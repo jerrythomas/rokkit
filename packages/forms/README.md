@@ -41,9 +41,9 @@ Schema and layout are inferred from the data shape automatically.
   const schema = {
     type: 'object',
     properties: {
-      name:   { type: 'string' },
-      role:   { type: 'string', enum: ['viewer', 'editor', 'admin'] },
-      count:  { type: 'integer', min: 0, max: 100 },
+      name: { type: 'string' },
+      role: { type: 'string', enum: ['viewer', 'editor', 'admin'] },
+      count: { type: 'integer', min: 0, max: 100 },
       active: { type: 'boolean' }
     }
   }
@@ -51,9 +51,9 @@ Schema and layout are inferred from the data shape automatically.
   const layout = {
     type: 'vertical',
     elements: [
-      { scope: '#/name',   label: 'Full Name', props: { placeholder: 'Enter name' } },
-      { scope: '#/role',   label: 'Role' },
-      { scope: '#/count',  label: 'Count' },
+      { scope: '#/name', label: 'Full Name', props: { placeholder: 'Enter name' } },
+      { scope: '#/role', label: 'Role' },
+      { scope: '#/count', label: 'Count' },
       { type: 'separator' },
       { scope: '#/active', label: 'Active' }
     ]
@@ -76,7 +76,7 @@ const form = new FormBuilder(data, schema, layout)
 form.updateField('#/name', 'Alice')
 form.validateField('#/name')
 form.validateAll()
-form.isDirty('#/name')   // true if value differs from initial
+form.isDirty('#/name') // true if value differs from initial
 ```
 
 ### Validation
@@ -142,37 +142,37 @@ Override individual fields with your own components using the `child` snippet an
 
 `FormBuilder` maps schema types to input types automatically:
 
-| Schema type | Condition | Input type |
-|---|---|---|
-| `string` | has `enum` or `options` in layout | `select` |
-| `string` | default | `text` |
-| `boolean` | — | `checkbox` |
-| `number` / `integer` | has both `min` and `max` | `range` |
-| `number` / `integer` | default | `number` |
-| any | `readonly: true` in layout | `info` |
-| — | no `scope` | `separator` |
+| Schema type          | Condition                         | Input type  |
+| -------------------- | --------------------------------- | ----------- |
+| `string`             | has `enum` or `options` in layout | `select`    |
+| `string`             | default                           | `text`      |
+| `boolean`            | —                                 | `checkbox`  |
+| `number` / `integer` | has both `min` and `max`          | `range`     |
+| `number` / `integer` | default                           | `number`    |
+| any                  | `readonly: true` in layout        | `info`      |
+| —                    | no `scope`                        | `separator` |
 
 ## Components
 
-| Component | Description |
-|---|---|
-| `FormRenderer` | Renders a complete form from data + schema + layout |
-| `Input` | Type-dispatching input — renders the right control for a given `type` |
-| `InputField` | Input wrapped with label, description, and validation message |
-| `InfoField` | Read-only label + value display |
-| `ValidationReport` | Displays a list of validation messages |
+| Component          | Description                                                           |
+| ------------------ | --------------------------------------------------------------------- |
+| `FormRenderer`     | Renders a complete form from data + schema + layout                   |
+| `Input`            | Type-dispatching input — renders the right control for a given `type` |
+| `InputField`       | Input wrapped with label, description, and validation message         |
+| `InfoField`        | Read-only label + value display                                       |
+| `ValidationReport` | Displays a list of validation messages                                |
 
 ## Utilities
 
 ```js
 import {
-  deriveSchemaFromValue,   // infer JSON schema from a data object
-  deriveLayoutFromValue,   // generate a default vertical layout from data
-  getSchemaWithLayout,     // merge schema attributes with layout elements
-  findAttributeByPath,     // look up a schema attribute by JSON Pointer path
-  validateField,           // validate a single value against schema constraints
-  validateAll,             // validate all fields in a FormBuilder
-  patterns                 // regex patterns: email, url, phone, etc.
+  deriveSchemaFromValue, // infer JSON schema from a data object
+  deriveLayoutFromValue, // generate a default vertical layout from data
+  getSchemaWithLayout, // merge schema attributes with layout elements
+  findAttributeByPath, // look up a schema attribute by JSON Pointer path
+  validateField, // validate a single value against schema constraints
+  validateAll, // validate all fields in a FormBuilder
+  patterns // regex patterns: email, url, phone, etc.
 } from '@rokkit/forms'
 ```
 
@@ -180,15 +180,15 @@ import {
 
 Components use `data-*` attribute selectors. Apply styles via `@rokkit/themes` or target these hooks directly:
 
-| Selector | Purpose |
-|---|---|
-| `[data-form-root]` | Form container |
-| `[data-form-field]` | Field wrapper |
-| `[data-form-separator]` | Separator element |
-| `[data-field-root]` | Input field root |
+| Selector                  | Purpose              |
+| ------------------------- | -------------------- |
+| `[data-form-root]`        | Form container       |
+| `[data-form-field]`       | Field wrapper        |
+| `[data-form-separator]`   | Separator element    |
+| `[data-field-root]`       | Input field root     |
 | `[data-field-type="..."]` | Type-specific layout |
-| `[data-description]` | Help text |
-| `[data-message]` | Validation message |
+| `[data-description]`      | Help text            |
+| `[data-message]`          | Validation message   |
 
 ---
 

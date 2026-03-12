@@ -18,8 +18,7 @@ export function magnetic(node, options = {}) {
 		}
 
 		const reducedMotion =
-			typeof window !== 'undefined' &&
-			window.matchMedia('(prefers-reduced-motion: reduce)').matches
+			typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 		if (reducedMotion) return
 

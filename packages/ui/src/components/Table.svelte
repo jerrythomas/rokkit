@@ -28,11 +28,14 @@
 
 	// ─── Controller ─────────────────────────────────────────────────
 
-	let controller = untrack(() => new TableController(data, {
-		columns: userColumns,
-		fields: userFields,
-		value
-	}))
+	let controller = untrack(
+		() =>
+			new TableController(data, {
+				columns: userColumns,
+				fields: userFields,
+				value
+			})
+	)
 	let tableRef = $state<HTMLElement | null>(null)
 
 	// Sync data changes to controller
@@ -141,11 +144,7 @@
 	onfocusin={handleFocusIn}
 	use:navigator={{ wrapper: controller, orientation: 'vertical' }}
 >
-	<table
-		role="grid"
-		aria-label={caption}
-		data-striped={striped || undefined}
-	>
+	<table role="grid" aria-label={caption} data-striped={striped || undefined}>
 		{#if caption}
 			<caption data-table-caption>{caption}</caption>
 		{/if}
@@ -162,7 +161,11 @@
 							data-sortable={column.sortable !== false || undefined}
 							data-sort-order={column.sorted ?? 'none'}
 							scope="col"
-							aria-sort={column.sorted === 'ascending' ? 'ascending' : column.sorted === 'descending' ? 'descending' : 'none'}
+							aria-sort={column.sorted === 'ascending'
+								? 'ascending'
+								: column.sorted === 'descending'
+									? 'descending'
+									: 'none'}
 							style:width={column.width}
 							style:text-align={column.align}
 							onclick={(e) => handleSort(e, column)}
@@ -188,9 +191,7 @@
 					</tr>
 				{:else}
 					<tr data-table-empty-row>
-						<td data-table-empty colspan={controller.columns.length}>
-							No data
-						</td>
+						<td data-table-empty colspan={controller.columns.length}> No data </td>
 					</tr>
 				{/if}
 			{:else}
@@ -212,20 +213,12 @@
 						>
 							{#each controller.columns as column (column.name)}
 								{#if cellSnippet}
-									<td
-										data-table-cell
-										data-column={column.name}
-										style:text-align={column.align}
-									>
+									<td data-table-cell data-column={column.name} style:text-align={column.align}>
 										{@render cellSnippet(getCellValue(row, column), column, row)}
 									</td>
 								{:else}
 									{@const cellIcon = getCellIcon(row, column)}
-									<td
-										data-table-cell
-										data-column={column.name}
-										style:text-align={column.align}
-									>
+									<td data-table-cell data-column={column.name} style:text-align={column.align}>
 										{#if cellIcon}
 											<span data-cell-icon class={cellIcon} aria-hidden="true"></span>
 										{/if}

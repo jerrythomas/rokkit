@@ -37,7 +37,11 @@ describe('MessagesStore', () => {
 			})
 			expect(messages.current.tabs).toEqual({ add: 'Add tab', remove: 'Remove tab' })
 			expect(messages.current.code).toEqual({ copy: 'Copy code', copied: 'Copied!' })
-			expect(messages.current.range).toEqual({ lower: 'Lower bound', upper: 'Upper bound', value: 'Value' })
+			expect(messages.current.range).toEqual({
+				lower: 'Lower bound',
+				upper: 'Upper bound',
+				value: 'Value'
+			})
 			expect(messages.current.search_).toEqual({ clear: 'Clear search' })
 			expect(messages.current.filter).toEqual({ remove: 'Remove filter' })
 			expect(messages.current.floatingNav).toEqual({

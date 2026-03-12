@@ -266,14 +266,14 @@ Feature: Multi-Step Forms
 
 ## Status
 
-| Feature | Status |
-|---------|--------|
-| JSON schema to form | ✅ Implemented |
+| Feature                                          | Status         |
+| ------------------------------------------------ | -------------- |
+| JSON schema to form                              | ✅ Implemented |
 | Field types (text, number, boolean, enum, array) | ✅ Implemented |
-| Nested structures and object sections | ✅ Implemented |
-| Validation | ✅ Implemented |
-| Dynamic lookups | ✅ Implemented |
-| Form state management (dirty, reset, submit) | ✅ Implemented |
-| Custom field rendering | ✅ Implemented |
-| Conditional fields | 🔲 Planned |
-| Multi-step forms | 🔲 Planned |
+| Nested structures and object sections            | ✅ Implemented |
+| Validation                                       | ✅ Implemented |
+| Dynamic lookups                                  | ✅ Implemented |
+| Form state management (dirty, reset, submit)     | ✅ Implemented |
+| Custom field rendering                           | ✅ Implemented |
+| Conditional fields                               | 🔲 Planned     |
+| Multi-step forms                                 | 🔲 Planned     |

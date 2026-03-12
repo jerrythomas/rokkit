@@ -106,8 +106,7 @@ const PATTERN_CHECKER_RULE = [
 		'background-image':
 			'linear-gradient(45deg, var(--pattern-color, currentColor) 25%, transparent 25%), linear-gradient(-45deg, var(--pattern-color, currentColor) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--pattern-color, currentColor) 75%), linear-gradient(-45deg, transparent 75%, var(--pattern-color, currentColor) 75%)',
 		'background-color': 'var(--pattern-fill, transparent)',
-		'background-size':
-			'calc(2 * var(--pattern-size, 3mm)) calc(2 * var(--pattern-size, 3mm))',
+		'background-size': 'calc(2 * var(--pattern-size, 3mm)) calc(2 * var(--pattern-size, 3mm))',
 		'background-position':
 			'0 0, 0 var(--pattern-size, 3mm), var(--pattern-size, 3mm) calc(-1 * var(--pattern-size, 3mm)), calc(-1 * var(--pattern-size, 3mm)) 0'
 	}

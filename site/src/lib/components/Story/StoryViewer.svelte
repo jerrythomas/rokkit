@@ -8,7 +8,10 @@
 
 <div data-story-root>
 	<!-- Demo preview area with grid background -->
-	<div data-story-preview class="preview-area rounded-t-md border border-surface-z2 p-6 text-surface-z8">
+	<div
+		data-story-preview
+		class="preview-area border-surface-z2 text-surface-z8 rounded-t-md border p-6"
+	>
 		{#if App}
 			<App />
 		{:else}
@@ -17,8 +20,10 @@
 	</div>
 
 	<!-- Toolbar: toggle code -->
-	<div class="flex items-center justify-between rounded-b-md border border-t-0 border-surface-z2 bg-surface-z1 px-3 py-1">
-		<span class="text-xs text-surface-z4">Example</span>
+	<div
+		class="border-surface-z2 bg-surface-z1 flex items-center justify-between rounded-b-md border border-t-0 px-3 py-1"
+	>
+		<span class="text-surface-z4 text-xs">Example</span>
 		<Button
 			label={showCode ? 'Hide code' : 'Show code'}
 			icon={showCode ? 'i-solar:minimize-square-bold-duotone' : 'i-solar:code-square-bold-duotone'}
@@ -38,7 +43,8 @@
 <style>
 	.preview-area {
 		background-color: var(--color-surface-z2, oklch(from var(--color-surface) calc(l + 0.02) c h));
-		background-image: linear-gradient(rgb(var(--color-surface-200, 128 128 128) / 0.25) 1px, transparent 1px),
+		background-image:
+			linear-gradient(rgb(var(--color-surface-200, 128 128 128) / 0.25) 1px, transparent 1px),
 			linear-gradient(90deg, rgb(var(--color-surface-200, 128 128 128) / 0.25) 1px, transparent 1px);
 		background-size: 20px 20px;
 	}

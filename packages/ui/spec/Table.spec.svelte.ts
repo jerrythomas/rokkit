@@ -215,9 +215,7 @@ describe('Table', () => {
 	// ─── Custom formatter ───────────────────────────────────────────
 
 	it('applies custom cell formatter', () => {
-		const columns = [
-			{ name: 'age', formatter: (v: unknown) => `${v} years` }
-		]
+		const columns = [{ name: 'age', formatter: (v: unknown) => `${v} years` }]
 		const { container } = render(Table, { data: sampleData, columns })
 		const cells = container.querySelectorAll('[data-column="age"]')
 		// First data cell (skip header)
@@ -233,7 +231,11 @@ describe('Table', () => {
 			{ name: 'Bob', gender: 'M' }
 		]
 		const columns = [
-			{ name: 'name', fields: { text: 'name', icon: 'gender' }, iconFormatter: (v: unknown) => `icon-${v}` }
+			{
+				name: 'name',
+				fields: { text: 'name', icon: 'gender' },
+				iconFormatter: (v: unknown) => `icon-${v}`
+			}
 		]
 		const { container } = render(Table, { data, columns })
 		const icon = container.querySelector('[data-cell-icon]')

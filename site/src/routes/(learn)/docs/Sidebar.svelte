@@ -20,8 +20,7 @@
 			// Group items — filter children, keep group if any match
 			const matchingChildren = item.children.filter(
 				(child) =>
-					child.title?.toLowerCase().includes(q) ||
-					child.description?.toLowerCase().includes(q)
+					child.title?.toLowerCase().includes(q) || child.description?.toLowerCase().includes(q)
 			)
 			if (matchingChildren.length > 0) {
 				return [{ ...item, children: matchingChildren }]
@@ -40,23 +39,29 @@
 	}
 </script>
 
-<div class="flex flex-col min-h-0 w-full flex-1">
+<div class="flex min-h-0 w-full flex-1 flex-col">
 	<div class="px-3 pt-3 pb-1">
 		<div class="relative">
-			<span class="i-solar:magnifer-bold-duotone absolute left-2.5 top-1/2 -translate-y-1/2 text-surface-z4 text-sm pointer-events-none" aria-hidden="true"></span>
+			<span
+				class="i-solar:magnifer-bold-duotone text-surface-z4 pointer-events-none absolute top-1/2 left-2.5 -translate-y-1/2 text-sm"
+				aria-hidden="true"
+			></span>
 			<input
 				bind:this={searchInput}
 				bind:value={query}
 				type="text"
 				placeholder="Search..."
-				class="w-full rounded-md border border-surface-z2 bg-surface-z1 py-1.5 pl-8 pr-8 text-sm text-surface-z7 placeholder:text-surface-z4 focus:border-primary-z5 focus:outline-none"
+				class="border-surface-z2 bg-surface-z1 text-surface-z7 placeholder:text-surface-z4 focus:border-primary-z5 w-full rounded-md border py-1.5 pr-8 pl-8 text-sm focus:outline-none"
 				aria-label="Search documentation"
 			/>
 			{#if !query}
-				<kbd class="absolute right-2 top-1/2 -translate-y-1/2 rounded border border-surface-z2 bg-surface-z1 px-1.5 py-0.5 text-[0.625rem] text-surface-z4 font-mono">⌘K</kbd>
+				<kbd
+					class="border-surface-z2 bg-surface-z1 text-surface-z4 absolute top-1/2 right-2 -translate-y-1/2 rounded border px-1.5 py-0.5 font-mono text-[0.625rem]"
+					>⌘K</kbd
+				>
 			{:else}
 				<button
-					class="absolute right-2 top-1/2 -translate-y-1/2 text-surface-z4 hover:text-surface-z7 text-sm"
+					class="text-surface-z4 hover:text-surface-z7 absolute top-1/2 right-2 -translate-y-1/2 text-sm"
 					onclick={() => (query = '')}
 					aria-label="Clear search"
 				>
@@ -65,5 +70,11 @@
 			{/if}
 		</div>
 	</div>
-	<List items={filtered} {fields} value={page.url.pathname} collapsible class="w-full flex-1 min-h-0 overflow-y-auto" />
+	<List
+		items={filtered}
+		{fields}
+		value={page.url.pathname}
+		collapsible
+		class="min-h-0 w-full flex-1 overflow-y-auto"
+	/>
 </div>

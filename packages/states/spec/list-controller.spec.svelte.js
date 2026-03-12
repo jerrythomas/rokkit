@@ -154,11 +154,7 @@ describe('ListController', () => {
 		})
 
 		it('moveFirst skips disabled first item', () => {
-			const allDisabledFirst = $state([
-				{ text: 'A', disabled: true },
-				{ text: 'B' },
-				{ text: 'C' }
-			])
+			const allDisabledFirst = $state([{ text: 'A', disabled: true }, { text: 'B' }, { text: 'C' }])
 			const controller = new ListController(allDisabledFirst)
 			expect(controller.moveFirst()).toBe(true)
 			expect(controller.focused).toEqual(allDisabledFirst[1])
@@ -178,11 +174,7 @@ describe('ListController', () => {
 		})
 
 		it('movePrev at first enabled item stays put', () => {
-			const allDisabledFirst = $state([
-				{ text: 'A', disabled: true },
-				{ text: 'B' },
-				{ text: 'C' }
-			])
+			const allDisabledFirst = $state([{ text: 'A', disabled: true }, { text: 'B' }, { text: 'C' }])
 			const controller = new ListController(allDisabledFirst)
 			controller.moveTo('1')
 			expect(controller.movePrev()).toBe(false)

@@ -26,7 +26,6 @@ function createFileObject(dir, entry) {
 function processEntry(entry, folderPath, pattern, dir) {
 	const currentPath = path.join(dir, entry.name)
 	if (entry.isDirectory()) {
-		 
 		return getFiles(folderPath, pattern, currentPath)
 	}
 

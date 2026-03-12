@@ -153,9 +153,7 @@ export class Navigator {
 		// Focused the container itself (user tabbed in, no roving tabindex item yet)
 		// Redirect focus to the currently focused item, or first item if none
 		const targetKey = this.#wrapper.focusedKey
-		const selector = targetKey
-			? `[data-path="${targetKey}"]`
-			: '[data-path]:not([disabled])'
+		const selector = targetKey ? `[data-path="${targetKey}"]` : '[data-path]:not([disabled])'
 		const el = /** @type {HTMLElement|null} */ (this.#root.querySelector(selector))
 		if (el) {
 			el.focus()

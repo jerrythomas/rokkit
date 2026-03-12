@@ -40,7 +40,7 @@
 	{#snippet preview()}
 		<div class="flex flex-col gap-8 px-4">
 			<div>
-				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Single slider</h4>
+				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">Single slider</h4>
 				<Range
 					bind:value
 					min={props.min}
@@ -53,7 +53,9 @@
 				<p class="text-surface-z6 mt-1 text-sm">Value: <strong>{value}</strong></p>
 			</div>
 			<div>
-				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Range slider (dual handles)</h4>
+				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">
+					Range slider (dual handles)
+				</h4>
 				<Range
 					range
 					bind:lower
@@ -65,25 +67,20 @@
 					labelSkip={props.labelSkip}
 					disabled={props.disabled}
 				/>
-				<p class="text-surface-z6 mt-1 text-sm">Lower: <strong>{lower}</strong> — Upper: <strong>{upper}</strong></p>
+				<p class="text-surface-z6 mt-1 text-sm">
+					Lower: <strong>{lower}</strong> — Upper: <strong>{upper}</strong>
+				</p>
 			</div>
 			<div>
-				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">With tick marks</h4>
-				<Range
-					value={30}
-					min={0}
-					max={100}
-					step={10}
-					ticks={10}
-					labelSkip={1}
-				/>
+				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">With tick marks</h4>
+				<Range value={30} min={0} max={100} step={10} ticks={10} labelSkip={1} />
 			</div>
 		</div>
 	{/snippet}
 
 	{#snippet controls()}
 		<FormRenderer bind:data={props} {schema} {layout} />
-		<InfoField label="Value" value={value} />
+		<InfoField label="Value" {value} />
 		<InfoField label="Lower" value={lower} />
 		<InfoField label="Upper" value={upper} />
 	{/snippet}

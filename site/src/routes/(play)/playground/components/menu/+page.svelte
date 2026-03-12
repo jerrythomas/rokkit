@@ -72,9 +72,9 @@
 
 <PlaySection>
 	{#snippet preview()}
-		<div class="flex gap-8 flex-wrap">
+		<div class="flex flex-wrap gap-8">
 			<div>
-				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Flat</h4>
+				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">Flat</h4>
 				<Menu
 					{items}
 					label={props.label}
@@ -88,7 +88,7 @@
 				/>
 			</div>
 			<div>
-				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Grouped</h4>
+				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">Grouped</h4>
 				<Menu
 					items={groupedItems}
 					label="File Menu"

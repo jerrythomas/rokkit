@@ -98,8 +98,17 @@
 			role="button"
 			tabindex="-1"
 			aria-label={labels.remove}
-			onclick={(e) => { e.stopPropagation(); handleRemove(proxy) }}
-			onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.stopPropagation(); e.preventDefault(); handleRemove(proxy) } }}
+			onclick={(e) => {
+				e.stopPropagation()
+				handleRemove(proxy)
+			}}
+			onkeydown={(e) => {
+				if (e.key === 'Enter' || e.key === ' ') {
+					e.stopPropagation()
+					e.preventDefault()
+					handleRemove(proxy)
+				}
+			}}
 		>
 			<span class={DEFAULT_STATE_ICONS.action.close} aria-hidden="true"></span>
 		</span>
@@ -161,12 +170,7 @@
 				</button>
 			{/each}
 			{#if editable}
-				<button
-					type="button"
-					data-tabs-add
-					aria-label={labels.add}
-					onclick={handleAdd}
-				>
+				<button type="button" data-tabs-add aria-label={labels.add} onclick={handleAdd}>
 					<span class="i-lucide:plus" aria-hidden="true"></span>
 				</button>
 			{/if}

@@ -72,11 +72,7 @@
 						{/if}
 					</span>
 				{:else if proxy.get('href')}
-					<a
-						href={proxy.get('href')}
-						data-breadcrumb-link
-						onclick={() => handleClick(proxy)}
-					>
+					<a href={proxy.get('href')} data-breadcrumb-link onclick={() => handleClick(proxy)}>
 						{#if crumb}
 							{@render crumb(proxy, isLast)}
 						{:else}
@@ -84,11 +80,7 @@
 						{/if}
 					</a>
 				{:else}
-					<button
-						type="button"
-						data-breadcrumb-link
-						onclick={() => handleClick(proxy)}
-					>
+					<button type="button" data-breadcrumb-link onclick={() => handleClick(proxy)}>
 						{#if crumb}
 							{@render crumb(proxy, isLast)}
 						{:else}

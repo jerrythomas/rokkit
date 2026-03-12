@@ -24,10 +24,7 @@ function createMockIO() {
 
 beforeEach(() => {
 	vi.stubGlobal('IntersectionObserver', createMockIO())
-	vi.stubGlobal(
-		'matchMedia',
-		vi.fn().mockReturnValue({ matches: false })
-	)
+	vi.stubGlobal('matchMedia', vi.fn().mockReturnValue({ matches: false }))
 	intersectCallback = null
 	mockObserverInstance = null
 })
@@ -85,9 +82,7 @@ describe('Reveal', () => {
 	it('sets --reveal-easing CSS custom property', () => {
 		const { container } = render(Reveal)
 		const el = container.querySelector('[data-reveal]') as HTMLElement
-		expect(el.style.getPropertyValue('--reveal-easing')).toBe(
-			'cubic-bezier(0.4, 0, 0.2, 1)'
-		)
+		expect(el.style.getPropertyValue('--reveal-easing')).toBe('cubic-bezier(0.4, 0, 0.2, 1)')
 	})
 
 	// ─── IntersectionObserver ──────────────────────────────────────

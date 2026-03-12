@@ -15,8 +15,8 @@
 	<h2>Basic Example</h2>
 	<p>
 		Pass an array of objects with <code>text</code> and optionally <code>icon</code> fields. Bind
-		<code>value</code> to track the selected value. Set <code>disabled: true</code> on any item to
-		make it unselectable.
+		<code>value</code> to track the selected value. Set <code>disabled: true</code> on any item to make
+		it unselectable.
 	</p>
 
 	<Code {...storyBuilder.getFragment(0)} />
@@ -35,9 +35,8 @@
 	<!-- Grouped Options -->
 	<h2>Grouped Options</h2>
 	<p>
-		Items with a <code>children</code> array are rendered as labelled option groups with a visual
-		divider between groups. Only leaf items (children) are selectable — group headers are
-		presentational.
+		Items with a <code>children</code> array are rendered as labelled option groups with a visual divider
+		between groups. Only leaf items (children) are selectable — group headers are presentational.
 	</p>
 
 	<Code {...storyBuilder.getFragment(2)} />
@@ -46,9 +45,9 @@
 	<!-- Filterable -->
 	<h2>Filterable</h2>
 	<p>
-		Enable the <code>filterable</code> prop to add a search input at the top of the dropdown.
-		Useful for long option lists. The filter matches against the display text of each option.
-		Use <code>filterPlaceholder</code> to customize the search input hint.
+		Enable the <code>filterable</code> prop to add a search input at the top of the dropdown. Useful
+		for long option lists. The filter matches against the display text of each option. Use
+		<code>filterPlaceholder</code> to customize the search input hint.
 	</p>
 
 	<StoryViewer {...storyBuilder.getExample('filterable')} />
@@ -56,8 +55,8 @@
 	<!-- Custom Option Snippet -->
 	<h2>Custom Option Rendering</h2>
 	<p>
-		Use the <code>itemContent</code> snippet to fully control what appears inside each dropdown option.
-		The snippet receives a <code>ProxyItem</code> — use <code>proxy.label</code>,
+		Use the <code>itemContent</code> snippet to fully control what appears inside each dropdown
+		option. The snippet receives a <code>ProxyItem</code> — use <code>proxy.label</code>,
 		<code>proxy.icon</code>, and <code>proxy.get('fieldName')</code> to access any field.
 	</p>
 
@@ -74,7 +73,9 @@
 				<li><strong>value</strong> (bindable): Currently selected value</li>
 				<li><strong>selected</strong> (bindable): Currently selected raw item object</li>
 				<li><strong>placeholder</strong>: Text shown when nothing is selected</li>
-				<li><strong>size</strong>: Size variant (<code>sm</code>, <code>md</code>, <code>lg</code>)</li>
+				<li>
+					<strong>size</strong>: Size variant (<code>sm</code>, <code>md</code>, <code>lg</code>)
+				</li>
 				<li><strong>align</strong>: Dropdown alignment (<code>start</code>, <code>end</code>)</li>
 				<li><strong>direction</strong>: Dropdown direction (<code>down</code>, <code>up</code>)</li>
 				<li><strong>disabled</strong>: Disable the entire select</li>

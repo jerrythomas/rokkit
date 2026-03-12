@@ -16,18 +16,20 @@
 	const fields = { label: 'label', href: 'href', icon: 'icon', value: 'href' }
 </script>
 
-<div class="flex flex-col min-h-screen">
+<div class="flex min-h-screen flex-col">
 	<!-- Top bar -->
-	<header class="h-14 flex items-center justify-between px-4 border-b border-surface-z2 bg-surface-z1 flex-shrink-0">
+	<header
+		class="border-surface-z2 bg-surface-z1 flex h-14 flex-shrink-0 items-center justify-between border-b px-4"
+	>
 		<div class="flex items-center gap-3">
-			<span class="i-solar:atom-bold-duotone text-2xl text-primary-z6" aria-hidden="true"></span>
-			<span class="font-bold text-surface-z8 text-lg">Nexus</span>
-			<span class="text-xs text-surface-z4 hidden sm:inline">Project Workspace</span>
+			<span class="i-solar:atom-bold-duotone text-primary-z6 text-2xl" aria-hidden="true"></span>
+			<span class="text-surface-z8 text-lg font-bold">Nexus</span>
+			<span class="text-surface-z4 hidden text-xs sm:inline">Project Workspace</span>
 		</div>
 		<div class="flex items-center gap-2">
 			<a
 				href="/"
-				class="text-xs text-surface-z5 hover:text-surface-z8 no-underline flex items-center gap-1"
+				class="text-surface-z5 hover:text-surface-z8 flex items-center gap-1 text-xs no-underline"
 			>
 				<span class="i-solar:arrow-left-bold-duotone text-sm" aria-hidden="true"></span>
 				Back to Docs
@@ -36,16 +38,18 @@
 	</header>
 
 	<!-- Body -->
-	<div class="flex flex-1 min-h-0 overflow-hidden">
+	<div class="flex min-h-0 flex-1 overflow-hidden">
 		<!-- Sidebar -->
-		<aside class="w-52 flex-shrink-0 border-r border-surface-z2 bg-surface-z1 overflow-y-auto hidden md:flex flex-col">
+		<aside
+			class="border-surface-z2 bg-surface-z1 hidden w-52 flex-shrink-0 flex-col overflow-y-auto border-r md:flex"
+		>
 			<div class="p-3 pt-4">
 				<List items={navItems} {fields} value={page.url.pathname} />
 			</div>
 		</aside>
 
 		<!-- Main content -->
-		<main class="flex-1 overflow-y-auto bg-surface-z0">
+		<main class="bg-surface-z0 flex-1 overflow-y-auto">
 			{@render children()}
 		</main>
 	</div>

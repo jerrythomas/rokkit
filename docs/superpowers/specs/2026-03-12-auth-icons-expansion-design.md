@@ -12,6 +12,7 @@ Expand `@rokkit/icons` auth set from 13 flat icons to a comprehensive auth icon 
 Flat hyphenated filenames in `src/auth/`. No build system changes required.
 
 ### Brand icon variants
+
 ```
 {name}                    # default (color)
 {name}-white              # white mono
@@ -24,7 +25,9 @@ Flat hyphenated filenames in `src/auth/`. No build system changes required.
 ```
 
 ### Auth method variants (Solar-style)
+
 Solar icon set has 4 variants per icon:
+
 ```
 {name}                    # solid (filled, default)
 {name}-outline            # linear/outline stroked
@@ -40,46 +43,49 @@ Solar icon set has 4 variants per icon:
 ## Full Icon Set
 
 ### Auth Platforms
+
 Icons with published wordmarks get full variants; others get color/white/black only.
 
-| Name | Variants | Source |
-|------|----------|--------|
-| `supabase` | color, white, black, wordmark, wordmark-white | simpleicons / official |
-| `firebase` | color, white, black | New 2024 brand — official Firebase kit |
-| `convex` | color, white, black + logo, logo-white, logo-black + wordmark, wordmark-white | `/Users/Jerry/Downloads/Logos/SVG/` |
-| `auth0` | color, white, black, wordmark, wordmark-white | Official Auth0 brand kit |
-| `amplify` | color, white, black, wordmark | AWS Amplify brand |
-| `cognito` | color, white, black | AWS Cognito |
-| `clerk` | color, white, black, wordmark, wordmark-white | clerk.com brand kit |
-| `okta` | color, white, black, wordmark | okta.com brand |
-| `keycloak` | color, white, black | keycloak.org |
-| `nextauth` | color, white, black, wordmark | authjs.dev |
-| `pocketbase` | color, white, black, wordmark | pocketbase.io |
-| `appwrite` | color, white, black, wordmark, wordmark-white | appwrite.io brand kit |
-| `azure` | color, white, black | Already present — keep |
-| `microsoft` | color, white, black | Already present — keep |
+| Name         | Variants                                                                      | Source                                 |
+| ------------ | ----------------------------------------------------------------------------- | -------------------------------------- |
+| `supabase`   | color, white, black, wordmark, wordmark-white                                 | simpleicons / official                 |
+| `firebase`   | color, white, black                                                           | New 2024 brand — official Firebase kit |
+| `convex`     | color, white, black + logo, logo-white, logo-black + wordmark, wordmark-white | `/Users/Jerry/Downloads/Logos/SVG/`    |
+| `auth0`      | color, white, black, wordmark, wordmark-white                                 | Official Auth0 brand kit               |
+| `amplify`    | color, white, black, wordmark                                                 | AWS Amplify brand                      |
+| `cognito`    | color, white, black                                                           | AWS Cognito                            |
+| `clerk`      | color, white, black, wordmark, wordmark-white                                 | clerk.com brand kit                    |
+| `okta`       | color, white, black, wordmark                                                 | okta.com brand                         |
+| `keycloak`   | color, white, black                                                           | keycloak.org                           |
+| `nextauth`   | color, white, black, wordmark                                                 | authjs.dev                             |
+| `pocketbase` | color, white, black, wordmark                                                 | pocketbase.io                          |
+| `appwrite`   | color, white, black, wordmark, wordmark-white                                 | appwrite.io brand kit                  |
+| `azure`      | color, white, black                                                           | Already present — keep                 |
+| `microsoft`  | color, white, black                                                           | Already present — keep                 |
 
 ### Social Auth Providers
-| Name | Variants | Notes |
-|------|----------|-------|
-| `google` | color, white, black | Already present |
-| `github` | color, white, black | Already present |
-| `apple` | color, white, black | Already present |
-| `twitter` | color, white, black | Already present (Twitter/X) |
-| `facebook` | color, white, black | New — add |
-| `microsoft` | color, white, black | Shared with platforms |
+
+| Name        | Variants            | Notes                       |
+| ----------- | ------------------- | --------------------------- |
+| `google`    | color, white, black | Already present             |
+| `github`    | color, white, black | Already present             |
+| `apple`     | color, white, black | Already present             |
+| `twitter`   | color, white, black | Already present (Twitter/X) |
+| `facebook`  | color, white, black | New — add                   |
+| `microsoft` | color, white, black | Shared with platforms       |
 
 ### Auth Methods (Solar-style 4 variants each)
-| Name | Notes |
-|------|-------|
-| `email` | Already present — add Solar variants |
-| `phone` | Already present — add Solar variants |
-| `password` | Already present — add Solar variants |
-| `magic` | Already present — add Solar variants |
-| `incognito` | New — hat + glasses anonymous figure |
-| `authy` | Already present — 2FA app brand icon (brand only, no Solar variants) |
-| `passkey` | New — fingerprint or hardware key visual |
-| `mfa` | New — shield + check or multi-device visual |
+
+| Name        | Notes                                                                |
+| ----------- | -------------------------------------------------------------------- |
+| `email`     | Already present — add Solar variants                                 |
+| `phone`     | Already present — add Solar variants                                 |
+| `password`  | Already present — add Solar variants                                 |
+| `magic`     | Already present — add Solar variants                                 |
+| `incognito` | New — hat + glasses anonymous figure                                 |
+| `authy`     | Already present — 2FA app brand icon (brand only, no Solar variants) |
+| `passkey`   | New — fingerprint or hardware key visual                             |
+| `mfa`       | New — shield + check or multi-device visual                          |
 
 ## SVG Sourcing Strategy
 

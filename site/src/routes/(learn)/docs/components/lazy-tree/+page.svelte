@@ -14,8 +14,8 @@
 	<h2>Basic Example</h2>
 	<p>
 		Set <code>children: true</code> on nodes that should load children on demand, and provide an
-		<code>onlazyload</code> callback that returns a promise resolving to an array of child items.
-		A loading spinner appears while children are being fetched.
+		<code>onlazyload</code> callback that returns a promise resolving to an array of child items. A loading
+		spinner appears while children are being fetched.
 	</p>
 
 	<Code {...storyBuilder.getFragment(0)} />
@@ -40,7 +40,9 @@
 		with <code>children: true</code> is expanded:
 	</p>
 	<ol>
-		<li>The node shows a loading spinner (<code>data-tree-loading</code>, <code>aria-busy</code>)</li>
+		<li>
+			The node shows a loading spinner (<code>data-tree-loading</code>, <code>aria-busy</code>)
+		</li>
 		<li><code>onlazyload(item)</code> is called with the node's raw item</li>
 		<li>The returned children replace the sentinel and the node expands</li>
 		<li>Subsequent expansions use the cached children (no re-fetch)</li>
@@ -54,9 +56,14 @@
 				<li><strong>items</strong>: Array of nested objects</li>
 				<li><strong>fields</strong>: Remap your data keys to component fields</li>
 				<li><strong>value</strong> (bindable): Currently selected item value</li>
-				<li><strong>lineStyle</strong>: Tree line style — <code>'none'</code>, <code>'solid'</code> (default), <code>'dashed'</code>, <code>'dotted'</code></li>
+				<li>
+					<strong>lineStyle</strong>: Tree line style — <code>'none'</code>, <code>'solid'</code>
+					(default), <code>'dashed'</code>, <code>'dotted'</code>
+				</li>
 				<li><strong>icons</strong>: Override the expand/collapse icons</li>
-				<li><strong>size</strong>: Size variant (<code>sm</code>, <code>md</code>, <code>lg</code>)</li>
+				<li>
+					<strong>size</strong>: Size variant (<code>sm</code>, <code>md</code>, <code>lg</code>)
+				</li>
 				<li><strong>onlazyload</strong>: Async callback to fetch children</li>
 				<li><strong>hasMore</strong>: Show a "Load More" button for root-level pagination</li>
 				<li><strong>class</strong>: Additional CSS classes</li>
@@ -80,8 +87,9 @@
 				<strong>onselect(value, proxy)</strong>: Fired when a node is selected
 			</li>
 			<li>
-				<strong>onlazyload(item)</strong>: Async callback — receives the node's raw item,
-				must return a Promise resolving to an array of child items. Called with no args for root-level "Load More" pagination.
+				<strong>onlazyload(item)</strong>: Async callback — receives the node's raw item, must
+				return a Promise resolving to an array of child items. Called with no args for root-level
+				"Load More" pagination.
 			</li>
 		</ul>
 	</div>

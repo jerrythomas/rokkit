@@ -162,8 +162,7 @@ export function navigator(node, options) {
 			resetTypeahead()
 			emitAction(node, wrapper, action, true)
 			// If expand/collapse moved focus, also emit move so components update DOM focus
-			const focusMoved =
-				['expand', 'collapse'].includes(action) && wrapper.focusedKey !== prevKey
+			const focusMoved = ['expand', 'collapse'].includes(action) && wrapper.focusedKey !== prevKey
 			if (focusMoved) {
 				node.dispatchEvent(
 					new CustomEvent('action', {

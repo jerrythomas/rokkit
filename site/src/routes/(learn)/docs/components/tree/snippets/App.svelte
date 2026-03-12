@@ -4,7 +4,7 @@
 
 	const items = [
 		{
-			label:'src',
+			label: 'src',
 			value: 'src',
 			icon: 'i-lucide:folder',
 			badge: '3 files',
@@ -27,7 +27,7 @@
 		{/if}
 		<span class="flex-1">{proxy.label}</span>
 		{#if proxy.get('badge')}
-			<span class="rounded bg-surface-z2 px-1.5 py-0.5 text-xs text-surface-z5">
+			<span class="bg-surface-z2 text-surface-z5 rounded px-1.5 py-0.5 text-xs">
 				{proxy.get('badge')}
 			</span>
 		{/if}

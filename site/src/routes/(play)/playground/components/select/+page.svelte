@@ -70,9 +70,9 @@
 
 <PlaySection>
 	{#snippet preview()}
-		<div class="flex gap-8 flex-wrap">
+		<div class="flex flex-wrap gap-8">
 			<div>
-				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Simple</h4>
+				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">Simple</h4>
 				<div class="w-[250px]">
 					<Select
 						items={fruits}
@@ -87,7 +87,7 @@
 				</div>
 			</div>
 			<div>
-				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Grouped</h4>
+				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">Grouped</h4>
 				<div class="w-[250px]">
 					<Select
 						items={grouped}

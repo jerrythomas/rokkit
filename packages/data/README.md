@@ -28,12 +28,12 @@ bun add @rokkit/data
 ```js
 import { typeOf } from '@rokkit/data'
 
-typeOf('hello')     // 'string'
-typeOf(42)          // 'number'
-typeOf(new Date())  // 'date'
-typeOf([1, 2])      // 'array'
-typeOf({ a: 1 })    // 'object'
-typeOf(true)        // 'boolean'
+typeOf('hello') // 'string'
+typeOf(42) // 'number'
+typeOf(new Date()) // 'date'
+typeOf([1, 2]) // 'array'
+typeOf({ a: 1 }) // 'object'
+typeOf(true) // 'boolean'
 ```
 
 ### Filtering
@@ -112,26 +112,26 @@ const filters = parseFilters('age >= 18 AND status = "active"')
 
 ## API
 
-| Export | Description |
-|--------|-------------|
-| `typeOf(value)` | Infer type string from a value |
-| `filterObjectArray(data, filter)` | Apply a single filter object to an array |
-| `filterData(data, filters)` | Apply an array of filters to a dataset |
-| `parseFilters(string)` | Parse a filter expression string into filter objects |
-| `innerJoin(a, b, keyA, keyB)` | Inner join two arrays on matching keys |
-| `leftJoin(a, b, keyA, keyB)` | Left join — all rows from `a`, matched rows from `b` |
-| `rightJoin(a, b, keyA, keyB)` | Right join — all rows from `b`, matched rows from `a` |
-| `fullJoin(a, b, keyA, keyB)` | Full outer join |
-| `crossJoin(a, b)` | Cartesian product of two arrays |
-| `antiJoin(a, b, keyA, keyB)` | Rows in `a` with no match in `b` |
-| `semiJoin(a, b, keyA, keyB)` | Rows in `a` that have a match in `b` |
-| `deriveMetadata(data)` | Infer column names and types from a data sample |
-| `deriveColumns(data)` | Derive column definitions from data |
-| `deriveSortableColumn(col)` | Mark a column as sortable |
-| `dataset(data, options?)` | Create a dataset abstraction |
-| `dataview(dataset, options?)` | Create a filtered/sorted/paged view over a dataset |
-| `renamer(mapping)` | Create a function that renames object keys |
-| `model(data)` | Create a reactive data model |
+| Export                            | Description                                           |
+| --------------------------------- | ----------------------------------------------------- |
+| `typeOf(value)`                   | Infer type string from a value                        |
+| `filterObjectArray(data, filter)` | Apply a single filter object to an array              |
+| `filterData(data, filters)`       | Apply an array of filters to a dataset                |
+| `parseFilters(string)`            | Parse a filter expression string into filter objects  |
+| `innerJoin(a, b, keyA, keyB)`     | Inner join two arrays on matching keys                |
+| `leftJoin(a, b, keyA, keyB)`      | Left join — all rows from `a`, matched rows from `b`  |
+| `rightJoin(a, b, keyA, keyB)`     | Right join — all rows from `b`, matched rows from `a` |
+| `fullJoin(a, b, keyA, keyB)`      | Full outer join                                       |
+| `crossJoin(a, b)`                 | Cartesian product of two arrays                       |
+| `antiJoin(a, b, keyA, keyB)`      | Rows in `a` with no match in `b`                      |
+| `semiJoin(a, b, keyA, keyB)`      | Rows in `a` that have a match in `b`                  |
+| `deriveMetadata(data)`            | Infer column names and types from a data sample       |
+| `deriveColumns(data)`             | Derive column definitions from data                   |
+| `deriveSortableColumn(col)`       | Mark a column as sortable                             |
+| `dataset(data, options?)`         | Create a dataset abstraction                          |
+| `dataview(dataset, options?)`     | Create a filtered/sorted/paged view over a dataset    |
+| `renamer(mapping)`                | Create a function that renames object keys            |
+| `model(data)`                     | Create a reactive data model                          |
 
 ---
 

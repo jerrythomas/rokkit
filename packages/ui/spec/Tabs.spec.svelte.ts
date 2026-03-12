@@ -58,7 +58,12 @@ describe('Tabs', () => {
 	it('renders icons when provided', () => {
 		const opts = [
 			{ label: 'Home', value: 'home', icon: 'i-lucide:home', content: 'Home content' },
-			{ label: 'Settings', value: 'settings', icon: 'i-lucide:settings', content: 'Settings content' }
+			{
+				label: 'Settings',
+				value: 'settings',
+				icon: 'i-lucide:settings',
+				content: 'Settings content'
+			}
 		]
 		const { container } = render(Tabs, { options: opts, value: 'home' })
 		const icons = container.querySelectorAll('[data-tabs-icon]')
@@ -179,7 +184,11 @@ describe('Tabs', () => {
 	})
 
 	it('supports vertical orientation', () => {
-		const { container } = render(Tabs, { options: basicOptions, value: 'tab1', orientation: 'vertical' })
+		const { container } = render(Tabs, {
+			options: basicOptions,
+			value: 'tab1',
+			orientation: 'vertical'
+		})
 		const el = container.querySelector('[data-tabs]')
 		expect(el?.getAttribute('data-orientation')).toBe('vertical')
 		const tabList = container.querySelector('[role="tablist"]')
@@ -330,9 +339,7 @@ describe('Tabs', () => {
 	})
 
 	it('renders mapped content field', () => {
-		const opts = [
-			{ label: 'Tab', value: 't1', body: 'Custom body content' }
-		]
+		const opts = [{ label: 'Tab', value: 't1', body: 'Custom body content' }]
 		const { container } = render(Tabs, {
 			options: opts,
 			fields: { content: 'body' },
@@ -371,7 +378,9 @@ describe('Tabs', () => {
 
 	it('updates active panel when value changes externally', async () => {
 		const { container, rerender } = render(Tabs, { options: basicOptions, value: 'tab1' })
-		expect(container.querySelector('[data-tabs-panel][data-panel-active]')?.textContent).toContain('Content 1')
+		expect(container.querySelector('[data-tabs-panel][data-panel-active]')?.textContent).toContain(
+			'Content 1'
+		)
 
 		await rerender({ value: 'tab2' })
 		const panels = container.querySelectorAll('[data-tabs-panel]')
@@ -390,7 +399,11 @@ describe('Tabs', () => {
 	// ─── Accessibility ──────────────────────────────────────────────
 
 	it('sets custom aria-label from name prop', () => {
-		const { container } = render(Tabs, { options: basicOptions, value: 'tab1', name: 'navigation-tabs' })
+		const { container } = render(Tabs, {
+			options: basicOptions,
+			value: 'tab1',
+			name: 'navigation-tabs'
+		})
 		const el = container.querySelector('[data-tabs]')
 		expect(el?.getAttribute('aria-label')).toBe('navigation-tabs')
 	})
@@ -472,7 +485,12 @@ describe('Tabs', () => {
 
 	it('calls onadd when add button is clicked', async () => {
 		const onadd = vi.fn()
-		const { container } = render(Tabs, { options: basicOptions, value: 'tab1', editable: true, onadd })
+		const { container } = render(Tabs, {
+			options: basicOptions,
+			value: 'tab1',
+			editable: true,
+			onadd
+		})
 		const addButton = container.querySelector('[data-tabs-add]')!
 		await fireEvent.click(addButton)
 		expect(onadd).toHaveBeenCalled()
@@ -480,7 +498,12 @@ describe('Tabs', () => {
 
 	it('calls onremove when remove button is clicked', async () => {
 		const onremove = vi.fn()
-		const { container } = render(Tabs, { options: basicOptions, value: 'tab1', editable: true, onremove })
+		const { container } = render(Tabs, {
+			options: basicOptions,
+			value: 'tab1',
+			editable: true,
+			onremove
+		})
 		const removeButtons = container.querySelectorAll('[data-tabs-remove]')
 		await fireEvent.click(removeButtons[1])
 		expect(onremove).toHaveBeenCalledWith('tab2')

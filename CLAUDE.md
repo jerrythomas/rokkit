@@ -5,6 +5,7 @@ This file is the entry point for any AI agent working on this repo.
 ## MANDATORY: Load Workflow First
 
 Before doing any work, read these files in order:
+
 1. **`agents/workflow.md`** — methodology and pipeline
 2. **`agents/memory.md`** — project knowledge, principles, tooling
 3. **`agents/journal.md`** (last ~50 lines) — recent progress
@@ -63,15 +64,18 @@ cd site && npx playwright test
 ## Conventions
 
 ### Pipeline for work items
+
 For non-trivial work: **Backlog → Plan → Implement**.
 See `agents/workflow.md` for the full process.
 
 ### When a feature design is agreed upon
+
 1. Update the relevant `docs/design/*.md` module file
 2. Log in `agents/journal.md`
 3. Create/update plan in `docs/design/07-priority.md`
 
 ### When completing work
+
 1. Run tests and lint — both must pass
 2. Check design docs are still accurate
 3. Update `docs/design/07-priority.md` — mark item complete
@@ -79,18 +83,19 @@ See `agents/workflow.md` for the full process.
 5. Update status in `docs/features/` and `docs/design/`
 
 ### Lint Rules
+
 - Warnings are pre-existing and acceptable
 - **Errors must be zero**
 
 ## Key Files Quick Reference
 
-| File | Purpose |
-|------|---------|
-| `agents/workflow.md` | Methodology, pipeline, session lifecycle |
-| `agents/memory.md` | Project knowledge, principles, tooling |
-| `agents/journal.md` | Chronological progress log |
-| `agents/design-patterns.md` | Established patterns cookbook |
-| `agents/references.md` | Coding conventions, styling, structure |
-| `agents/tracking.md` | Active tracking log |
-| `docs/features/` | Feature specs (Gherkin scenarios, vision) |
-| `docs/design/` | Architecture and design docs |
+| File                        | Purpose                                   |
+| --------------------------- | ----------------------------------------- |
+| `agents/workflow.md`        | Methodology, pipeline, session lifecycle  |
+| `agents/memory.md`          | Project knowledge, principles, tooling    |
+| `agents/journal.md`         | Chronological progress log                |
+| `agents/design-patterns.md` | Established patterns cookbook             |
+| `agents/references.md`      | Coding conventions, styling, structure    |
+| `agents/tracking.md`        | Active tracking log                       |
+| `docs/features/`            | Feature specs (Gherkin scenarios, vision) |
+| `docs/design/`              | Architecture and design docs              |

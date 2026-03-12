@@ -46,11 +46,7 @@ When your data keys differ from the expected defaults, use the `fields` prop:
   let chosen = $state(null)
 </script>
 
-<Select
-  options={countries}
-  fields={{ label: 'name', value: 'code' }}
-  bind:value={chosen}
-/>
+<Select options={countries} fields={{ label: 'name', value: 'code' }} bind:value={chosen} />
 ```
 
 ### Tabs with bind:value
@@ -103,16 +99,16 @@ When your data keys differ from the expected defaults, use the `fields` prop:
 
 ## Components
 
-| Category | Components |
-|---|---|
-| Form / Input | Button, ButtonGroup, Toggle, Switch, Range, SearchFilter, Tabs |
-| Dropdown | Menu, Select, MultiSelect, Toolbar, ToolbarGroup |
-| List / Navigation | List, Tree, LazyTree, BreadCrumbs |
-| Layout | Card, Grid, Carousel, ProgressBar, Timeline |
-| Data Display | Table, Rating, Pill, Connector, Stepper |
-| Visual | Reveal, Tilt, Shine, Code, ItemContent |
-| Advanced | PaletteManager, FloatingAction, FloatingNavigation |
-| Upload | UploadTarget, UploadFileStatus, UploadProgress |
+| Category          | Components                                                     |
+| ----------------- | -------------------------------------------------------------- |
+| Form / Input      | Button, ButtonGroup, Toggle, Switch, Range, SearchFilter, Tabs |
+| Dropdown          | Menu, Select, MultiSelect, Toolbar, ToolbarGroup               |
+| List / Navigation | List, Tree, LazyTree, BreadCrumbs                              |
+| Layout            | Card, Grid, Carousel, ProgressBar, Timeline                    |
+| Data Display      | Table, Rating, Pill, Connector, Stepper                        |
+| Visual            | Reveal, Tilt, Shine, Code, ItemContent                         |
+| Advanced          | PaletteManager, FloatingAction, FloatingNavigation             |
+| Upload            | UploadTarget, UploadFileStatus, UploadProgress                 |
 
 ## API
 
@@ -120,12 +116,12 @@ When your data keys differ from the expected defaults, use the `fields` prop:
 
 Most components share a consistent interface:
 
-| Prop | Description |
-|---|---|
-| `items` / `options` | Array of data items |
-| `value` | Bindable selected value |
-| `fields` | Field mapping — maps component-expected keys to your data's actual keys |
-| `onchange` / `onselect` | Selection callback |
+| Prop                    | Description                                                             |
+| ----------------------- | ----------------------------------------------------------------------- |
+| `items` / `options`     | Array of data items                                                     |
+| `value`                 | Bindable selected value                                                 |
+| `fields`                | Field mapping — maps component-expected keys to your data's actual keys |
+| `onchange` / `onselect` | Selection callback                                                      |
 
 ### Field mapping
 

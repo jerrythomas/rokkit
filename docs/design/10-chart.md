@@ -122,30 +122,24 @@ Every chart component uses a uniform set of semantic channel props. These are th
 
 ### Standard Channels
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `x` | `string` | X-axis field. Categorical or temporal. |
-| `y` | `string` | Y-axis field. Quantitative. |
-| `color` | `string` | Series/group field for palette color assignment. One color per distinct value. |
-| `fill` | `string \| CSSColor` | Fill color channel. If a field name: pattern fill assigned per distinct value. If a CSS color string: solid fill applied to all marks. |
-| `pattern` | `string` | Pattern type channel. Assigns a distinct SVG pattern (Dots, CrossHatch, Waves, etc.) per distinct value of this field. |
-| `size` | `string \| number` | Marker size channel. If a field name: encodes a quantitative dimension (bubble chart). If a number: fixed size for all marks. |
-| `symbol` | `string` | Symbol shape channel. Assigns a distinct marker shape per distinct value (scatter/bubble only). |
-| `label` | `string` | Field for data labels rendered on or near marks. |
-| `time` | `string` | Time axis field. Used by `AnimatedChart` to define keyframes. Also accepts ISO date strings for temporal x-axis. |
-| `z` | `string \| number` | Z-axis / bubble size channel. Alias for `size` in `BubbleChart`. |
+| Prop      | Type                 | Description                                                                                                                            |
+| --------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `x`       | `string`             | X-axis field. Categorical or temporal.                                                                                                 |
+| `y`       | `string`             | Y-axis field. Quantitative.                                                                                                            |
+| `color`   | `string`             | Series/group field for palette color assignment. One color per distinct value.                                                         |
+| `fill`    | `string \| CSSColor` | Fill color channel. If a field name: pattern fill assigned per distinct value. If a CSS color string: solid fill applied to all marks. |
+| `pattern` | `string`             | Pattern type channel. Assigns a distinct SVG pattern (Dots, CrossHatch, Waves, etc.) per distinct value of this field.                 |
+| `size`    | `string \| number`   | Marker size channel. If a field name: encodes a quantitative dimension (bubble chart). If a number: fixed size for all marks.          |
+| `symbol`  | `string`             | Symbol shape channel. Assigns a distinct marker shape per distinct value (scatter/bubble only).                                        |
+| `label`   | `string`             | Field for data labels rendered on or near marks.                                                                                       |
+| `time`    | `string`             | Time axis field. Used by `AnimatedChart` to define keyframes. Also accepts ISO date strings for temporal x-axis.                       |
+| `z`       | `string \| number`   | Z-axis / bubble size channel. Alias for `size` in `BubbleChart`.                                                                       |
 
 ### Usage Examples
 
 ```svelte
 <!-- Bar chart: color by region, dual-coded with pattern for accessibility -->
-<BarChart
-  data={salesData}
-  x="category"
-  y="revenue"
-  color="region"
-  pattern="region"
-/>
+<BarChart data={salesData} x="category" y="revenue" color="region" pattern="region" />
 
 <!-- Bubble chart: size and color as separate channels -->
 <BubbleChart
@@ -158,12 +152,7 @@ Every chart component uses a uniform set of semantic channel props. These are th
 />
 
 <!-- Line chart: multiple series by color field -->
-<LineChart
-  data={timeSeries}
-  x="date"
-  y="value"
-  color="metric"
-/>
+<LineChart data={timeSeries} x="date" y="value" color="metric" />
 
 <!-- Solid fill, no field mapping -->
 <BarChart data={totals} x="month" y="sales" fill="#3b82f6" />
@@ -227,18 +216,18 @@ Input: data, channels { x, y, color, pattern, symbol }
 ```javascript
 const SHADE_MAP = {
   light: {
-    fill:   [200, 300, 100, 400],   // bar fills, area fills
-    stroke: [600, 700, 500],         // pattern lines, borders
-    text:   [800, 900],              // data labels — high contrast
-    grid:   [100, 200],              // grid lines — subtle
-    axis:   [600, 700]               // axis lines and tick text
+    fill: [200, 300, 100, 400], // bar fills, area fills
+    stroke: [600, 700, 500], // pattern lines, borders
+    text: [800, 900], // data labels — high contrast
+    grid: [100, 200], // grid lines — subtle
+    axis: [600, 700] // axis lines and tick text
   },
   dark: {
-    fill:   [700, 800, 600, 900],
+    fill: [700, 800, 600, 900],
     stroke: [300, 200, 400],
-    text:   [100, 50],
-    grid:   [800, 900],
-    axis:   [300, 400]
+    text: [100, 50],
+    grid: [800, 900],
+    axis: [300, 400]
   }
 }
 ```
@@ -266,23 +255,29 @@ Users extend the built-in pattern and symbol registries:
 export function createRegistry(custom = {}) {
   const {
     patterns: customPatterns = [],
-    symbols:  customSymbols  = [],
-    palette:  customPalette  = {}
+    symbols: customSymbols = [],
+    palette: customPalette = {}
   } = custom
 
   // Built-in patterns merged with custom (custom overrides on name collision)
   const patternMap = new Map(builtInPatterns)
   for (const pat of customPatterns) {
-    patternMap.set(pat.name, pat.component
-      ? { component: pat.component, type: 'component', defaults: pat.defaults }
-      : { path: pat.path, type: 'path', size: pat.size ?? 10 })
+    patternMap.set(
+      pat.name,
+      pat.component
+        ? { component: pat.component, type: 'component', defaults: pat.defaults }
+        : { path: pat.path, type: 'path', size: pat.size ?? 10 }
+    )
   }
 
   const symbolMap = new Map(builtInSymbols)
   for (const sym of customSymbols) {
-    symbolMap.set(sym.name, sym.component
-      ? { component: sym.component, type: 'component' }
-      : { path: sym.path, type: 'path' })
+    symbolMap.set(
+      sym.name,
+      sym.component
+        ? { component: sym.component, type: 'component' }
+        : { path: sym.path, type: 'path' }
+    )
   }
 
   return { patternMap, symbolMap, palette: { ...palette, ...customPalette } }
@@ -303,14 +298,8 @@ Custom pattern components follow the same contract as built-ins: render SVG prim
 
 ```svelte
 <CrossFilter data={salesData} let:filtered let:filter let:reset>
-
   <!-- Filtering one chart narrows the data seen by the others -->
-  <BarChart
-    data={filtered}
-    x="region"
-    y="revenue"
-    onfilter={(d) => filter('region', d.region)}
-  />
+  <BarChart data={filtered} x="region" y="revenue" onfilter={(d) => filter('region', d.region)} />
 
   <LineChart
     data={filtered}
@@ -329,7 +318,6 @@ Custom pattern components follow the same contract as built-ins: render SVG prim
   />
 
   <button onclick={reset}>Reset all filters</button>
-
 </CrossFilter>
 ```
 
@@ -370,15 +358,16 @@ CrossFilter.svelte
 
 ```typescript
 type FilterSpec =
-  | { type: 'exact';   value: unknown }           // bar click: region === 'North'
-  | { type: 'set';     values: Set<unknown> }     // multi-select: region in ['North', 'East']
-  | { type: 'range';   min: unknown; max: unknown } // brush: date >= start && date <= end
-  | { type: 'custom';  fn: (d: unknown) => boolean } // arbitrary predicate
+  | { type: 'exact'; value: unknown } // bar click: region === 'North'
+  | { type: 'set'; values: Set<unknown> } // multi-select: region in ['North', 'East']
+  | { type: 'range'; min: unknown; max: unknown } // brush: date >= start && date <= end
+  | { type: 'custom'; fn: (d: unknown) => boolean } // arbitrary predicate
 ```
 
 ### Chart Integration with CrossFilter
 
 Charts read the CrossFilter context to:
+
 1. Receive `filtered` as their working dataset.
 2. Emit filter events via `onfilter` / `onbrush` which propagate to the controller.
 3. Show a **reset indicator** when their dimension is active in the filter set.
@@ -393,8 +382,13 @@ For highlighting rather than filtering, charts support `linkedSelection`:
 <CrossFilter data={salesData} mode="highlight" let:selection let:select>
   <!-- All charts receive the same selection object -->
   <!-- Unselected marks are dimmed, not removed -->
-  <BarChart data={salesData} x="region" y="revenue" {selection}
-            onselect={(d) => select(d.region)} />
+  <BarChart
+    data={salesData}
+    x="region"
+    y="revenue"
+    {selection}
+    onselect={(d) => select(d.region)}
+  />
   <LineChart data={salesData} x="month" y="value" {selection} color="region" />
 </CrossFilter>
 ```
@@ -407,7 +401,6 @@ Drill-down is a filter that narrows the visible data domain and resets when the 
 
 ```svelte
 <CrossFilter data={hierarchicalSales} let:filtered let:drillDown let:drillUp let:breadcrumb>
-
   <!-- breadcrumb = [{ label: 'All', level: 0 }, { label: 'North', level: 1 }] -->
   <ChartBreadcrumb {breadcrumb} onclick={drillUp} />
 
@@ -417,7 +410,6 @@ Drill-down is a filter that narrows the visible data domain and resets when the 
     y="revenue"
     onselect={(d) => drillDown({ field: 'subcategory', value: d.subcategory })}
   />
-
 </CrossFilter>
 ```
 
@@ -443,13 +435,13 @@ Any chart with a continuous x or y axis supports brushing:
 />
 ```
 
-| Prop | Values | Description |
-|------|--------|-------------|
-| `brush` | `'x' \| 'y' \| 'xy' \| false` | Axis to brush. `false` disables brushing (default). |
-| `brushMin` | `unknown` | Controlled: current brush min value. |
-| `brushMax` | `unknown` | Controlled: current brush max value. |
-| `onbrush` | `(range) => void` | Fires when user changes brush. |
-| `onbrushend` | `(range) => void` | Fires when user releases brush. |
+| Prop         | Values                        | Description                                         |
+| ------------ | ----------------------------- | --------------------------------------------------- |
+| `brush`      | `'x' \| 'y' \| 'xy' \| false` | Axis to brush. `false` disables brushing (default). |
+| `brushMin`   | `unknown`                     | Controlled: current brush min value.                |
+| `brushMax`   | `unknown`                     | Controlled: current brush max value.                |
+| `onbrush`    | `(range) => void`             | Fires when user changes brush.                      |
+| `onbrushend` | `(range) => void`             | Fires when user releases brush.                     |
 
 ### SVG Brush Implementation
 
@@ -493,18 +485,18 @@ brush.svelte.js
 
 ### Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `data` | `any[]` | required | Flat data array with `time` column |
-| `time` | `string` | required | Field to group keyframes by (e.g., "year") |
-| `categoryField` | `string` | — | Field to align across frames |
-| `duration` | `number` | `400` | Milliseconds per keyframe transition |
-| `autoplay` | `boolean` | `false` | Start playing on mount |
-| `loop` | `boolean` | `false` | Loop back to start |
-| `speed` | `number` | `1` | Playback speed multiplier |
-| `interpolate` | `boolean` | `true` | Tween between frames (vs. snap) |
-| `showControls` | `boolean` | `true` | Render `TimelineControls` |
-| `currentTime` | `unknown` | `$bindable` | Current time value |
+| Prop            | Type      | Default     | Description                                |
+| --------------- | --------- | ----------- | ------------------------------------------ |
+| `data`          | `any[]`   | required    | Flat data array with `time` column         |
+| `time`          | `string`  | required    | Field to group keyframes by (e.g., "year") |
+| `categoryField` | `string`  | —           | Field to align across frames               |
+| `duration`      | `number`  | `400`       | Milliseconds per keyframe transition       |
+| `autoplay`      | `boolean` | `false`     | Start playing on mount                     |
+| `loop`          | `boolean` | `false`     | Loop back to start                         |
+| `speed`         | `number`  | `1`         | Playback speed multiplier                  |
+| `interpolate`   | `boolean` | `true`      | Tween between frames (vs. snap)            |
+| `showControls`  | `boolean` | `true`      | Render `TimelineControls`                  |
+| `currentTime`   | `unknown` | `$bindable` | Current time value                         |
 
 ### Internal Architecture
 
@@ -556,7 +548,7 @@ export function createKeyframeStore(initial, options = {}) {
     easing,
     interpolate: (from, to) => (t) =>
       to.map((toItem) => {
-        const fromItem = from.find(f => f._key === toItem._key) ?? toItem
+        const fromItem = from.find((f) => f._key === toItem._key) ?? toItem
         const result = { ...toItem }
         for (const key of Object.keys(toItem)) {
           if (typeof toItem[key] === 'number' && typeof fromItem[key] === 'number') {
@@ -583,6 +575,7 @@ The `_rank` field is numeric and interpolated by the tweened store, producing sm
 ### prefers-reduced-motion
 
 When `prefers-reduced-motion: reduce` is detected, `AnimatedChart`:
+
 - Sets `duration` to `0` (instant transitions, no tweening)
 - Disables autoplay
 - Shows the final keyframe by default
@@ -595,8 +588,17 @@ When `prefers-reduced-motion: reduce` is detected, `AnimatedChart`:
 <!-- animation/TimelineControls.svelte -->
 <script>
   let {
-    playing, currentIndex, totalFrames, speed, currentLabel,
-    onplay, onpause, onreset, onstep, onseek, onspeedchange
+    playing,
+    currentIndex,
+    totalFrames,
+    speed,
+    currentLabel,
+    onplay,
+    onpause,
+    onreset,
+    onstep,
+    onseek,
+    onspeedchange
   } = $props()
 </script>
 
@@ -619,7 +621,11 @@ When `prefers-reduced-motion: reduce` is detected, `AnimatedChart`:
     aria-valuetext={currentLabel}
   />
 
-  <button onclick={() => onstep(1)} disabled={currentIndex >= totalFrames - 1} aria-label="Next frame">
+  <button
+    onclick={() => onstep(1)}
+    disabled={currentIndex >= totalFrames - 1}
+    aria-label="Next frame"
+  >
     <span class="i-lucide:skip-forward" />
   </button>
 
@@ -627,7 +633,11 @@ When `prefers-reduced-motion: reduce` is detected, `AnimatedChart`:
     <span class="i-lucide:rotate-ccw" />
   </button>
 
-  <select value={speed} onchange={(e) => onspeedchange(+e.target.value)} aria-label="Playback speed">
+  <select
+    value={speed}
+    onchange={(e) => onspeedchange(+e.target.value)}
+    aria-label="Playback speed"
+  >
     <option value={0.5}>0.5×</option>
     <option value={1}>1×</option>
     <option value={2}>2×</option>
@@ -650,91 +660,91 @@ All chart types share the same structural contract.
 
 ```typescript
 interface BaseChartProps {
-  data:            any[]
-  width?:          number
-  height?:         number
-  margin?:         { top: number, right: number, bottom: number, left: number }
-  responsive?:     boolean          // ResizeObserver (default true)
-  exportable?:     boolean          // Show export toolbar
+  data: any[]
+  width?: number
+  height?: number
+  margin?: { top: number; right: number; bottom: number; left: number }
+  responsive?: boolean // ResizeObserver (default true)
+  exportable?: boolean // Show export toolbar
   exportPosition?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'external'
-  accessible?:     boolean          // Pattern dual-coding (default true)
-  theme?:          'light' | 'dark' | 'auto'
-  title?:          string           // SVG <title> for screen readers
-  description?:    string           // SVG <desc> for screen readers
-  dataTable?:      boolean          // Render hidden <table> for screen readers
-  class?:          string
+  accessible?: boolean // Pattern dual-coding (default true)
+  theme?: 'light' | 'dark' | 'auto'
+  title?: string // SVG <title> for screen readers
+  description?: string // SVG <desc> for screen readers
+  dataTable?: boolean // Render hidden <table> for screen readers
+  class?: string
 }
 
 interface BarChartProps extends BaseChartProps {
-  x:            string               // Category field
-  y:            string               // Value field
-  color?:       string               // Series field for color assignment
-  fill?:        string | CSSColor    // Pattern fill field or solid color
-  pattern?:     string               // Pattern type field
-  label?:       string               // Data label field
+  x: string // Category field
+  y: string // Value field
+  color?: string // Series field for color assignment
+  fill?: string | CSSColor // Pattern fill field or solid color
+  pattern?: string // Pattern type field
+  label?: string // Data label field
   orientation?: 'vertical' | 'horizontal'
-  sorted?:      boolean
-  barCount?:    number               // Max bars (bar chart race)
-  brush?:       false | 'x' | 'y'
-  onfilter?:    (datum: any) => void
-  onbrush?:     (range: FilterRange) => void
-  selection?:   SelectionState       // From CrossFilter highlight mode
+  sorted?: boolean
+  barCount?: number // Max bars (bar chart race)
+  brush?: false | 'x' | 'y'
+  onfilter?: (datum: any) => void
+  onbrush?: (range: FilterRange) => void
+  selection?: SelectionState // From CrossFilter highlight mode
 }
 
 interface LineChartProps extends BaseChartProps {
-  x:        string               // Temporal or categorical field
-  y:        string               // Quantitative field
-  color?:   string               // Series field
-  fill?:    string | CSSColor
+  x: string // Temporal or categorical field
+  y: string // Quantitative field
+  color?: string // Series field
+  fill?: string | CSSColor
   pattern?: string
-  smooth?:  boolean              // Monotone cubic interpolation
-  dots?:    boolean              // Show point markers
-  brush?:   false | 'x' | 'xy'
+  smooth?: boolean // Monotone cubic interpolation
+  dots?: boolean // Show point markers
+  brush?: false | 'x' | 'xy'
   onbrush?: (range: FilterRange) => void
 }
 
 interface ScatterPlotProps extends BaseChartProps {
-  x:       string               // X quantitative field
-  y:       string               // Y quantitative field
-  color?:  string               // Color field
-  fill?:   string | CSSColor
+  x: string // X quantitative field
+  y: string // Y quantitative field
+  color?: string // Color field
+  fill?: string | CSSColor
   pattern?: string
-  symbol?: string               // Symbol shape field
-  size?:   string | number      // Size field or fixed size
-  label?:  string
-  brush?:  false | 'xy'
+  symbol?: string // Symbol shape field
+  size?: string | number // Size field or fixed size
+  label?: string
+  brush?: false | 'xy'
   onbrush?: (range: FilterRange) => void
 }
 
 interface BubbleChartProps extends ScatterPlotProps {
-  z:       string               // Bubble size field (alias for size)
-  minSize?: number              // Minimum bubble radius (px)
-  maxSize?: number              // Maximum bubble radius (px)
+  z: string // Bubble size field (alias for size)
+  minSize?: number // Minimum bubble radius (px)
+  maxSize?: number // Maximum bubble radius (px)
 }
 
 interface PieChartProps extends BaseChartProps {
-  value:        string          // Quantitative field (slice size)
-  label?:       string          // Category label field
-  color?:       string          // Color field (defaults to label field)
-  pattern?:     string          // Pattern field
-  innerRadius?: number          // 0 = pie, 0–1 = donut as fraction of outer radius
+  value: string // Quantitative field (slice size)
+  label?: string // Category label field
+  color?: string // Color field (defaults to label field)
+  pattern?: string // Pattern field
+  innerRadius?: number // 0 = pie, 0–1 = donut as fraction of outer radius
   labelPosition?: 'inside' | 'outside' | 'callout'
-  onfilter?:    (datum: any) => void
+  onfilter?: (datum: any) => void
 }
 
 interface SparklineProps {
-  data:       number[] | { value: number, label?: string }[]
-  type?:      'line' | 'bar' | 'area'
-  value?:     string | number   // Headline stat
-  unit?:      string
-  summary?:   string
-  trend?:     'up' | 'down' | 'flat'
-  width?:     number
-  height?:    number
-  color?:     string
+  data: number[] | { value: number; label?: string }[]
+  type?: 'line' | 'bar' | 'area'
+  value?: string | number // Headline stat
+  unit?: string
+  summary?: string
+  trend?: 'up' | 'down' | 'flat'
+  width?: number
+  height?: number
+  color?: string
   fillColor?: string
-  showAxis?:  boolean
-  class?:     string
+  showAxis?: boolean
+  class?: string
 }
 ```
 
@@ -798,19 +808,19 @@ All charts render inside a single `<svg>` with this layered structure:
 
 Chart components follow the same data-attribute pattern as all Rokkit components:
 
-| Attribute | Element | Description |
-|-----------|---------|-------------|
-| `data-chart` | Root `<svg>` | Component identity marker |
-| `data-chart-mark` | Each data mark (`<rect>`, `<circle>`, `<path>`) | Navigable, filterable mark |
-| `data-chart-axis` | Axis `<g>` | Axis container |
-| `data-chart-legend` | Legend `<g>` | Legend container |
-| `data-chart-brush` | Brush overlay `<g>` | Brush interaction area |
-| `data-key` | Each mark | The data field value this mark represents |
-| `data-focused` | Mark | Keyboard focus state |
-| `data-selected` | Mark | Selected/active state |
-| `data-dimmed` | Mark | Dimmed by CrossFilter highlight mode |
-| `data-filtered` | Root `<svg>` | Present when any CrossFilter dimension is active |
-| `data-theme` | Root `<svg>` | `"light"` or `"dark"` |
+| Attribute           | Element                                         | Description                                      |
+| ------------------- | ----------------------------------------------- | ------------------------------------------------ |
+| `data-chart`        | Root `<svg>`                                    | Component identity marker                        |
+| `data-chart-mark`   | Each data mark (`<rect>`, `<circle>`, `<path>`) | Navigable, filterable mark                       |
+| `data-chart-axis`   | Axis `<g>`                                      | Axis container                                   |
+| `data-chart-legend` | Legend `<g>`                                    | Legend container                                 |
+| `data-chart-brush`  | Brush overlay `<g>`                             | Brush interaction area                           |
+| `data-key`          | Each mark                                       | The data field value this mark represents        |
+| `data-focused`      | Mark                                            | Keyboard focus state                             |
+| `data-selected`     | Mark                                            | Selected/active state                            |
+| `data-dimmed`       | Mark                                            | Dimmed by CrossFilter highlight mode             |
+| `data-filtered`     | Root `<svg>`                                    | Present when any CrossFilter dimension is active |
+| `data-theme`        | Root `<svg>`                                    | `"light"` or `"dark"`                            |
 
 ---
 
@@ -899,12 +909,7 @@ When `dataTable={true}`, the chart renders a visually-hidden `<table>` that pres
 When `AnimatedChart` advances to a new keyframe:
 
 ```svelte
-<span
-  class="sr-only"
-  role="status"
-  aria-live="polite"
-  aria-atomic="true"
->
+<span class="sr-only" role="status" aria-live="polite" aria-atomic="true">
   {currentTimeLabel}: {topItem.name} leads with {topItem.value}
 </span>
 ```
@@ -914,6 +919,7 @@ This live region announces the current frame context without overwhelming the us
 ### Pattern Dual-Coding
 
 Every data series receives both a unique color and a unique pattern (Dots, CrossHatch, Waves, etc.). This ensures:
+
 - Color-blind users distinguish series by texture
 - Printed output (grayscale) remains legible
 - High-contrast mode users can identify marks by pattern alone
@@ -930,15 +936,15 @@ Charts consume the Rokkit theme variable system:
 /* packages/themes/src/base/chart.css */
 
 [data-chart] {
-  --chart-bg:          var(--surface-1, #ffffff);
-  --chart-text:        var(--text-1, #1a1a2e);
-  --chart-text-muted:  var(--text-2, #6b7280);
-  --chart-grid:        var(--border-1, #e5e7eb);
-  --chart-axis:        var(--text-2, #4b5563);
-  --chart-selection:   var(--color-primary-z4);
-  --chart-brush:       var(--color-primary-z2);
-  --chart-brush-border:var(--color-primary-z6);
-  --chart-dimmed:      0.2;    /* opacity for non-selected marks in highlight mode */
+  --chart-bg: var(--surface-1, #ffffff);
+  --chart-text: var(--text-1, #1a1a2e);
+  --chart-text-muted: var(--text-2, #6b7280);
+  --chart-grid: var(--border-1, #e5e7eb);
+  --chart-axis: var(--text-2, #4b5563);
+  --chart-selection: var(--color-primary-z4);
+  --chart-brush: var(--color-primary-z2);
+  --chart-brush-border: var(--color-primary-z6);
+  --chart-dimmed: 0.2; /* opacity for non-selected marks in highlight mode */
 }
 ```
 
@@ -953,7 +959,7 @@ The `ChartBrewer` selects palette shades appropriate to the current theme mode (
 Each chart can override its own theme:
 
 ```svelte
-<BarChart data={data} x="month" y="revenue" theme="dark" />
+<BarChart {data} x="month" y="revenue" theme="dark" />
 ```
 
 This renders the chart with dark-mode shades regardless of the page-level theme. Useful for charts on dark card surfaces within a light-mode page.
@@ -969,7 +975,9 @@ This renders the chart with dark-mode shades regardless of the page-level theme.
   padding: 0.5rem;
 }
 
-.chart-timeline input[type="range"] { flex: 1; }
+.chart-timeline input[type='range'] {
+  flex: 1;
+}
 
 .chart-timeline-label {
   font-size: 0.875rem;
@@ -987,14 +995,25 @@ This renders the chart with dark-mode shades regardless of the page-level theme.
 }
 
 [data-chart]:hover .chart-export-toolbar,
-.chart-export-toolbar:focus-within { opacity: 1; }
+.chart-export-toolbar:focus-within {
+  opacity: 1;
+}
 
 /* Brush */
-.brush-overlay   { fill: transparent; cursor: crosshair; }
-.brush-selection { fill: var(--chart-brush); stroke: var(--chart-brush-border); stroke-width: 1; }
+.brush-overlay {
+  fill: transparent;
+  cursor: crosshair;
+}
+.brush-selection {
+  fill: var(--chart-brush);
+  stroke: var(--chart-brush-border);
+  stroke-width: 1;
+}
 
 /* Dimming in highlight mode */
-[data-chart-mark][data-dimmed] { opacity: var(--chart-dimmed); }
+[data-chart-mark][data-dimmed] {
+  opacity: var(--chart-dimmed);
+}
 
 /* Sparkline */
 .sparkline {
@@ -1010,13 +1029,22 @@ This renders the chart with dark-mode shades regardless of the page-level theme.
   font-weight: 600;
 }
 
-.sparkline-trend[data-trend="up"]   { color: var(--color-success, #22c55e); }
-.sparkline-trend[data-trend="down"] { color: var(--color-danger, #ef4444); }
-.sparkline-trend[data-trend="flat"] { color: var(--chart-text-muted); }
+.sparkline-trend[data-trend='up'] {
+  color: var(--color-success, #22c55e);
+}
+.sparkline-trend[data-trend='down'] {
+  color: var(--color-danger, #ef4444);
+}
+.sparkline-trend[data-trend='flat'] {
+  color: var(--chart-text-muted);
+}
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  [data-chart] * { transition-duration: 0ms !important; animation: none !important; }
+  [data-chart] * {
+    transition-duration: 0ms !important;
+    animation: none !important;
+  }
 }
 ```
 
@@ -1047,14 +1075,17 @@ This renders the chart with dark-mode shades regardless of the page-level theme.
 </script>
 
 <div class="sparkline {className}" {...restProps}>
-
   {#if value != null}
     <div class="sparkline-stat">
       {#if trend}
         <span class="sparkline-trend" data-trend={trend}>
-          <span class={trend === 'up' ? 'i-lucide:trending-up'
-                      : trend === 'down' ? 'i-lucide:trending-down'
-                      : 'i-lucide:minus'} />
+          <span
+            class={trend === 'up'
+              ? 'i-lucide:trending-up'
+              : trend === 'down'
+                ? 'i-lucide:trending-down'
+                : 'i-lucide:minus'}
+          />
         </span>
       {/if}
       <span class="sparkline-value">{value}</span>
@@ -1082,7 +1113,6 @@ This renders the chart with dark-mode shades regardless of the page-level theme.
   {#if summary}
     <p class="sparkline-summary">{summary}</p>
   {/if}
-
 </div>
 ```
 
@@ -1092,7 +1122,7 @@ Sparklines compute inline scales without ChartBrewer (no axes, no legend):
 
 ```javascript
 function sparklineScale(data, width, height, padding = 2) {
-  const values = data.map(d => typeof d === 'number' ? d : d.value)
+  const values = data.map((d) => (typeof d === 'number' ? d : d.value))
   const min = Math.min(...values)
   const max = Math.max(...values)
   const range = max - min || 1
@@ -1131,7 +1161,9 @@ export async function exportRaster(svgElement, format = 'png', scale = 2, filena
   const url = URL.createObjectURL(svgBlob)
   const img = new Image()
   img.src = url
-  await new Promise((resolve) => { img.onload = resolve })
+  await new Promise((resolve) => {
+    img.onload = resolve
+  })
   const canvas = document.createElement('canvas')
   canvas.width = svgElement.clientWidth * scale
   canvas.height = svgElement.clientHeight * scale
@@ -1155,15 +1187,13 @@ Generates standalone animated SVG using SMIL `<animate>` elements:
 ```javascript
 export function exportAnimatedSvg(chartElement, keyframes, options = {}) {
   const {
-    duration = keyframes.length * 0.4,   // total seconds
+    duration = keyframes.length * 0.4, // total seconds
     repeatCount = 'indefinite',
     filename = 'animated-chart.svg'
   } = options
 
   const totalDur = `${duration}s`
-  const keyTimes = keyframes
-    .map((_, i) => (i / (keyframes.length - 1)).toFixed(4))
-    .join(';')
+  const keyTimes = keyframes.map((_, i) => (i / (keyframes.length - 1)).toFixed(4)).join(';')
 
   // For each bar/series: collect values across frames, emit <animate> per attribute
   // ...build SVG with SMIL animations
@@ -1218,16 +1248,22 @@ SMIL structure per animated bar:
 import { groupDataByKeys, fillAlignedData, getAlignGenerator } from '@rokkit/data'
 
 function buildKeyframes(data, timeField, categoryField, valueField) {
-  const grouped = groupDataByKeys(data, [timeField], [{
-    mapper: (row) => row,
-    reducers: [{ field: '_items', formula: (arr) => arr }]
-  }])
+  const grouped = groupDataByKeys(
+    data,
+    [timeField],
+    [
+      {
+        mapper: (row) => row,
+        reducers: [{ field: '_items', formula: (arr) => arr }]
+      }
+    ]
+  )
   grouped.sort((a, b) => (a[timeField] < b[timeField] ? -1 : 1))
-  const allCategories = [...new Set(data.map(d => d[categoryField]))]
-  return grouped.map(frame => ({
+  const allCategories = [...new Set(data.map((d) => d[categoryField]))]
+  return grouped.map((frame) => ({
     time: frame[timeField],
-    data: allCategories.map(cat => {
-      const item = frame._items.find(i => i[categoryField] === cat)
+    data: allCategories.map((cat) => {
+      const item = frame._items.find((i) => i[categoryField] === cat)
       return item ?? { [categoryField]: cat, [valueField]: 0, _filled: true }
     })
   }))
@@ -1244,12 +1280,12 @@ For consumers who want more control, `AnimatedChart` accepts a `rollup` configur
   time="month"
   rollup={{
     groupBy: ['month'],
-    summaries: [{
-      mapper: (row) => row.revenue,
-      reducers: [
-        { field: 'totalRevenue', formula: (arr) => arr.reduce((a, b) => a + b, 0) }
-      ]
-    }],
+    summaries: [
+      {
+        mapper: (row) => row.revenue,
+        reducers: [{ field: 'totalRevenue', formula: (arr) => arr.reduce((a, b) => a + b, 0) }]
+      }
+    ],
     alignBy: ['category']
   }}
 >
@@ -1287,12 +1323,7 @@ All 9 pattern components are Svelte 4 (`export let`, `$:`) and require migration
 ```svelte
 <defs>
   {#each brewer.getPatternDefs() as pat}
-    <pattern
-      id={pat.id}
-      patternUnits="userSpaceOnUse"
-      width={pat.size}
-      height={pat.size}
-    >
+    <pattern id={pat.id} patternUnits="userSpaceOnUse" width={pat.size} height={pat.size}>
       <rect width={pat.size} height={pat.size} fill={pat.fillColor} />
       <svelte:component
         this={pat.component}

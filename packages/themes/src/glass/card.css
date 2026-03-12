@@ -9,23 +9,26 @@
    ============================================================================= */
 
 [data-style='glass'] [data-card] {
-	@apply backdrop-blur-md border shadow-lg bg-surface-z2/60 border-surface-z5/20 text-surface-z9;
+  @apply bg-surface-z2/60 border-surface-z5/20 text-surface-z9 border shadow-lg backdrop-blur-md;
 }
 
 /* Interactive cards (buttons) */
 [data-style='glass'] [data-card][data-card-interactive] {
-	cursor: pointer;
-	transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
 }
 
 [data-style='glass'] [data-card][data-card-interactive]:hover {
-	@apply shadow-xl bg-surface-z2/80;
-	transform: translateY(-2px);
+  @apply bg-surface-z2/80 shadow-xl;
+  transform: translateY(-2px);
 }
 
 [data-style='glass'] [data-card][data-card-interactive]:active {
-	@apply shadow-lg;
-	transform: translateY(0);
+  @apply shadow-lg;
+  transform: translateY(0);
 }
 
 /* =============================================================================
@@ -33,15 +36,15 @@
    ============================================================================= */
 
 [data-style='glass'] [data-card-header] {
-	@apply border-surface-z5/20 border-b;
+  @apply border-surface-z5/20 border-b;
 }
 
 [data-style='glass'] [data-card-body] {
-	@apply text-surface-z8;
+  @apply text-surface-z8;
 }
 
 [data-style='glass'] [data-card-footer] {
-	@apply border-surface-z5/20 border-t text-surface-z7;
+  @apply border-surface-z5/20 text-surface-z7 border-t;
 }
 
 /* =============================================================================
@@ -49,7 +52,7 @@
    ============================================================================= */
 
 [data-style='glass'] [data-card][data-card-interactive]:focus-visible {
-	@apply outline-none ring-2 ring-surface-z5/40;
+  @apply ring-surface-z5/40 ring-2 outline-none;
 }
 
 /* =============================================================================
@@ -58,6 +61,6 @@
 
 [data-style='glass'] [data-card][data-card-interactive][data-disabled],
 [data-style='glass'] [data-card][data-card-interactive]:disabled {
-	@apply opacity-50 cursor-not-allowed;
-	transform: none;
+  @apply cursor-not-allowed opacity-50;
+  transform: none;
 }

@@ -117,7 +117,7 @@
 
 		// Add # if missing
 		if (hex && !hex.startsWith('#')) {
-			hex = `#${  hex}`
+			hex = `#${hex}`
 		}
 
 		hexInputs[role] = hex
@@ -278,11 +278,7 @@
 	</div>
 {/snippet}
 
-<div
-	data-palette-manager
-	data-compact={compact || undefined}
-	class={className || undefined}
->
+<div data-palette-manager data-compact={compact || undefined} class={className || undefined}>
 	{#if showPresets && presets.length > 0}
 		<div data-palette-presets>
 			<span data-palette-presets-label>Presets</span>

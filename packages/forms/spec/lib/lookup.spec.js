@@ -200,7 +200,12 @@ describe('lookup utilities', () => {
 
 			it('loading transitions: true during fetch, false after', async () => {
 				let resolveFn
-				const mockFetchHook = vi.fn(() => new Promise((resolve) => { resolveFn = resolve }))
+				const mockFetchHook = vi.fn(
+					() =>
+						new Promise((resolve) => {
+							resolveFn = resolve
+						})
+				)
 
 				const lookup = createLookup({ fetch: mockFetchHook })
 				const fetchPromise = lookup.fetch()

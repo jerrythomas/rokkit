@@ -27,7 +27,9 @@
 
 /* Hover and focus (keyboard navigation) */
 [data-style='rokkit'] [data-list] [data-list-item]:hover:not(:disabled):not([data-disabled='true']),
-[data-style='rokkit'] [data-list] [data-list-item]:focus:not(:disabled):not([data-disabled='true']) {
+[data-style='rokkit']
+  [data-list]
+  [data-list-item]:focus:not(:disabled):not([data-disabled='true']) {
   @apply from-surface-z3 to-surface-z2 text-surface-z10 bg-gradient-to-r outline-none;
 }
 
@@ -63,7 +65,10 @@
   @apply text-primary-z6;
 }
 
-[data-style='rokkit'] [data-list]:focus-within [data-list-item][data-active='true'] [data-item-icon] {
+[data-style='rokkit']
+  [data-list]:focus-within
+  [data-list-item][data-active='true']
+  [data-item-icon] {
   @apply text-primary-z9;
 }
 

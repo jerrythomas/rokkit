@@ -12,9 +12,7 @@ describe('Code', () => {
 
 	it('sets data-language attribute', () => {
 		const { container } = render(Code, { code: 'const x = 1', language: 'javascript' })
-		expect(container.querySelector('.code-block')?.getAttribute('data-language')).toBe(
-			'javascript'
-		)
+		expect(container.querySelector('.code-block')?.getAttribute('data-language')).toBe('javascript')
 	})
 
 	it('sets data-theme attribute', () => {
@@ -104,7 +102,10 @@ describe('Code', () => {
 	})
 
 	it('allows custom labels prop to override defaults', () => {
-		const { container } = render(Code, { code: 'hello', labels: { copy: 'Copier', copied: 'Copie!' } })
+		const { container } = render(Code, {
+			code: 'hello',
+			labels: { copy: 'Copier', copied: 'Copie!' }
+		})
 		const btn = container.querySelector('.copy-button')
 		expect(btn?.getAttribute('aria-label')).toBe('Copier')
 	})

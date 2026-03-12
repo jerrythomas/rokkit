@@ -30,7 +30,7 @@
 	class="bg-surface-z1 text-surface-z8 relative flex min-h-14 w-full items-center justify-between {className}"
 >
 	{#if loading}
-		<ProgressBar class="z-5 absolute top-0" />
+		<ProgressBar class="absolute top-0 z-5" />
 	{/if}
 	<div class="flex items-center gap-2 px-4">
 		<a href="/" class="flex items-center">
@@ -55,7 +55,12 @@
 			{/each}
 		</nav>
 		<ThemeSwitcherToggle size="sm" />
-		<a href="https://github.com/jerrythomas/rokkit" target="_blank" data-button-root aria-label="Rokkit on Github">
+		<a
+			href="https://github.com/jerrythomas/rokkit"
+			target="_blank"
+			data-button-root
+			aria-label="Rokkit on Github"
+		>
 			<span class="i-logo:github text-xl" aria-hidden="true"></span>
 		</a>
 	</settings>

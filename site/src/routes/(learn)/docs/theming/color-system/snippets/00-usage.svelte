@@ -4,9 +4,7 @@
 <small class="text-surface-z5">Muted text</small>
 
 <!-- Backgrounds and borders -->
-<div class="bg-surface-z1 border border-surface-z2">
-  Card content
-</div>
+<div class="bg-surface-z1 border-surface-z2 border">Card content</div>
 
 <!-- Accent colors -->
 <span class="text-primary-z7">Primary emphasis</span>

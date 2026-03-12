@@ -17,6 +17,7 @@
 ### Task 1: Create SVG normalization helper script
 
 **Files:**
+
 - Create: `solution/packages/icons/scripts/normalize.js`
 
 This script will be used by subsequent tasks to normalize SVG dimensions.
@@ -78,6 +79,7 @@ export function processFile(inputPath, outputPath, opts = {}) {
 ```bash
 cd solution/packages/icons && node --input-type=module < scripts/normalize.js
 ```
+
 Expected: no errors, just imports/exports nothing printed.
 
 ---
@@ -85,6 +87,7 @@ Expected: no errors, just imports/exports nothing printed.
 ### Task 2: Add Convex icons from downloaded files
 
 **Files:**
+
 - Create: `solution/packages/icons/scripts/add-convex.js`
 - Create: `solution/packages/icons/src/auth/convex.svg`
 - Create: `solution/packages/icons/src/auth/convex-white.svg`
@@ -98,6 +101,7 @@ Expected: no errors, just imports/exports nothing printed.
 Source files are in `/Users/Jerry/Downloads/Logos/SVG/`.
 
 Convex SVG dimensions:
+
 - Symbol: `184×188` viewBox → normalize to `24×24`
 - Logo (symbol+wordmark): `382×146` → normalize to `63×24` (width = round(382/146×24))
 - Wordmark: `322×146` → normalize to `53×24`
@@ -115,16 +119,16 @@ const OUT = resolve('src/auth')
 
 const files = [
   // symbol
-  { in: `${SRC}/symbol-color.svg`,   out: `${OUT}/convex.svg`,               h: 24, w: 24 },
-  { in: `${SRC}/symbol-white.svg`,   out: `${OUT}/convex-white.svg`,         h: 24, w: 24 },
-  { in: `${SRC}/symbol-black.svg`,   out: `${OUT}/convex-black.svg`,         h: 24, w: 24 },
+  { in: `${SRC}/symbol-color.svg`, out: `${OUT}/convex.svg`, h: 24, w: 24 },
+  { in: `${SRC}/symbol-white.svg`, out: `${OUT}/convex-white.svg`, h: 24, w: 24 },
+  { in: `${SRC}/symbol-black.svg`, out: `${OUT}/convex-black.svg`, h: 24, w: 24 },
   // logo (symbol + wordmark)
-  { in: `${SRC}/logo-color.svg`,     out: `${OUT}/convex-logo.svg`,          h: 24, w: null },
-  { in: `${SRC}/logo-white.svg`,     out: `${OUT}/convex-logo-white.svg`,    h: 24, w: null },
-  { in: `${SRC}/logo-black.svg`,     out: `${OUT}/convex-logo-black.svg`,    h: 24, w: null },
+  { in: `${SRC}/logo-color.svg`, out: `${OUT}/convex-logo.svg`, h: 24, w: null },
+  { in: `${SRC}/logo-white.svg`, out: `${OUT}/convex-logo-white.svg`, h: 24, w: null },
+  { in: `${SRC}/logo-black.svg`, out: `${OUT}/convex-logo-black.svg`, h: 24, w: null },
   // wordmark only
-  { in: `${SRC}/wordmark-black.svg`, out: `${OUT}/convex-wordmark.svg`,      h: 24, w: null },
-  { in: `${SRC}/wordmark-white.svg`, out: `${OUT}/convex-wordmark-white.svg`,h: 24, w: null },
+  { in: `${SRC}/wordmark-black.svg`, out: `${OUT}/convex-wordmark.svg`, h: 24, w: null },
+  { in: `${SRC}/wordmark-white.svg`, out: `${OUT}/convex-wordmark-white.svg`, h: 24, w: null }
 ]
 
 for (const f of files) {
@@ -138,6 +142,7 @@ console.log('Convex icons written.')
 ```bash
 cd solution/packages/icons && node scripts/add-convex.js
 ```
+
 Expected: 8 lines "Written: ..." and "Convex icons written."
 
 - [ ] **Step 3: Verify the output SVGs look right**
@@ -145,6 +150,7 @@ Expected: 8 lines "Written: ..." and "Convex icons written."
 ```bash
 head -2 src/auth/convex.svg src/auth/convex-wordmark.svg src/auth/convex-logo.svg
 ```
+
 Expected: `convex.svg` has `width="24" height="24"`, `convex-wordmark.svg` has `height="24"` with a wider width (~53).
 
 - [ ] **Step 4: Run build to confirm all 8 Convex icons process cleanly**
@@ -152,6 +158,7 @@ Expected: `convex.svg` has `width="24" height="24"`, `convex-wordmark.svg` has `
 ```bash
 cd solution/packages/icons && bun run build
 ```
+
 Expected: no errors, `lib/auth.json` now contains `convex`, `convex-white`, etc. keys.
 
 - [ ] **Step 5: Commit**
@@ -170,6 +177,7 @@ git commit -m "feat(icons): add Convex icon variants from official brand kit"
 Simple Icons provides a flat npm package with monochrome SVG paths and hex brand colors. Install it as a dev dependency, then extract SVGs.
 
 **Files:**
+
 - Modify: `solution/packages/icons/package.json`
 - Create: `solution/packages/icons/scripts/add-brand-icons.js`
 
@@ -184,6 +192,7 @@ cd solution/packages/icons && bun add -d simple-icons
 ```bash
 node -e "import('simple-icons').then(m => { ['github','google','apple','twitter','facebook','supabase','auth0','clerk','okta','appwrite','pocketbase','keycloak','microsoftazure','microsoft','awsamplify','amazoncognito'].forEach(s => { const icon = m['si' + s.charAt(0).toUpperCase() + s.slice(1)]; console.log(s, icon ? icon.hex : 'NOT FOUND') }) })"
 ```
+
 Expected: hex colors printed for each. Note any NOT FOUND and adjust slug names.
 
 - [ ] **Step 3: Create the brand icons script**
@@ -200,24 +209,24 @@ const OUT = resolve('src/auth')
 // siSlug is the camelCase key after 'si' prefix in simple-icons
 const BRANDS = [
   // Social auth
-  { name: 'github',        slug: 'Github' },
-  { name: 'google',        slug: 'Google' },
-  { name: 'apple',         slug: 'Apple' },
-  { name: 'twitter',       slug: 'X',         hex: '000000' }, // X/Twitter uses black
-  { name: 'facebook',      slug: 'Facebook' },
-  { name: 'microsoft',     slug: 'Microsoft' },
+  { name: 'github', slug: 'Github' },
+  { name: 'google', slug: 'Google' },
+  { name: 'apple', slug: 'Apple' },
+  { name: 'twitter', slug: 'X', hex: '000000' }, // X/Twitter uses black
+  { name: 'facebook', slug: 'Facebook' },
+  { name: 'microsoft', slug: 'Microsoft' },
   // Auth platforms
-  { name: 'auth0',         slug: 'Auth0' },
-  { name: 'clerk',         slug: 'Clerk' },
-  { name: 'okta',          slug: 'Okta' },
-  { name: 'appwrite',      slug: 'Appwrite' },
-  { name: 'pocketbase',    slug: 'Pocketbase' },
-  { name: 'keycloak',      slug: 'Keycloak' },
-  { name: 'azure',         slug: 'Microsoftazure' },
-  { name: 'amplify',       slug: 'Awsamplify' },
-  { name: 'cognito',       slug: 'Amazoncognito' },
-  { name: 'nextauth',      slug: 'Nextdotjs', hex: '000000' }, // Auth.js uses Next.js icon
-  { name: 'supabase',      slug: 'Supabase' },
+  { name: 'auth0', slug: 'Auth0' },
+  { name: 'clerk', slug: 'Clerk' },
+  { name: 'okta', slug: 'Okta' },
+  { name: 'appwrite', slug: 'Appwrite' },
+  { name: 'pocketbase', slug: 'Pocketbase' },
+  { name: 'keycloak', slug: 'Keycloak' },
+  { name: 'azure', slug: 'Microsoftazure' },
+  { name: 'amplify', slug: 'Awsamplify' },
+  { name: 'cognito', slug: 'Amazoncognito' },
+  { name: 'nextauth', slug: 'Nextdotjs', hex: '000000' }, // Auth.js uses Next.js icon
+  { name: 'supabase', slug: 'Supabase' }
 ]
 
 function makeSVG(path, fill, size = 24) {
@@ -253,6 +262,7 @@ console.log('Brand icons complete.')
 ```bash
 cd solution/packages/icons && node scripts/add-brand-icons.js
 ```
+
 Expected: a line per brand, no NOT FOUND. Adjust any missing slugs using `node -e "import('simple-icons').then(m => Object.keys(m).filter(k => k.includes('Nextauth')))"`.
 
 - [ ] **Step 5: Spot-check a few SVGs**
@@ -260,6 +270,7 @@ Expected: a line per brand, no NOT FOUND. Adjust any missing slugs using `node -
 ```bash
 head -3 src/auth/github.svg src/auth/facebook.svg src/auth/auth0.svg
 ```
+
 Expected: `width="24" height="24"` and correct fill colors.
 
 - [ ] **Step 6: Run build**
@@ -267,6 +278,7 @@ Expected: `width="24" height="24"` and correct fill colors.
 ```bash
 cd solution/packages/icons && bun run build
 ```
+
 Expected: no errors. `lib/auth.json` gains `github`, `github-white`, `github-black`, `facebook`, `auth0`, etc.
 
 - [ ] **Step 7: Commit**
@@ -283,6 +295,7 @@ git commit -m "feat(icons): add brand icon variants (color/white/black) via simp
 Firebase changed their icon in 2024. The old icon (in `src/auth/firebase.svg`) uses the old flame shape. The new brand uses a colorful abstract symbol.
 
 **Files:**
+
 - Modify: `solution/packages/icons/src/auth/firebase.svg`
 - Create: `solution/packages/icons/src/auth/firebase-white.svg`
 - Create: `solution/packages/icons/src/auth/firebase-black.svg`
@@ -325,6 +338,7 @@ const j = JSON.parse(require('fs').readFileSync('lib/auth.json', 'utf8'))
 console.log('firebase keys:', Object.keys(j.icons).filter(k => k.startsWith('firebase')))
 "
 ```
+
 Expected: `['firebase', 'firebase-white', 'firebase-black']`
 
 - [ ] **Step 4: Commit**
@@ -343,6 +357,7 @@ git commit -m "feat(icons): update Firebase to 2024 brand, add white/black varia
 Wordmarks are available from official brand sites. This task fetches them via browser/fetch and normalizes to `height=24`.
 
 Platforms with official wordmark SVGs:
+
 - **Auth0** — `auth0.com/brand-and-media`
 - **Clerk** — `clerk.com/brand`
 - **Appwrite** — `appwrite.io/brand`
@@ -352,6 +367,7 @@ Platforms with official wordmark SVGs:
 - **NextAuth/Auth.js** — `authjs.dev`
 
 **Files:**
+
 - Create: `solution/packages/icons/scripts/add-wordmarks.js`
 - Create: one `{name}-wordmark.svg` and `{name}-wordmark-white.svg` per platform
 
@@ -385,15 +401,15 @@ export function writeWordmarkPair(name, svg) {
 
 For each platform, fetch the official wordmark SVG and call `writeWordmarkPair`. Use the MCP browser tool or direct URLs. Below are the known official SVG sources to check:
 
-| Platform | Source URL |
-|----------|-----------|
-| auth0 | https://auth0.com/press (download brand kit) |
-| clerk | https://clerk.com/brand (SVG download) |
-| appwrite | https://appwrite.io/assets/appwrite-logo-white.svg (flip for dark) |
-| supabase | https://supabase.com/brand-assets |
-| amplify | AWS brand center |
-| nextauth | https://authjs.dev logo |
-| pocketbase | https://github.com/pocketbase/pocketbase — assets in README |
+| Platform   | Source URL                                                         |
+| ---------- | ------------------------------------------------------------------ |
+| auth0      | https://auth0.com/press (download brand kit)                       |
+| clerk      | https://clerk.com/brand (SVG download)                             |
+| appwrite   | https://appwrite.io/assets/appwrite-logo-white.svg (flip for dark) |
+| supabase   | https://supabase.com/brand-assets                                  |
+| amplify    | AWS brand center                                                   |
+| nextauth   | https://authjs.dev logo                                            |
+| pocketbase | https://github.com/pocketbase/pocketbase — assets in README        |
 
 Fetch each, paste into the script:
 
@@ -432,6 +448,7 @@ git commit -m "feat(icons): add platform wordmarks (auth0, clerk, supabase, appw
 ### Task 6: Source Solar variants for existing auth methods
 
 Solar icon set is available as `@iconify-json/solar`. Each auth method gets 4 variants using Solar's naming:
+
 - `bold` → our default (solid)
 - `linear` → our `outline`
 - `bold-duotone` → our `duotone`
@@ -439,18 +456,19 @@ Solar icon set is available as `@iconify-json/solar`. Each auth method gets 4 va
 
 Solar icon name mappings:
 
-| Our name | Solar icon base |
-|----------|----------------|
-| email | `solar:envelope` |
-| phone | `solar:phone` |
-| password | `solar:password-minimalistic` |
-| magic | `solar:magic-stick` |
-| passkey | `solar:fingerprint` |
-| mfa | `solar:shield-keyhole` |
-| incognito | custom (see Task 7) |
-| authy | brand only (no Solar variants) |
+| Our name  | Solar icon base                |
+| --------- | ------------------------------ |
+| email     | `solar:envelope`               |
+| phone     | `solar:phone`                  |
+| password  | `solar:password-minimalistic`  |
+| magic     | `solar:magic-stick`            |
+| passkey   | `solar:fingerprint`            |
+| mfa       | `solar:shield-keyhole`         |
+| incognito | custom (see Task 7)            |
+| authy     | brand only (no Solar variants) |
 
 **Files:**
+
 - Modify: `solution/packages/icons/package.json`
 - Create: `solution/packages/icons/scripts/add-solar-methods.js`
 - Create: 4 SVG files per auth method (email, phone, password, magic, passkey, mfa)
@@ -476,7 +494,9 @@ for (const base of bases) {
 }
 "
 ```
+
 Expected: all OK. If any are MISSING, find the correct Solar icon name with:
+
 ```bash
 node -e "const s = require('@iconify-json/solar/icons.json'); console.log(Object.keys(s.icons).filter(k => k.includes('envelope')))"
 ```
@@ -493,20 +513,20 @@ const OUT = resolve('src/auth')
 
 // Map: our stem → Solar icon base name
 const METHODS = [
-  { name: 'email',    solarBase: 'envelope' },
-  { name: 'phone',    solarBase: 'phone' },
+  { name: 'email', solarBase: 'envelope' },
+  { name: 'phone', solarBase: 'phone' },
   { name: 'password', solarBase: 'password-minimalistic' },
-  { name: 'magic',    solarBase: 'magic-stick' },
-  { name: 'passkey',  solarBase: 'fingerprint' },
-  { name: 'mfa',      solarBase: 'shield-keyhole' },
+  { name: 'magic', solarBase: 'magic-stick' },
+  { name: 'passkey', solarBase: 'fingerprint' },
+  { name: 'mfa', solarBase: 'shield-keyhole' }
 ]
 
 // Solar variant suffix → our suffix
 const VARIANTS = [
-  { solarSuffix: '-bold',        ourSuffix: '' },          // default solid
-  { solarSuffix: '-linear',      ourSuffix: '-outline' },
-  { solarSuffix: '-bold-duotone',ourSuffix: '-duotone' },
-  { solarSuffix: '-broken',      ourSuffix: '-duotone-outline' },
+  { solarSuffix: '-bold', ourSuffix: '' }, // default solid
+  { solarSuffix: '-linear', ourSuffix: '-outline' },
+  { solarSuffix: '-bold-duotone', ourSuffix: '-duotone' },
+  { solarSuffix: '-broken', ourSuffix: '-duotone-outline' }
 ]
 
 function iconToSVG(body, size = 24) {
@@ -536,11 +556,13 @@ console.log('Solar auth method icons complete.')
 ```bash
 cd solution/packages/icons && node --input-type=module scripts/add-solar-methods.js
 ```
+
 Expected: 24 "Written:" lines (6 methods × 4 variants), no MISSING.
 
 - [ ] **Step 5: Verify Solar icons use `currentColor` correctly**
 
 Solar icons use `currentColor` for strokes — check one:
+
 ```bash
 head -5 src/auth/email.svg src/auth/email-outline.svg src/auth/email-duotone.svg
 ```
@@ -554,6 +576,7 @@ const methods = Object.keys(j.icons).filter(k => ['email','phone','password','ma
 console.log(methods.sort())
 "
 ```
+
 Expected: all 24 keys present.
 
 - [ ] **Step 7: Commit**
@@ -570,12 +593,14 @@ git commit -m "feat(icons): add Solar-style variants for auth method icons"
 The incognito icon (hat + glasses) doesn't exist in Solar. Design a custom SVG in Solar's aesthetic — clean strokes with a fedora hat and disguise glasses. Provide all 4 variants.
 
 **Files:**
+
 - Create: `solution/packages/icons/src/auth/incognito.svg` (solid)
 - Create: `solution/packages/icons/src/auth/incognito-outline.svg`
 - Create: `solution/packages/icons/src/auth/incognito-duotone.svg`
 - Create: `solution/packages/icons/src/auth/incognito-duotone-outline.svg`
 
 Solar design principles:
+
 - 24×24 viewBox, 1.5px stroke width for linear, bold uses filled paths
 - Rounded stroke caps/joins (`stroke-linecap="round" stroke-linejoin="round"`)
 - Duotone: primary element at full opacity, secondary at 30% (`opacity="0.3"` or separate fill)
@@ -669,6 +694,7 @@ const j = JSON.parse(require('fs').readFileSync('lib/auth.json', 'utf8'))
 console.log(Object.keys(j.icons).filter(k => k.startsWith('incognito')))
 "
 ```
+
 Expected: `['incognito', 'incognito-duotone', 'incognito-duotone-outline', 'incognito-outline']`
 
 - [ ] **Step 6: Commit**
@@ -687,6 +713,7 @@ git commit -m "feat(icons): add custom Solar-style incognito icon (4 variants)"
 The Solar methods script in Task 6 overwrites existing `email.svg`, `phone.svg`, `password.svg`, `magic.svg` with Solar versions. The old files used different aesthetics. Verify the replacements are intentional and the old `authy.svg` (brand icon) remains untouched.
 
 **Files:**
+
 - Review: all files in `solution/packages/icons/src/auth/`
 
 - [ ] **Step 1: List all auth SVG files and count**
@@ -695,14 +722,17 @@ The Solar methods script in Task 6 overwrites existing `email.svg`, `phone.svg`,
 ls solution/packages/icons/src/auth/*.svg | wc -l
 ls solution/packages/icons/src/auth/*.svg | sort
 ```
+
 Expected: ~120+ files.
 
 - [ ] **Step 2: Verify no stale/unintended duplicates**
 
 Check that `authy.svg` still has the brand icon (red circle with white paths), not Solar replacement:
+
 ```bash
 head -3 solution/packages/icons/src/auth/authy.svg
 ```
+
 Expected: original content with `#f22e46` fill.
 
 - [ ] **Step 3: Final full build**
@@ -710,6 +740,7 @@ Expected: original content with `#f22e46` fill.
 ```bash
 cd solution/packages/icons && bun run build
 ```
+
 Expected: zero errors, output in `lib/auth.json` and `lib/auth/`.
 
 - [ ] **Step 4: Verify icon count in auth.json**
@@ -727,6 +758,7 @@ console.log('Sample keys:', Object.keys(j.icons).slice(0, 20).join(', '))
 ```bash
 cd solution && bun run test:ci
 ```
+
 Expected: same pass count as before (~2536+), zero new failures.
 
 - [ ] **Step 6: Final commit**
@@ -741,24 +773,31 @@ git commit -m "feat(icons): complete auth icon expansion — platforms, social, 
 ## Notes for Implementer
 
 ### Simple Icons slug lookup
+
 If a brand slug isn't found, search with:
+
 ```bash
 node -e "import('simple-icons').then(m => console.log(Object.keys(m).filter(k => k.toLowerCase().includes('auth'))))"
 ```
 
 ### Solar icon name lookup
+
 ```bash
 node -e "const s = require('@iconify-json/solar/icons.json'); console.log(Object.keys(s.icons).filter(k => k.includes('shield')))"
 ```
 
 ### Build command (from icons package root)
+
 ```bash
 cd solution/packages/icons && bun run build
 ```
+
 This runs `rokkit-cli build` which calls `bundleFolders` → reads all SVGs from `src/auth/` → exports `lib/auth.json`.
 
 ### viewBox normalization for wordmarks
+
 For any SVG where width/height attributes are missing, add them:
+
 ```bash
 node -e "
 const svg = require('fs').readFileSync('path/to/wordmark.svg', 'utf8')
@@ -780,6 +819,7 @@ console.log('Add: width=\"' + fw + '\" height=\"24\"')
 ### Task 9: Create icon browser playground page
 
 **Files:**
+
 - Create: `solution/sites/learn/src/routes/(play)/playground/icons/+page.svelte`
 - Modify: `solution/sites/learn/src/routes/(play)/playground/+page.svelte` (add Icons to groups)
 - Modify: `solution/sites/learn/src/routes/(play)/playground/+layout.svelte` (add to sidebar)
@@ -800,23 +840,52 @@ console.log('Add: width=\"' + fw + '\" height=\"24\"')
 
   // ── Auth grouping ────────────────────────────────────────────────────────
   const AUTH_CATEGORIES = {
-    'Auth Platforms': ['supabase', 'firebase', 'convex', 'auth0', 'amplify', 'cognito',
-      'clerk', 'okta', 'keycloak', 'nextauth', 'pocketbase', 'appwrite', 'azure', 'microsoft'],
+    'Auth Platforms': [
+      'supabase',
+      'firebase',
+      'convex',
+      'auth0',
+      'amplify',
+      'cognito',
+      'clerk',
+      'okta',
+      'keycloak',
+      'nextauth',
+      'pocketbase',
+      'appwrite',
+      'azure',
+      'microsoft'
+    ],
     'Social Auth': ['google', 'github', 'apple', 'twitter', 'facebook'],
     'Auth Methods': ['email', 'phone', 'password', 'magic', 'incognito', 'authy', 'passkey', 'mfa']
   }
 
   // Order variants for display
-  const VARIANT_ORDER = ['', '-white', '-black', '-outline', '-duotone', '-duotone-outline',
-    '-logo', '-logo-white', '-logo-black', '-wordmark', '-wordmark-white']
+  const VARIANT_ORDER = [
+    '',
+    '-white',
+    '-black',
+    '-outline',
+    '-duotone',
+    '-duotone-outline',
+    '-logo',
+    '-logo-white',
+    '-logo-black',
+    '-wordmark',
+    '-wordmark-white'
+  ]
 
   function getAuthFamilies(category, icons) {
-    return category.map((base) => {
-      const variants = VARIANT_ORDER
-        .map((suffix) => ({ suffix, key: base + suffix, icon: icons[base + suffix] }))
-        .filter((v) => v.icon)
-      return { base, variants }
-    }).filter((f) => f.variants.length > 0)
+    return category
+      .map((base) => {
+        const variants = VARIANT_ORDER.map((suffix) => ({
+          suffix,
+          key: base + suffix,
+          icon: icons[base + suffix]
+        })).filter((v) => v.icon)
+        return { base, variants }
+      })
+      .filter((f) => f.variants.length > 0)
   }
 
   // ── Generic icon list ────────────────────────────────────────────────────
@@ -826,8 +895,12 @@ console.log('Add: width=\"' + fw + '\" height=\"24\"')
 
   // ── Clipboard ────────────────────────────────────────────────────────────
   const prefixMap = {
-    auth: 'logo', app: 'app', component: 'component',
-    base: 'base', solid: 'solid', light: 'light'
+    auth: 'logo',
+    app: 'app',
+    component: 'component',
+    base: 'base',
+    solid: 'solid',
+    light: 'light'
   }
 
   let copied = $state(null)
@@ -836,7 +909,9 @@ console.log('Add: width=\"' + fw + '\" height=\"24\"')
     const cls = `i-${prefix}:${name}`
     navigator.clipboard.writeText(cls)
     copied = cls
-    setTimeout(() => { copied = null }, 1500)
+    setTimeout(() => {
+      copied = null
+    }, 1500)
   }
 
   // ── Tabs ────────────────────────────────────────────────────────────────
@@ -855,7 +930,7 @@ console.log('Add: width=\"' + fw + '\" height=\"24\"')
   function iconSVG(icon, collection, size = 24) {
     const w = icon.width ?? collection.width ?? 24
     const h = icon.height ?? collection.height ?? 24
-    return `<svg width="${size}" height="${Math.round(size * h / w)}" viewBox="0 0 ${w} ${h}" fill="none" xmlns="http://www.w3.org/2000/svg">${icon.body}</svg>`
+    return `<svg width="${size}" height="${Math.round((size * h) / w)}" viewBox="0 0 ${w} ${h}" fill="none" xmlns="http://www.w3.org/2000/svg">${icon.body}</svg>`
   }
 
   const COLLECTIONS = {
@@ -864,32 +939,35 @@ console.log('Add: width=\"' + fw + '\" height=\"24\"')
     Components: { collection: componentIcons, prefix: 'component' },
     Base: { collection: baseIcons, prefix: 'base' },
     Solid: { collection: solidIcons, prefix: 'solid' },
-    Light: { collection: lightIcons, prefix: 'light' },
+    Light: { collection: lightIcons, prefix: 'light' }
   }
 </script>
 
-<div class="p-6 space-y-6">
+<div class="space-y-6 p-6">
   <div class="flex items-center justify-between">
     <div>
-      <h1 class="text-xl font-semibold text-surface-z8">Icon Browser</h1>
-      <p class="text-sm text-surface-z5 mt-0.5">Click any icon to copy its class name</p>
+      <h1 class="text-surface-z8 text-xl font-semibold">Icon Browser</h1>
+      <p class="text-surface-z5 mt-0.5 text-sm">Click any icon to copy its class name</p>
     </div>
     {#if copied}
-      <div class="text-xs bg-success-z3 text-success-z8 px-3 py-1.5 rounded-md font-mono">
+      <div class="bg-success-z3 text-success-z8 rounded-md px-3 py-1.5 font-mono text-xs">
         Copied: {copied}
       </div>
     {/if}
   </div>
 
   <!-- Tabs -->
-  <div class="flex gap-1 border-b border-surface-z3">
+  <div class="border-surface-z3 flex gap-1 border-b">
     {#each TABS as tab (tab)}
       <button
-        class="px-4 py-2 text-sm font-medium rounded-t-md transition-colors
+        class="rounded-t-md px-4 py-2 text-sm font-medium transition-colors
           {activeTab === tab
-            ? 'bg-surface-z2 text-surface-z8 border border-b-0 border-surface-z3'
-            : 'text-surface-z5 hover:text-surface-z7'}"
-        onclick={() => { activeTab = tab; search = '' }}
+          ? 'bg-surface-z2 text-surface-z8 border-surface-z3 border border-b-0'
+          : 'text-surface-z5 hover:text-surface-z7'}"
+        onclick={() => {
+          activeTab = tab
+          search = ''
+        }}
       >
         {tab}
       </button>
@@ -902,22 +980,26 @@ console.log('Add: width=\"' + fw + '\" height=\"24\"')
       {@const families = getAuthFamilies(bases, authIcons.icons)}
       {#if families.length}
         <section>
-          <h2 class="text-sm font-semibold text-surface-z6 uppercase tracking-wide mb-3">{category}</h2>
+          <h2 class="text-surface-z6 mb-3 text-sm font-semibold tracking-wide uppercase">
+            {category}
+          </h2>
           <div class="space-y-2">
             {#each families as family (family.base)}
-              <div class="flex items-center gap-1 flex-wrap">
-                <span class="text-xs text-surface-z4 w-28 shrink-0 font-mono">{family.base}</span>
+              <div class="flex flex-wrap items-center gap-1">
+                <span class="text-surface-z4 w-28 shrink-0 font-mono text-xs">{family.base}</span>
                 {#each family.variants as v (v.key)}
                   <button
-                    class="group relative flex items-center justify-center w-10 h-10 rounded-md
-                      bg-surface-z2 hover:bg-surface-z3 border border-transparent
-                      hover:border-surface-z4 transition-colors"
-                    title="{v.key}"
+                    class="group bg-surface-z2 hover:bg-surface-z3 hover:border-surface-z4 relative flex h-10 w-10
+                      items-center justify-center rounded-md border
+                      border-transparent transition-colors"
+                    title={v.key}
                     onclick={() => copyName('logo', v.key)}
                   >
                     {@html iconSVG(v.icon, authIcons)}
-                    <span class="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[9px] text-surface-z4
-                      whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                    <span
+                      class="text-surface-z4 pointer-events-none absolute -bottom-5 left-1/2 -translate-x-1/2
+                      text-[9px] whitespace-nowrap opacity-0 transition-opacity group-hover:opacity-100"
+                    >
                       {v.suffix || 'default'}
                     </span>
                   </button>
@@ -929,33 +1011,35 @@ console.log('Add: width=\"' + fw + '\" height=\"24\"')
       {/if}
     {/each}
 
-  <!-- Other tabs: searchable flat grid -->
+    <!-- Other tabs: searchable flat grid -->
   {:else}
     {@const { collection, prefix } = COLLECTIONS[activeTab]}
     {@const icons = filtered(iconList(collection))}
-    <div class="flex items-center gap-3 mb-4">
+    <div class="mb-4 flex items-center gap-3">
       <input
         bind:value={search}
         placeholder="Search icons..."
-        class="w-64 px-3 py-1.5 text-sm rounded-md bg-surface-z2 border border-surface-z3
-          text-surface-z8 placeholder:text-surface-z4 focus:outline-none focus:border-primary-z5"
+        class="bg-surface-z2 border-surface-z3 text-surface-z8 placeholder:text-surface-z4 focus:border-primary-z5 w-64 rounded-md border
+          px-3 py-1.5 text-sm focus:outline-none"
       />
-      <span class="text-xs text-surface-z4">{icons.length} icons</span>
+      <span class="text-surface-z4 text-xs">{icons.length} icons</span>
     </div>
     <div class="grid grid-cols-[repeat(auto-fill,minmax(80px,1fr))] gap-2">
       {#each icons as { name, icon } (name)}
         <button
-          class="flex flex-col items-center gap-1.5 p-2 rounded-md bg-surface-z2
-            hover:bg-surface-z3 border border-transparent hover:border-surface-z4
-            transition-colors group"
+          class="bg-surface-z2 hover:bg-surface-z3 hover:border-surface-z4 group flex flex-col items-center
+            gap-1.5 rounded-md border border-transparent
+            p-2 transition-colors"
           title="i-{prefix}:{name}"
           onclick={() => copyName(prefix, name)}
         >
-          <div class="flex items-center justify-center w-8 h-8">
+          <div class="flex h-8 w-8 items-center justify-center">
             {@html iconSVG(icon, collection)}
           </div>
-          <span class="text-[10px] text-surface-z5 group-hover:text-surface-z7 text-center
-            leading-tight break-all line-clamp-2 font-mono">
+          <span
+            class="text-surface-z5 group-hover:text-surface-z7 line-clamp-2 text-center
+            font-mono text-[10px] leading-tight break-all"
+          >
             {name}
           </span>
         </button>
@@ -1042,6 +1126,7 @@ Replace the "Coming soon" content in `solution/sites/learn/src/routes/(learn)/do
 ```bash
 cd solution/sites/learn && npx vite build --mode development 2>&1 | tail -20
 ```
+
 Or start dev server and navigate to `/playground/icons`.
 
 - [ ] **Step 6: Commit**
@@ -1059,13 +1144,17 @@ git commit -m "feat(learn): add icon browser playground page with grouped auth i
 ## Notes for Chunk 6
 
 ### Auth icon prefix
+
 Auth icons in `rokkit.config.js` are registered as `logo:` → use `i-logo:github`, `i-logo:supabase`, etc.
 
 ### Rendering inline SVG from iconify JSON
+
 ```svelte
 {@html `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">${icon.body}</svg>`}
 ```
+
 The `body` field contains inner SVG elements (paths, groups) — wrap in `<svg>` to render.
 
 ### The sidebar List in playground layout
+
 The `sections` array has items with `{ title, slug, icon, children? }`. Top-level items without children render as direct links. Add Icons as a peer of the group headings.

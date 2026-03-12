@@ -6,7 +6,7 @@
 	let errors = $state([])
 
 	function handleFiles(files) {
-		fileNames = files.map(f => f.name)
+		fileNames = files.map((f) => f.name)
 		errors = []
 	}
 
@@ -23,5 +23,5 @@
 	</p>
 {/if}
 {#if errors.length}
-	<p class="text-red-500 mt-2 text-sm">{errors.join('; ')}</p>
+	<p class="mt-2 text-sm text-red-500">{errors.join('; ')}</p>
 {/if}

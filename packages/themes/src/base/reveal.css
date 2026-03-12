@@ -1,37 +1,37 @@
 /* Reveal — scroll-triggered entry animations */
 
 [data-reveal] {
-	opacity: 0;
-	transition:
-		opacity var(--reveal-duration, 600ms) var(--reveal-easing, cubic-bezier(0.4, 0, 0.2, 1)),
-		translate var(--reveal-duration, 600ms) var(--reveal-easing, cubic-bezier(0.4, 0, 0.2, 1));
+  opacity: 0;
+  transition:
+    opacity var(--reveal-duration, 600ms) var(--reveal-easing, cubic-bezier(0.4, 0, 0.2, 1)),
+    translate var(--reveal-duration, 600ms) var(--reveal-easing, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 [data-reveal='up'] {
-	translate: 0 var(--reveal-distance, 1.5rem);
+  translate: 0 var(--reveal-distance, 1.5rem);
 }
 [data-reveal='down'] {
-	translate: 0 calc(-1 * var(--reveal-distance, 1.5rem));
+  translate: 0 calc(-1 * var(--reveal-distance, 1.5rem));
 }
 [data-reveal='left'] {
-	translate: var(--reveal-distance, 1.5rem) 0;
+  translate: var(--reveal-distance, 1.5rem) 0;
 }
 [data-reveal='right'] {
-	translate: calc(-1 * var(--reveal-distance, 1.5rem)) 0;
+  translate: calc(-1 * var(--reveal-distance, 1.5rem)) 0;
 }
 [data-reveal='none'] {
-	translate: 0 0;
+  translate: 0 0;
 }
 
 [data-reveal][data-reveal-visible] {
-	opacity: 1;
-	translate: 0 0;
+  opacity: 1;
+  translate: 0 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
-	[data-reveal] {
-		transition-duration: 0ms !important;
-		opacity: 1 !important;
-		translate: 0 !important;
-	}
+  [data-reveal] {
+    transition-duration: 0ms !important;
+    opacity: 1 !important;
+    translate: 0 !important;
+  }
 }

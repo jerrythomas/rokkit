@@ -405,7 +405,9 @@ describe('Select', () => {
 
 			// First Escape: clears filter
 			await fireEvent.keyDown(input, { key: 'Escape' })
-			expect((container.querySelector('[data-select-filter-input]') as HTMLInputElement)?.value).toBe('')
+			expect(
+				(container.querySelector('[data-select-filter-input]') as HTMLInputElement)?.value
+			).toBe('')
 			expect(container.querySelectorAll('[data-select-option]').length).toBe(3)
 			expect(container.querySelector('[data-select-dropdown]')).toBeTruthy()
 

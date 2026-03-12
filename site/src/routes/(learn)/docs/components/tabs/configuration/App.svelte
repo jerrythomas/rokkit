@@ -82,7 +82,7 @@
 		</Tabs>
 	</div>
 	<div class="bg-surface-z2 w-full md:w-[40ch]">
-		<h3 class="mb-0 mt-6 px-6">Configuration</h3>
+		<h3 class="mt-6 mb-0 px-6">Configuration</h3>
 		<FormRenderer data={config} {schema} {layout} onupdate={handleConfigUpdate} class="pt-0" />
 	</div>
 </div>

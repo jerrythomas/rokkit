@@ -68,6 +68,14 @@
 		{...rest}
 	/>
 	{#if variant !== 'default'}
-		<span class={icon} data-checkbox-icon role="button" tabindex="0" onclick={toggle} onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && toggle()} aria-hidden="true"></span>
+		<span
+			class={icon}
+			data-checkbox-icon
+			role="button"
+			tabindex="0"
+			onclick={toggle}
+			onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && toggle()}
+			aria-hidden="true"
+		></span>
 	{/if}
 </div>

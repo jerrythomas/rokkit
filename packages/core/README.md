@@ -37,9 +37,9 @@ const mapper = new FieldMapper({ label: 'name', value: 'id', icon: 'iconClass' }
 
 const item = { id: 42, name: 'Settings', iconClass: 'i-settings' }
 
-mapper.get('label', item)   // 'Settings'
-mapper.get('value', item)   // 42
-mapper.get('icon', item)    // 'i-settings'
+mapper.get('label', item) // 'Settings'
+mapper.get('value', item) // 42
+mapper.get('icon', item) // 'i-settings'
 ```
 
 ### normalizeFields
@@ -98,23 +98,23 @@ const ticks = generateTicks(0, 100, 5)
 
 ## API
 
-| Export | Description |
-|--------|-------------|
-| `BASE_FIELDS` | Canonical semantic-to-data-key field mapping |
-| `normalizeFields(fields)` | Merge overrides with BASE_FIELDS defaults |
-| `FieldMapper` | Class that resolves semantic field reads from data objects |
-| `DEFAULT_STATE_ICONS` | Icon name map grouped by category (action, state, sort, etc.) |
-| `DEFAULT_KEYMAP` | Default keyboard navigation key mapping |
-| `DEFAULT_THEME_MAPPING` | Default semantic color → palette color mapping |
-| `createEmitter()` | Lightweight event emitter factory |
-| `getCalendarDays(year, month)` | Calendar day array for a given month |
-| `weekdays` | Localized weekday label array |
-| `generateTicks(min, max, count)` | Evenly spaced axis tick values |
-| `defaultColors` | Default color palette array |
-| `shades` | Available shade scale values |
-| `ITEM_SNIPPET` | Constant: default item snippet key (`'itemContent'`) |
-| `GROUP_SNIPPET` | Constant: default group snippet key (`'groupContent'`) |
-| `stateIconsFromNames(names)` | Build a state icon map from an array of icon name strings |
+| Export                           | Description                                                   |
+| -------------------------------- | ------------------------------------------------------------- |
+| `BASE_FIELDS`                    | Canonical semantic-to-data-key field mapping                  |
+| `normalizeFields(fields)`        | Merge overrides with BASE_FIELDS defaults                     |
+| `FieldMapper`                    | Class that resolves semantic field reads from data objects    |
+| `DEFAULT_STATE_ICONS`            | Icon name map grouped by category (action, state, sort, etc.) |
+| `DEFAULT_KEYMAP`                 | Default keyboard navigation key mapping                       |
+| `DEFAULT_THEME_MAPPING`          | Default semantic color → palette color mapping                |
+| `createEmitter()`                | Lightweight event emitter factory                             |
+| `getCalendarDays(year, month)`   | Calendar day array for a given month                          |
+| `weekdays`                       | Localized weekday label array                                 |
+| `generateTicks(min, max, count)` | Evenly spaced axis tick values                                |
+| `defaultColors`                  | Default color palette array                                   |
+| `shades`                         | Available shade scale values                                  |
+| `ITEM_SNIPPET`                   | Constant: default item snippet key (`'itemContent'`)          |
+| `GROUP_SNIPPET`                  | Constant: default group snippet key (`'groupContent'`)        |
+| `stateIconsFromNames(names)`     | Build a state icon map from an array of icon name strings     |
 
 ---
 

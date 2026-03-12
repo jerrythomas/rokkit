@@ -25,6 +25,7 @@
 ### Task 1: Move all tracked files to new locations
 
 **Files:**
+
 - Move: `solution/packages/` → `packages/`
 - Move: `solution/sites/learn/` → `site/`
 - Move: `solution/package.json` → `package.json`
@@ -41,6 +42,7 @@
 - [ ] **Step 1: Move packages and site**
 
 Run from `/Users/Jerry/Developer/rokkit/`:
+
 ```bash
 git mv solution/packages packages
 git mv solution/sites/learn site
@@ -91,18 +93,22 @@ Expected: a large list of renames (`R  solution/packages/... -> packages/...`, e
 ### Task 2: Update root package.json
 
 **Files:**
+
 - Modify: `package.json`
 
 - [ ] **Step 1: Update workspaces array**
 
 In `package.json`, change:
+
 ```json
 "workspaces": [
   "./packages/*",
   "./sites/*"
 ]
 ```
+
 to:
+
 ```json
 "workspaces": [
   "./packages/*",
@@ -113,10 +119,13 @@ to:
 - [ ] **Step 2: Update test:e2e script**
 
 Change:
+
 ```json
 "test:e2e": "cd sites/learn && npx playwright test"
 ```
+
 to:
+
 ```json
 "test:e2e": "cd site && npx playwright test"
 ```
@@ -124,6 +133,7 @@ to:
 - [ ] **Step 3: Add prettier config pointer**
 
 Add a new top-level field so editors and CLI both find the config:
+
 ```json
 "prettier": "./config/.prettierrc"
 ```
@@ -131,10 +141,13 @@ Add a new top-level field so editors and CLI both find the config:
 - [ ] **Step 4: Update format script**
 
 Change:
+
 ```json
 "format": "prettier --write ."
 ```
+
 to:
+
 ```json
 "format": "prettier --config config/.prettierrc --ignore-path config/.prettierignore --write ."
 ```
@@ -142,10 +155,13 @@ to:
 - [ ] **Step 5: Update lint script**
 
 Change:
+
 ```json
 "lint": "eslint --fix"
 ```
+
 to:
+
 ```json
 "lint": "eslint --config config/eslint.config.mjs --fix"
 ```
@@ -162,11 +178,13 @@ git commit -m "refactor: update workspace root package.json for repo restructure
 ### Task 3: Update vitest.config.ts
 
 **Files:**
+
 - Modify: `vitest.config.ts`
 
 - [ ] **Step 1: Update the learn project entry**
 
 Find the project entry for `learn` (near the bottom of the projects array):
+
 ```ts
 {
   extends: true,
@@ -184,6 +202,7 @@ Find the project entry for `learn` (near the bottom of the projects array):
 ```
 
 Replace with:
+
 ```ts
 {
   extends: true,
@@ -203,13 +222,29 @@ Replace with:
 - [ ] **Step 2: Update coverage exclude**
 
 Find:
+
 ```ts
-exclude: ['**/spec/**', '**/node_modules/**', '**/dist/**', '**/sites/**', '**/fixtures/**', '**/types.ts']
+exclude: [
+  '**/spec/**',
+  '**/node_modules/**',
+  '**/dist/**',
+  '**/sites/**',
+  '**/fixtures/**',
+  '**/types.ts'
+]
 ```
 
 Change `**/sites/**` → `**/site/**`:
+
 ```ts
-exclude: ['**/spec/**', '**/node_modules/**', '**/dist/**', '**/site/**', '**/fixtures/**', '**/types.ts']
+exclude: [
+  '**/spec/**',
+  '**/node_modules/**',
+  '**/dist/**',
+  '**/site/**',
+  '**/fixtures/**',
+  '**/types.ts'
+]
 ```
 
 - [ ] **Step 3: Remove the testbed project entry**
@@ -217,6 +252,7 @@ exclude: ['**/spec/**', '**/node_modules/**', '**/dist/**', '**/site/**', '**/fi
 The `testbed` package source files were deleted in an earlier session (all `packages/testbed/src/**` files are staged as deleted). The directory exists but has no source. Remove its entry from the `projects` array unconditionally:
 
 Find and delete:
+
 ```ts
 { extends: true, test: { name: 'testbed', root: 'packages/testbed' } },
 ```
@@ -233,27 +269,31 @@ git commit -m "refactor: update vitest project roots for repo restructure"
 ### Task 4: Update config/eslint.config.mjs
 
 **Files:**
+
 - Modify: `config/eslint.config.mjs`
 
 - [ ] **Step 1: Update ignore paths that reference sites/learn**
 
 Find in the `ignores` array:
+
 ```js
-'sites/learn/src/routes/(learn)/customization/icons/fragments/**',
-'sites/learn/src/routes/(learn)/elements/list/fragments/01-data-object.js',
-'sites/learn/src/routes/(learn)/**/snippets/**'
+;('sites/learn/src/routes/(learn)/customization/icons/fragments/**',
+  'sites/learn/src/routes/(learn)/elements/list/fragments/01-data-object.js',
+  'sites/learn/src/routes/(learn)/**/snippets/**')
 ```
 
 Replace with:
+
 ```js
-'site/src/routes/(learn)/customization/icons/fragments/**',
-'site/src/routes/(learn)/elements/list/fragments/01-data-object.js',
-'site/src/routes/(learn)/**/snippets/**'
+;('site/src/routes/(learn)/customization/icons/fragments/**',
+  'site/src/routes/(learn)/elements/list/fragments/01-data-object.js',
+  'site/src/routes/(learn)/**/snippets/**')
 ```
 
 - [ ] **Step 2: Update file glob patterns**
 
 Find:
+
 ```js
 {
   files: [
@@ -266,6 +306,7 @@ Find:
 ```
 
 Replace:
+
 ```js
 {
   files: [
@@ -280,12 +321,14 @@ Replace:
 - [ ] **Step 3: Update the sites/learn-specific rule block**
 
 Find:
+
 ```js
 {
   files: ['**/sites/learn/src/**'],
 ```
 
 Replace with:
+
 ```js
 {
   files: ['**/site/src/**'],
@@ -303,12 +346,14 @@ git commit -m "refactor: update eslint config paths for repo restructure"
 ### Task 5: Update bump.config.js and vercel.json
 
 **Files:**
+
 - Modify: `bump.config.js`
 - Modify: `vercel.json`
 
 - [ ] **Step 1: Update bump.config.js**
 
 Current content:
+
 ```js
 import { defineConfig } from 'bumpp'
 
@@ -319,6 +364,7 @@ export default defineConfig({
 ```
 
 Change `sites/*/package.json` → `site/package.json`:
+
 ```js
 import { defineConfig } from 'bumpp'
 
@@ -331,6 +377,7 @@ export default defineConfig({
 - [ ] **Step 2: Update vercel.json**
 
 Current content at repo root:
+
 ```json
 {
   "buildCommand": "bun run build",
@@ -340,6 +387,7 @@ Current content at repo root:
 ```
 
 Add `rootDirectory` so Vercel builds from the SvelteKit project:
+
 ```json
 {
   "rootDirectory": "site",
@@ -363,6 +411,7 @@ git commit -m "refactor: update bump and vercel config for repo restructure"
 ### Task 6: Fix relative paths inside site/
 
 **Files:**
+
 - Modify: `site/package.json`
 - Modify: `site/uno.config.js`
 
@@ -371,10 +420,13 @@ git commit -m "refactor: update bump and vercel config for repo restructure"
 The site's `build:themes` script uses `../../packages/themes` which resolved correctly when the site was at `solution/sites/learn/`. Now at `site/`, it is one level shallower — the path must become `../packages/themes`.
 
 In `site/package.json`, change:
+
 ```json
 "build:themes": "cd ../../packages/themes && bun run build"
 ```
+
 to:
+
 ```json
 "build:themes": "cd ../packages/themes && bun run build"
 ```
@@ -382,15 +434,15 @@ to:
 - [ ] **Step 2: Update site/uno.config.js package references**
 
 In `site/uno.config.js`, find:
+
 ```js
-'../../packages/themes/src/**/*.css',
-'../../packages/ui/src/**/*.svelte'
+;('../../packages/themes/src/**/*.css', '../../packages/ui/src/**/*.svelte')
 ```
 
 Replace with:
+
 ```js
-'../packages/themes/src/**/*.css',
-'../packages/ui/src/**/*.svelte'
+;('../packages/themes/src/**/*.css', '../packages/ui/src/**/*.svelte')
 ```
 
 - [ ] **Step 3: Commit**
@@ -407,6 +459,7 @@ git commit -m "refactor: fix relative paths in site after directory restructure"
 ### Task 7: Update agent docs and CLAUDE.md
 
 **Files:**
+
 - Modify: `CLAUDE.md`
 - Modify: `agents/memory.md`
 - Modify: `agents/references.md`
@@ -418,19 +471,25 @@ git commit -m "refactor: fix relative paths in site after directory restructure"
 - [ ] **Step 1: Update CLAUDE.md**
 
 Find:
+
 ```markdown
 ### Commands (run from `solution/`)
 ```
+
 Replace with:
+
 ```markdown
 ### Commands (run from repo root)
 ```
 
 Find:
+
 ```
 cd sites/learn && npx playwright test
 ```
+
 Replace with:
+
 ```
 cd site && npx playwright test
 ```
@@ -440,10 +499,13 @@ Also update the repo structure section — change any `solution/packages/`, `sol
 - [ ] **Step 2: Update agents/memory.md**
 
 Find the repository structure table entry:
+
 ```
 | `sites/learn` | Documentation site + interactive demos + e2e tests |
 ```
+
 Replace with:
+
 ```
 | `site` | Documentation site + interactive demos + e2e tests |
 ```
@@ -453,10 +515,13 @@ Also find and update any other `solution/` or `sites/learn` references in the fi
 - [ ] **Step 3: Update agents/references.md**
 
 Find (around line 186):
+
 ```
 | `sites/learn` | ...
 ```
+
 Replace with:
+
 ```
 | `site` | ...
 ```
@@ -470,14 +535,17 @@ Find the reference to `sites/learn/uno.config.js` and replace with `site/uno.con
 - [ ] **Step 5: Update docs/design/ files**
 
 In `docs/design/06-testing.md`, update:
+
 - `cd solution && bun run test:ci` → `bun run test:ci`
 - `cd solution/sites/learn && npx playwright test` → `cd site && npx playwright test`
 - Any `solution/packages/` references → `packages/`
 
 In `docs/design/05-website.md`, update:
+
 - All `sites/learn` references → `site`
 
 In `docs/design/03-forms.md`, update:
+
 - Any `solution/packages/forms/` references → `packages/forms/`
 
 - [ ] **Step 6: Commit**
@@ -518,6 +586,7 @@ bun run test:ci
 Expected: `Tests 2526 passed (2526)` — same count as before the restructure.
 
 If tests fail, check:
+
 - Vitest project roots point to correct directories
 - `site` project resolves `$lib` alias correctly
 

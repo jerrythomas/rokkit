@@ -25,7 +25,9 @@
 	} = $props()
 
 	// Check if options include an empty string (used as "none" option)
-	const hasEmptyOption = $derived(options.some((opt) => opt === '' || (typeof opt === 'object' && opt?.value === '')))
+	const hasEmptyOption = $derived(
+		options.some((opt) => opt === '' || (typeof opt === 'object' && opt?.value === ''))
+	)
 
 	// Filter out empty strings — Select + ProxyItem handles string options natively
 	const filteredOptions = $derived(
@@ -35,7 +37,7 @@
 	)
 
 	// Use placeholder for empty option, or provide a default clear label
-	const effectivePlaceholder = $derived(hasEmptyOption ? (placeholder || 'None') : placeholder)
+	const effectivePlaceholder = $derived(hasEmptyOption ? placeholder || 'None' : placeholder)
 </script>
 
 <Select

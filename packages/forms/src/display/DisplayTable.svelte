@@ -5,14 +5,7 @@
 	 */
 	import { Table } from '@rokkit/ui'
 
-	let {
-		data = [],
-		columns = [],
-		select,
-		title,
-		onselect,
-		class: className = ''
-	} = $props()
+	let { data = [], columns = [], select, title, onselect, class: className = '' } = $props()
 
 	// Map display columns → Table columns with formatters
 	const tableColumns = $derived(

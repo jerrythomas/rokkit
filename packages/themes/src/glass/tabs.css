@@ -9,11 +9,11 @@
    ============================================================================= */
 
 [data-style='glass'] [data-tabs-list] {
-  @apply backdrop-blur-md rounded-t-lg border-b bg-surface-z1/70 border-surface-z5/20;
+  @apply bg-surface-z1/70 border-surface-z5/20 rounded-t-lg border-b backdrop-blur-md;
 }
 
 [data-style='glass'] [data-tabs][data-position='after'] [data-tabs-list] {
-  @apply rounded-t-none rounded-b-lg border-b-0 border-t;
+  @apply rounded-t-none rounded-b-lg border-t border-b-0;
 }
 
 /* =============================================================================
@@ -30,7 +30,7 @@
 
 /* Selected state */
 [data-style='glass'] [data-tabs-trigger][data-selected] {
-  @apply bg-primary-z5/40 text-primary-z9 border-primary-z5/50 backdrop-blur-sm border;
+  @apply bg-primary-z5/40 text-primary-z9 border-primary-z5/50 border backdrop-blur-sm;
 }
 
 /* =============================================================================

@@ -6,8 +6,8 @@
 
 <article data-article-root>
 	<p>
-		A contextual action menu that opens on click. Supports icons, grouped items,
-		keyboard navigation, and custom alignment.
+		A contextual action menu that opens on click. Supports icons, grouped items, keyboard
+		navigation, and custom alignment.
 	</p>
 
 	<h2>Basic Example</h2>

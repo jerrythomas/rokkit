@@ -188,8 +188,14 @@ describe('Carousel', () => {
 		})
 		const el = container.querySelector('[data-carousel]')
 		expect(el?.getAttribute('aria-label')).toBe('Diaporama')
-		expect(container.querySelector('[data-carousel-prev]')?.getAttribute('aria-label')).toBe('Precedent')
-		expect(container.querySelector('[data-carousel-next]')?.getAttribute('aria-label')).toBe('Suivant')
-		expect(container.querySelector('[data-carousel-dots]')?.getAttribute('aria-label')).toBe('Navigation')
+		expect(container.querySelector('[data-carousel-prev]')?.getAttribute('aria-label')).toBe(
+			'Precedent'
+		)
+		expect(container.querySelector('[data-carousel-next]')?.getAttribute('aria-label')).toBe(
+			'Suivant'
+		)
+		expect(container.querySelector('[data-carousel-dots]')?.getAttribute('aria-label')).toBe(
+			'Navigation'
+		)
 	})
 })

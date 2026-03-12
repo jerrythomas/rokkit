@@ -97,7 +97,8 @@
   @apply from-danger-z5 to-danger-z3 text-on-danger bg-gradient-to-br;
 }
 
-[data-style='minimal'] [data-button][data-style='gradient']:hover:not(:disabled):not([data-disabled]) {
+[data-style='minimal']
+  [data-button][data-style='gradient']:hover:not(:disabled):not([data-disabled]) {
   filter: brightness(1.05);
 }
 
@@ -130,12 +131,14 @@
    Hover States
    ============================================================================= */
 
-[data-style='minimal'] [data-button][data-style='default']:hover:not(:disabled):not([data-disabled]),
+[data-style='minimal']
+  [data-button][data-style='default']:hover:not(:disabled):not([data-disabled]),
 [data-style='minimal'] [data-button]:not([data-style]):hover:not(:disabled):not([data-disabled]) {
   @apply bg-surface-z3 border-surface-z5;
 }
 
-[data-style='minimal'] [data-button][data-style='outline']:hover:not(:disabled):not([data-disabled]) {
+[data-style='minimal']
+  [data-button][data-style='outline']:hover:not(:disabled):not([data-disabled]) {
   @apply bg-surface-z1 border-surface-z5;
 }
 
@@ -148,5 +151,5 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-button]:focus-visible {
-  @apply outline-none ring-1 ring-surface-z5;
+  @apply ring-surface-z5 ring-1 outline-none;
 }

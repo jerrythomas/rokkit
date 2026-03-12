@@ -51,5 +51,4 @@
 			<li><strong>stages</strong>: Number of sub-stages (shows dots)</li>
 		</ul>
 	</div>
-
 </article>

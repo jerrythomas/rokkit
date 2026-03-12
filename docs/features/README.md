@@ -30,61 +30,61 @@ Rokkit is a Svelte 5 component library built around a single conviction: **data 
 
 ## Feature Status
 
-| Module | Feature | Status |
-|--------|---------|--------|
-| Data Binding | Default field conventions (`label`, `value`, `icon`, `children`) | ✅ Implemented |
-| | Custom field mapping | ✅ Implemented |
-| | Nested field access via dot paths | ✅ Implemented |
-| | Per-item field overrides | ✅ Implemented |
-| | No data transformation required | ✅ Implemented |
-| | Consistent component API | ✅ Implemented |
-| Composability | Custom item rendering via snippets | ✅ Implemented |
-| | Named snippets for mixed item types | ✅ Implemented |
-| | Partial snippet overrides | ✅ Implemented |
-| | Empty state snippets | ✅ Implemented |
-| | Icon overrides | ✅ Implemented |
-| | Snippet data access via ProxyItem | ✅ Implemented |
-| Theming & Design | Data-attribute styling hooks | ✅ Implemented |
-| | Theme/layout CSS separation | ✅ Implemented |
-| | CSS variable integration | ✅ Implemented |
-| | Dark / light / system mode | ✅ Implemented |
-| | Semantic color palettes (skins) | ✅ Implemented |
-| | Component variants | ✅ Implemented |
-| | Typography scale | ✅ Implemented |
-| | Data-density controls | 🔲 Planned |
-| | Whitelabeling | 🔲 Planned |
-| Accessibility & i18n | Keyboard navigation | ✅ Implemented |
-| | ARIA attributes | ✅ Implemented |
-| | Focus management and trapping | ✅ Implemented |
-| | Screen reader support | ✅ Implemented |
-| | Tooltips | 🔲 Planned |
-| | Internationalization (i18n) | 🔲 Planned |
-| Forms | JSON schema to form | ✅ Implemented |
-| | Field types (text, number, boolean, enum, array) | ✅ Implemented |
-| | Nested structures and object sections | ✅ Implemented |
-| | Custom field rendering | ✅ Implemented |
-| | Form state management (dirty, reset, submit) | ✅ Implemented |
-| | Validation | ✅ Implemented |
-| | Dynamic lookups | ✅ Implemented |
-| | Conditional fields | 🔲 Planned |
-| | Multi-step forms | 🔲 Planned |
-| Component Library | Selection (List, Select, MultiSelect, Tree) | ✅ Implemented |
-| | Navigation (Tabs, Menu, Toolbar) | ✅ Implemented |
-| | Inputs (Input, CheckBox, Toggle, Switch) | ✅ Implemented |
-| | Overlay (Dropdown, Popover) | ✅ Implemented |
-| | Cards | 🚧 In Progress |
-| | Layout components | 🔲 Planned |
-| | Data table | 🔲 Planned |
-| Charts | Sparklines | ✅ Implemented |
-| | Animated charts | 🔲 Planned |
-| | Pattern fills | 🔲 Planned |
-| | Interactive (hover, click, drill-down) | 🔲 Planned |
-| | Accessible chart data (ARIA, table fallback) | 🔲 Planned |
-| Developer Utilities | ProxyItem (field access abstraction) | ✅ Implemented |
-| | ListController / NestedController | ✅ Implemented |
-| | Navigator action (keyboard nav primitive) | ✅ Implemented |
-| | Interaction actions (ripple, hover-lift, magnetic) | ✅ Implemented |
-| Toolchain | CLI: add/upgrade Rokkit | 🔲 Planned |
-| | Icon sets | 🔲 Planned |
-| | Skin customization via CLI | 🔲 Planned |
-| | Custom theme style authoring | 🔲 Planned |
+| Module               | Feature                                                          | Status         |
+| -------------------- | ---------------------------------------------------------------- | -------------- |
+| Data Binding         | Default field conventions (`label`, `value`, `icon`, `children`) | ✅ Implemented |
+|                      | Custom field mapping                                             | ✅ Implemented |
+|                      | Nested field access via dot paths                                | ✅ Implemented |
+|                      | Per-item field overrides                                         | ✅ Implemented |
+|                      | No data transformation required                                  | ✅ Implemented |
+|                      | Consistent component API                                         | ✅ Implemented |
+| Composability        | Custom item rendering via snippets                               | ✅ Implemented |
+|                      | Named snippets for mixed item types                              | ✅ Implemented |
+|                      | Partial snippet overrides                                        | ✅ Implemented |
+|                      | Empty state snippets                                             | ✅ Implemented |
+|                      | Icon overrides                                                   | ✅ Implemented |
+|                      | Snippet data access via ProxyItem                                | ✅ Implemented |
+| Theming & Design     | Data-attribute styling hooks                                     | ✅ Implemented |
+|                      | Theme/layout CSS separation                                      | ✅ Implemented |
+|                      | CSS variable integration                                         | ✅ Implemented |
+|                      | Dark / light / system mode                                       | ✅ Implemented |
+|                      | Semantic color palettes (skins)                                  | ✅ Implemented |
+|                      | Component variants                                               | ✅ Implemented |
+|                      | Typography scale                                                 | ✅ Implemented |
+|                      | Data-density controls                                            | 🔲 Planned     |
+|                      | Whitelabeling                                                    | 🔲 Planned     |
+| Accessibility & i18n | Keyboard navigation                                              | ✅ Implemented |
+|                      | ARIA attributes                                                  | ✅ Implemented |
+|                      | Focus management and trapping                                    | ✅ Implemented |
+|                      | Screen reader support                                            | ✅ Implemented |
+|                      | Tooltips                                                         | 🔲 Planned     |
+|                      | Internationalization (i18n)                                      | 🔲 Planned     |
+| Forms                | JSON schema to form                                              | ✅ Implemented |
+|                      | Field types (text, number, boolean, enum, array)                 | ✅ Implemented |
+|                      | Nested structures and object sections                            | ✅ Implemented |
+|                      | Custom field rendering                                           | ✅ Implemented |
+|                      | Form state management (dirty, reset, submit)                     | ✅ Implemented |
+|                      | Validation                                                       | ✅ Implemented |
+|                      | Dynamic lookups                                                  | ✅ Implemented |
+|                      | Conditional fields                                               | 🔲 Planned     |
+|                      | Multi-step forms                                                 | 🔲 Planned     |
+| Component Library    | Selection (List, Select, MultiSelect, Tree)                      | ✅ Implemented |
+|                      | Navigation (Tabs, Menu, Toolbar)                                 | ✅ Implemented |
+|                      | Inputs (Input, CheckBox, Toggle, Switch)                         | ✅ Implemented |
+|                      | Overlay (Dropdown, Popover)                                      | ✅ Implemented |
+|                      | Cards                                                            | 🚧 In Progress |
+|                      | Layout components                                                | 🔲 Planned     |
+|                      | Data table                                                       | 🔲 Planned     |
+| Charts               | Sparklines                                                       | ✅ Implemented |
+|                      | Animated charts                                                  | 🔲 Planned     |
+|                      | Pattern fills                                                    | 🔲 Planned     |
+|                      | Interactive (hover, click, drill-down)                           | 🔲 Planned     |
+|                      | Accessible chart data (ARIA, table fallback)                     | 🔲 Planned     |
+| Developer Utilities  | ProxyItem (field access abstraction)                             | ✅ Implemented |
+|                      | ListController / NestedController                                | ✅ Implemented |
+|                      | Navigator action (keyboard nav primitive)                        | ✅ Implemented |
+|                      | Interaction actions (ripple, hover-lift, magnetic)               | ✅ Implemented |
+| Toolchain            | CLI: add/upgrade Rokkit                                          | 🔲 Planned     |
+|                      | Icon sets                                                        | 🔲 Planned     |
+|                      | Skin customization via CLI                                       | 🔲 Planned     |
+|                      | Custom theme style authoring                                     | 🔲 Planned     |

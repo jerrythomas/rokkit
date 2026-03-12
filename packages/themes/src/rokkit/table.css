@@ -9,25 +9,27 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-table-header] th {
-	@apply text-surface-z6 border-b border-surface-z4;
+  @apply text-surface-z6 border-surface-z4 border-b;
 }
 
 [data-style='rokkit'] [data-table-header-cell][data-sortable='true']:hover {
-	@apply text-surface-z8;
+  @apply text-surface-z8;
 }
 
 [data-style='rokkit'] [data-table-header-cell][data-sort-order='ascending'],
 [data-style='rokkit'] [data-table-header-cell][data-sort-order='descending'] {
-	@apply text-primary-z7;
+  @apply text-primary-z7;
 }
 
 [data-style='rokkit'] [data-table-sort-icon] {
-	@apply text-surface-z5;
+  @apply text-surface-z5;
 }
 
 [data-style='rokkit'] [data-table-header-cell][data-sort-order='ascending'] [data-table-sort-icon],
-[data-style='rokkit'] [data-table-header-cell][data-sort-order='descending'] [data-table-sort-icon] {
-	@apply text-primary-z6;
+[data-style='rokkit']
+  [data-table-header-cell][data-sort-order='descending']
+  [data-table-sort-icon] {
+  @apply text-primary-z6;
 }
 
 /* =============================================================================
@@ -35,7 +37,7 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-table-caption] {
-	@apply text-surface-z7;
+  @apply text-surface-z7;
 }
 
 /* =============================================================================
@@ -43,19 +45,19 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-table-row] {
-	@apply text-surface-z8 border-b border-surface-z3;
+  @apply text-surface-z8 border-surface-z3 border-b;
 }
 
 [data-style='rokkit'] [data-table-row]:hover {
-	@apply from-surface-z3 to-surface-z2 bg-gradient-to-r;
+  @apply from-surface-z3 to-surface-z2 bg-gradient-to-r;
 }
 
 [data-style='rokkit'] [data-table-row]:focus {
-	@apply from-surface-z3 to-surface-z2 text-surface-z10 bg-gradient-to-r outline-none;
+  @apply from-surface-z3 to-surface-z2 text-surface-z10 bg-gradient-to-r outline-none;
 }
 
 [data-style='rokkit'] [data-table-row][data-selected='true'] {
-	@apply from-primary-z5 to-secondary-z5 text-primary-z9 bg-gradient-to-r;
+  @apply from-primary-z5 to-secondary-z5 text-primary-z9 bg-gradient-to-r;
 }
 
 /* =============================================================================
@@ -63,7 +65,7 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-striped='true'] [data-table-body] tr:nth-child(even) {
-	@apply bg-surface-z2;
+  @apply bg-surface-z2;
 }
 
 /* =============================================================================
@@ -71,7 +73,7 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-table-empty] {
-	@apply text-surface-z5;
+  @apply text-surface-z5;
 }
 
 /* =============================================================================
@@ -79,9 +81,9 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-table-cell] [data-cell-icon] {
-	@apply text-surface-z5;
+  @apply text-surface-z5;
 }
 
 [data-style='rokkit'] [data-table-row][data-selected='true'] [data-cell-icon] {
-	@apply text-primary-z7;
+  @apply text-primary-z7;
 }

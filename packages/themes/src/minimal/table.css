@@ -9,25 +9,27 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-table-header] th {
-	@apply text-surface-z6 border-b border-surface-z4;
+  @apply text-surface-z6 border-surface-z4 border-b;
 }
 
 [data-style='minimal'] [data-table-header-cell][data-sortable='true']:hover {
-	@apply text-surface-z8;
+  @apply text-surface-z8;
 }
 
 [data-style='minimal'] [data-table-header-cell][data-sort-order='ascending'],
 [data-style='minimal'] [data-table-header-cell][data-sort-order='descending'] {
-	@apply text-primary-z7;
+  @apply text-primary-z7;
 }
 
 [data-style='minimal'] [data-table-sort-icon] {
-	@apply text-surface-z5;
+  @apply text-surface-z5;
 }
 
 [data-style='minimal'] [data-table-header-cell][data-sort-order='ascending'] [data-table-sort-icon],
-[data-style='minimal'] [data-table-header-cell][data-sort-order='descending'] [data-table-sort-icon] {
-	@apply text-primary-z6;
+[data-style='minimal']
+  [data-table-header-cell][data-sort-order='descending']
+  [data-table-sort-icon] {
+  @apply text-primary-z6;
 }
 
 /* =============================================================================
@@ -35,7 +37,7 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-table-caption] {
-	@apply text-surface-z7;
+  @apply text-surface-z7;
 }
 
 /* =============================================================================
@@ -43,19 +45,19 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-table-row] {
-	@apply text-surface-z7 border-b border-surface-z3;
+  @apply text-surface-z7 border-surface-z3 border-b;
 }
 
 [data-style='minimal'] [data-table-row]:hover {
-	@apply text-surface-z9;
+  @apply text-surface-z9;
 }
 
 [data-style='minimal'] [data-table-row]:focus {
-	@apply text-surface-z9 outline-none ring-1 ring-surface-z5;
+  @apply text-surface-z9 ring-surface-z5 ring-1 outline-none;
 }
 
 [data-style='minimal'] [data-table-row][data-selected='true'] {
-	@apply text-primary-z8 border-l-primary-z4 border-l-2;
+  @apply text-primary-z8 border-l-primary-z4 border-l-2;
 }
 
 /* =============================================================================
@@ -63,7 +65,7 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-striped='true'] [data-table-body] tr:nth-child(even) {
-	@apply bg-surface-z1;
+  @apply bg-surface-z1;
 }
 
 /* =============================================================================
@@ -71,7 +73,7 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-table-empty] {
-	@apply text-surface-z5;
+  @apply text-surface-z5;
 }
 
 /* =============================================================================
@@ -79,9 +81,9 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-table-cell] [data-cell-icon] {
-	@apply text-surface-z5;
+  @apply text-surface-z5;
 }
 
 [data-style='minimal'] [data-table-row][data-selected='true'] [data-cell-icon] {
-	@apply text-primary-z6;
+  @apply text-primary-z6;
 }

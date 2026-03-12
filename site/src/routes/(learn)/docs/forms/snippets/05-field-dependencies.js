@@ -1,10 +1,10 @@
 // Country → City cascade
 const lookups = {
-  city: createLookup({
-    url: '/api/cities?country={country}',
-    dependsOn: ['country'],
-    fields: { label: 'name', value: 'id' }
-  })
+	city: createLookup({
+		url: '/api/cities?country={country}',
+		dependsOn: ['country'],
+		fields: { label: 'name', value: 'id' }
+	})
 }
 
 // When 'country' changes:

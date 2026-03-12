@@ -5,10 +5,7 @@ import { hoverLift } from '../src/hover-lift.svelte.js'
 // ─── Setup / Teardown ──────────────────────────────────────────────
 
 beforeEach(() => {
-	vi.stubGlobal(
-		'matchMedia',
-		vi.fn().mockReturnValue({ matches: false })
-	)
+	vi.stubGlobal('matchMedia', vi.fn().mockReturnValue({ matches: false }))
 })
 
 afterEach(() => {
@@ -107,10 +104,7 @@ describe('hoverLift', () => {
 	// ─── prefers-reduced-motion ────────────────────────────────────
 
 	it('does nothing when prefers-reduced-motion is set', () => {
-		vi.stubGlobal(
-			'matchMedia',
-			vi.fn().mockReturnValue({ matches: true })
-		)
+		vi.stubGlobal('matchMedia', vi.fn().mockReturnValue({ matches: true }))
 
 		const node = document.createElement('div')
 		const cleanup = $effect.root(() => hoverLift(node))

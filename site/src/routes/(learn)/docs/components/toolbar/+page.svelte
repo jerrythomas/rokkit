@@ -47,5 +47,4 @@
 			</ul>
 		</div>
 	</div>
-
 </article>

@@ -14,8 +14,8 @@
 	<h2>Basic Example</h2>
 	<p>
 		Pass a nested array of objects with <code>text</code>, <code>value</code>, and optional
-		<code>icon</code> and <code>children</code> fields. Nodes with <code>children</code> arrays
-		are rendered as expandable branches.
+		<code>icon</code> and <code>children</code> fields. Nodes with <code>children</code> arrays are rendered
+		as expandable branches.
 	</p>
 
 	<Code {...storyBuilder.getFragment(0)} />
@@ -25,8 +25,9 @@
 	<!-- No Lines -->
 	<h2>No Lines</h2>
 	<p>
-		Set <code>lineStyle="none"</code> to use simple indentation instead of tree-line
-		connectors. Other options are <code>"solid"</code> (default), <code>"dashed"</code>, and <code>"dotted"</code>.
+		Set <code>lineStyle="none"</code> to use simple indentation instead of tree-line connectors.
+		Other options are <code>"solid"</code> (default), <code>"dashed"</code>, and
+		<code>"dotted"</code>.
 	</p>
 
 	<StoryViewer {...storyBuilder.getExample('no-lines')} />
@@ -45,8 +46,8 @@
 	<!-- Custom Icons -->
 	<h2>Custom Icons</h2>
 	<p>
-		Override the default expand/collapse chevrons with any icon via the <code>icons</code> prop.
-		Here we use folder icons for a file-manager style tree.
+		Override the default expand/collapse chevrons with any icon via the <code>icons</code> prop. Here
+		we use folder icons for a file-manager style tree.
 	</p>
 
 	<StoryViewer {...storyBuilder.getExample('icons')} />
@@ -54,8 +55,8 @@
 	<!-- Snippets -->
 	<h2>Custom Item Rendering</h2>
 	<p>
-		Use the <code>itemContent</code> snippet to control what appears inside each tree node.
-		The snippet receives a <code>ProxyItem</code> — use <code>proxy.label</code>,
+		Use the <code>itemContent</code> snippet to control what appears inside each tree node. The
+		snippet receives a <code>ProxyItem</code> — use <code>proxy.label</code>,
 		<code>proxy.icon</code>, and <code>proxy.get('fieldName')</code> to access any field.
 	</p>
 
@@ -71,9 +72,14 @@
 				<li><strong>items</strong>: Array of nested objects</li>
 				<li><strong>fields</strong>: Remap your data keys to component fields</li>
 				<li><strong>value</strong> (bindable): Currently selected item value</li>
-				<li><strong>lineStyle</strong>: Tree line style — <code>'none'</code>, <code>'solid'</code> (default), <code>'dashed'</code>, <code>'dotted'</code></li>
+				<li>
+					<strong>lineStyle</strong>: Tree line style — <code>'none'</code>, <code>'solid'</code>
+					(default), <code>'dashed'</code>, <code>'dotted'</code>
+				</li>
 				<li><strong>icons</strong>: Override the expand/collapse icons</li>
-				<li><strong>size</strong>: Size variant (<code>sm</code>, <code>md</code>, <code>lg</code>)</li>
+				<li>
+					<strong>size</strong>: Size variant (<code>sm</code>, <code>md</code>, <code>lg</code>)
+				</li>
 				<li><strong>class</strong>: Additional CSS classes</li>
 			</ul>
 		</div>

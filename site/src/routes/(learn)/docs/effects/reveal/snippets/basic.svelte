@@ -9,8 +9,10 @@
 
 	{#key key}
 		<Reveal direction="up" duration={600}>
-			<div class="w-64 h-28 rounded-xl bg-surface-z2 border border-surface-z3 flex items-center justify-center shadow">
-				<span class="text-sm font-semibold text-surface-z7">Single element — slides up</span>
+			<div
+				class="bg-surface-z2 border-surface-z3 flex h-28 w-64 items-center justify-center rounded-xl border shadow"
+			>
+				<span class="text-surface-z7 text-sm font-semibold">Single element — slides up</span>
 			</div>
 		</Reveal>
 	{/key}

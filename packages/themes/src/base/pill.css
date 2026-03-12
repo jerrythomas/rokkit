@@ -1,57 +1,57 @@
 /* Pill — base structural styles */
 
 [data-pill] {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.375rem;
-	padding: 0.125rem 0.625rem;
-	border-radius: 9999px;
-	font-size: 0.875rem;
-	line-height: 1.25rem;
-	white-space: nowrap;
-	outline: none;
-	vertical-align: middle;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.125rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  white-space: nowrap;
+  outline: none;
+  vertical-align: middle;
 }
 
 [data-pill-icon] {
-	font-size: 0.875rem;
-	flex-shrink: 0;
+  font-size: 0.875rem;
+  flex-shrink: 0;
 }
 
 [data-pill-text] {
-	overflow: hidden;
-	text-overflow: ellipsis;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 [data-pill-remove] {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	width: 1rem;
-	height: 1rem;
-	padding: 0;
-	margin-left: 0.125rem;
-	border: none;
-	border-radius: 9999px;
-	cursor: pointer;
-	background: transparent;
-	color: inherit;
-	opacity: 0.6;
-	transition: opacity 0.15s ease;
-	font-size: 0.75rem;
-	flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  padding: 0;
+  margin-left: 0.125rem;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  background: transparent;
+  color: inherit;
+  opacity: 0.6;
+  transition: opacity 0.15s ease;
+  font-size: 0.75rem;
+  flex-shrink: 0;
 }
 
 [data-pill-remove]:hover {
-	opacity: 1;
+  opacity: 1;
 }
 
 [data-pill-remove]:disabled {
-	opacity: 0.3;
-	cursor: default;
+  opacity: 0.3;
+  cursor: default;
 }
 
 [data-pill-disabled] {
-	opacity: 0.5;
-	cursor: default;
+  opacity: 0.5;
+  cursor: default;
 }

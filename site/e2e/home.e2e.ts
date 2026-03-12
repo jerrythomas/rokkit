@@ -147,9 +147,7 @@ test.describe('Home page', () => {
 			await expect(page.locator('h1')).toBeVisible()
 			await expect(page.locator('h2', { hasText: 'Why Rokkit?' })).toBeVisible()
 			// Verify the data-mode attribute was applied
-			const bodyMode = await page.evaluate(() =>
-				document.documentElement.getAttribute('data-mode')
-			)
+			const bodyMode = await page.evaluate(() => document.documentElement.getAttribute('data-mode'))
 			expect(bodyMode).toBe(mode)
 		})
 	}

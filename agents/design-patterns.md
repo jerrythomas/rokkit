@@ -22,6 +22,7 @@ Reference this file before implementing new features to ensure consistency.
 **Rules:**
 
 1. **Root marker** — Every component root has a single marker attribute that identifies it:
+
    ```html
    <div data-list>...</div>
    <div data-select>...</div>
@@ -29,26 +30,35 @@ Reference this file before implementing new features to ensure consistency.
    ```
 
 2. **Sub-element markers** — Child elements use `data-{component}-{role}`:
+
    ```html
    <div data-list-item data-path="0">
-   <span data-select-trigger>
-   <div data-range-thumb>
+     <span data-select-trigger> <div data-range-thumb></div></span>
+   </div>
    ```
 
 3. **Boolean state attributes** — Presence means true, absence means false (no `="true"`/`="false"`):
+
    ```html
-   <div data-list-item data-active>        <!-- active -->
-   <div data-list-item>                    <!-- not active -->
-   <div data-range-thumb data-sliding>     <!-- currently dragging -->
+   <div data-list-item data-active>
+     <!-- active -->
+     <div data-list-item>
+       <!-- not active -->
+       <div data-range-thumb data-sliding><!-- currently dragging --></div>
+     </div>
+   </div>
    ```
 
 4. **Value state attributes** — Enumerated states use `data-{attr}="{value}"`:
+
    ```html
    <div data-select data-size="md">
-   <div data-list data-density="compact">
+     <div data-list data-density="compact"></div>
+   </div>
    ```
 
 5. **CSS selectors** — Theme CSS always selects by attribute, never by element tag or class:
+
    ```css
    /* Correct */
    [data-list-item][data-active] { ... }
@@ -73,13 +83,14 @@ Reference this file before implementing new features to ensure consistency.
 
 **Architecture — Three Layers:**
 
-| Layer | Class / File | Responsibility |
-|-------|-------------|----------------|
-| `ProxyItem` | `@rokkit/states/proxy-item.svelte.js` | Read-only view of a raw item through a field map. Provides uniform `.text`, `.icon`, `.href`, `.value`, `.expanded`, `.disabled`, `.get('field')`. |
-| `Wrapper` | `@rokkit/states/wrapper.svelte.js` | Owns reactive state: `focusedKey`, `flatView` (flat array of `{ key, proxy, depth }`). Implements all navigation and selection actions (`moveNext`, `movePrev`, `select`, `expand`, `collapse`, etc.). |
-| `Navigator` | `@rokkit/actions/navigator.js` | Plain class (not Svelte action). Attaches DOM `keydown`/`click` event listeners to a container element. Translates key events → actions → calls `wrapper[action](path)`. |
+| Layer       | Class / File                          | Responsibility                                                                                                                                                                                         |
+| ----------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ProxyItem` | `@rokkit/states/proxy-item.svelte.js` | Read-only view of a raw item through a field map. Provides uniform `.text`, `.icon`, `.href`, `.value`, `.expanded`, `.disabled`, `.get('field')`.                                                     |
+| `Wrapper`   | `@rokkit/states/wrapper.svelte.js`    | Owns reactive state: `focusedKey`, `flatView` (flat array of `{ key, proxy, depth }`). Implements all navigation and selection actions (`moveNext`, `movePrev`, `select`, `expand`, `collapse`, etc.). |
+| `Navigator` | `@rokkit/actions/navigator.js`        | Plain class (not Svelte action). Attaches DOM `keydown`/`click` event listeners to a container element. Translates key events → actions → calls `wrapper[action](path)`.                               |
 
 **Key constants:**
+
 - `PROXY_ITEM_FIELDS` — default field map: `{ text: 'label', value: 'value', icon: 'icon', href: 'href', children: 'children', type: 'type', disabled: 'disabled', expanded: 'expanded', snippet: 'snippet' }`. Note `text → 'label'` (not `'text'`).
 - `DEFAULT_STATE_ICONS.accordion` — default expand/collapse icons for collapsible components.
 
@@ -91,8 +102,15 @@ Reference this file before implementing new features to ensure consistency.
   import { Navigator } from '@rokkit/actions'
   import { DEFAULT_STATE_ICONS, resolveSnippet } from '@rokkit/core'
 
-  let { items = [], value = $bindable(), fields = {}, collapsible = false,
-        icons: userIcons, class: className = '', onselect } = $props()
+  let {
+    items = [],
+    value = $bindable(),
+    fields = {},
+    collapsible = false,
+    icons: userIcons,
+    class: className = '',
+    onselect
+  } = $props()
 
   const mergedFields = $derived({ ...PROXY_ITEM_FIELDS, ...fields })
   const icons = $derived({ ...DEFAULT_STATE_ICONS.accordion, ...userIcons })
@@ -116,9 +134,12 @@ Reference this file before implementing new features to ensure consistency.
     {#if node.proxy.type === 'separator'}
       <hr data-list-separator />
     {:else if node.proxy.hasChildren}
-      <button data-list-group data-path={node.key}
-              aria-expanded={node.proxy.expanded}
-              disabled={!collapsible}>
+      <button
+        data-list-group
+        data-path={node.key}
+        aria-expanded={node.proxy.expanded}
+        disabled={!collapsible}
+      >
         {#if resolveSnippet($$snippets, node.proxy, 'groupContent')}
           {@render resolveSnippet($$snippets, node.proxy, 'groupContent')(node.proxy)}
         {:else}
@@ -126,8 +147,11 @@ Reference this file before implementing new features to ensure consistency.
         {/if}
       </button>
     {:else}
-      <button data-list-item data-path={node.key}
-              data-active={node.proxy.value === value || undefined}>
+      <button
+        data-list-item
+        data-path={node.key}
+        data-active={node.proxy.value === value || undefined}
+      >
         {#if resolveSnippet($$snippets, node.proxy, 'itemContent')}
           {@render resolveSnippet($$snippets, node.proxy, 'itemContent')(node.proxy)}
         {:else}
@@ -155,18 +179,20 @@ Reference this file before implementing new features to ensure consistency.
 
 **API — three snippet slots:**
 
-| Snippet | When used | Receives |
-|---------|-----------|---------|
-| `itemContent(proxy)` | Every leaf item | `ProxyItem` |
-| `groupContent(proxy)` | Every group header | `ProxyItem` |
-| `[name](proxy)` | Items with `item.snippet = 'name'` | `ProxyItem` (per-item named override) |
+| Snippet               | When used                          | Receives                              |
+| --------------------- | ---------------------------------- | ------------------------------------- |
+| `itemContent(proxy)`  | Every leaf item                    | `ProxyItem`                           |
+| `groupContent(proxy)` | Every group header                 | `ProxyItem`                           |
+| `[name](proxy)`       | Items with `item.snippet = 'name'` | `ProxyItem` (per-item named override) |
 
 **`resolveSnippet(snippets, proxy, fallbackName)`** — from `@rokkit/core/src/utils.js`:
+
 1. Check `proxy.get('snippet')` → look for `snippets[snippetName]`
 2. Fall back to `snippets[fallbackName]` (`'itemContent'` or `'groupContent'`)
 3. Return `undefined` if neither found (component renders default content)
 
 **Pattern — component template:**
+
 ```svelte
 {#snippet defaultContent(proxy)}
   {#if proxy.icon}<span class={proxy.icon} aria-hidden="true"></span>{/if}
@@ -179,6 +205,7 @@ Reference this file before implementing new features to ensure consistency.
 ```
 
 **Pattern — consumer usage:**
+
 ```svelte
 <!-- Override all items -->
 <List {items}>
@@ -190,19 +217,31 @@ Reference this file before implementing new features to ensure consistency.
 </List>
 
 <!-- Per-item override via item.snippet -->
-<List items={[{ label: 'Apple', snippet: 'fruit' }, { label: 'Carrot', snippet: 'vegetable' }]}>
+<List
+  items={[
+    { label: 'Apple', snippet: 'fruit' },
+    { label: 'Carrot', snippet: 'vegetable' }
+  ]}
+>
   {#snippet fruit(proxy)}<span class="text-error-z5">{proxy.text}</span>{/snippet}
   {#snippet vegetable(proxy)}<span class="text-success-z5">{proxy.text}</span>{/snippet}
 </List>
 ```
 
 **`proxy.value` mutation pattern (interactive elements in snippets):**
+
 ```svelte
 {#snippet itemContent(proxy)}
   <span class="flex-1">{proxy.text}</span>
-  <input type="checkbox" checked={proxy.get('checked')}
-    onchange={(e) => { proxy.value.checked = e.currentTarget.checked }}
-    onclick={(e) => e.stopPropagation()} />  <!-- prevent List selection -->
+  <input
+    type="checkbox"
+    checked={proxy.get('checked')}
+    onchange={(e) => {
+      proxy.value.checked = e.currentTarget.checked
+    }}
+    onclick={(e) => e.stopPropagation()}
+  />
+  <!-- prevent List selection -->
 {/snippet}
 ```
 
@@ -215,17 +254,22 @@ Reference this file before implementing new features to ensure consistency.
 **Context:** Any component that renders a root element and should allow consumers to add UnoCSS/CSS classes to constrain layout (height, width, overflow, etc.).
 
 **Pattern:**
+
 ```svelte
 let { class: className = '', ...rest } = $props()
 ```
+
 ```html
-<nav data-list class={className}>
+<nav data-list class="{className}"></nav>
 ```
 
 **Common use cases:**
+
 ```svelte
-<List {items} class="max-h-64 overflow-y-auto" />  <!-- fixed height with scroll -->
-<List {items} class="w-48" />                       <!-- fixed width -->
+<List {items} class="max-h-64 overflow-y-auto" />
+<!-- fixed height with scroll -->
+<List {items} class="w-48" />
+<!-- fixed width -->
 ```
 
 **Rule:** The `class` prop is additive — it appends to the component's own structural classes. Never replace them. If the component has no own classes (uses data-attribute CSS), the `class` prop is the only class on the root element.
@@ -246,16 +290,17 @@ let { class: className = '', ...rest } = $props()
 
 **Key Files:**
 
-| File | Purpose |
-|------|---------|
+| File                             | Purpose                                                                 |
+| -------------------------------- | ----------------------------------------------------------------------- |
 | `packages/core/src/constants.js` | `DEFAULT_ICONS` array + `stateIconsFromNames()` → `DEFAULT_STATE_ICONS` |
-| `packages/icons/src/base/` | SVGs matching the naming convention (`node-opened.svg`, etc.) |
-| `site/uno.config.js` | `iconShortcuts(DEFAULT_ICONS, 'i-rokkit')` global mapping |
-| `packages/core/src/utils.js` | `iconShortcuts()` function |
+| `packages/icons/src/base/`       | SVGs matching the naming convention (`node-opened.svg`, etc.)           |
+| `site/uno.config.js`             | `iconShortcuts(DEFAULT_ICONS, 'i-rokkit')` global mapping               |
+| `packages/core/src/utils.js`     | `iconShortcuts()` function                                              |
 
 **Naming Convention:**
 
 Flat icon names follow `{group}-{state}` pattern:
+
 - `node-opened`, `node-closed` — Tree expand/collapse
 - `selector-opened`, `selector-closed` — Select/Menu dropdown arrow
 - `accordion-opened`, `accordion-closed` — List collapsible groups
@@ -374,10 +419,10 @@ messages.set({
 
 **Contract:**
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `value` (bindable) | `unknown` (single) or `unknown[]` (multi) | The **extracted value-field primitive** — what `item[fields.value]` resolves to. For string arrays, the item itself. |
-| `onchange` / `onselect` | `(value, item) => void` | First arg: extracted primitive. Second arg: the full item object from the options array. |
+| Prop                    | Type                                      | Description                                                                                                          |
+| ----------------------- | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `value` (bindable)      | `unknown` (single) or `unknown[]` (multi) | The **extracted value-field primitive** — what `item[fields.value]` resolves to. For string arrays, the item itself. |
+| `onchange` / `onselect` | `(value, item) => void`                   | First arg: extracted primitive. Second arg: the full item object from the options array.                             |
 
 **Rationale:** Consumers typically bind to an id or key (`bind:value={selectedId}`), not a full object. When the full object is needed, it's available via the callback's second argument. This matches native `<select>` semantics where `value` is the option's value attribute.
 
@@ -392,6 +437,7 @@ messages.set({
 ```
 
 **ItemProxy resolution order** for extracting value (`itemValue` getter):
+
 1. Mapped value field: `item[fields.value]`
 2. Fallback fields: `id`, `key`, `value`
 3. Last resort: the original item itself (covers string/number arrays)
@@ -420,12 +466,12 @@ $effect(() => {
 
 **Current compliance:**
 
-| Component | `value` type | `onchange`/`onselect` sig | Status |
-|-----------|-------------|---------------------------|--------|
-| Toggle | extracted primitive | `(value, item)` | Compliant |
-| Select | extracted primitive | `(value, item)` + `selected` bindable for full item | Compliant |
-| List | extracted primitive | `(value, item)` | Compliant |
-| Tree | extracted primitive | `(value, item)` | Compliant |
+| Component   | `value` type              | `onchange`/`onselect` sig                              | Status    |
+| ----------- | ------------------------- | ------------------------------------------------------ | --------- |
+| Toggle      | extracted primitive       | `(value, item)`                                        | Compliant |
+| Select      | extracted primitive       | `(value, item)` + `selected` bindable for full item    | Compliant |
+| List        | extracted primitive       | `(value, item)`                                        | Compliant |
+| Tree        | extracted primitive       | `(value, item)`                                        | Compliant |
 | MultiSelect | extracted primitive array | `(values, items)` + `selected` bindable for full items | Compliant |
 
 **Used in:** Toggle, Select, MultiSelect, List, Tree.

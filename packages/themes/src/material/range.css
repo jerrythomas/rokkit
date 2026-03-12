@@ -9,11 +9,11 @@
    ============================================================================= */
 
 [data-style='material'] [data-range-bar] {
-	@apply bg-surface-z3;
+  @apply bg-surface-z3;
 }
 
 [data-style='material'] [data-range-selected] {
-	@apply bg-primary;
+  @apply bg-primary;
 }
 
 /* =============================================================================
@@ -21,16 +21,16 @@
    ============================================================================= */
 
 [data-style='material'] [data-range-thumb] {
-	@apply bg-primary border-primary shadow-md;
+  @apply bg-primary border-primary shadow-md;
 }
 
 [data-style='material'] [data-range-thumb][data-sliding] {
-	@apply shadow-lg;
-	box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 25%, transparent);
+  @apply shadow-lg;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 25%, transparent);
 }
 
 [data-style='material'] [data-range-thumb]:focus-visible {
-	box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 25%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 25%, transparent);
 }
 
 /* =============================================================================
@@ -38,15 +38,15 @@
    ============================================================================= */
 
 [data-style='material'] [data-range-tick] {
-	@apply text-surface-z6;
+  @apply text-surface-z6;
 }
 
 [data-style='material'] [data-tick-bar] {
-	@apply border-surface-z5;
+  @apply border-surface-z5;
 }
 
 [data-style='material'] [data-tick-label] {
-	@apply text-surface-z6;
+  @apply text-surface-z6;
 }
 
 /* =============================================================================
@@ -54,9 +54,9 @@
    ============================================================================= */
 
 [data-style='material'] [data-range][data-disabled] [data-range-thumb] {
-	@apply bg-surface-z4 border-surface-z4 shadow-none;
+  @apply bg-surface-z4 border-surface-z4 shadow-none;
 }
 
 [data-style='material'] [data-range][data-disabled] [data-range-selected] {
-	@apply bg-surface-z4;
+  @apply bg-surface-z4;
 }

@@ -5,17 +5,73 @@
 
 	// ── Travel Planner Data ────────────────────────────────────
 	const flights = [
-		{ airline: 'SkyWest Air', flight: 'SW-201', departure: '2026-03-15T08:00:00', arrival: '2026-03-15T14:30:00', duration: 390, price: 450, stops: 0 },
-		{ airline: 'Pacific Lines', flight: 'PL-455', departure: '2026-03-15T10:30:00', arrival: '2026-03-15T18:00:00', duration: 450, price: 320, stops: 1 },
-		{ airline: 'Atlas Airways', flight: 'AA-789', departure: '2026-03-15T14:00:00', arrival: '2026-03-15T19:15:00', duration: 315, price: 580, stops: 0 },
-		{ airline: 'NorthStar', flight: 'NS-102', departure: '2026-03-15T06:00:00', arrival: '2026-03-15T13:45:00', duration: 465, price: 275, stops: 2 }
+		{
+			airline: 'SkyWest Air',
+			flight: 'SW-201',
+			departure: '2026-03-15T08:00:00',
+			arrival: '2026-03-15T14:30:00',
+			duration: 390,
+			price: 450,
+			stops: 0
+		},
+		{
+			airline: 'Pacific Lines',
+			flight: 'PL-455',
+			departure: '2026-03-15T10:30:00',
+			arrival: '2026-03-15T18:00:00',
+			duration: 450,
+			price: 320,
+			stops: 1
+		},
+		{
+			airline: 'Atlas Airways',
+			flight: 'AA-789',
+			departure: '2026-03-15T14:00:00',
+			arrival: '2026-03-15T19:15:00',
+			duration: 315,
+			price: 580,
+			stops: 0
+		},
+		{
+			airline: 'NorthStar',
+			flight: 'NS-102',
+			departure: '2026-03-15T06:00:00',
+			arrival: '2026-03-15T13:45:00',
+			duration: 465,
+			price: 275,
+			stops: 2
+		}
 	]
 
 	const hotels = [
-		{ name: 'Grand Plaza Hotel', location: 'Downtown', rating: 4.5, pricePerNight: 189, amenities: 'Pool, Spa, Gym' },
-		{ name: 'Seaside Resort', location: 'Beachfront', rating: 4.8, pricePerNight: 320, amenities: 'Beach, Pool, Restaurant' },
-		{ name: 'City Budget Inn', location: 'Midtown', rating: 3.9, pricePerNight: 89, amenities: 'WiFi, Breakfast' },
-		{ name: 'The Skyline Suite', location: 'Financial District', rating: 4.2, pricePerNight: 245, amenities: 'Rooftop Bar, Gym, Spa' }
+		{
+			name: 'Grand Plaza Hotel',
+			location: 'Downtown',
+			rating: 4.5,
+			pricePerNight: 189,
+			amenities: 'Pool, Spa, Gym'
+		},
+		{
+			name: 'Seaside Resort',
+			location: 'Beachfront',
+			rating: 4.8,
+			pricePerNight: 320,
+			amenities: 'Beach, Pool, Restaurant'
+		},
+		{
+			name: 'City Budget Inn',
+			location: 'Midtown',
+			rating: 3.9,
+			pricePerNight: 89,
+			amenities: 'WiFi, Breakfast'
+		},
+		{
+			name: 'The Skyline Suite',
+			location: 'Financial District',
+			rating: 4.2,
+			pricePerNight: 245,
+			amenities: 'Rooftop Bar, Gym, Spa'
+		}
 	]
 
 	const itinerary = {
@@ -30,7 +86,7 @@
 	const activities = [
 		{ activity: 'Golden Gate Bridge Tour', date: '2026-03-16', cost: 35 },
 		{ activity: 'Alcatraz Island Visit', date: '2026-03-17', cost: 45 },
-		{ activity: 'Fisherman\'s Wharf', date: '2026-03-18', cost: 0 },
+		{ activity: "Fisherman's Wharf", date: '2026-03-18', cost: 0 },
 		{ activity: 'Cable Car Ride', date: '2026-03-19', cost: 8 }
 	]
 
@@ -72,7 +128,11 @@
 			{ type: 'separator' },
 			{ scope: '#/travelers', label: 'Number of Travelers' },
 			{ scope: '#/travelClass', label: 'Travel Class', props: { renderer: 'toggle' } },
-			{ scope: '#/notes', label: 'Notes', props: { renderer: 'textarea', placeholder: 'Special requests...' } }
+			{
+				scope: '#/notes',
+				label: 'Notes',
+				props: { renderer: 'textarea', placeholder: 'Special requests...' }
+			}
 		]
 	}
 
@@ -194,8 +254,16 @@
 				]
 			},
 			{ type: 'separator' },
-			{ scope: '#/cardName', label: 'Name on Card', props: { placeholder: 'Full name as on card' } },
-			{ scope: '#/cardNumber', label: 'Card Number', props: { placeholder: '4242 4242 4242 4242' } },
+			{
+				scope: '#/cardName',
+				label: 'Name on Card',
+				props: { placeholder: 'Full name as on card' }
+			},
+			{
+				scope: '#/cardNumber',
+				label: 'Card Number',
+				props: { placeholder: '4242 4242 4242 4242' }
+			},
 			{ scope: '#/agreeTerms', label: 'I agree to the terms and conditions' }
 		]
 	}
@@ -272,7 +340,11 @@
 		elements: [
 			{ scope: '#/name', label: 'Your Name', props: { placeholder: 'Full name (required)' } },
 			{ scope: '#/email', label: 'Email', props: { placeholder: 'email@example.com (required)' } },
-			{ scope: '#/message', label: 'Message', props: { renderer: 'textarea', placeholder: 'At least 10 characters...' } }
+			{
+				scope: '#/message',
+				label: 'Message',
+				props: { renderer: 'textarea', placeholder: 'At least 10 characters...' }
+			}
 		]
 	}
 
@@ -360,23 +432,16 @@
 
 <PlaySection>
 	{#snippet preview()}
-		<div class="flex flex-col w-full max-w-[720px] gap-4 self-start p-2">
+		<div class="flex w-full max-w-[720px] flex-col gap-4 self-start p-2">
 			<!-- Tab navigation -->
-			<div class="flex gap-1 flex-wrap">
-				{#each [
-					{ id: 'input', label: 'Input Form' },
-					{ id: 'flights', label: 'Pick a Flight' },
-					{ id: 'hotels', label: 'Hotel Cards' },
-					{ id: 'review', label: 'Itinerary Review' },
-					{ id: 'mixed', label: 'Mixed Layout' },
-					{ id: 'validation', label: 'Validation' },
-				{ id: 'nested', label: 'Nested Form' },
-				{ id: 'submit', label: 'Submit' },
-				{ id: 'dirty', label: 'Dirty Tracking' }
-				] as tab (tab.id)}
+			<div class="flex flex-wrap gap-1">
+				{#each [{ id: 'input', label: 'Input Form' }, { id: 'flights', label: 'Pick a Flight' }, { id: 'hotels', label: 'Hotel Cards' }, { id: 'review', label: 'Itinerary Review' }, { id: 'mixed', label: 'Mixed Layout' }, { id: 'validation', label: 'Validation' }, { id: 'nested', label: 'Nested Form' }, { id: 'submit', label: 'Submit' }, { id: 'dirty', label: 'Dirty Tracking' }] as tab (tab.id)}
 					<button
-						class="px-3 py-1.5 rounded-md text-xs cursor-pointer transition-all border border-surface-z3 {activeDemo === tab.id ? 'bg-primary-z1 text-primary-z7 border-primary-z3' : 'bg-transparent text-surface-z6 hover:bg-surface-z1'}"
-						onclick={() => activeDemo = tab.id}
+						class="border-surface-z3 cursor-pointer rounded-md border px-3 py-1.5 text-xs transition-all {activeDemo ===
+						tab.id
+							? 'bg-primary-z1 text-primary-z7 border-primary-z3'
+							: 'text-surface-z6 hover:bg-surface-z1 bg-transparent'}"
+						onclick={() => (activeDemo = tab.id)}
 					>
 						{tab.label}
 					</button>
@@ -384,73 +449,71 @@
 			</div>
 
 			<!-- Demo panels -->
-			<div class="rounded-lg border border-surface-z2 bg-surface p-4">
+			<div class="border-surface-z2 bg-surface rounded-lg border p-4">
 				{#if activeDemo === 'input'}
-					<h3 class="m-0 mb-3 text-sm font-semibold text-surface-z8">Traveler Information</h3>
+					<h3 class="text-surface-z8 m-0 mb-3 text-sm font-semibold">Traveler Information</h3>
 					<FormRenderer
 						bind:data={travelerData}
 						schema={travelerSchema}
 						layout={travelerLayout}
 						validateOn="blur"
 					/>
-
 				{:else if activeDemo === 'flights'}
-					<h3 class="m-0 mb-3 text-sm font-semibold text-surface-z8">Select Your Flight</h3>
+					<h3 class="text-surface-z8 m-0 mb-3 text-sm font-semibold">Select Your Flight</h3>
 					<FormRenderer
 						data={flightData}
 						layout={flightLayout}
-						onselect={(v) => selectedFlight = v}
+						onselect={(v) => (selectedFlight = v)}
 					/>
 					{#if selectedFlight}
-						<div class="mt-3 p-2 rounded bg-primary-z1 text-primary-z7 text-xs">
-							Selected: {selectedFlight.airline} {selectedFlight.flight} — {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(selectedFlight.price)}
+						<div class="bg-primary-z1 text-primary-z7 mt-3 rounded p-2 text-xs">
+							Selected: {selectedFlight.airline}
+							{selectedFlight.flight} — {new Intl.NumberFormat('en-US', {
+								style: 'currency',
+								currency: 'USD'
+							}).format(selectedFlight.price)}
 						</div>
 					{/if}
-
 				{:else if activeDemo === 'hotels'}
-					<h3 class="m-0 mb-3 text-sm font-semibold text-surface-z8">Choose Your Hotel</h3>
+					<h3 class="text-surface-z8 m-0 mb-3 text-sm font-semibold">Choose Your Hotel</h3>
 					<FormRenderer
 						data={hotelData}
 						layout={hotelLayout}
-						onselect={(v) => selectedHotel = v}
+						onselect={(v) => (selectedHotel = v)}
 					/>
 					{#if selectedHotel}
-						<div class="mt-3 p-2 rounded bg-primary-z1 text-primary-z7 text-xs">
-							Selected: {selectedHotel.name} — {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(selectedHotel.pricePerNight)}/night
+						<div class="bg-primary-z1 text-primary-z7 mt-3 rounded p-2 text-xs">
+							Selected: {selectedHotel.name} — {new Intl.NumberFormat('en-US', {
+								style: 'currency',
+								currency: 'USD'
+							}).format(selectedHotel.pricePerNight)}/night
 						</div>
 					{/if}
-
 				{:else if activeDemo === 'review'}
-					<h3 class="m-0 mb-3 text-sm font-semibold text-surface-z8">Review Your Itinerary</h3>
-					<FormRenderer
-						data={reviewData}
-						layout={reviewLayout}
-					/>
-
+					<h3 class="text-surface-z8 m-0 mb-3 text-sm font-semibold">Review Your Itinerary</h3>
+					<FormRenderer data={reviewData} layout={reviewLayout} />
 				{:else if activeDemo === 'mixed'}
-					<h3 class="m-0 mb-3 text-sm font-semibold text-surface-z8">Complete Your Booking</h3>
+					<h3 class="text-surface-z8 m-0 mb-3 text-sm font-semibold">Complete Your Booking</h3>
 					<FormRenderer
 						bind:data={bookingData}
 						schema={bookingSchema}
 						layout={bookingLayout}
 						validateOn="blur"
 					/>
-
 				{:else if activeDemo === 'validation'}
-					<h3 class="m-0 mb-3 text-sm font-semibold text-surface-z8">Validation Demo</h3>
-					<FormRenderer
-						builder={validationBuilder}
-						validateOn="blur"
-					/>
-					<div class="mt-3 flex gap-2 items-center">
+					<h3 class="text-surface-z8 m-0 mb-3 text-sm font-semibold">Validation Demo</h3>
+					<FormRenderer builder={validationBuilder} validateOn="blur" />
+					<div class="mt-3 flex items-center gap-2">
 						<button
-							class="px-3 py-1.5 rounded-md text-xs cursor-pointer bg-primary text-on-primary border-0 hover:opacity-90"
+							class="bg-primary text-on-primary cursor-pointer rounded-md border-0 px-3 py-1.5 text-xs hover:opacity-90"
 							onclick={runValidation}
 						>
 							Validate All
 						</button>
-						<span class="text-xs text-surface-z5">
-							{validationBuilder.isValid ? 'All fields valid' : `${validationBuilder.errors.length} error(s)`}
+						<span class="text-surface-z5 text-xs">
+							{validationBuilder.isValid
+								? 'All fields valid'
+								: `${validationBuilder.errors.length} error(s)`}
 						</span>
 					</div>
 					{#if validationBuilder.messages.length > 0}
@@ -465,7 +528,7 @@
 						</div>
 					{/if}
 				{:else if activeDemo === 'submit'}
-					<h3 class="m-0 mb-3 text-sm font-semibold text-surface-z8">Contact Form (Submit Demo)</h3>
+					<h3 class="text-surface-z8 m-0 mb-3 text-sm font-semibold">Contact Form (Submit Demo)</h3>
 					<FormRenderer
 						bind:data={submitData}
 						schema={submitSchema}
@@ -474,44 +537,48 @@
 						onsubmit={handleFormSubmit}
 					/>
 					{#if submitStatus}
-						<div class="mt-3 p-2 rounded bg-success-z1 text-success-z7 text-xs">
+						<div class="bg-success-z1 text-success-z7 mt-3 rounded p-2 text-xs">
 							{submitStatus}
 						</div>
 					{/if}
-
 				{:else if activeDemo === 'nested'}
-					<h3 class="m-0 mb-3 text-sm font-semibold text-surface-z8">Traveler Details (Nested Groups)</h3>
+					<h3 class="text-surface-z8 m-0 mb-3 text-sm font-semibold">
+						Traveler Details (Nested Groups)
+					</h3>
 					<FormRenderer
 						bind:data={nestedData}
 						schema={nestedSchema}
 						layout={nestedLayout}
 						validateOn="blur"
 					/>
-
 				{:else if activeDemo === 'dirty'}
-					<h3 class="m-0 mb-3 text-sm font-semibold text-surface-z8">Dirty Tracking</h3>
+					<h3 class="text-surface-z8 m-0 mb-3 text-sm font-semibold">Dirty Tracking</h3>
 					<FormRenderer builder={dirtyBuilder} />
 					<div class="mt-3 flex flex-col gap-2">
-						<div class="flex gap-2 items-center">
-							<span class="text-xs px-2 py-0.5 rounded-full {dirtyStatus ? 'bg-warning-z1 text-warning-z7' : 'bg-success-z1 text-success-z7'}">
+						<div class="flex items-center gap-2">
+							<span
+								class="rounded-full px-2 py-0.5 text-xs {dirtyStatus
+									? 'bg-warning-z1 text-warning-z7'
+									: 'bg-success-z1 text-success-z7'}"
+							>
 								{dirtyStatus ? 'Unsaved changes' : 'Clean'}
 							</span>
 						</div>
 						{#if dirtyFieldsList.length > 0}
-							<div class="text-xs text-surface-z5">
+							<div class="text-surface-z5 text-xs">
 								Modified: {dirtyFieldsList.join(', ')}
 							</div>
 						{/if}
 						<div class="flex gap-2">
 							<button
-								class="px-3 py-1.5 rounded-md text-xs cursor-pointer bg-primary text-on-primary border-0 hover:opacity-90 disabled:opacity-50"
+								class="bg-primary text-on-primary cursor-pointer rounded-md border-0 px-3 py-1.5 text-xs hover:opacity-90 disabled:opacity-50"
 								disabled={!dirtyStatus}
 								onclick={() => dirtyBuilder.snapshot()}
 							>
 								Snapshot (Save)
 							</button>
 							<button
-								class="px-3 py-1.5 rounded-md text-xs cursor-pointer bg-surface-z2 text-surface-z7 border border-surface-z3 hover:bg-surface-z3 disabled:opacity-50"
+								class="bg-surface-z2 text-surface-z7 border-surface-z3 hover:bg-surface-z3 cursor-pointer rounded-md border px-3 py-1.5 text-xs disabled:opacity-50"
 								disabled={!dirtyStatus}
 								onclick={() => dirtyBuilder.reset()}
 							>
@@ -525,19 +592,27 @@
 	{/snippet}
 
 	{#snippet controls()}
-		<div class="flex flex-col gap-2 text-xs text-surface-z6">
+		<div class="text-surface-z6 flex flex-col gap-2 text-xs">
 			<p class="m-0"><strong>Active:</strong> {activeDemo}</p>
 			{#if activeDemo === 'input'}
 				<InfoField label="Data" value={JSON.stringify(travelerData, null, 2)} />
 			{:else if activeDemo === 'flights'}
-				<InfoField label="Selected" value={selectedFlight ? `${selectedFlight.airline} ${selectedFlight.flight}` : 'None'} />
+				<InfoField
+					label="Selected"
+					value={selectedFlight ? `${selectedFlight.airline} ${selectedFlight.flight}` : 'None'}
+				/>
 			{:else if activeDemo === 'hotels'}
 				<InfoField label="Selected" value={selectedHotel ? selectedHotel.name : 'None'} />
 			{:else if activeDemo === 'mixed'}
 				<InfoField label="Data" value={JSON.stringify(bookingData, null, 2)} />
 			{:else if activeDemo === 'validation'}
 				<InfoField label="Valid" value={validationBuilder.isValid ? 'Yes' : 'No'} />
-				<InfoField label="Errors" value={validationBuilder.errors.length > 0 ? validationBuilder.errors.map(e => `${e.path}: ${e.text}`).join('\n') : 'None'} />
+				<InfoField
+					label="Errors"
+					value={validationBuilder.errors.length > 0
+						? validationBuilder.errors.map((e) => `${e.path}: ${e.text}`).join('\n')
+						: 'None'}
+				/>
 			{:else if activeDemo === 'submit'}
 				<InfoField label="Data" value={JSON.stringify(submitData, null, 2)} />
 				<InfoField label="Status" value={submitStatus ?? 'Not submitted'} />
@@ -545,7 +620,10 @@
 				<InfoField label="Data" value={JSON.stringify(nestedData, null, 2)} />
 			{:else if activeDemo === 'dirty'}
 				<InfoField label="isDirty" value={dirtyStatus ? 'Yes' : 'No'} />
-				<InfoField label="dirtyFields" value={dirtyFieldsList.length > 0 ? dirtyFieldsList.join(', ') : 'None'} />
+				<InfoField
+					label="dirtyFields"
+					value={dirtyFieldsList.length > 0 ? dirtyFieldsList.join(', ') : 'None'}
+				/>
 				<InfoField label="Data" value={JSON.stringify(dirtyBuilder.data, null, 2)} />
 			{/if}
 		</div>

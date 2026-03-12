@@ -24,9 +24,9 @@ describe('UploadTarget', () => {
 
 	it('sets data-disabled when disabled', () => {
 		const { container } = render(UploadTarget, { disabled: true })
-		expect(
-			container.querySelector('[data-upload-target]')!.hasAttribute('data-disabled')
-		).toBe(true)
+		expect(container.querySelector('[data-upload-target]')!.hasAttribute('data-disabled')).toBe(
+			true
+		)
 	})
 
 	it('has role="button" and tabindex', () => {
@@ -76,8 +76,8 @@ describe('UploadTarget', () => {
 
 	it('does not set data-disabled when enabled', () => {
 		const { container } = render(UploadTarget)
-		expect(
-			container.querySelector('[data-upload-target]')!.hasAttribute('data-disabled')
-		).toBe(false)
+		expect(container.querySelector('[data-upload-target]')!.hasAttribute('data-disabled')).toBe(
+			false
+		)
 	})
 })

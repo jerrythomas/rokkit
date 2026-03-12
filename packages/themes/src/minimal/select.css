@@ -17,7 +17,7 @@
 }
 
 [data-style='minimal'] [data-select-trigger]:focus-visible {
-  @apply ring-surface-z5 outline-none ring-1;
+  @apply ring-surface-z5 ring-1 outline-none;
 }
 
 [data-style='minimal'] [data-select][data-open='true'] [data-select-trigger] {
@@ -88,7 +88,9 @@
 }
 
 /* Selected state — full highlight when dropdown has focus */
-[data-style='minimal'] [data-select-dropdown]:focus-within [data-select-option][data-selected='true'] {
+[data-style='minimal']
+  [data-select-dropdown]:focus-within
+  [data-select-option][data-selected='true'] {
   @apply text-primary-z7 border-primary-z4 border-l-2;
 }
 

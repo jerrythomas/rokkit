@@ -1,14 +1,14 @@
 /* Tilt — base structural styles */
 
 [data-tilt] {
-	perspective: var(--tilt-perspective, 600px);
+  perspective: var(--tilt-perspective, 600px);
 }
 
 [data-tilt] > * {
-	transform: rotateX(var(--tilt-rotate-x, 0deg)) rotateY(var(--tilt-rotate-y, 0deg));
-	transition: transform 0.1s ease-out;
+  transform: rotateX(var(--tilt-rotate-x, 0deg)) rotateY(var(--tilt-rotate-y, 0deg));
+  transition: transform 0.1s ease-out;
 }
 
 [data-tilt][data-tilt-brightness] > * {
-	filter: brightness(var(--tilt-brightness, 1));
+  filter: brightness(var(--tilt-brightness, 1));
 }

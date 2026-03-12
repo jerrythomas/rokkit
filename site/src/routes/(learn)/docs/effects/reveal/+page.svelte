@@ -10,8 +10,8 @@
 <article data-article-root>
 	<p>
 		Reveal provides scroll-triggered entry animations. Elements fade and slide into view when they
-		enter the viewport. Supports configurable direction, distance, duration, delay, and stagger
-		for animating multiple children sequentially.
+		enter the viewport. Supports configurable direction, distance, duration, delay, and stagger for
+		animating multiple children sequentially.
 	</p>
 
 	<h2>Basic Reveal</h2>
@@ -36,15 +36,50 @@
 				<tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr>
 			</thead>
 			<tbody>
-				<tr><td><code>direction</code></td><td><code>'up' | 'down' | 'left' | 'right' | 'none'</code></td><td><code>'up'</code></td><td>Slide direction</td></tr>
-				<tr><td><code>distance</code></td><td><code>string</code></td><td><code>'1.5rem'</code></td><td>Slide distance (any CSS length)</td></tr>
-				<tr><td><code>duration</code></td><td><code>number</code></td><td><code>600</code></td><td>Animation duration in ms</td></tr>
-				<tr><td><code>delay</code></td><td><code>number</code></td><td><code>0</code></td><td>Delay before animation starts in ms</td></tr>
-				<tr><td><code>stagger</code></td><td><code>number</code></td><td><code>0</code></td><td>Delay increment per child in ms</td></tr>
-				<tr><td><code>once</code></td><td><code>boolean</code></td><td><code>true</code></td><td>Only animate once on first enter</td></tr>
-				<tr><td><code>threshold</code></td><td><code>number</code></td><td><code>0.1</code></td><td>Intersection ratio (0–1) to trigger</td></tr>
-				<tr><td><code>easing</code></td><td><code>string</code></td><td><code>'cubic-bezier(0.4, 0, 0.2, 1)'</code></td><td>CSS easing function</td></tr>
-				<tr><td><code>class</code></td><td><code>string</code></td><td>—</td><td>CSS class forwarded to the wrapper element</td></tr>
+				<tr
+					><td><code>direction</code></td><td
+						><code>'up' | 'down' | 'left' | 'right' | 'none'</code></td
+					><td><code>'up'</code></td><td>Slide direction</td></tr
+				>
+				<tr
+					><td><code>distance</code></td><td><code>string</code></td><td><code>'1.5rem'</code></td
+					><td>Slide distance (any CSS length)</td></tr
+				>
+				<tr
+					><td><code>duration</code></td><td><code>number</code></td><td><code>600</code></td><td
+						>Animation duration in ms</td
+					></tr
+				>
+				<tr
+					><td><code>delay</code></td><td><code>number</code></td><td><code>0</code></td><td
+						>Delay before animation starts in ms</td
+					></tr
+				>
+				<tr
+					><td><code>stagger</code></td><td><code>number</code></td><td><code>0</code></td><td
+						>Delay increment per child in ms</td
+					></tr
+				>
+				<tr
+					><td><code>once</code></td><td><code>boolean</code></td><td><code>true</code></td><td
+						>Only animate once on first enter</td
+					></tr
+				>
+				<tr
+					><td><code>threshold</code></td><td><code>number</code></td><td><code>0.1</code></td><td
+						>Intersection ratio (0–1) to trigger</td
+					></tr
+				>
+				<tr
+					><td><code>easing</code></td><td><code>string</code></td><td
+						><code>'cubic-bezier(0.4, 0, 0.2, 1)'</code></td
+					><td>CSS easing function</td></tr
+				>
+				<tr
+					><td><code>class</code></td><td><code>string</code></td><td>—</td><td
+						>CSS class forwarded to the wrapper element</td
+					></tr
+				>
 			</tbody>
 		</table>
 	</div>

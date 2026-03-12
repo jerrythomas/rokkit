@@ -46,18 +46,18 @@ describe('DisplayCardGrid', () => {
 		const { container } = render(DisplayCardGrid, {
 			props: { data: sampleData, fields: sampleFields, select: 'one' }
 		})
-		expect(
-			container.querySelector('[data-display-cards]').hasAttribute('data-selectable')
-		).toBe(true)
+		expect(container.querySelector('[data-display-cards]').hasAttribute('data-selectable')).toBe(
+			true
+		)
 	})
 
 	it('should not set data-selectable when select is not provided', () => {
 		const { container } = render(DisplayCardGrid, {
 			props: { data: sampleData, fields: sampleFields }
 		})
-		expect(
-			container.querySelector('[data-display-cards]').hasAttribute('data-selectable')
-		).toBe(false)
+		expect(container.querySelector('[data-display-cards]').hasAttribute('data-selectable')).toBe(
+			false
+		)
 	})
 
 	it('should handle single selection', async () => {

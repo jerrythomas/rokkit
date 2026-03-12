@@ -16,12 +16,12 @@ This package is for testing only. Add it to `devDependencies`.
 
 `@rokkit/helpers` provides four subpath imports:
 
-| Import | Contents |
-|--------|----------|
-| `@rokkit/helpers/matchers` | Custom Vitest matchers for dataset, actions, events, and arrays |
-| `@rokkit/helpers/mocks` | DOM mocks auto-installed into the global scope for jsdom |
-| `@rokkit/helpers/simulators` | Touch and mouse event simulators |
-| `@rokkit/helpers/components` | Minimal Svelte test components |
+| Import                       | Contents                                                        |
+| ---------------------------- | --------------------------------------------------------------- |
+| `@rokkit/helpers/matchers`   | Custom Vitest matchers for dataset, actions, events, and arrays |
+| `@rokkit/helpers/mocks`      | DOM mocks auto-installed into the global scope for jsdom        |
+| `@rokkit/helpers/simulators` | Touch and mouse event simulators                                |
+| `@rokkit/helpers/components` | Minimal Svelte test components                                  |
 
 ## Setup
 
@@ -45,7 +45,7 @@ export default defineConfig({
 // test-setup.js
 import { expect } from 'vitest'
 import { matchers } from '@rokkit/helpers/matchers'
-import '@rokkit/helpers/mocks'  // installs ResizeObserver, IntersectionObserver, etc.
+import '@rokkit/helpers/mocks' // installs ResizeObserver, IntersectionObserver, etc.
 
 expect.extend(matchers)
 ```
@@ -113,10 +113,7 @@ test('swipe left triggers dismiss', async () => {
 ```
 
 ```js
-import {
-  simulateTouchEvent,
-  simulateMouseEvent
-} from '@rokkit/helpers/simulators'
+import { simulateTouchEvent, simulateMouseEvent } from '@rokkit/helpers/simulators'
 
 // Low-level control
 simulateTouchEvent(el, 0, 0, 'touchstart')
@@ -128,31 +125,31 @@ simulateTouchEvent(el, 80, 0, 'touchend')
 
 ### `@rokkit/helpers/matchers`
 
-| Matcher | Description |
-|---------|-------------|
-| `toHaveDataset(key, value)` | Assert a single `data-*` attribute |
-| `toHaveValidData(object)` | Assert all dataset attributes match an object |
-| `toHaveAction(actionName)` | Assert a Svelte action registered its listeners |
-| `toDispatchEvent(eventName)` | Assert a custom DOM event was dispatched |
-| `toBeArrayOf(type)` | Assert every element in an array is of a given type |
+| Matcher                      | Description                                         |
+| ---------------------------- | --------------------------------------------------- |
+| `toHaveDataset(key, value)`  | Assert a single `data-*` attribute                  |
+| `toHaveValidData(object)`    | Assert all dataset attributes match an object       |
+| `toHaveAction(actionName)`   | Assert a Svelte action registered its listeners     |
+| `toDispatchEvent(eventName)` | Assert a custom DOM event was dispatched            |
+| `toBeArrayOf(type)`          | Assert every element in an array is of a given type |
 
 ### `@rokkit/helpers/mocks`
 
-| Export | Description |
-|--------|-------------|
-| `ResizeObserver` | ResizeObserver mock (auto-installed globally on import) |
-| `IntersectionObserver` | IntersectionObserver mock (auto-installed globally) |
-| `setMatchMedia(options)` | Configure the matchMedia mock |
-| `elementsWithSize(count, size)` | Create element stubs with a fixed `offsetHeight` |
+| Export                          | Description                                             |
+| ------------------------------- | ------------------------------------------------------- |
+| `ResizeObserver`                | ResizeObserver mock (auto-installed globally on import) |
+| `IntersectionObserver`          | IntersectionObserver mock (auto-installed globally)     |
+| `setMatchMedia(options)`        | Configure the matchMedia mock                           |
+| `elementsWithSize(count, size)` | Create element stubs with a fixed `offsetHeight`        |
 
 ### `@rokkit/helpers/simulators`
 
-| Export | Description |
-|--------|-------------|
-| `simulateTouchEvent(el, x, y, type)` | Fire a single touch event |
-| `simulateMouseEvent(el, x, y, type)` | Fire a single mouse event |
+| Export                                    | Description                                     |
+| ----------------------------------------- | ----------------------------------------------- |
+| `simulateTouchEvent(el, x, y, type)`      | Fire a single touch event                       |
+| `simulateMouseEvent(el, x, y, type)`      | Fire a single mouse event                       |
 | `simulateTouchSwipe(el, distance, delay)` | Fire touchstart → touchmove → touchend sequence |
-| `simulateMouseSwipe(el, distance, delay)` | Fire mousedown → mousemove → mouseup sequence |
+| `simulateMouseSwipe(el, distance, delay)` | Fire mousedown → mousemove → mouseup sequence   |
 
 ## Peer Dependencies
 

@@ -51,18 +51,18 @@ semantic z-indexed references: `bg-surface-z1` through `bg-surface-z10`.
 
 The z-index maps to different concrete shades depending on the active mode:
 
-| Shortcut | Light Mode | Dark Mode | Semantic meaning |
-|----------|-----------|-----------|-----------------|
-| `z1` | shade-50 | shade-950 | Background, lowest surface |
-| `z2` | shade-100 | shade-900 | Card, panel background |
-| `z3` | shade-200 | shade-800 | Subtle elevation |
-| `z4` | shade-300 | shade-700 | Input backgrounds |
-| `z5` | shade-500 | shade-600 | Mid-range (borders) |
-| `z6` | shade-600 | shade-500 | Inverse mid-range |
-| `z7` | shade-700 | shade-300 | Elevated text |
-| `z8` | shade-800 | shade-200 | Secondary text |
-| `z9` | shade-900 | shade-100 | Primary text |
-| `z10` | shade-950 | shade-50 | Maximum contrast |
+| Shortcut | Light Mode | Dark Mode | Semantic meaning           |
+| -------- | ---------- | --------- | -------------------------- |
+| `z1`     | shade-50   | shade-950 | Background, lowest surface |
+| `z2`     | shade-100  | shade-900 | Card, panel background     |
+| `z3`     | shade-200  | shade-800 | Subtle elevation           |
+| `z4`     | shade-300  | shade-700 | Input backgrounds          |
+| `z5`     | shade-500  | shade-600 | Mid-range (borders)        |
+| `z6`     | shade-600  | shade-500 | Inverse mid-range          |
+| `z7`     | shade-700  | shade-300 | Elevated text              |
+| `z8`     | shade-800  | shade-200 | Secondary text             |
+| `z9`     | shade-900  | shade-100 | Primary text               |
+| `z10`    | shade-950  | shade-50  | Maximum contrast           |
 
 This mapping means a theme file written once is automatically correct in both light and dark
 mode. There is no need for `@media (prefers-color-scheme)` blocks or `.dark` selectors in
@@ -83,16 +83,16 @@ theme CSS — swapping `data-mode` swaps the underlying z-index resolution.
 The skin layer maps eight semantic roles to color scales. Theme CSS uses these roles via
 CSS custom properties — never direct Tailwind color names.
 
-| Role | Purpose | Example mapping |
-|------|---------|----------------|
-| `primary` | Brand primary, interactive elements | orange, teal, blue |
-| `secondary` | Brand secondary, accents | pink, green, indigo |
-| `surface` / `neutral` | Backgrounds, cards, surfaces | slate, zinc, stone |
-| `accent` | Highlight, hover emphasis | sky, cyan, pink |
-| `success` | Positive state, confirmation | green, lime |
-| `warning` | Caution state | amber, yellow |
-| `error` / `danger` | Error state, destructive actions | red, rose |
-| `info` | Informational messages | blue, sky |
+| Role                  | Purpose                             | Example mapping     |
+| --------------------- | ----------------------------------- | ------------------- |
+| `primary`             | Brand primary, interactive elements | orange, teal, blue  |
+| `secondary`           | Brand secondary, accents            | pink, green, indigo |
+| `surface` / `neutral` | Backgrounds, cards, surfaces        | slate, zinc, stone  |
+| `accent`              | Highlight, hover emphasis           | sky, cyan, pink     |
+| `success`             | Positive state, confirmation        | green, lime         |
+| `warning`             | Caution state                       | amber, yellow       |
+| `error` / `danger`    | Error state, destructive actions    | red, rose           |
+| `info`                | Informational messages              | blue, sky           |
 
 Each role generates a full z-indexed shortcut set (`bg-{role}-z1` through `bg-{role}-z10`,
 and equivalent `text-` and `border-` variants).
@@ -139,11 +139,11 @@ in `@rokkit/core/src/skins.js` and exported as `predefinedSkins`.
 
 ```javascript
 export const predefinedSkins = {
-  'skin-vibrant-orange': null,          // default: orange/pink/slate
-  'skin-sea-green':    { primary: 'teal',   secondary: 'green',  surface: 'zinc',  accent: 'sky'  },
-  'skin-deep-blue':    { primary: 'blue',   secondary: 'indigo', surface: 'slate', accent: 'cyan' },
+  'skin-vibrant-orange': null, // default: orange/pink/slate
+  'skin-sea-green': { primary: 'teal', secondary: 'green', surface: 'zinc', accent: 'sky' },
+  'skin-deep-blue': { primary: 'blue', secondary: 'indigo', surface: 'slate', accent: 'cyan' },
   'skin-royal-purple': { primary: 'violet', secondary: 'purple', surface: 'slate', accent: 'pink' },
-  'skin-rose-gold':    { primary: 'rose',   secondary: 'amber',  surface: 'stone', accent: 'orange' },
+  'skin-rose-gold': { primary: 'rose', secondary: 'amber', surface: 'stone', accent: 'orange' }
 }
 
 export const defaultSkin = 'skin-vibrant-orange'
@@ -163,12 +163,13 @@ import { predefinedSkins } from '@rokkit/core'
 const theme = new Theme()
 
 shortcuts: [
-  ...Object.entries(predefinedSkins).map(([name, mapping]) =>
-    [name, theme.getPalette(mapping ?? undefined)]
-  ),
+  ...Object.entries(predefinedSkins).map(([name, mapping]) => [
+    name,
+    theme.getPalette(mapping ?? undefined)
+  ]),
   ...theme.getShortcuts('surface'),
   ...theme.getShortcuts('primary'),
-  ...theme.getShortcuts('secondary'),
+  ...theme.getShortcuts('secondary')
   // ... other roles
 ]
 ```
@@ -184,11 +185,21 @@ shortcut rules for that role.
 ```css
 @layer base {
   :root:not([data-palette]),
-  [data-palette="skin-vibrant-orange"] { @apply skin-vibrant-orange; }
-  [data-palette="skin-sea-green"]      { @apply skin-sea-green; }
-  [data-palette="skin-deep-blue"]      { @apply skin-deep-blue; }
-  [data-palette="skin-royal-purple"]   { @apply skin-royal-purple; }
-  [data-palette="skin-rose-gold"]      { @apply skin-rose-gold; }
+  [data-palette='skin-vibrant-orange'] {
+    @apply skin-vibrant-orange;
+  }
+  [data-palette='skin-sea-green'] {
+    @apply skin-sea-green;
+  }
+  [data-palette='skin-deep-blue'] {
+    @apply skin-deep-blue;
+  }
+  [data-palette='skin-royal-purple'] {
+    @apply skin-royal-purple;
+  }
+  [data-palette='skin-rose-gold'] {
+    @apply skin-rose-gold;
+  }
 }
 ```
 
@@ -209,16 +220,21 @@ export function setPalette(name: string) {
 ### Adding a Custom Skin
 
 1. Register a shortcut in the application's `uno.config.ts`:
+
 ```typescript
-['skin-my-brand', theme.getPalette({ primary: 'emerald', secondary: 'cyan', surface: 'gray' })]
+;['skin-my-brand', theme.getPalette({ primary: 'emerald', secondary: 'cyan', surface: 'gray' })]
 ```
 
 2. Add the CSS rule in the application's stylesheet (not in `palette.css`):
+
 ```css
-[data-palette="skin-my-brand"] { @apply skin-my-brand; }
+[data-palette='skin-my-brand'] {
+  @apply skin-my-brand;
+}
 ```
 
 3. Activate it:
+
 ```typescript
 setPalette('skin-my-brand')
 ```
@@ -233,10 +249,10 @@ interface between the skin layer and theme CSS:
 ```css
 /* What @apply skin-sea-green expands to (simplified) */
 :root {
-  --color-primary-50:  /* teal-50 */;
+  --color-primary-50: /* teal-50 */;
   --color-primary-100: /* teal-100 */;
   /* ... through 950 */
-  --color-surface-50:  /* zinc-50 */;
+  --color-surface-50: /* zinc-50 */;
   /* ... through 950 */
   /* ... all roles */
 }
@@ -262,10 +278,7 @@ Theme CSS files target those attributes and apply visual styles.
 
 ```svelte
 <!-- Component template (no CSS, no style block) -->
-<div
-  data-list
-  data-density={density}
->
+<div data-list data-density={density}>
   {#each flatView as node}
     <div
       data-list-item
@@ -309,7 +322,7 @@ Theme CSS files target those attributes and apply visual styles.
   pointer-events: none;
 }
 
-[data-list][data-density="compact"] [data-list-item] {
+[data-list][data-density='compact'] [data-list-item] {
   padding: 0.25rem 0.5rem;
 }
 ```
@@ -329,10 +342,10 @@ The `themable` action (from `@rokkit/actions`) applies `data-style`, `data-mode`
 ```javascript
 // vibe store — @rokkit/states/vibe.svelte.js
 export const vibe = $state({
-  style: 'rokkit',     // 'rokkit' | 'material' | 'minimal'
+  style: 'rokkit', // 'rokkit' | 'material' | 'minimal'
   palette: 'skin-vibrant-orange',
-  mode: 'light',       // 'light' | 'dark'
-  direction: 'ltr'     // auto-detected from document.documentElement.lang
+  mode: 'light', // 'light' | 'dark'
+  direction: 'ltr' // auto-detected from document.documentElement.lang
 })
 ```
 

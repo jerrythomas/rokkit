@@ -61,8 +61,12 @@ describe('ValidationReport', () => {
 		]
 		const { container } = render(ValidationReport, { props: { items } })
 
-		const errorHeader = container.querySelector('[data-severity="error"] [data-validation-group-header]')
-		const warningHeader = container.querySelector('[data-severity="warning"] [data-validation-group-header]')
+		const errorHeader = container.querySelector(
+			'[data-severity="error"] [data-validation-group-header]'
+		)
+		const warningHeader = container.querySelector(
+			'[data-severity="warning"] [data-validation-group-header]'
+		)
 
 		expect(errorHeader.textContent).toContain('errors')
 		expect(warningHeader.textContent).toContain('warning')

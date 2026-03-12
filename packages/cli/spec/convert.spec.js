@@ -124,7 +124,6 @@ describe('convert module', () => {
 				// Should contain valid icons
 				const bundleContent = readJSON(outputFile)
 				expect(Object.keys(bundleContent.icons)).toContain('valid-icon')
-				 
 			} catch (_) {
 				// 	// This test might fail due to importDirectory errors
 				// 	console.warn('Bundle test error:', error.message)

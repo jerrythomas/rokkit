@@ -1,5 +1,11 @@
 <script>
-	let { size = 10, thickness = 0.5, fill = 'currentColor', stroke = 'currentColor', data = [] } = $props()
+	let {
+		size = 10,
+		thickness = 0.5,
+		fill = 'currentColor',
+		stroke = 'currentColor',
+		data = []
+	} = $props()
 
 	let polygons = $derived(data.map((points) => points.map((point) => point * size).join(', ')))
 </script>

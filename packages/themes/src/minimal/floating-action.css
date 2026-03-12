@@ -9,20 +9,20 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-fab-trigger] {
-	@apply bg-surface-z1 text-surface-z8 border-surface-z4 border;
+  @apply bg-surface-z1 text-surface-z8 border-surface-z4 border;
 }
 
 [data-style='minimal'] [data-fab-trigger]:hover:not(:disabled) {
-	@apply bg-surface-z2 text-surface-z10 border-surface-z5;
+  @apply bg-surface-z2 text-surface-z10 border-surface-z5;
 }
 
 [data-style='minimal'] [data-fab-trigger]:focus-visible {
-	@apply outline-none ring-1 ring-surface-z5;
+  @apply ring-surface-z5 ring-1 outline-none;
 }
 
 [data-style='minimal'] [data-fab][data-open='true'] [data-fab-trigger] {
-	@apply bg-surface-z3 border-surface-z5;
-	transform: rotate(45deg);
+  @apply bg-surface-z3 border-surface-z5;
+  transform: rotate(45deg);
 }
 
 /* =============================================================================
@@ -30,24 +30,24 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-fab-item] {
-	@apply bg-surface-z1 text-surface-z7 border-surface-z4 border;
+  @apply bg-surface-z1 text-surface-z7 border-surface-z4 border;
 }
 
 [data-style='minimal'] [data-fab-item]:hover:not(:disabled) {
-	@apply bg-surface-z2 text-surface-z9 border-surface-z5;
+  @apply bg-surface-z2 text-surface-z9 border-surface-z5;
 }
 
 [data-style='minimal'] [data-fab-item]:focus-visible {
-	@apply outline-none ring-1 ring-surface-z5;
+  @apply ring-surface-z5 ring-1 outline-none;
 }
 
 /* Item icon */
 [data-style='minimal'] [data-fab-item] [data-fab-item-icon] {
-	@apply text-surface-z6;
+  @apply text-surface-z6;
 }
 
 [data-style='minimal'] [data-fab-item]:hover:not(:disabled) [data-fab-item-icon] {
-	@apply text-surface-z8;
+  @apply text-surface-z8;
 }
 
 /* =============================================================================
@@ -55,5 +55,5 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-fab-backdrop] {
-	background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.2);
 }

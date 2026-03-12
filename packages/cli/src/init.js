@@ -71,10 +71,7 @@ export default defineConfig({
  * @returns {string[]}
  */
 export function generateAppCssImports(themes) {
-	const lines = [
-		"@import '@unocss/reset/tailwind.css';",
-		"@import '@rokkit/themes/dist/base';"
-	]
+	const lines = ["@import '@unocss/reset/tailwind.css';", "@import '@rokkit/themes/dist/base';"]
 	for (const theme of themes) {
 		lines.push(`@import '@rokkit/themes/dist/${theme}';`)
 	}
@@ -91,10 +88,7 @@ export function generateAppCssImports(themes) {
 export function generateInitScript(switcher, storageKey = 'rokkit-theme') {
 	if (switcher === 'system') return null
 
-	const setStyle =
-		switcher === 'full'
-			? `b.dataset.style = t.style || 'rokkit'\n          `
-			: ''
+	const setStyle = switcher === 'full' ? `b.dataset.style = t.style || 'rokkit'\n          ` : ''
 
 	return `    <script>
       (function () {
@@ -224,13 +218,13 @@ export async function init() {
 		const existing = readFileSync(appCssPath, 'utf-8')
 		const missing = cssImports.filter((line) => !existing.includes(line))
 		if (missing.length > 0) {
-			writeFileSync(appCssPath, `${missing.join('\n')  }\n${  existing}`)
+			writeFileSync(appCssPath, `${missing.join('\n')}\n${existing}`)
 			console.info(`  Patched app.css — added ${missing.length} imports`)
 		} else {
 			console.info('  app.css already has theme imports')
 		}
 	} else {
-		writeFileSync(appCssPath, `${cssImports.join('\n')  }\n`)
+		writeFileSync(appCssPath, `${cssImports.join('\n')}\n`)
 		console.info('  Created src/app.css')
 	}
 

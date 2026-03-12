@@ -26,7 +26,11 @@
 	const layout = {
 		type: 'vertical',
 		elements: [
-			{ scope: '#/orientation', label: 'Orientation', props: { options: ['horizontal', 'vertical'] } },
+			{
+				scope: '#/orientation',
+				label: 'Orientation',
+				props: { options: ['horizontal', 'vertical'] }
+			},
 			{ scope: '#/position', label: 'Position', props: { options: ['before', 'after'] } },
 			{ scope: '#/align', label: 'Align', props: { options: ['start', 'center', 'end'] } },
 			{ scope: '#/disabled', label: 'Disabled' },
@@ -35,9 +39,24 @@
 	}
 
 	const tabs = [
-		{ label: 'Overview', value: 'overview', icon: 'i-lucide:home', content: 'Welcome to the overview panel. This is the main dashboard view.' },
-		{ label: 'Settings', value: 'settings', icon: 'i-lucide:settings', content: 'Configure your preferences and application settings here.' },
-		{ label: 'Activity', value: 'activity', icon: 'i-lucide:activity', content: 'View recent activity and event logs.' }
+		{
+			label: 'Overview',
+			value: 'overview',
+			icon: 'i-lucide:home',
+			content: 'Welcome to the overview panel. This is the main dashboard view.'
+		},
+		{
+			label: 'Settings',
+			value: 'settings',
+			icon: 'i-lucide:settings',
+			content: 'Configure your preferences and application settings here.'
+		},
+		{
+			label: 'Activity',
+			value: 'activity',
+			icon: 'i-lucide:activity',
+			content: 'View recent activity and event logs.'
+		}
 	]
 
 	const simpleTabs = [
@@ -49,9 +68,9 @@
 
 <PlaySection>
 	{#snippet preview()}
-		<div class="flex flex-col gap-8 w-full">
+		<div class="flex w-full flex-col gap-8">
 			<div>
-				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">With icons</h4>
+				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">With icons</h4>
 				<Tabs
 					options={tabs}
 					bind:value
@@ -62,7 +81,7 @@
 				/>
 			</div>
 			<div>
-				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Simple</h4>
+				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">Simple</h4>
 				<Tabs
 					options={simpleTabs}
 					value="tab1"

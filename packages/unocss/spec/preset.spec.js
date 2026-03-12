@@ -36,9 +36,7 @@ describe('presetRokkit', () => {
 				vibrant: { primary: 'blue', secondary: 'purple' }
 			}
 		})
-		const skinEntry = preset.shortcuts.find(
-			(s) => Array.isArray(s) && s[0] === 'skin-vibrant'
-		)
+		const skinEntry = preset.shortcuts.find((s) => Array.isArray(s) && s[0] === 'skin-vibrant')
 		expect(skinEntry).toBeDefined()
 		expect(typeof skinEntry[1]).toBe('object')
 	})

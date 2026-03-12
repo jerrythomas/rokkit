@@ -13,10 +13,18 @@
 				{ name: 'Lazy Tree', description: 'Async-loaded tree component', slug: 'lazy-tree' },
 				{ name: 'List', description: 'Data-driven list with field mapping', slug: 'list' },
 				{ name: 'Menu', description: 'Popup menu with keyboard navigation', slug: 'menu' },
-				{ name: 'Multi Select', description: 'Multi-value dropdown selection', slug: 'multi-select' },
+				{
+					name: 'Multi Select',
+					description: 'Multi-value dropdown selection',
+					slug: 'multi-select'
+				},
 				{ name: 'Select', description: 'Single-value dropdown selection', slug: 'select' },
 				{ name: 'Tabs', description: 'Tabbed content panels', slug: 'tabs' },
-				{ name: 'Toggle', description: 'Toggle group for mutually exclusive options', slug: 'toggle' },
+				{
+					name: 'Toggle',
+					description: 'Toggle group for mutually exclusive options',
+					slug: 'toggle'
+				},
 				{ name: 'Tree', description: 'Collapsible hierarchical tree', slug: 'tree' }
 			]
 		},
@@ -30,7 +38,11 @@
 				{ name: 'Rating', description: 'Star rating input', slug: 'rating' },
 				{ name: 'Stepper', description: 'Step-by-step progress input', slug: 'stepper' },
 				{ name: 'Switch', description: 'On/off toggle switch', slug: 'switch' },
-				{ name: 'Upload Progress', description: 'File upload progress indicator', slug: 'upload-progress' },
+				{
+					name: 'Upload Progress',
+					description: 'File upload progress indicator',
+					slug: 'upload-progress'
+				},
 				{ name: 'Upload Target', description: 'Drag-and-drop upload zone', slug: 'upload-target' }
 			]
 		},
@@ -39,7 +51,11 @@
 			icon: 'i-solar:gallery-wide-bold-duotone',
 			basePath: '/playground/components/',
 			components: [
-				{ name: 'Card', description: 'Content container with optional header/footer', slug: 'card' },
+				{
+					name: 'Card',
+					description: 'Content container with optional header/footer',
+					slug: 'card'
+				},
 				{ name: 'Code', description: 'Syntax-highlighted code block', slug: 'code' },
 				{ name: 'Forms', description: 'Schema-driven form renderer', slug: 'forms' },
 				{ name: 'Pill', description: 'Compact tag or badge element', slug: 'pill' },
@@ -53,9 +69,21 @@
 			basePath: '/playground/components/',
 			components: [
 				{ name: 'Carousel', description: 'Horizontally scrolling item carousel', slug: 'carousel' },
-				{ name: 'Floating Action', description: 'Floating action button overlay', slug: 'floating-action' },
-				{ name: 'Floating Navigation', description: 'Floating navigation overlay', slug: 'floating-navigation' },
-				{ name: 'Palette Manager', description: 'Color palette selection UI', slug: 'palette-manager' },
+				{
+					name: 'Floating Action',
+					description: 'Floating action button overlay',
+					slug: 'floating-action'
+				},
+				{
+					name: 'Floating Navigation',
+					description: 'Floating navigation overlay',
+					slug: 'floating-navigation'
+				},
+				{
+					name: 'Palette Manager',
+					description: 'Color palette selection UI',
+					slug: 'palette-manager'
+				},
 				{ name: 'Progress', description: 'Progress bar indicator', slug: 'progress' }
 			]
 		},
@@ -74,7 +102,11 @@
 			icon: 'i-solar:stars-bold-duotone',
 			basePath: '/playground/',
 			components: [
-				{ name: 'Icons', description: 'Browse all icon collections and auth icon variants', slug: 'icons' }
+				{
+					name: 'Icons',
+					description: 'Browse all icon collections and auth icon variants',
+					slug: 'icons'
+				}
 			]
 		}
 	]
@@ -82,22 +114,29 @@
 
 <div class="p-8">
 	<div class="mb-8">
-		<h2 class="text-2xl font-semibold text-surface-z8 mb-1">Playground</h2>
+		<h2 class="text-surface-z8 mb-1 text-2xl font-semibold">Playground</h2>
 		<p class="text-surface-z5">Select a component or effect to open its interactive playground.</p>
 	</div>
 
 	{#each GROUPS as group}
 		<section class="mb-10">
-			<div class="flex items-center gap-2 mb-4">
-				<span class="{group.icon} text-xl text-secondary-z7" aria-hidden="true"></span>
-				<h3 class="text-base font-semibold text-surface-z7 m-0">{group.title}</h3>
+			<div class="mb-4 flex items-center gap-2">
+				<span class="{group.icon} text-secondary-z7 text-xl" aria-hidden="true"></span>
+				<h3 class="text-surface-z7 m-0 text-base font-semibold">{group.title}</h3>
 			</div>
-			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+			<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 				{#each group.components as component (component.slug)}
-					<Card class="cursor-pointer hover:border-primary-z5 transition-colors" onclick={() => goto(`${group.basePath}${component.slug}`)}>
-						<h4 class="text-sm font-semibold text-surface-z8 mb-1">{component.name}</h4>
-						<p class="text-xs text-surface-z5 mb-3 leading-relaxed">{component.description}</p>
-						<Button variant="ghost" size="sm" onclick={() => goto(`${group.basePath}${component.slug}`)}>
+					<Card
+						class="hover:border-primary-z5 cursor-pointer transition-colors"
+						onclick={() => goto(`${group.basePath}${component.slug}`)}
+					>
+						<h4 class="text-surface-z8 mb-1 text-sm font-semibold">{component.name}</h4>
+						<p class="text-surface-z5 mb-3 text-xs leading-relaxed">{component.description}</p>
+						<Button
+							variant="ghost"
+							size="sm"
+							onclick={() => goto(`${group.basePath}${component.slug}`)}
+						>
 							Open
 						</Button>
 					</Card>

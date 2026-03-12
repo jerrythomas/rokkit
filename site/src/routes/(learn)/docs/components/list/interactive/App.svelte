@@ -30,5 +30,8 @@
 </List>
 
 <p class="text-surface-z5 mt-3 text-sm">
-	Checked: {items.filter((i) => i.checked).map((i) => i.label).join(', ') || 'none'}
+	Checked: {items
+		.filter((i) => i.checked)
+		.map((i) => i.label)
+		.join(', ') || 'none'}
 </p>

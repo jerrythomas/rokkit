@@ -212,12 +212,12 @@ Feature: Internationalization
 
 ## Status
 
-| Feature | Status |
-|---------|--------|
-| Keyboard navigation | ✅ Implemented |
-| Keyboard selection | ✅ Implemented |
+| Feature                       | Status         |
+| ----------------------------- | -------------- |
+| Keyboard navigation           | ✅ Implemented |
+| Keyboard selection            | ✅ Implemented |
 | Focus management and trapping | ✅ Implemented |
-| ARIA attributes | ✅ Implemented |
-| Screen reader support | ✅ Implemented |
-| Tooltips | 🔲 Planned |
-| Internationalization (i18n) | 🔲 Planned |
+| ARIA attributes               | ✅ Implemented |
+| Screen reader support         | ✅ Implemented |
+| Tooltips                      | 🔲 Planned     |
+| Internationalization (i18n)   | 🔲 Planned     |

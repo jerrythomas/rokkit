@@ -1,5 +1,5 @@
 <script>
-  import { ProgressBar } from '@rokkit/ui'
+	import { ProgressBar } from '@rokkit/ui'
 </script>
 
 <!-- Determinate -->

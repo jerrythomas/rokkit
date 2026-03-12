@@ -9,35 +9,107 @@
 	const palettes = [
 		{
 			name: 'Default',
-			mapping: { primary: 'orange', secondary: 'pink', accent: 'sky', surface: 'slate', success: 'green', warning: 'amber', danger: 'red', info: 'cyan' }
+			mapping: {
+				primary: 'orange',
+				secondary: 'pink',
+				accent: 'sky',
+				surface: 'slate',
+				success: 'green',
+				warning: 'amber',
+				danger: 'red',
+				info: 'cyan'
+			}
 		},
 		{
 			name: 'Vibrant',
-			mapping: { primary: 'orange', secondary: 'fuchsia', accent: 'cyan', surface: 'stone', success: 'emerald', warning: 'yellow', danger: 'rose', info: 'sky' }
+			mapping: {
+				primary: 'orange',
+				secondary: 'fuchsia',
+				accent: 'cyan',
+				surface: 'stone',
+				success: 'emerald',
+				warning: 'yellow',
+				danger: 'rose',
+				info: 'sky'
+			}
 		},
 		{
 			name: 'Ocean',
-			mapping: { primary: 'teal', secondary: 'blue', accent: 'cyan', surface: 'slate', success: 'emerald', warning: 'amber', danger: 'red', info: 'sky' }
+			mapping: {
+				primary: 'teal',
+				secondary: 'blue',
+				accent: 'cyan',
+				surface: 'slate',
+				success: 'emerald',
+				warning: 'amber',
+				danger: 'red',
+				info: 'sky'
+			}
 		},
 		{
 			name: 'Forest',
-			mapping: { primary: 'emerald', secondary: 'lime', accent: 'teal', surface: 'stone', success: 'green', warning: 'yellow', danger: 'orange', info: 'cyan' }
+			mapping: {
+				primary: 'emerald',
+				secondary: 'lime',
+				accent: 'teal',
+				surface: 'stone',
+				success: 'green',
+				warning: 'yellow',
+				danger: 'orange',
+				info: 'cyan'
+			}
 		},
 		{
 			name: 'Sunset',
-			mapping: { primary: 'rose', secondary: 'orange', accent: 'amber', surface: 'neutral', success: 'emerald', warning: 'yellow', danger: 'red', info: 'sky' }
+			mapping: {
+				primary: 'rose',
+				secondary: 'orange',
+				accent: 'amber',
+				surface: 'neutral',
+				success: 'emerald',
+				warning: 'yellow',
+				danger: 'red',
+				info: 'sky'
+			}
 		},
 		{
 			name: 'Midnight',
-			mapping: { primary: 'indigo', secondary: 'violet', accent: 'blue', surface: 'zinc', success: 'emerald', warning: 'amber', danger: 'rose', info: 'cyan' }
+			mapping: {
+				primary: 'indigo',
+				secondary: 'violet',
+				accent: 'blue',
+				surface: 'zinc',
+				success: 'emerald',
+				warning: 'amber',
+				danger: 'rose',
+				info: 'cyan'
+			}
 		},
 		{
 			name: 'Sea Green',
-			mapping: { primary: 'green', secondary: 'blue', accent: 'teal', surface: 'gray', success: 'emerald', warning: 'amber', danger: 'red', info: 'cyan' }
+			mapping: {
+				primary: 'green',
+				secondary: 'blue',
+				accent: 'teal',
+				surface: 'gray',
+				success: 'emerald',
+				warning: 'amber',
+				danger: 'red',
+				info: 'cyan'
+			}
 		},
 		{
 			name: 'Berry',
-			mapping: { primary: 'purple', secondary: 'pink', accent: 'fuchsia', surface: 'zinc', success: 'green', warning: 'amber', danger: 'rose', info: 'violet' }
+			mapping: {
+				primary: 'purple',
+				secondary: 'pink',
+				accent: 'fuchsia',
+				surface: 'zinc',
+				success: 'green',
+				warning: 'amber',
+				danger: 'rose',
+				info: 'violet'
+			}
 		}
 	]
 
@@ -107,10 +179,10 @@
 
 <PlaySection>
 	{#snippet preview()}
-		<div class="flex gap-4 w-full h-full items-stretch">
-			<div class="w-[180px] shrink-0 flex flex-col">
-				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Palettes</h4>
-				<div class="flex-1 overflow-y-auto rounded-md bg-surface-z0 border-surface-z2 border">
+		<div class="flex h-full w-full items-stretch gap-4">
+			<div class="flex w-[180px] shrink-0 flex-col">
+				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">Palettes</h4>
+				<div class="bg-surface-z0 border-surface-z2 flex-1 overflow-y-auto rounded-md border">
 					<List
 						items={paletteItems}
 						value={selectedPalette}
@@ -119,11 +191,26 @@
 					>
 						{#snippet item(item, _fields, handlers)}
 							{@const palette = palettes.find((p) => p.name === item.text)}
-							<button class="flex items-center gap-2" data-list-item onclick={handlers.onclick} onkeydown={handlers.onkeydown}>
+							<button
+								class="flex items-center gap-2"
+								data-list-item
+								onclick={handlers.onclick}
+								onkeydown={handlers.onkeydown}
+							>
 								{#if palette}
-									<span class="flex gap-px rounded-sm overflow-hidden shrink-0">
-										<span class="w-2 h-3" style="background-color: {tailwindColors[palette.mapping.primary ?? 'gray']['500']}"></span>
-										<span class="w-2 h-3" style="background-color: {tailwindColors[palette.mapping.secondary ?? 'gray']['500']}"></span>
+									<span class="flex shrink-0 gap-px overflow-hidden rounded-sm">
+										<span
+											class="h-3 w-2"
+											style="background-color: {tailwindColors[palette.mapping.primary ?? 'gray'][
+												'500'
+											]}"
+										></span>
+										<span
+											class="h-3 w-2"
+											style="background-color: {tailwindColors[palette.mapping.secondary ?? 'gray'][
+												'500'
+											]}"
+										></span>
 									</span>
 								{/if}
 								<span>{item.text}</span>
@@ -133,17 +220,19 @@
 				</div>
 			</div>
 
-			<div class="flex-1 min-w-0">
-				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Color Mapping</h4>
+			<div class="min-w-0 flex-1">
+				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">Color Mapping</h4>
 				<div class="flex flex-col gap-2.5">
 					{#each defaultRoles as role}
 						{@const shades = roleShades[role]}
 						{@const color = config.mapping[role]}
 						{#if shades}
-							<div class="rounded-md overflow-hidden bg-surface-z0 border-surface-z2 border">
-								<div class="flex justify-between items-center py-1.5 px-2">
-									<span class="text-xs font-semibold capitalize text-surface-z8">{role}</span>
-									<span class="text-[0.6875rem] font-mono text-surface-z5">{getColorLabel(color)}</span>
+							<div class="bg-surface-z0 border-surface-z2 overflow-hidden rounded-md border">
+								<div class="flex items-center justify-between px-2 py-1.5">
+									<span class="text-surface-z8 text-xs font-semibold capitalize">{role}</span>
+									<span class="text-surface-z5 font-mono text-[0.6875rem]"
+										>{getColorLabel(color)}</span
+									>
 								</div>
 								<div class="flex h-6">
 									{#each Object.entries(shades) as [shade, hex]}
@@ -165,7 +254,7 @@
 	{#snippet controls()}
 		{#each defaultRoles as role}
 			<div class="flex flex-col gap-1">
-				<label class="text-xs font-medium capitalize text-surface-z6">{role}</label>
+				<label class="text-surface-z6 text-xs font-medium capitalize">{role}</label>
 				<Select
 					options={colorOptions}
 					value={config.mapping[role]}
@@ -174,8 +263,15 @@
 					onchange={handleRoleChange(role)}
 				>
 					{#snippet item(item, _fields, handlers, _isSelected)}
-						<button class="flex items-center gap-2 w-full" onclick={handlers.onclick} onkeydown={handlers.onkeydown}>
-							<span class="w-3 h-3 rounded-full shrink-0 border border-surface-z3" style="background-color: {getColor500(String(item.value))}"></span>
+						<button
+							class="flex w-full items-center gap-2"
+							onclick={handlers.onclick}
+							onkeydown={handlers.onkeydown}
+						>
+							<span
+								class="border-surface-z3 h-3 w-3 shrink-0 rounded-full border"
+								style="background-color: {getColor500(String(item.value))}"
+							></span>
 							<span>{item.text}</span>
 						</button>
 					{/snippet}

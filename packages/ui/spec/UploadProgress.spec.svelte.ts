@@ -3,9 +3,33 @@ import { render, fireEvent } from '@testing-library/svelte'
 import UploadProgress from '../src/components/UploadProgress.svelte'
 
 const files = [
-	{ id: '1', text: 'photo.jpg', value: '1', size: 1024, type: 'image/jpeg', status: 'uploading', progress: 45 },
-	{ id: '2', text: 'doc.pdf', value: '2', size: 2048, type: 'application/pdf', status: 'done', progress: 100 },
-	{ id: '3', text: 'readme.md', value: '3', size: 512, type: 'text/plain', status: 'pending', progress: 0 },
+	{
+		id: '1',
+		text: 'photo.jpg',
+		value: '1',
+		size: 1024,
+		type: 'image/jpeg',
+		status: 'uploading',
+		progress: 45
+	},
+	{
+		id: '2',
+		text: 'doc.pdf',
+		value: '2',
+		size: 2048,
+		type: 'application/pdf',
+		status: 'done',
+		progress: 100
+	},
+	{
+		id: '3',
+		text: 'readme.md',
+		value: '3',
+		size: 512,
+		type: 'text/plain',
+		status: 'pending',
+		progress: 0
+	}
 ]
 
 describe('UploadProgress', () => {
@@ -16,7 +40,9 @@ describe('UploadProgress', () => {
 
 	it('renders data-upload-view attribute', () => {
 		const { container } = render(UploadProgress, { files })
-		expect(container.querySelector('[data-upload-progress]')?.getAttribute('data-upload-view')).toBe('list')
+		expect(
+			container.querySelector('[data-upload-progress]')?.getAttribute('data-upload-view')
+		).toBe('list')
 	})
 
 	it('shows file count in header', () => {
@@ -36,7 +62,7 @@ describe('UploadProgress', () => {
 	it('uses labels for status summary when provided', () => {
 		const { container } = render(UploadProgress, {
 			files,
-			labels: { uploading: 'En cours', done: 'Termin\u00e9', pending: 'En attente' },
+			labels: { uploading: 'En cours', done: 'Termin\u00e9', pending: 'En attente' }
 		})
 		const header = container.querySelector('[data-upload-header]')!
 		expect(header.textContent).toContain('En cours')
@@ -50,7 +76,9 @@ describe('UploadProgress', () => {
 
 	it('renders a Grid component when view=grid', () => {
 		const { container } = render(UploadProgress, { files, view: 'grid' })
-		expect(container.querySelector('[data-upload-progress]')?.getAttribute('data-upload-view')).toBe('grid')
+		expect(
+			container.querySelector('[data-upload-progress]')?.getAttribute('data-upload-view')
+		).toBe('grid')
 		expect(container.querySelector('[data-grid]')).toBeTruthy()
 	})
 
@@ -81,7 +109,9 @@ describe('UploadProgress', () => {
 	it('forwards cancelWhen to UploadFileStatus', () => {
 		const oncancel = vi.fn()
 		const { container } = render(UploadProgress, {
-			files, cancelWhen: ['uploading'], oncancel,
+			files,
+			cancelWhen: ['uploading'],
+			oncancel
 		})
 		const cancelBtns = container.querySelectorAll('[data-upload-cancel]')
 		expect(cancelBtns.length).toBe(1)
@@ -90,10 +120,20 @@ describe('UploadProgress', () => {
 	it('forwards retryWhen to UploadFileStatus', () => {
 		const onretry = vi.fn()
 		const failedFiles = [
-			{ id: '1', text: 'fail.txt', value: '1', size: 100, type: 'text/plain', status: 'failed', progress: 0 },
+			{
+				id: '1',
+				text: 'fail.txt',
+				value: '1',
+				size: 100,
+				type: 'text/plain',
+				status: 'failed',
+				progress: 0
+			}
 		]
 		const { container } = render(UploadProgress, {
-			files: failedFiles, retryWhen: ['failed'], onretry,
+			files: failedFiles,
+			retryWhen: ['failed'],
+			onretry
 		})
 		expect(container.querySelectorAll('[data-upload-retry]').length).toBe(1)
 	})
@@ -101,7 +141,9 @@ describe('UploadProgress', () => {
 	it('forwards removeWhen to UploadFileStatus', () => {
 		const onremove = vi.fn()
 		const { container } = render(UploadProgress, {
-			files, removeWhen: ['done'], onremove,
+			files,
+			removeWhen: ['done'],
+			onremove
 		})
 		expect(container.querySelectorAll('[data-upload-remove]').length).toBe(1)
 	})
@@ -113,13 +155,30 @@ describe('UploadProgress', () => {
 
 	it('passes fields mapping through to inner components', () => {
 		const customFiles = [
-			{ id: '1', filename: 'test.txt', val: '1', bytes: 512, mime: 'text/plain', stage: 'active', pct: 50 },
+			{
+				id: '1',
+				filename: 'test.txt',
+				val: '1',
+				bytes: 512,
+				mime: 'text/plain',
+				stage: 'active',
+				pct: 50
+			}
 		]
 		const { container } = render(UploadProgress, {
 			files: customFiles,
-			fields: { label: 'filename', value: 'val', size: 'bytes', type: 'mime', status: 'stage', progress: 'pct' },
+			fields: {
+				label: 'filename',
+				value: 'val',
+				size: 'bytes',
+				type: 'mime',
+				status: 'stage',
+				progress: 'pct'
+			}
 		})
 		expect(container.textContent).toContain('test.txt')
-		expect(container.querySelector('[data-upload-file-status]')?.getAttribute('data-status')).toBe('active')
+		expect(container.querySelector('[data-upload-file-status]')?.getAttribute('data-status')).toBe(
+			'active'
+		)
 	})
 })

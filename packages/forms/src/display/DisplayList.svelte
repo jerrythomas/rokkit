@@ -4,12 +4,7 @@
 	 */
 	import DisplayValue from './DisplayValue.svelte'
 
-	let {
-		data = [],
-		fields = [],
-		title,
-		class: className = ''
-	} = $props()
+	let { data = [], fields = [], title, class: className = '' } = $props()
 </script>
 
 <div data-display-list class={className}>

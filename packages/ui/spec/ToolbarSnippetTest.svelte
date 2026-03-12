@@ -17,7 +17,11 @@
 
 {#if useItemSnippet}
 	<Toolbar {items} {fields} {onclick}>
-		{#snippet item(toolbarItem: ToolbarItem, _itemFields: ToolbarFields, handlers: ToolbarItemHandlers)}
+		{#snippet item(
+			toolbarItem: ToolbarItem,
+			_itemFields: ToolbarFields,
+			handlers: ToolbarItemHandlers
+		)}
 			<button
 				type="button"
 				data-custom-toolbar-item

@@ -4,7 +4,12 @@
 	import { FormRenderer } from '@rokkit/forms'
 	import PlaySection from '$lib/components/PlaySection.svelte'
 
-	let props = $state({ language: 'typescript', codeTheme: 'light', showLineNumbers: false, showCopyButton: true })
+	let props = $state({
+		language: 'typescript',
+		codeTheme: 'light',
+		showLineNumbers: false,
+		showCopyButton: true
+	})
 
 	const schema = {
 		type: 'object',
@@ -19,7 +24,11 @@
 	const layout = {
 		type: 'vertical',
 		elements: [
-			{ scope: '#/language', label: 'Language', props: { options: ['typescript', 'svelte', 'css', 'json'] } },
+			{
+				scope: '#/language',
+				label: 'Language',
+				props: { options: ['typescript', 'svelte', 'css', 'json'] }
+			},
 			{ scope: '#/codeTheme', label: 'Theme', props: { options: ['light', 'dark'] } },
 			{ scope: '#/showLineNumbers', label: 'Line numbers' },
 			{ scope: '#/showCopyButton', label: 'Copy button' }
@@ -69,7 +78,13 @@ function greet(user: User): string {
 
 <PlaySection>
 	{#snippet preview()}
-		<Code {code} language={props.language} theme={props.codeTheme} showLineNumbers={props.showLineNumbers} showCopyButton={props.showCopyButton} />
+		<Code
+			{code}
+			language={props.language}
+			theme={props.codeTheme}
+			showLineNumbers={props.showLineNumbers}
+			showCopyButton={props.showCopyButton}
+		/>
 	{/snippet}
 
 	{#snippet controls()}

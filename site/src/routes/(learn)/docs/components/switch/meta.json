@@ -3,11 +3,6 @@
   "description": "Toggle between multiple options",
   "icon": "i-component:switch",
   "category": "inputs",
-  "tags": [
-    "switch",
-    "toggle",
-    "multiple",
-    "options"
-  ],
+  "tags": ["switch", "toggle", "multiple", "options"],
   "experimental": false
 }

@@ -132,9 +132,15 @@ FormBuilder (reactive state)
 ```javascript
 let formBuilder = untrack(() => builder ?? new FormBuilder(data, schema, layout, lookups))
 
-$effect(() => { if (formBuilder.data !== data) formBuilder.data = data })
-$effect(() => { if (schema) formBuilder.schema = schema })
-$effect(() => { if (layout) formBuilder.layout = layout })
+$effect(() => {
+  if (formBuilder.data !== data) formBuilder.data = data
+})
+$effect(() => {
+  if (schema) formBuilder.schema = schema
+})
+$effect(() => {
+  if (layout) formBuilder.layout = layout
+})
 ```
 
 This pattern is critical: recreating `FormBuilder` on every derivation (e.g., `$derived(new FormBuilder(...))`) would lose validation state, dirty tracking, and the lookup manager on every prop update.
@@ -231,17 +237,17 @@ The schema follows a JSON-schema-compatible structure. All standard JSON schema 
 The `format` field controls which input component is selected for string fields:
 
 | `format` value | Selected component |
-|---|---|
-| `email` | InputEmail |
-| `url` | InputUrl |
-| `tel` | InputTel |
-| `date` | InputDate |
-| `datetime` | InputDateTime |
-| `time` | InputTime |
-| `month` | InputMonth |
-| `week` | InputWeek |
-| `color` | InputColor |
-| `password` | InputPassword |
+| -------------- | ------------------ |
+| `email`        | InputEmail         |
+| `url`          | InputUrl           |
+| `tel`          | InputTel           |
+| `date`         | InputDate          |
+| `datetime`     | InputDateTime      |
+| `time`         | InputTime          |
+| `month`        | InputMonth         |
+| `week`         | InputWeek          |
+| `color`        | InputColor         |
+| `password`     | InputPassword      |
 
 The `renderer` field (set in the layout element) bypasses all type inference and directly names a key in the renderer registry.
 
@@ -267,7 +273,7 @@ When no schema is supplied, `deriveSchemaFromValue(data)` walks the data object 
 
 ## Layout Design
 
-Layout describes *how* a form is presented, independent of what the schema says about the data. Separating schema from layout makes it possible to present the same data model in multiple ways — a wizard step, a compact sidebar panel, a full-page editor — without duplicating the schema.
+Layout describes _how_ a form is presented, independent of what the schema says about the data. Separating schema from layout makes it possible to present the same data model in multiple ways — a wizard step, a compact sidebar panel, a full-page editor — without duplicating the schema.
 
 A layout is an object with a `type` and an `elements` array:
 
@@ -323,34 +329,34 @@ Key layout behaviors:
 
 The `defaultRenderers` registry maps type strings to Svelte components. `resolveRenderer` performs a three-step lookup: explicit `renderer` name → type key → fallback to `InputText`.
 
-| Schema type | Format / annotation | Rendered component | Notes |
-|---|---|---|---|
-| `string` | — | `InputText` | Default text input |
-| `string` | `format: 'email'` | `InputEmail` | `type="email"` |
-| `string` | `format: 'url'` | `InputUrl` | `type="url"` |
-| `string` | `format: 'tel'` | `InputTel` | `type="tel"` |
-| `string` | `format: 'password'` | `InputPassword` | `type="password"` |
-| `string` | `format: 'color'` | `InputColor` | `type="color"` |
-| `string` | `format: 'date'` | `InputDate` | `type="date"` |
-| `string` | `format: 'datetime'` | `InputDateTime` | `type="datetime-local"` |
-| `string` | `format: 'time'` | `InputTime` | `type="time"` |
-| `string` | `format: 'month'` | `InputMonth` | `type="month"` |
-| `string` | `format: 'week'` | `InputWeek` | `type="week"` |
-| `string` | `renderer: 'textarea'` | `InputTextArea` | Set in layout, not schema |
-| `string` | `renderer: 'radio'` | `InputRadio` | Set in layout, not schema |
-| `string` with `enum` | — | `InputSelect` | Enum values mapped to options |
-| `number` / `integer` | — | `InputNumber` | `step="1"` for integer |
-| `number` with min+max | — | `InputRange` | Both min and max required |
-| `boolean` | — | `InputCheckbox` | Icon-based custom checkbox |
-| `boolean` | `renderer: 'switch'` | `InputSwitch` | Toggle switch |
-| `boolean` | `renderer: 'toggle'` | `InputToggle` | Option-set toggle |
-| `array` | — | `ArrayEditor` | Primitive or object items |
-| `object` | — | `<fieldset>` group | Recursive via `renderElement` |
-| any | `readonly: true` | `InfoField` | Read-only display, no input |
-| any | `type: 'display-table'` | `DisplayTable` | Non-editable data table |
-| any | `type: 'display-cards'` | `DisplayCardGrid` | Non-editable card grid |
-| any | `type: 'display-section'` | `DisplaySection` | Key-value display |
-| any | `type: 'display-list'` | `DisplayList` | Simple display list |
+| Schema type           | Format / annotation       | Rendered component | Notes                         |
+| --------------------- | ------------------------- | ------------------ | ----------------------------- |
+| `string`              | —                         | `InputText`        | Default text input            |
+| `string`              | `format: 'email'`         | `InputEmail`       | `type="email"`                |
+| `string`              | `format: 'url'`           | `InputUrl`         | `type="url"`                  |
+| `string`              | `format: 'tel'`           | `InputTel`         | `type="tel"`                  |
+| `string`              | `format: 'password'`      | `InputPassword`    | `type="password"`             |
+| `string`              | `format: 'color'`         | `InputColor`       | `type="color"`                |
+| `string`              | `format: 'date'`          | `InputDate`        | `type="date"`                 |
+| `string`              | `format: 'datetime'`      | `InputDateTime`    | `type="datetime-local"`       |
+| `string`              | `format: 'time'`          | `InputTime`        | `type="time"`                 |
+| `string`              | `format: 'month'`         | `InputMonth`       | `type="month"`                |
+| `string`              | `format: 'week'`          | `InputWeek`        | `type="week"`                 |
+| `string`              | `renderer: 'textarea'`    | `InputTextArea`    | Set in layout, not schema     |
+| `string`              | `renderer: 'radio'`       | `InputRadio`       | Set in layout, not schema     |
+| `string` with `enum`  | —                         | `InputSelect`      | Enum values mapped to options |
+| `number` / `integer`  | —                         | `InputNumber`      | `step="1"` for integer        |
+| `number` with min+max | —                         | `InputRange`       | Both min and max required     |
+| `boolean`             | —                         | `InputCheckbox`    | Icon-based custom checkbox    |
+| `boolean`             | `renderer: 'switch'`      | `InputSwitch`      | Toggle switch                 |
+| `boolean`             | `renderer: 'toggle'`      | `InputToggle`      | Option-set toggle             |
+| `array`               | —                         | `ArrayEditor`      | Primitive or object items     |
+| `object`              | —                         | `<fieldset>` group | Recursive via `renderElement` |
+| any                   | `readonly: true`          | `InfoField`        | Read-only display, no input   |
+| any                   | `type: 'display-table'`   | `DisplayTable`     | Non-editable data table       |
+| any                   | `type: 'display-cards'`   | `DisplayCardGrid`  | Non-editable card grid        |
+| any                   | `type: 'display-section'` | `DisplaySection`   | Key-value display             |
+| any                   | `type: 'display-list'`    | `DisplayList`      | Simple display list           |
 
 Custom renderers registered via the `renderers` prop extend this table. The consumer passes `renderers={{ myPicker: MyDatePicker }}` to `FormRenderer` and sets `renderer: 'myPicker'` on the relevant layout element. The merged registry replaces the built-in entry when the keys overlap, allowing global type overrides (e.g., replacing all `date` fields with a custom picker).
 
@@ -545,6 +551,7 @@ Setting `override: true` on a layout element delegates that field's entire rende
 ### Custom component contract
 
 A custom renderer component must accept:
+
 - `value` (bindable) — the current field value
 - `onchange` — callback to call with the new value when it changes
 - Any additional props from `element.props` (label, required, disabled, message, etc.)
@@ -623,10 +630,7 @@ For **arrays of objects** (`items.type === 'object'`), each item renders as a ne
     onupdate={(newData) => updateItem(index, newData)}
   />
 {:else}
-  <PrimitiveComponent
-    value={item}
-    onchange={(newVal) => updateItem(index, newVal)}
-  />
+  <PrimitiveComponent value={item} onchange={(newVal) => updateItem(index, newVal)} />
 {/if}
 ```
 
@@ -664,67 +668,67 @@ FormElement (array of objects)
 
 ### FormRenderer
 
-| Attribute | Element | Purpose |
-|---|---|---|
-| `data-form-root` | `<form>` or `<div>` | Form container |
-| `data-form-submitting` | root | Present during async submission |
-| `data-form-separator` | `<div>` | Visual separator between fields |
-| `data-form-field` | `<div>` | Wrapper for each rendered element |
-| `data-form-group` | `<fieldset>` | Nested object section |
-| `data-form-group-label` | `<legend>` | Group label |
-| `data-form-actions` | `<div>` | Default action buttons container |
-| `data-form-reset` | `<button>` | Default reset button |
-| `data-form-submit` | `<button>` | Default submit button |
-| `data-scope` | field/group wrapper | JSON Pointer path to data field |
+| Attribute               | Element             | Purpose                           |
+| ----------------------- | ------------------- | --------------------------------- |
+| `data-form-root`        | `<form>` or `<div>` | Form container                    |
+| `data-form-submitting`  | root                | Present during async submission   |
+| `data-form-separator`   | `<div>`             | Visual separator between fields   |
+| `data-form-field`       | `<div>`             | Wrapper for each rendered element |
+| `data-form-group`       | `<fieldset>`        | Nested object section             |
+| `data-form-group-label` | `<legend>`          | Group label                       |
+| `data-form-actions`     | `<div>`             | Default action buttons container  |
+| `data-form-reset`       | `<button>`          | Default reset button              |
+| `data-form-submit`      | `<button>`          | Default submit button             |
+| `data-scope`            | field/group wrapper | JSON Pointer path to data field   |
 
 ### InputField
 
-| Attribute | Element | Purpose |
-|---|---|---|
-| `data-field-root` | outer `<div>` | Field container |
-| `data-field` | inner `<div>` | Label + input row |
-| `data-field-state` | outer `<div>` | Validation state: error/warning/info/success |
-| `data-field-type` | outer `<div>` | Input type string |
-| `data-field-required` | outer `<div>` | Present when required |
-| `data-field-disabled` | outer `<div>` | Present when disabled |
-| `data-field-dirty` | outer `<div>` | Present when value differs from initial |
-| `data-field-empty` | outer `<div>` | Present when value is null/undefined |
-| `data-has-icon` | outer `<div>` | Present when field has an icon |
-| `data-description` | `<div>` | Help text below the input |
-| `data-message` | `<div>` | Validation message text |
-| `data-message-state` | message `<div>` | Mirrors field-state for message styling |
+| Attribute             | Element         | Purpose                                      |
+| --------------------- | --------------- | -------------------------------------------- |
+| `data-field-root`     | outer `<div>`   | Field container                              |
+| `data-field`          | inner `<div>`   | Label + input row                            |
+| `data-field-state`    | outer `<div>`   | Validation state: error/warning/info/success |
+| `data-field-type`     | outer `<div>`   | Input type string                            |
+| `data-field-required` | outer `<div>`   | Present when required                        |
+| `data-field-disabled` | outer `<div>`   | Present when disabled                        |
+| `data-field-dirty`    | outer `<div>`   | Present when value differs from initial      |
+| `data-field-empty`    | outer `<div>`   | Present when value is null/undefined         |
+| `data-has-icon`       | outer `<div>`   | Present when field has an icon               |
+| `data-description`    | `<div>`         | Help text below the input                    |
+| `data-message`        | `<div>`         | Validation message text                      |
+| `data-message-state`  | message `<div>` | Mirrors field-state for message styling      |
 
 ### Input container
 
-| Attribute | Element | Purpose |
-|---|---|---|
-| `data-input-root` | `<div>` | Wrapper for non-checkbox inputs; used for gradient border |
-| `data-input-icon` | `<span>` | Icon rendered inside the input wrapper |
+| Attribute         | Element  | Purpose                                                   |
+| ----------------- | -------- | --------------------------------------------------------- |
+| `data-input-root` | `<div>`  | Wrapper for non-checkbox inputs; used for gradient border |
+| `data-input-icon` | `<span>` | Icon rendered inside the input wrapper                    |
 
 ### ArrayEditor
 
-| Attribute | Element | Purpose |
-|---|---|---|
-| `data-array-editor` | root `<div>` | Array editor container |
-| `data-array-editor-empty` | root | Present when array is empty |
-| `data-array-editor-disabled` | root | Present when disabled |
-| `data-array-editor-items` | `<div>` | Items container |
-| `data-array-editor-item` | `<div>` | Individual item row |
-| `data-array-editor-item-content` | `<div>` | Item input area |
-| `data-array-editor-remove` | `<button>` | Remove item button |
-| `data-array-editor-add` | `<button>` | Add item button |
+| Attribute                        | Element      | Purpose                     |
+| -------------------------------- | ------------ | --------------------------- |
+| `data-array-editor`              | root `<div>` | Array editor container      |
+| `data-array-editor-empty`        | root         | Present when array is empty |
+| `data-array-editor-disabled`     | root         | Present when disabled       |
+| `data-array-editor-items`        | `<div>`      | Items container             |
+| `data-array-editor-item`         | `<div>`      | Individual item row         |
+| `data-array-editor-item-content` | `<div>`      | Item input area             |
+| `data-array-editor-remove`       | `<button>`   | Remove item button          |
+| `data-array-editor-add`          | `<button>`   | Add item button             |
 
 ### Display components
 
-| Attribute | Element | Purpose |
-|---|---|---|
-| `data-display-table` | root | Table display container |
-| `data-display-cards` | root | Card grid container |
-| `data-display-card` | card | Individual card |
-| `data-display-section` | root | Key-value section |
-| `data-display-field` | row | Individual field row |
-| `data-display-value` | span | Formatted value |
-| `data-format` | value | Format hint for value styling |
+| Attribute              | Element | Purpose                       |
+| ---------------------- | ------- | ----------------------------- |
+| `data-display-table`   | root    | Table display container       |
+| `data-display-cards`   | root    | Card grid container           |
+| `data-display-card`    | card    | Individual card               |
+| `data-display-section` | root    | Key-value section             |
+| `data-display-field`   | row     | Individual field row          |
+| `data-display-value`   | span    | Formatted value               |
+| `data-format`          | value   | Format hint for value styling |
 
 ---
 
@@ -787,17 +791,25 @@ packages/forms/src/
 `FormRenderer` must maintain a single stable `FormBuilder` instance across prop changes. Recreating it on each derivation loses validation state, dirty tracking, and the lookup manager.
 
 **Incorrect pattern** (loses state on every prop update):
+
 ```javascript
 let formBuilder = $derived(new FormBuilder(data, schema, layout))
 ```
 
 **Correct pattern** (stable instance, reactive updates):
+
 ```javascript
 let formBuilder = untrack(() => builder ?? new FormBuilder(data, schema, layout, lookups))
 
-$effect(() => { if (formBuilder.data !== data) formBuilder.data = data })
-$effect(() => { if (schema) formBuilder.schema = schema })
-$effect(() => { if (layout) formBuilder.layout = layout })
+$effect(() => {
+  if (formBuilder.data !== data) formBuilder.data = data
+})
+$effect(() => {
+  if (schema) formBuilder.schema = schema
+})
+$effect(() => {
+  if (layout) formBuilder.layout = layout
+})
 ```
 
 `untrack()` at construction prevents Svelte from treating `FormBuilder` construction as a reactive dependency. The `$effect` blocks synchronize each prop individually after construction, so the instance remains stable while remaining reactive to external changes.
@@ -822,13 +834,26 @@ The default registry (`defaultRenderers`) maps type strings to components:
 
 ```javascript
 const defaultRenderers = {
-  text: InputText,     number: InputNumber,   email: InputEmail,
-  password: InputPassword, tel: InputTel,     url: InputUrl,
-  color: InputColor,   date: InputDate,       time: InputTime,
-  month: InputMonth,   week: InputWeek,       range: InputRange,
-  textarea: InputTextArea, checkbox: InputCheckbox, radio: InputRadio,
-  select: InputSelect, switch: InputSwitch,   toggle: InputToggle,
-  array: ArrayEditor,  info: InfoField,
+  text: InputText,
+  number: InputNumber,
+  email: InputEmail,
+  password: InputPassword,
+  tel: InputTel,
+  url: InputUrl,
+  color: InputColor,
+  date: InputDate,
+  time: InputTime,
+  month: InputMonth,
+  week: InputWeek,
+  range: InputRange,
+  textarea: InputTextArea,
+  checkbox: InputCheckbox,
+  radio: InputRadio,
+  select: InputSelect,
+  switch: InputSwitch,
+  toggle: InputToggle,
+  array: ArrayEditor,
+  info: InfoField
 }
 ```
 

@@ -28,7 +28,7 @@
 		onretry,
 		onremove,
 		labels: userLabels = {} as Record<string, string>,
-		icons: userIcons = {} as Record<string, string>,
+		icons: userIcons = {} as Record<string, string>
 	}: UploadFileStatusProps = $props()
 
 	const labels = $derived({ ...messages.current.uploadProgress, ...userLabels })
@@ -36,13 +36,17 @@
 		cancel: DEFAULT_STATE_ICONS.action.cancel,
 		retry: DEFAULT_STATE_ICONS.action.retry,
 		remove: DEFAULT_STATE_ICONS.action.remove,
-		...userIcons,
+		...userIcons
 	})
 
 	const status = $derived(String(proxy.get('status') ?? 'unknown'))
 	const progress = $derived(Number(proxy.get('progress') ?? 0))
 	const size = $derived(Number(proxy.get('size') ?? 0))
-	const fileIcon = $derived(proxy.get('icon') ? String(proxy.get('icon')) : inferIcon(proxy.get('type') as string | undefined))
+	const fileIcon = $derived(
+		proxy.get('icon')
+			? String(proxy.get('icon'))
+			: inferIcon(proxy.get('type') as string | undefined)
+	)
 	const statusLabel = $derived(labels[status] ?? status)
 
 	const showBar = $derived(progress > 0 && progress < 100)
@@ -64,17 +68,32 @@
 	{#if showCancel || showRetry || showRemove}
 		<div data-upload-actions>
 			{#if showCancel}
-				<button type="button" data-upload-cancel aria-label="{labels.cancel} {proxy.label}" onclick={() => oncancel?.(proxy)}>
+				<button
+					type="button"
+					data-upload-cancel
+					aria-label="{labels.cancel} {proxy.label}"
+					onclick={() => oncancel?.(proxy)}
+				>
 					<span class={icons.cancel} aria-hidden="true"></span>
 				</button>
 			{/if}
 			{#if showRetry}
-				<button type="button" data-upload-retry aria-label="{labels.retry} {proxy.label}" onclick={() => onretry?.(proxy)}>
+				<button
+					type="button"
+					data-upload-retry
+					aria-label="{labels.retry} {proxy.label}"
+					onclick={() => onretry?.(proxy)}
+				>
 					<span class={icons.retry} aria-hidden="true"></span>
 				</button>
 			{/if}
 			{#if showRemove}
-				<button type="button" data-upload-remove aria-label="{labels.remove} {proxy.label}" onclick={() => onremove?.(proxy)}>
+				<button
+					type="button"
+					data-upload-remove
+					aria-label="{labels.remove} {proxy.label}"
+					onclick={() => onremove?.(proxy)}
+				>
 					<span class={icons.remove} aria-hidden="true"></span>
 				</button>
 			{/if}

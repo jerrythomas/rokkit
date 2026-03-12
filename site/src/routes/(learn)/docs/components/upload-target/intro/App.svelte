@@ -5,7 +5,7 @@
 	let fileNames = $state([])
 
 	function handleFiles(files) {
-		fileNames = files.map(f => f.name)
+		fileNames = files.map((f) => f.name)
 	}
 </script>
 

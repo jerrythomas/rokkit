@@ -35,13 +35,18 @@
 	)
 
 	function typeDefault(type) {
-		return { string: '', number: 0, integer: 0, boolean: false, array: [], object: {} }[type] ?? null
+		return (
+			{ string: '', number: 0, integer: 0, boolean: false, array: [], object: {} }[type] ?? null
+		)
 	}
 
 	function createDefaultItem(schema) {
 		if (schema.type === 'object') {
 			return Object.fromEntries(
-				Object.entries(schema.properties ?? {}).map(([k, s]) => [k, s.default ?? typeDefault(s.type)])
+				Object.entries(schema.properties ?? {}).map(([k, s]) => [
+					k,
+					s.default ?? typeDefault(s.type)
+				])
 			)
 		}
 		return schema.default ?? typeDefault(schema.type)
@@ -96,8 +101,8 @@
 						type="button"
 						data-array-editor-remove
 						{disabled}
-						onclick={() => removeItem(index)}
-					>Remove</button>
+						onclick={() => removeItem(index)}>Remove</button
+					>
 				{/if}
 			</div>
 		{/each}

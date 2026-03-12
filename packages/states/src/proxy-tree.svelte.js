@@ -21,7 +21,13 @@ import { ProxyItem } from './proxy-item.svelte.js'
 
 // Maps a parent's line type to the continuation type shown at the same column
 // in child rows below it. 'child'→'sibling' (line continues), 'last'→'empty' (branch ended).
-const NEXT_LINE = { child: 'sibling', last: 'empty', sibling: 'sibling', empty: 'empty', icon: 'empty' }
+const NEXT_LINE = {
+	child: 'sibling',
+	last: 'empty',
+	sibling: 'sibling',
+	empty: 'empty',
+	icon: 'empty'
+}
 
 // ─── Reactive tree traversal utilities ─────────────────────────────────────────
 
@@ -115,17 +121,24 @@ export class ProxyTree {
 	 */
 	constructor(items = [], fields = {}, options = {}) {
 		this.#fields = { ...BASE_FIELDS, ...normalizeFields(fields) }
-		this.#factory = options.createProxy ?? ((raw, f, key, level) => new ProxyItem(raw, f, key, level))
-		this.#rootProxies = (items ?? []).map((raw, i) => this.#factory(raw, this.#fields, String(i), 1))
+		this.#factory =
+			options.createProxy ?? ((raw, f, key, level) => new ProxyItem(raw, f, key, level))
+		this.#rootProxies = (items ?? []).map((raw, i) =>
+			this.#factory(raw, this.#fields, String(i), 1)
+		)
 	}
 
 	// ─── Read accessors ──────────────────────────────────────────────────────
 
 	/** @returns {ProxyItem[]} Root proxy array */
-	get roots() { return this.#rootProxies }
+	get roots() {
+		return this.#rootProxies
+	}
 
 	/** @returns {Map<string, ProxyItem>} Lookup map of all proxies by key */
-	get lookup() { return this.#lookup }
+	get lookup() {
+		return this.#lookup
+	}
 
 	// ─── Mutation methods ────────────────────────────────────────────────────
 
@@ -137,9 +150,7 @@ export class ProxyTree {
 	 */
 	append(items) {
 		const start = this.#rootProxies.length
-		const newProxies = items.map((raw, i) =>
-			this.#factory(raw, this.#fields, String(start + i), 1)
-		)
+		const newProxies = items.map((raw, i) => this.#factory(raw, this.#fields, String(start + i), 1))
 		this.#rootProxies = [...this.#rootProxies, ...newProxies]
 	}
 

@@ -8,14 +8,14 @@
 		class?: string
 	}
 
-	const {
-		value = null,
-		max = 100,
-		class: className = ''
-	}: ProgressBarProps = $props()
+	const { value = null, max = 100, class: className = '' }: ProgressBarProps = $props()
 
-	const indeterminate = $derived(value === null || value === undefined || max === null || max === undefined)
-	const percentage = $derived(indeterminate ? 100 : Math.min(100, Math.max(0, (value! / max!) * 100)))
+	const indeterminate = $derived(
+		value === null || value === undefined || max === null || max === undefined
+	)
+	const percentage = $derived(
+		indeterminate ? 100 : Math.min(100, Math.max(0, (value! / max!) * 100))
+	)
 </script>
 
 <div

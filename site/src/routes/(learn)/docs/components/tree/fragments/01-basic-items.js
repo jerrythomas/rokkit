@@ -1,7 +1,7 @@
 // @ts-nocheck
 const items = [
 	{
-		label:'src',
+		label: 'src',
 		value: 'src',
 		icon: 'i-lucide:folder',
 		children: [
@@ -10,12 +10,10 @@ const items = [
 		]
 	},
 	{
-		label:'tests',
+		label: 'tests',
 		value: 'tests',
 		icon: 'i-lucide:folder',
-		children: [
-			{ label: 'index.spec.ts', value: 'spec', icon: 'i-lucide:file-code' }
-		]
+		children: [{ label: 'index.spec.ts', value: 'spec', icon: 'i-lucide:file-code' }]
 	},
 	{ label: 'README.md', value: 'readme', icon: 'i-lucide:file-text' }
 ]

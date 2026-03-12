@@ -9,15 +9,15 @@
    ============================================================================= */
 
 [data-style='material'] [data-search-input] {
-	@apply text-surface-z8 border-surface-z4 bg-surface-z1 border shadow-sm;
+  @apply text-surface-z8 border-surface-z4 bg-surface-z1 border shadow-sm;
 }
 
 [data-style='material'] [data-search-input]:focus {
-	@apply border-primary-z5 ring-1 ring-primary-z4;
+  @apply border-primary-z5 ring-primary-z4 ring-1;
 }
 
 [data-style='material'] [data-search-input]::placeholder {
-	@apply text-surface-z5;
+  @apply text-surface-z5;
 }
 
 /* =============================================================================
@@ -25,11 +25,11 @@
    ============================================================================= */
 
 [data-style='material'] [data-search-clear] {
-	@apply text-surface-z5;
+  @apply text-surface-z5;
 }
 
 [data-style='material'] [data-search-clear]:hover {
-	@apply text-surface-z8 bg-surface-z2 rounded;
+  @apply text-surface-z8 bg-surface-z2 rounded;
 }
 
 /* =============================================================================
@@ -37,13 +37,13 @@
    ============================================================================= */
 
 [data-style='material'] [data-search-tag] {
-	@apply text-surface-z8 bg-surface-z2 rounded-full shadow-sm;
+  @apply text-surface-z8 bg-surface-z2 rounded-full shadow-sm;
 }
 
 [data-style='material'] [data-search-tag-remove] {
-	@apply text-surface-z6 rounded-full;
+  @apply text-surface-z6 rounded-full;
 }
 
 [data-style='material'] [data-search-tag-remove]:hover {
-	@apply text-surface-z9 bg-surface-z3;
+  @apply text-surface-z9 bg-surface-z3;
 }

@@ -6,9 +6,9 @@
 
 <article data-article-root>
 	<p>
-		A file upload status orchestrator that composes a header with either a List or Grid layout.
-		Each file is rendered as an <code>UploadFileStatus</code> by default, showing progress, status,
-		and action buttons. Override per-file rendering with a custom <code>itemContent</code> snippet.
+		A file upload status orchestrator that composes a header with either a List or Grid layout. Each
+		file is rendered as an <code>UploadFileStatus</code> by default, showing progress, status, and
+		action buttons. Override per-file rendering with a custom <code>itemContent</code> snippet.
 	</p>
 
 	<h2>Basic File List</h2>
@@ -81,7 +81,9 @@
 				<li><strong>onretry</strong> — called with raw file object</li>
 				<li><strong>onremove</strong> — called with raw file object</li>
 				<li><strong>onclear</strong> — called when clear all is clicked</li>
-				<li><strong>itemContent</strong> — snippet <code>(proxy: ProxyItem)</code> for custom file rendering</li>
+				<li>
+					<strong>itemContent</strong> — snippet <code>(proxy: ProxyItem)</code> for custom file rendering
+				</li>
 			</ul>
 		</div>
 	</div>

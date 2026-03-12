@@ -3,11 +3,6 @@
   "description": "Multi-step process navigation",
   "icon": "i-component:stepper",
   "category": "inputs",
-  "tags": [
-    "stepper",
-    "multi-step",
-    "process",
-    "navigation"
-  ],
+  "tags": ["stepper", "multi-step", "process", "navigation"],
   "experimental": false
 }

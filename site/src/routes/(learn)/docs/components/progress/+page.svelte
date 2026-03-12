@@ -6,8 +6,8 @@
 
 <article data-article-root>
 	<p>
-		A progress bar for visualizing completion state. Supports determinate progress
-		with a value and an indeterminate loading animation.
+		A progress bar for visualizing completion state. Supports determinate progress with a value and
+		an indeterminate loading animation.
 	</p>
 
 	<h2>Basic Example</h2>
@@ -33,5 +33,4 @@
 			<li><strong>class</strong>: Additional CSS classes</li>
 		</ul>
 	</div>
-
 </article>

@@ -1,13 +1,13 @@
 <article data-article-root>
-	<p class="text-[1.0625rem] leading-7 text-surface-z6 mb-8">
-		Every Rokkit component includes full keyboard navigation and ARIA support out of the box.
-		No configuration required.
+	<p class="text-surface-z6 mb-8 text-[1.0625rem] leading-7">
+		Every Rokkit component includes full keyboard navigation and ARIA support out of the box. No
+		configuration required.
 	</p>
 
 	<h2>The Navigator Pattern</h2>
 	<p>
-		Rokkit uses a Svelte action called <code>navigator</code> that attaches keyboard handlers
-		to any container element. Combined with a <code>ListController</code>, it provides:
+		Rokkit uses a Svelte action called <code>navigator</code> that attaches keyboard handlers to any
+		container element. Combined with a <code>ListController</code>, it provides:
 	</p>
 	<ul>
 		<li>Arrow key navigation (up/down, left/right)</li>
@@ -28,8 +28,13 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr><td><code>ArrowDown</code></td><td>Move to next item</td><td>Lists, Menus, Selects</td></tr>
-			<tr><td><code>ArrowUp</code></td><td>Move to previous item</td><td>Lists, Menus, Selects</td></tr>
+			<tr
+				><td><code>ArrowDown</code></td><td>Move to next item</td><td>Lists, Menus, Selects</td></tr
+			>
+			<tr
+				><td><code>ArrowUp</code></td><td>Move to previous item</td><td>Lists, Menus, Selects</td
+				></tr
+			>
 			<tr><td><code>ArrowRight</code></td><td>Expand group / next tab</td><td>Trees, Tabs</td></tr>
 			<tr><td><code>ArrowLeft</code></td><td>Collapse group / prev tab</td><td>Trees, Tabs</td></tr>
 			<tr><td><code>Home</code></td><td>First item</td><td>All</td></tr>
@@ -42,8 +47,8 @@
 
 	<h2>Tree Navigation</h2>
 	<p>
-		In tree-style components (List with <code>collapsible</code>, Tree), the keyboard follows
-		the WAI-ARIA TreeView pattern:
+		In tree-style components (List with <code>collapsible</code>, Tree), the keyboard follows the
+		WAI-ARIA TreeView pattern:
 	</p>
 	<ul>
 		<li><code>ArrowRight</code> on a collapsed group — expands it</li>
@@ -54,15 +59,17 @@
 	</ul>
 
 	<h2>ARIA Support</h2>
-	<p>
-		Components automatically apply correct ARIA roles and attributes:
-	</p>
+	<p>Components automatically apply correct ARIA roles and attributes:</p>
 	<table>
 		<thead>
 			<tr><th>Component</th><th>Container Role</th><th>Item Role</th></tr>
 		</thead>
 		<tbody>
-			<tr><td>List</td><td><code>navigation</code></td><td><code>button</code> / <code>link</code></td></tr>
+			<tr
+				><td>List</td><td><code>navigation</code></td><td
+					><code>button</code> / <code>link</code></td
+				></tr
+			>
 			<tr><td>Tree</td><td><code>tree</code></td><td><code>treeitem</code></td></tr>
 			<tr><td>Menu</td><td><code>menu</code></td><td><code>menuitem</code></td></tr>
 			<tr><td>Select</td><td><code>listbox</code></td><td><code>option</code></td></tr>
@@ -76,16 +83,16 @@
 
 	<h2>Type-Ahead Search</h2>
 	<p>
-		In List and Select components, typing characters jumps to the first matching item.
-		The search matches against the display text (the <code>text</code> field) and
-		resets after a brief pause. This works automatically — no configuration needed.
+		In List and Select components, typing characters jumps to the first matching item. The search
+		matches against the display text (the <code>text</code> field) and resets after a brief pause. This
+		works automatically — no configuration needed.
 	</p>
 
 	<h2>Focus Management</h2>
 	<p>
-		When a dropdown opens (Select, Menu), focus moves to the first item or the currently
-		selected item. When it closes, focus returns to the trigger element. Tab key moves
-		focus out of the component entirely, following standard web behavior.
+		When a dropdown opens (Select, Menu), focus moves to the first item or the currently selected
+		item. When it closes, focus returns to the trigger element. Tab key moves focus out of the
+		component entirely, following standard web behavior.
 	</p>
 
 	<h2>Related</h2>

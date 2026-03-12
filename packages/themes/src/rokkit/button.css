@@ -101,7 +101,8 @@
   @apply from-danger-z5 to-danger-z3 text-on-danger bg-gradient-to-br;
 }
 
-[data-style='rokkit'] [data-button][data-style='gradient']:hover:not(:disabled):not([data-disabled]) {
+[data-style='rokkit']
+  [data-button][data-style='gradient']:hover:not(:disabled):not([data-disabled]) {
   filter: brightness(1.1);
 }
 
@@ -141,38 +142,66 @@
 }
 
 /* Outline style hover */
-[data-style='rokkit'] [data-button][data-style='outline']:hover:not(:disabled):not([data-disabled])[data-variant='default'],
-[data-style='rokkit'] [data-button][data-style='outline']:hover:not(:disabled):not([data-disabled]):not([data-variant]) {
+[data-style='rokkit']
+  [data-button][data-style='outline']:hover:not(:disabled):not(
+    [data-disabled]
+  )[data-variant='default'],
+[data-style='rokkit']
+  [data-button][data-style='outline']:hover:not(:disabled):not([data-disabled]):not(
+    [data-variant]
+  ) {
   @apply from-surface-z2 to-surface-z1 bg-gradient-to-b;
 }
 
-[data-style='rokkit'] [data-button][data-style='outline']:hover:not(:disabled):not([data-disabled])[data-variant='primary'] {
+[data-style='rokkit']
+  [data-button][data-style='outline']:hover:not(:disabled):not(
+    [data-disabled]
+  )[data-variant='primary'] {
   @apply from-primary-z2 to-primary-z1 bg-gradient-to-b;
 }
 
-[data-style='rokkit'] [data-button][data-style='outline']:hover:not(:disabled):not([data-disabled])[data-variant='secondary'] {
+[data-style='rokkit']
+  [data-button][data-style='outline']:hover:not(:disabled):not(
+    [data-disabled]
+  )[data-variant='secondary'] {
   @apply from-secondary-z2 to-secondary-z1 bg-gradient-to-b;
 }
 
-[data-style='rokkit'] [data-button][data-style='outline']:hover:not(:disabled):not([data-disabled])[data-variant='danger'] {
+[data-style='rokkit']
+  [data-button][data-style='outline']:hover:not(:disabled):not(
+    [data-disabled]
+  )[data-variant='danger'] {
   @apply from-danger-z2 to-danger-z1 bg-gradient-to-b;
 }
 
 /* Ghost style hover */
-[data-style='rokkit'] [data-button][data-style='ghost']:hover:not(:disabled):not([data-disabled])[data-variant='default'],
-[data-style='rokkit'] [data-button][data-style='ghost']:hover:not(:disabled):not([data-disabled]):not([data-variant]) {
+[data-style='rokkit']
+  [data-button][data-style='ghost']:hover:not(:disabled):not(
+    [data-disabled]
+  )[data-variant='default'],
+[data-style='rokkit']
+  [data-button][data-style='ghost']:hover:not(:disabled):not([data-disabled]):not([data-variant]) {
   @apply bg-surface-z2;
 }
 
-[data-style='rokkit'] [data-button][data-style='ghost']:hover:not(:disabled):not([data-disabled])[data-variant='primary'] {
+[data-style='rokkit']
+  [data-button][data-style='ghost']:hover:not(:disabled):not(
+    [data-disabled]
+  )[data-variant='primary'] {
   @apply bg-primary-z1;
 }
 
-[data-style='rokkit'] [data-button][data-style='ghost']:hover:not(:disabled):not([data-disabled])[data-variant='secondary'] {
+[data-style='rokkit']
+  [data-button][data-style='ghost']:hover:not(:disabled):not(
+    [data-disabled]
+  )[data-variant='secondary'] {
   @apply bg-secondary-z1;
 }
 
-[data-style='rokkit'] [data-button][data-style='ghost']:hover:not(:disabled):not([data-disabled])[data-variant='danger'] {
+[data-style='rokkit']
+  [data-button][data-style='ghost']:hover:not(:disabled):not(
+    [data-disabled]
+  )[data-variant='danger'] {
   @apply bg-danger-z1;
 }
 

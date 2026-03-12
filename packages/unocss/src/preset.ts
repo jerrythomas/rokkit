@@ -9,13 +9,7 @@ import {
 	transformerVariantGroup
 } from 'unocss'
 import type { Preset } from 'unocss'
-import {
-	shades,
-	defaultPalette,
-	DEFAULT_ICONS,
-	iconShortcuts,
-	Theme
-} from '@rokkit/core'
+import { shades, defaultPalette, DEFAULT_ICONS, iconShortcuts, Theme } from '@rokkit/core'
 import { iconCollections } from '@rokkit/core/vite'
 import { loadConfig } from './config.js'
 
@@ -43,12 +37,8 @@ function buildIconCollections(configIcons) {
 function buildSafelist() {
 	return [
 		...DEFAULT_ICONS,
-		...defaultPalette.flatMap((color) =>
-			shades.map((shade) => `bg-${color}-${shade}`)
-		),
-		...defaultPalette.flatMap((color) =>
-			shades.map((shade) => `bg-${color}-${shade}/50`)
-		)
+		...defaultPalette.flatMap((color) => shades.map((shade) => `bg-${color}-${shade}`)),
+		...defaultPalette.flatMap((color) => shades.map((shade) => `bg-${color}-${shade}/50`))
 	]
 }
 
@@ -56,7 +46,7 @@ function buildShortcuts(theme, config) {
 	const shortcuts = []
 
 	for (const [name, mapping] of Object.entries(config.skins)) {
-		shortcuts.push([`skin-${  name}`, theme.getPalette(mapping)])
+		shortcuts.push([`skin-${name}`, theme.getPalette(mapping)])
 	}
 
 	const variants = Object.keys(config.colors)

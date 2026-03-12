@@ -49,13 +49,15 @@
 
 	const icons = $derived({ ...DEFAULT_STATE_ICONS.folder, ...userIcons })
 
-
 	const proxyTree = $derived(
 		new ProxyTree(items, fields, {
 			createProxy: (raw, f, key, level) =>
-				new LazyProxyItem(raw, f, key, level, onlazyload
-					? async (_value, rawItem) => onlazyload(rawItem)
-					: null
+				new LazyProxyItem(
+					raw,
+					f,
+					key,
+					level,
+					onlazyload ? async (_value, rawItem) => onlazyload(rawItem) : null
 				)
 		})
 	)
@@ -93,73 +95,78 @@
 		{@const content = resolveSnippet(snippets, proxy, ITEM_SNIPPET)}
 
 		<div
-				data-tree-node
-				data-tree-path={node.key}
-				data-tree-level={node.level - 1}
-				data-tree-has-children={node.isExpandable || undefined}
-				data-tree-loading={isLoading || undefined}
-				data-active={isActive || undefined}
-				role="treeitem"
-				aria-expanded={node.isExpandable ? proxy.expanded : undefined}
-				aria-selected={isActive}
-				aria-busy={isLoading || undefined}
-				aria-level={node.level}
-			>
-				<div data-tree-node-row>
-					{#each node.lineTypes as lineType, lineIndex (lineIndex)}
-						{#if lineType === 'icon'}
-							<button
-								type="button"
-								data-tree-toggle-btn
-								onclick={() => wrapper.toggle(node.key)}
-								aria-label={isLoading ? labels.loading : proxy.expanded ? labels.collapse : labels.expand}
-								tabindex={-1}
-							>
-								{#if isLoading}
-									<span data-tree-spinner aria-hidden="true"></span>
-								{:else}
-									<span class={proxy.expanded ? icons.opened : icons.closed} aria-hidden="true"></span>
-								{/if}
-							</button>
-						{:else}
-							<Connector type={lineType} />
-						{/if}
-					{/each}
-
-					{#if proxy.get('href')}
-						<a
-							href={proxy.get('href')}
-							data-tree-item-content
-							data-path={node.key}
-							data-active={isActive || undefined}
-							aria-label={proxy.label}
-							aria-current={isActive ? 'page' : undefined}
-						>
-							{#if content}
-								{@render content(proxy)}
-							{:else}
-								<ItemContent {proxy} showIcon={!node.isExpandable} showSubtext={false} />
-							{/if}
-						</a>
-					{:else}
+			data-tree-node
+			data-tree-path={node.key}
+			data-tree-level={node.level - 1}
+			data-tree-has-children={node.isExpandable || undefined}
+			data-tree-loading={isLoading || undefined}
+			data-active={isActive || undefined}
+			role="treeitem"
+			aria-expanded={node.isExpandable ? proxy.expanded : undefined}
+			aria-selected={isActive}
+			aria-busy={isLoading || undefined}
+			aria-level={node.level}
+		>
+			<div data-tree-node-row>
+				{#each node.lineTypes as lineType, lineIndex (lineIndex)}
+					{#if lineType === 'icon'}
 						<button
 							type="button"
-							data-tree-item-content
-							data-path={node.key}
-							data-active={isActive || undefined}
-							aria-label={proxy.label}
+							data-tree-toggle-btn
+							onclick={() => wrapper.toggle(node.key)}
+							aria-label={isLoading
+								? labels.loading
+								: proxy.expanded
+									? labels.collapse
+									: labels.expand}
+							tabindex={-1}
 						>
-							{#if content}
-								{@render content(proxy)}
+							{#if isLoading}
+								<span data-tree-spinner aria-hidden="true"></span>
 							{:else}
-								<ItemContent {proxy} showIcon={!node.isExpandable} showSubtext={false} />
+								<span class={proxy.expanded ? icons.opened : icons.closed} aria-hidden="true"
+								></span>
 							{/if}
 						</button>
+					{:else}
+						<Connector type={lineType} />
 					{/if}
-				</div>
+				{/each}
+
+				{#if proxy.get('href')}
+					<a
+						href={proxy.get('href')}
+						data-tree-item-content
+						data-path={node.key}
+						data-active={isActive || undefined}
+						aria-label={proxy.label}
+						aria-current={isActive ? 'page' : undefined}
+					>
+						{#if content}
+							{@render content(proxy)}
+						{:else}
+							<ItemContent {proxy} showIcon={!node.isExpandable} showSubtext={false} />
+						{/if}
+					</a>
+				{:else}
+					<button
+						type="button"
+						data-tree-item-content
+						data-path={node.key}
+						data-active={isActive || undefined}
+						aria-label={proxy.label}
+					>
+						{#if content}
+							{@render content(proxy)}
+						{:else}
+							<ItemContent {proxy} showIcon={!node.isExpandable} showSubtext={false} />
+						{/if}
+					</button>
+				{/if}
 			</div>
+		</div>
 	{/each}
 	{#if hasMore}
-		<Button label={labels.loadMore} style="ghost" size={size} onclick={() => wrapper.loadMore()} />
+		<Button label={labels.loadMore} style="ghost" {size} onclick={() => wrapper.loadMore()} />
 	{/if}
 </div>

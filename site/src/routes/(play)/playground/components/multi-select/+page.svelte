@@ -53,9 +53,9 @@
 
 <PlaySection>
 	{#snippet preview()}
-		<div class="flex gap-8 flex-wrap">
+		<div class="flex flex-wrap gap-8">
 			<div>
-				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Colors</h4>
+				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">Colors</h4>
 				<div class="w-[300px]">
 					<MultiSelect
 						items={colors}
@@ -67,7 +67,7 @@
 				</div>
 			</div>
 			<div>
-				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">With icons</h4>
+				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">With icons</h4>
 				<div class="w-[300px]">
 					<MultiSelect
 						items={withIcons}

@@ -340,7 +340,10 @@ describe('Tree', () => {
 	})
 
 	it('allows custom expand/collapse labels', async () => {
-		const { container } = render(Tree, { items: nestedItems, labels: { expand: 'Ouvrir', collapse: 'Fermer' } })
+		const { container } = render(Tree, {
+			items: nestedItems,
+			labels: { expand: 'Ouvrir', collapse: 'Fermer' }
+		})
 		const toggleBtn = container.querySelector('[data-tree-toggle-btn]')
 		expect(toggleBtn?.getAttribute('aria-label')).toBe('Ouvrir')
 		// Expand and check collapse label

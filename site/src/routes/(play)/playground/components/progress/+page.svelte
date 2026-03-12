@@ -25,14 +25,14 @@
 
 <PlaySection>
 	{#snippet preview()}
-		<div class="flex flex-col gap-8 p-8 w-full max-w-md mx-auto">
+		<div class="mx-auto flex w-full max-w-md flex-col gap-8 p-8">
 			<div class="flex flex-col gap-2">
-				<span class="text-sm text-surface-z5">Determinate ({props.value}%)</span>
+				<span class="text-surface-z5 text-sm">Determinate ({props.value}%)</span>
 				<ProgressBar value={props.value} max={props.max} />
 			</div>
 
 			<div class="flex flex-col gap-2">
-				<span class="text-sm text-surface-z5">Indeterminate (loading)</span>
+				<span class="text-surface-z5 text-sm">Indeterminate (loading)</span>
 				<ProgressBar />
 			</div>
 		</div>

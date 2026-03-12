@@ -203,22 +203,22 @@ Feature: Consistent Component API
 
 ## Status
 
-| Feature | Status |
-|---------|--------|
-| Selection: List | ✅ Implemented |
-| Selection: Select | ✅ Implemented |
-| Selection: MultiSelect | ✅ Implemented |
-| Selection: Tree | ✅ Implemented |
-| Selection: Toggle | ✅ Implemented |
-| Navigation: Tabs | ✅ Implemented |
-| Navigation: Menu | ✅ Implemented |
-| Navigation: Toolbar | ✅ Implemented |
-| Navigation: Breadcrumb | 🔲 Planned |
-| Input: Text Input | ✅ Implemented |
-| Input: Checkbox | ✅ Implemented |
-| Input: Toggle Switch | ✅ Implemented |
-| Overlay: Dropdown | ✅ Implemented |
-| Overlay: Popover | ✅ Implemented |
-| Cards | 🚧 In Progress |
-| Layout: Stack / Grid / Divider | 🔲 Planned |
-| Data Table | 🔲 Planned |
+| Feature                        | Status         |
+| ------------------------------ | -------------- |
+| Selection: List                | ✅ Implemented |
+| Selection: Select              | ✅ Implemented |
+| Selection: MultiSelect         | ✅ Implemented |
+| Selection: Tree                | ✅ Implemented |
+| Selection: Toggle              | ✅ Implemented |
+| Navigation: Tabs               | ✅ Implemented |
+| Navigation: Menu               | ✅ Implemented |
+| Navigation: Toolbar            | ✅ Implemented |
+| Navigation: Breadcrumb         | 🔲 Planned     |
+| Input: Text Input              | ✅ Implemented |
+| Input: Checkbox                | ✅ Implemented |
+| Input: Toggle Switch           | ✅ Implemented |
+| Overlay: Dropdown              | ✅ Implemented |
+| Overlay: Popover               | ✅ Implemented |
+| Cards                          | 🚧 In Progress |
+| Layout: Stack / Grid / Divider | 🔲 Planned     |
+| Data Table                     | 🔲 Planned     |

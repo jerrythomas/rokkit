@@ -1,5 +1,8 @@
 <script lang="ts">
-	import type { FloatingNavigationProps, FloatingNavigationIcons } from '../types/floating-navigation.js'
+	import type {
+		FloatingNavigationProps,
+		FloatingNavigationIcons
+	} from '../types/floating-navigation.js'
 	import { ProxyItem, messages } from '@rokkit/states'
 	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 
@@ -23,7 +26,11 @@
 
 	const labels = $derived({ ...messages.current.floatingNav, ...userLabels })
 
-	const icons = $derived({ pin: DEFAULT_STATE_ICONS.action.pin, unpin: DEFAULT_STATE_ICONS.action.unpin, ...userIcons })
+	const icons = $derived({
+		pin: DEFAULT_STATE_ICONS.action.pin,
+		unpin: DEFAULT_STATE_ICONS.action.unpin,
+		...userIcons
+	})
 
 	let navRef = $state<HTMLElement | null>(null)
 	let expanded = $state(false)
@@ -38,9 +45,7 @@
 		}))
 	)
 
-	const activeIndex = $derived(
-		itemProxies.findIndex((item) => item.proxy.value === value)
-	)
+	const activeIndex = $derived(itemProxies.findIndex((item) => item.proxy.value === value))
 
 	function togglePin() {
 		pinned = !pinned
@@ -61,7 +66,10 @@
 		onselect?.(item.proxy.value, item.original)
 
 		// Smooth scroll to target section
-		const href = item.proxy.get('href') !== undefined ? String(item.original[userFields?.href ?? 'href'] ?? '') : ''
+		const href =
+			item.proxy.get('href') !== undefined
+				? String(item.original[userFields?.href ?? 'href'] ?? '')
+				: ''
 		const targetId = href.startsWith('#') ? href.slice(1) : String(item.proxy.value)
 		const el = document.getElementById(targetId)
 		el?.scrollIntoView({ behavior: 'smooth' })
@@ -123,9 +131,10 @@
 			for (const entry of entries) {
 				if (entry.isIntersecting) {
 					const match = itemProxies.find((item) => {
-						const href = item.proxy.get('href') !== undefined
-							? String(item.original[userFields?.href ?? 'href'] ?? '')
-							: ''
+						const href =
+							item.proxy.get('href') !== undefined
+								? String(item.original[userFields?.href ?? 'href'] ?? '')
+								: ''
 						const targetId = href.startsWith('#') ? href.slice(1) : String(item.proxy.value)
 						return targetId === entry.target.id
 					})
@@ -137,9 +146,10 @@
 		}, observerOptions)
 
 		for (const item of itemProxies) {
-			const href = item.proxy.get('href') !== undefined
-				? String(item.original[userFields?.href ?? 'href'] ?? '')
-				: ''
+			const href =
+				item.proxy.get('href') !== undefined
+					? String(item.original[userFields?.href ?? 'href'] ?? '')
+					: ''
 			const targetId = href.startsWith('#') ? href.slice(1) : String(item.proxy.value)
 			const el = document.getElementById(targetId)
 			if (el) observer.observe(el)
@@ -174,7 +184,8 @@
 			aria-label={pinned ? labels.unpin : labels.pin}
 			onclick={togglePin}
 		>
-			<span data-floating-nav-pin-icon class={pinned ? icons.unpin : icons.pin} aria-hidden="true"></span>
+			<span data-floating-nav-pin-icon class={pinned ? icons.unpin : icons.pin} aria-hidden="true"
+			></span>
 		</button>
 	</div>
 
@@ -225,10 +236,7 @@
 		{/each}
 
 		{#if activeIndex >= 0}
-			<span
-				data-floating-nav-indicator
-				style="--fn-active-index: {activeIndex}"
-				aria-hidden="true"
+			<span data-floating-nav-indicator style="--fn-active-index: {activeIndex}" aria-hidden="true"
 			></span>
 		{/if}
 	</div>

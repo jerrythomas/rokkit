@@ -52,9 +52,9 @@
 	const selectFields = { label: 'label', value: 'value' }
 </script>
 
-<div class="p-6 flex flex-col gap-6">
-	<div class="flex items-center justify-between flex-wrap gap-3">
-		<h1 class="text-2xl font-bold text-surface-z8">Projects</h1>
+<div class="flex flex-col gap-6 p-6">
+	<div class="flex flex-wrap items-center justify-between gap-3">
+		<h1 class="text-surface-z8 text-2xl font-bold">Projects</h1>
 		<Toolbar>
 			<Button label="New Task" icon="i-solar:add-circle-bold-duotone" variant="primary" />
 		</Toolbar>
@@ -67,28 +67,24 @@
 	</Toolbar>
 
 	<!-- Task tree + detail panel -->
-	<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+	<div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
 		<div data-card class="p-4">
-			<h2 class="text-sm font-semibold text-surface-z7 mb-3">Tasks</h2>
-			<Tree
-				items={projects}
-				fields={treeFields}
-				collapsible
-				bind:value={selectedTask}
-			/>
+			<h2 class="text-surface-z7 mb-3 text-sm font-semibold">Tasks</h2>
+			<Tree items={projects} fields={treeFields} collapsible bind:value={selectedTask} />
 		</div>
 
 		<div data-card class="p-4">
 			{#if selectedTask}
-				<h2 class="text-sm font-semibold text-surface-z7 mb-4">Task Detail</h2>
+				<h2 class="text-surface-z7 mb-4 text-sm font-semibold">Task Detail</h2>
 				<div class="flex flex-col gap-3">
 					<p class="text-surface-z8 font-medium">{selectedTask}</p>
-					<p class="text-sm text-surface-z5">Inline editing with FormRenderer coming soon.</p>
+					<p class="text-surface-z5 text-sm">Inline editing with FormRenderer coming soon.</p>
 				</div>
 			{:else}
-				<div class="h-full flex flex-col items-center justify-center gap-2 text-center min-h-40">
-					<span class="i-solar:cursor-bold-duotone text-3xl text-surface-z3" aria-hidden="true"></span>
-					<p class="text-sm text-surface-z5">Select a task to view details</p>
+				<div class="flex h-full min-h-40 flex-col items-center justify-center gap-2 text-center">
+					<span class="i-solar:cursor-bold-duotone text-surface-z3 text-3xl" aria-hidden="true"
+					></span>
+					<p class="text-surface-z5 text-sm">Select a task to view details</p>
 				</div>
 			{/if}
 		</div>

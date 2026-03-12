@@ -6,7 +6,13 @@
 
 	let lastAction = $state('')
 
-	let props = $state({ size: 'md', expand: 'vertical', position: 'bottom-right', itemAlign: 'center', backdrop: false })
+	let props = $state({
+		size: 'md',
+		expand: 'vertical',
+		position: 'bottom-right',
+		itemAlign: 'center',
+		backdrop: false
+	})
 
 	const schema = {
 		type: 'object',
@@ -23,8 +29,16 @@
 		type: 'vertical',
 		elements: [
 			{ scope: '#/size', label: 'Size', props: { options: ['sm', 'md', 'lg'] } },
-			{ scope: '#/expand', label: 'Expand', props: { options: ['vertical', 'horizontal', 'radial'] } },
-			{ scope: '#/position', label: 'Position', props: { options: ['bottom-right', 'bottom-left', 'top-right', 'top-left'] } },
+			{
+				scope: '#/expand',
+				label: 'Expand',
+				props: { options: ['vertical', 'horizontal', 'radial'] }
+			},
+			{
+				scope: '#/position',
+				label: 'Position',
+				props: { options: ['bottom-right', 'bottom-left', 'top-right', 'top-left'] }
+			},
 			{ scope: '#/itemAlign', label: 'Item Align', props: { options: ['start', 'center', 'end'] } },
 			{ scope: '#/backdrop', label: 'Backdrop' },
 			{ type: 'separator' }
@@ -45,7 +59,9 @@
 
 <PlaySection>
 	{#snippet preview()}
-		<div class="relative w-full h-[400px] border-dashed border-surface-z3 border rounded-lg overflow-visible">
+		<div
+			class="border-surface-z3 relative h-[400px] w-full overflow-visible rounded-lg border border-dashed"
+		>
 			<FloatingAction
 				items={actions}
 				icon="i-lucide:plus"

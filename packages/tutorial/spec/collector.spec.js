@@ -1,4 +1,3 @@
- 
 import { describe, it, expect, vi, afterEach } from 'vitest'
 import fs from 'fs/promises'
 import { getFiles } from '../src/files'
@@ -122,7 +121,9 @@ describe('collector', () => {
 
 			expect(result.error.split('\n')[0]).toEqual("Parse failure: Expected ';', '}' or <eof>")
 			expect(console.error).toHaveBeenCalledWith(
-				expect.stringMatching(/Parse failure: Expected ';', '\}' or <eof>[\s\S]*At file:.*error\/meta\.js:2:\d+/)
+				expect.stringMatching(
+					/Parse failure: Expected ';', '\}' or <eof>[\s\S]*At file:.*error\/meta\.js:2:\d+/
+				)
 			)
 			await fs.unlink(path.join(folder, 'meta.js'))
 		})

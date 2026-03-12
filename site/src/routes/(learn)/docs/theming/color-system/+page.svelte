@@ -6,9 +6,9 @@
 </script>
 
 <article data-article-root>
-	<p class="text-[1.0625rem] leading-7 text-surface-z6 mb-8">
-		Rokkit uses semantic z-depth color tokens that automatically adapt between light and dark
-		modes. The system provides consistent visual hierarchy without manual color management.
+	<p class="text-surface-z6 mb-8 text-[1.0625rem] leading-7">
+		Rokkit uses semantic z-depth color tokens that automatically adapt between light and dark modes.
+		The system provides consistent visual hierarchy without manual color management.
 	</p>
 
 	<h2>Z-Depth Tokens</h2>
@@ -41,13 +41,15 @@
 		<li><code>primary</code> — Brand color for primary actions and focus states</li>
 		<li><code>secondary</code> — Accent color for highlights and active indicators</li>
 		<li><code>accent</code> — Additional emphasis color</li>
-		<li><code>success</code>, <code>warning</code>, <code>danger</code>, <code>info</code> — Status colors</li>
+		<li>
+			<code>success</code>, <code>warning</code>, <code>danger</code>, <code>info</code> — Status colors
+		</li>
 	</ul>
 
 	<h2>Usage</h2>
 	<p>
-		Use z-depth tokens as UnoCSS utility classes. The token resolves to the correct shade
-		for the current mode (light or dark):
+		Use z-depth tokens as UnoCSS utility classes. The token resolves to the correct shade for the
+		current mode (light or dark):
 	</p>
 	<Code content={usage} language="svelte" />
 
@@ -60,13 +62,12 @@
 
 	<h2>Dark Mode</h2>
 	<p>
-		Z-depth tokens automatically invert in dark mode. Set <code>data-mode="dark"</code> on
-		your root element, and all <code>z1-z10</code> values flip to their dark equivalents.
-		No additional CSS needed.
+		Z-depth tokens automatically invert in dark mode. Set <code>data-mode="dark"</code> on your root
+		element, and all <code>z1-z10</code> values flip to their dark equivalents. No additional CSS needed.
 	</p>
 	<p>
-		Use the <code>ThemeSwitcherToggle</code> component from <code>@rokkit/app</code> to
-		let users toggle between light, dark, and system modes:
+		Use the <code>ThemeSwitcherToggle</code> component from <code>@rokkit/app</code> to let users toggle
+		between light, dark, and system modes:
 	</p>
 	<Code content={darkMode} language="svelte" />
 

@@ -4,7 +4,13 @@
 	import { FormRenderer } from '@rokkit/forms'
 	import PlaySection from '$lib/components/PlaySection.svelte'
 
-	let props = $state({ radius: 300, depth: 1, surfaceScale: 2, specularConstant: 0.75, specularExponent: 120 })
+	let props = $state({
+		radius: 300,
+		depth: 1,
+		surfaceScale: 2,
+		specularConstant: 0.75,
+		specularExponent: 120
+	})
 
 	const schema = {
 		type: 'object',
@@ -31,7 +37,7 @@
 
 <PlaySection>
 	{#snippet preview()}
-		<div class="flex gap-8 items-center justify-center p-8">
+		<div class="flex items-center justify-center gap-8 p-8">
 			<Shine
 				radius={props.radius}
 				depth={props.depth}
@@ -39,7 +45,9 @@
 				specularConstant={props.specularConstant}
 				specularExponent={props.specularExponent}
 			>
-				<div class="w-48 h-32 rounded-xl bg-primary-z3 flex items-center justify-center text-on-primary">
+				<div
+					class="bg-primary-z3 text-on-primary flex h-32 w-48 items-center justify-center rounded-xl"
+				>
 					<span class="text-lg font-semibold">Shine effect</span>
 				</div>
 			</Shine>
@@ -52,8 +60,8 @@
 				specularExponent={props.specularExponent}
 				color="rgb(var(--accent-500))"
 			>
-				<div class="w-48 h-48 rounded-xl bg-surface-z2 flex items-center justify-center">
-					<span class="i-lucide:diamond text-4xl text-surface-z5"></span>
+				<div class="bg-surface-z2 flex h-48 w-48 items-center justify-center rounded-xl">
+					<span class="i-lucide:diamond text-surface-z5 text-4xl"></span>
 				</div>
 			</Shine>
 		</div>

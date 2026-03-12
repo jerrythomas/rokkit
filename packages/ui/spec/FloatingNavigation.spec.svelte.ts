@@ -69,17 +69,23 @@ describe('FloatingNavigation', () => {
 
 	it('supports left position', () => {
 		const { container } = render(FloatingNavigation, { items: basicItems, position: 'left' })
-		expect(container.querySelector('[data-floating-nav]')?.getAttribute('data-position')).toBe('left')
+		expect(container.querySelector('[data-floating-nav]')?.getAttribute('data-position')).toBe(
+			'left'
+		)
 	})
 
 	it('supports top position', () => {
 		const { container } = render(FloatingNavigation, { items: basicItems, position: 'top' })
-		expect(container.querySelector('[data-floating-nav]')?.getAttribute('data-position')).toBe('top')
+		expect(container.querySelector('[data-floating-nav]')?.getAttribute('data-position')).toBe(
+			'top'
+		)
 	})
 
 	it('supports bottom position', () => {
 		const { container } = render(FloatingNavigation, { items: basicItems, position: 'bottom' })
-		expect(container.querySelector('[data-floating-nav]')?.getAttribute('data-position')).toBe('bottom')
+		expect(container.querySelector('[data-floating-nav]')?.getAttribute('data-position')).toBe(
+			'bottom'
+		)
 	})
 
 	// ─── Size ───────────────────────────────────────────────────────
@@ -197,7 +203,11 @@ describe('FloatingNavigation', () => {
 
 	it('calls onselect when clicking a button item', async () => {
 		const onselect = vi.fn()
-		const { container } = render(FloatingNavigation, { items: basicItems, onselect, observe: false })
+		const { container } = render(FloatingNavigation, {
+			items: basicItems,
+			onselect,
+			observe: false
+		})
 		const items = container.querySelectorAll('[data-floating-nav-item]')
 		await fireEvent.click(items[2])
 		expect(onselect).toHaveBeenCalledWith('pricing', basicItems[2])
@@ -236,7 +246,11 @@ describe('FloatingNavigation', () => {
 	})
 
 	it('does not collapse on Escape when pinned', async () => {
-		const { container } = render(FloatingNavigation, { items: basicItems, pinned: true, observe: false })
+		const { container } = render(FloatingNavigation, {
+			items: basicItems,
+			pinned: true,
+			observe: false
+		})
 		const nav = container.querySelector('[data-floating-nav]')!
 		await fireEvent.keyDown(nav, { key: 'Escape' })
 		expect(nav.hasAttribute('data-expanded')).toBe(true)
@@ -275,7 +289,10 @@ describe('FloatingNavigation', () => {
 	})
 
 	it('uses custom pin/unpin icons override', () => {
-		const { container } = render(FloatingNavigation, { items: basicItems, icons: { pin: 'custom-pin', unpin: 'custom-unpin' } })
+		const { container } = render(FloatingNavigation, {
+			items: basicItems,
+			icons: { pin: 'custom-pin', unpin: 'custom-unpin' }
+		})
 		const icon = container.querySelector('[data-floating-nav-pin-icon]')
 		expect(icon?.classList.contains('custom-pin')).toBe(true)
 	})

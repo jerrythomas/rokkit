@@ -16,8 +16,7 @@ export function flatVisibleNodes(items, fields = DEFAULT_FIELDS, path = [], expa
 	items.forEach((item, index) => {
 		const itemPath = [...path, index]
 		const key = getKeyFromPath(itemPath)
-		const hasChildren =
-			Array.isArray(item[fields.children]) && item[fields.children].length > 0
+		const hasChildren = Array.isArray(item[fields.children]) && item[fields.children].length > 0
 		const expanded = hasChildren && (expandedKeys ? expandedKeys.has(key) : item[fields.expanded])
 
 		data.push({ key, value: item, level, hasChildren })

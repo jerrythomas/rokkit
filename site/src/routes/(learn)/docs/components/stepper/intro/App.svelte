@@ -30,7 +30,5 @@
 		Current: <strong>{steps[current].text}</strong> (Step {current + 1} of {steps.length})
 	</p>
 
-	<button class="button is-primary" onclick={advance}>
-		Complete &amp; Next
-	</button>
+	<button class="button is-primary" onclick={advance}> Complete &amp; Next </button>
 </div>

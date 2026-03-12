@@ -39,7 +39,9 @@
 }
 
 /* Standard inputs inside wrapper */
-[data-style='rokkit'] [data-input-root] input:not([type='checkbox'], [type='radio'], [type='color']),
+[data-style='rokkit']
+  [data-input-root]
+  input:not([type='checkbox'], [type='radio'], [type='color']),
 [data-style='rokkit'] [data-input-root] select {
   @apply bg-surface-z2 text-surface-z8 rounded-md border-none px-3 focus:outline-none;
   font-size: 0.875rem;
@@ -53,13 +55,13 @@
 
 /* Select inside input-root: remove trigger styles since input-root provides the border */
 [data-style='rokkit'] [data-input-root] [data-select-trigger] {
-  @apply border-none bg-surface-z2 text-surface-z8 rounded-md shadow-none ring-0 focus:outline-none;
+  @apply bg-surface-z2 text-surface-z8 rounded-md border-none shadow-none ring-0 focus:outline-none;
   background-image: none;
 }
 
 /* Suppress standalone select open-state ring/border when inside input-root */
 [data-style='rokkit'] [data-input-root] [data-select][data-open='true'] [data-select-trigger] {
-  @apply border-none ring-0 shadow-none;
+  @apply border-none shadow-none ring-0;
 }
 
 [data-style='rokkit'] [data-input-root] input::placeholder,
@@ -74,14 +76,16 @@
 
 /* Checkbox icon: theme-colored */
 [data-style='rokkit'] [data-checkbox-icon] {
-  @apply text-surface-z5 cursor-pointer transition-colors text-lg rounded;
+  @apply text-surface-z5 cursor-pointer rounded text-lg transition-colors;
 }
 
 [data-style='rokkit'] [data-checkbox-icon]:focus-visible {
-  @apply outline-2 outline-primary-z4 outline-offset-2;
+  @apply outline-primary-z4 outline-2 outline-offset-2;
 }
 
-[data-style='rokkit'] [data-checkbox-root][data-variant='custom']:has(input:checked) [data-checkbox-icon] {
+[data-style='rokkit']
+  [data-checkbox-root][data-variant='custom']:has(input:checked)
+  [data-checkbox-icon] {
   @apply text-primary-z6;
 }
 

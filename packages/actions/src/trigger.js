@@ -49,7 +49,9 @@ export class Trigger {
 		document.addEventListener('keydown', this.#handleDocKeydown)
 	}
 
-	get isOpen() { return this.#isOpenFn() }
+	get isOpen() {
+		return this.#isOpenFn()
+	}
 
 	open() {
 		if (this.isOpen) return

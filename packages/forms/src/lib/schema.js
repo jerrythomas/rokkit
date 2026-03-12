@@ -9,7 +9,6 @@ import { typeOf } from '@rokkit/data'
 function deriveObjectProperties(data) {
 	const properties = {}
 	for (const [key, value] of Object.entries(data)) {
-		 
 		properties[key] = deriveSchemaFromValue(value)
 	}
 	return properties

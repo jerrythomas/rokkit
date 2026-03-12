@@ -178,19 +178,19 @@ Feature: Accessible Chart Data
 
 ## Status
 
-| Feature | Status |
-|---------|--------|
-| Sparklines — line/bar/area | ✅ Implemented |
-| Sparkline pattern fills | 🔲 Planned |
-| Animated bar chart | 🔲 Planned |
-| Animated line / area chart | 🔲 Planned |
-| Pie / donut chart | 🔲 Planned |
-| Scatter chart | 🔲 Planned |
-| Interactive tooltips | 🔲 Planned |
-| Click selection on data points | 🔲 Planned |
-| Zoom and pan | 🔲 Planned |
-| Keyboard navigation within charts | 🔲 Planned |
-| Theme color palette integration | 🔲 Planned |
-| Pattern fills for series | 🔲 Planned |
-| Dark mode support | 🔲 Planned |
-| Accessible data table fallback | 🔲 Planned |
+| Feature                           | Status         |
+| --------------------------------- | -------------- |
+| Sparklines — line/bar/area        | ✅ Implemented |
+| Sparkline pattern fills           | 🔲 Planned     |
+| Animated bar chart                | 🔲 Planned     |
+| Animated line / area chart        | 🔲 Planned     |
+| Pie / donut chart                 | 🔲 Planned     |
+| Scatter chart                     | 🔲 Planned     |
+| Interactive tooltips              | 🔲 Planned     |
+| Click selection on data points    | 🔲 Planned     |
+| Zoom and pan                      | 🔲 Planned     |
+| Keyboard navigation within charts | 🔲 Planned     |
+| Theme color palette integration   | 🔲 Planned     |
+| Pattern fills for series          | 🔲 Planned     |
+| Dark mode support                 | 🔲 Planned     |
+| Accessible data table fallback    | 🔲 Planned     |

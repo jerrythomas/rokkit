@@ -395,7 +395,11 @@ describe('navigator', () => {
 
 				// Dispatch on the anchor so event.target is the anchor, then it bubbles to root
 				const anchor = root.querySelector('a[href]')
-				const event = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true })
+				const event = new KeyboardEvent('keydown', {
+					key: 'Enter',
+					bubbles: true,
+					cancelable: true
+				})
 				const preventDefaultSpy = vi.spyOn(event, 'preventDefault')
 				anchor.dispatchEvent(event)
 

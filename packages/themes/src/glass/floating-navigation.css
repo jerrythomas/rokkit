@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='glass'] [data-floating-nav] {
-  @apply backdrop-blur-xl border shadow-xl bg-surface-z1/70 border-surface-z5/20;
+  @apply bg-surface-z1/70 border-surface-z5/20 border shadow-xl backdrop-blur-xl;
 }
 
 /* =============================================================================
@@ -49,7 +49,7 @@
 }
 
 [data-style='glass'] [data-floating-nav-item]:focus-visible {
-  @apply outline-none ring-2 ring-surface-z5/40;
+  @apply ring-surface-z5/40 ring-2 outline-none;
 }
 
 /* Icon */

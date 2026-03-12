@@ -189,7 +189,11 @@ describe('Rating', () => {
 	})
 
 	it('uses custom icons override', () => {
-		const { container } = render(Rating, { value: 1, max: 2, icons: { filled: 'custom-star-filled', empty: 'custom-star-empty' } })
+		const { container } = render(Rating, {
+			value: 1,
+			max: 2,
+			icons: { filled: 'custom-star-filled', empty: 'custom-star-empty' }
+		})
 		const items = container.querySelectorAll('[data-rating-item]')
 		const filledIcon = items[0]?.querySelector('[data-rating-icon]')
 		const emptyIcon = items[1]?.querySelector('[data-rating-icon]')

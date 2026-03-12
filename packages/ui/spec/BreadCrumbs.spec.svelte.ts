@@ -121,7 +121,10 @@ describe('BreadCrumbs', () => {
 	})
 
 	it('uses custom separator icon override', () => {
-		const { container } = render(BreadCrumbs, { items: basicItems, icons: { separator: 'custom-arrow' } })
+		const { container } = render(BreadCrumbs, {
+			items: basicItems,
+			icons: { separator: 'custom-arrow' }
+		})
 		const sep = container.querySelector('[data-breadcrumb-separator] span')
 		expect(sep?.classList.contains('custom-arrow')).toBe(true)
 	})
@@ -206,8 +209,8 @@ describe('BreadCrumbs', () => {
 	})
 
 	it('allows custom label prop to override default', () => {
-		const { container } = render(BreadCrumbs, { items: basicItems, label: 'Fil d\'Ariane' })
+		const { container } = render(BreadCrumbs, { items: basicItems, label: "Fil d'Ariane" })
 		const nav = container.querySelector('[data-breadcrumbs]')
-		expect(nav?.getAttribute('aria-label')).toBe('Fil d\'Ariane')
+		expect(nav?.getAttribute('aria-label')).toBe("Fil d'Ariane")
 	})
 })

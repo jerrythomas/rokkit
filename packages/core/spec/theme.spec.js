@@ -300,11 +300,17 @@ describe('semanticShortcuts', () => {
 		// border-l at index 6-8
 		expect(shortcuts[6]).toEqual([/^(.+):border-l-secondary-z0(\/\d+)?$/, expect.any(Function)])
 		expect(shortcuts[7]).toEqual([/^border-l-secondary-z0(\/\d+)?$/, expect.any(Function)])
-		expect(shortcuts[8]).toEqual(['border-l-secondary-z0', 'border-l-secondary-50 dark:border-l-secondary-950'])
+		expect(shortcuts[8]).toEqual([
+			'border-l-secondary-z0',
+			'border-l-secondary-50 dark:border-l-secondary-950'
+		])
 		// text at index 18-20
 		expect(shortcuts[18]).toEqual([/^(.+):text-secondary-z0(\/\d+)?$/, expect.any(Function)])
 		expect(shortcuts[19]).toEqual([/^text-secondary-z0(\/\d+)?$/, expect.any(Function)])
-		expect(shortcuts[20]).toEqual(['text-secondary-z0', 'text-secondary-50 dark:text-secondary-950'])
+		expect(shortcuts[20]).toEqual([
+			'text-secondary-z0',
+			'text-secondary-50 dark:text-secondary-950'
+		])
 	})
 
 	it('should execute variant pattern callback function (line 85)', () => {

@@ -7,11 +7,13 @@ import { flushSync } from 'svelte'
 describe('LazyWrapper', () => {
 	describe('basic Wrapper parity', () => {
 		it('should build flatView from items', () => {
-			const w = new LazyWrapper(new ProxyTree([
-				{ label: 'A', value: 'a' },
-				{ label: 'B', value: 'b' },
-				{ label: 'C', value: 'c' }
-			]))
+			const w = new LazyWrapper(
+				new ProxyTree([
+					{ label: 'A', value: 'a' },
+					{ label: 'B', value: 'b' },
+					{ label: 'C', value: 'c' }
+				])
+			)
 			expect(w.flatView).toHaveLength(3)
 			expect(w.flatView[0].proxy.label).toBe('A')
 			expect(w.flatView[1].proxy.label).toBe('B')
@@ -19,26 +21,30 @@ describe('LazyWrapper', () => {
 		})
 
 		it('should build lookup from items', () => {
-			const w = new LazyWrapper(new ProxyTree([
-				{ label: 'A', value: 'a' },
-				{ label: 'B', value: 'b' }
-			]))
+			const w = new LazyWrapper(
+				new ProxyTree([
+					{ label: 'A', value: 'a' },
+					{ label: 'B', value: 'b' }
+				])
+			)
 			expect(w.lookup.size).toBe(2)
 			expect(w.lookup.get('0').label).toBe('A')
 			expect(w.lookup.get('1').label).toBe('B')
 		})
 
 		it('should handle nested items', () => {
-			const w = new LazyWrapper(new ProxyTree([
-				{
-					label: 'Parent',
-					value: 'p',
-					children: [
-						{ label: 'Child1', value: 'c1' },
-						{ label: 'Child2', value: 'c2' }
-					]
-				}
-			]))
+			const w = new LazyWrapper(
+				new ProxyTree([
+					{
+						label: 'Parent',
+						value: 'p',
+						children: [
+							{ label: 'Child1', value: 'c1' },
+							{ label: 'Child2', value: 'c2' }
+						]
+					}
+				])
+			)
 
 			// Initially collapsed — only parent visible
 			expect(w.flatView).toHaveLength(1)
@@ -52,13 +58,15 @@ describe('LazyWrapper', () => {
 		})
 
 		it('should expand/collapse groups', () => {
-			const w = new LazyWrapper(new ProxyTree([
-				{
-					label: 'Parent',
-					value: 'p',
-					children: [{ label: 'Child', value: 'c' }]
-				}
-			]))
+			const w = new LazyWrapper(
+				new ProxyTree([
+					{
+						label: 'Parent',
+						value: 'p',
+						children: [{ label: 'Child', value: 'c' }]
+					}
+				])
+			)
 
 			expect(w.flatView).toHaveLength(1)
 
@@ -75,11 +83,13 @@ describe('LazyWrapper', () => {
 		})
 
 		it('should navigate with next/prev/first/last', () => {
-			const w = new LazyWrapper(new ProxyTree([
-				{ label: 'A', value: 'a' },
-				{ label: 'B', value: 'b' },
-				{ label: 'C', value: 'c' }
-			]))
+			const w = new LazyWrapper(
+				new ProxyTree([
+					{ label: 'A', value: 'a' },
+					{ label: 'B', value: 'b' },
+					{ label: 'C', value: 'c' }
+				])
+			)
 
 			expect(w.focusedKey).toBeNull()
 
@@ -103,7 +113,10 @@ describe('LazyWrapper', () => {
 			const onselect = vi.fn()
 			const onchange = vi.fn()
 			const w = new LazyWrapper(
-				new ProxyTree([{ label: 'A', value: 'a' }, { label: 'B', value: 'b' }]),
+				new ProxyTree([
+					{ label: 'A', value: 'a' },
+					{ label: 'B', value: 'b' }
+				]),
 				{ onselect, onchange }
 			)
 
@@ -115,11 +128,13 @@ describe('LazyWrapper', () => {
 		it('should select groups by toggling expansion', () => {
 			const onselect = vi.fn()
 			const w = new LazyWrapper(
-				new ProxyTree([{
-					label: 'Group',
-					value: 'g',
-					children: [{ label: 'Child', value: 'c' }]
-				}]),
+				new ProxyTree([
+					{
+						label: 'Group',
+						value: 'g',
+						children: [{ label: 'Child', value: 'c' }]
+					}
+				]),
 				{ onselect }
 			)
 
@@ -132,21 +147,25 @@ describe('LazyWrapper', () => {
 		})
 
 		it('should support moveToValue', () => {
-			const w = new LazyWrapper(new ProxyTree([
-				{ label: 'A', value: 'a' },
-				{ label: 'B', value: 'b' }
-			]))
+			const w = new LazyWrapper(
+				new ProxyTree([
+					{ label: 'A', value: 'a' },
+					{ label: 'B', value: 'b' }
+				])
+			)
 
 			w.moveToValue('b')
 			expect(w.focusedKey).toBe('1')
 		})
 
 		it('should support typeahead via findByText', () => {
-			const w = new LazyWrapper(new ProxyTree([
-				{ label: 'Apple', value: 'a' },
-				{ label: 'Banana', value: 'b' },
-				{ label: 'Cherry', value: 'c' }
-			]))
+			const w = new LazyWrapper(
+				new ProxyTree([
+					{ label: 'Apple', value: 'a' },
+					{ label: 'Banana', value: 'b' },
+					{ label: 'Cherry', value: 'c' }
+				])
+			)
 
 			expect(w.findByText('b')).toBe('1')
 			expect(w.findByText('ch')).toBe('2')
@@ -160,13 +179,15 @@ describe('LazyWrapper', () => {
 		})
 
 		it('should handle expand/collapse via keyboard actions', () => {
-			const w = new LazyWrapper(new ProxyTree([
-				{
-					label: 'Parent',
-					value: 'p',
-					children: [{ label: 'Child', value: 'c' }]
-				}
-			]))
+			const w = new LazyWrapper(
+				new ProxyTree([
+					{
+						label: 'Parent',
+						value: 'p',
+						children: [{ label: 'Child', value: 'c' }]
+					}
+				])
+			)
 
 			w.first()
 			expect(w.focusedKey).toBe('0')
@@ -193,11 +214,13 @@ describe('LazyWrapper', () => {
 
 	describe('lineTypes computation', () => {
 		it('should compute lineTypes for flat list', () => {
-			const w = new LazyWrapper(new ProxyTree([
-				{ label: 'A', value: 'a' },
-				{ label: 'B', value: 'b' },
-				{ label: 'C', value: 'c' }
-			]))
+			const w = new LazyWrapper(
+				new ProxyTree([
+					{ label: 'A', value: 'a' },
+					{ label: 'B', value: 'b' },
+					{ label: 'C', value: 'c' }
+				])
+			)
 
 			// Leaf nodes: no lineTypes (no toggle icon, no trailing empty)
 			expect(w.flatView[0].lineTypes).toEqual([])
@@ -206,14 +229,16 @@ describe('LazyWrapper', () => {
 		})
 
 		it('should compute lineTypes for expandable root', () => {
-			const w = new LazyWrapper(new ProxyTree([
-				{
-					label: 'Parent',
-					value: 'p',
-					children: [{ label: 'Child', value: 'c' }]
-				},
-				{ label: 'Sibling', value: 's' }
-			]))
+			const w = new LazyWrapper(
+				new ProxyTree([
+					{
+						label: 'Parent',
+						value: 'p',
+						children: [{ label: 'Child', value: 'c' }]
+					},
+					{ label: 'Sibling', value: 's' }
+				])
+			)
 
 			// Expandable root: 'icon' (toggle slot)
 			expect(w.flatView[0].lineTypes).toEqual(['icon'])
@@ -222,17 +247,19 @@ describe('LazyWrapper', () => {
 		})
 
 		it('should compute lineTypes for expanded children', () => {
-			const w = new LazyWrapper(new ProxyTree([
-				{
-					label: 'Parent',
-					value: 'p',
-					children: [
-						{ label: 'Child1', value: 'c1' },
-						{ label: 'Child2', value: 'c2' }
-					]
-				},
-				{ label: 'Sibling', value: 's' }
-			]))
+			const w = new LazyWrapper(
+				new ProxyTree([
+					{
+						label: 'Parent',
+						value: 'p',
+						children: [
+							{ label: 'Child1', value: 'c1' },
+							{ label: 'Child2', value: 'c2' }
+						]
+					},
+					{ label: 'Sibling', value: 's' }
+				])
+			)
 
 			w.lookup.get('0').expanded = true
 			flushSync()
@@ -248,22 +275,26 @@ describe('LazyWrapper', () => {
 		})
 
 		it('should compute lineTypes for deeply nested tree', () => {
-			const w = new LazyWrapper(new ProxyTree([
-				{
-					label: 'A', value: 'a',
-					children: [
-						{
-							label: 'A1', value: 'a1',
-							children: [
-								{ label: 'A1a', value: 'a1a' },
-								{ label: 'A1b', value: 'a1b' }
-							]
-						},
-						{ label: 'A2', value: 'a2' }
-					]
-				},
-				{ label: 'B', value: 'b' }
-			]))
+			const w = new LazyWrapper(
+				new ProxyTree([
+					{
+						label: 'A',
+						value: 'a',
+						children: [
+							{
+								label: 'A1',
+								value: 'a1',
+								children: [
+									{ label: 'A1a', value: 'a1a' },
+									{ label: 'A1b', value: 'a1b' }
+								]
+							},
+							{ label: 'A2', value: 'a2' }
+						]
+					},
+					{ label: 'B', value: 'b' }
+				])
+			)
 
 			// Expand all
 			w.lookup.get('0').expanded = true
@@ -285,9 +316,7 @@ describe('LazyWrapper', () => {
 		})
 
 		it('should update lineTypes when children are lazily loaded', () => {
-			const w = new LazyWrapper(new ProxyTree([
-				{ label: 'Root', value: 'r' }
-			]))
+			const w = new LazyWrapper(new ProxyTree([{ label: 'Root', value: 'r' }]))
 
 			// Initially a leaf
 			expect(w.flatView[0].lineTypes).toEqual([])
@@ -311,9 +340,7 @@ describe('LazyWrapper', () => {
 
 	describe('reactive lazy loading', () => {
 		it('should update flatView when children are set via proxy.set()', () => {
-			const w = new LazyWrapper(new ProxyTree([
-				{ label: 'Root', value: 'r' }
-			]))
+			const w = new LazyWrapper(new ProxyTree([{ label: 'Root', value: 'r' }]))
 
 			expect(w.flatView).toHaveLength(1)
 			expect(w.flatView[0].hasChildren).toBe(false)
@@ -339,9 +366,7 @@ describe('LazyWrapper', () => {
 		})
 
 		it('should update lookup when children are set via proxy.set()', () => {
-			const w = new LazyWrapper(new ProxyTree([
-				{ label: 'Root', value: 'r' }
-			]))
+			const w = new LazyWrapper(new ProxyTree([{ label: 'Root', value: 'r' }]))
 
 			expect(w.lookup.size).toBe(1)
 
@@ -356,9 +381,7 @@ describe('LazyWrapper', () => {
 		})
 
 		it('should allow navigation to lazily loaded children', () => {
-			const w = new LazyWrapper(new ProxyTree([
-				{ label: 'Root', value: 'r' }
-			]))
+			const w = new LazyWrapper(new ProxyTree([{ label: 'Root', value: 'r' }]))
 
 			const proxy = w.lookup.get('0')
 			proxy.set('children', [{ label: 'Child', value: 'c' }])
@@ -374,10 +397,7 @@ describe('LazyWrapper', () => {
 
 		it('should support selection on lazily loaded items', () => {
 			const onselect = vi.fn()
-			const w = new LazyWrapper(
-				new ProxyTree([{ label: 'Root', value: 'r' }]),
-				{ onselect }
-			)
+			const w = new LazyWrapper(new ProxyTree([{ label: 'Root', value: 'r' }]), { onselect })
 
 			const proxy = w.lookup.get('0')
 			proxy.set('children', [{ label: 'Child', value: 'c' }])
@@ -474,9 +494,7 @@ describe('LazyWrapper', () => {
 
 		it('should update original items when children are loaded', async () => {
 			const items = [{ label: 'Root', value: 'r', children: true }]
-			const lazyLoad = vi.fn().mockResolvedValue([
-				{ label: 'Child', value: 'c' }
-			])
+			const lazyLoad = vi.fn().mockResolvedValue([{ label: 'Child', value: 'c' }])
 
 			const w = new LazyWrapper(
 				new ProxyTree(
@@ -529,14 +547,9 @@ describe('LazyWrapper', () => {
 		})
 
 		it('should preserve existing proxies after loadMore', async () => {
-			const onlazyload = vi.fn().mockResolvedValue([
-				{ label: 'New', value: 'n' }
-			])
+			const onlazyload = vi.fn().mockResolvedValue([{ label: 'New', value: 'n' }])
 
-			const w = new LazyWrapper(
-				new ProxyTree([{ label: 'Original', value: 'o' }]),
-				{ onlazyload }
-			)
+			const w = new LazyWrapper(new ProxyTree([{ label: 'Original', value: 'o' }]), { onlazyload })
 
 			const originalProxy = w.flatView[0].proxy
 
@@ -550,10 +563,12 @@ describe('LazyWrapper', () => {
 		})
 
 		it('should do nothing in loadMore when no onlazyload callback', async () => {
-			const w = new LazyWrapper(new ProxyTree([
-				{ label: 'A', value: 'a' },
-				{ label: 'B', value: 'b' }
-			]))
+			const w = new LazyWrapper(
+				new ProxyTree([
+					{ label: 'A', value: 'a' },
+					{ label: 'B', value: 'b' }
+				])
+			)
 
 			await w.loadMore()
 			flushSync()
@@ -564,10 +579,7 @@ describe('LazyWrapper', () => {
 		it('should handle empty result from onlazyload', async () => {
 			const onlazyload = vi.fn().mockResolvedValue([])
 
-			const w = new LazyWrapper(
-				new ProxyTree([{ label: 'A', value: 'a' }]),
-				{ onlazyload }
-			)
+			const w = new LazyWrapper(new ProxyTree([{ label: 'A', value: 'a' }]), { onlazyload })
 
 			await w.loadMore()
 			flushSync()
@@ -578,20 +590,18 @@ describe('LazyWrapper', () => {
 
 		it('should handle onlazyload returning null/undefined gracefully', async () => {
 			const onlazyloadNull = vi.fn().mockResolvedValue(null)
-			const w1 = new LazyWrapper(
-				new ProxyTree([{ label: 'A', value: 'a' }]),
-				{ onlazyload: onlazyloadNull }
-			)
+			const w1 = new LazyWrapper(new ProxyTree([{ label: 'A', value: 'a' }]), {
+				onlazyload: onlazyloadNull
+			})
 
 			await w1.loadMore()
 			flushSync()
 			expect(w1.flatView).toHaveLength(1)
 
 			const onlazyloadUndef = vi.fn().mockResolvedValue(undefined)
-			const w2 = new LazyWrapper(
-				new ProxyTree([{ label: 'B', value: 'b' }]),
-				{ onlazyload: onlazyloadUndef }
-			)
+			const w2 = new LazyWrapper(new ProxyTree([{ label: 'B', value: 'b' }]), {
+				onlazyload: onlazyloadUndef
+			})
 
 			await w2.loadMore()
 			flushSync()
@@ -601,9 +611,7 @@ describe('LazyWrapper', () => {
 
 	describe('expand() triggers lazy fetch', () => {
 		it('should fetch and expand an unloaded lazy node', async () => {
-			const lazyLoad = vi.fn().mockResolvedValue([
-				{ label: 'Child', value: 'c' }
-			])
+			const lazyLoad = vi.fn().mockResolvedValue([{ label: 'Child', value: 'c' }])
 
 			const w = new LazyWrapper(
 				new ProxyTree(
@@ -635,9 +643,7 @@ describe('LazyWrapper', () => {
 		})
 
 		it('should not re-fetch an already loaded node', async () => {
-			const lazyLoad = vi.fn().mockResolvedValue([
-				{ label: 'Child', value: 'c' }
-			])
+			const lazyLoad = vi.fn().mockResolvedValue([{ label: 'Child', value: 'c' }])
 
 			const w = new LazyWrapper(
 				new ProxyTree(
@@ -673,9 +679,7 @@ describe('LazyWrapper', () => {
 		})
 
 		it('should handle expand on regular leaf as no-op', () => {
-			const w = new LazyWrapper(new ProxyTree([
-				{ label: 'Leaf', value: 'l' }
-			]))
+			const w = new LazyWrapper(new ProxyTree([{ label: 'Leaf', value: 'l' }]))
 
 			w.first()
 			w.expand() // no-op on leaf without lazy load
@@ -687,11 +691,13 @@ describe('LazyWrapper', () => {
 
 			const w = new LazyWrapper(
 				new ProxyTree(
-					[{
-						label: 'Parent',
-						value: 'p',
-						children: [{ label: 'Child', value: 'c' }]
-					}],
+					[
+						{
+							label: 'Parent',
+							value: 'p',
+							children: [{ label: 'Child', value: 'c' }]
+						}
+					],
 					{},
 					{
 						createProxy: (raw, fields, key, level) =>

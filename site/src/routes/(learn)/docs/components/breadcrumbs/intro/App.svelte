@@ -12,4 +12,6 @@
 
 <BreadCrumbs {items} onclick={(value) => alert(value.text)} />
 
-<p class="text-surface-z6 mt-4 text-sm">Click any breadcrumb to navigate. The last item is the current page.</p>
+<p class="text-surface-z6 mt-4 text-sm">
+	Click any breadcrumb to navigate. The last item is the current page.
+</p>

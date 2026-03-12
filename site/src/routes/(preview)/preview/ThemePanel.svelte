@@ -8,37 +8,41 @@
 	let open = $state(false)
 </script>
 
-<div class="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">
+<div class="fixed right-6 bottom-6 z-50 flex flex-col items-end gap-2">
 	{#if open}
-		<div data-card class="p-4 w-56 flex flex-col gap-4 shadow-lg">
+		<div data-card class="flex w-56 flex-col gap-4 p-4 shadow-lg">
 			<div>
-				<p class="text-xs font-semibold text-surface-z5 mb-2 uppercase tracking-wide">Skin</p>
+				<p class="text-surface-z5 mb-2 text-xs font-semibold tracking-wide uppercase">Skin</p>
 				<div class="flex flex-wrap gap-1">
 					{#each skins as skin}
 						<button
-							class="px-2 py-1 text-xs rounded capitalize border transition-colors
-								{vibe.style === skin ? 'bg-primary-z6 text-white border-transparent' : 'border-surface-z3 text-surface-z6 hover:bg-surface-z2'}"
-							onclick={() => (vibe.style = skin)}
-						>{skin}</button>
+							class="rounded border px-2 py-1 text-xs capitalize transition-colors
+								{vibe.style === skin
+								? 'bg-primary-z6 border-transparent text-white'
+								: 'border-surface-z3 text-surface-z6 hover:bg-surface-z2'}"
+							onclick={() => (vibe.style = skin)}>{skin}</button
+						>
 					{/each}
 				</div>
 			</div>
 			<div>
-				<p class="text-xs font-semibold text-surface-z5 mb-2 uppercase tracking-wide">Mode</p>
+				<p class="text-surface-z5 mb-2 text-xs font-semibold tracking-wide uppercase">Mode</p>
 				<div class="flex gap-1">
 					{#each modes as mode}
 						<button
-							class="px-2 py-1 text-xs rounded capitalize border transition-colors flex-1
-								{vibe.mode === mode ? 'bg-primary-z6 text-white border-transparent' : 'border-surface-z3 text-surface-z6 hover:bg-surface-z2'}"
-							onclick={() => (vibe.mode = mode)}
-						>{mode}</button>
+							class="flex-1 rounded border px-2 py-1 text-xs capitalize transition-colors
+								{vibe.mode === mode
+								? 'bg-primary-z6 border-transparent text-white'
+								: 'border-surface-z3 text-surface-z6 hover:bg-surface-z2'}"
+							onclick={() => (vibe.mode = mode)}>{mode}</button
+						>
 					{/each}
 				</div>
 			</div>
 		</div>
 	{/if}
 	<button
-		class="h-10 w-10 rounded-full bg-primary-z6 text-white shadow-lg flex items-center justify-center hover:bg-primary-z7 transition-colors"
+		class="bg-primary-z6 hover:bg-primary-z7 flex h-10 w-10 items-center justify-center rounded-full text-white shadow-lg transition-colors"
 		onclick={() => (open = !open)}
 		aria-label="Toggle theme panel"
 		aria-expanded={open}

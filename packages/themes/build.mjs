@@ -31,36 +31,36 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const theme = new Theme()
 
 const uno = await createGenerator({
-	presets: [
-		presetWind3({
-			dark: {
-				light: '[data-mode="light"]',
-				dark: '[data-mode="dark"]'
-			}
-		})
-	],
-	shortcuts: [
-		['skin-default', theme.getPalette()],
-		...theme.getShortcuts('surface'),
-		...theme.getShortcuts('primary'),
-		...theme.getShortcuts('secondary'),
-		...theme.getShortcuts('accent'),
-		...theme.getShortcuts('success'),
-		...theme.getShortcuts('warning'),
-		...theme.getShortcuts('danger'),
-		...theme.getShortcuts('error'),
-		...theme.getShortcuts('info'),
-		['text-on-primary', 'text-surface-50'],
-		['text-on-secondary', 'text-surface-50'],
-		['text-on-info', 'text-surface-50'],
-		['text-on-success', 'text-surface-50'],
-		['text-on-warning', 'text-surface-50'],
-		['text-on-error', 'text-surface-50'],
-		['text-on-surface', 'text-surface-50']
-	],
-	theme: {
-		colors: theme.getColorRules()
-	}
+  presets: [
+    presetWind3({
+      dark: {
+        light: '[data-mode="light"]',
+        dark: '[data-mode="dark"]'
+      }
+    })
+  ],
+  shortcuts: [
+    ['skin-default', theme.getPalette()],
+    ...theme.getShortcuts('surface'),
+    ...theme.getShortcuts('primary'),
+    ...theme.getShortcuts('secondary'),
+    ...theme.getShortcuts('accent'),
+    ...theme.getShortcuts('success'),
+    ...theme.getShortcuts('warning'),
+    ...theme.getShortcuts('danger'),
+    ...theme.getShortcuts('error'),
+    ...theme.getShortcuts('info'),
+    ['text-on-primary', 'text-surface-50'],
+    ['text-on-secondary', 'text-surface-50'],
+    ['text-on-info', 'text-surface-50'],
+    ['text-on-success', 'text-surface-50'],
+    ['text-on-warning', 'text-surface-50'],
+    ['text-on-error', 'text-surface-50'],
+    ['text-on-surface', 'text-surface-50']
+  ],
+  theme: {
+    colors: theme.getColorRules()
+  }
 })
 
 // ─── CSS @import resolver ─────────────────────────────────────────────────────
@@ -70,17 +70,17 @@ const uno = await createGenerator({
  * External imports (http, @, ~) are left unchanged.
  */
 function resolveImports(filePath, seen = new Set()) {
-	if (seen.has(filePath)) return ''
-	seen.add(filePath)
+  if (seen.has(filePath)) return ''
+  seen.add(filePath)
 
-	const content = readFileSync(filePath, 'utf-8')
-	return content.replace(/@import\s+['"]([^'"]+)['"]\s*;/g, (match, importPath) => {
-		if (importPath.startsWith('http') || importPath.startsWith('@') || importPath.startsWith('~')) {
-			return match
-		}
-		const resolvedPath = resolve(dirname(filePath), importPath)
-		return resolveImports(resolvedPath, seen)
-	})
+  const content = readFileSync(filePath, 'utf-8')
+  return content.replace(/@import\s+['"]([^'"]+)['"]\s*;/g, (match, importPath) => {
+    if (importPath.startsWith('http') || importPath.startsWith('@') || importPath.startsWith('~')) {
+      return match
+    }
+    const resolvedPath = resolve(dirname(filePath), importPath)
+    return resolveImports(resolvedPath, seen)
+  })
 }
 
 // ─── UnoCSS @apply processor ─────────────────────────────────────────────────
@@ -88,13 +88,13 @@ function resolveImports(filePath, seen = new Set()) {
 const transformer = transformerDirectives()
 
 async function processCSS(content, filename) {
-	const s = new MagicString(content)
-	await transformer.transform(s, filename, {
-		uno,
-		tokens: new Set(),
-		generate: async (tokens) => uno.generate(tokens, { preflights: false })
-	})
-	return s.toString()
+  const s = new MagicString(content)
+  await transformer.transform(s, filename, {
+    uno,
+    tokens: new Set(),
+    generate: async (tokens) => uno.generate(tokens, { preflights: false })
+  })
+  return s.toString()
 }
 
 // ─── Post-processing: fix dark mode selectors ─────────────────────────────────
@@ -112,77 +112,77 @@ async function processCSS(content, filename) {
  * Both forms are emitted so either usage pattern works.
  */
 function fixModeSelectors(css) {
-	const modePattern = /\[data-mode="(?:dark|light)"\] \[data-style="[^"]+"\]/
+  const modePattern = /\[data-mode="(?:dark|light)"\] \[data-style="[^"]+"\]/
 
-	let result = ''
-	let i = 0
+  let result = ''
+  let i = 0
 
-	while (i < css.length) {
-		// Find next { (opening of a declarations block)
-		const braceOpen = css.indexOf('{', i)
-		if (braceOpen === -1) {
-			result += css.slice(i)
-			break
-		}
+  while (i < css.length) {
+    // Find next { (opening of a declarations block)
+    const braceOpen = css.indexOf('{', i)
+    if (braceOpen === -1) {
+      result += css.slice(i)
+      break
+    }
 
-		const selectorText = css.slice(i, braceOpen)
+    const selectorText = css.slice(i, braceOpen)
 
-		// Only expand selectors that contain the problematic pattern
-		if (modePattern.test(selectorText)) {
-			// Split on comma, but only top-level commas (not inside :not(), :is(), etc.)
-			const parts = splitTopLevelSelectors(selectorText)
-			const expanded = []
+    // Only expand selectors that contain the problematic pattern
+    if (modePattern.test(selectorText)) {
+      // Split on comma, but only top-level commas (not inside :not(), :is(), etc.)
+      const parts = splitTopLevelSelectors(selectorText)
+      const expanded = []
 
-			for (const part of parts) {
-				const m = part.match(/^(\s*)(\[data-mode="(?:dark|light)"\]) (\[data-style="[^"]+"\])(.*)$/)
-				if (m) {
-					const [, ws, modeSelector, styleSelector, rest] = m
-					// Compound form: [data-mode="X"][data-style="Y"]rest (same-element match)
-					expanded.push(`${ws}${modeSelector}${styleSelector}${rest}`)
-				}
-				// Always include original descendant form
-				expanded.push(part)
-			}
+      for (const part of parts) {
+        const m = part.match(/^(\s*)(\[data-mode="(?:dark|light)"\]) (\[data-style="[^"]+"\])(.*)$/)
+        if (m) {
+          const [, ws, modeSelector, styleSelector, rest] = m
+          // Compound form: [data-mode="X"][data-style="Y"]rest (same-element match)
+          expanded.push(`${ws}${modeSelector}${styleSelector}${rest}`)
+        }
+        // Always include original descendant form
+        expanded.push(part)
+      }
 
-			result += expanded.join(',') + '{'
-		} else {
-			result += selectorText + '{'
-		}
+      result += expanded.join(',') + '{'
+    } else {
+      result += selectorText + '{'
+    }
 
-		// Find the matching closing brace, handling nesting
-		let depth = 1
-		let j = braceOpen + 1
-		while (j < css.length && depth > 0) {
-			if (css[j] === '{') depth++
-			else if (css[j] === '}') depth--
-			j++
-		}
+    // Find the matching closing brace, handling nesting
+    let depth = 1
+    let j = braceOpen + 1
+    while (j < css.length && depth > 0) {
+      if (css[j] === '{') depth++
+      else if (css[j] === '}') depth--
+      j++
+    }
 
-		result += css.slice(braceOpen + 1, j)
-		i = j
-	}
+    result += css.slice(braceOpen + 1, j)
+    i = j
+  }
 
-	return result
+  return result
 }
 
 /**
  * Split a selector list by top-level commas only (not inside parentheses).
  */
 function splitTopLevelSelectors(text) {
-	const parts = []
-	let depth = 0
-	let start = 0
+  const parts = []
+  let depth = 0
+  let start = 0
 
-	for (let i = 0; i < text.length; i++) {
-		if (text[i] === '(') depth++
-		else if (text[i] === ')') depth--
-		else if (text[i] === ',' && depth === 0) {
-			parts.push(text.slice(start, i))
-			start = i + 1
-		}
-	}
-	parts.push(text.slice(start))
-	return parts
+  for (let i = 0; i < text.length; i++) {
+    if (text[i] === '(') depth++
+    else if (text[i] === ')') depth--
+    else if (text[i] === ',' && depth === 0) {
+      parts.push(text.slice(start, i))
+      start = i + 1
+    }
+  }
+  parts.push(text.slice(start))
+  return parts
 }
 
 // ─── Build ────────────────────────────────────────────────────────────────────
@@ -191,47 +191,45 @@ const srcDir = join(__dirname, 'src')
 const distDir = join(__dirname, 'dist')
 
 async function buildFile(inputPath, outputName, label) {
-	const fullCSS = resolveImports(inputPath)
-	const compiled = await processCSS(fullCSS, outputName)
-	const fixed = fixModeSelectors(compiled)
-	writeFileSync(join(distDir, outputName), fixed, 'utf-8')
-	console.log(`✓ dist/${outputName} (${label})`)
+  const fullCSS = resolveImports(inputPath)
+  const compiled = await processCSS(fullCSS, outputName)
+  const fixed = fixModeSelectors(compiled)
+  writeFileSync(join(distDir, outputName), fixed, 'utf-8')
+  console.log(`✓ dist/${outputName} (${label})`)
 }
 
 async function build() {
-	mkdirSync(distDir, { recursive: true })
+  mkdirSync(distDir, { recursive: true })
 
-	// base.css: structural styles + palette CSS variable defaults
-	const paletteCSS = readFileSync(join(srcDir, 'palette.css'), 'utf-8')
-	const compiledPalette = await processCSS(paletteCSS, 'palette.css')
-	const baseCSS = resolveImports(join(srcDir, 'base', 'index.css'))
-	const compiledBase = await processCSS(baseCSS, 'base.css')
-	const baseFull = fixModeSelectors(compiledPalette + '\n' + compiledBase)
-	writeFileSync(join(distDir, 'base.css'), baseFull, 'utf-8')
-	console.log('✓ dist/base.css (structural styles + palette defaults)')
+  // base.css: structural styles + palette CSS variable defaults
+  const paletteCSS = readFileSync(join(srcDir, 'palette.css'), 'utf-8')
+  const compiledPalette = await processCSS(paletteCSS, 'palette.css')
+  const baseCSS = resolveImports(join(srcDir, 'base', 'index.css'))
+  const compiledBase = await processCSS(baseCSS, 'base.css')
+  const baseFull = fixModeSelectors(compiledPalette + '\n' + compiledBase)
+  writeFileSync(join(distDir, 'base.css'), baseFull, 'utf-8')
+  console.log('✓ dist/base.css (structural styles + palette defaults)')
 
-	// Per-theme files
-	for (const [name, label] of [
-		['rokkit', 'gradients + glowing borders'],
-		['minimal', 'clean + subtle'],
-		['material', 'elevation + shadows'],
-		['glass', 'blur + transparency']
-	]) {
-		await buildFile(join(srcDir, name, 'index.css'), `${name}.css`, label)
-	}
+  // Per-theme files
+  for (const [name, label] of [
+    ['rokkit', 'gradients + glowing borders'],
+    ['minimal', 'clean + subtle'],
+    ['material', 'elevation + shadows'],
+    ['glass', 'blur + transparency']
+  ]) {
+    await buildFile(join(srcDir, name, 'index.css'), `${name}.css`, label)
+  }
 
-	// Full bundle: base + all themes
-	const allThemes = ['base', 'rokkit', 'minimal', 'material', 'glass']
-	const bundleParts = allThemes.map((name) =>
-		readFileSync(join(distDir, `${name}.css`), 'utf-8')
-	)
-	writeFileSync(join(distDir, 'index.css'), bundleParts.join('\n'), 'utf-8')
-	console.log('✓ dist/index.css (full bundle)')
+  // Full bundle: base + all themes
+  const allThemes = ['base', 'rokkit', 'minimal', 'material', 'glass']
+  const bundleParts = allThemes.map((name) => readFileSync(join(distDir, `${name}.css`), 'utf-8'))
+  writeFileSync(join(distDir, 'index.css'), bundleParts.join('\n'), 'utf-8')
+  console.log('✓ dist/index.css (full bundle)')
 
-	console.log('\n@rokkit/themes build complete.')
+  console.log('\n@rokkit/themes build complete.')
 }
 
 build().catch((err) => {
-	console.error('Build failed:', err)
-	process.exit(1)
+  console.error('Build failed:', err)
+  process.exit(1)
 })

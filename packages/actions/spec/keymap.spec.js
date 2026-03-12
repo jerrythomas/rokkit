@@ -154,6 +154,8 @@ describe('resolveAction', () => {
 
 	it('ctrl takes precedence over shift when both active', () => {
 		// ctrlKey + shiftKey: ctrl layer wins
-		expect(resolveAction(makeEvent(' ', { ctrlKey: true, shiftKey: true }), km)).toBe(ACTIONS.extend)
+		expect(resolveAction(makeEvent(' ', { ctrlKey: true, shiftKey: true }), km)).toBe(
+			ACTIONS.extend
+		)
 	})
 })

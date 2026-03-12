@@ -8,12 +8,12 @@ Rokkit uses two testing layers with distinct purposes and toolchains: unit tests
 
 ### Toolchain
 
-| Tool | Role |
-|------|------|
-| Vitest | Test runner and assertion library |
+| Tool                    | Role                                          |
+| ----------------------- | --------------------------------------------- |
+| Vitest                  | Test runner and assertion library             |
 | @testing-library/svelte | Component mounting, querying, and interaction |
-| JSDOM | DOM simulation environment |
-| `flushSync` (Svelte) | Force synchronous reactive updates in tests |
+| JSDOM                   | DOM simulation environment                    |
+| `flushSync` (Svelte)    | Force synchronous reactive updates in tests   |
 
 ### Test location
 
@@ -140,13 +140,13 @@ it('uses custom label field when fields.label is set', () => {
 
 JSDOM does not implement all browser APIs. The following require mocking or defensive coding:
 
-| API | Problem | Solution |
-|-----|---------|---------|
-| `element.scrollIntoView()` | Not implemented | Use optional chaining: `element.scrollIntoView?.()` |
-| `ResizeObserver` | Not defined | Mock in `spec/setup.ts` or `vitest.config.ts` |
-| `IntersectionObserver` | Not defined | Mock in setup if used |
-| CSS transitions | No animation engine | Use `flushSync()` to advance reactive state |
-| `getBoundingClientRect()` | Returns all zeros | Mock if position-dependent logic is tested |
+| API                        | Problem             | Solution                                            |
+| -------------------------- | ------------------- | --------------------------------------------------- |
+| `element.scrollIntoView()` | Not implemented     | Use optional chaining: `element.scrollIntoView?.()` |
+| `ResizeObserver`           | Not defined         | Mock in `spec/setup.ts` or `vitest.config.ts`       |
+| `IntersectionObserver`     | Not defined         | Mock in setup if used                               |
+| CSS transitions            | No animation engine | Use `flushSync()` to advance reactive state         |
+| `getBoundingClientRect()`  | Returns all zeros   | Mock if position-dependent logic is tested          |
 
 Setup file (`spec/setup.ts`) registers any global mocks:
 
@@ -179,11 +179,11 @@ Every UI component must have unit tests covering:
 
 ### Toolchain
 
-| Tool | Role |
-|------|------|
-| Playwright | Browser automation, assertions, screenshots |
-| Chromium | Primary test browser |
-| `bun run build && bun run preview` | Production build served on port 4173 |
+| Tool                               | Role                                        |
+| ---------------------------------- | ------------------------------------------- |
+| Playwright                         | Browser automation, assertions, screenshots |
+| Chromium                           | Primary test browser                        |
+| `bun run build && bun run preview` | Production build served on port 4173        |
 
 ### Configuration
 
@@ -378,7 +378,7 @@ When testing Svelte 5 reactive behavior, use `flushSync()` after interactions th
 
 ```typescript
 await fireEvent.click(item)
-flushSync()  // flush pending reactive updates
+flushSync() // flush pending reactive updates
 expect(item).toHaveAttribute('data-active', 'true')
 ```
 
@@ -408,15 +408,15 @@ cd site && npx playwright test --update-snapshots
 
 The target is behavioral coverage, not line coverage. A component is considered adequately tested when:
 
-| Category | Requirement |
-|----------|-------------|
-| Selection behavior | All selection modes tested (single, multi if applicable) |
-| Keyboard navigation | All key bindings have at least one test |
-| Field mapping | At least one custom `fields` test per component |
-| Snippets | At least one snippet dispatch test if component supports snippets |
-| Disabled state | Disabled items/component behavior tested |
-| Callbacks | All `on*` callbacks verified to fire with correct arguments |
-| Visual | All `themes × modes` snapshot combinations for components with visual states |
+| Category            | Requirement                                                                  |
+| ------------------- | ---------------------------------------------------------------------------- |
+| Selection behavior  | All selection modes tested (single, multi if applicable)                     |
+| Keyboard navigation | All key bindings have at least one test                                      |
+| Field mapping       | At least one custom `fields` test per component                              |
+| Snippets            | At least one snippet dispatch test if component supports snippets            |
+| Disabled state      | Disabled items/component behavior tested                                     |
+| Callbacks           | All `on*` callbacks verified to fire with correct arguments                  |
+| Visual              | All `themes × modes` snapshot combinations for components with visual states |
 
 ### What does not need a test
 

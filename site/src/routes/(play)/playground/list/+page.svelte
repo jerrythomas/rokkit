@@ -143,14 +143,16 @@
 </script>
 
 <div class="space-y-12 p-8">
-	<h1 class="text-2xl font-semibold text-surface-z8">List — Testbed Demo</h1>
-	<p class="text-surface-z5 text-sm">Visual test for the new ProxyItem + Wrapper + Navigator implementation.</p>
+	<h1 class="text-surface-z8 text-2xl font-semibold">List — Testbed Demo</h1>
+	<p class="text-surface-z5 text-sm">
+		Visual test for the new ProxyItem + Wrapper + Navigator implementation.
+	</p>
 
 	<!-- ─── Flat list ─────────────────────────────────────────────────────────── -->
 	<section class="space-y-3">
 		<h2 class="text-surface-z7 font-semibold">Flat list with separator + disabled</h2>
 		<p class="text-surface-z5 text-xs">Selected: <code>{flatValue ?? 'none'}</code></p>
-		<div class="w-56 rounded border border-surface-z3 bg-surface-z1">
+		<div class="border-surface-z3 bg-surface-z1 w-56 rounded border">
 			<List items={flat} bind:value={flatValue} onselect={(v) => (flatValue = v)} />
 		</div>
 	</section>
@@ -159,15 +161,20 @@
 	<section class="space-y-3">
 		<h2 class="text-surface-z7 font-semibold">Nested collapsible groups</h2>
 		<p class="text-surface-z5 text-xs">Selected: <code>{nestedValue ?? 'none'}</code></p>
-		<div class="w-56 rounded border border-surface-z3 bg-surface-z1">
-			<List items={nested} collapsible bind:value={nestedValue} onselect={(v) => (nestedValue = v)} />
+		<div class="border-surface-z3 bg-surface-z1 w-56 rounded border">
+			<List
+				items={nested}
+				collapsible
+				bind:value={nestedValue}
+				onselect={(v) => (nestedValue = v)}
+			/>
 		</div>
 	</section>
 
 	<!-- ─── Custom icons ────────────────────────────────────────────────────── -->
 	<section class="space-y-3">
 		<h2 class="text-surface-z7 font-semibold">Collapsible with custom icons</h2>
-		<div class="w-56 rounded border border-surface-z3 bg-surface-z1">
+		<div class="border-surface-z3 bg-surface-z1 w-56 rounded border">
 			<List
 				items={nested}
 				collapsible
@@ -181,7 +188,7 @@
 	<!-- ─── Navigation links ─────────────────────────────────────────────────── -->
 	<section class="space-y-3">
 		<h2 class="text-surface-z7 font-semibold">Navigation links (href items)</h2>
-		<div class="w-56 rounded border border-surface-z3 bg-surface-z1">
+		<div class="border-surface-z3 bg-surface-z1 w-56 rounded border">
 			<List items={links} collapsible />
 		</div>
 	</section>
@@ -190,7 +197,7 @@
 	<section class="space-y-3">
 		<h2 class="text-surface-z7 font-semibold">Custom itemContent snippet (with badge)</h2>
 		<p class="text-surface-z5 text-xs">Selected: <code>{badgeValue ?? 'none'}</code></p>
-		<div class="w-56 rounded border border-surface-z3 bg-surface-z1">
+		<div class="border-surface-z3 bg-surface-z1 w-56 rounded border">
 			<List items={withBadge} bind:value={badgeValue} onselect={(v) => (badgeValue = v)}>
 				{#snippet itemContent(proxy)}
 					{#if proxy.icon}
@@ -211,7 +218,7 @@
 	<section class="space-y-3">
 		<h2 class="text-surface-z7 font-semibold">Per-item snippet (item.snippet = 'highlighted')</h2>
 		<p class="text-surface-z5 text-xs">Selected: <code>{mixedValue ?? 'none'}</code></p>
-		<div class="w-56 rounded border border-surface-z3 bg-surface-z1">
+		<div class="border-surface-z3 bg-surface-z1 w-56 rounded border">
 			<List items={mixed} bind:value={mixedValue} onselect={(v) => (mixedValue = v)}>
 				{#snippet highlighted(proxy)}
 					<span class="i-lucide:star text-warning-z6" aria-hidden="true"></span>
@@ -227,7 +234,10 @@
 		<p class="text-surface-z5 text-xs">
 			Selected: <code>{longValue ?? 'none'}</code> — use ↑↓ Home/End to test scroll
 		</p>
-		<div class="w-56 rounded border border-surface-z3 bg-surface-z1" style="max-height: 200px; overflow-y: auto;">
+		<div
+			class="border-surface-z3 bg-surface-z1 w-56 rounded border"
+			style="max-height: 200px; overflow-y: auto;"
+		>
 			<List items={long} bind:value={longValue} onselect={(v) => (longValue = v)} />
 		</div>
 	</section>
@@ -310,8 +320,12 @@
 	}
 
 	/* Indentation by level */
-	:global([data-level='2']) { padding-left: 28px; }
-	:global([data-level='3']) { padding-left: 44px; }
+	:global([data-level='2']) {
+		padding-left: 28px;
+	}
+	:global([data-level='3']) {
+		padding-left: 44px;
+	}
 
 	/* Expand icon */
 	:global([data-list-expand-icon]) {

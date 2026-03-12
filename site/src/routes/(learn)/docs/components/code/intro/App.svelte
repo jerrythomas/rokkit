@@ -16,6 +16,4 @@ onMount(() => {
 	<Code code={example} language="javascript" />
 </div>
 
-<p class="text-surface-z6 mt-4 text-sm">
-	Hover over the code block to reveal the copy button.
-</p>
+<p class="text-surface-z6 mt-4 text-sm">Hover over the code block to reveal the copy button.</p>

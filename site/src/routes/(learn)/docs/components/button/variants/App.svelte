@@ -27,7 +27,12 @@
 	<div>
 		<h3 class="text-surface-z7 mb-2 text-sm font-semibold">As Links</h3>
 		<div class="flex flex-wrap items-center gap-3">
-			<Button label="External Link" href="https://github.com" target="_blank" iconRight="i-lucide:share" />
+			<Button
+				label="External Link"
+				href="https://github.com"
+				target="_blank"
+				iconRight="i-lucide:share"
+			/>
 		</div>
 	</div>
 </div>

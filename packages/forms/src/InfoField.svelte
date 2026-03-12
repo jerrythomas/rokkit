@@ -1,11 +1,5 @@
 <script>
-	let {
-		class: className,
-		name,
-		value,
-		label,
-		description
-	} = $props()
+	let { class: className, name, value, label, description } = $props()
 </script>
 
 <div

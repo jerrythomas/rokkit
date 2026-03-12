@@ -281,35 +281,35 @@ one component can adopt any other with minimal learning.
 
 ### Standard Props
 
-| Prop | Type | Bindable | Description |
-|------|------|----------|-------------|
-| `items` | `unknown[]` | No | The data array. Items may be objects or primitives. |
-| `value` | `unknown` | Yes | The extracted value-field primitive of the selected item. For MultiSelect, an array of primitives. |
-| `fields` | `FieldConfig` | No | Maps semantic field names to raw data keys. Partial — overrides default field map. |
-| `onchange` | `(value, item) => void` | No | Fired when the selection is committed. Receives the extracted value and the original item. |
-| `onselect` | `(value, item) => void` | No | Fired when an item is highlighted (not yet committed). Used for preview or hover effects. |
-| `disabled` | `boolean` | No | Disables the entire component. No interaction, visually muted. |
-| `class` | `string` | No | CSS class appended to the component's root element. Used for layout constraints (width, height, overflow). |
-| `icons` | `StateIcons` | No | Per-instance overrides for component state icons (expand/collapse arrows, etc.). |
-| `labels` | `Labels` | No | Per-instance overrides for component ARIA labels and visible text. |
+| Prop       | Type                    | Bindable | Description                                                                                                |
+| ---------- | ----------------------- | -------- | ---------------------------------------------------------------------------------------------------------- |
+| `items`    | `unknown[]`             | No       | The data array. Items may be objects or primitives.                                                        |
+| `value`    | `unknown`               | Yes      | The extracted value-field primitive of the selected item. For MultiSelect, an array of primitives.         |
+| `fields`   | `FieldConfig`           | No       | Maps semantic field names to raw data keys. Partial — overrides default field map.                         |
+| `onchange` | `(value, item) => void` | No       | Fired when the selection is committed. Receives the extracted value and the original item.                 |
+| `onselect` | `(value, item) => void` | No       | Fired when an item is highlighted (not yet committed). Used for preview or hover effects.                  |
+| `disabled` | `boolean`               | No       | Disables the entire component. No interaction, visually muted.                                             |
+| `class`    | `string`                | No       | CSS class appended to the component's root element. Used for layout constraints (width, height, overflow). |
+| `icons`    | `StateIcons`            | No       | Per-instance overrides for component state icons (expand/collapse arrows, etc.).                           |
+| `labels`   | `Labels`                | No       | Per-instance overrides for component ARIA labels and visible text.                                         |
 
 ### Field Mapping Defaults
 
 The `fields` prop is always partial. When a key is omitted, the component uses its default.
 The default field map for all selection components is:
 
-| Semantic Name | Default Raw Key | Description |
-|---------------|-----------------|-------------|
-| `text` | `label` | Display text |
-| `value` | `value` | Extracted selection value |
-| `icon` | `icon` | Icon class name |
-| `href` | `href` | Navigation URL (renders as `<a>`) |
-| `description` | `description` | Secondary text |
-| `children` | `children` | Array of child items (hierarchical) |
-| `type` | `type` | Item type: `item`, `group`, `separator`, `spacer` |
-| `disabled` | `disabled` | Item-level disabled state |
-| `expanded` | `expanded` | Initial/synced expansion state |
-| `snippet` | `snippet` | Named snippet override for this item |
+| Semantic Name | Default Raw Key | Description                                       |
+| ------------- | --------------- | ------------------------------------------------- |
+| `text`        | `label`         | Display text                                      |
+| `value`       | `value`         | Extracted selection value                         |
+| `icon`        | `icon`          | Icon class name                                   |
+| `href`        | `href`          | Navigation URL (renders as `<a>`)                 |
+| `description` | `description`   | Secondary text                                    |
+| `children`    | `children`      | Array of child items (hierarchical)               |
+| `type`        | `type`          | Item type: `item`, `group`, `separator`, `spacer` |
+| `disabled`    | `disabled`      | Item-level disabled state                         |
+| `expanded`    | `expanded`      | Initial/synced expansion state                    |
+| `snippet`     | `snippet`       | Named snippet override for this item              |
 
 ### Value Binding Contract
 
@@ -327,11 +327,11 @@ extracted value, so `bind:value={period}` binds directly to the string.
 
 Some components expose secondary bindable props alongside `value`:
 
-| Prop | Component | Description |
-|------|-----------|-------------|
+| Prop       | Component           | Description                                                              |
+| ---------- | ------------------- | ------------------------------------------------------------------------ |
 | `selected` | Select, MultiSelect | The full selected item object(s). Convenience alternative to `onchange`. |
-| `open` | Select, Dropdown | Controls panel open/closed state. |
-| `expanded` | Tree | Tracks expansion state for external sync. |
+| `open`     | Select, Dropdown    | Controls panel open/closed state.                                        |
+| `expanded` | Tree                | Tracks expansion state for external sync.                                |
 
 ---
 
@@ -343,12 +343,12 @@ navigation.
 
 ### Available Snippet Slots
 
-| Snippet Name | When Invoked | Receives |
-|--------------|-------------|---------|
-| `itemContent` | Every leaf item (non-group) | `ProxyItem` |
-| `groupContent` | Every group header | `ProxyItem` |
-| `empty` | When `items` is empty or all items filtered | Nothing |
-| `[name]` | Items with `item.snippet === name` | `ProxyItem` for that item |
+| Snippet Name   | When Invoked                                | Receives                  |
+| -------------- | ------------------------------------------- | ------------------------- |
+| `itemContent`  | Every leaf item (non-group)                 | `ProxyItem`               |
+| `groupContent` | Every group header                          | `ProxyItem`               |
+| `empty`        | When `items` is empty or all items filtered | Nothing                   |
+| `[name]`       | Items with `item.snippet === name`          | `ProxyItem` for that item |
 
 The named snippet slot allows per-item rendering variation without a conditional inside the
 snippet. If an item carries `snippet: 'featured'`, the component looks for a `{#snippet
@@ -375,18 +375,18 @@ use a consistent pattern:
 
 Snippets receive the ProxyItem, not the raw item. This provides:
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `.text` | `string` | Display label (field-mapped) |
-| `.value` | `unknown` | Extracted value primitive |
-| `.icon` | `string?` | Icon class string |
-| `.href` | `string?` | Navigation URL |
-| `.disabled` | `boolean` | Non-interactive state |
-| `.expanded` | `boolean` | Group expansion state |
-| `.selected` | `boolean` | Selection state |
-| `.level` | `number` | Nesting depth (1 = root) |
+| Property        | Type      | Description                                  |
+| --------------- | --------- | -------------------------------------------- |
+| `.text`         | `string`  | Display label (field-mapped)                 |
+| `.value`        | `unknown` | Extracted value primitive                    |
+| `.icon`         | `string?` | Icon class string                            |
+| `.href`         | `string?` | Navigation URL                               |
+| `.disabled`     | `boolean` | Non-interactive state                        |
+| `.expanded`     | `boolean` | Group expansion state                        |
+| `.selected`     | `boolean` | Selection state                              |
+| `.level`        | `number`  | Nesting depth (1 = root)                     |
 | `.get('field')` | `unknown` | Access any field by semantic name or raw key |
-| `.raw` | `unknown` | Escape hatch to original item object |
+| `.raw`          | `unknown` | Escape hatch to original item object         |
 
 Snippets must not mutate `proxy.raw` directly for state purposes. For interactive elements
 within a snippet (e.g., a checkbox inside a list item), mutations should be applied to
@@ -413,65 +413,65 @@ state; no element type selectors are used in theme CSS.
 
 Every component root has a single identifying marker:
 
-| Component | Root Attribute |
-|-----------|---------------|
-| List | `data-list` |
-| Select | `data-select` |
+| Component   | Root Attribute     |
+| ----------- | ------------------ |
+| List        | `data-list`        |
+| Select      | `data-select`      |
 | MultiSelect | `data-multiselect` |
-| Tree | `data-tree` |
-| Toggle | `data-toggle` |
-| Tabs | `data-tabs` |
-| Menu | `data-menu` |
-| Toolbar | `data-toolbar` |
-| Dropdown | `data-dropdown` |
-| Card | `data-card` |
+| Tree        | `data-tree`        |
+| Toggle      | `data-toggle`      |
+| Tabs        | `data-tabs`        |
+| Menu        | `data-menu`        |
+| Toolbar     | `data-toolbar`     |
+| Dropdown    | `data-dropdown`    |
+| Card        | `data-card`        |
 
 ### Sub-Element Markers
 
 Child elements use the `data-{component}-{role}` pattern:
 
-| Element | Attribute | Description |
-|---------|-----------|-------------|
-| Leaf item | `data-list-item` | Selectable item |
-| Group header | `data-list-group` | Collapsible group trigger |
-| Separator | `data-list-separator` | Visual divider, not focusable |
-| Spacer | `data-list-spacer` | Flexible space, not focusable |
-| Select trigger | `data-select-trigger` | Displays current selection |
-| Select panel | `data-select-panel` | Dropdown container |
-| Tab item | `data-tabs-tab` | Individual tab button |
-| Tab panel | `data-tabs-panel` | Panel associated with tab |
+| Element        | Attribute             | Description                   |
+| -------------- | --------------------- | ----------------------------- |
+| Leaf item      | `data-list-item`      | Selectable item               |
+| Group header   | `data-list-group`     | Collapsible group trigger     |
+| Separator      | `data-list-separator` | Visual divider, not focusable |
+| Spacer         | `data-list-spacer`    | Flexible space, not focusable |
+| Select trigger | `data-select-trigger` | Displays current selection    |
+| Select panel   | `data-select-panel`   | Dropdown container            |
+| Tab item       | `data-tabs-tab`       | Individual tab button         |
+| Tab panel      | `data-tabs-panel`     | Panel associated with tab     |
 
 ### Boolean State Attributes
 
 Boolean state uses **presence vs. absence** — not `="true"`/`="false"`. An attribute is
 present when the state is active; absent otherwise.
 
-| Attribute | Meaning when present |
-|-----------|---------------------|
-| `data-active` | Item is the current selection |
-| `data-focused` | Item has logical keyboard focus |
-| `data-disabled` | Item or component is non-interactive |
-| `data-expanded` | Group node is expanded |
+| Attribute       | Meaning when present                    |
+| --------------- | --------------------------------------- |
+| `data-active`   | Item is the current selection           |
+| `data-focused`  | Item has logical keyboard focus         |
+| `data-disabled` | Item or component is non-interactive    |
+| `data-expanded` | Group node is expanded                  |
 | `data-selected` | Item is selected (multi-select context) |
-| `data-open` | Overlay panel is open |
+| `data-open`     | Overlay panel is open                   |
 
 ### Value State Attributes
 
 Enumerated states use `data-{attr}="{value}"`:
 
-| Attribute | Values | Description |
-|-----------|--------|-------------|
-| `data-variant` | `default`, `ghost`, `outline`, … | Visual variant |
-| `data-size` | `sm`, `md`, `lg` | Size modifier |
-| `data-density` | `compact`, `default`, `comfortable` | Spacing density |
-| `data-orientation` | `horizontal`, `vertical` | Layout axis |
-| `data-state` | `error`, `success`, `warning` | Validation state (inputs) |
-| `data-level` | integer ≥ 1 | Nesting depth for indentation |
+| Attribute          | Values                              | Description                   |
+| ------------------ | ----------------------------------- | ----------------------------- |
+| `data-variant`     | `default`, `ghost`, `outline`, …    | Visual variant                |
+| `data-size`        | `sm`, `md`, `lg`                    | Size modifier                 |
+| `data-density`     | `compact`, `default`, `comfortable` | Spacing density               |
+| `data-orientation` | `horizontal`, `vertical`            | Layout axis                   |
+| `data-state`       | `error`, `success`, `warning`       | Validation state (inputs)     |
+| `data-level`       | integer ≥ 1                         | Nesting depth for indentation |
 
 ### Navigation Attributes
 
-| Attribute | Element | Description |
-|-----------|---------|-------------|
+| Attribute   | Element              | Description                                                                                              |
+| ----------- | -------------------- | -------------------------------------------------------------------------------------------------------- |
 | `data-path` | Every focusable item | Key string used by Navigator for click detection and scroll targeting. Format: `'0'`, `'0-1'`, `'0-1-2'` |
 
 ### CSS Theme Convention
@@ -609,19 +609,19 @@ chooses its placement:
 
 **Vertical axis (direction):**
 
-| Value | Behavior |
-|-------|----------|
-| `down` | Panel opens below the trigger (default) |
-| `up` | Panel opens above the trigger |
+| Value  | Behavior                                           |
+| ------ | -------------------------------------------------- |
+| `down` | Panel opens below the trigger (default)            |
+| `up`   | Panel opens above the trigger                      |
 | `auto` | Compares space above and below; selects the larger |
 
 **Horizontal axis (alignment):**
 
-| Value | Behavior |
-|-------|----------|
-| `start` | Panel left edge aligns with trigger left edge |
-| `center` | Panel centered on the trigger |
-| `end` | Panel right edge aligns with trigger right edge |
+| Value    | Behavior                                        |
+| -------- | ----------------------------------------------- |
+| `start`  | Panel left edge aligns with trigger left edge   |
+| `center` | Panel centered on the trigger                   |
+| `end`    | Panel right edge aligns with trigger right edge |
 
 Placement is calculated at open time and may shift if the viewport is scrolled or resized
 while the panel is open. The panel does not overflow the viewport — if the calculated
@@ -706,7 +706,7 @@ Standard component script structure:
     disabled = false,
     class: className = '',
     onchange,
-    onselect,
+    onselect
     // snippets...
   } = $props()
 
@@ -720,12 +720,12 @@ Standard component script structure:
 
 Define all data attribute hooks before writing theme CSS:
 
-| Pattern | Example |
-|---------|---------|
-| Component root | `data-list`, `data-tree`, `data-select` |
-| Sub-elements | `data-list-item`, `data-tree-node` |
-| Boolean states | `data-active`, `data-focused`, `data-disabled`, `data-expanded` |
-| Enumerated values | `data-variant="filled"`, `data-size="sm"` |
+| Pattern           | Example                                                         |
+| ----------------- | --------------------------------------------------------------- |
+| Component root    | `data-list`, `data-tree`, `data-select`                         |
+| Sub-elements      | `data-list-item`, `data-tree-node`                              |
+| Boolean states    | `data-active`, `data-focused`, `data-disabled`, `data-expanded` |
+| Enumerated values | `data-variant="filled"`, `data-size="sm"`                       |
 
 Theme CSS targets only these data attributes — never class names or element type selectors.
 
@@ -747,32 +747,31 @@ Every interactive component provides both data-attribute styling hooks and ARIA 
 
 ### ARIA Roles by Component Type
 
-| Component | Container Role | Item Role | Key ARIA Attributes |
-|-----------|---------------|-----------|---------------------|
-| List | `listbox` | `option` | `aria-selected`, `aria-activedescendant` |
-| Tree | `tree` | `treeitem` | `aria-expanded`, `aria-level`, `aria-selected` |
-| Menu | `menu` | `menuitem` | `aria-haspopup`, `aria-expanded` |
-| Tabs | `tablist` | `tab` | `aria-selected`, `aria-controls` |
-| Grid | `grid` | `gridcell` | `aria-selected` |
-| Select | `combobox` | — | `aria-expanded`, `aria-haspopup` |
-| Toggle | `listbox` | `option` | `aria-selected`, `aria-orientation` |
-| Toolbar | `toolbar` | — | `aria-orientation` |
+| Component | Container Role | Item Role  | Key ARIA Attributes                            |
+| --------- | -------------- | ---------- | ---------------------------------------------- |
+| List      | `listbox`      | `option`   | `aria-selected`, `aria-activedescendant`       |
+| Tree      | `tree`         | `treeitem` | `aria-expanded`, `aria-level`, `aria-selected` |
+| Menu      | `menu`         | `menuitem` | `aria-haspopup`, `aria-expanded`               |
+| Tabs      | `tablist`      | `tab`      | `aria-selected`, `aria-controls`               |
+| Grid      | `grid`         | `gridcell` | `aria-selected`                                |
+| Select    | `combobox`     | —          | `aria-expanded`, `aria-haspopup`               |
+| Toggle    | `listbox`      | `option`   | `aria-selected`, `aria-orientation`            |
+| Toolbar   | `toolbar`      | —          | `aria-orientation`                             |
 
 ### Required ARIA Pattern
 
 ```html
 <!-- Container — orientation and label -->
-<div role="listbox"
-     aria-label="Choose a country"
-     aria-orientation="vertical">
-
+<div role="listbox" aria-label="Choose a country" aria-orientation="vertical">
   <!-- Items — state reflects controller -->
-  <div role="option"
-       aria-selected="true"
-       aria-disabled="false"
-       data-list-item
-       data-active
-       data-path="0">
+  <div
+    role="option"
+    aria-selected="true"
+    aria-disabled="false"
+    data-list-item
+    data-active
+    data-path="0"
+  >
     Content
   </div>
 </div>
@@ -780,13 +779,13 @@ Every interactive component provides both data-attribute styling hooks and ARIA 
 
 ### Keyboard Interaction by Pattern
 
-| Component | Navigation Keys | Selection Keys |
-|-----------|----------------|----------------|
-| List | Up/Down | Enter, Space |
-| Tree | Up/Down (move), Left/Right (collapse/expand) | Enter, Space |
-| Tabs | Left/Right (or Up/Down for vertical) | Auto on focus |
-| Menu | Up/Down | Enter |
-| Grid | All four arrows | Enter, Space |
+| Component | Navigation Keys                              | Selection Keys |
+| --------- | -------------------------------------------- | -------------- |
+| List      | Up/Down                                      | Enter, Space   |
+| Tree      | Up/Down (move), Left/Right (collapse/expand) | Enter, Space   |
+| Tabs      | Left/Right (or Up/Down for vertical)         | Auto on focus  |
+| Menu      | Up/Down                                      | Enter          |
+| Grid      | All four arrows                              | Enter, Space   |
 
 ---
 
@@ -814,24 +813,33 @@ The Wrapper is the coordination point. It owns the `open` state and exposes `can
 class MenuWrapper extends ListWrapper {
   #open = $state(false)
 
-  open()  { this.#open = true }
-  close() { this.#open = false; this.#triggerEl?.focus() }
+  open() {
+    this.#open = true
+  }
+  close() {
+    this.#open = false
+    this.#triggerEl?.focus()
+  }
 
-  cancel(_path) { this.close() }  // Escape key
-  blur()        { this.close() }  // focus left dropdown
+  cancel(_path) {
+    this.close()
+  } // Escape key
+  blur() {
+    this.close()
+  } // focus left dropdown
 }
 ```
 
 Navigator is only constructed when the dropdown is open and attached to the dropdown element, not the trigger. When the dropdown closes, Navigator is destroyed. This keeps each class focused: `Trigger` never reads item state; `Navigator` never manages open/close.
 
-| Component | Trigger | Navigator target | Wrapper subclass |
-|-----------|---------|-----------------|-----------------|
-| List | none (persistent) | root element | `ListWrapper` |
-| Tree | none (persistent) | root element | `ListWrapper` |
-| Menu | `<button>` | dropdown `<ul>` | `MenuWrapper` |
-| Select | `<button>` | dropdown `<ul>` | `SelectWrapper` |
-| MultiSelect | `<button>` | dropdown `<ul>` | `MultiSelectWrapper` |
-| Combobox | `<input>` | dropdown `<ul>` | `ComboboxWrapper` |
+| Component   | Trigger           | Navigator target | Wrapper subclass     |
+| ----------- | ----------------- | ---------------- | -------------------- |
+| List        | none (persistent) | root element     | `ListWrapper`        |
+| Tree        | none (persistent) | root element     | `ListWrapper`        |
+| Menu        | `<button>`        | dropdown `<ul>`  | `MenuWrapper`        |
+| Select      | `<button>`        | dropdown `<ul>`  | `SelectWrapper`      |
+| MultiSelect | `<button>`        | dropdown `<ul>`  | `MultiSelectWrapper` |
+| Combobox    | `<input>`         | dropdown `<ul>`  | `ComboboxWrapper`    |
 
 ---
 
@@ -924,7 +932,14 @@ The full theme system design is in `docs/design/10-theming.md`. The key principl
 Theme CSS targets data attributes exclusively:
 
 ```css
-[data-list-item][data-active]    { background: var(--color-primary-z2); }
-[data-list-item][data-disabled]  { opacity: 0.5; pointer-events: none; }
-[data-list][data-density="compact"] [data-list-item] { padding: 0.25rem 0.5rem; }
+[data-list-item][data-active] {
+  background: var(--color-primary-z2);
+}
+[data-list-item][data-disabled] {
+  opacity: 0.5;
+  pointer-events: none;
+}
+[data-list][data-density='compact'] [data-list-item] {
+  padding: 0.25rem 0.5rem;
+}
 ```

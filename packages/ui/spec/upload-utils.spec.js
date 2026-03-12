@@ -23,11 +23,15 @@ describe('matchesAccept', () => {
 	})
 
 	it('matches exact MIME type', () => {
-		expect(matchesAccept({ type: 'application/json', name: 'data.json' }, 'application/json')).toBe(true)
+		expect(matchesAccept({ type: 'application/json', name: 'data.json' }, 'application/json')).toBe(
+			true
+		)
 	})
 
 	it('rejects non-matching exact MIME type', () => {
-		expect(matchesAccept({ type: 'text/plain', name: 'readme.txt' }, 'application/json')).toBe(false)
+		expect(matchesAccept({ type: 'text/plain', name: 'readme.txt' }, 'application/json')).toBe(
+			false
+		)
 	})
 
 	it('matches wildcard MIME type (image/*)', () => {
@@ -269,9 +273,7 @@ describe('groupByPath', () => {
 	})
 
 	it('creates nested folder structure for multi-level paths', () => {
-		const items = [
-			{ name: 'thumb.jpg', path: 'images/thumbnails/' }
-		]
+		const items = [{ name: 'thumb.jpg', path: 'images/thumbnails/' }]
 		const result = groupByPath(items, 'path', 'children')
 		expect(result).toEqual([
 			{
@@ -287,9 +289,7 @@ describe('groupByPath', () => {
 	})
 
 	it('handles deep nesting (3+ levels)', () => {
-		const items = [
-			{ name: 'file.txt', path: 'a/b/c/' }
-		]
+		const items = [{ name: 'file.txt', path: 'a/b/c/' }]
 		const result = groupByPath(items, 'path', 'children')
 		expect(result).toEqual([
 			{
@@ -330,23 +330,15 @@ describe('groupByPath', () => {
 	})
 
 	it('uses custom pathField and childrenField', () => {
-		const items = [
-			{ name: 'photo.jpg', dir: 'images/' }
-		]
+		const items = [{ name: 'photo.jpg', dir: 'images/' }]
 		const result = groupByPath(items, 'dir', 'items')
-		expect(result).toEqual([
-			{ text: 'images', items: [{ name: 'photo.jpg', dir: 'images/' }] }
-		])
+		expect(result).toEqual([{ text: 'images', items: [{ name: 'photo.jpg', dir: 'images/' }] }])
 	})
 
 	it('handles paths without trailing slash', () => {
-		const items = [
-			{ name: 'photo.jpg', path: 'images' }
-		]
+		const items = [{ name: 'photo.jpg', path: 'images' }]
 		const result = groupByPath(items, 'path', 'children')
-		expect(result).toEqual([
-			{ text: 'images', children: [{ name: 'photo.jpg', path: 'images' }] }
-		])
+		expect(result).toEqual([{ text: 'images', children: [{ name: 'photo.jpg', path: 'images' }] }])
 	})
 
 	it('preserves order: groups appear in first-seen order', () => {

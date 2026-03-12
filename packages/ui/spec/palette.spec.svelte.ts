@@ -205,7 +205,19 @@ describe('Palette Utilities', () => {
 		it('returns all 11 shade keys', () => {
 			const shades = generateShades('#3b82f6')
 			const keys = Object.keys(shades)
-			expect(keys).toEqual(['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', '950'])
+			expect(keys).toEqual([
+				'50',
+				'100',
+				'200',
+				'300',
+				'400',
+				'500',
+				'600',
+				'700',
+				'800',
+				'900',
+				'950'
+			])
 		})
 
 		it('all shade values are valid hex colors', () => {

@@ -48,7 +48,7 @@
 	{#snippet preview()}
 		<div class="flex flex-col gap-6">
 			<div>
-				<h4 class="m-0 mb-2 text-xs uppercase tracking-wide text-surface-z5">With icons</h4>
+				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">With icons</h4>
 				<Toggle
 					options={withIcons}
 					bind:value={iconValue}
@@ -58,7 +58,7 @@
 				/>
 			</div>
 			<div>
-				<h4 class="m-0 mb-2 text-xs uppercase tracking-wide text-surface-z5">Text only</h4>
+				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">Text only</h4>
 				<Toggle
 					options={textOnly}
 					bind:value={textValue}
@@ -68,7 +68,7 @@
 				/>
 			</div>
 			<div>
-				<h4 class="m-0 mb-2 text-xs uppercase tracking-wide text-surface-z5">Icon-only mode</h4>
+				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">Icon-only mode</h4>
 				<Toggle
 					options={modeOptions}
 					bind:value={modeValue}

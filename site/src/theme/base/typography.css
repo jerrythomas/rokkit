@@ -1,7 +1,7 @@
 h1,
 h2,
 h3 {
-  @apply font-semibold text-surface-z8;
+  @apply text-surface-z8 font-semibold;
 }
 h1 {
   @apply text-[1.75rem] font-bold tracking-tight;

@@ -9,21 +9,21 @@
    ============================================================================= */
 
 [data-style='glass'] [data-fab-trigger] {
-	@apply text-white backdrop-blur-md bg-primary-z5/80 shadow-lg;
+  @apply bg-primary-z5/80 text-white shadow-lg backdrop-blur-md;
 }
 
 [data-style='glass'] [data-fab-trigger]:hover:not(:disabled) {
-	@apply bg-primary-z5/90 shadow-xl;
-	transform: scale(1.05);
+  @apply bg-primary-z5/90 shadow-xl;
+  transform: scale(1.05);
 }
 
 [data-style='glass'] [data-fab-trigger]:focus-visible {
-	@apply outline-none ring-2 ring-surface-z5/40;
+  @apply ring-surface-z5/40 ring-2 outline-none;
 }
 
 [data-style='glass'] [data-fab][data-open='true'] [data-fab-trigger] {
-	@apply bg-surface-z6/80;
-	transform: rotate(45deg);
+  @apply bg-surface-z6/80;
+  transform: rotate(45deg);
 }
 
 /* =============================================================================
@@ -31,24 +31,24 @@
    ============================================================================= */
 
 [data-style='glass'] [data-fab-item] {
-	@apply text-surface-z9 backdrop-blur-md border shadow-md bg-surface-z1/70 border-surface-z5/20;
+  @apply text-surface-z9 bg-surface-z1/70 border-surface-z5/20 border shadow-md backdrop-blur-md;
 }
 
 [data-style='glass'] [data-fab-item]:hover:not(:disabled) {
-	@apply text-surface-z10 bg-surface-z2/80 shadow-lg;
+  @apply text-surface-z10 bg-surface-z2/80 shadow-lg;
 }
 
 [data-style='glass'] [data-fab-item]:focus-visible {
-	@apply outline-none ring-2 ring-surface-z5/40;
+  @apply ring-surface-z5/40 ring-2 outline-none;
 }
 
 /* Item icon */
 [data-style='glass'] [data-fab-item] [data-fab-item-icon] {
-	@apply text-primary-z6;
+  @apply text-primary-z6;
 }
 
 [data-style='glass'] [data-fab-item]:hover:not(:disabled) [data-fab-item-icon] {
-	@apply text-primary-z7;
+  @apply text-primary-z7;
 }
 
 /* =============================================================================
@@ -56,6 +56,6 @@
    ============================================================================= */
 
 [data-style='glass'] [data-fab-backdrop] {
-	background: rgba(0, 0, 0, 0.3);
-	backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
 }

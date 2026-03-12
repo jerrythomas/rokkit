@@ -20,7 +20,11 @@
 		type: 'vertical',
 		elements: [
 			{ scope: '#/size', label: 'Size', props: { options: ['sm', 'md', 'lg'] } },
-			{ scope: '#/lineStyle', label: 'Line style', props: { options: ['none', 'solid', 'dashed', 'dotted'] } },
+			{
+				scope: '#/lineStyle',
+				label: 'Line style',
+				props: { options: ['none', 'solid', 'dashed', 'dotted'] }
+			},
 			{ type: 'separator' }
 		]
 	}
@@ -84,12 +88,7 @@
 <PlaySection>
 	{#snippet preview()}
 		<div class="max-w-[320px]">
-			<Tree
-				items={fileTree}
-				lineStyle="none"
-				value={selected}
-				onselect={handleSelect}
-			/>
+			<Tree items={fileTree} lineStyle="none" value={selected} onselect={handleSelect} />
 		</div>
 	{/snippet}
 

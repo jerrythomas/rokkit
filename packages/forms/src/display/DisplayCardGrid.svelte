@@ -5,14 +5,7 @@
 	 */
 	import DisplayValue from './DisplayValue.svelte'
 
-	let {
-		data = [],
-		fields = [],
-		select,
-		title,
-		onselect,
-		class: className = ''
-	} = $props()
+	let { data = [], fields = [], select, title, onselect, class: className = '' } = $props()
 
 	let selectedIndex = $state(-1)
 	let selectedIndices = $state(new Set())

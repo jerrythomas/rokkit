@@ -12,22 +12,22 @@
 [data-style='glass'] [data-button]:not([data-style])[data-variant='default'],
 [data-style='glass'] [data-button][data-style='default']:not([data-variant]),
 [data-style='glass'] [data-button]:not([data-style]):not([data-variant]) {
-  @apply backdrop-blur-md border shadow-sm bg-surface-z2/70 border-surface-z5/20 text-surface-z9;
+  @apply bg-surface-z2/70 border-surface-z5/20 text-surface-z9 border shadow-sm backdrop-blur-md;
 }
 
 [data-style='glass'] [data-button][data-style='default'][data-variant='primary'],
 [data-style='glass'] [data-button]:not([data-style])[data-variant='primary'] {
-  @apply backdrop-blur-md shadow-sm bg-primary-z5/80 text-on-primary;
+  @apply bg-primary-z5/80 text-on-primary shadow-sm backdrop-blur-md;
 }
 
 [data-style='glass'] [data-button][data-style='default'][data-variant='secondary'],
 [data-style='glass'] [data-button]:not([data-style])[data-variant='secondary'] {
-  @apply backdrop-blur-md shadow-sm bg-secondary-z4/80 text-on-secondary;
+  @apply bg-secondary-z4/80 text-on-secondary shadow-sm backdrop-blur-md;
 }
 
 [data-style='glass'] [data-button][data-style='default'][data-variant='danger'],
 [data-style='glass'] [data-button]:not([data-style])[data-variant='danger'] {
-  @apply backdrop-blur-md shadow-sm bg-danger-z4/80 text-on-danger;
+  @apply bg-danger-z4/80 text-on-danger shadow-sm backdrop-blur-md;
 }
 
 /* =============================================================================
@@ -82,22 +82,23 @@
 
 [data-style='glass'] [data-button][data-style='gradient'][data-variant='default'],
 [data-style='glass'] [data-button][data-style='gradient']:not([data-variant]) {
-  @apply from-surface-z3/80 to-surface-z1/60 text-surface-z10 backdrop-blur-md bg-gradient-to-br;
+  @apply from-surface-z3/80 to-surface-z1/60 text-surface-z10 bg-gradient-to-br backdrop-blur-md;
 }
 
 [data-style='glass'] [data-button][data-style='gradient'][data-variant='primary'] {
-  @apply from-primary-z5/80 to-primary-z3/60 text-on-primary backdrop-blur-md bg-gradient-to-br;
+  @apply from-primary-z5/80 to-primary-z3/60 text-on-primary bg-gradient-to-br backdrop-blur-md;
 }
 
 [data-style='glass'] [data-button][data-style='gradient'][data-variant='secondary'] {
-  @apply from-secondary-z5/80 to-secondary-z3/60 text-on-secondary backdrop-blur-md bg-gradient-to-br;
+  @apply from-secondary-z5/80 to-secondary-z3/60 text-on-secondary bg-gradient-to-br backdrop-blur-md;
 }
 
 [data-style='glass'] [data-button][data-style='gradient'][data-variant='danger'] {
-  @apply from-danger-z5/80 to-danger-z3/60 text-on-danger backdrop-blur-md bg-gradient-to-br;
+  @apply from-danger-z5/80 to-danger-z3/60 text-on-danger bg-gradient-to-br backdrop-blur-md;
 }
 
-[data-style='glass'] [data-button][data-style='gradient']:hover:not(:disabled):not([data-disabled]) {
+[data-style='glass']
+  [data-button][data-style='gradient']:hover:not(:disabled):not([data-disabled]) {
   filter: brightness(1.1);
 }
 
@@ -148,5 +149,5 @@
    ============================================================================= */
 
 [data-style='glass'] [data-button]:focus-visible {
-  @apply outline-none ring-2 ring-surface-z5/40;
+  @apply ring-surface-z5/40 ring-2 outline-none;
 }

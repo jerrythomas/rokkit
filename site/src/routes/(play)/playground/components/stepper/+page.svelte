@@ -80,12 +80,8 @@
 			</div>
 
 			<div class="flex gap-2">
-				<button class="button is-primary" onclick={advance}>
-					Next
-				</button>
-				<button class="button" onclick={reset}>
-					Reset
-				</button>
+				<button class="button is-primary" onclick={advance}> Next </button>
+				<button class="button" onclick={reset}> Reset </button>
 			</div>
 		</div>
 	{/snippet}

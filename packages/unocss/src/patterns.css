@@ -8,99 +8,83 @@
  */
 
 [data-pattern='diagonal'] {
-	background-image: repeating-linear-gradient(
-		45deg,
-		var(--pattern-color, currentColor) 0,
-		var(--pattern-color, currentColor) var(--pattern-line, 0.5px),
-		var(--pattern-fill, transparent) var(--pattern-line, 0.5px),
-		var(--pattern-fill, transparent) var(--pattern-size, 3mm)
-	);
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--pattern-color, currentColor) 0,
+    var(--pattern-color, currentColor) var(--pattern-line, 0.5px),
+    var(--pattern-fill, transparent) var(--pattern-line, 0.5px),
+    var(--pattern-fill, transparent) var(--pattern-size, 3mm)
+  );
 }
 
 [data-pattern='diagonal-reverse'] {
-	background-image: repeating-linear-gradient(
-		-45deg,
-		var(--pattern-color, currentColor) 0,
-		var(--pattern-color, currentColor) var(--pattern-line, 0.5px),
-		var(--pattern-fill, transparent) var(--pattern-line, 0.5px),
-		var(--pattern-fill, transparent) var(--pattern-size, 3mm)
-	);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--pattern-color, currentColor) 0,
+    var(--pattern-color, currentColor) var(--pattern-line, 0.5px),
+    var(--pattern-fill, transparent) var(--pattern-line, 0.5px),
+    var(--pattern-fill, transparent) var(--pattern-size, 3mm)
+  );
 }
 
 [data-pattern='crosshatch'] {
-	background-image:
-		repeating-linear-gradient(
-			45deg,
-			var(--pattern-color, currentColor) 0,
-			var(--pattern-color, currentColor) var(--pattern-line, 0.5px),
-			var(--pattern-fill, transparent) var(--pattern-line, 0.5px),
-			var(--pattern-fill, transparent) var(--pattern-size, 3mm)
-		),
-		repeating-linear-gradient(
-			-45deg,
-			var(--pattern-color, currentColor) 0,
-			var(--pattern-color, currentColor) var(--pattern-line, 0.5px),
-			var(--pattern-fill, transparent) var(--pattern-line, 0.5px),
-			var(--pattern-fill, transparent) var(--pattern-size, 3mm)
-		);
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      var(--pattern-color, currentColor) 0,
+      var(--pattern-color, currentColor) var(--pattern-line, 0.5px),
+      var(--pattern-fill, transparent) var(--pattern-line, 0.5px),
+      var(--pattern-fill, transparent) var(--pattern-size, 3mm)
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      var(--pattern-color, currentColor) 0,
+      var(--pattern-color, currentColor) var(--pattern-line, 0.5px),
+      var(--pattern-fill, transparent) var(--pattern-line, 0.5px),
+      var(--pattern-fill, transparent) var(--pattern-size, 3mm)
+    );
 }
 
 [data-pattern='vertical'] {
-	background-image: repeating-linear-gradient(
-		90deg,
-		var(--pattern-color, currentColor) 0,
-		var(--pattern-color, currentColor) var(--pattern-line, 0.5px),
-		var(--pattern-fill, transparent) var(--pattern-line, 0.5px),
-		var(--pattern-fill, transparent) var(--pattern-size, 3mm)
-	);
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--pattern-color, currentColor) 0,
+    var(--pattern-color, currentColor) var(--pattern-line, 0.5px),
+    var(--pattern-fill, transparent) var(--pattern-line, 0.5px),
+    var(--pattern-fill, transparent) var(--pattern-size, 3mm)
+  );
 }
 
 [data-pattern='horizontal'] {
-	background-image: repeating-linear-gradient(
-		0deg,
-		var(--pattern-color, currentColor) 0,
-		var(--pattern-color, currentColor) var(--pattern-line, 0.5px),
-		var(--pattern-fill, transparent) var(--pattern-line, 0.5px),
-		var(--pattern-fill, transparent) var(--pattern-size, 3mm)
-	);
+  background-image: repeating-linear-gradient(
+    0deg,
+    var(--pattern-color, currentColor) 0,
+    var(--pattern-color, currentColor) var(--pattern-line, 0.5px),
+    var(--pattern-fill, transparent) var(--pattern-line, 0.5px),
+    var(--pattern-fill, transparent) var(--pattern-size, 3mm)
+  );
 }
 
 [data-pattern='dots'] {
-	background-image: radial-gradient(
-		circle,
-		var(--pattern-color, currentColor) var(--pattern-line, 0.5px),
-		var(--pattern-fill, transparent) var(--pattern-line, 0.5px)
-	);
-	background-size: var(--pattern-size, 3mm) var(--pattern-size, 3mm);
+  background-image: radial-gradient(
+    circle,
+    var(--pattern-color, currentColor) var(--pattern-line, 0.5px),
+    var(--pattern-fill, transparent) var(--pattern-line, 0.5px)
+  );
+  background-size: var(--pattern-size, 3mm) var(--pattern-size, 3mm);
 }
 
 [data-pattern='checker'] {
-	background-image:
-		linear-gradient(
-			45deg,
-			var(--pattern-color, currentColor) 25%,
-			transparent 25%
-		),
-		linear-gradient(
-			-45deg,
-			var(--pattern-color, currentColor) 25%,
-			transparent 25%
-		),
-		linear-gradient(
-			45deg,
-			transparent 75%,
-			var(--pattern-color, currentColor) 75%
-		),
-		linear-gradient(
-			-45deg,
-			transparent 75%,
-			var(--pattern-color, currentColor) 75%
-		);
-	background-color: var(--pattern-fill, transparent);
-	background-size: calc(2 * var(--pattern-size, 3mm)) calc(2 * var(--pattern-size, 3mm));
-	background-position:
-		0 0,
-		0 var(--pattern-size, 3mm),
-		var(--pattern-size, 3mm) calc(-1 * var(--pattern-size, 3mm)),
-		calc(-1 * var(--pattern-size, 3mm)) 0;
+  background-image:
+    linear-gradient(45deg, var(--pattern-color, currentColor) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--pattern-color, currentColor) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--pattern-color, currentColor) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--pattern-color, currentColor) 75%);
+  background-color: var(--pattern-fill, transparent);
+  background-size: calc(2 * var(--pattern-size, 3mm)) calc(2 * var(--pattern-size, 3mm));
+  background-position:
+    0 0,
+    0 var(--pattern-size, 3mm),
+    var(--pattern-size, 3mm) calc(-1 * var(--pattern-size, 3mm)),
+    calc(-1 * var(--pattern-size, 3mm)) 0;
 }

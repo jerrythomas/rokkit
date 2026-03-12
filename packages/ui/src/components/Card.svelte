@@ -16,14 +16,7 @@
 		children?: Snippet
 	}
 
-	const {
-		href,
-		onclick,
-		class: className = '',
-		header,
-		footer,
-		children
-	}: CardProps = $props()
+	const { href, onclick, class: className = '', header, footer, children }: CardProps = $props()
 </script>
 
 {#snippet cardContent()}

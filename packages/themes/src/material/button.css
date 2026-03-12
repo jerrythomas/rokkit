@@ -82,22 +82,23 @@
 
 [data-style='material'] [data-button][data-style='gradient'][data-variant='default'],
 [data-style='material'] [data-button][data-style='gradient']:not([data-variant]) {
-  @apply from-surface-z3 to-surface-z1 text-surface-z10 shadow-md bg-gradient-to-br;
+  @apply from-surface-z3 to-surface-z1 text-surface-z10 bg-gradient-to-br shadow-md;
 }
 
 [data-style='material'] [data-button][data-style='gradient'][data-variant='primary'] {
-  @apply from-primary-z5 to-primary-z3 text-on-primary shadow-md bg-gradient-to-br;
+  @apply from-primary-z5 to-primary-z3 text-on-primary bg-gradient-to-br shadow-md;
 }
 
 [data-style='material'] [data-button][data-style='gradient'][data-variant='secondary'] {
-  @apply from-secondary-z5 to-secondary-z3 text-on-secondary shadow-md bg-gradient-to-br;
+  @apply from-secondary-z5 to-secondary-z3 text-on-secondary bg-gradient-to-br shadow-md;
 }
 
 [data-style='material'] [data-button][data-style='gradient'][data-variant='danger'] {
-  @apply from-danger-z5 to-danger-z3 text-on-danger shadow-md bg-gradient-to-br;
+  @apply from-danger-z5 to-danger-z3 text-on-danger bg-gradient-to-br shadow-md;
 }
 
-[data-style='material'] [data-button][data-style='gradient']:hover:not(:disabled):not([data-disabled]) {
+[data-style='material']
+  [data-button][data-style='gradient']:hover:not(:disabled):not([data-disabled]) {
   filter: brightness(1.08);
   @apply shadow-lg;
 }
@@ -131,16 +132,19 @@
    Hover States
    ============================================================================= */
 
-[data-style='material'] [data-button][data-style='default']:hover:not(:disabled):not([data-disabled]),
+[data-style='material']
+  [data-button][data-style='default']:hover:not(:disabled):not([data-disabled]),
 [data-style='material'] [data-button]:not([data-style]):hover:not(:disabled):not([data-disabled]) {
   @apply shadow-md;
 }
 
-[data-style='material'] [data-button][data-style='outline']:hover:not(:disabled):not([data-disabled]) {
+[data-style='material']
+  [data-button][data-style='outline']:hover:not(:disabled):not([data-disabled]) {
   @apply bg-surface-z1;
 }
 
-[data-style='material'] [data-button][data-style='ghost']:hover:not(:disabled):not([data-disabled]) {
+[data-style='material']
+  [data-button][data-style='ghost']:hover:not(:disabled):not([data-disabled]) {
   @apply bg-surface-z2;
 }
 

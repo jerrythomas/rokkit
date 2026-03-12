@@ -94,7 +94,7 @@ await preloadHighlighter()
 // Highlight a code string
 const html = await highlightCode('const x = 1', {
   lang: 'javascript',
-  theme: 'github-light'  // or 'github-dark'
+  theme: 'github-light' // or 'github-dark'
 })
 ```
 
@@ -104,32 +104,32 @@ Supported languages: `svelte`, `javascript`, `typescript`, `css`, `html`, `json`
 
 ### Components
 
-| Export | Description |
-|--------|-------------|
+| Export        | Description                                                                                  |
+| ------------- | -------------------------------------------------------------------------------------------- |
 | `StoryViewer` | Renders a live preview (`App` prop) alongside syntax-highlighted source files (`files` prop) |
-| `CodeViewer` | Tabbed code viewer with syntax highlighting |
-| `Preview` | Isolated preview container for a live component |
-| `Notes` | Prose content area for story narrative text |
+| `CodeViewer`  | Tabbed code viewer with syntax highlighting                                                  |
+| `Preview`     | Isolated preview container for a live component                                              |
+| `Notes`       | Prose content area for story narrative text                                                  |
 
 ### Story utilities (`@rokkit/stories`)
 
-| Export | Description |
-|--------|-------------|
-| `fetchImports(sources)` | Resolve `import.meta.glob` entries into `File[]` objects |
-| `fetchStories(sources, modules)` | Combine source files and metadata modules into stories |
-| `getSlug(file)` | Derive a URL slug from a file path |
-| `getSections(metadata)` | Build a hierarchical section list from metadata objects |
-| `groupFiles(files)` | Group `File[]` by parent folder name |
-| `getAllSections()` | Return the full section list (populated after `fetchStories`) |
-| `findSection(sections, slug)` | Look up a section by slug |
-| `findGroupForSection(sections, id)` | Find the nav group that contains a section |
+| Export                              | Description                                                   |
+| ----------------------------------- | ------------------------------------------------------------- |
+| `fetchImports(sources)`             | Resolve `import.meta.glob` entries into `File[]` objects      |
+| `fetchStories(sources, modules)`    | Combine source files and metadata modules into stories        |
+| `getSlug(file)`                     | Derive a URL slug from a file path                            |
+| `getSections(metadata)`             | Build a hierarchical section list from metadata objects       |
+| `groupFiles(files)`                 | Group `File[]` by parent folder name                          |
+| `getAllSections()`                  | Return the full section list (populated after `fetchStories`) |
+| `findSection(sections, slug)`       | Look up a section by slug                                     |
+| `findGroupForSection(sections, id)` | Find the nav group that contains a section                    |
 
 ### Shiki utilities
 
-| Export | Description |
-|--------|-------------|
-| `highlightCode(code, options)` | Highlight a code string; returns HTML string |
-| `preloadHighlighter()` | Warm the Shiki highlighter to avoid cold-start latency |
+| Export                         | Description                                            |
+| ------------------------------ | ------------------------------------------------------ |
+| `highlightCode(code, options)` | Highlight a code string; returns HTML string           |
+| `preloadHighlighter()`         | Warm the Shiki highlighter to avoid cold-start latency |
 
 ### Types
 

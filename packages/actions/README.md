@@ -44,8 +44,8 @@ The `data-path` attribute on each item is required — Navigator uses it to reso
 import { Navigator } from '@rokkit/actions'
 
 const nav = new Navigator(containerEl, wrapper, {
-  orientation: 'vertical',  // 'vertical' | 'horizontal'
-  collapsible: true          // enable expand/collapse key handling
+  orientation: 'vertical', // 'vertical' | 'horizontal'
+  collapsible: true // enable expand/collapse key handling
 })
 
 // Clean up when done
@@ -59,9 +59,11 @@ nav.destroy()
   import { keyboard } from '@rokkit/actions'
 </script>
 
-<div use:keyboard={{ submit: 'enter', cancel: 'escape' }}
-     onsubmit={() => save()}
-     oncancel={() => close()}>
+<div
+  use:keyboard={{ submit: 'enter', cancel: 'escape' }}
+  onsubmit={() => save()}
+  oncancel={() => close()}
+>
   ...
 </div>
 ```
@@ -120,9 +122,7 @@ Default mappings: alphabet keys dispatch `add`, Enter dispatches `submit`, Escap
   let open = $state(false)
 </script>
 
-<div use:dismissable={{ enabled: open, ondismiss: () => (open = false) }}>
-  Dropdown content
-</div>
+<div use:dismissable={{ enabled: open, ondismiss: () => (open = false) }}>Dropdown content</div>
 ```
 
 ### swipeable — touch swipe detection
@@ -132,9 +132,7 @@ Default mappings: alphabet keys dispatch `add`, Enter dispatches `submit`, Escap
   import { swipeable } from '@rokkit/actions'
 </script>
 
-<div use:swipeable onswipeleft={() => next()} onswiperight={() => prev()}>
-  Swipeable content
-</div>
+<div use:swipeable onswipeleft={() => next()} onswiperight={() => prev()}>Swipeable content</div>
 ```
 
 ### themable — apply theme CSS variables
@@ -151,10 +149,10 @@ Default mappings: alphabet keys dispatch `add`, Enter dispatches `submit`, Escap
 
 ### Navigator options
 
-| Option | Type | Default | Description |
-|---|---|---|---|
+| Option        | Type                         | Default      | Description                           |
+| ------------- | ---------------------------- | ------------ | ------------------------------------- |
 | `orientation` | `'vertical' \| 'horizontal'` | `'vertical'` | Arrow key axis for prev/next movement |
-| `collapsible` | `boolean` | `false` | Enable expand/collapse via arrow keys |
+| `collapsible` | `boolean`                    | `false`      | Enable expand/collapse via arrow keys |
 
 ### buildKeymap / resolveAction
 
@@ -164,27 +162,27 @@ Low-level utilities for constructing custom keymaps:
 import { buildKeymap, resolveAction, ACTIONS } from '@rokkit/actions'
 
 const keymap = buildKeymap({ orientation: 'vertical', collapsible: true })
-const action = resolveAction(keymap, event)  // returns action string or null
+const action = resolveAction(keymap, event) // returns action string or null
 ```
 
 ## Exports
 
-| Export | Type | Description |
-|---|---|---|
-| `Navigator` | Class | DOM event wiring for Wrapper/ListController |
-| `navigator` | Svelte action | `use:navigator` wrapper around Navigator class |
-| `keyboard` | Svelte action | Declarative keyboard shortcut binding |
-| `ripple` | Svelte action | Material Design ink ripple on click |
-| `hoverLift` | Svelte action | Elevation shadow on hover |
-| `magnetic` | Svelte action | Snap-to-cursor magnetic effect |
-| `reveal` | Svelte action | Intersection-observer reveal animation |
-| `dismissable` | Svelte action | Click-outside dismissal |
-| `pannable` | Svelte action | Pan / drag detection |
-| `swipeable` | Svelte action | Touch swipe detection |
-| `themable` | Svelte action | Apply theme CSS vars to element |
-| `buildKeymap` | Function | Build a keymap for given orientation/options |
-| `resolveAction` | Function | Resolve a keyboard event to an action string |
-| `ACTIONS` | Object | Named action constants |
+| Export          | Type          | Description                                    |
+| --------------- | ------------- | ---------------------------------------------- |
+| `Navigator`     | Class         | DOM event wiring for Wrapper/ListController    |
+| `navigator`     | Svelte action | `use:navigator` wrapper around Navigator class |
+| `keyboard`      | Svelte action | Declarative keyboard shortcut binding          |
+| `ripple`        | Svelte action | Material Design ink ripple on click            |
+| `hoverLift`     | Svelte action | Elevation shadow on hover                      |
+| `magnetic`      | Svelte action | Snap-to-cursor magnetic effect                 |
+| `reveal`        | Svelte action | Intersection-observer reveal animation         |
+| `dismissable`   | Svelte action | Click-outside dismissal                        |
+| `pannable`      | Svelte action | Pan / drag detection                           |
+| `swipeable`     | Svelte action | Touch swipe detection                          |
+| `themable`      | Svelte action | Apply theme CSS vars to element                |
+| `buildKeymap`   | Function      | Build a keymap for given orientation/options   |
+| `resolveAction` | Function      | Resolve a keyboard event to an action string   |
+| `ACTIONS`       | Object        | Named action constants                         |
 
 ---
 

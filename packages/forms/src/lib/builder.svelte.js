@@ -2,7 +2,10 @@ import { deriveSchemaFromValue } from './schema.js'
 import { deriveLayoutFromValue } from './layout.js'
 import { getSchemaWithLayout } from './fields.js'
 import { createLookupManager } from './lookup.svelte.js'
-import { validateField as validateFieldValue, validateAll as validateAllFields } from './validation.js'
+import {
+	validateField as validateFieldValue,
+	validateAll as validateAllFields
+} from './validation.js'
 
 /**
  * Deep-clone a plain value (primitives, plain objects, arrays).
@@ -455,8 +458,7 @@ export class FormBuilder {
 			)
 
 			// Group elements have top-level properties (label, etc.) from combineNestedElementsWithSchema
-			const { key: _k, elements: _e, override: _o, props: groupProps, ...topLevelProps } =
-				element
+			const { key: _k, elements: _e, override: _o, props: groupProps, ...topLevelProps } = element
 
 			return {
 				scope,
@@ -696,10 +698,7 @@ export class FormBuilder {
 	 * @param {Set<string>} dirty - Accumulator set
 	 */
 	#collectDirtyFields(current, initial, prefix, dirty) {
-		const allKeys = new Set([
-			...Object.keys(current ?? {}),
-			...Object.keys(initial ?? {})
-		])
+		const allKeys = new Set([...Object.keys(current ?? {}), ...Object.keys(initial ?? {})])
 
 		for (const key of allKeys) {
 			const path = prefix ? `${prefix}/${key}` : key

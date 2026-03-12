@@ -52,7 +52,11 @@ describe('validateField', () => {
 		})
 
 		it('should validate pattern', () => {
-			const result = validateField('not-email', { type: 'string', pattern: '^[^@]+@[^@]+$' }, 'Email')
+			const result = validateField(
+				'not-email',
+				{ type: 'string', pattern: '^[^@]+@[^@]+$' },
+				'Email'
+			)
 			expect(result).toEqual({ state: 'error', text: 'Email format is invalid' })
 		})
 
@@ -62,7 +66,11 @@ describe('validateField', () => {
 		})
 
 		it('should validate enum', () => {
-			const result = validateField('purple', { type: 'string', enum: ['red', 'blue', 'green'] }, 'Color')
+			const result = validateField(
+				'purple',
+				{ type: 'string', enum: ['red', 'blue', 'green'] },
+				'Color'
+			)
 			expect(result).toEqual({
 				state: 'error',
 				text: 'Color must be one of: red, blue, green'
@@ -70,7 +78,11 @@ describe('validateField', () => {
 		})
 
 		it('should pass valid enum value', () => {
-			const result = validateField('red', { type: 'string', enum: ['red', 'blue', 'green'] }, 'Color')
+			const result = validateField(
+				'red',
+				{ type: 'string', enum: ['red', 'blue', 'green'] },
+				'Color'
+			)
 			expect(result).toBeNull()
 		})
 	})
@@ -119,12 +131,20 @@ describe('validateField', () => {
 
 	describe('boolean validation', () => {
 		it('should validate required mustBeTrue boolean', () => {
-			const result = validateField(false, { type: 'boolean', required: true, mustBeTrue: true }, 'Terms')
+			const result = validateField(
+				false,
+				{ type: 'boolean', required: true, mustBeTrue: true },
+				'Terms'
+			)
 			expect(result).toEqual({ state: 'error', text: 'Terms must be accepted' })
 		})
 
 		it('should pass when mustBeTrue and value is true', () => {
-			const result = validateField(true, { type: 'boolean', required: true, mustBeTrue: true }, 'Terms')
+			const result = validateField(
+				true,
+				{ type: 'boolean', required: true, mustBeTrue: true },
+				'Terms'
+			)
 			expect(result).toBeNull()
 		})
 	})
@@ -167,10 +187,7 @@ describe('validateAll', () => {
 		}
 		const layout = {
 			type: 'vertical',
-			elements: [
-				{ type: 'separator' },
-				{ label: 'Name', scope: '#/name' }
-			]
+			elements: [{ type: 'separator' }, { label: 'Name', scope: '#/name' }]
 		}
 
 		const results = validateAll(data, schema, layout)

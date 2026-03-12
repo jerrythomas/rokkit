@@ -18,9 +18,7 @@
 		canonicalPath.includes('/docs/components/') ? canonicalPath.split('/').pop() : null
 	)
 	const playHref = $derived(componentSlug ? `/playground/components/${componentSlug}` : null)
-	const llmsHref = $derived(
-		llms && componentSlug ? `/llms/components/${componentSlug}.txt` : null
-	)
+	const llmsHref = $derived(llms && componentSlug ? `/llms/components/${componentSlug}.txt` : null)
 
 	let breadcrumbs = $derived.by(() => {
 		const group = findGroupForSection(sections, canonicalPath)
@@ -82,16 +80,17 @@
 	<meta name="tutorial" content={description} />
 </svelte:head>
 
-<div class="flex flex-col flex-1 min-h-0 overflow-hidden">
-
+<div class="flex min-h-0 flex-1 flex-col overflow-hidden">
 	<!-- ── Header ──────────────────────────────────────────────────────────────── -->
-	<header class="flex h-14 flex-shrink-0 items-center justify-between border-b border-surface-z2 bg-surface-z1 px-4 relative">
+	<header
+		class="border-surface-z2 bg-surface-z1 relative flex h-14 flex-shrink-0 items-center justify-between border-b px-4"
+	>
 		{#if loading}
 			<ProgressBar class="absolute inset-x-0 top-0 z-10" />
 		{/if}
 		<div class="flex items-center gap-2">
 			<button
-				class="flex h-9 w-9 items-center justify-center rounded-md text-xl text-surface-z6 hover:bg-surface-z3 lg:hidden"
+				class="text-surface-z6 hover:bg-surface-z3 flex h-9 w-9 items-center justify-center rounded-md text-xl lg:hidden"
 				onclick={() => (sidebarOpen = !sidebarOpen)}
 				aria-label="Toggle navigation"
 				aria-expanded={sidebarOpen}
@@ -113,7 +112,7 @@
 			<ThemeSwitcherToggle size="sm" />
 			<a
 				href="/preview"
-				class="flex h-9 items-center gap-1.5 px-3 rounded-md text-sm text-surface-z5 hover:text-surface-z8 hover:bg-surface-z2 no-underline"
+				class="text-surface-z5 hover:text-surface-z8 hover:bg-surface-z2 flex h-9 items-center gap-1.5 rounded-md px-3 text-sm no-underline"
 				title="Preview App — Nexus"
 			>
 				<span class="i-solar:atom-bold-duotone inline-block text-base" aria-hidden="true"></span>
@@ -123,7 +122,7 @@
 				href="https://github.com/jerrythomas/rokkit"
 				target="_blank"
 				rel="noopener noreferrer"
-				class="flex h-9 w-9 items-center justify-center rounded-md text-xl text-surface-z5 hover:text-surface-z8 no-underline"
+				class="text-surface-z5 hover:text-surface-z8 flex h-9 w-9 items-center justify-center rounded-md text-xl no-underline"
 				aria-label="Rokkit on GitHub"
 			>
 				<span class="i-logo:github inline-block" aria-hidden="true"></span>
@@ -132,8 +131,7 @@
 	</header>
 
 	<!-- ── Body ──────────────────────────────────────────────────────────────────── -->
-	<div class="flex flex-1 min-h-0 overflow-hidden relative">
-
+	<div class="relative flex min-h-0 flex-1 overflow-hidden">
 		<!-- Backdrop (mobile only) -->
 		{#if sidebarOpen && !media.large.current}
 			<div
@@ -146,7 +144,7 @@
 
 		<!-- ── Sidebar ─────────────────────────────────────────────────────────── -->
 		<aside
-			class="bg-surface-z1 border-r border-surface-z2 flex flex-col"
+			class="bg-surface-z1 border-surface-z2 flex flex-col border-r"
 			style={sidebarStyle}
 			aria-label="Site navigation"
 		>
@@ -156,17 +154,18 @@
 		<!-- ── Main column ──────────────────────────────────────────────────────── -->
 		<div class="flex min-w-0 flex-1 flex-col overflow-hidden">
 			<div class="flex min-h-0 flex-1 overflow-hidden">
-				<main id="main-content" class="min-w-0 flex-1 overflow-y-auto p-8 relative">
+				<main id="main-content" class="relative min-w-0 flex-1 overflow-y-auto p-8">
 					{#if playHref || llmsHref}
-						<div class="absolute top-4 right-4 flex items-center gap-1 z-10">
+						<div class="absolute top-4 right-4 z-10 flex items-center gap-1">
 							{#if playHref}
 								<a
 									href={playHref}
-									class="flex h-8 w-8 items-center justify-center rounded-md text-surface-z5 hover:bg-surface-z3 hover:text-surface-z8 no-underline"
+									class="text-surface-z5 hover:bg-surface-z3 hover:text-surface-z8 flex h-8 w-8 items-center justify-center rounded-md no-underline"
 									title="Open in Playground"
 									aria-label="Open in Playground"
 								>
-									<span class="i-solar:gamepad-bold-duotone inline-block text-lg" aria-hidden="true"></span>
+									<span class="i-solar:gamepad-bold-duotone inline-block text-lg" aria-hidden="true"
+									></span>
 								</a>
 							{/if}
 							{#if llmsHref}
@@ -174,11 +173,14 @@
 									href={llmsHref}
 									target="_blank"
 									rel="noopener noreferrer"
-									class="flex h-8 w-8 items-center justify-center rounded-md text-surface-z5 hover:bg-surface-z3 hover:text-surface-z8 no-underline"
+									class="text-surface-z5 hover:bg-surface-z3 hover:text-surface-z8 flex h-8 w-8 items-center justify-center rounded-md no-underline"
 									title="View llms.txt"
 									aria-label="View llms.txt"
 								>
-									<span class="i-solar:file-text-bold-duotone inline-block text-lg" aria-hidden="true"></span>
+									<span
+										class="i-solar:file-text-bold-duotone inline-block text-lg"
+										aria-hidden="true"
+									></span>
 								</a>
 							{/if}
 						</div>
@@ -188,25 +190,31 @@
 							{#each breadcrumbs as crumb, i}
 								{#if i > 0}<span class="text-surface-z3 mx-1">/</span>{/if}
 								{#if crumb.href}
-									<a href={crumb.href} class="text-surface-z5 hover:text-surface-z8">{crumb.label}</a>
+									<a href={crumb.href} class="text-surface-z5 hover:text-surface-z8"
+										>{crumb.label}</a
+									>
 								{:else}
 									<span class="text-surface-z7">{crumb.label}</span>
 								{/if}
 							{/each}
 						</nav>
 					{/if}
-					<h1 class="flex items-center gap-3 mb-1 text-[1.75rem] font-bold tracking-tight text-surface-z8">
+					<h1
+						class="text-surface-z8 mb-1 flex items-center gap-3 text-[1.75rem] font-bold tracking-tight"
+					>
 						{#if icon}
 							<span class="{icon} text-secondary-z7 text-4xl" aria-hidden="true"></span>
 						{/if}
 						{title}
 					</h1>
 					{#if description}
-						<p class="mb-6 text-sm text-surface-z5">{description}</p>
+						<p class="text-surface-z5 mb-6 text-sm">{description}</p>
 					{/if}
 					{@render children?.()}
 				</main>
-				<aside class="hidden xl:flex w-52 flex-shrink-0 flex-col overflow-y-auto border-l border-surface-z2 px-5 py-6">
+				<aside
+					class="border-surface-z2 hidden w-52 flex-shrink-0 flex-col overflow-y-auto border-l px-5 py-6 xl:flex"
+				>
 					<TableOfContents />
 				</aside>
 			</div>

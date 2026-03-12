@@ -83,7 +83,10 @@ export class ListController {
 		if (index < 0) {
 			const valueField = this.fields.value
 			index = this.data.findIndex(
-				(row) => typeof row.value === 'object' && row.value !== null && equals(row.value[valueField], value)
+				(row) =>
+					typeof row.value === 'object' &&
+					row.value !== null &&
+					equals(row.value[valueField], value)
 			)
 		}
 

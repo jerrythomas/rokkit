@@ -61,7 +61,9 @@ describe('normalizeFields', () => {
 	})
 
 	it('should remap all legacy keys (text is no longer legacy)', () => {
-		expect(normalizeFields({ text: 'a', description: 'b', title: 'c', image: 'd', target: 'e' })).toEqual({
+		expect(
+			normalizeFields({ text: 'a', description: 'b', title: 'c', image: 'd', target: 'e' })
+		).toEqual({
 			text: 'a',
 			subtext: 'b',
 			tooltip: 'c',
@@ -224,7 +226,9 @@ describe('LazyProxyItem', () => {
 		it('should be loaded when node already has children array', () => {
 			const proxy = new LazyProxyItem(
 				{ text: 'parent', children: [{ text: 'child' }] },
-				{}, '0', 1,
+				{},
+				'0',
+				1,
 				async () => []
 			)
 			expect(proxy.loaded).toBe(true)
@@ -232,20 +236,12 @@ describe('LazyProxyItem', () => {
 		})
 
 		it('should not be loaded for sentinel node (children: true)', () => {
-			const proxy = new LazyProxyItem(
-				{ text: 'lazy', children: true },
-				{}, '0', 1,
-				async () => []
-			)
+			const proxy = new LazyProxyItem({ text: 'lazy', children: true }, {}, '0', 1, async () => [])
 			expect(proxy.loaded).toBe(false)
 		})
 
 		it('should be loaded when node has no children field (leaf)', () => {
-			const proxy = new LazyProxyItem(
-				{ text: 'lazy' },
-				{}, '0', 1,
-				async () => []
-			)
+			const proxy = new LazyProxyItem({ text: 'lazy' }, {}, '0', 1, async () => [])
 			expect(proxy.loaded).toBe(true)
 		})
 
@@ -264,8 +260,11 @@ describe('LazyProxyItem', () => {
 
 		it('should be loading during fetch', async () => {
 			let resolveLoad
-			const lazyLoad = vi.fn().mockImplementation(() =>
-				new Promise((resolve) => { resolveLoad = resolve })
+			const lazyLoad = vi.fn().mockImplementation(
+				() =>
+					new Promise((resolve) => {
+						resolveLoad = resolve
+					})
 			)
 
 			const proxy = new LazyProxyItem({ text: 'x', children: true }, {}, '0', 1, lazyLoad)
@@ -293,8 +292,11 @@ describe('LazyProxyItem', () => {
 
 		it('should not fetch while already loading', async () => {
 			let resolveLoad
-			const lazyLoad = vi.fn().mockImplementation(() =>
-				new Promise((resolve) => { resolveLoad = resolve })
+			const lazyLoad = vi.fn().mockImplementation(
+				() =>
+					new Promise((resolve) => {
+						resolveLoad = resolve
+					})
 			)
 
 			const proxy = new LazyProxyItem({ text: 'x', children: true }, {}, '0', 1, lazyLoad)
@@ -348,7 +350,10 @@ describe('LazyProxyItem', () => {
 			const lazyLoad = vi.fn().mockResolvedValue([])
 			const proxy = new LazyProxyItem(
 				{ text: 'p', children: [{ text: 'existing' }] },
-				{}, '0', 1, lazyLoad
+				{},
+				'0',
+				1,
+				lazyLoad
 			)
 
 			expect(proxy.loaded).toBe(true)
@@ -365,12 +370,16 @@ describe('LazyProxyItem', () => {
 		it('should propagate lazyLoad to children via _createChild', async () => {
 			const lazyLoad = vi.fn()
 
-			const proxy = new LazyProxyItem({ label: 'root', value: 'r', children: true }, {}, '0', 1, lazyLoad)
+			const proxy = new LazyProxyItem(
+				{ label: 'root', value: 'r', children: true },
+				{},
+				'0',
+				1,
+				lazyLoad
+			)
 
 			// First fetch: load children for root
-			lazyLoad.mockResolvedValueOnce([
-				{ label: 'child', value: 'c1', children: true }
-			])
+			lazyLoad.mockResolvedValueOnce([{ label: 'child', value: 'c1', children: true }])
 			await proxy.fetch()
 			flushSync()
 
@@ -380,9 +389,7 @@ describe('LazyProxyItem', () => {
 			expect(child.loaded).toBe(false) // sentinel (children: true) → needs fetch
 
 			// Fetch children of the child
-			lazyLoad.mockResolvedValueOnce([
-				{ label: 'grandchild', value: 'gc1' }
-			])
+			lazyLoad.mockResolvedValueOnce([{ label: 'grandchild', value: 'gc1' }])
 			await child.fetch()
 			flushSync()
 
@@ -391,9 +398,9 @@ describe('LazyProxyItem', () => {
 		})
 
 		it('children with existing arrays should be loaded', async () => {
-			const lazyLoad = vi.fn().mockResolvedValueOnce([
-				{ text: 'child', value: 'c1', children: [{ text: 'gc' }] }
-			])
+			const lazyLoad = vi
+				.fn()
+				.mockResolvedValueOnce([{ text: 'child', value: 'c1', children: [{ text: 'gc' }] }])
 
 			const proxy = new LazyProxyItem({ text: 'root', children: true }, {}, '0', 1, lazyLoad)
 			await proxy.fetch()

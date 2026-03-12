@@ -20,6 +20,6 @@
 <Table data={filtered} caption="Filtered Employees" striped />
 
 <p class="text-surface-z6 mt-2 text-sm">
-	Try: <code>name:alice</code>, <code>salary>90000</code>, <code>department:eng</code>, or just
-	type free text to search all columns.
+	Try: <code>name:alice</code>, <code>salary>90000</code>, <code>department:eng</code>, or just type
+	free text to search all columns.
 </p>

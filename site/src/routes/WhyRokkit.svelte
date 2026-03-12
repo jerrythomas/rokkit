@@ -46,9 +46,9 @@
 	<div class="grid w-full grid-cols-1 gap-8 sm:grid-cols-2 md:gap-10 lg:grid-cols-3">
 		{#each features as feature, index (index)}
 			<Card class="bg-surface-z1 flex flex-col items-center gap-2 rounded-xl px-4 py-4">
-					<span class="{feature.icon} text-primary-z7 text-4xl" aria-hidden="true"></span>
-					<h3 class="text-md font-semibold leading-loose text-surface-z7">{feature.title}</h3>
-					<p class="text-surface-z6 text-justify text-sm">{feature.description}</p>
+				<span class="{feature.icon} text-primary-z7 text-4xl" aria-hidden="true"></span>
+				<h3 class="text-md text-surface-z7 leading-loose font-semibold">{feature.title}</h3>
+				<p class="text-surface-z6 text-justify text-sm">{feature.description}</p>
 			</Card>
 		{/each}
 	</div>

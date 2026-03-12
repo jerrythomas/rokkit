@@ -64,10 +64,15 @@ export const BASE_FIELDS = {
 	// State
 	disabled: 'disabled',
 	expanded: 'expanded',
-	selected: 'selected',
+	selected: 'selected'
 }
 
-const LEGACY_KEY_MAP = { description: 'subtext', title: 'tooltip', image: 'avatar', target: 'hrefTarget' }
+const LEGACY_KEY_MAP = {
+	description: 'subtext',
+	title: 'tooltip',
+	image: 'avatar',
+	target: 'hrefTarget'
+}
 
 /**
  * Remap legacy field-override keys to their BASE_FIELDS semantic equivalents.

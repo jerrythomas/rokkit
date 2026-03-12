@@ -14,7 +14,7 @@
 	target="_blank"
 	rel="noopener"
 	data-button-root
-	class="absolute right-0 top-0 z-10 inline-flex items-center gap-1.5 px-2 text-xs"
+	class="absolute top-0 right-0 z-10 inline-flex items-center gap-1.5 px-2 text-xs"
 	title="View LLM API Documentation"
 >
 	<svg

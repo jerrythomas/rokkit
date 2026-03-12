@@ -31,10 +31,10 @@ sites/learn/src/routes/
 
 Each group uses a physical subfolder to anchor its URL namespace:
 
-| Group | Physical path | URL prefix |
-|-------|--------------|------------|
-| `(learn)` | `(learn)/[section]/[slug]/` | `/[section]/[slug]` |
-| `(play)` | `(play)/play/[component]/` | `/play/[component]` |
+| Group       | Physical path                  | URL prefix           |
+| ----------- | ------------------------------ | -------------------- |
+| `(learn)`   | `(learn)/[section]/[slug]/`    | `/[section]/[slug]`  |
+| `(play)`    | `(play)/play/[component]/`     | `/play/[component]`  |
 | `(preview)` | `(preview)/preview/[section]/` | `/preview/[section]` |
 
 Route groups are logical — they share the URL namespace. The `play/` and `preview/` folder segments prevent clashes between groups.
@@ -170,35 +170,39 @@ The left sidebar uses Rokkit's own `List` component (self-hosted). The top bar u
 
 Controls applied live to `document.documentElement`:
 
-| Control | Attribute | Options |
-|---------|-----------|---------|
-| Skin | `data-palette` | `rokkit`, `glass`, `minimal`, `material` |
-| Mode | `data-mode` | `light`, `dark` |
-| Density | `data-density` | `compact`, `default`, `comfortable` 🔲 |
+| Control | Attribute      | Options                                  |
+| ------- | -------------- | ---------------------------------------- |
+| Skin    | `data-palette` | `rokkit`, `glass`, `minimal`, `material` |
+| Mode    | `data-mode`    | `light`, `dark`                          |
+| Density | `data-density` | `compact`, `default`, `comfortable` 🔲   |
 
 State persists in the vibe store (not URL) — switching skin repaints the entire preview app instantly with no reload.
 
 ### Page content
 
 **`/preview/dashboard`**
+
 - KPI stat `Card` components (revenue, tasks, team members)
 - Sparkline charts for trend data
 - Recent activity `List`
 - `Toolbar` with action `Button`s
 
 **`/preview/projects`**
+
 - Project filter bar (`Select`, `MultiSelect`, `Toolbar`)
 - Task `Tree` with expand/collapse groups
 - Inline task editing via `FormRenderer` (text, date, select fields)
 - Add task panel with validation and lookup fields
 
 **`/preview/reports`**
+
 - Date range + dimension filter bar (`Toolbar`, `Select`)
 - Animated `BarChart` with data transitions
 - `LineChart` / area chart for time series
 - Summary `DataTable` 🔲 (placeholder until built)
 
 **`/preview/admin`**
+
 - Team members `DataTable` 🔲 (placeholder)
 - User settings `FormRenderer` with validation and lookups
 - Appearance settings (skin, mode, density — wired to the floating panel)
@@ -214,18 +218,18 @@ The preview app exercises every implemented component at least once. Placeholder
 
 Current files are inconsistently numbered. New sequence:
 
-| New name | Old name | Status |
-|----------|----------|--------|
-| `01-patterns.md` | `01-patterns.md` | Exists |
-| `02-components.md` | `02-components.md` | Exists |
-| `03-forms.md` | `03-forms.md` | Exists |
-| `04-actions.md` | `04-actions.md` | Exists |
-| `05-effects.md` | _(planned)_ | 🔲 To write |
-| `06-themes.md` | _(planned)_ | 🔲 To write |
-| `07-charts.md` | _(planned)_ | 🔲 To write |
-| `08-tools.md` | _(planned)_ | 🔲 To write |
-| `09-website.md` | `05-website.md` | Rename + expand |
-| `README.md` | `000-component-gaps.md` | Repurpose as index |
+| New name           | Old name                | Status             |
+| ------------------ | ----------------------- | ------------------ |
+| `01-patterns.md`   | `01-patterns.md`        | Exists             |
+| `02-components.md` | `02-components.md`      | Exists             |
+| `03-forms.md`      | `03-forms.md`           | Exists             |
+| `04-actions.md`    | `04-actions.md`         | Exists             |
+| `05-effects.md`    | _(planned)_             | 🔲 To write        |
+| `06-themes.md`     | _(planned)_             | 🔲 To write        |
+| `07-charts.md`     | _(planned)_             | 🔲 To write        |
+| `08-tools.md`      | _(planned)_             | 🔲 To write        |
+| `09-website.md`    | `05-website.md`         | Rename + expand    |
+| `README.md`        | `000-component-gaps.md` | Repurpose as index |
 
 `08-tools.md` covers CLI, icon sets, plugin system.
 `09-website.md` covers the learn site, playground, and preview app (this design becomes its content).

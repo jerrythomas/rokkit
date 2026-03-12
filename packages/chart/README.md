@@ -25,7 +25,7 @@ npm install @rokkit/chart
   const data = [
     { month: 'Jan', sales: 120, returns: 30 },
     { month: 'Feb', sales: 150, returns: 20 },
-    { month: 'Mar', sales: 90,  returns: 40 }
+    { month: 'Mar', sales: 90, returns: 40 }
   ]
 </script>
 
@@ -47,7 +47,7 @@ npm install @rokkit/chart
 
   const raw = [
     { category: 'Electronics', name: 'A', revenue: 450 },
-    { category: 'Clothing',    name: 'B', revenue: 320 },
+    { category: 'Clothing', name: 'B', revenue: 320 },
     { category: 'Electronics', name: 'C', revenue: 620 }
   ]
 
@@ -92,62 +92,62 @@ const dimensions = brewer.getDimensions()
 
 ### Components (`Plot` namespace)
 
-| Component | Description |
-|-----------|-------------|
-| `Plot.Root` | Chart container. Manages dimensions, scales, and context. |
-| `Plot.Bar` | Bar series. Reads x/y fields and renders SVG rects. |
-| `Plot.Axis` | X or Y axis with optional label and tick formatting. |
-| `Plot.Grid` | Background grid lines derived from axis scales. |
-| `Plot.Legend` | Color legend; clicking items filters the visible series. |
+| Component     | Description                                               |
+| ------------- | --------------------------------------------------------- |
+| `Plot.Root`   | Chart container. Manages dimensions, scales, and context. |
+| `Plot.Bar`    | Bar series. Reads x/y fields and renders SVG rects.       |
+| `Plot.Axis`   | X or Y axis with optional label and tick formatting.      |
+| `Plot.Grid`   | Background grid lines derived from axis scales.           |
+| `Plot.Legend` | Color legend; clicking items filters the visible series.  |
 
 ### `Plot.Root` props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `data` | `array \| dataset` | `[]` | Chart data. Accepts a plain array or a `@rokkit/data` dataset object. |
-| `width` | `number` | `600` | SVG width in pixels. |
-| `height` | `number` | `400` | SVG height in pixels. |
-| `margin` | `object` | `{top:20,right:30,bottom:40,left:50}` | Chart margins. |
-| `fill` | `string` | `null` | Field name used for color mapping. |
-| `responsive` | `boolean` | `true` | Resize with the container. |
-| `animationDuration` | `number` | `300` | Transition duration in ms. |
+| Prop                | Type               | Default                               | Description                                                           |
+| ------------------- | ------------------ | ------------------------------------- | --------------------------------------------------------------------- |
+| `data`              | `array \| dataset` | `[]`                                  | Chart data. Accepts a plain array or a `@rokkit/data` dataset object. |
+| `width`             | `number`           | `600`                                 | SVG width in pixels.                                                  |
+| `height`            | `number`           | `400`                                 | SVG height in pixels.                                                 |
+| `margin`            | `object`           | `{top:20,right:30,bottom:40,left:50}` | Chart margins.                                                        |
+| `fill`              | `string`           | `null`                                | Field name used for color mapping.                                    |
+| `responsive`        | `boolean`          | `true`                                | Resize with the container.                                            |
+| `animationDuration` | `number`           | `300`                                 | Transition duration in ms.                                            |
 
 ### `Plot.Bar` props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `x` | `string` | — | Field for x-axis values. |
-| `y` | `string` | — | Field for y-axis values. |
-| `fill` | `string` | — | Field for color mapping (overrides root). |
-| `color` | `string` | `'#4682b4'` | Fallback bar color when no fill field is set. |
-| `opacity` | `number` | `1` | Bar opacity. |
-| `animationDuration` | `number` | `300` | Per-bar transition duration in ms. |
-| `onClick` | `function` | `null` | Click handler; receives the data row. |
+| Prop                | Type       | Default     | Description                                   |
+| ------------------- | ---------- | ----------- | --------------------------------------------- |
+| `x`                 | `string`   | —           | Field for x-axis values.                      |
+| `y`                 | `string`   | —           | Field for y-axis values.                      |
+| `fill`              | `string`   | —           | Field for color mapping (overrides root).     |
+| `color`             | `string`   | `'#4682b4'` | Fallback bar color when no fill field is set. |
+| `opacity`           | `number`   | `1`         | Bar opacity.                                  |
+| `animationDuration` | `number`   | `300`       | Per-bar transition duration in ms.            |
+| `onClick`           | `function` | `null`      | Click handler; receives the data row.         |
 
 ### `Plot.Axis` props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `type` | `'x' \| 'y'` | `'x'` | Axis orientation. |
-| `field` | `string` | — | Data field this axis represents. |
-| `label` | `string` | `''` | Axis label. |
-| `ticks` | `number` | — | Suggested tick count. |
-| `tickFormat` | `function` | — | D3 tick formatter. |
-| `grid` | `boolean` | `false` | Render grid lines from this axis. |
+| Prop         | Type         | Default | Description                       |
+| ------------ | ------------ | ------- | --------------------------------- |
+| `type`       | `'x' \| 'y'` | `'x'`   | Axis orientation.                 |
+| `field`      | `string`     | —       | Data field this axis represents.  |
+| `label`      | `string`     | `''`    | Axis label.                       |
+| `ticks`      | `number`     | —       | Suggested tick count.             |
+| `tickFormat` | `function`   | —       | D3 tick formatter.                |
+| `grid`       | `boolean`    | `false` | Render grid lines from this axis. |
 
 ### Utility functions
 
-| Export | Description |
-|--------|-------------|
-| `createDimensions(width, height, margin)` | Compute chart area dimensions with margins |
-| `createScales(data, fields, dimensions)` | Generate D3 band/linear scales |
-| `createBars(data, scales, fields)` | Compute bar x/y/width/height attributes |
-| `createGroupedBars(data, scales, fields)` | Compute grouped bar layout |
-| `createLegend(data, colorScale)` | Build legend item array |
-| `filterByLegend(data, activeItems)` | Filter data rows by active legend selection |
-| `createXAxis(scale, options)` | Build D3 x-axis descriptor |
-| `createYAxis(scale, options)` | Build D3 y-axis descriptor |
-| `createGrid(scales, dimensions)` | Build grid line descriptors |
+| Export                                    | Description                                 |
+| ----------------------------------------- | ------------------------------------------- |
+| `createDimensions(width, height, margin)` | Compute chart area dimensions with margins  |
+| `createScales(data, fields, dimensions)`  | Generate D3 band/linear scales              |
+| `createBars(data, scales, fields)`        | Compute bar x/y/width/height attributes     |
+| `createGroupedBars(data, scales, fields)` | Compute grouped bar layout                  |
+| `createLegend(data, colorScale)`          | Build legend item array                     |
+| `filterByLegend(data, activeItems)`       | Filter data rows by active legend selection |
+| `createXAxis(scale, options)`             | Build D3 x-axis descriptor                  |
+| `createYAxis(scale, options)`             | Build D3 y-axis descriptor                  |
+| `createGrid(scales, dimensions)`          | Build grid line descriptors                 |
 
 ## Dependencies
 

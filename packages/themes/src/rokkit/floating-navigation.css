@@ -41,11 +41,11 @@
 }
 
 [data-style='rokkit'] [data-floating-nav-item]:hover {
-  @apply from-surface-z2 to-surface-z1 bg-gradient-to-b text-surface-z10;
+  @apply from-surface-z2 to-surface-z1 text-surface-z10 bg-gradient-to-b;
 }
 
 [data-style='rokkit'] [data-floating-nav-item][data-active] {
-  @apply from-primary-z5/10 to-primary-z5/5 bg-gradient-to-b text-primary-z7;
+  @apply from-primary-z5/10 to-primary-z5/5 text-primary-z7 bg-gradient-to-b;
 }
 
 [data-style='rokkit'] [data-floating-nav-item]:focus-visible {

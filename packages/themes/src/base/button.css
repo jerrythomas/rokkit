@@ -171,7 +171,9 @@
    ============================================================================= */
 
 /* Hover lift — subtle elevation on hover (not on link or ghost style) */
-[data-button]:not([data-style='link']):not([data-style='ghost']):hover:not(:disabled):not([data-disabled]) {
+[data-button]:not([data-style='link']):not([data-style='ghost']):hover:not(:disabled):not(
+    [data-disabled]
+  ) {
   transform: translateY(-1px);
 }
 
@@ -195,8 +197,13 @@
 }
 
 @keyframes button-loading-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
 
 /* =============================================================================

@@ -13,7 +13,7 @@ function deriveElementLayout(val, scope, label) {
 		return {
 			title: label,
 			scope: path,
-			 
+
 			...deriveLayoutFromValue(val, path)
 		}
 	}
@@ -40,7 +40,6 @@ function deriveObjectLayout(value, scope) {
  * @returns {import('../types').DataLayout}
  */
 function deriveArrayLayout(value, scope) {
-	 
 	const schema = deriveLayoutFromValue(value[0], '#')
 	return {
 		scope,

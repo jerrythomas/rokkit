@@ -11,37 +11,41 @@
 </script>
 
 <article data-article-root>
-	<p class="text-[1.0625rem] leading-7 text-surface-z6 mb-8">
-		Rokkit Forms let you build complex forms from a JSON schema. Define fields, validation
-		rules, and dependencies declaratively — the form builder handles rendering, validation,
-		dirty tracking, and dynamic lookups.
+	<p class="text-surface-z6 mb-8 text-[1.0625rem] leading-7">
+		Rokkit Forms let you build complex forms from a JSON schema. Define fields, validation rules,
+		and dependencies declaratively — the form builder handles rendering, validation, dirty tracking,
+		and dynamic lookups.
 	</p>
 
 	<h2>Schema-Driven Forms</h2>
 	<p>
-		Define your form as a schema with typed properties. If you skip the schema, Rokkit
-		auto-derives one from your data:
+		Define your form as a schema with typed properties. If you skip the schema, Rokkit auto-derives
+		one from your data:
 	</p>
 	<Code content={schemaDriven} language="svelte" />
 
 	<h2>Auto-Derived Schema</h2>
-	<p>
-		Pass just data — Rokkit infers the schema and layout automatically:
-	</p>
+	<p>Pass just data — Rokkit infers the schema and layout automatically:</p>
 	<Code content={autoDerived} language="svelte" />
 
 	<h2>Validation</h2>
-	<p>
-		Add validation rules directly in the schema. Built-in validators handle common patterns:
-	</p>
+	<p>Add validation rules directly in the schema. Built-in validators handle common patterns:</p>
 	<table>
 		<thead>
 			<tr><th>Rule</th><th>Applies To</th><th>Example</th></tr>
 		</thead>
 		<tbody>
 			<tr><td><code>required</code></td><td>All types</td><td><code>required: true</code></td></tr>
-			<tr><td><code>min</code> / <code>max</code></td><td>Numbers</td><td><code>min: 18, max: 120</code></td></tr>
-			<tr><td><code>minLength</code> / <code>maxLength</code></td><td>Strings</td><td><code>minLength: 8</code></td></tr>
+			<tr
+				><td><code>min</code> / <code>max</code></td><td>Numbers</td><td
+					><code>min: 18, max: 120</code></td
+				></tr
+			>
+			<tr
+				><td><code>minLength</code> / <code>maxLength</code></td><td>Strings</td><td
+					><code>minLength: 8</code></td
+				></tr
+			>
 			<tr><td><code>pattern</code></td><td>Strings</td><td><code>pattern: '^[A-Z]'</code></td></tr>
 			<tr><td><code>format</code></td><td>Strings</td><td><code>format: 'email'</code></td></tr>
 			<tr><td><code>enum</code></td><td>Strings</td><td><code>enum: ['a', 'b']</code></td></tr>
@@ -57,9 +61,7 @@
 	<Code content={customValidation} language="svelte" />
 
 	<h2>Lookups</h2>
-	<p>
-		Populate select fields dynamically using lookups. Three patterns are supported:
-	</p>
+	<p>Populate select fields dynamically using lookups. Three patterns are supported:</p>
 	<Code content={lookups} language="svelte" />
 
 	<h2>Field Dependencies</h2>

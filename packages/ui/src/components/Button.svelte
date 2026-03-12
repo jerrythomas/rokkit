@@ -29,9 +29,7 @@
 	 * Create a ProxyItem for default content rendering.
 	 * Constructs a minimal item from button props.
 	 */
-	const proxy = $derived(
-		new ProxyItem({ label, icon, iconRight })
-	)
+	const proxy = $derived(new ProxyItem({ label, icon, iconRight }))
 </script>
 
 {#snippet defaultContent()}

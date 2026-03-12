@@ -6,8 +6,8 @@
 <article data-article-root>
 	<p>
 		Timeline displays view-only vertical steps for instructions, changelogs, or process
-		visualization. Items can have <code>completed</code> and <code>active</code> boolean fields
-		to indicate progress, and a <code>content</code> snippet for custom rich content per step.
+		visualization. Items can have <code>completed</code> and <code>active</code> boolean fields to
+		indicate progress, and a <code>content</code> snippet for custom rich content per step.
 	</p>
 
 	<h2>Quick Start</h2>

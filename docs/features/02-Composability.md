@@ -141,11 +141,11 @@ Feature: Icon Overrides
 
 ## Status
 
-| Feature | Status |
-|---------|--------|
-| Custom item rendering via snippets | ✅ Implemented |
+| Feature                             | Status         |
+| ----------------------------------- | -------------- |
+| Custom item rendering via snippets  | ✅ Implemented |
 | Named snippets for mixed item types | ✅ Implemented |
-| Partial snippet overrides | ✅ Implemented |
-| Empty state snippets | ✅ Implemented |
-| Snippet data access via ProxyItem | ✅ Implemented |
-| Icon overrides | ✅ Implemented |
+| Partial snippet overrides           | ✅ Implemented |
+| Empty state snippets                | ✅ Implemented |
+| Snippet data access via ProxyItem   | ✅ Implemented |
+| Icon overrides                      | ✅ Implemented |

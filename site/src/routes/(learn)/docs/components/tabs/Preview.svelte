@@ -2,7 +2,7 @@
 	let { width = 314, height = 157 } = $props()
 </script>
 
-<div class="bg-surface-z3 min-h-100 flex w-full items-center justify-center rounded-lg">
+<div class="bg-surface-z3 flex min-h-100 w-full items-center justify-center rounded-lg">
 	<svg
 		{width}
 		{height}

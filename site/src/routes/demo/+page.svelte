@@ -108,14 +108,15 @@
 </script>
 
 <!-- Root: fill the body flex column -->
-<div class="flex flex-col flex-1 min-h-0 overflow-hidden">
-
+<div class="flex min-h-0 flex-1 flex-col overflow-hidden">
 	<!-- ── Header ──────────────────────────────────────────────────────────────── -->
-	<header class="flex h-14 flex-shrink-0 items-center justify-between border-b border-surface-z2 bg-surface-z1 px-4">
+	<header
+		class="border-surface-z2 bg-surface-z1 flex h-14 flex-shrink-0 items-center justify-between border-b px-4"
+	>
 		<div class="flex items-center gap-2">
 			<!-- Hamburger (mobile only) -->
 			<button
-				class="flex h-9 w-9 items-center justify-center rounded-md text-xl text-surface-z6 hover:bg-surface-z3 lg:hidden"
+				class="text-surface-z6 hover:bg-surface-z3 flex h-9 w-9 items-center justify-center rounded-md text-xl lg:hidden"
 				onclick={() => (sidebarOpen = !sidebarOpen)}
 				aria-label="Toggle navigation"
 				aria-expanded={sidebarOpen}
@@ -136,7 +137,7 @@
 				href="https://github.com/jerrythomas/rokkit"
 				target="_blank"
 				rel="noopener noreferrer"
-				class="flex h-9 w-9 items-center justify-center rounded-md text-xl text-surface-z5 hover:text-surface-z8 no-underline"
+				class="text-surface-z5 hover:text-surface-z8 flex h-9 w-9 items-center justify-center rounded-md text-xl no-underline"
 				aria-label="Rokkit on GitHub"
 			>
 				<span class="i-logo:github inline-block" aria-hidden="true"></span>
@@ -145,8 +146,7 @@
 	</header>
 
 	<!-- ── Body ──────────────────────────────────────────────────────────────────── -->
-	<div class="flex flex-1 min-h-0 overflow-hidden relative">
-
+	<div class="relative flex min-h-0 flex-1 overflow-hidden">
 		<!-- Backdrop (mobile only) -->
 		{#if sidebarOpen}
 			<div
@@ -159,14 +159,16 @@
 
 		<!-- ── Sidebar ─────────────────────────────────────────────────────────── -->
 		<aside
-			class="bg-surface-z1 border-r border-surface-z2"
+			class="bg-surface-z1 border-surface-z2 border-r"
 			style={sidebarStyle}
 			aria-label="Site navigation"
 		>
-			<div class="overflow-y-auto h-full px-3 py-6">
+			<div class="h-full overflow-y-auto px-3 py-6">
 				{#each navSections as section}
 					<div class="mb-6">
-						<p class="mb-1 px-2 text-[11px] font-bold uppercase tracking-widest text-surface-z4 opacity-60">
+						<p
+							class="text-surface-z4 mb-1 px-2 text-[11px] font-bold tracking-widest uppercase opacity-60"
+						>
 							{section.title}
 						</p>
 						<div class="flex flex-col gap-0.5">
@@ -191,13 +193,12 @@
 		</aside>
 
 		<!-- ── Main scroll area ────────────────────────────────────────────────── -->
-		<main id="demo-scroll" class="flex-1 min-w-0 overflow-y-auto">
+		<main id="demo-scroll" class="min-w-0 flex-1 overflow-y-auto">
 			<div class="mx-auto max-w-[760px] px-6 py-10 lg:px-10">
-
 				<!-- Page header -->
-				<div class="mb-8 border-b border-surface-z2 pb-8">
-					<h1 class="mb-3 text-[1.75rem] font-bold tracking-tight text-surface-z8">Introduction</h1>
-					<p class="text-base leading-relaxed text-surface-z5">
+				<div class="border-surface-z2 mb-8 border-b pb-8">
+					<h1 class="text-surface-z8 mb-3 text-[1.75rem] font-bold tracking-tight">Introduction</h1>
+					<p class="text-surface-z5 text-base leading-relaxed">
 						Rokkit is a data-first Svelte 5 component library. Every component accepts your data's
 						natural shape through a simple field mapping — no adapters, no transformations, no
 						boilerplate.
@@ -205,60 +206,74 @@
 				</div>
 
 				<!-- Image placeholder -->
-				<div class="mb-8 flex h-48 items-center justify-center rounded-xl border border-dashed border-surface-z3 bg-surface-z2">
-					<div class="flex flex-col items-center gap-2 text-surface-z4">
-						<span class="i-solar:widget-bold-duotone inline-block text-5xl" aria-hidden="true"></span>
+				<div
+					class="border-surface-z3 bg-surface-z2 mb-8 flex h-48 items-center justify-center rounded-xl border border-dashed"
+				>
+					<div class="text-surface-z4 flex flex-col items-center gap-2">
+						<span class="i-solar:widget-bold-duotone inline-block text-5xl" aria-hidden="true"
+						></span>
 						<span class="text-sm">Component preview image</span>
 					</div>
 				</div>
 
-				<h2 class="mb-3 mt-10 border-b border-surface-z2 pb-2 text-xl font-semibold text-surface-z8">
+				<h2
+					class="border-surface-z2 text-surface-z8 mt-10 mb-3 border-b pb-2 text-xl font-semibold"
+				>
 					Why Rokkit?
 				</h2>
-				<p class="mb-4 leading-7 text-surface-z6">
+				<p class="text-surface-z6 mb-4 leading-7">
 					Most UI libraries define rigid data contracts. You reshape your API responses to fit their
 					expectations. Rokkit flips this: you tell it which fields in your data map to which roles
 					in the UI, and it adapts.
 				</p>
 
-				<h3 class="mb-2 mt-6 text-base font-semibold text-surface-z8">Data-First</h3>
-				<p class="mb-4 leading-7 text-surface-z6">
-					Pass any object structure with a <code class="rounded bg-surface-z3 px-1.5 py-0.5 font-mono text-sm">fields</code>
+				<h3 class="text-surface-z8 mt-6 mb-2 text-base font-semibold">Data-First</h3>
+				<p class="text-surface-z6 mb-4 leading-7">
+					Pass any object structure with a <code
+						class="bg-surface-z3 rounded px-1.5 py-0.5 font-mono text-sm">fields</code
+					>
 					mapping. The same pattern works across List, Select, Table, Tabs, MultiSelect — learn it once,
 					use it everywhere.
 				</p>
-				<div class="mb-4 overflow-hidden rounded-lg border border-surface-z2 bg-surface-z2">
-					<pre class="overflow-x-auto p-4 font-mono text-sm leading-relaxed text-surface-z7"><code>const users = await fetch('/api/users').then(r => r.json())
+				<div class="border-surface-z2 bg-surface-z2 mb-4 overflow-hidden rounded-lg border">
+					<pre class="text-surface-z7 overflow-x-auto p-4 font-mono text-sm leading-relaxed"><code
+							>const users = await fetch('/api/users').then(r => r.json())
 const fields = &#123; text: 'name', value: 'id' &#125;
 
 // No .map(), no adapter needed
-&lt;List items=&#123;users&#125; &#123;fields&#125; bind:value /&gt;</code></pre>
+&lt;List items=&#123;users&#125; &#123;fields&#125; bind:value /&gt;</code
+						></pre>
 				</div>
 
-				<h3 class="mb-2 mt-6 text-base font-semibold text-surface-z8">Composable</h3>
-				<p class="mb-4 leading-7 text-surface-z6">
+				<h3 class="text-surface-z8 mt-6 mb-2 text-base font-semibold">Composable</h3>
+				<p class="text-surface-z6 mb-4 leading-7">
 					Every component is extensible via Svelte snippets. Customize rendering without forking or
-					wrapping. The component's data logic stays intact while you control every pixel of the output.
+					wrapping. The component's data logic stays intact while you control every pixel of the
+					output.
 				</p>
 
-				<h3 class="mb-2 mt-6 text-base font-semibold text-surface-z8">Accessible</h3>
-				<p class="mb-4 leading-7 text-surface-z6">
+				<h3 class="text-surface-z8 mt-6 mb-2 text-base font-semibold">Accessible</h3>
+				<p class="text-surface-z6 mb-4 leading-7">
 					Full keyboard navigation and ARIA support are built in via the navigator pattern. Focus
 					management, arrow key routing, and screen reader announcements come with every component —
 					no configuration required.
 				</p>
 
-				<h3 class="mb-2 mt-6 text-base font-semibold text-surface-z8">Themeable</h3>
-				<p class="mb-4 leading-7 text-surface-z6">
-					Components expose <code class="rounded bg-surface-z3 px-1.5 py-0.5 font-mono text-sm">data-*</code>
+				<h3 class="text-surface-z8 mt-6 mb-2 text-base font-semibold">Themeable</h3>
+				<p class="text-surface-z6 mb-4 leading-7">
+					Components expose <code class="bg-surface-z3 rounded px-1.5 py-0.5 font-mono text-sm"
+						>data-*</code
+					>
 					attribute hooks for styling, with clean separation between layout CSS and visual theme CSS.
 					Ship with the included Rokkit theme or build your own.
 				</p>
 
-				<h2 class="mb-3 mt-10 border-b border-surface-z2 pb-2 text-xl font-semibold text-surface-z8">
+				<h2
+					class="border-surface-z2 text-surface-z8 mt-10 mb-3 border-b pb-2 text-xl font-semibold"
+				>
 					Community
 				</h2>
-				<p class="mb-4 leading-7 text-surface-z6">
+				<p class="text-surface-z6 mb-4 leading-7">
 					Rokkit is open source and welcomes contributions. File issues, submit pull requests, or
 					start a discussion on GitHub.
 				</p>
@@ -267,49 +282,49 @@ const fields = &#123; text: 'name', value: 'id' &#125;
 						href="https://github.com/jerrythomas/rokkit"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="inline-flex items-center gap-2 rounded-md border border-surface-z3 px-4 py-2 text-sm font-medium text-surface-z7 no-underline hover:bg-surface-z2 transition-colors"
+						class="border-surface-z3 text-surface-z7 hover:bg-surface-z2 inline-flex items-center gap-2 rounded-md border px-4 py-2 text-sm font-medium no-underline transition-colors"
 					>
 						<span class="i-logo:github inline-block text-base" aria-hidden="true"></span>
 						GitHub
 					</a>
 				</div>
 
-				<h2 class="mb-3 mt-10 border-b border-surface-z2 pb-2 text-xl font-semibold text-surface-z8">
+				<h2
+					class="border-surface-z2 text-surface-z8 mt-10 mb-3 border-b pb-2 text-xl font-semibold"
+				>
 					Where to go next
 				</h2>
-				<p class="mb-4 leading-7 text-surface-z6">
+				<p class="text-surface-z6 mb-4 leading-7">
 					Pick a component and see the data-first pattern in action:
 				</p>
 				<div class="grid grid-cols-2 gap-3">
-					{#each [
-						{ label: 'List', href: '/elements/list', desc: 'Select from a collection using field mapping' },
-						{ label: 'Select', href: '/elements/select', desc: 'Dropdown selection with keyboard navigation' },
-						{ label: 'Table', href: '/elements/table', desc: 'Sortable, filterable data tables' },
-						{ label: 'Theming', href: '/theming/colors', desc: 'Semantic color palettes and surface depth' }
-					] as link}
+					{#each [{ label: 'List', href: '/elements/list', desc: 'Select from a collection using field mapping' }, { label: 'Select', href: '/elements/select', desc: 'Dropdown selection with keyboard navigation' }, { label: 'Table', href: '/elements/table', desc: 'Sortable, filterable data tables' }, { label: 'Theming', href: '/theming/colors', desc: 'Semantic color palettes and surface depth' }] as link}
 						<a
 							href={link.href}
-							class="flex flex-col gap-1 rounded-lg border border-surface-z2 p-4 no-underline hover:border-surface-z4 hover:bg-surface-z2 transition-colors"
+							class="border-surface-z2 hover:border-surface-z4 hover:bg-surface-z2 flex flex-col gap-1 rounded-lg border p-4 no-underline transition-colors"
 						>
-							<span class="text-sm font-semibold text-surface-z8">{link.label}</span>
-							<span class="text-xs leading-relaxed text-surface-z5">{link.desc}</span>
+							<span class="text-surface-z8 text-sm font-semibold">{link.label}</span>
+							<span class="text-surface-z5 text-xs leading-relaxed">{link.desc}</span>
 						</a>
 					{/each}
 				</div>
-
 			</div>
 		</main>
 
 		<!-- ── TOC ──────────────────────────────────────────────────────────────── -->
 		{#if headings.length > 1}
-			<aside class="hidden lg:flex flex-col w-52 flex-shrink-0 overflow-y-auto border-l border-surface-z2">
+			<aside
+				class="border-surface-z2 hidden w-52 flex-shrink-0 flex-col overflow-y-auto border-l lg:flex"
+			>
 				<div class="px-4 py-6">
-					<p class="mb-3 text-[11px] font-bold uppercase tracking-widest text-surface-z4">On this page</p>
-					<ul class="m-0 list-none border-l border-surface-z3 p-0">
+					<p class="text-surface-z4 mb-3 text-[11px] font-bold tracking-widest uppercase">
+						On this page
+					</p>
+					<ul class="border-surface-z3 m-0 list-none border-l p-0">
 						{#each headings as h}
 							<li>
 								<button
-									class="block w-full cursor-pointer bg-transparent text-left font-[inherit] text-[0.8125rem] leading-[1.5] py-[0.3rem] -ml-px border-l-2 border-transparent transition-colors hover:text-surface-z8"
+									class="hover:text-surface-z8 -ml-px block w-full cursor-pointer border-l-2 border-transparent bg-transparent py-[0.3rem] text-left font-[inherit] text-[0.8125rem] leading-[1.5] transition-colors"
 									class:text-surface-z5={activeId !== h.id}
 									class:text-secondary-z7={activeId === h.id}
 									class:border-l-secondary-z7={activeId === h.id}
@@ -326,7 +341,5 @@ const fields = &#123; text: 'name', value: 'id' &#125;
 				</div>
 			</aside>
 		{/if}
-
 	</div>
 </div>
-

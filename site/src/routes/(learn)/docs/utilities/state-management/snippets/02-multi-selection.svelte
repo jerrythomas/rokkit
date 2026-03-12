@@ -1,7 +1,7 @@
 <script>
-  import { MultiSelect } from '@rokkit/ui'
+	import { MultiSelect } from '@rokkit/ui'
 
-  let selected = $state([])
+	let selected = $state([])
 </script>
 
 <MultiSelect items={options} {fields} bind:value={selected} />

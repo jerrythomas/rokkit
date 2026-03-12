@@ -20,24 +20,24 @@ The `@rokkit/actions` package provides Svelte actions — functions applied to D
 
 The package exports the following actions. All are Svelte 5 `$effect`-based unless noted as a plain class.
 
-| Action | Purpose | Exported as |
-|--------|---------|-------------|
-| `navigator` | Keyboard navigation + selection for any container (function form, legacy) | `navigator` |
-| `Navigator` | Keyboard navigation + selection — preferred class form | `Navigator` (class) |
-| `Trigger` | Dropdown open/close management for trigger buttons | `Trigger` (class) |
-| `navigable` | Low-level semantic event emitter, foundational primitive | `navigable` |
-| `dismissable` | Escape key + click-outside dismissal | `dismissable` |
-| `keyboard` | Custom key-to-event mapping for non-navigation keyboards | `keyboard` |
-| `themable` | Applies theme data attributes to a root element | `themable` |
-| `skinnable` | Variant of themable for component-level skin overrides | `skinnable` |
-| `fillable` | Fill-in-the-blank interaction for learning exercises | `fillable` |
-| `pannable` | Mouse and touch panning for scrollable containers | `pannable` |
-| `swipeable` | Touch swipe gesture detection | `swipeable` |
-| `reveal` | Scroll-triggered viewport entry animation | `reveal` |
-| `ripple` | Material-style click ripple animation | `ripple` |
-| `hoverLift` | Hover elevation with shadow and translateY | `hoverLift` |
-| `magnetic` | Cursor-attracted positional offset on hover | `magnetic` |
-| `delegateKeyboardEvents` | Forwards keyboard events across a shadow boundary | `delegateKeyboardEvents` |
+| Action                   | Purpose                                                                   | Exported as              |
+| ------------------------ | ------------------------------------------------------------------------- | ------------------------ |
+| `navigator`              | Keyboard navigation + selection for any container (function form, legacy) | `navigator`              |
+| `Navigator`              | Keyboard navigation + selection — preferred class form                    | `Navigator` (class)      |
+| `Trigger`                | Dropdown open/close management for trigger buttons                        | `Trigger` (class)        |
+| `navigable`              | Low-level semantic event emitter, foundational primitive                  | `navigable`              |
+| `dismissable`            | Escape key + click-outside dismissal                                      | `dismissable`            |
+| `keyboard`               | Custom key-to-event mapping for non-navigation keyboards                  | `keyboard`               |
+| `themable`               | Applies theme data attributes to a root element                           | `themable`               |
+| `skinnable`              | Variant of themable for component-level skin overrides                    | `skinnable`              |
+| `fillable`               | Fill-in-the-blank interaction for learning exercises                      | `fillable`               |
+| `pannable`               | Mouse and touch panning for scrollable containers                         | `pannable`               |
+| `swipeable`              | Touch swipe gesture detection                                             | `swipeable`              |
+| `reveal`                 | Scroll-triggered viewport entry animation                                 | `reveal`                 |
+| `ripple`                 | Material-style click ripple animation                                     | `ripple`                 |
+| `hoverLift`              | Hover elevation with shadow and translateY                                | `hoverLift`              |
+| `magnetic`               | Cursor-attracted positional offset on hover                               | `magnetic`               |
+| `delegateKeyboardEvents` | Forwards keyboard events across a shadow boundary                         | `delegateKeyboardEvents` |
 
 The navigation-related entries — `Navigator`, `Trigger`, `navigable`, `dismissable`, and `keyboard` — form the core of the package and receive the most detailed treatment below.
 
@@ -75,12 +75,12 @@ The class form (`Navigator`) is preferred in library components because it is a 
 
 Both `Navigator` and `navigator` accept the same configuration object.
 
-| Option | Type | Default | Purpose |
-|--------|------|---------|---------|
-| `wrapper` | Controller | required | The controller to dispatch actions to |
-| `orientation` | `'vertical' \| 'horizontal'` | `'vertical'` | Which arrow keys mean previous/next |
-| `dir` | `'ltr' \| 'rtl'` | `'ltr'` | Text direction; reverses horizontal arrow meaning |
-| `collapsible` | `boolean` | `false` | Whether to bind expand/collapse keys (ArrowLeft/Right or ArrowUp/Down) |
+| Option        | Type                         | Default      | Purpose                                                                |
+| ------------- | ---------------------------- | ------------ | ---------------------------------------------------------------------- |
+| `wrapper`     | Controller                   | required     | The controller to dispatch actions to                                  |
+| `orientation` | `'vertical' \| 'horizontal'` | `'vertical'` | Which arrow keys mean previous/next                                    |
+| `dir`         | `'ltr' \| 'rtl'`             | `'ltr'`      | Text direction; reverses horizontal arrow meaning                      |
+| `collapsible` | `boolean`                    | `false`      | Whether to bind expand/collapse keys (ArrowLeft/Right or ArrowUp/Down) |
 
 The `navigable` action uses identical options except it does not accept a `wrapper`.
 
@@ -90,38 +90,38 @@ The keymap is built once at construction time by `buildKeymap()` in `keymap.js`.
 
 #### Plain keys (no modifiers)
 
-| Key | Vertical LTR | Vertical RTL | Horizontal |
-|-----|-------------|-------------|------------|
-| ArrowUp | `prev` | `prev` | — |
-| ArrowDown | `next` | `next` | — |
-| ArrowLeft | `collapse`* | `expand`* | `prev` |
-| ArrowRight | `expand`* | `collapse`* | `next` |
-| Home | `first` | `first` | `first` |
-| End | `last` | `last` | `last` |
-| Enter | `select` | `select` | `select` |
-| Space | `select` | `select` | `select` |
-| Escape | `cancel` | `cancel` | `cancel` |
+| Key        | Vertical LTR | Vertical RTL | Horizontal |
+| ---------- | ------------ | ------------ | ---------- |
+| ArrowUp    | `prev`       | `prev`       | —          |
+| ArrowDown  | `next`       | `next`       | —          |
+| ArrowLeft  | `collapse`\* | `expand`\*   | `prev`     |
+| ArrowRight | `expand`\*   | `collapse`\* | `next`     |
+| Home       | `first`      | `first`      | `first`    |
+| End        | `last`       | `last`       | `last`     |
+| Enter      | `select`     | `select`     | `select`   |
+| Space      | `select`     | `select`     | `select`   |
+| Escape     | `cancel`     | `cancel`     | `cancel`   |
 
 \* Only bound when `collapsible: true`. For horizontal orientation, expand/collapse are instead bound to ArrowDown/ArrowUp.
 
 #### Modifier keys
 
-| Key | Ctrl/Cmd | Shift |
-|-----|----------|-------|
+| Key   | Ctrl/Cmd                               | Shift                                |
+| ----- | -------------------------------------- | ------------------------------------ |
 | Space | `extend` (toggle individual selection) | `range` (contiguous range selection) |
-| Home | `first` | — |
-| End | `last` | — |
+| Home  | `first`                                | —                                    |
+| End   | `last`                                 | —                                    |
 
 #### Click action resolution
 
 Clicks are disambiguated by modifier state and target:
 
-| Condition | Action |
-|-----------|--------|
-| Shift held (no Ctrl) | `range` |
-| Ctrl or Meta held | `extend` |
+| Condition                                       | Action   |
+| ----------------------------------------------- | -------- |
+| Shift held (no Ctrl)                            | `range`  |
+| Ctrl or Meta held                               | `extend` |
 | Target or ancestor has `data-accordion-trigger` | `toggle` |
-| Otherwise | `select` |
+| Otherwise                                       | `select` |
 
 ### Event Flow
 
@@ -184,24 +184,24 @@ wrapper.movePrev()
 wrapper.moveFirst()
 wrapper.moveLast()
 wrapper.moveTo(path)
-wrapper.expand()      // expand focused item (collapsible only)
-wrapper.collapse()    // collapse focused item (collapsible only)
+wrapper.expand() // expand focused item (collapsible only)
+wrapper.collapse() // collapse focused item (collapsible only)
 
 // Selection (use path argument)
 wrapper.select(path)
-wrapper.extendSelection(path)   // toggle individual item in multi-select
-wrapper.selectRange(path)       // extend selection to path (shift+click/space)
-wrapper.toggleExpansion(path)   // toggle expand/collapse at path
+wrapper.extendSelection(path) // toggle individual item in multi-select
+wrapper.selectRange(path) // extend selection to path (shift+click/space)
+wrapper.toggleExpansion(path) // toggle expand/collapse at path
 
 // Query
-wrapper.focusedKey              // string | null — current focus
-wrapper.focused                 // the focused item value
-wrapper.selected                // the selected value(s)
-wrapper.findByText(text, startAfter)  // typeahead search
+wrapper.focusedKey // string | null — current focus
+wrapper.focused // the focused item value
+wrapper.selected // the selected value(s)
+wrapper.findByText(text, startAfter) // typeahead search
 
 // Optional lifecycle hooks
-wrapper.blur?.()                // called when focus leaves the container
-wrapper.cancel?.()              // called on Escape
+wrapper.blur?.() // called when focus leaves the container
+wrapper.cancel?.() // called on Escape
 ```
 
 `ListController` satisfies this interface for flat lists. `NestedController` extends it with expand/collapse semantics for trees and collapsible groups. Custom wrappers can satisfy the same interface to plug into `Navigator` without using the built-in controllers.
@@ -216,14 +216,14 @@ Dropdown components — `Select`, `MultiSelect`, `Menu` — require two coordina
 
 `Trigger` listens to events on the trigger button element and document-level events for click-outside and Escape:
 
-| Event | Source | Behavior |
-|-------|--------|----------|
-| `click` trigger | trigger element | Toggle open/close |
-| `Enter` / `Space` | trigger element | Toggle open/close |
-| `ArrowDown` | trigger element | Open (focus first item) |
-| `ArrowUp` | trigger element | Open, then call `onlast` to focus last item |
-| `Escape` | document keydown | Close + return focus to trigger |
-| `click` outside | document click (capture) | Close + return focus to trigger |
+| Event             | Source                   | Behavior                                    |
+| ----------------- | ------------------------ | ------------------------------------------- |
+| `click` trigger   | trigger element          | Toggle open/close                           |
+| `Enter` / `Space` | trigger element          | Toggle open/close                           |
+| `ArrowDown`       | trigger element          | Open (focus first item)                     |
+| `ArrowUp`         | trigger element          | Open, then call `onlast` to focus last item |
+| `Escape`          | document keydown         | Close + return focus to trigger             |
+| `click` outside   | document click (capture) | Close + return focus to trigger             |
 
 `Navigator` is attached to the dropdown element (not the trigger). When the overlay closes, the `Navigator` is destroyed. When it opens, a new `Navigator` is constructed on the newly rendered dropdown element.
 
@@ -253,6 +253,7 @@ Both listeners are document-level and are cleaned up when the action's `$effect`
 The `ripple` action adds a Material Design-style expanding circle at the point of a click.
 
 On each click event:
+
 1. Compute the click position relative to the element's bounding rect.
 2. Create a `<span>` absolutely positioned so its center is at the click point. Its diameter is `2 × max(width, height)` so it always covers the full element when fully expanded.
 3. Apply a CSS `@keyframes` animation (`rokkit-ripple`) injected once into `document.head` that scales the span from 0 to 1 and fades its opacity to 0.
@@ -266,11 +267,11 @@ The action reads `prefers-reduced-motion` on mount. If the user has requested re
 
 **Options:**
 
-| Option | Default | Description |
-|--------|---------|-------------|
-| `color` | `'currentColor'` | Ripple fill color |
-| `opacity` | `0.15` | Initial ripple opacity |
-| `duration` | `500` | Animation duration in milliseconds |
+| Option     | Default          | Description                        |
+| ---------- | ---------------- | ---------------------------------- |
+| `color`    | `'currentColor'` | Ripple fill color                  |
+| `opacity`  | `0.15`           | Initial ripple opacity             |
+| `duration` | `500`            | Animation duration in milliseconds |
 
 ### Hover Lift
 
@@ -287,11 +288,11 @@ Respects `prefers-reduced-motion`: the action is a no-op if the media query matc
 
 **Options:**
 
-| Option | Default | Description |
-|--------|---------|-------------|
-| `distance` | `'-0.25rem'` | Vertical translate on hover (negative = up) |
-| `shadow` | `'0 10px 25px -5px rgba(0,0,0,0.1)'` | Box shadow on hover |
-| `duration` | `200` | Transition duration in milliseconds |
+| Option     | Default                              | Description                                 |
+| ---------- | ------------------------------------ | ------------------------------------------- |
+| `distance` | `'-0.25rem'`                         | Vertical translate on hover (negative = up) |
+| `shadow`   | `'0 10px 25px -5px rgba(0,0,0,0.1)'` | Box shadow on hover                         |
+| `duration` | `200`                                | Transition duration in milliseconds         |
 
 ### Magnetic
 
@@ -307,10 +308,10 @@ Respects `prefers-reduced-motion`.
 
 **Options:**
 
-| Option | Default | Description |
-|--------|---------|-------------|
-| `strength` | `0.3` | Maximum displacement as a fraction of element size (0–1) |
-| `duration` | `300` | Return-to-center transition duration in milliseconds |
+| Option     | Default | Description                                              |
+| ---------- | ------- | -------------------------------------------------------- |
+| `strength` | `0.3`   | Maximum displacement as a fraction of element size (0–1) |
+| `duration` | `300`   | Return-to-center transition duration in milliseconds     |
 
 ### Reveal
 
@@ -344,27 +345,31 @@ The only interaction to be aware of: both `hoverLift` and `magnetic` write to `e
 
 The following table shows how `@rokkit/ui` components apply `Navigator` and related classes. All use the class form (not the `use:navigator` directive form) for explicit lifecycle control inside `$effect` blocks.
 
-| Component | Navigator options | Notes |
-|-----------|------------------|-------|
-| `List` | `{ collapsible, dir }` | `collapsible` comes from whether a `hierarchy` prop is set; vertical orientation by default |
-| `Tree` | `{ collapsible: true, dir }` | Always collapsible; uses `NestedController` |
-| `LazyTree` | `{ collapsible: true, dir }` | Same as Tree but items load on expand |
-| `Tabs` | `{ orientation }` | Horizontal by default; `orientation` prop allows vertical tabs |
-| `Toggle` | `{ orientation: 'horizontal', dir }` | Horizontal, no collapsible |
-| `Grid` | `{ orientation: 'horizontal', dir }` | Horizontal grid navigation |
-| `Select` | `{ dir }` | Navigator on dropdown only; `Trigger` on trigger button |
-| `MultiSelect` | `{ dir }` | Same pattern as Select |
-| `Menu` | `{ collapsible, dir }` | Navigator on dropdown; `Trigger` on trigger; `collapsible` for grouped menus |
-| `Table` | `use:navigator` directive | Uses legacy function form; vertical, no collapsible |
-| `Toolbar` | `use:navigator` directive | Uses legacy function form; orientation prop forwarded |
+| Component     | Navigator options                    | Notes                                                                                       |
+| ------------- | ------------------------------------ | ------------------------------------------------------------------------------------------- |
+| `List`        | `{ collapsible, dir }`               | `collapsible` comes from whether a `hierarchy` prop is set; vertical orientation by default |
+| `Tree`        | `{ collapsible: true, dir }`         | Always collapsible; uses `NestedController`                                                 |
+| `LazyTree`    | `{ collapsible: true, dir }`         | Same as Tree but items load on expand                                                       |
+| `Tabs`        | `{ orientation }`                    | Horizontal by default; `orientation` prop allows vertical tabs                              |
+| `Toggle`      | `{ orientation: 'horizontal', dir }` | Horizontal, no collapsible                                                                  |
+| `Grid`        | `{ orientation: 'horizontal', dir }` | Horizontal grid navigation                                                                  |
+| `Select`      | `{ dir }`                            | Navigator on dropdown only; `Trigger` on trigger button                                     |
+| `MultiSelect` | `{ dir }`                            | Same pattern as Select                                                                      |
+| `Menu`        | `{ collapsible, dir }`               | Navigator on dropdown; `Trigger` on trigger; `collapsible` for grouped menus                |
+| `Table`       | `use:navigator` directive            | Uses legacy function form; vertical, no collapsible                                         |
+| `Toolbar`     | `use:navigator` directive            | Uses legacy function form; orientation prop forwarded                                       |
 
 Dropdown components (`Select`, `MultiSelect`, `Menu`) follow a consistent pattern:
 
 ```javascript
 // Inside $effect:
 const t = new Trigger(triggerRef, rootRef, {
-  onopen: () => { isOpen = true },
-  onclose: () => { isOpen = false }
+  onopen: () => {
+    isOpen = true
+  },
+  onclose: () => {
+    isOpen = false
+  }
 })
 
 // Separate $effect that runs when isOpen becomes true and dropdown renders:
@@ -430,20 +435,47 @@ class MockWrapper {
   focusedKey = null
   calls = []
 
-  next(path)     { this.calls.push({ action: 'next', path }) }
-  prev(path)     { this.calls.push({ action: 'prev', path }) }
-  first(path)    { this.calls.push({ action: 'first', path }) }
-  last(path)     { this.calls.push({ action: 'last', path }) }
-  select(path)   { this.calls.push({ action: 'select', path }) }
-  expand(path)   { this.calls.push({ action: 'expand', path }) }
-  collapse(path) { this.calls.push({ action: 'collapse', path }) }
-  moveTo(path)   { this.calls.push({ action: 'moveTo', path }); this.focusedKey = path }
-  blur()         { this.calls.push({ action: 'blur', path: null }) }
-  cancel(path)   { this.calls.push({ action: 'cancel', path }) }
-  findByText()   { return null }
+  next(path) {
+    this.calls.push({ action: 'next', path })
+  }
+  prev(path) {
+    this.calls.push({ action: 'prev', path })
+  }
+  first(path) {
+    this.calls.push({ action: 'first', path })
+  }
+  last(path) {
+    this.calls.push({ action: 'last', path })
+  }
+  select(path) {
+    this.calls.push({ action: 'select', path })
+  }
+  expand(path) {
+    this.calls.push({ action: 'expand', path })
+  }
+  collapse(path) {
+    this.calls.push({ action: 'collapse', path })
+  }
+  moveTo(path) {
+    this.calls.push({ action: 'moveTo', path })
+    this.focusedKey = path
+  }
+  blur() {
+    this.calls.push({ action: 'blur', path: null })
+  }
+  cancel(path) {
+    this.calls.push({ action: 'cancel', path })
+  }
+  findByText() {
+    return null
+  }
 
-  lastCall() { return this.calls[this.calls.length - 1] }
-  reset()    { this.calls = [] }
+  lastCall() {
+    return this.calls[this.calls.length - 1]
+  }
+  reset() {
+    this.calls = []
+  }
 }
 ```
 
@@ -464,7 +496,7 @@ expect(wrapper.lastCall()).toEqual({ action: 'next', path: null })
 ```javascript
 // Setup
 button1.focus()
-wrapper.reset()  // clear the moveTo call triggered by focus
+wrapper.reset() // clear the moveTo call triggered by focus
 
 // Now test
 fireEvent.keyDown(container, { key: 'ArrowDown' })
@@ -475,7 +507,7 @@ Similarly, if you need to override `focusedKey` after focusing an element:
 
 ```javascript
 button1.focus()
-wrapper.focusedKey = null  // override the focusin-set value
+wrapper.focusedKey = null // override the focusin-set value
 wrapper.reset()
 ```
 

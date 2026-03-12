@@ -17,6 +17,6 @@
 <Toolbar {items} onclick={(item) => alert(item.label)} />
 
 <p class="text-surface-z6 mt-4 text-sm">
-	Separators create visual dividers. Spacers push items to the end. Both are skipped during
-	keyboard navigation.
+	Separators create visual dividers. Spacers push items to the end. Both are skipped during keyboard
+	navigation.
 </p>

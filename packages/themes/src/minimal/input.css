@@ -4,7 +4,7 @@
 
 /* Input root: transparent background, bottom border only */
 [data-style='minimal'] [data-input-root] {
-  @apply flex items-center border-b border-surface-z3 bg-transparent p-0 transition-all relative;
+  @apply border-surface-z3 relative flex items-center border-b bg-transparent p-0 transition-all;
   border-radius: 0;
   background-image: none;
 }
@@ -16,10 +16,12 @@
 }
 
 /* Inputs inside wrapper */
-[data-style='minimal'] [data-input-root] input:not([type='checkbox'], [type='radio'], [type='color']),
+[data-style='minimal']
+  [data-input-root]
+  input:not([type='checkbox'], [type='radio'], [type='color']),
 [data-style='minimal'] [data-input-root] textarea,
 [data-style='minimal'] [data-input-root] select {
-  @apply bg-transparent text-surface-z9 w-full border-none px-1 py-1.5 outline-none transition-all;
+  @apply text-surface-z9 w-full border-none bg-transparent px-1 py-1.5 transition-all outline-none;
   font-size: 0.875rem;
   line-height: 1.25rem;
 }
@@ -30,7 +32,7 @@
 
 /* Select inside input-root: match text input appearance */
 [data-style='minimal'] [data-input-root] [data-select-trigger] {
-  @apply bg-transparent text-surface-z9 border-none rounded-none px-1 shadow-none ring-0 focus:outline-none;
+  @apply text-surface-z9 rounded-none border-none bg-transparent px-1 shadow-none ring-0 focus:outline-none;
   font-size: 0.875rem;
   background-image: none;
   transition: color 150ms ease;
@@ -42,16 +44,16 @@
 }
 
 [data-style='minimal'] [data-input-root] [data-select][data-open='true'] [data-select-trigger] {
-  @apply border-none ring-0 shadow-none bg-transparent;
+  @apply border-none bg-transparent shadow-none ring-0;
 }
 
 /* Labels: smaller, uppercase */
 [data-style='minimal'] [data-field] > label {
-  @apply text-surface-z6 text-xs uppercase tracking-wide;
+  @apply text-surface-z6 text-xs tracking-wide uppercase;
 }
 
 [data-style='minimal'] [data-form-root] label {
-  @apply text-surface-z6 text-xs uppercase tracking-wide;
+  @apply text-surface-z6 text-xs tracking-wide uppercase;
 }
 
 /* Focused label: secondary color */
@@ -76,7 +78,7 @@
 
 /* Disabled state */
 [data-style='minimal'] [data-field-disabled] [data-input-root] {
-  @apply border-surface-z3 opacity-50 cursor-not-allowed;
+  @apply border-surface-z3 cursor-not-allowed opacity-50;
 }
 
 /* Error state */
@@ -91,7 +93,7 @@
 
 /* Message */
 [data-style='minimal'] [data-message] {
-  @apply text-danger-z6 text-xs mt-0.5;
+  @apply text-danger-z6 mt-0.5 text-xs;
 }
 
 /* Checkbox */
@@ -99,7 +101,9 @@
   @apply text-surface-z5 text-lg;
 }
 
-[data-style='minimal'] [data-checkbox-root][data-variant='custom']:has(input:checked) [data-checkbox-icon] {
+[data-style='minimal']
+  [data-checkbox-root][data-variant='custom']:has(input:checked)
+  [data-checkbox-icon] {
   @apply text-secondary-600;
 }
 

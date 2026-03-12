@@ -19,26 +19,27 @@
 	<h2>Overview</h2>
 	<p>
 		Most component libraries require your data to match a specific shape. A <code>Select</code>
-		needs <code>&#123; label, value &#125;</code>, a <code>Tree</code> needs <code>&#123; name, children &#125;</code>.
-		Every component has its own convention, so you write adapters everywhere.
+		needs <code>&#123; label, value &#125;</code>, a <code>Tree</code> needs
+		<code>&#123; name, children &#125;</code>. Every component has its own convention, so you write
+		adapters everywhere.
 	</p>
 	<h3>The Rokkit Approach</h3>
 	<p>
 		Instead, every Rokkit component accepts a <code>fields</code> prop that maps your keys to the
-		component's semantic fields. Your <code>&#123; name, id, nested &#125;</code> data works directly —
-		no transformation, no adapter layer.
+		component's semantic fields. Your <code>&#123; name, id, nested &#125;</code> data works directly
+		— no transformation, no adapter layer.
 	</p>
 
 	<h2>Field Mapping</h2>
-	<p class="text-[1.0625rem] leading-7 text-surface-z6 mb-8">
-		The <code>fields</code> prop is Rokkit's core concept. Instead of reshaping your data to
-		match component contracts, you tell components which fields in your data map to which roles.
+	<p class="text-surface-z6 mb-8 text-[1.0625rem] leading-7">
+		The <code>fields</code> prop is Rokkit's core concept. Instead of reshaping your data to match component
+		contracts, you tell components which fields in your data map to which roles.
 	</p>
 
 	<h3>The Problem</h3>
 	<p>
-		Most UI libraries force you to transform your API data into their expected shape.
-		If your API returns <code>&#123; name, id &#125;</code> but the component expects
+		Most UI libraries force you to transform your API data into their expected shape. If your API
+		returns <code>&#123; name, id &#125;</code> but the component expects
 		<code>&#123; label, key &#125;</code>, you write adapter code everywhere.
 	</p>
 	<Code content={oldWay} language="javascript" />
@@ -64,14 +65,18 @@
 			<tr><td><code>description</code></td><td>Secondary text</td><td>List, Card</td></tr>
 			<tr><td><code>disabled</code></td><td>Item disabled state</td><td>List, Menu, Select</td></tr>
 			<tr><td><code>component</code></td><td>Per-item Svelte component</td><td>List</td></tr>
-			<tr><td><code>snippet</code></td><td>Named snippet for per-item rendering</td><td>List, Select</td></tr>
+			<tr
+				><td><code>snippet</code></td><td>Named snippet for per-item rendering</td><td
+					>List, Select</td
+				></tr
+			>
 		</tbody>
 	</table>
 
 	<h3>Default Mapping</h3>
 	<p>
-		When no <code>fields</code> prop is provided, Rokkit uses the field names directly. So if
-		your data already has <code>text</code> and <code>value</code> properties, no mapping is needed.
+		When no <code>fields</code> prop is provided, Rokkit uses the field names directly. So if your
+		data already has <code>text</code> and <code>value</code> properties, no mapping is needed.
 	</p>
 	<Code content={defaultMapping} language="svelte" />
 
@@ -84,8 +89,8 @@
 
 	<h3>Nested Data</h3>
 	<p>
-		Map the <code>children</code> field for hierarchical data. Groups with children render
-		as collapsible sections in List and Tree, or as option groups in Select and Menu.
+		Map the <code>children</code> field for hierarchical data. Groups with children render as collapsible
+		sections in List and Tree, or as option groups in Select and Menu.
 	</p>
 	<Code content={nested} language="svelte" />
 

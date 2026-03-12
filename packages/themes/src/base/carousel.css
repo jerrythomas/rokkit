@@ -1,128 +1,128 @@
 /* Carousel — base structural styles */
 
 [data-carousel] {
-	position: relative;
-	overflow: hidden;
-	outline: none;
+  position: relative;
+  overflow: hidden;
+  outline: none;
 }
 
 [data-carousel-viewport] {
-	overflow: hidden;
-	width: 100%;
+  overflow: hidden;
+  width: 100%;
 }
 
 /* ─── Slide transition ─── */
 
-[data-carousel-transition="slide"] [data-carousel-track] {
-	display: flex;
-	transition: transform 0.4s ease;
-	transform: translateX(calc(-100% * var(--carousel-current, 0)));
+[data-carousel-transition='slide'] [data-carousel-track] {
+  display: flex;
+  transition: transform 0.4s ease;
+  transform: translateX(calc(-100% * var(--carousel-current, 0)));
 }
 
-[data-carousel-transition="slide"] [data-carousel-slide] {
-	flex: 0 0 100%;
-	min-width: 0;
+[data-carousel-transition='slide'] [data-carousel-slide] {
+  flex: 0 0 100%;
+  min-width: 0;
 }
 
 /* ─── Fade transition ─── */
 
-[data-carousel-transition="fade"] [data-carousel-track] {
-	position: relative;
+[data-carousel-transition='fade'] [data-carousel-track] {
+  position: relative;
 }
 
-[data-carousel-transition="fade"] [data-carousel-slide] {
-	position: absolute;
-	inset: 0;
-	opacity: 0;
-	transition: opacity 0.4s ease;
-	pointer-events: none;
+[data-carousel-transition='fade'] [data-carousel-slide] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
 }
 
-[data-carousel-transition="fade"] [data-carousel-slide][data-active] {
-	position: relative;
-	opacity: 1;
-	pointer-events: auto;
+[data-carousel-transition='fade'] [data-carousel-slide][data-active] {
+  position: relative;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* ─── No transition ─── */
 
-[data-carousel-transition="none"] [data-carousel-track] {
-	display: flex;
-	transform: translateX(calc(-100% * var(--carousel-current, 0)));
+[data-carousel-transition='none'] [data-carousel-track] {
+  display: flex;
+  transform: translateX(calc(-100% * var(--carousel-current, 0)));
 }
 
-[data-carousel-transition="none"] [data-carousel-slide] {
-	flex: 0 0 100%;
-	min-width: 0;
+[data-carousel-transition='none'] [data-carousel-slide] {
+  flex: 0 0 100%;
+  min-width: 0;
 }
 
 /* ─── Arrow buttons ─── */
 
 [data-carousel-prev],
 [data-carousel-next] {
-	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 2.5rem;
-	height: 2.5rem;
-	border: none;
-	border-radius: 9999px;
-	cursor: pointer;
-	background: rgba(0, 0, 0, 0.3);
-	color: white;
-	font-size: 1.25rem;
-	z-index: 1;
-	opacity: 0.7;
-	transition: opacity 0.2s ease;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.3);
+  color: white;
+  font-size: 1.25rem;
+  z-index: 1;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
 }
 
 [data-carousel-prev]:hover,
 [data-carousel-next]:hover {
-	opacity: 1;
+  opacity: 1;
 }
 
 [data-carousel-prev]:disabled,
 [data-carousel-next]:disabled {
-	opacity: 0.3;
-	cursor: default;
+  opacity: 0.3;
+  cursor: default;
 }
 
 [data-carousel-prev] {
-	left: 0.5rem;
+  left: 0.5rem;
 }
 
 [data-carousel-next] {
-	right: 0.5rem;
+  right: 0.5rem;
 }
 
 /* ─── Dots ─── */
 
 [data-carousel-dots] {
-	display: flex;
-	justify-content: center;
-	gap: 0.5rem;
-	padding: 0.75rem 0;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 0;
 }
 
 [data-carousel-dot] {
-	width: 0.625rem;
-	height: 0.625rem;
-	border-radius: 9999px;
-	border: none;
-	cursor: pointer;
-	background: currentColor;
-	opacity: 0.3;
-	transition: opacity 0.2s ease;
-	padding: 0;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  background: currentColor;
+  opacity: 0.3;
+  transition: opacity 0.2s ease;
+  padding: 0;
 }
 
 [data-carousel-dot][data-active] {
-	opacity: 1;
+  opacity: 1;
 }
 
 [data-carousel-dot]:hover {
-	opacity: 0.7;
+  opacity: 0.7;
 }

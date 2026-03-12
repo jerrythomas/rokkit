@@ -5,11 +5,7 @@ import { ProxyTree } from '../src/proxy-tree.svelte.js'
 // ─── Fixtures ─────────────────────────────────────────────────────────────────
 // Raw data uses BASE_FIELDS conventions: label→'label', value→'value', children→'children'
 
-const flat = [
-	{ label: 'Alpha' },
-	{ label: 'Beta' },
-	{ label: 'Gamma' }
-]
+const flat = [{ label: 'Alpha' }, { label: 'Beta' }, { label: 'Gamma' }]
 
 const nested = [
 	{
@@ -22,17 +18,9 @@ const nested = [
 	{ label: 'Vegetables', value: 'veg' }
 ]
 
-const withDisabled = [
-	{ label: 'A' },
-	{ label: 'B (disabled)', disabled: true },
-	{ label: 'C' }
-]
+const withDisabled = [{ label: 'A' }, { label: 'B (disabled)', disabled: true }, { label: 'C' }]
 
-const withSeparator = [
-	{ label: 'A' },
-	{ type: 'separator' },
-	{ label: 'B' }
-]
+const withSeparator = [{ label: 'A' }, { type: 'separator' }, { label: 'B' }]
 
 // ─── Constructor ──────────────────────────────────────────────────────────────
 
@@ -63,10 +51,10 @@ describe('Wrapper — constructor', () => {
 
 	it('lookup contains all items (including nested)', () => {
 		const w = new Wrapper(new ProxyTree(nested))
-		expect(w.lookup.has('0')).toBe(true)   // Fruits group
+		expect(w.lookup.has('0')).toBe(true) // Fruits group
 		expect(w.lookup.has('0-0')).toBe(true) // Apple
 		expect(w.lookup.has('0-1')).toBe(true) // Banana
-		expect(w.lookup.has('1')).toBe(true)   // Vegetables
+		expect(w.lookup.has('1')).toBe(true) // Vegetables
 	})
 
 	it('focusedKey starts as null', () => {
@@ -291,9 +279,7 @@ describe('Wrapper — collapse()', () => {
 		const deep = [
 			{
 				label: 'A',
-				children: [
-					{ label: 'B', children: [{ label: 'C' }] }
-				]
+				children: [{ label: 'B', children: [{ label: 'C' }] }]
 			}
 		]
 		const w = new Wrapper(new ProxyTree(deep))
@@ -573,20 +559,14 @@ describe('Wrapper — findByText()', () => {
 	})
 
 	it('only searches navigable items (skips disabled)', () => {
-		const w = new Wrapper(new ProxyTree([
-			{ label: 'Alpha' },
-			{ label: 'Bravo', disabled: true },
-			{ label: 'Charlie' }
-		]))
+		const w = new Wrapper(
+			new ProxyTree([{ label: 'Alpha' }, { label: 'Bravo', disabled: true }, { label: 'Charlie' }])
+		)
 		expect(w.findByText('b')).toBeNull()
 	})
 
 	it('only searches navigable items (skips separators)', () => {
-		const w = new Wrapper(new ProxyTree([
-			{ label: 'A' },
-			{ type: 'separator' },
-			{ label: 'B' }
-		]))
+		const w = new Wrapper(new ProxyTree([{ label: 'A' }, { type: 'separator' }, { label: 'B' }]))
 		expect(w.findByText('b')).toBe('2')
 	})
 
@@ -678,7 +658,7 @@ describe('Wrapper — integration', () => {
 
 		// Start at first item
 		w.first(null)
-		expect(w.focusedKey).toBe('0')    // Fruits (group)
+		expect(w.focusedKey).toBe('0') // Fruits (group)
 
 		// Expand group
 		w.expand(null)
@@ -686,33 +666,32 @@ describe('Wrapper — integration', () => {
 
 		// Move into first child
 		w.next(null)
-		expect(w.focusedKey).toBe('0-0')  // Apple
+		expect(w.focusedKey).toBe('0-0') // Apple
 
 		// Move to next child
 		w.next(null)
-		expect(w.focusedKey).toBe('0-1')  // Banana
+		expect(w.focusedKey).toBe('0-1') // Banana
 
 		// Collapse: moves to parent
 		w.collapse(null)
-		expect(w.focusedKey).toBe('0')    // back to Fruits
+		expect(w.focusedKey).toBe('0') // back to Fruits
 
 		// Collapse again: closes group
 		w.collapse(null)
 		expect(w.lookup.get('0').expanded).toBe(false)
-		expect(w.focusedKey).toBe('0')    // at root, no-op
+		expect(w.focusedKey).toBe('0') // at root, no-op
 
 		// Move to next root item
 		w.next(null)
-		expect(w.focusedKey).toBe('1')    // Vegetables
+		expect(w.focusedKey).toBe('1') // Vegetables
 	})
 
 	it('typeahead navigates correctly after expand', () => {
 		const w = new Wrapper(new ProxyTree(nested))
 		w.lookup.get('0').expanded = true
 
-		expect(w.findByText('f')).toBe('0')   // Fruits
+		expect(w.findByText('f')).toBe('0') // Fruits
 		expect(w.findByText('a')).toBe('0-0') // Apple
-		expect(w.findByText('v')).toBe('1')   // Vegetables
+		expect(w.findByText('v')).toBe('1') // Vegetables
 	})
 })
-

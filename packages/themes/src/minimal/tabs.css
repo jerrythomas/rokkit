@@ -13,14 +13,16 @@
 }
 
 [data-style='minimal'] [data-tabs][data-position='after'] [data-tabs-list] {
-  @apply border-b-0 border-t;
+  @apply border-t border-b-0;
 }
 
 [data-style='minimal'] [data-tabs][data-orientation='vertical'] [data-tabs-list] {
-  @apply border-b-0 border-r;
+  @apply border-r border-b-0;
 }
 
-[data-style='minimal'] [data-tabs][data-orientation='vertical'][data-position='after'] [data-tabs-list] {
+[data-style='minimal']
+  [data-tabs][data-orientation='vertical'][data-position='after']
+  [data-tabs-list] {
   @apply border-r-0 border-l;
 }
 

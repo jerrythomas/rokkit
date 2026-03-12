@@ -137,7 +137,9 @@
 				isOpen = true
 				requestAnimationFrame(() => wrapper.first(null))
 			},
-			onclose: () => { isOpen = false },
+			onclose: () => {
+				isOpen = false
+			},
 			onlast: () => requestAnimationFrame(() => wrapper.last(null))
 		})
 		return () => t.destroy()
@@ -213,16 +215,15 @@
 
 	{#if isOpen}
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
-		<div
-			bind:this={dropdownRef}
-			data-menu-dropdown
-			role="menu"
-			aria-orientation="vertical"
-		>
+		<div bind:this={dropdownRef} data-menu-dropdown role="menu" aria-orientation="vertical">
 			{#each wrapper.flatView as node (node.key)}
 				{@const proxy = node.proxy}
 				{@const isActive = proxy.value === value}
-				{@const content = resolveSnippet(snippets as Record<string, unknown>, proxy, node.hasChildren ? GROUP_SNIPPET : ITEM_SNIPPET)}
+				{@const content = resolveSnippet(
+					snippets as Record<string, unknown>,
+					proxy,
+					node.hasChildren ? GROUP_SNIPPET : ITEM_SNIPPET
+				)}
 
 				{#if node.type === 'separator'}
 					<hr data-menu-separator />

@@ -11,9 +11,7 @@
 	</p>
 
 	<h2>Basic Example</h2>
-	<p>
-		Click on the stars or use number keys to set a rating:
-	</p>
+	<p>Click on the stars or use number keys to set a rating:</p>
 
 	<StoryViewer {...storyBuilder.getExample('properties')} />
 
@@ -56,5 +54,4 @@
 		<li><strong>Number Keys (1-9)</strong>: Directly select a rating value</li>
 		<li><strong>Space/Enter</strong>: Confirm selection</li>
 	</ul>
-
 </article>

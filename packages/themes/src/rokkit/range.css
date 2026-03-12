@@ -9,11 +9,11 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-range-bar] {
-	@apply bg-surface-z2 border-surface-z3 border;
+  @apply bg-surface-z2 border-surface-z3 border;
 }
 
 [data-style='rokkit'] [data-range-selected] {
-	@apply from-primary to-secondary bg-gradient-to-r;
+  @apply from-primary to-secondary bg-gradient-to-r;
 }
 
 /* =============================================================================
@@ -21,16 +21,16 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-range-thumb] {
-	@apply bg-secondary border-secondary shadow-lg;
+  @apply bg-secondary border-secondary shadow-lg;
 }
 
 [data-style='rokkit'] [data-range-thumb][data-sliding] {
-	@apply shadow-xl;
-	box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-secondary) 30%, transparent);
+  @apply shadow-xl;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-secondary) 30%, transparent);
 }
 
 [data-style='rokkit'] [data-range-thumb]:focus-visible {
-	box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-secondary) 30%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-secondary) 30%, transparent);
 }
 
 /* =============================================================================
@@ -38,15 +38,15 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-range-tick] {
-	@apply text-surface-z6;
+  @apply text-surface-z6;
 }
 
 [data-style='rokkit'] [data-tick-bar] {
-	@apply border-surface-z5;
+  @apply border-surface-z5;
 }
 
 [data-style='rokkit'] [data-tick-label] {
-	@apply text-surface-z6;
+  @apply text-surface-z6;
 }
 
 /* =============================================================================
@@ -54,9 +54,9 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-range][data-disabled] [data-range-thumb] {
-	@apply bg-surface-z4 border-surface-z4;
+  @apply bg-surface-z4 border-surface-z4;
 }
 
 [data-style='rokkit'] [data-range][data-disabled] [data-range-selected] {
-	@apply bg-surface-z4;
+  @apply bg-surface-z4;
 }

@@ -34,25 +34,29 @@ rokkit/                        ← repo root = workspace root
 
 ## Why Some Configs Stay at Root
 
-| File | Reason |
-|------|--------|
+| File               | Reason                                                                                                                                                           |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `vitest.config.ts` | Project roots (`packages/actions`, `site/`) resolve relative to config file location — moving would require `../` prefix on all paths and shifts the Vitest root |
-| `tsconfig.json` | VS Code TS language server walks up directories looking for it by name; moving breaks editor features |
-| `svelte.config.js` | SvelteKit's Vite plugin requires it at the workspace root |
-| `bump.config.js` | bumpp has no `--config` flag for custom config path |
+| `tsconfig.json`    | VS Code TS language server walks up directories looking for it by name; moving breaks editor features                                                            |
+| `svelte.config.js` | SvelteKit's Vite plugin requires it at the workspace root                                                                                                        |
+| `bump.config.js`   | bumpp has no `--config` flag for custom config path                                                                                                              |
 
 ## Config Folder Integration
 
 **ESLint:** Script updated to pass explicit path:
+
 ```json
 "lint": "eslint --config config/eslint.config.mjs --fix"
 ```
 
 **Prettier:** Add `"prettier"` field to `package.json` so both CLI and editor plugins (VS Code) respect the relocated config:
+
 ```json
 "prettier": "./config/.prettierrc"
 ```
+
 Script updated:
+
 ```json
 "format": "prettier --config config/.prettierrc --ignore-path config/.prettierignore --write ."
 ```
@@ -60,6 +64,7 @@ Script updated:
 ## Required File Updates
 
 ### `package.json`
+
 - Workspaces: `"./sites/*"` → `["./packages/*", "./site"]`
 - Add `"prettier": "./config/.prettierrc"` field
 - Scripts: `cd sites/learn` → `cd site`
@@ -67,22 +72,27 @@ Script updated:
 - `bump.config.js`: `sites/*/package.json` → `site/package.json`
 
 ### `vitest.config.ts`
+
 - Project root: `root: 'sites/learn'` → `root: 'site'`
 - Aliases: `./sites/learn/src/lib` → `./site/src/lib`, same for `$app`
 - Coverage exclude: `**/sites/**` → `**/site/**`
 
 ### `config/eslint.config.mjs` (after move)
+
 - Ignores referencing `sites/learn/...` → `site/...`
 - File patterns `**/sites/*/src/**` → `**/site/src/**`
 - `**/sites/learn/src/**` → `**/site/src/**`
 
 ### `bump.config.js`
+
 - `sites/*/package.json` → `site/package.json`
 
 ### `vercel.json`
+
 - Add `"rootDirectory": "site"` so Vercel builds from the SvelteKit project root
 
 ### `agents/` and `CLAUDE.md`
+
 - All references to `solution/` paths updated to repo root
 - `cd solution && bun run ...` → `bun run ...`
 - `sites/learn` references → `site`

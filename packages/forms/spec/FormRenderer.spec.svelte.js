@@ -334,7 +334,12 @@ describe('FormRenderer — form submission', () => {
 
 	it('should set data-form-submitting during async submission', async () => {
 		let resolveSubmit
-		const onsubmit = vi.fn(() => new Promise((resolve) => { resolveSubmit = resolve }))
+		const onsubmit = vi.fn(
+			() =>
+				new Promise((resolve) => {
+					resolveSubmit = resolve
+				})
+		)
 		const props = $state({
 			data: { name: 'Alice', email: 'alice@test.com' },
 			schema,
@@ -361,7 +366,12 @@ describe('FormRenderer — form submission', () => {
 
 	it('should disable buttons during submission', async () => {
 		let resolveSubmit
-		const onsubmit = vi.fn(() => new Promise((resolve) => { resolveSubmit = resolve }))
+		const onsubmit = vi.fn(
+			() =>
+				new Promise((resolve) => {
+					resolveSubmit = resolve
+				})
+		)
 		const props = $state({
 			data: { name: 'Alice', email: 'alice@test.com' },
 			schema,
@@ -524,7 +534,12 @@ describe('FormRenderer — lookup integration', () => {
 				filter: (src) => src
 			}
 		}
-		const props = $state({ data: { country: null, city: null }, schema: baseSchema, layout, lookups })
+		const props = $state({
+			data: { country: null, city: null },
+			schema: baseSchema,
+			layout,
+			lookups
+		})
 		const { container } = render(FormRenderer, { props })
 
 		await tick()
@@ -551,7 +566,12 @@ describe('FormRenderer — lookup integration', () => {
 			}
 		}
 		// country is already set — city should be enabled after init
-		const props = $state({ data: { country: 'USA', city: null }, schema: baseSchema, layout, lookups })
+		const props = $state({
+			data: { country: 'USA', city: null },
+			schema: baseSchema,
+			layout,
+			lookups
+		})
 		const { container } = render(FormRenderer, { props })
 
 		await tick()

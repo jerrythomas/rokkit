@@ -15,18 +15,18 @@ This file is read at the start of every session.
 
 ## Architecture
 
-| Package | Purpose |
-|---------|---------|
-| `@rokkit/ui` | UI components (Select, Toggle, List, Tree, Menu, etc.) — depends on core, states, actions |
-| `@rokkit/forms` | Schema-driven form rendering (FormBuilder, FormRenderer, Input types) |
-| `@rokkit/themes` | CSS themes (base structural + rokkit/minimal/material/glass variants) |
-| `@rokkit/core` | Constants, utilities, field mapping, icon collections |
-| `@rokkit/states` | Reactive state classes (ListController, NestedController, ProxyItem, watchMedia) |
-| `@rokkit/actions` | Svelte actions (keyboard, navigation, dismissable, etc.) |
-| `@rokkit/icons` | SVG icon sets |
-| `@rokkit/data` | Data structures (Dataset, hierarchy, parsing) |
-| `@rokkit/chart` | Chart components |
-| `site` | Documentation site + interactive demos + e2e tests |
+| Package           | Purpose                                                                                   |
+| ----------------- | ----------------------------------------------------------------------------------------- |
+| `@rokkit/ui`      | UI components (Select, Toggle, List, Tree, Menu, etc.) — depends on core, states, actions |
+| `@rokkit/forms`   | Schema-driven form rendering (FormBuilder, FormRenderer, Input types)                     |
+| `@rokkit/themes`  | CSS themes (base structural + rokkit/minimal/material/glass variants)                     |
+| `@rokkit/core`    | Constants, utilities, field mapping, icon collections                                     |
+| `@rokkit/states`  | Reactive state classes (ListController, NestedController, ProxyItem, watchMedia)          |
+| `@rokkit/actions` | Svelte actions (keyboard, navigation, dismissable, etc.)                                  |
+| `@rokkit/icons`   | SVG icon sets                                                                             |
+| `@rokkit/data`    | Data structures (Dataset, hierarchy, parsing)                                             |
+| `@rokkit/chart`   | Chart components                                                                          |
+| `site`            | Documentation site + interactive demos + e2e tests                                        |
 
 ## Project Principles
 
@@ -41,29 +41,29 @@ Violations must be justified or the plan revised.
 
 ## Tooling & Stack
 
-| Tool/Library | Version | Purpose | Docs |
-|-------------|---------|---------|------|
-| Svelte | ^5.0.0 | UI framework (runes mode) | svelte.dev |
-| UnoCSS | latest | Atomic CSS + icon generation | unocss.dev |
-| Vitest | latest | Unit testing | vitest.dev |
-| Playwright | latest | E2E testing | playwright.dev |
-| Bun | latest | Runtime + package manager | bun.sh |
-| Ramda | latest | Data transforms (being phased out) | ramdajs.com |
+| Tool/Library | Version | Purpose                            | Docs           |
+| ------------ | ------- | ---------------------------------- | -------------- |
+| Svelte       | ^5.0.0  | UI framework (runes mode)          | svelte.dev     |
+| UnoCSS       | latest  | Atomic CSS + icon generation       | unocss.dev     |
+| Vitest       | latest  | Unit testing                       | vitest.dev     |
+| Playwright   | latest  | E2E testing                        | playwright.dev |
+| Bun          | latest  | Runtime + package manager          | bun.sh         |
+| Ramda        | latest  | Data transforms (being phased out) | ramdajs.com    |
 
 ## Key Decisions
 
-| Decision | Rationale | Date |
-|----------|-----------|------|
-| Icons as CSS classes (`<span class={icon}>`) | UnoCSS generates icon classes; no Icon component needed | 2026-02 |
-| Data attributes for CSS selectors (`data-*`) | Decouples theme from implementation, enables theme layering | 2026-02 |
-| Gradient border via bg wrapper | CSS doesn't support gradient borders natively; `[data-input-root]` uses `bg-gradient p-px` + inner bg | 2026-02 |
-| InputSelect wraps @rokkit/ui Select | Replaces native `<select>` with themed component; normalizes string arrays to {text,value} | 2026-02 |
-| InputCheckbox defaults to 'custom' variant | Uses icon-based checkbox from @rokkit/core defaultStateIcons instead of native | 2026-02 |
-| FormBuilder element.type at top level | FormRenderer checks element.type for separator/info routing | 2026-02 |
-| @rokkit/types package deferred | ui types (TS) and core types (JSDoc) serve different purposes | 2026-02 |
-| ItemProxy deleted, ProxyItem is canonical | All components migrated to ProxyItem from @rokkit/states; ItemProxy class removed | 2026-03 |
-| Legacy Proxy deleted from @rokkit/states | Ramda-dependent Proxy class replaced by lightweight wrapper in deriveLookupWithProxy | 2026-03 |
-| Migrated to simplified workflow | Adopted Story → Plan → Implement pipeline. Plans in docs/plans/, dropped open-questions/sessions. | 2026-03 |
+| Decision                                     | Rationale                                                                                             | Date    |
+| -------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ------- |
+| Icons as CSS classes (`<span class={icon}>`) | UnoCSS generates icon classes; no Icon component needed                                               | 2026-02 |
+| Data attributes for CSS selectors (`data-*`) | Decouples theme from implementation, enables theme layering                                           | 2026-02 |
+| Gradient border via bg wrapper               | CSS doesn't support gradient borders natively; `[data-input-root]` uses `bg-gradient p-px` + inner bg | 2026-02 |
+| InputSelect wraps @rokkit/ui Select          | Replaces native `<select>` with themed component; normalizes string arrays to {text,value}            | 2026-02 |
+| InputCheckbox defaults to 'custom' variant   | Uses icon-based checkbox from @rokkit/core defaultStateIcons instead of native                        | 2026-02 |
+| FormBuilder element.type at top level        | FormRenderer checks element.type for separator/info routing                                           | 2026-02 |
+| @rokkit/types package deferred               | ui types (TS) and core types (JSDoc) serve different purposes                                         | 2026-02 |
+| ItemProxy deleted, ProxyItem is canonical    | All components migrated to ProxyItem from @rokkit/states; ItemProxy class removed                     | 2026-03 |
+| Legacy Proxy deleted from @rokkit/states     | Ramda-dependent Proxy class replaced by lightweight wrapper in deriveLookupWithProxy                  | 2026-03 |
+| Migrated to simplified workflow              | Adopted Story → Plan → Implement pipeline. Plans in docs/plans/, dropped open-questions/sessions.     | 2026-03 |
 
 ## Key Architectural Decisions
 

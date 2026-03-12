@@ -13,7 +13,7 @@
 >
 	<Background />
 	<div
-		class="z-1 xl:p-30 flex w-full flex-col items-center gap-12 p-12 md:w-1/2 md:p-10 lg:py-24 2xl:p-40"
+		class="z-1 flex w-full flex-col items-center gap-12 p-12 md:w-1/2 md:p-10 lg:py-24 xl:p-30 2xl:p-40"
 	>
 		<span class="items-right w-content flex flex-col">
 			<h1 class="font-serif text-3xl lg:text-5xl">Build Beyond Limits</h1>
@@ -24,11 +24,7 @@
 			<p>{data.app.about}</p>
 			<span class="flex gap-4 text-xl">
 				<Button variant="primary" href="/docs/getting-started/introduction" label="Get Started" />
-				<Button
-					href="/preview/dashboard"
-					icon="i-solar:atom-bold-duotone"
-					label="Live Preview"
-				/>
+				<Button href="/preview/dashboard" icon="i-solar:atom-bold-duotone" label="Live Preview" />
 				<Button
 					href="/llms/index.txt"
 					target="_blank"

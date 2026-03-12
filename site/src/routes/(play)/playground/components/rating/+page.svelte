@@ -32,11 +32,7 @@
 <PlaySection>
 	{#snippet preview()}
 		<div class="flex flex-col items-center gap-6 p-4">
-			<Rating
-				bind:value={props.value}
-				max={props.max}
-				disabled={props.disabled}
-			/>
+			<Rating bind:value={props.value} max={props.max} disabled={props.disabled} />
 			<span class="text-sm opacity-60">{props.value} / {props.max}</span>
 		</div>
 	{/snippet}

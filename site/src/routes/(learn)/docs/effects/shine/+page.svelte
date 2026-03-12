@@ -23,13 +23,41 @@
 				<tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr>
 			</thead>
 			<tbody>
-				<tr><td><code>color</code></td><td><code>string</code></td><td><code>rgb(var(--primary-500))</code></td><td>Light color</td></tr>
-				<tr><td><code>radius</code></td><td><code>number</code></td><td><code>300</code></td><td>Light source height — controls spread</td></tr>
-				<tr><td><code>depth</code></td><td><code>number</code></td><td><code>1</code></td><td>Gaussian blur depth</td></tr>
-				<tr><td><code>surfaceScale</code></td><td><code>number</code></td><td><code>2</code></td><td>Surface height for the light filter</td></tr>
-				<tr><td><code>specularConstant</code></td><td><code>number</code></td><td><code>0.75</code></td><td>Reflection intensity</td></tr>
-				<tr><td><code>specularExponent</code></td><td><code>number</code></td><td><code>120</code></td><td>Focus of the light source (higher = brighter)</td></tr>
-				<tr><td><code>class</code></td><td><code>string</code></td><td>—</td><td>CSS class forwarded to the wrapper element</td></tr>
+				<tr
+					><td><code>color</code></td><td><code>string</code></td><td
+						><code>rgb(var(--primary-500))</code></td
+					><td>Light color</td></tr
+				>
+				<tr
+					><td><code>radius</code></td><td><code>number</code></td><td><code>300</code></td><td
+						>Light source height — controls spread</td
+					></tr
+				>
+				<tr
+					><td><code>depth</code></td><td><code>number</code></td><td><code>1</code></td><td
+						>Gaussian blur depth</td
+					></tr
+				>
+				<tr
+					><td><code>surfaceScale</code></td><td><code>number</code></td><td><code>2</code></td><td
+						>Surface height for the light filter</td
+					></tr
+				>
+				<tr
+					><td><code>specularConstant</code></td><td><code>number</code></td><td
+						><code>0.75</code></td
+					><td>Reflection intensity</td></tr
+				>
+				<tr
+					><td><code>specularExponent</code></td><td><code>number</code></td><td
+						><code>120</code></td
+					><td>Focus of the light source (higher = brighter)</td></tr
+				>
+				<tr
+					><td><code>class</code></td><td><code>string</code></td><td>—</td><td
+						>CSS class forwarded to the wrapper element</td
+					></tr
+				>
 			</tbody>
 		</table>
 	</div>

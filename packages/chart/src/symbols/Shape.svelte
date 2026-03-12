@@ -1,7 +1,20 @@
 <script>
 	import { namedShapes } from './constants'
 
-	let { x = 0, y = 0, size = 1, fill = 'none', stroke = 'currentColor', thickness = 1, name = 'circle', onclick, onmouseover, onmouseleave, onfocus, onblur } = $props()
+	let {
+		x = 0,
+		y = 0,
+		size = 1,
+		fill = 'none',
+		stroke = 'currentColor',
+		thickness = 1,
+		name = 'circle',
+		onclick,
+		onmouseover,
+		onmouseleave,
+		onfocus,
+		onblur
+	} = $props()
 
 	let d = $derived(name in namedShapes ? namedShapes[name](size) : namedShapes['circle'](size))
 </script>

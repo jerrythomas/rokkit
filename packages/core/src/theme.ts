@@ -72,7 +72,20 @@ export function themeRules(mapping = DEFAULT_THEME_MAPPING, colors = defaultColo
  * @returns {Array} Array of shortcut definitions
  */
 export function semanticShortcuts(name) {
-	const prefixes = ['bg', 'border', 'border-l', 'border-r', 'border-t', 'border-b', 'text', 'ring', 'outline', 'from', 'to', 'divide']
+	const prefixes = [
+		'bg',
+		'border',
+		'border-l',
+		'border-r',
+		'border-t',
+		'border-b',
+		'text',
+		'ring',
+		'outline',
+		'from',
+		'to',
+		'divide'
+	]
 	const shortcuts = []
 
 	for (const [toneName, lightValue] of Object.entries(TONE_MAP)) {

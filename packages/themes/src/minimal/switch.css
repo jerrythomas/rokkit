@@ -3,26 +3,26 @@
  */
 
 [data-style='minimal'] [data-switch-track] {
-	@apply bg-transparent border-surface-z4 border-2;
+  @apply border-surface-z4 border-2 bg-transparent;
 }
 
 [data-style='minimal'] [data-switch-thumb] {
-	@apply bg-surface-z5;
+  @apply bg-surface-z5;
 }
 
 [data-style='minimal'] [data-switch]:focus-visible [data-switch-track] {
-	@apply ring-2 ring-primary-z4 ring-offset-1;
+  @apply ring-primary-z4 ring-2 ring-offset-1;
 }
 
 /* On state */
 [data-style='minimal'] [data-switch][aria-checked='true'] [data-switch-track] {
-	@apply border-primary-z4;
+  @apply border-primary-z4;
 }
 
 [data-style='minimal'] [data-switch][aria-checked='true'] [data-switch-thumb] {
-	@apply bg-primary-z4;
+  @apply bg-primary-z4;
 }
 
 [data-style='minimal'] [data-switch-label] {
-	@apply text-surface-z7;
+  @apply text-surface-z7;
 }

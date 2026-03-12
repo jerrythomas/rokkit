@@ -1,3 +1,3 @@
-import { ThemeSwitcherToggle } from '@rokkit/app'
+import {ThemeSwitcherToggle} from '@rokkit/app'
 
 <ThemeSwitcherToggle size="sm" />

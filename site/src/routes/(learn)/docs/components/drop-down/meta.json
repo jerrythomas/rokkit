@@ -3,11 +3,6 @@
   "description": "Context menus and action lists",
   "icon": "i-component:dropdown",
   "category": "navigation-selection",
-  "tags": [
-    "dropdown",
-    "context",
-    "menus",
-    "actions"
-  ],
+  "tags": ["dropdown", "context", "menus", "actions"],
   "experimental": false
 }

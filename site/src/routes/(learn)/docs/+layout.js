@@ -12,6 +12,13 @@ export async function load() {
 
 	return {
 		sections,
-		fields: { label: 'title', href: 'slug', icon: 'icon', description: 'none', value: 'slug', type: 'type' }
+		fields: {
+			label: 'title',
+			href: 'slug',
+			icon: 'icon',
+			description: 'none',
+			value: 'slug',
+			type: 'type'
+		}
 	}
 }

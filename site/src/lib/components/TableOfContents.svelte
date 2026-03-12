@@ -70,12 +70,14 @@
 
 {#if headings.length > 1}
 	<nav aria-label="On this page">
-		<p class="mb-3 text-[11px] font-bold uppercase tracking-widest text-surface-z4 opacity-60">On this page</p>
-		<ul class="m-0 list-none border-l border-surface-z3 p-0 flex flex-col gap-0.5">
+		<p class="text-surface-z4 mb-3 text-[11px] font-bold tracking-widest uppercase opacity-60">
+			On this page
+		</p>
+		<ul class="border-surface-z3 m-0 flex list-none flex-col gap-0.5 border-l p-0">
 			{#each headings as h}
 				<li>
 					<button
-						class="block w-full cursor-pointer bg-transparent text-left font-[inherit] text-[0.8125rem] leading-[1.5] py-[0.3rem] -ml-px border-l-2 border-transparent transition-colors no-underline hover:text-surface-z8"
+						class="hover:text-surface-z8 -ml-px block w-full cursor-pointer border-l-2 border-transparent bg-transparent py-[0.3rem] text-left font-[inherit] text-[0.8125rem] leading-[1.5] no-underline transition-colors"
 						class:text-surface-z5={activeId !== h.id}
 						class:text-secondary-z7={activeId === h.id}
 						class:border-l-secondary-z7={activeId === h.id}

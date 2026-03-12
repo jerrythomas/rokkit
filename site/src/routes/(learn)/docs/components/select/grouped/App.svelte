@@ -26,4 +26,4 @@
 
 <Select {items} bind:value placeholder="Choose a food" />
 
-<p class="mt-3 text-sm text-surface-z5">Selected: <strong>{value ?? 'none'}</strong></p>
+<p class="text-surface-z5 mt-3 text-sm">Selected: <strong>{value ?? 'none'}</strong></p>

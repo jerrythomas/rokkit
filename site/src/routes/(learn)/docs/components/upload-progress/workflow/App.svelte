@@ -23,10 +23,16 @@
 
 	function simulateUpload(id) {
 		const interval = setInterval(() => {
-			const idx = files.findIndex(f => f.value === id)
-			if (idx === -1) { clearInterval(interval); return }
+			const idx = files.findIndex((f) => f.value === id)
+			if (idx === -1) {
+				clearInterval(interval)
+				return
+			}
 			const file = files[idx]
-			if (file.status !== 'uploading') { clearInterval(interval); return }
+			if (file.status !== 'uploading') {
+				clearInterval(interval)
+				return
+			}
 			const next = Math.min(file.progress + Math.floor(Math.random() * 20) + 5, 100)
 			if (next >= 100) {
 				files[idx] = { ...file, status: 'done', progress: 100 }
@@ -38,12 +44,12 @@
 	}
 
 	function handleCancel(file) {
-		const idx = files.findIndex(f => f.value === file.value)
+		const idx = files.findIndex((f) => f.value === file.value)
 		if (idx !== -1) files[idx] = { ...files[idx], status: 'cancelled' }
 	}
 
 	function handleRemove(file) {
-		files = files.filter(f => f.value !== file.value)
+		files = files.filter((f) => f.value !== file.value)
 	}
 
 	function handleClear() {

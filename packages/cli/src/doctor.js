@@ -36,8 +36,8 @@ export function runChecks(fs) {
 		status: unoUsesPreset ? 'pass' : 'fail',
 		fixable: false,
 		fix: unoExists
-			? `Replace uno.config.js contents with:\n${  generateUnoConfig()}`
-			: `Create uno.config.js with:\n${  generateUnoConfig()}`
+			? `Replace uno.config.js contents with:\n${generateUnoConfig()}`
+			: `Create uno.config.js with:\n${generateUnoConfig()}`
 	})
 
 	// 3. app.css has theme imports
@@ -115,10 +115,10 @@ function autoFix(checks, cwd) {
 				const existing = readFileSync(cssPath, 'utf-8')
 				const missing = imports.filter((line) => !existing.includes(line))
 				if (missing.length > 0) {
-					writeFileSync(cssPath, `${missing.join('\n')  }\n${  existing}`)
+					writeFileSync(cssPath, `${missing.join('\n')}\n${existing}`)
 				}
 			} else {
-				writeFileSync(cssPath, `${imports.join('\n')  }\n`)
+				writeFileSync(cssPath, `${imports.join('\n')}\n`)
 			}
 			console.info(`  Fixed: ${check.label}`)
 			fixed++

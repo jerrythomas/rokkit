@@ -201,14 +201,14 @@ Feature: Whitelabeling
 
 ## Status
 
-| Feature | Status |
-|---------|--------|
-| Data-attribute styling hooks | ✅ Implemented |
-| Theme/layout CSS separation | ✅ Implemented |
-| CSS variable integration | ✅ Implemented |
-| Dark / light / system mode | ✅ Implemented |
+| Feature                         | Status         |
+| ------------------------------- | -------------- |
+| Data-attribute styling hooks    | ✅ Implemented |
+| Theme/layout CSS separation     | ✅ Implemented |
+| CSS variable integration        | ✅ Implemented |
+| Dark / light / system mode      | ✅ Implemented |
 | Semantic color palettes (skins) | ✅ Implemented |
-| Component variants | ✅ Implemented |
-| Typography scale | ✅ Implemented |
-| Data-density controls | 🔲 Planned |
-| Whitelabeling | 🔲 Planned |
+| Component variants              | ✅ Implemented |
+| Typography scale                | ✅ Implemented |
+| Data-density controls           | 🔲 Planned     |
+| Whitelabeling                   | 🔲 Planned     |

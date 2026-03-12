@@ -53,8 +53,16 @@
 		</div>
 
 		<div class="flex flex-wrap items-center gap-2 p-4 pt-0">
-			<Pill value={{ label: 'With Icon', icon: 'i-lucide:tag' }} removable={props.removable} disabled={props.disabled} />
-			<Pill value={{ label: 'Star', icon: 'i-lucide:star' }} removable={props.removable} disabled={props.disabled} />
+			<Pill
+				value={{ label: 'With Icon', icon: 'i-lucide:tag' }}
+				removable={props.removable}
+				disabled={props.disabled}
+			/>
+			<Pill
+				value={{ label: 'Star', icon: 'i-lucide:star' }}
+				removable={props.removable}
+				disabled={props.disabled}
+			/>
 		</div>
 	{/snippet}
 

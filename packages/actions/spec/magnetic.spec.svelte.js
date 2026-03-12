@@ -5,10 +5,7 @@ import { magnetic } from '../src/magnetic.svelte.js'
 // ─── Setup / Teardown ──────────────────────────────────────────────
 
 beforeEach(() => {
-	vi.stubGlobal(
-		'matchMedia',
-		vi.fn().mockReturnValue({ matches: false })
-	)
+	vi.stubGlobal('matchMedia', vi.fn().mockReturnValue({ matches: false }))
 })
 
 afterEach(() => {
@@ -111,10 +108,7 @@ describe('magnetic', () => {
 	// ─── prefers-reduced-motion ────────────────────────────────────
 
 	it('does nothing when prefers-reduced-motion is set', () => {
-		vi.stubGlobal(
-			'matchMedia',
-			vi.fn().mockReturnValue({ matches: true })
-		)
+		vi.stubGlobal('matchMedia', vi.fn().mockReturnValue({ matches: true }))
 
 		const node = createNodeWithRect({ left: 0, top: 0, width: 100, height: 100 })
 		const cleanup = $effect.root(() => magnetic(node))

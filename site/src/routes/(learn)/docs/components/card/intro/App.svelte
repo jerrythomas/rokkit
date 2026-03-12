@@ -8,7 +8,7 @@
 		<p class="text-surface-z6">A basic card with text content.</p>
 	</Card>
 
-	<Card href="https://github.com" class="hover:shadow-lg transition-shadow">
+	<Card href="https://github.com" class="transition-shadow hover:shadow-lg">
 		<h3 class="mb-2 text-lg font-semibold">Linked Card</h3>
 		<p class="text-surface-z6">Click to navigate. Renders as an anchor tag.</p>
 	</Card>

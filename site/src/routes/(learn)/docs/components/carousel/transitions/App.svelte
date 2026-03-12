@@ -13,7 +13,10 @@
 		<button
 			class="button"
 			class:is-primary={transition === t}
-			onclick={() => { transition = t; current = 0 }}
+			onclick={() => {
+				transition = t
+				current = 0
+			}}
 		>
 			{t}
 		</button>

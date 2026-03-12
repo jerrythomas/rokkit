@@ -2,11 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, fireEvent } from '@testing-library/svelte'
 import Stepper from '../src/components/Stepper.svelte'
 
-const basicSteps = [
-	{ text: 'Account' },
-	{ text: 'Profile' },
-	{ text: 'Review' }
-]
+const basicSteps = [{ text: 'Account' }, { text: 'Profile' }, { text: 'Review' }]
 
 const completedSteps = [
 	{ text: 'Account', completed: true },
@@ -49,7 +45,10 @@ describe('Stepper', () => {
 	})
 
 	it('shows custom label when provided', () => {
-		const steps = [{ text: 'Step A', label: 'A' }, { text: 'Step B', label: 'B' }]
+		const steps = [
+			{ text: 'Step A', label: 'A' },
+			{ text: 'Step B', label: 'B' }
+		]
 		const { container } = render(Stepper, { steps })
 		const circles = container.querySelectorAll('[data-stepper-circle]')
 		expect(circles[0]?.textContent?.trim()).toBe('A')
@@ -84,7 +83,9 @@ describe('Stepper', () => {
 
 	it('shows semantic check icon on completed steps', () => {
 		const { container } = render(Stepper, { steps: completedSteps })
-		const completedCircles = container.querySelectorAll('[data-stepper-step][data-completed] [data-stepper-circle]')
+		const completedCircles = container.querySelectorAll(
+			'[data-stepper-step][data-completed] [data-stepper-circle]'
+		)
 		completedCircles.forEach((circle) => {
 			const icon = circle.querySelector('[data-stepper-check-icon]')
 			expect(icon).toBeTruthy()
@@ -97,7 +98,9 @@ describe('Stepper', () => {
 			steps: completedSteps,
 			icons: { check: 'custom-check' }
 		})
-		const circle = container.querySelector('[data-stepper-step][data-completed] [data-stepper-circle]')
+		const circle = container.querySelector(
+			'[data-stepper-step][data-completed] [data-stepper-circle]'
+		)
 		expect(circle?.querySelector('.custom-check')).toBeTruthy()
 	})
 
@@ -111,11 +114,7 @@ describe('Stepper', () => {
 	})
 
 	it('disables disabled steps', () => {
-		const steps = [
-			{ text: 'First' },
-			{ text: 'Disabled', disabled: true },
-			{ text: 'Third' }
-		]
+		const steps = [{ text: 'First' }, { text: 'Disabled', disabled: true }, { text: 'Third' }]
 		const { container } = render(Stepper, { steps })
 		const circles = container.querySelectorAll('[data-stepper-circle]')
 		expect(circles[1]?.hasAttribute('disabled')).toBe(true)
@@ -132,10 +131,7 @@ describe('Stepper', () => {
 	})
 
 	it('does not call onclick for disabled steps', async () => {
-		const steps = [
-			{ text: 'First' },
-			{ text: 'Disabled', disabled: true }
-		]
+		const steps = [{ text: 'First' }, { text: 'Disabled', disabled: true }]
 		const onclick = vi.fn()
 		const { container } = render(Stepper, { steps, onclick })
 		const circles = container.querySelectorAll('[data-stepper-circle]')
@@ -146,11 +142,7 @@ describe('Stepper', () => {
 	// ─── Linear Mode ────────────────────────────────────────────────
 
 	it('linear mode disables steps beyond first incomplete', () => {
-		const steps = [
-			{ text: 'Done', completed: true },
-			{ text: 'Current' },
-			{ text: 'Future' }
-		]
+		const steps = [{ text: 'Done', completed: true }, { text: 'Current' }, { text: 'Future' }]
 		const { container } = render(Stepper, { steps, linear: true })
 		const circles = container.querySelectorAll('[data-stepper-circle]')
 		// Step 0 (completed) → clickable
@@ -170,11 +162,7 @@ describe('Stepper', () => {
 	})
 
 	it('linear mode does not fire onclick on future steps', async () => {
-		const steps = [
-			{ text: 'Done', completed: true },
-			{ text: 'Current' },
-			{ text: 'Future' }
-		]
+		const steps = [{ text: 'Done', completed: true }, { text: 'Current' }, { text: 'Future' }]
 		const onclick = vi.fn()
 		const { container } = render(Stepper, { steps, linear: true, onclick })
 		const circles = container.querySelectorAll('[data-stepper-circle]')
@@ -185,20 +173,14 @@ describe('Stepper', () => {
 	// ─── Sub-Stages (Dots) ──────────────────────────────────────────
 
 	it('renders dots when step has stages > 1', () => {
-		const steps = [
-			{ text: 'Step 1', stages: 3 },
-			{ text: 'Step 2' }
-		]
+		const steps = [{ text: 'Step 1', stages: 3 }, { text: 'Step 2' }]
 		const { container } = render(Stepper, { steps })
 		const dots = container.querySelectorAll('[data-stepper-dot]')
 		expect(dots.length).toBe(3)
 	})
 
 	it('does not render dots when stages is 1 or absent', () => {
-		const steps = [
-			{ text: 'Step 1', stages: 1 },
-			{ text: 'Step 2' }
-		]
+		const steps = [{ text: 'Step 1', stages: 1 }, { text: 'Step 2' }]
 		const { container } = render(Stepper, { steps })
 		expect(container.querySelectorAll('[data-stepper-dot]').length).toBe(0)
 	})

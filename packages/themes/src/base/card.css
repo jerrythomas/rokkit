@@ -1,36 +1,36 @@
 /* Card — base structural styles */
 
 [data-card] {
-	display: flex;
-	flex-direction: column;
-	border-radius: 0.5rem;
-	overflow: hidden;
-	text-decoration: none;
-	color: inherit;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
 }
 
 button[data-card] {
-	background: none;
-	border: none;
-	cursor: pointer;
-	text-align: inherit;
-	font: inherit;
-	padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: inherit;
+  font: inherit;
+  padding: 0;
 }
 
 a[data-card] {
-	cursor: pointer;
+  cursor: pointer;
 }
 
 [data-card-header] {
-	padding: 1rem 1rem 0.5rem;
+  padding: 1rem 1rem 0.5rem;
 }
 
 [data-card-body] {
-	padding: 0.5rem 1rem;
-	flex: 1;
+  padding: 0.5rem 1rem;
+  flex: 1;
 }
 
 [data-card-footer] {
-	padding: 0.5rem 1rem 1rem;
+  padding: 0.5rem 1rem 1rem;
 }

@@ -1,4 +1,3 @@
- 
 import { describe, it, expect, afterEach, vi, beforeEach } from 'vitest'
 import { filterMenuItems, assimilateTutorials, findTutorial } from '../src/assimilate'
 

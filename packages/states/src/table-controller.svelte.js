@@ -68,7 +68,8 @@ export class TableController {
 			}
 		} else {
 			// Single column sort: replace entire sort state
-			this.sortState = nextDirection === 'none' ? [] : [{ column: columnName, direction: nextDirection }]
+			this.sortState =
+				nextDirection === 'none' ? [] : [{ column: columnName, direction: nextDirection }]
 		}
 
 		// Update column sorted flags

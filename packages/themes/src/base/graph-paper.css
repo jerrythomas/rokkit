@@ -25,59 +25,59 @@
  */
 
 [data-graph-paper] {
-	background-image:
-		linear-gradient(
-			var(--graph-paper-color, currentColor) var(--major-grid, 0.5px),
-			transparent var(--major-grid, 0.5px)
-		),
-		linear-gradient(
-			90deg,
-			var(--graph-paper-color, currentColor) var(--major-grid, 0.5px),
-			transparent var(--major-grid, 0.5px)
-		),
-		linear-gradient(
-			var(--graph-paper-color, currentColor) var(--minor-grid, 0.5px),
-			transparent var(--minor-grid, 0.5px)
-		),
-		linear-gradient(
-			90deg,
-			var(--graph-paper-color, currentColor) var(--minor-grid, 0.5px),
-			transparent var(--minor-grid, 0.5px)
-		);
-	background-size:
-		var(--size, calc(5 * var(--unit, 0.5rem))) var(--size, calc(5 * var(--unit, 0.5rem))),
-		var(--size, calc(5 * var(--unit, 0.5rem))) var(--size, calc(5 * var(--unit, 0.5rem))),
-		var(--unit, 0.5rem) var(--unit, 0.5rem),
-		var(--unit, 0.5rem) var(--unit, 0.5rem);
-	background-position:
-		calc(-1 * var(--minor-grid, 0.5px)) calc(-1 * var(--minor-grid, 0.5px)),
-		calc(-1 * var(--minor-grid, 0.5px)) calc(-1 * var(--minor-grid, 0.5px)),
-		calc(-1 * var(--minor-grid, 0.5px)) calc(-1 * var(--minor-grid, 0.5px)),
-		calc(-1 * var(--minor-grid, 0.5px)) calc(-1 * var(--minor-grid, 0.5px));
+  background-image:
+    linear-gradient(
+      var(--graph-paper-color, currentColor) var(--major-grid, 0.5px),
+      transparent var(--major-grid, 0.5px)
+    ),
+    linear-gradient(
+      90deg,
+      var(--graph-paper-color, currentColor) var(--major-grid, 0.5px),
+      transparent var(--major-grid, 0.5px)
+    ),
+    linear-gradient(
+      var(--graph-paper-color, currentColor) var(--minor-grid, 0.5px),
+      transparent var(--minor-grid, 0.5px)
+    ),
+    linear-gradient(
+      90deg,
+      var(--graph-paper-color, currentColor) var(--minor-grid, 0.5px),
+      transparent var(--minor-grid, 0.5px)
+    );
+  background-size:
+    var(--size, calc(5 * var(--unit, 0.5rem))) var(--size, calc(5 * var(--unit, 0.5rem))),
+    var(--size, calc(5 * var(--unit, 0.5rem))) var(--size, calc(5 * var(--unit, 0.5rem))),
+    var(--unit, 0.5rem) var(--unit, 0.5rem),
+    var(--unit, 0.5rem) var(--unit, 0.5rem);
+  background-position:
+    calc(-1 * var(--minor-grid, 0.5px)) calc(-1 * var(--minor-grid, 0.5px)),
+    calc(-1 * var(--minor-grid, 0.5px)) calc(-1 * var(--minor-grid, 0.5px)),
+    calc(-1 * var(--minor-grid, 0.5px)) calc(-1 * var(--minor-grid, 0.5px)),
+    calc(-1 * var(--minor-grid, 0.5px)) calc(-1 * var(--minor-grid, 0.5px));
 }
 
 [data-grid-paper] {
-	background-image:
-		linear-gradient(
-			var(--grid-paper-color, currentColor) var(--grid-line, 0.5px),
-			transparent var(--grid-line, 0.5px)
-		),
-		linear-gradient(
-			90deg,
-			var(--grid-paper-color, currentColor) var(--grid-line, 0.5px),
-			transparent var(--grid-line, 0.5px)
-		);
-	background-size: var(--unit, 0.5rem) var(--unit, 0.5rem);
-	background-position:
-		calc(-1 * var(--grid-line, 0.5px)) calc(-1 * var(--grid-line, 0.5px)),
-		calc(-1 * var(--grid-line, 0.5px)) calc(-1 * var(--grid-line, 0.5px));
+  background-image:
+    linear-gradient(
+      var(--grid-paper-color, currentColor) var(--grid-line, 0.5px),
+      transparent var(--grid-line, 0.5px)
+    ),
+    linear-gradient(
+      90deg,
+      var(--grid-paper-color, currentColor) var(--grid-line, 0.5px),
+      transparent var(--grid-line, 0.5px)
+    );
+  background-size: var(--unit, 0.5rem) var(--unit, 0.5rem);
+  background-position:
+    calc(-1 * var(--grid-line, 0.5px)) calc(-1 * var(--grid-line, 0.5px)),
+    calc(-1 * var(--grid-line, 0.5px)) calc(-1 * var(--grid-line, 0.5px));
 }
 
 [data-ruled-paper] {
-	background-image: linear-gradient(
-		var(--ruled-paper-color, currentColor) var(--rule-size, 0.5px),
-		transparent var(--rule-size, 0.5px)
-	);
-	background-size: 100% var(--unit, 1.5rem);
-	background-position: 0 calc(-1 * var(--rule-size, 0.5px));
+  background-image: linear-gradient(
+    var(--ruled-paper-color, currentColor) var(--rule-size, 0.5px),
+    transparent var(--rule-size, 0.5px)
+  );
+  background-size: 100% var(--unit, 1.5rem);
+  background-position: 0 calc(-1 * var(--rule-size, 0.5px));
 }

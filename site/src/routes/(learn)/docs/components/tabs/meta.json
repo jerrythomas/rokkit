@@ -3,13 +3,7 @@
   "description": "Navigate between different content sections with flexible layouts and interactive controls",
   "icon": "i-component:tabs",
   "category": "navigation-selection",
-  "tags": [
-    "tabs",
-    "navigation",
-    "content",
-    "sections",
-    "selection"
-  ],
+  "tags": ["tabs", "navigation", "content", "sections", "selection"],
   "experimental": false,
   "llms": true
 }

@@ -23,10 +23,7 @@ function createMockIO() {
 
 beforeEach(() => {
 	vi.stubGlobal('IntersectionObserver', createMockIO())
-	vi.stubGlobal(
-		'matchMedia',
-		vi.fn().mockReturnValue({ matches: false })
-	)
+	vi.stubGlobal('matchMedia', vi.fn().mockReturnValue({ matches: false }))
 	intersectCallback = null
 	mockObserverInstance = null
 })
@@ -108,9 +105,7 @@ describe('reveal', () => {
 		const cleanup = $effect.root(() => reveal(node))
 		flushSync()
 
-		expect(node.style.getPropertyValue('--reveal-easing')).toBe(
-			'cubic-bezier(0.4, 0, 0.2, 1)'
-		)
+		expect(node.style.getPropertyValue('--reveal-easing')).toBe('cubic-bezier(0.4, 0, 0.2, 1)')
 		cleanup()
 	})
 
@@ -235,10 +230,7 @@ describe('reveal', () => {
 	// ─── prefers-reduced-motion ────────────────────────────────────
 
 	it('sets data-reveal-visible immediately when prefers-reduced-motion', () => {
-		vi.stubGlobal(
-			'matchMedia',
-			vi.fn().mockReturnValue({ matches: true })
-		)
+		vi.stubGlobal('matchMedia', vi.fn().mockReturnValue({ matches: true }))
 
 		const node = document.createElement('div')
 		const cleanup = $effect.root(() => reveal(node))
@@ -249,10 +241,7 @@ describe('reveal', () => {
 	})
 
 	it('does not create IntersectionObserver when prefers-reduced-motion', () => {
-		vi.stubGlobal(
-			'matchMedia',
-			vi.fn().mockReturnValue({ matches: true })
-		)
+		vi.stubGlobal('matchMedia', vi.fn().mockReturnValue({ matches: true }))
 
 		const MockIO = createMockIO()
 		vi.stubGlobal('IntersectionObserver', MockIO)

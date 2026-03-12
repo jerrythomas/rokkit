@@ -110,11 +110,7 @@
 	onmouseleave={() => (hovered = false)}
 >
 	<div data-carousel-viewport>
-		<div
-			data-carousel-track
-			style:--carousel-current={current}
-			style:--carousel-count={count}
-		>
+		<div data-carousel-track style:--carousel-current={current} style:--carousel-count={count}>
 			{#if slide}
 				{#each Array(count) as _, index (index)}
 					<div

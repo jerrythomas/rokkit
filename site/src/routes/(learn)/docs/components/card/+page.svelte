@@ -19,8 +19,8 @@
 
 	<h2>Header & Footer Snippets</h2>
 	<p>
-		Use the <code>header</code> and <code>footer</code> snippets to add structured sections with
-		consistent spacing and dividers.
+		Use the <code>header</code> and <code>footer</code> snippets to add structured sections with consistent
+		spacing and dividers.
 	</p>
 
 	<StoryViewer {...storyBuilder.getExample('snippets')} />

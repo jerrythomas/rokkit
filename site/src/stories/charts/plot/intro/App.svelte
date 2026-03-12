@@ -12,32 +12,35 @@
 	let colorBy = $state('cyl')
 	let showLegend = $state(true)
 
-	let plotData = $derived(data.map(d => ({
-		...d,
-		cylinders: `${d.cyl} cylinders`,
-		transmission: d.am ? 'Manual' : 'Automatic'
-	})))
+	let plotData = $derived(
+		data.map((d) => ({
+			...d,
+			cylinders: `${d.cyl} cylinders`,
+			transmission: d.am ? 'Manual' : 'Automatic'
+		}))
+	)
 </script>
 
 <div class="space-y-6">
 	<div>
-		<h3 class="text-lg font-medium mb-4">Interactive Chart Example</h3>
-		<p class="text-sm text-gray-600 mb-4">
-			The Plot component provides powerful data visualization using Observable Plot. Explore different chart configurations below.
+		<h3 class="mb-4 text-lg font-medium">Interactive Chart Example</h3>
+		<p class="mb-4 text-sm text-gray-600">
+			The Plot component provides powerful data visualization using Observable Plot. Explore
+			different chart configurations below.
 		</p>
-		
-		<div class="grid grid-cols-3 gap-4 mb-4">
+
+		<div class="mb-4 grid grid-cols-3 gap-4">
 			<div>
-				<label class="block text-sm font-medium mb-2">Chart Type</label>
-				<select bind:value={chartType} class="border rounded px-3 py-2 w-full">
+				<label class="mb-2 block text-sm font-medium">Chart Type</label>
+				<select bind:value={chartType} class="w-full rounded border px-3 py-2">
 					<option value="scatter">Scatter Plot</option>
 					<option value="line">Line Chart</option>
 					<option value="bar">Bar Chart</option>
 				</select>
 			</div>
 			<div>
-				<label class="block text-sm font-medium mb-2">Color By</label>
-				<select bind:value={colorBy} class="border rounded px-3 py-2 w-full">
+				<label class="mb-2 block text-sm font-medium">Color By</label>
+				<select bind:value={colorBy} class="w-full rounded border px-3 py-2">
 					<option value="cyl">Cylinders</option>
 					<option value="transmission">Transmission</option>
 					<option value="gear">Gears</option>
@@ -50,31 +53,31 @@
 				</label>
 			</div>
 		</div>
-		
-		<div class="border border-gray-200 rounded-lg p-4 bg-white">
+
+		<div class="rounded-lg border border-gray-200 bg-white p-4">
 			{#if chartType === 'scatter'}
-				<Plot 
-					data={plotData} 
-					x="mpg" 
-					y="hp" 
+				<Plot
+					data={plotData}
+					x="mpg"
+					y="hp"
 					stroke={colorBy === 'transmission' ? 'transmission' : 'cylinders'}
 					symbol={colorBy === 'transmission' ? 'transmission' : 'cylinders'}
-					legend={showLegend} 
-					{labels} 
+					legend={showLegend}
+					{labels}
 				/>
 			{:else if chartType === 'bar'}
-				<Plot 
-					data={plotData} 
-					x="model" 
+				<Plot
+					data={plotData}
+					x="model"
 					y="hp"
 					fill={colorBy === 'transmission' ? 'transmission' : 'cylinders'}
 					legend={showLegend}
 					labels={{ x: 'Car Model', y: 'Horsepower' }}
 				/>
 			{:else}
-				<Plot 
-					data={plotData.slice(0, 10)} 
-					x="wt" 
+				<Plot
+					data={plotData.slice(0, 10)}
+					x="wt"
 					y="mpg"
 					stroke={colorBy === 'transmission' ? 'transmission' : 'cylinders'}
 					legend={showLegend}
@@ -83,11 +86,12 @@
 			{/if}
 		</div>
 	</div>
-	
+
 	<div>
-		<h3 class="text-lg font-medium mb-4">Basic Usage</h3>
-		<div class="bg-gray-50 p-4 rounded-lg">
-			<pre class="text-sm"><code>&lt;Plot 
+		<h3 class="mb-4 text-lg font-medium">Basic Usage</h3>
+		<div class="rounded-lg bg-gray-50 p-4">
+			<pre class="text-sm"><code
+					>&lt;Plot 
   data={`{data}`} 
   x="mpg" 
   y="hp" 
@@ -95,7 +99,8 @@
   symbol="cylinders" 
   legend 
   labels={`{labels}`} 
-/&gt;</code></pre>
+/&gt;</code
+				></pre>
 		</div>
 	</div>
 </div>

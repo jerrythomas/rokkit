@@ -7,8 +7,8 @@
 <article data-article-root>
 	<p>
 		A drop zone for file uploads. Accepts drag-and-drop or click-to-browse, and validates files
-		against <code>accept</code> (MIME type / extension) and <code>maxSize</code> constraints before
-		passing them through.
+		against <code>accept</code> (MIME type / extension) and <code>maxSize</code> constraints before passing
+		them through.
 	</p>
 
 	<h2>Basic Example</h2>
@@ -66,7 +66,9 @@
 			<h2>Events &amp; Snippets</h2>
 			<ul>
 				<li><strong>onfiles</strong> — called with validated <code>File[]</code></li>
-				<li><strong>onerror</strong> — called per rejected file with <code>{`{file, reason}`}</code></li>
+				<li>
+					<strong>onerror</strong> — called per rejected file with <code>{`{file, reason}`}</code>
+				</li>
 				<li><strong>content</strong> — snippet <code>(dragging: boolean)</code> for custom UI</li>
 			</ul>
 		</div>

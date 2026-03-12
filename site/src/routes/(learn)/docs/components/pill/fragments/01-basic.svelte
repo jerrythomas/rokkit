@@ -1,4 +1,5 @@
 <script>
-// @ts-nocheck
+	// @ts-nocheck
 </script>
+
 <ItemWrapper value="Sample Content" />

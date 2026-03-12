@@ -1,5 +1,5 @@
 <script>
-  import { Button } from '@rokkit/ui'
+	import { Button } from '@rokkit/ui'
 </script>
 
 <Button label="Click me" onclick={() => console.log('clicked')} />

@@ -16,16 +16,16 @@ No runtime dependencies.
 
 `@rokkit/icons` ships a curated set of SVG icons as Iconify-compatible JSON bundles. Each bundle is available as a named subpath export.
 
-| Subpath | Collection | Description |
-|---------|------------|-------------|
-| `@rokkit/icons` (default) | `rokkit-ui` | Base UI icons — navigation, actions, states |
-| `@rokkit/icons/ui.json` | `rokkit-ui` | Same as default |
-| `@rokkit/icons/light.json` | `rokkit-light` | Outlined lightweight icons |
-| `@rokkit/icons/solid.json` | `rokkit-solid` | Solid filled icons |
-| `@rokkit/icons/twotone.json` | `rokkit-twotone` | Two-tone icons |
-| `@rokkit/icons/components.json` | `rokkit-components` | Component-specific icons |
-| `@rokkit/icons/auth.json` | `rokkit-auth` | Authentication icons (login, logout, user) |
-| `@rokkit/icons/app.json` | `rokkit-app` | Application icons |
+| Subpath                         | Collection          | Description                                 |
+| ------------------------------- | ------------------- | ------------------------------------------- |
+| `@rokkit/icons` (default)       | `rokkit-ui`         | Base UI icons — navigation, actions, states |
+| `@rokkit/icons/ui.json`         | `rokkit-ui`         | Same as default                             |
+| `@rokkit/icons/light.json`      | `rokkit-light`      | Outlined lightweight icons                  |
+| `@rokkit/icons/solid.json`      | `rokkit-solid`      | Solid filled icons                          |
+| `@rokkit/icons/twotone.json`    | `rokkit-twotone`    | Two-tone icons                              |
+| `@rokkit/icons/components.json` | `rokkit-components` | Component-specific icons                    |
+| `@rokkit/icons/auth.json`       | `rokkit-auth`       | Authentication icons (login, logout, user)  |
+| `@rokkit/icons/app.json`        | `rokkit-app`        | Application icons                           |
 
 ## Usage
 

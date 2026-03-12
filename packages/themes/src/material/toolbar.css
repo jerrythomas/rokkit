@@ -9,25 +9,25 @@
    ============================================================================= */
 
 [data-style='material'] [data-toolbar] {
-	@apply bg-surface-z1 shadow-sm;
+  @apply bg-surface-z1 shadow-sm;
 }
 
 /* Position-based borders removed - using shadows instead */
 [data-style='material'] [data-toolbar][data-toolbar-position='top'],
 [data-style='material'] [data-toolbar]:not([data-toolbar-position]) {
-	@apply shadow-md;
+  @apply shadow-md;
 }
 
 [data-style='material'] [data-toolbar][data-toolbar-position='bottom'] {
-	@apply shadow-md;
+  @apply shadow-md;
 }
 
 [data-style='material'] [data-toolbar][data-toolbar-position='left'] {
-	@apply shadow-md;
+  @apply shadow-md;
 }
 
 [data-style='material'] [data-toolbar][data-toolbar-position='right'] {
-	@apply shadow-md;
+  @apply shadow-md;
 }
 
 /* =============================================================================
@@ -35,24 +35,25 @@
    ============================================================================= */
 
 [data-style='material'] [data-toolbar-item] {
-	@apply text-surface-z7 rounded-full;
+  @apply text-surface-z7 rounded-full;
 }
 
 [data-style='material'] [data-toolbar-item]:hover:not(:disabled):not([data-disabled='true']) {
-	@apply bg-surface-z2 text-surface-z9;
+  @apply bg-surface-z2 text-surface-z9;
 }
 
-[data-style='material'] [data-toolbar-item]:focus-visible:not(:disabled):not([data-disabled='true']) {
-	@apply bg-surface-z2 text-surface-z9 outline-none ring-2 ring-primary-z4;
+[data-style='material']
+  [data-toolbar-item]:focus-visible:not(:disabled):not([data-disabled='true']) {
+  @apply bg-surface-z2 text-surface-z9 ring-primary-z4 ring-2 outline-none;
 }
 
 /* Active/pressed state */
 [data-style='material'] [data-toolbar-item][data-active='true'] {
-	@apply bg-primary-z2 text-primary-z8;
+  @apply bg-primary-z2 text-primary-z8;
 }
 
 [data-style='material'] [data-toolbar-item][data-active='true']:hover:not(:disabled) {
-	@apply bg-primary-z3 text-primary-z9;
+  @apply bg-primary-z3 text-primary-z9;
 }
 
 /* =============================================================================
@@ -60,15 +61,15 @@
    ============================================================================= */
 
 [data-style='material'] [data-toolbar-item] [data-toolbar-icon] {
-	@apply text-surface-z6;
+  @apply text-surface-z6;
 }
 
 [data-style='material'] [data-toolbar-item]:hover:not(:disabled) [data-toolbar-icon] {
-	@apply text-surface-z8;
+  @apply text-surface-z8;
 }
 
 [data-style='material'] [data-toolbar-item][data-active='true'] [data-toolbar-icon] {
-	@apply text-primary-z7;
+  @apply text-primary-z7;
 }
 
 /* =============================================================================
@@ -76,9 +77,9 @@
    ============================================================================= */
 
 [data-style='material'] [data-toolbar-separator] {
-	@apply bg-surface-z3;
+  @apply bg-surface-z3;
 }
 
 [data-style='material'] [data-toolbar-divider] {
-	@apply bg-surface-z3;
+  @apply bg-surface-z3;
 }

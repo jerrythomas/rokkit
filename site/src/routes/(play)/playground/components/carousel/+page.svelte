@@ -47,7 +47,7 @@
 
 <PlaySection>
 	{#snippet preview()}
-		<div class="w-full max-w-lg mx-auto p-4">
+		<div class="mx-auto w-full max-w-lg p-4">
 			<Carousel
 				count={slides.length}
 				autoplay={props.autoplay}
@@ -58,7 +58,7 @@
 				transition={props.transition}
 			>
 				{#snippet slide(index)}
-					<div class="flex items-center justify-center h-64 rounded-lg {slides[index].bg}">
+					<div class="flex h-64 items-center justify-center rounded-lg {slides[index].bg}">
 						<div class="flex flex-col items-center gap-3">
 							<span class="{slides[index].icon} text-5xl"></span>
 							<span class="text-lg font-semibold">{slides[index].text}</span>

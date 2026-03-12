@@ -39,11 +39,7 @@ const ACCESSIBILITY = [
 	'/docs/accessibility/i18n'
 ]
 
-const TOOLCHAIN = [
-	'/docs/toolchain/overview',
-	'/docs/toolchain/cli',
-	'/docs/toolchain/icon-sets'
-]
+const TOOLCHAIN = ['/docs/toolchain/overview', '/docs/toolchain/cli', '/docs/toolchain/icon-sets']
 
 const UTILITIES = [
 	'/docs/utilities/overview',
@@ -55,17 +51,9 @@ const UTILITIES = [
 	'/docs/utilities/custom-primitives'
 ]
 
-const EFFECTS = [
-	'/docs/effects/reveal',
-	'/docs/effects/shine',
-	'/docs/effects/tilt'
-]
+const EFFECTS = ['/docs/effects/reveal', '/docs/effects/shine', '/docs/effects/tilt']
 
-const FORMS = [
-	'/docs/forms',
-	'/docs/forms/conditional-fields',
-	'/docs/forms/multi-step'
-]
+const FORMS = ['/docs/forms', '/docs/forms/conditional-fields', '/docs/forms/multi-step']
 
 const CHARTS = [
 	'/docs/charts/overview',

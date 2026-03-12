@@ -37,6 +37,7 @@ Navigation & Selection (10) → Inputs (11) → Display (12) → Layout (13) →
 ### Quick Wins COMPLETE (3 steps)
 
 **Step 1 — Fix 3 failing vibe tests** (`a0e5e24b`)
+
 - Root cause: Node.js v25 exposes a native `localStorage` global broken without `--localstorage-file`
 - Fix: `packages/states/spec/setup.js` stubs localStorage via `vi.stubGlobal` with in-memory impl
 - Also added `afterEach` restore to the `mocked` describe block in vibe.spec.svelte.js
@@ -44,6 +45,7 @@ Navigation & Selection (10) → Inputs (11) → Display (12) → Layout (13) →
 - Result: 2696/2696 tests passing
 
 **Step 2 — text→label field mapping rename** (`72a239f2`)
+
 - `BASE_FIELDS.label` changed from raw key `'text'` → `'label'`
 - Removed `text: 'label'` from `LEGACY_KEY_MAP` in `normalizeFields()`
 - `field-mapper.js`: removed `hasText`, updated `prop()` and `getFormattedText()`
@@ -52,6 +54,7 @@ Navigation & Selection (10) → Inputs (11) → Display (12) → Layout (13) →
 - Result: 2696/2696 tests passing
 
 **Step 3 — Missing test coverage** (`056fb07c`)
+
 - `packages/actions/spec/trigger.spec.js`: 20 tests for Trigger class (open/close, keyboard, click-outside, destroy)
 - `packages/actions/spec/keymap.spec.js`: 29 tests for buildKeymap + resolveAction (all orientations, modifiers)
 - table-controller already covered by existing `tabular.spec.svelte.js`
@@ -65,7 +68,7 @@ Feature branch `feature/website-redesign` merged into `develop` (`df08ce58`).
 
 - Deleted `sites/quick-start/` and `sites/sample/` entirely
 - Restructured learn site nav from flat component list to **feature-first pillars**: Getting Started, Data Binding, Composability, Theming & Design, Accessibility & i18n, Forms, Components, Charts, Utilities, Toolchain
-- Moved existing doc pages into pillar subfolders (field-mapping, snippets, color-system, styling, keyboard-navigation, state-management, icons, effects/*)
+- Moved existing doc pages into pillar subfolders (field-mapping, snippets, color-system, styling, keyboard-navigation, state-management, icons, effects/\*)
 - Added **placeholder pages** for all planned-but-unbuilt features (data-sources, density, whitelabeling, tooltips, i18n, conditional-fields, multi-step, badge, avatar, data-table, stack, grid, divider, pie-donut, scatter, interactivity, accessibility, animation, custom-primitives, cli, icon-sets)
 - Added `(preview)` route group with **Nexus demo app** at `/preview/*`: dashboard (KPI cards, activity list), projects (Tree, Select filters, detail panel), reports (chart placeholders, DataTable placeholder), admin (Tabs, appearance settings)
 - Floating `ThemePanel` overlay on all `/preview/*` routes — switches `vibe.style` and `vibe.mode` live
@@ -87,6 +90,7 @@ Feature branch `feature/website-redesign` merged into `develop` (`df08ce58`).
 Merged the entire `sites/playground` into `sites/learn`. The playground site has been deleted.
 
 **What was done:**
+
 - Enhanced `PlaySection` with theme selector sidebar (ThemeManager + ThemeSwitcherToggle)
 - Created 8 new learn entries for playground-only components (breadcrumbs, button, card, carousel, code, floating-action, floating-navigation, pill)
 - Added play pages for all 14 existing learn components that lacked them
@@ -117,10 +121,11 @@ Removed deprecated `ToggleItemHandlers` interface and `LegacyToggleItemSnippet` 
 **Task 1:** Extended MessagesStore with 16 nested component label keys + deep-merge in `set()`. Commit: `da92eae4`
 
 **Tasks 2-10:** 15 UI components migrated to read aria-labels from MessagesStore with `label`/`labels` prop overrides:
+
 1. **Pattern A (single label):** List, Toolbar, Toggle, Rating, Stepper, BreadCrumbs — `label` prop defaulting from `messages.current.<component>.label`
 2. **Pattern A (existing label default):** Menu — changed `label = 'Menu'` to `label = messages.current.menu.label`
 3. **Pattern B (multi-label):** Tree, LazyTree, Carousel, Tabs, Code, Range, SearchFilter, FloatingNavigation — `labels` prop merged over store defaults via `$derived({ ...messages.current.<component>, ...userLabels })`
-Commit: `c169ac0c`
+   Commit: `c169ac0c`
 
 **Task 11:** ThemeSwitcherToggle — `buildThemeSwitcherOptions()` reads from `messages.current.mode`, accepts `labels` prop. Commit: `03908e31`
 
@@ -247,6 +252,7 @@ Removed dead CSS selectors from base and all 4 theme variants (rokkit, minimal, 
 ### Tree UI Refinements + ItemContent Flags + Housekeeping
 
 **Tree rendering improvements:**
+
 - Leaf spacer removal: leaf nodes no longer get trailing `'empty'` in lineTypes (proxy-tree.svelte.js)
 - Added `folder-opened`/`folder-closed` to DEFAULT_ICONS (constants.js) — Tree uses `DEFAULT_STATE_ICONS.folder` instead of `.node`
 - ItemContent.svelte: added `showIcon` (default true) and `showSubtext` (default true) boolean flags
@@ -254,6 +260,7 @@ Removed dead CSS selectors from base and all 4 theme variants (rokkit, minimal, 
 - Removed redundant `role="separator"` from List.svelte `<hr>` (a11y fix)
 
 **Housekeeping:**
+
 - Cleaned backlog files: removed all completed/DONE items from 01-forms, 02-ui-components, 03-effects, 04-infrastructure
 - Updated #70/#71/#72 checklist progress in backlog
 - Deleted `docs/llms/` directory (content lives on learn site llms.txt routes)
@@ -268,10 +275,12 @@ Removed dead CSS selectors from base and all 4 theme variants (rokkit, minimal, 
 Removed dead legacy code and deprecated DEFAULT_FIELDS.
 
 **Commits:**
+
 - `fb839416` — refactor: remove dead legacy code, deprecate DEFAULT_FIELDS
 - `e97d5007` — refactor: migrate ProxyItem/ProxyTree to BASE_FIELDS + normalizeFields
 
 **What was removed:**
+
 - mapping.js: 8 dead functions (-786 lines), NestedController (deleted), findValueFromPath
 - Core barrel exports: getValue, hasChildren, isExpanded, findValueFromPath
 
@@ -290,6 +299,7 @@ Removed dead legacy code and deprecated DEFAULT_FIELDS.
 Implemented ProxyTree class and refactored lazy loading stack.
 
 **Commits:**
+
 - `5a3a834c` — feat(states): add ProxyTree reactive collection manager
 - `55b9f16d` — refactor(states): LazyWrapper delegates to ProxyTree
 - `cb3d6f0a` — feat(states): add onlazyload callback + loadMore() to LazyWrapper
@@ -298,6 +308,7 @@ Implemented ProxyTree class and refactored lazy loading stack.
 - `0c7c2cf8` — fix: remove unused PROXY_ITEM_FIELDS import from lazy-wrapper
 
 **What was built:**
+
 - `ProxyTree` class in `@rokkit/states` — reactive collection manager with `append()`, `addChildren()`, `flatView`, `lookup`
 - LazyWrapper refactored to delegate data management to ProxyTree
 - `onloadchildren` → `onlazyload` rename throughout (LazyWrapper, LazyTree, playground, learn site, llms.txt)
@@ -314,18 +325,21 @@ Implemented ProxyTree class and refactored lazy loading stack.
 Updated `docs/design/011-states.md` and `docs/requirements/011-states.md` with all resolved decisions from design discussion:
 
 **ProxyItem API:**
+
 - `text` → `label`, `raw` → `original`, added `id` (auto-generated), added `mutate()`
 - Limited direct getters to `label`, `value`, `id` — all others via `get(fieldName)`
 - Fallback resolution chains not needed (primitive handling covers stringify)
 - `getSnippet` superseded by `resolveSnippet`
 
 **Canonical BASE_FIELDS:**
+
 - Single field mapping replacing `DEFAULT_FIELDS`, `PROXY_ITEM_FIELDS`, `defaultItemFields`
 - 18 fields: id, value, label, icon, avatar, subtext, tooltip, badge, shortcut, children, type, snippet, href, hrefTarget, disabled, expanded, selected
 - `avatar` for image URLs (rendered as `<img>`), `icon` for iconify classes (mutually exclusive)
 - Semantic keys map to common raw keys for backward compat (`label`→`'text'`, `subtext`→`'description'`, `tooltip`→`'title'`)
 
 **Architecture:**
+
 - Wrapper receives ProxyTree (does not create it)
 - LazyWrapper extends Wrapper (overrides expand/select only, no code duplication)
 - `toggle()` stays on Wrapper for accordion-trigger pattern
@@ -333,6 +347,7 @@ Updated `docs/design/011-states.md` and `docs/requirements/011-states.md` with a
 - "sentinel" → "lazy marker" terminology throughout
 
 **Backlog updates:**
+
 - Added #71 (Canonical BASE_FIELDS + ProxyItem API Refinements)
 - Added #72 (Shared Content Component)
 - Updated #70 with all resolved decisions
@@ -346,6 +361,7 @@ Updated `docs/design/011-states.md` and `docs/requirements/011-states.md` with a
 Renamed SimpleTree → Tree (deleted old NestedController-based Tree.svelte). Created LazyTree as separate component.
 
 **Changes:**
+
 - Deleted old `Tree.svelte`, renamed `SimpleTree.svelte` → `Tree.svelte`
 - Updated barrel exports (`components/index.ts`, `src/index.ts`) — removed SimpleTree
 - Renamed test file `SimpleTree.spec.svelte.ts` → `Tree.spec.svelte.ts` (28 tests pass)
@@ -364,6 +380,7 @@ Renamed SimpleTree → Tree (deleted old NestedController-based Tree.svelte). Cr
 Fully rewrote `Tree.svelte` to use `Wrapper` + `Navigator` + `ProxyItem` pattern (matching List/Toggle/Tabs).
 
 **Key architecture decisions:**
+
 - `Wrapper` as `$derived` with `loadVersion` trick for lazy loading re-derivation
 - Navigator with `collapsible: true` handles all keyboard navigation
 - Event listeners registered in explicit order: pre-Navigator (lazy interception) → Navigator → post-Navigator (expansion sync)
@@ -377,21 +394,25 @@ Fully rewrote `Tree.svelte` to use `Wrapper` + `Navigator` + `ProxyItem` pattern
 ### Architecture Decision: Components Built from List Pattern
 
 After reviewing Menu, Toggle, Tree migrations, adopted a cleaner approach:
+
 - **Toggle**: Copy List.svelte, set `orientation: 'horizontal'` on Navigator, add external value sync effect. No group content. Uses `wrapper.flatView` loop and `resolveSnippet`.
 - **Menu**: Copy List + add `Trigger` class (new in `@rokkit/actions`) for open/close management. Pre-flatten leaf items for Wrapper; use `renderNodes` array for group/item rendering. Panel renders like List inside `{#if trigger?.isOpen}`.
 - **Tree**: Copy List + tree-line helper (`getTreeLineType`). Everything else (collapsible Navigator) stays same.
 - **Select/MultiSelect**: Will use Trigger class + List pattern for dropdown panel.
 
 **Key additions:**
+
 - `ProxyItem.raw` getter added — exposes `#raw` directly so `handleSelect` can return raw item without `itemPathMap`
 - Backlog items #67, #68, #69 updated with new architecture
 
 ### Toggle Rewrite — In Progress
 
 **`packages/states/src/proxy-item.svelte.js`:**
+
 - Added `get raw() { return this.#raw }` — exposes original raw item
 
 **`packages/ui/src/components/Toggle.svelte` rewritten:**
+
 - Uses `wrapper.flatView` loop (like List) instead of index-based `wrapper.lookup.get(String(index))`
 - `new Navigator(containerRef, wrapper, { orientation: 'horizontal' })` — left/right arrow keys
 - External value sync: `$effect` calls `wrapper.moveTo(key)` when `value` changes
@@ -407,6 +428,7 @@ After reviewing Menu, Toggle, Tree migrations, adopted a cleaner approach:
 ### Select Migration to Navigator/Wrapper/ProxyItem Stack — Complete
 
 **`packages/ui/src/components/Select.svelte` rewritten:**
+
 - Uses `Wrapper`, `ProxyItem`, `PROXY_ITEM_FIELDS` from `@rokkit/states`; `Navigator` from `@rokkit/actions`
 - `mergedFields = { ...PROXY_ITEM_FIELDS, ...userFields }` (text → 'label' default)
 - `filteredOptions` derived from `options + filterQuery` (group-aware filter)
@@ -417,11 +439,13 @@ After reviewing Menu, Toggle, Tree migrations, adopted a cleaner approach:
 - `handleSelect` recovers raw item via `flatItems[parseInt(proxy.key)]`
 
 **`packages/ui/src/types/select.ts` updated:**
+
 - New snippet types: `SelectOptionSnippet`, `SelectGroupLabelSnippet`, `SelectValueSnippet`
 - Legacy types kept for MultiSelect backward compat (`SelectItemHandlers`, `SelectItemSnippet`, etc.)
 - `SelectBaseProps.option` prop uses new `SelectOptionSnippet = Snippet<[ProxyItem]>`
 
 **Learn site `elements/select/` updated:**
+
 - Rewrote `+page.svelte` with comprehensive docs (6 sections, props table, ProxyItem API, snippets)
 - Updated `properties/App.svelte`, `fields/App.svelte` with `label:` field names
 - Created `grouped/App.svelte`, `filterable/App.svelte`, `snippet/App.svelte`
@@ -439,22 +463,26 @@ After reviewing Menu, Toggle, Tree migrations, adopted a cleaner approach:
 ### List Docs, E2E Tests, llms.txt, Design Patterns, Backlog — Complete
 
 **SimplifiedList removed:**
+
 - Deleted `packages/ui/src/components/SimplifiedList.svelte`
 - Removed from `packages/ui/src/components/index.ts` and `packages/ui/src/index.ts`
 - Deleted `sites/learn/src/routes/poc/+page.svelte` and `sites/learn/e2e/poc.spec.ts`
 
 **Learn site play page updated (`elements/list/play/+page.svelte`):**
+
 - Changed all `text:` → `label:` in items
 - Removed `multiselect` prop (not in new API)
 - Added `expanded: true` to grouped items (so groups start open for e2e)
 - Fixed `value` binding and `onselect` callbacks
 
 **E2E tests rewritten (`sites/learn/e2e/list.spec.ts`):**
+
 - Play page tests: keyboard flat list, keyboard grouped, mouse interaction, learn/play toggle
 - Group expansion uses `aria-expanded` attribute (not old `data-list-group-collapsed`)
 - Learn page tests: intro example, primitives, nested groups toggle, itemContent snippet badges, interactive checkboxes
 
 **`llms.txt` updated (`sites/learn/src/routes/docs/components/list/llms.txt/+server.ts`):**
+
 - Props table: removed `multiselect`/`expanded`/`selected`, added `class` prop
 - Field mapping: `text → 'label'` default (was `'text'`)
 - New snippet API: `itemContent(proxy)`, `groupContent(proxy)`, per-item named snippets
@@ -463,12 +491,14 @@ After reviewing Menu, Toggle, Tree migrations, adopted a cleaner approach:
 - Updated data attributes: no `data-list-group`, uses `aria-expanded` on group label
 
 **Design patterns documented (`agents/design-patterns.md`):**
+
 - New: Navigator/Wrapper/ProxyItem Stack pattern
 - New: Snippet Customization pattern (`itemContent`/`groupContent`/per-item)
 - New: `class` prop convention
 - Updated: State Icons pattern to use `DEFAULT_STATE_ICONS` / `DEFAULT_ICONS` (UPPER_SNAKE_CASE)
 
 **Migration backlog added (`agents/backlog/02-ui-components.md`):**
+
 - #65 Select — migrate to Navigator/Wrapper/ProxyItem stack
 - #66 MultiSelect — migrate to Navigator/Wrapper/ProxyItem stack
 - #67 Menu — migrate to Navigator/Wrapper/ProxyItem stack
@@ -482,6 +512,7 @@ After reviewing Menu, Toggle, Tree migrations, adopted a cleaner approach:
 Promoted the testbed Navigator/Wrapper/ProxyItem stack to production packages and rewrote the List component.
 
 **Constants rename — `@rokkit/core`:**
+
 - All `default*` constants renamed to `DEFAULT_*` (UPPER_SNAKE_CASE):
   - `defaultFields` → `DEFAULT_FIELDS`, `defaultIcons` → `DEFAULT_ICONS`
   - `defaultOptions` → `DEFAULT_OPTIONS`, `defaultKeyMap` → `DEFAULT_KEYMAP`
@@ -493,22 +524,26 @@ Promoted the testbed Navigator/Wrapper/ProxyItem stack to production packages an
 - Added `resolveSnippet` to `@rokkit/core/src/utils.js`
 
 **New files in `@rokkit/actions`:**
+
 - `nav-constants.js` — ACTIONS, PLAIN_FIXED, CTRL_FIXED, SHIFT_FIXED, ARROWS, TYPEAHEAD_RESET_MS
 - `keymap.js` — `buildKeymap`, `resolveAction`
 - `navigator.js` — `Navigator` class (not a Svelte action); exported as capital-N to avoid conflict with existing `navigator` Svelte action
 
 **New files in `@rokkit/states`:**
+
 - `abstract-wrapper.js` — base class with uniform method signatures (all params use `_path` for lint compliance)
 - `proxy-item.svelte.js` — `ProxyItem`, `buildProxyList`, `buildFlatView`, `PROXY_ITEM_FIELDS` (text → 'label' default)
 - `wrapper.svelte.js` — `Wrapper extends AbstractWrapper` with full navigation + selection state
 
 **`@rokkit/ui` List.svelte rewrite:**
+
 - Uses `Wrapper` from `@rokkit/states`, `Navigator` class via `$effect`, `resolveSnippet` from `@rokkit/core`
 - Icons: `$derived({ ...DEFAULT_STATE_ICONS.accordion, ...userIcons })`
 - Single flat `{#each wrapper.flatView}` loop; separators/spacers/groups/links/buttons all handled
 - Snippets: `itemContent(proxy)`, `groupContent(proxy)`, per-item via `item.snippet = 'name'`
 
 **Learn site List docs rewritten:**
+
 - New examples: `primitives/`, `icons/`, `interactive/` (checkbox in snippet)
 - Updated: `nested/`, `mapping/`, `snippets/` (itemContent badge demo), `mixed/` (per-item snippet)
 - Removed old image/component-field examples (not in new API)
@@ -526,14 +561,17 @@ Promoted the testbed Navigator/Wrapper/ProxyItem stack to production packages an
 Achieved 100% coverage on all production files in `packages/testbed/src/`:
 
 **New test files:**
+
 - `keymap.spec.js` — 37 tests covering ACTIONS, all three orientations (vertical/horizontal-ltr/horizontal-rtl), collapsible variants, `resolveAction` for all modifier combinations including null-returning branches
 - `wrapper.spec.js` — 19 tests covering `Wrapper` base class: initial `focusedKey = null`, all 12 action methods callable without error, `findByText` returns null
 
 **Extended existing specs:**
+
 - `navigator.spec.js` — 4 new tests for `navigator()` Svelte action adapter (returns `{ destroy }`, wires events, destroy removes listeners, passes options through)
 - `proxy.spec.svelte.js` — 9 new tests: `get('value')`, `get('hasChildren')`, `get('disabled')`, `get('selected')` delegates; `text ?? ''` fallback (items without label); `children ?? []` fallback; `buildProxyList(undefined)`, `buildProxyList(null)`, `buildProxyList([])` edge cases
 
 **Coverage result:**
+
 ```
 keymap.js     100 | 100 | 100 | 100
 navigator.js  100 | 100 | 100 | 100
@@ -553,6 +591,7 @@ Built a clean three-layer keyboard/mouse navigation architecture as a POC before
 `packages/`. All 1402 tests pass.
 
 **`keymap.js`:**
+
 - `ACTIONS` frozen object with 10 semantic actions (next/prev/first/last/expand/collapse/select/extend/range/cancel)
 - Three modifier layers: `plain`, `shift`, `ctrl`
 - Orientation variants: vertical, horizontal-ltr, horizontal-rtl
@@ -560,12 +599,14 @@ Built a clean three-layer keyboard/mouse navigation architecture as a POC before
 - `Escape → cancel` in PLAIN_FIXED
 
 **`wrapper.js`:**
+
 - `Wrapper` base class with uniform signature — every method receives `path`
 - Movement methods (`next/prev/first/last/expand/collapse`) receive path but ignore it
 - Selection methods (`select/extend/range/toggle/moveTo`) use path (fall back to `focusedKey`)
 - `focusedKey` property — Navigator reads after keyboard actions to scroll focused item into view
 
 **`navigator.js`:**
+
 - Plain class (not just a Svelte action) — testable without framework
 - Handles: keydown (keymap lookup), click (modifier-aware), focusin (path redirect), focusout (blur detection)
 - Typeahead: 500ms buffer, accumulates chars, calls `wrapper.findByText`, scrolls match
@@ -574,6 +615,7 @@ Built a clean three-layer keyboard/mouse navigation architecture as a POC before
 - Svelte action adapter: `export function navigator(node, options)` for `use:navigator`
 
 **`navigator.spec.js`:**
+
 - 44 tests across 7 describe blocks
 - MockWrapper records all calls as `{ action, path }`
 - Tests: movement keys, expand/collapse, selection, scrollIntoView, click modifiers, focusin/focusout, typeahead, destroy
@@ -594,11 +636,13 @@ list half; shared Wrapper coordinates both (Escape → cancel, focusout → blur
 Replaced partial theme imports and rebuilt the learn layout as a proper two-column design.
 
 **Theme fix (`app.css`):**
+
 - Replaced `@rokkit/themes/palette.css` + `theme/base.css` + `theme/rokkit.css` with `@import '@rokkit/themes'` (full bundle)
 - Kept only learn-site-exclusive CSS: `shiki.css`, `article.css`, `typography.css`
 - Moved `[data-story-root]` rule into `app.css` (was in the deleted `base.css` aggregate)
 
 **Layout redesign:**
+
 - Root `+layout.svelte`: `showRootHeader` derived flag hides top-level `<Header>` on all learn routes (shows only on `/` and `/playground/...`)
 - `(learn)/+layout.svelte`: Full rewrite — two-column flex layout with sidebar overlay on small/medium screens
   - Top bar: hamburger toggle (lg:hidden), logo (icon on small, full on larger), version, ThemeSwitcher, GitHub link
@@ -616,22 +660,27 @@ Replaced partial theme imports and rebuilt the learn layout as a proper two-colu
 Added interactive Play pages to the learn site for List, Select, and Tabs. Approach: URL routing (`/elements/{component}/play`) with a Toggle header in per-component layouts.
 
 **FileTabs.svelte rewrite:**
+
 - Replaced manual `<div role="tablist">` with `<Tabs>` from `@rokkit/ui` (same pattern as `CodeViewer.svelte`)
 - Pre-computes icons via `processedFiles = $derived(files.map(f => ({ ...f, _icon: getFileIcon(f) })))`
 - `fields = { value: 'id', text: 'name', icon: '_icon' }` — backward-compatible `selectedFile` binding
 - `tabPanel` snippet uses reactive `activeFile`/`highlightedCode` (all panels share same derived state)
 
 **PlaySection.svelte** (new shared component):
+
 - Two-column layout: preview area (dotted grid background) + 280px controls sidebar
 
 **(learn)/+layout.svelte fix:**
+
 - Added `canonicalPath` stripping `/play` suffix before `findSection`/`findGroupForSection` lookups
 - Play sub-routes inherit correct title/breadcrumbs from parent component's meta.json
 
 **Per-component layouts** (`elements/{list,select,tabs}/+layout.svelte`):
+
 - `Toggle` with Learn/Play options at top-right; navigates via `goto()` on change
 
 **Play pages** — new routes at `elements/{list,select,tabs}/play/+page.svelte`:
+
 - List: 4 variants (Navigation, Button, Grouped, Descriptions) + FormRenderer controls
 - Select: Simple + Grouped + FormRenderer controls
 - Tabs: With-icons + Simple + FormRenderer controls
@@ -661,10 +710,12 @@ All 48 e2e tests now pass. Unit tests: 1356 passing.
 Fixed learn site build failures and rewrote all component llms.txt documentation to match current APIs.
 
 **Build fixes:**
+
 - Added `@rokkit/app` and `@rokkit/data` to `sites/learn/package.json` (missing workspace dependencies)
 - Rewrote `FileTabs.svelte` without `bits-ui` (ADR-003 compliance — bits-ui removed)
 
 **LLMs.txt rewrites** — corrected against actual TypeScript type files:
+
 - `List`, `Tree`: correct props (`items`, `fields`, `value`, `multiselect`, `expanded`, lazy loading)
 - `Select`, `MultiSelect`: `filterable`/`filterPlaceholder` (not `searchable`), added `align`/`maxRows`/`selected`
 - `Toggle`: removed non-existent `square`/`label` props, added `showLabels`
@@ -686,6 +737,7 @@ Fixed learn site build failures and rewrote all component llms.txt documentation
 Extended `@rokkit/forms` lookup system end-to-end: fetch/filter hooks, `disabled` state, reactive injection into form elements, and `FormRenderer` wiring.
 
 **`lookup.svelte.js` changes:**
+
 - Extended `LookupConfig` typedef: `fetch` (async hook), `source` (pre-loaded array), `filter` (client-side filter), `cacheKey` (custom cache key fn)
 - Added `disabled = $state(false)` — set to `true` when dep check fails, `false` when deps met
 - `fetch()` branches: filter+source (synchronous), fetch hook (async, optional caching via `cacheKeyFn`), URL (unchanged)
@@ -694,12 +746,14 @@ Extended `@rokkit/forms` lookup system end-to-end: fetch/filter hooks, `disabled
 - `createLookupManager.initialize()` now always calls `fetch()` for all lookups (lets missing-dep check set `disabled = true` on init)
 
 **`builder.svelte.js` changes:**
+
 - `getLookupState()` returns `disabled` property
 - `#convertToFormElement()` injects `options`, `loading`, `disabled`, `fields` from lookup state into `finalProps` (reactive via `$derived(#buildElements())`)
 - `updateField()` clears dependent field values (`null`) before triggering lookup re-fetch
 - New `isFieldDisabled(path)` and `refreshLookup(path)` public methods
 
 **`FormRenderer.svelte` changes:**
+
 - Added `lookups = {}` prop, passed to `FormBuilder` constructor
 - `onMount` calls `formBuilder.initializeLookups()` (fire-and-forget)
 
@@ -714,6 +768,7 @@ Extended `@rokkit/forms` lookup system end-to-end: fetch/filter hooks, `disabled
 Added `ArrayEditor.svelte` to `@rokkit/forms` — a composable input component that manages a dynamic list of array items within the form renderer pipeline.
 
 **Architecture:**
+
 - `type: 'array'` schema fields now resolve to `ArrayEditor` via `defaultRenderers.array`
 - Primitive items (`string`, `number`, etc.) render via `resolveRenderer({ type: itemSchema.type }, defaultRenderers)` + `svelte:component`
 - Object items render a nested `<FormRenderer data={item} schema={itemSchema} onupdate={...} />`, using `onupdate` callback (not `bind:data`) to avoid Svelte 5 array-index binding issues
@@ -724,6 +779,7 @@ Added `ArrayEditor.svelte` to `@rokkit/forms` — a composable input component t
 **DOM structure:** `[data-array-editor]` root with `[data-array-editor-empty]` / `[data-array-editor-disabled]` boolean attributes; `[data-array-editor-items]` → `[data-array-editor-item]` × N; `[data-array-editor-remove]` buttons (hidden when `readonly`); `[data-array-editor-add]` button (hidden when `readonly`, disabled when `disabled`)
 
 **Files created/modified:**
+
 - `packages/forms/src/input/ArrayEditor.svelte` — new component
 - `packages/forms/src/lib/renderers.js` — added `array: ArrayEditor`
 - `packages/forms/src/input/index.js` — exported `ArrayEditor`
@@ -739,6 +795,7 @@ Added `ArrayEditor.svelte` to `@rokkit/forms` — a composable input component t
 Replaced the hand-rolled `<nav>` sidebar in `sites/playground/src/routes/+layout.svelte` with the `List` component. Items from `$lib/components` (which have `text`, `href`, `icon`) are passed with `fields={{ value: 'href' }}` so active state tracks `page.url.pathname`. Sidebar wrapper uses `data-style="rokkit"` for consistent styling.
 
 Added `e2e/sidebar-nav.spec.ts` covering:
+
 - Active item reflects current route on load
 - Click navigates to the correct page and updates active state
 - ArrowDown/Up moves keyboard focus through items
@@ -746,6 +803,7 @@ Added `e2e/sidebar-nav.spec.ts` covering:
 - Enter on focused link navigates (browser-native, no `preventDefault`)
 
 **Files modified:**
+
 - `sites/playground/src/routes/+layout.svelte` — sidebar replaced with `List` component
 - `sites/playground/e2e/sidebar-nav.spec.ts` — new e2e test file (10 tests)
 
@@ -760,6 +818,7 @@ Added `e2e/sidebar-nav.spec.ts` covering:
 **Fix:** In `handleKeydown`, early return when `action === 'select' && event.target.closest('a[href]')` — browser handles Enter/Space natively on focused anchor.
 
 **Files modified:**
+
 - `packages/actions/src/navigator.svelte.js` — `handleKeydown` anchor early return
 - `packages/actions/spec/navigator.spec.svelte.js` — 2 new keyboard anchor tests (dispatched on anchor element so `event.target` is set correctly)
 
@@ -774,6 +833,7 @@ Added `e2e/sidebar-nav.spec.ts` covering:
 **Fix:** In `handleClick`, detect `event.target.closest('a[href]')` and bypass `handleAction` — call the controller handler directly (preserving focus/select state updates) without calling `preventDefault()`.
 
 **Files modified:**
+
 - `packages/actions/src/navigator.svelte.js` — fix `handleClick`
 - `packages/actions/spec/navigator.spec.svelte.js` — 4 new anchor click tests
 
@@ -794,6 +854,7 @@ Three new Svelte actions in `@rokkit/actions`:
 All three respect `prefers-reduced-motion`, use `$effect()` wrapper with cleanup, restore original styles on destroy.
 
 **Files created:**
+
 - `actions/src/hover-lift.svelte.js`, `actions/src/magnetic.svelte.js`, `actions/src/ripple.svelte.js`
 - `actions/spec/hover-lift.spec.svelte.js` (12 tests), `actions/spec/magnetic.spec.svelte.js` (10 tests), `actions/spec/ripple.spec.svelte.js` (14 tests)
 
@@ -810,6 +871,7 @@ Added `gradient` and `link` style variants plus micro-animations.
 **Type changes:** `ButtonStyle` now includes `'gradient' | 'link'`
 
 **Base CSS additions:**
+
 - Gradient structural style (border: none)
 - Link structural style (no bg/border/height, underline on hover)
 - Hover lift (`translateY(-1px)`) for non-link/ghost styles
@@ -818,6 +880,7 @@ Added `gradient` and `link` style variants plus micro-animations.
 - Loading pulse (opacity animation)
 
 **Theme CSS:**
+
 - Rokkit: added gradient (diagonal) + link colors for all 4 variants
 - Glass: **new file** — full button theme with glassmorphism (backdrop-blur, transparency)
 - Minimal: **new file** — full button theme with clean borders
@@ -837,6 +900,7 @@ Added `gradient` and `link` style variants plus micro-animations.
 Implemented `FloatingNavigation.svelte` — floating, collapsible page navigation widget.
 
 **Component features:**
+
 - Data-driven with ItemProxy field mapping
 - 4-position layouts: left, right, top, bottom (screen edge anchoring)
 - Hover expand/collapse with pin toggle to lock expanded
@@ -848,6 +912,7 @@ Implemented `FloatingNavigation.svelte` — floating, collapsible page navigatio
 - `prefers-reduced-motion` support
 
 **Files created:**
+
 - `packages/ui/src/components/FloatingNavigation.svelte`
 - `packages/ui/src/types/floating-navigation.ts`
 - `packages/ui/spec/FloatingNavigation.spec.svelte.ts` (34 tests)
@@ -993,11 +1058,13 @@ Created playground page at `/components/forms` with travel planner scenario. 7 t
 ### Forms Phase 1: FormBuilder Stability (#7) + Validation Integration (#13)
 
 **FormBuilder stability (#7):**
+
 - Replaced `$derived(new FormBuilder(...))` in FormRenderer with stable instance + `$effect` sync
 - Builder's `$state` fields + `$derived` elements handle reactivity via setters
 - Added `builder` prop to FormRenderer for external builder injection
 
 **Validation integration (#13):**
+
 - Added `validateField(fieldPath)`, `validate()`, `isValid`, `errors` to FormBuilder
 - Wired into FormRenderer with `validateOn` prop ('blur'|'change'|'manual')
 - External `onvalidate` callback for custom validation logic
@@ -1014,11 +1081,13 @@ Created playground page at `/components/forms` with travel planner scenario. 7 t
 ### Forms Phase 2: Type Renderer Registry (#12) + Display-Only Rendering (#60)
 
 **Type Renderer Registry (#12):**
+
 - Created `packages/forms/src/lib/renderers.js` — `defaultRenderers` map (21 type→component mappings) + `resolveRenderer()` with 3-level resolution (explicit renderer → type → fallback to InputText)
 - Refactored `Input.svelte` — replaced 30-line if/else chain with registry-based `<svelte:component>` dispatch
 - `renderers` prop flows FormRenderer → InputField → Input for custom type overrides
 
 **Display-Only Rendering (#60):**
+
 - 5 new display components: `DisplayValue` (format-aware: currency/datetime/duration/number/boolean/badge), `DisplaySection` (key-value pairs), `DisplayTable` (wraps @rokkit/ui Table), `DisplayCardGrid` (responsive grid with single/multi selection), `DisplayList` (styled list)
 - FormBuilder handles `display-*` layout types, resolves data from scope, supports `renderer` hint for custom type overrides
 - FormRenderer routes `display-*` elements to display components, new `onselect` prop
@@ -1037,6 +1106,7 @@ Created playground page at `/components/forms` with travel planner scenario. 7 t
 ### Housekeeping: Consolidate .rules → agents, split backlog
 
 **Consolidated `.rules/` into `agents/`:**
+
 - Created `agents/references.md` — coding conventions, styling rules (theme/layout separation), story conventions, color system, architecture principles, project structure table
 - Removed `.rules/` folder entirely (16 files across 4 subdirectories)
 - Updated `CLAUDE.md` — proper project description, correct commands, references new file, removed placeholder text
@@ -1044,6 +1114,7 @@ Created playground page at `/components/forms` with travel planner scenario. 7 t
 - Outdated bits-ui references in .rules discarded (ADR-003 removed bits-ui)
 
 **Split backlog into priority-ordered files:**
+
 - `agents/backlog/01-forms.md` — FormBuilder stability, validation, display schemas, legacy migration, dirty tracking (items #7-22, #60)
 - `agents/backlog/02-ui-components.md` — Table phases 2-4, FloatingNav, Button styles, type-ahead, MultiSelect value contract (items #3, #11, #28, #46-51)
 - `agents/backlog/03-effects.md` — HoverLift, Magnetic, Ripple, Glow, decorative components (items #53-57)
@@ -1053,6 +1124,7 @@ Created playground page at `/components/forms` with travel planner scenario. 7 t
 - `agents/backlog.md` now a pointer to the directory
 
 **Documented backlog #60 as requirement:**
+
 - Added §18 "Display-Only Schema Rendering" to `docs/requirements/010-form.md`
 - Added design section to `docs/design/010-form.md` — DisplayValue component, FormBuilder integration, FormRenderer routing, data attributes
 - Updated gaps summary in both docs
@@ -1062,12 +1134,14 @@ Created playground page at `/components/forms` with travel planner scenario. 7 t
 Created comprehensive requirements and design docs for the chart package overhaul:
 
 **Files created:**
+
 - `docs/requirements/020-chart.md` — updated from skeleton to full requirements covering: 6 chart types (bar, line, area, scatter, pie, sparkline), animated time series (chart race), data mapping & brewer, SVG/PNG/animated SVG export, accessibility, theme integration
 - `docs/design/020-chart.md` — full technical design: AnimatedChart wrapper architecture, custom tweened store for object array interpolation, TimelineControls, VisualBrewer (data→pattern+color+symbol), Sparkline component, SVG export pipeline (static + raster + SMIL animated), @rokkit/data rollup integration for keyframe alignment, 5-phase implementation plan
 
 **Backlog #59 added** with 5 phases: Foundation & Static Charts → Chart Type Components → Animated Time Series → Animated Export & Polish → Advanced Features
 
 **Key design decisions:**
+
 - All rendering in SVG (not HTML elements like the reference example)
 - AnimatedChart is a wrapper; base charts have zero animation awareness
 - @rokkit/data rollup provides keyframe alignment (groupDataByKeys + fillAlignedData)
@@ -1084,6 +1158,7 @@ Created comprehensive requirements and design docs for the chart package overhau
 Implemented scroll-triggered reveal animations: `use:reveal` action + `Reveal` wrapper component.
 
 **Files created:**
+
 - `packages/actions/src/reveal.svelte.js` — action: IntersectionObserver + CSS data-attribute transitions, `prefers-reduced-motion` bypass
 - `packages/ui/src/components/Reveal.svelte` — component: wraps action, adds stagger support (DOM-based child delay iteration)
 - `packages/themes/src/base/reveal.css` — base CSS for `[data-reveal]` + `[data-reveal-visible]` transitions
@@ -1104,19 +1179,23 @@ Implemented scroll-triggered reveal animations: `use:reveal` action + `Reveal` w
 Added requirements, design docs, and backlog entries based on reference site at `/Users/Jerry/Work/website/site` (React + Framer Motion).
 
 **Additional patterns discovered from deeper reference site analysis:**
+
 - **SectionDivider** (Backlog #55): Animated decorative divider — lines scale in from edges, dots pop in center. IntersectionObserver triggered. Added to `060-effects.md §11`.
 - **GradientText** (Backlog #56): CSS utility for gradient-colored text via `background-clip: text`. Added to `060-effects.md §12`.
 - **BackgroundOrbs** (Backlog #57): Decorative blurred gradient circles for hero/section backgrounds. Added to `060-effects.md §13`.
 - Reference site button patterns confirmed: gradient CTA (`from-orange-500 to-pink-500`), `group-hover:translate-x-1` trailing arrow, outline-with-brand-color variant, white/transparent CTA variants. All covered by existing Backlog #51.
 
 **FloatingNavigation** (Backlog #50):
+
 - Requirements added to `docs/requirements/009-navigation.md §6` — data-driven collapsible floating nav with 4-edge positioning, pin toggle, IntersectionObserver active tracking, CSS animations
 - Design doc created: `docs/design/009-floating-navigation.md` — architecture, position layouts, animation strategy (pure CSS), template structure, size variants
 
 **Button Style Enhancements** (Backlog #51):
+
 - Requirements added to `docs/requirements/001-button.md §6` — new `gradient` and `link` style variants, standardized micro-animations (press feedback, hover lift, focus ring, icon shift, loading pulse, pop on click) across all themes
 
 **Interactive Effects** (Backlog #52–54):
+
 - Requirements rewritten: `docs/requirements/060-effects.md` — expanded from 6 vague sections to 14 detailed sections covering:
   - `Reveal` component + `use:reveal` action (scroll-triggered entry animations) — highest priority
   - `use:hoverLift`, `use:magnetic`, `use:ripple` actions
@@ -1133,6 +1212,7 @@ Added requirements, design docs, and backlog entries based on reference site at 
 Implemented async lazy loading for Tree nodes. Convention: `children: true` (boolean, not array) marks a node as "has children, not yet loaded."
 
 **Changes:**
+
 - `ItemProxy` (`packages/ui/src/types/item-proxy.ts`): Added `canLoadChildren` getter — detects truthy non-array children field
 - `TreeProps` (`packages/ui/src/types/tree.ts`): Added `onloadchildren?: (value, item) => Promise<TreeItem[]>` callback
 - `Tree.svelte` (`packages/ui/src/components/Tree.svelte`):
@@ -1158,6 +1238,7 @@ Implemented async lazy loading for Tree nodes. Convention: `children: true` (boo
 New component for instructions, changelogs, and process visualization. Purely presentational — no interaction, no state controller.
 
 **Architecture:**
+
 - Single `Timeline.svelte` with `ItemProxy` for field mapping (text, icon, description)
 - `completed` / `active` boolean fields on items for state indicators
 - Completed items show check icon (configurable), others show step number or custom icon
@@ -1166,6 +1247,7 @@ New component for instructions, changelogs, and process visualization. Purely pr
 - ARIA: `role="list"` / `role="listitem"`, `aria-hidden` on markers
 
 **Files created:**
+
 - `packages/ui/src/types/timeline.ts` — TimelineProps, TimelineFields, TimelineIcons
 - `packages/ui/src/components/Timeline.svelte` — Timeline component
 - `packages/themes/src/base/timeline.css` — structural styles
@@ -1182,6 +1264,7 @@ New component for instructions, changelogs, and process visualization. Purely pr
 Migrated and consolidated the archived Range slider (4 files: Range, RangeMinMax, RangeSlider, RangeTick) into a single `Range.svelte` component.
 
 **Architecture:**
+
 - Single component with `range` boolean prop for dual-handle mode
 - `lerp`/`inverseLerp` inline helpers replace D3 `scaleLinear` (same pattern as Tilt)
 - `use:pannable` from `@rokkit/actions` for drag interaction on thumbs
@@ -1190,6 +1273,7 @@ Migrated and consolidated the archived Range slider (4 files: Range, RangeMinMax
 - ArrowLeft/Right/Up/Down for increment/decrement, Home/End for min/max
 
 **Files created:**
+
 - `packages/ui/src/types/range.ts` — RangeProps interface
 - `packages/ui/src/components/Range.svelte` — Range component
 - `packages/themes/src/base/range.css` — structural styles
@@ -1198,6 +1282,7 @@ Migrated and consolidated the archived Range slider (4 files: Range, RangeMinMax
 - `sites/playground/src/routes/components/range/+page.svelte` — playground page
 
 **Files modified:**
+
 - `packages/ui/src/components/index.ts` — added Range export
 - `packages/ui/src/index.ts` — added Range to named re-exports
 - `packages/ui/src/types/index.ts` — added range type export
@@ -1212,6 +1297,7 @@ Migrated and consolidated the archived Range slider (4 files: Range, RangeMinMax
 Added learn site page for Table component following List page pattern.
 
 **Files created:**
+
 - `sites/learn/src/routes/(learn)/elements/table/+page.svelte` — article with intro, sorting, custom columns, filtering sections
 - `sites/learn/src/routes/(learn)/elements/table/stories.js` — StoryBuilder wiring
 - `sites/learn/src/routes/(learn)/elements/table/{intro,sorting,filtering,custom-columns}/App.svelte` — 4 examples
@@ -1226,11 +1312,13 @@ Added learn site page for Table component following List page pattern.
 Implemented flat Table component with sortable columns, keyboard navigation, and standalone SearchFilter component. Multi-package feature spanning `@rokkit/data`, `@rokkit/states`, `@rokkit/ui`, and `@rokkit/themes`.
 
 **Architecture:**
+
 - `TableController` in `@rokkit/states` — composition wrapping `ListController` (not inheritance). Manages columns, sort state (single + multi-column via Shift+click), delegates focus/selection/navigation to internal ListController.
 - `Table.svelte` — creates `TableController`, uses `use:navigator` for keyboard/click on rows, sort via `<th>` click handlers. Auto-derives columns from data via `deriveColumns()`. Supports custom columns with field mapping, formatters.
 - `SearchFilter.svelte` — standalone component parsing user input with `parseFilters()` from `@rokkit/data`. Debounced input, filter tags with remove, clear button. Composes with Table via `filterData()`.
 
 **Files created:**
+
 - `packages/ui/src/types/table.ts` — TableColumn, TableProps, SortState, TableSortIcons types
 - `packages/ui/src/types/search-filter.ts` — SearchFilterProps, FilterObject types
 - `packages/states/src/table-controller.svelte.js` — TableController class (replaces old TableWrapper stub)
@@ -1244,6 +1332,7 @@ Implemented flat Table component with sortable columns, keyboard navigation, and
 - `sites/playground/src/routes/components/table/+page.svelte` — playground page
 
 **Files modified:**
+
 - `packages/data/src/index.js` — exported `deriveColumns`, `deriveMetadata`, `deriveSortableColumn`, `parseFilters`, `filterData`, `filterObjectArray` (backlog #10)
 - `packages/states/src/index.js` — replaced `TableWrapper` with `TableController` export
 - `packages/ui/src/types/index.ts` — added table + search-filter type exports
@@ -1267,6 +1356,7 @@ Added WAI-ARIA treeview keyboard patterns to NestedController:
 - **Expand on leaf** → returns false (node has no children)
 
 **Files modified:**
+
 - `packages/states/src/nested-controller.svelte.js` — `expand()` checks for children, moves to first child when already expanded. `collapse()` moves to parent when not expandable.
 - `packages/actions/src/navigator.svelte.js` — emits `'move'` event + scroll when expand/collapse changes focus (so Tree/List update DOM focus)
 - `packages/states/spec/nested-controller.spec.svelte.js` — 8 new tests, 1 updated expectation
@@ -1280,18 +1370,21 @@ Added WAI-ARIA treeview keyboard patterns to NestedController:
 Built a new Stepper component for multi-step wizard indicators (onboarding, checkout flows).
 
 **Design decisions:**
+
 - Single `Stepper.svelte` (no sub-components) — steps/dots are tightly coupled to stepper layout
 - No controller/navigator needed — simple clickable buttons, not a focus-roving widget
 - CSS connector lines via data attributes, not SVG Connector component
 - Sub-stage dots when `step.stages > 1`
 
 **Component:** `packages/ui/src/components/Stepper.svelte`
+
 - TypeScript interfaces: `StepperStep`, `StepperIcons`, `StepperProps`
 - `$bindable` current/currentStage, linear mode (only completed + next clickable)
 - Horizontal/vertical orientation, custom completed icon, content snippet
 - ARIA: `role="group"`, `aria-current="step"`, `aria-label` on buttons
 
 **Files created:**
+
 - `packages/ui/src/components/Stepper.svelte`
 - `packages/ui/spec/Stepper.spec.svelte.ts` (29 tests)
 - `packages/themes/src/base/stepper.css`
@@ -1299,6 +1392,7 @@ Built a new Stepper component for multi-step wizard indicators (onboarding, chec
 - `sites/learn/src/routes/(learn)/layout/stepper/` — full story (stories.js, intro/App.svelte, fragments/01-basic.svelte, +page.svelte)
 
 **Files modified:**
+
 - `packages/ui/src/components/index.ts`, `packages/ui/src/index.ts` — added exports
 - `packages/themes/src/base/index.css` — added CSS import
 - `sites/playground/src/lib/components.ts` — added nav entry
@@ -1312,6 +1406,7 @@ Built a new Stepper component for multi-step wizard indicators (onboarding, chec
 Created new interactive stories for all existing components and updated existing ones:
 
 **New stories created:**
+
 - `elements/toggle` — intro, fields, configuration examples
 - `elements/toolbar` — intro, separators examples
 - `elements/menu` — intro, groups examples
@@ -1323,11 +1418,13 @@ Created new interactive stories for all existing components and updated existing
 - `layout/progress` — intro, indeterminate examples (replaced ComingSoon)
 
 **Updated stories:**
+
 - `primitives/pill` — text corrections (ItemWrapper → Pill)
 - `input/rating` — fixed broken `<section>` tag, heading levels h1→h2
 - `elements/list` — added nested/collapsible groups example
 
 **Layout improvements:**
+
 - Added breadcrumb navigation to `(learn)/+layout.svelte`
 - Fixed `findGroupForSection` to use `slug` instead of `id`
 
@@ -1340,11 +1437,13 @@ Learn site builds. All tests pass: 626 UI, 1047 CI.
 Fixed all broken imports preventing the learn site from building:
 
 **Root causes fixed:**
+
 - `uno.config.js`: imported JS (`iconShortcuts`, `defaultIcons`, `Theme`) from `@rokkit/themes` (CSS-only) → changed to `@rokkit/core`
 - `ThemeSwitcher.svelte`: `ToggleThemeMode` from `@rokkit/ui` → `ThemeSwitcherToggle` from `@rokkit/app`
 - `Connector` missing from `@rokkit/ui` barrel export → added to `index.ts`
 
 **Shared components fixed (Icon → CSS class span):**
+
 - `ComingSoon.svelte`, `CopyToClipboard.svelte`, learn `Header.svelte`, root `Header.svelte`
 - `Sidebar.svelte`: added `collapsible` prop to List, replaced Icon with CSS span
 - `DropDown.svelte`: removed `Item` import, inline text rendering
@@ -1354,6 +1453,7 @@ Fixed all broken imports preventing the learn site from building:
 
 **Broken story routes → ComingSoon:**
 Removed story subdirectories and replaced +page.svelte with ComingSoon for:
+
 - Routes: accordion, table, icon, item, calendar, range, stepper
 - Stories: inputfield, validation-report, responsive-grid, templates/editor
 - Forms stories: overview, schema, layout, validation, advanced
@@ -1367,6 +1467,7 @@ Learn site builds successfully. All tests pass: 626 UI, 1047 CI.
 ### Table & Range — Backlog Corrections
 
 Corrected plan status for Table and Range:
+
 - **Table** (#47): NOT "separate package" — has full requirements (`docs/requirements/004-table.md`) and design (`docs/design/004-table.md`) as a `@rokkit/ui` component. Multi-phase: flat+SearchFilter → hierarchy → pagination → polish. Uses `TableController` in `@rokkit/states`, `@rokkit/data` utilities for columns/sorting/filtering.
 - **Range** (#48): Current `InputRange` in forms is a minimal native wrapper. The archived custom slider had dual handles, tick marks, step markers, styled ends/selected range, pannable thumbs. Needs full migration to `@rokkit/ui` as a standalone component.
 
@@ -1377,6 +1478,7 @@ Corrected plan status for Table and Range:
 Migrated both components from archive to Svelte 5:
 
 **Pill** (`packages/ui/src/components/Pill.svelte`):
+
 - Tag/chip with optional remove button
 - `ItemProxy` for field mapping, `use:keyboard` for Delete/Backspace removal
 - Props: value, fields, removable, disabled, onremove, content (snippet), class
@@ -1384,6 +1486,7 @@ Migrated both components from archive to Svelte 5:
 - 16 unit tests
 
 **Rating** (`packages/ui/src/components/Rating.svelte`):
+
 - Star/icon rating input with keyboard navigation
 - ARIA: `role="radiogroup"` container, `role="radio"` per star
 - Keyboard: ArrowLeft/Right/Up/Down, digit keys for direct set
@@ -1400,6 +1503,7 @@ All tests pass: 626 UI, 1047 CI.
 ### Learn Site Audit — Component Gap Analysis
 
 Audited all learn site routes against current `@rokkit/ui` exports. Identified:
+
 - **2 components to migrate** (Pill, Rating) — needed by learn stories, added to backlog #44, #45
 - **5 deprecated stories to remove** (Accordion, DropDown, Switch, Icon, Message)
 - **9+ new stories to create** (Toggle, Toolbar, Menu, Carousel, Card, Button, ProgressBar, BreadCrumbs, Code)
@@ -1416,10 +1520,12 @@ Created plan in `agents/plan.md` with Phase 1 (migrate Pill + Rating) and Phase 
 Built a Carousel component using `use:swipeable` + `use:keyboard` actions (no ListController needed).
 
 **Actions used:**
+
 - `use:swipeable` — touch/mouse swipe gestures → `swipeLeft`/`swipeRight` events
 - `use:keyboard` — maps ArrowLeft/Right/Home/End → `prev`/`next`/`first`/`last` custom events
 
 **Features:**
+
 - Slide/fade/none transitions via CSS `data-carousel-transition` attribute + CSS custom properties (`--carousel-current`)
 - Autoplay with pause-on-hover, configurable interval
 - Loop/wrap option (disables arrows at boundaries when off)
@@ -1428,6 +1534,7 @@ Built a Carousel component using `use:swipeable` + `use:keyboard` actions (no Li
 - Bindable `current` index
 
 **Files created:**
+
 - `packages/ui/src/components/Carousel.svelte`
 - `packages/ui/spec/Carousel.spec.svelte.ts` (22 tests)
 - `packages/themes/src/base/carousel.css`
@@ -1442,26 +1549,31 @@ Built a Carousel component using `use:swipeable` + `use:keyboard` actions (no Li
 Migrated three presentational components from archive to `@rokkit/ui` with Svelte 5 runes, TypeScript types, data-attribute theming, and proper ARIA.
 
 **BreadCrumbs** — navigation breadcrumbs with `nav`/`ol`/`li` ARIA pattern:
+
 - Uses `ItemProxy` for field mapping (text, value, icon)
 - Last item marked `aria-current="page"`, non-last rendered as buttons
 - Custom separator icon, custom crumb snippet support
 
 **Card** — flexible content container:
+
 - Renders as `<div>` (static), `<a>` (href), or `<button>` (onclick)
 - Snippet-based `header`, `footer`, `children` slots
 
 **ProgressBar** — determinate/indeterminate progress indicator:
+
 - `role="progressbar"` with `aria-valuenow/min/max`
 - Indeterminate mode when `value` is null (CSS animation)
 - Percentage clamped to 0-100%
 
 **Files created:**
+
 - `packages/ui/src/components/BreadCrumbs.svelte`, `Card.svelte`, `ProgressBar.svelte`
 - `packages/ui/spec/BreadCrumbs.spec.svelte.ts` (16 tests), `Card.spec.svelte.ts` (7 tests), `ProgressBar.spec.svelte.ts` (13 tests)
 - `packages/themes/src/base/breadcrumbs.css`, `card.css`, `progress.css`
 - `sites/playground/src/routes/components/breadcrumbs/+page.svelte`, `card/+page.svelte`, `progress/+page.svelte`
 
 **Files modified:**
+
 - `packages/ui/src/components/index.ts`, `packages/ui/src/index.ts` — added exports
 - `packages/themes/src/base/index.css` — added CSS imports
 - `sites/playground/src/lib/components.ts` — added nav entries
@@ -1475,21 +1587,25 @@ Migrated three presentational components from archive to `@rokkit/ui` with Svelt
 Migrated two visual effect components from archive to `@rokkit/ui` with Svelte 5 runes, TypeScript types, and data-attribute theming.
 
 **Tilt** — parallax tilt effect responding to mouse position:
+
 - Replaced D3 `scaleLinear` with simple `lerp()` function (zero new dependencies)
 - CSS variables: `--tilt-perspective`, `--tilt-rotate-x`, `--tilt-rotate-y`, `--tilt-brightness`
 - Props: `maxRotation`, `setBrightness`, `perspective`
 
 **Shine** — specular lighting effect using SVG `feSpecularLighting` + `fePointLight`:
+
 - Uses `@rokkit/core` `id()` for unique SVG filter IDs
 - Props: `color`, `radius`, `depth`, `surfaceScale`, `specularConstant`, `specularExponent`
 
 **Files created:**
+
 - `packages/ui/src/components/Tilt.svelte`, `Shine.svelte`
 - `packages/ui/spec/Tilt.spec.svelte.ts` (12 tests), `Shine.spec.svelte.ts` (12 tests)
 - `packages/themes/src/base/tilt.css`, `shine.css`
 - `sites/playground/src/routes/components/tilt/+page.svelte`, `shine/+page.svelte`
 
 **Files modified:**
+
 - `packages/ui/src/components/index.ts`, `packages/ui/src/index.ts` — added exports
 - `packages/themes/src/base/index.css` — added CSS imports
 - `sites/playground/src/lib/components.ts` — added nav entries
@@ -1503,6 +1619,7 @@ Migrated two visual effect components from archive to `@rokkit/ui` with Svelte 5
 Added arrow-key navigation to Toolbar via `ListController` + `use:navigator`, following the same pattern used in Toggle, Tabs, and List.
 
 **Key design decisions:**
+
 - Separators and spacers don't get `data-path` attributes → invisible to navigator, naturally skipped
 - `ListController#isDisabled()` skips disabled items during arrow-key navigation
 - `focusin` listener syncs controller position when items receive focus externally (e.g. Tab)
@@ -1511,10 +1628,12 @@ Added arrow-key navigation to Toolbar via `ListController` + `use:navigator`, fo
 - Orientation derived from `position` prop: left/right → vertical (ArrowUp/Down), top/bottom → horizontal (ArrowLeft/Right)
 
 **Files modified:**
+
 - `packages/ui/src/components/Toolbar.svelte` — added controller + navigator integration
 - `packages/ui/spec/Toolbar.spec.svelte.ts` — added 12 new tests (arrow keys, Home/End, skip separators/spacers/disabled, vertical orientation)
 
 **Files created:**
+
 - `sites/playground/e2e/toolbar.spec.ts` — 25 e2e tests (keyboard, mouse, visual snapshots × 5 themes × 2 modes)
 
 **Tests:** 1047 unit (502 UI), 213 e2e — all passing.
@@ -1526,12 +1645,14 @@ Deleted the `@rokkit/composables` package (55 files, 26 tests). No active consum
 Also assessed Proxy/ItemProxy unification (Phase C item) and deferred — they are fundamentally different abstractions: `states.Proxy` is reactive+mutable data model, `ItemProxy` is read-only view-layer field mapper.
 
 **What was removed:**
+
 - `packages/composables/` — entire directory (List, GroupedList, Switch, TabGroup, FloatingNav)
 - `docs/llms/composables.md` — LLM reference doc
 - Composables entries from: llms/README.md, .rules/project/structure.md, agents/memory.md
 - Composables import references from: learn site LLM generators, commented import in tabs page
 
 **What was updated:**
+
 - `bun.lock` — regenerated (1 package removed: bits-ui)
 - `docs/llms/states.md` — updated "Depended on by" list
 - `docs/decisions/003-mvc-separation.md` — marked Phase D complete
@@ -1547,6 +1668,7 @@ Also assessed Proxy/ItemProxy unification (Phase C item) and deferred — they a
 Sixth component in Phase C. Most complex migration — hierarchical data with expand/collapse, tree lines/connectors, ArrowLeft/Right for expand/collapse and parent navigation.
 
 **Key decisions:**
+
 - Used `NestedController` (not `ListController`) — Tree has true nested expand/collapse.
 - Navigator with `nested: true` — maps ArrowLeft→collapse, ArrowRight→expand via kbd.js `getVerticalExpandActions`.
 - Kept `flattenTree()` for rendering (computes `lineTypes`, `level`, `isLast` per node) — reads expansion from `controller.expandedKeys`.
@@ -1556,10 +1678,12 @@ Sixth component in Phase C. Most complex migration — hierarchical data with ex
 - Toggle buttons (`data-tree-toggle-btn`) call `toggleNodeByKey()` directly, don't use `data-path`.
 
 **What was removed:**
+
 - `focusedPath` state, `focusPath()`, inline `handleFocusIn()`, `handleItemKeyDown()` (~80 lines keyboard switch)
 - `handleItemSelect()`, `internalExpanded` / `effectiveExpanded`, `isNodeExpanded()` / `toggleNode()`
 
 **Files changed:**
+
 - `packages/ui/src/components/Tree.svelte` — full migration
 - `docs/decisions/003-mvc-separation.md` — marked Tree checkbox
 
@@ -1578,11 +1702,13 @@ Assessed Toolbar.svelte (198 lines). **Decision: skip** — minimal keyboard cod
 Fifth component in Phase C. Same dropdown pattern as Select with toggle selection (don't close on select) and array-of-items value binding.
 
 **Key decisions:**
+
 - Same `Map<unknown, string>` pattern as Select for `itemPathMap`.
 - `handleSelectAction()` calls `toggleItemSelection()` instead of closing dropdown.
 - No `lastSyncedValue` guard needed — MultiSelect's value is array of full items, not a single primitive.
 
 **Files changed:**
+
 - `packages/ui/src/components/MultiSelect.svelte` — full migration
 - `docs/decisions/003-mvc-separation.md` — marked MultiSelect checkbox
 
@@ -1595,18 +1721,21 @@ Fifth component in Phase C. Same dropdown pattern as Select with toggle selectio
 Fourth component in Phase C (after Toggle, List, Menu). Same dropdown pattern as Menu with additional concerns: bindable `value`/`selected`, `lastSyncedValue` guard, maxHeight measurement, check mark rendering.
 
 **Key decisions:**
+
 - Used `Map<unknown, string>` (not `WeakMap`) for `itemPathMap` — Select supports string/number arrays (`['foo', 'bar']`) where items are primitives, not objects.
 - `lastSyncedValue` guard pattern (from Toggle) prevents value-sync `$effect` from fighting navigator focus moves.
 - `scrollIntoView?.()` with optional chaining — forms tests run in JSDOM which doesn't implement `scrollIntoView`.
 - On `openDropdown()`: focuses selected item via `controller.moveToValue(value)`, or first item if no selection.
 
 **What was removed:**
+
 - `focusedIndex` state tracking
 - `focusItem()` — manual DOM query + focus + scroll
 - `handleKeyDown()` — 35-line keyboard switch
 - `handleItemKeyDown()` — per-item Enter/Space handler
 
 **Files changed:**
+
 - `packages/ui/src/components/Select.svelte` — full migration
 - `docs/decisions/003-mvc-separation.md` — marked Select checkbox
 
@@ -1621,6 +1750,7 @@ Fourth component in Phase C (after Toggle, List, Menu). Same dropdown pattern as
 Third component in Phase C (after Toggle, List). Replaced inline keyboard/focus code in Menu.svelte with `ListController` + `use:navigator`.
 
 **Key decisions:**
+
 - Used `ListController` (not `NestedController`) — Menu groups are presentation-only headers, not collapsible. All children are flattened into a single navigable list.
 - Pre-flattens `options` into `flatItems` (leaf items only) for the controller. Groups are skipped. Uses `WeakMap<object, string>` to map raw item objects → flat index keys for `data-path`.
 - Navigator is applied to the dropdown container (`[data-menu-dropdown]`), not the root `[data-menu]`. Trigger button keyboard handling (ArrowDown/Up → open + focus first/last) remains manual.
@@ -1629,12 +1759,14 @@ Third component in Phase C (after Toggle, List). Replaced inline keyboard/focus 
 - Dropped wrapping behavior (ArrowDown on last item no longer wraps to first) — matches WAI-ARIA standard.
 
 **What was removed:**
+
 - `focusedIndex` state tracking
 - `focusItem()` — manual DOM query + focus
 - `handleKeyDown()` — 35-line keyboard switch (ArrowDown/Up wrapping, Home/End, Enter/Space, Escape)
 - `handleItemKeyDown()` — per-item Enter/Space handler
 
 **What was added:**
+
 - `ListController` + `use:navigator` for arrow keys, Home/End, disabled skip, focus tracking
 - `flatItems` derived (pre-flatten groups → children for controller)
 - `itemPathMap` derived (`WeakMap` for raw item → flat index key)
@@ -1642,6 +1774,7 @@ Third component in Phase C (after Toggle, List). Replaced inline keyboard/focus 
 - `handleFocusIn` to sync DOM focus → controller
 
 **Files changed:**
+
 - `packages/ui/src/components/Menu.svelte` — full migration
 - `docs/decisions/003-mvc-separation.md` — marked Menu checkbox
 
@@ -1654,17 +1787,14 @@ Third component in Phase C (after Toggle, List). Replaced inline keyboard/focus 
 Fixed 6 reported issues (3 were already implemented). `docs/issues/001..md` cleared.
 
 **Bug fixes:**
+
 1. **Input text value binding** — already fixed in `b660d747`. Added regression test in `InputText.spec.svelte.js`.
 2. **Menu first item highlighted** — added `tabindex="-1"` to menu item buttons (WAI-ARIA menu pattern), removed focus-within outline ring from dropdown container.
 
-**Style fixes:**
-3. **Select inside input-root: extra thick border / 2px→1px / height mismatch** — root cause was `data-select` using `display: inline-block` inside flex `data-input-root`, creating a baseline gap. Fix: `data-select` now uses `display: flex; self-stretch` and trigger uses `flex-1; self-stretch; min-width: 0` in base/input.css.
-4. **Danger button text invisible in dark mode** — changed outline/ghost danger text from `text-danger-z6` to `text-danger-z4` (semantic shortcut handles both light/dark) in rokkit/button.css.
-5. **Minimal theme underline inputs** — already implemented correctly.
-6. **Material theme floating label inputs** — already implemented correctly.
-7. **menu-opened/menu-closed icons** — already in defaultIcons, icon bundles, and Menu component.
+**Style fixes:** 3. **Select inside input-root: extra thick border / 2px→1px / height mismatch** — root cause was `data-select` using `display: inline-block` inside flex `data-input-root`, creating a baseline gap. Fix: `data-select` now uses `display: flex; self-stretch` and trigger uses `flex-1; self-stretch; min-width: 0` in base/input.css. 4. **Danger button text invisible in dark mode** — changed outline/ghost danger text from `text-danger-z6` to `text-danger-z4` (semantic shortcut handles both light/dark) in rokkit/button.css. 5. **Minimal theme underline inputs** — already implemented correctly. 6. **Material theme floating label inputs** — already implemented correctly. 7. **menu-opened/menu-closed icons** — already in defaultIcons, icon bundles, and Menu component.
 
 **Files changed:**
+
 - `packages/themes/src/base/input.css` — select-inside-input-root structural fix
 - `packages/themes/src/base/menu.css` — dropdown focus-within outline removal
 - `packages/themes/src/rokkit/button.css` — danger text `z6`→`z4`
@@ -1682,6 +1812,7 @@ Fixed 6 reported issues (3 were already implemented). `docs/issues/001..md` clea
 Second component in Phase B (after Toggle). Replaced ~100 lines of inline keyboard navigation in List.svelte with `NestedController` + `use:navigator`.
 
 **Key decisions:**
+
 - Used `NestedController` (not `ListController`) because expand/collapse is handled by NestedController. Navigator handles all keyboard when `nested: collapsible`.
 - Created `expandedByPath` (`$state<Record<string, boolean>>`) as reactive bridge for template rendering. Svelte 5 cannot track reactivity through `controller.lookup` ($derived Map) → `proxy.expanded` ($state). The `expandedByPath` state is the template's source of truth for expansion.
 - Removed `onclick` from group label button — navigator intercepts clicks on `data-path` elements. Without this, click would double-toggle (button onclick + navigator select → handleSelectAction toggle).
@@ -1690,17 +1821,20 @@ Second component in Phase B (after Toggle). Replaced ~100 lines of inline keyboa
 - `handleFocusIn` syncs DOM focus → controller via `controller.moveTo(path)`.
 
 **Expansion bridge pattern:**
+
 1. External `expanded` prop (keyed by group name: `{ "Favorites": true }`) → `syncExpandedToController()` → controller proxy.expanded + expandedByPath
 2. User toggles → `toggleGroupByKey(pathKey)` → controller.toggleExpansion + expandedByPath update → `deriveExpandedFromPath()` → expanded prop + onexpandedchange
 3. Navigator toggle action → sync controller proxy states → expandedByPath → expanded prop
 
 **E2e tests (33 total):**
+
 - 9 flat list keyboard tests (ArrowDown/Up repeated, Home, End, no-wrap, Enter, Space, focus≠select)
 - 5 grouped list keyboard tests (navigation through groups, collapse/expand, Enter toggle, repeated cycles)
 - 3 mouse tests (click select, deselect, group toggle)
 - 16 visual snapshots (4 themes × 2 modes × 2 states)
 
 **Not implemented (backlog):**
+
 - ArrowRight on expanded group → move to first child (tree-style navigation)
 - ArrowLeft on child → move to parent group label
 
@@ -1711,6 +1845,7 @@ Second component in Phase B (after Toggle). Replaced ~100 lines of inline keyboa
 Added `disabled: 'disabled'` to `@rokkit/core` defaultFields and `#isDisabled(index)` helper to `ListController`. All four movement methods (`moveNext`, `movePrev`, `moveFirst`, `moveLast`) now skip disabled items. `moveToIndex()` and `moveTo()` remain unchanged — they're used for explicit focus (focusin handler, selection) where any index should be reachable.
 
 **Files changed:**
+
 - `packages/core/src/constants.js` — added `disabled: 'disabled'` field
 - `packages/core/spec/constants.spec.js` — updated defaultFields snapshot
 - `packages/states/src/list-controller.svelte.js` — added `#isDisabled()` + updated 4 movement methods
@@ -1728,6 +1863,7 @@ Moved expansion state from Proxy (which mutated original items via `proxy.expand
 **List.svelte simplification:** Removed the `expandedByPath` reactive bridge (which was a workaround for Svelte 5 reactivity not tracking through `$derived` Map → `proxy.expanded` `$state`). Now reads `controller.expandedKeys.has(pathKey)` directly — `SvelteSet` is natively reactive.
 
 **Files changed:**
+
 - `packages/states/src/derive.svelte.js` — `flatVisibleNodes` accepts `expandedKeys` param
 - `packages/states/src/list-controller.svelte.js` — added `expandedKeys`, `#initExpandedKeys()`
 - `packages/states/src/nested-controller.svelte.js` — expand/collapse/toggle use `expandedKeys`
@@ -1747,6 +1883,7 @@ Moved expansion state from Proxy (which mutated original items via `proxy.expand
 Restructured documentation per approved plan: split catch-all requirements file, created per-component requirements, built package reference docs, and wrote architecture decision for MVC separation.
 
 **Phase 1 — Split 000-component-requirements.md:**
+
 - Created `000-patterns.md` (type system, architecture patterns, TypeScript strategy)
 - Created `000-rtl.md` (RTL detection, Vibe direction)
 - Created `020-chart.md` (AnimatedChart, accessible patterns)
@@ -1756,19 +1893,23 @@ Restructured documentation per approved plan: split catch-all requirements file,
 - Deleted `000-component-requirements.md`
 
 **Phase 2 — Active component requirements (5 new files):**
+
 - `001-button.md`, `005-select.md`, `006-menu.md`, `007-toggle.md`, `008-toolbar.md`
 
 **Phase 3 — Archived component requirements (4 new files):**
+
 - `009-navigation.md` (Tabs, BreadCrumbs, Stepper, PageNavigator)
 - `040-layout.md` (Card, Panel, Overlay, ResponsiveGrid, Carousel, SlidingColumns)
 - `050-feedback.md` (ProgressBar, Message, Pill, Separator, Summary, Icon, Link, Accordion)
 - `070-data.md` (SearchFilter, Calendar)
 
 **Phase 4 — docs/llms/ package reference (14 files + README):**
+
 - Created `docs/llms/` with reference docs for all 14 packages
 - Each doc: dependency hierarchy, exports table, key patterns, internal modules
 
 **ADR-003 — MVC Separation (docs/decisions/003-mvc-separation.md):**
+
 - Analysis found ~1200 lines of duplicated keyboard/navigation/focus code across List, Select, Menu, Tree
 - Decision: fold composables into ui, add states/actions as ui dependencies, remove bits-ui entirely
 - Found chart has dead bits-ui dependency; composables fully superseded by ui equivalents
@@ -1786,6 +1927,7 @@ Restructured documentation per approved plan: split catch-all requirements file,
 Documented requirements and design for three component areas based on existing code analysis.
 
 **Files created:**
+
 - `docs/requirements/002-list.md` — 10 sections, identified 4 gaps (navigator refactor, multi-selection, type-ahead, missing role="listbox")
 - `docs/requirements/003-tree.md` — 12 sections, identified 6 gaps (navigator refactor, multi-selection, drag-and-drop, lazy loading, proxy recreation, search/filter)
 - `docs/requirements/010-form.md` — 17 sections covering current + future features (custom type renderers, validation integration, enhanced lookups, master-detail, semantic command input, dirty tracking, form submission, audit fields)
@@ -1794,10 +1936,12 @@ Documented requirements and design for three component areas based on existing c
 - `docs/design/010-form.md` — Current architecture + 5-phase enhancement plan (FormBuilder stability, type registry, validation, lookups, master-detail, semantic command)
 
 **Backlog updated:**
+
 - Items #8-#16: List/Tree navigator refactor, multi-selection, lazy loading, FormBuilder recreation, legacy migration, dirty tracking, parseFilters export, type-ahead search
 - Items #17-#28: Custom type renderer registry, validation integration, ValidationReport migration, InputToggle, FieldGroup, ArrayEditor, enhanced lookups, form submission, audit metadata, master-detail, semantic command input, ramda removal
 
 **Key decisions:**
+
 - Forms do NOT benefit from `use:navigator` — standard tab order is sufficient, arrow keys would break text inputs
 - List (~100 lines inline keyboard code) and Tree (~80 lines) should be refactored to use `use:navigator` + controllers
 - Form enhancement follows 5-phase strategy: fix current → type renderers → lookups/validation → master-detail → semantic command
@@ -1811,6 +1955,7 @@ Documented requirements and design for three component areas based on existing c
 Implemented form-driven property controls via `@rokkit/forms`.
 
 **Steps completed:**
+
 1. Replaced `Icon` import with `<span class={icon}>` in InputField
 2. Replaced InputSelect native `<select>` with `@rokkit/ui` Select component
 3. Created `InfoField.svelte` for read-only value display
@@ -1821,6 +1966,7 @@ Implemented form-driven property controls via `@rokkit/forms`.
 8. Pilot conversion: toggle playground page → FormRenderer with schema + layout
 
 **Additional fixes during phase 1:**
+
 - Changed InputCheckbox default variant to 'custom' (icon-based, not native blue checkbox)
 - Moved checkbox outside `[data-input-root]` (doesn't need gradient border wrapper)
 - Added `[data-input-root] [data-select] { flex-1 }` to stretch Select in input wrapper
@@ -1830,6 +1976,7 @@ Implemented form-driven property controls via `@rokkit/forms`.
 - Wrote comprehensive `@rokkit/forms` README with future enhancements
 
 **Commits:**
+
 - `910499e0` — feat: form-driven property controls via @rokkit/forms
 
 **Tests:** 1057 passing, all green
@@ -1839,12 +1986,14 @@ Implemented form-driven property controls via `@rokkit/forms`.
 Converted 8 playground pages to FormRenderer and cleaned up deprecated code.
 
 **Page conversions (8):** list, tree, toolbar, code, floating-action, menu, select, multi-select
-- Each page: replaced individual `$state()` + Prop* imports with single `props = $state({})` + schema + layout + `<FormRenderer>`
+
+- Each page: replaced individual `$state()` + Prop\* imports with single `props = $state({})` + schema + layout + `<FormRenderer>`
 - PaletteManager skipped (uses custom snippets, not expressible as schema)
 
 **Controls deletion:** removed `sites/playground/src/lib/controls/` (PropSelect, PropCheckbox, PropText, PropInfo, index.ts)
 
 **Archive/deprecated cleanup:**
+
 - Deleted `archive/forms/` (forms-old, inp, lib-deprecated, spec-inp)
 - Deleted rebuilt components from `archive/ui/` (Button, List, Tree, Select, MultiSelect, Toggle, FloatingAction(s), Connector, Node, Item, NestedList + specs/snapshots)
 - Deleted `packages/states/deprecated/` (hierarchy.js)
@@ -1853,6 +2002,7 @@ Converted 8 playground pages to FormRenderer and cleaned up deprecated code.
 - Kept un-rebuilt components in `archive/ui/` (47 components)
 
 **Commits:**
+
 - `7af488f8` — feat: convert playground pages to FormRenderer and clean up deprecated code
 
 **Tests:** 1057 passing, all green
@@ -1862,6 +2012,7 @@ Converted 8 playground pages to FormRenderer and cleaned up deprecated code.
 ### 2026-02-23 — NestedController Tree-style Navigation (Backlog #29)
 
 Implemented WAI-ARIA treeview keyboard patterns for NestedController:
+
 - `expand()` on already-expanded group → moves focus to first child
 - `expand()` on leaf node → returns false (no children to expand)
 - `collapse()` on child/leaf → moves focus to parent
@@ -1869,6 +2020,7 @@ Implemented WAI-ARIA treeview keyboard patterns for NestedController:
 - Navigator emits `'move'` event when expand/collapse changes focusedKey
 
 **Files modified:**
+
 - `packages/states/src/nested-controller.svelte.js` — expand/collapse with tree-style focus
 - `packages/actions/src/navigator.svelte.js` — emit 'move' + scroll on focus-changing expand/collapse
 - `packages/states/spec/nested-controller.spec.svelte.js` — 8 new tests
@@ -1883,6 +2035,7 @@ Implemented WAI-ARIA treeview keyboard patterns for NestedController:
 Built new `Switch` component for `@rokkit/ui` — an iOS-style sliding toggle for binary state.
 
 **Design:**
+
 - Single `<button role="switch">` with track + sliding thumb
 - Two options only (default `[false, true]`), also supports `['x', 'y']` or `[{icon, value}, ...]`
 - ItemProxy for field mapping (same contract as Toggle/Select/List)
@@ -1890,6 +2043,7 @@ Built new `Switch` component for `@rokkit/ui` — an iOS-style sliding toggle fo
 - No ListController/navigator needed (2 options, simple toggle)
 
 **Files created:**
+
 - `packages/ui/src/types/switch.ts` — SwitchProps, SwitchFields, SwitchItem types
 - `packages/ui/src/components/Switch.svelte` — component
 - `packages/themes/src/base/switch.css` — base structural styles (3 size variants, CSS custom property for thumb travel)
@@ -1898,6 +2052,7 @@ Built new `Switch` component for `@rokkit/ui` — an iOS-style sliding toggle fo
 - `sites/playground/src/routes/components/switch/+page.svelte` — playground page
 
 **Files modified:**
+
 - `packages/ui/src/components/index.ts` — added Switch export
 - `packages/ui/src/index.ts` — added Switch to component list
 - `packages/ui/src/types/index.ts` — added switch types export
@@ -1914,6 +2069,7 @@ Built new `Switch` component for `@rokkit/ui` — an iOS-style sliding toggle fo
 Migrated `InputSwitch.svelte` in `@rokkit/forms` from wrapping `Toggle` to wrapping `Switch`. Removed dead `handle()` function and `@rokkit/core` dependency.
 
 **Files modified:**
+
 - `packages/forms/src/input/InputSwitch.svelte` — replaced Toggle import with Switch
 
 **Backlog:** #1 marked done
@@ -1926,6 +2082,7 @@ Migrated `InputSwitch.svelte` in `@rokkit/forms` from wrapping `Toggle` to wrapp
 Added `filterable` prop to Select component. When enabled, shows a text input at the top of the dropdown for filtering options by case-insensitive substring match.
 
 **Features:**
+
 - `filterable` prop enables filter input in dropdown header
 - `filterPlaceholder` prop (default "Search...") for custom placeholder text
 - `filteredOptions` derived filters before `flatItems` — controller only sees visible items, keyboard nav works naturally
@@ -1936,6 +2093,7 @@ Added `filterable` prop to Select component. When enabled, shows a text input at
 - `selectedItem` searches all options (not filtered) so trigger always shows selected value
 
 **Files modified:**
+
 - `packages/ui/src/types/select.ts` — added `filterable`, `filterPlaceholder` to SelectBaseProps
 - `packages/ui/src/components/Select.svelte` — filter state, filteredOptions derived, handleFilterKeyDown, template changes
 - `packages/themes/src/base/select.css` — structural styles for filter input and empty state
@@ -1960,6 +2118,7 @@ Added Ctrl+click toggle and Shift+click range selection to both List and Tree co
 4. **CSS** — base: `user-select: none` for multiselect items; 4 themes × 2 components: selected state colors (rokkit: primary-z3/z4, glass: primary-z5/20-30, material: primary-z2, minimal: border-primary-z3/z4)
 
 **Files modified:**
+
 - `packages/states/src/list-controller.svelte.js` — `#anchorKey`, `selectRange()`, updated `select()`/`extendSelection()`
 - `packages/actions/src/kbd.js` — `createShiftKeyboardActionMap()`, shift detection in `getKeyboardAction()`
 - `packages/actions/src/utils.js` — shift detection in `getClickAction()`
@@ -1996,6 +2155,7 @@ Added Ctrl+click toggle and Shift+click range selection to both List and Tree co
 Implemented type-ahead search for List and Tree components.
 
 **Changes:**
+
 - `packages/states/src/list-controller.svelte.js` — `findByText(query, startAfterKey)`: wrapping prefix search, case-insensitive, skips disabled
 - `packages/actions/src/kbd.js` — added `typeahead: false` to `defaultNavigationOptions`
 - `packages/actions/src/navigator.svelte.js` — type-ahead buffer + 500ms reset timer, triggers on single printable chars (no modifiers), emits 'move' action, scrolls into view, resets on navigation actions
@@ -2019,6 +2179,7 @@ Aligned MultiSelect with the Value Binding Contract used by Select/List/Tree.
 **After:** `value: unknown[]` (extracted primitives), `selected: SelectItem[]` (bindable full items), `onchange: (values, items) => void`
 
 **Changes:**
+
 - `packages/ui/src/types/select.ts` — `MultiSelectProps.value: unknown[]`, added `selected: SelectItem[]`, `onchange: (values, items)`
 - `packages/ui/src/components/MultiSelect.svelte` — selection logic uses extracted values via `ItemProxy.itemValue`, `isSelected` compares primitives, `toggleItemSelection`/`removeItem` emit both values and items
 - `packages/ui/spec/MultiSelect.spec.svelte.ts` — all assertions updated for primitive values
@@ -2035,6 +2196,7 @@ Aligned MultiSelect with the Value Binding Contract used by Select/List/Tree.
 Reorganized `docs/llms/` from 13 flat files into a structured hierarchy with an index and per-item files.
 
 **New structure (60 files):**
+
 - `docs/llms/index.md` — master index with dependency graph, section links, common patterns
 - `docs/llms/components/` — 27 files: `index.md` + one file per component
   - Interactive: List, Tree, Select, MultiSelect, Menu, Toggle, Tabs, Toolbar, Switch, Carousel, Table, Range, SearchFilter
@@ -2051,6 +2213,7 @@ Reorganized `docs/llms/` from 13 flat files into a structured hierarchy with an 
 - `docs/llms/packages/` — 8 files: core, data, chart, themes, icons, app, cli, helpers
 
 **Updated content:**
+
 - All new components documented: Switch, Switch, Table, Range, SearchFilter, Stepper, Timeline, FloatingNavigation, Reveal
 - All new actions documented: reveal, hoverLift, magnetic, ripple
 - `themes.md` updated with 30 base CSS files (was 21)
@@ -2062,6 +2225,7 @@ Reorganized `docs/llms/` from 13 flat files into a structured hierarchy with an 
 ### 2026-02-26 — Testbed: ProxyItem Refinements + ListWrapper + List Reference
 
 **ProxyItem final design:**
+
 - `#raw` / `#item` split: primitives normalised to `{ [fields.text]: raw, [fields.value]: raw }` for uniform access
 - `#key` + `#level`: path identifiers with invariant `level === key.split('-').length`; root items level 1
 - `snippet` field added to `DEFAULT_FIELDS` and as a getter
@@ -2072,6 +2236,7 @@ Reorganized `docs/llms/` from 13 flat files into a structured hierarchy with an 
 **Tests:** 78 proxy tests, 17 wrapper tests, 32 keymap tests, 49 navigator tests = 176 testbed tests, 100% coverage
 
 **ListWrapper (`packages/testbed/src/wrapper/list-wrapper.svelte.js`):**
+
 - Extends `Wrapper`; uses `buildProxyList` + `buildFlatView` for reactive proxy tree
 - `flatView = $derived(buildFlatView(#roots))` — re-derives on any `proxy.expanded` change
 - `#navigable = $derived(flatView.filter(...))` — excludes separator/spacer/disabled
@@ -2080,6 +2245,7 @@ Reorganized `docs/llms/` from 13 flat files into a structured hierarchy with an 
 - 66 tests covering all paths including integration scenario
 
 **Reference List (`packages/testbed/src/ui/List.svelte`):**
+
 - Thin rendering layer: `ListWrapper` + `use:navigator` + flat `{#each wrapper.flatView}`
 - `$effect` syncs `wrapper.focusedKey` → DOM `.focus()`
 - `data-accordion-trigger` on group headers → Navigator dispatches `toggle` not `select`
@@ -2087,12 +2253,14 @@ Reorganized `docs/llms/` from 13 flat files into a structured hierarchy with an 
 - Old `packages/ui/src/components/List.svelte` unchanged — switch export pending full validation
 
 **Design docs updated:**
+
 - `docs/design/002-list.md` — rewritten for ProxyItem-based design (supersedes NestedController approach)
 - `docs/design/000-navigator-wrapper.md` — file paths updated to reflect testbed package
 
 **Tests:** 1600 passing (up from 1534 — 66 new ListWrapper tests)
 
 **Promotion plan (when design is proven):**
+
 - `Wrapper` + `Navigator` + `keymap` → `packages/actions/src/`
 - `ProxyItem` + `buildProxyList/buildFlatView` → `packages/states/src/`
 - `ListWrapper` → `packages/states/src/`
@@ -2104,9 +2272,10 @@ Reorganized `docs/llms/` from 13 flat files into a structured hierarchy with an 
 
 After merging feature/website-redesign, the quick-wins `text→label` rename broke all
 learn site demos that used `text:` as item property or field mapping key. Fixed:
+
 - 90 files across components, data-binding, forms, composability, playground, preview
-- `+layout.js`: sidebar fields `{ label: 'title', ... }`  
-- `playground/+layout.svelte`: `{ label: 'title', ... }`  
+- `+layout.js`: sidebar fields `{ label: 'title', ... }`
+- `playground/+layout.svelte`: `{ label: 'title', ... }`
 - `CodeViewer.svelte`: `{ label: 'name', icon: 'language' }`
 - `FileTabs.svelte`: `{ label: 'name', ... }`
 - All tabs/tree/select/multi-select/toolbar/stepper/list demo files

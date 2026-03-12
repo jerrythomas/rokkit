@@ -98,15 +98,15 @@
 
 <PlaySection>
 	{#snippet preview()}
-		<div class="flex gap-6 flex-wrap">
+		<div class="flex flex-wrap gap-6">
 			<div>
-				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Navigation</h4>
+				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">Navigation</h4>
 				<div class="w-[240px]">
 					<List items={navItems} active="#home" size={props.size} disabled={props.disabled} />
 				</div>
 			</div>
 			<div>
-				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Button items</h4>
+				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">Button items</h4>
 				<div class="w-[240px]">
 					<List
 						items={buttonItems}
@@ -120,7 +120,7 @@
 				</div>
 			</div>
 			<div>
-				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Grouped</h4>
+				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">Grouped</h4>
 				<div class="w-[240px]">
 					<List
 						items={groupedItems}
@@ -133,7 +133,7 @@
 				</div>
 			</div>
 			<div>
-				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Descriptions</h4>
+				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">Descriptions</h4>
 				<div class="w-[240px]">
 					<List
 						items={withDescriptions}

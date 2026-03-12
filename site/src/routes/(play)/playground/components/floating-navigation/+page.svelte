@@ -53,7 +53,10 @@
 
 <PlaySection>
 	{#snippet preview()}
-		<div class="relative w-full h-[500px] overflow-auto rounded-lg" style="scroll-behavior: smooth;">
+		<div
+			class="relative h-[500px] w-full overflow-auto rounded-lg"
+			style="scroll-behavior: smooth;"
+		>
 			<FloatingNavigation
 				items={navItems}
 				bind:value={activeValue}
@@ -64,29 +67,37 @@
 				onselect={handleSelect}
 			/>
 
-			<div class="p-8 space-y-96">
-				<section id="intro" class="p-6 rounded-lg border border-surface-z3">
-					<h2 class="text-xl font-bold mb-2">Introduction</h2>
-					<p class="text-surface-z7">Welcome to the FloatingNavigation demo. Hover over the nav widget on the right edge to expand it.</p>
+			<div class="space-y-96 p-8">
+				<section id="intro" class="border-surface-z3 rounded-lg border p-6">
+					<h2 class="mb-2 text-xl font-bold">Introduction</h2>
+					<p class="text-surface-z7">
+						Welcome to the FloatingNavigation demo. Hover over the nav widget on the right edge to
+						expand it.
+					</p>
 				</section>
 
-				<section id="features" class="p-6 rounded-lg border border-surface-z3">
-					<h2 class="text-xl font-bold mb-2">Features</h2>
-					<p class="text-surface-z7">Pin to keep expanded, hover expand/collapse, active section tracking, keyboard navigation.</p>
+				<section id="features" class="border-surface-z3 rounded-lg border p-6">
+					<h2 class="mb-2 text-xl font-bold">Features</h2>
+					<p class="text-surface-z7">
+						Pin to keep expanded, hover expand/collapse, active section tracking, keyboard
+						navigation.
+					</p>
 				</section>
 
-				<section id="components" class="p-6 rounded-lg border border-surface-z3">
-					<h2 class="text-xl font-bold mb-2">Components</h2>
-					<p class="text-surface-z7">A rich library of data-driven components with snippet customization.</p>
+				<section id="components" class="border-surface-z3 rounded-lg border p-6">
+					<h2 class="mb-2 text-xl font-bold">Components</h2>
+					<p class="text-surface-z7">
+						A rich library of data-driven components with snippet customization.
+					</p>
 				</section>
 
-				<section id="pricing" class="p-6 rounded-lg border border-surface-z3">
-					<h2 class="text-xl font-bold mb-2">Pricing</h2>
+				<section id="pricing" class="border-surface-z3 rounded-lg border p-6">
+					<h2 class="mb-2 text-xl font-bold">Pricing</h2>
 					<p class="text-surface-z7">Open source and free forever.</p>
 				</section>
 
-				<section id="contact" class="p-6 rounded-lg border border-surface-z3">
-					<h2 class="text-xl font-bold mb-2">Contact</h2>
+				<section id="contact" class="border-surface-z3 rounded-lg border p-6">
+					<h2 class="mb-2 text-xl font-bold">Contact</h2>
 					<p class="text-surface-z7">Get in touch with the team.</p>
 				</section>
 			</div>

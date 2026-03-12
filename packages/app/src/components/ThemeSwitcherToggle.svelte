@@ -3,10 +3,7 @@
 	import { vibe } from '@rokkit/states'
 	import { Toggle } from '@rokkit/ui'
 	import type { ThemeSwitcherToggleProps } from '../types/theme-switcher.js'
-	import {
-		defaultThemeSwitcherIcons,
-		buildThemeSwitcherOptions
-	} from '../types/theme-switcher.js'
+	import { defaultThemeSwitcherIcons, buildThemeSwitcherOptions } from '../types/theme-switcher.js'
 	import { ColorModeManager, type ColorMode } from '../utils/color-mode.svelte.js'
 
 	let {

@@ -13,6 +13,7 @@
 ## Task 1: Commit existing staged changes
 
 **Files:**
+
 - Modified: `solution/sites/learn/src/routes/(learn)/docs/forms/meta.json`
 - Modified: `solution/sites/learn/src/routes/(learn)/docs/charts/meta.json`
 - Deleted: `solution/sites/learn/src/routes/(learn)/docs/components/meta.json`
@@ -36,6 +37,7 @@ Expected: clean commit, `git status` shows no pending changes for these files.
 Each of `utilities/reveal`, `utilities/shine`, `utilities/tilt` has a `+page.js` redirect (keep) plus a now-dead `+page.svelte`, `meta.json`, and a `play/` subdirectory.
 
 **Files to delete:**
+
 - `solution/sites/learn/src/routes/(learn)/docs/utilities/reveal/+page.svelte`
 - `solution/sites/learn/src/routes/(learn)/docs/utilities/reveal/meta.json`
 - `solution/sites/learn/src/routes/(learn)/docs/utilities/reveal/+layout.svelte` (if exists)
@@ -55,6 +57,7 @@ done
 **Step 2: Verify redirects still work**
 
 Each directory should only contain `+page.js`:
+
 ```bash
 ls solution/sites/learn/src/routes/\(learn\)/docs/utilities/reveal/
 # Expected: +page.js only
@@ -94,10 +97,18 @@ The playground home (`/playground`) currently shows a flat card grid. Replace wi
         { name: 'Lazy Tree', description: 'Async-loaded tree component', slug: 'lazy-tree' },
         { name: 'List', description: 'Data-driven list with field mapping', slug: 'list' },
         { name: 'Menu', description: 'Popup menu with keyboard navigation', slug: 'menu' },
-        { name: 'Multi Select', description: 'Multi-value dropdown selection', slug: 'multi-select' },
+        {
+          name: 'Multi Select',
+          description: 'Multi-value dropdown selection',
+          slug: 'multi-select'
+        },
         { name: 'Select', description: 'Single-value dropdown selection', slug: 'select' },
         { name: 'Tabs', description: 'Tabbed content panels', slug: 'tabs' },
-        { name: 'Toggle', description: 'Toggle group for mutually exclusive options', slug: 'toggle' },
+        {
+          name: 'Toggle',
+          description: 'Toggle group for mutually exclusive options',
+          slug: 'toggle'
+        },
         { name: 'Tree', description: 'Collapsible hierarchical tree', slug: 'tree' }
       ]
     },
@@ -110,7 +121,11 @@ The playground home (`/playground`) currently shows a flat card grid. Replace wi
         { name: 'Rating', description: 'Star rating input', slug: 'rating' },
         { name: 'Stepper', description: 'Step-by-step progress input', slug: 'stepper' },
         { name: 'Switch', description: 'On/off toggle switch', slug: 'switch' },
-        { name: 'Upload Progress', description: 'File upload progress indicator', slug: 'upload-progress' },
+        {
+          name: 'Upload Progress',
+          description: 'File upload progress indicator',
+          slug: 'upload-progress'
+        },
         { name: 'Upload Target', description: 'Drag-and-drop upload zone', slug: 'upload-target' }
       ]
     },
@@ -118,7 +133,11 @@ The playground home (`/playground`) currently shows a flat card grid. Replace wi
       title: 'Display',
       icon: 'i-solar:gallery-wide-bold-duotone',
       components: [
-        { name: 'Card', description: 'Content container with optional header/footer', slug: 'card' },
+        {
+          name: 'Card',
+          description: 'Content container with optional header/footer',
+          slug: 'card'
+        },
         { name: 'Code', description: 'Syntax-highlighted code block', slug: 'code' },
         { name: 'Forms', description: 'Schema-driven form renderer', slug: 'forms' },
         { name: 'Pill', description: 'Compact tag or badge element', slug: 'pill' },
@@ -131,9 +150,21 @@ The playground home (`/playground`) currently shows a flat card grid. Replace wi
       icon: 'i-solar:layers-minimalistic-bold-duotone',
       components: [
         { name: 'Carousel', description: 'Horizontally scrolling item carousel', slug: 'carousel' },
-        { name: 'Floating Action', description: 'Floating action button overlay', slug: 'floating-action' },
-        { name: 'Floating Navigation', description: 'Floating navigation overlay', slug: 'floating-navigation' },
-        { name: 'Palette Manager', description: 'Color palette selection UI', slug: 'palette-manager' },
+        {
+          name: 'Floating Action',
+          description: 'Floating action button overlay',
+          slug: 'floating-action'
+        },
+        {
+          name: 'Floating Navigation',
+          description: 'Floating navigation overlay',
+          slug: 'floating-navigation'
+        },
+        {
+          name: 'Palette Manager',
+          description: 'Color palette selection UI',
+          slug: 'palette-manager'
+        },
         { name: 'Progress', description: 'Progress bar indicator', slug: 'progress' }
       ]
     }
@@ -142,22 +173,29 @@ The playground home (`/playground`) currently shows a flat card grid. Replace wi
 
 <div class="p-8">
   <div class="mb-8">
-    <h2 class="text-2xl font-semibold text-surface-z8 mb-1">Component Playground</h2>
+    <h2 class="text-surface-z8 mb-1 text-2xl font-semibold">Component Playground</h2>
     <p class="text-surface-z5">Select a component to open its interactive playground.</p>
   </div>
 
   {#each GROUPS as group}
     <section class="mb-10">
-      <div class="flex items-center gap-2 mb-4">
-        <span class="{group.icon} text-xl text-secondary-z7" aria-hidden="true"></span>
-        <h3 class="text-base font-semibold text-surface-z7 m-0">{group.title}</h3>
+      <div class="mb-4 flex items-center gap-2">
+        <span class="{group.icon} text-secondary-z7 text-xl" aria-hidden="true"></span>
+        <h3 class="text-surface-z7 m-0 text-base font-semibold">{group.title}</h3>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+      <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {#each group.components as component (component.slug)}
-          <Card class="cursor-pointer hover:border-primary-z5 transition-colors" onclick={() => goto(`/playground/components/${component.slug}`)}>
-            <h4 class="text-sm font-semibold text-surface-z8 mb-1">{component.name}</h4>
-            <p class="text-xs text-surface-z5 mb-3 leading-relaxed">{component.description}</p>
-            <Button size="sm" variant="ghost" onclick={() => goto(`/playground/components/${component.slug}`)}>
+          <Card
+            class="hover:border-primary-z5 cursor-pointer transition-colors"
+            onclick={() => goto(`/playground/components/${component.slug}`)}
+          >
+            <h4 class="text-surface-z8 mb-1 text-sm font-semibold">{component.name}</h4>
+            <p class="text-surface-z5 mb-3 text-xs leading-relaxed">{component.description}</p>
+            <Button
+              size="sm"
+              variant="ghost"
+              onclick={() => goto(`/playground/components/${component.slug}`)}
+            >
               Open
             </Button>
           </Card>
@@ -190,11 +228,23 @@ const sections = [
     title: 'Navigation & Selection',
     icon: 'i-solar:list-check-bold-duotone',
     children: [
-      { title: 'Breadcrumbs', slug: '/playground/components/breadcrumbs', icon: 'i-component:breadcrumbs' },
-      { title: 'Lazy Tree', slug: '/playground/components/lazy-tree', icon: 'i-component:lazy-tree' },
+      {
+        title: 'Breadcrumbs',
+        slug: '/playground/components/breadcrumbs',
+        icon: 'i-component:breadcrumbs'
+      },
+      {
+        title: 'Lazy Tree',
+        slug: '/playground/components/lazy-tree',
+        icon: 'i-component:lazy-tree'
+      },
       { title: 'List', slug: '/playground/components/list', icon: 'i-component:list' },
       { title: 'Menu', slug: '/playground/components/menu', icon: 'i-component:menu' },
-      { title: 'Multi Select', slug: '/playground/components/multi-select', icon: 'i-component:multi-select' },
+      {
+        title: 'Multi Select',
+        slug: '/playground/components/multi-select',
+        icon: 'i-component:multi-select'
+      },
       { title: 'Select', slug: '/playground/components/select', icon: 'i-component:select' },
       { title: 'Tabs', slug: '/playground/components/tabs', icon: 'i-component:tabs' },
       { title: 'Toggle', slug: '/playground/components/toggle', icon: 'i-component:toggle' },
@@ -210,8 +260,16 @@ const sections = [
       { title: 'Rating', slug: '/playground/components/rating', icon: 'i-component:rating' },
       { title: 'Stepper', slug: '/playground/components/stepper', icon: 'i-component:stepper' },
       { title: 'Switch', slug: '/playground/components/switch', icon: 'i-component:switch' },
-      { title: 'Upload Progress', slug: '/playground/components/upload-progress', icon: 'i-component:upload-progress' },
-      { title: 'Upload Target', slug: '/playground/components/upload-target', icon: 'i-component:upload-target' }
+      {
+        title: 'Upload Progress',
+        slug: '/playground/components/upload-progress',
+        icon: 'i-component:upload-progress'
+      },
+      {
+        title: 'Upload Target',
+        slug: '/playground/components/upload-target',
+        icon: 'i-component:upload-target'
+      }
     ]
   },
   {
@@ -231,9 +289,21 @@ const sections = [
     icon: 'i-solar:layers-minimalistic-bold-duotone',
     children: [
       { title: 'Carousel', slug: '/playground/components/carousel', icon: 'i-component:carousel' },
-      { title: 'Floating Action', slug: '/playground/components/floating-action', icon: 'i-component:floating-action' },
-      { title: 'Floating Navigation', slug: '/playground/components/floating-navigation', icon: 'i-component:floating-navigation' },
-      { title: 'Palette Manager', slug: '/playground/components/palette-manager', icon: 'i-component:palette-manager' },
+      {
+        title: 'Floating Action',
+        slug: '/playground/components/floating-action',
+        icon: 'i-component:floating-action'
+      },
+      {
+        title: 'Floating Navigation',
+        slug: '/playground/components/floating-navigation',
+        icon: 'i-component:floating-navigation'
+      },
+      {
+        title: 'Palette Manager',
+        slug: '/playground/components/palette-manager',
+        icon: 'i-component:palette-manager'
+      },
       { title: 'Progress', slug: '/playground/components/progress', icon: 'i-component:progress' }
     ]
   }
@@ -265,6 +335,7 @@ git commit -m "feat: restructure playground home and sidebar to match docs nav g
 **Step 1: Update UTILITIES array** — remove redirected entries, add effects
 
 Replace the `UTILITIES` constant:
+
 ```ts
 const UTILITIES = [
   '/docs/utilities/overview',
@@ -276,16 +347,13 @@ const UTILITIES = [
   '/docs/utilities/custom-primitives'
 ]
 
-const EFFECTS = [
-  '/docs/effects/reveal',
-  '/docs/effects/shine',
-  '/docs/effects/tilt'
-]
+const EFFECTS = ['/docs/effects/reveal', '/docs/effects/shine', '/docs/effects/tilt']
 ```
 
 **Step 2: Add combined section pages**
 
 Add a new constant after the existing ones:
+
 ```ts
 const COMBINED_SECTIONS = [
   '/docs/getting-started',
@@ -301,6 +369,7 @@ const COMBINED_SECTIONS = [
 **Step 3: Add test suites for new constants**
 
 After the existing `Utilities pages` describe block, add:
+
 ```ts
 test.describe('Effects pages', () => {
   for (const url of EFFECTS) {
@@ -430,18 +499,21 @@ git commit -m "test(e2e): add effects/combined-section pages, add playground e2e
 
 <article data-article-root>
   <p>
-    The <code>FormRenderer</code> component renders forms from a JSON schema and layout descriptor.
-    It handles input binding, validation, dirty tracking, conditional visibility, nested groups,
-    and lookup fields — all driven by configuration, not code.
+    The <code>FormRenderer</code> component renders forms from a JSON schema and layout descriptor. It
+    handles input binding, validation, dirty tracking, conditional visibility, nested groups, and lookup
+    fields — all driven by configuration, not code.
   </p>
 
   <h2>Quick Start</h2>
   <p>
-    Import <code>FormRenderer</code> from <code>@rokkit/forms</code>. Provide a JSON Schema
-    (<code>schema</code>), a layout descriptor (<code>layout</code>), and bind <code>data</code>
+    Import <code>FormRenderer</code> from <code>@rokkit/forms</code>. Provide a JSON Schema (<code
+      >schema</code
+    >), a layout descriptor (<code>layout</code>), and bind <code>data</code>
     for two-way sync.
   </p>
-  <Code language="svelte" content={`<script>
+  <Code
+    language="svelte"
+    content={`<script>
   import { FormRenderer } from '@rokkit/forms'
 
   let data = $state({ name: '', email: '' })
@@ -464,16 +536,20 @@ git commit -m "test(e2e): add effects/combined-section pages, add playground e2e
   }
 <\/script>
 
-<FormRenderer bind:data {schema} {layout} validateOn="blur" />`} />
+<FormRenderer bind:data {schema} {layout} validateOn="blur" />`}
+  />
 
-  <div class="grid grid-cols-1 gap-6 md:grid-cols-2 mt-8">
+  <div class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
     <div data-card>
       <h2>Props</h2>
       <ul>
         <li><strong>data</strong> (bindable): The form data object — mutated in place</li>
         <li><strong>schema</strong>: JSON Schema describing field types and validation rules</li>
         <li><strong>layout</strong>: Layout descriptor — elements, groups, display components</li>
-        <li><strong>validateOn</strong>: When to validate — <code>"blur"</code>, <code>"change"</code>, <code>"submit"</code></li>
+        <li>
+          <strong>validateOn</strong>: When to validate — <code>"blur"</code>,
+          <code>"change"</code>, <code>"submit"</code>
+        </li>
         <li><strong>disabled</strong>: Disable all inputs</li>
         <li><strong>readonly</strong>: Render all fields as read-only display</li>
       </ul>
@@ -491,7 +567,9 @@ git commit -m "test(e2e): add effects/combined-section pages, add playground e2e
   <div data-card class="mt-6">
     <h2>Layout Element Types</h2>
     <ul>
-      <li><strong>scope</strong>: JSON Pointer to a schema property (e.g. <code>#/address/city</code>)</li>
+      <li>
+        <strong>scope</strong>: JSON Pointer to a schema property (e.g. <code>#/address/city</code>)
+      </li>
       <li><strong>type: "group"</strong>: Wraps children in a labelled section</li>
       <li><strong>type: "horizontal"</strong>: Side-by-side layout for multiple fields</li>
       <li><strong>type: "display"</strong>: Read-only display component (table, list, card)</li>
@@ -499,7 +577,8 @@ git commit -m "test(e2e): add effects/combined-section pages, add playground e2e
   </div>
 
   <p class="text-surface-z5 mt-6">
-    See the <a href="/docs/forms">Forms guide</a> for conditional fields, lookup sources, and multi-step forms.
+    See the <a href="/docs/forms">Forms guide</a> for conditional fields, lookup sources, and multi-step
+    forms.
   </p>
 </article>
 ```
@@ -526,18 +605,19 @@ The `Grid` component is a responsive tile grid. Props: `items`, `fields`, `value
   <p>
     A responsive tile grid for displaying and selecting from a collection of items. Uses CSS
     <code>grid</code> with <code>auto-fill</code> columns so tiles flow naturally at any viewport
-    width. Keyboard navigation moves focus between tiles with arrow keys. Accepts the same
-    field mapping and snippet patterns as <code>List</code>.
+    width. Keyboard navigation moves focus between tiles with arrow keys. Accepts the same field
+    mapping and snippet patterns as <code>List</code>.
   </p>
 
   <h2>Basic Example</h2>
   <p>
-    Pass an array of objects. The <code>label</code> and <code>icon</code> fields are displayed
-    in each tile by default. Bind <code>value</code> to track the selected item.
+    Pass an array of objects. The <code>label</code> and <code>icon</code> fields are displayed in
+    each tile by default. Bind <code>value</code> to track the selected item.
   </p>
 
   <div data-card>
-    <pre><code>{`<script>
+    <pre><code
+        >{`<script>
   import { Grid } from '@rokkit/ui'
 
   const items = [
@@ -549,14 +629,15 @@ The `Grid` component is a responsive tile grid. Props: `items`, `fields`, `value
   let selected = $state(null)
 <\/script>
 
-<Grid {items} bind:value={selected} />`}</code></pre>
+<Grid {items} bind:value={selected} />`}</code
+      ></pre>
   </div>
 
   <h2>Tile Size Control</h2>
   <p>
     Use <code>minSize</code> to control the minimum tile width. The grid fills available columns
-    automatically. Use <code>size</code> for the content size variant
-    (<code>sm</code>, <code>md</code>, <code>lg</code>).
+    automatically. Use <code>size</code> for the content size variant (<code>sm</code>,
+    <code>md</code>, <code>lg</code>).
   </p>
 
   <div data-card>
@@ -565,13 +646,14 @@ The `Grid` component is a responsive tile grid. Props: `items`, `fields`, `value
 
   <h2>Custom Tile Content</h2>
   <p>
-    Use the <code>itemContent</code> snippet to replace what renders inside each tile.
-    The snippet receives a <code>ProxyItem</code> — use <code>proxy.label</code>,
+    Use the <code>itemContent</code> snippet to replace what renders inside each tile. The snippet
+    receives a <code>ProxyItem</code> — use <code>proxy.label</code>,
     <code>proxy.icon</code>, and <code>proxy.get('field')</code>.
   </p>
 
   <div data-card>
-    <pre><code>{`{#snippet itemContent(proxy)}
+    <pre><code
+        >{`{#snippet itemContent(proxy)}
   <div class="flex flex-col items-center gap-1 p-2">
     <span class="{proxy.icon} text-2xl text-secondary-z7"></span>
     <span class="text-xs font-medium">{proxy.label}</span>
@@ -579,18 +661,23 @@ The `Grid` component is a responsive tile grid. Props: `items`, `fields`, `value
   </div>
 {/snippet}
 
-<Grid {items} {itemContent} bind:value />`}</code></pre>
+<Grid {items} {itemContent} bind:value />`}</code
+      ></pre>
   </div>
 
-  <div class="grid grid-cols-1 gap-6 md:grid-cols-2 mt-8">
+  <div class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
     <div data-card>
       <h2>Props</h2>
       <ul>
         <li><strong>items</strong>: Array of objects</li>
         <li><strong>fields</strong>: Remap data keys to component fields</li>
         <li><strong>value</strong> (bindable): Currently selected item value</li>
-        <li><strong>size</strong>: Content size — <code>sm</code>, <code>md</code>, <code>lg</code></li>
-        <li><strong>minSize</strong>: Minimum tile width (CSS value, default <code>120px</code>)</li>
+        <li>
+          <strong>size</strong>: Content size — <code>sm</code>, <code>md</code>, <code>lg</code>
+        </li>
+        <li>
+          <strong>minSize</strong>: Minimum tile width (CSS value, default <code>120px</code>)
+        </li>
         <li><strong>gap</strong>: Grid gap (CSS value, default <code>1rem</code>)</li>
         <li><strong>disabled</strong>: Disable all tiles</li>
         <li><strong>label</strong>: ARIA label for the grid container</li>
@@ -601,7 +688,9 @@ The `Grid` component is a responsive tile grid. Props: `items`, `fields`, `value
       <h2>Snippets</h2>
       <ul>
         <li><strong>itemContent(proxy)</strong>: Custom content inside each tile button</li>
-        <li><strong>[name](proxy)</strong>: Per-item snippet — set <code>item.snippet = 'name'</code></li>
+        <li>
+          <strong>[name](proxy)</strong>: Per-item snippet — set <code>item.snippet = 'name'</code>
+        </li>
       </ul>
       <h2>Events</h2>
       <ul>
@@ -658,23 +747,22 @@ If "Coming soon", replace with:
 <article data-article-root>
   <p>
     Rokkit's toolchain covers everything outside the component library itself: the CLI for
-    scaffolding and upgrading projects, curated icon sets with tree-shaking, and a custom
-    primitive guide for building new components on top of Rokkit's controller and navigator
-    patterns.
+    scaffolding and upgrading projects, curated icon sets with tree-shaking, and a custom primitive
+    guide for building new components on top of Rokkit's controller and navigator patterns.
   </p>
 
   <h2>CLI</h2>
   <p>
-    The Rokkit CLI (<code>npx rokkit</code>) automates common project tasks — adding Rokkit to
-    a new project, upgrading between versions, generating custom skin scaffolds, and creating
-    new component themes. See <a href="/docs/toolchain/cli">CLI reference</a> for full usage.
+    The Rokkit CLI (<code>npx rokkit</code>) automates common project tasks — adding Rokkit to a new
+    project, upgrading between versions, generating custom skin scaffolds, and creating new
+    component themes. See <a href="/docs/toolchain/cli">CLI reference</a> for full usage.
   </p>
 
   <h2>Icon Sets</h2>
   <p>
-    Rokkit ships curated icon sets (navigation, status, action, object) that are fully
-    tree-shaken — only imported icons enter your bundle. You can also register a global icon
-    override snippet to replace all component icons with any icon system at once. See
+    Rokkit ships curated icon sets (navigation, status, action, object) that are fully tree-shaken —
+    only imported icons enter your bundle. You can also register a global icon override snippet to
+    replace all component icons with any icon system at once. See
     <a href="/docs/toolchain/icon-sets">Icon sets</a> for details.
   </p>
 </article>
@@ -693,18 +781,18 @@ If "Coming soon", replace with:
 ```svelte
 <article data-article-root>
   <p>
-    Rokkit components are accessible by default. Keyboard navigation, focus management, and
-    ARIA attributes are built into every interactive component via the controller + navigator
-    pattern — no configuration required.
+    Rokkit components are accessible by default. Keyboard navigation, focus management, and ARIA
+    attributes are built into every interactive component via the controller + navigator pattern —
+    no configuration required.
   </p>
 
   <h2>Keyboard Navigation</h2>
   <p>
     All selection components (List, Tree, Select, Menu, Tabs, Toggle) support full keyboard
     navigation. Arrow keys move between items, Enter/Space activate, Escape closes dropdowns.
-    Navigation adapts to orientation (horizontal/vertical) and RTL layouts automatically.
-    See <a href="/docs/accessibility/keyboard-navigation">Keyboard navigation</a> for the
-    full key mapping.
+    Navigation adapts to orientation (horizontal/vertical) and RTL layouts automatically. See <a
+      href="/docs/accessibility/keyboard-navigation">Keyboard navigation</a
+    > for the full key mapping.
   </p>
 
   <h2>ARIA</h2>

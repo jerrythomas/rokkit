@@ -138,12 +138,12 @@ Feature: Custom Theme Style Authoring
 
 ## Status
 
-| Feature | Status |
-|---------|--------|
-| CLI: add Rokkit to a project | 🔲 Planned |
-| CLI: upgrade Rokkit | 🔲 Planned |
-| Curated icon sets | 🔲 Planned |
-| Tree-shaken icon imports | 🔲 Planned |
+| Feature                               | Status     |
+| ------------------------------------- | ---------- |
+| CLI: add Rokkit to a project          | 🔲 Planned |
+| CLI: upgrade Rokkit                   | 🔲 Planned |
+| Curated icon sets                     | 🔲 Planned |
+| Tree-shaken icon imports              | 🔲 Planned |
 | Custom icon override (global snippet) | 🔲 Planned |
-| CLI: generate custom skin | 🔲 Planned |
-| CLI: generate custom theme scaffold | 🔲 Planned |
+| CLI: generate custom skin             | 🔲 Planned |
+| CLI: generate custom theme scaffold   | 🔲 Planned |

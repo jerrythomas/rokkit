@@ -35,8 +35,8 @@
 	<h2>Nested Groups</h2>
 	<p>
 		Items with a <code>children</code> array are rendered as collapsible groups. Add the
-		<code>collapsible</code> prop to allow toggling. Keyboard navigation with arrow keys moves
-		through all visible items; left/right keys collapse and expand groups.
+		<code>collapsible</code> prop to allow toggling. Keyboard navigation with arrow keys moves through
+		all visible items; left/right keys collapse and expand groups.
 	</p>
 
 	<StoryViewer {...storyBuilder.getExample('nested')} />
@@ -45,8 +45,8 @@
 	<h2>Field Mapping</h2>
 	<p>
 		Your data rarely matches the component's default field names. Use the <code>fields</code> prop
-		to remap — for example, mapping <code>name</code> → text and <code>path</code> → value without
-		altering your data.
+		to remap — for example, mapping <code>name</code> → text and <code>path</code> → value without altering
+		your data.
 	</p>
 
 	<Code {...storyBuilder.getFragment(1)} />
@@ -56,8 +56,8 @@
 	<!-- Custom Icons -->
 	<h2>Custom Icons</h2>
 	<p>
-		Override the default expand/collapse chevrons with any icon via the <code>icons</code> prop.
-		Here we use folder icons to make a file-tree style list.
+		Override the default expand/collapse chevrons with any icon via the <code>icons</code> prop. Here
+		we use folder icons to make a file-tree style list.
 	</p>
 
 	<StoryViewer {...storyBuilder.getExample('icons')} />
@@ -67,8 +67,8 @@
 	<p>
 		Use the <code>itemContent</code> snippet to fully control what appears inside each list item.
 		The snippet receives a <code>ProxyItem</code> — use <code>proxy.label</code>,
-		<code>proxy.icon</code>, and <code>proxy.get('fieldName')</code> to access any field. Here
-		each item shows a status badge alongside the icon and label.
+		<code>proxy.icon</code>, and <code>proxy.get('fieldName')</code> to access any field. Here each item
+		shows a status badge alongside the icon and label.
 	</p>
 
 	<Code {...storyBuilder.getFragment(2)} />
@@ -80,8 +80,7 @@
 	<p>
 		For items that need entirely different layouts, set <code>item.snippet = 'name'</code> to route
 		each item to a named snippet. Items without a <code>snippet</code> field fall back to
-		<code>itemContent</code> (or the default renderer). Here fruits and vegetables get distinct
-		treatments.
+		<code>itemContent</code> (or the default renderer). Here fruits and vegetables get distinct treatments.
 	</p>
 
 	<Code {...storyBuilder.getFragment(3)} />
@@ -91,10 +90,12 @@
 	<!-- Interactive Snippets -->
 	<h2>Interactive Elements in Snippets</h2>
 	<p>
-		Snippets support full Svelte reactivity — you can embed checkboxes, toggles, or inputs.
-		Use <code>proxy.value</code> to access the original item and mutate it directly. Call
-		<code>e.stopPropagation()</code> on the control's click to prevent the List from also
-		triggering item selection.
+		Snippets support full Svelte reactivity — you can embed checkboxes, toggles, or inputs. Use <code
+			>proxy.value</code
+		>
+		to access the original item and mutate it directly. Call
+		<code>e.stopPropagation()</code> on the control's click to prevent the List from also triggering item
+		selection.
 	</p>
 
 	<StoryViewer {...storyBuilder.getExample('interactive')} />
@@ -110,7 +111,9 @@
 				<li><strong>collapsible</strong>: Allow groups to be expanded/collapsed</li>
 				<li><strong>icons</strong>: Override the expand/collapse icons</li>
 				<li><strong>disabled</strong>: Disable the entire list</li>
-				<li><strong>size</strong>: Size variant (<code>sm</code>, <code>md</code>, <code>lg</code>)</li>
+				<li>
+					<strong>size</strong>: Size variant (<code>sm</code>, <code>md</code>, <code>lg</code>)
+				</li>
 			</ul>
 		</div>
 

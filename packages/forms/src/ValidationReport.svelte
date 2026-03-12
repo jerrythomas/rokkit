@@ -8,11 +8,7 @@
 	const SEVERITY_ORDER = ['error', 'warning', 'info', 'success']
 	const SEVERITY_LABELS = { error: 'error', warning: 'warning', info: 'info', success: 'success' }
 
-	let {
-		items = [],
-		onclick = undefined,
-		class: className = ''
-	} = $props()
+	let { items = [], onclick = undefined, class: className = '' } = $props()
 
 	const grouped = $derived(
 		SEVERITY_ORDER.map((state) => ({
@@ -28,7 +24,11 @@
 			<div data-validation-group data-severity={group.state}>
 				<div data-validation-group-header>
 					<span data-validation-count>{group.items.length}</span>
-					<span>{group.items.length === 1 ? SEVERITY_LABELS[group.state] : `${SEVERITY_LABELS[group.state]}s`}</span>
+					<span
+						>{group.items.length === 1
+							? SEVERITY_LABELS[group.state]
+							: `${SEVERITY_LABELS[group.state]}s`}</span
+					>
 				</div>
 				{#each group.items as item (item.path)}
 					{#if onclick}

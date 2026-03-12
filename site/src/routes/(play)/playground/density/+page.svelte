@@ -27,14 +27,14 @@
 		@apply bg-surface-z3 flex w-80 flex-col rounded-lg text-white shadow-md transition-all duration-300;
 	}
 	[data-card-root] h1 {
-		@apply border-surface-z5 m-0 border-b px-0 py-2 text-2xl font-bold leading-tight;
+		@apply border-surface-z5 m-0 border-b px-0 py-2 text-2xl leading-tight font-bold;
 	}
 	[data-card-root] h1,
 	[data-card-root] p {
 		@apply p-4;
 	}
 	[data-card-header] {
-		@apply bg-gradient-to-rb from-primary-z5 to-secondary-z5 min-h-30 text-on-primary flex flex-col justify-end rounded-t-lg;
+		@apply bg-gradient-to-rb from-primary-z5 to-secondary-z5 text-on-primary flex min-h-30 flex-col justify-end rounded-t-lg;
 	}
 	[data-card-body] {
 		@apply flex flex-col p-4;
@@ -64,7 +64,7 @@
 		@apply px-5 py-1 leading-loose;
 	}
 	[data-density='compact'] [data-button-root] {
-		@apply min-h-6 px-3 py-0 text-sm uppercase leading-loose;
+		@apply min-h-6 px-3 py-0 text-sm leading-loose uppercase;
 	}
 	[data-density='cozy'] [data-button-root] {
 		@apply px-4 py-0 text-lg;

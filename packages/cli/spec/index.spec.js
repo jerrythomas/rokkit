@@ -25,9 +25,9 @@ describe('CLI Integration', () => {
 	beforeEach(() => {
 		// Store original process.argv
 		originalArgv = process.argv
-		 
+
 		console.info = vi.fn()
-		 
+
 		console.warn = vi.fn()
 		// Spy on console methods
 		consoleSpy = vi.spyOn(console, 'info')

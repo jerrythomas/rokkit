@@ -51,7 +51,7 @@
 		progress: userFields.progress ?? 'progress',
 		size: userFields.size ?? 'size',
 		type: userFields.type ?? 'type',
-		error: userFields.error ?? 'error',
+		error: userFields.error ?? 'error'
 	})
 
 	// ─── Status summary ──────────────────────────────────────────────────────
@@ -101,11 +101,7 @@
 	/>
 {/snippet}
 
-<div
-	data-upload-progress
-	data-upload-view={view}
-	class={className || undefined}
->
+<div data-upload-progress data-upload-view={view} class={className || undefined}>
 	<!-- Header -->
 	<div data-upload-header>
 		<span>{files.length} files — {statusSummary}</span>

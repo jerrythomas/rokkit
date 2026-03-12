@@ -13,40 +13,56 @@
 	const skins = ['rokkit', 'glass', 'minimal', 'material']
 </script>
 
-<div class="p-6 flex flex-col gap-6">
-	<h1 class="text-2xl font-bold text-surface-z8">Admin</h1>
+<div class="flex flex-col gap-6 p-6">
+	<h1 class="text-surface-z8 text-2xl font-bold">Admin</h1>
 
-	<Tabs options={tabs} bind:value={activeTab} fields={tabFields} onchange={(v) => (activeTab = v)} />
+	<Tabs
+		options={tabs}
+		bind:value={activeTab}
+		fields={tabFields}
+		onchange={(v) => (activeTab = v)}
+	/>
 
 	<div class="mt-2">
 		{#if activeTab === 'profile'}
-			<div data-card class="p-6 max-w-lg flex flex-col gap-4">
-				<h2 class="text-base font-semibold text-surface-z7">Profile Settings</h2>
-				<p class="text-sm text-surface-z5">
-					Full form editing with FormRenderer, validation, and lookup fields will be demonstrated here.
+			<div data-card class="flex max-w-lg flex-col gap-4 p-6">
+				<h2 class="text-surface-z7 text-base font-semibold">Profile Settings</h2>
+				<p class="text-surface-z5 text-sm">
+					Full form editing with FormRenderer, validation, and lookup fields will be demonstrated
+					here.
 				</p>
 				<div class="flex flex-col gap-3 opacity-60">
-					<div class="h-9 bg-surface-z2 rounded-md"></div>
-					<div class="h-9 bg-surface-z2 rounded-md"></div>
-					<div class="h-9 bg-surface-z2 rounded-md"></div>
+					<div class="bg-surface-z2 h-9 rounded-md"></div>
+					<div class="bg-surface-z2 h-9 rounded-md"></div>
+					<div class="bg-surface-z2 h-9 rounded-md"></div>
 				</div>
-				<p class="text-xs text-surface-z4">FormRenderer integration coming soon</p>
+				<p class="text-surface-z4 text-xs">FormRenderer integration coming soon</p>
 			</div>
 		{:else if activeTab === 'team'}
-			<div data-card class="p-6 flex flex-col gap-2 min-h-40 items-center justify-center text-center">
-				<span class="i-solar:table-bold-duotone text-3xl text-surface-z3" aria-hidden="true"></span>
-				<p class="text-sm text-surface-z5">Team members DataTable</p>
-				<p class="text-xs text-surface-z4">DataTable component coming soon</p>
+			<div
+				data-card
+				class="flex min-h-40 flex-col items-center justify-center gap-2 p-6 text-center"
+			>
+				<span class="i-solar:table-bold-duotone text-surface-z3 text-3xl" aria-hidden="true"></span>
+				<p class="text-surface-z5 text-sm">Team members DataTable</p>
+				<p class="text-surface-z4 text-xs">DataTable component coming soon</p>
 			</div>
 		{:else if activeTab === 'appearance'}
-			<div data-card class="p-6 max-w-sm flex flex-col gap-4">
-				<h2 class="text-base font-semibold text-surface-z7">Appearance</h2>
-				<p class="text-sm text-surface-z5">Use the theme panel (bottom-right) to switch skin and mode live.</p>
+			<div data-card class="flex max-w-sm flex-col gap-4 p-6">
+				<h2 class="text-surface-z7 text-base font-semibold">Appearance</h2>
+				<p class="text-surface-z5 text-sm">
+					Use the theme panel (bottom-right) to switch skin and mode live.
+				</p>
 				<div class="flex flex-col gap-2">
-					<p class="text-xs font-semibold text-surface-z5 uppercase tracking-wide">Available Skins</p>
+					<p class="text-surface-z5 text-xs font-semibold tracking-wide uppercase">
+						Available Skins
+					</p>
 					<div class="flex flex-wrap gap-2">
 						{#each skins as skin}
-							<span class="px-2 py-1 text-xs rounded border border-surface-z3 text-surface-z6 capitalize">{skin}</span>
+							<span
+								class="border-surface-z3 text-surface-z6 rounded border px-2 py-1 text-xs capitalize"
+								>{skin}</span
+							>
 						{/each}
 					</div>
 				</div>

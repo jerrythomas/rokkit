@@ -29,9 +29,7 @@ export class Wrapper {
 	// Navigable items: exclude separators, spacers, and disabled items.
 	// This is the subset that keyboard navigation moves through.
 	#navigable = $derived(
-		this.flatView.filter(
-			(n) => n.type !== 'separator' && n.type !== 'spacer' && !n.proxy.disabled
-		)
+		this.flatView.filter((n) => n.type !== 'separator' && n.type !== 'spacer' && !n.proxy.disabled)
 	)
 
 	// ─── State ──────────────────────────────────────────────────────────────────
@@ -56,7 +54,9 @@ export class Wrapper {
 
 	// ─── IWrapper: state read by Navigator ─────────────────────────────────────
 
-	get focusedKey() { return this.#focusedKey }
+	get focusedKey() {
+		return this.#focusedKey
+	}
 
 	// ─── IWrapper: movement (path passed through but ignored) ──────────────────
 
@@ -211,9 +211,7 @@ export class Wrapper {
 		const nav = this.#navigable
 		if (!nav.length) return null
 		const q = query.toLowerCase()
-		const startIdx = startAfterKey
-			? nav.findIndex((n) => n.key === startAfterKey) + 1
-			: 0
+		const startIdx = startAfterKey ? nav.findIndex((n) => n.key === startAfterKey) + 1 : 0
 		for (let i = 0; i < nav.length; i++) {
 			const node = nav[(startIdx + i) % nav.length]
 			if (node.proxy.label.toLowerCase().startsWith(q)) return node.key
@@ -224,8 +222,12 @@ export class Wrapper {
 	// ─── Helpers for the component ─────────────────────────────────────────────
 
 	/** @returns {Map<string, import('./proxy-item.svelte.js').ProxyItem>} */
-	get lookup() { return this.#proxyTree.lookup }
+	get lookup() {
+		return this.#proxyTree.lookup
+	}
 
 	/** @returns {import('./proxy-tree.svelte.js').ProxyTree} */
-	get proxyTree() { return this.#proxyTree }
+	get proxyTree() {
+		return this.#proxyTree
+	}
 }

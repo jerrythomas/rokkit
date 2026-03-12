@@ -1,15 +1,15 @@
 <script>
-  import { Card } from '@rokkit/ui'
+	import { Card } from '@rokkit/ui'
 </script>
 
 <Card>
-  {#snippet header()}
-    <h3>Card Title</h3>
-  {/snippet}
+	{#snippet header()}
+		<h3>Card Title</h3>
+	{/snippet}
 
-  <p>Card body content.</p>
+	<p>Card body content.</p>
 
-  {#snippet footer()}
-    <button>Action</button>
-  {/snippet}
+	{#snippet footer()}
+		<button>Action</button>
+	{/snippet}
 </Card>

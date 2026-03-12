@@ -4,12 +4,12 @@
 
 	const items = [
 		{
-			label:'src',
+			label: 'src',
 			value: 'src',
 			icon: 'i-lucide:folder',
 			children: [
 				{
-					label:'components',
+					label: 'components',
 					value: 'components',
 					icon: 'i-lucide:folder',
 					children: [
@@ -21,12 +21,10 @@
 			]
 		},
 		{
-			label:'tests',
+			label: 'tests',
 			value: 'tests',
 			icon: 'i-lucide:folder',
-			children: [
-				{ label: 'tree.spec.ts', value: 'spec', icon: 'i-lucide:file-code' }
-			]
+			children: [{ label: 'tree.spec.ts', value: 'spec', icon: 'i-lucide:file-code' }]
 		},
 		{ label: 'README.md', value: 'readme', icon: 'i-lucide:file-text' }
 	]

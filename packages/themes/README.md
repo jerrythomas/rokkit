@@ -16,13 +16,13 @@ bun add @rokkit/themes
 
 Available themes:
 
-| Theme | Description |
-|-------|-------------|
-| `rokkit` | Default — gradients and glowing borders |
-| `minimal` | Clean and subtle |
-| `material` | Elevation and shadows |
-| `glass` | Blur and transparency |
-| `base` | Structural styles only (layout and positioning, no visual treatment) |
+| Theme      | Description                                                          |
+| ---------- | -------------------------------------------------------------------- |
+| `rokkit`   | Default — gradients and glowing borders                              |
+| `minimal`  | Clean and subtle                                                     |
+| `material` | Elevation and shadows                                                |
+| `glass`    | Blur and transparency                                                |
+| `base`     | Structural styles only (layout and positioning, no visual treatment) |
 
 ## Usage
 
@@ -78,7 +78,7 @@ Other themes are scoped using the `data-style` attribute:
 </div>
 
 <!-- Apply a theme globally -->
-<html data-style="material">
+<html data-style="material"></html>
 ```
 
 Switching themes at runtime is a matter of updating the `data-style` attribute.

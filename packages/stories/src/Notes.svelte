@@ -12,7 +12,7 @@
 	 */
 	async function gotoPage(route) {
 		if (route) {
-			const location = `/${  page.params.segment  }/${  route}`
+			const location = `/${page.params.segment}/${route}`
 			await goto(location)
 		}
 	}

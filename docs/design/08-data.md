@@ -27,12 +27,12 @@ The data manipulation layer for Rokkit. This package provides collection-level o
 
 These are complementary, not overlapping:
 
-| Concern | Where it lives |
-|---------|---------------|
-| Per-item field access — resolve `profile.name`, apply a function `(item) => …` | `ProxyItem` in `@rokkit/states` |
-| Collection operations — group 1000 rows by `region`, aggregate by `sum`, join two arrays | `@rokkit/data` |
-| Schema inference — detect column types from a data array | `@rokkit/data` |
-| Formatting — format a number as `$1,234.56` | `@rokkit/data` (`createFormatter`) |
+| Concern                                                                                  | Where it lives                     |
+| ---------------------------------------------------------------------------------------- | ---------------------------------- |
+| Per-item field access — resolve `profile.name`, apply a function `(item) => …`           | `ProxyItem` in `@rokkit/states`    |
+| Collection operations — group 1000 rows by `region`, aggregate by `sum`, join two arrays | `@rokkit/data`                     |
+| Schema inference — detect column types from a data array                                 | `@rokkit/data`                     |
+| Formatting — format a number as `$1,234.56`                                              | `@rokkit/data` (`createFormatter`) |
 
 `ProxyItem` is a read-only view lens onto a single object. `@rokkit/data` transforms arrays of objects — it produces new collections, summaries, and metadata.
 
@@ -67,19 +67,17 @@ These are complementary, not overlapping:
 ```
 
 Exports from `index.js`:
+
 ```js
-export { typeOf }                            // utils
-export { renamer }                           // renamer
-export { model }                             // model
-export { innerJoin, leftJoin, rightJoin,
-         fullJoin, crossJoin, antiJoin,
-         semiJoin }                          // join
-export { dataset }                           // dataset (DataSet factory)
-export { dataview }                          // view
-export { deriveColumns, deriveMetadata,
-         deriveSortableColumn }              // infer
-export { parseFilters }                      // parser
-export { filterData, filterObjectArray }     // filter
+export { typeOf } // utils
+export { renamer } // renamer
+export { model } // model
+export { innerJoin, leftJoin, rightJoin, fullJoin, crossJoin, antiJoin, semiJoin } // join
+export { dataset } // dataset (DataSet factory)
+export { dataview } // view
+export { deriveColumns, deriveMetadata, deriveSortableColumn } // infer
+export { parseFilters } // parser
+export { filterData, filterObjectArray } // filter
 ```
 
 Note: `rollup.js` internals (`groupDataByKeys`, `aggregateData`, etc.) are not re-exported from `index.js` — they are used by `dataset.js` internally.
@@ -136,6 +134,7 @@ dataset(sales)
 ```
 
 `summarize(from, using)` accepts:
+
 - `from`: field name string, array of field names, or mapper function `(row) => value`
 - `using`: target field name string (identity pass-through) or `{ fieldName: reducerFn }` object
 
@@ -161,6 +160,7 @@ dataview(data, options)
 ```
 
 Internal state shape:
+
 ```js
 {
   columns: ColumnMetadata[],   // inferred or provided column defs with formatter functions
@@ -172,9 +172,9 @@ Internal state shape:
 
 ```js
 const view = dataview(rows, { path: 'category', separator: '/' })
-view.sortBy('revenue', true)   // ascending
-view.toggle(3)                 // expand/collapse node at index 3
-view.select(3)                 // toggle selection at index 3
+view.sortBy('revenue', true) // ascending
+view.toggle(3) // expand/collapse node at index 3
+view.select(3) // toggle selection at index 3
 ```
 
 ---
@@ -190,14 +190,14 @@ filterData(data, [{ column, value, operator }, …])
 
 Supported operators (from `filterOperations` in `constants.js`):
 
-| Operator | Meaning |
-|----------|---------|
-| `=` | strict equality |
-| `!=` | strict inequality |
-| `<`, `>`, `<=`, `>=` | numeric comparison |
-| `~` | regex match (case-sensitive) |
-| `~*` | regex match (case-insensitive) |
-| `!~`, `!~*` | negated regex |
+| Operator             | Meaning                        |
+| -------------------- | ------------------------------ |
+| `=`                  | strict equality                |
+| `!=`                 | strict inequality              |
+| `<`, `>`, `<=`, `>=` | numeric comparison             |
+| `~`                  | regex match (case-sensitive)   |
+| `~*`                 | regex match (case-insensitive) |
+| `!~`, `!~*`          | negated regex                  |
 
 When `column` is omitted, the operator is tested against all fields in each row.
 
@@ -224,25 +224,25 @@ The shorthand `:` maps to `~*` (case-insensitive contains). Quoted values preser
 
 ```js
 const fmt = createFormatter('currency', 'en-US', 2)
-fmt(1234.5, 'USD')  // → '$1,234.50'
+fmt(1234.5, 'USD') // → '$1,234.50'
 
 const dateFmt = createFormatter('date', 'de-DE')
-dateFmt(new Date('2025-01-15'))  // → '15.1.2025'
+dateFmt(new Date('2025-01-15')) // → '15.1.2025'
 ```
 
 Supported types:
 
-| Type | Output example |
-|------|---------------|
-| `currency` | `$1,234.50` (currency code as second arg) |
-| `number` | `1,234.50` |
-| `integer` | `1,234` |
-| `date` | locale date string |
-| `time` | locale time string |
-| `object` | `JSON.stringify` |
-| `array` | `JSON.stringify` |
-| `ellipsis` | always `'...'` |
-| anything else | identity (pass-through) |
+| Type          | Output example                            |
+| ------------- | ----------------------------------------- |
+| `currency`    | `$1,234.50` (currency code as second arg) |
+| `number`      | `1,234.50`                                |
+| `integer`     | `1,234`                                   |
+| `date`        | locale date string                        |
+| `time`        | locale time string                        |
+| `object`      | `JSON.stringify`                          |
+| `array`       | `JSON.stringify`                          |
+| `ellipsis`    | always `'...'`                            |
+| anything else | identity (pass-through)                   |
 
 `deriveMetadata` and `addFormatters` use `createFormatter` to attach a `formatter` function to each `ColumnMetadata` entry, keyed by the inferred column type. This is how `Table` cells get locale-formatted values without any per-column formatter configuration.
 
@@ -253,13 +253,13 @@ Supported types:
 `typeOf(value)` extends `typeof` with data-aware distinctions:
 
 ```js
-typeOf(42)           // 'integer'
-typeOf(3.14)         // 'number'
+typeOf(42) // 'integer'
+typeOf(3.14) // 'number'
 typeOf('2025-01-01') // 'date'
-typeOf(new Date())   // 'date'
-typeOf([1, 2, 3])    // 'array'
-typeOf({ a: 1 })     // 'object'
-typeOf(null)         // 'string'
+typeOf(new Date()) // 'date'
+typeOf([1, 2, 3]) // 'array'
+typeOf({ a: 1 }) // 'object'
+typeOf(null) // 'string'
 ```
 
 `deriveColumns(data, options)` scans the data array and returns `ColumnMetadata[]` — one entry per field with inferred `type`, `sortable`, `filterable`, and a default `fields: { label: key }` mapping.
@@ -269,8 +269,8 @@ typeOf(null)         // 'string'
 `deriveSortableColumn(value)` normalises a sort spec into `{ name, sorter }`:
 
 ```js
-deriveSortableColumn('revenue')              // → { name: 'revenue', sorter: ascending }
-deriveSortableColumn(['revenue', false])     // → { name: 'revenue', sorter: descending }
+deriveSortableColumn('revenue') // → { name: 'revenue', sorter: ascending }
+deriveSortableColumn(['revenue', false]) // → { name: 'revenue', sorter: descending }
 deriveSortableColumn({ name: 'date', sorter: myCustomSorter })
 ```
 
@@ -320,9 +320,9 @@ Because ProxyItem normalises both string paths and functions to the same resolve
 
 ### `dataset(data, options?)`
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `data` | `Object[]` | Source data array |
+| Parameter | Type                          | Description                         |
+| --------- | ----------------------------- | ----------------------------------- |
+| `data`    | `Object[]`                    | Source data array                   |
 | `options` | `{ children?, actual_flag? }` | Override defaults for rollup config |
 
 Returns a `DataSet` with the fluent methods described in section 3.
@@ -331,15 +331,15 @@ Returns a `DataSet` with the fluent methods described in section 3.
 
 ### `dataview(data, options?)`
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `data` | `Object[]` | Source data array |
-| `options.path` | `string` | Field name whose value is a path string (for hierarchy) |
-| `options.separator` | `string` | Path separator (default `/`) |
-| `options.expanded` | `boolean` | Initial expanded state (default `false`) |
-| `options.columns` | `ColumnMetadata[]` | Explicit column definitions (skip inference) |
-| `options.actions` | `string[]` | Action column names to prepend |
-| `options.language` | `string` | IETF locale for formatters (default `'en-US'`) |
+| Parameter           | Type               | Description                                             |
+| ------------------- | ------------------ | ------------------------------------------------------- |
+| `data`              | `Object[]`         | Source data array                                       |
+| `options.path`      | `string`           | Field name whose value is a path string (for hierarchy) |
+| `options.separator` | `string`           | Path separator (default `/`)                            |
+| `options.expanded`  | `boolean`          | Initial expanded state (default `false`)                |
+| `options.columns`   | `ColumnMetadata[]` | Explicit column definitions (skip inference)            |
+| `options.actions`   | `string[]`         | Action column names to prepend                          |
+| `options.language`  | `string`           | IETF locale for formatters (default `'en-US'`)          |
 
 Returns `{ subscribe, sortBy(name, ascending), clearSort(), select(index), toggle(index) }`.
 
@@ -408,7 +408,7 @@ renamer({ prefix?, suffix?, separator?, keys? }): RenamerBuilder
 ```js
 const r = renamer({ prefix: 'src', separator: '_' })
 const { renameObject } = r.get()
-renameObject({ id: 1, name: 'Alice' })  // → { src_id: 1, src_name: 'Alice' }
+renameObject({ id: 1, name: 'Alice' }) // → { src_id: 1, src_name: 'Alice' }
 ```
 
 ---
@@ -417,13 +417,13 @@ renameObject({ id: 1, name: 'Alice' })  // → { src_id: 1, src_name: 'Alice' }
 
 All joins take `(first: Object[], second: Object[], condition: (a, b) => boolean)` except `crossJoin` (no condition) and `nestedJoin` (adds `key` parameter).
 
-| Function | Returns |
-|----------|---------|
-| `innerJoin` | Rows matched in both |
-| `leftJoin` | All from first, matched from second |
-| `rightJoin` | All from second, matched from first |
-| `fullJoin` | All rows from both, matched where possible |
-| `crossJoin` | All combinations |
-| `semiJoin` | Rows from first that have a match in second |
-| `antiJoin` | Rows from first that have no match in second |
+| Function                                     | Returns                                                                             |
+| -------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `innerJoin`                                  | Rows matched in both                                                                |
+| `leftJoin`                                   | All from first, matched from second                                                 |
+| `rightJoin`                                  | All from second, matched from first                                                 |
+| `fullJoin`                                   | All rows from both, matched where possible                                          |
+| `crossJoin`                                  | All combinations                                                                    |
+| `semiJoin`                                   | Rows from first that have a match in second                                         |
+| `antiJoin`                                   | Rows from first that have no match in second                                        |
 | `nestedJoin(first, second, condition, key?)` | Rows from first with matching second rows nested under `key` (default `'children'`) |

@@ -23,8 +23,8 @@
 
 	<h2>Basic Example</h2>
 	<p>
-		Pass an array of objects to the <code>data</code> prop. The Table auto-derives column headers
-		from the object keys. Click a row to select it:
+		Pass an array of objects to the <code>data</code> prop. The Table auto-derives column headers from
+		the object keys. Click a row to select it:
 	</p>
 
 	<StoryViewer {...storyBuilder.getExample('intro')} />
@@ -47,7 +47,9 @@
 				<li><strong>columns</strong>: Optional column definitions (auto-derived if omitted)</li>
 				<li><strong>value</strong>: Currently selected row value</li>
 				<li><strong>caption</strong>: Table caption text (also sets aria-label)</li>
-				<li><strong>size</strong>: Size variant — <code>sm</code>, <code>md</code>, <code>lg</code></li>
+				<li>
+					<strong>size</strong>: Size variant — <code>sm</code>, <code>md</code>, <code>lg</code>
+				</li>
 				<li><strong>striped</strong>: Alternate row background colors</li>
 				<li><strong>disabled</strong>: Disable interaction</li>
 			</ul>
@@ -64,8 +66,8 @@
 
 	<h2>Custom Columns</h2>
 	<p>
-		Provide a <code>columns</code> array to control which fields are shown, their labels, width,
-		alignment, and how values are formatted. Here's an example column definition:
+		Provide a <code>columns</code> array to control which fields are shown, their labels, width, alignment,
+		and how values are formatted. Here's an example column definition:
 	</p>
 
 	<Code {...storyBuilder.getFragment(1)} />
@@ -97,10 +99,11 @@
 		<h3>Available Snippets</h3>
 		<ul>
 			<li><strong>header</strong>: Custom header row rendering</li>
-			<li><strong>row</strong>: Custom row rendering (receives row data, columns, index, isSelected)</li>
+			<li>
+				<strong>row</strong>: Custom row rendering (receives row data, columns, index, isSelected)
+			</li>
 			<li><strong>cell</strong>: Custom cell rendering (receives value, column, row)</li>
 			<li><strong>empty</strong>: Custom empty state when no data</li>
 		</ul>
 	</div>
-
 </article>

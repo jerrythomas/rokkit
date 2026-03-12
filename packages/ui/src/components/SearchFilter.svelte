@@ -78,8 +78,8 @@
 							data-search-tag-remove
 							onclick={() => removeFilter(i)}
 							aria-label={labels.remove}
-							type="button"
-						>&times;</button>
+							type="button">&times;</button
+						>
 					</span>
 				{/if}
 			{/each}

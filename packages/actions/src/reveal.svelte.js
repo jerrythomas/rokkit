@@ -31,8 +31,7 @@ export function reveal(node, options = {}) {
 		}
 
 		const reducedMotion =
-			typeof window !== 'undefined' &&
-			window.matchMedia('(prefers-reduced-motion: reduce)').matches
+			typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 		const isStagger = opts.stagger > 0
 

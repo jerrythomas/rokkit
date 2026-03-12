@@ -92,8 +92,12 @@
 			aria-checked={filled}
 			aria-label="Rate {index + 1} of {max}"
 			onclick={() => handleClick(index)}
-			onmouseenter={() => { if (!disabled) hoverIndex = index }}
-			onmouseleave={() => { hoverIndex = -1 }}
+			onmouseenter={() => {
+				if (!disabled) hoverIndex = index
+			}}
+			onmouseleave={() => {
+				hoverIndex = -1
+			}}
 		>
 			<span data-rating-icon class={filled ? icons.filled : icons.empty} aria-hidden="true"></span>
 		</span>

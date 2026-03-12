@@ -160,12 +160,12 @@ Feature: Consistent Component API
 
 ## Status
 
-| Feature | Status |
-|---------|--------|
+| Feature                                                         | Status         |
+| --------------------------------------------------------------- | -------------- |
 | Default field conventions (`text`, `value`, `icon`, `children`) | ✅ Implemented |
-| Custom field mapping | ✅ Implemented |
-| Nested field access via dot paths | ✅ Implemented |
-| Computed field mapping (function values) | 🔲 Planned |
-| Per-item field overrides | ✅ Implemented |
-| No data transformation required | ✅ Implemented |
-| Consistent component API | ✅ Implemented |
+| Custom field mapping                                            | ✅ Implemented |
+| Nested field access via dot paths                               | ✅ Implemented |
+| Computed field mapping (function values)                        | 🔲 Planned     |
+| Per-item field overrides                                        | ✅ Implemented |
+| No data transformation required                                 | ✅ Implemented |
+| Consistent component API                                        | ✅ Implemented |

@@ -65,8 +65,8 @@ describe('List', () => {
 		const { container } = render(List, { items: flatItems })
 		// Icons render as <span class={proxy.icon} aria-hidden="true"> inside item buttons
 		const items = container.querySelectorAll('[data-list-item]')
-		const iconsFound = Array.from(items).filter(
-			(item) => item.querySelector('[aria-hidden="true"]')
+		const iconsFound = Array.from(items).filter((item) =>
+			item.querySelector('[aria-hidden="true"]')
 		).length
 		expect(iconsFound).toBe(3)
 	})

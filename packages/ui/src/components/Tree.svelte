@@ -81,64 +81,64 @@
 		{@const content = resolveSnippet(snippets, proxy, ITEM_SNIPPET)}
 
 		<div
-				data-tree-node
-				data-tree-path={node.key}
-				data-tree-level={node.level - 1}
-				data-tree-has-children={node.isExpandable || undefined}
-				data-active={isActive || undefined}
-				role="treeitem"
-				aria-expanded={node.isExpandable ? proxy.expanded : undefined}
-				aria-selected={isActive}
-				aria-level={node.level}
-			>
-				<div data-tree-node-row>
-					{#each node.lineTypes as lineType, lineIndex (lineIndex)}
-						{#if lineType === 'icon'}
-							<button
-								type="button"
-								data-tree-toggle-btn
-								onclick={() => wrapper.toggle(node.key)}
-								aria-label={proxy.expanded ? labels.collapse : labels.expand}
-								tabindex={-1}
-							>
-								<span class={proxy.expanded ? icons.opened : icons.closed} aria-hidden="true"></span>
-							</button>
-						{:else}
-							<Connector type={lineType} />
-						{/if}
-					{/each}
-
-					{#if proxy.get('href')}
-						<a
-							href={proxy.get('href')}
-							data-tree-item-content
-							data-path={node.key}
-							data-active={isActive || undefined}
-							aria-label={proxy.label}
-							aria-current={isActive ? 'page' : undefined}
-						>
-							{#if content}
-								{@render content(proxy)}
-							{:else}
-								<ItemContent {proxy} showIcon={!node.isExpandable} showSubtext={false} />
-							{/if}
-						</a>
-					{:else}
+			data-tree-node
+			data-tree-path={node.key}
+			data-tree-level={node.level - 1}
+			data-tree-has-children={node.isExpandable || undefined}
+			data-active={isActive || undefined}
+			role="treeitem"
+			aria-expanded={node.isExpandable ? proxy.expanded : undefined}
+			aria-selected={isActive}
+			aria-level={node.level}
+		>
+			<div data-tree-node-row>
+				{#each node.lineTypes as lineType, lineIndex (lineIndex)}
+					{#if lineType === 'icon'}
 						<button
 							type="button"
-							data-tree-item-content
-							data-path={node.key}
-							data-active={isActive || undefined}
-							aria-label={proxy.label}
+							data-tree-toggle-btn
+							onclick={() => wrapper.toggle(node.key)}
+							aria-label={proxy.expanded ? labels.collapse : labels.expand}
+							tabindex={-1}
 						>
-							{#if content}
-								{@render content(proxy)}
-							{:else}
-								<ItemContent {proxy} showIcon={!node.isExpandable} showSubtext={false} />
-							{/if}
+							<span class={proxy.expanded ? icons.opened : icons.closed} aria-hidden="true"></span>
 						</button>
+					{:else}
+						<Connector type={lineType} />
 					{/if}
-				</div>
+				{/each}
+
+				{#if proxy.get('href')}
+					<a
+						href={proxy.get('href')}
+						data-tree-item-content
+						data-path={node.key}
+						data-active={isActive || undefined}
+						aria-label={proxy.label}
+						aria-current={isActive ? 'page' : undefined}
+					>
+						{#if content}
+							{@render content(proxy)}
+						{:else}
+							<ItemContent {proxy} showIcon={!node.isExpandable} showSubtext={false} />
+						{/if}
+					</a>
+				{:else}
+					<button
+						type="button"
+						data-tree-item-content
+						data-path={node.key}
+						data-active={isActive || undefined}
+						aria-label={proxy.label}
+					>
+						{#if content}
+							{@render content(proxy)}
+						{:else}
+							<ItemContent {proxy} showIcon={!node.isExpandable} showSubtext={false} />
+						{/if}
+					</button>
+				{/if}
 			</div>
+		</div>
 	{/each}
 </div>

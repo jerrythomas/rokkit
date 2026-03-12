@@ -55,7 +55,10 @@ describe('FloatingAction', () => {
 	})
 
 	it('uses custom icons override', () => {
-		const { container } = render(FloatingAction, { items: basicItems, icons: { add: 'custom-plus', close: 'custom-x' } })
+		const { container } = render(FloatingAction, {
+			items: basicItems,
+			icons: { add: 'custom-plus', close: 'custom-x' }
+		})
 		const icon = container.querySelector('[data-fab-icon]')
 		expect(icon?.classList.contains('custom-plus')).toBe(true)
 	})

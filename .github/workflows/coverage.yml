@@ -29,6 +29,10 @@ jobs:
           coverageCommand: bun run coverage
           debug: true
           coverageLocations: coverage/lcov.info:lcov
+      - uses: qltysh/qlty-action/coverage@v2
+        with:
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: coverage/lcov.info
       - name: Report results to DeepSource
         env:
           DEEPSOURCE_DSN: ${{ secrets.DEEPSOURCE_DSN }}

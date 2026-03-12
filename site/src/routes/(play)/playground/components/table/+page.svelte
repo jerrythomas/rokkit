@@ -45,7 +45,12 @@
 	const customColumns = [
 		{ name: 'name', label: 'Employee', width: '200px' },
 		{ name: 'department', label: 'Dept' },
-		{ name: 'salary', label: 'Annual Salary', align: 'right', formatter: (v) => `$${Number(v).toLocaleString()}` }
+		{
+			name: 'salary',
+			label: 'Annual Salary',
+			align: 'right',
+			formatter: (v) => `$${Number(v).toLocaleString()}`
+		}
 	]
 
 	const filtered = $derived(filters.length > 0 ? filterData(employees, filters) : employees)
@@ -55,7 +60,9 @@
 	{#snippet preview()}
 		<div class="flex flex-col gap-8">
 			<div>
-				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Auto-derived columns</h4>
+				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">
+					Auto-derived columns
+				</h4>
 				<Table
 					data={employees}
 					caption={props.caption}
@@ -63,11 +70,13 @@
 					striped={props.striped}
 					disabled={props.disabled}
 					bind:value
-					onselect={(v) => value = v}
+					onselect={(v) => (value = v)}
 				/>
 			</div>
 			<div>
-				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Custom columns + formatter</h4>
+				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">
+					Custom columns + formatter
+				</h4>
 				<Table
 					data={employees}
 					columns={customColumns}
@@ -78,7 +87,7 @@
 				/>
 			</div>
 			<div>
-				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">With SearchFilter</h4>
+				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">With SearchFilter</h4>
 				<div class="mb-2">
 					<SearchFilter bind:filters placeholder="e.g. name:alice department:eng salary>90000" />
 				</div>

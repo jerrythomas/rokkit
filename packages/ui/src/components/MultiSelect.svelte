@@ -70,7 +70,12 @@
 		[key: string]: unknown
 	} = $props()
 
-	const icons = $derived({ ...DEFAULT_STATE_ICONS.selector, ...DEFAULT_STATE_ICONS.checkbox, ...DEFAULT_STATE_ICONS.action, ...userIcons })
+	const icons = $derived({
+		...DEFAULT_STATE_ICONS.selector,
+		...DEFAULT_STATE_ICONS.checkbox,
+		...DEFAULT_STATE_ICONS.action,
+		...userIcons
+	})
 
 	// ─── Dropdown state ───────────────────────────────────────────────────────
 
@@ -198,7 +203,9 @@
 				isOpen = true
 				requestAnimationFrame(() => wrapper.first(null))
 			},
-			onclose: () => { isOpen = false },
+			onclose: () => {
+				isOpen = false
+			},
 			onlast: () => requestAnimationFrame(() => wrapper.last(null))
 		})
 		return () => t.destroy()
@@ -322,7 +329,11 @@
 			{#each wrapper.flatView as node (node.key)}
 				{@const proxy = node.proxy}
 				{@const sel = !node.hasChildren && isItemSelected(proxy.value)}
-				{@const content = resolveSnippet(snippets as Record<string, unknown>, proxy, node.hasChildren ? GROUP_SNIPPET : ITEM_SNIPPET)}
+				{@const content = resolveSnippet(
+					snippets as Record<string, unknown>,
+					proxy,
+					node.hasChildren ? GROUP_SNIPPET : ITEM_SNIPPET
+				)}
 
 				{#if node.type === 'separator'}
 					<hr data-select-separator />

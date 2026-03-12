@@ -31,7 +31,7 @@
 	}
 
 	function handleFiles(files) {
-		lastFiles = files.map(f => f.name).join(', ')
+		lastFiles = files.map((f) => f.name).join(', ')
 		lastError = ''
 	}
 
@@ -44,17 +44,13 @@
 	{#snippet preview()}
 		<div class="flex flex-wrap gap-6">
 			<div>
-				<h4 class="m-0 mb-2 text-xs uppercase tracking-wide text-surface-z5">Default</h4>
+				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">Default</h4>
 				<div class="w-[320px]">
-					<UploadTarget
-						multiple
-						onfiles={handleFiles}
-						onerror={handleError}
-					/>
+					<UploadTarget multiple onfiles={handleFiles} onerror={handleError} />
 				</div>
 			</div>
 			<div>
-				<h4 class="m-0 mb-2 text-xs uppercase tracking-wide text-surface-z5">Constrained</h4>
+				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">Constrained</h4>
 				<div class="w-[320px]">
 					<UploadTarget
 						accept={props.accept || undefined}

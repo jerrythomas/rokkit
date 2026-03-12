@@ -193,11 +193,24 @@
 			{@render renderElement(element)}
 		{/each}
 		{#if actions}
-			{@render actions({ submitting, isValid: formBuilder.isValid, isDirty: formBuilder.isDirty, submit: handleSubmit, reset: handleReset })}
+			{@render actions({
+				submitting,
+				isValid: formBuilder.isValid,
+				isDirty: formBuilder.isDirty,
+				submit: handleSubmit,
+				reset: handleReset
+			})}
 		{:else}
 			<div data-form-actions>
-				<button type="button" data-form-reset disabled={!formBuilder.isDirty || submitting} onclick={handleReset}>Reset</button>
-				<button type="submit" data-form-submit disabled={!formBuilder.isDirty || submitting}>Submit</button>
+				<button
+					type="button"
+					data-form-reset
+					disabled={!formBuilder.isDirty || submitting}
+					onclick={handleReset}>Reset</button
+				>
+				<button type="submit" data-form-submit disabled={!formBuilder.isDirty || submitting}
+					>Submit</button
+				>
 			</div>
 		{/if}
 	</form>

@@ -154,5 +154,4 @@ describe('InputText', () => {
 		expect(typeof lastCall[0]).toBe('string')
 		expect(lastCall[0]).toBe('updated')
 	})
-
 })

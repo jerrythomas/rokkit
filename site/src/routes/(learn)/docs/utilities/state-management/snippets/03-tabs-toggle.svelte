@@ -1,8 +1,8 @@
 <script>
-  import { Tabs, Toggle } from '@rokkit/ui'
+	import { Tabs, Toggle } from '@rokkit/ui'
 
-  let activeTab = $state('overview')
-  let viewMode = $state('grid')
+	let activeTab = $state('overview')
+	let viewMode = $state('grid')
 </script>
 
 <Tabs items={tabs} {fields} bind:value={activeTab} />

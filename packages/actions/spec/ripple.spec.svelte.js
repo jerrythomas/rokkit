@@ -5,10 +5,7 @@ import { ripple } from '../src/ripple.svelte.js'
 // ─── Setup / Teardown ──────────────────────────────────────────────
 
 beforeEach(() => {
-	vi.stubGlobal(
-		'matchMedia',
-		vi.fn().mockReturnValue({ matches: false })
-	)
+	vi.stubGlobal('matchMedia', vi.fn().mockReturnValue({ matches: false }))
 })
 
 afterEach(() => {
@@ -161,10 +158,7 @@ describe('ripple', () => {
 	// ─── prefers-reduced-motion ────────────────────────────────────
 
 	it('does nothing when prefers-reduced-motion is set', () => {
-		vi.stubGlobal(
-			'matchMedia',
-			vi.fn().mockReturnValue({ matches: true })
-		)
+		vi.stubGlobal('matchMedia', vi.fn().mockReturnValue({ matches: true }))
 
 		const node = createNodeWithRect()
 		const cleanup = $effect.root(() => ripple(node))

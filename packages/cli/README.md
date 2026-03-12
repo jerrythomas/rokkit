@@ -63,11 +63,11 @@ Checks for correct UnoCSS config, theme imports, and required package presence. 
 
 ## Global Options
 
-| Option | Alias | Description | Default |
-|--------|-------|-------------|---------|
-| `--input` | `-i` | Source folder containing SVG subfolders | `./src` |
-| `--output` | `-o` | Output folder for generated files | `./lib` |
-| `--config` | `-c` | Path to config file (relative to input) | `config.json` |
+| Option     | Alias | Description                             | Default       |
+| ---------- | ----- | --------------------------------------- | ------------- |
+| `--input`  | `-i`  | Source folder containing SVG subfolders | `./src`       |
+| `--output` | `-o`  | Output folder for generated files       | `./lib`       |
+| `--config` | `-c`  | Path to config file (relative to input) | `config.json` |
 
 ## Configuration File
 
@@ -89,12 +89,12 @@ Place a `config.json` inside the input folder to control icon processing:
 }
 ```
 
-| Field | Description |
-|-------|-------------|
-| `package.namespace` | Iconify collection prefix namespace |
-| `package.version` | Published version string |
-| `package.homepage` | Repository or homepage URL |
-| `<set>.color` | `true` preserves original colors; `false` converts fills to `currentColor` |
+| Field               | Description                                                                |
+| ------------------- | -------------------------------------------------------------------------- |
+| `package.namespace` | Iconify collection prefix namespace                                        |
+| `package.version`   | Published version string                                                   |
+| `package.homepage`  | Repository or homepage URL                                                 |
+| `<set>.color`       | `true` preserves original colors; `false` converts fills to `currentColor` |
 
 ## Examples
 

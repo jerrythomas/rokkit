@@ -86,7 +86,9 @@ export class LazyWrapper extends Wrapper {
 
 		// Lazy sentinel: fetch children, then expand
 		if (proxy.loaded === false) {
-			proxy.fetch().then(() => { proxy.expanded = true })
+			proxy.fetch().then(() => {
+				proxy.expanded = true
+			})
 			return
 		}
 
@@ -112,7 +114,9 @@ export class LazyWrapper extends Wrapper {
 
 		// Lazy sentinel: fetch children, then expand
 		if (proxy.loaded === false) {
-			proxy.fetch().then(() => { proxy.expanded = true })
+			proxy.fetch().then(() => {
+				proxy.expanded = true
+			})
 			return
 		}
 	}

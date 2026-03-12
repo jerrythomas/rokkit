@@ -228,7 +228,6 @@ function isImageUrl(str) {
 
 		// Fallback if URL constructor is not available
 		return fallbackValidation()
-		 
 	} catch {
 		// Fallback if URL constructor fails
 		return fallbackValidation()

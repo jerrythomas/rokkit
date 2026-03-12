@@ -151,8 +151,10 @@
 						<button
 							type="button"
 							data-stepper-dot
-							data-active={index === current && stageIndex === currentStage || undefined}
-							data-completed={step.completed || (index === current && stageIndex < currentStage) || undefined}
+							data-active={(index === current && stageIndex === currentStage) || undefined}
+							data-completed={step.completed ||
+								(index === current && stageIndex < currentStage) ||
+								undefined}
 							disabled={!isClickable(index)}
 							aria-label="Stage {stageIndex + 1}"
 							onclick={() => handleDotClick(index, stageIndex)}

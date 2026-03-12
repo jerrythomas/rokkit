@@ -9,15 +9,15 @@
    ============================================================================= */
 
 [data-style='glass'] [data-search-input] {
-	@apply text-surface-z8 border-surface-z5/20 bg-surface-z1/50 border backdrop-blur-md;
+  @apply text-surface-z8 border-surface-z5/20 bg-surface-z1/50 border backdrop-blur-md;
 }
 
 [data-style='glass'] [data-search-input]:focus {
-	@apply border-primary-z5/50 ring-1 ring-surface-z5/30;
+  @apply border-primary-z5/50 ring-surface-z5/30 ring-1;
 }
 
 [data-style='glass'] [data-search-input]::placeholder {
-	@apply text-surface-z5;
+  @apply text-surface-z5;
 }
 
 /* =============================================================================
@@ -25,11 +25,11 @@
    ============================================================================= */
 
 [data-style='glass'] [data-search-clear] {
-	@apply text-surface-z5;
+  @apply text-surface-z5;
 }
 
 [data-style='glass'] [data-search-clear]:hover {
-	@apply text-surface-z9;
+  @apply text-surface-z9;
 }
 
 /* =============================================================================
@@ -37,13 +37,13 @@
    ============================================================================= */
 
 [data-style='glass'] [data-search-tag] {
-	@apply text-surface-z8 bg-surface-z2/15;
+  @apply text-surface-z8 bg-surface-z2/15;
 }
 
 [data-style='glass'] [data-search-tag-remove] {
-	@apply text-surface-z6;
+  @apply text-surface-z6;
 }
 
 [data-style='glass'] [data-search-tag-remove]:hover {
-	@apply text-surface-z9;
+  @apply text-surface-z9;
 }

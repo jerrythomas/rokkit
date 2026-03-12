@@ -3,11 +3,6 @@
   "description": "Removable item wrappers and tags",
   "icon": "i-component:pill",
   "category": "display",
-  "tags": [
-    "pill",
-    "removable",
-    "tags",
-    "wrappers"
-  ],
+  "tags": ["pill", "removable", "tags", "wrappers"],
   "experimental": false
 }

@@ -49,11 +49,8 @@
 
 <PlaySection>
 	{#snippet preview()}
-		<div class="flex flex-col gap-8 items-center p-8">
-			<button
-				class="px-4 py-2 rounded bg-primary-z3 text-on-primary text-sm"
-				onclick={replay}
-			>
+		<div class="flex flex-col items-center gap-8 p-8">
+			<button class="bg-primary-z3 text-on-primary rounded px-4 py-2 text-sm" onclick={replay}>
 				Replay Animation
 			</button>
 
@@ -66,7 +63,9 @@
 					once={props.once}
 					threshold={props.threshold}
 				>
-					<div class="w-64 h-32 rounded-xl bg-surface-z2 flex items-center justify-center shadow-lg">
+					<div
+						class="bg-surface-z2 flex h-32 w-64 items-center justify-center rounded-xl shadow-lg"
+					>
 						<span class="text-lg font-semibold">Single Reveal</span>
 					</div>
 				</Reveal>
@@ -81,7 +80,9 @@
 						threshold={props.threshold}
 					>
 						{#each ['Card 1', 'Card 2', 'Card 3', 'Card 4'] as label}
-							<div class="w-36 h-24 rounded-xl bg-primary-z3 text-on-primary flex items-center justify-center shadow-lg">
+							<div
+								class="bg-primary-z3 text-on-primary flex h-24 w-36 items-center justify-center rounded-xl shadow-lg"
+							>
 								<span class="font-medium">{label}</span>
 							</div>
 						{/each}

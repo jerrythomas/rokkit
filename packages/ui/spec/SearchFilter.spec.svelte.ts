@@ -143,7 +143,9 @@ describe('SearchFilter', () => {
 	})
 
 	it('uses default remove label from MessagesStore', async () => {
-		const { container } = render(SearchFilter, { filters: [{ column: 'name', operator: '=', value: 'test' }] })
+		const { container } = render(SearchFilter, {
+			filters: [{ column: 'name', operator: '=', value: 'test' }]
+		})
 		const removeBtn = container.querySelector('[data-search-tag-remove]')
 		expect(removeBtn?.getAttribute('aria-label')).toBe('Remove filter')
 	})

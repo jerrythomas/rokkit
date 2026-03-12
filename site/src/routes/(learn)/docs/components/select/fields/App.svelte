@@ -16,4 +16,4 @@
 
 <Select items={countries} {fields} bind:value placeholder="Select a country" />
 
-<p class="mt-3 text-sm text-surface-z5">Selected code: <strong>{value ?? 'none'}</strong></p>
+<p class="text-surface-z5 mt-3 text-sm">Selected code: <strong>{value ?? 'none'}</strong></p>

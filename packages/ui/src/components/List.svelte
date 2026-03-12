@@ -87,11 +87,10 @@
 	$effect(() => {
 		wrapper.moveToValue(value)
 	})
-
 </script>
 
 {#snippet collapsibleIcon(proxy: ProxyItem)}
-  {#if collapsible && proxy.hasChildren}
+	{#if collapsible && proxy.hasChildren}
 		<span
 			data-list-expand-icon
 			class={proxy.expanded ? icons.opened : icons.closed}
@@ -113,7 +112,11 @@
 	{#each wrapper.flatView as node (node.key)}
 		{@const proxy = node.proxy}
 		{@const isActive = proxy.value === value}
-		{@const content = resolveSnippet(snippets as Record<string, unknown>, proxy, node.hasChildren ? GROUP_SNIPPET : ITEM_SNIPPET)}
+		{@const content = resolveSnippet(
+			snippets as Record<string, unknown>,
+			proxy,
+			node.hasChildren ? GROUP_SNIPPET : ITEM_SNIPPET
+		)}
 
 		{#if node.type === 'separator'}
 			<hr data-list-separator />
@@ -137,10 +140,10 @@
 				{#if content}
 					{@render content(proxy)}
 				{:else}
-				<ItemContent {proxy} />
+					<ItemContent {proxy} />
 				{/if}
 
-        {@render collapsibleIcon(proxy)}
+				{@render collapsibleIcon(proxy)}
 			</button>
 		{:else if proxy.get('href')}
 			<!--
@@ -159,7 +162,7 @@
 				{#if content}
 					{@render content(proxy)}
 				{:else}
-				<ItemContent {proxy} />
+					<ItemContent {proxy} />
 				{/if}
 			</a>
 		{:else}
@@ -180,7 +183,7 @@
 				{#if content}
 					{@render content(proxy)}
 				{:else}
-				<ItemContent {proxy} />
+					<ItemContent {proxy} />
 				{/if}
 			</button>
 		{/if}

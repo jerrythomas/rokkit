@@ -114,7 +114,11 @@ describe('Pill', () => {
 	})
 
 	it('uses custom remove icon override', () => {
-		const { container } = render(Pill, { value: 'Tag', removable: true, icons: { remove: 'custom-x' } })
+		const { container } = render(Pill, {
+			value: 'Tag',
+			removable: true,
+			icons: { remove: 'custom-x' }
+		})
 		const icon = container.querySelector('[data-pill-remove-icon]')
 		expect(icon?.classList.contains('custom-x')).toBe(true)
 	})

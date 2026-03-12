@@ -16,17 +16,17 @@
   @apply p-0;
 }
 [data-code-root] {
-  @apply max-h-100 bg-surface-z2 relative flex h-fit w-full flex-col overflow-hidden rounded-md;
+  @apply bg-surface-z2 relative flex h-fit max-h-100 w-full flex-col overflow-hidden rounded-md;
 }
 [data-code-overlay] {
-  @apply absolute right-1 top-1 z-10 flex items-center gap-1 opacity-0 transition-opacity;
+  @apply absolute top-1 right-1 z-10 flex items-center gap-1 opacity-0 transition-opacity;
 }
 [data-code-root]:hover [data-code-overlay],
 [data-code-root]:focus-within [data-code-overlay] {
   @apply opacity-100;
 }
 [data-code-lang] {
-  @apply text-surface-z5 absolute bottom-1 right-2 z-10 font-mono text-[0.5625rem] uppercase tracking-wider select-none;
+  @apply text-surface-z5 absolute right-2 bottom-1 z-10 font-mono text-[0.5625rem] tracking-wider uppercase select-none;
 }
 [data-code-root] > pre.shiki {
   @apply bg-surface-z2 m-0 h-fit border-none p-2 focus:outline-none;

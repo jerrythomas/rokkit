@@ -32,9 +32,8 @@
 	</div>
 	<h2>Custom Component</h2>
 	<p>
-		You can also use a custom component for the content of the Pill. In this example, we will
-		create a custom Status component, which takes a status string and shows color and text for the
-		status.
+		You can also use a custom component for the content of the Pill. In this example, we will create
+		a custom Status component, which takes a status string and shows color and text for the status.
 	</p>
 
 	<StoryViewer {...storyBuilder.getExample('mapping')} />
@@ -42,15 +41,13 @@
 	<div data-card>
 		<h3>Custom Component Implementation:</h3>
 		<Code {...storyBuilder.getFragment(3)} />
-		<p>
-			Set the using property to the Status component and Pill will use this for the content.
-		</p>
+		<p>Set the using property to the Status component and Pill will use this for the content.</p>
 	</div>
 	<h2>Removable Pills</h2>
 	<p>
-		To create a removable Pill, set the `removable` prop to `true`. This will add a remove
-		icon to the Pill, and when clicked, it will emit a `remove` event that you can handle to
-		perform the actual remove action:
+		To create a removable Pill, set the `removable` prop to `true`. This will add a remove icon to
+		the Pill, and when clicked, it will emit a `remove` event that you can handle to perform the
+		actual remove action:
 	</p>
 
 	<StoryViewer {...storyBuilder.getExample('removable')} />
@@ -59,9 +56,9 @@
 		<h3>Removable Implementation:</h3>
 		<Code {...storyBuilder.getFragment(4)} />
 		<p>
-			The Pill component provides a flexible and customizable way to display removable
-			elements in your application. By utilizing the Item component's features, you can create
-			various appearances to suit your specific use cases.
+			The Pill component provides a flexible and customizable way to display removable elements in
+			your application. By utilizing the Item component's features, you can create various
+			appearances to suit your specific use cases.
 		</p>
 	</div>
 	<h2>Properties</h2>
@@ -96,5 +93,4 @@
 			</div>
 		</div>
 	</div>
-
 </article>

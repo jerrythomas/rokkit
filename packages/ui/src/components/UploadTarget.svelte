@@ -32,7 +32,7 @@
 
 	const resolvedLabels = $derived({
 		...messages.current.uploadTarget,
-		...labels,
+		...labels
 	})
 
 	let inputRef = $state<HTMLInputElement | null>(null)

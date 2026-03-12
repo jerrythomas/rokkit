@@ -16,4 +16,4 @@
 	<MultiSelect {items} {fields} bind:value placeholder="Choose categories" />
 </div>
 
-<p class="mt-3 text-sm text-surface-z5">Selected: <strong>{JSON.stringify(value)}</strong></p>
+<p class="text-surface-z5 mt-3 text-sm">Selected: <strong>{JSON.stringify(value)}</strong></p>

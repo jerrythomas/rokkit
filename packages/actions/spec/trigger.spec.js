@@ -13,8 +13,12 @@ function makeTrigger(overrides = {}) {
 	const { trigger, container } = makeElements()
 	let open = false
 	const callbacks = {
-		onopen: vi.fn(() => { open = true }),
-		onclose: vi.fn(() => { open = false }),
+		onopen: vi.fn(() => {
+			open = true
+		}),
+		onclose: vi.fn(() => {
+			open = false
+		}),
 		onlast: vi.fn(),
 		isOpen: () => open,
 		...overrides
@@ -137,10 +141,16 @@ describe('Trigger', () => {
 		it('ArrowUp does not call onlast when onlast is not provided', () => {
 			const { trigger, container } = makeElements()
 			let open = false
-			const onopen = vi.fn(() => { open = true })
-			const onclose = vi.fn(() => { open = false })
+			const onopen = vi.fn(() => {
+				open = true
+			})
+			const onclose = vi.fn(() => {
+				open = false
+			})
 			const t = new Trigger(trigger, container, { onopen, onclose, isOpen: () => open })
-			trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true, cancelable: true }))
+			trigger.dispatchEvent(
+				new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true, cancelable: true })
+			)
 			expect(onopen).toHaveBeenCalledOnce()
 		})
 	})

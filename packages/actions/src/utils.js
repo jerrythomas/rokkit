@@ -26,7 +26,6 @@ export function getClosestAncestorWithAttribute(element, attribute) {
  * @returns {string|null} - The event name or null if no match is found.
  */
 export const getEventForKey = (keyMapping, key) => {
-	 
 	const matchEvent = ([_eventName, keys]) =>
 		(Array.isArray(keys) && keys.includes(key)) || (keys instanceof RegExp && keys.test(key))
 

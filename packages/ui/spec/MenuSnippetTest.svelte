@@ -14,10 +14,7 @@
 
 <Menu {items} {fields} {onselect}>
 	{#snippet itemContent(proxy)}
-		<span
-			data-custom-item
-			data-item-value={proxy.get('value')}
-		>
+		<span data-custom-item data-item-value={proxy.get('value')}>
 			Custom: {proxy.label}
 		</span>
 	{/snippet}

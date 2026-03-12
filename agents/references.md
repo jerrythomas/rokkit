@@ -35,6 +35,7 @@ Consolidated coding guidelines, framework references, and styling conventions.
 ### Theme Styles (per-theme folders: `rokkit/`, `minimal/`, `material/`, `glass/`)
 
 Control colors, gradients, shadows, border colors — the "look and feel":
+
 - Background and text colors
 - Gradients, shadows
 - Focus/active/hover color states
@@ -44,6 +45,7 @@ Control colors, gradients, shadows, border colors — the "look and feel":
 ### Layout Styles (`base/`)
 
 Structural properties consistent across themes:
+
 - Padding, margin, gap
 - Flexbox/grid structure
 - Border radius and width
@@ -62,6 +64,7 @@ Structural properties consistent across themes:
 ### Theme Application
 
 Applied via ancestor data attributes:
+
 - `data-style="rokkit|material|minimal|glass"` — visual theme
 - `data-mode="light|dark"` — color mode
 
@@ -126,6 +129,7 @@ UnoCSS-based color system using CSS variables for runtime theme switching:
 ### Data-First Design
 
 Components adapt to data structures — no data transformation required:
+
 ```svelte
 <List items={users} fields={{ text: 'fullName', image: 'avatar' }} />
 ```
@@ -133,6 +137,7 @@ Components adapt to data structures — no data transformation required:
 ### Composable Flexibility
 
 Every component extensible without modification via snippets:
+
 ```svelte
 <List {items}>
   {#snippet item(proxy)}
@@ -169,18 +174,18 @@ Standard props: `items`/`options`, `value` (bindable), `fields`, `onchange`/`ons
 
 ## Project Structure
 
-| Package | Folder | Description |
-|---------|--------|-------------|
-| `@rokkit/actions` | `packages/actions/` | Svelte actions (keyboard, navigator, dismissable, reveal, etc.) |
-| `@rokkit/chart` | `packages/chart/` | Chart/visualization components |
-| `@rokkit/cli` | `packages/cli/` | CLI tools |
-| `@rokkit/core` | `packages/core/` | Constants, utilities, field mapping, icon collections |
-| `@rokkit/data` | `packages/data/` | Data structures (Dataset, hierarchy, parsing, filters) |
-| `@rokkit/forms` | `packages/forms/` | Schema-driven form system |
-| `@rokkit/helpers` | `packages/helpers/` | Helper functions |
-| `@rokkit/icons` | `packages/icons/` | SVG icon sets |
-| `@rokkit/states` | `packages/states/` | Reactive state (ListController, NestedController, Proxy) |
-| `@rokkit/themes` | `packages/themes/` | CSS themes (base + rokkit/minimal/material/glass) |
-| `@rokkit/tutorial` | `packages/tutorial/` | Tutorial utilities |
-| `@rokkit/ui` | `packages/ui/` | UI components |
-| `site` | Documentation site + interactive demos + e2e tests |
+| Package            | Folder                                             | Description                                                     |
+| ------------------ | -------------------------------------------------- | --------------------------------------------------------------- |
+| `@rokkit/actions`  | `packages/actions/`                                | Svelte actions (keyboard, navigator, dismissable, reveal, etc.) |
+| `@rokkit/chart`    | `packages/chart/`                                  | Chart/visualization components                                  |
+| `@rokkit/cli`      | `packages/cli/`                                    | CLI tools                                                       |
+| `@rokkit/core`     | `packages/core/`                                   | Constants, utilities, field mapping, icon collections           |
+| `@rokkit/data`     | `packages/data/`                                   | Data structures (Dataset, hierarchy, parsing, filters)          |
+| `@rokkit/forms`    | `packages/forms/`                                  | Schema-driven form system                                       |
+| `@rokkit/helpers`  | `packages/helpers/`                                | Helper functions                                                |
+| `@rokkit/icons`    | `packages/icons/`                                  | SVG icon sets                                                   |
+| `@rokkit/states`   | `packages/states/`                                 | Reactive state (ListController, NestedController, Proxy)        |
+| `@rokkit/themes`   | `packages/themes/`                                 | CSS themes (base + rokkit/minimal/material/glass)               |
+| `@rokkit/tutorial` | `packages/tutorial/`                               | Tutorial utilities                                              |
+| `@rokkit/ui`       | `packages/ui/`                                     | UI components                                                   |
+| `site`             | Documentation site + interactive demos + e2e tests |

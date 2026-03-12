@@ -5,11 +5,7 @@
  */
 import { test, expect } from '@playwright/test'
 
-const EFFECTS_WITH_DEMOS = [
-	'/docs/effects/reveal',
-	'/docs/effects/shine',
-	'/docs/effects/tilt'
-]
+const EFFECTS_WITH_DEMOS = ['/docs/effects/reveal', '/docs/effects/shine', '/docs/effects/tilt']
 
 test.describe('Demo component toggle', () => {
 	for (const url of EFFECTS_WITH_DEMOS) {
@@ -32,9 +28,7 @@ test.describe('Demo component toggle', () => {
 			})
 
 			test('clicking code toggle renders highlighted code without error', async ({ page }) => {
-				const codeBtn = page
-					.locator('[data-demo-root] [data-demo-btn][title="Code"]')
-					.first()
+				const codeBtn = page.locator('[data-demo-root] [data-demo-btn][title="Code"]').first()
 				await codeBtn.click()
 
 				// Code block should be visible

@@ -1,7 +1,7 @@
 <script>
-  import { Code } from '@rokkit/ui'
+	import { Code } from '@rokkit/ui'
 
-  const code = `const message = 'Hello, World!'
+	const code = `const message = 'Hello, World!'
 console.log(message)`
 </script>
 

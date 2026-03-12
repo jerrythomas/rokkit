@@ -84,7 +84,11 @@
 		[key: string]: unknown
 	} = $props()
 
-	const icons = $derived({ ...DEFAULT_STATE_ICONS.selector, ...DEFAULT_STATE_ICONS.checkbox, ...userIcons })
+	const icons = $derived({
+		...DEFAULT_STATE_ICONS.selector,
+		...DEFAULT_STATE_ICONS.checkbox,
+		...userIcons
+	})
 
 	// ─── Dropdown state ───────────────────────────────────────────────────────
 
@@ -109,11 +113,17 @@
 				const children = item[childrenField]
 				if (Array.isArray(children) && children.length > 0) {
 					const matching = children.filter((child) =>
-						String(child[textField] ?? '').toLowerCase().includes(query)
+						String(child[textField] ?? '')
+							.toLowerCase()
+							.includes(query)
 					)
 					return matching.length > 0 ? { ...item, [childrenField]: matching } : null
 				}
-				return String(item[textField] ?? '').toLowerCase().includes(query) ? item : null
+				return String(item[textField] ?? '')
+					.toLowerCase()
+					.includes(query)
+					? item
+					: null
 			})
 			.filter(Boolean)
 	})
@@ -325,12 +335,7 @@
 
 	{#if isOpen}
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
-		<div
-			bind:this={dropdownRef}
-			data-select-dropdown
-			role="listbox"
-			aria-orientation="vertical"
-		>
+		<div bind:this={dropdownRef} data-select-dropdown role="listbox" aria-orientation="vertical">
 			{#if filterable}
 				<div data-select-filter>
 					<!-- svelte-ignore a11y_autofocus -->
@@ -347,7 +352,11 @@
 			{#each wrapper.flatView as node (node.key)}
 				{@const proxy = node.proxy}
 				{@const sel = !node.hasChildren && proxy.value === value}
-				{@const content = resolveSnippet(snippets as Record<string, unknown>, proxy, node.hasChildren ? GROUP_SNIPPET : ITEM_SNIPPET)}
+				{@const content = resolveSnippet(
+					snippets as Record<string, unknown>,
+					proxy,
+					node.hasChildren ? GROUP_SNIPPET : ITEM_SNIPPET
+				)}
 
 				{#if node.type === 'separator'}
 					<hr data-select-separator />

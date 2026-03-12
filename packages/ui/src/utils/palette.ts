@@ -20,7 +20,18 @@ export interface HSL {
 	l: number
 }
 
-export type ShadeKey = '50' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900' | '950'
+export type ShadeKey =
+	| '50'
+	| '100'
+	| '200'
+	| '300'
+	| '400'
+	| '500'
+	| '600'
+	| '700'
+	| '800'
+	| '900'
+	| '950'
 
 export type Shades = Record<ShadeKey, string>
 
@@ -64,7 +75,7 @@ export function hexToRgb(hex: string): RGB {
 export function rgbToHex(rgb: RGB): string {
 	const toHex = (n: number) => {
 		const hex = Math.round(Math.max(0, Math.min(255, n))).toString(16)
-		return hex.length === 1 ? `0${  hex}` : hex
+		return hex.length === 1 ? `0${hex}` : hex
 	}
 	return `#${toHex(rgb.r)}${toHex(rgb.g)}${toHex(rgb.b)}`
 }
@@ -173,7 +184,7 @@ export function generateShades(hex: string): Shades {
 		'500': [1.0, hsl.l], // Keep original lightness
 		'600': [1.02, Math.max(hsl.l * 0.82, 25)],
 		'700': [1.04, Math.max(hsl.l * 0.65, 20)],
-		'800': [1.06, Math.max(hsl.l * 0.50, 15)],
+		'800': [1.06, Math.max(hsl.l * 0.5, 15)],
 		'900': [1.08, Math.max(hsl.l * 0.35, 12)],
 		'950': [1.12, Math.max(hsl.l * 0.22, 8)]
 	}
@@ -539,10 +550,31 @@ export function applyPalette(
  * Remove custom palette CSS variables (reset to theme defaults)
  */
 export function resetPalette(
-	roles: ColorRole[] = ['primary', 'secondary', 'accent', 'surface', 'success', 'warning', 'danger', 'info'],
+	roles: ColorRole[] = [
+		'primary',
+		'secondary',
+		'accent',
+		'surface',
+		'success',
+		'warning',
+		'danger',
+		'info'
+	],
 	element: HTMLElement = document.documentElement
 ): void {
-	const shadeKeys: ShadeKey[] = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', '950']
+	const shadeKeys: ShadeKey[] = [
+		'50',
+		'100',
+		'200',
+		'300',
+		'400',
+		'500',
+		'600',
+		'700',
+		'800',
+		'900',
+		'950'
+	]
 
 	for (const role of roles) {
 		element.style.removeProperty(`--color-${role}`)

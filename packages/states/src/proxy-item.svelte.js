@@ -100,14 +100,13 @@ export class ProxyItem {
 		void this.#version // reactive dependency — triggers recompute after set()
 		const raw = this.#item[this.#fields.children]
 		if (!Array.isArray(raw) || raw.length === 0) return []
-		return raw.map(
-			(child, i) =>
-				this._createChild(
-					child,
-					this.#fields,
-					this.#key ? `${this.#key}-${i}` : String(i),
-					this.#level + 1
-				)
+		return raw.map((child, i) =>
+			this._createChild(
+				child,
+				this.#fields,
+				this.#key ? `${this.#key}-${i}` : String(i),
+				this.#level + 1
+			)
 		)
 	}
 
@@ -292,8 +291,12 @@ export class LazyProxyItem extends ProxyItem {
 		this.#loaded = lazyLoad === null || this.get('children') !== true
 	}
 
-	get loaded() { return this.#loaded }
-	get loading() { return this.#loading }
+	get loaded() {
+		return this.#loaded
+	}
+	get loading() {
+		return this.#loading
+	}
 
 	/**
 	 * Fetch children via the lazyLoad function.
@@ -317,4 +320,3 @@ export class LazyProxyItem extends ProxyItem {
 		return new LazyProxyItem(raw, fields, key, level, this.#lazyLoad)
 	}
 }
-

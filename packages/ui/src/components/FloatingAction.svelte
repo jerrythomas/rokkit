@@ -31,7 +31,11 @@
 		...snippets
 	}: FloatingActionProps & { [key: string]: FloatingActionItemSnippet | unknown } = $props()
 
-	const icons = $derived({ add: DEFAULT_STATE_ICONS.action.add, close: DEFAULT_STATE_ICONS.action.close, ...userIcons })
+	const icons = $derived({
+		add: DEFAULT_STATE_ICONS.action.add,
+		close: DEFAULT_STATE_ICONS.action.close,
+		...userIcons
+	})
 
 	/**
 	 * Create a ProxyItem for the given item

@@ -194,14 +194,14 @@ Feature: Custom Component Authoring
 
 ## Status
 
-| Feature | Status |
-|---------|--------|
-| ProxyItem — field access abstraction | ✅ Implemented |
-| ListController | ✅ Implemented |
-| NestedController | ✅ Implemented |
-| Navigator action | ✅ Implemented |
-| Ripple action | ✅ Implemented |
-| Hover lift action | ✅ Implemented |
-| Magnetic action | ✅ Implemented |
-| Action composition | ✅ Implemented |
-| Custom component primitives (documented patterns) | 🔲 Planned |
+| Feature                                           | Status         |
+| ------------------------------------------------- | -------------- |
+| ProxyItem — field access abstraction              | ✅ Implemented |
+| ListController                                    | ✅ Implemented |
+| NestedController                                  | ✅ Implemented |
+| Navigator action                                  | ✅ Implemented |
+| Ripple action                                     | ✅ Implemented |
+| Hover lift action                                 | ✅ Implemented |
+| Magnetic action                                   | ✅ Implemented |
+| Action composition                                | ✅ Implemented |
+| Custom component primitives (documented patterns) | 🔲 Planned     |

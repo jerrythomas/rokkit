@@ -62,9 +62,7 @@
 
 	let selectedLeft = $derived(rangeMode ? valueToPercent(lower) : 0)
 	let selectedWidth = $derived(
-		rangeMode
-			? valueToPercent(upper) - valueToPercent(lower)
-			: valueToPercent(value)
+		rangeMode ? valueToPercent(upper) - valueToPercent(lower) : valueToPercent(value)
 	)
 
 	// ─── Ticks ──────────────────────────────────────────────────────
@@ -87,7 +85,11 @@
 		if (disabled || trackWidth === 0) return
 		const dx = event.detail.dx as number
 		const currentPx = inverseLerp(rangeMode ? upper : value, min, max) * trackWidth
-		const newPx = clamp(currentPx + dx, rangeMode ? inverseLerp(lower, min, max) * trackWidth : 0, trackWidth)
+		const newPx = clamp(
+			currentPx + dx,
+			rangeMode ? inverseLerp(lower, min, max) * trackWidth : 0,
+			trackWidth
+		)
 		const raw = pixelToValue(newPx)
 		const snapped = snapToStep(clamp(raw, rangeMode ? lower : min, max))
 		if (rangeMode) {
@@ -243,19 +245,11 @@
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div
-	data-range
-	data-disabled={disabled || undefined}
-	class={className || undefined}
->
+<div data-range data-disabled={disabled || undefined} class={className || undefined}>
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<div data-range-track onclick={handleTrackClick}>
 		<div data-range-bar bind:clientWidth={trackWidth}></div>
-		<div
-			data-range-selected
-			style:left="{selectedLeft}%"
-			style:width="{selectedWidth}%"
-		></div>
+		<div data-range-selected style:left="{selectedLeft}%" style:width="{selectedWidth}%"></div>
 
 		{#if rangeMode}
 			<!-- Lower thumb -->
@@ -270,8 +264,12 @@
 				onpanmove={handleLowerPanMove}
 				onpanend={handleLowerPanEnd}
 				onkeydown={handleLowerKeyDown}
-				onfocus={() => { if (!disabled) slidingLower = true }}
-				onblur={() => { slidingLower = false }}
+				onfocus={() => {
+					if (!disabled) slidingLower = true
+				}}
+				onblur={() => {
+					slidingLower = false
+				}}
 				role="slider"
 				aria-valuenow={lower}
 				aria-valuemin={min}
@@ -293,8 +291,12 @@
 			onpanmove={handleUpperPanMove}
 			onpanend={handleUpperPanEnd}
 			onkeydown={handleUpperKeyDown}
-			onfocus={() => { if (!disabled) slidingUpper = true }}
-			onblur={() => { slidingUpper = false }}
+			onfocus={() => {
+				if (!disabled) slidingUpper = true
+			}}
+			onblur={() => {
+				slidingUpper = false
+			}}
 			role="slider"
 			aria-valuenow={rangeMode ? upper : value}
 			aria-valuemin={rangeMode ? lower : min}

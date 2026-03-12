@@ -83,19 +83,19 @@ Use `@rokkit/app`'s `ColorModeManager` to manage this automatically with OS pref
 
 ## API
 
-| Export | Description |
-|--------|-------------|
+| Export                   | Description                                                                |
+| ------------------------ | -------------------------------------------------------------------------- |
 | `presetRokkit(options?)` | Full UnoCSS preset for Rokkit — colors, icons, shortcuts, dark mode, fonts |
-| `presetBackgrounds()` | SVG background pattern utilities |
-| `loadConfig(options?)` | Load and merge Rokkit config from project config file |
+| `presetBackgrounds()`    | SVG background pattern utilities                                           |
+| `loadConfig(options?)`   | Load and merge Rokkit config from project config file                      |
 
 ### `presetRokkit` options
 
-| Option | Type | Description |
-|--------|------|-------------|
+| Option   | Type                     | Description                                |
+| -------- | ------------------------ | ------------------------------------------ |
 | `colors` | `Record<string, string>` | Override semantic color → palette mappings |
-| `skins` | `Record<string, object>` | Additional `skin-*` shortcut definitions |
-| `icons` | `Record<string, string>` | Additional icon collection paths |
+| `skins`  | `Record<string, object>` | Additional `skin-*` shortcut definitions   |
+| `icons`  | `Record<string, string>` | Additional icon collection paths           |
 
 ---
 

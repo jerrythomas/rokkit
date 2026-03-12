@@ -1,5 +1,5 @@
 <script>
-  import { Button } from '@rokkit/ui'
+	import { Button } from '@rokkit/ui'
 </script>
 
 <!-- Icon-only buttons -->

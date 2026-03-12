@@ -7,7 +7,6 @@ import { omit, pick } from 'ramda'
  * @param {import('../types').LayoutSchema} attribute
  */
 function combineArrayElementsWithSchema(element, attribute) {
-	 
 	const schema = getSchemaWithLayout(attribute.props.items, element.schema)
 	return {
 		...attribute,
@@ -76,7 +75,6 @@ function combineElementWithSchema(element, schema) {
 	let attribute = findAttributeByPath(scope, schema)
 
 	if (Array.isArray(element.elements)) {
-		 
 		attribute = combineNestedElementsWithSchema(element, attribute, schema)
 	} else if (element.schema || attribute.props?.type === 'array') {
 		attribute = combineArrayElementsWithSchema(element, attribute)

@@ -1,34 +1,34 @@
 /* ProgressBar — base structural styles */
 
 [data-progress] {
-	position: relative;
-	width: 100%;
-	height: 0.5rem;
-	border-radius: 9999px;
-	overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 0.5rem;
+  border-radius: 9999px;
+  overflow: hidden;
 }
 
 [data-progress-bar] {
-	height: 100%;
-	border-radius: 9999px;
-	transition: width 0.3s ease;
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.3s ease;
 }
 
 [data-progress][data-indeterminate] [data-progress-bar] {
-	animation: progress-indeterminate 1.5s ease-in-out infinite;
+  animation: progress-indeterminate 1.5s ease-in-out infinite;
 }
 
 @keyframes progress-indeterminate {
-	0% {
-		transform: translateX(-100%);
-		width: 50%;
-	}
-	50% {
-		transform: translateX(50%);
-		width: 50%;
-	}
-	100% {
-		transform: translateX(200%);
-		width: 50%;
-	}
+  0% {
+    transform: translateX(-100%);
+    width: 50%;
+  }
+  50% {
+    transform: translateX(50%);
+    width: 50%;
+  }
+  100% {
+    transform: translateX(200%);
+    width: 50%;
+  }
 }

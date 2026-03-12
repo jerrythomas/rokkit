@@ -1,4 +1,4 @@
- * Card - Rokkit Theme Styles
+* Card - Rokkit Theme Styles
  *
  * Rich gradients, elevated shadows, and vibrant surface styling.
  */
@@ -8,23 +8,25 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-card] {
-	@apply from-surface-z2 to-surface-z1 border-surface-z5 text-surface-z9 border bg-gradient-to-b shadow-lg;
+  @apply from-surface-z2 to-surface-z1 border-surface-z5 text-surface-z9 border bg-gradient-to-b shadow-lg;
 }
 
 /* Interactive cards (buttons) */
 [data-style='rokkit'] [data-card][data-card-interactive] {
-	cursor: pointer;
-	transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 [data-style='rokkit'] [data-card][data-card-interactive]:hover {
-	@apply shadow-xl;
-	transform: translateY(-2px);
+  @apply shadow-xl;
+  transform: translateY(-2px);
 }
 
 [data-style='rokkit'] [data-card][data-card-interactive]:active {
-	@apply shadow-lg;
-	transform: translateY(0);
+  @apply shadow-lg;
+  transform: translateY(0);
 }
 
 /* =============================================================================
@@ -32,15 +34,15 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-card-header] {
-	@apply border-surface-z4 border-b;
+  @apply border-surface-z4 border-b;
 }
 
 [data-style='rokkit'] [data-card-body] {
-	@apply text-surface-z8;
+  @apply text-surface-z8;
 }
 
 [data-style='rokkit'] [data-card-footer] {
-	@apply border-surface-z4 border-t text-surface-z7;
+  @apply border-surface-z4 text-surface-z7 border-t;
 }
 
 /* =============================================================================
@@ -48,7 +50,7 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-card][data-card-interactive]:focus-visible {
-	@apply ring-primary-z5 ring-2 outline-none;
+  @apply ring-primary-z5 ring-2 outline-none;
 }
 
 /* =============================================================================
@@ -57,6 +59,6 @@
 
 [data-style='rokkit'] [data-card][data-card-interactive][data-disabled],
 [data-style='rokkit'] [data-card][data-card-interactive]:disabled {
-	@apply opacity-50 cursor-not-allowed;
-	transform: none;
+  @apply cursor-not-allowed opacity-50;
+  transform: none;
 }

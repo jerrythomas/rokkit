@@ -20,23 +20,24 @@ A Svelte 5 component library built around a single conviction: **data should dri
 
 ## What's in the box
 
-| Area | What it does |
-|------|-------------|
-| **Data Binding** | Field mapping, nested paths, computed fields, per-item overrides |
-| **Composability** | Snippet-based extensibility for any rendered part of any component |
-| **Theming** | Skin system, CSS variable architecture, dark/light/system mode, component variants |
-| **Accessibility** | Keyboard navigation via `use:navigator`, ARIA, focus trapping, screen reader labels |
-| **Forms** | Schema-driven form generation, validation, dynamic lookups, custom field types |
-| **Component Library** | Selection, navigation, input, overlay, cards, layout, data components |
-| **Charts** | Sparklines, animated charts, coordinated views (CrossFilter), pattern fills |
-| **Developer Utilities** | ListController, NestedController, ProxyItem, ripple/hover-lift/magnetic actions |
-| **Toolchain** | CLI for setup and upgrade, icon sets, custom skin and theme authoring |
+| Area                    | What it does                                                                        |
+| ----------------------- | ----------------------------------------------------------------------------------- |
+| **Data Binding**        | Field mapping, nested paths, computed fields, per-item overrides                    |
+| **Composability**       | Snippet-based extensibility for any rendered part of any component                  |
+| **Theming**             | Skin system, CSS variable architecture, dark/light/system mode, component variants  |
+| **Accessibility**       | Keyboard navigation via `use:navigator`, ARIA, focus trapping, screen reader labels |
+| **Forms**               | Schema-driven form generation, validation, dynamic lookups, custom field types      |
+| **Component Library**   | Selection, navigation, input, overlay, cards, layout, data components               |
+| **Charts**              | Sparklines, animated charts, coordinated views (CrossFilter), pattern fills         |
+| **Developer Utilities** | ListController, NestedController, ProxyItem, ripple/hover-lift/magnetic actions     |
+| **Toolchain**           | CLI for setup and upgrade, icon sets, custom skin and theme authoring               |
 
 ---
 
 ## Documentation
 
 ### [Features](features/)
+
 What Rokkit does and why — written as Gherkin scenarios and vision statements. Start here to understand the goals.
 
 - [Data Binding](features/01-DataBinding.md)
@@ -50,6 +51,7 @@ What Rokkit does and why — written as Gherkin scenarios and vision statements.
 - [Toolchain](features/09-Toolchain.md)
 
 ### [Design](design/)
+
 How Rokkit is built — architecture decisions, patterns, and implementation details.
 
 - [Patterns](design/01-patterns.md) — Core patterns every component follows

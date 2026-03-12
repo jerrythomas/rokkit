@@ -31,7 +31,12 @@ describe('PaletteManager', () => {
 		const { container } = render(PaletteManager, {
 			showSave: true,
 			autoApply: false,
-			icons: { save: 'custom-save', check: 'custom-check', hex: 'custom-hash', presets: 'custom-list' }
+			icons: {
+				save: 'custom-save',
+				check: 'custom-check',
+				hex: 'custom-hash',
+				presets: 'custom-list'
+			}
 		})
 		const saveIcon = container.querySelector('[data-palette-save-icon]')
 		expect(saveIcon?.classList.contains('custom-save')).toBe(true)

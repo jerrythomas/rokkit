@@ -35,12 +35,12 @@ import { vibe } from '@rokkit/states'
 const modeManager = new ColorModeManager(vibe)
 
 // Read current mode
-console.log(modeManager.mode)      // 'system' | 'light' | 'dark'
-console.log(modeManager.resolved)  // 'light' | 'dark'
+console.log(modeManager.mode) // 'system' | 'light' | 'dark'
+console.log(modeManager.resolved) // 'light' | 'dark'
 
 // Change mode
 modeManager.mode = 'dark'
-modeManager.mode = 'system'  // will re-resolve from OS preference
+modeManager.mode = 'system' // will re-resolve from OS preference
 ```
 
 ### Listening for OS preference changes
@@ -56,7 +56,7 @@ Call `listen()` inside `onMount` or a `$effect.root`. It returns a cleanup funct
   const modeManager = new ColorModeManager(vibe)
 
   onMount(() => {
-    return modeManager.listen()  // returns cleanup fn, called on destroy
+    return modeManager.listen() // returns cleanup fn, called on destroy
   })
 </script>
 ```
@@ -83,28 +83,28 @@ Drop-in Svelte component that renders a three-way toggle (light / dark / system)
 ```js
 import { resolveMode } from '@rokkit/app'
 
-resolveMode('system')  // 'light' or 'dark' based on OS preference
-resolveMode('dark')    // 'dark'
-resolveMode('light')   // 'light'
+resolveMode('system') // 'light' or 'dark' based on OS preference
+resolveMode('dark') // 'dark'
+resolveMode('light') // 'light'
 ```
 
 ## API
 
-| Export | Description |
-|--------|-------------|
-| `ColorModeManager` | Reactive class for tracking and resolving color mode |
+| Export                | Description                                           |
+| --------------------- | ----------------------------------------------------- |
+| `ColorModeManager`    | Reactive class for tracking and resolving color mode  |
 | `ThemeSwitcherToggle` | Svelte component — three-way light/dark/system toggle |
-| `resolveMode(mode)` | Resolve `'system'` to actual `'light'` \| `'dark'` |
-| `ColorMode` | Type: `'system' \| 'light' \| 'dark'` |
-| `ResolvedMode` | Type: `'light' \| 'dark'` |
+| `resolveMode(mode)`   | Resolve `'system'` to actual `'light'` \| `'dark'`    |
+| `ColorMode`           | Type: `'system' \| 'light' \| 'dark'`                 |
+| `ResolvedMode`        | Type: `'light' \| 'dark'`                             |
 
 ### ColorModeManager members
 
-| Member | Type | Description |
-|--------|------|-------------|
-| `mode` | `ColorMode` (get/set) | Current three-way mode selection |
-| `resolved` | `ResolvedMode` (get) | Actual light or dark value |
-| `listen()` | `() => () => void` | Start OS preference listener; returns cleanup fn |
+| Member     | Type                  | Description                                      |
+| ---------- | --------------------- | ------------------------------------------------ |
+| `mode`     | `ColorMode` (get/set) | Current three-way mode selection                 |
+| `resolved` | `ResolvedMode` (get)  | Actual light or dark value                       |
+| `listen()` | `() => () => void`    | Start OS preference listener; returns cleanup fn |
 
 ---
 

@@ -48,7 +48,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-card][data-card-interactive]:focus-visible {
-  @apply ring-primary-z4 outline-none ring-2 ring-offset-2;
+  @apply ring-primary-z4 ring-2 ring-offset-2 outline-none;
 }
 
 /* =============================================================================

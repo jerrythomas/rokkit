@@ -14,7 +14,10 @@ const ARCHIVE_TYPES = new Set(['application/zip', 'application/gzip', 'applicati
 export function matchesAccept(file, accept) {
 	if (!accept) return true
 
-	const tokens = accept.split(',').map((t) => t.trim()).filter(Boolean)
+	const tokens = accept
+		.split(',')
+		.map((t) => t.trim())
+		.filter(Boolean)
 	if (tokens.length === 0) return true
 
 	return tokens.some((token) => {

@@ -384,12 +384,12 @@ Each docs page has a `meta.json` file in its directory:
 }
 ```
 
-| Field | Purpose |
-|-------|---------|
-| `title` | Page title in `<head>` and `<h1>` |
-| `description` | Subtitle shown below the `<h1>` |
-| `icon` | Icon class shown alongside the title |
-| `llms` | Whether to show the llms.txt floating button |
+| Field         | Purpose                                      |
+| ------------- | -------------------------------------------- |
+| `title`       | Page title in `<head>` and `<h1>`            |
+| `description` | Subtitle shown below the `<h1>`              |
+| `icon`        | Icon class shown alongside the title         |
+| `llms`        | Whether to show the llms.txt floating button |
 
 The layout reads these via `data.sections` (loaded server-side) and uses `findSection()` to locate the metadata for the current route.
 
@@ -413,12 +413,12 @@ The page lives inside the `(play)` route group and uses the standard playground 
 
 A controls column on the left side of the builder exposes four top-level settings that map directly to the `data-*` attributes Rokkit reads on `<html>`:
 
-| Control | Attribute | Options |
-|---------|-----------|---------|
+| Control        | Attribute      | Options                                            |
+| -------------- | -------------- | -------------------------------------------------- |
 | Palette / skin | `data-palette` | `rokkit`, `glass`, `minimal`, `material`, `custom` |
-| Theme style | `data-style` | `rokkit`, `minimal`, `material` |
-| Color mode | `data-mode` | `light`, `dark`, `system` |
-| Density | `data-density` | `compact`, `default`, `comfortable` |
+| Theme style    | `data-style`   | `rokkit`, `minimal`, `material`                    |
+| Color mode     | `data-mode`    | `light`, `dark`, `system`                          |
+| Density        | `data-density` | `compact`, `default`, `comfortable`                |
 
 Selecting a built-in skin loads its token values into the editor. Selecting "Custom" starts with the `rokkit` defaults and allows full per-token editing. All four controls use Rokkit's own `Toggle` group or `Select` components — the builder eats its own cooking.
 
@@ -428,16 +428,16 @@ Below the top-level controls, the builder exposes per-state visual property edit
 
 **States available:**
 
-| State | `data-*` trigger |
-|-------|-----------------|
-| `default` | (no modifier) |
-| `hover` | `:hover` |
-| `focus` | `:focus-visible` |
-| `active` | `data-active="true"` |
-| `selected` | `data-selected="true"` |
+| State                  | `data-*` trigger                                           |
+| ---------------------- | ---------------------------------------------------------- |
+| `default`              | (no modifier)                                              |
+| `hover`                | `:hover`                                                   |
+| `focus`                | `:focus-visible`                                           |
+| `active`               | `data-active="true"`                                       |
+| `selected`             | `data-selected="true"`                                     |
 | `selected + unfocused` | `data-selected="true"` without `:focus-within` on ancestor |
-| `disabled` | `data-disabled="true"` |
-| `error` | `data-error="true"` |
+| `disabled`             | `data-disabled="true"`                                     |
+| `error`                | `data-error="true"`                                        |
 
 **Properties per state:**
 
@@ -494,13 +494,13 @@ A "Download theme.css" button at the bottom of the controls panel exports the cu
 /* Base: rokkit skin / material style / dark mode   */
 
 :root,
-[data-palette="custom"] {
+[data-palette='custom'] {
   --color-primary-500: #6366f1;
   --color-primary-600: #4f46e5;
   /* ... only tokens that differ from the base skin ... */
 }
 
-[data-style="material"] [data-list] [data-list-item][data-active="true"] {
+[data-style='material'] [data-list] [data-list-item][data-active='true'] {
   border-radius: 0.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
@@ -560,10 +560,10 @@ The layout renders the full Nexus chrome (top bar, sidebar) around every child p
 
 A `ThemePanel` component floats in the bottom-right corner of the viewport, visible only while inside `/preview/*`. It exposes two controls:
 
-| Control | Store field | Options |
-|---------|-------------|---------|
-| Skin | `vibe.style` | `rokkit`, `glass`, `minimal`, `material` |
-| Mode | `vibe.mode` | `light`, `dark` |
+| Control | Store field  | Options                                  |
+| ------- | ------------ | ---------------------------------------- |
+| Skin    | `vibe.style` | `rokkit`, `glass`, `minimal`, `material` |
+| Mode    | `vibe.mode`  | `light`, `dark`                          |
 
 Changes write directly to the vibe store, which applies `data-style` and `data-mode` to `document.documentElement`. Theme updates are instant — no page reload required. The panel is positioned with `position: fixed; bottom: 1rem; right: 1rem` and sits above the page content at a high `z-index`.
 
@@ -571,12 +571,12 @@ Changes write directly to the vibe store, which applies `data-style` and `data-m
 
 Nexus is designed to exercise a broad cross-section of the Rokkit component library across its four screens:
 
-| Screen | Components used |
-|--------|----------------|
-| Dashboard | `List` (activity feed), `Button`, card layout |
-| Projects | `Select` (filters), `Tree` (task hierarchy), detail panel |
-| Reports | `Toolbar`, `Select` (filters), chart placeholders, DataTable placeholder |
-| Admin | `Tabs` (profile / team / appearance), `Button`, appearance settings |
+| Screen    | Components used                                                          |
+| --------- | ------------------------------------------------------------------------ |
+| Dashboard | `List` (activity feed), `Button`, card layout                            |
+| Projects  | `Select` (filters), `Tree` (task hierarchy), detail panel                |
+| Reports   | `Toolbar`, `Select` (filters), chart placeholders, DataTable placeholder |
+| Admin     | `Tabs` (profile / team / appearance), `Button`, appearance settings      |
 
 Sections that require components not yet available (DataTable, density control) are marked "Coming soon" with a placeholder card so the layout remains coherent without empty screens.
 

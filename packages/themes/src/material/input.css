@@ -19,7 +19,7 @@
 
 /* Input root: outlined border */
 [data-style='material'] [data-input-root] {
-  @apply flex items-center border border-surface-z4 rounded bg-transparent p-0 transition-all;
+  @apply border-surface-z4 flex items-center rounded border bg-transparent p-0 transition-all;
   background-image: none;
 }
 
@@ -33,10 +33,12 @@
 }
 
 /* Inputs inside wrapper */
-[data-style='material'] [data-input-root] input:not([type='checkbox'], [type='radio'], [type='color']),
+[data-style='material']
+  [data-input-root]
+  input:not([type='checkbox'], [type='radio'], [type='color']),
 [data-style='material'] [data-input-root] textarea,
 [data-style='material'] [data-input-root] select {
-  @apply bg-transparent text-surface-z9 w-full border-none px-3 py-2.5 outline-none transition-all;
+  @apply text-surface-z9 w-full border-none bg-transparent px-3 py-2.5 transition-all outline-none;
   font-size: 0.875rem;
   line-height: 1.25rem;
 }
@@ -47,18 +49,18 @@
 
 /* Select inside input-root */
 [data-style='material'] [data-input-root] [data-select-trigger] {
-  @apply bg-transparent text-surface-z9 border-none rounded px-3 shadow-none ring-0 focus:outline-none;
+  @apply text-surface-z9 rounded border-none bg-transparent px-3 shadow-none ring-0 focus:outline-none;
   font-size: 0.875rem;
 }
 
 /* Suppress standalone select open-state ring/border when inside input-root */
 [data-style='material'] [data-input-root] [data-select][data-open='true'] [data-select-trigger] {
-  @apply border-none ring-0 shadow-none;
+  @apply border-none shadow-none ring-0;
 }
 
 /* Labels: floating label effect (exclude checkbox — uses inline label) */
 [data-style='material'] [data-field-root]:not([data-field-type='checkbox']) [data-field] > label {
-  @apply text-surface-z5 text-sm absolute left-3 px-1 transition-all pointer-events-none;
+  @apply text-surface-z5 pointer-events-none absolute left-3 px-1 text-sm transition-all;
   top: 50%;
   transform: translateY(-50%);
   background: transparent;
@@ -66,8 +68,14 @@
 }
 
 /* Label floats up when input has focus or value */
-[data-style='material'] [data-field-root]:not([data-field-type='checkbox']) [data-field]:has([data-input-root]:focus-within) > label,
-[data-style='material'] [data-field-root]:not([data-field-type='checkbox']):not([data-field-empty='true']) [data-field] > label {
+[data-style='material']
+  [data-field-root]:not([data-field-type='checkbox'])
+  [data-field]:has([data-input-root]:focus-within)
+  > label,
+[data-style='material']
+  [data-field-root]:not([data-field-type='checkbox']):not([data-field-empty='true'])
+  [data-field]
+  > label {
   @apply text-xs;
   top: 0;
   transform: translateY(-50%);
@@ -75,7 +83,10 @@
   padding-inline: 0.25rem;
 }
 
-[data-style='material'] [data-field-root]:not([data-field-type='checkbox']) [data-field]:has([data-input-root]:focus-within) > label {
+[data-style='material']
+  [data-field-root]:not([data-field-type='checkbox'])
+  [data-field]:has([data-input-root]:focus-within)
+  > label {
   @apply text-primary-z5;
 }
 
@@ -105,7 +116,7 @@
 
 /* Disabled state */
 [data-style='material'] [data-field-disabled] [data-input-root] {
-  @apply border-surface-z3 bg-surface-z1 opacity-60 cursor-not-allowed;
+  @apply border-surface-z3 bg-surface-z1 cursor-not-allowed opacity-60;
 }
 
 /* Error state */
@@ -113,18 +124,21 @@
   @apply border-danger-z4;
 }
 
-[data-style='material'] [data-field-root]:not([data-field-type='checkbox'])[data-field-state='fail'] [data-field] > label {
+[data-style='material']
+  [data-field-root]:not([data-field-type='checkbox'])[data-field-state='fail']
+  [data-field]
+  > label {
   @apply text-danger-z4;
 }
 
 /* Description */
 [data-style='material'] [data-description] {
-  @apply text-surface-z5 mt-1 text-xs px-3;
+  @apply text-surface-z5 mt-1 px-3 text-xs;
 }
 
 /* Message */
 [data-style='material'] [data-message] {
-  @apply text-danger-z5 text-xs mt-1 px-3;
+  @apply text-danger-z5 mt-1 px-3 text-xs;
 }
 
 /* Checkbox */
@@ -132,7 +146,9 @@
   @apply text-surface-z5 text-lg;
 }
 
-[data-style='material'] [data-checkbox-root][data-variant='custom']:has(input:checked) [data-checkbox-icon] {
+[data-style='material']
+  [data-checkbox-root][data-variant='custom']:has(input:checked)
+  [data-checkbox-icon] {
   @apply text-primary-z5;
 }
 

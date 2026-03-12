@@ -18,15 +18,18 @@ CLAUDE.md loads this file at session start — follow it.
 ## Task Classification
 
 ### Design Work (full pipeline)
+
 - New features, new patterns, architectural changes
 - Anything that could be done multiple ways
 - **Process:** Backlog → Plan → Implement (see below)
 
 ### Tactical Work (lightweight)
+
 - Bug fixes, small changes, clear scope
 - **Process:** Confirm reasoning → implement → update docs if needed
 
 ### When in Doubt
+
 Ask. The cost of a question is low.
 
 ---
@@ -74,6 +77,7 @@ Everything goes to `docs/backlog/`. No inline insertion into current work. Pick 
 ## Session Lifecycle
 
 ### Session Start
+
 1. Read `agents/workflow.md` — this file
 2. Read `agents/memory.md` — project knowledge
 3. Read `agents/journal.md` (last ~50 lines) — recent progress
@@ -81,11 +85,13 @@ Everything goes to `docs/backlog/`. No inline insertion into current work. Pick 
 5. Consult `agents/design-patterns.md` and `agents/references.md` as needed during implementation
 
 ### During Session
+
 - Track progress in the active plan
 - Capture decisions in `agents/memory.md` immediately
 - Update `docs/design/*.md` when designs change
 
 ### Before Commit
+
 1. Run tests — all must pass
 2. Run lint — 0 errors
 3. Update `agents/journal.md`
@@ -102,14 +108,14 @@ Everything goes to `docs/backlog/`. No inline insertion into current work. Pick 
 
 ## File Reference
 
-| File | Purpose | When to update |
-|------|---------|---------------|
-| `agents/workflow.md` | This file — methodology | When workflow evolves |
-| `agents/memory.md` | Project knowledge, principles | When decisions are made |
-| `agents/journal.md` | Progress log | Every session |
-| `agents/design-patterns.md` | Established patterns cookbook | When patterns are proven |
-| `agents/references.md` | Coding conventions, styling | When conventions change |
-| `docs/requirements/` | Module requirements (what/why) | When module scope changes |
-| `docs/design/` | Module design (how/why) | When design changes |
-| `docs/backlog/` | Prioritized work items | When items are added/completed |
-| `docs/plans/README.md` | Active plan | When starting/finishing work |
+| File                        | Purpose                        | When to update                 |
+| --------------------------- | ------------------------------ | ------------------------------ |
+| `agents/workflow.md`        | This file — methodology        | When workflow evolves          |
+| `agents/memory.md`          | Project knowledge, principles  | When decisions are made        |
+| `agents/journal.md`         | Progress log                   | Every session                  |
+| `agents/design-patterns.md` | Established patterns cookbook  | When patterns are proven       |
+| `agents/references.md`      | Coding conventions, styling    | When conventions change        |
+| `docs/requirements/`        | Module requirements (what/why) | When module scope changes      |
+| `docs/design/`              | Module design (how/why)        | When design changes            |
+| `docs/backlog/`             | Prioritized work items         | When items are added/completed |
+| `docs/plans/README.md`      | Active plan                    | When starting/finishing work   |
