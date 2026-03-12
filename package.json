@@ -2,6 +2,7 @@
   "name": "rokkit",
   "version": "1.0.0-next.132",
   "private": true,
+  "prettier": "./config/.prettierrc",
   "module": "src/index.js",
   "type": "module",
   "scripts": {
@@ -9,10 +10,10 @@
     "test:unit": "vitest",
     "test:ci": "vitest run",
     "test:ui": "vitest run --project ui",
-    "test:e2e": "cd sites/learn && npx playwright test",
+    "test:e2e": "cd site && npx playwright test",
     "coverage": "vitest run --coverage",
-    "format": "prettier --write .",
-    "lint": "eslint --fix",
+    "format": "prettier --config config/.prettierrc --ignore-path config/.prettierignore --write .",
+    "lint": "eslint --config config/eslint.config.mjs --fix",
     "bump": "bumpp --no-push",
     "bump:next": "bumpp --preid=next --no-push",
     "upgrade:all": "find ./packages -type d -depth 1 -exec sh -c 'cd \"{}\" && bun update --latest' \\;",
@@ -48,7 +49,7 @@
   },
   "workspaces": [
     "./packages/*",
-    "./sites/*"
+    "./site"
   ],
   "dependencies": {
     "@types/ramda": "^0.31.1"
