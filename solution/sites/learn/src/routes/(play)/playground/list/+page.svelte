@@ -1,6 +1,6 @@
 <script>
 	// @ts-nocheck
-	import List from '@rokkit/testbed/List.svelte'
+	import { List } from '@rokkit/ui'
 
 	// ─── Flat list ────────────────────────────────────────────────────────────────
 
