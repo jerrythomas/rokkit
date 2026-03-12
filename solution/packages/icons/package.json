@@ -25,6 +25,7 @@
     "access": "public"
   },
   "devDependencies": {
+    "@iconify-json/solar": "^1.2.5",
     "@rokkit/cli": "workspace:latest",
     "simple-icons": "^16.11.0"
   },
