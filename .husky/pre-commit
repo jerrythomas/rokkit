@@ -1,1 +1,1 @@
-cd solution && bun run vitest run
+bun run vitest run
