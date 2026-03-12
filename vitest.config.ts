@@ -19,7 +19,7 @@ export default defineConfig({
 			all: true,
 			reporter: ['text', 'html', 'lcov', 'json'],
 			include: ['**/src/**'],
-			exclude: ['**/spec/**', '**/node_modules/**', '**/dist/**', '**/sites/**', '**/fixtures/**', '**/types.ts']
+			exclude: ['**/spec/**', '**/node_modules/**', '**/dist/**', '**/site/**', '**/fixtures/**', '**/types.ts']
 		},
 		projects: [
 			{ extends: true, test: { name: 'actions', root: 'packages/actions' } },
@@ -38,16 +38,15 @@ export default defineConfig({
 				extends: true,
 				test: {
 					name: 'learn',
-					root: 'sites/learn'
+					root: 'site'
 				},
 				resolve: {
 					alias: {
-						$lib: path.resolve('./sites/learn/src/lib'),
-						$app: path.resolve('./sites/learn/src/app')
+						$lib: path.resolve('./site/src/lib'),
+						$app: path.resolve('./site/src/app')
 					}
 				}
-			},
-			{ extends: true, test: { name: 'testbed', root: 'packages/testbed' } }
+			}
 		]
 	}
 })
