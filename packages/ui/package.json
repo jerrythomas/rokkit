@@ -21,9 +21,11 @@
     }
   },
   "files": [
-    "src"
+    "src",
+    "LICENSE"
   ],
   "scripts": {
+    "prepublishOnly": "cp ../../LICENSE .",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "build": "echo 'No build step needed for source-only package'"
   },

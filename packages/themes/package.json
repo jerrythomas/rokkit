@@ -31,10 +31,11 @@
   "files": [
     "src",
     "dist",
-    "build.mjs"
+    "build.mjs",
+    "LICENSE"
   ],
   "scripts": {
-    "prepublishOnly": "bun run build.mjs",
+    "prepublishOnly": "cp ../../LICENSE . && bun run build.mjs",
     "build": "bun run build.mjs"
   },
   "dependencies": {

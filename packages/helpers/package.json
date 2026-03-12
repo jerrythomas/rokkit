@@ -19,7 +19,8 @@
     "src/**/*.svelte",
     "dist/**/*.d.ts",
     "README.md",
-    "package.json"
+    "package.json",
+    "LICENSE"
   ],
   "exports": {
     "./package.json": "./package.json",
@@ -34,7 +35,7 @@
     }
   },
   "scripts": {
-    "prepublishOnly": "tsc --project tsconfig.build.json",
+    "prepublishOnly": "cp ../../LICENSE . && tsc --project tsconfig.build.json",
     "clean": "rm -rf dist",
     "build": "bun clean && bun prepublishOnly"
   },

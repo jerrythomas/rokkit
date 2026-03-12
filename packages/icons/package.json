@@ -18,7 +18,8 @@
   "files": [
     "lib/**/*",
     "README.md",
-    "package.json"
+    "package.json",
+    "LICENSE"
   ],
   "license": "MIT",
   "publishConfig": {
@@ -30,6 +31,7 @@
     "simple-icons": "^16.11.0"
   },
   "scripts": {
+    "prepublishOnly": "cp ../../LICENSE .",
     "format": "prettier --write .",
     "lint": "eslint --fix .",
     "build": "rokkit-cli build && bun format",

@@ -12,13 +12,14 @@
     "access": "public"
   },
   "scripts": {
-    "prepublishOnly": "tsc --project tsconfig.build.json",
+    "prepublishOnly": "cp ../../LICENSE . && tsc --project tsconfig.build.json",
     "clean": "rm -rf dist",
     "build": "bun clean && bun prepublishOnly"
   },
   "files": [
     "src/**/*.js",
-    "src/**/*.svelte"
+    "src/**/*.svelte",
+    "LICENSE"
   ],
   "exports": {
     "./src": "./src",

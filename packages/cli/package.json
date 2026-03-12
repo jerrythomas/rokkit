@@ -9,7 +9,7 @@
   },
   "type": "module",
   "scripts": {
-    "prepublishOnly": "bun clean && bun tsc --project tsconfig.build.json",
+    "prepublishOnly": "cp ../../LICENSE . && bun clean && bun tsc --project tsconfig.build.json",
     "clean": "rm -rf dist",
     "build": "bun prepublishOnly"
   },
@@ -33,7 +33,8 @@
     "src/**/*.js",
     "dist/**/*.d.ts",
     "README.md",
-    "package.json"
+    "package.json",
+    "LICENSE"
   ],
   "exports": {
     "./package.json": "./package.json",

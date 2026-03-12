@@ -9,7 +9,7 @@
     "access": "public"
   },
   "scripts": {
-    "prepublishOnly": "bunx tsc --project tsconfig.build.json",
+    "prepublishOnly": "cp ../../LICENSE . && bunx tsc --project tsconfig.build.json",
     "clean": "rm -rf dist",
     "build": "bun clean && bun prepublishOnly"
   },
@@ -19,7 +19,8 @@
     "src/**/*.json",
     "dist/**/*.d.ts",
     "README.md",
-    "package.json"
+    "package.json",
+    "LICENSE"
   ],
   "exports": {
     "./src": "./src",

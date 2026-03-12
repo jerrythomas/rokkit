@@ -22,8 +22,13 @@
       "import": "./src/index.js"
     }
   },
+  "files": [
+    "src/**/*.js",
+    "dist/**/*.d.ts",
+    "LICENSE"
+  ],
   "scripts": {
-    "prepublishOnly": "bun clean && bun tsc --project tsconfig.build.json",
+    "prepublishOnly": "cp ../../LICENSE . && bun clean && bun tsc --project tsconfig.build.json",
     "clean": "rm -rf dist",
     "build": "bun prepublishOnly"
   },

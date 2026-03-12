@@ -20,9 +20,11 @@
     }
   },
   "files": [
-    "src"
+    "src",
+    "LICENSE"
   ],
   "scripts": {
+    "prepublishOnly": "cp ../../LICENSE .",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "test": "vitest run",
     "test:watch": "vitest",
