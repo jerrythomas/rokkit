@@ -16,3 +16,8 @@ tsconfig.json
 *.webmanifest
 pnpm-lock.yaml
 **/.worktrees/**
+**/.vercel/**
+packages/chart/src/template/**/*.svelte
+**/snippets/**/*.svelte
+**/snippets/**/*.js
+**/snippets/**/*.css
