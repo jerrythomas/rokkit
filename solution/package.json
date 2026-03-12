@@ -1,11 +1,9 @@
 {
   "name": "rokkit",
   "version": "1.0.0-next.132",
+  "private": true,
   "module": "src/index.js",
   "type": "module",
-  "npm": {
-    "publish": false
-  },
   "scripts": {
     "clean": "find . -name  node_modules -o -name .svelte-kit -o -name dist | xargs rm -rf",
     "test:unit": "vitest",
