@@ -13,6 +13,7 @@
   },
   "scripts": {
     "prepublishOnly": "cp ../../LICENSE . && tsc --project tsconfig.build.json",
+    "postpublish": "rm -f LICENSE",
     "clean": "rm -rf dist",
     "build": "bun clean && bun prepublishOnly"
   },

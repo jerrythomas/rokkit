@@ -36,6 +36,7 @@
   ],
   "scripts": {
     "prepublishOnly": "cp ../../LICENSE . && bun run build.mjs",
+    "postpublish": "rm -f LICENSE",
     "build": "bun run build.mjs"
   },
   "dependencies": {

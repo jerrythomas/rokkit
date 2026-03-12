@@ -25,6 +25,7 @@
   ],
   "scripts": {
     "prepublishOnly": "cp ../../LICENSE .",
+    "postpublish": "rm -f LICENSE",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "test": "vitest run",
     "test:watch": "vitest",

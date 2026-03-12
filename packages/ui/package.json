@@ -26,6 +26,7 @@
   ],
   "scripts": {
     "prepublishOnly": "cp ../../LICENSE .",
+    "postpublish": "rm -f LICENSE",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "build": "echo 'No build step needed for source-only package'"
   },

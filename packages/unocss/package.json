@@ -8,6 +8,7 @@
   "publishConfig": { "access": "public" },
   "scripts": {
     "prepublishOnly": "cp ../../LICENSE . && bunx tsc --project tsconfig.build.json",
+    "postpublish": "rm -f LICENSE",
     "clean": "rm -rf dist",
     "build": "bun clean && bun prepublishOnly"
   },
