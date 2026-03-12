@@ -33,6 +33,8 @@ export default [
   },
   {
     ignores: [
+      '.worktrees/**',
+      'packages/icons/scripts/**',
       '**/spec/error/*.js',
       '**/fixtures/error/*.js',
       '**/fixtures/**/invalid.js',
