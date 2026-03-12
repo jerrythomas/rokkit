@@ -178,8 +178,8 @@ export default defineConfig({
 		pipeline: {
 			include: [
 				'src/**/*.{svelte,js,ts}',
-				'../../packages/themes/src/**/*.css',
-				'../../packages/ui/src/**/*.svelte'
+				'../packages/themes/src/**/*.css',
+				'../packages/ui/src/**/*.svelte'
 			]
 		}
 	}
