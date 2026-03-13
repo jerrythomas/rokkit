@@ -1148,8 +1148,8 @@ describe('FormBuilder', () => {
 		const schema = {
 			properties: {
 				accountType: { type: 'string' },
-				companyName: { type: 'string' },
-			},
+				companyName: { type: 'string' }
+			}
 		}
 
 		it('includes field with no showWhen condition', () => {
@@ -1189,6 +1189,17 @@ describe('FormBuilder', () => {
 			}
 			const builder = new FormBuilder({ accountType: 'personal' }, schema, layout)
 			expect(builder.elements.some(el => el.scope === '#/companyName')).toBe(false)
+		})
+
+		it('includes field when showWhen notEquals condition is met', () => {
+			const layout = {
+				elements: [
+					{ scope: '#/accountType', label: 'Account Type' },
+					{ scope: '#/companyName', label: 'Company Name', showWhen: { field: 'accountType', notEquals: 'personal' } },
+				],
+			}
+			const builder = new FormBuilder({ accountType: 'business' }, schema, layout)
+			expect(builder.elements.some(el => el.scope === '#/companyName')).toBe(true)
 		})
 
 		it('does not affect separators when showWhen conditions are present', () => {
