@@ -606,6 +606,23 @@ export class FormBuilder {
 	}
 
 	/**
+	 * Get form data with hidden field values stripped out
+	 * Hidden fields are those absent from this.elements (the derived list)
+	 * Does not mutate this.#data
+	 * @returns {Object} Filtered data containing only visible field keys
+	 */
+	getVisibleData() {
+		const visiblePaths = new Set(
+			this.elements
+				.filter(el => el.scope)
+				.map(el => el.scope.replace(/^#\//, ''))
+		)
+		return Object.fromEntries(
+			Object.entries(this.#data).filter(([key]) => visiblePaths.has(key))
+		)
+	}
+
+	/**
 	 * Whether all fields pass validation (no error-state messages)
 	 * @returns {boolean}
 	 */

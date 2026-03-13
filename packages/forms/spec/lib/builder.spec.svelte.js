@@ -1213,4 +1213,72 @@ describe('FormBuilder', () => {
 			expect(builder.elements.some(el => el.type === 'separator')).toBe(true)
 		})
 	})
+
+	describe('getVisibleData()', () => {
+		const schema = {
+			properties: {
+				accountType: { type: 'string' },
+				companyName: { type: 'string' },
+				personalBio: { type: 'string' }
+			}
+		}
+
+		it('returns all field values when no fields are hidden', () => {
+			const layout = {
+				elements: [
+					{ scope: '#/accountType', label: 'Account Type' },
+					{ scope: '#/companyName', label: 'Company Name' }
+				]
+			}
+			const builder = new FormBuilder({ accountType: 'business', companyName: 'Acme' }, schema, layout)
+			expect(builder.getVisibleData()).toEqual({ accountType: 'business', companyName: 'Acme' })
+		})
+
+		it('excludes hidden field keys from returned data', () => {
+			const layout = {
+				elements: [
+					{ scope: '#/accountType', label: 'Account Type' },
+					{
+						scope: '#/companyName',
+						label: 'Company Name',
+						showWhen: { field: 'accountType', equals: 'business' }
+					}
+				]
+			}
+			const builder = new FormBuilder({ accountType: 'personal', companyName: 'Acme' }, schema, layout)
+			expect(builder.getVisibleData()).toEqual({ accountType: 'personal' })
+		})
+
+		it('includes visible field keys in returned data', () => {
+			const layout = {
+				elements: [
+					{ scope: '#/accountType', label: 'Account Type' },
+					{
+						scope: '#/companyName',
+						label: 'Company Name',
+						showWhen: { field: 'accountType', equals: 'business' }
+					}
+				]
+			}
+			const builder = new FormBuilder({ accountType: 'business', companyName: 'Acme' }, schema, layout)
+			expect(builder.getVisibleData()).toEqual({ accountType: 'business', companyName: 'Acme' })
+		})
+
+		it('does not mutate #data when called', () => {
+			const layout = {
+				elements: [
+					{ scope: '#/accountType', label: 'Account Type' },
+					{
+						scope: '#/companyName',
+						label: 'Company Name',
+						showWhen: { field: 'accountType', equals: 'business' }
+					}
+				]
+			}
+			const data = { accountType: 'personal', companyName: 'Acme' }
+			const builder = new FormBuilder(data, schema, layout)
+			builder.getVisibleData()
+			expect(builder.data).toEqual({ accountType: 'personal', companyName: 'Acme' })
+		})
+	})
 })
