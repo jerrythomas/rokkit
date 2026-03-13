@@ -1281,4 +1281,36 @@ describe('FormBuilder', () => {
 			expect(builder.data).toEqual({ accountType: 'personal', companyName: 'Acme' })
 		})
 	})
+
+	describe('#clearHiddenValidation()', () => {
+		it('clears stale validation errors for fields that become hidden', () => {
+			const schema = {
+				properties: {
+					accountType: { type: 'string' },
+					companyName: { type: 'string', required: true }
+				}
+			}
+			const layout = {
+				elements: [
+					{ scope: '#/accountType', label: 'Account Type' },
+					{
+						scope: '#/companyName',
+						label: 'Company Name',
+						showWhen: { field: 'accountType', equals: 'business' }
+					}
+				]
+			}
+			const builder = new FormBuilder({
+				accountType: 'business',
+				companyName: ''
+			}, schema, layout)
+			// Validate to create a stale error on companyName
+			builder.validate()
+			expect(builder.isValid).toBe(false)
+			// Now hide companyName by changing accountType
+			builder.updateField('accountType', 'personal')
+			// Stale error should be cleared
+			expect(builder.isValid).toBe(true)
+		})
+	})
 })

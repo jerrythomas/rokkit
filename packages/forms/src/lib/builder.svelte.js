@@ -274,6 +274,9 @@ export class FormBuilder {
 			this.#data = updatedData
 		}
 
+		// Clear stale validation errors for fields that are now hidden
+		this.#clearHiddenValidation()
+
 		// Trigger dependent lookups if configured
 		if (triggerLookups && this.#lookupManager) {
 			// Clear dependent field values synchronously before lookup re-fetch
@@ -307,6 +310,22 @@ export class FormBuilder {
 			}
 		}
 		return current
+	}
+
+	/**
+	 * Clear validation errors for fields that are no longer visible
+	 * @private
+	 */
+	#clearHiddenValidation() {
+		const visiblePaths = new Set(
+			this.elements.filter((el) => el.scope).map((el) => el.scope.replace(/^#\//, ''))
+		)
+		const cleaned = Object.fromEntries(
+			Object.entries(this.#validation).filter(([path]) => visiblePaths.has(path))
+		)
+		if (Object.keys(cleaned).length !== Object.keys(this.#validation).length) {
+			this.#validation = cleaned
+		}
 	}
 
 	/**
