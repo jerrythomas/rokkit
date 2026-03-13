@@ -2,6 +2,7 @@ import { deriveSchemaFromValue } from './schema.js'
 import { deriveLayoutFromValue } from './layout.js'
 import { getSchemaWithLayout } from './fields.js'
 import { createLookupManager } from './lookup.svelte.js'
+import { evaluateCondition } from './conditions.js'
 import {
 	validateField as validateFieldValue,
 	validateAll as validateAllFields
@@ -357,6 +358,11 @@ export class FormBuilder {
 						props: separatorProps
 					})
 				} else {
+					// Check showWhen condition before processing scoped field
+					if (layoutEl.showWhen && !evaluateCondition(layoutEl.showWhen, this.#data)) {
+						continue
+					}
+
 					// Extract key from scope
 					const key = layoutEl.scope.replace(/^#\//, '').split('/').pop()
 					const combinedEl = combinedMap.get(key)

@@ -1143,4 +1143,63 @@ describe('FormBuilder', () => {
 			expect(element.props.message).toEqual({ state: 'error', text: 'Name is required' })
 		})
 	})
+
+	describe('conditional fields — showWhen', () => {
+		const schema = {
+			properties: {
+				accountType: { type: 'string' },
+				companyName: { type: 'string' },
+			},
+		}
+
+		it('includes field with no showWhen condition', () => {
+			const layout = { elements: [{ scope: '#/accountType', label: 'Account Type' }] }
+			const builder = new FormBuilder({ accountType: 'personal' }, schema, layout)
+			expect(builder.elements.some(el => el.scope === '#/accountType')).toBe(true)
+		})
+
+		it('includes field when showWhen equals condition is met', () => {
+			const layout = {
+				elements: [
+					{ scope: '#/accountType', label: 'Account Type' },
+					{ scope: '#/companyName', label: 'Company Name', showWhen: { field: 'accountType', equals: 'business' } },
+				],
+			}
+			const builder = new FormBuilder({ accountType: 'business' }, schema, layout)
+			expect(builder.elements.some(el => el.scope === '#/companyName')).toBe(true)
+		})
+
+		it('excludes field when showWhen equals condition is not met', () => {
+			const layout = {
+				elements: [
+					{ scope: '#/accountType', label: 'Account Type' },
+					{ scope: '#/companyName', label: 'Company Name', showWhen: { field: 'accountType', equals: 'business' } },
+				],
+			}
+			const builder = new FormBuilder({ accountType: 'personal' }, schema, layout)
+			expect(builder.elements.some(el => el.scope === '#/companyName')).toBe(false)
+		})
+
+		it('excludes field when showWhen notEquals condition is not met', () => {
+			const layout = {
+				elements: [
+					{ scope: '#/accountType', label: 'Account Type' },
+					{ scope: '#/companyName', label: 'Company Name', showWhen: { field: 'accountType', notEquals: 'personal' } },
+				],
+			}
+			const builder = new FormBuilder({ accountType: 'personal' }, schema, layout)
+			expect(builder.elements.some(el => el.scope === '#/companyName')).toBe(false)
+		})
+
+		it('does not affect separators when showWhen conditions are present', () => {
+			const layout = {
+				elements: [
+					{ type: 'separator' },
+					{ scope: '#/companyName', label: 'Company Name', showWhen: { field: 'accountType', equals: 'business' } },
+				],
+			}
+			const builder = new FormBuilder({ accountType: 'personal' }, schema, layout)
+			expect(builder.elements.some(el => el.type === 'separator')).toBe(true)
+		})
+	})
 })
