@@ -513,6 +513,53 @@ describe('FormBuilder', () => {
 		})
 	})
 
+	describe('validate() with showWhen', () => {
+		const schema = {
+			properties: {
+				accountType: { type: 'string' },
+				companyName: { type: 'string', required: true }
+			}
+		}
+
+		it('does not produce errors for hidden required fields', () => {
+			const layout = {
+				elements: [
+					{ scope: '#/accountType', label: 'Account Type' },
+					{
+						scope: '#/companyName',
+						label: 'Company Name',
+						showWhen: { field: 'accountType', equals: 'business' }
+					}
+				]
+			}
+			const builder = new FormBuilder({
+				accountType: 'personal',
+				companyName: ''
+			}, schema, layout)
+			builder.validate()
+			expect(builder.isValid).toBe(true)
+		})
+
+		it('does produce errors for visible required fields', () => {
+			const layout = {
+				elements: [
+					{ scope: '#/accountType', label: 'Account Type' },
+					{
+						scope: '#/companyName',
+						label: 'Company Name',
+						showWhen: { field: 'accountType', equals: 'business' }
+					}
+				]
+			}
+			const builder = new FormBuilder({
+				accountType: 'business',
+				companyName: ''
+			}, schema, layout)
+			builder.validate()
+			expect(builder.isValid).toBe(false)
+		})
+	})
+
 	describe('isValid', () => {
 		it('should return true when no validation errors', () => {
 			formBuilder = new FormBuilder({ name: 'Alice' })

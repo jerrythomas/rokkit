@@ -620,8 +620,14 @@ export class FormBuilder {
 	 */
 	validate() {
 		const results = validateAllFields(this.#data, this.#schema, this.#layout)
-		this.#validation = results
-		return results
+		const visiblePaths = new Set(
+			this.elements.filter((el) => el.scope).map((el) => el.scope.replace(/^#\//, ''))
+		)
+		const filtered = Object.fromEntries(
+			Object.entries(results).filter(([path]) => visiblePaths.has(path))
+		)
+		this.#validation = filtered
+		return filtered
 	}
 
 	/**
