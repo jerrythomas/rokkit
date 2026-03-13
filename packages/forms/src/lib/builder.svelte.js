@@ -614,8 +614,8 @@ export class FormBuilder {
 	getVisibleData() {
 		const visiblePaths = new Set(
 			this.elements
-				.filter(el => el.scope)
-				.map(el => el.scope.replace(/^#\//, ''))
+				.filter((el) => el.scope)
+				.map((el) => el.scope.replace(/^#\//, ''))
 		)
 		return Object.fromEntries(
 			Object.entries(this.#data).filter(([key]) => visiblePaths.has(key))
