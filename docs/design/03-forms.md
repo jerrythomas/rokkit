@@ -562,33 +562,34 @@ Calling `onchange(newValue)` routes through `FormRenderer.handleFieldChange`, wh
 
 ## Conditional Fields
 
-Conditional fields are planned and not yet implemented. This section describes the intended design.
-
-Fields will be shown or hidden based on the values of other fields. The condition is expressed in the schema using a `showWhen` annotation:
+Fields can be shown or hidden based on the values of other fields. The condition is expressed in the **layout** using a `showWhen` annotation — visibility is a presentation concern, so it belongs in the layout rather than the schema.
 
 ```javascript
-// Schema
+// Layout
 {
-  type: 'object',
-  properties: {
-    accountType: { type: 'string', enum: ['personal', 'business'] },
-    companyName: {
-      type: 'string',
+  elements: [
+    { scope: '#/accountType', label: 'Account Type' },
+    {
+      scope: '#/companyName',
+      label: 'Company Name',
       showWhen: { field: 'accountType', equals: 'business' }
     },
-    vatNumber: {
-      type: 'string',
+    {
+      scope: '#/vatNumber',
+      label: 'VAT Number',
       showWhen: { field: 'accountType', equals: 'business' }
     }
-  }
+  ]
 }
 ```
 
-`FormBuilder.#buildElements()` will evaluate conditions reactively against the current `#data`. Elements whose conditions are not met will be excluded from the returned `elements` array entirely — they are not rendered at all.
+Supported operators: `equals`, `notEquals`. If `showWhen` is absent the field is always shown.
 
-On submission, excluded field values will not appear in the data object passed to `onsubmit`. When a previously hidden field becomes visible (condition met), it initializes to the schema's `default` value or `null`.
+`FormBuilder.#buildElements()` evaluates conditions reactively against the current `#data` — hidden elements are excluded from the returned `elements` array entirely. Since `elements` is `$derived`, no imperative toggle code is needed.
 
-The `$derived` nature of `elements` means conditions re-evaluate automatically whenever any field value changes — no imperative toggle code is needed.
+`#data` is never mutated when a field is hidden — the value is preserved in memory. A user who re-shows a conditional field sees their previously entered value. Hidden field values are stripped at submit time via `getVisibleData()`, not eagerly.
+
+On submission, `FormRenderer` passes `formBuilder.getVisibleData()` (not raw `data`) to `onsubmit`. Validation skips hidden fields.
 
 ---
 
