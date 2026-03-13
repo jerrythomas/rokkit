@@ -2,7 +2,7 @@
 
 A working checklist of all pending work items collected from feature status tables and planned design documents. Organized by priority tier. Check off items as they are completed.
 
-Last updated: 2026-03-06 (quick-wins session)
+Last updated: 2026-03-12 (conditional fields)
 
 ---
 
@@ -12,7 +12,7 @@ Items that block other work or are essential for the library to be complete.
 
 ### Forms
 
-- [ ] Conditional fields — show/hide/disable fields based on other field values, schema-driven (`docs/features/05-Forms.md`)
+- [x] Conditional fields — `showWhen` on layout elements, `equals`/`notEquals` operators, `getVisibleData()` on submit (`docs/features/05-Forms.md`)
 - [ ] Multi-step forms — sequential steps with per-step validation and step indicator (`docs/features/05-Forms.md`)
 
 ### Component Library

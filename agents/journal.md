@@ -2283,4 +2283,26 @@ learn site demos that used `text:` as item property or field mapping key. Fixed:
 - Home page "Get Started" stale href fixed
 - Root header now shows Docs + Playground nav links
 
+### Conditional fields — showWhen (2026-03-12)
+
+**Feature:** `showWhen` on layout elements to show/hide fields based on other field values.
+
+**Design:** visibility is a presentation concern → lives in layout (not schema). `evaluateCondition()` is a pure function. `#buildElements()` skips hidden fields. `getVisibleData()` strips hidden keys at submit time. `#clearHiddenValidation()` clears stale blur errors when a controlling field hides another.
+
+**Commits:**
+- `04fda1f5` — `conditions.js` + `conditions.spec.js` (evaluateCondition, 9 unit tests)
+- `6297c4ea` — export evaluateCondition from lib/index.js
+- `37b6a0a0` — filter hidden elements via showWhen in #buildElements() (5 integration tests)
+- `9e4a8105` — add notEquals inclusion test + fix schema style
+- `8bf05670` — add getVisibleData() to FormBuilder (4 tests)
+- `2f90197c` — style: consistent arrow parens in getVisibleData
+- `e67f9a07` — add #clearHiddenValidation() + call from updateField() (1 test)
+- `ca422985` — post-filter validate() results to visible paths (2 tests)
+- `0bd46eee` — FormRenderer passes getVisibleData() on submit (1 test)
+
+**Tests:** 2549 passing. 0 lint errors.
+
+**Design doc:** `docs/superpowers/specs/2026-03-12-conditional-fields-design.md`
+**Priority:** `docs/design/12-priority.md` — conditional fields ✅
+
 **All tests: 2745/2745 passing**
