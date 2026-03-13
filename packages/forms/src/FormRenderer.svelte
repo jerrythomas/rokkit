@@ -163,7 +163,7 @@
 		// Submit
 		submitting = true
 		try {
-			await onsubmit(data, { isValid: true, errors: [] })
+			await onsubmit(formBuilder.getVisibleData(), { isValid: true, errors: [] })
 			formBuilder.snapshot()
 		} catch {
 			// Consumer handles errors in their onsubmit callback

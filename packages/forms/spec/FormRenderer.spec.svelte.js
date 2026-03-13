@@ -466,6 +466,45 @@ describe('FormRenderer — form submission', () => {
 		// Submitting should be cleared despite error
 		expect(form.getAttribute('data-form-submitting')).toBeNull()
 	})
+
+	it('excludes hidden field values from onsubmit payload', async () => {
+		const conditionalSchema = {
+			type: 'object',
+			properties: {
+				accountType: { type: 'string' },
+				companyName: { type: 'string' }
+			}
+		}
+		const conditionalLayout = {
+			type: 'vertical',
+			elements: [
+				{ scope: '#/accountType', label: 'Account Type' },
+				{
+					scope: '#/companyName',
+					label: 'Company Name',
+					showWhen: { field: 'accountType', equals: 'business' }
+				}
+			]
+		}
+		const onsubmit = vi.fn()
+		const props = $state({
+			data: { accountType: 'personal', companyName: 'Acme' },
+			schema: conditionalSchema,
+			layout: conditionalLayout,
+			onsubmit
+		})
+		const { container } = render(FormRenderer, { props })
+
+		const form = container.querySelector('form')
+		await fireEvent.submit(form)
+
+		// companyName should be excluded because accountType !== 'business'
+		expect(onsubmit).toHaveBeenCalledOnce()
+		expect(onsubmit).toHaveBeenCalledWith(
+			{ accountType: 'personal' },
+			{ isValid: true, errors: [] }
+		)
+	})
 })
 
 describe('FormRenderer — lookup integration', () => {
