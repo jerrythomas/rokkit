@@ -1,4 +1,5 @@
 export { FormBuilder } from './builder.svelte.js'
+export { evaluateCondition } from './conditions.js'
 export { validateField, validateAll, createMessage, patterns } from './validation.js'
 export { default as FormRenderer } from './FormRenderer.svelte'
 export { default as Input } from './Input.svelte'
