@@ -8,7 +8,7 @@
 	let headings = $state([])
 	let activeId = $state('')
 	let focusedIndex = $state(0)
-	let navEl = null
+	let navEl = $state(null)
 	let observer = null
 
 	function slugify(text) {
