@@ -37,6 +37,7 @@
     "build": "echo 'No build step needed for source-only package'"
   },
   "dependencies": {
+    "@rokkit/actions": "workspace:*",
     "@rokkit/core": "workspace:*",
     "@rokkit/states": "workspace:*",
     "@rokkit/ui": "workspace:*"

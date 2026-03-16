@@ -14,3 +14,8 @@ global.IntersectionObserver = IntersectionObserver
 if (typeof document !== 'undefined' && !document.execCommand) {
 	document.execCommand = () => false
 }
+
+// JSDOM doesn't implement HTMLElement.scrollTo — add a no-op so vi.spyOn works
+if (typeof HTMLElement !== 'undefined' && !HTMLElement.prototype.scrollTo) {
+	HTMLElement.prototype.scrollTo = () => {}
+}
