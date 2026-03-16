@@ -2,6 +2,10 @@
   "name": "@rokkit/unocss",
   "version": "1.0.0-next.134",
   "description": "UnoCSS preset for Rokkit — one-line setup for colors, shortcuts, icons, and dark mode.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jerrythomas/rokkit.git"
+  },
   "author": "Jerry Thomas <me@jerrythomas.name>",
   "license": "MIT",
   "type": "module",

@@ -2,6 +2,10 @@
   "name": "@rokkit/themes",
   "version": "1.0.0-next.134",
   "description": "Theme styles for @rokkit/ui components",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jerrythomas/rokkit.git"
+  },
   "type": "module",
   "main": "./src/index.js",
   "exports": {

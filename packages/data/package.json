@@ -2,6 +2,10 @@
   "name": "@rokkit/data",
   "version": "1.0.0-next.134",
   "description": "Contains generic data manipulation functions that can be used in various components.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jerrythomas/rokkit.git"
+  },
   "author": "Jerry Thomas <me@jerrythomas.name>",
   "license": "MIT",
   "type": "module",

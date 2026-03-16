@@ -2,6 +2,10 @@
   "name": "@rokkit/stories",
   "version": "1.0.0-next.134",
   "description": "Utilities for building tutorials.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jerrythomas/rokkit.git"
+  },
   "publishConfig": {
     "access": "public"
   },
