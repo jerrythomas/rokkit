@@ -32,16 +32,10 @@ jobs:
         env:
           NODE_NO_WARNINGS: 1
         run: |
-          VERSION=$(node -p "require('./package.json').version")
-          if [[ "$VERSION" == *"-"* ]]; then
-            DIST_TAG=$(echo "$VERSION" | sed 's/[^-]*-\([^.]*\).*/\1/')
-          else
-            DIST_TAG="latest"
-          fi
           npm config delete always-auth 2>/dev/null || true
           for dir in ./packages/*/; do
             grep -q '"private": true' "${dir}package.json" 2>/dev/null || \
-              (cd "$dir" && npm publish --provenance --access public --tag "$DIST_TAG")
+              (cd "$dir" && npm publish --provenance --access public --tag latest)
           done
 
       - name: Create GitHub release
