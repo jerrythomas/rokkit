@@ -8,7 +8,6 @@ on:
 
 jobs:
   analyze:
-    name: code-climate-reporter
     runs-on: ubuntu-latest
 
     steps:
@@ -27,9 +26,3 @@ jobs:
         with:
           token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
           files: coverage/lcov.info
-      - name: Report results to DeepSource
-        env:
-          DEEPSOURCE_DSN: ${{ secrets.DEEPSOURCE_DSN }}
-        run: |
-          curl https://deepsource.io/cli | sh
-          ./bin/deepsource report --analyzer test-coverage --key javascript --value-file ./coverage/lcov.info
