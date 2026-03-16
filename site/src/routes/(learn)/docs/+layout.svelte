@@ -3,9 +3,8 @@
 	import { page } from '$app/state'
 	import { beforeNavigate, afterNavigate } from '$app/navigation'
 	import Sidebar from './Sidebar.svelte'
-	import { ThemeSwitcherToggle } from '@rokkit/app'
+	import { ThemeSwitcherToggle, TableOfContents } from '@rokkit/app'
 	import { ProgressBar } from '@rokkit/ui'
-	import TableOfContents from '$lib/components/TableOfContents.svelte'
 	import { media } from '$lib/media.js'
 	import { findSection, findGroupForSection } from '$lib/stories.js'
 
@@ -36,6 +35,7 @@
 	let sidebarOpen = $state(media.large.current ?? false)
 	let loading = $state(false)
 	let sidebarRef = $state(null)
+	let toc = $state(null)
 
 	function handleKeydown(e) {
 		if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
@@ -70,6 +70,7 @@
 	afterNavigate(() => {
 		loading = false
 		if (!media.large.current) sidebarOpen = false
+		toc?.rescan()
 	})
 </script>
 
@@ -215,7 +216,7 @@
 				<aside
 					class="border-surface-z2 hidden w-52 flex-shrink-0 flex-col overflow-y-auto border-l px-5 py-6 xl:flex"
 				>
-					<TableOfContents />
+					<TableOfContents bind:this={toc} />
 				</aside>
 			</div>
 		</div>
