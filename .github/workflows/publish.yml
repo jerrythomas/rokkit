@@ -29,6 +29,8 @@ jobs:
         run: bun install
 
       - name: Publish packages
+        env:
+          NODE_NO_WARNINGS: 1
         run: |
           VERSION=$(node -p "require('./package.json').version")
           if [[ "$VERSION" == *"-"* ]]; then
