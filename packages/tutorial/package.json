@@ -6,10 +6,7 @@
     "type": "git",
     "url": "git+https://github.com/jerrythomas/rokkit.git"
   },
-  "deprecated": "Superseded by @rokkit/stories. This package is no longer used and will be removed in a future release.",
-  "publishConfig": {
-    "access": "public"
-  },
+  "private": true,
   "keywords": [
     "tutorial",
     "markdown",
