@@ -32,9 +32,13 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
+          VERSION=$(node -p "require('./package.json').version")
           for dir in ./packages/*/; do
-            grep -q '"private": true' "${dir}package.json" 2>/dev/null || \
-              (cd "$dir" && npm publish --provenance --access public)
+            grep -q '"private": true' "${dir}package.json" 2>/dev/null || (
+              cd "$dir"
+              sed -i "s|\"workspace:[^\"]*\"|\"$VERSION\"|g" package.json
+              npm publish --provenance --access public
+            )
           done
 
       - name: Create GitHub release
