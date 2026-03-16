@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test'
+import type { Page, Locator } from '@playwright/test'
 
 export const themes = ['rokkit', 'minimal', 'material', 'glass'] as const
 export type Theme = (typeof themes)[number]
@@ -21,4 +21,25 @@ export async function setTheme(page: Page, theme: Theme) {
 /** Set color mode directly on the document element */
 export async function setMode(page: Page, mode: Mode) {
 	await page.evaluate((m) => document.documentElement.setAttribute('data-mode', m), mode)
+}
+
+export interface DropdownLocators {
+	trigger: Locator
+	dropdown: Locator
+	items: Locator
+}
+
+/** Focus the trigger, press ArrowDown to open, and return the key locators */
+export async function openDropdownViaKeyboard(
+	page: Page,
+	triggerSelector: string,
+	dropdownSelector: string,
+	itemSelector: string,
+): Promise<DropdownLocators> {
+	const trigger = page.locator(triggerSelector).first()
+	await trigger.focus()
+	await page.keyboard.press('ArrowDown')
+	const dropdown = page.locator(dropdownSelector).first()
+	const items = dropdown.locator(itemSelector)
+	return { trigger, dropdown, items }
 }

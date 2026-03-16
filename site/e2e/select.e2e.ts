@@ -1,5 +1,10 @@
 import { test, expect } from '@playwright/test'
-import { goToPlayPage, setTheme, setMode, themes, modes } from './helpers'
+import type { Page } from '@playwright/test'
+import { goToPlayPage, setTheme, setMode, themes, modes, openDropdownViaKeyboard } from './helpers'
+
+function openSelect(page: Page) {
+	return openDropdownViaKeyboard(page, '[data-select-trigger]', '[data-select-dropdown]', '[data-select-option]')
+}
 
 test.describe('Select — play page', () => {
 	test.beforeEach(async ({ page }) => {
@@ -10,23 +15,13 @@ test.describe('Select — play page', () => {
 
 	test.describe('keyboard navigation', () => {
 		test('ArrowDown opens dropdown and focuses first item', async ({ page }) => {
-			const trigger = page.locator('[data-select-trigger]').first()
-			await trigger.focus()
-			await page.keyboard.press('ArrowDown')
-
-			const dropdown = page.locator('[data-select-dropdown]').first()
+			const { dropdown, items: options } = await openSelect(page)
 			await expect(dropdown).toBeVisible()
-			const options = dropdown.locator('[data-select-option]')
 			await expect(options.first()).toBeFocused()
 		})
 
 		test('ArrowDown navigates through options', async ({ page }) => {
-			const trigger = page.locator('[data-select-trigger]').first()
-			await trigger.focus()
-			await page.keyboard.press('ArrowDown')
-
-			const dropdown = page.locator('[data-select-dropdown]').first()
-			const options = dropdown.locator('[data-select-option]')
+			const { items: options } = await openSelect(page)
 			await expect(options.first()).toBeFocused()
 
 			await page.keyboard.press('ArrowDown')
@@ -37,12 +32,7 @@ test.describe('Select — play page', () => {
 		})
 
 		test('ArrowUp navigates back through options', async ({ page }) => {
-			const trigger = page.locator('[data-select-trigger]').first()
-			await trigger.focus()
-			await page.keyboard.press('ArrowDown')
-
-			const dropdown = page.locator('[data-select-dropdown]').first()
-			const options = dropdown.locator('[data-select-option]')
+			const { items: options } = await openSelect(page)
 			await expect(options.first()).toBeFocused()
 
 			await page.keyboard.press('ArrowDown')
@@ -54,12 +44,7 @@ test.describe('Select — play page', () => {
 		})
 
 		test('Home and End navigate to first/last option', async ({ page }) => {
-			const trigger = page.locator('[data-select-trigger]').first()
-			await trigger.focus()
-			await page.keyboard.press('ArrowDown')
-
-			const dropdown = page.locator('[data-select-dropdown]').first()
-			const options = dropdown.locator('[data-select-option]')
+			const { items: options } = await openSelect(page)
 			await expect(options.first()).toBeFocused()
 
 			await page.keyboard.press('End')
@@ -70,12 +55,7 @@ test.describe('Select — play page', () => {
 		})
 
 		test('Enter selects option and closes dropdown', async ({ page }) => {
-			const trigger = page.locator('[data-select-trigger]').first()
-			await trigger.focus()
-			await page.keyboard.press('ArrowDown')
-
-			const dropdown = page.locator('[data-select-dropdown]').first()
-			const options = dropdown.locator('[data-select-option]')
+			const { dropdown, items: options } = await openSelect(page)
 			await expect(options.first()).toBeFocused()
 
 			await page.keyboard.press('ArrowDown') // Banana
@@ -88,11 +68,7 @@ test.describe('Select — play page', () => {
 		})
 
 		test('Escape closes dropdown and returns focus to trigger', async ({ page }) => {
-			const trigger = page.locator('[data-select-trigger]').first()
-			await trigger.focus()
-			await page.keyboard.press('ArrowDown')
-
-			const dropdown = page.locator('[data-select-dropdown]').first()
+			const { trigger, dropdown } = await openSelect(page)
 			await expect(dropdown).toBeVisible()
 
 			await page.keyboard.press('Escape')
@@ -101,12 +77,7 @@ test.describe('Select — play page', () => {
 		})
 
 		test('reopening focuses previously selected item', async ({ page }) => {
-			const trigger = page.locator('[data-select-trigger]').first()
-			await trigger.focus()
-			await page.keyboard.press('ArrowDown')
-
-			const dropdown = page.locator('[data-select-dropdown]').first()
-			const options = dropdown.locator('[data-select-option]')
+			const { dropdown, items: options } = await openSelect(page)
 			await expect(options.first()).toBeFocused()
 
 			// Select Cherry (index 2)

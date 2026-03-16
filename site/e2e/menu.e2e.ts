@@ -1,5 +1,10 @@
 import { test, expect } from '@playwright/test'
-import { goToPlayPage, setTheme, setMode, themes, modes } from './helpers'
+import { goToPlayPage, setTheme, setMode, themes, modes, openDropdownViaKeyboard } from './helpers'
+import type { Page } from '@playwright/test'
+
+function openMenu(page: Page) {
+	return openDropdownViaKeyboard(page, '[data-menu-trigger]', '[data-menu-dropdown]', '[data-menu-item]')
+}
 
 test.describe('Menu', () => {
 	test.beforeEach(async ({ page }) => {
@@ -10,23 +15,13 @@ test.describe('Menu', () => {
 
 	test.describe('keyboard navigation', () => {
 		test('ArrowDown opens menu and focuses first item', async ({ page }) => {
-			const trigger = page.locator('[data-menu-trigger]').first()
-			await trigger.focus()
-			await page.keyboard.press('ArrowDown')
-
-			const dropdown = page.locator('[data-menu-dropdown]').first()
+			const { dropdown, items } = await openMenu(page)
 			await expect(dropdown).toBeVisible()
-			const items = dropdown.locator('[data-menu-item]')
 			await expect(items.first()).toBeFocused()
 		})
 
 		test('ArrowDown navigates through items', async ({ page }) => {
-			const trigger = page.locator('[data-menu-trigger]').first()
-			await trigger.focus()
-			await page.keyboard.press('ArrowDown')
-
-			const dropdown = page.locator('[data-menu-dropdown]').first()
-			const items = dropdown.locator('[data-menu-item]')
+			const { items } = await openMenu(page)
 			await expect(items.first()).toBeFocused()
 
 			await page.keyboard.press('ArrowDown')
@@ -37,12 +32,7 @@ test.describe('Menu', () => {
 		})
 
 		test('ArrowUp navigates back through items', async ({ page }) => {
-			const trigger = page.locator('[data-menu-trigger]').first()
-			await trigger.focus()
-			await page.keyboard.press('ArrowDown')
-
-			const dropdown = page.locator('[data-menu-dropdown]').first()
-			const items = dropdown.locator('[data-menu-item]')
+			const { items } = await openMenu(page)
 			await expect(items.first()).toBeFocused()
 
 			// Navigate to third item
@@ -57,12 +47,7 @@ test.describe('Menu', () => {
 		})
 
 		test('Home moves to first item', async ({ page }) => {
-			const trigger = page.locator('[data-menu-trigger]').first()
-			await trigger.focus()
-			await page.keyboard.press('ArrowDown')
-
-			const dropdown = page.locator('[data-menu-dropdown]').first()
-			const items = dropdown.locator('[data-menu-item]')
+			const { items } = await openMenu(page)
 			await expect(items.first()).toBeFocused()
 
 			await page.keyboard.press('End')
@@ -72,12 +57,7 @@ test.describe('Menu', () => {
 		})
 
 		test('End moves to last item', async ({ page }) => {
-			const trigger = page.locator('[data-menu-trigger]').first()
-			await trigger.focus()
-			await page.keyboard.press('ArrowDown')
-
-			const dropdown = page.locator('[data-menu-dropdown]').first()
-			const items = dropdown.locator('[data-menu-item]')
+			const { items } = await openMenu(page)
 			await expect(items.first()).toBeFocused()
 
 			await page.keyboard.press('End')
@@ -85,12 +65,7 @@ test.describe('Menu', () => {
 		})
 
 		test('Enter selects item and closes menu', async ({ page }) => {
-			const trigger = page.locator('[data-menu-trigger]').first()
-			await trigger.focus()
-			await page.keyboard.press('ArrowDown')
-
-			const dropdown = page.locator('[data-menu-dropdown]').first()
-			const items = dropdown.locator('[data-menu-item]')
+			const { dropdown, items } = await openMenu(page)
 			await expect(items.first()).toBeFocused()
 
 			await page.keyboard.press('ArrowDown') // focus second item (Copy)
@@ -101,13 +76,9 @@ test.describe('Menu', () => {
 		})
 
 		test('Escape closes menu and returns focus to trigger', async ({ page }) => {
-			const trigger = page.locator('[data-menu-trigger]').first()
-			await trigger.focus()
-			await page.keyboard.press('ArrowDown')
-
-			const dropdown = page.locator('[data-menu-dropdown]').first()
+			const { trigger, dropdown, items } = await openMenu(page)
 			await expect(dropdown).toBeVisible()
-			await expect(dropdown.locator('[data-menu-item]').first()).toBeFocused()
+			await expect(items.first()).toBeFocused()
 
 			await page.keyboard.press('Escape')
 			await expect(dropdown).not.toBeVisible()

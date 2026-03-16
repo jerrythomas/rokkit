@@ -1,5 +1,15 @@
 import { test, expect } from '@playwright/test'
-import { goToPlayPage, setTheme, setMode, themes, modes } from './helpers'
+import type { Page } from '@playwright/test'
+import { goToPlayPage, setTheme, setMode, themes, modes, openDropdownViaKeyboard } from './helpers'
+
+function openMultiSelect(page: Page) {
+	return openDropdownViaKeyboard(
+		page,
+		'[data-multiselect] [data-select-trigger]',
+		'[data-multiselect] [data-select-dropdown]',
+		'[data-select-option]',
+	)
+}
 
 test.describe('MultiSelect', () => {
 	test.beforeEach(async ({ page }) => {
@@ -10,23 +20,13 @@ test.describe('MultiSelect', () => {
 
 	test.describe('keyboard navigation', () => {
 		test('ArrowDown opens dropdown and focuses first item', async ({ page }) => {
-			const trigger = page.locator('[data-multiselect] [data-select-trigger]').first()
-			await trigger.focus()
-			await page.keyboard.press('ArrowDown')
-
-			const dropdown = page.locator('[data-multiselect] [data-select-dropdown]').first()
+			const { dropdown, items: options } = await openMultiSelect(page)
 			await expect(dropdown).toBeVisible()
-			const options = dropdown.locator('[data-select-option]')
 			await expect(options.first()).toBeFocused()
 		})
 
 		test('ArrowDown navigates through options', async ({ page }) => {
-			const trigger = page.locator('[data-multiselect] [data-select-trigger]').first()
-			await trigger.focus()
-			await page.keyboard.press('ArrowDown')
-
-			const dropdown = page.locator('[data-multiselect] [data-select-dropdown]').first()
-			const options = dropdown.locator('[data-select-option]')
+			const { items: options } = await openMultiSelect(page)
 			await expect(options.first()).toBeFocused()
 
 			await page.keyboard.press('ArrowDown')
@@ -37,12 +37,7 @@ test.describe('MultiSelect', () => {
 		})
 
 		test('Enter toggles selection without closing', async ({ page }) => {
-			const trigger = page.locator('[data-multiselect] [data-select-trigger]').first()
-			await trigger.focus()
-			await page.keyboard.press('ArrowDown')
-
-			const dropdown = page.locator('[data-multiselect] [data-select-dropdown]').first()
-			const options = dropdown.locator('[data-select-option]')
+			const { dropdown, items: options } = await openMultiSelect(page)
 			await expect(options.first()).toBeFocused()
 
 			// Select first item
@@ -63,12 +58,7 @@ test.describe('MultiSelect', () => {
 		})
 
 		test('Enter deselects already-selected item', async ({ page }) => {
-			const trigger = page.locator('[data-multiselect] [data-select-trigger]').first()
-			await trigger.focus()
-			await page.keyboard.press('ArrowDown')
-
-			const dropdown = page.locator('[data-multiselect] [data-select-dropdown]').first()
-			const options = dropdown.locator('[data-select-option]')
+			const { items: options } = await openMultiSelect(page)
 			await expect(options.first()).toBeFocused()
 
 			// Select then deselect
@@ -80,11 +70,7 @@ test.describe('MultiSelect', () => {
 		})
 
 		test('Escape closes dropdown', async ({ page }) => {
-			const trigger = page.locator('[data-multiselect] [data-select-trigger]').first()
-			await trigger.focus()
-			await page.keyboard.press('ArrowDown')
-
-			const dropdown = page.locator('[data-multiselect] [data-select-dropdown]').first()
+			const { dropdown } = await openMultiSelect(page)
 			await expect(dropdown).toBeVisible()
 
 			await page.keyboard.press('Escape')

@@ -55,6 +55,6 @@
     "@types/ramda": "^0.31.1"
   },
   "overrides": {
-    "svelte": "^5.53.0"
+    "svelte": "^5.53.3"
   }
 }
