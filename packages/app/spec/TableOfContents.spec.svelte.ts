@@ -146,12 +146,15 @@ describe('TableOfContents — DOM scanning', () => {
 		container.remove()
 	})
 
-	it('uses existing IDs on headings', () => {
-		addHeading(container, 'h2', 'First', 'my-first-id')
-		addHeading(container, 'h2', 'Second', 'my-second-id')
-		render(TableOfContents)
-		expect(document.getElementById('my-first-id')).toBeTruthy()
-		expect(document.getElementById('my-second-id')).toBeTruthy()
+	it('preserves existing IDs on headings (does not overwrite with slugs)', () => {
+		const h1 = addHeading(container, 'h2', 'Getting Started', 'my-custom-id')
+		const h2 = addHeading(container, 'h2', 'Another Section', 'another-id')
+		const { container: host } = render(TableOfContents)
+		// Verify that the headings still have their original IDs, not slugified versions
+		expect(h1.id).toBe('my-custom-id')
+		expect(h2.id).toBe('another-id')
+		// Also verify the component found both headings via the TOC items
+		expect(host.querySelectorAll('[data-toc-item]').length).toBe(2)
 	})
 
 	it('auto-generates slug IDs for headings without IDs', () => {
