@@ -8,7 +8,7 @@
 	let headings = $state([])
 	let activeId = $state('')
 	let focusedIndex = $state(0)
-	let navEl = $state(null)
+	let navEl = null
 	let observer = null
 
 	function slugify(text) {
@@ -118,7 +118,7 @@
 	>
 		<p data-toc-label>On this page</p>
 		<ul data-toc-list>
-			{#each headings as h, i}
+			{#each headings as h, i (h.id)}
 				<li>
 					<button
 						data-toc-item
