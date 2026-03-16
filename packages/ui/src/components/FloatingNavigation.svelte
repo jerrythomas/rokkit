@@ -61,65 +61,95 @@
 		if (!pinned) expanded = false
 	}
 
+	function getItemHref(item: { proxy: ProxyItem; original: Record<string, unknown> }): string {
+		if (item.proxy.get('href') === undefined) return ''
+		return String(item.original[userFields?.href ?? 'href'] ?? '')
+	}
+
+	function resolveTargetId(item: { proxy: ProxyItem; original: Record<string, unknown> }): string {
+		const href = getItemHref(item)
+		return href.startsWith('#') ? href.slice(1) : String(item.proxy.value)
+	}
+
 	function handleItemClick(item: { proxy: ProxyItem; original: Record<string, unknown> }) {
 		value = item.proxy.value
 		onselect?.(item.proxy.value, item.original)
-
-		// Smooth scroll to target section
-		const href =
-			item.proxy.get('href') !== undefined
-				? String(item.original[userFields?.href ?? 'href'] ?? '')
-				: ''
-		const targetId = href.startsWith('#') ? href.slice(1) : String(item.proxy.value)
-		const el = document.getElementById(targetId)
+		const el = document.getElementById(resolveTargetId(item))
 		el?.scrollIntoView({ behavior: 'smooth' })
 	}
 
-	function handleKeyDown(event: KeyboardEvent) {
-		const nextKey = isVertical ? 'ArrowDown' : 'ArrowRight'
-		const prevKey = isVertical ? 'ArrowUp' : 'ArrowLeft'
-
-		switch (event.key) {
-			case nextKey:
-				event.preventDefault()
-				focusItem(focusedIndex < itemProxies.length - 1 ? focusedIndex + 1 : 0)
-				break
-			case prevKey:
-				event.preventDefault()
-				focusItem(focusedIndex > 0 ? focusedIndex - 1 : itemProxies.length - 1)
-				break
-			case 'Home':
-				event.preventDefault()
-				focusItem(0)
-				break
-			case 'End':
-				event.preventDefault()
-				focusItem(itemProxies.length - 1)
-				break
-			case 'Enter':
-			case ' ':
-				event.preventDefault()
-				if (focusedIndex >= 0 && focusedIndex < itemProxies.length) {
-					handleItemClick(itemProxies[focusedIndex])
-				}
-				break
-			case 'Escape':
-				if (!pinned) {
-					event.preventDefault()
-					expanded = false
-				}
-				break
+	function activateFocusedItem() {
+		if (focusedIndex >= 0 && focusedIndex < itemProxies.length) {
+			handleItemClick(itemProxies[focusedIndex])
 		}
+	}
+
+	const nextKey = $derived(isVertical ? 'ArrowDown' : 'ArrowRight')
+	const prevKey = $derived(isVertical ? 'ArrowUp' : 'ArrowLeft')
+
+	function wrapNext(current: number, last: number): number {
+		return current < last ? current + 1 : 0
+	}
+
+	function wrapPrev(current: number, last: number): number {
+		return current > 0 ? current - 1 : last
+	}
+
+	function getNextNavIndex(key: string, current: number, last: number): number {
+		if (key === nextKey) return wrapNext(current, last)
+		if (key === prevKey) return wrapPrev(current, last)
+		if (key === 'Home') return 0
+		if (key === 'End') return last
+		return -1
+	}
+
+	function handleNavMove(event: KeyboardEvent): boolean {
+		const last = itemProxies.length - 1
+		const next = getNextNavIndex(event.key, focusedIndex, last)
+		if (next === -1) return false
+		focusItem(next)
+		return true
+	}
+
+	function isActivateKey(key: string): boolean {
+		return key === 'Enter' || key === ' '
+	}
+
+	function handleKeyDown(event: KeyboardEvent) {
+		if (isActivateKey(event.key)) {
+			event.preventDefault()
+			activateFocusedItem()
+		} else if (event.key === 'Escape' && !pinned) {
+			event.preventDefault()
+			expanded = false
+		} else if (handleNavMove(event)) {
+			event.preventDefault()
+		}
+	}
+
+	function focusDomItem(index: number) {
+		const itemsContainer = navRef?.querySelector('[data-floating-nav-items]')
+		if (!itemsContainer) return
+		const navItems = itemsContainer.querySelectorAll('[data-floating-nav-item]')
+		const item = navItems[index] as HTMLElement | undefined
+		item?.focus()
 	}
 
 	function focusItem(index: number) {
 		if (index < 0 || index >= itemProxies.length) return
 		focusedIndex = index
-		const itemsContainer = navRef?.querySelector('[data-floating-nav-items]')
-		if (itemsContainer) {
-			const navItems = itemsContainer.querySelectorAll('[data-floating-nav-item]')
-			const item = navItems[index] as HTMLElement | undefined
-			item?.focus()
+		focusDomItem(index)
+	}
+
+	function matchesEntryId(item: { proxy: ProxyItem; original: Record<string, unknown> }, id: string): boolean {
+		return resolveTargetId(item) === id
+	}
+
+	function handleIntersection(entries: IntersectionObserverEntry[]) {
+		for (const entry of entries) {
+			if (!entry.isIntersecting) continue
+			const match = itemProxies.find((item) => matchesEntryId(item, entry.target.id))
+			if (match) value = match.proxy.value
 		}
 	}
 
@@ -127,30 +157,10 @@
 	$effect(() => {
 		if (!observe || itemProxies.length === 0) return
 
-		const observer = new IntersectionObserver((entries) => {
-			for (const entry of entries) {
-				if (entry.isIntersecting) {
-					const match = itemProxies.find((item) => {
-						const href =
-							item.proxy.get('href') !== undefined
-								? String(item.original[userFields?.href ?? 'href'] ?? '')
-								: ''
-						const targetId = href.startsWith('#') ? href.slice(1) : String(item.proxy.value)
-						return targetId === entry.target.id
-					})
-					if (match) {
-						value = match.proxy.value
-					}
-				}
-			}
-		}, observerOptions)
+		const observer = new IntersectionObserver(handleIntersection, observerOptions)
 
 		for (const item of itemProxies) {
-			const href =
-				item.proxy.get('href') !== undefined
-					? String(item.original[userFields?.href ?? 'href'] ?? '')
-					: ''
-			const targetId = href.startsWith('#') ? href.slice(1) : String(item.proxy.value)
+			const targetId = resolveTargetId(item)
 			const el = document.getElementById(targetId)
 			if (el) observer.observe(el)
 		}

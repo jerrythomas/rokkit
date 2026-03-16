@@ -68,7 +68,7 @@
 
 	{#if filters.length > 0}
 		<div data-search-tags>
-			{#each filters as filter, i}
+			{#each filters as filter, i (i)}
 				{#if tagSnippet}
 					{@render tagSnippet(filter, () => removeFilter(i))}
 				{:else}

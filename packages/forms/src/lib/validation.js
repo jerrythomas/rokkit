@@ -19,6 +19,47 @@ function isEmpty(value) {
 	return value === undefined || value === null || value === ''
 }
 
+/** @returns {ValidationMessage} */
+function errorMsg(text) {
+	return { state: 'error', text }
+}
+
+/**
+ * Validate string pattern constraint
+ * @private
+ */
+function validateStringPattern(stringValue, schema, label) {
+	if (!schema.pattern) return null
+	const regex = new RegExp(schema.pattern)
+	if (!regex.test(stringValue)) return errorMsg(`${label} format is invalid`)
+	return null
+}
+
+/**
+ * Validate string length constraints
+ * @private
+ */
+function validateStringLength(stringValue, schema, label) {
+	if (schema.minLength !== undefined && stringValue.length < schema.minLength) {
+		return errorMsg(`${label} must be at least ${schema.minLength} characters`)
+	}
+	if (schema.maxLength !== undefined && stringValue.length > schema.maxLength) {
+		return errorMsg(`${label} must be no more than ${schema.maxLength} characters`)
+	}
+	return null
+}
+
+/**
+ * Validate string enum constraint
+ * @private
+ */
+function validateStringEnum(stringValue, schema, label) {
+	if (schema.enum && !schema.enum.includes(stringValue)) {
+		return errorMsg(`${label} must be one of: ${schema.enum.join(', ')}`)
+	}
+	return null
+}
+
 /**
  * Validate string field
  * @private
@@ -28,43 +69,46 @@ function isEmpty(value) {
  * @returns {ValidationMessage|null}
  */
 function validateString(value, schema, label) {
-	// Convert to string if not already
 	const stringValue = String(value)
+	return (
+		validateStringPattern(stringValue, schema, label) ||
+		validateStringLength(stringValue, schema, label) ||
+		validateStringEnum(stringValue, schema, label)
+	)
+}
 
-	// Pattern validation
-	if (schema.pattern) {
-		const regex = new RegExp(schema.pattern)
-		if (!regex.test(stringValue)) {
-			return {
-				state: 'error',
-				text: `${label} format is invalid`
-			}
-		}
+/**
+ * Validate number integer constraint
+ * @private
+ */
+function validateNumberInteger(numValue, schema, label) {
+	if (schema.type === 'integer' && !Number.isInteger(numValue)) {
+		return errorMsg(`${label} must be a whole number`)
 	}
+	return null
+}
 
-	// Length validations
-	if (schema.minLength !== undefined && stringValue.length < schema.minLength) {
-		return {
-			state: 'error',
-			text: `${label} must be at least ${schema.minLength} characters`
-		}
+/**
+ * Validate number minimum constraint
+ * @private
+ */
+function validateNumberMin(numValue, schema, label) {
+	const minimum = schema.min !== undefined ? schema.min : schema.minimum
+	if (minimum !== undefined && numValue < minimum) {
+		return errorMsg(`${label} must be at least ${minimum}`)
 	}
+	return null
+}
 
-	if (schema.maxLength !== undefined && stringValue.length > schema.maxLength) {
-		return {
-			state: 'error',
-			text: `${label} must be no more than ${schema.maxLength} characters`
-		}
+/**
+ * Validate number maximum constraint
+ * @private
+ */
+function validateNumberMax(numValue, schema, label) {
+	const maximum = schema.max !== undefined ? schema.max : schema.maximum
+	if (maximum !== undefined && numValue > maximum) {
+		return errorMsg(`${label} must be no more than ${maximum}`)
 	}
-
-	// Enum validation
-	if (schema.enum && !schema.enum.includes(stringValue)) {
-		return {
-			state: 'error',
-			text: `${label} must be one of: ${schema.enum.join(', ')}`
-		}
-	}
-
 	return null
 }
 
@@ -78,42 +122,12 @@ function validateString(value, schema, label) {
  */
 function validateNumber(value, schema, label) {
 	const numValue = Number(value)
-
-	// Check if it's a valid number
-	if (isNaN(numValue)) {
-		return {
-			state: 'error',
-			text: `${label} must be a valid number`
-		}
-	}
-
-	// Integer validation
-	if (schema.type === 'integer' && !Number.isInteger(numValue)) {
-		return {
-			state: 'error',
-			text: `${label} must be a whole number`
-		}
-	}
-
-	// Minimum validation (support both min and minimum)
-	const minimum = schema.min !== undefined ? schema.min : schema.minimum
-	if (minimum !== undefined && numValue < minimum) {
-		return {
-			state: 'error',
-			text: `${label} must be at least ${minimum}`
-		}
-	}
-
-	// Maximum validation (support both max and maximum)
-	const maximum = schema.max !== undefined ? schema.max : schema.maximum
-	if (maximum !== undefined && numValue > maximum) {
-		return {
-			state: 'error',
-			text: `${label} must be no more than ${maximum}`
-		}
-	}
-
-	return null
+	if (isNaN(numValue)) return errorMsg(`${label} must be a valid number`)
+	return (
+		validateNumberInteger(numValue, schema, label) ||
+		validateNumberMin(numValue, schema, label) ||
+		validateNumberMax(numValue, schema, label)
+	)
 }
 
 /**
@@ -130,10 +144,7 @@ function validateBoolean(value, schema, label) {
 
 	// For required boolean fields, we might want to ensure it's explicitly true
 	if (schema.required && schema.mustBeTrue && !boolValue) {
-		return {
-			state: 'error',
-			text: `${label} must be accepted`
-		}
+		return errorMsg(`${label} must be accepted`)
 	}
 
 	return null
@@ -210,27 +221,10 @@ function getValueByPath(data, path) {
 }
 
 /**
- * Validate a single field value against its schema
- * @param {any} value - Field value to validate
- * @param {Object} fieldSchema - Field schema definition
- * @param {string} [fieldLabel] - Field label for error messages
- * @returns {ValidationMessage|null} Validation message or null if valid
+ * Dispatch to the type-specific validator
+ * @private
  */
-export function validateField(value, fieldSchema, fieldLabel = 'Field') {
-	if (!fieldSchema) return null
-
-	// Required field validation
-	if (fieldSchema.required && isEmpty(value)) {
-		return {
-			state: 'error',
-			text: `${fieldLabel} is required`
-		}
-	}
-
-	// Skip other validations if field is empty and not required
-	if (isEmpty(value)) return null
-
-	// Type-specific validations
+function validateByType(value, fieldSchema, fieldLabel) {
 	switch (fieldSchema.type) {
 		case 'string':
 			return validateString(value, fieldSchema, fieldLabel)
@@ -243,6 +237,52 @@ export function validateField(value, fieldSchema, fieldLabel = 'Field') {
 			return null
 	}
 }
+
+/**
+ * Check presence (required + empty) before type validation.
+ * Returns an error message, null if valid/skippable, or 'skip' sentinel to skip type checks.
+ * @private
+ * @returns {ValidationMessage|null|'skip'}
+ */
+function checkPresence(value, fieldSchema, fieldLabel) {
+	if (fieldSchema.required && isEmpty(value)) return errorMsg(`${fieldLabel} is required`)
+	if (isEmpty(value)) return 'skip'
+	return null
+}
+
+/**
+ * Validate a single field value against its schema
+ * @param {any} value - Field value to validate
+ * @param {Object} fieldSchema - Field schema definition
+ * @param {string} [fieldLabel] - Field label for error messages
+ * @returns {ValidationMessage|null} Validation message or null if valid
+ */
+export function validateField(value, fieldSchema, fieldLabel = 'Field') {
+	if (!fieldSchema) return null
+	const presenceResult = checkPresence(value, fieldSchema, fieldLabel)
+	if (presenceResult === 'skip') return null
+	if (presenceResult) return presenceResult
+	return validateByType(value, fieldSchema, fieldLabel)
+}
+
+/**
+ * Validate one element from the layout
+ * @private
+ */
+function validateElement(element, data, schema, results) {
+	if (!element.scope) return
+
+	const fieldPath = element.scope.replace(/^#\//, '')
+	const fieldSchema = getFieldSchema(fieldPath, schema)
+	const fieldLabel = element.label || element.title || fieldPath
+	const value = getValueByPath(data, fieldPath)
+
+	const result = validateField(value, fieldSchema, fieldLabel)
+	if (result) {
+		results[fieldPath] = result
+	}
+}
+
 /**
  * Validate all fields in a data object
  * @param {Object} data - Data object to validate
@@ -256,17 +296,7 @@ export function validateAll(data, schema, layout) {
 	if (!layout.elements || !schema.properties) return validationResults
 
 	for (const element of layout.elements) {
-		if (!element.scope) continue
-
-		const fieldPath = element.scope.replace(/^#\//, '')
-		const fieldSchema = getFieldSchema(fieldPath, schema)
-		const fieldLabel = element.label || element.title || fieldPath
-		const value = getValueByPath(data, fieldPath)
-
-		const result = validateField(value, fieldSchema, fieldLabel)
-		if (result) {
-			validationResults[fieldPath] = result
-		}
+		validateElement(element, data, schema, validationResults)
 	}
 
 	return validationResults

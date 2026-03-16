@@ -4,33 +4,32 @@ import { resolve } from 'path'
 import { generateUnoConfig, generateAppCssImports, generateInitScript } from './init.js'
 
 /**
- * Run all doctor checks against the given filesystem adapter.
- * @param {{ exists: (p: string) => boolean, read: (p: string) => string, resolve: (p: string) => string }} fs
- * @returns {Array<{ id: string, label: string, status: 'pass'|'fail', fixable: boolean, fix: string, autoFix?: string }>}
+ * Check config file existence
+ * @param {Object} fs
+ * @returns {{ id: string, label: string, status: string, fixable: boolean, fix: string, autoFix: string }}
  */
-export function runChecks(fs) {
-	const checks = []
-
-	// 1. rokkit.config.js exists
+function checkConfig(fs) {
 	const configExists = fs.exists(fs.resolve('rokkit.config.js'))
-	checks.push({
+	return {
 		id: 'config-exists',
 		label: 'rokkit.config.js exists',
 		status: configExists ? 'pass' : 'fail',
 		fixable: true,
 		fix: 'Run `rokkit init` to generate config',
 		autoFix: 'generate-config'
-	})
+	}
+}
 
-	// 2. uno.config.js uses presetRokkit
+/**
+ * Check uno.config.js uses presetRokkit
+ * @param {Object} fs
+ * @returns {Object}
+ */
+function checkUnoPreset(fs) {
 	const unoPath = fs.resolve('uno.config.js')
 	const unoExists = fs.exists(unoPath)
-	let unoUsesPreset = false
-	if (unoExists) {
-		const unoContent = fs.read(unoPath)
-		unoUsesPreset = unoContent.includes('presetRokkit')
-	}
-	checks.push({
+	const unoUsesPreset = unoExists && fs.read(unoPath).includes('presetRokkit')
+	return {
 		id: 'uno-uses-preset',
 		label: 'uno.config.js uses presetRokkit()',
 		status: unoUsesPreset ? 'pass' : 'fail',
@@ -38,43 +37,56 @@ export function runChecks(fs) {
 		fix: unoExists
 			? `Replace uno.config.js contents with:\n${generateUnoConfig()}`
 			: `Create uno.config.js with:\n${generateUnoConfig()}`
-	})
+	}
+}
 
-	// 3. app.css has theme imports
+/**
+ * Check app.css has theme imports
+ * @param {Object} fs
+ * @returns {Object}
+ */
+function checkCssImports(fs) {
 	const cssPath = fs.resolve('src/app.css')
 	const cssExists = fs.exists(cssPath)
-	let cssHasBase = false
-	if (cssExists) {
-		const css = fs.read(cssPath)
-		cssHasBase = css.includes('@rokkit/themes/dist/base')
-	}
-	checks.push({
+	const cssHasBase = cssExists && fs.read(cssPath).includes('@rokkit/themes/dist/base')
+	return {
 		id: 'css-imports',
 		label: 'app.css has theme imports',
 		status: cssHasBase ? 'pass' : 'fail',
 		fixable: true,
 		fix: 'Append theme imports to src/app.css',
 		autoFix: 'patch-css'
-	})
+	}
+}
 
-	// 4. app.html has init script
+/**
+ * Check app.html has init script
+ * @param {Object} fs
+ * @returns {Object}
+ */
+function checkHtmlScript(fs) {
 	const htmlPath = fs.resolve('src/app.html')
 	const htmlExists = fs.exists(htmlPath)
-	let htmlHasScript = false
-	if (htmlExists) {
-		const html = fs.read(htmlPath)
-		htmlHasScript = html.includes('rokkit-theme') || html.includes('data-mode')
-	}
-	checks.push({
+	const htmlHasScript =
+		htmlExists &&
+		(fs.read(htmlPath).includes('rokkit-theme') || fs.read(htmlPath).includes('data-mode'))
+	return {
 		id: 'html-init-script',
 		label: 'app.html has theme init script',
 		status: htmlHasScript ? 'pass' : 'fail',
 		fixable: true,
 		fix: 'Add flash-prevention script to src/app.html',
 		autoFix: 'patch-html'
-	})
+	}
+}
 
-	return checks
+/**
+ * Run all doctor checks against the given filesystem adapter.
+ * @param {{ exists: (p: string) => boolean, read: (p: string) => string, resolve: (p: string) => string }} fs
+ * @returns {Array<{ id: string, label: string, status: 'pass'|'fail', fixable: boolean, fix: string, autoFix?: string }>}
+ */
+export function runChecks(fs) {
+	return [checkConfig(fs), checkUnoPreset(fs), checkCssImports(fs), checkHtmlScript(fs)]
 }
 
 /**
@@ -90,97 +102,164 @@ function createFsAdapter(cwd) {
 }
 
 /**
+ * Apply the generate-config fix
+ * @param {string} cwd
+ * @param {string} label
+ */
+function applyGenerateConfig(cwd, label) {
+	const configPath = resolve(cwd, 'rokkit.config.js')
+	writeFileSync(configPath, 'export default {}\n')
+	console.info(`  Fixed: ${label}`)
+}
+
+/**
+ * Apply the patch-css fix
+ * @param {string} cwd
+ * @param {string} label
+ */
+function applyPatchCss(cwd, label) {
+	const cssPath = resolve(cwd, 'src/app.css')
+	const imports = generateAppCssImports(['rokkit'])
+	if (existsSync(cssPath)) {
+		const existing = readFileSync(cssPath, 'utf-8')
+		const missing = imports.filter((line) => !existing.includes(line))
+		if (missing.length > 0) writeFileSync(cssPath, `${missing.join('\n')}\n${existing}`)
+	} else {
+		writeFileSync(cssPath, `${imports.join('\n')}\n`)
+	}
+	console.info(`  Fixed: ${label}`)
+}
+
+/**
+ * Apply the patch-html fix
+ * @param {string} cwd
+ * @param {string} label
+ * @returns {boolean} whether fix was applied
+ */
+function applyPatchHtml(cwd, label) {
+	const htmlPath = resolve(cwd, 'src/app.html')
+	if (!existsSync(htmlPath)) return false
+	const html = readFileSync(htmlPath, 'utf-8')
+	const script = generateInitScript('manual', 'rokkit-theme')
+	if (!script || html.includes('rokkit-theme')) return false
+	const patched = html.replace(/(<body[^>]*>)/, `$1\n${script}`)
+	writeFileSync(htmlPath, patched)
+	console.info(`  Fixed: ${label}`)
+	return true
+}
+
+/** @type {Record<string, (cwd: string, label: string) => boolean|void>} */
+const FIX_HANDLERS = {
+	'generate-config': (cwd, label) => { applyGenerateConfig(cwd, label); return true },
+	'patch-css': (cwd, label) => { applyPatchCss(cwd, label); return true },
+	'patch-html': (cwd, label) => applyPatchHtml(cwd, label)
+}
+
+/**
+ * @param {number} fixed
+ * @param {{ status: string, fixable: boolean, autoFix?: string, label: string }} check
+ * @param {string} cwd
+ * @returns {number}
+ */
+function applyCheckFix(fixed, check, cwd) {
+	if (check.status !== 'fail' || !check.fixable) return fixed
+	const handler = FIX_HANDLERS[check.autoFix]
+	return handler && handler(cwd, check.label) ? fixed + 1 : fixed
+}
+
+/**
  * Auto-fix failed checks that are marked fixable.
- * @param {Array<{ id: string, status: string, fixable: boolean, autoFix?: string }>} checks
+ * @param {Array<{ id: string, status: string, fixable: boolean, autoFix?: string, label: string }>} checks
  * @param {string} cwd
  * @returns {number} number of fixed items
  */
 function autoFix(checks, cwd) {
-	let fixed = 0
+	return checks.reduce((fixed, check) => applyCheckFix(fixed, check, cwd), 0)
+}
 
+/**
+ * Print fix hints for failing checks
+ * @param {Array} checks
+ */
+function printFixHints(checks) {
 	for (const check of checks) {
-		if (check.status !== 'fail' || !check.fixable) continue
-
-		if (check.autoFix === 'generate-config') {
-			const configPath = resolve(cwd, 'rokkit.config.js')
-			writeFileSync(configPath, 'export default {}\n')
-			console.info(`  Fixed: ${check.label}`)
-			fixed++
-		}
-
-		if (check.autoFix === 'patch-css') {
-			const cssPath = resolve(cwd, 'src/app.css')
-			const imports = generateAppCssImports(['rokkit'])
-			if (existsSync(cssPath)) {
-				const existing = readFileSync(cssPath, 'utf-8')
-				const missing = imports.filter((line) => !existing.includes(line))
-				if (missing.length > 0) {
-					writeFileSync(cssPath, `${missing.join('\n')}\n${existing}`)
-				}
-			} else {
-				writeFileSync(cssPath, `${imports.join('\n')}\n`)
-			}
-			console.info(`  Fixed: ${check.label}`)
-			fixed++
-		}
-
-		if (check.autoFix === 'patch-html') {
-			const htmlPath = resolve(cwd, 'src/app.html')
-			if (existsSync(htmlPath)) {
-				const html = readFileSync(htmlPath, 'utf-8')
-				const script = generateInitScript('manual', 'rokkit-theme')
-				if (script && !html.includes('rokkit-theme')) {
-					const patched = html.replace(/(<body[^>]*>)/, `$1\n${script}`)
-					writeFileSync(htmlPath, patched)
-					console.info(`  Fixed: ${check.label}`)
-					fixed++
-				}
-			}
+		if (check.status === 'fail') {
+			console.info(`         ${check.fixable ? '(auto-fixable) ' : ''}${check.fix}`)
 		}
 	}
+}
 
-	return fixed
+/**
+ * Print remaining manual action items
+ * @param {Array} checks
+ */
+function printManualItems(checks) {
+	for (const check of checks) {
+		if (check.status === 'fail' && !check.fixable) {
+			console.info(`  - ${check.label}: ${check.fix}`)
+		}
+	}
+}
+
+/**
+ * Count failures and print status for each check.
+ * @param {Array} checks
+ * @returns {number}
+ */
+function printChecks(checks) {
+	let failures = 0
+	for (const check of checks) {
+		const icon = check.status === 'pass' ? 'PASS' : 'FAIL'
+		console.info(`  ${icon}  ${check.label}`)
+		if (check.status === 'fail') failures++
+	}
+	return failures
+}
+
+/**
+ * Handle auto-fix flow and print results.
+ * @param {Array} checks
+ * @param {string} cwd
+ * @param {number} failures
+ */
+function handleAutoFix(checks, cwd, failures) {
+	console.info('\nAuto-fixing...\n')
+	const fixed = autoFix(checks, cwd)
+	const remaining = failures - fixed
+	if (remaining > 0) {
+		console.info(`\n${fixed} fixed, ${remaining} require manual action:`)
+		printManualItems(checks)
+	} else {
+		console.info(`\nAll ${fixed} issues fixed!`)
+	}
+}
+
+/**
+ * @param {Array} checks
+ * @param {string} cwd
+ * @param {number} failures
+ * @param {boolean} fix
+ */
+function handleResults(checks, cwd, failures, fix) {
+	if (failures === 0) return
+	if (fix) {
+		handleAutoFix(checks, cwd, failures)
+	} else {
+		printFixHints(checks)
+		process.exitCode = 1
+	}
 }
 
 /**
  * Interactive doctor command — validates project setup.
  * @param {{ fix?: boolean }} [opts]
  */
-export async function doctor(opts = {}) {
+export function doctor(opts = {}) {
 	const cwd = process.cwd()
-	const fs = createFsAdapter(cwd)
-	const checks = runChecks(fs)
+	const checks = runChecks(createFsAdapter(cwd))
 
 	console.info('Rokkit Doctor\n')
-
-	let failures = 0
-	for (const check of checks) {
-		const icon = check.status === 'pass' ? 'PASS' : 'FAIL'
-		console.info(`  ${icon}  ${check.label}`)
-		if (check.status === 'fail') {
-			failures++
-			if (!opts.fix) {
-				console.info(`         ${check.fixable ? '(auto-fixable) ' : ''}${check.fix}`)
-			}
-		}
-	}
-
-	if (failures > 0 && opts.fix) {
-		console.info('\nAuto-fixing...\n')
-		const fixed = autoFix(checks, cwd)
-		const remaining = failures - fixed
-		if (remaining > 0) {
-			console.info(`\n${fixed} fixed, ${remaining} require manual action:`)
-			for (const check of checks) {
-				if (check.status === 'fail' && !check.fixable) {
-					console.info(`  - ${check.label}: ${check.fix}`)
-				}
-			}
-		} else {
-			console.info(`\nAll ${fixed} issues fixed!`)
-		}
-	}
-
+	const failures = printChecks(checks)
+	handleResults(checks, cwd, failures, opts.fix ?? false)
 	console.info('')
-	process.exitCode = failures > 0 && !opts.fix ? 1 : 0
 }

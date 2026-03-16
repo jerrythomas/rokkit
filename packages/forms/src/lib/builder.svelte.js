@@ -1,3 +1,4 @@
+import { SvelteMap, SvelteSet } from 'svelte/reactivity'
 import { deriveSchemaFromValue } from './schema.js'
 import { deriveLayoutFromValue } from './layout.js'
 import { getSchemaWithLayout } from './fields.js'
@@ -19,6 +20,35 @@ function deepClone(value) {
 	return JSON.parse(JSON.stringify(value))
 }
 
+/** @private */
+function deepEqualArrays(a, b) {
+	if (a.length !== b.length) return false
+	return a.every((val, i) => deepEqual(val, b[i]))
+}
+
+/** @private */
+function deepEqualObjects(a, b) {
+	const keysA = Object.keys(a)
+	const keysB = Object.keys(b)
+	if (keysA.length !== keysB.length) return false
+	return keysA.every((key) => Object.hasOwn(b, key) && deepEqual(a[key], b[key]))
+}
+
+/** @private — true when either value is nullish */
+function isNullish(v) {
+	return v === null || v === undefined
+}
+
+/** @private — true when both are same-type objects (not mixed array/object) */
+function areSameObjectType(a, b) {
+	return typeof a === 'object' && typeof b === 'object' && Array.isArray(a) === Array.isArray(b)
+}
+
+/** @private — dispatch object comparison to array or plain-object helper */
+function deepEqualObjects2(a, b) {
+	return Array.isArray(a) ? deepEqualArrays(a, b) : deepEqualObjects(a, b)
+}
+
 /**
  * Deep equality check for plain values (primitives, plain objects, arrays).
  * @param {any} a
@@ -27,20 +57,8 @@ function deepClone(value) {
  */
 function deepEqual(a, b) {
 	if (a === b) return true
-	if (a === null || a === undefined || b === null || b === undefined) return a === b
-	if (typeof a !== typeof b) return false
-	if (typeof a !== 'object') return false
-	if (Array.isArray(a) !== Array.isArray(b)) return false
-
-	if (Array.isArray(a)) {
-		if (a.length !== b.length) return false
-		return a.every((val, i) => deepEqual(val, b[i]))
-	}
-
-	const keysA = Object.keys(a)
-	const keysB = Object.keys(b)
-	if (keysA.length !== keysB.length) return false
-	return keysA.every((key) => Object.hasOwn(b, key) && deepEqual(a[key], b[key]))
+	if (isNullish(a) || isNullish(b)) return false
+	return areSameObjectType(a, b) && deepEqualObjects2(a, b)
 }
 
 /**
@@ -61,6 +79,28 @@ function deepEqual(a, b) {
  * @property {string} [props.message.text] - Message text content
  * @property {boolean} [props.dirty] - Whether field value differs from initial
  */
+
+/** Maps simple schema types to their input type string */
+const SCHEMA_TYPE_MAP = { boolean: 'checkbox', array: 'array' }
+
+/**
+ * Update a nested data path and return the updated root object
+ * @private
+ * @param {Object} data - Current data
+ * @param {string[]} keys - Path segments
+ * @param {any} value - New value
+ * @returns {Object}
+ */
+function setNestedValue(data, keys, value) {
+	const updated = { ...data }
+	let current = updated
+	for (let i = 0; i < keys.length - 1; i++) {
+		current[keys[i]] = { ...current[keys[i]] }
+		current = current[keys[i]]
+	}
+	current[keys[keys.length - 1]] = value
+	return updated
+}
 
 /**
  * FormBuilder class for dynamically generating forms from data structures
@@ -161,6 +201,17 @@ export class FormBuilder {
 	}
 
 	/**
+	 * Initialise the lookup manager if any lookups are provided
+	 * @private
+	 */
+	#initLookups(lookups) {
+		this.#lookupConfigs = lookups
+		if (Object.keys(lookups).length > 0) {
+			this.#lookupManager = createLookupManager(lookups)
+		}
+	}
+
+	/**
 	 * Create a new FormBuilder instance
 	 * @param {Object} [data={}] - Initial data object
 	 * @param {Object|null} [schema=null] - Optional schema override
@@ -172,10 +223,7 @@ export class FormBuilder {
 		this.#initialData = deepClone(data)
 		this.schema = schema
 		this.layout = layout
-		this.#lookupConfigs = lookups
-		if (Object.keys(lookups).length > 0) {
-			this.#lookupManager = createLookupManager(lookups)
-		}
+		this.#initLookups(lookups)
 	}
 
 	/**
@@ -252,26 +300,31 @@ export class FormBuilder {
 	}
 
 	/**
+	 * Clear dependent field values for a changed path
+	 * @private
+	 */
+	#clearDependentFields(path) {
+		for (const [depPath, lookup] of this.#lookupManager.lookups) {
+			if (!lookup.dependsOn.includes(path)) continue
+			const depKeys = depPath.split('/')
+			if (depKeys.length === 1) {
+				this.#data = { ...this.#data, [depKeys[0]]: null }
+			}
+		}
+	}
+
+	/**
 	 * Update a specific field value
 	 * @param {string} path - Field path (e.g., 'count', 'settings/distance')
 	 * @param {any} value - New value
 	 * @param {boolean} [triggerLookups=true] - Whether to trigger dependent lookups
 	 */
 	updateField(path, value, triggerLookups = true) {
-		// Simple path handling for now - can be enhanced for nested objects
 		const keys = path.split('/')
 		if (keys.length === 1) {
 			this.#data = { ...this.#data, [keys[0]]: value }
 		} else {
-			// Handle nested paths if needed
-			const updatedData = { ...this.#data }
-			let current = updatedData
-			for (let i = 0; i < keys.length - 1; i++) {
-				current[keys[i]] = { ...current[keys[i]] }
-				current = current[keys[i]]
-			}
-			current[keys[keys.length - 1]] = value
-			this.#data = updatedData
+			this.#data = setNestedValue(this.#data, keys, value)
 		}
 
 		// Clear stale validation errors for fields that are now hidden
@@ -279,15 +332,7 @@ export class FormBuilder {
 
 		// Trigger dependent lookups if configured
 		if (triggerLookups && this.#lookupManager) {
-			// Clear dependent field values synchronously before lookup re-fetch
-			for (const [depPath, lookup] of this.#lookupManager.lookups) {
-				if (lookup.dependsOn.includes(path)) {
-					const depKeys = depPath.split('/')
-					if (depKeys.length === 1) {
-						this.#data = { ...this.#data, [depKeys[0]]: null }
-					}
-				}
-			}
+			this.#clearDependentFields(path)
 			this.#lookupManager.handleFieldChange(path, this.#data)
 		}
 	}
@@ -317,7 +362,7 @@ export class FormBuilder {
 	 * @private
 	 */
 	#clearHiddenValidation() {
-		const visiblePaths = new Set(
+		const visiblePaths = new SvelteSet(
 			this.elements.filter((el) => el.scope).map((el) => el.scope.replace(/^#\//, ''))
 		)
 		const cleaned = Object.fromEntries(
@@ -329,71 +374,95 @@ export class FormBuilder {
 	}
 
 	/**
+	 * Build a display element from the layout entry
+	 * @private
+	 */
+	#buildDisplayElement(layoutEl) {
+		const scope = layoutEl.scope ?? null
+		const fieldPath = scope?.replace(/^#\//, '')
+		const value = fieldPath ? this.getValue(fieldPath) : null
+		const { type: displayType, scope: _s, ...displayProps } = layoutEl
+		return { type: displayType, scope, value, override: false, props: displayProps }
+	}
+
+	/**
+	 * Build a non-scoped separator/spacer element from the layout entry
+	 * @private
+	 */
+	#buildSeparatorElement(layoutEl) {
+		const { type: separatorType, ...separatorProps } = layoutEl
+		return {
+			type: separatorType ?? 'separator',
+			scope: null,
+			value: null,
+			override: false,
+			props: separatorProps
+		}
+	}
+
+	/**
+	 * Process one scoped layout element — returns FormElement or null
+	 * @private
+	 */
+	#processScopedElement(layoutEl, combinedMap) {
+		if (layoutEl.showWhen && !evaluateCondition(layoutEl.showWhen, this.#data)) return null
+		const key = layoutEl.scope.replace(/^#\//, '').split('/').pop()
+		const combinedEl = combinedMap.get(key)
+		return combinedEl ? this.#convertToFormElement(combinedEl) : null
+	}
+
+	/**
+	 * Build the combined element map from schema+layout
+	 * @private
+	 */
+	#buildCombinedMap(layoutElements) {
+		const scopedElements = layoutElements.filter(
+			(el) => el.scope && !el.type?.startsWith('display-')
+		)
+		const scopedLayout = { ...this.#layout, elements: scopedElements }
+		const combined = getSchemaWithLayout(this.#schema, scopedLayout)
+
+		const combinedMap = new SvelteMap()
+		for (const el of combined.elements ?? []) {
+			if (el.key) combinedMap.set(el.key, el)
+		}
+		return combinedMap
+	}
+
+	/**
+	 * Convert one layout element to a form element (or null)
+	 * @private
+	 */
+	#buildOneElement(layoutEl, combinedMap) {
+		if (layoutEl.type?.startsWith('display-')) return this.#buildDisplayElement(layoutEl)
+		if (!layoutEl.scope) return this.#buildSeparatorElement(layoutEl)
+		return this.#processScopedElement(layoutEl, combinedMap)
+	}
+
+	/**
+	 * Collect form elements from layout into result array
+	 * @private
+	 */
+	#collectElements(layoutElements, combinedMap) {
+		const result = []
+		for (const layoutEl of layoutElements) {
+			const formEl = this.#buildOneElement(layoutEl, combinedMap)
+			if (formEl) result.push(formEl)
+		}
+		return result
+	}
+
+	/**
 	 * Build form elements from schema and layout using getSchemaWithLayout
 	 * @private
 	 * @returns {FormElement[]} Array of form elements
 	 */
 	#buildElements() {
 		try {
-			const result = []
 			const layoutElements = this.#layout?.elements ?? []
-			// Track which layout elements have scopes (for schema merge)
-			// Exclude display-* elements — they are handled separately
-			const scopedElements = layoutElements.filter(
-				(el) => el.scope && !el.type?.startsWith('display-')
-			)
-			const scopedLayout = { ...this.#layout, elements: scopedElements }
-			const combined = getSchemaWithLayout(this.#schema, scopedLayout)
-
-			// Build a map of combined elements by key for lookup
-			const combinedMap = new Map()
-			for (const el of combined.elements ?? []) {
-				if (el.key) combinedMap.set(el.key, el)
-			}
-
-			// Iterate original layout order to preserve separators and other non-scoped elements
-			for (const layoutEl of layoutElements) {
-				if (layoutEl.type?.startsWith('display-')) {
-					// Display element — resolve data from scope if present
-					const scope = layoutEl.scope ?? null
-					const fieldPath = scope?.replace(/^#\//, '')
-					const value = fieldPath ? this.getValue(fieldPath) : null
-					const { type: displayType, scope: _s, ...displayProps } = layoutEl
-					result.push({
-						type: displayType,
-						scope,
-						value,
-						override: false,
-						props: displayProps
-					})
-				} else if (!layoutEl.scope) {
-					// Non-scoped element (separator, etc.)
-					const { type: separatorType, ...separatorProps } = layoutEl
-					result.push({
-						type: separatorType ?? 'separator',
-						scope: null,
-						value: null,
-						override: false,
-						props: separatorProps
-					})
-				} else {
-					// Check showWhen condition before processing scoped field
-					if (layoutEl.showWhen && !evaluateCondition(layoutEl.showWhen, this.#data)) {
-						continue
-					}
-
-					// Extract key from scope
-					const key = layoutEl.scope.replace(/^#\//, '').split('/').pop()
-					const combinedEl = combinedMap.get(key)
-					if (combinedEl) {
-						const formEl = this.#convertToFormElement(combinedEl)
-						if (formEl) result.push(formEl)
-					}
-				}
-			}
-			return result
+			const combinedMap = this.#buildCombinedMap(layoutElements)
+			return this.#collectElements(layoutElements, combinedMap)
 		} catch (error) {
-			// If getSchemaWithLayout fails, fall back to basic element creation
 			console.warn('Failed to build elements:', error) // eslint-disable-line no-console
 			return this.#buildBasicElements()
 		}
@@ -456,6 +525,124 @@ export class FormBuilder {
 	}
 
 	/**
+	 * Convert a nested (group) element to FormElement format
+	 * @private
+	 */
+	#convertNestedElement(element, fieldPath, scope, value) {
+		const nestedElements = element.elements.map((child) =>
+			this.#convertToFormElement(child, fieldPath)
+		)
+		const { key: _k, elements: _e, override: _o, props: groupProps, ...topLevelProps } = element
+		return {
+			scope,
+			type: 'group',
+			value,
+			override: element.override || false,
+			props: {
+				...topLevelProps,
+				...groupProps,
+				elements: nestedElements,
+				message: this.#validation[fieldPath] || null
+			}
+		}
+	}
+
+	/**
+	 * Convert a readonly element to FormElement format
+	 * @private
+	 */
+	#convertReadonlyElement(element, fieldPath, scope, value) {
+		const validationMessage = this.#validation[fieldPath] || null
+		return {
+			scope,
+			type: 'info',
+			value,
+			override: element.override || false,
+			props: { ...element.props, type: 'info', message: validationMessage }
+		}
+	}
+
+	/**
+	 * Resolve number input type (range when both min and max are set, otherwise number)
+	 * @private
+	 */
+	#resolveNumberType(props) {
+		return props.min !== undefined && props.max !== undefined ? 'range' : 'number'
+	}
+
+	/**
+	 * Resolve input type for string schema type
+	 * @private
+	 */
+	#resolveStringType(props) {
+		if (props.enum || props.options) {
+			// Map enum values to options format expected by select inputs
+			if (Array.isArray(props.enum) && !props.options) {
+				props.options = props.enum
+			}
+			return 'select'
+		}
+		return 'text'
+	}
+
+	/**
+	 * Resolve input type from schema type field
+	 * @private
+	 */
+	#resolveTypeFromSchema(props) {
+		if (props.type === 'number' || props.type === 'integer') return this.#resolveNumberType(props)
+		if (props.type === 'string') return this.#resolveStringType(props)
+		return SCHEMA_TYPE_MAP[props.type] ?? 'text'
+	}
+
+	/**
+	 * Resolve the input type from element props
+	 * @private
+	 * @param {Object} props - Element props
+	 * @returns {string}
+	 */
+	#resolveInputType(props) {
+		if (props.renderer) return props.renderer
+		if (props.format && !['text', 'number'].includes(props.format)) return props.format
+		return this.#resolveTypeFromSchema(props)
+	}
+
+	/**
+	 * Apply lookup state into finalProps (mutates finalProps)
+	 * @private
+	 */
+	#applyLookupState(fieldPath, finalProps) {
+		const lookupState = this.getLookupState(fieldPath)
+		if (!lookupState) return
+		applyLookupProps(lookupState, finalProps)
+	}
+
+	/**
+	 * Build a standard (non-nested, non-readonly) form element
+	 * @private
+	 */
+	#buildStandardElement(element, fieldPath, scope, value) {
+		const { props } = element
+		const type = this.#resolveInputType(props)
+		const finalProps = {
+			...props,
+			type,
+			message: this.#validation[fieldPath] || null,
+			dirty: this.isFieldDirty(fieldPath)
+		}
+		this.#applyLookupState(fieldPath, finalProps)
+		return { scope, type, value, override: element.override || false, props: finalProps }
+	}
+
+	/**
+	 * Resolve the field path for an element
+	 * @private
+	 */
+	#resolveFieldPath(key, parentPath) {
+		return parentPath ? `${parentPath}/${key}` : key
+	}
+
+	/**
 	 * Convert a combined schema/layout element to FormElement format
 	 * @private
 	 * @param {Object} element - Combined element from getSchemaWithLayout
@@ -463,115 +650,16 @@ export class FormBuilder {
 	 * @returns {FormElement} Form element
 	 */
 	#convertToFormElement(element, parentPath = '') {
-		const { key, props } = element
+		const { key } = element
+		if (!key) return null
 
-		// Skip elements without a key
-		if (!key) {
-			return null
-		}
-
-		// Create scope in JSON Pointer format
-		const fieldPath = parentPath ? `${parentPath}/${key}` : key
+		const fieldPath = this.#resolveFieldPath(key, parentPath)
 		const scope = `#/${fieldPath}`
 		const value = this.getValue(fieldPath)
 
-		// Handle nested elements (arrays and objects)
-		if (element.elements) {
-			// This is a nested structure, process children
-			const nestedElements = element.elements.map((child) =>
-				this.#convertToFormElement(child, fieldPath)
-			)
-
-			// Group elements have top-level properties (label, etc.) from combineNestedElementsWithSchema
-			const { key: _k, elements: _e, override: _o, props: groupProps, ...topLevelProps } = element
-
-			return {
-				scope,
-				type: 'group',
-				value,
-				override: element.override || false,
-				props: {
-					...topLevelProps,
-					...groupProps,
-					elements: nestedElements,
-					message: this.#validation[fieldPath] || null
-				}
-			}
-		}
-
-		// Readonly fields render as info display
-		if (props.readonly) {
-			const validationMessage = this.#validation[fieldPath] || null
-			return {
-				scope,
-				type: 'info',
-				value,
-				override: element.override || false,
-				props: { ...props, type: 'info', message: validationMessage }
-			}
-		}
-
-		// Determine input type — renderer hint takes priority
-		let type = 'text'
-		if (props.renderer) {
-			// Explicit renderer override — use as-is, resolveRenderer handles lookup
-			type = props.renderer
-		} else if (props.format && !['text', 'number'].includes(props.format)) {
-			// Format hint maps to input type (email, url, tel, color, date, etc.)
-			type = props.format
-		} else if (props.type) {
-			switch (props.type) {
-				case 'number':
-				case 'integer':
-					type = props.min !== undefined && props.max !== undefined ? 'range' : 'number'
-					break
-				case 'boolean':
-					type = 'checkbox'
-					break
-				case 'string':
-					if (props.enum || props.options) {
-						type = 'select'
-						// Map enum values to options format expected by select inputs
-						if (Array.isArray(props.enum) && !props.options) {
-							props.options = props.enum
-						}
-					} else {
-						type = 'text'
-					}
-					break
-				case 'array':
-					type = 'array'
-					break
-			}
-		}
-
-		// Add validation message and dirty state
-		const validationMessage = this.#validation[fieldPath] || null
-
-		// Compose final props
-		const finalProps = {
-			...props,
-			type,
-			message: validationMessage,
-			dirty: this.isFieldDirty(fieldPath)
-		}
-
-		// Inject lookup state (options, loading, disabled, fields) when present
-		const lookupState = this.getLookupState(fieldPath)
-		if (lookupState) {
-			if (lookupState.options?.length > 0) finalProps.options = lookupState.options
-			if (lookupState.loading) finalProps.loading = true
-			if (lookupState.disabled) finalProps.disabled = true
-			if (lookupState.fields && !finalProps.fields) finalProps.fields = lookupState.fields
-		}
-
-		return {
-			scope,
-			type,
-			value,
-			override: element.override || false,
-			props: finalProps
-		}
+		if (element.elements) return this.#convertNestedElement(element, fieldPath, scope, value)
+		if (element.props.readonly) return this.#convertReadonlyElement(element, fieldPath, scope, value)
+		return this.#buildStandardElement(element, fieldPath, scope, value)
 	}
 
 	/**
@@ -620,7 +708,7 @@ export class FormBuilder {
 	 */
 	validate() {
 		const results = validateAllFields(this.#data, this.#schema, this.#layout)
-		const visiblePaths = new Set(
+		const visiblePaths = new SvelteSet(
 			this.elements.filter((el) => el.scope).map((el) => el.scope.replace(/^#\//, ''))
 		)
 		const filtered = Object.fromEntries(
@@ -637,7 +725,7 @@ export class FormBuilder {
 	 * @returns {Object} Filtered data containing only visible field keys
 	 */
 	getVisibleData() {
-		const visiblePaths = new Set(
+		const visiblePaths = new SvelteSet(
 			this.elements
 				.filter((el) => el.scope)
 				.map((el) => el.scope.replace(/^#\//, ''))
@@ -746,28 +834,17 @@ export class FormBuilder {
 	 * @param {Set<string>} dirty - Accumulator set
 	 */
 	#collectDirtyFields(current, initial, prefix, dirty) {
-		const allKeys = new Set([...Object.keys(current ?? {}), ...Object.keys(initial ?? {})])
-
+		const allKeys = new SvelteSet([...Object.keys(current ?? {}), ...Object.keys(initial ?? {})])
 		for (const key of allKeys) {
-			const path = prefix ? `${prefix}/${key}` : key
-			const curVal = current?.[key]
-			const initVal = initial?.[key]
-
-			if (!deepEqual(curVal, initVal)) {
-				dirty.add(path)
-			}
+			collectIfDirty({ current, initial, prefix, key, dirty })
 		}
 	}
 
 	/**
-	 * Get schema definition for a field path
+	 * Walk schema properties following the key path
 	 * @private
-	 * @param {string} fieldPath - Field path
-	 * @returns {Object|null} Field schema
 	 */
-	#getFieldSchema(fieldPath) {
-		if (!this.#schema?.properties) return null
-		const keys = fieldPath.split('/')
+	#walkSchemaPath(keys) {
 		let current = this.#schema.properties
 		for (const key of keys) {
 			if (current && current[key]) {
@@ -780,6 +857,17 @@ export class FormBuilder {
 	}
 
 	/**
+	 * Get schema definition for a field path
+	 * @private
+	 * @param {string} fieldPath - Field path
+	 * @returns {Object|null} Field schema
+	 */
+	#getFieldSchema(fieldPath) {
+		if (!this.#schema?.properties) return null
+		return this.#walkSchemaPath(fieldPath.split('/'))
+	}
+
+	/**
 	 * Get label for a field from layout
 	 * @private
 	 * @param {string} fieldPath - Field path
@@ -788,7 +876,7 @@ export class FormBuilder {
 	#getFieldLabel(fieldPath) {
 		const scope = `#/${fieldPath}`
 		const layoutEl = this.#layout?.elements?.find((el) => el.scope === scope)
-		return layoutEl?.label || layoutEl?.title || fieldPath
+		return layoutElLabel(layoutEl, fieldPath)
 	}
 
 	/**
@@ -798,4 +886,52 @@ export class FormBuilder {
 		this.#data = deepClone(this.#initialData)
 		this.#validation = {}
 	}
+}
+
+// ── Module-level helpers (no `this`) ──────────────────────────────────────────
+
+/**
+ * Return the display label for a layout element, falling back to fieldPath
+ * @private
+ */
+function layoutElLabel(layoutEl, fieldPath) {
+	if (layoutEl?.label) return layoutEl.label
+	return layoutEl?.title ?? fieldPath
+}
+
+/**
+ * Apply options/loading state from lookup to finalProps
+ * @private
+ */
+function applyLookupData(lookupState, finalProps) {
+	if (lookupState.options?.length > 0) finalProps.options = lookupState.options
+	if (lookupState.loading) finalProps.loading = true
+}
+
+/**
+ * Apply disabled/fields state from lookup to finalProps
+ * @private
+ */
+function applyLookupMeta(lookupState, finalProps) {
+	if (lookupState.disabled) finalProps.disabled = true
+	if (lookupState.fields && !finalProps.fields) finalProps.fields = lookupState.fields
+}
+
+/**
+ * Merge all lookup properties into finalProps
+ * @private
+ */
+function applyLookupProps(lookupState, finalProps) {
+	applyLookupData(lookupState, finalProps)
+	applyLookupMeta(lookupState, finalProps)
+}
+
+/**
+ * Add path to dirty set if current and initial values differ
+ * @private
+ * @param {{ current: any, initial: any, prefix: string, key: string, dirty: Set<string> }} ctx
+ */
+function collectIfDirty({ current, initial, prefix, key, dirty }) {
+	const path = prefix ? `${prefix}/${key}` : key
+	if (!deepEqual(current?.[key], initial?.[key])) dirty.add(path)
 }

@@ -24,24 +24,42 @@ export const DEFAULT_CONFIG = {
 const KNOWN_KEYS = new Set(Object.keys(DEFAULT_CONFIG))
 
 /**
+ * @param {unknown} value
+ * @param {unknown} fallback
+ * @returns {unknown}
+ */
+function pick(value, fallback) {
+	return value !== undefined ? value : fallback
+}
+
+/**
+ * Strip unknown keys from merged result
+ * @param {Record<string, unknown>} result
+ */
+function stripUnknownKeys(result) {
+	for (const key of Object.keys(result)) {
+		if (!KNOWN_KEYS.has(key)) delete result[key]
+	}
+}
+
+/**
  * Merge user configuration with defaults.
  *
  * @param {Partial<typeof DEFAULT_CONFIG>} [userConfig={}]
  * @returns {typeof DEFAULT_CONFIG}
  */
-export function loadConfig(userConfig = {}) {
+export function loadConfig(userConfig) {
+	const cfg = userConfig || {}
 	const result = {
-		colors: { ...DEFAULT_CONFIG.colors, ...userConfig.colors },
-		skins: userConfig.skins ?? DEFAULT_CONFIG.skins,
-		themes: userConfig.themes ?? DEFAULT_CONFIG.themes,
-		icons: { ...DEFAULT_CONFIG.icons, ...userConfig.icons },
-		switcher: userConfig.switcher ?? DEFAULT_CONFIG.switcher,
-		storageKey: userConfig.storageKey ?? DEFAULT_CONFIG.storageKey
+		colors: { ...DEFAULT_CONFIG.colors, ...cfg.colors },
+		skins: pick(cfg.skins, DEFAULT_CONFIG.skins),
+		themes: pick(cfg.themes, DEFAULT_CONFIG.themes),
+		icons: { ...DEFAULT_CONFIG.icons, ...cfg.icons },
+		switcher: pick(cfg.switcher, DEFAULT_CONFIG.switcher),
+		storageKey: pick(cfg.storageKey, DEFAULT_CONFIG.storageKey)
 	}
 
-	for (const key of Object.keys(result)) {
-		if (!KNOWN_KEYS.has(key)) delete result[key]
-	}
+	stripUnknownKeys(result)
 
 	return result
 }

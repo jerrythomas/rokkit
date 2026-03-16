@@ -66,6 +66,27 @@ export class ProxyItem {
 	#children = $derived(this.#buildChildren())
 
 	/**
+	 * Normalise a raw value to an object for uniform field access.
+	 * @param {*} raw
+	 * @returns {object}
+	 */
+	#normalizeItem(raw) {
+		return raw !== null && typeof raw === 'object'
+			? raw
+			: { [this.#fields.label]: raw, [this.#fields.value]: raw }
+	}
+
+	/**
+	 * Sync initial control state from item fields when present.
+	 */
+	#syncControlState() {
+		const ef = this.#fields.expanded
+		const sf = this.#fields.selected
+		if (ef in this.#item) this.#expanded = Boolean(this.#item[ef])
+		if (sf in this.#item) this.#selected = Boolean(this.#item[sf])
+	}
+
+	/**
 	 * @param {*} raw   Raw item — object or primitive (string, number, …)
 	 * @param {Partial<typeof BASE_FIELDS>} [fields]
 	 * @param {string} [key]    Path-based key assigned by ProxyTree
@@ -76,22 +97,9 @@ export class ProxyItem {
 		this.#raw = raw
 		this.#key = key
 		this.#level = level
-
-		// Normalise primitives: #item is always an object.
-		// Both text and value fields point to the primitive so all accessors work uniformly.
-		this.#item =
-			raw !== null && typeof raw === 'object'
-				? raw
-				: { [this.#fields.label]: raw, [this.#fields.value]: raw }
-
-		// Stable unique id: read from item field, or auto-generate
+		this.#item = this.#normalizeItem(raw)
 		this.#id = this.#item[this.#fields.id] ?? `proxy-${_nextId++}`
-
-		// Sync initial control state from #item fields when present
-		const ef = this.#fields.expanded
-		const sf = this.#fields.selected
-		if (ef in this.#item) this.#expanded = Boolean(this.#item[ef])
-		if (sf in this.#item) this.#selected = Boolean(this.#item[sf])
+		this.#syncControlState()
 	}
 
 	// ─── Internal: build wrapped children ────────────────────────────────────
@@ -283,12 +291,21 @@ export class LazyProxyItem extends ProxyItem {
 	 * @param {number} [level]
 	 * @param {((value: unknown, raw: unknown) => Promise<unknown[]>) | null} [lazyLoad]
 	 */
+	// eslint-disable-next-line max-params
 	constructor(raw, fields = {}, key = '', level = 0, lazyLoad = null) {
 		super(raw, fields, key, level)
 		this.#lazyLoad = lazyLoad
-		// Loaded if: no lazyLoad function, children already exist as an array, or no children field (leaf)
-		// Only sentinel nodes (children: true) are considered unloaded
-		this.#loaded = lazyLoad === null || this.get('children') !== true
+		this.#loaded = this.#resolveLoaded(lazyLoad)
+	}
+
+	/**
+	 * Determine initial loaded state.
+	 * Loaded if no lazyLoad function, or children is not a sentinel (true).
+	 * @param {Function|null} lazyLoad
+	 * @returns {boolean}
+	 */
+	#resolveLoaded(lazyLoad) {
+		return lazyLoad === null || this.get('children') !== true
 	}
 
 	get loaded() {

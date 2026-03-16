@@ -34,6 +34,14 @@ function getArrows(orientation, dir) {
 	return ARROWS[`vertical-${dir}`]
 }
 
+function buildPlainLayer(arrows, collapsible) {
+	return {
+		...PLAIN_FIXED,
+		...arrows.move,
+		...(collapsible ? arrows.nested : {})
+	}
+}
+
 // ─── buildKeymap ──────────────────────────────────────────────────────────────
 
 /**
@@ -52,17 +60,20 @@ export function buildKeymap({ orientation = 'vertical', dir = 'ltr', collapsible
 	const arrows = getArrows(orientation, dir)
 
 	return {
-		plain: {
-			...PLAIN_FIXED,
-			...arrows.move,
-			...(collapsible ? arrows.nested : {})
-		},
+		plain: buildPlainLayer(arrows, collapsible),
 		shift: { ...SHIFT_FIXED },
 		ctrl: { ...CTRL_FIXED }
 	}
 }
 
 // ─── resolveAction ────────────────────────────────────────────────────────────
+
+function pickLayer(shiftKey, ctrlKey, metaKey) {
+	if (ctrlKey) return 'ctrl'
+	if (metaKey) return 'ctrl'
+	if (shiftKey) return 'shift'
+	return 'plain'
+}
 
 /**
  * Resolve the action for a keyboard event given a pre-built keymap.
@@ -74,8 +85,5 @@ export function buildKeymap({ orientation = 'vertical', dir = 'ltr', collapsible
  */
 export function resolveAction(event, keymap) {
 	const { key, ctrlKey, metaKey, shiftKey } = event
-
-	if (shiftKey && !ctrlKey && !metaKey) return keymap.shift[key] ?? null
-	if (ctrlKey || metaKey) return keymap.ctrl[key] ?? null
-	return keymap.plain[key] ?? null
+	return keymap[pickLayer(shiftKey, ctrlKey, metaKey)][key] ?? null
 }

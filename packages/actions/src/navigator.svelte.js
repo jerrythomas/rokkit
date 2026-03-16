@@ -99,6 +99,98 @@ function getHandlers(wrapper) {
 		toggle: (path) => wrapper.toggleExpansion(path)
 	}
 }
+
+function isTypeaheadEvent(event) {
+	if (event.ctrlKey) return false
+	if (event.metaKey) return false
+	if (event.altKey) return false
+	if (event.key.length !== 1) return false
+	return event.key !== ' '
+}
+
+function dispatchFocusMoveEvent(node, wrapper) {
+	node.dispatchEvent(
+		new CustomEvent('action', {
+			detail: {
+				name: 'move',
+				data: { value: wrapper.focused, selected: wrapper.selected }
+			}
+		})
+	)
+}
+
+const SCROLL_ACTIONS = new Set(['first', 'last', 'previous', 'next', 'expand', 'collapse'])
+
+function isNativeLink(action, target) {
+	return action === 'select' && Boolean(target.closest('a[href]'))
+}
+
+function notifyFocusMove(node, wrapper, action, prevKey) {
+	if (action !== 'expand' && action !== 'collapse') return false
+	if (wrapper.focusedKey === prevKey) return false
+	dispatchFocusMoveEvent(node, wrapper)
+	return true
+}
+
+function runTypeahead(config, wrapper, ta, event) {
+	if (!config.typeahead) return
+	if (!wrapper.findByText) return
+	ta.handle(event)
+}
+
+function makeKeydownHandler(ctx, config, handlers, ta) {
+	const { node, wrapper } = ctx
+	return (event) => {
+		const action = getKeyboardAction(event, config)
+		if (isNativeLink(action, event.target)) return
+
+		const prevKey = wrapper.focusedKey
+		const handled = handleAction(event, handlers[action])
+		if (!handled) { runTypeahead(config, wrapper, ta, event); return }
+
+		ta.reset()
+		emitAction(node, wrapper, action, true)
+		notifyFocusMove(node, wrapper, action, prevKey)
+		if (SCROLL_ACTIONS.has(action)) setTimeout(() => scrollFocusedIntoView(node, wrapper), 0)
+	}
+}
+
+function getTypeaheadStart(buffer, wrapper) {
+	if (buffer.length === 0) return wrapper.focusedKey
+	return null
+}
+
+function makeTypeahead(node, wrapper) {
+	let buffer = ''
+	let timer = null
+
+	function reset() {
+		buffer = ''
+		if (timer) { clearTimeout(timer); timer = null }
+	}
+
+	function handle(event) {
+		if (!isTypeaheadEvent(event)) return false
+
+		const startAfter = getTypeaheadStart(buffer, wrapper)
+		buffer += event.key
+		if (timer) clearTimeout(timer)
+		timer = setTimeout(reset, 500)
+
+		const matchKey = wrapper.findByText(buffer, startAfter)
+		if (matchKey === null) return false
+		if (!wrapper.moveTo(matchKey)) return false
+
+		event.preventDefault()
+		event.stopPropagation()
+		emitAction(node, wrapper, 'first', true)
+		setTimeout(() => scrollFocusedIntoView(node, wrapper), 0)
+		return true
+	}
+
+	return { reset, handle }
+}
+
 /**
  * A svelte action function that captures keyboard evvents and emits event for corresponding movements.
  *
@@ -110,88 +202,13 @@ export function navigator(node, options) {
 	const { wrapper } = options
 	const config = { ...defaultNavigationOptions, ...omit(['wrapper'], options) }
 	const handlers = getHandlers(wrapper)
-
-	// Type-ahead state
-	let typeaheadBuffer = ''
-	let typeaheadTimer = null
-
-	function resetTypeahead() {
-		typeaheadBuffer = ''
-		if (typeaheadTimer) {
-			clearTimeout(typeaheadTimer)
-			typeaheadTimer = null
-		}
-	}
-
-	function handleTypeahead(event) {
-		const { key, ctrlKey, metaKey, altKey } = event
-		if (ctrlKey || metaKey || altKey) return false
-		if (key.length !== 1 || key === ' ') return false
-
-		// Single-char repeat: start after current to cycle through matches
-		const startAfter = typeaheadBuffer.length === 0 ? wrapper.focusedKey : null
-
-		typeaheadBuffer += key
-		if (typeaheadTimer) clearTimeout(typeaheadTimer)
-		typeaheadTimer = setTimeout(resetTypeahead, 500)
-
-		const matchKey = wrapper.findByText(typeaheadBuffer, startAfter)
-		if (matchKey !== null && wrapper.moveTo(matchKey)) {
-			event.preventDefault()
-			event.stopPropagation()
-			emitAction(node, wrapper, 'first', true) // emit 'move'
-			setTimeout(() => scrollFocusedIntoView(node, wrapper), 0)
-			return true
-		}
-		return false
-	}
-
-	const handleKeydown = (event) => {
-		const action = getKeyboardAction(event, config)
-		const prevKey = wrapper.focusedKey
-
-		// For activation keys (Enter/Space) on anchor elements, let the browser
-		// navigate natively. The click handler will update controller state when
-		// the browser fires the synthetic click.
-		if (action === 'select' && event.target.closest('a[href]')) {
-			return
-		}
-
-		const handled = handleAction(event, handlers[action])
-		if (handled) {
-			resetTypeahead()
-			emitAction(node, wrapper, action, true)
-			// If expand/collapse moved focus, also emit move so components update DOM focus
-			const focusMoved = ['expand', 'collapse'].includes(action) && wrapper.focusedKey !== prevKey
-			if (focusMoved) {
-				node.dispatchEvent(
-					new CustomEvent('action', {
-						detail: {
-							name: 'move',
-							data: { value: wrapper.focused, selected: wrapper.selected }
-						}
-					})
-				)
-			}
-			// Scroll focused element into view for navigation and focus-moving expand/collapse
-			if (focusMoved || ['first', 'last', 'previous', 'next'].includes(action)) {
-				setTimeout(() => scrollFocusedIntoView(node, wrapper), 0)
-			}
-			return
-		}
-
-		// Type-ahead: when no navigation action matched and typeahead is enabled
-		if (config.typeahead && wrapper.findByText) {
-			handleTypeahead(event)
-		}
-	}
+	const ta = makeTypeahead(node, wrapper)
+	const handleKeydown = makeKeydownHandler({ node, wrapper }, config, handlers, ta)
 
 	const handleClick = (event) => {
 		const action = getClickAction(event)
 		const path = getPathFromEvent(event)
 
-		// Anchor elements with href handle navigation natively — don't preventDefault.
-		// Still call the handler so focus/selection state stays in sync.
 		if (event.target.closest('a[href]')) {
 			const handler = handlers[action]
 			if (handler?.(path)) emitAction(node, options.wrapper, action)
@@ -204,10 +221,6 @@ export function navigator(node, options) {
 
 	$effect(() => {
 		const cleanup = [on(node, 'keydown', handleKeydown), on(node, 'click', handleClick)]
-
-		return () => {
-			resetTypeahead()
-			cleanup.forEach((fn) => fn())
-		}
+		return () => { ta.reset(); cleanup.forEach((fn) => fn()) }
 	})
 }

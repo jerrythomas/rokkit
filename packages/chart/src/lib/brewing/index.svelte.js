@@ -112,7 +112,7 @@ export class ChartBrewer {
 	 * @returns {Array} Data for rendering bars
 	 */
 	createBars() {
-		return createBars(this.#data, this.#fields, this.#scales, this.#dimensions)
+		return createBars(this.#data, this.#fields, this.#scales, { dimensions: this.#dimensions })
 	}
 
 	/**
@@ -152,7 +152,10 @@ export class ChartBrewer {
 	 * @returns {Object} Legend rendering data
 	 */
 	createLegend(options = {}) {
-		return createLegend(this.#data, this.#fields, this.#scales, this.#dimensions, options)
+		return createLegend(this.#data, this.#fields, this.#scales, {
+			...options,
+			dimensions: this.#dimensions
+		})
 	}
 
 	/**

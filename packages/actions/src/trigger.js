@@ -22,6 +22,20 @@
  *   trigger.destroy()
  */
 
+function handleToggleKey(self) {
+	if (self.isOpen) self.close()
+	else self.open()
+}
+
+function handleArrowDown(self) {
+	self.open()
+}
+
+function handleArrowUp(self, onlast) {
+	self.open()
+	onlast?.()
+}
+
 export class Trigger {
 	#trigger
 	#container
@@ -78,15 +92,13 @@ export class Trigger {
 		const { key } = event
 		if (key === 'Enter' || key === ' ') {
 			event.preventDefault()
-			if (this.isOpen) this.close()
-			else this.open()
+			handleToggleKey(this)
 		} else if (key === 'ArrowDown') {
 			event.preventDefault()
-			this.open()
+			handleArrowDown(this)
 		} else if (key === 'ArrowUp') {
 			event.preventDefault()
-			this.open()
-			this.#onlast?.()
+			handleArrowUp(this, this.#onlast)
 		}
 	}
 

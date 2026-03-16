@@ -1,3 +1,4 @@
+import { SvelteSet } from 'svelte/reactivity'
 import { min, max } from 'd3-array'
 import { scaleBand, scaleLinear, scaleTime, scaleOrdinal } from 'd3-scale'
 import { schemeCategory10 } from 'd3-scale-chromatic'
@@ -10,6 +11,64 @@ import {} from './types.js'
  */
 
 /**
+ * @param {Array} xValues
+ * @param {Object} dimensions
+ * @param {number} padding
+ * @returns {import('d3-scale').ScaleContinuousNumeric|import('d3-scale').ScaleBand}
+ */
+function buildXScale(xValues, dimensions, padding) {
+	const xIsDate = xValues.some((v) => v instanceof Date)
+	const xIsNumeric = !xIsDate && xValues.every((v) => !isNaN(parseFloat(v)))
+
+	if (xIsDate) {
+		return scaleTime()
+			.domain([min(xValues), max(xValues)])
+			.range([0, dimensions.innerWidth])
+			.nice()
+	}
+	if (xIsNumeric) {
+		return scaleLinear()
+			.domain([min([0, ...xValues]), max(xValues)])
+			.range([0, dimensions.innerWidth])
+			.nice()
+	}
+	return scaleBand().domain(xValues).range([0, dimensions.innerWidth]).padding(padding)
+}
+
+/**
+ * @param {Array} data
+ * @param {string} colorField
+ * @returns {import('d3-scale').ScaleOrdinal}
+ */
+function buildColorScale(data, colorField) {
+	const colorValues = [...new SvelteSet(data.map((d) => d[colorField]))]
+	return scaleOrdinal().domain(colorValues).range(schemeCategory10)
+}
+
+/**
+ * @param {Array} data
+ * @param {string} yField
+ * @param {Object} dimensions
+ * @returns {import('d3-scale').ScaleContinuousNumeric}
+ */
+function buildYScale(data, yField, dimensions) {
+	const yValues = data.map((d) => d[yField])
+	return scaleLinear()
+		.domain([0, max(yValues) * 1.1])
+		.nice()
+		.range([dimensions.innerHeight, 0])
+}
+
+/**
+ * @param {Array} data
+ * @param {ScaleFields} fields
+ * @returns {boolean}
+ */
+function hasRequiredFields(data, fields) {
+	return Boolean(data && data.length && fields.x && fields.y)
+}
+
+/**
  * Creates scales based on data, fields, and dimensions
  *
  * @param {Array} data - Chart data
@@ -20,54 +79,16 @@ import {} from './types.js'
  * @returns {ChartScales} Chart scales
  */
 export function createScales(data, fields, dimensions, options = {}) {
-	const scales = {
-		x: null,
-		y: null,
-		color: null
-	}
+	if (!hasRequiredFields(data, fields)) return { x: null, y: null, color: null }
 
-	if (!data || data.length === 0 || !fields.x || !fields.y) {
-		return scales
-	}
-
-	const padding = options.padding !== undefined ? options.padding : 0.2
-
-	// Extract values
+	const padding = options.padding ?? 0.2
 	const xValues = data.map((d) => d[fields.x])
-	const yValues = data.map((d) => d[fields.y])
 
-	// Determine x scale type
-	const xIsDate = xValues.some((v) => v instanceof Date)
-	const xIsNumeric = !xIsDate && xValues.every((v) => !isNaN(parseFloat(v)))
-
-	// Create x scale based on data type
-	if (xIsDate) {
-		scales.x = scaleTime()
-			.domain([min(xValues), max(xValues)])
-			.range([0, dimensions.innerWidth])
-			.nice()
-	} else if (xIsNumeric) {
-		scales.x = scaleLinear()
-			.domain([min([0, ...xValues]), max(xValues)])
-			.range([0, dimensions.innerWidth])
-			.nice()
-	} else {
-		scales.x = scaleBand().domain(xValues).range([0, dimensions.innerWidth]).padding(padding)
+	return {
+		x: buildXScale(xValues, dimensions, padding),
+		y: buildYScale(data, fields.y, dimensions),
+		color: fields.color ? buildColorScale(data, fields.color) : null
 	}
-
-	// Create y scale
-	scales.y = scaleLinear()
-		.domain([0, max(yValues) * 1.1]) // Add 10% padding on top
-		.nice()
-		.range([dimensions.innerHeight, 0])
-
-	// Create color scale if color field is set
-	if (fields.color) {
-		const colorValues = [...new Set(data.map((d) => d[fields.color]))]
-		scales.color = scaleOrdinal().domain(colorValues).range(schemeCategory10)
-	}
-
-	return scales
 }
 
 /**

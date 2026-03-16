@@ -36,12 +36,16 @@ describe('Stepper', () => {
 		expect(connectors.length).toBe(2)
 	})
 
+	function getCircleText(circles: NodeListOf<Element>, index: number): string {
+		return circles[index]?.textContent?.trim() ?? ''
+	}
+
 	it('shows step numbers by default', () => {
 		const { container } = render(Stepper, { steps: basicSteps })
 		const circles = container.querySelectorAll('[data-stepper-circle]')
-		expect(circles[0]?.textContent?.trim()).toBe('1')
-		expect(circles[1]?.textContent?.trim()).toBe('2')
-		expect(circles[2]?.textContent?.trim()).toBe('3')
+		expect(getCircleText(circles, 0)).toBe('1')
+		expect(getCircleText(circles, 1)).toBe('2')
+		expect(getCircleText(circles, 2)).toBe('3')
 	})
 
 	it('shows custom label when provided', () => {

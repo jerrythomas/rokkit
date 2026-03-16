@@ -4,29 +4,34 @@
 	 * Each card displays fields with formatted values.
 	 */
 	import DisplayValue from './DisplayValue.svelte'
+	import { SvelteSet } from 'svelte/reactivity'
 
 	let { data = [], fields = [], select, title, onselect, class: className = '' } = $props()
 
 	let selectedIndex = $state(-1)
-	let selectedIndices = $state(new Set())
+	let selectedIndices = new SvelteSet()
+
+	function selectOne(item, index) {
+		selectedIndex = index
+		onselect?.(item, item)
+	}
+
+	function selectMany(item, index) {
+		const next = new SvelteSet(selectedIndices)
+		if (next.has(index)) {
+			next.delete(index)
+		} else {
+			next.add(index)
+		}
+		selectedIndices = next
+		const selected = data.filter((_, i) => next.has(i))
+		onselect?.(selected, item)
+	}
 
 	function handleCardClick(item, index) {
 		if (!select) return
-
-		if (select === 'one') {
-			selectedIndex = index
-			onselect?.(item, item)
-		} else if (select === 'many') {
-			const next = new Set(selectedIndices)
-			if (next.has(index)) {
-				next.delete(index)
-			} else {
-				next.add(index)
-			}
-			selectedIndices = next
-			const selected = data.filter((_, i) => next.has(i))
-			onselect?.(selected, item)
-		}
+		if (select === 'one') selectOne(item, index)
+		else if (select === 'many') selectMany(item, index)
 	}
 
 	function isSelected(index) {

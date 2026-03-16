@@ -1,3 +1,5 @@
+import { SvelteMap } from 'svelte/reactivity'
+
 /**
  * @typedef {Object} LookupConfig
  * @property {string} [url] - URL template with optional placeholders (e.g., '/api/cities?country={country}')
@@ -29,7 +31,7 @@
 const DEFAULT_CACHE_TIME = 5 * 60 * 1000 // 5 minutes
 
 /** @type {Map<string, CacheEntry>} */
-const cache = new Map()
+const cache = new SvelteMap()
 
 /**
  * Interpolates URL template with values
@@ -45,15 +47,6 @@ function interpolateUrl(template, values) {
 }
 
 /**
- * Generates a cache key from URL and parameters
- * @param {string} url - The resolved URL
- * @returns {string}
- */
-function getCacheKey(url) {
-	return url
-}
-
-/**
  * Checks if a cache entry is still valid
  * @param {CacheEntry} entry
  * @param {number} cacheTime
@@ -64,185 +57,252 @@ function isCacheValid(entry, cacheTime) {
 }
 
 /**
+ * Extract first matching array from common API response envelope keys
+ * @private
+ */
+function unwrapApiResponse(data) {
+	const ENVELOPE_KEYS = ['data', 'items', 'results']
+	for (const k of ENVELOPE_KEYS) {
+		if (data?.[k]) return data[k]
+	}
+	return []
+}
+
+/**
+ * Normalise raw API data to an array
+ * @param {any} data
+ * @returns {any[]}
+ */
+function normaliseToArray(data) {
+	if (Array.isArray(data)) return data
+	return unwrapApiResponse(data)
+}
+
+/**
+ * Apply optional transform then normalise to array
+ * @param {any} data
+ * @param {((d: any) => any)|undefined} transform
+ * @returns {any[]}
+ */
+function applyTransformAndNormalise(data, transform) {
+	const transformed = transform ? transform(data) : data
+	return normaliseToArray(transformed)
+}
+
+/**
+ * Try to return cached data for a given key
+ * @private
+ */
+function getCachedData(key, cacheTime) {
+	if (key === undefined) return null
+	const cached = cache.get(key)
+	return cached && isCacheValid(cached, cacheTime) ? cached.data : null
+}
+
+/**
+ * @typedef {{ fetchHook: Function, cacheKeyFn?: Function, cacheTime: number, transform?: Function }} HookConfig
+ */
+
+/**
+ * Handle the async fetch-hook branch (with optional caching)
+ * @param {HookConfig} hookConfig
+ * @param {Object} params
+ * @private
+ */
+async function fetchFromHook(hookConfig, params) {
+	const { fetchHook, cacheKeyFn, cacheTime, transform } = hookConfig
+	const key = cacheKeyFn?.(params)
+
+	const cached = getCachedData(key, cacheTime)
+	if (cached) return cached
+
+	const rawData = await fetchHook(params)
+	const data = applyTransformAndNormalise(rawData, transform)
+
+	if (key !== undefined) cache.set(key, { data, timestamp: Date.now() })
+	return data
+}
+
+/**
+ * @typedef {{ url: string, cacheTime: number, transform?: Function }} UrlConfig
+ */
+
+/**
+ * Handle the URL-based fetch branch (with caching)
+ * @param {UrlConfig} urlConfig
+ * @param {Object} params
+ * @private
+ */
+async function fetchFromUrl(urlConfig, params) {
+	const { url, cacheTime, transform } = urlConfig
+	const resolvedUrl = interpolateUrl(url, params)
+
+	const cached = getCachedData(resolvedUrl, cacheTime)
+	if (cached) return cached
+
+	const response = await globalThis.fetch(resolvedUrl)
+
+	if (!response.ok) {
+		throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+	}
+
+	const rawData = await response.json()
+	const data = applyTransformAndNormalise(rawData, transform)
+
+	cache.set(resolvedUrl, { data, timestamp: Date.now() })
+	return data
+}
+
+/**
+ * Execute an async fetch function and capture result/error into reactive state
+ * @private
+ */
+async function runWithLoadingState(asyncFn, state) {
+	state.loading = true
+	state.error = null
+	try {
+		const data = await asyncFn()
+		state.options = data
+		return data
+	} catch (err) {
+		state.error = err.message || 'Failed to load options'
+		state.options = []
+		return []
+	} finally {
+		state.loading = false
+	}
+}
+
+/**
+ * @typedef {{ state: Object, meta: Object, fetch: Function, clearCache: Function, reset: Function }} LookupApi
+ */
+
+/**
+ * Build the public API object returned by createLookup
+ * @param {{ state: Object, meta: Object }} ctx
+ * @param {{ fetch: Function, clearCache: Function, reset: Function }} fns
+ * @private
+ */
+function buildLookupApi(ctx, fns) {
+	const { state, meta } = ctx
+	return {
+		get options() { return state.options },
+		get loading() { return state.loading },
+		get error() { return state.error },
+		get disabled() { return state.disabled },
+		get dependsOn() { return meta.dependsOn },
+		get fields() { return meta.fields },
+		...fns
+	}
+}
+
+/**
+ * Clear URL-based cache entries for a given URL template
+ * @private
+ */
+function clearUrlCache(url) {
+	if (!url) return
+	const baseUrl = url.split('?')[0]
+	for (const key of cache.keys()) {
+		if (key.startsWith(baseUrl)) cache.delete(key)
+	}
+}
+
+/**
+ * Reset lookup state to initial values
+ * @private
+ */
+function resetState(state) {
+	state.options = []
+	state.loading = false
+	state.error = null
+	state.disabled = false
+}
+
+/**
+ * Dispatch fetch to the appropriate strategy
+ * @private
+ */
+function fetchDispatch(params, ctx) {
+	const { state, dependsOn, source, filter, fetchHook, cacheKeyFn, cacheTime, transform, url } = ctx
+
+	const missingDeps = dependsOn.filter((dep) => !params[dep] && params[dep] !== 0)
+	if (missingDeps.length > 0) {
+		state.options = []
+		state.disabled = true
+		return Promise.resolve([])
+	}
+
+	state.disabled = false
+
+	if (filter !== undefined && source !== undefined) {
+		state.options = filter(source, params)
+		return Promise.resolve(state.options)
+	}
+
+	if (fetchHook) {
+		return runWithLoadingState(() => fetchFromHook({ fetchHook, cacheKeyFn, cacheTime, transform }, params), state)
+	}
+
+	return runWithLoadingState(() => fetchFromUrl({ url, cacheTime, transform }, params), state)
+}
+
+/**
  * Creates a lookup provider for a field
  * @param {LookupConfig} config - Lookup configuration
  * @returns {Object} Lookup provider with reactive state
  */
 export function createLookup(config) {
-	const {
-		url,
-		fetch: fetchHook,
-		source,
-		filter,
-		cacheKey: cacheKeyFn,
-		dependsOn = [],
-		fields = {},
-		cacheTime = DEFAULT_CACHE_TIME,
-		transform
-	} = config
+	const { url, fetch: fetchHook, source, filter, cacheKey: cacheKeyFn,
+		dependsOn = [], fields = {}, cacheTime = DEFAULT_CACHE_TIME, transform } = config
 
-	let options = $state([])
-	let loading = $state(false)
-	let error = $state(null)
-	let disabled = $state(false)
+	let state = $state({ options: [], loading: false, error: null, disabled: false })
+	const ctx = { state, dependsOn, source, filter, fetchHook, cacheKeyFn, cacheTime, transform, url }
 
-	/**
-	 * Fetches options from the configured source (URL, fetch hook, or filter)
-	 * @param {Object} params - Parameter values for URL interpolation / filter context
-	 * @returns {Promise<any[]>}
-	 */
-	async function fetch(params = {}) {
-		// Check if all dependencies have values
-		const missingDeps = dependsOn.filter((dep) => !params[dep] && params[dep] !== 0)
-		if (missingDeps.length > 0) {
-			options = []
-			disabled = true
-			return []
+	return buildLookupApi(
+		{ state, meta: { dependsOn, fields } },
+		{
+			fetch: (params = {}) => fetchDispatch(params, ctx),
+			clearCache: () => clearUrlCache(url),
+			reset: () => resetState(state)
 		}
+	)
+}
 
-		disabled = false
+/**
+ * Initialize all lookups from the lookup map
+ * @private
+ */
+async function initializeAllLookups(lookups, formData) {
+	const promises = []
+	for (const [_fieldPath, lookup] of lookups) {
+		promises.push(lookup.fetch(formData))
+	}
+	await Promise.all(promises)
+}
 
-		// Branch: synchronous filter over pre-loaded source
-		if (filter !== undefined && source !== undefined) {
-			options = filter(source, params)
-			return options
-		}
-
-		// Branch: async fetch hook with optional caching
-		if (fetchHook) {
-			const key = cacheKeyFn?.(params)
-
-			if (key !== undefined) {
-				const cached = cache.get(key)
-				if (cached && isCacheValid(cached, cacheTime)) {
-					options = cached.data
-					return cached.data
-				}
-			}
-
-			loading = true
-			error = null
-
-			try {
-				let data = await fetchHook(params)
-
-				if (transform) {
-					data = transform(data)
-				}
-
-				if (!Array.isArray(data)) {
-					data = data?.data || data?.items || data?.results || []
-				}
-
-				if (key !== undefined) {
-					cache.set(key, { data, timestamp: Date.now() })
-				}
-
-				options = data
-				return data
-			} catch (err) {
-				error = err.message || 'Failed to load options'
-				options = []
-				return []
-			} finally {
-				loading = false
-			}
-		}
-
-		// Branch: URL-based fetch (original behavior)
-		const resolvedUrl = interpolateUrl(url, params)
-		const urlCacheKey = getCacheKey(resolvedUrl)
-
-		// Check cache first
-		const cached = cache.get(urlCacheKey)
-		if (cached && isCacheValid(cached, cacheTime)) {
-			options = cached.data
-			return cached.data
-		}
-
-		loading = true
-		error = null
-
-		try {
-			const response = await globalThis.fetch(resolvedUrl)
-
-			if (!response.ok) {
-				throw new Error(`HTTP ${response.status}: ${response.statusText}`)
-			}
-
-			let data = await response.json()
-
-			// Apply transform if provided
-			if (transform) {
-				data = transform(data)
-			}
-
-			// Ensure data is an array
-			if (!Array.isArray(data)) {
-				data = data.data || data.items || data.results || []
-			}
-
-			// Cache the result
-			cache.set(urlCacheKey, { data, timestamp: Date.now() })
-
-			options = data
-			return data
-		} catch (err) {
-			error = err.message || 'Failed to load options'
-			options = []
-			return []
-		} finally {
-			loading = false
+/**
+ * Trigger all lookups that depend on the changed field
+ * @private
+ */
+async function triggerDependentLookups(lookups, changedField, formData) {
+	for (const [_fieldPath, lookup] of lookups) {
+		if (lookup.dependsOn.includes(changedField)) {
+			await lookup.fetch(formData)
 		}
 	}
+}
 
-	/**
-	 * Clears the cache for this lookup
-	 */
-	function clearCache() {
-		if (!url) return // fetch/filter hooks have no URL-keyed cache entries
-		// Clear all cache entries that match this URL pattern
-		const baseUrl = url.split('?')[0]
-		for (const key of cache.keys()) {
-			if (key.startsWith(baseUrl)) {
-				cache.delete(key)
-			}
-		}
+/**
+ * Build a SvelteMap of fieldPath -> lookup from configs
+ * @private
+ */
+function buildLookupMap(lookupConfigs) {
+	const lookups = new SvelteMap()
+	for (const [fieldPath, config] of Object.entries(lookupConfigs)) {
+		lookups.set(fieldPath, createLookup(config))
 	}
-
-	/**
-	 * Resets the lookup state
-	 */
-	function reset() {
-		options = []
-		loading = false
-		error = null
-		disabled = false
-	}
-
-	return {
-		get options() {
-			return options
-		},
-		get loading() {
-			return loading
-		},
-		get error() {
-			return error
-		},
-		get disabled() {
-			return disabled
-		},
-		get dependsOn() {
-			return dependsOn
-		},
-		get fields() {
-			return fields
-		},
-		fetch,
-		clearCache,
-		reset
-	}
+	return lookups
 }
 
 /**
@@ -251,78 +311,16 @@ export function createLookup(config) {
  * @returns {Object} Lookup manager
  */
 export function createLookupManager(lookupConfigs) {
-	/** @type {Map<string, ReturnType<typeof createLookup>>} */
-	const lookups = new Map()
-
-	// Create lookup providers for each configured field
-	for (const [fieldPath, config] of Object.entries(lookupConfigs)) {
-		lookups.set(fieldPath, createLookup(config))
-	}
-
-	/**
-	 * Gets the lookup provider for a field
-	 * @param {string} fieldPath
-	 * @returns {ReturnType<typeof createLookup> | undefined}
-	 */
-	function getLookup(fieldPath) {
-		return lookups.get(fieldPath)
-	}
-
-	/**
-	 * Checks if a field has a lookup configured
-	 * @param {string} fieldPath
-	 * @returns {boolean}
-	 */
-	function hasLookup(fieldPath) {
-		return lookups.has(fieldPath)
-	}
-
-	/**
-	 * Handles a field value change and triggers dependent lookups
-	 * @param {string} changedField - The field that changed
-	 * @param {Object} formData - Current form data
-	 */
-	async function handleFieldChange(changedField, formData) {
-		// Find all lookups that depend on this field
-		for (const [_fieldPath, lookup] of lookups) {
-			if (lookup.dependsOn.includes(changedField)) {
-				// Reset dependent field value and fetch new options
-				await lookup.fetch(formData)
-			}
-		}
-	}
-
-	/**
-	 * Initializes all lookups with current form data.
-	 * Calls fetch() for every lookup so disabled state is set correctly.
-	 * @param {Object} formData - Current form data
-	 */
-	async function initialize(formData) {
-		const promises = []
-		for (const [_fieldPath, lookup] of lookups) {
-			promises.push(lookup.fetch(formData))
-		}
-		await Promise.all(promises)
-	}
-
-	/**
-	 * Clears all caches
-	 */
-	function clearAllCaches() {
-		for (const lookup of lookups.values()) {
-			lookup.clearCache()
-		}
-	}
+	const lookups = buildLookupMap(lookupConfigs)
 
 	return {
-		getLookup,
-		hasLookup,
-		handleFieldChange,
-		initialize,
-		clearAllCaches,
-		get lookups() {
-			return lookups
-		}
+		getLookup: (fieldPath) => lookups.get(fieldPath),
+		hasLookup: (fieldPath) => lookups.has(fieldPath),
+		handleFieldChange: (changedField, formData) =>
+			triggerDependentLookups(lookups, changedField, formData),
+		initialize: (formData) => initializeAllLookups(lookups, formData),
+		clearAllCaches: () => { for (const lookup of lookups.values()) lookup.clearCache() },
+		get lookups() { return lookups }
 	}
 }
 

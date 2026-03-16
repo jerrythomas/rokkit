@@ -15,6 +15,7 @@
  */
 
 import { BASE_FIELDS, normalizeFields } from '@rokkit/core'
+import { SvelteMap } from 'svelte/reactivity'
 import { ProxyItem } from './proxy-item.svelte.js'
 
 // ─── Tree line type computation ────────────────────────────────────────────────
@@ -30,6 +31,19 @@ const NEXT_LINE = {
 }
 
 // ─── Reactive tree traversal utilities ─────────────────────────────────────────
+
+/**
+ * Compute the lineTypes array for a single node.
+ * @param {string[]} parentLineTypes
+ * @param {string} position - 'child' or 'last'
+ * @param {boolean} isExpandable
+ * @returns {string[]}
+ */
+function computeLineTypes(parentLineTypes, position, isExpandable) {
+	const inherited = parentLineTypes.slice(0, -1).map((t) => NEXT_LINE[t] ?? 'empty')
+	if (parentLineTypes.length > 0) inherited.push(position)
+	return isExpandable ? [...inherited, 'icon'] : inherited
+}
 
 /**
  * Build flat view by walking proxy.children ($derived) recursively.
@@ -48,33 +62,28 @@ const NEXT_LINE = {
  * @param {string[]} [parentLineTypes]  Line types of the parent node (for computing inherited connectors)
  * @returns {{ key: string, proxy: ProxyItem, level: number, hasChildren: boolean, isExpandable: boolean, type: string, lineTypes: string[] }[]}
  */
+/**
+ * Visit a single proxy node and push entries to result.
+ * @param {Array} result
+ * @param {ProxyItem} proxy
+ * @param {string[]} parentLineTypes
+ * @param {string} position - 'child' or 'last'
+ */
+function visitProxy(result, proxy, parentLineTypes, position) {
+	const children = proxy.children // reads $derived — registers dependency
+	const hasChildren = children.length > 0
+	const isExpandable = hasChildren || proxy.get('children') === true // sentinel: lazy-loadable
+	const lineTypes = computeLineTypes(parentLineTypes, position, isExpandable)
+	result.push({ key: proxy.key, proxy, level: proxy.level, hasChildren, isExpandable, type: proxy.type, lineTypes })
+	if (hasChildren && proxy.expanded) {
+		result.push(...buildReactiveFlatView(children, lineTypes))
+	}
+}
+
 function buildReactiveFlatView(proxies, parentLineTypes = []) {
 	const result = []
 	for (let i = 0; i < proxies.length; i++) {
-		const proxy = proxies[i]
-		const children = proxy.children // reads $derived — registers dependency
-		const hasChildren = children.length > 0
-		const isExpandable = hasChildren || proxy.get('children') === true // sentinel: lazy-loadable
-		const isLast = i === proxies.length - 1
-		const position = isLast ? 'last' : 'child'
-
-		// Compute line types: inherit parent's continuations + current position + icon/empty
-		const inherited = parentLineTypes.slice(0, -1).map((t) => NEXT_LINE[t] ?? 'empty')
-		if (parentLineTypes.length > 0) inherited.push(position)
-		const lineTypes = isExpandable ? [...inherited, 'icon'] : inherited
-
-		result.push({
-			key: proxy.key,
-			proxy,
-			level: proxy.level,
-			hasChildren,
-			isExpandable,
-			type: proxy.type,
-			lineTypes
-		})
-		if (hasChildren && proxy.expanded) {
-			result.push(...buildReactiveFlatView(children, lineTypes))
-		}
+		visitProxy(result, proxies[i], parentLineTypes, i === proxies.length - 1 ? 'last' : 'child')
 	}
 	return result
 }
@@ -88,7 +97,7 @@ function buildReactiveFlatView(proxies, parentLineTypes = []) {
  * @param {Map<string, ProxyItem>} [map]
  * @returns {Map<string, ProxyItem>}
  */
-function buildReactiveLookup(proxies, map = new Map()) {
+function buildReactiveLookup(proxies, map = new SvelteMap()) {
 	for (const proxy of proxies) {
 		map.set(proxy.key, proxy)
 		const children = proxy.children
@@ -121,11 +130,18 @@ export class ProxyTree {
 	 */
 	constructor(items = [], fields = {}, options = {}) {
 		this.#fields = { ...BASE_FIELDS, ...normalizeFields(fields) }
-		this.#factory =
-			options.createProxy ?? ((raw, f, key, level) => new ProxyItem(raw, f, key, level))
+		this.#factory = this.#resolveFactory(options.createProxy)
 		this.#rootProxies = (items ?? []).map((raw, i) =>
 			this.#factory(raw, this.#fields, String(i), 1)
 		)
+	}
+
+	/**
+	 * @param {Function|undefined} createProxy
+	 * @returns {Function}
+	 */
+	#resolveFactory(createProxy) {
+		return createProxy ?? ((raw, f, key, level) => new ProxyItem(raw, f, key, level))
 	}
 
 	// ─── Read accessors ──────────────────────────────────────────────────────

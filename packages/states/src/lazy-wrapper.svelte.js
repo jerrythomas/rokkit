@@ -68,30 +68,36 @@ export class LazyWrapper extends Wrapper {
 	}
 
 	/**
+	 * Fetch children for an unloaded lazy sentinel proxy and expand it.
+	 * @param {*} proxy
+	 */
+	#fetchAndExpand(proxy) {
+		proxy.fetch().then(() => {
+			proxy.expanded = true
+		})
+	}
+
+	/**
+	 * Resolve proxy for a path or focused key, or null if not found.
+	 * @param {string|null} path
+	 * @returns {*|null}
+	 */
+	#resolveProxy(path) {
+		const key = path ?? this.focusedKey
+		if (!key) return null
+		return this.lookup.get(key) ?? null
+	}
+
+	/**
 	 * Select item at path (or focusedKey). If the target is a group/expandable
 	 * node with proxy.loaded === false, fetch children first then expand.
 	 * Otherwise delegates to Wrapper's select().
 	 */
 	select(path) {
-		const key = path ?? this.focusedKey
-		if (!key) return
-		const proxy = this.lookup.get(key)
+		const proxy = this.#resolveProxy(path)
 		if (!proxy) return
-
-		// Group with children: delegate to super (toggle expansion)
-		if (proxy.hasChildren) {
-			super.select(path)
-			return
-		}
-
-		// Lazy sentinel: fetch children, then expand
-		if (proxy.loaded === false) {
-			proxy.fetch().then(() => {
-				proxy.expanded = true
-			})
-			return
-		}
-
+		if (proxy.hasChildren) return super.select(path)
+		if (proxy.loaded === false) return this.#fetchAndExpand(proxy)
 		super.select(path)
 	}
 
@@ -101,23 +107,9 @@ export class LazyWrapper extends Wrapper {
 	 * Otherwise delegates to Wrapper's toggle().
 	 */
 	toggle(path) {
-		const key = path ?? this.focusedKey
-		if (!key) return
-		const proxy = this.lookup.get(key)
+		const proxy = this.#resolveProxy(path)
 		if (!proxy) return
-
-		// Group with children: normal toggle
-		if (proxy.hasChildren) {
-			super.toggle(path)
-			return
-		}
-
-		// Lazy sentinel: fetch children, then expand
-		if (proxy.loaded === false) {
-			proxy.fetch().then(() => {
-				proxy.expanded = true
-			})
-			return
-		}
+		if (proxy.hasChildren) return super.toggle(path)
+		if (proxy.loaded === false) this.#fetchAndExpand(proxy)
 	}
 }

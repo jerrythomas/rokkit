@@ -40,6 +40,7 @@
 	// @ts-nocheck
 	import type { ProxyItem } from '@rokkit/states'
 	import { Wrapper, ProxyTree } from '@rokkit/states'
+	import { SvelteSet } from 'svelte/reactivity'
 	import { Navigator, Trigger } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET, GROUP_SNIPPET } from '@rokkit/core'
 	import ItemContent from './ItemContent.svelte'
@@ -105,27 +106,33 @@
 	const textField = $derived(fields?.label || 'label')
 	const childrenField = $derived(fields?.children || 'children')
 
+	function childMatchesQuery(child: unknown, query: string): boolean {
+		return String((child as Record<string, unknown>)[textField] ?? '').toLowerCase().includes(query)
+	}
+
+	function filterGroupChildren(
+		asRecord: Record<string, unknown>,
+		query: string
+	): unknown | null {
+		const children = asRecord[childrenField] as unknown[]
+		const matching = children.filter((child: unknown) => childMatchesQuery(child, query))
+		return matching.length > 0 ? { ...asRecord, [childrenField]: matching } : null
+	}
+
+	function filterItem(item: unknown, query: string): unknown | null {
+		const asRecord = item as Record<string, unknown>
+		const children = asRecord[childrenField]
+		if (Array.isArray(children) && children.length > 0) {
+			return filterGroupChildren(asRecord, query)
+		}
+		const text = String(asRecord[textField] ?? '').toLowerCase()
+		return text.includes(query) ? item : null
+	}
+
 	const filteredItems = $derived.by(() => {
 		if (!filterable || !filterQuery) return items
 		const query = filterQuery.toLowerCase()
-		return items
-			.map((item) => {
-				const children = item[childrenField]
-				if (Array.isArray(children) && children.length > 0) {
-					const matching = children.filter((child) =>
-						String(child[textField] ?? '')
-							.toLowerCase()
-							.includes(query)
-					)
-					return matching.length > 0 ? { ...item, [childrenField]: matching } : null
-				}
-				return String(item[textField] ?? '')
-					.toLowerCase()
-					.includes(query)
-					? item
-					: null
-			})
-			.filter(Boolean)
+		return items.map((item) => filterItem(item, query)).filter(Boolean)
 	})
 
 	// Pre-process: force groups expanded + disabled (non-navigable labels)
@@ -176,13 +183,23 @@
 
 	// ─── Selected proxy for trigger display ───────────────────────────────────
 
-	const selectedProxy = $derived.by(() => {
-		if (value === undefined || value === null) return null
+	function isValueUnset(): boolean {
+		return value === undefined || value === null
+	}
+
+	function isMatchingLeaf(proxy: ProxyItem): boolean {
+		return !proxy.hasChildren && proxy.value === value
+	}
+
+	function findSelectedProxy(): ProxyItem | null {
+		if (isValueUnset()) return null
 		for (const [, proxy] of wrapper.lookup) {
-			if (!proxy.hasChildren && proxy.value === value) return proxy
+			if (isMatchingLeaf(proxy)) return proxy
 		}
 		return null
-	})
+	}
+
+	const selectedProxy = $derived.by(findSelectedProxy)
 
 	// Sync selected raw item
 	$effect(() => {
@@ -214,15 +231,18 @@
 		return () => t.destroy()
 	})
 
-	function focusSelectedOrFirst() {
-		if (value !== undefined && value !== null) {
-			for (const node of wrapper.flatView) {
-				if (!node.proxy.disabled && node.proxy.value === value) {
-					wrapper.moveTo(node.key)
-					return
-				}
+	function moveToSelectedValue(): boolean {
+		for (const node of wrapper.flatView) {
+			if (!node.proxy.disabled && node.proxy.value === value) {
+				wrapper.moveTo(node.key)
+				return true
 			}
 		}
+		return false
+	}
+
+	function focusSelectedOrFirst() {
+		if (value !== undefined && value !== null && moveToSelectedValue()) return
 		wrapper.first(null)
 	}
 
@@ -250,36 +270,38 @@
 
 	// ─── Filter keyboard (native listener, fires before Navigator) ───────────
 
+	function selectFocused() {
+		if (wrapper.focusedKey) wrapper.select(null)
+	}
+
+	function handleFilterKeyDown(event: KeyboardEvent) {
+		if (event.key === 'ArrowDown') {
+			event.preventDefault()
+			event.stopPropagation()
+			wrapper.first(null)
+		} else if (event.key === 'Escape' && filterQuery) {
+			event.preventDefault()
+			event.stopPropagation()
+			filterQuery = ''
+		} else if (event.key === 'Enter') {
+			event.preventDefault()
+			event.stopPropagation()
+			selectFocused()
+		}
+	}
+
 	$effect(() => {
 		if (!isOpen || !filterable || !filterInputRef) return
 		const el = filterInputRef
-		const handler = (event: KeyboardEvent) => {
-			if (event.key === 'ArrowDown') {
-				event.preventDefault()
-				event.stopPropagation()
-				wrapper.first(null)
-			} else if (event.key === 'Escape') {
-				if (filterQuery) {
-					event.preventDefault()
-					event.stopPropagation()
-					filterQuery = ''
-				}
-				// Empty filter: let event bubble to Navigator/Trigger for close
-			} else if (event.key === 'Enter') {
-				event.preventDefault()
-				event.stopPropagation()
-				if (wrapper.focusedKey) wrapper.select(null)
-			}
-		}
-		el.addEventListener('keydown', handler)
-		return () => el.removeEventListener('keydown', handler)
+		el.addEventListener('keydown', handleFilterKeyDown)
+		return () => el.removeEventListener('keydown', handleFilterKeyDown)
 	})
 
 	// ─── Helpers ──────────────────────────────────────────────────────────────
 
 	/** Set of group keys that need a divider before them (not the first group) */
 	const groupDividers = $derived.by(() => {
-		const set = new Set<string>()
+		const set = new SvelteSet<string>()
 		let foundFirst = false
 		for (const node of wrapper.flatView) {
 			if (node.hasChildren) {
@@ -334,11 +356,9 @@
 	</button>
 
 	{#if isOpen}
-		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<div bind:this={dropdownRef} data-select-dropdown role="listbox" aria-orientation="vertical">
 			{#if filterable}
 				<div data-select-filter>
-					<!-- svelte-ignore a11y_autofocus -->
 					<input
 						bind:this={filterInputRef}
 						type="text"

@@ -19,36 +19,32 @@
 		}))
 	)
 
+	function formatDuration(minutes) {
+		const h = Math.floor(minutes / 60)
+		const m = minutes % 60
+		if (h > 0 && m > 0) return `${h}h ${m}m`
+		if (h > 0) return `${h}h`
+		return `${m}m`
+	}
+
+	const formatters = {
+		currency: (v) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(v),
+		datetime: (v) => new Date(v).toLocaleString(),
+		duration: (v) => formatDuration(v),
+		number: (v) => new Intl.NumberFormat().format(v),
+		boolean: (v) => (v ? '✓' : '✗')
+	}
+
 	/**
 	 * Create a cell formatter function for a given display format.
 	 * @param {string} format
 	 * @returns {(value: unknown) => string}
 	 */
 	function createFormatter(format) {
+		const fn = formatters[format] ?? String
 		return (value) => {
 			if (value === null || value === undefined) return '—'
-			switch (format) {
-				case 'currency':
-					return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
-						/** @type {number} */ (value)
-					)
-				case 'datetime':
-					return new Date(/** @type {string|number} */ (value)).toLocaleString()
-				case 'duration': {
-					const minutes = /** @type {number} */ (value)
-					const h = Math.floor(minutes / 60)
-					const m = minutes % 60
-					if (h > 0 && m > 0) return `${h}h ${m}m`
-					if (h > 0) return `${h}h`
-					return `${m}m`
-				}
-				case 'number':
-					return new Intl.NumberFormat().format(/** @type {number} */ (value))
-				case 'boolean':
-					return value ? '✓' : '✗'
-				default:
-					return String(value)
-			}
+			return fn(value)
 		}
 	}
 </script>

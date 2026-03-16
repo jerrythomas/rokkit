@@ -38,9 +38,9 @@ import { buildKeymap, resolveAction } from './keymap.js'
  */
 function getClickAction(event) {
 	const { shiftKey, ctrlKey, metaKey, target } = event
-
-	if (shiftKey && !ctrlKey && !metaKey) return 'range'
-	if (ctrlKey || metaKey) return 'extend'
+	if (shiftKey) return 'range'
+	if (ctrlKey) return 'extend'
+	if (metaKey) return 'extend'
 	if (target.closest('[data-accordion-trigger]')) return 'toggle'
 	return 'select'
 }
@@ -201,6 +201,25 @@ export class Navigator {
 
 	// ─── Typeahead ───────────────────────────────────────────────────────────
 
+	#isPrintableKey(key, ctrlKey, metaKey, altKey) {
+		if (ctrlKey) return false
+		if (metaKey) return false
+		if (altKey) return false
+		if (key.length !== 1) return false
+		return key !== ' '
+	}
+
+	#appendBuffer(key) {
+		const startAfter = this.#buffer.length === 0 ? this.#wrapper.focusedKey : null
+		this.#buffer += key
+		if (this.#bufferTimer) {
+			clearTimeout(this.#bufferTimer)
+			this.#bufferTimer = null
+		}
+		this.#bufferTimer = setTimeout(() => this.#clearTypeahead(), TYPEAHEAD_RESET_MS)
+		return startAfter
+	}
+
 	/**
 	 * Handle printable character keys for typeahead search.
 	 * Returns true if the event was consumed.
@@ -211,20 +230,9 @@ export class Navigator {
 	#tryTypeahead(event) {
 		const { key, ctrlKey, metaKey, altKey } = event
 
-		// Only single printable characters, no modifier combos
-		if (ctrlKey || metaKey || altKey) return false
-		if (key.length !== 1) return false
-		if (key === ' ') return false // Space is a keymap action, not typeahead
+		if (!this.#isPrintableKey(key, ctrlKey, metaKey, altKey)) return false
 
-		const startAfter = this.#buffer.length === 0 ? this.#wrapper.focusedKey : null
-		this.#buffer += key
-
-		// Cancel the existing reset timer but keep the accumulated buffer
-		if (this.#bufferTimer) {
-			clearTimeout(this.#bufferTimer)
-			this.#bufferTimer = null
-		}
-		this.#bufferTimer = setTimeout(() => this.#clearTypeahead(), TYPEAHEAD_RESET_MS)
+		const startAfter = this.#appendBuffer(key)
 
 		const matchKey = this.#wrapper.findByText(this.#buffer, startAfter)
 		if (matchKey !== null) {

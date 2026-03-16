@@ -70,36 +70,28 @@ export interface HighlightOptions {
  * @param options - Highlighting options
  * @returns The highlighted code as HTML
  */
+function resolveTheme(themeOption: string | undefined): BundledTheme {
+	if (themeOption === 'light') return 'github-light'
+	if (themeOption === 'dark' || !themeOption) return 'github-dark'
+	return themeOption as BundledTheme
+}
+
+function isValidCode(code: unknown): code is string {
+	return Boolean(code) && typeof code === 'string'
+}
+
 export async function highlightCode(code: string, options: HighlightOptions = {}): Promise<string> {
-	if (!code || typeof code !== 'string') {
-		throw new Error('Invalid code provided for highlighting')
-	}
+	if (!isValidCode(code)) throw new Error('Invalid code provided for highlighting')
 
 	const hl = await initializeHighlighter()
-	const lang = (options.lang || 'text') as BundledLanguage
-	let theme: BundledTheme = 'github-dark'
-
-	if (options.theme === 'light') {
-		theme = 'github-light'
-	} else if (options.theme === 'dark') {
-		theme = 'github-dark'
-	} else if (options.theme) {
-		theme = options.theme
-	}
-
-	// Check if language is supported, fallback to text
+	const lang = (options.lang ?? 'text') as BundledLanguage
+	const theme = resolveTheme(options.theme)
 	const loadedLangs = hl.getLoadedLanguages()
 	const effectiveLang = loadedLangs.includes(lang) ? lang : 'text'
 
-	return (
-		hl
-			.codeToHtml(code, {
-				lang: effectiveLang,
-				theme
-			})
-			// Remove inline styles from pre tag to allow CSS theming
-			.replace(/(<pre[^>]+) style="[^"]*"/, '$1')
-	)
+	return hl
+		.codeToHtml(code, { lang: effectiveLang, theme })
+		.replace(/(<pre[^>]+) style="[^"]*"/, '$1')
 }
 
 /**

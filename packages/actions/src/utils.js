@@ -125,6 +125,10 @@ function isAccordionTrigger(target) {
 }
 // getKeyboardAction moved to kbd.js
 
+function isToggleTarget(target) {
+	return isNodeToggle(target) || isNodeToggle(target.parentElement) || isAccordionTrigger(target)
+}
+
 /**
  * Determines an action based on a click event
  *
@@ -134,26 +138,9 @@ function isAccordionTrigger(target) {
 export const getClickAction = (event) => {
 	const { ctrlKey, metaKey, shiftKey, target } = event
 
-	// Check for shift key first (range selection)
-	if (shiftKey && !ctrlKey && !metaKey) {
-		return 'range'
-	}
-
-	// Check for modifier keys (toggle selection)
-	if (ctrlKey || metaKey) {
-		return 'extend'
-	}
-
-	// Check if clicked on icon with collapsed/expanded state
-	if (isNodeToggle(target) || isNodeToggle(target.parentElement)) {
-		return 'toggle'
-	}
-
-	// Check if clicked on accordion trigger (header area)
-	if (isAccordionTrigger(target)) {
-		return 'toggle'
-	}
-
-	// Default action
+	if (shiftKey) return 'range'
+	if (ctrlKey) return 'extend'
+	if (metaKey) return 'extend'
+	if (isToggleTarget(target)) return 'toggle'
 	return 'select'
 }

@@ -56,27 +56,25 @@
 
 	// ─── Focus management ───────────────────────────────────────────
 
+	function focusByKey(el: HTMLElement, key: string) {
+		const target = el.querySelector(`[data-path="${key}"]`) as HTMLElement | null
+		if (target && target !== document.activeElement) {
+			target.focus()
+			target.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+		}
+	}
+
 	$effect(() => {
 		if (!tableRef) return
 		const el = tableRef
 
 		function onAction(event: Event) {
 			const detail = (event as CustomEvent).detail
-
 			if (detail.name === 'move') {
 				const key = controller.focusedKey
-				if (key) {
-					const target = el.querySelector(`[data-path="${key}"]`) as HTMLElement | null
-					if (target && target !== document.activeElement) {
-						target.focus()
-						target.scrollIntoView({ block: 'nearest', inline: 'nearest' })
-					}
-				}
+				if (key) focusByKey(el, key)
 			}
-
-			if (detail.name === 'select') {
-				handleSelectAction()
-			}
+			if (detail.name === 'select') handleSelectAction()
 		}
 
 		el.addEventListener('action', onAction)
@@ -134,7 +132,6 @@
 	}
 </script>
 
-<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <div
 	bind:this={tableRef}
 	data-table

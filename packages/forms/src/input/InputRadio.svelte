@@ -28,12 +28,12 @@
 		...rest
 	} = $props()
 
+	let currentIndex = $derived(getIndexForItem(options, value))
+
 	const handleChange = () => {
 		value = getItemAtIndex(options, currentIndex)
 		onchange?.(value)
 	}
-
-	let currentIndex = $derived(getIndexForItem(options, value))
 
 	// $effect.pre(() => {
 	// 	currentIndex = getIndexForItem(options, value)

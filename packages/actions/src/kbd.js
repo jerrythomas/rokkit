@@ -93,6 +93,23 @@ export function getKeyboardActions(options, handlers) {
 	return { ...common, ...movement, ...expandCollapse }
 }
 
+function buildHorizontalMovementMap(dir) {
+	return dir === 'rtl'
+		? { ArrowRight: 'previous', ArrowLeft: 'next' }
+		: { ArrowLeft: 'previous', ArrowRight: 'next' }
+}
+
+function buildVerticalNestedMap(dir) {
+	return dir === 'rtl'
+		? { ArrowRight: 'collapse', ArrowLeft: 'expand' }
+		: { ArrowLeft: 'collapse', ArrowRight: 'expand' }
+}
+
+function buildNestedActions(isHorizontal, dir) {
+	if (isHorizontal) return { ArrowUp: 'collapse', ArrowDown: 'expand' }
+	return buildVerticalNestedMap(dir)
+}
+
 /**
  * Creates a keyboard action mapping based on navigation options
  *
@@ -106,31 +123,12 @@ export function createKeyboardActionMap(options) {
 	const { orientation, dir, nested } = options
 	const isHorizontal = orientation === 'horizontal'
 
-	// Define movement actions based on orientation and direction
-	let movementActions = {}
-	if (isHorizontal) {
-		movementActions =
-			dir === 'rtl'
-				? { ArrowRight: 'previous', ArrowLeft: 'next' }
-				: { ArrowLeft: 'previous', ArrowRight: 'next' }
-	} else {
-		movementActions = { ArrowUp: 'previous', ArrowDown: 'next' }
-	}
+	const movementActions = isHorizontal
+		? buildHorizontalMovementMap(dir)
+		: { ArrowUp: 'previous', ArrowDown: 'next' }
 
-	// Define expand/collapse actions for nested option
-	let nestedActions = {}
-	if (nested) {
-		if (isHorizontal) {
-			nestedActions = { ArrowUp: 'collapse', ArrowDown: 'expand' }
-		} else {
-			nestedActions =
-				dir === 'rtl'
-					? { ArrowRight: 'collapse', ArrowLeft: 'expand' }
-					: { ArrowLeft: 'collapse', ArrowRight: 'expand' }
-		}
-	}
+	const nestedActions = nested ? buildNestedActions(isHorizontal, dir) : {}
 
-	// Common actions regardless of options
 	const commonActions = {
 		Enter: 'select',
 		' ': 'select',
@@ -138,12 +136,7 @@ export function createKeyboardActionMap(options) {
 		End: 'last'
 	}
 
-	// Combine all possible actions
-	return {
-		...commonActions,
-		...movementActions,
-		...nestedActions
-	}
+	return { ...commonActions, ...movementActions, ...nestedActions }
 }
 
 /**
@@ -171,6 +164,19 @@ export function createShiftKeyboardActionMap() {
 	return { ' ': 'range' }
 }
 
+const KEY_LAYER_RESOLVERS = {
+	shift: (key, _opts) => createShiftKeyboardActionMap()[key] || null,
+	modifier: (key, opts) => createModifierKeyboardActionMap(opts)[key] || null,
+	plain: (key, opts) => createKeyboardActionMap(opts)[key] || null
+}
+
+function getKeyLayer(ctrlKey, metaKey, shiftKey) {
+	if (ctrlKey) return 'modifier'
+	if (metaKey) return 'modifier'
+	if (shiftKey) return 'shift'
+	return 'plain'
+}
+
 /**
  * Gets the keyboard action for a key event
  * @param {KeyboardEvent} event - The keyboard event
@@ -179,25 +185,7 @@ export function createShiftKeyboardActionMap() {
  */
 export function getKeyboardAction(event, options = {}) {
 	const { key, ctrlKey, metaKey, shiftKey } = event
-
-	// Use updated options with defaults
 	const mergedOptions = { ...defaultNavigationOptions, ...options }
-
-	// Check for shift key (range selection)
-	if (shiftKey && !ctrlKey && !metaKey) {
-		const shiftMap = createShiftKeyboardActionMap()
-		return shiftMap[key] || null
-	}
-
-	// Check for modifier keys (ctrl/cmd)
-	if (ctrlKey || metaKey) {
-		const modifierMap = createModifierKeyboardActionMap(mergedOptions)
-		return modifierMap[key] || null
-	}
-
-	// Get the action map based on options
-	const actionMap = createKeyboardActionMap(mergedOptions)
-
-	// Return the action or null if no matching key
-	return actionMap[key] || null
+	const layer = getKeyLayer(ctrlKey, metaKey, shiftKey)
+	return KEY_LAYER_RESOLVERS[layer](key, mergedOptions)
 }

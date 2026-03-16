@@ -80,87 +80,60 @@
 		if (layout !== null && layout !== undefined) formBuilder.layout = layout
 	})
 
+	// Apply external validation result for a field path
+	function applyExternalValidation(fieldPath, value, event) {
+		if (!onvalidate) return
+		const result = onvalidate(fieldPath, value, event)
+		if (result && typeof result === 'object' && result.state) {
+			formBuilder.setFieldValidation(fieldPath, result)
+		}
+	}
+
 	// Handle field value changes
 	function handleFieldChange(element, newValue) {
 		const fieldPath = element.scope.replace(/^#\//, '')
-
-		// Update builder (source of truth)
 		formBuilder.updateField(fieldPath, newValue)
-
-		// Sync builder data back to bindable prop
 		data = formBuilder.data
-
-		// Call onupdate callback if provided
-		if (onupdate) {
-			onupdate(data)
-		}
-
-		// Built-in validation on change
-		if (validateOn === 'change') {
-			formBuilder.validateField(fieldPath)
-		}
-
-		// External validation callback (backward compat)
-		if (onvalidate) {
-			const result = onvalidate(fieldPath, newValue, 'change')
-			if (result && typeof result === 'object' && result.state) {
-				formBuilder.setFieldValidation(fieldPath, result)
-			}
-		}
+		if (onupdate) onupdate(data)
+		if (validateOn === 'change') formBuilder.validateField(fieldPath)
+		applyExternalValidation(fieldPath, newValue, 'change')
 	}
 
 	// Handle blur events for validation
 	function handleFieldBlur(element) {
 		const fieldPath = element.scope.replace(/^#\//, '')
 		const currentValue = formBuilder.getValue(fieldPath)
-
-		// Built-in validation on blur (default mode)
-		if (validateOn === 'blur') {
-			formBuilder.validateField(fieldPath)
-		}
-
-		// External validation callback (backward compat)
-		if (onvalidate) {
-			const result = onvalidate(fieldPath, currentValue, 'blur')
-			if (result && typeof result === 'object' && result.state) {
-				formBuilder.setFieldValidation(fieldPath, result)
-			}
-		}
+		if (validateOn === 'blur') formBuilder.validateField(fieldPath)
+		applyExternalValidation(fieldPath, currentValue, 'blur')
 	}
 
 	// Submission state
 	let submitting = $state(false)
 	let formRoot = $state(null)
 
+	// Focus the first invalid field in the form
+	function focusFirstError() {
+		const firstError = formBuilder.errors[0]
+		if (!firstError || !formRoot) return
+		const field = formRoot.querySelector(
+			`[data-scope="#/${firstError.path}"] input, [data-scope="#/${firstError.path}"] select, [data-scope="#/${firstError.path}"] textarea`
+		)
+		field?.focus?.()
+	}
+
 	// Handle form submission: validate → focus first error → call onsubmit → snapshot
 	async function handleSubmit(e) {
 		e.preventDefault()
 		if (submitting || !onsubmit) return
 
-		// Validate all fields
 		formBuilder.validate()
+		applyExternalValidation('*', data, 'submit')
 
-		// External form-level validation
-		if (onvalidate) {
-			const result = onvalidate('*', data, 'submit')
-			if (result && typeof result === 'object' && result.state) {
-				formBuilder.setFieldValidation('*', result)
-			}
-		}
-
-		// If invalid, focus first error field
 		if (!formBuilder.isValid) {
-			const firstError = formBuilder.errors[0]
-			if (firstError && formRoot) {
-				const field = formRoot.querySelector(
-					`[data-scope="#/${firstError.path}"] input, [data-scope="#/${firstError.path}"] select, [data-scope="#/${firstError.path}"] textarea`
-				)
-				field?.focus?.()
-			}
+			focusFirstError()
 			return
 		}
 
-		// Submit
 		submitting = true
 		try {
 			await onsubmit(formBuilder.getVisibleData(), { isValid: true, errors: [] })

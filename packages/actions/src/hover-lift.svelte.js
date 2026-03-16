@@ -10,46 +10,53 @@
  * @property {string} [shadow='0 10px 25px -5px rgba(0,0,0,0.1)'] Box shadow on hover
  * @property {number} [duration=200] Transition duration (ms)
  */
+
+function resolveHoverLiftOpts(options) {
+	return {
+		distance: '-0.25rem',
+		shadow: '0 10px 25px -5px rgba(0,0,0,0.1)',
+		duration: 200,
+		...options
+	}
+}
+
+function isReducedMotion() {
+	return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
+
+function applyHoverLift(node, opts) {
+	const originalTransform = node.style.transform
+	const originalBoxShadow = node.style.boxShadow
+	const originalTransition = node.style.transition
+
+	node.style.transition = `transform ${opts.duration}ms ease, box-shadow ${opts.duration}ms ease`
+
+	function onEnter() {
+		node.style.transform = `translateY(${opts.distance})`
+		node.style.boxShadow = opts.shadow
+	}
+
+	function onLeave() {
+		node.style.transform = originalTransform
+		node.style.boxShadow = originalBoxShadow
+	}
+
+	node.addEventListener('mouseenter', onEnter)
+	node.addEventListener('mouseleave', onLeave)
+
+	return () => {
+		node.removeEventListener('mouseenter', onEnter)
+		node.removeEventListener('mouseleave', onLeave)
+		node.style.transform = originalTransform
+		node.style.boxShadow = originalBoxShadow
+		node.style.transition = originalTransition
+	}
+}
+
 export function hoverLift(node, options = {}) {
 	$effect(() => {
-		const opts = {
-			distance: '-0.25rem',
-			shadow: '0 10px 25px -5px rgba(0,0,0,0.1)',
-			duration: 200,
-			...options
-		}
-
-		const reducedMotion =
-			typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-		if (reducedMotion) return
-
-		// Store original values
-		const originalTransform = node.style.transform
-		const originalBoxShadow = node.style.boxShadow
-		const originalTransition = node.style.transition
-
-		node.style.transition = `transform ${opts.duration}ms ease, box-shadow ${opts.duration}ms ease`
-
-		function onEnter() {
-			node.style.transform = `translateY(${opts.distance})`
-			node.style.boxShadow = opts.shadow
-		}
-
-		function onLeave() {
-			node.style.transform = originalTransform
-			node.style.boxShadow = originalBoxShadow
-		}
-
-		node.addEventListener('mouseenter', onEnter)
-		node.addEventListener('mouseleave', onLeave)
-
-		return () => {
-			node.removeEventListener('mouseenter', onEnter)
-			node.removeEventListener('mouseleave', onLeave)
-			node.style.transform = originalTransform
-			node.style.boxShadow = originalBoxShadow
-			node.style.transition = originalTransition
-		}
+		const opts = resolveHoverLiftOpts(options)
+		if (isReducedMotion()) return
+		return applyHoverLift(node, opts)
 	})
 }

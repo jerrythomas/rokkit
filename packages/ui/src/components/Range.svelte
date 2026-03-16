@@ -81,22 +81,18 @@
 		slidingUpper = true
 	}
 
+	function panUpperBy(dx: number) {
+		const currentPx = inverseLerp(rangeMode ? upper : value, min, max) * trackWidth
+		const minPx = rangeMode ? inverseLerp(lower, min, max) * trackWidth : 0
+		const newPx = clamp(currentPx + dx, minPx, trackWidth)
+		const snapped = snapToStep(clamp(pixelToValue(newPx), rangeMode ? lower : min, max))
+		if (rangeMode) upper = snapped
+		else value = snapped
+	}
+
 	function handleUpperPanMove(event: CustomEvent) {
 		if (disabled || trackWidth === 0) return
-		const dx = event.detail.dx as number
-		const currentPx = inverseLerp(rangeMode ? upper : value, min, max) * trackWidth
-		const newPx = clamp(
-			currentPx + dx,
-			rangeMode ? inverseLerp(lower, min, max) * trackWidth : 0,
-			trackWidth
-		)
-		const raw = pixelToValue(newPx)
-		const snapped = snapToStep(clamp(raw, rangeMode ? lower : min, max))
-		if (rangeMode) {
-			upper = snapped
-		} else {
-			value = snapped
-		}
+		panUpperBy(event.detail.dx as number)
 		fireChange()
 	}
 
@@ -111,41 +107,37 @@
 		fireChange()
 	}
 
+	function nudgeUpper(delta: number) {
+		const increment = step > 0 ? step : (max - min) / 10
+		if (rangeMode) upper = clamp(snapToStep(upper + delta * increment), lower, max)
+		else value = clamp(snapToStep(value + delta * increment), min, max)
+	}
+
+	function jumpUpper(toEnd: boolean) {
+		if (rangeMode) upper = toEnd ? max : lower
+		else value = toEnd ? max : min
+	}
+
+	function isIncreaseKey(key: string): boolean {
+		return key === 'ArrowRight' || key === 'ArrowUp'
+	}
+
+	function isDecreaseKey(key: string): boolean {
+		return key === 'ArrowLeft' || key === 'ArrowDown'
+	}
+
+	function applyUpperKey(key: string): boolean {
+		if (isIncreaseKey(key)) { nudgeUpper(1); return true }
+		if (isDecreaseKey(key)) { nudgeUpper(-1); return true }
+		if (key === 'Home') { jumpUpper(false); return true }
+		if (key === 'End') { jumpUpper(true); return true }
+		return false
+	}
+
 	function handleUpperKeyDown(event: KeyboardEvent) {
 		if (disabled) return
-		const increment = step > 0 ? step : (max - min) / 10
-
-		if (event.key === 'ArrowRight' || event.key === 'ArrowUp') {
+		if (applyUpperKey(event.key)) {
 			event.preventDefault()
-			if (rangeMode) {
-				upper = clamp(snapToStep(upper + increment), lower, max)
-			} else {
-				value = clamp(snapToStep(value + increment), min, max)
-			}
-			fireChange()
-		} else if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') {
-			event.preventDefault()
-			if (rangeMode) {
-				upper = clamp(snapToStep(upper - increment), lower, max)
-			} else {
-				value = clamp(snapToStep(value - increment), min, max)
-			}
-			fireChange()
-		} else if (event.key === 'Home') {
-			event.preventDefault()
-			if (rangeMode) {
-				upper = lower
-			} else {
-				value = min
-			}
-			fireChange()
-		} else if (event.key === 'End') {
-			event.preventDefault()
-			if (rangeMode) {
-				upper = max
-			} else {
-				value = max
-			}
 			fireChange()
 		}
 	}
@@ -175,25 +167,23 @@
 		fireChange()
 	}
 
+	function nudgeLower(delta: number) {
+		const increment = step > 0 ? step : (max - min) / 10
+		lower = clamp(snapToStep(lower + delta * increment), min, upper)
+	}
+
+	function applyLowerKey(key: string): boolean {
+		if (isIncreaseKey(key)) { nudgeLower(1); return true }
+		if (isDecreaseKey(key)) { nudgeLower(-1); return true }
+		if (key === 'Home') { lower = min; return true }
+		if (key === 'End') { lower = upper; return true }
+		return false
+	}
+
 	function handleLowerKeyDown(event: KeyboardEvent) {
 		if (disabled) return
-		const increment = step > 0 ? step : (max - min) / 10
-
-		if (event.key === 'ArrowRight' || event.key === 'ArrowUp') {
+		if (applyLowerKey(event.key)) {
 			event.preventDefault()
-			lower = clamp(snapToStep(lower + increment), min, upper)
-			fireChange()
-		} else if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') {
-			event.preventDefault()
-			lower = clamp(snapToStep(lower - increment), min, upper)
-			fireChange()
-		} else if (event.key === 'Home') {
-			event.preventDefault()
-			lower = min
-			fireChange()
-		} else if (event.key === 'End') {
-			event.preventDefault()
-			lower = upper
 			fireChange()
 		}
 	}

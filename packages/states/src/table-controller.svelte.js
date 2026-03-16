@@ -39,6 +39,55 @@ export class TableController {
 	// =========================================================================
 
 	/**
+	 * Compute the next sort state for multi-column (extend) mode.
+	 * @param {string} columnName
+	 * @param {string} nextDirection
+	 * @returns {Array}
+	 */
+	#extendSortState(columnName, nextDirection) {
+		const existing = this.sortState.findIndex((s) => s.column === columnName)
+		if (nextDirection === 'none') {
+			return this.sortState.filter((s) => s.column !== columnName)
+		}
+		if (existing >= 0) {
+			return this.sortState.map((s) =>
+				s.column === columnName ? { ...s, direction: nextDirection } : s
+			)
+		}
+		return [...this.sortState, { column: columnName, direction: nextDirection }]
+	}
+
+	/**
+	 * Compute new sort state for a single-column sort.
+	 * @param {string} columnName
+	 * @param {string} nextDirection
+	 * @returns {Array}
+	 */
+	#singleSortState(columnName, nextDirection) {
+		return nextDirection === 'none' ? [] : [{ column: columnName, direction: nextDirection }]
+	}
+
+	/**
+	 * Sync column sorted flags from current sortState.
+	 */
+	#syncColumnFlags() {
+		this.columns = this.columns.map((c) => {
+			const sort = this.sortState.find((s) => s.column === c.name)
+			return { ...c, sorted: sort ? sort.direction : 'none' }
+		})
+	}
+
+	/**
+	 * Determine the next sort direction for a column by cycling.
+	 * @param {object} col  Column object with sorted property
+	 * @returns {string}
+	 */
+	#nextSortDirection(col) {
+		const cycle = { none: 'ascending', ascending: 'descending', descending: 'none' }
+		return cycle[col.sorted ?? 'none']
+	}
+
+	/**
 	 * Toggle sort on a column. Cycles: none → ascending → descending → none.
 	 * @param {string} columnName - Column to sort by
 	 * @param {boolean} [extend=false] - If true (Shift+click), add to sort stack
@@ -46,39 +95,11 @@ export class TableController {
 	sortBy(columnName, extend = false) {
 		const col = this.columns.find((c) => c.name === columnName)
 		if (!col || col.sortable === false) return
-
-		// Determine next direction
-		const cycle = { none: 'ascending', ascending: 'descending', descending: 'none' }
-		const nextDirection = cycle[col.sorted ?? 'none']
-
-		if (extend) {
-			// Multi-column sort: add/update/remove this column in the sort stack
-			const existing = this.sortState.findIndex((s) => s.column === columnName)
-			if (nextDirection === 'none') {
-				// Remove from stack
-				this.sortState = this.sortState.filter((s) => s.column !== columnName)
-			} else if (existing >= 0) {
-				// Update direction in place
-				this.sortState = this.sortState.map((s) =>
-					s.column === columnName ? { ...s, direction: nextDirection } : s
-				)
-			} else {
-				// Add to stack
-				this.sortState = [...this.sortState, { column: columnName, direction: nextDirection }]
-			}
-		} else {
-			// Single column sort: replace entire sort state
-			this.sortState =
-				nextDirection === 'none' ? [] : [{ column: columnName, direction: nextDirection }]
-		}
-
-		// Update column sorted flags
-		this.columns = this.columns.map((c) => {
-			const sort = this.sortState.find((s) => s.column === c.name)
-			return { ...c, sorted: sort ? sort.direction : 'none' }
-		})
-
-		// Apply sort and update list
+		const nextDirection = this.#nextSortDirection(col)
+		this.sortState = extend
+			? this.#extendSortState(columnName, nextDirection)
+			: this.#singleSortState(columnName, nextDirection)
+		this.#syncColumnFlags()
 		this.#applySortAndUpdate()
 	}
 

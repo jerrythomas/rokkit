@@ -20,24 +20,18 @@
 		return `${m}m`
 	}
 
+	const valueFormatters = {
+		currency: (v) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(v),
+		datetime: (v) => new Date(v).toLocaleString(),
+		duration: (v) => formatDuration(v),
+		number: (v) => new Intl.NumberFormat().format(v),
+		boolean: (v) => (v ? '✓' : '✗')
+	}
+
 	const formatted = $derived.by(() => {
 		if (value === null || value === undefined) return '—'
-		switch (format) {
-			case 'currency':
-				return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value)
-			case 'datetime':
-				return new Date(value).toLocaleString()
-			case 'duration':
-				return formatDuration(value)
-			case 'number':
-				return new Intl.NumberFormat().format(value)
-			case 'boolean':
-				return value ? '✓' : '✗'
-			case 'badge':
-				return String(value)
-			default:
-				return String(value)
-		}
+		const fn = valueFormatters[format] ?? String
+		return fn(value)
 	})
 </script>
 

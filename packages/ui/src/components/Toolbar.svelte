@@ -8,6 +8,7 @@
 	import { getSnippet } from '../types/menu.js'
 	import { ProxyItem, messages } from '@rokkit/states'
 	import { ListController } from '@rokkit/states'
+	import { SvelteMap } from 'svelte/reactivity'
 	import { navigator } from '@rokkit/actions'
 	import { untrack } from 'svelte'
 
@@ -51,7 +52,7 @@
 
 	/** Map from item → its data-path key (index within interactive items) */
 	const itemPathMap = $derived.by(() => {
-		const map = new Map<unknown, string>()
+		const map = new SvelteMap<unknown, string>()
 		let idx = 0
 		for (const item of items) {
 			if (isInteractive(item)) {
@@ -94,6 +95,11 @@
 		return () => el.removeEventListener('focusin', onFocusIn)
 	})
 
+	function focusKeyedItem(el: HTMLElement, key: string) {
+		const target = el.querySelector(`[data-path="${key}"]`) as HTMLElement | null
+		if (target && target !== document.activeElement) target.focus()
+	}
+
 	// Focus the item matching controller.focusedKey on navigator action events
 	$effect(() => {
 		if (!containerRef) return
@@ -101,20 +107,11 @@
 
 		function onAction(event: Event) {
 			const detail = (event as CustomEvent).detail
-
 			if (detail.name === 'move') {
 				const key = controller.focusedKey
-				if (key) {
-					const target = el.querySelector(`[data-path="${key}"]`) as HTMLElement | null
-					if (target && target !== document.activeElement) {
-						target.focus()
-					}
-				}
+				if (key) focusKeyedItem(el, key)
 			}
-
-			if (detail.name === 'select') {
-				handleSelectAction()
-			}
+			if (detail.name === 'select') handleSelectAction()
 		}
 
 		el.addEventListener('action', onAction)
@@ -250,7 +247,6 @@
 	{/if}
 {/snippet}
 
-<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
 	bind:this={containerRef}
 	data-toolbar

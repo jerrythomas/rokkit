@@ -66,56 +66,57 @@ export function themeRules(mapping = DEFAULT_THEME_MAPPING, colors = defaultColo
 	return rules
 }
 
+const SEMANTIC_PREFIXES = [
+	'bg',
+	'border',
+	'border-l',
+	'border-r',
+	'border-t',
+	'border-b',
+	'text',
+	'ring',
+	'outline',
+	'from',
+	'to',
+	'divide'
+]
+
+/**
+ * @param {{ prefix: string, name: string, toneName: string, lightValue: number, darkValue: number }} opts
+ * @returns {Array}
+ */
+function toneShortcuts({ prefix, name, toneName, lightValue, darkValue }) {
+	const variantPattern = new RegExp(`^(.+):${prefix}-${name}-${toneName}(\\/\\d+)?$`)
+	const opacityPattern = new RegExp(`^${prefix}-${name}-${toneName}(\\/\\d+)?$`)
+	const exactPattern = `${prefix}-${name}-${toneName}`
+	return [
+		[
+			variantPattern,
+			([, variant, end]) =>
+				`${variant}:${prefix}-${name}-${lightValue}${end || ''} ${variant}:dark:${prefix}-${name}-${darkValue}${end || ''}`
+		],
+		[
+			opacityPattern,
+			([, end]) =>
+				`${prefix}-${name}-${lightValue}${end || ''} dark:${prefix}-${name}-${darkValue}${end || ''}`
+		],
+		[exactPattern, `${prefix}-${name}-${lightValue} dark:${prefix}-${name}-${darkValue}`]
+	]
+}
+
 /**
  * Generates UnoCSS shortcut definitions for semantic tones with bg, border, text.
  * @param {string} name - Color name (e.g., 'primary')
  * @returns {Array} Array of shortcut definitions
  */
 export function semanticShortcuts(name) {
-	const prefixes = [
-		'bg',
-		'border',
-		'border-l',
-		'border-r',
-		'border-t',
-		'border-b',
-		'text',
-		'ring',
-		'outline',
-		'from',
-		'to',
-		'divide'
-	]
 	const shortcuts = []
-
 	for (const [toneName, lightValue] of Object.entries(TONE_MAP)) {
 		const darkValue = 1000 - lightValue
-
-		for (const prefix of prefixes) {
-			// Variant-prefixed regex (e.g., hover:bg-primary-base)
-			const variantPattern = new RegExp(`^(.+):${prefix}-${name}-${toneName}(\/\\d+)?$`)
-			shortcuts.push([
-				variantPattern,
-				([, variant, end]) =>
-					`${variant}:${prefix}-${name}-${lightValue}${end || ''} ${variant}:dark:${prefix}-${name}-${darkValue}${end || ''}`
-			])
-
-			const opacityPattern = new RegExp(`^${prefix}-${name}-${toneName}(\/\\d+)?$`)
-			shortcuts.push([
-				opacityPattern,
-				([, end]) =>
-					`${prefix}-${name}-${lightValue}${end || ''} dark:${prefix}-${name}-${darkValue}${end || ''}`
-			])
-
-			// Exact static shortcut (e.g., bg-primary-base)
-			const exactPattern = `${prefix}-${name}-${toneName}`
-			shortcuts.push([
-				exactPattern,
-				`${prefix}-${name}-${lightValue} dark:${prefix}-${name}-${darkValue}`
-			])
+		for (const prefix of SEMANTIC_PREFIXES) {
+			shortcuts.push(...toneShortcuts({ prefix, name, toneName, lightValue, darkValue }))
 		}
 	}
-
 	return shortcuts
 }
 

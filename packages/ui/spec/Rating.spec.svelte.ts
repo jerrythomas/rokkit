@@ -36,14 +36,16 @@ describe('Rating', () => {
 
 	// ─── Value Display ──────────────────────────────────────────────
 
+	function checkFilledStars(items: NodeListOf<Element>, filled: number, total: number) {
+		for (let i = 0; i < total; i++) {
+			expect(items[i]?.hasAttribute('data-filled')).toBe(i < filled)
+		}
+	}
+
 	it('marks correct stars as filled', () => {
 		const { container } = render(Rating, { value: 3 })
 		const items = container.querySelectorAll('[data-rating-item]')
-		expect(items[0]?.hasAttribute('data-filled')).toBe(true)
-		expect(items[1]?.hasAttribute('data-filled')).toBe(true)
-		expect(items[2]?.hasAttribute('data-filled')).toBe(true)
-		expect(items[3]?.hasAttribute('data-filled')).toBe(false)
-		expect(items[4]?.hasAttribute('data-filled')).toBe(false)
+		checkFilledStars(items, 3, 5)
 	})
 
 	it('no stars filled when value is 0', () => {

@@ -41,13 +41,17 @@ export function matchesAccept(file, accept) {
  * @param {{ accept?: string, maxSize?: number }} constraints
  * @returns {true | { reason: 'type' | 'size' }}
  */
+function hasTypeError(file, accept) {
+	return accept && !matchesAccept(file, accept)
+}
+
+function hasSizeError(file, maxSize) {
+	return maxSize !== undefined && file.size > maxSize
+}
+
 export function validateFile(file, { accept, maxSize } = {}) {
-	if (accept && !matchesAccept(file, accept)) {
-		return { reason: 'type' }
-	}
-	if (maxSize !== undefined && file.size > maxSize) {
-		return { reason: 'size' }
-	}
+	if (hasTypeError(file, accept)) return { reason: 'type' }
+	if (hasSizeError(file, maxSize)) return { reason: 'size' }
 	return true
 }
 
@@ -56,16 +60,26 @@ export function validateFile(file, { accept, maxSize } = {}) {
  * @param {string | null | undefined} mimeType
  * @returns {string}
  */
+const MIME_PREFIX_ICONS = [
+	['image/', 'i-lucide:image'],
+	['video/', 'i-lucide:video'],
+	['audio/', 'i-lucide:music'],
+	['text/', 'i-lucide:file-text'],
+	['application/pdf', 'i-lucide:file-text']
+]
+
+function getPrefixIcon(mimeType) {
+	for (const [prefix, icon] of MIME_PREFIX_ICONS) {
+		if (mimeType.startsWith(prefix)) return icon
+	}
+	return null
+}
+
 export function inferIcon(mimeType) {
 	if (!mimeType) return 'i-lucide:file'
-
-	if (mimeType.startsWith('image/')) return 'i-lucide:image'
-	if (mimeType.startsWith('video/')) return 'i-lucide:video'
-	if (mimeType.startsWith('audio/')) return 'i-lucide:music'
-	if (mimeType === 'application/pdf') return 'i-lucide:file-text'
-	if (mimeType.startsWith('text/')) return 'i-lucide:file-text'
+	const prefixIcon = getPrefixIcon(mimeType)
+	if (prefixIcon) return prefixIcon
 	if (ARCHIVE_TYPES.has(mimeType)) return 'i-lucide:archive'
-
 	return 'i-lucide:file'
 }
 
@@ -91,40 +105,40 @@ export function formatSize(bytes) {
  * @param {string} childrenField - field name for children arrays (e.g. 'children')
  * @returns {Array<Record<string, any>>}
  */
+function resolveFolder(ctx, parent, segment, fullPath) {
+	let folder = ctx.folderMap.get(fullPath)
+	if (!folder) {
+		folder = { text: segment, [ctx.childrenField]: [] }
+		ctx.folderMap.set(fullPath, folder)
+		parent.push(folder)
+	}
+	return folder[ctx.childrenField]
+}
+
+function walkSegments(ctx, item, rawPath, root) {
+	const segments = rawPath.split('/').filter(Boolean)
+	let parent = root
+	let fullPath = ''
+	for (const segment of segments) {
+		fullPath = fullPath ? `${fullPath}/${segment}` : segment
+		parent = resolveFolder(ctx, parent, segment, fullPath)
+	}
+	parent.push(item)
+}
+
 export function groupByPath(items, pathField, childrenField) {
-	if (!items || items.length === 0) return []
+	if (!items?.length) return []
 
 	const root = []
-	/** @type {Map<string, Record<string, any>>} */
-	const folderMap = new Map()
+	const ctx = { folderMap: new Map(), childrenField }
 
 	for (const item of items) {
-		const rawPath = item[pathField] || ''
+		const rawPath = item[pathField]
 		if (!rawPath) {
 			root.push(item)
 			continue
 		}
-
-		// Split path into segments, filtering empty strings from trailing slashes
-		const segments = rawPath.split('/').filter(Boolean)
-		let parent = root
-		let fullPath = ''
-
-		for (let i = 0; i < segments.length; i++) {
-			const segment = segments[i]
-			fullPath = fullPath ? `${fullPath}/${segment}` : segment
-
-			let folder = folderMap.get(fullPath)
-			if (!folder) {
-				folder = { text: segment, [childrenField]: [] }
-				folderMap.set(fullPath, folder)
-				parent.push(folder)
-			}
-
-			parent = folder[childrenField]
-		}
-
-		parent.push(item)
+		walkSegments(ctx, item, rawPath, root)
 	}
 
 	return root

@@ -62,22 +62,28 @@ class MessagesStore {
 	}
 
 	/**
+	 * Merge a single key from custom into merged target.
+	 * @param {Record<string, unknown>} merged
+	 * @param {Record<string, unknown>} custom
+	 * @param {string} key
+	 */
+	#mergeKey(merged, custom, key) {
+		const isObject = (v) => typeof v === 'object' && v !== null
+		if (isObject(custom[key]) && isObject(merged[key])) {
+			merged[key] = { ...merged[key], ...custom[key] }
+		} else {
+			merged[key] = custom[key]
+		}
+	}
+
+	/**
 	 * Set custom messages (merges with defaults)
 	 * @param {Partial<import('./types').Messages>} custom
 	 */
 	set(custom) {
 		const merged = { ...defaultMessages }
 		for (const key of Object.keys(custom)) {
-			if (
-				typeof custom[key] === 'object' &&
-				custom[key] !== null &&
-				typeof merged[key] === 'object' &&
-				merged[key] !== null
-			) {
-				merged[key] = { ...merged[key], ...custom[key] }
-			} else {
-				merged[key] = custom[key]
-			}
+			this.#mergeKey(merged, custom, key)
 		}
 		this.#messages = merged
 	}

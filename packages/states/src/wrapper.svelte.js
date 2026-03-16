@@ -105,6 +105,18 @@ export class Wrapper {
 	}
 
 	/**
+	 * Move focus to the parent key by stripping the last segment.
+	 * No-op at root level.
+	 */
+	#focusParent() {
+		const parts = this.#focusedKey.split('-')
+		if (parts.length > 1) {
+			parts.pop()
+			this.#focusedKey = parts.join('-')
+		}
+	}
+
+	/**
 	 * Collapse focused group, or move focus to parent if already collapsed / leaf.
 	 * At root level with no parent: no-op.
 	 */
@@ -115,17 +127,23 @@ export class Wrapper {
 		if (node.hasChildren && node.proxy.expanded) {
 			node.proxy.expanded = false
 		} else {
-			// Move to parent: strip the last segment from the key
-			const parts = this.#focusedKey.split('-')
-			if (parts.length > 1) {
-				parts.pop()
-				this.#focusedKey = parts.join('-')
-			}
-			// At root level (no '-'): no-op — already at root
+			this.#focusParent()
 		}
 	}
 
 	// ─── IWrapper: selection actions ───────────────────────────────────────────
+
+	/**
+	 * Fire value-change callbacks for a leaf selection.
+	 * @param {*} proxy
+	 */
+	#selectLeaf(proxy) {
+		if (proxy.value !== this.#selectedValue) {
+			this.#selectedValue = proxy.value
+			this.#onchange?.(proxy.value, proxy)
+		}
+		this.#onselect?.(proxy.value, proxy)
+	}
 
 	/**
 	 * Select item at path (or focusedKey when path is null).
@@ -140,11 +158,7 @@ export class Wrapper {
 		if (proxy.hasChildren) {
 			proxy.expanded = !proxy.expanded
 		} else {
-			if (proxy.value !== this.#selectedValue) {
-				this.#selectedValue = proxy.value
-				this.#onchange?.(proxy.value, proxy)
-			}
-			this.#onselect?.(proxy.value, proxy)
+			this.#selectLeaf(proxy)
 		}
 	}
 
@@ -212,6 +226,17 @@ export class Wrapper {
 		if (!nav.length) return null
 		const q = query.toLowerCase()
 		const startIdx = startAfterKey ? nav.findIndex((n) => n.key === startAfterKey) + 1 : 0
+		return this.#searchNav(nav, q, startIdx)
+	}
+
+	/**
+	 * Search navigable items for a text prefix match starting from startIdx.
+	 * @param {Array} nav
+	 * @param {string} q
+	 * @param {number} startIdx
+	 * @returns {string|null}
+	 */
+	#searchNav(nav, q, startIdx) {
 		for (let i = 0; i < nav.length; i++) {
 			const node = nav[(startIdx + i) % nav.length]
 			if (node.proxy.label.toLowerCase().startsWith(q)) return node.key

@@ -45,31 +45,41 @@
 		onchange?.(newValue)
 	}
 
+	function setRating(newValue: number) {
+		value = newValue
+		onchange?.(newValue)
+	}
+
+	function tryDigitKey(key: string): boolean {
+		const digit = parseInt(key, 10)
+		if (isNaN(digit) || digit < 0 || digit > max) return false
+		setRating(digit)
+		return true
+	}
+
+	function isIncreaseKey(key: string): boolean {
+		return key === 'ArrowRight' || key === 'ArrowUp'
+	}
+
+	function isDecreaseKey(key: string): boolean {
+		return key === 'ArrowLeft' || key === 'ArrowDown'
+	}
+
 	function handleKeyDown(event: KeyboardEvent) {
 		if (disabled) return
 
-		if (event.key === 'ArrowRight' || event.key === 'ArrowUp') {
+		if (isIncreaseKey(event.key)) {
 			event.preventDefault()
-			const newValue = Math.min(value + 1, max)
-			value = newValue
-			onchange?.(newValue)
-		} else if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') {
+			setRating(Math.min(value + 1, max))
+		} else if (isDecreaseKey(event.key)) {
 			event.preventDefault()
-			const newValue = Math.max(value - 1, 0)
-			value = newValue
-			onchange?.(newValue)
-		} else {
-			const digit = parseInt(event.key, 10)
-			if (!isNaN(digit) && digit >= 0 && digit <= max) {
-				event.preventDefault()
-				value = digit
-				onchange?.(digit)
-			}
+			setRating(Math.max(value - 1, 0))
+		} else if (tryDigitKey(event.key)) {
+			event.preventDefault()
 		}
 	}
 </script>
 
-<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <div
 	data-rating
 	data-rating-disabled={disabled || undefined}

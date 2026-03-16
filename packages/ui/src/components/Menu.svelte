@@ -214,7 +214,6 @@
 	</button>
 
 	{#if isOpen}
-		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<div bind:this={dropdownRef} data-menu-dropdown role="menu" aria-orientation="vertical">
 			{#each wrapper.flatView as node (node.key)}
 				{@const proxy = node.proxy}

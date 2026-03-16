@@ -21,25 +21,25 @@ const RTL_LANGUAGES = [
 ]
 
 /**
+ * Checks dir/lang attributes of the html element for RTL
+ * @returns {'ltr' | 'rtl'}
+ */
+function dirFromHtmlElement() {
+	const htmlDir = document.documentElement.getAttribute('dir')
+	if (htmlDir === 'rtl' || htmlDir === 'ltr') return htmlDir
+
+	const lang = document.documentElement.getAttribute('lang')
+	const primaryLang = lang ? lang.split('-')[0].toLowerCase() : ''
+	return RTL_LANGUAGES.includes(primaryLang) ? 'rtl' : 'ltr'
+}
+
+/**
  * Detects text direction based on HTML lang attribute
  * @returns {'ltr' | 'rtl'}
  */
 export function detectDirection() {
 	if (typeof document === 'undefined') return 'ltr'
-
-	// Check dir attribute first (explicit override)
-	const htmlDir = document.documentElement.getAttribute('dir')
-	if (htmlDir === 'rtl' || htmlDir === 'ltr') return htmlDir
-
-	// Detect from lang attribute
-	const lang = document.documentElement.getAttribute('lang')
-	if (lang) {
-		// Extract primary language code (e.g., 'ar-SA' -> 'ar')
-		const primaryLang = lang.split('-')[0].toLowerCase()
-		if (RTL_LANGUAGES.includes(primaryLang)) return 'rtl'
-	}
-
-	return 'ltr'
+	return dirFromHtmlElement()
 }
 
 /**
@@ -181,11 +181,17 @@ export function getSnippet(obj, key, defaultSnippet = null) {
  * @param {string} [fallback]                  - fallback snippet name; defaults to ITEM_SNIPPET ('itemContent')
  * @returns {Function | null}
  */
+/**
+ * @param {unknown} value
+ * @returns {Function|null}
+ */
+function asSnippet(value) {
+	return typeof value === 'function' ? value : null
+}
+
 export function resolveSnippet(snippets, proxy, fallback = ITEM_SNIPPET) {
-	const name = proxy?.snippet
-	if (name && typeof snippets[name] === 'function') return snippets[name]
-	const fb = snippets[fallback]
-	return typeof fb === 'function' ? fb : null
+	const name = proxy && proxy.snippet
+	return asSnippet(name && snippets[name]) || asSnippet(snippets[fallback])
 }
 
 /**

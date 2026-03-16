@@ -4,80 +4,62 @@ import * as d3 from 'd3'
 
 const CHART_CONTEXT = 'chart-context'
 
+const DEFAULT_OPTIONS = {
+	width: 600,
+	height: 400,
+	margin: { top: 20, right: 30, bottom: 40, left: 50 },
+	padding: { top: 0, right: 0, bottom: 0, left: 0 },
+	responsive: true,
+	animationDuration: 300,
+	data: []
+}
+
 /**
- * Creates chart context and provides it to child components
- *
- * @param {Object} options Initial chart options
- * @returns {Object} Chart context with all stores and methods
+ * @param {Object} config
+ * @returns {import('svelte/store').Writable}
  */
-export function createChartContext(options = {}) {
-	// Default config values
-	const defaultOptions = {
-		width: 600,
-		height: 400,
-		margin: { top: 20, right: 30, bottom: 40, left: 50 },
-		padding: { top: 0, right: 0, bottom: 0, left: 0 },
-		responsive: true,
-		animationDuration: 300,
-		data: []
-	}
-
-	// Merge options with defaults
-	const config = { ...defaultOptions, ...options }
-
-	// Create stores for reactive properties
-	const dimensions = writable({
+function createDimensionsStore(config) {
+	return writable({
 		width: config.width,
 		height: config.height,
 		margin: { ...config.margin },
 		padding: { ...config.padding }
 	})
+}
 
-	const data = writable(config.data)
-	const scales = writable({})
+/**
+ * @param {import('svelte/store').Writable} dimensions
+ * @returns {import('svelte/store').Readable}
+ */
+function createInnerDimensions(dimensions) {
+	return derived(dimensions, ($d) => ({
+		width:
+			$d.width - $d.margin.left - $d.margin.right - $d.padding.left - $d.padding.right,
+		height:
+			$d.height - $d.margin.top - $d.margin.bottom - $d.padding.top - $d.padding.bottom
+	}))
+}
 
-	// Compute inner dimensions (subtracting margins)
-	const innerDimensions = derived(dimensions, ($dimensions) => {
-		return {
-			width:
-				$dimensions.width -
-				$dimensions.margin.left -
-				$dimensions.margin.right -
-				$dimensions.padding.left -
-				$dimensions.padding.right,
-			height:
-				$dimensions.height -
-				$dimensions.margin.top -
-				$dimensions.margin.bottom -
-				$dimensions.padding.top -
-				$dimensions.padding.bottom
-		}
-	})
-
-	// Store for plot elements (bars, lines, etc.)
-	const plots = writable([])
-
-	// Store for axes
-	const axes = writable({
-		x: null,
-		y: null
-	})
-
-	const legend = writable({
-		enabled: false,
-		items: []
-	})
-
-	// Helper to add a new plot
-	function addPlot(plot) {
+/**
+ * @param {import('svelte/store').Writable} plots
+ * @returns {(plot: unknown) => () => void}
+ */
+function makeAddPlot(plots) {
+	return function addPlot(plot) {
 		plots.update((currentPlots) => [...currentPlots, plot])
 		return () => {
 			plots.update((currentPlots) => currentPlots.filter((p) => p !== plot))
 		}
 	}
+}
 
-	// Helper to update scales based on data and dimensions
-	function updateScales(xKey, yKey, colorKey = null) {
+/**
+ * @param {import('svelte/store').Writable} data
+ * @param {import('svelte/store').Readable} innerDimensions
+ * @returns {(xKey: string, yKey: string, colorKey?: string|null) => import('svelte/store').Readable}
+ */
+function makeUpdateScales(data, innerDimensions) {
+	return function updateScales(xKey, yKey, colorKey = null) {
 		return derived([data, innerDimensions], ([$data, $innerDimensions]) => {
 			if (!$data || $data.length === 0) return null
 
@@ -94,7 +76,6 @@ export function createChartContext(options = {}) {
 				.range([$innerDimensions.height, 0])
 
 			let colorScale = null
-
 			if (colorKey) {
 				const uniqueCategories = [...new Set($data.map((d) => d[colorKey]))]
 				colorScale = d3.scaleOrdinal().domain(uniqueCategories).range(d3.schemeCategory10)
@@ -103,8 +84,28 @@ export function createChartContext(options = {}) {
 			return { xScale, yScale, colorScale }
 		})
 	}
+}
 
-	// Create and set context
+/**
+ * Creates chart context and provides it to child components
+ *
+ * @param {Object} options Initial chart options
+ * @returns {Object} Chart context with all stores and methods
+ */
+export function createChartContext(options = {}) {
+	const config = { ...DEFAULT_OPTIONS, ...options }
+
+	const dimensions = createDimensionsStore(config)
+	const data = writable(config.data)
+	const scales = writable({})
+	const innerDimensions = createInnerDimensions(dimensions)
+	const plots = writable([])
+	const axes = writable({ x: null, y: null })
+	const legend = writable({ enabled: false, items: [] })
+
+	const addPlot = makeAddPlot(plots)
+	const updateScales = makeUpdateScales(data, innerDimensions)
+
 	const chartContext = {
 		dimensions,
 		innerDimensions,

@@ -6,15 +6,17 @@ import { max } from 'd3-array'
  * Creates appropriate scales based on data and dimensions
  *
  * @param {Array} data The dataset
- * @param {string} xKey Field to use for x-axis
- * @param {string} yKey Field to use for y-axis
  * @param {Object} dimensions Chart dimensions
  * @param {Object} [options] Additional options
+ * @param {string} options.xKey Field to use for x-axis
+ * @param {string} options.yKey Field to use for y-axis
  * @param {string} [options.colorKey] Field to use for color mapping
  * @returns {Object} Object containing xScale, yScale, and colorScale
  */
-export function createScales(data, xKey, yKey, dimensions, options = {}) {
+export function createScales(data, dimensions, options = {}) {
 	if (!data || data.length === 0) return {}
+
+	const { xKey, yKey, colorKey } = options
 
 	const xScale = scaleBand()
 		.domain(data.map((d) => d[xKey]))
@@ -28,8 +30,8 @@ export function createScales(data, xKey, yKey, dimensions, options = {}) {
 
 	let colorScale = null
 
-	if (options.colorKey) {
-		const uniqueCategories = [...new Set(data.map((d) => d[options.colorKey]))]
+	if (colorKey) {
+		const uniqueCategories = [...new Set(data.map((d) => d[colorKey]))]
 		colorScale = scaleOrdinal().domain(uniqueCategories).range(schemeCategory10)
 	}
 
@@ -85,6 +87,18 @@ export function uniqueId(prefix = 'chart') {
 }
 
 /**
+ * Format a single key-value pair for tooltip
+ * @param {string} key
+ * @param {unknown} value
+ * @param {Function|undefined} formatter
+ * @returns {string}
+ */
+function formatField(key, value, formatter) {
+	const formatted = formatter ? formatter(value) : value
+	return `${key}: ${formatted}`
+}
+
+/**
  * Formats tooltip content for a data point
  *
  * @param {Object} d Data point
@@ -97,13 +111,10 @@ export function formatTooltipContent(d, options = {}) {
 	const { xKey, yKey, xFormat, yFormat } = options
 
 	if (xKey && yKey) {
-		const xValue = d[xKey]
-		const yValue = d[yKey]
-
-		const xFormatted = xFormat ? xFormat(xValue) : xValue
-		const yFormatted = yFormat ? yFormat(yValue) : yValue
-
-		return `${xKey}: ${xFormatted}<br>${yKey}: ${yFormatted}`
+		return [
+			formatField(xKey, d[xKey], xFormat),
+			formatField(yKey, d[yKey], yFormat)
+		].join('<br>')
 	}
 
 	return Object.entries(d)

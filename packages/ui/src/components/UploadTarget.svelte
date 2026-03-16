@@ -38,22 +38,21 @@
 	let inputRef = $state<HTMLInputElement | null>(null)
 	let dragging = $state(false)
 
+	function validateFile(file: File): 'type' | 'size' | null {
+		if (accept && !matchesAccept(file, accept)) return 'type'
+		if (file.size > maxSize) return 'size'
+		return null
+	}
+
+	function processFile(file: File, valid: File[]) {
+		const reason = validateFile(file)
+		if (reason) onerror?.({ file, reason })
+		else valid.push(file)
+	}
+
 	function handleFiles(fileList: FileList | File[]) {
-		const files = Array.from(fileList)
 		const valid: File[] = []
-
-		for (const file of files) {
-			if (accept && !matchesAccept(file, accept)) {
-				onerror?.({ file, reason: 'type' })
-				continue
-			}
-			if (file.size > maxSize) {
-				onerror?.({ file, reason: 'size' })
-				continue
-			}
-			valid.push(file)
-		}
-
+		for (const file of Array.from(fileList)) processFile(file, valid)
 		if (valid.length > 0) onfiles?.(valid)
 	}
 
@@ -86,7 +85,6 @@
 	}
 </script>
 
-<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
 	data-upload-target
 	data-disabled={disabled || undefined}

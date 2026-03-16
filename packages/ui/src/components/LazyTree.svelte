@@ -57,7 +57,7 @@
 					f,
 					key,
 					level,
-					onlazyload ? async (_value, rawItem) => onlazyload(rawItem) : null
+					onlazyload ? (_value, rawItem) => onlazyload(rawItem) : null
 				)
 		})
 	)
@@ -77,7 +77,6 @@
 	})
 </script>
 
-<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <div
 	bind:this={treeRef}
 	data-tree

@@ -28,22 +28,18 @@
 		onchange?.(nextValue, next.original as SwitchItem)
 	}
 
+	function shouldToggle(key: string): boolean {
+		if (key === ' ' || key === 'Enter') return true
+		if (key === 'ArrowRight') return !isChecked
+		if (key === 'ArrowLeft') return isChecked
+		return false
+	}
+
 	function handleKeyDown(event: KeyboardEvent) {
 		if (disabled) return
-		switch (event.key) {
-			case ' ':
-			case 'Enter':
-				event.preventDefault()
-				toggle()
-				break
-			case 'ArrowRight':
-				event.preventDefault()
-				if (!isChecked) toggle()
-				break
-			case 'ArrowLeft':
-				event.preventDefault()
-				if (isChecked) toggle()
-				break
+		if (shouldToggle(event.key)) {
+			event.preventDefault()
+			toggle()
 		}
 	}
 </script>

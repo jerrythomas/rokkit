@@ -92,7 +92,6 @@
 	{/if}
 	<span data-tabs-label>{proxy.label}</span>
 	{#if editable}
-		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<span
 			data-tabs-remove
 			role="button"
@@ -125,7 +124,6 @@
 	No tabs available.
 {/snippet}
 
-<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
 	bind:this={containerRef}
 	data-tabs

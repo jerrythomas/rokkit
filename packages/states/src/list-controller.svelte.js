@@ -30,22 +30,35 @@ export class ListController {
 	}
 
 	/**
+	 * Process a group item's children for expanded key initialization.
+	 * @private
+	 */
+	#initExpandedGroup(item, itemPath, children, fields) {
+		if (item[fields.expanded]) {
+			this.expandedKeys.add(getKeyFromPath(itemPath))
+		}
+		this.#initExpandedKeys(children, getNestedFields(fields), itemPath)
+	}
+
+	/**
+	 * Process a single item for expanded key initialization.
+	 * @private
+	 */
+	// eslint-disable-next-line complexity
+	#initExpandedItem(item, index, fields, path) {
+		if (item === null || item === undefined || typeof item !== 'object') return
+		const children = item[fields.children]
+		if (!Array.isArray(children) || children.length === 0) return
+		this.#initExpandedGroup(item, [...path, index], children, fields)
+	}
+
+	/**
 	 * Scan items for pre-existing expanded flags and populate expandedKeys
 	 * @private
 	 */
 	#initExpandedKeys(items, fields, path = []) {
 		if (!items || !Array.isArray(items)) return
-		items.forEach((item, index) => {
-			if (item === null || item === undefined || typeof item !== 'object') return
-			const itemPath = [...path, index]
-			const children = item[fields.children]
-			if (Array.isArray(children) && children.length > 0) {
-				if (item[fields.expanded]) {
-					this.expandedKeys.add(getKeyFromPath(itemPath))
-				}
-				this.#initExpandedKeys(children, getNestedFields(fields), itemPath)
-			}
-		})
+		items.forEach((item, index) => this.#initExpandedItem(item, index, fields, path))
 	}
 
 	/**
@@ -234,6 +247,45 @@ export class ListController {
 	}
 
 	/**
+	 * Select non-disabled items in index range [start, end] inclusive.
+	 * @private
+	 */
+	#selectIndexRange(start, end, targetIndex) {
+		this.selectedKeys.clear()
+		for (let i = start; i <= end; i++) {
+			if (!this.#isDisabled(i)) {
+				this.selectedKeys.add(this.data[i].key)
+			}
+		}
+		this.moveToIndex(targetIndex)
+	}
+
+	/**
+	 * Find indices for anchor and target keys. Returns null if either is missing.
+	 * @private
+	 */
+	#findRangeIndices(anchorKey, targetKey) {
+		const anchorIndex = this.data.findIndex((row) => row.key === anchorKey)
+		const targetIndex = this.data.findIndex((row) => row.key === targetKey)
+		if (anchorIndex < 0 || targetIndex < 0) return null
+		return { anchorIndex, targetIndex }
+	}
+
+	/**
+	 * Apply range selection using pre-computed anchor and target indices.
+	 * @private
+	 */
+	#applyRangeSelection(key) {
+		const anchorKey = this.#anchorKey ?? this.focusedKey
+		if (!anchorKey) return this.select(key)
+		const indices = this.#findRangeIndices(anchorKey, key)
+		if (!indices) return false
+		const { anchorIndex, targetIndex } = indices
+		this.#selectIndexRange(Math.min(anchorIndex, targetIndex), Math.max(anchorIndex, targetIndex), targetIndex)
+		return true
+	}
+
+	/**
 	 * Select all non-disabled items between the anchor and the given key (inclusive).
 	 * Used for Shift+click range selection in multiselect mode.
 	 * @param {string} selectedKey
@@ -242,29 +294,29 @@ export class ListController {
 	selectRange(selectedKey) {
 		const key = selectedKey ?? this.focusedKey
 		if (!this.lookup.has(key)) return false
-
 		if (!this.#options.multiselect) return this.select(key)
+		return this.#applyRangeSelection(key)
+	}
 
-		const anchorKey = this.#anchorKey ?? this.focusedKey
-		if (!anchorKey) return this.select(key)
+	/**
+	 * Compute the start index for a findByText search.
+	 * @private
+	 */
+	#findStartIndex(startAfterKey) {
+		if (startAfterKey === null) return 0
+		const idx = this.data.findIndex((row) => row.key === startAfterKey)
+		return idx >= 0 ? idx + 1 : 0
+	}
 
-		const anchorIndex = this.data.findIndex((row) => row.key === anchorKey)
-		const targetIndex = this.data.findIndex((row) => row.key === key)
-		if (anchorIndex < 0 || targetIndex < 0) return false
-
-		const start = Math.min(anchorIndex, targetIndex)
-		const end = Math.max(anchorIndex, targetIndex)
-
-		this.selectedKeys.clear()
-		for (let i = start; i <= end; i++) {
-			if (!this.#isDisabled(i)) {
-				this.selectedKeys.add(this.data[i].key)
-			}
-		}
-
-		// Move focus but don't change anchor (anchor stays for subsequent Shift+clicks)
-		this.moveToIndex(targetIndex)
-		return true
+	/**
+	 * Check if an item at idx matches the query prefix.
+	 * @private
+	 */
+	#matchesText(idx, q) {
+		if (this.#isDisabled(idx)) return false
+		const entry = this.lookup.get(this.data[idx].key)
+		const text = entry?.label ?? ''
+		return String(text).toLowerCase().startsWith(q)
 	}
 
 	/**
@@ -277,19 +329,10 @@ export class ListController {
 	 */
 	findByText(query, startAfterKey = null) {
 		const q = query.toLowerCase()
-		let startIndex = 0
-		if (startAfterKey !== null) {
-			const idx = this.data.findIndex((row) => row.key === startAfterKey)
-			if (idx >= 0) startIndex = idx + 1
-		}
+		const startIndex = this.#findStartIndex(startAfterKey)
 		for (let i = 0; i < this.data.length; i++) {
 			const idx = (startIndex + i) % this.data.length
-			if (this.#isDisabled(idx)) continue
-			const entry = this.lookup.get(this.data[idx].key)
-			const text = entry?.label ?? ''
-			if (String(text).toLowerCase().startsWith(q)) {
-				return this.data[idx].key
-			}
+			if (this.#matchesText(idx, q)) return this.data[idx].key
 		}
 		return null
 	}

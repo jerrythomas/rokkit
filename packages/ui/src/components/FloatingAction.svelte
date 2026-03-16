@@ -99,17 +99,23 @@
 	}
 
 	/**
+	 * Move DOM focus to the menu item at the given index
+	 */
+	function focusDomItem(index: number) {
+		const menu = fabRef?.querySelector('[data-fab-menu]')
+		if (!menu) return
+		const menuItems = menu.querySelectorAll('[data-fab-item]:not([data-disabled])')
+		const menuItem = menuItems[index] as HTMLElement | undefined
+		menuItem?.focus()
+	}
+
+	/**
 	 * Focus an item by index
 	 */
 	function focusItem(index: number) {
 		if (index < 0 || index >= flatItems.length) return
 		focusedIndex = index
-		const menu = fabRef?.querySelector('[data-fab-menu]')
-		if (menu) {
-			const menuItems = menu.querySelectorAll('[data-fab-item]:not([data-disabled])')
-			const menuItem = menuItems[index] as HTMLElement | undefined
-			menuItem?.focus()
-		}
+		focusDomItem(index)
 	}
 
 	/**
@@ -126,41 +132,64 @@
 	}
 
 	/**
+	 * Close menu and return focus to trigger
+	 */
+	function closeAndFocusTrigger() {
+		close()
+		const trigger = fabRef?.querySelector('[data-fab-trigger]') as HTMLElement | undefined
+		trigger?.focus()
+	}
+
+	/**
+	 * Activate the currently focused item
+	 */
+	function activateFocusedItem() {
+		if (focusedIndex >= 0 && focusedIndex < flatItems.length) {
+			handleItemClick(flatItems[focusedIndex])
+		}
+	}
+
+	function wrapNext(current: number, last: number): number {
+		return current < last ? current + 1 : 0
+	}
+
+	function wrapPrev(current: number, last: number): number {
+		return current > 0 ? current - 1 : last
+	}
+
+	function nextFabIndex(key: string, current: number, last: number): number {
+		if (key === 'ArrowDown') return wrapNext(current, last)
+		if (key === 'ArrowUp') return wrapPrev(current, last)
+		if (key === 'Home') return 0
+		if (key === 'End') return last
+		return -1
+	}
+
+	function handleFabNavMove(event: KeyboardEvent): boolean {
+		const last = flatItems.length - 1
+		const next = nextFabIndex(event.key, focusedIndex, last)
+		if (next === -1) return false
+		focusItem(next)
+		return true
+	}
+
+	function isActivateKey(key: string): boolean {
+		return key === 'Enter' || key === ' '
+	}
+
+	/**
 	 * Handle keyboard navigation when menu is open
 	 */
 	function handleKeyDown(event: KeyboardEvent) {
 		if (!open) return
-
-		switch (event.key) {
-			case 'Escape':
-				event.preventDefault()
-				close()
-				const trigger = fabRef?.querySelector('[data-fab-trigger]') as HTMLElement | undefined
-				trigger?.focus()
-				break
-			case 'ArrowDown':
-				event.preventDefault()
-				focusItem(focusedIndex < flatItems.length - 1 ? focusedIndex + 1 : 0)
-				break
-			case 'ArrowUp':
-				event.preventDefault()
-				focusItem(focusedIndex > 0 ? focusedIndex - 1 : flatItems.length - 1)
-				break
-			case 'Home':
-				event.preventDefault()
-				focusItem(0)
-				break
-			case 'End':
-				event.preventDefault()
-				focusItem(flatItems.length - 1)
-				break
-			case 'Enter':
-			case ' ':
-				event.preventDefault()
-				if (focusedIndex >= 0 && focusedIndex < flatItems.length) {
-					handleItemClick(flatItems[focusedIndex])
-				}
-				break
+		if (event.key === 'Escape') {
+			event.preventDefault()
+			closeAndFocusTrigger()
+		} else if (isActivateKey(event.key)) {
+			event.preventDefault()
+			activateFocusedItem()
+		} else if (handleFabNavMove(event)) {
+			event.preventDefault()
 		}
 	}
 

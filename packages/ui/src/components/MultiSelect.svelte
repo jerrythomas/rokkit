@@ -27,6 +27,7 @@
 	// @ts-nocheck
 	import type { ProxyItem } from '@rokkit/states'
 	import { Wrapper, ProxyTree } from '@rokkit/states'
+	import { SvelteSet } from 'svelte/reactivity'
 	import { Navigator, Trigger } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET, GROUP_SNIPPET } from '@rokkit/core'
 	import ItemContent from './ItemContent.svelte'
@@ -133,65 +134,52 @@
 		return (value ?? []).some((v) => v === extractedValue)
 	}
 
-	function toggleItemSelection(extractedValue: unknown) {
-		const currentValues = value ?? []
-		const alreadySelected = currentValues.some((v) => v === extractedValue)
-
-		let newValues: unknown[]
-		let newItems: unknown[]
-
-		if (alreadySelected) {
-			newValues = currentValues.filter((v) => v !== extractedValue)
-			// Rebuild selected items from remaining values
-			newItems = []
-			for (const [, proxy] of wrapper.lookup) {
-				if (!proxy.hasChildren && newValues.some((v) => v === proxy.value)) {
-					newItems.push(proxy.original)
-				}
-			}
-		} else {
-			newValues = [...currentValues, extractedValue]
-			// Rebuild selected items from lookup to include all values
-			newItems = []
-			for (const [, proxy] of wrapper.lookup) {
-				if (!proxy.hasChildren && newValues.some((v) => v === proxy.value)) {
-					newItems.push(proxy.original)
-				}
-			}
+	function buildSelectedItems(newValues: unknown[]): unknown[] {
+		const result: unknown[] = []
+		for (const [, proxy] of wrapper.lookup) {
+			if (isLeafWithValue(proxy, newValues)) result.push(proxy.original)
 		}
+		return result
+	}
 
+	function applySelection(newValues: unknown[]) {
+		const newItems = buildSelectedItems(newValues)
 		value = newValues
 		selected = newItems
 		onchange?.(newValues, newItems)
 	}
 
-	function removeTag(extractedValue: unknown) {
+	function toggleItemSelection(extractedValue: unknown) {
 		const currentValues = value ?? []
-		const newValues = currentValues.filter((v) => v !== extractedValue)
-		const newItems: unknown[] = []
-		for (const [, proxy] of wrapper.lookup) {
-			if (!proxy.hasChildren && newValues.some((v) => v === proxy.value)) {
-				newItems.push(proxy.original)
-			}
-		}
-		value = newValues
-		selected = newItems
-		onchange?.(newValues, newItems)
+		const alreadySelected = currentValues.some((v) => v === extractedValue)
+		const newValues = alreadySelected
+			? currentValues.filter((v) => v !== extractedValue)
+			: [...currentValues, extractedValue]
+		applySelection(newValues)
+	}
+
+	function removeTag(extractedValue: unknown) {
+		const newValues = (value ?? []).filter((v) => v !== extractedValue)
+		applySelection(newValues)
 	}
 
 	// ─── Selected items for tags display ──────────────────────────────────────
 
-	const selectedProxies = $derived.by(() => {
+	function isLeafWithValue(proxy: ProxyItem, vals: unknown[]): boolean {
+		return !proxy.hasChildren && vals.some((v) => v === proxy.value)
+	}
+
+	function computeSelectedProxies(): ProxyItem[] {
 		const vals = value ?? []
 		if (vals.length === 0) return []
 		const result: ProxyItem[] = []
 		for (const [, proxy] of wrapper.lookup) {
-			if (!proxy.hasChildren && vals.some((v) => v === proxy.value)) {
-				result.push(proxy)
-			}
+			if (isLeafWithValue(proxy, vals)) result.push(proxy)
 		}
 		return result
-	})
+	}
+
+	const selectedProxies = $derived.by(computeSelectedProxies)
 
 	// ─── Trigger action ───────────────────────────────────────────────────────
 
@@ -236,7 +224,7 @@
 	// ─── Helpers ──────────────────────────────────────────────────────────────
 
 	const groupDividers = $derived.by(() => {
-		const set = new Set<string>()
+		const set = new SvelteSet<string>()
 		let foundFirst = false
 		for (const node of wrapper.flatView) {
 			if (node.hasChildren) {
@@ -318,7 +306,6 @@
 	</button>
 
 	{#if isOpen}
-		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<div
 			bind:this={dropdownRef}
 			data-select-dropdown
