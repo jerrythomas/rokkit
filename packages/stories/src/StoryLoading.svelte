@@ -1,14 +1,4 @@
 <script>
-	/**
-	 * @typedef {Object} StoryLoadingProps
-	 * @property {string} [message] - Custom loading message
-	 * @property {string} [class] - Additional CSS classes
-	 */
-
-	/**
-	 * Props for the StoryLoading component
-	 * @type {StoryLoadingProps}
-	 */
 	let { message = 'Loading story...', class: className = '' } = $props()
 </script>
 

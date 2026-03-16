@@ -1,14 +1,4 @@
 <script>
-	/**
-	 * @typedef {Object} StoryErrorProps
-	 * @property {string} error - The error message to display
-	 * @property {string} [class] - Additional CSS classes
-	 */
-
-	/**
-	 * Props for the StoryError component
-	 * @type {StoryErrorProps}
-	 */
 	let { error, class: className = '' } = $props()
 </script>
 

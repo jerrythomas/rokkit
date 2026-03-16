@@ -1,14 +1,4 @@
 <script>
-	/**
-	 * @typedef {Object} StoryComponentProps
-	 * @property {any} component - The Svelte component to render
-	 * @property {string} [class] - Additional CSS classes
-	 */
-
-	/**
-	 * Props for the StoryComponent
-	 * @type {StoryComponentProps}
-	 */
 	let { component, class: className = '' } = $props()
 </script>
 

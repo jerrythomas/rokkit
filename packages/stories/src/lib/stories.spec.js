@@ -356,47 +356,47 @@ describe('stories.js', () => {
 		const mockSections = [
 			{
 				title: 'Welcome',
-				id: 'welcome',
+				slug: '/welcome',
 				children: [
-					{ title: 'Introduction', id: 'intro' },
-					{ title: 'Getting Started', id: 'get-started' }
+					{ title: 'Introduction', slug: '/welcome/intro' },
+					{ title: 'Getting Started', slug: '/welcome/get-started' }
 				]
 			},
 			{
 				title: 'Elements',
-				id: 'elements',
+				slug: '/elements',
 				children: [
-					{ title: 'List', id: 'list' },
-					{ title: 'Button', id: 'button' }
+					{ title: 'List', slug: '/elements/list' },
+					{ title: 'Button', slug: '/elements/button' }
 				]
 			}
 		]
 
 		it('should find the group containing a section', () => {
-			const result = findGroupForSection(mockSections, 'list')
+			const result = findGroupForSection(mockSections, '/elements/list')
 			expect(result).toEqual({
 				title: 'Elements',
-				id: 'elements',
+				slug: '/elements',
 				children: [
-					{ title: 'List', id: 'list' },
-					{ title: 'Button', id: 'button' }
+					{ title: 'List', slug: '/elements/list' },
+					{ title: 'Button', slug: '/elements/button' }
 				]
 			})
 		})
 
 		it('should return null when section is not found', () => {
-			const result = findGroupForSection(mockSections, 'nonexistent')
+			const result = findGroupForSection(mockSections, '/nonexistent')
 			expect(result).toBeNull()
 		})
 
 		it('should find group for section in first group', () => {
-			const result = findGroupForSection(mockSections, 'intro')
+			const result = findGroupForSection(mockSections, '/welcome/intro')
 			expect(result).toEqual({
 				title: 'Welcome',
-				id: 'welcome',
+				slug: '/welcome',
 				children: [
-					{ title: 'Introduction', id: 'intro' },
-					{ title: 'Getting Started', id: 'get-started' }
+					{ title: 'Introduction', slug: '/welcome/intro' },
+					{ title: 'Getting Started', slug: '/welcome/get-started' }
 				]
 			})
 		})

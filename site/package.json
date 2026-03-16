@@ -47,6 +47,7 @@
     "@rokkit/forms": "workspace:latest",
     "@rokkit/icons": "workspace:latest",
     "@rokkit/states": "workspace:latest",
+    "@rokkit/stories": "workspace:latest",
     "@rokkit/themes": "workspace:latest",
 "@rokkit/unocss": "workspace:latest",
     "@rokkit/ui": "workspace:latest",

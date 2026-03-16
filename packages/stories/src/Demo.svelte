@@ -1,5 +1,4 @@
 <script>
-	// @ts-nocheck
 	import Code from './Code.svelte'
 
 	let { App, code, language = 'svelte' } = $props()
@@ -87,7 +86,6 @@
 		color: var(--color-surface-z7);
 	}
 
-	/* Graph paper preview — minor grid only, muted color */
 	[data-demo-preview] {
 		@apply bg-graph-paper;
 		--unit: 20px;

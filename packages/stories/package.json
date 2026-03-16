@@ -23,11 +23,13 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./dist/index.d.ts",
+      "svelte": "./src/index.js",
       "import": "./src/index.js"
     }
   },
   "files": [
     "src/**/*.js",
+    "src/**/*.svelte",
     "dist/**/*.d.ts",
     "README.md",
     "LICENSE"
@@ -43,6 +45,11 @@
     "frontmatter": "^0.0.3",
     "ramda": "^0.32.0",
     "shiki": "^3.23.0",
-    "@rokkit/core": "workspace:latest"
+    "@rokkit/core": "workspace:latest",
+    "@rokkit/states": "workspace:latest",
+    "@rokkit/ui": "workspace:latest"
+  },
+  "peerDependencies": {
+    "svelte": "^5.0.0"
   }
 }

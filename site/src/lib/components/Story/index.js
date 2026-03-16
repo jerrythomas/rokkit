@@ -1,8 +1,11 @@
-export { default as StoryComponent } from './StoryComponent.svelte'
+export {
+	Code,
+	CodeViewer,
+	CopyToClipboard,
+	Demo,
+	StoryViewer,
+	StoryComponent,
+	StoryError,
+	StoryLoading
+} from '@rokkit/stories'
 export { default as StoryCode } from './StoryCode.svelte'
-export { default as StoryError } from './StoryError.svelte'
-export { default as StoryLoading } from './StoryLoading.svelte'
-export { default as CodeViewer } from './CodeViewer.svelte'
-export { default as StoryViewer } from './StoryViewer.svelte'
-export { default as Code } from './Code.svelte'
-export { default as Demo } from './Demo.svelte'

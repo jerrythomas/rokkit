@@ -164,10 +164,11 @@ export async function fetchStories(sources, modules) {
 }
 /**
  * Get all individual sections flattened from groups
+ * @param {Metadata[]} sections - The sections to flatten
  * @returns {Array} Array of all tutorial sections
  */
-export function getAllSections() {
-	return sections.flatMap((group) => group.children)
+export function getAllSections(sections) {
+	return sections.flatMap((group) => group.children ?? [])
 }
 
 /**
@@ -176,8 +177,9 @@ export function getAllSections() {
  * @returns {Object|null} The section object or null if not found
  */
 export function findSection(sections, slug) {
-	for (const group of sections) {
-		const section = group.children.find((child) => child.slug === slug)
+	for (const item of sections) {
+		if (item.slug === slug) return item
+		const section = item.children?.find((child) => child.slug === slug)
 		if (section) return section
 	}
 	return {}
@@ -188,6 +190,6 @@ export function findSection(sections, slug) {
  * @param {string} sectionId - The section ID to find the group for
  * @returns {Object|null} The group object or null if not found
  */
-export function findGroupForSection(sections, sectionId) {
-	return sections.find((group) => group.children.some((child) => child.id === sectionId)) || null
+export function findGroupForSection(sections, slug) {
+	return sections.find((group) => group.children?.some((child) => child.slug === slug)) || null
 }
