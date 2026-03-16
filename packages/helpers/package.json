@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/helpers",
-  "version": "1.0.0-next.134",
+  "version": "1.0.0-next.135",
   "description": "Custom matchers for vitest, mocks and simulators for testing.",
   "repository": {
     "type": "git",

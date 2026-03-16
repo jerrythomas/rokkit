@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/tutorial",
-  "version": "1.0.0-next.134",
+  "version": "1.0.0-next.135",
   "description": "DEPRECATED: Superseded by @rokkit/stories. Utilities for building tutorials (Svelte 4 era).",
   "repository": {
     "type": "git",
