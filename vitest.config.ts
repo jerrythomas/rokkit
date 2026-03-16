@@ -51,6 +51,14 @@ export default defineConfig({
 			{
 				extends: true,
 				test: {
+					name: 'app',
+					root: 'packages/app',
+					setupFiles: ['../helpers/src/mocks/index.js']
+				}
+			},
+			{
+				extends: true,
+				test: {
 					name: 'learn',
 					root: 'site'
 				},
