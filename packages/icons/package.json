@@ -19,7 +19,6 @@
     ".": "./lib/base.json",
     "./utils": "./src/convert.js"
   },
-  "description": "A minimal icon set for use in applications.",
   "files": [
     "lib/**/*",
     "README.md",
