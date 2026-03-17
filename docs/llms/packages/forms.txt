@@ -1,0 +1,894 @@
+# Rokkit Forms Package
+
+> Schema-driven form builder with automatic field derivation, lookup-based dependent fields, validation, dirty tracking, conditional visibility, and snippet-based rendering.
+
+The `@rokkit/forms` package generates reactive forms from data, schema, and layout definitions. It provides `FormBuilder` for programmatic form management and `FormRenderer` for rendering forms as Svelte components. Fields are automatically derived from data structure, or can be explicitly defined via JSON Schema and layout objects.
+
+## Quick Start
+
+```svelte
+<script>
+  import { FormBuilder, FormRenderer } from '@rokkit/forms'
+
+  let data = $state({ name: '', email: '' })
+
+  const schema = {
+    type: 'object',
+    properties: {
+      name: { type: 'string', required: true },
+      email: { type: 'string', pattern: '^[^@]+@[^@]+$' }
+    }
+  }
+
+  const layout = {
+    type: 'vertical',
+    elements: [
+      { label: 'Name', scope: '#/name' },
+      { label: 'Email', scope: '#/email' }
+    ]
+  }
+
+  async function handleSubmit(visibleData, { isValid }) {
+    await fetch('/api/save', {
+      method: 'POST',
+      body: JSON.stringify(visibleData)
+    })
+  }
+</script>
+
+<FormRenderer bind:data {schema} {layout} onsubmit={handleSubmit} />
+```
+
+## Auto-Derived Forms
+
+When schema or layout are omitted, FormBuilder derives them from the data shape:
+
+```js
+import { FormBuilder } from '@rokkit/forms'
+
+const builder = new FormBuilder({ count: 25, animate: true })
+
+// Schema is auto-derived:
+// { type: 'object', properties: { count: { type: 'integer' }, animate: { type: 'boolean' } } }
+
+// Layout is auto-derived:
+// { type: 'vertical', elements: [
+//   { label: 'count', scope: '#/count' },
+//   { label: 'animate', scope: '#/animate' }
+// ] }
+
+// Elements are auto-derived:
+// [
+//   { scope: '#/count', type: 'number', value: 25, props: { label: 'count', ... } },
+//   { scope: '#/animate', type: 'checkbox', value: true, props: { label: 'animate', ... } }
+// ]
+```
+
+## FormBuilder
+
+The core class that manages form state, field derivation, validation, and dirty tracking.
+
+### Constructor
+
+```js
+new FormBuilder(data?, schema?, layout?, lookups?)
+```
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `data` | `Object` | `{}` | Initial form data |
+| `schema` | `Object\|null` | `null` | JSON Schema definition (auto-derived from data when null) |
+| `layout` | `Object\|null` | `null` | Layout definition (auto-derived from data when null) |
+| `lookups` | `Object` | `{}` | Lookup configurations keyed by field path |
+
+### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `data` | `Object` | Current form data (get/set) |
+| `schema` | `Object` | Current schema (get/set; setting null re-derives from data) |
+| `layout` | `Object` | Current layout (get/set; setting null re-derives from data) |
+| `validation` | `Object` | Current validation state keyed by field path (get/set) |
+| `elements` | `FormElement[]` | Derived form elements array (reactive, read-only) |
+| `isValid` | `boolean` | True when no error-state validation messages exist |
+| `isDirty` | `boolean` | True when any field differs from initial snapshot |
+| `dirtyFields` | `Set<string>` | Set of field paths that differ from initial values |
+| `errors` | `Array<{path, state, text}>` | Array of current error messages |
+| `messages` | `Array<{path, state, text}>` | All validation messages sorted by severity (error > warning > info > success) |
+
+### Methods
+
+| Method | Signature | Description |
+|--------|-----------|-------------|
+| `updateField` | `(path, value, triggerLookups?)` | Update a field value. Clears dependent field values and triggers dependent lookups by default |
+| `getValue` | `(path) => any` | Get a field value by slash-delimited path (e.g., `'address/city'`) |
+| `validateField` | `(fieldPath) => ValidationMessage\|null` | Validate one field against its schema; updates validation state |
+| `validate` | `() => Object` | Validate all visible fields; populates validation state; returns results keyed by path |
+| `setFieldValidation` | `(fieldPath, message\|null)` | Manually set or clear a validation message for a field |
+| `clearValidation` | `()` | Clear all validation messages |
+| `isFieldDirty` | `(fieldPath) => boolean` | Check if a specific field has been modified from its initial value |
+| `snapshot` | `()` | Update the initial data snapshot to current data (call after save to clear dirty state) |
+| `reset` | `()` | Reset data to initial snapshot and clear all validation |
+| `getVisibleData` | `() => Object` | Return form data filtered to only visible fields (hidden fields excluded) |
+| `isFieldDisabled` | `(path) => boolean` | Check if a field is disabled due to unmet lookup dependencies |
+| `refreshLookup` | `(path) => Promise<void>` | Manually trigger a lookup re-fetch for a field |
+| `hasLookup` | `(fieldPath) => boolean` | Check if a field has a lookup configured |
+| `getLookupState` | `(fieldPath) => LookupState\|null` | Get the current lookup state (options, loading, error, disabled, fields) |
+| `setLookups` | `(lookups)` | Configure or replace lookups after construction |
+| `initializeLookups` | `() => Promise<void>` | Initialize all lookups (called automatically by FormRenderer on mount) |
+
+### FormElement Shape
+
+Each entry in `builder.elements` has this structure:
+
+```ts
+{
+  scope: string       // JSON Pointer path, e.g. '#/email', '#/address/city'
+  type: string        // Resolved input type: 'text', 'number', 'select', 'checkbox', etc.
+  value: any          // Current value from data
+  override: boolean   // Whether to use custom child snippet (from layout)
+  props: {
+    label?: string        // Display label
+    description?: string  // Help text
+    placeholder?: string  // Placeholder text
+    required?: boolean    // Required flag
+    min?: number          // Minimum value
+    max?: number          // Maximum value
+    options?: any[]       // Select/radio options
+    message?: { state: string, text: string } | null  // Validation message
+    dirty?: boolean       // Whether field differs from initial value
+    disabled?: boolean    // Disabled state (from lookup dependency)
+    loading?: boolean     // Loading state (from lookup)
+    fields?: Object       // Field mapping (from lookup)
+    type?: string         // Input type string
+    renderer?: string     // Explicit renderer override
+  }
+}
+```
+
+## Schema Definition
+
+A JSON Schema-like object defining field types and constraints:
+
+```js
+const schema = {
+  type: 'object',
+  properties: {
+    name: { type: 'string', required: true, minLength: 2, maxLength: 100 },
+    email: { type: 'string', pattern: '^[^@]+@[^@]+$' },
+    age: { type: 'integer', min: 0, max: 150 },
+    score: { type: 'number', min: 0, max: 100 },
+    active: { type: 'boolean' },
+    role: { type: 'string', enum: ['admin', 'editor', 'viewer'] },
+    tags: { type: 'array' },
+    address: {
+      type: 'object',
+      properties: {
+        street: { type: 'string' },
+        city: { type: 'string' }
+      }
+    }
+  }
+}
+```
+
+### Schema Types and Auto-Resolved Input Types
+
+| Schema `type` | Conditions | Resolved input type | Renderer component |
+|---------------|------------|--------------------|--------------------|
+| `string` | (default) | `text` | InputText |
+| `string` | has `enum` or `options` | `select` | InputSelect |
+| `string` | `format: 'email'` | `email` | InputEmail |
+| `string` | `format: 'password'` | `password` | InputPassword |
+| `string` | `format: 'tel'` | `tel` | InputTel |
+| `string` | `format: 'url'` | `url` | InputUrl |
+| `string` | `format: 'color'` | `color` | InputColor |
+| `string` | `format: 'date'` | `date` | InputDate |
+| `string` | `format: 'datetime-local'` or `format: 'datetime'` | `datetime-local` / `datetime` | InputDateTime |
+| `string` | `format: 'time'` | `time` | InputTime |
+| `string` | `format: 'month'` | `month` | InputMonth |
+| `string` | `format: 'week'` | `week` | InputWeek |
+| `string` | `format: 'textarea'` | `textarea` | InputTextArea |
+| `number` | no min+max | `number` | InputNumber |
+| `number` | has both min and max | `range` | InputRange |
+| `integer` | no min+max | `number` | InputNumber |
+| `integer` | has both min and max | `range` | InputRange |
+| `boolean` | (default) | `checkbox` | InputCheckbox |
+| `array` | (default) | `array` | ArrayEditor |
+
+Additional renderer types available via `renderer` layout prop or the `renderers` registry:
+
+| Type | Component | Description |
+|------|-----------|-------------|
+| `radio` | InputRadio | Radio button group |
+| `switch` | InputSwitch | Toggle switch |
+| `toggle` | InputToggle | Toggle button |
+| `file` | InputFile | File upload |
+
+### Schema Constraint Properties
+
+| Property | Applies to | Description |
+|----------|-----------|-------------|
+| `required` | all types | Field must have a non-empty value |
+| `minLength` | `string` | Minimum string length |
+| `maxLength` | `string` | Maximum string length |
+| `pattern` | `string` | Regex pattern the value must match |
+| `enum` | `string` | Array of allowed values (renders as select) |
+| `min` / `minimum` | `number`, `integer` | Minimum numeric value |
+| `max` / `maximum` | `number`, `integer` | Maximum numeric value |
+| `mustBeTrue` | `boolean` | When combined with `required`, value must be `true` |
+| `readonly` | all types | Field renders as read-only info display |
+
+## Layout Definition
+
+A layout object controls field order, labels, grouping, separators, and conditional visibility:
+
+```js
+const layout = {
+  type: 'vertical',
+  elements: [
+    { label: 'Full Name', scope: '#/name', placeholder: 'Enter your name' },
+    { label: 'Email', scope: '#/email', description: 'We will not share your email' },
+    { type: 'separator' },
+    { label: 'Age', scope: '#/age' },
+    {
+      scope: '#/address',
+      label: 'Address',
+      elements: [
+        { scope: '#/address/street', label: 'Street' },
+        { scope: '#/address/city', label: 'City' }
+      ]
+    }
+  ]
+}
+```
+
+### Layout Element Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `scope` | `string` | JSON Pointer to data field, e.g. `'#/name'`. Omit for separators |
+| `label` | `string` | Display label for the field |
+| `description` | `string` | Help text shown below the field |
+| `placeholder` | `string` | Placeholder text for the input |
+| `override` | `boolean` | When true, renders via custom `child` snippet instead of default renderer |
+| `renderer` | `string` | Explicit renderer type name, overrides auto-resolved type |
+| `showWhen` | `Object` | Conditional visibility (see Conditional Fields) |
+| `elements` | `Array` | Nested elements for group fields |
+| `type` | `string` | `'separator'` for dividers, or `'display-table'`, `'display-section'`, etc. |
+
+### Separators
+
+Layout elements without a `scope` are rendered as separator dividers:
+
+```js
+{ type: 'separator' }
+// or simply:
+{ label: 'Section Header' }  // no scope → treated as separator
+```
+
+### Display Elements
+
+Prefix the `type` with `display-` to render read-only display components:
+
+```js
+{ type: 'display-table', scope: '#/items', columns: [...] }
+{ type: 'display-section', scope: '#/user', title: 'User Info', fields: [...] }
+{ type: 'display-cards', scope: '#/products', ... }
+{ type: 'display-list', scope: '#/tags', ... }
+```
+
+### Custom Renderer Override
+
+Use the `renderer` layout property to force a specific input component:
+
+```js
+{ scope: '#/rating', label: 'Rating', renderer: 'star-rating' }
+// Resolves to 'star-rating' type → looked up in renderers registry
+```
+
+## Conditional Fields (showWhen)
+
+Fields can be shown or hidden based on other field values using the `showWhen` layout property:
+
+```js
+const layout = {
+  elements: [
+    { scope: '#/accountType', label: 'Account Type' },
+    {
+      scope: '#/companyName',
+      label: 'Company Name',
+      showWhen: { field: 'accountType', equals: 'business' }
+    }
+  ]
+}
+```
+
+### Condition Operators
+
+| Operator | Example | Description |
+|----------|---------|-------------|
+| `equals` | `{ field: 'type', equals: 'business' }` | Show when field value strictly equals the given value |
+| `notEquals` | `{ field: 'type', notEquals: 'personal' }` | Show when field value does not equal the given value |
+
+Key behaviors:
+- Hidden fields are excluded from `builder.elements`
+- Hidden fields are excluded from `getVisibleData()` output
+- Hidden fields are excluded from `validate()` results
+- When a field becomes hidden, its stale validation errors are automatically cleared
+- On submit, only visible field values are passed to `onsubmit`
+
+## Validation
+
+### Schema-Based Validation
+
+Validation rules are defined in the schema. Call `validate()` or `validateField(path)` to run them:
+
+```js
+const schema = {
+  type: 'object',
+  properties: {
+    name: { type: 'string', required: true, minLength: 2 },
+    email: { type: 'string', pattern: '^[^@]+@[^@]+$' },
+    age: { type: 'integer', min: 18, max: 120 }
+  }
+}
+const layout = {
+  elements: [
+    { scope: '#/name', label: 'Name' },
+    { scope: '#/email', label: 'Email' },
+    { scope: '#/age', label: 'Age' }
+  ]
+}
+
+const builder = new FormBuilder({ name: '', email: 'bad', age: 5 }, schema, layout)
+
+// Validate all fields
+const results = builder.validate()
+// { name: { state: 'error', text: 'Name is required' },
+//   email: { state: 'error', text: 'Email format is invalid' },
+//   age: { state: 'error', text: 'Age must be at least 18' } }
+
+builder.isValid  // false
+builder.errors   // [{ path: 'name', state: 'error', text: '...' }, ...]
+```
+
+### Validation Message Shape
+
+```ts
+{ state: 'error' | 'warning' | 'info' | 'success', text: string }
+```
+
+### Manual Validation Messages
+
+```js
+import { createMessage } from '@rokkit/forms'
+
+// Set a manual validation message
+builder.setFieldValidation('email', { state: 'warning', text: 'This email is already in use' })
+
+// Or use the createMessage helper
+const msg = createMessage('email', 'info', 'We will send a verification email')
+// Returns: { email: { state: 'info', text: 'We will send a verification email' } }
+```
+
+### Validation Patterns
+
+Common regex patterns are exported for convenience:
+
+```js
+import { patterns } from '@rokkit/forms'
+
+patterns.email      // /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+patterns.phone      // /^\+?[\d\s\-\(\)]{10,}$/
+patterns.url        // /^https?:\/\/[^\s/$.?#].[^\s]*$/
+patterns.zipCode    // /^\d{5}(-\d{4})?$/
+patterns.creditCard // /^\d{4}\s?\d{4}\s?\d{4}\s?\d{4}$/
+```
+
+### Standalone Validation Functions
+
+```js
+import { validateField, validateAll } from '@rokkit/forms'
+
+// Validate a single value against a field schema
+const result = validateField('', { type: 'string', required: true }, 'Name')
+// { state: 'error', text: 'Name is required' }
+
+// Validate all fields in a data object
+const results = validateAll(data, schema, layout)
+// { fieldPath: { state, text }, ... }
+```
+
+## Lookups
+
+Lookups populate field options dynamically. Three modes are supported: URL template, async fetch hook, and client-side source+filter.
+
+### Lookup Configuration
+
+```ts
+{
+  url?: string                          // URL template with {field} placeholders
+  fetch?: (formData) => Promise<any[]>  // Async fetch function
+  source?: any[]                        // Pre-loaded array for client-side filtering
+  filter?: (items, formData) => any[]   // Client-side filter function (used with source)
+  dependsOn?: string[]                  // Field paths this lookup depends on
+  fields?: Object                       // Field mapping for response data
+  cacheKey?: (formData) => string       // Custom cache key function (for fetch hook)
+  cacheTime?: number                    // Cache duration in ms (default: 5 minutes)
+  transform?: (data) => any[]           // Transform API response to options array
+}
+```
+
+### Mode 1: URL Template
+
+Fetches options from a URL. Placeholders like `{country}` are interpolated from form data. Responses are automatically cached by resolved URL.
+
+```js
+const lookups = {
+  country: {
+    url: '/api/countries'
+  },
+  city: {
+    url: '/api/cities?country={country}',
+    dependsOn: ['country']
+  }
+}
+```
+
+The URL response is normalized: if it returns an array, it is used directly. If it returns an object, the first matching key from `['data', 'items', 'results']` is extracted as the array.
+
+Use `transform` for custom response shapes:
+
+```js
+{
+  url: '/api/countries',
+  transform: (data) => data.data.countries
+}
+```
+
+### Mode 2: Async Fetch Hook
+
+A custom async function that receives the full form data and returns options. No automatic caching unless `cacheKey` is provided.
+
+```js
+const lookups = {
+  city: {
+    dependsOn: ['country'],
+    fetch: async (formData) => {
+      const response = await fetch(`/api/cities?country=${formData.country}`)
+      return response.json()
+    }
+  }
+}
+```
+
+With caching:
+
+```js
+{
+  fetch: async (formData) => {
+    const res = await fetch(`/api/cities?country=${formData.country}`)
+    return res.json()
+  },
+  cacheKey: (formData) => `cities-${formData.country}`,
+  cacheTime: 60000  // 1 minute
+}
+```
+
+### Mode 3: Source + Filter (Client-Side)
+
+Synchronous client-side filtering of a pre-loaded array. No network requests, no loading state.
+
+```js
+const allCities = [
+  { name: 'New York', country: 'USA' },
+  { name: 'Los Angeles', country: 'USA' },
+  { name: 'Paris', country: 'France' }
+]
+
+const lookups = {
+  city: {
+    dependsOn: ['country'],
+    source: allCities,
+    filter: (items, formData) => items.filter(c => c.country === formData.country)
+  }
+}
+```
+
+### Disabled State Lifecycle
+
+When a lookup has `dependsOn` and the dependencies are not met (null, undefined, or empty string), the lookup enters the disabled state:
+
+1. `lookup.disabled` becomes `true`
+2. `lookup.options` is set to `[]`
+3. The corresponding field element gets `props.disabled = true`
+4. No fetch is performed
+
+When the dependency is satisfied:
+
+1. The lookup fetches options
+2. `lookup.disabled` becomes `false`
+3. The field becomes enabled with populated options
+
+### Dependent Field Clearing
+
+When a field changes and lookups depend on it:
+
+1. `updateField(path, value)` updates the data
+2. All dependent field values are cleared to `null`
+3. Dependent lookups are re-fetched with the new form data
+
+```js
+// When country changes:
+builder.updateField('country', 'France')
+// 1. data.country = 'France'
+// 2. data.city = null (cleared because city depends on country)
+// 3. city lookup re-fetches with { country: 'France' }
+```
+
+### Lookup Manager Methods
+
+```js
+// Check if a field is disabled due to unmet dependencies
+builder.isFieldDisabled('city')  // true when country is not set
+
+// Manually refresh a lookup
+await builder.refreshLookup('city')
+
+// Check if a field has a lookup
+builder.hasLookup('city')  // true
+
+// Get full lookup state
+builder.getLookupState('city')
+// { options: [...], loading: false, error: null, disabled: false, fields: {} }
+```
+
+### Cache Management
+
+```js
+import { clearLookupCache } from '@rokkit/forms'
+
+// Clear all lookup caches globally
+clearLookupCache()
+
+// Clear caches for a specific lookup manager
+builder.lookupManager.clearAllCaches()
+```
+
+## FormRenderer Component
+
+Renders a form from a FormBuilder or from data/schema/layout props directly.
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `builder` | `FormBuilder` | — | Optional external FormBuilder instance |
+| `data` | `Object` | — | Form data (bindable). Alternative to `builder` |
+| `schema` | `Object\|null` | `null` | Schema definition |
+| `layout` | `Object\|null` | `null` | Layout definition |
+| `lookups` | `Object` | `{}` | Lookup configurations |
+| `validateOn` | `'blur'\|'change'\|'manual'` | `'blur'` | When to auto-validate fields |
+| `renderers` | `Object` | `{}` | Custom type renderer components (merged with defaults) |
+| `onupdate` | `(data) => void` | — | Called when any field value changes |
+| `onvalidate` | `(fieldPath, value, event) => ValidationMessage\|void` | — | Custom validation hook |
+| `onselect` | `(value) => void` | — | Selection callback (for display components) |
+| `onsubmit` | `(visibleData, { isValid, errors }) => Promise<void>` | — | Submit handler. When provided, form renders as `<form>` with submit/reset buttons |
+| `actions` | `Snippet` | — | Custom actions snippet replacing default buttons |
+| `child` | `Snippet` | — | Custom field snippet for elements with `override: true` |
+| `className` | `string` | `''` | CSS class on root element |
+
+### Rendering Behavior
+
+- When `onsubmit` is provided: renders as `<form>` with default Submit/Reset buttons
+- When `onsubmit` is omitted: renders as `<div>` with no action buttons
+- Fields are rendered via the `renderers` registry based on resolved type
+- Groups render as `<fieldset>` with optional `<legend>`
+- Separators render as `<div data-form-separator>`
+- Display elements render their corresponding display component
+
+### Using with External Builder
+
+```svelte
+<script>
+  import { FormBuilder, FormRenderer } from '@rokkit/forms'
+
+  const builder = new FormBuilder(
+    { name: '', country: '', city: '' },
+    schema,
+    layout,
+    lookups
+  )
+</script>
+
+<FormRenderer {builder} onsubmit={handleSubmit} />
+```
+
+### Using with Direct Props
+
+```svelte
+<script>
+  import { FormRenderer } from '@rokkit/forms'
+
+  let data = $state({ name: '', email: '' })
+</script>
+
+<FormRenderer bind:data {schema} {layout} onsubmit={handleSubmit} />
+```
+
+### Custom Actions Snippet
+
+Replace the default submit/reset buttons:
+
+```svelte
+<FormRenderer bind:data {schema} {layout} onsubmit={handleSubmit}>
+  {#snippet actions({ submitting, isValid, isDirty, submit, reset })}
+    <div class="flex gap-2">
+      <button type="button" onclick={reset} disabled={!isDirty || submitting}>
+        Cancel
+      </button>
+      <button type="submit" disabled={!isDirty || submitting}>
+        {submitting ? 'Saving...' : 'Save'}
+      </button>
+    </div>
+  {/snippet}
+</FormRenderer>
+```
+
+### Custom Field Snippet (child)
+
+For fields with `override: true` in layout, the `child` snippet renders the field:
+
+```svelte
+<FormRenderer bind:data {schema} {layout} onsubmit={handleSubmit}>
+  {#snippet child(element)}
+    <div class="custom-field">
+      <label>{element.props.label}</label>
+      <input value={element.value} />
+    </div>
+  {/snippet}
+</FormRenderer>
+```
+
+### Custom Renderers
+
+Register custom input components for specific type strings:
+
+```svelte
+<script>
+  import { FormRenderer } from '@rokkit/forms'
+  import StarRating from './StarRating.svelte'
+  import RichTextEditor from './RichTextEditor.svelte'
+</script>
+
+<FormRenderer
+  bind:data
+  {schema}
+  {layout}
+  renderers={{ 'star-rating': StarRating, 'rich-text': RichTextEditor }}
+  onsubmit={handleSubmit}
+/>
+```
+
+Then use in layout:
+
+```js
+{ scope: '#/rating', label: 'Rating', renderer: 'star-rating' }
+```
+
+### Validation Modes
+
+| Mode | Behavior |
+|------|----------|
+| `'blur'` (default) | Validates a field when it loses focus |
+| `'change'` | Validates a field on every value change |
+| `'manual'` | No automatic validation; call `builder.validate()` manually |
+
+## Dirty Tracking
+
+FormBuilder tracks which fields have changed from their initial values:
+
+```js
+const builder = new FormBuilder({ name: 'Alice', age: 30 })
+
+builder.isDirty           // false
+builder.updateField('name', 'Bob')
+builder.isDirty           // true
+builder.isFieldDirty('name')  // true
+builder.isFieldDirty('age')   // false
+builder.dirtyFields       // Set { 'name' }
+
+// Each element includes dirty in props
+builder.elements[0].props.dirty  // true (name)
+builder.elements[1].props.dirty  // false (age)
+
+// Revert clears dirty state
+builder.updateField('name', 'Alice')
+builder.isDirty           // false
+
+// snapshot() resets the baseline to current data
+builder.updateField('name', 'Bob')
+builder.snapshot()        // Now 'Bob' is the baseline
+builder.isDirty           // false
+
+// reset() reverts to the last snapshot
+builder.updateField('name', 'Charlie')
+builder.reset()
+builder.data.name         // 'Bob' (reverted to snapshot)
+builder.isDirty           // false
+```
+
+## Grouped Fields
+
+Nested objects are represented as groups with `<fieldset>` rendering:
+
+```js
+const data = {
+  name: 'Alice',
+  address: { street: '123 Main St', city: 'Springfield' }
+}
+
+const schema = {
+  type: 'object',
+  properties: {
+    name: { type: 'string' },
+    address: {
+      type: 'object',
+      properties: {
+        street: { type: 'string' },
+        city: { type: 'string' }
+      }
+    }
+  }
+}
+
+const layout = {
+  type: 'vertical',
+  elements: [
+    { label: 'Name', scope: '#/name' },
+    {
+      scope: '#/address',
+      label: 'Address',
+      elements: [
+        { scope: '#/address/street', label: 'Street' },
+        { scope: '#/address/city', label: 'City' }
+      ]
+    }
+  ]
+}
+```
+
+Nested paths use slash notation: `builder.getValue('address/city')`, `builder.updateField('address/city', 'Shelbyville')`.
+
+## Dynamic Forms Example
+
+A complete form with dependent lookups, conditional fields, validation, and submit:
+
+```svelte
+<script>
+  import { FormRenderer } from '@rokkit/forms'
+
+  let data = $state({
+    accountType: '',
+    country: '',
+    city: '',
+    companyName: ''
+  })
+
+  const schema = {
+    type: 'object',
+    properties: {
+      accountType: { type: 'string', required: true, enum: ['personal', 'business'] },
+      country: { type: 'string', required: true },
+      city: { type: 'string', required: true },
+      companyName: { type: 'string', required: true, minLength: 2 }
+    }
+  }
+
+  const layout = {
+    type: 'vertical',
+    elements: [
+      { scope: '#/accountType', label: 'Account Type' },
+      {
+        scope: '#/companyName',
+        label: 'Company Name',
+        showWhen: { field: 'accountType', equals: 'business' }
+      },
+      { type: 'separator' },
+      { scope: '#/country', label: 'Country' },
+      { scope: '#/city', label: 'City' }
+    ]
+  }
+
+  const allCities = [
+    { label: 'New York', value: 'nyc', country: 'USA' },
+    { label: 'Los Angeles', value: 'la', country: 'USA' },
+    { label: 'Paris', value: 'paris', country: 'France' },
+    { label: 'Lyon', value: 'lyon', country: 'France' }
+  ]
+
+  const lookups = {
+    country: {
+      url: '/api/countries'
+    },
+    city: {
+      dependsOn: ['country'],
+      source: allCities,
+      filter: (items, formData) => items.filter(c => c.country === formData.country)
+    }
+  }
+
+  async function handleSubmit(visibleData) {
+    // visibleData excludes companyName when accountType !== 'business'
+    await fetch('/api/register', {
+      method: 'POST',
+      body: JSON.stringify(visibleData)
+    })
+  }
+</script>
+
+<FormRenderer
+  bind:data
+  {schema}
+  {layout}
+  {lookups}
+  validateOn="blur"
+  onsubmit={handleSubmit}
+>
+  {#snippet actions({ submitting, isDirty, reset })}
+    <div class="form-actions">
+      <button type="button" onclick={reset} disabled={!isDirty}>Reset</button>
+      <button type="submit" disabled={!isDirty || submitting}>
+        {submitting ? 'Registering...' : 'Register'}
+      </button>
+    </div>
+  {/snippet}
+</FormRenderer>
+```
+
+## Data Attributes (for CSS theming)
+
+| Attribute | Element | Description |
+|-----------|---------|-------------|
+| `data-form-root` | Root `<form>` or `<div>` | Form container |
+| `data-form-submitting` | Root `<form>` | Present during async submission |
+| `data-form-field` | Field wrapper `<div>` | Wraps each input field |
+| `data-form-group` | `<fieldset>` | Group container |
+| `data-form-group-label` | `<legend>` | Group label |
+| `data-form-separator` | `<div>` | Separator element |
+| `data-form-actions` | `<div>` | Default action buttons container |
+| `data-form-submit` | `<button>` | Submit button |
+| `data-form-reset` | `<button>` | Reset button |
+| `data-scope` | Field/group wrapper | JSON pointer scope, e.g. `"#/name"` |
+| `data-field-root` | InputField root | Field root container |
+| `data-field-state` | InputField root | Validation state: `'error'`, `'warning'`, `'info'`, `'success'` |
+| `data-field-type` | InputField root | Input type string |
+| `data-field-required` | InputField root | Present when field is required |
+| `data-field-disabled` | InputField root | Present when field is disabled |
+| `data-field-dirty` | InputField root | Present when field value differs from initial |
+| `data-field-empty` | InputField root | Present when field value is null or undefined |
+
+## Imports
+
+```js
+// Core
+import { FormBuilder, FormRenderer } from '@rokkit/forms'
+
+// Validation utilities
+import { validateField, validateAll, createMessage, patterns } from '@rokkit/forms'
+
+// Lookup utilities
+import { createLookup, createLookupManager, clearLookupCache } from '@rokkit/forms'
+
+// Schema/layout utilities
+import { deriveSchemaFromValue } from '@rokkit/forms'
+import { deriveLayoutFromValue } from '@rokkit/forms'
+import { getSchemaWithLayout, findAttributeByPath } from '@rokkit/forms'
+
+// Renderer registry
+import { defaultRenderers, resolveRenderer } from '@rokkit/forms'
+
+// Individual input components
+import { Input, InputField, InfoField, ValidationReport } from '@rokkit/forms'
+```
