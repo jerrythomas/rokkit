@@ -21,8 +21,7 @@ export default {
 	icons: {
 		app: '@rokkit/icons/app.json',
 		logo: '@rokkit/icons/auth.json',
-		component: '@rokkit/icons/components.json',
-		solar: '@iconify-json/solar/icons.json',
+		glyph: '@rokkit/icons/glyph.json',
 		file: './static/icons/files/icons.json'
 	},
 	switcher: 'full',
