@@ -49,23 +49,23 @@
 ### Fixes to Existing Pages
 | Item | Status | File | Issue |
 |------|--------|------|-------|
-| Theming — fix `data-palette="rokkit"` → `data-style="rokkit"` in examples | ⬜ Todo | `theming/overview/+page.svelte` | Wrong attribute used in example |
-| Theming — add UnoCSS utility class guidance (use utility classes, not CSS vars) | ⬜ Todo | `theming/` pages | No guidance on primary authoring model |
-| Getting Started / Installation — add CLI setup path | ⬜ Todo | `getting-started/installation/+page.svelte` | Only manual install described; no mention of `npx @rokkit/cli@latest init` |
-| CLI page — fill "Coming soon" with real content | ⬜ Todo | `toolchain/cli/+page.svelte` | Entire page is a placeholder |
-| Select component — verify `items` vs `options` naming consistency | ⬜ Todo | `components/select/` | Learn site uses `items=`, LLMs docs use `options=` |
+| Theming — fix `data-palette="rokkit"` → `data-style="rokkit"` in examples | ✅ Done | `theming/+page.svelte` + `theming/overview/+page.svelte` | Commit `137d2af0`, `766ff536` |
+| Theming — add UnoCSS utility class guidance (use utility classes, not CSS vars) | ✅ Done | `theming/overview/+page.svelte` | Expanded from stub to full page; commit `766ff536` |
+| Getting Started / Installation — add CLI setup path | ✅ Done | `getting-started/installation/+page.svelte` | Added CLI section; commit `e7664625` |
+| CLI page — fill "Coming soon" with real content | ✅ Done | `toolchain/cli/+page.svelte` | Full reference with init, doctor, icon tools; commit `a4daae0d` |
+| Select component — verify `items` vs `options` naming consistency | ✅ Done | `docs/llms/components/select.txt` | Learn site was correct; llms doc fixed; commit `b8cdb4b5` |
+| `@rokkit/states` exports accurate on site | ✅ Done | `utilities/controllers/+page.svelte` | Removed non-existent `NestedController`; commit `07a29998` |
+| `data-style` attribute used consistently (not `data-theme`) | ✅ Done | `theming/` pages | Both theming pages audited and fixed |
 
 ### New Pages — Package Reference (Style A: reference-style, no demos)
 | Page | Status | Notes |
 |------|--------|-------|
-| `@rokkit/actions` reference page | ⬜ Todo | Coverage: navigable, all actions, events. No deep coverage exists on site. |
-| `@rokkit/states` reference page | ⬜ Todo | `utilities/state-management` has some coverage; needs full API reference |
-| `@rokkit/core` reference page | ⬜ Todo | Not covered anywhere on site |
-| `@rokkit/data` reference page | ⬜ Todo | Not covered anywhere on site |
-| `@rokkit/unocss` reference page | ⬜ Todo | Partially covered in theming; needs dedicated page |
-| `@rokkit/app` reference page | ⬜ Todo | Not covered anywhere on site |
-
-Navigation placement for new pages: **`utilities/` section** — add as sub-pages alongside existing controllers, navigator, state-management pages.
+| `@rokkit/actions` reference page | ✅ Done | `utilities/actions/` — navigable, all 14 actions, events table; commit `15b3dbf6` |
+| `@rokkit/states` reference page | ✅ Done | `utilities/states/` — ProxyItem, ProxyTree, controllers, vibe; commit `65aa8ed9` |
+| `@rokkit/core` reference page | ✅ Done | `utilities/core/` — FieldMapper, BASE_FIELDS, string utils; commit `96fdec41` |
+| `@rokkit/data` reference page | ✅ Done | `utilities/data/` — dataset pipeline, filtering, formatter, hierarchy; commit `96fdec41` |
+| `@rokkit/unocss` reference page | ✅ Done | `utilities/unocss/` — presetRokkit, all options; commit `96fdec41` |
+| `@rokkit/app` reference page | ✅ Done | `utilities/app/` — ThemeSwitcherToggle, TableOfContents; commit `96fdec41` |
 
 ### New Pages — Full Learn Pages with Demos (Style B: future work)
 | Page | Status | Notes |
@@ -83,8 +83,8 @@ Navigation placement for new pages: **`utilities/` section** — add as sub-page
 | Item | Status | Notes |
 |------|--------|-------|
 | Component import statements match between site and llms | ✅ Verified | Spot-checked List, Select, Tabs, Tree — consistent |
-| `@rokkit/states` exports accurate on site | ⬜ Todo | `utilities/state-management` may reference `NestedController` (doesn't exist) — verify |
-| `data-style` attribute used consistently (not `data-theme`) | ⬜ Todo | Site theming pages need audit pass |
+| `@rokkit/states` exports accurate on site | ✅ Done | Removed `NestedController` from controllers page; commit `07a29998` |
+| `data-style` attribute used consistently (not `data-theme`) | ✅ Done | Theming pages audited and corrected |
 | z-scale token names consistent (z1–z10) | ✅ Consistent | Both site and llms docs use same token names |
 
 ---
@@ -98,14 +98,13 @@ Navigation placement for new pages: **`utilities/` section** — add as sub-page
 | `docs/superpowers/plans/2026-03-16-llms-infrastructure.md` | ✅ Executed |
 | `docs/superpowers/plans/2026-03-16-llms-entry-point-and-cli.md` | ✅ Executed |
 | `docs/superpowers/plans/2026-03-16-llms-package-docs.md` | ✅ Executed |
-| Learn site fixes spec + plan | ⬜ Todo — next |
+| `docs/superpowers/specs/2026-03-16-learn-site-sync-design.md` | ✅ Done — implemented |
+| `docs/superpowers/plans/2026-03-16-learn-site-sync.md` | ✅ Executed — all 12 tasks complete |
 
 ---
 
 ## Next Priorities
 
-1. **Learn site fixes** (targeted edits to existing pages) — highest value, addresses real errors
-2. **New package reference pages** (Style A) — add to nav under TBD section
-3. **`@rokkit/chart` and `@rokkit/icons` llms package docs** — small content files
-4. **Learn page content extraction into llms** — audit learn pages for useful LLM-facing content
-5. **Style B full learn pages** — longer-term content investment
+1. **`@rokkit/chart` and `@rokkit/icons` llms package docs** — small content files, fills remaining gaps
+2. **Learn page content extraction into llms** — audit learn pages for useful LLM-facing content
+3. **Style B full learn pages** — longer-term content investment (demos, interactive examples)
