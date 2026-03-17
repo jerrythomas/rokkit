@@ -1,0 +1,8 @@
+{
+  "title": "UnoCSS",
+  "description": "presetRokkit setup and configuration for Rokkit's color and utility system",
+  "icon": "i-solar:palette-bold-duotone",
+  "category": "utilities",
+  "order": 11,
+  "tags": ["unocss", "presetRokkit", "preset", "colors", "utility-classes", "css"]
+}

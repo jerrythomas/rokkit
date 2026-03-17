@@ -1,0 +1,8 @@
+{
+  "title": "Data",
+  "description": "Dataset pipeline, filtering, formatting, and hierarchy utilities",
+  "icon": "i-solar:database-bold-duotone",
+  "category": "utilities",
+  "order": 10,
+  "tags": ["data", "dataset", "filter", "formatter", "hierarchy", "pipeline"]
+}

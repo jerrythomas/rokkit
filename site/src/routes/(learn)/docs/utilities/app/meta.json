@@ -1,0 +1,8 @@
+{
+  "title": "App",
+  "description": "ThemeSwitcherToggle and TableOfContents app-level components",
+  "icon": "i-solar:widget-bold-duotone",
+  "category": "utilities",
+  "order": 12,
+  "tags": ["app", "ThemeSwitcherToggle", "TableOfContents", "theme", "navigation"]
+}
