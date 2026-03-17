@@ -133,13 +133,13 @@ Verify that `<body>` is on its own line in `src/app.html`. The script is injecte
 |---------|-------------|
 | `@rokkit/ui` | Main UI components (30+ components) |
 | `@rokkit/forms` | Dynamic form generation from JSON schema |
-| `@rokkit/states` | State management (ProxyItem, ProxyTree, Wrapper, ListController, NestedController) |
+| `@rokkit/states` | State management (ProxyItem, LazyProxyItem, ProxyTree, Wrapper, LazyWrapper, ListController, TableController, vibe, messages, watchMedia) |
 | `@rokkit/actions` | Svelte actions (navigable, hoverLift, magnetic, ripple) |
 | `@rokkit/core` | Core utilities and field mapping |
 | `@rokkit/data` | Data manipulation utilities |
 | `@rokkit/themes` | CSS themes (rokkit, minimal, material) |
 | `@rokkit/unocss` | UnoCSS preset (`presetRokkit`) |
-| `@rokkit/app` | App-level UI chrome (ThemeSwitcher, TableOfContents) |
+| `@rokkit/app` | App-level UI chrome (ThemeSwitcherToggle, TableOfContents) |
 | `@rokkit/icons` | Icon system with Iconify integration |
 
 Package reference: [packages/](/llms/packages/)
@@ -184,7 +184,7 @@ Map any data structure without transforming data:
 <body
   data-style="rokkit"         <!-- visual personality: rokkit | material | minimal -->
   data-mode="dark"            <!-- light | dark -->
-  data-density="comfortable"  <!-- compact | default | comfortable -->
+  data-density="comfortable"  <!-- compact | default | comfortable — planned; not yet applied by theme CSS, no visual effect without custom CSS -->
 >
 ```
 
@@ -291,14 +291,14 @@ Utility class pattern: `{prefix}-{role}-z{n}`
 
 - [Menu](/llms/components/dropdown.txt) — dropdown menu with grouped options
 - [Toolbar](/llms/components/toolbar.txt) — horizontal action bar with sections
-- [FloatingActions](/llms/components/floating-actions.txt) — floating action button (FAB)
+- [FloatingAction](/llms/components/floating-actions.txt) — floating action button (FAB)
 
 ### Form Inputs
 
 - [Form](/llms/components/form.txt) — schema-driven dynamic form
-- [CheckBox](/llms/components/checkbox.txt) — checkbox input
+- [CheckBox](/llms/components/checkbox.txt) — checkbox input (rendered by `@rokkit/forms`; not directly importable from `@rokkit/ui`)
 - [Switch](/llms/components/switch.txt) — boolean on/off toggle
-- [RadioGroup](/llms/components/radiogroup.txt) — radio button group
+- [RadioGroup](/llms/components/radiogroup.txt) — radio button group (rendered by `@rokkit/forms`; not directly importable from `@rokkit/ui`)
 - [Range](/llms/components/range.txt) — range slider
 - [Rating](/llms/components/rating.txt) — star rating input
 - [SearchFilter](/llms/components/search-filter.txt) — structured filter parser
