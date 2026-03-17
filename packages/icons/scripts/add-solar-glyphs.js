@@ -1,10 +1,11 @@
 // packages/icons/scripts/add-solar-glyphs.js
 import solar from '@iconify-json/solar/icons.json' with { type: 'json' }
-import { writeFileSync } from 'fs'
+import { writeFileSync, mkdirSync } from 'fs'
 import { resolve } from 'path'
 import glyphMap from './glyph-map.json' with { type: 'json' }
 
 const OUT = resolve('src/glyph')
+mkdirSync(OUT, { recursive: true })
 
 // duotone is default (differs from auth icons which use bold as default)
 const VARIANTS = [
