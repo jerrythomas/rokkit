@@ -35,7 +35,7 @@
  * signals stable so $derived computations track them correctly.
  */
 
-import { BASE_FIELDS, normalizeFields } from '@rokkit/core'
+import { BASE_FIELDS } from '@rokkit/core'
 export { BASE_FIELDS }
 
 // Auto-increment counter for generating stable unique IDs.
@@ -93,7 +93,7 @@ export class ProxyItem {
 	 * @param {number} [level]  Nesting depth (1 = root)
 	 */
 	constructor(raw, fields = {}, key = '', level = 0) {
-		this.#fields = { ...BASE_FIELDS, ...normalizeFields(fields) }
+		this.#fields = { ...BASE_FIELDS, ...(fields && typeof fields === 'object' ? fields : {}) }
 		this.#raw = raw
 		this.#key = key
 		this.#level = level

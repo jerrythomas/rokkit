@@ -1,6 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
 import { ProxyItem, LazyProxyItem, BASE_FIELDS } from '../src/proxy-item.svelte.js'
-import { normalizeFields } from '@rokkit/core'
 import { flushSync } from 'svelte'
 
 describe('BASE_FIELDS', () => {
@@ -35,43 +34,6 @@ describe('BASE_FIELDS', () => {
 	})
 })
 
-describe('normalizeFields', () => {
-	it('should pass through text key unchanged (no longer a legacy key)', () => {
-		expect(normalizeFields({ text: 'name' })).toEqual({ text: 'name' })
-	})
-
-	it('should pass through non-legacy keys unchanged', () => {
-		expect(normalizeFields({ icon: 'myicon' })).toEqual({ icon: 'myicon' })
-	})
-
-	it('should return empty object for null', () => {
-		expect(normalizeFields(null)).toEqual({})
-	})
-
-	it('should return empty object for undefined', () => {
-		expect(normalizeFields(undefined)).toEqual({})
-	})
-
-	it('should remap combined legacy and non-legacy keys', () => {
-		expect(normalizeFields({ text: 'name', description: 'desc', icon: 'x' })).toEqual({
-			text: 'name',
-			subtext: 'desc',
-			icon: 'x'
-		})
-	})
-
-	it('should remap all legacy keys (text is no longer legacy)', () => {
-		expect(
-			normalizeFields({ text: 'a', description: 'b', title: 'c', image: 'd', target: 'e' })
-		).toEqual({
-			text: 'a',
-			subtext: 'b',
-			tooltip: 'c',
-			avatar: 'd',
-			hrefTarget: 'e'
-		})
-	})
-})
 
 describe('ProxyItem', () => {
 	describe('id', () => {

@@ -14,7 +14,7 @@
  *   expansion or children change anywhere in the tree.
  */
 
-import { BASE_FIELDS, normalizeFields } from '@rokkit/core'
+import { BASE_FIELDS } from '@rokkit/core'
 import { SvelteMap } from 'svelte/reactivity'
 import { ProxyItem } from './proxy-item.svelte.js'
 
@@ -129,7 +129,7 @@ export class ProxyTree {
 	 * @param {{ createProxy?: (raw: *, fields: object, key: string, level: number) => ProxyItem }} [options]
 	 */
 	constructor(items = [], fields = {}, options = {}) {
-		this.#fields = { ...BASE_FIELDS, ...normalizeFields(fields) }
+		this.#fields = { ...BASE_FIELDS, ...(fields && typeof fields === 'object' ? fields : {}) }
 		this.#factory = this.#resolveFactory(options.createProxy)
 		this.#rootProxies = (items ?? []).map((raw, i) =>
 			this.#factory(raw, this.#fields, String(i), 1)

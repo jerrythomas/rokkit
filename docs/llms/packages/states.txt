@@ -493,5 +493,5 @@ import { watchMedia, defaultBreakpoints }        from '@rokkit/states'
 ## Related packages
 
 - [@rokkit/ui](/llms/packages/ui.txt) — components that consume these state primitives
-- [@rokkit/core](/llms/packages/core.txt) — BASE_FIELDS, FieldMapper, normalizeFields
+- [@rokkit/core](/llms/packages/core.txt) — BASE_FIELDS, FieldMapper
 - [@rokkit/actions](/llms/packages/actions.txt) — `navigator` action that drives Wrapper/ListController

@@ -23,7 +23,6 @@ describe('@rokkit/core', () => {
 			'GROUP_SNIPPET',
 			'DEFAULT_FIELDS',
 			'BASE_FIELDS',
-			'normalizeFields',
 			'DEFAULT_ICONS',
 			'DEFAULT_OPTIONS',
 			'DEFAULT_KEYMAP',

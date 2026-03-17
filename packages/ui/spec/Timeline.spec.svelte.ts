@@ -110,7 +110,7 @@ describe('Timeline', () => {
 
 	it('supports field mapping', () => {
 		const items = [{ title: 'Mapped', summary: 'Mapped desc' }]
-		const fields = { label: 'title', description: 'summary' }
+		const fields = { label: 'title', subtext: 'summary' }
 		const { container } = render(Timeline, { items, fields })
 		expect(container.querySelector('[data-timeline-title]')?.textContent).toBe('Mapped')
 		expect(container.querySelector('[data-timeline-description]')?.textContent).toBe('Mapped desc')

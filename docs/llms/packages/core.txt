@@ -55,16 +55,6 @@ import { BASE_FIELDS } from '@rokkit/core'
 
 Legacy mapping (used by `FieldMapper` and older `ListController`-based code). Prefer `BASE_FIELDS` for new work.
 
-### `normalizeFields(fields)`
-
-Converts legacy field-override keys to their `BASE_FIELDS` equivalents. Legacy keys: `description` → `subtext`, `title` → `tooltip`, `image` → `avatar`, `target` → `hrefTarget`.
-
-```js
-import { normalizeFields } from '@rokkit/core'
-normalizeFields({ image: 'avatar_url', description: 'bio' })
-// { avatar: 'avatar_url', subtext: 'bio' }
-```
-
 ### `getNestedFields(fields)`
 
 Returns a merged field mapping for child nodes in a nested data structure.
@@ -248,5 +238,5 @@ Convert a flat array of `'group-key'` icon names into the nested `StateIcons` ob
 ## Import
 
 ```js
-import { FieldMapper, BASE_FIELDS, normalizeFields, Theme, DEFAULT_STATE_ICONS } from '@rokkit/core'
+import { FieldMapper, BASE_FIELDS, Theme, DEFAULT_STATE_ICONS } from '@rokkit/core'
 ```

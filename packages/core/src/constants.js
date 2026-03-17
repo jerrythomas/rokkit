@@ -67,28 +67,6 @@ export const BASE_FIELDS = {
 	selected: 'selected'
 }
 
-const LEGACY_KEY_MAP = {
-	description: 'subtext',
-	title: 'tooltip',
-	image: 'avatar',
-	target: 'hrefTarget'
-}
-
-/**
- * Remap legacy field-override keys to their BASE_FIELDS semantic equivalents.
- * e.g. { text: 'name' } → { label: 'name' }
- *
- * @param {Record<string, string> | null | undefined} fields
- * @returns {Record<string, string>}
- */
-export function normalizeFields(fields) {
-	if (!fields || typeof fields !== 'object') return {}
-	const result = {}
-	for (const [key, value] of Object.entries(fields)) {
-		result[LEGACY_KEY_MAP[key] ?? key] = value
-	}
-	return result
-}
 
 export const DEFAULT_ICONS = [
 	'accordion-opened',

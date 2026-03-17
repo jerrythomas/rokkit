@@ -11,15 +11,15 @@ import type { Snippet } from 'svelte'
 // =============================================================================
 
 export interface TimelineFields {
-	text?: string
+	label?: string
 	icon?: string
-	description?: string
+	subtext?: string
 }
 
 export const defaultTimelineFields: Required<TimelineFields> = {
-	text: 'text',
+	label: 'label',
 	icon: 'icon',
-	description: 'description'
+	subtext: 'description'
 }
 
 // =============================================================================
