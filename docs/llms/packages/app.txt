@@ -1,0 +1,210 @@
+# Rokkit App Package (@rokkit/app)
+
+> Application-level components for SvelteKit apps: theme switching and on-page navigation.
+
+The `@rokkit/app` package provides higher-level components that sit above the core UI library. They integrate with `@rokkit/states` (the `vibe` store) and `@rokkit/actions`, and are designed to be dropped directly into SvelteKit layouts.
+
+## Exports
+
+```javascript
+import { ThemeSwitcherToggle, TableOfContents } from '@rokkit/app'
+import { ColorModeManager, resolveMode } from '@rokkit/app'
+```
+
+---
+
+## ThemeSwitcherToggle
+
+A compact toggle button for switching between `system`, `light`, and `dark` color modes. Reads and writes the `vibe` store from `@rokkit/states` via `ColorModeManager`. Renders as a `Toggle` component from `@rokkit/ui`.
+
+### Quick Start
+
+```svelte
+<script>
+  import { ThemeSwitcherToggle } from '@rokkit/app'
+</script>
+
+<ThemeSwitcherToggle />
+```
+
+No props required — it connects to the `vibe` store automatically.
+
+### How It Works
+
+- Internally uses `ColorModeManager` which wraps the `vibe` store
+- On mount, starts listening to OS-level `prefers-color-scheme` changes via `manager.listen()`
+- `manager.mode` is a `$derived` value — reads the current mode from `vibe`, writes back on change
+- The `vibe` store is the source of truth; all theme-aware components in the app react to it
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `modes` | `ColorMode[]` | `['system', 'light', 'dark']` | Which modes to include in the toggle |
+| `includeSystem` | `boolean` | `true` | Shortcut to exclude the `'system'` option |
+| `icons` | `{ system?: string, light?: string, dark?: string }` | — | Override icon CSS classes per mode |
+| `labels` | `{ system?: string, light?: string, dark?: string }` | — | Override display labels per mode |
+| `showLabels` | `boolean` | `false` | Show text labels alongside icons |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'sm'` | Size variant |
+| `disabled` | `boolean` | `false` | Disable the toggle |
+| `class` | `string` | `''` | Additional CSS classes |
+| `item` | `ToggleItemSnippet` | — | Custom snippet for rendering each toggle option |
+| `onchange` | `(mode: ColorMode) => void` | — | Called when the mode changes |
+
+### `ColorMode` type
+
+```typescript
+type ColorMode = 'system' | 'light' | 'dark'
+```
+
+### Two-mode toggle (no system)
+
+```svelte
+<ThemeSwitcherToggle :includeSystem={false} />
+<!-- or equivalently -->
+<ThemeSwitcherToggle modes={['light', 'dark']} />
+```
+
+### With labels
+
+```svelte
+<ThemeSwitcherToggle showLabels size="md" />
+```
+
+### Custom icons
+
+```svelte
+<ThemeSwitcherToggle
+  icons={{ system: 'i-lucide:monitor', light: 'i-lucide:sun', dark: 'i-lucide:moon' }}
+/>
+```
+
+### Custom item snippet
+
+```svelte
+<ThemeSwitcherToggle>
+  {#snippet item(option, active)}
+    <span class={option.icon}></span>
+    {#if active}<span class="sr-only">{option.text}</span>{/if}
+  {/snippet}
+</ThemeSwitcherToggle>
+```
+
+---
+
+## TableOfContents
+
+An on-page navigation component that scans the DOM for `h2` and `h3` headings inside a scrollable container and renders a linked list. Tracks which heading is currently in view using `IntersectionObserver`. Keyboard navigation is provided via the `navigable` action from `@rokkit/actions`.
+
+The component is **invisible when there is only one or zero headings** — it only renders when `headings.length > 1`.
+
+### Quick Start (SvelteKit layout)
+
+```svelte
+<script>
+  import { TableOfContents } from '@rokkit/app'
+  import { afterNavigate } from '$app/navigation'
+
+  let toc = $state(null)
+  afterNavigate(() => toc?.rescan())
+</script>
+
+<TableOfContents bind:this={toc} container="main-content" />
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `container` | `string` | `'main-content'` | `id` of the scrollable element to scan for headings |
+
+### Exported Method: `rescan()`
+
+```typescript
+rescan(): void
+```
+
+Re-scans the container for headings, resets active state, and reconnects the `IntersectionObserver`. **Must be called from `afterNavigate`** in SvelteKit layouts when page content changes — the DOM is updated after navigation but the component doesn't automatically know the headings changed.
+
+```svelte
+afterNavigate(() => toc?.rescan())
+```
+
+The optional chaining (`?.`) is important: `toc` may be `null` before the component mounts.
+
+### How It Works
+
+1. On `onMount`, calls `scan()` to query `h2`/`h3` elements inside `#container`
+2. Auto-assigns `id` attributes to headings that don't have one (slugified from text content)
+3. Sets up an `IntersectionObserver` with `rootMargin: '-5% 0px -70% 0px'` to detect the topmost visible heading
+4. Clicking or keyboard-selecting a heading calls `scrollToHeading()` — smooth scrolls the container (not `window`)
+5. On navigation, `rescan()` disconnects the old observer, re-scans the new DOM, and creates a fresh observer
+
+### Keyboard Navigation
+
+Uses `use:navigable` from `@rokkit/actions`. The `navigable` action fires `onprevious`, `onnext`, and `onselect` events on the `<nav>` element:
+
+| Key | Action |
+|-----|--------|
+| `ArrowUp` | Focus previous heading |
+| `ArrowDown` | Focus next heading |
+| `Enter` / `Space` | Scroll to focused heading |
+
+Focus management uses `tabindex` roving: only the focused item has `tabindex="0"`, all others have `tabindex="-1"`.
+
+### Data Attributes (for CSS theming)
+
+| Attribute | Element | Description |
+|-----------|---------|-------------|
+| `data-toc` | `<nav>` | Root marker |
+| `data-toc-label` | `<p>` | "On this page" heading text |
+| `data-toc-list` | `<ul>` | The heading list |
+| `data-toc-item` | `<button>` | Individual heading link |
+| `data-toc-level` | `<button>` | Heading level — `'h2'` or `'h3'` |
+| `data-toc-index` | `<button>` | Zero-based index in the list |
+| `data-toc-active` | `<button>` | Present (empty string) when this heading is in view |
+| `data-toc-focused` | `<button>` | Present when this item has roving focus |
+
+Use `data-toc-level` to indent `h3` entries relative to `h2`:
+
+```css
+[data-toc-item][data-toc-level="h3"] {
+  padding-left: 1rem;
+  font-size: 0.875rem;
+}
+[data-toc-item][data-toc-active] {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+```
+
+---
+
+## ColorModeManager (utility)
+
+```typescript
+import { ColorModeManager, resolveMode, type ColorMode, type ResolvedMode } from '@rokkit/app'
+```
+
+Low-level utility used internally by `ThemeSwitcherToggle`. Wraps a Svelte store to add OS preference detection.
+
+| Export | Description |
+|--------|-------------|
+| `ColorModeManager` | Class — wraps a store, exposes `mode` ($state), `listen()` |
+| `resolveMode(mode)` | Resolves `'system'` → `'light'` or `'dark'` based on `prefers-color-scheme` |
+| `ColorMode` | Type: `'system' \| 'light' \| 'dark'` |
+| `ResolvedMode` | Type: `'light' \| 'dark'` |
+
+---
+
+## Import
+
+```javascript
+import { ThemeSwitcherToggle, TableOfContents } from '@rokkit/app'
+```
+
+## Related
+
+- [@rokkit/states](/llms/packages/states.txt) — `vibe` store and theme primitives
+- [@rokkit/actions](/llms/packages/actions.txt) — `navigable` action used by TableOfContents
+- [@rokkit/ui Toggle](/llms/components/toggle.txt) — underlying toggle component used by ThemeSwitcherToggle
