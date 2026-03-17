@@ -84,6 +84,45 @@ export default defineConfig({
 })
 ```
 
+### `src/app.html` missing theme init script
+
+The init script reads saved theme preferences from `localStorage` and applies them to `document.body` before the page renders, preventing a flash-of-unstyled-content (FOUC).
+
+**When it is NOT needed:** if `switcher` is set to `system` in `rokkit.config.js`, the theme follows `prefers-color-scheme` and no script is written or required.
+
+**When it IS needed** (`manual` or `full` switcher): `doctor --fix` injects the script automatically, but only if `<body>` is on its own line. To add it manually, insert the following immediately after the `<body>` tag in `src/app.html`:
+
+For `manual` mode (light/dark toggle only):
+```html
+<body>
+    <script>
+      (function () {
+        try {
+          var t = JSON.parse(localStorage.getItem('rokkit-theme') || '{}')
+          var b = document.body
+          b.dataset.mode = t.mode || 'dark'
+        } catch (e) {}
+      })()
+    </script>
+```
+
+For `full` mode (light/dark + style variants):
+```html
+<body>
+    <script>
+      (function () {
+        try {
+          var t = JSON.parse(localStorage.getItem('rokkit-theme') || '{}')
+          var b = document.body
+          b.dataset.style = t.style || 'rokkit'
+          b.dataset.mode = t.mode || 'dark'
+        } catch (e) {}
+      })()
+    </script>
+```
+
+Replace `'rokkit-theme'` with your `storageKey` value if you changed it in `rokkit.config.js`.
+
 ### Theme init script missing after --fix
 
 Verify that `<body>` is on its own line in `src/app.html`. The script is injected immediately after `<body>`.
