@@ -109,6 +109,7 @@ button[data-list-item] {
   padding-block: 0.25rem;
   font-size: 0.75rem;
   font-weight: 600;
+  text-align: left;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   cursor: pointer;
@@ -136,17 +137,20 @@ button[data-list-item] {
   padding: 0.5rem 1rem;
 }
 
-/* Group item content — inherits font from [data-list-group], label stays inline */
+/* Group item content — icon slightly muted, text stacks label + description */
 [data-list-group] > [data-item-icon] {
   opacity: 0.7;
 }
 
-[data-list-group] > [data-item-text] {
-  display: contents;
-}
-
 [data-list-group] [data-item-label] {
   font-weight: inherit;
+}
+
+[data-list-group] [data-item-description] {
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 400;
+  opacity: 0.8;
 }
 
 /* Expand/collapse chevron — pushed to the right edge */

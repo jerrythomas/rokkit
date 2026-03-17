@@ -1,0 +1,18 @@
+/* TableOfContents — Minimal theme */
+
+[data-style='minimal'] [data-toc] [data-toc-label] {
+  @apply text-surface-z5;
+}
+
+[data-style='minimal'] [data-toc] [data-toc-item] {
+  @apply text-surface-z6;
+}
+
+[data-style='minimal'] [data-toc] [data-toc-item]:hover,
+[data-style='minimal'] [data-toc] [data-toc-item][data-toc-focused] {
+  @apply text-surface-z9 outline-none;
+}
+
+[data-style='minimal'] [data-toc] [data-toc-item][data-toc-active] {
+  @apply text-primary-z7 border-l-primary-z4;
+}

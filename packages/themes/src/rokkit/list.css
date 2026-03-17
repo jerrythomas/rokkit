@@ -33,19 +33,19 @@
   @apply from-surface-z3 to-surface-z2 text-surface-z10 bg-gradient-to-r outline-none;
 }
 
-/* Active state — muted when list not focused */
+/* Active state — muted gradient when list not focused */
 [data-style='rokkit'] [data-list] [data-list-item][data-active='true'] {
-  @apply bg-surface-z2 text-primary-z9 border-l-primary-z5 border-l-2;
+  @apply from-surface-z3 to-surface-z2 text-primary-z9 bg-gradient-to-r;
 }
 
 /* Active state — full gradient when list has focus */
 [data-style='rokkit'] [data-list]:focus-within [data-list-item][data-active='true'] {
-  @apply from-primary-z5 to-secondary-z5 text-primary-z9 border-l-primary-z5 border-l-2 bg-gradient-to-r;
+  @apply from-primary-z5 to-secondary-z5 text-on-primary bg-gradient-to-r;
 }
 
-/* Active + hover — intensified gradient on hover */
+/* Active + hover — same as focus-within gradient */
 [data-style='rokkit'] [data-list] [data-list-item][data-active='true']:hover:not(:disabled) {
-  @apply from-primary-z4 to-primary-z3 bg-gradient-to-r;
+  @apply from-primary-z5 to-secondary-z5 text-on-primary bg-gradient-to-r;
 }
 
 /* =============================================================================
@@ -53,6 +53,7 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-list] [data-list-item] [data-item-icon] {
+  font-size: 1rem;
   @apply text-surface-z5;
 }
 
@@ -68,8 +69,12 @@
 [data-style='rokkit']
   [data-list]:focus-within
   [data-list-item][data-active='true']
+  [data-item-icon],
+[data-style='rokkit']
+  [data-list]
+  [data-list-item][data-active='true']:hover:not(:disabled)
   [data-item-icon] {
-  @apply text-primary-z9;
+  @apply text-on-primary;
 }
 
 /* Item description */
@@ -81,6 +86,17 @@
   @apply text-primary-z7;
 }
 
+[data-style='rokkit']
+  [data-list]:focus-within
+  [data-list-item][data-active='true']
+  [data-item-description],
+[data-style='rokkit']
+  [data-list]
+  [data-list-item][data-active='true']:hover:not(:disabled)
+  [data-item-description] {
+  @apply text-on-primary;
+}
+
 /* Item badge */
 [data-style='rokkit'] [data-list] [data-list-item] [data-item-badge] {
   @apply text-surface-z6 from-surface-z3 to-surface-z2 border-surface-z4 border bg-gradient-to-b;
@@ -90,12 +106,23 @@
   @apply text-primary-z8 from-primary-z3 to-primary-z2 border-primary-z4 border bg-gradient-to-b;
 }
 
+[data-style='rokkit']
+  [data-list]:focus-within
+  [data-list-item][data-active='true']
+  [data-item-badge] {
+  @apply text-on-primary from-primary-z6 to-primary-z5 border-primary-z6;
+}
+
 /* =============================================================================
    Groups
    ============================================================================= */
 
 [data-style='rokkit'] [data-list] [data-list-group] {
   @apply text-surface-z6;
+}
+
+[data-style='rokkit'] [data-list] [data-list-group] [data-item-icon] {
+  font-size: 1rem;
 }
 
 [data-style='rokkit'] [data-list] [data-list-group]:hover:not(:disabled),
