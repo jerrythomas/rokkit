@@ -7,10 +7,13 @@
 	<h2>Available controllers</h2>
 	<ul>
 		<li>
-			<strong>ListController</strong> — flat and grouped list navigation with single/multi-select
+			<strong>ListController</strong> — flat and grouped list navigation with single/multi-select;
+			supports nested tree navigation when used with the <code>navigator</code> action
 		</li>
-		<li><strong>NestedController</strong> — tree navigation with expand/collapse</li>
-		<li><strong>TabularController</strong> — row/column navigation for data tables</li>
+		<li><strong>TableController</strong> — row/column navigation for data tables</li>
 	</ul>
-	<p>Full API reference and examples coming soon.</p>
+	<p>
+		See <a href="/docs/utilities/states">@rokkit/states</a> for full API reference and usage
+		examples.
+	</p>
 </article>
