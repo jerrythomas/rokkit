@@ -1,5 +1,6 @@
 <script>
 	import { Code } from '$lib/components/Story'
+	import cliInit from '../snippets/06-cli-init.sh?raw'
 	import install from '../snippets/00-install.sh?raw'
 	import installAlt from '../snippets/01-install-alt.sh?raw'
 	import themeSetup from '../snippets/02-theme-setup.css?raw'
@@ -14,7 +15,19 @@
 		first data-driven component.
 	</p>
 
-	<h2>Installation</h2>
+	<h2>CLI Setup (Recommended)</h2>
+	<p>
+		The fastest way to set up Rokkit is the CLI. It runs interactive prompts to configure your
+		palette, theme style, and icons, then writes all necessary config files:
+	</p>
+	<Code content={cliInit} language="bash" />
+	<p>
+		This generates: <code>rokkit.config.js</code>, <code>uno.config.js</code>,
+		<code>src/app.css</code>, and <code>src/app.html</code>. See the
+		<a href="/docs/toolchain/cli">CLI reference</a> for all options.
+	</p>
+
+	<h2>Manual Installation</h2>
 	<p>Install Rokkit UI and the default theme:</p>
 	<Code content={install} language="bash" />
 	<p>Or with other package managers:</p>
