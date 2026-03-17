@@ -12,7 +12,7 @@ const VARIANTS = [
 	{ solarSuffix: '-bold-duotone', ourSuffix: '',                 skipDefault: true },
 	{ solarSuffix: '-linear',       ourSuffix: '-outline' },
 	{ solarSuffix: '-bold',         ourSuffix: '-solid' },
-	{ solarSuffix: '-duotone',      ourSuffix: '-duotone-outline' }
+	{ solarSuffix: '-line-duotone', ourSuffix: '-duotone-outline' }
 ]
 
 function iconToSVG(body) {
