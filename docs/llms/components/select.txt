@@ -10,11 +10,11 @@ The Select component provides a dropdown selection interface that adapts to any 
 <script>
   import { Select } from '@rokkit/ui'
 
-  let options = ['Apple', 'Banana', 'Cherry']
+  let items = ['Apple', 'Banana', 'Cherry']
   let value = $state(null)
 </script>
 
-<Select {options} bind:value placeholder="Choose a fruit..." />
+<Select {items} bind:value placeholder="Choose a fruit..." />
 ```
 
 ## Object Options with Field Mapping
@@ -33,14 +33,14 @@ The Select component provides a dropdown selection interface that adapts to any 
   let value = $state(null)
 </script>
 
-<Select options={countries} {fields} bind:value placeholder="Select country..." />
+<Select items={countries} {fields} bind:value placeholder="Select country..." />
 ```
 
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `options` | `SelectItem[]` | `[]` | Options array |
+| `items` | `SelectItem[]` | `[]` | Options array |
 | `fields` | `SelectFields` | defaults | Field mapping |
 | `value` | `unknown` | — | Selected value — use `bind:value` |
 | `selected` | `SelectItem|null` | — | Selected item reference — use `bind:selected` |
@@ -74,7 +74,7 @@ Use the `children` field to create option groups:
 
 ```svelte
 <script>
-  const options = [
+  const items = [
     { text: 'Fruits', children: [
         { text: 'Apple',  value: 'apple' },
         { text: 'Banana', value: 'banana' }
@@ -86,13 +86,13 @@ Use the `children` field to create option groups:
   let value = $state(null)
 </script>
 
-<Select {options} bind:value />
+<Select {items} bind:value />
 ```
 
 ## Typeahead Filter
 
 ```svelte
-<Select options={countries} bind:value filterable filterPlaceholder="Search countries..." />
+<Select items={countries} bind:value filterable filterPlaceholder="Search countries..." />
 ```
 
 ## Callbacks
@@ -106,7 +106,7 @@ Use the `children` field to create option groups:
 ### Custom Selected Value Display
 
 ```svelte
-<Select {options} bind:value>
+<Select {items} bind:value>
   {#snippet selectedValue(item, fields)}
     {#if item}
       <span class={item.flag}></span>
@@ -121,7 +121,7 @@ Use the `children` field to create option groups:
 ### Custom Option Item
 
 ```svelte
-<Select {options} bind:value>
+<Select {items} bind:value>
   {#snippet item(data, fields, handlers, isActive)}
     <button onclick={handlers.onclick} onkeydown={handlers.onkeydown}>
       <span class={data.flag}></span>
@@ -135,7 +135,7 @@ Use the `children` field to create option groups:
 ## State Icons
 
 ```svelte
-<Select {options} bind:value
+<Select {items} bind:value
   icons={{
     opened: 'i-lucide:chevron-up',
     closed: 'i-lucide:chevron-down',
@@ -175,7 +175,7 @@ import { Select } from '@rokkit/ui'
 
 ```typescript
 interface SelectProps {
-  options?: SelectItem[]
+  items?: SelectItem[]
   fields?: SelectFields
   value?: unknown
   selected?: SelectItem | null
