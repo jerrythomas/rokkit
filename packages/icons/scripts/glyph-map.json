@@ -91,5 +91,23 @@
   { "name": "switch",         "solar": "transfer-horizontal",        "skipDefault": true },
   { "name": "table",          "solar": "database",                   "skipDefault": true },
   { "name": "tabs",           "solar": "layers-minimalistic",        "skipDefault": true },
-  { "name": "tree",           "solar": "layers",                     "skipDefault": true }
+  { "name": "tree",           "solar": "layers",                     "skipDefault": true },
+
+  { "name": "stars",               "solar": "stars" },
+  { "name": "bug",                 "solar": "bug" },
+  { "name": "upload-target",       "solar": "upload" },
+  { "name": "search-filter",       "solar": "filter" },
+  { "name": "forms",               "solar": "document" },
+  { "name": "toolbar",             "solar": "layers-minimalistic" },
+  { "name": "timeline",            "solar": "history" },
+  { "name": "floating-action",     "solar": "add-square" },
+  { "name": "floating-navigation", "solar": "sidebar-minimalistic" },
+  { "name": "breadcrumbs",         "solar": "alt-arrow-right" },
+  { "name": "multi-select",        "solar": "users-group-two-rounded" },
+  { "name": "toggle",              "solar": "transfer-horizontal" },
+  { "name": "grid",                "solar": "graph-new" },
+  { "name": "palette-manager",     "solar": "palette" },
+  { "name": "upload-progress",     "solar": "hourglass" },
+  { "name": "lazy-tree",           "solar": "layers" },
+  { "name": "menu",                "solar": "hamburger-menu" }
 ]
