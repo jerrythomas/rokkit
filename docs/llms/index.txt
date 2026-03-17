@@ -1,8 +1,92 @@
-# Rokkit UI Component Library
+# Rokkit — LLM Reference Index
 
 > Data-driven, accessible UI components for Svelte 5
 
-Rokkit is a component library built around the principle that **data should drive the interface**. Components adapt to any data structure via field mapping — no transformation required. All selection components share a consistent API: `options`/`items`, `value`, `fields`, callbacks.
+## Quick Setup
+
+**Always use the CLI — manual setup leads to configuration errors.**
+
+1. Create a SvelteKit project:
+   ```bash
+   npm create svelte@latest myapp
+   cd myapp
+   npm install
+   ```
+
+2. Initialize Rokkit:
+   ```bash
+   npx @rokkit/cli@latest init
+   ```
+
+   The `init` command is interactive. It prompts for:
+   - **Color palette:** `default` (orange/pink/sky) | `vibrant` (blue/purple/sky) | `seaweed` (sky/green/blue) | `custom`
+   - If `custom`: primary, secondary, accent, surface colors (Tailwind palette names, e.g. `orange`)
+   - **Icon collection:** Rokkit built-in | Rokkit + custom collection
+   - If custom: path to custom icon collection JSON
+   - **Theme styles** (multi-select, min 1): `rokkit` | `minimal` | `material`
+   - **Theme switching:** `system` (prefers-color-scheme) | `manual` (light/dark toggle) | `full` (light/dark + style variants)
+
+   Files written: `rokkit.config.js`, `uno.config.js`, `src/app.css`, `src/app.html`
+
+   See [cli.txt](/llms/cli.txt) for full CLI reference.
+
+## Verify & Fix
+
+After setup, or when things seem broken:
+
+```bash
+npx @rokkit/cli@latest doctor
+```
+
+Runs 4 checks:
+- `rokkit.config.js` exists
+- `uno.config.js` uses `presetRokkit()`
+- `src/app.css` has theme imports
+- `src/app.html` has theme init script
+
+Auto-fix 3 of 4 checks:
+```bash
+npx @rokkit/cli@latest doctor --fix
+```
+
+Exit codes: `0` = all pass, `1` = any failures.
+
+## Troubleshooting
+
+### `rokkit.config.js` missing
+
+`doctor --fix` can auto-generate an empty config. If running manually:
+```js
+// rokkit.config.js — minimal valid config
+export default {}
+```
+
+### `app.css` missing theme imports
+
+Prepend to `src/app.css`:
+```css
+@import '@unocss/reset/tailwind.css';
+@import '@rokkit/themes/dist/base';
+@import '@rokkit/themes/dist/rokkit';  /* also minimal, material if needed */
+```
+
+### `uno.config.js` does not use `presetRokkit()` (not auto-fixable)
+
+`doctor --fix` cannot overwrite an existing `uno.config.js`. Add the preset manually:
+
+```js
+// uno.config.js
+import { defineConfig } from 'unocss'
+import { presetRokkit } from '@rokkit/unocss'
+
+export default defineConfig({
+  presets: [presetRokkit()]
+})
+```
+
+### Theme init script missing after --fix
+
+Verify that `<body>` is on its own line in `src/app.html`. The script is injected immediately after `<body>`.
 
 ## Packages
 
@@ -11,28 +95,15 @@ Rokkit is a component library built around the principle that **data should driv
 | `@rokkit/ui` | Main UI components (30+ components) |
 | `@rokkit/forms` | Dynamic form generation from JSON schema |
 | `@rokkit/states` | State management (ProxyItem, ProxyTree, Wrapper, ListController, NestedController) |
-| `@rokkit/actions` | Svelte actions (navigator, hoverLift, magnetic, ripple) |
+| `@rokkit/actions` | Svelte actions (navigable, hoverLift, magnetic, ripple) |
 | `@rokkit/core` | Core utilities and field mapping |
 | `@rokkit/data` | Data manipulation utilities |
 | `@rokkit/themes` | CSS themes (rokkit, minimal, material) |
+| `@rokkit/unocss` | UnoCSS preset (`presetRokkit`) |
+| `@rokkit/app` | App-level UI chrome (ThemeSwitcher, TableOfContents) |
 | `@rokkit/icons` | Icon system with Iconify integration |
 
-## Quick Start
-
-```svelte
-<script>
-  import { List, Select, Table } from '@rokkit/ui'
-
-  const users = [
-    { id: 1, name: 'Alice', role: 'Admin' },
-    { id: 2, name: 'Bob',   role: 'User' }
-  ]
-
-  let value = $state(null)
-</script>
-
-<List items={users} bind:value fields={{ text: 'name' }} />
-```
+Package reference: [packages/](/llms/packages/)
 
 ## Standard API Pattern
 
@@ -40,10 +111,10 @@ Most selection components share this pattern:
 
 ```svelte
 <Component
-  options={data}           <!-- or items= -->
-  bind:value               <!-- selected value (bindable) -->
-  fields={{ text: 'name' }} <!-- map data fields to component expectations -->
-  onchange={(v, item) => {}} <!-- selection callback -->
+  options={data}              <!-- or items= -->
+  bind:value                  <!-- selected value (bindable) -->
+  fields={{ text: 'name' }}   <!-- map data fields to component expectations -->
+  onchange={(v, item) => {}}  <!-- selection callback -->
 />
 ```
 
@@ -53,29 +124,117 @@ Map any data structure without transforming data:
 
 ```svelte
 <script>
-  // Your data uses different field names
   const users = [
     { userId: 1, fullName: 'Alice', avatarUrl: '/alice.jpg' }
   ]
-
-  // Tell the component where to find each value
   const fields = {
-    value: 'userId',     // what to emit on selection
-    text: 'fullName',    // what to display
-    icon: 'avatarUrl'    // icon/image
+    value: 'userId',
+    text: 'fullName',
+    icon: 'avatarUrl'
   }
 </script>
 
 <Select options={users} {fields} bind:value />
 ```
 
-## Themes
+## Theming
+
+### Data Attributes
 
 ```html
-<html data-theme="rokkit" data-mode="dark">
+<body
+  data-style="rokkit"         <!-- visual personality: rokkit | material | minimal -->
+  data-mode="dark"            <!-- light | dark -->
+  data-density="comfortable"  <!-- compact | default | comfortable -->
+>
 ```
 
-Available themes: `rokkit` | `minimal` | `material`
+`data-palette` sets the active color skin (e.g. `skin-vibrant-orange`). Managed reactively by the `vibe` store (`@rokkit/states`) and `themable` action (`@rokkit/actions`).
+
+### UnoCSS Utility Classes (primary authoring model)
+
+Do NOT use CSS variables in `<style>` blocks — they are not theme-aware. Use utility classes:
+
+```svelte
+<!-- ✅ Correct: theme-aware, responds to data-mode switching -->
+<div class="bg-surface-z1 border border-surface-z3 text-surface-z8 rounded-lg p-4">
+  <h2 class="text-primary-z6 font-semibold">Title</h2>
+  <p class="text-surface-z5 text-sm">Subtitle</p>
+</div>
+
+<!-- ❌ Wrong: not theme-aware -->
+<div style="background: var(--color-surface-z1)">...</div>
+```
+
+### Z-Scale Color System
+
+Each semantic role (`surface`, `primary`, `secondary`, `accent`, `success`, `warning`, `error`, `info`) has 10 z-levels:
+
+| Level | Light      | Dark       | Use                        |
+|-------|-----------|-----------|----------------------------|
+| `z1`  | shade-50  | shade-950 | Page background            |
+| `z2`  | shade-100 | shade-900 | Card / panel background    |
+| `z3`  | shade-200 | shade-800 | Subtle borders, dividers   |
+| `z4`  | shade-300 | shade-700 | Input backgrounds          |
+| `z5`  | shade-500 | shade-600 | Muted text, placeholders   |
+| `z6`  | shade-600 | shade-500 | Interactive / link color   |
+| `z7`  | shade-700 | shade-300 | Secondary text             |
+| `z8`  | shade-800 | shade-200 | Body text                  |
+| `z9`  | shade-900 | shade-100 | Primary text               |
+| `z10` | shade-950 | shade-50  | Maximum contrast           |
+
+Utility class pattern: `{prefix}-{role}-z{n}`
+
+| Prefix    | Example             | Use             |
+|-----------|---------------------|-----------------|
+| `bg-`     | `bg-surface-z1`     | Background      |
+| `text-`   | `text-surface-z8`   | Text color      |
+| `border-` | `border-surface-z3` | Border color    |
+
+### Common Patterns
+
+```svelte
+<!-- Page background -->
+<div class="bg-surface-z1 text-surface-z8">
+
+<!-- Card -->
+<div class="bg-surface-z1 border border-surface-z3 rounded-lg p-4">
+
+<!-- Section header -->
+<h2 class="text-xs font-semibold text-surface-z5 uppercase tracking-wider">
+
+<!-- Primary link -->
+<a class="text-primary-z6 hover:text-primary-z7 transition-colors">
+
+<!-- Input field -->
+<input class="bg-surface-z2 border border-surface-z3 text-surface-z8 focus:border-primary-z5 focus:outline-none rounded px-3 py-2">
+
+<!-- Status indicators -->
+<span class="text-warning-z6">Stale</span>
+<span class="text-success-z6">Active</span>
+<span class="text-error-z6">Failed</span>
+
+<!-- Table row separator -->
+<tr class="border-b border-surface-z2 last:border-b-0">
+  <td class="px-4 py-2.5 text-surface-z7">...</td>
+</tr>
+```
+
+### Inline styles: only for dynamic computed values
+
+```svelte
+<!-- ✅ OK: computed in JS, can't be a static class -->
+<div style="background: {color}22; color: {color}">
+
+<!-- ❌ Not OK: use utility class instead -->
+<div style="background: var(--color-surface-z1)">
+```
+
+## Reference
+
+- [cli.txt](/llms/cli.txt) — CLI reference (`rokkit init`, `rokkit doctor`, icon tools)
+- [packages/](/llms/packages/) — per-package documentation
+- [components/](/llms/components/) — component reference (30+ components)
 
 ## Component Index
 
