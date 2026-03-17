@@ -3,9 +3,9 @@
 	import { Tabs } from '@rokkit/ui'
 
 	const tabs = [
-		{ label: 'Profile', value: 'profile', icon: 'i-solar:user-bold-duotone' },
-		{ label: 'Team', value: 'team', icon: 'i-solar:users-group-two-rounded-bold-duotone' },
-		{ label: 'Appearance', value: 'appearance', icon: 'i-solar:palette-bold-duotone' }
+		{ label: 'Profile', value: 'profile', icon: 'i-glyph:user' },
+		{ label: 'Team', value: 'team', icon: 'i-glyph:users-group-two-rounded' },
+		{ label: 'Appearance', value: 'appearance', icon: 'i-glyph:palette' }
 	]
 
 	let activeTab = $state('profile')
@@ -43,7 +43,7 @@
 				data-card
 				class="flex min-h-40 flex-col items-center justify-center gap-2 p-6 text-center"
 			>
-				<span class="i-solar:table-bold-duotone text-surface-z3 text-3xl" aria-hidden="true"></span>
+				<span class="i-glyph:table text-surface-z3 text-3xl" aria-hidden="true"></span>
 				<p class="text-surface-z5 text-sm">Team members DataTable</p>
 				<p class="text-surface-z4 text-xs">DataTable component coming soon</p>
 			</div>

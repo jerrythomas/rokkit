@@ -96,7 +96,7 @@
 				aria-label="Toggle navigation"
 				aria-expanded={sidebarOpen}
 			>
-				<span class="i-solar:hamburger-menu-bold-duotone inline-block" aria-hidden="true"></span>
+				<span class="i-glyph:hamburger-menu inline-block" aria-hidden="true"></span>
 			</button>
 			<a href="/" class="flex items-center gap-2 no-underline">
 				{#if media.small.current}
@@ -116,7 +116,7 @@
 				class="text-surface-z5 hover:text-surface-z8 hover:bg-surface-z2 flex h-9 items-center gap-1.5 rounded-md px-3 text-sm no-underline"
 				title="Preview App — Nexus"
 			>
-				<span class="i-solar:atom-bold-duotone inline-block text-base" aria-hidden="true"></span>
+				<span class="i-glyph:atom inline-block text-base" aria-hidden="true"></span>
 				<span class="hidden sm:inline">Preview</span>
 			</a>
 			<a
@@ -165,7 +165,7 @@
 									title="Open in Playground"
 									aria-label="Open in Playground"
 								>
-									<span class="i-solar:gamepad-bold-duotone inline-block text-lg" aria-hidden="true"
+									<span class="i-glyph:gamepad inline-block text-lg" aria-hidden="true"
 									></span>
 								</a>
 							{/if}
@@ -179,7 +179,7 @@
 									aria-label="View llms.txt"
 								>
 									<span
-										class="i-solar:file-text-bold-duotone inline-block text-lg"
+										class="i-glyph:file-text inline-block text-lg"
 										aria-hidden="true"
 									></span>
 								</a>

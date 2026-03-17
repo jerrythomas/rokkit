@@ -22,13 +22,13 @@
 
 	<div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
 		<div data-card class="flex min-h-52 flex-col items-center justify-center gap-2 p-4 text-center">
-			<span class="i-solar:chart-2-bold-duotone text-surface-z3 text-3xl" aria-hidden="true"></span>
+			<span class="i-glyph:chart-2 text-surface-z3 text-3xl" aria-hidden="true"></span>
 			<p class="text-surface-z5 text-sm">Task completion — Bar Chart</p>
 			<p class="text-surface-z4 text-xs">Chart integration in progress</p>
 		</div>
 
 		<div data-card class="flex min-h-52 flex-col items-center justify-center gap-2 p-4 text-center">
-			<span class="i-solar:graph-new-bold-duotone text-surface-z3 text-3xl" aria-hidden="true"
+			<span class="i-glyph:graph-new text-surface-z3 text-3xl" aria-hidden="true"
 			></span>
 			<p class="text-surface-z5 text-sm">Velocity over time — Line Chart</p>
 			<p class="text-surface-z4 text-xs">Chart integration in progress</p>
@@ -36,7 +36,7 @@
 	</div>
 
 	<div data-card class="flex min-h-32 flex-col items-center justify-center gap-2 p-4 text-center">
-		<span class="i-solar:table-bold-duotone text-surface-z3 text-3xl" aria-hidden="true"></span>
+		<span class="i-glyph:table text-surface-z3 text-3xl" aria-hidden="true"></span>
 		<p class="text-surface-z5 text-sm">Summary Data Table</p>
 		<p class="text-surface-z4 text-xs">DataTable component coming soon</p>
 	</div>

@@ -6,7 +6,7 @@
 	const GROUPS = [
 		{
 			title: 'Navigation & Selection',
-			icon: 'i-solar:list-check-bold-duotone',
+			icon: 'i-glyph:list-check',
 			basePath: '/playground/components/',
 			components: [
 				{ name: 'Breadcrumbs', description: 'Navigation path with links', slug: 'breadcrumbs' },
@@ -30,7 +30,7 @@
 		},
 		{
 			title: 'Inputs',
-			icon: 'i-solar:keyboard-bold-duotone',
+			icon: 'i-glyph:keyboard',
 			basePath: '/playground/components/',
 			components: [
 				{ name: 'Button', description: 'Action button with variants', slug: 'button' },
@@ -48,7 +48,7 @@
 		},
 		{
 			title: 'Display',
-			icon: 'i-solar:gallery-wide-bold-duotone',
+			icon: 'i-glyph:gallery-wide',
 			basePath: '/playground/components/',
 			components: [
 				{
@@ -65,7 +65,7 @@
 		},
 		{
 			title: 'Layout',
-			icon: 'i-solar:layers-minimalistic-bold-duotone',
+			icon: 'i-glyph:layers-minimalistic',
 			basePath: '/playground/components/',
 			components: [
 				{ name: 'Carousel', description: 'Horizontally scrolling item carousel', slug: 'carousel' },
@@ -89,7 +89,7 @@
 		},
 		{
 			title: 'Effects',
-			icon: 'i-solar:magic-stick-bold-duotone',
+			icon: 'i-glyph:magic-stick',
 			basePath: '/playground/effects/',
 			components: [
 				{ name: 'Reveal', description: 'Scroll-triggered reveal animation', slug: 'reveal' },
@@ -99,7 +99,7 @@
 		},
 		{
 			title: 'Design Resources',
-			icon: 'i-solar:stars-bold-duotone',
+			icon: 'i-glyph:stars',
 			basePath: '/playground/',
 			components: [
 				{

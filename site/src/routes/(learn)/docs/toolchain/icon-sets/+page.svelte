@@ -21,7 +21,7 @@
 				></tr
 			>
 			<tr
-				><td><code>@rokkit/icons/components.json</code></td><td><code>i-component:</code></td><td
+				><td><code>@rokkit/icons/components.json</code></td><td><code>i-glyph:</code></td><td
 					>Component-specific icons</td
 				></tr
 			>

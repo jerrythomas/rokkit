@@ -39,7 +39,7 @@
 		<code>BASE_FIELDS</code> is the canonical semantic-to-raw-key mapping used by
 		<code>ProxyItem</code> and all Rokkit components:
 	</p>
-	<pre><code>import {'{'} BASE_FIELDS {'}'} from '@rokkit/core'
+	<pre><code>import {'{'} BASE_FIELDS } from '@rokkit/core'
 // id, value, label, icon, avatar, subtext, tooltip, badge,
 // children, type, snippet, href, disabled, expanded, selected</code></pre>
 	<p>

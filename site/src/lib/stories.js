@@ -13,13 +13,13 @@ export {
 const GROUPS = {
 	'navigation-selection': {
 		title: 'Navigation & Selection',
-		icon: 'i-solar:list-check-bold-duotone',
+		icon: 'i-glyph:list-check',
 		order: 10
 	},
-	inputs: { title: 'Inputs', icon: 'i-solar:keyboard-bold-duotone', order: 11 },
-	display: { title: 'Display', icon: 'i-solar:gallery-wide-bold-duotone', order: 12 },
-	layout: { title: 'Layout', icon: 'i-solar:layers-minimalistic-bold-duotone', order: 13 },
-	effects: { title: 'Effects', icon: 'i-solar:magic-stick-bold-duotone', order: 14 }
+	inputs: { title: 'Inputs', icon: 'i-glyph:keyboard', order: 11 },
+	display: { title: 'Display', icon: 'i-glyph:gallery-wide', order: 12 },
+	layout: { title: 'Layout', icon: 'i-glyph:layers-minimalistic', order: 13 },
+	effects: { title: 'Effects', icon: 'i-glyph:magic-stick', order: 14 }
 }
 
 /**

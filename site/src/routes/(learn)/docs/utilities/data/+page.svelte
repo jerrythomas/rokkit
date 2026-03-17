@@ -50,9 +50,9 @@
 	<p>
 		<code>createFormatter(rules)</code> builds a value formatter for display purposes:
 	</p>
-	<pre><code>import {'{'} createFormatter {'}'} from '@rokkit/data'
+	<pre><code>import {'{'} createFormatter } from '@rokkit/data'
 
-const fmt = createFormatter({'{'} currency: 'USD', locale: 'en-US' {'}'})
+const fmt = createFormatter({'{'} currency: 'USD', locale: 'en-US' })
 fmt.format(1234.5, 'currency')  // '$1,234.50'
 fmt.format('2024-01-15', 'date')  // 'Jan 15, 2024'</code></pre>
 

@@ -14,11 +14,11 @@
 
 	<h2>How actions work</h2>
 	<p>
-		Apply an action with <code>use:actionName</code> or <code>use:actionName={'{'}options{'}'}</code>.
+		Apply an action with <code>use:actionName</code> or <code>use:actionName={'{'}options}</code>.
 		The action sets up its behavior on mount and tears down on destroy — no lifecycle management
 		needed:
 	</p>
-	<pre><code>&lt;div use:someAction={'{'}options{'}'} onsomeevent={'{'}handler{'}'}&gt;...&lt;/div&gt;</code></pre>
+	<pre><code>&lt;div use:someAction={'{'}options} onsomeevent={'{'}handler}&gt;...&lt;/div&gt;</code></pre>
 
 	<h2>navigable — keyboard navigation</h2>
 	<p>

@@ -22,27 +22,27 @@
 	const projects = [
 		{
 			label: 'Auth Module',
-			icon: 'i-solar:shield-bold-duotone',
+			icon: 'i-glyph:shield',
 			children: [
-				{ label: 'OAuth integration', icon: 'i-solar:check-circle-bold-duotone' },
-				{ label: 'Session management', icon: 'i-solar:clock-circle-bold-duotone' },
-				{ label: 'Rate limiting', icon: 'i-solar:add-circle-bold-duotone' }
+				{ label: 'OAuth integration', icon: 'i-glyph:check-circle' },
+				{ label: 'Session management', icon: 'i-glyph:clock-circle' },
+				{ label: 'Rate limiting', icon: 'i-glyph:add-circle' }
 			]
 		},
 		{
 			label: 'Payments',
-			icon: 'i-solar:card-bold-duotone',
+			icon: 'i-glyph:card',
 			children: [
-				{ label: 'Stripe integration', icon: 'i-solar:check-circle-bold-duotone' },
-				{ label: 'Invoice generation', icon: 'i-solar:clock-circle-bold-duotone' }
+				{ label: 'Stripe integration', icon: 'i-glyph:check-circle' },
+				{ label: 'Invoice generation', icon: 'i-glyph:clock-circle' }
 			]
 		},
 		{
 			label: 'Notifications',
-			icon: 'i-solar:bell-bold-duotone',
+			icon: 'i-glyph:bell',
 			children: [
-				{ label: 'Email templates', icon: 'i-solar:clock-circle-bold-duotone' },
-				{ label: 'Push notifications', icon: 'i-solar:add-circle-bold-duotone' }
+				{ label: 'Email templates', icon: 'i-glyph:clock-circle' },
+				{ label: 'Push notifications', icon: 'i-glyph:add-circle' }
 			]
 		}
 	]
@@ -56,7 +56,7 @@
 	<div class="flex flex-wrap items-center justify-between gap-3">
 		<h1 class="text-surface-z8 text-2xl font-bold">Projects</h1>
 		<Toolbar>
-			<Button label="New Task" icon="i-solar:add-circle-bold-duotone" variant="primary" />
+			<Button label="New Task" icon="i-glyph:add-circle" variant="primary" />
 		</Toolbar>
 	</div>
 
@@ -82,7 +82,7 @@
 				</div>
 			{:else}
 				<div class="flex h-full min-h-40 flex-col items-center justify-center gap-2 text-center">
-					<span class="i-solar:cursor-bold-duotone text-surface-z3 text-3xl" aria-hidden="true"
+					<span class="i-glyph:cursor text-surface-z3 text-3xl" aria-hidden="true"
 					></span>
 					<p class="text-surface-z5 text-sm">Select a task to view details</p>
 				</div>
