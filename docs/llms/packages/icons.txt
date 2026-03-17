@@ -1,0 +1,129 @@
+# @rokkit/icons
+
+> Curated Iconify-compatible icon collections for Rokkit applications. Static JSON bundles — no runtime JavaScript required.
+
+Icons are distributed as [Iconify](https://iconify.design/) JSON files. They integrate with UnoCSS (via `@rokkit/unocss`), the Iconify runtime, or any toolchain that accepts Iconify collections.
+
+## Install
+
+```bash
+npm install @rokkit/icons
+```
+
+---
+
+## Collections
+
+| Subpath import | Collection prefix | Count | Contents |
+|----------------|-------------------|-------|----------|
+| `@rokkit/icons` or `@rokkit/icons/ui.json` | `rokkit-ui` | 94 | Base UI icons — navigation, actions, states |
+| `@rokkit/icons/light.json` | `rokkit-light` | 5 | Outlined lightweight icons |
+| `@rokkit/icons/solid.json` | `rokkit-solid` | 12 | Solid filled icons |
+| `@rokkit/icons/twotone.json` | `rokkit-twotone` | 4 | Two-tone icons |
+| `@rokkit/icons/components.json` | `rokkit-components` | 49 | Component-type icons (for tooling/palettes) |
+| `@rokkit/icons/auth.json` | `rokkit-auth` | 107 | Auth provider logos (Google, GitHub, Firebase, etc.) |
+| `@rokkit/icons/app.json` | `rokkit-app` | 36 | Application-level icons |
+| `@rokkit/icons/utils` | — | — | Utility functions for icon conversion |
+
+---
+
+## Usage with @rokkit/unocss (recommended)
+
+`presetRokkit()` registers selected collections automatically. Icons become UnoCSS utility classes:
+
+```html
+<!-- Syntax: i-{prefix}:{icon-name} -->
+<span class="i-rokkit-ui:menu"></span>
+<span class="i-rokkit-ui:action-add"></span>
+<span class="i-rokkit-solid:action-check"></span>
+<span class="i-rokkit-auth:google"></span>
+```
+
+Configure which collections to load in `uno.config.js`:
+
+```javascript
+import { presetRokkit } from '@rokkit/unocss'
+
+export default {
+  presets: [
+    presetRokkit({
+      icons: ['ui', 'solid', 'auth']  // load specific collections
+    })
+  ]
+}
+```
+
+---
+
+## Usage with Iconify runtime
+
+Import JSON and register with `@iconify/svelte` or `@iconify/icon-offline`:
+
+```javascript
+import { addCollection } from '@iconify/svelte'
+import uiIcons from '@rokkit/icons/ui.json'
+import authIcons from '@rokkit/icons/auth.json'
+
+addCollection(uiIcons)
+addCollection(authIcons)
+```
+
+---
+
+## JSON bundle format
+
+Each file is a standard Iconify JSON collection:
+
+```json
+{
+  "prefix": "rokkit-ui",
+  "lastModified": 1234567890,
+  "icons": {
+    "menu": { "body": "<path d=\"...\" />" },
+    "action-add": { "body": "<path d=\"...\" />" }
+  }
+}
+```
+
+---
+
+## Base UI collection (`rokkit-ui`) — icon reference
+
+| Category | Icons |
+|----------|-------|
+| Accordion | `accordion-opened`, `accordion-closed` |
+| Actions | `action-add`, `action-cancel`, `action-check`, `action-clear`, `action-close`, `action-copy`, `action-copysuccess`, `action-cross`, `action-pin`, `action-remove`, `action-retry`, `action-save`, `action-search`, `action-sort-down`, `action-sort-up`, `action-unpin` |
+| Navigation | `navigate-up`, `navigate-down`, `navigate-left`, `navigate-right`, `arrow-up`, `arrow-down`, `arrow-left`, `arrow-right` |
+| Node states | `node-opened`, `node-closed` |
+| Checkbox | `checkbox-checked`, `checkbox-unchecked`, `checkbox-unknown` |
+| Radio | `radio-on`, `radio-off`, `radio-group` |
+| Selector | `selector-opened`, `selector-closed` |
+| Menu | `menu`, `menu-opened`, `menu-closed`, `menu-dots`, `menu-sidebar` |
+| State indicators | `state-success`, `state-error`, `state-warning`, `state-info`, `state-unknown` |
+| Validity | `validity-passed`, `validity-failed`, `validity-warning`, `validity-unknown` |
+| Badges | `badge-pass`, `badge-fail`, `badge-warn`, `badge-unknown` |
+| Rating | `rating-empty`, `rating-half`, `rating-filled` |
+| Heart | `heart-outlined`, `heart-filled` |
+| Folder | `folder-opened`, `folder-closed` |
+| Calendar | `calendar`, `calendar-mark`, `calendar-minimal` |
+| Mode | `mode-light`, `mode-dark`, `mode-system` |
+| Sort | `sort-ascending`, `sort-descending`, `sort-none` |
+| Format/align | `format-left`, `format-center`, `format-right`, `format-justify`, `align-horizontal-left`, `align-horizontal-center`, `align-horizontal-right`, `align-vertical-top`, `align-vertical-middle`, `align-vertical-bottom` |
+| Misc | `palette`, `palette-hex`, `palette-presets`, `properties`, `themes`, `swatch`, `plus`, `minus`, `logout`, `trend-up`, `trend-down` |
+
+## Auth collection (`rokkit-auth`) — providers
+
+Includes logos for: Firebase, GitHub, Google, Microsoft, AWS Cognito, Supabase, Auth0, Clerk, Okta, Apple, Twitter/X, LinkedIn, Facebook, Discord, Slack, and others. Each provider has variants: default, black, white, wordmark, duotone, outline (availability varies by provider).
+
+```html
+<span class="i-rokkit-auth:google"></span>
+<span class="i-rokkit-auth:github-white"></span>
+<span class="i-rokkit-auth:firebase-duotone"></span>
+```
+
+---
+
+## Related
+
+- `@rokkit/unocss` — `presetRokkit()` loads icon collections into UnoCSS automatically
+- `@rokkit/cli` — `rokkit doctor` checks that icon collections are configured correctly

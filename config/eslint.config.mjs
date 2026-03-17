@@ -34,6 +34,8 @@ export default [
   {
     ignores: [
       '**/.worktrees/**',
+      '**/.claude/**',
+      '**/.claire/**',
       'packages/icons/scripts/**',
       '**/spec/error/*.js',
       '**/fixtures/error/*.js',
