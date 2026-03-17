@@ -1,0 +1,246 @@
+# @rokkit/core
+
+> Shared utilities, constants, field mapping, and theme helpers used across all Rokkit packages.
+
+Most applications never import `@rokkit/core` directly — components from `@rokkit/ui` and `@rokkit/forms` consume it internally. Import directly when you need to build custom components that integrate with Rokkit's field-mapping system, generate theme rules for a custom UnoCSS setup, or access the icon/state-icon constants.
+
+## Field Mapping
+
+### `FieldMapper` class
+
+The core abstraction for resolving data fields by semantic name. Components instantiate a `FieldMapper` with a `fields` override and use it to read `label`, `icon`, `value`, `children`, etc., from arbitrary object shapes.
+
+```js
+import { FieldMapper } from '@rokkit/core'
+
+const mapper = new FieldMapper({ label: 'name', value: 'id' })
+const label = mapper.get('label', { name: 'Alice', id: 42 }) // 'Alice'
+const value = mapper.getValue({ name: 'Alice', id: 42 })     // 42
+const hasChildren = mapper.hasChildren(item)
+const children = mapper.getChildren(item)
+```
+
+Key methods:
+
+| Method | Description |
+|--------|-------------|
+| `get(fieldName, item, default?)` | Read a mapped field from an item |
+| `getValue(item)` | Read the `value` field (falls back to the raw item) |
+| `getIcon(item)` | Read the icon field, handles state-based icon objects |
+| `getFormattedText(item, formatter?)` | Read label, optionally run through a formatter |
+| `hasChildren(item)` | True when the item has a non-empty children array |
+| `isNested(items)` | True when any item in the array has children |
+| `getChildren(item)` | Return children array or `[]` |
+| `getChildrenByPath(items, path)` | Traverse nested structure by numeric index path |
+| `getItemByPath(items, path)` | Get a specific item by numeric index path |
+| `getChildMapper()` | Return a `FieldMapper` for the children level |
+
+### `BASE_FIELDS` constant
+
+The canonical semantic-to-raw-key mapping used by `ProxyItem` and all Wrapper+Navigator components:
+
+```js
+import { BASE_FIELDS } from '@rokkit/core'
+// { id, value, label, icon, avatar, subtext, tooltip, badge, shortcut,
+//   children, type, snippet, href, hrefTarget, disabled, expanded, selected }
+```
+
+### `DEFAULT_FIELDS` constant
+
+Legacy mapping (used by `FieldMapper` and older `ListController`-based code). Prefer `BASE_FIELDS` for new work.
+
+### `normalizeFields(fields)`
+
+Converts legacy field-override keys to their `BASE_FIELDS` equivalents before passing to a component. E.g., `{ text: 'name' }` → `{ label: 'name' }`.
+
+```js
+import { normalizeFields } from '@rokkit/core'
+normalizeFields({ text: 'title', image: 'avatar_url' })
+// { label: 'title', avatar: 'avatar_url' }
+```
+
+### `getNestedFields(fields)`
+
+Returns a merged field mapping for child nodes in a nested data structure.
+
+### `flattenNestedList(items, fields?, level?)`
+
+Flattens a tree of items with `children` arrays into a single flat array, adding `level` and `parent` flags to each row. Useful when you need to render a flat list from hierarchical data.
+
+```js
+import { flattenNestedList } from '@rokkit/core'
+const flat = flattenNestedList(treeItems)
+```
+
+### `getItemAtIndex(items, index)` / `getIndexForItem(items, item)`
+
+Helpers for index-based item lookup with deep equality (`equals` from Ramda).
+
+## Snippet Utilities
+
+### `resolveSnippet(snippets, proxy, fallback?)`
+
+Determines which snippet function to render for an item. Checks `proxy.snippet` for a per-item named override, then falls back to `fallback` (default: `'itemContent'`). Returns a function or `null`.
+
+Used internally by `@rokkit/ui` components; use directly when building custom renderers.
+
+### `getSnippet(obj, key, defaultSnippet?)`
+
+Returns the function at `obj[key]` if it exists and is a function, otherwise returns `defaultSnippet`.
+
+## Theme Utilities
+
+### `Theme` class
+
+Manages semantic color palette generation for UnoCSS configuration. Used internally by `presetRokkit` in `@rokkit/unocss`.
+
+```js
+import { Theme } from '@rokkit/core'
+const theme = new Theme({ mapping: { primary: 'violet', surface: 'zinc' } })
+theme.getColorRules()   // UnoCSS theme.colors object (semantic → CSS variable shades)
+theme.getPalette()      // CSS variable rules { '--color-primary': '...', ... }
+theme.getShortcuts('primary')  // semantic tone + contrast shortcut definitions
+```
+
+### `themeRules(mapping?, colors?)`
+
+Generates CSS variable rules for a color palette mapping. Returns an object of `--color-{variant}-{shade}` entries with RGB values.
+
+### `shadesOf(name, modifier?)`
+
+Returns a UnoCSS color shades object that references CSS variables:
+
+```js
+shadesOf('primary') // { DEFAULT: 'var(--color-primary-500)', 50: 'var(--color-primary-50)', ... }
+```
+
+### `semanticShortcuts(name)` / `contrastShortcuts(name)`
+
+Generate UnoCSS shortcut arrays for semantic tone utilities (`bg-primary-z5`, etc.) and on-color text utilities (`text-on-primary`).
+
+### `DEFAULT_THEME_MAPPING` constant
+
+The default semantic-color → Tailwind palette mapping:
+
+```js
+{ surface: 'slate', primary: 'orange', secondary: 'pink', accent: 'sky',
+  success: 'green', warning: 'yellow', danger: 'red', error: 'red', info: 'cyan' }
+```
+
+### `TONE_MAP` constant
+
+Maps `z0`–`z10` tone names to Tailwind shade numbers (50–950):
+
+```js
+{ z0: 50, z1: 100, z2: 200, ..., z10: 950 }
+```
+
+## String Utilities
+
+| Function | Description |
+|----------|-------------|
+| `toInitCapCase(text)` | Capitalize first letter, lowercase the rest |
+| `toPascalCase(text)` | Hyphen-separated → PascalCase |
+| `toHyphenCase(text)` | PascalCase → hyphen-case |
+| `compareStrings(a, b)` | Simple string comparator returning -1 / 0 / 1 |
+| `sortByParts(a, b, separator?)` | Sort hyphen-separated strings by parts |
+| `uniqueId(prefix?, separator?)` | Timestamp-based unique ID |
+| `compact(obj)` | Remove null/undefined values from an object |
+| `toHexString(value, size?)` | Number to zero-padded hex string |
+
+## General Utilities
+
+| Function | Description |
+|----------|-------------|
+| `id(prefix?)` | Generate a random short ID (prefix + base36 + counter) |
+| `isObject(val)` | True for plain objects (not null, not Date) |
+| `toString(value)` | Value to string; objects are JSON-stringified |
+| `noop()` | Empty function for default event handlers |
+| `hex2rgb(hex)` | Convert hex color string to `"r,g,b"` format |
+| `getImage(str)` | Return string if it's an image URL or base64 data URI, else null |
+| `detectDirection()` | Returns `'ltr'` or `'rtl'` based on HTML `lang`/`dir` attributes |
+| `isRTL()` | True when the document direction is right-to-left |
+| `getClosestAncestorWithAttribute(el, attr)` | Walk up DOM tree to find ancestor with attribute |
+| `iconShortcuts(icons, collection, variants?)` | Generate UnoCSS icon shortcut map |
+| `scaledPath(size, x)` | Scale SVG path coordinates |
+| `getKeyFromPath(path)` | Numeric index array → `"1-2-3"` key string |
+| `getPathFromKey(key)` | `"1-2-3"` key string → numeric array |
+
+## Event Utilities
+
+### `createEmitter(props, defaults?)`
+
+Extracts event handlers from a props object, stripping the `on` prefix. Adds no-op functions for any missing default events.
+
+```js
+const emit = createEmitter(props, ['change', 'select'])
+emit.change(value)   // calls props.onchange(value) or noop
+emit.select(item)    // calls props.onselect(item) or noop
+```
+
+Used internally by component controllers to normalize callback props.
+
+## Calendar Utilities
+
+| Export | Description |
+|--------|-------------|
+| `weekdays` | Array of day names: `['Sunday', 'Monday', ...]` |
+| `getCalendarDays(date, holidays?, fixed?)` | Generate calendar day objects for a month, with weekend/holiday flags |
+
+## Chart Utilities
+
+### `generateTicks(lowerBound, upperBound, minorTickStep?, majorTickStep?)`
+
+Generates an array of tick mark objects `{ value, label, major }` for axis rendering in charts.
+
+## Tree Connector Utilities
+
+### `getLineTypes(hasChildren, parentTypes, position)`
+
+Used by the Tree component to compute connector line types (`child`, `last`, `sibling`, `empty`, `icon`) for each node level. Internal to tree rendering.
+
+## Icon Constants
+
+### `DEFAULT_STATE_ICONS`
+
+A nested object of all Rokkit state icon names, grouped by category:
+
+```js
+{
+  node: { opened: 'node-opened', closed: 'node-closed' },
+  checkbox: { checked: 'checkbox-checked', unchecked: 'checkbox-unchecked', unknown: 'checkbox-unknown' },
+  action: { add: 'action-add', remove: 'action-remove', ... },
+  // ... accordion, folder, selector, menu, rating, radio, mode, navigate, sort, state, badge, validity, alert, align
+}
+```
+
+### `DEFAULT_ICONS`
+
+Flat array of all icon name strings (used for UnoCSS safelist generation).
+
+### `stateIconsFromNames(names)`
+
+Convert a flat array of `'group-key'` icon names into the nested `StateIcons` object format.
+
+## Color Constants
+
+| Export | Description |
+|--------|-------------|
+| `defaultColors` | Full Tailwind-compatible color palette object |
+| `syntaxColors` | Syntax highlighting color definitions |
+| `shades` | Array of shade keys: `[50, 100, 200, ..., 950]` |
+| `defaultPalette` | Array of all base color names |
+
+## When to Use @rokkit/core Directly
+
+- **Building custom components** that need to read data fields via semantic names (use `FieldMapper` or `BASE_FIELDS` + `ProxyItem` from `@rokkit/states`)
+- **Generating theme color rules** in a custom UnoCSS config (use `Theme`, `themeRules`, `shadesOf`)
+- **Accessing icon name constants** (`DEFAULT_STATE_ICONS`, `DEFAULT_ICONS`) for custom icon configuration
+- **String/ID utilities** in non-component code (`id()`, `uniqueId()`, `compact()`, etc.)
+- **Event handler normalization** with `createEmitter` in custom controller code
+
+## Import
+
+```js
+import { FieldMapper, BASE_FIELDS, normalizeFields, Theme, DEFAULT_STATE_ICONS } from '@rokkit/core'
+```
