@@ -1,0 +1,427 @@
+# @rokkit/actions
+
+> Svelte 5 actions for keyboard navigation, pointer gestures, theming, and visual effects. Drop onto any DOM element with `use:actionName`.
+
+Svelte actions are plain functions applied to DOM elements via the `use:` directive. They run when the element mounts, set up event listeners or observers, and clean up automatically on destroy. Because they use `$effect` internally, they react to option changes.
+
+```svelte
+<div use:someAction={options} onsomeevent={handler}>...</div>
+```
+
+---
+
+## `navigable` — Keyboard Navigation (simple)
+
+The lightweight keyboard navigation action. Listens on **keyup** and dispatches five custom events. Use this when you want keyboard-driven custom UI without a full controller/wrapper stack.
+
+### Events dispatched
+
+| Event | Default key(s) — vertical | Default key(s) — horizontal |
+|-------|---------------------------|------------------------------|
+| `previous` | `ArrowUp` | `ArrowLeft` |
+| `next` | `ArrowDown` | `ArrowRight` |
+| `select` | `Enter`, `Space` | `Enter`, `Space` |
+| `collapse` | `ArrowLeft` (when `nested: true`) | `ArrowUp` (when `nested: true`) |
+| `expand` | `ArrowRight` (when `nested: true`) | `ArrowDown` (when `nested: true`) |
+
+### Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `orientation` | `'vertical'|'horizontal'` | `'vertical'` | Arrow key axis |
+| `dir` | `'ltr'|'rtl'` | `'ltr'` | Text direction (reverses horizontal collapse/expand) |
+| `nested` | `boolean` | `false` | Enable collapse/expand key bindings |
+| `enabled` | `boolean` | `true` | Disable all key handling when `false` |
+
+### Usage
+
+```svelte
+<nav
+  use:navigable
+  onprevious={handlePrevious}
+  onnext={handleNext}
+  onselect={handleSelect}
+>
+  <!-- items with data-path attributes -->
+</nav>
+```
+
+With options:
+
+```svelte
+<div
+  use:navigable={{ orientation: 'horizontal', nested: true }}
+  onprevious={prev}
+  onnext={next}
+  oncollapse={collapse}
+  onexpand={expand}
+  onselect={select}
+>
+```
+
+---
+
+## `navigator` — Keyboard Navigation (full controller integration)
+
+The full-featured navigation action used internally by all Rokkit UI components. Pairs with a `Wrapper`/controller from `@rokkit/states`. Handles keyboard, clicks, typeahead, scrollIntoView, and focus management.
+
+Requires a `wrapper` option — a controller instance that implements `movePrev()`, `moveNext()`, `moveFirst()`, `moveLast()`, `select()`, `expand()`, `collapse()`, etc.
+
+Dispatches a single `action` custom event rather than per-action events:
+
+```
+CustomEvent('action', { detail: { name: 'move'|'select'|'toggle', data: { value, selected } } })
+```
+
+### Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `wrapper` | Controller instance | required | State controller to drive |
+| `orientation` | `'vertical'|'horizontal'` | `'vertical'` | Arrow key axis |
+| `dir` | `'ltr'|'rtl'` | `'ltr'` | Text direction |
+| `nested` | `boolean` | `false` | Enable expand/collapse keys |
+| `typeahead` | `boolean` | `false` | Enable character typeahead search |
+
+### Features
+
+- **Keyboard**: maps keys to controller methods via configurable keymap
+- **Clicks**: resolves `select`, `extend` (Ctrl/Cmd+click), `range` (Shift+click), `toggle` (accordion trigger)
+- **Typeahead**: buffers printable characters (500 ms reset), calls `wrapper.findByText()` and `wrapper.moveTo()`
+- **scrollIntoView**: scrolls focused item into view after navigation
+- **Native links**: `<a href>` elements navigate naturally; state is still updated
+
+### Usage
+
+```svelte
+<script>
+  import { navigator } from '@rokkit/actions'
+  import { ListController } from '@rokkit/states'
+
+  const wrapper = new ListController(items)
+</script>
+
+<ul
+  use:navigator={{ wrapper, typeahead: true }}
+  onaction={handleAction}
+>
+  {#each items as item}
+    <li data-path={item.id}>{item.label}</li>
+  {/each}
+</ul>
+```
+
+---
+
+## `Navigator` class
+
+The underlying class powering `use:navigator`. Use directly (without `$effect`) when you need imperative control, e.g. inside `$effect` blocks or framework-agnostic code.
+
+```javascript
+import { Navigator } from '@rokkit/actions'
+
+const nav = new Navigator(rootEl, wrapper, { collapsible: true })
+// later:
+nav.destroy()
+```
+
+Constructor options mirror the `navigator` action options (`orientation`, `dir`, `collapsible`).
+
+---
+
+## `Trigger` class
+
+Manages dropdown open/close from a trigger button. Handles click, Enter/Space, ArrowDown/Up to open, Escape and outside-click to close. Pairs with `Navigator` on the dropdown container.
+
+```javascript
+import { Trigger } from '@rokkit/actions'
+
+const trigger = new Trigger(triggerEl, containerEl, {
+  onopen:  () => { isOpen = true },
+  onclose: () => { isOpen = false },
+  onlast:  () => { wrapper.moveLast(null) }, // optional: ArrowUp opens at end
+  isOpen:  () => isOpen
+})
+// later:
+trigger.destroy()
+```
+
+Key bindings managed by `Trigger`:
+
+| Key | Action |
+|-----|--------|
+| `Click` / `Enter` / `Space` | Toggle open/close |
+| `ArrowDown` | Open (focus first item) |
+| `ArrowUp` | Open, then call `onlast` (focus last item) |
+| `Escape` (document) | Close + return focus to trigger |
+| Click outside (document) | Close |
+
+---
+
+## `keyboard` — Generic Key Mapping
+
+Maps keyboard events to named custom events. Dispatches on **keyup**, and also watches clicks on elements with `data-key` attributes.
+
+Default mappings:
+
+| Event name | Keys |
+|------------|------|
+| `remove` | `Backspace`, `Delete` |
+| `submit` | `Enter` |
+| `add` | Any single `a-zA-Z` character |
+
+### Usage
+
+```svelte
+<div
+  use:keyboard
+  onremove={() => removeSelected()}
+  onsubmit={() => submitForm()}
+  onadd={(e) => addItem(e.detail)}
+>
+```
+
+Custom mappings:
+
+```svelte
+<div use:keyboard={{ submit: ['Enter', 'Tab'], remove: ['Backspace'] }}>
+```
+
+---
+
+## `dismissable` — Click Outside / Escape
+
+Dispatches a `dismiss` event when the user clicks outside the element or presses `Escape`. Useful for closing modals, dropdowns, or tooltips.
+
+```svelte
+<div use:dismissable ondismiss={() => (open = false)}>
+  <!-- modal or dropdown content -->
+</div>
+```
+
+No options. Listens on `document` for click (outside check) and keyup (Escape).
+
+---
+
+## `pannable` — Mouse/Touch Pan
+
+Makes an element pannable. Dispatches three events as the user drags with mouse or touch:
+
+| Event | Detail |
+|-------|--------|
+| `panstart` | `{ x, y }` |
+| `panmove` | `{ x, y, dx, dy }` — delta from previous position |
+| `panend` | `{ x, y }` |
+
+```svelte
+<div
+  use:pannable
+  onpanstart={e => startDrag(e.detail)}
+  onpanmove={e => drag(e.detail)}
+  onpanend={endDrag}
+>
+```
+
+No options. Handles both `mousedown`/`mousemove`/`mouseup` and `touchstart`/`touchmove`/`touchend`.
+
+---
+
+## `swipeable` — Swipe Gestures
+
+Detects directional swipes (touch or mouse) and dispatches directional events.
+
+Events: `swipeLeft`, `swipeRight`, `swipeUp`, `swipeDown`
+
+### Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `horizontal` | `boolean` | `true` | Detect left/right swipes |
+| `vertical` | `boolean` | `false` | Detect up/down swipes |
+| `threshold` | `number` | `100` | Minimum distance in px |
+| `minSpeed` | `number` | `300` | Minimum speed in px/s |
+| `enabled` | `boolean` | `true` | Disable all detection when `false` |
+
+```svelte
+<div
+  use:swipeable={{ horizontal: true, threshold: 80 }}
+  onswipeLeft={() => prev()}
+  onswipeRight={() => next()}
+>
+```
+
+---
+
+## `themable` — Theme Attribute Sync
+
+Syncs a theme state object to `data-style`, `data-mode`, and `data-density` attributes on the root element. Optionally persists to `localStorage` and syncs across tabs via the `storage` event.
+
+```svelte
+<div use:themable={{ theme, storageKey: 'app-theme' }}>
+```
+
+### Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `theme` | Theme state object | `{ style: 'rokkit', mode: 'dark', density: 'comfortable' }` | Reactive theme state with `style`, `mode`, `density` |
+| `storageKey` | `string` | — | Key for `localStorage` persistence and cross-tab sync |
+
+---
+
+## `skinnable` — CSS Variable Injection
+
+Applies CSS custom properties directly to an element's inline style. Useful for per-instance theming.
+
+```svelte
+<div use:skinnable={{ '--color-accent': '#7c3aed', '--radius': '0.5rem' }}>
+```
+
+Accepts an `Object.<string, string>` — keys are CSS variable names, values are the values to set. Reactive: re-runs when the variables object changes.
+
+---
+
+## `reveal` — Scroll-Triggered Animation
+
+Animates an element (or its children) as it enters the viewport using `IntersectionObserver`. Applies opacity + translate transitions via `data-reveal` and `data-reveal-visible` attributes. Respects `prefers-reduced-motion`.
+
+Dispatches a `reveal` event: `CustomEvent('reveal', { detail: { visible: true|false } })`
+
+### Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `direction` | `'up'|'down'|'left'|'right'|'none'` | `'up'` | Slide direction |
+| `distance` | `string` | `'1.5rem'` | Slide distance (any CSS unit) |
+| `duration` | `number` | `600` | Animation duration (ms) |
+| `delay` | `number` | `0` | Delay before animation (ms) |
+| `stagger` | `number` | `0` | Per-child delay increment (ms); `0` disables stagger mode |
+| `once` | `boolean` | `true` | Animate only the first time |
+| `threshold` | `number` | `0.1` | IntersectionObserver threshold (0–1) |
+| `easing` | `string` | `'cubic-bezier(0.4, 0, 0.2, 1)'` | CSS easing |
+
+```svelte
+<!-- Stagger children on scroll -->
+<ul use:reveal={{ stagger: 80, direction: 'up' }}>
+  {#each items as item}<li>{item}</li>{/each}
+</ul>
+```
+
+CSS must define transitions that read the `data-reveal` / `data-reveal-visible` attributes and the `--reveal-*` custom properties injected by the action.
+
+---
+
+## `hoverLift` — Hover Elevation Effect
+
+Translates an element upward and applies a box-shadow on hover. Restores original styles on `mouseleave`. Respects `prefers-reduced-motion`.
+
+### Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `distance` | `string` | `'-0.25rem'` | translateY offset (negative = up) |
+| `shadow` | `string` | `'0 10px 25px -5px rgba(0,0,0,0.1)'` | Box-shadow on hover |
+| `duration` | `number` | `200` | Transition duration (ms) |
+
+```svelte
+<div class="card" use:hoverLift={{ distance: '-0.5rem' }}>
+```
+
+---
+
+## `magnetic` — Cursor Attraction Effect
+
+Shifts an element subtly toward the cursor while hovering, creating a magnetic pull effect. Returns to center smoothly on `mouseleave`. Respects `prefers-reduced-motion`.
+
+### Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `strength` | `number` | `0.3` | Max displacement as fraction of element size (0–1) |
+| `duration` | `number` | `300` | Return-to-center transition duration (ms) |
+
+```svelte
+<button use:magnetic={{ strength: 0.4 }}>Hover me</button>
+```
+
+---
+
+## `ripple` — Click Ripple Effect
+
+Material-design inspired circular ripple expanding from the click point. Appends a self-removing `<span>` on each click. Sets `overflow: hidden` and `position: relative` on the target if not already positioned. Respects `prefers-reduced-motion`.
+
+### Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `color` | `string` | `'currentColor'` | Ripple fill color |
+| `opacity` | `number` | `0.15` | Ripple opacity |
+| `duration` | `number` | `500` | Animation duration (ms) |
+
+```svelte
+<button use:ripple>Click me</button>
+<button use:ripple={{ color: '#fff', opacity: 0.2 }}>Custom</button>
+```
+
+---
+
+## `delegateKeyboardEvents` — Keyboard Event Forwarding
+
+Forwards keyboard events from a parent element to a child matched by CSS selector. Useful when a wrapper element needs to relay keyboard input to an inner `<input>` or other focusable.
+
+```svelte
+<div use:delegateKeyboardEvents={{ selector: 'input', events: ['keydown'] }}>
+  <input type="text" />
+</div>
+```
+
+### Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `selector` | `string` | required | CSS selector for target child |
+| `events` | `string[]` | `['keydown', 'keyup', 'keypress']` | Event types to forward |
+
+---
+
+## Keymap utilities
+
+Low-level functions for building and resolving keyboard action maps. Used internally by `Navigator`.
+
+```javascript
+import { buildKeymap, resolveAction, ACTIONS } from '@rokkit/actions'
+
+const keymap = buildKeymap({ orientation: 'vertical', dir: 'ltr', collapsible: true })
+// keymap = { plain: {...}, shift: {...}, ctrl: {...} }
+
+const action = resolveAction(keyboardEvent, keymap)
+// action = 'next' | 'prev' | 'select' | 'expand' | 'collapse' | 'first' | 'last' | null
+```
+
+`ACTIONS` is a constant set of all action name strings.
+
+---
+
+## Import
+
+```javascript
+import {
+  // Actions
+  navigable, navigator, keyboard, pannable, swipeable,
+  themable, skinnable, dismissable, reveal,
+  hoverLift, magnetic, ripple, delegateKeyboardEvents,
+
+  // Classes
+  Navigator, Trigger,
+
+  // Keymap utilities
+  buildKeymap, resolveAction, ACTIONS
+} from '@rokkit/actions'
+```
+
+---
+
+## Related
+
+- [@rokkit/states](/llms/packages/states.txt) — controller/wrapper classes that pair with `navigator` and `Navigator`
+- [@rokkit/ui](/llms/components/list.txt) — components that use these actions internally
