@@ -203,6 +203,60 @@ No options. Listens on `document` for click (outside check) and keyup (Escape).
 
 ---
 
+## `fillable` — Interactive Blank Filling
+
+Turns `<del>` elements (blanks marked with `?`) into interactive fillable fields. Clicking a blank fills it with an option value; clicking a filled field removes the value. Optionally validates answers against expected indices.
+
+Used for interactive learning/quiz interfaces where users drag-and-drop or click to fill blanks.
+
+### Events dispatched
+
+| Event | Detail |
+|-------|--------|
+| `fill` | `{ index: number, value: string }` — fired when a blank is filled |
+| `remove` | `{ index: number, value: string }` — fired when a filled blank is cleared |
+
+### Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `options` | `Array<{value, actualIndex, expectedIndex}>` | required | Available fill options with tracking indices |
+| `current` | `number` | `0` | Index of the blank currently being filled |
+| `check` | `boolean` | `false` | Enable validation; applies `pass`/`fail` CSS classes after fill |
+
+### Usage
+
+```svelte
+<script>
+  import { fillable } from '@rokkit/actions'
+
+  const options = [
+    { value: 'red', actualIndex: 0, expectedIndex: 0 },
+    { value: 'blue', actualIndex: 1, expectedIndex: 2 }
+  ]
+
+  function handleFill(e) {
+    console.log('Filled blank', e.detail.index, 'with', e.detail.value)
+  }
+</script>
+
+<div
+  use:fillable={{ options, current: 0, check: true }}
+  onfill={handleFill}
+  onremove={(e) => console.log('Removed:', e.detail)}
+>
+  <p>The sky is <del></del> and grass is <del></del></p>
+</div>
+```
+
+CSS classes applied by the action:
+- `empty` — initial state (shows `?`)
+- `filled` — when a value is set
+- `pass` — when validation enabled and actual matches expected index
+- `fail` — when validation enabled and actual does not match expected index
+
+---
+
 ## `pannable` — Mouse/Touch Pan
 
 Makes an element pannable. Dispatches three events as the user drags with mouse or touch:
@@ -408,7 +462,7 @@ const action = resolveAction(keyboardEvent, keymap)
 import {
   // Actions
   navigable, navigator, keyboard, pannable, swipeable,
-  themable, skinnable, dismissable, reveal,
+  themable, skinnable, dismissable, fillable, reveal,
   hoverLift, magnetic, ripple, delegateKeyboardEvents,
 
   // Classes
