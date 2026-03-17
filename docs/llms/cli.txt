@@ -1,0 +1,127 @@
+# Rokkit CLI
+
+> Command-line tools for setting up and validating Rokkit projects
+
+Package: `@rokkit/cli`
+
+## Usage
+
+Run without installing:
+```bash
+npx @rokkit/cli@latest <command>
+```
+
+Or install globally:
+```bash
+npm install -g @rokkit/cli
+rokkit <command>
+```
+
+## rokkit init
+
+Interactive setup for an existing SvelteKit project. Run from the project root.
+
+```bash
+npx @rokkit/cli@latest init
+```
+
+### Prompts
+
+| Prompt | Type | Description | Choices |
+|--------|------|-------------|---------|
+| `palette` | select | Color palette preset | `default` (orange/pink/sky), `vibrant` (blue/purple/sky), `seaweed` (sky/green/blue), `custom` |
+| `primary` | text | Primary color (Tailwind palette name) | Default: `orange`. **Conditional:** only shown when `palette` is `custom` |
+| `secondary` | text | Secondary color | Default: `pink`. **Conditional:** only shown when `palette` is `custom` |
+| `accent` | text | Accent color | Default: `sky`. **Conditional:** only shown when `palette` is `custom` |
+| `surface` | text | Surface color | Default: `slate`. **Conditional:** only shown when `palette` is `custom` |
+| `icons` | select | Icon collections | `rokkit` (Rokkit icons only), `custom` (Rokkit + custom collection) |
+| `iconPath` | text | Path to custom icon collection JSON | Default: `./static/icons/custom.json`. **Conditional:** only shown when `icons` is `custom` |
+| `themes` | multiselect | Theme styles (select one or more) | `rokkit` (selected by default), `minimal`, `material` |
+| `switcher` | select | Theme switching mode | `system` (prefers-color-scheme only), `manual` (light/dark toggle), `full` (light/dark + style variants) |
+
+### Files Written
+
+| File | Notes |
+|------|-------|
+| `rokkit.config.js` | Written with the generated config (colors, themes, switcher, storageKey). Skipped if the file already exists. |
+| `uno.config.js` | Written with `presetRokkit()` from `@rokkit/unocss`. Skipped if the file already exists (run `rokkit doctor` for migration hints). |
+| `src/app.css` | Prepends missing `@import` lines for `@unocss/reset/tailwind.css`, `@rokkit/themes/dist/base`, and each selected theme (e.g. `@rokkit/themes/dist/rokkit`). Creates the file if it does not exist. |
+| `src/app.html` | Injects a flash-prevention `<script>` after the `<body>` opening tag. Skipped when `switcher` is `system` (no script needed), when the file does not exist, or when the script is already present. The `full` switcher also sets `data-style`; the `manual` switcher sets `data-mode` only. |
+
+### After init
+
+```
+Done! Run `rokkit doctor` to verify your setup.
+```
+
+## rokkit doctor
+
+Validates Rokkit project configuration. Run from the project root.
+
+```bash
+npx @rokkit/cli@latest doctor        # check only
+npx @rokkit/cli@latest doctor --fix  # check and auto-fix where possible
+```
+
+### Checks
+
+| ID | Description | Auto-fixable |
+|----|-------------|-------------|
+| `config-exists` | `rokkit.config.js` exists | Yes — generates an empty `export default {}` config file |
+| `uno-uses-preset` | `uno.config.js` uses `presetRokkit()` | No — requires manual edit (see below) |
+| `css-imports` | `src/app.css` has theme imports (`@rokkit/themes/dist/base`) | Yes — prepends missing imports to `src/app.css` |
+| `html-init-script` | `src/app.html` has theme init script (`rokkit-theme` / `data-mode`) | Yes — injects flash-prevention script after `<body>` tag |
+
+### Exit codes
+
+| Code | Meaning |
+|------|---------|
+| `0` | All checks passed |
+| `1` | One or more checks failed |
+
+### Manual fix: uno-uses-preset
+
+`doctor --fix` will not overwrite an existing `uno.config.js`. Add `presetRokkit` manually:
+
+```js
+import { defineConfig } from 'unocss'
+import { presetRokkit } from '@rokkit/unocss'
+
+export default defineConfig({
+  presets: [presetRokkit()]
+})
+```
+
+## Icon Tools
+
+For icon library authors only. Not required for standard Rokkit projects.
+
+### rokkit bundle
+
+Bundles SVG icons in the source folder into JSON files.
+
+```bash
+rokkit bundle [options]
+rokkit bundle -i src -o build --config my-conf.json
+```
+
+| Flag | Short | Default | Description |
+|------|-------|---------|-------------|
+| `--config` | `-c` | `config.json` | Path to custom config file (resolved relative to the input folder) |
+| `--input` | `-i` | `./src` | Source folder containing icon subfolders |
+| `--output` | `-o` | `./lib` | Output folder for bundled JSON files |
+
+### rokkit build
+
+Builds a complete Iconify JSON package for each icon folder in the source directory.
+
+```bash
+rokkit build [options]
+rokkit build -i src -o build --config my-conf.json
+```
+
+| Flag | Short | Default | Description |
+|------|-------|---------|-------------|
+| `--config` | `-c` | `config.json` | Path to custom config file (resolved relative to the input folder) |
+| `--input` | `-i` | `./src` | Source folder containing icon subfolders |
+| `--output` | `-o` | `./lib` | Output folder for built Iconify packages |
