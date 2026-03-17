@@ -65,7 +65,7 @@
 | `@rokkit/unocss` reference page | ⬜ Todo | Partially covered in theming; needs dedicated page |
 | `@rokkit/app` reference page | ⬜ Todo | Not covered anywhere on site |
 
-Navigation placement for new pages: **TBD** — decide whether to add to `utilities/` section or create new `packages/` section.
+Navigation placement for new pages: **`utilities/` section** — add as sub-pages alongside existing controllers, navigator, state-management pages.
 
 ### New Pages — Full Learn Pages with Demos (Style B: future work)
 | Page | Status | Notes |
