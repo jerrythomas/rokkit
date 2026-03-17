@@ -30,12 +30,12 @@ jobs:
 
       - name: Publish packages
         env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_NO_WARNINGS: 1
         run: |
-          npm config delete always-auth 2>/dev/null || true
           for dir in ./packages/*/; do
             grep -q '"private": true' "${dir}package.json" 2>/dev/null || \
-              (cd "$dir" && npm publish --provenance --access public --tag latest)
+              (cd "$dir" && bun publish --access public --tag latest)
           done
 
       - name: Create GitHub release
