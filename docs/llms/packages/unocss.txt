@@ -1,0 +1,256 @@
+# @rokkit/unocss
+
+> UnoCSS preset for Rokkit — wires up color tokens, semantic shortcuts, icon integration, and dark mode in a single `presetRokkit()` call.
+
+## Quick Start
+
+```js
+// uno.config.js (or vite.config.js)
+import { defineConfig } from 'unocss'
+import { presetRokkit } from '@rokkit/unocss'
+
+export default defineConfig({
+  presets: [presetRokkit()]
+})
+```
+
+For SvelteKit, also add the UnoCSS Vite plugin:
+
+```js
+// vite.config.js
+import { defineConfig } from 'vite'
+import { sveltekit } from '@sveltejs/kit/vite'
+import UnoCSS from 'unocss/vite'
+import { presetRokkit } from '@rokkit/unocss'
+
+export default defineConfig({
+  plugins: [
+    UnoCSS({ presets: [presetRokkit()] }),
+    sveltekit()
+  ]
+})
+```
+
+## `presetRokkit(options?)` — The Single Export
+
+Returns a complete UnoCSS `Preset` object. All configuration is optional — defaults work out of the box.
+
+```js
+import { presetRokkit } from '@rokkit/unocss'
+
+const preset = presetRokkit({
+  colors: {
+    primary: 'violet',   // override semantic color → Tailwind palette name
+    surface: 'zinc'
+  },
+  skins: {
+    vibrant: { primary: 'blue', secondary: 'purple' }
+  },
+  icons: {
+    app: '@rokkit/icons/app.json',
+    solar: '@iconify-json/solar/icons.json'
+  },
+  themes: ['rokkit'],
+  switcher: 'manual',   // 'manual' | 'full'
+  storageKey: 'rokkit-theme'
+})
+```
+
+### Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `colors` | `Record<string, string>` | Default semantic palette | Map semantic names to Tailwind color names. Overrides individual entries — unspecified semantics keep defaults. |
+| `skins` | `Record<string, Record<string, string>>` | `{}` | Named palette overrides. Each skin generates a `skin-{name}` CSS class that injects its color variables. |
+| `icons` | `Record<string, string>` | `{ app: '@rokkit/icons/app.json' }` | Additional icon collections (JSON files). Merged with the built-in `rokkit` collection. |
+| `themes` | `string[]` | `['rokkit']` | Which CSS themes to activate (informational — does not import CSS; use CSS imports for that). |
+| `switcher` | `'manual' \| 'full'` | `'manual'` | Theme switcher mode hint (used by app-level UI, not by the preset itself). |
+| `storageKey` | `string` | `'rokkit-theme'` | `localStorage` key for persisting theme selection. |
+
+### Default Color Mapping
+
+```js
+{
+  primary:   'orange',
+  secondary: 'pink',
+  accent:    'sky',
+  surface:   'slate',
+  success:   'green',
+  warning:   'yellow',
+  danger:    'red',
+  error:     'red',
+  info:      'cyan'
+}
+```
+
+## What `presetRokkit` Configures
+
+### Included Sub-presets
+
+- **`presetWind3`** — Tailwind CSS v3-compatible utility classes
+- **`presetIcons`** — CSS icon classes (`i-{collection}:{name}`) via `@iconify/utils`
+- **`presetTypography`** — Typography prose utilities
+
+### Color Palette Tokens
+
+Generates CSS custom property rules for each semantic variant:
+
+```css
+--color-primary:     249,115,22;    /* z5 / 500 shade */
+--color-primary-50:  255,247,237;
+/* ... through -950 */
+```
+
+These are consumed by `@rokkit/themes` and are the source of all component colors.
+
+### Semantic Tone Shortcuts
+
+For each semantic color (`primary`, `surface`, `success`, etc.), `presetRokkit` generates tone shortcuts that automatically adapt between light and dark mode:
+
+```html
+<!-- Light mode: bg-orange-500 | Dark mode: bg-orange-500 -->
+<div class="bg-primary-z5">
+
+<!-- Light mode: text-slate-700 | Dark mode: text-slate-300 -->
+<span class="text-surface-z7">
+```
+
+Tone scale: `z0` (lightest, shade 50) through `z10` (darkest, shade 950).
+
+See `docs/llms/index.txt` for the full tone utility guide and all supported prefixes.
+
+### Icon Shortcuts
+
+All Rokkit state icons are registered as shortcut aliases pointing to `i-rokkit:{name}`:
+
+```html
+<span class="checkbox-checked"></span>   <!-- → i-rokkit:checkbox-checked -->
+<span class="node-opened"></span>        <!-- → i-rokkit:node-opened -->
+<span class="action-add"></span>         <!-- → i-rokkit:action-add -->
+```
+
+The full `DEFAULT_ICONS` list (70+ icons) is also added to the UnoCSS safelist.
+
+### Skin Shortcuts
+
+Each entry in `options.skins` generates a `skin-{name}` class that injects a CSS variable override block for that palette:
+
+```js
+presetRokkit({
+  skins: {
+    ocean: { primary: 'sky', secondary: 'teal', surface: 'zinc' }
+  }
+})
+```
+
+```html
+<div class="skin-ocean">
+  <!-- All components inside use sky/teal/zinc palette -->
+</div>
+```
+
+### Dark Mode
+
+Dark mode uses `[data-mode="dark"]` and `[data-mode="light"]` attribute selectors on an ancestor element (not the `prefers-color-scheme` media query). This enables programmatic theme switching:
+
+```html
+<body data-mode="dark">   <!-- force dark -->
+<body data-mode="light">  <!-- force light -->
+```
+
+The `dark:` variant in utility classes respects this selector:
+
+```html
+<div class="bg-white dark:bg-slate-900">
+```
+
+### Font Families
+
+Registers these font family tokens in the UnoCSS theme:
+
+| Token | Fonts |
+|-------|-------|
+| `font-body` | Open Sans, system-ui fallbacks |
+| `font-heading` | Open Sans, sans-serif |
+| `font-sans` | Overpass, ui-serif, sans-serif |
+| `font-mono` | Victor Mono, monospace |
+
+### Additional Rules
+
+- `hidden` → `display: none` (simple utility alias)
+
+### Svelte Extractor
+
+`extractorSvelte` is included automatically — class names inside Svelte template expressions and `class:` directives are correctly scanned.
+
+### Transformers
+
+- `transformerDirectives` — enables `@apply` and `@screen` in CSS
+- `transformerVariantGroup` — enables `hover:(bg-red text-white)` grouped variants
+
+## `presetBackgrounds` — Optional Background Patterns
+
+A separate, opt-in preset for CSS background pattern utilities:
+
+```js
+import { presetRokkit, presetBackgrounds } from '@rokkit/unocss'
+
+export default defineConfig({
+  presets: [presetRokkit(), presetBackgrounds()]
+})
+```
+
+Adds classes:
+
+| Class | Description |
+|-------|-------------|
+| `bg-graph-paper` | Major + minor grid lines |
+| `bg-grid-paper` | Simple square grid |
+| `bg-ruled-paper` | Horizontal ruled lines |
+| `bg-pattern-diagonal` | 45° diagonal lines |
+| `bg-pattern-diagonal-reverse` | -45° diagonal lines |
+| `bg-pattern-vertical` | Vertical stripes |
+| `bg-pattern-horizontal` | Horizontal stripes |
+| `bg-pattern-crosshatch` | Crosshatch (diamond mesh) |
+| `bg-pattern-dots` | Dot grid |
+| `bg-pattern-checker` | Checkerboard |
+
+Pattern appearance is controlled via CSS custom properties: `--pattern-color`, `--pattern-fill`, `--pattern-size`, `--pattern-line`.
+
+## Using `rokkit.config.js`
+
+Place a `rokkit.config.js` at your project root to keep preset options out of your build config. `loadConfig` is called internally by `presetRokkit` and merges the file with inline options:
+
+```js
+// rokkit.config.js
+export default {
+  colors: {
+    primary: 'violet',
+    surface: 'zinc'
+  },
+  skins: {
+    default:  { surface: 'shark' },
+    vibrant:  { primary: 'blue', secondary: 'purple' }
+  },
+  icons: {
+    app:       '@rokkit/icons/app.json',
+    solar:     '@iconify-json/solar/icons.json'
+  },
+  themes:     ['rokkit'],
+  switcher:   'full',
+  storageKey: 'rokkit-theme'
+}
+```
+
+Then use `presetRokkit()` with no arguments — the config file is auto-loaded.
+
+## Utility Classes and Data Attributes
+
+For the full utility class reference (tone scale, semantic color patterns, `data-mode`, `data-style`, etc.), see `docs/llms/index.txt`.
+
+## Import
+
+```js
+import { presetRokkit } from '@rokkit/unocss'
+import { presetBackgrounds } from '@rokkit/unocss'  // optional
+```
