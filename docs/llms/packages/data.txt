@@ -4,6 +4,12 @@
 
 Use `@rokkit/data` when your application needs to transform or analyze raw arrays of objects before passing them to components. Components in `@rokkit/ui` display data as-is; `@rokkit/data` is for pre-processing pipelines.
 
+## Install
+
+```bash
+npm install @rokkit/data
+```
+
 ## Quick Start
 
 ```js

@@ -4,6 +4,12 @@
 
 This package provides the data and navigation layer that backs all Rokkit UI components. It is rarely used directly in application code — components consume it internally — but it is useful when building custom components or extending existing ones.
 
+## Install
+
+```bash
+npm install @rokkit/states
+```
+
 ## Exports
 
 ```javascript
@@ -120,19 +126,11 @@ new LazyProxyItem(raw, fields?, key?, level?, lazyLoad?)
 
 ## BASE_FIELDS
 
-The default field mapping configuration — an object mapping semantic names to their default raw data keys.
-
 ```javascript
 import { BASE_FIELDS } from '@rokkit/states'
-// {
-//   label: 'label', value: 'value', id: 'id', icon: 'icon',
-//   href: 'href', children: 'children', type: 'type',
-//   disabled: 'disabled', expanded: 'expanded', selected: 'selected',
-//   snippet: 'snippet', description: 'description'
-// }
 ```
 
-Pass a partial override to `ProxyItem`, `ProxyTree`, or components' `fields` prop to remap your data keys.
+`BASE_FIELDS` is re-exported from `@rokkit/states` for convenience. The canonical documentation — including the full key list and usage guidance — is in [@rokkit/core](/llms/packages/core.txt).
 
 ---
 

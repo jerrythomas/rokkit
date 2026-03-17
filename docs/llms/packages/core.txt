@@ -4,6 +4,12 @@
 
 Most applications never import `@rokkit/core` directly — components from `@rokkit/ui` and `@rokkit/forms` consume it internally. Import directly when you need to build custom components that integrate with Rokkit's field-mapping system, generate theme rules for a custom UnoCSS setup, or access the icon/state-icon constants.
 
+## Install
+
+```bash
+npm install @rokkit/core
+```
+
 ## Field Mapping
 
 ### `FieldMapper` class

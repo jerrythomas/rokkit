@@ -8,6 +8,12 @@ Svelte actions are plain functions applied to DOM elements via the `use:` direct
 <div use:someAction={options} onsomeevent={handler}>...</div>
 ```
 
+## Install
+
+```bash
+npm install @rokkit/actions
+```
+
 ---
 
 ## `navigable` — Keyboard Navigation (simple)

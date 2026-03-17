@@ -4,6 +4,12 @@
 
 The `@rokkit/app` package provides higher-level components that sit above the core UI library. They integrate with `@rokkit/states` (the `vibe` store) and `@rokkit/actions`, and are designed to be dropped directly into SvelteKit layouts.
 
+## Install
+
+```bash
+npm install @rokkit/app
+```
+
 ## Exports
 
 ```javascript

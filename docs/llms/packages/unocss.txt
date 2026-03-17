@@ -2,6 +2,12 @@
 
 > UnoCSS preset for Rokkit — wires up color tokens, semantic shortcuts, icon integration, and dark mode in a single `presetRokkit()` call.
 
+## Install
+
+```bash
+npm install @rokkit/unocss
+```
+
 ## Quick Start
 
 ```js

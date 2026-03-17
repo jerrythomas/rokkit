@@ -4,6 +4,12 @@
 
 The `@rokkit/forms` package generates reactive forms from data, schema, and layout definitions. It provides `FormBuilder` for programmatic form management and `FormRenderer` for rendering forms as Svelte components. Fields are automatically derived from data structure, or can be explicitly defined via JSON Schema and layout objects.
 
+## Install
+
+```bash
+npm install @rokkit/forms
+```
+
 ## Quick Start
 
 ```svelte

@@ -2,6 +2,12 @@
 
 > CSS theme files for Rokkit components — structural base styles and visual theme variants.
 
+## Install
+
+```bash
+npm install @rokkit/themes
+```
+
 ## Available Themes
 
 Rokkit ships four visual themes. Each is a separate CSS file in `@rokkit/themes/dist/`:
