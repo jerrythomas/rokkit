@@ -1,0 +1,130 @@
+# Composability — Snippets & Customization
+
+> Svelte snippets let you control how every item renders without forking components. The component owns data, navigation, and ARIA; you own the pixels.
+
+## Item Snippets
+
+Every collection component (`List`, `Select`, `Tree`, `Tabs`, `Table`, etc.) accepts an `itemContent` snippet that receives a `ProxyItem`. The component handles layout and accessibility; the snippet only needs to render content:
+
+```svelte
+<List items={users} {fields}>
+  {#snippet itemContent(proxy)}
+    <div class="flex items-center gap-3">
+      <img src={proxy.get('avatar')} class="h-8 w-8 rounded-full" />
+      <div>
+        <p class="font-medium">{proxy.label}</p>
+        <p class="text-surface-z5 text-xs">{proxy.get('role')}</p>
+      </div>
+    </div>
+  {/snippet}
+</List>
+```
+
+---
+
+## ProxyItem API
+
+Snippets receive a `ProxyItem` — a unified interface to the underlying data item, whether it's an object or a primitive.
+
+| Property / Method | Returns | Description |
+|-------------------|---------|-------------|
+| `proxy.label` | `string` | Mapped display text (via `fields.text`) |
+| `proxy.icon` | `string` | Mapped icon CSS class (via `fields.icon`) |
+| `proxy.href` | `string` | Mapped href — renders item as `<a>` if set |
+| `proxy.value` | `any` | The original raw item (object or primitive) |
+| `proxy.disabled` | `boolean` | Whether the item is disabled |
+| `proxy.expanded` | `boolean` | Expand state for groups/nodes |
+| `proxy.get('field')` | `any` | Read any field by name (mapped or raw) |
+
+**`proxy.get(field)`** resolves through the field map first, then falls back to the raw property name. Use it to access fields that aren't part of the standard mapping:
+
+```svelte
+{#snippet itemContent(proxy)}
+  <span>{proxy.label}</span>
+  <span class="badge">{proxy.get('status')}</span>  <!-- reads item.status -->
+{/snippet}
+```
+
+---
+
+## Per-Item Snippets
+
+Route different items to different snippets by setting `snippet` on the data item. Items without a `snippet` field use the default `itemContent`:
+
+```svelte
+<script>
+  const items = [
+    { label: 'Apple', snippet: 'fruit' },
+    { label: 'Carrot', snippet: 'vegetable' }
+  ]
+</script>
+
+<List {items}>
+  {#snippet fruit(proxy)}
+    <span>{proxy.label}</span>
+    <span class="text-xs text-error-z5">fruit</span>
+  {/snippet}
+  {#snippet vegetable(proxy)}
+    <span>{proxy.label}</span>
+    <span class="text-xs text-success-z5">veggie</span>
+  {/snippet}
+</List>
+```
+
+This is useful for mixed-type lists (e.g., headers, dividers, and regular items in the same collection).
+
+---
+
+## Group Snippets
+
+For nested/grouped data, `groupContent` customizes the group header row:
+
+```svelte
+<List items={data} {fields} collapsible>
+  {#snippet groupContent(proxy)}
+    <h3 class="text-sm font-semibold tracking-wide uppercase">
+      {proxy.label}
+    </h3>
+  {/snippet}
+</List>
+```
+
+---
+
+## Interactive Snippets — stopPropagation Gotcha
+
+When embedding interactive elements (checkboxes, toggles, buttons) inside snippets, call `e.stopPropagation()` on the control's click handler. Without it, the click bubbles to the component and triggers item selection in addition to the control's own handler:
+
+```svelte
+{#snippet itemContent(proxy)}
+  <span class="flex-1">{proxy.label}</span>
+  <input
+    type="checkbox"
+    checked={proxy.value.enabled}
+    onclick={(e) => {
+      e.stopPropagation()            <!-- ← required: prevents List from selecting item -->
+      proxy.value.enabled = !proxy.value.enabled
+    }}
+  />
+{/snippet}
+```
+
+This applies to any interactive element inside an `itemContent` snippet: checkboxes, toggle switches, inline buttons, link badges, etc.
+
+---
+
+## Available Snippet Slots
+
+| Slot | Supported by | Description |
+|------|-------------|-------------|
+| `itemContent` | List, Select, MultiSelect, Tree, Tabs, Toggle, Table | Default item renderer |
+| `groupContent` | List, Tree | Group/section header |
+| `{name}` (named) | List, Select, Tree | Per-item snippet routing via `item.snippet` field |
+
+---
+
+## Related
+
+- [packages/states.txt](/llms/packages/states.txt) — Full `ProxyItem` class API
+- [field-mapping section in index.txt](/llms/index.txt) — How `fields` prop drives ProxyItem resolution
+- [components/list.txt](/llms/components/list.txt) — All snippet patterns applied to List

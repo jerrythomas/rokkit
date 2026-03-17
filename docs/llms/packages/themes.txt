@@ -104,6 +104,92 @@ The separation means:
 
 Each theme targets Rokkit's data attributes. For example, `[data-button]` gets border, background, and hover effects from the active theme file.
 
+## Data-Attribute Hooks for Custom Styling
+
+Rokkit components expose state through `data-*` attributes instead of class names. Target these in your CSS to style component and state variations:
+
+```css
+/* Target the list container */
+[data-list] { ... }
+
+/* Target individual items */
+[data-list-item] { ... }
+
+/* Selected state */
+[data-list-item][data-selected] {
+  background: var(--primary-100);
+  color: var(--primary-800);
+}
+
+/* Keyboard-focused state */
+[data-list-item][data-focused] {
+  outline: 2px solid var(--primary-500);
+  outline-offset: -2px;
+}
+```
+
+### Common State Attributes
+
+These state attributes are applied consistently across all components:
+
+| Attribute | When Present | Components |
+|-----------|-------------|-----------|
+| `data-selected` | Item is selected | List, Select, Tabs, Toggle |
+| `data-focused` | Item has keyboard focus | All navigable components |
+| `data-disabled` | Item is disabled | All |
+| `data-expanded` | Group or node is expanded | List, Tree, Select |
+| `data-open` | Dropdown is open | Select, Menu |
+
+### Building a Custom Theme
+
+Create a theme CSS file that targets data attributes, then import it after the base CSS:
+
+```css
+/* my-theme.css */
+[data-list-item] {
+  border-radius: 0.5rem;
+  transition: background 150ms ease;
+}
+
+[data-list-item][data-selected] {
+  background: var(--primary-100);
+  color: var(--primary-800);
+}
+
+[data-list-item][data-focused] {
+  outline: 2px solid var(--primary-500);
+  outline-offset: -2px;
+}
+```
+
+```css
+/* app.css */
+@import '@rokkit/themes/dist/base';
+@import './my-theme.css';
+```
+
+Activate it with `data-style` just like a built-in theme:
+```html
+<body data-style="my-theme">
+```
+
+## Skins
+
+Skins are pre-built color bundles applied via a CSS class on any ancestor element. They layer a specific color palette on top of the active theme, without changing the structural or visual style:
+
+```svelte
+<!-- Applied to any container or wrapper -->
+<div class="skin-default">...</div>
+<div class="skin-vibrant">...</div>
+<div class="skin-seaweed">...</div>
+```
+
+Skins are useful for scoping different color palettes to different sections of a page without changing the overall theme.
+
+**Skin vs. `data-style`:**
+- `data-style` selects the visual personality (gradients, shadows, border radius, transitions)
+- Skins change the color palette within that personality
+
 ## Utility Classes and Data Attributes
 
 For utility classes (`bg-primary-z5`, `text-surface-z8`, `data-mode`, etc.) and the full data attribute reference, see `docs/llms/index.txt`.

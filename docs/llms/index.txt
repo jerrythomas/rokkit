@@ -150,7 +150,7 @@ Most selection components share this pattern:
 
 ```svelte
 <Component
-  options={data}              <!-- or items= -->
+  items={data}                <!-- the data array -->
   bind:value                  <!-- selected value (bindable) -->
   fields={{ text: 'name' }}   <!-- map data fields to component expectations -->
   onchange={(v, item) => {}}  <!-- selection callback -->
@@ -173,8 +173,35 @@ Map any data structure without transforming data:
   }
 </script>
 
-<Select options={users} {fields} bind:value />
+<Select items={users} {fields} bind:value />
 ```
+
+### Field Roles Reference
+
+| Field role | Default key | Description | Used by |
+|------------|-------------|-------------|---------|
+| `text` | `'label'` | Display label | All components |
+| `value` | `'value'` | Selection value (what `bind:value` receives) | Select, List, Toggle, etc. |
+| `icon` | `'icon'` | Icon CSS class | List, Select, Menu, Tree |
+| `children` | `'children'` | Nested items for groups/trees | List (groups), Tree |
+| `description` | `'description'` | Secondary text below label | List, Select |
+| `disabled` | `'disabled'` | Disables the item | All |
+| `component` | `'component'` | Svelte component to render the item | List, Select |
+| `snippet` | `'snippet'` | Named snippet to route the item to | List, Select, Tree |
+
+**Default mapping:** if you pass no `fields` prop, Rokkit uses field names directly — a property named `label` becomes the display text, `value` becomes the selection value, etc.
+
+**Primitive arrays:** strings and numbers work without any field mapping. `['Alice', 'Bob']` gives you both `label` and `value` set to the primitive itself.
+
+```svelte
+<!-- Primitives work without fields -->
+<Select items={['Alice', 'Bob', 'Carol']} bind:value />
+
+<!-- Object array with explicit mapping -->
+<Select items={users} fields={{ text: 'fullName', value: 'userId' }} bind:value />
+```
+
+**Same pattern everywhere:** `items` + `fields` + `bind:value` works identically across List, Select, MultiSelect, Tree, Tabs, Toggle, Table, Menu — no adapters needed.
 
 ## Theming
 
@@ -272,6 +299,7 @@ Utility class pattern: `{prefix}-{role}-z{n}`
 ## Reference
 
 - [cli.txt](/llms/cli.txt) — CLI reference (`rokkit init`, `rokkit doctor`, icon tools)
+- [composability.txt](/llms/composability.txt) — Snippets, ProxyItem API, per-item routing, interactive snippet patterns
 - [packages/](/llms/packages/) — per-package documentation
 - [components/](/llms/components/) — component reference (30+ components)
 

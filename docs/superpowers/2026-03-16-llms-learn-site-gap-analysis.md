@@ -36,7 +36,7 @@
 | Item | Status | Notes |
 |------|--------|-------|
 | Component `.txt` files for all 30+ UI components | ✅ Existing | 28 component files were in place before this work |
-| Extract useful content from learn site pages into llms docs | ⬜ Todo | Sub-project B remainder — tutorials, usage patterns from learn pages that LLMs would benefit from |
+| Extract useful content from learn site pages into llms docs | ✅ Done | `composability.txt` (ProxyItem API, per-item routing, stopPropagation), `themes.txt` expanded (data-attr hooks, custom theme, skins), `index.txt` field roles table + primitive arrays |
 | `@rokkit/chart` package docs | ⬜ Todo | Not included in Plan 2 — chart package needs `docs/llms/packages/chart.txt` |
 | `@rokkit/icons` package docs | ⬜ Todo | Icons partially covered in `index.txt`; dedicated `packages/icons.txt` would be useful |
 | `@rokkit/stories` package docs | ⬜ Low priority | Internal/testing utility; lower LLM relevance |
@@ -105,6 +105,4 @@
 
 ## Next Priorities
 
-1. **`@rokkit/chart` and `@rokkit/icons` llms package docs** — small content files, fills remaining gaps
-2. **Learn page content extraction into llms** — audit learn pages for useful LLM-facing content
-3. **Style B full learn pages** — longer-term content investment (demos, interactive examples)
+1. **Style B full learn pages** — longer-term content investment (demos, interactive examples for actions, forms, data packages)
