@@ -1,0 +1,299 @@
+# @rokkit/data
+
+> Data manipulation utilities for tabular and hierarchical data — filtering, sorting, grouping, rollup aggregation, formatting, and joins.
+
+Use `@rokkit/data` when your application needs to transform or analyze raw arrays of objects before passing them to components. Components in `@rokkit/ui` display data as-is; `@rokkit/data` is for pre-processing pipelines.
+
+## Quick Start
+
+```js
+import { dataset, filterData, createFormatter, deriveMetadata } from '@rokkit/data'
+
+// Fluent dataset pipeline
+const result = dataset(rawData)
+  .where(row => row.active)
+  .sortBy('name')
+  .groupBy('category')
+  .rollup()
+  .select()
+
+// One-shot filter
+const filtered = filterData(rows, [{ column: 'status', operator: '=', value: 'active' }])
+```
+
+## `dataset(data, options?)` — Fluent Data Pipeline
+
+The primary entry point. Returns a `DataSet` instance with a chainable API for querying and transforming arrays of objects.
+
+```js
+import { dataset } from '@rokkit/data'
+
+const ds = dataset(salesData)
+  .where(row => row.region === 'West')
+  .sortBy('amount')             // ascending by default
+  .sortBy(['amount', false])    // descending
+  .rename({ amt: 'amount' })    // rename keys
+  .fillNA({ amount: 0 })        // fill nulls/undefined
+  .drop('internal_id')          // remove columns
+  .apply(row => ({ ...row, tax: row.amount * 0.1 }))  // row transform
+```
+
+### Grouping and Rollup
+
+```js
+const grouped = dataset(salesData)
+  .groupBy('region', 'quarter')
+  .summarize(['amount', 'units'], {
+    totalAmount: arr => arr.reduce((s, r) => s + r.amount, 0),
+    totalUnits:  arr => arr.reduce((s, r) => s + r.units, 0)
+  })
+  .rollup()
+  .select()
+```
+
+### Set Operations
+
+```js
+const ds1 = dataset(setA)
+const ds2 = dataset(setB)
+
+ds1.union(ds2)         // combine all rows
+ds1.intersect(ds2)     // rows in both (deep equality)
+ds1.minus(ds2)         // rows in ds1 not in ds2
+```
+
+### Joins
+
+```js
+import { innerJoin, leftJoin, rightJoin, fullJoin, crossJoin, semiJoin, antiJoin } from '@rokkit/data'
+
+const joined = innerJoin(orders, customers, (o, c) => o.customerId === c.id)
+// or via DataSet:
+dataset(orders).innerJoin(dataset(customers), (o, c) => o.customerId === c.id).select()
+```
+
+| Join Type | Description |
+|-----------|-------------|
+| `innerJoin` | Rows matching in both tables |
+| `leftJoin` | All rows from left, matched from right |
+| `rightJoin` | All rows from right, matched from left |
+| `fullJoin` | All rows from both tables |
+| `crossJoin` | Cartesian product |
+| `semiJoin` | Left rows that have a match in right |
+| `antiJoin` | Left rows with no match in right |
+
+### DataSet API Reference
+
+| Method | Description |
+|--------|-------------|
+| `where(fn)` | Set a row filter predicate (applied by `.select()` or `.remove()`/`.update()`) |
+| `sortBy(...fields)` | Sort in place; field can be string (asc), `[name, bool]` pair, or `{name, sorter}` |
+| `groupBy(...fields)` | Set group-by keys for rollup |
+| `alignBy(...fields)` | Align (fill gaps in) rolled-up data by specified fields |
+| `summarize(from, using)` | Add an aggregation: `from` selects source fields, `using` maps target field → formula |
+| `rollup()` | Execute groupBy + summarize, returns a new DataSet |
+| `select(...cols)` | Return final data array (optionally pick specific columns; applies where filter) |
+| `rename(how)` | Rename column keys (object map or function) |
+| `drop(...fields)` | Return new DataSet without specified columns |
+| `fillNA(value)` | Fill null/undefined cells with defaults |
+| `update(value)` | Update rows matching current `where` predicate |
+| `remove()` | Delete rows matching current `where` predicate |
+| `apply(fn)` | Map each row through a transform function |
+| `union(other)` | Concatenate with another DataSet or array |
+| `minus(other)` | Remove rows that appear in another set |
+| `intersect(other)` | Keep only rows that appear in another set |
+| `data` | Get/set the raw data array directly |
+
+## Filter Utilities
+
+### `filterObjectArray(data, options)`
+
+Filter a single condition against an array of objects:
+
+```js
+import { filterObjectArray } from '@rokkit/data'
+
+filterObjectArray(rows, { column: 'age', operator: '>=', value: 30 })
+filterObjectArray(rows, { operator: '~*', value: /alice/i })  // search all columns
+```
+
+### `filterData(data, filters)`
+
+Apply multiple filter conditions in sequence:
+
+```js
+import { filterData } from '@rokkit/data'
+
+filterData(rows, [
+  { column: 'status', operator: '=',  value: 'active' },
+  { column: 'score',  operator: '>=', value: 50 }
+])
+```
+
+Supported operators: `=`, `!=`, `>`, `<`, `>=`, `<=`, `~` (regex), `~*` (case-insensitive regex), and negated variants with `!` prefix.
+
+### `parseFilters(string)`
+
+Parse a search string with optional column-qualified filters into a filter array:
+
+```js
+import { parseFilters } from '@rokkit/data'
+
+parseFilters('status:active age>=30 alice')
+// [
+//   { column: 'status', operator: '~*', value: /active/i },
+//   { column: 'age',    operator: '>=', value: 30 },
+//   { operator: '~*',   value: /alice/i }  // bare term = full-row search
+// ]
+```
+
+Useful for implementing a search-filter input that supports power-user column filters.
+
+## `createFormatter(type, language?, decimalPlaces?)` — Value Formatting
+
+Create a locale-aware formatter function:
+
+```js
+import { createFormatter } from '@rokkit/data'
+
+const currencyFmt = createFormatter('currency', 'en-US', 2)
+currencyFmt(1234.5, 'USD')  // '$1,234.50'
+
+const dateFmt = createFormatter('date', 'de-DE')
+dateFmt(new Date())         // '16.3.2026'
+
+const intFmt = createFormatter('integer', 'en-US')
+intFmt(1234567)             // '1,234,567'
+```
+
+| Type | Description |
+|------|-------------|
+| `'currency'` | `toLocaleString` with `style: 'currency'`; accepts optional currency code as second arg |
+| `'number'` | `toLocaleString` with fixed decimal places |
+| `'integer'` | `toLocaleString` with no decimal places |
+| `'date'` | `toLocaleDateString` |
+| `'time'` | `toLocaleTimeString` |
+| `'object'` / `'array'` | `JSON.stringify` |
+| `'ellipsis'` | Always returns `'...'` |
+| anything else | Identity — returns value unchanged |
+
+## Metadata Inference
+
+### `deriveMetadata(data, options?)`
+
+Derive column metadata from a data array — type inference, sort configuration, formatter assignment, and optional action columns. Primarily used by table/grid components.
+
+```js
+import { deriveMetadata } from '@rokkit/data'
+
+const columns = deriveMetadata(salesData, {
+  language: 'en-US',
+  columns: [
+    { name: 'amount', type: 'currency', sortable: true },
+    { name: 'date',   type: 'date' }
+  ],
+  actions: ['edit', 'delete']
+})
+```
+
+### `deriveColumns(data, options?)` / `deriveSortableColumn(value)`
+
+- `deriveColumns` — scan data to auto-detect column names and types
+- `deriveSortableColumn` — normalize a sort spec (string / `[name, bool]` / `{name, sorter}`) into a `{ name, sorter }` object
+
+## Hierarchy Utilities
+
+### `deriveHierarchy(data, options)`
+
+Build a parent-child hierarchy from flat data with a path column:
+
+```js
+import { deriveHierarchy } from '@rokkit/data'
+
+const nodes = deriveHierarchy(data, { path: 'category', separator: '/' })
+// Each node: { depth, value, path, row, children, isParent, isExpanded, isHidden, parent }
+```
+
+### `hierarchicalFilter(arr, filterFn)`
+
+Apply a filter to a flattened hierarchy, retaining parents of matching children (`retainedByChild` flag).
+
+### `toggleExpansion(node)` / `toggleSelection(item)`
+
+Toggle the `isExpanded` or `selected` state of a hierarchy node and cascade to children/parents.
+
+### `flattenNestedChildren(arr)` / `removeChildren(arr)`
+
+In-place operations on flattened hierarchy arrays:
+- `flattenNestedChildren` — expand all `children` arrays inline
+- `removeChildren` — remove child rows (where `parent` is set)
+
+## `dataview(data, options)` — Svelte Store View
+
+Create a Svelte-compatible store wrapping metadata + hierarchy for data grid scenarios:
+
+```js
+import { dataview } from '@rokkit/data'
+
+const view = dataview(employees, { path: 'department', separator: '.' })
+// view is a readable Svelte store: { columns, hierarchy }
+view.sortBy('name', true)    // sort ascending
+view.clearSort()             // reset sort
+view.select(index)           // toggle selection at index
+view.toggle(index)           // toggle expansion at index
+```
+
+## Schema Model
+
+### `model()`
+
+Derive and merge data schema models (field name + inferred type):
+
+```js
+import { model } from '@rokkit/data'
+
+const schema = model()
+  .from(dataArray)
+  .merge(otherModel)
+  .renameUsing(key => key.toLowerCase())
+  .get()
+// [{ name: 'field', type: 'string' }, ...]
+```
+
+### `renamer(mapping)`
+
+Build a key-renaming function from a source → target key mapping (used by `DataSet.rename()`).
+
+## `typeOf(value)` — Type Detection
+
+```js
+import { typeOf } from '@rokkit/data'
+typeOf(42)           // 'number'
+typeOf('hello')      // 'string'
+typeOf(new Date())   // 'date'
+typeOf([])           // 'array'
+typeOf({})           // 'object'
+typeOf(null)         // 'null'
+```
+
+## When to Use @rokkit/data vs Handling Data Manually
+
+Use `@rokkit/data` when you need:
+
+- **Multi-step pipelines** — chaining filter → sort → group → rollup in a readable way
+- **Locale-aware formatting** — `createFormatter` handles currency, dates, and numbers correctly for any locale
+- **Column metadata inference** — `deriveMetadata` saves manual column configuration for table components
+- **Hierarchy from path strings** — `deriveHierarchy` converts flat category paths into tree structures
+- **Search filter parsing** — `parseFilters` lets users type `column:value operator` expressions naturally
+- **Relational joins** — when combining two datasets like SQL-style queries
+
+Handle data manually when:
+- Your transform is a simple one-liner (`.filter()`, `.map()`, `.sort()`)
+- You're already using a dedicated data library (e.g., d3-array, Arquero, Observable Plot)
+- The data arrives pre-shaped from an API
+
+## Import
+
+```js
+import { dataset, filterData, createFormatter, deriveMetadata, deriveHierarchy } from '@rokkit/data'
+```
