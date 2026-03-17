@@ -17,10 +17,22 @@
 		The style attribute selects the visual personality:
 	</p>
 	<Code content={activateTheme} language="html" />
+	<p>Four built-in styles are available:</p>
+	<table>
+		<thead>
+			<tr><th>Style</th><th>Personality</th></tr>
+		</thead>
+		<tbody>
+			<tr><td><code>rokkit</code></td><td>Rich gradients, glowing borders, and vibrant accents</td></tr>
+			<tr><td><code>minimal</code></td><td>Clean, understated styling with subtle borders and soft backgrounds</td></tr>
+			<tr><td><code>material</code></td><td>Material Design–inspired with elevation shadows and depth</td></tr>
+			<tr><td><code>glass</code></td><td>Glassmorphism with backdrop blur, transparency, and subtle borders</td></tr>
+		</tbody>
+	</table>
 	<p>
-		Three built-in styles are available: <strong>rokkit</strong> (the default, opinionated design),
-		<strong>minimal</strong> (clean, low-contrast), and <strong>material</strong>
-		(Material Design-inspired).
+		<code>data-style</code> can be set on any ancestor element, not just <code>&lt;html&gt;</code>.
+		Multiple themes can coexist on the same page — components inherit the nearest ancestor's
+		<code>data-style</code>.
 	</p>
 
 	<h2>Data attributes</h2>

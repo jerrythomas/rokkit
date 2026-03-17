@@ -1,7 +1,7 @@
 {
   "title": "Accessibility",
   "description": "Data table fallback, keyboard navigation between data points, screen reader announcements",
-  "icon": "i-solar:accessibility-bold-duotone",
+  "icon": "i-glyph:accessibility",
   "category": "charts",
   "order": 8
 }

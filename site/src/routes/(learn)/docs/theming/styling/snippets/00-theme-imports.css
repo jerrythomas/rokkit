@@ -1,3 +1,8 @@
-// Import both layers
-@import '@rokkit/themes/base.css';   // layout
-@import '@rokkit/themes/rokkit.css';  // visual theme
+/* Required for all Rokkit projects */
+@import '@rokkit/themes/base.css';   /* structural layout for all components */
+
+/* Import one or more visual themes */
+@import '@rokkit/themes/rokkit.css';    /* rich gradients, glowing borders */
+@import '@rokkit/themes/minimal.css';   /* clean, subtle borders */
+@import '@rokkit/themes/material.css';  /* elevation shadows and depth */
+@import '@rokkit/themes/glass.css';     /* glassmorphism with backdrop blur */

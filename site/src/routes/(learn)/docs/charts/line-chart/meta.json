@@ -1,7 +1,7 @@
 {
   "title": "Line / Area Chart",
   "description": "Animated line and area chart with smooth data transitions",
-  "icon": "i-solar:graph-new-bold-duotone",
+  "icon": "i-glyph:graph-new",
   "category": "charts",
   "order": 3
 }

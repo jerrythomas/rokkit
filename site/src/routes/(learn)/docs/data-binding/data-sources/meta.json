@@ -1,7 +1,7 @@
 {
   "title": "Data Sources",
   "description": "Connecting components to async data, paginated lists, and lazy-loaded trees",
-  "icon": "i-solar:cloud-download-bold-duotone",
+  "icon": "i-glyph:cloud-download",
   "category": "data-binding",
   "order": 3
 }

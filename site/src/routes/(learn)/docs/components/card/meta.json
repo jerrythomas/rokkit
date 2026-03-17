@@ -3,5 +3,5 @@
   "description": "Container card component for organizing content",
   "category": "display",
   "sequence": 50,
-  "icon": "i-component:card"
+  "icon": "i-glyph:card"
 }

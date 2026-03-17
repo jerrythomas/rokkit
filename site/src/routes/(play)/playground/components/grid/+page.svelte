@@ -32,14 +32,14 @@
 	}
 
 	const items = [
-		{ label: 'Dashboard', icon: 'i-lucide:layout-dashboard', value: 'dashboard' },
-		{ label: 'Analytics', icon: 'i-lucide:bar-chart-2', value: 'analytics' },
-		{ label: 'Users', icon: 'i-lucide:users', value: 'users' },
-		{ label: 'Settings', icon: 'i-lucide:settings', value: 'settings' },
-		{ label: 'Messages', icon: 'i-lucide:message-square', value: 'messages' },
-		{ label: 'Files', icon: 'i-lucide:folder', value: 'files' },
-		{ label: 'Calendar', icon: 'i-lucide:calendar', value: 'calendar' },
-		{ label: 'Reports', icon: 'i-lucide:file-text', value: 'reports' }
+		{ label: 'Dashboard', icon: 'i-glyph:widget', value: 'dashboard' },
+		{ label: 'Analytics', icon: 'i-glyph:chart-2', value: 'analytics' },
+		{ label: 'Users', icon: 'i-glyph:users', value: 'users' },
+		{ label: 'Settings', icon: 'i-glyph:settings', value: 'settings' },
+		{ label: 'Messages', icon: 'i-glyph:message', value: 'messages' },
+		{ label: 'Files', icon: 'i-glyph:folder', value: 'files' },
+		{ label: 'Calendar', icon: 'i-glyph:calendar', value: 'calendar' },
+		{ label: 'Reports', icon: 'i-glyph:file-text', value: 'reports' }
 	]
 
 	let selected = $state('dashboard')

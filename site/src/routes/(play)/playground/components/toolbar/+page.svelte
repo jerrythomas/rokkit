@@ -40,15 +40,15 @@
 	}
 
 	const items = [
-		{ label: 'Bold', icon: 'i-lucide:bold', value: 'bold' },
-		{ label: 'Italic', icon: 'i-lucide:italic', value: 'italic' },
-		{ label: 'Underline', icon: 'i-lucide:underline', value: 'underline' },
+		{ label: 'Bold', icon: 'i-glyph:text-bold', value: 'bold' },
+		{ label: 'Italic', icon: 'i-glyph:text-italic', value: 'italic' },
+		{ label: 'Underline', icon: 'i-glyph:text-underline', value: 'underline' },
 		{ type: 'separator' },
-		{ label: 'Align Left', icon: 'i-lucide:align-left', value: 'align-left' },
-		{ label: 'Align Center', icon: 'i-lucide:align-center', value: 'align-center' },
-		{ label: 'Align Right', icon: 'i-lucide:align-right', value: 'align-right' },
+		{ label: 'Align Left', icon: 'i-glyph:text-bold', value: 'align-left' },
+		{ label: 'Align Center', icon: 'i-glyph:layers-minimalistic', value: 'align-center' },
+		{ label: 'Align Right', icon: 'i-glyph:text-bold', value: 'align-right' },
 		{ type: 'spacer' },
-		{ label: 'Settings', icon: 'i-lucide:settings', value: 'settings' }
+		{ label: 'Settings', icon: 'i-glyph:settings', value: 'settings' }
 	]
 
 	let lastAction = $state('')
@@ -85,14 +85,14 @@
 					disabled={props.disabled}
 				>
 					{#snippet start()}
-						<Button label="New" icon="i-lucide:plus" style="ghost" size={props.size} />
-						<Button label="Open" icon="i-lucide:folder-open" style="ghost" size={props.size} />
+						<Button label="New" icon="i-glyph:add-circle" style="ghost" size={props.size} />
+						<Button label="Open" icon="i-glyph:folder-open" style="ghost" size={props.size} />
 					{/snippet}
 					{#snippet center()}
 						<span class="text-surface-z6 text-sm">document.txt</span>
 					{/snippet}
 					{#snippet end()}
-						<Button label="Save" icon="i-lucide:save" style="ghost" size={props.size} />
+						<Button label="Save" icon="i-glyph:diskette" style="ghost" size={props.size} />
 					{/snippet}
 				</Toolbar>
 			</div>

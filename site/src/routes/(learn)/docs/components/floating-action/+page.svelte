@@ -16,12 +16,12 @@
   import { FloatingAction } from '@rokkit/ui'
 
   const actions = [
-    { label: 'Edit', value: 'edit', icon: 'i-lucide:edit' },
-    { label: 'Copy', value: 'copy', icon: 'i-lucide:copy' },
-    { label: 'Share', value: 'share', icon: 'i-lucide:share' }
+    { label: 'Edit', value: 'edit', icon: 'i-glyph:edit' },
+    { label: 'Copy', value: 'copy', icon: 'i-glyph:copy' },
+    { label: 'Share', value: 'share', icon: 'i-glyph:share' }
   ]
 </script>
 
-<FloatingAction items={actions} icon="i-lucide:plus" onselect={(v) => console.log(v)} />`}
+<FloatingAction items={actions} icon="i-glyph:add-circle" onselect={(v) => console.log(v)} />`}
 	/>
 </article>

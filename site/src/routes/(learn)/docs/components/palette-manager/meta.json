@@ -1,6 +1,6 @@
 {
   "title": "PaletteManager",
   "description": "Interactive color palette editor for theme customization",
-  "icon": "i-lucide:palette",
+  "icon": "i-glyph:palette",
   "category": "layout"
 }

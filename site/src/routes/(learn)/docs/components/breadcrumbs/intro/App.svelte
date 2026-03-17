@@ -3,8 +3,8 @@
 	import { BreadCrumbs } from '@rokkit/ui'
 
 	let items = [
-		{ label: 'Home', icon: 'i-lucide:home' },
-		{ label: 'Products', icon: 'i-lucide:package' },
+		{ label: 'Home', icon: 'i-glyph:home' },
+		{ label: 'Products', icon: 'i-glyph:box' },
 		{ label: 'Electronics' },
 		{ label: 'Laptops' }
 	]

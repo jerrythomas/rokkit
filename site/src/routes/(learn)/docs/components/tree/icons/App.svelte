@@ -7,21 +7,21 @@
 			label: 'Documents',
 			value: 'docs',
 			children: [
-				{ label: 'Report.pdf', value: 'report', icon: 'i-lucide:file-text' },
-				{ label: 'Notes.md', value: 'notes', icon: 'i-lucide:file-text' }
+				{ label: 'Report.pdf', value: 'report', icon: 'i-glyph:file-text' },
+				{ label: 'Notes.md', value: 'notes', icon: 'i-glyph:file-text' }
 			]
 		},
 		{
 			label: 'Images',
 			value: 'images',
 			children: [
-				{ label: 'photo.jpg', value: 'photo', icon: 'i-lucide:image' },
-				{ label: 'logo.svg', value: 'logo', icon: 'i-lucide:image' }
+				{ label: 'photo.jpg', value: 'photo', icon: 'i-glyph:gallery' },
+				{ label: 'logo.svg', value: 'logo', icon: 'i-glyph:gallery' }
 			]
 		}
 	]
 
-	const icons = { opened: 'i-lucide:folder-open', closed: 'i-lucide:folder' }
+	const icons = { opened: 'i-glyph:folder-open', closed: 'i-glyph:folder' }
 	let value = $state(null)
 </script>
 

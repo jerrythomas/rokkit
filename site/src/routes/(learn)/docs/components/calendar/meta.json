@@ -2,6 +2,6 @@
   "category": "inputs",
   "title": "Calendar",
   "description": "A simple Calendar component for date selection.",
-  "icon": "i-component:calendar",
+  "icon": "i-glyph:calendar",
   "labs": true
 }

@@ -40,7 +40,7 @@
 				<ButtonGroup size={props.size}>
 					<Button
 						label="Cut"
-						icon="i-lucide:scissors"
+						icon="i-glyph:scissors"
 						style={props.style}
 						size={props.size}
 						disabled={props.disabled}
@@ -48,7 +48,7 @@
 					/>
 					<Button
 						label="Copy"
-						icon="i-lucide:copy"
+						icon="i-glyph:copy"
 						style={props.style}
 						size={props.size}
 						disabled={props.disabled}
@@ -56,7 +56,7 @@
 					/>
 					<Button
 						label="Paste"
-						icon="i-lucide:clipboard"
+						icon="i-glyph:clipboard"
 						style={props.style}
 						size={props.size}
 						disabled={props.disabled}
@@ -69,7 +69,7 @@
 				<ButtonGroup size={props.size}>
 					<Button
 						label="Previous"
-						icon="i-lucide:chevron-left"
+						icon="i-glyph:arrow-left"
 						style={props.style}
 						size={props.size}
 						disabled={props.disabled}
@@ -77,7 +77,7 @@
 					/>
 					<Button
 						label="Next"
-						icon="i-lucide:chevron-right"
+						icon="i-glyph:alt-arrow-right"
 						style={props.style}
 						size={props.size}
 						disabled={props.disabled}

@@ -27,7 +27,7 @@
 			<Card class="w-64" onclick={() => console.log('clicked!')}>
 				{#snippet header()}
 					<div class="flex items-center gap-2">
-						<span class="i-lucide:mouse-pointer-click text-xl"></span>
+						<span class="i-glyph:cursor text-xl"></span>
 						<h3 class="text-lg font-semibold">Clickable Card</h3>
 					</div>
 				{/snippet}

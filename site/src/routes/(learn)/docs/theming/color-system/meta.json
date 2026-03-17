@@ -1,7 +1,7 @@
 {
   "title": "Color System",
   "description": "Semantic z-depth colors, surface palettes, and dark mode support",
-  "icon": "i-solar:pallete-2-bold-duotone",
+  "icon": "i-glyph:pallete-2",
   "category": "theming",
   "order": 2,
   "tags": ["colors", "palette", "surface", "dark-mode", "semantic"]

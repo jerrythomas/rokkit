@@ -1,7 +1,7 @@
 {
   "title": "Pill",
   "description": "Removable item wrappers and tags",
-  "icon": "i-component:pill",
+  "icon": "i-glyph:pill",
   "category": "display",
   "tags": ["pill", "removable", "tags", "wrappers"],
   "experimental": false

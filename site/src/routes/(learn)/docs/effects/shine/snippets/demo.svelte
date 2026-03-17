@@ -23,7 +23,7 @@
 		<div
 			class="bg-surface-z2 border-surface-z3 flex h-48 w-48 cursor-pointer items-center justify-center rounded-xl border shadow-lg"
 		>
-			<span class="i-lucide:diamond text-surface-z5 text-4xl"></span>
+			<span class="i-glyph:star text-surface-z5 text-4xl"></span>
 		</div>
 	</Shine>
 </div>

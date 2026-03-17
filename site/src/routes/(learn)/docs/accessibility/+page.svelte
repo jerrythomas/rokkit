@@ -114,8 +114,42 @@
 	</p>
 
 	<h2>Tooltips</h2>
-	<p class="text-surface-z5">Coming soon.</p>
+	<p>
+		Rokkit does not include a built-in tooltip component, but all interactive elements support
+		standard HTML <code>title</code> attributes for basic browser tooltips. For richer tooltips,
+		use any Svelte-compatible tooltip library alongside Rokkit components — the
+		<code>class</code> prop and snippet system let you attach tooltip triggers to any item or
+		element without modifying component internals.
+	</p>
+	<p>
+		For icon-only buttons or toolbar items, use <code>aria-label</code> to provide accessible names
+		that screen readers announce. The <code>data-*</code> attribute structure makes it
+		straightforward to attach tooltip behavior via Svelte actions.
+	</p>
 
 	<h2>Internationalization</h2>
-	<p class="text-surface-z5">Coming soon.</p>
+	<p>
+		Rokkit components are locale-agnostic by design. All text displayed in components comes from
+		your data (via the <code>fields</code> prop) or from snippets you provide — there are no
+		hard-coded user-facing strings inside Rokkit components themselves.
+	</p>
+	<p>This means i18n integration is straightforward:</p>
+	<ul>
+		<li>
+			Pass translated strings in your <code>items</code> arrays — no adapter needed since Rokkit
+			reads whatever field you map via <code>fields.text</code>
+		</li>
+		<li>
+			Use Svelte snippets to render custom item content with your i18n library (e.g.,
+			<code>$t('key')</code> from <code>svelte-i18n</code> or <code>i18next</code>)
+		</li>
+		<li>
+			ARIA labels on container elements come from your layout — add <code>aria-label</code> via the
+			<code>class</code> prop or wrapper elements as needed
+		</li>
+	</ul>
+	<p>
+		Type-ahead search matches against the resolved <code>text</code> field value, so it works
+		correctly with any translated strings passed through your data.
+	</p>
 </article>

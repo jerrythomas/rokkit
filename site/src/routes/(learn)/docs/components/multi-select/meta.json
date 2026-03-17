@@ -1,7 +1,7 @@
 {
   "category": "navigation-selection",
   "title": "MultiSelect",
-  "icon": "i-component:multiselect",
+  "icon": "i-glyph:multiselect",
   "description": "Input component that allows users to choose multiple values from a list of options.",
   "llms": true
 }

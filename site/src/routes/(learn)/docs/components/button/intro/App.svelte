@@ -6,7 +6,7 @@
 
 <div class="flex flex-wrap items-center gap-4">
 	<Button label="Click me" onclick={() => clickCount++} />
-	<Button label="With Icon" icon="i-lucide:star" onclick={() => clickCount++} />
+	<Button label="With Icon" icon="i-glyph:star" onclick={() => clickCount++} />
 	<Button label="Disabled" disabled />
 	<Button label="Loading" loading />
 </div>

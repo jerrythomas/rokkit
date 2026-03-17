@@ -16,7 +16,7 @@
 			class:border-blue-500={dragging}
 			class:bg-blue-50={dragging}
 		>
-			<span class={dragging ? 'i-lucide:download' : 'i-lucide:cloud-upload'} class:text-2xl={true}
+			<span class={dragging ? 'i-glyph:download' : 'i-glyph:cloud-upload'} class:text-2xl={true}
 			></span>
 			<p class="m-0 text-sm">
 				{dragging ? 'Release to upload' : 'Drag files here or click to browse'}

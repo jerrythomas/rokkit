@@ -3,10 +3,10 @@
 </script>
 
 <!-- Icon-only buttons -->
-<Button icon="i-lucide:bold" />
+<Button icon="i-glyph:text-bold" />
 
 <!-- With right icon -->
-<Button label="Download" iconRight="i-lucide:download" />
+<Button label="Download" iconRight="i-glyph:download" />
 
 <!-- As a link -->
 <Button label="Visit" href="https://example.com" target="_blank" />

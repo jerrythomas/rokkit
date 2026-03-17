@@ -33,32 +33,32 @@
 		{
 			label: 'src',
 			value: 'src',
-			icon: 'i-lucide:folder',
+			icon: 'i-glyph:folder',
 			children: [
 				{
 					label: 'components',
 					value: 'components',
-					icon: 'i-lucide:folder',
+					icon: 'i-glyph:folder',
 					children: [
-						{ label: 'Menu.svelte', value: 'menu', icon: 'i-lucide:file-code' },
-						{ label: 'List.svelte', value: 'list', icon: 'i-lucide:file-code' },
-						{ label: 'Tree.svelte', value: 'tree', icon: 'i-lucide:file-code' }
+						{ label: 'Menu.svelte', value: 'menu', icon: 'i-glyph:code-square' },
+						{ label: 'List.svelte', value: 'list', icon: 'i-glyph:code-square' },
+						{ label: 'Tree.svelte', value: 'tree', icon: 'i-glyph:code-square' }
 					]
 				},
 				{
 					label: 'types',
 					value: 'types',
-					icon: 'i-lucide:folder',
+					icon: 'i-glyph:folder',
 					children: [
-						{ label: 'menu.ts', value: 'menu-types', icon: 'i-lucide:file-code' },
-						{ label: 'list.ts', value: 'list-types', icon: 'i-lucide:file-code' }
+						{ label: 'menu.ts', value: 'menu-types', icon: 'i-glyph:code-square' },
+						{ label: 'list.ts', value: 'list-types', icon: 'i-glyph:code-square' }
 					]
 				},
-				{ label: 'index.ts', value: 'index', icon: 'i-lucide:file-code' }
+				{ label: 'index.ts', value: 'index', icon: 'i-glyph:code-square' }
 			]
 		},
-		{ label: 'package.json', value: 'pkg', icon: 'i-lucide:file-text' },
-		{ label: 'README.md', value: 'readme', icon: 'i-lucide:file-text' }
+		{ label: 'package.json', value: 'pkg', icon: 'i-glyph:file-text' },
+		{ label: 'README.md', value: 'readme', icon: 'i-glyph:file-text' }
 	]
 
 	function handleSelect(value) {

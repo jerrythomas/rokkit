@@ -1,6 +1,6 @@
 {
   "category": "inputs",
   "title": "Rating",
-  "icon": "i-component:rating",
+  "icon": "i-glyph:rating",
   "description": "An input component that allows selection of a rating value using icons."
 }

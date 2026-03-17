@@ -1,7 +1,7 @@
 {
   "category": "navigation-selection",
   "title": "Select",
-  "icon": "i-component:select",
+  "icon": "i-glyph:select",
   "description": "Input component that allows users to choose one value from a list of options.",
   "llms": true
 }

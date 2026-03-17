@@ -1,7 +1,7 @@
 {
   "title": "ValidationReport",
   "description": "Display validation results and status",
-  "icon": "✅",
+  "icon": "i-glyph:check-circle",
   "category": "Utilities",
   "tags": ["validation", "report", "status", "results"],
   "experimental": false

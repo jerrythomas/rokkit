@@ -1,7 +1,7 @@
 {
   "title": "Whitelabeling",
   "description": "Full visual replacement via skin, typography, icon, and shape tokens",
-  "icon": "i-solar:magic-stick-bold-duotone",
+  "icon": "i-glyph:magic-stick",
   "category": "theming",
   "order": 5
 }

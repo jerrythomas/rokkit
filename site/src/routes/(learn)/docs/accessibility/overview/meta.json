@@ -1,7 +1,7 @@
 {
   "title": "Overview",
   "description": "The controller + navigator pattern: how Rokkit delivers keyboard navigation and ARIA",
-  "icon": "i-solar:accessibility-bold-duotone",
+  "icon": "i-glyph:accessibility",
   "category": "accessibility",
   "order": 1
 }

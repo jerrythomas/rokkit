@@ -23,7 +23,7 @@
 		<div
 			class="bg-secondary-z3 flex h-32 w-48 cursor-pointer items-center justify-center rounded-xl shadow-lg"
 		>
-			<span class="i-lucide:image text-on-secondary">Brightness</span>
+			<span class="i-glyph:gallery text-on-secondary">Brightness</span>
 		</div>
 	</Tilt>
 
@@ -31,7 +31,7 @@
 		<div
 			class="bg-accent-z3 flex h-32 w-48 cursor-pointer items-center justify-center rounded-xl shadow-lg"
 		>
-			<span class="i-lucide:image text-on-secondary">Perspective</span>
+			<span class="i-glyph:gallery text-on-secondary">Perspective</span>
 		</div>
 	</Tilt>
 
@@ -39,7 +39,7 @@
 		<div
 			class="bg-success-z3 flex h-32 w-48 cursor-pointer items-center justify-center rounded-xl shadow-lg"
 		>
-			<span class="i-lucide:image text-on-secondary">Combination</span>
+			<span class="i-glyph:gallery text-on-secondary">Combination</span>
 		</div>
 	</Tilt>
 </div>

@@ -30,17 +30,17 @@
 	}
 
 	const withIcons = [
-		{ label: 'Day', value: 'day', icon: 'i-lucide:sun' },
-		{ label: 'Week', value: 'week', icon: 'i-lucide:calendar' },
-		{ label: 'Month', value: 'month', icon: 'i-lucide:calendar-range' }
+		{ label: 'Day', value: 'day', icon: 'i-glyph:sun' },
+		{ label: 'Week', value: 'week', icon: 'i-glyph:calendar' },
+		{ label: 'Month', value: 'month', icon: 'i-glyph:calendar' }
 	]
 
 	const textOnly = ['Daily', 'Weekly', 'Monthly', 'Yearly']
 
 	const modeOptions = [
-		{ value: 'system', icon: 'i-lucide:monitor', label: 'System' },
-		{ value: 'light', icon: 'i-lucide:sun', label: 'Light' },
-		{ value: 'dark', icon: 'i-lucide:moon', label: 'Dark' }
+		{ value: 'system', icon: 'i-glyph:monitor', label: 'System' },
+		{ value: 'light', icon: 'i-glyph:sun', label: 'Light' },
+		{ value: 'dark', icon: 'i-glyph:moon', label: 'Dark' }
 	]
 </script>
 

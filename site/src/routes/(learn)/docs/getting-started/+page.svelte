@@ -8,6 +8,7 @@
 	import unoConfig from './snippets/03-uno-config.js?raw'
 	import firstComponent from './snippets/04-first-component.svelte?raw'
 	import samePattern from './snippets/05-same-pattern.svelte?raw'
+	import cliInit from './snippets/06-cli-init.sh?raw'
 </script>
 
 <article data-article-root>
@@ -104,5 +105,12 @@
 	<Code content={samePattern} language="svelte" />
 
 	<h2>Quick Start</h2>
-	<p class="text-surface-z5">Coming soon.</p>
+	<p>The fastest way to add Rokkit to an existing SvelteKit project is with the CLI:</p>
+	<Code content={cliInit} language="bash" />
+	<p>
+		The CLI sets up UnoCSS, imports theme CSS, and adds <code>data-style</code> to
+		<code>&lt;html&gt;</code> automatically. See the
+		<a href="/docs/getting-started/quick-start">Quick Start guide</a> for a full step-by-step
+		walkthrough.
+	</p>
 </article>

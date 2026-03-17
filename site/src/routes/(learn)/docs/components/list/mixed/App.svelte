@@ -3,12 +3,12 @@
 	import { List } from '@rokkit/ui'
 
 	const items = [
-		{ label: 'Apple', snippet: 'fruit', icon: 'i-lucide:apple' },
-		{ label: 'Carrot', snippet: 'vegetable', icon: 'i-lucide:carrot' },
-		{ label: 'Banana', snippet: 'fruit', icon: 'i-lucide:banana' },
-		{ label: 'Broccoli', snippet: 'vegetable', icon: 'i-lucide:leaf' },
-		{ label: 'Cherry', snippet: 'fruit', icon: 'i-lucide:cherry' },
-		{ label: 'Spinach', snippet: 'vegetable', icon: 'i-lucide:leaf' }
+		{ label: 'Apple', snippet: 'fruit', icon: 'i-glyph:leaf' },
+		{ label: 'Carrot', snippet: 'vegetable', icon: 'i-glyph:leaf' },
+		{ label: 'Banana', snippet: 'fruit', icon: 'i-glyph:leaf' },
+		{ label: 'Broccoli', snippet: 'vegetable', icon: 'i-glyph:leaf' },
+		{ label: 'Cherry', snippet: 'fruit', icon: 'i-glyph:heart' },
+		{ label: 'Spinach', snippet: 'vegetable', icon: 'i-glyph:leaf' }
 	]
 
 	let value = $state(null)

@@ -6,7 +6,7 @@
 	<Card>
 		{#snippet header()}
 			<div class="flex items-center gap-2">
-				<span class="i-lucide:user text-lg" aria-hidden="true"></span>
+				<span class="i-glyph:user text-lg" aria-hidden="true"></span>
 				<h3 class="font-semibold">Profile</h3>
 			</div>
 		{/snippet}
@@ -24,7 +24,7 @@
 	<Card>
 		{#snippet header()}
 			<div class="flex items-center gap-2">
-				<span class="i-lucide:bell text-lg" aria-hidden="true"></span>
+				<span class="i-glyph:bell text-lg" aria-hidden="true"></span>
 				<h3 class="font-semibold">Notifications</h3>
 				<span class="ml-auto rounded-full bg-red-500 px-2 py-0.5 text-xs text-white">3</span>
 			</div>

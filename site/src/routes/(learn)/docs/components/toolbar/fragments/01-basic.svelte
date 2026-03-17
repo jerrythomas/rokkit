@@ -3,10 +3,10 @@
 	import { Toolbar } from '@rokkit/ui'
 
 	let items = [
-		{ label: 'Bold', icon: 'i-lucide:bold' },
-		{ label: 'Italic', icon: 'i-lucide:italic' },
+		{ label: 'Bold', icon: 'i-glyph:text-bold' },
+		{ label: 'Italic', icon: 'i-glyph:text-italic' },
 		{ itemType: 'separator' },
-		{ label: 'Align Left', icon: 'i-lucide:align-left' }
+		{ label: 'Align Left', icon: 'i-glyph:text-bold' }
 	]
 </script>
 

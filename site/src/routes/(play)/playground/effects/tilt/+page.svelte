@@ -46,7 +46,7 @@
 				setBrightness={props.setBrightness}
 			>
 				<div class="bg-surface-z2 flex h-48 w-48 items-center justify-center rounded-xl shadow-lg">
-					<span class="i-lucide:image text-surface-z5 text-4xl"></span>
+					<span class="i-glyph:gallery text-surface-z5 text-4xl"></span>
 				</div>
 			</Tilt>
 		</div>

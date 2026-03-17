@@ -43,11 +43,11 @@
 	]
 
 	const withIcons = [
-		{ label: 'Home', value: 'home', icon: 'i-lucide:home' },
-		{ label: 'Settings', value: 'settings', icon: 'i-lucide:settings' },
-		{ label: 'User', value: 'user', icon: 'i-lucide:user' },
-		{ label: 'Mail', value: 'mail', icon: 'i-lucide:mail' },
-		{ label: 'Bell', value: 'bell', icon: 'i-lucide:bell' }
+		{ label: 'Home', value: 'home', icon: 'i-glyph:home' },
+		{ label: 'Settings', value: 'settings', icon: 'i-glyph:settings' },
+		{ label: 'User', value: 'user', icon: 'i-glyph:user' },
+		{ label: 'Mail', value: 'mail', icon: 'i-glyph:letter' },
+		{ label: 'Bell', value: 'bell', icon: 'i-glyph:bell' }
 	]
 </script>
 

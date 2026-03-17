@@ -4,9 +4,9 @@
 
 	// label is now the default text field — no fields prop needed for standard objects
 	let options = [
-		{ label: 'Light', value: 'light', icon: 'i-lucide:sun' },
-		{ label: 'Dark', value: 'dark', icon: 'i-lucide:moon' },
-		{ label: 'System', value: 'system', icon: 'i-lucide:monitor' }
+		{ label: 'Light', value: 'light', icon: 'i-glyph:sun' },
+		{ label: 'Dark', value: 'dark', icon: 'i-glyph:moon' },
+		{ label: 'System', value: 'system', icon: 'i-glyph:monitor' }
 	]
 	let value = $state('light')
 </script>

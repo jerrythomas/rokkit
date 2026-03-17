@@ -41,19 +41,19 @@
 	}
 
 	const items = [
-		{ label: 'Cut', value: 'cut', icon: 'i-lucide:scissors', shortcut: 'Ctrl+X' },
-		{ label: 'Copy', value: 'copy', icon: 'i-lucide:copy', shortcut: 'Ctrl+C' },
-		{ label: 'Paste', value: 'paste', icon: 'i-lucide:clipboard', shortcut: 'Ctrl+V' },
-		{ label: 'Delete', value: 'delete', icon: 'i-lucide:trash' }
+		{ label: 'Cut', value: 'cut', icon: 'i-glyph:scissors', shortcut: 'Ctrl+X' },
+		{ label: 'Copy', value: 'copy', icon: 'i-glyph:copy', shortcut: 'Ctrl+C' },
+		{ label: 'Paste', value: 'paste', icon: 'i-glyph:clipboard', shortcut: 'Ctrl+V' },
+		{ label: 'Delete', value: 'delete', icon: 'i-glyph:trash-bin' }
 	]
 
 	const groupedItems = [
 		{
 			label: 'File',
 			children: [
-				{ label: 'New', value: 'new', icon: 'i-lucide:file', shortcut: 'Ctrl+N' },
-				{ label: 'Open', value: 'open', icon: 'i-lucide:folder-open', shortcut: 'Ctrl+O' },
-				{ label: 'Save', value: 'save', icon: 'i-lucide:save', shortcut: 'Ctrl+S' }
+				{ label: 'New', value: 'new', icon: 'i-glyph:file', shortcut: 'Ctrl+N' },
+				{ label: 'Open', value: 'open', icon: 'i-glyph:folder-open', shortcut: 'Ctrl+O' },
+				{ label: 'Save', value: 'save', icon: 'i-glyph:diskette', shortcut: 'Ctrl+S' }
 			]
 		},
 		{
@@ -78,7 +78,7 @@
 				<Menu
 					{items}
 					label={props.label}
-					icon="i-lucide:menu"
+					icon="i-glyph:menu"
 					size={props.size}
 					align={props.align}
 					direction={props.direction}

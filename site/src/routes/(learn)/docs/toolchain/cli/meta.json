@@ -1,7 +1,7 @@
 {
   "title": "CLI",
   "description": "Add Rokkit to a project, upgrade packages, and scaffold skins via the CLI",
-  "icon": "i-solar:terminal-bold-duotone",
+  "icon": "i-glyph:terminal",
   "category": "toolchain",
   "order": 2
 }

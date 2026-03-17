@@ -6,17 +6,17 @@
 		{
 			label: 'File',
 			children: [
-				{ label: 'New', icon: 'i-lucide:plus' },
-				{ label: 'Open', icon: 'i-lucide:folder-open' },
-				{ label: 'Save', icon: 'i-lucide:save' }
+				{ label: 'New', icon: 'i-glyph:add-circle' },
+				{ label: 'Open', icon: 'i-glyph:folder-open' },
+				{ label: 'Save', icon: 'i-glyph:diskette' }
 			]
 		},
 		{
 			label: 'Edit',
 			children: [
-				{ label: 'Undo', icon: 'i-lucide:rotate-ccw' },
-				{ label: 'Copy', icon: 'i-lucide:copy' },
-				{ label: 'Paste', icon: 'i-lucide:clipboard' }
+				{ label: 'Undo', icon: 'i-glyph:restart' },
+				{ label: 'Copy', icon: 'i-glyph:copy' },
+				{ label: 'Paste', icon: 'i-glyph:clipboard' }
 			]
 		}
 	]

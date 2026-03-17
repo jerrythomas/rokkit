@@ -1,7 +1,7 @@
 {
   "title": "UploadTarget",
   "description": "Drag-and-drop file zone with MIME type and size validation",
-  "icon": "i-lucide:upload",
+  "icon": "i-glyph:cloud-upload",
   "category": "inputs",
   "order": 30,
   "tags": ["upload", "file", "drag-drop", "validation"],

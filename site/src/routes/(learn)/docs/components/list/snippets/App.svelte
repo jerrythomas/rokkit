@@ -3,11 +3,11 @@
 	import { List } from '@rokkit/ui'
 
 	const items = [
-		{ label: 'Design system', status: 'done', icon: 'i-lucide:palette' },
-		{ label: 'Component library', status: 'done', icon: 'i-lucide:blocks' },
-		{ label: 'Documentation', status: 'in-progress', icon: 'i-lucide:book-open' },
-		{ label: 'E2E tests', status: 'in-progress', icon: 'i-lucide:flask-conical' },
-		{ label: 'Release v1.0', status: 'pending', icon: 'i-lucide:rocket' }
+		{ label: 'Design system', status: 'done', icon: 'i-glyph:palette' },
+		{ label: 'Component library', status: 'done', icon: 'i-glyph:widget' },
+		{ label: 'Documentation', status: 'in-progress', icon: 'i-glyph:book' },
+		{ label: 'E2E tests', status: 'in-progress', icon: 'i-glyph:atom' },
+		{ label: 'Release v1.0', status: 'pending', icon: 'i-glyph:rocket' }
 	]
 
 	const statusStyle = {

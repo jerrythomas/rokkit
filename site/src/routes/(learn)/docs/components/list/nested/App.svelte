@@ -5,17 +5,17 @@
 	const items = [
 		{
 			label: 'Fruits',
-			icon: 'i-lucide:apple',
+			icon: 'i-glyph:leaf',
 			children: [{ label: 'Apple' }, { label: 'Banana' }, { label: 'Cherry' }]
 		},
 		{
 			label: 'Vegetables',
-			icon: 'i-lucide:carrot',
+			icon: 'i-glyph:leaf',
 			children: [{ label: 'Carrot' }, { label: 'Broccoli' }, { label: 'Spinach' }]
 		},
 		{
 			label: 'Grains',
-			icon: 'i-lucide:wheat',
+			icon: 'i-glyph:leaf',
 			children: [{ label: 'Rice' }, { label: 'Wheat' }, { label: 'Oats' }]
 		}
 	]

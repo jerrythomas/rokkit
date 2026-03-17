@@ -5,12 +5,12 @@
 	// ─── Flat list ────────────────────────────────────────────────────────────────
 
 	const flat = [
-		{ label: 'Dashboard', icon: 'i-lucide:layout-dashboard' },
-		{ label: 'Analytics', icon: 'i-lucide:bar-chart-2' },
-		{ label: 'Reports', icon: 'i-lucide:file-text' },
+		{ label: 'Dashboard', icon: 'i-glyph:widget' },
+		{ label: 'Analytics', icon: 'i-glyph:chart-2' },
+		{ label: 'Reports', icon: 'i-glyph:file-text' },
 		{ type: 'separator' },
-		{ label: 'Settings', icon: 'i-lucide:settings' },
-		{ label: 'Disabled item', icon: 'i-lucide:lock', disabled: true }
+		{ label: 'Settings', icon: 'i-glyph:settings' },
+		{ label: 'Disabled item', icon: 'i-glyph:lock', disabled: true }
 	]
 
 	let flatValue = $state(null)
@@ -20,7 +20,7 @@
 	const nested = [
 		{
 			label: 'Components',
-			icon: 'i-lucide:box',
+			icon: 'i-glyph:box',
 			children: [
 				{ label: 'Button', value: 'button' },
 				{ label: 'Card', value: 'card' },
@@ -30,7 +30,7 @@
 		{ type: 'separator' },
 		{
 			label: 'Forms',
-			icon: 'i-lucide:form-input',
+			icon: 'i-glyph:input-text',
 			children: [
 				{ label: 'Input', value: 'input' },
 				{ label: 'Select', value: 'select' },
@@ -38,7 +38,7 @@
 			]
 		},
 		{ type: 'spacer' },
-		{ label: 'Documentation', icon: 'i-lucide:book-open', value: 'docs' }
+		{ label: 'Documentation', icon: 'i-glyph:book', value: 'docs' }
 	]
 
 	let nestedValue = $state(null)
@@ -46,13 +46,13 @@
 	// ─── Navigation links ─────────────────────────────────────────────────────────
 
 	const links = [
-		{ label: 'Introduction', href: '#introduction', icon: 'i-lucide:info' },
-		{ label: 'Getting Started', href: '#getting-started', icon: 'i-lucide:rocket' },
-		{ label: 'API Reference', href: '#api', icon: 'i-lucide:code-2' },
+		{ label: 'Introduction', href: '#introduction', icon: 'i-glyph:info-circle' },
+		{ label: 'Getting Started', href: '#getting-started', icon: 'i-glyph:rocket' },
+		{ label: 'API Reference', href: '#api', icon: 'i-glyph:code' },
 		{ type: 'separator' },
 		{
 			label: 'Examples',
-			icon: 'i-lucide:layers',
+			icon: 'i-glyph:layers',
 			children: [
 				{ label: 'Basic', href: '#basic' },
 				{ label: 'Advanced', href: '#advanced' }
@@ -63,11 +63,11 @@
 	// ─── Custom snippet demo ──────────────────────────────────────────────────────
 
 	const withBadge = [
-		{ label: 'Inbox', icon: 'i-lucide:inbox', badge: 12 },
-		{ label: 'Sent', icon: 'i-lucide:send', badge: null },
-		{ label: 'Drafts', icon: 'i-lucide:file', badge: 3 },
+		{ label: 'Inbox', icon: 'i-glyph:inbox', badge: 12 },
+		{ label: 'Sent', icon: 'i-glyph:plain', badge: null },
+		{ label: 'Drafts', icon: 'i-glyph:file', badge: 3 },
 		{ type: 'separator' },
-		{ label: 'Trash', icon: 'i-lucide:trash-2', badge: null }
+		{ label: 'Trash', icon: 'i-glyph:trash-bin', badge: null }
 	]
 
 	let badgeValue = $state(null)
@@ -86,57 +86,57 @@
 	// ─── Scroll wrapper demo ──────────────────────────────────────────────────────
 
 	const long = [
-		{ label: 'Afghanistan', value: 'af', icon: 'i-lucide:globe' },
-		{ label: 'Albania', value: 'al', icon: 'i-lucide:globe' },
-		{ label: 'Algeria', value: 'dz', icon: 'i-lucide:globe' },
-		{ label: 'Argentina', value: 'ar', icon: 'i-lucide:globe' },
-		{ label: 'Australia', value: 'au', icon: 'i-lucide:globe' },
-		{ label: 'Austria', value: 'at', icon: 'i-lucide:globe' },
-		{ label: 'Belgium', value: 'be', icon: 'i-lucide:globe' },
-		{ label: 'Brazil', value: 'br', icon: 'i-lucide:globe' },
-		{ label: 'Canada', value: 'ca', icon: 'i-lucide:globe' },
-		{ label: 'Chile', value: 'cl', icon: 'i-lucide:globe' },
-		{ label: 'China', value: 'cn', icon: 'i-lucide:globe' },
-		{ label: 'Colombia', value: 'co', icon: 'i-lucide:globe' },
-		{ label: 'Croatia', value: 'hr', icon: 'i-lucide:globe' },
-		{ label: 'Czech Republic', value: 'cz', icon: 'i-lucide:globe' },
-		{ label: 'Denmark', value: 'dk', icon: 'i-lucide:globe' },
-		{ label: 'Egypt', value: 'eg', icon: 'i-lucide:globe' },
-		{ label: 'Finland', value: 'fi', icon: 'i-lucide:globe' },
-		{ label: 'France', value: 'fr', icon: 'i-lucide:globe' },
-		{ label: 'Germany', value: 'de', icon: 'i-lucide:globe' },
-		{ label: 'Greece', value: 'gr', icon: 'i-lucide:globe' },
-		{ label: 'Hungary', value: 'hu', icon: 'i-lucide:globe' },
-		{ label: 'India', value: 'in', icon: 'i-lucide:globe' },
-		{ label: 'Indonesia', value: 'id', icon: 'i-lucide:globe' },
-		{ label: 'Iran', value: 'ir', icon: 'i-lucide:globe' },
-		{ label: 'Ireland', value: 'ie', icon: 'i-lucide:globe' },
-		{ label: 'Israel', value: 'il', icon: 'i-lucide:globe' },
-		{ label: 'Italy', value: 'it', icon: 'i-lucide:globe' },
-		{ label: 'Japan', value: 'jp', icon: 'i-lucide:globe' },
-		{ label: 'Mexico', value: 'mx', icon: 'i-lucide:globe' },
-		{ label: 'Netherlands', value: 'nl', icon: 'i-lucide:globe' },
-		{ label: 'New Zealand', value: 'nz', icon: 'i-lucide:globe' },
-		{ label: 'Nigeria', value: 'ng', icon: 'i-lucide:globe' },
-		{ label: 'Norway', value: 'no', icon: 'i-lucide:globe' },
-		{ label: 'Pakistan', value: 'pk', icon: 'i-lucide:globe' },
-		{ label: 'Peru', value: 'pe', icon: 'i-lucide:globe' },
-		{ label: 'Philippines', value: 'ph', icon: 'i-lucide:globe' },
-		{ label: 'Poland', value: 'pl', icon: 'i-lucide:globe' },
-		{ label: 'Portugal', value: 'pt', icon: 'i-lucide:globe' },
-		{ label: 'Romania', value: 'ro', icon: 'i-lucide:globe' },
-		{ label: 'Russia', value: 'ru', icon: 'i-lucide:globe' },
-		{ label: 'Saudi Arabia', value: 'sa', icon: 'i-lucide:globe' },
-		{ label: 'South Africa', value: 'za', icon: 'i-lucide:globe' },
-		{ label: 'South Korea', value: 'kr', icon: 'i-lucide:globe' },
-		{ label: 'Spain', value: 'es', icon: 'i-lucide:globe' },
-		{ label: 'Sweden', value: 'se', icon: 'i-lucide:globe' },
-		{ label: 'Switzerland', value: 'ch', icon: 'i-lucide:globe' },
-		{ label: 'Turkey', value: 'tr', icon: 'i-lucide:globe' },
-		{ label: 'Ukraine', value: 'ua', icon: 'i-lucide:globe' },
-		{ label: 'United Kingdom', value: 'gb', icon: 'i-lucide:globe' },
-		{ label: 'United States', value: 'us', icon: 'i-lucide:globe' },
-		{ label: 'Vietnam', value: 'vn', icon: 'i-lucide:globe' }
+		{ label: 'Afghanistan', value: 'af', icon: 'i-glyph:global' },
+		{ label: 'Albania', value: 'al', icon: 'i-glyph:global' },
+		{ label: 'Algeria', value: 'dz', icon: 'i-glyph:global' },
+		{ label: 'Argentina', value: 'ar', icon: 'i-glyph:global' },
+		{ label: 'Australia', value: 'au', icon: 'i-glyph:global' },
+		{ label: 'Austria', value: 'at', icon: 'i-glyph:global' },
+		{ label: 'Belgium', value: 'be', icon: 'i-glyph:global' },
+		{ label: 'Brazil', value: 'br', icon: 'i-glyph:global' },
+		{ label: 'Canada', value: 'ca', icon: 'i-glyph:global' },
+		{ label: 'Chile', value: 'cl', icon: 'i-glyph:global' },
+		{ label: 'China', value: 'cn', icon: 'i-glyph:global' },
+		{ label: 'Colombia', value: 'co', icon: 'i-glyph:global' },
+		{ label: 'Croatia', value: 'hr', icon: 'i-glyph:global' },
+		{ label: 'Czech Republic', value: 'cz', icon: 'i-glyph:global' },
+		{ label: 'Denmark', value: 'dk', icon: 'i-glyph:global' },
+		{ label: 'Egypt', value: 'eg', icon: 'i-glyph:global' },
+		{ label: 'Finland', value: 'fi', icon: 'i-glyph:global' },
+		{ label: 'France', value: 'fr', icon: 'i-glyph:global' },
+		{ label: 'Germany', value: 'de', icon: 'i-glyph:global' },
+		{ label: 'Greece', value: 'gr', icon: 'i-glyph:global' },
+		{ label: 'Hungary', value: 'hu', icon: 'i-glyph:global' },
+		{ label: 'India', value: 'in', icon: 'i-glyph:global' },
+		{ label: 'Indonesia', value: 'id', icon: 'i-glyph:global' },
+		{ label: 'Iran', value: 'ir', icon: 'i-glyph:global' },
+		{ label: 'Ireland', value: 'ie', icon: 'i-glyph:global' },
+		{ label: 'Israel', value: 'il', icon: 'i-glyph:global' },
+		{ label: 'Italy', value: 'it', icon: 'i-glyph:global' },
+		{ label: 'Japan', value: 'jp', icon: 'i-glyph:global' },
+		{ label: 'Mexico', value: 'mx', icon: 'i-glyph:global' },
+		{ label: 'Netherlands', value: 'nl', icon: 'i-glyph:global' },
+		{ label: 'New Zealand', value: 'nz', icon: 'i-glyph:global' },
+		{ label: 'Nigeria', value: 'ng', icon: 'i-glyph:global' },
+		{ label: 'Norway', value: 'no', icon: 'i-glyph:global' },
+		{ label: 'Pakistan', value: 'pk', icon: 'i-glyph:global' },
+		{ label: 'Peru', value: 'pe', icon: 'i-glyph:global' },
+		{ label: 'Philippines', value: 'ph', icon: 'i-glyph:global' },
+		{ label: 'Poland', value: 'pl', icon: 'i-glyph:global' },
+		{ label: 'Portugal', value: 'pt', icon: 'i-glyph:global' },
+		{ label: 'Romania', value: 'ro', icon: 'i-glyph:global' },
+		{ label: 'Russia', value: 'ru', icon: 'i-glyph:global' },
+		{ label: 'Saudi Arabia', value: 'sa', icon: 'i-glyph:global' },
+		{ label: 'South Africa', value: 'za', icon: 'i-glyph:global' },
+		{ label: 'South Korea', value: 'kr', icon: 'i-glyph:global' },
+		{ label: 'Spain', value: 'es', icon: 'i-glyph:global' },
+		{ label: 'Sweden', value: 'se', icon: 'i-glyph:global' },
+		{ label: 'Switzerland', value: 'ch', icon: 'i-glyph:global' },
+		{ label: 'Turkey', value: 'tr', icon: 'i-glyph:global' },
+		{ label: 'Ukraine', value: 'ua', icon: 'i-glyph:global' },
+		{ label: 'United Kingdom', value: 'gb', icon: 'i-glyph:global' },
+		{ label: 'United States', value: 'us', icon: 'i-glyph:global' },
+		{ label: 'Vietnam', value: 'vn', icon: 'i-glyph:global' }
 	]
 
 	let longValue = $state(null)
@@ -178,7 +178,7 @@
 			<List
 				items={nested}
 				collapsible
-				icons={{ opened: 'i-lucide:folder-open', closed: 'i-lucide:folder' }}
+				icons={{ opened: 'i-glyph:folder-open', closed: 'i-glyph:folder' }}
 				bind:value={nestedValue}
 				onselect={(v) => (nestedValue = v)}
 			/>
@@ -221,7 +221,7 @@
 		<div class="border-surface-z3 bg-surface-z1 w-56 rounded border">
 			<List items={mixed} bind:value={mixedValue} onselect={(v) => (mixedValue = v)}>
 				{#snippet highlighted(proxy)}
-					<span class="i-lucide:star text-warning-z6" aria-hidden="true"></span>
+					<span class="i-glyph:star text-warning-z6" aria-hidden="true"></span>
 					<span class="text-warning-z7 font-medium">{proxy.label}</span>
 				{/snippet}
 			</List>

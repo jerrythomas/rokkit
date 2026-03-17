@@ -1,7 +1,7 @@
 {
   "title": "Tilt",
   "description": "Parallax 3D tilt effect that responds to mouse movement",
-  "icon": "i-lucide:rotate-3d",
+  "icon": "i-glyph:atom",
   "category": "effects",
   "order": 3
 }
