@@ -21,7 +21,7 @@
 
 	<h2>Overview</h2>
 	<p>Add a data attribute to <code>&lt;html&gt;</code> and import the theme CSS:</p>
-	<pre><code>&lt;html data-palette="rokkit" data-mode="dark"&gt;</code></pre>
+	<pre><code>&lt;html data-style="rokkit" data-mode="dark"&gt;</code></pre>
 
 	<h2>Color System</h2>
 	<p class="text-surface-z6 mb-8 text-[1.0625rem] leading-7">
