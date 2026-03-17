@@ -38,6 +38,11 @@
 			icon: 'i-solar:keyboard-bold-duotone',
 			children: [
 				{ title: 'Button', slug: '/playground/components/button', icon: 'i-component:button' },
+				{
+					title: 'Button Group',
+					slug: '/playground/components/button-group',
+					icon: 'i-component:button'
+				},
 				{ title: 'Range', slug: '/playground/components/range', icon: 'i-component:range' },
 				{ title: 'Rating', slug: '/playground/components/rating', icon: 'i-component:rating' },
 				{ title: 'Stepper', slug: '/playground/components/stepper', icon: 'i-component:stepper' },
@@ -61,7 +66,13 @@
 				{ title: 'Card', slug: '/playground/components/card', icon: 'i-component:card' },
 				{ title: 'Code', slug: '/playground/components/code', icon: 'i-component:code' },
 				{ title: 'Forms', slug: '/playground/components/forms', icon: 'i-component:forms' },
+				{ title: 'Grid', slug: '/playground/components/grid', icon: 'i-component:grid' },
 				{ title: 'Pill', slug: '/playground/components/pill', icon: 'i-component:pill' },
+				{
+					title: 'Search Filter',
+					slug: '/playground/components/search-filter',
+					icon: 'i-component:search-filter'
+				},
 				{ title: 'Table', slug: '/playground/components/table', icon: 'i-component:table' },
 				{ title: 'Timeline', slug: '/playground/components/timeline', icon: 'i-component:timeline' }
 			]
@@ -74,6 +85,11 @@
 					title: 'Carousel',
 					slug: '/playground/components/carousel',
 					icon: 'i-component:carousel'
+				},
+				{
+					title: 'Toolbar',
+					slug: '/playground/components/toolbar',
+					icon: 'i-component:toolbar'
 				},
 				{
 					title: 'Floating Action',
