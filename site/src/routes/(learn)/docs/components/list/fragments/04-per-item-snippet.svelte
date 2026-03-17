@@ -2,8 +2,8 @@
 	// @ts-nocheck
 	// Set item.snippet = 'name' to route specific items to a named snippet
 	const items = [
-		{ label: 'Apple', snippet: 'fruit', icon: 'i-lucide:apple' },
-		{ label: 'Carrot', snippet: 'vegetable', icon: 'i-lucide:carrot' }
+		{ label: 'Apple', snippet: 'fruit', icon: 'i-glyph:leaf' },
+		{ label: 'Carrot', snippet: 'vegetable', icon: 'i-glyph:leaf' }
 	]
 </script>
 

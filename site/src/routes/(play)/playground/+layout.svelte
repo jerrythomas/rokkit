@@ -8,107 +8,123 @@
 	const sections = [
 		{
 			title: 'Navigation & Selection',
-			icon: 'i-solar:list-check-bold-duotone',
+			icon: 'i-glyph:list-check',
 			children: [
 				{
 					title: 'Breadcrumbs',
 					slug: '/playground/components/breadcrumbs',
-					icon: 'i-component:breadcrumbs'
+					icon: 'i-glyph:breadcrumbs'
 				},
 				{
 					title: 'Lazy Tree',
 					slug: '/playground/components/lazy-tree',
-					icon: 'i-component:lazy-tree'
+					icon: 'i-glyph:lazy-tree'
 				},
-				{ title: 'List', slug: '/playground/components/list', icon: 'i-component:list' },
-				{ title: 'Menu', slug: '/playground/components/menu', icon: 'i-component:menu' },
+				{ title: 'List', slug: '/playground/components/list', icon: 'i-glyph:list' },
+				{ title: 'Menu', slug: '/playground/components/menu', icon: 'i-glyph:menu' },
 				{
 					title: 'Multi Select',
 					slug: '/playground/components/multi-select',
-					icon: 'i-component:multi-select'
+					icon: 'i-glyph:multi-select'
 				},
-				{ title: 'Select', slug: '/playground/components/select', icon: 'i-component:select' },
-				{ title: 'Tabs', slug: '/playground/components/tabs', icon: 'i-component:tabs' },
-				{ title: 'Toggle', slug: '/playground/components/toggle', icon: 'i-component:toggle' },
-				{ title: 'Tree', slug: '/playground/components/tree', icon: 'i-component:tree' }
+				{ title: 'Select', slug: '/playground/components/select', icon: 'i-glyph:select' },
+				{ title: 'Tabs', slug: '/playground/components/tabs', icon: 'i-glyph:tabs' },
+				{ title: 'Toggle', slug: '/playground/components/toggle', icon: 'i-glyph:toggle' },
+				{ title: 'Tree', slug: '/playground/components/tree', icon: 'i-glyph:tree' }
 			]
 		},
 		{
 			title: 'Inputs',
-			icon: 'i-solar:keyboard-bold-duotone',
+			icon: 'i-glyph:keyboard',
 			children: [
-				{ title: 'Button', slug: '/playground/components/button', icon: 'i-component:button' },
-				{ title: 'Range', slug: '/playground/components/range', icon: 'i-component:range' },
-				{ title: 'Rating', slug: '/playground/components/rating', icon: 'i-component:rating' },
-				{ title: 'Stepper', slug: '/playground/components/stepper', icon: 'i-component:stepper' },
-				{ title: 'Switch', slug: '/playground/components/switch', icon: 'i-component:switch' },
+				{ title: 'Button', slug: '/playground/components/button', icon: 'i-glyph:button' },
+				{
+					title: 'Button Group',
+					slug: '/playground/components/button-group',
+					icon: 'i-glyph:button'
+				},
+				{ title: 'Range', slug: '/playground/components/range', icon: 'i-glyph:range' },
+				{ title: 'Rating', slug: '/playground/components/rating', icon: 'i-glyph:rating' },
+				{ title: 'Stepper', slug: '/playground/components/stepper', icon: 'i-glyph:stepper' },
+				{ title: 'Switch', slug: '/playground/components/switch', icon: 'i-glyph:switch' },
 				{
 					title: 'Upload Progress',
 					slug: '/playground/components/upload-progress',
-					icon: 'i-component:upload-progress'
+					icon: 'i-glyph:upload-progress'
 				},
 				{
 					title: 'Upload Target',
 					slug: '/playground/components/upload-target',
-					icon: 'i-component:upload-target'
+					icon: 'i-glyph:upload-target'
 				}
 			]
 		},
 		{
 			title: 'Display',
-			icon: 'i-solar:gallery-wide-bold-duotone',
+			icon: 'i-glyph:gallery-wide',
 			children: [
-				{ title: 'Card', slug: '/playground/components/card', icon: 'i-component:card' },
-				{ title: 'Code', slug: '/playground/components/code', icon: 'i-component:code' },
-				{ title: 'Forms', slug: '/playground/components/forms', icon: 'i-component:forms' },
-				{ title: 'Pill', slug: '/playground/components/pill', icon: 'i-component:pill' },
-				{ title: 'Table', slug: '/playground/components/table', icon: 'i-component:table' },
-				{ title: 'Timeline', slug: '/playground/components/timeline', icon: 'i-component:timeline' }
+				{ title: 'Card', slug: '/playground/components/card', icon: 'i-glyph:card' },
+				{ title: 'Code', slug: '/playground/components/code', icon: 'i-glyph:code' },
+				{ title: 'Forms', slug: '/playground/components/forms', icon: 'i-glyph:forms' },
+				{ title: 'Grid', slug: '/playground/components/grid', icon: 'i-glyph:grid' },
+				{ title: 'Pill', slug: '/playground/components/pill', icon: 'i-glyph:pill' },
+				{
+					title: 'Search Filter',
+					slug: '/playground/components/search-filter',
+					icon: 'i-glyph:search-filter'
+				},
+				{ title: 'Table', slug: '/playground/components/table', icon: 'i-glyph:table' },
+				{ title: 'Timeline', slug: '/playground/components/timeline', icon: 'i-glyph:timeline' }
 			]
 		},
 		{
 			title: 'Layout',
-			icon: 'i-solar:layers-minimalistic-bold-duotone',
+			icon: 'i-glyph:layers-minimalistic',
 			children: [
 				{
 					title: 'Carousel',
 					slug: '/playground/components/carousel',
-					icon: 'i-component:carousel'
+					icon: 'i-glyph:carousel'
+				},
+				{
+					title: 'Toolbar',
+					slug: '/playground/components/toolbar',
+					icon: 'i-glyph:toolbar'
 				},
 				{
 					title: 'Floating Action',
 					slug: '/playground/components/floating-action',
-					icon: 'i-component:floating-action'
+					icon: 'i-glyph:floating-action'
 				},
 				{
 					title: 'Floating Navigation',
 					slug: '/playground/components/floating-navigation',
-					icon: 'i-component:floating-navigation'
+					icon: 'i-glyph:floating-navigation'
 				},
 				{
 					title: 'Palette Manager',
 					slug: '/playground/components/palette-manager',
-					icon: 'i-component:palette-manager'
+					icon: 'i-glyph:palette-manager'
 				},
-				{ title: 'Progress', slug: '/playground/components/progress', icon: 'i-component:progress' }
+				{ title: 'Progress', slug: '/playground/components/progress', icon: 'i-glyph:progress' }
 			]
 		},
 		{
 			title: 'Design Resources',
-			icon: 'i-solar:stars-bold-duotone',
-			children: [{ title: 'Icons', slug: '/playground/icons', icon: 'i-solar:stars-bold-duotone' }]
+			icon: 'i-glyph:stars',
+			children: [{ title: 'Icons', slug: '/playground/icons', icon: 'i-glyph:stars' }]
 		},
 		{
 			title: 'Effects',
-			icon: 'i-solar:magic-stick-bold-duotone',
+			icon: 'i-glyph:magic-stick',
 			children: [
-				{ title: 'Reveal', slug: '/playground/effects/reveal', icon: 'i-solar:eye-bold-duotone' },
+				{ title: 'Reveal', slug: '/playground/effects/reveal', icon: 'i-glyph:eye' },
 				{
 					title: 'Shine',
 					slug: '/playground/effects/shine',
-					icon: 'i-solar:chart-square-bold-duotone'
+					icon: 'i-glyph:chart-square'
 				},
-				{ title: 'Tilt', slug: '/playground/effects/tilt', icon: 'i-solar:cursor-bold-duotone' }
+				{ title: 'Tilt', slug: '/playground/effects/tilt', icon: 'i-glyph:cursor' }
 			]
 		}
 	]
@@ -159,7 +175,7 @@
 							title="View Documentation"
 							aria-label="View Documentation"
 						>
-							<span class="i-solar:book-2-bold-duotone inline-block text-lg" aria-hidden="true"
+							<span class="i-glyph:book-2 inline-block text-lg" aria-hidden="true"
 							></span>
 						</a>
 					{/if}
@@ -172,7 +188,7 @@
 							title="View llms.txt"
 							aria-label="View llms.txt"
 						>
-							<span class="i-solar:file-text-bold-duotone inline-block text-lg" aria-hidden="true"
+							<span class="i-glyph:file-text inline-block text-lg" aria-hidden="true"
 							></span>
 						</a>
 					{/if}

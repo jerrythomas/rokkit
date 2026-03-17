@@ -1,7 +1,7 @@
 {
   "title": "Overview",
   "description": "Theme/layout CSS separation, data-attribute hooks, and the token system",
-  "icon": "i-solar:palette-bold-duotone",
+  "icon": "i-glyph:palette",
   "category": "theming",
   "order": 1
 }

@@ -6,15 +6,15 @@
 		{
 			label: 'src',
 			value: 'src',
-			icon: 'i-lucide:folder',
+			icon: 'i-glyph:folder',
 			badge: '3 files',
 			children: [
-				{ label: 'index.ts', value: 'index', icon: 'i-lucide:file-code', badge: '2.1kb' },
-				{ label: 'utils.ts', value: 'utils', icon: 'i-lucide:file-code', badge: '1.4kb' },
-				{ label: 'types.ts', value: 'types', icon: 'i-lucide:file-code', badge: '0.8kb' }
+				{ label: 'index.ts', value: 'index', icon: 'i-glyph:code-square', badge: '2.1kb' },
+				{ label: 'utils.ts', value: 'utils', icon: 'i-glyph:code-square', badge: '1.4kb' },
+				{ label: 'types.ts', value: 'types', icon: 'i-glyph:code-square', badge: '0.8kb' }
 			]
 		},
-		{ label: 'README.md', value: 'readme', icon: 'i-lucide:file-text', badge: '0.5kb' }
+		{ label: 'README.md', value: 'readme', icon: 'i-glyph:file-text', badge: '0.5kb' }
 	]
 
 	let value = $state(null)

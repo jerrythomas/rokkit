@@ -10,8 +10,9 @@ export function load() {
 	return {
 		sections: [],
 		menu: [
-			{ title: 'Docs', slug: 'docs/getting-started/introduction' },
-			{ title: 'Playground', slug: 'playground' }
+			{ title: 'Docs', slug: 'docs/getting-started/introduction', match: '/docs' },
+			{ title: 'Playground', slug: 'playground', match: '/playground' },
+			{ title: 'Preview', slug: 'preview', match: '/preview' }
 		],
 		app: {
 			name: 'Rokkit',

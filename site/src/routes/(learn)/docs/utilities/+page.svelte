@@ -71,28 +71,18 @@
 
 	<h2>Navigator</h2>
 	<p>
-		The <code>navigator</code> Svelte action connects a controller to a container element. It intercepts
-		keyboard events, routes them through the controller, and syncs the DOM focus and ARIA state in response.
+		The <code>navigator</code> Svelte action connects a controller to a container element. It
+		intercepts keyboard events, routes them through the controller, and syncs DOM focus and ARIA
+		state. See <a href="/docs/utilities/navigator">Navigator</a> for the API reference.
 	</p>
-	<h3>Usage</h3>
-	<pre><code>&lt;ul use:navigator=&#123;&#123; controller, onselect &#125;&#125;&gt;</code></pre>
-	<p>Full API reference and examples coming soon.</p>
 
 	<h2>Controllers</h2>
 	<p>
-		Controllers are plain JavaScript objects that manage interaction state — which item is focused,
-		what is selected, whether groups are expanded. They have no DOM dependency and can be tested
-		without a browser.
+		Controllers are plain JavaScript objects that manage interaction state with no DOM dependency —
+		testable without a browser. <strong>ListController</strong> handles flat and grouped lists;
+		<strong>NestedController</strong> handles tree navigation with expand/collapse. See
+		<a href="/docs/utilities/controllers">Controllers</a> for method references.
 	</p>
-	<h3>Available Controllers</h3>
-	<ul>
-		<li>
-			<strong>ListController</strong> — flat and grouped list navigation with single/multi-select
-		</li>
-		<li><strong>NestedController</strong> — tree navigation with expand/collapse</li>
-		<li><strong>TabularController</strong> — row/column navigation for data tables</li>
-	</ul>
-	<p>Full API reference and examples coming soon.</p>
 
 	<h2>Icons</h2>
 	<p class="text-surface-z6 mb-8 text-[1.0625rem] leading-7">
@@ -168,5 +158,9 @@
 	</p>
 
 	<h2>Custom Primitives</h2>
-	<p class="text-surface-z5">Coming soon.</p>
+	<p>
+		Build your own accessible components using the same controllers and navigator action that
+		Rokkit uses internally. See
+		<a href="/docs/utilities/custom-primitives">Custom Primitives</a> for a complete worked example.
+	</p>
 </article>

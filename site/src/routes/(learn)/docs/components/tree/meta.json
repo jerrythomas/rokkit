@@ -1,7 +1,7 @@
 {
   "title": "Tree",
   "description": "Hierarchical data navigation with tree lines and keyboard navigation",
-  "icon": "i-component:tree",
+  "icon": "i-glyph:tree",
   "category": "navigation-selection",
   "tags": ["tree", "hierarchical", "data", "navigation"],
   "experimental": false,

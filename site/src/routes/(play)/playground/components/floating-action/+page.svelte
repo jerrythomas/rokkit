@@ -46,10 +46,10 @@
 	}
 
 	const actions = [
-		{ label: 'Edit', value: 'edit', icon: 'i-lucide:edit' },
-		{ label: 'Copy', value: 'copy', icon: 'i-lucide:copy' },
-		{ label: 'Share', value: 'share', icon: 'i-lucide:share' },
-		{ label: 'Delete', value: 'delete', icon: 'i-lucide:trash' }
+		{ label: 'Edit', value: 'edit', icon: 'i-glyph:edit' },
+		{ label: 'Copy', value: 'copy', icon: 'i-glyph:copy' },
+		{ label: 'Share', value: 'share', icon: 'i-glyph:share' },
+		{ label: 'Delete', value: 'delete', icon: 'i-glyph:trash-bin' }
 	]
 
 	function handleSelect(value) {
@@ -64,7 +64,7 @@
 		>
 			<FloatingAction
 				items={actions}
-				icon="i-lucide:plus"
+				icon="i-glyph:add-circle"
 				expand={props.expand}
 				position={props.position}
 				itemAlign={props.itemAlign}

@@ -4,14 +4,14 @@
 	import PlaySection from '$lib/components/PlaySection.svelte'
 
 	const items = [
-		{ label: 'Home', value: 'home', icon: 'i-lucide:home' },
+		{ label: 'Home', value: 'home', icon: 'i-glyph:home' },
 		{ label: 'Products', value: 'products' },
 		{ label: 'Electronics', value: 'electronics' },
 		{ label: 'Laptops', value: 'laptops' }
 	]
 
 	const shortItems = [
-		{ label: 'Home', value: 'home', icon: 'i-lucide:home' },
+		{ label: 'Home', value: 'home', icon: 'i-glyph:home' },
 		{ label: 'Settings', value: 'settings' }
 	]
 
@@ -35,7 +35,7 @@
 
 			<div class="flex flex-col gap-2">
 				<span class="text-surface-z5 text-sm">Custom separator</span>
-				<BreadCrumbs {items} separator="i-lucide:slash" onclick={handleClick} />
+				<BreadCrumbs {items} separator="i-glyph:close-circle" onclick={handleClick} />
 			</div>
 		</div>
 	{/snippet}

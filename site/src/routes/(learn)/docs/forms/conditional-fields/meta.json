@@ -1,7 +1,7 @@
 {
   "title": "Conditional Fields",
   "description": "Show, hide, and disable fields based on other field values",
-  "icon": "i-solar:branch-bold-duotone",
+  "icon": "i-glyph:git-merge",
   "category": "forms",
   "order": 5
 }

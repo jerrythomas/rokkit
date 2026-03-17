@@ -3,17 +3,17 @@ const items = [
 	{
 		label: 'src',
 		value: 'src',
-		icon: 'i-lucide:folder',
+		icon: 'i-glyph:folder',
 		children: [
-			{ label: 'index.ts', value: 'index', icon: 'i-lucide:file-code' },
-			{ label: 'utils.ts', value: 'utils', icon: 'i-lucide:file-code' }
+			{ label: 'index.ts', value: 'index', icon: 'i-glyph:code-square' },
+			{ label: 'utils.ts', value: 'utils', icon: 'i-glyph:code-square' }
 		]
 	},
 	{
 		label: 'tests',
 		value: 'tests',
-		icon: 'i-lucide:folder',
-		children: [{ label: 'index.spec.ts', value: 'spec', icon: 'i-lucide:file-code' }]
+		icon: 'i-glyph:folder',
+		children: [{ label: 'index.spec.ts', value: 'spec', icon: 'i-glyph:code-square' }]
 	},
-	{ label: 'README.md', value: 'readme', icon: 'i-lucide:file-text' }
+	{ label: 'README.md', value: 'readme', icon: 'i-glyph:file-text' }
 ]

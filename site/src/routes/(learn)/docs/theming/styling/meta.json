@@ -1,7 +1,7 @@
 {
   "title": "Styling",
   "description": "Theme architecture, data-attribute hooks, and CSS customization",
-  "icon": "i-solar:brush-bold-duotone",
+  "icon": "i-glyph:brush",
   "category": "theming",
   "order": 3,
   "tags": ["styling", "themes", "css", "customization", "data-attributes"]

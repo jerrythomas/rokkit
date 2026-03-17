@@ -24,11 +24,11 @@
 			<p>{data.app.about}</p>
 			<span class="flex gap-4 text-xl">
 				<Button variant="primary" href="/docs/getting-started/introduction" label="Get Started" />
-				<Button href="/preview/dashboard" icon="i-solar:atom-bold-duotone" label="Live Preview" />
+				<Button href="/preview/dashboard" icon="i-glyph:atom" label="Live Preview" />
 				<Button
 					href="/llms/index.txt"
 					target="_blank"
-					icon="i-solar:chat-square-code-bold-duotone"
+					icon="i-glyph:chat-square-code"
 					label="llms"
 				/>
 			</span>

@@ -5,13 +5,13 @@
 	let lastAction = $state('none')
 
 	let items = [
-		{ label: 'Bold', icon: 'i-lucide:bold' },
-		{ label: 'Italic', icon: 'i-lucide:italic' },
-		{ label: 'Underline', icon: 'i-lucide:underline' },
+		{ label: 'Bold', icon: 'i-glyph:text-bold' },
+		{ label: 'Italic', icon: 'i-glyph:text-italic' },
+		{ label: 'Underline', icon: 'i-glyph:text-underline' },
 		{ itemType: 'separator' },
-		{ label: 'Align Left', icon: 'i-lucide:align-left' },
-		{ label: 'Align Center', icon: 'i-lucide:align-center' },
-		{ label: 'Align Right', icon: 'i-lucide:align-right' }
+		{ label: 'Align Left', icon: 'i-glyph:text-bold' },
+		{ label: 'Align Center', icon: 'i-glyph:layers-minimalistic' },
+		{ label: 'Align Right', icon: 'i-glyph:text-bold' }
 	]
 </script>
 

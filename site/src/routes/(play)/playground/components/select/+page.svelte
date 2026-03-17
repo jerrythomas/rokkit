@@ -41,11 +41,11 @@
 	}
 
 	const fruits = [
-		{ label: 'Apple', value: 'apple', icon: 'i-lucide:circle' },
-		{ label: 'Banana', value: 'banana', icon: 'i-lucide:circle' },
-		{ label: 'Cherry', value: 'cherry', icon: 'i-lucide:circle' },
-		{ label: 'Date', value: 'date', icon: 'i-lucide:circle' },
-		{ label: 'Elderberry', value: 'elderberry', icon: 'i-lucide:circle' }
+		{ label: 'Apple', value: 'apple', icon: 'i-glyph:close-circle' },
+		{ label: 'Banana', value: 'banana', icon: 'i-glyph:close-circle' },
+		{ label: 'Cherry', value: 'cherry', icon: 'i-glyph:close-circle' },
+		{ label: 'Date', value: 'date', icon: 'i-glyph:close-circle' },
+		{ label: 'Elderberry', value: 'elderberry', icon: 'i-glyph:close-circle' }
 	]
 
 	const grouped = [

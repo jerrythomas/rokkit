@@ -1,7 +1,7 @@
 {
   "title": "Stack",
   "description": "Vertical or horizontal stack layout with consistent spacing",
-  "icon": "i-solar:layers-minimalistic-bold-duotone",
+  "icon": "i-glyph:layers-minimalistic",
   "category": "layout",
   "order": 28
 }

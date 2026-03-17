@@ -159,8 +159,18 @@
 	<Code content={componentClass} language="svelte" />
 
 	<h2>Density</h2>
-	<p class="text-surface-z5">Coming soon.</p>
+	<p>
+		Density controls the spacing and sizing of all components globally via the
+		<code>data-density</code> attribute (<code>comfortable</code>, <code>compact</code>,
+		<code>cozy</code>). See <a href="/docs/theming/density">Density</a> for the full reference
+		including programmatic control via the <code>vibe</code> store.
+	</p>
 
 	<h2>Whitelabeling</h2>
-	<p class="text-surface-z5">Coming soon.</p>
+	<p>
+		Replace Rokkit's default palette with your own brand colors via a <code>palette</code> override
+		in your UnoCSS config — no CSS overrides needed. For per-client runtime palettes, scope CSS
+		custom property overrides to a wrapper element. See
+		<a href="/docs/theming/whitelabeling">Whitelabeling</a> for a full multi-tenant example.
+	</p>
 </article>

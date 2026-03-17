@@ -7,10 +7,10 @@
 	let { children } = $props()
 
 	const navItems = [
-		{ label: 'Dashboard', href: '/preview/dashboard', icon: 'i-solar:chart-square-bold-duotone' },
-		{ label: 'Projects', href: '/preview/projects', icon: 'i-solar:folder-open-bold-duotone' },
-		{ label: 'Reports', href: '/preview/reports', icon: 'i-solar:chart-2-bold-duotone' },
-		{ label: 'Admin', href: '/preview/admin', icon: 'i-solar:settings-bold-duotone' }
+		{ label: 'Dashboard', href: '/preview/dashboard', icon: 'i-glyph:chart-square' },
+		{ label: 'Projects', href: '/preview/projects', icon: 'i-glyph:folder-open' },
+		{ label: 'Reports', href: '/preview/reports', icon: 'i-glyph:chart-2' },
+		{ label: 'Admin', href: '/preview/admin', icon: 'i-glyph:settings' }
 	]
 
 	const fields = { label: 'label', href: 'href', icon: 'icon', value: 'href' }
@@ -22,7 +22,7 @@
 		class="border-surface-z2 bg-surface-z1 flex h-14 flex-shrink-0 items-center justify-between border-b px-4"
 	>
 		<div class="flex items-center gap-3">
-			<span class="i-solar:atom-bold-duotone text-primary-z6 text-2xl" aria-hidden="true"></span>
+			<span class="i-glyph:atom text-primary-z6 text-2xl" aria-hidden="true"></span>
 			<span class="text-surface-z8 text-lg font-bold">Nexus</span>
 			<span class="text-surface-z4 hidden text-xs sm:inline">Project Workspace</span>
 		</div>
@@ -31,7 +31,7 @@
 				href="/"
 				class="text-surface-z5 hover:text-surface-z8 flex items-center gap-1 text-xs no-underline"
 			>
-				<span class="i-solar:arrow-left-bold-duotone text-sm" aria-hidden="true"></span>
+				<span class="i-glyph:arrow-left text-sm" aria-hidden="true"></span>
 				Back to Docs
 			</a>
 		</div>

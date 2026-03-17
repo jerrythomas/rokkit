@@ -50,11 +50,11 @@
 				props: {
 					options: [
 						'',
-						'i-lucide:star',
-						'i-lucide:heart',
-						'i-lucide:plus',
-						'i-lucide:settings',
-						'i-lucide:download'
+						'i-glyph:star',
+						'i-glyph:heart',
+						'i-glyph:add-circle',
+						'i-glyph:settings',
+						'i-glyph:download'
 					]
 				}
 			},

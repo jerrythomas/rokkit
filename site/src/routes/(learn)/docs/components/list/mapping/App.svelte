@@ -3,12 +3,12 @@
 	import { List } from '@rokkit/ui'
 
 	const items = [
-		{ name: 'Dashboard', path: '/dashboard', icon: 'i-lucide:layout-dashboard' },
-		{ name: 'Analytics', path: '/analytics', icon: 'i-lucide:bar-chart-2' },
-		{ name: 'Reports', path: '/reports', icon: 'i-lucide:file-text' },
+		{ name: 'Dashboard', path: '/dashboard', icon: 'i-glyph:widget' },
+		{ name: 'Analytics', path: '/analytics', icon: 'i-glyph:chart-2' },
+		{ name: 'Reports', path: '/reports', icon: 'i-glyph:file-text' },
 		{ type: 'separator' },
-		{ name: 'Settings', path: '/settings', icon: 'i-lucide:settings' },
-		{ name: 'Profile', path: '/profile', icon: 'i-lucide:user' }
+		{ name: 'Settings', path: '/settings', icon: 'i-glyph:settings' },
+		{ name: 'Profile', path: '/profile', icon: 'i-glyph:user' }
 	]
 
 	const fields = { label: 'name', value: 'path' }

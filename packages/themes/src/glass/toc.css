@@ -1,0 +1,18 @@
+/* TableOfContents — Glass theme */
+
+[data-style='glass'] [data-toc] [data-toc-label] {
+  @apply text-surface-z6;
+}
+
+[data-style='glass'] [data-toc] [data-toc-item] {
+  @apply text-surface-z7;
+}
+
+[data-style='glass'] [data-toc] [data-toc-item]:hover,
+[data-style='glass'] [data-toc] [data-toc-item][data-toc-focused] {
+  @apply text-surface-z10 bg-surface-z2/15 outline-none;
+}
+
+[data-style='glass'] [data-toc] [data-toc-item][data-toc-active] {
+  @apply text-primary-z9 border-l-primary-z5;
+}

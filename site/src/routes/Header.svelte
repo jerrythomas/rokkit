@@ -1,11 +1,9 @@
 <script>
-	import { getContext } from 'svelte'
 	import { afterNavigate, beforeNavigate } from '$app/navigation'
+	import { page } from '$app/state'
 	import { media } from '$lib/media.js'
 	import { ProgressBar } from '@rokkit/ui'
 	import { ThemeSwitcherToggle } from '@rokkit/app'
-
-	const site = getContext('site')()
 
 	/**
 	 * @typedef {Object} Props
@@ -18,50 +16,50 @@
 	let { class: className = '', version, menu = [] } = $props()
 	let loading = $state(false)
 
-	beforeNavigate(() => {
-		loading = true
-	})
-	afterNavigate(() => {
-		loading = false
-	})
+	beforeNavigate(() => { loading = true })
+	afterNavigate(() => { loading = false })
 </script>
 
 <header
-	class="bg-surface-z1 text-surface-z8 relative flex min-h-14 w-full items-center justify-between {className}"
+	class="border-surface-z2 bg-surface-z1 relative z-50 flex h-12 w-full flex-shrink-0 items-center justify-between border-b px-4 {className}"
 >
 	{#if loading}
-		<ProgressBar class="absolute top-0 z-5" />
+		<ProgressBar class="absolute inset-x-0 top-0 z-5" />
 	{/if}
-	<div class="flex items-center gap-2 px-4">
-		<a href="/" class="flex items-center">
+
+	<div class="flex items-center gap-2">
+		<a href="/" class="flex items-center no-underline">
 			{#if media.small.current}
-				<img src="/rokkit-icon.svg" alt="Rokkit Logo" class="h-12" />
+				<img src="/rokkit-icon.svg" alt="Rokkit" class="h-7" />
 			{:else}
-				<img src="/rokkit-light.svg" alt="Rokkit Logo" class="h-10" />
+				<img src="/rokkit-light.svg" alt="Rokkit" class="h-6" />
 			{/if}
 		</a>
 		{#if !media.small.current}
-			<small class="font-small px-2">{version}</small>
+			<span class="text-surface-z4 text-[11px]">{version}</span>
 		{/if}
 	</div>
-	<settings class="flex items-center justify-end gap-3 pr-4">
-		<nav class="flex gap-3 pr-3 uppercase">
-			{#each menu as item, index (index)}
-				<a
-					href="/{item.slug}"
-					class="active:border-secondary-700 hover:text-secondary-700 border-b-2 leading-loose"
-					>{item.title}</a
-				>
-			{/each}
-		</nav>
+
+	<nav class="flex items-center gap-1">
+		{#each menu as item}
+			{@const active = page.url.pathname.startsWith(item.match)}
+			<a
+				href="/{item.slug}"
+				class="text-surface-z5 hover:text-surface-z8 hover:bg-surface-z2 rounded-md px-3 py-1 text-xs font-medium no-underline transition-colors {active ? 'bg-surface-z2 text-surface-z8' : ''}"
+			>{item.title}</a>
+		{/each}
+	</nav>
+
+	<div class="flex items-center gap-1">
 		<ThemeSwitcherToggle size="sm" />
 		<a
 			href="https://github.com/jerrythomas/rokkit"
 			target="_blank"
-			data-button-root
-			aria-label="Rokkit on Github"
+			rel="noopener noreferrer"
+			class="text-surface-z5 hover:text-surface-z8 flex h-8 w-8 items-center justify-center rounded-md no-underline"
+			aria-label="Rokkit on GitHub"
 		>
-			<span class="i-logo:github text-xl" aria-hidden="true"></span>
+			<span class="i-logo:github text-lg" aria-hidden="true"></span>
 		</a>
-	</settings>
+	</div>
 </header>

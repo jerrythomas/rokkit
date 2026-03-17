@@ -43,7 +43,7 @@
 	<div class="px-3 pt-3 pb-1">
 		<div class="relative">
 			<span
-				class="i-solar:magnifer-bold-duotone text-surface-z4 pointer-events-none absolute top-1/2 left-2.5 -translate-y-1/2 text-sm"
+				class="i-glyph:magnifer text-surface-z4 pointer-events-none absolute top-1/2 left-2.5 -translate-y-1/2 text-sm"
 				aria-hidden="true"
 			></span>
 			<input
@@ -65,7 +65,7 @@
 					onclick={() => (query = '')}
 					aria-label="Clear search"
 				>
-					<span class="i-solar:close-circle-bold-duotone inline-block" aria-hidden="true"></span>
+					<span class="i-glyph:close-circle inline-block" aria-hidden="true"></span>
 				</button>
 			{/if}
 		</div>

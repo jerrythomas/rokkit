@@ -18,9 +18,9 @@
   import { Grid } from '@rokkit/ui'
 
   const items = [
-    { label: 'Dashboard', icon: 'i-solar:home-bold-duotone' },
-    { label: 'Reports', icon: 'i-solar:chart-bold-duotone' },
-    { label: 'Settings', icon: 'i-solar:settings-bold-duotone' }
+    { label: 'Dashboard', icon: 'i-glyph:home' },
+    { label: 'Reports', icon: 'i-glyph:chart' },
+    { label: 'Settings', icon: 'i-glyph:settings' }
   ]
 
   let selected = $state(null)

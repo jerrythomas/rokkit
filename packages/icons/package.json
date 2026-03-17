@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/icons",
-  "version": "1.0.0-next.141",
+  "version": "1.0.0-next.142",
   "description": "A minimal icon set for use in Rokkit applications.",
   "repository": {
     "type": "git",
@@ -10,10 +10,10 @@
   "exports": {
     "./package.json": "./package.json",
     "./ui.json": "./lib/base.json",
-    "./light.json": "./lib/light.json",
-    "./solid.json": "./lib/solid.json",
+    "./semantic.json": "./lib/semantic.json",
     "./twotone.json": "./lib/twotone.json",
-    "./components.json": "./lib/components.json",
+    "./glyph.json": "./lib/glyph.json",
+    "./components.json": "./lib/glyph.json",
     "./auth.json": "./lib/auth.json",
     "./app.json": "./lib/app.json",
     ".": "./lib/base.json",

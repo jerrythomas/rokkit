@@ -1,7 +1,7 @@
 {
   "title": "Code",
   "description": "Syntax-highlighted code block with copy support",
-  "icon": "i-lucide:code",
+  "icon": "i-glyph:code",
   "category": "display",
   "sequence": 50
 }

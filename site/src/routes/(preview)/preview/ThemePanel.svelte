@@ -47,6 +47,6 @@
 		aria-label="Toggle theme panel"
 		aria-expanded={open}
 	>
-		<span class="i-solar:palette-bold-duotone text-lg" aria-hidden="true"></span>
+		<span class="i-glyph:palette text-lg" aria-hidden="true"></span>
 	</button>
 </div>

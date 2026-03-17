@@ -10,6 +10,7 @@
 	let focusedIndex = $state(0)
 	let navEl = $state(null)
 	let observer = null
+	let scrollLockTimer = null
 
 	function slugify(text) {
 		return (text ?? '')
@@ -44,7 +45,7 @@
 				const visible = entries
 					.filter((e) => e.isIntersecting)
 					.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
-				if (visible.length > 0) activeId = visible[0].target.id
+				if (visible.length > 0 && !scrollLockTimer) activeId = visible[0].target.id
 			},
 			{ root: main, rootMargin: '-5% 0px -70% 0px' }
 		)
@@ -58,6 +59,8 @@
 		const el = document.getElementById(id)
 		const main = getContainer()
 		if (!el || !main) return
+		clearTimeout(scrollLockTimer)
+		scrollLockTimer = setTimeout(() => { scrollLockTimer = null }, 1000)
 		main.scrollTo({ top: el.offsetTop - 16, behavior: 'smooth' })
 	}
 
@@ -87,7 +90,9 @@
 	}
 
 	function handleSelect() {
-		scrollToHeading(headings[focusedIndex]?.id)
+		const id = headings[focusedIndex]?.id
+		if (id) activeId = id
+		scrollToHeading(id)
 	}
 
 	function handleClick(event) {
@@ -101,7 +106,7 @@
 	onMount(() => {
 		scan()
 		observe()
-		return () => observer?.disconnect()
+		return () => { observer?.disconnect(); clearTimeout(scrollLockTimer) }
 	})
 </script>
 
@@ -111,7 +116,6 @@
 		data-toc
 		aria-label="On this page"
 		use:navigable
-		onclick={handleClick}
 		onprevious={handlePrevious}
 		onnext={handleNext}
 		onselect={handleSelect}
@@ -128,6 +132,7 @@
 						data-toc-focused={focusedIndex === i ? '' : undefined}
 						tabindex={focusedIndex === i ? 0 : -1}
 						onfocusin={() => (focusedIndex = i)}
+						onclick={() => { focusedIndex = i; activeId = h.id; scrollToHeading(h.id) }}
 					>
 						{h.text}
 					</button>

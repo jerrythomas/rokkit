@@ -1,5 +1,10 @@
-<!-- Activate a style (visual personality) -->
+<!-- Activate a style (visual personality) and mode on the root element -->
 <html data-style="rokkit" data-mode="dark">
 
-<!-- Available styles: rokkit | minimal | material -->
-<!-- Available modes: light | dark (omit for system default) -->
+<!-- Available styles: rokkit | minimal | material | glass -->
+<!-- Available modes: light | dark (omit to follow system preference) -->
+
+<!-- Scope a different theme to any ancestor element -->
+<div data-style="minimal">
+  <!-- components inside use minimal theme -->
+</div>

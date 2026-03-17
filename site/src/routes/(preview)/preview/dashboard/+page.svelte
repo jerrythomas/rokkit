@@ -7,52 +7,52 @@
 			label: 'Active Projects',
 			value: '12',
 			change: '+2 this week',
-			icon: 'i-solar:folder-open-bold-duotone'
+			icon: 'i-glyph:folder-open'
 		},
 		{
 			label: 'Open Tasks',
 			value: '84',
 			change: '-6 today',
-			icon: 'i-solar:checklist-minimalistic-bold-duotone'
+			icon: 'i-glyph:checklist-minimalistic'
 		},
 		{
 			label: 'Team Members',
 			value: '9',
 			change: '2 on leave',
-			icon: 'i-solar:users-group-two-rounded-bold-duotone'
+			icon: 'i-glyph:users-group-two-rounded'
 		},
 		{
 			label: 'Completed',
 			value: '63%',
 			change: '+4% vs last sprint',
-			icon: 'i-solar:chart-2-bold-duotone'
+			icon: 'i-glyph:chart-2'
 		}
 	]
 
 	const recentActivity = [
 		{
 			label: 'Alice merged PR #42 — Auth module',
-			icon: 'i-solar:git-merge-bold-duotone',
+			icon: 'i-glyph:git-merge',
 			sublabel: '10m ago'
 		},
 		{
 			label: 'Bob created task: API rate limiting',
-			icon: 'i-solar:add-circle-bold-duotone',
+			icon: 'i-glyph:add-circle',
 			sublabel: '1h ago'
 		},
 		{
 			label: 'Sprint 14 planning completed',
-			icon: 'i-solar:calendar-bold-duotone',
+			icon: 'i-glyph:calendar',
 			sublabel: '2h ago'
 		},
 		{
 			label: 'Carol closed 3 bugs in payments',
-			icon: 'i-solar:bug-bold-duotone',
+			icon: 'i-glyph:bug',
 			sublabel: '3h ago'
 		},
 		{
 			label: 'New milestone: v2.0 scope locked',
-			icon: 'i-solar:flag-bold-duotone',
+			icon: 'i-glyph:flag',
 			sublabel: 'Yesterday'
 		}
 	]
@@ -67,7 +67,7 @@
 			<p class="text-surface-z5 text-sm">Good morning — here's what's happening today.</p>
 		</div>
 		<Toolbar>
-			<Button label="New Task" icon="i-solar:add-circle-bold-duotone" variant="primary" />
+			<Button label="New Task" icon="i-glyph:add-circle" variant="primary" />
 		</Toolbar>
 	</div>
 
@@ -93,7 +93,7 @@
 		</div>
 
 		<div data-card class="flex min-h-40 flex-col items-center justify-center gap-2 p-4 text-center">
-			<span class="i-solar:chart-bold-duotone text-surface-z3 text-3xl" aria-hidden="true"></span>
+			<span class="i-glyph:chart text-surface-z3 text-3xl" aria-hidden="true"></span>
 			<p class="text-surface-z5 text-sm">Sprint velocity chart</p>
 			<p class="text-surface-z4 text-xs">Charts coming soon</p>
 		</div>

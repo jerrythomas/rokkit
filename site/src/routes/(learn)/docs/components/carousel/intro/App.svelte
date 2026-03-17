@@ -4,9 +4,9 @@
 	let current = $state(0)
 
 	const slides = [
-		{ title: 'Welcome', color: 'bg-primary/20', icon: 'i-lucide:star' },
-		{ title: 'Features', color: 'bg-secondary/20', icon: 'i-lucide:zap' },
-		{ title: 'Get Started', color: 'bg-accent/20', icon: 'i-lucide:rocket' }
+		{ title: 'Welcome', color: 'bg-primary/20', icon: 'i-glyph:star' },
+		{ title: 'Features', color: 'bg-secondary/20', icon: 'i-glyph:bolt' },
+		{ title: 'Get Started', color: 'bg-accent/20', icon: 'i-glyph:rocket' }
 	]
 </script>
 

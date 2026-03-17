@@ -121,7 +121,7 @@
 				aria-label="Toggle navigation"
 				aria-expanded={sidebarOpen}
 			>
-				<span class="i-solar:hamburger-menu-bold-duotone inline-block" aria-hidden="true"></span>
+				<span class="i-glyph:hamburger-menu inline-block" aria-hidden="true"></span>
 			</button>
 			<a href="/" class="flex items-center gap-2 no-underline">
 				{#if media.small.current}
@@ -210,7 +210,7 @@
 					class="border-surface-z3 bg-surface-z2 mb-8 flex h-48 items-center justify-center rounded-xl border border-dashed"
 				>
 					<div class="text-surface-z4 flex flex-col items-center gap-2">
-						<span class="i-solar:widget-bold-duotone inline-block text-5xl" aria-hidden="true"
+						<span class="i-glyph:widget inline-block text-5xl" aria-hidden="true"
 						></span>
 						<span class="text-sm">Component preview image</span>
 					</div>

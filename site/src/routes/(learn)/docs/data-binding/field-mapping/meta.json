@@ -1,7 +1,7 @@
 {
   "title": "Field Mapping",
   "description": "Map any data shape to components with the fields prop",
-  "icon": "i-solar:map-arrow-right-bold-duotone",
+  "icon": "i-glyph:map-arrow-right",
   "category": "data-binding",
   "order": 2,
   "tags": ["fields", "mapping", "data", "props", "adapter"]

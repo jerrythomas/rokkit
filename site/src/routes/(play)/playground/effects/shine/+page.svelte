@@ -61,7 +61,7 @@
 				color="rgb(var(--accent-500))"
 			>
 				<div class="bg-surface-z2 flex h-48 w-48 items-center justify-center rounded-xl">
-					<span class="i-lucide:diamond text-surface-z5 text-4xl"></span>
+					<span class="i-glyph:star text-surface-z5 text-4xl"></span>
 				</div>
 			</Shine>
 		</div>

@@ -64,8 +64,10 @@
 
 	<h2>Skins</h2>
 	<p>
-		Rokkit provides pre-built skin sets that bundle color palettes and style variations. Apply a
-		skin by adding a class to your root element:
+		Skins apply a color palette override on top of the active theme, without changing the visual
+		personality. A skin changes <em>colors</em>; <code>data-style</code> changes the
+		<em>visual style</em> (gradients, shadows, border-radius). Add a skin class to any ancestor
+		element:
 	</p>
 	<Code content={skins} language="svelte" />
 
@@ -78,7 +80,8 @@
 
 	<h2>Related</h2>
 	<ul>
-		<li><a href="/color-system">Color System</a> — Semantic color tokens and palettes</li>
-		<li><a href="/icons">Icons</a> — Icon mapping and customization</li>
+		<li><a href="/docs/theming/color-system">Color System</a> — z-depth tokens, palettes, dark mode</li>
+		<li><a href="/docs/theming/whitelabeling">Whitelabeling</a> — brand palette overrides</li>
+		<li><a href="/docs/toolchain/icon-sets">Icon Sets</a> — icon collections and configuration</li>
 	</ul>
 </article>

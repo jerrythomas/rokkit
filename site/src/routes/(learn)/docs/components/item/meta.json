@@ -1,7 +1,7 @@
 {
   "title": "Item",
   "description": "Flexible content renderer for text, icons, and images",
-  "icon": "i-component:item",
+  "icon": "i-glyph:item",
   "category": "display",
   "tags": ["item", "content", "renderer", "text", "icons", "images"],
   "experimental": false

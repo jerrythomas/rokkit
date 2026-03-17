@@ -6,27 +6,27 @@
 		{
 			label: 'src',
 			value: 'src',
-			icon: 'i-lucide:folder',
+			icon: 'i-glyph:folder',
 			children: [
 				{
 					label: 'components',
 					value: 'components',
-					icon: 'i-lucide:folder',
+					icon: 'i-glyph:folder',
 					children: [
-						{ label: 'Tree.svelte', value: 'tree', icon: 'i-lucide:file-code' },
-						{ label: 'List.svelte', value: 'list', icon: 'i-lucide:file-code' }
+						{ label: 'Tree.svelte', value: 'tree', icon: 'i-glyph:code-square' },
+						{ label: 'List.svelte', value: 'list', icon: 'i-glyph:code-square' }
 					]
 				},
-				{ label: 'index.ts', value: 'index', icon: 'i-lucide:file-code' }
+				{ label: 'index.ts', value: 'index', icon: 'i-glyph:code-square' }
 			]
 		},
 		{
 			label: 'tests',
 			value: 'tests',
-			icon: 'i-lucide:folder',
-			children: [{ label: 'tree.spec.ts', value: 'spec', icon: 'i-lucide:file-code' }]
+			icon: 'i-glyph:folder',
+			children: [{ label: 'tree.spec.ts', value: 'spec', icon: 'i-glyph:code-square' }]
 		},
-		{ label: 'README.md', value: 'readme', icon: 'i-lucide:file-text' }
+		{ label: 'README.md', value: 'readme', icon: 'i-glyph:file-text' }
 	]
 
 	let value = $state(null)

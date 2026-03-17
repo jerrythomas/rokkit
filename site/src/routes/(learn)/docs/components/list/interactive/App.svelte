@@ -3,11 +3,11 @@
 	import { List } from '@rokkit/ui'
 
 	let items = $state([
-		{ label: 'Enable notifications', icon: 'i-lucide:bell', checked: true },
-		{ label: 'Dark mode', icon: 'i-lucide:moon', checked: false },
-		{ label: 'Auto-save', icon: 'i-lucide:save', checked: true },
-		{ label: 'Show hints', icon: 'i-lucide:info', checked: false },
-		{ label: 'Compact view', icon: 'i-lucide:layout-list', checked: false }
+		{ label: 'Enable notifications', icon: 'i-glyph:bell', checked: true },
+		{ label: 'Dark mode', icon: 'i-glyph:moon', checked: false },
+		{ label: 'Auto-save', icon: 'i-glyph:diskette', checked: true },
+		{ label: 'Show hints', icon: 'i-glyph:info-circle', checked: false },
+		{ label: 'Compact view', icon: 'i-glyph:list-items', checked: false }
 	])
 </script>
 

@@ -1,7 +1,7 @@
 {
   "title": "Forms",
   "description": "Schema-driven forms with validation, lookups, and field dependencies",
-  "icon": "i-solar:document-text-bold-duotone",
+  "icon": "i-glyph:document-text",
   "category": "forms",
   "order": 20,
   "tags": ["forms", "validation", "schema", "lookups"]

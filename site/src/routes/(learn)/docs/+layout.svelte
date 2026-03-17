@@ -3,8 +3,7 @@
 	import { page } from '$app/state'
 	import { beforeNavigate, afterNavigate } from '$app/navigation'
 	import Sidebar from './Sidebar.svelte'
-	import { ThemeSwitcherToggle, TableOfContents } from '@rokkit/app'
-	import { ProgressBar } from '@rokkit/ui'
+	import { TableOfContents } from '@rokkit/app'
 	import { media } from '$lib/media.js'
 	import { findSection, findGroupForSection } from '$lib/stories.js'
 
@@ -32,7 +31,7 @@
 		return crumbs
 	})
 
-	let sidebarOpen = $state(media.large.current ?? false)
+	let sidebarOpen = $state(typeof window !== 'undefined' ? window.innerWidth >= 1024 : false)
 	let loading = $state(false)
 	let sidebarRef = $state(null)
 	let toc = $state(null)
@@ -49,19 +48,20 @@
 	// Sidebar positioning — inline styles because assetsInclude: ['**/*.svelte'] in
 	// vite.config breaks Svelte's CSS sub-resource loading on the learn site
 	let sidebarStyle = $derived.by(() => {
-		if (media.large.current) {
+		const large = media.large.current ?? (typeof window !== 'undefined' ? window.innerWidth >= 1024 : false)
+		if (large) {
 			return sidebarOpen
 				? 'position:static;flex:0 0 18rem;min-width:18rem;overflow-y:auto'
 				: 'position:static;flex:0 0 0px;min-width:0;overflow:hidden'
 		}
 		return sidebarOpen
-			? 'position:fixed;top:3.5rem;left:0;bottom:0;z-index:45;width:18rem;overflow-y:auto;transform:translateX(0);transition:transform 250ms ease'
-			: 'position:fixed;top:3.5rem;left:0;bottom:0;z-index:45;width:18rem;overflow:hidden;transform:translateX(-100%);transition:transform 250ms ease'
+			? 'position:fixed;top:5.5rem;left:0;bottom:0;z-index:45;width:18rem;overflow-y:auto;transform:translateX(0);transition:transform 250ms ease'
+			: 'position:fixed;top:5.5rem;left:0;bottom:0;z-index:45;width:18rem;overflow:hidden;transform:translateX(-100%);transition:transform 250ms ease'
 	})
 
-	// Auto-close when resizing down to mobile
+	// Auto-close when resizing down to mobile (only when definitively not large)
 	$effect(() => {
-		if (!media.large.current) sidebarOpen = false
+		if (media.large.current === false) sidebarOpen = false
 	})
 
 	beforeNavigate(() => {
@@ -69,7 +69,7 @@
 	})
 	afterNavigate(() => {
 		loading = false
-		if (!media.large.current) sidebarOpen = false
+		if (media.large.current === false) sidebarOpen = false
 		toc?.rescan()
 	})
 </script>
@@ -82,54 +82,17 @@
 </svelte:head>
 
 <div class="flex min-h-0 flex-1 flex-col overflow-hidden">
-	<!-- ── Header ──────────────────────────────────────────────────────────────── -->
-	<header
-		class="border-surface-z2 bg-surface-z1 relative flex h-14 flex-shrink-0 items-center justify-between border-b px-4"
-	>
-		{#if loading}
-			<ProgressBar class="absolute inset-x-0 top-0 z-10" />
-		{/if}
-		<div class="flex items-center gap-2">
-			<button
-				class="text-surface-z6 hover:bg-surface-z3 flex h-9 w-9 items-center justify-center rounded-md text-xl lg:hidden"
-				onclick={() => (sidebarOpen = !sidebarOpen)}
-				aria-label="Toggle navigation"
-				aria-expanded={sidebarOpen}
-			>
-				<span class="i-solar:hamburger-menu-bold-duotone inline-block" aria-hidden="true"></span>
-			</button>
-			<a href="/" class="flex items-center gap-2 no-underline">
-				{#if media.small.current}
-					<img src="/rokkit-icon.svg" alt="Rokkit" class="h-8" />
-				{:else}
-					<img src="/rokkit-light.svg" alt="Rokkit" class="h-7" />
-				{/if}
-			</a>
-			{#if !media.small.current}
-				<small class="text-surface-z5">{data.app.version}</small>
-			{/if}
-		</div>
-		<div class="flex items-center gap-1">
-			<ThemeSwitcherToggle size="sm" />
-			<a
-				href="/preview"
-				class="text-surface-z5 hover:text-surface-z8 hover:bg-surface-z2 flex h-9 items-center gap-1.5 rounded-md px-3 text-sm no-underline"
-				title="Preview App — Nexus"
-			>
-				<span class="i-solar:atom-bold-duotone inline-block text-base" aria-hidden="true"></span>
-				<span class="hidden sm:inline">Preview</span>
-			</a>
-			<a
-				href="https://github.com/jerrythomas/rokkit"
-				target="_blank"
-				rel="noopener noreferrer"
-				class="text-surface-z5 hover:text-surface-z8 flex h-9 w-9 items-center justify-center rounded-md text-xl no-underline"
-				aria-label="Rokkit on GitHub"
-			>
-				<span class="i-logo:github inline-block" aria-hidden="true"></span>
-			</a>
-		</div>
-	</header>
+	<!-- ── Mobile sidebar toggle (hidden on desktop) ──────────────────────────── -->
+	<div class="border-surface-z2 bg-surface-z1 flex h-10 flex-shrink-0 items-center border-b px-3 lg:hidden">
+		<button
+			class="text-surface-z6 hover:bg-surface-z3 flex h-8 w-8 items-center justify-center rounded-md"
+			onclick={() => (sidebarOpen = !sidebarOpen)}
+			aria-label="Toggle navigation"
+			aria-expanded={sidebarOpen}
+		>
+			<span class="i-glyph:hamburger-menu inline-block text-lg" aria-hidden="true"></span>
+		</button>
+	</div>
 
 	<!-- ── Body ──────────────────────────────────────────────────────────────────── -->
 	<div class="relative flex min-h-0 flex-1 overflow-hidden">
@@ -137,7 +100,7 @@
 		{#if sidebarOpen && !media.large.current}
 			<div
 				class="fixed inset-x-0 bottom-0 z-40 bg-black/50 lg:hidden"
-				style="top: 3.5rem"
+				style="top: 5.5rem"
 				role="presentation"
 				onclick={() => (sidebarOpen = false)}
 			></div>
@@ -165,7 +128,7 @@
 									title="Open in Playground"
 									aria-label="Open in Playground"
 								>
-									<span class="i-solar:gamepad-bold-duotone inline-block text-lg" aria-hidden="true"
+									<span class="i-glyph:gamepad inline-block text-lg" aria-hidden="true"
 									></span>
 								</a>
 							{/if}
@@ -179,7 +142,7 @@
 									aria-label="View llms.txt"
 								>
 									<span
-										class="i-solar:file-text-bold-duotone inline-block text-lg"
+										class="i-glyph:file-text inline-block text-lg"
 										aria-hidden="true"
 									></span>
 								</a>

@@ -1,7 +1,7 @@
 {
   "title": "Button",
   "description": "Interactive button component with customizable styling and behavior",
-  "icon": "i-component:button",
+  "icon": "i-glyph:button",
   "category": "inputs",
   "sequence": 10
 }

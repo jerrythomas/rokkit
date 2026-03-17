@@ -34,32 +34,32 @@
 	}
 
 	const navItems = [
-		{ label: 'Home', href: '#home', value: '#home', icon: 'i-lucide:home' },
-		{ label: 'Settings', href: '#settings', value: '#settings', icon: 'i-lucide:settings' },
-		{ label: 'Profile', href: '#profile', value: '#profile', icon: 'i-lucide:user' },
-		{ label: 'Messages', href: '#messages', value: '#messages', icon: 'i-lucide:mail', badge: '3' }
+		{ label: 'Home', href: '#home', value: '#home', icon: 'i-glyph:home' },
+		{ label: 'Settings', href: '#settings', value: '#settings', icon: 'i-glyph:settings' },
+		{ label: 'Profile', href: '#profile', value: '#profile', icon: 'i-glyph:user' },
+		{ label: 'Messages', href: '#messages', value: '#messages', icon: 'i-glyph:letter', badge: '3' }
 	]
 
 	const buttonItems = [
-		{ label: 'Cut', value: 'cut', icon: 'i-lucide:scissors' },
-		{ label: 'Copy', value: 'copy', icon: 'i-lucide:copy' },
-		{ label: 'Paste', value: 'paste', icon: 'i-lucide:clipboard' },
-		{ label: 'Delete', value: 'delete', icon: 'i-lucide:trash', disabled: true }
+		{ label: 'Cut', value: 'cut', icon: 'i-glyph:scissors' },
+		{ label: 'Copy', value: 'copy', icon: 'i-glyph:copy' },
+		{ label: 'Paste', value: 'paste', icon: 'i-glyph:clipboard' },
+		{ label: 'Delete', value: 'delete', icon: 'i-glyph:trash-bin', disabled: true }
 	]
 
 	const groupedItems = [
 		{
 			label: 'Favorites',
 			children: [
-				{ label: 'Dashboard', value: 'dashboard', icon: 'i-lucide:layout-grid' },
-				{ label: 'Analytics', value: 'analytics', icon: 'i-lucide:star' }
+				{ label: 'Dashboard', value: 'dashboard', icon: 'i-glyph:grid' },
+				{ label: 'Analytics', value: 'analytics', icon: 'i-glyph:star' }
 			]
 		},
 		{
 			label: 'Settings',
 			children: [
-				{ label: 'General', value: 'general', icon: 'i-lucide:settings' },
-				{ label: 'Security', value: 'security', icon: 'i-lucide:heart' }
+				{ label: 'General', value: 'general', icon: 'i-glyph:settings' },
+				{ label: 'Security', value: 'security', icon: 'i-glyph:heart' }
 			]
 		}
 	]
@@ -68,19 +68,19 @@
 		{
 			label: 'Dashboard',
 			value: 'dashboard',
-			icon: 'i-lucide:layout-grid',
+			icon: 'i-glyph:grid',
 			description: 'Overview of all metrics'
 		},
 		{
 			label: 'Reports',
 			value: 'reports',
-			icon: 'i-lucide:file-text',
+			icon: 'i-glyph:file-text',
 			description: 'Download generated reports'
 		},
 		{
 			label: 'Settings',
 			value: 'settings',
-			icon: 'i-lucide:settings',
+			icon: 'i-glyph:settings',
 			description: 'Configure preferences'
 		}
 	]

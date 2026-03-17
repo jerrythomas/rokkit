@@ -42,19 +42,19 @@
 		{
 			label: 'Overview',
 			value: 'overview',
-			icon: 'i-lucide:home',
+			icon: 'i-glyph:home',
 			content: 'Welcome to the overview panel. This is the main dashboard view.'
 		},
 		{
 			label: 'Settings',
 			value: 'settings',
-			icon: 'i-lucide:settings',
+			icon: 'i-glyph:settings',
 			content: 'Configure your preferences and application settings here.'
 		},
 		{
 			label: 'Activity',
 			value: 'activity',
-			icon: 'i-lucide:activity',
+			icon: 'i-glyph:chart',
 			content: 'View recent activity and event logs.'
 		}
 	]

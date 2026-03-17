@@ -32,7 +32,7 @@
 		</li>
 		<li>
 			<strong>Icon integration</strong> — loads configured icon collections for use with
-			<code>i-solar:icon-name</code> utility classes
+			<code>i-glyph:icon-name</code> utility classes
 		</li>
 		<li>
 			<strong>Dark mode</strong> — data-attribute-based dark mode (<code>data-mode="dark"</code>)

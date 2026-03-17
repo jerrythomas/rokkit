@@ -1,6 +1,6 @@
 {
   "title": "FloatingNavigation",
   "description": "Floating navigation dots for page sections",
-  "icon": "i-lucide:compass",
+  "icon": "i-glyph:compass",
   "category": "layout"
 }

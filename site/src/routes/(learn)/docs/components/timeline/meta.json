@@ -1,6 +1,6 @@
 {
   "title": "Timeline",
   "description": "View-only vertical steps for instructions, changelogs, or process visualization",
-  "icon": "i-lucide:milestone",
+  "icon": "i-glyph:flag",
   "category": "display"
 }

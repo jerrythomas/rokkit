@@ -1,7 +1,7 @@
 {
   "title": "Internationalization",
   "description": "Translatable strings, locale-aware formatting, and RTL layout support",
-  "icon": "i-solar:global-bold-duotone",
+  "icon": "i-glyph:global",
   "category": "accessibility",
   "order": 4
 }

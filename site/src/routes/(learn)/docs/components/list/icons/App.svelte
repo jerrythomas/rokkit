@@ -17,7 +17,7 @@
 		}
 	]
 
-	const icons = { opened: 'i-lucide:folder-open', closed: 'i-lucide:folder' }
+	const icons = { opened: 'i-glyph:folder-open', closed: 'i-glyph:folder' }
 	let value = $state(null)
 </script>
 

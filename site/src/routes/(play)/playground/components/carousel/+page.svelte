@@ -38,10 +38,10 @@
 	}
 
 	const slides = [
-		{ bg: 'bg-primary-z3', label: 'Slide 1', icon: 'i-lucide:image' },
-		{ bg: 'bg-accent-z3', label: 'Slide 2', icon: 'i-lucide:star' },
-		{ bg: 'bg-surface-z3', label: 'Slide 3', icon: 'i-lucide:heart' },
-		{ bg: 'bg-primary-z2', label: 'Slide 4', icon: 'i-lucide:zap' }
+		{ bg: 'bg-primary-z3', label: 'Slide 1', icon: 'i-glyph:gallery' },
+		{ bg: 'bg-accent-z3', label: 'Slide 2', icon: 'i-glyph:star' },
+		{ bg: 'bg-surface-z3', label: 'Slide 3', icon: 'i-glyph:heart' },
+		{ bg: 'bg-primary-z2', label: 'Slide 4', icon: 'i-glyph:bolt' }
 	]
 </script>
 

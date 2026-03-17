@@ -95,5 +95,10 @@
 	<Code content={nested} language="svelte" />
 
 	<h2>Data Sources</h2>
-	<p class="text-surface-z5">Coming soon.</p>
+	<p>
+		Rokkit components accept any JavaScript array as <code>items</code> — static, reactive
+		<code>$state</code>, async-loaded, or <code>$derived</code>. See
+		<a href="/docs/data-binding/data-sources">Data Sources</a> for examples of each pattern,
+		including async loading with <code>onMount</code> and filtered derived arrays.
+	</p>
 </article>

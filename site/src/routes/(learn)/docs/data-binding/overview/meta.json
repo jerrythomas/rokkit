@@ -1,7 +1,7 @@
 {
   "title": "Overview",
   "description": "The data-first philosophy: components adapt to your data, not the other way around",
-  "icon": "i-solar:database-bold-duotone",
+  "icon": "i-glyph:database",
   "category": "data-binding",
   "order": 1
 }

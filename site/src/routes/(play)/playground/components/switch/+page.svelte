@@ -35,8 +35,8 @@
 	]
 
 	const iconOptions = [
-		{ label: 'Dark', value: 0, icon: 'i-lucide:moon' },
-		{ label: 'Light', value: 1, icon: 'i-lucide:sun' }
+		{ label: 'Dark', value: 0, icon: 'i-glyph:moon' },
+		{ label: 'Light', value: 1, icon: 'i-glyph:sun' }
 	]
 </script>
 

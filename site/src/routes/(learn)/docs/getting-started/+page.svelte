@@ -8,6 +8,7 @@
 	import unoConfig from './snippets/03-uno-config.js?raw'
 	import firstComponent from './snippets/04-first-component.svelte?raw'
 	import samePattern from './snippets/05-same-pattern.svelte?raw'
+	import cliInit from './snippets/06-cli-init.sh?raw'
 </script>
 
 <article data-article-root>
@@ -25,7 +26,7 @@
 	</p>
 
 	<div class="my-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-		{#each [{ icon: 'i-solar:database-bold-duotone', title: 'Data-First', desc: 'Components adapt to your data shape via field mapping. No transformations, no boilerplate.' }, { icon: 'i-solar:code-bold-duotone', title: 'Composable', desc: 'Customize any component with Svelte snippets. Full control over rendering without forking.' }, { icon: 'i-solar:keyboard-bold-duotone', title: 'Accessible', desc: 'Keyboard navigation and ARIA support built in via the navigator pattern. Zero config.' }, { icon: 'i-solar:palette-bold-duotone', title: 'Themeable', desc: 'Data-attribute hooks with clean layout/theme CSS separation. Build or swap themes freely.' }, { icon: 'i-solar:widget-bold-duotone', title: 'Consistent API', desc: 'Every component follows the same pattern: items, fields, value, onchange. Learn once, use everywhere.' }, { icon: 'i-solar:rocket-bold-duotone', title: 'Svelte 5 Native', desc: 'Built on runes, snippets, and $state. No legacy patterns, no compatibility layers.' }] as card}
+		{#each [{ icon: 'i-glyph:database', title: 'Data-First', desc: 'Components adapt to your data shape via field mapping. No transformations, no boilerplate.' }, { icon: 'i-glyph:code', title: 'Composable', desc: 'Customize any component with Svelte snippets. Full control over rendering without forking.' }, { icon: 'i-glyph:keyboard', title: 'Accessible', desc: 'Keyboard navigation and ARIA support built in via the navigator pattern. Zero config.' }, { icon: 'i-glyph:palette', title: 'Themeable', desc: 'Data-attribute hooks with clean layout/theme CSS separation. Build or swap themes freely.' }, { icon: 'i-glyph:widget', title: 'Consistent API', desc: 'Every component follows the same pattern: items, fields, value, onchange. Learn once, use everywhere.' }, { icon: 'i-glyph:rocket', title: 'Svelte 5 Native', desc: 'Built on runes, snippets, and $state. No legacy patterns, no compatibility layers.' }] as card}
 			<div class="border-surface-z2 rounded-lg border p-4">
 				<span class="{card.icon} text-secondary-z7 mb-2 block text-2xl" aria-hidden="true"></span>
 				<h3 class="mb-1 text-sm font-semibold">{card.title}</h3>
@@ -104,5 +105,12 @@
 	<Code content={samePattern} language="svelte" />
 
 	<h2>Quick Start</h2>
-	<p class="text-surface-z5">Coming soon.</p>
+	<p>The fastest way to add Rokkit to an existing SvelteKit project is with the CLI:</p>
+	<Code content={cliInit} language="bash" />
+	<p>
+		The CLI sets up UnoCSS, imports theme CSS, and adds <code>data-style</code> to
+		<code>&lt;html&gt;</code> automatically. See the
+		<a href="/docs/getting-started/quick-start">Quick Start guide</a> for a full step-by-step
+		walkthrough.
+	</p>
 </article>
