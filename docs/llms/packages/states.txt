@@ -1,0 +1,498 @@
+# @rokkit/states
+
+> Reactive state primitives for Rokkit components: proxy wrappers, navigation controllers, theme state, messages, and media queries.
+
+This package provides the data and navigation layer that backs all Rokkit UI components. It is rarely used directly in application code — components consume it internally — but it is useful when building custom components or extending existing ones.
+
+## Exports
+
+```javascript
+import {
+  ProxyItem, LazyProxyItem, BASE_FIELDS,
+  ProxyTree,
+  Wrapper, LazyWrapper,
+  ListController,
+  TableController,
+  vibe,
+  messages,
+  watchMedia, defaultBreakpoints
+} from '@rokkit/states'
+```
+
+---
+
+## ProxyItem
+
+A read-only view mapper for a single item. Wraps a raw item (object or primitive) and provides uniform field access through a configurable field mapping.
+
+**When to use:** Components pass `ProxyItem` instances to snippets. If you write a custom component that needs to normalise raw data (including primitives) through a field map, use `ProxyItem`.
+
+### Key concepts
+
+- `#raw` — the original input, never mutated
+- Field mapping translates semantic names (`label`, `value`, `icon`, …) to the actual data keys
+- Primitives are auto-normalised: `'Hello'` becomes `{ label: 'Hello', value: 'Hello' }` internally
+- Control state (`expanded`, `selected`) is `$state`-tracked; if the underlying item has the field, reads/writes pass through to it
+- `children` items are auto-wrapped as `ProxyItem` instances via `$derived`, with path-based keys (`'0'`, `'0-1'`, `'0-1-2'`) assigned automatically
+
+### Constructor
+
+```javascript
+new ProxyItem(raw, fields?, key?, level?)
+```
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `raw` | `unknown` | Raw item — object or primitive |
+| `fields` | `Partial<BASE_FIELDS>` | Field name overrides |
+| `key` | `string` | Path-based key (assigned by ProxyTree) |
+| `level` | `number` | Nesting depth: 1 = root |
+
+### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `label` | `string` | Mapped display text (`item[fields.label]`) |
+| `value` | `unknown` | Mapped value (`item[fields.value]`), falls back to raw item |
+| `id` | `string` | Stable unique ID — from item's id field or auto-generated |
+| `key` | `string` | Path-based key, e.g. `'0'`, `'0-1-2'` |
+| `level` | `number` | Nesting depth (1 = root) |
+| `original` | `unknown` | The original raw input — never mutated |
+| `fields` | `object` | Merged field-mapping config |
+| `disabled` | `boolean` | Whether the item is disabled |
+| `hasChildren` | `boolean` | True for objects with a non-empty children array |
+| `children` | `ProxyItem[]` | Auto-wrapped child proxies (`$derived`) |
+| `type` | `'item'|'group'|'separator'|'spacer'` | Item type |
+| `expanded` | `boolean` | Expand state (`$state`); writes through to raw item if field present |
+| `selected` | `boolean` | Selection state (`$state`); writes through to raw item if field present |
+
+### Methods
+
+| Method | Description |
+|--------|-------------|
+| `get(fieldName)` | Read any field by semantic or raw name |
+| `set(fieldName, value)` | Write to the underlying item through field mapping; triggers children recompute |
+| `mutate(fieldOrBatch, value?)` | Write directly to raw item, bypassing field mapping; accepts `(key, value)` or `{ key: value, … }` |
+
+### Usage example
+
+```javascript
+// ProxyItem is typically created by ProxyTree, not manually:
+const proxy = new ProxyItem({ name: 'Alice', role: 'admin' }, { label: 'name', value: 'role' })
+
+proxy.label    // 'Alice'
+proxy.value    // 'admin'
+proxy.get('role')  // 'admin' (raw key fallback)
+proxy.get('label') // 'Alice' (via field mapping)
+proxy.set('name', 'Bob')  // updates underlying item
+```
+
+---
+
+## LazyProxyItem
+
+Extends `ProxyItem` with lazy-loading support. When a `lazyLoad` function is provided, children are fetched on demand.
+
+**When to use:** Use with `LazyWrapper` and tree components that load children asynchronously. Set `children: true` on items as a sentinel to signal they are loadable but not yet loaded.
+
+### Additional properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `loaded` | `boolean` | `false` only for sentinel nodes (`children === true`) that need fetching |
+| `loading` | `boolean` | `true` while async fetch is in progress |
+
+### Additional method
+
+| Method | Description |
+|--------|-------------|
+| `fetch()` | Async. Calls `lazyLoad(value, original)`, writes results via `set('children', …)`, sets `loaded = true`. No-op if already loaded or loading. |
+
+### Constructor
+
+```javascript
+new LazyProxyItem(raw, fields?, key?, level?, lazyLoad?)
+```
+
+`lazyLoad` is `async (value, raw) => children[]`.
+
+---
+
+## BASE_FIELDS
+
+The default field mapping configuration — an object mapping semantic names to their default raw data keys.
+
+```javascript
+import { BASE_FIELDS } from '@rokkit/states'
+// {
+//   label: 'label', value: 'value', id: 'id', icon: 'icon',
+//   href: 'href', children: 'children', type: 'type',
+//   disabled: 'disabled', expanded: 'expanded', selected: 'selected',
+//   snippet: 'snippet', description: 'description'
+// }
+```
+
+Pass a partial override to `ProxyItem`, `ProxyTree`, or components' `fields` prop to remap your data keys.
+
+---
+
+## ProxyTree
+
+Manages a tree of `ProxyItem` instances. Derives a reactive flat view for rendering and a lookup map for O(1) access.
+
+**When to use:** The data layer behind `Wrapper`. Use directly only when building custom tree-based components.
+
+### Constructor
+
+```javascript
+new ProxyTree(items?, fields?, options?)
+```
+
+`options.createProxy` — factory function `(raw, fields, key, level) => ProxyItem` for custom proxy types (e.g. `LazyProxyItem`).
+
+### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `flatView` | `{ key, proxy, level, hasChildren, isExpandable, type, lineTypes }[]` | Reactive flat render list — re-derives on expand/children changes |
+| `roots` | `ProxyItem[]` | Root proxy array |
+| `lookup` | `Map<string, ProxyItem>` | All proxies by key (reactive, includes non-expanded nodes) |
+
+### Methods
+
+| Method | Description |
+|--------|-------------|
+| `append(items)` | Add new root items; creates proxies continuing from current length |
+| `addChildren(proxy, items)` | Add raw children to an existing proxy node |
+
+---
+
+## Wrapper
+
+Navigation controller for persistent list/tree/sidebar components. Owns `focusedKey` state and provides movement, selection, expand/collapse, and typeahead logic on top of a `ProxyTree`.
+
+**When to use:** The navigation layer behind `List` and `Tree` components. Use directly only when building custom persistent-list components. Dropdown variants (`Select`, `Menu`) extend this class.
+
+### Constructor
+
+```javascript
+new Wrapper(proxyTree, { onselect?, onchange? }?)
+```
+
+### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `flatView` | array | Re-derived from proxyTree's flatView |
+| `focusedKey` | `string\|null` | Currently focused item key (`$state`) |
+| `lookup` | `Map` | Delegated from proxyTree |
+| `proxyTree` | `ProxyTree` | The underlying data layer |
+
+### Navigation methods
+
+| Method | Description |
+|--------|-------------|
+| `next(path)` | Move focus to next navigable item (skips separators/spacers/disabled) |
+| `prev(path)` | Move focus to previous navigable item |
+| `first(path)` | Focus first navigable item |
+| `last(path)` | Focus last navigable item |
+| `expand(path)` | Expand focused group; if already open, advances focus to first child |
+| `collapse(path)` | Collapse focused group; if leaf/collapsed, moves focus to parent |
+| `moveTo(path)` | Sync focused key to path — called by Navigator on focusin |
+| `moveToValue(v)` | Sync focus to the item matching a semantic value |
+
+### Selection methods
+
+| Method | Description |
+|--------|-------------|
+| `select(path)` | Select item at path (or `focusedKey`). Groups toggle expanded; leaves fire `onchange`/`onselect` |
+| `toggle(path)` | Toggle group expansion — does not fire `onselect` |
+| `findByText(query, startAfterKey?)` | Typeahead: returns key of first item whose label starts with query (case-insensitive, wraps around) |
+| `cancel(path)` | No-op on persistent lists; override in dropdown subclasses to close |
+| `blur()` | No-op on persistent lists; override in dropdown subclasses |
+
+---
+
+## LazyWrapper
+
+Extends `Wrapper` with lazy-loading support. Intercepts `expand()`, `select()`, and `toggle()` on unloaded sentinel nodes to call `proxy.fetch()` before delegating to the base behavior.
+
+**When to use:** Backing layer for tree components with on-demand child loading.
+
+### Constructor
+
+```javascript
+new LazyWrapper(proxyTree, { onselect?, onchange?, onlazyload? }?)
+```
+
+`onlazyload` is `async () => items[]` — called by `loadMore()` for root-level pagination.
+
+### Additional method
+
+| Method | Description |
+|--------|-------------|
+| `loadMore()` | Async. Calls `onlazyload()` and appends results to the proxy tree root. |
+
+---
+
+## ListController
+
+Flat-list navigation state controller. Manages focus, selection, and multi-select for `Select`, `MultiSelect`, `Menu`, and `Toolbar` components.
+
+**When to use:** Backing controller for dropdown and toolbar components. Prefer `Wrapper` + `ProxyTree` for persistent/tree-based components.
+
+### Constructor
+
+```javascript
+new ListController(items, value, fields, options?)
+```
+
+`options.multiselect` — enable multi-selection (default `false`).
+
+### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `items` | `unknown[]` | Raw items array (`$state`) |
+| `fields` | `object` | Field mapping config |
+| `focusedKey` | `string\|null` | Currently focused item key (`$state`) |
+| `selectedKeys` | `SvelteSet<string>` | Set of selected keys |
+| `expandedKeys` | `SvelteSet<string>` | Set of expanded group keys |
+| `data` | array | Flat visible nodes (`$derived`) |
+| `lookup` | `Map` | All items by key (`$derived`) |
+| `selected` | `unknown[]` | Array of selected item values (`$derived`) |
+| `focused` | `unknown` | Focused item value (`$derived`) |
+
+### Navigation methods
+
+| Method | Description |
+|--------|-------------|
+| `moveTo(path)` | Focus item at path key |
+| `moveFirst()` | Focus first non-disabled item |
+| `moveLast()` | Focus last non-disabled item |
+| `moveNext()` | Focus next non-disabled item |
+| `movePrev()` | Focus previous non-disabled item |
+
+### Selection methods
+
+| Method | Description |
+|--------|-------------|
+| `select(key)` | Single-select item at key |
+| `extendSelection(key)` | Toggle-select in multiselect mode; single-select otherwise |
+| `selectRange(key)` | Range-select from anchor to key (Shift+click, multiselect only) |
+| `findByText(query, startAfterKey?)` | Typeahead match by label prefix (wraps around) |
+| `update(items)` | Replace the items array |
+
+---
+
+## TableController
+
+Tabular data controller. Composes a `ListController` for row focus/selection/navigation and adds column metadata and multi-column sorting.
+
+**When to use:** Backing controller for the `Table` component.
+
+### Constructor
+
+```javascript
+new TableController(data?, options?)
+// options: { columns?, fields?, value?, multiselect? }
+```
+
+Columns are auto-derived from data if not provided. Each column gets `{ sortable: true, sorted: 'none' }` defaults.
+
+### Properties (own)
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `columns` | `object[]` | Column definitions with `name`, `sortable`, `sorted` (`$state`) |
+| `sortState` | `{ column, direction }[]` | Active sort stack (`$state`) |
+
+### Properties (delegated from ListController)
+
+`data`, `lookup`, `focusedKey`, `focused`, `selected`, `selectedKeys`
+
+### Sort methods
+
+| Method | Description |
+|--------|-------------|
+| `sortBy(columnName, extend?)` | Toggle sort on a column. Cycles `none → ascending → descending → none`. `extend=true` (Shift+click) adds to sort stack |
+| `clearSort()` | Clear all sort state; restore original data order |
+
+### Navigation/selection methods (delegated)
+
+`moveFirst()`, `moveLast()`, `moveNext()`, `movePrev()`, `moveTo(path)`, `moveToIndex(index)`, `select(key)`, `extendSelection(key)`
+
+### Update method
+
+| Method | Description |
+|--------|-------------|
+| `update(data)` | Replace data source; re-applies current sort if active |
+
+---
+
+## vibe
+
+Singleton reactive store for the current theme state. Components and actions read from `vibe` to apply palette, mode, density, and direction.
+
+**When to use:** Read `vibe` to react to theme changes. Write to its properties to change the theme programmatically.
+
+### Properties (all reactive `$state`)
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `mode` | `'light'\|'dark'` | `'dark'` | Color scheme |
+| `density` | `'cozy'\|'compact'\|'comfortable'` | `'comfortable'` | Spacing density |
+| `style` | `string` | `'rokkit'` | Active theme style name |
+| `direction` | `'ltr'\|'rtl'` | auto-detected | Text direction |
+| `isRTL` | `boolean` | — | Convenience flag for RTL |
+| `palette` | `object` | — | Derived color rules from `colorMap` + `colors` (`$derived`) |
+| `colors` | `object` | — | Base color definitions |
+| `colorMap` | `object` | — | Maps semantic color roles to base color keys |
+| `allowedStyles` | `string[]` | `DEFAULT_STYLES` | Whitelist of valid style values |
+
+### Methods
+
+| Method | Description |
+|--------|-------------|
+| `update({ style?, mode?, density?, direction? })` | Batch update multiple theme properties |
+| `load(key)` | Load and apply theme from `localStorage` |
+| `save(key)` | Persist current theme (`style`, `mode`, `density`, `direction`) to `localStorage` |
+| `detectDirection()` | Re-detect direction from the document's lang attribute |
+
+### Usage example
+
+```javascript
+import { vibe } from '@rokkit/states'
+
+// Read
+console.log(vibe.mode)     // 'dark'
+console.log(vibe.density)  // 'comfortable'
+
+// Write
+vibe.mode = 'light'
+vibe.density = 'compact'
+
+// Persist
+vibe.save('myapp-theme')
+// Later:
+vibe.load('myapp-theme')
+```
+
+---
+
+## messages
+
+Singleton reactive store for localised UI strings. All Rokkit components read from `messages.current` for their labels and ARIA strings.
+
+**When to use:** Override default English strings for internationalisation or to customise button/label text in components.
+
+### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `current` | `Messages` | The current message map (`$state`) |
+
+### Methods
+
+| Method | Description |
+|--------|-------------|
+| `set(custom)` | Deep-merge custom strings over defaults. Partial updates are fine — only supplied keys are replaced. |
+| `reset()` | Restore all defaults |
+
+### Default message keys
+
+`emptyList`, `emptyTree`, `loading`, `noResults`, `select`, `search`, `list`, `tree`, `toolbar`, `menu`, `toggle`, `rating`, `stepper`, `breadcrumbs`, `carousel`, `tabs`, `code`, `range`, `search_`, `filter`, `grid`, `uploadProgress`, `floatingNav`, `mode`
+
+### Usage example
+
+```javascript
+import { messages } from '@rokkit/states'
+
+// Partial override (merges with defaults)
+messages.set({
+  emptyList: 'Aucun élément trouvé',
+  tree: { expand: 'Développer', collapse: 'Réduire' },
+  select: 'Choisir une option'
+})
+
+// Read in a component
+messages.current.emptyList  // 'Aucun élément trouvé'
+```
+
+---
+
+## watchMedia
+
+Creates a record of reactive media query matchers using Svelte's `MediaQuery`. Each entry is `true` when the query matches.
+
+**When to use:** Responsive layouts that need to react to breakpoint or preference changes inside Svelte components.
+
+### Signature
+
+```javascript
+function watchMedia(breakpoints?: Record<string, string>): Record<string, MediaQuery>
+```
+
+Returns an object where each key holds a `MediaQuery` instance — read `.matches` (or use in reactive context) to get the current boolean state.
+
+### defaultBreakpoints
+
+```javascript
+{
+  small:        '(max-width: 767px)',
+  medium:       '(min-width: 768px) and (max-width: 1023px)',
+  large:        '(min-width: 1024px)',
+  extraLarge:   '(min-width: 1280px)',
+  short:        '(max-height: 399px)',
+  landscape:    '(orientation: landscape)',
+  tiny:         '(orientation: portrait) and (max-height: 599px)',
+  dark:         '(prefers-color-scheme: dark)',
+  noanimations: '(prefers-reduced-motion: reduce)'
+}
+```
+
+### Usage example
+
+```svelte
+<script>
+  import { watchMedia, defaultBreakpoints } from '@rokkit/states'
+
+  const media = watchMedia(defaultBreakpoints)
+</script>
+
+{#if media.small.matches}
+  <MobileNav />
+{:else}
+  <SidebarNav />
+{/if}
+```
+
+Custom breakpoints:
+
+```javascript
+const media = watchMedia({
+  phone: '(max-width: 600px)',
+  tablet: '(min-width: 601px) and (max-width: 1024px)'
+})
+```
+
+---
+
+## Import
+
+```javascript
+import { ProxyItem, LazyProxyItem, BASE_FIELDS } from '@rokkit/states'
+import { ProxyTree }                             from '@rokkit/states'
+import { Wrapper, LazyWrapper }                  from '@rokkit/states'
+import { ListController }                        from '@rokkit/states'
+import { TableController }                       from '@rokkit/states'
+import { vibe }                                  from '@rokkit/states'
+import { messages }                              from '@rokkit/states'
+import { watchMedia, defaultBreakpoints }        from '@rokkit/states'
+```
+
+## Related packages
+
+- [@rokkit/ui](/llms/packages/ui.txt) — components that consume these state primitives
+- [@rokkit/core](/llms/packages/core.txt) — BASE_FIELDS, FieldMapper, normalizeFields
+- [@rokkit/actions](/llms/packages/actions.txt) — `navigator` action that drives Wrapper/ListController
