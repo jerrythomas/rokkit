@@ -57,12 +57,12 @@ Legacy mapping (used by `FieldMapper` and older `ListController`-based code). Pr
 
 ### `normalizeFields(fields)`
 
-Converts legacy field-override keys to their `BASE_FIELDS` equivalents before passing to a component. E.g., `{ text: 'name' }` → `{ label: 'name' }`.
+Converts legacy field-override keys to their `BASE_FIELDS` equivalents. Legacy keys: `description` → `subtext`, `title` → `tooltip`, `image` → `avatar`, `target` → `hrefTarget`.
 
 ```js
 import { normalizeFields } from '@rokkit/core'
-normalizeFields({ text: 'title', image: 'avatar_url' })
-// { label: 'title', avatar: 'avatar_url' }
+normalizeFields({ image: 'avatar_url', description: 'bio' })
+// { avatar: 'avatar_url', subtext: 'bio' }
 ```
 
 ### `getNestedFields(fields)`

@@ -34,7 +34,7 @@ RadioGroup adapts to your data structure through field mapping:
     { id: 'enterprise', name: 'Enterprise', price: 99 }
   ]
 
-  const mapping = new FieldMapper({ text: 'name', value: 'id' })
+  const mapping = new FieldMapper({ label: 'name', value: 'id' })
   let selected = $state('basic')
 </script>
 
@@ -50,12 +50,12 @@ import { FieldMapper } from '@rokkit/core'
 
 // Create custom mapping
 const mapping = new FieldMapper({
-  text: 'label',    // Field for display text
+  label: 'name',    // Field for display text
   value: 'id'       // Field for radio value
 })
 
 // Usage
-mapping.get('text', item)   // Get display text
+mapping.get('label', item)  // Get display text
 mapping.get('value', item)  // Get value
 ```
 
@@ -96,7 +96,7 @@ Map your data fields using FieldMapper:
     { colorName: 'Red', hex: '#ff0000' },
     { colorName: 'Blue', hex: '#0000ff' }
   ]
-  const colorMapping = new FieldMapper({ text: 'colorName', value: 'hex' })
+  const colorMapping = new FieldMapper({ label: 'colorName', value: 'hex' })
 </script>
 
 <RadioGroup options={sizes} bind:value={size} name="size" />
@@ -275,7 +275,7 @@ interface RadioIcons {
     { method: 'overnight', label: 'Overnight', cost: 24.99 }
   ]
 
-  const mapping = new FieldMapper({ text: 'label', value: 'method' })
+  const mapping = new FieldMapper({ label: 'label', value: 'method' })
   let shipping = $state('standard')
 </script>
 

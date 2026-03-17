@@ -11,9 +11,9 @@ The Tabs component renders a list of tab triggers above (or beside) associated c
   import { Tabs } from '@rokkit/ui'
 
   const options = [
-    { value: 'overview', text: 'Overview', content: 'Overview content here...' },
+    { value: 'overview', label: 'Overview', content: 'Overview content here...' },
     { value: 'api',      text: 'API',      content: 'API docs here...' },
-    { value: 'examples', text: 'Examples', content: 'Examples here...' }
+    { value: 'examples', label: 'Examples', content: 'Examples here...' }
   ]
 
   let value = $state('overview')
@@ -78,7 +78,7 @@ Add and remove tabs dynamically:
   import { Tabs } from '@rokkit/ui'
 
   let tabs = $state([
-    { value: 't1', text: 'Tab 1', content: 'Content 1' }
+    { value: 't1', label: 'Tab 1', content: 'Content 1' }
   ])
   let value = $state('t1')
   let nextId = 2

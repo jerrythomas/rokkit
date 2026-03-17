@@ -11,9 +11,9 @@ LazyTree extends Tree with async child loading. Nodes with `children: true` (a b
   import { LazyTree } from '@rokkit/ui'
 
   const items = [
-    { text: 'Documents', value: 'docs', icon: 'i-lucide:folder', children: true },
-    { text: 'Pictures', value: 'pics', icon: 'i-lucide:folder', children: true },
-    { text: 'notes.txt', value: 'notes', icon: 'i-lucide:file-text' }
+    { label: 'Documents', value: 'docs', icon: 'i-lucide:folder', children: true },
+    { label: 'Pictures', value: 'pics', icon: 'i-lucide:folder', children: true },
+    { label: 'notes.txt', value: 'notes', icon: 'i-lucide:file-text' }
   ]
 
   async function loadChildren(item) {
@@ -44,8 +44,8 @@ Set `hasMore={true}` to show a "Load More" button at the bottom of the tree. Whe
   import { LazyTree } from '@rokkit/ui'
 
   let items = $state([
-    { text: 'Item 1', value: '1' },
-    { text: 'Item 2', value: '2' }
+    { label: 'Item 1', value: '1' },
+    { label: 'Item 2', value: '2' }
   ])
   let hasMore = $state(true)
 
@@ -53,7 +53,7 @@ Set `hasMore={true}` to show a "Load More" button at the bottom of the tree. Whe
     if (!item) {
       // No item = "Load More" at root level
       hasMore = false
-      return [{ text: 'Item 3', value: '3' }]
+      return [{ label: 'Item 3', value: '3' }]
     }
     // item provided = lazy-load children for that node
     return fetchChildren(item)
@@ -85,9 +85,9 @@ Set `hasMore={true}` to show a "Load More" button at the bottom of the tree. Whe
 // children: [...]  → pre-loaded children
 // no children key → leaf node
 const items = [
-  { text: 'Lazy folder', value: 'lazy', children: true },
-  { text: 'Pre-loaded',  value: 'pre',  children: [{ text: 'Child', value: 'c1' }] },
-  { text: 'Leaf file',   value: 'leaf' }
+  { label: 'Lazy folder', value: 'lazy', children: true },
+  { label: 'Pre-loaded',  value: 'pre',  children: [{ label: 'Child', value: 'c1' }] },
+  { label: 'Leaf file',   value: 'leaf' }
 ]
 ```
 

@@ -11,10 +11,10 @@ The Toolbar component renders a horizontal or vertical action bar. Items can be 
   import { Toolbar } from '@rokkit/ui'
 
   const items = [
-    { text: 'Bold',   value: 'bold',   icon: 'i-lucide:bold' },
-    { text: 'Italic', value: 'italic', icon: 'i-lucide:italic' },
+    { label: 'Bold',   value: 'bold',   icon: 'i-lucide:bold' },
+    { label: 'Italic', value: 'italic', icon: 'i-lucide:italic' },
     { type: 'separator' },
-    { text: 'Link',   value: 'link',   icon: 'i-lucide:link' }
+    { label: 'Link',   value: 'link',   icon: 'i-lucide:link' }
   ]
 
   function handleClick(value, item) {
@@ -66,9 +66,9 @@ The Toolbar component renders a horizontal or vertical action bar. Items can be 
 
 ```svelte
 const items = [
-  { text: 'Save',     value: 'save',  icon: 'i-lucide:save' },
+  { label: 'Save',     value: 'save',  icon: 'i-lucide:save' },
   { type: 'spacer' },   // pushes remaining items to the end
-  { text: 'Settings', value: 'settings', icon: 'i-lucide:settings' }
+  { label: 'Settings', value: 'settings', icon: 'i-lucide:settings' }
 ]
 ```
 
@@ -78,8 +78,8 @@ Set `type: 'toggle'` and `active: true` for pressed-state buttons:
 
 ```svelte
 const items = [
-  { text: 'Bold',   value: 'bold',   icon: 'i-lucide:bold',   type: 'toggle', active: true },
-  { text: 'Italic', value: 'italic', icon: 'i-lucide:italic', type: 'toggle', active: false }
+  { label: 'Bold',   value: 'bold',   icon: 'i-lucide:bold',   type: 'toggle', active: true },
+  { label: 'Italic', value: 'italic', icon: 'i-lucide:italic', type: 'toggle', active: false }
 ]
 ```
 
@@ -124,7 +124,7 @@ Set `snippet: 'myWidget'` on an item and pass a matching snippet:
 ```svelte
 <script>
   const items = [
-    { text: 'Zoom', value: 'zoom', type: 'custom', snippet: 'zoom' }
+    { label: 'Zoom', value: 'zoom', type: 'custom', snippet: 'zoom' }
   ]
 </script>
 

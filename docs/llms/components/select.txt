@@ -28,7 +28,7 @@ The Select component provides a dropdown selection interface that adapts to any 
     { code: 'gb', name: 'United Kingdom', flag: 'i-flag:gb' },
     { code: 'ca', name: 'Canada',         flag: 'i-flag:ca' }
   ]
-  const fields = { value: 'code', text: 'name', icon: 'flag' }
+  const fields = { value: 'code', label: 'name', icon: 'flag' }
 
   let value = $state(null)
 </script>
@@ -75,12 +75,12 @@ Use the `children` field to create option groups:
 ```svelte
 <script>
   const items = [
-    { text: 'Fruits', children: [
-        { text: 'Apple',  value: 'apple' },
-        { text: 'Banana', value: 'banana' }
+    { label: 'Fruits', children: [
+        { label: 'Apple',  value: 'apple' },
+        { label: 'Banana', value: 'banana' }
     ]},
-    { text: 'Vegetables', children: [
-        { text: 'Carrot', value: 'carrot' }
+    { label: 'Vegetables', children: [
+        { label: 'Carrot', value: 'carrot' }
     ]}
   ]
   let value = $state(null)

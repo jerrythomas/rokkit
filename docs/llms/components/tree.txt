@@ -16,11 +16,11 @@ The Tree component renders nested items with tree-line connectors, expand/collap
       value: 'src',
       icon: 'i-lucide:folder',
       children: [
-        { text: 'index.ts', value: 'index', icon: 'i-lucide:file-code' },
-        { text: 'utils.ts', value: 'utils', icon: 'i-lucide:file-code' }
+        { label: 'index.ts', value: 'index', icon: 'i-lucide:file-code' },
+        { label: 'utils.ts', value: 'utils', icon: 'i-lucide:file-code' }
       ]
     },
-    { text: 'README.md', value: 'readme', icon: 'i-lucide:file-text' }
+    { label: 'README.md', value: 'readme', icon: 'i-lucide:file-text' }
   ]
 
   let value = $state(null)
@@ -59,7 +59,7 @@ The Tree component renders nested items with tree-line connectors, expand/collap
 ## Custom Field Mapping
 
 ```svelte
-<Tree {items} fields={{ text: 'name', value: 'id' }} />
+<Tree {items} fields={{ label: 'name', value: 'id' }} />
 ```
 
 ## Custom Icons

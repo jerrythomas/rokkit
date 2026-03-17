@@ -62,7 +62,7 @@ Default field names (what the component reads from your data):
 To remap — e.g. your data uses `name` and `path` instead of `label` and `value`:
 
 ```svelte
-<List {items} fields={{ text: 'name', value: 'path' }} bind:value />
+<List {items} fields={{ label: 'name', value: 'path' }} bind:value />
 ```
 
 ## Grouped Items / Collapsible Sections

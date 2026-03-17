@@ -28,7 +28,7 @@ Snippets receive a `ProxyItem` — a unified interface to the underlying data it
 
 | Property / Method | Returns | Description |
 |-------------------|---------|-------------|
-| `proxy.label` | `string` | Mapped display text (via `fields.text`) |
+| `proxy.label` | `string` | Mapped display text (via `fields.label`) |
 | `proxy.icon` | `string` | Mapped icon CSS class (via `fields.icon`) |
 | `proxy.href` | `string` | Mapped href — renders item as `<a>` if set |
 | `proxy.value` | `any` | The original raw item (object or primitive) |

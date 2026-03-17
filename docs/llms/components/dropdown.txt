@@ -11,9 +11,9 @@ The Menu component renders a trigger button that opens a dropdown list of select
   import { Menu } from '@rokkit/ui'
 
   const options = [
-    { text: 'Edit',      value: 'edit',   icon: 'i-lucide:edit' },
-    { text: 'Duplicate', value: 'dup',    icon: 'i-lucide:copy' },
-    { text: 'Delete',    value: 'delete', icon: 'i-lucide:trash' }
+    { label: 'Edit',      value: 'edit',   icon: 'i-lucide:edit' },
+    { label: 'Duplicate', value: 'dup',    icon: 'i-lucide:copy' },
+    { label: 'Delete',    value: 'delete', icon: 'i-lucide:trash' }
   ]
 </script>
 
@@ -63,13 +63,13 @@ Use the `children` field to create groups:
 ```svelte
 <script>
   const options = [
-    { text: 'File', children: [
-      { text: 'New',  value: 'new',  icon: 'i-lucide:file-plus', shortcut: 'Ctrl+N' },
-      { text: 'Open', value: 'open', icon: 'i-lucide:folder-open', shortcut: 'Ctrl+O' }
+    { label: 'File', children: [
+      { label: 'New',  value: 'new',  icon: 'i-lucide:file-plus', shortcut: 'Ctrl+N' },
+      { label: 'Open', value: 'open', icon: 'i-lucide:folder-open', shortcut: 'Ctrl+O' }
     ]},
-    { text: 'Edit', children: [
-      { text: 'Cut',   value: 'cut',   icon: 'i-lucide:scissors', shortcut: 'Ctrl+X' },
-      { text: 'Paste', value: 'paste', icon: 'i-lucide:clipboard', shortcut: 'Ctrl+V' }
+    { label: 'Edit', children: [
+      { label: 'Cut',   value: 'cut',   icon: 'i-lucide:scissors', shortcut: 'Ctrl+X' },
+      { label: 'Paste', value: 'paste', icon: 'i-lucide:clipboard', shortcut: 'Ctrl+V' }
     ]}
   ]
 </script>
@@ -99,9 +99,9 @@ Use the `snippet` field to assign different renderers to individual items:
 ```svelte
 <script>
   const options = [
-    { text: 'Normal',    value: 'a' },
-    { text: 'Separator', value: 'sep', snippet: 'divider' },
-    { text: 'Danger',    value: 'd',   snippet: 'danger' }
+    { label: 'Normal',    value: 'a' },
+    { label: 'Separator', value: 'sep', snippet: 'divider' },
+    { label: 'Danger',    value: 'd',   snippet: 'danger' }
   ]
 </script>
 

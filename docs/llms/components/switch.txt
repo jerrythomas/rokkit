@@ -26,7 +26,7 @@ Switch renders a sliding toggle button (`role="switch"`) that alternates between
   let theme = $state('light')
 
   const options = [
-    { value: 'light', text: 'Light', icon: 'i-lucide:sun' },
+    { value: 'light', label: 'Light', icon: 'i-lucide:sun' },
     { value: 'dark',  text: 'Dark',  icon: 'i-lucide:moon' }
   ] as [object, object]
 </script>
@@ -67,7 +67,7 @@ Switch renders a sliding toggle button (`role="switch"`) that alternates between
 ```svelte
 <Switch
   options={[
-    { value: false, text: 'Off' },
+    { value: false, label: 'Off' },
     { value: true,  text: 'On' }
   ]}
   bind:value={enabled}
@@ -80,7 +80,7 @@ Switch renders a sliding toggle button (`role="switch"`) that alternates between
 ```svelte
 <Switch
   options={[
-    { value: 'system', icon: 'i-lucide:monitor', text: 'System' },
+    { value: 'system', icon: 'i-lucide:monitor', label: 'System' },
     { value: 'dark',   icon: 'i-lucide:moon',    text: 'Dark' }
   ]}
   bind:value={mode}

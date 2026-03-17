@@ -11,10 +11,10 @@ The BreadCrumbs component displays a path of links showing the user's location i
   import { BreadCrumbs } from '@rokkit/ui'
 
   let path = [
-    { text: 'Home', href: '/' },
-    { text: 'Products', href: '/products' },
-    { text: 'Electronics', href: '/products/electronics' },
-    { text: 'Laptops' }
+    { label: 'Home', href: '/' },
+    { label: 'Products', href: '/products' },
+    { label: 'Electronics', href: '/products/electronics' },
+    { label: 'Laptops' }
   ]
 </script>
 
@@ -29,9 +29,9 @@ Each breadcrumb item represents a level in the hierarchy:
 
 ```javascript
 const items = [
-  { text: 'Home', href: '/' },           // Clickable link
-  { text: 'Category', href: '/cat' },    // Clickable link
-  { text: 'Current Page' }               // No href = current page
+  { label: 'Home', href: '/' },           // Clickable link
+  { label: 'Category', href: '/cat' },    // Clickable link
+  { label: 'Current Page' }               // No href = current page
 ]
 ```
 
@@ -209,9 +209,9 @@ interface BreadCrumbItem {
   import { BreadCrumbs } from '@rokkit/ui'
 
   let crumbs = [
-    { text: 'Home', href: '/' },
-    { text: 'Blog', href: '/blog' },
-    { text: 'Article Title' }
+    { label: 'Home', href: '/' },
+    { label: 'Blog', href: '/blog' },
+    { label: 'Article Title' }
   ]
 </script>
 
@@ -225,9 +225,9 @@ interface BreadCrumbItem {
   import { BreadCrumbs } from '@rokkit/ui'
 
   let crumbs = [
-    { text: 'Home', href: '/', icon: 'home' },
-    { text: 'Settings', href: '/settings', icon: 'cog' },
-    { text: 'Profile', icon: 'user' }
+    { label: 'Home', href: '/', icon: 'home' },
+    { label: 'Settings', href: '/settings', icon: 'cog' },
+    { label: 'Profile', icon: 'user' }
   ]
 </script>
 
@@ -241,9 +241,9 @@ interface BreadCrumbItem {
   import { BreadCrumbs } from '@rokkit/ui'
 
   let path = [
-    { text: 'Dashboard', href: '/dash' },
-    { text: 'Reports', href: '/reports' },
-    { text: 'Sales Report' }
+    { label: 'Dashboard', href: '/dash' },
+    { label: 'Reports', href: '/reports' },
+    { label: 'Sales Report' }
   ]
 </script>
 
@@ -257,9 +257,9 @@ interface BreadCrumbItem {
   import { BreadCrumbs } from '@rokkit/ui'
 
   let path = [
-    { text: 'Shop', href: '/shop' },
-    { text: 'Clothing', href: '/shop/clothing' },
-    { text: 'T-Shirts' }
+    { label: 'Shop', href: '/shop' },
+    { label: 'Clothing', href: '/shop/clothing' },
+    { label: 'T-Shirts' }
   ]
 </script>
 
@@ -276,7 +276,7 @@ interface BreadCrumbItem {
   let crumbs = $derived.by(() => {
     const segments = $page.url.pathname.split('/').filter(Boolean)
     return [
-      { text: 'Home', href: '/' },
+      { label: 'Home', href: '/' },
       ...segments.map((segment, i) => ({
         text: segment.charAt(0).toUpperCase() + segment.slice(1),
         href: '/' + segments.slice(0, i + 1).join('/'),
@@ -297,9 +297,9 @@ interface BreadCrumbItem {
   import { BreadCrumbs } from '@rokkit/ui'
 
   let crumbs = [
-    { text: 'Home', href: '/', icon: 'home' },
-    { text: 'Products', href: '/products', count: 42 },
-    { text: 'Widget Pro' }
+    { label: 'Home', href: '/', icon: 'home' },
+    { label: 'Products', href: '/products', count: 42 },
+    { label: 'Widget Pro' }
   ]
 </script>
 
@@ -331,11 +331,11 @@ interface BreadCrumbItem {
   import { BreadCrumbs } from '@rokkit/ui'
 
   let productPath = [
-    { text: 'Home', href: '/' },
-    { text: 'Electronics', href: '/electronics' },
-    { text: 'Computers', href: '/electronics/computers' },
-    { text: 'Laptops', href: '/electronics/computers/laptops' },
-    { text: 'MacBook Pro 16"' }
+    { label: 'Home', href: '/' },
+    { label: 'Electronics', href: '/electronics' },
+    { label: 'Computers', href: '/electronics/computers' },
+    { label: 'Laptops', href: '/electronics/computers/laptops' },
+    { label: 'MacBook Pro 16"' }
   ]
 </script>
 
@@ -351,18 +351,18 @@ interface BreadCrumbItem {
   import { BreadCrumbs } from '@rokkit/ui'
 
   let longPath = [
-    { text: 'Home', href: '/' },
-    { text: 'Documents', href: '/docs' },
-    { text: 'Projects', href: '/docs/projects' },
-    { text: '2024', href: '/docs/projects/2024' },
-    { text: 'Q1', href: '/docs/projects/2024/q1' },
-    { text: 'Report.pdf' }
+    { label: 'Home', href: '/' },
+    { label: 'Documents', href: '/docs' },
+    { label: 'Projects', href: '/docs/projects' },
+    { label: '2024', href: '/docs/projects/2024' },
+    { label: 'Q1', href: '/docs/projects/2024/q1' },
+    { label: 'Report.pdf' }
   ]
 
   // Show first, ellipsis, last 2
   let displayPath = $derived([
     longPath[0],
-    { text: '...', href: undefined },
+    { label: '...', href: undefined },
     ...longPath.slice(-2)
   ])
 </script>

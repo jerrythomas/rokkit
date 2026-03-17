@@ -11,9 +11,9 @@ FloatingAction renders a single trigger button that expands a list of action ite
   import { FloatingAction } from '@rokkit/ui'
 
   const actions = [
-    { text: 'Add note',  icon: 'i-lucide:file-plus',  value: 'note' },
-    { text: 'Add photo', icon: 'i-lucide:camera',      value: 'photo' },
-    { text: 'Add task',  icon: 'i-lucide:check-square', value: 'task' }
+    { label: 'Add note',  icon: 'i-lucide:file-plus',  value: 'note' },
+    { label: 'Add photo', icon: 'i-lucide:camera',      value: 'photo' },
+    { label: 'Add task',  icon: 'i-lucide:check-square', value: 'task' }
   ]
 </script>
 
@@ -82,7 +82,7 @@ FloatingAction renders a single trigger button that expands a list of action ite
     { id: 'new',    title: 'New File',    glyph: 'i-lucide:file-plus' },
     { id: 'upload', title: 'Upload',      glyph: 'i-lucide:upload' }
   ]
-  const fields = { value: 'id', text: 'title', icon: 'glyph' }
+  const fields = { value: 'id', label: 'title', icon: 'glyph' }
 </script>
 
 <FloatingAction items={actions} {fields} onselect={handleAction} />

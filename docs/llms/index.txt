@@ -150,10 +150,10 @@ Most selection components share this pattern:
 
 ```svelte
 <Component
-  items={data}                <!-- the data array -->
-  bind:value                  <!-- selected value (bindable) -->
-  fields={{ text: 'name' }}   <!-- map data fields to component expectations -->
-  onchange={(v, item) => {}}  <!-- selection callback -->
+  items={data}                 <!-- the data array -->
+  bind:value                   <!-- selected value (bindable) -->
+  fields={{ label: 'name' }}   <!-- map data fields to component expectations -->
+  onchange={(v, item) => {}}   <!-- selection callback -->
 />
 ```
 
@@ -168,7 +168,7 @@ Map any data structure without transforming data:
   ]
   const fields = {
     value: 'userId',
-    text: 'fullName',
+    label: 'fullName',
     icon: 'avatarUrl'
   }
 </script>
@@ -178,16 +178,26 @@ Map any data structure without transforming data:
 
 ### Field Roles Reference
 
-| Field role | Default key | Description | Used by |
-|------------|-------------|-------------|---------|
-| `text` | `'label'` | Display label | All components |
+Field roles are the keys you use in the `fields` prop. They map from Rokkit's semantic names to your data's property names.
+
+| Field role | Default data key | Description | Used by |
+|------------|-----------------|-------------|---------|
+| `label` | `'label'` | Display text | All components |
 | `value` | `'value'` | Selection value (what `bind:value` receives) | Select, List, Toggle, etc. |
 | `icon` | `'icon'` | Icon CSS class | List, Select, Menu, Tree |
+| `avatar` | `'image'` | Avatar image URL | List, Select |
+| `subtext` | `'description'` | Secondary text below label | List, Select |
+| `tooltip` | `'title'` | Tooltip text | All |
+| `badge` | `'badge'` | Badge value | List |
+| `shortcut` | `'shortcut'` | Keyboard shortcut label | Menu |
 | `children` | `'children'` | Nested items for groups/trees | List (groups), Tree |
-| `description` | `'description'` | Secondary text below label | List, Select |
-| `disabled` | `'disabled'` | Disables the item | All |
-| `component` | `'component'` | Svelte component to render the item | List, Select |
 | `snippet` | `'snippet'` | Named snippet to route the item to | List, Select, Tree |
+| `href` | `'href'` | Link URL — renders item as `<a>` | List, Menu |
+| `hrefTarget` | `'target'` | Link target (`_blank`, etc.) | List, Menu |
+| `disabled` | `'disabled'` | Disables the item | All |
+| `expanded` | `'expanded'` | Initial expand state | List, Tree |
+| `selected` | `'selected'` | Initial selected state | List |
+| `id` | `'id'` | Unique identifier | All |
 
 **Default mapping:** if you pass no `fields` prop, Rokkit uses field names directly — a property named `label` becomes the display text, `value` becomes the selection value, etc.
 
@@ -198,7 +208,7 @@ Map any data structure without transforming data:
 <Select items={['Alice', 'Bob', 'Carol']} bind:value />
 
 <!-- Object array with explicit mapping -->
-<Select items={users} fields={{ text: 'fullName', value: 'userId' }} bind:value />
+<Select items={users} fields={{ label: 'fullName', value: 'userId' }} bind:value />
 ```
 
 **Same pattern everywhere:** `items` + `fields` + `bind:value` works identically across List, Select, MultiSelect, Tree, Tabs, Toggle, Table, Menu — no adapters needed.

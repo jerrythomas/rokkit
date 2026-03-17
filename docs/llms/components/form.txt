@@ -72,7 +72,7 @@ const schema = {
         { id: 'M', value: 'Male' },
         { id: 'F', value: 'Female' }
       ],
-      fields: { value: 'id', text: 'value' }
+      fields: { value: 'value' }
     },
     age: { type: 'number', min: 18, max: 99 }
   }
@@ -139,7 +139,7 @@ const layout = {
           { id: 'M', value: 'Male' },
           { id: 'F', value: 'Female' }
         ],
-        fields: { value: 'id', text: 'value' }
+        fields: { value: 'value' }
       },
       age: { type: 'number', min: 18, max: 99 }
     }
@@ -189,7 +189,7 @@ const layout = {
     { id: 'value1', value: 'Display 1' },
     { id: 'value2', value: 'Display 2' }
   ],
-  fields: { value: 'id', text: 'value' }
+  fields: { value: 'value' }
 }
 ```
 
@@ -273,7 +273,7 @@ const lookups = {
       const response = await fetch('/api/countries')
       return response.json()
     },
-    fields: { value: 'code', text: 'name' }
+    fields: { value: 'name' }
   }
 }
 
@@ -292,7 +292,7 @@ const lookups = {
       const response = await fetch('/api/countries')
       return response.json()
     },
-    fields: { value: 'code', text: 'name' }
+    fields: { value: 'name' }
   },
 
   // City options depend on selected country
@@ -303,7 +303,7 @@ const lookups = {
       const response = await fetch(`/api/countries/${deps.country}/cities`)
       return response.json()
     },
-    fields: { value: 'id', text: 'name' }
+    fields: { value: 'name' }
   },
 
   // District depends on both country and city
@@ -365,7 +365,7 @@ const countryLookup = createLookup({
     const res = await fetch('/api/countries')
     return res.json()
   },
-  fields: { value: 'code', text: 'name' }
+  fields: { value: 'name' }
 })
 
 // Access state
@@ -445,7 +445,7 @@ manager.clearAllCaches()
         const res = await fetch('/api/countries')
         return res.json()
       },
-      fields: { value: 'code', text: 'name' }
+      fields: { value: 'name' }
     },
     city: {
       dependsOn: ['country'],
@@ -454,7 +454,7 @@ manager.clearAllCaches()
         const res = await fetch(`/api/countries/${deps.country}/cities`)
         return res.json()
       },
-      fields: { value: 'id', text: 'name' }
+      fields: { value: 'name' }
     }
   }
 

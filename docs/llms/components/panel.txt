@@ -238,9 +238,9 @@ interface PanelProps {
   import { Panel, List } from '@rokkit/ui'
 
   let menuItems = [
-    { text: 'Dashboard', icon: 'home' },
-    { text: 'Settings', icon: 'cog' },
-    { text: 'Profile', icon: 'user' }
+    { label: 'Dashboard', icon: 'home' },
+    { label: 'Settings', icon: 'cog' },
+    { label: 'Profile', icon: 'user' }
   ]
 </script>
 

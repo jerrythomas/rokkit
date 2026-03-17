@@ -29,7 +29,7 @@ MultiSelect extends Select for multi-item selection. Selected values are shown a
     { id: 2, name: 'Backend',   color: '#10b981' },
     { id: 3, name: 'DevOps',    color: '#f59e0b' }
   ]
-  const fields = { value: 'id', text: 'name' }
+  const fields = { value: 'id', label: 'name' }
 
   let value = $state([])
   let selected = $state([])
