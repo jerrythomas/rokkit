@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/app",
-  "version": "1.0.0-next.142",
+  "version": "1.0.0-next.143",
   "description": "App-level controls for Rokkit applications - theme management and UI chrome",
   "repository": {
     "type": "git",
