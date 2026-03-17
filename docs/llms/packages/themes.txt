@@ -1,0 +1,112 @@
+# @rokkit/themes
+
+> CSS theme files for Rokkit components — structural base styles and visual theme variants.
+
+## Available Themes
+
+Rokkit ships four visual themes. Each is a separate CSS file in `@rokkit/themes/dist/`:
+
+| Theme | File | Personality |
+|-------|------|-------------|
+| **rokkit** | `dist/rokkit.css` | Rich gradients, glowing borders, and vibrant accents. The default theme — applied without a wrapper attribute. |
+| **minimal** | `dist/minimal.css` | Clean, understated visual styling with subtle borders and soft backgrounds. |
+| **material** | `dist/material.css` | Material Design inspired styling with elevation shadows and depth. |
+| **glass** | `dist/glass.css` | Glassmorphism styling with backdrop blur, transparency, and subtle borders. |
+
+## CSS Import Structure
+
+Every Rokkit application needs two imports: the **base** file (structural layout) and at least one **theme** file (colors and visual effects).
+
+```css
+/* In your global CSS (e.g., app.css or +layout.svelte <style>) */
+@import '@rokkit/themes/dist/base';    /* Required — structural layout for all components */
+@import '@rokkit/themes/dist/rokkit';  /* One or more visual themes */
+```
+
+Or import all themes at once (larger bundle, but lets you switch themes at runtime):
+
+```css
+@import '@rokkit/themes/dist/base';
+@import '@rokkit/themes/dist/rokkit';
+@import '@rokkit/themes/dist/minimal';
+@import '@rokkit/themes/dist/material';
+@import '@rokkit/themes/dist/glass';
+```
+
+### Per-component imports (tree-shaking)
+
+Each theme directory also has per-component CSS files. Import only what you use for smaller bundles:
+
+```css
+@import '@rokkit/themes/dist/base/button.css';
+@import '@rokkit/themes/dist/rokkit/button.css';
+```
+
+## Activating a Theme with `data-style`
+
+The `rokkit` theme is active by default with no attribute needed. Other themes are activated by setting `data-style` on any ancestor element — typically `<body>` or a layout wrapper:
+
+```html
+<!-- Minimal theme for the whole page -->
+<body data-style="minimal">
+
+<!-- Material theme for a specific section -->
+<div data-style="material">
+  ...components...
+</div>
+```
+
+Multiple themes can coexist on the same page — components inherit the nearest ancestor's `data-style`.
+
+## Color Palette and Custom Colors
+
+The base CSS file sets all semantic color variables (`--color-primary`, `--color-surface`, etc.) using the default palette (orange primary, slate surface, etc.).
+
+To change these colors without rebuilding CSS, override the CSS variables directly:
+
+```css
+:root {
+  --color-primary:     76,29,149;   /* violet-900 in r,g,b format */
+  --color-primary-500: 109,40,217;
+  /* ... shades 50–950 */
+}
+```
+
+For a structured approach, use `rokkit.config.js` with `@rokkit/unocss`. The config drives both the UnoCSS utility classes and the CSS variable values injected at build time:
+
+```js
+// rokkit.config.js
+export default {
+  colors: {
+    primary: 'violet',
+    surface: 'zinc',
+    accent:  'sky'
+  }
+}
+```
+
+See `docs/llms/packages/unocss.txt` for the full `rokkit.config.js` API and how `presetRokkit` consumes it.
+
+## How Themes Relate to Components
+
+Rokkit components are **unstyled by default** — they only have structural CSS (`data-*` attribute selectors for layout, sizing, and behavior). Visual appearance comes entirely from the imported theme files.
+
+The separation means:
+- Components work without any theme (plain, minimal structure)
+- Swapping theme files changes the look without touching component code
+- `data-style` on an ancestor scopes a theme to a subtree
+
+Each theme targets Rokkit's data attributes. For example, `[data-button]` gets border, background, and hover effects from the active theme file.
+
+## Utility Classes and Data Attributes
+
+For utility classes (`bg-primary-z5`, `text-surface-z8`, `data-mode`, etc.) and the full data attribute reference, see `docs/llms/index.txt`.
+
+## Import
+
+```js
+// In vite.config.js or SvelteKit app — CSS imports are typically in global CSS, not JS
+// But if needed from JS:
+import '@rokkit/themes/dist/base'
+import '@rokkit/themes/dist/rokkit'
+```
