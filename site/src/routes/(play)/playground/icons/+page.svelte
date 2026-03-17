@@ -2,10 +2,9 @@
 	// @ts-nocheck
 	import authIcons from '@rokkit/icons/auth.json'
 	import appIcons from '@rokkit/icons/app.json'
-	import componentIcons from '@rokkit/icons/components.json'
 	import baseIcons from '@rokkit/icons/ui.json'
-	import solidIcons from '@rokkit/icons/solid.json'
-	import lightIcons from '@rokkit/icons/light.json'
+	import glyphIcons from '@rokkit/icons/glyph.json'
+	import semanticIcons from '@rokkit/icons/semantic.json'
 
 	const AUTH_CATEGORIES = {
 		'Auth Platforms': [
@@ -28,7 +27,7 @@
 		'Auth Methods': ['email', 'phone', 'password', 'magic', 'incognito', 'authy', 'passkey', 'mfa']
 	}
 
-	const VARIANT_ORDER = [
+	const AUTH_VARIANT_ORDER = [
 		'',
 		'-white',
 		'-black',
@@ -42,10 +41,12 @@
 		'-wordmark-white'
 	]
 
+	const GLYPH_VARIANTS = ['', '-outline', '-solid', '-duotone-outline']
+
 	function getAuthFamilies(bases, icons) {
 		return bases
 			.map((base) => {
-				const variants = VARIANT_ORDER.map((suffix) => ({
+				const variants = AUTH_VARIANT_ORDER.map((suffix) => ({
 					suffix,
 					key: base + suffix,
 					icon: icons[base + suffix]
@@ -53,6 +54,26 @@
 				return { base, variants }
 			})
 			.filter((f) => f.variants.length > 0)
+	}
+
+	function getGlyphFamilies(icons, query = '') {
+		const bases = [
+			...new Set(
+				Object.keys(icons).map((n) =>
+					n.replace(/-duotone-outline$|-outline$|-solid$/, '')
+				)
+			)
+		].sort()
+		return bases
+			.filter((base) => !query || base.includes(query))
+			.map((base) => ({
+				base,
+				variants: GLYPH_VARIANTS.map((suffix) => ({
+					suffix,
+					key: base + suffix,
+					icon: icons[base + suffix] ?? null
+				}))
+			}))
 	}
 
 	function iconList(collection) {
@@ -68,7 +89,7 @@
 		setTimeout(() => (copied = null), 1500)
 	}
 
-	const TABS = ['Auth', 'App', 'Components', 'Base', 'Solid', 'Light']
+	const TABS = ['Auth', 'App', 'Base', 'Glyph', 'Semantic']
 	let activeTab = $state('Auth')
 	let search = $state('')
 
@@ -87,10 +108,9 @@
 	const COLLECTIONS = {
 		Auth: { collection: authIcons, prefix: 'logo' },
 		App: { collection: appIcons, prefix: 'app' },
-		Components: { collection: componentIcons, prefix: 'component' },
 		Base: { collection: baseIcons, prefix: 'base' },
-		Solid: { collection: solidIcons, prefix: 'solid' },
-		Light: { collection: lightIcons, prefix: 'light' }
+		Glyph: { collection: glyphIcons, prefix: 'glyph' },
+		Semantic: { collection: semanticIcons, prefix: 'semantic' }
 	}
 </script>
 
@@ -157,6 +177,72 @@
 				</section>
 			{/if}
 		{/each}
+	{:else if activeTab === 'Glyph'}
+		{@const families = getGlyphFamilies(glyphIcons.icons, search)}
+		<div class="flex items-center gap-3">
+			<input
+				bind:value={search}
+				placeholder="Search glyphs…"
+				class="bg-surface-z2 border-surface-z3 text-surface-z8 placeholder:text-surface-z4 focus:border-primary-z5 w-64 rounded-md border
+          px-3 py-1.5 text-sm focus:outline-none"
+			/>
+			<span class="text-surface-z4 text-xs">{families.length} icons</span>
+		</div>
+		<div class="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-2">
+			{#each families as family (family.base)}
+				<div class="bg-surface-z2 hover:bg-surface-z3 hover:border-surface-z4 flex flex-col gap-1 rounded-md border border-transparent px-2 py-1.5 transition-colors">
+					<div class="flex gap-0.5">
+						{#each family.variants as v (v.key)}
+							{#if v.icon}
+								<button
+									class="hover:bg-surface-z4 flex h-8 w-8 shrink-0 items-center justify-center rounded transition-colors"
+									title={v.key}
+									onclick={() => copyName('glyph', v.key)}
+								>
+									{@html iconSVG(v.icon, glyphIcons)}
+								</button>
+							{:else}
+								<div class="h-8 w-8 shrink-0"></div>
+							{/if}
+						{/each}
+					</div>
+					<span class="text-surface-z5 truncate font-mono text-[10px] leading-tight">{family.base}</span>
+				</div>
+			{/each}
+		</div>
+	{:else if activeTab === 'Semantic'}
+		{@const families = getGlyphFamilies(semanticIcons.icons, search)}
+		<div class="flex items-center gap-3">
+			<input
+				bind:value={search}
+				placeholder="Search semantic…"
+				class="bg-surface-z2 border-surface-z3 text-surface-z8 placeholder:text-surface-z4 focus:border-primary-z5 w-64 rounded-md border
+          px-3 py-1.5 text-sm focus:outline-none"
+			/>
+			<span class="text-surface-z4 text-xs">{families.length} icons</span>
+		</div>
+		<div class="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-2">
+			{#each families as family (family.base)}
+				<div class="bg-surface-z2 hover:bg-surface-z3 hover:border-surface-z4 flex flex-col gap-1 rounded-md border border-transparent px-2 py-1.5 transition-colors">
+					<div class="flex gap-0.5">
+						{#each family.variants as v (v.key)}
+							{#if v.icon}
+								<button
+									class="hover:bg-surface-z4 flex h-8 w-8 shrink-0 items-center justify-center rounded transition-colors"
+									title={v.key}
+									onclick={() => copyName('semantic', v.key)}
+								>
+									{@html iconSVG(v.icon, semanticIcons)}
+								</button>
+							{:else}
+								<div class="h-8 w-8 shrink-0"></div>
+							{/if}
+						{/each}
+					</div>
+					<span class="text-surface-z5 truncate font-mono text-[10px] leading-tight">{family.base}</span>
+				</div>
+			{/each}
+		</div>
 	{:else}
 		{@const { collection, prefix } = COLLECTIONS[activeTab]}
 		{@const icons = filtered(iconList(collection))}

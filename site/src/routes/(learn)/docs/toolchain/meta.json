@@ -1,7 +1,7 @@
 {
   "title": "Toolchain",
   "description": "CLI, icon sets, and project scaffolding tools",
-  "icon": "i-solar:settings-bold-duotone",
-  "category": "guide",
+  "icon": "i-glyph:settings",
+  "category": "toolchain",
   "order": 10
 }

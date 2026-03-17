@@ -4,7 +4,6 @@
 	import '../app.css'
 
 	import { setContext } from 'svelte'
-	import { page } from '$app/state'
 	import { media } from '$lib/media.js'
 	import { vibe } from '@rokkit/states'
 	import { themable } from '@rokkit/actions'
@@ -25,11 +24,6 @@
 	})
 
 	setContext('site', () => site)
-
-	let showRootHeader = $derived(
-		page.url.pathname === '/' || page.url.pathname.startsWith('/playground')
-	)
-	let headerStyle = $derived(page.url.pathname === '/' ? '' : 'border-b border-surface-z1 z-10')
 </script>
 
 <svelte:body use:themable={{ theme: vibe, storageKey: 'rokkit-theme' }} />
@@ -37,7 +31,10 @@
 	<title>{data.app.name}</title>
 	<meta name="description" content={data.app.about} />
 </svelte:head>
-{#if showRootHeader}
-	<Header version={data.app.version} menu={data.menu} class={headerStyle}></Header>
-{/if}
-{@render children?.()}
+
+<div class="flex h-screen flex-col overflow-hidden">
+	<Header version={data.app.version} menu={data.menu} />
+	<div class="min-h-0 flex-1 flex flex-col overflow-hidden">
+		{@render children?.()}
+	</div>
+</div>

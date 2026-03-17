@@ -10,8 +10,7 @@
   "exports": {
     "./package.json": "./package.json",
     "./ui.json": "./lib/base.json",
-    "./light.json": "./lib/light.json",
-    "./solid.json": "./lib/solid.json",
+    "./semantic.json": "./lib/semantic.json",
     "./twotone.json": "./lib/twotone.json",
     "./glyph.json": "./lib/glyph.json",
     "./components.json": "./lib/glyph.json",

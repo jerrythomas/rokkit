@@ -16,6 +16,7 @@ const BRANDS = [
 	{ name: 'clerk', slug: 'Clerk' },
 	{ name: 'okta', slug: 'Okta' },
 	{ name: 'appwrite', slug: 'Appwrite' },
+	{ name: 'firebase', slug: 'Firebase' },
 	{ name: 'pocketbase', slug: 'Pocketbase' },
 	{ name: 'keycloak', slug: 'Keycloak' },
 	{ name: 'supabase', slug: 'Supabase' },
