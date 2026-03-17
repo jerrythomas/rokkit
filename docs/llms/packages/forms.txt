@@ -184,7 +184,8 @@ const schema = {
 | `string` | `format: 'url'` | `url` | InputUrl |
 | `string` | `format: 'color'` | `color` | InputColor |
 | `string` | `format: 'date'` | `date` | InputDate |
-| `string` | `format: 'datetime-local'` or `format: 'datetime'` | `datetime-local` / `datetime` | InputDateTime |
+| `string` | `format: 'datetime-local'` | `datetime-local` | InputDateTime |
+| `string` | `format: 'datetime'` | `datetime` | InputDateTime |
 | `string` | `format: 'time'` | `time` | InputTime |
 | `string` | `format: 'month'` | `month` | InputMonth |
 | `string` | `format: 'week'` | `week` | InputWeek |
@@ -819,7 +820,8 @@ A complete form with dependent lookups, conditional fields, validation, and subm
     }
   }
 
-  async function handleSubmit(visibleData) {
+  async function handleSubmit(visibleData, { isValid, errors }) {
+    if (!isValid) return
     // visibleData excludes companyName when accountType !== 'business'
     await fetch('/api/register', {
       method: 'POST',
