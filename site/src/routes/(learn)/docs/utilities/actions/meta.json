@@ -1,0 +1,8 @@
+{
+  "title": "Actions",
+  "description": "Svelte actions for keyboard navigation, drag, gestures, and visual effects",
+  "icon": "i-solar:keyboard-bold-duotone",
+  "category": "utilities",
+  "order": 7,
+  "tags": ["actions", "navigable", "keyboard", "navigation", "drag", "gesture"]
+}
