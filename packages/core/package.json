@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/core",
-  "version": "1.0.0-next.138",
+  "version": "1.0.0-next.139",
   "description": "Contains core utility functions and classes that can be used in various components.",
   "repository": {
     "type": "git",
