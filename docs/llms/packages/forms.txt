@@ -898,5 +898,187 @@ import { getSchemaWithLayout, findAttributeByPath } from '@rokkit/forms'
 import { defaultRenderers, resolveRenderer } from '@rokkit/forms'
 
 // Individual input components
-import { Input, InputField, InfoField, ValidationReport } from '@rokkit/forms'
+import { Input, InputField, InfoField, StatusList } from '@rokkit/forms'
 ```
+
+## Standalone Input Components
+
+These components can be used independently of FormBuilder and FormRenderer for custom form layouts.
+
+### InputField
+
+A labeled form field wrapper. Combines a label, input, optional description, and validation message display into one component. All HTML input types are supported.
+
+```svelte
+<script>
+  import { InputField } from '@rokkit/forms'
+
+  let email = $state('')
+</script>
+
+<InputField label="Email" type="email" bind:value={email} required />
+
+<!-- With validation message -->
+<InputField
+  label="Username"
+  bind:value={username}
+  message={{ state: 'error', text: 'Username is already taken' }}
+/>
+
+<!-- With description -->
+<InputField
+  label="Password"
+  type="password"
+  bind:value={password}
+  description="Must be at least 8 characters"
+/>
+```
+
+#### InputField Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `label` | `string` | Display label |
+| `value` | `any` | Bindable input value |
+| `type` | `string` | HTML input type (text, email, password, number, date, etc.) |
+| `name` | `string` | Input name for label association |
+| `required` | `boolean` | Marks field required |
+| `disabled` | `boolean` | Disables the input |
+| `description` | `string` | Help text below the input |
+| `message` | `{ state: string, text: string } \| null` | Validation message |
+| `status` | `string` | Override field state appearance without message text |
+| `dirty` | `boolean` | Applies dirty indicator styling |
+| `nolabel` | `boolean` | Suppress label rendering |
+| `icon` | `string` | Icon class to display inside the input |
+| `class` | `string` | Additional CSS classes |
+
+The root element is `<div data-field-root>` with data-attribute hooks: `data-field-state`, `data-field-type`, `data-field-required`, `data-field-disabled`, `data-field-dirty`, `data-field-empty`.
+
+### Input
+
+The bare input dispatcher — resolves to the correct renderer component based on `type`. Use when you need the input element alone without a label/message wrapper.
+
+```svelte
+<script>
+  import { Input } from '@rokkit/forms'
+
+  let value = $state('')
+</script>
+
+<Input type="text" bind:value placeholder="Search..." />
+<Input type="text" bind:value icon="i-lucide:search" />
+```
+
+Wraps the resolved component in `<div data-input-root>` and renders optional `<span data-input-icon>` for icons. Checkbox type is rendered without the wrapper div.
+
+### InfoField
+
+Read-only display field with label and optional description. Renders a `<span data-field-info>` with the value. Shows `—` when value is `undefined`.
+
+```svelte
+<script>
+  import { InfoField } from '@rokkit/forms'
+</script>
+
+<InfoField label="Account Type" value="Business" />
+<InfoField label="Created" value={createdAt} />
+<InfoField label="Status" value={undefined} />
+<!-- Renders '—' -->
+```
+
+#### InfoField Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `label` | `string` | Display label |
+| `value` | `any` | Value to display (`undefined` → `'—'`) |
+| `name` | `string` | Field name for accessibility |
+| `description` | `string` | Help text |
+| `class` | `string` | Additional CSS classes |
+
+## StatusList Component
+
+Renders a grouped summary of validation messages. Items are grouped by severity (error → warning → info → success) with a count header per group. The component renders nothing when `items` is empty.
+
+```svelte
+<script>
+  import { StatusList } from '@rokkit/forms'
+
+  // Feed builder.errors directly — already has the correct shape
+  const builder = new FormBuilder(data, schema, layout)
+</script>
+
+<!-- Errors only -->
+<StatusList items={builder.errors} />
+
+<!-- All messages (errors + warnings + info + success) -->
+<StatusList items={builder.messages} />
+```
+
+### Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `items` | `Array<{ path: string, state: string, text: string }>` | Validation messages to display |
+| `onclick` | `(path: string) => void` | When provided, items render as buttons and call this on click |
+| `class` | `string` | Additional CSS classes on root |
+
+`state` must be `'error' | 'warning' | 'info' | 'success'`.
+
+### Click-to-Focus
+
+When `onclick` is provided, each item renders as a `<button>` so users can click an error to navigate to the failing field:
+
+```svelte
+<StatusList
+  items={builder.errors}
+  onclick={(path) => {
+    document.querySelector(`[data-scope="#/${path}"]`)
+      ?.querySelector('input, select, textarea')
+      ?.focus()
+  }}
+/>
+```
+
+### Password Strength Example
+
+```svelte
+<script>
+  import { StatusList } from '@rokkit/forms'
+
+  let password = $state('')
+
+  const checks = $derived([
+    {
+      path: 'length',
+      state: password.length >= 8 ? 'success' : 'error',
+      text: 'At least 8 characters'
+    },
+    {
+      path: 'uppercase',
+      state: /[A-Z]/.test(password) ? 'success' : 'error',
+      text: 'Contains an uppercase letter'
+    },
+    {
+      path: 'number',
+      state: /[0-9]/.test(password) ? 'success' : 'warning',
+      text: 'Contains a number'
+    }
+  ])
+</script>
+
+<input type="password" bind:value={password} />
+<StatusList items={checks} />
+```
+
+### Data Attributes
+
+| Attribute | Element | Description |
+|-----------|---------|-------------|
+| `data-validation-report` | root `div` | Component root; `role="status"` live region |
+| `data-validation-group` | group `div` | One per severity level present |
+| `data-severity` | group `div` | `'error'` \| `'warning'` \| `'info'` \| `'success'` |
+| `data-validation-group-header` | header `div` | Contains count span and label |
+| `data-validation-count` | `span` | The numeric count of items in group |
+| `data-validation-item` | item `div` or `button` | Individual message |
+| `data-status` | item element | Severity of that item |

@@ -2,7 +2,7 @@
 
 A working checklist of all pending work items collected from feature status tables and planned design documents. Organized by priority tier. Check off items as they are completed.
 
-Last updated: 2026-03-17 (restored components, placeholder stories)
+Last updated: 2026-03-17 (P4 design docs + story pages written)
 
 ---
 
@@ -14,7 +14,7 @@ Items that block other work or are essential for the library to be complete.
 
 These components existed and were deleted in commit `4ef37ef4` (2026-02-18). Source and tests survive in git history. Placeholder stories exist in `site/src/stories/`.
 
-- [ ] **ValidationReport** (`@rokkit/ui`) — list of status checks (pass/fail/warn/unknown) with icons, used for multi-rule validation like password strength. Source at `git show 6275d11d:packages/ui/src/ValidationReport.svelte`. Story placeholder: `site/src/stories/validation-report/`. Needs theme CSS in `@rokkit/themes`.
+- [ ] **StatusList** (`@rokkit/ui`) — list of status checks (pass/fail/warn/unknown) with icons, used for multi-rule validation like password strength. Source at `git show 6275d11d:packages/ui/src/ValidationReport.svelte` (old name — rename to StatusList). Story placeholder: `site/src/stories/validation-report/`. Needs theme CSS in `@rokkit/themes`.
 - [ ] **Message/Alert** (`@rokkit/ui`) — single alert/notification with `type` (error/info/success/warning) and text or snippet children. Source at `git show 6275d11d:packages/ui/src/Message.svelte`. Needs associated `alerts` store in `@rokkit/states` for programmatic notification pushing (toast-style). No placeholder story exists — needs creating.
 
 ### Forms
@@ -93,34 +93,34 @@ Design documents that need to be written and patterns that need to be documented
 
 ### Core Design Documents (planned, not yet written)
 
-- [ ] `docs/design/05-effects.md` — Animation and visual effects system
+- [x] `docs/design/13-effects.md` — Animation and visual effects system
 - [ ] `docs/design/06-themes.md` — Skin system, mode switching, CSS variable architecture
-- [ ] `docs/design/07-charts.md` (to be renumbered after this file) — Chart rendering, animation, patterns, accessibility
+- [ ] `docs/design/07-charts.md` — Chart rendering, animation, patterns, accessibility
 - [ ] `docs/design/08-tools.md` — CLI, icon sets, toolchain design
 
 ### Placeholder Story Pages (ComingSoon — need real content)
 
 These pages exist at `site/src/stories/` but show `<ComingSoon />`:
 
-- [ ] `validation-report` — blocked on ValidationReport component (see P1)
-- [ ] `inputfield` — InputField from `@rokkit/forms`, needs a story
-- [ ] `responsive-grid` — Layout/Grid component story
-- [ ] `forms/overview` — forms system intro and quick-start
-- [ ] `forms/layout` — layout options (columns, sections, groups)
-- [ ] `forms/schema` — schema-driven form generation
-- [ ] `forms/advanced` — conditional fields, lookups, array editors
-- [ ] `forms/validation` — validation rules, ValidationReport integration
-- [ ] `templates/editor` — editor template story
+- [x] `validation-report` — uses `StatusList` from `@rokkit/forms` (UI package restore still P1)
+- [x] `inputfield` — InputField, Input, InfoField from `@rokkit/forms`
+- [ ] `responsive-grid` — Layout/Grid component story (blocked on P1 Grid component)
+- [x] `forms/overview` — forms system intro and quick-start
+- [x] `forms/layout` — layout options (columns, sections, groups)
+- [x] `forms/schema` — schema-driven form generation
+- [x] `forms/advanced` — conditional fields, lookups, array editors
+- [x] `forms/validation` — validation rules, StatusList integration
+- [x] `templates/editor` — editor template story (Tree + FormRenderer composition pattern)
 
 ### Component Design Documents (planned or missing)
 
-- [ ] Card component design — anatomy, interactive states, snippet model, theming hooks
+- [x] Card component design — `docs/design/components/card.md`
 - [ ] Layout components design (Stack, Grid, Divider) — structural components, responsive behavior, CSS architecture
-- [ ] Data Table design — TabularController integration, sorting, selection, keyboard navigation
-- [ ] Breadcrumb design — navigation path rendering, link vs. current item distinction
-- [ ] Tooltip design — positioning, delay behavior, ARIA integration, trigger types
-- [ ] Conditional fields design — condition evaluation model, schema annotation, render lifecycle
-- [ ] Multi-step form design — step group schema, per-step validation, step indicator component
-- [ ] i18n design — translation provider, string keys, locale-aware formatting, RTL support
-- [ ] Density system design — compact/default/comfortable token mapping, context inheritance
-- [ ] Whitelabeling guide — skin authoring, type scale override, shape tokens, icon system replacement
+- [x] Data Table design — `docs/design/components/data-table.md`
+- [x] Breadcrumb design — `docs/design/components/breadcrumbs.md`
+- [x] Tooltip design — `docs/design/components/tooltip.md`
+- [x] Conditional fields design — covered in `docs/design/components/multi-step-form.md` and forms feature doc
+- [x] Multi-step form design — `docs/design/components/multi-step-form.md`
+- [x] i18n design — `docs/design/15-i18n.md`
+- [x] Density system design — `docs/design/14-density.md`
+- [x] Whitelabeling guide — `docs/design/16-whitelabeling.md`

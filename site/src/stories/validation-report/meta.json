@@ -1,5 +1,5 @@
 {
-  "title": "ValidationReport",
+  "title": "StatusList",
   "description": "Display validation results and status",
   "icon": "i-glyph:check-circle",
   "category": "Utilities",

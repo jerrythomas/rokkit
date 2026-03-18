@@ -741,7 +741,7 @@ packages/forms/src/
 ├── InputField.svelte            — label + input + message wrapper
 ├── Input.svelte                 — type dispatcher; delegates to InputXxx via resolveRenderer
 ├── InfoField.svelte             — read-only field display
-├── ValidationReport.svelte      — grouped validation message list
+├── StatusList.svelte      — grouped validation message list
 │
 ├── input/
 │   ├── InputText.svelte         — type="text"
