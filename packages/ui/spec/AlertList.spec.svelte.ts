@@ -6,23 +6,30 @@ import AlertList from '../src/components/AlertList.svelte'
 
 describe('AlertList', () => {
 	beforeEach(() => cleanup())
-	afterEach(() => alerts.clear())
+	afterEach(() => {
+		alerts.clear()
+		// Clean up any portalled elements left on body
+		document.querySelectorAll('[data-alert-list]').forEach((el) => el.remove())
+	})
 
-	it('renders the alert list container', () => {
-		const { container } = render(AlertList)
-		expect(container.querySelector('[data-alert-list]')).toBeTruthy()
+	it('renders the alert list container on document.body (portal)', () => {
+		render(AlertList)
+		flushSync()
+		expect(document.querySelector('[data-alert-list]')).toBeTruthy()
 	})
 
 	it('defaults to top-right position', () => {
-		const { container } = render(AlertList)
-		expect(container.querySelector('[data-alert-list]')!.getAttribute('data-position')).toBe(
+		render(AlertList)
+		flushSync()
+		expect(document.querySelector('[data-alert-list]')!.getAttribute('data-position')).toBe(
 			'top-right'
 		)
 	})
 
 	it('respects the position prop', () => {
-		const { container } = render(AlertList, { props: { position: 'bottom-left' } })
-		expect(container.querySelector('[data-alert-list]')!.getAttribute('data-position')).toBe(
+		render(AlertList, { props: { position: 'bottom-left' } })
+		flushSync()
+		expect(document.querySelector('[data-alert-list]')!.getAttribute('data-position')).toBe(
 			'bottom-left'
 		)
 	})
