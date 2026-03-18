@@ -2,13 +2,20 @@
 
 A working checklist of all pending work items collected from feature status tables and planned design documents. Organized by priority tier. Check off items as they are completed.
 
-Last updated: 2026-03-12 (conditional fields)
+Last updated: 2026-03-17 (restored components, placeholder stories)
 
 ---
 
 ## P1 — High Impact, Core Functionality
 
 Items that block other work or are essential for the library to be complete.
+
+### Restore Deleted Components
+
+These components existed and were deleted in commit `4ef37ef4` (2026-02-18). Source and tests survive in git history. Placeholder stories exist in `site/src/stories/`.
+
+- [ ] **ValidationReport** (`@rokkit/ui`) — list of status checks (pass/fail/warn/unknown) with icons, used for multi-rule validation like password strength. Source at `git show 6275d11d:packages/ui/src/ValidationReport.svelte`. Story placeholder: `site/src/stories/validation-report/`. Needs theme CSS in `@rokkit/themes`.
+- [ ] **Message/Alert** (`@rokkit/ui`) — single alert/notification with `type` (error/info/success/warning) and text or snippet children. Source at `git show 6275d11d:packages/ui/src/Message.svelte`. Needs associated `alerts` store in `@rokkit/states` for programmatic notification pushing (toast-style). No placeholder story exists — needs creating.
 
 ### Forms
 
@@ -90,6 +97,20 @@ Design documents that need to be written and patterns that need to be documented
 - [ ] `docs/design/06-themes.md` — Skin system, mode switching, CSS variable architecture
 - [ ] `docs/design/07-charts.md` (to be renumbered after this file) — Chart rendering, animation, patterns, accessibility
 - [ ] `docs/design/08-tools.md` — CLI, icon sets, toolchain design
+
+### Placeholder Story Pages (ComingSoon — need real content)
+
+These pages exist at `site/src/stories/` but show `<ComingSoon />`:
+
+- [ ] `validation-report` — blocked on ValidationReport component (see P1)
+- [ ] `inputfield` — InputField from `@rokkit/forms`, needs a story
+- [ ] `responsive-grid` — Layout/Grid component story
+- [ ] `forms/overview` — forms system intro and quick-start
+- [ ] `forms/layout` — layout options (columns, sections, groups)
+- [ ] `forms/schema` — schema-driven form generation
+- [ ] `forms/advanced` — conditional fields, lookups, array editors
+- [ ] `forms/validation` — validation rules, ValidationReport integration
+- [ ] `templates/editor` — editor template story
 
 ### Component Design Documents (planned or missing)
 
