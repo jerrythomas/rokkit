@@ -37,7 +37,8 @@ export {
 	UploadFileStatus,
 	UploadProgress,
 	StatusList,
-	Message
+	Message,
+	AlertList
 } from './components/index.js'
 
 // Utilities

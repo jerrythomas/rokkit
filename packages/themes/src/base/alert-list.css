@@ -1,0 +1,54 @@
+/* AlertList — base structural styles for the fixed toast container */
+
+[data-alert-list] {
+  position: fixed;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 24rem;
+  width: calc(100% - 2rem);
+  padding: 1rem;
+  pointer-events: none;
+}
+
+[data-alert-list] > [data-message-root] {
+  pointer-events: auto;
+}
+
+/* Top positions */
+[data-alert-list][data-position='top-right'] {
+  top: 0;
+  right: 0;
+}
+
+[data-alert-list][data-position='top-center'] {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+[data-alert-list][data-position='top-left'] {
+  top: 0;
+  left: 0;
+}
+
+/* Bottom positions — reverse stack so newest appears at bottom edge */
+[data-alert-list][data-position='bottom-right'] {
+  bottom: 0;
+  right: 0;
+  flex-direction: column-reverse;
+}
+
+[data-alert-list][data-position='bottom-center'] {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  flex-direction: column-reverse;
+}
+
+[data-alert-list][data-position='bottom-left'] {
+  bottom: 0;
+  left: 0;
+  flex-direction: column-reverse;
+}
