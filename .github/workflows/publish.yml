@@ -56,6 +56,20 @@ jobs:
             git checkout -- "$pkg"
           done
 
+      - name: Sync next dist-tag
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+          NODE_NO_WARNINGS: 1
+        run: |
+          PACKAGES=(helpers cli icons core data actions themes unocss states ui forms app chart stories)
+          VERSION=$(node -p "require('./packages/helpers/package.json').version")
+          for name in "${PACKAGES[@]}"; do
+            pkg="./packages/${name}/package.json"
+            [ -f "$pkg" ] || continue
+            grep -q '"private": true' "$pkg" 2>/dev/null && continue
+            npm dist-tag add @rokkit/${name}@${VERSION} next
+          done
+
       - name: Create GitHub release
         run: npx changelogithub
         env:
