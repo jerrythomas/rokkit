@@ -35,7 +35,9 @@ export {
 	Grid,
 	UploadTarget,
 	UploadFileStatus,
-	UploadProgress
+	UploadProgress,
+	StatusList,
+	Message
 } from './components/index.js'
 
 // Utilities
