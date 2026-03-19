@@ -82,8 +82,7 @@
 				</div>
 			{:else}
 				<div class="flex h-full min-h-40 flex-col items-center justify-center gap-2 text-center">
-					<span class="i-glyph:cursor text-surface-z3 text-3xl" aria-hidden="true"
-					></span>
+					<span class="i-glyph:cursor text-surface-z3 text-3xl" aria-hidden="true"></span>
 					<p class="text-surface-z5 text-sm">Select a task to view details</p>
 				</div>
 			{/if}

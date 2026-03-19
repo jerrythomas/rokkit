@@ -28,8 +28,7 @@
 		</div>
 
 		<div data-card class="flex min-h-52 flex-col items-center justify-center gap-2 p-4 text-center">
-			<span class="i-glyph:graph-new text-surface-z3 text-3xl" aria-hidden="true"
-			></span>
+			<span class="i-glyph:graph-new text-surface-z3 text-3xl" aria-hidden="true"></span>
 			<p class="text-surface-z5 text-sm">Velocity over time — Line Chart</p>
 			<p class="text-surface-z4 text-xs">Chart integration in progress</p>
 		</div>

@@ -1,0 +1,68 @@
+/**
+ * StatusList - Rokkit Theme Styles
+ */
+
+/* ── @rokkit/ui StatusList: icon colors by status (pass/fail/warn/unknown) ── */
+
+[data-style='rokkit'] [data-status-item][data-status='pass'] span {
+  @apply text-success-z6;
+}
+[data-style='rokkit'] [data-status-item][data-status='fail'] span {
+  @apply text-error-z6;
+}
+[data-style='rokkit'] [data-status-item][data-status='warn'] span {
+  @apply text-warning-z6;
+}
+[data-style='rokkit'] [data-status-item][data-status='unknown'] span {
+  @apply text-surface-z4;
+}
+
+/* ── @rokkit/ui StatusList: text color by status ── */
+
+[data-style='rokkit'] [data-status-item][data-status='pass'] {
+  @apply text-success-z7;
+}
+[data-style='rokkit'] [data-status-item][data-status='fail'] {
+  @apply text-error-z7;
+}
+[data-style='rokkit'] [data-status-item][data-status='warn'] {
+  @apply text-warning-z7;
+}
+[data-style='rokkit'] [data-status-item][data-status='unknown'] {
+  @apply text-surface-z5;
+}
+
+/* ── @rokkit/forms StatusList: group headers by severity ── */
+
+[data-style='rokkit'] [data-status-group][data-severity='error'] [data-status-header] {
+  @apply text-error-z6;
+}
+[data-style='rokkit'] [data-status-group][data-severity='warning'] [data-status-header] {
+  @apply text-warning-z6;
+}
+[data-style='rokkit'] [data-status-group][data-severity='info'] [data-status-header] {
+  @apply text-info-z6;
+}
+[data-style='rokkit'] [data-status-group][data-severity='success'] [data-status-header] {
+  @apply text-success-z6;
+}
+
+/* ── @rokkit/forms StatusList: item colors by severity ── */
+
+[data-style='rokkit'] [data-status-item][data-status='error'] {
+  @apply text-error-z7;
+}
+[data-style='rokkit'] [data-status-item][data-status='warning'] {
+  @apply text-warning-z7;
+}
+[data-style='rokkit'] [data-status-item][data-status='info'] {
+  @apply text-info-z7;
+}
+[data-style='rokkit'] [data-status-item][data-status='success'] {
+  @apply text-success-z7;
+}
+
+/* Count badge */
+[data-style='rokkit'] [data-status-count] {
+  @apply bg-surface-z3 text-surface-z7 font-semibold;
+}

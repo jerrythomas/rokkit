@@ -3,7 +3,12 @@ import type { Page } from '@playwright/test'
 import { goToPlayPage, setTheme, setMode, themes, modes, openDropdownViaKeyboard } from './helpers'
 
 function openSelect(page: Page) {
-	return openDropdownViaKeyboard(page, '[data-select-trigger]', '[data-select-dropdown]', '[data-select-option]')
+	return openDropdownViaKeyboard(
+		page,
+		'[data-select-trigger]',
+		'[data-select-dropdown]',
+		'[data-select-option]'
+	)
 }
 
 test.describe('Select — play page', () => {

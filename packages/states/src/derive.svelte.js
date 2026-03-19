@@ -25,7 +25,9 @@ function visitNode(data, ctx) {
 	const hasChildren = Array.isArray(item[fields.children]) && item[fields.children].length > 0
 	data.push({ key, value: item, level, hasChildren })
 	if (isExpanded(item, fields, key, expandedKeys)) {
-		data.push(...flatVisibleNodes(item[fields.children], getNestedFields(fields), itemPath, expandedKeys))
+		data.push(
+			...flatVisibleNodes(item[fields.children], getNestedFields(fields), itemPath, expandedKeys)
+		)
 	}
 }
 

@@ -1,0 +1,57 @@
+/**
+ * Tabs - Grada UI Theme Styles
+ *
+ * Gradient active tab with pill-shaped triggers.
+ */
+
+[data-style='grada-ui'] [data-tabs-list] {
+  @apply bg-surface-z2 gap-1;
+  border-radius: 20px;
+  padding: 3px;
+}
+
+[data-style='grada-ui'] [data-tabs][data-position='after'] [data-tabs-list] {
+  border-radius: 20px;
+}
+
+[data-style='grada-ui'] [data-tabs-trigger] {
+  @apply text-surface-z6;
+  border-radius: 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+[data-style='grada-ui'] [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {
+  @apply bg-surface-z3 text-surface-z8;
+}
+
+/* Selected — gradient */
+[data-style='grada-ui'] [data-tabs-trigger][data-selected] {
+  background: var(--gd-gradient);
+  color: white;
+  @apply shadow-sm;
+}
+
+/* Reset rokkit gradients bleeding in */
+[data-style='grada-ui'] [data-tabs-list]:focus-within [data-tabs-trigger][data-selected] {
+  background: var(--gd-gradient);
+}
+
+[data-style='grada-ui'] [data-tabs-trigger] [data-tabs-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='grada-ui'] [data-tabs-trigger]:hover:not(:disabled) [data-tabs-icon] {
+  @apply text-surface-z7;
+}
+
+[data-style='grada-ui'] [data-tabs-trigger][data-selected] [data-tabs-icon] {
+  color: white;
+}
+
+[data-style='grada-ui'] [data-tabs-content] {
+  @apply text-surface-z8;
+}

@@ -208,4 +208,5 @@ tmp
 .playwright-mcp
 /*.png
 .worktrees/
+.claire/
 firebase-debug.log

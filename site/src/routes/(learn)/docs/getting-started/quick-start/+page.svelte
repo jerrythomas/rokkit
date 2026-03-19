@@ -36,7 +36,7 @@
 		In <code>src/app.html</code>, add <code>data-style</code> and <code>data-mode</code> to
 		<code>&lt;html&gt;</code>:
 	</p>
-	<pre><code>{`<html data-style="rokkit" data-mode="dark">`}</code></pre>
+	<pre><code>&lt;html data-style="rokkit" data-mode="dark"&gt;</code></pre>
 
 	<h2>5. Build your first page</h2>
 	<p>
@@ -48,19 +48,21 @@
 
 	<h2>6. Add the theme switcher</h2>
 	<p>
-		Drop <code>ThemeSwitcherToggle</code> from <code>@rokkit/app</code> anywhere in your layout to
-		give users light/dark/system control:
+		Drop <code>ThemeSwitcherToggle</code> from <code>@rokkit/app</code> anywhere in your layout to give
+		users light/dark/system control:
 	</p>
 	<Code content={themeSwitcher} language="svelte" />
 
 	<h2>Next steps</h2>
 	<ul>
-		<li><a href="/docs/data-binding">Data Binding</a> — field mapping, nested data, data sources</li>
+		<li>
+			<a href="/docs/data-binding">Data Binding</a> — field mapping, nested data, data sources
+		</li>
 		<li><a href="/docs/composability">Composability</a> — snippets, per-item rendering</li>
 		<li><a href="/docs/theming">Theming</a> — color system, custom themes, dark mode</li>
 		<li>
-			<a href="/docs/components/list">Components</a> — full reference for List, Select, Tree, Table,
-			and more
+			<a href="/docs/components/list">Components</a> — full reference for List, Select, Tree, Table, and
+			more
 		</li>
 	</ul>
 </article>

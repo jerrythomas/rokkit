@@ -12,8 +12,8 @@ mkdirSync(OUT, { recursive: true })
 // Same variant mapping as glyph icons
 const VARIANTS = [
 	{ solarSuffix: '-bold-duotone', ourSuffix: '' },
-	{ solarSuffix: '-linear',       ourSuffix: '-outline' },
-	{ solarSuffix: '-bold',         ourSuffix: '-solid' },
+	{ solarSuffix: '-linear', ourSuffix: '-outline' },
+	{ solarSuffix: '-bold', ourSuffix: '-solid' },
 	{ solarSuffix: '-line-duotone', ourSuffix: '-duotone-outline' }
 ]
 

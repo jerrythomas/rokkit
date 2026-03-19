@@ -1,0 +1,93 @@
+/**
+ * Tree - Grada UI Theme Styles
+ */
+
+[data-style='grada-ui'] [data-tree]:focus-within {
+  @apply outline-none;
+}
+
+[data-style='grada-ui'] [data-tree-toggle-btn] {
+  @apply text-surface-z5;
+  border-radius: 20px;
+}
+
+[data-style='grada-ui'] [data-tree-toggle-btn]:hover {
+  @apply bg-surface-z2 text-surface-z7;
+}
+
+[data-style='grada-ui'] [data-tree-item-content] {
+  @apply text-surface-z8;
+}
+
+[data-style='grada-ui'] [data-tree-item-content]:hover:not(:disabled),
+[data-style='grada-ui'] [data-tree-item-content]:focus:not(:disabled) {
+  @apply bg-surface-z1 text-surface-z10 outline-none;
+}
+
+[data-style='grada-ui'] [data-tree-item-content]:focus-visible {
+  outline: 2px solid var(--gd-primary);
+  outline-offset: -2px;
+}
+
+/* Active/selected state */
+[data-style='grada-ui'] [data-tree-item-content][data-active='true'] {
+  @apply bg-surface-z1;
+  border-left: 3px solid var(--gd-primary);
+  color: var(--gd-primary);
+}
+
+[data-style='grada-ui'] [data-tree-item-content][data-active='true']:hover:not(:disabled) {
+  @apply bg-surface-z2;
+}
+
+[data-style='grada-ui'] [data-tree]:focus-within [data-tree-item-content][data-active='true'] {
+  border-left: 3px solid var(--gd-primary);
+}
+
+[data-style='grada-ui'] [data-tree]:not(:focus-within) [data-tree-item-content][data-active='true'] {
+  border-left: 3px solid var(--gd-primary);
+  opacity: 0.8;
+}
+
+/* Item Elements */
+[data-style='grada-ui'] [data-tree-item-content] [data-item-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='grada-ui'] [data-tree-item-content]:hover:not(:disabled) [data-item-icon] {
+  @apply text-surface-z7;
+}
+
+[data-style='grada-ui'] [data-tree-item-content][data-active='true'] [data-item-icon] {
+  color: var(--gd-primary);
+}
+
+[data-style='grada-ui'] [data-tree-item-content] [data-item-description] {
+  @apply text-surface-z5;
+}
+
+[data-style='grada-ui'] [data-tree-item-content] [data-item-badge] {
+  @apply text-surface-z6 bg-surface-z2;
+  border-radius: 20px;
+}
+
+[data-style='grada-ui'] [data-tree-item-content][data-active='true'] [data-item-badge] {
+  background: var(--gd-gradient);
+  color: white;
+}
+
+/* Multi-Selection */
+[data-style='grada-ui'] [data-tree-node][data-selected='true'] [data-tree-node-row] {
+  background: color-mix(in srgb, var(--gd-primary) 15%, transparent);
+}
+
+[data-style='grada-ui'] [data-tree-node][data-selected='true'] [data-tree-item-content] {
+  color: var(--gd-primary);
+}
+
+[data-style='grada-ui']
+  [data-tree-node][data-selected='true']
+  [data-tree-item-content]
+  [data-item-icon] {
+  color: var(--gd-primary);
+}

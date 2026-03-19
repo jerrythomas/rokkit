@@ -30,6 +30,12 @@
   @apply border-surface-z4 border-l shadow-sm;
 }
 
+/* Compact item spacing for small toolbars */
+[data-style='rokkit'] [data-toolbar][data-toolbar-size='sm'],
+[data-style='rokkit'] [data-toolbar][data-size='sm'] {
+  gap: 1px;
+}
+
 /* =============================================================================
    Toolbar Items
    ============================================================================= */

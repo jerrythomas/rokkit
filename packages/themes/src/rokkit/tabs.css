@@ -23,7 +23,7 @@
 [data-style='rokkit']
   [data-tabs][data-orientation='vertical'][data-position='after']
   [data-tabs-list] {
-  @apply border-r-0 border-l-2;
+  @apply border-t-0 border-r-0 border-l-2;
 }
 
 [data-style='rokkit'] [data-tabs-list]:focus-within {
@@ -40,6 +40,30 @@
 
 [data-style='rokkit'] [data-tabs][data-position='after'] [data-tabs-trigger] {
   @apply rounded-t-none rounded-b;
+}
+
+[data-style='rokkit'] [data-tabs][data-orientation='vertical'] [data-tabs-trigger] {
+  @apply rounded-none rounded-l;
+}
+
+[data-style='rokkit']
+  [data-tabs][data-orientation='vertical']
+  [data-tabs-list]:focus-within
+  [data-tabs-trigger][data-selected] {
+  @apply bg-gradient-to-r;
+}
+
+[data-style='rokkit']
+  [data-tabs][data-orientation='vertical'][data-position='after']
+  [data-tabs-trigger] {
+  @apply rounded-none rounded-r;
+}
+
+[data-style='rokkit']
+  [data-tabs][data-orientation='vertical'][data-position='after']
+  [data-tabs-list]:focus-within
+  [data-tabs-trigger][data-selected] {
+  @apply bg-gradient-to-l;
 }
 
 [data-style='rokkit'] [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {

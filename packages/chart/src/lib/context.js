@@ -33,10 +33,8 @@ function createDimensionsStore(config) {
  */
 function createInnerDimensions(dimensions) {
 	return derived(dimensions, ($d) => ({
-		width:
-			$d.width - $d.margin.left - $d.margin.right - $d.padding.left - $d.padding.right,
-		height:
-			$d.height - $d.margin.top - $d.margin.bottom - $d.padding.top - $d.padding.bottom
+		width: $d.width - $d.margin.left - $d.margin.right - $d.padding.left - $d.padding.right,
+		height: $d.height - $d.margin.top - $d.margin.bottom - $d.padding.top - $d.padding.bottom
 	}))
 }
 

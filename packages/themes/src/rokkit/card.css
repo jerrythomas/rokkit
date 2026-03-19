@@ -62,3 +62,40 @@
   @apply cursor-not-allowed opacity-50;
   transform: none;
 }
+
+/* =============================================================================
+   Variants
+   ============================================================================= */
+
+/* Primary — gradient from primary to secondary */
+[data-style='rokkit'] [data-card][data-variant='primary'] {
+  @apply from-primary-z5 to-secondary-z5 border-primary-z6 text-on-primary bg-gradient-to-br shadow-lg;
+}
+
+[data-style='rokkit'] [data-card][data-variant='primary'] [data-card-header],
+[data-style='rokkit'] [data-card][data-variant='primary'] [data-card-footer] {
+  @apply border-primary-z4/40;
+}
+
+[data-style='rokkit'] [data-card][data-variant='primary'] [data-card-body] {
+  @apply text-on-primary/80;
+}
+
+/* Secondary — muted secondary surface */
+[data-style='rokkit'] [data-card][data-variant='secondary'] {
+  @apply from-secondary-z4 to-secondary-z3 border-secondary-z5 text-on-secondary bg-gradient-to-b shadow;
+}
+
+[data-style='rokkit'] [data-card][data-variant='secondary'] [data-card-header],
+[data-style='rokkit'] [data-card][data-variant='secondary'] [data-card-footer] {
+  @apply border-secondary-z4/40;
+}
+
+[data-style='rokkit'] [data-card][data-variant='secondary'] [data-card-body] {
+  @apply text-on-secondary/80;
+}
+
+/* Tertiary — elevated surface, no color accent */
+[data-style='rokkit'] [data-card][data-variant='tertiary'] {
+  @apply from-surface-z3 to-surface-z2 border-surface-z4 text-surface-z7 bg-gradient-to-b shadow;
+}

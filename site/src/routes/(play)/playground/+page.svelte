@@ -12,6 +12,7 @@
 				{ name: 'Breadcrumbs', description: 'Navigation path with links', slug: 'breadcrumbs' },
 				{ name: 'Lazy Tree', description: 'Async-loaded tree component', slug: 'lazy-tree' },
 				{ name: 'List', description: 'Data-driven list with field mapping', slug: 'list' },
+				{ name: 'Dropdown', description: 'Compact dropdown showing selected value', slug: 'dropdown' },
 				{ name: 'Menu', description: 'Popup menu with keyboard navigation', slug: 'menu' },
 				{
 					name: 'Multi Select',
@@ -34,6 +35,7 @@
 			basePath: '/playground/components/',
 			components: [
 				{ name: 'Button', description: 'Action button with variants', slug: 'button' },
+				{ name: 'Inputs', description: 'Text, number, textarea and validation states', slug: 'inputs' },
 				{ name: 'Range', description: 'Numeric range slider', slug: 'range' },
 				{ name: 'Rating', description: 'Star rating input', slug: 'rating' },
 				{ name: 'Stepper', description: 'Step-by-step progress input', slug: 'stepper' },
@@ -58,7 +60,13 @@
 				},
 				{ name: 'Code', description: 'Syntax-highlighted code block', slug: 'code' },
 				{ name: 'Forms', description: 'Schema-driven form renderer', slug: 'forms' },
+				{ name: 'Message', description: 'Inline alerts and toast notifications', slug: 'message' },
 				{ name: 'Pill', description: 'Compact tag or badge element', slug: 'pill' },
+				{
+					name: 'Status List',
+					description: 'Validation rule summary with pass/fail/warn/unknown icons',
+					slug: 'status-list'
+				},
 				{ name: 'Table', description: 'Sortable tabular data display', slug: 'table' },
 				{ name: 'Timeline', description: 'Chronological event display', slug: 'timeline' }
 			]

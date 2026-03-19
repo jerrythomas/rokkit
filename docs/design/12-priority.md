@@ -2,13 +2,20 @@
 
 A working checklist of all pending work items collected from feature status tables and planned design documents. Organized by priority tier. Check off items as they are completed.
 
-Last updated: 2026-03-12 (conditional fields)
+Last updated: 2026-03-17 (P4 design docs + story pages written)
 
 ---
 
 ## P1 — High Impact, Core Functionality
 
 Items that block other work or are essential for the library to be complete.
+
+### Restore Deleted Components
+
+These components existed and were deleted in commit `4ef37ef4` (2026-02-18). Source and tests survive in git history. Placeholder stories exist in `site/src/stories/`.
+
+- [x] **StatusList** (`@rokkit/ui`) — list of status checks (pass/fail/warn/unknown) with icons, used for multi-rule validation like password strength. Theme CSS, playground, docs, and e2e tests complete (2026-03-18).
+- [x] **Message/Alert** (`@rokkit/ui`) — single alert/notification with `type` (error/info/success/warning) and text or snippet children, plus `AlertList` toast system using `@rokkit/states` alerts store. Playground, docs, and e2e tests complete (2026-03-18).
 
 ### Forms
 
@@ -18,9 +25,9 @@ Items that block other work or are essential for the library to be complete.
 ### Component Library
 
 - [x] Rename `text` field to `label` in all component defaults and remove backward compatibility layer (code change)
-- [ ] Cards — complete in-progress implementation: interactive states, snippet support, theming (`docs/features/06-ComponentLibrary.md`)
-- [ ] Navigation: Breadcrumb — path display component with navigable links (`docs/features/06-ComponentLibrary.md`)
-- [ ] Layout components — Stack, Grid, Divider with responsive behavior (`docs/features/06-ComponentLibrary.md`)
+- [x] Cards — implemented (`packages/ui/src/components/Card.svelte`)
+- [x] Navigation: Breadcrumb — implemented (`packages/ui/src/components/BreadCrumbs.svelte`)
+- [ ] Layout components — Stack and Divider missing; Grid exists (`docs/features/06-ComponentLibrary.md`)
 - [ ] Data Table — tabular data display with sorting, selection, and keyboard navigation (`docs/features/06-ComponentLibrary.md`)
 
 ### Theming & Design
@@ -71,12 +78,12 @@ Items that add sophisticated capabilities.
 ### Toolchain
 
 - [ ] CLI: add Rokkit to a project — installs packages, configures build, imports starter theme (`docs/features/09-Toolchain.md`)
-- [ ] CLI: upgrade Rokkit — updates packages, applies migration steps, reports breaking changes (`docs/features/09-Toolchain.md`)
+- [x] CLI: upgrade Rokkit — `rokkit upgrade` detects @rokkit/* deps, fetches latest versions, prints diff, detects package manager, runs install with `--apply` (2026-03-18)
 - [ ] Curated icon sets — navigation, status, action, and object icons with tree-shaking (`docs/features/09-Toolchain.md`)
 - [ ] Tree-shaken icon imports — only imported icons included in the bundle (`docs/features/09-Toolchain.md`)
 - [ ] Custom icon override (global snippet) — replace all component icons with any icon system via one registration point (`docs/features/09-Toolchain.md`)
-- [ ] CLI: generate custom skin — scaffold with all semantic color token slots and role annotations (`docs/features/09-Toolchain.md`)
-- [ ] CLI: generate custom theme scaffold — CSS file with selectors for every component, pre-wired token references (`docs/features/09-Toolchain.md`)
+- [x] CLI: generate custom skin — `rokkit skin create --name` scaffolds skin entry with all 9 color token keys in rokkit.config.js (2026-03-18)
+- [x] CLI: generate custom theme scaffold — `rokkit theme create --name` generates CSS stub with all 25 component selectors in src/themes/ (2026-03-18)
 
 ---
 
@@ -86,20 +93,34 @@ Design documents that need to be written and patterns that need to be documented
 
 ### Core Design Documents (planned, not yet written)
 
-- [ ] `docs/design/05-effects.md` — Animation and visual effects system
+- [x] `docs/design/13-effects.md` — Animation and visual effects system
 - [ ] `docs/design/06-themes.md` — Skin system, mode switching, CSS variable architecture
-- [ ] `docs/design/07-charts.md` (to be renumbered after this file) — Chart rendering, animation, patterns, accessibility
+- [ ] `docs/design/07-charts.md` — Chart rendering, animation, patterns, accessibility
 - [ ] `docs/design/08-tools.md` — CLI, icon sets, toolchain design
+
+### Placeholder Story Pages (ComingSoon — need real content)
+
+These pages exist at `site/src/stories/` but show `<ComingSoon />`:
+
+- [x] `validation-report` — uses `StatusList` from `@rokkit/forms` (UI package restore still P1)
+- [x] `inputfield` — InputField, Input, InfoField from `@rokkit/forms`
+- [ ] `responsive-grid` — Layout/Grid component story (blocked on P1 Grid component)
+- [x] `forms/overview` — forms system intro and quick-start
+- [x] `forms/layout` — layout options (columns, sections, groups)
+- [x] `forms/schema` — schema-driven form generation
+- [x] `forms/advanced` — conditional fields, lookups, array editors
+- [x] `forms/validation` — validation rules, StatusList integration
+- [x] `templates/editor` — editor template story (Tree + FormRenderer composition pattern)
 
 ### Component Design Documents (planned or missing)
 
-- [ ] Card component design — anatomy, interactive states, snippet model, theming hooks
+- [x] Card component design — `docs/design/components/card.md`
 - [ ] Layout components design (Stack, Grid, Divider) — structural components, responsive behavior, CSS architecture
-- [ ] Data Table design — TabularController integration, sorting, selection, keyboard navigation
-- [ ] Breadcrumb design — navigation path rendering, link vs. current item distinction
-- [ ] Tooltip design — positioning, delay behavior, ARIA integration, trigger types
-- [ ] Conditional fields design — condition evaluation model, schema annotation, render lifecycle
-- [ ] Multi-step form design — step group schema, per-step validation, step indicator component
-- [ ] i18n design — translation provider, string keys, locale-aware formatting, RTL support
-- [ ] Density system design — compact/default/comfortable token mapping, context inheritance
-- [ ] Whitelabeling guide — skin authoring, type scale override, shape tokens, icon system replacement
+- [x] Data Table design — `docs/design/components/data-table.md`
+- [x] Breadcrumb design — `docs/design/components/breadcrumbs.md`
+- [x] Tooltip design — `docs/design/components/tooltip.md`
+- [x] Conditional fields design — covered in `docs/design/components/multi-step-form.md` and forms feature doc
+- [x] Multi-step form design — `docs/design/components/multi-step-form.md`
+- [x] i18n design — `docs/design/15-i18n.md`
+- [x] Density system design — `docs/design/14-density.md`
+- [x] Whitelabeling guide — `docs/design/16-whitelabeling.md`

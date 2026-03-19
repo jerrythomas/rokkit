@@ -27,11 +27,13 @@ but need not be identical.
 ### Fix 1: `data-palette` → `data-style` in theming pages
 
 **Files:**
+
 - `site/src/routes/(learn)/docs/theming/overview/+page.svelte` — line 9
 - `site/src/routes/(learn)/docs/theming/+page.svelte` — line 24
 - `site/src/routes/(learn)/docs/utilities/controllers/+page.svelte` — NestedController doesn't exist
 
 **Issues:**
+
 - Both theming pages show `<html data-palette="rokkit" ...>` — wrong. `"rokkit"` is a style name,
   not a palette. Correct attribute: `data-style="rokkit"`.
 - `data-palette` is a valid attribute but for color variant names (e.g., `data-palette="blue"`),
@@ -48,6 +50,7 @@ but need not be identical.
 
 The current `theming/overview/+page.svelte` is 14 lines and barely more than a stub. Expand it
 to be a real overview that covers:
+
 - The `data-*` attribute system (all four: `data-style`, `data-mode`, `data-palette`, `data-density`)
 - UnoCSS utility class guidance — the primary authoring model; don't use inline CSS variables
 - Brief z-scale token reference (already in `theming/+page.svelte` but overview should link/intro it)
@@ -64,6 +67,7 @@ CLI path should be presented as the **recommended** approach. Keep the existing 
 as an alternative.
 
 **New section to add:**
+
 - "CLI Setup" (before "Installation") — `npx @rokkit/cli@latest init` with brief description of
   what it does (interactive prompts, writes 4 files: `rokkit.config.js`, `uno.config.js`,
   `src/app.css`, `src/app.html`)
@@ -97,6 +101,7 @@ Update the controllers page to remove `NestedController` and reflect the actual 
 ### Pattern
 
 Each new page follows the same structure as `utilities/state-management/+page.svelte`:
+
 - `article[data-article-root]` wrapper
 - Intro paragraph with lead text styling (`text-surface-z6 mb-8 text-[1.0625rem] leading-7`)
 - `h2` section headings
@@ -105,20 +110,21 @@ Each new page follows the same structure as `utilities/state-management/+page.sv
 - Related section at the end
 
 Each page requires:
+
 - `meta.json` with `category: "utilities"` and an assigned order
 - `+page.svelte` with the article content
 - `snippets/` folder with code examples as separate files
 
 ### Pages to Create
 
-| Folder | Package | Order | Key Content |
-|--------|---------|-------|-------------|
-| `utilities/actions/` | `@rokkit/actions` | 7 | All actions; navigable detail (keyup, events); usage examples |
-| `utilities/states/` | `@rokkit/states` | 8 | ProxyItem, ListController, TableController, vibe, Wrapper |
-| `utilities/core/` | `@rokkit/core` | 9 | FieldMapper, theme utils, string utils |
-| `utilities/data/` | `@rokkit/data` | 10 | Dataset pipeline, filter, formatter, hierarchy |
-| `utilities/unocss/` | `@rokkit/unocss` | 11 | presetRokkit setup; what it adds; options |
-| `utilities/app/` | `@rokkit/app` | 12 | ThemeSwitcherToggle, TableOfContents + rescan() |
+| Folder               | Package           | Order | Key Content                                                   |
+| -------------------- | ----------------- | ----- | ------------------------------------------------------------- |
+| `utilities/actions/` | `@rokkit/actions` | 7     | All actions; navigable detail (keyup, events); usage examples |
+| `utilities/states/`  | `@rokkit/states`  | 8     | ProxyItem, ListController, TableController, vibe, Wrapper     |
+| `utilities/core/`    | `@rokkit/core`    | 9     | FieldMapper, theme utils, string utils                        |
+| `utilities/data/`    | `@rokkit/data`    | 10    | Dataset pipeline, filter, formatter, hierarchy                |
+| `utilities/unocss/`  | `@rokkit/unocss`  | 11    | presetRokkit setup; what it adds; options                     |
+| `utilities/app/`     | `@rokkit/app`     | 12    | ThemeSwitcherToggle, TableOfContents + rescan()               |
 
 ### Content Source
 
@@ -136,6 +142,7 @@ navigator=3, custom-primitives=4, state-management=5, icons=6).
 ## File Inventory
 
 ### Modified files
+
 - `site/src/routes/(learn)/docs/theming/overview/+page.svelte`
 - `site/src/routes/(learn)/docs/theming/+page.svelte`
 - `site/src/routes/(learn)/docs/utilities/controllers/+page.svelte`
@@ -146,6 +153,7 @@ navigator=3, custom-primitives=4, state-management=5, icons=6).
 - `docs/llms/components/select.txt`
 
 ### Created files (×6 packages, each with meta.json + +page.svelte + snippets/)
+
 - `site/src/routes/(learn)/docs/utilities/actions/`
 - `site/src/routes/(learn)/docs/utilities/states/`
 - `site/src/routes/(learn)/docs/utilities/core/`

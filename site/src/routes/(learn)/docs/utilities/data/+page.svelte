@@ -6,9 +6,9 @@
 
 <article data-article-root>
 	<p class="text-surface-z6 mb-8 text-[1.0625rem] leading-7">
-		<code>@rokkit/data</code> provides data manipulation utilities for tabular and hierarchical
-		data. Use it to pre-process raw arrays before passing them to components — filtering, sorting,
-		grouping, rollup aggregation, and formatting.
+		<code>@rokkit/data</code> provides data manipulation utilities for tabular and hierarchical data.
+		Use it to pre-process raw arrays before passing them to components — filtering, sorting, grouping,
+		rollup aggregation, and formatting.
 	</p>
 
 	<h2>Dataset pipeline</h2>
@@ -36,8 +36,8 @@
 
 	<h2>Filtering</h2>
 	<p>
-		<code>filterData(rows, rules)</code> applies declarative filter rules. Each rule specifies a
-		column, operator, and value:
+		<code>filterData(rows, rules)</code> applies declarative filter rules. Each rule specifies a column,
+		operator, and value:
 	</p>
 	<Code content={filterExample} language="javascript" />
 	<p>
@@ -50,23 +50,24 @@
 	<p>
 		<code>createFormatter(rules)</code> builds a value formatter for display purposes:
 	</p>
-	<pre><code>import {'{'} createFormatter } from '@rokkit/data'
+	<pre><code
+			>import {'{'} createFormatter } from '@rokkit/data'
 
 const fmt = createFormatter({'{'} currency: 'USD', locale: 'en-US' })
 fmt.format(1234.5, 'currency')  // '$1,234.50'
-fmt.format('2024-01-15', 'date')  // 'Jan 15, 2024'</code></pre>
+fmt.format('2024-01-15', 'date')  // 'Jan 15, 2024'</code
+		></pre>
 
 	<h2>Hierarchy — tree data</h2>
 	<p>
-		<code>buildHierarchy(items, options)</code> converts flat data with parent/child references
-		into a nested tree structure. <code>flattenHierarchy(tree)</code> does the reverse.
+		<code>buildHierarchy(items, options)</code> converts flat data with parent/child references into
+		a nested tree structure. <code>flattenHierarchy(tree)</code> does the reverse.
 	</p>
 
 	<h2>Related</h2>
 	<ul>
 		<li>
-			<a href="/docs/components/table">Table</a> — Displays tabular data; accepts pre-processed
-			arrays
+			<a href="/docs/components/table">Table</a> — Displays tabular data; accepts pre-processed arrays
 		</li>
 		<li>
 			<a href="/docs/components/tree">Tree</a> — Renders hierarchical data structures

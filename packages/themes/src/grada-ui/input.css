@@ -1,0 +1,155 @@
+/**
+ * Input - Grada UI Theme Styles
+ *
+ * Clean white inputs with 3px radius, accent left border for valid/invalid states,
+ * Montserrat labels.
+ */
+
+/* =============================================================================
+   Base Input
+   ============================================================================= */
+
+[data-style='grada-ui'] [data-input-root] {
+  @apply border-surface-z4 flex items-center border bg-white p-0 transition-all;
+  border-radius: 3px;
+  background-image: none;
+}
+
+[data-style='grada-ui'] [data-input-root]:hover {
+  @apply border-surface-z6;
+}
+
+[data-style='grada-ui'] [data-input-root]:focus-within {
+  border-color: var(--gd-primary);
+  background-image: none;
+  @apply bg-white;
+}
+
+/* Inputs inside wrapper */
+[data-style='grada-ui']
+  [data-input-root]
+  input:not([type='checkbox'], [type='radio'], [type='color']),
+[data-style='grada-ui'] [data-input-root] textarea,
+[data-style='grada-ui'] [data-input-root] select {
+  @apply text-surface-z9 w-full border-none bg-transparent px-3 py-2.5 transition-all outline-none;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+[data-style='grada-ui'] [data-input-root] textarea {
+  @apply resize-vertical min-h-20;
+}
+
+/* Select inside input-root */
+[data-style='grada-ui'] [data-input-root] [data-select-trigger] {
+  @apply text-surface-z9 border-none bg-transparent px-3 shadow-none ring-0 focus:outline-none;
+  border-radius: 3px;
+  font-size: 0.875rem;
+}
+
+[data-style='grada-ui'] [data-input-root] [data-select][data-open='true'] [data-select-trigger] {
+  @apply border-none shadow-none ring-0;
+}
+
+/* =============================================================================
+   Labels
+   ============================================================================= */
+
+[data-style='grada-ui'] [data-field-root] label {
+  @apply text-surface-z6 text-sm font-medium;
+  font-family: 'Montserrat', sans-serif;
+}
+
+[data-style='grada-ui'] [data-form-root] label {
+  @apply text-surface-z6 text-sm;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Checkbox fields */
+[data-style='grada-ui'] [data-field-type='checkbox'] [data-field] {
+  @apply flex flex-row items-center gap-2;
+}
+
+[data-style='grada-ui'] [data-field-type='checkbox'] [data-field] > label {
+  @apply text-surface-z7 text-sm;
+}
+
+/* =============================================================================
+   Valid State — 4px left border mint green
+   ============================================================================= */
+
+[data-style='grada-ui'] [data-field-state='pass'] [data-input-root] {
+  border-left: 4px solid var(--gd-success);
+}
+
+/* =============================================================================
+   Invalid / Error State — 4px left border error pink
+   ============================================================================= */
+
+[data-style='grada-ui'] [data-field-state='fail'] [data-input-root] {
+  border-left: 4px solid var(--gd-error-border);
+}
+
+[data-style='grada-ui'] [data-field-state='fail'] label {
+  color: var(--gd-error-text);
+}
+
+/* =============================================================================
+   Disabled State
+   ============================================================================= */
+
+[data-style='grada-ui'] [data-field-disabled] [data-input-root] {
+  @apply border-surface-z3 bg-surface-z1 cursor-not-allowed opacity-60;
+}
+
+/* =============================================================================
+   Info Field
+   ============================================================================= */
+
+[data-style='grada-ui'] [data-field-info] {
+  color: var(--gd-primary);
+}
+
+/* =============================================================================
+   Separator
+   ============================================================================= */
+
+[data-style='grada-ui'] [data-form-separator] {
+  @apply border-surface-z3;
+}
+
+/* =============================================================================
+   Description & Messages
+   ============================================================================= */
+
+[data-style='grada-ui'] [data-description] {
+  @apply text-surface-z5 mt-1 px-1 text-xs;
+}
+
+[data-style='grada-ui'] [data-message] {
+  @apply mt-1 px-1 text-xs;
+  color: var(--gd-error-text);
+}
+
+/* =============================================================================
+   Placeholder
+   ============================================================================= */
+
+[data-style='grada-ui'] [data-input-root] input::placeholder,
+[data-style='grada-ui'] [data-input-root] textarea::placeholder {
+  color: var(--gd-grey-c);
+}
+
+/* =============================================================================
+   Checkbox
+   ============================================================================= */
+
+[data-style='grada-ui'] [data-checkbox-icon] {
+  @apply text-surface-z5 text-lg;
+}
+
+[data-style='grada-ui']
+  [data-checkbox-root][data-variant='custom']:has(input:checked)
+  [data-checkbox-icon] {
+  color: var(--gd-primary);
+}

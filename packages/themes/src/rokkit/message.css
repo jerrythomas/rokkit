@@ -1,0 +1,44 @@
+/**
+ * Message - Rokkit Theme Styles
+ */
+
+/* Type colors */
+[data-style='rokkit'] [data-message-root][data-type='error'] {
+  @apply bg-error-z1 border-error-z4 text-error-z8;
+}
+[data-style='rokkit'] [data-message-root][data-type='error'] [data-message-icon] {
+  @apply text-error-z6;
+}
+[data-style='rokkit'] [data-message-root][data-type='error'] [data-message-dismiss] {
+  @apply text-error-z6;
+}
+
+[data-style='rokkit'] [data-message-root][data-type='warning'] {
+  @apply bg-warning-z1 border-warning-z4 text-warning-z8;
+}
+[data-style='rokkit'] [data-message-root][data-type='warning'] [data-message-icon] {
+  @apply text-warning-z6;
+}
+[data-style='rokkit'] [data-message-root][data-type='warning'] [data-message-dismiss] {
+  @apply text-warning-z6;
+}
+
+[data-style='rokkit'] [data-message-root][data-type='info'] {
+  @apply bg-info-z1 border-info-z4 text-info-z8;
+}
+[data-style='rokkit'] [data-message-root][data-type='info'] [data-message-icon] {
+  @apply text-info-z6;
+}
+[data-style='rokkit'] [data-message-root][data-type='info'] [data-message-dismiss] {
+  @apply text-info-z6;
+}
+
+[data-style='rokkit'] [data-message-root][data-type='success'] {
+  @apply bg-success-z1 border-success-z4 text-success-z8;
+}
+[data-style='rokkit'] [data-message-root][data-type='success'] [data-message-icon] {
+  @apply text-success-z6;
+}
+[data-style='rokkit'] [data-message-root][data-type='success'] [data-message-dismiss] {
+  @apply text-success-z6;
+}

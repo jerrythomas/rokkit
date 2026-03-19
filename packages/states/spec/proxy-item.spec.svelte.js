@@ -34,7 +34,6 @@ describe('BASE_FIELDS', () => {
 	})
 })
 
-
 describe('ProxyItem', () => {
 	describe('id', () => {
 		it('should return item id field when present', () => {

@@ -6,6 +6,8 @@
 		href?: string
 		/** Click handler (only applies when no href) */
 		onclick?: () => void
+		/** Visual variant */
+		variant?: 'default' | 'primary' | 'secondary' | 'tertiary'
 		/** Additional CSS class */
 		class?: string
 		/** Card header snippet */
@@ -16,7 +18,7 @@
 		children?: Snippet
 	}
 
-	const { href, onclick, class: className = '', header, footer, children }: CardProps = $props()
+	const { href, onclick, variant = 'default', class: className = '', header, footer, children }: CardProps = $props()
 </script>
 
 {#snippet cardContent()}
@@ -40,15 +42,15 @@
 {/snippet}
 
 {#if href}
-	<a {href} data-card class={className || undefined}>
+	<a {href} data-card data-variant={variant} class={className || undefined}>
 		{@render cardContent()}
 	</a>
 {:else if onclick}
-	<button type="button" data-card data-card-interactive class={className || undefined} {onclick}>
+	<button type="button" data-card data-card-interactive data-variant={variant} class={className || undefined} {onclick}>
 		{@render cardContent()}
 	</button>
 {:else}
-	<div data-card class={className || undefined}>
+	<div data-card data-variant={variant} class={className || undefined}>
 		{@render cardContent()}
 	</div>
 {/if}

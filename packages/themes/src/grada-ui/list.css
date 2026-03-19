@@ -1,0 +1,109 @@
+/**
+ * List - Grada UI Theme Styles
+ */
+
+[data-style='grada-ui'] [data-list]:focus-within {
+  @apply outline-none;
+}
+
+[data-style='grada-ui'] [data-list] [data-list-item] {
+  @apply text-surface-z8;
+}
+
+[data-style='grada-ui'] [data-list] a[data-list-item],
+[data-style='grada-ui'] [data-list] button[data-list-item] {
+  @apply text-surface-z7;
+}
+
+/* Hover and focus */
+[data-style='grada-ui']
+  [data-list]
+  [data-list-item]:hover:not(:disabled):not([data-disabled='true']),
+[data-style='grada-ui']
+  [data-list]
+  [data-list-item]:focus:not(:disabled):not([data-disabled='true']) {
+  @apply bg-surface-z1 text-surface-z10 outline-none;
+}
+
+/* Active state — muted when list not focused */
+[data-style='grada-ui'] [data-list] [data-list-item][data-active='true'] {
+  @apply bg-surface-z1;
+  color: var(--gd-primary);
+}
+
+/* Active state — gradient left border when list has focus */
+[data-style='grada-ui'] [data-list]:focus-within [data-list-item][data-active='true'] {
+  @apply bg-surface-z1;
+  border-left: 3px solid var(--gd-primary);
+  color: var(--gd-primary);
+}
+
+[data-style='grada-ui'] [data-list] [data-list-item][data-active='true']:hover:not(:disabled),
+[data-style='grada-ui'] [data-list] [data-list-item][data-active='true']:focus:not(:disabled) {
+  @apply bg-surface-z2;
+}
+
+/* Item Elements */
+[data-style='grada-ui'] [data-list] [data-list-item] [data-item-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='grada-ui'] [data-list] [data-list-item]:hover:not(:disabled) [data-item-icon],
+[data-style='grada-ui'] [data-list] [data-list-item]:focus:not(:disabled) [data-item-icon] {
+  @apply text-surface-z7;
+}
+
+[data-style='grada-ui'] [data-list] [data-list-item][data-active='true'] [data-item-icon] {
+  color: var(--gd-primary);
+}
+
+[data-style='grada-ui'] [data-list] [data-list-item] [data-item-description] {
+  @apply text-surface-z5;
+}
+
+[data-style='grada-ui'] [data-list] [data-list-item] [data-item-badge] {
+  @apply bg-surface-z2 text-surface-z6;
+  border-radius: 20px;
+}
+
+[data-style='grada-ui'] [data-list] [data-list-item][data-active='true'] [data-item-badge] {
+  background: var(--gd-gradient);
+  color: white;
+}
+
+/* Groups */
+[data-style='grada-ui'] [data-list] [data-list-group] {
+  @apply text-surface-z6 font-medium;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+[data-style='grada-ui'] [data-list] [data-list-group]:hover:not(:disabled),
+[data-style='grada-ui'] [data-list] [data-list-group]:focus:not(:disabled) {
+  @apply bg-surface-z2 text-surface-z8;
+}
+
+/* Separator */
+[data-style='grada-ui'] [data-list] [data-list-separator] {
+  @apply bg-surface-z3;
+}
+
+/* Multi-Selection */
+[data-style='grada-ui'] [data-list] [data-list-item][data-selected='true'] {
+  background: var(--gd-gradient);
+  color: white;
+}
+
+[data-style='grada-ui'] [data-list]:focus-within [data-list-item][data-selected='true'] {
+  background: var(--gd-gradient);
+}
+
+[data-style='grada-ui'] [data-list] [data-list-item][data-selected='true']:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+[data-style='grada-ui'] [data-list] [data-list-item][data-selected='true'] [data-item-icon] {
+  color: white;
+}

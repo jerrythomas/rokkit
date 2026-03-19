@@ -20,6 +20,10 @@
   opacity: 0.5;
 }
 
+[data-toolbar][data-toolbar-width='fit'] {
+  width: fit-content;
+}
+
 /* Position variants - horizontal */
 [data-toolbar][data-toolbar-position='top'],
 [data-toolbar][data-toolbar-position='bottom'],

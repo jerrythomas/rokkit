@@ -1,0 +1,42 @@
+/**
+ * SearchFilter - Grada UI Theme Styles
+ */
+
+[data-style='grada-ui'] [data-search-input] {
+  @apply text-surface-z8 border-surface-z4 bg-white border;
+  border-radius: 3px;
+}
+
+[data-style='grada-ui'] [data-search-input]:focus {
+  border-color: var(--gd-primary);
+  outline: none;
+}
+
+[data-style='grada-ui'] [data-search-input]::placeholder {
+  color: var(--gd-grey-c);
+}
+
+[data-style='grada-ui'] [data-search-clear] {
+  @apply text-surface-z5;
+}
+
+[data-style='grada-ui'] [data-search-clear]:hover {
+  @apply text-surface-z8 bg-surface-z1;
+  border-radius: 3px;
+}
+
+[data-style='grada-ui'] [data-search-tag] {
+  background: var(--gd-gradient);
+  color: white;
+  border-radius: 20px;
+}
+
+[data-style='grada-ui'] [data-search-tag-remove] {
+  color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+}
+
+[data-style='grada-ui'] [data-search-tag-remove]:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.2);
+}

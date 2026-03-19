@@ -1,0 +1,168 @@
+/**
+ * Select - Grada UI Theme Styles
+ *
+ * White dropdown with gradient selected highlight, 3px radius.
+ */
+
+/* Trigger */
+[data-style='grada-ui'] [data-select-trigger] {
+  @apply bg-white text-surface-z8 border-surface-z4 border;
+  border-radius: 3px;
+}
+
+[data-style='grada-ui'] [data-select-trigger]:hover:not(:disabled) {
+  @apply border-surface-z6;
+}
+
+[data-style='grada-ui'] [data-select-trigger]:focus-visible {
+  outline: 2px solid var(--gd-primary);
+  outline-offset: -2px;
+}
+
+[data-style='grada-ui'] [data-select][data-open='true'] [data-select-trigger] {
+  border-color: var(--gd-primary);
+}
+
+/* Placeholder */
+[data-style='grada-ui'] [data-select-placeholder] {
+  color: var(--gd-grey-c);
+}
+
+/* Arrow */
+[data-style='grada-ui'] [data-select-arrow] {
+  @apply text-surface-z5;
+}
+
+[data-style='grada-ui'] [data-select-trigger]:hover:not(:disabled) [data-select-arrow] {
+  color: var(--gd-primary);
+}
+
+/* Tags (MultiSelect) */
+[data-style='grada-ui'] [data-select-tag] {
+  background: var(--gd-gradient);
+  color: white;
+  border-radius: 20px;
+}
+
+[data-style='grada-ui'] [data-select-tag-remove] {
+  color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+}
+
+[data-style='grada-ui'] [data-select-tag-remove]:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Dropdown Panel */
+[data-style='grada-ui'] [data-select-dropdown] {
+  @apply bg-white border-surface-z3 border shadow-lg;
+  border-radius: 3px;
+}
+
+/* Options */
+[data-style='grada-ui'] [data-select-option] {
+  @apply text-surface-z8;
+}
+
+[data-style='grada-ui'] [data-select-option]:hover:not(:disabled),
+[data-style='grada-ui'] [data-select-option]:focus:not(:disabled) {
+  @apply bg-surface-z1 text-surface-z10;
+}
+
+[data-style='grada-ui'] [data-select-option]:focus-visible {
+  outline: 2px solid var(--gd-primary);
+  outline-offset: -2px;
+}
+
+/* Selected option — gradient background */
+[data-style='grada-ui'] [data-select-option][data-selected='true'] {
+  background: var(--gd-gradient);
+  color: white;
+}
+
+[data-style='grada-ui'] [data-select-option][data-selected='true']:hover:not(:disabled),
+[data-style='grada-ui'] [data-select-option][data-selected='true']:focus:not(:disabled) {
+  background: var(--gd-gradient);
+  filter: brightness(1.1);
+  color: white;
+}
+
+[data-style='grada-ui'] [data-select-dropdown]:focus-within [data-select-option][data-selected='true'] {
+  background: var(--gd-gradient);
+}
+
+/* Check mark */
+[data-style='grada-ui'] [data-select-check] {
+  color: white;
+}
+
+/* Checkbox */
+[data-style='grada-ui'] [data-select-checkbox] {
+  @apply bg-white border-surface-z5 border;
+  border-radius: 2px;
+}
+
+[data-style='grada-ui'] [data-select-checkbox][data-checked='true'] {
+  background: var(--gd-primary);
+  border-color: var(--gd-primary);
+  color: white;
+}
+
+/* Item elements */
+[data-style='grada-ui'] [data-select-option] [data-item-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='grada-ui'] [data-select-option]:hover:not(:disabled) [data-item-icon] {
+  @apply text-surface-z7;
+}
+
+[data-style='grada-ui'] [data-select-option][data-selected='true'] [data-item-icon] {
+  color: white;
+}
+
+[data-style='grada-ui'] [data-select-option] [data-item-description] {
+  @apply text-surface-z5;
+}
+
+[data-style='grada-ui'] [data-select-option][data-selected='true'] [data-item-description] {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Groups */
+[data-style='grada-ui'] [data-select-group-label] {
+  @apply text-surface-z5 font-medium;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Divider */
+[data-style='grada-ui'] [data-select-divider] {
+  @apply bg-surface-z3;
+}
+
+/* Filter Input */
+[data-style='grada-ui'] [data-select-filter] {
+  @apply bg-white;
+}
+
+[data-style='grada-ui'] [data-select-filter-input] {
+  @apply text-surface-z8 border-surface-z4 bg-white border;
+  border-radius: 3px;
+}
+
+[data-style='grada-ui'] [data-select-filter-input]:focus {
+  border-color: var(--gd-primary);
+  outline: none;
+}
+
+[data-style='grada-ui'] [data-select-filter-input]::placeholder {
+  color: var(--gd-grey-c);
+}
+
+[data-style='grada-ui'] [data-select-empty] {
+  @apply text-surface-z5;
+}

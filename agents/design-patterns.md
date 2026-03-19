@@ -23,51 +23,51 @@ Reference this file before implementing new features to ensure consistency.
 
 1. **Root marker** — Every component root has a single marker attribute that identifies it:
 
-   ```html
-   <div data-list>...</div>
-   <div data-select>...</div>
-   <div data-rating>...</div>
-   ```
+```html
+<div data-list>...</div>
+<div data-select>...</div>
+<div data-rating>...</div>
+```
 
 2. **Sub-element markers** — Child elements use `data-{component}-{role}`:
 
-   ```html
-   <div data-list-item data-path="0">
-     <span data-select-trigger> <div data-range-thumb></div></span>
-   </div>
-   ```
+```html
+<div data-list-item data-path="0">
+  <span data-select-trigger> <div data-range-thumb></div></span>
+</div>
+```
 
 3. **Boolean state attributes** — Presence means true, absence means false (no `="true"`/`="false"`):
 
-   ```html
-   <div data-list-item data-active>
-     <!-- active -->
-     <div data-list-item>
-       <!-- not active -->
-       <div data-range-thumb data-sliding><!-- currently dragging --></div>
-     </div>
-   </div>
-   ```
+```html
+<div data-list-item data-active>
+  <!-- active -->
+  <div data-list-item>
+    <!-- not active -->
+    <div data-range-thumb data-sliding><!-- currently dragging --></div>
+  </div>
+</div>
+```
 
 4. **Value state attributes** — Enumerated states use `data-{attr}="{value}"`:
 
-   ```html
-   <div data-select data-size="md">
-     <div data-list data-density="compact"></div>
-   </div>
-   ```
+```html
+<div data-select data-size="md">
+  <div data-list data-density="compact"></div>
+</div>
+```
 
 5. **CSS selectors** — Theme CSS always selects by attribute, never by element tag or class:
 
-   ```css
-   /* Correct */
-   [data-list-item][data-active] { ... }
-   [data-range-thumb][data-sliding] { ... }
+```css
+/* Correct */
+[data-list-item][data-active] { ... }
+[data-range-thumb][data-sliding] { ... }
 
-   /* Never do this */
-   rk-item { ... }
-   .list-item.active { ... }
-   ```
+/* Never do this */
+rk-item { ... }
+.list-item.active { ... }
+```
 
 6. **Naming convention** for data attributes: `data-{component}` (root), `data-{component}-{part}` (child), consistent `data-{state}` names across components (`data-disabled`, `data-active`, `data-selected`, `data-open`).
 
@@ -318,12 +318,12 @@ Flat icon names follow `{group}-{state}` pattern:
 ```typescript
 import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 
-export interface {Component}StateIcons {
+export interface StateIcons {
   opened?: string
   closed?: string
 }
 
-export const default{Component}StateIcons: {Component}StateIcons = {
+export const defaultStateIcons: StateIcons = {
   opened: DEFAULT_STATE_ICONS.{group}.opened,
   closed: DEFAULT_STATE_ICONS.{group}.closed,
 }
@@ -332,8 +332,8 @@ export const default{Component}StateIcons: {Component}StateIcons = {
 2. **Add to props interface**:
 
 ```typescript
-export interface {Component}Props {
-  icons?: {Component}StateIcons
+export interface Props {
+  icons?: StateIcons
   // ...other props
 }
 ```
@@ -342,10 +342,10 @@ export interface {Component}Props {
 
 ```svelte
 <script lang="ts">
-  import { default{Component}StateIcons } from '../types/{component}.js'
+  import { defaultStateIcons } from '../types/{component}.js'
 
   let { icons: userIcons, ...rest } = $props()
-  const icons = $derived({ ...default{Component}StateIcons, ...userIcons })
+  const icons = $derived({ ...defaultStateIcons, ...userIcons })
 </script>
 
 <span class={icons.opened} aria-hidden="true"></span>

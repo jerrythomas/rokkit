@@ -4,6 +4,7 @@ export {
 	ButtonGroup,
 	Code,
 	Menu,
+	Dropdown,
 	Select,
 	MultiSelect,
 	Toolbar,
@@ -35,7 +36,10 @@ export {
 	Grid,
 	UploadTarget,
 	UploadFileStatus,
-	UploadProgress
+	UploadProgress,
+	StatusList,
+	Message,
+	AlertList
 } from './components/index.js'
 
 // Utilities

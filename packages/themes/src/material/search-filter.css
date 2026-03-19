@@ -37,7 +37,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-search-tag] {
-  @apply text-surface-z8 bg-surface-z2 rounded-full shadow-sm;
+  @apply bg-none text-surface-z8 bg-surface-z2 rounded-full shadow-sm;
 }
 
 [data-style='material'] [data-search-tag-remove] {

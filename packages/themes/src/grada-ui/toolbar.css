@@ -1,0 +1,81 @@
+/**
+ * Toolbar - Grada UI Theme Styles
+ */
+
+[data-style='grada-ui'] [data-toolbar] {
+  @apply bg-white shadow-sm;
+  border-bottom: 1px solid var(--gd-grey-a);
+}
+
+[data-style='grada-ui'] [data-toolbar][data-toolbar-position='top'],
+[data-style='grada-ui'] [data-toolbar]:not([data-toolbar-position]) {
+  border-bottom: 1px solid var(--gd-grey-a);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+[data-style='grada-ui'] [data-toolbar][data-toolbar-position='bottom'] {
+  border-top: 1px solid var(--gd-grey-a);
+  border-bottom: none;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
+}
+
+[data-style='grada-ui'] [data-toolbar][data-toolbar-position='left'] {
+  border-right: 1px solid var(--gd-grey-a);
+  border-bottom: none;
+}
+
+[data-style='grada-ui'] [data-toolbar][data-toolbar-position='right'] {
+  border-left: 1px solid var(--gd-grey-a);
+  border-bottom: none;
+}
+
+/* Items */
+[data-style='grada-ui'] [data-toolbar-item] {
+  @apply text-surface-z7;
+  border-radius: 3px;
+}
+
+[data-style='grada-ui'] [data-toolbar-item]:hover:not(:disabled):not([data-disabled='true']) {
+  @apply bg-surface-z1 text-surface-z9;
+}
+
+[data-style='grada-ui']
+  [data-toolbar-item]:focus-visible:not(:disabled):not([data-disabled='true']) {
+  @apply bg-surface-z1 text-surface-z9;
+  outline: 2px solid var(--gd-primary);
+  outline-offset: -2px;
+}
+
+/* Active */
+[data-style='grada-ui'] [data-toolbar-item][data-active='true'] {
+  background: var(--gd-gradient);
+  color: white;
+}
+
+[data-style='grada-ui'] [data-toolbar-item][data-active='true']:hover:not(:disabled) {
+  background: var(--gd-gradient);
+  filter: brightness(1.08);
+  color: white;
+}
+
+/* Icons */
+[data-style='grada-ui'] [data-toolbar-item] [data-toolbar-icon] {
+  @apply text-surface-z6;
+}
+
+[data-style='grada-ui'] [data-toolbar-item]:hover:not(:disabled) [data-toolbar-icon] {
+  @apply text-surface-z8;
+}
+
+[data-style='grada-ui'] [data-toolbar-item][data-active='true'] [data-toolbar-icon] {
+  color: white;
+}
+
+/* Separator & Divider */
+[data-style='grada-ui'] [data-toolbar-separator] {
+  @apply bg-surface-z3;
+}
+
+[data-style='grada-ui'] [data-toolbar-divider] {
+  @apply bg-surface-z3;
+}

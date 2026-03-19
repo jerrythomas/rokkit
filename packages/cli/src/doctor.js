@@ -150,8 +150,14 @@ function applyPatchHtml(cwd, label) {
 
 /** @type {Record<string, (cwd: string, label: string) => boolean|void>} */
 const FIX_HANDLERS = {
-	'generate-config': (cwd, label) => { applyGenerateConfig(cwd, label); return true },
-	'patch-css': (cwd, label) => { applyPatchCss(cwd, label); return true },
+	'generate-config': (cwd, label) => {
+		applyGenerateConfig(cwd, label)
+		return true
+	},
+	'patch-css': (cwd, label) => {
+		applyPatchCss(cwd, label)
+		return true
+	},
 	'patch-html': (cwd, label) => applyPatchHtml(cwd, label)
 }
 

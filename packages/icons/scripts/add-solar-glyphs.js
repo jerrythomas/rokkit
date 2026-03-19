@@ -9,9 +9,9 @@ mkdirSync(OUT, { recursive: true })
 
 // duotone is default (differs from auth icons which use bold as default)
 const VARIANTS = [
-	{ solarSuffix: '-bold-duotone', ourSuffix: '',                 skipDefault: true },
-	{ solarSuffix: '-linear',       ourSuffix: '-outline' },
-	{ solarSuffix: '-bold',         ourSuffix: '-solid' },
+	{ solarSuffix: '-bold-duotone', ourSuffix: '', skipDefault: true },
+	{ solarSuffix: '-linear', ourSuffix: '-outline' },
+	{ solarSuffix: '-bold', ourSuffix: '-solid' },
 	{ solarSuffix: '-line-duotone', ourSuffix: '-duotone-outline' }
 ]
 
@@ -25,7 +25,10 @@ let missing = 0
 
 for (const glyph of glyphMap) {
 	for (const variant of VARIANTS) {
-		if (variant.skipDefault && glyph.skipDefault) { skipped++; continue }
+		if (variant.skipDefault && glyph.skipDefault) {
+			skipped++
+			continue
+		}
 		const solarKey = glyph.solar + variant.solarSuffix
 		const icon = solar.icons[solarKey]
 		if (!icon) {
@@ -40,4 +43,6 @@ for (const glyph of glyphMap) {
 	}
 }
 
-console.log(`\nDone: ${written} written, ${skipped} skipped (skipDefault), ${missing} missing solar icons.`)
+console.log(
+	`\nDone: ${written} written, ${skipped} skipped (skipDefault), ${missing} missing solar icons.`
+)

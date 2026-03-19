@@ -112,6 +112,9 @@ export interface ToolbarProps {
 	/** Size variant */
 	size?: 'sm' | 'md' | 'lg'
 
+	/** Width behaviour: full stretches to container, fit sizes to content */
+	width?: 'full' | 'fit'
+
 	/** Whether toolbar should stick to its position */
 	sticky?: boolean
 

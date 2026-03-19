@@ -143,7 +143,8 @@ export default [
       'svelte/no-navigation-without-resolve': 'off',
       'svelte/require-each-key': 'warn',
       'svelte/no-unused-svelte-ignore': 'warn',
-      'svelte/prefer-svelte-reactivity': 'warn'
+      'svelte/prefer-svelte-reactivity': 'warn',
+      'svelte/no-dom-manipulating': 'warn'
     }
   },
   {

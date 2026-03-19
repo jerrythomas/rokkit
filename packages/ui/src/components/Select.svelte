@@ -107,13 +107,12 @@
 	const childrenField = $derived(fields?.children || 'children')
 
 	function childMatchesQuery(child: unknown, query: string): boolean {
-		return String((child as Record<string, unknown>)[textField] ?? '').toLowerCase().includes(query)
+		return String((child as Record<string, unknown>)[textField] ?? '')
+			.toLowerCase()
+			.includes(query)
 	}
 
-	function filterGroupChildren(
-		asRecord: Record<string, unknown>,
-		query: string
-	): unknown | null {
+	function filterGroupChildren(asRecord: Record<string, unknown>, query: string): unknown | null {
 		const children = asRecord[childrenField] as unknown[]
 		const matching = children.filter((child: unknown) => childMatchesQuery(child, query))
 		return matching.length > 0 ? { ...asRecord, [childrenField]: matching } : null

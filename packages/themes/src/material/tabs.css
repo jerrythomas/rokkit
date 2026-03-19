@@ -37,6 +37,29 @@
   @apply bg-primary-z5 text-white shadow-md;
 }
 
+/* Reset rokkit gradients bleeding in from body[data-style='rokkit'] ancestor */
+[data-style='material'] [data-tabs-list]:focus-within [data-tabs-trigger][data-selected] {
+  @apply bg-none;
+}
+
+[data-style='material'] [data-tabs][data-position='after'] [data-tabs-list]:focus-within [data-tabs-trigger][data-selected] {
+  @apply bg-none;
+}
+
+[data-style='material']
+  [data-tabs][data-orientation='vertical']
+  [data-tabs-list]:focus-within
+  [data-tabs-trigger][data-selected] {
+  @apply bg-none;
+}
+
+[data-style='material']
+  [data-tabs][data-orientation='vertical'][data-position='after']
+  [data-tabs-list]:focus-within
+  [data-tabs-trigger][data-selected] {
+  @apply bg-none;
+}
+
 /* =============================================================================
    Tab Icon
    ============================================================================= */

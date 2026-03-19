@@ -30,20 +30,22 @@
 				><td>Which modes to include</td></tr
 			>
 			<tr
-				><td><code>includeSystem</code></td><td><code>boolean</code></td><td
-					><code>true</code></td
+				><td><code>includeSystem</code></td><td><code>boolean</code></td><td><code>true</code></td
 				><td>Shortcut to exclude system option</td></tr
 			>
 			<tr
-				><td><code>showLabels</code></td><td><code>boolean</code></td><td><code>false</code></td
-				><td>Show text labels alongside icons</td></tr
+				><td><code>showLabels</code></td><td><code>boolean</code></td><td><code>false</code></td><td
+					>Show text labels alongside icons</td
+				></tr
 			>
 			<tr
-				><td><code>size</code></td><td><code>'sm'|'md'|'lg'</code></td><td><code>'sm'</code></td
-				><td>Size variant</td></tr
+				><td><code>size</code></td><td><code>'sm'|'md'|'lg'</code></td><td><code>'sm'</code></td><td
+					>Size variant</td
+				></tr
 			>
 			<tr
-				><td><code>icons</code></td><td>object</td><td>—</td><td>Override icon CSS classes per mode</td
+				><td><code>icons</code></td><td>object</td><td>—</td><td
+					>Override icon CSS classes per mode</td
 				></tr
 			>
 			<tr
@@ -57,9 +59,9 @@
 	<h2>TableOfContents</h2>
 	<p>
 		Scans <code>h2</code> and <code>h3</code> headings inside a container element and renders an
-		on-page navigation list. Uses <code>IntersectionObserver</code> to highlight the active
-		section. In SvelteKit layouts, call <code>rescan()</code> after navigation to pick up headings
-		from the new page:
+		on-page navigation list. Uses <code>IntersectionObserver</code> to highlight the active section.
+		In SvelteKit layouts, call <code>rescan()</code> after navigation to pick up headings from the new
+		page:
 	</p>
 	<Code content={tableOfContents} language="svelte" />
 	<p>Props and methods:</p>
@@ -89,12 +91,11 @@
 	<h2>Related</h2>
 	<ul>
 		<li>
-			<a href="/docs/utilities/states">@rokkit/states</a> — <code>vibe</code> store that
-			ThemeSwitcherToggle reads/writes
+			<a href="/docs/utilities/states">@rokkit/states</a> — <code>vibe</code> store that ThemeSwitcherToggle
+			reads/writes
 		</li>
 		<li>
-			<a href="/docs/theming/overview">Theming Overview</a> — Data attributes controlled by
-			ThemeSwitcherToggle
+			<a href="/docs/theming/overview">Theming Overview</a> — Data attributes controlled by ThemeSwitcherToggle
 		</li>
 	</ul>
 </article>

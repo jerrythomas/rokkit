@@ -18,11 +18,13 @@ Currently `docs/llms/` documents components only. An LLM helping a developer set
 Two independent plans:
 
 **Plan 1 — Entry point + CLI reference**
+
 - Rewrite `docs/llms/index.txt` as a navigational entry point
 - Create `docs/llms/cli.txt`
 - Correct the theming section (supersedes `docs/superpowers/specs/2026-03-16-llms-txt-theming-docs.md`)
 
 **Plan 2 — Package documentation**
+
 - Create `docs/llms/packages/*.txt` — one file per non-UI package
 
 ---
@@ -76,20 +78,20 @@ New directory `docs/llms/packages/` with one `.txt` file per package.
 
 Format mirrors `docs/llms/components/*.txt`: description → install → key exports → usage examples → related packages. Use `docs/llms/components/list.txt` as the canonical template reference.
 
-**Boundary with `index.txt` theming section:** `index.txt` section 4 covers *how to apply* theming (data attributes, utility classes, z-scale tokens — the usage API). `themes.txt` covers *what the theme system provides* (available built-in themes, custom palettes, CSS import structure). Minimal overlap is acceptable; do not duplicate the data attribute reference.
+**Boundary with `index.txt` theming section:** `index.txt` section 4 covers _how to apply_ theming (data attributes, utility classes, z-scale tokens — the usage API). `themes.txt` covers _what the theme system provides_ (available built-in themes, custom palettes, CSS import structure). Minimal overlap is acceptable; do not duplicate the data attribute reference.
 
 ### Files
 
-| File | Package | Key Content |
-|------|---------|-------------|
+| File          | Package           | Key Content                                                                     |
+| ------------- | ----------------- | ------------------------------------------------------------------------------- |
 | `actions.txt` | `@rokkit/actions` | `navigable`, `draggable`, other actions; how to apply; custom events dispatched |
-| `states.txt` | `@rokkit/states` | State primitives and data structures |
-| `forms.txt` | `@rokkit/forms` | Full coverage — see below |
-| `app.txt` | `@rokkit/app` | `ThemeSwitcher`, `ThemeSwitcherToggle`, `TableOfContents`; app-level chrome |
-| `core.txt` | `@rokkit/core` | Core utilities; what's exported and when to use |
-| `data.txt` | `@rokkit/data` | Data manipulation helpers |
-| `themes.txt` | `@rokkit/themes` | Theme system; available themes; custom palettes; CSS import structure |
-| `unocss.txt` | `@rokkit/unocss` | `presetRokkit`; setup; utility classes; color tokens; dark mode |
+| `states.txt`  | `@rokkit/states`  | State primitives and data structures                                            |
+| `forms.txt`   | `@rokkit/forms`   | Full coverage — see below                                                       |
+| `app.txt`     | `@rokkit/app`     | `ThemeSwitcher`, `ThemeSwitcherToggle`, `TableOfContents`; app-level chrome     |
+| `core.txt`    | `@rokkit/core`    | Core utilities; what's exported and when to use                                 |
+| `data.txt`    | `@rokkit/data`    | Data manipulation helpers                                                       |
+| `themes.txt`  | `@rokkit/themes`  | Theme system; available themes; custom palettes; CSS import structure           |
+| `unocss.txt`  | `@rokkit/unocss`  | `presetRokkit`; setup; utility classes; color tokens; dark mode                 |
 
 ### forms.txt — expanded coverage
 

@@ -17,14 +17,15 @@
 	<h2>CLI</h2>
 	<p>
 		The Rokkit CLI automates project setup — adding Rokkit to a new project, verifying your
-		configuration, and managing icon collections. See <a href="/docs/toolchain/cli">CLI reference</a>
+		configuration, and managing icon collections. See <a href="/docs/toolchain/cli">CLI reference</a
+		>
 		for all commands.
 	</p>
 
 	<h2>Icon Sets</h2>
 	<p>
 		Rokkit ships curated icon sets (auth, app, component, ui) in Iconify JSON format with
-		tree-shaking via UnoCSS. See <a href="/docs/toolchain/icon-sets">Icon Sets</a> for available
-		collections and configuration.
+		tree-shaking via UnoCSS. See <a href="/docs/toolchain/icon-sets">Icon Sets</a> for available collections
+		and configuration.
 	</p>
 </article>

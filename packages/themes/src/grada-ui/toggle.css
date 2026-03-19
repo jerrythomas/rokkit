@@ -1,0 +1,42 @@
+/**
+ * Toggle - Grada UI Theme Styles
+ *
+ * Gradient selected option.
+ */
+
+[data-style='grada-ui'] [data-toggle] {
+  @apply bg-none bg-surface-z2;
+  border-radius: 20px;
+  @apply shadow-sm;
+}
+
+[data-style='grada-ui'] [data-toggle-option] {
+  @apply text-surface-z6;
+  border-radius: 20px;
+}
+
+[data-style='grada-ui'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']),
+[data-style='grada-ui'] [data-toggle-option]:focus:not(:disabled):not([data-disabled='true']) {
+  @apply bg-none bg-surface-z3 text-surface-z8;
+}
+
+/* Selected state — gradient */
+[data-style='grada-ui'] [data-toggle-option][data-selected='true'] {
+  background: var(--gd-gradient);
+  color: white;
+  border-radius: 20px;
+  @apply shadow-sm;
+}
+
+[data-style='grada-ui'] [data-toggle-option] [data-toggle-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='grada-ui'] [data-toggle-option]:hover:not(:disabled) [data-toggle-icon],
+[data-style='grada-ui'] [data-toggle-option]:focus:not(:disabled) [data-toggle-icon] {
+  @apply text-surface-z7;
+}
+
+[data-style='grada-ui'] [data-toggle-option][data-selected='true'] [data-toggle-icon] {
+  color: white;
+}

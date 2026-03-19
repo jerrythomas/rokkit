@@ -13,7 +13,7 @@ export { default as FormRenderer } from './FormRenderer.svelte'
 export { default as Input } from './Input.svelte'
 export { default as InputField } from './InputField.svelte'
 export { default as InfoField } from './InfoField.svelte'
-export { default as ValidationReport } from './ValidationReport.svelte'
+export { default as StatusList } from './StatusList.svelte'
 
 // Display Components
 export * from './display'

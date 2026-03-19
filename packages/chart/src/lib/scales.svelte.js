@@ -74,7 +74,10 @@ export function createScales(data, dimensions, options) {
 
 	return {
 		xScale: buildXScale(xValues, dimensions, padding),
-		yScale: scaleLinear().domain([0, max(yValues) * 1.1]).nice().range([dimensions.innerHeight, 0]),
+		yScale: scaleLinear()
+			.domain([0, max(yValues) * 1.1])
+			.nice()
+			.range([dimensions.innerHeight, 0]),
 		colorScale
 	}
 }

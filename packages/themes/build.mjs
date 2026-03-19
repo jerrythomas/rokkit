@@ -215,13 +215,14 @@ async function build() {
     ['rokkit', 'gradients + glowing borders'],
     ['minimal', 'clean + subtle'],
     ['material', 'elevation + shadows'],
-    ['glass', 'blur + transparency']
+    ['glass', 'blur + transparency'],
+    ['grada-ui', 'coral/purple gradient identity']
   ]) {
     await buildFile(join(srcDir, name, 'index.css'), `${name}.css`, label)
   }
 
   // Full bundle: base + all themes
-  const allThemes = ['base', 'rokkit', 'minimal', 'material', 'glass']
+  const allThemes = ['base', 'rokkit', 'minimal', 'material', 'glass', 'grada-ui']
   const bundleParts = allThemes.map((name) => readFileSync(join(distDir, `${name}.css`), 'utf-8'))
   writeFileSync(join(distDir, 'index.css'), bundleParts.join('\n'), 'utf-8')
   console.log('✓ dist/index.css (full bundle)')

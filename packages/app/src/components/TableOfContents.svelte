@@ -60,7 +60,9 @@
 		const main = getContainer()
 		if (!el || !main) return
 		clearTimeout(scrollLockTimer)
-		scrollLockTimer = setTimeout(() => { scrollLockTimer = null }, 1000)
+		scrollLockTimer = setTimeout(() => {
+			scrollLockTimer = null
+		}, 1000)
 		main.scrollTo({ top: el.offsetTop - 16, behavior: 'smooth' })
 	}
 
@@ -95,18 +97,13 @@
 		scrollToHeading(id)
 	}
 
-	function handleClick(event) {
-		const btn = event.target.closest('[data-toc-item]')
-		if (!btn) return
-		const index = parseInt(btn.dataset.tocIndex ?? '0', 10)
-		focusedIndex = index
-		scrollToHeading(headings[index]?.id)
-	}
-
 	onMount(() => {
 		scan()
 		observe()
-		return () => { observer?.disconnect(); clearTimeout(scrollLockTimer) }
+		return () => {
+			observer?.disconnect()
+			clearTimeout(scrollLockTimer)
+		}
 	})
 </script>
 
@@ -132,7 +129,11 @@
 						data-toc-focused={focusedIndex === i ? '' : undefined}
 						tabindex={focusedIndex === i ? 0 : -1}
 						onfocusin={() => (focusedIndex = i)}
-						onclick={() => { focusedIndex = i; activeId = h.id; scrollToHeading(h.id) }}
+						onclick={() => {
+							focusedIndex = i
+							activeId = h.id
+							scrollToHeading(h.id)
+						}}
 					>
 						{h.text}
 					</button>

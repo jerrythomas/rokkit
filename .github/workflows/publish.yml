@@ -8,6 +8,8 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     permissions:
       contents: write
       id-token: write
@@ -30,12 +32,42 @@ jobs:
 
       - name: Publish packages
         env:
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
           NODE_NO_WARNINGS: 1
         run: |
-          npm config delete always-auth 2>/dev/null || true
-          for dir in ./packages/*/; do
-            grep -q '"private": true' "${dir}package.json" 2>/dev/null || \
-              (cd "$dir" && npm publish --provenance --access public --tag latest)
+          # Publish in dependency order so each package's deps are already on npm
+          PACKAGES=(helpers cli icons core data actions themes unocss states ui forms app chart stories)
+          for name in "${PACKAGES[@]}"; do
+            pkg="./packages/${name}/package.json"
+            [ -f "$pkg" ] || continue
+            grep -q '"private": true' "$pkg" 2>/dev/null && continue
+            # rewrite workspace:* and workspace:latest → "latest"
+            node -e "
+              const fs = require('fs');
+              const p = JSON.parse(fs.readFileSync('$pkg', 'utf8'));
+              for (const section of ['dependencies','peerDependencies']) {
+                for (const [k,v] of Object.entries(p[section] || {})) {
+                  if (v.startsWith('workspace:')) p[section][k] = 'latest';
+                }
+              }
+              fs.writeFileSync('$pkg', JSON.stringify(p, null, 2) + '\n');
+            "
+            (cd "./packages/${name}" && npm publish --provenance --access public --tag latest)
+            git checkout -- "$pkg"
+          done
+
+      - name: Sync next dist-tag
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+          NODE_NO_WARNINGS: 1
+        run: |
+          PACKAGES=(helpers cli icons core data actions themes unocss states ui forms app chart stories)
+          VERSION=$(node -p "require('./packages/helpers/package.json').version")
+          for name in "${PACKAGES[@]}"; do
+            pkg="./packages/${name}/package.json"
+            [ -f "$pkg" ] || continue
+            grep -q '"private": true' "$pkg" 2>/dev/null && continue
+            npm dist-tag add @rokkit/${name}@${VERSION} next
           done
 
       - name: Create GitHub release

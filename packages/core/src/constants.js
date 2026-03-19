@@ -67,7 +67,6 @@ export const BASE_FIELDS = {
 	selected: 'selected'
 }
 
-
 export const DEFAULT_ICONS = [
 	'accordion-opened',
 	'accordion-closed',

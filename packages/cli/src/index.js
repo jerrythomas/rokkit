@@ -70,4 +70,47 @@ prog
 		await doctor(opts)
 	})
 
+prog
+	.command('upgrade')
+	.describe('Check for @rokkit/* package updates and optionally install them')
+	.option('--apply', 'Install available upgrades')
+	.action(async (opts) => {
+		const { upgrade } = await import('./upgrade.js')
+		upgrade(opts)
+	})
+
+prog
+	.command('skin list')
+	.describe('List all skins defined in rokkit.config.js')
+	.action(async () => {
+		const { skin } = await import('./skin.js')
+		await skin('list')
+	})
+
+prog
+	.command('skin create')
+	.describe('Scaffold a new skin entry in rokkit.config.js')
+	.option('--name', 'Skin name')
+	.action(async (opts) => {
+		const { skin } = await import('./skin.js')
+		await skin('create', opts)
+	})
+
+prog
+	.command('theme list')
+	.describe('List built-in and custom themes')
+	.action(async () => {
+		const { theme } = await import('./theme.js')
+		await theme('list')
+	})
+
+prog
+	.command('theme create')
+	.describe('Scaffold a new custom theme CSS file')
+	.option('--name', 'Theme name')
+	.action(async (opts) => {
+		const { theme } = await import('./theme.js')
+		await theme('create', opts)
+	})
+
 prog.parse(process.argv)

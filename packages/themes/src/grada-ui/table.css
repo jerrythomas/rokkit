@@ -1,0 +1,81 @@
+/**
+ * Table - Grada UI Theme Styles
+ */
+
+[data-style='grada-ui'] [data-table-header] th {
+  @apply text-surface-z6 border-b font-medium;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background-color: var(--gd-surface-a);
+  border-color: var(--gd-grey-a);
+}
+
+[data-style='grada-ui'] [data-table-header-cell][data-sortable='true']:hover {
+  @apply text-surface-z9;
+  background-color: var(--gd-surface-b);
+}
+
+[data-style='grada-ui'] [data-table-header-cell][data-sort-order='ascending'],
+[data-style='grada-ui'] [data-table-header-cell][data-sort-order='descending'] {
+  color: var(--gd-primary);
+}
+
+[data-style='grada-ui'] [data-table-sort-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='grada-ui']
+  [data-table-header-cell][data-sort-order='ascending']
+  [data-table-sort-icon],
+[data-style='grada-ui']
+  [data-table-header-cell][data-sort-order='descending']
+  [data-table-sort-icon] {
+  color: var(--gd-primary);
+}
+
+/* Caption */
+[data-style='grada-ui'] [data-table-caption] {
+  @apply text-surface-z7;
+}
+
+/* Rows */
+[data-style='grada-ui'] [data-table-row] {
+  @apply text-surface-z8 border-b;
+  border-color: var(--gd-grey-a);
+}
+
+[data-style='grada-ui'] [data-table-row]:hover {
+  @apply bg-surface-z1;
+}
+
+[data-style='grada-ui'] [data-table-row]:focus {
+  @apply bg-surface-z1 text-surface-z10 outline-none;
+  outline: 2px solid var(--gd-primary);
+  outline-offset: -2px;
+}
+
+[data-style='grada-ui'] [data-table-row][data-selected='true'] {
+  background: color-mix(in srgb, var(--gd-primary) 10%, transparent);
+  color: var(--gd-primary);
+}
+
+/* Striped */
+[data-style='grada-ui'] [data-striped='true'] [data-table-body] tr:nth-child(even) {
+  @apply bg-surface-z1;
+}
+
+/* Empty */
+[data-style='grada-ui'] [data-table-empty] {
+  @apply text-surface-z5;
+}
+
+/* Cell Icon */
+[data-style='grada-ui'] [data-table-cell] [data-cell-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='grada-ui'] [data-table-row][data-selected='true'] [data-cell-icon] {
+  color: var(--gd-primary);
+}

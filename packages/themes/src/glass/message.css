@@ -1,0 +1,36 @@
+/**
+ * Message - Glass Theme Styles
+ */
+
+
+[data-style='glass'] [data-message-root][data-type='error'] {
+  @apply bg-error-z2/50 border-error-z4/40 text-error-z8 backdrop-blur-sm;
+}
+[data-style='glass'] [data-message-root][data-type='error'] [data-message-icon],
+[data-style='glass'] [data-message-root][data-type='error'] [data-message-dismiss] {
+  @apply text-error-z6;
+}
+
+[data-style='glass'] [data-message-root][data-type='warning'] {
+  @apply bg-warning-z2/50 border-warning-z4/40 text-warning-z8 backdrop-blur-sm;
+}
+[data-style='glass'] [data-message-root][data-type='warning'] [data-message-icon],
+[data-style='glass'] [data-message-root][data-type='warning'] [data-message-dismiss] {
+  @apply text-warning-z6;
+}
+
+[data-style='glass'] [data-message-root][data-type='info'] {
+  @apply bg-info-z2/50 border-info-z4/40 text-info-z8 backdrop-blur-sm;
+}
+[data-style='glass'] [data-message-root][data-type='info'] [data-message-icon],
+[data-style='glass'] [data-message-root][data-type='info'] [data-message-dismiss] {
+  @apply text-info-z6;
+}
+
+[data-style='glass'] [data-message-root][data-type='success'] {
+  @apply bg-success-z2/50 border-success-z4/40 text-success-z8 backdrop-blur-sm;
+}
+[data-style='glass'] [data-message-root][data-type='success'] [data-message-icon],
+[data-style='glass'] [data-message-root][data-type='success'] [data-message-dismiss] {
+  @apply text-success-z6;
+}

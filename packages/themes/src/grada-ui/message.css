@@ -1,0 +1,48 @@
+/**
+ * Message - Grada UI Theme Styles
+ *
+ * Left border accent style matching Figma form field states.
+ */
+
+[data-style='grada-ui'] [data-message-root] {
+  border-radius: 3px;
+  border-left-width: 4px;
+}
+
+[data-style='grada-ui'] [data-message-root][data-type='error'] {
+  background-color: #fff5f7;
+  border-color: var(--gd-error-border);
+  color: var(--gd-error-text);
+}
+[data-style='grada-ui'] [data-message-root][data-type='error'] [data-message-icon],
+[data-style='grada-ui'] [data-message-root][data-type='error'] [data-message-dismiss] {
+  color: var(--gd-error-border);
+}
+
+[data-style='grada-ui'] [data-message-root][data-type='warning'] {
+  @apply bg-warning-z1 border-warning-z3 text-warning-z9;
+}
+[data-style='grada-ui'] [data-message-root][data-type='warning'] [data-message-icon],
+[data-style='grada-ui'] [data-message-root][data-type='warning'] [data-message-dismiss] {
+  @apply text-warning-z6;
+}
+
+[data-style='grada-ui'] [data-message-root][data-type='info'] {
+  background-color: #f0f4ff;
+  border-color: var(--gd-secondary);
+  color: #4a3d7a;
+}
+[data-style='grada-ui'] [data-message-root][data-type='info'] [data-message-icon],
+[data-style='grada-ui'] [data-message-root][data-type='info'] [data-message-dismiss] {
+  color: var(--gd-secondary);
+}
+
+[data-style='grada-ui'] [data-message-root][data-type='success'] {
+  background-color: #f0faf4;
+  border-color: var(--gd-success);
+  color: #1a5c35;
+}
+[data-style='grada-ui'] [data-message-root][data-type='success'] [data-message-icon],
+[data-style='grada-ui'] [data-message-root][data-type='success'] [data-message-dismiss] {
+  color: var(--gd-success);
+}

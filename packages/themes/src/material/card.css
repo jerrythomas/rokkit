@@ -8,7 +8,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-card] {
-  @apply bg-surface-z1 border-surface-z4 text-surface-z9 border shadow-sm;
+  @apply bg-none bg-surface-z1 border-surface-z4 text-surface-z9 border shadow-sm;
 }
 
 /* Interactive cards (buttons) */
@@ -58,4 +58,41 @@
 [data-style='material'] [data-card][data-card-interactive][data-disabled],
 [data-style='material'] [data-card][data-card-interactive]:disabled {
   @apply cursor-not-allowed opacity-50 shadow-none;
+}
+
+/* =============================================================================
+   Variants
+   ============================================================================= */
+
+/* Primary — tonal primary container (Material You style) */
+[data-style='material'] [data-card][data-variant='primary'] {
+  @apply bg-none bg-primary-z1 border-primary-z3 text-primary-z9 border shadow-sm;
+}
+
+[data-style='material'] [data-card][data-variant='primary'] [data-card-header],
+[data-style='material'] [data-card][data-variant='primary'] [data-card-footer] {
+  @apply border-primary-z2;
+}
+
+[data-style='material'] [data-card][data-variant='primary'] [data-card-body] {
+  @apply text-primary-z8;
+}
+
+/* Secondary — tonal secondary container */
+[data-style='material'] [data-card][data-variant='secondary'] {
+  @apply bg-none bg-secondary-z1 border-secondary-z3 text-secondary-z9 border shadow-sm;
+}
+
+[data-style='material'] [data-card][data-variant='secondary'] [data-card-header],
+[data-style='material'] [data-card][data-variant='secondary'] [data-card-footer] {
+  @apply border-secondary-z2;
+}
+
+[data-style='material'] [data-card][data-variant='secondary'] [data-card-body] {
+  @apply text-secondary-z8;
+}
+
+/* Tertiary — elevated surface with no color accent */
+[data-style='material'] [data-card][data-variant='tertiary'] {
+  @apply bg-none bg-surface-z2 border-surface-z3 text-surface-z7 border shadow-none;
 }

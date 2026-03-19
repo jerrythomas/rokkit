@@ -1,0 +1,7 @@
+{
+  "title": "Dropdown",
+  "description": "A trigger button that shows the selected value and opens a panel of options.",
+  "icon": "i-glyph:dropdown",
+  "category": "navigation-selection",
+  "tags": ["dropdown", "select", "picker", "navigation"]
+}

@@ -1,0 +1,16 @@
+/* Custom theme: midnight */
+/* Apply this theme with: <body data-style="midnight"> */
+
+[data-style='midnight'] [data-button] {
+  /* button styles */
+}
+
+[data-style='midnight'] [data-card] {
+  /* card styles */
+}
+
+[data-style='midnight'] [data-list] {
+  /* list styles */
+}
+
+/* … one block per component */

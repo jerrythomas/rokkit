@@ -1,0 +1,64 @@
+/**
+ * FloatingNavigation - Grada UI Theme Styles
+ */
+
+[data-style='grada-ui'] [data-floating-nav] {
+  @apply bg-white shadow-xl;
+  border-right: 1px solid var(--gd-grey-a);
+}
+
+[data-style='grada-ui'] [data-floating-nav-title] {
+  @apply text-surface-z6;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+[data-style='grada-ui'] [data-floating-nav-pin] {
+  @apply text-surface-z6;
+}
+
+[data-style='grada-ui'] [data-floating-nav-pin]:hover {
+  color: var(--gd-primary);
+}
+
+[data-style='grada-ui'] [data-floating-nav-pin][aria-pressed='true'] {
+  color: var(--gd-primary);
+}
+
+[data-style='grada-ui'] [data-floating-nav-item] {
+  @apply text-surface-z8;
+  border-radius: 3px;
+}
+
+[data-style='grada-ui'] [data-floating-nav-item]:hover {
+  @apply bg-surface-z1 text-surface-z10;
+}
+
+[data-style='grada-ui'] [data-floating-nav-item][data-active] {
+  color: var(--gd-primary);
+  background: color-mix(in srgb, var(--gd-primary) 10%, transparent);
+}
+
+[data-style='grada-ui'] [data-floating-nav-item]:focus-visible {
+  outline: 2px solid var(--gd-primary);
+  outline-offset: -2px;
+}
+
+[data-style='grada-ui'] [data-floating-nav-icon] {
+  @apply text-surface-z6;
+}
+
+[data-style='grada-ui'] [data-floating-nav-item]:hover [data-floating-nav-icon] {
+  color: var(--gd-primary);
+}
+
+[data-style='grada-ui'] [data-floating-nav-item][data-active] [data-floating-nav-icon] {
+  color: var(--gd-primary);
+}
+
+[data-style='grada-ui'] [data-floating-nav-indicator] {
+  background: var(--gd-gradient);
+}

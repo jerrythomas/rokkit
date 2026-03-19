@@ -17,8 +17,8 @@
 			<code>onselect</code> callback
 		</li>
 		<li>
-			Add <code>data-path</code> attributes to item elements — the navigator identifies items by
-			this attribute
+			Add <code>data-path</code> attributes to item elements — the navigator identifies items by this
+			attribute
 		</li>
 	</ol>
 	<Code content={customComponent} language="svelte" />

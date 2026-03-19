@@ -159,8 +159,8 @@
 
 	<h2>Custom Primitives</h2>
 	<p>
-		Build your own accessible components using the same controllers and navigator action that
-		Rokkit uses internally. See
+		Build your own accessible components using the same controllers and navigator action that Rokkit
+		uses internally. See
 		<a href="/docs/utilities/custom-primitives">Custom Primitives</a> for a complete worked example.
 	</p>
 </article>

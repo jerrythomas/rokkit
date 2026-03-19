@@ -110,7 +110,6 @@
 	<p>
 		The CLI sets up UnoCSS, imports theme CSS, and adds <code>data-style</code> to
 		<code>&lt;html&gt;</code> automatically. See the
-		<a href="/docs/getting-started/quick-start">Quick Start guide</a> for a full step-by-step
-		walkthrough.
+		<a href="/docs/getting-started/quick-start">Quick Start guide</a> for a full step-by-step walkthrough.
 	</p>
 </article>

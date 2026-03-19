@@ -18,12 +18,12 @@ Expand and rename the `rokkit-components` icon collection to `rokkit-glyph` (`i-
 
 Each icon has up to 4 SVG files:
 
-| Filename | Variant label | Solar source suffix |
-|---|---|---|
-| `{name}.svg` | duotone (default) | `-bold-duotone` |
-| `{name}-outline.svg` | outline / linear | `-linear` |
-| `{name}-solid.svg` | solid / filled | `-bold` |
-| `{name}-duotone-outline.svg` | duotone outline | `-duotone` |
+| Filename                     | Variant label     | Solar source suffix |
+| ---------------------------- | ----------------- | ------------------- |
+| `{name}.svg`                 | duotone (default) | `-bold-duotone`     |
+| `{name}-outline.svg`         | outline / linear  | `-linear`           |
+| `{name}-solid.svg`           | solid / filled    | `-bold`             |
+| `{name}-duotone-outline.svg` | duotone outline   | `-duotone`          |
 
 > **Note:** The variant labels (e.g. "duotone outline") are display names chosen for clarity. They do not correspond to solar suffix names. In particular, the fourth variant file `{name}-duotone-outline.svg` is sourced from solar's `-duotone` style — a lighter version — not from any solar "-duotone-outline" suffix. This differs from the auth icon collection where `-bold` is the default; here `-bold-duotone` is the default.
 
@@ -41,10 +41,10 @@ Example structure:
 
 ```json
 [
-  { "name": "rocket",        "solar": "rocket" },
+  { "name": "rocket", "solar": "rocket" },
   { "name": "accessibility", "solar": "accessibility" },
-  { "name": "accordion",     "solar": "sort-vertical",  "skipDefault": true },
-  { "name": "button",        "solar": "widget",         "skipDefault": true }
+  { "name": "accordion", "solar": "sort-vertical", "skipDefault": true },
+  { "name": "button", "solar": "widget", "skipDefault": true }
 ]
 ```
 
@@ -54,10 +54,10 @@ To replace a hand-crafted default with solar later: remove `"skipDefault": true`
 
 ```js
 const VARIANTS = [
-  { solarSuffix: '-bold-duotone', ourSuffix: '' },         // skipped when skipDefault: true
-  { solarSuffix: '-linear',       ourSuffix: '-outline' },
-  { solarSuffix: '-bold',         ourSuffix: '-solid' },
-  { solarSuffix: '-duotone',      ourSuffix: '-duotone-outline' },
+  { solarSuffix: '-bold-duotone', ourSuffix: '' }, // skipped when skipDefault: true
+  { solarSuffix: '-linear', ourSuffix: '-outline' },
+  { solarSuffix: '-bold', ourSuffix: '-solid' },
+  { solarSuffix: '-duotone', ourSuffix: '-duotone-outline' }
 ]
 ```
 
@@ -92,12 +92,12 @@ Before populating `glyph-map.json`, do an audit to enumerate all icons in scope:
 
 The following files require changes:
 
-| File | Change |
-|---|---|
-| `packages/icons/src/config.json` | Rename collection entry from `rokkit-components` → `rokkit-glyph` |
-| `packages/icons/package.json` | Add export `"./glyph.json": "./lib/glyph.json"`, remove or alias `"./components.json"` |
-| `site/rokkit.config.js` | In the `icons` map: rename `component` key → `glyph` pointing to `@rokkit/icons/glyph.json`; remove `solar` key |
-| `site/uno.config.js` | Update safelist and shortcuts (see Site Migration above) |
+| File                             | Change                                                                                                          |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `packages/icons/src/config.json` | Rename collection entry from `rokkit-components` → `rokkit-glyph`                                               |
+| `packages/icons/package.json`    | Add export `"./glyph.json": "./lib/glyph.json"`, remove or alias `"./components.json"`                          |
+| `site/rokkit.config.js`          | In the `icons` map: rename `component` key → `glyph` pointing to `@rokkit/icons/glyph.json`; remove `solar` key |
+| `site/uno.config.js`             | Update safelist and shortcuts (see Site Migration above)                                                        |
 
 > The `packages/unocss/src/preset.ts` preset does **not** need changes — it reads the collection from `config.icons` which is set by `rokkit.config.js`. There is no hard-coded `rokkit-components` reference in the preset.
 

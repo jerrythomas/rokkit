@@ -3,7 +3,7 @@
  */
 
 [data-style='material'] [data-switch-track] {
-  @apply bg-surface-z3;
+  @apply bg-none bg-surface-z3;
 }
 
 [data-style='material'] [data-switch-thumb] {
@@ -16,7 +16,7 @@
 
 /* On state */
 [data-style='material'] [data-switch][aria-checked='true'] [data-switch-track] {
-  @apply bg-primary-z5;
+  @apply bg-none bg-primary-z5;
 }
 
 [data-style='material'] [data-switch][aria-checked='true'] [data-switch-thumb] {

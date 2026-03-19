@@ -3,7 +3,12 @@ import { goToPlayPage, setTheme, setMode, themes, modes, openDropdownViaKeyboard
 import type { Page } from '@playwright/test'
 
 function openMenu(page: Page) {
-	return openDropdownViaKeyboard(page, '[data-menu-trigger]', '[data-menu-dropdown]', '[data-menu-item]')
+	return openDropdownViaKeyboard(
+		page,
+		'[data-menu-trigger]',
+		'[data-menu-dropdown]',
+		'[data-menu-item]'
+	)
 }
 
 test.describe('Menu', () => {

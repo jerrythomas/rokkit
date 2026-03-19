@@ -1,6 +1,6 @@
 <script>
 	/**
-	 * ValidationReport — grouped summary of validation messages
+	 * StatusList — grouped summary of validation messages
 	 * Groups items by severity (error, warning, info, success) with count headers.
 	 * Supports click-to-focus via onclick callback.
 	 */
@@ -19,11 +19,11 @@
 </script>
 
 {#if items.length > 0}
-	<div data-validation-report class={className} role="status">
+	<div data-status-list class={className} role="status">
 		{#each grouped as group (group.state)}
-			<div data-validation-group data-severity={group.state}>
-				<div data-validation-group-header>
-					<span data-validation-count>{group.items.length}</span>
+			<div data-status-group data-severity={group.state}>
+				<div data-status-header>
+					<span data-status-count>{group.items.length}</span>
 					<span
 						>{group.items.length === 1
 							? SEVERITY_LABELS[group.state]
@@ -33,7 +33,7 @@
 				{#each group.items as item (item.path)}
 					{#if onclick}
 						<button
-							data-validation-item
+							data-status-item
 							data-status={item.state}
 							onclick={() => onclick(item.path)}
 							type="button"
@@ -41,7 +41,7 @@
 							{item.text}
 						</button>
 					{:else}
-						<div data-validation-item data-status={item.state}>
+						<div data-status-item data-status={item.state}>
 							{item.text}
 						</div>
 					{/if}

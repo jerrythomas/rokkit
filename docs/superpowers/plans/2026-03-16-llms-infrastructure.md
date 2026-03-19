@@ -15,11 +15,13 @@
 ### Task 1: Move files to docs/llms
 
 **Files:**
+
 - Create: `docs/llms/` (move from `site/static/llms/`)
 
 - [ ] **Step 1: Move the directory**
 
   Run from repo root `/Users/Jerry/Developer/rokkit`:
+
   ```bash
   mv site/static/llms docs/llms
   ```
@@ -30,7 +32,9 @@
   ls docs/llms/
   ls docs/llms/components/ | wc -l
   ```
+
   Expected:
+
   ```
   components  index.txt
   28
@@ -43,6 +47,7 @@
   git add site/static/llms
   git commit -m "chore: move llms docs to docs/llms as source of truth"
   ```
+
   Git will detect this as a rename/move.
 
 ---
@@ -50,11 +55,13 @@
 ### Task 2: Add /static/llms to site gitignore
 
 **Files:**
+
 - Modify: `site/.gitignore`
 
 - [ ] **Step 1: Append to site/.gitignore**
 
   Add this line to `site/.gitignore`:
+
   ```
   /static/llms
   ```
@@ -71,9 +78,11 @@
 ### Task 3: Update site/package.json scripts
 
 **Files:**
+
 - Modify: `site/package.json`
 
 Current scripts (relevant lines):
+
 ```json
 "dev": "vite dev",
 "build": "bun run build:themes && paraglide-js compile --project ./project.inlang --outdir ./src/paraglide && vite build"
@@ -82,11 +91,13 @@ Current scripts (relevant lines):
 - [ ] **Step 1: Update both scripts**
 
   Change `"dev"` to:
+
   ```json
   "dev": "cp -r ../docs/llms ./static && vite dev",
   ```
 
   Change `"build"` to:
+
   ```json
   "build": "cp -r ../docs/llms ./static && bun run build:themes && paraglide-js compile --project ./project.inlang --outdir ./src/paraglide && vite build",
   ```
@@ -94,9 +105,11 @@ Current scripts (relevant lines):
 - [ ] **Step 2: Verify the copy works**
 
   Run from `site/`:
+
   ```bash
   cd site && cp -r ../docs/llms ./static && ls static/llms/
   ```
+
   Expected: `components  index.txt`
 
 - [ ] **Step 3: Verify site/static/llms is now ignored by git**
@@ -104,14 +117,17 @@ Current scripts (relevant lines):
   ```bash
   git status
   ```
+
   Expected: `site/static/llms/` should NOT appear as an untracked or modified file.
 
 - [ ] **Step 4: Run full tests to confirm nothing broken**
 
   From repo root:
+
   ```bash
   bun run test:ci
   ```
+
   Expected: all tests pass.
 
 - [ ] **Step 5: Run lint**
@@ -119,6 +135,7 @@ Current scripts (relevant lines):
   ```bash
   bun run lint
   ```
+
   Expected: 0 errors (pre-existing warnings are acceptable).
 
 - [ ] **Step 6: Commit**

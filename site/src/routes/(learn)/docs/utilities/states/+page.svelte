@@ -7,9 +7,9 @@
 
 <article data-article-root>
 	<p class="text-surface-z6 mb-8 text-[1.0625rem] leading-7">
-		<code>@rokkit/states</code> provides reactive state primitives, navigation controllers, and
-		application stores. These are the building blocks used internally by all Rokkit components —
-		and available for building custom accessible UI.
+		<code>@rokkit/states</code> provides reactive state primitives, navigation controllers, and application
+		stores. These are the building blocks used internally by all Rokkit components — and available for
+		building custom accessible UI.
 	</p>
 
 	<h2>ProxyItem — view mapping</h2>
@@ -19,14 +19,15 @@
 	</p>
 	<Code content={proxyItem} language="svelte" />
 	<p>
-		<code>ProxyTree</code> is the hierarchical version, used for tree data. <code>LazyProxyItem</code>
+		<code>ProxyTree</code> is the hierarchical version, used for tree data.
+		<code>LazyProxyItem</code>
 		defers field resolution until accessed.
 	</p>
 
 	<h2>ListController — navigation state</h2>
 	<p>
-		Manages focus and selection state for a flat or grouped list. No DOM dependency — works in
-		tests without a browser. Used with the <code>navigator</code> action from
+		Manages focus and selection state for a flat or grouped list. No DOM dependency — works in tests
+		without a browser. Used with the <code>navigator</code> action from
 		<code>@rokkit/actions</code>:
 	</p>
 	<Code content={listController} language="svelte" />
@@ -51,31 +52,75 @@
 			<tr><th>Export</th><th>Type</th><th>Purpose</th></tr>
 		</thead>
 		<tbody>
-			<tr><td><code>ProxyItem</code></td><td>class</td><td>Read-only field-mapped view of one item</td></tr>
-			<tr><td><code>LazyProxyItem</code></td><td>class</td><td>ProxyItem with deferred field resolution</td></tr>
-			<tr><td><code>ProxyTree</code></td><td>class</td><td>Hierarchical ProxyItem for tree data</td></tr>
-			<tr><td><code>Wrapper</code></td><td>class</td><td>Reactive model wrapper with change tracking</td></tr>
-			<tr><td><code>LazyWrapper</code></td><td>class</td><td>Wrapper with lazy-loading support</td></tr>
-			<tr><td><code>ListController</code></td><td>class</td><td>Flat/grouped list navigation state</td></tr>
-			<tr><td><code>TableController</code></td><td>class</td><td>Row/column navigation for tables</td></tr>
-			<tr><td><code>vibe</code></td><td>store</td><td>Reactive current-theme state (style/mode/palette)</td></tr>
-			<tr><td><code>messages</code></td><td>store</td><td>App-level notification/toast message queue</td></tr>
-			<tr><td><code>watchMedia</code></td><td>function</td><td>Reactive media query watcher</td></tr>
-			<tr><td><code>defaultBreakpoints</code></td><td>object</td><td>Standard breakpoint definitions for watchMedia</td></tr>
-			<tr><td><code>BASE_FIELDS</code></td><td>object</td><td>Default field mapping (label/value/icon/etc.)</td></tr>
+			<tr
+				><td><code>ProxyItem</code></td><td>class</td><td
+					>Read-only field-mapped view of one item</td
+				></tr
+			>
+			<tr
+				><td><code>LazyProxyItem</code></td><td>class</td><td
+					>ProxyItem with deferred field resolution</td
+				></tr
+			>
+			<tr
+				><td><code>ProxyTree</code></td><td>class</td><td>Hierarchical ProxyItem for tree data</td
+				></tr
+			>
+			<tr
+				><td><code>Wrapper</code></td><td>class</td><td
+					>Reactive model wrapper with change tracking</td
+				></tr
+			>
+			<tr
+				><td><code>LazyWrapper</code></td><td>class</td><td>Wrapper with lazy-loading support</td
+				></tr
+			>
+			<tr
+				><td><code>ListController</code></td><td>class</td><td
+					>Flat/grouped list navigation state</td
+				></tr
+			>
+			<tr
+				><td><code>TableController</code></td><td>class</td><td>Row/column navigation for tables</td
+				></tr
+			>
+			<tr
+				><td><code>vibe</code></td><td>store</td><td
+					>Reactive current-theme state (style/mode/palette)</td
+				></tr
+			>
+			<tr
+				><td><code>messages</code></td><td>store</td><td
+					>App-level notification/toast message queue</td
+				></tr
+			>
+			<tr><td><code>watchMedia</code></td><td>function</td><td>Reactive media query watcher</td></tr
+			>
+			<tr
+				><td><code>defaultBreakpoints</code></td><td>object</td><td
+					>Standard breakpoint definitions for watchMedia</td
+				></tr
+			>
+			<tr
+				><td><code>BASE_FIELDS</code></td><td>object</td><td
+					>Default field mapping (label/value/icon/etc.)</td
+				></tr
+			>
 		</tbody>
 	</table>
 
 	<h2>Related</h2>
 	<ul>
 		<li>
-			<a href="/docs/utilities/actions">@rokkit/actions</a> — The <code>navigator</code> action
-			pairs with controllers
+			<a href="/docs/utilities/actions">@rokkit/actions</a> — The <code>navigator</code> action pairs
+			with controllers
 		</li>
 		<li>
 			<a href="/docs/utilities/app">@rokkit/app</a> — <code>ThemeSwitcherToggle</code> writes to
 			<code>vibe</code>
 		</li>
-		<li><a href="/docs/utilities/controllers">Controllers</a> — Overview of the controller pattern</li>
+		<li>
+			<a href="/docs/utilities/controllers">Controllers</a> — Overview of the controller pattern
+		</li>
 	</ul>
 </article>

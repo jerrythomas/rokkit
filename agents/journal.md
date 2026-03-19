@@ -3,6 +3,22 @@
 Chronological log of confirmations, progress, milestones, and decisions.
 Design details live in `docs/design/` — modular docs per module.
 
+### StatusList — complete (2026-03-18)
+
+Component and unit tests already existed. Added the missing pieces:
+
+- Theme CSS for rokkit/minimal/material/glass covering both `@rokkit/ui` (pass/fail/warn/unknown) and `@rokkit/forms` (error/warning/info/success severity groups)
+- Playground page with live per-item status toggling
+- Docs page with live password-strength demo and all four variant states
+- E2E tests (rendering + visual snapshots across all 4 themes × 2 modes)
+- Updated `site/static/llms/components/status-list.txt` to document both ui and forms variants
+
+**Tests:** 2582 passing. 0 lint errors.
+
+**Commit:** `b4f2e362` — feat: add StatusList theme CSS, playground, docs, and e2e tests
+
+**Priority:** `docs/design/12-priority.md` — StatusList ✅
+
 ---
 
 ## 2026-03-07
@@ -2290,6 +2306,7 @@ learn site demos that used `text:` as item property or field mapping key. Fixed:
 **Design:** visibility is a presentation concern → lives in layout (not schema). `evaluateCondition()` is a pure function. `#buildElements()` skips hidden fields. `getVisibleData()` strips hidden keys at submit time. `#clearHiddenValidation()` clears stale blur errors when a controlling field hides another.
 
 **Commits:**
+
 - `04fda1f5` — `conditions.js` + `conditions.spec.js` (evaluateCondition, 9 unit tests)
 - `6297c4ea` — export evaluateCondition from lib/index.js
 - `37b6a0a0` — filter hidden elements via showWhen in #buildElements() (5 integration tests)
@@ -2306,3 +2323,33 @@ learn site demos that used `text:` as item property or field mapping key. Fixed:
 **Priority:** `docs/design/12-priority.md` — conditional fields ✅
 
 **All tests: 2745/2745 passing**
+
+### CLI Toolchain: upgrade + skin + theme commands (2026-03-18)
+
+**Feature:** Three new CLI commands to manage Rokkit projects:
+- `rokkit upgrade` — check `@rokkit/*` versions, optionally run install with `--apply`
+- `rokkit skin list / skin create --name` — scaffold skin entries in `rokkit.config.js`
+- `rokkit theme list / theme create --name` — scaffold custom CSS theme stubs in `src/themes/`
+
+**Architecture:**
+- All commands use injectable adapter pattern (same as `doctor.js`) for testability
+- `upgrade.js`: `getRokkitPackages()`, `detectPackageManager()`, `buildInstallCommand()` are pure functions; `runUpgrade()` takes `{ readFile, exists, fetchVersion, runInstall }` adapters
+- `skin.js`: `generateSkinScaffold()`, `addSkinToConfig()`, `serializeConfig()` are pure; config read via dynamic import with injectable `readConfig`/`writeConfig` adapters
+- `theme.js`: `THEME_COMPONENTS` list (25 components), `generateThemeStub()` pure; `runThemeCreate()` takes `{ writeFile, exists, mkdir }` adapters
+- Uses `execFileSync` instead of `execSync` to prevent shell injection
+
+**New files:**
+- `packages/cli/src/upgrade.js`
+- `packages/cli/src/skin.js`
+- `packages/cli/src/theme.js`
+- `packages/cli/spec/upgrade.spec.js` (15 tests)
+- `packages/cli/spec/skin.spec.js` (14 tests)
+- `packages/cli/spec/theme.spec.js` (18 tests)
+
+**Updated:**
+- `packages/cli/src/index.js` — wired 6 new sade commands
+- `site/static/llms/cli.txt` — upgrade, skin, theme sections added
+- `site/src/routes/(learn)/docs/toolchain/cli/+page.svelte` — docs for all new commands + snippets
+- `docs/design/12-priority.md` — Message/Alert, upgrade, skin create, theme scaffold marked ✅
+
+**Tests:** 2632 passing (50 new CLI tests). 0 lint errors.

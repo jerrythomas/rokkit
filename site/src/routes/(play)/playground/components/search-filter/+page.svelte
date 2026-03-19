@@ -54,7 +54,9 @@
 				size={props.size}
 			/>
 			<div>
-				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">Filter syntax examples</h4>
+				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">
+					Filter syntax examples
+				</h4>
 				<div class="flex flex-wrap gap-2">
 					{#each filterSyntaxExamples as example}
 						<code class="bg-surface-z2 text-surface-z7 rounded px-2 py-0.5 text-xs">{example}</code>

@@ -15,6 +15,7 @@
 ### Task 1: Rewrite index.txt
 
 **Files:**
+
 - Modify: `docs/llms/index.txt`
 - Source references (read these before writing):
   - `packages/cli/src/init.js` — PROMPTS_CONFIG array (all prompts)
@@ -26,6 +27,7 @@ There are no automated tests for content files. Verification is done by cross-ch
 - [ ] **Step 1: Read source files**
 
   Read these files to gather accurate information before writing:
+
   ```
   packages/cli/src/init.js        — PROMPTS_CONFIG array (prompts list)
   packages/cli/src/doctor.js      — CHECKS array (check IDs, labels, autofix flags)
@@ -37,7 +39,7 @@ There are no automated tests for content files. Verification is done by cross-ch
 
   Replace the entire contents of `docs/llms/index.txt` with the following. The component index and keyboard nav table are preserved from the current file. Insert correct content for all new sections.
 
-  ```
+  ````
   # Rokkit — LLM Reference Index
 
   > Data-driven, accessible UI components for Svelte 5
@@ -51,9 +53,10 @@ There are no automated tests for content files. Verification is done by cross-ch
      npm create svelte@latest myapp
      cd myapp
      npm install
-     ```
+  ````
 
   2. Initialize Rokkit:
+
      ```bash
      npx @rokkit/cli@latest init
      ```
@@ -85,6 +88,7 @@ There are no automated tests for content files. Verification is done by cross-ch
   - `src/app.html` has theme init script
 
   Auto-fix 3 of 4 checks:
+
   ```bash
   npx @rokkit/cli@latest doctor --fix
   ```
@@ -110,6 +114,7 @@ There are no automated tests for content files. Verification is done by cross-ch
   ### `rokkit.config.js` missing
 
   If `doctor --fix` was not run, or the file was deleted:
+
   ```js
   // rokkit.config.js — minimal valid config
   export default {}
@@ -118,10 +123,11 @@ There are no automated tests for content files. Verification is done by cross-ch
   ### `app.css` missing theme imports
 
   Prepend the missing lines to `src/app.css`:
+
   ```css
   @import '@unocss/reset/tailwind.css';
   @import '@rokkit/themes/dist/base';
-  @import '@rokkit/themes/dist/rokkit';  /* also minimal, material if needed */
+  @import '@rokkit/themes/dist/rokkit'; /* also minimal, material if needed */
   ```
 
   ### Theme init script missing after --fix
@@ -134,18 +140,18 @@ There are no automated tests for content files. Verification is done by cross-ch
 
   ## Packages
 
-  | Package | Description |
-  |---------|-------------|
-  | `@rokkit/ui` | Main UI components (30+ components) |
-  | `@rokkit/forms` | Dynamic form generation from JSON schema |
-  | `@rokkit/states` | State management (ProxyItem, ProxyTree, Wrapper, ListController, NestedController) |
-  | `@rokkit/actions` | Svelte actions (navigable, hoverLift, magnetic, ripple) |
-  | `@rokkit/core` | Core utilities and field mapping |
-  | `@rokkit/data` | Data manipulation utilities |
-  | `@rokkit/themes` | CSS themes (rokkit, minimal, material) |
-  | `@rokkit/unocss` | UnoCSS preset (`presetRokkit`) |
-  | `@rokkit/app` | App-level UI chrome (ThemeSwitcher, TableOfContents) |
-  | `@rokkit/icons` | Icon system with Iconify integration |
+  | Package           | Description                                                                        |
+  | ----------------- | ---------------------------------------------------------------------------------- |
+  | `@rokkit/ui`      | Main UI components (30+ components)                                                |
+  | `@rokkit/forms`   | Dynamic form generation from JSON schema                                           |
+  | `@rokkit/states`  | State management (ProxyItem, ProxyTree, Wrapper, ListController, NestedController) |
+  | `@rokkit/actions` | Svelte actions (navigable, hoverLift, magnetic, ripple)                            |
+  | `@rokkit/core`    | Core utilities and field mapping                                                   |
+  | `@rokkit/data`    | Data manipulation utilities                                                        |
+  | `@rokkit/themes`  | CSS themes (rokkit, minimal, material)                                             |
+  | `@rokkit/unocss`  | UnoCSS preset (`presetRokkit`)                                                     |
+  | `@rokkit/app`     | App-level UI chrome (ThemeSwitcher, TableOfContents)                               |
+  | `@rokkit/icons`   | Icon system with Iconify integration                                               |
 
   Package reference: [packages/](/llms/packages/)
 
@@ -168,9 +174,7 @@ There are no automated tests for content files. Verification is done by cross-ch
 
   ```svelte
   <script>
-    const users = [
-      { userId: 1, fullName: 'Alice', avatarUrl: '/alice.jpg' }
-    ]
+    const users = [{ userId: 1, fullName: 'Alice', avatarUrl: '/alice.jpg' }]
     const fields = {
       value: 'userId',
       text: 'fullName',
@@ -201,7 +205,7 @@ There are no automated tests for content files. Verification is done by cross-ch
 
   ```svelte
   <!-- ✅ Correct: theme-aware, responds to data-mode switching -->
-  <div class="bg-surface-z1 border border-surface-z3 text-surface-z8 rounded-lg p-4">
+  <div class="bg-surface-z1 border-surface-z3 text-surface-z8 rounded-lg border p-4">
     <h2 class="text-primary-z6 font-semibold">Title</h2>
     <p class="text-surface-z5 text-sm">Subtitle</p>
   </div>
@@ -214,26 +218,26 @@ There are no automated tests for content files. Verification is done by cross-ch
 
   Each semantic role (`surface`, `primary`, `secondary`, `accent`, `success`, `warning`, `error`, `info`) has 10 z-levels:
 
-  | Level | Light      | Dark       | Use                        |
-  |-------|-----------|-----------|----------------------------|
-  | `z1`  | shade-50  | shade-950 | Page background            |
-  | `z2`  | shade-100 | shade-900 | Card / panel background    |
-  | `z3`  | shade-200 | shade-800 | Subtle borders, dividers   |
-  | `z4`  | shade-300 | shade-700 | Input backgrounds          |
-  | `z5`  | shade-500 | shade-600 | Muted text, placeholders   |
-  | `z6`  | shade-600 | shade-500 | Interactive / link color   |
-  | `z7`  | shade-700 | shade-300 | Secondary text             |
-  | `z8`  | shade-800 | shade-200 | Body text                  |
-  | `z9`  | shade-900 | shade-100 | Primary text               |
-  | `z10` | shade-950 | shade-50  | Maximum contrast           |
+  | Level | Light     | Dark      | Use                      |
+  | ----- | --------- | --------- | ------------------------ |
+  | `z1`  | shade-50  | shade-950 | Page background          |
+  | `z2`  | shade-100 | shade-900 | Card / panel background  |
+  | `z3`  | shade-200 | shade-800 | Subtle borders, dividers |
+  | `z4`  | shade-300 | shade-700 | Input backgrounds        |
+  | `z5`  | shade-500 | shade-600 | Muted text, placeholders |
+  | `z6`  | shade-600 | shade-500 | Interactive / link color |
+  | `z7`  | shade-700 | shade-300 | Secondary text           |
+  | `z8`  | shade-800 | shade-200 | Body text                |
+  | `z9`  | shade-900 | shade-100 | Primary text             |
+  | `z10` | shade-950 | shade-50  | Maximum contrast         |
 
   Utility class pattern: `{prefix}-{role}-z{n}`
 
-  | Prefix    | Example             | Use             |
-  |-----------|---------------------|-----------------|
-  | `bg-`     | `bg-surface-z1`     | Background      |
-  | `text-`   | `text-surface-z8`   | Text color      |
-  | `border-` | `border-surface-z3` | Border color    |
+  | Prefix    | Example             | Use          |
+  | --------- | ------------------- | ------------ |
+  | `bg-`     | `bg-surface-z1`     | Background   |
+  | `text-`   | `text-surface-z8`   | Text color   |
+  | `border-` | `border-surface-z3` | Border color |
 
   ### Common Patterns
 
@@ -275,7 +279,6 @@ There are no automated tests for content files. Verification is done by cross-ch
   ```
 
   ## Reference
-
   - [cli.txt](/llms/cli.txt) — CLI reference (`rokkit init`, `rokkit doctor`, icon tools)
   - [packages/](/llms/packages/) — per-package documentation
   - [components/](/llms/components/) — component reference (30+ components)
@@ -296,9 +299,12 @@ There are no automated tests for content files. Verification is done by cross-ch
   import { FloatingAction } from '@rokkit/ui'
   import { Form, FormRenderer } from '@rokkit/forms'
   ```
+
   ```
 
   **Important:** Replace the two `[PRESERVE VERBATIM ...]` placeholders by copying verbatim from the current `docs/llms/index.txt` — do not rewrite or reformat them. Read the current file to get the exact text.
+
+  ```
 
 - [ ] **Step 3: Verify accuracy**
 
@@ -323,6 +329,7 @@ There are no automated tests for content files. Verification is done by cross-ch
 ### Task 2: Create cli.txt
 
 **Files:**
+
 - Create: `docs/llms/cli.txt`
 - Source references (read these before writing):
   - `packages/cli/src/init.js` — full PROMPTS_CONFIG, generateConfig, file writing logic
@@ -332,6 +339,7 @@ There are no automated tests for content files. Verification is done by cross-ch
 - [ ] **Step 1: Read source files**
 
   Read these files for accurate content:
+
   ```
   packages/cli/src/init.js     — full prompt list, generated files, conditional logic
   packages/cli/src/doctor.js   — check IDs, labels, fix behaviour
@@ -342,7 +350,7 @@ There are no automated tests for content files. Verification is done by cross-ch
 
   Create `docs/llms/cli.txt` with this content (verify all details against source files):
 
-  ```
+  ````
   # Rokkit CLI
 
   > Command-line tools for setting up and validating Rokkit projects
@@ -354,9 +362,10 @@ There are no automated tests for content files. Verification is done by cross-ch
   Run without installing:
   ```bash
   npx @rokkit/cli@latest <command>
-  ```
+  ````
 
   Or install globally:
+
   ```bash
   npm install -g @rokkit/cli
   rokkit <command>
@@ -371,7 +380,6 @@ There are no automated tests for content files. Verification is done by cross-ch
   ```
 
   ### Prompts
-
   1. **Color palette**
      - `default` — orange / pink / sky
      - `vibrant` — blue / purple
@@ -403,12 +411,12 @@ There are no automated tests for content files. Verification is done by cross-ch
 
   ### Files Written
 
-  | File | Notes |
-  |------|-------|
-  | `rokkit.config.js` | Color palette and theme config. Skipped if already exists. |
-  | `uno.config.js` | UnoCSS config with `presetRokkit()`. Skipped if already exists (manual migration hint printed). |
-  | `src/app.css` | Prepends reset, base, and per-theme `@import` lines. Skipped if imports already present. |
-  | `src/app.html` | Injects theme init script after `<body>`. Only for `manual` and `full` modes. |
+  | File               | Notes                                                                                           |
+  | ------------------ | ----------------------------------------------------------------------------------------------- |
+  | `rokkit.config.js` | Color palette and theme config. Skipped if already exists.                                      |
+  | `uno.config.js`    | UnoCSS config with `presetRokkit()`. Skipped if already exists (manual migration hint printed). |
+  | `src/app.css`      | Prepends reset, base, and per-theme `@import` lines. Skipped if imports already present.        |
+  | `src/app.html`     | Injects theme init script after `<body>`. Only for `manual` and `full` modes.                   |
 
   ### After init
 
@@ -427,19 +435,19 @@ There are no automated tests for content files. Verification is done by cross-ch
 
   ### Checks
 
-  | Check ID | Description | Auto-fixable |
-  |----------|-------------|-------------|
-  | `config-exists` | `rokkit.config.js` exists in project root | ✓ generates empty config |
-  | `uno-uses-preset` | `uno.config.js` imports and uses `presetRokkit()` | ✗ manual |
-  | `css-imports` | `src/app.css` has required `@import` lines | ✓ appends missing imports |
-  | `html-init-script` | `src/app.html` has theme init script in `<body>` | ✓ injects script |
+  | Check ID           | Description                                       | Auto-fixable              |
+  | ------------------ | ------------------------------------------------- | ------------------------- |
+  | `config-exists`    | `rokkit.config.js` exists in project root         | ✓ generates empty config  |
+  | `uno-uses-preset`  | `uno.config.js` imports and uses `presetRokkit()` | ✗ manual                  |
+  | `css-imports`      | `src/app.css` has required `@import` lines        | ✓ appends missing imports |
+  | `html-init-script` | `src/app.html` has theme init script in `<body>`  | ✓ injects script          |
 
   ### Exit codes
 
-  | Code | Meaning |
-  |------|---------|
-  | `0` | All checks passed |
-  | `1` | One or more checks failed |
+  | Code | Meaning                   |
+  | ---- | ------------------------- |
+  | `0`  | All checks passed         |
+  | `1`  | One or more checks failed |
 
   ### Manual fix: `uno-uses-preset`
 
@@ -466,10 +474,10 @@ There are no automated tests for content files. Verification is done by cross-ch
   npx @rokkit/cli@latest bundle -i ./src -o ./lib
   ```
 
-  | Flag | Alias | Default | Description |
-  |------|-------|---------|-------------|
-  | `--input` | `-i` | `./src` | Source folder containing SVG subfolders |
-  | `--output` | `-o` | `./lib` | Output folder for JSON bundles |
+  | Flag       | Alias | Default | Description                             |
+  | ---------- | ----- | ------- | --------------------------------------- |
+  | `--input`  | `-i`  | `./src` | Source folder containing SVG subfolders |
+  | `--output` | `-o`  | `./lib` | Output folder for JSON bundles          |
 
   ### rokkit build
 
@@ -480,6 +488,9 @@ There are no automated tests for content files. Verification is done by cross-ch
   ```
 
   Same flags as `bundle`. Produces full Iconify package structure with prefix, icons, width, height metadata.
+
+  ```
+
   ```
 
 - [ ] **Step 3: Verify accuracy**

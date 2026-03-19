@@ -21,6 +21,7 @@
 					icon: 'i-glyph:lazy-tree'
 				},
 				{ title: 'List', slug: '/playground/components/list', icon: 'i-glyph:list' },
+				{ title: 'Dropdown', slug: '/playground/components/dropdown', icon: 'i-glyph:dropdown' },
 				{ title: 'Menu', slug: '/playground/components/menu', icon: 'i-glyph:menu' },
 				{
 					title: 'Multi Select',
@@ -38,6 +39,7 @@
 			icon: 'i-glyph:keyboard',
 			children: [
 				{ title: 'Button', slug: '/playground/components/button', icon: 'i-glyph:button' },
+				{ title: 'Inputs', slug: '/playground/components/inputs', icon: 'i-glyph:forms' },
 				{
 					title: 'Button Group',
 					slug: '/playground/components/button-group',
@@ -63,11 +65,22 @@
 			title: 'Display',
 			icon: 'i-glyph:gallery-wide',
 			children: [
+				{
+					title: 'Alert List',
+					slug: '/playground/components/alert-list',
+					icon: 'i-glyph:bell'
+				},
 				{ title: 'Card', slug: '/playground/components/card', icon: 'i-glyph:card' },
 				{ title: 'Code', slug: '/playground/components/code', icon: 'i-glyph:code' },
 				{ title: 'Forms', slug: '/playground/components/forms', icon: 'i-glyph:forms' },
 				{ title: 'Grid', slug: '/playground/components/grid', icon: 'i-glyph:grid' },
+				{ title: 'Message', slug: '/playground/components/message', icon: 'i-glyph:message' },
 				{ title: 'Pill', slug: '/playground/components/pill', icon: 'i-glyph:pill' },
+				{
+					title: 'Status List',
+					slug: '/playground/components/status-list',
+					icon: 'i-glyph:status-list'
+				},
 				{
 					title: 'Search Filter',
 					slug: '/playground/components/search-filter',
@@ -140,61 +153,17 @@
 	const llmsHref = $derived(isComponent ? `/llms/components/${slug}.txt` : null)
 </script>
 
-<div class="flex min-h-0 flex-1 flex-col">
-	<header class="bg-surface-z2 border-surface-z2 text-surface-z7 border-b px-6 py-4">
-		<div class="flex items-center justify-between">
-			<div>
-				<h1 class="text-xl font-semibold">Playground</h1>
-				<p class="text-surface-z5 text-sm">
-					Interactive testing environment for Rokkit components and effects
-				</p>
-			</div>
-			<a href="/playground" class="text-surface-z5 hover:text-surface-z7 text-sm"
-				>← Back to Overview</a
-			>
+<div class="flex min-h-0 flex-1 overflow-hidden">
+	<aside class="border-surface-z2 bg-surface-z1 w-64 flex-shrink-0 overflow-y-auto border-r">
+		<div class="p-3">
+			<List items={sections} {fields} value={page.url.pathname} collapsible />
 		</div>
-	</header>
+	</aside>
 
-	<div class="flex min-h-0 flex-1 overflow-hidden">
-		<aside class="border-surface-z2 bg-surface-z1 w-64 flex-shrink-0 overflow-y-auto border-r">
-			<div class="p-3">
-				<List items={sections} {fields} value={page.url.pathname} collapsible />
-			</div>
-		</aside>
-
-		<main
-			data-playground-content
-			class="bg-surface-z1 text-surface-z8 relative flex min-w-0 flex-1 flex-col overflow-auto"
-		>
-			{#if docsHref || llmsHref}
-				<div class="absolute top-4 right-4 z-10 flex items-center gap-1">
-					{#if docsHref}
-						<a
-							href={docsHref}
-							class="text-surface-z5 hover:bg-surface-z3 hover:text-surface-z8 flex h-8 w-8 items-center justify-center rounded-md no-underline"
-							title="View Documentation"
-							aria-label="View Documentation"
-						>
-							<span class="i-glyph:book-2 inline-block text-lg" aria-hidden="true"
-							></span>
-						</a>
-					{/if}
-					{#if llmsHref}
-						<a
-							href={llmsHref}
-							target="_blank"
-							rel="noopener noreferrer"
-							class="text-surface-z5 hover:bg-surface-z3 hover:text-surface-z8 flex h-8 w-8 items-center justify-center rounded-md no-underline"
-							title="View llms.txt"
-							aria-label="View llms.txt"
-						>
-							<span class="i-glyph:file-text inline-block text-lg" aria-hidden="true"
-							></span>
-						</a>
-					{/if}
-				</div>
-			{/if}
-			{@render children()}
-		</main>
-	</div>
+	<main
+		data-playground-content
+		class="bg-surface-z1 text-surface-z8 flex min-w-0 flex-1 flex-col overflow-hidden"
+	>
+		{@render children()}
+	</main>
 </div>

@@ -1,7 +1,8 @@
 /**
  * Tabs - Minimal Theme Styles
  *
- * Clean, understated tabs with subtle bottom-border indicators.
+ * Underline-indicator tabs. Active tab: thick bottom border, bolder text.
+ * No background fill on any state — clean and typographic.
  */
 
 /* =============================================================================
@@ -9,7 +10,7 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-tabs-list] {
-  @apply border-surface-z3 gap-1 border-b;
+  @apply border-surface-z3 gap-0 border-b;
 }
 
 [data-style='minimal'] [data-tabs][data-position='after'] [data-tabs-list] {
@@ -23,24 +24,104 @@
 [data-style='minimal']
   [data-tabs][data-orientation='vertical'][data-position='after']
   [data-tabs-list] {
-  @apply border-r-0 border-l;
+  @apply border-t-0 border-r-0 border-l;
 }
 
 /* =============================================================================
-   Tab Triggers
+   Tab Triggers — default: horizontal/before (bottom border)
    ============================================================================= */
 
 [data-style='minimal'] [data-tabs-trigger] {
-  @apply text-surface-z6 border-b-2 border-b-transparent;
+  @apply text-surface-z5 border-b-[3px] border-b-transparent;
+  font-weight: 400;
+  transition: color 150ms ease, border-color 150ms ease;
 }
 
 [data-style='minimal'] [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {
   @apply text-surface-z8 border-b-surface-z4;
 }
 
-/* Selected state */
 [data-style='minimal'] [data-tabs-trigger][data-selected] {
-  @apply text-surface-z9 border-b-primary-z4;
+  @apply bg-none text-surface-z9 border-b-surface-z8;
+  font-weight: 600;
+}
+
+/* Reset rokkit gradients bleeding in */
+[data-style='minimal'] [data-tabs-list]:focus-within [data-tabs-trigger][data-selected] {
+  @apply bg-none;
+}
+
+[data-style='minimal']
+  [data-tabs][data-orientation='vertical']
+  [data-tabs-list]:focus-within
+  [data-tabs-trigger][data-selected] {
+  @apply bg-none;
+}
+
+[data-style='minimal']
+  [data-tabs][data-orientation='vertical'][data-position='after']
+  [data-tabs-list]:focus-within
+  [data-tabs-trigger][data-selected] {
+  @apply bg-none;
+}
+
+/* Horizontal after (tabs below content): top border */
+[data-style='minimal'] [data-tabs][data-position='after'] [data-tabs-trigger] {
+  @apply border-b-0 border-t-[3px] border-t-transparent;
+}
+
+[data-style='minimal']
+  [data-tabs][data-position='after']
+  [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {
+  @apply border-t-surface-z4;
+}
+
+[data-style='minimal'] [data-tabs][data-position='after'] [data-tabs-trigger][data-selected] {
+  @apply border-t-surface-z8;
+  font-weight: 600;
+}
+
+[data-style='minimal']
+  [data-tabs][data-position='after']
+  [data-tabs-list]:focus-within
+  [data-tabs-trigger][data-selected] {
+  @apply bg-none;
+}
+
+/* Vertical before (tabs on left): right border */
+[data-style='minimal'] [data-tabs][data-orientation='vertical'] [data-tabs-trigger] {
+  @apply border-b-0 border-r-[3px] border-r-transparent rounded-none rounded-l;
+}
+
+[data-style='minimal']
+  [data-tabs][data-orientation='vertical']
+  [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {
+  @apply border-r-surface-z4;
+}
+
+[data-style='minimal'] [data-tabs][data-orientation='vertical'] [data-tabs-trigger][data-selected] {
+  @apply border-r-surface-z8;
+  font-weight: 600;
+}
+
+/* Vertical after (tabs on right): left border */
+[data-style='minimal']
+  [data-tabs][data-orientation='vertical'][data-position='after']
+  [data-tabs-trigger] {
+  @apply border-t-0 border-b-0 border-r-0 border-l-[3px] border-l-transparent rounded-none rounded-r;
+}
+
+[data-style='minimal']
+  [data-tabs][data-orientation='vertical'][data-position='after']
+  [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {
+  @apply border-t-0 border-b-0 border-r-0 border-l-surface-z4;
+}
+
+[data-style='minimal']
+  [data-tabs][data-orientation='vertical'][data-position='after']
+  [data-tabs-trigger][data-selected] {
+  @apply border-t-0 border-b-0 border-r-0 border-l-surface-z8;
+  font-weight: 600;
 }
 
 /* =============================================================================
@@ -48,15 +129,15 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-tabs-trigger] [data-tabs-icon] {
-  @apply text-surface-z5;
+  @apply text-surface-z4;
 }
 
 [data-style='minimal'] [data-tabs-trigger]:hover:not(:disabled) [data-tabs-icon] {
-  @apply text-surface-z7;
+  @apply text-surface-z6;
 }
 
 [data-style='minimal'] [data-tabs-trigger][data-selected] [data-tabs-icon] {
-  @apply text-surface-z8;
+  @apply text-surface-z7;
 }
 
 /* =============================================================================

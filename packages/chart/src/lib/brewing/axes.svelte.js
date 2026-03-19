@@ -157,7 +157,12 @@ function yPositionPassthrough(scale, value) {
 export function createYAxis(scales, dimensions, options) {
 	if (!scales.y) return { ticks: [] }
 	const { tickCount, formatter, label } = parseAxisOptions(options)
-	const ticks = mapTicks(scales.y, resolveYTicks(scales.y, tickCount), formatter, yPositionPassthrough)
+	const ticks = mapTicks(
+		scales.y,
+		resolveYTicks(scales.y, tickCount),
+		formatter,
+		yPositionPassthrough
+	)
 	return {
 		ticks,
 		label,

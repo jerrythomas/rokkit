@@ -5,6 +5,7 @@ import * as components from '../src/index.js'
 describe('components', () => {
 	it('should contain all exported components', () => {
 		expect(Object.keys(components)).toEqual([
+			'alerts',
 			'TableController',
 			'vibe',
 			'ListController',

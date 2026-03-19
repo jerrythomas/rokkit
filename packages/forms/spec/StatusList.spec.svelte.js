@@ -1,26 +1,26 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { cleanup, render, fireEvent } from '@testing-library/svelte'
-import ValidationReport from '../src/ValidationReport.svelte'
+import StatusList from '../src/StatusList.svelte'
 
-describe('ValidationReport', () => {
+describe('StatusList', () => {
 	beforeEach(() => cleanup())
 
 	it('should render nothing when items is empty', () => {
-		const { container } = render(ValidationReport, { props: { items: [] } })
-		expect(container.querySelector('[data-validation-report]')).toBeNull()
+		const { container } = render(StatusList, { props: { items: [] } })
+		expect(container.querySelector('[data-status-list]')).toBeNull()
 	})
 
 	it('should render nothing when items is not provided', () => {
-		const { container } = render(ValidationReport)
-		expect(container.querySelector('[data-validation-report]')).toBeNull()
+		const { container } = render(StatusList)
+		expect(container.querySelector('[data-status-list]')).toBeNull()
 	})
 
-	it('should render report container with role="status"', () => {
+	it('should render list container with role="status"', () => {
 		const items = [{ path: 'name', state: 'error', text: 'Name is required' }]
-		const { container } = render(ValidationReport, { props: { items } })
-		const report = container.querySelector('[data-validation-report]')
-		expect(report).toBeTruthy()
-		expect(report.getAttribute('role')).toBe('status')
+		const { container } = render(StatusList, { props: { items } })
+		const list = container.querySelector('[data-status-list]')
+		expect(list).toBeTruthy()
+		expect(list.getAttribute('role')).toBe('status')
 	})
 
 	it('should group items by severity', () => {
@@ -29,9 +29,9 @@ describe('ValidationReport', () => {
 			{ path: 'age', state: 'error', text: 'Age must be at least 18' },
 			{ path: 'bio', state: 'warning', text: 'Bio is very short' }
 		]
-		const { container } = render(ValidationReport, { props: { items } })
+		const { container } = render(StatusList, { props: { items } })
 
-		const groups = container.querySelectorAll('[data-validation-group]')
+		const groups = container.querySelectorAll('[data-status-group]')
 		expect(groups).toHaveLength(2)
 
 		expect(groups[0].getAttribute('data-severity')).toBe('error')
@@ -44,13 +44,13 @@ describe('ValidationReport', () => {
 			{ path: 'age', state: 'error', text: 'Age must be at least 18' },
 			{ path: 'bio', state: 'warning', text: 'Bio is short' }
 		]
-		const { container } = render(ValidationReport, { props: { items } })
+		const { container } = render(StatusList, { props: { items } })
 
 		const errorGroup = container.querySelector('[data-severity="error"]')
 		const warningGroup = container.querySelector('[data-severity="warning"]')
 
-		expect(errorGroup.querySelector('[data-validation-count]').textContent).toBe('2')
-		expect(warningGroup.querySelector('[data-validation-count]').textContent).toBe('1')
+		expect(errorGroup.querySelector('[data-status-count]').textContent).toBe('2')
+		expect(warningGroup.querySelector('[data-status-count]').textContent).toBe('1')
 	})
 
 	it('should pluralize severity labels correctly', () => {
@@ -59,14 +59,10 @@ describe('ValidationReport', () => {
 			{ path: 'age', state: 'error', text: 'Age is required' },
 			{ path: 'bio', state: 'warning', text: 'Bio is short' }
 		]
-		const { container } = render(ValidationReport, { props: { items } })
+		const { container } = render(StatusList, { props: { items } })
 
-		const errorHeader = container.querySelector(
-			'[data-severity="error"] [data-validation-group-header]'
-		)
-		const warningHeader = container.querySelector(
-			'[data-severity="warning"] [data-validation-group-header]'
-		)
+		const errorHeader = container.querySelector('[data-severity="error"] [data-status-header]')
+		const warningHeader = container.querySelector('[data-severity="warning"] [data-status-header]')
 
 		expect(errorHeader.textContent).toContain('errors')
 		expect(warningHeader.textContent).toContain('warning')
@@ -76,17 +72,17 @@ describe('ValidationReport', () => {
 	it('should render items as buttons when onclick is provided', () => {
 		const onclick = vi.fn()
 		const items = [{ path: 'name', state: 'error', text: 'Name is required' }]
-		const { container } = render(ValidationReport, { props: { items, onclick } })
+		const { container } = render(StatusList, { props: { items, onclick } })
 
-		const item = container.querySelector('[data-validation-item]')
+		const item = container.querySelector('[data-status-item]')
 		expect(item.tagName).toBe('BUTTON')
 	})
 
 	it('should render items as divs when onclick is not provided', () => {
 		const items = [{ path: 'name', state: 'error', text: 'Name is required' }]
-		const { container } = render(ValidationReport, { props: { items } })
+		const { container } = render(StatusList, { props: { items } })
 
-		const item = container.querySelector('[data-validation-item]')
+		const item = container.querySelector('[data-status-item]')
 		expect(item.tagName).toBe('DIV')
 	})
 
@@ -96,9 +92,9 @@ describe('ValidationReport', () => {
 			{ path: 'name', state: 'error', text: 'Name is required' },
 			{ path: 'age', state: 'error', text: 'Age must be 18+' }
 		]
-		const { container } = render(ValidationReport, { props: { items, onclick } })
+		const { container } = render(StatusList, { props: { items, onclick } })
 
-		const buttons = container.querySelectorAll('button[data-validation-item]')
+		const buttons = container.querySelectorAll('button[data-status-item]')
 		await fireEvent.click(buttons[1])
 
 		expect(onclick).toHaveBeenCalledWith('age')
@@ -106,9 +102,9 @@ describe('ValidationReport', () => {
 
 	it('should render item text content', () => {
 		const items = [{ path: 'email', state: 'error', text: 'Invalid email format' }]
-		const { container } = render(ValidationReport, { props: { items } })
+		const { container } = render(StatusList, { props: { items } })
 
-		const item = container.querySelector('[data-validation-item]')
+		const item = container.querySelector('[data-status-item]')
 		expect(item.textContent).toContain('Invalid email format')
 	})
 
@@ -117,9 +113,9 @@ describe('ValidationReport', () => {
 			{ path: 'name', state: 'error', text: 'Error msg' },
 			{ path: 'bio', state: 'warning', text: 'Warning msg' }
 		]
-		const { container } = render(ValidationReport, { props: { items } })
+		const { container } = render(StatusList, { props: { items } })
 
-		const allItems = container.querySelectorAll('[data-validation-item]')
+		const allItems = container.querySelectorAll('[data-status-item]')
 		expect(allItems[0].getAttribute('data-status')).toBe('error')
 		expect(allItems[1].getAttribute('data-status')).toBe('warning')
 	})
@@ -131,9 +127,9 @@ describe('ValidationReport', () => {
 			{ path: 'c', state: 'success', text: 'Success msg' },
 			{ path: 'd', state: 'warning', text: 'Warning msg' }
 		]
-		const { container } = render(ValidationReport, { props: { items } })
+		const { container } = render(StatusList, { props: { items } })
 
-		const groups = container.querySelectorAll('[data-validation-group]')
+		const groups = container.querySelectorAll('[data-status-group]')
 		expect(groups).toHaveLength(4)
 		expect(groups[0].getAttribute('data-severity')).toBe('error')
 		expect(groups[1].getAttribute('data-severity')).toBe('warning')
@@ -143,9 +139,9 @@ describe('ValidationReport', () => {
 
 	it('should apply custom class', () => {
 		const items = [{ path: 'name', state: 'error', text: 'Required' }]
-		const { container } = render(ValidationReport, { props: { items, class: 'my-report' } })
+		const { container } = render(StatusList, { props: { items, class: 'my-list' } })
 
-		const report = container.querySelector('[data-validation-report]')
-		expect(report.classList.contains('my-report')).toBe(true)
+		const list = container.querySelector('[data-status-list]')
+		expect(list.classList.contains('my-list')).toBe(true)
 	})
 })

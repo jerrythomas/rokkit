@@ -1,0 +1,8 @@
+{
+  "title": "StatusList",
+  "description": "Validation rule summary with pass/fail/warn/unknown status icons",
+  "icon": "i-glyph:status-list",
+  "category": "display",
+  "sequence": 65,
+  "llms": true
+}

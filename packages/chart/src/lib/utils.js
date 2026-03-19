@@ -111,10 +111,7 @@ export function formatTooltipContent(d, options = {}) {
 	const { xKey, yKey, xFormat, yFormat } = options
 
 	if (xKey && yKey) {
-		return [
-			formatField(xKey, d[xKey], xFormat),
-			formatField(yKey, d[yKey], yFormat)
-		].join('<br>')
+		return [formatField(xKey, d[xKey], xFormat), formatField(yKey, d[yKey], yFormat)].join('<br>')
 	}
 
 	return Object.entries(d)

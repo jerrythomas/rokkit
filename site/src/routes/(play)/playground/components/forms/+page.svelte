@@ -1,6 +1,6 @@
 <script>
 	// @ts-nocheck
-	import { FormRenderer, InfoField, FormBuilder, ValidationReport } from '@rokkit/forms'
+	import { FormRenderer, InfoField, FormBuilder, StatusList } from '@rokkit/forms'
 	import PlaySection from '$lib/components/PlaySection.svelte'
 
 	// ── Travel Planner Data ────────────────────────────────────
@@ -518,7 +518,7 @@
 					</div>
 					{#if validationBuilder.messages.length > 0}
 						<div class="mt-3">
-							<ValidationReport
+							<StatusList
 								items={validationBuilder.messages}
 								onclick={(path) => {
 									const field = document.querySelector(`[data-scope="#/${path}"] input`)

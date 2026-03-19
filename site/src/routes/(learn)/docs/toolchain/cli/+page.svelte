@@ -8,6 +8,11 @@
 	import rokkitConfig from './snippets/04-rokkit-config.js?raw'
 	import appCssOutput from './snippets/05-app-css-output.css?raw'
 	import installCmd from './snippets/06-install.sh?raw'
+	import upgradeCmd from './snippets/07-upgrade.sh?raw'
+	import skinCmd from './snippets/08-skin.sh?raw'
+	import skinConfig from './snippets/09-skin-config.js?raw'
+	import themeCmd from './snippets/10-theme.sh?raw'
+	import themeStub from './snippets/11-theme-stub.css?raw'
 </script>
 
 <article data-article-root>
@@ -54,8 +59,7 @@
 			>
 			<tr
 				><td><code>iconPath</code></td><td>text</td><td
-					>Path to custom icon JSON — only shown when <code>icons</code> is <code>custom</code
-					></td
+					>Path to custom icon JSON — only shown when <code>icons</code> is <code>custom</code></td
 				></tr
 			>
 			<tr
@@ -100,8 +104,7 @@
 			<tr
 				><td><code>src/app.html</code></td><td
 					>Injects a flash-prevention script after <code>&lt;body&gt;</code> to restore saved
-					theme/mode before paint. Skipped when switcher is <code>system</code> or when already
-					present.</td
+					theme/mode before paint. Skipped when switcher is <code>system</code> or when already present.</td
 				></tr
 			>
 		</tbody>
@@ -109,8 +112,8 @@
 
 	<h3>Generated rokkit.config.js</h3>
 	<p>
-		This file is read automatically by <code>presetRokkit()</code> — no arguments needed in your
-		UnoCSS config:
+		This file is read automatically by <code>presetRokkit()</code> — no arguments needed in your UnoCSS
+		config:
 	</p>
 	<Code content={rokkitConfig} language="javascript" />
 
@@ -131,9 +134,9 @@
 		</thead>
 		<tbody>
 			<tr
-				><td><code>config-exists</code></td><td
-					><code>rokkit.config.js</code> present</td
-				><td>Yes — generates an empty config</td></tr
+				><td><code>config-exists</code></td><td><code>rokkit.config.js</code> present</td><td
+					>Yes — generates an empty config</td
+				></tr
 			>
 			<tr
 				><td><code>uno-uses-preset</code></td><td
@@ -160,6 +163,45 @@
 		<code>presetRokkit</code> manually:
 	</p>
 	<Code content={doctorManualFix} language="javascript" />
+
+	<h2>rokkit upgrade</h2>
+	<p>
+		Check for available updates to all <code>@rokkit/*</code> packages in your project. Compares
+		installed versions against the latest published releases:
+	</p>
+	<Code content={upgradeCmd} language="bash" />
+	<p>
+		Without <code>--apply</code>, upgrade prints a diff and the install command to run. With
+		<code>--apply</code>, it detects your package manager (bun, pnpm, yarn, or npm from lockfiles)
+		and runs the install automatically.
+	</p>
+
+	<h2>rokkit skin</h2>
+	<p>
+		Manage color skins — named palettes defined in <code>rokkit.config.js</code>. A skin maps each
+		semantic color role to a Tailwind palette name:
+	</p>
+	<Code content={skinCmd} language="bash" />
+	<p>
+		<code>skin create</code> adds a scaffold entry with all nine token keys (<code>primary</code>,
+		<code>secondary</code>, <code>accent</code>, <code>surface</code>, <code>success</code>,
+		<code>warning</code>, <code>danger</code>, <code>error</code>, <code>info</code>) set to
+		default color names. Edit the values then activate with <code>data-skin="&lt;name&gt;"</code>:
+	</p>
+	<Code content={skinConfig} language="javascript" />
+
+	<h2>rokkit theme</h2>
+	<p>
+		Manage visual styles — full CSS theme files that control every component's appearance. Built-in
+		themes come from <code>@rokkit/themes</code>; custom themes live in <code>src/themes/</code>:
+	</p>
+	<Code content={themeCmd} language="bash" />
+	<p>
+		<code>theme create</code> generates a complete CSS stub at <code>src/themes/&lt;name&gt;.css</code
+		> with one <code>[data-style='&lt;name&gt;']</code> block for every component. Import it in
+		<code>src/app.css</code> and activate with <code>data-style="&lt;name&gt;"</code> on the body:
+	</p>
+	<Code content={themeStub} language="css" />
 
 	<h2>Icon Tools</h2>
 	<p>
@@ -189,8 +231,16 @@
 			<tr><th>Flag</th><th>Short</th><th>Default</th><th>Description</th></tr>
 		</thead>
 		<tbody>
-			<tr><td><code>--input</code></td><td><code>-i</code></td><td><code>./src</code></td><td>Source folder with SVG subfolders</td></tr>
-			<tr><td><code>--output</code></td><td><code>-o</code></td><td><code>./lib</code></td><td>Output folder for JSON files</td></tr>
+			<tr
+				><td><code>--input</code></td><td><code>-i</code></td><td><code>./src</code></td><td
+					>Source folder with SVG subfolders</td
+				></tr
+			>
+			<tr
+				><td><code>--output</code></td><td><code>-o</code></td><td><code>./lib</code></td><td
+					>Output folder for JSON files</td
+				></tr
+			>
 			<tr
 				><td><code>--config</code></td><td><code>-c</code></td><td><code>config.json</code></td><td
 					>Config file relative to input folder</td
@@ -202,8 +252,8 @@
 	<h2>Related</h2>
 	<ul>
 		<li>
-			<a href="/docs/getting-started/quick-start">Quick Start</a> — step-by-step from install to
-			first component
+			<a href="/docs/getting-started/quick-start">Quick Start</a> — step-by-step from install to first
+			component
 		</li>
 		<li>
 			<a href="/docs/toolchain/icon-sets">Icon Sets</a> — available collections and UnoCSS integration

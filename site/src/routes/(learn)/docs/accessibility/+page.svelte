@@ -116,22 +116,22 @@
 	<h2>Tooltips</h2>
 	<p>
 		Rokkit does not include a built-in tooltip component, but all interactive elements support
-		standard HTML <code>title</code> attributes for basic browser tooltips. For richer tooltips,
-		use any Svelte-compatible tooltip library alongside Rokkit components — the
-		<code>class</code> prop and snippet system let you attach tooltip triggers to any item or
-		element without modifying component internals.
+		standard HTML <code>title</code> attributes for basic browser tooltips. For richer tooltips, use
+		any Svelte-compatible tooltip library alongside Rokkit components — the
+		<code>class</code> prop and snippet system let you attach tooltip triggers to any item or element
+		without modifying component internals.
 	</p>
 	<p>
 		For icon-only buttons or toolbar items, use <code>aria-label</code> to provide accessible names
-		that screen readers announce. The <code>data-*</code> attribute structure makes it
-		straightforward to attach tooltip behavior via Svelte actions.
+		that screen readers announce. The <code>data-*</code> attribute structure makes it straightforward
+		to attach tooltip behavior via Svelte actions.
 	</p>
 
 	<h2>Internationalization</h2>
 	<p>
 		Rokkit components are locale-agnostic by design. All text displayed in components comes from
-		your data (via the <code>fields</code> prop) or from snippets you provide — there are no
-		hard-coded user-facing strings inside Rokkit components themselves.
+		your data (via the <code>fields</code> prop) or from snippets you provide — there are no hard-coded
+		user-facing strings inside Rokkit components themselves.
 	</p>
 	<p>This means i18n integration is straightforward:</p>
 	<ul>
@@ -149,7 +149,7 @@
 		</li>
 	</ul>
 	<p>
-		Type-ahead search matches against the resolved <code>text</code> field value, so it works
-		correctly with any translated strings passed through your data.
+		Type-ahead search matches against the resolved <code>text</code> field value, so it works correctly
+		with any translated strings passed through your data.
 	</p>
 </article>
