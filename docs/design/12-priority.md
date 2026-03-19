@@ -14,8 +14,8 @@ Items that block other work or are essential for the library to be complete.
 
 These components existed and were deleted in commit `4ef37ef4` (2026-02-18). Source and tests survive in git history. Placeholder stories exist in `site/src/stories/`.
 
-- [ ] **StatusList** (`@rokkit/ui`) — list of status checks (pass/fail/warn/unknown) with icons, used for multi-rule validation like password strength. Source at `git show 6275d11d:packages/ui/src/ValidationReport.svelte` (old name — rename to StatusList). Story placeholder: `site/src/stories/validation-report/`. Needs theme CSS in `@rokkit/themes`.
-- [ ] **Message/Alert** (`@rokkit/ui`) — single alert/notification with `type` (error/info/success/warning) and text or snippet children. Source at `git show 6275d11d:packages/ui/src/Message.svelte`. Needs associated `alerts` store in `@rokkit/states` for programmatic notification pushing (toast-style). No placeholder story exists — needs creating.
+- [x] **StatusList** (`@rokkit/ui`) — list of status checks (pass/fail/warn/unknown) with icons, used for multi-rule validation like password strength. Theme CSS, playground, docs, and e2e tests complete (2026-03-18).
+- [x] **Message/Alert** (`@rokkit/ui`) — single alert/notification with `type` (error/info/success/warning) and text or snippet children, plus `AlertList` toast system using `@rokkit/states` alerts store. Playground, docs, and e2e tests complete (2026-03-18).
 
 ### Forms
 
@@ -25,9 +25,9 @@ These components existed and were deleted in commit `4ef37ef4` (2026-02-18). Sou
 ### Component Library
 
 - [x] Rename `text` field to `label` in all component defaults and remove backward compatibility layer (code change)
-- [ ] Cards — complete in-progress implementation: interactive states, snippet support, theming (`docs/features/06-ComponentLibrary.md`)
-- [ ] Navigation: Breadcrumb — path display component with navigable links (`docs/features/06-ComponentLibrary.md`)
-- [ ] Layout components — Stack, Grid, Divider with responsive behavior (`docs/features/06-ComponentLibrary.md`)
+- [x] Cards — implemented (`packages/ui/src/components/Card.svelte`)
+- [x] Navigation: Breadcrumb — implemented (`packages/ui/src/components/BreadCrumbs.svelte`)
+- [ ] Layout components — Stack and Divider missing; Grid exists (`docs/features/06-ComponentLibrary.md`)
 - [ ] Data Table — tabular data display with sorting, selection, and keyboard navigation (`docs/features/06-ComponentLibrary.md`)
 
 ### Theming & Design
@@ -78,12 +78,12 @@ Items that add sophisticated capabilities.
 ### Toolchain
 
 - [ ] CLI: add Rokkit to a project — installs packages, configures build, imports starter theme (`docs/features/09-Toolchain.md`)
-- [ ] CLI: upgrade Rokkit — updates packages, applies migration steps, reports breaking changes (`docs/features/09-Toolchain.md`)
+- [x] CLI: upgrade Rokkit — `rokkit upgrade` detects @rokkit/* deps, fetches latest versions, prints diff, detects package manager, runs install with `--apply` (2026-03-18)
 - [ ] Curated icon sets — navigation, status, action, and object icons with tree-shaking (`docs/features/09-Toolchain.md`)
 - [ ] Tree-shaken icon imports — only imported icons included in the bundle (`docs/features/09-Toolchain.md`)
 - [ ] Custom icon override (global snippet) — replace all component icons with any icon system via one registration point (`docs/features/09-Toolchain.md`)
-- [ ] CLI: generate custom skin — scaffold with all semantic color token slots and role annotations (`docs/features/09-Toolchain.md`)
-- [ ] CLI: generate custom theme scaffold — CSS file with selectors for every component, pre-wired token references (`docs/features/09-Toolchain.md`)
+- [x] CLI: generate custom skin — `rokkit skin create --name` scaffolds skin entry with all 9 color token keys in rokkit.config.js (2026-03-18)
+- [x] CLI: generate custom theme scaffold — `rokkit theme create --name` generates CSS stub with all 25 component selectors in src/themes/ (2026-03-18)
 
 ---
 
