@@ -32,23 +32,23 @@
 [data-style='material']
   [data-list]
   [data-list-item]:focus:not(:disabled):not([data-disabled='true']) {
-  @apply bg-surface-z2 text-surface-z10 outline-none;
+  @apply bg-none bg-surface-z2 text-surface-z10 outline-none;
 }
 
 /* Active state — muted when list not focused */
 [data-style='material'] [data-list] [data-list-item][data-active='true'] {
-  @apply bg-surface-z2 text-primary-z9;
+  @apply bg-none bg-surface-z2 text-primary-z9;
 }
 
 /* Active state — full highlight when list has focus */
 [data-style='material'] [data-list]:focus-within [data-list-item][data-active='true'] {
-  @apply bg-primary-z2 text-primary-z9;
+  @apply bg-none bg-primary-z2 text-primary-z9;
 }
 
 /* Active + hover/focus */
 [data-style='material'] [data-list] [data-list-item][data-active='true']:hover:not(:disabled),
 [data-style='material'] [data-list] [data-list-item][data-active='true']:focus:not(:disabled) {
-  @apply bg-primary-z3;
+  @apply bg-none bg-primary-z3;
 }
 
 /* =============================================================================
@@ -77,11 +77,11 @@
 }
 
 [data-style='material'] [data-list] [data-list-item] [data-item-badge] {
-  @apply text-surface-z6 bg-surface-z2 rounded-full;
+  @apply bg-none bg-surface-z2 text-surface-z6 rounded-full;
 }
 
 [data-style='material'] [data-list] [data-list-item][data-active='true'] [data-item-badge] {
-  @apply text-primary-z8 bg-primary-z2;
+  @apply bg-none bg-primary-z2 text-primary-z8;
 }
 
 /* =============================================================================
@@ -94,7 +94,7 @@
 
 [data-style='material'] [data-list] [data-list-group]:hover:not(:disabled),
 [data-style='material'] [data-list] [data-list-group]:focus:not(:disabled) {
-  @apply bg-surface-z3 text-surface-z8;
+  @apply bg-none bg-surface-z3 text-surface-z8;
 }
 
 /* =============================================================================
@@ -102,7 +102,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-list] [data-list-separator] {
-  @apply bg-surface-z3;
+  @apply bg-none bg-surface-z3;
 }
 
 /* =============================================================================
@@ -110,15 +110,15 @@
    ============================================================================= */
 
 [data-style='material'] [data-list] [data-list-item][data-selected='true'] {
-  @apply bg-primary-z2 text-primary-z9;
+  @apply bg-none bg-primary-z2 text-primary-z9;
 }
 
 [data-style='material'] [data-list]:focus-within [data-list-item][data-selected='true'] {
-  @apply bg-primary-z2;
+  @apply bg-none bg-primary-z2;
 }
 
 [data-style='material'] [data-list] [data-list-item][data-selected='true']:hover:not(:disabled) {
-  @apply bg-primary-z3;
+  @apply bg-none bg-primary-z3;
 }
 
 [data-style='material'] [data-list] [data-list-item][data-selected='true'] [data-item-icon] {

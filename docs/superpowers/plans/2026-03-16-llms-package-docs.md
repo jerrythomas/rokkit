@@ -12,7 +12,7 @@
 
 **Template (use for all files, scale sections to package complexity):**
 
-```
+````
 # @rokkit/<package>
 
 > <one-line description>
@@ -21,12 +21,12 @@
 
 ```bash
 npm install @rokkit/<package>
-```
+````
 
 ## Key Exports
 
-| Export | Type | Description |
-|--------|------|-------------|
+| Export | Type | Description  |
+| ------ | ---- | ------------ |
 | `name` | type | what it does |
 
 ## Usage
@@ -36,6 +36,7 @@ npm install @rokkit/<package>
 ## Related
 
 - `@rokkit/<other>` — brief reason
+
 ```
 
 **Reference template file:** `docs/llms/components/list.txt` — read this before starting to match tone and depth.
@@ -54,32 +55,35 @@ The `@rokkit/actions` package provides Svelte actions — functions used with th
 
 - [ ] **Step 1: Read source files**
 
-  ```
-  packages/actions/src/index.js     — full export list
-  packages/actions/src/navigable.svelte.js  — keyboard navigation action
-  packages/actions/src/                     — scan remaining action files for exports
-  ```
+```
+
+packages/actions/src/index.js — full export list
+packages/actions/src/navigable.svelte.js — keyboard navigation action
+packages/actions/src/ — scan remaining action files for exports
+
+````
 
 - [ ] **Step 2: Create docs/llms/packages/actions.txt**
 
-  Cover:
-  - What Svelte actions are and how to apply them (`use:actionName`)
-  - Each exported action: what it does, what events it dispatches, any options
-  - The `navigable` action in detail — it is the primary keyboard navigation mechanism. It dispatches: `previous`, `next`, `select`, `collapse`, `expand` on **keyup** (not keydown). Default orientation: vertical (ArrowUp/Down).
-  - Usage example showing `use:navigable` on a container with event handlers
+Cover:
+- What Svelte actions are and how to apply them (`use:actionName`)
+- Each exported action: what it does, what events it dispatches, any options
+- The `navigable` action in detail — it is the primary keyboard navigation mechanism. It dispatches: `previous`, `next`, `select`, `collapse`, `expand` on **keyup** (not keydown). Default orientation: vertical (ArrowUp/Down).
+- Usage example showing `use:navigable` on a container with event handlers
 
 - [ ] **Step 3: Commit**
 
-  ```bash
-  git add docs/llms/packages/actions.txt
-  git commit -m "docs(llms): add packages/actions.txt"
-  ```
+```bash
+git add docs/llms/packages/actions.txt
+git commit -m "docs(llms): add packages/actions.txt"
+````
 
 ---
 
 ### Task 2: states.txt
 
 **Files:**
+
 - Create: `docs/llms/packages/states.txt`
 - Source: `packages/states/src/index.js`, `packages/states/src/` (all state files)
 
@@ -113,6 +117,7 @@ The `@rokkit/actions` package provides Svelte actions — functions used with th
 ### Task 3: core.txt
 
 **Files:**
+
 - Create: `docs/llms/packages/core.txt`
 - Source: `packages/core/src/index.js`, `packages/core/src/`
 
@@ -144,6 +149,7 @@ The `@rokkit/actions` package provides Svelte actions — functions used with th
 ### Task 4: data.txt
 
 **Files:**
+
 - Create: `docs/llms/packages/data.txt`
 - Source: `packages/data/src/index.js`, `packages/data/src/`
 
@@ -177,6 +183,7 @@ The `@rokkit/actions` package provides Svelte actions — functions used with th
 ### Task 5: themes.txt
 
 **Files:**
+
 - Create: `docs/llms/packages/themes.txt`
 - Source: `packages/themes/`, `packages/unocss/src/`
 
@@ -193,8 +200,8 @@ The `@rokkit/actions` package provides Svelte actions — functions used with th
   - Available themes: `rokkit`, `minimal`, `material` — brief description of each personality
   - CSS import structure:
     ```css
-    @import '@rokkit/themes/dist/base';      /* required */
-    @import '@rokkit/themes/dist/rokkit';    /* one or more themes */
+    @import '@rokkit/themes/dist/base'; /* required */
+    @import '@rokkit/themes/dist/rokkit'; /* one or more themes */
     ```
   - Custom palettes — how to override colors via `rokkit.config.js`
   - How themes relate to `data-style` attribute on `<body>`
@@ -212,6 +219,7 @@ The `@rokkit/actions` package provides Svelte actions — functions used with th
 ### Task 6: unocss.txt
 
 **Files:**
+
 - Create: `docs/llms/packages/unocss.txt`
 - Source: `packages/unocss/src/`, `packages/unocss/spec/`
 
@@ -250,6 +258,7 @@ The `@rokkit/actions` package provides Svelte actions — functions used with th
 ### Task 7: app.txt
 
 **Files:**
+
 - Create: `docs/llms/packages/app.txt`
 - Source: `packages/app/src/index.ts`, `packages/app/src/components/`
 
@@ -281,6 +290,7 @@ The `@rokkit/actions` package provides Svelte actions — functions used with th
 ### Task 8: forms.txt (expanded)
 
 **Files:**
+
 - Create: `docs/llms/packages/forms.txt`
 - Source:
   - `packages/forms/src/index.js` — exports
@@ -335,6 +345,7 @@ This is the most complex package. Take time to read all source files before writ
   **Lookups — three modes**
 
   Mode 1: `url` — server fetch from URL template
+
   ```js
   lookup: {
     url: '/api/cities?country={country}',
@@ -343,6 +354,7 @@ This is the most complex package. Take time to read all source files before writ
   ```
 
   Mode 2: `fetch` — custom async function
+
   ```js
   lookup: {
     fetch: async ({ values }) => {
@@ -354,6 +366,7 @@ This is the most complex package. Take time to read all source files before writ
   ```
 
   Mode 3: `source + filter` — client-side filter
+
   ```js
   lookup: {
     source: allCities,

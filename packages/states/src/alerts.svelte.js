@@ -13,7 +13,7 @@ class AlertsStore {
 	 * @param {{ type?: string, text?: string, dismissible?: boolean, timeout?: number, actions?: unknown }} alert
 	 * @returns {string}
 	 */
-	push({ type = 'info', text, dismissible = false, timeout = 0, actions } = {}) {
+	push({ type = 'info', text, dismissible = false, timeout = dismissible ? 0 : 4000, actions } = {}) {
 		const id = crypto.randomUUID()
 		this.#items = [...this.#items, { id, type, text, dismissible, timeout, actions }]
 		if (timeout > 0) {

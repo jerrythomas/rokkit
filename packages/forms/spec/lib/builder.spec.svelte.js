@@ -532,10 +532,14 @@ describe('FormBuilder', () => {
 					}
 				]
 			}
-			const builder = new FormBuilder({
-				accountType: 'personal',
-				companyName: ''
-			}, schema, layout)
+			const builder = new FormBuilder(
+				{
+					accountType: 'personal',
+					companyName: ''
+				},
+				schema,
+				layout
+			)
 			builder.validate()
 			expect(builder.isValid).toBe(true)
 		})
@@ -551,10 +555,14 @@ describe('FormBuilder', () => {
 					}
 				]
 			}
-			const builder = new FormBuilder({
-				accountType: 'business',
-				companyName: ''
-			}, schema, layout)
+			const builder = new FormBuilder(
+				{
+					accountType: 'business',
+					companyName: ''
+				},
+				schema,
+				layout
+			)
 			builder.validate()
 			expect(builder.isValid).toBe(false)
 		})
@@ -1202,62 +1210,82 @@ describe('FormBuilder', () => {
 		it('includes field with no showWhen condition', () => {
 			const layout = { elements: [{ scope: '#/accountType', label: 'Account Type' }] }
 			const builder = new FormBuilder({ accountType: 'personal' }, schema, layout)
-			expect(builder.elements.some(el => el.scope === '#/accountType')).toBe(true)
+			expect(builder.elements.some((el) => el.scope === '#/accountType')).toBe(true)
 		})
 
 		it('includes field when showWhen equals condition is met', () => {
 			const layout = {
 				elements: [
 					{ scope: '#/accountType', label: 'Account Type' },
-					{ scope: '#/companyName', label: 'Company Name', showWhen: { field: 'accountType', equals: 'business' } },
-				],
+					{
+						scope: '#/companyName',
+						label: 'Company Name',
+						showWhen: { field: 'accountType', equals: 'business' }
+					}
+				]
 			}
 			const builder = new FormBuilder({ accountType: 'business' }, schema, layout)
-			expect(builder.elements.some(el => el.scope === '#/companyName')).toBe(true)
+			expect(builder.elements.some((el) => el.scope === '#/companyName')).toBe(true)
 		})
 
 		it('excludes field when showWhen equals condition is not met', () => {
 			const layout = {
 				elements: [
 					{ scope: '#/accountType', label: 'Account Type' },
-					{ scope: '#/companyName', label: 'Company Name', showWhen: { field: 'accountType', equals: 'business' } },
-				],
+					{
+						scope: '#/companyName',
+						label: 'Company Name',
+						showWhen: { field: 'accountType', equals: 'business' }
+					}
+				]
 			}
 			const builder = new FormBuilder({ accountType: 'personal' }, schema, layout)
-			expect(builder.elements.some(el => el.scope === '#/companyName')).toBe(false)
+			expect(builder.elements.some((el) => el.scope === '#/companyName')).toBe(false)
 		})
 
 		it('excludes field when showWhen notEquals condition is not met', () => {
 			const layout = {
 				elements: [
 					{ scope: '#/accountType', label: 'Account Type' },
-					{ scope: '#/companyName', label: 'Company Name', showWhen: { field: 'accountType', notEquals: 'personal' } },
-				],
+					{
+						scope: '#/companyName',
+						label: 'Company Name',
+						showWhen: { field: 'accountType', notEquals: 'personal' }
+					}
+				]
 			}
 			const builder = new FormBuilder({ accountType: 'personal' }, schema, layout)
-			expect(builder.elements.some(el => el.scope === '#/companyName')).toBe(false)
+			expect(builder.elements.some((el) => el.scope === '#/companyName')).toBe(false)
 		})
 
 		it('includes field when showWhen notEquals condition is met', () => {
 			const layout = {
 				elements: [
 					{ scope: '#/accountType', label: 'Account Type' },
-					{ scope: '#/companyName', label: 'Company Name', showWhen: { field: 'accountType', notEquals: 'personal' } },
-				],
+					{
+						scope: '#/companyName',
+						label: 'Company Name',
+						showWhen: { field: 'accountType', notEquals: 'personal' }
+					}
+				]
 			}
 			const builder = new FormBuilder({ accountType: 'business' }, schema, layout)
-			expect(builder.elements.some(el => el.scope === '#/companyName')).toBe(true)
+			expect(builder.elements.some((el) => el.scope === '#/companyName')).toBe(true)
 		})
 
 		it('does not affect separators when showWhen conditions are present', () => {
 			const layout = {
 				elements: [
 					{ type: 'separator' },
-					{ scope: '#/companyName', label: 'Company Name', showWhen: { field: 'accountType', equals: 'business' } },
-				],
+					{
+						scope: '#/companyName',
+						label: 'Company Name',
+						showWhen: { field: 'accountType', equals: 'business' }
+					}
+				]
 			}
 			const builder = new FormBuilder({ accountType: 'personal' }, schema, layout)
-			expect(builder.elements.some(el => el.type === 'separator')).toBe(true)
+			expect(builder.elements.some((el) => el.type === 'separator')).toBe(true)
 		})
 	})
 
@@ -1277,7 +1305,11 @@ describe('FormBuilder', () => {
 					{ scope: '#/companyName', label: 'Company Name' }
 				]
 			}
-			const builder = new FormBuilder({ accountType: 'business', companyName: 'Acme' }, schema, layout)
+			const builder = new FormBuilder(
+				{ accountType: 'business', companyName: 'Acme' },
+				schema,
+				layout
+			)
 			expect(builder.getVisibleData()).toEqual({ accountType: 'business', companyName: 'Acme' })
 		})
 
@@ -1292,7 +1324,11 @@ describe('FormBuilder', () => {
 					}
 				]
 			}
-			const builder = new FormBuilder({ accountType: 'personal', companyName: 'Acme' }, schema, layout)
+			const builder = new FormBuilder(
+				{ accountType: 'personal', companyName: 'Acme' },
+				schema,
+				layout
+			)
 			expect(builder.getVisibleData()).toEqual({ accountType: 'personal' })
 		})
 
@@ -1307,7 +1343,11 @@ describe('FormBuilder', () => {
 					}
 				]
 			}
-			const builder = new FormBuilder({ accountType: 'business', companyName: 'Acme' }, schema, layout)
+			const builder = new FormBuilder(
+				{ accountType: 'business', companyName: 'Acme' },
+				schema,
+				layout
+			)
 			expect(builder.getVisibleData()).toEqual({ accountType: 'business', companyName: 'Acme' })
 		})
 
@@ -1347,10 +1387,14 @@ describe('FormBuilder', () => {
 					}
 				]
 			}
-			const builder = new FormBuilder({
-				accountType: 'business',
-				companyName: ''
-			}, schema, layout)
+			const builder = new FormBuilder(
+				{
+					accountType: 'business',
+					companyName: ''
+				},
+				schema,
+				layout
+			)
 			// Validate to create a stale error on companyName
 			builder.validate()
 			expect(builder.isValid).toBe(false)

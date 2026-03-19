@@ -658,7 +658,8 @@ export class FormBuilder {
 		const value = this.getValue(fieldPath)
 
 		if (element.elements) return this.#convertNestedElement(element, fieldPath, scope, value)
-		if (element.props.readonly) return this.#convertReadonlyElement(element, fieldPath, scope, value)
+		if (element.props.readonly)
+			return this.#convertReadonlyElement(element, fieldPath, scope, value)
 		return this.#buildStandardElement(element, fieldPath, scope, value)
 	}
 
@@ -726,13 +727,9 @@ export class FormBuilder {
 	 */
 	getVisibleData() {
 		const visiblePaths = new SvelteSet(
-			this.elements
-				.filter((el) => el.scope)
-				.map((el) => el.scope.replace(/^#\//, ''))
+			this.elements.filter((el) => el.scope).map((el) => el.scope.replace(/^#\//, ''))
 		)
-		return Object.fromEntries(
-			Object.entries(this.#data).filter(([key]) => visiblePaths.has(key))
-		)
+		return Object.fromEntries(Object.entries(this.#data).filter(([key]) => visiblePaths.has(key)))
 	}
 
 	/**

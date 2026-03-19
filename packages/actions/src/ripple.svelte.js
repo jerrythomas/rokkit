@@ -16,7 +16,9 @@ function resolveRippleOpts(options) {
 }
 
 function isReducedMotion() {
-	return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+	return (
+		typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+	)
 }
 
 function injectRippleKeyframes() {
@@ -66,7 +68,9 @@ function applyRipple(node, opts) {
 		const span = createRippleSpan(e, node, opts)
 		node.appendChild(span)
 		span.addEventListener('animationend', () => span.remove(), { once: true })
-		setTimeout(() => { if (span.parentNode) span.remove() }, opts.duration + 100)
+		setTimeout(() => {
+			if (span.parentNode) span.remove()
+		}, opts.duration + 100)
 	}
 
 	injectRippleKeyframes()

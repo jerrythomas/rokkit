@@ -17,6 +17,7 @@
 		fields: userFields,
 		position = 'top',
 		size = 'md',
+		width = 'full',
 		sticky = false,
 		compact = false,
 		showDividers = true,
@@ -252,6 +253,7 @@
 	data-toolbar
 	data-toolbar-position={position}
 	data-toolbar-size={size}
+	data-toolbar-width={width === 'fit' ? 'fit' : undefined}
 	data-toolbar-sticky={sticky || undefined}
 	data-toolbar-compact={compact || undefined}
 	data-toolbar-disabled={disabled || undefined}

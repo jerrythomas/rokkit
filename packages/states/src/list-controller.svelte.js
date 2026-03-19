@@ -281,7 +281,11 @@ export class ListController {
 		const indices = this.#findRangeIndices(anchorKey, key)
 		if (!indices) return false
 		const { anchorIndex, targetIndex } = indices
-		this.#selectIndexRange(Math.min(anchorIndex, targetIndex), Math.max(anchorIndex, targetIndex), targetIndex)
+		this.#selectIndexRange(
+			Math.min(anchorIndex, targetIndex),
+			Math.max(anchorIndex, targetIndex),
+			targetIndex
+		)
 		return true
 	}
 

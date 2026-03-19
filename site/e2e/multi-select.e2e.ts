@@ -7,7 +7,7 @@ function openMultiSelect(page: Page) {
 		page,
 		'[data-multiselect] [data-select-trigger]',
 		'[data-multiselect] [data-select-dropdown]',
-		'[data-select-option]',
+		'[data-select-option]'
 	)
 }
 

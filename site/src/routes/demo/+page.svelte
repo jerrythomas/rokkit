@@ -210,8 +210,7 @@
 					class="border-surface-z3 bg-surface-z2 mb-8 flex h-48 items-center justify-center rounded-xl border border-dashed"
 				>
 					<div class="text-surface-z4 flex flex-col items-center gap-2">
-						<span class="i-glyph:widget inline-block text-5xl" aria-hidden="true"
-						></span>
+						<span class="i-glyph:widget inline-block text-5xl" aria-hidden="true"></span>
 						<span class="text-sm">Component preview image</span>
 					</div>
 				</div>

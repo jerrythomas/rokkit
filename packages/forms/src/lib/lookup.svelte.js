@@ -186,12 +186,24 @@ async function runWithLoadingState(asyncFn, state) {
 function buildLookupApi(ctx, fns) {
 	const { state, meta } = ctx
 	return {
-		get options() { return state.options },
-		get loading() { return state.loading },
-		get error() { return state.error },
-		get disabled() { return state.disabled },
-		get dependsOn() { return meta.dependsOn },
-		get fields() { return meta.fields },
+		get options() {
+			return state.options
+		},
+		get loading() {
+			return state.loading
+		},
+		get error() {
+			return state.error
+		},
+		get disabled() {
+			return state.disabled
+		},
+		get dependsOn() {
+			return meta.dependsOn
+		},
+		get fields() {
+			return meta.fields
+		},
 		...fns
 	}
 }
@@ -241,7 +253,10 @@ function fetchDispatch(params, ctx) {
 	}
 
 	if (fetchHook) {
-		return runWithLoadingState(() => fetchFromHook({ fetchHook, cacheKeyFn, cacheTime, transform }, params), state)
+		return runWithLoadingState(
+			() => fetchFromHook({ fetchHook, cacheKeyFn, cacheTime, transform }, params),
+			state
+		)
 	}
 
 	return runWithLoadingState(() => fetchFromUrl({ url, cacheTime, transform }, params), state)
@@ -253,8 +268,17 @@ function fetchDispatch(params, ctx) {
  * @returns {Object} Lookup provider with reactive state
  */
 export function createLookup(config) {
-	const { url, fetch: fetchHook, source, filter, cacheKey: cacheKeyFn,
-		dependsOn = [], fields = {}, cacheTime = DEFAULT_CACHE_TIME, transform } = config
+	const {
+		url,
+		fetch: fetchHook,
+		source,
+		filter,
+		cacheKey: cacheKeyFn,
+		dependsOn = [],
+		fields = {},
+		cacheTime = DEFAULT_CACHE_TIME,
+		transform
+	} = config
 
 	let state = $state({ options: [], loading: false, error: null, disabled: false })
 	const ctx = { state, dependsOn, source, filter, fetchHook, cacheKeyFn, cacheTime, transform, url }
@@ -319,8 +343,12 @@ export function createLookupManager(lookupConfigs) {
 		handleFieldChange: (changedField, formData) =>
 			triggerDependentLookups(lookups, changedField, formData),
 		initialize: (formData) => initializeAllLookups(lookups, formData),
-		clearAllCaches: () => { for (const lookup of lookups.values()) lookup.clearCache() },
-		get lookups() { return lookups }
+		clearAllCaches: () => {
+			for (const lookup of lookups.values()) lookup.clearCache()
+		},
+		get lookups() {
+			return lookups
+		}
 	}
 }
 

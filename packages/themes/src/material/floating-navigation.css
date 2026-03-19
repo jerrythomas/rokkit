@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-floating-nav] {
-  @apply bg-surface-z1 shadow-xl;
+  @apply bg-none bg-surface-z1 shadow-xl;
 }
 
 /* =============================================================================
@@ -41,11 +41,11 @@
 }
 
 [data-style='material'] [data-floating-nav-item]:hover {
-  @apply bg-surface-z2 text-surface-z10;
+  @apply bg-none bg-surface-z2 text-surface-z10;
 }
 
 [data-style='material'] [data-floating-nav-item][data-active] {
-  @apply text-primary-z7 bg-primary-z5/10;
+  @apply bg-none text-primary-z7 bg-primary-z5/10;
 }
 
 [data-style='material'] [data-floating-nav-item]:focus-visible {
@@ -70,5 +70,5 @@
    ============================================================================= */
 
 [data-style='material'] [data-floating-nav-indicator] {
-  @apply bg-primary-z5 shadow-sm;
+  @apply bg-none bg-primary-z5 shadow-sm;
 }

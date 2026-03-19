@@ -8,7 +8,7 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-card] {
-  @apply bg-surface-z1 border-surface-z4 text-surface-z9 border shadow-sm;
+  @apply bg-none bg-surface-z1 border-surface-z4 text-surface-z9 border shadow-sm;
 }
 
 /* Interactive cards (buttons) */
@@ -66,7 +66,7 @@
 
 /* Primary — solid primary fill */
 [data-style='minimal'] [data-card][data-variant='primary'] {
-  @apply bg-primary-z5 border-primary-z6 text-on-primary border;
+  @apply bg-none bg-primary-z5 border-primary-z6 text-on-primary border;
 }
 
 [data-style='minimal'] [data-card][data-variant='primary'] [data-card-header],
@@ -80,7 +80,7 @@
 
 /* Secondary — solid secondary fill */
 [data-style='minimal'] [data-card][data-variant='secondary'] {
-  @apply bg-secondary-z4 border-secondary-z5 text-on-secondary border;
+  @apply bg-none bg-secondary-z4 border-secondary-z5 text-on-secondary border;
 }
 
 [data-style='minimal'] [data-card][data-variant='secondary'] [data-card-header],
@@ -94,5 +94,5 @@
 
 /* Tertiary — recessed surface, lighter border */
 [data-style='minimal'] [data-card][data-variant='tertiary'] {
-  @apply bg-surface-z0 border-surface-z3 text-surface-z7 border shadow-none;
+  @apply bg-none bg-surface-z0 border-surface-z3 text-surface-z7 border shadow-none;
 }

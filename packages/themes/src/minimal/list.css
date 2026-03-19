@@ -32,23 +32,23 @@
 [data-style='minimal']
   [data-list]
   [data-list-item]:focus:not(:disabled):not([data-disabled='true']) {
-  @apply text-surface-z9 border-l-surface-z2 border-l-2 outline-none;
+  @apply bg-none text-surface-z9 border-l-secondary-z4 border-l-2 outline-none;
 }
 
 /* Active state — muted when list not focused */
 [data-style='minimal'] [data-list] [data-list-item][data-active='true'] {
-  @apply text-surface-z8 border-primary-z4 border-l-2;
+  @apply bg-none text-surface-z8 border-primary-z4 border-l-2;
 }
 
 /* Active state — full highlight when list has focus */
 [data-style='minimal'] [data-list]:focus-within [data-list-item][data-active='true'] {
-  @apply text-primary-z7 border-primary-z4 border-l-2;
+  @apply bg-none text-primary-z7 border-primary-z4 border-l-2;
 }
 
 /* Active + hover/focus */
 [data-style='minimal'] [data-list] [data-list-item][data-active='true']:hover:not(:disabled),
 [data-style='minimal'] [data-list] [data-list-item][data-active='true']:focus:not(:disabled) {
-  @apply text-primary-z8;
+  @apply bg-none text-primary-z8;
 }
 
 /* =============================================================================
@@ -77,11 +77,11 @@
 }
 
 [data-style='minimal'] [data-list] [data-list-item] [data-item-badge] {
-  @apply text-surface-z6 border-surface-z4 border bg-transparent;
+  @apply bg-none text-surface-z6 border-surface-z4 border bg-transparent;
 }
 
 [data-style='minimal'] [data-list] [data-list-item][data-active='true'] [data-item-badge] {
-  @apply text-primary-z7 border-primary-z4;
+  @apply bg-none text-primary-z7 border-primary-z4;
 }
 
 /* =============================================================================
@@ -94,7 +94,7 @@
 
 [data-style='minimal'] [data-list] [data-list-group]:hover:not(:disabled),
 [data-style='minimal'] [data-list] [data-list-group]:focus:not(:disabled) {
-  @apply text-surface-z7 border-l-surface-z3 border-l-2;
+  @apply bg-none text-surface-z7 border-l-secondary-z4 border-l-2;
 }
 
 /* =============================================================================
@@ -102,7 +102,7 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-list] [data-list-separator] {
-  @apply bg-surface-z3;
+  @apply bg-none bg-surface-z3;
 }
 
 /* =============================================================================

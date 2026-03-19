@@ -21,6 +21,7 @@
 ### Task 1: Create `conditions.js` with `evaluateCondition`
 
 **Files:**
+
 - Create: `packages/forms/src/lib/conditions.js`
 - Create: `packages/forms/src/lib/conditions.spec.js`
 
@@ -141,6 +142,7 @@ git commit -m "feat(forms): add evaluateCondition for showWhen layout support"
 ### Task 2: Filter hidden elements in `#buildElements()`
 
 **Files:**
+
 - Modify: `packages/forms/src/lib/builder.svelte.js`
 - Modify: `packages/forms/spec/lib/builder.spec.svelte.js`
 
@@ -177,11 +179,7 @@ describe('conditional fields — showWhen', () => {
         }
       ]
     }
-    const fb = new FormBuilder(
-      { accountType: 'business', companyName: '' },
-      null,
-      layout
-    )
+    const fb = new FormBuilder({ accountType: 'business', companyName: '' }, null, layout)
     expect(fb.elements.map((el) => el.scope)).toContain('#/companyName')
   })
 
@@ -197,11 +195,7 @@ describe('conditional fields — showWhen', () => {
         }
       ]
     }
-    const fb = new FormBuilder(
-      { accountType: 'personal', companyName: '' },
-      null,
-      layout
-    )
+    const fb = new FormBuilder({ accountType: 'personal', companyName: '' }, null, layout)
     expect(fb.elements.map((el) => el.scope)).not.toContain('#/companyName')
   })
 
@@ -217,11 +211,7 @@ describe('conditional fields — showWhen', () => {
         }
       ]
     }
-    const fb = new FormBuilder(
-      { accountType: 'business', personalBio: '' },
-      null,
-      layout
-    )
+    const fb = new FormBuilder({ accountType: 'business', personalBio: '' }, null, layout)
     expect(fb.elements.map((el) => el.scope)).not.toContain('#/personalBio')
   })
 
@@ -292,6 +282,7 @@ git commit -m "feat(forms): filter hidden elements in #buildElements() using sho
 ### Task 3: Add `getVisibleData()` to `FormBuilder`
 
 **Files:**
+
 - Modify: `packages/forms/src/lib/builder.svelte.js`
 - Modify: `packages/forms/spec/lib/builder.spec.svelte.js`
 
@@ -319,11 +310,7 @@ describe('getVisibleData', () => {
         }
       ]
     }
-    const fb = new FormBuilder(
-      { accountType: 'personal', companyName: 'ACME' },
-      null,
-      layout
-    )
+    const fb = new FormBuilder({ accountType: 'personal', companyName: 'ACME' }, null, layout)
     const visible = fb.getVisibleData()
     expect(visible).toEqual({ accountType: 'personal' })
     expect(visible).not.toHaveProperty('companyName')
@@ -341,11 +328,7 @@ describe('getVisibleData', () => {
         }
       ]
     }
-    const fb = new FormBuilder(
-      { accountType: 'personal', companyName: 'ACME' },
-      null,
-      layout
-    )
+    const fb = new FormBuilder({ accountType: 'personal', companyName: 'ACME' }, null, layout)
     // Change controlling field so companyName becomes visible
     fb.updateField('accountType', 'business')
     const visible = fb.getVisibleData()
@@ -364,11 +347,7 @@ describe('getVisibleData', () => {
         }
       ]
     }
-    const fb = new FormBuilder(
-      { accountType: 'business', companyName: 'ACME' },
-      null,
-      layout
-    )
+    const fb = new FormBuilder({ accountType: 'business', companyName: 'ACME' }, null, layout)
     fb.updateField('accountType', 'personal') // hides companyName
     // raw data still has the value
     expect(fb.data.companyName).toBe('ACME')
@@ -430,6 +409,7 @@ git commit -m "feat(forms): add getVisibleData() to strip hidden fields from sub
 ### Task 4: Clear stale blur validation when fields become hidden
 
 **Files:**
+
 - Modify: `packages/forms/src/lib/builder.svelte.js`
 - Modify: `packages/forms/spec/lib/builder.spec.svelte.js`
 
@@ -557,6 +537,7 @@ git commit -m "feat(forms): clear stale validation errors when fields become hid
 ### Task 5: Fix `validate()` to skip hidden fields
 
 **Files:**
+
 - Modify: `packages/forms/src/lib/builder.svelte.js`
 - Modify: `packages/forms/spec/lib/builder.spec.svelte.js`
 
@@ -675,6 +656,7 @@ git commit -m "feat(forms): validate() skips hidden fields via post-hoc visible 
 ### Task 6: `FormRenderer` — use `getVisibleData()` on submit
 
 **Files:**
+
 - Modify: `packages/forms/src/FormRenderer.svelte`
 - Modify: `packages/forms/spec/FormRenderer.spec.svelte.js`
 

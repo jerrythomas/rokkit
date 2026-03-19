@@ -2,20 +2,6 @@
  * Message - Rokkit Theme Styles
  */
 
-/* Icons via pseudo-element on the icon span */
-[data-style='rokkit'] [data-message-root][data-type='error'] [data-message-icon]::before {
-  content: '✕';
-}
-[data-style='rokkit'] [data-message-root][data-type='warning'] [data-message-icon]::before {
-  content: '⚠';
-}
-[data-style='rokkit'] [data-message-root][data-type='info'] [data-message-icon]::before {
-  content: 'ℹ';
-}
-[data-style='rokkit'] [data-message-root][data-type='success'] [data-message-icon]::before {
-  content: '✓';
-}
-
 /* Type colors */
 [data-style='rokkit'] [data-message-root][data-type='error'] {
   @apply bg-error-z1 border-error-z4 text-error-z8;

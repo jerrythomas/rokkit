@@ -6,15 +6,15 @@
 
 <article data-article-root>
 	<p class="text-surface-z6 mb-8 text-[1.0625rem] leading-7">
-		<code>@rokkit/unocss</code> exports a single <code>presetRokkit()</code> function — a complete
-		UnoCSS preset that wires up Rokkit's color token system, semantic utility shortcuts, icon
-		integration, and dark mode in one call.
+		<code>@rokkit/unocss</code> exports a single <code>presetRokkit()</code> function — a complete UnoCSS
+		preset that wires up Rokkit's color token system, semantic utility shortcuts, icon integration, and
+		dark mode in one call.
 	</p>
 
 	<h2>Setup</h2>
 	<p>
-		Add <code>presetRokkit()</code> to your UnoCSS config. The CLI (<code>rokkit init</code>)
-		writes this automatically:
+		Add <code>presetRokkit()</code> to your UnoCSS config. The CLI (<code>rokkit init</code>) writes
+		this automatically:
 	</p>
 	<Code content={setup} language="javascript" />
 
@@ -49,22 +49,21 @@
 	<h2>Using utility classes</h2>
 	<p>
 		Always use utility classes for color tokens — not inline CSS variables. See
-		<a href="/docs/theming/overview">Theming Overview</a> for the full utility class guide and
-		z-depth token reference.
+		<a href="/docs/theming/overview">Theming Overview</a> for the full utility class guide and z-depth
+		token reference.
 	</p>
 
 	<h2>Related</h2>
 	<ul>
 		<li>
-			<a href="/docs/theming/overview">Theming Overview</a> — Data attributes, z-scale tokens,
-			utility class patterns
+			<a href="/docs/theming/overview">Theming Overview</a> — Data attributes, z-scale tokens, utility
+			class patterns
 		</li>
 		<li>
 			<a href="/docs/theming/color-system">Color System</a> — Z-depth token values by mode
 		</li>
 		<li>
-			<a href="/docs/toolchain/cli">CLI</a> — <code>rokkit init</code> sets up this preset
-			automatically
+			<a href="/docs/toolchain/cli">CLI</a> — <code>rokkit init</code> sets up this preset automatically
 		</li>
 	</ul>
 </article>

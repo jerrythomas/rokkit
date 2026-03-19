@@ -49,15 +49,15 @@
 }
 
 [data-style='minimal'] [data-table-row]:hover {
-  @apply text-surface-z9;
+  @apply bg-none text-surface-z9;
 }
 
 [data-style='minimal'] [data-table-row]:focus {
-  @apply text-surface-z9 ring-surface-z5 ring-1 outline-none;
+  @apply bg-none text-surface-z9 ring-surface-z5 ring-1 outline-none;
 }
 
 [data-style='minimal'] [data-table-row][data-selected='true'] {
-  @apply text-primary-z8 border-l-primary-z4 border-l-2;
+  @apply bg-none text-primary-z8 border-l-primary-z4 border-l-2;
 }
 
 /* =============================================================================

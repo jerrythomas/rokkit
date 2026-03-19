@@ -127,10 +127,22 @@
 	}
 
 	function applyUpperKey(key: string): boolean {
-		if (isIncreaseKey(key)) { nudgeUpper(1); return true }
-		if (isDecreaseKey(key)) { nudgeUpper(-1); return true }
-		if (key === 'Home') { jumpUpper(false); return true }
-		if (key === 'End') { jumpUpper(true); return true }
+		if (isIncreaseKey(key)) {
+			nudgeUpper(1)
+			return true
+		}
+		if (isDecreaseKey(key)) {
+			nudgeUpper(-1)
+			return true
+		}
+		if (key === 'Home') {
+			jumpUpper(false)
+			return true
+		}
+		if (key === 'End') {
+			jumpUpper(true)
+			return true
+		}
 		return false
 	}
 
@@ -173,10 +185,22 @@
 	}
 
 	function applyLowerKey(key: string): boolean {
-		if (isIncreaseKey(key)) { nudgeLower(1); return true }
-		if (isDecreaseKey(key)) { nudgeLower(-1); return true }
-		if (key === 'Home') { lower = min; return true }
-		if (key === 'End') { lower = upper; return true }
+		if (isIncreaseKey(key)) {
+			nudgeLower(1)
+			return true
+		}
+		if (isDecreaseKey(key)) {
+			nudgeLower(-1)
+			return true
+		}
+		if (key === 'Home') {
+			lower = min
+			return true
+		}
+		if (key === 'End') {
+			lower = upper
+			return true
+		}
 		return false
 	}
 

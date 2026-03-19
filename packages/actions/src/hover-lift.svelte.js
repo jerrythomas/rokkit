@@ -21,7 +21,9 @@ function resolveHoverLiftOpts(options) {
 }
 
 function isReducedMotion() {
-	return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+	return (
+		typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+	)
 }
 
 function applyHoverLift(node, opts) {

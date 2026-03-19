@@ -8,7 +8,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-card] {
-  @apply bg-surface-z1 border-surface-z4 text-surface-z9 border shadow-sm;
+  @apply bg-none bg-surface-z1 border-surface-z4 text-surface-z9 border shadow-sm;
 }
 
 /* Interactive cards (buttons) */
@@ -66,7 +66,7 @@
 
 /* Primary — tonal primary container (Material You style) */
 [data-style='material'] [data-card][data-variant='primary'] {
-  @apply bg-primary-z1 border-primary-z3 text-primary-z9 border shadow-sm;
+  @apply bg-none bg-primary-z1 border-primary-z3 text-primary-z9 border shadow-sm;
 }
 
 [data-style='material'] [data-card][data-variant='primary'] [data-card-header],
@@ -80,7 +80,7 @@
 
 /* Secondary — tonal secondary container */
 [data-style='material'] [data-card][data-variant='secondary'] {
-  @apply bg-secondary-z1 border-secondary-z3 text-secondary-z9 border shadow-sm;
+  @apply bg-none bg-secondary-z1 border-secondary-z3 text-secondary-z9 border shadow-sm;
 }
 
 [data-style='material'] [data-card][data-variant='secondary'] [data-card-header],
@@ -94,5 +94,5 @@
 
 /* Tertiary — elevated surface with no color accent */
 [data-style='material'] [data-card][data-variant='tertiary'] {
-  @apply bg-surface-z2 border-surface-z3 text-surface-z7 border shadow-none;
+  @apply bg-none bg-surface-z2 border-surface-z3 text-surface-z7 border shadow-none;
 }

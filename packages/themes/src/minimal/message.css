@@ -2,18 +2,6 @@
  * Message - Minimal Theme Styles
  */
 
-[data-style='minimal'] [data-message-root][data-type='error'] [data-message-icon]::before {
-  content: '✕';
-}
-[data-style='minimal'] [data-message-root][data-type='warning'] [data-message-icon]::before {
-  content: '⚠';
-}
-[data-style='minimal'] [data-message-root][data-type='info'] [data-message-icon]::before {
-  content: 'ℹ';
-}
-[data-style='minimal'] [data-message-root][data-type='success'] [data-message-icon]::before {
-  content: '✓';
-}
 
 [data-style='minimal'] [data-message-root][data-type='error'] {
   @apply bg-error-z1 border-error-z3 text-error-z8;

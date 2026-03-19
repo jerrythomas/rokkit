@@ -4,6 +4,7 @@ export {
 	ButtonGroup,
 	Code,
 	Menu,
+	Dropdown,
 	Select,
 	MultiSelect,
 	Toolbar,

@@ -21,7 +21,7 @@
 }
 
 [data-style='material'] [data-tree-toggle-btn]:hover {
-  @apply bg-surface-z2 text-surface-z7;
+  @apply bg-none bg-surface-z2 text-surface-z7;
 }
 
 /* =============================================================================
@@ -34,7 +34,7 @@
 
 [data-style='material'] [data-tree-item-content]:hover:not(:disabled),
 [data-style='material'] [data-tree-item-content]:focus:not(:disabled) {
-  @apply bg-surface-z2 text-surface-z10 outline-none;
+  @apply bg-none bg-surface-z2 text-surface-z10 outline-none;
 }
 
 /* Focus visible for keyboard navigation */
@@ -49,6 +49,19 @@
 
 [data-style='material'] [data-tree-item-content][data-active='true']:hover:not(:disabled) {
   @apply bg-primary-z3;
+}
+
+/* Reset rokkit gradients bleeding in from body[data-style='rokkit'] ancestor */
+[data-style='material'] [data-tree]:focus-within [data-tree-item-content][data-active='true'] {
+  @apply bg-none;
+}
+
+[data-style='material'] [data-tree]:focus-within [data-tree-item-content][data-active='true']:hover:not(:disabled) {
+  @apply bg-none;
+}
+
+[data-style='material'] [data-tree]:not(:focus-within) [data-tree-item-content][data-active='true'] {
+  @apply bg-none;
 }
 
 /* =============================================================================
@@ -76,11 +89,19 @@
 }
 
 [data-style='material'] [data-tree-item-content] [data-item-badge] {
-  @apply text-surface-z6 bg-surface-z2 rounded-full;
+  @apply bg-none text-surface-z6 bg-surface-z2 rounded-full;
 }
 
 [data-style='material'] [data-tree-item-content][data-active='true'] [data-item-badge] {
   @apply text-primary-z8 bg-primary-z2;
+}
+
+[data-style='material'] [data-tree]:focus-within [data-tree-item-content][data-active='true'] [data-item-badge] {
+  @apply bg-none;
+}
+
+[data-style='material'] [data-tree]:not(:focus-within) [data-tree-item-content][data-active='true'] [data-item-badge] {
+  @apply bg-none;
 }
 
 /* =============================================================================

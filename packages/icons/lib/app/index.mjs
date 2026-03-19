@@ -1,6 +1,6 @@
-import icons from './icons.json' with { type: 'json' };
+import icons from './icons.json' with { type: 'json' }
 
-const info = {};
-const metadata = {};
-const chars = {};
-export { icons, info, metadata, chars };
+const info = {}
+const metadata = {}
+const chars = {}
+export { icons, info, metadata, chars }

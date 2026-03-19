@@ -1,0 +1,70 @@
+/**
+ * Dropdown - Rokkit Theme Styles
+ *
+ * Rich gradients and glowing borders.
+ */
+
+/* =============================================================================
+   Trigger
+   ============================================================================= */
+
+[data-style='rokkit'] [data-dropdown-trigger] {
+  @apply from-surface-z3 to-surface-z2 border-surface-z4 text-surface-z8 border bg-gradient-to-b;
+}
+
+[data-style='rokkit'] [data-dropdown-trigger]:hover:not(:disabled) {
+  @apply from-surface-z4 to-surface-z3 text-surface-z10 border-surface-z5 bg-gradient-to-b;
+}
+
+[data-style='rokkit'] [data-dropdown-trigger]:focus-visible {
+  @apply outline-none;
+}
+
+[data-style='rokkit'] [data-dropdown][data-open='true'] [data-dropdown-trigger] {
+  @apply from-primary-z5 to-secondary-z5 border-primary-z5 bg-gradient-to-b;
+}
+
+[data-style='rokkit'] [data-dropdown-trigger] [data-dropdown-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='rokkit'] [data-dropdown-trigger]:hover:not(:disabled) [data-dropdown-icon] {
+  @apply text-surface-z7;
+}
+
+[data-style='rokkit'] [data-dropdown-trigger] [data-dropdown-arrow] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Panel
+   ============================================================================= */
+
+[data-style='rokkit'] [data-dropdown-panel] {
+  @apply from-surface-z2 to-surface-z1 border-surface-z4 border bg-gradient-to-b shadow-md;
+}
+
+/* =============================================================================
+   Options
+   ============================================================================= */
+
+[data-style='rokkit'] [data-dropdown-option] {
+  @apply text-surface-z8;
+}
+
+[data-style='rokkit'] [data-dropdown-option]:hover:not(:disabled),
+[data-style='rokkit'] [data-dropdown-option]:focus:not(:disabled) {
+  @apply from-surface-z3 to-surface-z2 text-surface-z10 bg-gradient-to-r outline-none;
+}
+
+[data-style='rokkit'] [data-dropdown-option][data-active='true'] {
+  @apply from-primary-z5 to-secondary-z5 text-primary-z9 bg-gradient-to-r;
+}
+
+/* =============================================================================
+   Separator
+   ============================================================================= */
+
+[data-style='rokkit'] [data-dropdown-separator] {
+  @apply via-surface-z4 bg-gradient-to-r from-transparent to-transparent;
+}

@@ -17,8 +17,8 @@
 
 	<h2>ListController</h2>
 	<p>
-		Manages a flat or grouped list. Items are identified by a <code>value</code> field. Supports
-		single selection (default), multi-selection, and type-ahead search.
+		Manages a flat or grouped list. Items are identified by a <code>value</code> field. Supports single
+		selection (default), multi-selection, and type-ahead search.
 	</p>
 	<table>
 		<thead>
@@ -60,7 +60,6 @@
 	</table>
 
 	<p>
-		See <a href="/docs/utilities/states">@rokkit/states</a> for full API reference and usage
-		examples.
+		See <a href="/docs/utilities/states">@rokkit/states</a> for full API reference and usage examples.
 	</p>
 </article>

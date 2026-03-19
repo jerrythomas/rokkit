@@ -34,7 +34,7 @@
 
 <div class="flex h-screen flex-col overflow-hidden">
 	<Header version={data.app.version} menu={data.menu} />
-	<div class="min-h-0 flex-1 flex flex-col overflow-hidden">
+	<div class="flex min-h-0 flex-1 flex-col overflow-hidden">
 		{@render children?.()}
 	</div>
 </div>

@@ -48,7 +48,8 @@
 	// Sidebar positioning — inline styles because assetsInclude: ['**/*.svelte'] in
 	// vite.config breaks Svelte's CSS sub-resource loading on the learn site
 	let sidebarStyle = $derived.by(() => {
-		const large = media.large.current ?? (typeof window !== 'undefined' ? window.innerWidth >= 1024 : false)
+		const large =
+			media.large.current ?? (typeof window !== 'undefined' ? window.innerWidth >= 1024 : false)
 		if (large) {
 			return sidebarOpen
 				? 'position:static;flex:0 0 18rem;min-width:18rem;overflow-y:auto'
@@ -83,7 +84,9 @@
 
 <div class="flex min-h-0 flex-1 flex-col overflow-hidden">
 	<!-- ── Mobile sidebar toggle (hidden on desktop) ──────────────────────────── -->
-	<div class="border-surface-z2 bg-surface-z1 flex h-10 flex-shrink-0 items-center border-b px-3 lg:hidden">
+	<div
+		class="border-surface-z2 bg-surface-z1 flex h-10 flex-shrink-0 items-center border-b px-3 lg:hidden"
+	>
 		<button
 			class="text-surface-z6 hover:bg-surface-z3 flex h-8 w-8 items-center justify-center rounded-md"
 			onclick={() => (sidebarOpen = !sidebarOpen)}
@@ -128,8 +131,7 @@
 									title="Open in Playground"
 									aria-label="Open in Playground"
 								>
-									<span class="i-glyph:gamepad inline-block text-lg" aria-hidden="true"
-									></span>
+									<span class="i-glyph:gamepad inline-block text-lg" aria-hidden="true"></span>
 								</a>
 							{/if}
 							{#if llmsHref}
@@ -141,10 +143,7 @@
 									title="View llms.txt"
 									aria-label="View llms.txt"
 								>
-									<span
-										class="i-glyph:file-text inline-block text-lg"
-										aria-hidden="true"
-									></span>
+									<span class="i-glyph:file-text inline-block text-lg" aria-hidden="true"></span>
 								</a>
 							{/if}
 						</div>

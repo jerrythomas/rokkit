@@ -72,14 +72,27 @@ describe('AlertsStore', () => {
 		beforeEach(() => vi.useFakeTimers())
 		afterEach(() => vi.useRealTimers())
 
-		it('auto-dismisses after timeout ms', () => {
+		it('non-dismissible alerts default to 4000ms auto-dismiss', () => {
+			alerts.push({ text: 'Auto' })
+			expect(alerts.current).toHaveLength(1)
+			vi.advanceTimersByTime(4000)
+			expect(alerts.current).toHaveLength(0)
+		})
+
+		it('dismissible alerts default to no auto-dismiss', () => {
+			alerts.push({ text: 'Persistent', dismissible: true })
+			vi.advanceTimersByTime(10000)
+			expect(alerts.current).toHaveLength(1)
+		})
+
+		it('auto-dismisses after explicit timeout ms', () => {
 			alerts.push({ text: 'Bye', timeout: 3000 })
 			expect(alerts.current).toHaveLength(1)
 			vi.advanceTimersByTime(3000)
 			expect(alerts.current).toHaveLength(0)
 		})
 
-		it('does not auto-dismiss when timeout is 0', () => {
+		it('does not auto-dismiss when timeout is explicitly 0', () => {
 			alerts.push({ text: 'Stay', timeout: 0 })
 			vi.advanceTimersByTime(10000)
 			expect(alerts.current).toHaveLength(1)

@@ -7,6 +7,7 @@ Make `docs/llms/` the source of truth for all LLM-facing documentation — commi
 ## Problem
 
 Currently the 29 `.txt` files in `site/static/llms/` are the only copy. They are:
+
 - Not visible on GitHub (inside `site/static/`, buried in the site package)
 - Easy to accidentally overwrite or lose during site rebuilds
 - Not co-located with the rest of the project documentation
@@ -44,6 +45,7 @@ In `site/package.json`:
 ### Gitignore
 
 Add to `site/.gitignore`:
+
 ```
 /static/llms
 ```

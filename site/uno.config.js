@@ -7,7 +7,9 @@ const require = createRequire(import.meta.url)
 const glyphData = require('@rokkit/icons/glyph.json')
 const GLYPH_VARIANTS = ['', '-outline', '-solid', '-duotone-outline']
 const glyphBases = [
-	...new Set(Object.keys(glyphData.icons).map((n) => n.replace(/-duotone-outline$|-outline$|-solid$/, '')))
+	...new Set(
+		Object.keys(glyphData.icons).map((n) => n.replace(/-duotone-outline$|-outline$|-solid$/, ''))
+	)
 ]
 const allGlyphIcons = glyphBases.flatMap((b) => GLYPH_VARIANTS.map((v) => `i-glyph:${b}${v}`))
 
@@ -113,7 +115,26 @@ const siteIcons = [
 	'i-glyph:users-group',
 	'i-glyph:users-group-two-rounded',
 	'i-glyph:widget',
-	'i-glyph:widget-5',
+	'i-glyph:widget-5'
+]
+
+const stateIcons = [
+	'state-error',
+	'state-warning',
+	'state-success',
+	'state-info',
+	'state-unknown'
+]
+
+const solarIcons = [
+	'i-solar:book-2-bold-duotone',
+	'i-solar:file-text-bold-duotone',
+	'i-solar:settings-bold-duotone',
+	'i-solar:database-bold-duotone',
+	'i-solar:palette-bold-duotone',
+	'i-solar:alt-arrow-down-bold-duotone',
+	'i-solar:close-circle-bold-duotone',
+	'i-solar:bell-bold-duotone'
 ]
 
 const componentIcons = [
@@ -175,7 +196,7 @@ export default defineConfig({
 		['text-on-error', 'text-surface-50'],
 		['text-on-surface', 'text-surface-50']
 	],
-	safelist: [...siteIcons, ...componentIcons, ...allGlyphIcons],
+	safelist: [...siteIcons, ...componentIcons, ...allGlyphIcons, ...stateIcons, ...solarIcons],
 	content: {
 		pipeline: {
 			include: [

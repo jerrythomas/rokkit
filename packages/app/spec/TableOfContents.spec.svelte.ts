@@ -481,7 +481,9 @@ describe('TableOfContents — rescan()', () => {
 
 		await waitFor(() => {
 			expect(result.container.querySelectorAll('[data-toc-item]').length).toBe(3)
-			expect(result.container.querySelectorAll('[data-toc-item]')[0].textContent?.trim()).toBe('New First')
+			expect(result.container.querySelectorAll('[data-toc-item]')[0].textContent?.trim()).toBe(
+				'New First'
+			)
 		})
 	})
 })

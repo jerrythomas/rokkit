@@ -83,7 +83,11 @@ export function rgbToHex(rgb: RGB): string {
 /**
  * Convert RGB to HSL
  */
-interface NormalizedRGB { r: number; g: number; b: number }
+interface NormalizedRGB {
+	r: number
+	g: number
+	b: number
+}
 
 function computeHue(norm: NormalizedRGB, max: number, d: number): number {
 	const { r, g, b } = norm
@@ -545,11 +549,28 @@ export function applyPalette(
 }
 
 const DEFAULT_PALETTE_ROLES: ColorRole[] = [
-	'primary', 'secondary', 'accent', 'surface', 'success', 'warning', 'danger', 'info'
+	'primary',
+	'secondary',
+	'accent',
+	'surface',
+	'success',
+	'warning',
+	'danger',
+	'info'
 ]
 
 const ALL_SHADE_KEYS: ShadeKey[] = [
-	'50', '100', '200', '300', '400', '500', '600', '700', '800', '900', '950'
+	'50',
+	'100',
+	'200',
+	'300',
+	'400',
+	'500',
+	'600',
+	'700',
+	'800',
+	'900',
+	'950'
 ]
 
 /**

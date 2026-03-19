@@ -5,15 +5,52 @@
   z-index: 9999;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
   max-width: 24rem;
   width: calc(100% - 2rem);
   padding: 1rem;
   pointer-events: none;
 }
 
-[data-alert-list] > [data-message-root] {
+/* Each toast wrapper: handles enter animation, spacing, and dismiss collapse */
+[data-alert-list] > * {
   pointer-events: auto;
+  overflow: hidden;
+  max-height: 12rem;
+  margin-bottom: 0.5rem;
+  transition:
+    max-height 0.25s ease-out,
+    margin-bottom 0.25s ease-out;
+}
+
+/* Collapse height + spacing when dismissing — CSS drives the animation */
+[data-alert-list] > *[data-dismissing] {
+  max-height: 0;
+  margin-bottom: 0;
+}
+
+/* Message enter animation */
+@keyframes toast-enter {
+  from {
+    opacity: 0;
+    transform: translateX(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Message exit transition */
+[data-alert-list] > * > [data-message-root] {
+  animation: toast-enter 0.2s ease-out;
+  transition:
+    opacity 0.2s ease-out,
+    transform 0.2s ease-out;
+}
+
+[data-alert-list] > *[data-dismissing] > [data-message-root] {
+  opacity: 0;
+  transform: translateX(2rem);
 }
 
 /* Top positions */

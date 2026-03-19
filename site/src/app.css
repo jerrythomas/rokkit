@@ -12,6 +12,9 @@
 
 @import '@rokkit/themes/base.css';
 @import '@rokkit/themes/rokkit.css';
+@import '@rokkit/themes/minimal.css';
+@import '@rokkit/themes/material.css';
+@import '@rokkit/themes/glass.css';
 
 /* Learn-site specific overrides loaded after package */
 @import './theme/base/shiki.css';
@@ -36,4 +39,18 @@ main {
 
 [data-playground-root] > header {
   @apply border-surface-z2 bg-surface-z2 space-y-2 border-b px-6 py-8;
+}
+
+/* Playground preview area grid */
+.preview-area {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+[data-mode='dark'] .preview-area {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
 }

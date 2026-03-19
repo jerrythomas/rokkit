@@ -74,7 +74,15 @@ function visitProxy(result, proxy, parentLineTypes, position) {
 	const hasChildren = children.length > 0
 	const isExpandable = hasChildren || proxy.get('children') === true // sentinel: lazy-loadable
 	const lineTypes = computeLineTypes(parentLineTypes, position, isExpandable)
-	result.push({ key: proxy.key, proxy, level: proxy.level, hasChildren, isExpandable, type: proxy.type, lineTypes })
+	result.push({
+		key: proxy.key,
+		proxy,
+		level: proxy.level,
+		hasChildren,
+		isExpandable,
+		type: proxy.type,
+		lineTypes
+	})
 	if (hasChildren && proxy.expanded) {
 		result.push(...buildReactiveFlatView(children, lineTypes))
 	}

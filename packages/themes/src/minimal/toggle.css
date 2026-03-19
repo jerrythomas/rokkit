@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-toggle] {
-  @apply border-surface-z3 rounded-lg border bg-transparent;
+  @apply bg-none border-surface-z3 rounded-lg border bg-transparent;
 }
 
 /* =============================================================================
@@ -22,12 +22,12 @@
 
 [data-style='minimal'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']),
 [data-style='minimal'] [data-toggle-option]:focus:not(:disabled):not([data-disabled='true']) {
-  @apply text-surface-z8 border-b-surface-z2 border-b-2;
+  @apply bg-none text-surface-z8 border-b-surface-z2 border-b-2;
 }
 
 /* Selected state */
 [data-style='minimal'] [data-toggle-option][data-selected='true'] {
-  @apply text-surface-z9 border-b-primary-z4 border-b-2;
+  @apply bg-none text-surface-z9 border-b-primary-z4 border-b-2;
 }
 
 /* =============================================================================

@@ -51,15 +51,15 @@
 }
 
 [data-style='material'] [data-table-row]:hover {
-  @apply bg-surface-z2;
+  @apply bg-none bg-surface-z2;
 }
 
 [data-style='material'] [data-table-row]:focus {
-  @apply bg-surface-z2 text-surface-z10 ring-primary-z4 ring-2 outline-none ring-inset;
+  @apply bg-none bg-surface-z2 text-surface-z10 ring-primary-z4 ring-2 outline-none ring-inset;
 }
 
 [data-style='material'] [data-table-row][data-selected='true'] {
-  @apply bg-primary-z2 text-primary-z9;
+  @apply bg-none bg-primary-z2 text-primary-z9;
 }
 
 /* =============================================================================

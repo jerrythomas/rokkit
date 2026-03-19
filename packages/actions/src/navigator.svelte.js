@@ -146,7 +146,10 @@ function makeKeydownHandler(ctx, config, handlers, ta) {
 
 		const prevKey = wrapper.focusedKey
 		const handled = handleAction(event, handlers[action])
-		if (!handled) { runTypeahead(config, wrapper, ta, event); return }
+		if (!handled) {
+			runTypeahead(config, wrapper, ta, event)
+			return
+		}
 
 		ta.reset()
 		emitAction(node, wrapper, action, true)
@@ -166,7 +169,10 @@ function makeTypeahead(node, wrapper) {
 
 	function reset() {
 		buffer = ''
-		if (timer) { clearTimeout(timer); timer = null }
+		if (timer) {
+			clearTimeout(timer)
+			timer = null
+		}
 	}
 
 	function handle(event) {
@@ -221,6 +227,9 @@ export function navigator(node, options) {
 
 	$effect(() => {
 		const cleanup = [on(node, 'keydown', handleKeydown), on(node, 'click', handleClick)]
-		return () => { ta.reset(); cleanup.forEach((fn) => fn()) }
+		return () => {
+			ta.reset()
+			cleanup.forEach((fn) => fn())
+		}
 	})
 }

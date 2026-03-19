@@ -141,7 +141,10 @@
 		focusDomItem(index)
 	}
 
-	function matchesEntryId(item: { proxy: ProxyItem; original: Record<string, unknown> }, id: string): boolean {
+	function matchesEntryId(
+		item: { proxy: ProxyItem; original: Record<string, unknown> },
+		id: string
+	): boolean {
 		return resolveTargetId(item) === id
 	}
 

@@ -16,8 +16,12 @@
 	let { class: className = '', version, menu = [] } = $props()
 	let loading = $state(false)
 
-	beforeNavigate(() => { loading = true })
-	afterNavigate(() => { loading = false })
+	beforeNavigate(() => {
+		loading = true
+	})
+	afterNavigate(() => {
+		loading = false
+	})
 </script>
 
 <header
@@ -45,8 +49,10 @@
 			{@const active = page.url.pathname.startsWith(item.match)}
 			<a
 				href="/{item.slug}"
-				class="text-surface-z5 hover:text-surface-z8 hover:bg-surface-z2 rounded-md px-3 py-1 text-xs font-medium no-underline transition-colors {active ? 'bg-surface-z2 text-surface-z8' : ''}"
-			>{item.title}</a>
+				class="text-surface-z5 hover:text-surface-z8 hover:bg-surface-z2 rounded-md px-3 py-1 text-xs font-medium no-underline transition-colors {active
+					? 'bg-surface-z2 text-surface-z8'
+					: ''}">{item.title}</a
+			>
 		{/each}
 	</nav>
 

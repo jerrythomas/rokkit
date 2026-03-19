@@ -21,7 +21,8 @@
 	}
 
 	const valueFormatters = {
-		currency: (v) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(v),
+		currency: (v) =>
+			new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(v),
 		datetime: (v) => new Date(v).toLocaleString(),
 		duration: (v) => formatDuration(v),
 		number: (v) => new Intl.NumberFormat().format(v),

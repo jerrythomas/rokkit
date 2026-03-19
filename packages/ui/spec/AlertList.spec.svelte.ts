@@ -51,11 +51,21 @@ describe('AlertList', () => {
 
 	it('removes alert from DOM when dismissed', () => {
 		render(AlertList)
-		const id = alerts.push({ type: 'warning', text: 'Warn', dismissible: true })
+		const id = alerts.push({ type: 'warning', text: 'Warn', dismissible: true, timeout: 0 })
 		flushSync()
 		expect(document.querySelectorAll('[data-message-root]')).toHaveLength(1)
-		alerts.dismiss(id)
+		// Trigger the dismiss animation via the component's ondismiss handler
+		const dismissBtn = document.querySelector('[data-message-dismiss]') as HTMLElement
+		dismissBtn.click()
+		flushSync()
+		// JSDOM doesn't run CSS transitions, so fire transitionend (max-height) to
+		// complete the CSS-driven dismiss and remove the element from the store.
+		document.querySelectorAll('[data-alert-list] > div').forEach((el) => {
+			el.dispatchEvent(new TransitionEvent('transitionend', { propertyName: 'max-height', bubbles: true }))
+		})
 		flushSync()
 		expect(document.querySelectorAll('[data-message-root]')).toHaveLength(0)
+		// Verify it was actually removed from the store too
+		expect(alerts.current.find((a) => a.id === id)).toBeUndefined()
 	})
 })

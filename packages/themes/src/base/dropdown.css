@@ -1,0 +1,166 @@
+/**
+ * Dropdown - Base Structural Styles
+ *
+ * A trigger button that displays the selected value, opening a panel of options.
+ * No colors, shadows, or visual theming — those belong in theme styles.
+ */
+
+/* =============================================================================
+   Root Container
+   ============================================================================= */
+
+[data-dropdown] {
+  position: relative;
+  display: inline-block;
+}
+
+[data-dropdown][data-disabled='true'] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* =============================================================================
+   Trigger Button
+   ============================================================================= */
+
+[data-dropdown-trigger] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid transparent;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: all 150ms ease;
+}
+
+[data-dropdown-trigger]:disabled {
+  cursor: not-allowed;
+}
+
+[data-dropdown-trigger]:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Size variants */
+[data-dropdown][data-size='sm'] [data-dropdown-trigger] {
+  height: 1.5rem;
+  padding-inline: 0.5rem;
+  font-size: 0.75rem;
+}
+
+[data-dropdown][data-size='md'] [data-dropdown-trigger],
+[data-dropdown]:not([data-size]) [data-dropdown-trigger] {
+  height: 2rem;
+  padding-inline: 0.625rem;
+  font-size: 0.875rem;
+}
+
+[data-dropdown][data-size='lg'] [data-dropdown-trigger] {
+  height: 2.5rem;
+  padding-inline: 0.75rem;
+  font-size: 1rem;
+}
+
+/* =============================================================================
+   Trigger Elements
+   ============================================================================= */
+
+[data-dropdown-trigger] > [data-dropdown-icon] {
+  flex-shrink: 0;
+  font-size: 1em;
+}
+
+[data-dropdown-trigger] > [data-dropdown-label] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+}
+
+[data-dropdown-trigger] > [data-dropdown-arrow] {
+  flex-shrink: 0;
+  font-size: 0.75em;
+  transition: transform 150ms ease;
+}
+
+[data-dropdown][data-open='true'] [data-dropdown-trigger] > [data-dropdown-arrow] {
+  transform: rotate(180deg);
+}
+
+/* =============================================================================
+   Panel
+   ============================================================================= */
+
+[data-dropdown-panel] {
+  position: absolute;
+  z-index: 50;
+  min-width: 100%;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  margin-top: 0.375rem;
+}
+
+[data-dropdown][data-align='end'] [data-dropdown-panel] {
+  right: 0;
+  left: auto;
+}
+
+[data-dropdown][data-align='start'] [data-dropdown-panel] {
+  left: 0;
+  right: auto;
+}
+
+[data-dropdown][data-direction='up'] [data-dropdown-panel] {
+  bottom: 100%;
+  top: auto;
+  margin-top: 0;
+  margin-bottom: 0.375rem;
+}
+
+/* =============================================================================
+   Options
+   ============================================================================= */
+
+[data-dropdown-option] {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding-block: 0.375rem;
+  padding-inline: 0.75rem;
+  font-size: 0.875rem;
+  text-align: left;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  transition: all 100ms ease;
+  white-space: nowrap;
+}
+
+[data-dropdown][data-size='sm'] [data-dropdown-option] {
+  padding-block: 0.25rem;
+  padding-inline: 0.625rem;
+  font-size: 0.75rem;
+}
+
+[data-dropdown-option]:disabled,
+[data-dropdown-option][data-disabled='true'] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+[data-dropdown-option-label] {
+  flex: 1;
+}
+
+/* =============================================================================
+   Separator
+   ============================================================================= */
+
+[data-dropdown-separator] {
+  height: 1px;
+  border: none;
+  margin-block: 0.25rem;
+}

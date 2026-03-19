@@ -15,6 +15,7 @@
 ### Task 1: Add `packages/app` to vitest projects
 
 **Files:**
+
 - Modify: `vitest.config.ts`
 
 - [ ] **Step 1: Add the app project entry**
@@ -35,9 +36,11 @@
 - [ ] **Step 2: Verify the project loads (no tests yet)**
 
   Run from repo root:
+
   ```bash
   bun run test:ci --project=app
   ```
+
   Expected: "No test files found" — not a failure, just zero tests.
 
 - [ ] **Step 3: Commit**
@@ -52,6 +55,7 @@
 ### Task 2: Write the full spec (all failing)
 
 **Files:**
+
 - Create: `packages/app/spec/TableOfContents.spec.svelte.ts`
 
 - [ ] **Step 1: Create the spec file**
@@ -98,8 +102,12 @@
   describe('TableOfContents — rendering', () => {
     let container: HTMLElement
 
-    beforeEach(() => { container = makeContainer() })
-    afterEach(() => { container.remove() })
+    beforeEach(() => {
+      container = makeContainer()
+    })
+    afterEach(() => {
+      container.remove()
+    })
 
     it('renders nothing when container has no headings', () => {
       const { container: host } = render(TableOfContents)
@@ -172,8 +180,12 @@
   describe('TableOfContents — DOM scanning', () => {
     let container: HTMLElement
 
-    beforeEach(() => { container = makeContainer() })
-    afterEach(() => { container.remove() })
+    beforeEach(() => {
+      container = makeContainer()
+    })
+    afterEach(() => {
+      container.remove()
+    })
 
     it('uses existing IDs on headings', () => {
       addHeading(container, 'h2', 'First', 'my-first-id')
@@ -221,7 +233,9 @@
     })
 
     it('renders nothing when container element does not exist', () => {
-      const { container: host } = render(TableOfContents, { props: { container: 'nonexistent-id' } })
+      const { container: host } = render(TableOfContents, {
+        props: { container: 'nonexistent-id' }
+      })
       expect(host.querySelector('[data-toc]')).toBeNull()
     })
   })
@@ -231,8 +245,12 @@
   describe('TableOfContents — active state', () => {
     let container: HTMLElement
 
-    beforeEach(() => { container = makeContainer() })
-    afterEach(() => { container.remove() })
+    beforeEach(() => {
+      container = makeContainer()
+    })
+    afterEach(() => {
+      container.remove()
+    })
 
     it('no item has data-toc-active initially', () => {
       addHeading(container, 'h2', 'First')
@@ -281,8 +299,12 @@
   describe('TableOfContents — roving tabindex', () => {
     let container: HTMLElement
 
-    beforeEach(() => { container = makeContainer() })
-    afterEach(() => { container.remove() })
+    beforeEach(() => {
+      container = makeContainer()
+    })
+    afterEach(() => {
+      container.remove()
+    })
 
     it('first item has tabindex 0 by default', () => {
       addHeading(container, 'h2', 'First')
@@ -320,8 +342,12 @@
   describe('TableOfContents — keyboard navigation', () => {
     let container: HTMLElement
 
-    beforeEach(() => { container = makeContainer() })
-    afterEach(() => { container.remove() })
+    beforeEach(() => {
+      container = makeContainer()
+    })
+    afterEach(() => {
+      container.remove()
+    })
 
     it('ArrowDown moves focus to next item', async () => {
       addHeading(container, 'h2', 'First')
@@ -399,8 +425,12 @@
   describe('TableOfContents — click handling', () => {
     let container: HTMLElement
 
-    beforeEach(() => { container = makeContainer() })
-    afterEach(() => { container.remove() })
+    beforeEach(() => {
+      container = makeContainer()
+    })
+    afterEach(() => {
+      container.remove()
+    })
 
     it('clicking an item calls scrollTo on the container', async () => {
       addHeading(container, 'h2', 'First', 'first')
@@ -433,8 +463,12 @@
   describe('TableOfContents — rescan()', () => {
     let container: HTMLElement
 
-    beforeEach(() => { container = makeContainer() })
-    afterEach(() => { container.remove() })
+    beforeEach(() => {
+      container = makeContainer()
+    })
+    afterEach(() => {
+      container.remove()
+    })
 
     it('rescan() picks up new headings added after mount', async () => {
       addHeading(container, 'h2', 'First')
@@ -486,7 +520,9 @@
 
       await waitFor(() => {
         expect(result.container.querySelectorAll('[data-toc-item]').length).toBe(3)
-        expect(result.container.querySelectorAll('[data-toc-item]')[0].textContent?.trim()).toBe('New First')
+        expect(result.container.querySelectorAll('[data-toc-item]')[0].textContent?.trim()).toBe(
+          'New First'
+        )
       })
     })
   })
@@ -497,6 +533,7 @@
   ```bash
   bun run test:ci --project=app
   ```
+
   Expected: import error or all tests failing — confirms spec is wired up correctly.
 
 - [ ] **Step 3: Commit the spec**
@@ -513,6 +550,7 @@
 ### Task 3: Create TableOfContents.svelte
 
 **Files:**
+
 - Create: `packages/app/src/components/TableOfContents.svelte`
 
 - [ ] **Step 1: Write the component**
@@ -663,6 +701,7 @@
   ```bash
   bun run test:ci --project=app
   ```
+
   Expected: most tests passing. Fix any failures before continuing.
 
 - [ ] **Step 3: Commit**
@@ -677,12 +716,14 @@
 ### Task 4: Export from `@rokkit/app`
 
 **Files:**
+
 - Modify: `packages/app/src/components/index.ts`
 - Modify: `packages/app/src/index.ts`
 
 - [ ] **Step 1: Add export to components/index.ts**
 
   Add to `packages/app/src/components/index.ts`:
+
   ```ts
   export { default as TableOfContents } from './TableOfContents.svelte'
   ```
@@ -690,6 +731,7 @@
 - [ ] **Step 2: Update index.ts to include TableOfContents**
 
   In `packages/app/src/index.ts`, update the components export line to include `TableOfContents`:
+
   ```ts
   export { ThemeSwitcherToggle, TableOfContents } from './components/index.js'
   ```
@@ -699,6 +741,7 @@
   ```bash
   bun run test:ci
   ```
+
   Expected: all tests pass, 0 errors.
 
 - [ ] **Step 4: Commit**
@@ -715,6 +758,7 @@
 ### Task 5: Replace site TableOfContents usage
 
 **Files:**
+
 - Modify: `site/src/routes/(learn)/docs/+layout.svelte`
 - Delete: `site/src/lib/components/TableOfContents.svelte` (after verifying no other usages)
 
@@ -737,6 +781,7 @@
 - [ ] **Step 3: Delete the old component (only if no other usages found in step 1)**
 
   Verify step 1 found only the layout file, then:
+
   ```bash
   git rm site/src/lib/components/TableOfContents.svelte
   ```
@@ -746,6 +791,7 @@
   ```bash
   bun run lint
   ```
+
   Expected: 0 errors.
 
 - [ ] **Step 5: Run all tests**
@@ -753,6 +799,7 @@
   ```bash
   bun run test:ci
   ```
+
   Expected: all pass.
 
 - [ ] **Step 6: Commit**

@@ -48,9 +48,9 @@ This design covers **show/hide only** with `equals`/`notEquals` operators. `disa
 
 ```typescript
 type Condition = {
-  field: string        // top-level field key (e.g. 'accountType')
-  equals?: unknown     // show when value strictly equals this
-  notEquals?: unknown  // show when value strictly does not equal this
+  field: string // top-level field key (e.g. 'accountType')
+  equals?: unknown // show when value strictly equals this
+  notEquals?: unknown // show when value strictly does not equal this
 }
 ```
 
@@ -79,6 +79,7 @@ export function evaluateCondition(condition, data) {
 ```
 
 Edge cases:
+
 - `condition` is null/undefined → returns `true` (field shown)
 - `condition.field` resolves to `undefined` — `equals`: `undefined === value`; `notEquals`: `undefined !== value`
 - Neither operator present → returns `true`
@@ -187,13 +188,13 @@ No template changes needed — `FormRenderer` already iterates `formBuilder.elem
 
 ## Files
 
-| Action | File |
-|--------|------|
-| Create | `packages/forms/src/lib/conditions.js` |
-| Create | `packages/forms/src/lib/conditions.spec.js` |
-| Modify | `packages/forms/src/lib/builder.svelte.js` |
-| Modify | `packages/forms/src/FormRenderer.svelte` |
-| Modify | `packages/forms/spec/lib/builder.spec.svelte.js` |
+| Action | File                                                                     |
+| ------ | ------------------------------------------------------------------------ |
+| Create | `packages/forms/src/lib/conditions.js`                                   |
+| Create | `packages/forms/src/lib/conditions.spec.js`                              |
+| Modify | `packages/forms/src/lib/builder.svelte.js`                               |
+| Modify | `packages/forms/src/FormRenderer.svelte`                                 |
+| Modify | `packages/forms/spec/lib/builder.spec.svelte.js`                         |
 | Modify | `docs/design/03-forms.md` (Conditional Fields section — already updated) |
 
 ---

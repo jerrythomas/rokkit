@@ -114,7 +114,18 @@ function buildGroupBar(item, scales, ctx) {
  * @returns {BarData|null}
  */
 function buildOneGroupBar(scales, ctx) {
-	const { groupItems, groupField, group, i, yField, colorField, barWidth, padding, dimensions, xPos } = ctx
+	const {
+		groupItems,
+		groupField,
+		group,
+		i,
+		yField,
+		colorField,
+		barWidth,
+		padding,
+		dimensions,
+		xPos
+	} = ctx
 	const item = groupItems.find((d) => d[groupField] === group)
 	if (!item) return null
 	const barX = xPos + i * (barWidth + padding)
@@ -152,8 +163,10 @@ function parseGroupedBarsConfig(fields, options) {
 export function createGroupedBars(data, fields, scales, options) {
 	if (!data || !data.length || !fields.group) return { groups: [], bars: [] }
 
-	const { xField, yField, groupField, colorField, dimensions, padding } =
-		parseGroupedBarsConfig(fields, options)
+	const { xField, yField, groupField, colorField, dimensions, padding } = parseGroupedBarsConfig(
+		fields,
+		options
+	)
 
 	const groups = [...new SvelteSet(data.map((d) => d[groupField]))]
 	const xValues = [...new SvelteSet(data.map((d) => d[xField]))]
@@ -167,7 +180,18 @@ export function createGroupedBars(data, fields, scales, options) {
 		const groupItems = data.filter((d) => d[xField] === xValue)
 		const xPos = xScale(xValue)
 		groups.forEach((group, i) => {
-			const ctx = { groupItems, groupField, group, i, yField, colorField, barWidth, padding, dimensions, xPos }
+			const ctx = {
+				groupItems,
+				groupField,
+				group,
+				i,
+				yField,
+				colorField,
+				barWidth,
+				padding,
+				dimensions,
+				xPos
+			}
 			const bar = buildOneGroupBar(scales, ctx)
 			if (bar) bars.push(bar)
 		})

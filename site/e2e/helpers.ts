@@ -12,10 +12,14 @@ export async function goToPlayPage(page: Page, component: string) {
 	await page.waitForLoadState('networkidle')
 }
 
-/** Set theme by clicking the theme button in the PlaySection sidebar */
+/** Set theme via the Dropdown in the PlaySection toolbar */
 export async function setTheme(page: Page, theme: Theme) {
-	const btn = page.locator('aside button', { hasText: new RegExp(`^${theme}$`, 'i') })
-	await btn.click()
+	const themeDropdown = page.locator('[data-toolbar] [data-dropdown]')
+	await themeDropdown.locator('[data-dropdown-trigger]').click()
+	const option = page.locator('[data-dropdown-panel] [data-dropdown-option]').filter({
+		hasText: new RegExp(`^${theme}$`, 'i')
+	})
+	await option.click()
 }
 
 /** Set color mode directly on the document element */
@@ -34,7 +38,7 @@ export async function openDropdownViaKeyboard(
 	page: Page,
 	triggerSelector: string,
 	dropdownSelector: string,
-	itemSelector: string,
+	itemSelector: string
 ): Promise<DropdownLocators> {
 	const trigger = page.locator(triggerSelector).first()
 	await trigger.focus()

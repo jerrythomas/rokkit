@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-toolbar] {
-  @apply bg-surface-z1 shadow-sm;
+  @apply bg-none bg-surface-z1 shadow-sm;
 }
 
 /* Position-based borders removed - using shadows instead */
@@ -39,21 +39,21 @@
 }
 
 [data-style='material'] [data-toolbar-item]:hover:not(:disabled):not([data-disabled='true']) {
-  @apply bg-surface-z2 text-surface-z9;
+  @apply bg-none bg-surface-z2 text-surface-z9;
 }
 
 [data-style='material']
   [data-toolbar-item]:focus-visible:not(:disabled):not([data-disabled='true']) {
-  @apply bg-surface-z2 text-surface-z9 ring-primary-z4 ring-2 outline-none;
+  @apply bg-none bg-surface-z2 text-surface-z9 ring-primary-z4 ring-2 outline-none;
 }
 
 /* Active/pressed state */
 [data-style='material'] [data-toolbar-item][data-active='true'] {
-  @apply bg-primary-z2 text-primary-z8;
+  @apply bg-none bg-primary-z2 text-primary-z8;
 }
 
 [data-style='material'] [data-toolbar-item][data-active='true']:hover:not(:disabled) {
-  @apply bg-primary-z3 text-primary-z9;
+  @apply bg-none bg-primary-z3 text-primary-z9;
 }
 
 /* =============================================================================
@@ -77,9 +77,9 @@
    ============================================================================= */
 
 [data-style='material'] [data-toolbar-separator] {
-  @apply bg-surface-z3;
+  @apply bg-none bg-surface-z3;
 }
 
 [data-style='material'] [data-toolbar-divider] {
-  @apply bg-surface-z3;
+  @apply bg-none bg-surface-z3;
 }

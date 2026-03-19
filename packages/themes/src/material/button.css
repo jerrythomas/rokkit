@@ -12,22 +12,22 @@
 [data-style='material'] [data-button]:not([data-style])[data-variant='default'],
 [data-style='material'] [data-button][data-style='default']:not([data-variant]),
 [data-style='material'] [data-button]:not([data-style]):not([data-variant]) {
-  @apply bg-surface-z2 text-surface-z8 shadow-sm;
+  @apply bg-none bg-surface-z2 text-surface-z8 shadow-sm;
 }
 
 [data-style='material'] [data-button][data-style='default'][data-variant='primary'],
 [data-style='material'] [data-button]:not([data-style])[data-variant='primary'] {
-  @apply bg-primary-z5 text-on-primary shadow-md;
+  @apply bg-none bg-primary-z5 text-on-primary shadow-md;
 }
 
 [data-style='material'] [data-button][data-style='default'][data-variant='secondary'],
 [data-style='material'] [data-button]:not([data-style])[data-variant='secondary'] {
-  @apply bg-secondary-z4 text-on-secondary shadow-md;
+  @apply bg-none bg-secondary-z4 text-on-secondary shadow-md;
 }
 
 [data-style='material'] [data-button][data-style='default'][data-variant='danger'],
 [data-style='material'] [data-button]:not([data-style])[data-variant='danger'] {
-  @apply bg-danger-z4 text-on-danger shadow-md;
+  @apply bg-none bg-danger-z4 text-on-danger shadow-md;
 }
 
 /* =============================================================================

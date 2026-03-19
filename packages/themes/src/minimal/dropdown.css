@@ -1,0 +1,50 @@
+/**
+ * Dropdown - Minimal Theme Styles
+ *
+ * Clean, understated with subtle borders.
+ */
+
+[data-style='minimal'] [data-dropdown-trigger] {
+  @apply bg-none border-surface-z4 text-surface-z7 border bg-transparent;
+}
+
+[data-style='minimal'] [data-dropdown-trigger]:hover:not(:disabled) {
+  @apply bg-none text-surface-z9 border-surface-z5;
+}
+
+[data-style='minimal'] [data-dropdown-trigger]:focus-visible {
+  @apply ring-surface-z5 ring-1 outline-none;
+}
+
+[data-style='minimal'] [data-dropdown][data-open='true'] [data-dropdown-trigger] {
+  @apply bg-none border-surface-z6;
+}
+
+[data-style='minimal'] [data-dropdown-trigger] [data-dropdown-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='minimal'] [data-dropdown-trigger] [data-dropdown-arrow] {
+  @apply text-surface-z4;
+}
+
+[data-style='minimal'] [data-dropdown-panel] {
+  @apply bg-none bg-surface-z1 border-surface-z3 border shadow-sm;
+}
+
+[data-style='minimal'] [data-dropdown-option] {
+  @apply text-surface-z7;
+}
+
+[data-style='minimal'] [data-dropdown-option]:hover:not(:disabled),
+[data-style='minimal'] [data-dropdown-option]:focus:not(:disabled) {
+  @apply bg-none text-surface-z9 border-l-secondary-z4 border-l-2 outline-none;
+}
+
+[data-style='minimal'] [data-dropdown-option][data-active='true'] {
+  @apply bg-none text-surface-z10 border-l-primary-z5 border-l-2;
+}
+
+[data-style='minimal'] [data-dropdown-separator] {
+  @apply bg-none bg-surface-z3;
+}

@@ -16,13 +16,15 @@
 		scoped to a wrapper element. Each client's palette is a small CSS block that sets the
 		<code>--color-primary-*</code> and <code>--color-secondary-*</code> variables:
 	</p>
-	<pre><code>{`.client-acme {
+	<pre><code
+			>{`.client-acme {
   --color-primary-500: #e11d48;
   --color-secondary-500: #7c3aed;
-}`}</code></pre>
+}`}</code
+		></pre>
 	<p>
-		Wrap each tenant's content in a <code>&lt;div class="client-acme"&gt;</code> and all Rokkit
-		components inside will use that palette automatically. This works with any number of palettes on
-		the same page simultaneously.
+		Wrap each tenant's content in a <code>&lt;div class="client-acme"&gt;</code> and all Rokkit components
+		inside will use that palette automatically. This works with any number of palettes on the same page
+		simultaneously.
 	</p>
 </article>

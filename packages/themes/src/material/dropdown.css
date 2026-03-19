@@ -1,0 +1,50 @@
+/**
+ * Dropdown - Material Theme Styles
+ *
+ * Material Design inspired with elevation and shadows.
+ */
+
+[data-style='material'] [data-dropdown-trigger] {
+  @apply bg-none bg-surface-z1 border-surface-z4 text-surface-z8 border shadow-sm;
+}
+
+[data-style='material'] [data-dropdown-trigger]:hover:not(:disabled) {
+  @apply bg-none bg-surface-z2 text-surface-z10 border-surface-z5 shadow-md;
+}
+
+[data-style='material'] [data-dropdown-trigger]:focus-visible {
+  @apply ring-primary-z4 ring-2 outline-none;
+}
+
+[data-style='material'] [data-dropdown][data-open='true'] [data-dropdown-trigger] {
+  @apply bg-none bg-primary-z2 border-primary-z5 shadow-md;
+}
+
+[data-style='material'] [data-dropdown-trigger] [data-dropdown-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='material'] [data-dropdown-trigger] [data-dropdown-arrow] {
+  @apply text-surface-z5;
+}
+
+[data-style='material'] [data-dropdown-panel] {
+  @apply bg-none bg-surface-z1 border-surface-z3 border shadow-lg;
+}
+
+[data-style='material'] [data-dropdown-option] {
+  @apply text-surface-z8;
+}
+
+[data-style='material'] [data-dropdown-option]:hover:not(:disabled),
+[data-style='material'] [data-dropdown-option]:focus:not(:disabled) {
+  @apply bg-none bg-surface-z2 text-surface-z10 outline-none;
+}
+
+[data-style='material'] [data-dropdown-option][data-active='true'] {
+  @apply bg-none bg-primary-z2 text-primary-z9;
+}
+
+[data-style='material'] [data-dropdown-separator] {
+  @apply bg-none bg-surface-z3;
+}

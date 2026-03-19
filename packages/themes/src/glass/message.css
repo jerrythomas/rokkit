@@ -2,18 +2,6 @@
  * Message - Glass Theme Styles
  */
 
-[data-style='glass'] [data-message-root][data-type='error'] [data-message-icon]::before {
-  content: '✕';
-}
-[data-style='glass'] [data-message-root][data-type='warning'] [data-message-icon]::before {
-  content: '⚠';
-}
-[data-style='glass'] [data-message-root][data-type='info'] [data-message-icon]::before {
-  content: 'ℹ';
-}
-[data-style='glass'] [data-message-root][data-type='success'] [data-message-icon]::before {
-  content: '✓';
-}
 
 [data-style='glass'] [data-message-root][data-type='error'] {
   @apply bg-error-z2/50 border-error-z4/40 text-error-z8 backdrop-blur-sm;

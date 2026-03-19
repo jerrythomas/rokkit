@@ -59,9 +59,7 @@
 	function getGlyphFamilies(icons, query = '') {
 		const bases = [
 			...new Set(
-				Object.keys(icons).map((n) =>
-					n.replace(/-duotone-outline$|-outline$|-solid$/, '')
-				)
+				Object.keys(icons).map((n) => n.replace(/-duotone-outline$|-outline$|-solid$/, ''))
 			)
 		].sort()
 		return bases
@@ -190,7 +188,9 @@
 		</div>
 		<div class="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-2">
 			{#each families as family (family.base)}
-				<div class="bg-surface-z2 hover:bg-surface-z3 hover:border-surface-z4 flex flex-col gap-1 rounded-md border border-transparent px-2 py-1.5 transition-colors">
+				<div
+					class="bg-surface-z2 hover:bg-surface-z3 hover:border-surface-z4 flex flex-col gap-1 rounded-md border border-transparent px-2 py-1.5 transition-colors"
+				>
 					<div class="flex gap-0.5">
 						{#each family.variants as v (v.key)}
 							{#if v.icon}
@@ -206,7 +206,9 @@
 							{/if}
 						{/each}
 					</div>
-					<span class="text-surface-z5 truncate font-mono text-[10px] leading-tight">{family.base}</span>
+					<span class="text-surface-z5 truncate font-mono text-[10px] leading-tight"
+						>{family.base}</span
+					>
 				</div>
 			{/each}
 		</div>
@@ -223,7 +225,9 @@
 		</div>
 		<div class="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-2">
 			{#each families as family (family.base)}
-				<div class="bg-surface-z2 hover:bg-surface-z3 hover:border-surface-z4 flex flex-col gap-1 rounded-md border border-transparent px-2 py-1.5 transition-colors">
+				<div
+					class="bg-surface-z2 hover:bg-surface-z3 hover:border-surface-z4 flex flex-col gap-1 rounded-md border border-transparent px-2 py-1.5 transition-colors"
+				>
 					<div class="flex gap-0.5">
 						{#each family.variants as v (v.key)}
 							{#if v.icon}
@@ -239,7 +243,9 @@
 							{/if}
 						{/each}
 					</div>
-					<span class="text-surface-z5 truncate font-mono text-[10px] leading-tight">{family.base}</span>
+					<span class="text-surface-z5 truncate font-mono text-[10px] leading-tight"
+						>{family.base}</span
+					>
 				</div>
 			{/each}
 		</div>

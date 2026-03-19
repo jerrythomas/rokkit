@@ -7,9 +7,9 @@
  * @returns {boolean}
  */
 export function evaluateCondition(condition, data) {
-  if (!condition) return true
-  const value = data[condition.field]
-  if ('equals' in condition) return value === condition.equals
-  if ('notEquals' in condition) return value !== condition.notEquals
-  return true
+	if (!condition) return true
+	const value = data[condition.field]
+	if ('equals' in condition) return value === condition.equals
+	if ('notEquals' in condition) return value !== condition.notEquals
+	return true
 }

@@ -23,11 +23,11 @@
 [data-style='minimal']
   [data-tabs][data-orientation='vertical'][data-position='after']
   [data-tabs-list] {
-  @apply border-r-0 border-l;
+  @apply border-t-0 border-r-0 border-l;
 }
 
 /* =============================================================================
-   Tab Triggers
+   Tab Triggers — default: horizontal/before (bottom border)
    ============================================================================= */
 
 [data-style='minimal'] [data-tabs-trigger] {
@@ -35,12 +35,87 @@
 }
 
 [data-style='minimal'] [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {
-  @apply text-surface-z8 border-b-surface-z4;
+  @apply text-surface-z8 border-b-secondary-z4;
 }
 
-/* Selected state */
 [data-style='minimal'] [data-tabs-trigger][data-selected] {
-  @apply text-surface-z9 border-b-primary-z4;
+  @apply bg-none text-surface-z9 border-b-primary-z4;
+}
+
+/* Reset rokkit gradients bleeding in from body[data-style='rokkit'] ancestor */
+[data-style='minimal'] [data-tabs-list]:focus-within [data-tabs-trigger][data-selected] {
+  @apply bg-none;
+}
+
+[data-style='minimal']
+  [data-tabs][data-orientation='vertical']
+  [data-tabs-list]:focus-within
+  [data-tabs-trigger][data-selected] {
+  @apply bg-none;
+}
+
+[data-style='minimal']
+  [data-tabs][data-orientation='vertical'][data-position='after']
+  [data-tabs-list]:focus-within
+  [data-tabs-trigger][data-selected] {
+  @apply bg-none;
+}
+
+/* Horizontal after (tabs below content): top border */
+[data-style='minimal'] [data-tabs][data-position='after'] [data-tabs-trigger] {
+  @apply border-b-0 border-t-2 border-t-transparent;
+}
+
+[data-style='minimal']
+  [data-tabs][data-position='after']
+  [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {
+  @apply border-t-secondary-z4;
+}
+
+[data-style='minimal'] [data-tabs][data-position='after'] [data-tabs-trigger][data-selected] {
+  @apply border-t-primary-z4;
+}
+
+[data-style='minimal']
+  [data-tabs][data-position='after']
+  [data-tabs-list]:focus-within
+  [data-tabs-trigger][data-selected] {
+  @apply bg-none;
+}
+
+/* Vertical before (tabs on left): right border, rounded left */
+[data-style='minimal'] [data-tabs][data-orientation='vertical'] [data-tabs-trigger] {
+  @apply border-b-0 border-r-2 border-r-transparent rounded-none rounded-l;
+}
+
+[data-style='minimal']
+  [data-tabs][data-orientation='vertical']
+  [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {
+  @apply border-r-secondary-z4;
+}
+
+[data-style='minimal'] [data-tabs][data-orientation='vertical'] [data-tabs-trigger][data-selected] {
+  @apply border-r-primary-z4;
+}
+
+/* Vertical after (tabs on right): left border, rounded right */
+/* Must explicitly zero border-t set by data-position='after' rule */
+[data-style='minimal']
+  [data-tabs][data-orientation='vertical'][data-position='after']
+  [data-tabs-trigger] {
+  @apply border-t-0 border-b-0 border-r-0 border-l-2 border-l-transparent rounded-none rounded-r;
+}
+
+[data-style='minimal']
+  [data-tabs][data-orientation='vertical'][data-position='after']
+  [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {
+  @apply border-t-0 border-b-0 border-r-0 border-l-secondary-z4;
+}
+
+[data-style='minimal']
+  [data-tabs][data-orientation='vertical'][data-position='after']
+  [data-tabs-trigger][data-selected] {
+  @apply border-t-0 border-b-0 border-r-0 border-l-primary-z4;
 }
 
 /* =============================================================================
