@@ -39,6 +39,7 @@
 			icon: 'i-glyph:keyboard',
 			children: [
 				{ title: 'Button', slug: '/playground/components/button', icon: 'i-glyph:button' },
+				{ title: 'Inputs', slug: '/playground/components/inputs', icon: 'i-glyph:forms' },
 				{
 					title: 'Button Group',
 					slug: '/playground/components/button-group',

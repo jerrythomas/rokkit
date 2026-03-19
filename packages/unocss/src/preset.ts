@@ -42,6 +42,14 @@ function buildSafelist() {
 	]
 }
 
+function buildPreflights(theme) {
+	const vars = theme.getPalette()
+	const cssVars = Object.entries(vars)
+		.map(([k, v]) => `${k}:${v}`)
+		.join(';')
+	return [{ getCSS: () => `:root{${cssVars}}` }]
+}
+
 function buildShortcuts(theme, config) {
 	const shortcuts = []
 
@@ -76,6 +84,7 @@ export function presetRokkit(options = {}): Preset {
 		extractors: [extractorSvelte()],
 		rules: [['hidden', { display: 'none' }]],
 		safelist: buildSafelist(),
+		preflights: buildPreflights(theme),
 		shortcuts: buildShortcuts(theme, config),
 		theme: {
 			fontFamily: FONT_FAMILIES,

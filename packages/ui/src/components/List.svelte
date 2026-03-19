@@ -82,6 +82,15 @@
 		return () => nav.destroy()
 	})
 
+	// Expand all groups on mount and when items change.
+	// collapsible=false: groups are fixed section headers — must always show children.
+	// collapsible=true: groups start expanded; user can collapse individual groups.
+	$effect(() => {
+		for (const [, proxy] of wrapper.lookup) {
+			if (proxy.hasChildren) proxy.expanded = true
+		}
+	})
+
 	// ─── Sync external value → focused key ────────────────────────────────────
 
 	$effect(() => {
