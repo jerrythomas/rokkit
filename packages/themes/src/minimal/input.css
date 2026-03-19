@@ -1,18 +1,40 @@
 /* Minimal Theme - Form field and input styles
- * Underline-based input styling with clean, minimal appearance.
+ * Underline-only inputs with animated expanding focus line.
  */
 
 /* Input root: transparent background, bottom border only */
 [data-style='minimal'] [data-input-root] {
-  @apply border-surface-z3 relative flex items-center border-b bg-transparent p-0 transition-all;
+  @apply border-surface-z2 relative flex items-center border-b bg-transparent p-0;
   border-radius: 0;
   background-image: none;
 }
 
-/* Override rokkit default gradient on focus */
-[data-style='minimal'] [data-input-root]:focus-within {
-  @apply border-b-secondary-600 bg-transparent;
+/* Hover: very subtle tint */
+[data-style='minimal'] [data-input-root]:hover:not(:focus-within) {
+  @apply bg-surface-z1;
   background-image: none;
+}
+
+/* Focus: keep transparent — the ::after animated line handles the accent */
+[data-style='minimal'] [data-input-root]:focus-within {
+  @apply bg-transparent;
+  background-image: none;
+}
+
+/* Animated underline — grows left to right on focus */
+[data-style='minimal'] [data-input-root]::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  @apply bg-secondary-z6;
+  transition: width 0.3s ease;
+}
+
+[data-style='minimal'] [data-input-root]:focus-within::after {
+  width: 100%;
 }
 
 /* Inputs inside wrapper */
@@ -21,9 +43,10 @@
   input:not([type='checkbox'], [type='radio'], [type='color']),
 [data-style='minimal'] [data-input-root] textarea,
 [data-style='minimal'] [data-input-root] select {
-  @apply text-surface-z9 w-full border-none bg-transparent px-1 py-1.5 transition-all outline-none;
+  @apply text-surface-z9 w-full border-none bg-transparent px-1 py-1.5 outline-none;
   font-size: 0.875rem;
   line-height: 1.25rem;
+  transition: color 150ms ease;
 }
 
 [data-style='minimal'] [data-input-root] textarea {
@@ -49,16 +72,17 @@
 
 /* Labels: smaller, uppercase */
 [data-style='minimal'] [data-field] > label {
-  @apply text-surface-z6 text-xs tracking-wide uppercase;
+  @apply text-surface-z5 text-xs tracking-wide uppercase;
+  transition: color 150ms ease;
 }
 
 [data-style='minimal'] [data-form-root] label {
-  @apply text-surface-z6 text-xs tracking-wide uppercase;
+  @apply text-surface-z5 text-xs tracking-wide uppercase;
 }
 
 /* Focused label: secondary color */
 [data-style='minimal'] [data-field]:has([data-input-root]:focus-within) > label {
-  @apply text-secondary-600;
+  @apply text-secondary-z6;
 }
 
 /* Field root */
@@ -78,7 +102,11 @@
 
 /* Disabled state */
 [data-style='minimal'] [data-field-disabled] [data-input-root] {
-  @apply border-surface-z3 cursor-not-allowed opacity-50;
+  @apply border-surface-z2 cursor-not-allowed opacity-40;
+}
+
+[data-style='minimal'] [data-field-disabled] [data-input-root]::after {
+  display: none;
 }
 
 /* Error state */
@@ -86,14 +114,24 @@
   @apply border-danger-z4;
 }
 
+[data-style='minimal'] [data-field-state='fail'] [data-input-root]::after {
+  @apply bg-danger-z5;
+}
+
+/* Pass state */
+[data-style='minimal'] [data-field-state='pass'] [data-input-root]::after {
+  @apply bg-success-z5;
+  width: 100%;
+}
+
 /* Description */
 [data-style='minimal'] [data-description] {
-  @apply text-surface-z6 mt-0.5 text-xs;
+  @apply text-surface-z5 mt-0.5 text-xs;
 }
 
 /* Message */
 [data-style='minimal'] [data-message] {
-  @apply text-danger-z6 mt-0.5 text-xs;
+  @apply text-danger-z5 mt-0.5 text-xs;
 }
 
 /* Checkbox */
@@ -104,16 +142,16 @@
 [data-style='minimal']
   [data-checkbox-root][data-variant='custom']:has(input:checked)
   [data-checkbox-icon] {
-  @apply text-secondary-600;
+  @apply text-secondary-z6;
 }
 
 /* Checkbox label: secondary on focus (checkbox has no input-root) */
 [data-style='minimal'] [data-field-type='checkbox'] [data-field]:has(:focus-within) > label {
-  @apply text-secondary-600;
+  @apply text-secondary-z6;
 }
 
 /* Placeholders */
 [data-style='minimal'] [data-input-root] input::placeholder,
 [data-style='minimal'] [data-input-root] textarea::placeholder {
-  @apply text-surface-z4;
+  @apply text-surface-z3;
 }
