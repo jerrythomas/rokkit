@@ -1,0 +1,31 @@
+/**
+ * Switch - Grada UI Theme Styles
+ *
+ * Gradient track when active.
+ */
+
+[data-style='grada-ui'] [data-switch-track] {
+  @apply bg-none bg-surface-z3;
+}
+
+[data-style='grada-ui'] [data-switch-thumb] {
+  @apply bg-white shadow-md;
+}
+
+[data-style='grada-ui'] [data-switch]:focus-visible [data-switch-track] {
+  outline: 2px solid var(--gd-primary);
+  outline-offset: 2px;
+}
+
+/* On state — gradient track */
+[data-style='grada-ui'] [data-switch][aria-checked='true'] [data-switch-track] {
+  background: var(--gd-gradient);
+}
+
+[data-style='grada-ui'] [data-switch][aria-checked='true'] [data-switch-thumb] {
+  @apply bg-white shadow-lg;
+}
+
+[data-style='grada-ui'] [data-switch-label] {
+  @apply text-surface-z7;
+}

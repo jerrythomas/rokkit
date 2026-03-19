@@ -1,0 +1,54 @@
+/**
+ * Range - Grada UI Theme Styles
+ *
+ * Gradient selected track, white square thumb handles.
+ */
+
+/* Track */
+[data-style='grada-ui'] [data-range-bar] {
+  @apply bg-surface-z3;
+}
+
+[data-style='grada-ui'] [data-range-selected] {
+  background: var(--gd-gradient);
+}
+
+/* Thumb — white square */
+[data-style='grada-ui'] [data-range-thumb] {
+  background-color: white;
+  border: 2px solid var(--gd-primary);
+  border-radius: 2px;
+  @apply shadow-md;
+}
+
+[data-style='grada-ui'] [data-range-thumb][data-sliding] {
+  @apply shadow-lg;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--gd-primary) 25%, transparent);
+}
+
+[data-style='grada-ui'] [data-range-thumb]:focus-visible {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--gd-primary) 25%, transparent);
+}
+
+/* Ticks */
+[data-style='grada-ui'] [data-range-tick] {
+  @apply text-surface-z6;
+}
+
+[data-style='grada-ui'] [data-tick-bar] {
+  @apply border-surface-z5;
+}
+
+[data-style='grada-ui'] [data-tick-label] {
+  @apply text-surface-z6;
+}
+
+/* Disabled */
+[data-style='grada-ui'] [data-range][data-disabled] [data-range-thumb] {
+  @apply bg-surface-z4 border-surface-z4 shadow-none;
+}
+
+[data-style='grada-ui'] [data-range][data-disabled] [data-range-selected] {
+  @apply bg-surface-z4;
+  background: none;
+}

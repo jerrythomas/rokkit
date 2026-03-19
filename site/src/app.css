@@ -15,6 +15,7 @@
 @import '@rokkit/themes/minimal.css';
 @import '@rokkit/themes/material.css';
 @import '@rokkit/themes/glass.css';
+@import '@rokkit/themes/grada-ui.css';
 
 /* Learn-site specific overrides loaded after package */
 @import './theme/base/shiki.css';

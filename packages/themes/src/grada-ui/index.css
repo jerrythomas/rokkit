@@ -1,0 +1,54 @@
+/**
+ * @rokkit/themes - Grada UI Theme
+ *
+ * Coral/purple gradient identity with Montserrat typography.
+ * Clean white form elements, pill buttons, left-border accent states.
+ * Use with data-style="grada-ui" wrapper.
+ */
+
+/* =============================================================================
+   Grada UI Design Tokens
+   ============================================================================= */
+
+[data-style='grada-ui'] {
+  /* Brand colors (from Figma) */
+  --gd-primary: #f27a54;
+  --gd-secondary: #a154f2;
+  --gd-gradient: linear-gradient(to right, #f27a54, #a154f2);
+
+  /* Semantic colors */
+  --gd-success: #6fcf97;
+  --gd-error-border: #cf6f8a;
+  --gd-error-text: #f27474;
+
+  /* Surface palette */
+  --gd-dark: #30363d;
+  --gd-surface-a: #3c444c;
+  --gd-surface-b: #747d88;
+  --gd-grey-c: #cbcfd4;
+
+  /* Typography */
+  font-family: 'Montserrat', sans-serif;
+}
+
+@import './button.css';
+@import './input.css';
+@import './toolbar.css';
+@import './tabs.css';
+@import './toggle.css';
+@import './switch.css';
+@import './list.css';
+@import './tree.css';
+@import './select.css';
+@import './menu.css';
+@import './dropdown.css';
+@import './floating-action.css';
+@import './table.css';
+@import './search-filter.css';
+@import './range.css';
+@import './timeline.css';
+@import './floating-navigation.css';
+@import './toc.css';
+@import './card.css';
+@import './message.css';
+@import './status-list.css';

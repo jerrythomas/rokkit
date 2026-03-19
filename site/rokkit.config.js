@@ -4,6 +4,17 @@ export default {
 	},
 	skins: {
 		default: { surface: 'shark' },
+		'grada-ui': {
+			primary: 'orange',
+			secondary: 'violet',
+			accent: 'purple',
+			surface: 'slate',
+			success: 'green',
+			warning: 'yellow',
+			danger: 'rose',
+			error: 'rose',
+			info: 'purple'
+		},
 		vibrant: { primary: 'blue', secondary: 'purple' },
 		seaweed: {
 			primary: 'sky',

@@ -1,0 +1,58 @@
+/**
+ * FloatingAction - Grada UI Theme Styles
+ *
+ * Gradient FAB trigger, pill-shaped action items.
+ */
+
+[data-style='grada-ui'] [data-fab-trigger] {
+  background: var(--gd-gradient);
+  color: white;
+  @apply shadow-lg;
+  border-radius: 50%;
+  transition: filter 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+[data-style='grada-ui'] [data-fab-trigger]:hover:not(:disabled) {
+  filter: brightness(1.1);
+  @apply shadow-xl;
+  transform: scale(1.05);
+}
+
+[data-style='grada-ui'] [data-fab-trigger]:focus-visible {
+  outline: 2px solid var(--gd-primary);
+  outline-offset: 2px;
+}
+
+[data-style='grada-ui'] [data-fab][data-open='true'] [data-fab-trigger] {
+  @apply bg-none bg-surface-z4 text-surface-z10 shadow-lg;
+  background: none;
+  transform: rotate(45deg);
+}
+
+/* FAB Items */
+[data-style='grada-ui'] [data-fab-item] {
+  @apply bg-white text-surface-z8 shadow-md;
+  border-radius: 20px;
+}
+
+[data-style='grada-ui'] [data-fab-item]:hover:not(:disabled) {
+  @apply bg-surface-z1 text-surface-z10 shadow-lg;
+}
+
+[data-style='grada-ui'] [data-fab-item]:focus-visible {
+  outline: 2px solid var(--gd-primary);
+  outline-offset: -2px;
+}
+
+[data-style='grada-ui'] [data-fab-item] [data-fab-item-icon] {
+  color: var(--gd-primary);
+}
+
+[data-style='grada-ui'] [data-fab-item]:hover:not(:disabled) [data-fab-item-icon] {
+  color: var(--gd-secondary);
+}
+
+/* Backdrop */
+[data-style='grada-ui'] [data-fab-backdrop] {
+  background: rgba(0, 0, 0, 0.5);
+}

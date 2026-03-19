@@ -1,0 +1,92 @@
+/**
+ * Card - Grada UI Theme Styles
+ *
+ * Dark surface cards with subtle borders and 3px radius.
+ */
+
+[data-style='grada-ui'] [data-card] {
+  @apply bg-none border text-surface-z9;
+  background-color: var(--gd-surface-a);
+  border-color: var(--gd-grey-a);
+  border-radius: 3px;
+}
+
+[data-style='grada-ui'] [data-card][data-card-interactive] {
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+[data-style='grada-ui'] [data-card][data-card-interactive]:hover {
+  @apply shadow-md;
+  border-color: var(--gd-primary);
+}
+
+[data-style='grada-ui'] [data-card][data-card-interactive]:active {
+  @apply shadow-sm;
+}
+
+/* =============================================================================
+   Card Sections
+   ============================================================================= */
+
+[data-style='grada-ui'] [data-card-header] {
+  border-bottom: 1px solid var(--gd-grey-a);
+}
+
+[data-style='grada-ui'] [data-card-body] {
+  @apply text-surface-z8;
+}
+
+[data-style='grada-ui'] [data-card-footer] {
+  @apply text-surface-z7;
+  border-top: 1px solid var(--gd-grey-a);
+}
+
+/* =============================================================================
+   Focus States
+   ============================================================================= */
+
+[data-style='grada-ui'] [data-card][data-card-interactive]:focus-visible {
+  outline: 2px solid var(--gd-primary);
+  outline-offset: 2px;
+}
+
+/* =============================================================================
+   Disabled
+   ============================================================================= */
+
+[data-style='grada-ui'] [data-card][data-card-interactive][data-disabled],
+[data-style='grada-ui'] [data-card][data-card-interactive]:disabled {
+  @apply cursor-not-allowed opacity-50 shadow-none;
+}
+
+/* =============================================================================
+   Variants
+   ============================================================================= */
+
+[data-style='grada-ui'] [data-card][data-variant='primary'] {
+  background: var(--gd-gradient);
+  color: white;
+  border: none;
+}
+
+[data-style='grada-ui'] [data-card][data-variant='primary'] [data-card-header],
+[data-style='grada-ui'] [data-card][data-variant='primary'] [data-card-footer] {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-style='grada-ui'] [data-card][data-variant='primary'] [data-card-body] {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+[data-style='grada-ui'] [data-card][data-variant='secondary'] {
+  background-color: var(--gd-secondary);
+  color: white;
+  border: none;
+  border-radius: 3px;
+}
+
+[data-style='grada-ui'] [data-card][data-variant='tertiary'] {
+  @apply bg-none bg-surface-z1 border-surface-z3 text-surface-z7 border shadow-none;
+  border-radius: 3px;
+}

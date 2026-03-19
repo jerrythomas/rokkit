@@ -1,0 +1,24 @@
+/* TableOfContents — Grada UI theme */
+
+[data-style='grada-ui'] [data-toc] [data-toc-label] {
+  @apply text-surface-z6;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+}
+
+[data-style='grada-ui'] [data-toc] [data-toc-item] {
+  @apply text-surface-z7;
+}
+
+[data-style='grada-ui'] [data-toc] [data-toc-item]:hover,
+[data-style='grada-ui'] [data-toc] [data-toc-item][data-toc-focused] {
+  @apply text-surface-z10 bg-surface-z1 outline-none;
+}
+
+[data-style='grada-ui'] [data-toc] [data-toc-item][data-toc-active] {
+  color: var(--gd-primary);
+  border-left-color: var(--gd-primary);
+}

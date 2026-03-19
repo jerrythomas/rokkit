@@ -1,0 +1,53 @@
+/**
+ * Dropdown - Grada UI Theme Styles
+ */
+
+[data-style='grada-ui'] [data-dropdown-trigger] {
+  @apply bg-white text-surface-z8 border-surface-z4 border;
+  border-radius: 3px;
+}
+
+[data-style='grada-ui'] [data-dropdown-trigger]:hover:not(:disabled) {
+  @apply text-surface-z10 border-surface-z5;
+  border-color: var(--gd-primary);
+}
+
+[data-style='grada-ui'] [data-dropdown-trigger]:focus-visible {
+  outline: 2px solid var(--gd-primary);
+  outline-offset: -2px;
+}
+
+[data-style='grada-ui'] [data-dropdown][data-open='true'] [data-dropdown-trigger] {
+  border-color: var(--gd-primary);
+}
+
+[data-style='grada-ui'] [data-dropdown-trigger] [data-dropdown-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='grada-ui'] [data-dropdown-trigger] [data-dropdown-arrow] {
+  @apply text-surface-z5;
+}
+
+[data-style='grada-ui'] [data-dropdown-panel] {
+  @apply bg-white border-surface-z3 border shadow-lg;
+  border-radius: 3px;
+}
+
+[data-style='grada-ui'] [data-dropdown-option] {
+  @apply text-surface-z8;
+}
+
+[data-style='grada-ui'] [data-dropdown-option]:hover:not(:disabled),
+[data-style='grada-ui'] [data-dropdown-option]:focus:not(:disabled) {
+  @apply bg-surface-z1 text-surface-z10 outline-none;
+}
+
+[data-style='grada-ui'] [data-dropdown-option][data-active='true'] {
+  background: var(--gd-gradient);
+  color: white;
+}
+
+[data-style='grada-ui'] [data-dropdown-separator] {
+  @apply bg-surface-z3;
+}

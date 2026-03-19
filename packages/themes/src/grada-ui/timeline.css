@@ -1,0 +1,36 @@
+/**
+ * Timeline - Grada UI Theme Styles
+ */
+
+[data-style='grada-ui'] [data-timeline-circle] {
+  @apply border-surface-z4 text-surface-z6;
+}
+
+[data-style='grada-ui'] [data-timeline-item][data-completed] [data-timeline-circle] {
+  background: var(--gd-gradient);
+  border-color: var(--gd-primary);
+  color: white;
+  @apply shadow-sm;
+}
+
+[data-style='grada-ui'] [data-timeline-item][data-active] [data-timeline-circle] {
+  border-color: var(--gd-primary);
+  color: var(--gd-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--gd-primary) 25%, transparent);
+}
+
+[data-style='grada-ui'] [data-timeline-connector] {
+  @apply bg-surface-z3;
+}
+
+[data-style='grada-ui'] [data-timeline-item][data-completed] [data-timeline-connector] {
+  background: var(--gd-gradient);
+}
+
+[data-style='grada-ui'] [data-timeline-title] {
+  @apply text-surface-z8;
+}
+
+[data-style='grada-ui'] [data-timeline-description] {
+  @apply text-surface-z6;
+}

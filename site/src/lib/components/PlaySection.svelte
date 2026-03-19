@@ -10,7 +10,8 @@
 		{ label: 'rokkit', value: 'rokkit' },
 		{ label: 'minimal', value: 'minimal' },
 		{ label: 'material', value: 'material' },
-		{ label: 'glass', value: 'glass' }
+		{ label: 'glass', value: 'glass' },
+		{ label: 'grada-ui', value: 'grada-ui' }
 	]
 	let showControls = $state(false)
 	let showData = $state(false)

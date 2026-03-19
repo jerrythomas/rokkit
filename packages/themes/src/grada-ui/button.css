@@ -1,0 +1,197 @@
+/**
+ * Button - Grada UI Theme Styles
+ *
+ * Gradient brand identity with pill-shape primary actions,
+ * uppercase Montserrat Bold labels.
+ */
+
+/* =============================================================================
+   Shared Base
+   ============================================================================= */
+
+[data-style='grada-ui'] [data-button] {
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.625rem;
+  font-weight: 700;
+  transition: filter 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* =============================================================================
+   Default Style (filled)
+   ============================================================================= */
+
+[data-style='grada-ui'] [data-button][data-style='default'][data-variant='default'],
+[data-style='grada-ui'] [data-button]:not([data-style])[data-variant='default'],
+[data-style='grada-ui'] [data-button][data-style='default']:not([data-variant]),
+[data-style='grada-ui'] [data-button]:not([data-style]):not([data-variant]) {
+  @apply bg-none bg-surface-z2 text-surface-z8 shadow-sm;
+  border-radius: 20px;
+}
+
+[data-style='grada-ui'] [data-button][data-style='default'][data-variant='primary'],
+[data-style='grada-ui'] [data-button]:not([data-style])[data-variant='primary'] {
+  background: var(--gd-gradient);
+  color: white;
+  border-radius: 20px;
+  @apply shadow-md;
+}
+
+[data-style='grada-ui'] [data-button][data-style='default'][data-variant='secondary'],
+[data-style='grada-ui'] [data-button]:not([data-style])[data-variant='secondary'] {
+  background-color: var(--gd-secondary);
+  color: white;
+  border-radius: 20px;
+  @apply shadow-md;
+}
+
+[data-style='grada-ui'] [data-button][data-style='default'][data-variant='danger'],
+[data-style='grada-ui'] [data-button]:not([data-style])[data-variant='danger'] {
+  background-color: var(--gd-error);
+  color: white;
+  border-radius: 20px;
+  @apply shadow-md;
+}
+
+/* =============================================================================
+   Outline Style
+   ============================================================================= */
+
+[data-style='grada-ui'] [data-button][data-style='outline'][data-variant='default'],
+[data-style='grada-ui'] [data-button][data-style='outline']:not([data-variant]) {
+  @apply border-surface-z4 text-surface-z7 border bg-transparent;
+  border-radius: 20px;
+}
+
+[data-style='grada-ui'] [data-button][data-style='outline'][data-variant='primary'] {
+  border: 2px solid var(--gd-primary);
+  color: var(--gd-primary);
+  background: transparent;
+  border-radius: 20px;
+}
+
+[data-style='grada-ui'] [data-button][data-style='outline'][data-variant='secondary'] {
+  border: 2px solid var(--gd-secondary);
+  color: var(--gd-secondary);
+  background: transparent;
+  border-radius: 20px;
+}
+
+[data-style='grada-ui'] [data-button][data-style='outline'][data-variant='danger'] {
+  border: 2px solid var(--gd-error);
+  color: var(--gd-error);
+  background: transparent;
+  border-radius: 20px;
+}
+
+/* =============================================================================
+   Ghost Style
+   ============================================================================= */
+
+[data-style='grada-ui'] [data-button][data-style='ghost'] {
+  background: transparent;
+  border-color: transparent;
+  border-radius: 20px;
+}
+
+[data-style='grada-ui'] [data-button][data-style='ghost'][data-variant='default'],
+[data-style='grada-ui'] [data-button][data-style='ghost']:not([data-variant]) {
+  @apply text-surface-z7;
+}
+
+[data-style='grada-ui'] [data-button][data-style='ghost'][data-variant='primary'] {
+  color: var(--gd-primary);
+}
+
+[data-style='grada-ui'] [data-button][data-style='ghost'][data-variant='secondary'] {
+  color: var(--gd-secondary);
+}
+
+[data-style='grada-ui'] [data-button][data-style='ghost'][data-variant='danger'] {
+  color: var(--gd-error);
+}
+
+/* =============================================================================
+   Gradient Style
+   ============================================================================= */
+
+[data-style='grada-ui'] [data-button][data-style='gradient'][data-variant='default'],
+[data-style='grada-ui'] [data-button][data-style='gradient']:not([data-variant]) {
+  @apply from-surface-z3 to-surface-z1 text-surface-z10 bg-gradient-to-br shadow-md;
+  border-radius: 20px;
+}
+
+[data-style='grada-ui'] [data-button][data-style='gradient'][data-variant='primary'],
+[data-style='grada-ui'] [data-button][data-style='gradient'][data-variant='secondary'] {
+  background: var(--gd-gradient);
+  color: white;
+  border-radius: 20px;
+  @apply shadow-md;
+}
+
+[data-style='grada-ui'] [data-button][data-style='gradient'][data-variant='danger'] {
+  background-color: var(--gd-error);
+  color: white;
+  border-radius: 20px;
+  @apply shadow-md;
+}
+
+/* =============================================================================
+   Link Style
+   ============================================================================= */
+
+[data-style='grada-ui'] [data-button][data-style='link'][data-variant='default'],
+[data-style='grada-ui'] [data-button][data-style='link']:not([data-variant]) {
+  @apply text-surface-z7;
+}
+
+[data-style='grada-ui'] [data-button][data-style='link'][data-variant='primary'] {
+  color: var(--gd-primary);
+}
+
+[data-style='grada-ui'] [data-button][data-style='link'][data-variant='secondary'] {
+  color: var(--gd-secondary);
+}
+
+[data-style='grada-ui'] [data-button][data-style='link'][data-variant='danger'] {
+  color: var(--gd-error);
+}
+
+/* =============================================================================
+   Hover States
+   ============================================================================= */
+
+[data-style='grada-ui']
+  [data-button][data-variant='primary']:hover:not(:disabled):not([data-disabled]),
+[data-style='grada-ui']
+  [data-button][data-style='gradient']:hover:not(:disabled):not([data-disabled]) {
+  filter: brightness(1.1);
+  @apply shadow-lg;
+}
+
+[data-style='grada-ui']
+  [data-button][data-style='default']:hover:not(:disabled):not([data-disabled]),
+[data-style='grada-ui'] [data-button]:not([data-style]):hover:not(:disabled):not([data-disabled]) {
+  @apply shadow-md;
+  filter: brightness(1.05);
+}
+
+[data-style='grada-ui']
+  [data-button][data-style='outline']:hover:not(:disabled):not([data-disabled]) {
+  @apply bg-surface-z1;
+}
+
+[data-style='grada-ui']
+  [data-button][data-style='ghost']:hover:not(:disabled):not([data-disabled]) {
+  @apply bg-surface-z1;
+}
+
+/* =============================================================================
+   Focus
+   ============================================================================= */
+
+[data-style='grada-ui'] [data-button]:focus-visible {
+  outline: 2px solid var(--gd-primary);
+  outline-offset: 2px;
+}
