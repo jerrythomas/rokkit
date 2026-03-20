@@ -174,8 +174,14 @@ Navigation controller for persistent list/tree/sidebar components. Owns `focused
 ### Constructor
 
 ```javascript
-new Wrapper(proxyTree, { onselect?, onchange? }?)
+new Wrapper(proxyTree, { onselect?, onchange?, collapsible? }?)
 ```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `onselect` | `Function` | — | Called on every leaf selection with `(value, proxy)` |
+| `onchange` | `Function` | — | Called on leaf selection only when value changes |
+| `collapsible` | `boolean` | `true` | When `false`, `toggle()`, `collapse()` (closing), and `select()` on groups are no-ops — groups stay permanently open |
 
 ### Properties
 
@@ -195,7 +201,7 @@ new Wrapper(proxyTree, { onselect?, onchange? }?)
 | `first(path)` | Focus first navigable item |
 | `last(path)` | Focus last navigable item |
 | `expand(path)` | Expand focused group; if already open, advances focus to first child |
-| `collapse(path)` | Collapse focused group; if leaf/collapsed, moves focus to parent |
+| `collapse(path)` | Collapse focused group; if leaf/collapsed, moves focus to parent. When `collapsible=false`, always moves to parent without closing |
 | `moveTo(path)` | Sync focused key to path — called by Navigator on focusin |
 | `moveToValue(v)` | Sync focus to the item matching a semantic value |
 
@@ -203,8 +209,8 @@ new Wrapper(proxyTree, { onselect?, onchange? }?)
 
 | Method | Description |
 |--------|-------------|
-| `select(path)` | Select item at path (or `focusedKey`). Groups toggle expanded; leaves fire `onchange`/`onselect` |
-| `toggle(path)` | Toggle group expansion — does not fire `onselect` |
+| `select(path)` | Select item at path (or `focusedKey`). Groups toggle expanded (only when `collapsible=true`); leaves fire `onchange`/`onselect` |
+| `toggle(path)` | Toggle group expansion — does not fire `onselect`. No-op when `collapsible=false` |
 | `findByText(query, startAfterKey?)` | Typeahead: returns key of first item whose label starts with query (case-insensitive, wraps around) |
 | `cancel(path)` | No-op on persistent lists; override in dropdown subclasses to close |
 | `blur()` | No-op on persistent lists; override in dropdown subclasses |
