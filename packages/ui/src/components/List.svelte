@@ -70,7 +70,7 @@
 	// Navigator calls wrapper[action](path) → focusedKey / proxy.expanded updates →
 	// flatView $derived re-computes → Svelte re-renders the changed nodes.
 	const proxyTree = $derived(new ProxyTree(items, fields))
-	const wrapper = $derived(new Wrapper(proxyTree, { onselect }))
+	const wrapper = $derived(new Wrapper(proxyTree, { onselect, collapsible }))
 
 	let listRef = $state<HTMLElement | null>(null)
 

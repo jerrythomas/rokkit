@@ -582,6 +582,51 @@ describe('Wrapper — findByText()', () => {
 	})
 })
 
+// ─── collapsible=false ────────────────────────────────────────────────────────
+
+describe('Wrapper — collapsible=false', () => {
+	it('toggle() is a no-op — group stays expanded', () => {
+		const w = new Wrapper(new ProxyTree(nested), { collapsible: false })
+		w.lookup.get('0').expanded = true
+		w.toggle('0')
+		expect(w.lookup.get('0').expanded).toBe(true)
+	})
+
+	it('select() on a group does not change expanded state', () => {
+		const w = new Wrapper(new ProxyTree(nested), { collapsible: false })
+		w.lookup.get('0').expanded = true
+		w.select('0')
+		expect(w.lookup.get('0').expanded).toBe(true)
+	})
+
+	it('collapse() on an expanded group does not close it — focuses parent instead', () => {
+		const w = new Wrapper(new ProxyTree(nested), { collapsible: false })
+		w.lookup.get('0').expanded = true
+		w.moveTo('0')
+		w.collapse(null)
+		// group stays expanded, focus moves to parent (root → no-op for key '0')
+		expect(w.lookup.get('0').expanded).toBe(true)
+	})
+
+	it('collapse() on a child still moves focus to parent', () => {
+		const w = new Wrapper(new ProxyTree(nested), { collapsible: false })
+		w.lookup.get('0').expanded = true
+		w.moveTo('0-0')
+		w.collapse(null)
+		expect(w.focusedKey).toBe('0')
+		expect(w.lookup.get('0').expanded).toBe(true)
+	})
+
+	it('select() on a leaf still fires onselect', () => {
+		const onselect = vi.fn()
+		const w = new Wrapper(new ProxyTree(nested), { onselect, collapsible: false })
+		w.lookup.get('0').expanded = true
+		w.select('0-0')
+		expect(onselect).toHaveBeenCalledOnce()
+		expect(onselect.mock.calls[0][0]).toBe('apple')
+	})
+})
+
 // ─── cancel / blur / extend / range (no-ops for persistent list) ──────────────
 
 describe('Wrapper — no-op methods', () => {

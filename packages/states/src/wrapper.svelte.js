@@ -42,14 +42,17 @@ export class Wrapper {
 	#onchange
 	#selectedValue = $state(undefined)
 
+	#collapsible
+
 	/**
 	 * @param {import('./proxy-tree.svelte.js').ProxyTree} proxyTree
-	 * @param {{ onselect?: Function, onchange?: Function }} [options]
+	 * @param {{ onselect?: Function, onchange?: Function, collapsible?: boolean }} [options]
 	 */
 	constructor(proxyTree, options = {}) {
 		this.#proxyTree = proxyTree
 		this.#onselect = options.onselect
 		this.#onchange = options.onchange
+		this.#collapsible = options.collapsible ?? true
 	}
 
 	// ─── IWrapper: state read by Navigator ─────────────────────────────────────
@@ -90,7 +93,8 @@ export class Wrapper {
 
 	/**
 	 * Expand focused group, or move focus into it if already open.
-	 * No-op on leaf items.
+	 * No-op on leaf items. When collapsible=false groups are always open,
+	 * so this only ever moves focus into the first child.
 	 */
 	expand(_path) {
 		if (!this.#focusedKey) return
@@ -119,12 +123,13 @@ export class Wrapper {
 	/**
 	 * Collapse focused group, or move focus to parent if already collapsed / leaf.
 	 * At root level with no parent: no-op.
+	 * When collapsible=false, skips closing the group but still moves focus to parent.
 	 */
 	collapse(_path) {
 		if (!this.#focusedKey) return
 		const node = this.flatView.find((n) => n.key === this.#focusedKey)
 		if (!node) return
-		if (node.hasChildren && node.proxy.expanded) {
+		if (node.hasChildren && node.proxy.expanded && this.#collapsible) {
 			node.proxy.expanded = false
 		} else {
 			this.#focusParent()
@@ -147,7 +152,7 @@ export class Wrapper {
 
 	/**
 	 * Select item at path (or focusedKey when path is null).
-	 * Groups toggle expanded. Leaves fire onchange (value differs) and onselect callbacks.
+	 * Groups toggle expanded (only when collapsible=true). Leaves fire onchange and onselect callbacks.
 	 */
 	select(path) {
 		const key = path ?? this.#focusedKey
@@ -156,7 +161,7 @@ export class Wrapper {
 		const proxy = this.#proxyTree.lookup.get(key)
 		if (!proxy) return
 		if (proxy.hasChildren) {
-			proxy.expanded = !proxy.expanded
+			if (this.#collapsible) proxy.expanded = !proxy.expanded
 		} else {
 			this.#selectLeaf(proxy)
 		}
@@ -165,8 +170,10 @@ export class Wrapper {
 	/**
 	 * Toggle expansion of group at path — called by Navigator for accordion-trigger clicks.
 	 * Unlike select(), this only applies to groups and never fires onselect.
+	 * No-op when collapsible=false.
 	 */
 	toggle(path) {
+		if (!this.#collapsible) return
 		const key = path ?? this.#focusedKey
 		if (!key) return
 		const proxy = this.#proxyTree.lookup.get(key)

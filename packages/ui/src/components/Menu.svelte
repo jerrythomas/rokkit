@@ -107,7 +107,7 @@
 	}
 
 	const proxyTree = $derived(new ProxyTree(items, fields))
-	const wrapper = $derived(new Wrapper(proxyTree, { onselect: handleSelect }))
+	const wrapper = $derived(new Wrapper(proxyTree, { onselect: handleSelect, collapsible }))
 
 	// Override cancel/blur to close dropdown (Navigator dispatches these on Escape/focusout)
 	$effect(() => {
