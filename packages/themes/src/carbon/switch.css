@@ -8,7 +8,8 @@
   @apply bg-none border-surface-z5 border-2 bg-transparent rounded-none;
 }
 
-[data-style='carbon'] [data-switch-thumb] {
+[data-style='carbon'] [data-switch] [data-switch-thumb] {
+  --switch-thumb-travel: 1rem;
   @apply bg-surface-z5 rounded-none;
 }
 

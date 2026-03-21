@@ -36,6 +36,7 @@
  * The semi-transparent background provides the frosted glass look. */
 [data-style='glass'] [data-input-root] {
   @apply bg-surface-z1/70 border-surface-z5/20 flex items-center rounded-md border p-0.5 transition-all;
+  background-image: none;
 }
 
 [data-style='glass'] [data-input-root]:hover {
@@ -44,6 +45,7 @@
 
 [data-style='glass'] [data-input-root]:focus-within {
   @apply border-primary-z5/50 bg-surface-z1/70;
+  background-image: none;
 }
 
 /* Standard inputs inside wrapper */

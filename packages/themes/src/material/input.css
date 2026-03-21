@@ -75,6 +75,7 @@
   top: 0;
   transform: translateY(-50%);
   padding-inline: 0.25rem;
+  border-radius: 2px;
 }
 
 [data-style='material']

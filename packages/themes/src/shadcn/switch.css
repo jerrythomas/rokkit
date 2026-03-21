@@ -8,7 +8,8 @@
   @apply bg-none border-surface-z4 border-2 bg-transparent rounded-full;
 }
 
-[data-style='shadcn'] [data-switch-thumb] {
+[data-style='shadcn'] [data-switch] [data-switch-thumb] {
+  --switch-thumb-travel: 1rem;
   @apply bg-surface-z5 rounded-full;
 }
 

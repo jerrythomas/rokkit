@@ -20,9 +20,8 @@
 }
 
 [data-style='grada-ui'] [data-input-root]:focus-within {
-  border-color: var(--gd-primary);
+  @apply border-primary-z5 bg-white;
   background-image: none;
-  @apply bg-white;
 }
 
 /* Inputs inside wrapper */
@@ -34,6 +33,7 @@
   @apply text-surface-z9 w-full border-none bg-transparent px-3 py-2.5 transition-all outline-none;
   font-size: 0.875rem;
   line-height: 1.25rem;
+  border-radius: 2px;
 }
 
 [data-style='grada-ui'] [data-input-root] textarea {
@@ -79,7 +79,7 @@
    ============================================================================= */
 
 [data-style='grada-ui'] [data-field-state='pass'] [data-input-root] {
-  border-left: 4px solid var(--gd-success);
+  @apply border-l-4 border-success-z5;
 }
 
 /* =============================================================================
@@ -87,11 +87,11 @@
    ============================================================================= */
 
 [data-style='grada-ui'] [data-field-state='fail'] [data-input-root] {
-  border-left: 4px solid var(--gd-error-border);
+  @apply border-l-4 border-danger-z4;
 }
 
 [data-style='grada-ui'] [data-field-state='fail'] label {
-  color: var(--gd-error-text);
+  @apply text-danger-z5;
 }
 
 /* =============================================================================
@@ -107,7 +107,7 @@
    ============================================================================= */
 
 [data-style='grada-ui'] [data-field-info] {
-  color: var(--gd-primary);
+  @apply text-primary-z5;
 }
 
 /* =============================================================================
@@ -127,8 +127,7 @@
 }
 
 [data-style='grada-ui'] [data-message] {
-  @apply mt-1 px-1 text-xs;
-  color: var(--gd-error-text);
+  @apply text-danger-z5 mt-1 px-1 text-xs;
 }
 
 /* =============================================================================
@@ -137,7 +136,7 @@
 
 [data-style='grada-ui'] [data-input-root] input::placeholder,
 [data-style='grada-ui'] [data-input-root] textarea::placeholder {
-  color: var(--gd-grey-c);
+  @apply text-surface-z4;
 }
 
 /* =============================================================================
@@ -151,5 +150,5 @@
 [data-style='grada-ui']
   [data-checkbox-root][data-variant='custom']:has(input:checked)
   [data-checkbox-icon] {
-  color: var(--gd-primary);
+  @apply text-primary-z5;
 }
