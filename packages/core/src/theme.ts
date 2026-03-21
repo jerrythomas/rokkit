@@ -2,7 +2,7 @@
 // @ts-nocheck
 import { DEFAULT_THEME_MAPPING, defaultColors, TONE_MAP } from './constants'
 import { shades } from './colors/index'
-import { hex2rgb } from './utils'
+import { hex2rgb, colorToRgb } from './utils'
 
 const modifiers = {
 	hsl: (value) => `hsl(${value} / <alpha-value>)`,
@@ -43,7 +43,7 @@ function generateColorRules(variant, colors, mapping) {
 	return ['DEFAULT', ...shades].flatMap((shade) => [
 		{
 			key: shade === 'DEFAULT' ? `--color-${variant}` : `--color-${variant}-${shade}`,
-			value: hex2rgb(colors[mapping[variant]][`${shade}`])
+			value: colorToRgb(colors[mapping[variant]][`${shade}`])
 		}
 	])
 }

@@ -44,6 +44,7 @@ describe('@rokkit/core', () => {
 			'getSnippet',
 			'resolveSnippet',
 			'hex2rgb',
+			'colorToRgb',
 			'getImage',
 			'flattenNestedList',
 			'toInitCapCase',

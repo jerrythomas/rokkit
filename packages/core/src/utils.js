@@ -205,6 +205,22 @@ export function hex2rgb(hex) {
 }
 
 /**
+ * Convert a CSS color value to r,g,b for use in CSS variables.
+ * Hex values (#rrggbb) are converted to "r,g,b" for rgba() support.
+ * All other formats (oklch, hsl, named) are returned as-is.
+ * Note: non-hex values will NOT work with UnoCSS opacity utilities like bg-primary/50.
+ *
+ * @param {string} value
+ * @returns {string}
+ */
+export function colorToRgb(value) {
+	if (typeof value === 'string' && /^#[0-9a-fA-F]{6}$/.test(value)) {
+		return hex2rgb(value)
+	}
+	return value
+}
+
+/**
  * Checks if a string is a valid image URL
  *
  * @param {string} str - The string to check

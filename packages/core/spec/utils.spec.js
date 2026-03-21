@@ -11,7 +11,8 @@ import {
 	getPathFromKey,
 	getSnippet,
 	getImage,
-	hex2rgb
+	hex2rgb,
+	colorToRgb
 } from '../src/utils.js'
 
 describe('utils', () => {
@@ -224,6 +225,21 @@ describe('utils', () => {
 
 			// Restore original URL
 			global.URL = originalURL
+		})
+	})
+
+	describe('colorToRgb', () => {
+		it('converts hex to r,g,b', () => {
+			expect(colorToRgb('#0f4c81')).toBe('15,76,129')
+		})
+		it('passes through oklch as-is', () => {
+			expect(colorToRgb('oklch(60% 0.18 250)')).toBe('oklch(60% 0.18 250)')
+		})
+		it('passes through hsl as-is', () => {
+			expect(colorToRgb('hsl(210 83% 27%)')).toBe('hsl(210 83% 27%)')
+		})
+		it('passes through named colors as-is', () => {
+			expect(colorToRgb('rebeccapurple')).toBe('rebeccapurple')
 		})
 	})
 
