@@ -16,6 +16,11 @@
 @import '@rokkit/themes/material.css';
 @import '@rokkit/themes/glass.css';
 @import '@rokkit/themes/grada-ui.css';
+@import '@rokkit/themes/shadcn.css';
+@import '@rokkit/themes/daisy-ui.css';
+@import '@rokkit/themes/bits-ui.css';
+@import '@rokkit/themes/carbon.css';
+@import '@rokkit/themes/ant-design.css';
 
 /* Learn-site specific overrides loaded after package */
 @import './theme/base/shiki.css';
