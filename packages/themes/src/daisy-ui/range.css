@@ -1,0 +1,61 @@
+/**
+ * Range - DaisyUI Theme Styles
+ *
+ * Bold primary track fill, rounded thumb.
+ */
+
+/* =============================================================================
+   Track
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-range-bar] {
+  @apply bg-surface-z3 rounded-full;
+}
+
+[data-style='daisy-ui'] [data-range-selected] {
+  @apply bg-none bg-primary-z5 rounded-full;
+}
+
+/* =============================================================================
+   Thumb
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-range-thumb] {
+  @apply bg-surface-z1 border-primary-z5 border-2 rounded-full;
+}
+
+[data-style='daisy-ui'] [data-range-thumb][data-sliding] {
+  @apply bg-primary-z5;
+}
+
+[data-style='daisy-ui'] [data-range-thumb]:focus-visible {
+  @apply bg-primary-z5 outline-2 outline-offset-2 outline-primary-z5 outline;
+}
+
+/* =============================================================================
+   Ticks
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-range-tick] {
+  @apply text-surface-z6;
+}
+
+[data-style='daisy-ui'] [data-tick-bar] {
+  @apply border-surface-z4;
+}
+
+[data-style='daisy-ui'] [data-tick-label] {
+  @apply text-surface-z6;
+}
+
+/* =============================================================================
+   Disabled
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-range][data-disabled] [data-range-thumb] {
+  @apply bg-surface-z3 border-surface-z4;
+}
+
+[data-style='daisy-ui'] [data-range][data-disabled] [data-range-selected] {
+  @apply bg-surface-z4;
+}

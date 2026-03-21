@@ -1,0 +1,45 @@
+/**
+ * Timeline - DaisyUI Theme Styles
+ *
+ * Bold primary accent for completed/active items.
+ */
+
+/* =============================================================================
+   Circle
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-timeline-circle] {
+  @apply border-surface-z4 text-surface-z6 rounded-full;
+}
+
+[data-style='daisy-ui'] [data-timeline-item][data-completed] [data-timeline-circle] {
+  @apply border-primary-z5 text-primary-z5 bg-primary-z2;
+}
+
+[data-style='daisy-ui'] [data-timeline-item][data-active] [data-timeline-circle] {
+  @apply border-primary-z5 text-primary-z5 bg-primary-z5 text-on-primary;
+}
+
+/* =============================================================================
+   Connector
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-timeline-connector] {
+  @apply bg-surface-z3;
+}
+
+[data-style='daisy-ui'] [data-timeline-item][data-completed] [data-timeline-connector] {
+  @apply bg-primary-z5;
+}
+
+/* =============================================================================
+   Body
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-timeline-title] {
+  @apply text-surface-z8;
+}
+
+[data-style='daisy-ui'] [data-timeline-description] {
+  @apply text-surface-z6;
+}

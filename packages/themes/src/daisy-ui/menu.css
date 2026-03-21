@@ -1,0 +1,88 @@
+/**
+ * Menu - DaisyUI Theme Styles
+ *
+ * Rounded-lg trigger, rounded-xl dropdown, hover fill on items.
+ */
+
+/* =============================================================================
+   Menu Trigger
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-menu-trigger] {
+  @apply bg-none border-surface-z4 text-surface-z7 border bg-transparent rounded-lg;
+}
+
+[data-style='daisy-ui'] [data-menu-trigger]:hover:not(:disabled) {
+  @apply bg-none bg-surface-z2 text-surface-z9 border-surface-z5;
+}
+
+[data-style='daisy-ui'] [data-menu-trigger]:focus-visible {
+  @apply outline-2 outline-offset-2 outline-primary-z5 outline;
+}
+
+[data-style='daisy-ui'] [data-menu][data-open='true'] [data-menu-trigger] {
+  @apply bg-none border-primary-z5;
+}
+
+/* Trigger elements */
+[data-style='daisy-ui'] [data-menu-trigger] [data-menu-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='daisy-ui'] [data-menu-trigger]:hover:not(:disabled) [data-menu-icon] {
+  @apply text-surface-z7;
+}
+
+[data-style='daisy-ui'] [data-menu-trigger] [data-menu-arrow] {
+  @apply text-surface-z4;
+}
+
+/* =============================================================================
+   Menu Dropdown
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-menu-dropdown] {
+  @apply bg-none bg-surface-z1 border-surface-z3 border shadow-md rounded-xl;
+}
+
+/* =============================================================================
+   Menu Items
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-menu-item] {
+  @apply text-surface-z7 rounded-lg;
+}
+
+[data-style='daisy-ui'] [data-menu-item]:hover:not(:disabled),
+[data-style='daisy-ui'] [data-menu-item]:focus:not(:disabled) {
+  @apply bg-none bg-surface-z2 text-surface-z9 outline-none;
+}
+
+/* Item elements */
+[data-style='daisy-ui'] [data-menu-item] [data-item-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='daisy-ui'] [data-menu-item]:hover:not(:disabled) [data-item-icon] {
+  @apply text-surface-z6;
+}
+
+[data-style='daisy-ui'] [data-menu-item] [data-item-description] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Groups
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-menu-group] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Divider
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-menu-separator] {
+  @apply bg-none bg-surface-z3;
+}

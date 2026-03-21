@@ -1,0 +1,89 @@
+/**
+ * Table - DaisyUI Theme Styles
+ *
+ * Clean table with subtle borders, primary fill on selected rows.
+ */
+
+/* =============================================================================
+   Header
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-table-header] th {
+  @apply text-surface-z6 border-surface-z4 border-b;
+}
+
+[data-style='daisy-ui'] [data-table-header-cell][data-sortable='true']:hover {
+  @apply text-surface-z8;
+}
+
+[data-style='daisy-ui'] [data-table-header-cell][data-sort-order='ascending'],
+[data-style='daisy-ui'] [data-table-header-cell][data-sort-order='descending'] {
+  @apply text-primary-z7;
+}
+
+[data-style='daisy-ui'] [data-table-sort-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='daisy-ui'] [data-table-header-cell][data-sort-order='ascending'] [data-table-sort-icon],
+[data-style='daisy-ui']
+  [data-table-header-cell][data-sort-order='descending']
+  [data-table-sort-icon] {
+  @apply text-primary-z6;
+}
+
+/* =============================================================================
+   Caption
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-table-caption] {
+  @apply text-surface-z7;
+}
+
+/* =============================================================================
+   Rows
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-table-row] {
+  @apply text-surface-z7 border-surface-z3 border-b;
+}
+
+[data-style='daisy-ui'] [data-table-row]:hover {
+  @apply bg-none bg-surface-z1 text-surface-z9;
+}
+
+[data-style='daisy-ui'] [data-table-row]:focus {
+  @apply bg-none bg-surface-z2 text-surface-z9 outline-2 outline-offset-2 outline-primary-z5 outline;
+}
+
+[data-style='daisy-ui'] [data-table-row][data-selected='true'] {
+  @apply bg-none bg-primary-z4 text-on-primary;
+}
+
+/* =============================================================================
+   Striped
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-striped='true'] [data-table-body] tr:nth-child(even) {
+  @apply bg-surface-z1;
+}
+
+/* =============================================================================
+   Empty
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-table-empty] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Cell Icon
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-table-cell] [data-cell-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='daisy-ui'] [data-table-row][data-selected='true'] [data-cell-icon] {
+  @apply text-on-primary;
+}

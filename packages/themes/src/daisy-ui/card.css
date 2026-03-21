@@ -1,0 +1,99 @@
+/**
+ * Card - DaisyUI Theme Styles
+ *
+ * Rounded-2xl cards with subtle shadow. Bold primary variant fill.
+ */
+
+/* =============================================================================
+   Base Card Styles
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-card] {
+  @apply bg-none bg-surface-z1 border-surface-z3 text-surface-z9 border shadow-sm rounded-2xl;
+}
+
+/* Interactive cards */
+[data-style='daisy-ui'] [data-card][data-card-interactive] {
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+[data-style='daisy-ui'] [data-card][data-card-interactive]:hover {
+  @apply border-surface-z5 shadow-md;
+}
+
+[data-style='daisy-ui'] [data-card][data-card-interactive]:active {
+  @apply bg-surface-z2;
+}
+
+/* =============================================================================
+   Card Sections
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-card-header] {
+  @apply border-surface-z3 border-b;
+}
+
+[data-style='daisy-ui'] [data-card-body] {
+  @apply text-surface-z8;
+}
+
+[data-style='daisy-ui'] [data-card-footer] {
+  @apply border-surface-z3 text-surface-z7 border-t;
+}
+
+/* =============================================================================
+   Focus States
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-card][data-card-interactive]:focus-visible {
+  @apply outline-2 outline-offset-2 outline-primary-z5 outline;
+}
+
+/* =============================================================================
+   Disabled State
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-card][data-card-interactive][data-disabled],
+[data-style='daisy-ui'] [data-card][data-card-interactive]:disabled {
+  @apply cursor-not-allowed opacity-50;
+}
+
+/* =============================================================================
+   Variants
+   ============================================================================= */
+
+/* Primary — solid primary fill */
+[data-style='daisy-ui'] [data-card][data-variant='primary'] {
+  @apply bg-none bg-primary-z5 border-primary-z6 text-on-primary border;
+}
+
+[data-style='daisy-ui'] [data-card][data-variant='primary'] [data-card-header],
+[data-style='daisy-ui'] [data-card][data-variant='primary'] [data-card-footer] {
+  @apply border-primary-z4/40;
+}
+
+[data-style='daisy-ui'] [data-card][data-variant='primary'] [data-card-body] {
+  @apply text-on-primary/80;
+}
+
+/* Secondary — solid secondary fill */
+[data-style='daisy-ui'] [data-card][data-variant='secondary'] {
+  @apply bg-none bg-secondary-z4 border-secondary-z5 text-on-secondary border;
+}
+
+[data-style='daisy-ui'] [data-card][data-variant='secondary'] [data-card-header],
+[data-style='daisy-ui'] [data-card][data-variant='secondary'] [data-card-footer] {
+  @apply border-secondary-z3/40;
+}
+
+[data-style='daisy-ui'] [data-card][data-variant='secondary'] [data-card-body] {
+  @apply text-on-secondary/80;
+}
+
+/* Tertiary — recessed surface */
+[data-style='daisy-ui'] [data-card][data-variant='tertiary'] {
+  @apply bg-none bg-surface-z0 border-surface-z3 text-surface-z7 border shadow-none;
+}

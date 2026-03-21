@@ -1,0 +1,48 @@
+/**
+ * Toggle - DaisyUI Theme Styles
+ *
+ * Pill-shaped toggle group with bold selected fill.
+ */
+
+/* =============================================================================
+   Toggle Container
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-toggle] {
+  @apply bg-none border-surface-z3 rounded-full border bg-surface-z1;
+}
+
+/* =============================================================================
+   Toggle Options
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-toggle-option] {
+  @apply text-surface-z6 rounded-full;
+}
+
+[data-style='daisy-ui'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']),
+[data-style='daisy-ui'] [data-toggle-option]:focus:not(:disabled):not([data-disabled='true']) {
+  @apply bg-none bg-surface-z2 text-surface-z8;
+}
+
+/* Selected state */
+[data-style='daisy-ui'] [data-toggle-option][data-selected='true'] {
+  @apply bg-none bg-primary-z5 text-on-primary;
+}
+
+/* =============================================================================
+   Toggle Icon
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-toggle-option] [data-toggle-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='daisy-ui'] [data-toggle-option]:hover:not(:disabled) [data-toggle-icon],
+[data-style='daisy-ui'] [data-toggle-option]:focus:not(:disabled) [data-toggle-icon] {
+  @apply text-surface-z7;
+}
+
+[data-style='daisy-ui'] [data-toggle-option][data-selected='true'] [data-toggle-icon] {
+  @apply text-on-primary;
+}

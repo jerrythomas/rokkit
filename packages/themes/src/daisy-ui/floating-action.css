@@ -1,0 +1,63 @@
+/**
+ * FloatingAction - DaisyUI Theme Styles
+ *
+ * Pill-shaped FAB with bold primary fill. DaisyUI outline focus.
+ */
+
+/* =============================================================================
+   FAB Trigger Button
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-fab-trigger] {
+  @apply bg-none bg-primary-z5 text-on-primary border-transparent rounded-full;
+}
+
+[data-style='daisy-ui'] [data-fab-trigger]:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+[data-style='daisy-ui'] [data-fab-trigger]:focus-visible {
+  @apply outline-2 outline-offset-2 outline-primary-z5 outline;
+}
+
+[data-style='daisy-ui'] [data-fab][data-open='true'] [data-fab-trigger] {
+  @apply bg-none bg-primary-z6;
+  transform: rotate(45deg);
+}
+
+[data-style='daisy-ui'] [data-fab][data-open='true'] [data-fab-trigger]:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+/* =============================================================================
+   FAB Items
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-fab-item] {
+  @apply bg-none bg-surface-z2 text-surface-z7 border-surface-z4 border rounded-full;
+}
+
+[data-style='daisy-ui'] [data-fab-item]:hover:not(:disabled) {
+  @apply bg-none bg-surface-z3 text-surface-z9 border-surface-z5;
+}
+
+[data-style='daisy-ui'] [data-fab-item]:focus-visible {
+  @apply outline-2 outline-offset-2 outline-primary-z5 outline;
+}
+
+/* Item icon */
+[data-style='daisy-ui'] [data-fab-item] [data-fab-item-icon] {
+  @apply text-surface-z6;
+}
+
+[data-style='daisy-ui'] [data-fab-item]:hover:not(:disabled) [data-fab-item-icon] {
+  @apply text-surface-z8;
+}
+
+/* =============================================================================
+   Backdrop
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-fab-backdrop] {
+  background: rgba(0, 0, 0, 0.2);
+}

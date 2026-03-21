@@ -1,0 +1,50 @@
+/**
+ * UploadTarget - DaisyUI Theme Styles
+ *
+ * Rounded-xl drop zone, bold primary on drag-over.
+ */
+
+/* =============================================================================
+   Drop Zone
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-upload-target] {
+  @apply border-surface-z4 text-surface-z6 rounded-xl;
+}
+
+[data-style='daisy-ui'] [data-upload-target]:hover:not([data-disabled]) {
+  @apply border-surface-z5 text-surface-z7 bg-surface-z2;
+}
+
+[data-style='daisy-ui'] [data-upload-target]:focus-visible:not([data-disabled]) {
+  @apply outline-2 outline-offset-2 outline-primary-z5 outline;
+}
+
+/* Drag-over highlight */
+[data-style='daisy-ui'] [data-upload-target][data-dragging] {
+  @apply border-primary-z5 bg-primary-z2 text-primary-z7;
+}
+
+/* =============================================================================
+   Upload Icon
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-upload-target] [data-upload-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='daisy-ui'] [data-upload-target][data-dragging] [data-upload-icon] {
+  @apply text-primary-z6;
+}
+
+/* =============================================================================
+   Browse Button
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-upload-target] [data-upload-button] {
+  @apply border-surface-z4 text-surface-z7 rounded-full;
+}
+
+[data-style='daisy-ui'] [data-upload-target] [data-upload-button]:hover:not(:disabled) {
+  @apply bg-primary-z5 text-on-primary border-primary-z5;
+}

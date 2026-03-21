@@ -1,0 +1,22 @@
+/**
+ * TableOfContents - DaisyUI Theme Styles
+ *
+ * Active item gets primary color with pill accent.
+ */
+
+[data-style='daisy-ui'] [data-toc] [data-toc-label] {
+  @apply text-surface-z5;
+}
+
+[data-style='daisy-ui'] [data-toc] [data-toc-item] {
+  @apply text-surface-z6 rounded-full;
+}
+
+[data-style='daisy-ui'] [data-toc] [data-toc-item]:hover,
+[data-style='daisy-ui'] [data-toc] [data-toc-item][data-toc-focused] {
+  @apply bg-surface-z2 text-surface-z9 outline-none;
+}
+
+[data-style='daisy-ui'] [data-toc] [data-toc-item][data-toc-active] {
+  @apply text-primary-z6 bg-primary-z1;
+}

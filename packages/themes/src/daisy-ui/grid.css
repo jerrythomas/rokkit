@@ -1,0 +1,46 @@
+/**
+ * Grid - DaisyUI Theme Styles
+ *
+ * Rounded-xl tiles, bold primary fill on active selection.
+ */
+
+/* =============================================================================
+   Grid Tiles
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-grid] [data-grid-item] {
+  @apply border-surface-z3 text-surface-z7 rounded-xl;
+}
+
+[data-style='daisy-ui'] [data-grid] [data-grid-item]:hover:not(:disabled):not([data-disabled]) {
+  @apply border-surface-z5 bg-surface-z2 text-surface-z9;
+}
+
+[data-style='daisy-ui'] [data-grid] [data-grid-item]:focus:not(:disabled):not([data-disabled]) {
+  @apply border-primary-z5 bg-surface-z2 text-surface-z9 outline-2 outline-offset-2 outline-primary-z5 outline;
+}
+
+/* Active / selected tile */
+[data-style='daisy-ui'] [data-grid] [data-grid-item][data-active] {
+  @apply border-primary-z5 bg-primary-z5 text-on-primary;
+}
+
+[data-style='daisy-ui'] [data-grid] [data-grid-item][data-active]:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+/* =============================================================================
+   Item Elements
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-grid] [data-grid-item] [data-item-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='daisy-ui'] [data-grid] [data-grid-item]:hover:not(:disabled) [data-item-icon] {
+  @apply text-surface-z7;
+}
+
+[data-style='daisy-ui'] [data-grid] [data-grid-item][data-active] [data-item-icon] {
+  @apply text-on-primary;
+}

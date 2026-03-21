@@ -22,12 +22,14 @@
     "./dist/material": "./dist/material.css",
     "./dist/glass": "./dist/glass.css",
     "./dist/grada-ui": "./dist/grada-ui.css",
+    "./dist/daisy-ui": "./dist/daisy-ui.css",
     "./base.css": "./dist/base.css",
     "./rokkit.css": "./dist/rokkit.css",
     "./minimal.css": "./dist/minimal.css",
     "./material.css": "./dist/material.css",
     "./glass.css": "./dist/glass.css",
     "./grada-ui.css": "./dist/grada-ui.css",
+    "./daisy-ui.css": "./dist/daisy-ui.css",
     "./base": "./src/base/index.css",
     "./base/*": "./src/base/*.css",
     "./rokkit": "./src/rokkit/index.css",
@@ -39,7 +41,9 @@
     "./glass": "./src/glass/index.css",
     "./glass/*": "./src/glass/*.css",
     "./grada-ui": "./src/grada-ui/index.css",
-    "./grada-ui/*": "./src/grada-ui/*.css"
+    "./grada-ui/*": "./src/grada-ui/*.css",
+    "./daisy-ui": "./src/daisy-ui/index.css",
+    "./daisy-ui/*": "./src/daisy-ui/*.css"
   },
   "files": [
     "src",

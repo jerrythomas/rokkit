@@ -1,0 +1,127 @@
+/**
+ * List - DaisyUI Theme Styles
+ *
+ * Selected item gets solid primary fill with rounded-lg.
+ * Hover: subtle background fill, no border indicator.
+ */
+
+/* =============================================================================
+   List Container
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-list]:focus-within {
+  @apply outline-none;
+}
+
+/* =============================================================================
+   List Items
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-list] [data-list-item] {
+  @apply text-surface-z7 rounded-lg;
+}
+
+[data-style='daisy-ui'] [data-list] a[data-list-item],
+[data-style='daisy-ui'] [data-list] button[data-list-item] {
+  @apply text-surface-z6;
+}
+
+/* Hover and focus (keyboard navigation) */
+[data-style='daisy-ui']
+  [data-list]
+  [data-list-item]:hover:not(:disabled):not([data-disabled='true']),
+[data-style='daisy-ui']
+  [data-list]
+  [data-list-item]:focus:not(:disabled):not([data-disabled='true']) {
+  @apply bg-none bg-surface-z2 text-surface-z9 outline-none;
+}
+
+/* Active state — muted when list not focused */
+[data-style='daisy-ui'] [data-list] [data-list-item][data-active='true'] {
+  @apply bg-none bg-primary-z4 text-on-primary;
+}
+
+/* Active state — full highlight when list has focus */
+[data-style='daisy-ui'] [data-list]:focus-within [data-list-item][data-active='true'] {
+  @apply bg-none bg-primary-z5 text-on-primary;
+}
+
+/* Active + hover/focus */
+[data-style='daisy-ui'] [data-list] [data-list-item][data-active='true']:hover:not(:disabled),
+[data-style='daisy-ui'] [data-list] [data-list-item][data-active='true']:focus:not(:disabled) {
+  opacity: 0.9;
+}
+
+/* =============================================================================
+   Item Elements
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-list] [data-list-item] [data-item-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='daisy-ui'] [data-list] [data-list-item]:hover:not(:disabled) [data-item-icon],
+[data-style='daisy-ui'] [data-list] [data-list-item]:focus:not(:disabled) [data-item-icon] {
+  @apply text-surface-z6;
+}
+
+[data-style='daisy-ui'] [data-list] [data-list-item][data-active='true'] [data-item-icon] {
+  @apply text-on-primary;
+}
+
+[data-style='daisy-ui'] [data-list] [data-list-item] [data-item-description] {
+  @apply text-surface-z5;
+}
+
+[data-style='daisy-ui'] [data-list] [data-list-item][data-active='true'] [data-item-description] {
+  @apply text-on-primary/80;
+}
+
+[data-style='daisy-ui'] [data-list] [data-list-item] [data-item-badge] {
+  @apply bg-none text-surface-z6 border-surface-z4 border bg-transparent rounded-full;
+}
+
+[data-style='daisy-ui'] [data-list] [data-list-item][data-active='true'] [data-item-badge] {
+  @apply bg-none text-on-primary border-on-primary/30;
+}
+
+/* =============================================================================
+   Groups
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-list] [data-list-group] {
+  @apply text-surface-z5;
+}
+
+[data-style='daisy-ui'] [data-list] [data-list-group]:hover:not(:disabled),
+[data-style='daisy-ui'] [data-list] [data-list-group]:focus:not(:disabled) {
+  @apply bg-none bg-surface-z2 text-surface-z7 rounded-lg;
+}
+
+/* =============================================================================
+   Separator
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-list] [data-list-separator] {
+  @apply bg-none bg-surface-z3;
+}
+
+/* =============================================================================
+   Multi-Selection
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-list] [data-list-item][data-selected='true'] {
+  @apply bg-none bg-primary-z3 text-on-primary rounded-lg;
+}
+
+[data-style='daisy-ui'] [data-list]:focus-within [data-list-item][data-selected='true'] {
+  @apply bg-none bg-primary-z4 text-on-primary;
+}
+
+[data-style='daisy-ui'] [data-list] [data-list-item][data-selected='true']:hover:not(:disabled) {
+  @apply bg-primary-z5;
+}
+
+[data-style='daisy-ui'] [data-list] [data-list-item][data-selected='true'] [data-item-icon] {
+  @apply text-on-primary;
+}

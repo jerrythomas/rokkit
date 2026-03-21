@@ -1,0 +1,30 @@
+/**
+ * Switch - DaisyUI Theme Styles
+ *
+ * Extra-rounded pill track (rounded-full), bold primary on state.
+ */
+
+[data-style='daisy-ui'] [data-switch-track] {
+  @apply bg-none border-surface-z4 rounded-full border-2 bg-transparent;
+}
+
+[data-style='daisy-ui'] [data-switch-thumb] {
+  @apply bg-surface-z5 rounded-full;
+}
+
+[data-style='daisy-ui'] [data-switch]:focus-visible [data-switch-track] {
+  @apply outline-2 outline-offset-2 outline-primary-z5 outline;
+}
+
+/* On state */
+[data-style='daisy-ui'] [data-switch][aria-checked='true'] [data-switch-track] {
+  @apply bg-none bg-primary-z5 border-primary-z5;
+}
+
+[data-style='daisy-ui'] [data-switch][aria-checked='true'] [data-switch-thumb] {
+  @apply bg-on-primary;
+}
+
+[data-style='daisy-ui'] [data-switch-label] {
+  @apply text-surface-z7;
+}

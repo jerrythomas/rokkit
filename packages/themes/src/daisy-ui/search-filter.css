@@ -1,0 +1,49 @@
+/**
+ * SearchFilter - DaisyUI Theme Styles
+ *
+ * Rounded-lg input with outline focus. Pill-shaped tags.
+ */
+
+/* =============================================================================
+   Input
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-search-input] {
+  @apply text-surface-z7 border-surface-z4 border bg-transparent rounded-lg;
+}
+
+[data-style='daisy-ui'] [data-search-input]:focus {
+  @apply border-primary-z5 outline-2 outline-offset-2 outline-primary-z5 outline;
+}
+
+[data-style='daisy-ui'] [data-search-input]::placeholder {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Clear Button
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-search-clear] {
+  @apply text-surface-z5;
+}
+
+[data-style='daisy-ui'] [data-search-clear]:hover {
+  @apply text-surface-z8;
+}
+
+/* =============================================================================
+   Tags
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-search-tag] {
+  @apply bg-none text-on-primary bg-primary-z5 border-transparent rounded-full;
+}
+
+[data-style='daisy-ui'] [data-search-tag-remove] {
+  @apply text-on-primary/70;
+}
+
+[data-style='daisy-ui'] [data-search-tag-remove]:hover {
+  @apply text-on-primary;
+}

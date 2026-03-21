@@ -1,0 +1,70 @@
+/**
+ * FloatingNavigation - DaisyUI Theme Styles
+ *
+ * Rounded-xl panel, pill-shaped active item with primary fill.
+ */
+
+/* =============================================================================
+   Container
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-floating-nav] {
+  @apply bg-none bg-surface-z1 border-surface-z3 border rounded-xl shadow-md;
+}
+
+/* =============================================================================
+   Header
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-floating-nav-title] {
+  @apply text-surface-z5;
+}
+
+[data-style='daisy-ui'] [data-floating-nav-pin] {
+  @apply text-surface-z5;
+}
+
+[data-style='daisy-ui'] [data-floating-nav-pin]:hover {
+  @apply text-surface-z8;
+}
+
+[data-style='daisy-ui'] [data-floating-nav-pin][aria-pressed='true'] {
+  @apply text-primary-z6;
+}
+
+/* =============================================================================
+   Items
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-floating-nav-item] {
+  @apply text-surface-z7 rounded-full;
+}
+
+[data-style='daisy-ui'] [data-floating-nav-item]:hover {
+  @apply bg-none bg-surface-z2 text-surface-z9;
+}
+
+[data-style='daisy-ui'] [data-floating-nav-item][data-active] {
+  @apply bg-none bg-primary-z5 text-on-primary;
+}
+
+[data-style='daisy-ui'] [data-floating-nav-item]:focus-visible {
+  @apply outline-2 outline-offset-2 outline-primary-z5 outline;
+}
+
+/* Icon */
+[data-style='daisy-ui'] [data-floating-nav-icon] {
+  @apply text-surface-z6;
+}
+
+[data-style='daisy-ui'] [data-floating-nav-item][data-active] [data-floating-nav-icon] {
+  @apply text-on-primary;
+}
+
+/* =============================================================================
+   Active Indicator
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-floating-nav-indicator] {
+  @apply bg-none bg-primary-z5 rounded-full;
+}

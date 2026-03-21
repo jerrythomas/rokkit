@@ -1,0 +1,158 @@
+/**
+ * Select - DaisyUI Theme Styles
+ *
+ * Rounded-lg trigger, rounded-xl dropdown, bold primary selection fill.
+ */
+
+/* =============================================================================
+   Trigger Button
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-select-trigger] {
+  @apply bg-none text-surface-z7 border-surface-z4 border bg-transparent rounded-lg;
+}
+
+[data-style='daisy-ui'] [data-select-trigger]:hover:not(:disabled) {
+  @apply bg-none border-surface-z5 text-surface-z8;
+}
+
+[data-style='daisy-ui'] [data-select-trigger]:focus-visible {
+  @apply outline-2 outline-offset-2 outline-primary-z5 outline;
+}
+
+[data-style='daisy-ui'] [data-select][data-open='true'] [data-select-trigger] {
+  @apply bg-none border-primary-z5;
+}
+
+/* =============================================================================
+   Placeholder
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-select-placeholder] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Arrow
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-select-arrow] {
+  @apply text-surface-z5;
+}
+
+[data-style='daisy-ui'] [data-select-trigger]:hover:not(:disabled) [data-select-arrow] {
+  @apply text-surface-z6;
+}
+
+/* =============================================================================
+   Tags (MultiSelect)
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-select-tag] {
+  @apply bg-none text-on-primary bg-primary-z5 border-transparent rounded-full;
+}
+
+[data-style='daisy-ui'] [data-select-tag-remove] {
+  @apply text-on-primary/70;
+}
+
+[data-style='daisy-ui'] [data-select-tag-remove]:hover {
+  @apply text-on-primary;
+}
+
+/* =============================================================================
+   Dropdown Panel
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-select-dropdown] {
+  @apply bg-none bg-surface-z1 border-surface-z3 border shadow-md rounded-xl;
+}
+
+/* =============================================================================
+   Options
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-select-option] {
+  @apply text-surface-z7 rounded-lg;
+}
+
+/* Hover and focus */
+[data-style='daisy-ui'] [data-select-option]:hover:not(:disabled),
+[data-style='daisy-ui'] [data-select-option]:focus:not(:disabled) {
+  @apply bg-none bg-surface-z2 text-surface-z9 outline-none;
+}
+
+/* Selected state */
+[data-style='daisy-ui'] [data-select-option][data-selected='true'] {
+  @apply bg-none bg-primary-z4 text-on-primary;
+}
+
+/* Selected state — full highlight when dropdown has focus */
+[data-style='daisy-ui']
+  [data-select-dropdown]:focus-within
+  [data-select-option][data-selected='true'] {
+  @apply bg-none bg-primary-z5 text-on-primary;
+}
+
+/* Check mark */
+[data-style='daisy-ui'] [data-select-check] {
+  @apply text-on-primary;
+}
+
+/* Checkbox */
+[data-style='daisy-ui'] [data-select-checkbox] {
+  @apply bg-none border-surface-z5 bg-transparent rounded;
+}
+
+[data-style='daisy-ui'] [data-select-checkbox][data-checked='true'] {
+  @apply bg-none bg-primary-z5 border-primary-z5 text-white;
+}
+
+/* Item elements */
+[data-style='daisy-ui'] [data-select-option] [data-item-description] {
+  @apply text-surface-z5;
+}
+
+[data-style='daisy-ui'] [data-select-option][data-selected='true'] [data-item-description] {
+  @apply text-on-primary/80;
+}
+
+/* =============================================================================
+   Groups
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-select-group-label] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Divider
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-select-divider] {
+  @apply bg-none bg-surface-z3;
+}
+
+/* =============================================================================
+   Filter Input
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-select-filter] {
+  @apply bg-surface-z1;
+}
+
+[data-style='daisy-ui'] [data-select-filter-input] {
+  @apply text-surface-z7 border-surface-z4 border bg-transparent rounded-lg;
+}
+
+[data-style='daisy-ui'] [data-select-filter-input]:focus {
+  @apply border-primary-z5 outline-2 outline-offset-2 outline-primary-z5 outline;
+}
+
+[data-style='daisy-ui'] [data-select-filter-input]::placeholder {
+  @apply text-surface-z5;
+}
+
+[data-style='daisy-ui'] [data-select-empty] {
+  @apply text-surface-z5;
+}

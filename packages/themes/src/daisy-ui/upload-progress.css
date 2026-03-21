@@ -1,0 +1,102 @@
+/**
+ * UploadProgress - DaisyUI Theme Styles
+ *
+ * Status colors, primary progress fill, pill-rounded action buttons.
+ */
+
+/* =============================================================================
+   Header
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-upload-header] {
+  @apply text-surface-z7;
+}
+
+[data-style='daisy-ui'] [data-upload-clear] {
+  @apply border-surface-z4 text-surface-z6 rounded-full;
+}
+
+[data-style='daisy-ui'] [data-upload-clear]:hover {
+  @apply bg-surface-z3 text-surface-z9;
+}
+
+/* =============================================================================
+   File Rows
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-upload-file-status] {
+  @apply text-surface-z7 rounded-lg;
+}
+
+[data-style='daisy-ui'] [data-upload-file-status]:hover {
+  @apply bg-surface-z1;
+}
+
+/* =============================================================================
+   File Elements
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-upload-file-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='daisy-ui'] [data-upload-file-size] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Progress Bar
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-upload-bar] {
+  @apply bg-surface-z3 rounded-full;
+}
+
+[data-style='daisy-ui'] [data-upload-fill] {
+  @apply bg-primary-z5 rounded-full;
+}
+
+/* =============================================================================
+   Status Colors
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-upload-file-status][data-status='uploading'] [data-upload-status] {
+  @apply text-primary-z6;
+}
+
+[data-style='daisy-ui'] [data-upload-file-status][data-status='done'] [data-upload-status] {
+  @apply text-success-z6;
+}
+
+[data-style='daisy-ui'] [data-upload-file-status][data-status='error'] [data-upload-status] {
+  @apply text-danger-z5;
+}
+
+[data-style='daisy-ui'] [data-upload-file-status][data-status='pending'] [data-upload-status] {
+  @apply text-surface-z5;
+}
+
+/* Status-based file icon tinting */
+[data-style='daisy-ui'] [data-upload-file-status][data-status='done'] [data-upload-file-icon] {
+  @apply text-success-z6;
+}
+
+[data-style='daisy-ui'] [data-upload-file-status][data-status='error'] [data-upload-file-icon] {
+  @apply text-danger-z5;
+}
+
+/* =============================================================================
+   Action Buttons
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-upload-actions] button {
+  @apply text-surface-z5 rounded-full;
+}
+
+[data-style='daisy-ui'] [data-upload-actions] button:hover {
+  @apply bg-surface-z3 text-surface-z9;
+}
+
+[data-style='daisy-ui'] [data-upload-file-status][data-status='error'] [data-upload-retry]:hover {
+  @apply text-primary-z7;
+}

@@ -1,0 +1,11 @@
+/**
+ * Connector - DaisyUI Theme Styles
+ *
+ * Subtle tree line connectors.
+ */
+
+[data-style='daisy-ui'] [data-connector] [data-connector-v],
+[data-style='daisy-ui'] [data-connector] [data-connector-h],
+[data-style='daisy-ui'] [data-connector] [data-connector-corner] {
+  @apply border-surface-z3;
+}

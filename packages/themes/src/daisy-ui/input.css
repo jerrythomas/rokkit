@@ -1,0 +1,149 @@
+/**
+ * Input - DaisyUI Theme Styles
+ *
+ * Rounded-lg bordered inputs with DaisyUI outline focus (no ring, outline with offset).
+ */
+
+/* Input root: full border with rounded-lg */
+[data-style='daisy-ui'] [data-input-root] {
+  @apply border-surface-z4 relative flex items-center border rounded-lg bg-transparent p-0;
+  background-image: none;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+/* Hover: slightly more pronounced border */
+[data-style='daisy-ui'] [data-input-root]:hover:not(:focus-within) {
+  @apply border-surface-z5;
+  background-image: none;
+}
+
+/* Focus: primary border + DaisyUI outline */
+[data-style='daisy-ui'] [data-input-root]:focus-within {
+  @apply border-primary-z5;
+  background-image: none;
+  outline: 2px solid;
+  @apply outline-primary-z5;
+  outline-offset: 2px;
+}
+
+/* Inputs inside wrapper */
+[data-style='daisy-ui']
+  [data-input-root]
+  input:not([type='checkbox'], [type='radio'], [type='color']),
+[data-style='daisy-ui'] [data-input-root] textarea,
+[data-style='daisy-ui'] [data-input-root] select {
+  @apply text-surface-z9 w-full border-none bg-transparent px-3 py-2 outline-none;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  transition: color 150ms ease;
+}
+
+[data-style='daisy-ui'] [data-input-root] textarea {
+  @apply resize-vertical min-h-20 py-2;
+}
+
+/* Select inside input-root */
+[data-style='daisy-ui'] [data-input-root] [data-select-trigger] {
+  @apply text-surface-z9 border-none bg-transparent px-3 shadow-none ring-0 rounded-lg focus:outline-none;
+  font-size: 0.875rem;
+  background-image: none;
+  transition: color 150ms ease;
+}
+
+[data-style='daisy-ui'] [data-input-root] [data-select-trigger]:hover:not(:disabled) {
+  @apply bg-transparent;
+  background-image: none;
+}
+
+[data-style='daisy-ui'] [data-input-root] [data-select][data-open='true'] [data-select-trigger] {
+  @apply border-none bg-transparent shadow-none ring-0;
+}
+
+/* Labels */
+[data-style='daisy-ui'] [data-field] > label {
+  @apply text-surface-z6 text-sm font-medium;
+  transition: color 150ms ease;
+}
+
+[data-style='daisy-ui'] [data-form-root] label {
+  @apply text-surface-z6 text-sm font-medium;
+}
+
+/* Focused label: primary color */
+[data-style='daisy-ui'] [data-field]:has([data-input-root]:focus-within) > label {
+  @apply text-primary-z6;
+}
+
+/* Field root */
+[data-style='daisy-ui'] [data-field-root] {
+  @apply gap-1;
+}
+
+/* Info field value */
+[data-style='daisy-ui'] [data-field-info] {
+  @apply text-primary-z6;
+}
+
+/* Separator */
+[data-style='daisy-ui'] [data-form-separator] {
+  @apply border-surface-z3;
+}
+
+/* Disabled state */
+[data-style='daisy-ui'] [data-field-disabled] [data-input-root] {
+  @apply border-surface-z3 cursor-not-allowed opacity-40;
+}
+
+/* Error state */
+[data-style='daisy-ui'] [data-field-state='fail'] [data-input-root] {
+  @apply border-danger-z4 bg-danger-z1;
+}
+
+[data-style='daisy-ui'] [data-field-state='fail'] [data-input-root]:hover:not(:focus-within) {
+  @apply bg-danger-z2;
+}
+
+[data-style='daisy-ui'] [data-field-state='fail'] [data-input-root]:focus-within {
+  outline-color: var(--color-danger-z4, currentColor);
+}
+
+/* Pass state */
+[data-style='daisy-ui'] [data-field-state='pass'] [data-input-root] {
+  @apply border-success-z4 bg-success-z1;
+}
+
+[data-style='daisy-ui'] [data-field-state='pass'] [data-input-root]:hover:not(:focus-within) {
+  @apply bg-success-z2;
+}
+
+/* Description */
+[data-style='daisy-ui'] [data-description] {
+  @apply text-surface-z5 mt-0.5 text-xs;
+}
+
+/* Message */
+[data-style='daisy-ui'] [data-message] {
+  @apply text-danger-z5 mt-0.5 text-xs;
+}
+
+/* Checkbox */
+[data-style='daisy-ui'] [data-checkbox-icon] {
+  @apply text-surface-z5 text-lg;
+}
+
+[data-style='daisy-ui']
+  [data-checkbox-root][data-variant='custom']:has(input:checked)
+  [data-checkbox-icon] {
+  @apply text-primary-z6;
+}
+
+/* Checkbox label */
+[data-style='daisy-ui'] [data-field-type='checkbox'] [data-field]:has(:focus-within) > label {
+  @apply text-primary-z6;
+}
+
+/* Placeholders */
+[data-style='daisy-ui'] [data-input-root] input::placeholder,
+[data-style='daisy-ui'] [data-input-root] textarea::placeholder {
+  @apply text-surface-z4;
+}
