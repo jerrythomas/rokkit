@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
-import { writeFileSync, existsSync } from 'fs'
+import { writeFileSync } from 'fs'
 import { resolve } from 'path'
+import { loadConfig } from './config.js'
 
 const SKIN_TOKEN_DEFAULTS = {
 	primary: 'orange',
@@ -54,7 +55,10 @@ export function serializeConfig(config) {
  */
 export async function runSkinList(adapters = {}) {
 	const config = await loadConfig(adapters)
-	if (!config) return
+	if (!config) {
+		console.error('rokkit.config.js not found. Run `rokkit init` first.')
+		return
+	}
 	const skins = config.skins ?? {}
 	const names = Object.keys(skins)
 	if (names.length === 0) {
@@ -87,7 +91,10 @@ export async function runSkinCreate(name, adapters = {}) {
 	}
 
 	const config = await loadConfig(adapters)
-	if (!config) return
+	if (!config) {
+		console.error('rokkit.config.js not found. Run `rokkit init` first.')
+		return
+	}
 
 	if (config.skins?.[name]) {
 		console.warn(`Skin "${name}" already exists in rokkit.config.js.`)
@@ -102,25 +109,6 @@ export async function runSkinCreate(name, adapters = {}) {
 		`\nCustomize the color tokens in rokkit.config.js → skins.${name}\n` +
 			`Then apply with: <body data-skin="${name}">`
 	)
-}
-
-/**
- * Load rokkit.config.js using injected adapter or real filesystem.
- * @param {{ readConfig?: () => Record<string, unknown>, cwd?: string }} adapters
- * @returns {Promise<Record<string, unknown> | null>}
- */
-async function loadConfig(adapters) {
-	if (adapters.readConfig) return adapters.readConfig()
-
-	const cwd = adapters.cwd ?? process.cwd()
-	const configPath = resolve(cwd, 'rokkit.config.js')
-	if (!existsSync(configPath)) {
-		console.error('rokkit.config.js not found. Run `rokkit init` first.')
-		return null
-	}
-
-	const { default: config } = await import(`file://${configPath}?t=${Date.now()}`)
-	return config
 }
 
 /**

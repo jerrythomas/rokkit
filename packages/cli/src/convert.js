@@ -172,6 +172,23 @@ export function getFolderNames(dir) {
 	}
 }
 
+function folderOpts(folder, config, opts, extra) {
+	const folderConfig = config.bundles?.[folder] || {}
+	return { target: opts.output, color: folderConfig.color || false, prefix: folder, ...extra }
+}
+
+/**
+ * @param {string[]} folders
+ * @param {import('./types').IconBuilderOptions} config
+ * @param {import('./types').FolderOptions} opts
+ * @param {{ fn: Function, extra?: Record<string, unknown> }} processor
+ */
+function processFolders(folders, config, opts, { fn, extra = {} }) {
+	for (const folder of folders) {
+		fn(path.join(opts.input, folder), folderOpts(folder, config, opts, extra))
+	}
+}
+
 /**
  * Converts a folder of icons into an icon bundle
  * @param {string[]} folders
@@ -179,33 +196,15 @@ export function getFolderNames(dir) {
  * @param {import('./types').FolderOptions}      opts
  */
 export function bundleFolders(folders, config, opts) {
-	for (const folder of folders) {
-		const folderPath = path.join(opts.input, folder)
-		const folderConfig = config.bundles?.[folder] || {}
-
-		bundle(folderPath, {
-			target: opts.output,
-			color: folderConfig.color || false,
-			prefix: folder
-		})
-	}
+	processFolders(folders, config, opts, { fn: bundle })
 }
+
 /**
- * Converts a folder of icons into an icon bundle
+ * Converts a folder of icons into individual SVG files
  * @param {string[]}                             folders
  * @param {import('./types').IconBuilderOptions} config
  * @param {import('./types').FolderOptions}      opts
  */
 export function convertFolders(folders, config, opts) {
-	for (const folder of folders) {
-		const folderPath = path.join(opts.input, folder)
-		const folderConfig = config.bundles[folder] || {}
-
-		convert(folderPath, {
-			target: opts.output,
-			color: folderConfig.color || false,
-			prefix: folder,
-			package: config.package || {}
-		})
-	}
+	processFolders(folders, config, opts, { fn: convert, extra: { package: config.package || {} } })
 }

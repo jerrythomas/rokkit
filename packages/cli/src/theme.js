@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { writeFileSync, existsSync, mkdirSync, readdirSync } from 'fs'
 import { resolve, join } from 'path'
+import { loadConfig } from './config.js'
 
 /**
  * All component names that ship with Rokkit — one CSS block will be generated for each.
@@ -126,26 +127,6 @@ export async function runThemeCreate(name, adapters = {}) {
 		`\nImport it in src/app.css:\n  @import './themes/${name}.css';\n` +
 			`\nApply it: <body data-style="${name}">`
 	)
-}
-
-/**
- * Load rokkit.config.js using injected adapter or real filesystem.
- * Returns null (not an error) if config is absent — theme list can still show custom files.
- * @param {{ readConfig?: () => Record<string, unknown>, cwd?: string }} adapters
- */
-async function loadConfig(adapters) {
-	if (adapters.readConfig) return adapters.readConfig()
-
-	const cwd = adapters.cwd ?? process.cwd()
-	const configPath = resolve(cwd, 'rokkit.config.js')
-	if (!existsSync(configPath)) return null
-
-	try {
-		const { default: config } = await import(`file://${configPath}?t=${Date.now()}`)
-		return config
-	} catch {
-		return null
-	}
 }
 
 /**
