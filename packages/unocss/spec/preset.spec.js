@@ -120,6 +120,14 @@ describe('presetRokkit', () => {
 			},
 			colors: { primary: 'brand' }
 		})
+		// Verify the custom palette key was injected into theme.colors
+		expect(preset.theme.colors).toHaveProperty('brand')
+		expect(preset.theme.colors.brand).toEqual(expect.objectContaining({
+			50: '#f0f4ff',
+			500: '#0f4c81',
+			950: '#071c30'
+		}))
+		// Verify it can be used as a semantic mapping (primary maps to brand)
 		expect(preset.theme.colors).toHaveProperty('primary')
 		expect(preset.theme.colors.primary).toHaveProperty('500')
 	})

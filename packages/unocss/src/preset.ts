@@ -91,7 +91,7 @@ export function presetRokkit(options = {}): Preset {
 		shortcuts: buildShortcuts(theme, config),
 		theme: {
 			fontFamily: FONT_FAMILIES,
-			colors: theme.getColorRules()
+			colors: { ...theme.getColorRules(), ...config.palettes }
 		},
 		transformers: [transformerDirectives(), transformerVariantGroup()]
 	}
