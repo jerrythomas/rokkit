@@ -1,0 +1,127 @@
+/**
+ * Tree - bits-ui Theme Styles
+ *
+ * Softer tree with rounded item backgrounds on hover/active.
+ */
+
+/* =============================================================================
+   Tree Container
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-tree]:focus-within {
+  @apply outline-none;
+}
+
+/* =============================================================================
+   Tree Toggle Button
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-tree-toggle-btn] {
+  @apply text-surface-z4 rounded;
+}
+
+[data-style='bits-ui'] [data-tree-toggle-btn]:hover {
+  @apply bg-surface-z2 text-surface-z6;
+}
+
+/* =============================================================================
+   Tree Item Content
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-tree-item-content] {
+  @apply text-surface-z7 rounded-lg;
+}
+
+[data-style='bits-ui'] [data-tree-item-content]:hover:not(:disabled),
+[data-style='bits-ui'] [data-tree-item-content]:focus:not(:disabled) {
+  @apply bg-surface-z2 text-surface-z9 outline-none;
+}
+
+/* Focus visible for keyboard navigation */
+[data-style='bits-ui'] [data-tree-item-content]:focus-visible {
+  @apply ring-primary-z3 ring-2 outline-none;
+}
+
+/* Active/selected state */
+[data-style='bits-ui'] [data-tree-item-content][data-active='true'] {
+  @apply bg-primary-z2 text-primary-z7;
+}
+
+[data-style='bits-ui'] [data-tree-item-content][data-active='true']:hover:not(:disabled) {
+  @apply bg-primary-z3 text-primary-z8;
+}
+
+/* Reset rokkit gradients bleeding in from body[data-style='rokkit'] ancestor */
+[data-style='bits-ui'] [data-tree]:focus-within [data-tree-item-content][data-active='true'] {
+  @apply bg-primary-z2;
+}
+
+[data-style='bits-ui'] [data-tree]:focus-within [data-tree-item-content][data-active='true']:hover:not(:disabled) {
+  @apply bg-primary-z3;
+}
+
+[data-style='bits-ui'] [data-tree]:not(:focus-within) [data-tree-item-content][data-active='true'] {
+  @apply bg-surface-z2;
+}
+
+/* =============================================================================
+   Item Elements
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-tree-item-content] [data-item-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='bits-ui'] [data-tree-item-content]:hover:not(:disabled) [data-item-icon] {
+  @apply text-surface-z6;
+}
+
+[data-style='bits-ui'] [data-tree-item-content][data-active='true'] [data-item-icon] {
+  @apply text-primary-z5;
+}
+
+[data-style='bits-ui'] [data-tree-item-content] [data-item-description] {
+  @apply text-surface-z5;
+}
+
+[data-style='bits-ui'] [data-tree-item-content][data-active='true'] [data-item-description] {
+  @apply text-primary-z6;
+}
+
+[data-style='bits-ui'] [data-tree-item-content] [data-item-badge] {
+  @apply bg-none text-surface-z6 border-surface-z3 border bg-transparent rounded-lg;
+}
+
+[data-style='bits-ui'] [data-tree-item-content][data-active='true'] [data-item-badge] {
+  @apply text-primary-z7 border-primary-z3;
+}
+
+[data-style='bits-ui'] [data-tree]:focus-within [data-tree-item-content][data-active='true'] [data-item-badge] {
+  @apply bg-none;
+}
+
+[data-style='bits-ui'] [data-tree]:not(:focus-within) [data-tree-item-content][data-active='true'] [data-item-badge] {
+  @apply bg-none;
+}
+
+/* =============================================================================
+   Multi-Selection
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-tree-node][data-selected='true'] [data-tree-item-content] {
+  @apply bg-primary-z2 text-primary-z7;
+}
+
+[data-style='bits-ui']
+  [data-tree]:focus-within
+  [data-tree-node][data-selected='true']
+  [data-tree-item-content] {
+  @apply bg-primary-z2 text-primary-z7;
+}
+
+[data-style='bits-ui']
+  [data-tree-node][data-selected='true']
+  [data-tree-item-content]
+  [data-item-icon] {
+  @apply text-primary-z5;
+}

@@ -1,0 +1,70 @@
+/**
+ * FloatingNavigation - bits-ui Theme Styles
+ *
+ * Card-like container with rounded-xl and shadow.
+ */
+
+/* =============================================================================
+   Container
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-floating-nav] {
+  @apply bg-none bg-surface-z1 border-surface-z3 border rounded-xl shadow-sm;
+}
+
+/* =============================================================================
+   Header
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-floating-nav-title] {
+  @apply text-surface-z5;
+}
+
+[data-style='bits-ui'] [data-floating-nav-pin] {
+  @apply text-surface-z5;
+}
+
+[data-style='bits-ui'] [data-floating-nav-pin]:hover {
+  @apply text-surface-z8;
+}
+
+[data-style='bits-ui'] [data-floating-nav-pin][aria-pressed='true'] {
+  @apply text-surface-z9;
+}
+
+/* =============================================================================
+   Items
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-floating-nav-item] {
+  @apply text-surface-z7 rounded-lg;
+}
+
+[data-style='bits-ui'] [data-floating-nav-item]:hover {
+  @apply bg-surface-z2 text-surface-z9;
+}
+
+[data-style='bits-ui'] [data-floating-nav-item][data-active] {
+  @apply bg-primary-z2 text-primary-z8;
+}
+
+[data-style='bits-ui'] [data-floating-nav-item]:focus-visible {
+  @apply ring-primary-z3 ring-2 outline-none;
+}
+
+/* Icon */
+[data-style='bits-ui'] [data-floating-nav-icon] {
+  @apply text-surface-z6;
+}
+
+[data-style='bits-ui'] [data-floating-nav-item][data-active] [data-floating-nav-icon] {
+  @apply text-primary-z7;
+}
+
+/* =============================================================================
+   Active Indicator
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-floating-nav-indicator] {
+  @apply bg-none bg-primary-z5 rounded-lg;
+}

@@ -1,0 +1,35 @@
+/**
+ * Message - bits-ui Theme Styles
+ */
+
+[data-style='bits-ui'] [data-message-root][data-type='error'] {
+  @apply bg-error-z1 border-error-z3 text-error-z8 rounded-lg;
+}
+[data-style='bits-ui'] [data-message-root][data-type='error'] [data-message-icon],
+[data-style='bits-ui'] [data-message-root][data-type='error'] [data-message-dismiss] {
+  @apply text-error-z5;
+}
+
+[data-style='bits-ui'] [data-message-root][data-type='warning'] {
+  @apply bg-warning-z1 border-warning-z3 text-warning-z8 rounded-lg;
+}
+[data-style='bits-ui'] [data-message-root][data-type='warning'] [data-message-icon],
+[data-style='bits-ui'] [data-message-root][data-type='warning'] [data-message-dismiss] {
+  @apply text-warning-z5;
+}
+
+[data-style='bits-ui'] [data-message-root][data-type='info'] {
+  @apply bg-info-z1 border-info-z3 text-info-z8 rounded-lg;
+}
+[data-style='bits-ui'] [data-message-root][data-type='info'] [data-message-icon],
+[data-style='bits-ui'] [data-message-root][data-type='info'] [data-message-dismiss] {
+  @apply text-info-z5;
+}
+
+[data-style='bits-ui'] [data-message-root][data-type='success'] {
+  @apply bg-success-z1 border-success-z3 text-success-z8 rounded-lg;
+}
+[data-style='bits-ui'] [data-message-root][data-type='success'] [data-message-icon],
+[data-style='bits-ui'] [data-message-root][data-type='success'] [data-message-dismiss] {
+  @apply text-success-z5;
+}

@@ -1,0 +1,46 @@
+/**
+ * Grid - bits-ui Theme Styles
+ *
+ * Card-like tiles with rounded-xl, shadow, and primary selection.
+ */
+
+/* =============================================================================
+   Grid Tiles
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-grid] [data-grid-item] {
+  @apply border-surface-z3 text-surface-z7 rounded-xl shadow-sm;
+}
+
+[data-style='bits-ui'] [data-grid] [data-grid-item]:hover:not(:disabled):not([data-disabled]) {
+  @apply border-surface-z4 bg-surface-z2 text-surface-z9 shadow-md;
+}
+
+[data-style='bits-ui'] [data-grid] [data-grid-item]:focus:not(:disabled):not([data-disabled]) {
+  @apply border-primary-z4 bg-surface-z2 text-surface-z9 ring-primary-z3 ring-2 outline-none;
+}
+
+/* Active / selected tile */
+[data-style='bits-ui'] [data-grid] [data-grid-item][data-active] {
+  @apply border-primary-z4 bg-primary-z2 text-primary-z9;
+}
+
+[data-style='bits-ui'] [data-grid] [data-grid-item][data-active]:hover:not(:disabled) {
+  @apply bg-primary-z3;
+}
+
+/* =============================================================================
+   Item Elements
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-grid] [data-grid-item] [data-item-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='bits-ui'] [data-grid] [data-grid-item]:hover:not(:disabled) [data-item-icon] {
+  @apply text-surface-z7;
+}
+
+[data-style='bits-ui'] [data-grid] [data-grid-item][data-active] [data-item-icon] {
+  @apply text-primary-z6;
+}

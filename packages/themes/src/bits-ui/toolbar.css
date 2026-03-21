@@ -1,0 +1,85 @@
+/**
+ * Toolbar - bits-ui Theme Styles
+ *
+ * Softer styling with subtle borders.
+ */
+
+/* =============================================================================
+   Toolbar Container
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-toolbar] {
+  @apply bg-none bg-transparent;
+}
+
+/* Position-based borders */
+[data-style='bits-ui'] [data-toolbar][data-toolbar-position='top'],
+[data-style='bits-ui'] [data-toolbar]:not([data-toolbar-position]) {
+  @apply border-surface-z3 border-b;
+}
+
+[data-style='bits-ui'] [data-toolbar][data-toolbar-position='bottom'] {
+  @apply border-surface-z3 border-t;
+}
+
+[data-style='bits-ui'] [data-toolbar][data-toolbar-position='left'] {
+  @apply border-surface-z3 border-r;
+}
+
+[data-style='bits-ui'] [data-toolbar][data-toolbar-position='right'] {
+  @apply border-surface-z3 border-l;
+}
+
+/* =============================================================================
+   Toolbar Items
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-toolbar-item] {
+  @apply text-surface-z6 rounded-lg;
+}
+
+[data-style='bits-ui'] [data-toolbar-item]:hover:not(:disabled):not([data-disabled='true']) {
+  @apply bg-none text-surface-z9;
+}
+
+[data-style='bits-ui']
+  [data-toolbar-item]:focus-visible:not(:disabled):not([data-disabled='true']) {
+  @apply bg-none text-surface-z9 ring-primary-z3 ring-2 outline-none;
+}
+
+/* Active/pressed state */
+[data-style='bits-ui'] [data-toolbar-item][data-active='true'] {
+  @apply bg-none text-primary-z7;
+}
+
+[data-style='bits-ui'] [data-toolbar-item][data-active='true']:hover:not(:disabled) {
+  @apply bg-none text-primary-z8;
+}
+
+/* =============================================================================
+   Toolbar Icon
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-toolbar-item] [data-toolbar-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='bits-ui'] [data-toolbar-item]:hover:not(:disabled) [data-toolbar-icon] {
+  @apply text-surface-z8;
+}
+
+[data-style='bits-ui'] [data-toolbar-item][data-active='true'] [data-toolbar-icon] {
+  @apply text-primary-z6;
+}
+
+/* =============================================================================
+   Separator & Divider
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-toolbar-separator] {
+  @apply bg-none bg-surface-z3;
+}
+
+[data-style='bits-ui'] [data-toolbar-divider] {
+  @apply bg-none bg-surface-z3;
+}

@@ -1,0 +1,63 @@
+/**
+ * FloatingAction - bits-ui Theme Styles
+ *
+ * Rounded buttons with shadow elevation.
+ */
+
+/* =============================================================================
+   FAB Trigger Button
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-fab-trigger] {
+  @apply bg-none bg-surface-z2 text-surface-z8 border-surface-z3 border rounded-lg shadow-sm;
+}
+
+[data-style='bits-ui'] [data-fab-trigger]:hover:not(:disabled) {
+  @apply bg-none bg-surface-z3 text-surface-z10 border-surface-z4 shadow-md;
+}
+
+[data-style='bits-ui'] [data-fab-trigger]:focus-visible {
+  @apply ring-primary-z3 ring-2 outline-none;
+}
+
+[data-style='bits-ui'] [data-fab][data-open='true'] [data-fab-trigger] {
+  @apply bg-none bg-surface-z3 border-surface-z4 shadow-md;
+  transform: rotate(45deg);
+}
+
+[data-style='bits-ui'] [data-fab][data-open='true'] [data-fab-trigger]:hover:not(:disabled) {
+  @apply bg-none;
+}
+
+/* =============================================================================
+   FAB Items
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-fab-item] {
+  @apply bg-none bg-surface-z1 text-surface-z7 border-surface-z3 border rounded-lg shadow-sm;
+}
+
+[data-style='bits-ui'] [data-fab-item]:hover:not(:disabled) {
+  @apply bg-none bg-surface-z2 text-surface-z9 border-surface-z4 shadow-md;
+}
+
+[data-style='bits-ui'] [data-fab-item]:focus-visible {
+  @apply ring-primary-z3 ring-2 outline-none;
+}
+
+/* Item icon */
+[data-style='bits-ui'] [data-fab-item] [data-fab-item-icon] {
+  @apply text-surface-z6;
+}
+
+[data-style='bits-ui'] [data-fab-item]:hover:not(:disabled) [data-fab-item-icon] {
+  @apply text-surface-z8;
+}
+
+/* =============================================================================
+   Backdrop
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-fab-backdrop] {
+  background: rgba(0, 0, 0, 0.2);
+}

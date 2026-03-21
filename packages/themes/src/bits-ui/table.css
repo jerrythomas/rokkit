@@ -1,0 +1,89 @@
+/**
+ * Table - bits-ui Theme Styles
+ *
+ * Clean table with subtle borders and rounded selection highlight.
+ */
+
+/* =============================================================================
+   Header
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-table-header] th {
+  @apply text-surface-z6 border-surface-z3 border-b;
+}
+
+[data-style='bits-ui'] [data-table-header-cell][data-sortable='true']:hover {
+  @apply text-surface-z8;
+}
+
+[data-style='bits-ui'] [data-table-header-cell][data-sort-order='ascending'],
+[data-style='bits-ui'] [data-table-header-cell][data-sort-order='descending'] {
+  @apply text-primary-z7;
+}
+
+[data-style='bits-ui'] [data-table-sort-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='bits-ui'] [data-table-header-cell][data-sort-order='ascending'] [data-table-sort-icon],
+[data-style='bits-ui']
+  [data-table-header-cell][data-sort-order='descending']
+  [data-table-sort-icon] {
+  @apply text-primary-z6;
+}
+
+/* =============================================================================
+   Caption
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-table-caption] {
+  @apply text-surface-z7;
+}
+
+/* =============================================================================
+   Rows
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-table-row] {
+  @apply text-surface-z7 border-surface-z2 border-b;
+}
+
+[data-style='bits-ui'] [data-table-row]:hover {
+  @apply bg-surface-z2 text-surface-z9;
+}
+
+[data-style='bits-ui'] [data-table-row]:focus {
+  @apply bg-surface-z2 text-surface-z9 ring-primary-z3 ring-2 outline-none;
+}
+
+[data-style='bits-ui'] [data-table-row][data-selected='true'] {
+  @apply bg-primary-z2 text-primary-z8;
+}
+
+/* =============================================================================
+   Striped
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-striped='true'] [data-table-body] tr:nth-child(even) {
+  @apply bg-surface-z1;
+}
+
+/* =============================================================================
+   Empty
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-table-empty] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Cell Icon
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-table-cell] [data-cell-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='bits-ui'] [data-table-row][data-selected='true'] [data-cell-icon] {
+  @apply text-primary-z6;
+}

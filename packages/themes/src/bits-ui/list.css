@@ -1,0 +1,126 @@
+/**
+ * List - bits-ui Theme Styles
+ *
+ * Softer list styling with rounded item backgrounds on hover/active.
+ */
+
+/* =============================================================================
+   List Container
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-list]:focus-within {
+  @apply outline-none;
+}
+
+/* =============================================================================
+   List Items
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-list] [data-list-item] {
+  @apply text-surface-z7 border-0 border-solid border-transparent rounded-lg;
+}
+
+[data-style='bits-ui'] [data-list] a[data-list-item],
+[data-style='bits-ui'] [data-list] button[data-list-item] {
+  @apply text-surface-z6;
+}
+
+/* Hover and focus (keyboard navigation) */
+[data-style='bits-ui']
+  [data-list]
+  [data-list-item]:hover:not(:disabled):not([data-disabled='true']),
+[data-style='bits-ui']
+  [data-list]
+  [data-list-item]:focus:not(:disabled):not([data-disabled='true']) {
+  @apply bg-surface-z2 text-surface-z9 outline-none;
+}
+
+/* Active state — muted when list not focused */
+[data-style='bits-ui'] [data-list] [data-list-item][data-active='true'] {
+  @apply bg-surface-z2 text-surface-z8;
+}
+
+/* Active state — full highlight when list has focus */
+[data-style='bits-ui'] [data-list]:focus-within [data-list-item][data-active='true'] {
+  @apply bg-primary-z2 text-primary-z7;
+}
+
+/* Active + hover/focus */
+[data-style='bits-ui'] [data-list] [data-list-item][data-active='true']:hover:not(:disabled),
+[data-style='bits-ui'] [data-list] [data-list-item][data-active='true']:focus:not(:disabled) {
+  @apply bg-primary-z3 text-primary-z8;
+}
+
+/* =============================================================================
+   Item Elements
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-list] [data-list-item] [data-item-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='bits-ui'] [data-list] [data-list-item]:hover:not(:disabled) [data-item-icon],
+[data-style='bits-ui'] [data-list] [data-list-item]:focus:not(:disabled) [data-item-icon] {
+  @apply text-surface-z6;
+}
+
+[data-style='bits-ui'] [data-list] [data-list-item][data-active='true'] [data-item-icon] {
+  @apply text-primary-z5;
+}
+
+[data-style='bits-ui'] [data-list] [data-list-item] [data-item-description] {
+  @apply text-surface-z5;
+}
+
+[data-style='bits-ui'] [data-list] [data-list-item][data-active='true'] [data-item-description] {
+  @apply text-primary-z6;
+}
+
+[data-style='bits-ui'] [data-list] [data-list-item] [data-item-badge] {
+  @apply bg-none text-surface-z6 border-surface-z3 border bg-transparent rounded-lg;
+}
+
+[data-style='bits-ui'] [data-list] [data-list-item][data-active='true'] [data-item-badge] {
+  @apply bg-none text-primary-z7 border-primary-z3;
+}
+
+/* =============================================================================
+   Groups
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-list] [data-list-group] {
+  @apply text-surface-z5;
+}
+
+[data-style='bits-ui'] [data-list] [data-list-group]:hover:not(:disabled),
+[data-style='bits-ui'] [data-list] [data-list-group]:focus:not(:disabled) {
+  @apply bg-surface-z2 text-surface-z7;
+}
+
+/* =============================================================================
+   Separator
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-list] [data-list-separator] {
+  @apply bg-none bg-surface-z3;
+}
+
+/* =============================================================================
+   Multi-Selection
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-list] [data-list-item][data-selected='true'] {
+  @apply bg-primary-z2 text-primary-z7;
+}
+
+[data-style='bits-ui'] [data-list]:focus-within [data-list-item][data-selected='true'] {
+  @apply bg-primary-z2 text-primary-z7;
+}
+
+[data-style='bits-ui'] [data-list] [data-list-item][data-selected='true']:hover:not(:disabled) {
+  @apply bg-primary-z3 text-primary-z8;
+}
+
+[data-style='bits-ui'] [data-list] [data-list-item][data-selected='true'] [data-item-icon] {
+  @apply text-primary-z5;
+}

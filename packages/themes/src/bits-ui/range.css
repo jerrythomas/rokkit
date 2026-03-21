@@ -1,0 +1,61 @@
+/**
+ * Range - bits-ui Theme Styles
+ *
+ * Softer range slider with rounded thumb and primary fill.
+ */
+
+/* =============================================================================
+   Track
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-range-bar] {
+  @apply bg-surface-z3 rounded-lg;
+}
+
+[data-style='bits-ui'] [data-range-selected] {
+  @apply bg-none bg-primary rounded-lg;
+}
+
+/* =============================================================================
+   Thumb
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-range-thumb] {
+  @apply bg-surface-z1 border-primary border-2 shadow-sm rounded-lg;
+}
+
+[data-style='bits-ui'] [data-range-thumb][data-sliding] {
+  @apply bg-primary shadow-md;
+}
+
+[data-style='bits-ui'] [data-range-thumb]:focus-visible {
+  @apply bg-primary ring-primary-z3 ring-2;
+}
+
+/* =============================================================================
+   Ticks
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-range-tick] {
+  @apply text-surface-z6;
+}
+
+[data-style='bits-ui'] [data-tick-bar] {
+  @apply border-surface-z3;
+}
+
+[data-style='bits-ui'] [data-tick-label] {
+  @apply text-surface-z6;
+}
+
+/* =============================================================================
+   Disabled
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-range][data-disabled] [data-range-thumb] {
+  @apply bg-surface-z3 border-surface-z4;
+}
+
+[data-style='bits-ui'] [data-range][data-disabled] [data-range-selected] {
+  @apply bg-surface-z4;
+}

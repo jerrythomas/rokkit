@@ -1,0 +1,45 @@
+/**
+ * Timeline - bits-ui Theme Styles
+ *
+ * Softer timeline with rounded circles and primary accent.
+ */
+
+/* =============================================================================
+   Circle
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-timeline-circle] {
+  @apply border-surface-z3 text-surface-z6 rounded-lg shadow-sm;
+}
+
+[data-style='bits-ui'] [data-timeline-item][data-completed] [data-timeline-circle] {
+  @apply border-primary text-primary;
+}
+
+[data-style='bits-ui'] [data-timeline-item][data-active] [data-timeline-circle] {
+  @apply border-primary text-primary border-2;
+}
+
+/* =============================================================================
+   Connector
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-timeline-connector] {
+  @apply bg-surface-z3;
+}
+
+[data-style='bits-ui'] [data-timeline-item][data-completed] [data-timeline-connector] {
+  @apply bg-primary;
+}
+
+/* =============================================================================
+   Body
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-timeline-title] {
+  @apply text-surface-z8;
+}
+
+[data-style='bits-ui'] [data-timeline-description] {
+  @apply text-surface-z6;
+}

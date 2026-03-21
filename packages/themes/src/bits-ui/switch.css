@@ -1,0 +1,28 @@
+/**
+ * Switch - bits-ui Theme Styles
+ */
+
+[data-style='bits-ui'] [data-switch-track] {
+  @apply bg-none border-surface-z3 border-2 bg-surface-z2 rounded-lg;
+}
+
+[data-style='bits-ui'] [data-switch-thumb] {
+  @apply bg-surface-z5 rounded;
+}
+
+[data-style='bits-ui'] [data-switch]:focus-visible [data-switch-track] {
+  @apply ring-primary-z3 ring-2 ring-offset-1;
+}
+
+/* On state */
+[data-style='bits-ui'] [data-switch][aria-checked='true'] [data-switch-track] {
+  @apply bg-none border-primary-z4 bg-primary-z2;
+}
+
+[data-style='bits-ui'] [data-switch][aria-checked='true'] [data-switch-thumb] {
+  @apply bg-primary-z5;
+}
+
+[data-style='bits-ui'] [data-switch-label] {
+  @apply text-surface-z7;
+}

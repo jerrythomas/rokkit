@@ -1,0 +1,49 @@
+/**
+ * SearchFilter - bits-ui Theme Styles
+ *
+ * Rounded input with subtle shadow.
+ */
+
+/* =============================================================================
+   Input
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-search-input] {
+  @apply text-surface-z7 border-surface-z3 border bg-surface-z1 rounded-lg shadow-sm;
+}
+
+[data-style='bits-ui'] [data-search-input]:focus {
+  @apply border-primary-z4 ring-primary-z3 ring-2;
+}
+
+[data-style='bits-ui'] [data-search-input]::placeholder {
+  @apply text-surface-z4;
+}
+
+/* =============================================================================
+   Clear Button
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-search-clear] {
+  @apply text-surface-z5;
+}
+
+[data-style='bits-ui'] [data-search-clear]:hover {
+  @apply text-surface-z8;
+}
+
+/* =============================================================================
+   Tags
+   ============================================================================= */
+
+[data-style='bits-ui'] [data-search-tag] {
+  @apply bg-none text-surface-z7 border-surface-z3 border bg-surface-z2 rounded-lg;
+}
+
+[data-style='bits-ui'] [data-search-tag-remove] {
+  @apply text-surface-z5;
+}
+
+[data-style='bits-ui'] [data-search-tag-remove]:hover {
+  @apply text-surface-z8;
+}
