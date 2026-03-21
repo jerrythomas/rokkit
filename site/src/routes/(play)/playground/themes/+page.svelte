@@ -1,7 +1,7 @@
 <script>
 	// @ts-nocheck
 	import { Button, Card, Switch } from '@rokkit/ui'
-	import { Input } from '@rokkit/forms'
+	import { Input, InputField } from '@rokkit/forms'
 
 	const THEMES = [
 		'rokkit',
@@ -66,10 +66,10 @@
 					<p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Input</p>
 					<div class="flex gap-3">
 						<div class="max-w-xs flex-1">
-							<Input bind:value={inputValues[themeName]} placeholder="Type something..." />
+							<InputField bind:value={inputValues[themeName]} label="Label" name="demo" />
 						</div>
 						<div class="max-w-xs flex-1">
-							<Input placeholder="Disabled input" disabled />
+							<InputField label="Disabled" name="demo-disabled" disabled />
 						</div>
 					</div>
 				</div>

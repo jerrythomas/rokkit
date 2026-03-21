@@ -39,6 +39,7 @@
 [data-style='material'] [data-input-root] textarea,
 [data-style='material'] [data-input-root] select {
   @apply text-surface-z9 w-full border-none bg-transparent px-3 py-2.5 transition-all outline-none;
+  border-radius: 4px;
   font-size: 0.875rem;
   line-height: 1.25rem;
 }

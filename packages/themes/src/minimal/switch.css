@@ -1,13 +1,15 @@
 /**
  * Switch - Minimal Theme Styles
+ * Flat filled pill — no borders, no shadows, just color transitions.
  */
 
 [data-style='minimal'] [data-switch-track] {
-  @apply bg-none border-surface-z4 border-2 bg-transparent;
+  @apply bg-surface-z4 border-0;
+  background-image: none;
 }
 
 [data-style='minimal'] [data-switch-thumb] {
-  @apply bg-surface-z5;
+  @apply bg-surface-z1;
 }
 
 [data-style='minimal'] [data-switch]:focus-visible [data-switch-track] {
@@ -16,11 +18,12 @@
 
 /* On state */
 [data-style='minimal'] [data-switch][aria-checked='true'] [data-switch-track] {
-  @apply bg-none border-primary-z4;
+  @apply bg-primary-z5 border-0;
+  background-image: none;
 }
 
 [data-style='minimal'] [data-switch][aria-checked='true'] [data-switch-thumb] {
-  @apply bg-primary-z4;
+  @apply bg-surface-z1;
 }
 
 [data-style='minimal'] [data-switch-label] {
