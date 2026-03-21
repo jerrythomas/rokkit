@@ -4,7 +4,7 @@
 
 /* Input root: transparent background, bottom border only */
 [data-style='minimal'] [data-input-root] {
-  @apply border-surface-z2 relative flex items-center border-b bg-transparent p-0;
+  @apply border-surface-z4 relative flex items-center border-b bg-transparent p-0;
   border-radius: 0;
   background-image: none;
   transition: background-color 150ms ease;
@@ -45,6 +45,7 @@
 [data-style='minimal'] [data-input-root] textarea,
 [data-style='minimal'] [data-input-root] select {
   @apply text-surface-z9 w-full border-none bg-transparent px-1 py-1.5 outline-none;
+  border-radius: 0;
   font-size: 0.875rem;
   line-height: 1.25rem;
   transition: color 150ms ease;
