@@ -17,7 +17,29 @@ describe('generateConfig', () => {
 		expect(config.colors).toBeDefined()
 		expect(config.colors.primary).toBe('orange')
 		expect(config.themes).toEqual(['rokkit'])
+		expect(config.defaultTheme).toBe('rokkit')
 		expect(config.switcher).toBe('manual')
+	})
+
+	it('should use explicit defaultTheme when provided', () => {
+		const config = generateConfig({
+			palette: 'default',
+			icons: 'rokkit',
+			themes: ['rokkit', 'glass'],
+			defaultTheme: 'glass',
+			switcher: 'full'
+		})
+		expect(config.defaultTheme).toBe('glass')
+	})
+
+	it('should fall back to first theme when defaultTheme is not set', () => {
+		const config = generateConfig({
+			palette: 'default',
+			icons: 'rokkit',
+			themes: ['minimal', 'rokkit'],
+			switcher: 'manual'
+		})
+		expect(config.defaultTheme).toBe('minimal')
 	})
 
 	it('should apply vibrant skin preset', () => {
@@ -60,7 +82,8 @@ describe('generateUnoConfig', () => {
 	it('should return valid uno.config.js content string', () => {
 		const content = generateUnoConfig()
 		expect(content).toContain("import { presetRokkit } from '@rokkit/unocss'")
-		expect(content).toContain('presetRokkit()')
+		expect(content).toContain("import config from './rokkit.config.js'")
+		expect(content).toContain('presetRokkit(config)')
 		expect(content).toContain('defineConfig')
 	})
 })
@@ -69,14 +92,14 @@ describe('generateAppCssImports', () => {
 	it('should include unocss reset and theme imports', () => {
 		const lines = generateAppCssImports(['rokkit'])
 		expect(lines).toContain("@import '@unocss/reset/tailwind.css';")
-		expect(lines).toContain("@import '@rokkit/themes/dist/base';")
-		expect(lines).toContain("@import '@rokkit/themes/dist/rokkit';")
+		expect(lines).toContain("@import '@rokkit/themes/base.css';")
+		expect(lines).toContain("@import '@rokkit/themes/rokkit.css';")
 	})
 
 	it('should include multiple theme imports', () => {
 		const lines = generateAppCssImports(['rokkit', 'minimal'])
-		expect(lines).toContain("@import '@rokkit/themes/dist/rokkit';")
-		expect(lines).toContain("@import '@rokkit/themes/dist/minimal';")
+		expect(lines).toContain("@import '@rokkit/themes/rokkit.css';")
+		expect(lines).toContain("@import '@rokkit/themes/minimal.css';")
 	})
 })
 
@@ -96,6 +119,12 @@ describe('generateInitScript', () => {
 	it('should include data-style for full switcher', () => {
 		const script = generateInitScript('full', 'rokkit-theme')
 		expect(script).toContain('dataset.style')
+		expect(script).toContain("|| 'rokkit'")
 		expect(script).toContain('dataset.mode')
+	})
+
+	it('should use custom defaultStyle for full switcher', () => {
+		const script = generateInitScript('full', 'rokkit-theme', 'glass')
+		expect(script).toContain("|| 'glass'")
 	})
 })

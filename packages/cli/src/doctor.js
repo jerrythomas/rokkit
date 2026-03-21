@@ -3,6 +3,8 @@ import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { resolve } from 'path'
 import { generateUnoConfig, generateAppCssImports, generateInitScript } from './init.js'
 
+const KNOWN_THEMES = ['rokkit', 'minimal', 'material', 'glass', 'grada-ui']
+
 /**
  * Check config file existence
  * @param {Object} fs
@@ -28,10 +30,11 @@ function checkConfig(fs) {
 function checkUnoPreset(fs) {
 	const unoPath = fs.resolve('uno.config.js')
 	const unoExists = fs.exists(unoPath)
-	const unoUsesPreset = unoExists && fs.read(unoPath).includes('presetRokkit')
+	const unoContent = unoExists ? fs.read(unoPath) : ''
+	const unoUsesPreset = unoContent.includes('presetRokkit') && unoContent.includes('rokkit.config')
 	return {
 		id: 'uno-uses-preset',
-		label: 'uno.config.js uses presetRokkit()',
+		label: 'uno.config.js uses presetRokkit(config)',
 		status: unoUsesPreset ? 'pass' : 'fail',
 		fixable: false,
 		fix: unoExists
@@ -48,14 +51,33 @@ function checkUnoPreset(fs) {
 function checkCssImports(fs) {
 	const cssPath = fs.resolve('src/app.css')
 	const cssExists = fs.exists(cssPath)
-	const cssHasBase = cssExists && fs.read(cssPath).includes('@rokkit/themes/dist/base')
+	const cssHasBase = cssExists && fs.read(cssPath).includes('@rokkit/themes/base.css')
 	return {
 		id: 'css-imports',
-		label: 'app.css has theme imports',
+		label: 'app.css imports @rokkit/themes/base.css',
 		status: cssHasBase ? 'pass' : 'fail',
 		fixable: true,
-		fix: 'Append theme imports to src/app.css',
+		fix: 'Append base theme import to src/app.css',
 		autoFix: 'patch-css'
+	}
+}
+
+/**
+ * Check app.css has at least one theme style
+ * @param {Object} fs
+ * @returns {Object}
+ */
+function checkCssTheme(fs) {
+	const cssPath = fs.resolve('src/app.css')
+	const cssExists = fs.exists(cssPath)
+	const css = cssExists ? fs.read(cssPath) : ''
+	const hasTheme = KNOWN_THEMES.some((t) => css.includes(`@rokkit/themes/${t}.css`))
+	return {
+		id: 'css-theme',
+		label: 'app.css has a theme style',
+		status: hasTheme ? 'pass' : 'warn',
+		fixable: false,
+		fix: `Add a theme import to src/app.css, e.g. @import '@rokkit/themes/rokkit.css'\n         Available: ${KNOWN_THEMES.join(', ')}, or use a custom theme`
 	}
 }
 
@@ -86,7 +108,7 @@ function checkHtmlScript(fs) {
  * @returns {Array<{ id: string, label: string, status: 'pass'|'fail', fixable: boolean, fix: string, autoFix?: string }>}
  */
 export function runChecks(fs) {
-	return [checkConfig(fs), checkUnoPreset(fs), checkCssImports(fs), checkHtmlScript(fs)]
+	return [checkConfig(fs), checkUnoPreset(fs), checkCssImports(fs), checkCssTheme(fs), checkHtmlScript(fs)]
 }
 
 /**
@@ -119,7 +141,7 @@ function applyGenerateConfig(cwd, label) {
  */
 function applyPatchCss(cwd, label) {
 	const cssPath = resolve(cwd, 'src/app.css')
-	const imports = generateAppCssImports(['rokkit'])
+	const imports = generateAppCssImports([])
 	if (existsSync(cssPath)) {
 		const existing = readFileSync(cssPath, 'utf-8')
 		const missing = imports.filter((line) => !existing.includes(line))
@@ -189,7 +211,7 @@ function autoFix(checks, cwd) {
  */
 function printFixHints(checks) {
 	for (const check of checks) {
-		if (check.status === 'fail') {
+		if (check.status === 'fail' || check.status === 'warn') {
 			console.info(`         ${check.fixable ? '(auto-fixable) ' : ''}${check.fix}`)
 		}
 	}
@@ -215,7 +237,7 @@ function printManualItems(checks) {
 function printChecks(checks) {
 	let failures = 0
 	for (const check of checks) {
-		const icon = check.status === 'pass' ? 'PASS' : 'FAIL'
+		const icon = check.status === 'pass' ? 'PASS' : check.status === 'warn' ? 'WARN' : 'FAIL'
 		console.info(`  ${icon}  ${check.label}`)
 		if (check.status === 'fail') failures++
 	}

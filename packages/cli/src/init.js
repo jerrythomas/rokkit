@@ -36,13 +36,19 @@ const DEFAULT_COLORS = {
  * @param {{ palette: string, customColors?: Record<string, string>, icons: string, iconPath?: string, themes: string[], switcher: string }} opts
  * @returns {Record<string, unknown>}
  */
-export function generateConfig({ palette, customColors, icons, iconPath, themes, switcher }) {
+export function generateConfig({ palette, customColors, icons, iconPath, themes, defaultTheme, switcher }) {
 	const colors =
 		palette === 'custom'
 			? { ...DEFAULT_COLORS, ...customColors }
 			: { ...DEFAULT_COLORS, ...(SKIN_PRESETS[palette] || {}) }
 
-	const config = { colors, themes, switcher, storageKey: 'rokkit-theme' }
+	const config = {
+		colors,
+		themes,
+		defaultTheme: defaultTheme || themes[0],
+		switcher,
+		storageKey: 'rokkit-theme'
+	}
 
 	if (icons === 'custom' && iconPath) {
 		config.icons = { custom: iconPath }
@@ -58,9 +64,10 @@ export function generateConfig({ palette, customColors, icons, iconPath, themes,
 export function generateUnoConfig() {
 	return `import { defineConfig } from 'unocss'
 import { presetRokkit } from '@rokkit/unocss'
+import config from './rokkit.config.js'
 
 export default defineConfig({
-  presets: [presetRokkit()]
+  presets: [presetRokkit(config)]
 })
 `
 }
@@ -71,9 +78,9 @@ export default defineConfig({
  * @returns {string[]}
  */
 export function generateAppCssImports(themes) {
-	const lines = ["@import '@unocss/reset/tailwind.css';", "@import '@rokkit/themes/dist/base';"]
+	const lines = ["@import '@unocss/reset/tailwind.css';", "@import '@rokkit/themes/base.css';"]
 	for (const theme of themes) {
-		lines.push(`@import '@rokkit/themes/dist/${theme}';`)
+		lines.push(`@import '@rokkit/themes/${theme}.css';`)
 	}
 	return lines
 }
@@ -85,10 +92,10 @@ export function generateAppCssImports(themes) {
  * @param {string} [storageKey='rokkit-theme']
  * @returns {string | null}
  */
-export function generateInitScript(switcher, storageKey = 'rokkit-theme') {
+export function generateInitScript(switcher, storageKey = 'rokkit-theme', defaultStyle = 'rokkit') {
 	if (switcher === 'system') return null
 
-	const setStyle = switcher === 'full' ? `b.dataset.style = t.style || 'rokkit'\n          ` : ''
+	const setStyle = switcher === 'full' ? `b.dataset.style = t.style || '${defaultStyle}'\n          ` : ''
 
 	return `    <script>
       (function () {
@@ -159,9 +166,17 @@ const PROMPTS_CONFIG = [
 		choices: [
 			{ title: 'Rokkit', value: 'rokkit', selected: true },
 			{ title: 'Minimal', value: 'minimal' },
-			{ title: 'Material', value: 'material' }
+			{ title: 'Material', value: 'material' },
+			{ title: 'Glass', value: 'glass' },
+			{ title: 'Grada UI', value: 'grada-ui' }
 		],
 		min: 1
+	},
+	{
+		type: (prev) => (prev?.length > 1 ? 'select' : null),
+		name: 'defaultTheme',
+		message: 'Default theme style',
+		choices: (prev) => prev.map((t) => ({ title: t.charAt(0).toUpperCase() + t.slice(1), value: t }))
 	},
 	{
 		type: 'select',
@@ -269,7 +284,7 @@ export async function init() {
 	writeUnoConfig(cwd)
 	writeAppCss(cwd, generateAppCssImports(config.themes))
 
-	const initScript = generateInitScript(config.switcher, config.storageKey)
+	const initScript = generateInitScript(config.switcher, config.storageKey, config.defaultTheme)
 	if (initScript) writeAppHtml(cwd, initScript, config.storageKey)
 
 	console.info('\nDone! Run `rokkit doctor` to verify your setup.')
