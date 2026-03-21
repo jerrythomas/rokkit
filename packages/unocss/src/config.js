@@ -1,6 +1,7 @@
 import { DEFAULT_THEME_MAPPING } from '@rokkit/core'
 
 export const DEFAULT_CONFIG = {
+	palettes: {},
 	colors: {
 		primary: DEFAULT_THEME_MAPPING.primary,
 		secondary: DEFAULT_THEME_MAPPING.secondary,
@@ -51,6 +52,7 @@ function stripUnknownKeys(result) {
 export function loadConfig(userConfig) {
 	const cfg = userConfig || {}
 	const result = {
+		palettes: pick(cfg.palettes, DEFAULT_CONFIG.palettes),
 		colors: { ...DEFAULT_CONFIG.colors, ...cfg.colors },
 		skins: pick(cfg.skins, DEFAULT_CONFIG.skins),
 		themes: pick(cfg.themes, DEFAULT_CONFIG.themes),

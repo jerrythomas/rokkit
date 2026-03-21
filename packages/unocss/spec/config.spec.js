@@ -67,4 +67,21 @@ describe('loadConfig', () => {
 		const config = loadConfig({ unknown: 'value' })
 		expect(config).not.toHaveProperty('unknown')
 	})
+
+	it('should default palettes to empty object', () => {
+		const config = loadConfig()
+		expect(config.palettes).toEqual({})
+	})
+
+	it('should pass through custom palettes', () => {
+		const palettes = { brand: { 500: '#0f4c81', 600: '#0a3a64' } }
+		const config = loadConfig({ palettes })
+		expect(config.palettes).toEqual(palettes)
+	})
+
+	it('should ignore unknown fields but keep palettes', () => {
+		const config = loadConfig({ palettes: { brand: { 500: '#fff' } }, unknown: 'x' })
+		expect(config.palettes).toEqual({ brand: { 500: '#fff' } })
+		expect(config).not.toHaveProperty('unknown')
+	})
 })
