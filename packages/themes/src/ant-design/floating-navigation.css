@@ -1,0 +1,70 @@
+/**
+ * FloatingNavigation - Ant Design Theme Styles
+ *
+ * Enterprise clean: thin border, rounded, subtle hover.
+ */
+
+/* =============================================================================
+   Container
+   ============================================================================= */
+
+[data-style='ant-design'] [data-floating-nav] {
+  @apply bg-none bg-surface-z0 border-surface-z3 border rounded shadow-md;
+}
+
+/* =============================================================================
+   Header
+   ============================================================================= */
+
+[data-style='ant-design'] [data-floating-nav-title] {
+  @apply text-surface-z6;
+}
+
+[data-style='ant-design'] [data-floating-nav-pin] {
+  @apply text-surface-z5;
+}
+
+[data-style='ant-design'] [data-floating-nav-pin]:hover {
+  @apply text-primary-z5;
+}
+
+[data-style='ant-design'] [data-floating-nav-pin][aria-pressed='true'] {
+  @apply text-primary-z6;
+}
+
+/* =============================================================================
+   Items
+   ============================================================================= */
+
+[data-style='ant-design'] [data-floating-nav-item] {
+  @apply text-surface-z7 rounded;
+}
+
+[data-style='ant-design'] [data-floating-nav-item]:hover {
+  @apply bg-none bg-primary-z1 text-primary-z6 rounded;
+}
+
+[data-style='ant-design'] [data-floating-nav-item][data-active] {
+  @apply bg-none bg-primary-z1 text-primary-z6 rounded;
+}
+
+[data-style='ant-design'] [data-floating-nav-item]:focus-visible {
+  @apply ring-primary-z3 ring-1 outline-none;
+}
+
+/* Icon */
+[data-style='ant-design'] [data-floating-nav-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='ant-design'] [data-floating-nav-item][data-active] [data-floating-nav-icon] {
+  @apply text-primary-z5;
+}
+
+/* =============================================================================
+   Active Indicator
+   ============================================================================= */
+
+[data-style='ant-design'] [data-floating-nav-indicator] {
+  @apply bg-none bg-primary-z5;
+}

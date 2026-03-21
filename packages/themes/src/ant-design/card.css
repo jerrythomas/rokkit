@@ -1,0 +1,100 @@
+/**
+ * Card - Ant Design Theme Styles
+ *
+ * Enterprise clean: thin border, rounded, flat with subtle background.
+ */
+
+/* =============================================================================
+   Base Card Styles
+   ============================================================================= */
+
+[data-style='ant-design'] [data-card] {
+  @apply bg-none bg-surface-z0 border-surface-z3 text-surface-z8 border rounded;
+}
+
+/* Interactive cards (buttons) */
+[data-style='ant-design'] [data-card][data-card-interactive] {
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+[data-style='ant-design'] [data-card][data-card-interactive]:hover {
+  @apply border-primary-z4;
+  box-shadow: 0 2px 8px rgb(var(--color-primary-z3) / 0.15);
+}
+
+[data-style='ant-design'] [data-card][data-card-interactive]:active {
+  @apply bg-surface-z1;
+}
+
+/* =============================================================================
+   Card Sections
+   ============================================================================= */
+
+[data-style='ant-design'] [data-card-header] {
+  @apply border-surface-z3 border-b;
+}
+
+[data-style='ant-design'] [data-card-body] {
+  @apply text-surface-z7;
+}
+
+[data-style='ant-design'] [data-card-footer] {
+  @apply border-surface-z3 text-surface-z6 border-t;
+}
+
+/* =============================================================================
+   Focus States
+   ============================================================================= */
+
+[data-style='ant-design'] [data-card][data-card-interactive]:focus-visible {
+  @apply ring-primary-z3 ring-1 outline-none;
+}
+
+/* =============================================================================
+   Disabled State
+   ============================================================================= */
+
+[data-style='ant-design'] [data-card][data-card-interactive][data-disabled],
+[data-style='ant-design'] [data-card][data-card-interactive]:disabled {
+  @apply cursor-not-allowed opacity-50;
+}
+
+/* =============================================================================
+   Variants
+   ============================================================================= */
+
+/* Primary — solid primary fill */
+[data-style='ant-design'] [data-card][data-variant='primary'] {
+  @apply bg-none bg-primary-z5 border-primary-z6 text-on-primary border rounded;
+}
+
+[data-style='ant-design'] [data-card][data-variant='primary'] [data-card-header],
+[data-style='ant-design'] [data-card][data-variant='primary'] [data-card-footer] {
+  @apply border-primary-z4/40;
+}
+
+[data-style='ant-design'] [data-card][data-variant='primary'] [data-card-body] {
+  @apply text-on-primary/80;
+}
+
+/* Secondary — solid secondary fill */
+[data-style='ant-design'] [data-card][data-variant='secondary'] {
+  @apply bg-none bg-secondary-z4 border-secondary-z5 text-on-secondary border rounded;
+}
+
+[data-style='ant-design'] [data-card][data-variant='secondary'] [data-card-header],
+[data-style='ant-design'] [data-card][data-variant='secondary'] [data-card-footer] {
+  @apply border-secondary-z3/40;
+}
+
+[data-style='ant-design'] [data-card][data-variant='secondary'] [data-card-body] {
+  @apply text-on-secondary/80;
+}
+
+/* Tertiary — recessed surface, lighter border */
+[data-style='ant-design'] [data-card][data-variant='tertiary'] {
+  @apply bg-none bg-surface-z1 border-surface-z3 text-surface-z7 border shadow-none rounded;
+}

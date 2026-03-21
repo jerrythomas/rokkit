@@ -1,0 +1,102 @@
+/**
+ * UploadProgress - Carbon Theme Styles
+ *
+ * Status colors, flat progress fill, action buttons.
+ */
+
+/* =============================================================================
+   Header
+   ============================================================================= */
+
+[data-style='carbon'] [data-upload-header] {
+  @apply text-surface-z7;
+}
+
+[data-style='carbon'] [data-upload-clear] {
+  @apply border-surface-z4 text-surface-z6 rounded-none border bg-surface-z2;
+}
+
+[data-style='carbon'] [data-upload-clear]:hover {
+  @apply bg-surface-z4 text-surface-z9;
+}
+
+/* =============================================================================
+   File Rows
+   ============================================================================= */
+
+[data-style='carbon'] [data-upload-file-status] {
+  @apply text-surface-z7;
+}
+
+[data-style='carbon'] [data-upload-file-status]:hover {
+  @apply bg-surface-z2;
+}
+
+/* =============================================================================
+   File Elements
+   ============================================================================= */
+
+[data-style='carbon'] [data-upload-file-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='carbon'] [data-upload-file-size] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Progress Bar
+   ============================================================================= */
+
+[data-style='carbon'] [data-upload-bar] {
+  @apply bg-surface-z3;
+}
+
+[data-style='carbon'] [data-upload-fill] {
+  @apply bg-none bg-primary-z5;
+}
+
+/* =============================================================================
+   Status Colors
+   ============================================================================= */
+
+[data-style='carbon'] [data-upload-file-status][data-status='uploading'] [data-upload-status] {
+  @apply text-primary-z6;
+}
+
+[data-style='carbon'] [data-upload-file-status][data-status='done'] [data-upload-status] {
+  @apply text-green-500;
+}
+
+[data-style='carbon'] [data-upload-file-status][data-status='error'] [data-upload-status] {
+  @apply text-red-500;
+}
+
+[data-style='carbon'] [data-upload-file-status][data-status='pending'] [data-upload-status] {
+  @apply text-surface-z5;
+}
+
+/* Status-based file icon tinting */
+[data-style='carbon'] [data-upload-file-status][data-status='done'] [data-upload-file-icon] {
+  @apply text-green-500;
+}
+
+[data-style='carbon'] [data-upload-file-status][data-status='error'] [data-upload-file-icon] {
+  @apply text-red-500;
+}
+
+/* =============================================================================
+   Action Buttons
+   ============================================================================= */
+
+[data-style='carbon'] [data-upload-actions] button {
+  @apply text-surface-z5 rounded-none;
+}
+
+[data-style='carbon'] [data-upload-actions] button:hover {
+  @apply bg-surface-z3 text-surface-z9;
+}
+
+[data-style='carbon'] [data-upload-file-status][data-status='error'] [data-upload-retry]:hover {
+  @apply text-primary-z7;
+}

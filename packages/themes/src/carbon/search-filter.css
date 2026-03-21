@@ -1,0 +1,49 @@
+/**
+ * SearchFilter - Carbon Theme Styles
+ *
+ * Bottom-border only search input, no border-radius.
+ */
+
+/* =============================================================================
+   Input
+   ============================================================================= */
+
+[data-style='carbon'] [data-search-input] {
+  @apply text-surface-z7 border-b-2 border-surface-z5 rounded-none border-l-0 border-r-0 border-t-0 bg-surface-z1;
+}
+
+[data-style='carbon'] [data-search-input]:focus {
+  @apply border-b-primary-z5 bg-surface-z2 outline-none;
+}
+
+[data-style='carbon'] [data-search-input]::placeholder {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Clear Button
+   ============================================================================= */
+
+[data-style='carbon'] [data-search-clear] {
+  @apply text-surface-z5;
+}
+
+[data-style='carbon'] [data-search-clear]:hover {
+  @apply text-surface-z8;
+}
+
+/* =============================================================================
+   Tags
+   ============================================================================= */
+
+[data-style='carbon'] [data-search-tag] {
+  @apply bg-none text-surface-z7 border-surface-z4 rounded-none border bg-surface-z2;
+}
+
+[data-style='carbon'] [data-search-tag-remove] {
+  @apply text-surface-z5;
+}
+
+[data-style='carbon'] [data-search-tag-remove]:hover {
+  @apply text-surface-z8;
+}

@@ -1,0 +1,48 @@
+/**
+ * Toggle - Carbon Theme Styles
+ *
+ * Square, flat, no border-radius.
+ */
+
+/* =============================================================================
+   Toggle Container
+   ============================================================================= */
+
+[data-style='carbon'] [data-toggle] {
+  @apply bg-none border-surface-z3 rounded-none border bg-transparent;
+}
+
+/* =============================================================================
+   Toggle Options
+   ============================================================================= */
+
+[data-style='carbon'] [data-toggle-option] {
+  @apply text-surface-z6 rounded-none border-0 border-solid border-transparent;
+}
+
+[data-style='carbon'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']),
+[data-style='carbon'] [data-toggle-option]:focus:not(:disabled):not([data-disabled='true']) {
+  @apply bg-none bg-surface-z3 text-surface-z8;
+}
+
+/* Selected state */
+[data-style='carbon'] [data-toggle-option][data-selected='true'] {
+  @apply bg-none bg-primary-z5 text-on-primary border-b-primary-z5 border-b-2;
+}
+
+/* =============================================================================
+   Toggle Icon
+   ============================================================================= */
+
+[data-style='carbon'] [data-toggle-option] [data-toggle-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='carbon'] [data-toggle-option]:hover:not(:disabled) [data-toggle-icon],
+[data-style='carbon'] [data-toggle-option]:focus:not(:disabled) [data-toggle-icon] {
+  @apply text-surface-z7;
+}
+
+[data-style='carbon'] [data-toggle-option][data-selected='true'] [data-toggle-icon] {
+  @apply text-on-primary;
+}

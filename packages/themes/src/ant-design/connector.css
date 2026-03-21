@@ -1,0 +1,11 @@
+/**
+ * Connector - Ant Design Theme Styles
+ *
+ * Visual theming for tree line connectors.
+ */
+
+[data-style='ant-design'] [data-connector] [data-connector-v],
+[data-style='ant-design'] [data-connector] [data-connector-h],
+[data-style='ant-design'] [data-connector] [data-connector-corner] {
+  @apply border-surface-z3;
+}

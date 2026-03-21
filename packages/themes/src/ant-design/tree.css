@@ -1,0 +1,127 @@
+/**
+ * Tree - Ant Design Theme Styles
+ *
+ * Enterprise clean: selected items get bg-primary-z1 with rounded corners.
+ */
+
+/* =============================================================================
+   Tree Container
+   ============================================================================= */
+
+[data-style='ant-design'] [data-tree]:focus-within {
+  @apply outline-none;
+}
+
+/* =============================================================================
+   Tree Toggle Button
+   ============================================================================= */
+
+[data-style='ant-design'] [data-tree-toggle-btn] {
+  @apply text-surface-z4;
+}
+
+[data-style='ant-design'] [data-tree-toggle-btn]:hover {
+  @apply bg-none text-primary-z5;
+}
+
+/* =============================================================================
+   Tree Item Content
+   ============================================================================= */
+
+[data-style='ant-design'] [data-tree-item-content] {
+  @apply text-surface-z7 rounded;
+}
+
+[data-style='ant-design'] [data-tree-item-content]:hover:not(:disabled),
+[data-style='ant-design'] [data-tree-item-content]:focus:not(:disabled) {
+  @apply bg-none bg-primary-z1 text-primary-z6 outline-none rounded;
+}
+
+/* Focus visible for keyboard navigation */
+[data-style='ant-design'] [data-tree-item-content]:focus-visible {
+  @apply ring-primary-z3 ring-1 outline-none;
+}
+
+/* Active/selected state */
+[data-style='ant-design'] [data-tree-item-content][data-active='true'] {
+  @apply bg-none bg-primary-z1 text-primary-z6 rounded;
+}
+
+[data-style='ant-design'] [data-tree-item-content][data-active='true']:hover:not(:disabled) {
+  @apply bg-none bg-primary-z2 text-primary-z7;
+}
+
+/* Reset gradients bleeding in */
+[data-style='ant-design'] [data-tree]:focus-within [data-tree-item-content][data-active='true'] {
+  @apply bg-primary-z1;
+}
+
+[data-style='ant-design'] [data-tree]:focus-within [data-tree-item-content][data-active='true']:hover:not(:disabled) {
+  @apply bg-primary-z2;
+}
+
+[data-style='ant-design'] [data-tree]:not(:focus-within) [data-tree-item-content][data-active='true'] {
+  @apply bg-primary-z1;
+}
+
+/* =============================================================================
+   Item Elements
+   ============================================================================= */
+
+[data-style='ant-design'] [data-tree-item-content] [data-item-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='ant-design'] [data-tree-item-content]:hover:not(:disabled) [data-item-icon] {
+  @apply text-primary-z5;
+}
+
+[data-style='ant-design'] [data-tree-item-content][data-active='true'] [data-item-icon] {
+  @apply text-primary-z5;
+}
+
+[data-style='ant-design'] [data-tree-item-content] [data-item-description] {
+  @apply text-surface-z5;
+}
+
+[data-style='ant-design'] [data-tree-item-content][data-active='true'] [data-item-description] {
+  @apply text-primary-z5;
+}
+
+[data-style='ant-design'] [data-tree-item-content] [data-item-badge] {
+  @apply bg-none text-surface-z6 border-surface-z4 border bg-transparent rounded;
+}
+
+[data-style='ant-design'] [data-tree-item-content][data-active='true'] [data-item-badge] {
+  @apply text-primary-z6 border-primary-z4;
+}
+
+[data-style='ant-design'] [data-tree]:focus-within [data-tree-item-content][data-active='true'] [data-item-badge] {
+  @apply bg-transparent;
+}
+
+[data-style='ant-design'] [data-tree]:not(:focus-within) [data-tree-item-content][data-active='true'] [data-item-badge] {
+  @apply bg-transparent;
+}
+
+/* =============================================================================
+   Multi-Selection
+   ============================================================================= */
+
+[data-style='ant-design'] [data-tree-node][data-selected='true'] [data-tree-item-content] {
+  @apply bg-none bg-primary-z1 text-primary-z6 rounded;
+}
+
+[data-style='ant-design']
+  [data-tree]:focus-within
+  [data-tree-node][data-selected='true']
+  [data-tree-item-content] {
+  @apply bg-none bg-primary-z1 text-primary-z6 rounded;
+}
+
+[data-style='ant-design']
+  [data-tree-node][data-selected='true']
+  [data-tree-item-content]
+  [data-item-icon] {
+  @apply text-primary-z5;
+}

@@ -1,0 +1,88 @@
+/**
+ * Menu - Carbon Theme Styles
+ *
+ * Flat menu with thin border-b dividers, no border-radius.
+ */
+
+/* =============================================================================
+   Menu Trigger
+   ============================================================================= */
+
+[data-style='carbon'] [data-menu-trigger] {
+  @apply bg-none border-surface-z4 text-surface-z7 rounded-none border bg-transparent;
+}
+
+[data-style='carbon'] [data-menu-trigger]:hover:not(:disabled) {
+  @apply bg-none bg-surface-z3 text-surface-z9;
+}
+
+[data-style='carbon'] [data-menu-trigger]:focus-visible {
+  @apply outline-none border-2 border-primary-z5;
+}
+
+[data-style='carbon'] [data-menu][data-open='true'] [data-menu-trigger] {
+  @apply bg-none bg-surface-z3 border-surface-z5;
+}
+
+/* Trigger elements */
+[data-style='carbon'] [data-menu-trigger] [data-menu-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='carbon'] [data-menu-trigger]:hover:not(:disabled) [data-menu-icon] {
+  @apply text-surface-z7;
+}
+
+[data-style='carbon'] [data-menu-trigger] [data-menu-arrow] {
+  @apply text-surface-z4;
+}
+
+/* =============================================================================
+   Menu Dropdown
+   ============================================================================= */
+
+[data-style='carbon'] [data-menu-dropdown] {
+  @apply bg-none bg-surface-z1 border-surface-z3 rounded-none border;
+}
+
+/* =============================================================================
+   Menu Items
+   ============================================================================= */
+
+[data-style='carbon'] [data-menu-item] {
+  @apply text-surface-z7 rounded-none border-0 border-b border-surface-z2;
+}
+
+[data-style='carbon'] [data-menu-item]:hover:not(:disabled),
+[data-style='carbon'] [data-menu-item]:focus:not(:disabled) {
+  @apply bg-none bg-surface-z2 text-surface-z9 outline-none;
+}
+
+/* Item elements */
+[data-style='carbon'] [data-menu-item] [data-item-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='carbon'] [data-menu-item]:hover:not(:disabled) [data-item-icon] {
+  @apply text-surface-z6;
+}
+
+[data-style='carbon'] [data-menu-item] [data-item-description] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Groups
+   ============================================================================= */
+
+[data-style='carbon'] [data-menu-group] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Divider
+   ============================================================================= */
+
+[data-style='carbon'] [data-menu-separator] {
+  @apply bg-none bg-surface-z3;
+}

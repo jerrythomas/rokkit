@@ -1,0 +1,46 @@
+/**
+ * Grid - Ant Design Theme Styles
+ *
+ * Tile borders, hover/focus effects, selection highlight.
+ */
+
+/* =============================================================================
+   Grid Tiles
+   ============================================================================= */
+
+[data-style='ant-design'] [data-grid] [data-grid-item] {
+  @apply border-surface-z3 text-surface-z7 rounded;
+}
+
+[data-style='ant-design'] [data-grid] [data-grid-item]:hover:not(:disabled):not([data-disabled]) {
+  @apply border-primary-z4 bg-primary-z1 text-primary-z6 rounded;
+}
+
+[data-style='ant-design'] [data-grid] [data-grid-item]:focus:not(:disabled):not([data-disabled]) {
+  @apply border-primary-z5 bg-primary-z1 text-primary-z6 outline-none ring-primary-z3 ring-1 rounded;
+}
+
+/* Active / selected tile */
+[data-style='ant-design'] [data-grid] [data-grid-item][data-active] {
+  @apply border-primary-z5 bg-primary-z1 text-primary-z7 rounded;
+}
+
+[data-style='ant-design'] [data-grid] [data-grid-item][data-active]:hover:not(:disabled) {
+  @apply bg-primary-z2;
+}
+
+/* =============================================================================
+   Item Elements
+   ============================================================================= */
+
+[data-style='ant-design'] [data-grid] [data-grid-item] [data-item-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='ant-design'] [data-grid] [data-grid-item]:hover:not(:disabled) [data-item-icon] {
+  @apply text-primary-z5;
+}
+
+[data-style='ant-design'] [data-grid] [data-grid-item][data-active] [data-item-icon] {
+  @apply text-primary-z5;
+}

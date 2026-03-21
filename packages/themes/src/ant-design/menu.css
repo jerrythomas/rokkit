@@ -1,0 +1,88 @@
+/**
+ * Menu - Ant Design Theme Styles
+ *
+ * Enterprise dense: thin borders, selected bg-primary-z1, thin dividers.
+ */
+
+/* =============================================================================
+   Menu Trigger
+   ============================================================================= */
+
+[data-style='ant-design'] [data-menu-trigger] {
+  @apply bg-none border-surface-z4 text-surface-z7 border bg-transparent rounded;
+}
+
+[data-style='ant-design'] [data-menu-trigger]:hover:not(:disabled) {
+  @apply bg-none text-primary-z5 border-primary-z4;
+}
+
+[data-style='ant-design'] [data-menu-trigger]:focus-visible {
+  @apply ring-primary-z3 ring-1 outline-none;
+}
+
+[data-style='ant-design'] [data-menu][data-open='true'] [data-menu-trigger] {
+  @apply bg-none border-primary-z5 ring-primary-z3 ring-1;
+}
+
+/* Trigger elements */
+[data-style='ant-design'] [data-menu-trigger] [data-menu-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='ant-design'] [data-menu-trigger]:hover:not(:disabled) [data-menu-icon] {
+  @apply text-primary-z4;
+}
+
+[data-style='ant-design'] [data-menu-trigger] [data-menu-arrow] {
+  @apply text-surface-z4;
+}
+
+/* =============================================================================
+   Menu Dropdown
+   ============================================================================= */
+
+[data-style='ant-design'] [data-menu-dropdown] {
+  @apply bg-none bg-surface-z0 border-surface-z3 border shadow-md rounded;
+}
+
+/* =============================================================================
+   Menu Items
+   ============================================================================= */
+
+[data-style='ant-design'] [data-menu-item] {
+  @apply text-surface-z7 rounded;
+}
+
+[data-style='ant-design'] [data-menu-item]:hover:not(:disabled),
+[data-style='ant-design'] [data-menu-item]:focus:not(:disabled) {
+  @apply bg-none bg-primary-z1 text-primary-z6 outline-none rounded;
+}
+
+/* Item elements */
+[data-style='ant-design'] [data-menu-item] [data-item-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='ant-design'] [data-menu-item]:hover:not(:disabled) [data-item-icon] {
+  @apply text-primary-z5;
+}
+
+[data-style='ant-design'] [data-menu-item] [data-item-description] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Groups
+   ============================================================================= */
+
+[data-style='ant-design'] [data-menu-group] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Divider
+   ============================================================================= */
+
+[data-style='ant-design'] [data-menu-separator] {
+  @apply bg-none bg-surface-z2;
+}

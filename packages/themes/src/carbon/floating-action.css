@@ -1,0 +1,63 @@
+/**
+ * FloatingAction - Carbon Theme Styles
+ *
+ * Flat, square FAB buttons, no border-radius.
+ */
+
+/* =============================================================================
+   FAB Trigger Button
+   ============================================================================= */
+
+[data-style='carbon'] [data-fab-trigger] {
+  @apply bg-none bg-primary-z5 text-on-primary rounded-none border-0;
+}
+
+[data-style='carbon'] [data-fab-trigger]:hover:not(:disabled) {
+  @apply bg-none bg-primary-z6 text-on-primary;
+}
+
+[data-style='carbon'] [data-fab-trigger]:focus-visible {
+  @apply outline-none border-2 border-primary-z7;
+}
+
+[data-style='carbon'] [data-fab][data-open='true'] [data-fab-trigger] {
+  @apply bg-none bg-primary-z6;
+  transform: rotate(45deg);
+}
+
+[data-style='carbon'] [data-fab][data-open='true'] [data-fab-trigger]:hover:not(:disabled) {
+  @apply bg-none bg-primary-z7;
+}
+
+/* =============================================================================
+   FAB Items
+   ============================================================================= */
+
+[data-style='carbon'] [data-fab-item] {
+  @apply bg-none bg-surface-z3 text-surface-z8 rounded-none border-0;
+}
+
+[data-style='carbon'] [data-fab-item]:hover:not(:disabled) {
+  @apply bg-none bg-surface-z4 text-surface-z9;
+}
+
+[data-style='carbon'] [data-fab-item]:focus-visible {
+  @apply outline-none border-2 border-primary-z5;
+}
+
+/* Item icon */
+[data-style='carbon'] [data-fab-item] [data-fab-item-icon] {
+  @apply text-surface-z6;
+}
+
+[data-style='carbon'] [data-fab-item]:hover:not(:disabled) [data-fab-item-icon] {
+  @apply text-surface-z8;
+}
+
+/* =============================================================================
+   Backdrop
+   ============================================================================= */
+
+[data-style='carbon'] [data-fab-backdrop] {
+  background: rgba(0, 0, 0, 0.3);
+}

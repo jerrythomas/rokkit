@@ -1,0 +1,50 @@
+/**
+ * UploadTarget - Carbon Theme Styles
+ *
+ * Flat drop zone with structured borders, no border-radius.
+ */
+
+/* =============================================================================
+   Drop Zone
+   ============================================================================= */
+
+[data-style='carbon'] [data-upload-target] {
+  @apply border-surface-z4 text-surface-z6 rounded-none border-2;
+}
+
+[data-style='carbon'] [data-upload-target]:hover:not([data-disabled]) {
+  @apply border-surface-z5 text-surface-z7 bg-surface-z2;
+}
+
+[data-style='carbon'] [data-upload-target]:focus-visible:not([data-disabled]) {
+  @apply border-primary-z5 outline-none border-2;
+}
+
+/* Drag-over highlight */
+[data-style='carbon'] [data-upload-target][data-dragging] {
+  @apply border-primary-z5 bg-primary-z2 text-primary-z7;
+}
+
+/* =============================================================================
+   Upload Icon
+   ============================================================================= */
+
+[data-style='carbon'] [data-upload-target] [data-upload-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='carbon'] [data-upload-target][data-dragging] [data-upload-icon] {
+  @apply text-primary-z6;
+}
+
+/* =============================================================================
+   Browse Button
+   ============================================================================= */
+
+[data-style='carbon'] [data-upload-target] [data-upload-button] {
+  @apply border-surface-z4 text-surface-z7 rounded-none border bg-surface-z3;
+}
+
+[data-style='carbon'] [data-upload-target] [data-upload-button]:hover:not(:disabled) {
+  @apply bg-surface-z4 text-surface-z9;
+}

@@ -1,0 +1,50 @@
+/**
+ * Dropdown - Ant Design Theme Styles
+ *
+ * Enterprise clean: thin border, rounded, shadow-md on panel.
+ */
+
+[data-style='ant-design'] [data-dropdown-trigger] {
+  @apply bg-none border-surface-z4 text-surface-z7 border bg-transparent rounded;
+}
+
+[data-style='ant-design'] [data-dropdown-trigger]:hover:not(:disabled) {
+  @apply bg-none text-primary-z5 border-primary-z4;
+}
+
+[data-style='ant-design'] [data-dropdown-trigger]:focus-visible {
+  @apply ring-primary-z3 ring-1 outline-none;
+}
+
+[data-style='ant-design'] [data-dropdown][data-open='true'] [data-dropdown-trigger] {
+  @apply bg-none border-primary-z5 ring-primary-z3 ring-1;
+}
+
+[data-style='ant-design'] [data-dropdown-trigger] [data-dropdown-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='ant-design'] [data-dropdown-trigger] [data-dropdown-arrow] {
+  @apply text-surface-z4;
+}
+
+[data-style='ant-design'] [data-dropdown-panel] {
+  @apply bg-none bg-surface-z0 border-surface-z3 border shadow-md rounded;
+}
+
+[data-style='ant-design'] [data-dropdown-option] {
+  @apply text-surface-z7 rounded;
+}
+
+[data-style='ant-design'] [data-dropdown-option]:hover:not(:disabled),
+[data-style='ant-design'] [data-dropdown-option]:focus:not(:disabled) {
+  @apply bg-none bg-primary-z1 text-primary-z6 outline-none rounded;
+}
+
+[data-style='ant-design'] [data-dropdown-option][data-active='true'] {
+  @apply bg-none bg-primary-z1 text-primary-z6 rounded;
+}
+
+[data-style='ant-design'] [data-dropdown-separator] {
+  @apply bg-none bg-surface-z2;
+}

@@ -1,0 +1,126 @@
+/**
+ * List - Ant Design Theme Styles
+ *
+ * Enterprise clean: selected items get bg-primary-z1 with rounded corners.
+ */
+
+/* =============================================================================
+   List Container
+   ============================================================================= */
+
+[data-style='ant-design'] [data-list]:focus-within {
+  @apply outline-none;
+}
+
+/* =============================================================================
+   List Items
+   ============================================================================= */
+
+[data-style='ant-design'] [data-list] [data-list-item] {
+  @apply text-surface-z7 rounded;
+}
+
+[data-style='ant-design'] [data-list] a[data-list-item],
+[data-style='ant-design'] [data-list] button[data-list-item] {
+  @apply text-surface-z6;
+}
+
+/* Hover and focus (keyboard navigation) */
+[data-style='ant-design']
+  [data-list]
+  [data-list-item]:hover:not(:disabled):not([data-disabled='true']),
+[data-style='ant-design']
+  [data-list]
+  [data-list-item]:focus:not(:disabled):not([data-disabled='true']) {
+  @apply bg-none bg-primary-z1 text-primary-z6 outline-none rounded;
+}
+
+/* Active state — muted when list not focused */
+[data-style='ant-design'] [data-list] [data-list-item][data-active='true'] {
+  @apply bg-none bg-primary-z1 text-primary-z6 rounded;
+}
+
+/* Active state — full highlight when list has focus */
+[data-style='ant-design'] [data-list]:focus-within [data-list-item][data-active='true'] {
+  @apply bg-none bg-primary-z1 text-primary-z6 rounded;
+}
+
+/* Active + hover/focus */
+[data-style='ant-design'] [data-list] [data-list-item][data-active='true']:hover:not(:disabled),
+[data-style='ant-design'] [data-list] [data-list-item][data-active='true']:focus:not(:disabled) {
+  @apply bg-none bg-primary-z2 text-primary-z7;
+}
+
+/* =============================================================================
+   Item Elements
+   ============================================================================= */
+
+[data-style='ant-design'] [data-list] [data-list-item] [data-item-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='ant-design'] [data-list] [data-list-item]:hover:not(:disabled) [data-item-icon],
+[data-style='ant-design'] [data-list] [data-list-item]:focus:not(:disabled) [data-item-icon] {
+  @apply text-primary-z5;
+}
+
+[data-style='ant-design'] [data-list] [data-list-item][data-active='true'] [data-item-icon] {
+  @apply text-primary-z5;
+}
+
+[data-style='ant-design'] [data-list] [data-list-item] [data-item-description] {
+  @apply text-surface-z5;
+}
+
+[data-style='ant-design'] [data-list] [data-list-item][data-active='true'] [data-item-description] {
+  @apply text-primary-z5;
+}
+
+[data-style='ant-design'] [data-list] [data-list-item] [data-item-badge] {
+  @apply bg-none text-surface-z6 border-surface-z4 border bg-transparent rounded;
+}
+
+[data-style='ant-design'] [data-list] [data-list-item][data-active='true'] [data-item-badge] {
+  @apply bg-none text-primary-z6 border-primary-z4;
+}
+
+/* =============================================================================
+   Groups
+   ============================================================================= */
+
+[data-style='ant-design'] [data-list] [data-list-group] {
+  @apply text-surface-z5;
+}
+
+[data-style='ant-design'] [data-list] [data-list-group]:hover:not(:disabled),
+[data-style='ant-design'] [data-list] [data-list-group]:focus:not(:disabled) {
+  @apply bg-none bg-primary-z1 text-primary-z5 rounded;
+}
+
+/* =============================================================================
+   Separator
+   ============================================================================= */
+
+[data-style='ant-design'] [data-list] [data-list-separator] {
+  @apply bg-none bg-surface-z2;
+}
+
+/* =============================================================================
+   Multi-Selection
+   ============================================================================= */
+
+[data-style='ant-design'] [data-list] [data-list-item][data-selected='true'] {
+  @apply bg-none bg-primary-z1 text-primary-z6 rounded;
+}
+
+[data-style='ant-design'] [data-list]:focus-within [data-list-item][data-selected='true'] {
+  @apply bg-none bg-primary-z1 text-primary-z6 rounded;
+}
+
+[data-style='ant-design'] [data-list] [data-list-item][data-selected='true']:hover:not(:disabled) {
+  @apply bg-none bg-primary-z2 text-primary-z7;
+}
+
+[data-style='ant-design'] [data-list] [data-list-item][data-selected='true'] [data-item-icon] {
+  @apply text-primary-z5;
+}

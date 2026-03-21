@@ -1,0 +1,93 @@
+/**
+ * Table - Carbon Theme Styles
+ *
+ * Structured header, alternating row backgrounds, no border-radius.
+ */
+
+/* =============================================================================
+   Header
+   ============================================================================= */
+
+[data-style='carbon'] [data-table-header] th {
+  @apply text-surface-z7 border-surface-z4 border-b bg-surface-z3;
+}
+
+[data-style='carbon'] [data-table-header-cell][data-sortable='true']:hover {
+  @apply text-surface-z9 bg-surface-z4;
+}
+
+[data-style='carbon'] [data-table-header-cell][data-sort-order='ascending'],
+[data-style='carbon'] [data-table-header-cell][data-sort-order='descending'] {
+  @apply text-primary-z7;
+}
+
+[data-style='carbon'] [data-table-sort-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='carbon'] [data-table-header-cell][data-sort-order='ascending'] [data-table-sort-icon],
+[data-style='carbon']
+  [data-table-header-cell][data-sort-order='descending']
+  [data-table-sort-icon] {
+  @apply text-primary-z6;
+}
+
+/* =============================================================================
+   Caption
+   ============================================================================= */
+
+[data-style='carbon'] [data-table-caption] {
+  @apply text-surface-z7;
+}
+
+/* =============================================================================
+   Rows
+   ============================================================================= */
+
+[data-style='carbon'] [data-table-row] {
+  @apply text-surface-z7 border-surface-z3 border-b;
+}
+
+[data-style='carbon'] [data-table-row]:hover {
+  @apply bg-none bg-surface-z2 text-surface-z9;
+}
+
+[data-style='carbon'] [data-table-row]:focus {
+  @apply bg-none bg-surface-z2 text-surface-z9 outline-none border-2 border-primary-z5;
+}
+
+[data-style='carbon'] [data-table-row][data-selected='true'] {
+  @apply bg-none bg-primary-z2 text-primary-z8;
+}
+
+/* =============================================================================
+   Striped — alternating rows
+   ============================================================================= */
+
+[data-style='carbon'] [data-striped='true'] [data-table-body] tr:nth-child(even) {
+  @apply bg-surface-z1;
+}
+
+[data-style='carbon'] [data-striped='true'] [data-table-body] tr:nth-child(odd) {
+  @apply bg-surface-z0;
+}
+
+/* =============================================================================
+   Empty
+   ============================================================================= */
+
+[data-style='carbon'] [data-table-empty] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Cell Icon
+   ============================================================================= */
+
+[data-style='carbon'] [data-table-cell] [data-cell-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='carbon'] [data-table-row][data-selected='true'] [data-cell-icon] {
+  @apply text-primary-z6;
+}

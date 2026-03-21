@@ -1,0 +1,158 @@
+/**
+ * Select - Ant Design Theme Styles
+ *
+ * Enterprise clean: thin border, rounded, shadow-md on dropdown.
+ */
+
+/* =============================================================================
+   Trigger Button
+   ============================================================================= */
+
+[data-style='ant-design'] [data-select-trigger] {
+  @apply bg-none text-surface-z7 border-surface-z4 border bg-transparent rounded;
+}
+
+[data-style='ant-design'] [data-select-trigger]:hover:not(:disabled) {
+  @apply bg-none border-primary-z4 text-surface-z8;
+}
+
+[data-style='ant-design'] [data-select-trigger]:focus-visible {
+  @apply border-primary-z5 ring-primary-z3 ring-1 outline-none;
+}
+
+[data-style='ant-design'] [data-select][data-open='true'] [data-select-trigger] {
+  @apply bg-none border-primary-z5 ring-primary-z3 ring-1;
+}
+
+/* =============================================================================
+   Placeholder
+   ============================================================================= */
+
+[data-style='ant-design'] [data-select-placeholder] {
+  @apply text-surface-z4;
+}
+
+/* =============================================================================
+   Arrow
+   ============================================================================= */
+
+[data-style='ant-design'] [data-select-arrow] {
+  @apply text-surface-z5;
+}
+
+[data-style='ant-design'] [data-select-trigger]:hover:not(:disabled) [data-select-arrow] {
+  @apply text-primary-z4;
+}
+
+/* =============================================================================
+   Tags (MultiSelect)
+   ============================================================================= */
+
+[data-style='ant-design'] [data-select-tag] {
+  @apply bg-none text-primary-z6 border-primary-z3 border bg-primary-z1 rounded;
+}
+
+[data-style='ant-design'] [data-select-tag-remove] {
+  @apply text-primary-z4;
+}
+
+[data-style='ant-design'] [data-select-tag-remove]:hover {
+  @apply text-primary-z7;
+}
+
+/* =============================================================================
+   Dropdown Panel
+   ============================================================================= */
+
+[data-style='ant-design'] [data-select-dropdown] {
+  @apply bg-none bg-surface-z0 border-surface-z3 border shadow-md rounded;
+}
+
+/* =============================================================================
+   Options
+   ============================================================================= */
+
+[data-style='ant-design'] [data-select-option] {
+  @apply text-surface-z7 rounded;
+}
+
+/* Hover and focus */
+[data-style='ant-design'] [data-select-option]:hover:not(:disabled),
+[data-style='ant-design'] [data-select-option]:focus:not(:disabled) {
+  @apply bg-none bg-primary-z1 text-primary-z6 outline-none rounded;
+}
+
+/* Selected state */
+[data-style='ant-design'] [data-select-option][data-selected='true'] {
+  @apply bg-none bg-primary-z1 text-primary-z6 rounded;
+}
+
+/* Selected state — full highlight when dropdown has focus */
+[data-style='ant-design']
+  [data-select-dropdown]:focus-within
+  [data-select-option][data-selected='true'] {
+  @apply bg-none bg-primary-z1 text-primary-z6 rounded;
+}
+
+/* Check mark */
+[data-style='ant-design'] [data-select-check] {
+  @apply text-primary-z5;
+}
+
+/* Checkbox */
+[data-style='ant-design'] [data-select-checkbox] {
+  @apply bg-none border-surface-z4 bg-transparent rounded;
+}
+
+[data-style='ant-design'] [data-select-checkbox][data-checked='true'] {
+  @apply bg-none bg-primary-z5 border-primary-z5 text-white;
+}
+
+/* Item elements */
+[data-style='ant-design'] [data-select-option] [data-item-description] {
+  @apply text-surface-z5;
+}
+
+[data-style='ant-design'] [data-select-option][data-selected='true'] [data-item-description] {
+  @apply text-primary-z5;
+}
+
+/* =============================================================================
+   Groups
+   ============================================================================= */
+
+[data-style='ant-design'] [data-select-group-label] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Divider
+   ============================================================================= */
+
+[data-style='ant-design'] [data-select-divider] {
+  @apply bg-none bg-surface-z2;
+}
+
+/* =============================================================================
+   Filter Input
+   ============================================================================= */
+
+[data-style='ant-design'] [data-select-filter] {
+  @apply bg-surface-z0;
+}
+
+[data-style='ant-design'] [data-select-filter-input] {
+  @apply text-surface-z7 border-surface-z4 border bg-transparent rounded;
+}
+
+[data-style='ant-design'] [data-select-filter-input]:focus {
+  @apply border-primary-z5 ring-primary-z3 ring-1;
+}
+
+[data-style='ant-design'] [data-select-filter-input]::placeholder {
+  @apply text-surface-z4;
+}
+
+[data-style='ant-design'] [data-select-empty] {
+  @apply text-surface-z5;
+}

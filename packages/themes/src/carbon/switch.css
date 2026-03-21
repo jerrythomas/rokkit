@@ -1,0 +1,30 @@
+/**
+ * Switch - Carbon Theme Styles
+ *
+ * Square track corners, flat fill on active state.
+ */
+
+[data-style='carbon'] [data-switch-track] {
+  @apply bg-none border-surface-z5 border-2 bg-transparent rounded-none;
+}
+
+[data-style='carbon'] [data-switch-thumb] {
+  @apply bg-surface-z5 rounded-none;
+}
+
+[data-style='carbon'] [data-switch]:focus-visible [data-switch-track] {
+  @apply border-2 border-primary-z5;
+}
+
+/* On state */
+[data-style='carbon'] [data-switch][aria-checked='true'] [data-switch-track] {
+  @apply bg-none bg-primary-z5 border-primary-z5;
+}
+
+[data-style='carbon'] [data-switch][aria-checked='true'] [data-switch-thumb] {
+  @apply bg-on-primary rounded-none;
+}
+
+[data-style='carbon'] [data-switch-label] {
+  @apply text-surface-z7;
+}

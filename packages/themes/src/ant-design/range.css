@@ -1,0 +1,61 @@
+/**
+ * Range - Ant Design Theme Styles
+ *
+ * Enterprise clean: primary accent on selected range and thumb.
+ */
+
+/* =============================================================================
+   Track
+   ============================================================================= */
+
+[data-style='ant-design'] [data-range-bar] {
+  @apply bg-surface-z3;
+}
+
+[data-style='ant-design'] [data-range-selected] {
+  @apply bg-none bg-primary-z5;
+}
+
+/* =============================================================================
+   Thumb
+   ============================================================================= */
+
+[data-style='ant-design'] [data-range-thumb] {
+  @apply bg-surface-z0 border-primary-z5 border-2;
+}
+
+[data-style='ant-design'] [data-range-thumb][data-sliding] {
+  @apply bg-primary-z5;
+}
+
+[data-style='ant-design'] [data-range-thumb]:focus-visible {
+  @apply bg-primary-z5 ring-primary-z3 ring-1;
+}
+
+/* =============================================================================
+   Ticks
+   ============================================================================= */
+
+[data-style='ant-design'] [data-range-tick] {
+  @apply text-surface-z5;
+}
+
+[data-style='ant-design'] [data-tick-bar] {
+  @apply border-surface-z3;
+}
+
+[data-style='ant-design'] [data-tick-label] {
+  @apply text-surface-z6;
+}
+
+/* =============================================================================
+   Disabled
+   ============================================================================= */
+
+[data-style='ant-design'] [data-range][data-disabled] [data-range-thumb] {
+  @apply bg-surface-z2 border-surface-z4;
+}
+
+[data-style='ant-design'] [data-range][data-disabled] [data-range-selected] {
+  @apply bg-surface-z4;
+}

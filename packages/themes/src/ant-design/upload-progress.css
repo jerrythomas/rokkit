@@ -1,0 +1,102 @@
+/**
+ * UploadProgress - Ant Design Theme Styles
+ *
+ * Status colors, progress fill, action buttons.
+ */
+
+/* =============================================================================
+   Header
+   ============================================================================= */
+
+[data-style='ant-design'] [data-upload-header] {
+  @apply text-surface-z7;
+}
+
+[data-style='ant-design'] [data-upload-clear] {
+  @apply border-surface-z4 text-surface-z6 border rounded;
+}
+
+[data-style='ant-design'] [data-upload-clear]:hover {
+  @apply border-primary-z4 text-primary-z5;
+}
+
+/* =============================================================================
+   File Rows
+   ============================================================================= */
+
+[data-style='ant-design'] [data-upload-file-status] {
+  @apply text-surface-z7 rounded;
+}
+
+[data-style='ant-design'] [data-upload-file-status]:hover {
+  @apply bg-surface-z1;
+}
+
+/* =============================================================================
+   File Elements
+   ============================================================================= */
+
+[data-style='ant-design'] [data-upload-file-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='ant-design'] [data-upload-file-size] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Progress Bar
+   ============================================================================= */
+
+[data-style='ant-design'] [data-upload-bar] {
+  @apply bg-surface-z2 rounded;
+}
+
+[data-style='ant-design'] [data-upload-fill] {
+  @apply bg-primary-z5 rounded;
+}
+
+/* =============================================================================
+   Status Colors
+   ============================================================================= */
+
+[data-style='ant-design'] [data-upload-file-status][data-status='uploading'] [data-upload-status] {
+  @apply text-primary-z5;
+}
+
+[data-style='ant-design'] [data-upload-file-status][data-status='done'] [data-upload-status] {
+  @apply text-success-z5;
+}
+
+[data-style='ant-design'] [data-upload-file-status][data-status='error'] [data-upload-status] {
+  @apply text-error-z5;
+}
+
+[data-style='ant-design'] [data-upload-file-status][data-status='pending'] [data-upload-status] {
+  @apply text-surface-z5;
+}
+
+/* Status-based file icon tinting */
+[data-style='ant-design'] [data-upload-file-status][data-status='done'] [data-upload-file-icon] {
+  @apply text-success-z5;
+}
+
+[data-style='ant-design'] [data-upload-file-status][data-status='error'] [data-upload-file-icon] {
+  @apply text-error-z5;
+}
+
+/* =============================================================================
+   Action Buttons
+   ============================================================================= */
+
+[data-style='ant-design'] [data-upload-actions] button {
+  @apply text-surface-z5;
+}
+
+[data-style='ant-design'] [data-upload-actions] button:hover {
+  @apply bg-surface-z2 text-primary-z5;
+}
+
+[data-style='ant-design'] [data-upload-file-status][data-status='error'] [data-upload-retry]:hover {
+  @apply text-primary-z6;
+}

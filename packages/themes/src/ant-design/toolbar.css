@@ -1,0 +1,85 @@
+/**
+ * Toolbar - Ant Design Theme Styles
+ *
+ * Enterprise clean: thin borders, transparent background.
+ */
+
+/* =============================================================================
+   Toolbar Container
+   ============================================================================= */
+
+[data-style='ant-design'] [data-toolbar] {
+  @apply bg-none bg-transparent;
+}
+
+/* Position-based borders */
+[data-style='ant-design'] [data-toolbar][data-toolbar-position='top'],
+[data-style='ant-design'] [data-toolbar]:not([data-toolbar-position]) {
+  @apply border-surface-z3 border-b;
+}
+
+[data-style='ant-design'] [data-toolbar][data-toolbar-position='bottom'] {
+  @apply border-surface-z3 border-t;
+}
+
+[data-style='ant-design'] [data-toolbar][data-toolbar-position='left'] {
+  @apply border-surface-z3 border-r;
+}
+
+[data-style='ant-design'] [data-toolbar][data-toolbar-position='right'] {
+  @apply border-surface-z3 border-l;
+}
+
+/* =============================================================================
+   Toolbar Items
+   ============================================================================= */
+
+[data-style='ant-design'] [data-toolbar-item] {
+  @apply text-surface-z6 rounded;
+}
+
+[data-style='ant-design'] [data-toolbar-item]:hover:not(:disabled):not([data-disabled='true']) {
+  @apply bg-none text-primary-z5;
+}
+
+[data-style='ant-design']
+  [data-toolbar-item]:focus-visible:not(:disabled):not([data-disabled='true']) {
+  @apply bg-none text-primary-z5 ring-primary-z3 ring-1 outline-none;
+}
+
+/* Active/pressed state */
+[data-style='ant-design'] [data-toolbar-item][data-active='true'] {
+  @apply bg-none text-primary-z6;
+}
+
+[data-style='ant-design'] [data-toolbar-item][data-active='true']:hover:not(:disabled) {
+  @apply bg-none text-primary-z7;
+}
+
+/* =============================================================================
+   Toolbar Icon
+   ============================================================================= */
+
+[data-style='ant-design'] [data-toolbar-item] [data-toolbar-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='ant-design'] [data-toolbar-item]:hover:not(:disabled) [data-toolbar-icon] {
+  @apply text-primary-z4;
+}
+
+[data-style='ant-design'] [data-toolbar-item][data-active='true'] [data-toolbar-icon] {
+  @apply text-primary-z6;
+}
+
+/* =============================================================================
+   Separator & Divider
+   ============================================================================= */
+
+[data-style='ant-design'] [data-toolbar-separator] {
+  @apply bg-none bg-surface-z3;
+}
+
+[data-style='ant-design'] [data-toolbar-divider] {
+  @apply bg-none bg-surface-z3;
+}

@@ -1,0 +1,28 @@
+/**
+ * Switch - Ant Design Theme Styles
+ */
+
+[data-style='ant-design'] [data-switch-track] {
+  @apply bg-none border-surface-z4 border-2 bg-transparent;
+}
+
+[data-style='ant-design'] [data-switch-thumb] {
+  @apply bg-surface-z5;
+}
+
+[data-style='ant-design'] [data-switch]:focus-visible [data-switch-track] {
+  @apply ring-primary-z3 ring-1 ring-offset-1;
+}
+
+/* On state */
+[data-style='ant-design'] [data-switch][aria-checked='true'] [data-switch-track] {
+  @apply bg-none border-primary-z5;
+}
+
+[data-style='ant-design'] [data-switch][aria-checked='true'] [data-switch-thumb] {
+  @apply bg-primary-z5;
+}
+
+[data-style='ant-design'] [data-switch-label] {
+  @apply text-surface-z7;
+}

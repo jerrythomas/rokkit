@@ -1,0 +1,48 @@
+/**
+ * Toggle - Ant Design Theme Styles
+ *
+ * Enterprise clean: thin border, rounded container.
+ */
+
+/* =============================================================================
+   Toggle Container
+   ============================================================================= */
+
+[data-style='ant-design'] [data-toggle] {
+  @apply bg-none border-surface-z3 rounded border bg-transparent;
+}
+
+/* =============================================================================
+   Toggle Options
+   ============================================================================= */
+
+[data-style='ant-design'] [data-toggle-option] {
+  @apply text-surface-z6 border-0 border-solid border-transparent;
+}
+
+[data-style='ant-design'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']),
+[data-style='ant-design'] [data-toggle-option]:focus:not(:disabled):not([data-disabled='true']) {
+  @apply bg-none text-primary-z5 border-b-primary-z3 border-b-2;
+}
+
+/* Selected state */
+[data-style='ant-design'] [data-toggle-option][data-selected='true'] {
+  @apply bg-none text-primary-z6 border-b-primary-z5 border-b-2;
+}
+
+/* =============================================================================
+   Toggle Icon
+   ============================================================================= */
+
+[data-style='ant-design'] [data-toggle-option] [data-toggle-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='ant-design'] [data-toggle-option]:hover:not(:disabled) [data-toggle-icon],
+[data-style='ant-design'] [data-toggle-option]:focus:not(:disabled) [data-toggle-icon] {
+  @apply text-primary-z4;
+}
+
+[data-style='ant-design'] [data-toggle-option][data-selected='true'] [data-toggle-icon] {
+  @apply text-primary-z5;
+}

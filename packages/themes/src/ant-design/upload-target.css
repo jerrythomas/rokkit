@@ -1,0 +1,50 @@
+/**
+ * UploadTarget - Ant Design Theme Styles
+ *
+ * Enterprise clean: thin dashed border, primary drag-over highlight.
+ */
+
+/* =============================================================================
+   Drop Zone
+   ============================================================================= */
+
+[data-style='ant-design'] [data-upload-target] {
+  @apply border-surface-z4 text-surface-z6 rounded;
+}
+
+[data-style='ant-design'] [data-upload-target]:hover:not([data-disabled]) {
+  @apply border-primary-z4 text-primary-z5 bg-primary-z1;
+}
+
+[data-style='ant-design'] [data-upload-target]:focus-visible:not([data-disabled]) {
+  @apply border-primary-z5 ring-primary-z3 ring-1;
+}
+
+/* Drag-over highlight */
+[data-style='ant-design'] [data-upload-target][data-dragging] {
+  @apply border-primary-z5 bg-primary-z1 text-primary-z6;
+}
+
+/* =============================================================================
+   Upload Icon
+   ============================================================================= */
+
+[data-style='ant-design'] [data-upload-target] [data-upload-icon] {
+  @apply text-surface-z4;
+}
+
+[data-style='ant-design'] [data-upload-target][data-dragging] [data-upload-icon] {
+  @apply text-primary-z5;
+}
+
+/* =============================================================================
+   Browse Button
+   ============================================================================= */
+
+[data-style='ant-design'] [data-upload-target] [data-upload-button] {
+  @apply border-primary-z4 text-primary-z5 border rounded;
+}
+
+[data-style='ant-design'] [data-upload-target] [data-upload-button]:hover:not(:disabled) {
+  @apply bg-primary-z1 text-primary-z6;
+}

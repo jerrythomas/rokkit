@@ -1,0 +1,89 @@
+/**
+ * Table - Ant Design Theme Styles
+ *
+ * Enterprise clean: thin borders on cells, alternating row backgrounds.
+ */
+
+/* =============================================================================
+   Header
+   ============================================================================= */
+
+[data-style='ant-design'] [data-table-header] th {
+  @apply text-surface-z7 border-surface-z3 border-b bg-surface-z1;
+}
+
+[data-style='ant-design'] [data-table-header-cell][data-sortable='true']:hover {
+  @apply text-primary-z6;
+}
+
+[data-style='ant-design'] [data-table-header-cell][data-sort-order='ascending'],
+[data-style='ant-design'] [data-table-header-cell][data-sort-order='descending'] {
+  @apply text-primary-z6;
+}
+
+[data-style='ant-design'] [data-table-sort-icon] {
+  @apply text-surface-z4;
+}
+
+[data-style='ant-design'] [data-table-header-cell][data-sort-order='ascending'] [data-table-sort-icon],
+[data-style='ant-design']
+  [data-table-header-cell][data-sort-order='descending']
+  [data-table-sort-icon] {
+  @apply text-primary-z5;
+}
+
+/* =============================================================================
+   Caption
+   ============================================================================= */
+
+[data-style='ant-design'] [data-table-caption] {
+  @apply text-surface-z7;
+}
+
+/* =============================================================================
+   Rows
+   ============================================================================= */
+
+[data-style='ant-design'] [data-table-row] {
+  @apply text-surface-z7 border-surface-z3 border-b;
+}
+
+[data-style='ant-design'] [data-table-row]:hover {
+  @apply bg-none bg-primary-z1 text-surface-z9;
+}
+
+[data-style='ant-design'] [data-table-row]:focus {
+  @apply bg-none bg-primary-z1 text-surface-z9 ring-primary-z3 ring-1 outline-none;
+}
+
+[data-style='ant-design'] [data-table-row][data-selected='true'] {
+  @apply bg-none bg-primary-z1 text-primary-z7;
+}
+
+/* =============================================================================
+   Striped
+   ============================================================================= */
+
+[data-style='ant-design'] [data-striped='true'] [data-table-body] tr:nth-child(even) {
+  @apply bg-surface-z1;
+}
+
+/* =============================================================================
+   Empty
+   ============================================================================= */
+
+[data-style='ant-design'] [data-table-empty] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Cell Icon
+   ============================================================================= */
+
+[data-style='ant-design'] [data-table-cell] [data-cell-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='ant-design'] [data-table-row][data-selected='true'] [data-cell-icon] {
+  @apply text-primary-z5;
+}

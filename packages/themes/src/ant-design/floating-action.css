@@ -1,0 +1,63 @@
+/**
+ * FloatingAction - Ant Design Theme Styles
+ *
+ * Enterprise clean: thin border, rounded, subtle hover.
+ */
+
+/* =============================================================================
+   FAB Trigger Button
+   ============================================================================= */
+
+[data-style='ant-design'] [data-fab-trigger] {
+  @apply bg-none bg-primary-z5 text-on-primary border-primary-z6 border rounded;
+}
+
+[data-style='ant-design'] [data-fab-trigger]:hover:not(:disabled) {
+  @apply bg-none bg-primary-z4 border-primary-z5;
+}
+
+[data-style='ant-design'] [data-fab-trigger]:focus-visible {
+  @apply ring-primary-z3 ring-1 outline-none;
+}
+
+[data-style='ant-design'] [data-fab][data-open='true'] [data-fab-trigger] {
+  @apply bg-none bg-primary-z6 border-primary-z7;
+  transform: rotate(45deg);
+}
+
+[data-style='ant-design'] [data-fab][data-open='true'] [data-fab-trigger]:hover:not(:disabled) {
+  @apply bg-none;
+}
+
+/* =============================================================================
+   FAB Items
+   ============================================================================= */
+
+[data-style='ant-design'] [data-fab-item] {
+  @apply bg-none bg-surface-z0 text-surface-z7 border-surface-z4 border rounded;
+}
+
+[data-style='ant-design'] [data-fab-item]:hover:not(:disabled) {
+  @apply bg-none bg-surface-z1 text-primary-z6 border-primary-z4;
+}
+
+[data-style='ant-design'] [data-fab-item]:focus-visible {
+  @apply ring-primary-z3 ring-1 outline-none;
+}
+
+/* Item icon */
+[data-style='ant-design'] [data-fab-item] [data-fab-item-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='ant-design'] [data-fab-item]:hover:not(:disabled) [data-fab-item-icon] {
+  @apply text-primary-z5;
+}
+
+/* =============================================================================
+   Backdrop
+   ============================================================================= */
+
+[data-style='ant-design'] [data-fab-backdrop] {
+  background: rgba(0, 0, 0, 0.15);
+}

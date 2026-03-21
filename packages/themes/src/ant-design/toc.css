@@ -1,0 +1,18 @@
+/* TableOfContents — Ant Design theme */
+
+[data-style='ant-design'] [data-toc] [data-toc-label] {
+  @apply text-surface-z5;
+}
+
+[data-style='ant-design'] [data-toc] [data-toc-item] {
+  @apply text-surface-z6 rounded;
+}
+
+[data-style='ant-design'] [data-toc] [data-toc-item]:hover,
+[data-style='ant-design'] [data-toc] [data-toc-item][data-toc-focused] {
+  @apply text-primary-z5 outline-none;
+}
+
+[data-style='ant-design'] [data-toc] [data-toc-item][data-toc-active] {
+  @apply text-primary-z6 border-l-primary-z5;
+}

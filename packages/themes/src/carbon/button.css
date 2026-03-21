@@ -1,0 +1,162 @@
+/**
+ * Button - Carbon Theme Styles
+ *
+ * Completely square, flat fills, no border-radius. IBM Carbon inspired.
+ */
+
+/* =============================================================================
+   Default Style (filled)
+   ============================================================================= */
+
+[data-style='carbon'] [data-button][data-style='default'][data-variant='default'],
+[data-style='carbon'] [data-button]:not([data-style])[data-variant='default'],
+[data-style='carbon'] [data-button][data-style='default']:not([data-variant]),
+[data-style='carbon'] [data-button]:not([data-style]):not([data-variant]) {
+  @apply bg-none bg-surface-z3 text-surface-z8 rounded-none border-0;
+}
+
+[data-style='carbon'] [data-button][data-style='default'][data-variant='primary'],
+[data-style='carbon'] [data-button]:not([data-style])[data-variant='primary'] {
+  @apply bg-none bg-primary-z5 text-on-primary rounded-none border-0;
+}
+
+[data-style='carbon'] [data-button][data-style='default'][data-variant='secondary'],
+[data-style='carbon'] [data-button]:not([data-style])[data-variant='secondary'] {
+  @apply bg-none bg-secondary-z5 text-on-secondary rounded-none border-0;
+}
+
+[data-style='carbon'] [data-button][data-style='default'][data-variant='danger'],
+[data-style='carbon'] [data-button]:not([data-style])[data-variant='danger'] {
+  @apply bg-none bg-danger-z5 text-on-danger rounded-none border-0;
+}
+
+/* =============================================================================
+   Outline Style
+   ============================================================================= */
+
+[data-style='carbon'] [data-button][data-style='outline'][data-variant='default'],
+[data-style='carbon'] [data-button][data-style='outline']:not([data-variant]) {
+  @apply border-surface-z5 text-surface-z7 rounded-none border bg-transparent;
+}
+
+[data-style='carbon'] [data-button][data-style='outline'][data-variant='primary'] {
+  @apply border-primary-z5 text-primary-z6 rounded-none border bg-transparent;
+}
+
+[data-style='carbon'] [data-button][data-style='outline'][data-variant='secondary'] {
+  @apply border-secondary-z5 text-secondary-z6 rounded-none border bg-transparent;
+}
+
+[data-style='carbon'] [data-button][data-style='outline'][data-variant='danger'] {
+  @apply border-danger-z5 text-danger-z5 rounded-none border bg-transparent;
+}
+
+/* =============================================================================
+   Ghost Style
+   ============================================================================= */
+
+[data-style='carbon'] [data-button][data-style='ghost'] {
+  @apply border-transparent bg-transparent rounded-none;
+}
+
+[data-style='carbon'] [data-button][data-style='ghost'][data-variant='default'],
+[data-style='carbon'] [data-button][data-style='ghost']:not([data-variant]) {
+  @apply text-surface-z7;
+}
+
+[data-style='carbon'] [data-button][data-style='ghost'][data-variant='primary'] {
+  @apply text-primary-z6;
+}
+
+[data-style='carbon'] [data-button][data-style='ghost'][data-variant='secondary'] {
+  @apply text-secondary-z6;
+}
+
+[data-style='carbon'] [data-button][data-style='ghost'][data-variant='danger'] {
+  @apply text-danger-z5;
+}
+
+/* =============================================================================
+   Gradient Style (flat fill — Carbon avoids gradients)
+   ============================================================================= */
+
+[data-style='carbon'] [data-button][data-style='gradient'][data-variant='default'],
+[data-style='carbon'] [data-button][data-style='gradient']:not([data-variant]) {
+  @apply bg-none bg-surface-z4 text-surface-z9 rounded-none border-0;
+}
+
+[data-style='carbon'] [data-button][data-style='gradient'][data-variant='primary'] {
+  @apply bg-none bg-primary-z5 text-on-primary rounded-none border-0;
+}
+
+[data-style='carbon'] [data-button][data-style='gradient'][data-variant='secondary'] {
+  @apply bg-none bg-secondary-z5 text-on-secondary rounded-none border-0;
+}
+
+[data-style='carbon'] [data-button][data-style='gradient'][data-variant='danger'] {
+  @apply bg-none bg-danger-z5 text-on-danger rounded-none border-0;
+}
+
+/* =============================================================================
+   Link Style
+   ============================================================================= */
+
+[data-style='carbon'] [data-button][data-style='link'][data-variant='default'],
+[data-style='carbon'] [data-button][data-style='link']:not([data-variant]) {
+  @apply text-surface-z7;
+}
+
+[data-style='carbon'] [data-button][data-style='link'][data-variant='primary'] {
+  @apply text-primary-z6;
+}
+
+[data-style='carbon'] [data-button][data-style='link'][data-variant='secondary'] {
+  @apply text-secondary-z6;
+}
+
+[data-style='carbon'] [data-button][data-style='link'][data-variant='danger'] {
+  @apply text-danger-z5;
+}
+
+[data-style='carbon'] [data-button][data-style='link']:hover:not(:disabled):not([data-disabled]) {
+  @apply text-surface-z9;
+}
+
+/* =============================================================================
+   Hover States
+   ============================================================================= */
+
+[data-style='carbon']
+  [data-button][data-style='default']:hover:not(:disabled):not([data-disabled]),
+[data-style='carbon'] [data-button]:not([data-style]):hover:not(:disabled):not([data-disabled]) {
+  @apply bg-none bg-surface-z4;
+}
+
+[data-style='carbon']
+  [data-button][data-style='default'][data-variant='primary']:hover:not(:disabled):not([data-disabled]),
+[data-style='carbon']
+  [data-button]:not([data-style])[data-variant='primary']:hover:not(:disabled):not([data-disabled]) {
+  @apply bg-none bg-primary-z6;
+}
+
+[data-style='carbon']
+  [data-button][data-style='outline']:hover:not(:disabled):not([data-disabled]) {
+  @apply bg-none bg-surface-z2;
+}
+
+[data-style='carbon'] [data-button][data-style='ghost']:hover:not(:disabled):not([data-disabled]) {
+  @apply bg-surface-z2;
+}
+
+[data-style='carbon']
+  [data-button][data-style='gradient']:hover:not(:disabled):not([data-disabled]) {
+  @apply bg-none bg-surface-z5;
+}
+
+/* =============================================================================
+   Focus — Carbon style: thick outline, no ring, no offset
+   ============================================================================= */
+
+[data-style='carbon'] [data-button]:focus-visible {
+  @apply outline-none border-2 border-primary-z5;
+}
