@@ -35,6 +35,13 @@ describe('loadConfig', () => {
 		expect(config.icons.custom).toBe('./icons/custom.json')
 	})
 
+	it('should pass through icons.overrides', () => {
+		const overrides = { 'folder-open': 'i-phosphor:folder-open', 'node-opened': 'i-app:chevron' }
+		const config = loadConfig({ icons: { overrides } })
+		expect(config.icons.overrides).toEqual(overrides)
+		expect(config.icons.app).toBe('@rokkit/icons/app.json')
+	})
+
 	it('should allow overriding the default app icon collection', () => {
 		const config = loadConfig({ icons: { app: './my-app-icons.json' } })
 		expect(config.icons.app).toBe('./my-app-icons.json')

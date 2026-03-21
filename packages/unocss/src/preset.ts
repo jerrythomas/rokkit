@@ -62,7 +62,9 @@ function buildShortcuts(theme, config) {
 		shortcuts.push(...theme.getShortcuts(variant))
 	}
 
-	shortcuts.push(...Object.entries(iconShortcuts(DEFAULT_ICONS, 'i-rokkit')))
+	const baseIconShortcuts = iconShortcuts(DEFAULT_ICONS, 'i-rokkit')
+	const overrides = (config.icons?.overrides as Record<string, string>) || {}
+	shortcuts.push(...Object.entries({ ...baseIconShortcuts, ...overrides }))
 
 	return shortcuts
 }
