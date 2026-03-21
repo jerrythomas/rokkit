@@ -1,32 +1,8 @@
 import { SvelteSet } from 'svelte/reactivity'
-import { scaleBand, scaleLinear, scaleTime, scaleOrdinal } from 'd3-scale'
+import { scaleLinear, scaleOrdinal } from 'd3-scale'
 import { schemeCategory10 } from 'd3-scale-chromatic'
 import { min, max } from 'd3-array'
-
-/**
- * @param {Array} xValues
- * @param {Object} dimensions
- * @param {number} padding
- * @returns {Object}
- */
-function buildXScale(xValues, dimensions, padding) {
-	const xIsDate = xValues.some((v) => v instanceof Date)
-	const xIsNumeric = !xIsDate && xValues.every((v) => !isNaN(parseFloat(v)))
-
-	if (xIsDate) {
-		return scaleTime()
-			.domain([min(xValues), max(xValues)])
-			.range([0, dimensions.innerWidth])
-			.nice()
-	}
-	if (xIsNumeric) {
-		return scaleLinear()
-			.domain([min([0, ...xValues]), max(xValues)])
-			.range([0, dimensions.innerWidth])
-			.nice()
-	}
-	return scaleBand().domain(xValues).range([0, dimensions.innerWidth]).padding(padding)
-}
+import { buildXScale } from './xscale.js'
 
 /**
  * Creates appropriate scales based on data and dimensions
