@@ -17,13 +17,10 @@
   background-image: none;
 }
 
-/* Focus: primary border + DaisyUI outline */
+/* Focus: DaisyUI ring — primary border + glow ring flush with element */
 [data-style='daisy-ui'] [data-input-root]:focus-within {
-  @apply border-primary-z5;
+  @apply border-primary-z5 ring-primary-z5/50 ring-2;
   background-image: none;
-  outline: 2px solid;
-  @apply outline-primary-z5;
-  outline-offset: 2px;
 }
 
 /* Inputs inside wrapper */

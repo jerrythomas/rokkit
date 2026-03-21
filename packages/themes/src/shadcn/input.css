@@ -18,9 +18,9 @@
   background-image: none;
 }
 
-/* Focus */
+/* Focus: single ring flush with border, no offset gap */
 [data-style='shadcn'] [data-input-root]:focus-within {
-  @apply border-primary-z4 ring-primary-z4 ring-2 ring-offset-2;
+  @apply border-primary-z4 ring-primary-z4/40 ring-2;
   background-image: none;
 }
 

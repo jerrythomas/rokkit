@@ -12,9 +12,12 @@
   @apply relative gap-0;
 }
 
-/* Input root: outlined border */
-[data-style='material'] [data-input-root] {
+/* Input root: outlined border — force transparent even in dark mode
+ * (prevents body[data-mode="dark"][data-style="rokkit"] bleed on comparison pages) */
+[data-style='material'] [data-input-root],
+[data-mode='dark'] [data-style='material'] [data-input-root] {
   @apply border-surface-z4 flex items-center rounded border bg-transparent p-0 transition-all;
+  background-color: transparent;
   background-image: none;
 }
 
@@ -27,13 +30,20 @@
   background-image: none;
 }
 
-/* Inputs inside wrapper */
+/* Inputs inside wrapper — also target dark-mode to prevent rokkit bleed */
 [data-style='material']
   [data-input-root]
   input:not([type='checkbox'], [type='radio'], [type='color']),
+[data-mode='dark']
+  [data-style='material']
+  [data-input-root]
+  input:not([type='checkbox'], [type='radio'], [type='color']),
 [data-style='material'] [data-input-root] textarea,
-[data-style='material'] [data-input-root] select {
+[data-mode='dark'] [data-style='material'] [data-input-root] textarea,
+[data-style='material'] [data-input-root] select,
+[data-mode='dark'] [data-style='material'] [data-input-root] select {
   @apply text-surface-z9 w-full border-none bg-transparent px-3 py-2.5 transition-all outline-none;
+  background-color: transparent;
   border-radius: 4px;
   font-size: 0.875rem;
   line-height: 1.25rem;
