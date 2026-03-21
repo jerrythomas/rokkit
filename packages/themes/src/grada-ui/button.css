@@ -32,7 +32,8 @@
 
 [data-style='grada-ui'] [data-button][data-style='default'][data-variant='primary'],
 [data-style='grada-ui'] [data-button]:not([data-style])[data-variant='primary'] {
-  background: var(--gd-gradient);
+  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-color: transparent;
   color: white;
   border-radius: 20px;
   @apply shadow-md;
@@ -40,18 +41,16 @@
 
 [data-style='grada-ui'] [data-button][data-style='default'][data-variant='secondary'],
 [data-style='grada-ui'] [data-button]:not([data-style])[data-variant='secondary'] {
-  background-color: var(--gd-secondary);
+  @apply bg-secondary-z5 shadow-md;
   color: white;
   border-radius: 20px;
-  @apply shadow-md;
 }
 
 [data-style='grada-ui'] [data-button][data-style='default'][data-variant='danger'],
 [data-style='grada-ui'] [data-button]:not([data-style])[data-variant='danger'] {
-  background-color: var(--gd-error);
+  @apply bg-danger-z5 shadow-md;
   color: white;
   border-radius: 20px;
-  @apply shadow-md;
 }
 
 /* =============================================================================
@@ -65,23 +64,17 @@
 }
 
 [data-style='grada-ui'] [data-button][data-style='outline'][data-variant='primary'] {
-  border: 2px solid var(--gd-primary);
-  color: var(--gd-primary);
-  background: transparent;
+  @apply border-primary-z5 text-primary-z5 border-2 bg-transparent;
   border-radius: 20px;
 }
 
 [data-style='grada-ui'] [data-button][data-style='outline'][data-variant='secondary'] {
-  border: 2px solid var(--gd-secondary);
-  color: var(--gd-secondary);
-  background: transparent;
+  @apply border-secondary-z5 text-secondary-z5 border-2 bg-transparent;
   border-radius: 20px;
 }
 
 [data-style='grada-ui'] [data-button][data-style='outline'][data-variant='danger'] {
-  border: 2px solid var(--gd-error);
-  color: var(--gd-error);
-  background: transparent;
+  @apply border-danger-z5 text-danger-z5 border-2 bg-transparent;
   border-radius: 20px;
 }
 
@@ -101,15 +94,15 @@
 }
 
 [data-style='grada-ui'] [data-button][data-style='ghost'][data-variant='primary'] {
-  color: var(--gd-primary);
+  @apply text-primary-z5;
 }
 
 [data-style='grada-ui'] [data-button][data-style='ghost'][data-variant='secondary'] {
-  color: var(--gd-secondary);
+  @apply text-secondary-z5;
 }
 
 [data-style='grada-ui'] [data-button][data-style='ghost'][data-variant='danger'] {
-  color: var(--gd-error);
+  @apply text-danger-z5;
 }
 
 /* =============================================================================
@@ -124,17 +117,17 @@
 
 [data-style='grada-ui'] [data-button][data-style='gradient'][data-variant='primary'],
 [data-style='grada-ui'] [data-button][data-style='gradient'][data-variant='secondary'] {
-  background: var(--gd-gradient);
+  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-color: transparent;
   color: white;
   border-radius: 20px;
   @apply shadow-md;
 }
 
 [data-style='grada-ui'] [data-button][data-style='gradient'][data-variant='danger'] {
-  background-color: var(--gd-error);
+  @apply bg-danger-z5 shadow-md;
   color: white;
   border-radius: 20px;
-  @apply shadow-md;
 }
 
 /* =============================================================================
@@ -147,15 +140,15 @@
 }
 
 [data-style='grada-ui'] [data-button][data-style='link'][data-variant='primary'] {
-  color: var(--gd-primary);
+  @apply text-primary-z5;
 }
 
 [data-style='grada-ui'] [data-button][data-style='link'][data-variant='secondary'] {
-  color: var(--gd-secondary);
+  @apply text-secondary-z5;
 }
 
 [data-style='grada-ui'] [data-button][data-style='link'][data-variant='danger'] {
-  color: var(--gd-error);
+  @apply text-danger-z5;
 }
 
 /* =============================================================================
@@ -192,6 +185,5 @@
    ============================================================================= */
 
 [data-style='grada-ui'] [data-button]:focus-visible {
-  outline: 2px solid var(--gd-primary);
-  outline-offset: 2px;
+  @apply outline-2 outline-offset-2 outline outline-primary-z5;
 }

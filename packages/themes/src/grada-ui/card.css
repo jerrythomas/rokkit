@@ -16,8 +16,7 @@
 }
 
 [data-style='grada-ui'] [data-card][data-card-interactive]:hover {
-  @apply shadow-md;
-  border-color: var(--gd-primary);
+  @apply shadow-md border-primary-z5;
 }
 
 [data-style='grada-ui'] [data-card][data-card-interactive]:active {
@@ -47,8 +46,7 @@
    ============================================================================= */
 
 [data-style='grada-ui'] [data-card][data-card-interactive]:focus-visible {
-  outline: 2px solid var(--gd-primary);
-  outline-offset: 2px;
+  @apply outline-2 outline-offset-2 outline outline-primary-z5;
 }
 
 /* =============================================================================
