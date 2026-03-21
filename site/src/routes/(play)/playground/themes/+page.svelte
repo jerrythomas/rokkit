@@ -1,5 +1,7 @@
 <script>
 	// @ts-nocheck
+	import { Button, Card, Switch } from '@rokkit/ui'
+	import { Input } from '@rokkit/forms'
 
 	const THEMES = [
 		'rokkit',
@@ -23,6 +25,15 @@
 		{ label: 'Ghost', variant: 'default', style: 'ghost' },
 		{ label: 'Disabled', variant: 'default', disabled: true }
 	]
+
+	const SWITCH_OPTIONS = [
+		{ label: 'Off', value: false },
+		{ label: 'On', value: true }
+	]
+
+	let inputValues = $state(Object.fromEntries(THEMES.map((t) => [t, ''])))
+	let switchOnValues = $state(Object.fromEntries(THEMES.map((t) => [t, true])))
+	let switchOffValues = $state(Object.fromEntries(THEMES.map((t) => [t, false])))
 </script>
 
 <div class="overflow-auto p-6">
@@ -31,7 +42,7 @@
 
 	<div class="flex flex-col gap-8">
 		{#each THEMES as themeName (themeName)}
-			<section data-style={themeName} class="rounded-xl border p-6">
+			<section data-style={themeName} class="rounded-xl p-6" style="border: 1px solid var(--color-surface-z3, #444)">
 				<h2 class="mb-4 text-lg font-semibold font-mono">{themeName}</h2>
 
 				<!-- Buttons -->
@@ -39,15 +50,13 @@
 					<p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Buttons</p>
 					<div class="flex flex-wrap gap-2">
 						{#each BUTTON_VARIANTS as btn (btn.label)}
-							<button
-								data-button
-								data-variant={btn.variant}
-								data-style={btn.style ?? undefined}
+							<Button
+								label={btn.label}
+								variant={btn.variant}
+								style={btn.style ?? 'default'}
 								disabled={btn.disabled ?? false}
-								class="px-3 py-1.5 text-sm"
-							>
-								{btn.label}
-							</button>
+								size="sm"
+							/>
 						{/each}
 					</div>
 				</div>
@@ -56,59 +65,37 @@
 				<div class="mb-4">
 					<p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Input</p>
 					<div class="flex gap-3">
-						<div data-input-root class="max-w-xs flex-1 rounded-md border px-3 py-1.5">
-							<input
-								type="text"
-								placeholder="Type something..."
-								class="w-full bg-transparent text-sm outline-none"
-							/>
+						<div class="max-w-xs flex-1">
+							<Input bind:value={inputValues[themeName]} placeholder="Type something..." />
 						</div>
-						<div data-input-root class="max-w-xs flex-1 rounded-md border px-3 py-1.5" data-disabled>
-							<input
-								type="text"
-								placeholder="Disabled input"
-								disabled
-								class="w-full bg-transparent text-sm outline-none"
-							/>
+						<div class="max-w-xs flex-1">
+							<Input placeholder="Disabled input" disabled />
 						</div>
 					</div>
 				</div>
 
-				<!-- Toggle (checkbox) -->
+				<!-- Switch -->
 				<div class="mb-4">
-					<p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Toggle</p>
+					<p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Switch</p>
 					<div class="flex gap-4">
-						<label class="flex cursor-pointer items-center gap-2 text-sm">
-							<input type="checkbox" checked class="h-4 w-4 cursor-pointer" />
-							Checked
-						</label>
-						<label class="flex cursor-pointer items-center gap-2 text-sm">
-							<input type="checkbox" class="h-4 w-4 cursor-pointer" />
-							Unchecked
-						</label>
-						<label class="flex cursor-not-allowed items-center gap-2 text-sm opacity-50">
-							<input type="checkbox" disabled class="h-4 w-4" />
-							Disabled
-						</label>
+						<Switch bind:value={switchOnValues[themeName]} options={SWITCH_OPTIONS} showLabels />
+						<Switch bind:value={switchOffValues[themeName]} options={SWITCH_OPTIONS} showLabels />
+						<Switch value={false} options={SWITCH_OPTIONS} disabled showLabels />
 					</div>
 				</div>
 
 				<!-- Card -->
 				<div>
 					<p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Card</p>
-					<div data-card class="max-w-xs border">
-						<div data-card-header>
+					<Card class="max-w-xs">
+						{#snippet header()}
 							<p class="text-sm font-semibold">Card Title</p>
-						</div>
-						<div data-card-body>
-							<p class="text-sm">This is a sample card body with some descriptive text.</p>
-						</div>
-						<div data-card-footer>
-							<button data-button data-variant="primary" class="px-3 py-1.5 text-sm">
-								Action
-							</button>
-						</div>
-					</div>
+						{/snippet}
+						<p class="text-sm">This is a sample card body with some descriptive text.</p>
+						{#snippet footer()}
+							<Button label="Action" variant="primary" size="sm" />
+						{/snippet}
+					</Card>
 				</div>
 			</section>
 		{/each}
