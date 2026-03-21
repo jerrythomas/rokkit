@@ -112,4 +112,15 @@ describe('presetRokkit', () => {
 		const rule = preset.rules.find((r) => r[0] === 'bg-graph-paper')
 		expect(rule).toBeUndefined()
 	})
+
+	it('should include custom palette in theme.colors', () => {
+		const preset = presetRokkit({
+			palettes: {
+				brand: { 50: '#f0f4ff', 500: '#0f4c81', 950: '#071c30' }
+			},
+			colors: { primary: 'brand' }
+		})
+		expect(preset.theme.colors).toHaveProperty('primary')
+		expect(preset.theme.colors.primary).toHaveProperty('500')
+	})
 })

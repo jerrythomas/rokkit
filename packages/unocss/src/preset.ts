@@ -9,7 +9,7 @@ import {
 	transformerVariantGroup
 } from 'unocss'
 import type { Preset } from 'unocss'
-import { shades, defaultPalette, DEFAULT_ICONS, iconShortcuts, Theme } from '@rokkit/core'
+import { shades, defaultPalette, DEFAULT_ICONS, iconShortcuts, Theme, defaultColors } from '@rokkit/core'
 import { iconCollections } from '@rokkit/core/vite'
 import { loadConfig } from './config.js'
 
@@ -71,7 +71,8 @@ function buildShortcuts(theme, config) {
 
 export function presetRokkit(options = {}): Preset {
 	const config = loadConfig(options)
-	const theme = new Theme({ mapping: config.colors })
+	const mergedColors = { ...defaultColors, ...config.palettes }
+	const theme = new Theme({ colors: mergedColors, mapping: config.colors })
 
 	return {
 		name: 'rokkit',
