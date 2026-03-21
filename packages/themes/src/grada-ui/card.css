@@ -5,9 +5,8 @@
  */
 
 [data-style='grada-ui'] [data-card] {
-  @apply bg-none border text-surface-z9;
-  background-color: var(--gd-surface-a);
-  border-color: var(--gd-grey-a);
+  @apply bg-surface-z2 border border-surface-z4 text-surface-z9;
+  background-image: none;
   border-radius: 3px;
 }
 
@@ -30,7 +29,8 @@
    ============================================================================= */
 
 [data-style='grada-ui'] [data-card-header] {
-  border-bottom: 1px solid var(--gd-grey-a);
+  @apply border-surface-z4;
+  border-bottom-width: 1px;
 }
 
 [data-style='grada-ui'] [data-card-body] {
@@ -38,8 +38,8 @@
 }
 
 [data-style='grada-ui'] [data-card-footer] {
-  @apply text-surface-z7;
-  border-top: 1px solid var(--gd-grey-a);
+  @apply text-surface-z7 border-surface-z4;
+  border-top-width: 1px;
 }
 
 /* =============================================================================
@@ -65,9 +65,10 @@
    ============================================================================= */
 
 [data-style='grada-ui'] [data-card][data-variant='primary'] {
-  background: var(--gd-gradient);
-  color: white;
-  border: none;
+  @apply from-primary-z5 to-secondary-z5 text-surface-z1 border-0;
+  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-color: transparent;
+  border-radius: 3px;
 }
 
 [data-style='grada-ui'] [data-card][data-variant='primary'] [data-card-header],
@@ -80,9 +81,8 @@
 }
 
 [data-style='grada-ui'] [data-card][data-variant='secondary'] {
-  background-color: var(--gd-secondary);
-  color: white;
-  border: none;
+  @apply bg-secondary-z5 text-surface-z1 border-0;
+  background-image: none;
   border-radius: 3px;
 }
 

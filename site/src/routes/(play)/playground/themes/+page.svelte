@@ -87,15 +87,26 @@
 				<!-- Card -->
 				<div>
 					<p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Card</p>
-					<Card class="max-w-xs">
-						{#snippet header()}
-							<p class="text-sm font-semibold">Card Title</p>
-						{/snippet}
-						<p class="text-sm">This is a sample card body with some descriptive text.</p>
-						{#snippet footer()}
-							<Button label="Action" variant="primary" size="sm" />
-						{/snippet}
-					</Card>
+					<div class="flex flex-wrap gap-3">
+						<Card class="max-w-xs flex-1">
+							{#snippet header()}
+								<p class="text-sm font-semibold">Default Card</p>
+							{/snippet}
+							<p class="text-sm">Card body with some descriptive text.</p>
+							{#snippet footer()}
+								<Button label="Action" variant="primary" size="sm" />
+							{/snippet}
+						</Card>
+						<Card variant="primary" class="max-w-xs flex-1">
+							{#snippet header()}
+								<p class="text-sm font-semibold">Primary Card</p>
+							{/snippet}
+							<p class="text-sm">Card body with some descriptive text.</p>
+							{#snippet footer()}
+								<Button label="Action" variant="default" size="sm" />
+							{/snippet}
+						</Card>
+					</div>
 				</div>
 			</section>
 		{/each}

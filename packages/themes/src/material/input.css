@@ -2,14 +2,9 @@
  * Material Design outlined text field with floating label.
  */
 
-/* Form background: needed so floating label pill matches */
+/* Form background */
 [data-style='material'] [data-form-root] {
   @apply bg-surface-z1;
-  --material-bg: rgba(var(--color-surface-100), 1);
-}
-
-[data-mode='dark'] [data-style='material'] [data-form-root] {
-  --material-bg: rgba(var(--color-surface-900), 1);
 }
 
 /* Field root: relative positioning for floating label */
@@ -64,7 +59,6 @@
   @apply text-surface-z5 pointer-events-none absolute left-3 px-1 text-sm transition-all;
   top: 50%;
   transform: translateY(-50%);
-  background: transparent;
   z-index: 1;
 }
 
@@ -77,10 +71,9 @@
   [data-field-root]:not([data-field-type='checkbox']):not([data-field-empty='true'])
   [data-field]
   > label {
-  @apply text-xs;
+  @apply text-xs bg-surface-z1;
   top: 0;
   transform: translateY(-50%);
-  background: var(--material-bg, rgba(var(--color-surface-100), 1));
   padding-inline: 0.25rem;
 }
 
