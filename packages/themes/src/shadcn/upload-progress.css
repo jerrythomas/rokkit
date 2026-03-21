@@ -1,0 +1,102 @@
+/**
+ * UploadProgress - shadcn Theme Styles
+ *
+ * Status colors, solid primary progress fill, action buttons.
+ */
+
+/* =============================================================================
+   Header
+   ============================================================================= */
+
+[data-style='shadcn'] [data-upload-header] {
+  @apply text-surface-z7;
+}
+
+[data-style='shadcn'] [data-upload-clear] {
+  @apply border-surface-z3 text-surface-z6 rounded-md;
+}
+
+[data-style='shadcn'] [data-upload-clear]:hover {
+  @apply bg-surface-z3 text-surface-z9;
+}
+
+/* =============================================================================
+   File Rows
+   ============================================================================= */
+
+[data-style='shadcn'] [data-upload-file-status] {
+  @apply text-surface-z7 rounded-md;
+}
+
+[data-style='shadcn'] [data-upload-file-status]:hover {
+  @apply bg-surface-z2;
+}
+
+/* =============================================================================
+   File Elements
+   ============================================================================= */
+
+[data-style='shadcn'] [data-upload-file-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='shadcn'] [data-upload-file-size] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Progress Bar
+   ============================================================================= */
+
+[data-style='shadcn'] [data-upload-bar] {
+  @apply bg-surface-z3 rounded-full;
+}
+
+[data-style='shadcn'] [data-upload-fill] {
+  @apply bg-none bg-primary-z5 rounded-full;
+}
+
+/* =============================================================================
+   Status Colors
+   ============================================================================= */
+
+[data-style='shadcn'] [data-upload-file-status][data-status='uploading'] [data-upload-status] {
+  @apply text-primary-z6;
+}
+
+[data-style='shadcn'] [data-upload-file-status][data-status='done'] [data-upload-status] {
+  @apply text-green-500;
+}
+
+[data-style='shadcn'] [data-upload-file-status][data-status='error'] [data-upload-status] {
+  @apply text-red-500;
+}
+
+[data-style='shadcn'] [data-upload-file-status][data-status='pending'] [data-upload-status] {
+  @apply text-surface-z5;
+}
+
+/* Status-based file icon tinting */
+[data-style='shadcn'] [data-upload-file-status][data-status='done'] [data-upload-file-icon] {
+  @apply text-green-500;
+}
+
+[data-style='shadcn'] [data-upload-file-status][data-status='error'] [data-upload-file-icon] {
+  @apply text-red-500;
+}
+
+/* =============================================================================
+   Action Buttons
+   ============================================================================= */
+
+[data-style='shadcn'] [data-upload-actions] button {
+  @apply text-surface-z5;
+}
+
+[data-style='shadcn'] [data-upload-actions] button:hover {
+  @apply bg-surface-z3 text-surface-z9;
+}
+
+[data-style='shadcn'] [data-upload-file-status][data-status='error'] [data-upload-retry]:hover {
+  @apply text-primary-z7;
+}

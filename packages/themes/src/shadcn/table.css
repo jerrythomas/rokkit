@@ -1,0 +1,89 @@
+/**
+ * Table - shadcn Theme Styles
+ *
+ * Clean table with subtle row borders, bg highlight on hover/selected.
+ */
+
+/* =============================================================================
+   Header
+   ============================================================================= */
+
+[data-style='shadcn'] [data-table-header] th {
+  @apply text-surface-z6 border-surface-z3 border-b;
+}
+
+[data-style='shadcn'] [data-table-header-cell][data-sortable='true']:hover {
+  @apply text-surface-z8;
+}
+
+[data-style='shadcn'] [data-table-header-cell][data-sort-order='ascending'],
+[data-style='shadcn'] [data-table-header-cell][data-sort-order='descending'] {
+  @apply text-primary-z7;
+}
+
+[data-style='shadcn'] [data-table-sort-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='shadcn'] [data-table-header-cell][data-sort-order='ascending'] [data-table-sort-icon],
+[data-style='shadcn']
+  [data-table-header-cell][data-sort-order='descending']
+  [data-table-sort-icon] {
+  @apply text-primary-z6;
+}
+
+/* =============================================================================
+   Caption
+   ============================================================================= */
+
+[data-style='shadcn'] [data-table-caption] {
+  @apply text-surface-z7;
+}
+
+/* =============================================================================
+   Rows
+   ============================================================================= */
+
+[data-style='shadcn'] [data-table-row] {
+  @apply text-surface-z7 border-surface-z3 border-b;
+}
+
+[data-style='shadcn'] [data-table-row]:hover {
+  @apply bg-none bg-surface-z2 text-surface-z9;
+}
+
+[data-style='shadcn'] [data-table-row]:focus {
+  @apply bg-none bg-surface-z2 text-surface-z9 ring-primary-z4 ring-2 outline-none;
+}
+
+[data-style='shadcn'] [data-table-row][data-selected='true'] {
+  @apply bg-none bg-primary-z2 text-primary-z8;
+}
+
+/* =============================================================================
+   Striped
+   ============================================================================= */
+
+[data-style='shadcn'] [data-striped='true'] [data-table-body] tr:nth-child(even) {
+  @apply bg-surface-z1;
+}
+
+/* =============================================================================
+   Empty
+   ============================================================================= */
+
+[data-style='shadcn'] [data-table-empty] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Cell Icon
+   ============================================================================= */
+
+[data-style='shadcn'] [data-table-cell] [data-cell-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='shadcn'] [data-table-row][data-selected='true'] [data-cell-icon] {
+  @apply text-primary-z6;
+}

@@ -1,0 +1,70 @@
+/**
+ * FloatingNavigation - shadcn Theme Styles
+ *
+ * Rounded-md container with border, ring focus on items.
+ */
+
+/* =============================================================================
+   Container
+   ============================================================================= */
+
+[data-style='shadcn'] [data-floating-nav] {
+  @apply bg-none bg-surface-z0 border-surface-z3 border rounded-md shadow-md;
+}
+
+/* =============================================================================
+   Header
+   ============================================================================= */
+
+[data-style='shadcn'] [data-floating-nav-title] {
+  @apply text-surface-z5;
+}
+
+[data-style='shadcn'] [data-floating-nav-pin] {
+  @apply text-surface-z5;
+}
+
+[data-style='shadcn'] [data-floating-nav-pin]:hover {
+  @apply text-surface-z8;
+}
+
+[data-style='shadcn'] [data-floating-nav-pin][aria-pressed='true'] {
+  @apply text-surface-z9;
+}
+
+/* =============================================================================
+   Items
+   ============================================================================= */
+
+[data-style='shadcn'] [data-floating-nav-item] {
+  @apply text-surface-z7 rounded-md;
+}
+
+[data-style='shadcn'] [data-floating-nav-item]:hover {
+  @apply bg-none bg-surface-z3 text-surface-z9;
+}
+
+[data-style='shadcn'] [data-floating-nav-item][data-active] {
+  @apply bg-none bg-primary-z2 text-primary-z8;
+}
+
+[data-style='shadcn'] [data-floating-nav-item]:focus-visible {
+  @apply ring-primary-z4 ring-2 ring-offset-2 outline-none;
+}
+
+/* Icon */
+[data-style='shadcn'] [data-floating-nav-icon] {
+  @apply text-surface-z6;
+}
+
+[data-style='shadcn'] [data-floating-nav-item][data-active] [data-floating-nav-icon] {
+  @apply text-primary-z6;
+}
+
+/* =============================================================================
+   Active Indicator
+   ============================================================================= */
+
+[data-style='shadcn'] [data-floating-nav-indicator] {
+  @apply bg-none bg-primary-z5 rounded-full;
+}

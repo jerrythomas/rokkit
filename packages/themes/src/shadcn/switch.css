@@ -1,0 +1,30 @@
+/**
+ * Switch - shadcn Theme Styles
+ *
+ * Full-pill track (rounded-full), ring-based focus — shadcn signature.
+ */
+
+[data-style='shadcn'] [data-switch-track] {
+  @apply bg-none border-surface-z4 border-2 bg-transparent rounded-full;
+}
+
+[data-style='shadcn'] [data-switch-thumb] {
+  @apply bg-surface-z5 rounded-full;
+}
+
+[data-style='shadcn'] [data-switch]:focus-visible [data-switch-track] {
+  @apply ring-primary-z4 ring-2 ring-offset-2;
+}
+
+/* On state */
+[data-style='shadcn'] [data-switch][aria-checked='true'] [data-switch-track] {
+  @apply bg-none bg-primary-z5 border-primary-z5;
+}
+
+[data-style='shadcn'] [data-switch][aria-checked='true'] [data-switch-thumb] {
+  @apply bg-surface-z0;
+}
+
+[data-style='shadcn'] [data-switch-label] {
+  @apply text-surface-z7;
+}

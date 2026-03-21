@@ -1,0 +1,61 @@
+/**
+ * Range - shadcn Theme Styles
+ *
+ * Clean track, primary fill, rounded thumb with ring focus.
+ */
+
+/* =============================================================================
+   Track
+   ============================================================================= */
+
+[data-style='shadcn'] [data-range-bar] {
+  @apply bg-surface-z3 rounded-full;
+}
+
+[data-style='shadcn'] [data-range-selected] {
+  @apply bg-none bg-primary rounded-full;
+}
+
+/* =============================================================================
+   Thumb
+   ============================================================================= */
+
+[data-style='shadcn'] [data-range-thumb] {
+  @apply bg-surface-z0 border-primary-z5 border-2 rounded-full;
+}
+
+[data-style='shadcn'] [data-range-thumb][data-sliding] {
+  @apply bg-primary-z5;
+}
+
+[data-style='shadcn'] [data-range-thumb]:focus-visible {
+  @apply bg-primary-z5 ring-primary-z4 ring-2 ring-offset-2;
+}
+
+/* =============================================================================
+   Ticks
+   ============================================================================= */
+
+[data-style='shadcn'] [data-range-tick] {
+  @apply text-surface-z6;
+}
+
+[data-style='shadcn'] [data-tick-bar] {
+  @apply border-surface-z3;
+}
+
+[data-style='shadcn'] [data-tick-label] {
+  @apply text-surface-z6;
+}
+
+/* =============================================================================
+   Disabled
+   ============================================================================= */
+
+[data-style='shadcn'] [data-range][data-disabled] [data-range-thumb] {
+  @apply bg-surface-z3 border-surface-z4;
+}
+
+[data-style='shadcn'] [data-range][data-disabled] [data-range-selected] {
+  @apply bg-surface-z4;
+}

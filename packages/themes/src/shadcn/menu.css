@@ -1,0 +1,88 @@
+/**
+ * Menu - shadcn Theme Styles
+ *
+ * Rounded-md trigger and items, shadow-md dropdown, bg highlight on hover.
+ */
+
+/* =============================================================================
+   Menu Trigger
+   ============================================================================= */
+
+[data-style='shadcn'] [data-menu-trigger] {
+  @apply bg-none border-surface-z3 text-surface-z7 border bg-transparent rounded-md;
+}
+
+[data-style='shadcn'] [data-menu-trigger]:hover:not(:disabled) {
+  @apply bg-none bg-surface-z2 text-surface-z9 border-surface-z4;
+}
+
+[data-style='shadcn'] [data-menu-trigger]:focus-visible {
+  @apply ring-primary-z4 ring-2 ring-offset-2 outline-none;
+}
+
+[data-style='shadcn'] [data-menu][data-open='true'] [data-menu-trigger] {
+  @apply bg-none border-surface-z5;
+}
+
+/* Trigger elements */
+[data-style='shadcn'] [data-menu-trigger] [data-menu-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='shadcn'] [data-menu-trigger]:hover:not(:disabled) [data-menu-icon] {
+  @apply text-surface-z7;
+}
+
+[data-style='shadcn'] [data-menu-trigger] [data-menu-arrow] {
+  @apply text-surface-z4;
+}
+
+/* =============================================================================
+   Menu Dropdown
+   ============================================================================= */
+
+[data-style='shadcn'] [data-menu-dropdown] {
+  @apply bg-none bg-surface-z0 border-surface-z3 border shadow-md rounded-md;
+}
+
+/* =============================================================================
+   Menu Items
+   ============================================================================= */
+
+[data-style='shadcn'] [data-menu-item] {
+  @apply text-surface-z7 border-0 border-solid border-transparent rounded-md;
+}
+
+[data-style='shadcn'] [data-menu-item]:hover:not(:disabled),
+[data-style='shadcn'] [data-menu-item]:focus:not(:disabled) {
+  @apply bg-none bg-surface-z3 text-surface-z9 outline-none;
+}
+
+/* Item elements */
+[data-style='shadcn'] [data-menu-item] [data-item-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='shadcn'] [data-menu-item]:hover:not(:disabled) [data-item-icon] {
+  @apply text-surface-z6;
+}
+
+[data-style='shadcn'] [data-menu-item] [data-item-description] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Groups
+   ============================================================================= */
+
+[data-style='shadcn'] [data-menu-group] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Divider
+   ============================================================================= */
+
+[data-style='shadcn'] [data-menu-separator] {
+  @apply bg-none bg-surface-z3;
+}

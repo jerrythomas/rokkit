@@ -1,0 +1,149 @@
+/**
+ * Tabs - shadcn Theme Styles
+ *
+ * Underline-indicator tabs with primary color accent on active.
+ * Active tab: thick bottom border in primary color, bolder text.
+ */
+
+/* =============================================================================
+   Tab List
+   ============================================================================= */
+
+[data-style='shadcn'] [data-tabs-list] {
+  @apply border-surface-z3 gap-0 border-b;
+}
+
+[data-style='shadcn'] [data-tabs][data-position='after'] [data-tabs-list] {
+  @apply border-t border-b-0;
+}
+
+[data-style='shadcn'] [data-tabs][data-orientation='vertical'] [data-tabs-list] {
+  @apply border-r border-b-0;
+}
+
+[data-style='shadcn']
+  [data-tabs][data-orientation='vertical'][data-position='after']
+  [data-tabs-list] {
+  @apply border-t-0 border-r-0 border-l;
+}
+
+/* =============================================================================
+   Tab Triggers — default: horizontal/before (bottom border)
+   ============================================================================= */
+
+[data-style='shadcn'] [data-tabs-trigger] {
+  @apply text-surface-z5 border-b-2 border-b-transparent rounded-none;
+  font-weight: 400;
+  transition: color 150ms ease, border-color 150ms ease;
+}
+
+[data-style='shadcn'] [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {
+  @apply text-surface-z8 border-b-surface-z4;
+}
+
+[data-style='shadcn'] [data-tabs-trigger][data-selected] {
+  @apply bg-none text-surface-z9 border-b-primary-z5;
+  font-weight: 600;
+}
+
+/* Reset gradients */
+[data-style='shadcn'] [data-tabs-list]:focus-within [data-tabs-trigger][data-selected] {
+  @apply bg-none;
+}
+
+[data-style='shadcn']
+  [data-tabs][data-orientation='vertical']
+  [data-tabs-list]:focus-within
+  [data-tabs-trigger][data-selected] {
+  @apply bg-none;
+}
+
+[data-style='shadcn']
+  [data-tabs][data-orientation='vertical'][data-position='after']
+  [data-tabs-list]:focus-within
+  [data-tabs-trigger][data-selected] {
+  @apply bg-none;
+}
+
+/* Horizontal after (tabs below content): top border */
+[data-style='shadcn'] [data-tabs][data-position='after'] [data-tabs-trigger] {
+  @apply border-b-0 border-t-2 border-t-transparent;
+}
+
+[data-style='shadcn']
+  [data-tabs][data-position='after']
+  [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {
+  @apply border-t-surface-z4;
+}
+
+[data-style='shadcn'] [data-tabs][data-position='after'] [data-tabs-trigger][data-selected] {
+  @apply border-t-primary-z5;
+  font-weight: 600;
+}
+
+[data-style='shadcn']
+  [data-tabs][data-position='after']
+  [data-tabs-list]:focus-within
+  [data-tabs-trigger][data-selected] {
+  @apply bg-none;
+}
+
+/* Vertical before (tabs on left): right border */
+[data-style='shadcn'] [data-tabs][data-orientation='vertical'] [data-tabs-trigger] {
+  @apply border-b-0 border-r-2 border-r-transparent rounded-none rounded-l;
+}
+
+[data-style='shadcn']
+  [data-tabs][data-orientation='vertical']
+  [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {
+  @apply border-r-surface-z4;
+}
+
+[data-style='shadcn'] [data-tabs][data-orientation='vertical'] [data-tabs-trigger][data-selected] {
+  @apply border-r-primary-z5;
+  font-weight: 600;
+}
+
+/* Vertical after (tabs on right): left border */
+[data-style='shadcn']
+  [data-tabs][data-orientation='vertical'][data-position='after']
+  [data-tabs-trigger] {
+  @apply border-t-0 border-b-0 border-r-0 border-l-2 border-l-transparent rounded-none rounded-r;
+}
+
+[data-style='shadcn']
+  [data-tabs][data-orientation='vertical'][data-position='after']
+  [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {
+  @apply border-t-0 border-b-0 border-r-0 border-l-surface-z4;
+}
+
+[data-style='shadcn']
+  [data-tabs][data-orientation='vertical'][data-position='after']
+  [data-tabs-trigger][data-selected] {
+  @apply border-t-0 border-b-0 border-r-0 border-l-primary-z5;
+  font-weight: 600;
+}
+
+/* =============================================================================
+   Tab Icon
+   ============================================================================= */
+
+[data-style='shadcn'] [data-tabs-trigger] [data-tabs-icon] {
+  @apply text-surface-z4;
+}
+
+[data-style='shadcn'] [data-tabs-trigger]:hover:not(:disabled) [data-tabs-icon] {
+  @apply text-surface-z6;
+}
+
+[data-style='shadcn'] [data-tabs-trigger][data-selected] [data-tabs-icon] {
+  @apply text-primary-z5;
+}
+
+/* =============================================================================
+   Tab Panel
+   ============================================================================= */
+
+[data-style='shadcn'] [data-tabs-content] {
+  @apply text-surface-z8;
+}

@@ -3,7 +3,10 @@ import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { resolve } from 'path'
 import { generateUnoConfig, generateAppCssImports, generateInitScript } from './init.js'
 
-const KNOWN_THEMES = ['rokkit', 'minimal', 'material', 'glass', 'grada-ui']
+const KNOWN_THEMES = [
+  'rokkit', 'minimal', 'material', 'glass', 'grada-ui',
+  'shadcn', 'daisy-ui', 'bits-ui', 'carbon', 'ant-design'
+]
 
 /**
  * Check config file existence

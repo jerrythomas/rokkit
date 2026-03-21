@@ -1,0 +1,11 @@
+/**
+ * Connector - shadcn Theme Styles
+ *
+ * Visual theming for tree line connectors.
+ */
+
+[data-style='shadcn'] [data-connector] [data-connector-v],
+[data-style='shadcn'] [data-connector] [data-connector-h],
+[data-style='shadcn'] [data-connector] [data-connector-corner] {
+  @apply border-surface-z3;
+}

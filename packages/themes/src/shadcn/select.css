@@ -1,0 +1,158 @@
+/**
+ * Select - shadcn Theme Styles
+ *
+ * Rounded-md trigger, ring focus, subtle dropdown with bg highlight on hover.
+ */
+
+/* =============================================================================
+   Trigger Button
+   ============================================================================= */
+
+[data-style='shadcn'] [data-select-trigger] {
+  @apply bg-none text-surface-z7 border-surface-z3 border bg-transparent rounded-md;
+}
+
+[data-style='shadcn'] [data-select-trigger]:hover:not(:disabled) {
+  @apply bg-none bg-surface-z2 border-surface-z4 text-surface-z8;
+}
+
+[data-style='shadcn'] [data-select-trigger]:focus-visible {
+  @apply ring-primary-z4 ring-2 ring-offset-2 outline-none;
+}
+
+[data-style='shadcn'] [data-select][data-open='true'] [data-select-trigger] {
+  @apply bg-none border-surface-z5 ring-primary-z4 ring-2 ring-offset-2;
+}
+
+/* =============================================================================
+   Placeholder
+   ============================================================================= */
+
+[data-style='shadcn'] [data-select-placeholder] {
+  @apply text-surface-z4;
+}
+
+/* =============================================================================
+   Arrow
+   ============================================================================= */
+
+[data-style='shadcn'] [data-select-arrow] {
+  @apply text-surface-z5;
+}
+
+[data-style='shadcn'] [data-select-trigger]:hover:not(:disabled) [data-select-arrow] {
+  @apply text-surface-z6;
+}
+
+/* =============================================================================
+   Tags (MultiSelect)
+   ============================================================================= */
+
+[data-style='shadcn'] [data-select-tag] {
+  @apply bg-none text-surface-z7 border-surface-z3 border bg-transparent rounded-md;
+}
+
+[data-style='shadcn'] [data-select-tag-remove] {
+  @apply text-surface-z5;
+}
+
+[data-style='shadcn'] [data-select-tag-remove]:hover {
+  @apply text-surface-z8;
+}
+
+/* =============================================================================
+   Dropdown Panel
+   ============================================================================= */
+
+[data-style='shadcn'] [data-select-dropdown] {
+  @apply bg-none bg-surface-z0 border-surface-z3 border shadow-md rounded-md;
+}
+
+/* =============================================================================
+   Options
+   ============================================================================= */
+
+[data-style='shadcn'] [data-select-option] {
+  @apply text-surface-z7 border-0 border-solid border-transparent rounded-md;
+}
+
+/* Hover and focus */
+[data-style='shadcn'] [data-select-option]:hover:not(:disabled),
+[data-style='shadcn'] [data-select-option]:focus:not(:disabled) {
+  @apply bg-none bg-surface-z3 text-surface-z9 outline-none;
+}
+
+/* Selected state */
+[data-style='shadcn'] [data-select-option][data-selected='true'] {
+  @apply bg-none bg-surface-z2 text-surface-z8;
+}
+
+/* Selected state — full highlight when dropdown has focus */
+[data-style='shadcn']
+  [data-select-dropdown]:focus-within
+  [data-select-option][data-selected='true'] {
+  @apply bg-none bg-primary-z2 text-primary-z7;
+}
+
+/* Check mark */
+[data-style='shadcn'] [data-select-check] {
+  @apply text-primary-z6;
+}
+
+/* Checkbox */
+[data-style='shadcn'] [data-select-checkbox] {
+  @apply bg-none border-surface-z4 bg-transparent rounded-md;
+}
+
+[data-style='shadcn'] [data-select-checkbox][data-checked='true'] {
+  @apply bg-none bg-primary-z5 border-primary-z5 text-white;
+}
+
+/* Item description */
+[data-style='shadcn'] [data-select-option] [data-item-description] {
+  @apply text-surface-z5;
+}
+
+[data-style='shadcn'] [data-select-option][data-selected='true'] [data-item-description] {
+  @apply text-primary-z6;
+}
+
+/* =============================================================================
+   Groups
+   ============================================================================= */
+
+[data-style='shadcn'] [data-select-group-label] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Divider
+   ============================================================================= */
+
+[data-style='shadcn'] [data-select-divider] {
+  @apply bg-none bg-surface-z3;
+}
+
+/* =============================================================================
+   Filter Input
+   ============================================================================= */
+
+[data-style='shadcn'] [data-select-filter] {
+  @apply bg-surface-z0;
+}
+
+[data-style='shadcn'] [data-select-filter-input] {
+  @apply text-surface-z7 border-surface-z3 border bg-transparent rounded-md;
+}
+
+[data-style='shadcn'] [data-select-filter-input]:focus {
+  @apply border-surface-z5 ring-primary-z4 ring-2 ring-offset-2;
+}
+
+[data-style='shadcn'] [data-select-filter-input]::placeholder {
+  @apply text-surface-z4;
+}
+
+[data-style='shadcn'] [data-select-empty] {
+  @apply text-surface-z5;
+}

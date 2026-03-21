@@ -1,0 +1,45 @@
+/**
+ * Timeline - shadcn Theme Styles
+ *
+ * Clean timeline with primary accent on active/completed states.
+ */
+
+/* =============================================================================
+   Circle
+   ============================================================================= */
+
+[data-style='shadcn'] [data-timeline-circle] {
+  @apply border-surface-z3 text-surface-z6;
+}
+
+[data-style='shadcn'] [data-timeline-item][data-completed] [data-timeline-circle] {
+  @apply border-primary text-primary;
+}
+
+[data-style='shadcn'] [data-timeline-item][data-active] [data-timeline-circle] {
+  @apply border-primary text-primary border-2;
+}
+
+/* =============================================================================
+   Connector
+   ============================================================================= */
+
+[data-style='shadcn'] [data-timeline-connector] {
+  @apply bg-surface-z3;
+}
+
+[data-style='shadcn'] [data-timeline-item][data-completed] [data-timeline-connector] {
+  @apply bg-primary;
+}
+
+/* =============================================================================
+   Body
+   ============================================================================= */
+
+[data-style='shadcn'] [data-timeline-title] {
+  @apply text-surface-z8;
+}
+
+[data-style='shadcn'] [data-timeline-description] {
+  @apply text-surface-z6;
+}

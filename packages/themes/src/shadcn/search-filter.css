@@ -1,0 +1,49 @@
+/**
+ * SearchFilter - shadcn Theme Styles
+ *
+ * Rounded-md input with ring focus, subtle tags.
+ */
+
+/* =============================================================================
+   Input
+   ============================================================================= */
+
+[data-style='shadcn'] [data-search-input] {
+  @apply text-surface-z7 border-surface-z3 border bg-transparent rounded-md;
+}
+
+[data-style='shadcn'] [data-search-input]:focus {
+  @apply border-primary-z4 ring-primary-z4 ring-2 ring-offset-2;
+}
+
+[data-style='shadcn'] [data-search-input]::placeholder {
+  @apply text-surface-z4;
+}
+
+/* =============================================================================
+   Clear Button
+   ============================================================================= */
+
+[data-style='shadcn'] [data-search-clear] {
+  @apply text-surface-z5;
+}
+
+[data-style='shadcn'] [data-search-clear]:hover {
+  @apply text-surface-z8;
+}
+
+/* =============================================================================
+   Tags
+   ============================================================================= */
+
+[data-style='shadcn'] [data-search-tag] {
+  @apply bg-none text-surface-z7 border-surface-z3 border bg-transparent rounded-md;
+}
+
+[data-style='shadcn'] [data-search-tag-remove] {
+  @apply text-surface-z5;
+}
+
+[data-style='shadcn'] [data-search-tag-remove]:hover {
+  @apply text-surface-z8;
+}

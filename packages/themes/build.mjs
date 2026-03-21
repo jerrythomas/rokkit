@@ -216,13 +216,21 @@ async function build() {
     ['minimal', 'clean + subtle'],
     ['material', 'elevation + shadows'],
     ['glass', 'blur + transparency'],
-    ['grada-ui', 'coral/purple gradient identity']
+    ['grada-ui', 'coral/purple gradient identity'],
+    ['shadcn', 'flat borders + ring focus'],
+    ['daisy-ui', 'rounded-full + bold fills'],
+    ['bits-ui', 'rounded-lg + shadow-sm'],
+    ['carbon', 'square + bottom-border inputs'],
+    ['ant-design', 'thin borders + dense layout'],
   ]) {
     await buildFile(join(srcDir, name, 'index.css'), `${name}.css`, label)
   }
 
   // Full bundle: base + all themes
-  const allThemes = ['base', 'rokkit', 'minimal', 'material', 'glass', 'grada-ui']
+  const allThemes = [
+    'base', 'rokkit', 'minimal', 'material', 'glass', 'grada-ui',
+    'shadcn', 'daisy-ui', 'bits-ui', 'carbon', 'ant-design'
+  ]
   const bundleParts = allThemes.map((name) => readFileSync(join(distDir, `${name}.css`), 'utf-8'))
   writeFileSync(join(distDir, 'index.css'), bundleParts.join('\n'), 'utf-8')
   console.log('✓ dist/index.css (full bundle)')

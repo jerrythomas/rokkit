@@ -168,7 +168,12 @@ const PROMPTS_CONFIG = [
 			{ title: 'Minimal', value: 'minimal' },
 			{ title: 'Material', value: 'material' },
 			{ title: 'Glass', value: 'glass' },
-			{ title: 'Grada UI', value: 'grada-ui' }
+			{ title: 'Grada UI', value: 'grada-ui' },
+			{ value: 'shadcn', title: 'shadcn', hint: 'flat borders + ring focus' },
+			{ value: 'daisy-ui', title: 'daisy-ui', hint: 'rounded-full + bold fills' },
+			{ value: 'bits-ui', title: 'bits-ui', hint: 'rounded-lg + polished' },
+			{ value: 'carbon', title: 'carbon', hint: 'square edges + enterprise' },
+			{ value: 'ant-design', title: 'ant-design', hint: 'thin borders + dense' }
 		],
 		min: 1
 	},

@@ -1,0 +1,50 @@
+/**
+ * Dropdown - shadcn Theme Styles
+ *
+ * Rounded-md trigger, shadow-md panel, bg highlight on hover/active.
+ */
+
+[data-style='shadcn'] [data-dropdown-trigger] {
+  @apply bg-none border-surface-z3 text-surface-z7 border bg-transparent rounded-md;
+}
+
+[data-style='shadcn'] [data-dropdown-trigger]:hover:not(:disabled) {
+  @apply bg-none bg-surface-z2 text-surface-z9 border-surface-z4;
+}
+
+[data-style='shadcn'] [data-dropdown-trigger]:focus-visible {
+  @apply ring-primary-z4 ring-2 ring-offset-2 outline-none;
+}
+
+[data-style='shadcn'] [data-dropdown][data-open='true'] [data-dropdown-trigger] {
+  @apply bg-none border-surface-z5;
+}
+
+[data-style='shadcn'] [data-dropdown-trigger] [data-dropdown-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='shadcn'] [data-dropdown-trigger] [data-dropdown-arrow] {
+  @apply text-surface-z4;
+}
+
+[data-style='shadcn'] [data-dropdown-panel] {
+  @apply bg-none bg-surface-z0 border-surface-z3 border shadow-md rounded-md;
+}
+
+[data-style='shadcn'] [data-dropdown-option] {
+  @apply text-surface-z7 rounded-md;
+}
+
+[data-style='shadcn'] [data-dropdown-option]:hover:not(:disabled),
+[data-style='shadcn'] [data-dropdown-option]:focus:not(:disabled) {
+  @apply bg-none bg-surface-z3 text-surface-z9 outline-none;
+}
+
+[data-style='shadcn'] [data-dropdown-option][data-active='true'] {
+  @apply bg-none bg-primary-z2 text-primary-z8;
+}
+
+[data-style='shadcn'] [data-dropdown-separator] {
+  @apply bg-none bg-surface-z3;
+}

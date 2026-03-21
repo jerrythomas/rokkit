@@ -1,0 +1,46 @@
+/**
+ * Grid - shadcn Theme Styles
+ *
+ * Rounded-md tile borders, bg highlight on hover/focus/active.
+ */
+
+/* =============================================================================
+   Grid Tiles
+   ============================================================================= */
+
+[data-style='shadcn'] [data-grid] [data-grid-item] {
+  @apply border-surface-z3 text-surface-z7 rounded-md;
+}
+
+[data-style='shadcn'] [data-grid] [data-grid-item]:hover:not(:disabled):not([data-disabled]) {
+  @apply border-surface-z4 bg-surface-z2 text-surface-z9;
+}
+
+[data-style='shadcn'] [data-grid] [data-grid-item]:focus:not(:disabled):not([data-disabled]) {
+  @apply border-primary-z4 bg-surface-z2 text-surface-z9 ring-primary-z4 ring-2 ring-offset-2 outline-none;
+}
+
+/* Active / selected tile */
+[data-style='shadcn'] [data-grid] [data-grid-item][data-active] {
+  @apply border-primary-z4 bg-primary-z2 text-primary-z8;
+}
+
+[data-style='shadcn'] [data-grid] [data-grid-item][data-active]:hover:not(:disabled) {
+  @apply bg-primary-z3;
+}
+
+/* =============================================================================
+   Item Elements
+   ============================================================================= */
+
+[data-style='shadcn'] [data-grid] [data-grid-item] [data-item-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='shadcn'] [data-grid] [data-grid-item]:hover:not(:disabled) [data-item-icon] {
+  @apply text-surface-z7;
+}
+
+[data-style='shadcn'] [data-grid] [data-grid-item][data-active] [data-item-icon] {
+  @apply text-primary-z6;
+}

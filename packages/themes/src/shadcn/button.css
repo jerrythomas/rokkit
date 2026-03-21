@@ -1,0 +1,155 @@
+/**
+ * Button - shadcn Theme Styles
+ *
+ * Flat, rounded-md buttons. No gradients. Ring-based focus.
+ */
+
+/* =============================================================================
+   Default Style (filled)
+   ============================================================================= */
+
+[data-style='shadcn'] [data-button][data-style='default'][data-variant='default'],
+[data-style='shadcn'] [data-button]:not([data-style])[data-variant='default'],
+[data-style='shadcn'] [data-button][data-style='default']:not([data-variant]),
+[data-style='shadcn'] [data-button]:not([data-style]):not([data-variant]) {
+  @apply bg-none bg-surface-z2 border-surface-z3 text-surface-z8 border rounded-md;
+}
+
+[data-style='shadcn'] [data-button][data-style='default'][data-variant='primary'],
+[data-style='shadcn'] [data-button]:not([data-style])[data-variant='primary'] {
+  @apply bg-none bg-primary-z5 text-on-primary border-transparent rounded-md;
+}
+
+[data-style='shadcn'] [data-button][data-style='default'][data-variant='secondary'],
+[data-style='shadcn'] [data-button]:not([data-style])[data-variant='secondary'] {
+  @apply bg-none bg-secondary-z4 text-on-secondary border-transparent rounded-md;
+}
+
+[data-style='shadcn'] [data-button][data-style='default'][data-variant='danger'],
+[data-style='shadcn'] [data-button]:not([data-style])[data-variant='danger'] {
+  @apply bg-none bg-danger-z4 text-on-danger border-transparent rounded-md;
+}
+
+/* =============================================================================
+   Outline Style
+   ============================================================================= */
+
+[data-style='shadcn'] [data-button][data-style='outline'][data-variant='default'],
+[data-style='shadcn'] [data-button][data-style='outline']:not([data-variant]) {
+  @apply border-surface-z3 text-surface-z7 border bg-transparent rounded-md;
+}
+
+[data-style='shadcn'] [data-button][data-style='outline'][data-variant='primary'] {
+  @apply border-primary-z4 text-primary-z6 border bg-transparent rounded-md;
+}
+
+[data-style='shadcn'] [data-button][data-style='outline'][data-variant='secondary'] {
+  @apply border-secondary-z4 text-secondary-z6 border bg-transparent rounded-md;
+}
+
+[data-style='shadcn'] [data-button][data-style='outline'][data-variant='danger'] {
+  @apply border-danger-z4 text-danger-z4 border bg-transparent rounded-md;
+}
+
+/* =============================================================================
+   Ghost Style
+   ============================================================================= */
+
+[data-style='shadcn'] [data-button][data-style='ghost'] {
+  @apply border-transparent bg-transparent rounded-md;
+}
+
+[data-style='shadcn'] [data-button][data-style='ghost'][data-variant='default'],
+[data-style='shadcn'] [data-button][data-style='ghost']:not([data-variant]) {
+  @apply text-surface-z7;
+}
+
+[data-style='shadcn'] [data-button][data-style='ghost'][data-variant='primary'] {
+  @apply text-primary-z6;
+}
+
+[data-style='shadcn'] [data-button][data-style='ghost'][data-variant='secondary'] {
+  @apply text-secondary-z6;
+}
+
+[data-style='shadcn'] [data-button][data-style='ghost'][data-variant='danger'] {
+  @apply text-danger-z4;
+}
+
+/* =============================================================================
+   Gradient Style (flat fill — no gradients in shadcn)
+   ============================================================================= */
+
+[data-style='shadcn'] [data-button][data-style='gradient'][data-variant='default'],
+[data-style='shadcn'] [data-button][data-style='gradient']:not([data-variant]) {
+  @apply bg-none bg-surface-z3 text-surface-z10 rounded-md;
+}
+
+[data-style='shadcn'] [data-button][data-style='gradient'][data-variant='primary'] {
+  @apply bg-none bg-primary-z5 text-on-primary rounded-md;
+}
+
+[data-style='shadcn'] [data-button][data-style='gradient'][data-variant='secondary'] {
+  @apply bg-none bg-secondary-z4 text-on-secondary rounded-md;
+}
+
+[data-style='shadcn'] [data-button][data-style='gradient'][data-variant='danger'] {
+  @apply bg-none bg-danger-z4 text-on-danger rounded-md;
+}
+
+/* =============================================================================
+   Link Style
+   ============================================================================= */
+
+[data-style='shadcn'] [data-button][data-style='link'][data-variant='default'],
+[data-style='shadcn'] [data-button][data-style='link']:not([data-variant]) {
+  @apply text-surface-z7;
+}
+
+[data-style='shadcn'] [data-button][data-style='link'][data-variant='primary'] {
+  @apply text-primary-z6;
+}
+
+[data-style='shadcn'] [data-button][data-style='link'][data-variant='secondary'] {
+  @apply text-secondary-z6;
+}
+
+[data-style='shadcn'] [data-button][data-style='link'][data-variant='danger'] {
+  @apply text-danger-z4;
+}
+
+[data-style='shadcn'] [data-button][data-style='link']:hover:not(:disabled):not([data-disabled]) {
+  @apply text-surface-z9;
+}
+
+/* =============================================================================
+   Hover States
+   ============================================================================= */
+
+[data-style='shadcn']
+  [data-button][data-style='default']:hover:not(:disabled):not([data-disabled]),
+[data-style='shadcn'] [data-button]:not([data-style]):hover:not(:disabled):not([data-disabled]) {
+  @apply bg-none bg-surface-z3 border-surface-z4;
+}
+
+[data-style='shadcn']
+  [data-button][data-style='outline']:hover:not(:disabled):not([data-disabled]) {
+  @apply bg-none bg-surface-z2 border-surface-z4;
+}
+
+[data-style='shadcn'] [data-button][data-style='ghost']:hover:not(:disabled):not([data-disabled]) {
+  @apply bg-surface-z2;
+}
+
+[data-style='shadcn']
+  [data-button][data-style='gradient']:hover:not(:disabled):not([data-disabled]) {
+  @apply bg-none bg-surface-z4;
+}
+
+/* =============================================================================
+   Focus — ring with offset (shadcn signature)
+   ============================================================================= */
+
+[data-style='shadcn'] [data-button]:focus-visible {
+  @apply ring-primary-z4 ring-2 ring-offset-2 outline-none;
+}
