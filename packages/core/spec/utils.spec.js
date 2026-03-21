@@ -241,6 +241,13 @@ describe('utils', () => {
 		it('passes through named colors as-is', () => {
 			expect(colorToRgb('rebeccapurple')).toBe('rebeccapurple')
 		})
+		it('returns non-string values as-is', () => {
+			expect(colorToRgb(null)).toBeNull()
+			expect(colorToRgb(undefined)).toBeUndefined()
+		})
+		it('passes through 3-digit hex as-is (no conversion)', () => {
+			expect(colorToRgb('#fff')).toBe('#fff')
+		})
 	})
 
 	describe('hex2rgb', () => {

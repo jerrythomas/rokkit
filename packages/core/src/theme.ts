@@ -2,7 +2,7 @@
 // @ts-nocheck
 import { DEFAULT_THEME_MAPPING, defaultColors, TONE_MAP } from './constants'
 import { shades } from './colors/index'
-import { hex2rgb, colorToRgb } from './utils'
+import { colorToRgb } from './utils'
 
 const modifiers = {
 	hsl: (value) => `hsl(${value} / <alpha-value>)`,
