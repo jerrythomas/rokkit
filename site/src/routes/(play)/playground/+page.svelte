@@ -1,7 +1,6 @@
 <script>
 	// @ts-nocheck
-	import { goto } from '$app/navigation'
-	import { Button, Card } from '@rokkit/ui'
+	import { Card } from '@rokkit/ui'
 
 	const GROUPS = [
 		{
@@ -135,18 +134,11 @@
 			<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 				{#each group.components as component (component.slug)}
 					<Card
-						class="hover:border-primary-z5 cursor-pointer transition-colors"
-						onclick={() => goto(`${group.basePath}${component.slug}`)}
+						class="hover:border-primary-z5 transition-colors"
+						href={`${group.basePath}${component.slug}`}
 					>
 						<h4 class="text-surface-z8 mb-1 text-sm font-semibold">{component.name}</h4>
-						<p class="text-surface-z5 mb-3 text-xs leading-relaxed">{component.description}</p>
-						<Button
-							variant="ghost"
-							size="sm"
-							onclick={() => goto(`${group.basePath}${component.slug}`)}
-						>
-							Open
-						</Button>
+						<p class="text-surface-z5 text-xs leading-relaxed">{component.description}</p>
 					</Card>
 				{/each}
 			</div>
