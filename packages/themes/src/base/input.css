@@ -210,6 +210,55 @@ input[type='range']::-moz-range-thumb {
   border: none;
 }
 
+/* Date / time / datetime-local — inherit theme text color, match sizing */
+input[type='date'],
+input[type='time'],
+input[type='datetime-local'] {
+  color: inherit;
+  color-scheme: inherit;
+}
+
+/* Calendar/time picker indicator — inherit text color so it matches theme */
+input[type='date']::-webkit-calendar-picker-indicator,
+input[type='time']::-webkit-calendar-picker-indicator,
+input[type='datetime-local']::-webkit-calendar-picker-indicator {
+  opacity: 0.6;
+  cursor: pointer;
+  color: inherit;
+  filter: var(--picker-indicator-filter, none);
+}
+
+/* Radio inputs — remove native appearance for theme styling */
+input[type='radio'] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  flex-shrink: 0;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+input[type='radio']:checked {
+  border-color: rgba(var(--color-primary-500), 1);
+}
+
+input[type='radio']:checked::before {
+  content: '';
+  display: block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: rgba(var(--color-primary-500), 1);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 /* Color input */
 input[type='color'] {
   appearance: none;
