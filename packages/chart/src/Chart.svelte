@@ -64,9 +64,6 @@
     }
   })
 
-  const margin = { top: 20, right: 20, bottom: 40, left: 50 }
-  const innerWidth = $derived(width - margin.left - margin.right)
-  const innerHeight = $derived(height - margin.top - margin.bottom)
 </script>
 
 <div class="chart-container" data-chart-root>
@@ -79,7 +76,6 @@
   >
     <g
       class="chart-area"
-      transform="translate({margin.left}, {margin.top})"
       data-chart-canvas
     >
       {@render children?.()}
