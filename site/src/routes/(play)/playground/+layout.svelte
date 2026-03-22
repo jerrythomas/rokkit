@@ -128,6 +128,13 @@
 			]
 		},
 		{
+			title: 'Charts',
+			icon: 'i-glyph:chart',
+			children: [
+				{ title: 'Sparkline', slug: '/playground/components/sparkline', icon: 'i-glyph:chart-square' }
+			]
+		},
+		{
 			title: 'Design Resources',
 			icon: 'i-glyph:stars',
 			children: [{ title: 'Icons', slug: '/playground/icons', icon: 'i-glyph:stars' }]

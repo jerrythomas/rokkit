@@ -13,6 +13,9 @@ export const Plot = {
 	Legend
 }
 
+// Export standalone components
+export { default as Sparkline } from './Sparkline.svelte'
+
 // Export utilities
 export { ChartBrewer } from './lib/brewing/index.svelte.js'
 export * from './lib/brewing/index.svelte.js'

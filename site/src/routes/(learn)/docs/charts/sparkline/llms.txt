@@ -1,0 +1,41 @@
+# Sparkline
+
+Lightweight inline SVG sparkline for @rokkit/chart. No ChartBrewer, no axes, no legend.
+
+## Import
+
+```svelte
+import { Sparkline } from '@rokkit/chart'
+```
+
+## Usage
+
+```svelte
+<!-- Numeric array -->
+<Sparkline data={[12, 45, 23, 67, 34, 89]} />
+
+<!-- Object array with field -->
+<Sparkline data={rows} field="revenue" type="bar" color="danger" />
+
+<!-- Area type with explicit size -->
+<Sparkline data={rows} field="value" type="area" width={120} height={32} />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| data | number[] \| object[] | [] | Series data |
+| field | string | — | Field name if data is objects |
+| type | 'line' \| 'bar' \| 'area' | 'line' | Chart type |
+| color | string | 'primary' | Semantic color role |
+| width | number | 80 | SVG width in pixels |
+| height | number | 24 | SVG height in pixels |
+| min | number | auto | Y domain minimum override |
+| max | number | auto | Y domain maximum override |
+
+## Notes
+
+- Uses `--color-{role}-500` for stroke/bar fill, `--color-{role}-300` for area fill
+- No `data-chart-*` attributes — standalone, not connected to ChartBrewer
+- Safe to embed in table cells, cards, and inline text
