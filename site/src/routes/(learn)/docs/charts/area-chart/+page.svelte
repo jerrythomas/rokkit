@@ -1,6 +1,6 @@
 <article data-article-root>
 	<p>
-		A data-driven SVG line chart for displaying trends and time series. Built on
+		A data-driven SVG area chart for visualizing cumulative trends and volumes over time. Built on
 		<code>ChartBrewer</code> for reactive data binding with optional gridlines and legend.
 	</p>
 
@@ -8,7 +8,7 @@
 	<p>Map your data fields to the <code>x</code> and <code>y</code> props:</p>
 	<pre><code
 			>{`<script>
-  import { LineChart } from '@rokkit/chart'
+  import { AreaChart } from '@rokkit/chart'
 
   const data = [
     { month: 'Jan', revenue: 32000 },
@@ -18,7 +18,7 @@
   ]
 <\/script>
 
-<LineChart data={data} x="month" y="revenue" />`}</code
+<AreaChart data={data} x="month" y="revenue" />`}</code
 		></pre>
 
 	<h2>Color coding</h2>
@@ -27,21 +27,13 @@
 		<code>legend</code> to show the color key:
 	</p>
 	<pre><code
-			>{`<LineChart
+			>{`<AreaChart
   data={data}
   x="month"
   y="revenue"
   color="region"
   legend
 />`}</code
-		></pre>
-
-	<h2>Grid and dimensions</h2>
-	<p>
-		Gridlines are on by default. Set <code>grid={false}</code> to hide them. Use
-		<code>width</code> and <code>height</code> to control the SVG size:
-	</p>
-	<pre><code>{`<LineChart data={data} x="month" y="revenue" grid={false} width={400} height={300} />`}</code
 		></pre>
 
 	<h2>Props</h2>

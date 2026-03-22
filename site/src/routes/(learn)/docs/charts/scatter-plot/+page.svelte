@@ -1,47 +1,40 @@
 <article data-article-root>
 	<p>
-		A data-driven SVG line chart for displaying trends and time series. Built on
-		<code>ChartBrewer</code> for reactive data binding with optional gridlines and legend.
+		A data-driven SVG scatter plot for correlation and distribution analysis. Built on
+		<code>ChartBrewer</code> for reactive data binding with optional gridlines, color coding, and
+		legend.
 	</p>
 
 	<h2>Basic usage</h2>
-	<p>Map your data fields to the <code>x</code> and <code>y</code> props:</p>
+	<p>Map numeric fields to <code>x</code> and <code>y</code> props:</p>
 	<pre><code
 			>{`<script>
-  import { LineChart } from '@rokkit/chart'
+  import { ScatterPlot } from '@rokkit/chart'
 
   const data = [
-    { month: 'Jan', revenue: 32000 },
-    { month: 'Feb', revenue: 41000 },
-    { month: 'Mar', revenue: 38000 },
-    { month: 'Apr', revenue: 52000 }
+    { sessions: 120, conversions: 18 },
+    { sessions: 340, conversions: 45 },
+    { sessions: 200, conversions: 22 },
+    { sessions: 480, conversions: 71 }
   ]
 <\/script>
 
-<LineChart data={data} x="month" y="revenue" />`}</code
+<ScatterPlot data={data} x="sessions" y="conversions" />`}</code
 		></pre>
 
 	<h2>Color coding</h2>
 	<p>
-		Pass a <code>color</code> field to assign palette colors per series. Enable
+		Pass a <code>color</code> field to assign palette colors by category. Enable
 		<code>legend</code> to show the color key:
 	</p>
 	<pre><code
-			>{`<LineChart
+			>{`<ScatterPlot
   data={data}
-  x="month"
-  y="revenue"
-  color="region"
+  x="sessions"
+  y="conversions"
+  color="channel"
   legend
 />`}</code
-		></pre>
-
-	<h2>Grid and dimensions</h2>
-	<p>
-		Gridlines are on by default. Set <code>grid={false}</code> to hide them. Use
-		<code>width</code> and <code>height</code> to control the SVG size:
-	</p>
-	<pre><code>{`<LineChart data={data} x="month" y="revenue" grid={false} width={400} height={300} />`}</code
 		></pre>
 
 	<h2>Props</h2>
@@ -65,19 +58,25 @@
 				<td><code>x</code></td>
 				<td><code>string</code></td>
 				<td>—</td>
-				<td>Field name for the X axis</td>
+				<td>Field name for the X axis (numeric)</td>
 			</tr>
 			<tr>
 				<td><code>y</code></td>
 				<td><code>string</code></td>
 				<td>—</td>
-				<td>Field name for the Y axis (values)</td>
+				<td>Field name for the Y axis (numeric)</td>
 			</tr>
 			<tr>
 				<td><code>color</code></td>
 				<td><code>string</code></td>
 				<td>—</td>
 				<td>Field name for palette color assignment</td>
+			</tr>
+			<tr>
+				<td><code>size</code></td>
+				<td><code>string</code></td>
+				<td>—</td>
+				<td>Field name for point size channel</td>
 			</tr>
 			<tr>
 				<td><code>width</code></td>

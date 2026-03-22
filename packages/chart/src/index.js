@@ -25,6 +25,10 @@ export const Plot = {
 export { default as Chart } from './Chart.svelte'
 export { default as Sparkline } from './Sparkline.svelte'
 export { default as BarChart } from './charts/BarChart.svelte'
+export { default as LineChart } from './charts/LineChart.svelte'
+export { default as AreaChart } from './charts/AreaChart.svelte'
+export { default as PieChart } from './charts/PieChart.svelte'
+export { default as ScatterPlot } from './charts/ScatterPlot.svelte'
 
 // Export utilities
 export { ChartBrewer } from './lib/brewing/index.svelte.js'

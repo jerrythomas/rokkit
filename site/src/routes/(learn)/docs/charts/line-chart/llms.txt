@@ -1,0 +1,45 @@
+# LineChart
+
+Data-driven SVG line chart for @rokkit/chart.
+
+## Import
+
+```svelte
+import { LineChart } from '@rokkit/chart'
+```
+
+## Usage
+
+```svelte
+<!-- Basic line chart -->
+<LineChart data={data} x="month" y="revenue" />
+
+<!-- With color coding -->
+<LineChart data={data} x="month" y="revenue" color="region" legend />
+
+<!-- Without grid -->
+<LineChart data={data} x="month" y="revenue" grid={false} />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| data | Object[] | [] | Chart data |
+| x | string | — | X axis field |
+| y | string | — | Y axis field |
+| color | string | — | Color channel field |
+| pattern | string | — | Pattern fill channel field |
+| fill | string | — | Fill channel field |
+| size | string | — | Size channel field |
+| width | number | 600 | SVG width |
+| height | number | 400 | SVG height |
+| mode | 'light' \| 'dark' | 'light' | Color palette mode |
+| grid | boolean | true | Show gridlines |
+| legend | boolean | false | Show legend |
+
+## Notes
+
+- Uses ChartBrewer internally for reactive data binding
+- Renders SVG path elements for each line series
+- Compatible with the declarative Chart wrapper via shared context key

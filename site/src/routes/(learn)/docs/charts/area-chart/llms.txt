@@ -1,0 +1,45 @@
+# AreaChart
+
+Data-driven SVG area chart for @rokkit/chart.
+
+## Import
+
+```svelte
+import { AreaChart } from '@rokkit/chart'
+```
+
+## Usage
+
+```svelte
+<!-- Basic area chart -->
+<AreaChart data={data} x="month" y="revenue" />
+
+<!-- With color coding -->
+<AreaChart data={data} x="month" y="revenue" color="region" legend />
+
+<!-- Without grid -->
+<AreaChart data={data} x="month" y="revenue" grid={false} />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| data | Object[] | [] | Chart data |
+| x | string | — | X axis field |
+| y | string | — | Y axis field |
+| color | string | — | Color channel field |
+| pattern | string | — | Pattern fill channel field |
+| fill | string | — | Fill channel field |
+| size | string | — | Size channel field |
+| width | number | 600 | SVG width |
+| height | number | 400 | SVG height |
+| mode | 'light' \| 'dark' | 'light' | Color palette mode |
+| grid | boolean | true | Show gridlines |
+| legend | boolean | false | Show legend |
+
+## Notes
+
+- Uses ChartBrewer internally for reactive data binding
+- Renders SVG path elements with fill opacity for area series
+- Compatible with the declarative Chart wrapper via shared context key

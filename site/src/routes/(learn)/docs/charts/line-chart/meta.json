@@ -1,7 +1,9 @@
 {
-  "title": "Line / Area Chart",
-  "description": "Animated line and area chart with smooth data transitions",
-  "icon": "i-glyph:graph-new",
+  "title": "LineChart",
+  "description": "Data-driven SVG line chart for time series and trend visualization.",
+  "icon": "i-glyph:chart-square",
+  "package": "@rokkit/chart",
   "category": "charts",
-  "order": 3
+  "order": 3,
+  "since": "0.1.0"
 }

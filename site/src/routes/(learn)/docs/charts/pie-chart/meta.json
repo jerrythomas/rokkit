@@ -1,0 +1,9 @@
+{
+  "title": "PieChart",
+  "description": "Data-driven SVG pie chart for part-to-whole comparisons.",
+  "icon": "i-glyph:chart-square",
+  "package": "@rokkit/chart",
+  "category": "charts",
+  "order": 5,
+  "since": "0.1.0"
+}

@@ -132,7 +132,11 @@
 			icon: 'i-glyph:chart',
 			children: [
 				{ title: 'Sparkline', slug: '/playground/components/sparkline', icon: 'i-glyph:chart-square' },
-				{ title: 'Bar Chart', slug: '/playground/components/bar-chart', icon: 'i-glyph:chart-2' }
+				{ title: 'Bar Chart', slug: '/playground/components/bar-chart', icon: 'i-glyph:chart-2' },
+				{ title: 'Line Chart', slug: '/playground/components/line-chart', icon: 'i-glyph:chart-square' },
+				{ title: 'Area Chart', slug: '/playground/components/area-chart', icon: 'i-glyph:chart-square' },
+				{ title: 'Pie Chart', slug: '/playground/components/pie-chart', icon: 'i-glyph:chart-square' },
+				{ title: 'Scatter Plot', slug: '/playground/components/scatter-plot', icon: 'i-glyph:chart-square' }
 			]
 		},
 		{

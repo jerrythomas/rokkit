@@ -1,0 +1,9 @@
+{
+  "title": "AreaChart",
+  "description": "Data-driven SVG area chart for visualizing cumulative trends over time.",
+  "icon": "i-glyph:chart-square",
+  "package": "@rokkit/chart",
+  "category": "charts",
+  "order": 4,
+  "since": "0.1.0"
+}

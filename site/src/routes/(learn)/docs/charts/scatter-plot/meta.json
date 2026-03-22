@@ -1,0 +1,9 @@
+{
+  "title": "ScatterPlot",
+  "description": "Data-driven SVG scatter plot for correlation and distribution analysis.",
+  "icon": "i-glyph:chart-square",
+  "package": "@rokkit/chart",
+  "category": "charts",
+  "order": 6,
+  "since": "0.1.0"
+}
