@@ -78,7 +78,9 @@ const SEMANTIC_PREFIXES = [
 	'outline',
 	'from',
 	'to',
-	'divide'
+	'divide',
+	'stroke',
+	'fill'
 ]
 
 /**
