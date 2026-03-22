@@ -111,8 +111,6 @@
               y1={line.y}
               x2={innerWidth}
               y2={line.y}
-              stroke="currentColor"
-              stroke-opacity="0.1"
               data-chart-grid-line
             />
           {/each}

@@ -12,8 +12,13 @@
 }
 
 [data-style='rokkit'] [data-chart-grid-line] {
-  @apply stroke-surface-z2;
+  @apply stroke-surface-z3;
   stroke-dasharray: 4 4;
+  stroke-opacity: 0.5;
+}
+
+[data-style='rokkit'] [data-chart-legend-label] {
+  @apply fill-surface-z6;
 }
 
 [data-style='rokkit'] [data-chart-legend-item]:hover {

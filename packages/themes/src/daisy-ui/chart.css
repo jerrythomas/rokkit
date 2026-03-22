@@ -12,8 +12,13 @@
 }
 
 [data-style='daisy-ui'] [data-chart-grid-line] {
-  @apply stroke-surface-z2;
+  @apply stroke-surface-z3;
+  stroke-opacity: 0.5;
   stroke-dasharray: 2 4;
+}
+
+[data-style='daisy-ui'] [data-chart-legend-label] {
+  @apply fill-surface-z5;
 }
 
 [data-style='daisy-ui'] [data-chart-legend-item]:hover {

@@ -82,12 +82,31 @@
 		return () => nav.destroy()
 	})
 
-	// Expand all groups on mount and when items change.
-	// collapsible=false: groups are fixed section headers — must always show children.
-	// collapsible=true: groups start expanded; user can collapse individual groups.
+	// Expand groups on mount and when items/value change.
+	// collapsible=false: groups are fixed section headers — always show children.
+	// collapsible=true: expand only the group containing the current value;
+	//   if no value is set, expand all groups as the default starting state.
 	$effect(() => {
-		for (const [, proxy] of wrapper.lookup) {
-			if (proxy.hasChildren) proxy.expanded = true
+		if (!collapsible) {
+			for (const [, proxy] of wrapper.lookup) {
+				if (proxy.hasChildren) proxy.expanded = true
+			}
+		} else {
+			let activeKey: string | null = null
+			for (const [key, proxy] of wrapper.lookup) {
+				if (proxy.value === value) {
+					activeKey = key
+					break
+				}
+			}
+			for (const [key, proxy] of wrapper.lookup) {
+				if (proxy.hasChildren) {
+					proxy.expanded =
+						activeKey == null ||
+						activeKey === key ||
+						activeKey.startsWith(key + '-')
+				}
+			}
 		}
 	})
 
