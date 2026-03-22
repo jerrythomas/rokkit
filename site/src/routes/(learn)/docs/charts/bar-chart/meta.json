@@ -1,7 +1,9 @@
 {
-  "title": "Bar Chart",
-  "description": "Animated bar chart with data transitions and bar chart race support",
+  "title": "BarChart",
+  "description": "Data-driven bar chart with palette-based color coding.",
   "icon": "i-glyph:chart-2",
+  "package": "@rokkit/chart",
   "category": "charts",
-  "order": 2
+  "order": 2,
+  "since": "0.1.0"
 }

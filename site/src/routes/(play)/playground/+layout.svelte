@@ -131,7 +131,8 @@
 			title: 'Charts',
 			icon: 'i-glyph:chart',
 			children: [
-				{ title: 'Sparkline', slug: '/playground/components/sparkline', icon: 'i-glyph:chart-square' }
+				{ title: 'Sparkline', slug: '/playground/components/sparkline', icon: 'i-glyph:chart-square' },
+				{ title: 'Bar Chart', slug: '/playground/components/bar-chart', icon: 'i-glyph:chart-2' }
 			]
 		},
 		{

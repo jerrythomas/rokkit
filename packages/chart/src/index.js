@@ -24,6 +24,7 @@ export const Plot = {
 // Export standalone components
 export { default as Chart } from './Chart.svelte'
 export { default as Sparkline } from './Sparkline.svelte'
+export { default as BarChart } from './charts/BarChart.svelte'
 
 // Export utilities
 export { ChartBrewer } from './lib/brewing/index.svelte.js'
