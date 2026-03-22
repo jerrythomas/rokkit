@@ -115,14 +115,14 @@
 
 	// Build list items for the palette selector
 	const paletteItems = palettes.map((p) => ({
-		text: p.name,
+		label: p.name,
 		value: p.name
 	}))
 
 	// Build Select options for individual color selection
 	const tailwindColorNameList = getTailwindColorNames()
 	const colorOptions = tailwindColorNameList.map((name) => ({
-		text: name.charAt(0).toUpperCase() + name.slice(1),
+		label: name.charAt(0).toUpperCase() + name.slice(1),
 		value: name
 	}))
 
@@ -190,7 +190,7 @@
 						onselect={handlePaletteSelect}
 					>
 						{#snippet item(item, _fields, handlers)}
-							{@const palette = palettes.find((p) => p.name === item.text)}
+							{@const palette = palettes.find((p) => p.name === item.label)}
 							<button
 								class="flex items-center gap-2"
 								data-list-item
@@ -213,7 +213,7 @@
 										></span>
 									</span>
 								{/if}
-								<span>{item.text}</span>
+								<span>{item.label}</span>
 							</button>
 						{/snippet}
 					</List>
@@ -272,7 +272,7 @@
 								class="border-surface-z3 h-3 w-3 shrink-0 rounded-full border"
 								style="background-color: {getColor500(String(item.value))}"
 							></span>
-							<span>{item.text}</span>
+							<span>{item.label}</span>
 						</button>
 					{/snippet}
 				</Select>

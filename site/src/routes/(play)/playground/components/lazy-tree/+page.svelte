@@ -81,36 +81,32 @@
 
 <PlaySection>
 	{#snippet preview()}
-		<div class="max-w-[320px]">
-			<LazyTree
-				items={lazyTree}
-				value={selected}
-				onselect={(v) => (selected = v)}
-				onlazyload={handleLazyLoad}
-			/>
+		<div class="flex gap-8">
+			<div class="max-w-[280px]">
+				<p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Lazy Load</p>
+				<LazyTree
+					items={lazyTree}
+					value={selected}
+					onselect={(v) => (selected = v)}
+					onlazyload={handleLazyLoad}
+				/>
+			</div>
+			<div class="max-w-[280px]">
+				<p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Load More</p>
+				<LazyTree
+					items={paginatedItems}
+					value={selected2}
+					onselect={(v) => (selected2 = v)}
+					onlazyload={handleLoadMore}
+					{hasMore}
+				/>
+			</div>
 		</div>
 	{/snippet}
 
 	{#snippet controls()}
 		<InfoField label="Selected" value={selected} />
-	{/snippet}
-</PlaySection>
-
-<PlaySection>
-	{#snippet preview()}
-		<div class="max-w-[320px]">
-			<LazyTree
-				items={paginatedItems}
-				value={selected2}
-				onselect={(v) => (selected2 = v)}
-				onlazyload={handleLoadMore}
-				{hasMore}
-			/>
-		</div>
-	{/snippet}
-
-	{#snippet controls()}
-		<InfoField label="Selected" value={selected2} />
+		<InfoField label="Selected 2" value={selected2} />
 		<InfoField label="Has More" value={hasMore} />
 		<InfoField label="Batch" value={batch} />
 	{/snippet}

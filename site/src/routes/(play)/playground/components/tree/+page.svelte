@@ -84,15 +84,3 @@
 		<InfoField label="Selected" value={selected} />
 	{/snippet}
 </PlaySection>
-
-<PlaySection>
-	{#snippet preview()}
-		<div class="max-w-[320px]">
-			<Tree items={fileTree} lineStyle="none" value={selected} onselect={handleSelect} />
-		</div>
-	{/snippet}
-
-	{#snippet controls()}
-		<InfoField label="Selected" value={selected} />
-	{/snippet}
-</PlaySection>

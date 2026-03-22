@@ -87,7 +87,12 @@
 					icon: 'i-glyph:search-filter'
 				},
 				{ title: 'Table', slug: '/playground/components/table', icon: 'i-glyph:table' },
-				{ title: 'Timeline', slug: '/playground/components/timeline', icon: 'i-glyph:timeline' }
+				{ title: 'Timeline', slug: '/playground/components/timeline', icon: 'i-glyph:timeline' },
+				{
+					title: 'Table of Contents',
+					slug: '/playground/components/toc',
+					icon: 'i-glyph:list-unordered'
+				}
 			]
 		},
 		{
@@ -126,6 +131,17 @@
 			title: 'Design Resources',
 			icon: 'i-glyph:stars',
 			children: [{ title: 'Icons', slug: '/playground/icons', icon: 'i-glyph:stars' }]
+		},
+		{
+			title: 'Themes',
+			icon: 'i-glyph:palette-manager',
+			children: [
+				{ title: 'Core Components', slug: '/playground/themes/components', icon: 'i-glyph:list' },
+				{ title: 'Inputs & Buttons', slug: '/playground/themes/inputs', icon: 'i-glyph:keyboard' },
+				{ title: 'Cards', slug: '/playground/themes/cards', icon: 'i-glyph:card' },
+				{ title: 'Navigation', slug: '/playground/themes/navigation', icon: 'i-glyph:breadcrumbs' },
+				{ title: 'Feedback & Display', slug: '/playground/themes/display', icon: 'i-glyph:star' }
+			]
 		},
 		{
 			title: 'Effects',

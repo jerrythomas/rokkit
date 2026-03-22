@@ -1,6 +1,7 @@
 <script>
 	// @ts-nocheck
 	import { FormRenderer, InfoField, FormBuilder, StatusList } from '@rokkit/forms'
+	import { Button } from '@rokkit/ui'
 	import PlaySection from '$lib/components/PlaySection.svelte'
 
 	// ── Travel Planner Data ────────────────────────────────────
@@ -436,15 +437,13 @@
 			<!-- Tab navigation -->
 			<div class="flex flex-wrap gap-1">
 				{#each [{ id: 'input', label: 'Input Form' }, { id: 'flights', label: 'Pick a Flight' }, { id: 'hotels', label: 'Hotel Cards' }, { id: 'review', label: 'Itinerary Review' }, { id: 'mixed', label: 'Mixed Layout' }, { id: 'validation', label: 'Validation' }, { id: 'nested', label: 'Nested Form' }, { id: 'submit', label: 'Submit' }, { id: 'dirty', label: 'Dirty Tracking' }] as tab (tab.id)}
-					<button
-						class="border-surface-z3 cursor-pointer rounded-md border px-3 py-1.5 text-xs transition-all {activeDemo ===
-						tab.id
-							? 'bg-primary-z1 text-primary-z7 border-primary-z3'
-							: 'text-surface-z6 hover:bg-surface-z1 bg-transparent'}"
+					<Button
+						label={tab.label}
+						size="sm"
+						variant={activeDemo === tab.id ? 'primary' : 'default'}
+						style={activeDemo === tab.id ? 'default' : 'ghost'}
 						onclick={() => (activeDemo = tab.id)}
-					>
-						{tab.label}
-					</button>
+					/>
 				{/each}
 			</div>
 
@@ -504,12 +503,7 @@
 					<h3 class="text-surface-z8 m-0 mb-3 text-sm font-semibold">Validation Demo</h3>
 					<FormRenderer builder={validationBuilder} validateOn="blur" />
 					<div class="mt-3 flex items-center gap-2">
-						<button
-							class="bg-primary text-on-primary cursor-pointer rounded-md border-0 px-3 py-1.5 text-xs hover:opacity-90"
-							onclick={runValidation}
-						>
-							Validate All
-						</button>
+						<Button label="Validate All" size="sm" variant="primary" onclick={runValidation} />
 						<span class="text-surface-z5 text-xs">
 							{validationBuilder.isValid
 								? 'All fields valid'
