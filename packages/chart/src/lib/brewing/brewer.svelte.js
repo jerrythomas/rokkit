@@ -17,6 +17,7 @@ export class ChartBrewer {
   #mode = $state('light')
   #margin = $state(DEFAULT_MARGIN)
   #layers = $state([])
+  #curve = $state(/** @type {'linear'|'smooth'|'step'|undefined} */(undefined))
 
   /** @type {Map<unknown, {fill:string,stroke:string}>} */
   colorMap = $derived(
@@ -61,13 +62,13 @@ export class ChartBrewer {
 
   lines = $derived(
     this.xScale && this.yScale
-      ? buildLines(this.#data, this.#channels, this.xScale, this.yScale, this.colorMap)
+      ? buildLines(this.#data, this.#channels, this.xScale, this.yScale, this.colorMap, this.#curve)
       : []
   )
 
   areas = $derived(
     this.xScale && this.yScale
-      ? buildAreas(this.#data, this.#channels, this.xScale, this.yScale, this.colorMap)
+      ? buildAreas(this.#data, this.#channels, this.xScale, this.yScale, this.colorMap, this.#curve)
       : []
   )
 
@@ -99,5 +100,6 @@ export class ChartBrewer {
     if (opts.mode     !== undefined) this.#mode     = opts.mode
     if (opts.margin   !== undefined) this.#margin   = { ...DEFAULT_MARGIN, ...opts.margin }
     if (opts.layers   !== undefined) this.#layers   = opts.layers
+    if (opts.curve    !== undefined) this.#curve    = opts.curve
   }
 }

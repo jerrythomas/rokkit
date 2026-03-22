@@ -39,13 +39,13 @@
   flex-wrap: wrap;
   gap: 0.5rem;
   font-size: 0.75rem;
+  margin-top: 0.5rem;
 }
 
 [data-chart-legend-item] {
   display: flex;
   align-items: center;
   gap: 0.375rem;
-  cursor: pointer;
   user-select: none;
 }
 
@@ -54,6 +54,10 @@
   height: 0.75rem;
   border-radius: 2px;
   flex-shrink: 0;
+}
+
+[data-chart-legend-label] {
+  color: currentColor;
 }
 
 [data-chart-label] {

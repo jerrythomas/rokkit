@@ -164,19 +164,20 @@
         </g>
       {/if}
 
-      <!-- Legend -->
-      {#if legend && legendItems.length > 0}
-        <g class="chart-legend" transform="translate({innerWidth + 5}, 0)" data-chart-legend>
-          {#each legendItems as item, i}
-            <g transform="translate(0, {i * 20})">
-              <rect width="10" height="10" fill={item.fill} data-chart-legend-marker />
-              <text x="14" y="9" text-anchor="start" data-chart-legend-label>{item.label}</text>
-            </g>
-          {/each}
-        </g>
-      {/if}
     </g>
   </svg>
+
+  <!-- HTML legend -->
+  {#if legend && legendItems.length > 0}
+    <div data-chart-legend>
+      {#each legendItems as item}
+        <div data-chart-legend-item>
+          <span data-chart-legend-swatch style="background-color: {item.fill}"></span>
+          <span data-chart-legend-label>{item.label}</span>
+        </div>
+      {/each}
+    </div>
+  {/if}
 </div>
 
 <style>
@@ -196,11 +197,6 @@
   }
 
   .axis {
-    font-size: 11px;
-    fill: currentColor;
-  }
-
-  .chart-legend {
     font-size: 11px;
     fill: currentColor;
   }

@@ -1,4 +1,4 @@
-import { line } from 'd3-shape'
+import { line, curveCatmullRom, curveStep } from 'd3-shape'
 
 /**
  * @param {Object[]} data
@@ -6,23 +6,27 @@ import { line } from 'd3-shape'
  * @param {Function} xScale
  * @param {Function} yScale
  * @param {Map} colors
+ * @param {'linear'|'smooth'|'step'} [curve]
  * @returns {{ d: string, fill: string, stroke: string }[]}
  */
-export function buildLines(data, channels, xScale, yScale, colors) {
+export function buildLines(data, channels, xScale, yScale, colors, curve) {
   const { x: xf, y: yf, color: cf } = channels
+  const xPos = (d) => typeof xScale.bandwidth === 'function'
+    ? xScale(d[xf]) + xScale.bandwidth() / 2
+    : xScale(d[xf])
+  const makeGen = () => {
+    const gen = line().x(xPos).y((d) => yScale(d[yf]))
+    if (curve === 'smooth') gen.curve(curveCatmullRom)
+    else if (curve === 'step') gen.curve(curveStep)
+    return gen
+  }
   if (!cf) {
-    const lineGen = line()
-      .x((d) => (typeof xScale.bandwidth === 'function' ? xScale(d[xf]) + xScale.bandwidth() / 2 : xScale(d[xf])))
-      .y((d) => yScale(d[yf]))
-    return [{ d: lineGen(data), fill: 'none', stroke: colors?.values().next().value?.stroke ?? '#888' }]
+    return [{ d: makeGen()(data), fill: 'none', stroke: colors?.values().next().value?.stroke ?? '#888' }]
   }
   const groups = groupBy(data, cf)
   return [...groups.entries()].map(([key, rows]) => {
-    const lineGen = line()
-      .x((d) => (typeof xScale.bandwidth === 'function' ? xScale(d[xf]) + xScale.bandwidth() / 2 : xScale(d[xf])))
-      .y((d) => yScale(d[yf]))
     const colorEntry = colors?.get(key) ?? { fill: 'none', stroke: '#888' }
-    return { d: lineGen(rows), fill: 'none', stroke: colorEntry.stroke, key }
+    return { d: makeGen()(rows), fill: 'none', stroke: colorEntry.stroke, key }
   })
 }
 
