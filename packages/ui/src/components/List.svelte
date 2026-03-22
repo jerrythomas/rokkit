@@ -84,10 +84,16 @@
 
 	// Expand groups on mount and when items/value change.
 	// collapsible=false: groups are fixed section headers — always show children.
-	// collapsible=true: expand only the group containing the current value;
-	//   if no value is set, expand all groups as the default starting state.
+	// collapsible=true:
+	//   - no value prop → expand all (default open state)
+	//   - value set, match found → expand only the group containing that value
+	//   - value set, no match → collapse all (clean state for non-item pages)
 	$effect(() => {
 		if (!collapsible) {
+			for (const [, proxy] of wrapper.lookup) {
+				if (proxy.hasChildren) proxy.expanded = true
+			}
+		} else if (value === undefined || value === null) {
 			for (const [, proxy] of wrapper.lookup) {
 				if (proxy.hasChildren) proxy.expanded = true
 			}
@@ -102,9 +108,8 @@
 			for (const [key, proxy] of wrapper.lookup) {
 				if (proxy.hasChildren) {
 					proxy.expanded =
-						activeKey == null ||
-						activeKey === key ||
-						activeKey.startsWith(key + '-')
+						activeKey !== null &&
+						(activeKey === key || activeKey.startsWith(key + '-'))
 				}
 			}
 		}
