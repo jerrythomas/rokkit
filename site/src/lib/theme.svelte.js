@@ -44,11 +44,16 @@ import { SvelteSet } from 'svelte/reactivity'
  * @property {string} onSuccess
  */
 
+function readBody(key, fallback) {
+	if (typeof document === 'undefined') return fallback
+	return document.body.dataset[key] || fallback
+}
+
 export class ThemeManager {
 	/** @type {string} */
-	name = $state('rokkit')
+	name = $state(readBody('style', 'rokkit'))
 	/** @type {ThemeMode} */
-	mode = $state('dark')
+	mode = $state(readBody('mode', 'dark'))
 	/** @type {string} */
 	#prefix = 'app-'
 

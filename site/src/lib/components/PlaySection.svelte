@@ -16,6 +16,11 @@
 	let showControls = $state(false)
 	let showData = $state(false)
 
+	$effect(() => {
+		document.body.dataset.style = theme.name
+		document.body.dataset.mode = theme.mode
+	})
+
 	const slug = $derived(page.url.pathname.split('/').pop())
 	const isComponent = $derived(page.url.pathname.includes('/playground/components/'))
 	const isEffect = $derived(page.url.pathname.includes('/playground/effects/'))
