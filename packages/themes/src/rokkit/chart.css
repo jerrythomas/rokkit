@@ -1,0 +1,29 @@
+/**
+ * Chart - Rokkit Theme Styles
+ */
+
+[data-style='rokkit'] [data-chart-axis-line],
+[data-style='rokkit'] [data-chart-tick] line {
+  @apply stroke-surface-z4;
+}
+
+[data-style='rokkit'] [data-chart-tick-label] {
+  @apply fill-surface-z6;
+}
+
+[data-style='rokkit'] [data-chart-grid-line] {
+  @apply stroke-surface-z2;
+  stroke-dasharray: 4 4;
+}
+
+[data-style='rokkit'] [data-chart-legend-item]:hover {
+  @apply text-surface-z9;
+}
+
+[data-style='rokkit'] [data-chart-bar][data-dimmed],
+[data-style='rokkit'] [data-chart-point][data-dimmed],
+[data-style='rokkit'] [data-chart-arc][data-dimmed],
+[data-style='rokkit'] [data-chart-line][data-dimmed],
+[data-style='rokkit'] [data-chart-area][data-dimmed] {
+  opacity: 0.15;
+}

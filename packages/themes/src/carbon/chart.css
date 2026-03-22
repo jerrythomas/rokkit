@@ -1,0 +1,29 @@
+/**
+ * Chart - Carbon Theme Styles
+ */
+
+[data-style='carbon'] [data-chart-axis-line],
+[data-style='carbon'] [data-chart-tick] line {
+  @apply stroke-surface-z3;
+}
+
+[data-style='carbon'] [data-chart-tick-label] {
+  @apply fill-surface-z5;
+}
+
+[data-style='carbon'] [data-chart-grid-line] {
+  @apply stroke-surface-z2;
+  stroke-dasharray: 2 4;
+}
+
+[data-style='carbon'] [data-chart-legend-item]:hover {
+  @apply text-surface-z8;
+}
+
+[data-style='carbon'] [data-chart-bar][data-dimmed],
+[data-style='carbon'] [data-chart-point][data-dimmed],
+[data-style='carbon'] [data-chart-arc][data-dimmed],
+[data-style='carbon'] [data-chart-line][data-dimmed],
+[data-style='carbon'] [data-chart-area][data-dimmed] {
+  opacity: 0.15;
+}

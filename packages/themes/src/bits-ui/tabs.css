@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='bits-ui'] [data-tabs-list] {
-  @apply border-surface-z3 gap-1 border-b;
+  @apply border-surface-z3 gap-1 border-0 border-b px-0;
 }
 
 [data-style='bits-ui'] [data-tabs][data-position='after'] [data-tabs-list] {
@@ -31,7 +31,7 @@
    ============================================================================= */
 
 [data-style='bits-ui'] [data-tabs-trigger] {
-  @apply text-surface-z5 rounded-lg border-b-[3px] border-b-transparent;
+  @apply bg-transparent text-surface-z5 rounded-lg border-b-[3px] border-b-transparent;
   font-weight: 400;
   transition:
     color 150ms ease,

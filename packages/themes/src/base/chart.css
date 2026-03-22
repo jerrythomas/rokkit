@@ -1,0 +1,72 @@
+/**
+ * Chart - Base Structural Styles
+ *
+ * Layout, typography, pointer-events.
+ * No colors — those live in theme-specific chart.css files.
+ */
+
+[data-chart] {
+  position: relative;
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+[data-chart-canvas] {
+  overflow: visible;
+}
+
+[data-chart-axis-line] {
+  fill: none;
+}
+
+[data-chart-tick] line {
+  fill: none;
+}
+
+[data-chart-tick-label] {
+  font-size: 0.75rem;
+  font-family: inherit;
+  user-select: none;
+}
+
+[data-chart-grid-line] {
+  fill: none;
+}
+
+[data-chart-legend] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+}
+
+[data-chart-legend-item] {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+[data-chart-legend-swatch] {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+[data-chart-label] {
+  font-size: 0.6875rem;
+  font-family: inherit;
+  pointer-events: none;
+  user-select: none;
+}
+
+[data-chart-bar],
+[data-chart-line],
+[data-chart-area],
+[data-chart-point],
+[data-chart-arc] {
+  transition: opacity 0.15s ease;
+}

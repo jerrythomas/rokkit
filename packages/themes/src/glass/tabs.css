@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='glass'] [data-tabs-list] {
-  @apply bg-surface-z1/70 border-surface-z5/20 rounded-t-lg border-b backdrop-blur-md;
+  @apply bg-surface-z1/70 border-surface-z5/20 rounded-t-lg border-0 border-b px-0 backdrop-blur-md;
 }
 
 [data-style='glass'] [data-tabs][data-position='after'] [data-tabs-list] {
@@ -21,7 +21,7 @@
    ============================================================================= */
 
 [data-style='glass'] [data-tabs-trigger] {
-  @apply text-surface-z6;
+  @apply bg-transparent text-surface-z6;
 }
 
 [data-style='glass'] [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {

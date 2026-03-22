@@ -10,7 +10,7 @@
    ============================================================================= */
 
 [data-style='shadcn'] [data-tabs-list] {
-  @apply border-surface-z3 gap-0 border-b;
+  @apply border-surface-z3 gap-0 border-0 border-b px-0;
 }
 
 [data-style='shadcn'] [data-tabs][data-position='after'] [data-tabs-list] {
@@ -32,7 +32,7 @@
    ============================================================================= */
 
 [data-style='shadcn'] [data-tabs-trigger] {
-  @apply text-surface-z5 border-b-2 border-b-transparent rounded-none;
+  @apply bg-transparent text-surface-z5 border-b-2 border-b-transparent rounded-none;
   font-weight: 400;
   transition: color 150ms ease, border-color 150ms ease;
 }

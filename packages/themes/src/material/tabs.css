@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-tabs-list] {
-  @apply bg-surface-z2 gap-0.5 rounded-t-lg shadow-sm;
+  @apply bg-surface-z2 gap-0.5 rounded-t-lg shadow-sm border-0 px-0;
 }
 
 [data-style='material'] [data-tabs][data-position='after'] [data-tabs-list] {
@@ -21,7 +21,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-tabs-trigger] {
-  @apply text-surface-z6 rounded-t-lg;
+  @apply bg-transparent text-surface-z6 rounded-t-lg;
 }
 
 [data-style='material'] [data-tabs][data-position='after'] [data-tabs-trigger] {

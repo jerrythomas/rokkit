@@ -1,0 +1,29 @@
+/**
+ * Chart - Daisy UI Theme Styles
+ */
+
+[data-style='daisy-ui'] [data-chart-axis-line],
+[data-style='daisy-ui'] [data-chart-tick] line {
+  @apply stroke-surface-z3;
+}
+
+[data-style='daisy-ui'] [data-chart-tick-label] {
+  @apply fill-surface-z5;
+}
+
+[data-style='daisy-ui'] [data-chart-grid-line] {
+  @apply stroke-surface-z2;
+  stroke-dasharray: 2 4;
+}
+
+[data-style='daisy-ui'] [data-chart-legend-item]:hover {
+  @apply text-surface-z8;
+}
+
+[data-style='daisy-ui'] [data-chart-bar][data-dimmed],
+[data-style='daisy-ui'] [data-chart-point][data-dimmed],
+[data-style='daisy-ui'] [data-chart-arc][data-dimmed],
+[data-style='daisy-ui'] [data-chart-line][data-dimmed],
+[data-style='daisy-ui'] [data-chart-area][data-dimmed] {
+  opacity: 0.15;
+}

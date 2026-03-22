@@ -1,0 +1,29 @@
+/**
+ * Chart - Material Theme Styles
+ */
+
+[data-style='material'] [data-chart-axis-line],
+[data-style='material'] [data-chart-tick] line {
+  @apply stroke-surface-z3;
+}
+
+[data-style='material'] [data-chart-tick-label] {
+  @apply fill-surface-z5;
+}
+
+[data-style='material'] [data-chart-grid-line] {
+  @apply stroke-surface-z2;
+  stroke-dasharray: 2 4;
+}
+
+[data-style='material'] [data-chart-legend-item]:hover {
+  @apply text-surface-z8;
+}
+
+[data-style='material'] [data-chart-bar][data-dimmed],
+[data-style='material'] [data-chart-point][data-dimmed],
+[data-style='material'] [data-chart-arc][data-dimmed],
+[data-style='material'] [data-chart-line][data-dimmed],
+[data-style='material'] [data-chart-area][data-dimmed] {
+  opacity: 0.15;
+}

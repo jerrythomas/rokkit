@@ -22,12 +22,12 @@
 
 [data-style='minimal'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']),
 [data-style='minimal'] [data-toggle-option]:focus:not(:disabled):not([data-disabled='true']) {
-  @apply bg-none text-surface-z8 border-b-surface-z2 border-b-2;
+  @apply bg-surface-z2 text-surface-z8;
 }
 
-/* Selected state */
+/* Selected state — subtle fill with primary bottom accent */
 [data-style='minimal'] [data-toggle-option][data-selected='true'] {
-  @apply bg-none text-surface-z9 border-b-primary-z4 border-b-2;
+  @apply bg-surface-z3 text-surface-z9 border-b-primary-z5 border-b-2;
 }
 
 /* =============================================================================
