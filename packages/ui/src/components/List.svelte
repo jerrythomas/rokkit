@@ -103,7 +103,7 @@
 				if (proxy.hasChildren) {
 					proxy.expanded =
 						activeKey !== null &&
-						(activeKey === key || activeKey.startsWith(key + '-'))
+						(activeKey === key || activeKey.startsWith(`${key  }-`))
 				}
 			}
 		}
