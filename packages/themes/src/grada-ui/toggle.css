@@ -22,7 +22,8 @@
 
 /* Selected state — gradient */
 [data-style='grada-ui'] [data-toggle-option][data-selected='true'] {
-  background: var(--gd-gradient);
+  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-color: transparent;
   color: white;
   border-radius: 20px;
   @apply shadow-sm;

@@ -114,11 +114,29 @@
 }
 
 /* =============================================================================
+   Indentation by nesting level
+   ============================================================================= */
+
+[data-style='rokkit'] [data-list] [data-list-item][data-level='2'],
+[data-style='rokkit'] [data-list] [data-list-group][data-level='2'] {
+  padding-left: 1.25rem;
+}
+
+[data-style='rokkit'] [data-list] [data-list-item][data-level='3'],
+[data-style='rokkit'] [data-list] [data-list-group][data-level='3'] {
+  padding-left: 2rem;
+}
+
+/* =============================================================================
    Groups
    ============================================================================= */
 
 [data-style='rokkit'] [data-list] [data-list-group] {
-  @apply text-surface-z6;
+  @apply text-surface-z6 mt-2;
+}
+
+[data-style='rokkit'] [data-list] [data-list-group]:first-child {
+  @apply mt-0;
 }
 
 [data-style='rokkit'] [data-list] [data-list-group] [data-item-icon] {

@@ -3,23 +3,21 @@
  */
 
 [data-style='grada-ui'] [data-table-header] th {
-  @apply text-surface-z6 border-b font-medium;
+  @apply text-surface-z6 border-b font-medium bg-surface-z1;
   font-family: 'Montserrat', sans-serif;
   font-size: 0.625rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  background-color: var(--gd-surface-a);
-  border-color: var(--gd-grey-a);
+  border-color: rgba(var(--color-surface-z300), 1);
 }
 
 [data-style='grada-ui'] [data-table-header-cell][data-sortable='true']:hover {
-  @apply text-surface-z9;
-  background-color: var(--gd-surface-b);
+  @apply text-surface-z9 bg-surface-z2;
 }
 
 [data-style='grada-ui'] [data-table-header-cell][data-sort-order='ascending'],
 [data-style='grada-ui'] [data-table-header-cell][data-sort-order='descending'] {
-  color: var(--gd-primary);
+  color: rgba(var(--color-primary-500), 1);
 }
 
 [data-style='grada-ui'] [data-table-sort-icon] {
@@ -32,7 +30,7 @@
 [data-style='grada-ui']
   [data-table-header-cell][data-sort-order='descending']
   [data-table-sort-icon] {
-  color: var(--gd-primary);
+  color: rgba(var(--color-primary-500), 1);
 }
 
 /* Caption */
@@ -43,7 +41,7 @@
 /* Rows */
 [data-style='grada-ui'] [data-table-row] {
   @apply text-surface-z8 border-b;
-  border-color: var(--gd-grey-a);
+  border-color: rgba(var(--color-surface-z300), 1);
 }
 
 [data-style='grada-ui'] [data-table-row]:hover {
@@ -52,13 +50,13 @@
 
 [data-style='grada-ui'] [data-table-row]:focus {
   @apply bg-surface-z1 text-surface-z10 outline-none;
-  outline: 2px solid var(--gd-primary);
+  outline: 2px solid rgba(var(--color-primary-500), 1);
   outline-offset: -2px;
 }
 
 [data-style='grada-ui'] [data-table-row][data-selected='true'] {
-  background: color-mix(in srgb, var(--gd-primary) 10%, transparent);
-  color: var(--gd-primary);
+  background: rgba(var(--color-primary-500), 0.1);
+  color: rgba(var(--color-primary-500), 1);
 }
 
 /* Striped */
@@ -77,5 +75,5 @@
 }
 
 [data-style='grada-ui'] [data-table-row][data-selected='true'] [data-cell-icon] {
-  color: var(--gd-primary);
+  color: rgba(var(--color-primary-500), 1);
 }

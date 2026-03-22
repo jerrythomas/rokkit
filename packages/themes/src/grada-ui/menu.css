@@ -9,16 +9,16 @@
 
 [data-style='grada-ui'] [data-menu-trigger]:hover:not(:disabled) {
   @apply text-surface-z10 border-surface-z5;
-  border-color: var(--gd-primary);
+  border-color: rgba(var(--color-primary-500), 1);
 }
 
 [data-style='grada-ui'] [data-menu-trigger]:focus-visible {
-  outline: 2px solid var(--gd-primary);
+  outline: 2px solid rgba(var(--color-primary-500), 1);
   outline-offset: -2px;
 }
 
 [data-style='grada-ui'] [data-menu][data-open='true'] [data-menu-trigger] {
-  border-color: var(--gd-primary);
+  border-color: rgba(var(--color-primary-500), 1);
 }
 
 [data-style='grada-ui'] [data-menu-trigger] [data-menu-icon] {
@@ -26,7 +26,7 @@
 }
 
 [data-style='grada-ui'] [data-menu-trigger]:hover:not(:disabled) [data-menu-icon] {
-  color: var(--gd-primary);
+  color: rgba(var(--color-primary-500), 1);
 }
 
 [data-style='grada-ui'] [data-menu-trigger] [data-menu-arrow] {
@@ -50,7 +50,7 @@
 }
 
 [data-style='grada-ui'] [data-menu-item]:focus-visible {
-  outline: 2px solid var(--gd-primary);
+  outline: 2px solid rgba(var(--color-primary-500), 1);
   outline-offset: -2px;
 }
 
@@ -59,7 +59,7 @@
 }
 
 [data-style='grada-ui'] [data-menu-item]:hover:not(:disabled) [data-item-icon] {
-  color: var(--gd-primary);
+  color: rgba(var(--color-primary-500), 1);
 }
 
 [data-style='grada-ui'] [data-menu-item] [data-item-description] {

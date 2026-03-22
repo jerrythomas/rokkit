@@ -8,12 +8,12 @@
 }
 
 [data-style='grada-ui'] [data-search-input]:focus {
-  border-color: var(--gd-primary);
+  border-color: rgba(var(--color-primary-500), 1);
   outline: none;
 }
 
 [data-style='grada-ui'] [data-search-input]::placeholder {
-  color: var(--gd-grey-c);
+  color: rgba(var(--color-surface-z500), 1);
 }
 
 [data-style='grada-ui'] [data-search-clear] {
@@ -26,7 +26,8 @@
 }
 
 [data-style='grada-ui'] [data-search-tag] {
-  background: var(--gd-gradient);
+  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-color: transparent;
   color: white;
   border-radius: 20px;
 }

@@ -187,3 +187,21 @@
 [data-style='grada-ui'] [data-button]:focus-visible {
   @apply outline-2 outline-offset-2 outline outline-primary-z5;
 }
+
+/* =============================================================================
+   Button Group — override pill radius for connected appearance
+   ============================================================================= */
+
+[data-style='grada-ui'] [data-button-group] [data-button] {
+  border-radius: 0;
+}
+
+[data-style='grada-ui'] [data-button-group] [data-button]:first-child {
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+[data-style='grada-ui'] [data-button-group] [data-button]:last-child {
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}

@@ -4,7 +4,7 @@
 
 [data-style='grada-ui'] [data-floating-nav] {
   @apply bg-white shadow-xl;
-  border-right: 1px solid var(--gd-grey-a);
+  border-right: 1px solid rgba(var(--color-surface-z300), 1);
 }
 
 [data-style='grada-ui'] [data-floating-nav-title] {
@@ -21,11 +21,11 @@
 }
 
 [data-style='grada-ui'] [data-floating-nav-pin]:hover {
-  color: var(--gd-primary);
+  color: rgba(var(--color-primary-500), 1);
 }
 
 [data-style='grada-ui'] [data-floating-nav-pin][aria-pressed='true'] {
-  color: var(--gd-primary);
+  color: rgba(var(--color-primary-500), 1);
 }
 
 [data-style='grada-ui'] [data-floating-nav-item] {
@@ -38,12 +38,12 @@
 }
 
 [data-style='grada-ui'] [data-floating-nav-item][data-active] {
-  color: var(--gd-primary);
-  background: color-mix(in srgb, var(--gd-primary) 10%, transparent);
+  color: rgba(var(--color-primary-500), 1);
+  background: rgba(var(--color-primary-500), 0.1);
 }
 
 [data-style='grada-ui'] [data-floating-nav-item]:focus-visible {
-  outline: 2px solid var(--gd-primary);
+  outline: 2px solid rgba(var(--color-primary-500), 1);
   outline-offset: -2px;
 }
 
@@ -52,13 +52,14 @@
 }
 
 [data-style='grada-ui'] [data-floating-nav-item]:hover [data-floating-nav-icon] {
-  color: var(--gd-primary);
+  color: rgba(var(--color-primary-500), 1);
 }
 
 [data-style='grada-ui'] [data-floating-nav-item][data-active] [data-floating-nav-icon] {
-  color: var(--gd-primary);
+  color: rgba(var(--color-primary-500), 1);
 }
 
 [data-style='grada-ui'] [data-floating-nav-indicator] {
-  background: var(--gd-gradient);
+  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-color: transparent;
 }

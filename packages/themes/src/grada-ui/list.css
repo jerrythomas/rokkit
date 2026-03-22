@@ -28,14 +28,14 @@
 /* Active state — muted when list not focused */
 [data-style='grada-ui'] [data-list] [data-list-item][data-active='true'] {
   @apply bg-surface-z1;
-  color: var(--gd-primary);
+  color: rgba(var(--color-primary-500), 1);
 }
 
 /* Active state — gradient left border when list has focus */
 [data-style='grada-ui'] [data-list]:focus-within [data-list-item][data-active='true'] {
   @apply bg-surface-z1;
-  border-left: 3px solid var(--gd-primary);
-  color: var(--gd-primary);
+  border-left: 3px solid rgba(var(--color-primary-500), 1);
+  color: rgba(var(--color-primary-500), 1);
 }
 
 [data-style='grada-ui'] [data-list] [data-list-item][data-active='true']:hover:not(:disabled),
@@ -54,7 +54,7 @@
 }
 
 [data-style='grada-ui'] [data-list] [data-list-item][data-active='true'] [data-item-icon] {
-  color: var(--gd-primary);
+  color: rgba(var(--color-primary-500), 1);
 }
 
 [data-style='grada-ui'] [data-list] [data-list-item] [data-item-description] {
@@ -67,7 +67,8 @@
 }
 
 [data-style='grada-ui'] [data-list] [data-list-item][data-active='true'] [data-item-badge] {
-  background: var(--gd-gradient);
+  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-color: transparent;
   color: white;
 }
 
@@ -92,12 +93,14 @@
 
 /* Multi-Selection */
 [data-style='grada-ui'] [data-list] [data-list-item][data-selected='true'] {
-  background: var(--gd-gradient);
+  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-color: transparent;
   color: white;
 }
 
 [data-style='grada-ui'] [data-list]:focus-within [data-list-item][data-selected='true'] {
-  background: var(--gd-gradient);
+  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-color: transparent;
 }
 
 [data-style='grada-ui'] [data-list] [data-list-item][data-selected='true']:hover:not(:disabled) {

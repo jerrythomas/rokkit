@@ -11,12 +11,12 @@
 
 [data-style='grada-ui'] [data-message-root][data-type='error'] {
   background-color: #fff5f7;
-  border-color: var(--gd-error-border);
-  color: var(--gd-error-text);
+  border-color: rgba(var(--color-danger-400), 1);
+  color: rgba(var(--color-danger-600), 1);
 }
 [data-style='grada-ui'] [data-message-root][data-type='error'] [data-message-icon],
 [data-style='grada-ui'] [data-message-root][data-type='error'] [data-message-dismiss] {
-  color: var(--gd-error-border);
+  color: rgba(var(--color-danger-400), 1);
 }
 
 [data-style='grada-ui'] [data-message-root][data-type='warning'] {
@@ -29,20 +29,20 @@
 
 [data-style='grada-ui'] [data-message-root][data-type='info'] {
   background-color: #f0f4ff;
-  border-color: var(--gd-secondary);
+  border-color: rgba(var(--color-secondary-500), 1);
   color: #4a3d7a;
 }
 [data-style='grada-ui'] [data-message-root][data-type='info'] [data-message-icon],
 [data-style='grada-ui'] [data-message-root][data-type='info'] [data-message-dismiss] {
-  color: var(--gd-secondary);
+  color: rgba(var(--color-secondary-500), 1);
 }
 
 [data-style='grada-ui'] [data-message-root][data-type='success'] {
   background-color: #f0faf4;
-  border-color: var(--gd-success);
+  border-color: rgba(var(--color-success-500), 1);
   color: #1a5c35;
 }
 [data-style='grada-ui'] [data-message-root][data-type='success'] [data-message-icon],
 [data-style='grada-ui'] [data-message-root][data-type='success'] [data-message-dismiss] {
-  color: var(--gd-success);
+  color: rgba(var(--color-success-500), 1);
 }

@@ -5,7 +5,7 @@
  */
 
 [data-style='grada-ui'] [data-tabs-list] {
-  @apply bg-surface-z2 gap-1;
+  @apply bg-surface-z2 gap-1 border-0;
   border-radius: 20px;
   padding: 3px;
 }
@@ -15,6 +15,7 @@
 }
 
 [data-style='grada-ui'] [data-tabs-trigger] {
+  background-color: transparent;
   @apply text-surface-z6;
   border-radius: 20px;
   font-family: 'Montserrat', sans-serif;
@@ -28,16 +29,13 @@
   @apply bg-surface-z3 text-surface-z8;
 }
 
-/* Selected — gradient */
-[data-style='grada-ui'] [data-tabs-trigger][data-selected] {
-  background: var(--gd-gradient);
+/* Selected — primary→secondary gradient */
+[data-style='grada-ui'] [data-tabs-trigger][data-selected],
+[data-style='grada-ui'] [data-tabs-list]:focus-within [data-tabs-trigger][data-selected] {
+  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-color: transparent;
   color: white;
   @apply shadow-sm;
-}
-
-/* Reset rokkit gradients bleeding in */
-[data-style='grada-ui'] [data-tabs-list]:focus-within [data-tabs-trigger][data-selected] {
-  background: var(--gd-gradient);
 }
 
 [data-style='grada-ui'] [data-tabs-trigger] [data-tabs-icon] {

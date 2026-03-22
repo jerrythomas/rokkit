@@ -154,3 +154,21 @@
 [data-style='daisy-ui'] [data-button]:focus-visible {
   @apply outline-2 outline-offset-2 outline-primary-z5 outline;
 }
+
+/* =============================================================================
+   Button Group — override pill radius for connected appearance
+   ============================================================================= */
+
+[data-style='daisy-ui'] [data-button-group] [data-button] {
+  border-radius: 0;
+}
+
+[data-style='daisy-ui'] [data-button-group] [data-button]:first-child {
+  border-top-left-radius: 9999px;
+  border-bottom-left-radius: 9999px;
+}
+
+[data-style='daisy-ui'] [data-button-group] [data-button]:last-child {
+  border-top-right-radius: 9999px;
+  border-bottom-right-radius: 9999px;
+}

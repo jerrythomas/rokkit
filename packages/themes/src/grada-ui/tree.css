@@ -25,15 +25,15 @@
 }
 
 [data-style='grada-ui'] [data-tree-item-content]:focus-visible {
-  outline: 2px solid var(--gd-primary);
+  outline: 2px solid rgba(var(--color-primary-500), 1);
   outline-offset: -2px;
 }
 
 /* Active/selected state */
 [data-style='grada-ui'] [data-tree-item-content][data-active='true'] {
   @apply bg-surface-z1;
-  border-left: 3px solid var(--gd-primary);
-  color: var(--gd-primary);
+  border-left: 3px solid rgba(var(--color-primary-500), 1);
+  color: rgba(var(--color-primary-500), 1);
 }
 
 [data-style='grada-ui'] [data-tree-item-content][data-active='true']:hover:not(:disabled) {
@@ -41,11 +41,11 @@
 }
 
 [data-style='grada-ui'] [data-tree]:focus-within [data-tree-item-content][data-active='true'] {
-  border-left: 3px solid var(--gd-primary);
+  border-left: 3px solid rgba(var(--color-primary-500), 1);
 }
 
 [data-style='grada-ui'] [data-tree]:not(:focus-within) [data-tree-item-content][data-active='true'] {
-  border-left: 3px solid var(--gd-primary);
+  border-left: 3px solid rgba(var(--color-primary-500), 1);
   opacity: 0.8;
 }
 
@@ -59,7 +59,7 @@
 }
 
 [data-style='grada-ui'] [data-tree-item-content][data-active='true'] [data-item-icon] {
-  color: var(--gd-primary);
+  color: rgba(var(--color-primary-500), 1);
 }
 
 [data-style='grada-ui'] [data-tree-item-content] [data-item-description] {
@@ -72,22 +72,23 @@
 }
 
 [data-style='grada-ui'] [data-tree-item-content][data-active='true'] [data-item-badge] {
-  background: var(--gd-gradient);
+  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-color: transparent;
   color: white;
 }
 
 /* Multi-Selection */
 [data-style='grada-ui'] [data-tree-node][data-selected='true'] [data-tree-node-row] {
-  background: color-mix(in srgb, var(--gd-primary) 15%, transparent);
+  background: rgba(var(--color-primary-500), 0.15);
 }
 
 [data-style='grada-ui'] [data-tree-node][data-selected='true'] [data-tree-item-content] {
-  color: var(--gd-primary);
+  color: rgba(var(--color-primary-500), 1);
 }
 
 [data-style='grada-ui']
   [data-tree-node][data-selected='true']
   [data-tree-item-content]
   [data-item-icon] {
-  color: var(--gd-primary);
+  color: rgba(var(--color-primary-500), 1);
 }

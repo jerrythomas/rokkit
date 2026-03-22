@@ -19,6 +19,6 @@
 }
 
 [data-style='grada-ui'] [data-toc] [data-toc-item][data-toc-active] {
-  color: var(--gd-primary);
-  border-left-color: var(--gd-primary);
+  color: rgba(var(--color-primary-500), 1);
+  border-left-color: rgba(var(--color-primary-500), 1);
 }
