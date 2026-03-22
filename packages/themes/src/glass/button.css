@@ -25,6 +25,11 @@
   @apply bg-secondary-z4/80 text-on-secondary shadow-sm backdrop-blur-md;
 }
 
+[data-style='glass'] [data-button][data-style='default'][data-variant='accent'],
+[data-style='glass'] [data-button]:not([data-style])[data-variant='accent'] {
+  @apply bg-accent-z4/80 text-on-accent shadow-sm backdrop-blur-md;
+}
+
 [data-style='glass'] [data-button][data-style='default'][data-variant='danger'],
 [data-style='glass'] [data-button]:not([data-style])[data-variant='danger'] {
   @apply bg-danger-z4/80 text-on-danger shadow-sm backdrop-blur-md;
@@ -45,6 +50,10 @@
 
 [data-style='glass'] [data-button][data-style='outline'][data-variant='secondary'] {
   @apply border-secondary-z4/40 text-secondary-z6 border bg-transparent;
+}
+
+[data-style='glass'] [data-button][data-style='outline'][data-variant='accent'] {
+  @apply border-accent-z4/40 text-accent-z6 border bg-transparent;
 }
 
 [data-style='glass'] [data-button][data-style='outline'][data-variant='danger'] {
@@ -72,6 +81,10 @@
   @apply text-secondary-z6;
 }
 
+[data-style='glass'] [data-button][data-style='ghost'][data-variant='accent'] {
+  @apply text-accent-z6;
+}
+
 [data-style='glass'] [data-button][data-style='ghost'][data-variant='danger'] {
   @apply text-danger-z4;
 }
@@ -91,6 +104,10 @@
 
 [data-style='glass'] [data-button][data-style='gradient'][data-variant='secondary'] {
   @apply from-secondary-z5/80 to-secondary-z3/60 text-on-secondary bg-gradient-to-br backdrop-blur-md;
+}
+
+[data-style='glass'] [data-button][data-style='gradient'][data-variant='accent'] {
+  @apply from-accent-z5/80 to-accent-z3/60 text-on-accent bg-gradient-to-br backdrop-blur-md;
 }
 
 [data-style='glass'] [data-button][data-style='gradient'][data-variant='danger'] {
@@ -117,6 +134,10 @@
 
 [data-style='glass'] [data-button][data-style='link'][data-variant='secondary'] {
   @apply text-secondary-z6;
+}
+
+[data-style='glass'] [data-button][data-style='link'][data-variant='accent'] {
+  @apply text-accent-z6;
 }
 
 [data-style='glass'] [data-button][data-style='link'][data-variant='danger'] {

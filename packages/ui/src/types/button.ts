@@ -12,7 +12,7 @@ import type { Snippet } from 'svelte'
 // =============================================================================
 
 /** Semantic color variant */
-export type ButtonVariant = 'default' | 'primary' | 'secondary' | 'danger'
+export type ButtonVariant = 'default' | 'primary' | 'secondary' | 'accent' | 'danger'
 
 /** Visual style treatment */
 export type ButtonStyle = 'default' | 'outline' | 'ghost' | 'gradient' | 'link'

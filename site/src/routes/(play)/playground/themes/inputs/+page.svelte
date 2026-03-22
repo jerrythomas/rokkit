@@ -20,6 +20,7 @@
 		{ label: 'Default', variant: 'default', style: 'default' },
 		{ label: 'Primary', variant: 'primary', style: 'default' },
 		{ label: 'Secondary', variant: 'secondary', style: 'default' },
+		{ label: 'Accent', variant: 'accent', style: 'default' },
 		{ label: 'Danger', variant: 'danger', style: 'default' },
 		{ label: 'Outline', variant: 'primary', style: 'outline' },
 		{ label: 'Ghost', variant: 'primary', style: 'ghost' },

@@ -46,6 +46,13 @@
   border-radius: 20px;
 }
 
+[data-style='grada-ui'] [data-button][data-style='default'][data-variant='accent'],
+[data-style='grada-ui'] [data-button]:not([data-style])[data-variant='accent'] {
+  @apply bg-accent-z5 shadow-md;
+  color: white;
+  border-radius: 20px;
+}
+
 [data-style='grada-ui'] [data-button][data-style='default'][data-variant='danger'],
 [data-style='grada-ui'] [data-button]:not([data-style])[data-variant='danger'] {
   @apply bg-danger-z5 shadow-md;
@@ -70,6 +77,11 @@
 
 [data-style='grada-ui'] [data-button][data-style='outline'][data-variant='secondary'] {
   @apply border-secondary-z5 text-secondary-z5 border-2 bg-transparent;
+  border-radius: 20px;
+}
+
+[data-style='grada-ui'] [data-button][data-style='outline'][data-variant='accent'] {
+  @apply border-accent-z5 text-accent-z5 border-2 bg-transparent;
   border-radius: 20px;
 }
 
@@ -101,6 +113,10 @@
   @apply text-secondary-z5;
 }
 
+[data-style='grada-ui'] [data-button][data-style='ghost'][data-variant='accent'] {
+  @apply text-accent-z5;
+}
+
 [data-style='grada-ui'] [data-button][data-style='ghost'][data-variant='danger'] {
   @apply text-danger-z5;
 }
@@ -118,6 +134,14 @@
 [data-style='grada-ui'] [data-button][data-style='gradient'][data-variant='primary'],
 [data-style='grada-ui'] [data-button][data-style='gradient'][data-variant='secondary'] {
   background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-color: transparent;
+  color: white;
+  border-radius: 20px;
+  @apply shadow-md;
+}
+
+[data-style='grada-ui'] [data-button][data-style='gradient'][data-variant='accent'] {
+  background-image: linear-gradient(to right, rgba(var(--color-accent-500), 1), rgba(var(--color-accent-400), 1));
   background-color: transparent;
   color: white;
   border-radius: 20px;
@@ -145,6 +169,10 @@
 
 [data-style='grada-ui'] [data-button][data-style='link'][data-variant='secondary'] {
   @apply text-secondary-z5;
+}
+
+[data-style='grada-ui'] [data-button][data-style='link'][data-variant='accent'] {
+  @apply text-accent-z5;
 }
 
 [data-style='grada-ui'] [data-button][data-style='link'][data-variant='danger'] {

@@ -28,6 +28,12 @@
   @apply from-secondary-z4 to-secondary-z3 border-secondary-z5 text-on-secondary border bg-gradient-to-b;
 }
 
+/* Accent variant */
+[data-style='rokkit'] [data-button][data-style='default'][data-variant='accent'],
+[data-style='rokkit'] [data-button]:not([data-style])[data-variant='accent'] {
+  @apply from-accent-z4 to-accent-z3 border-accent-z5 text-on-accent border bg-gradient-to-b;
+}
+
 /* Danger variant */
 [data-style='rokkit'] [data-button][data-style='default'][data-variant='danger'],
 [data-style='rokkit'] [data-button]:not([data-style])[data-variant='danger'] {
@@ -49,6 +55,10 @@
 
 [data-style='rokkit'] [data-button][data-style='outline'][data-variant='secondary'] {
   @apply border-secondary-z4 text-secondary-z6 border bg-transparent;
+}
+
+[data-style='rokkit'] [data-button][data-style='outline'][data-variant='accent'] {
+  @apply border-accent-z4 text-accent-z6 border bg-transparent;
 }
 
 [data-style='rokkit'] [data-button][data-style='outline'][data-variant='danger'] {
@@ -76,6 +86,10 @@
   @apply text-secondary-z6;
 }
 
+[data-style='rokkit'] [data-button][data-style='ghost'][data-variant='accent'] {
+  @apply text-accent-z6;
+}
+
 [data-style='rokkit'] [data-button][data-style='ghost'][data-variant='danger'] {
   @apply text-danger-z4;
 }
@@ -95,6 +109,10 @@
 
 [data-style='rokkit'] [data-button][data-style='gradient'][data-variant='secondary'] {
   @apply from-secondary-z5 to-secondary-z3 text-on-secondary bg-gradient-to-br;
+}
+
+[data-style='rokkit'] [data-button][data-style='gradient'][data-variant='accent'] {
+  @apply from-accent-z5 to-accent-z3 text-on-accent bg-gradient-to-br;
 }
 
 [data-style='rokkit'] [data-button][data-style='gradient'][data-variant='danger'] {
@@ -121,6 +139,10 @@
 
 [data-style='rokkit'] [data-button][data-style='link'][data-variant='secondary'] {
   @apply text-secondary-z6;
+}
+
+[data-style='rokkit'] [data-button][data-style='link'][data-variant='accent'] {
+  @apply text-accent-z6;
 }
 
 [data-style='rokkit'] [data-button][data-style='link'][data-variant='danger'] {
@@ -170,6 +192,13 @@
 [data-style='rokkit']
   [data-button][data-style='outline']:hover:not(:disabled):not(
     [data-disabled]
+  )[data-variant='accent'] {
+  @apply from-accent-z2 to-accent-z1 bg-gradient-to-b;
+}
+
+[data-style='rokkit']
+  [data-button][data-style='outline']:hover:not(:disabled):not(
+    [data-disabled]
   )[data-variant='danger'] {
   @apply from-danger-z2 to-danger-z1 bg-gradient-to-b;
 }
@@ -196,6 +225,13 @@
     [data-disabled]
   )[data-variant='secondary'] {
   @apply bg-secondary-z1;
+}
+
+[data-style='rokkit']
+  [data-button][data-style='ghost']:hover:not(:disabled):not(
+    [data-disabled]
+  )[data-variant='accent'] {
+  @apply bg-accent-z1;
 }
 
 [data-style='rokkit']
