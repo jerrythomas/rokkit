@@ -3,6 +3,10 @@ import Axis from './Plot/Axis.svelte'
 import Bar from './Plot/Bar.svelte'
 import Grid from './Plot/Grid.svelte'
 import Legend from './Plot/Legend.svelte'
+import Line from './Plot/Line.svelte'
+import Area from './Plot/Area.svelte'
+import Point from './Plot/Point.svelte'
+import Arc from './Plot/Arc.svelte'
 
 // Export components
 export const Plot = {
@@ -10,7 +14,11 @@ export const Plot = {
 	Axis,
 	Bar,
 	Grid,
-	Legend
+	Legend,
+	Line,
+	Area,
+	Point,
+	Arc
 }
 
 // Export standalone components
