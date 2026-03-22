@@ -3,6 +3,23 @@
 Chronological log of confirmations, progress, milestones, and decisions.
 Design details live in `docs/design/` — modular docs per module.
 
+### Chart Task 2: palette.json & assignColors — complete (2026-03-22)
+
+**What was done:**
+
+- Created `packages/chart/src/lib/brewing/palette.json` with 21 chart-safe colors (blue, emerald, rose, amber, violet, sky, pink, teal, orange, indigo, lime, cyan, fuchsia, yellow, red, green, purple, slate, stone, zinc, neutral)
+- Each color has light/dark mode shades with fill and stroke properties
+- Created `packages/chart/src/lib/brewing/colors.js` with `distinct()` and `assignColors()` utilities
+  - `distinct(data, field)` — extracts unique values for a field
+  - `assignColors(values, mode)` — maps values to palette entries, cycling past 21 series
+- Created `packages/chart/spec/brewing/colors.spec.js` with 7 passing tests
+
+**Tests:** 2665 passing (up from 2536). 0 lint errors.
+
+**Commit:** `70ffa748` — feat(chart): add 21-color palette.json and assignColors utility
+
+---
+
 ### StatusList — complete (2026-03-18)
 
 Component and unit tests already existed. Added the missing pieces:
@@ -2353,3 +2370,36 @@ learn site demos that used `text:` as item property or field mapping key. Fixed:
 - `docs/design/12-priority.md` — Message/Alert, upgrade, skin create, theme scaffold marked ✅
 
 **Tests:** 2632 passing (50 new CLI tests). 0 lint errors.
+
+### Chart CSS: Base + All 10 Themes (2026-03-22)
+
+**Feature:** Created base structural and themed CSS for chart components.
+
+**Files created:**
+- `packages/themes/src/base/chart.css` — structural styles (layout, typography, transitions)
+- `packages/themes/src/rokkit/chart.css` — rokkit theme (stroke-surface-z4, fill-surface-z6, etc.)
+- `packages/themes/src/minimal/chart.css` — minimal theme (stroke-surface-z3, fill-surface-z5, etc.)
+- `packages/themes/src/material/chart.css` — material theme
+- `packages/themes/src/glass/chart.css` — glass theme
+- `packages/themes/src/ant-design/chart.css` — ant-design theme
+- `packages/themes/src/bits-ui/chart.css` — bits-ui theme
+- `packages/themes/src/carbon/chart.css` — carbon theme
+- `packages/themes/src/daisy-ui/chart.css` — daisy-ui theme
+- `packages/themes/src/grada-ui/chart.css` — grada-ui theme
+- `packages/themes/src/shadcn/chart.css` — shadcn theme
+
+**Updated:** All 11 theme `index.css` files with `@import './chart.css'` at the end.
+
+**CSS features:**
+- `[data-chart]` — wrapper container (relative, block, 100% width)
+- `[data-chart-axis-line]`, `[data-chart-tick]` — axis styling (via stroke-surface-z* classes)
+- `[data-chart-tick-label]` — label sizing and typography (0.75rem)
+- `[data-chart-grid-line]` — grid styling with theme-specific dasharray
+- `[data-chart-legend]` — flexbox legend (gap 0.5rem)
+- `[data-chart-legend-item]` — interactive legend items with hover state
+- `[data-chart-label]` — annotation labels (0.6875rem, pointer-events: none)
+- `[data-chart-*]` marks — bar, line, area, point, arc with transition/opacity on dimmed state
+
+**Build:** `bun run build` succeeds. Verified: `dist/base.css` and `dist/rokkit.css` contain correct chart selectors.
+
+**Commit:** `787f43f7` — feat(themes): add chart.css for base structure and all 10 themes
