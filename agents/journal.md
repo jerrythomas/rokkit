@@ -2403,3 +2403,32 @@ learn site demos that used `text:` as item property or field mapping key. Fixed:
 **Build:** `bun run build` succeeds. Verified: `dist/base.css` and `dist/rokkit.css` contain correct chart selectors.
 
 **Commit:** `787f43f7` — feat(themes): add chart.css for base structure and all 10 themes
+
+### D3 Scales Builder (2026-03-22)
+
+**Feature:** Created scales builder module with three D3 scale factory functions.
+
+**Files created:**
+- `packages/chart/src/lib/brewing/scales.js` — scale builders (buildXScale, buildYScale, buildSizeScale)
+- `packages/chart/spec/brewing/scales2.spec.js` — 6 comprehensive tests
+
+**API:**
+- `buildXScale(data, field, width, opts)` — band scale for categorical x, linear scale for numeric x
+- `buildYScale(data, field, height, layers)` — linear scale from 0 to max, with layer-extended domain support
+- `buildSizeScale(data, field, maxRadius)` — sqrt scale for bubble/point size encoding
+
+**Example usage:**
+```js
+const xScale = buildXScale(data, 'date', 400)  // → band scale
+const yScale = buildYScale(data, 'revenue', 300)  // → linear scale [0, maxVal]
+const sizeScale = buildSizeScale(data, 'value', 20)  // → sqrt scale [0, 20]
+```
+
+**Dependencies added:**
+- `d3-shape@^3.2.0` — mark generators (line, area, arc, pie) for Task 7
+
+**Tests:** 6 tests passing (6/6). Covers categorical/numeric x detection, domain extension, SVG y-axis inversion, sqrt scaling.
+
+**Build:** Tests 2694 passing. Lint 0 errors. All pre-existing warnings only.
+
+**Commit:** `bc6536f5` — feat(chart): add D3 scale builders (x band/linear, y linear, size sqrt)
