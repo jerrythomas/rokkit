@@ -45,8 +45,8 @@
 
   const barWidth = $derived(Math.max(1, width / values.length - 1))
 
-  const strokeColor = $derived(`var(--color-${color}-z5, currentColor)`)
-  const fillColor = $derived(`var(--color-${color}-z3, transparent)`)
+  const strokeColor = $derived(`rgb(var(--color-${color}-500, 100,116,139))`)
+  const fillColor = $derived(`rgba(var(--color-${color}-300), 0.25)`)
 </script>
 
 <svg {width} {height} style="overflow: visible; display: block;">
