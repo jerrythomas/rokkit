@@ -1,6 +1,7 @@
 <script>
   import { setContext } from 'svelte'
   import { ChartBrewer } from '../lib/brewing/brewer.svelte.js'
+  import Shape from '../symbols/Shape.svelte'
 
   /**
    * @type {{
@@ -8,8 +9,7 @@
    *   x?: string,
    *   y?: string,
    *   color?: string,
-   *   pattern?: string,
-   *   fill?: string,
+   *   symbol?: string,
    *   size?: string,
    *   width?: number,
    *   height?: number,
@@ -23,8 +23,7 @@
     x = undefined,
     y = undefined,
     color = undefined,
-    pattern = undefined,
-    fill = undefined,
+    symbol = undefined,
     size = undefined,
     width = 600,
     height = 400,
@@ -38,12 +37,11 @@
 
   $effect(() => {
     const channels = {}
-    if (x)       channels.x = x
-    if (y)       channels.y = y
-    if (color)   channels.color = color
-    if (pattern) channels.pattern = pattern
-    if (fill)    channels.fill = fill
-    if (size)    channels.size = size
+    if (x)      channels.x = x
+    if (y)      channels.y = y
+    if (color)  channels.color = color
+    if (symbol) channels.symbol = symbol
+    if (size)   channels.size = size
     brewer.update({ data, channels, width, height, mode })
   })
 
@@ -51,12 +49,10 @@
   const innerWidth = $derived(width - margin.left - margin.right)
   const innerHeight = $derived(height - margin.top - margin.bottom)
 
-  // Derived chart data from brewer
   const points = $derived(brewer.points)
   const xScale = $derived(brewer.xScale)
   const yScale = $derived(brewer.yScale)
 
-  // X-axis ticks
   const xTicks = $derived(
     xScale && typeof xScale.ticks === 'function'
       ? xScale.ticks(5).map((val) => ({ value: val, x: xScale(val) ?? 0 }))
@@ -68,21 +64,18 @@
         : []
   )
 
-  // Y-axis ticks
   const yTicks = $derived(
     yScale && typeof yScale.ticks === 'function'
       ? yScale.ticks(5).map((val) => ({ value: val, y: yScale(val) }))
       : []
   )
 
-  // Grid lines (horizontal, from y ticks)
   const gridLines = $derived(
     yScale && typeof yScale.ticks === 'function'
       ? yScale.ticks(5).map((val) => ({ y: yScale(val) }))
       : []
   )
 
-  // Legend items from brewer colorMap
   const legendItems = $derived(
     Array.from(brewer.colorMap.entries()).map(([key, entry]) => ({
       label: String(key),
@@ -107,7 +100,7 @@
       <!-- Grid lines -->
       {#if grid}
         <g class="chart-grid" data-chart-grid>
-          {#each gridLines as line}
+          {#each gridLines as line (line.y)}
             <line
               x1="0"
               y1={line.y}
@@ -122,14 +115,14 @@
       <!-- Points -->
       <g class="chart-points" data-chart-mark="point">
         {#each points as pt, i (i)}
-          <circle
-            cx={pt.cx}
-            cy={pt.cy}
-            r={pt.r}
+          <Shape
+            x={pt.cx}
+            y={pt.cy}
+            size={pt.r / 4.5}
+            name={pt.shape}
             fill={pt.fill}
             stroke={pt.stroke}
-            stroke-width="1"
-            data-chart-element="point"
+            thickness={1}
           />
         {/each}
       </g>
@@ -137,8 +130,8 @@
       <!-- X axis -->
       {#if xScale}
         <g class="axis x-axis" transform="translate(0, {innerHeight})" data-chart-axis="x">
-          <line x1="0" y1="0" x2={innerWidth} y2="0" stroke="currentColor" />
-          {#each xTicks as tick}
+          <line x1="0" y1="0" x2={innerWidth} y2="0" data-chart-axis-line />
+          {#each xTicks as tick (tick.value)}
             <g transform="translate({tick.x}, 0)">
               <line x1="0" y1="0" x2="0" y2="6" stroke="currentColor" />
               <text x="0" y="9" text-anchor="middle" dominant-baseline="hanging" data-chart-tick-label>
@@ -152,8 +145,8 @@
       <!-- Y axis -->
       {#if yScale}
         <g class="axis y-axis" data-chart-axis="y">
-          <line x1="0" y1="0" x2="0" y2={innerHeight} stroke="currentColor" />
-          {#each yTicks as tick}
+          <line x1="0" y1="0" x2="0" y2={innerHeight} data-chart-axis-line />
+          {#each yTicks as tick (tick.value)}
             <g transform="translate(0, {tick.y})">
               <line x1="-6" y1="0" x2="0" y2="0" stroke="currentColor" />
               <text x="-9" y="0" text-anchor="end" dominant-baseline="middle" data-chart-tick-label>
@@ -170,7 +163,7 @@
   <!-- HTML legend -->
   {#if legend && legendItems.length > 0}
     <div data-chart-legend>
-      {#each legendItems as item}
+      {#each legendItems as item (item.label)}
         <div data-chart-legend-item>
           <span data-chart-legend-swatch style="background-color: {item.fill}"></span>
           <span data-chart-legend-label>{item.label}</span>

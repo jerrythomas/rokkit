@@ -12,7 +12,8 @@
 	]
 
 	let props = $state({
-		colorField: '',
+		colorField: 'region',
+		patternField: '',
 		grid: true,
 		legend: false
 	})
@@ -21,6 +22,7 @@
 		type: 'object',
 		properties: {
 			colorField: { type: 'string' },
+			patternField: { type: 'string' },
 			grid: { type: 'boolean' },
 			legend: { type: 'boolean' }
 		}
@@ -32,7 +34,12 @@
 			{
 				scope: '#/colorField',
 				label: 'Color field',
-				props: { options: ['', 'region'] }
+				props: { options: ['', 'region', 'category'] }
+			},
+			{
+				scope: '#/patternField',
+				label: 'Pattern field',
+				props: { options: ['', 'region', 'category'] }
 			},
 			{ scope: '#/grid', label: 'Grid' },
 			{ scope: '#/legend', label: 'Legend' },
@@ -53,6 +60,7 @@
 					x="category"
 					y="revenue"
 					color={props.colorField || undefined}
+					pattern={props.patternField || undefined}
 					grid={props.grid}
 					legend={props.legend}
 					width={560}
@@ -65,6 +73,7 @@
 	{#snippet controls()}
 		<FormRenderer bind:data={props} {schema} {layout} />
 		<InfoField label="Color field" value={props.colorField || '(none)'} />
+		<InfoField label="Pattern field" value={props.patternField || '(none)'} />
 		<InfoField label="Grid" value={String(props.grid)} />
 		<InfoField label="Legend" value={String(props.legend)} />
 	{/snippet}

@@ -1,5 +1,6 @@
 import { distinct, assignColors } from './colors.js'
 import { assignPatterns } from './patterns.js'
+import { assignSymbols } from './symbols.js'
 import { buildXScale, buildYScale, buildSizeScale } from './scales.js'
 import { buildBars } from './marks/bars.js'
 import { buildLines } from './marks/lines.js'
@@ -33,6 +34,13 @@ export class ChartBrewer {
       : new Map()
   )
 
+  /** @type {Map<unknown, string>} */
+  symbolMap = $derived(
+    this.#channels.symbol
+      ? assignSymbols(distinct(this.#data, this.#channels.symbol))
+      : new Map()
+  )
+
   get innerWidth()  { return this.#width  - this.#margin.left - this.#margin.right }
   get innerHeight() { return this.#height - this.#margin.top  - this.#margin.bottom }
 
@@ -56,7 +64,7 @@ export class ChartBrewer {
 
   bars = $derived(
     this.xScale && this.yScale
-      ? buildBars(this.#data, this.#channels, this.xScale, this.yScale, this.colorMap)
+      ? buildBars(this.#data, this.#channels, this.xScale, this.yScale, this.colorMap, this.patternMap)
       : []
   )
 
@@ -80,7 +88,7 @@ export class ChartBrewer {
 
   points = $derived(
     this.xScale && this.yScale
-      ? buildPoints(this.#data, this.#channels, this.xScale, this.yScale, this.colorMap, this.sizeScale)
+      ? buildPoints(this.#data, this.#channels, this.xScale, this.yScale, this.colorMap, this.sizeScale, this.symbolMap)
       : []
   )
 

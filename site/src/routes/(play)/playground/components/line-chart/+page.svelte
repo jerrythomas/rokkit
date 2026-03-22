@@ -29,6 +29,7 @@
 	let props = $state({
 		colorField: '',
 		curve: 'linear',
+		symbol: false,
 		grid: true,
 		legend: false
 	})
@@ -38,6 +39,7 @@
 		properties: {
 			colorField: { type: 'string' },
 			curve: { type: 'string' },
+			symbol: { type: 'boolean' },
 			grid: { type: 'boolean' },
 			legend: { type: 'boolean' }
 		}
@@ -56,6 +58,7 @@
 				label: 'Curve',
 				props: { options: ['linear', 'smooth', 'step'] }
 			},
+			{ scope: '#/symbol', label: 'Symbols' },
 			{ scope: '#/grid', label: 'Grid' },
 			{ scope: '#/legend', label: 'Legend' },
 			{ type: 'separator' }
@@ -75,6 +78,7 @@
 					x="month"
 					y="value"
 					color={props.colorField || undefined}
+					symbol={props.symbol && props.colorField ? props.colorField : undefined}
 					curve={props.curve}
 					grid={props.grid}
 					legend={props.legend}

@@ -7,7 +7,7 @@ import { line, curveCatmullRom, curveStep } from 'd3-shape'
  * @param {Function} yScale
  * @param {Map} colors
  * @param {'linear'|'smooth'|'step'} [curve]
- * @returns {{ d: string, fill: string, stroke: string }[]}
+ * @returns {{ d: string, fill: string, stroke: string, points: {x:number, y:number, data:Object}[], key?: unknown }[]}
  */
 export function buildLines(data, channels, xScale, yScale, colors, curve) {
   const { x: xf, y: yf, color: cf } = channels
@@ -20,13 +20,16 @@ export function buildLines(data, channels, xScale, yScale, colors, curve) {
     else if (curve === 'step') gen.curve(curveStep)
     return gen
   }
+  const toPoints = (rows) => rows.map((d) => ({ x: xPos(d), y: yScale(d[yf]), data: d }))
+
   if (!cf) {
-    return [{ d: makeGen()(data), fill: 'none', stroke: colors?.values().next().value?.stroke ?? '#888' }]
+    const stroke = colors?.values().next().value?.stroke ?? '#888'
+    return [{ d: makeGen()(data), fill: 'none', stroke, points: toPoints(data) }]
   }
   const groups = groupBy(data, cf)
   return [...groups.entries()].map(([key, rows]) => {
     const colorEntry = colors?.get(key) ?? { fill: 'none', stroke: '#888' }
-    return { d: makeGen()(rows), fill: 'none', stroke: colorEntry.stroke, key }
+    return { d: makeGen()(rows), fill: 'none', stroke: colorEntry.stroke, points: toPoints(rows), key }
   })
 }
 

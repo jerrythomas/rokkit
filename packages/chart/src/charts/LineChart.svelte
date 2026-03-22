@@ -1,6 +1,7 @@
 <script>
   import { setContext } from 'svelte'
   import { ChartBrewer } from '../lib/brewing/brewer.svelte.js'
+  import Shape from '../symbols/Shape.svelte'
 
   /**
    * @type {{
@@ -13,7 +14,8 @@
    *   mode?: 'light' | 'dark',
    *   grid?: boolean,
    *   legend?: boolean,
-   *   curve?: 'linear' | 'smooth' | 'step'
+   *   curve?: 'linear' | 'smooth' | 'step',
+   *   symbol?: string
    * }}
    */
   let {
@@ -26,7 +28,8 @@
     mode = 'light',
     grid = true,
     legend = false,
-    curve = 'linear'
+    curve = 'linear',
+    symbol = undefined
   } = $props()
 
   const brewer = new ChartBrewer()
@@ -34,9 +37,10 @@
 
   $effect(() => {
     const channels = {}
-    if (x)     channels.x = x
-    if (y)     channels.y = y
-    if (color) channels.color = color
+    if (x)      channels.x = x
+    if (y)      channels.y = y
+    if (color)  channels.color = color
+    if (symbol) channels.symbol = symbol
     brewer.update({ data, channels, width, height, mode, curve })
   })
 
@@ -47,6 +51,7 @@
   const lines = $derived(brewer.lines)
   const xScale = $derived(brewer.xScale)
   const yScale = $derived(brewer.yScale)
+  const symbolMap = $derived(brewer.symbolMap)
 
   const xTicks = $derived(
     xScale && typeof xScale.domain === 'function'
@@ -72,7 +77,8 @@
   const legendItems = $derived(
     Array.from(brewer.colorMap.entries()).map(([key, entry]) => ({
       label: String(key),
-      fill: entry.fill
+      fill: entry.fill,
+      shape: symbolMap.get(key) ?? 'circle'
     }))
   )
 </script>
@@ -93,12 +99,12 @@
       <!-- Grid lines -->
       {#if grid}
         <g class="chart-grid" data-chart-grid>
-          {#each gridLines as line}
+          {#each gridLines as gl (gl.y)}
             <line
               x1="0"
-              y1={line.y}
+              y1={gl.y}
               x2={innerWidth}
-              y2={line.y}
+              y2={gl.y}
               data-chart-grid-line
             />
           {/each}
@@ -120,11 +126,31 @@
         {/each}
       </g>
 
+      <!-- Symbol markers on data points -->
+      {#if symbol}
+        <g class="chart-symbols" data-chart-mark="symbol">
+          {#each lines as seg (seg.key ?? seg.d)}
+            {#each seg.points as pt, i (i)}
+              {@const shape = symbolMap.get(seg.key) ?? 'circle'}
+              <Shape
+                x={pt.x}
+                y={pt.y}
+                size={0.8}
+                name={shape}
+                fill={seg.stroke}
+                stroke={seg.stroke}
+                thickness={1}
+              />
+            {/each}
+          {/each}
+        </g>
+      {/if}
+
       <!-- X axis -->
       {#if xScale}
         <g class="axis x-axis" transform="translate(0, {innerHeight})" data-chart-axis="x">
           <line x1="0" y1="0" x2={innerWidth} y2="0" data-chart-axis-line />
-          {#each xTicks as tick}
+          {#each xTicks as tick (tick.value)}
             <g class="chart-tick" transform="translate({tick.x}, 0)" data-chart-tick>
               <line x1="0" y1="0" x2="0" y2="6" />
               <text x="0" y="9" text-anchor="middle" dominant-baseline="hanging" data-chart-tick-label>
@@ -139,7 +165,7 @@
       {#if yScale}
         <g class="axis y-axis" data-chart-axis="y">
           <line x1="0" y1="0" x2="0" y2={innerHeight} data-chart-axis-line />
-          {#each yTicks as tick}
+          {#each yTicks as tick (tick.value)}
             <g class="chart-tick" transform="translate(0, {tick.y})" data-chart-tick>
               <line x1="-6" y1="0" x2="0" y2="0" />
               <text x="-9" y="0" text-anchor="end" dominant-baseline="middle" data-chart-tick-label>
@@ -155,7 +181,7 @@
   <!-- HTML legend (below SVG, styled via base/theme CSS) -->
   {#if legend && legendItems.length > 0}
     <div data-chart-legend>
-      {#each legendItems as item}
+      {#each legendItems as item (item.label)}
         <div data-chart-legend-item>
           <span data-chart-legend-swatch style="background-color: {item.fill}"></span>
           <span data-chart-legend-label>{item.label}</span>
@@ -187,6 +213,10 @@
   }
 
   .chart-grid {
+    pointer-events: none;
+  }
+
+  .chart-symbols {
     pointer-events: none;
   }
 </style>
