@@ -136,22 +136,22 @@ describe('List', () => {
 	it('toggles group on click when collapsible', async () => {
 		const { container } = render(List, { items: groupedItems, collapsible: true })
 		const label = container.querySelector('[data-list-group]')!
-		// Groups start expanded
-		expect(label.getAttribute('aria-expanded')).toBe('true')
-		await fireEvent.click(label)
-		flushSync()
+		// Groups start collapsed
 		expect(label.getAttribute('aria-expanded')).toBe('false')
 		await fireEvent.click(label)
 		flushSync()
 		expect(label.getAttribute('aria-expanded')).toBe('true')
+		await fireEvent.click(label)
+		flushSync()
+		expect(label.getAttribute('aria-expanded')).toBe('false')
 	})
 
 	it('sets aria-expanded on group labels when collapsible', () => {
 		const { container } = render(List, { items: groupedItems, collapsible: true })
 		const labels = container.querySelectorAll('[data-list-group]')
-		// Groups start expanded
-		expect(labels[0]?.getAttribute('aria-expanded')).toBe('true')
-		expect(labels[1]?.getAttribute('aria-expanded')).toBe('true')
+		// Groups start collapsed
+		expect(labels[0]?.getAttribute('aria-expanded')).toBe('false')
+		expect(labels[1]?.getAttribute('aria-expanded')).toBe('false')
 	})
 
 	it('disables group label button when not collapsible', () => {
@@ -185,7 +185,10 @@ describe('List', () => {
 	it('calls onselect for group children', async () => {
 		const onselect = vi.fn()
 		const { container } = render(List, { items: groupedItems, collapsible: true, onselect })
-		// Groups start expanded — children are immediately visible
+		// Groups start collapsed — expand first group first
+		const groupLabel = container.querySelector('[data-list-group]')!
+		await fireEvent.click(groupLabel)
+		flushSync()
 		const childItem = container.querySelector('[data-list-item]')!
 		await fireEvent.click(childItem)
 		expect(onselect).toHaveBeenCalled()
@@ -247,12 +250,9 @@ describe('List', () => {
 		const nav = container.querySelector('nav[data-list]')!
 		const groupLabel = container.querySelector('[data-path="0"]') as HTMLElement
 		groupLabel.focus()
-		// Groups start expanded — collapse first
-		expect(groupLabel.getAttribute('aria-expanded')).toBe('true')
-		await fireEvent.keyDown(nav, { key: 'ArrowLeft' })
-		flushSync()
+		// Groups start collapsed
 		expect(groupLabel.getAttribute('aria-expanded')).toBe('false')
-		// Now expand with ArrowRight
+		// Expand with ArrowRight
 		await fireEvent.keyDown(nav, { key: 'ArrowRight' })
 		flushSync()
 		expect(groupLabel.getAttribute('aria-expanded')).toBe('true')
@@ -263,9 +263,12 @@ describe('List', () => {
 		const nav = container.querySelector('nav[data-list]')!
 		const groupLabel = container.querySelector('[data-path="0"]') as HTMLElement
 		groupLabel.focus()
-		// Groups start expanded
+		// Groups start collapsed — expand first
+		expect(groupLabel.getAttribute('aria-expanded')).toBe('false')
+		await fireEvent.keyDown(nav, { key: 'ArrowRight' })
+		flushSync()
 		expect(groupLabel.getAttribute('aria-expanded')).toBe('true')
-		// Collapse with ArrowLeft
+		// Now collapse with ArrowLeft
 		await fireEvent.keyDown(nav, { key: 'ArrowLeft' })
 		flushSync()
 		expect(groupLabel.getAttribute('aria-expanded')).toBe('false')
