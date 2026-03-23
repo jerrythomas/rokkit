@@ -59,6 +59,13 @@ Items that significantly improve the developer or end-user experience.
 - [ ] Theme color palette integration — charts draw series colors from active theme skin (`docs/features/07-Charts.md`)
 - [ ] Dark mode support for charts — background, gridlines, labels, and series adapt to dark mode (`docs/features/07-Charts.md`)
 - [ ] Accessible data table fallback — visually hidden data table in DOM for screen reader access (`docs/features/07-Charts.md`)
+- [x] BoxPlot — quartile aggregation via `@rokkit/data`, `fill` (body) + `color` (whiskers) aesthetics (2026-03-23)
+- [x] ViolinPlot — density shape via quartile anchors + catmullRom curve, `fill` + `color` aesthetics (2026-03-23)
+- [x] BubbleChart — scatter with `size` channel, `color` aesthetic, sizeScale sqrt encoding (2026-03-23)
+- [x] ggplot2-style aesthetic channels — `fill` for polygons, `color` for strokes/lines, all channels null-default independent (2026-03-23)
+- [ ] Horizontal BarChart — `orientation='horizontal'` flips x/y axes (issue #108)
+- [ ] Stacked / grouped BarChart — `stack` and `group` layout modes (issue #109)
+- [ ] Static color literal support — `fill`/`color` accepts CSS color values directly without groupBy (issue #110)
 
 ---
 

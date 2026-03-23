@@ -2432,3 +2432,68 @@ const sizeScale = buildSizeScale(data, 'value', 20)  // → sqrt scale [0, 20]
 **Build:** Tests 2694 passing. Lint 0 errors. All pre-existing warnings only.
 
 **Commit:** `bc6536f5` — feat(chart): add D3 scale builders (x band/linear, y linear, size sqrt)
+
+### Chart Playground Pages Update (2026-03-23)
+
+**Task 4 Complete:** Updated all 5 chart playground pages with full aesthetic prop controls and data visualization.
+
+**Changes made:**
+- Renamed data const to `chartData` in all 5 playgrounds (avoids conflict with `{#snippet data()}` syntax in Svelte 5)
+- **Bar Chart:** `colorField`, `patternField` (both string dropdowns); defaults: legend=true, dual-coded
+- **Area Chart:** Added `patternField` as string field dropdown; added curve options
+- **Pie Chart:** `patternField` (string); legend default changed to true
+- **Line Chart:** `symbolField` replaces boolean `symbol` prop; renamed data const from `multiData` to `chartData`
+- **Scatter Plot:** `symbolField` with 'channel' and 'tier' options; dual-coded aesthetic encoding
+
+**Data snippet implementation:**
+- Each playground now includes `{#snippet data()}` block with HTML table
+- Displays raw chart data with automatic column detection via `Object.keys(chartData[0])`
+- Accessible via database icon button in PlaySection toolbar
+- Styled with Rokkit utilities: `overflow-x-auto`, `text-xs`, border classes
+
+**Controls & Info display:**
+- FormRenderer with string field dropdowns (colorField, patternField/symbolField)
+- InfoField displays for all props (shows '(none)' for empty strings)
+- Lowercase labels (color, pattern, symbol, grid, legend)
+
+**Tests:** Chart test suite: 196 tests passing (35 files)
+
+**Commit:** `1e2afd1f` — feat(playground): ggplot-style aesthetic fields + data tables in chart playgrounds
+
+### Plan B Complete: BoxPlot, ViolinPlot, BubbleChart + Aesthetic Channel Fix (2026-03-23)
+
+**Plan B complete.** Three new chart types added to `@rokkit/chart`:
+
+**BoxPlot (`packages/chart/src/charts/BoxPlot.svelte`)**
+- `BoxBrewer` overrides `transform()` to compute quartile stats (q1, median, q3, iqr_min, iqr_max) via `@rokkit/data` groupBy/summarize
+- `buildBoxes` mark builder computes box geometry, whisker lines, median line
+- `fill` channel → box body color, `color` channel → whisker/outline stroke (independent, null = not applied)
+- Commits: `e8f87aea`, `ad7f18aa`, `c5a609de`
+
+**ViolinPlot (`packages/chart/src/charts/ViolinPlot.svelte`)**
+- `ViolinBrewer` mirrors BoxBrewer transform; adds `violins = $derived(...)` field
+- `buildViolins` creates closed SVG path using `curveCatmullRom` from 5 quartile anchor points mirrored left/right
+- `DENSITY_AT = { iqr_min: 0.08, q1: 0.55, median: 1.0, q3: 0.55, iqr_max: 0.08 }` drives width at each anchor
+- Commits: `80264c9e`, `e1972f43`, `eac4f388`
+
+**BubbleChart (`packages/chart/src/charts/BubbleChart.svelte`)**
+- Uses `ChartBrewer` directly (size channel + sizeScale already in base)
+- `size` prop drives radius via sqrt scale; `color` + `symbol` aesthetics supported
+- Commit: `f35c7a6a`
+
+**ggplot2-style Aesthetic Channel Fix**
+- `fill` → polygon interior (BarChart, AreaChart, PieChart); `color` → stroke/line (LineChart, ScatterPlot)
+- All aesthetic channels null-default with NO cross-channel fallbacks (ggplot2 convention)
+- Removed `pattern ?? fill` fallback from all polygon charts
+- `bars.js`: `fillKey = ff ? d[ff] : xVal`, `strokeKey = cf ? d[cf] : null` — independent
+- Commits: `d2c87ed8`, `5431fd8f`
+
+**Playground pages:** box-plot, violin-plot, bubble-chart added to site.
+
+**Final state:** 2791 tests passing, 0 lint errors.
+
+**Future work tracked:**
+- Horizontal BarChart (issue #108)
+- Stacked/grouped BarChart (issue #109)
+- Static color literal support (issue #110)
+- AnimatedChart / bar chart race via `createFrames()` + `useAnimation()` (issue #101)
