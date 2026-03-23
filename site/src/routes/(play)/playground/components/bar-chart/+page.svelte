@@ -5,15 +5,20 @@
 	import PlaySection from '$lib/components/PlaySection.svelte'
 
 	const chartData = [
-		{ category: 'Q1', revenue: 42000, region: 'North' },
-		{ category: 'Q2', revenue: 58000, region: 'South' },
-		{ category: 'Q3', revenue: 51000, region: 'East' },
-		{ category: 'Q4', revenue: 73000, region: 'West' }
+		{ category: 'Q1', revenue: 42000, cost: 31000, margin: 26, region: 'North' },
+		{ category: 'Q2', revenue: 58000, cost: 39000, margin: 33, region: 'South' },
+		{ category: 'Q3', revenue: 51000, cost: 36000, margin: 29, region: 'East' },
+		{ category: 'Q4', revenue: 73000, cost: 48000, margin: 34, region: 'West' },
+		{ category: 'Q5', revenue: 67000, cost: 44000, margin: 34, region: 'North' },
+		{ category: 'Q6', revenue: 80000, cost: 52000, margin: 35, region: 'South' },
+		{ category: 'Q7', revenue: 74000, cost: 49000, margin: 34, region: 'East' },
+		{ category: 'Q8', revenue: 91000, cost: 60000, margin: 34, region: 'West' }
 	]
 
 	let props = $state({
 		colorField: 'region',
 		patternField: 'region',
+		stat: 'identity',
 		grid: true,
 		legend: true
 	})
@@ -23,6 +28,7 @@
 		properties: {
 			colorField: { type: 'string' },
 			patternField: { type: 'string' },
+			stat: { type: 'string' },
 			grid: { type: 'boolean' },
 			legend: { type: 'boolean' }
 		}
@@ -40,6 +46,11 @@
 				scope: '#/patternField',
 				label: 'pattern',
 				props: { options: ['', 'region', 'category'] }
+			},
+			{
+				scope: '#/stat',
+				label: 'stat',
+				props: { options: ['identity', 'sum', 'mean', 'min', 'max', 'count'] }
 			},
 			{ scope: '#/grid', label: 'grid' },
 			{ scope: '#/legend', label: 'legend' },
@@ -61,6 +72,7 @@
 					y="revenue"
 					color={props.colorField || undefined}
 					pattern={props.patternField || undefined}
+					stat={props.stat}
 					grid={props.grid}
 					legend={props.legend}
 					width={560}
@@ -72,10 +84,8 @@
 
 	{#snippet controls()}
 		<FormRenderer bind:data={props} {schema} {layout} />
-		<InfoField label="color" value={props.colorField || '(none)'} />
-		<InfoField label="pattern" value={props.patternField || '(none)'} />
-		<InfoField label="grid" value={String(props.grid)} />
-		<InfoField label="legend" value={String(props.legend)} />
+		<InfoField label="x" value="category" />
+		<InfoField label="y" value="revenue" />
 	{/snippet}
 
 	{#snippet data()}

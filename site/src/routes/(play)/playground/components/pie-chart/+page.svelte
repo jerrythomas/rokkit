@@ -5,15 +5,17 @@
 	import PlaySection from '$lib/components/PlaySection.svelte'
 
 	const chartData = [
-		{ segment: 'Mobile', share: 42 },
-		{ segment: 'Desktop', share: 35 },
-		{ segment: 'Tablet', share: 15 },
-		{ segment: 'Other', share: 8 }
+		{ segment: 'Mobile',  share: 42, yoy: +8,  avgSession: 4.2 },
+		{ segment: 'Desktop', share: 35, yoy: -3,  avgSession: 9.7 },
+		{ segment: 'Tablet',  share: 15, yoy: +1,  avgSession: 6.1 },
+		{ segment: 'Smart TV', share: 5, yoy: +12, avgSession: 22.4 },
+		{ segment: 'Other',   share: 3,  yoy: -1,  avgSession: 2.8 }
 	]
 
 	let props = $state({
 		colorField: 'segment',
 		patternField: 'segment',
+		stat: 'sum',
 		legend: true
 	})
 
@@ -22,6 +24,7 @@
 		properties: {
 			colorField: { type: 'string' },
 			patternField: { type: 'string' },
+			stat: { type: 'string' },
 			legend: { type: 'boolean' }
 		}
 	}
@@ -38,6 +41,11 @@
 				scope: '#/patternField',
 				label: 'pattern',
 				props: { options: ['', 'segment'] }
+			},
+			{
+				scope: '#/stat',
+				label: 'stat',
+				props: { options: ['sum', 'mean', 'min', 'max', 'count'] }
 			},
 			{ scope: '#/legend', label: 'legend' },
 			{ type: 'separator' }
@@ -58,6 +66,7 @@
 					y="share"
 					color={props.colorField || undefined}
 					pattern={props.patternField || undefined}
+					stat={props.stat}
 					legend={props.legend}
 					width={400}
 					height={400}
@@ -68,9 +77,8 @@
 
 	{#snippet controls()}
 		<FormRenderer bind:data={props} {schema} {layout} />
-		<InfoField label="color" value={props.colorField || '(none)'} />
-		<InfoField label="pattern" value={props.patternField || '(none)'} />
-		<InfoField label="legend" value={String(props.legend)} />
+		<InfoField label="label" value="segment" />
+		<InfoField label="y" value="share" />
 	{/snippet}
 
 	{#snippet data()}

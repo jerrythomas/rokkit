@@ -33,3 +33,5 @@ export { default as ScatterPlot } from './charts/ScatterPlot.svelte'
 // Export utilities
 export { ChartBrewer } from './lib/brewing/index.svelte.js'
 export * from './lib/brewing/index.svelte.js'
+export { CartesianBrewer } from './lib/brewing/CartesianBrewer.svelte.js'
+export { PieBrewer } from './lib/brewing/PieBrewer.svelte.js'
