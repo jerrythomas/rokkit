@@ -73,7 +73,7 @@ export class ChartBrewer {
    * @param {string|Function} stat
    * @returns {Object[]}
    */
-  transform(data, channels, stat) {
+  transform(data, _channels, _stat) {
     return data
   }
 

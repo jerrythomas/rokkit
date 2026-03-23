@@ -7,6 +7,8 @@
  * @param {Map} [patternMap] - value→patternName
  * @returns {Array}
  */
+import { toPatternId } from '../patterns.js'
+
 export function buildBars(data, channels, xScale, yScale, colors, patternMap) {
   const { x: xf, y: yf, color: cf, pattern: pf } = channels
   const barWidth = typeof xScale.bandwidth === 'function' ? xScale.bandwidth() : 10
@@ -17,7 +19,7 @@ export function buildBars(data, channels, xScale, yScale, colors, patternMap) {
     const colorKey = cf ? d[cf] : xVal
     const colorEntry = colors?.get(colorKey) ?? { fill: '#888', stroke: '#444' }
     const patternKey = pf ? d[pf] : null
-    const patternName = patternKey != null ? patternMap?.get(patternKey) : null
+    const patternName = patternKey !== null && patternKey !== undefined ? patternMap?.get(patternKey) : null
     const barX = typeof xScale.bandwidth === 'function'
       ? xScale(xVal)
       : xScale(xVal) - barWidth / 2
@@ -32,7 +34,7 @@ export function buildBars(data, channels, xScale, yScale, colors, patternMap) {
       stroke: colorEntry.stroke,
       colorKey,
       patternKey,
-      patternId: patternName ? `chart-pat-${patternKey}` : null
+      patternId: patternName ? toPatternId(patternKey) : null
     }
   })
 }
