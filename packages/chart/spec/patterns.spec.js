@@ -7,14 +7,25 @@ describe('components', () => {
 	it('should contain all exported components', () => {
 		expect(Object.keys(components)).toEqual([
 			'Brick',
+			'Checkerboard',
+			'CircleGrid',
 			'Circles',
-			'Dots',
+			'CrossDot',
 			'CrossHatch',
-			'Waves',
+			'CurvedWave',
+			'DiagonalLines',
+			'DiamondOutline',
+			'Diamonds',
+			'Dots',
+			'Hexagons',
+			'HorizontalLines',
+			'OutlineCircles',
+			'ScatteredTriangles',
 			'Tile',
 			'Triangles',
-			'CurvedWave',
-			'OutlineCircles'
+			'VerticalLines',
+			'Waves',
+			'Zigzag'
 		])
 	})
 
