@@ -9,7 +9,7 @@
    *   data?: Object[],
    *   label?: string,
    *   y?: string,
-   *   color?: string,
+   *   fill?: string,
    *   pattern?: string,
    *   width?: number,
    *   height?: number,
@@ -22,7 +22,7 @@
     data = [],
     label = undefined,
     y = undefined,
-    color = undefined,
+    fill = undefined,
     pattern = undefined,
     width = 400,
     height = 400,
@@ -36,10 +36,10 @@
 
   $effect(() => {
     const channels = {}
-    if (label)   channels.label = label
-    if (y)       channels.y = y
-    if (color)   channels.color = color
-    const effectivePattern = pattern ?? color
+    if (label) channels.label = label
+    if (y)     channels.y = y
+    if (fill)  channels.fill = fill
+    const effectivePattern = pattern ?? fill
     if (effectivePattern) channels.pattern = effectivePattern
     brewer.update({ data, channels, width, height, mode, stat })
   })

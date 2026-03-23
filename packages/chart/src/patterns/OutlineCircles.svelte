@@ -1,13 +1,7 @@
 <script>
-	let { size = 10, fill = 'currentColor', stroke = 'currentColor' } = $props()
+	let { size = 10, stroke = 'currentColor', thickness = 1.5 } = $props()
 
-	let centres = $derived([
-		{ cx: 0, cy: 0 },
-		{ cx: size, cy: size }
-	])
-	let r = $derived(0.5 * size)
+	let r = $derived(size * 0.38)
 </script>
 
-{#each centres as { cx, cy }, index (index)}
-	<circle {cx} {cy} {r} {fill} {stroke} />
-{/each}
+<circle cx={size * 0.5} cy={size * 0.5} {r} fill="none" {stroke} stroke-width={thickness} />

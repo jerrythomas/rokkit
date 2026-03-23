@@ -1,18 +1,15 @@
 <script>
-	let { size = 10, fill = 'currentColor', stroke = 'currentColor' } = $props()
+	let { size = 10, fill = 'currentColor', stroke = 'none' } = $props()
 
-	let data = $derived(
-		[
-			{ cx: 0, cy: 0, r: 0.5 },
-			{ cx: 1, cy: 1, r: 0.5 }
-		].map(({ cx, cy, r }) => ({
-			cx: cx * size,
-			cy: cy * size,
-			r: r * size
-		}))
-	)
+	let dots = $derived([
+		{ cx: size * 0.5, cy: size * 0.5, r: size * 0.2 },
+		{ cx: 0, cy: 0, r: size * 0.2 },
+		{ cx: size, cy: 0, r: size * 0.2 },
+		{ cx: 0, cy: size, r: size * 0.2 },
+		{ cx: size, cy: size, r: size * 0.2 }
+	])
 </script>
 
-{#each data as { cx, cy, r }, index (index)}
-	<circle {cx} {cy} {r} {fill} {stroke} />
+{#each dots as { cx, cy, r }, index (index)}
+	<circle {cx} {cy} {r} {fill} stroke={stroke} />
 {/each}

@@ -19,6 +19,7 @@
   import VerticalLines from '../patterns/VerticalLines.svelte'
   import Waves from '../patterns/Waves.svelte'
   import Zigzag from '../patterns/Zigzag.svelte'
+  import { toPatternId } from './brewing/patterns.js'
 
   const COMPONENTS = {
     Brick, Checkerboard, CircleGrid, Circles, CrossDot, CrossHatch, CurvedWave,
@@ -36,7 +37,7 @@
     Array.from(patternMap.entries()).map(([key, name]) => {
       const color = colorMap.get(key) ?? { fill: '#ddd', stroke: '#666' }
       return {
-        id: `chart-pat-${key}`,
+        id: toPatternId(key),
         Component: COMPONENTS[name] ?? null,
         fill: color.fill,
         stroke: color.stroke

@@ -14,14 +14,16 @@ const DEFAULT_MARGIN = { top: 20, right: 20, bottom: 40, left: 50 }
  * Groups aesthetic channel mappings by field name, merging aesthetics that
  * share the same field into one legend section.
  *
- * @param {{ color?: string, pattern?: string, symbol?: string }} channels
+ * @param {{ fill?: string, color?: string, pattern?: string, symbol?: string }} channels
+ *   `fill` takes precedence over `color` for polygon charts (bars, areas, pie slices).
  * @param {Map<unknown, {fill:string, stroke:string}>} colorMap
  * @param {Map<unknown, string>} patternMap
  * @param {Map<unknown, string>} symbolMap
  * @returns {{ field: string, items: { label: string, fill: string|null, stroke: string|null, patternId: string|null, shape: string|null }[] }[]}
  */
 export function buildLegendGroups(channels, colorMap, patternMap, symbolMap) {
-  const { color: cf, pattern: pf, symbol: sf } = channels
+  const cf = channels.fill ?? channels.color
+  const { pattern: pf, symbol: sf } = channels
   const byField = new Map()
 
   if (cf) {
@@ -85,8 +87,8 @@ export class ChartBrewer {
 
   /** @type {Map<unknown, {fill:string,stroke:string}>} */
   colorMap = $derived(
-    this.#channels.color
-      ? assignColors(distinct(this.processedData, this.#channels.color), this.#mode)
+    (this.#channels.fill ?? this.#channels.color)
+      ? assignColors(distinct(this.processedData, this.#channels.fill ?? this.#channels.color), this.#mode)
       : new Map()
   )
 
@@ -166,6 +168,8 @@ export class ChartBrewer {
 
   /**
    * @param {{ data?: Object[], channels?: Object, width?: number, height?: number, mode?: string, margin?: Object, layers?: Object[], curve?: string, stat?: string|Function }} opts
+   *   Supported channel keys: `x`, `y`, `fill`, `color`, `pattern`, `symbol`, `size`, `label`.
+   *   `frame` is reserved for future animation use (no-op).
    */
   update(opts = {}) {
     if (opts.data     !== undefined) this.#rawData  = opts.data

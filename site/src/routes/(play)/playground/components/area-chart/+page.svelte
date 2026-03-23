@@ -5,22 +5,26 @@
 	import PlaySection from '$lib/components/PlaySection.svelte'
 
 	const chartData = [
-		{ month: 'Jan', revenue: 32000, region: 'North' },
-		{ month: 'Feb', revenue: 41000, region: 'North' },
-		{ month: 'Mar', revenue: 38000, region: 'North' },
-		{ month: 'Apr', revenue: 52000, region: 'North' },
-		{ month: 'May', revenue: 61000, region: 'North' },
-		{ month: 'Jun', revenue: 58000, region: 'North' },
-		{ month: 'Jan', revenue: 21000, region: 'South' },
-		{ month: 'Feb', revenue: 29000, region: 'South' },
-		{ month: 'Mar', revenue: 34000, region: 'South' },
-		{ month: 'Apr', revenue: 31000, region: 'South' },
-		{ month: 'May', revenue: 44000, region: 'South' },
-		{ month: 'Jun', revenue: 40000, region: 'South' }
+		{ month: 'Jan', revenue: 32000, target: 30000, growth: 7,  region: 'North' },
+		{ month: 'Feb', revenue: 41000, target: 38000, growth: 28, region: 'North' },
+		{ month: 'Mar', revenue: 38000, target: 42000, growth: -7, region: 'North' },
+		{ month: 'Apr', revenue: 52000, target: 45000, growth: 37, region: 'North' },
+		{ month: 'May', revenue: 61000, target: 55000, growth: 17, region: 'North' },
+		{ month: 'Jun', revenue: 58000, target: 60000, growth: -5, region: 'North' },
+		{ month: 'Jul', revenue: 67000, target: 62000, growth: 16, region: 'North' },
+		{ month: 'Aug', revenue: 74000, target: 70000, growth: 10, region: 'North' },
+		{ month: 'Jan', revenue: 21000, target: 22000, growth: -5, region: 'South' },
+		{ month: 'Feb', revenue: 29000, target: 27000, growth: 38, region: 'South' },
+		{ month: 'Mar', revenue: 34000, target: 31000, growth: 17, region: 'South' },
+		{ month: 'Apr', revenue: 31000, target: 35000, growth: -9, region: 'South' },
+		{ month: 'May', revenue: 44000, target: 40000, growth: 42, region: 'South' },
+		{ month: 'Jun', revenue: 40000, target: 43000, growth: -9, region: 'South' },
+		{ month: 'Jul', revenue: 51000, target: 47000, growth: 28, region: 'South' },
+		{ month: 'Aug', revenue: 55000, target: 52000, growth: 8,  region: 'South' }
 	]
 
 	let props = $state({
-		colorField: 'region',
+		fillField: 'region',
 		patternField: 'region',
 		curve: 'linear',
 		grid: true,
@@ -30,7 +34,7 @@
 	const schema = {
 		type: 'object',
 		properties: {
-			colorField: { type: 'string' },
+			fillField: { type: 'string' },
 			patternField: { type: 'string' },
 			curve: { type: 'string' },
 			grid: { type: 'boolean' },
@@ -42,8 +46,8 @@
 		type: 'vertical',
 		elements: [
 			{
-				scope: '#/colorField',
-				label: 'color',
+				scope: '#/fillField',
+				label: 'fill',
 				props: { options: ['', 'region', 'month'] }
 			},
 			{
@@ -74,7 +78,7 @@
 					data={chartData}
 					x="month"
 					y="revenue"
-					color={props.colorField || undefined}
+					fill={props.fillField || undefined}
 					pattern={props.patternField || undefined}
 					curve={props.curve}
 					grid={props.grid}
@@ -88,11 +92,8 @@
 
 	{#snippet controls()}
 		<FormRenderer bind:data={props} {schema} {layout} />
-		<InfoField label="color" value={props.colorField || '(none)'} />
-		<InfoField label="pattern" value={props.patternField || '(none)'} />
-		<InfoField label="curve" value={props.curve} />
-		<InfoField label="grid" value={String(props.grid)} />
-		<InfoField label="legend" value={String(props.legend)} />
+		<InfoField label="x" value="month" />
+		<InfoField label="y" value="revenue" />
 	{/snippet}
 
 	{#snippet data()}

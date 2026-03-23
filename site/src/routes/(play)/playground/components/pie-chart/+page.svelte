@@ -13,7 +13,7 @@
 	]
 
 	let props = $state({
-		colorField: 'segment',
+		fillField: 'segment',
 		patternField: 'segment',
 		stat: 'sum',
 		legend: true
@@ -22,7 +22,7 @@
 	const schema = {
 		type: 'object',
 		properties: {
-			colorField: { type: 'string' },
+			fillField: { type: 'string' },
 			patternField: { type: 'string' },
 			stat: { type: 'string' },
 			legend: { type: 'boolean' }
@@ -33,8 +33,8 @@
 		type: 'vertical',
 		elements: [
 			{
-				scope: '#/colorField',
-				label: 'color',
+				scope: '#/fillField',
+				label: 'fill',
 				props: { options: ['', 'segment'] }
 			},
 			{
@@ -64,7 +64,7 @@
 					data={chartData}
 					label="segment"
 					y="share"
-					color={props.colorField || undefined}
+					fill={props.fillField || undefined}
 					pattern={props.patternField || undefined}
 					stat={props.stat}
 					legend={props.legend}

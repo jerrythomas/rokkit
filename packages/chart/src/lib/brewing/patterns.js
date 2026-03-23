@@ -1,3 +1,13 @@
+/**
+ * Converts a data key to a safe SVG element ID for pattern references.
+ * Spaces and non-word characters are replaced to avoid broken url(#...) refs.
+ * @param {unknown} key
+ * @returns {string}
+ */
+export function toPatternId(key) {
+  return `chart-pat-${String(key).replace(/\s+/g, '-').replace(/[^\w-]/g, '_')}`
+}
+
 export const PATTERN_ORDER = [
   'Dots',
   'CrossHatch',

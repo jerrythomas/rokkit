@@ -1,6 +1,7 @@
 /**
  * @param {Object[]} data
- * @param {{ x: string, y: string, color?: string, pattern?: string }} channels
+ * @param {{ x: string, y: string, fill?: string, color?: string, pattern?: string }} channels
+ *   `fill` takes precedence over `color` for bar interior coloring.
  * @param {import('d3-scale').ScaleBand|import('d3-scale').ScaleLinear} xScale
  * @param {import('d3-scale').ScaleLinear} yScale
  * @param {Map} colors - value→{fill,stroke}
@@ -10,13 +11,14 @@
 import { toPatternId } from '../patterns.js'
 
 export function buildBars(data, channels, xScale, yScale, colors, patternMap) {
-  const { x: xf, y: yf, color: cf, pattern: pf } = channels
+  const { x: xf, y: yf, fill: ff, color: cf, pattern: pf } = channels
+  const fillField = ff ?? cf   // fill takes precedence over color
   const barWidth = typeof xScale.bandwidth === 'function' ? xScale.bandwidth() : 10
   const innerHeight = yScale.range()[0]
 
   return data.map((d) => {
     const xVal = d[xf]
-    const colorKey = cf ? d[cf] : xVal
+    const colorKey = fillField ? d[fillField] : xVal
     const colorEntry = colors?.get(colorKey) ?? { fill: '#888', stroke: '#444' }
     const patternKey = pf ? d[pf] : null
     const patternName = patternKey !== null && patternKey !== undefined ? patternMap?.get(patternKey) : null

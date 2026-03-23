@@ -16,7 +16,7 @@
 	]
 
 	let props = $state({
-		colorField: 'region',
+		fillField: 'region',
 		patternField: 'region',
 		stat: 'identity',
 		grid: true,
@@ -26,7 +26,7 @@
 	const schema = {
 		type: 'object',
 		properties: {
-			colorField: { type: 'string' },
+			fillField: { type: 'string' },
 			patternField: { type: 'string' },
 			stat: { type: 'string' },
 			grid: { type: 'boolean' },
@@ -38,8 +38,8 @@
 		type: 'vertical',
 		elements: [
 			{
-				scope: '#/colorField',
-				label: 'color',
+				scope: '#/fillField',
+				label: 'fill',
 				props: { options: ['', 'region', 'category'] }
 			},
 			{
@@ -70,7 +70,7 @@
 					data={chartData}
 					x="category"
 					y="revenue"
-					color={props.colorField || undefined}
+					fill={props.fillField || undefined}
 					pattern={props.patternField || undefined}
 					stat={props.stat}
 					grid={props.grid}
