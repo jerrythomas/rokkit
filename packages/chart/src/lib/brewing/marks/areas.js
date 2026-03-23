@@ -3,8 +3,8 @@ import { toPatternId } from '../patterns.js'
 
 /**
  * @param {Object[]} data
- * @param {{ x: string, y: string, fill?: string, color?: string, pattern?: string }} channels
- *   `fill` takes precedence over `color` for area interior coloring.
+ * @param {{ x: string, y: string, fill?: string, pattern?: string }} channels
+ *   `fill` is the primary aesthetic — drives grouping and interior color.
  * @param {Function} xScale
  * @param {Function} yScale
  * @param {Map} colors
@@ -13,7 +13,7 @@ import { toPatternId } from '../patterns.js'
  */
 export function buildAreas(data, channels, xScale, yScale, colors, curve, patternMap) {
   const { x: xf, y: yf, pattern: pf } = channels
-  const cf = channels.fill ?? channels.color   // fill takes precedence
+  const cf = channels.fill   // fill is the primary aesthetic for area charts
   const innerHeight = yScale.range()[0]
   const xPos = (d) => typeof xScale.bandwidth === 'function'
     ? xScale(d[xf]) + xScale.bandwidth() / 2

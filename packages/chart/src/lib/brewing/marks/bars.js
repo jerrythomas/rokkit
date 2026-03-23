@@ -1,7 +1,7 @@
 /**
  * @param {Object[]} data
  * @param {{ x: string, y: string, fill?: string, color?: string, pattern?: string }} channels
- *   `fill` takes precedence over `color` for bar interior coloring.
+ *   `fill` drives the bar interior color. `color` drives the border stroke; falls back to fill.
  * @param {import('d3-scale').ScaleBand|import('d3-scale').ScaleLinear} xScale
  * @param {import('d3-scale').ScaleLinear} yScale
  * @param {Map} colors - value→{fill,stroke}
@@ -12,14 +12,15 @@ import { toPatternId } from '../patterns.js'
 
 export function buildBars(data, channels, xScale, yScale, colors, patternMap) {
   const { x: xf, y: yf, fill: ff, color: cf, pattern: pf } = channels
-  const fillField = ff ?? cf   // fill takes precedence over color
   const barWidth = typeof xScale.bandwidth === 'function' ? xScale.bandwidth() : 10
   const innerHeight = yScale.range()[0]
 
   return data.map((d) => {
     const xVal = d[xf]
-    const colorKey = fillField ? d[fillField] : xVal
-    const colorEntry = colors?.get(colorKey) ?? { fill: '#888', stroke: '#444' }
+    const fillKey = ff ? d[ff] : xVal           // fill channel drives interior color
+    const strokeKey = cf ? d[cf] : null          // color channel drives border; null = no border
+    const colorEntry = colors?.get(fillKey) ?? { fill: '#888', stroke: '#444' }
+    const strokeEntry = colors?.get(strokeKey) ?? colorEntry
     const patternKey = pf ? d[pf] : null
     const patternName = patternKey !== null && patternKey !== undefined ? patternMap?.get(patternKey) : null
     const barX = typeof xScale.bandwidth === 'function'
@@ -33,8 +34,8 @@ export function buildBars(data, channels, xScale, yScale, colors, patternMap) {
       width: barWidth,
       height: innerHeight - barY,
       fill: colorEntry.fill,
-      stroke: colorEntry.stroke,
-      colorKey,
+      stroke: strokeKey !== null ? strokeEntry.stroke : null,
+      colorKey: fillKey,
       patternKey,
       patternId: patternName ? toPatternId(patternKey) : null
     }

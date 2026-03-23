@@ -40,8 +40,7 @@
     if (x)    channels.x = x
     if (y)    channels.y = y
     if (fill) channels.fill = fill
-    const effectivePattern = pattern ?? fill
-    if (effectivePattern) channels.pattern = effectivePattern
+    if (pattern) channels.pattern = pattern
     brewer.update({ data, channels, width, height, mode, stat })
   })
 
