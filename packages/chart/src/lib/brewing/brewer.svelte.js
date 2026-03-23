@@ -1,5 +1,5 @@
 import { distinct, assignColors } from './colors.js'
-import { assignPatterns } from './patterns.js'
+import { assignPatterns, toPatternId } from './patterns.js'
 import { assignSymbols } from './symbols.js'
 import { buildXScale, buildYScale, buildSizeScale } from './scales.js'
 import { buildBars } from './marks/bars.js'
@@ -49,14 +49,14 @@ export function buildLegendGroups(channels, colorMap, patternMap, symbolMap) {
       fill: aesthetics.includes('color') ? (colorMap.get(key)?.fill ?? null) : null,
       stroke: aesthetics.includes('color') ? (colorMap.get(key)?.stroke ?? null) : null,
       patternId:
-        aesthetics.includes('pattern') && patternMap.has(key) ? `chart-pat-${key}` : null,
+        aesthetics.includes('pattern') && patternMap.has(key) ? toPatternId(key) : null,
       shape: aesthetics.includes('symbol') ? (symbolMap.get(key) ?? 'circle') : null
     }))
   }))
 }
 
 export class ChartBrewer {
-  #data = $state([])
+  #rawData = $state([])
   #channels = $state({})
   #width = $state(600)
   #height = $state(400)
@@ -64,25 +64,43 @@ export class ChartBrewer {
   #margin = $state(DEFAULT_MARGIN)
   #layers = $state([])
   #curve = $state(/** @type {'linear'|'smooth'|'step'|undefined} */(undefined))
+  #stat = $state('identity')
+
+  /**
+   * Override in subclasses to apply stat aggregation.
+   * @param {Object[]} data
+   * @param {Object} channels
+   * @param {string|Function} stat
+   * @returns {Object[]}
+   */
+  transform(data, channels, stat) {
+    return data
+  }
+
+  /** Aggregated data — all derived marks read this, not #rawData */
+  processedData = $derived(this.transform(this.#rawData, this.#channels, this.#stat))
+
+  /** Exposes channels to subclasses for use in their own $derived properties */
+  get channels() { return this.#channels }
 
   /** @type {Map<unknown, {fill:string,stroke:string}>} */
   colorMap = $derived(
     this.#channels.color
-      ? assignColors(distinct(this.#data, this.#channels.color), this.#mode)
+      ? assignColors(distinct(this.processedData, this.#channels.color), this.#mode)
       : new Map()
   )
 
   /** @type {Map<unknown, string>} */
   patternMap = $derived(
     this.#channels.pattern
-      ? assignPatterns(distinct(this.#data, this.#channels.pattern))
+      ? assignPatterns(distinct(this.processedData, this.#channels.pattern))
       : new Map()
   )
 
   /** @type {Map<unknown, string>} */
   symbolMap = $derived(
     this.#channels.symbol
-      ? assignSymbols(distinct(this.#data, this.#channels.symbol))
+      ? assignSymbols(distinct(this.processedData, this.#channels.symbol))
       : new Map()
   )
 
@@ -91,49 +109,49 @@ export class ChartBrewer {
 
   xScale = $derived(
     this.#channels.x
-      ? buildXScale(this.#data, this.#channels.x, this.innerWidth)
+      ? buildXScale(this.processedData, this.#channels.x, this.innerWidth)
       : null
   )
 
   yScale = $derived(
     this.#channels.y
-      ? buildYScale(this.#data, this.#channels.y, this.innerHeight, this.#layers)
+      ? buildYScale(this.processedData, this.#channels.y, this.innerHeight, this.#layers)
       : null
   )
 
   sizeScale = $derived(
     this.#channels.size
-      ? buildSizeScale(this.#data, this.#channels.size)
+      ? buildSizeScale(this.processedData, this.#channels.size)
       : null
   )
 
   bars = $derived(
     this.xScale && this.yScale
-      ? buildBars(this.#data, this.#channels, this.xScale, this.yScale, this.colorMap, this.patternMap)
+      ? buildBars(this.processedData, this.#channels, this.xScale, this.yScale, this.colorMap, this.patternMap)
       : []
   )
 
   lines = $derived(
     this.xScale && this.yScale
-      ? buildLines(this.#data, this.#channels, this.xScale, this.yScale, this.colorMap, this.#curve)
+      ? buildLines(this.processedData, this.#channels, this.xScale, this.yScale, this.colorMap, this.#curve)
       : []
   )
 
   areas = $derived(
     this.xScale && this.yScale
-      ? buildAreas(this.#data, this.#channels, this.xScale, this.yScale, this.colorMap, this.#curve, this.patternMap)
+      ? buildAreas(this.processedData, this.#channels, this.xScale, this.yScale, this.colorMap, this.#curve, this.patternMap)
       : []
   )
 
   arcs = $derived(
     this.#channels.y
-      ? buildArcs(this.#data, this.#channels, this.colorMap, this.#width, this.#height)
+      ? buildArcs(this.processedData, this.#channels, this.colorMap, this.#width, this.#height)
       : []
   )
 
   points = $derived(
     this.xScale && this.yScale
-      ? buildPoints(this.#data, this.#channels, this.xScale, this.yScale, this.colorMap, this.sizeScale, this.symbolMap)
+      ? buildPoints(this.processedData, this.#channels, this.xScale, this.yScale, this.colorMap, this.sizeScale, this.symbolMap)
       : []
   )
 
@@ -147,10 +165,10 @@ export class ChartBrewer {
   get mode()    { return this.#mode }
 
   /**
-   * @param {{ data?: Object[], channels?: Object, width?: number, height?: number, mode?: string, margin?: Object, layers?: Object[] }} opts
+   * @param {{ data?: Object[], channels?: Object, width?: number, height?: number, mode?: string, margin?: Object, layers?: Object[], curve?: string, stat?: string|Function }} opts
    */
   update(opts = {}) {
-    if (opts.data     !== undefined) this.#data     = opts.data
+    if (opts.data     !== undefined) this.#rawData  = opts.data
     if (opts.channels !== undefined) this.#channels = opts.channels
     if (opts.width    !== undefined) this.#width    = opts.width
     if (opts.height   !== undefined) this.#height   = opts.height
@@ -158,5 +176,6 @@ export class ChartBrewer {
     if (opts.margin   !== undefined) this.#margin   = { ...DEFAULT_MARGIN, ...opts.margin }
     if (opts.layers   !== undefined) this.#layers   = opts.layers
     if (opts.curve    !== undefined) this.#curve    = opts.curve
+    if (opts.stat     !== undefined) this.#stat     = opts.stat
   }
 }

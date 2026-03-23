@@ -37,4 +37,13 @@ describe('ChartBrewer', () => {
     expect(brewer.xScale).toBeDefined()
     expect(brewer.yScale).toBeDefined()
   })
+
+  describe('transform hook', () => {
+    it('processedData equals raw data when transform is identity', () => {
+      const brewer = new ChartBrewer()
+      const data = [{ x: 1, y: 2 }]
+      brewer.update({ data })
+      expect(brewer.processedData).toEqual(data)
+    })
+  })
 })
