@@ -70,7 +70,7 @@
       {/if}
 
       <g data-chart-mark="point">
-        {#each points as pt (`${pt.cx}-${pt.cy}`)}
+        {#each points as pt, i (i)}
           <circle
             cx={pt.cx}
             cy={pt.cy}

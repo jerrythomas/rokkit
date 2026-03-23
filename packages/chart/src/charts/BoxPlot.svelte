@@ -71,7 +71,7 @@
       {/if}
 
       <g data-chart-mark="box">
-        {#each boxes as box (box.data[x])}
+        {#each boxes as box (`${box.data[x]}-${fill ? box.data[fill] : ''}`)}
           <g data-chart-element="box">
             <!-- Whisker line: iqr_min → iqr_max -->
             <line

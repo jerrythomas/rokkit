@@ -71,7 +71,7 @@
       {/if}
 
       <g data-chart-mark="violin">
-        {#each violins as v (v.data[x])}
+        {#each violins as v (`${v.data[x]}-${fill ? v.data[fill] : color ? v.data[color] : ''}`)}
           <path
             d={v.d}
             fill={v.fill}
