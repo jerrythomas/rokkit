@@ -76,7 +76,8 @@
   const legendItems = $derived(
     Array.from(colorMap.entries()).map(([key, entry]) => ({
       label: String(key),
-      fill: entry.fill
+      fill: entry.fill,
+      patternId: patternMap.size > 0 && patternMap.has(key) ? `chart-pat-${key}` : null
     }))
   )
 </script>
@@ -171,7 +172,13 @@
     <div data-chart-legend>
       {#each legendItems as item (item.label)}
         <div data-chart-legend-item>
-          <span data-chart-legend-swatch style="background-color: {item.fill}"></span>
+          {#if item.patternId}
+            <svg width="12" height="12" data-chart-legend-swatch>
+              <rect width="12" height="12" fill="url(#{item.patternId})" />
+            </svg>
+          {:else}
+            <span data-chart-legend-swatch style="background-color: {item.fill}"></span>
+          {/if}
           <span data-chart-legend-label>{item.label}</span>
         </div>
       {/each}

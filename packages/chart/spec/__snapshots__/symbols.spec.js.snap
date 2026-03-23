@@ -59,7 +59,7 @@ exports[`symbols > named paths > should render "asterisk" 1`] = `
   <path
     d="M 0 4.769 L 0 -4.769 M -4.13 -2.384 L 4.13 2.384 M -4.13 2.384 L 4.13 -2.384"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -75,7 +75,7 @@ exports[`symbols > named paths > should render "asterisk" with size and origin 1
   <path
     d="M 0 47.69 L 0 -47.69 M -41.3 -23.84 L 41.3 23.84 M -41.3 23.84 L 41.3 -23.84"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -91,7 +91,7 @@ exports[`symbols > named paths > should render "asterisk" with stroke and fill 1
   <path
     d="M 0 4.769 L 0 -4.769 M -4.13 -2.384 L 4.13 2.384 M -4.13 2.384 L 4.13 -2.384"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -107,7 +107,7 @@ exports[`symbols > named paths > should render "circle" 1`] = `
   <path
     d="M 4.5 0 A 4.5 4.5 0 1 1 -4.5 0 A 4.5 4.5 0 1 1 4.5 0"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -123,7 +123,7 @@ exports[`symbols > named paths > should render "circle" with size and origin 1`]
   <path
     d="M 45 0 A 45 45 0 10 10 -45 0 A 45 45 0 10 10 45 0"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -139,7 +139,7 @@ exports[`symbols > named paths > should render "circle" with stroke and fill 1`]
   <path
     d="M 4.5 0 A 4.5 4.5 0 1 1 -4.5 0 A 4.5 4.5 0 1 1 4.5 0"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -155,7 +155,7 @@ exports[`symbols > named paths > should render "cross" 1`] = `
   <path
     d="M -4.87 -4.87 L 4.87 4.87 M -4.87 4.87 L 4.87 -4.87"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -171,7 +171,7 @@ exports[`symbols > named paths > should render "cross" with size and origin 1`] 
   <path
     d="M -48.7 -48.7 L 48.7 48.7 M -48.7 48.7 L 48.7 -48.7"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -187,7 +187,7 @@ exports[`symbols > named paths > should render "cross" with stroke and fill 1`] 
   <path
     d="M -4.87 -4.87 L 4.87 4.87 M -4.87 4.87 L 4.87 -4.87"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -203,7 +203,7 @@ exports[`symbols > named paths > should render "diamond" 1`] = `
   <path
     d="M 0 -4.995 L 4.995 0 L 0 4.995 L -4.995 0 Z"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -219,7 +219,7 @@ exports[`symbols > named paths > should render "diamond" with size and origin 1`
   <path
     d="M 0 -49.95 L 49.95 0 L 0 49.95 L -49.95 0 Z"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -235,7 +235,7 @@ exports[`symbols > named paths > should render "diamond" with stroke and fill 1`
   <path
     d="M 0 -4.995 L 4.995 0 L 0 4.995 L -4.995 0 Z"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -251,7 +251,7 @@ exports[`symbols > named paths > should render "heart" 1`] = `
   <path
     d="M 4 0 A 0.8 0.8 0 0 0 0 -3 A 0.8 0.8 0 0 0 -4 0 L 0 4 L 4 0"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -267,7 +267,7 @@ exports[`symbols > named paths > should render "heart" with size and origin 1`] 
   <path
     d="M 40 0 A 8 8 0 0 0 0 -30 A 8 8 0 0 0 -40 0 L 0 40 L 40 0"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -283,7 +283,7 @@ exports[`symbols > named paths > should render "heart" with stroke and fill 1`] 
   <path
     d="M 4 0 A 0.8 0.8 0 0 0 0 -3 A 0.8 0.8 0 0 0 -4 0 L 0 4 L 4 0"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -299,7 +299,7 @@ exports[`symbols > named paths > should render "plus" 1`] = `
   <path
     d="M -6.873 0 L 6.873 0 M 0 6.873 L 0 -6.873"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -315,7 +315,7 @@ exports[`symbols > named paths > should render "plus" with size and origin 1`] =
   <path
     d="M -68.73 0 L 68.73 0 M 0 68.73 L 0 -68.73"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -331,7 +331,7 @@ exports[`symbols > named paths > should render "plus" with stroke and fill 1`] =
   <path
     d="M -6.873 0 L 6.873 0 M 0 6.873 L 0 -6.873"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -347,7 +347,7 @@ exports[`symbols > named paths > should render "square" 1`] = `
   <path
     d="M 3.534 3.534 L 3.534 -3.534 L -3.534 -3.534 L -3.534 3.534 Z"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -363,7 +363,7 @@ exports[`symbols > named paths > should render "square" with size and origin 1`]
   <path
     d="M 35.339999999999996 35.339999999999996 L 35.339999999999996 -35.339999999999996 L -35.339999999999996 -35.339999999999996 L -35.339999999999996 35.339999999999996 Z"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -379,7 +379,7 @@ exports[`symbols > named paths > should render "square" with stroke and fill 1`]
   <path
     d="M 3.534 3.534 L 3.534 -3.534 L -3.534 -3.534 L -3.534 3.534 Z"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -395,7 +395,7 @@ exports[`symbols > named paths > should render "star" 1`] = `
   <path
     d="M -0.19999 -5 L 0.92258 -1.54509 H 4.55529 L 1.61637 0.59017 L 2.73894 4.04509 L -0.19999 1.90983 L -3.13892 4.04509 L -2.01635 0.59017 L -4.95527 -1.54509 H -1.32256 L -0.19999 -5 Z"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -411,7 +411,7 @@ exports[`symbols > named paths > should render "star" with size and origin 1`] =
   <path
     d="M -1.9999 -50 L 9.2258 -15.4509 H 45.5529 L 16.163700000000002 5.9017 L 27.3894 40.450900000000004 L -1.9999 19.0983 L -31.389200000000002 40.450900000000004 L -20.1635 5.9017 L -49.552699999999994 -15.4509 H -13.2256 L -1.9999 -50 Z"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -427,7 +427,7 @@ exports[`symbols > named paths > should render "star" with stroke and fill 1`] =
   <path
     d="M -0.19999 -5 L 0.92258 -1.54509 H 4.55529 L 1.61637 0.59017 L 2.73894 4.04509 L -0.19999 1.90983 L -3.13892 4.04509 L -2.01635 0.59017 L -4.95527 -1.54509 H -1.32256 L -0.19999 -5 Z"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -443,7 +443,7 @@ exports[`symbols > named paths > should render "triangle" 1`] = `
   <path
     d="M 0 -5.443 L 4.714 2.721 L -4.714 2.721 Z"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -459,7 +459,7 @@ exports[`symbols > named paths > should render "triangle" with size and origin 1
   <path
     d="M 0 -54.42999999999999 L 47.14 27.21 L -47.14 27.21 Z"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -475,7 +475,7 @@ exports[`symbols > named paths > should render "triangle" with stroke and fill 1
   <path
     d="M 0 -5.443 L 4.714 2.721 L -4.714 2.721 Z"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"
@@ -491,7 +491,7 @@ exports[`symbols > named paths > should render default 1`] = `
   <path
     d="M 4.5 0 A 4.5 4.5 0 1 1 -4.5 0 A 4.5 4.5 0 1 1 4.5 0"
     fill="none"
-    fill-rule="evenodd"
+    fill-rule="nonzero"
     role="button"
     stroke="currentColor"
     stroke-width="1"

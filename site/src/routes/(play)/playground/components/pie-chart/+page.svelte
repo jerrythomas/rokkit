@@ -12,12 +12,14 @@
 	]
 
 	let props = $state({
+		patternField: '',
 		legend: false
 	})
 
 	const schema = {
 		type: 'object',
 		properties: {
+			patternField: { type: 'string' },
 			legend: { type: 'boolean' }
 		}
 	}
@@ -25,6 +27,11 @@
 	const layout = {
 		type: 'vertical',
 		elements: [
+			{
+				scope: '#/patternField',
+				label: 'Pattern field',
+				props: { options: ['', 'segment'] }
+			},
 			{ scope: '#/legend', label: 'Legend' },
 			{ type: 'separator' }
 		]
@@ -43,6 +50,7 @@
 					label="segment"
 					y="share"
 					color="segment"
+					pattern={props.patternField || undefined}
 					legend={props.legend}
 					width={400}
 					height={400}
@@ -53,6 +61,7 @@
 
 	{#snippet controls()}
 		<FormRenderer bind:data={props} {schema} {layout} />
+		<InfoField label="Pattern field" value={props.patternField || '(none)'} />
 		<InfoField label="Legend" value={String(props.legend)} />
 	{/snippet}
 </PlaySection>

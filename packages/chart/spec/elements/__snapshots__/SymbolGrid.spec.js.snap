@@ -9,7 +9,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
     <path
       d="M 18 0 A 18 18 0 4 4 -18 0 A 18 18 0 4 4 18 0"
       fill="#11b8aa"
-      fill-rule="evenodd"
+      fill-rule="nonzero"
       role="button"
       stroke="#11b8aa"
       stroke-width="1"
@@ -21,7 +21,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
     <path
       d="M 18 0 A 18 18 0 4 4 -18 0 A 18 18 0 4 4 18 0"
       fill="#11b8aa"
-      fill-rule="evenodd"
+      fill-rule="nonzero"
       role="button"
       stroke="#11b8aa"
       stroke-width="1"
@@ -33,7 +33,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
     <path
       d="M 18 0 A 18 18 0 4 4 -18 0 A 18 18 0 4 4 18 0"
       fill="#11b8aa"
-      fill-rule="evenodd"
+      fill-rule="nonzero"
       role="button"
       stroke="#11b8aa"
       stroke-width="1"
@@ -45,7 +45,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
     <path
       d="M 18 0 A 18 18 0 4 4 -18 0 A 18 18 0 4 4 18 0"
       fill="#11b8aa"
-      fill-rule="evenodd"
+      fill-rule="nonzero"
       role="button"
       stroke="#11b8aa"
       stroke-width="1"
@@ -57,7 +57,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
     <path
       d="M 18 0 A 18 18 0 4 4 -18 0 A 18 18 0 4 4 18 0"
       fill="#11b8aa"
-      fill-rule="evenodd"
+      fill-rule="nonzero"
       role="button"
       stroke="#11b8aa"
       stroke-width="1"
@@ -69,7 +69,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
     <path
       d="M 18 0 A 18 18 0 4 4 -18 0 A 18 18 0 4 4 18 0"
       fill="#11b8aa"
-      fill-rule="evenodd"
+      fill-rule="nonzero"
       role="button"
       stroke="#11b8aa"
       stroke-width="1"
@@ -81,7 +81,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
     <path
       d="M 18 0 A 18 18 0 4 4 -18 0 A 18 18 0 4 4 18 0"
       fill="#11b8aa"
-      fill-rule="evenodd"
+      fill-rule="nonzero"
       role="button"
       stroke="#11b8aa"
       stroke-width="1"
@@ -93,7 +93,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
     <path
       d="M 18 0 A 18 18 0 4 4 -18 0 A 18 18 0 4 4 18 0"
       fill="#11b8aa"
-      fill-rule="evenodd"
+      fill-rule="nonzero"
       role="button"
       stroke="#11b8aa"
       stroke-width="1"
@@ -105,7 +105,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
     <path
       d="M 18 0 A 18 18 0 4 4 -18 0 A 18 18 0 4 4 18 0"
       fill="#11b8aa"
-      fill-rule="evenodd"
+      fill-rule="nonzero"
       role="button"
       stroke="#11b8aa"
       stroke-width="1"

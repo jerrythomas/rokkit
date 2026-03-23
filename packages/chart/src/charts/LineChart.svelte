@@ -183,7 +183,14 @@
     <div data-chart-legend>
       {#each legendItems as item (item.label)}
         <div data-chart-legend-item>
-          <span data-chart-legend-swatch style="background-color: {item.fill}"></span>
+          {#if symbol}
+            <svg width="20" height="12" data-chart-legend-swatch>
+              <line x1="0" y1="6" x2="20" y2="6" stroke={item.fill} stroke-width="2" />
+              <Shape x={10} y={6} size={0.6} name={item.shape} fill={item.fill} stroke={item.fill} thickness={1} />
+            </svg>
+          {:else}
+            <span data-chart-legend-swatch style="background-color: {item.fill}"></span>
+          {/if}
           <span data-chart-legend-label>{item.label}</span>
         </div>
       {/each}

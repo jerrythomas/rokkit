@@ -26,7 +26,7 @@
 	{stroke}
 	transform="translate({x},{y})"
 	stroke-width={thickness}
-	fill-rule="evenodd"
+	fill-rule="nonzero"
 	role="button"
 	{onclick}
 	{onmouseover}

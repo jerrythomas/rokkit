@@ -273,9 +273,11 @@ exports[`components > should render Triangles 1`] = `
 exports[`components > should render Waves 1`] = `
 <div>
   <path
-    d=""
+    d="M 0 5 L 2.5 0 L 7.5 10 L 10 5"
     fill="none"
     stroke="currentColor"
+    stroke-linecap="round"
+    stroke-linejoin="round"
     stroke-width="0.5"
   />
   
