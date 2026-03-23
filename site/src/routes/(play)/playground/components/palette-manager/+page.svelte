@@ -254,7 +254,7 @@
 	{#snippet controls()}
 		{#each defaultRoles as role}
 			<div class="flex flex-col gap-1">
-				<label class="text-surface-z6 text-xs font-medium capitalize">{role}</label>
+				<span class="text-surface-z6 text-xs font-medium capitalize">{role}</span>
 				<Select
 					options={colorOptions}
 					value={config.mapping[role]}
