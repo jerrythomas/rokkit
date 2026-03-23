@@ -32,22 +32,30 @@ Feature: Sparklines
 
 ### Animated Charts
 
-Full chart components with animation that communicate data transitions and draw user attention to changes.
+Charts support time-series animation via a data-first approach: a `createFrames` utility in `@rokkit/data` partitions a dataset by a time/animate field, normalises each frame (filling missing combinations with zeroes), and returns a consistent array-per-frame that can be fed to Svelte's `tweened` store. The chart component receives the tweened data directly — no animation wrapper needed.
 
 ```gherkin
 Feature: Animated Charts
 
-  Scenario: Chart animates on initial render
-    Given a chart component with data
-    When the component mounts
-    Then the chart animates into view — bars grow, lines draw, arcs expand
-    And animation completes in a reasonable time
+  Scenario: Dataset is partitioned into normalised animation frames
+    Given a dataset with a time field (e.g. year, date)
+    When createFrames(data, { by: 'year', group: ['country'], template: { value: 0 } }) is called
+    Then an array of frames is returned, one per distinct time value
+    And each frame has the same set of child rows (missing combinations filled with zeroes)
+    And frames are sorted by time value
 
-  Scenario: Chart animates when data changes
-    Given a chart displaying a data series
-    When the data prop is updated
-    Then the chart transitions smoothly to the new data
-    And previous values are visibly replaced
+  Scenario: Chart animates by receiving a tweened data frame
+    Given an array of normalised frames from createFrames
+    And a Svelte tweened store stepping through frames
+    When the tweened value updates
+    Then the chart re-renders with interpolated values
+    And transitions are smooth
+
+  Scenario: Bar chart race uses the animated data-first approach
+    Given a population dataset with year, country, and value fields
+    When partitioned by year and tweened
+    Then a horizontal BarChart sorted by value animates as a racing bar chart
+    And no special chart wrapper is required
 
   Scenario: Animation is disabled for reduced motion preference
     Given a user with prefers-reduced-motion set
@@ -67,6 +75,7 @@ Feature: Chart Types
     Given a bar chart with categorical data
     When rendered
     Then each category is represented by a bar proportional to its value
+    And the bar chart can be oriented horizontally or vertically
     And grouped or stacked variants are available
 
   Scenario: Line chart shows trends over time
@@ -92,6 +101,54 @@ Feature: Chart Types
     When rendered
     Then each pair is plotted as a point
     And point size and color can encode additional dimensions
+
+  Scenario: Bubble chart encodes a third dimension via point size
+    Given a bubble chart with x, y, and size fields
+    When rendered
+    Then each data point is plotted as a circle
+    And circle radius encodes the size field proportionally
+    And color and symbol can encode additional dimensions
+
+  Scenario: Box plot shows distribution summary per category
+    Given a box plot with a categorical x and numeric y
+    When rendered
+    Then each category shows median, IQR box, and whiskers
+    And outliers are plotted as individual points
+
+  Scenario: Violin plot shows distribution shape per category
+    Given a violin plot with a categorical x and numeric y
+    When rendered
+    Then each category shows a mirrored kernel density estimate
+    And the width at any point encodes frequency
+```
+
+### Stat Transforms (ggplot2-style)
+
+Charts support a `stat` prop for ggplot2-style aggregation before rendering. This allows charts to accept raw, unaggregated data and compute summary statistics automatically.
+
+```gherkin
+Feature: Chart Stat Transforms
+
+  Scenario: Bar chart aggregates values using a stat
+    Given a bar chart with raw data and stat="sum"
+    When rendered
+    Then values sharing the same x (and color, if set) are summed
+    And one bar per unique combination is rendered
+
+  Scenario: Stat supports built-in named aggregations
+    Given a chart with stat set to "sum", "mean", "min", "max", or "count"
+    When rendered
+    Then the chart uses the corresponding d3-array aggregation
+
+  Scenario: Stat supports custom aggregation functions
+    Given a chart with stat set to a custom function
+    When rendered
+    Then the chart uses the custom function to reduce each group
+
+  Scenario: PieChart always aggregates
+    Given a pie chart with duplicate label values
+    When rendered
+    Then segments are always summed by label (identity is treated as sum)
 ```
 
 ### Interactive Charts
@@ -178,19 +235,51 @@ Feature: Accessible Chart Data
 
 ## Status
 
-| Feature                           | Status         |
-| --------------------------------- | -------------- |
-| Sparklines — line/bar/area        | ✅ Implemented |
-| Sparkline pattern fills           | 🔲 Planned     |
-| Animated bar chart                | 🔲 Planned     |
-| Animated line / area chart        | 🔲 Planned     |
-| Pie / donut chart                 | 🔲 Planned     |
-| Scatter chart                     | 🔲 Planned     |
-| Interactive tooltips              | 🔲 Planned     |
-| Click selection on data points    | 🔲 Planned     |
-| Zoom and pan                      | 🔲 Planned     |
-| Keyboard navigation within charts | 🔲 Planned     |
-| Theme color palette integration   | 🔲 Planned     |
-| Pattern fills for series          | 🔲 Planned     |
-| Dark mode support                 | 🔲 Planned     |
-| Accessible data table fallback    | 🔲 Planned     |
+### Core Chart Types
+
+| Feature                                  | Status         |
+| ---------------------------------------- | -------------- |
+| BarChart (vertical)                      | ✅ Implemented |
+| BarChart (horizontal orientation)        | 🔲 Planned     |
+| BarChart stacked variant                 | 🔲 Planned     |
+| BarChart grouped variant                 | 🔲 Planned     |
+| LineChart                                | ✅ Implemented |
+| AreaChart                                | ✅ Implemented |
+| PieChart                                 | ✅ Implemented |
+| ScatterPlot                              | ✅ Implemented |
+| BubbleChart (scatter + size encoding)    | 🔲 Planned     |
+| BoxPlot                                  | 🔲 Planned     |
+| ViolinPlot                               | 🔲 Planned     |
+| Sparklines — line/bar/area               | ✅ Implemented |
+
+### Visual Encoding
+
+| Feature                                  | Status         |
+| ---------------------------------------- | -------------- |
+| Color field mapping (palette)            | ✅ Implemented |
+| Pattern fills for series                 | ✅ Implemented |
+| SVG pattern ID sanitization              | ✅ Implemented |
+| Symbol shapes for scatter/line           | ✅ Implemented |
+| Legend                                   | ✅ Implemented |
+| Dark mode / theme integration            | ✅ Implemented |
+| Stat transforms (sum/mean/min/max/count) | ✅ Implemented |
+| Custom aggregation functions             | ✅ Implemented |
+
+### Animation
+
+| Feature                                            | Status     |
+| -------------------------------------------------- | ---------- |
+| `createFrames` utility (partitioned + normalised)  | 🔲 Planned |
+| Tweened animation composable                       | 🔲 Planned |
+| Bar chart race demo                                | 🔲 Planned |
+| `prefers-reduced-motion` support                   | 🔲 Planned |
+
+### Interactivity
+
+| Feature                           | Status     |
+| --------------------------------- | ---------- |
+| Interactive tooltips              | 🔲 Planned |
+| Click selection on data points    | 🔲 Planned |
+| Zoom and pan                      | 🔲 Planned |
+| Keyboard navigation within charts | 🔲 Planned |
+| Accessible data table fallback    | 🔲 Planned |
