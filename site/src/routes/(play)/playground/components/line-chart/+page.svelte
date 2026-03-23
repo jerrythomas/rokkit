@@ -4,8 +4,7 @@
 	import { FormRenderer, InfoField } from '@rokkit/forms'
 	import PlaySection from '$lib/components/PlaySection.svelte'
 
-	// Multi-region monthly data for multi-series demos
-	const multiData = [
+	const chartData = [
 		{ month: 'Jan', value: 32000, region: 'North' },
 		{ month: 'Feb', value: 41000, region: 'North' },
 		{ month: 'Mar', value: 38000, region: 'North' },
@@ -27,19 +26,19 @@
 	]
 
 	let props = $state({
-		colorField: '',
+		colorField: 'region',
+		symbolField: 'region',
 		curve: 'linear',
-		symbol: false,
 		grid: true,
-		legend: false
+		legend: true
 	})
 
 	const schema = {
 		type: 'object',
 		properties: {
 			colorField: { type: 'string' },
+			symbolField: { type: 'string' },
 			curve: { type: 'string' },
-			symbol: { type: 'boolean' },
 			grid: { type: 'boolean' },
 			legend: { type: 'boolean' }
 		}
@@ -50,17 +49,21 @@
 		elements: [
 			{
 				scope: '#/colorField',
-				label: 'Color field',
+				label: 'color',
+				props: { options: ['', 'region'] }
+			},
+			{
+				scope: '#/symbolField',
+				label: 'symbol',
 				props: { options: ['', 'region'] }
 			},
 			{
 				scope: '#/curve',
-				label: 'Curve',
+				label: 'curve',
 				props: { options: ['linear', 'smooth', 'step'] }
 			},
-			{ scope: '#/symbol', label: 'Symbols' },
-			{ scope: '#/grid', label: 'Grid' },
-			{ scope: '#/legend', label: 'Legend' },
+			{ scope: '#/grid', label: 'grid' },
+			{ scope: '#/legend', label: 'legend' },
 			{ type: 'separator' }
 		]
 	}
@@ -74,11 +77,11 @@
 					Regional Revenue by Month
 				</h4>
 				<LineChart
-					data={multiData}
+					data={chartData}
 					x="month"
 					y="value"
 					color={props.colorField || undefined}
-					symbol={props.symbol && props.colorField ? props.colorField : undefined}
+					symbol={props.symbolField || undefined}
 					curve={props.curve}
 					grid={props.grid}
 					legend={props.legend}
@@ -91,9 +94,33 @@
 
 	{#snippet controls()}
 		<FormRenderer bind:data={props} {schema} {layout} />
-		<InfoField label="Color field" value={props.colorField || '(none)'} />
-		<InfoField label="Curve" value={props.curve} />
-		<InfoField label="Grid" value={String(props.grid)} />
-		<InfoField label="Legend" value={String(props.legend)} />
+		<InfoField label="color" value={props.colorField || '(none)'} />
+		<InfoField label="symbol" value={props.symbolField || '(none)'} />
+		<InfoField label="curve" value={props.curve} />
+		<InfoField label="grid" value={String(props.grid)} />
+		<InfoField label="legend" value={String(props.legend)} />
+	{/snippet}
+
+	{#snippet data()}
+		<div class="overflow-x-auto">
+			<table class="w-full text-xs">
+				<thead>
+					<tr class="border-surface-z2 border-b">
+						{#each Object.keys(chartData[0]) as col}
+							<th class="text-surface-z4 py-1 pr-3 text-left font-medium">{col}</th>
+						{/each}
+					</tr>
+				</thead>
+				<tbody>
+					{#each chartData as row}
+						<tr class="border-surface-z2 border-b last:border-0">
+							{#each Object.values(row) as val}
+								<td class="py-1 pr-3">{val}</td>
+							{/each}
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+		</div>
 	{/snippet}
 </PlaySection>

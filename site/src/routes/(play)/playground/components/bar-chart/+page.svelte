@@ -4,7 +4,7 @@
 	import { FormRenderer, InfoField } from '@rokkit/forms'
 	import PlaySection from '$lib/components/PlaySection.svelte'
 
-	const data = [
+	const chartData = [
 		{ category: 'Q1', revenue: 42000, region: 'North' },
 		{ category: 'Q2', revenue: 58000, region: 'South' },
 		{ category: 'Q3', revenue: 51000, region: 'East' },
@@ -13,9 +13,9 @@
 
 	let props = $state({
 		colorField: 'region',
-		patternField: '',
+		patternField: 'region',
 		grid: true,
-		legend: false
+		legend: true
 	})
 
 	const schema = {
@@ -33,16 +33,16 @@
 		elements: [
 			{
 				scope: '#/colorField',
-				label: 'Color field',
+				label: 'color',
 				props: { options: ['', 'region', 'category'] }
 			},
 			{
 				scope: '#/patternField',
-				label: 'Pattern field',
+				label: 'pattern',
 				props: { options: ['', 'region', 'category'] }
 			},
-			{ scope: '#/grid', label: 'Grid' },
-			{ scope: '#/legend', label: 'Legend' },
+			{ scope: '#/grid', label: 'grid' },
+			{ scope: '#/legend', label: 'legend' },
 			{ type: 'separator' }
 		]
 	}
@@ -56,7 +56,7 @@
 					Quarterly Revenue
 				</h4>
 				<BarChart
-					{data}
+					data={chartData}
 					x="category"
 					y="revenue"
 					color={props.colorField || undefined}
@@ -72,9 +72,32 @@
 
 	{#snippet controls()}
 		<FormRenderer bind:data={props} {schema} {layout} />
-		<InfoField label="Color field" value={props.colorField || '(none)'} />
-		<InfoField label="Pattern field" value={props.patternField || '(none)'} />
-		<InfoField label="Grid" value={String(props.grid)} />
-		<InfoField label="Legend" value={String(props.legend)} />
+		<InfoField label="color" value={props.colorField || '(none)'} />
+		<InfoField label="pattern" value={props.patternField || '(none)'} />
+		<InfoField label="grid" value={String(props.grid)} />
+		<InfoField label="legend" value={String(props.legend)} />
+	{/snippet}
+
+	{#snippet data()}
+		<div class="overflow-x-auto">
+			<table class="w-full text-xs">
+				<thead>
+					<tr class="border-surface-z2 border-b">
+						{#each Object.keys(chartData[0]) as col}
+							<th class="text-surface-z4 py-1 pr-3 text-left font-medium">{col}</th>
+						{/each}
+					</tr>
+				</thead>
+				<tbody>
+					{#each chartData as row}
+						<tr class="border-surface-z2 border-b last:border-0">
+							{#each Object.values(row) as val}
+								<td class="py-1 pr-3">{val}</td>
+							{/each}
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+		</div>
 	{/snippet}
 </PlaySection>

@@ -4,17 +4,16 @@
 	import { FormRenderer, InfoField } from '@rokkit/forms'
 	import PlaySection from '$lib/components/PlaySection.svelte'
 
-	// Multi-channel data: different categories and channels
-	const data = [
-		{ sessions: 120, conversions: 18, channel: 'Email', tier: 'Basic' },
-		{ sessions: 340, conversions: 45, channel: 'Social', tier: 'Pro' },
-		{ sessions: 200, conversions: 22, channel: 'Email', tier: 'Pro' },
+	const chartData = [
+		{ sessions: 120, conversions: 18, channel: 'Email',   tier: 'Basic' },
+		{ sessions: 340, conversions: 45, channel: 'Social',  tier: 'Pro' },
+		{ sessions: 200, conversions: 22, channel: 'Email',   tier: 'Pro' },
 		{ sessions: 480, conversions: 71, channel: 'Organic', tier: 'Enterprise' },
-		{ sessions: 150, conversions: 14, channel: 'Paid', tier: 'Basic' },
-		{ sessions: 390, conversions: 60, channel: 'Social', tier: 'Enterprise' },
+		{ sessions: 150, conversions: 14, channel: 'Paid',    tier: 'Basic' },
+		{ sessions: 390, conversions: 60, channel: 'Social',  tier: 'Enterprise' },
 		{ sessions: 270, conversions: 38, channel: 'Organic', tier: 'Pro' },
-		{ sessions: 510, conversions: 82, channel: 'Paid', tier: 'Enterprise' },
-		{ sessions: 95,  conversions: 10, channel: 'Email', tier: 'Basic' },
+		{ sessions: 510, conversions: 82, channel: 'Paid',    tier: 'Enterprise' },
+		{ sessions: 95,  conversions: 10, channel: 'Email',   tier: 'Basic' },
 		{ sessions: 430, conversions: 55, channel: 'Organic', tier: 'Pro' }
 	]
 
@@ -22,7 +21,7 @@
 		colorField: 'channel',
 		symbolField: 'tier',
 		grid: true,
-		legend: false
+		legend: true
 	})
 
 	const schema = {
@@ -40,16 +39,16 @@
 		elements: [
 			{
 				scope: '#/colorField',
-				label: 'Color field',
+				label: 'color',
 				props: { options: ['', 'channel', 'tier'] }
 			},
 			{
 				scope: '#/symbolField',
-				label: 'Symbol field',
+				label: 'symbol',
 				props: { options: ['', 'channel', 'tier'] }
 			},
-			{ scope: '#/grid', label: 'Grid' },
-			{ scope: '#/legend', label: 'Legend' },
+			{ scope: '#/grid', label: 'grid' },
+			{ scope: '#/legend', label: 'legend' },
 			{ type: 'separator' }
 		]
 	}
@@ -63,7 +62,7 @@
 					Sessions vs Conversions
 				</h4>
 				<ScatterPlot
-					{data}
+					data={chartData}
 					x="sessions"
 					y="conversions"
 					color={props.colorField || undefined}
@@ -79,9 +78,32 @@
 
 	{#snippet controls()}
 		<FormRenderer bind:data={props} {schema} {layout} />
-		<InfoField label="Color field" value={props.colorField || '(none)'} />
-		<InfoField label="Symbol field" value={props.symbolField || '(none)'} />
-		<InfoField label="Grid" value={String(props.grid)} />
-		<InfoField label="Legend" value={String(props.legend)} />
+		<InfoField label="color" value={props.colorField || '(none)'} />
+		<InfoField label="symbol" value={props.symbolField || '(none)'} />
+		<InfoField label="grid" value={String(props.grid)} />
+		<InfoField label="legend" value={String(props.legend)} />
+	{/snippet}
+
+	{#snippet data()}
+		<div class="overflow-x-auto">
+			<table class="w-full text-xs">
+				<thead>
+					<tr class="border-surface-z2 border-b">
+						{#each Object.keys(chartData[0]) as col}
+							<th class="text-surface-z4 py-1 pr-3 text-left font-medium">{col}</th>
+						{/each}
+					</tr>
+				</thead>
+				<tbody>
+					{#each chartData as row}
+						<tr class="border-surface-z2 border-b last:border-0">
+							{#each Object.values(row) as val}
+								<td class="py-1 pr-3">{val}</td>
+							{/each}
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+		</div>
 	{/snippet}
 </PlaySection>

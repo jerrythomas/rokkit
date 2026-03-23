@@ -4,7 +4,7 @@
 	import { FormRenderer, InfoField } from '@rokkit/forms'
 	import PlaySection from '$lib/components/PlaySection.svelte'
 
-	const data = [
+	const chartData = [
 		{ segment: 'Mobile', share: 42 },
 		{ segment: 'Desktop', share: 35 },
 		{ segment: 'Tablet', share: 15 },
@@ -12,13 +12,15 @@
 	]
 
 	let props = $state({
-		patternField: '',
-		legend: false
+		colorField: 'segment',
+		patternField: 'segment',
+		legend: true
 	})
 
 	const schema = {
 		type: 'object',
 		properties: {
+			colorField: { type: 'string' },
 			patternField: { type: 'string' },
 			legend: { type: 'boolean' }
 		}
@@ -28,11 +30,16 @@
 		type: 'vertical',
 		elements: [
 			{
-				scope: '#/patternField',
-				label: 'Pattern field',
+				scope: '#/colorField',
+				label: 'color',
 				props: { options: ['', 'segment'] }
 			},
-			{ scope: '#/legend', label: 'Legend' },
+			{
+				scope: '#/patternField',
+				label: 'pattern',
+				props: { options: ['', 'segment'] }
+			},
+			{ scope: '#/legend', label: 'legend' },
 			{ type: 'separator' }
 		]
 	}
@@ -46,10 +53,10 @@
 					Market Share by Device
 				</h4>
 				<PieChart
-					{data}
+					data={chartData}
 					label="segment"
 					y="share"
-					color="segment"
+					color={props.colorField || undefined}
 					pattern={props.patternField || undefined}
 					legend={props.legend}
 					width={400}
@@ -61,7 +68,31 @@
 
 	{#snippet controls()}
 		<FormRenderer bind:data={props} {schema} {layout} />
-		<InfoField label="Pattern field" value={props.patternField || '(none)'} />
-		<InfoField label="Legend" value={String(props.legend)} />
+		<InfoField label="color" value={props.colorField || '(none)'} />
+		<InfoField label="pattern" value={props.patternField || '(none)'} />
+		<InfoField label="legend" value={String(props.legend)} />
+	{/snippet}
+
+	{#snippet data()}
+		<div class="overflow-x-auto">
+			<table class="w-full text-xs">
+				<thead>
+					<tr class="border-surface-z2 border-b">
+						{#each Object.keys(chartData[0]) as col}
+							<th class="text-surface-z4 py-1 pr-3 text-left font-medium">{col}</th>
+						{/each}
+					</tr>
+				</thead>
+				<tbody>
+					{#each chartData as row}
+						<tr class="border-surface-z2 border-b last:border-0">
+							{#each Object.values(row) as val}
+								<td class="py-1 pr-3">{val}</td>
+							{/each}
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+		</div>
 	{/snippet}
 </PlaySection>
