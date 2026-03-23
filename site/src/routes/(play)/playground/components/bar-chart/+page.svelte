@@ -4,47 +4,51 @@
 	import { FormRenderer, InfoField } from '@rokkit/forms'
 	import PlaySection from '$lib/components/PlaySection.svelte'
 
-	// 32 rows: 4 regions × 8 quarters — enables aggregation demos (x=region, stat=sum → 4 bars)
+	// 32 rows: 4 regions × 8 quarters
+	// With x=region + stat=sum/mean/count: 4 aggregated bars (good stat demo)
+	// With x=quarter + no fill + stat=sum: 8 aggregated bars
+	// With x=quarter + fill=region: 32 bars at 8 positions (overlap — dodge not yet supported)
 	const chartData = [
-		{ quarter: 'Q1', revenue: 42000, region: 'North' },
-		{ quarter: 'Q2', revenue: 38000, region: 'North' },
-		{ quarter: 'Q3', revenue: 51000, region: 'North' },
-		{ quarter: 'Q4', revenue: 67000, region: 'North' },
-		{ quarter: 'Q5', revenue: 45000, region: 'North' },
-		{ quarter: 'Q6', revenue: 72000, region: 'North' },
-		{ quarter: 'Q7', revenue: 59000, region: 'North' },
-		{ quarter: 'Q8', revenue: 83000, region: 'North' },
-		{ quarter: 'Q1', revenue: 58000, region: 'South' },
-		{ quarter: 'Q2', revenue: 63000, region: 'South' },
-		{ quarter: 'Q3', revenue: 47000, region: 'South' },
-		{ quarter: 'Q4', revenue: 71000, region: 'South' },
-		{ quarter: 'Q5', revenue: 54000, region: 'South' },
-		{ quarter: 'Q6', revenue: 80000, region: 'South' },
-		{ quarter: 'Q7', revenue: 66000, region: 'South' },
-		{ quarter: 'Q8', revenue: 91000, region: 'South' },
-		{ quarter: 'Q1', revenue: 35000, region: 'East' },
-		{ quarter: 'Q2', revenue: 49000, region: 'East' },
-		{ quarter: 'Q3', revenue: 61000, region: 'East' },
-		{ quarter: 'Q4', revenue: 44000, region: 'East' },
-		{ quarter: 'Q5', revenue: 77000, region: 'East' },
-		{ quarter: 'Q6', revenue: 53000, region: 'East' },
-		{ quarter: 'Q7', revenue: 68000, region: 'East' },
-		{ quarter: 'Q8', revenue: 85000, region: 'East' },
-		{ quarter: 'Q1', revenue: 73000, region: 'West' },
-		{ quarter: 'Q2', revenue: 56000, region: 'West' },
-		{ quarter: 'Q3', revenue: 82000, region: 'West' },
-		{ quarter: 'Q4', revenue: 39000, region: 'West' },
-		{ quarter: 'Q5', revenue: 64000, region: 'West' },
-		{ quarter: 'Q6', revenue: 48000, region: 'West' },
-		{ quarter: 'Q7', revenue: 91000, region: 'West' },
-		{ quarter: 'Q8', revenue: 75000, region: 'West' }
+		{ quarter: 'Q1', revenue: 42000, margin: 26, region: 'North' },
+		{ quarter: 'Q2', revenue: 38000, margin: 22, region: 'North' },
+		{ quarter: 'Q3', revenue: 51000, margin: 29, region: 'North' },
+		{ quarter: 'Q4', revenue: 67000, margin: 34, region: 'North' },
+		{ quarter: 'Q5', revenue: 45000, margin: 27, region: 'North' },
+		{ quarter: 'Q6', revenue: 72000, margin: 36, region: 'North' },
+		{ quarter: 'Q7', revenue: 59000, margin: 31, region: 'North' },
+		{ quarter: 'Q8', revenue: 83000, margin: 38, region: 'North' },
+		{ quarter: 'Q1', revenue: 58000, margin: 33, region: 'South' },
+		{ quarter: 'Q2', revenue: 63000, margin: 35, region: 'South' },
+		{ quarter: 'Q3', revenue: 47000, margin: 28, region: 'South' },
+		{ quarter: 'Q4', revenue: 71000, margin: 37, region: 'South' },
+		{ quarter: 'Q5', revenue: 54000, margin: 30, region: 'South' },
+		{ quarter: 'Q6', revenue: 80000, margin: 39, region: 'South' },
+		{ quarter: 'Q7', revenue: 66000, margin: 34, region: 'South' },
+		{ quarter: 'Q8', revenue: 91000, margin: 41, region: 'South' },
+		{ quarter: 'Q1', revenue: 35000, margin: 21, region: 'East' },
+		{ quarter: 'Q2', revenue: 49000, margin: 26, region: 'East' },
+		{ quarter: 'Q3', revenue: 61000, margin: 32, region: 'East' },
+		{ quarter: 'Q4', revenue: 44000, margin: 25, region: 'East' },
+		{ quarter: 'Q5', revenue: 77000, margin: 38, region: 'East' },
+		{ quarter: 'Q6', revenue: 53000, margin: 29, region: 'East' },
+		{ quarter: 'Q7', revenue: 68000, margin: 35, region: 'East' },
+		{ quarter: 'Q8', revenue: 85000, margin: 40, region: 'East' },
+		{ quarter: 'Q1', revenue: 73000, margin: 36, region: 'West' },
+		{ quarter: 'Q2', revenue: 56000, margin: 30, region: 'West' },
+		{ quarter: 'Q3', revenue: 82000, margin: 39, region: 'West' },
+		{ quarter: 'Q4', revenue: 39000, margin: 23, region: 'West' },
+		{ quarter: 'Q5', revenue: 64000, margin: 33, region: 'West' },
+		{ quarter: 'Q6', revenue: 48000, margin: 27, region: 'West' },
+		{ quarter: 'Q7', revenue: 91000, margin: 42, region: 'West' },
+		{ quarter: 'Q8', revenue: 75000, margin: 37, region: 'West' }
 	]
 
 	let props = $state({
-		xField: 'quarter',
+		xField: 'region',
+		yField: 'revenue',
 		fillField: 'region',
 		patternField: '',
-		stat: 'identity',
+		stat: 'sum',
 		grid: true,
 		legend: true
 	})
@@ -53,6 +57,7 @@
 		type: 'object',
 		properties: {
 			xField: { type: 'string' },
+			yField: { type: 'string' },
 			fillField: { type: 'string' },
 			patternField: { type: 'string' },
 			stat: { type: 'string' },
@@ -67,7 +72,12 @@
 			{
 				scope: '#/xField',
 				label: 'x',
-				props: { options: ['quarter', 'region'] }
+				props: { options: ['region', 'quarter'] }
+			},
+			{
+				scope: '#/yField',
+				label: 'y',
+				props: { options: ['revenue', 'margin'] }
 			},
 			{
 				scope: '#/fillField',
@@ -96,12 +106,12 @@
 		<div class="flex flex-col gap-8 p-6">
 			<div>
 				<h4 class="text-surface-z5 m-0 mb-3 text-xs uppercase tracking-widest font-semibold">
-					Quarterly Revenue by Region
+					Revenue by Region
 				</h4>
 				<BarChart
 					data={chartData}
 					x={props.xField}
-					y="revenue"
+					y={props.yField}
 					fill={props.fillField || undefined}
 					pattern={props.patternField || undefined}
 					stat={props.stat}
@@ -116,7 +126,6 @@
 
 	{#snippet controls()}
 		<FormRenderer bind:data={props} {schema} {layout} />
-		<InfoField label="y" value="revenue" />
 	{/snippet}
 
 	{#snippet data()}
