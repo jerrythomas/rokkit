@@ -136,7 +136,11 @@
 				{ title: 'Line Chart', slug: '/playground/components/line-chart', icon: 'i-glyph:chart-square' },
 				{ title: 'Area Chart', slug: '/playground/components/area-chart', icon: 'i-glyph:chart-square' },
 				{ title: 'Pie Chart', slug: '/playground/components/pie-chart', icon: 'i-glyph:chart-square' },
-				{ title: 'Scatter Plot', slug: '/playground/components/scatter-plot', icon: 'i-glyph:chart-square' }
+				{ title: 'Scatter Plot', slug: '/playground/components/scatter-plot', icon: 'i-glyph:chart-square' },
+				{ title: 'Bubble Chart', slug: '/playground/components/bubble-chart', icon: 'i-glyph:chart-square' },
+				{ title: 'Box Plot', slug: '/playground/components/box-plot', icon: 'i-glyph:chart-square' },
+				{ title: 'Violin Plot', slug: '/playground/components/violin-plot', icon: 'i-glyph:chart-square' },
+				{ title: 'Chart Marks', slug: '/playground/components/chart-marks', icon: 'i-glyph:chart-square' }
 			]
 		},
 		{

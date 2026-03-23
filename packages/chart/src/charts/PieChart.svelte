@@ -57,7 +57,7 @@
   )
 </script>
 
-<div class="chart-container" data-chart-root data-chart-type="pie">
+<div data-chart-root data-chart-type="pie">
   <svg
     {width}
     {height}
@@ -72,7 +72,6 @@
     <!-- Arcs centered in the SVG -->
     {#if arcs && arcs.length > 0}
       <g
-        class="chart-arcs"
         data-chart-mark="arc"
         transform="translate({width / 2}, {height / 2})"
       >
@@ -91,7 +90,7 @@
 
     <!-- Legend -->
     {#if legend && legendGroups.length > 0}
-      <g class="chart-legend" transform="translate(10, 10)" data-chart-legend>
+      <g transform="translate(10, 10)" data-chart-legend>
         {#each legendAllItems as item, i}
           {#if item._title}
             <text x="0" y={i * 20 + 9} font-size="9" fill="currentColor" font-weight="bold" data-chart-legend-title>{item._title}</text>
@@ -115,7 +114,7 @@
 </div>
 
 <style>
-  .chart-container {
+  [data-chart-root] {
     position: relative;
     width: 100%;
     height: auto;
@@ -126,7 +125,7 @@
     overflow: visible;
   }
 
-  .chart-legend {
+  [data-chart-legend] {
     font-size: 11px;
     fill: currentColor;
   }

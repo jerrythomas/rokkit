@@ -79,7 +79,7 @@
   const legendGroups = $derived(brewer.legendGroups)
 </script>
 
-<div class="chart-container" data-chart-root data-chart-type="area">
+<div data-chart-root data-chart-type="area">
   <svg
     {width}
     {height}
@@ -92,13 +92,13 @@
     {/if}
 
     <g
-      class="chart-area"
+     
       transform="translate({margin.left}, {margin.top})"
       data-chart-canvas
     >
       <!-- Grid lines -->
       {#if grid}
-        <g class="chart-grid" data-chart-grid>
+        <g data-chart-grid>
           {#each gridLines as line}
             <line
               x1="0"
@@ -112,7 +112,7 @@
       {/if}
 
       <!-- Areas -->
-      <g class="chart-areas" data-chart-mark="area">
+      <g data-chart-mark="area">
         {#each areas as seg (seg.key ?? seg.d)}
           <path
             d={seg.d}
@@ -126,10 +126,10 @@
 
       <!-- X axis -->
       {#if xScale}
-        <g class="axis x-axis" transform="translate(0, {innerHeight})" data-chart-axis="x">
+        <g transform="translate(0, {innerHeight})" data-chart-axis="x">
           <line x1="0" y1="0" x2={innerWidth} y2="0" data-chart-axis-line />
           {#each xTicks as tick}
-            <g class="chart-tick" transform="translate({tick.x}, 0)" data-chart-tick>
+            <g transform="translate({tick.x}, 0)" data-chart-tick>
               <line x1="0" y1="0" x2="0" y2="6" />
               <text x="0" y="9" text-anchor="middle" dominant-baseline="hanging" data-chart-tick-label>
                 {tick.value}
@@ -141,10 +141,10 @@
 
       <!-- Y axis -->
       {#if yScale}
-        <g class="axis y-axis" data-chart-axis="y">
+        <g data-chart-axis="y">
           <line x1="0" y1="0" x2="0" y2={innerHeight} data-chart-axis-line />
           {#each yTicks as tick}
-            <g class="chart-tick" transform="translate(0, {tick.y})" data-chart-tick>
+            <g transform="translate(0, {tick.y})" data-chart-tick>
               <line x1="-6" y1="0" x2="0" y2="0" />
               <text x="-9" y="0" text-anchor="end" dominant-baseline="middle" data-chart-tick-label>
                 {tick.value}
@@ -182,7 +182,7 @@
 </div>
 
 <style>
-  .chart-container {
+  [data-chart-root] {
     position: relative;
     width: 100%;
     height: auto;
@@ -193,16 +193,16 @@
     overflow: visible;
   }
 
-  .chart-area {
+  [data-chart-canvas] {
     pointer-events: all;
   }
 
-  .axis {
+  [data-chart-axis] {
     font-size: 11px;
     fill: currentColor;
   }
 
-  .chart-grid {
+  [data-chart-grid] {
     pointer-events: none;
   }
 </style>
