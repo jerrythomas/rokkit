@@ -29,9 +29,11 @@ export { default as LineChart } from './charts/LineChart.svelte'
 export { default as AreaChart } from './charts/AreaChart.svelte'
 export { default as PieChart } from './charts/PieChart.svelte'
 export { default as ScatterPlot } from './charts/ScatterPlot.svelte'
+export { default as BoxPlot } from './charts/BoxPlot.svelte'
 
 // Export utilities
 export { ChartBrewer } from './lib/brewing/index.svelte.js'
 export * from './lib/brewing/index.svelte.js'
 export { CartesianBrewer } from './lib/brewing/CartesianBrewer.svelte.js'
 export { PieBrewer } from './lib/brewing/PieBrewer.svelte.js'
+export { BoxBrewer } from './lib/brewing/BoxBrewer.svelte.js'
