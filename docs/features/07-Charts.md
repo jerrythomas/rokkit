@@ -1,285 +1,466 @@
 # Charts
 
-Rokkit includes charting components designed to feel native to the rest of the library. They follow the same data-driven approach — pass data as-is, map fields, apply themes — and extend it to data visualization. Charts are accessible, interactive, and support the same theming system, including skins, dark mode, and pattern fills for non-color differentiation.
+Rokkit includes a composable `Plot` system for data visualization. It follows the same data-driven philosophy as the rest of the library — pass data as-is, map fields to visual channels, apply themes — and extends it to cover the full range of chart types, overlays, facets, animation, and linked interaction.
+
+Charts are configured via a `PlotSpec` JSON schema (suitable for AI/backend generation) or a declarative component API. Both normalize to the same internal `PlotState` before rendering. Theme, dark mode, and pattern fills are all supported.
+
+---
 
 ## Features
 
-### Sparklines
+### Plot System
 
-Compact, inline charts that communicate a trend or shape at a glance. Sparklines are embeddable anywhere — inside cards, tables, or list items — without requiring a dedicated chart container.
+The core composable chart primitive. A `Plot` hosts one or more geom layers on shared axes.
+
+```gherkin
+Feature: Plot System
+
+  Scenario: Plot renders a single geom
+    Given a Plot with data, x/y channels, and a Bar geom
+    When rendered
+    Then a bar chart appears with shared axis and grid
+
+  Scenario: Plot overlays multiple geoms on shared axes
+    Given a Plot with Bar and Line geoms on the same data
+    When rendered
+    Then both geoms share the same x and y scales
+    And the y domain is the union of both geoms' data ranges
+
+  Scenario: Plot accepts a serializable PlotSpec
+    Given a PlotSpec object with data, channels, and geoms array
+    When passed to <Plot spec={...} />
+    Then the chart renders identically to the declarative form
+    And the spec can be JSON.stringify'd without loss
+
+  Scenario: Plot accepts helpers for function-based extensions
+    Given a spec with a custom stat name and tooltip: true
+    And a helpers object with stats and tooltip functions
+    When rendered
+    Then the custom stat is applied and tooltip uses the provided function
+
+  Scenario: Geom orientation is inferred from scale types
+    Given a bar chart with x mapped to a numeric field and y mapped to a categorical field
+    When rendered
+    Then horizontal bars are produced without any explicit orientation prop
+    And swapping x and y back produces vertical bars
+```
+
+### PlotSpec — Serializable Chart Schema
+
+```gherkin
+Feature: PlotSpec
+
+  Scenario: Spec is fully serializable
+    Given a PlotSpec with data, channels, geoms, labels, and stat
+    When JSON.stringify is called on it
+    Then no functions, components, or non-serializable values are present
+
+  Scenario: Labels map field names to display names
+    Given a spec with labels: { cty: 'City MPG', hwy: 'Highway MPG' }
+    When rendered
+    Then axis labels and legend titles show the display names
+    And Plot does not perform any translation — labels are pre-resolved by the caller
+
+  Scenario: Labels support i18n from outside
+    Given a spec where labels are resolved by a Paraglide message function
+    When the user switches language
+    Then the parent re-resolves labels and passes new strings
+    And Plot re-renders with updated labels
+```
+
+### Geom Layer
+
+Pure render components. Each geom reads post-stat data and shared scales from context.
+
+```gherkin
+Feature: Geom Layer
+
+  Scenario: Bar geom renders grouped bars by default
+    Given a Bar geom with color channel set
+    When rendered
+    Then one bar group per x value, one bar per color value
+
+  Scenario: Bar geom supports stacking
+    Given a Bar geom with options: { stack: true }
+    When rendered
+    Then bars are stacked, total height equals sum of values
+
+  Scenario: Arc geom renders as pie by default
+    Given an Arc geom with theta channel
+    When rendered with options: { innerRadius: 0 }
+    Then a full pie chart is shown
+
+  Scenario: Arc geom renders as donut
+    Given an Arc geom with options: { innerRadius: 0.6 }
+    When rendered
+    Then a donut chart is shown with inner hole at 60% of outer radius
+
+  Scenario: Custom geom is registered via helpers
+    Given a helpers object with geoms: { hexbin: HexbinComponent }
+    And a spec with geoms: [{ type: 'hexbin' }]
+    When rendered
+    Then the custom component is used for that geom layer
+```
+
+### Stat Transforms
+
+Charts accept raw unaggregated data. Stats aggregate per geom before rendering.
+
+```gherkin
+Feature: Stat Transforms
+
+  Scenario: Built-in stat aggregates value channel
+    Given a Bar geom with stat: 'sum' and raw transactional data
+    When rendered
+    Then values are summed per x+color group before bars are drawn
+
+  Scenario: Multiple geoms use different stats on the same data
+    Given a Plot with Bar (stat: 'sum') and Line (stat: 'mean') on the same raw data
+    When rendered
+    Then bars show totals and the line shows averages on a shared y axis
+
+  Scenario: Custom stat name resolves via helpers
+    Given a geom with stat: 'weighted_mean'
+    And helpers.stats.weighted_mean defined as a function
+    When rendered
+    Then the custom function is used for aggregation
+
+  Scenario: Unknown stat name falls back gracefully
+    Given a geom with stat: 'unknown_stat' and no helpers entry
+    When rendered
+    Then a console warning is issued and identity (no aggregation) is used
+```
+
+### Color Scales
+
+```gherkin
+Feature: Color Scales
+
+  Scenario: Categorical color — string field
+    Given a color channel mapped to a string field (e.g. region)
+    When rendered
+    Then each distinct value gets a palette color
+    And the legend shows labeled swatches
+
+  Scenario: Sequential color — numeric field
+    Given a color channel mapped to a numeric field (e.g. contribution count)
+    And colorScale: 'sequential' or field is numeric (inferred)
+    When rendered
+    Then color interpolates from light to dark across the value range
+    And the legend shows a gradient bar
+
+  Scenario: Diverging color — numeric field with midpoint
+    Given a color channel mapped to a numeric field and colorMidpoint: 0
+    When rendered
+    Then color diverges from the midpoint in two directions
+    And the legend shows a gradient bar centered at the midpoint
+
+  Scenario: Color scale overridden via helpers
+    Given helpers.colorScale set to a d3 sequential scale
+    When rendered
+    Then the provided scale is used for color mapping
+```
+
+### Facet Plots
+
+```gherkin
+Feature: Facet Plots
+
+  Scenario: Data is split into panels by a field
+    Given a spec with facet: { by: 'region', cols: 3 }
+    When rendered
+    Then one panel per distinct region value is shown in a 3-column CSS grid
+    And each panel title shows the region value
+
+  Scenario: Fixed scales keep panels comparable
+    Given a facet plot with scales: 'fixed' (default)
+    When rendered
+    Then all panels share the same x and y domains
+    And the same bar height means the same value across panels
+
+  Scenario: Free scales let panels use independent domains
+    Given a facet plot with scales: 'free'
+    When rendered
+    Then each panel uses its own x and y domain
+
+  Scenario: Missing values produce gaps not errors
+    Given a facet plot where one panel has no data for a particular x category
+    When rendered
+    Then the x-axis still shows that category (gap in bars)
+    And no error or reordering occurs
+    And other panels remain aligned
+
+  Scenario: Stat runs within each panel
+    Given a facet plot with Bar stat: 'sum'
+    When rendered
+    Then each panel aggregates its own data slice independently
+
+  Scenario: Axis and legend are shared across panels
+    Given a facet plot with legend: true
+    When rendered
+    Then y-axis appears only on leftmost column
+    And x-axis appears only on bottom row
+    And a single legend appears outside the grid
+```
+
+### Animation / Race Plot
+
+```gherkin
+Feature: Animation
+
+  Scenario: Frames are built from a time field
+    Given a spec with animate: { by: 'year' } and raw multi-year data
+    When AnimatedPlot renders
+    Then one frame per distinct year is produced
+    And missing combinations per frame are filled with 0
+
+  Scenario: Scales are computed from full data before animation
+    Given an animated bar chart
+    When frames advance
+    Then the y axis domain does not change between frames
+    And bars can be compared across frames by absolute height
+
+  Scenario: Stat runs within each frame
+    Given animate: { by: 'year' } and Bar stat: 'sum'
+    When rendered
+    Then each year's data is aggregated independently
+
+  Scenario: Timeline controls are rendered
+    Given an AnimatedPlot
+    When rendered
+    Then play/pause, scrub slider, speed control, and frame label are shown below the chart
+
+  Scenario: Animation respects reduced-motion preference
+    Given prefers-reduced-motion is set
+    When frames advance
+    Then the chart jumps directly to each frame without tweening
+
+  Scenario: Bar chart race animates sorted positions
+    Given a bar chart with animate.by set and bars sorted by value per frame
+    When frames advance
+    Then bar positions tween smoothly as rankings change between frames
+```
+
+### CrossFilter — Linked Interactive Charts
+
+dc.js-style: multiple charts share a filter context. Interacting with one chart filters all others.
+
+```gherkin
+Feature: CrossFilter
+
+  Scenario: Multiple plots share a filter context
+    Given a CrossFilter wrapping two Plot components
+    When the user clicks a bar in Plot 1 (filterable)
+    Then Plot 2 re-renders showing only data matching the selected value
+    And filtered-out marks in Plot 1 are dimmed (data-dimmed attribute)
+
+  Scenario: Click interaction filters a categorical dimension
+    Given a Bar geom with filterable prop
+    When the user clicks a bar
+    Then that bar's x value is added to the filter for that dimension
+    And clicking again removes it (toggle)
+
+  Scenario: Brush interaction filters a continuous range
+    Given a Point geom with brush prop
+    When the user drags a range on the canvas
+    Then a [min, max] range filter is applied to the brushed dimension
+
+  Scenario: Filtered-out marks are dimmed by default
+    Given a CrossFilter with default mode
+    When a filter is active
+    Then out-of-filter marks remain visible at reduced opacity
+    And in-filter marks render at full opacity
+
+  Scenario: Filtered-out marks can be hidden
+    Given a CrossFilter with mode="hide"
+    When a filter is active
+    Then out-of-filter marks are not rendered
+
+  Scenario: CrossFilter works with spec API
+    Given a createCrossFilter() instance passed in helpers
+    When any linked Plot's filter changes
+    Then all other Plots using the same crossfilter instance re-render
+
+  Scenario: FilterBar is a compact filterable chart
+    Given a FilterBar component with data and field
+    When rendered
+    Then a small filterable bar chart appears suitable for a filter panel
+    And clicking a bar updates the shared CrossFilter state
+```
+
+### Tooltips
+
+```gherkin
+Feature: Tooltips
+
+  Scenario: Default tooltip shows field values on hover
+    Given a Plot with tooltip: true
+    When the user hovers a mark
+    Then a tooltip shows the data fields for that mark using display labels
+
+  Scenario: Custom tooltip renderer from helpers
+    Given helpers.tooltip defined as a function
+    When the user hovers a mark
+    Then the function's return string is shown in the tooltip
+
+  Scenario: Tooltip uses label map for field names
+    Given a spec with labels: { cty: 'City MPG' }
+    When the tooltip appears
+    Then it shows 'City MPG' not 'cty'
+```
+
+### Sparklines
 
 ```gherkin
 Feature: Sparklines
 
-  Scenario: Sparkline renders a trend from a data series
-    Given a Sparkline component with a numeric array
-    When rendered inline within a card or table cell
+  Scenario: Sparkline renders a trend inline
+    Given a Sparkline with a numeric array
+    When rendered inside a card or table cell
     Then a compact line, bar, or area chart appears
-    And no axes, labels, or legends are shown by default
+    And no axes, labels, or legends are shown
 
-  Scenario: Sparkline inherits theme colors
+  Scenario: Sparkline inherits theme color
     Given a themed application
     When a sparkline renders
-    Then it uses the theme's primary or accent color
+    Then it uses the theme's semantic color (primary, danger, etc.)
     And switches correctly in dark mode
-
-  Scenario: Sparkline supports pattern fill
-    Given a sparkline in a context where color alone is insufficient
-    When a pattern fill is configured
-    Then the chart area uses a repeating pattern instead of a solid color
-    And the chart remains distinguishable without relying on color
 ```
 
-### Animated Charts
-
-Charts support time-series animation via a data-first approach: a `createFrames` utility in `@rokkit/data` partitions a dataset by a time/animate field, normalises each frame (filling missing combinations with zeroes), and returns a consistent array-per-frame that can be fed to Svelte's `tweened` store. The chart component receives the tweened data directly — no animation wrapper needed.
+### Accessibility
 
 ```gherkin
-Feature: Animated Charts
-
-  Scenario: Dataset is partitioned into normalised animation frames
-    Given a dataset with a time field (e.g. year, date)
-    When createFrames(data, { by: 'year', group: ['country'], template: { value: 0 } }) is called
-    Then an array of frames is returned, one per distinct time value
-    And each frame has the same set of child rows (missing combinations filled with zeroes)
-    And frames are sorted by time value
-
-  Scenario: Chart animates by receiving a tweened data frame
-    Given an array of normalised frames from createFrames
-    And a Svelte tweened store stepping through frames
-    When the tweened value updates
-    Then the chart re-renders with interpolated values
-    And transitions are smooth
-
-  Scenario: Bar chart race uses the animated data-first approach
-    Given a population dataset with year, country, and value fields
-    When partitioned by year and tweened
-    Then a horizontal BarChart sorted by value animates as a racing bar chart
-    And no special chart wrapper is required
-
-  Scenario: Animation is disabled for reduced motion preference
-    Given a user with prefers-reduced-motion set
-    When a chart renders or updates
-    Then data is shown immediately without animation
-    And no motion is introduced
-```
-
-### Chart Types
-
-A range of chart types covering the most common data visualization needs in application interfaces.
-
-```gherkin
-Feature: Chart Types
-
-  Scenario: Bar chart compares values across categories
-    Given a bar chart with categorical data
-    When rendered
-    Then each category is represented by a bar proportional to its value
-    And the bar chart can be oriented horizontally or vertically
-    And grouped or stacked variants are available
-
-  Scenario: Line chart shows trends over time
-    Given a line chart with time-series data
-    When rendered
-    Then a line connects data points in sequence
-    And multiple series can be overlaid
-
-  Scenario: Area chart shows volume over time
-    Given an area chart
-    When rendered
-    Then the region below the line is filled
-    And stacked area charts are available for part-to-whole relationships
-
-  Scenario: Pie and donut charts show part-to-whole proportions
-    Given a pie or donut chart with segment data
-    When rendered
-    Then each segment is proportional to its share of the total
-    And a center label is available on donut charts
-
-  Scenario: Scatter chart shows correlation between two variables
-    Given a scatter chart with x/y data pairs
-    When rendered
-    Then each pair is plotted as a point
-    And point size and color can encode additional dimensions
-
-  Scenario: Bubble chart encodes a third dimension via point size
-    Given a bubble chart with x, y, and size fields
-    When rendered
-    Then each data point is plotted as a circle
-    And circle radius encodes the size field proportionally
-    And color and symbol can encode additional dimensions
-
-  Scenario: Box plot shows distribution summary per category
-    Given a box plot with a categorical x and numeric y
-    When rendered
-    Then each category shows median, IQR box, and whiskers
-    And outliers are plotted as individual points
-
-  Scenario: Violin plot shows distribution shape per category
-    Given a violin plot with a categorical x and numeric y
-    When rendered
-    Then each category shows a mirrored kernel density estimate
-    And the width at any point encodes frequency
-```
-
-### Stat Transforms (ggplot2-style)
-
-Charts support a `stat` prop for ggplot2-style aggregation before rendering. This allows charts to accept raw, unaggregated data and compute summary statistics automatically.
-
-```gherkin
-Feature: Chart Stat Transforms
-
-  Scenario: Bar chart aggregates values using a stat
-    Given a bar chart with raw data and stat="sum"
-    When rendered
-    Then values sharing the same x (and color, if set) are summed
-    And one bar per unique combination is rendered
-
-  Scenario: Stat supports built-in named aggregations
-    Given a chart with stat set to "sum", "mean", "min", "max", or "count"
-    When rendered
-    Then the chart uses the corresponding d3-array aggregation
-
-  Scenario: Stat supports custom aggregation functions
-    Given a chart with stat set to a custom function
-    When rendered
-    Then the chart uses the custom function to reduce each group
-
-  Scenario: PieChart always aggregates
-    Given a pie chart with duplicate label values
-    When rendered
-    Then segments are always summed by label (identity is treated as sum)
-```
-
-### Interactive Charts
-
-Charts respond to user interaction — hover, click, and zoom — so that data visualization is explorable, not just decorative.
-
-```gherkin
-Feature: Interactive Charts
-
-  Scenario: Tooltip appears on hover
-    Given a chart with hover interaction enabled
-    When the user hovers over a data point or bar
-    Then a tooltip displays the exact value and associated label
-    And disappears when the cursor moves away
-
-  Scenario: Data point is selectable
-    Given a chart with click interaction enabled
-    When the user clicks on a data point
-    Then a selection event fires with the data for that point
-    And the application can respond to the selection
-
-  Scenario: Chart supports zoom and pan
-    Given a chart with a large data range
-    When the user scrolls or drags within the chart
-    Then the visible range adjusts
-    And the chart re-renders to the new view window
-
-  Scenario: Keyboard interaction works within charts
-    Given a chart with keyboard interaction enabled
-    When the user tabs into the chart
-    Then focus moves between data points or segments
-    And the current point's data is announced to screen readers
-```
-
-### Theme and Pattern Support
-
-Charts participate in the same theming system as other components. Pattern fills provide an alternative to color for differentiating data series.
-
-```gherkin
-Feature: Chart Theme and Pattern Support
-
-  Scenario: Chart uses theme color palette
-    Given a chart in a themed application
-    When rendered
-    Then series colors are drawn from the theme's palette
-    And switching themes updates chart colors
-
-  Scenario: Pattern fills differentiate series without color
-    Given a chart displaying multiple data series
-    When pattern fills are enabled
-    Then each series uses a distinct repeating pattern — stripes, dots, hatching
-    And the chart is interpretable without relying on color contrast alone
-
-  Scenario: Dark mode applies correctly
-    Given a chart in dark mode
-    When rendered
-    Then background, gridlines, labels, and series colors adapt
-    And the chart remains readable against a dark surface
-```
-
-### Accessible Chart Data
-
-Charts are readable by screen readers and provide non-visual access to the underlying data they represent.
-
-```gherkin
-Feature: Accessible Chart Data
+Feature: Accessible Charts
 
   Scenario: Chart has an accessible label
-    Given a chart component
-    Then it has an aria-label or associated heading that describes the chart's subject
+    Given a chart component with title or aria-label
+    Then screen readers announce the chart subject
 
   Scenario: Data is available as a structured table
-    Given a chart with data series
+    Given any chart with data
     When rendered
     Then a visually hidden data table is present in the DOM
-    And screen readers can navigate the table to access the values
+    And screen readers can navigate it to access values
 
   Scenario: Key data points are announced on keyboard focus
     Given a keyboard-navigable chart
-    When focus moves to a data point
-    Then its label and value are announced by screen readers
-    And the context (series name, category) is included
+    When focus moves to a mark
+    Then label, value, and series context are announced
 ```
+
+---
 
 ## Status
 
-### Core Chart Types
+### Plot System
 
-| Feature                                  | Status         |
-| ---------------------------------------- | -------------- |
-| BarChart (vertical)                      | ✅ Implemented |
-| BarChart (horizontal orientation)        | 🔲 Planned     |
-| BarChart stacked variant                 | 🔲 Planned     |
-| BarChart grouped variant                 | 🔲 Planned     |
-| LineChart                                | ✅ Implemented |
-| AreaChart                                | ✅ Implemented |
-| PieChart                                 | ✅ Implemented |
-| ScatterPlot                              | ✅ Implemented |
-| BubbleChart (scatter + size encoding)    | 🔲 Planned     |
-| BoxPlot                                  | 🔲 Planned     |
-| ViolinPlot                               | 🔲 Planned     |
-| Sparklines — line/bar/area               | ✅ Implemented |
+| Feature | Status |
+|---------|--------|
+| `Plot.svelte` orchestrator | 🔲 Planned |
+| `PlotSpec` JSON schema | 🔲 Planned |
+| `PlotState` reactive class | 🔲 Planned |
+| Declarative geom children API | 🔲 Planned |
+| Spec-driven API | 🔲 Planned |
+| Helpers pattern (stats, format, tooltip, geoms) | 🔲 Planned |
+
+### Geoms
+
+| Feature | Status |
+|---------|--------|
+| Bar (vertical + horizontal via scale inference) | 🔲 Planned |
+| Bar stacked | 🔲 Planned |
+| Line | ✅ Implemented (extract to geom) |
+| Area | ✅ Implemented (extract to geom) |
+| Area stacked | 🔲 Planned |
+| Point / Scatter | ✅ Implemented (extract to geom) |
+| Box | ✅ Implemented (extract to geom) |
+| Violin | ✅ Implemented (extract to geom) |
+| Arc (pie + donut via innerRadius) | ✅ Implemented (extract to geom) |
+| Hexbin | 🔲 Planned (#121) |
+| Heatmap | 🔲 Planned (#122) |
+| Candlestick | 🔲 Planned (#123) |
+| Waterfall | 🔲 Planned (#124) |
+| Ribbon / Sankey | 🔲 Planned (#125) |
 
 ### Visual Encoding
 
-| Feature                                  | Status         |
-| ---------------------------------------- | -------------- |
-| Color field mapping (palette)            | ✅ Implemented |
-| Pattern fills for series                 | ✅ Implemented |
-| SVG pattern ID sanitization              | ✅ Implemented |
-| Symbol shapes for scatter/line           | ✅ Implemented |
-| Legend                                   | ✅ Implemented |
-| Dark mode / theme integration            | ✅ Implemented |
-| Stat transforms (sum/mean/min/max/count) | ✅ Implemented |
-| Custom aggregation functions             | ✅ Implemented |
+| Feature | Status |
+|---------|--------|
+| Categorical color scale (palette) | ✅ Implemented |
+| Sequential color scale | 🔲 Planned (#126) |
+| Diverging color scale | 🔲 Planned (#126) |
+| Pattern fills | ✅ Implemented |
+| Symbol shapes | ✅ Implemented |
+| Labels map + i18n-external contract | 🔲 Planned |
+| Tick formatters via helpers.format | 🔲 Planned |
+| Dark mode / theme integration | ✅ Implemented |
+
+### Infrastructure
+
+| Feature | Status |
+|---------|--------|
+| Shared axis (Axis.svelte) | ✅ Implemented |
+| Quadrant-aware axis (axisOrigin) | 🔲 Planned (future) |
+| Shared grid | ✅ Implemented |
+| Shared legend (categorical) | ✅ Implemented |
+| Shared legend (gradient — sequential/diverging) | 🔲 Planned |
+| Stat transforms (built-in) | ✅ Implemented |
+| Stat via helpers.stats (custom) | 🔲 Planned |
+| Orientation via scale-type inference | 🔲 Planned |
+
+### Facets
+
+| Feature | Status |
+|---------|--------|
+| `FacetPlot.svelte` | 🔲 Planned |
+| Fixed scales (shared domain) | 🔲 Planned |
+| Free scales (per-panel domain) | 🔲 Planned |
+| Missing values → gaps | 🔲 Planned |
+| Shared axis/legend across panels | 🔲 Planned |
 
 ### Animation
 
-| Feature                                            | Status     |
-| -------------------------------------------------- | ---------- |
-| `createFrames` utility (partitioned + normalised)  | 🔲 Planned |
-| Tweened animation composable                       | 🔲 Planned |
-| Bar chart race demo                                | 🔲 Planned |
-| `prefers-reduced-motion` support                   | 🔲 Planned |
+| Feature | Status |
+|---------|--------|
+| `AnimatedPlot.svelte` | 🔲 Planned |
+| Frame normalization (fill missing with 0) | 🔲 Planned |
+| Static scales across frames | 🔲 Planned |
+| Timeline controls (play/pause/scrub/speed) | 🔲 Planned |
+| Bar chart race (sorted positions) | 🔲 Planned |
+| `prefers-reduced-motion` | 🔲 Planned |
 
-### Interactivity
+### CrossFilter
 
-| Feature                           | Status     |
-| --------------------------------- | ---------- |
-| Interactive tooltips              | 🔲 Planned |
-| Click selection on data points    | 🔲 Planned |
-| Zoom and pan                      | 🔲 Planned |
+| Feature | Status |
+|---------|--------|
+| `CrossFilter` context provider | 🔲 Planned |
+| `createCrossFilter()` for spec API | 🔲 Planned |
+| Click filter (categorical) | 🔲 Planned |
+| Brush filter (continuous range) | 🔲 Planned |
+| Dimming filtered-out marks | 🔲 Planned |
+| `FilterBar` wrapper component | 🔲 Planned |
+| `FilterSlider` wrapper component | 🔲 Planned |
+
+### Tooltips & Interactivity
+
+| Feature | Status |
+|---------|--------|
+| Default tooltip on hover | 🔲 Planned |
+| Custom tooltip via helpers.tooltip | 🔲 Planned |
+| Click selection events | 🔲 Planned |
+| Zoom and pan | 🔲 Planned |
 | Keyboard navigation within charts | 🔲 Planned |
-| Accessible data table fallback    | 🔲 Planned |
+
+### Sparklines
+
+| Feature | Status |
+|---------|--------|
+| Sparkline — line/bar/area | ✅ Implemented |
+
+### Accessibility
+
+| Feature | Status |
+|---------|--------|
+| aria-label on chart | 🔲 Planned |
+| Visually hidden data table | 🔲 Planned |
+| Keyboard focus on data points | 🔲 Planned |
