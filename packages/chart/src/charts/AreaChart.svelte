@@ -1,6 +1,7 @@
 <script>
   import { setContext } from 'svelte'
   import { ChartBrewer } from '../lib/brewing/brewer.svelte.js'
+  import ChartPatternDefs from '../lib/ChartPatternDefs.svelte'
 
   /**
    * @type {{
@@ -8,6 +9,7 @@
    *   x?: string,
    *   y?: string,
    *   color?: string,
+   *   pattern?: string,
    *   width?: number,
    *   height?: number,
    *   mode?: 'light' | 'dark',
@@ -21,6 +23,7 @@
     x = undefined,
     y = undefined,
     color = undefined,
+    pattern = undefined,
     width = 600,
     height = 400,
     mode = 'light',
@@ -34,9 +37,11 @@
 
   $effect(() => {
     const channels = {}
-    if (x)     channels.x = x
-    if (y)     channels.y = y
-    if (color) channels.color = color
+    if (x)       channels.x = x
+    if (y)       channels.y = y
+    if (color)   channels.color = color
+    const effectivePattern = pattern ?? color
+    if (effectivePattern) channels.pattern = effectivePattern
     brewer.update({ data, channels, width, height, mode, curve })
   })
 
@@ -47,6 +52,8 @@
   const areas = $derived(brewer.areas)
   const xScale = $derived(brewer.xScale)
   const yScale = $derived(brewer.yScale)
+  const patternMap = $derived(brewer.patternMap)
+  const colorMap = $derived(brewer.colorMap)
 
   const xTicks = $derived(
     xScale && typeof xScale.domain === 'function'
@@ -69,12 +76,7 @@
       : []
   )
 
-  const legendItems = $derived(
-    Array.from(brewer.colorMap.entries()).map(([key, entry]) => ({
-      label: String(key),
-      fill: entry.fill
-    }))
-  )
+  const legendGroups = $derived(brewer.legendGroups)
 </script>
 
 <div class="chart-container" data-chart-root data-chart-type="area">
@@ -85,6 +87,10 @@
     role="img"
     aria-label="Area chart"
   >
+    {#if patternMap.size > 0}
+      <ChartPatternDefs {patternMap} {colorMap} />
+    {/if}
+
     <g
       class="chart-area"
       transform="translate({margin.left}, {margin.top})"
@@ -110,7 +116,7 @@
         {#each areas as seg (seg.key ?? seg.d)}
           <path
             d={seg.d}
-            fill={seg.fill}
+            fill={seg.patternId ? `url(#${seg.patternId})` : seg.fill}
             stroke={seg.stroke}
             opacity="0.7"
             data-chart-element="area"
@@ -151,13 +157,25 @@
   </svg>
 
   <!-- HTML legend -->
-  {#if legend && legendItems.length > 0}
+  {#if legend && legendGroups.length > 0}
     <div data-chart-legend>
-      {#each legendItems as item}
-        <div data-chart-legend-item>
-          <span data-chart-legend-swatch style="background-color: {item.fill}"></span>
-          <span data-chart-legend-label>{item.label}</span>
-        </div>
+      {#each legendGroups as group}
+        {#if legendGroups.length > 1}
+          <div data-chart-legend-title>{group.field}</div>
+        {/if}
+        {#each group.items as item (item.label)}
+          <div data-chart-legend-item>
+            {#if item.patternId}
+              <svg width="12" height="12" data-chart-legend-swatch>
+                <rect width="12" height="12" fill={item.fill ?? '#ddd'} />
+                <rect width="12" height="12" fill="url(#{item.patternId})" />
+              </svg>
+            {:else}
+              <span data-chart-legend-swatch style="background-color: {item.fill ?? '#ddd'}"></span>
+            {/if}
+            <span data-chart-legend-label>{item.label}</span>
+          </div>
+        {/each}
       {/each}
     </div>
   {/if}

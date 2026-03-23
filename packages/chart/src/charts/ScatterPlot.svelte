@@ -40,7 +40,8 @@
     if (x)      channels.x = x
     if (y)      channels.y = y
     if (color)  channels.color = color
-    if (symbol) channels.symbol = symbol
+    const effectiveSymbol = symbol ?? color
+    if (effectiveSymbol) channels.symbol = effectiveSymbol
     if (size)   channels.size = size
     brewer.update({ data, channels, width, height, mode })
   })
@@ -76,12 +77,7 @@
       : []
   )
 
-  const legendItems = $derived(
-    Array.from(brewer.colorMap.entries()).map(([key, entry]) => ({
-      label: String(key),
-      fill: entry.fill
-    }))
-  )
+  const legendGroups = $derived(brewer.legendGroups)
 </script>
 
 <div class="chart-container" data-chart-root data-chart-type="scatter">
@@ -161,13 +157,24 @@
   </svg>
 
   <!-- HTML legend -->
-  {#if legend && legendItems.length > 0}
+  {#if legend && legendGroups.length > 0}
     <div data-chart-legend>
-      {#each legendItems as item (item.label)}
-        <div data-chart-legend-item>
-          <span data-chart-legend-swatch style="background-color: {item.fill}"></span>
-          <span data-chart-legend-label>{item.label}</span>
-        </div>
+      {#each legendGroups as group}
+        {#if legendGroups.length > 1}
+          <div data-chart-legend-title>{group.field}</div>
+        {/if}
+        {#each group.items as item (item.label)}
+          <div data-chart-legend-item>
+            {#if item.shape}
+              <svg width="12" height="12" data-chart-legend-swatch>
+                <Shape x={6} y={6} size={0.6} name={item.shape} fill={item.fill ?? '#888'} stroke={item.stroke ?? '#888'} thickness={1} />
+              </svg>
+            {:else}
+              <span data-chart-legend-swatch style="background-color: {item.fill ?? '#ddd'}"></span>
+            {/if}
+            <span data-chart-legend-label>{item.label}</span>
+          </div>
+        {/each}
       {/each}
     </div>
   {/if}

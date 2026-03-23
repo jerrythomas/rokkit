@@ -40,7 +40,8 @@
     if (x)      channels.x = x
     if (y)      channels.y = y
     if (color)  channels.color = color
-    if (symbol) channels.symbol = symbol
+    const effectiveSymbol = symbol ?? color
+    if (effectiveSymbol) channels.symbol = effectiveSymbol
     brewer.update({ data, channels, width, height, mode, curve })
   })
 
@@ -74,13 +75,7 @@
       : []
   )
 
-  const legendItems = $derived(
-    Array.from(brewer.colorMap.entries()).map(([key, entry]) => ({
-      label: String(key),
-      fill: entry.fill,
-      shape: symbolMap.get(key) ?? 'circle'
-    }))
-  )
+  const legendGroups = $derived(brewer.legendGroups)
 </script>
 
 <div class="chart-container" data-chart-root data-chart-type="line">
@@ -179,20 +174,25 @@
   </svg>
 
   <!-- HTML legend (below SVG, styled via base/theme CSS) -->
-  {#if legend && legendItems.length > 0}
+  {#if legend && legendGroups.length > 0}
     <div data-chart-legend>
-      {#each legendItems as item (item.label)}
-        <div data-chart-legend-item>
-          {#if symbol}
-            <svg width="20" height="12" data-chart-legend-swatch>
-              <line x1="0" y1="6" x2="20" y2="6" stroke={item.fill} stroke-width="2" />
-              <Shape x={10} y={6} size={0.6} name={item.shape} fill={item.fill} stroke={item.fill} thickness={1} />
-            </svg>
-          {:else}
-            <span data-chart-legend-swatch style="background-color: {item.fill}"></span>
-          {/if}
-          <span data-chart-legend-label>{item.label}</span>
-        </div>
+      {#each legendGroups as group}
+        {#if legendGroups.length > 1}
+          <div data-chart-legend-title>{group.field}</div>
+        {/if}
+        {#each group.items as item (item.label)}
+          <div data-chart-legend-item>
+            {#if item.shape}
+              <svg width="20" height="12" data-chart-legend-swatch>
+                <line x1="0" y1="6" x2="20" y2="6" stroke={item.stroke ?? '#888'} stroke-width="2" />
+                <Shape x={10} y={6} size={0.6} name={item.shape} fill={item.stroke ?? '#888'} stroke={item.stroke ?? '#888'} thickness={1} />
+              </svg>
+            {:else}
+              <span data-chart-legend-swatch style="background-color: {item.stroke ?? item.fill ?? '#888'}"></span>
+            {/if}
+            <span data-chart-legend-label>{item.label}</span>
+          </div>
+        {/each}
       {/each}
     </div>
   {/if}

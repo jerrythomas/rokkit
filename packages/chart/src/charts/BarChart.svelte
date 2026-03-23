@@ -38,7 +38,8 @@
     if (x)       channels.x = x
     if (y)       channels.y = y
     if (color)   channels.color = color
-    if (pattern) channels.pattern = pattern
+    const effectivePattern = pattern ?? color
+    if (effectivePattern) channels.pattern = effectivePattern
     brewer.update({ data, channels, width, height, mode })
   })
 
@@ -51,19 +52,6 @@
   const yScale = $derived(brewer.yScale)
   const patternMap = $derived(brewer.patternMap)
   const colorMap = $derived(brewer.colorMap)
-
-  // When color and pattern use different fields, colorMap is keyed by color field values
-  // but ChartPatternDefs needs colors keyed by pattern field values.
-  // Build a resolved map: patternKey → colorEntry from the actual bar data.
-  const patternColorMap = $derived(
-    patternMap.size > 0
-      ? new Map(
-          bars
-            .filter((b) => b.patternKey != null)
-            .map((b) => [b.patternKey, colorMap.get(b.colorKey) ?? { fill: '#ddd', stroke: '#666' }])
-        )
-      : new Map()
-  )
 
   const xTicks = $derived(
     xScale && typeof xScale.domain === 'function'
@@ -86,13 +74,7 @@
       : []
   )
 
-  const legendItems = $derived(
-    Array.from(colorMap.entries()).map(([key, entry]) => ({
-      label: String(key),
-      fill: entry.fill,
-      patternId: patternMap.size > 0 && patternMap.has(key) ? `chart-pat-${key}` : null
-    }))
-  )
+  const legendGroups = $derived(brewer.legendGroups)
 </script>
 
 <div class="chart-container" data-chart-root data-chart-type="bar">
@@ -104,7 +86,7 @@
     aria-label="Bar chart"
   >
     {#if patternMap.size > 0}
-      <ChartPatternDefs {patternMap} colorMap={patternColorMap} />
+      <ChartPatternDefs {patternMap} {colorMap} />
     {/if}
 
     <g
@@ -181,19 +163,25 @@
   </svg>
 
   <!-- HTML legend -->
-  {#if legend && legendItems.length > 0}
+  {#if legend && legendGroups.length > 0}
     <div data-chart-legend>
-      {#each legendItems as item (item.label)}
-        <div data-chart-legend-item>
-          {#if item.patternId}
-            <svg width="12" height="12" data-chart-legend-swatch>
-              <rect width="12" height="12" fill="url(#{item.patternId})" />
-            </svg>
-          {:else}
-            <span data-chart-legend-swatch style="background-color: {item.fill}"></span>
-          {/if}
-          <span data-chart-legend-label>{item.label}</span>
-        </div>
+      {#each legendGroups as group}
+        {#if legendGroups.length > 1}
+          <div data-chart-legend-title>{group.field}</div>
+        {/if}
+        {#each group.items as item (item.label)}
+          <div data-chart-legend-item>
+            {#if item.patternId}
+              <svg width="12" height="12" data-chart-legend-swatch>
+                <rect width="12" height="12" fill={item.fill ?? '#ddd'} />
+                <rect width="12" height="12" fill="url(#{item.patternId})" />
+              </svg>
+            {:else}
+              <span data-chart-legend-swatch style="background-color: {item.fill ?? '#ddd'}"></span>
+            {/if}
+            <span data-chart-legend-label>{item.label}</span>
+          </div>
+        {/each}
       {/each}
     </div>
   {/if}

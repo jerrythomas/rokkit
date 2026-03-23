@@ -36,7 +36,8 @@
     if (label)   channels.label = label
     if (y)       channels.y = y
     if (color)   channels.color = color
-    if (pattern) channels.pattern = pattern
+    const effectivePattern = pattern ?? color
+    if (effectivePattern) channels.pattern = effectivePattern
     brewer.update({ data, channels, width, height, mode })
   })
 
@@ -45,13 +46,13 @@
   const patternMap = $derived(brewer.patternMap)
   const colorMap = $derived(brewer.colorMap)
 
-  // Legend items from brewer colorMap
-  const legendItems = $derived(
-    Array.from(colorMap.entries()).map(([key, entry]) => ({
-      label: String(key),
-      fill: entry.fill,
-      patternId: patternMap.size > 0 && patternMap.has(key) ? `chart-pat-${key}` : null
-    }))
+  const legendGroups = $derived(brewer.legendGroups)
+  const legendAllItems = $derived(
+    legendGroups.flatMap((g, gi) =>
+      legendGroups.length > 1
+        ? [{ _title: g.field, _gi: gi }, ...g.items]
+        : g.items
+    )
   )
 </script>
 
@@ -88,19 +89,24 @@
     {/if}
 
     <!-- Legend -->
-    {#if legend && legendItems.length > 0}
+    {#if legend && legendGroups.length > 0}
       <g class="chart-legend" transform="translate(10, 10)" data-chart-legend>
-        {#each legendItems as item, i}
-          <g transform="translate(0, {i * 20})">
-            {#if item.patternId}
-              <svg x="0" y="0" width="10" height="10">
-                <rect width="10" height="10" fill="url(#{item.patternId})" data-chart-legend-marker />
-              </svg>
-            {:else}
-              <rect width="10" height="10" fill={item.fill} data-chart-legend-marker />
-            {/if}
-            <text x="14" y="9" text-anchor="start" data-chart-legend-label>{item.label}</text>
-          </g>
+        {#each legendAllItems as item, i}
+          {#if item._title}
+            <text x="0" y={i * 20 + 9} font-size="9" fill="currentColor" font-weight="bold" data-chart-legend-title>{item._title}</text>
+          {:else}
+            <g transform="translate(0, {i * 20})">
+              {#if item.patternId}
+                <svg x="0" y="0" width="10" height="10">
+                  <rect width="10" height="10" fill={item.fill ?? '#ddd'} data-chart-legend-marker />
+                  <rect width="10" height="10" fill="url(#{item.patternId})" />
+                </svg>
+              {:else}
+                <rect width="10" height="10" fill={item.fill ?? '#ddd'} data-chart-legend-marker />
+              {/if}
+              <text x="14" y="9" text-anchor="start" data-chart-legend-label>{item.label}</text>
+            </g>
+          {/if}
         {/each}
       </g>
     {/if}
