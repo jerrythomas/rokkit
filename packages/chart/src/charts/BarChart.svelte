@@ -52,6 +52,19 @@
   const patternMap = $derived(brewer.patternMap)
   const colorMap = $derived(brewer.colorMap)
 
+  // When color and pattern use different fields, colorMap is keyed by color field values
+  // but ChartPatternDefs needs colors keyed by pattern field values.
+  // Build a resolved map: patternKey → colorEntry from the actual bar data.
+  const patternColorMap = $derived(
+    patternMap.size > 0
+      ? new Map(
+          bars
+            .filter((b) => b.patternKey != null)
+            .map((b) => [b.patternKey, colorMap.get(b.colorKey) ?? { fill: '#ddd', stroke: '#666' }])
+        )
+      : new Map()
+  )
+
   const xTicks = $derived(
     xScale && typeof xScale.domain === 'function'
       ? xScale.domain().map((val) => ({
@@ -91,7 +104,7 @@
     aria-label="Bar chart"
   >
     {#if patternMap.size > 0}
-      <ChartPatternDefs {patternMap} {colorMap} />
+      <ChartPatternDefs {patternMap} colorMap={patternColorMap} />
     {/if}
 
     <g

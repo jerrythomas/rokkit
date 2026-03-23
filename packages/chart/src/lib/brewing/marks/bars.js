@@ -30,6 +30,8 @@ export function buildBars(data, channels, xScale, yScale, colors, patternMap) {
       height: innerHeight - barY,
       fill: colorEntry.fill,
       stroke: colorEntry.stroke,
+      colorKey,
+      patternKey,
       patternId: patternName ? `chart-pat-${patternKey}` : null
     }
   })
