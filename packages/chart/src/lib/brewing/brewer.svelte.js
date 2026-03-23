@@ -10,6 +10,51 @@ import { buildPoints } from './marks/points.js'
 
 const DEFAULT_MARGIN = { top: 20, right: 20, bottom: 40, left: 50 }
 
+/**
+ * Groups aesthetic channel mappings by field name, merging aesthetics that
+ * share the same field into one legend section.
+ *
+ * @param {{ color?: string, pattern?: string, symbol?: string }} channels
+ * @param {Map<unknown, {fill:string, stroke:string}>} colorMap
+ * @param {Map<unknown, string>} patternMap
+ * @param {Map<unknown, string>} symbolMap
+ * @returns {{ field: string, items: { label: string, fill: string|null, stroke: string|null, patternId: string|null, shape: string|null }[] }[]}
+ */
+export function buildLegendGroups(channels, colorMap, patternMap, symbolMap) {
+  const { color: cf, pattern: pf, symbol: sf } = channels
+  const byField = new Map()
+
+  if (cf) {
+    byField.set(cf, { aesthetics: ['color'], keys: [...colorMap.keys()] })
+  }
+  if (pf) {
+    if (byField.has(pf)) {
+      byField.get(pf).aesthetics.push('pattern')
+    } else {
+      byField.set(pf, { aesthetics: ['pattern'], keys: [...patternMap.keys()] })
+    }
+  }
+  if (sf) {
+    if (byField.has(sf)) {
+      byField.get(sf).aesthetics.push('symbol')
+    } else {
+      byField.set(sf, { aesthetics: ['symbol'], keys: [...symbolMap.keys()] })
+    }
+  }
+
+  return [...byField.entries()].map(([field, { aesthetics, keys }]) => ({
+    field,
+    items: keys.map((key) => ({
+      label: String(key),
+      fill: aesthetics.includes('color') ? (colorMap.get(key)?.fill ?? null) : null,
+      stroke: aesthetics.includes('color') ? (colorMap.get(key)?.stroke ?? null) : null,
+      patternId:
+        aesthetics.includes('pattern') && patternMap.has(key) ? `chart-pat-${key}` : null,
+      shape: aesthetics.includes('symbol') ? (symbolMap.get(key) ?? 'circle') : null
+    }))
+  }))
+}
+
 export class ChartBrewer {
   #data = $state([])
   #channels = $state({})
@@ -76,7 +121,7 @@ export class ChartBrewer {
 
   areas = $derived(
     this.xScale && this.yScale
-      ? buildAreas(this.#data, this.#channels, this.xScale, this.yScale, this.colorMap, this.#curve)
+      ? buildAreas(this.#data, this.#channels, this.xScale, this.yScale, this.colorMap, this.#curve, this.patternMap)
       : []
   )
 
@@ -90,6 +135,10 @@ export class ChartBrewer {
     this.xScale && this.yScale
       ? buildPoints(this.#data, this.#channels, this.xScale, this.yScale, this.colorMap, this.sizeScale, this.symbolMap)
       : []
+  )
+
+  legendGroups = $derived(
+    buildLegendGroups(this.#channels, this.colorMap, this.patternMap, this.symbolMap)
   )
 
   get margin()  { return this.#margin }
