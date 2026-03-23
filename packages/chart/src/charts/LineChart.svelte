@@ -1,6 +1,6 @@
 <script>
   import { setContext } from 'svelte'
-  import { ChartBrewer } from '../lib/brewing/brewer.svelte.js'
+  import { CartesianBrewer } from '../lib/brewing/CartesianBrewer.svelte.js'
   import Shape from '../symbols/Shape.svelte'
 
   /**
@@ -15,7 +15,8 @@
    *   grid?: boolean,
    *   legend?: boolean,
    *   curve?: 'linear' | 'smooth' | 'step',
-   *   symbol?: string
+   *   symbol?: string,
+   *   stat?: string
    * }}
    */
   let {
@@ -29,10 +30,11 @@
     grid = true,
     legend = false,
     curve = 'linear',
-    symbol = undefined
+    symbol = undefined,
+    stat = 'identity'
   } = $props()
 
-  const brewer = new ChartBrewer()
+  const brewer = new CartesianBrewer()
   setContext('chart-brewer', brewer)
 
   $effect(() => {
@@ -42,7 +44,7 @@
     if (color)  channels.color = color
     const effectiveSymbol = symbol ?? color
     if (effectiveSymbol) channels.symbol = effectiveSymbol
-    brewer.update({ data, channels, width, height, mode, curve })
+    brewer.update({ data, channels, width, height, mode, curve, stat })
   })
 
   const margin = { top: 20, right: 20, bottom: 40, left: 50 }

@@ -18,4 +18,14 @@ describe('BarChart', () => {
     const { container } = render(BarChart, { data, x: 'category', y: 'revenue' })
     expect(container.querySelector('svg')).toBeTruthy()
   })
+
+  it('renders with stat=sum without errors', () => {
+    const aggData = [
+      { category: 'A', revenue: 50 },
+      { category: 'A', revenue: 50 },
+      { category: 'B', revenue: 200 }
+    ]
+    const { container } = render(BarChart, { data: aggData, x: 'category', y: 'revenue', stat: 'sum' })
+    expect(container.querySelector('svg')).toBeTruthy()
+  })
 })
