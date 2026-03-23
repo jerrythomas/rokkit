@@ -1,0 +1,42 @@
+# ViolinPlot
+
+Data-driven SVG violin plot for @rokkit/chart. Shows distribution shape via quartile-based density estimation.
+
+## Import
+
+```svelte
+import { ViolinPlot } from '@rokkit/chart'
+```
+
+## Usage
+
+```svelte
+<!-- Basic violin plot -->
+<ViolinPlot data={data} x="class" y="hwy" />
+
+<!-- With color coding -->
+<ViolinPlot data={data} x="class" y="hwy" fill="drv" legend />
+
+<!-- Without grid -->
+<ViolinPlot data={data} x="class" y="hwy" grid={false} />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| data | Object[] | [] | Raw observations array |
+| x | string | — | Categorical grouping field |
+| y | string | — | Numeric value field (raw observations) |
+| fill | string | — | Color channel field |
+| width | number | 600 | SVG width |
+| height | number | 400 | SVG height |
+| mode | 'light' \| 'dark' | 'light' | Color palette mode |
+| grid | boolean | true | Show gridlines |
+| legend | boolean | false | Show legend |
+
+## Notes
+
+- Uses ViolinBrewer internally, shares quartile computation with BoxBrewer
+- Wider sections of the violin indicate higher data density at that value
+- x must be categorical; y must be numeric raw observations

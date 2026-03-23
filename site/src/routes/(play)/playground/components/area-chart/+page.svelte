@@ -1,31 +1,19 @@
 <script>
 	// @ts-nocheck
 	import { AreaChart } from '@rokkit/chart'
-	import { FormRenderer, InfoField } from '@rokkit/forms'
+	import { FormRenderer } from '@rokkit/forms'
 	import PlaySection from '$lib/components/PlaySection.svelte'
+	import { mpg } from '$lib/data/mpg.js'
 
-	const chartData = [
-		{ month: 'Jan', revenue: 32000, target: 30000, growth: 7,  region: 'North' },
-		{ month: 'Feb', revenue: 41000, target: 38000, growth: 28, region: 'North' },
-		{ month: 'Mar', revenue: 38000, target: 42000, growth: -7, region: 'North' },
-		{ month: 'Apr', revenue: 52000, target: 45000, growth: 37, region: 'North' },
-		{ month: 'May', revenue: 61000, target: 55000, growth: 17, region: 'North' },
-		{ month: 'Jun', revenue: 58000, target: 60000, growth: -5, region: 'North' },
-		{ month: 'Jul', revenue: 67000, target: 62000, growth: 16, region: 'North' },
-		{ month: 'Aug', revenue: 74000, target: 70000, growth: 10, region: 'North' },
-		{ month: 'Jan', revenue: 21000, target: 22000, growth: -5, region: 'South' },
-		{ month: 'Feb', revenue: 29000, target: 27000, growth: 38, region: 'South' },
-		{ month: 'Mar', revenue: 34000, target: 31000, growth: 17, region: 'South' },
-		{ month: 'Apr', revenue: 31000, target: 35000, growth: -9, region: 'South' },
-		{ month: 'May', revenue: 44000, target: 40000, growth: 42, region: 'South' },
-		{ month: 'Jun', revenue: 40000, target: 43000, growth: -9, region: 'South' },
-		{ month: 'Jul', revenue: 51000, target: 47000, growth: 28, region: 'South' },
-		{ month: 'Aug', revenue: 55000, target: 52000, growth: 8,  region: 'South' }
-	]
+	// mpg: 234 rows — x=cyl (4,5,6,8), y=hwy, fill=drv, stat=mean
+	// shows area under highway mpg curve per drive type across cylinder counts
 
 	let props = $state({
-		fillField: 'region',
-		patternField: 'region',
+		xField: 'cyl',
+		yField: 'hwy',
+		fillField: 'drv',
+		patternField: '',
+		stat: 'mean',
 		curve: 'linear',
 		grid: true,
 		legend: true
@@ -34,8 +22,11 @@
 	const schema = {
 		type: 'object',
 		properties: {
+			xField: { type: 'string' },
+			yField: { type: 'string' },
 			fillField: { type: 'string' },
 			patternField: { type: 'string' },
+			stat: { type: 'string' },
 			curve: { type: 'string' },
 			grid: { type: 'boolean' },
 			legend: { type: 'boolean' }
@@ -46,14 +37,29 @@
 		type: 'vertical',
 		elements: [
 			{
+				scope: '#/xField',
+				label: 'x',
+				props: { options: ['cyl', 'class', 'year'] }
+			},
+			{
+				scope: '#/yField',
+				label: 'y',
+				props: { options: ['hwy', 'cty', 'displ'] }
+			},
+			{
 				scope: '#/fillField',
 				label: 'fill',
-				props: { options: ['', 'region', 'month'] }
+				props: { options: ['', 'drv', 'class', 'cyl', 'fl'] }
 			},
 			{
 				scope: '#/patternField',
 				label: 'pattern',
-				props: { options: ['', 'region', 'month'] }
+				props: { options: ['', 'drv', 'class', 'fl'] }
+			},
+			{
+				scope: '#/stat',
+				label: 'stat',
+				props: { options: ['identity', 'mean', 'sum', 'min', 'max', 'count'] }
 			},
 			{
 				scope: '#/curve',
@@ -72,14 +78,15 @@
 		<div class="flex flex-col gap-8 p-6">
 			<div>
 				<h4 class="text-surface-z5 m-0 mb-3 text-xs uppercase tracking-widest font-semibold">
-					Monthly Revenue
+					Highway MPG by Cylinders
 				</h4>
 				<AreaChart
-					data={chartData}
-					x="month"
-					y="revenue"
+					data={mpg}
+					x={props.xField}
+					y={props.yField}
 					fill={props.fillField || undefined}
 					pattern={props.patternField || undefined}
+					stat={props.stat}
 					curve={props.curve}
 					grid={props.grid}
 					legend={props.legend}
@@ -92,8 +99,6 @@
 
 	{#snippet controls()}
 		<FormRenderer bind:data={props} {schema} {layout} />
-		<InfoField label="x" value="month" />
-		<InfoField label="y" value="revenue" />
 	{/snippet}
 
 	{#snippet data()}
@@ -101,13 +106,13 @@
 			<table class="w-full text-xs">
 				<thead>
 					<tr class="border-surface-z2 border-b">
-						{#each Object.keys(chartData[0]) as col}
+						{#each Object.keys(mpg[0]) as col}
 							<th class="text-surface-z4 py-1 pr-3 text-left font-medium">{col}</th>
 						{/each}
 					</tr>
 				</thead>
 				<tbody>
-					{#each chartData as row}
+					{#each mpg as row}
 						<tr class="border-surface-z2 border-b last:border-0">
 							{#each Object.values(row) as val}
 								<td class="py-1 pr-3">{val}</td>

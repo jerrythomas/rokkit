@@ -1,0 +1,44 @@
+# BubbleChart
+
+Data-driven SVG bubble chart for @rokkit/chart. Three-variable correlation with sized, colored points.
+
+## Import
+
+```svelte
+import { BubbleChart } from '@rokkit/chart'
+```
+
+## Usage
+
+```svelte
+<!-- Basic bubble chart -->
+<BubbleChart data={data} x="cty" y="hwy" size="displ" />
+
+<!-- With color coding -->
+<BubbleChart data={data} x="cty" y="hwy" size="displ" color="class" legend />
+
+<!-- Without grid -->
+<BubbleChart data={data} x="cty" y="hwy" size="displ" grid={false} />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| data | Object[] | [] | Chart data array |
+| x | string | — | X axis field (numeric) |
+| y | string | — | Y axis field (numeric) |
+| size | string | — | Bubble size field (numeric) |
+| color | string | — | Color channel field |
+| symbol | string | — | Symbol shape channel field |
+| width | number | 600 | SVG width |
+| height | number | 400 | SVG height |
+| mode | 'light' \| 'dark' | 'light' | Color palette mode |
+| grid | boolean | true | Show gridlines |
+| legend | boolean | false | Show legend |
+
+## Notes
+
+- Uses ChartBrewer internally for reactive data binding
+- Size mapped via scaleSqrt so bubble area is proportional to the value
+- Compatible with the declarative Chart wrapper via shared context key

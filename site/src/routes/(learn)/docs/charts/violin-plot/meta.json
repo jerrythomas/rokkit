@@ -1,0 +1,9 @@
+{
+  "title": "ViolinPlot",
+  "description": "Data-driven SVG violin plot showing distribution shape via kernel density estimation.",
+  "icon": "i-glyph:chart-square",
+  "package": "@rokkit/chart",
+  "category": "charts",
+  "order": 9,
+  "since": "0.1.0"
+}

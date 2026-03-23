@@ -1,0 +1,9 @@
+{
+  "title": "BoxPlot",
+  "description": "Data-driven SVG box plot for distribution analysis with quartile statistics.",
+  "icon": "i-glyph:chart-square",
+  "package": "@rokkit/chart",
+  "category": "charts",
+  "order": 8,
+  "since": "0.1.0"
+}

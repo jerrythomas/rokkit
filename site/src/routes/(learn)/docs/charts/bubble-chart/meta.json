@@ -1,0 +1,9 @@
+{
+  "title": "BubbleChart",
+  "description": "Data-driven SVG bubble chart for three-variable correlation with sized, colored points.",
+  "icon": "i-glyph:chart-square",
+  "package": "@rokkit/chart",
+  "category": "charts",
+  "order": 7,
+  "since": "0.1.0"
+}

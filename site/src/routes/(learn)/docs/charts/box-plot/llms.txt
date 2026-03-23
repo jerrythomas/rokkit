@@ -1,0 +1,42 @@
+# BoxPlot
+
+Data-driven SVG box plot for @rokkit/chart. Computes quartile statistics from raw observations.
+
+## Import
+
+```svelte
+import { BoxPlot } from '@rokkit/chart'
+```
+
+## Usage
+
+```svelte
+<!-- Basic box plot -->
+<BoxPlot data={data} x="class" y="hwy" />
+
+<!-- With color coding -->
+<BoxPlot data={data} x="class" y="hwy" fill="drv" legend />
+
+<!-- Without grid -->
+<BoxPlot data={data} x="class" y="hwy" grid={false} />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| data | Object[] | [] | Raw observations array |
+| x | string | — | Categorical grouping field |
+| y | string | — | Numeric value field (raw observations) |
+| fill | string | — | Color channel field |
+| width | number | 600 | SVG width |
+| height | number | 400 | SVG height |
+| mode | 'light' \| 'dark' | 'light' | Color palette mode |
+| grid | boolean | true | Show gridlines |
+| legend | boolean | false | Show legend |
+
+## Notes
+
+- Uses BoxBrewer internally to compute min, Q1, median, Q3, max per group
+- x must be a categorical field; y must be numeric raw observations
+- Box spans Q1–Q3, whiskers extend to min/max, median line drawn across box
