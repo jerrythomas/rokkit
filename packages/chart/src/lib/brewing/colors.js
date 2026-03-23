@@ -8,7 +8,7 @@ import palette from './palette.json'
  */
 export function distinct(data, field) {
   if (!field) return []
-  return [...new Set(data.map((d) => d[field]))]
+  return [...new Set(data.map((d) => d[field]))].filter((v) => v !== null && v !== undefined)
 }
 
 /**

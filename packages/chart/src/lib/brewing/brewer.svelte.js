@@ -46,7 +46,7 @@ export function buildLegendGroups(channels, colorMap, patternMap, symbolMap) {
 
   return [...byField.entries()].map(([field, { aesthetics, keys }]) => ({
     field,
-    items: keys.map((key) => ({
+    items: keys.filter((k) => k !== null && k !== undefined).map((key) => ({
       label: String(key),
       fill: aesthetics.includes('color') ? (colorMap.get(key)?.fill ?? null) : null,
       stroke: aesthetics.includes('color') ? (colorMap.get(key)?.stroke ?? null) : null,
@@ -54,7 +54,7 @@ export function buildLegendGroups(channels, colorMap, patternMap, symbolMap) {
         aesthetics.includes('pattern') && patternMap.has(key) ? toPatternId(key) : null,
       shape: aesthetics.includes('symbol') ? (symbolMap.get(key) ?? 'circle') : null
     }))
-  }))
+  })).filter((group) => group.items.length > 0)
 }
 
 export class ChartBrewer {
@@ -109,7 +109,7 @@ export class ChartBrewer {
   patternDefs = $derived((() => {
     const pf = this.#channels.pattern
     const ff = this.#channels.fill ?? this.#channels.color
-    if (!pf) return []
+    if (!pf || this.patternMap.size === 0) return []
     if (!ff || pf === ff) {
       // Same field: pattern key = fill key — simple 1:1 lookup
       return Array.from(this.patternMap.entries()).map(([key, name]) => {
@@ -117,16 +117,21 @@ export class ChartBrewer {
         return { id: toPatternId(key), name, fill: color.fill, stroke: color.stroke }
       })
     }
-    // Different fields: one def per unique (fillKey, patternKey) combo
-    const seen = new Set()
+    // Different fields: need two sets of defs in the SVG:
+    // 1. Simple defs (neutral background) — referenced by legend swatches via toPatternId(patternKey)
+    // 2. Composite defs (fill-colored background) — referenced by bars via toPatternId(fillKey::patternKey)
     const defs = []
+    for (const [pk, name] of this.patternMap.entries()) {
+      defs.push({ id: toPatternId(pk), name, fill: '#ddd', stroke: '#666' })
+    }
+    const seenComposite = new Set()
     for (const d of this.processedData) {
       const fk = d[ff]
       const pk = d[pf]
       if (pk === null || pk === undefined) continue
       const compositeKey = `${fk}::${pk}`
-      if (seen.has(compositeKey)) continue
-      seen.add(compositeKey)
+      if (seenComposite.has(compositeKey)) continue
+      seenComposite.add(compositeKey)
       const name = this.patternMap.get(pk) ?? PATTERN_ORDER[0]
       const color = this.colorMap.get(fk) ?? { fill: '#ddd', stroke: '#666' }
       defs.push({ id: toPatternId(compositeKey), name, fill: color.fill, stroke: color.stroke })
