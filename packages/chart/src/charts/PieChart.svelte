@@ -1,7 +1,8 @@
 <script>
   import { setContext } from 'svelte'
-  import { ChartBrewer } from '../lib/brewing/brewer.svelte.js'
+  import { PieBrewer } from '../lib/brewing/PieBrewer.svelte.js'
   import ChartPatternDefs from '../lib/ChartPatternDefs.svelte'
+  import { toPatternId } from '../lib/brewing/patterns.js'
 
   /**
    * @type {{
@@ -13,7 +14,8 @@
    *   width?: number,
    *   height?: number,
    *   mode?: 'light' | 'dark',
-   *   legend?: boolean
+   *   legend?: boolean,
+   *   stat?: string
    * }}
    */
   let {
@@ -25,10 +27,11 @@
     width = 400,
     height = 400,
     mode = 'light',
-    legend = false
+    legend = false,
+    stat = 'sum'
   } = $props()
 
-  const brewer = new ChartBrewer()
+  const brewer = new PieBrewer()
   setContext('chart-brewer', brewer)
 
   $effect(() => {
@@ -38,7 +41,7 @@
     if (color)   channels.color = color
     const effectivePattern = pattern ?? color
     if (effectivePattern) channels.pattern = effectivePattern
-    brewer.update({ data, channels, width, height, mode })
+    brewer.update({ data, channels, width, height, mode, stat })
   })
 
   // Derived chart data from brewer
@@ -76,7 +79,7 @@
         transform="translate({width / 2}, {height / 2})"
       >
         {#each arcs as arc (arc.key)}
-          {@const patternId = patternMap.size > 0 && patternMap.has(arc.key) ? `chart-pat-${arc.key}` : null}
+          {@const patternId = patternMap.size > 0 && patternMap.has(arc.key) ? toPatternId(arc.key) : null}
           <path
             d={arc.d}
             fill={patternId ? `url(#${patternId})` : arc.fill}

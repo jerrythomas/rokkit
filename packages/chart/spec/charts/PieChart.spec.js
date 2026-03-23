@@ -17,4 +17,16 @@ describe('PieChart', () => {
     const { container } = render(PieChart, { data, label: 'slice', y: 'value' })
     expect(container.querySelector('svg')).toBeTruthy()
   })
+
+  it('aggregates duplicate labels with stat=sum', () => {
+    const dupData = [
+      { segment: 'A', share: 10 },
+      { segment: 'A', share: 20 },
+      { segment: 'B', share: 30 }
+    ]
+    const { container } = render(PieChart, {
+      data: dupData, label: 'segment', y: 'share', stat: 'sum'
+    })
+    expect(container.querySelector('svg')).toBeTruthy()
+  })
 })
