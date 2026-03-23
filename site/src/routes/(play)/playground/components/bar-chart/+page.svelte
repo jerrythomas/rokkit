@@ -4,20 +4,46 @@
 	import { FormRenderer, InfoField } from '@rokkit/forms'
 	import PlaySection from '$lib/components/PlaySection.svelte'
 
+	// 32 rows: 4 regions × 8 quarters — enables aggregation demos (x=region, stat=sum → 4 bars)
 	const chartData = [
-		{ category: 'Q1', revenue: 42000, cost: 31000, margin: 26, region: 'North' },
-		{ category: 'Q2', revenue: 58000, cost: 39000, margin: 33, region: 'South' },
-		{ category: 'Q3', revenue: 51000, cost: 36000, margin: 29, region: 'East' },
-		{ category: 'Q4', revenue: 73000, cost: 48000, margin: 34, region: 'West' },
-		{ category: 'Q5', revenue: 67000, cost: 44000, margin: 34, region: 'North' },
-		{ category: 'Q6', revenue: 80000, cost: 52000, margin: 35, region: 'South' },
-		{ category: 'Q7', revenue: 74000, cost: 49000, margin: 34, region: 'East' },
-		{ category: 'Q8', revenue: 91000, cost: 60000, margin: 34, region: 'West' }
+		{ quarter: 'Q1', revenue: 42000, region: 'North' },
+		{ quarter: 'Q2', revenue: 38000, region: 'North' },
+		{ quarter: 'Q3', revenue: 51000, region: 'North' },
+		{ quarter: 'Q4', revenue: 67000, region: 'North' },
+		{ quarter: 'Q5', revenue: 45000, region: 'North' },
+		{ quarter: 'Q6', revenue: 72000, region: 'North' },
+		{ quarter: 'Q7', revenue: 59000, region: 'North' },
+		{ quarter: 'Q8', revenue: 83000, region: 'North' },
+		{ quarter: 'Q1', revenue: 58000, region: 'South' },
+		{ quarter: 'Q2', revenue: 63000, region: 'South' },
+		{ quarter: 'Q3', revenue: 47000, region: 'South' },
+		{ quarter: 'Q4', revenue: 71000, region: 'South' },
+		{ quarter: 'Q5', revenue: 54000, region: 'South' },
+		{ quarter: 'Q6', revenue: 80000, region: 'South' },
+		{ quarter: 'Q7', revenue: 66000, region: 'South' },
+		{ quarter: 'Q8', revenue: 91000, region: 'South' },
+		{ quarter: 'Q1', revenue: 35000, region: 'East' },
+		{ quarter: 'Q2', revenue: 49000, region: 'East' },
+		{ quarter: 'Q3', revenue: 61000, region: 'East' },
+		{ quarter: 'Q4', revenue: 44000, region: 'East' },
+		{ quarter: 'Q5', revenue: 77000, region: 'East' },
+		{ quarter: 'Q6', revenue: 53000, region: 'East' },
+		{ quarter: 'Q7', revenue: 68000, region: 'East' },
+		{ quarter: 'Q8', revenue: 85000, region: 'East' },
+		{ quarter: 'Q1', revenue: 73000, region: 'West' },
+		{ quarter: 'Q2', revenue: 56000, region: 'West' },
+		{ quarter: 'Q3', revenue: 82000, region: 'West' },
+		{ quarter: 'Q4', revenue: 39000, region: 'West' },
+		{ quarter: 'Q5', revenue: 64000, region: 'West' },
+		{ quarter: 'Q6', revenue: 48000, region: 'West' },
+		{ quarter: 'Q7', revenue: 91000, region: 'West' },
+		{ quarter: 'Q8', revenue: 75000, region: 'West' }
 	]
 
 	let props = $state({
+		xField: 'quarter',
 		fillField: 'region',
-		patternField: 'region',
+		patternField: '',
 		stat: 'identity',
 		grid: true,
 		legend: true
@@ -26,6 +52,7 @@
 	const schema = {
 		type: 'object',
 		properties: {
+			xField: { type: 'string' },
 			fillField: { type: 'string' },
 			patternField: { type: 'string' },
 			stat: { type: 'string' },
@@ -38,14 +65,19 @@
 		type: 'vertical',
 		elements: [
 			{
+				scope: '#/xField',
+				label: 'x',
+				props: { options: ['quarter', 'region'] }
+			},
+			{
 				scope: '#/fillField',
 				label: 'fill',
-				props: { options: ['', 'region', 'category'] }
+				props: { options: ['', 'region', 'quarter'] }
 			},
 			{
 				scope: '#/patternField',
 				label: 'pattern',
-				props: { options: ['', 'region', 'category'] }
+				props: { options: ['', 'region', 'quarter'] }
 			},
 			{
 				scope: '#/stat',
@@ -64,11 +96,11 @@
 		<div class="flex flex-col gap-8 p-6">
 			<div>
 				<h4 class="text-surface-z5 m-0 mb-3 text-xs uppercase tracking-widest font-semibold">
-					Quarterly Revenue
+					Quarterly Revenue by Region
 				</h4>
 				<BarChart
 					data={chartData}
-					x="category"
+					x={props.xField}
 					y="revenue"
 					fill={props.fillField || undefined}
 					pattern={props.patternField || undefined}
@@ -84,7 +116,6 @@
 
 	{#snippet controls()}
 		<FormRenderer bind:data={props} {schema} {layout} />
-		<InfoField label="x" value="category" />
 		<InfoField label="y" value="revenue" />
 	{/snippet}
 

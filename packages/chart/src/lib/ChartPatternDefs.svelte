@@ -19,7 +19,6 @@
   import VerticalLines from '../patterns/VerticalLines.svelte'
   import Waves from '../patterns/Waves.svelte'
   import Zigzag from '../patterns/Zigzag.svelte'
-  import { toPatternId } from './brewing/patterns.js'
 
   const COMPONENTS = {
     Brick, Checkerboard, CircleGrid, Circles, CrossDot, CrossHatch, CurvedWave,
@@ -29,29 +28,18 @@
   const SIZE = 10
 
   /**
-   * @type {{ patternMap: Map<unknown, string>, colorMap: Map<unknown, {fill: string, stroke: string}> }}
+   * @type {{ defs: Array<{ id: string, name: string, fill: string, stroke: string }> }}
    */
-  let { patternMap, colorMap } = $props()
-
-  const defs = $derived(
-    Array.from(patternMap.entries()).map(([key, name]) => {
-      const color = colorMap.get(key) ?? { fill: '#ddd', stroke: '#666' }
-      return {
-        id: toPatternId(key),
-        Component: COMPONENTS[name] ?? null,
-        fill: color.fill,
-        stroke: color.stroke
-      }
-    })
-  )
+  let { defs } = $props()
 </script>
 
 <defs>
   {#each defs as def (def.id)}
+    {@const Component = COMPONENTS[def.name] ?? null}
     <pattern id={def.id} patternUnits="userSpaceOnUse" width={SIZE} height={SIZE}>
       <rect width={SIZE} height={SIZE} fill={def.fill} />
-      {#if def.Component}
-        <def.Component fill={def.stroke} stroke={def.stroke} size={SIZE} />
+      {#if Component}
+        <Component fill={def.stroke} stroke={def.stroke} size={SIZE} />
       {/if}
     </pattern>
   {/each}

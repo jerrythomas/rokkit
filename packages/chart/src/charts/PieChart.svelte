@@ -45,8 +45,7 @@
 
   // Derived chart data from brewer
   const arcs = $derived(brewer.arcs)
-  const patternMap = $derived(brewer.patternMap)
-  const colorMap = $derived(brewer.colorMap)
+  const patternDefs = $derived(brewer.patternDefs)
 
   const legendGroups = $derived(brewer.legendGroups)
   const legendAllItems = $derived(
@@ -66,8 +65,8 @@
     role="img"
     aria-label="Pie chart"
   >
-    {#if patternMap.size > 0}
-      <ChartPatternDefs {patternMap} {colorMap} />
+    {#if patternDefs.length > 0}
+      <ChartPatternDefs defs={patternDefs} />
     {/if}
 
     <!-- Arcs centered in the SVG -->
@@ -78,7 +77,7 @@
         transform="translate({width / 2}, {height / 2})"
       >
         {#each arcs as arc (arc.key)}
-          {@const patternId = patternMap.size > 0 && patternMap.has(arc.key) ? toPatternId(arc.key) : null}
+          {@const patternId = patternDefs.length > 0 ? patternDefs.find(d => d.id === toPatternId(arc.key))?.id ?? null : null}
           <path
             d={arc.d}
             fill={patternId ? `url(#${patternId})` : arc.fill}

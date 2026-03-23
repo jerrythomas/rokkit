@@ -8,7 +8,7 @@ import { applyAggregate } from './stats.js'
 export class CartesianBrewer extends ChartBrewer {
   transform(data, channels, stat) {
     if (stat === 'identity' || !channels.x || !channels.y) return data
-    const by = [channels.x, channels.fill ?? channels.color].filter(Boolean)
+    const by = [...new Set([channels.x, channels.fill ?? channels.color].filter(Boolean))]
     return applyAggregate(data, { by, value: channels.y, stat })
   }
 }

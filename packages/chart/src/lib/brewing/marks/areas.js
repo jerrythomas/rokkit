@@ -33,6 +33,9 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
     const colorEntry = colors?.get(key) ?? { fill: '#888', stroke: '#444' }
     const patternKey = pf ? (pf === cf ? key : rows[0]?.[pf]) : null
     const patternName = patternKey !== null && patternKey !== undefined ? patternMap?.get(patternKey) : null
+    const compositePatternKey = (cf && pf && cf !== pf && patternKey !== null && patternKey !== undefined)
+      ? `${key}::${patternKey}`
+      : patternKey
     return {
       d: makeGen()(rows),
       fill: colorEntry.fill,
@@ -40,7 +43,7 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
       key,
       colorKey: key,
       patternKey,
-      patternId: patternName ? toPatternId(patternKey) : null
+      patternId: patternName ? toPatternId(compositePatternKey) : null
     }
   })
 }

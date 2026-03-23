@@ -1,5 +1,5 @@
 import { distinct, assignColors } from './colors.js'
-import { assignPatterns, toPatternId } from './patterns.js'
+import { assignPatterns, toPatternId, PATTERN_ORDER } from './patterns.js'
 import { assignSymbols } from './symbols.js'
 import { buildXScale, buildYScale, buildSizeScale } from './scales.js'
 import { buildBars } from './marks/bars.js'
@@ -98,6 +98,41 @@ export class ChartBrewer {
       ? assignPatterns(distinct(this.processedData, this.#channels.pattern))
       : new Map()
   )
+
+  /**
+   * Unified pattern defs for ChartPatternDefs.
+   * When fill and pattern map the same field, pattern key = color key (simple case).
+   * When they differ, each unique (fillKey, patternKey) pair gets its own pattern def
+   * so bars/areas can have distinct colors per region AND distinct textures per category.
+   * @type {Array<{ id: string, name: string, fill: string, stroke: string }>}
+   */
+  patternDefs = $derived((() => {
+    const pf = this.#channels.pattern
+    const ff = this.#channels.fill ?? this.#channels.color
+    if (!pf) return []
+    if (!ff || pf === ff) {
+      // Same field: pattern key = fill key — simple 1:1 lookup
+      return Array.from(this.patternMap.entries()).map(([key, name]) => {
+        const color = this.colorMap.get(key) ?? { fill: '#ddd', stroke: '#666' }
+        return { id: toPatternId(key), name, fill: color.fill, stroke: color.stroke }
+      })
+    }
+    // Different fields: one def per unique (fillKey, patternKey) combo
+    const seen = new Set()
+    const defs = []
+    for (const d of this.processedData) {
+      const fk = d[ff]
+      const pk = d[pf]
+      if (pk === null || pk === undefined) continue
+      const compositeKey = `${fk}::${pk}`
+      if (seen.has(compositeKey)) continue
+      seen.add(compositeKey)
+      const name = this.patternMap.get(pk) ?? PATTERN_ORDER[0]
+      const color = this.colorMap.get(fk) ?? { fill: '#ddd', stroke: '#666' }
+      defs.push({ id: toPatternId(compositeKey), name, fill: color.fill, stroke: color.stroke })
+    }
+    return defs
+  })())
 
   /** @type {Map<unknown, string>} */
   symbolMap = $derived(

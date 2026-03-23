@@ -23,6 +23,11 @@ export function buildBars(data, channels, xScale, yScale, colors, patternMap) {
     const strokeEntry = colors?.get(strokeKey) ?? colorEntry
     const patternKey = pf ? d[pf] : null
     const patternName = patternKey !== null && patternKey !== undefined ? patternMap?.get(patternKey) : null
+    // When fill and pattern are different fields, bars need a composite pattern def id
+    // so each (region, category) pair gets its uniquely colored+textured pattern.
+    const compositePatternKey = (ff && pf && ff !== pf && patternKey !== null && patternKey !== undefined)
+      ? `${d[ff]}::${patternKey}`
+      : patternKey
     const barX = typeof xScale.bandwidth === 'function'
       ? xScale(xVal)
       : xScale(xVal) - barWidth / 2
@@ -37,7 +42,7 @@ export function buildBars(data, channels, xScale, yScale, colors, patternMap) {
       stroke: strokeKey !== null ? strokeEntry.stroke : null,
       colorKey: fillKey,
       patternKey,
-      patternId: patternName ? toPatternId(patternKey) : null
+      patternId: patternName ? toPatternId(compositePatternKey) : null
     }
   })
 }

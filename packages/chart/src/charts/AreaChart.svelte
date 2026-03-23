@@ -53,8 +53,7 @@
   const areas = $derived(brewer.areas)
   const xScale = $derived(brewer.xScale)
   const yScale = $derived(brewer.yScale)
-  const patternMap = $derived(brewer.patternMap)
-  const colorMap = $derived(brewer.colorMap)
+  const patternDefs = $derived(brewer.patternDefs)
 
   const xTicks = $derived(
     xScale && typeof xScale.domain === 'function'
@@ -88,8 +87,8 @@
     role="img"
     aria-label="Area chart"
   >
-    {#if patternMap.size > 0}
-      <ChartPatternDefs {patternMap} {colorMap} />
+    {#if patternDefs.length > 0}
+      <ChartPatternDefs defs={patternDefs} />
     {/if}
 
     <g
