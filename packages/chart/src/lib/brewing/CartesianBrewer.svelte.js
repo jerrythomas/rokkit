@@ -8,7 +8,9 @@ import { applyAggregate } from './stats.js'
 export class CartesianBrewer extends ChartBrewer {
   transform(data, channels, stat) {
     if (stat === 'identity' || !channels.x || !channels.y) return data
-    const by = [...new Set([channels.x, channels.fill ?? channels.color].filter(Boolean))]
+    // Group by all mapped aesthetic dimensions so they survive aggregation.
+    // e.g. x=region, fill=region, pattern=quarter → by=['region','quarter']
+    const by = [...new Set([channels.x, channels.fill, channels.color, channels.pattern].filter(Boolean))]
     return applyAggregate(data, { by, value: channels.y, stat })
   }
 }

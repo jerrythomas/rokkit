@@ -85,17 +85,21 @@ export class ChartBrewer {
   /** Exposes channels to subclasses for use in their own $derived properties */
   get channels() { return this.#channels }
 
+  // Maps are built from rawData so the legend always reflects the full set of
+  // original values — independent of whichever stat aggregation is applied.
+  // e.g. pattern=quarter with stat=sum still shows all 8 quarters in the legend.
+
   /** @type {Map<unknown, {fill:string,stroke:string}>} */
   colorMap = $derived(
     (this.#channels.fill ?? this.#channels.color)
-      ? assignColors(distinct(this.processedData, this.#channels.fill ?? this.#channels.color), this.#mode)
+      ? assignColors(distinct(this.#rawData, this.#channels.fill ?? this.#channels.color), this.#mode)
       : new Map()
   )
 
   /** @type {Map<unknown, string>} */
   patternMap = $derived(
     this.#channels.pattern
-      ? assignPatterns(distinct(this.processedData, this.#channels.pattern))
+      ? assignPatterns(distinct(this.#rawData, this.#channels.pattern))
       : new Map()
   )
 
@@ -142,7 +146,7 @@ export class ChartBrewer {
   /** @type {Map<unknown, string>} */
   symbolMap = $derived(
     this.#channels.symbol
-      ? assignSymbols(distinct(this.processedData, this.#channels.symbol))
+      ? assignSymbols(distinct(this.#rawData, this.#channels.symbol))
       : new Map()
   )
 
