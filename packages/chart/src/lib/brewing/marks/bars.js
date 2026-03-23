@@ -34,6 +34,7 @@ export function buildBars(data, channels, xScale, yScale, colors, patternMap) {
     const barY = yScale(d[yf])
     return {
       data: d,
+      key: `${xVal}::${fillKey ?? ''}::${patternKey ?? ''}`,
       x: barX,
       y: barY,
       width: barWidth,

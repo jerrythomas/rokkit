@@ -111,7 +111,7 @@
 
       <!-- Bars -->
       <g class="chart-bars" data-chart-mark="bar">
-        {#each bars as bar (bar.x)}
+        {#each bars as bar (bar.key)}
           <rect
             x={bar.x}
             y={bar.y}
