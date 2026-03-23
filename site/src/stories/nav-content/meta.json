@@ -1,8 +1,0 @@
-{
-  "title": "NavContent",
-  "description": "Navigation and content layout patterns",
-  "icon": "i-glyph:compass",
-  "category": "Layout",
-  "tags": ["navigation", "content", "layout", "patterns"],
-  "experimental": false
-}

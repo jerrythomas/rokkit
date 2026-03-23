@@ -1,8 +1,0 @@
-{
-  "title": "ResponsiveGrid",
-  "description": "Flexible grid layouts that adapt to screen size",
-  "icon": "i-glyph:grid-layout",
-  "category": "Layout",
-  "tags": ["grid", "responsive", "layout", "flexible", "screen"],
-  "experimental": false
-}
