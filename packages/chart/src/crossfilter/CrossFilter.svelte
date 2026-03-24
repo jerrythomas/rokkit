@@ -1,5 +1,5 @@
 <script>
-  import { setContext } from 'svelte'
+  import { setContext, untrack } from 'svelte'
   import { createCrossFilter } from './createCrossFilter.svelte.js'
 
   /**
@@ -17,8 +17,10 @@
     children
   } = $props()
 
-  // Use an externally provided instance (spec/helpers API) or create one internally
-  const cf = externalCf ?? createCrossFilter()
+  // Use an externally provided instance (spec/helpers API) or create one internally.
+  // untrack() suppresses "captures initial value" warning — intentional: the cf
+  // instance is locked in at construction time and must not recreate on prop changes.
+  const cf = untrack(() => externalCf ?? createCrossFilter())
 
   // Expose the reactive filters Map to callers via bind:filters
   $effect(() => {

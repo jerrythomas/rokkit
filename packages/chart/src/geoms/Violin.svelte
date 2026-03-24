@@ -26,7 +26,7 @@
 
 {#if violins.length > 0}
   <g data-plot-geom="violin">
-    {#each violins as v (v.cx)}
+    {#each violins as v, i (`${String(v.cx)  }::${  i}`)}
       <path
         d={v.d}
         fill={v.fill}

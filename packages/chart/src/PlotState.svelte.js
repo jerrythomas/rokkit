@@ -2,6 +2,7 @@ import { applyGeomStat } from './lib/plot/stat.js'
 import { inferFieldType, inferOrientation, buildUnifiedXScale, buildUnifiedYScale, inferColorScaleType } from './lib/plot/scales.js'
 import { resolvePreset } from './lib/plot/preset.js'
 import { resolveFormat, resolveTooltip, resolveGeom } from './lib/plot/helpers.js'
+import { distinct, assignColors } from './lib/brewing/colors.js'
 
 let nextId = 0
 
@@ -21,15 +22,30 @@ export class PlotState {
   #margin        = $state({ top: 20, right: 20, bottom: 40, left: 50 })
 
   #geoms = $state([])
+  #mode  = $state('light')
 
   axisOrigin = $state([undefined, undefined])
 
   #innerWidth  = $derived(this.#width  - this.#margin.left - this.#margin.right)
   #innerHeight = $derived(this.#height - this.#margin.top  - this.#margin.bottom)
 
+  // Effective channels: prefer top-level channels; fall back to first geom's channels
+  // for the declarative API where no spec is provided.
+  #effectiveChannels = $derived.by(() => {
+    const tc = this.#channels
+    if (tc.x && tc.y) return tc
+    const firstGeom = this.#geoms[0]
+    if (!firstGeom) return tc
+    return {
+      x:     tc.x     ?? firstGeom.channels?.x,
+      y:     tc.y     ?? firstGeom.channels?.y,
+      color: tc.color ?? firstGeom.channels?.color,
+    }
+  })
+
   orientation = $derived.by(() => {
-    const xField = this.#channels.x
-    const yField = this.#channels.y
+    const xField = this.#effectiveChannels.x
+    const yField = this.#effectiveChannels.y
     if (!xField || !yField) return 'none'
     const xType = inferFieldType(this.#data, xField)
     const yType = inferFieldType(this.#data, yField)
@@ -37,7 +53,7 @@ export class PlotState {
   })
 
   colorScaleType = $derived.by(() => {
-    const field = this.#channels.color
+    const field = this.#effectiveChannels.color
     if (!field) return 'categorical'
     return inferColorScaleType(this.#data, field, {
       colorScale: this.#colorSpec,
@@ -46,7 +62,7 @@ export class PlotState {
   })
 
   xScale = $derived.by(() => {
-    const field = this.#channels.x
+    const field = this.#effectiveChannels.x
     if (!field) return null
     const datasets = this.#geoms.length > 0
       ? this.#geoms.map((g) => this.geomData(g.id))
@@ -59,7 +75,7 @@ export class PlotState {
   })
 
   yScale = $derived.by(() => {
-    const field = this.#channels.y
+    const field = this.#effectiveChannels.y
     if (!field) return null
     const datasets = this.#geoms.length > 0
       ? this.#geoms.map((g) => this.geomData(g.id))
@@ -70,6 +86,16 @@ export class PlotState {
       includeZero
     })
   })
+
+  // Colors: Map<colorKey, { fill, stroke }> for all distinct color field values
+  colors = $derived.by(() => {
+    const field = this.#effectiveChannels.color
+    const values = distinct(this.#data, field)
+    return assignColors(values, this.#mode)
+  })
+
+  // Patterns: empty Map for now (pattern assignment deferred)
+  patterns = $derived(new Map())
 
   xAxisY = $derived.by(() => {
     if (!this.yScale || typeof this.yScale !== 'function') return this.#innerHeight
@@ -100,6 +126,7 @@ export class PlotState {
     this.#yDomain       = config.yDomain
     this.#width         = config.width         ?? 600
     this.#height        = config.height        ?? 400
+    this.#mode          = config.mode          ?? 'light'
   }
 
   update(config) {
@@ -114,6 +141,7 @@ export class PlotState {
     this.#yDomain = config.yDomain
     if (config.width         !== undefined) this.#width         = config.width
     if (config.height        !== undefined) this.#height        = config.height
+    if (config.mode          !== undefined) this.#mode          = config.mode
   }
 
   registerGeom(config) {

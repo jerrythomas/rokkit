@@ -10,13 +10,13 @@
 
   const cf = getContext('crossfilter')
 
-  let low  = $state(min ?? 0)
-  let high = $state(max ?? 100)
+  // Initialize from props; $effect keeps in sync when min/max change
+  let low  = $state(0)
+  let high = $state(100)
 
-  // Reset slider to full range when min/max props change
   $effect(() => {
-    low = min
-    high = max
+    low = min ?? 0
+    high = max ?? 100
   })
 
   function handleLow(e) {

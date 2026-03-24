@@ -26,7 +26,7 @@
 
 {#if boxes.length > 0}
   <g data-plot-geom="box">
-    {#each boxes as box (box.cx)}
+    {#each boxes as box, i (`${String(box.cx)  }::${  i}`)}
       {@const x0 = box.cx - box.width / 2}
       {@const xMid = box.cx}
       {@const xCap0 = box.cx - box.whiskerWidth / 2}

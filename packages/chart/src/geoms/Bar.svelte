@@ -80,7 +80,9 @@
         data-dimmed={dimmedByKey[bar.key] ? true : undefined}
         style:cursor={filterable ? 'pointer' : undefined}
         onclick={filterable && x ? () => handleBarClick(bar.data[x]) : undefined}
-        role="graphics-symbol"
+        onkeydown={filterable && x ? (e) => (e.key === 'Enter' || e.key === ' ') && handleBarClick(bar.data[x]) : undefined}
+        role={filterable ? 'button' : 'graphics-symbol'}
+        tabindex={filterable ? 0 : undefined}
         aria-label="{bar.data[x]}: {bar.data[y]}"
       >
         <title>{bar.data[x]}: {bar.data[y]}</title>
