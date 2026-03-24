@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/svelte'
-import Timeline from '../../src/plot/Timeline.svelte'
+import Timeline from '../../src/Plot/Timeline.svelte'
 
 const defaultProps = {
   frameKeys: [1999, 2008],
