@@ -557,9 +557,223 @@ Optional: `mode="hide"` on CrossFilter hides filtered-out marks entirely.
 
 ---
 
-## Section 9: Testing Strategy
+## Section 9: Presets — Colors, Patterns, Symbols
 
-> **TBD** — to be designed before implementation begins.
+The default palette (21 colors, 9 patterns, 9 symbols) is a built-in preset. Apps need to override these with brand colors, accessibility palettes, or custom mark types.
+
+### Preset structure
+
+```typescript
+interface PlotPreset {
+  colors?:   string[]           // ordered hex colors for series 1, 2, 3...
+  patterns?: string[]           // ordered pattern names (built-in or custom)
+  symbols?:  string[]           // ordered symbol names (built-in or custom)
+}
+```
+
+### Resolution — same pattern as stats and geoms
+
+```
+preset name in spec (string)
+  → 'default'            → built-in 21-color palette + standard patterns/symbols
+  → 'accessible'         → ColorBrewer qualitative (colorblind-safe)
+  → 'print'              → greyscale palette + high-contrast patterns
+  → helpers.presets[name] → user-defined named preset
+  → helpers.preset        → inline preset (no name needed)
+```
+
+In spec (serializable — string name only):
+```js
+{ ...spec, preset: 'brand' }
+```
+
+In helpers (definition):
+```js
+const helpers = {
+  presets: {
+    brand: {
+      colors:   ['#e63946', '#457b9d', '#2a9d8f', '#e9c46a'],
+      patterns: ['dots', 'cross-hatch', 'diagonal-lines'],
+      symbols:  ['circle', 'diamond', 'square']
+    }
+  }
+}
+```
+
+Inline (no name):
+```js
+const helpers = {
+  preset: { colors: brandColors, patterns: ['dots', 'waves'] }
+}
+```
+
+### Custom patterns and symbols
+
+Extend the built-in registries via helpers — same pattern as `helpers.geoms`:
+
+```js
+const helpers = {
+  patterns: { 'my-dots': MyDotsComponent },   // new SVG pattern component
+  symbols:  { 'star-filled': MyStarShape }    // new symbol shape
+}
+```
+
+Once registered, reference by name in `preset.patterns` or `preset.symbols`, or directly in channel mappings.
+
+### Continuous color schemes
+
+`colorScheme` (for sequential/diverging) follows the same resolution:
+- Built-in names: `'greens'`, `'blues'`, `'oranges'`, `'reds'`, `'purples'`, `'rdbu'`, `'rdylgn'`, `'bwr'`
+- `helpers.colorSchemes['my-scheme']` → custom interpolator function
+
+---
+
+## Section 10: Testing Strategy
+
+### Test data — mpg dataset
+
+Use the `mpg` dataset (234 rows, from ggplot2) as the primary test fixture. It has both categorical and numeric dimensions, making it comprehensive for all stat, scale, orientation, and facet scenarios.
+
+Fields:
+- **Categorical**: `manufacturer`, `model`, `trans`, `drv`, `fl`, `class`
+- **Numeric**: `displ`, `year`, `cyl`, `cty`, `hwy`
+
+Covers:
+- Stat transforms: `mean(cty)` by `class`, `count` by `manufacturer`
+- Orientation inference: `x='cty'` (numeric) + `y='class'` (band) → horizontal
+- Facets: split by `drv` (3 values: 4, f, r) or `class` (7 values)
+- Continuous color: `color='cty'` → sequential scale
+- Scatter/bubble: `x='displ'`, `y='hwy'`, `size='displ'`, `color='class'`
+- Multiple stats: bars (sum cty by class) + line (mean hwy by class)
+
+Ship `mpg.json` as a test fixture in `packages/chart/src/test/fixtures/mpg.json`.
+
+### Unit tests — pure logic (no DOM)
+
+Test `PlotState`, stat pipeline, scale building, orientation inference, frame normalization, CrossFilter state. No Svelte, no DOM.
+
+```js
+import mpg from '../fixtures/mpg.json'
+
+// stat transforms
+test('sum stat: cty summed per class', () => {
+  const result = applyStat(mpg, 'sum', { x: 'class', y: 'cty' })
+  expect(result.find(r => r.class === 'suv').cty).toBe(
+    mpg.filter(r => r.class === 'suv').reduce((a, r) => a + r.cty, 0)
+  )
+})
+
+test('mean stat: hwy averaged per manufacturer', () => { ... })
+test('count stat: rows per class', () => { ... })
+
+// orientation inference
+test('horizontal when y is band scale (class field)', () => {
+  const state = new PlotState({ x: 'cty', y: 'class', data: mpg })
+  expect(state.orientation).toBe('horizontal')
+})
+
+test('vertical when x is band scale', () => { ... })
+
+// scale union across geoms
+test('yDomain is union of bar and line geom data', () => { ... })
+
+// facet
+test('facet by drv produces 3 frames', () => {
+  const frames = buildFacetFrames(mpg, 'drv')
+  expect(frames.map(f => f.key)).toEqual(['4', 'f', 'r'])
+})
+
+test('missing value in facet frame produces gap not error', () => { ... })
+
+// animation frame normalization
+test('frames filled with 0 for missing year+class combinations', () => { ... })
+
+// CrossFilter
+test('click filter toggles class value in/out', () => { ... })
+test('brush filter sets [min, max] on cty', () => { ... })
+
+// stat resolution
+test('unknown stat falls back to identity with warning', () => { ... })
+test('custom stat from helpers is called', () => { ... })
+
+// color scale inference
+test('string field → categorical scale', () => { ... })
+test('numeric field → sequential scale', () => { ... })
+test('numeric field + colorMidpoint → diverging scale', () => { ... })
+
+// preset resolution
+test('named preset resolves colors from helpers.presets', () => { ... })
+test('unknown preset falls back to default', () => { ... })
+```
+
+### Component tests — Svelte Testing Library
+
+Verify data attributes and SVG structure, not pixel positions:
+
+```js
+// mark counts
+test('Bar renders one rect per class (7 classes in mpg)', async () => {
+  render(Plot, { props: { data: mpg, x: 'class', y: 'cty', geoms: [{ type: 'bar', stat: 'mean' }] } })
+  expect(document.querySelectorAll('[data-chart-element="bar"]')).toHaveLength(7)
+})
+
+// orientation
+test('horizontal bars when y is categorical', () => { ... })
+
+// stacking
+test('stacked bars: rects present, no negative heights', () => { ... })
+
+// Arc innerRadius
+test('donut: arc paths rendered with innerRadius option', () => { ... })
+
+// facet
+test('facet by drv: 3 panels rendered', () => { ... })
+test('facet panel with missing x value renders without error', () => { ... })
+
+// CrossFilter dimming
+test('filtered-out marks have data-dimmed attribute', () => { ... })
+
+// legend type
+test('numeric color field renders gradient legend not swatches', () => { ... })
+```
+
+### E2E tests — Playwright
+
+One playground page per chart type. Verify render, interaction, and animation.
+
+```js
+test('bar chart renders 7 class bars from mpg data', async ({ page }) => {
+  await page.goto('/playground/charts/bar-chart')
+  await expect(page.locator('[data-chart-element="bar"]')).toHaveCount(7)
+})
+
+test('tooltip appears on bar hover', async ({ page }) => {
+  await page.hover('[data-chart-element="bar"]:first-child')
+  await expect(page.locator('[data-chart-tooltip]')).toBeVisible()
+})
+
+test('crossfilter: clicking bar dims scatter marks', async ({ page }) => {
+  await page.goto('/playground/charts/cross-filter')
+  await page.click('[data-chart-element="bar"]:first-child')
+  const dimmed = await page.locator('[data-chart-element="point"][data-dimmed]').count()
+  expect(dimmed).toBeGreaterThan(0)
+})
+
+test('animated chart: play advances frame label', async ({ page }) => {
+  await page.goto('/playground/charts/animated-chart')
+  const before = await page.locator('[data-chart-frame-label]').textContent()
+  await page.click('[data-chart-play]')
+  await page.waitForTimeout(600)
+  const after = await page.locator('[data-chart-frame-label]').textContent()
+  expect(after).not.toBe(before)
+})
+```
+
+### What we do NOT test
+- Pixel-perfect positions — scale math is D3's responsibility
+- Visual appearance — verified by eye in playground
+- All 20 pattern components individually — one smoke test covers the system
+- Theme CSS — verified via playground + theme verification page
 
 ---
 
@@ -579,6 +793,9 @@ Optional: `mode="hide"` on CrossFilter hides filtered-out marks entirely.
 | Frame normalization | Missing combinations filled with 0 so tweening interpolates smoothly |
 | Geoms as filter controls | `filterable`/`brush` props on geoms make them interactive filters — no separate widget needed |
 | Dimming over hiding (CrossFilter default) | Preserves data context; filtered-out marks visible at low opacity rather than removed |
+| Presets via helpers, not global config | Consistent with helpers pattern; named presets stay serializable in spec |
+| mpg dataset as primary test fixture | Real-world data with both categorical + numeric dims covers all stat/scale/facet scenarios comprehensively |
+| Custom patterns/symbols via helpers registry | Same extension pattern as helpers.geoms — register by name, reference by name |
 | Backwards compatibility not required | Thin wrappers for specific use cases are fine; not compat shims |
 
 ---

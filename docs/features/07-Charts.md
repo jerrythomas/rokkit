@@ -451,6 +451,18 @@ Feature: Accessible Charts
 | Zoom and pan | 🔲 Planned |
 | Keyboard navigation within charts | 🔲 Planned |
 
+### Presets
+
+| Feature | Status |
+|---------|--------|
+| Default preset (21-color palette) | ✅ Implemented |
+| Named preset via helpers.presets | 🔲 Planned |
+| Built-in accessible preset (colorblind-safe) | 🔲 Planned |
+| Built-in print preset (greyscale + patterns) | 🔲 Planned |
+| Custom pattern registration via helpers.patterns | 🔲 Planned |
+| Custom symbol registration via helpers.symbols | 🔲 Planned |
+| Continuous color schemes (greens, blues, rdbu, etc.) | 🔲 Planned (#126) |
+
 ### Sparklines
 
 | Feature | Status |
