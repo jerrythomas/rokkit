@@ -412,22 +412,22 @@ Feature: Accessible Charts
 
 | Feature | Status |
 |---------|--------|
-| `FacetPlot.svelte` | 🔲 Planned |
-| Fixed scales (shared domain) | 🔲 Planned |
-| Free scales (per-panel domain) | 🔲 Planned |
-| Missing values → gaps | 🔲 Planned |
+| `FacetPlot.svelte` | ✅ Implemented |
+| Fixed scales (shared domain) | ✅ Implemented |
+| Free scales (per-panel domain) | ✅ Implemented |
+| Missing values → gaps | ✅ Implemented |
 | Shared axis/legend across panels | 🔲 Planned |
 
 ### Animation
 
 | Feature | Status |
 |---------|--------|
-| `AnimatedPlot.svelte` | 🔲 Planned |
-| Frame normalization (fill missing with 0) | 🔲 Planned |
-| Static scales across frames | 🔲 Planned |
-| Timeline controls (play/pause/scrub/speed) | 🔲 Planned |
+| `AnimatedPlot.svelte` | ✅ Implemented |
+| Frame normalization (fill missing with 0) | ✅ Implemented |
+| Static scales across frames | ✅ Implemented |
+| Timeline controls (play/pause/scrub/speed) | ✅ Implemented |
 | Bar chart race (sorted positions) | 🔲 Planned |
-| `prefers-reduced-motion` | 🔲 Planned |
+| `prefers-reduced-motion` | ✅ Implemented |
 
 ### CrossFilter
 

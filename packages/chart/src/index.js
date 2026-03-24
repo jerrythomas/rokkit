@@ -22,7 +22,11 @@ export const PlotLayers = {
 }
 
 // New Plot system
-export { default as PlotChart } from './Plot.svelte'
+export { default as PlotChart }    from './Plot.svelte'
+
+// Facets and Animation
+export { default as FacetPlot }    from './FacetPlot.svelte'
+export { default as AnimatedPlot } from './AnimatedPlot.svelte'
 
 // Geom components (for declarative use inside PlotChart)
 export { default as GeomBar }    from './geoms/Bar.svelte'
