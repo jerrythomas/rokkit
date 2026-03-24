@@ -32,6 +32,10 @@ export function extractFrames(data, timeField) {
 export function normalizeFrame(frameData, channels, allXValues, allColorValues) {
   const { x: xf, y: yf, color: cf } = channels
 
+  if (cf && !allColorValues?.length) {
+    throw new Error('normalizeFrame: allColorValues must be provided when color channel is set')
+  }
+
   // Build lookup of existing (x, color?) keys
   const existing = new Set(
     frameData.map((d) => (cf ? `${d[xf]}::${d[cf]}` : String(d[xf])))

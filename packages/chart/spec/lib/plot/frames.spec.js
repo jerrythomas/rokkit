@@ -45,6 +45,28 @@ describe('normalizeFrame', () => {
     const compact = frame1999.find((r) => r.class === 'compact')
     expect(compact?.hwy).toBe(29)
   })
+
+  it('fills missing (x, color) combinations when color channel is provided', () => {
+    const data = [
+      { year: 2000, class: 'compact', drv: 'f', hwy: 29 },
+      { year: 2000, class: 'compact', drv: '4', hwy: 26 },
+      // 2000/suv/f and 2000/suv/4 intentionally missing
+    ]
+    const allXValues = ['compact', 'suv']
+    const allColorValues = ['f', '4']
+    const frameData = data
+
+    const result = normalizeFrame(frameData, { x: 'class', y: 'hwy', color: 'drv' }, allXValues, allColorValues)
+
+    // Should have 4 rows: compact/f, compact/4 (original) + suv/f, suv/4 (filled)
+    expect(result).toHaveLength(4)
+    const suvF = result.find((r) => r.class === 'suv' && r.drv === 'f')
+    const suv4 = result.find((r) => r.class === 'suv' && r.drv === '4')
+    expect(suvF).toBeDefined()
+    expect(suvF?.hwy).toBe(0)
+    expect(suv4).toBeDefined()
+    expect(suv4?.hwy).toBe(0)
+  })
 })
 
 describe('computeStaticDomains', () => {
