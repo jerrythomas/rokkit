@@ -22,7 +22,9 @@
     onspeed
   } = $props()
 
-  const frameLabel = $derived(frameKeys[currentIndex] ?? '')
+  const safeIndex = $derived(
+    frameKeys.length === 0 ? 0 : Math.min(currentIndex, frameKeys.length - 1)
+  )
 
   const SPEEDS = [0.5, 1, 1.5, 2, 4]
 </script>
@@ -33,20 +35,22 @@
     class="play-pause"
     aria-label={playing ? 'Pause' : 'Play'}
     onclick={() => playing ? onpause?.() : onplay?.()}
+    disabled={frameKeys.length === 0}
     data-plot-timeline-playpause
   >
     {playing ? '⏸' : '▶'}
   </button>
 
   <!-- Frame label -->
-  <span class="frame-label" data-plot-timeline-label>{frameLabel}</span>
+  <span class="frame-label" data-plot-timeline-label>{frameKeys[safeIndex] ?? ''}</span>
 
   <!-- Scrub slider -->
   <input
     type="range"
     min="0"
-    max={frameKeys.length - 1}
-    value={currentIndex}
+    max={Math.max(0, frameKeys.length - 1)}
+    value={safeIndex}
+    disabled={frameKeys.length === 0}
     class="scrub"
     aria-label="Animation timeline"
     oninput={(e) => onscrub?.(Number(e.currentTarget.value))}
