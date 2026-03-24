@@ -22,6 +22,7 @@ export function resolveStat(name, helpers = {}) {
   if (name === 'identity') return (data) => data
   if (BUILT_IN_STATS[name]) return BUILT_IN_STATS[name]
   if (helpers?.stats?.[name]) return helpers.stats[name]
+  // eslint-disable-next-line no-console
   console.warn(
     `[Plot] Unknown stat "${name}" — falling back to identity. Add it to helpers.stats to suppress this warning.`
   )

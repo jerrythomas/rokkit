@@ -36,6 +36,7 @@ export function resolvePreset(name, helpers = {}) {
   } else if (name && helpers?.presets?.[name]) {
     resolved = helpers.presets[name]
   } else if (name) {
+    // eslint-disable-next-line no-console
     console.warn(`[Plot] Unknown preset "${name}" — falling back to default. Add it to helpers.presets to suppress this warning.`)
     resolved = DEFAULT_PRESET
   } else if (helpers?.preset) {
