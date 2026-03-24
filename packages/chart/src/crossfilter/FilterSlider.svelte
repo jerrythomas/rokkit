@@ -13,6 +13,12 @@
   let low  = $state(min ?? 0)
   let high = $state(max ?? 100)
 
+  // Reset slider to full range when min/max props change
+  $effect(() => {
+    low = min
+    high = max
+  })
+
   function handleLow(e) {
     low = Math.min(Number(e.currentTarget.value), high)
     cf?.setRange(field, [low, high])
@@ -24,11 +30,11 @@
   }
 </script>
 
-<div class="filter-slider" data-filter-slider data-filter-field={field}>
+<div data-filter-slider data-filter-field={field}>
   {#if label}
-    <span class="label" data-filter-slider-label>{label}</span>
+    <span data-filter-slider-label>{label}</span>
   {/if}
-  <div class="inputs">
+  <div data-filter-slider-inputs>
     <input
       type="range"
       {min} {max} {step}
@@ -46,27 +52,27 @@
       data-filter-slider-high
     />
   </div>
-  <div class="range-display" data-filter-slider-display>
+  <div data-filter-slider-display>
     {low} – {high}
   </div>
 </div>
 
 <style>
-  .filter-slider {
+  [data-filter-slider] {
     display: flex;
     flex-direction: column;
     gap: 4px;
     font-size: 12px;
   }
-  .inputs {
+  [data-filter-slider-inputs] {
     display: flex;
     flex-direction: column;
     gap: 2px;
   }
-  .label {
+  [data-filter-slider-label] {
     font-weight: 600;
   }
-  .range-display {
+  [data-filter-slider-display] {
     color: currentColor;
     opacity: 0.7;
   }
