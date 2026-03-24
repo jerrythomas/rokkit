@@ -4,23 +4,23 @@
 
   let { x, y, color, stat = 'identity', options = {} } = $props()
 
-  const state = getContext('plot-state')
+  const plotState = getContext('plot-state')
   let id = $state(null)
 
   onMount(() => {
-    id = state.registerGeom({ type: 'bar', channels: { x, y, color }, stat, options })
+    id = plotState.registerGeom({ type: 'bar', channels: { x, y, color }, stat, options })
   })
   onDestroy(() => {
-    if (id) state.unregisterGeom(id)
+    if (id) plotState.unregisterGeom(id)
   })
 
-  const data        = $derived(id ? state.geomData(id) : [])
-  const xScale      = $derived(state.xScale)
-  const yScale      = $derived(state.yScale)
-  const colors      = $derived(state.colors)
-  const patterns    = $derived(state.patterns)
-  const orientation = $derived(state.orientation)
-  const innerHeight = $derived(state.innerHeight)
+  const data        = $derived(id ? plotState.geomData(id) : [])
+  const xScale      = $derived(plotState.xScale)
+  const yScale      = $derived(plotState.yScale)
+  const colors      = $derived(plotState.colors)
+  const patterns    = $derived(plotState.patterns)
+  const orientation = $derived(plotState.orientation)
+  const innerHeight = $derived(plotState.innerHeight)
 
   const bars = $derived.by(() => {
     if (!data?.length || !xScale || !yScale) return []

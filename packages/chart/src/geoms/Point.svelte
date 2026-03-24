@@ -4,18 +4,18 @@
 
   let { x, y, color, size, stat = 'identity', options = {} } = $props()
 
-  const state = getContext('plot-state')
+  const plotState = getContext('plot-state')
   let id = $state(null)
 
   onMount(() => {
-    id = state.registerGeom({ type: 'point', channels: { x, y, color, size }, stat, options })
+    id = plotState.registerGeom({ type: 'point', channels: { x, y, color, size }, stat, options })
   })
-  onDestroy(() => { if (id) state.unregisterGeom(id) })
+  onDestroy(() => { if (id) plotState.unregisterGeom(id) })
 
-  const data    = $derived(id ? state.geomData(id) : [])
-  const xScale  = $derived(state.xScale)
-  const yScale  = $derived(state.yScale)
-  const colors  = $derived(state.colors)
+  const data    = $derived(id ? plotState.geomData(id) : [])
+  const xScale  = $derived(plotState.xScale)
+  const yScale  = $derived(plotState.yScale)
+  const colors  = $derived(plotState.colors)
   // Size scale: future enhancement — null for now
   const sizeScale = null
 
