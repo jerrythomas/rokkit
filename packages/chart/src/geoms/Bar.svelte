@@ -15,6 +15,10 @@
     if (id) plotState.unregisterGeom(id)
   })
 
+  $effect(() => {
+    if (id) plotState.updateGeom(id, { channels: { x, y, color }, stat })
+  })
+
   const data        = $derived(id ? plotState.geomData(id) : [])
   const xScale      = $derived(plotState.xScale)
   const yScale      = $derived(plotState.yScale)

@@ -14,8 +14,8 @@
 		xField: 'class',
 		yField: 'hwy',
 		fillField: 'drv',
-		patternField: '',
 		stat: 'mean',
+		stack: false,
 		grid: true,
 		legend: true
 	})
@@ -26,8 +26,8 @@
 			xField: { type: 'string' },
 			yField: { type: 'string' },
 			fillField: { type: 'string' },
-			patternField: { type: 'string' },
 			stat: { type: 'string' },
+			stack: { type: 'boolean' },
 			grid: { type: 'boolean' },
 			legend: { type: 'boolean' }
 		}
@@ -52,15 +52,11 @@
 				props: { options: ['', 'drv', 'class', 'cyl', 'year', 'fl', 'manufacturer'] }
 			},
 			{
-				scope: '#/patternField',
-				label: 'pattern',
-				props: { options: ['', 'drv', 'class', 'cyl', 'year', 'fl'] }
-			},
-			{
 				scope: '#/stat',
 				label: 'stat',
 				props: { options: ['identity', 'sum', 'mean', 'min', 'max', 'count'] }
 			},
+			{ scope: '#/stack', label: 'stack' },
 			{ scope: '#/grid', label: 'grid' },
 			{ scope: '#/legend', label: 'legend' },
 			{ type: 'separator' }
@@ -80,8 +76,8 @@
 					x={props.xField}
 					y={props.yField}
 					fill={props.fillField || undefined}
-					pattern={props.patternField || undefined}
 					stat={props.stat}
+					stack={props.stack}
 					grid={props.grid}
 					legend={props.legend}
 					width={560}

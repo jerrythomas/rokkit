@@ -31,6 +31,7 @@ export function createMockState(overrides = {}) {
     }),
     geomData: (_id) => [],
     registerGeom: (_config) => 'geom-0',
+    updateGeom: (_id, _config) => {},
     unregisterGeom: (_id) => {},
     ...overrides
   }

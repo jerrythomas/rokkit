@@ -1,3 +1,4 @@
+import { untrack } from 'svelte'
 import { applyGeomStat } from './lib/plot/stat.js'
 import { inferFieldType, inferOrientation, buildUnifiedXScale, buildUnifiedYScale, inferColorScaleType } from './lib/plot/scales.js'
 import { resolvePreset } from './lib/plot/preset.js'
@@ -148,6 +149,12 @@ export class PlotState {
     const id = `geom-${nextId++}`
     this.#geoms = [...this.#geoms, { id, ...config }]
     return id
+  }
+
+  updateGeom(id, config) {
+    // untrack the read of #geoms to avoid effect_update_depth_exceeded when
+    // called from a geom's $effect (which would otherwise track #geoms as a dependency)
+    this.#geoms = untrack(() => this.#geoms).map((g) => g.id === id ? { ...g, ...config } : g)
   }
 
   unregisterGeom(id) {

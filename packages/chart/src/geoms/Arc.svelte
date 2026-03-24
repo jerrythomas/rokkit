@@ -13,6 +13,10 @@
   })
   onDestroy(() => { if (id) plotState.unregisterGeom(id) })
 
+  $effect(() => {
+    if (id) plotState.updateGeom(id, { channels: { label: color, y: theta }, stat })
+  })
+
   const data   = $derived(id ? plotState.geomData(id) : [])
   const colors = $derived(plotState.colors)
   const w      = $derived(plotState.innerWidth)

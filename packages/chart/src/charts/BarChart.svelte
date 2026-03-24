@@ -13,10 +13,11 @@
     mode = 'light',
     grid = true,
     legend = false,
-    stat = 'identity'
+    stat = 'identity',
+    stack = false
   } = $props()
 </script>
 
 <Plot {data} {width} {height} {mode} {grid} {legend}>
-  <Bar {x} {y} color={fill} {stat} />
+  <Bar {x} {y} color={fill} {stat} options={{ stack }} />
 </Plot>
