@@ -49,7 +49,9 @@
     height: spec?.height ?? height,
     channels: spec ? { x: spec.x, y: spec.y, color: spec.color } : {},
     labels: spec?.labels ?? {},
-    helpers
+    helpers,
+    xDomain: spec?.xDomain,
+    yDomain: spec?.yDomain
   }))
   setContext('plot-state', plotState)
 
@@ -61,7 +63,9 @@
       height: spec?.height ?? height,
       channels: spec ? { x: spec.x, y: spec.y, color: spec.color } : {},
       labels: spec?.labels ?? {},
-      helpers
+      helpers,
+      xDomain: spec?.xDomain,
+      yDomain: spec?.yDomain
     })
   })
 
