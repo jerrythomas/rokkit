@@ -1586,13 +1586,15 @@ git commit -m "feat(chart): add Arc, Box, Violin geom components"
 
 ### Task 12: `Plot.svelte` orchestrator
 
+**Status: completed**
+
 The top-level chart component. Creates `PlotState`, sets context, renders SVG canvas with optional grid, axes, legend, and pattern defs. Accepts either declarative children (geoms as child components) or a `spec` prop.
 
 **Files:**
 - Create: `packages/chart/src/Plot.svelte`
 - Create: `packages/chart/spec/Plot.spec.js`
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 `packages/chart/spec/Plot.spec.js`:
 
@@ -1638,7 +1640,7 @@ describe('Plot.svelte', () => {
 })
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 ```bash
 bun run test:ci -- packages/chart/spec/Plot.spec.js
@@ -1646,7 +1648,7 @@ bun run test:ci -- packages/chart/spec/Plot.spec.js
 
 Expected: FAIL — `./Plot.svelte` not found.
 
-- [ ] **Step 3: Write `Plot.svelte`**
+- [x] **Step 3: Write `Plot.svelte`**
 
 ```svelte
 <script>
@@ -1804,7 +1806,7 @@ Expected: FAIL — `./Plot.svelte` not found.
 </style>
 ```
 
-- [ ] **Step 3b: Add `update(config, helpers)` to `PlotState.svelte.js`**
+- [x] **Step 3b: Add `update(config, helpers)` to `PlotState.svelte.js`**
 
 Read `packages/chart/src/PlotState.svelte.js`. The Plan 1 PlotState accepts config in its constructor. `Plot.svelte` calls `state.update(config, helpers)` inside a `$effect` to keep state in sync with reactive props. Add this method if it does not already exist:
 
@@ -1822,7 +1824,7 @@ update(config, helpers = {}) {
 
 If `PlotState` already reads `config` properties via `$derived` (referencing the constructor argument reactively), the `update()` method may be a no-op. Add it regardless so `Plot.svelte` can call it without a runtime error.
 
-- [ ] **Step 4: Run tests**
+- [x] **Step 4: Run tests**
 
 ```bash
 bun run test:ci -- packages/chart/spec/Plot.spec.js
@@ -1830,7 +1832,7 @@ bun run test:ci -- packages/chart/spec/Plot.spec.js
 
 Expected: All pass.
 
-- [ ] **Step 5: Run full test suite to verify no regressions**
+- [x] **Step 5: Run full test suite to verify no regressions**
 
 ```bash
 cd packages/chart && bun run test
@@ -1838,7 +1840,7 @@ cd packages/chart && bun run test
 
 Expected: All existing tests still pass.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add packages/chart/src/Plot.svelte packages/chart/spec/Plot.spec.js
@@ -1850,6 +1852,8 @@ git commit -m "feat(chart): add Plot.svelte orchestrator — declarative + spec-
 ## Chunk 5: Chart wrappers + exports
 
 ### Task 13: Updated chart wrappers
+
+**Status: completed**
 
 All existing chart wrapper components become thin wrappers around `Plot.svelte`. They preserve their existing prop signatures for backward compatibility. Read each file before rewriting it.
 
@@ -1863,7 +1867,7 @@ All existing chart wrapper components become thin wrappers around `Plot.svelte`.
 - Modify: `packages/chart/src/charts/ViolinPlot.svelte`
 - Modify: `packages/chart/src/charts/BubbleChart.svelte`
 
-- [ ] **Step 1: Rewrite `charts/BarChart.svelte`**
+- [x] **Step 1: Rewrite `charts/BarChart.svelte`**
 
 Read `packages/chart/src/charts/BarChart.svelte` to confirm existing props, then replace with:
 
@@ -1894,7 +1898,7 @@ Read `packages/chart/src/charts/BarChart.svelte` to confirm existing props, then
 
 **Note:** `pattern` is not yet wired — it requires the pattern channel support in Bar geom and `PlotState.patterns`. This is a known limitation of Plan 2. The `pattern` prop can be passed through in a follow-up once the `patterns` channel is integrated into PlotState.
 
-- [ ] **Step 2: Rewrite `charts/LineChart.svelte`**
+- [x] **Step 2: Rewrite `charts/LineChart.svelte`**
 
 Read `packages/chart/src/charts/LineChart.svelte` first to get its props, then replace:
 
@@ -1921,7 +1925,7 @@ Read `packages/chart/src/charts/LineChart.svelte` first to get its props, then r
 </Plot>
 ```
 
-- [ ] **Step 3: Rewrite remaining chart wrappers**
+- [x] **Step 3: Rewrite remaining chart wrappers**
 
 For each file, read it first to confirm the existing props, then replace with the thin wrapper below. The pattern is identical: forward data + channels to `Plot` + the matching geom.
 
@@ -2005,7 +2009,7 @@ For each file, read it first to confirm the existing props, then replace with th
 
 **Note:** For each wrapper, read the original file first to confirm the exact prop names before overwriting. The wrappers above assume common conventions — if an existing chart used different prop names (e.g. `fill` vs `color`, `label` vs `theta`), match the original name in the `$props()` destructure and map to the geom's prop.
 
-- [ ] **Step 4: Run the full test suite**
+- [x] **Step 4: Run the full test suite**
 
 ```bash
 bun run test:ci
@@ -2013,7 +2017,7 @@ bun run test:ci
 
 Expected: All tests pass, zero errors.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add packages/chart/src/charts/
@@ -2024,12 +2028,14 @@ git commit -m "refactor(chart): update all chart wrappers to use new Plot.svelte
 
 ### Task 14: Update `index.js` exports
 
+**Status: completed**
+
 The package's public API should export `Plot.svelte` and all geom components under a `Plot` namespace, alongside the existing exports.
 
 **Files:**
 - Modify: `packages/chart/src/index.js`
 
-- [ ] **Step 1: Rename the old `Plot` namespace export**
+- [x] **Step 1: Rename the old `Plot` namespace export**
 
 The current `index.js` exports `export const Plot = { Root, Axis, Bar, ... }` (the old system components). The new orchestrator `Plot.svelte` needs the `Plot` name. Rename the old namespace to `PlotLayers` to avoid the conflict:
 
@@ -2043,7 +2049,7 @@ export const PlotLayers = { Root, Axis, Bar, Grid, Legend, Line, Area, Point, Ar
 // The old system is deprecated — consumers should migrate to the new geoms.
 ```
 
-- [ ] **Step 2: Add new exports**
+- [x] **Step 2: Add new exports**
 
 After the `PlotLayers` rename, add the new system exports:
 
@@ -2065,7 +2071,7 @@ export { default as GeomViolin } from './geoms/Violin.svelte'
 
 **Why `GeomBar` etc.:** Geom names (`Bar`, `Line`) also collide with the old `Plot/Bar.svelte` components imported in `index.js`. The `Geom` prefix makes the new exports unambiguous. In future (when the old system is fully removed), these can be re-exported as bare `Bar`, `Line`, etc.
 
-- [ ] **Step 3: Run tests and lint**
+- [x] **Step 3: Run tests and lint**
 
 ```bash
 bun run test:ci && bun run lint
@@ -2073,7 +2079,7 @@ bun run test:ci && bun run lint
 
 Expected: All tests pass, zero lint errors.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add packages/chart/src/index.js
