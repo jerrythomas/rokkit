@@ -64,7 +64,6 @@ export function applyGeomStat(data, geomConfig, helpers = {}) {
   if (stat === 'identity') return data
 
   const statFn = resolveStat(stat, helpers)
-  if (!statFn || stat === 'identity') return data
 
   const VALUE_CHANNEL_KEYS = ['y', 'size', 'theta']
   const groupByFields = inferGroupByFields(channels, VALUE_CHANNEL_KEYS)
