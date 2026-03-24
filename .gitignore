@@ -210,3 +210,4 @@ tmp
 .worktrees/
 .claire/
 firebase-debug.log
+site/e2e/*-snapshots/
