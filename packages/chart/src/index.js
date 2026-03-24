@@ -33,6 +33,9 @@ export { default as BoxPlot } from './charts/BoxPlot.svelte'
 export { default as ViolinPlot } from './charts/ViolinPlot.svelte'
 export { default as BubbleChart } from './charts/BubbleChart.svelte'
 
+// Export state and types
+export { PlotState } from './PlotState.svelte.js'
+
 // Export utilities
 export { ChartBrewer } from './lib/brewing/index.svelte.js'
 export * from './lib/brewing/index.svelte.js'
