@@ -90,6 +90,7 @@
         stroke={box.stroke ?? box.fill}
         stroke-width="1"
       />
+      <!-- Outlier rendering deferred: buildBoxes does not compute outliers yet -->
     {/each}
   </g>
 {/if}
