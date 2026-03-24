@@ -68,7 +68,9 @@
     if (typeof window.matchMedia !== 'function') return
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
     prefersReducedMotion = mq.matches
-    mq.addEventListener('change', (e) => { prefersReducedMotion = e.matches })
+    const handler = (e) => { prefersReducedMotion = e.matches }
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
   })
 
   // Animation loop
@@ -95,6 +97,9 @@
   }
 
   $effect(() => {
+    // Reading msPerFrame here makes it a tracked dependency — effect re-runs on speed changes,
+    // which resets lastTime=0 to re-anchor frame pacing.
+    const _ms = msPerFrame
     if (playing && !prefersReducedMotion) {
       lastTime = 0
       rafId = requestAnimationFrame(tick)
@@ -105,7 +110,7 @@
   })
 
   // Reduced motion: step frames on interval instead
-  let reducedInterval = $state(0)
+  let reducedInterval = 0
   $effect(() => {
     if (!playing || !prefersReducedMotion) {
       clearInterval(reducedInterval)
@@ -124,6 +129,17 @@
   onDestroy(() => {
     cancelAnimationFrame(rafId)
     clearInterval(reducedInterval)
+  })
+
+  $effect(() => {
+    const len = frameKeys.length
+    if (currentIndex >= len && len > 0) {
+      currentIndex = len - 1
+      playing = false
+    } else if (len === 0) {
+      currentIndex = 0
+      playing = false
+    }
   })
 
   function handlePlay()  { playing = true }
