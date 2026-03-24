@@ -1,68 +1,30 @@
 <script>
-	import { getContext } from 'svelte'
-	import { createGrid } from '../lib/brewing/axes.svelte.js'
+  import { getContext } from 'svelte'
 
-	let {
-		direction = 'both',
-		xTicks = null,
-		yTicks = null,
-		color = 'currentColor',
-		opacity = 0.1,
-		lineStyle = 'solid'
-	} = $props()
+  const state = getContext('plot-state')
 
-	// Get brewer from context
-	const brewer = getContext('chart-brewer')
+  const xGridLines = $derived.by(() => {
+    const s = state.xScale
+    if (!s || typeof s.bandwidth !== 'function') return []
+    return s.domain().map((val) => ({ pos: (s(val) ?? 0) + s.bandwidth() / 2 }))
+  })
 
-	// Get grid data
-	let gridData = $derived(
-		brewer.createGrid({
-			direction,
-			xTickCount: xTicks,
-			yTickCount: yTicks
-		})
-	)
-
-	// Convert lineStyle to stroke-dasharray
-	let strokeDasharray = $derived(
-		lineStyle === 'dashed' ? '5,5' : lineStyle === 'dotted' ? '1,3' : 'none'
-	)
+  const yGridLines = $derived.by(() => {
+    const s = state.yScale
+    if (!s || typeof s.ticks !== 'function') return []
+    return s.ticks(6).map((val) => ({ pos: s(val) }))
+  })
 </script>
 
-<g class="chart-grid" data-plot-grid={direction}>
-	{#if direction === 'x' || direction === 'both'}
-		{#each gridData.xLines as line, index (index)}
-			<line
-				data-plot-grid-line="x"
-				x1={line.x1}
-				y1={line.y1}
-				x2={line.x2}
-				y2={line.y2}
-				stroke={color}
-				stroke-opacity={opacity}
-				stroke-dasharray={strokeDasharray}
-			/>
-		{/each}
-	{/if}
-
-	{#if direction === 'y' || direction === 'both'}
-		{#each gridData.yLines as line, index (index)}
-			<line
-				data-plot-grid-line="y"
-				x1={line.x1}
-				y1={line.y1}
-				x2={line.x2}
-				y2={line.y2}
-				stroke={color}
-				stroke-opacity={opacity}
-				stroke-dasharray={strokeDasharray}
-			/>
-		{/each}
-	{/if}
+<g class="grid" data-plot-grid>
+  {#each yGridLines as line (line.pos)}
+    <line x1="0" y1={line.pos} x2={state.innerWidth} y2={line.pos} data-plot-grid-line />
+  {/each}
+  {#each xGridLines as line (line.pos)}
+    <line x1={line.pos} y1="0" x2={line.pos} y2={state.innerHeight} data-plot-grid-line="x" />
+  {/each}
 </g>
 
 <style>
-	.chart-grid {
-		pointer-events: none;
-	}
+  [data-plot-grid-line] { stroke: var(--chart-grid-color, currentColor); opacity: 0.15; stroke-dasharray: 2 4; }
 </style>
