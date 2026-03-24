@@ -9,7 +9,7 @@ export function buildGroupedBars(data, channels, xScale, yScale, colors, innerHe
     ? scaleBand().domain(colorKeys).range([0, xScale.bandwidth()]).padding(0.05)
     : null
 
-  return data.map((d) => {
+  return data.map((d, i) => {
     const xVal = d[xf]
     const colorKey = cf ? d[cf] : null
     const colorEntry = colors?.get(colorKey) ?? colors?.values().next().value ?? { fill: '#888', stroke: '#888' }
@@ -24,7 +24,7 @@ export function buildGroupedBars(data, channels, xScale, yScale, colors, innerHe
 
     return {
       data: d,
-      key: `${String(xVal)}::${String(colorKey ?? '')}`,
+      key: `${String(xVal)}::${String(colorKey ?? '')}::${i}`,
       x: barX,
       y: barY,
       width: barWidth,
