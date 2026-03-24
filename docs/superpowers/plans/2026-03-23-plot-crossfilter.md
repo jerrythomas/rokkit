@@ -42,7 +42,7 @@ Exposes a `filters` getter so `CrossFilter.svelte` can bind to the current state
 
 **Files:**
 - Create: `packages/chart/src/crossfilter/createCrossFilter.svelte.js`
-- Create: `packages/chart/src/crossfilter/createCrossFilter.svelte.test.js`
+- Create: `packages/chart/spec/crossfilter/createCrossFilter.svelte.spec.js`
 
 > **Note on `.svelte.js` extension:** `$state` in plain `.js` files is not processed by the Svelte
 > compiler under Vitest. The `.svelte.js` extension tells the toolchain to run Svelte preprocessing
@@ -50,11 +50,11 @@ Exposes a `filters` getter so `CrossFilter.svelte` can bind to the current state
 
 - [ ] **Step 1: Write the failing tests**
 
-`packages/chart/src/crossfilter/createCrossFilter.svelte.test.js`:
+`packages/chart/spec/crossfilter/createCrossFilter.svelte.spec.js`:
 
 ```js
 import { describe, it, expect } from 'vitest'
-import { createCrossFilter } from './createCrossFilter.svelte.js'
+import { createCrossFilter } from '../../src/crossfilter/createCrossFilter.svelte.js'
 
 describe('createCrossFilter', () => {
   it('returns an object with filter operations', () => {
@@ -168,7 +168,7 @@ describe('createCrossFilter', () => {
 - [ ] **Step 2: Run test to verify it fails**
 
 ```bash
-cd packages/chart && bun run test --run createCrossFilter
+bun run test:ci -- packages/chart/spec/createCrossFilter.spec.js
 ```
 
 Expected: FAIL — `./createCrossFilter.svelte.js` not found.
@@ -282,7 +282,7 @@ export function createCrossFilter() {
 - [ ] **Step 4: Run tests**
 
 ```bash
-cd packages/chart && bun run test --run createCrossFilter
+bun run test:ci -- packages/chart/spec/createCrossFilter.spec.js
 ```
 
 Expected: All pass.
@@ -290,7 +290,7 @@ Expected: All pass.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add packages/chart/src/crossfilter/createCrossFilter.svelte.js packages/chart/src/crossfilter/createCrossFilter.svelte.test.js
+git add packages/chart/src/crossfilter/createCrossFilter.svelte.js packages/chart/spec/crossfilter/createCrossFilter.svelte.spec.js
 git commit -m "feat(chart): add createCrossFilter — reactive categorical and range filter state"
 ```
 
@@ -304,16 +304,16 @@ Svelte context provider. Wraps child `Plot` components and provides the crossfil
 
 **Files:**
 - Create: `packages/chart/src/crossfilter/CrossFilter.svelte`
-- Create: `packages/chart/src/crossfilter/CrossFilter.test.js`
+- Create: `packages/chart/spec/crossfilter/CrossFilter.spec.js`
 
 - [ ] **Step 1: Write the failing test**
 
-`packages/chart/src/crossfilter/CrossFilter.test.js`:
+`packages/chart/spec/crossfilter/CrossFilter.spec.js`:
 
 ```js
 import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/svelte'
-import CrossFilter from './CrossFilter.svelte'
+import CrossFilter from '../../src/crossfilter/CrossFilter.svelte'
 
 describe('CrossFilter', () => {
   it('renders without crashing', () => {
@@ -330,7 +330,7 @@ describe('CrossFilter', () => {
 - [ ] **Step 2: Run test to verify it fails**
 
 ```bash
-cd packages/chart && bun run test --run CrossFilter.test
+bun run test:ci -- packages/chart/spec/CrossFilter.spec.js
 ```
 
 Expected: FAIL — `./CrossFilter.svelte` not found.
@@ -377,7 +377,7 @@ Expected: FAIL — `./CrossFilter.svelte` not found.
 - [ ] **Step 4: Run tests**
 
 ```bash
-cd packages/chart && bun run test --run CrossFilter.test
+bun run test:ci -- packages/chart/spec/CrossFilter.spec.js
 ```
 
 Expected: All pass.
@@ -385,7 +385,7 @@ Expected: All pass.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add packages/chart/src/crossfilter/CrossFilter.svelte packages/chart/src/crossfilter/CrossFilter.test.js
+git add packages/chart/src/crossfilter/CrossFilter.svelte packages/chart/spec/crossfilter/CrossFilter.spec.js
 git commit -m "feat(chart): add CrossFilter.svelte — context provider with bind:filters"
 ```
 
@@ -401,16 +401,16 @@ the spec's `FilterState = Map<string, Set | [number, number]>`.
 
 **Files:**
 - Create: `packages/chart/src/lib/plot/crossfilter.js`
-- Create: `packages/chart/src/lib/plot/crossfilter.test.js`
+- Create: `packages/chart/spec/lib/plot/crossfilter.spec.js`
 
 - [ ] **Step 1: Write the failing tests**
 
-`packages/chart/src/lib/plot/crossfilter.test.js`:
+`packages/chart/spec/lib/plot/crossfilter.spec.js`:
 
 ```js
 import { describe, it, expect } from 'vitest'
-import { applyDimming } from './crossfilter.js'
-import { createCrossFilter } from '../../crossfilter/createCrossFilter.svelte.js'
+import { applyDimming } from '../../../src/lib/plot/crossfilter.js'
+import { createCrossFilter } from '../../../src/crossfilter/createCrossFilter.svelte.js'
 
 const data = [
   { class: 'compact', displ: 1.8, hwy: 29 },
@@ -469,7 +469,7 @@ describe('applyDimming', () => {
 - [ ] **Step 2: Run test to verify it fails**
 
 ```bash
-cd packages/chart && bun run test --run crossfilter.test
+bun run test:ci -- packages/chart/spec/crossfilter.spec.js
 ```
 
 Expected: FAIL — `./crossfilter.js` not found.
@@ -502,7 +502,7 @@ export function applyDimming(data, cf, channels) {
 - [ ] **Step 4: Run tests**
 
 ```bash
-cd packages/chart && bun run test --run crossfilter.test
+bun run test:ci -- packages/chart/spec/crossfilter.spec.js
 ```
 
 Expected: All pass.
@@ -510,7 +510,7 @@ Expected: All pass.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add packages/chart/src/lib/plot/crossfilter.js packages/chart/src/lib/plot/crossfilter.test.js
+git add packages/chart/src/lib/plot/crossfilter.js packages/chart/spec/lib/plot/crossfilter.spec.js
 git commit -m "feat(chart): add lib/plot/crossfilter.js — applyDimming utility for crossfilter geoms"
 ```
 
@@ -526,8 +526,8 @@ opacity (spec: 0.15 via `[data-dimmed] { opacity: 0.15 }`). Do NOT add inline `f
 
 **Files:**
 - Modify: `packages/chart/src/geoms/Bar.svelte`
-- Create: `packages/chart/src/geoms/Bar.crossfilter.test.js`
-- Create: `packages/chart/src/test/helpers/TestBarCF.svelte`
+- Create: `packages/chart/spec/geoms/Bar.crossfilter.spec.js`
+- Create: `packages/chart/spec/helpers/TestBarCF.svelte`
 
 - [ ] **Step 1: Read `geoms/Bar.svelte`**
 
@@ -595,13 +595,13 @@ Example template structure after changes:
 {/each}
 ```
 
-- [ ] **Step 4: Create `test/helpers/TestBarCF.svelte`**
+- [ ] **Step 4: Create `spec/helpers/TestBarCF.svelte`**
 
 ```svelte
 <script>
-  import CrossFilter from '../../crossfilter/CrossFilter.svelte'
-  import PlotChart from '../../Plot.svelte'
-  import Bar from '../Bar.svelte'
+  import CrossFilter from '../../src/crossfilter/CrossFilter.svelte'
+  import PlotChart from '../../src/Plot.svelte'
+  import Bar from '../../src/geoms/Bar.svelte'
 
   let { data, cf } = $props()
 </script>
@@ -615,13 +615,13 @@ Example template structure after changes:
 
 - [ ] **Step 5: Write crossfilter bar integration tests**
 
-`packages/chart/src/geoms/Bar.crossfilter.test.js`:
+`packages/chart/spec/geoms/Bar.crossfilter.spec.js`:
 
 ```js
 import { describe, it, expect } from 'vitest'
 import { render, fireEvent } from '@testing-library/svelte'
-import { createCrossFilter } from '../crossfilter/createCrossFilter.svelte.js'
-import TestBarCF from '../test/helpers/TestBarCF.svelte'
+import { createCrossFilter } from '../../src/crossfilter/createCrossFilter.svelte.js'
+import TestBarCF from '../helpers/TestBarCF.svelte'
 
 describe('Bar geom crossfilter', () => {
   const data = [
@@ -668,7 +668,7 @@ describe('Bar geom crossfilter', () => {
 - [ ] **Step 6: Run crossfilter bar tests**
 
 ```bash
-cd packages/chart && bun run test --run Bar.crossfilter.test
+bun run test:ci -- packages/chart/spec/Bar.crossfilter.spec.js
 ```
 
 Expected: All pass.
@@ -684,7 +684,7 @@ Expected: All existing tests still pass.
 - [ ] **Step 8: Commit**
 
 ```bash
-git add packages/chart/src/geoms/Bar.svelte packages/chart/src/geoms/Bar.crossfilter.test.js packages/chart/src/test/helpers/TestBarCF.svelte
+git add packages/chart/src/geoms/Bar.svelte packages/chart/spec/geoms/Bar.crossfilter.spec.js packages/chart/spec/helpers/TestBarCF.svelte
 git commit -m "feat(chart): add crossfilter support to Bar geom — filterable click + data-dimmed"
 ```
 
@@ -699,16 +699,16 @@ Must be placed inside an external `<CrossFilter>` wrapper — it does not create
 
 **Files:**
 - Create: `packages/chart/src/crossfilter/FilterBar.svelte`
-- Create: `packages/chart/src/crossfilter/FilterBar.test.js`
+- Create: `packages/chart/spec/crossfilter/FilterBar.spec.js`
 
 - [ ] **Step 1: Write the failing test**
 
-`packages/chart/src/crossfilter/FilterBar.test.js`:
+`packages/chart/spec/crossfilter/FilterBar.spec.js`:
 
 ```js
 import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/svelte'
-import FilterBar from './FilterBar.svelte'
+import FilterBar from '../../src/crossfilter/FilterBar.svelte'
 
 const data = [
   { class: 'compact', hwy: 29 },
@@ -741,7 +741,7 @@ describe('FilterBar', () => {
 - [ ] **Step 2: Run test to verify it fails**
 
 ```bash
-cd packages/chart && bun run test --run FilterBar.test
+bun run test:ci -- packages/chart/spec/FilterBar.spec.js
 ```
 
 Expected: FAIL — `./FilterBar.svelte` not found.
@@ -793,7 +793,7 @@ Expected: FAIL — `./FilterBar.svelte` not found.
 - [ ] **Step 4: Run tests**
 
 ```bash
-cd packages/chart && bun run test --run FilterBar.test
+bun run test:ci -- packages/chart/spec/FilterBar.spec.js
 ```
 
 Expected: All pass.
@@ -801,7 +801,7 @@ Expected: All pass.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add packages/chart/src/crossfilter/FilterBar.svelte packages/chart/src/crossfilter/FilterBar.test.js
+git add packages/chart/src/crossfilter/FilterBar.svelte packages/chart/spec/crossfilter/FilterBar.spec.js
 git commit -m "feat(chart): add FilterBar — compact filterable bar chart for filter panels"
 ```
 
@@ -819,16 +819,16 @@ component should be refactored to wrap `PlotChart + Point brush`.
 
 **Files:**
 - Create: `packages/chart/src/crossfilter/FilterSlider.svelte`
-- Create: `packages/chart/src/crossfilter/FilterSlider.test.js`
+- Create: `packages/chart/spec/crossfilter/FilterSlider.spec.js`
 
 - [ ] **Step 1: Write the failing test**
 
-`packages/chart/src/crossfilter/FilterSlider.test.js`:
+`packages/chart/spec/crossfilter/FilterSlider.spec.js`:
 
 ```js
 import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/svelte'
-import FilterSlider from './FilterSlider.svelte'
+import FilterSlider from '../../src/crossfilter/FilterSlider.svelte'
 
 describe('FilterSlider', () => {
   it('renders without crashing', () => {
@@ -865,7 +865,7 @@ describe('FilterSlider', () => {
 - [ ] **Step 2: Run test to verify it fails**
 
 ```bash
-cd packages/chart && bun run test --run FilterSlider.test
+bun run test:ci -- packages/chart/spec/FilterSlider.spec.js
 ```
 
 Expected: FAIL — `./FilterSlider.svelte` not found.
@@ -961,7 +961,7 @@ Expected: FAIL — `./FilterSlider.svelte` not found.
 - [ ] **Step 4: Run tests**
 
 ```bash
-cd packages/chart && bun run test --run FilterSlider.test
+bun run test:ci -- packages/chart/spec/FilterSlider.spec.js
 ```
 
 Expected: All pass.
@@ -969,7 +969,7 @@ Expected: All pass.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add packages/chart/src/crossfilter/FilterSlider.svelte packages/chart/src/crossfilter/FilterSlider.test.js
+git add packages/chart/src/crossfilter/FilterSlider.svelte packages/chart/spec/crossfilter/FilterSlider.spec.js
 git commit -m "feat(chart): add FilterSlider — dual range slider for continuous crossfilter dimensions (interim)"
 ```
 

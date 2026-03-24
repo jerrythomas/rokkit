@@ -37,16 +37,16 @@ Pure functions for splitting data into panels and computing shared or per-panel 
 
 **Files:**
 - Create: `packages/chart/src/lib/plot/facet.js`
-- Create: `packages/chart/src/lib/plot/facet.test.js`
+- Create: `packages/chart/spec/lib/plot/facet.spec.js`
 
 - [ ] **Step 1: Write the failing tests**
 
-`packages/chart/src/lib/plot/facet.test.js`:
+`packages/chart/spec/lib/plot/facet.spec.js`:
 
 ```js
 import { describe, it, expect } from 'vitest'
-import { splitByField, getFacetDomains } from './facet.js'
-import mpg from '../../test/fixtures/mpg.json'
+import { splitByField, getFacetDomains } from '../../../src/lib/plot/facet.js'
+import mpg from '../../fixtures/mpg.json'
 
 describe('splitByField', () => {
   it('splits data into one group per distinct field value', () => {
@@ -131,7 +131,7 @@ describe('getFacetDomains', () => {
 - [ ] **Step 2: Run test to verify it fails**
 
 ```bash
-cd packages/chart && bun run test --run facet.test
+bun run test:ci -- packages/chart/spec/facet.spec.js
 ```
 
 Expected: FAIL — `./facet.js` not found.
@@ -202,7 +202,7 @@ export function getFacetDomains(panels, channels, scalesMode = 'fixed') {
 - [ ] **Step 4: Run tests**
 
 ```bash
-cd packages/chart && bun run test --run facet.test
+bun run test:ci -- packages/chart/spec/facet.spec.js
 ```
 
 Expected: All pass.
@@ -210,7 +210,7 @@ Expected: All pass.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add packages/chart/src/lib/plot/facet.js packages/chart/src/lib/plot/facet.test.js
+git add packages/chart/src/lib/plot/facet.js packages/chart/spec/lib/plot/facet.spec.js
 git commit -m "feat(chart): add lib/plot/facet.js — data splitting and domain computation"
 ```
 
@@ -222,18 +222,18 @@ Renders data as a grid of small multiples. One panel per distinct facet field va
 
 **Files:**
 - Create: `packages/chart/src/FacetPlot.svelte`
-- Create: `packages/chart/src/FacetPlot.test.js`
+- Create: `packages/chart/spec/FacetPlot.spec.js`
 
 - [ ] **Step 1: Write the failing test**
 
-`packages/chart/src/FacetPlot.test.js`:
+`packages/chart/spec/FacetPlot.spec.js`:
 
 ```js
 import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/svelte'
-import FacetPlot from './FacetPlot.svelte'
-import Bar from './geoms/Bar.svelte'
-import mpg from './test/fixtures/mpg.json'
+import FacetPlot from '../src/FacetPlot.svelte'
+import Bar from '../src/geoms/Bar.svelte'
+import mpg from '../src/fixtures/mpg.json'
 
 describe('FacetPlot', () => {
   const defaultProps = {
@@ -272,7 +272,7 @@ describe('FacetPlot', () => {
 - [ ] **Step 2: Run test to verify it fails**
 
 ```bash
-cd packages/chart && bun run test --run FacetPlot.test
+bun run test:ci -- packages/chart/spec/FacetPlot.spec.js
 ```
 
 Expected: FAIL — `./FacetPlot.svelte` not found.
@@ -427,7 +427,7 @@ return buildUnifiedXScale(datasets, field, this.#innerWidth, opts)
 if (this.#config.yDomain) opts.domain = this.#config.yDomain
 ```
 
-- [ ] **Step 4b: Add a domain-override test to `FacetPlot.test.js`**
+- [ ] **Step 4b: Add a domain-override test to `FacetPlot.spec.js`**
 
 Add this test to verify the fixed-scale wiring actually constrains panel scales:
 
@@ -462,7 +462,7 @@ it('fixed scales: all panels have the same x domain', () => {
 - [ ] **Step 5: Run tests**
 
 ```bash
-cd packages/chart && bun run test --run FacetPlot.test
+bun run test:ci -- packages/chart/spec/FacetPlot.spec.js
 ```
 
 Expected: All pass.
@@ -478,7 +478,7 @@ Expected: All existing tests still pass.
 - [ ] **Step 7: Commit**
 
 ```bash
-git add packages/chart/src/FacetPlot.svelte packages/chart/src/FacetPlot/ packages/chart/src/FacetPlot.test.js
+git add packages/chart/src/FacetPlot.svelte packages/chart/src/FacetPlot/ packages/chart/spec/FacetPlot.spec.js
 git commit -m "feat(chart): add FacetPlot.svelte — small multiples with fixed/free scales"
 ```
 
@@ -492,15 +492,15 @@ Pure functions for extracting animation frames from data and normalizing missing
 
 **Files:**
 - Create: `packages/chart/src/lib/plot/frames.js`
-- Create: `packages/chart/src/lib/plot/frames.test.js`
+- Create: `packages/chart/spec/lib/plot/frames.spec.js`
 
 - [ ] **Step 1: Write the failing tests**
 
-`packages/chart/src/lib/plot/frames.test.js`:
+`packages/chart/spec/lib/plot/frames.spec.js`:
 
 ```js
 import { describe, it, expect } from 'vitest'
-import { extractFrames, normalizeFrame, computeStaticDomains } from './frames.js'
+import { extractFrames, normalizeFrame, computeStaticDomains } from '../../../src/lib/plot/frames.js'
 
 const rawData = [
   { year: 1999, class: 'compact', hwy: 29 },
@@ -568,7 +568,7 @@ describe('computeStaticDomains', () => {
 - [ ] **Step 2: Run test to verify it fails**
 
 ```bash
-cd packages/chart && bun run test --run frames.test
+bun run test:ci -- packages/chart/spec/frames.spec.js
 ```
 
 Expected: FAIL — `./frames.js` not found.
@@ -667,7 +667,7 @@ export function computeStaticDomains(frames, channels) {
 - [ ] **Step 4: Run tests**
 
 ```bash
-cd packages/chart && bun run test --run frames.test
+bun run test:ci -- packages/chart/spec/frames.spec.js
 ```
 
 Expected: All pass.
@@ -675,7 +675,7 @@ Expected: All pass.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add packages/chart/src/lib/plot/frames.js packages/chart/src/lib/plot/frames.test.js
+git add packages/chart/src/lib/plot/frames.js packages/chart/spec/lib/plot/frames.spec.js
 git commit -m "feat(chart): add lib/plot/frames.js — animation frame extraction and normalization"
 ```
 
@@ -687,16 +687,16 @@ Play/pause, scrub slider, speed selector, and current frame label. Purely presen
 
 **Files:**
 - Create: `packages/chart/src/plot/Timeline.svelte`
-- Create: `packages/chart/src/plot/Timeline.test.js`
+- Create: `packages/chart/spec/plot/Timeline.spec.js`
 
 - [ ] **Step 1: Write failing Timeline test**
 
-`packages/chart/src/plot/Timeline.test.js`:
+`packages/chart/spec/plot/Timeline.spec.js`:
 
 ```js
 import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/svelte'
-import Timeline from './Timeline.svelte'
+import Timeline from '../../src/plot/Timeline.svelte'
 
 const defaultProps = {
   frameKeys: [1999, 2008],
@@ -744,7 +744,7 @@ describe('Timeline', () => {
 - [ ] **Step 2: Run test to verify it fails**
 
 ```bash
-cd packages/chart && bun run test --run Timeline.test
+bun run test:ci -- packages/chart/spec/Timeline.spec.js
 ```
 
 Expected: FAIL — `./Timeline.svelte` not found.
@@ -848,7 +848,7 @@ Expected: FAIL — `./Timeline.svelte` not found.
 - [ ] **Step 4: Run tests**
 
 ```bash
-cd packages/chart && bun run test --run Timeline.test
+bun run test:ci -- packages/chart/spec/Timeline.spec.js
 ```
 
 Expected: All pass.
@@ -856,7 +856,7 @@ Expected: All pass.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add packages/chart/src/plot/Timeline.svelte packages/chart/src/plot/Timeline.test.js
+git add packages/chart/src/plot/Timeline.svelte packages/chart/spec/plot/Timeline.spec.js
 git commit -m "feat(chart): add plot/Timeline.svelte — play/pause/scrub/speed controls"
 ```
 
@@ -868,17 +868,17 @@ Renders one frame at a time. Computes static scales from full data, normalizes f
 
 **Files:**
 - Create: `packages/chart/src/AnimatedPlot.svelte`
-- Create: `packages/chart/src/AnimatedPlot.test.js`
+- Create: `packages/chart/spec/AnimatedPlot.spec.js`
 
 - [ ] **Step 1: Write the failing test**
 
-`packages/chart/src/AnimatedPlot.test.js`:
+`packages/chart/spec/AnimatedPlot.spec.js`:
 
 ```js
 import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/svelte'
-import AnimatedPlot from './AnimatedPlot.svelte'
-import mpg from './test/fixtures/mpg.json'
+import AnimatedPlot from '../src/AnimatedPlot.svelte'
+import mpg from '../src/fixtures/mpg.json'
 
 describe('AnimatedPlot', () => {
   const defaultProps = {
@@ -922,7 +922,7 @@ describe('AnimatedPlot', () => {
 - [ ] **Step 2: Run test to verify it fails**
 
 ```bash
-cd packages/chart && bun run test --run AnimatedPlot.test
+bun run test:ci -- packages/chart/spec/AnimatedPlot.spec.js
 ```
 
 Expected: FAIL — `./AnimatedPlot.svelte` not found.
@@ -1114,7 +1114,7 @@ Expected: FAIL — `./AnimatedPlot.svelte` not found.
 - [ ] **Step 4: Run tests**
 
 ```bash
-cd packages/chart && bun run test --run AnimatedPlot.test
+bun run test:ci -- packages/chart/spec/AnimatedPlot.spec.js
 ```
 
 Expected: All pass.
@@ -1130,7 +1130,7 @@ Expected: All existing tests still pass.
 - [ ] **Step 6: Commit**
 
 ```bash
-git add packages/chart/src/AnimatedPlot.svelte packages/chart/src/AnimatedPlot.test.js
+git add packages/chart/src/AnimatedPlot.svelte packages/chart/spec/AnimatedPlot.spec.js
 git commit -m "feat(chart): add AnimatedPlot.svelte with timeline controls and reduced-motion support"
 ```
 

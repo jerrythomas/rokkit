@@ -19,7 +19,7 @@
 The mpg dataset (from ggplot2) is the primary test fixture for all chart logic. 234 rows, categorical + numeric fields.
 
 **Files:**
-- Create: `packages/chart/src/test/fixtures/mpg.json`
+- Create: `packages/chart/spec/fixtures/mpg.json`
 
 - [ ] **Step 1: Create the mpg fixture file**
 
@@ -52,7 +52,7 @@ The mpg dataset (from ggplot2) is the primary test fixture for all chart logic. 
 ]
 ```
 
-Save this to `packages/chart/src/test/fixtures/mpg.json`.
+Save this to `packages/chart/spec/fixtures/mpg.json`.
 
 **Known limitation:** This is a 24-row representative subset of the full 234-row ggplot2 mpg dataset. It covers all 7 vehicle classes, 3 drive types, both model years, and a realistic numeric range. Test assertions must be derived from this subset — do not hardcode statistics that assume the full dataset. If full-dataset fidelity is needed (e.g., statistical distribution tests), replace with the full 234-row set from `https://vincentarelbundock.github.io/Rdatasets/csv/ggplot2/mpg.csv`.
 
@@ -61,7 +61,7 @@ Fields: manufacturer (string), model (string), displ (number), year (number: 199
 - [ ] **Step 2: Verify the file parses**
 
 ```bash
-cd packages/chart && node -e "const d = require('./src/test/fixtures/mpg.json'); console.log(d.length, 'rows, classes:', [...new Set(d.map(r=>r.class))])"
+cd packages/chart && node -e "const d = require('./spec/fixtures/mpg.json'); console.log(d.length, 'rows, classes:', [...new Set(d.map(r=>r.class))])"
 ```
 
 Expected: `24 rows, classes: [ 'compact', 'suv', '2seater', 'minivan', 'pickup', 'subcompact', 'midsize' ]`
@@ -69,7 +69,7 @@ Expected: `24 rows, classes: [ 'compact', 'suv', '2seater', 'minivan', 'pickup',
 - [ ] **Step 3: Commit**
 
 ```bash
-git add packages/chart/src/test/fixtures/mpg.json
+git add packages/chart/spec/fixtures/mpg.json
 git commit -m "test(chart): add mpg dataset fixture for plot foundation tests"
 ```
 
@@ -88,7 +88,7 @@ Extends existing `applyAggregate` with: `identity` as explicit built-in, helpers
 ```js
 // packages/chart/spec/plot/stat.spec.js
 import { describe, it, expect, vi } from 'vitest'
-import mpg from '../../src/test/fixtures/mpg.json'
+import mpg from '../fixtures/mpg.json'
 import { resolveStat, inferGroupByFields, applyGeomStat } from '../../src/lib/plot/stat.js'
 
 describe('resolveStat', () => {
@@ -331,7 +331,7 @@ Expected: all tests PASS.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add packages/chart/src/lib/plot/stat.js packages/chart/spec/plot/stat.spec.js packages/chart/src/test/fixtures/mpg.json
+git add packages/chart/src/lib/plot/stat.js packages/chart/spec/plot/stat.spec.js packages/chart/spec/fixtures/mpg.json
 git commit -m "feat(chart): add plot stat resolver with helpers extension and mpg fixture"
 ```
 
@@ -350,7 +350,7 @@ git commit -m "feat(chart): add plot stat resolver with helpers extension and mp
 ```js
 // packages/chart/spec/plot/scales.spec.js
 import { describe, it, expect } from 'vitest'
-import mpg from '../../src/test/fixtures/mpg.json'
+import mpg from '../fixtures/mpg.json'
 import {
   inferFieldType,
   inferOrientation,
@@ -955,7 +955,7 @@ Note: `PlotState.svelte.js` uses Svelte 5 `$state`/`$derived` runes. Tests run v
 ```js
 // packages/chart/spec/PlotState.spec.js
 import { describe, it, expect, vi } from 'vitest'
-import mpg from '../src/test/fixtures/mpg.json'
+import mpg from '../src/fixtures/mpg.json'
 import { PlotState } from '../src/PlotState.svelte.js'
 
 describe('PlotState — label resolution', () => {

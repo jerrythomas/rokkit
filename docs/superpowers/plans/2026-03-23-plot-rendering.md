@@ -100,12 +100,12 @@ The old `Plot/` folder (Root, Axis, Bar, Grid, Legend, Line, Area, Point, Arc) i
 Component tests need a real PlotState context. This helper creates a minimal PlotState for test scenarios.
 
 **Files:**
-- Create: `packages/chart/src/test/helpers/mock-plot-state.js`
-- Create: `packages/chart/src/test/helpers/ContextWrapper.svelte`
+- Create: `packages/chart/spec/helpers/mock-plot-state.js`
+- Create: `packages/chart/spec/helpers/ContextWrapper.svelte`
 
 - [ ] **Step 1: Create the mock PlotState helper**
 
-`packages/chart/src/test/helpers/mock-plot-state.js`:
+`packages/chart/spec/helpers/mock-plot-state.js`:
 
 ```js
 import { scaleBand, scaleLinear } from 'd3-scale'
@@ -114,7 +114,7 @@ import { scaleBand, scaleLinear } from 'd3-scale'
  * Creates a minimal PlotState-compatible object for testing infrastructure
  * components (Axis, Grid, Legend) without needing a real PlotState instance.
  *
- * @param {Partial<import('../../PlotState.svelte.js').PlotState>} overrides
+ * @param {Partial<import('../../src/PlotState.svelte.js').PlotState>} overrides
  */
 export function createMockState(overrides = {}) {
   const xScale = scaleBand().domain(['a', 'b', 'c']).range([0, 300]).padding(0.1)
@@ -149,7 +149,7 @@ export function createMockState(overrides = {}) {
 
 - [ ] **Step 2: Create the ContextWrapper Svelte component**
 
-`packages/chart/src/test/helpers/ContextWrapper.svelte`:
+`packages/chart/spec/helpers/ContextWrapper.svelte`:
 
 ```svelte
 <script>
@@ -164,13 +164,13 @@ export function createMockState(overrides = {}) {
 
 For component tests that need context, create a dedicated per-component harness. For example, to test `Axis.svelte`:
 
-`packages/chart/src/test/helpers/TestAxis.svelte`:
+`packages/chart/spec/helpers/TestAxis.svelte`:
 
 ```svelte
 <script>
   import { setContext } from 'svelte'
-  import Axis from '../../plot/Axis.svelte'
-  import { createMockState } from './mock-plot-state.js'
+  import Axis from '../../src/plot/Axis.svelte'
+  import { createMockState } from '../../src/helpers/mock-plot-state.js'
 
   let { state = createMockState(), type = 'x', label = '' } = $props()
   setContext('plot-state', state)
@@ -185,8 +185,8 @@ Then in the test:
 
 ```js
 import { render } from '@testing-library/svelte'
-import TestAxis from '../test/helpers/TestAxis.svelte'
-import { createMockState } from '../test/helpers/mock-plot-state.js'
+import TestAxis from '../helpers/TestAxis.svelte'
+import { createMockState } from '../helpers/mock-plot-state.js'
 
 const { container } = render(TestAxis, { props: { type: 'x' } })
 expect(container.querySelector('[data-plot-axis="x"]')).toBeTruthy()
@@ -197,7 +197,7 @@ Create similar `TestBar.svelte`, `TestLine.svelte`, etc. as needed for later geo
 - [ ] **Step 3: Commit**
 
 ```bash
-git add packages/chart/src/test/helpers/
+git add packages/chart/spec/helpers/
 git commit -m "test(chart): add mock PlotState helper for component tests"
 ```
 
@@ -209,17 +209,17 @@ Renders an x or y axis. Reads axis position from `state.xAxisY` / `state.yAxisX`
 
 **Files:**
 - Create: `packages/chart/src/plot/Axis.svelte`
-- Create: `packages/chart/src/plot/Axis.test.js`
+- Create: `packages/chart/spec/plot/Axis.spec.js`
 
 - [ ] **Step 1: Write the failing test**
 
-`packages/chart/src/plot/Axis.test.js`:
+`packages/chart/spec/plot/Axis.spec.js`:
 
 ```js
 import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/svelte'
 import { scaleBand, scaleLinear } from 'd3-scale'
-import { createMockState } from '../test/helpers/mock-plot-state.js'
+import { createMockState } from '../helpers/mock-plot-state.js'
 
 // We test the axis tick generation logic directly since component rendering
 // with Svelte context requires a harness. The key behaviors:
@@ -264,7 +264,7 @@ describe('Axis tick generation', () => {
 - [ ] **Step 2: Run tests**
 
 ```bash
-cd packages/chart && bun run test --run Axis.test
+bun run test:ci -- packages/chart/spec/Axis.spec.js
 ```
 
 Expected: PASS — these are pure logic tests with no file dependency on the component.
@@ -376,7 +376,7 @@ Expected: PASS — these are pure logic tests with no file dependency on the com
 - [ ] **Step 4: Run tests**
 
 ```bash
-cd packages/chart && bun run test --run Axis.test
+bun run test:ci -- packages/chart/spec/Axis.spec.js
 ```
 
 Expected: All pass.
@@ -384,7 +384,7 @@ Expected: All pass.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add packages/chart/src/plot/Axis.svelte packages/chart/src/plot/Axis.test.js
+git add packages/chart/src/plot/Axis.svelte packages/chart/spec/plot/Axis.spec.js
 git commit -m "feat(chart): add plot/Axis.svelte with quadrant-aware positioning"
 ```
 
@@ -465,16 +465,16 @@ Renders either a discrete swatch legend (categorical) or a gradient bar (sequent
 
 **Files:**
 - Create: `packages/chart/src/plot/Legend.svelte`
-- Create: `packages/chart/src/plot/Legend.test.js`
+- Create: `packages/chart/spec/plot/Legend.spec.js`
 
 - [ ] **Step 1a: Create `TestLegend.svelte` harness**
 
-`packages/chart/src/test/helpers/TestLegend.svelte`:
+`packages/chart/spec/helpers/TestLegend.svelte`:
 
 ```svelte
 <script>
   import { setContext } from 'svelte'
-  import Legend from '../../plot/Legend.svelte'
+  import Legend from '../../src/plot/Legend.svelte'
   let { state } = $props()
   setContext('plot-state', state)
 </script>
@@ -483,13 +483,13 @@ Renders either a discrete swatch legend (categorical) or a gradient bar (sequent
 
 - [ ] **Step 1b: Write the failing tests**
 
-`packages/chart/src/plot/Legend.test.js`:
+`packages/chart/spec/plot/Legend.spec.js`:
 
 ```js
 import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/svelte'
-import TestLegend from '../test/helpers/TestLegend.svelte'
-import { createMockState } from '../test/helpers/mock-plot-state.js'
+import TestLegend from '../helpers/TestLegend.svelte'
+import { createMockState } from '../helpers/mock-plot-state.js'
 
 // Categorical legend items (pure logic)
 describe('Legend item derivation', () => {
@@ -542,7 +542,7 @@ describe('Legend gradient branch (stub — see issue #126)', () => {
 - [ ] **Step 2: Run test to verify it fails**
 
 ```bash
-cd packages/chart && bun run test --run Legend.test
+bun run test:ci -- packages/chart/spec/Legend.spec.js
 ```
 
 Expected: FAIL (no file yet).
@@ -632,7 +632,7 @@ Expected: FAIL (no file yet).
 - [ ] **Step 4: Run test**
 
 ```bash
-cd packages/chart && bun run test --run Legend.test
+bun run test:ci -- packages/chart/spec/Legend.spec.js
 ```
 
 Expected: All pass.
@@ -640,7 +640,7 @@ Expected: All pass.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add packages/chart/src/plot/Legend.svelte packages/chart/src/plot/Legend.test.js
+git add packages/chart/src/plot/Legend.svelte packages/chart/spec/plot/Legend.spec.js
 git commit -m "feat(chart): add plot/Legend.svelte with categorical/gradient modes"
 ```
 
@@ -707,16 +707,16 @@ The core computation for bar layout. Handles vertical and horizontal orientation
 
 **Files:**
 - Create: `packages/chart/src/geoms/lib/bars.js`
-- Create: `packages/chart/src/geoms/lib/bars.test.js`
+- Create: `packages/chart/spec/geoms/lib/bars.spec.js`
 
 - [ ] **Step 1: Write the failing tests**
 
-`packages/chart/src/geoms/lib/bars.test.js`:
+`packages/chart/spec/geoms/lib/bars.spec.js`:
 
 ```js
 import { describe, it, expect } from 'vitest'
 import { scaleBand, scaleLinear } from 'd3-scale'
-import { buildGroupedBars, buildStackedBars, buildHorizontalBars } from './bars.js'
+import { buildGroupedBars, buildStackedBars, buildHorizontalBars } from '../../../src/geoms/lib/bars.js'
 
 const data = [
   { class: 'compact', drv: 'f', hwy: 29 },
@@ -812,7 +812,7 @@ describe('buildHorizontalBars', () => {
 - [ ] **Step 2: Run test to verify it fails**
 
 ```bash
-cd packages/chart && bun run test --run bars.test
+bun run test:ci -- packages/chart/spec/bars.spec.js
 ```
 
 Expected: FAIL — `./bars.js` not found.
@@ -975,7 +975,7 @@ export function buildHorizontalBars(data, channels, xScale, yScale, colors, inne
 - [ ] **Step 4: Run tests**
 
 ```bash
-cd packages/chart && bun run test --run bars.test
+bun run test:ci -- packages/chart/spec/bars.spec.js
 ```
 
 Expected: All pass.
@@ -983,7 +983,7 @@ Expected: All pass.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add packages/chart/src/geoms/lib/bars.js packages/chart/src/geoms/lib/bars.test.js
+git add packages/chart/src/geoms/lib/bars.js packages/chart/spec/geoms/lib/bars.spec.js
 git commit -m "feat(chart): add geoms/lib/bars.js — grouped, stacked, horizontal bar computation"
 ```
 
@@ -1342,17 +1342,17 @@ These follow the same context protocol as the other geoms. The mark computation 
 - Create: `packages/chart/src/geoms/Arc.svelte`
 - Create: `packages/chart/src/geoms/Box.svelte`
 - Create: `packages/chart/src/geoms/Violin.svelte`
-- Create: `packages/chart/src/test/helpers/TestArc.svelte`
+- Create: `packages/chart/spec/helpers/TestArc.svelte`
 
 - [ ] **Step 1: Create `TestArc.svelte` harness**
 
-`packages/chart/src/test/helpers/TestArc.svelte`:
+`packages/chart/spec/helpers/TestArc.svelte`:
 
 ```svelte
 <script>
   import { setContext } from 'svelte'
-  import Arc from '../../geoms/Arc.svelte'
-  import { createMockState } from './mock-plot-state.js'
+  import Arc from '../../src/geoms/Arc.svelte'
+  import { createMockState } from '../../src/helpers/mock-plot-state.js'
 
   let { state = createMockState(), theta = 'hwy', color = 'class' } = $props()
   setContext('plot-state', state)
@@ -1365,14 +1365,14 @@ These follow the same context protocol as the other geoms. The mark computation 
 
 - [ ] **Step 2: Write arc geom smoke test**
 
-`packages/chart/src/geoms/Arc.test.js`:
+`packages/chart/spec/geoms/Arc.spec.js`:
 
 ```js
 import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/svelte'
-import TestArc from '../test/helpers/TestArc.svelte'
-import { createMockState } from '../test/helpers/mock-plot-state.js'
-import mpg from '../test/fixtures/mpg.json'
+import TestArc from '../helpers/TestArc.svelte'
+import { createMockState } from '../helpers/mock-plot-state.js'
+import mpg from '../fixtures/mpg.json'
 
 describe('Arc geom (smoke)', () => {
   it('renders without crashing when data is empty', () => {
@@ -1404,7 +1404,7 @@ describe('Arc geom (smoke)', () => {
 - [ ] **Step 3: Run arc test to confirm it fails**
 
 ```bash
-cd packages/chart && bun run test --run Arc.test
+bun run test:ci -- packages/chart/spec/Arc.spec.js
 ```
 
 Expected: FAIL — `../../geoms/Arc.svelte` not found.
@@ -1465,7 +1465,7 @@ Reuses `buildArcs(data, channels, colors, width, height, opts)` from `lib/brewin
 - [ ] **Step 5: Run arc test to verify it passes**
 
 ```bash
-cd packages/chart && bun run test --run Arc.test
+bun run test:ci -- packages/chart/spec/Arc.spec.js
 ```
 
 Expected: All pass.
@@ -1578,7 +1578,7 @@ Reuses `buildViolins` from `lib/brewing/marks/violins.js`.
 - [ ] **Step 8: Commit**
 
 ```bash
-git add packages/chart/src/geoms/Arc.svelte packages/chart/src/geoms/Box.svelte packages/chart/src/geoms/Violin.svelte packages/chart/src/test/helpers/TestArc.svelte packages/chart/src/geoms/Arc.test.js
+git add packages/chart/src/geoms/Arc.svelte packages/chart/src/geoms/Box.svelte packages/chart/src/geoms/Violin.svelte packages/chart/spec/helpers/TestArc.svelte packages/chart/spec/geoms/Arc.spec.js
 git commit -m "feat(chart): add Arc, Box, Violin geom components"
 ```
 
@@ -1590,18 +1590,18 @@ The top-level chart component. Creates `PlotState`, sets context, renders SVG ca
 
 **Files:**
 - Create: `packages/chart/src/Plot.svelte`
-- Create: `packages/chart/src/Plot.test.js`
+- Create: `packages/chart/spec/Plot.spec.js`
 
 - [ ] **Step 1: Write the failing tests**
 
-`packages/chart/src/Plot.test.js`:
+`packages/chart/spec/Plot.spec.js`:
 
 ```js
 import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/svelte'
-import Plot from './Plot.svelte'
-import Bar from './geoms/Bar.svelte'
-import mpg from './test/fixtures/mpg.json'
+import Plot from '../src/Plot.svelte'
+import Bar from '../src/geoms/Bar.svelte'
+import mpg from '../src/fixtures/mpg.json'
 
 // Minimal render test — confirms Plot creates SVG and sets context
 describe('Plot.svelte', () => {
@@ -1641,7 +1641,7 @@ describe('Plot.svelte', () => {
 - [ ] **Step 2: Run test to verify it fails**
 
 ```bash
-cd packages/chart && bun run test --run Plot.test
+bun run test:ci -- packages/chart/spec/Plot.spec.js
 ```
 
 Expected: FAIL — `./Plot.svelte` not found.
@@ -1825,7 +1825,7 @@ If `PlotState` already reads `config` properties via `$derived` (referencing the
 - [ ] **Step 4: Run tests**
 
 ```bash
-cd packages/chart && bun run test --run Plot.test
+bun run test:ci -- packages/chart/spec/Plot.spec.js
 ```
 
 Expected: All pass.
@@ -1841,7 +1841,7 @@ Expected: All existing tests still pass.
 - [ ] **Step 6: Commit**
 
 ```bash
-git add packages/chart/src/Plot.svelte packages/chart/src/Plot.test.js
+git add packages/chart/src/Plot.svelte packages/chart/spec/Plot.spec.js
 git commit -m "feat(chart): add Plot.svelte orchestrator — declarative + spec-driven API"
 ```
 
