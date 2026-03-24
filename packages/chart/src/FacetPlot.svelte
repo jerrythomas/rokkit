@@ -65,6 +65,7 @@
         xDomain={domains.get(facetValue)?.xDomain}
         yDomain={domains.get(facetValue)?.yDomain}
       >
+        <!-- Render caller-supplied geoms inside every panel (each gets its own PlotState context) -->
         {@render children?.()}
       </PlotPanel>
     </div>

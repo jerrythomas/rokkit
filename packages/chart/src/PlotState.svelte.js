@@ -110,8 +110,8 @@ export class PlotState {
     if (config.preset        !== undefined) this.#presetName    = config.preset
     if (config.colorMidpoint !== undefined) this.#colorMidpoint = config.colorMidpoint
     if (config.colorScale    !== undefined) this.#colorSpec     = config.colorScale
-    if (config.xDomain       !== undefined) this.#xDomain       = config.xDomain
-    if (config.yDomain       !== undefined) this.#yDomain       = config.yDomain
+    this.#xDomain = config.xDomain
+    this.#yDomain = config.yDomain
     if (config.width         !== undefined) this.#width         = config.width
     if (config.height        !== undefined) this.#height        = config.height
   }

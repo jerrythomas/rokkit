@@ -31,7 +31,7 @@ export function getFacetDomains(panels, channels, scalesMode = 'fixed') {
   const allData = [...panels.values()].flat()
 
   // Determine if x is categorical (string) or numeric
-  const sampleXVal = allData[0]?.[xf]
+  const sampleXVal = allData.find(d => d[xf] != null)?.[xf]
   const xIsCategorical = typeof sampleXVal === 'string'
 
   // Global domains (for fixed mode)
