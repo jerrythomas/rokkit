@@ -66,6 +66,7 @@
 {#if bars.length > 0}
   <g data-plot-geom="bar">
     {#each bars as bar (bar.key)}
+      <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
       <rect
         x={bar.x}
         y={bar.y}
