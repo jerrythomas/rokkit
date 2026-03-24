@@ -433,13 +433,13 @@ Feature: Accessible Charts
 
 | Feature | Status |
 |---------|--------|
-| `CrossFilter` context provider | 🔲 Planned |
-| `createCrossFilter()` for spec API | 🔲 Planned |
-| Click filter (categorical) | 🔲 Planned |
+| `CrossFilter` context provider | ✅ Implemented |
+| `createCrossFilter()` for spec API | ✅ Implemented |
+| Click filter (categorical) | ✅ Implemented |
 | Brush filter (continuous range) | 🔲 Planned |
-| Dimming filtered-out marks | 🔲 Planned |
-| `FilterBar` wrapper component | 🔲 Planned |
-| `FilterSlider` wrapper component | 🔲 Planned |
+| Dimming filtered-out marks | ✅ Implemented |
+| `FilterBar` wrapper component | ✅ Implemented |
+| `FilterSlider` wrapper component | ✅ Implemented (interim — HTML inputs) |
 
 ### Tooltips & Interactivity
 

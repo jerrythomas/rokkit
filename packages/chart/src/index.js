@@ -59,3 +59,9 @@ export { CartesianBrewer } from './lib/brewing/CartesianBrewer.svelte.js'
 export { PieBrewer } from './lib/brewing/PieBrewer.svelte.js'
 export { BoxBrewer } from './lib/brewing/BoxBrewer.svelte.js'
 export { ViolinBrewer } from './lib/brewing/ViolinBrewer.svelte.js'
+
+// CrossFilter system
+export { createCrossFilter }           from './crossfilter/createCrossFilter.svelte.js'
+export { default as CrossFilter }      from './crossfilter/CrossFilter.svelte'
+export { default as FilterBar }        from './crossfilter/FilterBar.svelte'
+export { default as FilterSlider }     from './crossfilter/FilterSlider.svelte'
