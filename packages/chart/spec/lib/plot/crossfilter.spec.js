@@ -46,11 +46,11 @@ describe('applyDimming', () => {
     expect(result[0].dimmed).toBe(true)
   })
 
-  it('dimmed is false when none of the row\'s channel fields match the filter', () => {
+  it('dimmed is true when a channel field value matches the filter', () => {
     const data = [{ category: 'A', value: 10 }]
     const cf = {
       isDimmed: (field, value) => {
-        // Only 'value' field is filtered, so category 'A' is not dimmed
+        // 'value' field is filtered; value=10 matches (10 > 5)
         return field === 'value' && value > 5
       },
     }
@@ -59,6 +59,21 @@ describe('applyDimming', () => {
     const result = applyDimming(data, cf, channels)
 
     expect(result[0].dimmed).toBe(true)  // value=10 > 5, so it is dimmed
+  })
+
+  it('dimmed is false when none of the row\'s channel fields match the filter', () => {
+    const data = [{ category: 'A', value: 10 }]
+    const cf = {
+      isDimmed: (field, value) => {
+        // Filter active: 'category' field, but only 'X' is dimmed (not 'A')
+        return field === 'category' && value === 'X'
+      },
+    }
+    const channels = { x: 'category', y: 'value' }
+
+    const result = applyDimming(data, cf, channels)
+
+    expect(result[0].dimmed).toBe(false)  // category='A' does not match filter for 'X'
   })
 
   it('null/undefined channel fields are ignored', () => {
