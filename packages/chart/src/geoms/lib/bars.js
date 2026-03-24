@@ -81,7 +81,7 @@ export function buildStackedBars(data, channels, xScale, yScale, colors, innerHe
   return bars
 }
 
-export function buildHorizontalBars(data, channels, xScale, yScale, colors, innerHeight) {
+export function buildHorizontalBars(data, channels, xScale, yScale, colors, _innerHeight) {
   const { x: xf, y: yf, color: cf } = channels
   const colorKeys = cf ? [...new Set(data.map((d) => d[cf]))] : []
   const subScale = colorKeys.length > 1
