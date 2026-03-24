@@ -1,5 +1,5 @@
 <script>
-  import { setContext } from 'svelte'
+  import { setContext, untrack } from 'svelte'
   import { PlotState } from './PlotState.svelte.js'
   import Axis from './Plot/Axis.svelte'
   import Grid from './Plot/Grid.svelte'
@@ -40,15 +40,17 @@
     children
   } = $props()
 
-  // Create PlotState with initial values and provide as context
-  const plotState = new PlotState({
+  // Create PlotState with initial values and provide as context.
+  // untrack() suppresses "captures initial value" warnings — intentional:
+  // the $effect below handles all subsequent reactive updates.
+  const plotState = untrack(() => new PlotState({
     data: spec?.data ?? data,
     width: spec?.width ?? width,
     height: spec?.height ?? height,
     channels: spec ? { x: spec.x, y: spec.y, color: spec.color } : {},
     labels: spec?.labels ?? {},
     helpers
-  })
+  }))
   setContext('plot-state', plotState)
 
   // Keep state in sync when reactive config changes
