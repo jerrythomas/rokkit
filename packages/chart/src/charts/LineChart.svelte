@@ -7,6 +7,7 @@
     x = undefined,
     y = undefined,
     color = undefined,
+    curve = undefined,   // forwarded to Line options
     width = 600,
     height = 400,
     mode = 'light',
@@ -16,5 +17,5 @@
 </script>
 
 <Plot {data} {width} {height} {mode} {grid} {legend}>
-  <Line {x} {y} {color} />
+  <Line {x} {y} {color} options={{ curve }} />
 </Plot>

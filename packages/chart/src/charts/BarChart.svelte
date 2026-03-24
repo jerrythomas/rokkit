@@ -7,7 +7,7 @@
     x = undefined,
     y = undefined,
     fill = undefined,   // mapped to color channel
-    pattern: _pattern = undefined,
+    pattern: _pattern = undefined,   // deferred: geom layer does not yet support pattern fills
     width = 600,
     height = 400,
     mode = 'light',

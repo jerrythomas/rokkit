@@ -7,7 +7,8 @@
     x = undefined,
     y = undefined,
     fill = undefined,
-    pattern: _pattern = undefined,
+    curve = undefined,   // forwarded to Area options
+    pattern: _pattern = undefined,   // deferred: geom layer does not yet support pattern fills
     width = 600,
     height = 400,
     mode = 'light',
@@ -17,5 +18,5 @@
 </script>
 
 <Plot {data} {width} {height} {mode} {grid} {legend}>
-  <Area {x} {y} color={fill} />
+  <Area {x} {y} color={fill} options={{ curve }} />
 </Plot>

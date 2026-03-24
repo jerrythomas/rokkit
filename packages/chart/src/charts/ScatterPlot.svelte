@@ -7,7 +7,7 @@
     x = undefined,
     y = undefined,
     color = undefined,
-    symbol: _symbol = undefined,
+    symbol: _symbol = undefined,   // deferred: Point geom renders circles only; symbol shapes are a future addition
     size = undefined,
     width = 600,
     height = 400,
