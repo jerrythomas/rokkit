@@ -13,7 +13,7 @@
   let {
     crossfilter: externalCf = undefined,
     mode = 'dim',
-    filters = $bindable(undefined),
+    filters = $bindable(),
     children
   } = $props()
 
@@ -26,7 +26,9 @@
   })
 
   setContext('crossfilter', cf)
-  setContext('crossfilter-mode', mode)
+  // Use a getter object so children can read .mode reactively
+  const modeRef = { get mode() { return mode } }
+  setContext('crossfilter-mode', modeRef)
 </script>
 
 <div data-crossfilter data-crossfilter-mode={mode}>
