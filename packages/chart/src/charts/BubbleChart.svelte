@@ -7,7 +7,7 @@
     x = undefined,
     y = undefined,
     color = undefined,
-    symbol = undefined,
+    symbol: _symbol = undefined,
     size,               // required: field name for bubble radius
     width = 600,
     height = 400,

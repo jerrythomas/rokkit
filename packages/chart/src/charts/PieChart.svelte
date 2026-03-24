@@ -7,7 +7,7 @@
     label = undefined,
     y = undefined,
     fill = undefined,
-    pattern = undefined,
+    pattern: _pattern = undefined,
     innerRadius = 0,
     width = 400,
     height = 400,

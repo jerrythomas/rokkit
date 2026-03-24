@@ -8,8 +8,8 @@ import Area from './Plot/Area.svelte'
 import Point from './Plot/Point.svelte'
 import Arc from './Plot/Arc.svelte'
 
-// Export components
-export const Plot = {
+// Export components (old Plot namespace — renamed to avoid collision with new PlotChart export)
+export const PlotLayers = {
 	Root,
 	Axis,
 	Bar,
@@ -20,6 +20,18 @@ export const Plot = {
 	Point,
 	Arc
 }
+
+// New Plot system
+export { default as PlotChart } from './Plot.svelte'
+
+// Geom components (for declarative use inside PlotChart)
+export { default as GeomBar }    from './geoms/Bar.svelte'
+export { default as GeomLine }   from './geoms/Line.svelte'
+export { default as GeomArea }   from './geoms/Area.svelte'
+export { default as GeomPoint }  from './geoms/Point.svelte'
+export { default as GeomArc }    from './geoms/Arc.svelte'
+export { default as GeomBox }    from './geoms/Box.svelte'
+export { default as GeomViolin } from './geoms/Violin.svelte'
 
 // Export standalone components
 export { default as Chart } from './Chart.svelte'

@@ -7,7 +7,7 @@
     x = undefined,
     y = undefined,
     fill = undefined,
-    pattern = undefined,
+    pattern: _pattern = undefined,
     width = 600,
     height = 400,
     mode = 'light',
