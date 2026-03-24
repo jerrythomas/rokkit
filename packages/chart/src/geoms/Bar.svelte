@@ -2,9 +2,10 @@
   import { getContext, onMount, onDestroy } from 'svelte'
   import { buildGroupedBars, buildStackedBars, buildHorizontalBars } from './lib/bars.js'
 
-  let { x, y, color, stat = 'identity', options = {} } = $props()
+  let { x, y, color, stat = 'identity', options = {}, filterable = false } = $props()
 
   const plotState = getContext('plot-state')
+  const cf = getContext('crossfilter')
   let id = $state(null)
 
   onMount(() => {
@@ -33,6 +34,32 @@
     }
     return buildGroupedBars(data, channels, xScale, yScale, colors, innerHeight, patterns)
   })
+
+  // Separate $state record as template source of truth for dimmed keys.
+  // Cross-component $state (from CrossFilter context) cannot be reliably tracked
+  // by $effect in this component — so we sync manually on each filter mutation.
+  /** @type {Record<string, boolean>} */
+  let dimmedByKey = $state({})
+
+  /**
+   * Recomputes dimmedByKey using the current crossfilter state.
+   * Called after each filter mutation so the local $state updates.
+   */
+  function syncDimming() {
+    if (!cf) { dimmedByKey = {}; return }
+    const fields = [x, y, color].filter(Boolean)
+    const next = /** @type {Record<string, boolean>} */ ({})
+    for (const bar of bars) {
+      next[bar.key] = fields.some(field => cf.isDimmed(field, bar.data[field]))
+    }
+    dimmedByKey = next
+  }
+
+  function handleBarClick(barX) {
+    if (!filterable || !x || !cf) return
+    cf.toggleCategorical(x, barX)
+    syncDimming()
+  }
 </script>
 
 {#if bars.length > 0}
@@ -49,6 +76,9 @@
         data-plot-element="bar"
         data-plot-value={bar.data[y]}
         data-plot-category={bar.data[x]}
+        data-dimmed={dimmedByKey[bar.key] ? true : undefined}
+        style:cursor={filterable ? 'pointer' : undefined}
+        onclick={filterable ? () => handleBarClick(bar.data[x]) : undefined}
         role="graphics-symbol"
         aria-label="{bar.data[x]}: {bar.data[y]}"
       >
