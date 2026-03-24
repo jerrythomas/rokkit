@@ -86,6 +86,15 @@ describe('createCrossFilter', () => {
       expect(cf.isDimmed('displ', 2)).toBe(false)
       expect(cf.isDimmed('displ', 4)).toBe(false)
     })
+
+    it('stores a copy — mutating the input array does not change the stored filter', () => {
+      const cf = createCrossFilter()
+      const range = [2, 4]
+      cf.setRange('displ', range)
+      range[0] = 0  // mutate original
+      // stored filter should still be [2, 4]
+      expect(cf.filters.get('displ')[0]).toBe(2)
+    })
   })
 
   describe('clearFilter / clearAll', () => {
@@ -105,6 +114,13 @@ describe('createCrossFilter', () => {
       cf.clearAll()
       expect(cf.isFiltered('class')).toBe(false)
       expect(cf.isFiltered('displ')).toBe(false)
+    })
+
+    it('clearFilter on non-existent dimension is a no-op', () => {
+      const cf = createCrossFilter()
+      cf.toggleCategorical('class', 'compact')
+      expect(() => cf.clearFilter('nonexistent')).not.toThrow()
+      expect(cf.isFiltered('class')).toBe(true)  // other filters intact
     })
   })
 })

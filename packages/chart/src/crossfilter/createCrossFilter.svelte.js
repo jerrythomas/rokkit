@@ -72,7 +72,7 @@ export function createCrossFilter() {
    * @param {[number, number]} range
    */
   function setRange(dimension, range) {
-    filters.set(dimension, range)
+    filters.set(dimension, [range[0], range[1]])
   }
 
   /**
