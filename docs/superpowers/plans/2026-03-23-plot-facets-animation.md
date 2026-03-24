@@ -33,6 +33,8 @@ packages/chart/src/
 
 ### Task 1: `lib/plot/facet.js`
 
+**Status: in_progress**
+
 Pure functions for splitting data into panels and computing shared or per-panel scales.
 
 **Files:**

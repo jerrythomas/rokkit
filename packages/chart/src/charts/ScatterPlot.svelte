@@ -1,29 +1,13 @@
 <script>
-  import { setContext } from 'svelte'
-  import { ChartBrewer } from '../lib/brewing/brewer.svelte.js'
-  import Shape from '../symbols/Shape.svelte'
+  import Plot from '../Plot.svelte'
+  import Point from '../geoms/Point.svelte'
 
-  /**
-   * @type {{
-   *   data?: Object[],
-   *   x?: string,
-   *   y?: string,
-   *   color?: string,
-   *   symbol?: string,
-   *   size?: string,
-   *   width?: number,
-   *   height?: number,
-   *   mode?: 'light' | 'dark',
-   *   grid?: boolean,
-   *   legend?: boolean
-   * }}
-   */
   let {
     data = [],
     x = undefined,
     y = undefined,
     color = undefined,
-    symbol = undefined,
+    symbol: _symbol = undefined,   // deferred: Point geom renders circles only; symbol shapes are a future addition
     size = undefined,
     width = 600,
     height = 400,
@@ -31,177 +15,8 @@
     grid = true,
     legend = false
   } = $props()
-
-  const brewer = new ChartBrewer()
-  setContext('chart-brewer', brewer)
-
-  $effect(() => {
-    const channels = {}
-    if (x)      channels.x = x
-    if (y)      channels.y = y
-    if (color)  channels.color = color
-    const effectiveSymbol = symbol ?? color
-    if (effectiveSymbol) channels.symbol = effectiveSymbol
-    if (size)   channels.size = size
-    brewer.update({ data, channels, width, height, mode })
-  })
-
-  const margin = { top: 20, right: 20, bottom: 40, left: 50 }
-  const innerWidth = $derived(width - margin.left - margin.right)
-  const innerHeight = $derived(height - margin.top - margin.bottom)
-
-  const points = $derived(brewer.points)
-  const xScale = $derived(brewer.xScale)
-  const yScale = $derived(brewer.yScale)
-
-  const xTicks = $derived(
-    xScale && typeof xScale.ticks === 'function'
-      ? xScale.ticks(5).map((val) => ({ value: val, x: xScale(val) ?? 0 }))
-      : xScale && typeof xScale.domain === 'function'
-        ? xScale.domain().map((val) => ({
-            value: val,
-            x: (xScale(val) ?? 0) + (typeof xScale.bandwidth === 'function' ? xScale.bandwidth() / 2 : 0)
-          }))
-        : []
-  )
-
-  const yTicks = $derived(
-    yScale && typeof yScale.ticks === 'function'
-      ? yScale.ticks(5).map((val) => ({ value: val, y: yScale(val) }))
-      : []
-  )
-
-  const gridLines = $derived(
-    yScale && typeof yScale.ticks === 'function'
-      ? yScale.ticks(5).map((val) => ({ y: yScale(val) }))
-      : []
-  )
-
-  const legendGroups = $derived(brewer.legendGroups)
 </script>
 
-<div data-chart-root data-chart-type="scatter">
-  <svg
-    {width}
-    {height}
-    viewBox="0 0 {width} {height}"
-    role="img"
-    aria-label="Scatter plot"
-  >
-    <g
-     
-      transform="translate({margin.left}, {margin.top})"
-      data-chart-canvas
-    >
-      <!-- Grid lines -->
-      {#if grid}
-        <g data-chart-grid>
-          {#each gridLines as line (line.y)}
-            <line
-              x1="0"
-              y1={line.y}
-              x2={innerWidth}
-              y2={line.y}
-              data-chart-grid-line
-            />
-          {/each}
-        </g>
-      {/if}
-
-      <!-- Points -->
-      <g data-chart-mark="point">
-        {#each points as pt, i (i)}
-          <Shape
-            x={pt.cx}
-            y={pt.cy}
-            size={pt.r / 4.5}
-            name={pt.shape}
-            fill={pt.fill}
-            stroke={pt.stroke}
-            thickness={1}
-          />
-        {/each}
-      </g>
-
-      <!-- X axis -->
-      {#if xScale}
-        <g transform="translate(0, {innerHeight})" data-chart-axis="x">
-          <line x1="0" y1="0" x2={innerWidth} y2="0" data-chart-axis-line />
-          {#each xTicks as tick (tick.value)}
-            <g transform="translate({tick.x}, 0)">
-              <line x1="0" y1="0" x2="0" y2="6" stroke="currentColor" />
-              <text x="0" y="9" text-anchor="middle" dominant-baseline="hanging" data-chart-tick-label>
-                {tick.value}
-              </text>
-            </g>
-          {/each}
-        </g>
-      {/if}
-
-      <!-- Y axis -->
-      {#if yScale}
-        <g data-chart-axis="y">
-          <line x1="0" y1="0" x2="0" y2={innerHeight} data-chart-axis-line />
-          {#each yTicks as tick (tick.value)}
-            <g transform="translate(0, {tick.y})">
-              <line x1="-6" y1="0" x2="0" y2="0" stroke="currentColor" />
-              <text x="-9" y="0" text-anchor="end" dominant-baseline="middle" data-chart-tick-label>
-                {tick.value}
-              </text>
-            </g>
-          {/each}
-        </g>
-      {/if}
-
-    </g>
-  </svg>
-
-  <!-- HTML legend -->
-  {#if legend && legendGroups.length > 0}
-    <div data-chart-legend>
-      {#each legendGroups as group}
-        {#if legendGroups.length > 1}
-          <div data-chart-legend-title>{group.field}</div>
-        {/if}
-        {#each group.items as item (item.label)}
-          <div data-chart-legend-item>
-            {#if item.shape}
-              <svg width="12" height="12" data-chart-legend-swatch>
-                <Shape x={6} y={6} size={0.6} name={item.shape} fill={item.fill ?? '#888'} stroke={item.stroke ?? '#888'} thickness={1} />
-              </svg>
-            {:else}
-              <span data-chart-legend-swatch style="background-color: {item.fill ?? '#ddd'}"></span>
-            {/if}
-            <span data-chart-legend-label>{item.label}</span>
-          </div>
-        {/each}
-      {/each}
-    </div>
-  {/if}
-</div>
-
-<style>
-  [data-chart-root] {
-    position: relative;
-    width: 100%;
-    height: auto;
-  }
-
-  svg {
-    display: block;
-    overflow: visible;
-  }
-
-  [data-chart-canvas] {
-    pointer-events: all;
-  }
-
-  [data-chart-axis] {
-    font-size: 11px;
-    fill: currentColor;
-  }
-
-  [data-chart-grid] {
-    pointer-events: none;
-  }
-</style>
+<Plot {data} {width} {height} {mode} {grid} {legend}>
+  <Point {x} {y} {color} {size} />
+</Plot>

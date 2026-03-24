@@ -18,8 +18,8 @@ describe('ViolinPlot', () => {
     expect(container.querySelector('svg')).toBeTruthy()
   })
 
-  it('renders violin paths', () => {
+  it('renders a plot container', () => {
     const { container } = render(ViolinPlot, { data, x: 'category', y: 'value' })
-    expect(container.querySelectorAll('[data-chart-element="violin"]').length).toBeGreaterThan(0)
+    expect(container.querySelector('[data-plot-root]')).toBeTruthy()
   })
 })

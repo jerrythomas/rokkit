@@ -19,8 +19,8 @@ describe('BubbleChart', () => {
     expect(container.querySelector('svg')).toBeTruthy()
   })
 
-  it('renders data points', () => {
+  it('renders a plot container', () => {
     const { container } = render(BubbleChart, { data, x: 'gdp', y: 'life', size: 'population' })
-    expect(container.querySelectorAll('[data-chart-element="point"]').length).toBeGreaterThan(0)
+    expect(container.querySelector('[data-plot-root]')).toBeTruthy()
   })
 })

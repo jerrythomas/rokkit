@@ -8,8 +8,8 @@ import Area from './Plot/Area.svelte'
 import Point from './Plot/Point.svelte'
 import Arc from './Plot/Arc.svelte'
 
-// Export components
-export const Plot = {
+// Export components (old Plot namespace — renamed to avoid collision with new PlotChart export)
+export const PlotLayers = {
 	Root,
 	Axis,
 	Bar,
@@ -20,6 +20,22 @@ export const Plot = {
 	Point,
 	Arc
 }
+
+// New Plot system
+export { default as PlotChart }    from './Plot.svelte'
+
+// Facets and Animation
+export { default as FacetPlot }    from './FacetPlot.svelte'
+export { default as AnimatedPlot } from './AnimatedPlot.svelte'
+
+// Geom components (for declarative use inside PlotChart)
+export { default as GeomBar }    from './geoms/Bar.svelte'
+export { default as GeomLine }   from './geoms/Line.svelte'
+export { default as GeomArea }   from './geoms/Area.svelte'
+export { default as GeomPoint }  from './geoms/Point.svelte'
+export { default as GeomArc }    from './geoms/Arc.svelte'
+export { default as GeomBox }    from './geoms/Box.svelte'
+export { default as GeomViolin } from './geoms/Violin.svelte'
 
 // Export standalone components
 export { default as Chart } from './Chart.svelte'
@@ -33,6 +49,9 @@ export { default as BoxPlot } from './charts/BoxPlot.svelte'
 export { default as ViolinPlot } from './charts/ViolinPlot.svelte'
 export { default as BubbleChart } from './charts/BubbleChart.svelte'
 
+// Export state and types
+export { PlotState } from './PlotState.svelte.js'
+
 // Export utilities
 export { ChartBrewer } from './lib/brewing/index.svelte.js'
 export * from './lib/brewing/index.svelte.js'
@@ -40,3 +59,9 @@ export { CartesianBrewer } from './lib/brewing/CartesianBrewer.svelte.js'
 export { PieBrewer } from './lib/brewing/PieBrewer.svelte.js'
 export { BoxBrewer } from './lib/brewing/BoxBrewer.svelte.js'
 export { ViolinBrewer } from './lib/brewing/ViolinBrewer.svelte.js'
+
+// CrossFilter system
+export { createCrossFilter }           from './crossfilter/createCrossFilter.svelte.js'
+export { default as CrossFilter }      from './crossfilter/CrossFilter.svelte'
+export { default as FilterBar }        from './crossfilter/FilterBar.svelte'
+export { default as FilterSlider }     from './crossfilter/FilterSlider.svelte'

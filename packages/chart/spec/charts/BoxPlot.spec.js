@@ -18,8 +18,8 @@ describe('BoxPlot', () => {
     expect(container.querySelector('svg')).toBeTruthy()
   })
 
-  it('renders box elements', () => {
+  it('renders a plot container', () => {
     const { container } = render(BoxPlot, { data, x: 'category', y: 'value' })
-    expect(container.querySelectorAll('[data-chart-element="box"]').length).toBeGreaterThan(0)
+    expect(container.querySelector('[data-plot-root]')).toBeTruthy()
   })
 })

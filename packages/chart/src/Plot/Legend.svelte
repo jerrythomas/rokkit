@@ -1,127 +1,53 @@
 <script>
-	import { getContext } from 'svelte'
-	import { createLegend, createLegendItemAttributes } from '../lib/brewing/legends.svelte.js'
+  import { getContext } from 'svelte'
 
-	let {
-		title = '',
-		align = 'right',
-		verticalAlign = 'top',
-		shape = 'rect',
-		markerSize = 10,
-		onClick = null
-	} = $props()
+  /** @type {Record<string, string>} */
+  let { labels = {} } = $props()
 
-	// Get brewer from context
-	const brewer = getContext('chart-brewer')
+  const state = getContext('plot-state')
 
-	// Get legend data
-	let legendData = $derived(
-		brewer.createLegend({
-			title,
-			align,
-			shape,
-			markerSize
-		})
-	)
+  const isCategorical = $derived(state.colorScaleType === 'categorical')
 
-	// Track selected items (for filtering)
-	let selectedItems = $state([])
+  const categoricalItems = $derived(
+    [...(state.colors?.entries() ?? [])].map(([key, entry]) => ({
+      key,
+      label: labels[String(key)] ?? String(key),
+      fill: entry.fill,
+      patternId: state.patterns?.has(key) ? `pattern-${String(key).replace(/\s/g, '-')}` : null
+    }))
+  )
 
-	function toggleItem(item) {
-		if (!onClick) return
-
-		const isSelected = selectedItems.includes(item.value)
-
-		if (isSelected) {
-			selectedItems = selectedItems.filter((v) => v !== item.value)
-		} else {
-			selectedItems = [...selectedItems, item.value]
-		}
-
-		onClick(selectedItems)
-	}
+  const gradientStyle = $derived.by(() => {
+    if (isCategorical) return ''
+    return `background: linear-gradient(to right, #cfe2f3, #084594)`
+  })
 </script>
 
-{#if legendData.items.length > 0}
-	<g class="chart-legend" transform={legendData.transform} data-plot-legend>
-		<!-- Legend title -->
-		{#if legendData.title}
-			<text
-				class="legend-title"
-				x="0"
-				y="-6"
-				text-anchor={align === 'left' ? 'start' : align === 'right' ? 'end' : 'middle'}
-				data-plot-legend-title
-			>
-				{legendData.title}
-			</text>
-		{/if}
-
-		<!-- Legend items -->
-		{#each legendData.items as item, index (index)}
-			{@const attrs = createLegendItemAttributes(item)}
-			{@const isSelected = selectedItems.includes(item.value)}
-			<g
-				{...attrs}
-				class="legend-item"
-				class:selected={isSelected}
-				onclick={() => toggleItem(item)}
-			>
-				<!-- Shape: circle or rect -->
-				{#if item.shape === 'circle'}
-					<circle
-						cx={item.markerSize / 2}
-						cy={item.markerSize / 2}
-						r={item.markerSize / 2}
-						fill={item.color}
-						stroke={isSelected ? 'currentColor' : 'none'}
-						stroke-width={isSelected ? 1 : 0}
-						data-plot-legend-marker="circle"
-					/>
-				{:else}
-					<rect
-						width={item.markerSize}
-						height={item.markerSize}
-						fill={item.color}
-						stroke={isSelected ? 'currentColor' : 'none'}
-						stroke-width={isSelected ? 1 : 0}
-						data-plot-legend-marker="rect"
-					/>
-				{/if}
-
-				<!-- Text label -->
-				<text
-					x={item.markerSize + 5}
-					y={item.markerSize - 2}
-					text-anchor="start"
-					data-plot-legend-label
-				>
-					{item.value}
-				</text>
-			</g>
-		{/each}
-	</g>
+{#if isCategorical}
+  <div class="legend categorical" data-plot-legend>
+    {#each categoricalItems as item (item.key)}
+      <div class="legend-item" data-plot-legend-item>
+        {#if item.patternId}
+          <svg width="14" height="14" data-plot-legend-swatch>
+            <rect width="14" height="14" fill={item.fill} />
+            <rect width="14" height="14" fill="url(#{item.patternId})" />
+          </svg>
+        {:else}
+          <span class="swatch" style:background-color={item.fill} data-plot-legend-swatch></span>
+        {/if}
+        <span class="label" data-plot-legend-label>{item.label}</span>
+      </div>
+    {/each}
+  </div>
+{:else}
+  <div class="legend gradient" data-plot-legend>
+    <div class="gradient-bar" style={gradientStyle} data-plot-legend-gradient></div>
+  </div>
 {/if}
 
 <style>
-	.chart-legend {
-		font-size: 12px;
-	}
-
-	.legend-title {
-		font-weight: bold;
-		font-size: 14px;
-	}
-
-	.legend-item {
-		cursor: pointer;
-	}
-
-	.legend-item:hover [data-plot-legend-label] {
-		font-weight: 500;
-	}
-
-	.legend-item.selected [data-plot-legend-label] {
-		font-weight: 700;
-	}
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; font-size: 12px; }
+  .legend-item { display: flex; align-items: center; gap: 4px; }
+  .swatch { display: inline-block; width: 14px; height: 14px; border-radius: 2px; flex-shrink: 0; }
+  .gradient-bar { width: 180px; height: 14px; border-radius: 2px; }
 </style>

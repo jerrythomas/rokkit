@@ -3,6 +3,32 @@
 Chronological log of confirmations, progress, milestones, and decisions.
 Design details live in `docs/design/` — modular docs per module.
 
+### Chart Plan 4: CrossFilter system — complete (2026-03-23)
+
+**What was done:**
+
+All 7 tasks of Plan 4 (dc.js-style CrossFilter linked interactive charts) implemented and reviewed:
+
+- `createCrossFilter.svelte.js` — reactive filter state: categorical toggle, range, isDimmed/isFiltered, clearAll (16 tests)
+- `CrossFilter.svelte` — context provider: sets `'crossfilter'` + `'crossfilter-mode'` context, bind:filters, reactive mode getter object
+- `lib/plot/crossfilter.js` — `applyDimming(data, cf, channels)` utility (7 tests)
+- `geoms/Bar.svelte` — `filterable` prop + x-only dimming via `data-dimmed`, `onMount(syncDimming)`, `&& x` onclick guard (4 crossfilter tests)
+- `crossfilter/FilterBar.svelte` — thin wrapper: PlotChart + Bar filterable=true (3 tests)
+- `crossfilter/FilterSlider.svelte` — interim dual range slider with data-attribute styling, reactive min/max reset via `$effect` (4 tests)
+- `index.js` exports + `docs/features/07-Charts.md` status updated
+
+**Key design decisions:**
+- CrossFilter mode context uses getter object `{ get mode() { return mode } }` for reactivity
+- Bar dimming is x-dimension only (matches what `toggleCategorical` operates on)
+- FilterSlider is interim (HTML inputs); spec calls for Point+brush architecture (deferred)
+- `data-dimmed` attribute on bars; opacity handled by theme CSS — no inline styles
+
+**Tests:** 2967 passing (up from 2946). 0 lint errors.
+
+**Commits:** `4e5a70eb`, `e075b1a6`, `62dd2a5f`, `d54788fb`, `03b83930`, `29bdd757`, `50beb882`, `110a83b4`, `4f24910f`, `f2a02db5`
+
+---
+
 ### Chart Task 2: palette.json & assignColors — complete (2026-03-22)
 
 **What was done:**
