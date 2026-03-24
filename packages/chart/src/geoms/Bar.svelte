@@ -47,13 +47,14 @@
    */
   function syncDimming() {
     if (!cf) { dimmedByKey = {}; return }
-    const fields = [x, y, color].filter(Boolean)
     const next = /** @type {Record<string, boolean>} */ ({})
     for (const bar of bars) {
-      next[bar.key] = fields.some(field => cf.isDimmed(field, bar.data[field]))
+      next[bar.key] = x ? cf.isDimmed(x, bar.data[x]) : false
     }
     dimmedByKey = next
   }
+
+  onMount(syncDimming)
 
   function handleBarClick(barX) {
     if (!filterable || !x || !cf) return
@@ -78,7 +79,7 @@
         data-plot-category={bar.data[x]}
         data-dimmed={dimmedByKey[bar.key] ? true : undefined}
         style:cursor={filterable ? 'pointer' : undefined}
-        onclick={filterable ? () => handleBarClick(bar.data[x]) : undefined}
+        onclick={filterable && x ? () => handleBarClick(bar.data[x]) : undefined}
         role="graphics-symbol"
         aria-label="{bar.data[x]}: {bar.data[y]}"
       >

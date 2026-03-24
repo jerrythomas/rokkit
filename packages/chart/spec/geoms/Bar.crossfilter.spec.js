@@ -74,7 +74,7 @@ describe('Bar geom — crossfilter (filterable)', () => {
     const bars = container.querySelectorAll('[data-plot-element="bar"]')
     expect(bars.length).toBe(3)
     bars.forEach(bar => {
-      expect(bar.style.cursor).not.toBe('pointer')
+      expect(bar.style.cursor).toBe('')
     })
   })
 })
