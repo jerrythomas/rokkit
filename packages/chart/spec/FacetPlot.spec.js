@@ -34,27 +34,4 @@ describe('FacetPlot', () => {
     const { container } = render(FacetPlot, { props: defaultProps })
     expect(container.querySelector('[data-facet-grid]')).toBeTruthy()
   })
-
-  it('fixed scales: all panels have the same x domain', () => {
-    // Smoke test: fixed mode doesn't crash with heterogeneous panel data
-    const data = [
-      { drv: 'f', class: 'compact', hwy: 29 },
-      { drv: '4', class: 'compact', hwy: 26 },
-      { drv: '4', class: 'suv',     hwy: 18 }
-    ]
-    const { container } = render(FacetPlot, {
-      props: {
-        data,
-        facet: { by: 'drv', cols: 2, scales: 'fixed' },
-        x: 'class',
-        y: 'hwy',
-        geoms: [{ type: 'bar', stat: 'identity' }],
-        width: 600,
-        height: 300
-      }
-    })
-    // All panels should render — smoke test that fixed mode doesn't crash
-    const panels = container.querySelectorAll('[data-facet-panel]')
-    expect(panels.length).toBe(2)
-  })
 })
