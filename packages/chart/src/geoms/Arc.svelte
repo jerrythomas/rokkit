@@ -47,17 +47,16 @@
         <path d={arc.d} fill="url(#{arc.patternId})" stroke={arc.stroke} stroke-width="1" pointer-events="none" data-plot-element="arc" />
       {/if}
       {#if arc.pct >= 5}
-        <text
-          x={arc.centroid[0]}
-          y={arc.centroid[1]}
-          text-anchor="middle"
-          dominant-baseline="central"
-          font-size="12"
-          font-weight="600"
-          fill={arc.stroke}
-          pointer-events="none"
-          data-plot-element="arc-label"
-        >{arc.pct}%</text>
+        <g transform="translate({arc.centroid[0]},{arc.centroid[1]})" pointer-events="none" data-plot-element="arc-label">
+          <rect x="-18" y="-9" width="36" height="18" rx="4" fill="white" fill-opacity="0.82" />
+          <text
+            text-anchor="middle"
+            dominant-baseline="central"
+            font-size="11"
+            font-weight="600"
+            fill={arc.stroke}
+          >{arc.pct}%</text>
+        </g>
       {/if}
     {/each}
   </g>
