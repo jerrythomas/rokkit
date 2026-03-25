@@ -48,10 +48,13 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
     if (!groups.has(key)) groups.set(key, [])
     groups.get(key).push(d)
   }
-  return [...groups.entries()].map(([key, rows]) => {
+  // For different-field patterns, assign positionally so each area gets a distinct pattern
+  const orderedPatternKeys = pf && pf !== cf ? [...(patterns?.keys() ?? [])] : null
+
+  return [...groups.entries()].map(([key, rows], i) => {
     const entry = colors?.get(key) ?? { fill: '#888', stroke: '#888' }
-    // Pattern key: pf same as cf → colorKey; pf different → first row's value; no pf → colorKey (compat)
-    const patternKey = pf ? (pf === cf ? key : rows[0]?.[pf]) : key
+    // Same field or no pf: look up by colorKey. Different field: assign positionally.
+    const patternKey = !pf ? key : pf === cf ? key : (orderedPatternKeys?.[i % orderedPatternKeys.length] ?? null)
     const patternId = patternKey !== null && patternKey !== undefined && patterns?.has(patternKey)
       ? toPatternId(String(patternKey)) : null
     return { d: makeGen()(sortByX(rows)), fill: entry.fill, stroke: 'none', key, patternId }
@@ -71,7 +74,7 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
  * @returns {{ d: string, fill: string, stroke: string, key: unknown, patternId: string|null }[]}
  */
 export function buildStackedAreas(data, channels, xScale, yScale, colors, curve, patterns) {
-  const { x: xf, y: yf, color: cf } = channels
+  const { x: xf, y: yf, color: cf, pattern: pf } = channels
   if (!cf) return buildAreas(data, channels, xScale, yScale, colors, curve, patterns)
 
   const xCategories = [...new Set(data.map((d) => d[xf]))]
@@ -108,12 +111,14 @@ export function buildStackedAreas(data, channels, xScale, yScale, colors, curve,
   const stackGen = stack().keys(colorCategories)
   const layers = stackGen(wide)
 
-  return layers.map((layer) => {
+  const orderedPatternKeys = pf && pf !== cf ? [...(patterns?.keys() ?? [])] : null
+
+  return layers.map((layer, i) => {
     const colorKey = layer.key
     const entry = colors?.get(colorKey) ?? { fill: '#888', stroke: '#888' }
-    // Pattern key always resolves to colorKey (stacked by cf; pf defers to cf key for compat)
-    const patternKey = colorKey
-    const patternId = patternKey !== null && patterns?.has(patternKey)
+    // Same field (or no pf): look up by colorKey. Different field: assign positionally.
+    const patternKey = !pf ? colorKey : pf === cf ? colorKey : (orderedPatternKeys?.[i % orderedPatternKeys.length] ?? null)
+    const patternId = patternKey !== null && patternKey !== undefined && patterns?.has(patternKey)
       ? toPatternId(String(patternKey)) : null
     return {
       d: makeGen()(layer) ?? '',

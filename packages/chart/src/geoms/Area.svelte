@@ -38,7 +38,7 @@
       <path
         d={seg.d}
         fill={seg.fill}
-        fill-opacity={options.opacity ?? 0.6}
+        fill-opacity={seg.patternId ? 1 : (options.opacity ?? 0.6)}
         stroke={seg.stroke ?? 'none'}
         data-plot-element="area"
       />
