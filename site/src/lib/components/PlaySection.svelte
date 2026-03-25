@@ -34,9 +34,9 @@
 	<div class="flex min-h-0 flex-1 overflow-hidden">
 		<!-- Preview area -->
 		<div class="preview-area relative min-h-0 flex-1" data-style={theme.name}>
-			<!-- Inner overflow container keeps preview content clipped without affecting the Dropdown panel -->
-			<div class="absolute inset-0 overflow-hidden">
-				<div class="flex h-full items-center justify-center overflow-auto p-10">
+			<!-- overflow-auto on the outer lets large content scroll; min-h-full on inner centers small content -->
+			<div class="absolute inset-0 overflow-auto">
+				<div class="flex min-h-full items-center justify-center p-10">
 					{@render preview()}
 				</div>
 			</div>

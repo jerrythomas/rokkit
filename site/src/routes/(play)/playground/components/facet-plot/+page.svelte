@@ -13,7 +13,8 @@
 		facetBy: 'drv',
 		x: 'class',
 		y: 'hwy',
-		color: 'drv',
+		fill: 'drv',
+		geomType: 'bar',
 		stat: 'mean',
 		scales: 'fixed',
 		cols: 3,
@@ -27,7 +28,8 @@
 			facetBy: { type: 'string' },
 			x: { type: 'string' },
 			y: { type: 'string' },
-			color: { type: 'string' },
+			fill: { type: 'string' },
+			geomType: { type: 'string' },
 			stat: { type: 'string' },
 			scales: { type: 'string' },
 			cols: { type: 'number' },
@@ -55,14 +57,19 @@
 				props: { options: ['hwy', 'cty', 'displ'] }
 			},
 			{
-				scope: '#/color',
-				label: 'color',
+				scope: '#/fill',
+				label: 'fill',
 				props: { options: ['', 'drv', 'class', 'cyl', 'year', 'fl'] }
+			},
+			{
+				scope: '#/geomType',
+				label: 'geom',
+				props: { options: ['bar', 'line', 'point'] }
 			},
 			{
 				scope: '#/stat',
 				label: 'stat',
-				props: { options: ['mean', 'sum', 'count', 'min', 'max'] }
+				props: { options: ['mean', 'sum', 'count', 'min', 'max', 'identity'] }
 			},
 			{
 				scope: '#/scales',
@@ -92,8 +99,8 @@
 				facet={{ by: props.facetBy, cols: props.cols, scales: props.scales }}
 				x={props.x}
 				y={props.y}
-				color={props.color || undefined}
-				geoms={[{ type: 'bar', stat: props.stat }]}
+				fill={props.fill || undefined}
+				geoms={[{ type: props.geomType, stat: props.stat }]}
 				width={860}
 				height={260}
 				grid={props.grid}

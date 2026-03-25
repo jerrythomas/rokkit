@@ -1,5 +1,6 @@
 <script>
   import { splitByField, getFacetDomains } from './lib/plot/facet.js'
+  import { distinct } from './lib/brewing/colors.js'
   import PlotPanel from './FacetPlot/Panel.svelte'
 
   /**
@@ -26,6 +27,7 @@
     facet,
     x,
     y,
+    fill,
     color,
     geoms = [],
     helpers = {},
@@ -39,11 +41,17 @@
     children
   } = $props()
 
+  // `fill` is accepted as an alias for `color` (bar/area semantics vs line/point)
+  const colorChannel = $derived(fill ?? color)
+
   const panels  = $derived(splitByField(data, facet.by))
   const scales  = $derived(facet.scales ?? 'fixed')
   const domains = $derived(
     x && y ? getFacetDomains(panels, { x, y }, scales) : new Map()
   )
+
+  // Global color domain ensures the same value maps to the same color in every panel.
+  const colorDomain = $derived(colorChannel ? distinct(data, colorChannel) : undefined)
 
   const cols = $derived(facet.cols ?? Math.min(panels.size, 3))
   const pw   = $derived(panelWidth  ?? Math.floor(width / cols))
@@ -56,7 +64,7 @@
       <div data-facet-title>{facetValue}</div>
       <PlotPanel
         data={panelData}
-        {x} {y} {color}
+        {x} {y} color={colorChannel}
         {geoms} {helpers}
         width={pw}
         height={ph}
@@ -64,6 +72,7 @@
         legend={false}
         xDomain={domains.get(facetValue)?.xDomain}
         yDomain={domains.get(facetValue)?.yDomain}
+        {colorDomain}
       >
         <!-- Render caller-supplied geoms inside every panel (each gets its own PlotState context) -->
         {@render children?.()}

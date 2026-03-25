@@ -56,11 +56,12 @@
     height: spec?.height ?? height,
     mode,
     margin,
-    channels: spec ? { x: spec.x, y: spec.y, color: spec.color } : {},
+    channels: spec ? { x: spec.x, y: spec.y, color: spec.color ?? spec.fill } : {},
     labels: spec?.labels ?? {},
     helpers,
     xDomain: spec?.xDomain,
-    yDomain: spec?.yDomain
+    yDomain: spec?.yDomain,
+    colorDomain: spec?.colorDomain
   }))
   setContext('plot-state', plotState)
 
@@ -72,11 +73,12 @@
       height: spec?.height ?? height,
       mode,
       margin,
-      channels: spec ? { x: spec.x, y: spec.y, color: spec.color } : {},
+      channels: spec ? { x: spec.x, y: spec.y, color: spec.color ?? spec.fill } : {},
       labels: spec?.labels ?? {},
       helpers,
       xDomain: spec?.xDomain,
-      yDomain: spec?.yDomain
+      yDomain: spec?.yDomain,
+      colorDomain: spec?.colorDomain
     })
   })
 
@@ -136,6 +138,7 @@
             x={geomSpec.x ?? spec?.x}
             y={geomSpec.y ?? spec?.y}
             color={geomSpec.color ?? spec?.color}
+            fill={geomSpec.fill ?? spec?.fill}
             stat={geomSpec.stat}
             options={geomSpec.options}
           />

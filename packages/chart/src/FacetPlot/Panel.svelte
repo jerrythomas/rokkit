@@ -4,7 +4,7 @@
   let {
     data, x, y, color, geoms = [], helpers = {},
     width, height, mode, grid, legend,
-    xDomain, yDomain,
+    xDomain, yDomain, colorDomain,
     children
   } = $props()
 
@@ -13,7 +13,8 @@
     data, x, y, color,
     geoms,
     xDomain,
-    yDomain
+    yDomain,
+    colorDomain
   })
 </script>
 

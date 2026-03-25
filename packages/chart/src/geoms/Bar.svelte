@@ -3,7 +3,10 @@
   import { buildGroupedBars, buildStackedBars, buildHorizontalBars } from './lib/bars.js'
   import LabelPill from './LabelPill.svelte'
 
-  let { x, y, color, pattern, label = false, stat = 'identity', options = {}, filterable = false } = $props()
+  let { x, y, color, fill: fillProp, pattern, label = false, stat = 'identity', options = {}, filterable = false } = $props()
+
+  // `fill` is accepted as an alias for `color` (consistent with Arc.svelte)
+  const colorChannel = $derived(fillProp ?? color)
 
   /**
    * @param {Record<string, unknown>} data
@@ -23,14 +26,14 @@
   let id = $state(null)
 
   onMount(() => {
-    id = plotState.registerGeom({ type: 'bar', channels: { x, y, color, pattern }, stat, options: { stack: options?.stack ?? false } })
+    id = plotState.registerGeom({ type: 'bar', channels: { x, y, color: colorChannel, pattern }, stat, options: { stack: options?.stack ?? false } })
   })
   onDestroy(() => {
     if (id) plotState.unregisterGeom(id)
   })
 
   $effect(() => {
-    if (id) plotState.updateGeom(id, { channels: { x, y, color, pattern }, stat, options: { stack: options?.stack ?? false } })
+    if (id) plotState.updateGeom(id, { channels: { x, y, color: colorChannel, pattern }, stat, options: { stack: options?.stack ?? false } })
   })
 
   const data        = $derived(id ? plotState.geomData(id) : [])
@@ -43,7 +46,7 @@
 
   const bars = $derived.by(() => {
     if (!data?.length || !xScale || !yScale) return []
-    const channels = { x, y, color, pattern }
+    const channels = { x, y, color: colorChannel, pattern }
     if (orientation === 'horizontal') {
       return buildHorizontalBars(data, channels, xScale, yScale, colors, innerHeight)
     }

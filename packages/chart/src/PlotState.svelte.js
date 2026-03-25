@@ -18,6 +18,7 @@ export class PlotState {
   #presetName    = $state(undefined)
   #colorMidpoint = $state(undefined)
   #colorSpec     = $state(undefined)
+  #colorDomain   = $state(undefined)
   #xDomain       = $state(undefined)
   #yDomain       = $state(undefined)
   #width         = $state(600)
@@ -148,10 +149,12 @@ export class PlotState {
     })
   })
 
-  // Colors: Map<colorKey, { fill, stroke }> for all distinct color field values
+  // Colors: Map<colorKey, { fill, stroke }> for all distinct color field values.
+  // If a colorDomain is provided (e.g. from FacetPlot for cross-panel consistency),
+  // use it instead of deriving distinct values from the local panel data.
   colors = $derived.by(() => {
     const field = this.#effectiveChannels.color
-    const values = distinct(this.#data, field)
+    const values = this.#colorDomain ?? distinct(this.#data, field)
     return assignColors(values, this.#mode)
   })
 
@@ -204,6 +207,7 @@ export class PlotState {
     this.#presetName    = config.preset
     this.#colorMidpoint = config.colorMidpoint
     this.#colorSpec     = config.colorScale
+    this.#colorDomain   = config.colorDomain
     this.#xDomain       = config.xDomain
     this.#yDomain       = config.yDomain
     this.#width         = config.width         ?? 600
@@ -220,6 +224,7 @@ export class PlotState {
     if (config.preset        !== undefined) this.#presetName    = config.preset
     if (config.colorMidpoint !== undefined) this.#colorMidpoint = config.colorMidpoint
     if (config.colorScale    !== undefined) this.#colorSpec     = config.colorScale
+    this.#colorDomain = config.colorDomain
     this.#xDomain = config.xDomain
     this.#yDomain = config.yDomain
     if (config.width         !== undefined) this.#width         = config.width
