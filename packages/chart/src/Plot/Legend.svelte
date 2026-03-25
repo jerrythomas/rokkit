@@ -28,6 +28,7 @@
       key,
       label: labels[String(key)] ?? String(key),
       fill: entry.fill,
+      stroke: entry.stroke,
       patternId: !splitPattern && state.patterns?.has(key) ? toPatternId(String(key)) : null,
       symbolShape: !splitSymbol && state.symbols?.get(key) ? state.symbols.get(key) : null
     }))
@@ -51,7 +52,8 @@
           key,
           label: labels[String(key)] ?? String(key),
           shape,
-          fill: state.colors?.get(key)?.fill ?? '#888'
+          fill: state.colors?.get(key)?.fill ?? '#888',
+          stroke: state.colors?.get(key)?.stroke ?? '#888'
         }))
       : []
   )
@@ -86,9 +88,9 @@
             {#if isLineGeom}
               <!-- Line swatch with optional combined symbol -->
               <svg width="24" height="14" data-plot-legend-swatch>
-                <line x1="2" y1="7" x2="22" y2="7" stroke={item.fill} stroke-width="2" stroke-linecap="round" />
+                <line x1="2" y1="7" x2="22" y2="7" stroke={item.stroke} stroke-width="2" stroke-linecap="round" />
                 {#if item.symbolShape}
-                  <path transform="translate(12,7)" d={buildSymbolPath(item.symbolShape, 4)} fill={item.fill} />
+                  <path transform="translate(12,7)" d={buildSymbolPath(item.symbolShape, 4)} fill={item.stroke} />
                 {/if}
               </svg>
             {:else if isPointGeom && item.symbolShape}
@@ -134,8 +136,8 @@
           <div class="legend-item" data-plot-legend-item>
             {#if isLineGeom}
               <svg width="24" height="14" data-plot-legend-swatch>
-                <line x1="2" y1="7" x2="22" y2="7" stroke={item.fill} stroke-width="2" stroke-linecap="round" stroke-dasharray="4 2" />
-                <path transform="translate(12,7)" d={buildSymbolPath(item.shape, 4)} fill={item.fill} />
+                <line x1="2" y1="7" x2="22" y2="7" stroke={item.stroke ?? item.fill} stroke-width="2" stroke-linecap="round" stroke-dasharray="4 2" />
+                <path transform="translate(12,7)" d={buildSymbolPath(item.shape, 4)} fill={item.stroke ?? item.fill} />
               </svg>
             {:else}
               <svg width="14" height="14" data-plot-legend-swatch>
