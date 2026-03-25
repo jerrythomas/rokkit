@@ -23,14 +23,16 @@ export class PlotState {
   #width         = $state(600)
   #height        = $state(400)
   #margin        = $state({ top: 20, right: 20, bottom: 40, left: 50 })
+  #marginOverride = $state(undefined)
 
   #geoms = $state([])
   #mode  = $state('light')
 
   axisOrigin = $state([undefined, undefined])
 
-  #innerWidth  = $derived(this.#width  - this.#margin.left - this.#margin.right)
-  #innerHeight = $derived(this.#height - this.#margin.top  - this.#margin.bottom)
+  #effectiveMargin = $derived(this.#marginOverride ?? this.#margin)
+  #innerWidth  = $derived(this.#width  - this.#effectiveMargin.left - this.#effectiveMargin.right)
+  #innerHeight = $derived(this.#height - this.#effectiveMargin.top  - this.#effectiveMargin.bottom)
 
   // Effective channels: prefer top-level channels; fall back to first geom's channels
   // for the declarative API where no spec is provided.
@@ -206,6 +208,7 @@ export class PlotState {
     this.#width         = config.width         ?? 600
     this.#height        = config.height        ?? 400
     this.#mode          = config.mode          ?? 'light'
+    this.#marginOverride = config.margin       ?? undefined
   }
 
   update(config) {
@@ -221,6 +224,7 @@ export class PlotState {
     if (config.width         !== undefined) this.#width         = config.width
     if (config.height        !== undefined) this.#height        = config.height
     if (config.mode          !== undefined) this.#mode          = config.mode
+    this.#marginOverride = config.margin ?? undefined
   }
 
   registerGeom(config) {
@@ -257,7 +261,7 @@ export class PlotState {
   geomComponent(type) { return resolveGeom(type, this.#helpers) }
   preset()            { return resolvePreset(this.#presetName, this.#helpers) }
 
-  get margin()      { return this.#margin }
+  get margin()      { return this.#effectiveMargin }
   get innerWidth()  { return this.#innerWidth }
   get innerHeight() { return this.#innerHeight }
 }

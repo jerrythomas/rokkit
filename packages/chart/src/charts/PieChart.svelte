@@ -18,6 +18,6 @@
   } = $props()
 </script>
 
-<Plot {data} {width} {height} {mode} grid={false} axes={false} {legend}>
+<Plot {data} {width} {height} {mode} grid={false} axes={false} margin={{ top: 10, right: 10, bottom: 10, left: 10 }} {legend}>
   <Arc theta={y} color={label ?? fill} {pattern} {stat} options={{ innerRadius }} />
 </Plot>

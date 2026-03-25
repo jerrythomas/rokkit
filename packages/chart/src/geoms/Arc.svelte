@@ -46,6 +46,19 @@
       {#if arc.patternId}
         <path d={arc.d} fill="url(#{arc.patternId})" stroke={arc.stroke} stroke-width="1" pointer-events="none" data-plot-element="arc" />
       {/if}
+      {#if arc.pct >= 5}
+        <text
+          x={arc.centroid[0]}
+          y={arc.centroid[1]}
+          text-anchor="middle"
+          dominant-baseline="central"
+          font-size="12"
+          font-weight="600"
+          fill="white"
+          pointer-events="none"
+          data-plot-element="arc-label"
+        >{arc.pct}%</text>
+      {/if}
     {/each}
   </g>
 {/if}
