@@ -152,10 +152,12 @@ export class PlotState {
     return assignColors(values, this.#mode)
   })
 
-  // Patterns: Map<patternKey, patternName> — only populated when a pattern channel is set.
+  // Patterns: Map<patternKey, patternName> — only populated when a pattern channel is set
+  // and the pattern field is categorical (continuous fields can't be discretely patterned).
   patterns = $derived.by(() => {
     const pf = this.#effectiveChannels.pattern
     if (!pf) return new Map()
+    if (inferFieldType(this.#data, pf) === 'continuous') return new Map()
     return assignPatterns(distinct(this.#data, pf))
   })
 

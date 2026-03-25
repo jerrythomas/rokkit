@@ -8,7 +8,7 @@
     label = undefined,
     y = undefined,
     fill = undefined,
-    pattern: _pattern = undefined,
+    pattern = undefined,
     innerRadius = 0,
     width = 400,
     height = 400,
@@ -19,5 +19,5 @@
 </script>
 
 <Plot {data} {width} {height} {mode} grid={false} {legend}>
-  <Arc theta={y} color={label ?? fill} {stat} options={{ innerRadius }} />
+  <Arc theta={y} color={label ?? fill} {pattern} {stat} options={{ innerRadius }} />
 </Plot>
