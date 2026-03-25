@@ -17,8 +17,8 @@
 	const extraProps = $derived(type === 'integer' ? { step: '1' } : {})
 </script>
 
-{#if type === 'checkbox'}
-	{@const Component = resolveRenderer({ type: 'checkbox' }, allRenderers)}
+{#if type === 'checkbox' || type === 'swatch'}
+	{@const Component = resolveRenderer({ type, props: restProps }, allRenderers)}
 	<Component bind:value {onchange} {oninput} {onfocus} {onblur} {...restProps} />
 {:else}
 	{@const Component = resolveRenderer({ type, props: restProps }, allRenderers)}

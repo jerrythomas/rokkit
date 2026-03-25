@@ -2,21 +2,21 @@
   import { getContext, onMount, onDestroy } from 'svelte'
   import { buildGroupedBars, buildStackedBars, buildHorizontalBars } from './lib/bars.js'
 
-  let { x, y, color, stat = 'identity', options = {}, filterable = false } = $props()
+  let { x, y, color, pattern, stat = 'identity', options = {}, filterable = false } = $props()
 
   const plotState = getContext('plot-state')
   const cf = getContext('crossfilter')
   let id = $state(null)
 
   onMount(() => {
-    id = plotState.registerGeom({ type: 'bar', channels: { x, y, color }, stat, options })
+    id = plotState.registerGeom({ type: 'bar', channels: { x, y, color, pattern }, stat, options: { stack: options?.stack ?? false } })
   })
   onDestroy(() => {
     if (id) plotState.unregisterGeom(id)
   })
 
   $effect(() => {
-    if (id) plotState.updateGeom(id, { channels: { x, y, color }, stat })
+    if (id) plotState.updateGeom(id, { channels: { x, y, color, pattern }, stat, options: { stack: options?.stack ?? false } })
   })
 
   const data        = $derived(id ? plotState.geomData(id) : [])
@@ -29,12 +29,12 @@
 
   const bars = $derived.by(() => {
     if (!data?.length || !xScale || !yScale) return []
-    const channels = { x, y, color }
+    const channels = { x, y, color, pattern }
     if (orientation === 'horizontal') {
       return buildHorizontalBars(data, channels, xScale, yScale, colors, innerHeight)
     }
     if (options.stack) {
-      return buildStackedBars(data, channels, xScale, yScale, colors, innerHeight)
+      return buildStackedBars(data, channels, xScale, yScale, colors, innerHeight, patterns)
     }
     return buildGroupedBars(data, channels, xScale, yScale, colors, innerHeight, patterns)
   })

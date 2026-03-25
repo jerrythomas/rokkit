@@ -139,3 +139,12 @@ export function createTooltipFormatter(options = {}) {
 export function transform(x, y) {
 	return `translate(${x}, ${y})`
 }
+
+import { scaledPath } from '@rokkit/core'
+
+export function scaledPathCollection(paths) {
+	return Object.entries(paths).reduce(
+		(acc, [key, value]) => ({ ...acc, [key]: (s) => scaledPath(s, value) }),
+		{}
+	)
+}

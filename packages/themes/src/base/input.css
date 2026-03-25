@@ -115,10 +115,11 @@ button[data-form-reset]:disabled {
   @apply flex flex-col gap-1;
 }
 
-/* Checkbox and switch: inline layout */
+/* Checkbox, switch and toggle: inline layout (label left, control right) */
 [data-field-type='switch'] > [data-field],
-[data-field-type='checkbox'] > [data-field] {
-  @apply flex-row items-center gap-2;
+[data-field-type='checkbox'] > [data-field],
+[data-field-type='toggle'] > [data-field] {
+  @apply flex-row items-center justify-between gap-2;
 }
 
 /* Select: stretch to fill input wrapper — display:flex eliminates inline-block gap */

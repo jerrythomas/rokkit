@@ -22,14 +22,18 @@ export function buildLines(data, channels, xScale, yScale, colors, curve) {
   }
   const toPoints = (rows) => rows.map((d) => ({ x: xPos(d), y: yScale(d[yf]), data: d }))
 
+  const sortByX = (rows) => [...rows].sort((a, b) => a[xf] < b[xf] ? -1 : a[xf] > b[xf] ? 1 : 0)
+
   if (!cf) {
+    const sorted = sortByX(data)
     const stroke = colors?.values().next().value?.stroke ?? '#888'
-    return [{ d: makeGen()(data), fill: 'none', stroke, points: toPoints(data) }]
+    return [{ d: makeGen()(sorted), fill: 'none', stroke, points: toPoints(sorted) }]
   }
   const groups = groupBy(data, cf)
   return [...groups.entries()].map(([key, rows]) => {
+    const sorted = sortByX(rows)
     const colorEntry = colors?.get(key) ?? { fill: 'none', stroke: '#888' }
-    return { d: makeGen()(rows), fill: 'none', stroke: colorEntry.stroke, points: toPoints(rows), key }
+    return { d: makeGen()(sorted), fill: 'none', stroke: colorEntry.stroke, points: toPoints(sorted), key }
   })
 }
 

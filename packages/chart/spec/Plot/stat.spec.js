@@ -106,6 +106,34 @@ describe('applyGeomStat', () => {
     expect(compactFour.length).toBeGreaterThan(0)
   })
 
+  it('boxplot stat produces quartile rows', () => {
+    const vals = [
+      { class: 'A', hwy: 10 }, { class: 'A', hwy: 20 },
+      { class: 'A', hwy: 30 }, { class: 'A', hwy: 40 }
+    ]
+    const result = applyGeomStat(vals, { stat: 'boxplot', channels: { x: 'class', y: 'hwy' } }, {})
+    expect(result).toHaveLength(1)
+    const [row] = result
+    expect(row).toHaveProperty('q1')
+    expect(row).toHaveProperty('median')
+    expect(row).toHaveProperty('q3')
+    expect(row).toHaveProperty('iqr_min')
+    expect(row).toHaveProperty('iqr_max')
+  })
+
+  it('boxplot groups by x + color channel', () => {
+    const vals = [
+      { class: 'A', drv: 'f', hwy: 10 }, { class: 'A', drv: 'f', hwy: 20 },
+      { class: 'A', drv: '4', hwy: 30 }, { class: 'A', drv: '4', hwy: 40 }
+    ]
+    const result = applyGeomStat(
+      vals,
+      { stat: 'boxplot', channels: { x: 'class', y: 'hwy', color: 'drv' } },
+      {}
+    )
+    expect(result).toHaveLength(2)
+  })
+
   it('uses custom stat from helpers', () => {
     const helpers = { stats: { p95: (vals) => vals.sort((a, b) => a - b)[Math.floor(vals.length * 0.95)] } }
     const result = applyGeomStat(mpg, { stat: 'p95', channels: { x: 'class', y: 'cty' } }, helpers)

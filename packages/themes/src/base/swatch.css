@@ -1,0 +1,79 @@
+/* =============================================================================
+   InputSwatch / Swatch — Base structural styles
+   ============================================================================= */
+
+/* Container */
+[data-swatch] {
+  @apply flex flex-wrap gap-2 p-1;
+}
+
+/* Button: padding creates the ring gap; background is the gradient ring */
+[data-swatch-item] {
+  @apply cursor-pointer border-0 bg-transparent p-0.5 leading-none;
+  transition: background 120ms ease, outline-color 120ms ease;
+  outline: 2px solid transparent;
+  outline-offset: 0;
+}
+
+/* Border-radius follows shape */
+[data-swatch][data-swatch-shape='circle'] [data-swatch-item] {
+  @apply rounded-full;
+}
+
+[data-swatch][data-swatch-shape='square'] [data-swatch-item] {
+  @apply rounded;
+}
+
+/* ── Selected: gradient shows through the padding gap as a ring ────────────── */
+
+[data-swatch-item][data-selected] {
+  background: linear-gradient(135deg, var(--swatch-fill, currentColor), var(--swatch-stroke, currentColor));
+}
+
+/* ── Hover + keyboard focus: same visual treatment ────────────────────────── */
+
+[data-swatch-item]:hover:not(:disabled):not([data-disabled]):not([data-selected]),
+[data-swatch-item]:focus-visible:not(:disabled):not([data-disabled]):not([data-selected]) {
+  outline-color: var(--swatch-stroke, currentColor);
+}
+
+/* Focus on selected item: show outline so keyboard position is still visible */
+[data-swatch-item][data-selected]:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* ── Disabled ─────────────────────────────────────────────────────────────── */
+
+[data-swatch-item]:disabled,
+[data-swatch-item][data-disabled] {
+  @apply cursor-not-allowed opacity-40;
+}
+
+/* ── Default cells (fill the button's content box) ───────────────────────── */
+
+[data-swatch-square],
+[data-swatch-circle] {
+  display: block;
+  background-color: var(--swatch-fill, currentColor);
+}
+
+[data-swatch-square] {
+  @apply w-6 h-6 rounded-sm;
+}
+
+[data-swatch-circle] {
+  @apply w-6 h-6 rounded-full;
+}
+
+/* ── Size variants ─────────────────────────────────────────────────────────── */
+
+[data-swatch][data-swatch-size='sm'] [data-swatch-square],
+[data-swatch][data-swatch-size='sm'] [data-swatch-circle] {
+  @apply w-5 h-5;
+}
+
+[data-swatch][data-swatch-size='lg'] [data-swatch-square],
+[data-swatch][data-swatch-size='lg'] [data-swatch-circle] {
+  @apply w-8 h-8;
+}

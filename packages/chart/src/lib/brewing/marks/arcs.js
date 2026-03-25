@@ -10,7 +10,7 @@ import { pie, arc } from 'd3-shape'
  * @param {{ innerRadius?: number }} opts
  */
 export function buildArcs(data, channels, colors, width, height, opts = {}) {
-  const { label: lf, y: yf } = channels
+  const { color: lf, y: yf } = channels
   const radius = Math.min(width, height) / 2
   const innerRadius = opts.innerRadius ?? 0
   const pieGen = pie().value((d) => Number(d[yf]))

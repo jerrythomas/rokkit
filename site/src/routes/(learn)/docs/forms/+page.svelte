@@ -8,6 +8,7 @@
 	import fieldDependencies from './snippets/05-field-dependencies.js?raw'
 	import formBuilder from './snippets/06-form-builder.svelte?raw'
 	import customActions from './snippets/07-custom-actions.svelte?raw'
+	import customRenderers from './snippets/08-custom-renderers.svelte?raw'
 </script>
 
 <article data-article-root>
@@ -83,6 +84,31 @@
 		Override the default Submit/Reset buttons with a custom <code>actions</code> snippet:
 	</p>
 	<Code content={customActions} language="svelte" />
+
+	<h2>Custom Renderers</h2>
+	<p>
+		Replace any built-in control by passing a custom component via the <code>renderers</code> prop.
+		Each entry maps a key to a Svelte component. Reference it in the layout element's
+		<code>props.renderer</code>:
+	</p>
+	<Code content={customRenderers} language="svelte" />
+	<p>
+		Any custom renderer receives <code>bind:value</code>, <code>onchange</code>,
+		<code>disabled</code>, and all props defined in the layout element's <code>props</code> object.
+		Built-in keys like <code>toggle</code>, <code>switch</code>, <code>swatch</code> are already
+		registered — pass your own key to add new ones or override existing ones.
+	</p>
+	<table>
+		<thead>
+			<tr><th>Use case</th><th>renderer key</th><th>Replaces</th></tr>
+		</thead>
+		<tbody>
+			<tr><td>Color / pattern swatch</td><td><code>swatch</code></td><td><code>select</code></td></tr>
+			<tr><td>Segmented toggle</td><td><code>toggle</code></td><td><code>select</code> / <code>radio</code></td></tr>
+			<tr><td>Boolean switch</td><td><code>switch</code></td><td><code>checkbox</code></td></tr>
+			<tr><td>Any custom component</td><td>your key</td><td>any built-in</td></tr>
+		</tbody>
+	</table>
 
 	<h2>Related</h2>
 	<ul>

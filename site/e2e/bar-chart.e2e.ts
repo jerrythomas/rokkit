@@ -1,6 +1,16 @@
 import { test, expect } from '@playwright/test'
 import { goToPlayPage } from './helpers'
 
+// Playground defaults: x=class (7 categories), y=hwy, fill=drv (3 values), stat=mean
+// Selects in controls panel (after opening): [class, hwy, drv, None, mean]
+//   indices:                                   0=x    1=y   2=fill 3=pattern 4=stat
+// Checkboxes in controls panel: 0=stack, 1=grid, 2=legend
+
+async function openControls(page: any) {
+	await page.locator('[data-toolbar-item][title="Toggle Properties"]').click()
+	await page.waitForTimeout(200)
+}
+
 test.describe('BarChart', () => {
 	test.beforeEach(async ({ page }) => {
 		await goToPlayPage(page, 'bar-chart')
@@ -11,71 +21,94 @@ test.describe('BarChart', () => {
 		await expect(svg).toBeVisible()
 	})
 
-	test('renders 4 bars (one per quarter)', async ({ page }) => {
-		const bars = page.locator('.preview-area svg rect[data-chart-element="bar"]')
-		await expect(bars).toHaveCount(4)
+	test('renders grouped bars for class × drv', async ({ page }) => {
+		const bars = page.locator('.preview-area svg rect[data-plot-element="bar"]')
+		const count = await bars.count()
+		// 7 classes × up to 3 drv values → at least 7
+		expect(count).toBeGreaterThanOrEqual(7)
 	})
 
 	test('renders X and Y axes', async ({ page }) => {
-		await expect(page.locator('.preview-area [data-chart-axis="x"]')).toBeVisible()
-		await expect(page.locator('.preview-area [data-chart-axis="y"]')).toBeVisible()
+		await expect(page.locator('.preview-area [data-plot-axis="x"]')).toBeVisible()
+		await expect(page.locator('.preview-area [data-plot-axis="y"]')).toBeVisible()
 	})
 
-	test('renders grid lines by default', async ({ page }) => {
-		// SVG <line> elements have zero height, so use count check not toBeVisible
-		const count = await page.locator('.preview-area [data-chart-grid-line]').count()
+	test('renders grid lines when grid is enabled', async ({ page }) => {
+		const count = await page.locator('.preview-area [data-plot-grid-line]').count()
 		expect(count).toBeGreaterThan(0)
 	})
 
-	test('bars have solid fill colors by default (colorField=region)', async ({ page }) => {
-		const bars = page.locator('.preview-area svg rect[data-chart-element="bar"]')
+	test('bars have solid fill colors (no pattern by default)', async ({ page }) => {
+		const bars = page.locator('.preview-area svg rect[data-plot-element="bar"]')
 		const firstFill = await bars.first().getAttribute('fill')
-		// Should not be a url() reference when no pattern is active
 		expect(firstFill).not.toMatch(/^url\(/)
 		expect(firstFill).toBeTruthy()
 	})
 
-	test('each bar has a unique fill color when colorField is active', async ({ page }) => {
-		const bars = page.locator('.preview-area svg rect[data-chart-element="bar"]')
-		const fills = await bars.evaluateAll((els) => els.map((el) => el.getAttribute('fill')))
-		const uniqueFills = new Set(fills)
-		// 4 bars with 4 regions → 4 distinct colors
-		expect(uniqueFills.size).toBe(4)
-	})
-
 	test('bars use pattern fill when pattern field is set', async ({ page }) => {
-		// Open Properties panel
-		await page.locator('[data-toolbar-item][title="Toggle Properties"]').click()
-		await page.waitForTimeout(200)
-
-		// Pattern field is the second [data-select] in the controls (Color field is first)
+		await openControls(page)
+		// pattern is the 4th select (index 3)
 		const selects = page.locator('[data-select]')
-		await selects.nth(1).locator('[data-select-trigger]').click()
-		await page.locator('[data-select-option]').filter({ hasText: 'region' }).first().click()
+		await selects.nth(3).locator('[data-select-trigger]').click()
+		await page.locator('[data-select-option]').filter({ hasText: 'drv' }).first().click()
 		await page.waitForTimeout(400)
 
-		const bars = page.locator('.preview-area svg rect[data-chart-element="bar"]')
+		const bars = page.locator('.preview-area svg rect[data-plot-element="bar"]')
 		const firstFill = await bars.first().getAttribute('fill')
 		expect(firstFill).toMatch(/^url\(#chart-pat-/)
 	})
 
 	test('SVG defs contains pattern elements when pattern is active', async ({ page }) => {
-		// Open Properties panel and set pattern field
-		await page.locator('[data-toolbar-item][title="Toggle Properties"]').click()
-		await page.waitForTimeout(200)
-
+		await openControls(page)
 		const selects = page.locator('[data-select]')
-		await selects.nth(1).locator('[data-select-trigger]').click()
-		await page.locator('[data-select-option]').filter({ hasText: 'region' }).first().click()
+		await selects.nth(3).locator('[data-select-trigger]').click()
+		await page.locator('[data-select-option]').filter({ hasText: 'drv' }).first().click()
 		await page.waitForTimeout(400)
 
-		const patterns = page.locator('.preview-area svg defs pattern')
+		const patterns = page.locator('.preview-area svg [data-plot-pattern-defs] pattern')
 		const count = await patterns.count()
 		expect(count).toBeGreaterThan(0)
 	})
 
-	test('legend hidden by default', async ({ page }) => {
-		const legend = page.locator('.preview-area [data-chart-legend]')
+	test('stacked bars stay within y-axis domain', async ({ page }) => {
+		await openControls(page)
+		// stack toggle: click the label to enable stacking
+		await page.locator('label[for="\\#/stack"]').click()
+		await page.waitForTimeout(300)
+
+		const bars = page.locator('.preview-area svg rect[data-plot-element="bar"]')
+		const count = await bars.count()
+		expect(count).toBeGreaterThan(0)
+
+		// All bars must have non-negative y and height, and y+h must fit inside SVG height
+		const svgHeight = Number(
+			await page.locator('.preview-area svg').first().getAttribute('height')
+		)
+		const barData = await bars.evaluateAll((els) =>
+			els.map((el) => ({
+				y: Number(el.getAttribute('y')),
+				h: Number(el.getAttribute('height'))
+			}))
+		)
+		for (const { y, h } of barData) {
+			expect(y).toBeGreaterThanOrEqual(0)
+			expect(h).toBeGreaterThanOrEqual(0)
+			expect(y + h).toBeLessThanOrEqual(svgHeight + 1) // +1 for float rounding
+		}
+	})
+
+	test('legend visible by default (playground default legend=true)', async ({ page }) => {
+		const legend = page.locator('.preview-area [data-plot-legend]')
+		await expect(legend).toBeVisible()
+	})
+
+	test('legend hidden when legend toggle is off', async ({ page }) => {
+		await openControls(page)
+		// legend label click toggles it off (default is on)
+		await page.locator('label[for="\\#/legend"]').click()
+		await page.waitForTimeout(200)
+
+		const legend = page.locator('.preview-area [data-plot-legend]')
 		await expect(legend).toHaveCount(0)
 	})
 })

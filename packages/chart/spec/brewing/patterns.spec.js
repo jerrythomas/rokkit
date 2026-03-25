@@ -2,8 +2,8 @@ import { describe, it, expect } from 'vitest'
 import { PATTERN_ORDER, assignPatterns } from '../../src/lib/brewing/patterns.js'
 
 describe('PATTERN_ORDER', () => {
-  it('starts with Dots', () => {
-    expect(PATTERN_ORDER[0]).toBe('Dots')
+  it('starts with diagonal', () => {
+    expect(PATTERN_ORDER[0]).toBe('diagonal')
   })
 
   it('has exactly 9 patterns', () => {

@@ -4,6 +4,7 @@ import { inferFieldType, inferOrientation, buildUnifiedXScale, buildUnifiedYScal
 import { resolvePreset } from './lib/plot/preset.js'
 import { resolveFormat, resolveTooltip, resolveGeom } from './lib/plot/helpers.js'
 import { distinct, assignColors } from './lib/brewing/colors.js'
+import { assignPatterns } from './lib/brewing/patterns.js'
 
 let nextId = 0
 
@@ -38,9 +39,10 @@ export class PlotState {
     const firstGeom = this.#geoms[0]
     if (!firstGeom) return tc
     return {
-      x:     tc.x     ?? firstGeom.channels?.x,
-      y:     tc.y     ?? firstGeom.channels?.y,
-      color: tc.color ?? firstGeom.channels?.color,
+      x:       tc.x       ?? firstGeom.channels?.x,
+      y:       tc.y       ?? firstGeom.channels?.y,
+      color:   tc.color   ?? firstGeom.channels?.color,
+      pattern: tc.pattern ?? firstGeom.channels?.pattern,
     }
   })
 
@@ -48,8 +50,11 @@ export class PlotState {
     const xField = this.#effectiveChannels.x
     const yField = this.#effectiveChannels.y
     if (!xField || !yField) return 'none'
-    const xType = inferFieldType(this.#data, xField)
+    const rawXType = inferFieldType(this.#data, xField)
     const yType = inferFieldType(this.#data, yField)
+    // Bar geoms treat numeric X as categorical (e.g. year on X → vertical bars).
+    const hasBarGeom = this.#geoms.some((g) => g.type === 'bar')
+    const xType = (hasBarGeom && rawXType === 'continuous' && yType === 'continuous') ? 'band' : rawXType
     return inferOrientation(xType, yType)
   })
 
@@ -69,9 +74,14 @@ export class PlotState {
       ? this.#geoms.map((g) => this.geomData(g.id))
       : [this.#rawData]
     const includeZero = this.orientation === 'horizontal'
+    // For vertical bar charts, force scaleBand even when X values are numeric (e.g. year).
+    // Horizontal bar charts keep X as a continuous value axis.
+    const hasBarGeom = this.#geoms.some((g) => g.type === 'bar')
+    const bandX = hasBarGeom && this.orientation !== 'horizontal'
     return buildUnifiedXScale(datasets, field, this.#innerWidth, {
       domain: this.#xDomain,
-      includeZero
+      includeZero,
+      band: bandX
     })
   })
 
@@ -82,8 +92,51 @@ export class PlotState {
       ? this.#geoms.map((g) => this.geomData(g.id))
       : [this.#rawData]
     const includeZero = this.orientation === 'vertical'
+
+    // For stacked bars, the y domain must cover the per-x column *total*, not the
+    // per-row max — otherwise bars overflow the plot area.
+    // For box/violin geoms, the processed data has iqr_min/iqr_max instead of raw y values.
+    let yDomain = this.#yDomain
+    if (!yDomain) {
+      const boxGeom = this.#geoms.find((g) => g.type === 'box' || g.type === 'violin')
+      if (boxGeom) {
+        const boxData = this.geomData(boxGeom.id)
+        const mins = boxData.map((d) => d.iqr_min).filter((v) => v !== null && v !== undefined && !isNaN(v))
+        const maxs = boxData.map((d) => d.iqr_max).filter((v) => v !== null && v !== undefined && !isNaN(v))
+        if (mins.length > 0 && maxs.length > 0) {
+          yDomain = [Math.min(...mins), Math.max(...maxs)]
+        }
+      }
+    }
+    if (!yDomain) {
+      const stackGeom = this.#geoms.find((g) => g.options?.stack)
+      if (stackGeom) {
+        const xField = this.#effectiveChannels.x
+        const stackData = this.geomData(stackGeom.id)
+        if (xField && stackData.length > 0) {
+          // Mirror buildStackedBars: last-write-wins per (xVal, colorKey).
+          // Summing all raw rows (stat=identity) would overcount when multiple
+          // rows share the same (x, color) — e.g. mpg dataset with year on X.
+          const colorField = this.#effectiveChannels.color
+          const lookup = new Map()
+          for (const d of stackData) {
+            const xVal = d[xField]
+            const cKey = colorField ? String(d[colorField]) : '_'
+            if (!lookup.has(xVal)) lookup.set(xVal, new Map())
+            lookup.get(xVal).set(cKey, Number(d[field]) || 0)
+          }
+          const totals = new Map()
+          for (const [xVal, colorMap] of lookup) {
+            totals.set(xVal, [...colorMap.values()].reduce((s, v) => s + v, 0))
+          }
+          const maxStack = Math.max(0, ...totals.values())
+          yDomain = [0, maxStack]
+        }
+      }
+    }
+
     return buildUnifiedYScale(datasets, field, this.#innerHeight, {
-      domain: this.#yDomain,
+      domain: yDomain,
       includeZero
     })
   })
@@ -95,8 +148,15 @@ export class PlotState {
     return assignColors(values, this.#mode)
   })
 
-  // Patterns: empty Map for now (pattern assignment deferred)
-  patterns = $derived(new Map())
+  // Patterns: Map<colorKey, patternName> — only populated when a pattern channel is set.
+  // Keys match the color field so buildGroupedBars can look up by colorKey.
+  patterns = $derived.by(() => {
+    const pf = this.#effectiveChannels.pattern
+    if (!pf) return new Map()
+    const cf = this.#effectiveChannels.color
+    const values = distinct(this.#data, cf ?? pf)
+    return assignPatterns(values)
+  })
 
   xAxisY = $derived.by(() => {
     if (!this.yScale || typeof this.yScale !== 'function') return this.#innerHeight

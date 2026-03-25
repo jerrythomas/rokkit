@@ -2,6 +2,7 @@
   import Plot from '../Plot.svelte'
   import Point from '../geoms/Point.svelte'
 
+  /** @type {import('../lib/plot/chartProps.js').ScatterBubbleChartProps} */
   let {
     data = [],
     x = undefined,

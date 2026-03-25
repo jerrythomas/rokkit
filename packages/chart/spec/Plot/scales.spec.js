@@ -66,6 +66,23 @@ describe('buildUnifiedXScale', () => {
     expect(typeof scale.bandwidth).toBe('function')
     expect(scale.domain()).toEqual(['suv', 'compact', 'midsize'])
   })
+
+  it('opts.band=true forces scaleBand for numeric x field (e.g. year on bar chart)', () => {
+    const scale = buildUnifiedXScale([mpg], 'year', 500, { band: true })
+    // Must be a band scale, not linear
+    expect(typeof scale.bandwidth).toBe('function')
+    // Domain must contain only the distinct data values, not a continuous range
+    const domain = scale.domain()
+    expect(domain).toContain(1999)
+    expect(domain).toContain(2008)
+    expect(domain).toHaveLength(2)   // only 1999 and 2008 exist in mpg
+  })
+
+  it('opts.band=true with explicit domain still produces band scale', () => {
+    const scale = buildUnifiedXScale([mpg], 'year', 500, { band: true, domain: [1999, 2003, 2008] })
+    expect(typeof scale.bandwidth).toBe('function')
+    expect(scale.domain()).toEqual([1999, 2003, 2008])
+  })
 })
 
 describe('buildUnifiedYScale', () => {

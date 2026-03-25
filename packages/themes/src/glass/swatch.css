@@ -1,0 +1,19 @@
+/**
+ * Swatch — Glass Theme
+ * Selected: secondary outline ring. Hover/focus: primary outline ring.
+ */
+
+[data-style='glass'] [data-swatch-item][data-selected] {
+  background: transparent;
+  @apply outline-secondary-z5;
+}
+
+[data-style='glass'] [data-swatch-item]:hover:not(:disabled):not([data-disabled]):not([data-selected]),
+[data-style='glass'] [data-swatch-item]:focus-visible:not(:disabled):not([data-disabled]):not([data-selected]) {
+  @apply outline-primary-z4;
+}
+
+[data-style='glass'] [data-swatch-item][data-selected]:focus-visible {
+  @apply outline-secondary-z6;
+  outline-offset: 3px;
+}

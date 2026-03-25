@@ -11,6 +11,7 @@ export {
 	ToolbarGroup,
 	Tabs,
 	Toggle,
+	Swatch,
 	List,
 	Tree,
 	LazyTree,

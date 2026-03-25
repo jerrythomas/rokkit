@@ -9,12 +9,12 @@
   let id = $state(null)
 
   onMount(() => {
-    id = plotState.registerGeom({ type: 'arc', channels: { label: color, y: theta }, stat, options })
+    id = plotState.registerGeom({ type: 'arc', channels: { color, y: theta }, stat, options })
   })
   onDestroy(() => { if (id) plotState.unregisterGeom(id) })
 
   $effect(() => {
-    if (id) plotState.updateGeom(id, { channels: { label: color, y: theta }, stat })
+    if (id) plotState.updateGeom(id, { channels: { color, y: theta }, stat })
   })
 
   const data   = $derived(id ? plotState.geomData(id) : [])
@@ -25,7 +25,7 @@
   const arcs = $derived.by(() => {
     if (!data?.length) return []
     const innerRadius = (options.innerRadius ?? 0) * Math.min(w, h) / 2
-    return buildArcs(data, { label: color, y: theta }, colors, w, h, { innerRadius })
+    return buildArcs(data, { color, y: theta }, colors, w, h, { innerRadius })
   })
 </script>
 

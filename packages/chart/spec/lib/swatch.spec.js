@@ -1,44 +1,18 @@
 import { describe, it, expect } from 'vitest'
-import { get } from 'svelte/store'
-import { swatch } from '../../src/old_lib/swatch'
+import { swatch } from '../../src/lib/swatch'
 
 describe('Swatch Store', () => {
-	const { patterns, palette, keys } = get(swatch)
+	const { palette, keys } = swatch
 
 	it('should contain a swatch object', () => {
-		expect(Object.keys(get(swatch))).toEqual(['palette', 'patterns', 'keys'])
+		expect(Object.keys(swatch)).toEqual(['palette', 'keys'])
 	})
 
-	// describe('symbols', () => {
-	// 	it('should contain a set of symbols', () => {
-	// 		expect(Object.keys(symbols)).toMatchSnapshot()
-	// 		expect(Object.keys(symbols)).toEqual(keys.symbol)
-	// 	})
-
-	// 	it.each(Object.keys(symbols))('value for %s should be a function', (name) => {
-	// 		expect(typeof symbols[name]).toEqual('function')
-	// 	})
-	// 	it.each(Object.keys(symbols))(
-	// 		'function for %s should generate different paths for different sizes',
-	// 		(name) => {
-	// 			expect(symbols[name](10)).toMatchSnapshot()
-	// 			expect(symbols[name](20)).toMatchSnapshot()
-	// 		}
-	// 	)
-	// })
-
 	describe('patterns', () => {
-		it('should contain a set of patterns', () => {
-			// console.log(patterns)
-			expect(Object.keys(patterns)).toEqual(keys.pattern)
+		it('should contain a set of pattern keys', () => {
+			expect(Array.isArray(keys.pattern)).toBe(true)
+			expect(keys.pattern.length).toBeGreaterThan(0)
 		})
-
-		// it.each(Object.keys(patterns))('should match snapshot for pattern [%s]', (name) => {
-		// 	const fn = patterns[name]
-		// 	expect(typeof fn).toEqual('function')
-		// 	expect(fn(10)).toMatchSnapshot()
-		// 	expect(fn(5)).toMatchSnapshot()
-		// })
 	})
 
 	describe('palette', () => {

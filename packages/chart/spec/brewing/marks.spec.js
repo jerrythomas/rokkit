@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { buildBars } from '../../src/lib/brewing/marks/bars.js'
-import { buildPoints } from '../../src/lib/brewing/marks/points.js'
+import { buildPoints, assignSymbols, buildSymbolPath } from '../../src/lib/brewing/marks/points.js'
 import { buildArcs } from '../../src/lib/brewing/marks/arcs.js'
 import { scaleBand, scaleLinear } from 'd3-scale'
 
@@ -41,6 +41,61 @@ describe('buildPoints', () => {
     expect(pt).toHaveProperty('cx')
     expect(pt).toHaveProperty('cy')
     expect(pt).toHaveProperty('r')
+  })
+
+  it('symbolPath is null when no symbol channel', () => {
+    const [pt] = buildPoints(data, { x: 'x', y: 'y' }, xScaleLinear, yScale, colors, null)
+    expect(pt.symbolPath).toBeNull()
+  })
+
+  it('symbolPath is a non-empty SVG path string when symbol channel is set', () => {
+    const symbolData = [{ x: 1, y: 50, shape: 'A' }, { x: 5, y: 80, shape: 'B' }]
+    const symbolMap = assignSymbols(['A', 'B'])
+    const pts = buildPoints(symbolData, { x: 'x', y: 'y', symbol: 'shape' }, xScaleLinear, yScale, colors, null, symbolMap)
+    for (const pt of pts) {
+      expect(typeof pt.symbolPath).toBe('string')
+      expect(pt.symbolPath.length).toBeGreaterThan(0)
+      expect(pt.symbolPath).toMatch(/M/)
+    }
+  })
+})
+
+describe('assignSymbols', () => {
+  it('returns a Map mapping each value to a shape name', () => {
+    const map = assignSymbols(['A', 'B', 'C'])
+    expect(map.get('A')).toBe('circle')
+    expect(map.get('B')).toBe('square')
+    expect(map.get('C')).toBe('triangle')
+  })
+
+  it('cycles through shapes for more values than shapes', () => {
+    const vals = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
+    const map = assignSymbols(vals)
+    expect(map.get('a')).toBe('circle')
+    expect(map.get('g')).toBe('circle')   // cycles back
+  })
+})
+
+describe('buildSymbolPath', () => {
+  it('returns a non-empty path string for circle', () => {
+    const d = buildSymbolPath('circle', 5)
+    expect(typeof d).toBe('string')
+    expect(d.length).toBeGreaterThan(0)
+    expect(d).not.toContain('NaN')
+  })
+
+  it('returns a path string for all known shapes', () => {
+    for (const shape of ['circle', 'square', 'triangle', 'diamond', 'cross', 'star']) {
+      const d = buildSymbolPath(shape, 4)
+      expect(typeof d).toBe('string')
+      expect(d.length).toBeGreaterThan(0)
+    }
+  })
+
+  it('falls back to circle for unknown shape name', () => {
+    const circle = buildSymbolPath('circle', 5)
+    const unknown = buildSymbolPath('unknown', 5)
+    expect(circle).toBe(unknown)
   })
 })
 

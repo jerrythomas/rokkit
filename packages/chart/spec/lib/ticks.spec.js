@@ -1,5 +1,5 @@
 import { expect, describe, it } from 'vitest'
-import { getTicks, ticksByType } from '../../src/old_lib/ticks'
+import { getTicks, ticksByType } from '../../src/lib/ticks'
 
 describe('ticks', () => {
 	describe('ticksByType', () => {

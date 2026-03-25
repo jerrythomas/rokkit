@@ -20,6 +20,7 @@ import InputRange from '../input/InputRange.svelte'
 import InputSelect from '../input/InputSelect.svelte'
 import InputSwitch from '../input/InputSwitch.svelte'
 import InputToggle from '../input/InputToggle.svelte'
+import InputSwatch from '../input/InputSwatch.svelte'
 import InputTel from '../input/InputTel.svelte'
 import InputText from '../input/InputText.svelte'
 import InputTextArea from '../input/InputTextArea.svelte'
@@ -54,7 +55,8 @@ export const defaultRenderers = {
 	radio: InputRadio,
 	select: InputSelect,
 	switch: InputSwitch,
-	toggle: InputToggle
+	toggle: InputToggle,
+	swatch: InputSwatch
 }
 
 /**

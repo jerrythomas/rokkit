@@ -1,42 +1,37 @@
 import { describe, it, expect } from 'vitest'
-// skipcq: JS-C1003 - Importing all components for verification
-import * as components from '../src/patterns'
+import { PATTERNS, PatternDef } from '../src/patterns/index.js'
 import { render } from '@testing-library/svelte'
 
-describe('components', () => {
-	it('should contain all exported components', () => {
-		expect(Object.keys(components)).toEqual([
-			'Brick',
-			'Checkerboard',
-			'CircleGrid',
-			'Circles',
-			'CrossDot',
-			'CrossHatch',
-			'CurvedWave',
-			'DiagonalLines',
-			'DiamondOutline',
-			'Diamonds',
-			'Dots',
-			'Hexagons',
-			'HorizontalLines',
-			'OutlineCircles',
-			'ScatteredTriangles',
-			'Tile',
-			'Triangles',
-			'VerticalLines',
-			'Waves',
-			'Zigzag'
-		])
+describe('PATTERNS', () => {
+	it('exports a PATTERNS data object', () => {
+		expect(typeof PATTERNS).toBe('object')
+		expect(Object.keys(PATTERNS).length).toBeGreaterThan(0)
 	})
 
-	it.each(Object.keys(components))('should render %s', (key) => {
-		// skipcq: JS-E1007 - Using dynamic key to access object
-		const { container } = render(components[key])
-		expect(container).toMatchSnapshot()
+	it('does not contain zigzag', () => {
+		expect(PATTERNS).not.toHaveProperty('zigzag')
 	})
 
-	// it.each(Object.keys(patterns))('should render NamedPath for pattern "%s"', (key) => {
-	// 	const { container } = render(components.NamedPath, { props: { name: key } })
-	// 	expect(container).toMatchSnapshot()
-	// })
+	it('does not contain hexagons', () => {
+		expect(PATTERNS).not.toHaveProperty('hexagons')
+	})
+
+	it('contains petals', () => {
+		expect(PATTERNS).toHaveProperty('petals')
+	})
+})
+
+describe('PatternDef', () => {
+	it('renders without error for each pattern key', () => {
+		for (const name of Object.keys(PATTERNS)) {
+			const { container } = render(PatternDef, { props: { id: `pat-${name}`, name, size: 10 } })
+			expect(container).toBeTruthy()
+		}
+	})
+
+	it('renders empty pattern for an unknown pattern name', () => {
+		const { container } = render(PatternDef, { props: { id: 'pat-unknown', name: 'unknown', size: 10 } })
+		// only the background rect should be rendered (no mark elements)
+		expect(container.querySelectorAll('line, circle, polygon, path')).toHaveLength(0)
+	})
 })

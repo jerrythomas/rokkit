@@ -18,6 +18,32 @@ describe('PieChart', () => {
     expect(container.querySelector('svg')).toBeTruthy()
   })
 
+  it('renders one arc path per data slice', () => {
+    const { container } = render(PieChart, { data, label: 'slice', y: 'value' })
+    const paths = container.querySelectorAll('[data-plot-element="arc"]')
+    expect(paths.length).toBe(2)
+  })
+
+  it('arc paths have non-empty d attribute (no NaN)', () => {
+    const { container } = render(PieChart, { data, label: 'slice', y: 'value' })
+    const paths = container.querySelectorAll('[data-plot-element="arc"]')
+    for (const path of paths) {
+      const d = path.getAttribute('d')
+      expect(d).toBeTruthy()
+      expect(d).not.toContain('NaN')
+    }
+  })
+
+  it('arc paths have fill color (not the fallback #888)', () => {
+    const { container } = render(PieChart, { data, label: 'slice', y: 'value' })
+    const paths = container.querySelectorAll('[data-plot-element="arc"]')
+    for (const path of paths) {
+      const fill = path.getAttribute('fill')
+      expect(fill).not.toBe('#888')
+      expect(fill).toBeTruthy()
+    }
+  })
+
   it('aggregates duplicate labels with stat=sum', () => {
     const dupData = [
       { segment: 'A', share: 10 },
@@ -27,6 +53,16 @@ describe('PieChart', () => {
     const { container } = render(PieChart, {
       data: dupData, label: 'segment', y: 'share', stat: 'sum'
     })
-    expect(container.querySelector('svg')).toBeTruthy()
+    const paths = container.querySelectorAll('[data-plot-element="arc"]')
+    expect(paths.length).toBe(2)
+  })
+
+  it('renders a donut when innerRadius > 0', () => {
+    const { container } = render(PieChart, { data, label: 'slice', y: 'value', innerRadius: 0.5 })
+    const paths = container.querySelectorAll('[data-plot-element="arc"]')
+    expect(paths.length).toBe(2)
+    // Donut paths include an inner arc — the d attribute will differ from a full pie
+    const d = paths[0].getAttribute('d')
+    expect(d).toBeTruthy()
   })
 })

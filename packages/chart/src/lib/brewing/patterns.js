@@ -8,16 +8,17 @@ export function toPatternId(key) {
   return `chart-pat-${String(key).replace(/\s+/g, '-').replace(/[^\w-]/g, '_')}`
 }
 
+// Keys must match the keys in packages/chart/src/patterns/patterns.js
 export const PATTERN_ORDER = [
-  'Dots',
-  'CrossHatch',
-  'Waves',
-  'Brick',
-  'Triangles',
-  'Circles',
-  'Tile',
-  'OutlineCircles',
-  'CurvedWave'
+  'diagonal',
+  'dots',
+  'triangles',
+  'hatch',
+  'lattice',
+  'swell',
+  'checkerboard',
+  'waves',
+  'petals'
 ]
 
 /**

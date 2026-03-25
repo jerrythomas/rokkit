@@ -18,15 +18,16 @@ export function buildUnifiedXScale(datasets, field, width, opts = {}) {
   const allValues = datasets.flatMap((d) => d.map((r) => r[field]))
   const isNumeric = allValues.every((v) => typeof v === 'number' || (!isNaN(Number(v)) && String(v).trim() !== ''))
 
+  // opts.band forces scaleBand even for numeric data (e.g. bar charts with year on X).
   if (opts.domain) {
     const domainIsNumeric = opts.domain.every((v) => typeof v === 'number')
-    if (domainIsNumeric || isNumeric) {
+    if (!opts.band && (domainIsNumeric || isNumeric)) {
       return scaleLinear().domain(opts.domain).range([0, width]).nice()
     }
     return scaleBand().domain(opts.domain).range([0, width]).padding(opts.padding ?? 0.2)
   }
 
-  if (isNumeric) {
+  if (isNumeric && !opts.band) {
     const numericValues = allValues.map(Number)
     const [minVal, maxVal] = extent(numericValues)
     const domainMin = (opts.includeZero ?? false) ? 0 : (minVal ?? 0)

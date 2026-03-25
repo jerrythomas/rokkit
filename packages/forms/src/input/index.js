@@ -14,6 +14,7 @@ export { default as InputRadio } from './InputRadio.svelte'
 
 export { default as InputRange } from './InputRange.svelte'
 export { default as InputSelect } from './InputSelect.svelte'
+export { default as InputSwatch } from './InputSwatch.svelte'
 export { default as InputSwitch } from './InputSwitch.svelte'
 export { default as InputTel } from './InputTel.svelte'
 export { default as InputText } from './InputText.svelte'

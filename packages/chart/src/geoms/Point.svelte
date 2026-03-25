@@ -1,9 +1,9 @@
 <script>
   import { getContext, onMount, onDestroy } from 'svelte'
   import { scaleSqrt } from 'd3-scale'
-  import { buildPoints } from '../lib/brewing/marks/points.js'
+  import { buildPoints, assignSymbols } from '../lib/brewing/marks/points.js'
 
-  let { x, y, color, size, stat = 'identity', options = {} } = $props()
+  let { x, y, color, size, symbol: symbolField, stat = 'identity', options = {} } = $props()
 
   const plotState = getContext('plot-state')
   let id = $state(null)
@@ -31,27 +31,47 @@
     return scaleSqrt().domain([minVal, maxVal]).range([options.minRadius ?? 3, options.maxRadius ?? 20])
   })
 
+  const symbolMap = $derived.by(() => {
+    if (!symbolField || !data?.length) return null
+    const vals = [...new Set(data.map((d) => d[symbolField]))]
+    return assignSymbols(vals)
+  })
+
   const points = $derived.by(() => {
     if (!data?.length || !xScale || !yScale) return []
-    return buildPoints(data, { x, y, color, size }, xScale, yScale, colors, sizeScale, null, options.radius ?? 4)
+    return buildPoints(data, { x, y, color, size, symbol: symbolField }, xScale, yScale, colors, sizeScale, symbolMap, options.radius ?? 4)
   })
 </script>
 
 {#if points.length > 0}
   <g data-plot-geom="point">
     {#each points as pt, i (`${i}::${pt.data[x]}::${pt.data[y]}`)}
-      <circle
-        cx={pt.cx}
-        cy={pt.cy}
-        r={pt.r}
-        fill={pt.fill}
-        stroke={pt.stroke}
-        stroke-width="1"
-        fill-opacity={options.opacity ?? 0.8}
-        data-plot-element="point"
-        role="graphics-symbol"
-        aria-label="{pt.data[x]}, {pt.data[y]}"
-      />
+      {#if pt.symbolPath}
+        <path
+          transform="translate({pt.cx},{pt.cy})"
+          d={pt.symbolPath}
+          fill={pt.fill}
+          stroke={pt.stroke}
+          stroke-width="1"
+          fill-opacity={options.opacity ?? 0.8}
+          data-plot-element="point"
+          role="graphics-symbol"
+          aria-label="{pt.data[x]}, {pt.data[y]}"
+        />
+      {:else}
+        <circle
+          cx={pt.cx}
+          cy={pt.cy}
+          r={pt.r}
+          fill={pt.fill}
+          stroke={pt.stroke}
+          stroke-width="1"
+          fill-opacity={options.opacity ?? 0.8}
+          data-plot-element="point"
+          role="graphics-symbol"
+          aria-label="{pt.data[x]}, {pt.data[y]}"
+        />
+      {/if}
     {/each}
   </g>
 {/if}

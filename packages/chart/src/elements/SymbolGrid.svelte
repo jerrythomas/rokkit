@@ -1,12 +1,11 @@
 <script>
-	import { get } from 'svelte/store'
-	import { swatch, swatchGrid } from '../old_lib'
+	import { swatch } from '../lib/swatch'
+	import { swatchGrid } from '../lib/grid'
 	import Symbol from '../Symbol.svelte'
 
 	let { base = 'teal', size = 4, shade = 600 } = $props()
 
-	let swatchValue = $derived(get(swatch))
-	let grid = $derived(swatchGrid(swatchValue.keys.symbol.length, size, 10))
+	let grid = $derived(swatchGrid(swatch.keys.symbol.length, size, 10))
 </script>
 
 <svg viewBox="0 0 {grid.width} {grid.height}">
@@ -15,9 +14,9 @@
 			{x}
 			{y}
 			size={r * 2}
-			name={swatchValue.keys.symbol[index]}
-			fill={swatchValue.palette[base][shade]}
-			stroke={swatchValue.palette[base][shade]}
+			name={swatch.keys.symbol[index]}
+			fill={swatch.palette[base][shade]}
+			stroke={swatch.palette[base][shade]}
 		/>
 	{/each}
 </svg>

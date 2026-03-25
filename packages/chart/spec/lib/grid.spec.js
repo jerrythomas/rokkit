@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { swatchGrid } from '../../src/old_lib/grid'
+import { swatchGrid } from '../../src/lib/grid'
 
 describe('swatchGrid', () => {
 	it('should return a swatchGrid', () => {

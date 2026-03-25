@@ -15,6 +15,7 @@
 		patternField: '',
 		stat: 'mean',
 		curve: 'linear',
+		stack: false,
 		grid: true,
 		legend: true
 	})
@@ -28,6 +29,7 @@
 			patternField: { type: 'string' },
 			stat: { type: 'string' },
 			curve: { type: 'string' },
+			stack: { type: 'boolean' },
 			grid: { type: 'boolean' },
 			legend: { type: 'boolean' }
 		}
@@ -66,6 +68,7 @@
 				label: 'curve',
 				props: { options: ['linear', 'smooth', 'step'] }
 			},
+			{ scope: '#/stack', label: 'stack' },
 			{ scope: '#/grid', label: 'grid' },
 			{ scope: '#/legend', label: 'legend' },
 			{ type: 'separator' }
@@ -88,6 +91,7 @@
 					pattern={props.patternField || undefined}
 					stat={props.stat}
 					curve={props.curve}
+					stack={props.stack}
 					grid={props.grid}
 					legend={props.legend}
 					width={560}

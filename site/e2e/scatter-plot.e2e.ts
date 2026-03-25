@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test'
 import { goToPlayPage } from './helpers'
 
+// Playground defaults: mpg data, x=displ, y=hwy, color=class (7 classes), legend=true
+
 test.describe('ScatterPlot', () => {
 	test.beforeEach(async ({ page }) => {
 		await goToPlayPage(page, 'scatter-plot')
@@ -11,39 +13,46 @@ test.describe('ScatterPlot', () => {
 		await expect(svg).toBeVisible()
 	})
 
-	test('renders 10 data points as shape paths', async ({ page }) => {
-		// ScatterPlot uses Shape components (SVG paths) not plain circles
-		const points = page.locator('.preview-area svg [data-chart-mark="point"] path')
-		await expect(points).toHaveCount(10)
+	test('renders point elements (one per row in mpg)', async ({ page }) => {
+		const points = page.locator('.preview-area svg circle[data-plot-element="point"]')
+		const count = await points.count()
+		// mpg has 234 rows
+		expect(count).toBe(234)
+	})
+
+	test('points have numeric cx and cy (no NaN)', async ({ page }) => {
+		const points = page.locator('.preview-area svg circle[data-plot-element="point"]')
+		const attrs = await points.evaluateAll((els) =>
+			els.slice(0, 10).map((el) => ({
+				cx: el.getAttribute('cx'),
+				cy: el.getAttribute('cy')
+			}))
+		)
+		for (const { cx, cy } of attrs) {
+			expect(isNaN(Number(cx))).toBe(false)
+			expect(isNaN(Number(cy))).toBe(false)
+		}
+	})
+
+	test('points have fill colors when color field is set', async ({ page }) => {
+		const points = page.locator('.preview-area svg circle[data-plot-element="point"]')
+		const firstFill = await points.first().getAttribute('fill')
+		expect(firstFill).toBeTruthy()
+		expect(firstFill).not.toBe('#888')
 	})
 
 	test('renders X and Y axes', async ({ page }) => {
-		await expect(page.locator('.preview-area [data-chart-axis="x"]')).toBeVisible()
-		await expect(page.locator('.preview-area [data-chart-axis="y"]')).toBeVisible()
+		await expect(page.locator('.preview-area [data-plot-axis="x"]')).toBeVisible()
+		await expect(page.locator('.preview-area [data-plot-axis="y"]')).toBeVisible()
 	})
 
 	test('renders grid lines by default', async ({ page }) => {
-		// SVG <line> elements have zero height, so use count check not toBeVisible
-		const count = await page.locator('.preview-area [data-chart-grid-line]').count()
+		const count = await page.locator('.preview-area [data-plot-grid-line]').count()
 		expect(count).toBeGreaterThan(0)
 	})
 
-	test('data points have fill colors when color field is set', async ({ page }) => {
-		// Default colorField='channel' — points should have colored fills
-		const points = page.locator('.preview-area svg [data-chart-mark="point"] path')
-		const firstFill = await points.first().getAttribute('fill')
-		expect(firstFill).toBeTruthy()
-		expect(firstFill).not.toBe('none')
-	})
-
-	test('points render as SVG paths, not circles', async ({ page }) => {
-		// Confirm shape rendering — no plain <circle> elements in the points group
-		const circles = page.locator('.preview-area svg [data-chart-mark="point"] circle')
-		await expect(circles).toHaveCount(0)
-	})
-
-	test('legend hidden by default', async ({ page }) => {
-		const legend = page.locator('.preview-area [data-chart-legend]')
-		await expect(legend).toHaveCount(0)
+	test('legend is visible when color field is set (default)', async ({ page }) => {
+		const legend = page.locator('.preview-area [data-plot-legend]')
+		await expect(legend).toBeVisible()
 	})
 })

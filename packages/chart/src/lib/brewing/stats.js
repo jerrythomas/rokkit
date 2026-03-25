@@ -1,5 +1,9 @@
-import { sum, mean, min, max } from 'd3-array'
+import { sum, mean, min, max, quantile, ascending } from 'd3-array'
 import { dataset } from '@rokkit/data'
+
+function sortedQuantile(values, p) {
+  return quantile([...values].sort(ascending), p)
+}
 
 /**
  * Built-in reduction functions. Each receives an array of numeric values.
@@ -11,6 +15,31 @@ export const STAT_FNS = {
   min,
   max,
   count: (values) => values.length
+}
+
+/**
+ * Computes box plot quartile statistics grouped by x (and optionally color).
+ * Output rows have { q1, median, q3, iqr_min, iqr_max } replacing the raw y values.
+ *
+ * @param {Object[]} data
+ * @param {{ x?: string, y?: string, color?: string }} channels
+ * @returns {Object[]}
+ */
+export function applyBoxStat(data, channels) {
+  const { x: xf, y: yf, color: cf } = channels
+  if (!xf || !yf) return data
+  const by = [xf, cf].filter(Boolean)
+  return dataset(data)
+    .groupBy(...by)
+    .summarize((row) => row[yf], {
+      q1:      (v) => sortedQuantile(v, 0.25),
+      median:  (v) => sortedQuantile(v, 0.5),
+      q3:      (v) => sortedQuantile(v, 0.75),
+      iqr_min: (v) => { const q1 = sortedQuantile(v, 0.25); const q3 = sortedQuantile(v, 0.75); return q1 - 1.5 * (q3 - q1) },
+      iqr_max: (v) => { const q1 = sortedQuantile(v, 0.25); const q3 = sortedQuantile(v, 0.75); return q3 + 1.5 * (q3 - q1) }
+    })
+    .rollup()
+    .select()
 }
 
 /**

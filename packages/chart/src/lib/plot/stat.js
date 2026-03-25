@@ -1,5 +1,5 @@
 import { sum, mean, min, max, median } from 'd3-array'
-import { applyAggregate } from '../brewing/stats.js'
+import { applyAggregate, applyBoxStat } from '../brewing/stats.js'
 
 const BUILT_IN_STATS = {
   sum,
@@ -63,6 +63,7 @@ export function inferGroupByFields(channels, valueFields) {
 export function applyGeomStat(data, geomConfig, helpers = {}) {
   const { stat = 'identity', channels = {} } = geomConfig
   if (stat === 'identity') return data
+  if (stat === 'boxplot') return applyBoxStat(data, channels)
 
   const statFn = resolveStat(stat, helpers)
 

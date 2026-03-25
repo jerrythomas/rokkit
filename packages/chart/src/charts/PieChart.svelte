@@ -2,6 +2,7 @@
   import Plot from '../Plot.svelte'
   import Arc from '../geoms/Arc.svelte'
 
+  /** @type {import('../lib/plot/chartProps.js').PieChartProps} */
   let {
     data = [],
     label = undefined,

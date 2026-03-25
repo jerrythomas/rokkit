@@ -1,0 +1,18 @@
+/**
+ * Swatch — Rokkit Theme
+ * Selected ring uses primary→secondary gradient, matching input focus ring.
+ */
+
+[data-style='rokkit'] [data-swatch-item][data-selected] {
+  @apply from-primary-500 to-secondary-500 bg-gradient-to-br;
+}
+
+[data-style='rokkit'] [data-swatch-item]:hover:not(:disabled):not([data-disabled]):not([data-selected]),
+[data-style='rokkit'] [data-swatch-item]:focus-visible:not(:disabled):not([data-disabled]):not([data-selected]) {
+  @apply outline-primary-z4;
+}
+
+[data-style='rokkit'] [data-swatch-item][data-selected]:focus-visible {
+  @apply outline-primary-z6;
+  outline-offset: 3px;
+}

@@ -2,12 +2,13 @@
   import Plot from '../Plot.svelte'
   import Bar from '../geoms/Bar.svelte'
 
+  /** @type {import('../lib/plot/chartProps.js').BarChartProps} */
   let {
     data = [],
     x = undefined,
     y = undefined,
     fill = undefined,   // mapped to color channel
-    pattern: _pattern = undefined,   // deferred: geom layer does not yet support pattern fills
+    pattern = undefined,
     width = 600,
     height = 400,
     mode = 'light',
@@ -19,5 +20,5 @@
 </script>
 
 <Plot {data} {width} {height} {mode} {grid} {legend}>
-  <Bar {x} {y} color={fill} {stat} options={{ stack }} />
+  <Bar {x} {y} color={fill} {pattern} {stat} options={{ stack }} />
 </Plot>

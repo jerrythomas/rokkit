@@ -1,5 +1,6 @@
 <script>
   import { getContext } from 'svelte'
+  import { toPatternId } from '../lib/brewing/patterns.js'
 
   /** @type {Record<string, string>} */
   let { labels = {} } = $props()
@@ -13,7 +14,7 @@
       key,
       label: labels[String(key)] ?? String(key),
       fill: entry.fill,
-      patternId: state.patterns?.has(key) ? `pattern-${String(key).replace(/\s/g, '-')}` : null
+      patternId: state.patterns?.has(key) ? toPatternId(String(key)) : null
     }))
   )
 

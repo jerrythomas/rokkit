@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { chart } from '../../src/old_lib/chart'
+import { chart } from '../../src/lib/chart'
 
 describe('swatchGrid', () => {
 	const data = [

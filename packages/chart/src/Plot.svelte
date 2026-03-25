@@ -4,7 +4,7 @@
   import Axis from './Plot/Axis.svelte'
   import Grid from './Plot/Grid.svelte'
   import Legend from './Plot/Legend.svelte'
-  import DefinePatterns from './Plot/DefinePatterns.svelte'
+  import DefinePatterns from './patterns/DefinePatterns.svelte'
   import Bar from './geoms/Bar.svelte'
   import Line from './geoms/Line.svelte'
   import Area from './geoms/Area.svelte'
