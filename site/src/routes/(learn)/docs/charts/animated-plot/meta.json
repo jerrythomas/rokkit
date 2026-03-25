@@ -1,0 +1,9 @@
+{
+  "title": "AnimatedPlot",
+  "description": "Animated chart that steps through discrete frames of a dataset with playback controls.",
+  "icon": "i-glyph:chart-2",
+  "package": "@rokkit/chart",
+  "category": "charts",
+  "order": 12,
+  "since": "0.1.0"
+}

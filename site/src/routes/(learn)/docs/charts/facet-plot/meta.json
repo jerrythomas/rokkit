@@ -1,0 +1,9 @@
+{
+  "title": "FacetPlot",
+  "description": "Small-multiples chart that splits data into panels by a categorical field.",
+  "icon": "i-glyph:chart-2",
+  "package": "@rokkit/chart",
+  "category": "charts",
+  "order": 10,
+  "since": "0.1.0"
+}
