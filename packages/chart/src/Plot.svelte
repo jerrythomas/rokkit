@@ -22,6 +22,7 @@
    *   height?: number,
    *   mode?: 'light' | 'dark',
    *   grid?: boolean,
+   *   axes?: boolean,
    *   legend?: boolean,
    *   title?: string,
    *   children?: import('svelte').Snippet,
@@ -35,6 +36,7 @@
     height = 400,
     mode = 'light',
     grid = true,
+    axes = true,
     legend = false,
     title = '',
     children
@@ -134,8 +136,10 @@
       {/each}
 
       <!-- Axes -->
-      <Axis type="x" label={spec?.labels?.[spec?.x ?? ''] ?? ''} />
-      <Axis type="y" label={spec?.labels?.[spec?.y ?? ''] ?? ''} />
+      {#if axes}
+        <Axis type="x" label={spec?.labels?.[spec?.x ?? ''] ?? ''} />
+        <Axis type="y" label={spec?.labels?.[spec?.y ?? ''] ?? ''} />
+      {/if}
     </g>
   </svg>
 
