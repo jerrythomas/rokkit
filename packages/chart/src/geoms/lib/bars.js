@@ -75,7 +75,7 @@ export function buildGroupedBars(data, channels, xScale, yScale, colors, innerHe
 }
 
 export function buildStackedBars(data, channels, xScale, yScale, colors, innerHeight, patterns) {
-  const { x: xf, y: yf, color: cf } = channels
+  const { x: xf, y: yf, color: cf, pattern: pf } = channels
 
   const bandScale = ensureBandX(xScale, data, xf)
 
@@ -107,7 +107,6 @@ export function buildStackedBars(data, channels, xScale, yScale, colors, innerHe
   const bars = []
   for (const layer of layers) {
     const stackKey = layer.key
-    const patternId = patterns?.has(stackKey) ? toPatternId(String(stackKey)) : null
 
     for (const point of layer) {
       const [y0, y1] = point
@@ -118,6 +117,14 @@ export function buildStackedBars(data, channels, xScale, yScale, colors, innerHe
         ? (cf === xf ? xVal : cf === stackField ? stackKey : null)
         : null
       const colorEntry = colors?.get(colorKey) ?? { fill: '#888', stroke: '#888' }
+
+      // Pattern lookup: pf may equal xf (= xVal) or stackField (= stackKey)
+      const patternKey = pf
+        ? (pf === xf ? xVal : pf === stackField ? stackKey : null)
+        : null
+      const patternId = patternKey !== null && patternKey !== undefined && patterns?.has(patternKey)
+        ? toPatternId(String(patternKey))
+        : null
 
       bars.push({
         data: point.data,
