@@ -2,6 +2,7 @@
   import Plot from '../Plot.svelte'
   import Violin from '../geoms/Violin.svelte'
 
+  /** @type {import('../lib/plot/chartProps.js').BoxViolinChartProps} */
   let {
     data = [],
     x = undefined,
@@ -17,5 +18,5 @@
 </script>
 
 <Plot {data} {width} {height} {mode} {grid} {legend}>
-  <Violin {x} {y} color={color ?? fill} />
+  <Violin {x} {y} {fill} {color} />
 </Plot>

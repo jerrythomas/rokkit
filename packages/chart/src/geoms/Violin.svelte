@@ -2,18 +2,19 @@
   import { getContext, onMount, onDestroy } from 'svelte'
   import { buildViolins } from '../lib/brewing/marks/violins.js'
 
-  let { x, y, color, stat = 'identity', options = {} } = $props()
+  let { x, y, fill, color, stat = 'boxplot', options = {} } = $props()
 
   const plotState = getContext('plot-state')
   let id = $state(null)
 
+  // fill ?? x drives the colors map; color is the optional stroke channel
   onMount(() => {
-    id = plotState.registerGeom({ type: 'violin', channels: { x, y, color }, stat, options })
+    id = plotState.registerGeom({ type: 'violin', channels: { x, y, color: fill ?? x }, stat, options })
   })
   onDestroy(() => { if (id) plotState.unregisterGeom(id) })
 
   $effect(() => {
-    if (id) plotState.updateGeom(id, { channels: { x, y, color }, stat })
+    if (id) plotState.updateGeom(id, { channels: { x, y, color: fill ?? x }, stat })
   })
 
   const data   = $derived(id ? plotState.geomData(id) : [])
@@ -21,10 +22,10 @@
   const yScale = $derived(plotState.yScale)
   const colors = $derived(plotState.colors)
 
-  // buildViolins channels: { x, fill, color } where fill drives interior, color drives stroke
+  // fill ?? x drives violin interior; color drives outline stroke (optional)
   const violins = $derived.by(() => {
     if (!data?.length || !xScale || !yScale) return []
-    return buildViolins(data, { x, fill: x, color }, xScale, yScale, colors)
+    return buildViolins(data, { x, fill: fill ?? x, color }, xScale, yScale, colors)
   })
 </script>
 
