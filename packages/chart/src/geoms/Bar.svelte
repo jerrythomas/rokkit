@@ -1,8 +1,22 @@
 <script>
   import { getContext, onMount, onDestroy } from 'svelte'
   import { buildGroupedBars, buildStackedBars, buildHorizontalBars } from './lib/bars.js'
+  import LabelPill from './LabelPill.svelte'
 
-  let { x, y, color, pattern, stat = 'identity', options = {}, filterable = false } = $props()
+  let { x, y, color, pattern, label = false, stat = 'identity', options = {}, filterable = false } = $props()
+
+  /**
+   * @param {Record<string, unknown>} data
+   * @param {string} defaultField
+   * @returns {string | null}
+   */
+  function resolveLabel(data, defaultField) {
+    if (!label) return null
+    if (label === true) return String(data[defaultField] ?? '')
+    if (typeof label === 'function') return String(label(data) ?? '')
+    if (typeof label === 'string') return String(data[label] ?? '')
+    return null
+  }
 
   const plotState = getContext('plot-state')
   const cf = getContext('crossfilter')
@@ -89,6 +103,8 @@
         role={filterable ? 'button' : 'graphics-symbol'}
         tabindex={filterable ? 0 : undefined}
         aria-label="{bar.data[x]}: {bar.data[y]}"
+        onmouseenter={() => plotState.setHovered(bar.data)}
+        onmouseleave={() => plotState.clearHovered()}
       >
         <title>{bar.data[x]}: {bar.data[y]}</title>
       </rect>
@@ -101,6 +117,26 @@
           fill="url(#{bar.patternId})"
           pointer-events="none"
         />
+      {/if}
+      {#if label}
+        {@const text = resolveLabel(bar.data, orientation === 'horizontal' ? x : y)}
+        {#if text}
+          {#if orientation === 'horizontal'}
+            <LabelPill
+              x={bar.x + bar.width + (options.labelOffset ?? 8)}
+              y={bar.y + bar.height / 2}
+              {text}
+              color={bar.stroke ?? '#333'}
+            />
+          {:else}
+            <LabelPill
+              x={bar.x + bar.width / 2}
+              y={bar.y + (options.labelOffset ?? -8)}
+              {text}
+              color={bar.stroke ?? '#333'}
+            />
+          {/if}
+        {/if}
       {/if}
     {/each}
   </g>

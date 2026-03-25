@@ -2,8 +2,21 @@
   import { getContext, onMount, onDestroy } from 'svelte'
   import { buildLines } from '../lib/brewing/marks/lines.js'
   import { buildSymbolPath } from '../lib/brewing/marks/points.js'
+  import LabelPill from './LabelPill.svelte'
 
-  let { x, y, color, symbol: symbolField, stat = 'identity', options = {} } = $props()
+  let { x, y, color, symbol: symbolField, label = false, stat = 'identity', options = {} } = $props()
+
+  /**
+   * @param {Record<string, unknown>} data
+   * @returns {string | null}
+   */
+  function resolveLabel(data) {
+    if (!label) return null
+    if (label === true) return String(data[y] ?? '')
+    if (typeof label === 'function') return String(label(data) ?? '')
+    if (typeof label === 'string') return String(data[label] ?? '')
+    return null
+  }
 
   const plotState = getContext('plot-state')
   let id = $state(null)
@@ -55,6 +68,32 @@
           />
         {/each}
       {/if}
+      {#if label}
+        {#each seg.points as pt (`label::${pt.x}::${pt.y}`)}
+          {@const text = resolveLabel(pt.data)}
+          {#if text}
+            <LabelPill
+              x={pt.x + (options.labelOffset?.x ?? 0)}
+              y={pt.y + (options.labelOffset?.y ?? -12)}
+              {text}
+              color={seg.stroke ?? '#333'}
+            />
+          {/if}
+        {/each}
+      {/if}
+      <!-- Invisible hit areas for tooltip -->
+      {#each seg.points as pt (`hover::${pt.x}::${pt.y}`)}
+        <circle
+          cx={pt.x}
+          cy={pt.y}
+          r="8"
+          fill="transparent"
+          stroke="none"
+          data-plot-element="line-hover"
+          onmouseenter={() => plotState.setHovered(pt.data)}
+          onmouseleave={() => plotState.clearHovered()}
+        />
+      {/each}
     {/each}
   </g>
 {/if}

@@ -10,6 +10,8 @@
     fill = undefined,
     pattern = undefined,
     innerRadius = 0,
+    labelFn = undefined,
+    tooltip = false,
     width = 400,
     height = 400,
     mode = 'light',
@@ -18,6 +20,6 @@
   } = $props()
 </script>
 
-<Plot {data} {width} {height} {mode} grid={false} axes={false} margin={{ top: 10, right: 10, bottom: 10, left: 10 }} {legend}>
-  <Arc theta={y} color={label ?? fill} {pattern} {stat} options={{ innerRadius }} />
+<Plot {data} {width} {height} {mode} grid={false} axes={false} margin={{ top: 10, right: 10, bottom: 10, left: 10 }} {legend} {tooltip}>
+  <Arc theta={y} fill={label ?? fill} {pattern} {labelFn} {stat} options={{ innerRadius }} />
 </Plot>

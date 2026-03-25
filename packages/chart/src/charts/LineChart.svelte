@@ -11,6 +11,8 @@
     stat = 'identity',
     symbol = undefined,
     curve = undefined,   // forwarded to Line options
+    label = false,
+    tooltip = false,
     width = 600,
     height = 400,
     mode = 'light',
@@ -19,6 +21,6 @@
   } = $props()
 </script>
 
-<Plot {data} {width} {height} {mode} {grid} {legend}>
-  <Line {x} {y} {color} {symbol} {stat} options={{ curve }} />
+<Plot {data} {width} {height} {mode} {grid} {legend} {tooltip}>
+  <Line {x} {y} {color} {symbol} {label} {stat} options={{ curve }} />
 </Plot>

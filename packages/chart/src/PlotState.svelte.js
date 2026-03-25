@@ -25,8 +25,9 @@ export class PlotState {
   #margin        = $state({ top: 20, right: 20, bottom: 40, left: 50 })
   #marginOverride = $state(undefined)
 
-  #geoms = $state([])
-  #mode  = $state('light')
+  #geoms   = $state([])
+  #mode    = $state('light')
+  #hovered = $state(null)
 
   axisOrigin = $state([undefined, undefined])
 
@@ -264,4 +265,9 @@ export class PlotState {
   get margin()      { return this.#effectiveMargin }
   get innerWidth()  { return this.#innerWidth }
   get innerHeight() { return this.#innerHeight }
+  get mode()        { return this.#mode }
+  get hovered()     { return this.#hovered }
+
+  setHovered(data)  { this.#hovered = data }
+  clearHovered()    { this.#hovered = null }
 }

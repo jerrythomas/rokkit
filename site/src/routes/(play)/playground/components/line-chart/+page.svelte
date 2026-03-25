@@ -15,6 +15,8 @@
 		symbolField: '',
 		stat: 'mean',
 		curve: 'linear',
+		label: false,
+		tooltip: false,
 		grid: true,
 		legend: true
 	})
@@ -28,6 +30,8 @@
 			symbolField: { type: 'string' },
 			stat: { type: 'string' },
 			curve: { type: 'string' },
+			label: { type: 'boolean' },
+			tooltip: { type: 'boolean' },
 			grid: { type: 'boolean' },
 			legend: { type: 'boolean' }
 		}
@@ -66,6 +70,8 @@
 				label: 'curve',
 				props: { options: ['linear', 'smooth', 'step'] }
 			},
+			{ scope: '#/label', label: 'label' },
+			{ scope: '#/tooltip', label: 'tooltip' },
 			{ scope: '#/grid', label: 'grid' },
 			{ scope: '#/legend', label: 'legend' },
 			{ type: 'separator' }
@@ -88,6 +94,8 @@
 					symbol={props.symbolField || undefined}
 					stat={props.stat}
 					curve={props.curve}
+					label={props.label}
+					tooltip={props.tooltip}
 					grid={props.grid}
 					legend={props.legend}
 					width={560}

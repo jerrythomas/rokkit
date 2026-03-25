@@ -2,19 +2,25 @@
   import { getContext, onMount, onDestroy } from 'svelte'
   import { buildArcs } from '../lib/brewing/marks/arcs.js'
 
-  /** @type {{ theta?: string, color?: string, pattern?: string, stat?: string, options?: { innerRadius?: number } }} */
-  let { theta, color, pattern, stat = 'identity', options = {} } = $props()
+  /**
+   * `fill` is the primary prop name; `color` is accepted as an alias for
+   * spec-driven usage (Plot.svelte passes `color` to all geoms generically).
+   * @type {{ theta?: string, fill?: string, color?: string, pattern?: string, stat?: string, labelFn?: (data: Record<string, unknown>) => string, options?: { innerRadius?: number } }}
+   */
+  let { theta, fill, color, pattern, labelFn = undefined, stat = 'identity', options = {} } = $props()
+
+  const fillField = $derived(fill ?? color)
 
   const plotState = getContext('plot-state')
   let id = $state(null)
 
   onMount(() => {
-    id = plotState.registerGeom({ type: 'arc', channels: { color, y: theta, pattern }, stat, options })
+    id = plotState.registerGeom({ type: 'arc', channels: { color: fillField, y: theta, pattern }, stat, options })
   })
   onDestroy(() => { if (id) plotState.unregisterGeom(id) })
 
   $effect(() => {
-    if (id) plotState.updateGeom(id, { channels: { color, y: theta, pattern }, stat })
+    if (id) plotState.updateGeom(id, { channels: { color: fillField, y: theta, pattern }, stat })
   })
 
   const data     = $derived(id ? plotState.geomData(id) : [])
@@ -25,8 +31,13 @@
 
   const arcs = $derived.by(() => {
     if (!data?.length) return []
+    // Guard: skip until data catches up after a fill-field change.
+    // When fillField changes, the $effect updates the geom asynchronously, but
+    // this derived runs first with stale data whose rows don't have the new
+    // field — causing all keys to be undefined (duplicate key error).
+    if (fillField && !(fillField in data[0])) return []
     const innerRadius = (options.innerRadius ?? 0) * Math.min(w, h) / 2
-    return buildArcs(data, { color, y: theta, pattern }, colors, w, h, { innerRadius }, patterns)
+    return buildArcs(data, { color: fillField, y: theta, pattern }, colors, w, h, { innerRadius }, patterns)
   })
 </script>
 
@@ -42,21 +53,27 @@
         stroke={arc.stroke}
         stroke-width="1"
         data-plot-element="arc"
+        onmouseenter={() => plotState.setHovered({ ...arc.data, '%': `${arc.pct}%` })}
+        onmouseleave={() => plotState.clearHovered()}
       />
       {#if arc.patternId}
         <path d={arc.d} fill="url(#{arc.patternId})" stroke={arc.stroke} stroke-width="1" pointer-events="none" data-plot-element="arc" />
       {/if}
       {#if arc.pct >= 5}
-        <g transform="translate({arc.centroid[0]},{arc.centroid[1]})" pointer-events="none" data-plot-element="arc-label">
-          <rect x="-18" y="-9" width="36" height="18" rx="4" fill="white" fill-opacity="0.82" />
-          <text
-            text-anchor="middle"
-            dominant-baseline="central"
-            font-size="11"
-            font-weight="600"
-            fill={arc.stroke}
-          >{arc.pct}%</text>
-        </g>
+        {@const labelText = labelFn ? String(labelFn(arc.data) ?? '') : `${arc.pct}%`}
+        {#if labelText}
+          {@const lw = Math.max(36, labelText.length * 7 + 12)}
+          <g transform="translate({arc.centroid[0]},{arc.centroid[1]})" pointer-events="none" data-plot-element="arc-label">
+            <rect x={-lw / 2} y="-9" width={lw} height="18" rx="4" fill="white" fill-opacity="0.82" />
+            <text
+              text-anchor="middle"
+              dominant-baseline="central"
+              font-size="11"
+              font-weight="600"
+              fill={arc.stroke}
+            >{labelText}</text>
+          </g>
+        {/if}
       {/if}
     {/each}
   </g>

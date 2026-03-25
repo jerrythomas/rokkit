@@ -4,6 +4,7 @@
   import Axis from './Plot/Axis.svelte'
   import Grid from './Plot/Grid.svelte'
   import Legend from './Plot/Legend.svelte'
+  import Tooltip from './Plot/Tooltip.svelte'
   import DefinePatterns from './patterns/DefinePatterns.svelte'
   import Bar from './geoms/Bar.svelte'
   import Line from './geoms/Line.svelte'
@@ -26,6 +27,7 @@
    *   margin?: { top: number, right: number, bottom: number, left: number },
    *   legend?: boolean,
    *   title?: string,
+   *   tooltip?: boolean | ((data: Record<string, unknown>) => string),
    *   children?: import('svelte').Snippet,
    * }}
    */
@@ -41,6 +43,7 @@
     margin = undefined,
     legend = false,
     title = '',
+    tooltip = false,
     children
   } = $props()
 
@@ -150,6 +153,11 @@
   <!-- Legend (HTML, outside SVG) -->
   {#if showLegend}
     <Legend labels={spec?.labels ?? {}} />
+  {/if}
+
+  <!-- Tooltip (HTML, fixed-position overlay) -->
+  {#if tooltip}
+    <Tooltip {tooltip} />
   {/if}
 </div>
 

@@ -17,6 +17,8 @@
 		patternField: '',
 		stat: 'mean',
 		stack: false,
+		label: false,
+		tooltip: false,
 		grid: true,
 		legend: true
 	})
@@ -30,6 +32,8 @@
 			patternField: { type: 'string' },
 			stat: { type: 'string' },
 			stack: { type: 'boolean' },
+			label: { type: 'boolean' },
+			tooltip: { type: 'boolean' },
 			grid: { type: 'boolean' },
 			legend: { type: 'boolean' }
 		}
@@ -64,6 +68,8 @@
 				props: { options: ['identity', 'sum', 'mean', 'min', 'max', 'count'] }
 			},
 			{ scope: '#/stack', label: 'stack' },
+			{ scope: '#/label', label: 'label' },
+			{ scope: '#/tooltip', label: 'tooltip' },
 			{ scope: '#/grid', label: 'grid' },
 			{ scope: '#/legend', label: 'legend' },
 			{ type: 'separator' }
@@ -86,6 +92,8 @@
 					pattern={props.patternField || undefined}
 					stat={props.stat}
 					stack={props.stack}
+					label={props.label}
+					tooltip={props.tooltip}
 					grid={props.grid}
 					legend={props.legend}
 					width={560}

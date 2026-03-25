@@ -1,52 +1,86 @@
 <script>
 	// @ts-nocheck
 	import { PieChart } from '@rokkit/chart'
-	import { FormRenderer, InfoField } from '@rokkit/forms'
+	import { FormRenderer } from '@rokkit/forms'
 	import PlaySection from '$lib/components/PlaySection.svelte'
 
+	// 3 months × 5 segments — allows sum/mean/min/max/count to produce different results
 	const chartData = [
-		{ segment: 'Mobile',  share: 42, yoy: +8,  avgSession: 4.2 },
-		{ segment: 'Desktop', share: 35, yoy: -3,  avgSession: 9.7 },
-		{ segment: 'Tablet',  share: 15, yoy: +1,  avgSession: 6.1 },
-		{ segment: 'Smart TV', share: 5, yoy: +12, avgSession: 22.4 },
-		{ segment: 'Other',   share: 3,  yoy: -1,  avgSession: 2.8 }
+		{ segment: 'Mobile',   month: 'Jan', share: 38 },
+		{ segment: 'Mobile',   month: 'Feb', share: 42 },
+		{ segment: 'Mobile',   month: 'Mar', share: 46 },
+		{ segment: 'Desktop',  month: 'Jan', share: 38 },
+		{ segment: 'Desktop',  month: 'Feb', share: 35 },
+		{ segment: 'Desktop',  month: 'Mar', share: 33 },
+		{ segment: 'Tablet',   month: 'Jan', share: 14 },
+		{ segment: 'Tablet',   month: 'Feb', share: 15 },
+		{ segment: 'Tablet',   month: 'Mar', share: 15 },
+		{ segment: 'Smart TV', month: 'Jan', share: 4  },
+		{ segment: 'Smart TV', month: 'Feb', share: 5  },
+		{ segment: 'Smart TV', month: 'Mar', share: 6  },
+		{ segment: 'Other',    month: 'Jan', share: 6  },
+		{ segment: 'Other',    month: 'Feb', share: 3  },
+		{ segment: 'Other',    month: 'Mar', share: 1  }
 	]
 
 	let props = $state({
+		yField: 'share',
 		fillField: 'segment',
 		patternField: 'segment',
+		innerRadius: 0,
 		stat: 'sum',
+		customLabel: false,
+		tooltip: true,
 		legend: true
 	})
 
 	const schema = {
 		type: 'object',
 		properties: {
+			yField: { type: 'string' },
 			fillField: { type: 'string' },
 			patternField: { type: 'string' },
+			innerRadius: { type: 'number', minimum: 0, maximum: 1 },
 			stat: { type: 'string' },
+			customLabel: { type: 'boolean' },
+			tooltip: { type: 'boolean' },
 			legend: { type: 'boolean' }
 		}
 	}
+
+	// Custom labelFn: show actual y value rounded to 2 decimals
+	const customLabelFn = (d) => Number(d[props.yField]).toFixed(2)
 
 	const layout = {
 		type: 'vertical',
 		elements: [
 			{
+				scope: '#/yField',
+				label: 'y',
+				props: { options: ['share'] }
+			},
+			{
 				scope: '#/fillField',
 				label: 'fill',
-				props: { options: ['', 'segment'] }
+				props: { options: ['', 'segment', 'month'] }
 			},
 			{
 				scope: '#/patternField',
 				label: 'pattern',
-				props: { options: ['', 'segment'] }
+				props: { options: ['', 'segment', 'month'] }
+			},
+			{
+				scope: '#/innerRadius',
+				label: 'innerRadius',
+				props: { min: 0, max: 1, step: 0.05 }
 			},
 			{
 				scope: '#/stat',
 				label: 'stat',
 				props: { options: ['sum', 'mean', 'min', 'max', 'count'] }
 			},
+			{ scope: '#/customLabel', label: 'custom label' },
+			{ scope: '#/tooltip', label: 'tooltip' },
 			{ scope: '#/legend', label: 'legend' },
 			{ type: 'separator' }
 		]
@@ -62,11 +96,14 @@
 				</h4>
 				<PieChart
 					data={chartData}
-					label="segment"
-					y="share"
+					y={props.yField}
+					label={props.fillField || undefined}
 					fill={props.fillField || undefined}
 					pattern={props.patternField || undefined}
+					innerRadius={props.innerRadius}
 					stat={props.stat}
+					labelFn={props.customLabel ? customLabelFn : undefined}
+					tooltip={props.tooltip}
 					legend={props.legend}
 					width={400}
 					height={400}
@@ -77,8 +114,6 @@
 
 	{#snippet controls()}
 		<FormRenderer bind:data={props} {schema} {layout} />
-		<InfoField label="label" value="segment" />
-		<InfoField label="y" value="share" />
 	{/snippet}
 
 	{#snippet data()}

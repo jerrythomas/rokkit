@@ -10,6 +10,8 @@
     color = undefined,
     symbol = undefined,
     size = undefined,
+    label = false,
+    tooltip = false,
     width = 600,
     height = 400,
     mode = 'light',
@@ -18,6 +20,6 @@
   } = $props()
 </script>
 
-<Plot {data} {width} {height} {mode} {grid} {legend}>
-  <Point {x} {y} {color} {size} {symbol} />
+<Plot {data} {width} {height} {mode} {grid} {legend} {tooltip}>
+  <Point {x} {y} {color} {size} {symbol} {label} />
 </Plot>

@@ -15,10 +15,12 @@
     grid = true,
     legend = false,
     stat = 'identity',
-    stack = false
+    stack = false,
+    label = false,
+    tooltip = false
   } = $props()
 </script>
 
-<Plot {data} {width} {height} {mode} {grid} {legend}>
-  <Bar {x} {y} color={fill} {pattern} {stat} options={{ stack }} />
+<Plot {data} {width} {height} {mode} {grid} {legend} {tooltip}>
+  <Bar {x} {y} color={fill} {pattern} {label} {stat} options={{ stack }} />
 </Plot>

@@ -2,8 +2,21 @@
   import { getContext, onMount, onDestroy } from 'svelte'
   import { scaleSqrt } from 'd3-scale'
   import { buildPoints } from '../lib/brewing/marks/points.js'
+  import LabelPill from './LabelPill.svelte'
 
-  let { x, y, color, size, symbol: symbolField, stat = 'identity', options = {} } = $props()
+  let { x, y, color, size, symbol: symbolField, label = false, stat = 'identity', options = {} } = $props()
+
+  /**
+   * @param {Record<string, unknown>} data
+   * @returns {string | null}
+   */
+  function resolveLabel(data) {
+    if (!label) return null
+    if (label === true) return String(data[y] ?? '')
+    if (typeof label === 'function') return String(label(data) ?? '')
+    if (typeof label === 'string') return String(data[label] ?? '')
+    return null
+  }
 
   const plotState = getContext('plot-state')
   let id = $state(null)
@@ -52,6 +65,8 @@
           data-plot-element="point"
           role="graphics-symbol"
           aria-label="{pt.data[x]}, {pt.data[y]}"
+          onmouseenter={() => plotState.setHovered(pt.data)}
+          onmouseleave={() => plotState.clearHovered()}
         />
       {:else}
         <circle
@@ -65,7 +80,20 @@
           data-plot-element="point"
           role="graphics-symbol"
           aria-label="{pt.data[x]}, {pt.data[y]}"
+          onmouseenter={() => plotState.setHovered(pt.data)}
+          onmouseleave={() => plotState.clearHovered()}
         />
+      {/if}
+      {#if label}
+        {@const text = resolveLabel(pt.data)}
+        {#if text}
+          <LabelPill
+            x={pt.cx + (options.labelOffset?.x ?? 0)}
+            y={pt.cy - pt.r + (options.labelOffset?.y ?? -12)}
+            {text}
+            color={pt.stroke ?? '#333'}
+          />
+        {/if}
       {/if}
     {/each}
   </g>
