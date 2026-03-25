@@ -1,8 +1,6 @@
 # @rokkit/chart
 
-> D3-powered composable chart components for Svelte 5. Build bar charts (with more chart types planned) using a declarative component API backed by a reactive ChartBrewer state manager.
-
-Charts are composed from `Plot.*` components nested inside `Plot.Root`. The root manages dimensions, scales, and provides context to all children via `getContext('chart-brewer')`.
+> D3-powered composable chart components for Svelte 5. High-level chart components for common chart types, plus a low-level declarative geom API for custom compositions.
 
 ## Install
 
@@ -12,200 +10,271 @@ npm install @rokkit/chart
 
 ---
 
-## Components
+## High-level chart components
 
-All components are exported under the `Plot` namespace:
+All chart components are exported directly:
 
 ```javascript
-import { Plot } from '@rokkit/chart'
+import { BarChart, LineChart, ScatterPlot, PieChart, AreaChart, BubbleChart, BoxPlot, ViolinPlot } from '@rokkit/chart'
 ```
 
-### `Plot.Root`
+### Common props (all chart components)
 
-Container component. Manages responsive sizing, sets up ChartBrewer context, renders an SVG.
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `data` | `Object[]` | `[]` | Data rows array |
+| `width` | `number` | `600` | SVG width in pixels |
+| `height` | `number` | `400` | SVG height in pixels |
+| `mode` | `'light' \| 'dark'` | `'light'` | Color palette mode |
+| `grid` | `boolean` | `true` | Show gridlines |
+| `legend` | `boolean` | `false` | Show color legend |
+| `tooltip` | `boolean \| (data) => string` | `false` | Hover tooltip. `true` = key-value default; pass a function for custom HTML content |
+
+---
+
+### `BarChart`
 
 ```svelte
-<Plot.Root data={rows} width={600} height={400}>
-  <Plot.Bar x="category" y="value" />
-  <Plot.Axis type="x" field="category" />
-  <Plot.Axis type="y" field="value" label="Revenue ($)" />
-  <Plot.Grid />
-  <Plot.Legend />
-</Plot.Root>
+<BarChart data={sales} x="category" y="revenue" fill="region" stat="mean" label legend />
 ```
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `data` | `array` | `[]` | Data rows array |
-| `width` | `number` | `600` | Chart width in px |
-| `height` | `number` | `400` | Chart height in px |
-| `margin` | `object` | `{top:20,right:30,bottom:40,left:50}` | Margin on each side |
-| `fill` | `string` | `null` | Background fill |
-| `responsive` | `boolean` | `true` | Auto-resize to container width |
-| `animationDuration` | `number` | `300` | Default transition duration in ms |
-| `children` | `Snippet` | — | Child plot components |
-
-### `Plot.Bar`
-
-SVG bar series. Reads data and scales from `Plot.Root` context.
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `x` | `string` | — | Data field for x-axis (category) |
-| `y` | `string` | — | Data field for y-axis (value) |
-| `fill` | `string` | — | Data field for color grouping |
-| `color` | `string` | `'#4682b4'` | Fallback bar color |
-| `opacity` | `number` | `1` | Bar opacity |
-| `animationDuration` | `number` | `300` | Enter/update animation duration |
-| `onClick` | `(data, event) => void` | — | Click handler for individual bars |
-
-### `Plot.Axis`
-
-X or Y axis with optional label and tick formatting.
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `type` | `'x' \| 'y'` | `'x'` | Axis direction |
-| `field` | `string` | — | Data field this axis represents |
-| `label` | `string` | `''` | Axis label text |
-| `ticks` | `number` | — | Suggested tick count |
-| `tickFormat` | `(value) => string` | — | Custom tick label formatter |
-| `grid` | `boolean` | `false` | Render grid lines from this axis |
-
-### `Plot.Grid`
-
-Background grid lines derived from chart scales.
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `direction` | `'x' \| 'y' \| 'both'` | `'both'` | Which grid lines to render |
-| `xTicks` | `number` | `null` | X tick count override |
-| `yTicks` | `number` | `null` | Y tick count override |
-| `color` | `string` | `'currentColor'` | Grid line color |
-| `opacity` | `number` | `0.1` | Grid line opacity |
-| `lineStyle` | `'solid' \| 'dashed' \| 'dotted'` | `'solid'` | Grid line style |
-
-### `Plot.Legend`
-
-Color legend with interactive filtering. Clicking legend items shows/hides corresponding bars.
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `title` | `string` | `''` | Legend title |
-| `align` | `'left' \| 'right' \| 'center'` | `'right'` | Horizontal placement |
-| `verticalAlign` | `'top' \| 'middle' \| 'bottom'` | `'top'` | Vertical placement |
-| `shape` | `'rect' \| 'circle'` | `'rect'` | Marker shape |
-| `markerSize` | `number` | `10` | Marker size in px |
-| `onClick` | `(selectedItems: any[]) => void` | — | Called when selection changes |
+| `x` | `string` | — | Field for X axis (categories) |
+| `y` | `string` | — | Field for Y axis (values) |
+| `fill` | `string` | — | Field for palette color assignment |
+| `pattern` | `string` | — | Field for pattern fill assignment |
+| `stat` | `string` | `'identity'` | Aggregation: `identity`, `sum`, `mean`, `min`, `max`, `count` |
+| `stack` | `boolean` | `false` | Stack bars by color group |
+| `label` | `boolean \| string \| (data) => string` | `false` | Show value labels above bars |
 
 ---
 
-## ChartBrewer (programmatic API)
+### `LineChart`
 
-`ChartBrewer` is the reactive state manager that backs all `Plot.*` components. Accessible inside child components via `getContext('chart-brewer')`, or instantiated directly for headless/programmatic use.
+```svelte
+<LineChart data={rows} x="month" y="value" color="region" symbol="region" curve="smooth" label />
+```
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `x` | `string` | — | Field for X axis |
+| `y` | `string` | — | Field for Y axis |
+| `color` | `string` | — | Field for line color grouping |
+| `symbol` | `string` | — | Field for marker symbol assignment |
+| `stat` | `string` | `'identity'` | Aggregation stat |
+| `curve` | `'linear' \| 'smooth' \| 'step'` | `'linear'` | Line interpolation |
+| `label` | `boolean \| string \| (data) => string` | `false` | Show value labels at each point |
+
+---
+
+### `ScatterPlot`
+
+```svelte
+<ScatterPlot data={rows} x="gdp" y="life_exp" color="region" size="population" />
+```
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `x` | `string` | — | Field for X axis |
+| `y` | `string` | — | Field for Y axis |
+| `color` | `string` | — | Field for point color |
+| `size` | `string` | — | Field for point size (bubble chart) |
+| `symbol` | `string` | — | Field for marker symbol |
+| `label` | `boolean \| string \| (data) => string` | `false` | Show value labels at each point |
+
+---
+
+### `PieChart`
+
+```svelte
+<PieChart data={rows} y="share" fill="segment" stat="sum" innerRadius={0.5} legend />
+```
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `y` | `string` | — | Field for slice values |
+| `fill` | `string` | — | Field for slice color assignment |
+| `label` | `string` | — | Alias for `fill` (also controls which field labels slices) |
+| `pattern` | `string` | — | Field for pattern fill |
+| `stat` | `string` | `'sum'` | Aggregation: `sum`, `mean`, `min`, `max`, `count` |
+| `innerRadius` | `number` | `0` | Donut hole size as fraction of radius (0–1) |
+| `labelFn` | `(data) => string` | — | Override slice labels (default: `pct%`) |
+| `width` | `number` | `400` | SVG width |
+| `height` | `number` | `400` | SVG height |
+
+Slices with < 5% are not labeled. Set `innerRadius > 0` for a donut chart.
+
+---
+
+### `AreaChart`
+
+```svelte
+<AreaChart data={rows} x="month" y="value" color="region" stack />
+```
+
+Same props as `LineChart` plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `stack` | `boolean` | `false` | Stack areas |
+
+---
+
+### `BoxPlot` / `ViolinPlot`
+
+```svelte
+<BoxPlot data={rows} x="category" y="value" color="group" />
+```
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `x` | `string` | — | Categorical field |
+| `y` | `string` | — | Numeric value field |
+| `color` | `string` | — | Color grouping field |
+
+---
+
+## Data labels
+
+`label` prop on BarChart, LineChart, ScatterPlot:
+
+```svelte
+<!-- Show y value by default -->
+<BarChart ... label />
+
+<!-- Show a specific field -->
+<BarChart ... label="revenue" />
+
+<!-- Custom formatter -->
+<BarChart ... label={(d) => `$${d.revenue.toLocaleString()}`} />
+```
+
+For PieChart, use `labelFn` to override the default `pct%` labels:
+
+```svelte
+<PieChart ... labelFn={(d) => d.share.toFixed(1)} />
+```
+
+---
+
+## Tooltips
+
+Pass `tooltip` to any chart component:
+
+```svelte
+<!-- Default: key-value table of hovered row -->
+<BarChart ... tooltip />
+
+<!-- Custom: return HTML string -->
+<BarChart ... tooltip={(d) => `<strong>${d.category}</strong>: ${d.revenue}`} />
+```
+
+Tooltip is a `position: fixed` floating div that follows the cursor. Respects dark/light mode.
+
+---
+
+## Low-level declarative API
+
+Compose charts from `Plot` (container) and geom components. Used directly when `PieChart` etc. are insufficient.
 
 ```javascript
-import { ChartBrewer } from '@rokkit/chart'
-
-const brewer = new ChartBrewer({ width: 800, height: 400 })
-brewer.setData(rows)
-brewer.setFields({ x: 'month', y: 'revenue', color: 'region' })
-brewer.createScales()
-const bars = brewer.createBars()
-const xAxis = brewer.createXAxis()
-const legend = brewer.createLegend()
+import { Plot, Bar, Line, Point, Arc, Area, Box, Violin } from '@rokkit/chart'
 ```
 
-### Constructor options
+```svelte
+<Plot {data} {width} {height} {mode} {tooltip}>
+  <Bar x="category" y="revenue" color="region" stat="mean" />
+</Plot>
+```
 
-| Option | Type | Default |
-|--------|------|---------|
-| `width` | `number` | `600` |
-| `height` | `number` | `400` |
-| `margin` | `object` | `{top:20,right:30,bottom:40,left:50}` |
-| `padding` | `number` | `0.1` |
-| `animationDuration` | `number` | `300` |
+### `Plot` props
 
-### Methods
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `data` | `Object[]` | `[]` | Data rows |
+| `width` | `number` | `600` | SVG width |
+| `height` | `number` | `400` | SVG height |
+| `mode` | `'light' \| 'dark'` | `'light'` | Palette mode |
+| `grid` | `boolean` | `true` | Show gridlines |
+| `axes` | `boolean` | `true` | Show axes |
+| `margin` | `object` | `{top:20,right:20,bottom:40,left:50}` | Override margin |
+| `legend` | `boolean` | `false` | Show legend |
+| `tooltip` | `boolean \| (data) => string` | `false` | Tooltip |
 
-| Method | Description |
-|--------|-------------|
-| `setData(data)` | Set chart data array |
-| `setFields({ x, y, color })` | Set field mappings |
-| `setDimensions({ width, height, margin })` | Update dimensions |
-| `createScales()` | Generate D3 scales from data and fields |
-| `createBars()` | Compute bar positions (x, y, width, height) |
-| `createGroupedBars(data, fields, scales, options)` | Layout grouped bars |
-| `createXAxis(options?)` | Generate x-axis tick data |
-| `createYAxis(options?)` | Generate y-axis tick data |
-| `createGrid(options?)` | Generate grid line data |
-| `createLegend(options?)` | Generate legend items |
-| `getData()` | Get current data array |
-| `getFields()` | Get current field mappings |
-| `getDimensions()` | Get current dimensions |
-| `getScales()` | Get D3 scale objects |
-| `getAnimationDuration()` | Get animation duration in ms |
+### Geom props
+
+All geoms accept `stat` (`identity` | `sum` | `mean` | `min` | `max` | `count`).
+
+**Bar**: `x`, `y`, `color`, `pattern`, `label`, `stack` (via options), `filterable`
+
+**Line**: `x`, `y`, `color`, `symbol`, `label`, `options.curve`, `options.strokeWidth`
+
+**Point**: `x`, `y`, `color`, `size`, `symbol`, `label`, `options.radius`
+
+**Arc**: `theta`, `fill` (or `color`), `pattern`, `labelFn`, `options.innerRadius`
+
+**Area**: `x`, `y`, `color`, `pattern`, `options.stack`, `options.opacity`
 
 ---
 
-## Utility functions
+## Spec-driven API
 
-All utility functions are also exported directly for headless use:
+Pass a `spec` object to `Plot` instead of props:
 
-```javascript
-import {
-  createDimensions, updateDimensions,
-  createScales, getOrigin,
-  createBars, filterBars, createGroupedBars,
-  createXAxis, createYAxis, createGrid,
-  createLegend, filterByLegend
-} from '@rokkit/chart'
+```svelte
+<Plot spec={{
+  data: rows,
+  width: 600,
+  height: 400,
+  x: 'month',
+  y: 'revenue',
+  color: 'region',
+  geoms: [{ type: 'bar', stat: 'sum' }]
+}} />
 ```
-
-| Function | Description |
-|----------|-------------|
-| `createDimensions(width?, height?, margin?)` | Compute chart area with margins |
-| `updateDimensions(current, overrides)` | Merge dimension updates |
-| `createScales(data, fields, dimensions, options)` | Generate D3 band/linear scales |
-| `getOrigin(scales, dimensions)` | Get origin point for axes |
-| `createBars(data, fields, scales, options)` | Compute bar x/y/width/height |
-| `filterBars(bars, activeItems)` | Filter bars by legend selection |
-| `createGroupedBars(data, fields, scales, options)` | Layout grouped bars |
-| `createXAxis(scales, dimensions, options)` | Build x-axis tick data |
-| `createYAxis(scales, dimensions, options)` | Build y-axis tick data |
-| `createGrid(scales, dimensions, options)` | Build grid line data |
-| `createLegend(data, fields, scales, options)` | Build legend items array |
-| `filterByLegend(data, activeItems)` | Filter data by selected legend items |
 
 ---
 
-## Complete example
+## Complete examples
+
+### Bar chart with grouping
 
 ```svelte
 <script>
-  import { Plot } from '@rokkit/chart'
+  import { BarChart } from '@rokkit/chart'
 
   const data = [
-    { month: 'Jan', revenue: 4200, region: 'North' },
-    { month: 'Jan', revenue: 3100, region: 'South' },
-    { month: 'Feb', revenue: 5800, region: 'North' },
-    { month: 'Feb', revenue: 4200, region: 'South' },
+    { quarter: 'Q1', revenue: 42000, region: 'North' },
+    { quarter: 'Q1', revenue: 31000, region: 'South' },
+    { quarter: 'Q2', revenue: 58000, region: 'North' },
+    { quarter: 'Q2', revenue: 42000, region: 'South' },
   ]
 </script>
 
-<Plot.Root {data} width={640} height={400}>
-  <Plot.Bar x="month" y="revenue" fill="region" />
-  <Plot.Axis type="x" field="month" />
-  <Plot.Axis type="y" field="revenue" label="Revenue ($)" />
-  <Plot.Grid direction="y" />
-  <Plot.Legend title="Region" align="right" />
-</Plot.Root>
+<BarChart {data} x="quarter" y="revenue" fill="region" stat="sum" stack legend tooltip />
+```
+
+### Donut chart
+
+```svelte
+<script>
+  import { PieChart } from '@rokkit/chart'
+
+  const data = [
+    { segment: 'Mobile', share: 42 },
+    { segment: 'Desktop', share: 35 },
+    { segment: 'Tablet', share: 15 },
+    { segment: 'Other', share: 8 },
+  ]
+</script>
+
+<PieChart {data} y="share" fill="segment" innerRadius={0.5} legend tooltip />
 ```
 
 ---
 
 ## Related
 
-- `@rokkit/data` — Dataset pipelines for preparing chart data (aggregation, hierarchy, rollups)
-- `@rokkit/states` — `vibe` store for reading theme mode (pass to chart color scales)
-- `@rokkit/unocss` — `presetRokkit()` for theming the chart container
+- `@rokkit/data` — Dataset pipelines for aggregation, hierarchy, rollups
+- `@rokkit/themes` — CSS theme tokens consumed by chart color palettes

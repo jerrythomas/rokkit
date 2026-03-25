@@ -1,14 +1,12 @@
 <article data-article-root>
 	<p>
-		A data-driven SVG pie chart for part-to-whole comparisons. Built on
-		<code>ChartBrewer</code> for reactive data binding with palette-based color coding and optional
-		legend.
+		A data-driven SVG pie/donut chart for part-to-whole comparisons. Supports palette color coding,
+		patterns, percentage labels, custom label functions, hover tooltips, and aggregation stats.
 	</p>
 
 	<h2>Basic usage</h2>
 	<p>
-		Map your label and value fields. Use <code>label</code> for slice labels and <code>y</code> for
-		values:
+		Map <code>y</code> to the value field and <code>fill</code> to the grouping field:
 	</p>
 	<pre><code
 			>{`<script>
@@ -22,12 +20,48 @@
   ]
 <\/script>
 
-<PieChart data={data} label="segment" y="share" color="segment" />`}</code
+<PieChart {data} y="share" fill="segment" />`}</code
 		></pre>
 
-	<h2>Legend</h2>
-	<p>Enable the legend to show slice labels with their assigned colors:</p>
-	<pre><code>{`<PieChart data={data} label="segment" y="share" color="segment" legend />`}</code></pre>
+	<h2>Donut chart</h2>
+	<p>
+		Set <code>innerRadius</code> (0–1) to cut a hole in the centre:
+	</p>
+	<pre><code>{`<PieChart {data} y="share" fill="segment" innerRadius={0.5} />`}</code></pre>
+
+	<h2>Aggregation</h2>
+	<p>
+		When data has multiple rows per group, use <code>stat</code> to aggregate before slicing:
+	</p>
+	<pre><code
+			>{`<!-- Sum all rows per segment (default) -->
+<PieChart {data} y="share" fill="segment" stat="sum" />
+
+<!-- Equal slices by row count -->
+<PieChart {data} y="share" fill="segment" stat="count" />`}</code
+		></pre>
+
+	<h2>Custom labels</h2>
+	<p>
+		Slices ≥ 5% show a <code>pct%</code> label by default. Override with <code>labelFn</code>:
+	</p>
+	<pre><code
+			>{`<!-- Show raw value rounded to 2 decimals -->
+<PieChart {data} y="share" fill="segment" labelFn={(d) => d.share.toFixed(2)} />`}</code
+		></pre>
+
+	<h2>Tooltip</h2>
+	<p>
+		Pass <code>tooltip</code> to show a hover tooltip. The default shows all row fields plus the
+		computed slice percentage:
+	</p>
+	<pre><code
+			>{`<!-- Default key-value tooltip with % -->
+<PieChart {data} y="share" fill="segment" tooltip />
+
+<!-- Custom tooltip -->
+<PieChart {data} y="share" fill="segment" tooltip={(d) => \`\${d.segment}: \${d.share}%\`} />`}</code
+		></pre>
 
 	<h2>Props</h2>
 	<table>
@@ -47,22 +81,46 @@
 				<td>Chart data array</td>
 			</tr>
 			<tr>
-				<td><code>label</code></td>
-				<td><code>string</code></td>
-				<td>—</td>
-				<td>Field name for slice labels</td>
-			</tr>
-			<tr>
 				<td><code>y</code></td>
 				<td><code>string</code></td>
 				<td>—</td>
-				<td>Field name for slice values</td>
+				<td>Field for slice values</td>
 			</tr>
 			<tr>
-				<td><code>color</code></td>
+				<td><code>fill</code></td>
 				<td><code>string</code></td>
 				<td>—</td>
-				<td>Field name for palette color assignment</td>
+				<td>Field for slice color assignment and labels</td>
+			</tr>
+			<tr>
+				<td><code>pattern</code></td>
+				<td><code>string</code></td>
+				<td>—</td>
+				<td>Field for pattern fill assignment</td>
+			</tr>
+			<tr>
+				<td><code>stat</code></td>
+				<td><code>string</code></td>
+				<td><code>'sum'</code></td>
+				<td><code>sum</code>, <code>mean</code>, <code>min</code>, <code>max</code>, <code>count</code></td>
+			</tr>
+			<tr>
+				<td><code>innerRadius</code></td>
+				<td><code>number</code></td>
+				<td><code>0</code></td>
+				<td>Donut hole size as fraction of radius (0–1)</td>
+			</tr>
+			<tr>
+				<td><code>labelFn</code></td>
+				<td><code>(data) => string</code></td>
+				<td>—</td>
+				<td>Override slice label (default: <code>pct%</code>)</td>
+			</tr>
+			<tr>
+				<td><code>tooltip</code></td>
+				<td><code>boolean | (data) => string</code></td>
+				<td><code>false</code></td>
+				<td>Hover tooltip showing row data + slice %</td>
 			</tr>
 			<tr>
 				<td><code>width</code></td>

@@ -1,7 +1,7 @@
 <article data-article-root>
 	<p>
-		A data-driven SVG bar chart with palette-based color coding, optional gridlines, and a legend.
-		Built on <code>ChartBrewer</code> for reactive data binding.
+		A data-driven SVG bar chart with palette-based color coding, optional gridlines, stacking,
+		data labels, and hover tooltips.
 	</p>
 
 	<h2>Basic usage</h2>
@@ -21,27 +21,47 @@
 <BarChart data={sales} x="category" y="revenue" />`}</code
 		></pre>
 
-	<h2>Color coding</h2>
+	<h2>Color grouping</h2>
 	<p>
-		Pass a <code>color</code> field to assign palette colors by category. Enable
-		<code>legend</code> to show the color key:
+		Use <code>fill</code> to assign palette colors by a field. Combine with <code>legend</code> to show
+		the color key:
 	</p>
 	<pre><code
-			>{`<BarChart
-  data={sales}
-  x="category"
-  y="revenue"
-  color="region"
-  legend
-/>`}</code
+			>{`<BarChart data={sales} x="category" y="revenue" fill="region" legend />`}</code
 		></pre>
 
-	<h2>Grid and dimensions</h2>
+	<h2>Stacking and aggregation</h2>
 	<p>
-		Gridlines are on by default. Set <code>grid={false}</code> to hide them. Use
-		<code>width</code> and <code>height</code> to control the SVG size:
+		Pass <code>stack</code> to stack bars by color group. Use <code>stat</code> to aggregate multiple
+		rows per group before plotting:
 	</p>
-	<pre><code>{`<BarChart data={sales} x="category" y="revenue" grid={false} width={400} height={300} />`}</code
+	<pre><code
+			>{`<BarChart data={sales} x="category" y="revenue" fill="region" stat="sum" stack />`}</code
+		></pre>
+
+	<h2>Data labels</h2>
+	<p>
+		Add <code>label</code> to show values above bars. Pass a function for custom formatting:
+	</p>
+	<pre><code
+			>{`<!-- Show y value -->
+<BarChart ... label />
+
+<!-- Custom format -->
+<BarChart ... label={(d) => \`$\${d.revenue.toLocaleString()}\`} />`}</code
+		></pre>
+
+	<h2>Tooltips</h2>
+	<p>
+		Pass <code>tooltip</code> to show a hover tooltip with the row data. Pass a function to
+		customise the content:
+	</p>
+	<pre><code
+			>{`<!-- Default key-value tooltip -->
+<BarChart ... tooltip />
+
+<!-- Custom tooltip -->
+<BarChart ... tooltip={(d) => \`\${d.category}: \${d.revenue}\`} />`}</code
 		></pre>
 
 	<h2>Props</h2>
@@ -65,37 +85,49 @@
 				<td><code>x</code></td>
 				<td><code>string</code></td>
 				<td>—</td>
-				<td>Field name for the X axis (categories)</td>
+				<td>Field for the X axis (categories)</td>
 			</tr>
 			<tr>
 				<td><code>y</code></td>
 				<td><code>string</code></td>
 				<td>—</td>
-				<td>Field name for the Y axis (values)</td>
-			</tr>
-			<tr>
-				<td><code>color</code></td>
-				<td><code>string</code></td>
-				<td>—</td>
-				<td>Field name for palette color assignment</td>
-			</tr>
-			<tr>
-				<td><code>pattern</code></td>
-				<td><code>string</code></td>
-				<td>—</td>
-				<td>Field name for pattern fill assignment</td>
+				<td>Field for the Y axis (values)</td>
 			</tr>
 			<tr>
 				<td><code>fill</code></td>
 				<td><code>string</code></td>
 				<td>—</td>
-				<td>Field name for fill channel</td>
+				<td>Field for palette color assignment</td>
 			</tr>
 			<tr>
-				<td><code>size</code></td>
+				<td><code>pattern</code></td>
 				<td><code>string</code></td>
 				<td>—</td>
-				<td>Field name for size channel</td>
+				<td>Field for pattern fill assignment</td>
+			</tr>
+			<tr>
+				<td><code>stat</code></td>
+				<td><code>string</code></td>
+				<td><code>'identity'</code></td>
+				<td><code>sum</code>, <code>mean</code>, <code>min</code>, <code>max</code>, <code>count</code></td>
+			</tr>
+			<tr>
+				<td><code>stack</code></td>
+				<td><code>boolean</code></td>
+				<td><code>false</code></td>
+				<td>Stack bars by fill group</td>
+			</tr>
+			<tr>
+				<td><code>label</code></td>
+				<td><code>boolean | string | (data) => string</code></td>
+				<td><code>false</code></td>
+				<td>Value labels above bars</td>
+			</tr>
+			<tr>
+				<td><code>tooltip</code></td>
+				<td><code>boolean | (data) => string</code></td>
+				<td><code>false</code></td>
+				<td>Hover tooltip</td>
 			</tr>
 			<tr>
 				<td><code>width</code></td>
