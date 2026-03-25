@@ -52,6 +52,7 @@
         fill={arc.fill}
         stroke={arc.stroke}
         stroke-width="1"
+        role="presentation"
         data-plot-element="arc"
         onmouseenter={() => plotState.setHovered({ ...arc.data, '%': `${arc.pct}%` })}
         onmouseleave={() => plotState.clearHovered()}

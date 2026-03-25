@@ -89,6 +89,7 @@
           r="8"
           fill="transparent"
           stroke="none"
+          role="presentation"
           data-plot-element="line-hover"
           onmouseenter={() => plotState.setHovered(pt.data)}
           onmouseleave={() => plotState.clearHovered()}
