@@ -10,17 +10,18 @@ const ANCHOR_ORDER = ['iqr_max', 'q3', 'median', 'q1', 'iqr_min']
  *
  * When `fill` differs from `x`, violins are sub-grouped within each x-band
  * (one narrower violin per fill value per x category, like grouped bars).
+ * Violin body uses the lighter fill shade; outline uses the darker stroke shade.
  *
  * @param {Object[]} data
- * @param {{ x: string, fill?: string, color?: string }} channels
- *   `fill` drives violin interior. `color` drives outline stroke; null = no stroke.
+ * @param {{ x: string, fill?: string }} channels
+ *   `fill` drives violin interior and outline (defaults to x-field).
  * @param {import('d3-scale').ScaleBand} xScale
  * @param {import('d3-scale').ScaleLinear} yScale
  * @param {Map} colors
  * @returns {Array}
  */
 export function buildViolins(data, channels, xScale, yScale, colors) {
-  const { x: xf, fill: ff, color: cf } = channels
+  const { x: xf, fill: ff } = channels
   const bw = typeof xScale.bandwidth === 'function' ? xScale.bandwidth() : 40
   const grouped = ff && ff !== xf
 
@@ -40,9 +41,7 @@ export function buildViolins(data, channels, xScale, yScale, colors) {
       const subIndex = fillValues.indexOf(fillVal)
       const bandStart = xScale(d[xf]) ?? 0
       const cx = bandStart + subIndex * subBandWidth + subBandWidth / 2
-      const colorEntry = colors?.get(fillVal) ?? { fill: '#888', stroke: '#444' }
-      const strokeKey = cf ? d[cf] : null
-      const strokeEntry = strokeKey !== null ? (colors?.get(strokeKey) ?? colorEntry) : null
+      const colorEntry = colors?.get(fillVal) ?? { fill: '#aaa', stroke: '#666' }
 
       const rightPts = ANCHOR_ORDER.map((key) => ({
         x: cx + halfMax * DENSITY_AT[key],
@@ -52,14 +51,13 @@ export function buildViolins(data, channels, xScale, yScale, colors) {
         x: cx - halfMax * DENSITY_AT[key],
         y: yScale(d[key])
       }))
-      const pts = [...rightPts, ...leftPts, rightPts[0]]
 
       return {
         data: d,
         cx,
-        d:      pathGen(pts),
+        d:      pathGen([...rightPts, ...leftPts, rightPts[0]]),
         fill:   colorEntry.fill,
-        stroke: strokeEntry ? strokeEntry.stroke : null
+        stroke: colorEntry.stroke
       }
     })
   }
@@ -69,9 +67,7 @@ export function buildViolins(data, channels, xScale, yScale, colors) {
 
   return data.map((d) => {
     const fillKey = ff ? d[ff] : d[xf]
-    const strokeKey = cf ? d[cf] : null
-    const colorEntry = colors?.get(fillKey) ?? { fill: '#888', stroke: '#444' }
-    const strokeEntry = strokeKey !== null ? (colors?.get(strokeKey) ?? colorEntry) : null
+    const colorEntry = colors?.get(fillKey) ?? { fill: '#aaa', stroke: '#666' }
     const cx = (xScale(d[xf]) ?? 0) + (typeof xScale.bandwidth === 'function' ? bw / 2 : 0)
 
     const rightPts = ANCHOR_ORDER.map((key) => ({
@@ -82,14 +78,13 @@ export function buildViolins(data, channels, xScale, yScale, colors) {
       x: cx - halfMax * DENSITY_AT[key],
       y: yScale(d[key])
     }))
-    const pts = [...rightPts, ...leftPts, rightPts[0]]
 
     return {
       data: d,
       cx,
-      d:      pathGen(pts),
+      d:      pathGen([...rightPts, ...leftPts, rightPts[0]]),
       fill:   colorEntry.fill,
-      stroke: strokeEntry ? strokeEntry.stroke : null
+      stroke: colorEntry.stroke
     }
   })
 }

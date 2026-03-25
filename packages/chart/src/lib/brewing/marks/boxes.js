@@ -5,17 +5,18 @@
  *
  * When `fill` differs from `x`, boxes are sub-grouped within each x-band
  * (one narrower box per fill value per x category, like grouped bars).
+ * Box body uses the lighter fill shade; whiskers and median use the darker stroke shade.
  *
  * @param {Object[]} data - Pre-aggregated rows with quartile fields
- * @param {{ x: string, fill?: string, color?: string }} channels
- *   `fill` drives the box interior color. `color` drives whisker/border stroke; null = no stroke.
+ * @param {{ x: string, fill?: string }} channels
+ *   `fill` drives the box and whisker color (defaults to x-field).
  * @param {import('d3-scale').ScaleBand} xScale
  * @param {import('d3-scale').ScaleLinear} yScale
  * @param {Map<unknown, {fill:string, stroke:string}>} colors
  * @returns {Array}
  */
 export function buildBoxes(data, channels, xScale, yScale, colors) {
-  const { x: xf, fill: ff, color: cf } = channels
+  const { x: xf, fill: ff } = channels
   const bw = typeof xScale.bandwidth === 'function' ? xScale.bandwidth() : 20
   const grouped = ff && ff !== xf
 
@@ -31,9 +32,7 @@ export function buildBoxes(data, channels, xScale, yScale, colors) {
       const subIndex = fillValues.indexOf(fillVal)
       const bandStart = xScale(d[xf]) ?? 0
       const cx = bandStart + subIndex * subBandWidth + subBandWidth / 2
-      const colorEntry = colors?.get(fillVal) ?? { fill: '#888', stroke: '#444' }
-      const strokeKey = cf ? d[cf] : null
-      const strokeEntry = strokeKey !== null ? (colors?.get(strokeKey) ?? colorEntry) : null
+      const colorEntry = colors?.get(fillVal) ?? { fill: '#aaa', stroke: '#666' }
 
       return {
         data: d,
@@ -46,7 +45,7 @@ export function buildBoxes(data, channels, xScale, yScale, colors) {
         width:   boxWidth,
         whiskerWidth,
         fill:   colorEntry.fill,
-        stroke: strokeEntry ? strokeEntry.stroke : null
+        stroke: colorEntry.stroke
       }
     })
   }
@@ -57,9 +56,7 @@ export function buildBoxes(data, channels, xScale, yScale, colors) {
 
   return data.map((d) => {
     const fillKey = ff ? d[ff] : d[xf]
-    const strokeKey = cf ? d[cf] : null
-    const colorEntry = colors?.get(fillKey) ?? { fill: '#888', stroke: '#444' }
-    const strokeEntry = strokeKey !== null ? (colors?.get(strokeKey) ?? colorEntry) : null
+    const colorEntry = colors?.get(fillKey) ?? { fill: '#aaa', stroke: '#666' }
     const cx = (xScale(d[xf]) ?? 0) + (typeof xScale.bandwidth === 'function' ? bw / 2 : 0)
     return {
       data: d,
@@ -72,7 +69,7 @@ export function buildBoxes(data, channels, xScale, yScale, colors) {
       width:   boxWidth,
       whiskerWidth,
       fill:   colorEntry.fill,
-      stroke: strokeEntry ? strokeEntry.stroke : null
+      stroke: colorEntry.stroke
     }
   })
 }

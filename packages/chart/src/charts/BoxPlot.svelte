@@ -8,7 +8,6 @@
     x = undefined,
     y = undefined,
     fill = undefined,
-    color = undefined,
     width = 600,
     height = 400,
     mode = 'light',
@@ -18,5 +17,5 @@
 </script>
 
 <Plot {data} {width} {height} {mode} {grid} {legend}>
-  <Box {x} {y} {fill} {color} />
+  <Box {x} {y} {fill} />
 </Plot>

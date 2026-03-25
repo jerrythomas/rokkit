@@ -1,5 +1,6 @@
 <script>
   import { getContext, onMount, onDestroy } from 'svelte'
+  import { scaleSqrt } from 'd3-scale'
   import { buildPoints } from '../lib/brewing/marks/points.js'
 
   let { x, y, color, size, stat = 'identity', options = {} } = $props()
@@ -20,8 +21,15 @@
   const xScale  = $derived(plotState.xScale)
   const yScale  = $derived(plotState.yScale)
   const colors  = $derived(plotState.colors)
-  // Size scale: future enhancement — null for now
-  const sizeScale = null
+
+  const sizeScale = $derived.by(() => {
+    if (!size || !data?.length) return null
+    const vals = data.map((d) => Number(d[size])).filter((v) => !isNaN(v))
+    if (!vals.length) return null
+    const maxVal = Math.max(...vals)
+    const minVal = Math.min(...vals)
+    return scaleSqrt().domain([minVal, maxVal]).range([options.minRadius ?? 3, options.maxRadius ?? 20])
+  })
 
   const points = $derived.by(() => {
     if (!data?.length || !xScale || !yScale) return []
@@ -31,7 +39,7 @@
 
 {#if points.length > 0}
   <g data-plot-geom="point">
-    {#each points as pt, i (`${pt.data[x]}-${pt.data[y]}-${pt.data[color ?? ''] ?? i}`)}
+    {#each points as pt, i (`${i}::${pt.data[x]}::${pt.data[y]}`)}
       <circle
         cx={pt.cx}
         cy={pt.cy}

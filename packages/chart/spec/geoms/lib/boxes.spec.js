@@ -60,10 +60,15 @@ describe('buildBoxes — non-grouped (fill === x)', () => {
     }
   })
 
-  it('falls back to #888 when fill key not in colors map', () => {
+  it('returns stroke from the colors map (darker shade)', () => {
+    const compact = boxes.find((b) => b.data.class === 'compact')
+    expect(compact?.stroke).toBe('#4e79a7')
+  })
+
+  it('falls back to #aaa fill when fill key not in colors map', () => {
     const emptyColors = new Map()
     const result = buildBoxes(dataSimple, { x: 'class', fill: 'class' }, xScale, yScale, emptyColors)
-    expect(result[0].fill).toBe('#888')
+    expect(result[0].fill).toBe('#aaa')
   })
 })
 

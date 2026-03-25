@@ -23,15 +23,22 @@ describe('buildViolins', () => {
     expect(v).toHaveProperty('cx')
   })
 
-  it('uses fill channel for interior color', () => {
+  it('uses fill channel for interior color (lighter shade)', () => {
     const d = [{ cat: 'A', region: 'N', q1: 25, median: 50, q3: 75, iqr_min: 10, iqr_max: 90 }]
     const c = new Map([['N', { fill: 'blue', stroke: 'darkblue' }]])
     const [v] = buildViolins(d, { x: 'cat', fill: 'region' }, xScale, yScale, c)
     expect(v.fill).toBe('blue')
   })
 
-  it('stroke is null when no color channel', () => {
+  it('stroke comes from the same colors map entry as fill (darker shade)', () => {
     const [v] = buildViolins(data, { x: 'cat' }, xScale, yScale, colors)
-    expect(v.stroke).toBeNull()
+    expect(v.stroke).toBe('#333')
+  })
+
+  it('stroke matches fill entry when fill channel is set', () => {
+    const d = [{ cat: 'A', region: 'N', q1: 25, median: 50, q3: 75, iqr_min: 10, iqr_max: 90 }]
+    const c = new Map([['N', { fill: 'blue', stroke: 'darkblue' }]])
+    const [v] = buildViolins(d, { x: 'cat', fill: 'region' }, xScale, yScale, c)
+    expect(v.stroke).toBe('darkblue')
   })
 })

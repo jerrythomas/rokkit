@@ -39,22 +39,23 @@ describe('buildBoxes', () => {
     expect(box.cx).toBeCloseTo(expectedCx)
   })
 
-  it('uses fill field for interior color', () => {
+  it('uses fill field for interior color (lighter shade)', () => {
     const d = [{ cat: 'A', region: 'North', q1: 20, median: 40, q3: 60, iqr_min: 5, iqr_max: 80 }]
     const fillColors = new Map([['North', { fill: 'green', stroke: 'darkgreen' }]])
     const [box] = buildBoxes(d, { x: 'cat', fill: 'region' }, xScale, yScale, fillColors)
     expect(box.fill).toBe('green')
   })
 
-  it('stroke is null when no color channel', () => {
+  it('stroke comes from the same colors map entry as fill (darker shade)', () => {
     const [box] = buildBoxes(data, { x: 'cat' }, xScale, yScale, colors)
-    expect(box.stroke).toBeNull()
+    // When no fill channel, defaults to x-field lookup — colors['A'].stroke
+    expect(box.stroke).toBe('#darkblue')
   })
 
-  it('uses color channel for stroke', () => {
+  it('stroke matches fill entry even when fill channel differs from x', () => {
     const d = [{ cat: 'A', region: 'North', q1: 20, median: 40, q3: 60, iqr_min: 5, iqr_max: 80 }]
-    const strokeColors = new Map([['North', { fill: 'blue', stroke: 'darkblue' }]])
-    const [box] = buildBoxes(d, { x: 'cat', color: 'region' }, xScale, yScale, strokeColors)
+    const fillColors = new Map([['North', { fill: 'blue', stroke: 'darkblue' }]])
+    const [box] = buildBoxes(d, { x: 'cat', fill: 'region' }, xScale, yScale, fillColors)
     expect(box.stroke).toBe('darkblue')
   })
 })

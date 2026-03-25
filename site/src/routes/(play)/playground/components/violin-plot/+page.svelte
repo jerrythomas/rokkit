@@ -6,7 +6,7 @@
 	import { mpg } from '$lib/data/mpg.js'
 
 	// mpg: 234 raw observations — x=class, y=hwy, fill=drv
-	// shows distribution shape of highway mpg per vehicle class, colored by drive type
+	// fill=drv groups violins within each class band (3 drv values × 7 classes = 12 combos)
 
 	let props = $state({
 		xField: 'class',
@@ -19,11 +19,11 @@
 	const schema = {
 		type: 'object',
 		properties: {
-			xField: { type: 'string' },
-			yField: { type: 'string' },
+			xField:    { type: 'string' },
+			yField:    { type: 'string' },
 			fillField: { type: 'string' },
-			grid: { type: 'boolean' },
-			legend: { type: 'boolean' }
+			grid:      { type: 'boolean' },
+			legend:    { type: 'boolean' }
 		}
 	}
 
@@ -45,7 +45,7 @@
 				label: 'fill',
 				props: { options: ['', 'drv', 'class', 'cyl', 'fl'] }
 			},
-			{ scope: '#/grid', label: 'grid' },
+			{ scope: '#/grid',   label: 'grid' },
 			{ scope: '#/legend', label: 'legend' },
 			{ type: 'separator' }
 		]

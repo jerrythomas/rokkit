@@ -2,12 +2,12 @@
   import { getContext, onMount, onDestroy } from 'svelte'
   import { buildBoxes } from '../lib/brewing/marks/boxes.js'
 
-  let { x, y, fill, color, stat = 'boxplot', options = {} } = $props()
+  let { x, y, fill, stat = 'boxplot', options = {} } = $props()
 
   const plotState = getContext('plot-state')
   let id = $state(null)
 
-  // fill ?? x drives the colors map; color is the optional stroke channel
+  // fill ?? x drives the colors map for both box interior and whisker strokes
   onMount(() => {
     id = plotState.registerGeom({ type: 'box', channels: { x, y, color: fill ?? x }, stat, options })
   })
@@ -22,10 +22,9 @@
   const yScale = $derived(plotState.yScale)
   const colors = $derived(plotState.colors)
 
-  // fill ?? x drives box interior; color drives whisker stroke (optional)
   const boxes = $derived.by(() => {
     if (!data?.length || !xScale || !yScale) return []
-    return buildBoxes(data, { x, fill: fill ?? x, color }, xScale, yScale, colors)
+    return buildBoxes(data, { x, fill: fill ?? x }, xScale, yScale, colors)
   })
 </script>
 
@@ -36,24 +35,25 @@
       {@const xMid = box.cx}
       {@const xCap0 = box.cx - box.whiskerWidth / 2}
       {@const xCap1 = box.cx + box.whiskerWidth / 2}
-      <!-- Box body (IQR) -->
+      <!-- Box body (IQR): lighter fill shade -->
       <rect
         x={x0}
         y={box.q3}
         width={box.width}
         height={Math.max(0, box.q1 - box.q3)}
         fill={box.fill}
-        stroke={box.stroke ?? 'none'}
+        fill-opacity="0.5"
+        stroke={box.stroke}
         stroke-width="1"
         data-plot-element="box-body"
       />
-      <!-- Median line -->
+      <!-- Median line: darker stroke shade -->
       <line
         x1={x0}
         y1={box.median}
         x2={x0 + box.width}
         y2={box.median}
-        stroke={box.stroke ?? box.fill}
+        stroke={box.stroke}
         stroke-width="2"
         data-plot-element="box-median"
       />
@@ -63,7 +63,7 @@
         y1={box.q1}
         x2={xMid}
         y2={box.iqr_min}
-        stroke={box.stroke ?? box.fill}
+        stroke={box.stroke}
         stroke-width="1"
         data-plot-element="box-whisker"
       />
@@ -73,7 +73,7 @@
         y1={box.q3}
         x2={xMid}
         y2={box.iqr_max}
-        stroke={box.stroke ?? box.fill}
+        stroke={box.stroke}
         stroke-width="1"
         data-plot-element="box-whisker"
       />
@@ -83,7 +83,7 @@
         y1={box.iqr_min}
         x2={xCap1}
         y2={box.iqr_min}
-        stroke={box.stroke ?? box.fill}
+        stroke={box.stroke}
         stroke-width="1"
       />
       <!-- Upper whisker cap -->
@@ -92,7 +92,7 @@
         y1={box.iqr_max}
         x2={xCap1}
         y2={box.iqr_max}
-        stroke={box.stroke ?? box.fill}
+        stroke={box.stroke}
         stroke-width="1"
       />
       <!-- Outlier rendering deferred: buildBoxes does not compute outliers yet -->

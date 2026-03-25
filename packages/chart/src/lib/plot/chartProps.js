@@ -47,8 +47,7 @@
  * @property {Object[]} [data=[]]        - Data array to visualize
  * @property {string}   [x]              - Field name for the category axis (groups)
  * @property {string}   [y]              - Field name for the value axis (raw observations)
- * @property {string}   [fill]           - Field name for interior fill color; when different from x, sub-groups within each x-band (like grouped bars)
- * @property {string}   [color]          - Field name for whisker/outline stroke color (optional, independent of fill)
+ * @property {string}   [fill]           - Field name for fill color; when different from x, sub-groups within each x-band (like grouped bars); lighter shade used for body, darker shade for whiskers/outline
  * @property {number}   [width=600]      - SVG width in pixels
  * @property {number}   [height=400]     - SVG height in pixels
  * @property {string}   [mode='light']   - Color mode: 'light' | 'dark'

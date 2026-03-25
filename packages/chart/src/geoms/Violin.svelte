@@ -2,12 +2,12 @@
   import { getContext, onMount, onDestroy } from 'svelte'
   import { buildViolins } from '../lib/brewing/marks/violins.js'
 
-  let { x, y, fill, color, stat = 'boxplot', options = {} } = $props()
+  let { x, y, fill, stat = 'boxplot', options = {} } = $props()
 
   const plotState = getContext('plot-state')
   let id = $state(null)
 
-  // fill ?? x drives the colors map; color is the optional stroke channel
+  // fill ?? x drives the colors map for both violin interior and outline
   onMount(() => {
     id = plotState.registerGeom({ type: 'violin', channels: { x, y, color: fill ?? x }, stat, options })
   })
@@ -22,10 +22,9 @@
   const yScale = $derived(plotState.yScale)
   const colors = $derived(plotState.colors)
 
-  // fill ?? x drives violin interior; color drives outline stroke (optional)
   const violins = $derived.by(() => {
     if (!data?.length || !xScale || !yScale) return []
-    return buildViolins(data, { x, fill: fill ?? x, color }, xScale, yScale, colors)
+    return buildViolins(data, { x, fill: fill ?? x }, xScale, yScale, colors)
   })
 </script>
 
@@ -35,9 +34,9 @@
       <path
         d={v.d}
         fill={v.fill}
-        fill-opacity="0.7"
-        stroke={v.stroke ?? 'none'}
-        stroke-width="1"
+        fill-opacity="0.5"
+        stroke={v.stroke}
+        stroke-width="1.5"
         data-plot-element="violin"
       />
     {/each}
