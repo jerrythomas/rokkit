@@ -66,8 +66,9 @@ describe('AreaChart', () => {
       data: multiSeries, x: 'month', y: 'val', fill: 'category', pattern: 'category'
     })
     const paths = container.querySelectorAll('[data-plot-element="area"]')
-    expect(paths.length).toBe(2)
-    // At least one path should use url(#...) fill
+    // Two-path rendering: one fill path + one pattern overlay per series (2 series = 4 total)
+    expect(paths.length).toBe(4)
+    // Pattern overlay paths use url(#...) fill
     const fills = [...paths].map((p) => p.getAttribute('fill'))
     expect(fills.some((f) => f?.startsWith('url(#'))).toBe(true)
   })

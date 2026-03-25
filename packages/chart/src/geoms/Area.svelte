@@ -24,10 +24,11 @@
 
   const areas = $derived.by(() => {
     if (!data?.length || !xScale || !yScale) return []
+    const channels = { x, y, color, pattern }
     if (options.stack) {
-      return buildStackedAreas(data, { x, y, color }, xScale, yScale, colors, options.curve, patterns)
+      return buildStackedAreas(data, channels, xScale, yScale, colors, options.curve, patterns)
     }
-    return buildAreas(data, { x, y, color }, xScale, yScale, colors, options.curve, patterns)
+    return buildAreas(data, channels, xScale, yScale, colors, options.curve, patterns)
   })
 </script>
 
@@ -36,11 +37,14 @@
     {#each areas as seg (seg.key ?? seg.d)}
       <path
         d={seg.d}
-        fill={seg.patternId ? `url(#${seg.patternId})` : seg.fill}
-        fill-opacity={options.opacity ?? 0.3}
+        fill={seg.fill}
+        fill-opacity={options.opacity ?? 0.6}
         stroke={seg.stroke ?? 'none'}
         data-plot-element="area"
       />
+      {#if seg.patternId}
+        <path d={seg.d} fill="url(#{seg.patternId})" data-plot-element="area" />
+      {/if}
     {/each}
   </g>
 {/if}

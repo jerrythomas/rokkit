@@ -14,7 +14,7 @@ import { toPatternId } from '../../lib/brewing/patterns.js'
  * @returns {{ d: string, fill: string, stroke: string, key: unknown, patternId: string|null }[]}
  */
 export function buildAreas(data, channels, xScale, yScale, colors, curve, patterns) {
-  const { x: xf, y: yf, color: cf } = channels
+  const { x: xf, y: yf, color: cf, pattern: pf } = channels
   const baseline = yScale.range()[0]   // bottom of the chart (y pixel max)
 
   const xPos = (d) => typeof xScale.bandwidth === 'function'
@@ -35,7 +35,10 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
 
   if (!cf) {
     const entry = colors?.values().next().value ?? { fill: '#888', stroke: '#888' }
-    return [{ d: makeGen()(sortByX(data)), fill: entry.fill, stroke: 'none', key: null, patternId: null }]
+    const patternKey = pf ? data[0]?.[pf] : null
+    const patternId = patternKey !== null && patternKey !== undefined && patterns?.has(patternKey)
+      ? toPatternId(String(patternKey)) : null
+    return [{ d: makeGen()(sortByX(data)), fill: entry.fill, stroke: 'none', key: null, patternId }]
   }
 
   // Group by color field
@@ -47,7 +50,10 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
   }
   return [...groups.entries()].map(([key, rows]) => {
     const entry = colors?.get(key) ?? { fill: '#888', stroke: '#888' }
-    const patternId = patterns?.has(key) ? toPatternId(String(key)) : null
+    // Pattern key: pf same as cf → colorKey; pf different → first row's value; no pf → colorKey (compat)
+    const patternKey = pf ? (pf === cf ? key : rows[0]?.[pf]) : key
+    const patternId = patternKey !== null && patternKey !== undefined && patterns?.has(patternKey)
+      ? toPatternId(String(patternKey)) : null
     return { d: makeGen()(sortByX(rows)), fill: entry.fill, stroke: 'none', key, patternId }
   })
 }
@@ -105,7 +111,10 @@ export function buildStackedAreas(data, channels, xScale, yScale, colors, curve,
   return layers.map((layer) => {
     const colorKey = layer.key
     const entry = colors?.get(colorKey) ?? { fill: '#888', stroke: '#888' }
-    const patternId = patterns?.has(colorKey) ? toPatternId(String(colorKey)) : null
+    // Pattern key always resolves to colorKey (stacked by cf; pf defers to cf key for compat)
+    const patternKey = colorKey
+    const patternId = patternKey !== null && patterns?.has(patternKey)
+      ? toPatternId(String(patternKey)) : null
     return {
       d: makeGen()(layer) ?? '',
       fill: entry.fill,
