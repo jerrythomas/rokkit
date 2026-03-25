@@ -76,7 +76,7 @@
         y={bar.y}
         width={Math.max(0, bar.width)}
         height={Math.max(0, bar.height)}
-        fill={bar.patternId ? `url(#${bar.patternId})` : bar.fill}
+        fill={bar.fill}
         stroke={bar.stroke ?? 'none'}
         stroke-width={bar.stroke ? 0.5 : 0}
         data-plot-element="bar"
@@ -92,6 +92,16 @@
       >
         <title>{bar.data[x]}: {bar.data[y]}</title>
       </rect>
+      {#if bar.patternId}
+        <rect
+          x={bar.x}
+          y={bar.y}
+          width={Math.max(0, bar.width)}
+          height={Math.max(0, bar.height)}
+          fill="url(#{bar.patternId})"
+          pointer-events="none"
+        />
+      {/if}
     {/each}
   </g>
 {/if}

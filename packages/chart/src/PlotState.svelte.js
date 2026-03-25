@@ -114,14 +114,16 @@ export class PlotState {
         const xField = this.#effectiveChannels.x
         const stackData = this.geomData(stackGeom.id)
         if (xField && stackData.length > 0) {
-          // Mirror buildStackedBars: last-write-wins per (xVal, colorKey).
-          // Summing all raw rows (stat=identity) would overcount when multiple
-          // rows share the same (x, color) — e.g. mpg dataset with year on X.
+          // Mirror buildStackedBars/subBandFields: stack dimension is the first
+          // non-x field among [color, pattern]. Summing all raw rows (stat=identity)
+          // would overcount when multiple rows share the same (x, stack) key.
           const colorField = this.#effectiveChannels.color
+          const patternField = this.#effectiveChannels.pattern
+          const stackField = [colorField, patternField].find((f) => f && f !== xField) ?? colorField
           const lookup = new Map()
           for (const d of stackData) {
             const xVal = d[xField]
-            const cKey = colorField ? String(d[colorField]) : '_'
+            const cKey = stackField ? String(d[stackField]) : '_'
             if (!lookup.has(xVal)) lookup.set(xVal, new Map())
             lookup.get(xVal).set(cKey, Number(d[field]) || 0)
           }
@@ -148,15 +150,16 @@ export class PlotState {
     return assignColors(values, this.#mode)
   })
 
-  // Patterns: Map<colorKey, patternName> — only populated when a pattern channel is set.
-  // Keys match the color field so buildGroupedBars can look up by colorKey.
+  // Patterns: Map<patternKey, patternName> — only populated when a pattern channel is set.
   patterns = $derived.by(() => {
     const pf = this.#effectiveChannels.pattern
     if (!pf) return new Map()
-    const cf = this.#effectiveChannels.color
-    const values = distinct(this.#data, cf ?? pf)
-    return assignPatterns(values)
+    return assignPatterns(distinct(this.#data, pf))
   })
+
+  // Expose effective channel fields for consumers (e.g. Legend)
+  colorField = $derived(this.#effectiveChannels.color)
+  patternField = $derived(this.#effectiveChannels.pattern)
 
   xAxisY = $derived.by(() => {
     if (!this.yScale || typeof this.yScale !== 'function') return this.#innerHeight

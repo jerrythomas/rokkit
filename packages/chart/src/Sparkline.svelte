@@ -1,6 +1,6 @@
 <script>
   import { scaleLinear } from 'd3-scale'
-  import { line as d3line, area as d3area } from 'd3-shape'
+  import { line as d3line, area as d3area, curveCatmullRom } from 'd3-shape'
 
   /**
    * @type {number[] | object[]}
@@ -9,6 +9,7 @@
     data = [],
     field = undefined,
     type = 'line',
+    curve = 'linear',
     color = 'primary',
     width = 80,
     height = 24,
@@ -30,18 +31,17 @@
     scaleLinear().domain([yMin, yMax]).range([height, 0])
   )
 
-  const linePath = $derived(
-    d3line()
-      .x((_, i) => xScale(i))
-      .y((v) => yScale(v))(values)
-  )
+  const linePath = $derived.by(() => {
+    const gen = d3line().x((_, i) => xScale(i)).y((v) => yScale(v))
+    if (curve === 'smooth') gen.curve(curveCatmullRom)
+    return gen(values)
+  })
 
-  const areaPath = $derived(
-    d3area()
-      .x((_, i) => xScale(i))
-      .y0(height)
-      .y1((v) => yScale(v))(values)
-  )
+  const areaPath = $derived.by(() => {
+    const gen = d3area().x((_, i) => xScale(i)).y0(height).y1((v) => yScale(v))
+    if (curve === 'smooth') gen.curve(curveCatmullRom)
+    return gen(values)
+  })
 
   const barWidth = $derived(Math.max(1, width / values.length - 1))
 

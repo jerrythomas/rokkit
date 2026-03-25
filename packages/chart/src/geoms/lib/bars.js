@@ -15,23 +15,46 @@ function ensureBandX(xScale, data, xField) {
   return scaleBand().domain(domain).range([r0, r1]).padding(0.2)
 }
 
+/**
+ * Returns the sub-band fields: distinct non-x fields among [color, pattern].
+ * These are the fields that cause multiple bars within a single x-band.
+ */
+function subBandFields(channels) {
+  const { x: xf, color: cf, pattern: pf } = channels
+  const seen = new Set()
+  const out = []
+  for (const f of [cf, pf]) {
+    if (f && f !== xf && !seen.has(f)) { seen.add(f); out.push(f) }
+  }
+  return out
+}
+
 export function buildGroupedBars(data, channels, xScale, yScale, colors, innerHeight, patterns) {
-  const { x: xf, y: yf, color: cf } = channels
+  const { x: xf, y: yf, color: cf, pattern: pf } = channels
 
   const bandScale = ensureBandX(xScale, data, xf)
-  const colorKeys = cf ? [...new Set(data.map((d) => d[cf]))] : []
-  const subScale = colorKeys.length > 1
-    ? scaleBand().domain(colorKeys).range([0, bandScale.bandwidth()]).padding(0.05)
+
+  // Sub-banding: only fields that differ from x drive grouping within a band
+  const subFields = subBandFields(channels)
+  const getSubKey = (d) => subFields.map((f) => String(d[f])).join('::')
+  const subDomain = subFields.length > 0 ? [...new Set(data.map(getSubKey))] : []
+  const subScale = subDomain.length > 1
+    ? scaleBand().domain(subDomain).range([0, bandScale.bandwidth()]).padding(0.05)
     : null
 
   return data.map((d, i) => {
     const xVal = d[xf]
     const colorKey = cf ? d[cf] : null
+    const patternKey = pf ? d[pf] : null
+    const subKey = getSubKey(d)
+
     const colorEntry = colors?.get(colorKey) ?? colors?.values().next().value ?? { fill: '#888', stroke: '#888' }
-    const patternId = patterns?.has(colorKey) ? toPatternId(String(colorKey)) : null
+    const patternId = patternKey !== null && patternKey !== undefined && patterns?.has(patternKey)
+      ? toPatternId(String(patternKey))
+      : null
 
     const bandX = bandScale(xVal) ?? 0
-    const subX = subScale ? (subScale(colorKey) ?? 0) : 0
+    const subX = subScale && subKey ? (subScale(subKey) ?? 0) : 0
     const barX = bandX + subX
     const barWidth = subScale ? subScale.bandwidth() : bandScale.bandwidth()
     const barY = yScale(d[yf])
@@ -39,7 +62,7 @@ export function buildGroupedBars(data, channels, xScale, yScale, colors, innerHe
 
     return {
       data: d,
-      key: `${String(xVal)}::${String(colorKey ?? '')}::${i}`,
+      key: `${String(xVal)}::${subKey}::${i}`,
       x: barX,
       y: barY,
       width: barWidth,
@@ -53,38 +76,52 @@ export function buildGroupedBars(data, channels, xScale, yScale, colors, innerHe
 
 export function buildStackedBars(data, channels, xScale, yScale, colors, innerHeight, patterns) {
   const { x: xf, y: yf, color: cf } = channels
-  if (!cf) return buildGroupedBars(data, channels, xScale, yScale, colors, innerHeight, patterns)
 
   const bandScale = ensureBandX(xScale, data, xf)
+
+  // Stack dimension: first non-x grouping field (prefer pattern, then color)
+  const subFields = subBandFields(channels)
+  if (subFields.length === 0) {
+    return buildGroupedBars(data, channels, xScale, yScale, colors, innerHeight, patterns)
+  }
+  const stackField = subFields[0]
+
   const xCategories = [...new Set(data.map((d) => d[xf]))]
-  const colorCategories = [...new Set(data.map((d) => d[cf]))]
+  const stackCategories = [...new Set(data.map((d) => d[stackField]))]
 
   const lookup = new Map()
   for (const d of data) {
     if (!lookup.has(d[xf])) lookup.set(d[xf], {})
-    lookup.get(d[xf])[d[cf]] = Number(d[yf])
+    lookup.get(d[xf])[d[stackField]] = Number(d[yf])
   }
 
   const wide = xCategories.map((xVal) => {
     const row = { [xf]: xVal }
-    for (const c of colorCategories) row[c] = lookup.get(xVal)?.[c] ?? 0
+    for (const sk of stackCategories) row[sk] = lookup.get(xVal)?.[sk] ?? 0
     return row
   })
 
-  const stackGen = stack().keys(colorCategories)
+  const stackGen = stack().keys(stackCategories)
   const layers = stackGen(wide)
 
   const bars = []
   for (const layer of layers) {
-    const colorKey = layer.key
-    const colorEntry = colors?.get(colorKey) ?? { fill: '#888', stroke: '#888' }
-    const patternId = patterns?.has(colorKey) ? toPatternId(String(colorKey)) : null
+    const stackKey = layer.key
+    const patternId = patterns?.has(stackKey) ? toPatternId(String(stackKey)) : null
+
     for (const point of layer) {
       const [y0, y1] = point
       const xVal = point.data[xf]
+
+      // Color lookup: cf may equal xf (= xVal) or stackField (= stackKey)
+      const colorKey = cf
+        ? (cf === xf ? xVal : cf === stackField ? stackKey : null)
+        : null
+      const colorEntry = colors?.get(colorKey) ?? { fill: '#888', stroke: '#888' }
+
       bars.push({
         data: point.data,
-        key: `${String(xVal)}::${String(colorKey)}`,
+        key: `${String(xVal)}::${String(stackKey)}`,
         x: bandScale(xVal) ?? 0,
         y: yScale(y1),
         width: bandScale.bandwidth(),

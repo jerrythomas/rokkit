@@ -16,6 +16,7 @@
 
 	let props = $state({
 		type: 'line',
+		curve: 'linear',
 		color: 'primary',
 		width: 80,
 		height: 24
@@ -25,6 +26,7 @@
 		type: 'object',
 		properties: {
 			type: { type: 'string' },
+			curve: { type: 'string' },
 			color: { type: 'string' },
 			width: { type: 'number' },
 			height: { type: 'number' }
@@ -35,6 +37,7 @@
 		type: 'vertical',
 		elements: [
 			{ scope: '#/type', label: 'Type', props: { options: ['line', 'bar', 'area'] } },
+			{ scope: '#/curve', label: 'Curve', props: { options: ['linear', 'smooth'] } },
 			{
 				scope: '#/color',
 				label: 'Color',
@@ -54,20 +57,20 @@
 				<h4 class="text-surface-z5 m-0 mb-3 text-xs uppercase tracking-widest font-semibold">
 					Numeric Array
 				</h4>
-				<Sparkline data={numericData} type={props.type} color={props.color} width={props.width} height={props.height} />
+				<Sparkline data={numericData} type={props.type} curve={props.curve} color={props.color} width={props.width} height={props.height} />
 			</div>
 			<div>
 				<h4 class="text-surface-z5 m-0 mb-3 text-xs uppercase tracking-widest font-semibold">
 					Object Array with field
 				</h4>
-				<Sparkline data={objectData} field="revenue" type={props.type} color={props.color} width={props.width} height={props.height} />
+				<Sparkline data={objectData} field="revenue" type={props.type} curve={props.curve} color={props.color} width={props.width} height={props.height} />
 			</div>
 			<div>
 				<h4 class="text-surface-z5 m-0 mb-3 text-xs uppercase tracking-widest font-semibold">
 					Inline in text
 				</h4>
 				<p class="text-surface-z6 text-sm">
-					Revenue <Sparkline data={numericData} width={60} height={16} type={props.type} color={props.color} /> trend
+					Revenue <Sparkline data={numericData} width={60} height={16} type={props.type} curve={props.curve} color={props.color} /> trend
 				</p>
 			</div>
 		</div>
