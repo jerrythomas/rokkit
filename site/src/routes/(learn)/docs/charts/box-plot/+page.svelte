@@ -1,8 +1,7 @@
 <article data-article-root>
 	<p>
 		A data-driven SVG box plot for distribution analysis. Computes quartile statistics (min, Q1,
-		median, Q3, max) from raw observations and renders whisker boxes per category. Built on
-		<code>BoxBrewer</code> for reactive aggregation.
+		median, Q3, max) from raw observations and renders whisker boxes per category.
 	</p>
 
 	<h2>Basic usage</h2>
@@ -28,18 +27,24 @@
 
 	<h2>Color coding</h2>
 	<p>
-		Use <code>fill</code> to color boxes by a categorical field. Enable <code>legend</code> to show
-		the color key:
+		Use <code>fill</code> to color boxes by a categorical field. Enable <code>legend</code> to
+		show the color key:
 	</p>
-	<pre><code
-			>{`<BoxPlot
-  data={data}
-  x="class"
-  y="hwy"
-  fill="drv"
-  legend
-/>`}</code
-		></pre>
+	<pre><code>{`<BoxPlot data={data} x="class" y="hwy" fill="drv" legend />`}</code></pre>
+
+	<h2>Statistics computed</h2>
+	<p>For each group, the chart computes:</p>
+	<ul>
+		<li><strong>min</strong> — lowest value</li>
+		<li><strong>Q1</strong> — 25th percentile</li>
+		<li><strong>median</strong> — 50th percentile</li>
+		<li><strong>Q3</strong> — 75th percentile</li>
+		<li><strong>max</strong> — highest value</li>
+	</ul>
+	<p>
+		The box spans Q1–Q3, the whiskers extend to min/max, and the median line is drawn across the
+		box.
+	</p>
 
 	<h2>Props</h2>
 	<table>
@@ -109,17 +114,8 @@
 		</tbody>
 	</table>
 
-	<h2>Statistics computed</h2>
-	<p>For each group, <code>BoxBrewer</code> computes:</p>
-	<ul>
-		<li><strong>min</strong> — lowest value</li>
-		<li><strong>Q1</strong> — 25th percentile</li>
-		<li><strong>median</strong> — 50th percentile</li>
-		<li><strong>Q3</strong> — 75th percentile</li>
-		<li><strong>max</strong> — highest value</li>
-	</ul>
 	<p>
-		The box spans Q1–Q3, the whiskers extend to min/max, and the median line is drawn across the
-		box.
+		See also <a href="/docs/charts/violin-plot">ViolinPlot</a> for a continuous distribution shape
+		alternative.
 	</p>
 </article>

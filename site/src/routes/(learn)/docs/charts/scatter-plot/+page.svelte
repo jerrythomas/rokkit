@@ -1,8 +1,7 @@
 <article data-article-root>
 	<p>
-		A data-driven SVG scatter plot for correlation and distribution analysis. Built on
-		<code>ChartBrewer</code> for reactive data binding with optional gridlines, color coding, and
-		legend.
+		A data-driven SVG scatter plot for correlation and distribution analysis. Supports color
+		coding, variable point size (bubble chart), custom markers, data labels, and hover tooltips.
 	</p>
 
 	<h2>Basic usage</h2>
@@ -24,17 +23,28 @@
 
 	<h2>Color coding</h2>
 	<p>
-		Pass a <code>color</code> field to assign palette colors by category. Enable
-		<code>legend</code> to show the color key:
+		Use <code>color</code> to assign palette colors by category. Enable <code>legend</code> to
+		show the color key:
 	</p>
+	<pre><code>{`<ScatterPlot data={data} x="sessions" y="conversions" color="channel" legend />`}</code></pre>
+
+	<h2>Bubble chart</h2>
+	<p>Map a numeric field to <code>size</code> to vary point radius:</p>
+	<pre><code>{`<ScatterPlot data={data} x="sessions" y="conversions" size="orders" />`}</code></pre>
+
+	<h2>Data labels and tooltip</h2>
 	<pre><code
-			>{`<ScatterPlot
-  data={data}
-  x="sessions"
-  y="conversions"
-  color="channel"
-  legend
-/>`}</code
+			>{`<!-- Label each point with y value -->
+<ScatterPlot ... label />
+
+<!-- Custom label -->
+<ScatterPlot ... label={(d) => d.channel} />
+
+<!-- Hover tooltip -->
+<ScatterPlot ... tooltip />
+
+<!-- Custom tooltip -->
+<ScatterPlot ... tooltip={(d) => \`\${d.channel}: \${d.conversions} conversions\`} />`}</code
 		></pre>
 
 	<h2>Props</h2>
@@ -58,25 +68,43 @@
 				<td><code>x</code></td>
 				<td><code>string</code></td>
 				<td>—</td>
-				<td>Field name for the X axis (numeric)</td>
+				<td>Field for X axis (numeric)</td>
 			</tr>
 			<tr>
 				<td><code>y</code></td>
 				<td><code>string</code></td>
 				<td>—</td>
-				<td>Field name for the Y axis (numeric)</td>
+				<td>Field for Y axis (numeric)</td>
 			</tr>
 			<tr>
 				<td><code>color</code></td>
 				<td><code>string</code></td>
 				<td>—</td>
-				<td>Field name for palette color assignment</td>
+				<td>Field for palette color assignment</td>
 			</tr>
 			<tr>
 				<td><code>size</code></td>
 				<td><code>string</code></td>
 				<td>—</td>
-				<td>Field name for point size channel</td>
+				<td>Field for point size (bubble chart)</td>
+			</tr>
+			<tr>
+				<td><code>symbol</code></td>
+				<td><code>string</code></td>
+				<td>—</td>
+				<td>Field for marker symbol assignment</td>
+			</tr>
+			<tr>
+				<td><code>label</code></td>
+				<td><code>boolean | string | (data) => string</code></td>
+				<td><code>false</code></td>
+				<td>Show value labels at each point</td>
+			</tr>
+			<tr>
+				<td><code>tooltip</code></td>
+				<td><code>boolean | (data) => string</code></td>
+				<td><code>false</code></td>
+				<td>Hover tooltip</td>
 			</tr>
 			<tr>
 				<td><code>width</code></td>

@@ -1,7 +1,7 @@
 <article data-article-root>
 	<p>
-		A data-driven SVG line chart for displaying trends and time series. Built on
-		<code>ChartBrewer</code> for reactive data binding with optional gridlines and legend.
+		A data-driven SVG line chart for displaying trends and time series. Supports multi-series color
+		coding, custom markers, curve styles, data labels, and hover tooltips.
 	</p>
 
 	<h2>Basic usage</h2>
@@ -21,27 +21,41 @@
 <LineChart data={data} x="month" y="revenue" />`}</code
 		></pre>
 
-	<h2>Color coding</h2>
+	<h2>Multi-series</h2>
 	<p>
-		Pass a <code>color</code> field to assign palette colors per series. Enable
+		Use <code>color</code> to split data into separate lines by a field. Enable
 		<code>legend</code> to show the color key:
 	</p>
+	<pre><code>{`<LineChart data={data} x="month" y="revenue" color="region" legend />`}</code></pre>
+
+	<h2>Curve style</h2>
+	<p>Control how line segments are interpolated with <code>curve</code>:</p>
 	<pre><code
-			>{`<LineChart
-  data={data}
-  x="month"
-  y="revenue"
-  color="region"
-  legend
-/>`}</code
+			>{`<!-- Smooth bezier curve -->
+<LineChart data={data} x="month" y="revenue" curve="smooth" />
+
+<!-- Step (staircase) -->
+<LineChart data={data} x="month" y="revenue" curve="step" />`}</code
 		></pre>
 
-	<h2>Grid and dimensions</h2>
-	<p>
-		Gridlines are on by default. Set <code>grid={false}</code> to hide them. Use
-		<code>width</code> and <code>height</code> to control the SVG size:
-	</p>
-	<pre><code>{`<LineChart data={data} x="month" y="revenue" grid={false} width={400} height={300} />`}</code
+	<h2>Data labels</h2>
+	<p>Add <code>label</code> to show values at each point:</p>
+	<pre><code
+			>{`<!-- Show y value -->
+<LineChart ... label />
+
+<!-- Custom format -->
+<LineChart ... label={(d) => \`$\${d.revenue.toLocaleString()}\`} />`}</code
+		></pre>
+
+	<h2>Tooltip</h2>
+	<p>Pass <code>tooltip</code> to show a hover tooltip:</p>
+	<pre><code
+			>{`<!-- Default key-value tooltip -->
+<LineChart ... tooltip />
+
+<!-- Custom tooltip -->
+<LineChart ... tooltip={(d) => \`\${d.month}: \${d.revenue}\`} />`}</code
 		></pre>
 
 	<h2>Props</h2>
@@ -65,19 +79,49 @@
 				<td><code>x</code></td>
 				<td><code>string</code></td>
 				<td>—</td>
-				<td>Field name for the X axis</td>
+				<td>Field for X axis</td>
 			</tr>
 			<tr>
 				<td><code>y</code></td>
 				<td><code>string</code></td>
 				<td>—</td>
-				<td>Field name for the Y axis (values)</td>
+				<td>Field for Y axis (values)</td>
 			</tr>
 			<tr>
 				<td><code>color</code></td>
 				<td><code>string</code></td>
 				<td>—</td>
-				<td>Field name for palette color assignment</td>
+				<td>Field for line color grouping</td>
+			</tr>
+			<tr>
+				<td><code>symbol</code></td>
+				<td><code>string</code></td>
+				<td>—</td>
+				<td>Field for marker symbol assignment</td>
+			</tr>
+			<tr>
+				<td><code>stat</code></td>
+				<td><code>string</code></td>
+				<td><code>'identity'</code></td>
+				<td><code>identity</code>, <code>sum</code>, <code>mean</code>, <code>min</code>, <code>max</code>, <code>count</code></td>
+			</tr>
+			<tr>
+				<td><code>curve</code></td>
+				<td><code>'linear' | 'smooth' | 'step'</code></td>
+				<td><code>'linear'</code></td>
+				<td>Line interpolation style</td>
+			</tr>
+			<tr>
+				<td><code>label</code></td>
+				<td><code>boolean | string | (data) => string</code></td>
+				<td><code>false</code></td>
+				<td>Show value labels at each point</td>
+			</tr>
+			<tr>
+				<td><code>tooltip</code></td>
+				<td><code>boolean | (data) => string</code></td>
+				<td><code>false</code></td>
+				<td>Hover tooltip</td>
 			</tr>
 			<tr>
 				<td><code>width</code></td>

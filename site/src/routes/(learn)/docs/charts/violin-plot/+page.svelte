@@ -1,8 +1,8 @@
 <article data-article-root>
 	<p>
 		A data-driven SVG violin plot that shows the full distribution shape of numeric data per
-		category. Uses a simplified kernel density estimation based on quartiles to draw symmetric
-		violin shapes. Built on <code>ViolinBrewer</code>.
+		category. Uses kernel density estimation based on quartiles to draw symmetric violin shapes.
+		Wider sections indicate more observations at that value.
 	</p>
 
 	<h2>Basic usage</h2>
@@ -28,15 +28,7 @@
 
 	<h2>Color coding</h2>
 	<p>Use <code>fill</code> to color violins by category:</p>
-	<pre><code
-			>{`<ViolinPlot
-  data={data}
-  x="class"
-  y="hwy"
-  fill="drv"
-  legend
-/>`}</code
-		></pre>
+	<pre><code>{`<ViolinPlot data={data} x="class" y="hwy" fill="drv" legend />`}</code></pre>
 
 	<h2>Props</h2>
 	<table>
@@ -106,11 +98,8 @@
 		</tbody>
 	</table>
 
-	<h2>Compared to BoxPlot</h2>
 	<p>
-		Both charts show distribution per category from raw observations. The key difference is shape:
-		a <code>BoxPlot</code> uses a rectangular box with discrete quartile lines, while a
-		<code>ViolinPlot</code> draws a continuous curved outline that conveys where data is dense.
-		Wider sections of the violin indicate more observations at that value.
+		See also <a href="/docs/charts/box-plot">BoxPlot</a> — rectangular boxes with discrete quartile
+		lines compared to the continuous curved shape here.
 	</p>
 </article>
