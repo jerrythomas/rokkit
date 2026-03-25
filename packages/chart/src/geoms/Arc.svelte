@@ -54,7 +54,7 @@
           dominant-baseline="central"
           font-size="12"
           font-weight="600"
-          fill="white"
+          fill={arc.stroke}
           pointer-events="none"
           data-plot-element="arc-label"
         >{arc.pct}%</text>

@@ -57,6 +57,14 @@ describe('PieChart', () => {
     expect(paths.length).toBe(2)
   })
 
+  it('renders percentage labels for slices >= 5%', () => {
+    const { container } = render(PieChart, { data, label: 'slice', y: 'value' })
+    const labels = container.querySelectorAll('[data-plot-element="arc-label"]')
+    expect(labels.length).toBeGreaterThanOrEqual(1)
+    const texts = [...labels].map((l) => l.textContent)
+    expect(texts.some((t) => t?.includes('%'))).toBe(true)
+  })
+
   it('renders a donut when innerRadius > 0', () => {
     const { container } = render(PieChart, { data, label: 'slice', y: 'value', innerRadius: 0.5 })
     const paths = container.querySelectorAll('[data-plot-element="arc"]')
