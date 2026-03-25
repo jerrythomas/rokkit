@@ -53,31 +53,25 @@
     return buildGroupedBars(data, channels, xScale, yScale, colors, innerHeight, patterns)
   })
 
-  // Separate $state record as template source of truth for dimmed keys.
-  // Cross-component $state (from CrossFilter context) cannot be reliably tracked
-  // by $effect in this component — so we sync manually on each filter mutation.
   /** @type {Record<string, boolean>} */
   let dimmedByKey = $state({})
 
-  /**
-   * Recomputes dimmedByKey using the current crossfilter state.
-   * Called after each filter mutation so the local $state updates.
-   */
-  function syncDimming() {
+  $effect(() => {
     if (!cf) { dimmedByKey = {}; return }
+    // cf.version is a $state counter that increments on every filter mutation.
+    // Reading it here establishes a reactive dependency so the effect re-runs
+    // whenever any filter changes — including changes from sibling FilterBars.
+    void cf.version
     const next = /** @type {Record<string, boolean>} */ ({})
     for (const bar of bars) {
       next[bar.key] = x ? cf.isDimmed(x, bar.data[x]) : false
     }
     dimmedByKey = next
-  }
-
-  onMount(syncDimming)
+  })
 
   function handleBarClick(barX) {
     if (!filterable || !x || !cf) return
     cf.toggleCategorical(x, barX)
-    syncDimming()
   }
 </script>
 

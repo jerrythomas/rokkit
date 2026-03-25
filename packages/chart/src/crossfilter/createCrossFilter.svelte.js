@@ -7,12 +7,18 @@
  *   - continuous:  [min, max] tuple
  *
  * Exposes a `filters` getter so CrossFilter.svelte can bind to current state.
+ * Exposes a `version` counter that increments on every mutation, giving
+ * components a simple reactive signal to watch for filter changes.
  *
  * @returns {CrossFilter}
  */
 export function createCrossFilter() {
   // Map<dimension, Set<unknown> | [number, number]>
   const filters = $state(new Map())
+
+  // Simple counter incremented on every mutation. Components read cf.version
+  // inside $effect to reactively recompute when any filter changes.
+  let version = $state(0)
 
   /**
    * Returns true if any filter is active on this dimension.
@@ -64,6 +70,7 @@ export function createCrossFilter() {
     } else {
       filters.set(dimension, set)
     }
+    version++
   }
 
   /**
@@ -73,6 +80,7 @@ export function createCrossFilter() {
    */
   function setRange(dimension, range) {
     filters.set(dimension, [range[0], range[1]])
+    version++
   }
 
   /**
@@ -81,16 +89,20 @@ export function createCrossFilter() {
    */
   function clearFilter(dimension) {
     filters.delete(dimension)
+    version++
   }
 
   /** Clears all active filters. */
   function clearAll() {
     filters.clear()
+    version++
   }
 
   return {
     /** @readonly — reactive Map of current filter state */
     get filters() { return filters },
+    /** @readonly — increments on every mutation; read inside $effect to react to any filter change */
+    get version() { return version },
     isFiltered,
     isDimmed,
     toggleCategorical,
