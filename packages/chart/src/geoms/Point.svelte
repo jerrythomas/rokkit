@@ -1,7 +1,7 @@
 <script>
   import { getContext, onMount, onDestroy } from 'svelte'
   import { scaleSqrt } from 'd3-scale'
-  import { buildPoints, assignSymbols } from '../lib/brewing/marks/points.js'
+  import { buildPoints } from '../lib/brewing/marks/points.js'
 
   let { x, y, color, size, symbol: symbolField, stat = 'identity', options = {} } = $props()
 
@@ -9,18 +9,19 @@
   let id = $state(null)
 
   onMount(() => {
-    id = plotState.registerGeom({ type: 'point', channels: { x, y, color, size }, stat, options })
+    id = plotState.registerGeom({ type: 'point', channels: { x, y, color, size, symbol: symbolField }, stat, options })
   })
   onDestroy(() => { if (id) plotState.unregisterGeom(id) })
 
   $effect(() => {
-    if (id) plotState.updateGeom(id, { channels: { x, y, color, size }, stat })
+    if (id) plotState.updateGeom(id, { channels: { x, y, color, size, symbol: symbolField }, stat })
   })
 
-  const data    = $derived(id ? plotState.geomData(id) : [])
-  const xScale  = $derived(plotState.xScale)
-  const yScale  = $derived(plotState.yScale)
-  const colors  = $derived(plotState.colors)
+  const data      = $derived(id ? plotState.geomData(id) : [])
+  const xScale    = $derived(plotState.xScale)
+  const yScale    = $derived(plotState.yScale)
+  const colors    = $derived(plotState.colors)
+  const symbolMap = $derived(plotState.symbols)
 
   const sizeScale = $derived.by(() => {
     if (!size || !data?.length) return null
@@ -29,12 +30,6 @@
     const maxVal = Math.max(...vals)
     const minVal = Math.min(...vals)
     return scaleSqrt().domain([minVal, maxVal]).range([options.minRadius ?? 3, options.maxRadius ?? 20])
-  })
-
-  const symbolMap = $derived.by(() => {
-    if (!symbolField || !data?.length) return null
-    const vals = [...new Set(data.map((d) => d[symbolField]))]
-    return assignSymbols(vals)
   })
 
   const points = $derived.by(() => {

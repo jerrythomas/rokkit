@@ -1,7 +1,7 @@
 <script>
   import { getContext, onMount, onDestroy } from 'svelte'
   import { buildLines } from '../lib/brewing/marks/lines.js'
-  import { assignSymbols, buildSymbolPath } from '../lib/brewing/marks/points.js'
+  import { buildSymbolPath } from '../lib/brewing/marks/points.js'
 
   let { x, y, color, symbol: symbolField, stat = 'identity', options = {} } = $props()
 
@@ -9,28 +9,23 @@
   let id = $state(null)
 
   onMount(() => {
-    id = plotState.registerGeom({ type: 'line', channels: { x, y, color }, stat, options })
+    id = plotState.registerGeom({ type: 'line', channels: { x, y, color, symbol: symbolField }, stat, options })
   })
   onDestroy(() => { if (id) plotState.unregisterGeom(id) })
 
   $effect(() => {
-    if (id) plotState.updateGeom(id, { channels: { x, y, color }, stat })
+    if (id) plotState.updateGeom(id, { channels: { x, y, color, symbol: symbolField }, stat })
   })
 
-  const data   = $derived(id ? plotState.geomData(id) : [])
-  const xScale = $derived(plotState.xScale)
-  const yScale = $derived(plotState.yScale)
-  const colors = $derived(plotState.colors)
+  const data      = $derived(id ? plotState.geomData(id) : [])
+  const xScale    = $derived(plotState.xScale)
+  const yScale    = $derived(plotState.yScale)
+  const colors    = $derived(plotState.colors)
+  const symbolMap = $derived(plotState.symbols)
 
   const lines = $derived.by(() => {
     if (!data?.length || !xScale || !yScale) return []
     return buildLines(data, { x, y, color }, xScale, yScale, colors, options.curve)
-  })
-
-  const symbolMap = $derived.by(() => {
-    if (!symbolField || !data?.length) return null
-    const vals = [...new Set(data.map((d) => d[symbolField]))]
-    return assignSymbols(vals)
   })
 
   const markerRadius = $derived(options.markerRadius ?? 4)

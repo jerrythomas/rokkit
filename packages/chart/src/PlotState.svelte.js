@@ -5,6 +5,7 @@ import { resolvePreset } from './lib/plot/preset.js'
 import { resolveFormat, resolveTooltip, resolveGeom } from './lib/plot/helpers.js'
 import { distinct, assignColors } from './lib/brewing/colors.js'
 import { assignPatterns } from './lib/brewing/patterns.js'
+import { assignSymbols } from './lib/brewing/marks/points.js'
 
 let nextId = 0
 
@@ -43,6 +44,7 @@ export class PlotState {
       y:       tc.y       ?? firstGeom.channels?.y,
       color:   tc.color   ?? firstGeom.channels?.color,
       pattern: tc.pattern ?? firstGeom.channels?.pattern,
+      symbol:  tc.symbol  ?? firstGeom.channels?.symbol,
     }
   })
 
@@ -157,9 +159,20 @@ export class PlotState {
     return assignPatterns(distinct(this.#data, pf))
   })
 
+  // Symbols: Map<symbolKey, shapeName> — only populated when a symbol channel is set.
+  symbols = $derived.by(() => {
+    const sf = this.#effectiveChannels.symbol
+    if (!sf) return new Map()
+    return assignSymbols(distinct(this.#data, sf))
+  })
+
   // Expose effective channel fields for consumers (e.g. Legend)
   colorField = $derived(this.#effectiveChannels.color)
   patternField = $derived(this.#effectiveChannels.pattern)
+  symbolField = $derived(this.#effectiveChannels.symbol)
+
+  // Set of geom types currently registered (used by Legend to pick swatch style)
+  geomTypes = $derived(new Set(this.#geoms.map((g) => g.type)))
 
   xAxisY = $derived.by(() => {
     if (!this.yScale || typeof this.yScale !== 'function') return this.#innerHeight
