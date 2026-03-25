@@ -160,7 +160,7 @@
   })
 </script>
 
-<div class="animated-plot" data-plot-animated>
+<div data-plot-animated>
   <PlotChart
     spec={frameSpec}
     {helpers}
@@ -186,7 +186,7 @@
 </div>
 
 <style>
-  .animated-plot {
+  [data-plot-animated] {
     display: flex;
     flex-direction: column;
     width: 100%;

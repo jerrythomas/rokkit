@@ -25,11 +25,11 @@
   @apply text-surface-z8;
 }
 
-[data-style='minimal'] [data-chart-bar][data-dimmed],
-[data-style='minimal'] [data-chart-point][data-dimmed],
-[data-style='minimal'] [data-chart-arc][data-dimmed],
-[data-style='minimal'] [data-chart-line][data-dimmed],
-[data-style='minimal'] [data-chart-area][data-dimmed] {
+[data-style='minimal'] [data-plot-element="bar"][data-dimmed],
+[data-style='minimal'] [data-plot-element="point"][data-dimmed],
+[data-style='minimal'] [data-plot-element="arc"][data-dimmed],
+[data-style='minimal'] [data-plot-element="line"][data-dimmed],
+[data-style='minimal'] [data-plot-element="area"][data-dimmed] {
   opacity: 0.15;
 }
 

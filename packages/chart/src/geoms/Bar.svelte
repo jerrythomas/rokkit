@@ -64,7 +64,9 @@
     void cf.version
     const next = /** @type {Record<string, boolean>} */ ({})
     for (const bar of bars) {
-      next[bar.key] = x ? cf.isDimmed(x, bar.data[x]) : false
+      const dimmedByX = x ? cf.isDimmed(x, bar.data[x]) : false
+      const dimmedByY = y ? cf.isDimmed(y, bar.data[y]) : false
+      next[bar.key] = dimmedByX || dimmedByY
     }
     dimmedByKey = next
   })
