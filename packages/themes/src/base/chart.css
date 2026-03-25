@@ -74,3 +74,21 @@
 [data-chart-arc] {
   transition: opacity 0.15s ease;
 }
+
+[data-facet-grid] {
+  display: grid;
+  grid-template-columns: repeat(var(--facet-cols, 3), 1fr);
+  gap: 1rem;
+}
+
+[data-facet-panel] {
+  display: flex;
+  flex-direction: column;
+}
+
+[data-facet-title] {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 0.25rem;
+}

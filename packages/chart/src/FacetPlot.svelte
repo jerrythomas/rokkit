@@ -50,10 +50,10 @@
   const ph   = $derived(panelHeight ?? height)
 </script>
 
-<div class="facet-grid" data-facet-grid style:--facet-cols={cols}>
+<div data-facet-grid style:--facet-cols={cols}>
   {#each [...panels.entries()] as [facetValue, panelData] (`${facetValue}`)}
-    <div class="facet-panel" data-facet-panel data-facet-value={facetValue}>
-      <div class="facet-title" data-facet-title>{facetValue}</div>
+    <div data-facet-panel data-facet-value={facetValue}>
+      <div data-facet-title>{facetValue}</div>
       <PlotPanel
         data={panelData}
         {x} {y} {color}
@@ -79,21 +79,3 @@
   </div>
 {/if}
 
-<style>
-  .facet-grid {
-    display: grid;
-    grid-template-columns: repeat(var(--facet-cols), 1fr);
-    gap: 16px;
-  }
-  .facet-panel {
-    display: flex;
-    flex-direction: column;
-  }
-  .facet-title {
-    font-size: 12px;
-    font-weight: 600;
-    text-align: center;
-    margin-bottom: 4px;
-    color: currentColor;
-  }
-</style>

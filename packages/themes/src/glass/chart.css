@@ -32,3 +32,7 @@
 [data-style='glass'] [data-chart-area][data-dimmed] {
   opacity: 0.15;
 }
+
+[data-style='glass'] [data-facet-title] {
+  @apply text-surface-z5;
+}
