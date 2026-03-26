@@ -7,6 +7,11 @@ if (!global.Element.prototype.getAnimations) {
 
 // Use getter/setter so Svelte's `animation.onfinish = callback` assignment
 // immediately queues the callback, simulating instant animation completion.
+const animationEffect = {
+	getTiming: vi.fn(),
+	getComputedTiming: vi.fn()
+}
+
 function createAnimationMock() {
 	let _onfinish = null
 	let _oncancel = null
@@ -18,10 +23,7 @@ function createAnimationMock() {
 		reverse: vi.fn(),
 		persist: vi.fn(),
 		get onfinish() { return _onfinish },
-		set onfinish(cb) {
-			_onfinish = cb
-			if (cb) queueMicrotask(() => cb())
-		},
+		set onfinish(cb) { _onfinish = cb; if (cb) queueMicrotask(() => cb()) },
 		get oncancel() { return _oncancel },
 		set oncancel(cb) { _oncancel = cb },
 		currentTime: 0,
@@ -29,10 +31,7 @@ function createAnimationMock() {
 		playbackRate: 1,
 		playState: 'finished',
 		finished: Promise.resolve(),
-		effect: {
-			getTiming: vi.fn(),
-			getComputedTiming: vi.fn()
-		}
+		effect: animationEffect
 	}
 }
 
