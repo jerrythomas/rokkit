@@ -1,3 +1,4 @@
+import { SvelteSet } from 'svelte/reactivity'
 import { ChartBrewer } from './brewer.svelte.js'
 import { applyAggregate } from './stats.js'
 
@@ -10,7 +11,7 @@ export class CartesianBrewer extends ChartBrewer {
     if (stat === 'identity' || !channels.x || !channels.y) return data
     // Group by all mapped aesthetic dimensions so they survive aggregation.
     // e.g. x=region, fill=region, pattern=quarter → by=['region','quarter']
-    const by = [...new Set([channels.x, channels.fill, channels.color, channels.pattern].filter(Boolean))]
+    const by = [...new SvelteSet([channels.x, channels.fill, channels.color, channels.pattern].filter(Boolean))]
     return applyAggregate(data, { by, value: channels.y, stat })
   }
 }

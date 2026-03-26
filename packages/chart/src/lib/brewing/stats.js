@@ -50,8 +50,12 @@ export function applyBoxStat(data, channels) {
  * @param {{ by: string[], value: string, stat: string|Function }} opts
  * @returns {Object[]}
  */
+function isIdentityOrEmpty(stat, by, value) {
+  return stat === 'identity' || by.length === 0 || value === null || value === undefined
+}
+
 export function applyAggregate(data, { by, value, stat }) {
-  if (stat === 'identity' || by.length === 0 || value === null || value === undefined) return data
+  if (isIdentityOrEmpty(stat, by, value)) return data
   const fn = typeof stat === 'function' ? stat : STAT_FNS[stat]
   if (fn === null || fn === undefined) return data
   return dataset(data)

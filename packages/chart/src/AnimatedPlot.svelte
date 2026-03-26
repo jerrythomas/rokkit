@@ -99,19 +99,20 @@
   let lastTime = 0
   let rafId = 0
 
+  function advanceFrame() {
+    currentIndex = currentIndex + 1
+    if (currentIndex >= frameKeys.length) {
+      if (animate.loop ?? false) currentIndex = 0
+      else playing = false
+    }
+  }
+
   function tick(time) {
     if (!playing) return
     if (time - lastTime >= msPerFrame) {
       lastTime = time
-      currentIndex = currentIndex + 1
-      if (currentIndex >= frameKeys.length) {
-        if (animate.loop ?? false) {
-          currentIndex = 0
-        } else {
-          playing = false
-          return
-        }
-      }
+      advanceFrame()
+      if (!playing) return
     }
     rafId = requestAnimationFrame(tick)
   }

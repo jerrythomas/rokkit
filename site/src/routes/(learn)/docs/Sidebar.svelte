@@ -8,29 +8,23 @@
 	let query = $state('')
 	let searchInput = $state(null)
 
+	function matchesQuery(text, q) {
+		return Boolean(text?.toLowerCase().includes(q))
+	}
+
+	function filterItem(item, q) {
+		if (!item.children) return matchesQuery(item.title, q) ? [item] : []
+		const matching = item.children.filter(
+			(c) => matchesQuery(c.title, q) || matchesQuery(c.description, q)
+		)
+		if (matching.length > 0) return [{ ...item, children: matching }]
+		return matchesQuery(item.title, q) ? [item] : []
+	}
+
 	let filtered = $derived.by(() => {
 		const q = query.trim().toLowerCase()
 		if (!q) return sections
-
-		return sections.flatMap((item) => {
-			// Guide items (no children) — match against title
-			if (!item.children) {
-				return item.title?.toLowerCase().includes(q) ? [item] : []
-			}
-			// Group items — filter children, keep group if any match
-			const matchingChildren = item.children.filter(
-				(child) =>
-					child.title?.toLowerCase().includes(q) || child.description?.toLowerCase().includes(q)
-			)
-			if (matchingChildren.length > 0) {
-				return [{ ...item, children: matchingChildren }]
-			}
-			// Also match group title itself
-			if (item.title?.toLowerCase().includes(q)) {
-				return [item]
-			}
-			return []
-		})
+		return sections.flatMap((item) => filterItem(item, q))
 	})
 
 	export function focusSearch() {

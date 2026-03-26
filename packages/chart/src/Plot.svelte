@@ -47,27 +47,8 @@
     children
   } = $props()
 
-  // Create PlotState with initial values and provide as context.
-  // untrack() suppresses "captures initial value" warnings — intentional:
-  // the $effect below handles all subsequent reactive updates.
-  const plotState = untrack(() => new PlotState({
-    data: spec?.data ?? data,
-    width: spec?.width ?? width,
-    height: spec?.height ?? height,
-    mode,
-    margin,
-    channels: spec ? { x: spec.x, y: spec.y, color: spec.color ?? spec.fill } : {},
-    labels: spec?.labels ?? {},
-    helpers,
-    xDomain: spec?.xDomain,
-    yDomain: spec?.yDomain,
-    colorDomain: spec?.colorDomain
-  }))
-  setContext('plot-state', plotState)
-
-  // Keep state in sync when reactive config changes
-  $effect(() => {
-    plotState.update({
+  function buildPlotConfig() {
+    return {
       data: spec?.data ?? data,
       width: spec?.width ?? width,
       height: spec?.height ?? height,
@@ -79,7 +60,18 @@
       xDomain: spec?.xDomain,
       yDomain: spec?.yDomain,
       colorDomain: spec?.colorDomain
-    })
+    }
+  }
+
+  // Create PlotState with initial values and provide as context.
+  // untrack() suppresses "captures initial value" warnings — intentional:
+  // the $effect below handles all subsequent reactive updates.
+  const plotState = untrack(() => new PlotState(buildPlotConfig()))
+  setContext('plot-state', plotState)
+
+  // Keep state in sync when reactive config changes
+  $effect(() => {
+    plotState.update(buildPlotConfig())
   })
 
   const svgWidth  = $derived(spec?.width ?? width)
@@ -131,7 +123,7 @@
       {@render children?.()}
 
       <!-- Spec-driven geoms -->
-      {#each specGeoms as geomSpec}
+      {#each specGeoms as geomSpec (geomSpec.type)}
         {@const GeomComponent = resolveGeomComponent(geomSpec.type)}
         {#if GeomComponent}
           <GeomComponent

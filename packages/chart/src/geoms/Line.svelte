@@ -14,8 +14,7 @@
     if (!label) return null
     if (label === true) return String(data[y] ?? '')
     if (typeof label === 'function') return String(label(data) ?? '')
-    if (typeof label === 'string') return String(data[label] ?? '')
-    return null
+    return typeof label === 'string' ? String(data[label] ?? '') : null
   }
 
   const plotState = getContext('plot-state')

@@ -14,8 +14,7 @@
     if (!label) return null
     if (label === true) return String(data[y] ?? '')
     if (typeof label === 'function') return String(label(data) ?? '')
-    if (typeof label === 'string') return String(data[label] ?? '')
-    return null
+    return typeof label === 'string' ? String(data[label] ?? '') : null
   }
 
   const plotState = getContext('plot-state')
@@ -36,18 +35,24 @@
   const colors    = $derived(plotState.colors)
   const symbolMap = $derived(plotState.symbols)
 
-  const sizeScale = $derived.by(() => {
+  function buildSizeScale() {
     if (!size || !data?.length) return null
     const vals = data.map((d) => Number(d[size])).filter((v) => !isNaN(v))
     if (!vals.length) return null
-    const maxVal = Math.max(...vals)
     const minVal = Math.min(...vals)
-    return scaleSqrt().domain([minVal, maxVal]).range([options.minRadius ?? 3, options.maxRadius ?? 20])
-  })
+    const maxVal = Math.max(...vals)
+    const minRadius = options.minRadius ?? 3
+    const maxRadius = options.maxRadius ?? 20
+    return scaleSqrt().domain([minVal, maxVal]).range([minRadius, maxRadius])
+  }
+
+  const sizeScale = $derived.by(() => buildSizeScale())
+
+  const defaultRadius = $derived(options.radius ?? 4)
 
   const points = $derived.by(() => {
     if (!data?.length || !xScale || !yScale) return []
-    return buildPoints(data, { x, y, color, size, symbol: symbolField }, xScale, yScale, colors, sizeScale, symbolMap, options.radius ?? 4)
+    return buildPoints(data, { x, y, color, size, symbol: symbolField }, xScale, yScale, colors, sizeScale, symbolMap, defaultRadius)
   })
 </script>
 

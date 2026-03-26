@@ -11,7 +11,7 @@
 
 <pattern {id} patternUnits="userSpaceOnUse" width={size} height={size}>
 	<rect width={size} height={size} fill="none" />
-	{#each resolvedMarks as { type, attrs }}
+	{#each resolvedMarks as { type, attrs }, i (i)}
 		{#if type === 'line'}
 			<line {...attrs} />
 		{:else if type === 'circle'}

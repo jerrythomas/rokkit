@@ -56,7 +56,7 @@
     <path d={areaPath} fill={fillColor} stroke="none" />
     <path d={linePath} fill="none" stroke={strokeColor} stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" />
   {:else if type === 'bar'}
-    {#each values as v, i}
+    {#each values as v, i (i)}
       <rect
         x={xScale(i) - barWidth / 2}
         y={yScale(v)}

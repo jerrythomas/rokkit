@@ -23,6 +23,7 @@
 	let values = $state(inputTypes.reduce((acc, input) => ({ ...acc, [input.type]: null }), {}))
 	let messages = $state({})
 
+	// eslint-disable-next-line complexity
 	function getDescription(input) {
 		const val = values[input.type]
 		if (input.type === 'checkbox' || input.type === 'switch') {

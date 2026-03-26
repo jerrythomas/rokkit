@@ -1,3 +1,5 @@
+import { SvelteMap, SvelteSet } from 'svelte/reactivity'
+
 /**
  * Creates a reactive cross-filter state object.
  *
@@ -12,9 +14,25 @@
  *
  * @returns {CrossFilter}
  */
+
+function toggleCategoricalInMap(filters, dimension, value) {
+  const existing = filters.get(dimension)
+  const set = existing instanceof Set ? new SvelteSet(existing) : new SvelteSet()
+  if (set.has(value)) {
+    set.delete(value)
+  } else {
+    set.add(value)
+  }
+  if (set.size === 0) {
+    filters.delete(dimension)
+  } else {
+    filters.set(dimension, set)
+  }
+}
+
 export function createCrossFilter() {
   // Map<dimension, Set<unknown> | [number, number]>
-  const filters = $state(new Map())
+  const filters = new SvelteMap()
 
   // Simple counter incremented on every mutation. Components read cf.version
   // inside $effect to reactively recompute when any filter changes.
@@ -58,18 +76,7 @@ export function createCrossFilter() {
    * @param {unknown} value
    */
   function toggleCategorical(dimension, value) {
-    const existing = filters.get(dimension)
-    const set = existing instanceof Set ? new Set(existing) : new Set()
-    if (set.has(value)) {
-      set.delete(value)
-    } else {
-      set.add(value)
-    }
-    if (set.size === 0) {
-      filters.delete(dimension)
-    } else {
-      filters.set(dimension, set)
-    }
+    toggleCategoricalInMap(filters, dimension, value)
     version++
   }
 

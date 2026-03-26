@@ -8,13 +8,15 @@
   let id = $state(null)
 
   // fill ?? x drives the colors map for both violin interior and outline
+  const fillChannel = $derived(fill ?? x)
+
   onMount(() => {
-    id = plotState.registerGeom({ type: 'violin', channels: { x, y, color: fill ?? x }, stat, options })
+    id = plotState.registerGeom({ type: 'violin', channels: { x, y, color: fillChannel }, stat, options })
   })
   onDestroy(() => { if (id) plotState.unregisterGeom(id) })
 
   $effect(() => {
-    if (id) plotState.updateGeom(id, { channels: { x, y, color: fill ?? x }, stat })
+    if (id) plotState.updateGeom(id, { channels: { x, y, color: fillChannel }, stat })
   })
 
   const data   = $derived(id ? plotState.geomData(id) : [])
@@ -24,7 +26,7 @@
 
   const violins = $derived.by(() => {
     if (!data?.length || !xScale || !yScale) return []
-    return buildViolins(data, { x, fill: fill ?? x }, xScale, yScale, colors)
+    return buildViolins(data, { x, fill: fillChannel }, xScale, yScale, colors)
   })
 </script>
 

@@ -8,13 +8,15 @@
   let id = $state(null)
 
   // fill ?? x drives the colors map for both box interior and whisker strokes
+  const fillChannel = $derived(fill ?? x)
+
   onMount(() => {
-    id = plotState.registerGeom({ type: 'box', channels: { x, y, color: fill ?? x }, stat, options })
+    id = plotState.registerGeom({ type: 'box', channels: { x, y, color: fillChannel }, stat, options })
   })
   onDestroy(() => { if (id) plotState.unregisterGeom(id) })
 
   $effect(() => {
-    if (id) plotState.updateGeom(id, { channels: { x, y, color: fill ?? x }, stat })
+    if (id) plotState.updateGeom(id, { channels: { x, y, color: fillChannel }, stat })
   })
 
   const data   = $derived(id ? plotState.geomData(id) : [])
@@ -24,7 +26,7 @@
 
   const boxes = $derived.by(() => {
     if (!data?.length || !xScale || !yScale) return []
-    return buildBoxes(data, { x, fill: fill ?? x }, xScale, yScale, colors)
+    return buildBoxes(data, { x, fill: fillChannel }, xScale, yScale, colors)
   })
 </script>
 

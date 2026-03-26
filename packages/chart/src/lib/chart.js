@@ -46,7 +46,7 @@ class Chart {
 	// padding
 	// flipCoords = false
 
-	constructor(data, opts) {
+	#initFields(opts) {
 		this.width = Number(opts.width) || 2048
 		this.height = Number(opts.height) || 2048
 		this.flipCoords = opts.flipCoords || false
@@ -58,17 +58,18 @@ class Chart {
 		this.fill = opts.fill || opts.x
 		this.color = opts.color || opts.fill
 		this.shape = opts.shape || opts.fill
-
 		this.padding = opts.padding !== undefined ? Number(opts.padding) : 32
-
-		this.spacing =
-			Number(opts.spacing) >= 0 && Number(opts.spacing) <= 0.5 ? Number(opts.spacing) : 0
+		this.spacing = (Number(opts.spacing) >= 0 && Number(opts.spacing) <= 0.5) ? Number(opts.spacing) : 0
 		this.margin = {
 			top: Number(opts.margin?.top) || 0,
 			left: Number(opts.margin?.left) || 0,
 			right: Number(opts.margin?.right) || 0,
 			bottom: Number(opts.margin?.bottom) || 0
 		}
+		this.stat = opts.stat || 'identity'
+	}
+
+	#initDomain(data) {
 		this.domain = {
 			x: [...new Set(data.map((d) => d[this.x]))],
 			y: [...new Set(data.map((d) => d[this.y]))]
@@ -76,8 +77,9 @@ class Chart {
 		if (this.flipCoords) {
 			this.domain = { y: this.domain.x, x: this.domain.y }
 		}
-		this.stat = opts.stat || 'identity'
+	}
 
+	#initData(data) {
 		this.data = data.map((d) => ({
 			x: this.flipCoords ? d[this.y] : d[this.x],
 			y: this.flipCoords ? d[this.x] : d[this.y],
@@ -85,7 +87,12 @@ class Chart {
 			color: d[this.color]
 			// shape: d[this.shape]
 		}))
+	}
 
+	constructor(data, opts) {
+		this.#initFields(opts)
+		this.#initDomain(data)
+		this.#initData(data)
 		this.refresh()
 	}
 

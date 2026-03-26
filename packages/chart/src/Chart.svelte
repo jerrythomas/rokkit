@@ -40,27 +40,24 @@
   const brewer = new ChartBrewer()
   setContext('chart-brewer', brewer)
 
+  function buildChannels() {
+    const channels = {}
+    if (x)       channels.x = x
+    if (y)       channels.y = y
+    if (color)   channels.color = color
+    if (pattern) channels.pattern = pattern
+    if (fill)    channels.fill = fill
+    if (size)    channels.size = size
+    if (label)   channels.label = label
+    if (symbol)  channels.symbol = symbol
+    return channels
+  }
+
   $effect(() => {
     if (spec) {
-      brewer.update({
-        data: spec.data,
-        channels: spec.channels,
-        width,
-        height,
-        mode,
-        layers: spec.layers
-      })
+      brewer.update({ data: spec.data, channels: spec.channels, width, height, mode, layers: spec.layers })
     } else {
-      const channels = {}
-      if (x)       channels.x = x
-      if (y)       channels.y = y
-      if (color)   channels.color = color
-      if (pattern) channels.pattern = pattern
-      if (fill)    channels.fill = fill
-      if (size)    channels.size = size
-      if (label)   channels.label = label
-      if (symbol)  channels.symbol = symbol
-      brewer.update({ data, channels, width, height, mode })
+      brewer.update({ data, channels: buildChannels(), width, height, mode })
     }
   })
 

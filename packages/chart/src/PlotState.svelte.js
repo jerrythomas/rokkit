@@ -1,4 +1,5 @@
 import { untrack } from 'svelte'
+import { SvelteMap, SvelteSet } from 'svelte/reactivity'
 import { applyGeomStat } from './lib/plot/stat.js'
 import { inferFieldType, inferOrientation, buildUnifiedXScale, buildUnifiedYScale, inferColorScaleType } from './lib/plot/scales.js'
 import { resolvePreset } from './lib/plot/preset.js'
@@ -38,19 +39,28 @@ export class PlotState {
 
   // Effective channels: prefer top-level channels; fall back to first geom's channels
   // for the declarative API where no spec is provided.
+  #mergeGeomChannels(tc, geom) {
+    return {
+      x:       tc.x       ?? geom.channels?.x,
+      y:       tc.y       ?? geom.channels?.y,
+      color:   tc.color   ?? geom.channels?.color,
+      pattern: tc.pattern ?? geom.channels?.pattern,
+      symbol:  tc.symbol  ?? geom.channels?.symbol,
+    }
+  }
+
   #effectiveChannels = $derived.by(() => {
     const tc = this.#channels
     if (tc.x && tc.y) return tc
     const firstGeom = this.#geoms[0]
     if (!firstGeom) return tc
-    return {
-      x:       tc.x       ?? firstGeom.channels?.x,
-      y:       tc.y       ?? firstGeom.channels?.y,
-      color:   tc.color   ?? firstGeom.channels?.color,
-      pattern: tc.pattern ?? firstGeom.channels?.pattern,
-      symbol:  tc.symbol  ?? firstGeom.channels?.symbol,
-    }
+    return this.#mergeGeomChannels(tc, firstGeom)
   })
+
+  #resolveXType(rawXType, yType) {
+    const hasBarGeom = this.#geoms.some((g) => g.type === 'bar')
+    return (hasBarGeom && rawXType === 'continuous' && yType === 'continuous') ? 'band' : rawXType
+  }
 
   orientation = $derived.by(() => {
     const xField = this.#effectiveChannels.x
@@ -59,9 +69,7 @@ export class PlotState {
     const rawXType = inferFieldType(this.#data, xField)
     const yType = inferFieldType(this.#data, yField)
     // Bar geoms treat numeric X as categorical (e.g. year on X → vertical bars).
-    const hasBarGeom = this.#geoms.some((g) => g.type === 'bar')
-    const xType = (hasBarGeom && rawXType === 'continuous' && yType === 'continuous') ? 'band' : rawXType
-    return inferOrientation(xType, yType)
+    return inferOrientation(this.#resolveXType(rawXType, yType), yType)
   })
 
   colorScaleType = $derived.by(() => {
@@ -91,6 +99,44 @@ export class PlotState {
     })
   })
 
+  // For box/violin geoms, compute y domain from iqr_min/iqr_max instead of raw y values.
+  #resolveBoxDomain() {
+    const boxGeom = this.#geoms.find((g) => g.type === 'box' || g.type === 'violin')
+    if (!boxGeom) return null
+    const boxData = this.geomData(boxGeom.id)
+    const isValid = (v) => v !== null && v !== undefined && !isNaN(v)
+    const mins = boxData.map((d) => d.iqr_min).filter(isValid)
+    const maxs = boxData.map((d) => d.iqr_max).filter(isValid)
+    return (mins.length > 0 && maxs.length > 0) ? [Math.min(...mins), Math.max(...maxs)] : null
+  }
+
+  // For stacked bars, compute y domain from per-x column totals.
+  #resolveStackDomain(field) {
+    const stackGeom = this.#geoms.find((g) => g.options?.stack)
+    if (!stackGeom) return null
+    const xField = this.#effectiveChannels.x
+    const stackData = this.geomData(stackGeom.id)
+    if (!xField || stackData.length === 0) return null
+    // Mirror buildStackedBars/subBandFields: stack dimension is the first
+    // non-x field among [color, pattern]. Summing all raw rows (stat=identity)
+    // would overcount when multiple rows share the same (x, stack) key.
+    const colorField = this.#effectiveChannels.color
+    const patternField = this.#effectiveChannels.pattern
+    const stackField = [colorField, patternField].find((f) => f && f !== xField) ?? colorField
+    const lookup = new SvelteMap()
+    for (const d of stackData) {
+      const xVal = d[xField]
+      const cKey = stackField ? String(d[stackField]) : '_'
+      if (!lookup.has(xVal)) lookup.set(xVal, new SvelteMap())
+      lookup.get(xVal).set(cKey, Number(d[field]) || 0)
+    }
+    const totals = new SvelteMap()
+    for (const [xVal, colorMap] of lookup) {
+      totals.set(xVal, [...colorMap.values()].reduce((s, v) => s + v, 0))
+    }
+    return [0, Math.max(0, ...totals.values())]
+  }
+
   yScale = $derived.by(() => {
     const field = this.#effectiveChannels.y
     if (!field) return null
@@ -98,55 +144,8 @@ export class PlotState {
       ? this.#geoms.map((g) => this.geomData(g.id))
       : [this.#rawData]
     const includeZero = this.orientation === 'vertical'
-
-    // For stacked bars, the y domain must cover the per-x column *total*, not the
-    // per-row max — otherwise bars overflow the plot area.
-    // For box/violin geoms, the processed data has iqr_min/iqr_max instead of raw y values.
-    let yDomain = this.#yDomain
-    if (!yDomain) {
-      const boxGeom = this.#geoms.find((g) => g.type === 'box' || g.type === 'violin')
-      if (boxGeom) {
-        const boxData = this.geomData(boxGeom.id)
-        const mins = boxData.map((d) => d.iqr_min).filter((v) => v !== null && v !== undefined && !isNaN(v))
-        const maxs = boxData.map((d) => d.iqr_max).filter((v) => v !== null && v !== undefined && !isNaN(v))
-        if (mins.length > 0 && maxs.length > 0) {
-          yDomain = [Math.min(...mins), Math.max(...maxs)]
-        }
-      }
-    }
-    if (!yDomain) {
-      const stackGeom = this.#geoms.find((g) => g.options?.stack)
-      if (stackGeom) {
-        const xField = this.#effectiveChannels.x
-        const stackData = this.geomData(stackGeom.id)
-        if (xField && stackData.length > 0) {
-          // Mirror buildStackedBars/subBandFields: stack dimension is the first
-          // non-x field among [color, pattern]. Summing all raw rows (stat=identity)
-          // would overcount when multiple rows share the same (x, stack) key.
-          const colorField = this.#effectiveChannels.color
-          const patternField = this.#effectiveChannels.pattern
-          const stackField = [colorField, patternField].find((f) => f && f !== xField) ?? colorField
-          const lookup = new Map()
-          for (const d of stackData) {
-            const xVal = d[xField]
-            const cKey = stackField ? String(d[stackField]) : '_'
-            if (!lookup.has(xVal)) lookup.set(xVal, new Map())
-            lookup.get(xVal).set(cKey, Number(d[field]) || 0)
-          }
-          const totals = new Map()
-          for (const [xVal, colorMap] of lookup) {
-            totals.set(xVal, [...colorMap.values()].reduce((s, v) => s + v, 0))
-          }
-          const maxStack = Math.max(0, ...totals.values())
-          yDomain = [0, maxStack]
-        }
-      }
-    }
-
-    return buildUnifiedYScale(datasets, field, this.#innerHeight, {
-      domain: yDomain,
-      includeZero
-    })
+    const yDomain = this.#yDomain ?? this.#resolveBoxDomain() ?? this.#resolveStackDomain(field)
+    return buildUnifiedYScale(datasets, field, this.#innerHeight, { domain: yDomain, includeZero })
   })
 
   // Colors: Map<colorKey, { fill, stroke }> for all distinct color field values.
@@ -162,15 +161,15 @@ export class PlotState {
   // and the pattern field is categorical (continuous fields can't be discretely patterned).
   patterns = $derived.by(() => {
     const pf = this.#effectiveChannels.pattern
-    if (!pf) return new Map()
-    if (inferFieldType(this.#data, pf) === 'continuous') return new Map()
+    if (!pf) return new SvelteMap()
+    if (inferFieldType(this.#data, pf) === 'continuous') return new SvelteMap()
     return assignPatterns(distinct(this.#data, pf))
   })
 
   // Symbols: Map<symbolKey, shapeName> — only populated when a symbol channel is set.
   symbols = $derived.by(() => {
     const sf = this.#effectiveChannels.symbol
-    if (!sf) return new Map()
+    if (!sf) return new SvelteMap()
     return assignSymbols(distinct(this.#data, sf))
   })
 
@@ -180,7 +179,7 @@ export class PlotState {
   symbolField = $derived(this.#effectiveChannels.symbol)
 
   // Set of geom types currently registered (used by Legend to pick swatch style)
-  geomTypes = $derived(new Set(this.#geoms.map((g) => g.type)))
+  geomTypes = $derived(new SvelteSet(this.#geoms.map((g) => g.type)))
 
   xAxisY = $derived.by(() => {
     if (!this.yScale || typeof this.yScale !== 'function') return this.#innerHeight

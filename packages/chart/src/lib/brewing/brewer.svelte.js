@@ -1,3 +1,4 @@
+import { SvelteMap, SvelteSet } from 'svelte/reactivity'
 import { distinct, assignColors } from './colors.js'
 import { assignPatterns, toPatternId, PATTERN_ORDER } from './patterns.js'
 import { assignSymbols } from './symbols.js'
@@ -21,39 +22,39 @@ const DEFAULT_MARGIN = { top: 20, right: 20, bottom: 40, left: 50 }
  * @param {Map<unknown, string>} symbolMap
  * @returns {{ field: string, items: { label: string, fill: string|null, stroke: string|null, patternId: string|null, shape: string|null }[] }[]}
  */
+function addAesthetic(byField, field, aesthetic, keys) {
+  if (byField.has(field)) {
+    byField.get(field).aesthetics.push(aesthetic)
+  } else {
+    byField.set(field, { aesthetics: [aesthetic], keys })
+  }
+}
+
+function buildLegendItem(key, aesthetics, colorMap, patternMap, symbolMap) {
+  const hasColor = aesthetics.includes('color')
+  return {
+    label: String(key),
+    fill: hasColor ? (colorMap.get(key)?.fill ?? null) : null,
+    stroke: hasColor ? (colorMap.get(key)?.stroke ?? null) : null,
+    patternId: aesthetics.includes('pattern') && patternMap.has(key) ? toPatternId(key) : null,
+    shape: aesthetics.includes('symbol') ? (symbolMap.get(key) ?? 'circle') : null
+  }
+}
+
 export function buildLegendGroups(channels, colorMap, patternMap, symbolMap) {
   const cf = channels.fill ?? channels.color
   const { pattern: pf, symbol: sf } = channels
-  const byField = new Map()
+  const byField = new SvelteMap()
 
-  if (cf) {
-    byField.set(cf, { aesthetics: ['color'], keys: [...colorMap.keys()] })
-  }
-  if (pf) {
-    if (byField.has(pf)) {
-      byField.get(pf).aesthetics.push('pattern')
-    } else {
-      byField.set(pf, { aesthetics: ['pattern'], keys: [...patternMap.keys()] })
-    }
-  }
-  if (sf) {
-    if (byField.has(sf)) {
-      byField.get(sf).aesthetics.push('symbol')
-    } else {
-      byField.set(sf, { aesthetics: ['symbol'], keys: [...symbolMap.keys()] })
-    }
-  }
+  if (cf) byField.set(cf, { aesthetics: ['color'], keys: [...colorMap.keys()] })
+  if (pf) addAesthetic(byField, pf, 'pattern', [...patternMap.keys()])
+  if (sf) addAesthetic(byField, sf, 'symbol', [...symbolMap.keys()])
 
   return [...byField.entries()].map(([field, { aesthetics, keys }]) => ({
     field,
-    items: keys.filter((k) => k !== null && k !== undefined).map((key) => ({
-      label: String(key),
-      fill: aesthetics.includes('color') ? (colorMap.get(key)?.fill ?? null) : null,
-      stroke: aesthetics.includes('color') ? (colorMap.get(key)?.stroke ?? null) : null,
-      patternId:
-        aesthetics.includes('pattern') && patternMap.has(key) ? toPatternId(key) : null,
-      shape: aesthetics.includes('symbol') ? (symbolMap.get(key) ?? 'circle') : null
-    }))
+    items: keys
+      .filter((k) => k !== null && k !== undefined)
+      .map((key) => buildLegendItem(key, aesthetics, colorMap, patternMap, symbolMap))
   })).filter((group) => group.items.length > 0)
 }
 
@@ -93,14 +94,14 @@ export class ChartBrewer {
   colorMap = $derived(
     (this.#channels.fill ?? this.#channels.color)
       ? assignColors(distinct(this.#rawData, this.#channels.fill ?? this.#channels.color), this.#mode)
-      : new Map()
+      : new SvelteMap()
   )
 
   /** @type {Map<unknown, string>} */
   patternMap = $derived(
     this.#channels.pattern
       ? assignPatterns(distinct(this.#rawData, this.#channels.pattern))
-      : new Map()
+      : new SvelteMap()
   )
 
   /**
@@ -128,7 +129,7 @@ export class ChartBrewer {
     for (const [pk, name] of this.patternMap.entries()) {
       defs.push({ id: toPatternId(pk), name, fill: '#ddd', stroke: '#666' })
     }
-    const seenComposite = new Set()
+    const seenComposite = new SvelteSet()
     for (const d of this.processedData) {
       const fk = d[ff]
       const pk = d[pf]
@@ -147,7 +148,7 @@ export class ChartBrewer {
   symbolMap = $derived(
     this.#channels.symbol
       ? assignSymbols(distinct(this.#rawData, this.#channels.symbol))
-      : new Map()
+      : new SvelteMap()
   )
 
   get innerWidth()  { return this.#width  - this.#margin.left - this.#margin.right }

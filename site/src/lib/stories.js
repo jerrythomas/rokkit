@@ -30,41 +30,38 @@ const GROUPS = {
  * @param {import('@rokkit/stories').ModuleFile[]} metadata - The metadata to convert.
  * @returns {import('@rokkit/stories').Metadata[]} Array of section objects
  */
+function placeItem(groups, guideItems, item) {
+	const category = (item.category ?? '').toLowerCase()
+	if (category === 'guide') {
+		guideItems.push(item)
+		return
+	}
+	if (!groups[category]) groups[category] = { children: [] }
+	if (item.depth === 1) {
+		groups[category] = { ...groups[category], ...item }
+	} else {
+		groups[category].children.push(item)
+		groups[category].children = groups[category].children.sort((a, b) => a.order - b.order)
+	}
+}
+
 export function getSections(metadata) {
 	/** @type {import('@rokkit/stories').Metadata[]} */
 	const guideItems = []
 	/** @type Object<string, import('@rokkit/stories').Metadata> */
 	const groups = {}
 
-	// Pre-initialise GROUPS so they exist even with no depth-1 header file
 	Object.entries(GROUPS).forEach(([key, def]) => {
 		groups[key] = { ...def, children: [] }
 	})
 
 	metadata.forEach(({ content, file }) => {
-		const item = {
+		placeItem(groups, guideItems, {
 			order: 99,
 			...content,
 			slug: `/docs${getSlug(file)}`,
 			depth: file.split('/').length - 2
-		}
-
-		const category = (item.category ?? '').toLowerCase()
-
-		if (category === 'guide') {
-			guideItems.push(item)
-			return
-		}
-
-		if (!groups[category]) {
-			groups[category] = { children: [] }
-		}
-		if (item.depth === 1) {
-			groups[category] = { ...groups[category], ...item }
-		} else {
-			groups[category].children.push(item)
-		}
-		groups[category].children = groups[category].children.sort((a, b) => a.order - b.order)
+		})
 	})
 
 	const sortedGuides = guideItems.sort((a, b) => a.order - b.order)

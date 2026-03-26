@@ -36,7 +36,7 @@ jobs:
           NODE_NO_WARNINGS: 1
         run: |
           # Publish in dependency order so each package's deps are already on npm
-          PACKAGES=(helpers cli icons core data actions themes unocss states ui forms app chart stories)
+          PACKAGES=(helpers cli icons core data actions themes unocss states ui forms blocks app chart stories)
           for name in "${PACKAGES[@]}"; do
             pkg="./packages/${name}/package.json"
             [ -f "$pkg" ] || continue
@@ -61,7 +61,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
           NODE_NO_WARNINGS: 1
         run: |
-          PACKAGES=(helpers cli icons core data actions themes unocss states ui forms app chart stories)
+          PACKAGES=(helpers cli icons core data actions themes unocss states ui forms blocks app chart stories)
           VERSION=$(node -p "require('./packages/helpers/package.json').version")
           for name in "${PACKAGES[@]}"; do
             pkg="./packages/${name}/package.json"

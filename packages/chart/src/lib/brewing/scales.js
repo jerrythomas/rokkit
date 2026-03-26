@@ -21,6 +21,11 @@ export function buildXScale(data, field, width, opts = {}) {
     .padding(opts.padding ?? 0.2)
 }
 
+function maxFromLayer(layer) {
+  if (layer.data && layer.y) return max(layer.data, (d) => Number(d[layer.y])) ?? 0
+  return 0
+}
+
 /**
  * Builds a y linear scale from 0 to max, extended by any layer overrides.
  * @param {Object[]} data
@@ -29,13 +34,8 @@ export function buildXScale(data, field, width, opts = {}) {
  * @param {Array<{data?: Object[], y?: string}>} layers
  */
 export function buildYScale(data, field, height, layers = []) {
-  let maxVal = max(data, (d) => Number(d[field])) ?? 0
-  for (const layer of layers) {
-    if (layer.data && layer.y) {
-      const layerMax = max(layer.data, (d) => Number(d[layer.y])) ?? 0
-      if (layerMax > maxVal) maxVal = layerMax
-    }
-  }
+  const dataMax = max(data, (d) => Number(d[field])) ?? 0
+  const maxVal = layers.reduce((m, layer) => Math.max(m, maxFromLayer(layer)), dataMax)
   return scaleLinear().domain([0, maxVal]).range([height, 0]).nice()
 }
 

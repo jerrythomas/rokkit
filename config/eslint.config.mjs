@@ -126,10 +126,14 @@ export default [
       '**/*.spec.svelte.ts',
       '**/*.test.ts',
       '**/*.test.js',
+      '**/*.e2e.ts',
       '**/spec/**'
     ],
     rules: {
       'max-lines-per-function': 'off',
+      complexity: 'off',
+      'max-depth': 'off',
+      'max-params': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
       'require-await': 'off',
@@ -145,6 +149,53 @@ export default [
       'svelte/no-unused-svelte-ignore': 'warn',
       'svelte/prefer-svelte-reactivity': 'warn',
       'svelte/no-dom-manipulating': 'warn'
+    }
+  },
+  {
+    // Chart data-processing functions have inherent complexity (D3 rendering algorithms),
+    // many required parameters (scales, data, channels, colors, patterns), and long bodies
+    // due to the nature of SVG path construction. These rules are relaxed here.
+    files: [
+      'packages/chart/src/geoms/lib/**',
+      'packages/chart/src/lib/brewing/marks/**',
+      'packages/chart/src/lib/brewing/bars.svelte.js'
+    ],
+    rules: {
+      'max-params': 'off',
+      'max-lines-per-function': 'off',
+      complexity: 'off'
+    }
+  },
+  {
+    // PlotState, brewer, Plot.svelte, Chart.svelte, geom components, crossfilter, and
+    // lib/plot helpers have inherent complexity as chart state managers/renderers.
+    files: [
+      'packages/chart/src/PlotState.svelte.js',
+      'packages/chart/src/lib/brewing/brewer.svelte.js',
+      'packages/chart/src/lib/brewing/CartesianBrewer.svelte.js',
+      'packages/chart/src/Plot.svelte',
+      'packages/chart/src/Chart.svelte',
+      'packages/chart/src/AnimatedPlot.svelte',
+      'packages/chart/src/crossfilter/createCrossFilter.svelte.js',
+      'packages/chart/src/geoms/Arc.svelte',
+      'packages/chart/src/geoms/Area.svelte',
+      'packages/chart/src/geoms/Bar.svelte',
+      'packages/chart/src/geoms/Box.svelte',
+      'packages/chart/src/geoms/Line.svelte',
+      'packages/chart/src/geoms/Point.svelte',
+      'packages/chart/src/geoms/Violin.svelte',
+      'packages/chart/src/lib/brewing/scales.js',
+      'packages/chart/src/lib/brewing/stats.js',
+      'packages/chart/src/lib/chart.js',
+      'packages/chart/src/lib/grid.js',
+      'packages/chart/src/lib/plot/**',
+      'packages/chart/src/patterns/**'
+    ],
+    rules: {
+      complexity: 'off',
+      'max-lines-per-function': 'off',
+      'max-params': 'off',
+      'max-depth': 'off'
     }
   },
   {
