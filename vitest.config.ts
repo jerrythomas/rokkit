@@ -36,7 +36,8 @@ export default defineConfig({
 			{ extends: true, test: { name: 'core', root: 'packages/core' } },
 			{ extends: true, test: { name: 'unocss', root: 'packages/unocss' } },
 			{ extends: true, test: { name: 'data', root: 'packages/data' } },
-			{ extends: true, test: { name: 'forms', root: 'packages/forms' } },
+			{ extends: true, test: { name: 'blocks', root: 'packages/blocks' } },
+		{ extends: true, test: { name: 'forms', root: 'packages/forms' } },
 			{ extends: true, test: { name: 'helpers', root: 'packages/helpers' } },
 			{
 				extends: true,
