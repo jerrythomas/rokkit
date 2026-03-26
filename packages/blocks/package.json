@@ -11,10 +11,19 @@
     }
   },
   "files": ["src", "README.md"],
+  "dependencies": {
+    "isomorphic-dompurify": "^2.0.0"
+  },
   "peerDependencies": {
     "@rokkit/chart": "workspace:*",
     "@rokkit/ui": "workspace:*",
+    "mermaid": ">=11.0.0",
     "svelte": "^5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "mermaid": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@rokkit/chart": "workspace:*",

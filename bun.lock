@@ -72,6 +72,26 @@
         "svelte": "^5.0.0",
       },
     },
+    "packages/blocks": {
+      "name": "@rokkit/blocks",
+      "version": "1.0.0-next.148",
+      "dependencies": {
+        "isomorphic-dompurify": "^2.0.0",
+      },
+      "devDependencies": {
+        "@rokkit/chart": "workspace:*",
+        "@rokkit/ui": "workspace:*",
+      },
+      "peerDependencies": {
+        "@rokkit/chart": "workspace:*",
+        "@rokkit/ui": "workspace:*",
+        "mermaid": ">=11.0.0",
+        "svelte": "^5.0.0",
+      },
+      "optionalPeers": [
+        "mermaid",
+      ],
+    },
     "packages/chart": {
       "name": "@rokkit/chart",
       "version": "1.0.0-next.148",
@@ -512,6 +532,8 @@
     "@rokkit/actions": ["@rokkit/actions@workspace:packages/actions"],
 
     "@rokkit/app": ["@rokkit/app@workspace:packages/app"],
+
+    "@rokkit/blocks": ["@rokkit/blocks@workspace:packages/blocks"],
 
     "@rokkit/chart": ["@rokkit/chart@workspace:packages/chart"],
 
