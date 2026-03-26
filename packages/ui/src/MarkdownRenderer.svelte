@@ -32,9 +32,11 @@
       {#if Plugin}
         <Plugin code={token.text} />
       {:else}
+        <!-- eslint-disable-next-line svelte/no-at-html-tags -->
         {@html tokenToSafeHtml(token)}
       {/if}
     {:else}
+      <!-- eslint-disable-next-line svelte/no-at-html-tags -->
       {@html tokenToSafeHtml(token)}
     {/if}
   {/each}

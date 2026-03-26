@@ -10,7 +10,7 @@
     try {
       const { default: mermaid } = await import('mermaid')
       mermaid.initialize({ startOnLoad: false, theme: 'default' })
-      const id = 'mermaid-' + Math.random().toString(36).slice(2)
+      const id = `mermaid-${  Math.random().toString(36).slice(2)}`
       const { svg } = await mermaid.render(id, code)
       if (container) {
         const sanitized = DOMPurify.sanitize(svg, { USE_PROFILES: { svg: true } })
