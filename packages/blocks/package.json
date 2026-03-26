@@ -6,6 +6,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "scripts": {
+    "prepublishOnly": "cp ../../LICENSE .",
+    "postpublish": "rm -f LICENSE"
+  },
   "exports": {
     ".": {
       "types": "./src/index.ts",
