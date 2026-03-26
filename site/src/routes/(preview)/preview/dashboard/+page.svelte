@@ -73,7 +73,7 @@
 
 	<!-- KPI Cards -->
 	<div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
-		{#each kpis as kpi}
+		{#each kpis as kpi (kpi.label)}
 			<div data-card class="p-4">
 				<div class="mb-3 flex items-start justify-between">
 					<p class="text-surface-z5 text-sm">{kpi.label}</p>

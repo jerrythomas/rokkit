@@ -2,8 +2,6 @@
 	// @ts-nocheck
 	import { Tabs } from '@rokkit/ui'
 	import { options } from './data.js'
-	import Custom from './Custom.svelte'
-
 	let fields = { label: 'name', image: 'photo', url: 'artist' }
 	let value = $state()
 </script>

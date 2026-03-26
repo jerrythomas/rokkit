@@ -16,7 +16,7 @@
 				<div>
 					<p class="text-surface-z5 mb-2 text-xs font-semibold tracking-wide uppercase">Skin</p>
 					<div class="flex flex-wrap gap-1">
-						{#each skins as skin}
+						{#each skins as skin (skin)}
 							<Button
 								label={skin}
 								size="sm"
@@ -30,7 +30,7 @@
 				<div>
 					<p class="text-surface-z5 mb-2 text-xs font-semibold tracking-wide uppercase">Mode</p>
 					<div class="flex gap-1">
-						{#each modes as mode}
+						{#each modes as mode (mode)}
 							<Button
 								label={mode}
 								size="sm"

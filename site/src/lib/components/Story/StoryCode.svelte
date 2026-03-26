@@ -86,7 +86,8 @@
 			}, 2000)
 			oncopy?.({ code: textToCopy })
 		} catch (err) {
-			console.error('Failed to copy code:', err)
+			// eslint-disable-next-line no-console
+		console.error('Failed to copy code:', err)
 		}
 	}
 
@@ -109,7 +110,8 @@
 			}, 2000)
 			oncopy?.({ file, content: file.content })
 		} catch (err) {
-			console.error('Failed to copy code:', err)
+			// eslint-disable-next-line no-console
+		console.error('Failed to copy code:', err)
 		}
 	}
 </script>

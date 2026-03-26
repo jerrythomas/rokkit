@@ -70,7 +70,7 @@
 
 	<h2>Next Steps</h2>
 	<div class="grid grid-cols-2 gap-3">
-		{#each [{ label: 'Field Mapping', href: '/field-mapping', desc: 'Deep dive into the fields prop and data mapping' }, { label: 'Snippets', href: '/snippets', desc: 'Customize component rendering with Svelte snippets' }, { label: 'Components', href: '/components/list', desc: 'Browse the full component library' }, { label: 'Styling', href: '/styling', desc: 'Theming, colors, and visual customization' }] as link}
+		{#each [{ label: 'Field Mapping', href: '/field-mapping', desc: 'Deep dive into the fields prop and data mapping' }, { label: 'Snippets', href: '/snippets', desc: 'Customize component rendering with Svelte snippets' }, { label: 'Components', href: '/components/list', desc: 'Browse the full component library' }, { label: 'Styling', href: '/styling', desc: 'Theming, colors, and visual customization' }] as link (link.href)}
 			<a
 				href={link.href}
 				class="border-surface-z2 hover:border-surface-z4 hover:bg-surface-z2 flex flex-col gap-1 rounded-lg border p-4 no-underline transition-colors"

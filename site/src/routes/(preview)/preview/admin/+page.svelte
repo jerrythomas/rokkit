@@ -58,7 +58,7 @@
 						Available Skins
 					</p>
 					<div class="flex flex-wrap gap-2">
-						{#each skins as skin}
+						{#each skins as skin (skin)}
 							<span
 								class="border-surface-z3 text-surface-z6 rounded border px-2 py-1 text-xs capitalize"
 								>{skin}</span

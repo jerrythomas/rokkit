@@ -32,7 +32,7 @@
 	})
 
 	let sidebarOpen = $state(typeof window !== 'undefined' ? window.innerWidth >= 1024 : false)
-	let loading = $state(false)
+	let _loading = $state(false)
 	let sidebarRef = $state(null)
 	let toc = $state(null)
 
@@ -66,10 +66,10 @@
 	})
 
 	beforeNavigate(() => {
-		loading = true
+		_loading = true
 	})
 	afterNavigate(() => {
-		loading = false
+		_loading = false
 		if (media.large.current === false) sidebarOpen = false
 		toc?.rescan()
 	})
@@ -150,7 +150,7 @@
 					{/if}
 					{#if breadcrumbs.length > 0}
 						<nav class="mb-2 flex items-center gap-1 text-sm" aria-label="Breadcrumb">
-							{#each breadcrumbs as crumb, i}
+							{#each breadcrumbs as crumb, i (i)}
 								{#if i > 0}<span class="text-surface-z3 mx-1">/</span>{/if}
 								{#if crumb.href}
 									<a href={crumb.href} class="text-surface-z5 hover:text-surface-z8"

@@ -58,7 +58,7 @@
 					Filter syntax examples
 				</h4>
 				<div class="flex flex-wrap gap-2">
-					{#each filterSyntaxExamples as example}
+					{#each filterSyntaxExamples as example (example)}
 						<code class="bg-surface-z2 text-surface-z7 rounded px-2 py-0.5 text-xs">{example}</code>
 					{/each}
 				</div>

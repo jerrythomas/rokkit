@@ -12,6 +12,6 @@
 	}
 </script>
 
-{#each items as item, index}
+{#each items as item, index (index)}
 	<ItemWrapper value={item.text} removable={true} on:remove={() => handleRemove(index)} />
 {/each}

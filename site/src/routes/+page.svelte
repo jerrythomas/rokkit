@@ -3,7 +3,7 @@
 	import { Button } from '@rokkit/ui'
 	import Background from './Background.svelte'
 	import WhyRokkit from './WhyRokkit.svelte'
-	const site = getContext('site')()
+	const _site = getContext('site')()
 
 	let { data } = $props()
 </script>

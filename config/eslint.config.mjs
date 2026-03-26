@@ -148,9 +148,19 @@ export default [
     }
   },
   {
+    files: ['**/site/src/**'],
+    rules: {
+      'svelte/no-at-html-tags': 'off',
+      'no-console': 'warn',
+      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/ban-ts-comment': 'off'
+    }
+  },
+  {
     files: [
       '**/site/src/routes/components/**',
       '**/site/src/routes/playground/**',
+      '**/site/src/routes/(play)/playground/**',
       '**/examples/**',
       '**/stories/**',
       '**/fragments/**'
@@ -159,15 +169,6 @@ export default [
       'no-console': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
       '@typescript-eslint/no-unused-expressions': 'off'
-    }
-  },
-  {
-    files: ['**/site/src/**'],
-    rules: {
-      'svelte/no-at-html-tags': 'off',
-      'no-console': 'warn',
-      '@typescript-eslint/no-unused-vars': 'warn',
-      '@typescript-eslint/ban-ts-comment': 'off'
     }
   }
 ]

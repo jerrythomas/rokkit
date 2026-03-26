@@ -26,7 +26,7 @@
 			<section>
 				<h4 class="text-surface-z5 m-0 mb-4 text-xs uppercase tracking-widest font-semibold">Symbols</h4>
 				<div class="flex flex-wrap gap-6">
-					{#each SYMBOL_NAMES as name, i}
+					{#each SYMBOL_NAMES as name, i (name)}
 						{@const color = COLORS[i % COLORS.length]}
 						<div class="flex flex-col items-center gap-2">
 							<svg width="48" height="48" viewBox="0 0 48 48">

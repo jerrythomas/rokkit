@@ -121,15 +121,15 @@
 			<table class="w-full text-xs">
 				<thead>
 					<tr class="border-surface-z2 border-b">
-						{#each Object.keys(chartData[0]) as col}
+						{#each Object.keys(chartData[0]) as col (col)}
 							<th class="text-surface-z4 py-1 pr-3 text-left font-medium">{col}</th>
 						{/each}
 					</tr>
 				</thead>
 				<tbody>
-					{#each chartData as row}
+					{#each chartData as row, i (i)}
 						<tr class="border-surface-z2 border-b last:border-0">
-							{#each Object.values(row) as val}
+							{#each Object.values(row) as val, j (j)}
 								<td class="py-1 pr-3">{val}</td>
 							{/each}
 						</tr>

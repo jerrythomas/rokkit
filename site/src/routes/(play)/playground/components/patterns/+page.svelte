@@ -68,7 +68,7 @@
 
 	{#snippet preview()}
 		<div class="flex flex-wrap gap-6 p-6 self-start">
-			{#each PATTERN_NAMES as name, pi}
+			{#each PATTERN_NAMES as name, pi (name)}
 				{@const color = colorFor(pi)}
 				<div class="flex flex-col items-center gap-2">
 					<svg width={SWATCH} height={SWATCH}>

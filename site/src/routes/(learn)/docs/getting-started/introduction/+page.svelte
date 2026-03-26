@@ -17,7 +17,7 @@
 	</p>
 
 	<div class="my-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-		{#each [{ icon: 'i-glyph:database', title: 'Data-First', desc: 'Components adapt to your data shape via field mapping. No transformations, no boilerplate.' }, { icon: 'i-glyph:code', title: 'Composable', desc: 'Customize any component with Svelte snippets. Full control over rendering without forking.' }, { icon: 'i-glyph:keyboard', title: 'Accessible', desc: 'Keyboard navigation and ARIA support built in via the navigator pattern. Zero config.' }, { icon: 'i-glyph:palette', title: 'Themeable', desc: 'Data-attribute hooks with clean layout/theme CSS separation. Build or swap themes freely.' }, { icon: 'i-glyph:widget', title: 'Consistent API', desc: 'Every component follows the same pattern: items, fields, value, onchange. Learn once, use everywhere.' }, { icon: 'i-glyph:rocket', title: 'Svelte 5 Native', desc: 'Built on runes, snippets, and $state. No legacy patterns, no compatibility layers.' }] as card}
+		{#each [{ icon: 'i-glyph:database', title: 'Data-First', desc: 'Components adapt to your data shape via field mapping. No transformations, no boilerplate.' }, { icon: 'i-glyph:code', title: 'Composable', desc: 'Customize any component with Svelte snippets. Full control over rendering without forking.' }, { icon: 'i-glyph:keyboard', title: 'Accessible', desc: 'Keyboard navigation and ARIA support built in via the navigator pattern. Zero config.' }, { icon: 'i-glyph:palette', title: 'Themeable', desc: 'Data-attribute hooks with clean layout/theme CSS separation. Build or swap themes freely.' }, { icon: 'i-glyph:widget', title: 'Consistent API', desc: 'Every component follows the same pattern: items, fields, value, onchange. Learn once, use everywhere.' }, { icon: 'i-glyph:rocket', title: 'Svelte 5 Native', desc: 'Built on runes, snippets, and $state. No legacy patterns, no compatibility layers.' }] as card (card.title)}
 			<div class="border-surface-z2 rounded-lg border p-4">
 				<span class="{card.icon} text-secondary-z7 mb-2 block text-2xl" aria-hidden="true"></span>
 				<h3 class="mb-1 text-sm font-semibold">{card.title}</h3>
@@ -53,7 +53,7 @@
 	<h2>Where to go next</h2>
 	<p>Pick a topic or jump straight to a component:</p>
 	<div class="grid grid-cols-2 gap-3">
-		{#each [{ label: 'Getting Started', href: '/getting-started', desc: 'Install and build your first component' }, { label: 'Field Mapping', href: '/field-mapping', desc: 'The core concept behind every component' }, { label: 'List', href: '/components/list', desc: 'Data-driven list with field mapping' }, { label: 'Select', href: '/components/select', desc: 'Dropdown with keyboard navigation' }] as link}
+		{#each [{ label: 'Getting Started', href: '/getting-started', desc: 'Install and build your first component' }, { label: 'Field Mapping', href: '/field-mapping', desc: 'The core concept behind every component' }, { label: 'List', href: '/components/list', desc: 'Data-driven list with field mapping' }, { label: 'Select', href: '/components/select', desc: 'Dropdown with keyboard navigation' }] as link (link.href)}
 			<a
 				href={link.href}
 				class="border-surface-z2 hover:border-surface-z4 hover:bg-surface-z2 flex flex-col gap-1 rounded-lg border p-4 no-underline transition-colors"

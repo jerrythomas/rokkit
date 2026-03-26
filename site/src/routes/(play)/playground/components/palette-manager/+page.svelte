@@ -223,7 +223,7 @@
 			<div class="min-w-0 flex-1">
 				<h4 class="text-surface-z5 m-0 mb-2 text-xs tracking-wide uppercase">Color Mapping</h4>
 				<div class="flex flex-col gap-2.5">
-					{#each defaultRoles as role}
+					{#each defaultRoles as role (role)}
 						{@const shades = roleShades[role]}
 						{@const color = config.mapping[role]}
 						{#if shades}
@@ -235,7 +235,7 @@
 									>
 								</div>
 								<div class="flex h-6">
-									{#each Object.entries(shades) as [shade, hex]}
+									{#each Object.entries(shades) as [shade, hex] (shade)}
 										<div
 											class="flex-1"
 											style="background-color: {hex}"
@@ -252,7 +252,7 @@
 	{/snippet}
 
 	{#snippet controls()}
-		{#each defaultRoles as role}
+		{#each defaultRoles as role (role)}
 			<div class="flex flex-col gap-1">
 				<span class="text-surface-z6 text-xs font-medium capitalize">{role}</span>
 				<Select

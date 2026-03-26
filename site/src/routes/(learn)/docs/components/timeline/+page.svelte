@@ -1,5 +1,6 @@
 <script>
 	// @ts-nocheck
+	/* eslint-disable @typescript-eslint/no-unused-vars */
 	import { Code } from '@rokkit/ui'
 </script>
 

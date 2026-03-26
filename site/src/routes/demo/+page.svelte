@@ -164,7 +164,7 @@
 			aria-label="Site navigation"
 		>
 			<div class="h-full overflow-y-auto px-3 py-6">
-				{#each navSections as section}
+				{#each navSections as section (section.title)}
 					<div class="mb-6">
 						<p
 							class="text-surface-z4 mb-1 px-2 text-[11px] font-bold tracking-widest uppercase opacity-60"
@@ -172,7 +172,7 @@
 							{section.title}
 						</p>
 						<div class="flex flex-col gap-0.5">
-							{#each section.items as item}
+							{#each section.items as item (item.href)}
 								<a
 									href={item.href}
 									class="flex items-center rounded-md px-2.5 py-1.5 text-sm no-underline transition-colors"
@@ -297,7 +297,7 @@ const fields = &#123; text: 'name', value: 'id' &#125;
 					Pick a component and see the data-first pattern in action:
 				</p>
 				<div class="grid grid-cols-2 gap-3">
-					{#each [{ label: 'List', href: '/elements/list', desc: 'Select from a collection using field mapping' }, { label: 'Select', href: '/elements/select', desc: 'Dropdown selection with keyboard navigation' }, { label: 'Table', href: '/elements/table', desc: 'Sortable, filterable data tables' }, { label: 'Theming', href: '/theming/colors', desc: 'Semantic color palettes and surface depth' }] as link}
+					{#each [{ label: 'List', href: '/elements/list', desc: 'Select from a collection using field mapping' }, { label: 'Select', href: '/elements/select', desc: 'Dropdown selection with keyboard navigation' }, { label: 'Table', href: '/elements/table', desc: 'Sortable, filterable data tables' }, { label: 'Theming', href: '/theming/colors', desc: 'Semantic color palettes and surface depth' }] as link (link.href)}
 						<a
 							href={link.href}
 							class="border-surface-z2 hover:border-surface-z4 hover:bg-surface-z2 flex flex-col gap-1 rounded-lg border p-4 no-underline transition-colors"
@@ -320,7 +320,7 @@ const fields = &#123; text: 'name', value: 'id' &#125;
 						On this page
 					</p>
 					<ul class="border-surface-z3 m-0 list-none border-l p-0">
-						{#each headings as h}
+						{#each headings as h (h.id)}
 							<li>
 								<button
 									class="hover:text-surface-z8 -ml-px block w-full cursor-pointer border-l-2 border-transparent bg-transparent py-[0.3rem] text-left font-[inherit] text-[0.8125rem] leading-[1.5] transition-colors"

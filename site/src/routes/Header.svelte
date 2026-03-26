@@ -45,7 +45,7 @@
 	</div>
 
 	<nav class="flex items-center gap-1">
-		{#each menu as item}
+		{#each menu as item (item.slug)}
 			{@const active = page.url.pathname.startsWith(item.match)}
 			<a
 				href="/{item.slug}"

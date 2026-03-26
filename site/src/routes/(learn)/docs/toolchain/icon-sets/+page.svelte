@@ -162,9 +162,9 @@
 		<span>-duotone-outline</span>
 	</div>
 	<div class="grid gap-1" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr))">
-		{#each glyphBases as base}
+		{#each glyphBases as base (base)}
 			<div class="border-surface-z2 flex items-center gap-2 rounded border px-2 py-1">
-				{#each GLYPH_VARIANTS as variant}
+				{#each GLYPH_VARIANTS as variant (variant)}
 					<span
 						class="i-glyph:{base}{variant} text-surface-z8 shrink-0 text-lg"
 						title="{base}{variant}"

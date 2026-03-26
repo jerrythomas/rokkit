@@ -79,7 +79,7 @@
 						once={props.once}
 						threshold={props.threshold}
 					>
-						{#each ['Card 1', 'Card 2', 'Card 3', 'Card 4'] as label}
+						{#each ['Card 1', 'Card 2', 'Card 3', 'Card 4'] as label (label)}
 							<div
 								class="bg-primary-z3 text-on-primary flex h-24 w-36 items-center justify-center rounded-xl shadow-lg"
 							>

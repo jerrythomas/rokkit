@@ -125,7 +125,7 @@
 		<p class="text-surface-z5">Select a component or effect to open its interactive playground.</p>
 	</div>
 
-	{#each GROUPS as group}
+	{#each GROUPS as group (group.title)}
 		<section class="mb-10">
 			<div class="mb-4 flex items-center gap-2">
 				<span class="{group.icon} text-secondary-z7 text-xl" aria-hidden="true"></span>

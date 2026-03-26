@@ -9,7 +9,7 @@
 </script>
 
 <div class="mb-4 flex gap-2">
-	{#each ['slide', 'fade', 'none'] as t}
+	{#each ['slide', 'fade', 'none'] as t (t)}
 		<button
 			class="button"
 			class:is-primary={transition === t}
