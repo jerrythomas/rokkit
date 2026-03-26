@@ -2,7 +2,7 @@
 
 A working checklist of all pending work items collected from feature status tables and planned design documents. Organized by priority tier. Check off items as they are completed.
 
-Last updated: 2026-03-26 (Stack, Divider, Avatar, Badge implemented; chart items audited)
+Last updated: 2026-03-26 (Stack, Divider, Avatar, Badge implemented; chart preset fully implemented including CLI init/doctor and site config)
 
 ---
 
@@ -56,7 +56,13 @@ Items that significantly improve the developer or end-user experience.
 - [ ] Animated bar chart — animated entry and data transition (`docs/features/07-Charts.md`)
 - [ ] Animated line / area chart — line draw animation and smooth data transitions (`docs/features/07-Charts.md`)
 - [x] Pie / donut chart — `PieChart` with `innerRadius` prop for donut; `labelFn`, `stat`, `fill`, `pattern` (2026-03-23)
-- [ ] Theme color palette integration — charts draw series colors from active theme skin (`docs/features/07-Charts.md`)
+- [x] Chart preset — `createChartPreset()` + default preset; shade-mapping replaces hardcoded hex in `brewing/palette.json`; `ChartProvider` Svelte context; opacity to preset; jitter on Point (`docs/design/17-chart-preset.md`) (2026-03-26)
+  - [x] Step 1: `createChartPreset()` + `defaultPreset` in `packages/chart/src/lib/preset.js`
+  - [x] Step 2: Delete `brewing/palette.json`; rewrite `assignColors()` with shade-index mapping into `lib/palette.json`
+  - [x] Step 3: Remove hardcoded opacity from `Area.svelte`, `Box.svelte`, `Violin.svelte`; read from preset
+  - [x] Step 4: `ChartProvider.svelte` + `PlotState` reads preset from `'chart-preset'` context
+  - [x] Step 5: Jitter on `Point` / `ScatterPlot` — seeded LCG offset, `jitter.width`/`jitter.height` props
+  - [x] Step 6: `rokkit init` optional chart config step
 - [ ] Dark mode support for charts — background, gridlines, labels, and series adapt to dark mode (`docs/features/07-Charts.md`)
 - [ ] Accessible data table fallback — visually hidden data table in DOM for screen reader access (`docs/features/07-Charts.md`)
 - [x] BoxPlot — quartile aggregation via `@rokkit/data`, `fill` (body) + `color` (whiskers) aesthetics (2026-03-23)
@@ -64,7 +70,7 @@ Items that significantly improve the developer or end-user experience.
 - [x] BubbleChart — scatter with `size` channel, `color` aesthetic, sizeScale sqrt encoding (2026-03-23)
 - [x] ggplot2-style aesthetic channels — `fill` for polygons, `color` for strokes/lines, all channels null-default independent (2026-03-23)
 - [x] Horizontal BarChart — auto-detected: swap x/y so y=categorical, x=numeric; `Bar.svelte` + `PlotState` handle orientation (issue #108)
-- [~] Stacked / grouped BarChart — `stack=true` works on `BarChart`; grouped bars implemented in brewing lib but `group` prop not yet exposed on `BarChart` wrapper (issue #109)
+- [x] Stacked / grouped BarChart — `stack=true` for stacked; grouped bars are automatic when `fill` maps to a multi-value field (`buildGroupedBars` is the default path) (issue #109)
 - [ ] Static color literal support — `fill`/`color` accepts CSS color values directly without groupBy (issue #110)
 
 ---
