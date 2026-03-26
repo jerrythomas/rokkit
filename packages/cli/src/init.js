@@ -3,6 +3,19 @@ import prompts from 'prompts'
 import { writeFileSync, readFileSync, existsSync } from 'fs'
 import { resolve } from 'path'
 
+const CHART_COLOR_SETS = {
+	default: ['blue', 'emerald', 'rose', 'amber', 'violet', 'sky', 'pink', 'teal',
+	          'orange', 'indigo', 'lime', 'cyan', 'gold', 'lavender'],
+	warm:    ['rose', 'orange', 'amber', 'pink', 'red', 'yellow', 'gold', 'fuchsia'],
+	cool:    ['sky', 'teal', 'blue', 'indigo', 'cyan', 'violet', 'lavender', 'slate']
+}
+
+const CHART_SHADE_PRESETS = {
+	standard: { light: { fill: '300', stroke: '700' }, dark: { fill: '500', stroke: '200' } },
+	high:     { light: { fill: '200', stroke: '800' }, dark: { fill: '400', stroke: '100' } },
+	soft:     { light: { fill: '400', stroke: '600' }, dark: { fill: '600', stroke: '300' } }
+}
+
 const SKIN_PRESETS = {
 	default: { primary: 'orange', secondary: 'pink', accent: 'sky', surface: 'slate' },
 	vibrant: { primary: 'blue', secondary: 'purple', accent: 'sky', surface: 'slate' },
@@ -41,7 +54,30 @@ function resolveColors(palette, customColors) {
 	return { ...DEFAULT_COLORS, ...(SKIN_PRESETS[palette] || {}) }
 }
 
-export function generateConfig({ palette, customColors, icons, iconPath, themes, defaultTheme, switcher }) {
+/**
+ * Build the chart config section from user prompt answers.
+ * @param {{ chartColors: string, chartShades: string }} opts
+ * @returns {Record<string, unknown>}
+ */
+export function generateChartConfig({ chartColors, chartShades }) {
+	return {
+		colors: CHART_COLOR_SETS[chartColors] ?? CHART_COLOR_SETS.default,
+		shades: CHART_SHADE_PRESETS[chartShades] ?? CHART_SHADE_PRESETS.standard
+	}
+}
+
+export function generateConfig({
+	palette,
+	customColors,
+	icons,
+	iconPath,
+	themes,
+	defaultTheme,
+	switcher,
+	includeChart,
+	chartColors,
+	chartShades
+}) {
 	const config = {
 		colors: resolveColors(palette, customColors),
 		themes,
@@ -52,6 +88,10 @@ export function generateConfig({ palette, customColors, icons, iconPath, themes,
 
 	if (icons === 'custom' && iconPath) {
 		config.icons = { custom: iconPath }
+	}
+
+	if (includeChart) {
+		config.chart = generateChartConfig({ chartColors, chartShades })
 	}
 
 	return config
@@ -95,7 +135,8 @@ export function generateAppCssImports(themes) {
 export function generateInitScript(switcher, storageKey = 'rokkit-theme', defaultStyle = 'rokkit') {
 	if (switcher === 'system') return null
 
-	const setStyle = switcher === 'full' ? `b.dataset.style = t.style || '${defaultStyle}'\n          ` : ''
+	const setStyle =
+		switcher === 'full' ? `b.dataset.style = t.style || '${defaultStyle}'\n          ` : ''
 
 	return `    <script>
       (function () {
@@ -181,7 +222,8 @@ const PROMPTS_CONFIG = [
 		type: (prev) => (prev?.length > 1 ? 'select' : null),
 		name: 'defaultTheme',
 		message: 'Default theme style',
-		choices: (prev) => prev.map((t) => ({ title: t.charAt(0).toUpperCase() + t.slice(1), value: t }))
+		choices: (prev) =>
+			prev.map((t) => ({ title: t.charAt(0).toUpperCase() + t.slice(1), value: t }))
 	},
 	{
 		type: 'select',
@@ -191,6 +233,32 @@ const PROMPTS_CONFIG = [
 			{ title: 'System only (prefers-color-scheme)', value: 'system' },
 			{ title: 'Manual (light/dark toggle)', value: 'manual' },
 			{ title: 'Full (light/dark + style variants)', value: 'full' }
+		]
+	},
+	{
+		type: 'confirm',
+		name: 'includeChart',
+		message: 'Include chart configuration?',
+		initial: true
+	},
+	{
+		type: (prev) => (prev ? 'select' : null),
+		name: 'chartColors',
+		message: 'Chart color set',
+		choices: [
+			{ title: 'Default series (blue/emerald/rose/amber…)', value: 'default' },
+			{ title: 'Warm (rose/orange/amber/pink…)', value: 'warm' },
+			{ title: 'Cool (sky/teal/blue/indigo…)', value: 'cool' }
+		]
+	},
+	{
+		type: (_, values) => (values.includeChart ? 'select' : null),
+		name: 'chartShades',
+		message: 'Shade contrast',
+		choices: [
+			{ title: 'Standard (fill 300 / stroke 700)', value: 'standard' },
+			{ title: 'High (fill 200 / stroke 800)', value: 'high' },
+			{ title: 'Soft (fill 400 / stroke 600)', value: 'soft' }
 		]
 	}
 ]

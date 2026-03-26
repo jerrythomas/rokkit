@@ -14,7 +14,9 @@ export const defaultPreset = {
     point:  0.8
   },
   patterns: ['diagonal', 'dots', 'triangles', 'hatch', 'lattice', 'swell',
-             'checkerboard', 'waves', 'petals'],
+             'checkerboard', 'waves', 'petals', 'brick', 'diamonds', 'tile',
+             'scales', 'circles', 'pip', 'rings', 'chevrons', 'shards',
+             'wedge', 'argyle', 'shell'],
   symbols: ['circle', 'square', 'triangle', 'diamond', 'cross', 'star']
 }
 

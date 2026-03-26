@@ -1,11 +1,19 @@
 /* eslint-disable no-console */
 import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { resolve } from 'path'
-import { generateUnoConfig, generateAppCssImports, generateInitScript } from './init.js'
+import { generateUnoConfig, generateAppCssImports, generateInitScript, generateChartConfig } from './init.js'
 
 const KNOWN_THEMES = [
-  'rokkit', 'minimal', 'material', 'glass', 'grada-ui',
-  'shadcn', 'daisy-ui', 'bits-ui', 'carbon', 'ant-design'
+	'rokkit',
+	'minimal',
+	'material',
+	'glass',
+	'grada-ui',
+	'shadcn',
+	'daisy-ui',
+	'bits-ui',
+	'carbon',
+	'ant-design'
 ]
 
 /**
@@ -85,6 +93,26 @@ function checkCssTheme(fs) {
 }
 
 /**
+ * Check rokkit.config.js has a chart section.
+ * Missing chart config is a warning (not failure) — defaults work without it.
+ * @param {Object} fs
+ * @returns {Object}
+ */
+function checkChartConfig(fs) {
+	const configPath = fs.resolve('rokkit.config.js')
+	const configExists = fs.exists(configPath)
+	const hasChart = configExists && /\bchart\s*:/.test(fs.read(configPath))
+	return {
+		id: 'chart-config',
+		label: 'rokkit.config.js has chart configuration',
+		status: hasChart ? 'pass' : 'warn',
+		fixable: configExists,
+		fix: 'Add a chart section to rokkit.config.js (see docs/design/17-chart-preset.md)',
+		autoFix: 'patch-chart-config'
+	}
+}
+
+/**
  * Check app.html has init script
  * @param {Object} fs
  * @returns {Object}
@@ -111,7 +139,14 @@ function checkHtmlScript(fs) {
  * @returns {Array<{ id: string, label: string, status: 'pass'|'fail', fixable: boolean, fix: string, autoFix?: string }>}
  */
 export function runChecks(fs) {
-	return [checkConfig(fs), checkUnoPreset(fs), checkCssImports(fs), checkCssTheme(fs), checkHtmlScript(fs)]
+	return [
+		checkConfig(fs),
+		checkUnoPreset(fs),
+		checkCssImports(fs),
+		checkCssTheme(fs),
+		checkHtmlScript(fs),
+		checkChartConfig(fs)
+	]
 }
 
 /**
@@ -173,6 +208,25 @@ function applyPatchHtml(cwd, label) {
 	return true
 }
 
+/**
+ * Patch rokkit.config.js to add a default chart section.
+ * @param {string} cwd
+ * @param {string} label
+ */
+function applyPatchChartConfig(cwd, label) {
+	const configPath = resolve(cwd, 'rokkit.config.js')
+	if (!existsSync(configPath)) return false
+	const content = readFileSync(configPath, 'utf-8')
+	if (/\bchart\s*:/.test(content)) return false
+	const chartConfig = generateChartConfig({ chartColors: 'default', chartShades: 'standard' })
+	const chartJson = JSON.stringify(chartConfig, null, 2).replace(/\n/g, '\n  ')
+	// Inject before the last closing brace of the export default object
+	const patched = content.replace(/(\n?}\s*\n?)$/, `,\n  chart: ${chartJson}\n}\n`)
+	writeFileSync(configPath, patched)
+	console.info(`  Fixed: ${label}`)
+	return true
+}
+
 /** @type {Record<string, (cwd: string, label: string) => boolean|void>} */
 const FIX_HANDLERS = {
 	'generate-config': (cwd, label) => {
@@ -183,7 +237,8 @@ const FIX_HANDLERS = {
 		applyPatchCss(cwd, label)
 		return true
 	},
-	'patch-html': (cwd, label) => applyPatchHtml(cwd, label)
+	'patch-html': (cwd, label) => applyPatchHtml(cwd, label),
+	'patch-chart-config': (cwd, label) => applyPatchChartConfig(cwd, label)
 }
 
 /**

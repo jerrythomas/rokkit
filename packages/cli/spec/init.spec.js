@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import {
 	generateConfig,
+	generateChartConfig,
 	generateUnoConfig,
 	generateAppCssImports,
 	generateInitScript
@@ -75,6 +76,60 @@ describe('generateConfig', () => {
 			switcher: 'manual'
 		})
 		expect(config.icons.custom).toBe('./static/icons/custom.json')
+	})
+})
+
+describe('generateChartConfig', () => {
+	it('returns default color set and standard shades', () => {
+		const chart = generateChartConfig({ chartColors: 'default', chartShades: 'standard' })
+		expect(chart.colors[0]).toBe('blue')
+		expect(chart.shades.light.fill).toBe('300')
+		expect(chart.shades.light.stroke).toBe('700')
+	})
+
+	it('returns warm color set', () => {
+		const chart = generateChartConfig({ chartColors: 'warm', chartShades: 'standard' })
+		expect(chart.colors[0]).toBe('rose')
+	})
+
+	it('returns high contrast shades', () => {
+		const chart = generateChartConfig({ chartColors: 'default', chartShades: 'high' })
+		expect(chart.shades.light.fill).toBe('200')
+		expect(chart.shades.light.stroke).toBe('800')
+	})
+
+	it('falls back to defaults for unknown values', () => {
+		const chart = generateChartConfig({ chartColors: 'unknown', chartShades: 'unknown' })
+		expect(chart.colors[0]).toBe('blue')
+		expect(chart.shades.light.fill).toBe('300')
+	})
+})
+
+describe('generateConfig with chart', () => {
+	it('includes chart section when includeChart is true', () => {
+		const config = generateConfig({
+			palette: 'default',
+			icons: 'rokkit',
+			themes: ['rokkit'],
+			switcher: 'manual',
+			includeChart: true,
+			chartColors: 'default',
+			chartShades: 'standard'
+		})
+		expect(config.chart).toBeDefined()
+		expect(config.chart.colors[0]).toBe('blue')
+		expect(config.chart.shades.light.fill).toBe('300')
+	})
+
+	it('omits chart section when includeChart is false', () => {
+		const config = generateConfig({
+			palette: 'default',
+			icons: 'rokkit',
+			themes: ['rokkit'],
+			switcher: 'manual',
+			includeChart: false
+		})
+		expect(config.chart).toBeUndefined()
 	})
 })
 
