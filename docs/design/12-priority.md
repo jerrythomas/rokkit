@@ -2,7 +2,7 @@
 
 A working checklist of all pending work items collected from feature status tables and planned design documents. Organized by priority tier. Check off items as they are completed.
 
-Last updated: 2026-03-17 (P4 design docs + story pages written)
+Last updated: 2026-03-26 (Stack, Divider, Avatar, Badge implemented; chart items audited)
 
 ---
 
@@ -27,7 +27,7 @@ These components existed and were deleted in commit `4ef37ef4` (2026-02-18). Sou
 - [x] Rename `text` field to `label` in all component defaults and remove backward compatibility layer (code change)
 - [x] Cards — implemented (`packages/ui/src/components/Card.svelte`)
 - [x] Navigation: Breadcrumb — implemented (`packages/ui/src/components/BreadCrumbs.svelte`)
-- [ ] Layout components — Stack and Divider missing; Grid exists (`docs/features/06-ComponentLibrary.md`)
+- [x] Layout components — Stack, Divider, Grid all implemented; Avatar and Badge also added (2026-03-26)
 - [ ] Data Table — tabular data display with sorting, selection, and keyboard navigation (`docs/features/06-ComponentLibrary.md`)
 
 ### Theming & Design
@@ -55,7 +55,7 @@ Items that significantly improve the developer or end-user experience.
 - [ ] Sparkline pattern fills — pattern fill alternative for color-insufficient contexts (`docs/features/07-Charts.md`)
 - [ ] Animated bar chart — animated entry and data transition (`docs/features/07-Charts.md`)
 - [ ] Animated line / area chart — line draw animation and smooth data transitions (`docs/features/07-Charts.md`)
-- [ ] Pie / donut chart — proportional segment chart with optional center label (`docs/features/07-Charts.md`)
+- [x] Pie / donut chart — `PieChart` with `innerRadius` prop for donut; `labelFn`, `stat`, `fill`, `pattern` (2026-03-23)
 - [ ] Theme color palette integration — charts draw series colors from active theme skin (`docs/features/07-Charts.md`)
 - [ ] Dark mode support for charts — background, gridlines, labels, and series adapt to dark mode (`docs/features/07-Charts.md`)
 - [ ] Accessible data table fallback — visually hidden data table in DOM for screen reader access (`docs/features/07-Charts.md`)
@@ -63,8 +63,8 @@ Items that significantly improve the developer or end-user experience.
 - [x] ViolinPlot — density shape via quartile anchors + catmullRom curve, `fill` + `color` aesthetics (2026-03-23)
 - [x] BubbleChart — scatter with `size` channel, `color` aesthetic, sizeScale sqrt encoding (2026-03-23)
 - [x] ggplot2-style aesthetic channels — `fill` for polygons, `color` for strokes/lines, all channels null-default independent (2026-03-23)
-- [ ] Horizontal BarChart — `orientation='horizontal'` flips x/y axes (issue #108)
-- [ ] Stacked / grouped BarChart — `stack` and `group` layout modes (issue #109)
+- [x] Horizontal BarChart — auto-detected: swap x/y so y=categorical, x=numeric; `Bar.svelte` + `PlotState` handle orientation (issue #108)
+- [~] Stacked / grouped BarChart — `stack=true` works on `BarChart`; grouped bars implemented in brewing lib but `group` prop not yet exposed on `BarChart` wrapper (issue #109)
 - [ ] Static color literal support — `fill`/`color` accepts CSS color values directly without groupBy (issue #110)
 
 ---
@@ -78,14 +78,14 @@ Items that add sophisticated capabilities.
 - [ ] Interactive tooltips — value and label tooltip on hover over data points and bars (`docs/features/07-Charts.md`)
 - [ ] Click selection on data points — selection event fires with point data on click (`docs/features/07-Charts.md`)
 - [ ] Keyboard navigation within charts — focus moves between data points, values announced to screen readers (`docs/features/07-Charts.md`)
-- [ ] Scatter chart — x/y correlation plot with optional size and color encoding (`docs/features/07-Charts.md`)
+- [x] Scatter chart — `ScatterPlot` with `size`, `fill`, `color`, `symbol`, `label` channels (2026-03-23)
 - [ ] Pattern fills for series — stripe, dot, and hatch patterns for multi-series differentiation (`docs/features/07-Charts.md`)
 - [ ] Zoom and pan — scrollable and draggable chart viewport for large data ranges (`docs/features/07-Charts.md`)
 
 ### Toolchain
 
 - [ ] CLI: add Rokkit to a project — installs packages, configures build, imports starter theme (`docs/features/09-Toolchain.md`)
-- [x] CLI: upgrade Rokkit — `rokkit upgrade` detects @rokkit/* deps, fetches latest versions, prints diff, detects package manager, runs install with `--apply` (2026-03-18)
+- [x] CLI: upgrade Rokkit — `rokkit upgrade` detects @rokkit/\* deps, fetches latest versions, prints diff, detects package manager, runs install with `--apply` (2026-03-18)
 - [ ] Curated icon sets — navigation, status, action, and object icons with tree-shaking (`docs/features/09-Toolchain.md`)
 - [ ] Tree-shaken icon imports — only imported icons included in the bundle (`docs/features/09-Toolchain.md`)
 - [ ] Custom icon override (global snippet) — replace all component icons with any icon system via one registration point (`docs/features/09-Toolchain.md`)
@@ -122,7 +122,7 @@ These pages exist at `site/src/stories/` but show `<ComingSoon />`:
 ### Component Design Documents (planned or missing)
 
 - [x] Card component design — `docs/design/components/card.md`
-- [ ] Layout components design (Stack, Grid, Divider) — structural components, responsive behavior, CSS architecture
+- [~] Layout components design (Stack, Grid, Divider) — components implemented; formal design doc still missing
 - [x] Data Table design — `docs/design/components/data-table.md`
 - [x] Breadcrumb design — `docs/design/components/breadcrumbs.md`
 - [x] Tooltip design — `docs/design/components/tooltip.md`
