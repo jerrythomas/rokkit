@@ -16,7 +16,9 @@
     "prepublishOnly": "cp ../../LICENSE . && tsc --project tsconfig.build.json",
     "postpublish": "rm -f LICENSE",
     "clean": "rm -rf dist",
-    "build": "bun clean && bun prepublishOnly"
+    "build": "bun clean && bun prepublishOnly",
+    "benchmark": "bun benchmark/index.js",
+    "benchmark:save": "bun benchmark/index.js --save"
   },
   "files": [
     "src/**/*.js",

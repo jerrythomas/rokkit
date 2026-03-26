@@ -133,6 +133,30 @@ const filters = parseFilters('age >= 18 AND status = "active"')
 | `renamer(mapping)`                | Create a function that renames object keys            |
 | `model(data)`                     | Create a reactive data model                          |
 
+## Benchmarks
+
+Results from `benchmark/results/p4-lazy-fusion.json` — Bun 1.3.11, Apple Silicon (arm64).
+All times in **ms (mean)** over 10 iterations. Dataset sizes: small = 100 rows, medium = 1 000 rows, large = 10 000 rows.
+
+| Operation                   | Small | Medium |  Large |
+| --------------------------- | ----: | -----: | -----: |
+| `groupBy` + `rollup`        | 0.113 |  0.236 |  1.617 |
+| `groupBy` + `summarize` + `rollup` | 0.042 | 0.097 | 0.534 |
+| `groupBy` + `alignBy` + `rollup`   | 0.133 | 0.090 | 0.085 |
+| `where` + `apply` + `sortBy`| 0.024 |  0.120 |  1.328 |
+| `filterData`                | 0.020 |  0.022 |  0.081 |
+| `leftJoin`                  | 0.044 |  0.448 | 23.620 |
+| `antiJoin`                  | 0.045 |  0.340 | 13.798 |
+| `semiJoin`                  | 0.032 |  0.172 | 11.318 |
+| `crossJoin`                 | 0.034 |  0.023 |      — |
+
+To run benchmarks locally:
+
+```sh
+bun run benchmark          # print results to console
+bun run benchmark:save     # save results to benchmark/results/baseline.json
+```
+
 ---
 
 Part of [Rokkit](https://github.com/jerrythomas/rokkit) — a Svelte 5 component library and design system.
