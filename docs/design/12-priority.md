@@ -63,7 +63,7 @@ Items that significantly improve the developer or end-user experience.
   - [x] Step 4: `ChartProvider.svelte` + `PlotState` reads preset from `'chart-preset'` context
   - [x] Step 5: Jitter on `Point` / `ScatterPlot` — seeded LCG offset, `jitter.width`/`jitter.height` props
   - [x] Step 6: `rokkit init` optional chart config step
-- [ ] Dark mode support for charts — background, gridlines, labels, and series adapt to dark mode (`docs/features/07-Charts.md`)
+- [x] Dark mode support for charts — covered by chart preset `mode` prop + shade-index system (`shades.light`/`shades.dark` in `defaultPreset`)
 - [ ] Accessible data table fallback — visually hidden data table in DOM for screen reader access (`docs/features/07-Charts.md`)
 - [x] BoxPlot — quartile aggregation via `@rokkit/data`, `fill` (body) + `color` (whiskers) aesthetics (2026-03-23)
 - [x] ViolinPlot — density shape via quartile anchors + catmullRom curve, `fill` + `color` aesthetics (2026-03-23)
