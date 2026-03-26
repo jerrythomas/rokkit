@@ -3,6 +3,9 @@
   "version": "1.0.0-next.151",
   "description": "Markdown block plugins for Rokkit (Plot, Table, Sparkline, Mermaid)",
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": {
       "types": "./src/index.ts",
