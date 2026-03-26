@@ -2,6 +2,7 @@
 	import { getContext, onMount, onDestroy } from 'svelte'
 	import { scaleSqrt } from 'd3-scale'
 	import { buildPoints } from '../lib/brewing/marks/points.js'
+	import { keyboardNav } from '../lib/keyboard-nav.js'
 	import LabelPill from './LabelPill.svelte'
 
 	let {
@@ -13,7 +14,8 @@
 		label = false,
 		stat = 'identity',
 		options = {},
-		onselect = undefined
+		onselect = undefined,
+		keyboard = false
 	} = $props()
 
 	/**
@@ -96,14 +98,15 @@
 					stroke-width="1"
 					fill-opacity={options.opacity ?? plotState.chartPreset.opacity.point}
 					data-plot-element="point"
-					role={onselect ? 'button' : 'graphics-symbol'}
-					tabindex={onselect ? 0 : undefined}
+					role={onselect || keyboard ? 'button' : 'graphics-symbol'}
+					tabindex={onselect || keyboard ? 0 : undefined}
 					style:cursor={onselect ? 'pointer' : undefined}
 					aria-label="{pt.data[x]}, {pt.data[y]}"
 					onmouseenter={() => plotState.setHovered(pt.data)}
 					onmouseleave={() => plotState.clearHovered()}
 					onclick={onselect ? () => onselect(pt.data) : undefined}
 					onkeydown={onselect ? (e) => (e.key === 'Enter' || e.key === ' ') && onselect(pt.data) : undefined}
+					use:keyboardNav={keyboard}
 				/>
 			{:else}
 				<circle
@@ -115,14 +118,15 @@
 					stroke-width="1"
 					fill-opacity={options.opacity ?? plotState.chartPreset.opacity.point}
 					data-plot-element="point"
-					role={onselect ? 'button' : 'graphics-symbol'}
-					tabindex={onselect ? 0 : undefined}
+					role={onselect || keyboard ? 'button' : 'graphics-symbol'}
+					tabindex={onselect || keyboard ? 0 : undefined}
 					style:cursor={onselect ? 'pointer' : undefined}
 					aria-label="{pt.data[x]}, {pt.data[y]}"
 					onmouseenter={() => plotState.setHovered(pt.data)}
 					onmouseleave={() => plotState.clearHovered()}
 					onclick={onselect ? () => onselect(pt.data) : undefined}
 					onkeydown={onselect ? (e) => (e.key === 'Enter' || e.key === ' ') && onselect(pt.data) : undefined}
+					use:keyboardNav={keyboard}
 				/>
 			{/if}
 			{#if label}

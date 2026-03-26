@@ -1,6 +1,7 @@
 <script>
 	import { getContext, onMount, onDestroy } from 'svelte'
 	import { buildGroupedBars, buildStackedBars, buildHorizontalBars } from './lib/bars.js'
+	import { keyboardNav } from '../lib/keyboard-nav.js'
 	import LabelPill from './LabelPill.svelte'
 
 	let {
@@ -13,7 +14,8 @@
 		stat = 'identity',
 		options = {},
 		filterable = false,
-		onselect = undefined
+		onselect = undefined,
+		keyboard = false
 	} = $props()
 
 	// `fill` is accepted as an alias for `color` (consistent with Arc.svelte)
@@ -125,8 +127,9 @@
 				onkeydown={filterable && x
 					? (e) => (e.key === 'Enter' || e.key === ' ') && handleBarClick(bar.data[x])
 					: onselect ? (e) => (e.key === 'Enter' || e.key === ' ') && onselect(bar.data) : undefined}
-				role={filterable || onselect ? 'button' : 'graphics-symbol'}
-				tabindex={filterable || onselect ? 0 : undefined}
+				role={filterable || onselect || keyboard ? 'button' : 'graphics-symbol'}
+				tabindex={filterable || onselect || keyboard ? 0 : undefined}
+				use:keyboardNav={keyboard}
 				aria-label="{bar.data[x]}: {bar.data[y]}"
 				onmouseenter={() => plotState.setHovered(bar.data)}
 				onmouseleave={() => plotState.clearHovered()}

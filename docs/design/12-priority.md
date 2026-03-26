@@ -83,7 +83,7 @@ Items that add sophisticated capabilities.
 
 - [x] Interactive tooltips — `tooltip` prop on `Plot`; all geoms (Bar, Point, Line, Area, Box, Violin, Arc) call `setHovered`/`clearHovered`; `Tooltip.svelte` renders with default key-value format or custom fn (2026-03-26)
 - [x] Click selection on data points — `onselect` prop on Bar, Point, Line, Arc; fires with row data on click/Enter/Space; pointer cursor + button role when active (2026-03-26)
-- [ ] Keyboard navigation within charts — focus moves between data points, values announced to screen readers (`docs/features/07-Charts.md`)
+- [x] Keyboard navigation within charts — `keyboard` prop on Bar/Point/Line; `keyboardNav` Svelte action enables ArrowLeft/ArrowRight between data points; elements get tabindex+role automatically; `aria-label` announces values to screen readers (2026-03-26)
 - [x] Scatter chart — `ScatterPlot` with `size`, `fill`, `color`, `symbol`, `label` channels (2026-03-23)
 - [x] Pattern fills for series — 21 patterns (hatch, diagonal, dots, triangles, etc.); `pattern` channel on Bar and Area with `assignPatterns()` auto-rotation; `DefinePatterns.svelte` renders defs; Sparkline also supports pattern (2026-03-26)
 - [ ] Zoom and pan — scrollable and draggable chart viewport for large data ranges (`docs/features/07-Charts.md`)

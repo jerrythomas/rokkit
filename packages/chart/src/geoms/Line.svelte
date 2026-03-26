@@ -2,6 +2,7 @@
 	import { getContext, onMount, onDestroy } from 'svelte'
 	import { buildLines } from '../lib/brewing/marks/lines.js'
 	import { buildSymbolPath } from '../lib/brewing/marks/points.js'
+	import { keyboardNav } from '../lib/keyboard-nav.js'
 	import LabelPill from './LabelPill.svelte'
 
 	let {
@@ -12,7 +13,8 @@
 		label = false,
 		stat = 'identity',
 		options = {},
-		onselect = undefined
+		onselect = undefined,
+		keyboard = false
 	} = $props()
 
 	/**
@@ -105,14 +107,15 @@
 					r="8"
 					fill="transparent"
 					stroke="none"
-					role={onselect ? 'button' : 'presentation'}
-					tabindex={onselect ? 0 : undefined}
+					role={onselect || keyboard ? 'button' : 'presentation'}
+					tabindex={onselect || keyboard ? 0 : undefined}
 					style:cursor={onselect ? 'pointer' : undefined}
 					data-plot-element="line-hover"
 					onmouseenter={() => plotState.setHovered(pt.data)}
 					onmouseleave={() => plotState.clearHovered()}
 					onclick={onselect ? () => onselect(pt.data) : undefined}
 					onkeydown={onselect ? (e) => (e.key === 'Enter' || e.key === ' ') && onselect(pt.data) : undefined}
+					use:keyboardNav={keyboard}
 				/>
 			{/each}
 		{/each}
