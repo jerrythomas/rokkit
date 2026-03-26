@@ -43,6 +43,9 @@ export {
 	AlertList
 } from './components/index.js'
 
+export { default as MarkdownRenderer } from './MarkdownRenderer.svelte'
+export type { MarkdownPlugin } from './markdown-plugin.js'
+
 // Utilities
 export { highlightCode, preloadHighlighter, getSupportedLanguages } from './utils/shiki.js'
 export * from './utils/palette.js'
