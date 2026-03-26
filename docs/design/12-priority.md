@@ -53,8 +53,8 @@ Items that significantly improve the developer or end-user experience.
 ### Charts — Core Functionality
 
 - [ ] Sparkline pattern fills — pattern fill alternative for color-insufficient contexts (`docs/features/07-Charts.md`)
-- [ ] Animated bar chart — animated entry and data transition (`docs/features/07-Charts.md`)
-- [ ] Animated line / area chart — line draw animation and smooth data transitions (`docs/features/07-Charts.md`)
+- [x] Animated bar chart — covered by `AnimatedPlot` (frame-based animation with any geom type including bar)
+- [x] Animated line / area chart — covered by `AnimatedPlot` (frame-based animation with line/area geoms)
 - [x] Pie / donut chart — `PieChart` with `innerRadius` prop for donut; `labelFn`, `stat`, `fill`, `pattern` (2026-03-23)
 - [x] Chart preset — `createChartPreset()` + default preset; shade-mapping replaces hardcoded hex in `brewing/palette.json`; `ChartProvider` Svelte context; opacity to preset; jitter on Point (`docs/design/17-chart-preset.md`) (2026-03-26)
   - [x] Step 1: `createChartPreset()` + `defaultPreset` in `packages/chart/src/lib/preset.js`
