@@ -1,4 +1,5 @@
 import { extent } from 'd3-array'
+import { dataset } from '@rokkit/data'
 
 /**
  * Extracts animation frames from data, keyed by time field value.
@@ -19,72 +20,61 @@ export function extractFrames(data, timeField) {
 }
 
 /**
- * Ensures all (x, color) combinations exist in the frame data.
- * Missing combinations are filled with y=0 so the animation
- * starts/ends smoothly without bars jumping in from nowhere.
+ * Ensures all frame values (byField) appear for every (x, color?) combination.
+ * Uses dataset alignBy to fill missing frame-value combos with y=0 so bars
+ * animate smoothly rather than disappearing between frames.
  *
- * @param {Object[]} frameData - rows for a single frame
- * @param {{ x: string, y: string, color?: string }} channels
- * @param {unknown[]} allXValues - all x values across all frames
- * @param {unknown[] | null} allColorValues - all color values across frames (null if no color)
+ * Call after pre-aggregation. The result can be split directly by extractFrames
+ * with no further per-frame normalization needed.
+ *
+ * @param {Object[]} data - pre-aggregated rows, one per (x, color?, byField)
+ * @param {{ x?: string, y: string, color?: string }} channels
+ * @param {string} byField - the frame field (e.g. 'year')
  * @returns {Object[]}
  */
-export function normalizeFrame(frameData, channels, allXValues, allColorValues) {
+export function completeFrames(data, channels, byField) {
   const { x: xf, y: yf, color: cf } = channels
+  const groupFields = [xf, ...(cf ? [cf] : [])].filter(Boolean)
 
-  if (cf && !allColorValues?.length) {
-    throw new Error('normalizeFrame: allColorValues must be provided when color channel is set')
-  }
+  if (groupFields.length === 0) return data
 
-  // Build lookup of existing (x, color?) keys
-  const existing = new Set(
-    frameData.map((d) => (cf ? `${d[xf]}::${d[cf]}` : String(d[xf])))
-  )
+  const nested = dataset(data)
+    .groupBy(...groupFields)
+    .alignBy(byField)
+    .usingTemplate({ [yf]: 0 })
+    .rollup()
+    .select()
 
-  const filled = [...frameData]
-
-  const colorValues = cf && allColorValues ? allColorValues : [null]
-
-  for (const xVal of allXValues) {
-    for (const colorVal of colorValues) {
-      const key = cf ? `${xVal}::${colorVal}` : String(xVal)
-      if (!existing.has(key)) {
-        const row = { [xf]: xVal, [yf]: 0 }
-        if (cf && colorVal !== null) row[cf] = colorVal
-        filled.push(row)
-      }
-    }
-  }
-
-  return filled
+  return nested.flatMap((row) => {
+    const groupKey = groupFields.reduce((acc, f) => ({ ...acc, [f]: row[f] }), {})
+    // strip the actual_flag marker added by alignBy
+    return row.children.map(({ actual_flag: _af, ...child }) => ({ ...groupKey, ...child }))
+  })
 }
 
 /**
- * Computes static x/y domains across all frames combined.
- * These domains stay constant throughout the animation so bars
- * can be compared across frames by absolute height.
+ * Computes static x/y domains from the full (pre-split) data array.
+ * These domains stay constant throughout the animation so values are
+ * always comparable across frames.
  *
- * NOTE: y domain is pinned to [0, max] — assumes bar chart semantics where
- * the baseline is always 0. If used with scatter or line charts where y can
- * be negative, pass an explicit `yDomain` override instead.
+ * NOTE: y domain is pinned to [0, max] — assumes bar chart semantics.
+ * Pass an explicit yDomain override for scatter/line charts where y can
+ * be negative.
  *
- * @param {Map<unknown, Object[]>} frames
+ * @param {Object[]} data - full dataset (before frame extraction)
  * @param {{ x: string, y: string }} channels
  * @returns {{ xDomain: unknown[], yDomain: [number, number] }}
  */
-export function computeStaticDomains(frames, channels) {
+export function computeStaticDomains(data, channels) {
   const { x: xf, y: yf } = channels
-  const allData = [...frames.values()].flat()
 
-  const sampleX = allData[0]?.[xf]
-  const xIsCategorical = typeof sampleX === 'string'
+  const sampleX = data[0]?.[xf]
+  const xDomain = typeof sampleX === 'string'
+    ? [...new Set(data.map((d) => d[xf]))]
+    : extent(data, (d) => Number(d[xf]))
 
-  const xDomain = xIsCategorical
-    ? [...new Set(allData.map((d) => d[xf]))]
-    : extent(allData, (d) => Number(d[xf]))
-
-  const [, yMax] = extent(allData, (d) => Number(d[yf]))
-  const yDomain = [0, yMax ?? 0]   // pin to 0 (bar chart default)
+  const [, yMax] = extent(data, (d) => Number(d[yf]))
+  const yDomain = [0, yMax ?? 0]
 
   return { xDomain, yDomain }
 }

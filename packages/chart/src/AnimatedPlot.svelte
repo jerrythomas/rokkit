@@ -1,6 +1,7 @@
 <script>
   import { onMount, onDestroy } from 'svelte'
-  import { extractFrames, normalizeFrame, computeStaticDomains } from './lib/plot/frames.js'
+  import { extractFrames, completeFrames, computeStaticDomains } from './lib/plot/frames.js'
+  import { applyGeomStat } from './lib/plot/stat.js'
   import Timeline from './Plot/Timeline.svelte'
   import PlotChart from './Plot.svelte'
 
@@ -37,16 +38,37 @@
     children
   } = $props()
 
-  // Extract and normalize frames
-  const rawFrames = $derived(extractFrames(data, animate.by))
+  // Pre-aggregate and complete frames when any geom has a non-identity stat:
+  //   1. applyGeomStat: aggregate data by (x, color?, by) → one row per combination
+  //   2. completeFrames: alignBy(by) ensures all frame values appear for every (x, color?)
+  //      group, filling missing rows with y=0 so bars animate smoothly
+  // Geoms are returned with stat: 'identity' so PlotChart renders the pre-aggregated values as-is.
+  const prepared = $derived.by(() => {
+    const firstNonIdentity = geoms.find((g) => g.stat && g.stat !== 'identity')
+    if (!firstNonIdentity) return { data, geoms }
+
+    const aggChannels = { y }
+    if (x) aggChannels.x = x
+    if (color) aggChannels.color = color
+    aggChannels.frame = animate.by  // 'frame' is not a value channel, so it becomes a group-by
+
+    const aggregated = applyGeomStat(
+      data,
+      { stat: firstNonIdentity.stat, channels: aggChannels },
+      helpers
+    )
+    const completeData = completeFrames(aggregated, { x, y, color }, animate.by)
+
+    return { data: completeData, geoms: geoms.map((g) => ({ ...g, stat: 'identity' })) }
+  })
+
+  // Extract frames and compute stable domains from the full prepared dataset
+  const rawFrames = $derived(extractFrames(prepared.data, animate.by))
   const frameKeys = $derived([...rawFrames.keys()])
 
   const channels = $derived({ x, y, color })
-  const allXValues = $derived(x ? [...new Set(data.map((d) => d[x]))] : [])
-  const allColorValues = $derived(color ? [...new Set(data.map((d) => d[color]))] : null)
-
   const staticDomains = $derived(
-    x && y ? computeStaticDomains(rawFrames, channels) : { xDomain: undefined, yDomain: undefined }
+    x && y ? computeStaticDomains(prepared.data, channels) : { xDomain: undefined, yDomain: undefined }
   )
 
   // Playback state
@@ -54,12 +76,10 @@
   let playing      = $state(false)
   let speed        = $state(1)
 
-  // Current frame data (normalized — missing combos filled with 0)
+  // Current frame data — already complete (all x/color combos present)
   const currentFrameData = $derived.by(() => {
     const key = frameKeys[currentIndex]
-    const raw = rawFrames.get(key) ?? []
-    if (!x || !y) return raw
-    return normalizeFrame(raw, { x, y, color }, allXValues, allColorValues)
+    return rawFrames.get(key) ?? []
   })
 
   // Reduced motion preference
@@ -154,7 +174,7 @@
   const frameSpec = $derived({
     data: currentFrameData,
     x, y, color,
-    geoms,
+    geoms: prepared.geoms,
     xDomain: staticDomains.xDomain,
     yDomain: staticDomains.yDomain
   })
