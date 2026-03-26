@@ -55,6 +55,7 @@
 				stroke={box.stroke}
 				stroke-width="1"
 				data-plot-element="box-body"
+				role="presentation"
 				onmouseenter={() => plotState.setHovered(box.data)}
 				onmouseleave={() => plotState.clearHovered()}
 			/>

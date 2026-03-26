@@ -47,6 +47,7 @@
 				stroke={v.stroke}
 				stroke-width="1.5"
 				data-plot-element="violin"
+				role="presentation"
 				onmouseenter={() => plotState.setHovered(v.data)}
 				onmouseleave={() => plotState.clearHovered()}
 			/>
