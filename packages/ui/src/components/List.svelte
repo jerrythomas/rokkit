@@ -86,28 +86,34 @@
 	// collapsible=false: groups are fixed section headers — always expanded.
 	// collapsible=true: only expand the ancestor group of the active value;
 	//   all other groups start collapsed (user can toggle them).
-	$effect(() => {
-		if (!collapsible) {
-			for (const [, proxy] of wrapper.lookup) {
-				if (proxy.hasChildren) proxy.expanded = true
-			}
-		} else {
-			let activeKey: string | null = null
-			for (const [key, proxy] of wrapper.lookup) {
-				if (proxy.value === value) {
-					activeKey = key
-					break
-				}
-			}
-			for (const [key, proxy] of wrapper.lookup) {
-				if (proxy.hasChildren) {
-					proxy.expanded =
-						activeKey !== null &&
-						(activeKey === key || activeKey.startsWith(`${key  }-`))
-				}
-			}
+	function expandAllGroups() {
+		for (const [, proxy] of wrapper.lookup) {
+			if (proxy.hasChildren) proxy.expanded = true
 		}
-	})
+	}
+
+	function findActiveKey(): string | null {
+		for (const [key, proxy] of wrapper.lookup) {
+			if (proxy.value === value) return key
+		}
+		return null
+	}
+
+	function expandAncestorGroups(activeKey: string | null) {
+		for (const [key, proxy] of wrapper.lookup) {
+			if (!proxy.hasChildren) continue
+			proxy.expanded =
+				activeKey !== null &&
+				(activeKey === key || activeKey.startsWith(`${key  }-`))
+		}
+	}
+
+	function syncExpandedGroups() {
+		if (!collapsible) { expandAllGroups(); return }
+		expandAncestorGroups(findActiveKey())
+	}
+
+	$effect(syncExpandedGroups)
 
 	// ─── Sync external value → focused key ────────────────────────────────────
 

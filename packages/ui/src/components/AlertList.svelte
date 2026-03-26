@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte'
 	import { SvelteSet } from 'svelte/reactivity'
 	import { alerts } from '@rokkit/states'
 	import Message from './Message.svelte'
@@ -18,17 +19,15 @@
 
 	const { position = 'top-right', class: className = '' }: AlertListProps = $props()
 
-	let el: HTMLElement | undefined = $state()
 	const dismissing = new SvelteSet<string>()
 
 	// Portal to document.body so position:fixed is relative to the viewport,
 	// not clipped by any overflow:auto ancestor (e.g. the docs main column).
-	$effect(() => {
-		if (!el) return
-
-		document.body.appendChild(el)
-		return () => el?.remove()
-	})
+	 
+	function mountPortal(node: HTMLElement) {
+		document.body.appendChild(node)
+		return { destroy: () => node.remove() }
+	}
 
 	function startDismiss(id: string) {
 		dismissing.add(id)
@@ -42,7 +41,7 @@
 	}
 </script>
 
-<div bind:this={el} data-alert-list data-position={position} class={className || undefined}>
+<div use:mountPortal data-alert-list data-position={position} class={className || undefined}>
 	{#each alerts.current as alert (alert.id)}
 		<div
 			data-dismissing={dismissing.has(alert.id) || undefined}
@@ -52,7 +51,7 @@
 				type={alert.type as 'error' | 'info' | 'success' | 'warning'}
 				text={alert.text}
 				dismissible={alert.dismissible}
-				actions={alert.actions as any}
+				actions={alert.actions as Snippet}
 				ondismiss={() => startDismiss(alert.id)}
 			/>
 		</div>

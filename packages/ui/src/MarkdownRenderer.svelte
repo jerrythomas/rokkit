@@ -1,6 +1,6 @@
 <script lang="ts">
   import { marked } from 'marked'
-  import type { Token } from 'marked'
+  import type { Token, TokensList } from 'marked'
   import DOMPurify from 'isomorphic-dompurify'
   import type { MarkdownPlugin } from './markdown-plugin.js'
 
@@ -18,8 +18,8 @@
   const tokens = $derived(marked.lexer(markdown))
 
   function tokenToSafeHtml(token: Token): string {
-    const tokenList = Object.assign([token], { links: (tokens as any).links ?? {} })
-    const raw = marked.parser(tokenList as any)
+    const tokenList = Object.assign([token], { links: (tokens as TokensList).links ?? {} }) as TokensList
+    const raw = marked.parser(tokenList)
     return DOMPurify.sanitize(raw)
   }
 </script>

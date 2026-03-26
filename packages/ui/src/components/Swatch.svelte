@@ -38,19 +38,25 @@
 		return proxy.value === value
 	}
 
+	function toggleMultiValue(extracted, original) {
+		const arr = Array.isArray(value) ? [...value] : []
+		const idx = arr.indexOf(extracted)
+		if (idx >= 0) arr.splice(idx, 1)
+		else arr.push(extracted)
+		value = arr
+		onchange?.(value, original)
+	}
+
+	function selectSingleValue(extracted, original) {
+		if (extracted === value) return
+		value = extracted
+		onchange?.(extracted, original)
+	}
+
 	function handleSelect(extracted, proxy) {
 		if (proxy.disabled || disabled) return
-		if (multiple) {
-			const arr = Array.isArray(value) ? [...value] : []
-			const idx = arr.indexOf(extracted)
-			if (idx >= 0) arr.splice(idx, 1)
-			else arr.push(extracted)
-			value = arr
-			onchange?.(value, proxy.original)
-		} else if (extracted !== value) {
-			value = extracted
-			onchange?.(extracted, proxy.original)
-		}
+		if (multiple) toggleMultiValue(extracted, proxy.original)
+		else selectSingleValue(extracted, proxy.original)
 	}
 </script>
 

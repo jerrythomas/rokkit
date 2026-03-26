@@ -3,7 +3,7 @@
   import DOMPurify from 'isomorphic-dompurify'
 
   let { code }: { code: string } = $props()
-  let container: HTMLDivElement | undefined = $state()
+  let svgHtml = $state<string | null>(null)
   let error = $state<string | null>(null)
 
   onMount(async () => {
@@ -12,10 +12,7 @@
       mermaid.initialize({ startOnLoad: false, theme: 'default' })
       const id = `mermaid-${  Math.random().toString(36).slice(2)}`
       const { svg } = await mermaid.render(id, code)
-      if (container) {
-        const sanitized = DOMPurify.sanitize(svg, { USE_PROFILES: { svg: true } })
-        container.innerHTML = sanitized
-      }
+      svgHtml = DOMPurify.sanitize(svg, { USE_PROFILES: { svg: true } })
     } catch (e) {
       error = e instanceof Error ? e.message : 'Mermaid render failed'
     }
@@ -28,5 +25,10 @@
     <details><summary>Raw</summary><pre>{code}</pre></details>
   </div>
 {:else}
-  <div bind:this={container} class="mermaid-block" data-mermaid-block></div>
+  <div class="mermaid-block" data-mermaid-block>
+    {#if svgHtml}
+      <!-- eslint-disable-next-line svelte/no-at-html-tags -->
+      {@html svgHtml}
+    {/if}
+  </div>
 {/if}
