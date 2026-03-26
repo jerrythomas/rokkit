@@ -32,11 +32,13 @@ jobs:
 
       - name: Publish packages
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
           NODE_NO_WARNINGS: 1
         run: |
           # Publish in dependency order so each package's deps are already on npm
           PACKAGES=(helpers cli icons core data actions themes unocss states ui forms blocks app chart stories)
+          VERSION=$(node -p "require('./packages/helpers/package.json').version")
+          # Pre-release versions (containing '-') go to the 'next' tag; stable to 'latest'
+          TAG=$(echo "$VERSION" | grep -q '-' && echo 'next' || echo 'latest')
           for name in "${PACKAGES[@]}"; do
             pkg="./packages/${name}/package.json"
             [ -f "$pkg" ] || continue
@@ -52,22 +54,8 @@ jobs:
               }
               fs.writeFileSync('$pkg', JSON.stringify(p, null, 2) + '\n');
             "
-            (cd "./packages/${name}" && npm publish --provenance --access public --tag latest)
+            (cd "./packages/${name}" && npm publish --provenance --access public --tag "$TAG")
             git checkout -- "$pkg"
-          done
-
-      - name: Sync next dist-tag
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
-          NODE_NO_WARNINGS: 1
-        run: |
-          PACKAGES=(helpers cli icons core data actions themes unocss states ui forms blocks app chart stories)
-          VERSION=$(node -p "require('./packages/helpers/package.json').version")
-          for name in "${PACKAGES[@]}"; do
-            pkg="./packages/${name}/package.json"
-            [ -f "$pkg" ] || continue
-            grep -q '"private": true' "$pkg" 2>/dev/null && continue
-            npm dist-tag add @rokkit/${name}@${VERSION} next
           done
 
       - name: Create GitHub release
