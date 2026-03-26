@@ -52,7 +52,7 @@ Items that significantly improve the developer or end-user experience.
 
 ### Charts — Core Functionality
 
-- [ ] Sparkline pattern fills — pattern fill alternative for color-insufficient contexts (`docs/features/07-Charts.md`)
+- [x] Sparkline pattern fills — pattern fill alternative for color-insufficient contexts; `pattern` prop on `Sparkline.svelte` with `PatternDef` integration (2026-03-26)
 - [x] Animated bar chart — covered by `AnimatedPlot` (frame-based animation with any geom type including bar)
 - [x] Animated line / area chart — covered by `AnimatedPlot` (frame-based animation with line/area geoms)
 - [x] Pie / donut chart — `PieChart` with `innerRadius` prop for donut; `labelFn`, `stat`, `fill`, `pattern` (2026-03-23)
@@ -71,7 +71,7 @@ Items that significantly improve the developer or end-user experience.
 - [x] ggplot2-style aesthetic channels — `fill` for polygons, `color` for strokes/lines, all channels null-default independent (2026-03-23)
 - [x] Horizontal BarChart — auto-detected: swap x/y so y=categorical, x=numeric; `Bar.svelte` + `PlotState` handle orientation (issue #108)
 - [x] Stacked / grouped BarChart — `stack=true` for stacked; grouped bars are automatic when `fill` maps to a multi-value field (`buildGroupedBars` is the default path) (issue #109)
-- [ ] Static color literal support — `fill`/`color` accepts CSS color values directly without groupBy (issue #110)
+- [x] Static color literal support — `fill`/`color` accepts CSS color values directly without groupBy; `isLiteralColor()` utility, singleton Map pattern, sub-band exclusion (issue #110) (2026-03-26)
 
 ---
 
@@ -81,7 +81,7 @@ Items that add sophisticated capabilities.
 
 ### Charts — Advanced Interaction
 
-- [ ] Interactive tooltips — value and label tooltip on hover over data points and bars (`docs/features/07-Charts.md`)
+- [x] Interactive tooltips — `tooltip` prop on `Plot`; all geoms (Bar, Point, Line, Area, Box, Violin, Arc) call `setHovered`/`clearHovered`; `Tooltip.svelte` renders with default key-value format or custom fn (2026-03-26)
 - [ ] Click selection on data points — selection event fires with point data on click (`docs/features/07-Charts.md`)
 - [ ] Keyboard navigation within charts — focus moves between data points, values announced to screen readers (`docs/features/07-Charts.md`)
 - [x] Scatter chart — `ScatterPlot` with `size`, `fill`, `color`, `symbol`, `label` channels (2026-03-23)

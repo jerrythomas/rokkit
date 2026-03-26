@@ -58,5 +58,21 @@
 				<path d={seg.d} fill="url(#{seg.patternId})" data-plot-element="area" />
 			{/if}
 		{/each}
+		<!-- Invisible hit circles for tooltip: one per data point -->
+		{#each data as d, i (`hover::${i}`)}
+			{@const px = typeof xScale?.bandwidth === 'function' ? (xScale(d[x]) ?? 0) + xScale.bandwidth() / 2 : (xScale?.(d[x]) ?? 0)}
+			{@const py = yScale?.(d[y]) ?? 0}
+			<circle
+				cx={px}
+				cy={py}
+				r="8"
+				fill="transparent"
+				stroke="none"
+				role="presentation"
+				data-plot-element="area-hover"
+				onmouseenter={() => plotState.setHovered(d)}
+				onmouseleave={() => plotState.clearHovered()}
+			/>
+		{/each}
 	</g>
 {/if}

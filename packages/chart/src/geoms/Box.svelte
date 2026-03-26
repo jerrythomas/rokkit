@@ -55,6 +55,8 @@
 				stroke={box.stroke}
 				stroke-width="1"
 				data-plot-element="box-body"
+				onmouseenter={() => plotState.setHovered(box.data)}
+				onmouseleave={() => plotState.clearHovered()}
 			/>
 			<!-- Median line: darker stroke shade -->
 			<line
