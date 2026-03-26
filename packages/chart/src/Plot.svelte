@@ -28,6 +28,7 @@
 	 *   margin?: { top: number, right: number, bottom: number, left: number },
 	 *   legend?: boolean,
 	 *   title?: string,
+	 *   summary?: string,
 	 *   tooltip?: boolean | ((data: Record<string, unknown>) => string),
 	 *   children?: import('svelte').Snippet,
 	 * }}
@@ -44,6 +45,7 @@
 		margin = undefined,
 		legend = false,
 		title = '',
+		summary = '',
 		tooltip = false,
 		children
 	} = $props()
@@ -83,6 +85,7 @@
 	const showGrid = $derived(spec?.grid ?? grid)
 	const showLegend = $derived(spec?.legend ?? legend)
 	const chartTitle = $derived(spec?.title ?? title)
+	const chartSummary = $derived(spec?.summary ?? summary)
 
 	// Geoms from spec (spec-driven API)
 	const specGeoms = $derived(spec?.geoms ?? [])
@@ -117,6 +120,7 @@
 		viewBox="0 0 {svgWidth} {svgHeight}"
 		role="img"
 		aria-label={chartTitle || 'Chart visualization'}
+		aria-description={chartSummary || undefined}
 	>
 		<!-- SVG pattern defs -->
 		<DefinePatterns />

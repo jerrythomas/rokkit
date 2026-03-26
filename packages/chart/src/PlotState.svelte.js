@@ -11,7 +11,7 @@ import {
 import { resolvePreset } from './lib/plot/preset.js'
 import { resolveFormat, resolveTooltip, resolveGeom } from './lib/plot/helpers.js'
 import { defaultPreset } from './lib/preset.js'
-import { distinct, assignColors } from './lib/brewing/colors.js'
+import { distinct, assignColors, isLiteralColor } from './lib/brewing/colors.js'
 import { assignPatterns } from './lib/brewing/patterns.js'
 import { assignSymbols } from './lib/brewing/marks/points.js'
 
@@ -127,7 +127,9 @@ export class PlotState {
 		// Mirror buildStackedBars/subBandFields: stack dimension is the first
 		// non-x field among [color, pattern]. Summing all raw rows (stat=identity)
 		// would overcount when multiple rows share the same (x, stack) key.
-		const colorField = this.#effectiveChannels.color
+		const colorField = isLiteralColor(this.#effectiveChannels.color)
+			? null
+			: this.#effectiveChannels.color
 		const patternField = this.#effectiveChannels.pattern
 		const stackField = [colorField, patternField].find((f) => f && f !== xField) ?? colorField
 		const lookup = new SvelteMap()
@@ -158,10 +160,13 @@ export class PlotState {
 	})
 
 	// Colors: Map<colorKey, { fill, stroke }> for all distinct color field values.
+	// If the color channel is a CSS literal (e.g. '#4a90d9'), return a singleton map
+	// keyed by null so all marks pick it up via the fallback path.
 	// If a colorDomain is provided (e.g. from FacetPlot for cross-panel consistency),
 	// use it instead of deriving distinct values from the local panel data.
 	colors = $derived.by(() => {
 		const field = this.#effectiveChannels.color
+		if (isLiteralColor(field)) return new Map([[null, { fill: field, stroke: field }]])
 		const values = this.#colorDomain ?? distinct(this.#data, field)
 		return assignColors(values, this.#mode, this.#chartPreset)
 	})
@@ -182,8 +187,11 @@ export class PlotState {
 		return assignSymbols(distinct(this.#data, sf), this.#chartPreset)
 	})
 
-	// Expose effective channel fields for consumers (e.g. Legend)
-	colorField = $derived(this.#effectiveChannels.color)
+	// Expose effective channel fields for consumers (e.g. Legend).
+	// Returns null for literal CSS colors since they don't map to a data field.
+	colorField = $derived(
+		isLiteralColor(this.#effectiveChannels.color) ? null : this.#effectiveChannels.color
+	)
 	patternField = $derived(this.#effectiveChannels.pattern)
 	symbolField = $derived(this.#effectiveChannels.symbol)
 

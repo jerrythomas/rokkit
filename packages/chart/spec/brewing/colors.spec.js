@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { assignColors, distinct } from '../../src/lib/brewing/colors.js'
+import { assignColors, distinct, isLiteralColor } from '../../src/lib/brewing/colors.js'
 import { defaultPreset, createChartPreset } from '../../src/lib/preset.js'
 import masterPalette from '../../src/lib/palette.json'
 
@@ -48,6 +48,33 @@ describe('assignColors', () => {
 		const custom = createChartPreset({ colors: ['nonexistent-color'] })
 		const result = assignColors(['a'], 'light', custom)
 		expect(result.get('a')).toEqual({ fill: '#888', stroke: '#444' })
+	})
+})
+
+describe('isLiteralColor', () => {
+	it('detects hex colors', () => {
+		expect(isLiteralColor('#fff')).toBe(true)
+		expect(isLiteralColor('#4a90d9')).toBe(true)
+		expect(isLiteralColor('#4a90d9ff')).toBe(true)
+	})
+
+	it('detects functional color notations', () => {
+		expect(isLiteralColor('rgb(100, 100, 100)')).toBe(true)
+		expect(isLiteralColor('rgba(0,0,0,0.5)')).toBe(true)
+		expect(isLiteralColor('hsl(200 50% 50%)')).toBe(true)
+		expect(isLiteralColor('oklch(0.7 0.15 200)')).toBe(true)
+	})
+
+	it('returns false for field names', () => {
+		expect(isLiteralColor('region')).toBe(false)
+		expect(isLiteralColor('category')).toBe(false)
+		expect(isLiteralColor('year')).toBe(false)
+	})
+
+	it('returns false for falsy values', () => {
+		expect(isLiteralColor(null)).toBe(false)
+		expect(isLiteralColor(undefined)).toBe(false)
+		expect(isLiteralColor('')).toBe(false)
 	})
 })
 

@@ -2,6 +2,19 @@ import masterPalette from '../palette.json'
 import { defaultPreset } from '../preset.js'
 
 /**
+ * Returns true if the value looks like a CSS color literal (not a field name).
+ * Supports hex (#rgb, #rrggbb, #rrggbbaa), and functional notations (rgb, hsl, oklch, etc.).
+ * @param {unknown} value
+ * @returns {boolean}
+ */
+export function isLiteralColor(value) {
+	if (!value || typeof value !== 'string') return false
+	if (/^#([0-9a-fA-F]{3,8})$/.test(value)) return true
+	if (/^(rgb|rgba|hsl|hsla|oklch|oklab|hwb|lab|lch|color)\s*\(/i.test(value)) return true
+	return false
+}
+
+/**
  * Extracts distinct values for a given field from the data array.
  * @param {Object[]} data
  * @param {string|null} field
