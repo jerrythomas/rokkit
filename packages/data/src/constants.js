@@ -1,6 +1,11 @@
-import { identity, pick } from 'ramda'
-
-export const pickAllowedConfig = pick(['children', 'actual_flag'])
+const ALLOWED_CONFIG_KEYS = new Set(['children', 'actual_flag'])
+export const pickAllowedConfig = (obj) => {
+	const result = {}
+	for (const k of ALLOWED_CONFIG_KEYS) {
+		if (k in obj) result[k] = obj[k]
+	}
+	return result
+}
 
 /** @type {import('./types').DataFrameConfig */
 export const defaultConfig = {
@@ -63,7 +68,7 @@ export const typeConverters = {
 	number: (value) => Number(value),
 	boolean: (value) => value === 'true' || value === true,
 	date: (value) => new Date(value),
-	mixed: identity
+	mixed: (x) => x
 }
 
 /**

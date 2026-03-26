@@ -13,14 +13,19 @@
  * @returns {Array<Object>}            - An object with the inner and outer join result.
  */
 function joinData(first, second, condition) {
-	let inner = []
+	const inner = []
 	const outer = []
 
-	first.forEach((f) => {
-		const matches = second.filter((s) => condition(f, s)).map((m) => ({ ...m, ...f }))
-		inner = inner.concat(matches)
-		if (matches.length === 0) outer.push(f)
-	})
+	for (const f of first) {
+		let matched = false
+		for (const s of second) {
+			if (condition(f, s)) {
+				inner.push({ ...s, ...f })
+				matched = true
+			}
+		}
+		if (!matched) outer.push(f)
+	}
 	return { inner, outer }
 }
 

@@ -1,4 +1,11 @@
-import { omit, identity } from 'ramda'
+const identity = (x) => x
+
+function omit(keys, obj) {
+	const skip = new Set(keys)
+	const out = {}
+	for (const k of Object.keys(obj)) if (!skip.has(k)) out[k] = obj[k]
+	return out
+}
 
 /**
  *

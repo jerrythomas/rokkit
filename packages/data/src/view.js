@@ -1,4 +1,3 @@
-import { omit } from 'ramda'
 import { get, writable } from 'svelte/store'
 import { deriveMetadata, deriveSortableColumn } from './infer'
 
@@ -162,7 +161,7 @@ export function dataview(data, options) {
 	let sortGroup = []
 
 	return {
-		...omit(['set', 'update'], store),
+		...Object.fromEntries(Object.entries(store).filter(([k]) => k !== 'set' && k !== 'update')),
 		// filter: noop,
 		/**
 		 * Clears the applied sort order from the hierarchy.

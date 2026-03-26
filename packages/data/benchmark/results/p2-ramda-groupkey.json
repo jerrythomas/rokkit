@@ -1,0 +1,271 @@
+{
+  "phase": "p2-ramda-groupkey",
+  "timestamp": "2026-03-25T23:53:23.108Z",
+  "environment": {
+    "runtime": "Bun 1.3.11",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "results": [
+    {
+      "label": "groupBy+rollup",
+      "size": "small",
+      "iterations": 10,
+      "min": 0.043,
+      "mean": 0.116,
+      "max": 0.502,
+      "p50": 0.08,
+      "p95": 0.502
+    },
+    {
+      "label": "groupBy+summarize+rollup",
+      "size": "small",
+      "iterations": 10,
+      "min": 0.022,
+      "mean": 0.045,
+      "max": 0.162,
+      "p50": 0.035,
+      "p95": 0.162
+    },
+    {
+      "label": "groupBy+alignBy+rollup",
+      "size": "small",
+      "iterations": 10,
+      "min": 0.078,
+      "mean": 0.141,
+      "max": 0.462,
+      "p50": 0.106,
+      "p95": 0.462
+    },
+    {
+      "label": "leftJoin",
+      "size": "small",
+      "iterations": 10,
+      "min": 0.03,
+      "mean": 0.045,
+      "max": 0.148,
+      "p50": 0.034,
+      "p95": 0.148
+    },
+    {
+      "label": "antiJoin",
+      "size": "small",
+      "iterations": 10,
+      "min": 0.011,
+      "mean": 0.048,
+      "max": 0.269,
+      "p50": 0.018,
+      "p95": 0.269
+    },
+    {
+      "label": "semiJoin",
+      "size": "small",
+      "iterations": 10,
+      "min": 0.012,
+      "mean": 0.025,
+      "max": 0.082,
+      "p50": 0.018,
+      "p95": 0.082
+    },
+    {
+      "label": "where+apply+sortBy",
+      "size": "small",
+      "iterations": 10,
+      "min": 0.026,
+      "mean": 0.044,
+      "max": 0.123,
+      "p50": 0.036,
+      "p95": 0.123
+    },
+    {
+      "label": "filterData",
+      "size": "small",
+      "iterations": 10,
+      "min": 0.004,
+      "mean": 0.012,
+      "max": 0.072,
+      "p50": 0.004,
+      "p95": 0.072
+    },
+    {
+      "label": "crossJoin",
+      "size": "small",
+      "iterations": 10,
+      "min": 0.022,
+      "mean": 0.03,
+      "max": 0.07,
+      "p50": 0.027,
+      "p95": 0.07
+    },
+    {
+      "label": "groupBy+rollup",
+      "size": "medium",
+      "iterations": 10,
+      "min": 0.202,
+      "mean": 0.225,
+      "max": 0.317,
+      "p50": 0.22,
+      "p95": 0.317
+    },
+    {
+      "label": "groupBy+summarize+rollup",
+      "size": "medium",
+      "iterations": 10,
+      "min": 0.089,
+      "mean": 0.096,
+      "max": 0.11,
+      "p50": 0.094,
+      "p95": 0.11
+    },
+    {
+      "label": "groupBy+alignBy+rollup",
+      "size": "medium",
+      "iterations": 10,
+      "min": 0.083,
+      "mean": 0.094,
+      "max": 0.111,
+      "p50": 0.092,
+      "p95": 0.111
+    },
+    {
+      "label": "leftJoin",
+      "size": "medium",
+      "iterations": 10,
+      "min": 0.292,
+      "mean": 0.472,
+      "max": 0.66,
+      "p50": 0.64,
+      "p95": 0.66
+    },
+    {
+      "label": "antiJoin",
+      "size": "medium",
+      "iterations": 10,
+      "min": 0.186,
+      "mean": 0.342,
+      "max": 0.489,
+      "p50": 0.401,
+      "p95": 0.489
+    },
+    {
+      "label": "semiJoin",
+      "size": "medium",
+      "iterations": 10,
+      "min": 0.146,
+      "mean": 0.158,
+      "max": 0.164,
+      "p50": 0.16,
+      "p95": 0.164
+    },
+    {
+      "label": "where+apply+sortBy",
+      "size": "medium",
+      "iterations": 10,
+      "min": 0.276,
+      "mean": 0.31,
+      "max": 0.343,
+      "p50": 0.318,
+      "p95": 0.343
+    },
+    {
+      "label": "filterData",
+      "size": "medium",
+      "iterations": 10,
+      "min": 0.02,
+      "mean": 0.024,
+      "max": 0.031,
+      "p50": 0.024,
+      "p95": 0.031
+    },
+    {
+      "label": "crossJoin",
+      "size": "medium",
+      "iterations": 10,
+      "min": 0.021,
+      "mean": 0.024,
+      "max": 0.031,
+      "p50": 0.023,
+      "p95": 0.031
+    },
+    {
+      "label": "groupBy+rollup",
+      "size": "large",
+      "iterations": 10,
+      "min": 1.399,
+      "mean": 1.647,
+      "max": 2.719,
+      "p50": 1.502,
+      "p95": 2.719
+    },
+    {
+      "label": "groupBy+summarize+rollup",
+      "size": "large",
+      "iterations": 10,
+      "min": 0.477,
+      "mean": 0.504,
+      "max": 0.544,
+      "p50": 0.503,
+      "p95": 0.544
+    },
+    {
+      "label": "groupBy+alignBy+rollup",
+      "size": "large",
+      "iterations": 10,
+      "min": 0.073,
+      "mean": 0.083,
+      "max": 0.126,
+      "p50": 0.078,
+      "p95": 0.126
+    },
+    {
+      "label": "leftJoin",
+      "size": "large",
+      "iterations": 10,
+      "min": 21.484,
+      "mean": 22.905,
+      "max": 24.482,
+      "p50": 23.69,
+      "p95": 24.482
+    },
+    {
+      "label": "antiJoin",
+      "size": "large",
+      "iterations": 10,
+      "min": 11.397,
+      "mean": 11.799,
+      "max": 12.938,
+      "p50": 11.461,
+      "p95": 12.938
+    },
+    {
+      "label": "semiJoin",
+      "size": "large",
+      "iterations": 10,
+      "min": 10.221,
+      "mean": 11.952,
+      "max": 17.273,
+      "p50": 11.063,
+      "p95": 17.273
+    },
+    {
+      "label": "where+apply+sortBy",
+      "size": "large",
+      "iterations": 10,
+      "min": 3.612,
+      "mean": 3.732,
+      "max": 4.148,
+      "p50": 3.697,
+      "p95": 4.148
+    },
+    {
+      "label": "filterData",
+      "size": "large",
+      "iterations": 10,
+      "min": 0.083,
+      "mean": 0.088,
+      "max": 0.101,
+      "p50": 0.087,
+      "p95": 0.101
+    }
+  ]
+}

@@ -130,4 +130,17 @@ describe('renamer', () => {
 			action = renamer().setSuffix('a').setSeparator('-').setKeys(keys).get()
 		})
 	})
+
+	describe('setPrefix / setSuffix replace each other', () => {
+		it('should drop suffix but keep other options when setPrefix is called', () => {
+			// object has both a key in the skip set (suffix) and one not in it (separator)
+			const action = renamer({ suffix: 'old', separator: '.' }).setPrefix('new').get()
+			expect(action.rename('x')).toBe('new.x')
+		})
+		it('should drop prefix but keep other options when setSuffix is called', () => {
+			// object has both a key in the skip set (prefix) and one not in it (separator)
+			const action = renamer({ prefix: 'old', separator: '.' }).setSuffix('new').get()
+			expect(action.rename('x')).toBe('x.new')
+		})
+	})
 })

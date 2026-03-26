@@ -1,4 +1,4 @@
-import { identity } from 'ramda'
+const identity = (x) => x
 /**
  * Returns a currency formatter function that formats a value as a currency string.
  * @param {string} language       - The IETF language tag used for locale-specific formatting.

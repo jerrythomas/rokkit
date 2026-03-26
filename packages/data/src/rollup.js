@@ -1,5 +1,3 @@
-import { omit, pick, mergeLeft, map, difference, uniq, pipe } from 'ramda'
-
 /**
  * Sets initial values for summaries.
  *
@@ -28,7 +26,7 @@ export function addToSummaries(group, row, summaries) {
 }
 
 /**
- * Groups data by specified keys.
+ * Groups data by specified keys using a composite string key (Phase 3: replaces JSON.stringify).
  *
  * @param {Array} data - An array of data points.
  * @param {Array} groupByKeys - Keys to group the data by.
@@ -36,17 +34,22 @@ export function addToSummaries(group, row, summaries) {
  * @returns {Object} Grouped data object with aggregation placeholders.
  */
 export function groupDataByKeys(data, groupByKeys, summaries) {
-	const keysExtractor = pick(groupByKeys)
-	const groupedData = data.reduce((grouped, row) => {
-		const key = JSON.stringify(keysExtractor(row))
-		if (!grouped[key]) {
-			grouped[key] = { ...keysExtractor(row), ...initialValues(summaries) }
-		}
-		addToSummaries(grouped[key], row, summaries)
-		return grouped
-	}, {})
+	const groupedData = new Map()
 
-	return Object.values(groupedData)
+	for (const row of data) {
+		// Composite key: avoids JSON.stringify overhead
+		const key = groupByKeys.map((k) => row[k]).join('\x00')
+
+		if (!groupedData.has(key)) {
+			const group = {}
+			for (const k of groupByKeys) group[k] = row[k]
+			Object.assign(group, initialValues(summaries))
+			groupedData.set(key, group)
+		}
+		addToSummaries(groupedData.get(key), row, summaries)
+	}
+
+	return [...groupedData.values()]
 }
 
 /**
@@ -57,15 +60,57 @@ export function groupDataByKeys(data, groupByKeys, summaries) {
  * @returns {Array} Aligned data array.
  */
 export function fillAlignedData(groupedData, config, fillRowsFunc) {
-	// const fillRowsFunc = getAlignGenerator(df.data, config)
 	const { actual_flag, children } = config
-	return Object.values(groupedData).map((row) => ({
+	return groupedData.map((row) => ({
 		...row,
 		[children]: [
 			...row[children].map((value) => ({ ...value, [actual_flag]: 1 })),
 			...fillRowsFunc(row[children])
 		]
 	}))
+}
+
+/**
+ * Creates a generator that produces missing rows in a dataset based on specified columns.
+ *
+ * @param {Array<Object>} data - The array of objects representing the dataset.
+ * @param {Object} config - The configuration object.
+ * @returns {Function} A generator function that when called, produces the missing rows.
+ */
+export function getAlignGenerator(data, config) {
+	const { align_by, group_by, actual_flag } = config
+
+	// Build template: omit align_by and group_by keys, add actual_flag=0
+	const omitKeys = new Set([...align_by, ...group_by])
+	const template = { [actual_flag]: 0 }
+	for (const [k, v] of Object.entries(config.template)) {
+		if (!omitKeys.has(k)) template[k] = v
+	}
+
+	// Collect all unique combinations of align_by fields from full dataset
+	const seen = new Map()
+	for (const row of data) {
+		const key = align_by.map((k) => row[k]).join('\x00')
+		if (!seen.has(key)) {
+			const combo = {}
+			for (const k of align_by) combo[k] = row[k]
+			seen.set(key, combo)
+		}
+	}
+	const allCombos = [...seen.values()]
+
+	// Return a function that, given a group's children, yields the missing combos
+	return (children) => {
+		const childKeys = new Set(children.map((c) => align_by.map((k) => c[k]).join('\x00')))
+		const missing = []
+		for (const combo of allCombos) {
+			const key = align_by.map((k) => combo[k]).join('\x00')
+			if (!childKeys.has(key)) {
+				missing.push({ ...combo, ...template })
+			}
+		}
+		return missing
+	}
 }
 
 /**
@@ -88,51 +133,3 @@ export function aggregateData(dataArray, summaries) {
 		)
 	}))
 }
-
-/**
- * Creates a generator that produces missing rows in a dataset based on specified columns.
- * The function determines all unique combinations of the specified columns in config.align_by
- * and returns a generator function to create the missing combinations, potentially with default
- * values for other columns.
- * @param {Array<Object>} data - The array of objects representing the dataset.
- * @param {Object} config - The configuration object.
- *
- * @returns {Function} A generator function that when called, produces the missing rows.
- */
-export function getAlignGenerator(data, config) {
-	const { align_by, group_by, actual_flag } = config
-	const template = { ...omit([...align_by, ...group_by], config.template), [actual_flag]: 0 }
-	const subset = pipe(map(pick(align_by)), uniq)(data)
-
-	return pipe(map(pick(align_by)), uniq, difference(subset), map(mergeLeft(template)))
-}
-
-/**
- * Returns an aggregator object with a mapper and reducer function.
- *
- * @param {Array<string>} from  - The key or keys to aggregate.
- * @param {Function}      using - The aggregation function.
- * @returns {import('./types').SummaryConfig}  - An object with a mapper and reducer function.
- */
-// export function getAggregator(from, into, using = identity) {
-// 	// const mapper = pick(Array.isArray ? from : [from])
-// 	return {
-// 		mapper: pick(from),
-// 		reducers: [{ field: into, formula: using }]
-// 	}
-// }
-
-/**
- * Returns the default aggregator which rolls up the columns other than the group_by columns into a single object.
- *
- * @param {import('./types').Metadata} metadata - The metadata for the columns to be aggregated.
- * @param {Object} config                       - The configuration used to build the aggregator.
- *
- * @returns {Object} An object containing the default aggregator for the specified metadata and configuration.
- */
-// export function defaultAggregator(metadata, config) {
-// 	const child = metadata.filter((col) => !config.group_by.includes(col.name))
-// 	const keys = child.map((col) => col.name)
-
-// 	return { ...getAggregator(keys, config.children), metadata: child }
-// }

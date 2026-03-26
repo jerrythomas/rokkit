@@ -37,6 +37,14 @@ describe('dataset', () => {
 	// 		nestedJoin: expect.any(Function)
 	// 	})
 	// })
+	describe('data setter', () => {
+		it('should replace data via setter', () => {
+			const ds = dataset([{ a: 1 }])
+			ds.data = [{ a: 2 }, { a: 3 }]
+			expect(ds.select()).toEqual([{ a: 2 }, { a: 3 }])
+		})
+	})
+
 	describe('select', () => {
 		it('should return the data', () => {
 			const result = dataset(joindata.groups).select()
@@ -217,6 +225,10 @@ describe('dataset', () => {
 				])
 				expect(result.select()).not.toEqual(data)
 			})
+			it('should delete all records when pending ops have no filter', () => {
+				const result = dataset(data).apply((row) => ({ ...row, x: 1 })).remove()
+				expect(result.select()).toEqual([])
+			})
 		})
 
 		describe('fillNA', () => {
@@ -358,6 +370,34 @@ describe('dataset', () => {
 			expect(result.select()).toEqual(joindata.nested_override)
 			expect(result).not.toBe(child)
 			expect(result).not.toBe(parent)
+		})
+	})
+
+	describe('columnDefs', () => {
+		const data = [
+			{ region: 'North', year: 2020, revenue: 42000.5 },
+			{ region: 'South', year: 2021, revenue: 31500.0 }
+		]
+
+		it('derives column definitions with scale and formatter', () => {
+			const cols = dataset(data).columnDefs()
+			expect(cols).toHaveLength(3)
+
+			const region = cols.find((c) => c.name === 'region')
+			expect(region.scale).toBe('discrete')
+			expect(typeof region.formatter).toBe('function')
+
+			const revenue = cols.find((c) => c.name === 'revenue')
+			expect(revenue.scale).toBe('continuous')
+		})
+
+		it('merges enhancements', () => {
+			const cols = dataset(data).columnDefs({
+				enhancements: [{ name: 'revenue', label: 'Revenue ($)' }]
+			})
+			const revenue = cols.find((c) => c.name === 'revenue')
+			expect(revenue.label).toBe('Revenue ($)')
+			expect(revenue.scale).toBe('continuous') // auto-derived preserved
 		})
 	})
 })

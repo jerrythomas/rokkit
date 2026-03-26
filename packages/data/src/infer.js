@@ -1,6 +1,5 @@
 import { ascending, descending } from 'd3-array'
 import { compact } from '@rokkit/core'
-import { omit } from 'ramda'
 import { createFormatter } from './formatter'
 import { defaultViewOptions, defaultActionOrder } from './constants'
 import { typeOf } from './utils'
@@ -101,7 +100,7 @@ export function getSample(data, deepScan = true) {
 	return data.reduce(
 		(acc, cur) => ({
 			...acc,
-			...compact(omit(Object.keys(acc), cur))
+			...compact(Object.fromEntries(Object.entries(cur).filter(([k]) => !(k in acc))))
 		}),
 		{}
 	)
@@ -271,6 +270,105 @@ export function deriveMetadata(dataArray, options = {}) {
 	columns = deriveColumnMetadata(columns, dataArray, options)
 	columns = addFormatters(columns, language)
 	if (actions.length > 0) columns = deriveActions(columns, actions)
+
+	return columns
+}
+
+// ── Scale inference ──────────────────────────────────────────────────────────
+
+/**
+ * Infers whether a column's values are discrete (categorical) or continuous (quantitative).
+ *
+ * Rules:
+ *  - string, boolean           → always discrete
+ *  - date, number (float)      → always continuous
+ *  - integer                   → discrete when ≤20 unique values OR unique ratio < 5 %,
+ *                                continuous otherwise (e.g. large ID column)
+ *  - anything else             → discrete (safe default for unknown types)
+ *
+ * @param {any[]} values - All values for the column (may include nulls).
+ * @returns {'discrete'|'continuous'}
+ */
+export function inferScale(values) {
+	const nonNull = values.filter((v) => v !== null && v !== undefined)
+	if (nonNull.length === 0) return 'discrete'
+
+	const type = typeOf(nonNull[0])
+
+	if (type === 'string' || type === 'boolean') return 'discrete'
+	if (type === 'date' || type === 'number') return 'continuous'
+
+	if (type === 'integer') {
+		const unique = new Set(nonNull).size
+		return unique <= 20 || unique / nonNull.length < 0.05 ? 'discrete' : 'continuous'
+	}
+
+	return 'discrete'
+}
+
+/**
+ * Adds a `scale` property to each column definition.
+ *
+ * @param {Array<Object>} columns - Column definitions (from deriveColumns / deriveMetadata).
+ * @param {any[]} data - Source rows.
+ * @returns {Array<Object>} Column definitions with `scale` added.
+ */
+export function addScales(columns, data) {
+	return columns.map((col) => ({
+		...col,
+		scale: inferScale(data.map((r) => r[col.name]))
+	}))
+}
+
+/**
+ * Merges user-provided enhancements into auto-derived column definitions.
+ * Enhancements are matched by `name` and merged (user values win).
+ * Enhancements for unknown column names are appended as synthetic columns.
+ *
+ * @param {Array<Object>} derived - Auto-derived column definitions.
+ * @param {Array<Object>} enhancements - User-provided overrides/additions.
+ * @returns {Array<Object>} Merged column definitions.
+ */
+export function mergeColumnEnhancements(derived, enhancements) {
+	const enhMap = new Map(enhancements.map((e) => [e.name, e]))
+	const result = derived.map((col) => {
+		const enh = enhMap.get(col.name)
+		return enh ? { ...col, ...enh } : col
+	})
+	const derivedNames = new Set(derived.map((c) => c.name))
+	for (const e of enhancements) {
+		if (!derivedNames.has(e.name)) result.push(e)
+	}
+	return result
+}
+
+/**
+ * Full column definition pipeline: derive → format → scale → merge enhancements.
+ *
+ * Produces column descriptors suitable for use in Table, TreeTable, and chart
+ * components. Each column gets: name, type, scale, sortable, filterable, fields,
+ * formatter — plus any user-supplied properties from `enhancements`.
+ *
+ * @param {any[]} data - Source rows.
+ * @param {Object} [options] - Options forwarded to deriveColumns / addFormatters.
+ * @param {Array<Object>} [options.enhancements=[]] - Per-column overrides keyed by name.
+ *        Use to override scale, add a label, attach a custom formatter, etc.
+ * @param {string} [options.language='en-US'] - Locale for formatters.
+ * @param {string} [options.scanMode='fast'] - 'fast' (first row) or 'deep' (all rows).
+ * @returns {Array<Object>} Column definitions with scale and formatters.
+ */
+export function deriveColumnDefs(data, options = {}) {
+	const { enhancements = [], language, scanMode } = { ...defaultViewOptions, ...options }
+
+	if (data.length === 0) return enhancements
+
+	let columns = deriveColumns(data, { scanMode })
+	columns = addFormatters(columns, language)
+	columns = addScales(columns, data)
+
+	if (enhancements.length > 0) {
+		columns = mergeColumnEnhancements(columns, enhancements)
+	}
 
 	return columns
 }

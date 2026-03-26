@@ -1,4 +1,4 @@
-import { identity, clone as copy } from 'ramda'
+const copy = (val) => structuredClone(val)
 import { getSample } from './infer'
 import { typeOf } from './utils'
 
@@ -67,8 +67,8 @@ export function model() {
 		 * Renames the reference names using a renamer
 		 * @param {Function} rename - the renamer function
 		 */
-		renameUsing: (rename = identity) => {
-			if (rename !== identity) {
+		renameUsing: (rename) => {
+			if (rename) {
 				data = data.map((x) => ({ ...x, name: rename(x.name) }))
 			}
 			return actions

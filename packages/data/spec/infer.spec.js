@@ -9,7 +9,11 @@ import {
 	deriveActions,
 	convertToActions,
 	deriveMetadata,
-	addFormatters
+	addFormatters,
+	inferScale,
+	addScales,
+	deriveColumnDefs,
+	mergeColumnEnhancements
 } from '../src/infer'
 
 describe('infer', () => {
@@ -410,6 +414,133 @@ describe('infer', () => {
 			expect(result[0].formatter(1)).toEqual('1')
 			expect(result[1].formatter(2.3)).toEqual('2.30')
 			expect(result[2].formatter(1.2)).toEqual('$1.20')
+		})
+	})
+
+	describe('inferScale', () => {
+		it('string values → discrete', () => {
+			expect(inferScale(['North', 'South', 'East', 'West'])).toBe('discrete')
+		})
+		it('boolean values → discrete', () => {
+			expect(inferScale([true, false, true])).toBe('discrete')
+		})
+		it('float values → continuous', () => {
+			expect(inferScale([1.1, 2.5, 3.7, 100.9])).toBe('continuous')
+		})
+		it('date values → continuous', () => {
+			expect(inferScale([new Date('2023-01-01'), new Date('2024-01-01')])).toBe('continuous')
+		})
+		it('integers with few unique values → discrete (e.g. years)', () => {
+			const years = [2018, 2019, 2020, 2021, 2022, 2023]
+			const values = Array.from({ length: 100 }, (_, i) => years[i % 6])
+			expect(inferScale(values)).toBe('discrete')
+		})
+		it('integers with high cardinality → continuous (e.g. IDs)', () => {
+			const values = Array.from({ length: 1000 }, (_, i) => i + 1)
+			expect(inferScale(values)).toBe('continuous')
+		})
+		it('empty or all-null → discrete', () => {
+			expect(inferScale([])).toBe('discrete')
+			expect(inferScale([null, null])).toBe('discrete')
+		})
+		it('unknown types (array/object values) → discrete', () => {
+			expect(inferScale([[1, 2], [3, 4]])).toBe('discrete')
+		})
+	})
+
+	describe('addScales', () => {
+		it('adds scale to each column', () => {
+			const data = [
+				{ region: 'North', year: 2020, revenue: 42000.5 },
+				{ region: 'South', year: 2021, revenue: 31000.0 }
+			]
+			const columns = [
+				{ name: 'region', type: 'string' },
+				{ name: 'year', type: 'integer' },
+				{ name: 'revenue', type: 'number' }
+			]
+			const result = addScales(columns, data)
+			expect(result[0].scale).toBe('discrete')  // string
+			expect(result[1].scale).toBe('discrete')  // integer, 2 unique / 2 rows = 100% but ≤20
+			expect(result[2].scale).toBe('continuous') // float
+		})
+	})
+
+	describe('mergeColumnEnhancements', () => {
+		const derived = [
+			{ name: 'region', type: 'string', scale: 'discrete' },
+			{ name: 'revenue', type: 'number', scale: 'continuous' }
+		]
+
+		it('overrides specific properties by name', () => {
+			const result = mergeColumnEnhancements(derived, [
+				{ name: 'revenue', label: 'Revenue ($)', digits: 0 }
+			])
+			expect(result[0]).toEqual(derived[0])
+			expect(result[1].label).toBe('Revenue ($)')
+			expect(result[1].digits).toBe(0)
+			expect(result[1].scale).toBe('continuous') // auto-derived value preserved
+		})
+
+		it('appends synthetic columns not in derived set', () => {
+			const result = mergeColumnEnhancements(derived, [
+				{ name: 'actions', action: 'edit' }
+			])
+			expect(result).toHaveLength(3)
+			expect(result[2]).toEqual({ name: 'actions', action: 'edit' })
+		})
+
+		it('unknown enhancement names do not replace existing columns', () => {
+			const result = mergeColumnEnhancements(derived, [{ name: 'region', sortable: false }])
+			expect(result[0].sortable).toBe(false)
+			expect(result[0].type).toBe('string') // other props preserved
+		})
+	})
+
+	describe('deriveColumnDefs', () => {
+		const data = [
+			{ region: 'North', year: 2020, revenue: 42000.5, active: true },
+			{ region: 'South', year: 2021, revenue: 31000.0, active: false }
+		]
+
+		it('returns empty array for empty data', () => {
+			expect(deriveColumnDefs([])).toEqual([])
+		})
+
+		it('derives columns with scale and formatter', () => {
+			const cols = deriveColumnDefs(data)
+			expect(cols).toHaveLength(4)
+
+			const region = cols.find((c) => c.name === 'region')
+			expect(region.scale).toBe('discrete')
+			expect(region.type).toBe('string')
+			expect(typeof region.formatter).toBe('function')
+
+			const revenue = cols.find((c) => c.name === 'revenue')
+			expect(revenue.scale).toBe('continuous')
+			expect(revenue.type).toBe('number')
+
+			const active = cols.find((c) => c.name === 'active')
+			expect(active.scale).toBe('discrete')
+		})
+
+		it('merges enhancements', () => {
+			const cols = deriveColumnDefs(data, {
+				enhancements: [
+					{ name: 'revenue', label: 'Revenue ($)', scale: 'continuous' },
+					{ name: 'actions', action: 'delete' }
+				]
+			})
+			const revenue = cols.find((c) => c.name === 'revenue')
+			expect(revenue.label).toBe('Revenue ($)')
+			const actions = cols.find((c) => c.name === 'actions')
+			expect(actions).toBeDefined()
+			expect(actions.action).toBe('delete')
+		})
+
+		it('returns enhancements array when data is empty', () => {
+			const fallback = [{ name: 'id', type: 'integer' }]
+			expect(deriveColumnDefs([], { enhancements: fallback })).toEqual(fallback)
 		})
 	})
 })

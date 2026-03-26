@@ -6,6 +6,14 @@ export { model } from './model'
 export { innerJoin, leftJoin, rightJoin, fullJoin, crossJoin, antiJoin, semiJoin } from './join'
 export { dataset } from './dataset'
 export { dataview } from './view'
-export { deriveColumns, deriveMetadata, deriveSortableColumn } from './infer'
+export {
+	deriveColumns,
+	deriveMetadata,
+	deriveSortableColumn,
+	inferScale,
+	addScales,
+	deriveColumnDefs,
+	mergeColumnEnhancements
+} from './infer'
 export { parseFilters } from './parser'
 export { filterData, filterObjectArray } from './filter'

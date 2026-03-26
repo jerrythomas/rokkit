@@ -20,6 +20,10 @@ describe('library', () => {
 			'deriveColumns',
 			'deriveMetadata',
 			'deriveSortableColumn',
+			'inferScale',
+			'addScales',
+			'deriveColumnDefs',
+			'mergeColumnEnhancements',
 			'parseFilters',
 			'filterData',
 			'filterObjectArray'

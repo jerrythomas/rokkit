@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { filterOperations, typeConverters } from '../src/constants'
+import { filterOperations, typeConverters, includeAll } from '../src/constants'
 
 describe('constants', () => {
 	describe('filterOperations', () => {
@@ -79,6 +79,17 @@ describe('constants', () => {
 		})
 		it('should convert date values', () => {
 			expect(typeConverters.date('2021-01-01')).toEqual(new Date('2021-01-01'))
+		})
+		it('should pass through mixed values unchanged', () => {
+			expect(typeConverters.mixed(42)).toBe(42)
+			expect(typeConverters.mixed('hello')).toBe('hello')
+		})
+	})
+
+	describe('includeAll', () => {
+		it('should always return true', () => {
+			expect(includeAll()).toBe(true)
+			expect(includeAll({ any: 'value' })).toBe(true)
 		})
 	})
 })
