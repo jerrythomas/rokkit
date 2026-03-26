@@ -67,6 +67,7 @@
 
 {#if arcs.length > 0}
 	<g data-plot-geom="arc" transform="translate({w / 2}, {h / 2})">
+		<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 		{#each arcs as arc (arc.key)}
 			<path
 				d={arc.d}

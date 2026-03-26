@@ -85,6 +85,7 @@
 
 {#if points.length > 0}
 	<g data-plot-geom="point">
+		<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 		{#each points as pt, i (`${i}::${pt.data[x]}::${pt.data[y]}`)}
 			{#if pt.symbolPath}
 				<path

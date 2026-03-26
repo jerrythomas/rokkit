@@ -97,6 +97,7 @@
 				{/each}
 			{/if}
 			<!-- Invisible hit areas for tooltip and selection -->
+			<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 			{#each seg.points as pt (`hover::${pt.x}::${pt.y}`)}
 				<circle
 					cx={pt.x}
