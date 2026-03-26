@@ -12,7 +12,8 @@
 		symbol: symbolField,
 		label = false,
 		stat = 'identity',
-		options = {}
+		options = {},
+		onselect = undefined
 	} = $props()
 
 	/**
@@ -94,10 +95,14 @@
 					stroke-width="1"
 					fill-opacity={options.opacity ?? plotState.chartPreset.opacity.point}
 					data-plot-element="point"
-					role="graphics-symbol"
+					role={onselect ? 'button' : 'graphics-symbol'}
+					tabindex={onselect ? 0 : undefined}
+					style:cursor={onselect ? 'pointer' : undefined}
 					aria-label="{pt.data[x]}, {pt.data[y]}"
 					onmouseenter={() => plotState.setHovered(pt.data)}
 					onmouseleave={() => plotState.clearHovered()}
+					onclick={onselect ? () => onselect(pt.data) : undefined}
+					onkeydown={onselect ? (e) => (e.key === 'Enter' || e.key === ' ') && onselect(pt.data) : undefined}
 				/>
 			{:else}
 				<circle
@@ -109,10 +114,14 @@
 					stroke-width="1"
 					fill-opacity={options.opacity ?? plotState.chartPreset.opacity.point}
 					data-plot-element="point"
-					role="graphics-symbol"
+					role={onselect ? 'button' : 'graphics-symbol'}
+					tabindex={onselect ? 0 : undefined}
+					style:cursor={onselect ? 'pointer' : undefined}
 					aria-label="{pt.data[x]}, {pt.data[y]}"
 					onmouseenter={() => plotState.setHovered(pt.data)}
 					onmouseleave={() => plotState.clearHovered()}
+					onclick={onselect ? () => onselect(pt.data) : undefined}
+					onkeydown={onselect ? (e) => (e.key === 'Enter' || e.key === ' ') && onselect(pt.data) : undefined}
 				/>
 			{/if}
 			{#if label}
