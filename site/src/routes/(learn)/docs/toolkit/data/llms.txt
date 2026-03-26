@@ -1,0 +1,288 @@
+# @rokkit/data
+
+Tabular data manipulation for JavaScript. Provides a fluent `dataset()` pipeline for grouping,
+alignment, rollup aggregation, filling missing values, and set joins — plus standalone join
+functions and a declarative filter engine.
+
+## Import
+
+```js
+import { dataset, crossJoin, leftJoin, filterData } from '@rokkit/data'
+```
+
+## dataset() — fluent pipeline
+
+`dataset(rows)` wraps an array of plain objects and returns a chainable `DataSet`. Call `.select()`
+at the end to execute the pipeline and get the result array back.
+
+```js
+const result = dataset(rows)
+  .where(row => row.active)
+  .sortBy('name')
+  .select()
+```
+
+### Filtering and sorting
+
+```js
+// .where(predicate) — keep rows matching a function
+dataset(orders).where(o => o.amount > 100).select()
+
+// .sortBy(...keys) — sort ascending by one or more keys
+dataset(products).sortBy('category', 'price').select()
+```
+
+### Column operations
+
+```js
+// .rename({ oldKey: 'newKey' }) — rename columns
+dataset(rows).rename({ amt: 'amount', qty: 'quantity' }).select()
+
+// .drop(...keys) — remove columns
+dataset(rows).drop('internal_id', 'temp').select()
+
+// .apply(fn) — transform each row
+dataset(rows).apply(row => ({ ...row, total: row.price * row.qty })).select()
+
+// .fillNA({ field: defaultValue }) — fill null/undefined values
+dataset(rows).fillNA({ revenue: 0, label: 'N/A' }).select()
+```
+
+### Row operations
+
+```js
+// .update(value | fn) — update rows matching the current .where() filter
+dataset(rows).where(r => r.status === 'pending').update({ status: 'active' }).select()
+
+// .remove() — delete rows matching the current .where() filter
+dataset(rows).where(r => r.deleted).remove().select()
+```
+
+### Set operations
+
+```js
+// .union(other) — combine two datasets (append rows)
+dataset(a).union(b).select()
+
+// .minus(other) — rows in a that are not in b (deep equality)
+dataset(a).minus(b.select()).select()
+
+// .intersect(other) — rows in a that are also in b
+dataset(a).intersect(b.select()).select()
+```
+
+### Joins (chainable)
+
+```js
+// .innerJoin / .leftJoin / .rightJoin / .fullJoin / .semiJoin / .antiJoin
+// condition is a function (rowA, rowB) => boolean
+
+dataset(orders).leftJoin(dataset(customers), (o, c) => o.customerId === c.id).select()
+
+// .crossJoin — all combinations of two datasets
+dataset(sizes).crossJoin(dataset(colors)).select()
+
+// .nestedJoin — nest matching rows under a key (default 'children')
+dataset(departments).nestedJoin(dataset(employees), (d, e) => d.id === e.deptId).select()
+```
+
+### Aggregation — groupBy + rollup
+
+`groupBy` + optional `alignBy` + optional `summarize` + `rollup` is the aggregation pipeline.
+
+```js
+// Group and collect children (default aggregator — produces nested rows)
+const nested = dataset(sales)
+  .groupBy('region')
+  .rollup()
+  .select()
+// → [{ region: 'West', children: [{ month: 'Jan', revenue: 4200 }, ...] }]
+
+// Group and aggregate with a summary formula
+import { mean, sum } from 'd3-array'
+
+const byRegion = dataset(sales)
+  .groupBy('region')
+  .summarize(row => row.revenue, { revenue: sum })
+  .rollup()
+  .select()
+// → [{ region: 'West', revenue: 142000 }, ...]
+
+// Group by multiple keys
+dataset(sales)
+  .groupBy('region', 'product')
+  .summarize(row => row.revenue, { revenue: mean })
+  .rollup()
+  .select()
+```
+
+### alignBy — fill missing combinations
+
+`alignBy` ensures that every group has a row for every value of the aligned field that exists
+anywhere in the dataset. Missing rows are filled using `usingTemplate`.
+
+Use case: animation frames — ensure every (x, color) group has a data point for every year,
+filling gaps with zero so bars animate smoothly rather than jumping in and out.
+
+```js
+// Pre-aggregated data: one row per (class, drv, year)
+// Some (class, drv) groups may be missing certain years.
+const complete = dataset(aggregated)
+  .groupBy('class', 'drv')     // one group per (class, drv) combination
+  .alignBy('year')              // ensure all years appear in every group
+  .usingTemplate({ hwy: 0 })   // fill missing year rows with hwy = 0
+  .rollup()
+  .select()
+// → [{ class: 'compact', drv: 'f', children: [{ year: 1999, hwy: 29 }, { year: 2008, hwy: 31 }] },
+//    { class: 'suv',     drv: '4', children: [{ year: 1999, hwy: 0 }, { year: 2008, hwy: 15 }] }]
+
+// Flatten children back to flat rows:
+const flat = complete.flatMap(row =>
+  row.children.map(({ actual_flag: _, ...child }) => ({
+    class: row.class, drv: row.drv, ...child
+  }))
+)
+```
+
+**`actual_flag`**: `alignBy` adds an `actual_flag` field to all child rows (1 = real data, 0 = filled).
+Strip it after flattening if not needed.
+
+## Standalone join functions
+
+The join functions are also exported as plain functions that operate on raw arrays:
+
+```js
+import { innerJoin, leftJoin, rightJoin, fullJoin, crossJoin, antiJoin, semiJoin } from '@rokkit/data'
+
+// leftJoin(first, second, condition) — all rows from first, matched rows from second
+const result = leftJoin(users, roles, (u, r) => u.roleId === r.id)
+
+// crossJoin(first, second) — all combinations
+const grid = crossJoin(rows, cols)
+
+// antiJoin(first, second, condition) — rows from first with NO match in second
+const unmatched = antiJoin(all, matched, (a, b) => a.id === b.id)
+
+// semiJoin(first, second, condition) — rows from first WITH a match in second (no duplication)
+const matched = semiJoin(orders, activeCustomers, (o, c) => o.customerId === c.id)
+```
+
+## filterData — declarative filtering
+
+```js
+import { filterData, filterObjectArray } from '@rokkit/data'
+
+// Apply multiple filter rules in sequence
+const rules = [
+  { column: 'status', operator: '=', value: 'active' },
+  { column: 'revenue', operator: '>', value: 1000 }
+]
+const filtered = filterData(rows, rules)
+
+// Single filter on one column
+const one = filterObjectArray(rows, { column: 'region', operator: '=', value: 'West' })
+
+// Filter across all columns (omit column)
+const search = filterObjectArray(rows, { operator: '~*', value: /rokkit/i })
+```
+
+Operators: `=`, `!=`, `<`, `<=`, `>`, `>=`, `~` (regex), `~*` (regex), `!~`, `!~*`
+
+## Common use cases
+
+### Pre-aggregate chart data
+
+```js
+import { dataset } from '@rokkit/data'
+import { mean } from 'd3-array'
+
+// One mean value per (category, year) for a bar chart
+const chartData = dataset(rawRows)
+  .groupBy('category', 'year')
+  .summarize(row => row.sales, { sales: mean })
+  .rollup()
+  .select()
+```
+
+### Complete animation frames
+
+```js
+// After aggregating: ensure all frame values appear for every group
+const completeData = dataset(aggregated)
+  .groupBy('category')
+  .alignBy('year')
+  .usingTemplate({ sales: 0 })
+  .rollup()
+  .select()
+  .flatMap(row =>
+    row.children.map(({ actual_flag: _, ...child }) => ({ category: row.category, ...child }))
+  )
+```
+
+### Enrich one dataset with fields from another
+
+```js
+const enriched = leftJoin(
+  products,
+  categories,
+  (p, c) => p.categoryId === c.id
+)
+```
+
+### Find rows missing from a reference set
+
+```js
+const newItems = antiJoin(incoming, existing, (a, b) => a.id === b.id)
+```
+
+### Build a complete combination grid
+
+```js
+// All (size, color) combinations for a product configurator
+const variants = crossJoin(sizes, colors)
+```
+
+## ReactiveDataSet — Svelte 5 reactive wrapper
+
+File: `@rokkit/data/src/dataset.svelte.js` (must be imported directly — rune compilation required)
+
+`reactiveDataset(rows)` holds source data in `$state` and exposes a `rows` getter backed by
+`$derived`. Templates bind to `ds.rows` directly; the result auto-recomputes when source data or
+configuration changes.
+
+```js
+import { reactiveDataset } from '@rokkit/data/src/dataset.svelte.js'
+
+const ds = reactiveDataset(rawRows)
+ds.where(r => r.status === 'active').sortBy('name')
+
+// Template binding (Svelte 5)
+// {#each ds.rows as row}...{/each}
+
+// CRUD — triggers reactive update automatically
+ds.push({ id: 99, name: 'New', status: 'active' })
+ds.remove(r => r.id === 5)
+ds.update(r => r.status === 'pending', { status: 'active' })
+ds.setData(freshRows)
+```
+
+### ReactiveDataSet API
+
+| Method | Description |
+|--------|-------------|
+| `rows` (getter) | Reactive derived result — bind to this in templates |
+| `.where(fn)` | Set filter predicate (replaces any previous filter) |
+| `.apply(fn)` | Append a row transform |
+| `.sortBy(...fields)` | Set sort fields (replaces previous sort) |
+| `.clearFilter()` | Remove the current filter |
+| `.clearTransforms()` | Remove all transforms |
+| `.setData(rows)` | Replace entire source dataset |
+| `.push(row)` | Append a row to the source |
+| `.remove(pred)` | Remove rows matching predicate from source |
+| `.update(pred, patch)` | Update matching rows (object or function patch) |
+| `.snapshot()` | Return a plain non-reactive copy of current `rows` |
+
+### When to use DataSet vs ReactiveDataSet
+
+- **`dataset()`** — for one-shot data preparation outside components (pre-aggregation, chart prep)
+- **`reactiveDataset()`** — for in-component reactive data (search/filter UIs, CRUD lists)

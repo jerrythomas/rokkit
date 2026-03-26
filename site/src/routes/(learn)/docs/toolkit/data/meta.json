@@ -1,0 +1,9 @@
+{
+  "title": "Data",
+  "description": "Fluent dataset pipeline — grouping, alignment, rollup, joins, and filtering for tabular data",
+  "icon": "i-glyph:database",
+  "package": "@rokkit/data",
+  "category": "toolkit",
+  "order": 1,
+  "since": "0.1.0"
+}

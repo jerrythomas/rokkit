@@ -1,0 +1,7 @@
+{
+  "title": "Toolkit",
+  "description": "Data manipulation, state machines, and utility packages",
+  "icon": "i-glyph:database",
+  "category": "toolkit",
+  "order": 22
+}
