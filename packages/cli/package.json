@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/cli",
-  "version": "1.0.0-next.148",
+  "version": "1.0.0-next.149",
   "description": "Command line utilities for icon bundling and conversion.",
   "repository": {
     "type": "git",
