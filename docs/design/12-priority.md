@@ -84,7 +84,7 @@ Items that add sophisticated capabilities.
 
 ### Toolchain
 
-- [ ] CLI: add Rokkit to a project — installs packages, configures build, imports starter theme (`docs/features/09-Toolchain.md`)
+- [x] CLI: add Rokkit to a project — `rokkit init` prompts for palette, icons, themes, switcher; writes `rokkit.config.js`, `uno.config.js`, patches `app.css` and `app.html` (already done)
 - [x] CLI: upgrade Rokkit — `rokkit upgrade` detects @rokkit/\* deps, fetches latest versions, prints diff, detects package manager, runs install with `--apply` (2026-03-18)
 - [ ] Curated icon sets — navigation, status, action, and object icons with tree-shaking (`docs/features/09-Toolchain.md`)
 - [ ] Tree-shaken icon imports — only imported icons included in the bundle (`docs/features/09-Toolchain.md`)
