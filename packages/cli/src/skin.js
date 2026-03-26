@@ -53,13 +53,7 @@ export function serializeConfig(config) {
  *   cwd?: string
  * }} adapters
  */
-export async function runSkinList(adapters = {}) {
-	const config = await loadConfig(adapters)
-	if (!config) {
-		console.error('rokkit.config.js not found. Run `rokkit init` first.')
-		return
-	}
-	const skins = config.skins ?? {}
+function printSkinNames(skins) {
 	const names = Object.keys(skins)
 	if (names.length === 0) {
 		console.info('No skins defined in rokkit.config.js.')
@@ -75,6 +69,15 @@ export async function runSkinList(adapters = {}) {
 	}
 }
 
+export async function runSkinList(adapters = {}) {
+	const config = await loadConfig(adapters)
+	if (!config) {
+		console.error('rokkit.config.js not found. Run `rokkit init` first.')
+		return
+	}
+	printSkinNames(config.skins ?? {})
+}
+
 /**
  * Create a new skin entry in rokkit.config.js.
  * @param {string} name
@@ -84,25 +87,27 @@ export async function runSkinList(adapters = {}) {
  *   cwd?: string
  * }} adapters
  */
+function validateSkinCreate(name, config) {
+	if (!name) return 'Usage: rokkit skin create --name <name>'
+	if (!config) return 'rokkit.config.js not found. Run `rokkit init` first.'
+	if (config.skins?.[name]) return `Skin "${name}" already exists in rokkit.config.js.`
+	return null
+}
+
 export async function runSkinCreate(name, adapters = {}) {
-	if (!name) {
-		console.error('Usage: rokkit skin create --name <name>')
-		return
-	}
-
 	const config = await loadConfig(adapters)
-	if (!config) {
-		console.error('rokkit.config.js not found. Run `rokkit init` first.')
-		return
-	}
-
-	if (config.skins?.[name]) {
-		console.warn(`Skin "${name}" already exists in rokkit.config.js.`)
+	const error = validateSkinCreate(name, config)
+	if (error) {
+		if (error.includes('already exists')) {
+			console.warn(error)
+		} else {
+			console.error(error)
+		}
 		return
 	}
 
 	const updated = addSkinToConfig(config, name)
-	await saveConfig(updated, adapters)
+	saveConfig(updated, adapters)
 
 	console.info(`Added skin "${name}" to rokkit.config.js`)
 	console.info(
@@ -116,7 +121,7 @@ export async function runSkinCreate(name, adapters = {}) {
  * @param {Record<string, unknown>} config
  * @param {{ writeConfig?: (config: Record<string, unknown>) => void, cwd?: string }} adapters
  */
-async function saveConfig(config, adapters) {
+function saveConfig(config, adapters) {
 	if (adapters.writeConfig) {
 		adapters.writeConfig(config)
 		return

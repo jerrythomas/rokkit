@@ -136,8 +136,12 @@ export class ProxyTree {
 	 * @param {Partial<typeof BASE_FIELDS>} [fields]
 	 * @param {{ createProxy?: (raw: *, fields: object, key: string, level: number) => ProxyItem }} [options]
 	 */
+	#mergeFields(fields) {
+		return { ...BASE_FIELDS, ...(fields && typeof fields === 'object' ? fields : {}) }
+	}
+
 	constructor(items = [], fields = {}, options = {}) {
-		this.#fields = { ...BASE_FIELDS, ...(fields && typeof fields === 'object' ? fields : {}) }
+		this.#fields = this.#mergeFields(fields)
 		this.#factory = this.#resolveFactory(options.createProxy)
 		this.#rootProxies = (items ?? []).map((raw, i) =>
 			this.#factory(raw, this.#fields, String(i), 1)

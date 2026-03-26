@@ -63,31 +63,36 @@ export function generateThemeStub(name) {
  *   cwd?: string
  * }} adapters
  */
-export async function runThemeList(adapters = {}) {
-	const config = await loadConfig(adapters)
-	const builtIn = config?.themes ?? []
-
+function getCustomThemes(adapters) {
 	const cwd = adapters.cwd ?? process.cwd()
 	const themesDir = resolve(cwd, 'src/themes')
 	const listFiles = adapters.listFiles ?? ((dir) => (existsSync(dir) ? readdirSync(dir) : []))
-	const custom = listFiles(themesDir)
+	return listFiles(themesDir)
 		.filter((f) => f.endsWith('.css'))
 		.map((f) => f.replace(/\.css$/, ''))
+}
 
+function printThemeSection(label, items) {
+	if (items.length === 0) return
+	console.info(label)
+	for (const t of items) console.info(`    ${t}`)
+}
+
+function printThemeList(builtIn, custom) {
 	console.info('Rokkit Themes\n')
-
-	if (builtIn.length > 0) {
-		console.info('  Built-in (from @rokkit/themes):')
-		for (const t of builtIn) console.info(`    ${t}`)
-	}
-	if (custom.length > 0) {
-		console.info('\n  Custom (src/themes/):')
-		for (const t of custom) console.info(`    ${t}`)
-	}
+	printThemeSection('  Built-in (from @rokkit/themes):', builtIn)
+	printThemeSection('\n  Custom (src/themes/):', custom)
 	if (builtIn.length === 0 && custom.length === 0) {
 		console.info('  No themes found.')
 		console.info('  Run `rokkit theme create --name <name>` to scaffold a custom theme.')
 	}
+}
+
+export async function runThemeList(adapters = {}) {
+	const config = await loadConfig(adapters)
+	const builtIn = config?.themes ?? []
+	const custom = getCustomThemes(adapters)
+	printThemeList(builtIn, custom)
 }
 
 /**
@@ -100,17 +105,22 @@ export async function runThemeList(adapters = {}) {
  *   cwd?: string
  * }} adapters
  */
-export async function runThemeCreate(name, adapters = {}) {
+function resolveThemeAdapters(adapters) {
+	return {
+		cwd: adapters.cwd ?? process.cwd(),
+		writeFile: adapters.writeFile ?? writeFileSync,
+		exists: adapters.exists ?? existsSync,
+		mkdir: adapters.mkdir ?? ((dir) => mkdirSync(dir, { recursive: true }))
+	}
+}
+
+export function runThemeCreate(name, adapters = {}) {
 	if (!name) {
 		console.error('Usage: rokkit theme create --name <name>')
 		return
 	}
 
-	const cwd = adapters.cwd ?? process.cwd()
-	const writeFile = adapters.writeFile ?? writeFileSync
-	const exists = adapters.exists ?? existsSync
-	const mkdir = adapters.mkdir ?? ((dir) => mkdirSync(dir, { recursive: true }))
-
+	const { cwd, writeFile, exists, mkdir } = resolveThemeAdapters(adapters)
 	const themesDir = resolve(cwd, 'src/themes')
 	const filePath = join(themesDir, `${name}.css`)
 
@@ -136,7 +146,7 @@ export async function runThemeCreate(name, adapters = {}) {
  */
 export async function theme(sub, opts = {}) {
 	if (sub === 'create') {
-		await runThemeCreate(opts.name)
+		runThemeCreate(opts.name)
 	} else {
 		await runThemeList()
 	}

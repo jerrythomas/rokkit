@@ -41,6 +41,39 @@ export function sortDataByFields(data, ...fields) {
  * @param {Array<{type:string, fn?:Function, fields?:string[]}>} ops
  * @returns {any[]}
  */
+function applyOpsToRow(row, linearOps) {
+	let cur = row
+	for (const op of linearOps) {
+		if (op.type === 'filter') {
+			if (!op.fn(cur)) return null
+		} else {
+			cur = op.fn(cur)
+		}
+	}
+	return cur
+}
+
+function applyLinearOps(data, linearOps) {
+	const out = []
+	for (const row of data) {
+		const result = applyOpsToRow(row, linearOps)
+		if (result !== null) out.push(result)
+	}
+	return out
+}
+
+function collectLinearOps(ops, i) {
+	const linearOps = []
+	while (i < ops.length && ops[i].type !== 'sort') linearOps.push(ops[i++])
+	return { linearOps, i }
+}
+
+function collectSortFields(ops, i) {
+	const sortFields = []
+	while (i < ops.length && ops[i].type === 'sort') sortFields.push(...ops[i++].fields)
+	return { sortFields, i }
+}
+
 export function executeFused(data, ops) {
 	if (ops.length === 0) return data
 
@@ -48,42 +81,15 @@ export function executeFused(data, ops) {
 	let i = 0
 
 	while (i < ops.length) {
-		// Collect a run of linear (filter/map) ops
-		const linearOps = []
-		while (i < ops.length && ops[i].type !== 'sort') {
-			linearOps.push(ops[i])
-			i++
-		}
+		const linear = collectLinearOps(ops, i)
+		i = linear.i
+		if (linear.linearOps.length > 0) result = applyLinearOps(result, linear.linearOps)
 
-		if (linearOps.length > 0) {
-			const out = []
-			for (const row of result) {
-				let cur = row
-				let keep = true
-				for (const op of linearOps) {
-					if (op.type === 'filter') {
-						if (!op.fn(cur)) {
-							keep = false
-							break
-						}
-					} else {
-						cur = op.fn(cur)
-					}
-				}
-				if (keep) out.push(cur)
-			}
-			result = out
-		}
-
-		// Collect a run of sort ops and apply them as a single sort
-		const sortFields = []
-		while (i < ops.length && ops[i].type === 'sort') {
-			sortFields.push(...ops[i].fields)
-			i++
-		}
-		if (sortFields.length > 0) {
+		const sorted = collectSortFields(ops, i)
+		i = sorted.i
+		if (sorted.sortFields.length > 0) {
 			result = [...result]
-			sortDataByFields(result, ...sortFields)
+			sortDataByFields(result, ...sorted.sortFields)
 		}
 	}
 

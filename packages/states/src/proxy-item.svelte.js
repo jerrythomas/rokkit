@@ -92,8 +92,12 @@ export class ProxyItem {
 	 * @param {string} [key]    Path-based key assigned by ProxyTree
 	 * @param {number} [level]  Nesting depth (1 = root)
 	 */
+	#mergeFields(fields) {
+		return { ...BASE_FIELDS, ...(fields && typeof fields === 'object' ? fields : {}) }
+	}
+
 	constructor(raw, fields = {}, key = '', level = 0) {
-		this.#fields = { ...BASE_FIELDS, ...(fields && typeof fields === 'object' ? fields : {}) }
+		this.#fields = this.#mergeFields(fields)
 		this.#raw = raw
 		this.#key = key
 		this.#level = level

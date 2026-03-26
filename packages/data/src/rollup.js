@@ -77,17 +77,17 @@ export function fillAlignedData(groupedData, config, fillRowsFunc) {
  * @param {Object} config - The configuration object.
  * @returns {Function} A generator function that when called, produces the missing rows.
  */
-export function getAlignGenerator(data, config) {
+function buildAlignTemplate(config) {
 	const { align_by, group_by, actual_flag } = config
-
-	// Build template: omit align_by and group_by keys, add actual_flag=0
 	const omitKeys = new Set([...align_by, ...group_by])
 	const template = { [actual_flag]: 0 }
 	for (const [k, v] of Object.entries(config.template)) {
 		if (!omitKeys.has(k)) template[k] = v
 	}
+	return template
+}
 
-	// Collect all unique combinations of align_by fields from full dataset
+function collectAllCombos(data, align_by) {
 	const seen = new Map()
 	for (const row of data) {
 		const key = align_by.map((k) => row[k]).join('\x00')
@@ -97,19 +97,19 @@ export function getAlignGenerator(data, config) {
 			seen.set(key, combo)
 		}
 	}
-	const allCombos = [...seen.values()]
+	return [...seen.values()]
+}
 
-	// Return a function that, given a group's children, yields the missing combos
+export function getAlignGenerator(data, config) {
+	const { align_by } = config
+	const template = buildAlignTemplate(config)
+	const allCombos = collectAllCombos(data, align_by)
+
 	return (children) => {
 		const childKeys = new Set(children.map((c) => align_by.map((k) => c[k]).join('\x00')))
-		const missing = []
-		for (const combo of allCombos) {
-			const key = align_by.map((k) => combo[k]).join('\x00')
-			if (!childKeys.has(key)) {
-				missing.push({ ...combo, ...template })
-			}
-		}
-		return missing
+		return allCombos
+			.filter((combo) => !childKeys.has(align_by.map((k) => combo[k]).join('\x00')))
+			.map((combo) => ({ ...combo, ...template }))
 	}
 }
 

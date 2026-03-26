@@ -289,21 +289,24 @@ export function deriveMetadata(dataArray, options = {}) {
  * @param {any[]} values - All values for the column (may include nulls).
  * @returns {'discrete'|'continuous'}
  */
+function inferIntegerScale(nonNull) {
+	const unique = new Set(nonNull).size
+	return unique <= 20 || unique / nonNull.length < 0.05 ? 'discrete' : 'continuous'
+}
+
+const SCALE_BY_TYPE = {
+	string: () => 'discrete',
+	boolean: () => 'discrete',
+	date: () => 'continuous',
+	number: () => 'continuous',
+	integer: (nonNull) => inferIntegerScale(nonNull)
+}
+
 export function inferScale(values) {
 	const nonNull = values.filter((v) => v !== null && v !== undefined)
 	if (nonNull.length === 0) return 'discrete'
-
 	const type = typeOf(nonNull[0])
-
-	if (type === 'string' || type === 'boolean') return 'discrete'
-	if (type === 'date' || type === 'number') return 'continuous'
-
-	if (type === 'integer') {
-		const unique = new Set(nonNull).size
-		return unique <= 20 || unique / nonNull.length < 0.05 ? 'discrete' : 'continuous'
-	}
-
-	return 'discrete'
+	return (SCALE_BY_TYPE[type] ?? (() => 'discrete'))(nonNull)
 }
 
 /**

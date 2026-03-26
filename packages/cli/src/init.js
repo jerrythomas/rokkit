@@ -36,14 +36,14 @@ const DEFAULT_COLORS = {
  * @param {{ palette: string, customColors?: Record<string, string>, icons: string, iconPath?: string, themes: string[], switcher: string }} opts
  * @returns {Record<string, unknown>}
  */
-export function generateConfig({ palette, customColors, icons, iconPath, themes, defaultTheme, switcher }) {
-	const colors =
-		palette === 'custom'
-			? { ...DEFAULT_COLORS, ...customColors }
-			: { ...DEFAULT_COLORS, ...(SKIN_PRESETS[palette] || {}) }
+function resolveColors(palette, customColors) {
+	if (palette === 'custom') return { ...DEFAULT_COLORS, ...customColors }
+	return { ...DEFAULT_COLORS, ...(SKIN_PRESETS[palette] || {}) }
+}
 
+export function generateConfig({ palette, customColors, icons, iconPath, themes, defaultTheme, switcher }) {
 	const config = {
-		colors,
+		colors: resolveColors(palette, customColors),
 		themes,
 		defaultTheme: defaultTheme || themes[0],
 		switcher,

@@ -125,11 +125,13 @@ export class Wrapper {
 	 * At root level with no parent: no-op.
 	 * When collapsible=false, skips closing the group but still moves focus to parent.
 	 */
+	// eslint-disable-next-line complexity
 	collapse(_path) {
 		if (!this.#focusedKey) return
 		const node = this.flatView.find((n) => n.key === this.#focusedKey)
 		if (!node) return
-		if (node.hasChildren && node.proxy.expanded && this.#collapsible) {
+		const canCollapse = node.hasChildren && node.proxy.expanded && this.#collapsible
+		if (canCollapse) {
 			node.proxy.expanded = false
 		} else {
 			this.#focusParent()
@@ -154,12 +156,7 @@ export class Wrapper {
 	 * Select item at path (or focusedKey when path is null).
 	 * Groups toggle expanded (only when collapsible=true). Leaves fire onchange and onselect callbacks.
 	 */
-	select(path) {
-		const key = path ?? this.#focusedKey
-		if (!key) return
-		this.#focusedKey = key
-		const proxy = this.#proxyTree.lookup.get(key)
-		if (!proxy) return
+	#selectProxy(proxy) {
 		if (proxy.hasChildren) {
 			if (this.#collapsible) proxy.expanded = !proxy.expanded
 		} else {
@@ -167,17 +164,27 @@ export class Wrapper {
 		}
 	}
 
+	select(path) {
+		const key = path ?? this.#focusedKey
+		if (!key) return
+		this.#focusedKey = key
+		const proxy = this.#proxyTree.lookup.get(key)
+		if (proxy) this.#selectProxy(proxy)
+	}
+
 	/**
 	 * Toggle expansion of group at path — called by Navigator for accordion-trigger clicks.
 	 * Unlike select(), this only applies to groups and never fires onselect.
 	 * No-op when collapsible=false.
 	 */
+	// eslint-disable-next-line complexity
 	toggle(path) {
 		if (!this.#collapsible) return
 		const key = path ?? this.#focusedKey
-		if (!key) return
-		const proxy = this.#proxyTree.lookup.get(key)
-		if (proxy?.hasChildren) proxy.expanded = !proxy.expanded
+		if (key) {
+			const proxy = this.#proxyTree.lookup.get(key)
+			if (proxy?.hasChildren) proxy.expanded = !proxy.expanded
+		}
 	}
 
 	/**

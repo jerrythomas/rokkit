@@ -54,24 +54,17 @@ export function generateJoinData(n) {
  * Pre-aggregated data for alignBy benchmarks:
  * one row per (region, product, year) — some combos intentionally missing.
  */
+function buildAlignCombos() {
+	// All (region, product, year) combinations as flat list with an index
+	return REGIONS.flatMap((region) =>
+		PRODUCTS.flatMap((product) => YEARS.map((year) => ({ region, product, year })))
+	)
+}
+
 export function generateAlignData(n) {
-	const rows = []
-	let id = 0
-	for (let ri = 0; ri < REGIONS.length; ri++) {
-		for (let pi = 0; pi < PRODUCTS.length; pi++) {
-			for (let yi = 0; yi < YEARS.length; yi++) {
-				// Skip ~25% of combos to simulate missing frame values
-				if (id % 4 === 0) { id++; continue }
-				rows.push({
-					region: REGIONS[ri],
-					product: PRODUCTS[pi],
-					year: YEARS[yi],
-					revenue: Math.round(5000 + Math.random() * 45000)
-				})
-				id++
-				if (rows.length >= n) return rows
-			}
-		}
-	}
-	return rows
+	// Skip ~25% of combos (every 4th) to simulate missing frame values
+	return buildAlignCombos()
+		.filter((_, id) => id % 4 !== 0)
+		.slice(0, n)
+		.map((combo) => ({ ...combo, revenue: Math.round(5000 + Math.random() * 45000) }))
 }

@@ -51,62 +51,47 @@ export function buildInstallCommand(pm, packages) {
  *   runInstall?: (bin: string, args: string[]) => void
  * }} adapters — injectable for testing
  */
-export function runUpgrade(opts = {}, adapters = {}) {
-	const cwd = process.cwd()
-	const readFile = adapters.readFile ?? ((p) => readFileSync(p, 'utf-8'))
-	const exists = adapters.exists ?? ((p) => existsSync(p))
-	const fetchVersion =
-		adapters.fetchVersion ??
-		((name) => {
-			try {
-				return execFileSync('npm', ['view', name, 'version'], { encoding: 'utf-8' }).trim()
-			} catch {
-				return null
-			}
-		})
-	const runInstall =
-		adapters.runInstall ??
-		((bin, args) => execFileSync(bin, args, { stdio: 'inherit' }))
-
-	const pkgPath = resolve(cwd, 'package.json')
-	if (!exists(pkgPath)) {
-		console.error('No package.json found in current directory.')
-		return
+function resolveUpgradeAdapters(adapters) {
+	return {
+		readFile: adapters.readFile ?? ((p) => readFileSync(p, 'utf-8')),
+		exists: adapters.exists ?? ((p) => existsSync(p)),
+		fetchVersion:
+			adapters.fetchVersion ??
+			((name) => {
+				try {
+					return execFileSync('npm', ['view', name, 'version'], { encoding: 'utf-8' }).trim()
+				} catch {
+					return null
+				}
+			}),
+		runInstall: adapters.runInstall ?? ((bin, args) => execFileSync(bin, args, { stdio: 'inherit' }))
 	}
+}
 
-	const pkgJson = JSON.parse(readFile(pkgPath))
-	const packages = getRokkitPackages(pkgJson)
+function formatPackageStatus(pkg, latest) {
+	if (!latest) return `OK   ${pkg.name}  ${pkg.current}`
+	if (latest === pkg.current) return `OK   ${pkg.name}  ${pkg.current}`
+	return `OUT  ${pkg.name}  ${pkg.current} → ${latest}`
+}
 
-	if (packages.length === 0) {
-		console.info('No @rokkit/* packages found in package.json.')
-		return
-	}
+function checkPackageVersion(pkg, fetchVersion, upgrades) {
+	const latest = fetchVersion(pkg.name)
+	console.info(`  ${formatPackageStatus(pkg, latest)}`)
+	if (latest && latest !== pkg.current) upgrades.push(`${pkg.name}@${latest}`)
+}
 
-	const LOCKFILES = ['bun.lock', 'bun.lockb', 'pnpm-lock.yaml', 'yarn.lock', 'package-lock.json']
-	const presentLockfiles = LOCKFILES.filter((f) => exists(resolve(cwd, f)))
-	const pm = detectPackageManager(presentLockfiles)
-
-	console.info('Rokkit Upgrade\n')
-
+function checkUpgrades(packages, fetchVersion) {
 	const upgrades = []
 	for (const pkg of packages) {
-		const latest = fetchVersion(pkg.name)
-		const upToDate = latest && latest === pkg.current
-		const status = !latest ? '?' : upToDate ? 'up-to-date' : 'outdated'
-		const arrow = latest ? `${pkg.current} → ${latest}` : pkg.current
-		console.info(`  ${status === 'outdated' ? 'OUT' : 'OK '}  ${pkg.name}  ${arrow}`)
-		if (!upToDate && latest) upgrades.push(`${pkg.name}@${latest}`)
+		checkPackageVersion(pkg, fetchVersion, upgrades)
 	}
+	return upgrades
+}
 
-	if (upgrades.length === 0) {
-		console.info('\nAll packages are up to date.')
-		return
-	}
-
+function applyUpgrades(upgrades, pm, apply, runInstall) {
 	const { bin, args } = buildInstallCommand(pm, upgrades)
 	const cmdStr = `${bin} ${args.join(' ')}`
-
-	if (opts.apply) {
+	if (apply) {
 		console.info(`\nRunning: ${cmdStr}\n`)
 		runInstall(bin, args)
 		console.info('\nUpgrade complete.')
@@ -114,6 +99,44 @@ export function runUpgrade(opts = {}, adapters = {}) {
 		console.info(`\n${upgrades.length} package(s) can be upgraded.`)
 		console.info(`Run with --apply to install, or manually:\n  ${cmdStr}`)
 	}
+}
+
+function loadPackages(cwd, readFile, exists) {
+	const pkgPath = resolve(cwd, 'package.json')
+	if (!exists(pkgPath)) {
+		console.error('No package.json found in current directory.')
+		return null
+	}
+	const packages = getRokkitPackages(JSON.parse(readFile(pkgPath)))
+	if (packages.length === 0) {
+		console.info('No @rokkit/* packages found in package.json.')
+		return null
+	}
+	return packages
+}
+
+function detectPm(cwd, exists) {
+	const LOCKFILES = ['bun.lock', 'bun.lockb', 'pnpm-lock.yaml', 'yarn.lock', 'package-lock.json']
+	return detectPackageManager(LOCKFILES.filter((f) => exists(resolve(cwd, f))))
+}
+
+export function runUpgrade(opts = {}, adapters = {}) {
+	const cwd = process.cwd()
+	const { readFile, exists, fetchVersion, runInstall } = resolveUpgradeAdapters(adapters)
+
+	const packages = loadPackages(cwd, readFile, exists)
+	if (!packages) return
+
+	const pm = detectPm(cwd, exists)
+	console.info('Rokkit Upgrade\n')
+
+	const upgrades = checkUpgrades(packages, fetchVersion)
+	if (upgrades.length === 0) {
+		console.info('\nAll packages are up to date.')
+		return
+	}
+
+	applyUpgrades(upgrades, pm, opts.apply, runInstall)
 }
 
 /**

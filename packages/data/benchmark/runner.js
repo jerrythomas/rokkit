@@ -126,6 +126,41 @@ function benchFilterData(data, size) {
 // Main
 // ─────────────────────────────────────────────
 
+function buildOps({ salesData, alignData, orders, customers, sizeName, n }) {
+	const ops = [
+		() => benchGroupByRollup(salesData, sizeName),
+		() => benchGroupBySummarize(salesData, sizeName),
+		() => benchAlignBy(alignData, sizeName),
+		() => benchLeftJoin(orders, customers, sizeName),
+		() => benchAntiJoin(orders, customers, sizeName),
+		() => benchSemiJoin(orders, customers, sizeName),
+		() => benchWhereApplySortBy(salesData, sizeName),
+		() => benchFilterData(salesData, sizeName)
+	]
+	// Cross join: keep it small to avoid combinatorial explosion
+	if (n <= 1000) {
+		const a = salesData.slice(0, 20)
+		const b = customers.slice(0, 20)
+		ops.push(() => benchCrossJoin(a, b, 'crossJoin', sizeName))
+	}
+	return ops
+}
+
+function runSizeResults(sizeName, n, out) {
+	console.log(`\n── ${sizeName} (n=${n}) ──`)
+	const salesData = generateSalesData(n)
+	const alignData = generateAlignData(n)
+	const { orders, customers } = generateJoinData(n)
+	const ops = buildOps({ salesData, alignData, orders, customers, sizeName, n })
+	for (const op of ops) {
+		const r = op()
+		out.push(r)
+		console.log(
+			`  ${r.label.padEnd(28)} mean=${r.mean.toFixed(3)}ms  min=${r.min.toFixed(3)}ms  max=${r.max.toFixed(3)}ms`
+		)
+	}
+}
+
 export function runBenchmarks(phase = 'baseline') {
 	const results = {
 		phase,
@@ -139,37 +174,7 @@ export function runBenchmarks(phase = 'baseline') {
 	}
 
 	for (const [sizeName, n] of Object.entries(SIZES)) {
-		console.log(`\n── ${sizeName} (n=${n}) ──`)
-
-		const salesData = generateSalesData(n)
-		const alignData = generateAlignData(n)
-		const { orders, customers } = generateJoinData(n)
-
-		const ops = [
-			() => benchGroupByRollup(salesData, sizeName),
-			() => benchGroupBySummarize(salesData, sizeName),
-			() => benchAlignBy(alignData, sizeName),
-			() => benchLeftJoin(orders, customers, sizeName),
-			() => benchAntiJoin(orders, customers, sizeName),
-			() => benchSemiJoin(orders, customers, sizeName),
-			() => benchWhereApplySortBy(salesData, sizeName),
-			() => benchFilterData(salesData, sizeName)
-		]
-
-		// Cross join: keep it small to avoid combinatorial explosion
-		if (n <= 1000) {
-			const a = salesData.slice(0, 20)
-			const b = customers.slice(0, 20)
-			ops.push(() => benchCrossJoin(a, b, 'crossJoin', sizeName))
-		}
-
-		for (const op of ops) {
-			const r = op()
-			results.results.push(r)
-			console.log(
-				`  ${r.label.padEnd(28)} mean=${r.mean.toFixed(3)}ms  min=${r.min.toFixed(3)}ms  max=${r.max.toFixed(3)}ms`
-			)
-		}
+		runSizeResults(sizeName, n, results.results)
 	}
 
 	return results

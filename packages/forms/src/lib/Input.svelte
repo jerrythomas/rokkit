@@ -53,19 +53,17 @@
 		}
 	}
 
+	// Resolve new value from event based on input type
+	function resolveValue(event) {
+		if (type === 'checkbox' || type === 'radio') return event.target.checked
+		if (type === 'number' || type === 'range') return event.target.valueAsNumber
+		return event.target.value
+	}
+
 	// Handle change events
 	function handleChange(event) {
-		if (type === 'checkbox' || type === 'radio') {
-			value = event.target.checked
-		} else if (type === 'number' || type === 'range') {
-			value = event.target.valueAsNumber
-		} else {
-			value = event.target.value
-		}
-
-		if (onchange) {
-			onchange(value)
-		}
+		value = resolveValue(event)
+		if (onchange) onchange(value)
 	}
 
 	// Generate unique ID for accessibility
