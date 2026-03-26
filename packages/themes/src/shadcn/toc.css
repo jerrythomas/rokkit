@@ -12,9 +12,9 @@
 
 [data-style='shadcn'] [data-toc] [data-toc-item]:hover,
 [data-style='shadcn'] [data-toc] [data-toc-item][data-toc-focused] {
-  @apply bg-none bg-surface-z3 text-surface-z9 outline-none;
+  @apply bg-surface-z3 text-surface-z9 bg-none outline-none;
 }
 
 [data-style='shadcn'] [data-toc] [data-toc-item][data-toc-active] {
-  @apply bg-none bg-primary-z2 text-primary-z7;
+  @apply bg-primary-z2 text-primary-z7 bg-none;
 }

@@ -1,0 +1,41 @@
+/* Badge — base structural styles */
+
+[data-badge-wrapper] {
+  position: relative;
+  display: inline-flex;
+}
+
+[data-badge] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 0.375rem;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Dot mode — small circle with no content */
+[data-badge][data-dot] {
+  min-width: 0.5rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  padding: 0;
+}
+
+/* Positioned inside a wrapper */
+[data-badge-wrapper] [data-badge] {
+  position: absolute;
+  top: -0.375rem;
+  right: -0.375rem;
+  z-index: 1;
+}
+
+[data-badge-wrapper] [data-badge][data-dot] {
+  top: -0.125rem;
+  right: -0.125rem;
+}

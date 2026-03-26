@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='shadcn'] [data-toggle] {
-  @apply bg-none border-surface-z3 rounded-md border bg-transparent;
+  @apply border-surface-z3 rounded-md border bg-transparent bg-none;
 }
 
 /* =============================================================================
@@ -17,17 +17,17 @@
    ============================================================================= */
 
 [data-style='shadcn'] [data-toggle-option] {
-  @apply text-surface-z6 border-0 border-solid border-transparent rounded-md;
+  @apply text-surface-z6 rounded-md border-0 border-solid border-transparent;
 }
 
 [data-style='shadcn'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']),
 [data-style='shadcn'] [data-toggle-option]:focus:not(:disabled):not([data-disabled='true']) {
-  @apply bg-none bg-surface-z3 text-surface-z8;
+  @apply bg-surface-z3 text-surface-z8 bg-none;
 }
 
 /* Selected state */
 [data-style='shadcn'] [data-toggle-option][data-selected='true'] {
-  @apply bg-none bg-surface-z2 text-surface-z9 border-b-primary-z5 border-b-2;
+  @apply bg-surface-z2 text-surface-z9 border-b-primary-z5 border-b-2 bg-none;
 }
 
 /* =============================================================================

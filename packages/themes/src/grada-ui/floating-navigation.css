@@ -60,6 +60,10 @@
 }
 
 [data-style='grada-ui'] [data-floating-nav-indicator] {
-  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-image: linear-gradient(
+    to right,
+    rgba(var(--color-primary-500), 1),
+    rgba(var(--color-secondary-500), 1)
+  );
   background-color: transparent;
 }

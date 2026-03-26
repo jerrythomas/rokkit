@@ -3,7 +3,7 @@
  */
 
 [data-style='grada-ui'] [data-menu-trigger] {
-  @apply bg-white text-surface-z8 border-surface-z4 border;
+  @apply text-surface-z8 border-surface-z4 border bg-white;
   border-radius: 3px;
 }
 
@@ -35,7 +35,7 @@
 
 /* Dropdown */
 [data-style='grada-ui'] [data-menu-dropdown] {
-  @apply bg-white border-surface-z3 border shadow-lg;
+  @apply border-surface-z3 border bg-white shadow-lg;
   border-radius: 3px;
 }
 

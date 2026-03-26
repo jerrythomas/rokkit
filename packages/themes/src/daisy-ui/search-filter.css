@@ -9,11 +9,11 @@
    ============================================================================= */
 
 [data-style='daisy-ui'] [data-search-input] {
-  @apply text-surface-z7 border-surface-z4 border bg-transparent rounded-lg;
+  @apply text-surface-z7 border-surface-z4 rounded-lg border bg-transparent;
 }
 
 [data-style='daisy-ui'] [data-search-input]:focus {
-  @apply border-primary-z5 outline-2 outline-offset-2 outline-primary-z5 outline;
+  @apply border-primary-z5 outline-primary-z5 outline outline-2 outline-offset-2;
 }
 
 [data-style='daisy-ui'] [data-search-input]::placeholder {
@@ -37,7 +37,7 @@
    ============================================================================= */
 
 [data-style='daisy-ui'] [data-search-tag] {
-  @apply bg-none text-on-primary bg-primary-z5 border-transparent rounded-full;
+  @apply text-on-primary bg-primary-z5 rounded-full border-transparent bg-none;
 }
 
 [data-style='daisy-ui'] [data-search-tag-remove] {

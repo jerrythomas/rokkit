@@ -17,7 +17,7 @@
 }
 
 [data-style='daisy-ui'] [data-upload-target]:focus-visible:not([data-disabled]) {
-  @apply outline-2 outline-offset-2 outline-primary-z5 outline;
+  @apply outline-primary-z5 outline outline-2 outline-offset-2;
 }
 
 /* Drag-over highlight */

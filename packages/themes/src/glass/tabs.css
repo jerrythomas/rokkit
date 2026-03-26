@@ -21,7 +21,7 @@
    ============================================================================= */
 
 [data-style='glass'] [data-tabs-trigger] {
-  @apply bg-transparent text-surface-z6;
+  @apply text-surface-z6 bg-transparent;
 }
 
 [data-style='glass'] [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {

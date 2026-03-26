@@ -53,7 +53,7 @@
 }
 
 [data-style='shadcn'] [data-upload-fill] {
-  @apply bg-none bg-primary-z5 rounded-full;
+  @apply bg-primary-z5 rounded-full bg-none;
 }
 
 /* =============================================================================

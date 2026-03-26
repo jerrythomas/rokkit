@@ -7,7 +7,7 @@
 
 /* Input root: bottom border only, flat background */
 [data-style='carbon'] [data-input-root] {
-  @apply border-surface-z5 relative flex items-center border-b-2 border-l-0 border-r-0 border-t-0 bg-surface-z1 p-0;
+  @apply border-surface-z5 bg-surface-z1 relative flex items-center border-t-0 border-r-0 border-b-2 border-l-0 p-0;
   border-radius: 0;
   background-image: none;
   transition: background-color 150ms ease;
@@ -21,7 +21,7 @@
 
 /* Focus: primary thick bottom border */
 [data-style='carbon'] [data-input-root]:focus-within {
-  @apply bg-surface-z2 border-b-2 border-primary-z5;
+  @apply bg-surface-z2 border-primary-z5 border-b-2;
   background-image: none;
 }
 

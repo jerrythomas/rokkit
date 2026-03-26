@@ -1,0 +1,29 @@
+/**
+ * Avatar - Rokkit Theme Styles
+ */
+
+[data-style='rokkit'] [data-avatar] {
+  @apply bg-surface-z4 text-surface-z8;
+}
+
+/* Status dot colors */
+[data-style='rokkit'] [data-avatar-status][data-status='online'] {
+  @apply bg-success-z5;
+}
+
+[data-style='rokkit'] [data-avatar-status][data-status='offline'] {
+  @apply bg-surface-z5;
+}
+
+[data-style='rokkit'] [data-avatar-status][data-status='away'] {
+  @apply bg-warning-z5;
+}
+
+[data-style='rokkit'] [data-avatar-status][data-status='busy'] {
+  @apply bg-error-z5;
+}
+
+/* Status dot border matches surrounding background — uses surface-z1 as a neutral */
+[data-style='rokkit'] [data-avatar-status] {
+  @apply border-surface-z1;
+}

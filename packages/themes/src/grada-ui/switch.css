@@ -5,7 +5,7 @@
  */
 
 [data-style='grada-ui'] [data-switch-track] {
-  @apply bg-none bg-surface-z3;
+  @apply bg-surface-z3 bg-none;
 }
 
 [data-style='grada-ui'] [data-switch] [data-switch-thumb] {
@@ -13,12 +13,16 @@
 }
 
 [data-style='grada-ui'] [data-switch]:focus-visible [data-switch-track] {
-  @apply outline-2 outline-offset-2 outline outline-primary-z5;
+  @apply outline-primary-z5 outline outline-2 outline-offset-2;
 }
 
 /* On state — gradient track */
 [data-style='grada-ui'] [data-switch][aria-checked='true'] [data-switch-track] {
-  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-image: linear-gradient(
+    to right,
+    rgba(var(--color-primary-500), 1),
+    rgba(var(--color-secondary-500), 1)
+  );
   background-color: transparent;
 }
 

@@ -25,11 +25,11 @@
   @apply text-surface-z9;
 }
 
-[data-style='rokkit'] [data-plot-element="bar"][data-dimmed],
-[data-style='rokkit'] [data-plot-element="point"][data-dimmed],
-[data-style='rokkit'] [data-plot-element="arc"][data-dimmed],
-[data-style='rokkit'] [data-plot-element="line"][data-dimmed],
-[data-style='rokkit'] [data-plot-element="area"][data-dimmed] {
+[data-style='rokkit'] [data-plot-element='bar'][data-dimmed],
+[data-style='rokkit'] [data-plot-element='point'][data-dimmed],
+[data-style='rokkit'] [data-plot-element='arc'][data-dimmed],
+[data-style='rokkit'] [data-plot-element='line'][data-dimmed],
+[data-style='rokkit'] [data-plot-element='area'][data-dimmed] {
   opacity: 0.15;
 }
 

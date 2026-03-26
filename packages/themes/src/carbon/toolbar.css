@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='carbon'] [data-toolbar] {
-  @apply bg-none bg-transparent;
+  @apply bg-transparent bg-none;
 }
 
 /* Position-based borders */
@@ -39,21 +39,20 @@
 }
 
 [data-style='carbon'] [data-toolbar-item]:hover:not(:disabled):not([data-disabled='true']) {
-  @apply bg-none bg-surface-z3 text-surface-z9;
+  @apply bg-surface-z3 text-surface-z9 bg-none;
 }
 
-[data-style='carbon']
-  [data-toolbar-item]:focus-visible:not(:disabled):not([data-disabled='true']) {
-  @apply bg-none text-surface-z9 outline-none border-2 border-primary-z5;
+[data-style='carbon'] [data-toolbar-item]:focus-visible:not(:disabled):not([data-disabled='true']) {
+  @apply text-surface-z9 border-primary-z5 border-2 bg-none outline-none;
 }
 
 /* Active/pressed state */
 [data-style='carbon'] [data-toolbar-item][data-active='true'] {
-  @apply bg-none bg-primary-z2 text-primary-z7;
+  @apply bg-primary-z2 text-primary-z7 bg-none;
 }
 
 [data-style='carbon'] [data-toolbar-item][data-active='true']:hover:not(:disabled) {
-  @apply bg-none bg-primary-z3 text-primary-z8;
+  @apply bg-primary-z3 text-primary-z8 bg-none;
 }
 
 /* =============================================================================
@@ -77,9 +76,9 @@
    ============================================================================= */
 
 [data-style='carbon'] [data-toolbar-separator] {
-  @apply bg-none bg-surface-z3;
+  @apply bg-surface-z3 bg-none;
 }
 
 [data-style='carbon'] [data-toolbar-divider] {
-  @apply bg-none bg-surface-z3;
+  @apply bg-surface-z3 bg-none;
 }

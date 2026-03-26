@@ -3,5 +3,6 @@
   "description": "Vertical or horizontal stack layout with consistent spacing",
   "icon": "i-glyph:layers-minimalistic",
   "category": "layout",
-  "order": 28
+  "order": 28,
+  "llms": true
 }

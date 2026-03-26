@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-tabs-list] {
-  @apply bg-surface-z2 gap-0.5 rounded-t-lg shadow-sm border-0 px-0;
+  @apply bg-surface-z2 gap-0.5 rounded-t-lg border-0 px-0 shadow-sm;
 }
 
 [data-style='material'] [data-tabs][data-position='after'] [data-tabs-list] {
@@ -21,7 +21,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-tabs-trigger] {
-  @apply bg-transparent text-surface-z6 rounded-t-lg;
+  @apply text-surface-z6 rounded-t-lg bg-transparent;
 }
 
 [data-style='material'] [data-tabs][data-position='after'] [data-tabs-trigger] {
@@ -42,7 +42,10 @@
   @apply bg-none;
 }
 
-[data-style='material'] [data-tabs][data-position='after'] [data-tabs-list]:focus-within [data-tabs-trigger][data-selected] {
+[data-style='material']
+  [data-tabs][data-position='after']
+  [data-tabs-list]:focus-within
+  [data-tabs-trigger][data-selected] {
   @apply bg-none;
 }
 

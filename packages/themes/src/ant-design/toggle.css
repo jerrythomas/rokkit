@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='ant-design'] [data-toggle] {
-  @apply bg-none border-surface-z3 rounded border bg-transparent;
+  @apply border-surface-z3 rounded border bg-transparent bg-none;
 }
 
 /* =============================================================================
@@ -22,12 +22,12 @@
 
 [data-style='ant-design'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']),
 [data-style='ant-design'] [data-toggle-option]:focus:not(:disabled):not([data-disabled='true']) {
-  @apply bg-none text-primary-z5 border-b-primary-z3 border-b-2;
+  @apply text-primary-z5 border-b-primary-z3 border-b-2 bg-none;
 }
 
 /* Selected state */
 [data-style='ant-design'] [data-toggle-option][data-selected='true'] {
-  @apply bg-none text-primary-z6 border-b-primary-z5 border-b-2;
+  @apply text-primary-z6 border-b-primary-z5 border-b-2 bg-none;
 }
 
 /* =============================================================================

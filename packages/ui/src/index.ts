@@ -40,7 +40,11 @@ export {
 	UploadProgress,
 	StatusList,
 	Message,
-	AlertList
+	AlertList,
+	Divider,
+	Stack,
+	Badge,
+	Avatar
 } from './components/index.js'
 
 export { default as MarkdownRenderer } from './MarkdownRenderer.svelte'

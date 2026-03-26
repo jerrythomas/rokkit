@@ -1,0 +1,78 @@
+# Badge Component Documentation
+
+A small indicator for counts, statuses, and notifications. Can be used standalone or positioned as an overlay on another element.
+
+## Component API
+
+### Props
+
+- `count?: number` — Numeric count to display
+- `max?: number` — Maximum count before showing "max+" (default: `99`)
+- `variant?: 'default' | 'primary' | 'success' | 'warning' | 'error'` — Color variant (default: `'default'`)
+- `dot?: boolean` — Show as a small dot without content (default: `false`)
+- `children?: Snippet` — When provided, wraps the child and positions badge as an absolute overlay
+- `class?: string` — Additional CSS classes
+
+## DOM Structure
+
+### Standalone badge
+
+```html
+<span data-badge data-variant="primary">5</span>
+```
+
+### Dot mode
+
+```html
+<span data-badge data-variant="success" data-dot></span>
+```
+
+### Wrapper mode (with children)
+
+```html
+<div data-badge-wrapper>
+  <!-- slotted children -->
+  <span data-badge data-variant="error">3</span>
+</div>
+```
+
+## Usage Examples
+
+### Standalone Count
+
+```svelte
+<script>
+  import { Badge } from '@rokkit/ui'
+</script>
+
+<Badge count={5} />
+<Badge count={5} variant="error" />
+<Badge count={150} max={99} variant="error" /> <!-- renders "99+" -->
+```
+
+### Dot Indicator
+
+```svelte
+<Badge dot variant="success" />
+<Badge dot variant="error" />
+```
+
+### Wrapping an Element
+
+The badge positions absolutely in the top-right corner of the wrapped element:
+
+```svelte
+<Badge count={3} variant="error">
+  <Button>Messages</Button>
+</Badge>
+```
+
+## Styling Hooks
+
+- `[data-badge]` — The badge element itself
+- `[data-badge][data-variant='primary']` — Primary color variant
+- `[data-badge][data-variant='success']` — Success color variant
+- `[data-badge][data-variant='warning']` — Warning color variant
+- `[data-badge][data-variant='error']` — Error color variant
+- `[data-badge][data-dot]` — Dot mode (no text, smaller)
+- `[data-badge-wrapper]` — Wrapper div when children are provided (sets `position: relative`)

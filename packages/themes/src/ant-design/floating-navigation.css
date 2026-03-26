@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='ant-design'] [data-floating-nav] {
-  @apply bg-none bg-surface-z0 border-surface-z3 border rounded shadow-md;
+  @apply bg-surface-z0 border-surface-z3 rounded border bg-none shadow-md;
 }
 
 /* =============================================================================
@@ -41,11 +41,11 @@
 }
 
 [data-style='ant-design'] [data-floating-nav-item]:hover {
-  @apply bg-none bg-primary-z1 text-primary-z6 rounded;
+  @apply bg-primary-z1 text-primary-z6 rounded bg-none;
 }
 
 [data-style='ant-design'] [data-floating-nav-item][data-active] {
-  @apply bg-none bg-primary-z1 text-primary-z6 rounded;
+  @apply bg-primary-z1 text-primary-z6 rounded bg-none;
 }
 
 [data-style='ant-design'] [data-floating-nav-item]:focus-visible {
@@ -66,5 +66,5 @@
    ============================================================================= */
 
 [data-style='ant-design'] [data-floating-nav-indicator] {
-  @apply bg-none bg-primary-z5;
+  @apply bg-primary-z5 bg-none;
 }

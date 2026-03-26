@@ -12,27 +12,27 @@
 [data-style='minimal'] [data-button]:not([data-style])[data-variant='default'],
 [data-style='minimal'] [data-button][data-style='default']:not([data-variant]),
 [data-style='minimal'] [data-button]:not([data-style]):not([data-variant]) {
-  @apply bg-none bg-surface-z2 border-surface-z4 text-surface-z8 border;
+  @apply bg-surface-z2 border-surface-z4 text-surface-z8 border bg-none;
 }
 
 [data-style='minimal'] [data-button][data-style='default'][data-variant='primary'],
 [data-style='minimal'] [data-button]:not([data-style])[data-variant='primary'] {
-  @apply bg-none bg-primary-z5 text-on-primary border-transparent;
+  @apply bg-primary-z5 text-on-primary border-transparent bg-none;
 }
 
 [data-style='minimal'] [data-button][data-style='default'][data-variant='secondary'],
 [data-style='minimal'] [data-button]:not([data-style])[data-variant='secondary'] {
-  @apply bg-none bg-secondary-z4 text-on-secondary border-transparent;
+  @apply bg-secondary-z4 text-on-secondary border-transparent bg-none;
 }
 
 [data-style='minimal'] [data-button][data-style='default'][data-variant='accent'],
 [data-style='minimal'] [data-button]:not([data-style])[data-variant='accent'] {
-  @apply bg-none bg-accent-z4 text-on-accent border-transparent;
+  @apply bg-accent-z4 text-on-accent border-transparent bg-none;
 }
 
 [data-style='minimal'] [data-button][data-style='default'][data-variant='danger'],
 [data-style='minimal'] [data-button]:not([data-style])[data-variant='danger'] {
-  @apply bg-none bg-danger-z4 text-on-danger border-transparent;
+  @apply bg-danger-z4 text-on-danger border-transparent bg-none;
 }
 
 /* =============================================================================
@@ -155,12 +155,12 @@
 [data-style='minimal']
   [data-button][data-style='default']:hover:not(:disabled):not([data-disabled]),
 [data-style='minimal'] [data-button]:not([data-style]):hover:not(:disabled):not([data-disabled]) {
-  @apply bg-none bg-surface-z3 border-surface-z5;
+  @apply bg-surface-z3 border-surface-z5 bg-none;
 }
 
 [data-style='minimal']
   [data-button][data-style='outline']:hover:not(:disabled):not([data-disabled]) {
-  @apply bg-none bg-surface-z1 border-surface-z5;
+  @apply bg-surface-z1 border-surface-z5 bg-none;
 }
 
 [data-style='minimal'] [data-button][data-style='ghost']:hover:not(:disabled):not([data-disabled]) {

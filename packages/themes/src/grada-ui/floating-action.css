@@ -5,12 +5,19 @@
  */
 
 [data-style='grada-ui'] [data-fab-trigger] {
-  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-image: linear-gradient(
+    to right,
+    rgba(var(--color-primary-500), 1),
+    rgba(var(--color-secondary-500), 1)
+  );
   background-color: transparent;
   color: white;
   @apply shadow-lg;
   border-radius: 50%;
-  transition: filter 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    filter 0.15s ease,
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 [data-style='grada-ui'] [data-fab-trigger]:hover:not(:disabled) {
@@ -25,14 +32,14 @@
 }
 
 [data-style='grada-ui'] [data-fab][data-open='true'] [data-fab-trigger] {
-  @apply bg-none bg-surface-z4 text-surface-z10 shadow-lg;
+  @apply bg-surface-z4 text-surface-z10 bg-none shadow-lg;
   background: none;
   transform: rotate(45deg);
 }
 
 /* FAB Items */
 [data-style='grada-ui'] [data-fab-item] {
-  @apply bg-white text-surface-z8 shadow-md;
+  @apply text-surface-z8 bg-white shadow-md;
   border-radius: 20px;
 }
 

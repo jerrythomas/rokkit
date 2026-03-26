@@ -9,11 +9,11 @@
    ============================================================================= */
 
 [data-style='bits-ui'] [data-menu-trigger] {
-  @apply bg-none border-surface-z3 text-surface-z7 border bg-surface-z1 rounded-lg shadow-sm;
+  @apply border-surface-z3 text-surface-z7 bg-surface-z1 rounded-lg border bg-none shadow-sm;
 }
 
 [data-style='bits-ui'] [data-menu-trigger]:hover:not(:disabled) {
-  @apply bg-none text-surface-z9 border-surface-z4 shadow-md;
+  @apply text-surface-z9 border-surface-z4 bg-none shadow-md;
 }
 
 [data-style='bits-ui'] [data-menu-trigger]:focus-visible {
@@ -21,7 +21,7 @@
 }
 
 [data-style='bits-ui'] [data-menu][data-open='true'] [data-menu-trigger] {
-  @apply bg-none border-surface-z5 ring-primary-z3 ring-2;
+  @apply border-surface-z5 ring-primary-z3 bg-none ring-2;
 }
 
 /* Trigger elements */
@@ -42,7 +42,7 @@
    ============================================================================= */
 
 [data-style='bits-ui'] [data-menu-dropdown] {
-  @apply bg-none bg-surface-z1 border-surface-z3 border shadow-lg rounded-xl;
+  @apply bg-surface-z1 border-surface-z3 rounded-xl border bg-none shadow-lg;
 }
 
 /* =============================================================================
@@ -84,5 +84,5 @@
    ============================================================================= */
 
 [data-style='bits-ui'] [data-menu-separator] {
-  @apply bg-none bg-surface-z3;
+  @apply bg-surface-z3 bg-none;
 }

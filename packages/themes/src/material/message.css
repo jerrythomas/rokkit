@@ -2,7 +2,6 @@
  * Message - Material Theme Styles
  */
 
-
 [data-style='material'] [data-message-root][data-type='error'] {
   @apply bg-error-z1 border-error-z3 text-error-z9 shadow-sm;
 }

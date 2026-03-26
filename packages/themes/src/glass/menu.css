@@ -9,11 +9,11 @@
    ============================================================================= */
 
 [data-style='glass'] [data-menu-trigger] {
-  @apply bg-none bg-surface-z1/70 text-surface-z8 border-surface-z5/20 border backdrop-blur-md;
+  @apply bg-surface-z1/70 text-surface-z8 border-surface-z5/20 border bg-none backdrop-blur-md;
 }
 
 [data-style='glass'] [data-menu-trigger]:hover:not(:disabled) {
-  @apply bg-none bg-surface-z2/80 text-surface-z10 border-surface-z5/30;
+  @apply bg-surface-z2/80 text-surface-z10 border-surface-z5/30 bg-none;
 }
 
 [data-style='glass'] [data-menu-trigger]:focus-visible {
@@ -21,7 +21,7 @@
 }
 
 [data-style='glass'] [data-menu][data-open='true'] [data-menu-trigger] {
-  @apply bg-none bg-primary-z5/30 border-primary-z5/50;
+  @apply bg-primary-z5/30 border-primary-z5/50 bg-none;
 }
 
 /* Trigger elements */
@@ -42,7 +42,7 @@
    ============================================================================= */
 
 [data-style='glass'] [data-menu-dropdown] {
-  @apply bg-none bg-surface-z2/50 border-surface-z5/20 border shadow-lg backdrop-blur-lg;
+  @apply bg-surface-z2/50 border-surface-z5/20 border bg-none shadow-lg backdrop-blur-lg;
 }
 
 /* =============================================================================
@@ -55,7 +55,7 @@
 
 [data-style='glass'] [data-menu-item]:hover:not(:disabled),
 [data-style='glass'] [data-menu-item]:focus:not(:disabled) {
-  @apply bg-none bg-surface-z2/15 text-surface-z10 outline-none;
+  @apply bg-surface-z2/15 text-surface-z10 bg-none outline-none;
 }
 
 [data-style='glass'] [data-menu-item]:focus-visible {
@@ -88,5 +88,5 @@
    ============================================================================= */
 
 [data-style='glass'] [data-menu-separator] {
-  @apply bg-none bg-surface-z5/20;
+  @apply bg-surface-z5/20 bg-none;
 }

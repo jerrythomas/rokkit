@@ -9,19 +9,19 @@
    ============================================================================= */
 
 [data-style='carbon'] [data-menu-trigger] {
-  @apply bg-none border-surface-z4 text-surface-z7 rounded-none border bg-transparent;
+  @apply border-surface-z4 text-surface-z7 rounded-none border bg-transparent bg-none;
 }
 
 [data-style='carbon'] [data-menu-trigger]:hover:not(:disabled) {
-  @apply bg-none bg-surface-z3 text-surface-z9;
+  @apply bg-surface-z3 text-surface-z9 bg-none;
 }
 
 [data-style='carbon'] [data-menu-trigger]:focus-visible {
-  @apply outline-none border-2 border-primary-z5;
+  @apply border-primary-z5 border-2 outline-none;
 }
 
 [data-style='carbon'] [data-menu][data-open='true'] [data-menu-trigger] {
-  @apply bg-none bg-surface-z3 border-surface-z5;
+  @apply bg-surface-z3 border-surface-z5 bg-none;
 }
 
 /* Trigger elements */
@@ -42,7 +42,7 @@
    ============================================================================= */
 
 [data-style='carbon'] [data-menu-dropdown] {
-  @apply bg-none bg-surface-z1 border-surface-z3 rounded-none border;
+  @apply bg-surface-z1 border-surface-z3 rounded-none border bg-none;
 }
 
 /* =============================================================================
@@ -50,12 +50,12 @@
    ============================================================================= */
 
 [data-style='carbon'] [data-menu-item] {
-  @apply text-surface-z7 rounded-none border-0 border-b border-surface-z2;
+  @apply text-surface-z7 border-surface-z2 rounded-none border-0 border-b;
 }
 
 [data-style='carbon'] [data-menu-item]:hover:not(:disabled),
 [data-style='carbon'] [data-menu-item]:focus:not(:disabled) {
-  @apply bg-none bg-surface-z2 text-surface-z9 outline-none;
+  @apply bg-surface-z2 text-surface-z9 bg-none outline-none;
 }
 
 /* Item elements */
@@ -84,5 +84,5 @@
    ============================================================================= */
 
 [data-style='carbon'] [data-menu-separator] {
-  @apply bg-none bg-surface-z3;
+  @apply bg-surface-z3 bg-none;
 }

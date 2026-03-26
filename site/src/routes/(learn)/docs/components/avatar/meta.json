@@ -2,6 +2,7 @@
   "title": "Avatar",
   "description": "User and entity image with fallback initials and status indicator",
   "icon": "i-glyph:user-circle",
-  "category": "layout",
-  "order": 26
+  "category": "display",
+  "order": 26,
+  "llms": true
 }

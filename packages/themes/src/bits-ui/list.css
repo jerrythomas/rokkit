@@ -17,7 +17,7 @@
    ============================================================================= */
 
 [data-style='bits-ui'] [data-list] [data-list-item] {
-  @apply text-surface-z7 border-0 border-solid border-transparent rounded-lg;
+  @apply text-surface-z7 rounded-lg border-0 border-solid border-transparent;
 }
 
 [data-style='bits-ui'] [data-list] a[data-list-item],
@@ -77,11 +77,11 @@
 }
 
 [data-style='bits-ui'] [data-list] [data-list-item] [data-item-badge] {
-  @apply bg-none text-surface-z6 border-surface-z3 border bg-transparent rounded-lg;
+  @apply text-surface-z6 border-surface-z3 rounded-lg border bg-transparent bg-none;
 }
 
 [data-style='bits-ui'] [data-list] [data-list-item][data-active='true'] [data-item-badge] {
-  @apply bg-none text-primary-z7 border-primary-z3;
+  @apply text-primary-z7 border-primary-z3 bg-none;
 }
 
 /* =============================================================================
@@ -102,7 +102,7 @@
    ============================================================================= */
 
 [data-style='bits-ui'] [data-list] [data-list-separator] {
-  @apply bg-none bg-surface-z3;
+  @apply bg-surface-z3 bg-none;
 }
 
 /* =============================================================================

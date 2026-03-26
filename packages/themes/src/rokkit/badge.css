@@ -1,0 +1,29 @@
+/**
+ * Badge - Rokkit Theme Styles
+ */
+
+/* Default variant */
+[data-style='rokkit'] [data-badge][data-variant='default'],
+[data-style='rokkit'] [data-badge]:not([data-variant]) {
+  @apply bg-surface-z5 text-surface-z1;
+}
+
+/* Primary */
+[data-style='rokkit'] [data-badge][data-variant='primary'] {
+  @apply bg-primary-z5 text-on-primary;
+}
+
+/* Success */
+[data-style='rokkit'] [data-badge][data-variant='success'] {
+  @apply bg-success-z5 text-on-success;
+}
+
+/* Warning */
+[data-style='rokkit'] [data-badge][data-variant='warning'] {
+  @apply bg-warning-z5 text-on-warning;
+}
+
+/* Error */
+[data-style='rokkit'] [data-badge][data-variant='error'] {
+  @apply bg-error-z5 text-on-error;
+}

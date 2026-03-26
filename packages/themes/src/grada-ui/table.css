@@ -3,7 +3,7 @@
  */
 
 [data-style='grada-ui'] [data-table-header] th {
-  @apply text-surface-z6 border-b font-medium bg-surface-z1;
+  @apply text-surface-z6 bg-surface-z1 border-b font-medium;
   font-family: 'Montserrat', sans-serif;
   font-size: 0.625rem;
   text-transform: uppercase;

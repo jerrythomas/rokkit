@@ -13,7 +13,7 @@
 }
 
 [data-style='carbon'] [data-range-selected] {
-  @apply bg-none bg-primary-z5;
+  @apply bg-primary-z5 bg-none;
 }
 
 /* =============================================================================
@@ -29,7 +29,7 @@
 }
 
 [data-style='carbon'] [data-range-thumb]:focus-visible {
-  @apply bg-primary-z5 outline-none border-2 border-primary-z7;
+  @apply bg-primary-z5 border-primary-z7 border-2 outline-none;
 }
 
 /* =============================================================================

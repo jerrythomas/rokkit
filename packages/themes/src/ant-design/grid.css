@@ -17,7 +17,7 @@
 }
 
 [data-style='ant-design'] [data-grid] [data-grid-item]:focus:not(:disabled):not([data-disabled]) {
-  @apply border-primary-z5 bg-primary-z1 text-primary-z6 outline-none ring-primary-z3 ring-1 rounded;
+  @apply border-primary-z5 bg-primary-z1 text-primary-z6 ring-primary-z3 rounded ring-1 outline-none;
 }
 
 /* Active / selected tile */

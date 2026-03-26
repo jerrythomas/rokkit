@@ -1,0 +1,49 @@
+/* Divider — base structural styles */
+
+[data-divider] {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+[data-divider][data-orientation='horizontal'] {
+  flex-direction: row;
+  height: 1px;
+}
+
+[data-divider][data-orientation='vertical'] {
+  flex-direction: column;
+  width: 1px;
+  height: 100%;
+  align-self: stretch;
+}
+
+[data-divider-label] {
+  flex-shrink: 0;
+  padding: 0 0.75rem;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+[data-divider][data-orientation='horizontal']::before,
+[data-divider][data-orientation='horizontal']::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+}
+
+[data-divider][data-orientation='vertical']::before,
+[data-divider][data-orientation='vertical']::after {
+  content: '';
+  flex: 1;
+  width: 1px;
+}
+
+/* Without label, the element itself is the line */
+[data-divider]:not(:has([data-divider-label]))[data-orientation='horizontal'] {
+  height: 1px;
+}
+
+[data-divider]:not(:has([data-divider-label]))[data-orientation='vertical'] {
+  width: 1px;
+}

@@ -1,0 +1,68 @@
+# Divider Component Documentation
+
+A visual separator that divides content sections. Supports horizontal and vertical orientations with an optional centered label.
+
+## Component API
+
+### Props
+
+- `orientation: 'horizontal' | 'vertical'` — Separator axis (default: `'horizontal'`)
+- `label?: string` — Optional text displayed in the center of the divider
+- `class?: string` — Additional CSS classes on the root element
+
+## DOM Structure
+
+```html
+<!-- Horizontal (no label) -->
+<div data-divider data-orientation="horizontal" role="separator" aria-orientation="horizontal"></div>
+
+<!-- Horizontal with label -->
+<div data-divider data-orientation="horizontal" role="separator" aria-orientation="horizontal">
+  <span data-divider-label>OR</span>
+</div>
+
+<!-- Vertical -->
+<div data-divider data-orientation="vertical" role="separator" aria-orientation="vertical"></div>
+```
+
+## Usage Examples
+
+### Basic Horizontal
+
+```svelte
+<script>
+  import { Divider } from '@rokkit/ui'
+</script>
+
+<p>Section A</p>
+<Divider />
+<p>Section B</p>
+```
+
+### With Label
+
+```svelte
+<Divider label="OR" />
+<Divider label="SECTION BREAK" />
+```
+
+### Vertical
+
+Place inside a flex row container:
+
+```svelte
+<div class="flex h-12 items-center gap-4">
+  <span>Left</span>
+  <Divider orientation="vertical" />
+  <span>Right</span>
+</div>
+```
+
+## Styling Hooks
+
+- `[data-divider]` — Root element
+- `[data-divider][data-orientation='horizontal']` — Horizontal variant
+- `[data-divider][data-orientation='vertical']` — Vertical variant
+- `[data-divider-label]` — Center label span (only present when label prop is set)
+
+Theme colors come from `[data-style='rokkit']` ancestor and use the `surface-z4` token for the line color and `surface-z6` for the label text.

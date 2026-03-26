@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='carbon'] [data-search-input] {
-  @apply text-surface-z7 border-b-2 border-surface-z5 rounded-none border-l-0 border-r-0 border-t-0 bg-surface-z1;
+  @apply text-surface-z7 border-surface-z5 bg-surface-z1 rounded-none border-t-0 border-r-0 border-b-2 border-l-0;
 }
 
 [data-style='carbon'] [data-search-input]:focus {
@@ -37,7 +37,7 @@
    ============================================================================= */
 
 [data-style='carbon'] [data-search-tag] {
-  @apply bg-none text-surface-z7 border-surface-z4 rounded-none border bg-surface-z2;
+  @apply text-surface-z7 border-surface-z4 bg-surface-z2 rounded-none border bg-none;
 }
 
 [data-style='carbon'] [data-search-tag-remove] {

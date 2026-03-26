@@ -10,7 +10,9 @@
 /* Button: padding creates the ring gap; background is the gradient ring */
 [data-swatch-item] {
   @apply cursor-pointer border-0 bg-transparent p-0.5 leading-none;
-  transition: background 120ms ease, outline-color 120ms ease;
+  transition:
+    background 120ms ease,
+    outline-color 120ms ease;
   outline: 2px solid transparent;
   outline-offset: 0;
 }
@@ -27,7 +29,11 @@
 /* ── Selected: gradient shows through the padding gap as a ring ────────────── */
 
 [data-swatch-item][data-selected] {
-  background: linear-gradient(135deg, var(--swatch-fill, currentColor), var(--swatch-stroke, currentColor));
+  background: linear-gradient(
+    135deg,
+    var(--swatch-fill, currentColor),
+    var(--swatch-stroke, currentColor)
+  );
 }
 
 /* ── Hover + keyboard focus: same visual treatment ────────────────────────── */
@@ -59,21 +65,21 @@
 }
 
 [data-swatch-square] {
-  @apply w-6 h-6 rounded-sm;
+  @apply h-6 w-6 rounded-sm;
 }
 
 [data-swatch-circle] {
-  @apply w-6 h-6 rounded-full;
+  @apply h-6 w-6 rounded-full;
 }
 
 /* ── Size variants ─────────────────────────────────────────────────────────── */
 
 [data-swatch][data-swatch-size='sm'] [data-swatch-square],
 [data-swatch][data-swatch-size='sm'] [data-swatch-circle] {
-  @apply w-5 h-5;
+  @apply h-5 w-5;
 }
 
 [data-swatch][data-swatch-size='lg'] [data-swatch-square],
 [data-swatch][data-swatch-size='lg'] [data-swatch-circle] {
-  @apply w-8 h-8;
+  @apply h-8 w-8;
 }

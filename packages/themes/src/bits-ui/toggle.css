@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='bits-ui'] [data-toggle] {
-  @apply bg-none border-surface-z3 rounded-lg border bg-surface-z1 shadow-sm;
+  @apply border-surface-z3 bg-surface-z1 rounded-lg border bg-none shadow-sm;
 }
 
 /* =============================================================================
@@ -17,7 +17,7 @@
    ============================================================================= */
 
 [data-style='bits-ui'] [data-toggle-option] {
-  @apply text-surface-z6 border-0 border-solid border-transparent rounded-lg;
+  @apply text-surface-z6 rounded-lg border-0 border-solid border-transparent;
 }
 
 [data-style='bits-ui'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']),

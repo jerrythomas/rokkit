@@ -79,7 +79,7 @@
    ============================================================================= */
 
 [data-style='grada-ui'] [data-field-state='pass'] [data-input-root] {
-  @apply border-l-4 border-success-z5;
+  @apply border-success-z5 border-l-4;
 }
 
 /* =============================================================================
@@ -87,7 +87,7 @@
    ============================================================================= */
 
 [data-style='grada-ui'] [data-field-state='fail'] [data-input-root] {
-  @apply border-l-4 border-danger-z4;
+  @apply border-danger-z4 border-l-4;
 }
 
 [data-style='grada-ui'] [data-field-state='fail'] label {

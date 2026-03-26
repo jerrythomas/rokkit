@@ -9,24 +9,24 @@
    ============================================================================= */
 
 [data-style='carbon'] [data-fab-trigger] {
-  @apply bg-none bg-primary-z5 text-on-primary rounded-none border-0;
+  @apply bg-primary-z5 text-on-primary rounded-none border-0 bg-none;
 }
 
 [data-style='carbon'] [data-fab-trigger]:hover:not(:disabled) {
-  @apply bg-none bg-primary-z6 text-on-primary;
+  @apply bg-primary-z6 text-on-primary bg-none;
 }
 
 [data-style='carbon'] [data-fab-trigger]:focus-visible {
-  @apply outline-none border-2 border-primary-z7;
+  @apply border-primary-z7 border-2 outline-none;
 }
 
 [data-style='carbon'] [data-fab][data-open='true'] [data-fab-trigger] {
-  @apply bg-none bg-primary-z6;
+  @apply bg-primary-z6 bg-none;
   transform: rotate(45deg);
 }
 
 [data-style='carbon'] [data-fab][data-open='true'] [data-fab-trigger]:hover:not(:disabled) {
-  @apply bg-none bg-primary-z7;
+  @apply bg-primary-z7 bg-none;
 }
 
 /* =============================================================================
@@ -34,15 +34,15 @@
    ============================================================================= */
 
 [data-style='carbon'] [data-fab-item] {
-  @apply bg-none bg-surface-z3 text-surface-z8 rounded-none border-0;
+  @apply bg-surface-z3 text-surface-z8 rounded-none border-0 bg-none;
 }
 
 [data-style='carbon'] [data-fab-item]:hover:not(:disabled) {
-  @apply bg-none bg-surface-z4 text-surface-z9;
+  @apply bg-surface-z4 text-surface-z9 bg-none;
 }
 
 [data-style='carbon'] [data-fab-item]:focus-visible {
-  @apply outline-none border-2 border-primary-z5;
+  @apply border-primary-z5 border-2 outline-none;
 }
 
 /* Item icon */

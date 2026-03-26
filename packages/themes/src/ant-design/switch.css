@@ -3,7 +3,7 @@
  */
 
 [data-style='ant-design'] [data-switch-track] {
-  @apply bg-none border-surface-z4 border-2 bg-transparent;
+  @apply border-surface-z4 border-2 bg-transparent bg-none;
 }
 
 [data-style='ant-design'] [data-switch] [data-switch-thumb] {
@@ -17,7 +17,7 @@
 
 /* On state */
 [data-style='ant-design'] [data-switch][aria-checked='true'] [data-switch-track] {
-  @apply bg-none border-primary-z5;
+  @apply border-primary-z5 bg-none;
 }
 
 [data-style='ant-design'] [data-switch][aria-checked='true'] [data-switch-thumb] {

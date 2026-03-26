@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='ant-design'] [data-search-input] {
-  @apply text-surface-z7 border-surface-z4 border bg-transparent rounded;
+  @apply text-surface-z7 border-surface-z4 rounded border bg-transparent;
 }
 
 [data-style='ant-design'] [data-search-input]:focus {
@@ -37,7 +37,7 @@
    ============================================================================= */
 
 [data-style='ant-design'] [data-search-tag] {
-  @apply bg-none text-primary-z6 border-primary-z3 border bg-primary-z1 rounded;
+  @apply text-primary-z6 border-primary-z3 bg-primary-z1 rounded border bg-none;
 }
 
 [data-style='ant-design'] [data-search-tag-remove] {

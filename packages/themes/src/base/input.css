@@ -240,7 +240,9 @@ input[type='radio'] {
   flex-shrink: 0;
   cursor: pointer;
   position: relative;
-  transition: border-color 150ms ease, background-color 150ms ease;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease;
 }
 
 input[type='radio']:checked {

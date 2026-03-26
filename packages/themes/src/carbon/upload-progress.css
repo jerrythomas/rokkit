@@ -13,7 +13,7 @@
 }
 
 [data-style='carbon'] [data-upload-clear] {
-  @apply border-surface-z4 text-surface-z6 rounded-none border bg-surface-z2;
+  @apply border-surface-z4 text-surface-z6 bg-surface-z2 rounded-none border;
 }
 
 [data-style='carbon'] [data-upload-clear]:hover {
@@ -53,7 +53,7 @@
 }
 
 [data-style='carbon'] [data-upload-fill] {
-  @apply bg-none bg-primary-z5;
+  @apply bg-primary-z5 bg-none;
 }
 
 /* =============================================================================

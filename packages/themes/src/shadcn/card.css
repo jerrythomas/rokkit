@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='shadcn'] [data-card] {
-  @apply bg-none bg-surface-z0 border-surface-z3 text-surface-z9 border rounded-md;
+  @apply bg-surface-z0 border-surface-z3 text-surface-z9 rounded-md border bg-none;
 }
 
 /* Interactive cards */
@@ -67,7 +67,7 @@
 
 /* Primary — solid primary fill */
 [data-style='shadcn'] [data-card][data-variant='primary'] {
-  @apply bg-none bg-primary-z5 border-primary-z6 text-on-primary border rounded-md;
+  @apply bg-primary-z5 border-primary-z6 text-on-primary rounded-md border bg-none;
 }
 
 [data-style='shadcn'] [data-card][data-variant='primary'] [data-card-header],
@@ -81,7 +81,7 @@
 
 /* Secondary — solid secondary fill */
 [data-style='shadcn'] [data-card][data-variant='secondary'] {
-  @apply bg-none bg-secondary-z4 border-secondary-z5 text-on-secondary border rounded-md;
+  @apply bg-secondary-z4 border-secondary-z5 text-on-secondary rounded-md border bg-none;
 }
 
 [data-style='shadcn'] [data-card][data-variant='secondary'] [data-card-header],
@@ -95,5 +95,5 @@
 
 /* Tertiary — recessed surface */
 [data-style='shadcn'] [data-card][data-variant='tertiary'] {
-  @apply bg-none bg-surface-z1 border-surface-z3 text-surface-z7 border shadow-none rounded-md;
+  @apply bg-surface-z1 border-surface-z3 text-surface-z7 rounded-md border bg-none shadow-none;
 }

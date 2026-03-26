@@ -1,0 +1,109 @@
+# Avatar Component Documentation
+
+A circular or square user image with automatic initials fallback and optional presence status indicator.
+
+## Component API
+
+### Props
+
+- `src?: string` — Image source URL
+- `alt?: string` — Alt text for the image (defaults to `name` if not set)
+- `initials?: string` — Explicit initials to display (overrides name-derived initials)
+- `name?: string` — Full name used to auto-derive initials (first + last initial)
+- `size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'` — Size variant (default: `'md'`)
+- `status?: 'online' | 'offline' | 'away' | 'busy'` — Presence indicator dot
+- `shape?: 'circle' | 'square'` — Shape variant (default: `'circle'`)
+- `class?: string` — Additional CSS classes on the root element
+
+## Initials Derivation
+
+When `initials` is not provided:
+- Single-word name (e.g., `"Alice"`) → `"A"`
+- Multi-word name (e.g., `"Alice Brown"`) → `"AB"` (first + last word initials)
+- No name → `"?"`
+
+When `src` is set but the image fails to load (`onerror`), the component falls back to initials automatically.
+
+## DOM Structure
+
+### With image
+
+```html
+<div data-avatar data-size="md" data-shape="circle" role="img" aria-label="Alice Brown">
+  <img src="/alice.jpg" alt="Alice Brown" data-avatar-img />
+</div>
+```
+
+### Initials fallback
+
+```html
+<div data-avatar data-size="md" data-shape="circle" role="img" aria-label="Alice Brown">
+  <span data-avatar-initials aria-hidden="true">AB</span>
+</div>
+```
+
+### With status dot
+
+```html
+<div data-avatar data-size="md" data-shape="circle" data-status="online" role="img" aria-label="Alice Brown">
+  <span data-avatar-initials aria-hidden="true">AB</span>
+  <span data-avatar-status data-status="online" aria-label="online"></span>
+</div>
+```
+
+## Usage Examples
+
+### Basic
+
+```svelte
+<script>
+  import { Avatar } from '@rokkit/ui'
+</script>
+
+<!-- Auto-derived initials -->
+<Avatar name="Alice Brown" />
+
+<!-- Explicit initials -->
+<Avatar initials="JD" />
+
+<!-- With image -->
+<Avatar src="/avatar.jpg" name="Bob Smith" />
+```
+
+### With Status
+
+```svelte
+<Avatar name="Online User" status="online" />
+<Avatar name="Away User" status="away" />
+<Avatar name="Busy User" status="busy" />
+<Avatar name="Offline User" status="offline" />
+```
+
+### Sizes and Shapes
+
+```svelte
+<Avatar name="Small Circle" size="sm" />
+<Avatar name="Large Square" size="lg" shape="square" />
+```
+
+## Size Scale
+
+| Value | Dimensions |
+|-------|-----------|
+| xs    | 1.5rem    |
+| sm    | 2rem      |
+| md    | 2.5rem    |
+| lg    | 3rem      |
+| xl    | 4rem      |
+
+## Styling Hooks
+
+- `[data-avatar]` — Root element
+- `[data-avatar][data-size='md']` etc. — Size variants
+- `[data-avatar][data-shape='circle']` — Circle shape (border-radius: 9999px)
+- `[data-avatar][data-shape='square']` — Square shape (border-radius: 0.375rem)
+- `[data-avatar][data-status='online']` etc. — Presence state on root
+- `[data-avatar-img]` — The `<img>` element
+- `[data-avatar-initials]` — The initials `<span>`
+- `[data-avatar-status]` — The status dot `<span>` (positioned absolute, bottom-right)
+- `[data-avatar-status][data-status='online']` — Status dot color variant

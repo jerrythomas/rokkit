@@ -3,5 +3,6 @@
   "description": "Status and count indicator attached to other elements",
   "icon": "i-glyph:tag",
   "category": "display",
-  "order": 25
+  "order": 25,
+  "llms": true
 }

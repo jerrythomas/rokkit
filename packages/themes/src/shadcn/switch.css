@@ -5,7 +5,7 @@
  */
 
 [data-style='shadcn'] [data-switch-track] {
-  @apply bg-none border-surface-z4 border-2 bg-transparent rounded-full;
+  @apply border-surface-z4 rounded-full border-2 bg-transparent bg-none;
 }
 
 [data-style='shadcn'] [data-switch] [data-switch-thumb] {
@@ -19,7 +19,7 @@
 
 /* On state */
 [data-style='shadcn'] [data-switch][aria-checked='true'] [data-switch-track] {
-  @apply bg-none bg-primary-z5 border-primary-z5;
+  @apply bg-primary-z5 border-primary-z5 bg-none;
 }
 
 [data-style='shadcn'] [data-switch][aria-checked='true'] [data-switch-thumb] {

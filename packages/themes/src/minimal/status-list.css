@@ -62,5 +62,5 @@
 
 /* Count badge */
 [data-style='minimal'] [data-status-count] {
-  @apply bg-none text-surface-z6 font-semibold;
+  @apply text-surface-z6 bg-none font-semibold;
 }

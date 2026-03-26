@@ -48,13 +48,21 @@
 
 /* Active */
 [data-style='grada-ui'] [data-toolbar-item][data-active='true'] {
-  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-image: linear-gradient(
+    to right,
+    rgba(var(--color-primary-500), 1),
+    rgba(var(--color-secondary-500), 1)
+  );
   background-color: transparent;
   color: white;
 }
 
 [data-style='grada-ui'] [data-toolbar-item][data-active='true']:hover:not(:disabled) {
-  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-image: linear-gradient(
+    to right,
+    rgba(var(--color-primary-500), 1),
+    rgba(var(--color-secondary-500), 1)
+  );
   background-color: transparent;
   filter: brightness(1.08);
   color: white;

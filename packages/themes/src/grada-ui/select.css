@@ -6,7 +6,7 @@
 
 /* Trigger */
 [data-style='grada-ui'] [data-select-trigger] {
-  @apply bg-white text-surface-z8 border-surface-z4 border;
+  @apply text-surface-z8 border-surface-z4 border bg-white;
   border-radius: 3px;
 }
 
@@ -39,7 +39,11 @@
 
 /* Tags (MultiSelect) */
 [data-style='grada-ui'] [data-select-tag] {
-  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-image: linear-gradient(
+    to right,
+    rgba(var(--color-primary-500), 1),
+    rgba(var(--color-secondary-500), 1)
+  );
   background-color: transparent;
   color: white;
   border-radius: 20px;
@@ -57,7 +61,7 @@
 
 /* Dropdown Panel */
 [data-style='grada-ui'] [data-select-dropdown] {
-  @apply bg-white border-surface-z3 border shadow-lg;
+  @apply border-surface-z3 border bg-white shadow-lg;
   border-radius: 3px;
 }
 
@@ -78,21 +82,35 @@
 
 /* Selected option — gradient background */
 [data-style='grada-ui'] [data-select-option][data-selected='true'] {
-  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-image: linear-gradient(
+    to right,
+    rgba(var(--color-primary-500), 1),
+    rgba(var(--color-secondary-500), 1)
+  );
   background-color: transparent;
   color: white;
 }
 
 [data-style='grada-ui'] [data-select-option][data-selected='true']:hover:not(:disabled),
 [data-style='grada-ui'] [data-select-option][data-selected='true']:focus:not(:disabled) {
-  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-image: linear-gradient(
+    to right,
+    rgba(var(--color-primary-500), 1),
+    rgba(var(--color-secondary-500), 1)
+  );
   background-color: transparent;
   filter: brightness(1.1);
   color: white;
 }
 
-[data-style='grada-ui'] [data-select-dropdown]:focus-within [data-select-option][data-selected='true'] {
-  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+[data-style='grada-ui']
+  [data-select-dropdown]:focus-within
+  [data-select-option][data-selected='true'] {
+  background-image: linear-gradient(
+    to right,
+    rgba(var(--color-primary-500), 1),
+    rgba(var(--color-secondary-500), 1)
+  );
   background-color: transparent;
 }
 
@@ -103,7 +121,7 @@
 
 /* Checkbox */
 [data-style='grada-ui'] [data-select-checkbox] {
-  @apply bg-white border-surface-z5 border;
+  @apply border-surface-z5 border bg-white;
   border-radius: 2px;
 }
 
@@ -154,7 +172,7 @@
 }
 
 [data-style='grada-ui'] [data-select-filter-input] {
-  @apply text-surface-z8 border-surface-z4 bg-white border;
+  @apply text-surface-z8 border-surface-z4 border bg-white;
   border-radius: 3px;
 }
 

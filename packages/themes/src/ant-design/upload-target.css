@@ -42,7 +42,7 @@
    ============================================================================= */
 
 [data-style='ant-design'] [data-upload-target] [data-upload-button] {
-  @apply border-primary-z4 text-primary-z5 border rounded;
+  @apply border-primary-z4 text-primary-z5 rounded border;
 }
 
 [data-style='ant-design'] [data-upload-target] [data-upload-button]:hover:not(:disabled) {

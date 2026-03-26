@@ -6,9 +6,11 @@
 
 /* Input root: standard border, rounded */
 [data-style='ant-design'] [data-input-root] {
-  @apply border-surface-z4 relative flex items-center border bg-transparent rounded;
+  @apply border-surface-z4 relative flex items-center rounded border bg-transparent;
   background-image: none;
-  transition: border-color 150ms ease, box-shadow 150ms ease;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
 }
 
 /* Hover */

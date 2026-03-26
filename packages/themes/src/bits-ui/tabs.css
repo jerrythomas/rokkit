@@ -31,7 +31,7 @@
    ============================================================================= */
 
 [data-style='bits-ui'] [data-tabs-trigger] {
-  @apply bg-transparent text-surface-z5 rounded-lg border-b-[3px] border-b-transparent;
+  @apply text-surface-z5 rounded-lg border-b-[3px] border-b-transparent bg-transparent;
   font-weight: 400;
   transition:
     color 150ms ease,
@@ -69,7 +69,7 @@
 
 /* Horizontal after (tabs below content): top border */
 [data-style='bits-ui'] [data-tabs][data-position='after'] [data-tabs-trigger] {
-  @apply border-b-0 border-t-[3px] border-t-transparent;
+  @apply border-t-[3px] border-b-0 border-t-transparent;
 }
 
 [data-style='bits-ui']
@@ -92,7 +92,7 @@
 
 /* Vertical before (tabs on left): right border */
 [data-style='bits-ui'] [data-tabs][data-orientation='vertical'] [data-tabs-trigger] {
-  @apply border-b-0 border-r-[3px] border-r-transparent rounded-lg;
+  @apply rounded-lg border-r-[3px] border-b-0 border-r-transparent;
 }
 
 [data-style='bits-ui']
@@ -110,7 +110,7 @@
 [data-style='bits-ui']
   [data-tabs][data-orientation='vertical'][data-position='after']
   [data-tabs-trigger] {
-  @apply border-t-0 border-b-0 border-r-0 border-l-[3px] border-l-transparent rounded-lg;
+  @apply rounded-lg border-t-0 border-r-0 border-b-0 border-l-[3px] border-l-transparent;
 }
 
 [data-style='bits-ui']
@@ -122,7 +122,7 @@
 [data-style='bits-ui']
   [data-tabs][data-orientation='vertical'][data-position='after']
   [data-tabs-trigger][data-selected] {
-  @apply border-t-0 border-b-0 border-r-0 border-l-primary-z5;
+  @apply border-l-primary-z5 border-t-0 border-r-0 border-b-0;
   font-weight: 600;
 }
 

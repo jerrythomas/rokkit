@@ -8,8 +8,10 @@
   @apply outline-secondary-z5;
 }
 
-[data-style='minimal'] [data-swatch-item]:hover:not(:disabled):not([data-disabled]):not([data-selected]),
-[data-style='minimal'] [data-swatch-item]:focus-visible:not(:disabled):not([data-disabled]):not([data-selected]) {
+[data-style='minimal']
+  [data-swatch-item]:hover:not(:disabled):not([data-disabled]):not([data-selected]),
+[data-style='minimal']
+  [data-swatch-item]:focus-visible:not(:disabled):not([data-disabled]):not([data-selected]) {
   @apply outline-primary-z4;
 }
 

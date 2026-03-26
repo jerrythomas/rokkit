@@ -32,9 +32,11 @@
    ============================================================================= */
 
 [data-style='carbon'] [data-tabs-trigger] {
-  @apply bg-transparent text-surface-z5 border-b-[3px] border-b-transparent rounded-none;
+  @apply text-surface-z5 rounded-none border-b-[3px] border-b-transparent bg-transparent;
   font-weight: 400;
-  transition: color 150ms ease, border-color 150ms ease;
+  transition:
+    color 150ms ease,
+    border-color 150ms ease;
 }
 
 [data-style='carbon'] [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {
@@ -42,7 +44,7 @@
 }
 
 [data-style='carbon'] [data-tabs-trigger][data-selected] {
-  @apply bg-none text-surface-z9 border-b-primary-z5;
+  @apply text-surface-z9 border-b-primary-z5 bg-none;
   font-weight: 600;
 }
 
@@ -67,7 +69,7 @@
 
 /* Horizontal after (tabs below content): top border */
 [data-style='carbon'] [data-tabs][data-position='after'] [data-tabs-trigger] {
-  @apply border-b-0 border-t-[3px] border-t-transparent rounded-none;
+  @apply rounded-none border-t-[3px] border-b-0 border-t-transparent;
 }
 
 [data-style='carbon']
@@ -90,7 +92,7 @@
 
 /* Vertical before (tabs on left): right border */
 [data-style='carbon'] [data-tabs][data-orientation='vertical'] [data-tabs-trigger] {
-  @apply border-b-0 border-r-[3px] border-r-transparent rounded-none;
+  @apply rounded-none border-r-[3px] border-b-0 border-r-transparent;
 }
 
 [data-style='carbon']
@@ -108,19 +110,19 @@
 [data-style='carbon']
   [data-tabs][data-orientation='vertical'][data-position='after']
   [data-tabs-trigger] {
-  @apply border-t-0 border-b-0 border-r-0 border-l-[3px] border-l-transparent rounded-none;
+  @apply rounded-none border-t-0 border-r-0 border-b-0 border-l-[3px] border-l-transparent;
 }
 
 [data-style='carbon']
   [data-tabs][data-orientation='vertical'][data-position='after']
   [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {
-  @apply border-t-0 border-b-0 border-r-0 border-l-surface-z4;
+  @apply border-l-surface-z4 border-t-0 border-r-0 border-b-0;
 }
 
 [data-style='carbon']
   [data-tabs][data-orientation='vertical'][data-position='after']
   [data-tabs-trigger][data-selected] {
-  @apply border-t-0 border-b-0 border-r-0 border-l-primary-z5;
+  @apply border-l-primary-z5 border-t-0 border-r-0 border-b-0;
   font-weight: 600;
 }
 

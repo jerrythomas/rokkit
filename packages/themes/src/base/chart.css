@@ -67,11 +67,11 @@
   user-select: none;
 }
 
-[data-plot-element="bar"],
-[data-plot-element="line"],
-[data-plot-element="area"],
-[data-plot-element="point"],
-[data-plot-element="arc"] {
+[data-plot-element='bar'],
+[data-plot-element='line'],
+[data-plot-element='area'],
+[data-plot-element='point'],
+[data-plot-element='arc'] {
   transition: opacity 0.15s ease;
 }
 

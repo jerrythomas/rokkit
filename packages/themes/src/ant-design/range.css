@@ -13,7 +13,7 @@
 }
 
 [data-style='ant-design'] [data-range-selected] {
-  @apply bg-none bg-primary-z5;
+  @apply bg-primary-z5 bg-none;
 }
 
 /* =============================================================================

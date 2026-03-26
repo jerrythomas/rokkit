@@ -9,11 +9,11 @@
    ============================================================================= */
 
 [data-style='bits-ui'] [data-select-trigger] {
-  @apply bg-none text-surface-z7 border-surface-z3 border bg-surface-z1 rounded-lg shadow-sm;
+  @apply text-surface-z7 border-surface-z3 bg-surface-z1 rounded-lg border bg-none shadow-sm;
 }
 
 [data-style='bits-ui'] [data-select-trigger]:hover:not(:disabled) {
-  @apply bg-none border-surface-z4 text-surface-z8 shadow-md;
+  @apply border-surface-z4 text-surface-z8 bg-none shadow-md;
 }
 
 [data-style='bits-ui'] [data-select-trigger]:focus-visible {
@@ -21,7 +21,7 @@
 }
 
 [data-style='bits-ui'] [data-select][data-open='true'] [data-select-trigger] {
-  @apply bg-none border-surface-z5 ring-primary-z3 ring-2;
+  @apply border-surface-z5 ring-primary-z3 bg-none ring-2;
 }
 
 /* =============================================================================
@@ -49,7 +49,7 @@
    ============================================================================= */
 
 [data-style='bits-ui'] [data-select-tag] {
-  @apply bg-none text-surface-z7 border-surface-z3 border bg-surface-z2 rounded-lg;
+  @apply text-surface-z7 border-surface-z3 bg-surface-z2 rounded-lg border bg-none;
 }
 
 [data-style='bits-ui'] [data-select-tag-remove] {
@@ -65,7 +65,7 @@
    ============================================================================= */
 
 [data-style='bits-ui'] [data-select-dropdown] {
-  @apply bg-none bg-surface-z1 border-surface-z3 border shadow-lg rounded-xl;
+  @apply bg-surface-z1 border-surface-z3 rounded-xl border bg-none shadow-lg;
 }
 
 /* =============================================================================
@@ -101,11 +101,11 @@
 
 /* Checkbox */
 [data-style='bits-ui'] [data-select-checkbox] {
-  @apply bg-none border-surface-z4 bg-transparent rounded;
+  @apply border-surface-z4 rounded bg-transparent bg-none;
 }
 
 [data-style='bits-ui'] [data-select-checkbox][data-checked='true'] {
-  @apply bg-none bg-primary-z5 border-primary-z5 text-white;
+  @apply bg-primary-z5 border-primary-z5 bg-none text-white;
 }
 
 /* Item elements */
@@ -130,7 +130,7 @@
    ============================================================================= */
 
 [data-style='bits-ui'] [data-select-divider] {
-  @apply bg-none bg-surface-z3;
+  @apply bg-surface-z3 bg-none;
 }
 
 /* =============================================================================
@@ -142,7 +142,7 @@
 }
 
 [data-style='bits-ui'] [data-select-filter-input] {
-  @apply text-surface-z7 border-surface-z3 border bg-transparent rounded-lg;
+  @apply text-surface-z7 border-surface-z3 rounded-lg border bg-transparent;
 }
 
 [data-style='bits-ui'] [data-select-filter-input]:focus {

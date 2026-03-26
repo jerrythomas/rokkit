@@ -7,9 +7,11 @@
 
 /* Input root: full border, rounded-md */
 [data-style='shadcn'] [data-input-root] {
-  @apply border-surface-z3 relative flex items-center border bg-transparent rounded-md;
+  @apply border-surface-z3 relative flex items-center rounded-md border bg-transparent;
   background-image: none;
-  transition: border-color 150ms ease, box-shadow 150ms ease;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
 }
 
 /* Hover */

@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='daisy-ui'] [data-toggle] {
-  @apply bg-none border-surface-z3 rounded-full border bg-surface-z1;
+  @apply border-surface-z3 bg-surface-z1 rounded-full border bg-none;
 }
 
 /* =============================================================================
@@ -22,12 +22,12 @@
 
 [data-style='daisy-ui'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']),
 [data-style='daisy-ui'] [data-toggle-option]:focus:not(:disabled):not([data-disabled='true']) {
-  @apply bg-none bg-surface-z2 text-surface-z8;
+  @apply bg-surface-z2 text-surface-z8 bg-none;
 }
 
 /* Selected state */
 [data-style='daisy-ui'] [data-toggle-option][data-selected='true'] {
-  @apply bg-none bg-primary-z5 text-on-primary;
+  @apply bg-primary-z5 text-on-primary bg-none;
 }
 
 /* =============================================================================

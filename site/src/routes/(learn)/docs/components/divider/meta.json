@@ -3,5 +3,6 @@
   "description": "Horizontal or vertical separator with optional label",
   "icon": "i-glyph:minimize-square-3",
   "category": "layout",
-  "order": 30
+  "order": 30,
+  "llms": true
 }

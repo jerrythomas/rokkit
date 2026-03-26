@@ -56,7 +56,9 @@
   @apply bg-primary-z2;
 }
 
-[data-style='bits-ui'] [data-tree]:focus-within [data-tree-item-content][data-active='true']:hover:not(:disabled) {
+[data-style='bits-ui']
+  [data-tree]:focus-within
+  [data-tree-item-content][data-active='true']:hover:not(:disabled) {
   @apply bg-primary-z3;
 }
 
@@ -89,18 +91,24 @@
 }
 
 [data-style='bits-ui'] [data-tree-item-content] [data-item-badge] {
-  @apply bg-none text-surface-z6 border-surface-z3 border bg-transparent rounded-lg;
+  @apply text-surface-z6 border-surface-z3 rounded-lg border bg-transparent bg-none;
 }
 
 [data-style='bits-ui'] [data-tree-item-content][data-active='true'] [data-item-badge] {
   @apply text-primary-z7 border-primary-z3;
 }
 
-[data-style='bits-ui'] [data-tree]:focus-within [data-tree-item-content][data-active='true'] [data-item-badge] {
+[data-style='bits-ui']
+  [data-tree]:focus-within
+  [data-tree-item-content][data-active='true']
+  [data-item-badge] {
   @apply bg-none;
 }
 
-[data-style='bits-ui'] [data-tree]:not(:focus-within) [data-tree-item-content][data-active='true'] [data-item-badge] {
+[data-style='bits-ui']
+  [data-tree]:not(:focus-within)
+  [data-tree-item-content][data-active='true']
+  [data-item-badge] {
   @apply bg-none;
 }
 

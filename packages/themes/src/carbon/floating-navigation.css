@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='carbon'] [data-floating-nav] {
-  @apply bg-none bg-surface-z1 border-surface-z4 rounded-none border;
+  @apply bg-surface-z1 border-surface-z4 rounded-none border bg-none;
 }
 
 /* =============================================================================
@@ -41,15 +41,15 @@
 }
 
 [data-style='carbon'] [data-floating-nav-item]:hover {
-  @apply bg-none bg-surface-z3 text-surface-z9;
+  @apply bg-surface-z3 text-surface-z9 bg-none;
 }
 
 [data-style='carbon'] [data-floating-nav-item][data-active] {
-  @apply bg-none bg-primary-z2 text-primary-z8;
+  @apply bg-primary-z2 text-primary-z8 bg-none;
 }
 
 [data-style='carbon'] [data-floating-nav-item]:focus-visible {
-  @apply outline-none border-2 border-primary-z5;
+  @apply border-primary-z5 border-2 outline-none;
 }
 
 /* Icon */
@@ -66,5 +66,5 @@
    ============================================================================= */
 
 [data-style='carbon'] [data-floating-nav-indicator] {
-  @apply bg-none bg-primary-z5;
+  @apply bg-primary-z5 bg-none;
 }

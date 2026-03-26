@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='shadcn'] [data-floating-nav] {
-  @apply bg-none bg-surface-z0 border-surface-z3 border rounded-md shadow-md;
+  @apply bg-surface-z0 border-surface-z3 rounded-md border bg-none shadow-md;
 }
 
 /* =============================================================================
@@ -41,11 +41,11 @@
 }
 
 [data-style='shadcn'] [data-floating-nav-item]:hover {
-  @apply bg-none bg-surface-z3 text-surface-z9;
+  @apply bg-surface-z3 text-surface-z9 bg-none;
 }
 
 [data-style='shadcn'] [data-floating-nav-item][data-active] {
-  @apply bg-none bg-primary-z2 text-primary-z8;
+  @apply bg-primary-z2 text-primary-z8 bg-none;
 }
 
 [data-style='shadcn'] [data-floating-nav-item]:focus-visible {
@@ -66,5 +66,5 @@
    ============================================================================= */
 
 [data-style='shadcn'] [data-floating-nav-indicator] {
-  @apply bg-none bg-primary-z5 rounded-full;
+  @apply bg-primary-z5 rounded-full bg-none;
 }

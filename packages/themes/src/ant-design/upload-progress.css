@@ -13,7 +13,7 @@
 }
 
 [data-style='ant-design'] [data-upload-clear] {
-  @apply border-surface-z4 text-surface-z6 border rounded;
+  @apply border-surface-z4 text-surface-z6 rounded border;
 }
 
 [data-style='ant-design'] [data-upload-clear]:hover {

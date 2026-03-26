@@ -1,0 +1,76 @@
+# Stack Component Documentation
+
+A flex layout wrapper that arranges children in a consistent vertical or horizontal stack with configurable gap spacing.
+
+## Component API
+
+### Props
+
+- `direction: 'vertical' | 'horizontal'` — Flex direction (default: `'vertical'`)
+- `gap: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'` — Gap between children (default: `'md'`)
+- `align?: 'start' | 'center' | 'end' | 'stretch'` — Cross-axis alignment (`align-items`)
+- `justify?: 'start' | 'center' | 'end' | 'between' | 'around'` — Main-axis justification (`justify-content`)
+- `children: Snippet` — Content to stack (required)
+- `class?: string` — Additional CSS classes on the root element
+
+## DOM Structure
+
+```html
+<div data-stack data-direction="vertical" data-gap="md">
+  <!-- children -->
+</div>
+```
+
+## Usage Examples
+
+### Vertical Stack (default)
+
+```svelte
+<script>
+  import { Stack } from '@rokkit/ui'
+</script>
+
+<Stack gap="sm">
+  <div>First item</div>
+  <div>Second item</div>
+  <div>Third item</div>
+</Stack>
+```
+
+### Horizontal Stack
+
+```svelte
+<Stack direction="horizontal" gap="md" align="center">
+  <Button>Cancel</Button>
+  <Button variant="primary">Save</Button>
+</Stack>
+```
+
+### Space Between
+
+```svelte
+<Stack direction="horizontal" justify="between" align="center">
+  <h2>Title</h2>
+  <Button>Action</Button>
+</Stack>
+```
+
+## Gap Scale
+
+| Value | CSS gap  |
+|-------|----------|
+| none  | 0        |
+| xs    | 0.25rem  |
+| sm    | 0.5rem   |
+| md    | 1rem     |
+| lg    | 1.5rem   |
+| xl    | 2rem     |
+
+## Styling Hooks
+
+- `[data-stack]` — Root element
+- `[data-stack][data-direction='vertical']` — Vertical layout
+- `[data-stack][data-direction='horizontal']` — Horizontal layout
+- `[data-stack][data-gap='sm']` etc. — Gap size variants
+- `[data-stack][data-align='center']` etc. — Alignment variants
+- `[data-stack][data-justify='between']` etc. — Justification variants

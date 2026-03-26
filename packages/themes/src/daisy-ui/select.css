@@ -9,19 +9,19 @@
    ============================================================================= */
 
 [data-style='daisy-ui'] [data-select-trigger] {
-  @apply bg-none text-surface-z7 border-surface-z4 border bg-transparent rounded-lg;
+  @apply text-surface-z7 border-surface-z4 rounded-lg border bg-transparent bg-none;
 }
 
 [data-style='daisy-ui'] [data-select-trigger]:hover:not(:disabled) {
-  @apply bg-none border-surface-z5 text-surface-z8;
+  @apply border-surface-z5 text-surface-z8 bg-none;
 }
 
 [data-style='daisy-ui'] [data-select-trigger]:focus-visible {
-  @apply outline-2 outline-offset-2 outline-primary-z5 outline;
+  @apply outline-primary-z5 outline outline-2 outline-offset-2;
 }
 
 [data-style='daisy-ui'] [data-select][data-open='true'] [data-select-trigger] {
-  @apply bg-none border-primary-z5;
+  @apply border-primary-z5 bg-none;
 }
 
 /* =============================================================================
@@ -49,7 +49,7 @@
    ============================================================================= */
 
 [data-style='daisy-ui'] [data-select-tag] {
-  @apply bg-none text-on-primary bg-primary-z5 border-transparent rounded-full;
+  @apply text-on-primary bg-primary-z5 rounded-full border-transparent bg-none;
 }
 
 [data-style='daisy-ui'] [data-select-tag-remove] {
@@ -65,7 +65,7 @@
    ============================================================================= */
 
 [data-style='daisy-ui'] [data-select-dropdown] {
-  @apply bg-none bg-surface-z1 border-surface-z3 border shadow-md rounded-xl;
+  @apply bg-surface-z1 border-surface-z3 rounded-xl border bg-none shadow-md;
 }
 
 /* =============================================================================
@@ -79,19 +79,19 @@
 /* Hover and focus */
 [data-style='daisy-ui'] [data-select-option]:hover:not(:disabled),
 [data-style='daisy-ui'] [data-select-option]:focus:not(:disabled) {
-  @apply bg-none bg-surface-z2 text-surface-z9 outline-none;
+  @apply bg-surface-z2 text-surface-z9 bg-none outline-none;
 }
 
 /* Selected state */
 [data-style='daisy-ui'] [data-select-option][data-selected='true'] {
-  @apply bg-none bg-primary-z4 text-on-primary;
+  @apply bg-primary-z4 text-on-primary bg-none;
 }
 
 /* Selected state — full highlight when dropdown has focus */
 [data-style='daisy-ui']
   [data-select-dropdown]:focus-within
   [data-select-option][data-selected='true'] {
-  @apply bg-none bg-primary-z5 text-on-primary;
+  @apply bg-primary-z5 text-on-primary bg-none;
 }
 
 /* Check mark */
@@ -101,11 +101,11 @@
 
 /* Checkbox */
 [data-style='daisy-ui'] [data-select-checkbox] {
-  @apply bg-none border-surface-z5 bg-transparent rounded;
+  @apply border-surface-z5 rounded bg-transparent bg-none;
 }
 
 [data-style='daisy-ui'] [data-select-checkbox][data-checked='true'] {
-  @apply bg-none bg-primary-z5 border-primary-z5 text-white;
+  @apply bg-primary-z5 border-primary-z5 bg-none text-white;
 }
 
 /* Item elements */
@@ -130,7 +130,7 @@
    ============================================================================= */
 
 [data-style='daisy-ui'] [data-select-divider] {
-  @apply bg-none bg-surface-z3;
+  @apply bg-surface-z3 bg-none;
 }
 
 /* =============================================================================
@@ -142,11 +142,11 @@
 }
 
 [data-style='daisy-ui'] [data-select-filter-input] {
-  @apply text-surface-z7 border-surface-z4 border bg-transparent rounded-lg;
+  @apply text-surface-z7 border-surface-z4 rounded-lg border bg-transparent;
 }
 
 [data-style='daisy-ui'] [data-select-filter-input]:focus {
-  @apply border-primary-z5 outline-2 outline-offset-2 outline-primary-z5 outline;
+  @apply border-primary-z5 outline-primary-z5 outline outline-2 outline-offset-2;
 }
 
 [data-style='daisy-ui'] [data-select-filter-input]::placeholder {

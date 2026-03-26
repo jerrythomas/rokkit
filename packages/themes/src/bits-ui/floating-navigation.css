@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='bits-ui'] [data-floating-nav] {
-  @apply bg-none bg-surface-z1 border-surface-z3 border rounded-xl shadow-sm;
+  @apply bg-surface-z1 border-surface-z3 rounded-xl border bg-none shadow-sm;
 }
 
 /* =============================================================================
@@ -66,5 +66,5 @@
    ============================================================================= */
 
 [data-style='bits-ui'] [data-floating-nav-indicator] {
-  @apply bg-none bg-primary-z5 rounded-lg;
+  @apply bg-primary-z5 rounded-lg bg-none;
 }

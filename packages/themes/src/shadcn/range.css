@@ -13,7 +13,7 @@
 }
 
 [data-style='shadcn'] [data-range-selected] {
-  @apply bg-none bg-primary rounded-full;
+  @apply bg-primary rounded-full bg-none;
 }
 
 /* =============================================================================
@@ -21,7 +21,7 @@
    ============================================================================= */
 
 [data-style='shadcn'] [data-range-thumb] {
-  @apply bg-surface-z0 border-primary-z5 border-2 rounded-full;
+  @apply bg-surface-z0 border-primary-z5 rounded-full border-2;
 }
 
 [data-style='shadcn'] [data-range-thumb][data-sliding] {

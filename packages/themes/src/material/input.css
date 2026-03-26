@@ -81,7 +81,7 @@
   [data-field-root]:not([data-field-type='checkbox']):not([data-field-empty='true'])
   [data-field]
   > label {
-  @apply text-xs bg-surface-z1;
+  @apply bg-surface-z1 text-xs;
   top: 0;
   transform: translateY(-50%);
   padding-inline: 0.25rem;

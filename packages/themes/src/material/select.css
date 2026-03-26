@@ -9,11 +9,11 @@
    ============================================================================= */
 
 [data-style='material'] [data-select-trigger] {
-  @apply bg-none bg-surface-z1 text-surface-z8 border-surface-z4 border shadow-sm;
+  @apply bg-surface-z1 text-surface-z8 border-surface-z4 border bg-none shadow-sm;
 }
 
 [data-style='material'] [data-select-trigger]:hover:not(:disabled) {
-  @apply bg-none bg-surface-z2 border-surface-z5 shadow-md;
+  @apply bg-surface-z2 border-surface-z5 bg-none shadow-md;
 }
 
 [data-style='material'] [data-select-trigger]:focus-visible {
@@ -21,7 +21,7 @@
 }
 
 [data-style='material'] [data-select][data-open='true'] [data-select-trigger] {
-  @apply bg-none border-primary-z5 shadow-md;
+  @apply border-primary-z5 bg-none shadow-md;
 }
 
 /* =============================================================================
@@ -49,7 +49,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-select-tag] {
-  @apply bg-none bg-surface-z2 text-surface-z8 rounded-full shadow-sm;
+  @apply bg-surface-z2 text-surface-z8 rounded-full bg-none shadow-sm;
 }
 
 [data-style='material'] [data-select-tag-remove] {
@@ -65,7 +65,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-select-dropdown] {
-  @apply bg-none bg-surface-z1 border-surface-z3 border shadow-lg;
+  @apply bg-surface-z1 border-surface-z3 border bg-none shadow-lg;
 }
 
 /* =============================================================================
@@ -78,7 +78,7 @@
 
 [data-style='material'] [data-select-option]:hover:not(:disabled),
 [data-style='material'] [data-select-option]:focus:not(:disabled) {
-  @apply bg-none bg-surface-z2 text-surface-z10;
+  @apply bg-surface-z2 text-surface-z10 bg-none;
 }
 
 [data-style='material'] [data-select-option]:focus-visible {
@@ -86,16 +86,18 @@
 }
 
 [data-style='material'] [data-select-option][data-selected='true'] {
-  @apply bg-none bg-primary-z2 text-primary-z9;
+  @apply bg-primary-z2 text-primary-z9 bg-none;
 }
 
 [data-style='material'] [data-select-option][data-selected='true']:hover:not(:disabled),
 [data-style='material'] [data-select-option][data-selected='true']:focus:not(:disabled) {
-  @apply bg-none bg-primary-z3;
+  @apply bg-primary-z3 bg-none;
 }
 
 /* Reset rokkit gradients bleeding in from body[data-style='rokkit'] ancestor */
-[data-style='material'] [data-select-dropdown]:focus-within [data-select-option][data-selected='true'] {
+[data-style='material']
+  [data-select-dropdown]:focus-within
+  [data-select-option][data-selected='true'] {
   @apply bg-none;
 }
 
@@ -106,11 +108,11 @@
 
 /* Checkbox */
 [data-style='material'] [data-select-checkbox] {
-  @apply bg-none border-surface-z5 bg-surface-z1 rounded;
+  @apply border-surface-z5 bg-surface-z1 rounded bg-none;
 }
 
 [data-style='material'] [data-select-checkbox][data-checked='true'] {
-  @apply bg-none bg-primary-z5 border-primary-z5 text-white;
+  @apply bg-primary-z5 border-primary-z5 bg-none text-white;
 }
 
 /* Item elements */
@@ -147,7 +149,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-select-divider] {
-  @apply bg-none bg-surface-z3;
+  @apply bg-surface-z3 bg-none;
 }
 
 /* =============================================================================

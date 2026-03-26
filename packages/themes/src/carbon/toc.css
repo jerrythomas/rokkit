@@ -14,9 +14,9 @@
 
 [data-style='carbon'] [data-toc] [data-toc-item]:hover,
 [data-style='carbon'] [data-toc] [data-toc-item][data-toc-focused] {
-  @apply bg-none bg-surface-z2 text-surface-z9 outline-none;
+  @apply bg-surface-z2 text-surface-z9 bg-none outline-none;
 }
 
 [data-style='carbon'] [data-toc] [data-toc-item][data-toc-active] {
-  @apply text-primary-z7 border-l-2 border-l-primary-z5;
+  @apply text-primary-z7 border-l-primary-z5 border-l-2;
 }

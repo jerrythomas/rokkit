@@ -49,15 +49,15 @@
 }
 
 [data-style='shadcn'] [data-table-row]:hover {
-  @apply bg-none bg-surface-z2 text-surface-z9;
+  @apply bg-surface-z2 text-surface-z9 bg-none;
 }
 
 [data-style='shadcn'] [data-table-row]:focus {
-  @apply bg-none bg-surface-z2 text-surface-z9 ring-primary-z4 ring-2 outline-none;
+  @apply bg-surface-z2 text-surface-z9 ring-primary-z4 bg-none ring-2 outline-none;
 }
 
 [data-style='shadcn'] [data-table-row][data-selected='true'] {
-  @apply bg-none bg-primary-z2 text-primary-z8;
+  @apply bg-primary-z2 text-primary-z8 bg-none;
 }
 
 /* =============================================================================

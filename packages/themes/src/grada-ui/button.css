@@ -15,7 +15,9 @@
   text-transform: uppercase;
   font-size: 0.625rem;
   font-weight: 700;
-  transition: filter 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    filter 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 /* =============================================================================
@@ -26,13 +28,17 @@
 [data-style='grada-ui'] [data-button]:not([data-style])[data-variant='default'],
 [data-style='grada-ui'] [data-button][data-style='default']:not([data-variant]),
 [data-style='grada-ui'] [data-button]:not([data-style]):not([data-variant]) {
-  @apply bg-none bg-surface-z2 text-surface-z8 shadow-sm;
+  @apply bg-surface-z2 text-surface-z8 bg-none shadow-sm;
   border-radius: 20px;
 }
 
 [data-style='grada-ui'] [data-button][data-style='default'][data-variant='primary'],
 [data-style='grada-ui'] [data-button]:not([data-style])[data-variant='primary'] {
-  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-image: linear-gradient(
+    to right,
+    rgba(var(--color-primary-500), 1),
+    rgba(var(--color-secondary-500), 1)
+  );
   background-color: transparent;
   color: white;
   border-radius: 20px;
@@ -133,7 +139,11 @@
 
 [data-style='grada-ui'] [data-button][data-style='gradient'][data-variant='primary'],
 [data-style='grada-ui'] [data-button][data-style='gradient'][data-variant='secondary'] {
-  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-image: linear-gradient(
+    to right,
+    rgba(var(--color-primary-500), 1),
+    rgba(var(--color-secondary-500), 1)
+  );
   background-color: transparent;
   color: white;
   border-radius: 20px;
@@ -141,7 +151,11 @@
 }
 
 [data-style='grada-ui'] [data-button][data-style='gradient'][data-variant='accent'] {
-  background-image: linear-gradient(to right, rgba(var(--color-accent-500), 1), rgba(var(--color-accent-400), 1));
+  background-image: linear-gradient(
+    to right,
+    rgba(var(--color-accent-500), 1),
+    rgba(var(--color-accent-400), 1)
+  );
   background-color: transparent;
   color: white;
   border-radius: 20px;
@@ -213,7 +227,7 @@
    ============================================================================= */
 
 [data-style='grada-ui'] [data-button]:focus-visible {
-  @apply outline-2 outline-offset-2 outline outline-primary-z5;
+  @apply outline-primary-z5 outline outline-2 outline-offset-2;
 }
 
 /* =============================================================================

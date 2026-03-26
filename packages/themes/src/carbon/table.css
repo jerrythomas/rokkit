@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='carbon'] [data-table-header] th {
-  @apply text-surface-z7 border-surface-z4 border-b bg-surface-z3;
+  @apply text-surface-z7 border-surface-z4 bg-surface-z3 border-b;
 }
 
 [data-style='carbon'] [data-table-header-cell][data-sortable='true']:hover {
@@ -49,15 +49,15 @@
 }
 
 [data-style='carbon'] [data-table-row]:hover {
-  @apply bg-none bg-surface-z2 text-surface-z9;
+  @apply bg-surface-z2 text-surface-z9 bg-none;
 }
 
 [data-style='carbon'] [data-table-row]:focus {
-  @apply bg-none bg-surface-z2 text-surface-z9 outline-none border-2 border-primary-z5;
+  @apply bg-surface-z2 text-surface-z9 border-primary-z5 border-2 bg-none outline-none;
 }
 
 [data-style='carbon'] [data-table-row][data-selected='true'] {
-  @apply bg-none bg-primary-z2 text-primary-z8;
+  @apply bg-primary-z2 text-primary-z8 bg-none;
 }
 
 /* =============================================================================

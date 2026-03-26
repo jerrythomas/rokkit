@@ -6,7 +6,7 @@
 
 /* Input root: rounded border, subtle background */
 [data-style='bits-ui'] [data-input-root] {
-  @apply border-surface-z3 relative flex items-center border bg-surface-z1 rounded-lg shadow-sm;
+  @apply border-surface-z3 bg-surface-z1 relative flex items-center rounded-lg border shadow-sm;
   background-image: none;
   transition:
     background-color 150ms ease,
@@ -24,7 +24,9 @@
 [data-style='bits-ui'] [data-input-root]:focus-within {
   @apply border-primary-z4 bg-surface-z1;
   background-image: none;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06), 0 0 0 2px var(--color-primary-z3, rgba(0,0,0,0.08));
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.06),
+    0 0 0 2px var(--color-primary-z3, rgba(0, 0, 0, 0.08));
 }
 
 /* Inputs inside wrapper */
@@ -45,7 +47,7 @@
 
 /* Select inside input-root: match text input appearance */
 [data-style='bits-ui'] [data-input-root] [data-select-trigger] {
-  @apply text-surface-z9 border-none bg-transparent px-3 shadow-none ring-0 focus:outline-none rounded-lg;
+  @apply text-surface-z9 rounded-lg border-none bg-transparent px-3 shadow-none ring-0 focus:outline-none;
   font-size: 0.875rem;
   background-image: none;
   transition: color 150ms ease;
@@ -105,7 +107,9 @@
 }
 
 [data-style='bits-ui'] [data-field-state='fail'] [data-input-root]:focus-within {
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06), 0 0 0 2px var(--color-danger-z3, rgba(0,0,0,0.08));
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.06),
+    0 0 0 2px var(--color-danger-z3, rgba(0, 0, 0, 0.08));
 }
 
 /* Pass state */

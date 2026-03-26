@@ -13,7 +13,7 @@
 }
 
 [data-style='minimal'] [data-range-selected] {
-  @apply bg-none bg-primary;
+  @apply bg-primary bg-none;
 }
 
 /* =============================================================================

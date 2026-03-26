@@ -5,18 +5,20 @@
  */
 
 [data-style='grada-ui'] [data-card] {
-  @apply bg-surface-z2 border border-surface-z4 text-surface-z9;
+  @apply bg-surface-z2 border-surface-z4 text-surface-z9 border;
   background-image: none;
   border-radius: 3px;
 }
 
 [data-style='grada-ui'] [data-card][data-card-interactive] {
   cursor: pointer;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
 [data-style='grada-ui'] [data-card][data-card-interactive]:hover {
-  @apply shadow-md border-primary-z5;
+  @apply border-primary-z5 shadow-md;
 }
 
 [data-style='grada-ui'] [data-card][data-card-interactive]:active {
@@ -46,7 +48,7 @@
    ============================================================================= */
 
 [data-style='grada-ui'] [data-card][data-card-interactive]:focus-visible {
-  @apply outline-2 outline-offset-2 outline outline-primary-z5;
+  @apply outline-primary-z5 outline outline-2 outline-offset-2;
 }
 
 /* =============================================================================
@@ -64,7 +66,11 @@
 
 [data-style='grada-ui'] [data-card][data-variant='primary'] {
   @apply from-primary-z5 to-secondary-z5 text-surface-z1 border-0;
-  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-image: linear-gradient(
+    to right,
+    rgba(var(--color-primary-500), 1),
+    rgba(var(--color-secondary-500), 1)
+  );
   background-color: transparent;
   border-radius: 3px;
 }
@@ -85,6 +91,6 @@
 }
 
 [data-style='grada-ui'] [data-card][data-variant='tertiary'] {
-  @apply bg-none bg-surface-z1 border-surface-z3 text-surface-z7 border shadow-none;
+  @apply bg-surface-z1 border-surface-z3 text-surface-z7 border bg-none shadow-none;
   border-radius: 3px;
 }

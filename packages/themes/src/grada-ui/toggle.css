@@ -5,7 +5,7 @@
  */
 
 [data-style='grada-ui'] [data-toggle] {
-  @apply bg-none bg-surface-z2;
+  @apply bg-surface-z2 bg-none;
   border-radius: 20px;
   @apply shadow-sm;
 }
@@ -17,12 +17,16 @@
 
 [data-style='grada-ui'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']),
 [data-style='grada-ui'] [data-toggle-option]:focus:not(:disabled):not([data-disabled='true']) {
-  @apply bg-none bg-surface-z3 text-surface-z8;
+  @apply bg-surface-z3 text-surface-z8 bg-none;
 }
 
 /* Selected state — gradient */
 [data-style='grada-ui'] [data-toggle-option][data-selected='true'] {
-  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-image: linear-gradient(
+    to right,
+    rgba(var(--color-primary-500), 1),
+    rgba(var(--color-secondary-500), 1)
+  );
   background-color: transparent;
   color: white;
   border-radius: 20px;

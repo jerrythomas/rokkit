@@ -62,5 +62,5 @@
 
 /* Count badge */
 [data-style='glass'] [data-status-count] {
-  @apply bg-surface-z2/60 backdrop-blur-sm text-surface-z7 font-semibold;
+  @apply bg-surface-z2/60 text-surface-z7 font-semibold backdrop-blur-sm;
 }

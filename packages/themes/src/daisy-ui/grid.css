@@ -17,7 +17,7 @@
 }
 
 [data-style='daisy-ui'] [data-grid] [data-grid-item]:focus:not(:disabled):not([data-disabled]) {
-  @apply border-primary-z5 bg-surface-z2 text-surface-z9 outline-2 outline-offset-2 outline-primary-z5 outline;
+  @apply border-primary-z5 bg-surface-z2 text-surface-z9 outline-primary-z5 outline outline-2 outline-offset-2;
 }
 
 /* Active / selected tile */

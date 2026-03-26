@@ -6,9 +6,11 @@
 
 /* Input root: full border with rounded-lg */
 [data-style='daisy-ui'] [data-input-root] {
-  @apply border-surface-z4 relative flex items-center border rounded-lg bg-transparent p-0;
+  @apply border-surface-z4 relative flex items-center rounded-lg border bg-transparent p-0;
   background-image: none;
-  transition: border-color 150ms ease, background-color 150ms ease;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease;
 }
 
 /* Hover: slightly more pronounced border */
@@ -41,7 +43,7 @@
 
 /* Select inside input-root */
 [data-style='daisy-ui'] [data-input-root] [data-select-trigger] {
-  @apply text-surface-z9 border-none bg-transparent px-3 shadow-none ring-0 rounded-lg focus:outline-none;
+  @apply text-surface-z9 rounded-lg border-none bg-transparent px-3 shadow-none ring-0 focus:outline-none;
   font-size: 0.875rem;
   background-image: none;
   transition: color 150ms ease;

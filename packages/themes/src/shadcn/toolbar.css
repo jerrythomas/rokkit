@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='shadcn'] [data-toolbar] {
-  @apply bg-none bg-transparent;
+  @apply bg-transparent bg-none;
 }
 
 /* Position-based borders */
@@ -39,21 +39,20 @@
 }
 
 [data-style='shadcn'] [data-toolbar-item]:hover:not(:disabled):not([data-disabled='true']) {
-  @apply bg-none bg-surface-z3 text-surface-z9;
+  @apply bg-surface-z3 text-surface-z9 bg-none;
 }
 
-[data-style='shadcn']
-  [data-toolbar-item]:focus-visible:not(:disabled):not([data-disabled='true']) {
-  @apply bg-none text-surface-z9 ring-primary-z4 ring-2 ring-offset-2 outline-none;
+[data-style='shadcn'] [data-toolbar-item]:focus-visible:not(:disabled):not([data-disabled='true']) {
+  @apply text-surface-z9 ring-primary-z4 bg-none ring-2 ring-offset-2 outline-none;
 }
 
 /* Active/pressed state */
 [data-style='shadcn'] [data-toolbar-item][data-active='true'] {
-  @apply bg-none bg-surface-z3 text-primary-z7;
+  @apply bg-surface-z3 text-primary-z7 bg-none;
 }
 
 [data-style='shadcn'] [data-toolbar-item][data-active='true']:hover:not(:disabled) {
-  @apply bg-none bg-surface-z4 text-primary-z8;
+  @apply bg-surface-z4 text-primary-z8 bg-none;
 }
 
 /* =============================================================================
@@ -77,9 +76,9 @@
    ============================================================================= */
 
 [data-style='shadcn'] [data-toolbar-separator] {
-  @apply bg-none bg-surface-z3;
+  @apply bg-surface-z3 bg-none;
 }
 
 [data-style='shadcn'] [data-toolbar-divider] {
-  @apply bg-none bg-surface-z3;
+  @apply bg-surface-z3 bg-none;
 }

@@ -32,7 +32,11 @@
 /* Selected — primary→secondary gradient */
 [data-style='grada-ui'] [data-tabs-trigger][data-selected],
 [data-style='grada-ui'] [data-tabs-list]:focus-within [data-tabs-trigger][data-selected] {
-  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-image: linear-gradient(
+    to right,
+    rgba(var(--color-primary-500), 1),
+    rgba(var(--color-secondary-500), 1)
+  );
   background-color: transparent;
   color: white;
   @apply shadow-sm;

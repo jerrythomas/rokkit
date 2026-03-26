@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='carbon'] [data-toggle] {
-  @apply bg-none border-surface-z3 rounded-none border bg-transparent;
+  @apply border-surface-z3 rounded-none border bg-transparent bg-none;
 }
 
 /* =============================================================================
@@ -22,12 +22,12 @@
 
 [data-style='carbon'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']),
 [data-style='carbon'] [data-toggle-option]:focus:not(:disabled):not([data-disabled='true']) {
-  @apply bg-none bg-surface-z3 text-surface-z8;
+  @apply bg-surface-z3 text-surface-z8 bg-none;
 }
 
 /* Selected state */
 [data-style='carbon'] [data-toggle-option][data-selected='true'] {
-  @apply bg-none bg-primary-z5 text-on-primary border-b-primary-z5 border-b-2;
+  @apply bg-primary-z5 text-on-primary border-b-primary-z5 border-b-2 bg-none;
 }
 
 /* =============================================================================

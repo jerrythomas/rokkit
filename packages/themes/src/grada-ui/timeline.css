@@ -7,7 +7,11 @@
 }
 
 [data-style='grada-ui'] [data-timeline-item][data-completed] [data-timeline-circle] {
-  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-image: linear-gradient(
+    to right,
+    rgba(var(--color-primary-500), 1),
+    rgba(var(--color-secondary-500), 1)
+  );
   background-color: transparent;
   border-color: rgba(var(--color-primary-500), 1);
   color: white;
@@ -25,7 +29,11 @@
 }
 
 [data-style='grada-ui'] [data-timeline-item][data-completed] [data-timeline-connector] {
-  background-image: linear-gradient(to right, rgba(var(--color-primary-500), 1), rgba(var(--color-secondary-500), 1));
+  background-image: linear-gradient(
+    to right,
+    rgba(var(--color-primary-500), 1),
+    rgba(var(--color-secondary-500), 1)
+  );
   background-color: transparent;
 }
 

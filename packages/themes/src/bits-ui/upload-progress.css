@@ -53,7 +53,7 @@
 }
 
 [data-style='bits-ui'] [data-upload-fill] {
-  @apply from-primary-z5 to-secondary-z5 bg-gradient-to-r rounded-lg;
+  @apply from-primary-z5 to-secondary-z5 rounded-lg bg-gradient-to-r;
 }
 
 /* =============================================================================

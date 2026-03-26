@@ -1,0 +1,26 @@
+/**
+ * Divider - Rokkit Theme Styles
+ */
+
+[data-style='rokkit'] [data-divider][data-orientation='horizontal']::before,
+[data-style='rokkit'] [data-divider][data-orientation='horizontal']::after {
+  @apply bg-surface-z4;
+}
+
+[data-style='rokkit'] [data-divider][data-orientation='vertical']::before,
+[data-style='rokkit'] [data-divider][data-orientation='vertical']::after {
+  @apply bg-surface-z4;
+}
+
+/* No-label horizontal divider — color the element itself */
+[data-style='rokkit'] [data-divider][data-orientation='horizontal']:not(:has([data-divider-label])) {
+  @apply bg-surface-z4;
+}
+
+[data-style='rokkit'] [data-divider][data-orientation='vertical']:not(:has([data-divider-label])) {
+  @apply bg-surface-z4;
+}
+
+[data-style='rokkit'] [data-divider-label] {
+  @apply text-surface-z6;
+}

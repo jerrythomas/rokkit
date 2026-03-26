@@ -13,7 +13,7 @@
 }
 
 [data-style='bits-ui'] [data-range-selected] {
-  @apply bg-none bg-primary rounded-lg;
+  @apply bg-primary rounded-lg bg-none;
 }
 
 /* =============================================================================
@@ -21,7 +21,7 @@
    ============================================================================= */
 
 [data-style='bits-ui'] [data-range-thumb] {
-  @apply bg-surface-z1 border-primary border-2 shadow-sm rounded-lg;
+  @apply bg-surface-z1 border-primary rounded-lg border-2 shadow-sm;
 }
 
 [data-style='bits-ui'] [data-range-thumb][data-sliding] {

@@ -9,11 +9,11 @@
    ============================================================================= */
 
 [data-style='ant-design'] [data-fab-trigger] {
-  @apply bg-none bg-primary-z5 text-on-primary border-primary-z6 border rounded;
+  @apply bg-primary-z5 text-on-primary border-primary-z6 rounded border bg-none;
 }
 
 [data-style='ant-design'] [data-fab-trigger]:hover:not(:disabled) {
-  @apply bg-none bg-primary-z4 border-primary-z5;
+  @apply bg-primary-z4 border-primary-z5 bg-none;
 }
 
 [data-style='ant-design'] [data-fab-trigger]:focus-visible {
@@ -21,7 +21,7 @@
 }
 
 [data-style='ant-design'] [data-fab][data-open='true'] [data-fab-trigger] {
-  @apply bg-none bg-primary-z6 border-primary-z7;
+  @apply bg-primary-z6 border-primary-z7 bg-none;
   transform: rotate(45deg);
 }
 
@@ -34,11 +34,11 @@
    ============================================================================= */
 
 [data-style='ant-design'] [data-fab-item] {
-  @apply bg-none bg-surface-z0 text-surface-z7 border-surface-z4 border rounded;
+  @apply bg-surface-z0 text-surface-z7 border-surface-z4 rounded border bg-none;
 }
 
 [data-style='ant-design'] [data-fab-item]:hover:not(:disabled) {
-  @apply bg-none bg-surface-z1 text-primary-z6 border-primary-z4;
+  @apply bg-surface-z1 text-primary-z6 border-primary-z4 bg-none;
 }
 
 [data-style='ant-design'] [data-fab-item]:focus-visible {
