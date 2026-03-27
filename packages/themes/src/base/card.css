@@ -3,7 +3,7 @@
 [data-card] {
   display: flex;
   flex-direction: column;
-  border-radius: 0.5rem;
+  border-radius: var(--density-radius-base);
   overflow: hidden;
   text-decoration: none;
   color: inherit;
@@ -23,14 +23,17 @@ a[data-card] {
 }
 
 [data-card-header] {
-  padding: 1rem 1rem 0.5rem;
+  padding-block: var(--density-spacing-md) var(--density-spacing-sm);
+  padding-inline: var(--density-spacing-lg);
 }
 
 [data-card-body] {
-  padding: 0.5rem 1rem;
+  padding-block: var(--density-spacing-sm);
+  padding-inline: var(--density-spacing-lg);
   flex: 1;
 }
 
 [data-card-footer] {
-  padding: 0.5rem 1rem 1rem;
+  padding-block: var(--density-spacing-sm) var(--density-spacing-md);
+  padding-inline: var(--density-spacing-lg);
 }

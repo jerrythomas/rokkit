@@ -3,6 +3,9 @@
 	import { Button, Card, Switch } from '@rokkit/ui'
 	import { Input, InputField } from '@rokkit/forms'
 
+	const DENSITIES = ['compact', 'comfortable', 'cozy']
+	let density = $state('comfortable')
+
 	const THEMES = [
 		'rokkit',
 		'minimal',
@@ -36,11 +39,25 @@
 	let switchOffValues = $state(Object.fromEntries(THEMES.map((t) => [t, false])))
 </script>
 
-<div class="overflow-auto p-6">
+<div class="overflow-auto p-6" data-density={density}>
 	<h1 class="text-surface-z8 mb-2 text-2xl font-bold">Theme Verification</h1>
-	<p class="text-surface-z5 mb-8 text-sm">
+	<p class="text-surface-z5 mb-4 text-sm">
 		All 10 themes rendered side-by-side with the same component set.
 	</p>
+
+	<div class="mb-6 flex items-center gap-3">
+		<span class="text-surface-z5 text-xs font-semibold tracking-widest uppercase">Density</span>
+		{#each DENSITIES as d (d)}
+			<button
+				type="button"
+				onclick={() => (density = d)}
+				class="rounded border px-3 py-1 text-xs transition-colors"
+				style={density === d
+					? 'border-color: var(--color-primary-z5); color: var(--color-primary-z7); background: var(--color-primary-z2)'
+					: 'border-color: var(--color-surface-z3); color: var(--color-surface-z6)'}
+			>{d}</button>
+		{/each}
+	</div>
 
 	<div class="flex flex-col gap-8">
 		{#each THEMES as themeName (themeName)}

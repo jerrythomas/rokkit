@@ -1,0 +1,63 @@
+/**
+ * Density System — CSS Custom Property Scale
+ *
+ * Sets the spatial rhythm tokens inherited by all components.
+ * Place data-density on any container; descendants inherit automatically.
+ *
+ * Axes: compact → comfortable (default) → cozy
+ */
+
+:root,
+[data-density='comfortable'] {
+  --density-spacing-base: 1rem;
+  --density-spacing-xs: 0.25rem;
+  --density-spacing-sm: 0.5rem;
+  --density-spacing-md: 0.75rem;
+  --density-spacing-lg: 1rem;
+  --density-spacing-xl: 1.5rem;
+
+  --density-font-size-base: 0.875rem;
+  --density-font-size-sm: 0.75rem;
+  --density-font-size-lg: 1rem;
+
+  --density-line-height: 1.5;
+  --density-icon-size: 1.25rem;
+  --density-border-width: 1px;
+  --density-radius-base: var(--radius-md, 0.375rem);
+}
+
+[data-density='compact'] {
+  --density-spacing-base: 0.75rem;
+  --density-spacing-xs: 0.125rem;
+  --density-spacing-sm: 0.25rem;
+  --density-spacing-md: 0.5rem;
+  --density-spacing-lg: 0.75rem;
+  --density-spacing-xl: 1rem;
+
+  --density-font-size-base: 0.8125rem;
+  --density-font-size-sm: 0.6875rem;
+  --density-font-size-lg: 0.9375rem;
+
+  --density-line-height: 1.375;
+  --density-icon-size: 1rem;
+  --density-border-width: 1px;
+  --density-radius-base: var(--radius-sm, 0.25rem);
+}
+
+[data-density='cozy'] {
+  --density-spacing-base: 1.25rem;
+  --density-spacing-xs: 0.375rem;
+  --density-spacing-sm: 0.625rem;
+  --density-spacing-md: 1rem;
+  --density-spacing-lg: 1.25rem;
+  --density-spacing-xl: 2rem;
+
+  --density-font-size-base: 1rem;
+  --density-font-size-sm: 0.875rem;
+  --density-font-size-lg: 1.125rem;
+
+  --density-line-height: 1.75;
+  --density-icon-size: 1.5rem;
+  --density-border-width: 1px;
+  --density-radius-base: var(--radius-lg, 0.5rem);
+}

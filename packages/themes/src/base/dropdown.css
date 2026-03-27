@@ -54,9 +54,9 @@
 
 [data-dropdown][data-size='md'] [data-dropdown-trigger],
 [data-dropdown]:not([data-size]) [data-dropdown-trigger] {
-  height: 2rem;
-  padding-inline: 0.625rem;
-  font-size: 0.875rem;
+  height: calc(var(--density-icon-size) + var(--density-spacing-xs) * 2);
+  padding-inline: var(--density-spacing-md);
+  font-size: var(--density-font-size-base);
 }
 
 [data-dropdown][data-size='lg'] [data-dropdown-trigger] {
@@ -128,9 +128,10 @@
   display: flex;
   align-items: center;
   width: 100%;
-  padding-block: 0.375rem;
-  padding-inline: 0.75rem;
-  font-size: 0.875rem;
+  padding-block: var(--density-spacing-xs);
+  padding-inline: var(--density-spacing-md);
+  font-size: var(--density-font-size-base);
+  line-height: var(--density-line-height);
   text-align: left;
   cursor: pointer;
   border: none;

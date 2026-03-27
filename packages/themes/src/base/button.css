@@ -82,25 +82,25 @@
   font-size: 1.25rem;
 }
 
-/* Medium (default) */
+/* Medium (default) — responds to density */
 [data-button][data-size='md'],
 [data-button]:not([data-size]) {
-  height: 2.25rem;
-  padding-inline: 1rem;
-  font-size: 0.875rem;
-  gap: 0.5rem;
+  height: calc(var(--density-icon-size) + var(--density-spacing-sm) * 2);
+  padding-inline: var(--density-spacing-lg);
+  font-size: var(--density-font-size-base);
+  gap: var(--density-spacing-sm);
 }
 
 [data-button][data-size='md'][data-icon-only],
 [data-button]:not([data-size])[data-icon-only] {
-  width: 2.25rem;
+  width: calc(var(--density-icon-size) + var(--density-spacing-sm) * 2);
 }
 
 [data-button][data-size='md'] [data-item-icon],
 [data-button][data-size='md'] [data-button-icon-right],
 [data-button]:not([data-size]) [data-item-icon],
 [data-button]:not([data-size]) [data-button-icon-right] {
-  font-size: 1.5rem;
+  font-size: var(--density-icon-size);
 }
 
 /* Large */
