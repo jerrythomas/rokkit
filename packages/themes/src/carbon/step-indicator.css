@@ -1,0 +1,40 @@
+/* StepIndicator — carbon theme (square, flat fills, no border-radius) */
+
+[data-style='carbon'] [data-step-item][data-step-state='complete'] [data-step-number] {
+  @apply bg-primary-z5 border-primary-z5 text-on-primary bg-none;
+  border-radius: 0;
+}
+
+[data-style='carbon'] [data-step-item][data-step-state='current'] [data-step-number] {
+  @apply bg-transparent border-primary-z5 text-primary-z7 bg-none;
+  border-radius: 0;
+  outline: 2px solid;
+  @apply outline-primary-z4;
+  outline-offset: 2px;
+}
+
+[data-style='carbon'] [data-step-item][data-step-state='upcoming'] [data-step-number] {
+  @apply bg-surface-z2 border-surface-z4 text-surface-z5 bg-none;
+  border-radius: 0;
+}
+
+[data-style='carbon'] [data-step-item][data-step-state='complete'] [data-step-label] {
+  @apply text-primary-z7 bg-none;
+}
+
+[data-style='carbon'] [data-step-item][data-step-state='current'] [data-step-label] {
+  @apply text-surface-z9 font-semibold bg-none;
+}
+
+[data-style='carbon'] [data-step-item][data-step-state='upcoming'] [data-step-label] {
+  @apply text-surface-z5 bg-none;
+}
+
+[data-style='carbon'] [data-step-item][data-step-state='complete']::after {
+  @apply bg-primary-z5;
+}
+
+[data-style='carbon'] [data-step-item][data-step-state='current']::after,
+[data-style='carbon'] [data-step-item][data-step-state='upcoming']::after {
+  @apply bg-surface-z4;
+}

@@ -1,0 +1,37 @@
+/* StepIndicator — grada-ui theme (coral/purple gradient brand identity) */
+
+[data-style='grada-ui'] [data-step-item][data-step-state='complete'] [data-step-number] {
+  @apply bg-gradient-to-br from-primary-z5 to-secondary-z5 border-transparent text-on-primary;
+}
+
+[data-style='grada-ui'] [data-step-item][data-step-state='current'] [data-step-number] {
+  @apply bg-transparent border-primary-z5 text-primary-z7 bg-none;
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--color-primary-500, #6366f1) 20%, transparent),
+    0 0 8px color-mix(in srgb, var(--color-secondary-500, #ec4899) 15%, transparent);
+}
+
+[data-style='grada-ui'] [data-step-item][data-step-state='upcoming'] [data-step-number] {
+  @apply bg-surface-z1 border-surface-z3 text-surface-z5 bg-none;
+}
+
+[data-style='grada-ui'] [data-step-item][data-step-state='complete'] [data-step-label] {
+  @apply text-primary-z7 bg-none;
+}
+
+[data-style='grada-ui'] [data-step-item][data-step-state='current'] [data-step-label] {
+  @apply text-surface-z9 font-semibold bg-none;
+}
+
+[data-style='grada-ui'] [data-step-item][data-step-state='upcoming'] [data-step-label] {
+  @apply text-surface-z5 bg-none;
+}
+
+[data-style='grada-ui'] [data-step-item][data-step-state='complete']::after {
+  @apply bg-gradient-to-r from-primary-z5 to-secondary-z5;
+}
+
+[data-style='grada-ui'] [data-step-item][data-step-state='current']::after,
+[data-style='grada-ui'] [data-step-item][data-step-state='upcoming']::after {
+  @apply bg-surface-z3;
+}

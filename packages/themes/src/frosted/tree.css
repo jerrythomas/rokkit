@@ -8,7 +8,7 @@
    Tree Container
    ============================================================================= */
 
-[data-style='glass'] [data-tree]:focus-within {
+[data-style='frosted'] [data-tree]:focus-within {
   @apply ring-surface-z5/40 rounded ring-1;
 }
 
@@ -16,11 +16,11 @@
    Tree Toggle Button
    ============================================================================= */
 
-[data-style='glass'] [data-tree-toggle-btn] {
+[data-style='frosted'] [data-tree-toggle-btn] {
   @apply text-surface-z5;
 }
 
-[data-style='glass'] [data-tree-toggle-btn]:hover {
+[data-style='frosted'] [data-tree-toggle-btn]:hover {
   @apply text-surface-z7 bg-surface-z2/15;
 }
 
@@ -28,26 +28,26 @@
    Tree Item Content
    ============================================================================= */
 
-[data-style='glass'] [data-tree-item-content] {
+[data-style='frosted'] [data-tree-item-content] {
   @apply text-surface-z8;
 }
 
-[data-style='glass'] [data-tree-item-content]:hover:not(:disabled),
-[data-style='glass'] [data-tree-item-content]:focus:not(:disabled) {
+[data-style='frosted'] [data-tree-item-content]:hover:not(:disabled),
+[data-style='frosted'] [data-tree-item-content]:focus:not(:disabled) {
   @apply text-surface-z10 bg-surface-z2/15 outline-none;
 }
 
 /* Focus visible for keyboard navigation */
-[data-style='glass'] [data-tree-item-content]:focus-visible {
+[data-style='frosted'] [data-tree-item-content]:focus-visible {
   @apply ring-surface-z5/40 ring-1 outline-none;
 }
 
 /* Active/selected state */
-[data-style='glass'] [data-tree-item-content][data-active='true'] {
+[data-style='frosted'] [data-tree-item-content][data-active='true'] {
   @apply bg-primary-z5/30 text-primary-z9;
 }
 
-[data-style='glass'] [data-tree-item-content][data-active='true']:hover:not(:disabled) {
+[data-style='frosted'] [data-tree-item-content][data-active='true']:hover:not(:disabled) {
   @apply bg-primary-z5/40;
 }
 
@@ -55,31 +55,31 @@
    Item Elements
    ============================================================================= */
 
-[data-style='glass'] [data-tree-item-content] [data-item-icon] {
+[data-style='frosted'] [data-tree-item-content] [data-item-icon] {
   @apply text-surface-z5;
 }
 
-[data-style='glass'] [data-tree-item-content]:hover:not(:disabled) [data-item-icon] {
+[data-style='frosted'] [data-tree-item-content]:hover:not(:disabled) [data-item-icon] {
   @apply text-surface-z7;
 }
 
-[data-style='glass'] [data-tree-item-content][data-active='true'] [data-item-icon] {
+[data-style='frosted'] [data-tree-item-content][data-active='true'] [data-item-icon] {
   @apply text-primary-z6;
 }
 
-[data-style='glass'] [data-tree-item-content] [data-item-description] {
+[data-style='frosted'] [data-tree-item-content] [data-item-description] {
   @apply text-surface-z5;
 }
 
-[data-style='glass'] [data-tree-item-content][data-active='true'] [data-item-description] {
+[data-style='frosted'] [data-tree-item-content][data-active='true'] [data-item-description] {
   @apply text-primary-z7;
 }
 
-[data-style='glass'] [data-tree-item-content] [data-item-badge] {
+[data-style='frosted'] [data-tree-item-content] [data-item-badge] {
   @apply text-surface-z6 bg-surface-z2/15;
 }
 
-[data-style='glass'] [data-tree-item-content][data-active='true'] [data-item-badge] {
+[data-style='frosted'] [data-tree-item-content][data-active='true'] [data-item-badge] {
   @apply text-primary-z8 bg-primary-z5/25;
 }
 
@@ -87,22 +87,22 @@
    Multi-Selection
    ============================================================================= */
 
-[data-style='glass'] [data-tree-node][data-selected='true'] [data-tree-node-row] {
+[data-style='frosted'] [data-tree-node][data-selected='true'] [data-tree-node-row] {
   @apply bg-primary-z5/20;
 }
 
-[data-style='glass']
+[data-style='frosted']
   [data-tree]:focus-within
   [data-tree-node][data-selected='true']
   [data-tree-node-row] {
   @apply bg-primary-z5/30;
 }
 
-[data-style='glass'] [data-tree-node][data-selected='true'] [data-tree-item-content] {
+[data-style='frosted'] [data-tree-node][data-selected='true'] [data-tree-item-content] {
   @apply text-primary-z9;
 }
 
-[data-style='glass']
+[data-style='frosted']
   [data-tree-node][data-selected='true']
   [data-tree-item-content]
   [data-item-icon] {

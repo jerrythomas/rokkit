@@ -1,6 +1,6 @@
 import type { Page, Locator } from '@playwright/test'
 
-export const themes = ['rokkit', 'minimal', 'material', 'glass'] as const
+export const themes = ['rokkit', 'minimal', 'material', 'frosted'] as const
 export type Theme = (typeof themes)[number]
 
 export const modes = ['light', 'dark'] as const

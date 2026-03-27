@@ -8,11 +8,11 @@
  * - rokkit: Default theme (no wrapper needed — gradients + borders)
  * - minimal: Use data-style="minimal" wrapper (clean + subtle)
  * - material: Use data-style="material" wrapper (elevation + shadows)
- * - glass: Use data-style="glass" wrapper (blur + transparency)
+ * - frosted: Use data-style="frosted" wrapper (frosted glass + blur)
  */
 
 @import './base/index.css';
 @import './rokkit/index.css';
 @import './minimal/index.css';
 @import './material/index.css';
-@import './glass/index.css';
+@import './frosted/index.css';

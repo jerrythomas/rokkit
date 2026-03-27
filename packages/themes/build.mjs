@@ -9,7 +9,7 @@
  *   dist/rokkit.css  — rokkit theme (gradients, glowing borders)
  *   dist/minimal.css — minimal theme (clean, subtle)
  *   dist/material.css — material theme (elevation, shadows)
- *   dist/glass.css   — glass theme (blur, transparency)
+ *   dist/frosted.css   — frosted theme (blur, transparency)
  *
  * Post-processing: adds compound selector form so dark mode works when
  * data-mode and data-style are on the SAME element (e.g. body):
@@ -215,7 +215,7 @@ async function build() {
     ['rokkit', 'gradients + glowing borders'],
     ['minimal', 'clean + subtle'],
     ['material', 'elevation + shadows'],
-    ['glass', 'blur + transparency'],
+    ['frosted', 'frosted glass + blur'],
     ['grada-ui', 'coral/purple gradient identity'],
     ['shadcn', 'flat borders + ring focus'],
     ['daisy-ui', 'rounded-full + bold fills'],
@@ -232,7 +232,7 @@ async function build() {
     'rokkit',
     'minimal',
     'material',
-    'glass',
+    'frosted',
     'grada-ui',
     'shadcn',
     'daisy-ui',

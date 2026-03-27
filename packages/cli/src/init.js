@@ -208,7 +208,7 @@ const PROMPTS_CONFIG = [
 			{ title: 'Rokkit', value: 'rokkit', selected: true },
 			{ title: 'Minimal', value: 'minimal' },
 			{ title: 'Material', value: 'material' },
-			{ title: 'Glass', value: 'glass' },
+			{ title: 'Glass', value: 'frosted' },
 			{ title: 'Grada UI', value: 'grada-ui' },
 			{ value: 'shadcn', title: 'shadcn', hint: 'flat borders + ring focus' },
 			{ value: 'daisy-ui', title: 'daisy-ui', hint: 'rounded-full + bold fills' },

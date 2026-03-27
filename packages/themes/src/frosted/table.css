@@ -8,25 +8,25 @@
    Header
    ============================================================================= */
 
-[data-style='glass'] [data-table-header] th {
+[data-style='frosted'] [data-table-header] th {
   @apply text-surface-z6 border-surface-z5/20 border-b;
 }
 
-[data-style='glass'] [data-table-header-cell][data-sortable='true']:hover {
+[data-style='frosted'] [data-table-header-cell][data-sortable='true']:hover {
   @apply text-surface-z9;
 }
 
-[data-style='glass'] [data-table-header-cell][data-sort-order='ascending'],
-[data-style='glass'] [data-table-header-cell][data-sort-order='descending'] {
+[data-style='frosted'] [data-table-header-cell][data-sort-order='ascending'],
+[data-style='frosted'] [data-table-header-cell][data-sort-order='descending'] {
   @apply text-primary-z8;
 }
 
-[data-style='glass'] [data-table-sort-icon] {
+[data-style='frosted'] [data-table-sort-icon] {
   @apply text-surface-z5;
 }
 
-[data-style='glass'] [data-table-header-cell][data-sort-order='ascending'] [data-table-sort-icon],
-[data-style='glass'] [data-table-header-cell][data-sort-order='descending'] [data-table-sort-icon] {
+[data-style='frosted'] [data-table-header-cell][data-sort-order='ascending'] [data-table-sort-icon],
+[data-style='frosted'] [data-table-header-cell][data-sort-order='descending'] [data-table-sort-icon] {
   @apply text-primary-z6;
 }
 
@@ -34,7 +34,7 @@
    Caption
    ============================================================================= */
 
-[data-style='glass'] [data-table-caption] {
+[data-style='frosted'] [data-table-caption] {
   @apply text-surface-z7;
 }
 
@@ -42,19 +42,19 @@
    Rows
    ============================================================================= */
 
-[data-style='glass'] [data-table-row] {
+[data-style='frosted'] [data-table-row] {
   @apply text-surface-z8 border-surface-z5/10 border-b;
 }
 
-[data-style='glass'] [data-table-row]:hover {
+[data-style='frosted'] [data-table-row]:hover {
   @apply bg-surface-z2/80;
 }
 
-[data-style='glass'] [data-table-row]:focus {
+[data-style='frosted'] [data-table-row]:focus {
   @apply bg-surface-z2/80 text-surface-z10 outline-none;
 }
 
-[data-style='glass'] [data-table-row][data-selected='true'] {
+[data-style='frosted'] [data-table-row][data-selected='true'] {
   @apply text-primary-z9 bg-primary-z5/40;
 }
 
@@ -62,7 +62,7 @@
    Striped
    ============================================================================= */
 
-[data-style='glass'] [data-striped='true'] [data-table-body] tr:nth-child(even) {
+[data-style='frosted'] [data-striped='true'] [data-table-body] tr:nth-child(even) {
   @apply bg-surface-z2/30;
 }
 
@@ -70,7 +70,7 @@
    Empty
    ============================================================================= */
 
-[data-style='glass'] [data-table-empty] {
+[data-style='frosted'] [data-table-empty] {
   @apply text-surface-z5;
 }
 
@@ -78,10 +78,10 @@
    Cell Icon
    ============================================================================= */
 
-[data-style='glass'] [data-table-cell] [data-cell-icon] {
+[data-style='frosted'] [data-table-cell] [data-cell-icon] {
   @apply text-surface-z5;
 }
 
-[data-style='glass'] [data-table-row][data-selected='true'] [data-cell-icon] {
+[data-style='frosted'] [data-table-row][data-selected='true'] [data-cell-icon] {
   @apply text-primary-z6;
 }

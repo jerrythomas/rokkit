@@ -1,0 +1,38 @@
+/* StepIndicator — ant-design theme (4px radius, thin borders, enterprise) */
+
+[data-style='ant-design'] [data-step-item][data-step-state='complete'] [data-step-number] {
+  @apply bg-primary-z5 border-primary-z5 text-on-primary bg-none;
+  border-radius: 4px;
+}
+
+[data-style='ant-design'] [data-step-item][data-step-state='current'] [data-step-number] {
+  @apply bg-surface-z1 border-primary-z5 text-primary-z6 bg-none;
+  border-radius: 4px;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary-500, #6366f1) 20%, transparent);
+}
+
+[data-style='ant-design'] [data-step-item][data-step-state='upcoming'] [data-step-number] {
+  @apply bg-transparent border-surface-z4 text-surface-z5 bg-none;
+  border-radius: 4px;
+}
+
+[data-style='ant-design'] [data-step-item][data-step-state='complete'] [data-step-label] {
+  @apply text-primary-z6 bg-none;
+}
+
+[data-style='ant-design'] [data-step-item][data-step-state='current'] [data-step-label] {
+  @apply text-surface-z8 font-semibold bg-none;
+}
+
+[data-style='ant-design'] [data-step-item][data-step-state='upcoming'] [data-step-label] {
+  @apply text-surface-z5 bg-none;
+}
+
+[data-style='ant-design'] [data-step-item][data-step-state='complete']::after {
+  @apply bg-primary-z5;
+}
+
+[data-style='ant-design'] [data-step-item][data-step-state='current']::after,
+[data-style='ant-design'] [data-step-item][data-step-state='upcoming']::after {
+  @apply bg-surface-z3;
+}

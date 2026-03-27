@@ -1,0 +1,28 @@
+/**
+ * Switch - Glass Theme Styles
+ */
+
+[data-style='frosted'] [data-switch-track] {
+  @apply bg-surface-z2/50 border-surface-z5/20 border backdrop-blur-sm;
+}
+
+[data-style='frosted'] [data-switch-thumb] {
+  @apply bg-surface-z7/80 shadow-sm backdrop-blur-sm;
+}
+
+[data-style='frosted'] [data-switch]:focus-visible [data-switch-track] {
+  @apply ring-primary-z5/70 ring-2 ring-offset-1;
+}
+
+/* On state */
+[data-style='frosted'] [data-switch][aria-checked='true'] [data-switch-track] {
+  @apply bg-primary-z5/40 border-primary-z5/50;
+}
+
+[data-style='frosted'] [data-switch][aria-checked='true'] [data-switch-thumb] {
+  @apply bg-white/90 shadow-md;
+}
+
+[data-style='frosted'] [data-switch-label] {
+  @apply text-surface-z7;
+}

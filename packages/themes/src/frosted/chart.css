@@ -1,0 +1,38 @@
+/**
+ * Chart - Glass Theme Styles
+ */
+
+[data-style='frosted'] [data-chart-axis-line],
+[data-style='frosted'] [data-chart-tick] line {
+  @apply stroke-surface-z3;
+}
+
+[data-style='frosted'] [data-chart-tick-label] {
+  @apply fill-surface-z5;
+}
+
+[data-style='frosted'] [data-chart-grid-line] {
+  @apply stroke-surface-z3;
+  stroke-opacity: 0.5;
+  stroke-dasharray: 2 4;
+}
+
+[data-style='frosted'] [data-chart-legend-label] {
+  @apply fill-surface-z5;
+}
+
+[data-style='frosted'] [data-chart-legend-item]:hover {
+  @apply text-surface-z8;
+}
+
+[data-style='frosted'] [data-plot-element='bar'][data-dimmed],
+[data-style='frosted'] [data-plot-element='point'][data-dimmed],
+[data-style='frosted'] [data-plot-element='arc'][data-dimmed],
+[data-style='frosted'] [data-plot-element='line'][data-dimmed],
+[data-style='frosted'] [data-plot-element='area'][data-dimmed] {
+  opacity: 0.15;
+}
+
+[data-style='frosted'] [data-facet-title] {
+  @apply text-surface-z5;
+}

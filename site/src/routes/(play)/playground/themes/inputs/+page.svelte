@@ -7,7 +7,7 @@
 		'rokkit',
 		'minimal',
 		'material',
-		'glass',
+		'frosted',
 		'grada-ui',
 		'shadcn',
 		'daisy-ui',

@@ -200,7 +200,7 @@ describe('runChecks', () => {
 			exists: () => true,
 			read: (p) => {
 				if (p.includes('app.css'))
-					return "@import '@rokkit/themes/base.css';\n@import '@rokkit/themes/glass.css';"
+					return "@import '@rokkit/themes/base.css';\n@import '@rokkit/themes/frosted.css';"
 				return ''
 			},
 			resolve: (p) => p

@@ -8,12 +8,12 @@
    Base Card Styles
    ============================================================================= */
 
-[data-style='glass'] [data-card] {
+[data-style='frosted'] [data-card] {
   @apply bg-surface-z2/60 border-surface-z5/20 text-surface-z9 border shadow-lg backdrop-blur-md;
 }
 
 /* Interactive cards (buttons) */
-[data-style='glass'] [data-card][data-card-interactive] {
+[data-style='frosted'] [data-card][data-card-interactive] {
   cursor: pointer;
   transition:
     transform 0.2s ease,
@@ -21,12 +21,12 @@
     background-color 0.2s ease;
 }
 
-[data-style='glass'] [data-card][data-card-interactive]:hover {
+[data-style='frosted'] [data-card][data-card-interactive]:hover {
   @apply bg-surface-z2/80 shadow-xl;
   transform: translateY(-2px);
 }
 
-[data-style='glass'] [data-card][data-card-interactive]:active {
+[data-style='frosted'] [data-card][data-card-interactive]:active {
   @apply shadow-lg;
   transform: translateY(0);
 }
@@ -35,15 +35,15 @@
    Card Sections
    ============================================================================= */
 
-[data-style='glass'] [data-card-header] {
+[data-style='frosted'] [data-card-header] {
   @apply border-surface-z5/20 border-b;
 }
 
-[data-style='glass'] [data-card-body] {
+[data-style='frosted'] [data-card-body] {
   @apply text-surface-z8;
 }
 
-[data-style='glass'] [data-card-footer] {
+[data-style='frosted'] [data-card-footer] {
   @apply border-surface-z5/20 text-surface-z7 border-t;
 }
 
@@ -51,7 +51,7 @@
    Focus States
    ============================================================================= */
 
-[data-style='glass'] [data-card][data-card-interactive]:focus-visible {
+[data-style='frosted'] [data-card][data-card-interactive]:focus-visible {
   @apply ring-surface-z5/40 ring-2 outline-none;
 }
 
@@ -59,8 +59,8 @@
    Disabled State
    ============================================================================= */
 
-[data-style='glass'] [data-card][data-card-interactive][data-disabled],
-[data-style='glass'] [data-card][data-card-interactive]:disabled {
+[data-style='frosted'] [data-card][data-card-interactive][data-disabled],
+[data-style='frosted'] [data-card][data-card-interactive]:disabled {
   @apply cursor-not-allowed opacity-50;
   transform: none;
 }
@@ -70,34 +70,34 @@
    ============================================================================= */
 
 /* Primary — tinted primary glass */
-[data-style='glass'] [data-card][data-variant='primary'] {
+[data-style='frosted'] [data-card][data-variant='primary'] {
   @apply bg-primary-z4/40 border-primary-z5/30 text-on-primary border shadow-lg backdrop-blur-md;
 }
 
-[data-style='glass'] [data-card][data-variant='primary'] [data-card-header],
-[data-style='glass'] [data-card][data-variant='primary'] [data-card-footer] {
+[data-style='frosted'] [data-card][data-variant='primary'] [data-card-header],
+[data-style='frosted'] [data-card][data-variant='primary'] [data-card-footer] {
   @apply border-primary-z4/20;
 }
 
-[data-style='glass'] [data-card][data-variant='primary'] [data-card-body] {
+[data-style='frosted'] [data-card][data-variant='primary'] [data-card-body] {
   @apply text-on-primary/80;
 }
 
 /* Secondary — tinted secondary glass */
-[data-style='glass'] [data-card][data-variant='secondary'] {
+[data-style='frosted'] [data-card][data-variant='secondary'] {
   @apply bg-secondary-z4/40 border-secondary-z5/30 text-on-secondary border shadow-lg backdrop-blur-md;
 }
 
-[data-style='glass'] [data-card][data-variant='secondary'] [data-card-header],
-[data-style='glass'] [data-card][data-variant='secondary'] [data-card-footer] {
+[data-style='frosted'] [data-card][data-variant='secondary'] [data-card-header],
+[data-style='frosted'] [data-card][data-variant='secondary'] [data-card-footer] {
   @apply border-secondary-z4/20;
 }
 
-[data-style='glass'] [data-card][data-variant='secondary'] [data-card-body] {
+[data-style='frosted'] [data-card][data-variant='secondary'] [data-card-body] {
   @apply text-on-secondary/80;
 }
 
 /* Tertiary — barely-there frosted glass */
-[data-style='glass'] [data-card][data-variant='tertiary'] {
+[data-style='frosted'] [data-card][data-variant='tertiary'] {
   @apply bg-surface-z3/30 border-surface-z5/10 text-surface-z7 border backdrop-blur-md;
 }

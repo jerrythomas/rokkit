@@ -57,7 +57,7 @@ export class ThemeManager {
 	/** @type {string} */
 	#prefix = 'app-'
 
-	#allowedThemes = new SvelteSet(['rokkit', 'material', 'minimal', 'glass'])
+	#allowedThemes = new SvelteSet(['rokkit', 'material', 'minimal', 'frosted'])
 	#allowedModes = ['dark', 'light']
 }
 

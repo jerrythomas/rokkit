@@ -3,7 +3,7 @@
 	import { Button, Card } from '@rokkit/ui'
 	import { vibe } from '@rokkit/states'
 
-	const skins = ['rokkit', 'glass', 'minimal', 'material']
+	const skins = ['rokkit', 'frosted', 'minimal', 'material']
 	const modes = ['light', 'dark']
 
 	let open = $state(false)

@@ -1,0 +1,174 @@
+/**
+ * Button - Glass Theme Styles
+ *
+ * Glassmorphism styling with blur and transparency.
+ */
+
+/* =============================================================================
+   Default Style (filled)
+   ============================================================================= */
+
+[data-style='frosted'] [data-button][data-style='default'][data-variant='default'],
+[data-style='frosted'] [data-button]:not([data-style])[data-variant='default'],
+[data-style='frosted'] [data-button][data-style='default']:not([data-variant]),
+[data-style='frosted'] [data-button]:not([data-style]):not([data-variant]) {
+  @apply bg-surface-z2/70 border-surface-z5/20 text-surface-z9 border shadow-sm backdrop-blur-md;
+}
+
+[data-style='frosted'] [data-button][data-style='default'][data-variant='primary'],
+[data-style='frosted'] [data-button]:not([data-style])[data-variant='primary'] {
+  @apply bg-primary-z5/80 text-on-primary shadow-sm backdrop-blur-md;
+}
+
+[data-style='frosted'] [data-button][data-style='default'][data-variant='secondary'],
+[data-style='frosted'] [data-button]:not([data-style])[data-variant='secondary'] {
+  @apply bg-secondary-z4/80 text-on-secondary shadow-sm backdrop-blur-md;
+}
+
+[data-style='frosted'] [data-button][data-style='default'][data-variant='accent'],
+[data-style='frosted'] [data-button]:not([data-style])[data-variant='accent'] {
+  @apply bg-accent-z4/80 text-on-accent shadow-sm backdrop-blur-md;
+}
+
+[data-style='frosted'] [data-button][data-style='default'][data-variant='danger'],
+[data-style='frosted'] [data-button]:not([data-style])[data-variant='danger'] {
+  @apply bg-danger-z4/80 text-on-danger shadow-sm backdrop-blur-md;
+}
+
+/* =============================================================================
+   Outline Style
+   ============================================================================= */
+
+[data-style='frosted'] [data-button][data-style='outline'][data-variant='default'],
+[data-style='frosted'] [data-button][data-style='outline']:not([data-variant]) {
+  @apply border-surface-z5/30 text-surface-z8 border bg-transparent;
+}
+
+[data-style='frosted'] [data-button][data-style='outline'][data-variant='primary'] {
+  @apply border-primary-z4/40 text-primary-z6 border bg-transparent;
+}
+
+[data-style='frosted'] [data-button][data-style='outline'][data-variant='secondary'] {
+  @apply border-secondary-z4/40 text-secondary-z6 border bg-transparent;
+}
+
+[data-style='frosted'] [data-button][data-style='outline'][data-variant='accent'] {
+  @apply border-accent-z4/40 text-accent-z6 border bg-transparent;
+}
+
+[data-style='frosted'] [data-button][data-style='outline'][data-variant='danger'] {
+  @apply border-danger-z4/40 text-danger-z4 border bg-transparent;
+}
+
+/* =============================================================================
+   Ghost Style
+   ============================================================================= */
+
+[data-style='frosted'] [data-button][data-style='ghost'] {
+  @apply border-transparent bg-transparent;
+}
+
+[data-style='frosted'] [data-button][data-style='ghost'][data-variant='default'],
+[data-style='frosted'] [data-button][data-style='ghost']:not([data-variant]) {
+  @apply text-surface-z8;
+}
+
+[data-style='frosted'] [data-button][data-style='ghost'][data-variant='primary'] {
+  @apply text-primary-z6;
+}
+
+[data-style='frosted'] [data-button][data-style='ghost'][data-variant='secondary'] {
+  @apply text-secondary-z6;
+}
+
+[data-style='frosted'] [data-button][data-style='ghost'][data-variant='accent'] {
+  @apply text-accent-z6;
+}
+
+[data-style='frosted'] [data-button][data-style='ghost'][data-variant='danger'] {
+  @apply text-danger-z4;
+}
+
+/* =============================================================================
+   Gradient Style
+   ============================================================================= */
+
+[data-style='frosted'] [data-button][data-style='gradient'][data-variant='default'],
+[data-style='frosted'] [data-button][data-style='gradient']:not([data-variant]) {
+  @apply from-surface-z3/80 to-surface-z1/60 text-surface-z10 bg-gradient-to-br backdrop-blur-md;
+}
+
+[data-style='frosted'] [data-button][data-style='gradient'][data-variant='primary'] {
+  @apply from-primary-z5/80 to-primary-z3/60 text-on-primary bg-gradient-to-br backdrop-blur-md;
+}
+
+[data-style='frosted'] [data-button][data-style='gradient'][data-variant='secondary'] {
+  @apply from-secondary-z5/80 to-secondary-z3/60 text-on-secondary bg-gradient-to-br backdrop-blur-md;
+}
+
+[data-style='frosted'] [data-button][data-style='gradient'][data-variant='accent'] {
+  @apply from-accent-z5/80 to-accent-z3/60 text-on-accent bg-gradient-to-br backdrop-blur-md;
+}
+
+[data-style='frosted'] [data-button][data-style='gradient'][data-variant='danger'] {
+  @apply from-danger-z5/80 to-danger-z3/60 text-on-danger bg-gradient-to-br backdrop-blur-md;
+}
+
+[data-style='frosted']
+  [data-button][data-style='gradient']:hover:not(:disabled):not([data-disabled]) {
+  filter: brightness(1.1);
+}
+
+/* =============================================================================
+   Link Style
+   ============================================================================= */
+
+[data-style='frosted'] [data-button][data-style='link'][data-variant='default'],
+[data-style='frosted'] [data-button][data-style='link']:not([data-variant]) {
+  @apply text-surface-z8;
+}
+
+[data-style='frosted'] [data-button][data-style='link'][data-variant='primary'] {
+  @apply text-primary-z6;
+}
+
+[data-style='frosted'] [data-button][data-style='link'][data-variant='secondary'] {
+  @apply text-secondary-z6;
+}
+
+[data-style='frosted'] [data-button][data-style='link'][data-variant='accent'] {
+  @apply text-accent-z6;
+}
+
+[data-style='frosted'] [data-button][data-style='link'][data-variant='danger'] {
+  @apply text-danger-z4;
+}
+
+[data-style='frosted'] [data-button][data-style='link']:hover:not(:disabled):not([data-disabled]) {
+  @apply text-primary-z7;
+}
+
+/* =============================================================================
+   Hover States
+   ============================================================================= */
+
+[data-style='frosted'] [data-button][data-style='default']:hover:not(:disabled):not([data-disabled]),
+[data-style='frosted'] [data-button]:not([data-style]):hover:not(:disabled):not([data-disabled]) {
+  @apply shadow-md;
+}
+
+[data-style='frosted'] [data-button][data-style='outline']:hover:not(:disabled):not([data-disabled]) {
+  @apply bg-surface-z2/40;
+}
+
+[data-style='frosted'] [data-button][data-style='ghost']:hover:not(:disabled):not([data-disabled]) {
+  @apply bg-surface-z2/30;
+}
+
+/* =============================================================================
+   Focus
+   ============================================================================= */
+
+[data-style='frosted'] [data-button]:focus-visible {
+  @apply ring-surface-z5/40 ring-2 outline-none;
+}

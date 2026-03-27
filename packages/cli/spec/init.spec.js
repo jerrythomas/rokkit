@@ -26,11 +26,11 @@ describe('generateConfig', () => {
 		const config = generateConfig({
 			palette: 'default',
 			icons: 'rokkit',
-			themes: ['rokkit', 'glass'],
-			defaultTheme: 'glass',
+			themes: ['rokkit', 'frosted'],
+			defaultTheme: 'frosted',
 			switcher: 'full'
 		})
-		expect(config.defaultTheme).toBe('glass')
+		expect(config.defaultTheme).toBe('frosted')
 	})
 
 	it('should fall back to first theme when defaultTheme is not set', () => {
@@ -179,7 +179,7 @@ describe('generateInitScript', () => {
 	})
 
 	it('should use custom defaultStyle for full switcher', () => {
-		const script = generateInitScript('full', 'rokkit-theme', 'glass')
-		expect(script).toContain("|| 'glass'")
+		const script = generateInitScript('full', 'rokkit-theme', 'frosted')
+		expect(script).toContain("|| 'frosted'")
 	})
 })

@@ -8,32 +8,32 @@
    Menu Trigger
    ============================================================================= */
 
-[data-style='glass'] [data-menu-trigger] {
+[data-style='frosted'] [data-menu-trigger] {
   @apply bg-surface-z1/70 text-surface-z8 border-surface-z5/20 border bg-none backdrop-blur-md;
 }
 
-[data-style='glass'] [data-menu-trigger]:hover:not(:disabled) {
+[data-style='frosted'] [data-menu-trigger]:hover:not(:disabled) {
   @apply bg-surface-z2/80 text-surface-z10 border-surface-z5/30 bg-none;
 }
 
-[data-style='glass'] [data-menu-trigger]:focus-visible {
+[data-style='frosted'] [data-menu-trigger]:focus-visible {
   @apply ring-surface-z5/40 ring-1 outline-none;
 }
 
-[data-style='glass'] [data-menu][data-open='true'] [data-menu-trigger] {
+[data-style='frosted'] [data-menu][data-open='true'] [data-menu-trigger] {
   @apply bg-primary-z5/30 border-primary-z5/50 bg-none;
 }
 
 /* Trigger elements */
-[data-style='glass'] [data-menu-trigger] [data-menu-icon] {
+[data-style='frosted'] [data-menu-trigger] [data-menu-icon] {
   @apply text-surface-z5;
 }
 
-[data-style='glass'] [data-menu-trigger]:hover:not(:disabled) [data-menu-icon] {
+[data-style='frosted'] [data-menu-trigger]:hover:not(:disabled) [data-menu-icon] {
   @apply text-surface-z7;
 }
 
-[data-style='glass'] [data-menu-trigger] [data-menu-arrow] {
+[data-style='frosted'] [data-menu-trigger] [data-menu-arrow] {
   @apply text-surface-z5;
 }
 
@@ -41,7 +41,7 @@
    Menu Dropdown
    ============================================================================= */
 
-[data-style='glass'] [data-menu-dropdown] {
+[data-style='frosted'] [data-menu-dropdown] {
   @apply bg-surface-z2/50 border-surface-z5/20 border bg-none shadow-lg backdrop-blur-lg;
 }
 
@@ -49,29 +49,29 @@
    Menu Items
    ============================================================================= */
 
-[data-style='glass'] [data-menu-item] {
+[data-style='frosted'] [data-menu-item] {
   @apply text-surface-z8;
 }
 
-[data-style='glass'] [data-menu-item]:hover:not(:disabled),
-[data-style='glass'] [data-menu-item]:focus:not(:disabled) {
+[data-style='frosted'] [data-menu-item]:hover:not(:disabled),
+[data-style='frosted'] [data-menu-item]:focus:not(:disabled) {
   @apply bg-surface-z2/15 text-surface-z10 bg-none outline-none;
 }
 
-[data-style='glass'] [data-menu-item]:focus-visible {
+[data-style='frosted'] [data-menu-item]:focus-visible {
   @apply ring-surface-z5/40 ring-1 outline-none ring-inset;
 }
 
 /* Item elements */
-[data-style='glass'] [data-menu-item] [data-item-icon] {
+[data-style='frosted'] [data-menu-item] [data-item-icon] {
   @apply text-surface-z5;
 }
 
-[data-style='glass'] [data-menu-item]:hover:not(:disabled) [data-item-icon] {
+[data-style='frosted'] [data-menu-item]:hover:not(:disabled) [data-item-icon] {
   @apply text-surface-z7;
 }
 
-[data-style='glass'] [data-menu-item] [data-item-description] {
+[data-style='frosted'] [data-menu-item] [data-item-description] {
   @apply text-surface-z5;
 }
 
@@ -79,7 +79,7 @@
    Groups
    ============================================================================= */
 
-[data-style='glass'] [data-menu-group] {
+[data-style='frosted'] [data-menu-group] {
   @apply text-surface-z5;
 }
 
@@ -87,6 +87,6 @@
    Divider
    ============================================================================= */
 
-[data-style='glass'] [data-menu-separator] {
+[data-style='frosted'] [data-menu-separator] {
   @apply bg-surface-z5/20 bg-none;
 }

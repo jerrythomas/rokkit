@@ -8,7 +8,7 @@
    Container
    ============================================================================= */
 
-[data-style='glass'] [data-floating-nav] {
+[data-style='frosted'] [data-floating-nav] {
   @apply bg-surface-z1/70 border-surface-z5/20 border shadow-xl backdrop-blur-xl;
 }
 
@@ -16,19 +16,19 @@
    Header
    ============================================================================= */
 
-[data-style='glass'] [data-floating-nav-title] {
+[data-style='frosted'] [data-floating-nav-title] {
   @apply text-surface-z6;
 }
 
-[data-style='glass'] [data-floating-nav-pin] {
+[data-style='frosted'] [data-floating-nav-pin] {
   @apply text-surface-z6;
 }
 
-[data-style='glass'] [data-floating-nav-pin]:hover {
+[data-style='frosted'] [data-floating-nav-pin]:hover {
   @apply text-primary-z6;
 }
 
-[data-style='glass'] [data-floating-nav-pin][aria-pressed='true'] {
+[data-style='frosted'] [data-floating-nav-pin][aria-pressed='true'] {
   @apply text-primary-z7;
 }
 
@@ -36,32 +36,32 @@
    Items
    ============================================================================= */
 
-[data-style='glass'] [data-floating-nav-item] {
+[data-style='frosted'] [data-floating-nav-item] {
   @apply text-surface-z8;
 }
 
-[data-style='glass'] [data-floating-nav-item]:hover {
+[data-style='frosted'] [data-floating-nav-item]:hover {
   @apply text-surface-z10 bg-surface-z2/50;
 }
 
-[data-style='glass'] [data-floating-nav-item][data-active] {
+[data-style='frosted'] [data-floating-nav-item][data-active] {
   @apply text-primary-z7 bg-primary-z5/10;
 }
 
-[data-style='glass'] [data-floating-nav-item]:focus-visible {
+[data-style='frosted'] [data-floating-nav-item]:focus-visible {
   @apply ring-surface-z5/40 ring-2 outline-none;
 }
 
 /* Icon */
-[data-style='glass'] [data-floating-nav-icon] {
+[data-style='frosted'] [data-floating-nav-icon] {
   @apply text-surface-z6;
 }
 
-[data-style='glass'] [data-floating-nav-item]:hover [data-floating-nav-icon] {
+[data-style='frosted'] [data-floating-nav-item]:hover [data-floating-nav-icon] {
   @apply text-primary-z6;
 }
 
-[data-style='glass'] [data-floating-nav-item][data-active] [data-floating-nav-icon] {
+[data-style='frosted'] [data-floating-nav-item][data-active] [data-floating-nav-icon] {
   @apply text-primary-z7;
 }
 
@@ -69,6 +69,6 @@
    Active Indicator
    ============================================================================= */
 
-[data-style='glass'] [data-floating-nav-indicator] {
+[data-style='frosted'] [data-floating-nav-indicator] {
   @apply bg-primary-z5/80;
 }

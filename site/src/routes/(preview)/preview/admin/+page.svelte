@@ -10,7 +10,7 @@
 
 	let activeTab = $state('profile')
 	const tabFields = { label: 'label', value: 'value', icon: 'icon' }
-	const skins = ['rokkit', 'glass', 'minimal', 'material']
+	const skins = ['rokkit', 'frosted', 'minimal', 'material']
 </script>
 
 <div class="flex flex-col gap-6 p-6">

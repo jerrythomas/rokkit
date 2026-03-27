@@ -1,0 +1,41 @@
+/* StepIndicator — Glass theme (backdrop-blur + translucency) */
+
+/* ── Number circles ── */
+
+[data-style='frosted'] [data-step-item][data-step-state='complete'] [data-step-number] {
+  @apply bg-primary-z5/80 border-primary-z4/60 text-on-primary bg-none backdrop-blur-sm;
+}
+
+[data-style='frosted'] [data-step-item][data-step-state='current'] [data-step-number] {
+  @apply bg-surface-z2/60 border-primary-z4/70 text-primary-z7 bg-none backdrop-blur-sm;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-500, #6366f1) 15%, transparent);
+}
+
+[data-style='frosted'] [data-step-item][data-step-state='upcoming'] [data-step-number] {
+  @apply bg-surface-z1/40 border-surface-z3/50 text-surface-z5 bg-none backdrop-blur-sm;
+}
+
+/* ── Labels ── */
+
+[data-style='frosted'] [data-step-item][data-step-state='complete'] [data-step-label] {
+  @apply text-primary-z7 bg-none;
+}
+
+[data-style='frosted'] [data-step-item][data-step-state='current'] [data-step-label] {
+  @apply text-surface-z9 font-semibold bg-none;
+}
+
+[data-style='frosted'] [data-step-item][data-step-state='upcoming'] [data-step-label] {
+  @apply text-surface-z5 bg-none;
+}
+
+/* ── Connector lines ── */
+
+[data-style='frosted'] [data-step-item][data-step-state='complete']::after {
+  @apply bg-primary-z4/70;
+}
+
+[data-style='frosted'] [data-step-item][data-step-state='current']::after,
+[data-style='frosted'] [data-step-item][data-step-state='upcoming']::after {
+  @apply bg-surface-z3/50;
+}
