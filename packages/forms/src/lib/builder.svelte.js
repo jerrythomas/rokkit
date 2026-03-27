@@ -127,8 +127,14 @@ export class FormBuilder {
 	/** @type {ReturnType<typeof createLookupManager>|null} */
 	#lookupManager = $state(null)
 
+	/** @type {number} */
+	#currentStep = $state(0)
+
 	/** @type {FormElement[]} */
 	elements = $derived(this.#buildElements())
+
+	/** True when currentStep can advance to the next step */
+	canAdvance = $derived(this.#currentStep < this.totalSteps - 1)
 
 	/** Combined schema+layout (scoped elements only) */
 	get combined() {
@@ -459,7 +465,7 @@ export class FormBuilder {
 	 */
 	#buildElements() {
 		try {
-			const layoutElements = this.#layout?.elements ?? []
+			const layoutElements = this.#getActiveElements()
 			const combinedMap = this.#buildCombinedMap(layoutElements)
 			return this.#collectElements(layoutElements, combinedMap)
 		} catch (error) {
@@ -708,6 +714,17 @@ export class FormBuilder {
 	 * @returns {Object} Validation results keyed by field path
 	 */
 	validate() {
+		if (this.isMultiStep) {
+			// Flatten all step elements into a synthetic layout for full validation
+			const allElements = []
+			for (const step of this.#layout?.elements ?? []) {
+				if (step.type === 'step') allElements.push(...(step.elements ?? []))
+			}
+			const flatLayout = { ...this.#layout, elements: allElements }
+			const results = validateAllFields(this.#data, this.#schema, flatLayout)
+			this.#validation = results
+			return results
+		}
 		const results = validateAllFields(this.#data, this.#schema, this.#layout)
 		const visiblePaths = new SvelteSet(
 			this.elements.filter((el) => el.scope).map((el) => el.scope.replace(/^#\//, ''))
@@ -883,9 +900,143 @@ export class FormBuilder {
 		this.#data = deepClone(this.#initialData)
 		this.#validation = {}
 	}
+
+	// ── Multi-Step ────────────────────────────────────────────
+
+	/** True when the layout contains step elements */
+	get isMultiStep() {
+		return (this.#layout?.elements ?? []).some((el) => el.type === 'step')
+	}
+
+	/** Number of step elements in the layout */
+	get totalSteps() {
+		return (this.#layout?.elements ?? []).filter((el) => el.type === 'step').length
+	}
+
+	/** Zero-based index of the active step */
+	get currentStep() {
+		return this.#currentStep
+	}
+
+	/**
+	 * Validate the current step and advance if valid.
+	 * @returns {boolean} true if advanced, false if validation failed
+	 */
+	next() {
+		if (!this.validateStep(this.#currentStep)) return false
+		if (this.#currentStep < this.totalSteps - 1) {
+			this.#currentStep++
+			return true
+		}
+		return false
+	}
+
+	/**
+	 * Move to the previous step without validation.
+	 * @returns {boolean} true if moved, false if already on first step
+	 */
+	prev() {
+		if (this.#currentStep > 0) {
+			this.#currentStep--
+			return true
+		}
+		return false
+	}
+
+	/**
+	 * Navigate to a previously visited step (index < currentStep).
+	 * @param {number} index - Target step index
+	 */
+	goToStep(index) {
+		if (index >= this.#currentStep) throw new Error('Cannot navigate forward to an unvisited step')
+		this.#currentStep = index
+	}
+
+	/**
+	 * Validate all fields in a given step. Defaults to currentStep.
+	 * @param {number} [index] - Step index (defaults to currentStep)
+	 * @returns {boolean} true if no errors
+	 */
+	isStepValid(index = this.#currentStep) {
+		return this.validateStep(index)
+	}
+
+	/**
+	 * Validate all fields belonging to a step by index.
+	 * @param {number} index - Step index
+	 * @returns {boolean} true if no errors
+	 */
+	validateStep(index) {
+		const stepEl = (this.#layout?.elements ?? [])[index]
+		if (!stepEl || stepEl.type !== 'step') return true
+		const stepLayout = { ...this.#layout, elements: stepEl.elements ?? [] }
+		const results = validateAllFields(this.#data, this.#schema, stepLayout)
+		this.#applyStepValidation(results, stepEl.elements)
+		return isAllValid(results)
+	}
+
+	/**
+	 * Apply validation results for a step's fields into the validation state.
+	 * @private
+	 */
+	#applyStepValidation(results, elements) {
+		const paths = new SvelteSet(this.#collectStepPaths(elements))
+		for (const path of paths) {
+			this.setFieldValidation(path, results[path] ?? null)
+		}
+	}
+
+	/**
+	 * Collect all scoped field paths from a step's elements recursively.
+	 * @private
+	 * @param {Object[]} elements - Step element array
+	 * @returns {string[]}
+	 */
+	#collectStepPaths(elements) {
+		const paths = []
+		for (const el of elements ?? []) {
+			if (el.scope) paths.push(el.scope.replace(/^#\//, ''))
+			if (el.elements) paths.push(...this.#collectStepPaths(el.elements))
+		}
+		return paths
+	}
+
+	/**
+	 * Collect all field paths across all steps.
+	 * @private
+	 * @returns {Set<string>}
+	 */
+	#getAllStepPaths() {
+		const paths = new SvelteSet()
+		for (const step of this.#layout?.elements ?? []) {
+			if (step.type === 'step') {
+				for (const path of this.#collectStepPaths(step.elements)) paths.add(path)
+			}
+		}
+		return paths
+	}
+
+	/**
+	 * Return the layout elements for the active step (or all elements for flat layouts).
+	 * @private
+	 * @returns {Object[]}
+	 */
+	#getActiveElements() {
+		const elements = this.#layout?.elements ?? []
+		if (!elements.some((el) => el.type === 'step')) return elements
+		return elements[this.#currentStep]?.elements ?? []
+	}
 }
 
 // ── Module-level helpers (no `this`) ──────────────────────────────────────────
+
+/**
+ * Returns true when no result in the map has state === 'error'
+ * @private
+ */
+function isAllValid(results) {
+	return Object.values(results).every((msg) => msg?.state !== 'error')
+}
 
 /**
  * Return the display label for a layout element, falling back to fieldPath

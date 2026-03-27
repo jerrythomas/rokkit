@@ -65,11 +65,10 @@
 		}
 	})
 
-	// Sync prop changes to builder
+	// Sync external data prop changes to builder (effect only tracks `data`, not formBuilder.data,
+	// to avoid a proxy-vs-raw-value comparison loop)
 	$effect(() => {
-		if (formBuilder.data !== data) {
-			formBuilder.data = data
-		}
+		formBuilder.data = data
 	})
 
 	$effect(() => {
@@ -158,13 +157,22 @@
 		bind:this={formRoot}
 		data-form-root
 		data-form-submitting={submitting || undefined}
+		data-form-step={formBuilder.isMultiStep ? formBuilder.currentStep : undefined}
 		class={className}
 		onsubmit={handleSubmit}
 		{...props}
 	>
-		{#each formBuilder.elements as element, index (index)}
-			{@render renderElement(element)}
-		{/each}
+		{#if formBuilder.isMultiStep}
+			<div data-form-step-content>
+				{#each formBuilder.elements as element, index (index)}
+					{@render renderElement(element)}
+				{/each}
+			</div>
+		{:else}
+			{#each formBuilder.elements as element, index (index)}
+				{@render renderElement(element)}
+			{/each}
+		{/if}
 		{#if actions}
 			{@render actions({
 				submitting,
@@ -173,6 +181,17 @@
 				submit: handleSubmit,
 				reset: handleReset
 			})}
+		{:else if formBuilder.isMultiStep}
+			<div data-form-actions>
+				{#if formBuilder.currentStep > 0}
+					<button type="button" data-form-prev onclick={() => formBuilder.prev()}>Previous</button>
+				{/if}
+				{#if formBuilder.canAdvance}
+					<button type="button" data-form-next onclick={() => formBuilder.next()}>Next</button>
+				{:else}
+					<button type="submit" data-form-submit disabled={submitting}>Submit</button>
+				{/if}
+			</div>
 		{:else}
 			<div data-form-actions>
 				<button
@@ -188,10 +207,24 @@
 		{/if}
 	</form>
 {:else}
-	<div bind:this={formRoot} data-form-root class={className} {...props}>
-		{#each formBuilder.elements as element, index (index)}
-			{@render renderElement(element)}
-		{/each}
+	<div
+		bind:this={formRoot}
+		data-form-root
+		data-form-step={formBuilder.isMultiStep ? formBuilder.currentStep : undefined}
+		class={className}
+		{...props}
+	>
+		{#if formBuilder.isMultiStep}
+			<div data-form-step-content>
+				{#each formBuilder.elements as element, index (index)}
+					{@render renderElement(element)}
+				{/each}
+			</div>
+		{:else}
+			{#each formBuilder.elements as element, index (index)}
+				{@render renderElement(element)}
+			{/each}
+		{/if}
 	</div>
 {/if}
 

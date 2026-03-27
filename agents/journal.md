@@ -3,6 +3,20 @@
 Chronological log of confirmations, progress, milestones, and decisions.
 Design details live in `docs/design/` — modular docs per module.
 
+### Multi-step forms — complete (2026-03-27)
+
+**What was done:**
+
+- `FormBuilder` (builder.svelte.js): Added `#currentStep` `$state` field, `isMultiStep`/`totalSteps`/`currentStep`/`canAdvance` getters; `next()`/`prev()`/`goToStep()` navigation; `validateStep(index)` with synthesized flat layout; `validate()` cross-step flattening for full-form validation; `#applyStepValidation()` + `isAllValid()` helpers; `#getActiveElements()` returns only current step's layout elements
+- `FormRenderer.svelte`: Fixed pre-existing `$state` proxy comparison loop in data sync effect; added `data-form-step` attribute; step-content wrapper `data-form-step-content`; conditional Prev/Next/Submit buttons for multi-step mode
+- `StepIndicator.svelte`: New presentational component — receives `steps[]`, `current`, `onclick`; emits click for complete steps only; `data-step-item`/`data-step-state`/`data-step-number`/`data-step-label` data attributes; accessible with `role=button` + `tabindex` + `onkeydown`
+- `packages/forms/src/index.js`: Added `StepIndicator` export
+- `packages/forms/spec/MultiStep.spec.svelte.js`: 25 tests — FormBuilder multi-step navigation + validation, StepIndicator rendering and interaction, FormRenderer integration
+
+**Tests:** 3189 passing. 0 lint errors.
+
+---
+
 ### Chart preset system — complete (2026-03-26)
 
 **What was done:**

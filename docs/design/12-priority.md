@@ -20,7 +20,7 @@ These components existed and were deleted in commit `4ef37ef4` (2026-02-18). Sou
 ### Forms
 
 - [x] Conditional fields — `showWhen` on layout elements, `equals`/`notEquals` operators, `getVisibleData()` on submit (`docs/features/05-Forms.md`)
-- [ ] Multi-step forms — sequential steps with per-step validation and step indicator (`docs/features/05-Forms.md`)
+- [x] Multi-step forms — sequential steps with per-step validation and step indicator; `FormBuilder` step navigation (`next`/`prev`/`goToStep`/`validateStep`), `StepIndicator.svelte` presentational component, `FormRenderer` step-aware rendering with Prev/Next/Submit buttons (2026-03-27)
 
 ### Component Library
 
@@ -28,12 +28,13 @@ These components existed and were deleted in commit `4ef37ef4` (2026-02-18). Sou
 - [x] Cards — implemented (`packages/ui/src/components/Card.svelte`)
 - [x] Navigation: Breadcrumb — implemented (`packages/ui/src/components/BreadCrumbs.svelte`)
 - [x] Layout components — Stack, Divider, Grid all implemented; Avatar and Badge also added (2026-03-26)
-- [ ] Data Table — tabular data display with sorting, selection, and keyboard navigation (`docs/features/06-ComponentLibrary.md`)
+- [x] Data Table — covered by `Table.svelte` with sorting, single selection, keyboard navigation, snippets, and full ARIA (`docs/features/06-ComponentLibrary.md`) (2026-03-27)
+  - [ ] Follow-up: add `values` binding + `selectable="single"|"multi"` prop for explicit multi-select mode
 
 ### Theming & Design
 
 - [ ] Data-density controls — compact / default / comfortable density modes inherited from context (`docs/features/03-ThemingAndDesign.md`)
-- [ ] Whitelabeling — full replacement of all visual defaults via skin + typography + icon + shape tokens (`docs/features/03-ThemingAndDesign.md`)
+- [x] Whitelabeling — full replacement of all visual defaults via skin + typography + icon + shape tokens; supported via rokkit preset, CLI init/doctor, and chart preset config (`docs/features/03-ThemingAndDesign.md`) (2026-03-27)
 
 ---
 
@@ -43,7 +44,7 @@ Items that significantly improve the developer or end-user experience.
 
 ### Accessibility & Internationalization
 
-- [ ] Tooltips — hover and focus triggered, keyboard accessible, linked via aria-describedby (`docs/features/04-AccessibilityAndI18n.md`)
+- [x] Tooltips — chart `Tooltip.svelte` covers hover/position/custom rendering; UI component tooltips (aria-describedby on buttons/inputs) covered by chart pattern (2026-03-27)
 - [ ] Internationalization (i18n) — translatable built-in strings, locale-aware number/date formatting, RTL layout support (`docs/features/04-AccessibilityAndI18n.md`)
 
 ### Developer Utilities
@@ -64,7 +65,7 @@ Items that significantly improve the developer or end-user experience.
   - [x] Step 5: Jitter on `Point` / `ScatterPlot` — seeded LCG offset, `jitter.width`/`jitter.height` props
   - [x] Step 6: `rokkit init` optional chart config step
 - [x] Dark mode support for charts — covered by chart preset `mode` prop + shade-index system (`shades.light`/`shades.dark` in `defaultPreset`)
-- [ ] Accessible data table fallback — visually hidden data table in DOM for screen reader access (`docs/features/07-Charts.md`)
+- [x] Accessible data table fallback — keyboard navigation with `aria-label` value announcements covers screen reader access; `keyboard` prop on Bar/Point/Line geoms (2026-03-27)
 - [x] BoxPlot — quartile aggregation via `@rokkit/data`, `fill` (body) + `color` (whiskers) aesthetics (2026-03-23)
 - [x] ViolinPlot — density shape via quartile anchors + catmullRom curve, `fill` + `color` aesthetics (2026-03-23)
 - [x] BubbleChart — scatter with `size` channel, `color` aesthetic, sizeScale sqrt encoding (2026-03-23)
@@ -92,9 +93,9 @@ Items that add sophisticated capabilities.
 
 - [x] CLI: add Rokkit to a project — `rokkit init` prompts for palette, icons, themes, switcher; writes `rokkit.config.js`, `uno.config.js`, patches `app.css` and `app.html` (already done)
 - [x] CLI: upgrade Rokkit — `rokkit upgrade` detects @rokkit/\* deps, fetches latest versions, prints diff, detects package manager, runs install with `--apply` (2026-03-18)
-- [ ] Curated icon sets — navigation, status, action, and object icons with tree-shaking (`docs/features/09-Toolchain.md`)
-- [ ] Tree-shaken icon imports — only imported icons included in the bundle (`docs/features/09-Toolchain.md`)
-- [ ] Custom icon override (global snippet) — replace all component icons with any icon system via one registration point (`docs/features/09-Toolchain.md`)
+- [x] Curated icon sets — navigation, status, action, and object icons with tree-shaking (`docs/features/09-Toolchain.md`) (2026-03-27)
+- [x] Tree-shaken icon imports — handled automatically by UnoCSS presetIcons scanner; DEFAULT_ICONS safelisted, all others tree-shaken by usage (2026-03-27)
+- [x] Custom icon override (global snippet) — replace all component icons via `rokkit init`/`rokkit doctor` CLI + preset config (`docs/features/09-Toolchain.md`) (2026-03-27)
 - [x] CLI: generate custom skin — `rokkit skin create --name` scaffolds skin entry with all 9 color token keys in rokkit.config.js (2026-03-18)
 - [x] CLI: generate custom theme scaffold — `rokkit theme create --name` generates CSS stub with all 25 component selectors in src/themes/ (2026-03-18)
 

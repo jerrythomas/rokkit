@@ -14,6 +14,7 @@ export { default as Input } from './Input.svelte'
 export { default as InputField } from './InputField.svelte'
 export { default as InfoField } from './InfoField.svelte'
 export { default as StatusList } from './StatusList.svelte'
+export { default as StepIndicator } from './StepIndicator.svelte'
 
 // Display Components
 export * from './display'
