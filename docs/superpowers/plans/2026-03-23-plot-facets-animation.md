@@ -38,6 +38,7 @@ packages/chart/src/
 Pure functions for splitting data into panels and computing shared or per-panel scales.
 
 **Files:**
+
 - Create: `packages/chart/src/lib/plot/facet.js`
 - Create: `packages/chart/spec/lib/plot/facet.spec.js`
 
@@ -189,11 +190,11 @@ export function getFacetDomains(panels, channels, scalesMode = 'fixed') {
     const freeY = scalesMode === 'free' || scalesMode === 'free_y'
 
     const xDomain = freeX
-      ? (xIsCategorical ? [...new Set(rows.map((d) => d[xf]))] : extent(rows, (d) => Number(d[xf])))
+      ? xIsCategorical
+        ? [...new Set(rows.map((d) => d[xf]))]
+        : extent(rows, (d) => Number(d[xf]))
       : globalXDomain
-    const yDomain = freeY
-      ? extent(rows, (d) => Number(d[yf]))
-      : globalYDomain
+    const yDomain = freeY ? extent(rows, (d) => Number(d[yf])) : globalYDomain
 
     result.set(key, { xDomain, yDomain })
   }
@@ -223,6 +224,7 @@ git commit -m "feat(chart): add lib/plot/facet.js — data splitting and domain 
 Renders data as a grid of small multiples. One panel per distinct facet field value. Passes panel-specific data and domain overrides to each `Plot.svelte`.
 
 **Files:**
+
 - Create: `packages/chart/src/FacetPlot.svelte`
 - Create: `packages/chart/spec/FacetPlot.spec.js`
 
@@ -323,15 +325,13 @@ Expected: FAIL — `./FacetPlot.svelte` not found.
     children
   } = $props()
 
-  const panels  = $derived(splitByField(data, facet.by))
-  const scales  = $derived(facet.scales ?? 'fixed')
-  const domains = $derived(
-    x && y ? getFacetDomains(panels, { x, y }, scales) : new Map()
-  )
+  const panels = $derived(splitByField(data, facet.by))
+  const scales = $derived(facet.scales ?? 'fixed')
+  const domains = $derived(x && y ? getFacetDomains(panels, { x, y }, scales) : new Map())
 
   const cols = $derived(facet.cols ?? Math.min(panels.size, 3))
-  const pw   = $derived(panelWidth  ?? Math.floor(width / cols))
-  const ph   = $derived(panelHeight ?? height)
+  const pw = $derived(panelWidth ?? Math.floor(width / cols))
+  const ph = $derived(panelHeight ?? height)
 </script>
 
 <div class="facet-grid" data-facet-grid style:--facet-cols={cols}>
@@ -340,11 +340,15 @@ Expected: FAIL — `./FacetPlot.svelte` not found.
       <div class="facet-title" data-facet-title>{facetValue}</div>
       <PlotPanel
         data={panelData}
-        {x} {y} {color}
-        {geoms} {helpers}
+        {x}
+        {y}
+        {color}
+        {geoms}
+        {helpers}
         width={pw}
         height={ph}
-        {mode} {grid}
+        {mode}
+        {grid}
         legend={false}
         xDomain={domains.get(facetValue)?.xDomain}
         yDomain={domains.get(facetValue)?.yDomain}
@@ -393,15 +397,28 @@ Expected: FAIL — `./FacetPlot.svelte` not found.
   import PlotChart from '../Plot.svelte'
 
   let {
-    data, x, y, color, geoms = [], helpers = {},
-    width, height, mode, grid, legend,
-    xDomain, yDomain,
+    data,
+    x,
+    y,
+    color,
+    geoms = [],
+    helpers = {},
+    width,
+    height,
+    mode,
+    grid,
+    legend,
+    xDomain,
+    yDomain,
     children
   } = $props()
 
   // Build spec with domain overrides so PlotState uses them
   const spec = $derived({
-    data, x, y, color,
+    data,
+    x,
+    y,
+    color,
     geoms,
     xDomain,
     yDomain
@@ -442,7 +459,7 @@ it('fixed scales: all panels have the same x domain', () => {
   const data = [
     { drv: 'f', class: 'compact', hwy: 29 },
     { drv: '4', class: 'compact', hwy: 26 },
-    { drv: '4', class: 'suv',     hwy: 18 }
+    { drv: '4', class: 'suv', hwy: 18 }
   ]
   const { container } = render(FacetPlot, {
     props: {
@@ -493,6 +510,7 @@ git commit -m "feat(chart): add FacetPlot.svelte — small multiples with fixed/
 Pure functions for extracting animation frames from data and normalizing missing combinations.
 
 **Files:**
+
 - Create: `packages/chart/src/lib/plot/frames.js`
 - Create: `packages/chart/spec/lib/plot/frames.spec.js`
 
@@ -502,12 +520,16 @@ Pure functions for extracting animation frames from data and normalizing missing
 
 ```js
 import { describe, it, expect } from 'vitest'
-import { extractFrames, normalizeFrame, computeStaticDomains } from '../../../src/lib/plot/frames.js'
+import {
+  extractFrames,
+  normalizeFrame,
+  computeStaticDomains
+} from '../../../src/lib/plot/frames.js'
 
 const rawData = [
   { year: 1999, class: 'compact', hwy: 29 },
-  { year: 1999, class: 'suv',     hwy: 20 },
-  { year: 2008, class: 'compact', hwy: 31 },
+  { year: 1999, class: 'suv', hwy: 20 },
+  { year: 2008, class: 'compact', hwy: 31 }
   // 2008/suv intentionally missing to test normalization
 ]
 
@@ -528,8 +550,8 @@ describe('extractFrames', () => {
 describe('normalizeFrame', () => {
   it('fills missing (x, color) combinations with value 0', () => {
     const frames = extractFrames(rawData, 'year')
-    const allXValues    = [...new Set(rawData.map((d) => d.class))]
-    const allColorValues = null  // no color in this test
+    const allXValues = [...new Set(rawData.map((d) => d.class))]
+    const allColorValues = null // no color in this test
 
     const frame1999 = normalizeFrame(frames.get(1999), { x: 'class', y: 'hwy' }, allXValues, null)
     const frame2008 = normalizeFrame(frames.get(2008), { x: 'class', y: 'hwy' }, allXValues, null)
@@ -554,8 +576,8 @@ describe('computeStaticDomains', () => {
   it('returns y domain spanning all frames combined', () => {
     const frames = extractFrames(rawData, 'year')
     const { yDomain } = computeStaticDomains(frames, { y: 'hwy' })
-    expect(yDomain[0]).toBe(0)   // includeZero default
-    expect(yDomain[1]).toBe(31)  // max across all rows
+    expect(yDomain[0]).toBe(0) // includeZero default
+    expect(yDomain[1]).toBe(31) // max across all rows
   })
 
   it('returns categorical x domain covering all frames', () => {
@@ -613,9 +635,7 @@ export function normalizeFrame(frameData, channels, allXValues, allColorValues) 
   const { x: xf, y: yf, color: cf } = channels
 
   // Build lookup of existing (x, color?) keys
-  const existing = new Set(
-    frameData.map((d) => (cf ? `${d[xf]}::${d[cf]}` : String(d[xf])))
-  )
+  const existing = new Set(frameData.map((d) => (cf ? `${d[xf]}::${d[cf]}` : String(d[xf]))))
 
   const filled = [...frameData]
 
@@ -660,7 +680,7 @@ export function computeStaticDomains(frames, channels) {
     : extent(allData, (d) => Number(d[xf]))
 
   const [, yMax] = extent(allData, (d) => Number(d[yf]))
-  const yDomain = [0, yMax ?? 0]   // pin to 0 (bar chart default)
+  const yDomain = [0, yMax ?? 0] // pin to 0 (bar chart default)
 
   return { xDomain, yDomain }
 }
@@ -688,6 +708,7 @@ git commit -m "feat(chart): add lib/plot/frames.js — animation frame extractio
 Play/pause, scrub slider, speed selector, and current frame label. Purely presentational — emits events to parent.
 
 **Files:**
+
 - Create: `packages/chart/src/plot/Timeline.svelte`
 - Create: `packages/chart/spec/plot/Timeline.spec.js`
 
@@ -788,7 +809,7 @@ Expected: FAIL — `./Timeline.svelte` not found.
   <button
     class="play-pause"
     aria-label={playing ? 'Pause' : 'Play'}
-    onclick={() => playing ? onpause?.() : onplay?.()}
+    onclick={() => (playing ? onpause?.() : onplay?.())}
     data-plot-timeline-playpause
   >
     {playing ? '⏸' : '▶'}
@@ -869,6 +890,7 @@ git commit -m "feat(chart): add plot/Timeline.svelte — play/pause/scrub/speed 
 Renders one frame at a time. Computes static scales from full data, normalizes frame data, and drives animation via `requestAnimationFrame` + `prefers-reduced-motion` support.
 
 **Files:**
+
 - Create: `packages/chart/src/AnimatedPlot.svelte`
 - Create: `packages/chart/spec/AnimatedPlot.spec.js`
 
@@ -985,8 +1007,8 @@ Expected: FAIL — `./AnimatedPlot.svelte` not found.
 
   // Playback state
   let currentIndex = $state(0)
-  let playing      = $state(false)
-  let speed        = $state(1)
+  let playing = $state(false)
+  let speed = $state(1)
 
   // Current frame data (normalized — missing combos filled with 0)
   const currentFrameData = $derived.by(() => {
@@ -1001,14 +1023,16 @@ Expected: FAIL — `./AnimatedPlot.svelte` not found.
   onMount(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
     prefersReducedMotion = mq.matches
-    mq.addEventListener('change', (e) => { prefersReducedMotion = e.matches })
+    mq.addEventListener('change', (e) => {
+      prefersReducedMotion = e.matches
+    })
   })
 
   // Animation loop
   // `duration` from the spec means "ms to spend on each frame transition"
   // We use it as the base interval, then divide by speed for playback rate.
-  const baseDuration = $derived(animate.duration ?? 800)  // default 800ms per frame
-  const msPerFrame   = $derived(Math.round(baseDuration / speed))
+  const baseDuration = $derived(animate.duration ?? 800) // default 800ms per frame
+  const msPerFrame = $derived(Math.round(baseDuration / speed))
   let lastTime = 0
   let rafId = 0
 
@@ -1050,7 +1074,10 @@ Expected: FAIL — `./AnimatedPlot.svelte` not found.
       currentIndex = currentIndex + 1
       if (currentIndex >= frameKeys.length) {
         if (animate.loop ?? false) currentIndex = 0
-        else { playing = false; clearInterval(reducedInterval) }
+        else {
+          playing = false
+          clearInterval(reducedInterval)
+        }
       }
     }, msPerFrame)
     return () => clearInterval(reducedInterval)
@@ -1061,18 +1088,26 @@ Expected: FAIL — `./AnimatedPlot.svelte` not found.
     clearInterval(reducedInterval)
   })
 
-  function handlePlay()  { playing = true }
-  function handlePause() { playing = false }
+  function handlePlay() {
+    playing = true
+  }
+  function handlePause() {
+    playing = false
+  }
   function handleScrub(index) {
     playing = false
     currentIndex = index
   }
-  function handleSpeed(s) { speed = s }
+  function handleSpeed(s) {
+    speed = s
+  }
 
   // Build spec for the current frame, with static domain overrides
   const frameSpec = $derived({
     data: currentFrameData,
-    x, y, color,
+    x,
+    y,
+    color,
     geoms,
     xDomain: staticDomains.xDomain,
     yDomain: staticDomains.yDomain
@@ -1080,15 +1115,7 @@ Expected: FAIL — `./AnimatedPlot.svelte` not found.
 </script>
 
 <div class="animated-plot" data-plot-animated>
-  <PlotChart
-    spec={frameSpec}
-    {helpers}
-    {width}
-    {height}
-    {mode}
-    {grid}
-    {legend}
-  >
+  <PlotChart spec={frameSpec} {helpers} {width} {height} {mode} {grid} {legend}>
     {@render children?.()}
   </PlotChart>
 
@@ -1143,6 +1170,7 @@ git commit -m "feat(chart): add AnimatedPlot.svelte with timeline controls and r
 ### Task 6: Export new components + update docs status
 
 **Files:**
+
 - Modify: `packages/chart/src/index.js`
 - Modify: `docs/features/07-Charts.md`
 
@@ -1150,7 +1178,7 @@ git commit -m "feat(chart): add AnimatedPlot.svelte with timeline controls and r
 
 ```js
 // Facets and Animation
-export { default as FacetPlot }    from './FacetPlot.svelte'
+export { default as FacetPlot } from './FacetPlot.svelte'
 export { default as AnimatedPlot } from './AnimatedPlot.svelte'
 ```
 

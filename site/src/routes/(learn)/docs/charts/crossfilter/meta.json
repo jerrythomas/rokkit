@@ -1,0 +1,9 @@
+{
+  "title": "CrossFilter",
+  "description": "Reactive filter context linking charts and filter controls",
+  "icon": "i-glyph:filter",
+  "package": "@rokkit/chart",
+  "category": "charts",
+  "order": 12,
+  "llms": true
+}

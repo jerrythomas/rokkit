@@ -18,12 +18,12 @@ Then follow the `writing-new-component` skill exactly.
 
 ## Quick-Reference: Tier Selection
 
-| Tier | Pattern | When | Examples |
-|------|---------|------|----------|
-| 1 | Simple display | No items, no keyboard nav | Button, Card, Badge |
-| 2 | Data-driven | items array, click only | BreadCrumbs |
-| 3 | Interactive list | items + keyboard nav, always visible | List, Tree, Tabs, Toggle |
-| 4 | Complex interactive | Dropdown, multi-select, lazy | Menu, Select, Dropdown |
+| Tier | Pattern             | When                                 | Examples                 |
+| ---- | ------------------- | ------------------------------------ | ------------------------ |
+| 1    | Simple display      | No items, no keyboard nav            | Button, Card, Badge      |
+| 2    | Data-driven         | items array, click only              | BreadCrumbs              |
+| 3    | Interactive list    | items + keyboard nav, always visible | List, Tree, Tabs, Toggle |
+| 4    | Complex interactive | Dropdown, multi-select, lazy         | Menu, Select, Dropdown   |
 
 ## Quick-Reference: File Checklist
 

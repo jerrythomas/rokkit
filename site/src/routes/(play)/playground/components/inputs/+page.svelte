@@ -45,7 +45,7 @@
 		<div class="flex w-full max-w-[440px] flex-col gap-6">
 			<!-- Configurable field -->
 			<div class="flex flex-col gap-1">
-				<p class="text-surface-z4 text-[10px] font-semibold uppercase tracking-widest">
+				<p class="text-surface-z4 text-[10px] font-semibold tracking-widest uppercase">
 					Interactive
 				</p>
 				<InputField
@@ -61,19 +61,10 @@
 
 			<!-- State showcase -->
 			<div class="flex flex-col gap-1">
-				<p class="text-surface-z4 text-[10px] font-semibold uppercase tracking-widest">States</p>
+				<p class="text-surface-z4 text-[10px] font-semibold tracking-widest uppercase">States</p>
 				<div class="flex flex-col gap-3">
-					<InputField
-						name="default"
-						label="Default"
-						placeholder="Type something..."
-						value=""
-					/>
-					<InputField
-						name="with-value"
-						label="With value"
-						value="Jane Smith"
-					/>
+					<InputField name="default" label="Default" placeholder="Type something..." value="" />
+					<InputField name="with-value" label="With value" value="Jane Smith" />
 					<InputField
 						name="error"
 						label="Error"
@@ -88,12 +79,7 @@
 						status="pass"
 						message={{ state: 'info', text: 'Looks good!' }}
 					/>
-					<InputField
-						name="disabled"
-						label="Disabled"
-						value="Locked value"
-						disabled={true}
-					/>
+					<InputField name="disabled" label="Disabled" value="Locked value" disabled={true} />
 					<InputField
 						name="with-desc"
 						label="With description"
@@ -105,12 +91,30 @@
 
 			<!-- Input types -->
 			<div class="flex flex-col gap-1">
-				<p class="text-surface-z4 text-[10px] font-semibold uppercase tracking-widest">Types</p>
+				<p class="text-surface-z4 text-[10px] font-semibold tracking-widest uppercase">Types</p>
 				<div class="flex flex-col gap-3">
-					<InputField name="email" label="Email" type="email" placeholder="user@example.com" value="" />
-					<InputField name="password" label="Password" type="password" placeholder="••••••••" value="" />
+					<InputField
+						name="email"
+						label="Email"
+						type="email"
+						placeholder="user@example.com"
+						value=""
+					/>
+					<InputField
+						name="password"
+						label="Password"
+						type="password"
+						placeholder="••••••••"
+						value=""
+					/>
 					<InputField name="number" label="Number" type="number" value={42} />
-					<InputField name="textarea" label="Textarea" type="textarea" placeholder="Multi-line text..." value="" />
+					<InputField
+						name="textarea"
+						label="Textarea"
+						type="textarea"
+						placeholder="Multi-line text..."
+						value=""
+					/>
 				</div>
 			</div>
 		</div>

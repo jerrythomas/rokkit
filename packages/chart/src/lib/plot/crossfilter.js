@@ -8,9 +8,9 @@
  * @returns {{ data: Object, dimmed: boolean }[]}
  */
 export function applyDimming(data, cf, channels) {
-  const fields = Object.values(channels).filter(Boolean)
-  return data.map((row) => {
-    const dimmed = fields.some((field) => cf.isDimmed(field, row[field]))
-    return { data: row, dimmed }
-  })
+	const fields = Object.values(channels).filter(Boolean)
+	return data.map((row) => {
+		const dimmed = fields.some((field) => cf.isDimmed(field, row[field]))
+		return { data: row, dimmed }
+	})
 }

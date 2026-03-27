@@ -13,12 +13,17 @@
 	let currentSection = $derived(findSection(sections, canonicalPath))
 	let { title, description, icon = '?', llms = false } = $derived(currentSection)
 	let componentSlug = $derived(
-		canonicalPath.includes('/docs/components/') ? canonicalPath.split('/').pop() : null
+		canonicalPath.includes('/docs/components/') || canonicalPath.includes('/docs/charts/')
+			? canonicalPath.split('/').pop()
+			: null
 	)
-	const playHref = $derived(componentSlug ? `/playground/components/${componentSlug}` : null)
+	const playHref = $derived(
+		canonicalPath.includes('/docs/components/') && componentSlug
+			? `/playground/components/${componentSlug}`
+			: null
+	)
 	const llmsHref = $derived(llms && componentSlug ? `/llms/components/${componentSlug}.txt` : null)
 
-	// eslint-disable-next-line complexity
 	let breadcrumbs = $derived.by(() => {
 		const group = findGroupForSection(sections, canonicalPath)
 		if (!group) return []
@@ -48,7 +53,6 @@
 
 	// Sidebar positioning — inline styles because assetsInclude: ['**/*.svelte'] in
 	// vite.config breaks Svelte's CSS sub-resource loading on the learn site
-	// eslint-disable-next-line complexity
 	let sidebarStyle = $derived.by(() => {
 		const large =
 			media.large.current ?? (typeof window !== 'undefined' ? window.innerWidth >= 1024 : false)

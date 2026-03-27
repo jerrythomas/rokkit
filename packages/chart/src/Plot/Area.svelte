@@ -7,13 +7,7 @@
 {#if brewer && brewer.areas && brewer.areas.length > 0}
 	<g class="chart-areas" data-plot-type="area">
 		{#each brewer.areas as seg (seg.key ?? seg.d)}
-			<path
-				d={seg.d}
-				fill={seg.fill}
-				stroke={seg.stroke}
-				opacity="0.7"
-				data-plot-element="area"
-			/>
+			<path d={seg.d} fill={seg.fill} stroke={seg.stroke} opacity="0.7" data-plot-element="area" />
 		{/each}
 	</g>
 {/if}

@@ -6,7 +6,6 @@
  * @param {*} url
  * @returns {any}
  */
-// eslint-disable-next-line complexity
 export function findItemInMenu(menu, url) {
 	if (!Array.isArray(menu)) return null
 

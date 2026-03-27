@@ -55,7 +55,12 @@ describe('StatusList', () => {
 	})
 
 	it('should accept custom icon overrides', () => {
-		const icons = { pass: 'custom-pass', fail: 'custom-fail', warn: 'custom-warn', unknown: 'custom-unknown' }
+		const icons = {
+			pass: 'custom-pass',
+			fail: 'custom-fail',
+			warn: 'custom-warn',
+			unknown: 'custom-unknown'
+		}
 		const { container } = render(StatusList, { props: { items, icons } })
 		expect(container.querySelector('[data-status-list]')).toBeTruthy()
 	})

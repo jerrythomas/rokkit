@@ -13,6 +13,7 @@
 ## Scope Check
 
 Three distinct subsystems:
+
 - **Chunk 1: `palettes` field** — config.js + preset.ts + core color handling + tests
 - **Chunk 2: Five new themes** — CSS source files + build + package.json + CLI
 - **Chunk 3: Verification page** — Svelte playground route
@@ -25,14 +26,14 @@ Each chunk is independently testable and committable.
 
 ### Files
 
-| Action | Path | Responsibility |
-|---|---|---|
-| Modify | `packages/core/src/utils.js` | Add `colorToRgb` to handle hex, hsl, oklch, named colors |
-| Modify | `packages/core/src/theme.ts` | Use `colorToRgb` instead of `hex2rgb` in `generateColorRules` |
-| Modify | `packages/unocss/src/config.js` | Add `palettes: {}` to `DEFAULT_CONFIG`, merge in `loadConfig` |
-| Modify | `packages/unocss/src/preset.ts` | Pass `config.palettes` merged into `defaultColors` to `Theme` |
-| Modify | `packages/unocss/spec/config.spec.js` | Tests for palettes pass-through |
-| Modify | `packages/unocss/spec/preset.spec.js` | Tests for custom palette in theme.colors |
+| Action | Path                                  | Responsibility                                                |
+| ------ | ------------------------------------- | ------------------------------------------------------------- |
+| Modify | `packages/core/src/utils.js`          | Add `colorToRgb` to handle hex, hsl, oklch, named colors      |
+| Modify | `packages/core/src/theme.ts`          | Use `colorToRgb` instead of `hex2rgb` in `generateColorRules` |
+| Modify | `packages/unocss/src/config.js`       | Add `palettes: {}` to `DEFAULT_CONFIG`, merge in `loadConfig` |
+| Modify | `packages/unocss/src/preset.ts`       | Pass `config.palettes` merged into `defaultColors` to `Theme` |
+| Modify | `packages/unocss/spec/config.spec.js` | Tests for palettes pass-through                               |
+| Modify | `packages/unocss/spec/preset.spec.js` | Tests for custom palette in theme.colors                      |
 
 **Run tests with:** `cd packages/unocss && bun run test` (or `bun run test:ci` from repo root)
 
@@ -45,6 +46,7 @@ Each chunk is independently testable and committable.
 **Note on tradeoff:** UnoCSS uses `rgba(var(--color-primary-500), <alpha-value>)` for utility classes, which requires the CSS variable to hold `r,g,b` numbers (e.g., `255,0,0`). This only works with hex → rgb conversion. Non-hex custom palette colors will work in raw CSS (e.g., `color: var(--color-brand-500)`) but NOT with UnoCSS opacity utilities like `bg-primary-500/50`. Document this in a comment.
 
 **Files:**
+
 - Modify: `packages/core/src/utils.js`
 - Modify: `packages/core/src/theme.ts`
 
@@ -112,11 +114,13 @@ Expected: PASS
 - [ ] **Step 5: Update `generateColorRules` in `packages/core/src/theme.ts` to use `colorToRgb`**
 
 Change line 5 import:
+
 ```ts
 import { hex2rgb, colorToRgb } from './utils'
 ```
 
 Change line 46:
+
 ```ts
 // Before:
 value: hex2rgb(colors[mapping[variant]][`${shade}`])
@@ -144,6 +148,7 @@ git commit -m "feat(core): add colorToRgb to support non-hex CSS color values in
 ### Task 2: Add `palettes` field to unocss config
 
 **Files:**
+
 - Modify: `packages/unocss/src/config.js`
 - Modify: `packages/unocss/spec/config.spec.js`
 
@@ -198,8 +203,8 @@ In `loadConfig`, add to the result object:
 
 ```js
 const result = {
-  palettes: pick(cfg.palettes, DEFAULT_CONFIG.palettes),  // ← add
-  colors: { ...DEFAULT_CONFIG.colors, ...cfg.colors },
+  palettes: pick(cfg.palettes, DEFAULT_CONFIG.palettes), // ← add
+  colors: { ...DEFAULT_CONFIG.colors, ...cfg.colors }
   // ... rest unchanged
 }
 ```
@@ -224,6 +229,7 @@ git commit -m "feat(unocss): add palettes field to loadConfig"
 ### Task 3: Wire palettes into `presetRokkit`
 
 **Files:**
+
 - Modify: `packages/unocss/src/preset.ts`
 - Modify: `packages/unocss/spec/preset.spec.js`
 
@@ -332,14 +338,14 @@ packages/themes/src/<theme>/
 
 **Files to modify:**
 
-| Path | Change |
-|---|---|
-| `packages/themes/build.mjs` | Add 5 themes to build loop and bundle |
-| `packages/themes/package.json` | Add exports for each new theme |
-| `packages/cli/src/init.js` | Add to theme choices in `PROMPTS_CONFIG` |
-| `packages/cli/src/doctor.js` | Add to `KNOWN_THEMES` array |
-| `packages/cli/spec/doctor.spec.js` | Update count, add new theme names to list |
-| `packages/cli/spec/init.spec.js` | Update theme choices test to include new themes |
+| Path                               | Change                                          |
+| ---------------------------------- | ----------------------------------------------- |
+| `packages/themes/build.mjs`        | Add 5 themes to build loop and bundle           |
+| `packages/themes/package.json`     | Add exports for each new theme                  |
+| `packages/cli/src/init.js`         | Add to theme choices in `PROMPTS_CONFIG`        |
+| `packages/cli/src/doctor.js`       | Add to `KNOWN_THEMES` array                     |
+| `packages/cli/spec/doctor.spec.js` | Update count, add new theme names to list       |
+| `packages/cli/spec/init.spec.js`   | Update theme choices test to include new themes |
 
 **Build command:** `cd packages/themes && bun run build`
 **Verify with skill:** `/build-themes` (or `bun run build.mjs` directly)
@@ -398,43 +404,43 @@ packages/themes/src/<theme>/
 [data-style='shadcn'] [data-button]:not([data-style])[data-variant='default'],
 [data-style='shadcn'] [data-button][data-style='default']:not([data-variant]),
 [data-style='shadcn'] [data-button]:not([data-style]):not([data-variant]) {
-  @apply bg-surface-z2 border-surface-z4 text-surface-z8 border rounded-md;
+  @apply bg-surface-z2 border-surface-z4 text-surface-z8 rounded-md border;
 }
 
 [data-style='shadcn'] [data-button][data-style='default'][data-variant='primary'],
 [data-style='shadcn'] [data-button]:not([data-style])[data-variant='primary'] {
-  @apply bg-primary-z5 text-on-primary border-transparent rounded-md;
+  @apply bg-primary-z5 text-on-primary rounded-md border-transparent;
 }
 
 [data-style='shadcn'] [data-button][data-style='default'][data-variant='secondary'],
 [data-style='shadcn'] [data-button]:not([data-style])[data-variant='secondary'] {
-  @apply bg-secondary-z4 text-on-secondary border-transparent rounded-md;
+  @apply bg-secondary-z4 text-on-secondary rounded-md border-transparent;
 }
 
 [data-style='shadcn'] [data-button][data-style='default'][data-variant='danger'],
 [data-style='shadcn'] [data-button]:not([data-style])[data-variant='danger'] {
-  @apply bg-danger-z4 text-on-danger border-transparent rounded-md;
+  @apply bg-danger-z4 text-on-danger rounded-md border-transparent;
 }
 
 [data-style='shadcn'] [data-button][data-style='outline'][data-variant='default'],
 [data-style='shadcn'] [data-button][data-style='outline']:not([data-variant]) {
-  @apply border-surface-z4 text-surface-z7 border bg-transparent rounded-md;
+  @apply border-surface-z4 text-surface-z7 rounded-md border bg-transparent;
 }
 
 [data-style='shadcn'] [data-button][data-style='outline'][data-variant='primary'] {
-  @apply border-primary-z4 text-primary-z6 border bg-transparent rounded-md;
+  @apply border-primary-z4 text-primary-z6 rounded-md border bg-transparent;
 }
 
 [data-style='shadcn'] [data-button][data-style='outline'][data-variant='secondary'] {
-  @apply border-secondary-z4 text-secondary-z6 border bg-transparent rounded-md;
+  @apply border-secondary-z4 text-secondary-z6 rounded-md border bg-transparent;
 }
 
 [data-style='shadcn'] [data-button][data-style='outline'][data-variant='danger'] {
-  @apply border-danger-z4 text-danger-z4 border bg-transparent rounded-md;
+  @apply border-danger-z4 text-danger-z4 rounded-md border bg-transparent;
 }
 
 [data-style='shadcn'] [data-button][data-style='ghost'] {
-  @apply border-transparent bg-transparent rounded-md;
+  @apply rounded-md border-transparent bg-transparent;
 }
 
 [data-style='shadcn'] [data-button][data-style='ghost'][data-variant='default'],
@@ -456,19 +462,19 @@ packages/themes/src/<theme>/
 
 [data-style='shadcn'] [data-button][data-style='gradient'][data-variant='default'],
 [data-style='shadcn'] [data-button][data-style='gradient']:not([data-variant]) {
-  @apply from-surface-z3 to-surface-z1 text-surface-z10 bg-gradient-to-br rounded-md;
+  @apply from-surface-z3 to-surface-z1 text-surface-z10 rounded-md bg-gradient-to-br;
 }
 
 [data-style='shadcn'] [data-button][data-style='gradient'][data-variant='primary'] {
-  @apply from-primary-z5 to-primary-z3 text-on-primary bg-gradient-to-br rounded-md;
+  @apply from-primary-z5 to-primary-z3 text-on-primary rounded-md bg-gradient-to-br;
 }
 
 [data-style='shadcn'] [data-button][data-style='gradient'][data-variant='secondary'] {
-  @apply from-secondary-z5 to-secondary-z3 text-on-secondary bg-gradient-to-br rounded-md;
+  @apply from-secondary-z5 to-secondary-z3 text-on-secondary rounded-md bg-gradient-to-br;
 }
 
 [data-style='shadcn'] [data-button][data-style='gradient'][data-variant='danger'] {
-  @apply from-danger-z5 to-danger-z3 text-on-danger bg-gradient-to-br rounded-md;
+  @apply from-danger-z5 to-danger-z3 text-on-danger rounded-md bg-gradient-to-br;
 }
 
 [data-style='shadcn'] [data-button][data-style='link'][data-variant='default'],
@@ -497,7 +503,8 @@ packages/themes/src/<theme>/
   @apply bg-surface-z3;
 }
 
-[data-style='shadcn'] [data-button][data-style='outline']:hover:not(:disabled):not([data-disabled]) {
+[data-style='shadcn']
+  [data-button][data-style='outline']:hover:not(:disabled):not([data-disabled]) {
   @apply bg-surface-z1;
 }
 
@@ -525,6 +532,7 @@ packages/themes/src/<theme>/
 - [ ] **Step 3: Create remaining shadcn CSS files**
 
 For each remaining component file, copy the structure from `packages/themes/src/minimal/<component>.css`, replacing `data-style='minimal'` with `data-style='shadcn'`, then apply the shadcn visual rules:
+
 - Inputs: `rounded-md`, `border-surface-z3 border`, `focus:ring-2 ring-primary-z4 ring-offset-1`
 - Cards: `rounded-md`, `border-surface-z3 border`, `bg-surface-z1`
 - Lists/Menus: `rounded-md` for containers, items have subtle hover `bg-surface-z2`
@@ -558,6 +566,7 @@ git commit -m "feat(themes): add shadcn theme CSS source files"
 - [ ] **Step 1: Create all daisy-ui CSS files**
 
 Follow the same structure as Task 4 but with daisy-ui visual rules:
+
 - Buttons: `rounded-full`, solid fills, no borders
 - Default button: `bg-surface-z3 text-surface-z8`
 - Primary button: `bg-primary-z5 text-on-primary`
@@ -586,6 +595,7 @@ git commit -m "feat(themes): add daisy-ui theme CSS source files"
 - [ ] **Step 1: Create all bits-ui CSS files**
 
 Visual rules:
+
 - Buttons: `rounded-lg`, flat with `border-surface-z3`
 - Primary button: subtle `shadow-sm`, solid fill `bg-primary-z5`
 - Focus: soft `ring-2 ring-primary-z3` (lower z = lighter ring)
@@ -610,6 +620,7 @@ git commit -m "feat(themes): add bits-ui theme CSS source files"
 - [ ] **Step 1: Create all carbon CSS files**
 
 Visual rules:
+
 - **All elements:** `rounded-none` (no border radius anywhere)
 - Buttons: flat square, `border-0`, just `bg-surface-z3 text-surface-z8` default
 - Primary button: `bg-primary-z5 text-on-primary`, no border-radius
@@ -639,6 +650,7 @@ git commit -m "feat(themes): add carbon theme CSS source files"
 - [ ] **Step 1: Create all ant-design CSS files**
 
 Visual rules:
+
 - Buttons: `rounded` (4px), `border border-surface-z4`, flat no gradient
 - Primary button: `bg-primary-z5 text-on-primary border-primary-z6`
 - Focus: `ring-1 ring-primary-z3 outline-none` (thin focus ring)
@@ -662,6 +674,7 @@ git commit -m "feat(themes): add ant-design theme CSS source files"
 ### Task 9: Wire new themes into build + package.json + CLI
 
 **Files:**
+
 - Modify: `packages/themes/build.mjs`
 - Modify: `packages/themes/package.json`
 - Modify: `packages/cli/src/init.js`
@@ -680,11 +693,11 @@ for (const [name, label] of [
   ['material', 'elevation + shadows'],
   ['glass', 'blur + transparency'],
   ['grada-ui', 'coral/purple gradient identity'],
-  ['shadcn', 'flat borders + ring focus'],        // ← add
-  ['daisy-ui', 'rounded-full + bold fills'],      // ← add
-  ['bits-ui', 'rounded-lg + shadow-sm'],          // ← add
-  ['carbon', 'square + bottom-border inputs'],    // ← add
-  ['ant-design', 'thin borders + dense layout'],  // ← add
+  ['shadcn', 'flat borders + ring focus'], // ← add
+  ['daisy-ui', 'rounded-full + bold fills'], // ← add
+  ['bits-ui', 'rounded-lg + shadow-sm'], // ← add
+  ['carbon', 'square + bottom-border inputs'], // ← add
+  ['ant-design', 'thin borders + dense layout'] // ← add
 ]) {
   await buildFile(join(srcDir, name, 'index.css'), `${name}.css`, label)
 }
@@ -694,8 +707,17 @@ Also update the bundle:
 
 ```js
 const allThemes = [
-  'base', 'rokkit', 'minimal', 'material', 'glass', 'grada-ui',
-  'shadcn', 'daisy-ui', 'bits-ui', 'carbon', 'ant-design'   // ← add
+  'base',
+  'rokkit',
+  'minimal',
+  'material',
+  'glass',
+  'grada-ui',
+  'shadcn',
+  'daisy-ui',
+  'bits-ui',
+  'carbon',
+  'ant-design' // ← add
 ]
 ```
 
@@ -733,6 +755,7 @@ cd packages/themes && bun run build
 ```
 
 Expected output includes:
+
 ```
 ✓ dist/shadcn.css (flat borders + ring focus)
 ✓ dist/daisy-ui.css (rounded-full + bold fills)
@@ -748,8 +771,16 @@ Fix any CSS `@apply` errors before continuing.
 
 ```js
 const KNOWN_THEMES = [
-  'rokkit', 'minimal', 'material', 'glass', 'grada-ui',
-  'shadcn', 'daisy-ui', 'bits-ui', 'carbon', 'ant-design'  // ← add
+  'rokkit',
+  'minimal',
+  'material',
+  'glass',
+  'grada-ui',
+  'shadcn',
+  'daisy-ui',
+  'bits-ui',
+  'carbon',
+  'ant-design' // ← add
 ]
 ```
 
@@ -824,8 +855,8 @@ git commit -m "feat(themes): wire 5 new themes into build, exports, CLI init + d
 
 ### Files
 
-| Action | Path | Responsibility |
-|---|---|---|
+| Action | Path                                                    | Responsibility                                      |
+| ------ | ------------------------------------------------------- | --------------------------------------------------- |
 | Create | `site/src/routes/(play)/playground/themes/+page.svelte` | Shows all components across all themes side-by-side |
 
 **Run site:** `cd site && bun run dev` then open `http://localhost:5173/playground/themes`
@@ -843,8 +874,16 @@ Create `site/src/routes/(play)/playground/themes/+page.svelte`:
 ```svelte
 <script>
   const THEMES = [
-    'rokkit', 'minimal', 'material', 'glass', 'grada-ui',
-    'shadcn', 'daisy-ui', 'bits-ui', 'carbon', 'ant-design'
+    'rokkit',
+    'minimal',
+    'material',
+    'glass',
+    'grada-ui',
+    'shadcn',
+    'daisy-ui',
+    'bits-ui',
+    'carbon',
+    'ant-design'
   ]
 </script>
 
@@ -852,17 +891,17 @@ Create `site/src/routes/(play)/playground/themes/+page.svelte`:
   <title>Theme Verification</title>
 </svelte:head>
 
-<div class="p-8 space-y-12">
+<div class="space-y-12 p-8">
   <h1 class="text-2xl font-bold">Theme Verification</h1>
   <p class="text-surface-z6">All components across all themes for visual inspection.</p>
 
   {#each THEMES as theme}
-    <section data-style={theme} class="border border-surface-z3 rounded-lg p-6 space-y-6">
-      <h2 class="text-lg font-semibold font-mono text-surface-z7">{theme}</h2>
+    <section data-style={theme} class="border-surface-z3 space-y-6 rounded-lg border p-6">
+      <h2 class="text-surface-z7 font-mono text-lg font-semibold">{theme}</h2>
 
       <!-- Buttons -->
       <div class="space-y-2">
-        <h3 class="text-sm text-surface-z5 uppercase tracking-wide">Buttons</h3>
+        <h3 class="text-surface-z5 text-sm tracking-wide uppercase">Buttons</h3>
         <div class="flex flex-wrap gap-2">
           <button data-button>Default</button>
           <button data-button data-variant="primary">Primary</button>
@@ -876,13 +915,13 @@ Create `site/src/routes/(play)/playground/themes/+page.svelte`:
 
       <!-- Input -->
       <div class="space-y-2">
-        <h3 class="text-sm text-surface-z5 uppercase tracking-wide">Input</h3>
+        <h3 class="text-surface-z5 text-sm tracking-wide uppercase">Input</h3>
         <input data-input type="text" placeholder="Type something..." class="w-64" />
       </div>
 
       <!-- Toggle -->
       <div class="space-y-2">
-        <h3 class="text-sm text-surface-z5 uppercase tracking-wide">Toggle</h3>
+        <h3 class="text-surface-z5 text-sm tracking-wide uppercase">Toggle</h3>
         <div class="flex gap-4">
           <label data-toggle><input type="checkbox" /> Option A</label>
           <label data-toggle data-checked><input type="checkbox" checked /> Option B</label>
@@ -891,8 +930,8 @@ Create `site/src/routes/(play)/playground/themes/+page.svelte`:
 
       <!-- Card -->
       <div class="space-y-2">
-        <h3 class="text-sm text-surface-z5 uppercase tracking-wide">Card</h3>
-        <div data-card class="p-4 w-64">
+        <h3 class="text-surface-z5 text-sm tracking-wide uppercase">Card</h3>
+        <div data-card class="w-64 p-4">
           <p class="text-surface-z7">Card content here</p>
         </div>
       </div>

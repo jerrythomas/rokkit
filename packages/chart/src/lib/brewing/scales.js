@@ -9,21 +9,21 @@ import { max, extent } from 'd3-array'
  * @param {{ padding?: number }} opts
  */
 export function buildXScale(data, field, width, opts = {}) {
-  const values = [...new Set(data.map((d) => d[field]))]
-  const isNumeric = values.every((v) => typeof v === 'number' || (!isNaN(Number(v)) && v !== ''))
-  if (isNumeric) {
-    const [minVal, maxVal] = extent(data, (d) => Number(d[field]))
-    return scaleLinear().domain([minVal, maxVal]).range([0, width]).nice()
-  }
-  return scaleBand()
-    .domain(values)
-    .range([0, width])
-    .padding(opts.padding ?? 0.2)
+	const values = [...new Set(data.map((d) => d[field]))]
+	const isNumeric = values.every((v) => typeof v === 'number' || (!isNaN(Number(v)) && v !== ''))
+	if (isNumeric) {
+		const [minVal, maxVal] = extent(data, (d) => Number(d[field]))
+		return scaleLinear().domain([minVal, maxVal]).range([0, width]).nice()
+	}
+	return scaleBand()
+		.domain(values)
+		.range([0, width])
+		.padding(opts.padding ?? 0.2)
 }
 
 function maxFromLayer(layer) {
-  if (layer.data && layer.y) return max(layer.data, (d) => Number(d[layer.y])) ?? 0
-  return 0
+	if (layer.data && layer.y) return max(layer.data, (d) => Number(d[layer.y])) ?? 0
+	return 0
 }
 
 /**
@@ -34,9 +34,9 @@ function maxFromLayer(layer) {
  * @param {Array<{data?: Object[], y?: string}>} layers
  */
 export function buildYScale(data, field, height, layers = []) {
-  const dataMax = max(data, (d) => Number(d[field])) ?? 0
-  const maxVal = layers.reduce((m, layer) => Math.max(m, maxFromLayer(layer)), dataMax)
-  return scaleLinear().domain([0, maxVal]).range([height, 0]).nice()
+	const dataMax = max(data, (d) => Number(d[field])) ?? 0
+	const maxVal = layers.reduce((m, layer) => Math.max(m, maxFromLayer(layer)), dataMax)
+	return scaleLinear().domain([0, maxVal]).range([height, 0]).nice()
 }
 
 /**
@@ -46,6 +46,6 @@ export function buildYScale(data, field, height, layers = []) {
  * @param {number} maxRadius
  */
 export function buildSizeScale(data, field, maxRadius = 20) {
-  const maxVal = max(data, (d) => Number(d[field])) ?? 1
-  return scaleSqrt().domain([0, maxVal]).range([0, maxRadius])
+	const maxVal = max(data, (d) => Number(d[field])) ?? 1
+	return scaleSqrt().domain([0, maxVal]).range([0, maxRadius])
 }

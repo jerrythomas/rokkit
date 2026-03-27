@@ -9,6 +9,7 @@
 ## Goal
 
 Redesign `@rokkit/chart` around a composable `Plot` system that:
+
 - Extracts shared concerns (axis, grid, legend, brewer) out of individual chart components
 - Supports overlaying multiple geoms on shared axes
 - Supports a serializable `PlotSpec` JSON schema for AI/backend-driven charts
@@ -104,60 +105,60 @@ interface PlotSpec {
   size?: string
   symbol?: string
   pattern?: string
-  theta?: string               // Arc geom only
+  theta?: string // Arc geom only
 
   // Display names — resolved by caller (i18n lives outside Plot)
   // Pass already-translated strings; Plot never resolves translations itself
-  labels?: Record<string, string>   // { cty: 'City MPG', hwy: 'Highway MPG' }
+  labels?: Record<string, string> // { cty: 'City MPG', hwy: 'Highway MPG' }
 
   // Axis
-  xDomain?: unknown[]          // explicit domain override
+  xDomain?: unknown[] // explicit domain override
   yDomain?: number[]
-  xLabel?: string              // axis label (falls back to labels[x])
+  xLabel?: string // axis label (falls back to labels[x])
   yLabel?: string
   axisOrigin?: [number, number] // where axes cross — default: domain min (edge-pinned)
-                                // [0, 0] → quadrant mode (future)
+  // [0, 0] → quadrant mode (future)
 
   // Color scale
-  colorScale?: 'categorical' | 'sequential' | 'diverging'  // inferred if omitted
-  colorScheme?: string         // 'greens' | 'blues' | 'rdbu' | theme default
-  colorMidpoint?: number       // for diverging — default 0
-  colorDomain?: unknown[]      // explicit [min, max] or [min, mid, max]
+  colorScale?: 'categorical' | 'sequential' | 'diverging' // inferred if omitted
+  colorScheme?: string // 'greens' | 'blues' | 'rdbu' | theme default
+  colorMidpoint?: number // for diverging — default 0
+  colorDomain?: unknown[] // explicit [min, max] or [min, mid, max]
 
   // Geom layers (rendered bottom to top)
   geoms: GeomSpec[]
 
   // Facet
   facet?: {
-    by: string                 // field to split on
-    cols?: number              // columns in grid (default: auto ~3)
-    scales?: 'fixed' | 'free' | 'free_x' | 'free_y'  // default: 'fixed'
+    by: string // field to split on
+    cols?: number // columns in grid (default: auto ~3)
+    scales?: 'fixed' | 'free' | 'free_x' | 'free_y' // default: 'fixed'
   }
 
   // Animation (see Section 6)
   animate?: { by: string; duration?: number }
 
   // Display
-  grid?: boolean               // default: true
-  legend?: boolean             // default: false
-  tooltip?: boolean            // enable tooltip; render fn provided in helpers
+  grid?: boolean // default: true
+  legend?: boolean // default: false
+  tooltip?: boolean // enable tooltip; render fn provided in helpers
   title?: string
-  width?: number               // default: 600
-  height?: number              // default: 400
+  width?: number // default: 600
+  height?: number // default: 400
   mode?: 'light' | 'dark'
 }
 
 interface GeomSpec {
-  type: string                 // built-in or helpers.geoms key — open string, not enum
-  x?: string                  // channel overrides (merge with Plot-level)
+  type: string // built-in or helpers.geoms key — open string, not enum
+  x?: string // channel overrides (merge with Plot-level)
   y?: string
   color?: string
   fill?: string
   size?: string
   symbol?: string
   pattern?: string
-  stat?: string                // built-in or helpers.stats key
-  options?: Record<string, unknown>  // geom-specific: { stack, innerRadius, ... }
+  stat?: string // built-in or helpers.stats key
+  options?: Record<string, unknown> // geom-specific: { stack, innerRadius, ... }
 }
 ```
 
@@ -171,7 +172,8 @@ import { m } from '$lib/paraglide/messages'
 
 const spec = {
   data: carData,
-  x: 'cty', y: 'hwy',
+  x: 'cty',
+  y: 'hwy',
   labels: { cty: m.field_cty(), hwy: m.field_hwy() }
 }
 ```
@@ -257,11 +259,11 @@ Swapping `x` and `y` channel assignments is the mechanism. No `horizontal` prop 
 
 ### Color scale types
 
-| Type | When | Legend |
-|------|------|--------|
-| `categorical` | color field is string/enum | swatches |
-| `sequential` | color field is numeric, one direction | gradient bar |
-| `diverging` | color field is numeric + `colorMidpoint` set | gradient bar with midpoint |
+| Type          | When                                         | Legend                     |
+| ------------- | -------------------------------------------- | -------------------------- |
+| `categorical` | color field is string/enum                   | swatches                   |
+| `sequential`  | color field is numeric, one direction        | gradient bar               |
+| `diverging`   | color field is numeric + `colorMidpoint` set | gradient bar with midpoint |
 
 Inferred from data if `colorScale` not specified in spec. Full override via `helpers.colorScale`.
 
@@ -282,15 +284,15 @@ Each geom is a **pure render component**: reads post-stat data and scales from `
 
 ### Built-in geoms
 
-| Geom | Scale types | SVG output | Notable options |
-|------|-------------|-----------|-----------------|
-| `Bar` | x=band or y=band | `<rect>` per group | `stack` |
-| `Line` | both continuous | `<path>` per series | `curve` |
-| `Area` | both continuous | `<path>` filled per series | `curve`, `stack` |
-| `Point` | both continuous | `<circle>` or `<Shape>` | `symbol` |
-| `Box` | x=band, y=continuous | `<rect>` + `<line>` | — |
-| `Violin` | x=band, y=continuous | `<path>` (KDE) | — |
-| `Arc` | theta channel | `<path>` per slice | `innerRadius` (0=pie, 0–1=donut ratio) |
+| Geom     | Scale types          | SVG output                 | Notable options                        |
+| -------- | -------------------- | -------------------------- | -------------------------------------- |
+| `Bar`    | x=band or y=band     | `<rect>` per group         | `stack`                                |
+| `Line`   | both continuous      | `<path>` per series        | `curve`                                |
+| `Area`   | both continuous      | `<path>` filled per series | `curve`, `stack`                       |
+| `Point`  | both continuous      | `<circle>` or `<Shape>`    | `symbol`                               |
+| `Box`    | x=band, y=continuous | `<rect>` + `<line>`        | —                                      |
+| `Violin` | x=band, y=continuous | `<path>` (KDE)             | —                                      |
+| `Arc`    | theta channel        | `<path>` per slice         | `innerRadius` (0=pie, 0–1=donut ratio) |
 
 `Arc` is the special case — uses `theta` channel instead of x/y. `PlotState` detects a pure `theta` mapping and skips x/y scale building.
 
@@ -320,6 +322,7 @@ const helpers = { geoms: { hexbin: HexbinComponent } }
 Custom geom components follow the same context contract as built-ins.
 
 Future built-in candidates (filed as issues):
+
 - `hexbin` — 2D density (#121)
 - `heatmap` — matrix cells, x=band y=band (#122)
 - `candlestick` — OHLC financial (#123)
@@ -334,16 +337,16 @@ Future built-in candidates (filed as issues):
 
 ```typescript
 type BuiltinStat = 'identity' | 'count' | 'sum' | 'mean' | 'median' | 'min' | 'max'
-type StatFn      = (values: unknown[]) => unknown
-type FormatFn    = (v: unknown) => string
-type TooltipFn   = (d: Record<string, unknown>) => string
+type StatFn = (values: unknown[]) => unknown
+type FormatFn = (v: unknown) => string
+type TooltipFn = (d: Record<string, unknown>) => string
 
 interface PlotHelpers {
-  stats?:      Record<string, StatFn>         // extends built-in stat names
-  format?:     Record<string, FormatFn>       // field → tick/label formatter
-  tooltip?:    TooltipFn                      // custom tooltip renderer
-  geoms?:      Record<string, SvelteComponent> // custom geom components
-  colorScale?: unknown                         // d3 scale override for color
+  stats?: Record<string, StatFn> // extends built-in stat names
+  format?: Record<string, FormatFn> // field → tick/label formatter
+  tooltip?: TooltipFn // custom tooltip renderer
+  geoms?: Record<string, SvelteComponent> // custom geom components
+  colorScale?: unknown // d3 scale override for color
 }
 ```
 
@@ -433,6 +436,7 @@ East:       Jan Feb Mar  ·     ← gap at Apr
 ```
 
 Axis display in facet grids:
+
 - Y-axis: leftmost column only
 - X-axis: bottom row only
 - Legend: single shared legend outside the grid
@@ -472,6 +476,7 @@ Stat runs within each frame — `stat: 'sum'` aggregates 2019 data independently
 Handles frame management and owns timeline state. Renders a `Plot` with the current tweened frame data plus timeline controls below the chart.
 
 Timeline controls:
+
 - Play / pause
 - Scrub slider (current frame position)
 - Speed selector
@@ -498,13 +503,16 @@ dc.js-style linked interaction: multiple charts share a filter context. Interact
 ```svelte
 <CrossFilter bind:filters>
   <Plot data={sales} x="region" y="revenue">
-    <Bar filterable />       <!-- click → filters region dimension -->
+    <Bar filterable />
+    <!-- click → filters region dimension -->
   </Plot>
   <Plot data={sales} x="month" y="revenue">
-    <Line />                 <!-- shows filtered data passively -->
+    <Line />
+    <!-- shows filtered data passively -->
   </Plot>
   <Plot data={sales} x="price" y="units">
-    <Point brush />          <!-- drag → filters continuous range -->
+    <Point brush />
+    <!-- drag → filters continuous range -->
   </Plot>
 </CrossFilter>
 ```
@@ -528,10 +536,10 @@ Reactive — all Plots in the CrossFilter context re-render when any dimension's
 
 ### Filter interaction types
 
-| Prop on geom | Interaction | Filter type |
-|---|---|---|
-| `filterable` | click mark | categorical: toggle value in/out of Set |
-| `brush` | drag on axis/canvas | continuous: set [min, max] range |
+| Prop on geom | Interaction         | Filter type                             |
+| ------------ | ------------------- | --------------------------------------- |
+| `filterable` | click mark          | categorical: toggle value in/out of Set |
+| `brush`      | drag on axis/canvas | continuous: set [min, max] range        |
 
 ### Geoms as filter controls (dc.js philosophy)
 
@@ -565,9 +573,9 @@ The default palette (21 colors, 9 patterns, 9 symbols) is a built-in preset. App
 
 ```typescript
 interface PlotPreset {
-  colors?:   string[]           // ordered hex colors for series 1, 2, 3...
-  patterns?: string[]           // ordered pattern names (built-in or custom)
-  symbols?:  string[]           // ordered symbol names (built-in or custom)
+  colors?: string[] // ordered hex colors for series 1, 2, 3...
+  patterns?: string[] // ordered pattern names (built-in or custom)
+  symbols?: string[] // ordered symbol names (built-in or custom)
 }
 ```
 
@@ -583,24 +591,27 @@ preset name in spec (string)
 ```
 
 In spec (serializable — string name only):
+
 ```js
 { ...spec, preset: 'brand' }
 ```
 
 In helpers (definition):
+
 ```js
 const helpers = {
   presets: {
     brand: {
-      colors:   ['#e63946', '#457b9d', '#2a9d8f', '#e9c46a'],
+      colors: ['#e63946', '#457b9d', '#2a9d8f', '#e9c46a'],
       patterns: ['dots', 'cross-hatch', 'diagonal-lines'],
-      symbols:  ['circle', 'diamond', 'square']
+      symbols: ['circle', 'diamond', 'square']
     }
   }
 }
 ```
 
 Inline (no name):
+
 ```js
 const helpers = {
   preset: { colors: brandColors, patterns: ['dots', 'waves'] }
@@ -613,8 +624,8 @@ Extend the built-in registries via helpers — same pattern as `helpers.geoms`:
 
 ```js
 const helpers = {
-  patterns: { 'my-dots': MyDotsComponent },   // new SVG pattern component
-  symbols:  { 'star-filled': MyStarShape }    // new symbol shape
+  patterns: { 'my-dots': MyDotsComponent }, // new SVG pattern component
+  symbols: { 'star-filled': MyStarShape } // new symbol shape
 }
 ```
 
@@ -623,6 +634,7 @@ Once registered, reference by name in `preset.patterns` or `preset.symbols`, or 
 ### Continuous color schemes
 
 `colorScheme` (for sequential/diverging) follows the same resolution:
+
 - Built-in names: `'greens'`, `'blues'`, `'oranges'`, `'reds'`, `'purples'`, `'rdbu'`, `'rdylgn'`, `'bwr'`
 - `helpers.colorSchemes['my-scheme']` → custom interpolator function
 
@@ -635,10 +647,12 @@ Once registered, reference by name in `preset.patterns` or `preset.symbols`, or 
 Use the `mpg` dataset (234 rows, from ggplot2) as the primary test fixture. It has both categorical and numeric dimensions, making it comprehensive for all stat, scale, orientation, and facet scenarios.
 
 Fields:
+
 - **Categorical**: `manufacturer`, `model`, `trans`, `drv`, `fl`, `class`
 - **Numeric**: `displ`, `year`, `cyl`, `cty`, `hwy`
 
 Covers:
+
 - Stat transforms: `mean(cty)` by `class`, `count` by `manufacturer`
 - Orientation inference: `x='cty'` (numeric) + `y='class'` (band) → horizontal
 - Facets: split by `drv` (3 values: 4, f, r) or `class` (7 values)
@@ -770,6 +784,7 @@ test('animated chart: play advances frame label', async ({ page }) => {
 ```
 
 ### What we do NOT test
+
 - Pixel-perfect positions — scale math is D3's responsibility
 - Visual appearance — verified by eye in playground
 - All 20 pattern components individually — one smoke test covers the system
@@ -779,24 +794,24 @@ test('animated chart: play advances frame label', async ({ page }) => {
 
 ## Key Design Decisions Log
 
-| Decision | Rationale |
-|----------|-----------|
-| `horizontal` prop dropped — use scale-type detection | Line/area have no meaningful horizontal mode; orientation falls out of which axis is band vs continuous |
-| `labels` is resolved strings, not i18n keys | Plot is i18n-agnostic; caller resolves translations (Paraglide, i18next, backend) |
-| `stat` on GeomSpec, runs within facet/animation frame | Enables per-geom aggregation; multiple stats on same canvas (bars=sum, line=mean) |
-| `type` is open string, not enum | Custom geoms via helpers.geoms without forking the library |
-| Spec + helpers split | Spec travels over wire (AI/backend-safe); functions stay in app |
-| Axis position derived from axisOrigin | Keeps quadrant-aware axis as natural extension, not a retrofit |
-| Color scale inferred from field type | Sequential/diverging for numeric fields, categorical for string fields |
-| Facet missing values → gaps | Preserve ordering and alignment across panels; no crashes on sparse data |
-| Animation scales from full data | Axis never rescales mid-animation — global max applies across all frames |
-| Frame normalization | Missing combinations filled with 0 so tweening interpolates smoothly |
-| Geoms as filter controls | `filterable`/`brush` props on geoms make them interactive filters — no separate widget needed |
-| Dimming over hiding (CrossFilter default) | Preserves data context; filtered-out marks visible at low opacity rather than removed |
-| Presets via helpers, not global config | Consistent with helpers pattern; named presets stay serializable in spec |
-| mpg dataset as primary test fixture | Real-world data with both categorical + numeric dims covers all stat/scale/facet scenarios comprehensively |
-| Custom patterns/symbols via helpers registry | Same extension pattern as helpers.geoms — register by name, reference by name |
-| Backwards compatibility not required | Thin wrappers for specific use cases are fine; not compat shims |
+| Decision                                              | Rationale                                                                                                  |
+| ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `horizontal` prop dropped — use scale-type detection  | Line/area have no meaningful horizontal mode; orientation falls out of which axis is band vs continuous    |
+| `labels` is resolved strings, not i18n keys           | Plot is i18n-agnostic; caller resolves translations (Paraglide, i18next, backend)                          |
+| `stat` on GeomSpec, runs within facet/animation frame | Enables per-geom aggregation; multiple stats on same canvas (bars=sum, line=mean)                          |
+| `type` is open string, not enum                       | Custom geoms via helpers.geoms without forking the library                                                 |
+| Spec + helpers split                                  | Spec travels over wire (AI/backend-safe); functions stay in app                                            |
+| Axis position derived from axisOrigin                 | Keeps quadrant-aware axis as natural extension, not a retrofit                                             |
+| Color scale inferred from field type                  | Sequential/diverging for numeric fields, categorical for string fields                                     |
+| Facet missing values → gaps                           | Preserve ordering and alignment across panels; no crashes on sparse data                                   |
+| Animation scales from full data                       | Axis never rescales mid-animation — global max applies across all frames                                   |
+| Frame normalization                                   | Missing combinations filled with 0 so tweening interpolates smoothly                                       |
+| Geoms as filter controls                              | `filterable`/`brush` props on geoms make them interactive filters — no separate widget needed              |
+| Dimming over hiding (CrossFilter default)             | Preserves data context; filtered-out marks visible at low opacity rather than removed                      |
+| Presets via helpers, not global config                | Consistent with helpers pattern; named presets stay serializable in spec                                   |
+| mpg dataset as primary test fixture                   | Real-world data with both categorical + numeric dims covers all stat/scale/facet scenarios comprehensively |
+| Custom patterns/symbols via helpers registry          | Same extension pattern as helpers.geoms — register by name, reference by name                              |
+| Backwards compatibility not required                  | Thin wrappers for specific use cases are fine; not compat shims                                            |
 
 ---
 

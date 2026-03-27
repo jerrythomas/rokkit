@@ -1,0 +1,8 @@
+{
+  "title": "MarkdownRenderer",
+  "description": "Markdown-to-HTML renderer with syntax highlighting and Svelte component plugins",
+  "icon": "i-glyph:markdown",
+  "category": "display",
+  "sequence": 55,
+  "llms": true
+}

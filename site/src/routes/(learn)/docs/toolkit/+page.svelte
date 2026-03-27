@@ -8,8 +8,12 @@
 	<h2>Packages</h2>
 	<ul>
 		<li>
-			<a href="/docs/toolkit/data"><code>@rokkit/data</code></a> — Fluent dataset pipeline with
-			grouping, alignment, rollup aggregation, joins, and filtering for tabular data
+			<a href="/docs/toolkit/data"><code>@rokkit/data</code></a> — Fluent dataset pipeline with grouping,
+			alignment, rollup aggregation, joins, and filtering for tabular data
+		</li>
+		<li>
+			<a href="/docs/toolkit/blocks"><code>@rokkit/blocks</code></a> — Markdown block plugins that render
+			fenced code blocks as live chart, table, sparkline, or Mermaid components
 		</li>
 	</ul>
 </article>

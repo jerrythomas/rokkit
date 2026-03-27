@@ -17,6 +17,7 @@
 ## File Map
 
 **New files:**
+
 - `packages/chart/src/lib/brewing/BoxBrewer.svelte.js`
 - `packages/chart/src/lib/brewing/ViolinBrewer.svelte.js`
 - `packages/chart/src/lib/brewing/marks/boxes.js`
@@ -36,6 +37,7 @@
 - `site/src/routes/(play)/playground/components/bubble-chart/+page.svelte`
 
 **Modified files:**
+
 - `packages/chart/src/index.js` — export BoxPlot, ViolinPlot, BubbleChart, BoxBrewer, ViolinBrewer
 
 ---
@@ -45,6 +47,7 @@
 ### Task 1: `boxes.js` mark builder
 
 **Files:**
+
 - Create: `packages/chart/src/lib/brewing/marks/boxes.js`
 - Create: `packages/chart/spec/brewing/marks/boxes.spec.js`
 
@@ -63,11 +66,11 @@ const xScale = scaleBand().domain(['A', 'B']).range([0, 200]).padding(0.1)
 const yScale = scaleLinear().domain([0, 100]).range([200, 0])
 const colors = new Map([
   ['A', { fill: '#blue', stroke: '#darkblue' }],
-  ['B', { fill: '#red',  stroke: '#darkred' }]
+  ['B', { fill: '#red', stroke: '#darkred' }]
 ])
 
 const data = [
-  { cat: 'A', q1: 20, median: 40, q3: 60, iqr_min: 5,  iqr_max: 80 },
+  { cat: 'A', q1: 20, median: 40, q3: 60, iqr_min: 5, iqr_max: 80 },
   { cat: 'B', q1: 30, median: 50, q3: 70, iqr_min: 10, iqr_max: 90 }
 ]
 
@@ -97,8 +100,16 @@ describe('buildBoxes', () => {
   })
 
   it('uses color field key when color channel is set', () => {
-    const coloredData = [{ cat: 'A', region: 'North', q1: 20, median: 40, q3: 60, iqr_min: 5, iqr_max: 80 }]
-    const [box] = buildBoxes(coloredData, { x: 'cat', color: 'region' }, xScale, yScale, new Map([['North', { fill: 'green', stroke: 'darkgreen' }]]))
+    const coloredData = [
+      { cat: 'A', region: 'North', q1: 20, median: 40, q3: 60, iqr_min: 5, iqr_max: 80 }
+    ]
+    const [box] = buildBoxes(
+      coloredData,
+      { x: 'cat', color: 'region' },
+      xScale,
+      yScale,
+      new Map([['North', { fill: 'green', stroke: 'darkgreen' }]])
+    )
     expect(box.fill).toBe('green')
   })
 })
@@ -109,6 +120,7 @@ describe('buildBoxes', () => {
 ```bash
 cd packages/chart && bun run test --reporter=verbose spec/brewing/marks/boxes.spec.js
 ```
+
 Expected: FAIL — module not found
 
 - [ ] **Step 3: Implement `boxes.js`**
@@ -160,6 +172,7 @@ export function buildBoxes(data, channels, xScale, yScale, colors) {
 ```bash
 cd packages/chart && bun run test --reporter=verbose spec/brewing/marks/boxes.spec.js
 ```
+
 Expected: all PASS
 
 - [ ] **Step 5: Commit**
@@ -174,6 +187,7 @@ git commit -m "feat(chart): add buildBoxes mark builder for box plot geometry"
 ### Task 2: `BoxBrewer` + `BoxPlot.svelte`
 
 **Files:**
+
 - Create: `packages/chart/src/lib/brewing/BoxBrewer.svelte.js`
 - Create: `packages/chart/src/charts/BoxPlot.svelte`
 - Create: `packages/chart/spec/brewing/BoxBrewer.spec.js`
@@ -235,7 +249,7 @@ describe('BoxBrewer.transform', () => {
     const data = [
       { group: 'A', region: 'N', value: 10 },
       { group: 'A', region: 'N', value: 20 },
-      { group: 'A', region: 'S', value: 30 },
+      { group: 'A', region: 'S', value: 30 }
     ]
     const result = brewer.transform(data, { x: 'group', y: 'value', color: 'region' })
     expect(result).toHaveLength(2) // A/N and A/S
@@ -250,8 +264,12 @@ import { render } from '@testing-library/svelte'
 import BoxPlot from '../../src/charts/BoxPlot.svelte'
 
 const data = [
-  { category: 'A', value: 10 }, { category: 'A', value: 30 }, { category: 'A', value: 50 },
-  { category: 'B', value: 20 }, { category: 'B', value: 40 }, { category: 'B', value: 60 }
+  { category: 'A', value: 10 },
+  { category: 'A', value: 30 },
+  { category: 'A', value: 50 },
+  { category: 'B', value: 20 },
+  { category: 'B', value: 40 },
+  { category: 'B', value: 60 }
 ]
 
 describe('BoxPlot', () => {
@@ -303,11 +321,19 @@ export class BoxBrewer extends ChartBrewer {
     return dataset(data)
       .groupBy(...by)
       .summarize((row) => row[channels.y], {
-        q1:      (v) => sortedQuantile(v, 0.25),
-        median:  (v) => sortedQuantile(v, 0.5),
-        q3:      (v) => sortedQuantile(v, 0.75),
-        iqr_min: (v) => { const q1 = sortedQuantile(v, 0.25); const q3 = sortedQuantile(v, 0.75); return q1 - 1.5 * (q3 - q1) },
-        iqr_max: (v) => { const q1 = sortedQuantile(v, 0.25); const q3 = sortedQuantile(v, 0.75); return q3 + 1.5 * (q3 - q1) }
+        q1: (v) => sortedQuantile(v, 0.25),
+        median: (v) => sortedQuantile(v, 0.5),
+        q3: (v) => sortedQuantile(v, 0.75),
+        iqr_min: (v) => {
+          const q1 = sortedQuantile(v, 0.25)
+          const q3 = sortedQuantile(v, 0.75)
+          return q1 - 1.5 * (q3 - q1)
+        },
+        iqr_max: (v) => {
+          const q1 = sortedQuantile(v, 0.25)
+          const q3 = sortedQuantile(v, 0.75)
+          return q3 + 1.5 * (q3 - q1)
+        }
       })
       .rollup()
       .select()
@@ -347,26 +373,28 @@ export class BoxBrewer extends ChartBrewer {
 
   $effect(() => {
     const channels = {}
-    if (x)     channels.x = x
-    if (y)     channels.y = y
+    if (x) channels.x = x
+    if (y) channels.y = y
     if (color) channels.color = color
     brewer.update({ data, channels, width, height, mode })
   })
 
   const margin = { top: 20, right: 20, bottom: 40, left: 50 }
-  const innerWidth  = $derived(width  - margin.left - margin.right)
-  const innerHeight = $derived(height - margin.top  - margin.bottom)
+  const innerWidth = $derived(width - margin.left - margin.right)
+  const innerHeight = $derived(height - margin.top - margin.bottom)
 
-  const boxes      = $derived(brewer.boxes)
-  const xScale     = $derived(brewer.xScale)
-  const yScale     = $derived(brewer.yScale)
+  const boxes = $derived(brewer.boxes)
+  const xScale = $derived(brewer.xScale)
+  const yScale = $derived(brewer.yScale)
   const legendGroups = $derived(brewer.legendGroups)
 
   const xTicks = $derived(
     xScale && typeof xScale.domain === 'function'
       ? xScale.domain().map((val) => ({
           value: val,
-          x: (xScale(val) ?? 0) + (typeof xScale.bandwidth === 'function' ? xScale.bandwidth() / 2 : 0)
+          x:
+            (xScale(val) ?? 0) +
+            (typeof xScale.bandwidth === 'function' ? xScale.bandwidth() / 2 : 0)
         }))
       : []
   )
@@ -387,7 +415,6 @@ export class BoxBrewer extends ChartBrewer {
 <div class="chart-container" data-chart-root data-chart-type="box">
   <svg {width} {height} viewBox="0 0 {width} {height}" role="img" aria-label="Box plot">
     <g class="chart-area" transform="translate({margin.left}, {margin.top})" data-chart-canvas>
-
       {#if grid}
         <g class="chart-grid" data-chart-grid>
           {#each gridLines as line (line.y)}
@@ -401,20 +428,29 @@ export class BoxBrewer extends ChartBrewer {
           <g data-chart-element="box">
             <!-- Whisker: iqr_min to iqr_max -->
             <line
-              x1={box.cx} y1={box.iqr_min}
-              x2={box.cx} y2={box.iqr_max}
-              stroke={box.stroke} stroke-width="1.5"
+              x1={box.cx}
+              y1={box.iqr_min}
+              x2={box.cx}
+              y2={box.iqr_max}
+              stroke={box.stroke}
+              stroke-width="1.5"
             />
             <!-- Whisker caps -->
             <line
-              x1={box.cx - box.whiskerWidth / 2} y1={box.iqr_min}
-              x2={box.cx + box.whiskerWidth / 2} y2={box.iqr_min}
-              stroke={box.stroke} stroke-width="1.5"
+              x1={box.cx - box.whiskerWidth / 2}
+              y1={box.iqr_min}
+              x2={box.cx + box.whiskerWidth / 2}
+              y2={box.iqr_min}
+              stroke={box.stroke}
+              stroke-width="1.5"
             />
             <line
-              x1={box.cx - box.whiskerWidth / 2} y1={box.iqr_max}
-              x2={box.cx + box.whiskerWidth / 2} y2={box.iqr_max}
-              stroke={box.stroke} stroke-width="1.5"
+              x1={box.cx - box.whiskerWidth / 2}
+              y1={box.iqr_max}
+              x2={box.cx + box.whiskerWidth / 2}
+              y2={box.iqr_max}
+              stroke={box.stroke}
+              stroke-width="1.5"
             />
             <!-- IQR rectangle -->
             <rect
@@ -428,9 +464,12 @@ export class BoxBrewer extends ChartBrewer {
             />
             <!-- Median line -->
             <line
-              x1={box.cx - box.width / 2} y1={box.median}
-              x2={box.cx + box.width / 2} y2={box.median}
-              stroke={box.stroke} stroke-width="2"
+              x1={box.cx - box.width / 2}
+              y1={box.median}
+              x2={box.cx + box.width / 2}
+              y2={box.median}
+              stroke={box.stroke}
+              stroke-width="2"
             />
           </g>
         {/each}
@@ -442,7 +481,13 @@ export class BoxBrewer extends ChartBrewer {
           {#each xTicks as tick (tick.value)}
             <g transform="translate({tick.x}, 0)">
               <line x1="0" y1="0" x2="0" y2="6" stroke="currentColor" />
-              <text x="0" y="9" text-anchor="middle" dominant-baseline="hanging" data-chart-tick-label>
+              <text
+                x="0"
+                y="9"
+                text-anchor="middle"
+                dominant-baseline="hanging"
+                data-chart-tick-label
+              >
                 {tick.value}
               </text>
             </g>
@@ -463,7 +508,6 @@ export class BoxBrewer extends ChartBrewer {
           {/each}
         </g>
       {/if}
-
     </g>
   </svg>
 
@@ -485,10 +529,22 @@ export class BoxBrewer extends ChartBrewer {
 </div>
 
 <style>
-  .chart-container { position: relative; width: 100%; height: auto; }
-  svg { display: block; overflow: visible; }
-  .axis { font-size: 11px; fill: currentColor; }
-  .chart-grid { pointer-events: none; }
+  .chart-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+  }
+  svg {
+    display: block;
+    overflow: visible;
+  }
+  .axis {
+    font-size: 11px;
+    fill: currentColor;
+  }
+  .chart-grid {
+    pointer-events: none;
+  }
 </style>
 ```
 
@@ -497,6 +553,7 @@ export class BoxBrewer extends ChartBrewer {
 ```bash
 cd packages/chart && bun run test
 ```
+
 Expected: all tests PASS
 
 - [ ] **Step 6: Commit**
@@ -514,6 +571,7 @@ git commit -m "feat(chart): add BoxPlot chart with BoxBrewer quartile aggregatio
 ### Task 3: BoxPlot playground page
 
 **Files:**
+
 - Create: `site/src/routes/(play)/playground/components/box-plot/+page.svelte`
 
 - [ ] **Step 1: Create the playground page**
@@ -528,18 +586,30 @@ git commit -m "feat(chart): add BoxPlot chart with BoxBrewer quartile aggregatio
 
   // Raw observations — BoxPlot aggregates these into quartiles
   const chartData = [
-    { category: 'Control',   score: 52, cohort: 'A' }, { category: 'Control',   score: 61, cohort: 'A' },
-    { category: 'Control',   score: 48, cohort: 'A' }, { category: 'Control',   score: 70, cohort: 'A' },
-    { category: 'Control',   score: 55, cohort: 'A' }, { category: 'Control',   score: 43, cohort: 'A' },
-    { category: 'Control',   score: 66, cohort: 'A' }, { category: 'Control',   score: 58, cohort: 'A' },
-    { category: 'Treatment', score: 71, cohort: 'A' }, { category: 'Treatment', score: 83, cohort: 'A' },
-    { category: 'Treatment', score: 65, cohort: 'A' }, { category: 'Treatment', score: 90, cohort: 'A' },
-    { category: 'Treatment', score: 78, cohort: 'A' }, { category: 'Treatment', score: 62, cohort: 'A' },
-    { category: 'Treatment', score: 88, cohort: 'A' }, { category: 'Treatment', score: 75, cohort: 'A' },
-    { category: 'Placebo',   score: 50, cohort: 'B' }, { category: 'Placebo',   score: 54, cohort: 'B' },
-    { category: 'Placebo',   score: 47, cohort: 'B' }, { category: 'Placebo',   score: 63, cohort: 'B' },
-    { category: 'Placebo',   score: 51, cohort: 'B' }, { category: 'Placebo',   score: 58, cohort: 'B' },
-    { category: 'Placebo',   score: 44, cohort: 'B' }, { category: 'Placebo',   score: 60, cohort: 'B' }
+    { category: 'Control', score: 52, cohort: 'A' },
+    { category: 'Control', score: 61, cohort: 'A' },
+    { category: 'Control', score: 48, cohort: 'A' },
+    { category: 'Control', score: 70, cohort: 'A' },
+    { category: 'Control', score: 55, cohort: 'A' },
+    { category: 'Control', score: 43, cohort: 'A' },
+    { category: 'Control', score: 66, cohort: 'A' },
+    { category: 'Control', score: 58, cohort: 'A' },
+    { category: 'Treatment', score: 71, cohort: 'A' },
+    { category: 'Treatment', score: 83, cohort: 'A' },
+    { category: 'Treatment', score: 65, cohort: 'A' },
+    { category: 'Treatment', score: 90, cohort: 'A' },
+    { category: 'Treatment', score: 78, cohort: 'A' },
+    { category: 'Treatment', score: 62, cohort: 'A' },
+    { category: 'Treatment', score: 88, cohort: 'A' },
+    { category: 'Treatment', score: 75, cohort: 'A' },
+    { category: 'Placebo', score: 50, cohort: 'B' },
+    { category: 'Placebo', score: 54, cohort: 'B' },
+    { category: 'Placebo', score: 47, cohort: 'B' },
+    { category: 'Placebo', score: 63, cohort: 'B' },
+    { category: 'Placebo', score: 51, cohort: 'B' },
+    { category: 'Placebo', score: 58, cohort: 'B' },
+    { category: 'Placebo', score: 44, cohort: 'B' },
+    { category: 'Placebo', score: 60, cohort: 'B' }
   ]
 
   let props = $state({
@@ -561,7 +631,7 @@ git commit -m "feat(chart): add BoxPlot chart with BoxBrewer quartile aggregatio
     type: 'vertical',
     elements: [
       { scope: '#/colorField', label: 'color', props: { options: ['', 'category', 'cohort'] } },
-      { scope: '#/grid',   label: 'grid' },
+      { scope: '#/grid', label: 'grid' },
       { scope: '#/legend', label: 'legend' },
       { type: 'separator' }
     ]
@@ -572,7 +642,7 @@ git commit -m "feat(chart): add BoxPlot chart with BoxBrewer quartile aggregatio
   {#snippet preview()}
     <div class="flex flex-col gap-8 p-6">
       <div>
-        <h4 class="text-surface-z5 m-0 mb-3 text-xs uppercase tracking-widest font-semibold">
+        <h4 class="text-surface-z5 m-0 mb-3 text-xs font-semibold tracking-widest uppercase">
           Score Distribution by Group
         </h4>
         <BoxPlot
@@ -640,6 +710,7 @@ git commit -m "feat(site): add BoxPlot playground page"
 ### Task 4: `violins.js` mark builder
 
 **Files:**
+
 - Create: `packages/chart/src/lib/brewing/marks/violins.js`
 - Create: `packages/chart/spec/brewing/marks/violins.spec.js`
 
@@ -722,8 +793,10 @@ export function buildViolins(data, channels, xScale, yScale, colors) {
 
     // Build right side top→bottom, then left side bottom→top (closed shape)
     const rightPts = ANCHOR_ORDER.map((k) => ({ x: cx + halfMax * DENSITY_AT[k], y: yScale(d[k]) }))
-    const leftPts  = [...ANCHOR_ORDER].reverse().map((k) => ({ x: cx - halfMax * DENSITY_AT[k], y: yScale(d[k]) }))
-    const allPts   = [...rightPts, ...leftPts, rightPts[0]] // close path
+    const leftPts = [...ANCHOR_ORDER]
+      .reverse()
+      .map((k) => ({ x: cx - halfMax * DENSITY_AT[k], y: yScale(d[k]) }))
+    const allPts = [...rightPts, ...leftPts, rightPts[0]] // close path
 
     return {
       data: d,
@@ -754,6 +827,7 @@ git commit -m "feat(chart): add buildViolins mark builder for simplified violin 
 ### Task 5: `ViolinBrewer` + `ViolinPlot.svelte`
 
 **Files:**
+
 - Create: `packages/chart/src/lib/brewing/ViolinBrewer.svelte.js`
 - Create: `packages/chart/src/charts/ViolinPlot.svelte`
 - Create: `packages/chart/spec/brewing/ViolinBrewer.spec.js`
@@ -769,7 +843,10 @@ git commit -m "feat(chart): add buildViolins mark builder for simplified violin 
 import { describe, it, expect } from 'vitest'
 import { ViolinBrewer } from '../../src/lib/brewing/ViolinBrewer.svelte.js'
 
-const rawData = Array.from({ length: 20 }, (_, i) => ({ group: i < 10 ? 'A' : 'B', value: (i % 10) * 10 + 5 }))
+const rawData = Array.from({ length: 20 }, (_, i) => ({
+  group: i < 10 ? 'A' : 'B',
+  value: (i % 10) * 10 + 5
+}))
 
 describe('ViolinBrewer.transform', () => {
   it('produces one row per group', () => {
@@ -845,11 +922,19 @@ export class ViolinBrewer extends ChartBrewer {
     return dataset(data)
       .groupBy(...by)
       .summarize((row) => row[channels.y], {
-        q1:      (v) => sortedQuantile(v, 0.25),
-        median:  (v) => sortedQuantile(v, 0.5),
-        q3:      (v) => sortedQuantile(v, 0.75),
-        iqr_min: (v) => { const q1 = sortedQuantile(v, 0.25); const q3 = sortedQuantile(v, 0.75); return q1 - 1.5 * (q3 - q1) },
-        iqr_max: (v) => { const q1 = sortedQuantile(v, 0.25); const q3 = sortedQuantile(v, 0.75); return q3 + 1.5 * (q3 - q1) }
+        q1: (v) => sortedQuantile(v, 0.25),
+        median: (v) => sortedQuantile(v, 0.5),
+        q3: (v) => sortedQuantile(v, 0.75),
+        iqr_min: (v) => {
+          const q1 = sortedQuantile(v, 0.25)
+          const q3 = sortedQuantile(v, 0.75)
+          return q1 - 1.5 * (q3 - q1)
+        },
+        iqr_max: (v) => {
+          const q1 = sortedQuantile(v, 0.25)
+          const q3 = sortedQuantile(v, 0.75)
+          return q3 + 1.5 * (q3 - q1)
+        }
       })
       .rollup()
       .select()
@@ -866,6 +951,7 @@ export class ViolinBrewer extends ChartBrewer {
 - [ ] **Step 4: Implement `ViolinPlot.svelte`**
 
 Follow the same structure as `BoxPlot.svelte` but:
+
 - Use `brewer.violins` instead of `brewer.boxes`
 - Change `data-chart-type="violin"` and `data-chart-mark="violin"`
 - Render each violin as `<path d={violin.d} fill={violin.fill} fill-opacity="0.7" stroke={violin.stroke} stroke-width="1.5" data-chart-element="violin" />`
@@ -895,26 +981,28 @@ Follow the same structure as `BoxPlot.svelte` but:
 
   $effect(() => {
     const channels = {}
-    if (x)     channels.x = x
-    if (y)     channels.y = y
+    if (x) channels.x = x
+    if (y) channels.y = y
     if (color) channels.color = color
     brewer.update({ data, channels, width, height, mode })
   })
 
   const margin = { top: 20, right: 20, bottom: 40, left: 50 }
-  const innerWidth  = $derived(width  - margin.left - margin.right)
-  const innerHeight = $derived(height - margin.top  - margin.bottom)
+  const innerWidth = $derived(width - margin.left - margin.right)
+  const innerHeight = $derived(height - margin.top - margin.bottom)
 
-  const violins    = $derived(brewer.violins)
-  const xScale     = $derived(brewer.xScale)
-  const yScale     = $derived(brewer.yScale)
+  const violins = $derived(brewer.violins)
+  const xScale = $derived(brewer.xScale)
+  const yScale = $derived(brewer.yScale)
   const legendGroups = $derived(brewer.legendGroups)
 
   const xTicks = $derived(
     xScale && typeof xScale.domain === 'function'
       ? xScale.domain().map((val) => ({
           value: val,
-          x: (xScale(val) ?? 0) + (typeof xScale.bandwidth === 'function' ? xScale.bandwidth() / 2 : 0)
+          x:
+            (xScale(val) ?? 0) +
+            (typeof xScale.bandwidth === 'function' ? xScale.bandwidth() / 2 : 0)
         }))
       : []
   )
@@ -935,7 +1023,6 @@ Follow the same structure as `BoxPlot.svelte` but:
 <div class="chart-container" data-chart-root data-chart-type="violin">
   <svg {width} {height} viewBox="0 0 {width} {height}" role="img" aria-label="Violin plot">
     <g class="chart-area" transform="translate({margin.left}, {margin.top})" data-chart-canvas>
-
       {#if grid}
         <g class="chart-grid" data-chart-grid>
           {#each gridLines as line (line.y)}
@@ -963,7 +1050,13 @@ Follow the same structure as `BoxPlot.svelte` but:
           {#each xTicks as tick (tick.value)}
             <g transform="translate({tick.x}, 0)">
               <line x1="0" y1="0" x2="0" y2="6" stroke="currentColor" />
-              <text x="0" y="9" text-anchor="middle" dominant-baseline="hanging" data-chart-tick-label>
+              <text
+                x="0"
+                y="9"
+                text-anchor="middle"
+                dominant-baseline="hanging"
+                data-chart-tick-label
+              >
                 {tick.value}
               </text>
             </g>
@@ -984,7 +1077,6 @@ Follow the same structure as `BoxPlot.svelte` but:
           {/each}
         </g>
       {/if}
-
     </g>
   </svg>
 
@@ -1006,10 +1098,22 @@ Follow the same structure as `BoxPlot.svelte` but:
 </div>
 
 <style>
-  .chart-container { position: relative; width: 100%; height: auto; }
-  svg { display: block; overflow: visible; }
-  .axis { font-size: 11px; fill: currentColor; }
-  .chart-grid { pointer-events: none; }
+  .chart-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+  }
+  svg {
+    display: block;
+    overflow: visible;
+  }
+  .axis {
+    font-size: 11px;
+    fill: currentColor;
+  }
+  .chart-grid {
+    pointer-events: none;
+  }
 </style>
 ```
 
@@ -1018,6 +1122,7 @@ Follow the same structure as `BoxPlot.svelte` but:
 ```bash
 cd packages/chart && bun run test
 ```
+
 Expected: all PASS
 
 - [ ] **Step 6: Commit**
@@ -1046,18 +1151,30 @@ Use same dataset as BoxPlot (raw observations per group). Use `color` for group 
   import PlaySection from '$lib/components/PlaySection.svelte'
 
   const chartData = [
-    { category: 'Control',   score: 52, cohort: 'A' }, { category: 'Control',   score: 61, cohort: 'A' },
-    { category: 'Control',   score: 48, cohort: 'A' }, { category: 'Control',   score: 70, cohort: 'A' },
-    { category: 'Control',   score: 55, cohort: 'A' }, { category: 'Control',   score: 43, cohort: 'A' },
-    { category: 'Control',   score: 66, cohort: 'A' }, { category: 'Control',   score: 58, cohort: 'A' },
-    { category: 'Treatment', score: 71, cohort: 'A' }, { category: 'Treatment', score: 83, cohort: 'A' },
-    { category: 'Treatment', score: 65, cohort: 'A' }, { category: 'Treatment', score: 90, cohort: 'A' },
-    { category: 'Treatment', score: 78, cohort: 'A' }, { category: 'Treatment', score: 62, cohort: 'A' },
-    { category: 'Treatment', score: 88, cohort: 'A' }, { category: 'Treatment', score: 75, cohort: 'A' },
-    { category: 'Placebo',   score: 50, cohort: 'B' }, { category: 'Placebo',   score: 54, cohort: 'B' },
-    { category: 'Placebo',   score: 47, cohort: 'B' }, { category: 'Placebo',   score: 63, cohort: 'B' },
-    { category: 'Placebo',   score: 51, cohort: 'B' }, { category: 'Placebo',   score: 58, cohort: 'B' },
-    { category: 'Placebo',   score: 44, cohort: 'B' }, { category: 'Placebo',   score: 60, cohort: 'B' }
+    { category: 'Control', score: 52, cohort: 'A' },
+    { category: 'Control', score: 61, cohort: 'A' },
+    { category: 'Control', score: 48, cohort: 'A' },
+    { category: 'Control', score: 70, cohort: 'A' },
+    { category: 'Control', score: 55, cohort: 'A' },
+    { category: 'Control', score: 43, cohort: 'A' },
+    { category: 'Control', score: 66, cohort: 'A' },
+    { category: 'Control', score: 58, cohort: 'A' },
+    { category: 'Treatment', score: 71, cohort: 'A' },
+    { category: 'Treatment', score: 83, cohort: 'A' },
+    { category: 'Treatment', score: 65, cohort: 'A' },
+    { category: 'Treatment', score: 90, cohort: 'A' },
+    { category: 'Treatment', score: 78, cohort: 'A' },
+    { category: 'Treatment', score: 62, cohort: 'A' },
+    { category: 'Treatment', score: 88, cohort: 'A' },
+    { category: 'Treatment', score: 75, cohort: 'A' },
+    { category: 'Placebo', score: 50, cohort: 'B' },
+    { category: 'Placebo', score: 54, cohort: 'B' },
+    { category: 'Placebo', score: 47, cohort: 'B' },
+    { category: 'Placebo', score: 63, cohort: 'B' },
+    { category: 'Placebo', score: 51, cohort: 'B' },
+    { category: 'Placebo', score: 58, cohort: 'B' },
+    { category: 'Placebo', score: 44, cohort: 'B' },
+    { category: 'Placebo', score: 60, cohort: 'B' }
   ]
 
   let props = $state({ colorField: 'category', grid: true, legend: false })
@@ -1075,7 +1192,7 @@ Use same dataset as BoxPlot (raw observations per group). Use `color` for group 
     type: 'vertical',
     elements: [
       { scope: '#/colorField', label: 'color', props: { options: ['', 'category', 'cohort'] } },
-      { scope: '#/grid',   label: 'grid' },
+      { scope: '#/grid', label: 'grid' },
       { scope: '#/legend', label: 'legend' },
       { type: 'separator' }
     ]
@@ -1086,7 +1203,7 @@ Use same dataset as BoxPlot (raw observations per group). Use `color` for group 
   {#snippet preview()}
     <div class="flex flex-col gap-8 p-6">
       <div>
-        <h4 class="text-surface-z5 m-0 mb-3 text-xs uppercase tracking-widest font-semibold">
+        <h4 class="text-surface-z5 m-0 mb-3 text-xs font-semibold tracking-widest uppercase">
           Score Distribution by Group
         </h4>
         <ViolinPlot
@@ -1148,6 +1265,7 @@ git commit -m "feat(site): add ViolinPlot playground page"
 ### Task 7: `BubbleChart.svelte` + playground
 
 **Files:**
+
 - Create: `packages/chart/src/charts/BubbleChart.svelte`
 - Create: `packages/chart/spec/charts/BubbleChart.spec.js`
 - Create: `site/src/routes/(play)/playground/components/bubble-chart/+page.svelte`
@@ -1196,6 +1314,7 @@ cd packages/chart && bun run test --reporter=verbose spec/charts/BubbleChart.spe
 - [ ] **Step 3: Implement `BubbleChart.svelte`**
 
 Copy `ScatterPlot.svelte` as the base. Change:
+
 - `data-chart-type="bubble"` (was `"scatter"`)
 - `aria-label="Bubble chart"`
 - Add `size` to props (required — no default value)
@@ -1223,21 +1342,21 @@ Copy `ScatterPlot.svelte` as the base. Change:
   import PlaySection from '$lib/components/PlaySection.svelte'
 
   const chartData = [
-    { country: 'USA',     gdp: 25000, lifeExp: 79, population: 331,  continent: 'Americas' },
-    { country: 'China',   gdp: 18000, lifeExp: 77, population: 1412, continent: 'Asia' },
-    { country: 'Germany', gdp: 4200,  lifeExp: 81, population: 84,   continent: 'Europe' },
-    { country: 'India',   gdp: 3700,  lifeExp: 70, population: 1380, continent: 'Asia' },
-    { country: 'Japan',   gdp: 4300,  lifeExp: 84, population: 125,  continent: 'Asia' },
-    { country: 'Brazil',  gdp: 2100,  lifeExp: 75, population: 215,  continent: 'Americas' },
-    { country: 'UK',      gdp: 3100,  lifeExp: 81, population: 67,   continent: 'Europe' },
-    { country: 'France',  gdp: 2900,  lifeExp: 82, population: 68,   continent: 'Europe' },
-    { country: 'Nigeria', gdp: 477,   lifeExp: 55, population: 218,  continent: 'Africa' },
-    { country: 'Mexico',  gdp: 1290,  lifeExp: 75, population: 130,  continent: 'Americas' },
-    { country: 'S.Korea', gdp: 1800,  lifeExp: 83, population: 52,   continent: 'Asia' },
-    { country: 'Canada',  gdp: 2100,  lifeExp: 82, population: 38,   continent: 'Americas' },
-    { country: 'Egypt',   gdp: 476,   lifeExp: 72, population: 104,  continent: 'Africa' },
-    { country: 'Italy',   gdp: 2100,  lifeExp: 83, population: 60,   continent: 'Europe' },
-    { country: 'Pakistan',gdp: 376,   lifeExp: 68, population: 231,  continent: 'Asia' }
+    { country: 'USA', gdp: 25000, lifeExp: 79, population: 331, continent: 'Americas' },
+    { country: 'China', gdp: 18000, lifeExp: 77, population: 1412, continent: 'Asia' },
+    { country: 'Germany', gdp: 4200, lifeExp: 81, population: 84, continent: 'Europe' },
+    { country: 'India', gdp: 3700, lifeExp: 70, population: 1380, continent: 'Asia' },
+    { country: 'Japan', gdp: 4300, lifeExp: 84, population: 125, continent: 'Asia' },
+    { country: 'Brazil', gdp: 2100, lifeExp: 75, population: 215, continent: 'Americas' },
+    { country: 'UK', gdp: 3100, lifeExp: 81, population: 67, continent: 'Europe' },
+    { country: 'France', gdp: 2900, lifeExp: 82, population: 68, continent: 'Europe' },
+    { country: 'Nigeria', gdp: 477, lifeExp: 55, population: 218, continent: 'Africa' },
+    { country: 'Mexico', gdp: 1290, lifeExp: 75, population: 130, continent: 'Americas' },
+    { country: 'S.Korea', gdp: 1800, lifeExp: 83, population: 52, continent: 'Asia' },
+    { country: 'Canada', gdp: 2100, lifeExp: 82, population: 38, continent: 'Americas' },
+    { country: 'Egypt', gdp: 476, lifeExp: 72, population: 104, continent: 'Africa' },
+    { country: 'Italy', gdp: 2100, lifeExp: 83, population: 60, continent: 'Europe' },
+    { country: 'Pakistan', gdp: 376, lifeExp: 68, population: 231, continent: 'Asia' }
   ]
 
   let props = $state({
@@ -1250,9 +1369,9 @@ Copy `ScatterPlot.svelte` as the base. Change:
   const schema = {
     type: 'object',
     properties: {
-      colorField:  { type: 'string' },
+      colorField: { type: 'string' },
       symbolField: { type: 'string' },
-      grid:   { type: 'boolean' },
+      grid: { type: 'boolean' },
       legend: { type: 'boolean' }
     }
   }
@@ -1260,9 +1379,9 @@ Copy `ScatterPlot.svelte` as the base. Change:
   const layout = {
     type: 'vertical',
     elements: [
-      { scope: '#/colorField',  label: 'color',  props: { options: ['', 'continent'] } },
+      { scope: '#/colorField', label: 'color', props: { options: ['', 'continent'] } },
       { scope: '#/symbolField', label: 'symbol', props: { options: ['', 'continent'] } },
-      { scope: '#/grid',   label: 'grid' },
+      { scope: '#/grid', label: 'grid' },
       { scope: '#/legend', label: 'legend' },
       { type: 'separator' }
     ]
@@ -1273,7 +1392,7 @@ Copy `ScatterPlot.svelte` as the base. Change:
   {#snippet preview()}
     <div class="flex flex-col gap-8 p-6">
       <div>
-        <h4 class="text-surface-z5 m-0 mb-3 text-xs uppercase tracking-widest font-semibold">
+        <h4 class="text-surface-z5 m-0 mb-3 text-xs font-semibold tracking-widest uppercase">
           GDP vs Life Expectancy (bubble = population)
         </h4>
         <BubbleChart
@@ -1329,18 +1448,19 @@ Copy `ScatterPlot.svelte` as the base. Change:
 ```bash
 cd packages/chart && bun run test
 ```
+
 Expected: all PASS
 
 - [ ] **Step 6: Add all exports to `packages/chart/src/index.js`**
 
 ```js
 // Add to existing chart exports:
-export { default as BoxPlot }     from './charts/BoxPlot.svelte'
-export { default as ViolinPlot }  from './charts/ViolinPlot.svelte'
+export { default as BoxPlot } from './charts/BoxPlot.svelte'
+export { default as ViolinPlot } from './charts/ViolinPlot.svelte'
 export { default as BubbleChart } from './charts/BubbleChart.svelte'
 
 // Add to brewer exports:
-export { BoxBrewer }    from './lib/brewing/BoxBrewer.svelte.js'
+export { BoxBrewer } from './lib/brewing/BoxBrewer.svelte.js'
 export { ViolinBrewer } from './lib/brewing/ViolinBrewer.svelte.js'
 ```
 
@@ -1349,6 +1469,7 @@ export { ViolinBrewer } from './lib/brewing/ViolinBrewer.svelte.js'
 ```bash
 bun run test:ci && bun run lint
 ```
+
 Expected: zero errors.
 
 - [ ] **Step 8: Commit**

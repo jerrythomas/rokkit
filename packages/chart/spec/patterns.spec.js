@@ -30,7 +30,9 @@ describe('PatternDef', () => {
 	})
 
 	it('renders empty pattern for an unknown pattern name', () => {
-		const { container } = render(PatternDef, { props: { id: 'pat-unknown', name: 'unknown', size: 10 } })
+		const { container } = render(PatternDef, {
+			props: { id: 'pat-unknown', name: 'unknown', size: 10 }
+		})
 		// only the background rect should be rendered (no mark elements)
 		expect(container.querySelectorAll('line, circle, polygon, path')).toHaveLength(0)
 	})

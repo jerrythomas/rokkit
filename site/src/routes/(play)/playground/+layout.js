@@ -4,7 +4,11 @@ import { fetchImports, getSlug } from '$lib/stories.js'
 const metadataList = import.meta.glob('./**/meta.json', { import: 'default' })
 
 const GROUPS = {
-	'navigation-selection': { title: 'Navigation & Selection', icon: 'i-glyph:list-check', order: 10 },
+	'navigation-selection': {
+		title: 'Navigation & Selection',
+		icon: 'i-glyph:list-check',
+		order: 10
+	},
 	inputs: { title: 'Inputs', icon: 'i-glyph:keyboard', order: 11 },
 	display: { title: 'Display', icon: 'i-glyph:gallery-wide', order: 12 },
 	layout: { title: 'Layout', icon: 'i-glyph:layers-minimalistic', order: 13 },

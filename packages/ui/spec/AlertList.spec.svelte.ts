@@ -61,7 +61,9 @@ describe('AlertList', () => {
 		// JSDOM doesn't run CSS transitions, so fire transitionend (max-height) to
 		// complete the CSS-driven dismiss and remove the element from the store.
 		document.querySelectorAll('[data-alert-list] > div').forEach((el) => {
-			el.dispatchEvent(new TransitionEvent('transitionend', { propertyName: 'max-height', bubbles: true }))
+			el.dispatchEvent(
+				new TransitionEvent('transitionend', { propertyName: 'max-height', bubbles: true })
+			)
 		})
 		flushSync()
 		expect(document.querySelectorAll('[data-message-root]')).toHaveLength(0)

@@ -38,16 +38,24 @@
 
 <div class="overflow-auto p-6">
 	<h1 class="text-surface-z8 mb-2 text-2xl font-bold">Theme Verification</h1>
-	<p class="text-surface-z5 mb-8 text-sm">All 10 themes rendered side-by-side with the same component set.</p>
+	<p class="text-surface-z5 mb-8 text-sm">
+		All 10 themes rendered side-by-side with the same component set.
+	</p>
 
 	<div class="flex flex-col gap-8">
 		{#each THEMES as themeName (themeName)}
-			<section data-style={themeName} class="rounded-xl p-6" style="border: 1px solid var(--color-surface-z3, #444)">
-				<h2 class="mb-4 text-lg font-semibold font-mono">{themeName}</h2>
+			<section
+				data-style={themeName}
+				class="rounded-xl p-6"
+				style="border: 1px solid var(--color-surface-z3, #444)"
+			>
+				<h2 class="mb-4 font-mono text-lg font-semibold">{themeName}</h2>
 
 				<!-- Buttons -->
 				<div class="mb-4">
-					<p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Buttons</p>
+					<p class="text-surface-z5 mb-2 text-xs font-semibold tracking-widest uppercase">
+						Buttons
+					</p>
 					<div class="flex flex-wrap gap-2">
 						{#each BUTTON_VARIANTS as btn (btn.label)}
 							<Button
@@ -63,7 +71,7 @@
 
 				<!-- Input -->
 				<div class="mb-4">
-					<p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Input</p>
+					<p class="text-surface-z5 mb-2 text-xs font-semibold tracking-widest uppercase">Input</p>
 					<div class="flex gap-3">
 						<div class="max-w-xs flex-1">
 							<InputField bind:value={inputValues[themeName]} label="Label" name="demo" />
@@ -76,7 +84,7 @@
 
 				<!-- Switch -->
 				<div class="mb-4">
-					<p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Switch</p>
+					<p class="text-surface-z5 mb-2 text-xs font-semibold tracking-widest uppercase">Switch</p>
 					<div class="flex gap-4">
 						<Switch bind:value={switchOnValues[themeName]} options={SWITCH_OPTIONS} showLabels />
 						<Switch bind:value={switchOffValues[themeName]} options={SWITCH_OPTIONS} showLabels />
@@ -86,7 +94,7 @@
 
 				<!-- Card -->
 				<div>
-					<p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Card</p>
+					<p class="text-surface-z5 mb-2 text-xs font-semibold tracking-widest uppercase">Card</p>
 					<div class="flex flex-wrap gap-3">
 						<Card class="max-w-xs flex-1">
 							{#snippet header()}

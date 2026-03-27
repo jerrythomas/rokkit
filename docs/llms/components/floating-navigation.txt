@@ -1,0 +1,64 @@
+# FloatingNavigation
+
+Sticky side navigation panel that auto-expands on scroll and can be pinned open. Used for in-page section navigation (table of contents style).
+
+## Import
+
+```javascript
+import { FloatingNavigation } from '@rokkit/ui'
+```
+
+## Quick Start
+
+```svelte
+<script>
+  import { FloatingNavigation } from '@rokkit/ui'
+
+  const sections = [
+    { label: 'Introduction', href: '#intro' },
+    { label: 'Usage', href: '#usage' },
+    { label: 'API', href: '#api' },
+  ]
+  let current = $state(null)
+</script>
+
+<FloatingNavigation items={sections} bind:value={current} position="right" observe />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `items` | `unknown[]` | `[]` | Navigation items |
+| `fields` | `Record<string,string>` | `{}` | Field mapping |
+| `value` | `unknown` | — | Active item — use `bind:value` |
+| `position` | `'left' \| 'right'` | `'right'` | Screen side to attach to |
+| `pinned` | `boolean` | `false` | Pin panel open — use `bind:pinned` |
+| `observe` | `boolean` | `true` | Auto-highlight active section via IntersectionObserver |
+| `observerOptions` | `IntersectionObserverInit` | `{}` | Override observer options |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Item size |
+| `label` | `string` | — | Accessible label |
+| `labels` | `Record<string,string>` | `{}` | UI string overrides (e.g. `{ pin: 'Pin', unpin: 'Unpin' }`) |
+| `icons` | `{ pin?, unpin? }` | — | Override pin/unpin icon classes |
+| `onselect` | `(value, proxy) => void` | — | Item selection callback |
+| `onpinchange` | `(pinned) => void` | — | Pin state change callback |
+| `class` | `string` | `''` | Additional CSS classes |
+
+## Snippets
+
+- `itemContent(proxy)` — Custom nav item content
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-floating-nav` | Root element |
+| `data-position` | Panel position (`left`, `right`) |
+| `data-pinned` | Present when panel is pinned open |
+| `data-floating-nav-item` | Individual nav item |
+| `data-active` | Present on active item |
+
+## Related
+
+- [floating-actions](/llms/components/floating-actions.txt) — Floating action button (FAB)
+- [list](/llms/components/list.txt) — Vertical list navigation

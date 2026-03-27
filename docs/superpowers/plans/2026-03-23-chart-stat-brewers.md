@@ -13,6 +13,7 @@
 ## File Map
 
 **New files:**
+
 - `packages/chart/src/lib/brewing/stats.js` — `STAT_FNS` map + `applyAggregate()` helper
 - `packages/chart/src/lib/brewing/CartesianBrewer.svelte.js` — subclass for Bar/Line/Area
 - `packages/chart/src/lib/brewing/PieBrewer.svelte.js` — subclass for Pie (always aggregates)
@@ -21,6 +22,7 @@
 - `packages/chart/spec/brewing/PieBrewer.spec.js`
 
 **Modified files:**
+
 - `packages/chart/src/lib/brewing/brewer.svelte.js` — add transform hook, processedData, channels getter, stat in update()
 - `packages/chart/src/charts/BarChart.svelte` — use CartesianBrewer, add `stat` prop
 - `packages/chart/src/charts/LineChart.svelte` — use CartesianBrewer, add `stat` prop
@@ -37,18 +39,21 @@
 ### Task 1: `stats.js` — stat functions and aggregate helper
 
 **Files:**
+
 - Create: `packages/chart/src/lib/brewing/stats.js`
 - Create: `packages/chart/spec/brewing/stats.spec.js`
 
 **Context:**
 `@rokkit/data` is already a dependency. The `dataset()` API:
+
 ```js
 dataset(data)
   .groupBy('field1', 'field2')
   .summarize((row) => row['y'], { y: sumFn })
   .rollup()
-  .select()  // returns aggregated array
+  .select() // returns aggregated array
 ```
+
 The mapper in `summarize` must be a function returning the raw value (not `pick()`), so formula functions receive arrays of numbers.
 
 - [ ] **Step 1: Write the failing tests**
@@ -122,6 +127,7 @@ describe('applyAggregate', () => {
 ```bash
 cd packages/chart && bun run test --reporter=verbose spec/brewing/stats.spec.js
 ```
+
 Expected: FAIL — `Cannot find module '../../src/lib/brewing/stats.js'`
 
 - [ ] **Step 3: Implement `stats.js`**
@@ -168,6 +174,7 @@ export function applyAggregate(data, { by, value, stat }) {
 ```bash
 cd packages/chart && bun run test --reporter=verbose spec/brewing/stats.spec.js
 ```
+
 Expected: 12 tests PASS
 
 - [ ] **Step 5: Commit**
@@ -184,11 +191,13 @@ git commit -m "feat(chart): add stat aggregation utility with STAT_FNS and apply
 ### Task 2: Refactor `brewer.svelte.js` — add transform hook
 
 **Files:**
+
 - Modify: `packages/chart/src/lib/brewing/brewer.svelte.js`
 - Modify: `packages/chart/spec/brewing/brewer.spec.js`
 
 **Context:**
 Current `brewer.svelte.js` has `#data = $state([])`. We need to:
+
 1. Rename to `#rawData`
 2. Add `#stat = $state('identity')`
 3. Add `transform(data, channels, stat) { return data }` — subclasses override this
@@ -220,6 +229,7 @@ describe('transform hook', () => {
 ```bash
 cd packages/chart && bun run test --reporter=verbose spec/brewing/brewer.spec.js
 ```
+
 Expected: FAIL — `brewer.processedData is undefined`
 
 - [ ] **Step 3: Update `brewer.svelte.js`**
@@ -268,7 +278,9 @@ export class ChartBrewer {
   processedData = $derived(this.transform(this.#rawData, this.#channels, this.#stat))
 
   /** Exposes channels to subclasses for use in their own $derived properties */
-  get channels() { return this.#channels }
+  get channels() {
+    return this.#channels
+  }
 
   colorMap = $derived(
     this.#channels.color
@@ -288,13 +300,15 @@ export class ChartBrewer {
       : new Map()
   )
 
-  get innerWidth()  { return this.#width  - this.#margin.left - this.#margin.right }
-  get innerHeight() { return this.#height - this.#margin.top  - this.#margin.bottom }
+  get innerWidth() {
+    return this.#width - this.#margin.left - this.#margin.right
+  }
+  get innerHeight() {
+    return this.#height - this.#margin.top - this.#margin.bottom
+  }
 
   xScale = $derived(
-    this.#channels.x
-      ? buildXScale(this.processedData, this.#channels.x, this.innerWidth)
-      : null
+    this.#channels.x ? buildXScale(this.processedData, this.#channels.x, this.innerWidth) : null
   )
 
   yScale = $derived(
@@ -304,26 +318,46 @@ export class ChartBrewer {
   )
 
   sizeScale = $derived(
-    this.#channels.size
-      ? buildSizeScale(this.processedData, this.#channels.size)
-      : null
+    this.#channels.size ? buildSizeScale(this.processedData, this.#channels.size) : null
   )
 
   bars = $derived(
     this.xScale && this.yScale
-      ? buildBars(this.processedData, this.#channels, this.xScale, this.yScale, this.colorMap, this.patternMap)
+      ? buildBars(
+          this.processedData,
+          this.#channels,
+          this.xScale,
+          this.yScale,
+          this.colorMap,
+          this.patternMap
+        )
       : []
   )
 
   lines = $derived(
     this.xScale && this.yScale
-      ? buildLines(this.processedData, this.#channels, this.xScale, this.yScale, this.colorMap, this.#curve)
+      ? buildLines(
+          this.processedData,
+          this.#channels,
+          this.xScale,
+          this.yScale,
+          this.colorMap,
+          this.#curve
+        )
       : []
   )
 
   areas = $derived(
     this.xScale && this.yScale
-      ? buildAreas(this.processedData, this.#channels, this.xScale, this.yScale, this.colorMap, this.#curve, this.patternMap)
+      ? buildAreas(
+          this.processedData,
+          this.#channels,
+          this.xScale,
+          this.yScale,
+          this.colorMap,
+          this.#curve,
+          this.patternMap
+        )
       : []
   )
 
@@ -335,7 +369,15 @@ export class ChartBrewer {
 
   points = $derived(
     this.xScale && this.yScale
-      ? buildPoints(this.processedData, this.#channels, this.xScale, this.yScale, this.colorMap, this.sizeScale, this.symbolMap)
+      ? buildPoints(
+          this.processedData,
+          this.#channels,
+          this.xScale,
+          this.yScale,
+          this.colorMap,
+          this.sizeScale,
+          this.symbolMap
+        )
       : []
   )
 
@@ -343,21 +385,29 @@ export class ChartBrewer {
     buildLegendGroups(this.#channels, this.colorMap, this.patternMap, this.symbolMap)
   )
 
-  get margin()  { return this.#margin }
-  get width()   { return this.#width }
-  get height()  { return this.#height }
-  get mode()    { return this.#mode }
+  get margin() {
+    return this.#margin
+  }
+  get width() {
+    return this.#width
+  }
+  get height() {
+    return this.#height
+  }
+  get mode() {
+    return this.#mode
+  }
 
   update(opts = {}) {
-    if (opts.data     !== undefined) this.#rawData  = opts.data
+    if (opts.data !== undefined) this.#rawData = opts.data
     if (opts.channels !== undefined) this.#channels = opts.channels
-    if (opts.width    !== undefined) this.#width    = opts.width
-    if (opts.height   !== undefined) this.#height   = opts.height
-    if (opts.mode     !== undefined) this.#mode     = opts.mode
-    if (opts.margin   !== undefined) this.#margin   = { ...DEFAULT_MARGIN, ...opts.margin }
-    if (opts.layers   !== undefined) this.#layers   = opts.layers
-    if (opts.curve    !== undefined) this.#curve    = opts.curve
-    if (opts.stat     !== undefined) this.#stat     = opts.stat
+    if (opts.width !== undefined) this.#width = opts.width
+    if (opts.height !== undefined) this.#height = opts.height
+    if (opts.mode !== undefined) this.#mode = opts.mode
+    if (opts.margin !== undefined) this.#margin = { ...DEFAULT_MARGIN, ...opts.margin }
+    if (opts.layers !== undefined) this.#layers = opts.layers
+    if (opts.curve !== undefined) this.#curve = opts.curve
+    if (opts.stat !== undefined) this.#stat = opts.stat
   }
 }
 ```
@@ -367,6 +417,7 @@ export class ChartBrewer {
 ```bash
 cd packages/chart && bun run test
 ```
+
 Expected: all existing tests PASS (and the new processedData test passes)
 
 - [ ] **Step 5: Commit**
@@ -381,6 +432,7 @@ git commit -m "feat(chart): add transform hook and processedData to ChartBrewer"
 ### Task 3: `CartesianBrewer` and `PieBrewer`
 
 **Files:**
+
 - Create: `packages/chart/src/lib/brewing/CartesianBrewer.svelte.js`
 - Create: `packages/chart/src/lib/brewing/PieBrewer.svelte.js`
 - Create: `packages/chart/spec/brewing/CartesianBrewer.spec.js`
@@ -483,6 +535,7 @@ describe('PieBrewer.transform', () => {
 ```bash
 cd packages/chart && bun run test --reporter=verbose spec/brewing/CartesianBrewer.spec.js spec/brewing/PieBrewer.spec.js
 ```
+
 Expected: FAIL — modules not found
 
 - [ ] **Step 3: Implement `CartesianBrewer.svelte.js`**
@@ -530,6 +583,7 @@ export class PieBrewer extends ChartBrewer {
 ```bash
 cd packages/chart && bun run test --reporter=verbose spec/brewing/CartesianBrewer.spec.js spec/brewing/PieBrewer.spec.js
 ```
+
 Expected: all tests PASS
 
 - [ ] **Step 6: Commit**
@@ -549,6 +603,7 @@ git commit -m "feat(chart): add CartesianBrewer and PieBrewer subclasses with st
 ### Task 4: Wire BarChart, LineChart, AreaChart to CartesianBrewer
 
 **Files:**
+
 - Modify: `packages/chart/src/charts/BarChart.svelte`
 - Modify: `packages/chart/src/charts/LineChart.svelte`
 - Modify: `packages/chart/src/charts/AreaChart.svelte`
@@ -556,6 +611,7 @@ git commit -m "feat(chart): add CartesianBrewer and PieBrewer subclasses with st
 
 **Context:**
 Each chart only needs two changes in its `<script>`:
+
 1. Change import + `new ChartBrewer()` → `new CartesianBrewer()`
 2. Add `stat = 'identity'` prop and pass it in `brewer.update()`
 
@@ -572,7 +628,12 @@ it('renders with stat=sum', () => {
     { category: 'A', revenue: 50 },
     { category: 'B', revenue: 200 }
   ]
-  const { container } = render(BarChart, { data: aggData, x: 'category', y: 'revenue', stat: 'sum' })
+  const { container } = render(BarChart, {
+    data: aggData,
+    x: 'category',
+    y: 'revenue',
+    stat: 'sum'
+  })
   expect(container.querySelector('svg')).toBeTruthy()
 })
 ```
@@ -582,11 +643,13 @@ it('renders with stat=sum', () => {
 ```bash
 cd packages/chart && bun run test --reporter=verbose spec/charts/BarChart.spec.js
 ```
+
 Expected: FAIL — `stat` prop has no effect / warning
 
 - [ ] **Step 3: Update `BarChart.svelte`**
 
 Change import and brewer instantiation:
+
 ```js
 // Replace:
 import { ChartBrewer } from '../lib/brewing/brewer.svelte.js'
@@ -595,6 +658,7 @@ import { CartesianBrewer } from '../lib/brewing/CartesianBrewer.svelte.js'
 ```
 
 Add `stat` to props destructuring:
+
 ```js
 let {
   data = [],
@@ -602,7 +666,7 @@ let {
   y = undefined,
   color = undefined,
   pattern = undefined,
-  stat = 'identity',   // ← add this
+  stat = 'identity', // ← add this
   width = 600,
   height = 400,
   mode = 'light',
@@ -612,13 +676,15 @@ let {
 ```
 
 Change brewer instantiation:
+
 ```js
-const brewer = new CartesianBrewer()  // was: new ChartBrewer()
+const brewer = new CartesianBrewer() // was: new ChartBrewer()
 ```
 
 Add stat to brewer.update():
+
 ```js
-brewer.update({ data, channels, width, height, mode, stat })  // add stat
+brewer.update({ data, channels, width, height, mode, stat }) // add stat
 ```
 
 Apply same changes to `LineChart.svelte` and `AreaChart.svelte`.
@@ -628,6 +694,7 @@ Apply same changes to `LineChart.svelte` and `AreaChart.svelte`.
 ```bash
 cd packages/chart && bun run test
 ```
+
 Expected: all tests PASS
 
 - [ ] **Step 5: Commit**
@@ -645,12 +712,14 @@ git commit -m "feat(chart): wire BarChart, LineChart, AreaChart to CartesianBrew
 ### Task 5: Wire PieChart to PieBrewer
 
 **Files:**
+
 - Modify: `packages/chart/src/charts/PieChart.svelte`
 - Modify: `packages/chart/spec/charts/PieChart.spec.js`
 
 - [ ] **Step 1: Write a failing test**
 
 Add to `packages/chart/spec/charts/PieChart.spec.js`:
+
 ```js
 it('aggregates duplicate labels with stat=sum', () => {
   const dupData = [
@@ -659,7 +728,10 @@ it('aggregates duplicate labels with stat=sum', () => {
     { segment: 'B', share: 30 }
   ]
   const { container } = render(PieChart, {
-    data: dupData, label: 'segment', y: 'share', stat: 'sum'
+    data: dupData,
+    label: 'segment',
+    y: 'share',
+    stat: 'sum'
   })
   expect(container.querySelector('svg')).toBeTruthy()
 })
@@ -684,7 +756,7 @@ let {
   y = undefined,
   color = undefined,
   pattern = undefined,
-  stat = 'sum',          // ← add this; default sum because pie always aggregates
+  stat = 'sum', // ← add this; default sum because pie always aggregates
   width = 400,
   height = 400,
   mode = 'light',
@@ -703,6 +775,7 @@ brewer.update({ data, channels, width, height, mode, stat })
 ```bash
 cd packages/chart && bun run test
 ```
+
 Expected: all tests PASS
 
 - [ ] **Step 5: Commit**
@@ -717,6 +790,7 @@ git commit -m "feat(chart): wire PieChart to PieBrewer — always aggregates by 
 ### Task 6: Update exports + playground pages
 
 **Files:**
+
 - Modify: `packages/chart/src/index.js`
 - Modify: `site/src/routes/(play)/playground/components/bar-chart/+page.svelte`
 - Modify: `site/src/routes/(play)/playground/components/pie-chart/+page.svelte`
@@ -727,10 +801,12 @@ The bar chart playground needs data with duplicate x values so stat is meaningfu
 - [ ] **Step 1: Add exports to `packages/chart/src/index.js`**
 
 **Important context:** There are two `ChartBrewer` classes in this codebase:
+
 - `lib/brewing/index.svelte.js` — the legacy non-runes class used by `Plot.*` primitives (setData/setFields API). This is currently the one exported as `ChartBrewer` from `src/index.js`. **Do not change this export.**
 - `lib/brewing/brewer.svelte.js` — the Svelte 5 runes class used internally by all standalone chart components (BarChart, PieChart, etc.). Subclasses extend this one. It is not currently exported.
 
 Add after existing chart exports — do NOT replace the existing `ChartBrewer` export:
+
 ```js
 export { CartesianBrewer } from './lib/brewing/CartesianBrewer.svelte.js'
 export { PieBrewer } from './lib/brewing/PieBrewer.svelte.js'
@@ -755,9 +831,9 @@ const chartData = [
   { quarter: 'Q4', month: 'Oct', revenue: 40000, cost: 28000, region: 'North' },
   { quarter: 'Q4', month: 'Nov', revenue: 45000, cost: 32000, region: 'North' },
   { quarter: 'Q4', month: 'Dec', revenue: 52000, cost: 37000, region: 'North' },
-  { quarter: 'Q1', month: 'Jan', revenue: 12000, cost: 9000,  region: 'South' },
+  { quarter: 'Q1', month: 'Jan', revenue: 12000, cost: 9000, region: 'South' },
   { quarter: 'Q1', month: 'Feb', revenue: 15000, cost: 11000, region: 'South' },
-  { quarter: 'Q1', month: 'Mar', revenue: 11000, cost: 8000,  region: 'South' },
+  { quarter: 'Q1', month: 'Mar', revenue: 11000, cost: 8000, region: 'South' },
   { quarter: 'Q2', month: 'Apr', revenue: 19000, cost: 14000, region: 'South' },
   { quarter: 'Q2', month: 'May', revenue: 22000, cost: 16000, region: 'South' },
   { quarter: 'Q2', month: 'Jun', revenue: 18000, cost: 13000, region: 'South' },
@@ -791,17 +867,22 @@ const schema = {
 const layout = {
   type: 'vertical',
   elements: [
-    { scope: '#/colorField',   label: 'color',   props: { options: ['', 'region', 'quarter'] } },
+    { scope: '#/colorField', label: 'color', props: { options: ['', 'region', 'quarter'] } },
     { scope: '#/patternField', label: 'pattern', props: { options: ['', 'region', 'quarter'] } },
-    { scope: '#/stat',         label: 'stat',    props: { options: ['identity', 'sum', 'mean', 'min', 'max', 'count'] } },
-    { scope: '#/grid',         label: 'grid' },
-    { scope: '#/legend',       label: 'legend' },
+    {
+      scope: '#/stat',
+      label: 'stat',
+      props: { options: ['identity', 'sum', 'mean', 'min', 'max', 'count'] }
+    },
+    { scope: '#/grid', label: 'grid' },
+    { scope: '#/legend', label: 'legend' },
     { type: 'separator' }
   ]
 }
 ```
 
 Update the BarChart usage in `{#snippet preview()}`:
+
 ```svelte
 <BarChart
   data={chartData}
@@ -818,6 +899,7 @@ Update the BarChart usage in `{#snippet preview()}`:
 ```
 
 Update controls snippet:
+
 ```svelte
 {#snippet controls()}
   <FormRenderer bind:data={props} {schema} {layout} />
@@ -840,16 +922,21 @@ let props = $state({
 ```
 
 Add to schema:
+
 ```js
-stat: { type: 'string' }
+stat: {
+  type: 'string'
+}
 ```
 
 Add to layout elements (before separator):
+
 ```js
 { scope: '#/stat', label: 'stat', props: { options: ['sum', 'count', 'mean'] } }
 ```
 
 Update PieChart in preview:
+
 ```svelte
 <PieChart
   data={chartData}
@@ -869,6 +956,7 @@ Update PieChart in preview:
 ```bash
 cd site && bun run build 2>&1 | tail -20
 ```
+
 Expected: Build succeeds with no errors
 
 - [ ] **Step 5: Run all chart tests**
@@ -876,6 +964,7 @@ Expected: Build succeeds with no errors
 ```bash
 cd packages/chart && bun run test
 ```
+
 Expected: all tests PASS
 
 - [ ] **Step 6: Commit**
@@ -904,5 +993,6 @@ bun run lint
 Expected: zero errors.
 
 Open in browser:
+
 - `http://localhost:5174/playground/components/bar-chart` — set stat=sum, observe quarterly totals from monthly data; set stat=mean for averages
 - `http://localhost:5174/playground/components/pie-chart` — stat=count shows number of entries per segment

@@ -86,7 +86,7 @@ Items that add sophisticated capabilities.
 - [x] Keyboard navigation within charts — `keyboard` prop on Bar/Point/Line; `keyboardNav` Svelte action enables ArrowLeft/ArrowRight between data points; elements get tabindex+role automatically; `aria-label` announces values to screen readers (2026-03-26)
 - [x] Scatter chart — `ScatterPlot` with `size`, `fill`, `color`, `symbol`, `label` channels (2026-03-23)
 - [x] Pattern fills for series — 21 patterns (hatch, diagonal, dots, triangles, etc.); `pattern` channel on Bar and Area with `assignPatterns()` auto-rotation; `DefinePatterns.svelte` renders defs; Sparkline also supports pattern (2026-03-26)
-- [ ] Zoom and pan — scrollable and draggable chart viewport for large data ranges (`docs/features/07-Charts.md`)
+- [x] Zoom and pan — `zoom` prop on `Plot`; d3-zoom behavior on SVG; `applyZoom`/`resetZoom` on PlotState; rescaleX/rescaleY applied to continuous scales (2026-03-26)
 
 ### Toolchain
 

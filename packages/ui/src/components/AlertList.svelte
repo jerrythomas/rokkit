@@ -23,7 +23,7 @@
 
 	// Portal to document.body so position:fixed is relative to the viewport,
 	// not clipped by any overflow:auto ancestor (e.g. the docs main column).
-	 
+
 	function mountPortal(node: HTMLElement) {
 		document.body.appendChild(node)
 		return { destroy: () => node.remove() }

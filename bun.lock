@@ -36,7 +36,7 @@
     },
     "packages/actions": {
       "name": "@rokkit/actions",
-      "version": "1.0.0-next.148",
+      "version": "1.0.0-next.151",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "ramda": "^0.32.0",
@@ -48,7 +48,7 @@
     },
     "packages/app": {
       "name": "@rokkit/app",
-      "version": "1.0.0-next.148",
+      "version": "1.0.0-next.151",
       "dependencies": {
         "@rokkit/actions": "workspace:*",
         "@rokkit/core": "workspace:*",
@@ -74,7 +74,7 @@
     },
     "packages/blocks": {
       "name": "@rokkit/blocks",
-      "version": "1.0.0-next.148",
+      "version": "1.0.0-next.151",
       "dependencies": {
         "isomorphic-dompurify": "^2.0.0",
       },
@@ -94,7 +94,7 @@
     },
     "packages/chart": {
       "name": "@rokkit/chart",
-      "version": "1.0.0-next.148",
+      "version": "1.0.0-next.151",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "@rokkit/data": "workspace:latest",
@@ -107,12 +107,13 @@
         "d3-selection": "^3.0.0",
         "d3-shape": "^3.2.0",
         "d3-transition": "^3.0.1",
+        "d3-zoom": "^3.0.0",
         "ramda": "^0.32.0",
       },
     },
     "packages/cli": {
       "name": "@rokkit/cli",
-      "version": "1.0.0-next.148",
+      "version": "1.0.0-next.151",
       "bin": {
         "rokkit": "src/index.js",
       },
@@ -131,7 +132,7 @@
     },
     "packages/core": {
       "name": "@rokkit/core",
-      "version": "1.0.0-next.148",
+      "version": "1.0.0-next.151",
       "dependencies": {
         "@unocss/preset-mini": "^66.6.1",
         "date-fns": "^4.1.0",
@@ -143,7 +144,7 @@
     },
     "packages/data": {
       "name": "@rokkit/data",
-      "version": "1.0.0-next.148",
+      "version": "1.0.0-next.151",
       "dependencies": {
         "@lukeed/uuid": "^2.0.1",
         "@rokkit/core": "workspace:*",
@@ -155,7 +156,7 @@
     },
     "packages/forms": {
       "name": "@rokkit/forms",
-      "version": "1.0.0-next.148",
+      "version": "1.0.0-next.151",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "@rokkit/data": "workspace:latest",
@@ -166,7 +167,7 @@
     },
     "packages/helpers": {
       "name": "@rokkit/helpers",
-      "version": "1.0.0-next.148",
+      "version": "1.0.0-next.151",
       "dependencies": {
         "@vitest/expect": "^4.0.18",
         "ramda": "^0.32.0",
@@ -174,7 +175,7 @@
     },
     "packages/icons": {
       "name": "@rokkit/icons",
-      "version": "1.0.0-next.148",
+      "version": "1.0.0-next.151",
       "devDependencies": {
         "@iconify-json/solar": "^1.2.5",
         "@rokkit/cli": "workspace:latest",
@@ -183,7 +184,7 @@
     },
     "packages/states": {
       "name": "@rokkit/states",
-      "version": "1.0.0-next.148",
+      "version": "1.0.0-next.151",
       "dependencies": {
         "@rokkit/core": "workspace:*",
         "@rokkit/data": "workspace:*",
@@ -194,7 +195,7 @@
     },
     "packages/stories": {
       "name": "@rokkit/stories",
-      "version": "1.0.0-next.148",
+      "version": "1.0.0-next.151",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "@rokkit/states": "workspace:latest",
@@ -210,7 +211,7 @@
     },
     "packages/themes": {
       "name": "@rokkit/themes",
-      "version": "1.0.0-next.148",
+      "version": "1.0.0-next.151",
       "dependencies": {
         "@rokkit/core": "workspace:*",
       },
@@ -221,7 +222,7 @@
     },
     "packages/ui": {
       "name": "@rokkit/ui",
-      "version": "1.0.0-next.148",
+      "version": "1.0.0-next.151",
       "dependencies": {
         "@rokkit/actions": "workspace:*",
         "@rokkit/core": "workspace:*",
@@ -242,7 +243,7 @@
     },
     "packages/unocss": {
       "name": "@rokkit/unocss",
-      "version": "1.0.0-next.148",
+      "version": "1.0.0-next.151",
       "dependencies": {
         "@rokkit/core": "workspace:*",
         "@rokkit/icons": "workspace:*",
@@ -252,7 +253,7 @@
     },
     "site": {
       "name": "@rokkit/learn",
-      "version": "1.0.0-next.148",
+      "version": "1.0.0-next.151",
       "dependencies": {
         "@fontsource/open-sans": "^5.2.7",
         "@fontsource/overpass": "^5.2.8",
@@ -915,6 +916,8 @@
 
     "d3-dispatch": ["d3-dispatch@3.0.1", "", {}, "sha512-rzUyPU/S7rwUflMyLc1ETDeBj0NRuHKKAcvukozwhshr6g6c5d8zh4c2gQjY2bZ0dXeGLWc1PF174P2tVvKhfg=="],
 
+    "d3-drag": ["d3-drag@3.0.0", "", { "dependencies": { "d3-dispatch": "1 - 3", "d3-selection": "3" } }, "sha512-pWbUJLdETVA8lQNJecMxoXfH6x+mO2UQo8rSmZ+QqxcbyA3hfeprFgIT//HW2nlHChWeIIMwS2Fq+gEARkhTkg=="],
+
     "d3-ease": ["d3-ease@3.0.1", "", {}, "sha512-wR/XK3D3XcLIZwpbvQwQ5fK+8Ykds1ip7A2Txe0yxncXSdq1L9skcG7blcedkOX+ZcgxGAmLX1FrRGbADwzi0w=="],
 
     "d3-format": ["d3-format@3.1.2", "", {}, "sha512-AJDdYOdnyRDV5b6ArilzCPPwc1ejkHcoyFarqlPqT7zRYjhavcT3uSrqcMvsgh2CgoPbK3RCwyHaVyxYcP2Arg=="],
@@ -938,6 +941,8 @@
     "d3-timer": ["d3-timer@3.0.1", "", {}, "sha512-ndfJ/JxxMd3nw31uyKoY2naivF+r29V+Lc0svZxe1JvvIRmi8hUsrMvdOwgS1o6uBHmiz91geQ0ylPP0aj1VUA=="],
 
     "d3-transition": ["d3-transition@3.0.1", "", { "dependencies": { "d3-color": "1 - 3", "d3-dispatch": "1 - 3", "d3-ease": "1 - 3", "d3-interpolate": "1 - 3", "d3-timer": "1 - 3" }, "peerDependencies": { "d3-selection": "2 - 3" } }, "sha512-ApKvfjsSR6tg06xrL434C0WydLr7JewBB3V+/39RMHsaXTOG0zmt/OAXeng5M5LBm0ojmxJrpomQVZ1aPvBL4w=="],
+
+    "d3-zoom": ["d3-zoom@3.0.0", "", { "dependencies": { "d3-dispatch": "1 - 3", "d3-drag": "2 - 3", "d3-interpolate": "1 - 3", "d3-selection": "2 - 3", "d3-transition": "2 - 3" } }, "sha512-b8AmV3kfQaqWAuacbPuNbL6vahnOJflOhexLzMMNLga62+/nh0JzvJ0aO/5a5MVgUFGS7Hu1P9P03o3fJkDCyw=="],
 
     "data-urls": ["data-urls@6.0.1", "", { "dependencies": { "whatwg-mimetype": "^5.0.0", "whatwg-url": "^15.1.0" } }, "sha512-euIQENZg6x8mj3fO6o9+fOW8MimUI4PpD/fZBhJfeioZVy9TUpM4UY7KjQNVZFlqwJ0UdzRDzkycB997HEq1BQ=="],
 

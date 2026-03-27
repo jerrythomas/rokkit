@@ -11,7 +11,7 @@
 		same <code>x</code>, <code>y</code>, and <code>geoms</code> you would with <code>Plot</code>:
 	</p>
 	<pre><code
-		>{`<script>
+			>{`<script>
   import { AnimatedPlot } from '@rokkit/chart'
   import { browser } from '$app/environment'
   import { mpg } from './data/mpg.js'
@@ -26,7 +26,7 @@
     geoms={[{ type: 'bar', stat: 'mean' }]}
   />
 {/if}`}</code
-	></pre>
+		></pre>
 
 	<p>
 		The <code>{'{#if browser}'}</code> guard is required because <code>AnimatedPlot</code> uses
@@ -35,11 +35,11 @@
 
 	<h2>Playback options</h2>
 	<p>
-		Control playback speed and looping via the <code>animate</code> object. Users can also adjust
-		speed interactively via the timeline controls:
+		Control playback speed and looping via the <code>animate</code> object. Users can also adjust speed
+		interactively via the timeline controls:
 	</p>
 	<pre><code
-		>{`<AnimatedPlot
+			>{`<AnimatedPlot
   data={data}
   animate={{
     by: 'year',
@@ -49,15 +49,15 @@
   x="class" y="hwy"
   geoms={[{ type: 'bar', stat: 'mean' }]}
 />`}</code
-	></pre>
+		></pre>
 
 	<h2>Color encoding</h2>
 	<p>
-		Use <code>color</code> to assign palette colors by a field. The color domain is fixed across all
-		frames so categories keep consistent colors as the animation plays:
+		Use <code>color</code> to assign palette colors by a field. The color domain is fixed across all frames
+		so categories keep consistent colors as the animation plays:
 	</p>
 	<pre><code
-		>{`<AnimatedPlot
+			>{`<AnimatedPlot
   data={mpg}
   animate={{ by: 'year', loop: true }}
   x="class" y="hwy"
@@ -65,7 +65,7 @@
   geoms={[{ type: 'bar', stat: 'mean' }]}
   legend
 />`}</code
-	></pre>
+		></pre>
 
 	<h2>Geom types</h2>
 	<p>
@@ -74,7 +74,7 @@
 		are automatically filled with zero so bars and lines animate smoothly between frames:
 	</p>
 	<pre><code
-		>{`<!-- Animated line chart over time -->
+			>{`<!-- Animated line chart over time -->
 <AnimatedPlot
   data={data}
   animate={{ by: 'quarter' }}
@@ -82,7 +82,7 @@
   color="region"
   geoms={[{ type: 'line' }]}
 />`}</code
-	></pre>
+		></pre>
 
 	<h2>Timeline controls</h2>
 	<p>The built-in timeline renders below the chart and provides:</p>
@@ -93,8 +93,8 @@
 		<li><strong>Speed selector</strong> — 0.5×, 1×, 2×, 4× multipliers</li>
 	</ul>
 	<p>
-		The animation also respects the <code>prefers-reduced-motion</code> media query — when set,
-		auto-play is disabled.
+		The animation also respects the <code>prefers-reduced-motion</code> media query — when set, auto-play
+		is disabled.
 	</p>
 
 	<h2>Props</h2>

@@ -2,12 +2,12 @@ import { sum, mean, min, max, median } from 'd3-array'
 import { applyAggregate, applyBoxStat } from '../brewing/stats.js'
 
 const BUILT_IN_STATS = {
-  sum,
-  mean,
-  min,
-  max,
-  count: (values) => values.length,
-  median
+	sum,
+	mean,
+	min,
+	max,
+	count: (values) => values.length,
+	median
 }
 
 /**
@@ -19,14 +19,14 @@ const BUILT_IN_STATS = {
  * @returns {Function}
  */
 export function resolveStat(name, helpers = {}) {
-  if (name === 'identity') return (data) => data
-  if (BUILT_IN_STATS[name]) return BUILT_IN_STATS[name]
-  if (helpers?.stats?.[name]) return helpers.stats[name]
-  // eslint-disable-next-line no-console
-  console.warn(
-    `[Plot] Unknown stat "${name}" — falling back to identity. Add it to helpers.stats to suppress this warning.`
-  )
-  return (data) => data
+	if (name === 'identity') return (data) => data
+	if (BUILT_IN_STATS[name]) return BUILT_IN_STATS[name]
+	if (helpers?.stats?.[name]) return helpers.stats[name]
+	// eslint-disable-next-line no-console
+	console.warn(
+		`[Plot] Unknown stat "${name}" — falling back to identity. Add it to helpers.stats to suppress this warning.`
+	)
+	return (data) => data
 }
 
 /**
@@ -39,16 +39,16 @@ export function resolveStat(name, helpers = {}) {
  * @returns {string[]}
  */
 export function inferGroupByFields(channels, valueFields) {
-  const seen = new Set()
-  const result = []
-  for (const [key, field] of Object.entries(channels)) {
-    if (!field) continue
-    if (valueFields.includes(key) || valueFields.includes(field)) continue
-    if (seen.has(field)) continue
-    seen.add(field)
-    result.push(field)
-  }
-  return result
+	const seen = new Set()
+	const result = []
+	for (const [key, field] of Object.entries(channels)) {
+		if (!field) continue
+		if (valueFields.includes(key) || valueFields.includes(field)) continue
+		if (seen.has(field)) continue
+		seen.add(field)
+		result.push(field)
+	}
+	return result
 }
 
 /**
@@ -61,32 +61,32 @@ export function inferGroupByFields(channels, valueFields) {
  * @returns {Object[]}
  */
 export function applyGeomStat(data, geomConfig, helpers = {}) {
-  const { stat = 'identity', channels = {} } = geomConfig
-  if (stat === 'identity') return data
-  if (stat === 'boxplot') return applyBoxStat(data, channels)
+	const { stat = 'identity', channels = {} } = geomConfig
+	if (stat === 'identity') return data
+	if (stat === 'boxplot') return applyBoxStat(data, channels)
 
-  const statFn = resolveStat(stat, helpers)
+	const statFn = resolveStat(stat, helpers)
 
-  const VALUE_CHANNEL_KEYS = ['y', 'size', 'theta']
-  const groupByFields = inferGroupByFields(channels, VALUE_CHANNEL_KEYS)
-  const primaryKey = VALUE_CHANNEL_KEYS.find((k) => channels[k])
-  if (!primaryKey) return data
+	const VALUE_CHANNEL_KEYS = ['y', 'size', 'theta']
+	const groupByFields = inferGroupByFields(channels, VALUE_CHANNEL_KEYS)
+	const primaryKey = VALUE_CHANNEL_KEYS.find((k) => channels[k])
+	if (!primaryKey) return data
 
-  let result = applyAggregate(data, {
-    by: groupByFields,
-    value: channels[primaryKey],
-    stat: statFn
-  })
+	let result = applyAggregate(data, {
+		by: groupByFields,
+		value: channels[primaryKey],
+		stat: statFn
+	})
 
-  for (const key of VALUE_CHANNEL_KEYS.filter((k) => k !== primaryKey && channels[k])) {
-    const extra = applyAggregate(data, { by: groupByFields, value: channels[key], stat: statFn })
-    const index = new Map(extra.map((r) => [groupByFields.map((f) => r[f]).join('|'), r]))
-    result = result.map((r) => {
-      const mapKey = groupByFields.map((f) => r[f]).join('|')
-      const extraRow = index.get(mapKey)
-      return extraRow ? { ...r, [channels[key]]: extraRow[channels[key]] } : r
-    })
-  }
+	for (const key of VALUE_CHANNEL_KEYS.filter((k) => k !== primaryKey && channels[k])) {
+		const extra = applyAggregate(data, { by: groupByFields, value: channels[key], stat: statFn })
+		const index = new Map(extra.map((r) => [groupByFields.map((f) => r[f]).join('|'), r]))
+		result = result.map((r) => {
+			const mapKey = groupByFields.map((f) => r[f]).join('|')
+			const extraRow = index.get(mapKey)
+			return extraRow ? { ...r, [channels[key]]: extraRow[channels[key]] } : r
+		})
+	}
 
-  return result
+	return result
 }

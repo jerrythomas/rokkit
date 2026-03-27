@@ -1,25 +1,25 @@
 <script>
-  import Plot from '../Plot.svelte'
-  import Area from '../geoms/Area.svelte'
+	import Plot from '../Plot.svelte'
+	import Area from '../geoms/Area.svelte'
 
-  /** @type {import('../lib/plot/chartProps.js').LineAreaChartProps} */
-  let {
-    data = [],
-    x = undefined,
-    y = undefined,
-    fill = undefined,
-    stat = 'identity',
-    curve = undefined,
-    pattern = undefined,
-    stack = false,
-    width = 600,
-    height = 400,
-    mode = 'light',
-    grid = true,
-    legend = false
-  } = $props()
+	/** @type {import('../lib/plot/chartProps.js').LineAreaChartProps} */
+	let {
+		data = [],
+		x = undefined,
+		y = undefined,
+		fill = undefined,
+		stat = 'identity',
+		curve = undefined,
+		pattern = undefined,
+		stack = false,
+		width = 600,
+		height = 400,
+		mode = 'light',
+		grid = true,
+		legend = false
+	} = $props()
 </script>
 
 <Plot {data} {width} {height} {mode} {grid} {legend}>
-  <Area {x} {y} color={fill} {pattern} {stat} options={{ curve, stack }} />
+	<Area {x} {y} color={fill} {pattern} {stat} options={{ curve, stack }} />
 </Plot>

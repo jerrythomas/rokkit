@@ -1,43 +1,45 @@
 <script lang="ts">
-  import { marked } from 'marked'
-  import type { Token, TokensList } from 'marked'
-  import DOMPurify from 'isomorphic-dompurify'
-  import type { MarkdownPlugin } from './markdown-plugin.js'
+	import { marked } from 'marked'
+	import type { Token, TokensList } from 'marked'
+	import DOMPurify from 'isomorphic-dompurify'
+	import type { MarkdownPlugin } from './markdown-plugin.js'
 
-  interface Props {
-    markdown: string
-    plugins?: MarkdownPlugin[]
-  }
+	interface Props {
+		markdown: string
+		plugins?: MarkdownPlugin[]
+	}
 
-  let { markdown, plugins = [] }: Props = $props()
+	let { markdown, plugins = [] }: Props = $props()
 
-  const pluginMap = $derived(
-    Object.fromEntries(plugins.map((p) => [p.language.toLowerCase(), p.component]))
-  )
+	const pluginMap = $derived(
+		Object.fromEntries(plugins.map((p) => [p.language.toLowerCase(), p.component]))
+	)
 
-  const tokens = $derived(marked.lexer(markdown))
+	const tokens = $derived(marked.lexer(markdown))
 
-  function tokenToSafeHtml(token: Token): string {
-    const tokenList = Object.assign([token], { links: (tokens as TokensList).links ?? {} }) as TokensList
-    const raw = marked.parser(tokenList)
-    return DOMPurify.sanitize(raw)
-  }
+	function tokenToSafeHtml(token: Token): string {
+		const tokenList = Object.assign([token], {
+			links: (tokens as TokensList).links ?? {}
+		}) as TokensList
+		const raw = marked.parser(tokenList)
+		return DOMPurify.sanitize(raw)
+	}
 </script>
 
 <div class="markdown-renderer" data-markdown>
-  {#each tokens as token, i (i)}
-    {#if token.type === 'code'}
-      {@const lang = (token.lang ?? '').toLowerCase()}
-      {@const Plugin = pluginMap[lang]}
-      {#if Plugin}
-        <Plugin code={token.text} />
-      {:else}
-        <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-        {@html tokenToSafeHtml(token)}
-      {/if}
-    {:else}
-      <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-      {@html tokenToSafeHtml(token)}
-    {/if}
-  {/each}
+	{#each tokens as token, i (i)}
+		{#if token.type === 'code'}
+			{@const lang = (token.lang ?? '').toLowerCase()}
+			{@const Plugin = pluginMap[lang]}
+			{#if Plugin}
+				<Plugin code={token.text} />
+			{:else}
+				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+				{@html tokenToSafeHtml(token)}
+			{/if}
+		{:else}
+			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+			{@html tokenToSafeHtml(token)}
+		{/if}
+	{/each}
 </div>

@@ -81,9 +81,7 @@ test.describe('BarChart', () => {
 		expect(count).toBeGreaterThan(0)
 
 		// All bars must have non-negative y and height, and y+h must fit inside SVG height
-		const svgHeight = Number(
-			await page.locator('.preview-area svg').first().getAttribute('height')
-		)
+		const svgHeight = Number(await page.locator('.preview-area svg').first().getAttribute('height'))
 		const barData = await bars.evaluateAll((els) =>
 			els.map((el) => ({
 				y: Number(el.getAttribute('y')),

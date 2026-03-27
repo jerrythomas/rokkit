@@ -166,8 +166,8 @@
 
 	<h2>rokkit upgrade</h2>
 	<p>
-		Check for available updates to all <code>@rokkit/*</code> packages in your project. Compares
-		installed versions against the latest published releases:
+		Check for available updates to all <code>@rokkit/*</code> packages in your project. Compares installed
+		versions against the latest published releases:
 	</p>
 	<Code content={upgradeCmd} language="bash" />
 	<p>
@@ -185,8 +185,8 @@
 	<p>
 		<code>skin create</code> adds a scaffold entry with all nine token keys (<code>primary</code>,
 		<code>secondary</code>, <code>accent</code>, <code>surface</code>, <code>success</code>,
-		<code>warning</code>, <code>danger</code>, <code>error</code>, <code>info</code>) set to
-		default color names. Edit the values then activate with <code>data-skin="&lt;name&gt;"</code>:
+		<code>warning</code>, <code>danger</code>, <code>error</code>, <code>info</code>) set to default
+		color names. Edit the values then activate with <code>data-skin="&lt;name&gt;"</code>:
 	</p>
 	<Code content={skinConfig} language="javascript" />
 
@@ -197,8 +197,9 @@
 	</p>
 	<Code content={themeCmd} language="bash" />
 	<p>
-		<code>theme create</code> generates a complete CSS stub at <code>src/themes/&lt;name&gt;.css</code
-		> with one <code>[data-style='&lt;name&gt;']</code> block for every component. Import it in
+		<code>theme create</code> generates a complete CSS stub at
+		<code>src/themes/&lt;name&gt;.css</code>
+		with one <code>[data-style='&lt;name&gt;']</code> block for every component. Import it in
 		<code>src/app.css</code> and activate with <code>data-style="&lt;name&gt;"</code> on the body:
 	</p>
 	<Code content={themeStub} language="css" />

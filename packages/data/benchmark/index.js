@@ -26,7 +26,7 @@ console.log('─'.repeat(50))
 
 const results = runBenchmarks(phase)
 
-console.log(`\n${  '─'.repeat(50)}`)
+console.log(`\n${'─'.repeat(50)}`)
 console.log(`Completed ${results.results.length} benchmarks at ${results.timestamp}`)
 
 if (save) {

@@ -15,12 +15,21 @@ class AlertsStore {
 	 */
 	#scheduleTimer(id, timeout) {
 		if (timeout > 0) {
-			this.#timers.set(id, setTimeout(() => this.dismiss(id), timeout))
+			this.#timers.set(
+				id,
+				setTimeout(() => this.dismiss(id), timeout)
+			)
 		}
 	}
 
-	// eslint-disable-next-line complexity
-	push({ type = 'info', text, dismissible = false, timeout = dismissible ? 0 : 4000, actions } = {}) {
+	 
+	push({
+		type = 'info',
+		text,
+		dismissible = false,
+		timeout = dismissible ? 0 : 4000,
+		actions
+	} = {}) {
 		const id = crypto.randomUUID()
 		this.#items = [...this.#items, { id, type, text, dismissible, timeout, actions }]
 		this.#scheduleTimer(id, timeout)

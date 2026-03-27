@@ -212,7 +212,11 @@ describe('Dropdown', () => {
 	// ─── Separators ─────────────────────────────────────────────────
 
 	it('renders separators', async () => {
-		const itemsWithSep = [{ label: 'A', value: 'a' }, { type: 'separator' }, { label: 'B', value: 'b' }]
+		const itemsWithSep = [
+			{ label: 'A', value: 'a' },
+			{ type: 'separator' },
+			{ label: 'B', value: 'b' }
+		]
 		const { container } = render(Dropdown, { items: itemsWithSep })
 		await openDropdown(container)
 		expect(container.querySelector('[data-dropdown-separator]')).toBeTruthy()

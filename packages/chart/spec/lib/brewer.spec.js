@@ -8,10 +8,10 @@ describe('brewer', () => {
 		const values = ['a', 'b', 'c', 'd']
 		const result = getFillPatterns(values, baseSwatch)
 		expect(result).toEqual({
-			a: { color: 'gold',     pattern: 'diagonal' },
+			a: { color: 'gold', pattern: 'diagonal' },
 			b: { color: 'lavender', pattern: 'dots' },
-			c: { color: 'teal',     pattern: 'triangles' },
-			d: { color: 'rose',     pattern: 'hatch' }
+			c: { color: 'teal', pattern: 'triangles' },
+			d: { color: 'rose', pattern: 'hatch' }
 		})
 	})
 })

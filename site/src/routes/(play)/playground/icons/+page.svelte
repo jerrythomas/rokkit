@@ -112,7 +112,7 @@
 	}
 </script>
 
-<div class="h-full overflow-y-auto space-y-6 p-6">
+<div class="h-full space-y-6 overflow-y-auto p-6">
 	<div class="flex items-center justify-between gap-4">
 		<div>
 			<h1 class="text-surface-z8 text-xl font-semibold">Icon Browser</h1>

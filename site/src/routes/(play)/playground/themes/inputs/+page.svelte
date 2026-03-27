@@ -66,21 +66,42 @@
 
 	<div class="flex flex-col gap-8">
 		{#each THEMES as themeName (themeName)}
-			<section data-style={themeName} class="rounded-xl p-6" style="border: 1px solid var(--color-surface-z3, #444)">
+			<section
+				data-style={themeName}
+				class="rounded-xl p-6"
+				style="border: 1px solid var(--color-surface-z3, #444)"
+			>
 				<h2 class="mb-4 font-mono text-lg font-semibold">{themeName}</h2>
 
 				<!-- Text inputs -->
 				<div class="mb-4">
-					<p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Text Inputs</p>
+					<p class="text-surface-z5 mb-2 text-xs font-semibold tracking-widest uppercase">
+						Text Inputs
+					</p>
 					<div class="flex flex-wrap gap-3">
 						<div class="w-44">
-							<InputField bind:value={textValues[themeName]} label="Text" name="text-{themeName}" placeholder="Enter text" />
+							<InputField
+								bind:value={textValues[themeName]}
+								label="Text"
+								name="text-{themeName}"
+								placeholder="Enter text"
+							/>
 						</div>
 						<div class="w-44">
-							<InputField label="Email" name="email-{themeName}" type="email" placeholder="name@example.com" />
+							<InputField
+								label="Email"
+								name="email-{themeName}"
+								type="email"
+								placeholder="name@example.com"
+							/>
 						</div>
 						<div class="w-44">
-							<InputField label="Password" name="pw-{themeName}" type="password" placeholder="••••••••" />
+							<InputField
+								label="Password"
+								name="pw-{themeName}"
+								type="password"
+								placeholder="••••••••"
+							/>
 						</div>
 						<div class="w-44">
 							<InputField label="Disabled" name="dis-{themeName}" disabled placeholder="Disabled" />
@@ -90,7 +111,9 @@
 
 				<!-- Date & Time -->
 				<div class="mb-4">
-					<p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Date & Time</p>
+					<p class="text-surface-z5 mb-2 text-xs font-semibold tracking-widest uppercase">
+						Date & Time
+					</p>
 					<div class="flex flex-wrap gap-3">
 						<div class="w-44">
 							<InputField label="Date" name="date-{themeName}" type="date" />
@@ -106,15 +129,22 @@
 
 				<!-- Textarea -->
 				<div class="mb-4">
-					<p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Textarea</p>
+					<p class="text-surface-z5 mb-2 text-xs font-semibold tracking-widest uppercase">
+						Textarea
+					</p>
 					<div class="w-72">
-						<InputField label="Notes" name="textarea-{themeName}" type="textarea" placeholder="Write something…" />
+						<InputField
+							label="Notes"
+							name="textarea-{themeName}"
+							type="textarea"
+							placeholder="Write something…"
+						/>
 					</div>
 				</div>
 
 				<!-- Select -->
 				<div class="mb-4">
-					<p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Select</p>
+					<p class="text-surface-z5 mb-2 text-xs font-semibold tracking-widest uppercase">Select</p>
 					<div class="flex flex-wrap gap-3">
 						<Select
 							items={selectItems}
@@ -128,7 +158,9 @@
 
 				<!-- Checkbox & Radio -->
 				<div class="mb-4">
-					<p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Checkbox & Radio</p>
+					<p class="text-surface-z5 mb-2 text-xs font-semibold tracking-widest uppercase">
+						Checkbox & Radio
+					</p>
 					<div class="flex flex-wrap gap-4">
 						<InputField label="Checkbox" name="cb-{themeName}" type="checkbox" />
 						<InputField label="Checked" name="cb2-{themeName}" type="checkbox" value={true} />
@@ -143,7 +175,7 @@
 
 				<!-- Switch -->
 				<div class="mb-4">
-					<p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Switch</p>
+					<p class="text-surface-z5 mb-2 text-xs font-semibold tracking-widest uppercase">Switch</p>
 					<div class="flex gap-4">
 						<Switch bind:value={switchOnValues[themeName]} options={SWITCH_OPTIONS} showLabels />
 						<Switch bind:value={switchOffValues[themeName]} options={SWITCH_OPTIONS} showLabels />
@@ -153,7 +185,9 @@
 
 				<!-- Multi Select -->
 				<div class="mb-4">
-					<p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Multi Select</p>
+					<p class="text-surface-z5 mb-2 text-xs font-semibold tracking-widest uppercase">
+						Multi Select
+					</p>
 					<div class="w-72">
 						<MultiSelect
 							items={selectItems}
@@ -165,22 +199,30 @@
 
 				<!-- Range -->
 				<div class="mb-4">
-					<p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Range</p>
-					<div class="flex flex-col gap-4 w-72">
+					<p class="text-surface-z5 mb-2 text-xs font-semibold tracking-widest uppercase">Range</p>
+					<div class="flex w-72 flex-col gap-4">
 						<div>
 							<p class="text-surface-z4 mb-1 text-xs">Single</p>
 							<Range bind:value={rangeValues[themeName]} min={0} max={100} />
 						</div>
 						<div>
 							<p class="text-surface-z4 mb-1 text-xs">Dual</p>
-							<Range range bind:lower={rangeLower[themeName]} bind:upper={rangeUpper[themeName]} min={0} max={100} />
+							<Range
+								range
+								bind:lower={rangeLower[themeName]}
+								bind:upper={rangeUpper[themeName]}
+								min={0}
+								max={100}
+							/>
 						</div>
 					</div>
 				</div>
 
 				<!-- Buttons -->
 				<div>
-					<p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Buttons</p>
+					<p class="text-surface-z5 mb-2 text-xs font-semibold tracking-widest uppercase">
+						Buttons
+					</p>
 					<div class="flex flex-wrap gap-2">
 						{#each BUTTON_VARIANTS as btn (btn.label)}
 							<Button

@@ -10,13 +10,13 @@ import { dataset } from '@rokkit/data'
  * @returns {Map<unknown, Object[]>}
  */
 export function extractFrames(data, timeField) {
-  const map = new Map()
-  for (const row of data) {
-    const key = row[timeField]
-    if (!map.has(key)) map.set(key, [])
-    map.get(key).push(row)
-  }
-  return map
+	const map = new Map()
+	for (const row of data) {
+		const key = row[timeField]
+		if (!map.has(key)) map.set(key, [])
+		map.get(key).push(row)
+	}
+	return map
 }
 
 /**
@@ -33,23 +33,23 @@ export function extractFrames(data, timeField) {
  * @returns {Object[]}
  */
 export function completeFrames(data, channels, byField) {
-  const { x: xf, y: yf, color: cf } = channels
-  const groupFields = [xf, ...(cf ? [cf] : [])].filter(Boolean)
+	const { x: xf, y: yf, color: cf } = channels
+	const groupFields = [xf, ...(cf ? [cf] : [])].filter(Boolean)
 
-  if (groupFields.length === 0) return data
+	if (groupFields.length === 0) return data
 
-  const nested = dataset(data)
-    .groupBy(...groupFields)
-    .alignBy(byField)
-    .usingTemplate({ [yf]: 0 })
-    .rollup()
-    .select()
+	const nested = dataset(data)
+		.groupBy(...groupFields)
+		.alignBy(byField)
+		.usingTemplate({ [yf]: 0 })
+		.rollup()
+		.select()
 
-  return nested.flatMap((row) => {
-    const groupKey = groupFields.reduce((acc, f) => ({ ...acc, [f]: row[f] }), {})
-    // strip the actual_flag marker added by alignBy
-    return row.children.map(({ actual_flag: _af, ...child }) => ({ ...groupKey, ...child }))
-  })
+	return nested.flatMap((row) => {
+		const groupKey = groupFields.reduce((acc, f) => ({ ...acc, [f]: row[f] }), {})
+		// strip the actual_flag marker added by alignBy
+		return row.children.map(({ actual_flag: _af, ...child }) => ({ ...groupKey, ...child }))
+	})
 }
 
 /**
@@ -66,15 +66,16 @@ export function completeFrames(data, channels, byField) {
  * @returns {{ xDomain: unknown[], yDomain: [number, number] }}
  */
 export function computeStaticDomains(data, channels) {
-  const { x: xf, y: yf } = channels
+	const { x: xf, y: yf } = channels
 
-  const sampleX = data[0]?.[xf]
-  const xDomain = typeof sampleX === 'string'
-    ? [...new Set(data.map((d) => d[xf]))]
-    : extent(data, (d) => Number(d[xf]))
+	const sampleX = data[0]?.[xf]
+	const xDomain =
+		typeof sampleX === 'string'
+			? [...new Set(data.map((d) => d[xf]))]
+			: extent(data, (d) => Number(d[xf]))
 
-  const [, yMax] = extent(data, (d) => Number(d[yf]))
-  const yDomain = [0, yMax ?? 0]
+	const [, yMax] = extent(data, (d) => Number(d[yf]))
+	const yDomain = [0, yMax ?? 0]
 
-  return { xDomain, yDomain }
+	return { xDomain, yDomain }
 }

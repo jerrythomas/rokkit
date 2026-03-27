@@ -46,7 +46,7 @@
 	{#snippet preview()}
 		<div class="flex w-full max-w-lg flex-col gap-8">
 			<div>
-				<p class="text-surface-z4 mb-3 text-xs font-semibold uppercase tracking-widest">
+				<p class="text-surface-z4 mb-3 text-xs font-semibold tracking-widest uppercase">
 					Inline Message
 				</p>
 				{#if !dismissed}
@@ -63,7 +63,7 @@
 			</div>
 
 			<div>
-				<p class="text-surface-z4 mb-3 text-xs font-semibold uppercase tracking-widest">
+				<p class="text-surface-z4 mb-3 text-xs font-semibold tracking-widest uppercase">
 					All Types
 				</p>
 				<div class="flex flex-col gap-2">

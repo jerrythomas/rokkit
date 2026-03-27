@@ -43,15 +43,15 @@ This document describes the Model-View-Controller architecture for the Table com
 
 ### Key Principle: Separation of Concerns
 
-| Concern | Owner |
-|---------|-------|
-| Data storage, CRUD, filtering | `ReactiveDataSet` |
-| Sort execution (comparator) | `ReactiveDataSet.sortBy()` |
-| Sort state (which fields, direction) | `TableWrapper.sortState` |
-| Which columns are sortable | `TableWrapper.viewColumns[n].sortable` |
-| Tree node expand/collapse state | `TableWrapper` |
-| Keyboard navigation | `Wrapper` (base class) |
-| Rendering | `Table.svelte` |
+| Concern                              | Owner                                  |
+| ------------------------------------ | -------------------------------------- |
+| Data storage, CRUD, filtering        | `ReactiveDataSet`                      |
+| Sort execution (comparator)          | `ReactiveDataSet.sortBy()`             |
+| Sort state (which fields, direction) | `TableWrapper.sortState`               |
+| Which columns are sortable           | `TableWrapper.viewColumns[n].sortable` |
+| Tree node expand/collapse state      | `TableWrapper`                         |
+| Keyboard navigation                  | `Wrapper` (base class)                 |
+| Rendering                            | `Table.svelte`                         |
 
 ---
 
@@ -71,12 +71,14 @@ Internally `Table.svelte` creates a `TableWrapper` with a `ReactiveDataSet` from
 <script>
   const ds = reactiveDataset(data).where(activeFilter).sortBy('name')
 </script>
+
 <Table dataset={ds} columns={columnOverrides} />
 ```
 
 `Table.svelte` wraps the caller-provided dataset in a `TableWrapper`. The dataset lifecycle (filtering, mutation) belongs to the caller. The table handles column display, sort UI, and navigation.
 
 **Resolution rule inside `Table.svelte`:**
+
 ```js
 const controller = $derived(
   props.dataset
@@ -99,37 +101,27 @@ import { deriveHierarchy, toggleExpansion, hierarchicalFilter } from '@rokkit/da
 
 export class TableWrapper extends Wrapper {
   // ── Model ──────────────────────────────────────────────────────
-  #dataset = null                           // ReactiveDataSet
+  #dataset = null // ReactiveDataSet
 
   // ── Sort state ─────────────────────────────────────────────────
-  sortState = $state([])                    // [{field, direction}]
+  sortState = $state([]) // [{field, direction}]
 
   // ── Column config (view-layer overrides) ───────────────────────
-  #columnOverrides = $state([])             // TableColumn[] passed by consumer
+  #columnOverrides = $state([]) // TableColumn[] passed by consumer
 
   // ── Tree state ─────────────────────────────────────────────────
-  #treeField = $derived(
-    this.#columnOverrides.find((c) => c.tree)?.field ?? null
-  )
+  #treeField = $derived(this.#columnOverrides.find((c) => c.tree)?.field ?? null)
   // Derived tree nodes (flat list with depth/isHidden/isExpanded)
   #treeNodes = $derived(
-    this.#treeField
-      ? deriveHierarchy(this.#dataset.rows, { path: this.#treeField })
-      : null
+    this.#treeField ? deriveHierarchy(this.#dataset.rows, { path: this.#treeField }) : null
   )
 
   // ── Public derived ─────────────────────────────────────────────
   // Rows visible in the view (filtered by tree expansion, etc.)
-  rows = $derived(
-    this.#treeNodes
-      ? this.#treeNodes.filter((n) => !n.isHidden)
-      : this.#dataset.rows
-  )
+  rows = $derived(this.#treeNodes ? this.#treeNodes.filter((n) => !n.isHidden) : this.#dataset.rows)
 
   // Merged column definitions: auto-derived + consumer overrides
-  viewColumns = $derived(
-    mergeColumns(this.#dataset.columns, this.#columnOverrides, this.sortState)
-  )
+  viewColumns = $derived(mergeColumns(this.#dataset.columns, this.#columnOverrides, this.sortState))
 
   constructor(dataset, columnOverrides = []) {
     // Wrapper needs a ProxyTree — we build a thin one from rows
@@ -141,7 +133,7 @@ export class TableWrapper extends Wrapper {
   // ── Sort ───────────────────────────────────────────────────────
   sortBy(field, extend = false) {
     this.sortState = nextSortState(this.sortState, field, extend)
-    this.#dataset.sortBy(...this.sortState.map(s => [s.field, s.direction === 'ascending']))
+    this.#dataset.sortBy(...this.sortState.map((s) => [s.field, s.direction === 'ascending']))
   }
 
   // ── Tree ───────────────────────────────────────────────────────
@@ -166,7 +158,7 @@ function nextSortState(current, field, extend) {
   } else if (existing.direction === 'ascending') {
     next = { field, direction: 'descending' }
   } else {
-    next = null  // remove
+    next = null // remove
   }
 
   if (extend) {
@@ -227,13 +219,13 @@ A view column may display data from **multiple model fields** combined into one 
 
 ```ts
 interface TableColumn {
-  name: string          // display name / label
-  field?: string        // single data field (simple case)
-  fields?: string[]     // multiple data fields for composite display
+  name: string // display name / label
+  field?: string // single data field (simple case)
+  fields?: string[] // multiple data fields for composite display
   formatter?: (values: Record<string, unknown>, row: unknown) => string
-  sortField?: string    // which field governs sort (defaults to field/fields[0])
-  sortable?: boolean    // default: true if field/sortField exists
-  tree?: boolean        // marks this as the tree-indent column
+  sortField?: string // which field governs sort (defaults to field/fields[0])
+  sortable?: boolean // default: true if field/sortField exists
+  tree?: boolean // marks this as the tree-indent column
   width?: string
   align?: 'left' | 'center' | 'right'
 }
@@ -242,6 +234,7 @@ interface TableColumn {
 ### Examples
 
 **Full name from two fields:**
+
 ```js
 {
   name: 'Name',
@@ -254,6 +247,7 @@ interface TableColumn {
 **Currency composite (convention: `{base}_currency` field):**
 
 When `deriveColumnDefs` encounters a field named `salary_currency`, it auto-merges it into the `salary` column:
+
 ```js
 // Auto-derived composite:
 {
@@ -275,7 +269,7 @@ This convention (`{base}_currency` → merge into `{base}`) is implemented in `d
 {#each viewColumns as col}
   <td>
     {#if col.fields}
-      {col.formatter?.(pick(col.fields, row), row) ?? col.fields.map(f => row[f]).join(' ')}
+      {col.formatter?.(pick(col.fields, row), row) ?? col.fields.map((f) => row[f]).join(' ')}
     {:else}
       {col.formatter?.(row[col.field], row) ?? row[col.field]}
     {/if}
@@ -292,6 +286,7 @@ TreeTable is **not a separate component** — it is a mode of `Table.svelte` act
 ### Data Flavors for Tree
 
 **Flavor 1 — Path separator (flat data with hierarchical path field):**
+
 ```js
 // Raw data
 [
@@ -305,6 +300,7 @@ TreeTable is **not a separate component** — it is a mode of `Table.svelte` act
 ```
 
 **Flavor 2 — Nested children (from `nestedJoin` / `flattenNestedChildren`):**
+
 ```js
 // Pre-processed data with children arrays
 const ds = dataset(parents).nestedJoin(children, matcher)
@@ -480,13 +476,13 @@ export function hierarchy(data, options) {
 
 ## 10. File Change Summary
 
-| File | Change |
-|------|--------|
-| `packages/data/src/hierarchy.js` | Complete `hierarchy()` factory |
-| `packages/data/src/infer.js` | Add `_currency` composite column convention in `deriveColumnDefs` |
-| `packages/data/src/dataset.svelte.js` | `sortBy()` accepts `[field, ascending]` tuple args |
-| `packages/states/src/tabular.svelte.js` | Full `TableWrapper extends Wrapper` implementation |
-| `packages/ui/src/types/table.ts` | New types: `SortEntry`, `SortState`, `TableColumn` updates |
+| File                                      | Change                                                                  |
+| ----------------------------------------- | ----------------------------------------------------------------------- |
+| `packages/data/src/hierarchy.js`          | Complete `hierarchy()` factory                                          |
+| `packages/data/src/infer.js`              | Add `_currency` composite column convention in `deriveColumnDefs`       |
+| `packages/data/src/dataset.svelte.js`     | `sortBy()` accepts `[field, ascending]` tuple args                      |
+| `packages/states/src/tabular.svelte.js`   | Full `TableWrapper extends Wrapper` implementation                      |
+| `packages/ui/src/types/table.ts`          | New types: `SortEntry`, `SortState`, `TableColumn` updates              |
 | `packages/ui/src/components/Table.svelte` | Wire to `TableWrapper`; tree column rendering; composite cell rendering |
 
 ---

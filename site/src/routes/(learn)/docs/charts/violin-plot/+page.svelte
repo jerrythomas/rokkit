@@ -99,7 +99,7 @@
 	</table>
 
 	<p>
-		See also <a href="/docs/charts/box-plot">BoxPlot</a> — rectangular boxes with discrete quartile
-		lines compared to the continuous curved shape here.
+		See also <a href="/docs/charts/box-plot">BoxPlot</a> — rectangular boxes with discrete quartile lines
+		compared to the continuous curved shape here.
 	</p>
 </article>

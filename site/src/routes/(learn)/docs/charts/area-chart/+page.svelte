@@ -23,14 +23,15 @@
 
 	<h2>Color grouping</h2>
 	<p>
-		Use <code>fill</code> to assign palette colors per series. Enable <code>legend</code> to show
-		the color key:
+		Use <code>fill</code> to assign palette colors per series. Enable <code>legend</code> to show the
+		color key:
 	</p>
 	<pre><code>{`<AreaChart data={data} x="month" y="revenue" fill="region" legend />`}</code></pre>
 
 	<h2>Stacked areas</h2>
 	<p>Pass <code>stack</code> to stack areas by fill group:</p>
-	<pre><code>{`<AreaChart data={data} x="month" y="revenue" fill="region" stack legend />`}</code></pre>
+	<pre><code>{`<AreaChart data={data} x="month" y="revenue" fill="region" stack legend />`}</code
+		></pre>
 
 	<h2>Curve style</h2>
 	<p>Control how segments are interpolated with <code>curve</code>:</p>
@@ -81,7 +82,10 @@
 				<td><code>stat</code></td>
 				<td><code>string</code></td>
 				<td><code>'identity'</code></td>
-				<td><code>identity</code>, <code>sum</code>, <code>mean</code>, <code>min</code>, <code>max</code>, <code>count</code></td>
+				<td
+					><code>identity</code>, <code>sum</code>, <code>mean</code>, <code>min</code>,
+					<code>max</code>, <code>count</code></td
+				>
 			</tr>
 			<tr>
 				<td><code>stack</code></td>

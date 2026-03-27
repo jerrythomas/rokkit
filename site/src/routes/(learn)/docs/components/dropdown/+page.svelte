@@ -15,8 +15,8 @@
 	<h2>Basic Example</h2>
 	<p>
 		Pass an array of objects with <code>label</code> and <code>value</code> fields. Bind
-		<code>value</code> to track the selection. The trigger label updates automatically when a new option
-		is chosen. Set <code>disabled: true</code> on any item to make it unselectable.
+		<code>value</code> to track the selection. The trigger label updates automatically when a new
+		option is chosen. Set <code>disabled: true</code> on any item to make it unselectable.
 	</p>
 
 	<Code {...storyBuilder.getFragment(0)} />
@@ -35,8 +35,8 @@
 	<!-- Sizes -->
 	<h2>Sizes</h2>
 	<p>
-		Three size variants — <code>sm</code>, <code>md</code> (default), and <code>lg</code> — let you
-		match the dropdown to its surrounding context.
+		Three size variants — <code>sm</code>, <code>md</code> (default), and <code>lg</code> — let you match
+		the dropdown to its surrounding context.
 	</p>
 
 	<StoryViewer {...storyBuilder.getExample('sizes')} />

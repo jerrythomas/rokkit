@@ -19,7 +19,7 @@ let nextId = 0
 
 export class PlotState {
 	#data = $state([])
-	#rawData = []
+	#rawData = $state([])
 	#channels = $state({})
 	#labels = $state({})
 	#helpers = $state({})
@@ -38,8 +38,11 @@ export class PlotState {
 	#mode = $state('light')
 	#chartPreset = $state(defaultPreset)
 	#hovered = $state(null)
+	#orientationOverride = $state(undefined)
 
 	axisOrigin = $state([undefined, undefined])
+
+	#zoomTransform = $state(null)
 
 	#effectiveMargin = $derived(this.#marginOverride ?? this.#margin)
 	#innerWidth = $derived(this.#width - this.#effectiveMargin.left - this.#effectiveMargin.right)
@@ -71,6 +74,7 @@ export class PlotState {
 	}
 
 	orientation = $derived.by(() => {
+		if (this.#orientationOverride) return this.#orientationOverride
 		const xField = this.#effectiveChannels.x
 		const yField = this.#effectiveChannels.y
 		if (!xField || !yField) return 'none'
@@ -99,11 +103,14 @@ export class PlotState {
 		// Horizontal bar charts keep X as a continuous value axis.
 		const hasBarGeom = this.#geoms.some((g) => g.type === 'bar')
 		const bandX = hasBarGeom && this.orientation !== 'horizontal'
-		return buildUnifiedXScale(datasets, field, this.#innerWidth, {
+		const base = buildUnifiedXScale(datasets, field, this.#innerWidth, {
 			domain: this.#xDomain,
 			includeZero,
 			band: bandX
 		})
+		return this.#zoomTransform && typeof base?.bandwidth !== 'function'
+			? this.#zoomTransform.rescaleX(base)
+			: base
 	})
 
 	// For box/violin geoms, compute y domain from iqr_min/iqr_max instead of raw y values.
@@ -156,7 +163,8 @@ export class PlotState {
 			this.#geoms.length > 0 ? this.#geoms.map((g) => this.geomData(g.id)) : [this.#rawData]
 		const includeZero = this.orientation === 'vertical'
 		const yDomain = this.#yDomain ?? this.#resolveBoxDomain() ?? this.#resolveStackDomain(field)
-		return buildUnifiedYScale(datasets, field, this.#innerHeight, { domain: yDomain, includeZero })
+		const base = buildUnifiedYScale(datasets, field, this.#innerHeight, { domain: yDomain, includeZero })
+		return this.#zoomTransform ? this.#zoomTransform.rescaleY(base) : base
 	})
 
 	// Colors: Map<colorKey, { fill, stroke }> for all distinct color field values.
@@ -231,6 +239,7 @@ export class PlotState {
 		this.#mode = config.mode ?? 'light'
 		this.#chartPreset = config.chartPreset ?? defaultPreset
 		this.#marginOverride = config.margin ?? undefined
+		this.#orientationOverride = config.orientation ?? undefined
 	}
 
 	update(config) {
@@ -252,6 +261,7 @@ export class PlotState {
 		if (config.mode !== undefined) this.#mode = config.mode
 		if (config.chartPreset !== undefined) this.#chartPreset = config.chartPreset
 		this.#marginOverride = config.margin ?? undefined
+		this.#orientationOverride = config.orientation ?? undefined
 	}
 
 	registerGeom(config) {
@@ -320,5 +330,12 @@ export class PlotState {
 	}
 	clearHovered() {
 		this.#hovered = null
+	}
+
+	applyZoom(transform) {
+		this.#zoomTransform = transform
+	}
+	resetZoom() {
+		this.#zoomTransform = null
 	}
 }

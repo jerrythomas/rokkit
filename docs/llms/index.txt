@@ -131,8 +131,10 @@ Verify that `<body>` is on its own line in `src/app.html`. The script is injecte
 
 | Package | Description |
 |---------|-------------|
-| `@rokkit/ui` | Main UI components (30+ components) |
+| `@rokkit/ui` | Main UI components (40+ components) |
 | `@rokkit/forms` | Dynamic form generation from JSON schema |
+| `@rokkit/chart` | Data visualization (PlotChart, FacetPlot, AnimatedPlot, Sparkline, CrossFilter, GeomBar/Line/Area/Point/etc.) |
+| `@rokkit/blocks` | Rich content blocks for tables and plots (PlotPlugin, TablePlugin, SparklinePlugin, MermaidPlugin) |
 | `@rokkit/states` | State management (ProxyItem, LazyProxyItem, ProxyTree, Wrapper, LazyWrapper, ListController, TableController, vibe, messages, watchMedia) |
 | `@rokkit/actions` | Svelte actions (navigable, hoverLift, magnetic, ripple) |
 | `@rokkit/core` | Core utilities and field mapping |
@@ -311,7 +313,7 @@ Utility class pattern: `{prefix}-{role}-z{n}`
 - [cli.txt](/llms/cli.txt) — CLI reference (`rokkit init`, `rokkit doctor`, icon tools)
 - [composability.txt](/llms/composability.txt) — Snippets, ProxyItem API, per-item routing, interactive snippet patterns
 - [packages/](/llms/packages/) — per-package documentation
-- [components/](/llms/components/) — component reference (30+ components)
+- [components/](/llms/components/) — component reference (40+ components)
 
 ## Component Index
 
@@ -319,8 +321,9 @@ Utility class pattern: `{prefix}-{role}-z{n}`
 
 - [List](/llms/components/list.txt) — vertical list with selection, grouping, lazy loading
 - [Tree](/llms/components/tree.txt) — hierarchical tree view with expand/collapse
+- [LazyTree](/llms/components/lazy-tree.txt) — tree with on-demand lazy-loaded children and root pagination
 - [Select](/llms/components/select.txt) — dropdown single-selection with typeahead filter
-- [MultiSelect](/llms/components/multiselect.txt) — dropdown multi-selection with pills
+- [MultiSelect](/llms/components/multi-select.txt) — dropdown multi-selection with pills
 - [Toggle](/llms/components/toggle.txt) — radio-style button group
 - [Tabs](/llms/components/tabs.txt) — tabbed content panels (horizontal/vertical)
 - [Table](/llms/components/table.txt) — sortable data table with row selection
@@ -330,6 +333,7 @@ Utility class pattern: `{prefix}-{role}-z{n}`
 - [Menu](/llms/components/dropdown.txt) — dropdown menu with grouped options
 - [Toolbar](/llms/components/toolbar.txt) — horizontal action bar with sections
 - [FloatingAction](/llms/components/floating-actions.txt) — floating action button (FAB)
+- [FloatingNavigation](/llms/components/floating-navigation.txt) — floating back-to-top and section progress navigation
 
 ### Form Inputs
 
@@ -349,9 +353,50 @@ Utility class pattern: `{prefix}-{role}-z{n}`
 ### Layout & Display
 
 - [Card](/llms/components/card.txt) — content card container
+- [Grid](/llms/components/grid.txt) — responsive CSS grid layout wrapper
 - [Stepper](/llms/components/stepper.txt) — step indicator / wizard progress
 - [ProgressBar](/llms/components/progress-bar.txt) — progress indicator
 - [BreadCrumbs](/llms/components/breadcrumbs.txt) — breadcrumb navigation
+- [Carousel](/llms/components/carousel.txt) — touch-friendly content carousel with auto-play
+- [Timeline](/llms/components/timeline.txt) — vertical timeline of events with icons and metadata
+- [Pill](/llms/components/pill.txt) — inline label/tag/badge with optional dismiss
+
+### Content & Feedback
+
+- [Button](/llms/components/button.txt) — primary action button with variants and loading state
+- [Icon](/llms/components/icon.txt) — icon rendering via Iconify / UnoCSS class
+- [Message](/llms/components/message.txt) — inline status message (success/warning/error/info)
+- [AlertList](/llms/components/alert-list.txt) — dismissible alert stack with auto-dismiss
+- [StatusList](/llms/components/status-list.txt) — grouped validation message summary (`@rokkit/forms`)
+- [Code](/llms/components/code.txt) — syntax-highlighted code block with copy button
+- [MarkdownRenderer](/llms/components/markdown-renderer.txt) — Markdown-to-HTML renderer with DOMPurify sanitization and Svelte component plugins
+
+### Animation & Effects
+
+- [Reveal](/llms/components/reveal.txt) — scroll-triggered slide-in animation via IntersectionObserver
+- [Tilt](/llms/components/tilt.txt) — 3D tilt effect that follows mouse position
+- [Shine](/llms/components/shine.txt) — dynamic specular lighting effect following the mouse
+
+### Color & Theming
+
+- [Swatch](/llms/components/swatch.txt) — color / theme picker with single or multi-select
+- [PaletteManager](/llms/components/palette-manager.txt) — full palette configuration UI with presets and localStorage persistence
+
+### Charts (`@rokkit/chart`)
+
+- [BarChart](/llms/components/bar-chart.txt) — bar chart with grouping, stacking, aggregation, and labels
+- [LineChart](/llms/components/line-chart.txt) — line chart with multi-series, symbols, and curve interpolation
+- [AreaChart](/llms/components/area-chart.txt) — area chart with optional stacking
+- [ScatterPlot](/llms/components/scatter-plot.txt) — scatter plot with color and symbol encoding
+- [BubbleChart](/llms/components/bubble-chart.txt) — three-variable chart with scaleSqrt bubble sizing
+- [PieChart](/llms/components/pie-chart.txt) — pie/donut chart with innerRadius
+- [BoxPlot](/llms/components/box-plot.txt) — quartile box plot from raw observations
+- [ViolinPlot](/llms/components/violin-plot.txt) — distribution shape using QuartileBrewer
+- [Sparkline](/llms/components/sparkline.txt) — lightweight inline sparkline (no axes)
+- [PlotChart](/llms/components/plot-chart.txt) — low-level container with GeomBar/Line/Area/Point/Arc/Box/Violin
+- [FacetPlot](/llms/components/facet-plot.txt) — small-multiples, one panel per facet value
+- [AnimatedPlot](/llms/components/animated-plot.txt) — frame-by-frame animation with play/pause controls
+- [CrossFilter](/llms/components/crossfilter.txt) — linked filter context with FilterBar, FilterSlider, createCrossFilter
 
 ## Keyboard Navigation
 
@@ -369,8 +414,16 @@ All interactive components support:
 ## Import
 
 ```javascript
-import { List, Tree, Select, MultiSelect, Tabs, Toggle, Table, Toolbar, Menu } from '@rokkit/ui'
+import { List, Tree, LazyTree, Select, MultiSelect, Tabs, Toggle, Table, Toolbar, Menu } from '@rokkit/ui'
 import { UploadTarget, UploadProgress } from '@rokkit/ui'
-import { FloatingAction } from '@rokkit/ui'
-import { Form, FormRenderer } from '@rokkit/forms'
+import { FloatingAction, FloatingNavigation } from '@rokkit/ui'
+import { Carousel, Grid, Pill, Timeline } from '@rokkit/ui'
+import { Reveal, Tilt, Shine } from '@rokkit/ui'
+import { Swatch, PaletteManager } from '@rokkit/ui'
+import { Message, AlertList, Code, MarkdownRenderer } from '@rokkit/ui'
+import { Form, FormRenderer, StatusList } from '@rokkit/forms'
+import { BarChart, LineChart, AreaChart, ScatterPlot, BubbleChart, PieChart, BoxPlot, ViolinPlot } from '@rokkit/chart'
+import { PlotChart, GeomBar, GeomLine, GeomArea, GeomPoint, GeomArc, GeomBox, GeomViolin } from '@rokkit/chart'
+import { FacetPlot, AnimatedPlot, Sparkline } from '@rokkit/chart'
+import { CrossFilter, FilterBar, FilterSlider, createCrossFilter } from '@rokkit/chart'
 ```

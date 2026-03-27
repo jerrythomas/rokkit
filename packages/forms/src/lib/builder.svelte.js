@@ -777,8 +777,7 @@ export class FormBuilder {
 	 * @returns {Set<string>}
 	 */
 	get dirtyFields() {
-		// eslint-disable-next-line svelte/prefer-svelte-reactivity
-		const dirty = new Set()
+		const dirty = new SvelteSet()
 		this.#collectDirtyFields(this.#data, this.#initialData, '', dirty)
 		return dirty
 	}

@@ -4,4 +4,6 @@
   "icon": "i-glyph:chart-square",
   "category": "charts",
   "order": 4
+,
+  "llms": true
 }

@@ -6,21 +6,21 @@
 
 	// 3 months × 5 segments — allows sum/mean/min/max/count to produce different results
 	const chartData = [
-		{ segment: 'Mobile',   month: 'Jan', share: 38 },
-		{ segment: 'Mobile',   month: 'Feb', share: 42 },
-		{ segment: 'Mobile',   month: 'Mar', share: 46 },
-		{ segment: 'Desktop',  month: 'Jan', share: 38 },
-		{ segment: 'Desktop',  month: 'Feb', share: 35 },
-		{ segment: 'Desktop',  month: 'Mar', share: 33 },
-		{ segment: 'Tablet',   month: 'Jan', share: 14 },
-		{ segment: 'Tablet',   month: 'Feb', share: 15 },
-		{ segment: 'Tablet',   month: 'Mar', share: 15 },
-		{ segment: 'Smart TV', month: 'Jan', share: 4  },
-		{ segment: 'Smart TV', month: 'Feb', share: 5  },
-		{ segment: 'Smart TV', month: 'Mar', share: 6  },
-		{ segment: 'Other',    month: 'Jan', share: 6  },
-		{ segment: 'Other',    month: 'Feb', share: 3  },
-		{ segment: 'Other',    month: 'Mar', share: 1  }
+		{ segment: 'Mobile', month: 'Jan', share: 38 },
+		{ segment: 'Mobile', month: 'Feb', share: 42 },
+		{ segment: 'Mobile', month: 'Mar', share: 46 },
+		{ segment: 'Desktop', month: 'Jan', share: 38 },
+		{ segment: 'Desktop', month: 'Feb', share: 35 },
+		{ segment: 'Desktop', month: 'Mar', share: 33 },
+		{ segment: 'Tablet', month: 'Jan', share: 14 },
+		{ segment: 'Tablet', month: 'Feb', share: 15 },
+		{ segment: 'Tablet', month: 'Mar', share: 15 },
+		{ segment: 'Smart TV', month: 'Jan', share: 4 },
+		{ segment: 'Smart TV', month: 'Feb', share: 5 },
+		{ segment: 'Smart TV', month: 'Mar', share: 6 },
+		{ segment: 'Other', month: 'Jan', share: 6 },
+		{ segment: 'Other', month: 'Feb', share: 3 },
+		{ segment: 'Other', month: 'Mar', share: 1 }
 	]
 
 	let props = $state({
@@ -91,7 +91,7 @@
 	{#snippet preview()}
 		<div class="flex flex-col gap-8 p-6">
 			<div>
-				<h4 class="text-surface-z5 m-0 mb-3 text-xs uppercase tracking-widest font-semibold">
+				<h4 class="text-surface-z5 m-0 mb-3 text-xs font-semibold tracking-widest uppercase">
 					Market Share by Device
 				</h4>
 				<PieChart

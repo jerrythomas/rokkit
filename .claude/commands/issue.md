@@ -21,6 +21,7 @@ gh issue view <number> --json number,title,body,labels,comments
 ```
 
 Parse the issue:
+
 - **Title** — what the problem is
 - **Body** — detail, links to external tools (Qlty, etc.), code locations
 - **Labels** — classify: bug, code-quality, accessibility, performance, etc.
@@ -31,11 +32,13 @@ If the body links to an external tool (e.g. Qlty), note the link. The actual cod
 ## Step 3: Find the Code
 
 Search the codebase to find what the issue refers to. Use Grep/Glob to locate:
+
 - Duplicate/similar code (for Qlty code-quality issues)
 - The buggy code path (for bug issues)
 - The affected component (for feature/UX issues)
 
 For **Qlty duplicate/similar code issues**, the strategy is:
+
 1. Search for the repeated pattern (grep for a distinctive line from the duplicated block)
 2. Read both locations to understand what they do
 3. Determine if extraction is safe (shared utility, no side-effects, same semantics)
@@ -56,11 +59,13 @@ Follow the appropriate workflow based on classification. Always apply:
 ### Zero-Errors Policy
 
 Before touching code:
+
 ```bash
 bun run test:ci && bun run lint   # record baseline
 ```
 
 After fixing:
+
 ```bash
 bun run test:ci && bun run lint   # must be zero errors
 ```
@@ -101,10 +106,12 @@ gh issue close <number> --comment "Fixed in <commit-hash> — <one-line explanat
 ### Qlty: Duplicate / Similar Code
 
 These come from the [Qlty](https://qlty.sh) code quality tool scanning the repo. They flag:
+
 - **Identical code** — exact copy-paste that should be extracted
 - **Similar code** — near-duplicate with minor variations, candidate for parameterized extraction
 
 Resolution approach:
+
 1. Read both locations and confirm they have the same semantics
 2. Check which package each lives in — if both are in the same package, extract a shared util/helper; if cross-package, be careful about circular dependencies
 3. Extract the minimal shared abstraction: a function, a constant, a derived utility

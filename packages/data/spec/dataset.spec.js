@@ -226,7 +226,9 @@ describe('dataset', () => {
 				expect(result.select()).not.toEqual(data)
 			})
 			it('should delete all records when pending ops have no filter', () => {
-				const result = dataset(data).apply((row) => ({ ...row, x: 1 })).remove()
+				const result = dataset(data)
+					.apply((row) => ({ ...row, x: 1 }))
+					.remove()
 				expect(result.select()).toEqual([])
 			})
 		})

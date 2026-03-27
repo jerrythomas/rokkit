@@ -21,17 +21,17 @@ All geoms follow this pattern:
 ```js
 import { getContext, onMount, onDestroy } from 'svelte'
 
-const state = getContext('plot-state')       // PlotState instance
-const id = Symbol('geom-bar')               // unique per instance
+const state = getContext('plot-state') // PlotState instance
+const id = Symbol('geom-bar') // unique per instance
 
 onMount(() => state.registerGeom(id, { type: 'bar', channels, stat, options }))
 onDestroy(() => state.unregisterGeom(id))
 
-const data    = $derived(state.geomData(id))  // post-stat data for this geom
-const xScale  = $derived(state.xScale)
-const yScale  = $derived(state.yScale)
-const colors  = $derived(state.colors)        // Map<value, {fill, stroke}>
-const patterns = $derived(state.patterns)     // Map<value, patternName>
+const data = $derived(state.geomData(id)) // post-stat data for this geom
+const xScale = $derived(state.xScale)
+const yScale = $derived(state.yScale)
+const colors = $derived(state.colors) // Map<value, {fill, stroke}>
+const patterns = $derived(state.patterns) // Map<value, patternName>
 ```
 
 `Plot.svelte` exposes this context:
@@ -45,6 +45,7 @@ setContext('plot-state', state)
 ```
 
 PlotState properties used by infrastructure components:
+
 - `state.xScale` — D3 scale (band or linear)
 - `state.yScale` — D3 scale (band or linear)
 - `state.innerWidth` — number (canvas width, margin-adjusted)
@@ -100,6 +101,7 @@ The old `Plot/` folder (Root, Axis, Bar, Grid, Legend, Line, Area, Point, Arc) i
 Component tests need a real PlotState context. This helper creates a minimal PlotState for test scenarios.
 
 **Files:**
+
 - Create: `packages/chart/spec/helpers/mock-plot-state.js`
 - Create: `packages/chart/spec/helpers/ContextWrapper.svelte`
 
@@ -125,8 +127,8 @@ export function createMockState(overrides = {}) {
     yScale,
     innerWidth: 300,
     innerHeight: 200,
-    xAxisY: 200,         // default: bottom edge
-    yAxisX: 0,           // default: left edge
+    xAxisY: 200, // default: bottom edge
+    yAxisX: 0, // default: left edge
     orientation: 'vertical',
     colorScaleType: 'categorical',
     colors: new Map([
@@ -208,6 +210,7 @@ git commit -m "test(chart): add mock PlotState helper for component tests"
 Renders an x or y axis. Reads axis position from `state.xAxisY` / `state.yAxisX` (supports quadrant-aware positioning when `axisOrigin` is set on PlotState).
 
 **Files:**
+
 - Create: `packages/chart/src/plot/Axis.svelte`
 - Create: `packages/chart/spec/plot/Axis.spec.js`
 
@@ -244,7 +247,7 @@ describe('Axis tick generation', () => {
     const ticks = yScale.ticks(5).map((val) => ({ value: val, pos: yScale(val) }))
     expect(ticks.length).toBeGreaterThanOrEqual(4)
     expect(ticks[0].value).toBe(0)
-    expect(ticks[0].pos).toBe(200)   // 0 maps to bottom (200px)
+    expect(ticks[0].pos).toBe(200) // 0 maps to bottom (200px)
   })
 
   it('positions x axis at xAxisY from state (default = innerHeight)', () => {
@@ -329,8 +332,8 @@ Expected: PASS — these are pure logic tests with no file dependency on the com
         y="36"
         text-anchor="middle"
         class="axis-label"
-        data-plot-axis-label
-      >{label}</text>
+        data-plot-axis-label>{label}</text
+      >
     {/if}
   </g>
 {:else}
@@ -351,8 +354,8 @@ Expected: PASS — these are pure logic tests with no file dependency on the com
         y="-40"
         text-anchor="middle"
         class="axis-label"
-        data-plot-axis-label
-      >{label}</text>
+        data-plot-axis-label>{label}</text
+      >
     {/if}
   </g>
 {/if}
@@ -395,6 +398,7 @@ git commit -m "feat(chart): add plot/Axis.svelte with quadrant-aware positioning
 Renders horizontal and/or vertical grid lines behind the chart content.
 
 **Files:**
+
 - Create: `packages/chart/src/plot/Grid.svelte`
 
 - [ ] **Step 1: Write `plot/Grid.svelte`**
@@ -422,22 +426,10 @@ No separate test — logic is trivial (tick → line). The component is tested i
 
 <g class="grid" data-plot-grid>
   {#each yGridLines as line (line.pos)}
-    <line
-      x1="0"
-      y1={line.pos}
-      x2={state.innerWidth}
-      y2={line.pos}
-      data-plot-grid-line
-    />
+    <line x1="0" y1={line.pos} x2={state.innerWidth} y2={line.pos} data-plot-grid-line />
   {/each}
   {#each xGridLines as line (line.pos)}
-    <line
-      x1={line.pos}
-      y1="0"
-      x2={line.pos}
-      y2={state.innerHeight}
-      data-plot-grid-line="x"
-    />
+    <line x1={line.pos} y1="0" x2={line.pos} y2={state.innerHeight} data-plot-grid-line="x" />
   {/each}
 </g>
 
@@ -464,6 +456,7 @@ git commit -m "feat(chart): add plot/Grid.svelte"
 Renders either a discrete swatch legend (categorical) or a gradient bar (sequential/diverging). Uses `state.colorScaleType` to switch modes.
 
 **Files:**
+
 - Create: `packages/chart/src/plot/Legend.svelte`
 - Create: `packages/chart/spec/plot/Legend.spec.js`
 
@@ -478,6 +471,7 @@ Renders either a discrete swatch legend (categorical) or a gradient bar (sequent
   let { state } = $props()
   setContext('plot-state', state)
 </script>
+
 <Legend />
 ```
 
@@ -496,7 +490,7 @@ describe('Legend item derivation', () => {
   it('builds categorical items from colors Map', () => {
     const colors = new Map([
       ['compact', { fill: '#4e79a7', stroke: '#4e79a7' }],
-      ['suv',     { fill: '#f28e2b', stroke: '#f28e2b' }]
+      ['suv', { fill: '#f28e2b', stroke: '#f28e2b' }]
     ])
     const labels = { compact: 'Compact', suv: 'SUV' }
 
@@ -508,7 +502,7 @@ describe('Legend item derivation', () => {
 
     expect(items).toHaveLength(2)
     expect(items[0]).toEqual({ key: 'compact', label: 'Compact', fill: '#4e79a7' })
-    expect(items[1]).toEqual({ key: 'suv',     label: 'SUV',     fill: '#f28e2b' })
+    expect(items[1]).toEqual({ key: 'suv', label: 'SUV', fill: '#f28e2b' })
   })
 
   it('uses raw key as label when labels map is absent', () => {
@@ -653,6 +647,7 @@ git commit -m "feat(chart): add plot/Legend.svelte with categorical/gradient mod
 Renders SVG `<defs>` for patterns used by Bar geom. Reads pattern assignments from `state.patterns` and resolves pattern SVG from the active preset.
 
 **Files:**
+
 - Create: `packages/chart/src/plot/DefinePatterns.svelte`
 
 - [ ] **Step 1: Write `plot/DefinePatterns.svelte`**
@@ -706,6 +701,7 @@ git commit -m "feat(chart): add plot/DefinePatterns.svelte for pattern defs from
 The core computation for bar layout. Handles vertical and horizontal orientation, grouped sub-bars per color category, and D3-stack-based stacking.
 
 **Files:**
+
 - Create: `packages/chart/src/geoms/lib/bars.js`
 - Create: `packages/chart/spec/geoms/lib/bars.spec.js`
 
@@ -716,13 +712,17 @@ The core computation for bar layout. Handles vertical and horizontal orientation
 ```js
 import { describe, it, expect } from 'vitest'
 import { scaleBand, scaleLinear } from 'd3-scale'
-import { buildGroupedBars, buildStackedBars, buildHorizontalBars } from '../../../src/geoms/lib/bars.js'
+import {
+  buildGroupedBars,
+  buildStackedBars,
+  buildHorizontalBars
+} from '../../../src/geoms/lib/bars.js'
 
 const data = [
   { class: 'compact', drv: 'f', hwy: 29 },
   { class: 'compact', drv: '4', hwy: 26 },
-  { class: 'suv',     drv: 'f', hwy: 20 },
-  { class: 'suv',     drv: '4', hwy: 18 }
+  { class: 'suv', drv: 'f', hwy: 20 },
+  { class: 'suv', drv: '4', hwy: 18 }
 ]
 
 const xScale = scaleBand().domain(['compact', 'suv']).range([0, 300]).padding(0.2)
@@ -734,12 +734,26 @@ const colors = new Map([
 
 describe('buildGroupedBars', () => {
   it('returns one rect per datum', () => {
-    const bars = buildGroupedBars(data, { x: 'class', y: 'hwy', color: 'drv' }, xScale, yScale, colors, 200)
+    const bars = buildGroupedBars(
+      data,
+      { x: 'class', y: 'hwy', color: 'drv' },
+      xScale,
+      yScale,
+      colors,
+      200
+    )
     expect(bars).toHaveLength(4)
   })
 
   it('groups rects within the parent band', () => {
-    const bars = buildGroupedBars(data, { x: 'class', y: 'hwy', color: 'drv' }, xScale, yScale, colors, 200)
+    const bars = buildGroupedBars(
+      data,
+      { x: 'class', y: 'hwy', color: 'drv' },
+      xScale,
+      yScale,
+      colors,
+      200
+    )
     const compactBars = bars.filter((b) => b.data.class === 'compact')
     // Both compact bars must be within [xScale('compact'), xScale('compact') + xScale.bandwidth()]
     const bandStart = xScale('compact') ?? 0
@@ -751,20 +765,34 @@ describe('buildGroupedBars', () => {
   })
 
   it('applies color fill from colors Map', () => {
-    const bars = buildGroupedBars(data, { x: 'class', y: 'hwy', color: 'drv' }, xScale, yScale, colors, 200)
+    const bars = buildGroupedBars(
+      data,
+      { x: 'class', y: 'hwy', color: 'drv' },
+      xScale,
+      yScale,
+      colors,
+      200
+    )
     const fBar = bars.find((b) => b.data.drv === 'f')
     expect(fBar?.fill).toBe('#4e79a7')
   })
 
   it('bar height reflects y value', () => {
-    const bars = buildGroupedBars(data, { x: 'class', y: 'hwy', color: 'drv' }, xScale, yScale, colors, 200)
+    const bars = buildGroupedBars(
+      data,
+      { x: 'class', y: 'hwy', color: 'drv' },
+      xScale,
+      yScale,
+      colors,
+      200
+    )
     const bar29 = bars.find((b) => b.data.hwy === 29)
     expect(bar29?.height).toBeCloseTo(200 - yScale(29), 1)
   })
 
   it('returns single-bar-per-x when no color channel', () => {
     const bars = buildGroupedBars(data, { x: 'class', y: 'hwy' }, xScale, yScale, colors, 200)
-    expect(bars).toHaveLength(4)  // still one per datum
+    expect(bars).toHaveLength(4) // still one per datum
   })
 })
 
@@ -772,17 +800,31 @@ describe('buildStackedBars', () => {
   const stackData = [
     { class: 'compact', drv: 'f', hwy: 29 },
     { class: 'compact', drv: '4', hwy: 26 },
-    { class: 'suv',     drv: 'f', hwy: 20 },
-    { class: 'suv',     drv: '4', hwy: 18 }
+    { class: 'suv', drv: 'f', hwy: 20 },
+    { class: 'suv', drv: '4', hwy: 18 }
   ]
 
   it('returns one rect per datum', () => {
-    const bars = buildStackedBars(stackData, { x: 'class', y: 'hwy', color: 'drv' }, xScale, yScale, colors, 200)
+    const bars = buildStackedBars(
+      stackData,
+      { x: 'class', y: 'hwy', color: 'drv' },
+      xScale,
+      yScale,
+      colors,
+      200
+    )
     expect(bars).toHaveLength(4)
   })
 
   it('stacks bars vertically (y0 + y1 pattern)', () => {
-    const bars = buildStackedBars(stackData, { x: 'class', y: 'hwy', color: 'drv' }, xScale, yScale, colors, 200)
+    const bars = buildStackedBars(
+      stackData,
+      { x: 'class', y: 'hwy', color: 'drv' },
+      xScale,
+      yScale,
+      colors,
+      200
+    )
     const compactBars = bars.filter((b) => b.data.class === 'compact').sort((a, b) => b.y - a.y)
     // Bottom bar y + height should equal top bar y (stacked)
     // i.e., compactBars[0].y + compactBars[0].height ≈ compactBars[1].y + compactBars[1].height
@@ -794,15 +836,29 @@ describe('buildStackedBars', () => {
 
 describe('buildHorizontalBars', () => {
   const yBand = scaleBand().domain(['compact', 'suv']).range([0, 200]).padding(0.2)
-  const xLin  = scaleLinear().domain([0, 40]).range([0, 300])
+  const xLin = scaleLinear().domain([0, 40]).range([0, 300])
 
   it('returns one rect per datum', () => {
-    const bars = buildHorizontalBars(data, { x: 'hwy', y: 'class', color: 'drv' }, xLin, yBand, colors, 200)
+    const bars = buildHorizontalBars(
+      data,
+      { x: 'hwy', y: 'class', color: 'drv' },
+      xLin,
+      yBand,
+      colors,
+      200
+    )
     expect(bars).toHaveLength(4)
   })
 
   it('bar width reflects x value', () => {
-    const bars = buildHorizontalBars(data, { x: 'hwy', y: 'class', color: 'drv' }, xLin, yBand, colors, 200)
+    const bars = buildHorizontalBars(
+      data,
+      { x: 'hwy', y: 'class', color: 'drv' },
+      xLin,
+      yBand,
+      colors,
+      200
+    )
     const bar29 = bars.find((b) => b.data.hwy === 29)
     expect(bar29?.width).toBeCloseTo(xLin(29), 1)
   })
@@ -841,15 +897,19 @@ export function buildGroupedBars(data, channels, xScale, yScale, colors, innerHe
 
   // Sub-scale within each x band for color grouping
   const colorKeys = cf ? [...new Set(data.map((d) => d[cf]))] : []
-  const subScale = colorKeys.length > 1
-    ? scaleBand().domain(colorKeys).range([0, xScale.bandwidth()]).padding(0.05)
-    : null
+  const subScale =
+    colorKeys.length > 1
+      ? scaleBand().domain(colorKeys).range([0, xScale.bandwidth()]).padding(0.05)
+      : null
 
   return data.map((d) => {
     const xVal = d[xf]
     const colorKey = cf ? d[cf] : null
-    const colorEntry = colors?.get(colorKey) ?? colors?.values().next().value ?? { fill: '#888', stroke: '#888' }
-    const patternId = patterns?.has(colorKey) ? `pattern-${String(colorKey).replace(/\s/g, '-')}` : null
+    const colorEntry = colors?.get(colorKey) ??
+      colors?.values().next().value ?? { fill: '#888', stroke: '#888' }
+    const patternId = patterns?.has(colorKey)
+      ? `pattern-${String(colorKey).replace(/\s/g, '-')}`
+      : null
 
     const bandX = xScale(xVal) ?? 0
     const subX = subScale ? (subScale(colorKey) ?? 0) : 0
@@ -945,14 +1005,16 @@ export function buildStackedBars(data, channels, xScale, yScale, colors, innerHe
 export function buildHorizontalBars(data, channels, xScale, yScale, colors, innerHeight) {
   const { x: xf, y: yf, color: cf } = channels
   const colorKeys = cf ? [...new Set(data.map((d) => d[cf]))] : []
-  const subScale = colorKeys.length > 1
-    ? scaleBand().domain(colorKeys).range([0, yScale.bandwidth()]).padding(0.05)
-    : null
+  const subScale =
+    colorKeys.length > 1
+      ? scaleBand().domain(colorKeys).range([0, yScale.bandwidth()]).padding(0.05)
+      : null
 
   return data.map((d) => {
     const yVal = d[yf]
     const colorKey = cf ? d[cf] : null
-    const colorEntry = colors?.get(colorKey) ?? colors?.values().next().value ?? { fill: '#888', stroke: '#888' }
+    const colorEntry = colors?.get(colorKey) ??
+      colors?.values().next().value ?? { fill: '#888', stroke: '#888' }
 
     const bandY = yScale(yVal) ?? 0
     const subY = subScale ? (subScale(colorKey) ?? 0) : 0
@@ -994,6 +1056,7 @@ git commit -m "feat(chart): add geoms/lib/bars.js — grouped, stacked, horizont
 Pure render geom. Reads post-stat data from context, delegates layout to `bars.js`, renders SVG rects.
 
 **Files:**
+
 - Create: `packages/chart/src/geoms/Bar.svelte`
 
 - [ ] **Step 1: Write `geoms/Bar.svelte`**
@@ -1015,19 +1078,21 @@ Pure render geom. Reads post-stat data from context, delegates layout to `bars.j
   const state = getContext('plot-state')
   const id = Symbol('bar')
 
-  onMount(() => state.registerGeom(id, {
-    type: 'bar',
-    channels: { x, y, color },
-    stat,
-    options
-  }))
+  onMount(() =>
+    state.registerGeom(id, {
+      type: 'bar',
+      channels: { x, y, color },
+      stat,
+      options
+    })
+  )
   onDestroy(() => state.unregisterGeom(id))
 
-  const data        = $derived(state.geomData(id))
-  const xScale      = $derived(state.xScale)
-  const yScale      = $derived(state.yScale)
-  const colors      = $derived(state.colors)
-  const patterns    = $derived(state.patterns)
+  const data = $derived(state.geomData(id))
+  const xScale = $derived(state.xScale)
+  const yScale = $derived(state.yScale)
+  const colors = $derived(state.colors)
+  const patterns = $derived(state.patterns)
   const orientation = $derived(state.orientation)
   const innerHeight = $derived(state.innerHeight)
 
@@ -1084,6 +1149,7 @@ git commit -m "feat(chart): add geoms/Bar.svelte — grouped, stacked, horizonta
 Pure render geom. Adapts the existing `lib/brewing/marks/lines.js` helper.
 
 **Files:**
+
 - Create: `packages/chart/src/geoms/Line.svelte`
 
 - [ ] **Step 1: Write `geoms/Line.svelte`**
@@ -1100,15 +1166,17 @@ The existing `buildLines(data, channels, xScale, yScale, colors, curve)` is alre
   const state = getContext('plot-state')
   const id = Symbol('line')
 
-  onMount(() => state.registerGeom(id, {
-    type: 'line',
-    channels: { x, y, color },
-    stat,
-    options
-  }))
+  onMount(() =>
+    state.registerGeom(id, {
+      type: 'line',
+      channels: { x, y, color },
+      stat,
+      options
+    })
+  )
   onDestroy(() => state.unregisterGeom(id))
 
-  const data   = $derived(state.geomData(id))
+  const data = $derived(state.geomData(id))
   const xScale = $derived(state.xScale)
   const yScale = $derived(state.yScale)
   const colors = $derived(state.colors)
@@ -1150,6 +1218,7 @@ git commit -m "feat(chart): add geoms/Line.svelte"
 Pure render geom for area fills. Creates `geoms/lib/areas.js` rather than reusing `lib/brewing/marks/areas.js` — the existing helper uses `fill` as the grouping channel, while the new geom layer uses `color`. A new helper avoids a confusing channel rename at the call site.
 
 **Files:**
+
 - Create: `packages/chart/src/geoms/lib/areas.js`
 - Create: `packages/chart/src/geoms/Area.svelte`
 
@@ -1171,11 +1240,10 @@ import { area, curveCatmullRom, curveStep } from 'd3-shape'
  */
 export function buildAreas(data, channels, xScale, yScale, colors, curve) {
   const { x: xf, y: yf, color: cf } = channels
-  const baseline = yScale.range()[0]   // bottom of the chart (y pixel max)
+  const baseline = yScale.range()[0] // bottom of the chart (y pixel max)
 
-  const xPos = (d) => typeof xScale.bandwidth === 'function'
-    ? xScale(d[xf]) + xScale.bandwidth() / 2
-    : xScale(d[xf])
+  const xPos = (d) =>
+    typeof xScale.bandwidth === 'function' ? xScale(d[xf]) + xScale.bandwidth() / 2 : xScale(d[xf])
 
   const makeGen = () => {
     const gen = area()
@@ -1218,15 +1286,17 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve) {
   const state = getContext('plot-state')
   const id = Symbol('area')
 
-  onMount(() => state.registerGeom(id, {
-    type: 'area',
-    channels: { x, y, color },
-    stat,
-    options
-  }))
+  onMount(() =>
+    state.registerGeom(id, {
+      type: 'area',
+      channels: { x, y, color },
+      stat,
+      options
+    })
+  )
   onDestroy(() => state.unregisterGeom(id))
 
-  const data   = $derived(state.geomData(id))
+  const data = $derived(state.geomData(id))
   const xScale = $derived(state.xScale)
   const yScale = $derived(state.yScale)
   const colors = $derived(state.colors)
@@ -1266,6 +1336,7 @@ git commit -m "feat(chart): add geoms/Area.svelte with areas.js helper"
 Pure render geom for scatter/bubble charts.
 
 **Files:**
+
 - Create: `packages/chart/src/geoms/Point.svelte`
 
 - [ ] **Step 1: Write `geoms/Point.svelte`**
@@ -1282,24 +1353,35 @@ Reuses existing `buildPoints` from `lib/brewing/marks/points.js`.
   const state = getContext('plot-state')
   const id = Symbol('point')
 
-  onMount(() => state.registerGeom(id, {
-    type: 'point',
-    channels: { x, y, color, size },
-    stat,
-    options
-  }))
+  onMount(() =>
+    state.registerGeom(id, {
+      type: 'point',
+      channels: { x, y, color, size },
+      stat,
+      options
+    })
+  )
   onDestroy(() => state.unregisterGeom(id))
 
-  const data    = $derived(state.geomData(id))
-  const xScale  = $derived(state.xScale)
-  const yScale  = $derived(state.yScale)
-  const colors  = $derived(state.colors)
+  const data = $derived(state.geomData(id))
+  const xScale = $derived(state.xScale)
+  const yScale = $derived(state.yScale)
+  const colors = $derived(state.colors)
   // Size scale: future enhancement — null for now
   const sizeScale = null
 
   const points = $derived.by(() => {
     if (!data?.length || !xScale || !yScale) return []
-    return buildPoints(data, { x, y, color, size }, xScale, yScale, colors, sizeScale, null, options.radius ?? 4)
+    return buildPoints(
+      data,
+      { x, y, color, size },
+      xScale,
+      yScale,
+      colors,
+      sizeScale,
+      null,
+      options.radius ?? 4
+    )
   })
 </script>
 
@@ -1339,6 +1421,7 @@ git commit -m "feat(chart): add geoms/Point.svelte for scatter charts"
 These follow the same context protocol as the other geoms. The mark computation is reused from existing helpers.
 
 **Files:**
+
 - Create: `packages/chart/src/geoms/Arc.svelte`
 - Create: `packages/chart/src/geoms/Box.svelte`
 - Create: `packages/chart/src/geoms/Violin.svelte`
@@ -1424,31 +1507,30 @@ Reuses `buildArcs(data, channels, colors, width, height, opts)` from `lib/brewin
   const state = getContext('plot-state')
   const id = Symbol('arc')
 
-  onMount(() => state.registerGeom(id, {
-    type: 'arc',
-    channels: { label: color, y: theta },
-    stat,
-    options
-  }))
+  onMount(() =>
+    state.registerGeom(id, {
+      type: 'arc',
+      channels: { label: color, y: theta },
+      stat,
+      options
+    })
+  )
   onDestroy(() => state.unregisterGeom(id))
 
-  const data   = $derived(state.geomData(id))
+  const data = $derived(state.geomData(id))
   const colors = $derived(state.colors)
-  const w      = $derived(state.innerWidth)
-  const h      = $derived(state.innerHeight)
+  const w = $derived(state.innerWidth)
+  const h = $derived(state.innerHeight)
 
   const arcs = $derived.by(() => {
     if (!data?.length) return []
-    const innerRadius = (options.innerRadius ?? 0) * Math.min(w, h) / 2
+    const innerRadius = ((options.innerRadius ?? 0) * Math.min(w, h)) / 2
     return buildArcs(data, { label: color, y: theta }, colors, w, h, { innerRadius })
   })
 </script>
 
 {#if arcs.length > 0}
-  <g
-    data-plot-geom="arc"
-    transform="translate({w / 2}, {h / 2})"
-  >
+  <g data-plot-geom="arc" transform="translate({w / 2}, {h / 2})">
     {#each arcs as arc (arc.key)}
       <path
         d={arc.d}
@@ -1484,18 +1566,20 @@ Reuses `buildBoxes(data, channels, xScale, yScale, colors)` from `lib/brewing/ma
   const state = getContext('plot-state')
   const id = Symbol('box')
 
-  onMount(() => state.registerGeom(id, {
-    type: 'box',
-    channels: { x, y, color },
-    stat,
-    options
-  }))
+  onMount(() =>
+    state.registerGeom(id, {
+      type: 'box',
+      channels: { x, y, color },
+      stat,
+      options
+    })
+  )
   onDestroy(() => state.unregisterGeom(id))
 
-  const data    = $derived(state.geomData(id))
-  const xScale  = $derived(state.xScale)
-  const yScale  = $derived(state.yScale)
-  const colors  = $derived(state.colors)
+  const data = $derived(state.geomData(id))
+  const xScale = $derived(state.xScale)
+  const yScale = $derived(state.yScale)
+  const colors = $derived(state.colors)
 
   const boxes = $derived.by(() => {
     if (!data?.length || !xScale || !yScale) return []
@@ -1507,24 +1591,72 @@ Reuses `buildBoxes(data, channels, xScale, yScale, colors)` from `lib/brewing/ma
   <g data-plot-geom="box">
     {#each boxes as box (box.key)}
       <!-- Box body (IQR) -->
-      <rect x={box.x} y={box.q3y} width={box.width} height={box.q1y - box.q3y}
-            fill={box.fill} stroke={box.stroke} stroke-width="1" data-plot-element="box-body" />
+      <rect
+        x={box.x}
+        y={box.q3y}
+        width={box.width}
+        height={box.q1y - box.q3y}
+        fill={box.fill}
+        stroke={box.stroke}
+        stroke-width="1"
+        data-plot-element="box-body"
+      />
       <!-- Median line -->
-      <line x1={box.x} y1={box.mediany} x2={box.x + box.width} y2={box.mediany}
-            stroke={box.stroke} stroke-width="2" data-plot-element="box-median" />
+      <line
+        x1={box.x}
+        y1={box.mediany}
+        x2={box.x + box.width}
+        y2={box.mediany}
+        stroke={box.stroke}
+        stroke-width="2"
+        data-plot-element="box-median"
+      />
       <!-- Whiskers -->
-      <line x1={box.midX} y1={box.q1y} x2={box.midX} y2={box.whiskerLowy}
-            stroke={box.stroke} stroke-width="1" data-plot-element="box-whisker" />
-      <line x1={box.midX} y1={box.q3y} x2={box.midX} y2={box.whiskerHighy}
-            stroke={box.stroke} stroke-width="1" data-plot-element="box-whisker" />
+      <line
+        x1={box.midX}
+        y1={box.q1y}
+        x2={box.midX}
+        y2={box.whiskerLowy}
+        stroke={box.stroke}
+        stroke-width="1"
+        data-plot-element="box-whisker"
+      />
+      <line
+        x1={box.midX}
+        y1={box.q3y}
+        x2={box.midX}
+        y2={box.whiskerHighy}
+        stroke={box.stroke}
+        stroke-width="1"
+        data-plot-element="box-whisker"
+      />
       <!-- Whisker caps -->
-      <line x1={box.x + box.width * 0.25} y1={box.whiskerHighy} x2={box.x + box.width * 0.75} y2={box.whiskerHighy}
-            stroke={box.stroke} stroke-width="1" />
-      <line x1={box.x + box.width * 0.25} y1={box.whiskerLowy} x2={box.x + box.width * 0.75} y2={box.whiskerLowy}
-            stroke={box.stroke} stroke-width="1" />
+      <line
+        x1={box.x + box.width * 0.25}
+        y1={box.whiskerHighy}
+        x2={box.x + box.width * 0.75}
+        y2={box.whiskerHighy}
+        stroke={box.stroke}
+        stroke-width="1"
+      />
+      <line
+        x1={box.x + box.width * 0.25}
+        y1={box.whiskerLowy}
+        x2={box.x + box.width * 0.75}
+        y2={box.whiskerLowy}
+        stroke={box.stroke}
+        stroke-width="1"
+      />
       <!-- Outliers -->
       {#each box.outliers ?? [] as oy, oi (oi)}
-        <circle cx={box.midX} cy={oy} r="3" fill="none" stroke={box.stroke} data-plot-element="box-outlier" />
+        <circle
+          cx={box.midX}
+          cy={oy}
+          r="3"
+          fill="none"
+          stroke={box.stroke}
+          data-plot-element="box-outlier"
+        />
       {/each}
     {/each}
   </g>
@@ -1547,15 +1679,17 @@ Reuses `buildViolins` from `lib/brewing/marks/violins.js`.
   const state = getContext('plot-state')
   const id = Symbol('violin')
 
-  onMount(() => state.registerGeom(id, {
-    type: 'violin',
-    channels: { x, y, color },
-    stat,
-    options
-  }))
+  onMount(() =>
+    state.registerGeom(id, {
+      type: 'violin',
+      channels: { x, y, color },
+      stat,
+      options
+    })
+  )
   onDestroy(() => state.unregisterGeom(id))
 
-  const data   = $derived(state.geomData(id))
+  const data = $derived(state.geomData(id))
   const xScale = $derived(state.xScale)
   const yScale = $derived(state.yScale)
   const colors = $derived(state.colors)
@@ -1569,7 +1703,14 @@ Reuses `buildViolins` from `lib/brewing/marks/violins.js`.
 {#if violins.length > 0}
   <g data-plot-geom="violin">
     {#each violins as v (v.key)}
-      <path d={v.d} fill={v.fill} fill-opacity="0.7" stroke={v.stroke} stroke-width="1" data-plot-element="violin" />
+      <path
+        d={v.d}
+        fill={v.fill}
+        fill-opacity="0.7"
+        stroke={v.stroke}
+        stroke-width="1"
+        data-plot-element="violin"
+      />
     {/each}
   </g>
 {/if}
@@ -1591,6 +1732,7 @@ git commit -m "feat(chart): add Arc, Box, Violin geom components"
 The top-level chart component. Creates `PlotState`, sets context, renders SVG canvas with optional grid, axes, legend, and pattern defs. Accepts either declarative children (geoms as child components) or a `spec` prop.
 
 **Files:**
+
 - Create: `packages/chart/src/Plot.svelte`
 - Create: `packages/chart/spec/Plot.spec.js`
 
@@ -1694,15 +1836,17 @@ Expected: FAIL — `./Plot.svelte` not found.
   } = $props()
 
   // Merge declarative props with spec
-  const config = $derived(spec ?? {
-    data,
-    width,
-    height,
-    mode,
-    grid,
-    legend,
-    title
-  })
+  const config = $derived(
+    spec ?? {
+      data,
+      width,
+      height,
+      mode,
+      grid,
+      legend,
+      title
+    }
+  )
 
   // Create PlotState and provide as context
   const state = new PlotState(config, helpers)
@@ -1714,14 +1858,22 @@ Expected: FAIL — `./Plot.svelte` not found.
   })
 
   const margin = { top: 30, right: 30, bottom: 50, left: 55 }
-  const svgWidth  = $derived(config.width ?? width)
+  const svgWidth = $derived(config.width ?? width)
   const svgHeight = $derived(config.height ?? height)
 
   // Geoms from spec (spec-driven API)
   const specGeoms = $derived(spec?.geoms ?? [])
 
   // Geom component resolver for spec-driven mode
-  const GEOM_COMPONENTS = { bar: Bar, line: Line, area: Area, point: Point, arc: Arc, box: Box, violin: Violin }
+  const GEOM_COMPONENTS = {
+    bar: Bar,
+    line: Line,
+    area: Area,
+    point: Point,
+    arc: Arc,
+    box: Box,
+    violin: Violin
+  }
   function resolveGeomComponent(type) {
     return helpers?.geoms?.[type] ?? GEOM_COMPONENTS[type]
   }
@@ -1742,11 +1894,7 @@ Expected: FAIL — `./Plot.svelte` not found.
     <!-- SVG pattern defs -->
     <DefinePatterns />
 
-    <g
-      class="plot-canvas"
-      transform="translate({margin.left}, {margin.top})"
-      data-plot-canvas
-    >
+    <g class="plot-canvas" transform="translate({margin.left}, {margin.top})" data-plot-canvas>
       <!-- Grid (behind everything) -->
       {#if config.grid ?? grid}
         <Grid />
@@ -1858,6 +2006,7 @@ git commit -m "feat(chart): add Plot.svelte orchestrator — declarative + spec-
 All existing chart wrapper components become thin wrappers around `Plot.svelte`. They preserve their existing prop signatures for backward compatibility. Read each file before rewriting it.
 
 **Files:**
+
 - Modify: `packages/chart/src/charts/BarChart.svelte`
 - Modify: `packages/chart/src/charts/LineChart.svelte`
 - Modify: `packages/chart/src/charts/AreaChart.svelte`
@@ -1880,7 +2029,7 @@ Read `packages/chart/src/charts/BarChart.svelte` to confirm existing props, then
     data = [],
     x = undefined,
     y = undefined,
-    fill = undefined,   // mapped to color channel
+    fill = undefined, // mapped to color channel
     pattern = undefined,
     width = 600,
     height = 400,
@@ -1935,8 +2084,19 @@ For each file, read it first to confirm the existing props, then replace with th
 <script>
   import Plot from '../Plot.svelte'
   import Area from '../geoms/Area.svelte'
-  let { data = [], x, y, color, width = 600, height = 400, mode = 'light', grid = true, legend = false } = $props()
+  let {
+    data = [],
+    x,
+    y,
+    color,
+    width = 600,
+    height = 400,
+    mode = 'light',
+    grid = true,
+    legend = false
+  } = $props()
 </script>
+
 <Plot {data} {width} {height} {mode} {grid} {legend}>
   <Area {x} {y} {color} />
 </Plot>
@@ -1948,8 +2108,18 @@ For each file, read it first to confirm the existing props, then replace with th
 <script>
   import Plot from '../Plot.svelte'
   import Arc from '../geoms/Arc.svelte'
-  let { data = [], theta, color, innerRadius = 0, width = 400, height = 400, mode = 'light', legend = false } = $props()
+  let {
+    data = [],
+    theta,
+    color,
+    innerRadius = 0,
+    width = 400,
+    height = 400,
+    mode = 'light',
+    legend = false
+  } = $props()
 </script>
+
 <Plot {data} {width} {height} {mode} grid={false} {legend}>
   <Arc {theta} {color} options={{ innerRadius }} />
 </Plot>
@@ -1961,8 +2131,20 @@ For each file, read it first to confirm the existing props, then replace with th
 <script>
   import Plot from '../Plot.svelte'
   import Point from '../geoms/Point.svelte'
-  let { data = [], x, y, color, size, width = 600, height = 400, mode = 'light', grid = true, legend = false } = $props()
+  let {
+    data = [],
+    x,
+    y,
+    color,
+    size,
+    width = 600,
+    height = 400,
+    mode = 'light',
+    grid = true,
+    legend = false
+  } = $props()
 </script>
+
 <Plot {data} {width} {height} {mode} {grid} {legend}>
   <Point {x} {y} {color} {size} />
 </Plot>
@@ -1974,8 +2156,19 @@ For each file, read it first to confirm the existing props, then replace with th
 <script>
   import Plot from '../Plot.svelte'
   import Box from '../geoms/Box.svelte'
-  let { data = [], x, y, color, width = 600, height = 400, mode = 'light', grid = true, legend = false } = $props()
+  let {
+    data = [],
+    x,
+    y,
+    color,
+    width = 600,
+    height = 400,
+    mode = 'light',
+    grid = true,
+    legend = false
+  } = $props()
 </script>
+
 <Plot {data} {width} {height} {mode} {grid} {legend}>
   <Box {x} {y} {color} />
 </Plot>
@@ -1987,8 +2180,19 @@ For each file, read it first to confirm the existing props, then replace with th
 <script>
   import Plot from '../Plot.svelte'
   import Violin from '../geoms/Violin.svelte'
-  let { data = [], x, y, color, width = 600, height = 400, mode = 'light', grid = true, legend = false } = $props()
+  let {
+    data = [],
+    x,
+    y,
+    color,
+    width = 600,
+    height = 400,
+    mode = 'light',
+    grid = true,
+    legend = false
+  } = $props()
 </script>
+
 <Plot {data} {width} {height} {mode} {grid} {legend}>
   <Violin {x} {y} {color} />
 </Plot>
@@ -2000,8 +2204,20 @@ For each file, read it first to confirm the existing props, then replace with th
 <script>
   import Plot from '../Plot.svelte'
   import Point from '../geoms/Point.svelte'
-  let { data = [], x, y, size, color, width = 600, height = 400, mode = 'light', grid = true, legend = false } = $props()
+  let {
+    data = [],
+    x,
+    y,
+    size,
+    color,
+    width = 600,
+    height = 400,
+    mode = 'light',
+    grid = true,
+    legend = false
+  } = $props()
 </script>
+
 <Plot {data} {width} {height} {mode} {grid} {legend}>
   <Point {x} {y} {color} {size} />
 </Plot>
@@ -2033,6 +2249,7 @@ git commit -m "refactor(chart): update all chart wrappers to use new Plot.svelte
 The package's public API should export `Plot.svelte` and all geom components under a `Plot` namespace, alongside the existing exports.
 
 **Files:**
+
 - Modify: `packages/chart/src/index.js`
 
 - [x] **Step 1: Rename the old `Plot` namespace export**
@@ -2058,12 +2275,12 @@ After the `PlotLayers` rename, add the new system exports:
 export { default as PlotChart } from './Plot.svelte'
 
 // Geom components (for declarative use inside PlotChart)
-export { default as GeomBar }    from './geoms/Bar.svelte'
-export { default as GeomLine }   from './geoms/Line.svelte'
-export { default as GeomArea }   from './geoms/Area.svelte'
-export { default as GeomPoint }  from './geoms/Point.svelte'
-export { default as GeomArc }    from './geoms/Arc.svelte'
-export { default as GeomBox }    from './geoms/Box.svelte'
+export { default as GeomBar } from './geoms/Bar.svelte'
+export { default as GeomLine } from './geoms/Line.svelte'
+export { default as GeomArea } from './geoms/Area.svelte'
+export { default as GeomPoint } from './geoms/Point.svelte'
+export { default as GeomArc } from './geoms/Arc.svelte'
+export { default as GeomBox } from './geoms/Box.svelte'
 export { default as GeomViolin } from './geoms/Violin.svelte'
 ```
 

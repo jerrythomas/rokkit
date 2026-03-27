@@ -1,0 +1,62 @@
+# MarkdownRenderer
+
+Renders a Markdown string to sanitized HTML. Fenced code blocks can be intercepted by plugins — Svelte components that receive the raw code block text and render it as live UI (charts, tables, diagrams) instead of highlighted source.
+
+## Import
+
+```javascript
+import { MarkdownRenderer } from '@rokkit/ui'
+```
+
+## Quick Start
+
+```svelte
+<script>
+  import { MarkdownRenderer } from '@rokkit/ui'
+</script>
+
+<MarkdownRenderer markdown="# Hello\n\nThis is **Markdown**." />
+```
+
+HTML is sanitized with DOMPurify before rendering.
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `markdown` | `string` | — | Markdown source string |
+| `plugins` | `MarkdownPlugin[]` | `[]` | Code block plugins — intercept fenced blocks by language tag |
+
+## Plugins
+
+```svelte
+<script>
+  import { MarkdownRenderer } from '@rokkit/ui'
+  import { PlotPlugin, TablePlugin, MermaidPlugin } from '@rokkit/blocks'
+</script>
+
+<MarkdownRenderer {markdown} plugins={[PlotPlugin, TablePlugin, MermaidPlugin]} />
+```
+
+| Plugin | Language | Renders |
+|--------|----------|---------|
+| `PlotPlugin` | `plot` | `PlotChart` / `FacetPlot` from `@rokkit/chart` |
+| `TablePlugin` | `table` | `Table` from `@rokkit/ui` |
+| `SparklinePlugin` | `sparkline` | `Sparkline` from `@rokkit/chart` |
+| `MermaidPlugin` | `mermaid` | Mermaid diagram |
+
+## Custom Plugin
+
+```javascript
+import MyWidget from './MyWidget.svelte'
+
+export const MyPlugin = {
+  language: 'widget',          // matches ```widget fenced blocks
+  component: MyWidget          // receives { code: string } as props
+}
+```
+
+## Related
+
+- [Blocks](/llms/packages/blocks.txt) — `@rokkit/blocks` plugin package
+- [Code](/llms/components/code.txt) — static syntax-highlighted code block

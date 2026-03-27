@@ -1,0 +1,46 @@
+# PieChart
+
+Data-driven SVG pie/donut chart. Slices with < 5% are not labeled. Set `innerRadius > 0` for a donut.
+
+## Import
+
+```javascript
+import { PieChart } from '@rokkit/chart'
+```
+
+## Quick Start
+
+```svelte
+<!-- Pie chart -->
+<PieChart data={data} y="share" fill="segment" stat="sum" legend />
+
+<!-- Donut chart -->
+<PieChart data={data} y="share" fill="segment" innerRadius={0.5} legend tooltip />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `data` | `Object[]` | `[]` | Data rows |
+| `y` | `string` | — | Field for slice values |
+| `fill` | `string` | — | Field for slice color assignment |
+| `pattern` | `string` | — | Field for pattern fill |
+| `stat` | `string` | `'sum'` | Aggregation: `sum`, `mean`, `min`, `max`, `count` |
+| `innerRadius` | `number` | `0` | Donut hole size as fraction of outer radius (0–1) |
+| `labelFn` | `(d) => string` | — | Override slice labels (default: `pct%`) |
+| `width` | `number` | `400` | SVG width in pixels |
+| `height` | `number` | `400` | SVG height in pixels |
+| `mode` | `'light' \| 'dark'` | `'light'` | Color palette mode |
+| `legend` | `boolean` | `false` | Show color legend |
+| `tooltip` | `boolean \| (d) => string` | `false` | Hover tooltip |
+
+## Custom labels
+
+```svelte
+<PieChart data={data} y="share" fill="segment" labelFn={(d) => d.share.toFixed(1)} />
+```
+
+## Related
+
+- [PlotChart](/llms/components/plot-chart.txt) — low-level API with `GeomArc`

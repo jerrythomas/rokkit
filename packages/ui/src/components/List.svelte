@@ -102,14 +102,15 @@
 	function expandAncestorGroups(activeKey: string | null) {
 		for (const [key, proxy] of wrapper.lookup) {
 			if (!proxy.hasChildren) continue
-			proxy.expanded =
-				activeKey !== null &&
-				(activeKey === key || activeKey.startsWith(`${key  }-`))
+			proxy.expanded = activeKey !== null && (activeKey === key || activeKey.startsWith(`${key}-`))
 		}
 	}
 
 	function syncExpandedGroups() {
-		if (!collapsible) { expandAllGroups(); return }
+		if (!collapsible) {
+			expandAllGroups()
+			return
+		}
 		expandAncestorGroups(findActiveKey())
 	}
 

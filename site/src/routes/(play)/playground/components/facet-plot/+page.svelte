@@ -14,7 +14,10 @@
 		x: 'class',
 		y: 'hwy',
 		fill: 'drv',
-		geomType: 'bar',
+		color: '',
+		pattern: '',
+		symbol: '',
+		geom: 'bar',
 		stat: 'mean',
 		scales: 'fixed',
 		cols: 3,
@@ -29,7 +32,10 @@
 			x: { type: 'string' },
 			y: { type: 'string' },
 			fill: { type: 'string' },
-			geomType: { type: 'string' },
+			color: { type: 'string' },
+			pattern: { type: 'string' },
+			symbol: { type: 'string' },
+			geom: { type: 'string' },
 			stat: { type: 'string' },
 			scales: { type: 'string' },
 			cols: { type: 'number' },
@@ -57,19 +63,34 @@
 				props: { options: ['hwy', 'cty', 'displ'] }
 			},
 			{
+				scope: '#/geom',
+				label: 'geom',
+				props: { options: ['bar', 'line', 'area', 'point'] }
+			},
+			{
+				scope: '#/stat',
+				label: 'stat',
+				props: { options: ['identity', 'mean', 'sum', 'count', 'min', 'max'] }
+			},
+			{
 				scope: '#/fill',
 				label: 'fill',
 				props: { options: ['', 'drv', 'class', 'cyl', 'year', 'fl'] }
 			},
 			{
-				scope: '#/geomType',
-				label: 'geom',
-				props: { options: ['bar', 'line', 'point'] }
+				scope: '#/color',
+				label: 'color',
+				props: { options: ['', 'drv', 'class', 'cyl', 'year', 'fl'] }
 			},
 			{
-				scope: '#/stat',
-				label: 'stat',
-				props: { options: ['mean', 'sum', 'count', 'min', 'max', 'identity'] }
+				scope: '#/pattern',
+				label: 'pattern',
+				props: { options: ['', 'drv', 'class', 'cyl'] }
+			},
+			{
+				scope: '#/symbol',
+				label: 'symbol',
+				props: { options: ['', 'drv', 'class', 'cyl'] }
 			},
 			{
 				scope: '#/scales',
@@ -91,7 +112,7 @@
 <PlaySection>
 	{#snippet preview()}
 		<div class="flex flex-col gap-4 p-6">
-			<h4 class="text-surface-z5 m-0 text-xs uppercase tracking-widest font-semibold">
+			<h4 class="text-surface-z5 m-0 text-xs font-semibold tracking-widest uppercase">
 				Highway MPG by Vehicle Class — faceted by {props.facetBy}
 			</h4>
 			<FacetPlot
@@ -100,7 +121,11 @@
 				x={props.x}
 				y={props.y}
 				fill={props.fill || undefined}
-				geoms={[{ type: props.geomType, stat: props.stat }]}
+				color={props.color || undefined}
+				pattern={props.pattern || undefined}
+				symbol={props.symbol || undefined}
+				geom={props.geom}
+				stat={props.stat}
 				width={860}
 				height={260}
 				grid={props.grid}

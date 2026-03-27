@@ -17,6 +17,7 @@
 The UnoCSS preset generates `bg-{role}-z{n}`, `text-{role}-z{n}`, `border-{role}-z{n}` etc. from `SEMANTIC_PREFIXES` in `packages/core/src/theme.ts`. Adding `stroke` and `fill` generates the SVG-specific utilities required by chart theme CSS.
 
 **Files:**
+
 - Modify: `packages/core/src/theme.ts`
 - Test: `packages/unocss/spec/preset.spec.js`
 
@@ -70,8 +71,8 @@ const SEMANTIC_PREFIXES = [
   'from',
   'to',
   'divide',
-  'stroke',  // ← add
-  'fill'     // ← add
+  'stroke', // ← add
+  'fill' // ← add
 ]
 ```
 
@@ -115,6 +116,7 @@ EOF
 ChartBrewer assigns colors from a 21-color chart-safe palette (not theme roles). This file lives in the chart package.
 
 **Files:**
+
 - Create: `packages/chart/src/lib/brewing/palette.json`
 - Create: `packages/chart/spec/brewing/colors.spec.js`
 
@@ -122,27 +124,153 @@ ChartBrewer assigns colors from a 21-color chart-safe palette (not theme roles).
 
 ```json
 [
-  { "name": "blue",       "shades": { "light": { "fill": "#93c5fd", "stroke": "#1d4ed8" }, "dark": { "fill": "#3b82f6", "stroke": "#93c5fd" } } },
-  { "name": "emerald",    "shades": { "light": { "fill": "#6ee7b7", "stroke": "#065f46" }, "dark": { "fill": "#10b981", "stroke": "#6ee7b7" } } },
-  { "name": "rose",       "shades": { "light": { "fill": "#fda4af", "stroke": "#9f1239" }, "dark": { "fill": "#f43f5e", "stroke": "#fda4af" } } },
-  { "name": "amber",      "shades": { "light": { "fill": "#fcd34d", "stroke": "#92400e" }, "dark": { "fill": "#f59e0b", "stroke": "#fcd34d" } } },
-  { "name": "violet",     "shades": { "light": { "fill": "#c4b5fd", "stroke": "#4c1d95" }, "dark": { "fill": "#8b5cf6", "stroke": "#c4b5fd" } } },
-  { "name": "sky",        "shades": { "light": { "fill": "#7dd3fc", "stroke": "#0c4a6e" }, "dark": { "fill": "#0ea5e9", "stroke": "#7dd3fc" } } },
-  { "name": "pink",       "shades": { "light": { "fill": "#f9a8d4", "stroke": "#831843" }, "dark": { "fill": "#ec4899", "stroke": "#f9a8d4" } } },
-  { "name": "teal",       "shades": { "light": { "fill": "#5eead4", "stroke": "#134e4a" }, "dark": { "fill": "#14b8a6", "stroke": "#5eead4" } } },
-  { "name": "orange",     "shades": { "light": { "fill": "#fdba74", "stroke": "#7c2d12" }, "dark": { "fill": "#f97316", "stroke": "#fdba74" } } },
-  { "name": "indigo",     "shades": { "light": { "fill": "#a5b4fc", "stroke": "#312e81" }, "dark": { "fill": "#6366f1", "stroke": "#a5b4fc" } } },
-  { "name": "lime",       "shades": { "light": { "fill": "#bef264", "stroke": "#365314" }, "dark": { "fill": "#84cc16", "stroke": "#bef264" } } },
-  { "name": "cyan",       "shades": { "light": { "fill": "#67e8f9", "stroke": "#164e63" }, "dark": { "fill": "#06b6d4", "stroke": "#67e8f9" } } },
-  { "name": "fuchsia",    "shades": { "light": { "fill": "#f0abfc", "stroke": "#701a75" }, "dark": { "fill": "#d946ef", "stroke": "#f0abfc" } } },
-  { "name": "yellow",     "shades": { "light": { "fill": "#fef08a", "stroke": "#713f12" }, "dark": { "fill": "#eab308", "stroke": "#fef08a" } } },
-  { "name": "red",        "shades": { "light": { "fill": "#fca5a5", "stroke": "#7f1d1d" }, "dark": { "fill": "#ef4444", "stroke": "#fca5a5" } } },
-  { "name": "green",      "shades": { "light": { "fill": "#86efac", "stroke": "#14532d" }, "dark": { "fill": "#22c55e", "stroke": "#86efac" } } },
-  { "name": "purple",     "shades": { "light": { "fill": "#d8b4fe", "stroke": "#581c87" }, "dark": { "fill": "#a855f7", "stroke": "#d8b4fe" } } },
-  { "name": "slate",      "shades": { "light": { "fill": "#94a3b8", "stroke": "#0f172a" }, "dark": { "fill": "#64748b", "stroke": "#94a3b8" } } },
-  { "name": "stone",      "shades": { "light": { "fill": "#a8a29e", "stroke": "#1c1917" }, "dark": { "fill": "#78716c", "stroke": "#a8a29e" } } },
-  { "name": "zinc",       "shades": { "light": { "fill": "#a1a1aa", "stroke": "#18181b" }, "dark": { "fill": "#71717a", "stroke": "#a1a1aa" } } },
-  { "name": "neutral",    "shades": { "light": { "fill": "#a3a3a3", "stroke": "#171717" }, "dark": { "fill": "#737373", "stroke": "#a3a3a3" } } }
+  {
+    "name": "blue",
+    "shades": {
+      "light": { "fill": "#93c5fd", "stroke": "#1d4ed8" },
+      "dark": { "fill": "#3b82f6", "stroke": "#93c5fd" }
+    }
+  },
+  {
+    "name": "emerald",
+    "shades": {
+      "light": { "fill": "#6ee7b7", "stroke": "#065f46" },
+      "dark": { "fill": "#10b981", "stroke": "#6ee7b7" }
+    }
+  },
+  {
+    "name": "rose",
+    "shades": {
+      "light": { "fill": "#fda4af", "stroke": "#9f1239" },
+      "dark": { "fill": "#f43f5e", "stroke": "#fda4af" }
+    }
+  },
+  {
+    "name": "amber",
+    "shades": {
+      "light": { "fill": "#fcd34d", "stroke": "#92400e" },
+      "dark": { "fill": "#f59e0b", "stroke": "#fcd34d" }
+    }
+  },
+  {
+    "name": "violet",
+    "shades": {
+      "light": { "fill": "#c4b5fd", "stroke": "#4c1d95" },
+      "dark": { "fill": "#8b5cf6", "stroke": "#c4b5fd" }
+    }
+  },
+  {
+    "name": "sky",
+    "shades": {
+      "light": { "fill": "#7dd3fc", "stroke": "#0c4a6e" },
+      "dark": { "fill": "#0ea5e9", "stroke": "#7dd3fc" }
+    }
+  },
+  {
+    "name": "pink",
+    "shades": {
+      "light": { "fill": "#f9a8d4", "stroke": "#831843" },
+      "dark": { "fill": "#ec4899", "stroke": "#f9a8d4" }
+    }
+  },
+  {
+    "name": "teal",
+    "shades": {
+      "light": { "fill": "#5eead4", "stroke": "#134e4a" },
+      "dark": { "fill": "#14b8a6", "stroke": "#5eead4" }
+    }
+  },
+  {
+    "name": "orange",
+    "shades": {
+      "light": { "fill": "#fdba74", "stroke": "#7c2d12" },
+      "dark": { "fill": "#f97316", "stroke": "#fdba74" }
+    }
+  },
+  {
+    "name": "indigo",
+    "shades": {
+      "light": { "fill": "#a5b4fc", "stroke": "#312e81" },
+      "dark": { "fill": "#6366f1", "stroke": "#a5b4fc" }
+    }
+  },
+  {
+    "name": "lime",
+    "shades": {
+      "light": { "fill": "#bef264", "stroke": "#365314" },
+      "dark": { "fill": "#84cc16", "stroke": "#bef264" }
+    }
+  },
+  {
+    "name": "cyan",
+    "shades": {
+      "light": { "fill": "#67e8f9", "stroke": "#164e63" },
+      "dark": { "fill": "#06b6d4", "stroke": "#67e8f9" }
+    }
+  },
+  {
+    "name": "fuchsia",
+    "shades": {
+      "light": { "fill": "#f0abfc", "stroke": "#701a75" },
+      "dark": { "fill": "#d946ef", "stroke": "#f0abfc" }
+    }
+  },
+  {
+    "name": "yellow",
+    "shades": {
+      "light": { "fill": "#fef08a", "stroke": "#713f12" },
+      "dark": { "fill": "#eab308", "stroke": "#fef08a" }
+    }
+  },
+  {
+    "name": "red",
+    "shades": {
+      "light": { "fill": "#fca5a5", "stroke": "#7f1d1d" },
+      "dark": { "fill": "#ef4444", "stroke": "#fca5a5" }
+    }
+  },
+  {
+    "name": "green",
+    "shades": {
+      "light": { "fill": "#86efac", "stroke": "#14532d" },
+      "dark": { "fill": "#22c55e", "stroke": "#86efac" }
+    }
+  },
+  {
+    "name": "purple",
+    "shades": {
+      "light": { "fill": "#d8b4fe", "stroke": "#581c87" },
+      "dark": { "fill": "#a855f7", "stroke": "#d8b4fe" }
+    }
+  },
+  {
+    "name": "slate",
+    "shades": {
+      "light": { "fill": "#94a3b8", "stroke": "#0f172a" },
+      "dark": { "fill": "#64748b", "stroke": "#94a3b8" }
+    }
+  },
+  {
+    "name": "stone",
+    "shades": {
+      "light": { "fill": "#a8a29e", "stroke": "#1c1917" },
+      "dark": { "fill": "#78716c", "stroke": "#a8a29e" }
+    }
+  },
+  {
+    "name": "zinc",
+    "shades": {
+      "light": { "fill": "#a1a1aa", "stroke": "#18181b" },
+      "dark": { "fill": "#71717a", "stroke": "#a1a1aa" }
+    }
+  },
+  {
+    "name": "neutral",
+    "shades": {
+      "light": { "fill": "#a3a3a3", "stroke": "#171717" },
+      "dark": { "fill": "#737373", "stroke": "#a3a3a3" }
+    }
+  }
 ]
 ```
 
@@ -257,6 +385,7 @@ EOF
 ### Task 3: Create base/chart.css and all 10 theme chart.css files
 
 **Files:**
+
 - Create: `packages/themes/src/base/chart.css`
 - Create: `packages/themes/src/rokkit/chart.css`
 - Create: `packages/themes/src/minimal/chart.css`
@@ -399,17 +528,27 @@ EOF
 Each file uses the same rules as minimal/chart.css — only the `data-style` value changes. Create all 9 files:
 
 **`packages/themes/src/minimal/chart.css`:**
+
 ```css
 /** Chart - Minimal Theme Styles */
 [data-style='minimal'] [data-chart-axis-line],
-[data-style='minimal'] [data-chart-tick] line { @apply stroke-surface-z3; }
-[data-style='minimal'] [data-chart-tick-label] { @apply fill-surface-z5; }
-[data-style='minimal'] [data-chart-grid-line] { @apply stroke-surface-z2; stroke-dasharray: 2 4; }
+[data-style='minimal'] [data-chart-tick] line {
+  @apply stroke-surface-z3;
+}
+[data-style='minimal'] [data-chart-tick-label] {
+  @apply fill-surface-z5;
+}
+[data-style='minimal'] [data-chart-grid-line] {
+  @apply stroke-surface-z2;
+  stroke-dasharray: 2 4;
+}
 [data-style='minimal'] [data-chart-bar][data-dimmed],
 [data-style='minimal'] [data-chart-point][data-dimmed],
 [data-style='minimal'] [data-chart-arc][data-dimmed],
 [data-style='minimal'] [data-chart-line][data-dimmed],
-[data-style='minimal'] [data-chart-area][data-dimmed] { opacity: 0.15; }
+[data-style='minimal'] [data-chart-area][data-dimmed] {
+  opacity: 0.15;
+}
 ```
 
 **`packages/themes/src/material/chart.css`** — identical rules with `[data-style='material']`.
@@ -433,6 +572,7 @@ For each file: copy the minimal block above and replace every occurrence of `'mi
 - [ ] **Step 3.4: Add `@import './chart.css'` to each theme's index.css**
 
 Add to each `index.css` (base + all 10 themes):
+
 ```css
 @import './chart.css';
 ```
@@ -470,6 +610,7 @@ EOF
 ### Task 4: Create ChartSpec builder
 
 **Files:**
+
 - Create: `packages/chart/src/spec/chart-spec.js`
 - Create: `packages/chart/spec/spec/chart-spec.spec.js`
 
@@ -603,22 +744,65 @@ export class ChartSpec {
     this.options = {}
   }
 
-  x(f)      { this.channels.x = f; return this }
-  y(f)      { this.channels.y = f; return this }
-  color(f)  { this.channels.color = f; return this }
-  pattern(f){ this.channels.pattern = f; return this }
-  aes(ch)   { Object.assign(this.channels, ch); return this }
+  x(f) {
+    this.channels.x = f
+    return this
+  }
+  y(f) {
+    this.channels.y = f
+    return this
+  }
+  color(f) {
+    this.channels.color = f
+    return this
+  }
+  pattern(f) {
+    this.channels.pattern = f
+    return this
+  }
+  aes(ch) {
+    Object.assign(this.channels, ch)
+    return this
+  }
 
-  bar(opts = {})   { this.layers.push({ type: 'bar',   ...opts }); return this }
-  line(opts = {})  { this.layers.push({ type: 'line',  ...opts }); return this }
-  area(opts = {})  { this.layers.push({ type: 'area',  ...opts }); return this }
-  arc(opts = {})   { this.layers.push({ type: 'arc',   ...opts }); return this }
-  point(opts = {}) { this.layers.push({ type: 'point', ...opts }); return this }
+  bar(opts = {}) {
+    this.layers.push({ type: 'bar', ...opts })
+    return this
+  }
+  line(opts = {}) {
+    this.layers.push({ type: 'line', ...opts })
+    return this
+  }
+  area(opts = {}) {
+    this.layers.push({ type: 'area', ...opts })
+    return this
+  }
+  arc(opts = {}) {
+    this.layers.push({ type: 'arc', ...opts })
+    return this
+  }
+  point(opts = {}) {
+    this.layers.push({ type: 'point', ...opts })
+    return this
+  }
 
-  grid(opts = {})       { this.options.grid = opts; return this }
-  legend(opts = {})     { this.options.legend = opts; return this }
-  axis(type, opts = {}) { this.options[`axis_${type}`] = opts; return this }
-  size(w, h)            { this.options.width = w; this.options.height = h; return this }
+  grid(opts = {}) {
+    this.options.grid = opts
+    return this
+  }
+  legend(opts = {}) {
+    this.options.legend = opts
+    return this
+  }
+  axis(type, opts = {}) {
+    this.options[`axis_${type}`] = opts
+    return this
+  }
+  size(w, h) {
+    this.options.width = w
+    this.options.height = h
+    return this
+  }
 }
 
 export function chart(data, channels = {}) {
@@ -657,6 +841,7 @@ EOF
 Patterns are assigned in a fixed order for accessibility (dual-coding).
 
 **Files:**
+
 - Create: `packages/chart/src/lib/brewing/patterns.js`
 - Create: `packages/chart/spec/brewing/patterns.spec.js`
 
@@ -755,6 +940,7 @@ EOF
 ### Task 6: Create D3 scales builder
 
 **Files:**
+
 - Create: `packages/chart/src/lib/brewing/scales.js`
 - Create: `packages/chart/spec/brewing/scales2.spec.js`
 
@@ -890,6 +1076,7 @@ EOF
 The mark builders in Task 7 use `line`, `area`, `pie`, and `arc` generators from `d3-shape`, which is not in `packages/chart/package.json`.
 
 **Files:**
+
 - Modify: `packages/chart/package.json`
 
 - [ ] **Step 6b.1: Add d3-shape**
@@ -911,6 +1098,7 @@ Expected: `"d3-shape": "^3.x.x"` appears in dependencies.
 ### Task 7: Create mark geometry builders
 
 **Files:**
+
 - Create: `packages/chart/src/lib/brewing/marks/bars.js`
 - Create: `packages/chart/src/lib/brewing/marks/lines.js`
 - Create: `packages/chart/src/lib/brewing/marks/areas.js`
@@ -931,10 +1119,16 @@ import { scaleBand, scaleLinear } from 'd3-scale'
 
 const xScale = scaleBand().domain(['A', 'B']).range([0, 200]).padding(0.1)
 const yScale = scaleLinear().domain([0, 100]).range([200, 0])
-const colors = new Map([['A', { fill: 'red', stroke: 'darkred' }], ['B', { fill: 'blue', stroke: 'darkblue' }]])
+const colors = new Map([
+  ['A', { fill: 'red', stroke: 'darkred' }],
+  ['B', { fill: 'blue', stroke: 'darkblue' }]
+])
 
 describe('buildBars', () => {
-  const data = [{ cat: 'A', val: 50 }, { cat: 'B', val: 80 }]
+  const data = [
+    { cat: 'A', val: 50 },
+    { cat: 'B', val: 80 }
+  ]
 
   it('returns one bar per data point', () => {
     const bars = buildBars(data, { x: 'cat', y: 'val' }, xScale, yScale, colors)
@@ -954,7 +1148,10 @@ describe('buildBars', () => {
 
 describe('buildPoints', () => {
   const xScaleLinear = scaleLinear().domain([0, 10]).range([0, 200])
-  const data = [{ x: 1, y: 50 }, { x: 5, y: 80 }]
+  const data = [
+    { x: 1, y: 50 },
+    { x: 5, y: 80 }
+  ]
 
   it('returns one point per data point', () => {
     const pts = buildPoints(data, { x: 'x', y: 'y' }, xScaleLinear, yScale, colors, null)
@@ -970,7 +1167,10 @@ describe('buildPoints', () => {
 })
 
 describe('buildArcs', () => {
-  const data = [{ label: 'A', value: 30 }, { label: 'B', value: 70 }]
+  const data = [
+    { label: 'A', value: 30 },
+    { label: 'B', value: 70 }
+  ]
 
   it('returns one arc per data point', () => {
     const arcs = buildArcs(data, { label: 'label', y: 'value' }, colors, 100, 100)
@@ -995,6 +1195,7 @@ cd packages/chart && bun run test --run spec/brewing/marks.spec.js 2>&1 | tail -
 - [ ] **Step 7.3: Create mark geometry files**
 
 **`packages/chart/src/lib/brewing/marks/bars.js`:**
+
 ```js
 /**
  * @param {Object[]} data
@@ -1013,9 +1214,7 @@ export function buildBars(data, channels, xScale, yScale, colors) {
     const xVal = d[xf]
     const colorKey = cf ? d[cf] : xVal
     const colorEntry = colors?.get(colorKey) ?? { fill: '#888', stroke: '#444' }
-    const barX = typeof xScale.bandwidth === 'function'
-      ? xScale(xVal)
-      : xScale(xVal) - barWidth / 2
+    const barX = typeof xScale.bandwidth === 'function' ? xScale(xVal) : xScale(xVal) - barWidth / 2
     const barY = yScale(d[yf])
     return {
       data: d,
@@ -1031,6 +1230,7 @@ export function buildBars(data, channels, xScale, yScale, colors) {
 ```
 
 **`packages/chart/src/lib/brewing/marks/lines.js`:**
+
 ```js
 import { line } from 'd3-shape'
 
@@ -1046,14 +1246,24 @@ export function buildLines(data, channels, xScale, yScale, colors) {
   const { x: xf, y: yf, color: cf } = channels
   if (!cf) {
     const lineGen = line()
-      .x((d) => (typeof xScale.bandwidth === 'function' ? xScale(d[xf]) + xScale.bandwidth() / 2 : xScale(d[xf])))
+      .x((d) =>
+        typeof xScale.bandwidth === 'function'
+          ? xScale(d[xf]) + xScale.bandwidth() / 2
+          : xScale(d[xf])
+      )
       .y((d) => yScale(d[yf]))
-    return [{ d: lineGen(data), fill: 'none', stroke: colors?.values().next().value?.stroke ?? '#888' }]
+    return [
+      { d: lineGen(data), fill: 'none', stroke: colors?.values().next().value?.stroke ?? '#888' }
+    ]
   }
   const groups = Map.groupBy ? Map.groupBy(data, (d) => d[cf]) : groupBy(data, cf)
   return [...groups.entries()].map(([key, rows]) => {
     const lineGen = line()
-      .x((d) => (typeof xScale.bandwidth === 'function' ? xScale(d[xf]) + xScale.bandwidth() / 2 : xScale(d[xf])))
+      .x((d) =>
+        typeof xScale.bandwidth === 'function'
+          ? xScale(d[xf]) + xScale.bandwidth() / 2
+          : xScale(d[xf])
+      )
       .y((d) => yScale(d[yf]))
     const colorEntry = colors?.get(key) ?? { fill: 'none', stroke: '#888' }
     return { d: lineGen(rows), fill: 'none', stroke: colorEntry.stroke, key }
@@ -1072,24 +1282,30 @@ function groupBy(arr, field) {
 ```
 
 **`packages/chart/src/lib/brewing/marks/areas.js`:**
+
 ```js
 import { area } from 'd3-shape'
 
 export function buildAreas(data, channels, xScale, yScale, colors) {
   const { x: xf, y: yf, color: cf } = channels
   const innerHeight = yScale.range()[0]
-  const xPos = (d) => typeof xScale.bandwidth === 'function'
-    ? xScale(d[xf]) + xScale.bandwidth() / 2
-    : xScale(d[xf])
+  const xPos = (d) =>
+    typeof xScale.bandwidth === 'function' ? xScale(d[xf]) + xScale.bandwidth() / 2 : xScale(d[xf])
 
   if (!cf) {
-    const areaGen = area().x(xPos).y0(innerHeight).y1((d) => yScale(d[yf]))
+    const areaGen = area()
+      .x(xPos)
+      .y0(innerHeight)
+      .y1((d) => yScale(d[yf]))
     const colorEntry = colors?.values().next().value ?? { fill: '#888', stroke: '#444' }
     return [{ d: areaGen(data), fill: colorEntry.fill, stroke: 'none' }]
   }
   const groups = groupBy(data, cf)
   return [...groups.entries()].map(([key, rows]) => {
-    const areaGen = area().x(xPos).y0(innerHeight).y1((d) => yScale(d[yf]))
+    const areaGen = area()
+      .x(xPos)
+      .y0(innerHeight)
+      .y1((d) => yScale(d[yf]))
     const colorEntry = colors?.get(key) ?? { fill: '#888', stroke: '#444' }
     return { d: areaGen(rows), fill: colorEntry.fill, stroke: 'none', key }
   })
@@ -1107,6 +1323,7 @@ function groupBy(arr, field) {
 ```
 
 **`packages/chart/src/lib/brewing/marks/arcs.js`:**
+
 ```js
 import { pie, arc } from 'd3-shape'
 
@@ -1140,6 +1357,7 @@ export function buildArcs(data, channels, colors, width, height, opts = {}) {
 ```
 
 **`packages/chart/src/lib/brewing/marks/points.js`:**
+
 ```js
 /**
  * Builds point geometry for scatter/bubble charts.
@@ -1199,6 +1417,7 @@ EOF
 ### Task 8: Refactor ChartBrewer as Svelte 5 reactive class
 
 **Files:**
+
 - Create: `packages/chart/src/lib/brewing/brewer.svelte.js`
 - Create: `packages/chart/spec/brewing/brewer.spec.js` (uses Svelte testing)
 
@@ -1292,13 +1511,15 @@ export class ChartBrewer {
       : new Map()
   )
 
-  get innerWidth()  { return this.#width  - this.#margin.left - this.#margin.right }
-  get innerHeight() { return this.#height - this.#margin.top  - this.#margin.bottom }
+  get innerWidth() {
+    return this.#width - this.#margin.left - this.#margin.right
+  }
+  get innerHeight() {
+    return this.#height - this.#margin.top - this.#margin.bottom
+  }
 
   xScale = $derived(
-    this.#channels.x
-      ? buildXScale(this.#data, this.#channels.x, this.innerWidth)
-      : null
+    this.#channels.x ? buildXScale(this.#data, this.#channels.x, this.innerWidth) : null
   )
 
   yScale = $derived(
@@ -1307,11 +1528,7 @@ export class ChartBrewer {
       : null
   )
 
-  sizeScale = $derived(
-    this.#channels.size
-      ? buildSizeScale(this.#data, this.#channels.size)
-      : null
-  )
+  sizeScale = $derived(this.#channels.size ? buildSizeScale(this.#data, this.#channels.size) : null)
 
   bars = $derived(
     this.xScale && this.yScale
@@ -1339,26 +1556,41 @@ export class ChartBrewer {
 
   points = $derived(
     this.xScale && this.yScale
-      ? buildPoints(this.#data, this.#channels, this.xScale, this.yScale, this.colorMap, this.sizeScale)
+      ? buildPoints(
+          this.#data,
+          this.#channels,
+          this.xScale,
+          this.yScale,
+          this.colorMap,
+          this.sizeScale
+        )
       : []
   )
 
-  get margin()  { return this.#margin }
-  get width()   { return this.#width }
-  get height()  { return this.#height }
-  get mode()    { return this.#mode }
+  get margin() {
+    return this.#margin
+  }
+  get width() {
+    return this.#width
+  }
+  get height() {
+    return this.#height
+  }
+  get mode() {
+    return this.#mode
+  }
 
   /**
    * @param {{ data?: Object[], channels?: Object, width?: number, height?: number, mode?: string, margin?: Object, layers?: Object[] }} opts
    */
   update(opts = {}) {
-    if (opts.data     !== undefined) this.#data     = opts.data
+    if (opts.data !== undefined) this.#data = opts.data
     if (opts.channels !== undefined) this.#channels = opts.channels
-    if (opts.width    !== undefined) this.#width    = opts.width
-    if (opts.height   !== undefined) this.#height   = opts.height
-    if (opts.mode     !== undefined) this.#mode     = opts.mode
-    if (opts.margin   !== undefined) this.#margin   = { ...DEFAULT_MARGIN, ...opts.margin }
-    if (opts.layers   !== undefined) this.#layers   = opts.layers
+    if (opts.width !== undefined) this.#width = opts.width
+    if (opts.height !== undefined) this.#height = opts.height
+    if (opts.mode !== undefined) this.#mode = opts.mode
+    if (opts.margin !== undefined) this.#margin = { ...DEFAULT_MARGIN, ...opts.margin }
+    if (opts.layers !== undefined) this.#layers = opts.layers
   }
 }
 ```
@@ -1395,6 +1627,7 @@ EOF
 ### Task 9: Sparkline component
 
 **Files:**
+
 - Create: `packages/chart/src/Sparkline.svelte`
 - Modify: `packages/chart/src/index.js`
 - Create: `packages/chart/spec/Sparkline.spec.js` (component test)
@@ -1443,6 +1676,7 @@ describe('Sparkline', () => {
 ```
 
 Run to confirm fails:
+
 ```bash
 cd packages/chart && bun run test --run spec/Sparkline.spec.js 2>&1 | tail -10
 ```
@@ -1456,21 +1690,28 @@ cd packages/chart && bun run test --run spec/Sparkline.spec.js 2>&1 | tail -10
   import { max, min } from 'd3-array'
 
   /** @type {number[] | object[]} */
-  let { data = [], field = null, type = 'line', color = 'primary', width = 80, height = 24, min: minProp = null, max: maxProp = null } = $props()
+  let {
+    data = [],
+    field = null,
+    type = 'line',
+    color = 'primary',
+    width = 80,
+    height = 24,
+    min: minProp = null,
+    max: maxProp = null
+  } = $props()
 
-  const values = $derived(
-    field ? data.map((d) => +d[field]) : data.map((n) => +n)
-  )
+  const values = $derived(field ? data.map((d) => +d[field]) : data.map((n) => +n))
 
   const yMin = $derived(minProp ?? min(values) ?? 0)
   const yMax = $derived(maxProp ?? max(values) ?? 1)
 
   const xScale = $derived(
-    scaleLinear().domain([0, Math.max(values.length - 1, 1)]).range([0, width])
+    scaleLinear()
+      .domain([0, Math.max(values.length - 1, 1)])
+      .range([0, width])
   )
-  const yScale = $derived(
-    scaleLinear().domain([yMin, yMax]).range([height, 0])
-  )
+  const yScale = $derived(scaleLinear().domain([yMin, yMax]).range([height, 0]))
 
   const linePath = $derived(() => {
     if (values.length < 2) return ''
@@ -1494,9 +1735,21 @@ cd packages/chart && bun run test --run spec/Sparkline.spec.js 2>&1 | tail -10
   style="overflow: visible; display: inline-block; vertical-align: middle;"
 >
   {#if type === 'line'}
-    <path d={linePath()} fill="none" stroke="var(--color-{color}-500)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    <path
+      d={linePath()}
+      fill="none"
+      stroke="var(--color-{color}-500)"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
   {:else if type === 'area'}
-    <path d={areaPath()} fill="var(--color-{color}-300)" stroke="var(--color-{color}-500)" stroke-width="1" />
+    <path
+      d={areaPath()}
+      fill="var(--color-{color}-300)"
+      stroke="var(--color-{color}-500)"
+      stroke-width="1"
+    />
   {:else if type === 'bar'}
     {#each values as v, i}
       <rect
@@ -1555,7 +1808,13 @@ export { default as Sparkline } from './Sparkline.svelte'
     type: 'vertical',
     elements: [
       { scope: '#/type', label: 'Type', props: { options: ['line', 'bar', 'area'] } },
-      { scope: '#/color', label: 'Color', props: { options: ['primary', 'secondary', 'accent', 'success', 'warning', 'danger', 'info'] } },
+      {
+        scope: '#/color',
+        label: 'Color',
+        props: {
+          options: ['primary', 'secondary', 'accent', 'success', 'warning', 'danger', 'info']
+        }
+      },
       { scope: '#/width', label: 'Width' },
       { scope: '#/height', label: 'Height' }
     ]
@@ -1566,15 +1825,34 @@ export { default as Sparkline } from './Sparkline.svelte'
   {#snippet preview()}
     <div class="flex flex-col gap-6 p-4">
       <div>
-        <p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Array data</p>
-        <Sparkline data={seriesData} type={props.type} color={props.color} width={props.width} height={props.height} />
+        <p class="text-surface-z5 mb-2 text-xs font-semibold tracking-widest uppercase">
+          Array data
+        </p>
+        <Sparkline
+          data={seriesData}
+          type={props.type}
+          color={props.color}
+          width={props.width}
+          height={props.height}
+        />
       </div>
       <div>
-        <p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Object data with field</p>
-        <Sparkline data={objectData} field="revenue" type={props.type} color={props.color} width={props.width} height={props.height} />
+        <p class="text-surface-z5 mb-2 text-xs font-semibold tracking-widest uppercase">
+          Object data with field
+        </p>
+        <Sparkline
+          data={objectData}
+          field="revenue"
+          type={props.type}
+          color={props.color}
+          width={props.width}
+          height={props.height}
+        />
       </div>
       <div>
-        <p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Inline in text</p>
+        <p class="text-surface-z5 mb-2 text-xs font-semibold tracking-widest uppercase">
+          Inline in text
+        </p>
         <p class="text-surface-z7">
           Monthly revenue trend:
           <Sparkline data={seriesData} width={60} height={16} color="success" />
@@ -1592,6 +1870,7 @@ export { default as Sparkline } from './Sparkline.svelte'
 - [ ] **Step 9.4: Add sparkline to playground nav in `site/src/routes/(play)/playground/+layout.svelte`**
 
 In the `sections` array, find the `'Display'` section children and add:
+
 ```js
 { title: 'Sparkline', slug: '/playground/components/sparkline', icon: 'i-glyph:chart' },
 ```
@@ -1601,8 +1880,8 @@ In the `sections` array, find the `'Display'` section children and add:
 ```svelte
 <article data-article-root>
   <p>
-    Sparkline is a lightweight inline chart — no axes, no legend, no ChartBrewer. Safe to embed
-    in table cells, list items, cards, or inline in text.
+    Sparkline is a lightweight inline chart — no axes, no legend, no ChartBrewer. Safe to embed in
+    table cells, list items, cards, or inline in text.
   </p>
 
   <h2>Basic usage</h2>
@@ -1729,6 +2008,7 @@ EOF
 ### Task 10: Plot.Line, Plot.Area, Plot.Point, Plot.Arc
 
 **Files:**
+
 - Create: `packages/chart/src/Plot/Line.svelte`
 - Create: `packages/chart/src/Plot/Area.svelte`
 - Create: `packages/chart/src/Plot/Point.svelte`
@@ -1829,13 +2109,7 @@ EOF
 {#if brewer}
   <g transform="translate({cx ?? brewer.width / 2},{cy ?? brewer.height / 2})">
     {#each brewer.arcs as arc}
-      <path
-        data-chart-arc
-        d={arc.d}
-        fill={arc.fill}
-        stroke={arc.stroke}
-        stroke-width="1"
-      />
+      <path data-chart-arc d={arc.d} fill={arc.fill} stroke={arc.stroke} stroke-width="1" />
     {/each}
   </g>
 {/if}
@@ -1905,6 +2179,7 @@ EOF
 ### Task 11: Chart.svelte wrapper
 
 **Files:**
+
 - Create: `packages/chart/src/Chart.svelte`
 - Modify: `packages/chart/src/index.js`
 
@@ -1944,9 +2219,9 @@ EOF
     if (spec) return spec
     if (data) {
       const s = new ChartSpec(data)
-      if (x)       s.x(x)
-      if (y)       s.y(y)
-      if (color)   s.color(color)
+      if (x) s.x(x)
+      if (y) s.y(y)
+      if (color) s.color(color)
       if (pattern) s.pattern(pattern)
       return s
     }
@@ -2021,6 +2296,7 @@ EOF
 ### Task 12: BarChart component + playground + learn + e2e
 
 **Files:**
+
 - Create: `packages/chart/src/charts/BarChart.svelte`
 - Modify: `packages/chart/src/index.js`
 - Create: `site/src/routes/(play)/playground/components/bar-chart/+page.svelte`
@@ -2083,7 +2359,12 @@ EOF
   })
 </script>
 
-<div data-chart bind:this={containerEl} style:width={width ? `${width}px` : '100%'} style:height="{height}px">
+<div
+  data-chart
+  bind:this={containerEl}
+  style:width={width ? `${width}px` : '100%'}
+  style:height="{height}px"
+>
   <svg width={brewer.width} height={brewer.height}>
     <Root margin={brewer.margin}>
       {#if showGrid}
@@ -2164,7 +2445,7 @@ export { default as BarChart } from './charts/BarChart.svelte'
 
 <PlaySection>
   {#snippet preview()}
-    <div class="p-4 w-full">
+    <div class="w-full p-4">
       <BarChart
         data={salesData}
         x={props.x}
@@ -2216,10 +2497,12 @@ Replace the existing stub with a real doc page:
   <pre><code>{`<BarChart data={sales} x="month" y="revenue" />`}</code></pre>
 
   <h2>Composed usage</h2>
-  <pre><code>{`<Chart data={sales} x="month" y="revenue" color="region">
+  <pre><code
+      >{`<Chart data={sales} x="month" y="revenue" color="region">
   <BarChart />
   <Plot.Legend />
-</Chart>`}</code></pre>
+</Chart>`}</code
+    ></pre>
 
   <h2>Props</h2>
   <table>
@@ -2300,6 +2583,7 @@ EOF
 Each follows the same pattern as BarChart. Create component → playground → learn doc → e2e test → commit.
 
 **Files per chart:**
+
 - `packages/chart/src/charts/LineChart.svelte`
 - `packages/chart/src/charts/AreaChart.svelte`
 - `packages/chart/src/charts/PieChart.svelte`
@@ -2320,7 +2604,18 @@ Each follows the same pattern as BarChart. Create component → playground → l
   import Grid from '../Plot/Grid.svelte'
   import Legend from '../Plot/Legend.svelte'
 
-  let { data = [], x = null, y = null, color = null, width = null, height = 300, mode = 'light', showGrid = true, showLegend = false, strokeWidth = 2 } = $props()
+  let {
+    data = [],
+    x = null,
+    y = null,
+    color = null,
+    width = null,
+    height = 300,
+    mode = 'light',
+    showGrid = true,
+    showLegend = false,
+    strokeWidth = 2
+  } = $props()
 
   let brewer = getContext('chart-brewer')
   if (!brewer) {
@@ -2337,20 +2632,35 @@ Each follows the same pattern as BarChart. Create component → playground → l
 
   $effect(() => {
     if (width !== null || !containerEl) return
-    const ro = new ResizeObserver(([entry]) => { containerWidth = entry.contentRect.width })
+    const ro = new ResizeObserver(([entry]) => {
+      containerWidth = entry.contentRect.width
+    })
     ro.observe(containerEl)
     return () => ro.disconnect()
   })
 </script>
 
-<div data-chart bind:this={containerEl} style:width={width ? `${width}px` : '100%'} style:height="{height}px">
+<div
+  data-chart
+  bind:this={containerEl}
+  style:width={width ? `${width}px` : '100%'}
+  style:height="{height}px"
+>
   <svg width={brewer.width} height={brewer.height}>
     <Root margin={brewer.margin}>
       {#if showGrid}<Grid />{/if}
       <Axis type="x" />
       <Axis type="y" />
       {#each brewer.lines as seg}
-        <path data-chart-line d={seg.d} fill="none" stroke={seg.stroke} stroke-width={strokeWidth} stroke-linecap="round" stroke-linejoin="round" />
+        <path
+          data-chart-line
+          d={seg.d}
+          fill="none"
+          stroke={seg.stroke}
+          stroke-width={strokeWidth}
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
       {/each}
       {#if showLegend}<Legend />{/if}
     </Root>
@@ -2370,7 +2680,17 @@ Each follows the same pattern as BarChart. Create component → playground → l
   import Grid from '../Plot/Grid.svelte'
   import Legend from '../Plot/Legend.svelte'
 
-  let { data = [], x = null, y = null, color = null, width = null, height = 300, mode = 'light', showGrid = true, showLegend = false } = $props()
+  let {
+    data = [],
+    x = null,
+    y = null,
+    color = null,
+    width = null,
+    height = 300,
+    mode = 'light',
+    showGrid = true,
+    showLegend = false
+  } = $props()
 
   let brewer = getContext('chart-brewer')
   if (!brewer) {
@@ -2387,20 +2707,33 @@ Each follows the same pattern as BarChart. Create component → playground → l
 
   $effect(() => {
     if (width !== null || !containerEl) return
-    const ro = new ResizeObserver(([entry]) => { containerWidth = entry.contentRect.width })
+    const ro = new ResizeObserver(([entry]) => {
+      containerWidth = entry.contentRect.width
+    })
     ro.observe(containerEl)
     return () => ro.disconnect()
   })
 </script>
 
-<div data-chart bind:this={containerEl} style:width={width ? `${width}px` : '100%'} style:height="{height}px">
+<div
+  data-chart
+  bind:this={containerEl}
+  style:width={width ? `${width}px` : '100%'}
+  style:height="{height}px"
+>
   <svg width={brewer.width} height={brewer.height}>
     <Root margin={brewer.margin}>
       {#if showGrid}<Grid />{/if}
       <Axis type="x" />
       <Axis type="y" />
       {#each brewer.areas as seg}
-        <path data-chart-area d={seg.d} fill={seg.fill} fill-opacity="0.4" stroke={seg.stroke ?? 'none'} />
+        <path
+          data-chart-area
+          d={seg.d}
+          fill={seg.fill}
+          fill-opacity="0.4"
+          stroke={seg.stroke ?? 'none'}
+        />
       {/each}
       {#if showLegend}<Legend />{/if}
     </Root>
@@ -2417,7 +2750,16 @@ Each follows the same pattern as BarChart. Create component → playground → l
   import { ChartBrewer } from '../lib/brewing/brewer.svelte.js'
   import Legend from '../Plot/Legend.svelte'
 
-  let { data = [], label = null, y = null, width = null, height = 300, mode = 'light', showLegend = true, innerRadius = 0 } = $props()
+  let {
+    data = [],
+    label = null,
+    y = null,
+    width = null,
+    height = 300,
+    mode = 'light',
+    showLegend = true,
+    innerRadius = 0
+  } = $props()
 
   let brewer = getContext('chart-brewer')
   if (!brewer) {
@@ -2439,7 +2781,12 @@ Each follows the same pattern as BarChart. Create component → playground → l
   })
 </script>
 
-<div data-chart bind:this={containerEl} style:width={width ? `${width}px` : '100%'} style:height="{height}px">
+<div
+  data-chart
+  bind:this={containerEl}
+  style:width={width ? `${width}px` : '100%'}
+  style:height="{height}px"
+>
   <svg width={brewer.width} height={brewer.height}>
     <g transform="translate({brewer.width / 2},{brewer.height / 2})">
       {#each brewer.arcs as arc}
@@ -2465,7 +2812,19 @@ Each follows the same pattern as BarChart. Create component → playground → l
   import Grid from '../Plot/Grid.svelte'
   import Legend from '../Plot/Legend.svelte'
 
-  let { data = [], x = null, y = null, color = null, size = null, width = null, height = 300, mode = 'light', showGrid = true, showLegend = false, r = 5 } = $props()
+  let {
+    data = [],
+    x = null,
+    y = null,
+    color = null,
+    size = null,
+    width = null,
+    height = 300,
+    mode = 'light',
+    showGrid = true,
+    showLegend = false,
+    r = 5
+  } = $props()
 
   let brewer = getContext('chart-brewer')
   if (!brewer) {
@@ -2482,20 +2841,35 @@ Each follows the same pattern as BarChart. Create component → playground → l
 
   $effect(() => {
     if (width !== null || !containerEl) return
-    const ro = new ResizeObserver(([entry]) => { containerWidth = entry.contentRect.width })
+    const ro = new ResizeObserver(([entry]) => {
+      containerWidth = entry.contentRect.width
+    })
     ro.observe(containerEl)
     return () => ro.disconnect()
   })
 </script>
 
-<div data-chart bind:this={containerEl} style:width={width ? `${width}px` : '100%'} style:height="{height}px">
+<div
+  data-chart
+  bind:this={containerEl}
+  style:width={width ? `${width}px` : '100%'}
+  style:height="{height}px"
+>
   <svg width={brewer.width} height={brewer.height}>
     <Root margin={brewer.margin}>
       {#if showGrid}<Grid />{/if}
       <Axis type="x" />
       <Axis type="y" />
       {#each brewer.points as pt}
-        <circle data-chart-point cx={pt.cx} cy={pt.cy} r={pt.r ?? r} fill={pt.fill} stroke={pt.stroke} stroke-width="1" />
+        <circle
+          data-chart-point
+          cx={pt.cx}
+          cy={pt.cy}
+          r={pt.r ?? r}
+          fill={pt.fill}
+          stroke={pt.stroke}
+          stroke-width="1"
+        />
       {/each}
       {#if showLegend}<Legend />{/if}
     </Root>
@@ -2532,12 +2906,14 @@ export { default as ScatterPlot } from './charts/ScatterPlot.svelte'
 - [ ] **Step 13.6: Create playground pages for LineChart, AreaChart, PieChart, ScatterPlot**
 
 Create one page per chart at:
+
 - `site/src/routes/(play)/playground/components/line-chart/+page.svelte`
 - `site/src/routes/(play)/playground/components/area-chart/+page.svelte`
 - `site/src/routes/(play)/playground/components/pie-chart/+page.svelte`
 - `site/src/routes/(play)/playground/components/scatter-plot/+page.svelte`
 
 Each page follows the same structure as the BarChart playground page. Use sample data appropriate for each chart type:
+
 - Line/Area: time-series data (months vs. values)
 - Pie: category with percentage values
 - Scatter: two numeric fields (e.g., weight vs height)
@@ -2545,6 +2921,7 @@ Each page follows the same structure as the BarChart playground page. Use sample
 - [ ] **Step 13.7: Update existing learn doc stubs for line-chart, area-chart, pie-donut, scatter**
 
 In `site/src/routes/(learn)/docs/charts/`:
+
 - `line-chart/+page.svelte` — replace stub with real doc
 - `area-chart/+page.svelte` — create (may not exist)
 - `pie-donut/+page.svelte` — replace stub with real doc
@@ -2555,12 +2932,14 @@ Each doc should follow the same structure as the BarChart learn page.
 - [ ] **Step 13.8: Create Playwright e2e tests**
 
 Create:
+
 - `site/e2e/line-chart.e2e.ts`
 - `site/e2e/area-chart.e2e.ts`
 - `site/e2e/pie-chart.e2e.ts`
 - `site/e2e/scatter-plot.e2e.ts`
 
 Each test navigates to the playground page and checks:
+
 1. `[data-chart]` is visible
 2. The chart's primary mark element is visible (`[data-chart-line]`, `[data-chart-area]`, `[data-chart-arc]`, `[data-chart-point]`)
 3. Axis elements appear
@@ -2661,13 +3040,16 @@ EOF
 ## Notes for Implementer
 
 ### Existing code to preserve
+
 - `packages/chart/src/lib/brewing/` contains existing files (`dimensions.svelte.js`, `scales.svelte.js`, `bars.svelte.js`, `axes.svelte.js`, `legends.svelte.js`). The new `brewer.svelte.js` replaces the old `index.svelte.js` export approach. Keep existing files intact — the new mark builders in `marks/` are separate.
 - `packages/chart/src/Plot/Root.svelte`, `Axis.svelte`, `Bar.svelte`, `Grid.svelte`, `Legend.svelte` are existing — do not replace them unless they need `data-chart-*` attribute additions for theming.
 
 ### Data attributes on existing Plot components
+
 Check whether existing `Plot/Root.svelte`, `Axis.svelte`, `Grid.svelte`, `Legend.svelte` already use `data-chart-*` attributes. If not, add them to match the spec (e.g., `data-chart-axis`, `data-chart-grid-line`, etc.) before writing theme CSS that targets them.
 
 ### d3-shape dependency
+
 `buildLines`, `buildAreas`, `buildArcs` use `d3-shape` (line, area, pie, arc generators). Check if it's in `packages/chart/package.json` — if not, add it:
 
 ```bash
@@ -2675,4 +3057,5 @@ cd packages/chart && bun add d3-shape
 ```
 
 ### Test environment
+
 Svelte 5 `$state` and `$derived` in `.svelte.js` files require a Svelte-aware test environment. Check `packages/chart/vitest.config.js` — it should use `@sveltejs/vite-plugin-svelte` or similar. The existing brewing tests already work, so follow the same config pattern.

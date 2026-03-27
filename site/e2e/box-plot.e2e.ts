@@ -54,9 +54,7 @@ test.describe('BoxPlot', () => {
 
 	test('box bodies fit within the SVG plot area (y ≥ 0)', async ({ page }) => {
 		const boxes = page.locator('.preview-area svg rect[data-plot-element="box-body"]')
-		const svgHeight = Number(
-			await page.locator('.preview-area svg').first().getAttribute('height')
-		)
+		const svgHeight = Number(await page.locator('.preview-area svg').first().getAttribute('height'))
 		const attrs = await boxes.evaluateAll((els) =>
 			els.map((el) => ({
 				y: Number(el.getAttribute('y')),

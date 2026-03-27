@@ -1,0 +1,60 @@
+# SearchFilter
+
+Search input that parses typed queries into structured `FilterObject` arrays. Supports full-text, column-specific, comparison, and regex filter syntax. Uses `parseFilters()` from `@rokkit/data` internally.
+
+## Import
+
+```javascript
+import { SearchFilter } from '@rokkit/ui'
+```
+
+## Quick Start
+
+```svelte
+<script>
+  import { SearchFilter } from '@rokkit/ui'
+  let filters = $state([])
+</script>
+
+<SearchFilter bind:filters placeholder="Search..." />
+```
+
+## Filter Syntax
+
+| Input | Meaning |
+|-------|---------|
+| `apple` | Full-text search across all columns (case-insensitive) |
+| `name:alice` | Column `name` contains "alice" (case-insensitive) |
+| `age>30` | Column `age` greater than 30 |
+| `status!=active` | Column `status` not equal to "active" |
+| `name~alice` | Regex match (case-sensitive) |
+| `name~*alice` | Regex match (case-insensitive) |
+
+Operators: `:` `=` `!=` `>` `<` `>=` `<=` `~` `~*` `!~` `!~*`
+
+Multiple tokens combine: `status:active age>30 name:alice`
+
+## FilterObject Shape
+
+```typescript
+{
+  column?: string           // undefined = all columns
+  operator: string          // '~*', '>', '!=', etc.
+  value: string | number | RegExp
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `filters` | `FilterObject[]` (bindable) | `[]` | Parsed filter array |
+| `placeholder` | `string` | `'Search...'` | Input placeholder |
+| `debounce` | `number` | `300` | Parse delay in ms |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size variant |
+| `onfilter` | `(filters) => void` | — | Called when filters change |
+| `class` | `string` | `''` | Additional CSS classes |
+
+## Snippets
+
+- `tag(filter, remove)` — Custom chip rendering for each parsed filter

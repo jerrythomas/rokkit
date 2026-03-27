@@ -1,10 +1,26 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { generateSkinScaffold, addSkinToConfig, serializeConfig, runSkinList, runSkinCreate } from '../src/skin.js'
+import {
+	generateSkinScaffold,
+	addSkinToConfig,
+	serializeConfig,
+	runSkinList,
+	runSkinCreate
+} from '../src/skin.js'
 
 describe('generateSkinScaffold', () => {
 	it('returns an object with all 9 color token keys', () => {
 		const scaffold = generateSkinScaffold()
-		const keys = ['primary', 'secondary', 'accent', 'surface', 'success', 'warning', 'danger', 'error', 'info']
+		const keys = [
+			'primary',
+			'secondary',
+			'accent',
+			'surface',
+			'success',
+			'warning',
+			'danger',
+			'error',
+			'info'
+		]
 		for (const key of keys) {
 			expect(scaffold).toHaveProperty(key)
 			expect(typeof scaffold[key]).toBe('string')
@@ -87,7 +103,9 @@ describe('runSkinCreate', () => {
 		const written = { value: null }
 		const adapters = {
 			readConfig: () => ({ skins: {} }),
-			writeConfig: (config) => { written.value = config }
+			writeConfig: (config) => {
+				written.value = config
+			}
 		}
 		await runSkinCreate('midnight', adapters)
 		expect(written.value.skins).toHaveProperty('midnight')

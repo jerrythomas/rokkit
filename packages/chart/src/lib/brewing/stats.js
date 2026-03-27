@@ -2,7 +2,7 @@ import { sum, mean, min, max, quantile, ascending } from 'd3-array'
 import { dataset } from '@rokkit/data'
 
 function sortedQuantile(values, p) {
-  return quantile([...values].sort(ascending), p)
+	return quantile([...values].sort(ascending), p)
 }
 
 /**
@@ -10,11 +10,11 @@ function sortedQuantile(values, p) {
  * @type {Record<string, (values: number[]) => number>}
  */
 export const STAT_FNS = {
-  sum,
-  mean,
-  min,
-  max,
-  count: (values) => values.length
+	sum,
+	mean,
+	min,
+	max,
+	count: (values) => values.length
 }
 
 /**
@@ -26,20 +26,28 @@ export const STAT_FNS = {
  * @returns {Object[]}
  */
 export function applyBoxStat(data, channels) {
-  const { x: xf, y: yf, color: cf } = channels
-  if (!xf || !yf) return data
-  const by = [xf, cf].filter(Boolean)
-  return dataset(data)
-    .groupBy(...by)
-    .summarize((row) => row[yf], {
-      q1:      (v) => sortedQuantile(v, 0.25),
-      median:  (v) => sortedQuantile(v, 0.5),
-      q3:      (v) => sortedQuantile(v, 0.75),
-      iqr_min: (v) => { const q1 = sortedQuantile(v, 0.25); const q3 = sortedQuantile(v, 0.75); return q1 - 1.5 * (q3 - q1) },
-      iqr_max: (v) => { const q1 = sortedQuantile(v, 0.25); const q3 = sortedQuantile(v, 0.75); return q3 + 1.5 * (q3 - q1) }
-    })
-    .rollup()
-    .select()
+	const { x: xf, y: yf, color: cf } = channels
+	if (!xf || !yf) return data
+	const by = [xf, cf].filter(Boolean)
+	return dataset(data)
+		.groupBy(...by)
+		.summarize((row) => row[yf], {
+			q1: (v) => sortedQuantile(v, 0.25),
+			median: (v) => sortedQuantile(v, 0.5),
+			q3: (v) => sortedQuantile(v, 0.75),
+			iqr_min: (v) => {
+				const q1 = sortedQuantile(v, 0.25)
+				const q3 = sortedQuantile(v, 0.75)
+				return q1 - 1.5 * (q3 - q1)
+			},
+			iqr_max: (v) => {
+				const q1 = sortedQuantile(v, 0.25)
+				const q3 = sortedQuantile(v, 0.75)
+				return q3 + 1.5 * (q3 - q1)
+			}
+		})
+		.rollup()
+		.select()
 }
 
 /**
@@ -51,16 +59,16 @@ export function applyBoxStat(data, channels) {
  * @returns {Object[]}
  */
 function isIdentityOrEmpty(stat, by, value) {
-  return stat === 'identity' || by.length === 0 || value === null || value === undefined
+	return stat === 'identity' || by.length === 0 || value === null || value === undefined
 }
 
 export function applyAggregate(data, { by, value, stat }) {
-  if (isIdentityOrEmpty(stat, by, value)) return data
-  const fn = typeof stat === 'function' ? stat : STAT_FNS[stat]
-  if (fn === null || fn === undefined) return data
-  return dataset(data)
-    .groupBy(...by)
-    .summarize((row) => row[value], { [value]: fn })
-    .rollup()
-    .select()
+	if (isIdentityOrEmpty(stat, by, value)) return data
+	const fn = typeof stat === 'function' ? stat : STAT_FNS[stat]
+	if (fn === null || fn === undefined) return data
+	return dataset(data)
+		.groupBy(...by)
+		.summarize((row) => row[value], { [value]: fn })
+		.rollup()
+		.select()
 }

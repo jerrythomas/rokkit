@@ -444,7 +444,12 @@ describe('infer', () => {
 			expect(inferScale([null, null])).toBe('discrete')
 		})
 		it('unknown types (array/object values) → discrete', () => {
-			expect(inferScale([[1, 2], [3, 4]])).toBe('discrete')
+			expect(
+				inferScale([
+					[1, 2],
+					[3, 4]
+				])
+			).toBe('discrete')
 		})
 	})
 
@@ -460,8 +465,8 @@ describe('infer', () => {
 				{ name: 'revenue', type: 'number' }
 			]
 			const result = addScales(columns, data)
-			expect(result[0].scale).toBe('discrete')  // string
-			expect(result[1].scale).toBe('discrete')  // integer, 2 unique / 2 rows = 100% but ≤20
+			expect(result[0].scale).toBe('discrete') // string
+			expect(result[1].scale).toBe('discrete') // integer, 2 unique / 2 rows = 100% but ≤20
 			expect(result[2].scale).toBe('continuous') // float
 		})
 	})
@@ -483,9 +488,7 @@ describe('infer', () => {
 		})
 
 		it('appends synthetic columns not in derived set', () => {
-			const result = mergeColumnEnhancements(derived, [
-				{ name: 'actions', action: 'edit' }
-			])
+			const result = mergeColumnEnhancements(derived, [{ name: 'actions', action: 'edit' }])
 			expect(result).toHaveLength(3)
 			expect(result[2]).toEqual({ name: 'actions', action: 'edit' })
 		})

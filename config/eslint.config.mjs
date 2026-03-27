@@ -87,7 +87,7 @@ export default [
       reportUnusedDisableDirectives: true
     },
     rules: {
-      complexity: ['warn', 5],
+      complexity: ['warn', 7],
       'max-depth': ['warn', 3],
       'max-params': ['warn', 4],
       'no-console': 'error',

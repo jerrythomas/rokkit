@@ -1,0 +1,60 @@
+# Timeline
+
+Vertical timeline with completed/active/pending step markers. Items can have custom marker icons and rich content via snippets.
+
+## Import
+
+```javascript
+import { Timeline } from '@rokkit/ui'
+```
+
+## Quick Start
+
+```svelte
+<script>
+  import { Timeline } from '@rokkit/ui'
+
+  const events = [
+    { label: 'Order placed', description: 'Jan 1', completed: true },
+    { label: 'Processing', description: 'Jan 2', completed: true },
+    { label: 'Shipped', description: 'Jan 3', active: true },
+    { label: 'Delivered', description: 'Jan 4' },
+  ]
+</script>
+
+<Timeline items={events} />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `items` | `unknown[]` | `[]` | Data array |
+| `fields` | `Record<string,string>` | `{}` | Field mapping (e.g. `{ label: 'title' }`) |
+| `icons` | `Record<string, string>` | `{}` | Override marker icons per state |
+| `class` | `string` | `''` | Additional CSS classes |
+
+## Field Mapping
+
+| Field | Default key | Description |
+|-------|-------------|-------------|
+| `label` | `'label'` | Step title |
+| `description` | `'description'` | Secondary text |
+| `completed` | `'completed'` | Step is done |
+| `active` | `'active'` | Current step |
+| `icon` | `'icon'` | Custom marker icon class |
+
+## Snippets
+
+- `content(proxy)` — Custom step content (proxy is a `ProxyItem`)
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-timeline` | Root element |
+| `data-timeline-item` | Individual step |
+| `data-completed` | Present on completed steps |
+| `data-active` | Present on the active step |
+| `data-timeline-marker` | Step marker/icon |
+| `data-timeline-content` | Text content area |

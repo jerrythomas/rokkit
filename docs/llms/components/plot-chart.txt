@@ -1,0 +1,91 @@
+# PlotChart
+
+Low-level declarative chart container. Compose charts by placing geom components as children, or pass a `spec` object for the spec-driven API.
+
+## Import
+
+```javascript
+import { PlotChart, GeomBar, GeomLine, GeomArea, GeomPoint, GeomArc, GeomBox, GeomViolin } from '@rokkit/chart'
+```
+
+## Quick Start
+
+```svelte
+<!-- Component-based composition -->
+<PlotChart {data} width={600} height={400}>
+  <GeomBar x="category" y="revenue" color="region" stat="mean" />
+</PlotChart>
+
+<!-- Spec-driven (same result) -->
+<PlotChart spec={{
+  data: rows,
+  x: 'category', y: 'revenue', color: 'region',
+  geoms: [{ type: 'bar', stat: 'mean' }]
+}} />
+```
+
+## PlotChart Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `data` | `Object[]` | `[]` | Data rows |
+| `spec` | `PlotSpec` | — | Spec object (alternative to child geoms + individual props) |
+| `helpers` | `PlotHelpers` | `{}` | Crossfilter / brewer helpers |
+| `width` | `number` | `600` | SVG width in pixels |
+| `height` | `number` | `400` | SVG height in pixels |
+| `mode` | `'light' \| 'dark'` | `'light'` | Palette mode |
+| `grid` | `boolean` | `true` | Show gridlines |
+| `axes` | `boolean` | `true` | Show axes |
+| `margin` | `object` | `{top:20,right:20,bottom:40,left:50}` | Margin override |
+| `legend` | `boolean` | `false` | Show legend |
+| `title` | `string` | `''` | Chart title |
+| `tooltip` | `boolean \| (d) => string` | `false` | Hover tooltip |
+
+## Geom Props
+
+All geoms accept `stat` (`identity` | `sum` | `mean` | `min` | `max` | `count`).
+
+**GeomBar**: `x`, `y`, `color`, `fill`, `pattern`, `label`, `stack`, `filterable`
+
+**GeomLine**: `x`, `y`, `color`, `symbol`, `label`, `options.curve`, `options.strokeWidth`
+
+**GeomPoint**: `x`, `y`, `color`, `size`, `symbol`, `label`, `options.radius`
+
+**GeomArc**: `theta`, `fill` (or `color`), `pattern`, `labelFn`, `options.innerRadius`
+
+**GeomArea**: `x`, `y`, `color`, `pattern`, `options.stack`, `options.opacity`
+
+**GeomBox** / **GeomViolin**: `x`, `y`, `fill`, `color`
+
+## Spec-driven API
+
+```svelte
+<PlotChart spec={{
+  data: rows,
+  width: 600,
+  height: 400,
+  x: 'month',
+  y: 'revenue',
+  color: 'region',
+  geoms: [{ type: 'bar', stat: 'sum' }, { type: 'line' }]
+}} />
+```
+
+## CrossFilter integration
+
+```svelte
+<CrossFilter>
+  <PlotChart {data}>
+    <GeomBar x="category" y="revenue" filterable />
+  </PlotChart>
+</CrossFilter>
+```
+
+Geoms with `filterable` dim or hide unselected data when a filter is active.
+
+## Related
+
+- [BarChart](/llms/components/bar-chart.txt) — high-level bar chart
+- [FacetPlot](/llms/components/facet-plot.txt) — small-multiples using the same spec format
+- [AnimatedPlot](/llms/components/animated-plot.txt) — frame-by-frame animation
+- [CrossFilter](/llms/components/crossfilter.txt) — linked interactive filtering

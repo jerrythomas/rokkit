@@ -9,6 +9,7 @@ Working with the backlog. Request: **$ARGUMENTS**
 Read `docs/design/12-priority.md` in full. This is the canonical list of all pending work, organized by priority tier (P1 → P4).
 
 Also skim:
+
 - `agents/journal.md` (last 50 lines) — what was recently completed
 - `docs/plans/README.md` — is there already an active plan?
 
@@ -34,11 +35,13 @@ If a specific item was named in `$ARGUMENTS`, find it in the checklist and jump 
 ## Step 3: Load Item Context
 
 For the chosen item, read its linked design/feature doc. Common locations:
+
 - `docs/features/NN-<name>.md` — feature spec (what + scenarios)
 - `docs/design/NN-<name>.md` — design doc (how)
 - `docs/design/components/<name>.md` — component-specific design
 
 Summarize:
+
 - What it is and why it matters
 - Current state (what exists vs what's missing)
 - Estimated scope: tactical (bug/small addition) or design work (new component/pattern)
@@ -65,6 +68,7 @@ Once the user confirms the item:
 ## Backlog Maintenance
 
 When an item is done, update `docs/design/12-priority.md`:
+
 - Change `- [ ]` to `- [x]` for the completed item
 - Add the completion date as a note if significant
 

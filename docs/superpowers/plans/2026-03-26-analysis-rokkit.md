@@ -14,6 +14,7 @@
 **Spec:** `~/Developer/strategos/docs/superpowers/specs/2026-03-26-analysis-visualization-design.md`
 
 **Out of scope for this plan** (covered in `2026-03-26-analysis-strategos.md`):
+
 - `parseRichMarkdown()` and `RichSection` type in `@strategos/core`
 - `data_extract`, `data_analyze`, `report_compose` tools in `@strategos/tools`
 - `AnalysisOrchestrator` in `@strategos/agents`
@@ -31,6 +32,7 @@ cat ~/Developer/rokkit/packages/chart/package.json
 ```
 
 **Verify the test command before running any tests:**
+
 ```bash
 cat ~/Developer/rokkit/package.json | grep -A5 '"scripts"'
 # Note the actual test command — it may be `bun run test`, `bun run test:run`, `vitest`, etc.
@@ -38,9 +40,11 @@ cat ~/Developer/rokkit/package.json | grep -A5 '"scripts"'
 ```
 
 **Verify FacetPlot and AnimatedPlot are supported in PlotSpec:**
+
 ```bash
 grep -r "facet\|animate" packages/chart/src/PlotSpec* packages/chart/src/Plot.svelte 2>/dev/null | head -20
 ```
+
 `facet` and `animate` fields in PlotSpec are used by the AI tools. If they are not yet implemented in `@rokkit/chart`, note this as a known limitation — the `data_analyze` tool may generate them but they will be silently ignored until chart support lands.
 
 All commands below assume `~/Developer/rokkit/` as working directory unless stated.
@@ -76,7 +80,11 @@ import { render } from '@testing-library/svelte'
 import Sparkline from '../src/Sparkline.svelte'
 
 const spec = {
-  data: [{ m: 'Jan', v: 10 }, { m: 'Feb', v: 20 }, { m: 'Mar', v: 15 }],
+  data: [
+    { m: 'Jan', v: 10 },
+    { m: 'Feb', v: 20 },
+    { m: 'Mar', v: 15 }
+  ],
   x: 'm',
   y: 'v',
   geoms: [{ type: 'line' }]
@@ -164,7 +172,7 @@ Create `packages/chart/src/Sparkline.svelte`:
     legend: false,
     tooltip: false,
     // Only use first geom
-    geoms: spec.geoms?.slice(0, 1) ?? [],
+    geoms: spec.geoms?.slice(0, 1) ?? []
   })
 </script>
 
@@ -218,6 +226,7 @@ cat packages/ui/package.json | grep -E "marked|dompurify"
 ```
 
 Add any missing dependencies:
+
 ```bash
 cd packages/ui
 bun add marked isomorphic-dompurify
@@ -228,7 +237,7 @@ bun add -d @types/dompurify
 
 Create `packages/ui/spec/MarkdownRenderer.spec.ts`:
 
-```typescript
+````typescript
 import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/svelte'
 import MarkdownRenderer from '../src/MarkdownRenderer.svelte'
@@ -293,12 +302,10 @@ describe('MarkdownRenderer', () => {
   })
 
   it('renders with no plugins prop without error', () => {
-    expect(() =>
-      render(MarkdownRenderer, { props: { markdown: '# Hello' } })
-    ).not.toThrow()
+    expect(() => render(MarkdownRenderer, { props: { markdown: '# Hello' } })).not.toThrow()
   })
 })
-```
+````
 
 Create the stub fixture `packages/ui/spec/fixtures/StubPlugin.svelte`:
 
@@ -306,6 +313,7 @@ Create the stub fixture `packages/ui/spec/fixtures/StubPlugin.svelte`:
 <script lang="ts">
   let { code }: { code: string } = $props()
 </script>
+
 <div data-stub-plugin>{code}</div>
 ```
 
@@ -503,8 +511,12 @@ import { render } from '@testing-library/svelte'
 import PlotPlugin from '../src/PlotPlugin.svelte'
 
 const validSpec = JSON.stringify({
-  data: [{ year: 2023, revenue: 4.2 }, { year: 2024, revenue: 4.7 }],
-  x: 'year', y: 'revenue',
+  data: [
+    { year: 2023, revenue: 4.2 },
+    { year: 2024, revenue: 4.7 }
+  ],
+  x: 'year',
+  y: 'revenue',
   geoms: [{ type: 'bar' }]
 })
 
@@ -556,7 +568,10 @@ Create `packages/blocks/src/PlotPlugin.svelte`:
 {#if result.error}
   <div data-block-error class="block-error">
     <span>Plot error: {result.error}</span>
-    <details><summary>Raw spec</summary><pre>{code}</pre></details>
+    <details>
+      <summary>Raw spec</summary>
+      <pre>{code}</pre>
+    </details>
   </div>
 {:else}
   <Plot spec={result.spec} />
@@ -582,7 +597,10 @@ import TablePlugin from '../src/TablePlugin.svelte'
 
 const validTable = JSON.stringify({
   columns: ['Year', 'Revenue'],
-  rows: [{ Year: 2023, Revenue: 4.2 }, { Year: 2024, Revenue: 4.7 }]
+  rows: [
+    { Year: 2023, Revenue: 4.2 },
+    { Year: 2024, Revenue: 4.7 }
+  ]
 })
 
 describe('TablePlugin', () => {
@@ -625,13 +643,17 @@ If a `<Table>` component exists: use it in `TablePlugin.svelte` (it will have so
 Create `packages/blocks/src/TablePlugin.svelte` — choose the appropriate implementation based on Step 8:
 
 **If `@rokkit/ui` exports a `<Table>` component:**
+
 ```svelte
 <script lang="ts">
   import { Table } from '@rokkit/ui'
 
   let { code }: { code: string } = $props()
 
-  interface TableData { columns: string[]; rows: Record<string, unknown>[] }
+  interface TableData {
+    columns: string[]
+    rows: Record<string, unknown>[]
+  }
 
   const result = $derived.by(() => {
     try {
@@ -645,7 +667,10 @@ Create `packages/blocks/src/TablePlugin.svelte` — choose the appropriate imple
 {#if result.error}
   <div data-block-error class="block-error">
     <span>Table error: {result.error}</span>
-    <details><summary>Raw</summary><pre>{code}</pre></details>
+    <details>
+      <summary>Raw</summary>
+      <pre>{code}</pre>
+    </details>
   </div>
 {:else}
   <Table columns={result.data!.columns} rows={result.data!.rows} />
@@ -653,11 +678,15 @@ Create `packages/blocks/src/TablePlugin.svelte` — choose the appropriate imple
 ```
 
 **If no `<Table>` component exists (fallback):**
+
 ```svelte
 <script lang="ts">
   let { code }: { code: string } = $props()
 
-  interface TableData { columns: string[]; rows: Record<string, unknown>[] }
+  interface TableData {
+    columns: string[]
+    rows: Record<string, unknown>[]
+  }
 
   const result = $derived.by(() => {
     try {
@@ -671,16 +700,25 @@ Create `packages/blocks/src/TablePlugin.svelte` — choose the appropriate imple
 {#if result.error}
   <div data-block-error class="block-error">
     <span>Table error: {result.error}</span>
-    <details><summary>Raw</summary><pre>{code}</pre></details>
+    <details>
+      <summary>Raw</summary>
+      <pre>{code}</pre>
+    </details>
   </div>
 {:else}
   {@const { columns, rows } = result.data!}
   <div class="table-block" data-table-block>
     <table>
-      <thead><tr>{#each columns as col}<th>{col}</th>{/each}</tr></thead>
+      <thead
+        ><tr
+          >{#each columns as col}<th>{col}</th>{/each}</tr
+        ></thead
+      >
       <tbody>
         {#each rows as row}
-          <tr>{#each columns as col}<td>{row[col] ?? ''}</td>{/each}</tr>
+          <tr
+            >{#each columns as col}<td>{row[col] ?? ''}</td>{/each}</tr
+          >
         {/each}
       </tbody>
     </table>
@@ -706,8 +744,12 @@ import { render } from '@testing-library/svelte'
 import SparklinePlugin from '../src/SparklinePlugin.svelte'
 
 const validSpec = JSON.stringify({
-  data: [{ m: 'Jan', v: 10 }, { m: 'Feb', v: 20 }],
-  x: 'm', y: 'v',
+  data: [
+    { m: 'Jan', v: 10 },
+    { m: 'Feb', v: 20 }
+  ],
+  x: 'm',
+  y: 'v',
   geoms: [{ type: 'line' }]
 })
 
@@ -747,7 +789,10 @@ Create `packages/blocks/src/SparklinePlugin.svelte`:
 {#if result.error}
   <div data-block-error class="block-error">
     <span>Sparkline error: {result.error}</span>
-    <details><summary>Raw</summary><pre>{code}</pre></details>
+    <details>
+      <summary>Raw</summary>
+      <pre>{code}</pre>
+    </details>
   </div>
 {:else}
   <Sparkline spec={result.spec} />
@@ -816,10 +861,7 @@ Create `packages/blocks/src/MermaidPlugin.svelte`:
       // Lazy-load mermaid — only pulled in when this component mounts
       const { default: mermaid } = await import('mermaid')
       mermaid.initialize({ startOnLoad: false, theme: 'default' })
-      const { svg } = await mermaid.render(
-        'mermaid-' + Math.random().toString(36).slice(2),
-        code
-      )
+      const { svg } = await mermaid.render('mermaid-' + Math.random().toString(36).slice(2), code)
       // Sanitize the SVG before assigning to innerHTML
       container.innerHTML = DOMPurify.sanitize(svg, { USE_PROFILES: { svg: true } })
     } catch (e) {
@@ -831,7 +873,10 @@ Create `packages/blocks/src/MermaidPlugin.svelte`:
 {#if error}
   <div data-block-error class="block-error">
     <span>Mermaid error: {error}</span>
-    <details><summary>Raw</summary><pre>{code}</pre></details>
+    <details>
+      <summary>Raw</summary>
+      <pre>{code}</pre>
+    </details>
   </div>
 {:else}
   <div bind:this={container} class="mermaid-block" data-mermaid-block></div>
@@ -839,6 +884,7 @@ Create `packages/blocks/src/MermaidPlugin.svelte`:
 ```
 
 Add `isomorphic-dompurify` to blocks package:
+
 ```bash
 cd packages/blocks && bun add isomorphic-dompurify && bun add -d @types/dompurify
 ```
@@ -916,9 +962,11 @@ git commit -m "feat: add @rokkit/blocks package with PlotPlugin, TablePlugin, Sp
 ## Chunk 4: CrossFilter Support in `<MarkdownRenderer>`
 
 > **Prerequisites:** Chunks 1–3 must be complete. Also requires `CrossFilter` component API in `@rokkit/chart` to be stable. **Check before starting:**
+>
 > ```bash
 > grep -r "CrossFilter\|createCrossFilter" packages/chart/src/ | head -10
 > ```
+>
 > If `CrossFilter` is not yet implemented in `@rokkit/chart`, **skip this chunk entirely** — the basic renderer works without it. CrossFilter support is an enhancement, not a blocker.
 
 Enables multiple `plot` blocks in the same markdown document to share a CrossFilter context for linked interactive filtering. A `"crossfilter": "group-id"` field in a `plot` spec groups co-labelled plots into a shared `<CrossFilter>` wrapper.
@@ -934,7 +982,7 @@ Enables multiple `plot` blocks in the same markdown document to share a CrossFil
 
 Add to `packages/ui/spec/MarkdownRenderer.spec.ts`:
 
-```typescript
+````typescript
 import CrossFilterStub from './fixtures/CrossFilterStub.svelte'
 
 // CrossFilterStub: a component that renders [data-crossfilter-group] around its children
@@ -950,7 +998,7 @@ describe('MarkdownRenderer — CrossFilter grouping', () => {
       '',
       '```plot',
       '{"data":[],"x":"a","y":"b","geoms":[{"type":"line"}],"crossfilter":"group1"}',
-      '```',
+      '```'
     ].join('\n')
     const { container } = render(MarkdownRenderer, {
       props: {
@@ -965,20 +1013,21 @@ describe('MarkdownRenderer — CrossFilter grouping', () => {
   })
 
   it('does not group plots without crossfilter field', () => {
-    const md = [
-      '```plot',
-      '{"data":[],"x":"a","y":"b","geoms":[{"type":"bar"}]}',
-      '```',
-    ].join('\n')
+    const md = ['```plot', '{"data":[],"x":"a","y":"b","geoms":[{"type":"bar"}]}', '```'].join('\n')
     const { container } = render(MarkdownRenderer, {
-      props: { markdown: md, plugins: [{ language: 'plot', component: StubPlugin }], crossfilter: true }
+      props: {
+        markdown: md,
+        plugins: [{ language: 'plot', component: StubPlugin }],
+        crossfilter: true
+      }
     })
     expect(container.querySelectorAll('[data-crossfilter-group]')).toHaveLength(0)
   })
 })
-```
+````
 
 Create `packages/ui/spec/fixtures/CrossFilterStub.svelte`:
+
 ```svelte
 <div data-crossfilter-group><slot /></div>
 ```
@@ -994,6 +1043,7 @@ Expected: new crossfilter tests fail, existing tests still pass
 - [ ] **Step 3: Add `crossfilter` prop and pre-pass grouping to `MarkdownRenderer.svelte`**
 
 Read current `MarkdownRenderer.svelte`, then:
+
 1. Add `crossfilter?: boolean` to the `Props` interface
 2. Add a `CrossFilter` import from `@rokkit/chart`
 3. Add a `segments` derived value: pre-pass groups consecutive `plot` tokens with matching `crossfilter` field values into group segments; wraps them in `<CrossFilter>` in the template

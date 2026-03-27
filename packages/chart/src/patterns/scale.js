@@ -24,11 +24,20 @@
  * @returns {(string|number)[]}
  */
 function scalePathCmd(cmd, size) {
-  const [op, ...args] = cmd
-  if (op === 'A' || op === 'a') {
-    return [op, args[0] * size, args[1] * size, args[2], args[3], args[4], args[5] * size, args[6] * size]
-  }
-  return [op, ...args.map((v) => (typeof v === 'number' ? v * size : v))]
+	const [op, ...args] = cmd
+	if (op === 'A' || op === 'a') {
+		return [
+			op,
+			args[0] * size,
+			args[1] * size,
+			args[2],
+			args[3],
+			args[4],
+			args[5] * size,
+			args[6] * size
+		]
+	}
+	return [op, ...args.map((v) => (typeof v === 'number' ? v * size : v))]
 }
 
 /**
@@ -39,22 +48,34 @@ function scalePathCmd(cmd, size) {
  * @returns {object}
  */
 export function scaleMark(mark, size) {
-  switch (mark.type) {
-    case 'line':
-      return { ...mark, x1: mark.x1 * size, y1: mark.y1 * size, x2: mark.x2 * size, y2: mark.y2 * size }
-    case 'circle':
-      return { ...mark, cx: mark.cx * size, cy: mark.cy * size, r: mark.r * size }
-    case 'rect': {
-      const { w, h, ...rest } = mark
-      return { ...rest, x: mark.x * size, y: mark.y * size, width: w * size, height: h * size }
-    }
-    case 'polygon':
-      return { ...mark, points: mark.points.map(([x, y]) => `${x * size},${y * size}`).join(' ') }
-    case 'path':
-      return { ...mark, d: mark.d.map((cmd) => scalePathCmd(cmd, size)).map((cmd) => cmd.join(' ')).join(' ') }
-    default:
-      return mark
-  }
+	switch (mark.type) {
+		case 'line':
+			return {
+				...mark,
+				x1: mark.x1 * size,
+				y1: mark.y1 * size,
+				x2: mark.x2 * size,
+				y2: mark.y2 * size
+			}
+		case 'circle':
+			return { ...mark, cx: mark.cx * size, cy: mark.cy * size, r: mark.r * size }
+		case 'rect': {
+			const { w, h, ...rest } = mark
+			return { ...rest, x: mark.x * size, y: mark.y * size, width: w * size, height: h * size }
+		}
+		case 'polygon':
+			return { ...mark, points: mark.points.map(([x, y]) => `${x * size},${y * size}`).join(' ') }
+		case 'path':
+			return {
+				...mark,
+				d: mark.d
+					.map((cmd) => scalePathCmd(cmd, size))
+					.map((cmd) => cmd.join(' '))
+					.join(' ')
+			}
+		default:
+			return mark
+	}
 }
 
 /**
@@ -71,17 +92,25 @@ export function scaleMark(mark, size) {
  * @returns {{ type: string, attrs: object }}
  */
 export function resolveMarkAttrs(scaledMark, { fill, stroke, thickness }) {
-  const { type, fill: isFill, strokeWidth, fillOpacity, opacity, fillRule, ...geometry } = scaledMark
+	const {
+		type,
+		fill: isFill,
+		strokeWidth,
+		fillOpacity,
+		opacity,
+		fillRule,
+		...geometry
+	} = scaledMark
 
-  const attrs = {
-    ...geometry,
-    fill: isFill ? fill : 'none',
-    stroke: isFill ? 'none' : stroke,
-    'stroke-width': isFill ? 0 : (strokeWidth ?? thickness),
-  }
-  if (fillOpacity !== null && fillOpacity !== undefined) attrs['fill-opacity'] = fillOpacity
-  if (opacity !== null && opacity !== undefined) attrs.opacity = opacity
-  if (fillRule !== null && fillRule !== undefined) attrs['fill-rule'] = fillRule
+	const attrs = {
+		...geometry,
+		fill: isFill ? fill : 'none',
+		stroke: isFill ? 'none' : stroke,
+		'stroke-width': isFill ? 0 : (strokeWidth ?? thickness)
+	}
+	if (fillOpacity !== null && fillOpacity !== undefined) attrs['fill-opacity'] = fillOpacity
+	if (opacity !== null && opacity !== undefined) attrs.opacity = opacity
+	if (fillRule !== null && fillRule !== undefined) attrs['fill-rule'] = fillRule
 
-  return { type, attrs }
+	return { type, attrs }
 }

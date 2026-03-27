@@ -1,0 +1,68 @@
+# FacetPlot
+
+Small-multiples chart that splits data into one panel per distinct value of a categorical field. Each panel is an independent chart sharing the same x/y encoding and geom type. Color domains are consistent across panels.
+
+## Import
+
+```javascript
+import { FacetPlot } from '@rokkit/chart'
+```
+
+## Quick Start
+
+```svelte
+<FacetPlot
+  data={mpg}
+  facet={{ by: 'drv' }}
+  x="class"
+  y="hwy"
+  geoms={[{ type: 'bar', stat: 'mean' }]}
+/>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `data` | `Object[]` | `[]` | Full dataset — split into panels by the facet field |
+| `facet` | `{ by, cols?, scales? }` | — | **Required.** Facet configuration |
+| `x` | `string` | — | Field for the X axis |
+| `y` | `string` | — | Field for the Y axis |
+| `fill` | `string` | — | Field for color assignment (consistent across panels) |
+| `geoms` | `GeomSpec[]` | `[]` | Geom specs — same format as `PlotChart` |
+| `width` | `number` | `900` | Total grid width in pixels (divided equally across columns) |
+| `height` | `number` | `300` | Height of each panel in pixels |
+| `panelWidth` | `number` | — | Override per-panel width (takes precedence over `width / cols`) |
+| `panelHeight` | `number` | — | Override per-panel height |
+| `grid` | `boolean` | `true` | Show gridlines in each panel |
+| `legend` | `boolean` | `false` | Show color legend (rendered below the grid) |
+| `mode` | `'light' \| 'dark'` | `'light'` | Color palette mode |
+
+## facet object
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| `by` | `string` | — | Field to facet by — one panel per distinct value |
+| `cols` | `number` | `min(panels, 3)` | Number of columns in the panel grid |
+| `scales` | `'fixed' \| 'free' \| 'free_x' \| 'free_y'` | `'fixed'` | Axis sharing — `'fixed'` = same domain everywhere; `'free'` = each panel fits its own data |
+
+## Axis Scales
+
+```svelte
+<FacetPlot ... facet={{ by: 'drv', scales: 'fixed' }} />   <!-- same y axis (default) -->
+<FacetPlot ... facet={{ by: 'drv', scales: 'free' }} />    <!-- each panel fits its data -->
+<FacetPlot ... facet={{ by: 'drv', scales: 'free_y' }} />  <!-- free y, shared x -->
+```
+
+## Color Encoding
+
+Color domain is computed from all data before splitting — same value gets same color in every panel.
+
+```svelte
+<FacetPlot data={mpg} facet={{ by: 'cyl' }} x="class" y="hwy" fill="drv" geoms={[{ type: 'bar', stat: 'mean' }]} legend />
+```
+
+## Related
+
+- [PlotChart](/llms/components/plot-chart.txt) — single-panel chart (same geom API)
+- [AnimatedPlot](/llms/components/animated-plot.txt) — frame-by-frame animation over a field

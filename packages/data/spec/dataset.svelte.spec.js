@@ -76,7 +76,10 @@ describe('ReactiveDataSet', () => {
 
 	it('update with function patch', () => {
 		const ds = reactiveDataset([...seed])
-		ds.update((r) => r.score < 85, (r) => ({ ...r, score: r.score + 5 }))
+		ds.update(
+			(r) => r.score < 85,
+			(r) => ({ ...r, score: r.score + 5 })
+		)
 		expect(ds.rows.map((r) => r.score)).toEqual([90, 75, 85])
 	})
 

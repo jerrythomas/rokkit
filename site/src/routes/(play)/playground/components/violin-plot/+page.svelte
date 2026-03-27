@@ -19,11 +19,11 @@
 	const schema = {
 		type: 'object',
 		properties: {
-			xField:    { type: 'string' },
-			yField:    { type: 'string' },
+			xField: { type: 'string' },
+			yField: { type: 'string' },
 			fillField: { type: 'string' },
-			grid:      { type: 'boolean' },
-			legend:    { type: 'boolean' }
+			grid: { type: 'boolean' },
+			legend: { type: 'boolean' }
 		}
 	}
 
@@ -45,7 +45,7 @@
 				label: 'fill',
 				props: { options: ['', 'drv', 'class', 'cyl', 'fl'] }
 			},
-			{ scope: '#/grid',   label: 'grid' },
+			{ scope: '#/grid', label: 'grid' },
 			{ scope: '#/legend', label: 'legend' },
 			{ type: 'separator' }
 		]
@@ -56,7 +56,7 @@
 	{#snippet preview()}
 		<div class="flex flex-col gap-8 p-6">
 			<div>
-				<h4 class="text-surface-z5 m-0 mb-3 text-xs uppercase tracking-widest font-semibold">
+				<h4 class="text-surface-z5 m-0 mb-3 text-xs font-semibold tracking-widest uppercase">
 					Highway MPG Distribution by Vehicle Class
 				</h4>
 				<ViolinPlot

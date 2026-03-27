@@ -1,0 +1,65 @@
+# MarkdownRenderer
+
+Renders a markdown string as HTML, with support for syntax-highlighted fenced code blocks and plugin-based block overrides (charts, tables, Mermaid diagrams).
+
+## Import
+
+```javascript
+import { MarkdownRenderer } from '@rokkit/ui'
+```
+
+## Quick Start
+
+```svelte
+<script>
+  import { MarkdownRenderer } from '@rokkit/ui'
+</script>
+
+<MarkdownRenderer markdown={content} />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `markdown` | `string` | — | Markdown source string |
+| `plugins` | `MarkdownPlugin[]` | `[]` | Block plugins — each maps a fenced code language to a Svelte component |
+
+## MarkdownPlugin type
+
+```typescript
+interface MarkdownPlugin {
+  language: string       // fenced code block language identifier (e.g. 'plot', 'table')
+  component: Component   // Svelte component to render instead of a code block
+}
+```
+
+Import plugins from `@rokkit/blocks`:
+
+```svelte
+<script>
+  import { MarkdownRenderer } from '@rokkit/ui'
+  import { PlotPlugin, TablePlugin, MermaidPlugin } from '@rokkit/blocks'
+</script>
+
+<MarkdownRenderer {markdown} plugins={[PlotPlugin, TablePlugin, MermaidPlugin]} />
+```
+
+With plugins active, a fenced code block like:
+
+````markdown
+```plot
+{"type":"bar","data":[...],"x":"month","y":"revenue"}
+```
+````
+
+renders as a live `Plot` chart component instead of a code block.
+
+## Syntax Highlighting
+
+Fenced code blocks without a matching plugin are syntax-highlighted using Shiki (same as the `Code` component). Language is detected from the fence tag.
+
+## Related
+
+- [@rokkit/blocks](/llms/packages/blocks.txt) — PlotPlugin, TablePlugin, SparklinePlugin, MermaidPlugin
+- [code](/llms/components/code.txt) — Standalone code block with copy button

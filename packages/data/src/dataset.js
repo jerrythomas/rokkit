@@ -54,11 +54,7 @@ function cloneConfig(config) {
  */
 function summarize(config, from, using) {
 	const mapper =
-		typeof from === 'function'
-			? from
-			: Array.isArray(from)
-				? pickKeys(from)
-				: pickKeys([from])
+		typeof from === 'function' ? from : Array.isArray(from) ? pickKeys(from) : pickKeys([from])
 	const reducers = []
 
 	if (typeof using === 'string') reducers.push({ field: using, formula: (x) => x })

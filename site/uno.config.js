@@ -118,13 +118,7 @@ const siteIcons = [
 	'i-glyph:widget-5'
 ]
 
-const stateIcons = [
-	'state-error',
-	'state-warning',
-	'state-success',
-	'state-info',
-	'state-unknown'
-]
+const stateIcons = ['state-error', 'state-warning', 'state-success', 'state-info', 'state-unknown']
 
 const solarIcons = [
 	'i-solar:book-2-bold-duotone',

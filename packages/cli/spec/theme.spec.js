@@ -21,7 +21,7 @@ describe('generateThemeStub', () => {
 	it('includes the theme name in the header comment', () => {
 		const css = generateThemeStub('midnight')
 		expect(css).toContain('midnight')
-		expect(css).toContain("data-style=\"midnight\"")
+		expect(css).toContain('data-style="midnight"')
 	})
 
 	it('produces a CSS block for each component', () => {
@@ -98,7 +98,9 @@ describe('runThemeCreate', () => {
 	it('writes a CSS stub file to src/themes/<name>.css', async () => {
 		const files = {}
 		const adapters = {
-			writeFile: (path, content) => { files[path] = content },
+			writeFile: (path, content) => {
+				files[path] = content
+			},
 			exists: () => false,
 			mkdir: vi.fn()
 		}
@@ -153,7 +155,9 @@ describe('runThemeCreate', () => {
 	it('generates CSS stub with all component blocks', async () => {
 		const files = {}
 		const adapters = {
-			writeFile: (path, content) => { files[path] = content },
+			writeFile: (path, content) => {
+				files[path] = content
+			},
 			exists: () => false,
 			mkdir: vi.fn()
 		}

@@ -6,4 +6,6 @@
   "category": "charts",
   "order": 5,
   "since": "0.1.0"
+,
+  "llms": true
 }

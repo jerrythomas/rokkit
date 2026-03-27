@@ -3,6 +3,25 @@
 Chronological log of confirmations, progress, milestones, and decisions.
 Design details live in `docs/design/` — modular docs per module.
 
+### Chart preset system — complete (2026-03-26)
+
+**What was done:**
+
+- `packages/chart/src/lib/preset.js` — `defaultPreset` (14 colors, shade indices, 4 opacity values, patterns, symbols) + `createChartPreset(overrides)` with deep-merge for shades/opacity
+- Deleted `packages/chart/src/lib/brewing/palette.json` (21 hardcoded hex entries); rewrote `assignColors(values, mode, preset)` to shade-index into `lib/palette.json`
+- `assignSymbols(values, preset)` now uses `preset.symbols` for configurable order
+- `PlotState`: added `#chartPreset` field + `chartPreset` getter; passes preset to `assignColors`/`assignSymbols`
+- `ChartProvider.svelte` — sets `'chart-preset'` Svelte context; `Plot.svelte` reads context with `defaultPreset` fallback
+- Geom opacity from preset: `Area` → `preset.opacity.area`, `Box` → `preset.opacity.box`, `Violin` → `preset.opacity.violin`, `Point` → `preset.opacity.point`; `options.opacity` prop still overrides per-instance
+- `jitterOffset(i, range)` LCG helper + `buildPoints()` jitter option; `ScatterPlot` exposes `jitter` prop
+- Exports: `ChartProvider`, `createChartPreset`, `defaultPreset` added to `packages/chart/src/index.js`
+
+**Tests:** 3145 passing (up from 2967). New: `spec/lib/preset.spec.js` (8), `spec/brewing/marks/points.spec.js` (7). 0 lint errors.
+
+**Commit:** `56a9618a` — feat(chart): add chart preset system with shade-mapping, ChartProvider, and jitter
+
+---
+
 ### Chart Plan 4: CrossFilter system — complete (2026-03-23)
 
 **What was done:**
@@ -18,6 +37,7 @@ All 7 tasks of Plan 4 (dc.js-style CrossFilter linked interactive charts) implem
 - `index.js` exports + `docs/features/07-Charts.md` status updated
 
 **Key design decisions:**
+
 - CrossFilter mode context uses getter object `{ get mode() { return mode } }` for reactivity
 - Bar dimming is x-dimension only (matches what `toggleCategorical` operates on)
 - FilterSlider is interim (HTML inputs); spec calls for Point+brush architecture (deferred)
@@ -2370,11 +2390,13 @@ learn site demos that used `text:` as item property or field mapping key. Fixed:
 ### CLI Toolchain: upgrade + skin + theme commands (2026-03-18)
 
 **Feature:** Three new CLI commands to manage Rokkit projects:
+
 - `rokkit upgrade` — check `@rokkit/*` versions, optionally run install with `--apply`
 - `rokkit skin list / skin create --name` — scaffold skin entries in `rokkit.config.js`
 - `rokkit theme list / theme create --name` — scaffold custom CSS theme stubs in `src/themes/`
 
 **Architecture:**
+
 - All commands use injectable adapter pattern (same as `doctor.js`) for testability
 - `upgrade.js`: `getRokkitPackages()`, `detectPackageManager()`, `buildInstallCommand()` are pure functions; `runUpgrade()` takes `{ readFile, exists, fetchVersion, runInstall }` adapters
 - `skin.js`: `generateSkinScaffold()`, `addSkinToConfig()`, `serializeConfig()` are pure; config read via dynamic import with injectable `readConfig`/`writeConfig` adapters
@@ -2382,6 +2404,7 @@ learn site demos that used `text:` as item property or field mapping key. Fixed:
 - Uses `execFileSync` instead of `execSync` to prevent shell injection
 
 **New files:**
+
 - `packages/cli/src/upgrade.js`
 - `packages/cli/src/skin.js`
 - `packages/cli/src/theme.js`
@@ -2390,6 +2413,7 @@ learn site demos that used `text:` as item property or field mapping key. Fixed:
 - `packages/cli/spec/theme.spec.js` (18 tests)
 
 **Updated:**
+
 - `packages/cli/src/index.js` — wired 6 new sade commands
 - `site/static/llms/cli.txt` — upgrade, skin, theme sections added
 - `site/src/routes/(learn)/docs/toolchain/cli/+page.svelte` — docs for all new commands + snippets
@@ -2402,6 +2426,7 @@ learn site demos that used `text:` as item property or field mapping key. Fixed:
 **Feature:** Created base structural and themed CSS for chart components.
 
 **Files created:**
+
 - `packages/themes/src/base/chart.css` — structural styles (layout, typography, transitions)
 - `packages/themes/src/rokkit/chart.css` — rokkit theme (stroke-surface-z4, fill-surface-z6, etc.)
 - `packages/themes/src/minimal/chart.css` — minimal theme (stroke-surface-z3, fill-surface-z5, etc.)
@@ -2417,8 +2442,9 @@ learn site demos that used `text:` as item property or field mapping key. Fixed:
 **Updated:** All 11 theme `index.css` files with `@import './chart.css'` at the end.
 
 **CSS features:**
+
 - `[data-chart]` — wrapper container (relative, block, 100% width)
-- `[data-chart-axis-line]`, `[data-chart-tick]` — axis styling (via stroke-surface-z* classes)
+- `[data-chart-axis-line]`, `[data-chart-tick]` — axis styling (via stroke-surface-z\* classes)
 - `[data-chart-tick-label]` — label sizing and typography (0.75rem)
 - `[data-chart-grid-line]` — grid styling with theme-specific dasharray
 - `[data-chart-legend]` — flexbox legend (gap 0.5rem)
@@ -2435,22 +2461,26 @@ learn site demos that used `text:` as item property or field mapping key. Fixed:
 **Feature:** Created scales builder module with three D3 scale factory functions.
 
 **Files created:**
+
 - `packages/chart/src/lib/brewing/scales.js` — scale builders (buildXScale, buildYScale, buildSizeScale)
 - `packages/chart/spec/brewing/scales2.spec.js` — 6 comprehensive tests
 
 **API:**
+
 - `buildXScale(data, field, width, opts)` — band scale for categorical x, linear scale for numeric x
 - `buildYScale(data, field, height, layers)` — linear scale from 0 to max, with layer-extended domain support
 - `buildSizeScale(data, field, maxRadius)` — sqrt scale for bubble/point size encoding
 
 **Example usage:**
+
 ```js
-const xScale = buildXScale(data, 'date', 400)  // → band scale
-const yScale = buildYScale(data, 'revenue', 300)  // → linear scale [0, maxVal]
-const sizeScale = buildSizeScale(data, 'value', 20)  // → sqrt scale [0, 20]
+const xScale = buildXScale(data, 'date', 400) // → band scale
+const yScale = buildYScale(data, 'revenue', 300) // → linear scale [0, maxVal]
+const sizeScale = buildSizeScale(data, 'value', 20) // → sqrt scale [0, 20]
 ```
 
 **Dependencies added:**
+
 - `d3-shape@^3.2.0` — mark generators (line, area, arc, pie) for Task 7
 
 **Tests:** 6 tests passing (6/6). Covers categorical/numeric x detection, domain extension, SVG y-axis inversion, sqrt scaling.
@@ -2464,6 +2494,7 @@ const sizeScale = buildSizeScale(data, 'value', 20)  // → sqrt scale [0, 20]
 **Task 4 Complete:** Updated all 5 chart playground pages with full aesthetic prop controls and data visualization.
 
 **Changes made:**
+
 - Renamed data const to `chartData` in all 5 playgrounds (avoids conflict with `{#snippet data()}` syntax in Svelte 5)
 - **Bar Chart:** `colorField`, `patternField` (both string dropdowns); defaults: legend=true, dual-coded
 - **Area Chart:** Added `patternField` as string field dropdown; added curve options
@@ -2472,12 +2503,14 @@ const sizeScale = buildSizeScale(data, 'value', 20)  // → sqrt scale [0, 20]
 - **Scatter Plot:** `symbolField` with 'channel' and 'tier' options; dual-coded aesthetic encoding
 
 **Data snippet implementation:**
+
 - Each playground now includes `{#snippet data()}` block with HTML table
 - Displays raw chart data with automatic column detection via `Object.keys(chartData[0])`
 - Accessible via database icon button in PlaySection toolbar
 - Styled with Rokkit utilities: `overflow-x-auto`, `text-xs`, border classes
 
 **Controls & Info display:**
+
 - FormRenderer with string field dropdowns (colorField, patternField/symbolField)
 - InfoField displays for all props (shows '(none)' for empty strings)
 - Lowercase labels (color, pattern, symbol, grid, legend)
@@ -2491,23 +2524,27 @@ const sizeScale = buildSizeScale(data, 'value', 20)  // → sqrt scale [0, 20]
 **Plan B complete.** Three new chart types added to `@rokkit/chart`:
 
 **BoxPlot (`packages/chart/src/charts/BoxPlot.svelte`)**
+
 - `BoxBrewer` overrides `transform()` to compute quartile stats (q1, median, q3, iqr_min, iqr_max) via `@rokkit/data` groupBy/summarize
 - `buildBoxes` mark builder computes box geometry, whisker lines, median line
 - `fill` channel → box body color, `color` channel → whisker/outline stroke (independent, null = not applied)
 - Commits: `e8f87aea`, `ad7f18aa`, `c5a609de`
 
 **ViolinPlot (`packages/chart/src/charts/ViolinPlot.svelte`)**
+
 - `ViolinBrewer` mirrors BoxBrewer transform; adds `violins = $derived(...)` field
 - `buildViolins` creates closed SVG path using `curveCatmullRom` from 5 quartile anchor points mirrored left/right
 - `DENSITY_AT = { iqr_min: 0.08, q1: 0.55, median: 1.0, q3: 0.55, iqr_max: 0.08 }` drives width at each anchor
 - Commits: `80264c9e`, `e1972f43`, `eac4f388`
 
 **BubbleChart (`packages/chart/src/charts/BubbleChart.svelte`)**
+
 - Uses `ChartBrewer` directly (size channel + sizeScale already in base)
 - `size` prop drives radius via sqrt scale; `color` + `symbol` aesthetics supported
 - Commit: `f35c7a6a`
 
 **ggplot2-style Aesthetic Channel Fix**
+
 - `fill` → polygon interior (BarChart, AreaChart, PieChart); `color` → stroke/line (LineChart, ScatterPlot)
 - All aesthetic channels null-default with NO cross-channel fallbacks (ggplot2 convention)
 - Removed `pattern ?? fill` fallback from all polygon charts
@@ -2519,7 +2556,34 @@ const sizeScale = buildSizeScale(data, 'value', 20)  // → sqrt scale [0, 20]
 **Final state:** 2791 tests passing, 0 lint errors.
 
 **Future work tracked:**
+
 - Horizontal BarChart (issue #108)
 - Stacked/grouped BarChart (issue #109)
 - Static color literal support (issue #110)
 - AnimatedChart / bar chart race via `createFrames()` + `useAnimation()` (issue #101)
+
+## 2026-03-26 — Chart System Completion (Session 2)
+
+**Interactive Tooltips, Click Selection, Keyboard Navigation**
+
+- `plotState.setHovered(data)` / `clearHovered()` already on PlotState; `Tooltip.svelte` renders at mouse position
+- Area.svelte: added invisible hit circles (`<circle r="8" fill="transparent">`) per data point for tooltip hover
+- Box.svelte: added `role="presentation"` + hover handlers to box body rect
+- Violin.svelte: added `role="presentation"` + hover handlers to violin path
+- Bar.svelte: added `onselect` + `keyboard` props; `use:keyboardNav` on rect elements
+- Point.svelte: added `onselect` + `keyboard` props; both path and circle elements get `role="button"` when interactive
+- Line.svelte: added `onselect` + `keyboard` props; hit circles updated with interactive roles
+- Arc.svelte: added `onselect` prop; fires with `{ ...arc.data, '%': '...' }`
+- `packages/chart/src/lib/keyboard-nav.js` (new): Svelte action; ArrowLeft/ArrowRight between `[data-plot-element]` siblings in `[data-plot-geom]` container
+
+**Pattern Fills for Series**
+
+- Feature already complete; marked done in priority doc (21 patterns, `pattern` channel on Bar + Area)
+
+**Zoom and Pan**
+
+- `d3-zoom` added as dependency (`packages/chart/package.json`)
+- `PlotState`: `#zoomTransform = $state(null)`; `xScale` applies `rescaleX` for non-band scales; `yScale` applies `rescaleY`; `applyZoom(transform)` + `resetZoom()` methods
+- `Plot.svelte`: `zoom` prop (default false); d3-zoom behavior attached to SVG via `$effect`; `style:cursor="grab"` when zoom active; cleanup on destroy
+
+**Final state:** 3161 tests passing, 0 lint errors.

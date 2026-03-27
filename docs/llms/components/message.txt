@@ -1,0 +1,74 @@
+# Message
+
+Inline alert/toast component with auto-dismiss, dismiss button, and optional action snippets.
+
+## Import
+
+```javascript
+import { Message } from '@rokkit/ui'
+```
+
+## Quick Start
+
+```svelte
+<Message type="error" text="Something went wrong" />
+<Message type="success" text="Saved!" dismissible timeout={3000} />
+<Message type="info" text="Tip" dismissible />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `type` | `'error' \| 'info' \| 'success' \| 'warning'` | `'error'` | Alert type — controls color and default icon |
+| `text` | `string` | — | Text shorthand (children snippet takes precedence) |
+| `dismissible` | `boolean` | `false` | Show dismiss (×) button |
+| `timeout` | `number` | `4000` | Auto-dismiss after N ms. `0` = no auto-dismiss. Defaults to persistent when `dismissible` is set |
+| `icons` | `{ error?, info?, success?, warning? }` | — | Override default icon per type |
+| `actions` | `Snippet` | — | Snippet for action buttons below message |
+| `children` | `Snippet` | — | Rich content (takes precedence over `text`) |
+| `ondismiss` | `() => void` | — | Called when dismissed (button or timeout) |
+| `class` | `string` | `''` | Additional CSS classes |
+
+## Snippets
+
+```svelte
+<Message type="warning">
+  <strong>Heads up</strong> — your session expires soon.
+
+  {#snippet actions()}
+    <button onclick={renew}>Renew session</button>
+  {/snippet}
+</Message>
+```
+
+## Global Toasts — `AlertList`
+
+For app-level toast notifications, place `<AlertList>` once in the app root and push alerts via the `alerts` store:
+
+```svelte
+<!-- +layout.svelte -->
+<AlertList position="top-right" />
+```
+
+```javascript
+import { alerts } from '@rokkit/states'
+
+alerts.push({ type: 'success', text: 'Saved!', timeout: 3000 })
+alerts.push({ type: 'error', text: 'Failed', dismissible: true })
+```
+
+`AlertList` mounts as a portal onto `document.body` so it is never clipped by `overflow: hidden` ancestors.
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-message` | Root element |
+| `data-type` | Alert type (`error`, `info`, `success`, `warning`) |
+| `data-dismissible` | Present when dismiss button is shown |
+
+## Related
+
+- [alert-list](/llms/components/alert-list.txt) — Toast stack portal
+- [status-list](/llms/components/status-list.txt) — List of status indicators

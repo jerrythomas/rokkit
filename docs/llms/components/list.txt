@@ -250,6 +250,6 @@ import { List } from '@rokkit/ui'
 
 - [Tree](/llms/components/tree.txt) — hierarchical tree with per-node expand/collapse
 - [Select](/llms/components/select.txt) — dropdown single selection
-- [MultiSelect](/llms/components/multiselect.txt) — dropdown multi-selection
+- [MultiSelect](/llms/components/multi-select.txt) — dropdown multi-selection
 - [Menu](/llms/components/menu.txt) — contextual action menu
 - [Tabs](/llms/components/tabs.txt) — tabbed interface

@@ -93,7 +93,7 @@
 
 	{#snippet data()}
 		<div class="flex flex-col gap-3">
-			<p class="text-surface-z5 text-xs font-semibold uppercase tracking-widest">New Toast</p>
+			<p class="text-surface-z5 text-xs font-semibold tracking-widest uppercase">New Toast</p>
 			<FormRenderer bind:data={toastData} schema={toastSchema} layout={toastLayout} />
 			<div class="flex flex-wrap gap-2">
 				<button data-button data-variant="primary" onclick={sendToast}>Send</button>

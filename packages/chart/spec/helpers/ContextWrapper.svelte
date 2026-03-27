@@ -1,8 +1,8 @@
 <script>
-  import { setContext } from 'svelte'
+	import { setContext } from 'svelte'
 
-  let { state, children } = $props()
-  setContext('plot-state', state)
+	let { state, children } = $props()
+	setContext('plot-state', state)
 </script>
 
 {@render children()}

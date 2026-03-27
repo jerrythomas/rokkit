@@ -54,23 +54,45 @@
 	{#snippet preview()}
 		<div class="flex flex-col gap-8 p-6">
 			<div>
-				<h4 class="text-surface-z5 m-0 mb-3 text-xs uppercase tracking-widest font-semibold">
+				<h4 class="text-surface-z5 m-0 mb-3 text-xs font-semibold tracking-widest uppercase">
 					Numeric Array
 				</h4>
-				<Sparkline data={numericData} type={props.type} curve={props.curve} color={props.color} width={props.width} height={props.height} />
+				<Sparkline
+					data={numericData}
+					type={props.type}
+					curve={props.curve}
+					color={props.color}
+					width={props.width}
+					height={props.height}
+				/>
 			</div>
 			<div>
-				<h4 class="text-surface-z5 m-0 mb-3 text-xs uppercase tracking-widest font-semibold">
+				<h4 class="text-surface-z5 m-0 mb-3 text-xs font-semibold tracking-widest uppercase">
 					Object Array with field
 				</h4>
-				<Sparkline data={objectData} field="revenue" type={props.type} curve={props.curve} color={props.color} width={props.width} height={props.height} />
+				<Sparkline
+					data={objectData}
+					field="revenue"
+					type={props.type}
+					curve={props.curve}
+					color={props.color}
+					width={props.width}
+					height={props.height}
+				/>
 			</div>
 			<div>
-				<h4 class="text-surface-z5 m-0 mb-3 text-xs uppercase tracking-widest font-semibold">
+				<h4 class="text-surface-z5 m-0 mb-3 text-xs font-semibold tracking-widest uppercase">
 					Inline in text
 				</h4>
 				<p class="text-surface-z6 text-sm">
-					Revenue <Sparkline data={numericData} width={60} height={16} type={props.type} curve={props.curve} color={props.color} /> trend
+					Revenue <Sparkline
+						data={numericData}
+						width={60}
+						height={16}
+						type={props.type}
+						curve={props.curve}
+						color={props.color}
+					/> trend
 				</p>
 			</div>
 		</div>

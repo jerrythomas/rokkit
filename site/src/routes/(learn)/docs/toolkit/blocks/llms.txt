@@ -1,0 +1,75 @@
+# @rokkit/blocks
+
+Markdown block plugins for `@rokkit/ui`'s `MarkdownRenderer`. Each plugin maps a fenced code block
+language to a Svelte component, rendering it live instead of as highlighted code.
+
+## Import
+
+```js
+import { PlotPlugin, TablePlugin, SparklinePlugin, MermaidPlugin } from '@rokkit/blocks'
+```
+
+## Usage
+
+```svelte
+<script>
+  import { MarkdownRenderer } from '@rokkit/ui'
+  import { PlotPlugin, TablePlugin, MermaidPlugin } from '@rokkit/blocks'
+</script>
+
+<MarkdownRenderer {content} plugins={[PlotPlugin, TablePlugin, MermaidPlugin]} />
+```
+
+## Plugins
+
+| Plugin | Language | Renders | Peer dep |
+|--------|----------|---------|----------|
+| `PlotPlugin` | `plot` | `Plot` or `FacetPlot` from `@rokkit/chart` | `@rokkit/chart` |
+| `TablePlugin` | `table` | `Table` from `@rokkit/ui` | `@rokkit/ui` |
+| `SparklinePlugin` | `sparkline` | `Sparkline` from `@rokkit/chart` | `@rokkit/chart` |
+| `MermaidPlugin` | `mermaid` | Mermaid diagram | `mermaid ≥ 11` (optional) |
+
+## PlotPlugin — ```plot
+
+Body must be valid JSON matching the chart spec:
+
+```json
+{
+  "type": "bar",
+  "data": [...],
+  "x": "category",
+  "y": "value",
+  "fill": "category"
+}
+```
+
+## TablePlugin — ```table
+
+Body must be valid JSON — array of objects or `{ data, fields }`:
+
+```json
+[{"name":"Alice","age":30},{"name":"Bob","age":25}]
+```
+
+## SparklinePlugin — ```sparkline
+
+Body must be valid JSON matching the Sparkline props:
+
+```json
+{"values":[10,20,15,30,25],"type":"line","color":"primary"}
+```
+
+## MermaidPlugin — ```mermaid
+
+Body is passed directly to Mermaid. Requires `mermaid ≥ 11` peer dependency:
+
+```
+graph TD
+  A[Start] --> B[End]
+```
+
+## Notes
+
+- Plugins are plain objects `{ language, component }` implementing the `MarkdownPlugin` type from `@rokkit/ui`
+- `mermaid` is an optional peer dependency — only required for `MermaidPlugin`
+- The `PlotPlugin` body is parsed as JSON and spread as props onto `Plot` or `FacetPlot`

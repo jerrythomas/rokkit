@@ -1,6 +1,6 @@
 # @rokkit/chart
 
-> D3-powered composable chart components for Svelte 5. High-level chart components for common chart types, plus a low-level declarative geom API for custom compositions.
+D3-powered composable chart components for Svelte 5. High-level chart components, a low-level declarative geom API, faceted and animated plots, inline sparklines, and a reactive crossfilter system for linked views.
 
 ## Install
 
@@ -8,17 +8,37 @@
 npm install @rokkit/chart
 ```
 
----
+## Component Reference
 
-## High-level chart components
+### High-level charts
 
-All chart components are exported directly:
+| Component | File | Description |
+|-----------|------|-------------|
+| `BarChart` | [bar-chart.txt](/llms/components/bar-chart.txt) | Bar chart with grouping, stacking, aggregation, labels |
+| `LineChart` | [line-chart.txt](/llms/components/line-chart.txt) | Line chart with multi-series, symbols, curve interpolation |
+| `AreaChart` | [area-chart.txt](/llms/components/area-chart.txt) | Area chart with optional stacking |
+| `ScatterPlot` | [scatter-plot.txt](/llms/components/scatter-plot.txt) | Scatter plot with color/symbol encoding |
+| `BubbleChart` | [bubble-chart.txt](/llms/components/bubble-chart.txt) | Three-variable chart with scaleSqrt bubble sizing |
+| `PieChart` | [pie-chart.txt](/llms/components/pie-chart.txt) | Pie/donut chart with `innerRadius` |
+| `BoxPlot` | [box-plot.txt](/llms/components/box-plot.txt) | Quartile box plot from raw observations |
+| `ViolinPlot` | [violin-plot.txt](/llms/components/violin-plot.txt) | Distribution shape using QuartileBrewer |
+| `Sparkline` | [sparkline.txt](/llms/components/sparkline.txt) | Lightweight inline sparkline (no axes) |
 
-```javascript
-import { BarChart, LineChart, ScatterPlot, PieChart, AreaChart, BubbleChart, BoxPlot, ViolinPlot } from '@rokkit/chart'
-```
+### Composition & animation
 
-### Common props (all chart components)
+| Component | File | Description |
+|-----------|------|-------------|
+| `PlotChart` | [plot-chart.txt](/llms/components/plot-chart.txt) | Low-level container + GeomBar/Line/Area/Point/Arc/Box/Violin |
+| `FacetPlot` | [facet-plot.txt](/llms/components/facet-plot.txt) | Small-multiples — one panel per facet value |
+| `AnimatedPlot` | [animated-plot.txt](/llms/components/animated-plot.txt) | Frame-by-frame animation with play/pause controls |
+
+### Filtering
+
+| Component | File | Description |
+|-----------|------|-------------|
+| `CrossFilter` | [crossfilter.txt](/llms/components/crossfilter.txt) | Linked filter context — FilterBar, FilterSlider, createCrossFilter |
+
+## Common Props (all high-level charts)
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
@@ -28,253 +48,26 @@ import { BarChart, LineChart, ScatterPlot, PieChart, AreaChart, BubbleChart, Box
 | `mode` | `'light' \| 'dark'` | `'light'` | Color palette mode |
 | `grid` | `boolean` | `true` | Show gridlines |
 | `legend` | `boolean` | `false` | Show color legend |
-| `tooltip` | `boolean \| (data) => string` | `false` | Hover tooltip. `true` = key-value default; pass a function for custom HTML content |
+| `tooltip` | `boolean \| (d) => string` | `false` | Hover tooltip |
 
----
+## Brewer System (advanced)
 
-### `BarChart`
-
-```svelte
-<BarChart data={sales} x="category" y="revenue" fill="region" stat="mean" label legend />
-```
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `x` | `string` | — | Field for X axis (categories) |
-| `y` | `string` | — | Field for Y axis (values) |
-| `fill` | `string` | — | Field for palette color assignment |
-| `pattern` | `string` | — | Field for pattern fill assignment |
-| `stat` | `string` | `'identity'` | Aggregation: `identity`, `sum`, `mean`, `min`, `max`, `count` |
-| `stack` | `boolean` | `false` | Stack bars by color group |
-| `label` | `boolean \| string \| (data) => string` | `false` | Show value labels above bars |
-
----
-
-### `LineChart`
-
-```svelte
-<LineChart data={rows} x="month" y="value" color="region" symbol="region" curve="smooth" label />
-```
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `x` | `string` | — | Field for X axis |
-| `y` | `string` | — | Field for Y axis |
-| `color` | `string` | — | Field for line color grouping |
-| `symbol` | `string` | — | Field for marker symbol assignment |
-| `stat` | `string` | `'identity'` | Aggregation stat |
-| `curve` | `'linear' \| 'smooth' \| 'step'` | `'linear'` | Line interpolation |
-| `label` | `boolean \| string \| (data) => string` | `false` | Show value labels at each point |
-
----
-
-### `ScatterPlot`
-
-```svelte
-<ScatterPlot data={rows} x="gdp" y="life_exp" color="region" size="population" />
-```
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `x` | `string` | — | Field for X axis |
-| `y` | `string` | — | Field for Y axis |
-| `color` | `string` | — | Field for point color |
-| `size` | `string` | — | Field for point size (bubble chart) |
-| `symbol` | `string` | — | Field for marker symbol |
-| `label` | `boolean \| string \| (data) => string` | `false` | Show value labels at each point |
-
----
-
-### `PieChart`
-
-```svelte
-<PieChart data={rows} y="share" fill="segment" stat="sum" innerRadius={0.5} legend />
-```
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `y` | `string` | — | Field for slice values |
-| `fill` | `string` | — | Field for slice color assignment |
-| `label` | `string` | — | Alias for `fill` (also controls which field labels slices) |
-| `pattern` | `string` | — | Field for pattern fill |
-| `stat` | `string` | `'sum'` | Aggregation: `sum`, `mean`, `min`, `max`, `count` |
-| `innerRadius` | `number` | `0` | Donut hole size as fraction of radius (0–1) |
-| `labelFn` | `(data) => string` | — | Override slice labels (default: `pct%`) |
-| `width` | `number` | `400` | SVG width |
-| `height` | `number` | `400` | SVG height |
-
-Slices with < 5% are not labeled. Set `innerRadius > 0` for a donut chart.
-
----
-
-### `AreaChart`
-
-```svelte
-<AreaChart data={rows} x="month" y="value" color="region" stack />
-```
-
-Same props as `LineChart` plus:
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `stack` | `boolean` | `false` | Stack areas |
-
----
-
-### `BoxPlot` / `ViolinPlot`
-
-```svelte
-<BoxPlot data={rows} x="category" y="value" color="group" />
-```
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `x` | `string` | — | Categorical field |
-| `y` | `string` | — | Numeric value field |
-| `color` | `string` | — | Color grouping field |
-
----
-
-## Data labels
-
-`label` prop on BarChart, LineChart, ScatterPlot:
-
-```svelte
-<!-- Show y value by default -->
-<BarChart ... label />
-
-<!-- Show a specific field -->
-<BarChart ... label="revenue" />
-
-<!-- Custom formatter -->
-<BarChart ... label={(d) => `$${d.revenue.toLocaleString()}`} />
-```
-
-For PieChart, use `labelFn` to override the default `pct%` labels:
-
-```svelte
-<PieChart ... labelFn={(d) => d.share.toFixed(1)} />
-```
-
----
-
-## Tooltips
-
-Pass `tooltip` to any chart component:
-
-```svelte
-<!-- Default: key-value table of hovered row -->
-<BarChart ... tooltip />
-
-<!-- Custom: return HTML string -->
-<BarChart ... tooltip={(d) => `<strong>${d.category}</strong>: ${d.revenue}`} />
-```
-
-Tooltip is a `position: fixed` floating div that follows the cursor. Respects dark/light mode.
-
----
-
-## Low-level declarative API
-
-Compose charts from `Plot` (container) and geom components. Used directly when `PieChart` etc. are insufficient.
+Brewers transform raw data into chart-ready geometry. Extend to build custom chart types.
 
 ```javascript
-import { Plot, Bar, Line, Point, Arc, Area, Box, Violin } from '@rokkit/chart'
+import { ChartBrewer, CartesianBrewer, PieBrewer, QuartileBrewer, BoxBrewer, ViolinBrewer } from '@rokkit/chart'
 ```
 
-```svelte
-<Plot {data} {width} {height} {mode} {tooltip}>
-  <Bar x="category" y="revenue" color="region" stat="mean" />
-</Plot>
-```
-
-### `Plot` props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `data` | `Object[]` | `[]` | Data rows |
-| `width` | `number` | `600` | SVG width |
-| `height` | `number` | `400` | SVG height |
-| `mode` | `'light' \| 'dark'` | `'light'` | Palette mode |
-| `grid` | `boolean` | `true` | Show gridlines |
-| `axes` | `boolean` | `true` | Show axes |
-| `margin` | `object` | `{top:20,right:20,bottom:40,left:50}` | Override margin |
-| `legend` | `boolean` | `false` | Show legend |
-| `tooltip` | `boolean \| (data) => string` | `false` | Tooltip |
-
-### Geom props
-
-All geoms accept `stat` (`identity` | `sum` | `mean` | `min` | `max` | `count`).
-
-**Bar**: `x`, `y`, `color`, `pattern`, `label`, `stack` (via options), `filterable`
-
-**Line**: `x`, `y`, `color`, `symbol`, `label`, `options.curve`, `options.strokeWidth`
-
-**Point**: `x`, `y`, `color`, `size`, `symbol`, `label`, `options.radius`
-
-**Arc**: `theta`, `fill` (or `color`), `pattern`, `labelFn`, `options.innerRadius`
-
-**Area**: `x`, `y`, `color`, `pattern`, `options.stack`, `options.opacity`
-
----
-
-## Spec-driven API
-
-Pass a `spec` object to `Plot` instead of props:
-
-```svelte
-<Plot spec={{
-  data: rows,
-  width: 600,
-  height: 400,
-  x: 'month',
-  y: 'revenue',
-  color: 'region',
-  geoms: [{ type: 'bar', stat: 'sum' }]
-}} />
-```
-
----
-
-## Complete examples
-
-### Bar chart with grouping
-
-```svelte
-<script>
-  import { BarChart } from '@rokkit/chart'
-
-  const data = [
-    { quarter: 'Q1', revenue: 42000, region: 'North' },
-    { quarter: 'Q1', revenue: 31000, region: 'South' },
-    { quarter: 'Q2', revenue: 58000, region: 'North' },
-    { quarter: 'Q2', revenue: 42000, region: 'South' },
-  ]
-</script>
-
-<BarChart {data} x="quarter" y="revenue" fill="region" stat="sum" stack legend tooltip />
-```
-
-### Donut chart
-
-```svelte
-<script>
-  import { PieChart } from '@rokkit/chart'
-
-  const data = [
-    { segment: 'Mobile', share: 42 },
-    { segment: 'Desktop', share: 35 },
-    { segment: 'Tablet', share: 15 },
-    { segment: 'Other', share: 8 },
-  ]
-</script>
-
-<PieChart {data} y="share" fill="segment" innerRadius={0.5} legend tooltip />
-```
-
----
+| Class | Extends | Use for |
+|-------|---------|---------|
+| `ChartBrewer` | — | Base class — override `transform()`, add `$derived` mark properties |
+| `CartesianBrewer` | `ChartBrewer` | X/Y cartesian charts with scales |
+| `PieBrewer` | `ChartBrewer` | Pie/donut charts |
+| `QuartileBrewer` | `ChartBrewer` | Shared quartile transform + scales for box/violin |
+| `BoxBrewer` | `QuartileBrewer` | Adds `boxes` derived property |
+| `ViolinBrewer` | `QuartileBrewer` | Adds `violins` derived property |
 
 ## Related
 
-- `@rokkit/data` — Dataset pipelines for aggregation, hierarchy, rollups
-- `@rokkit/themes` — CSS theme tokens consumed by chart color palettes
+- `@rokkit/data` — Dataset pipelines for aggregation, joins, rollups
+- `@rokkit/blocks` — Render charts from Markdown fenced code blocks

@@ -157,39 +157,48 @@ The `opacity` prop on chart wrappers overrides the preset's geom-level default f
 
 ---
 
-## Symbols: geometric defaults + iconify escape hatch
+## Symbols: built-in set with user extension
 
-Custom geometric shapes (`shapes.json`) remain the default — they have consistent visual weight at small sizes (6–12px) which is essential for scatter plots.
+The existing `shapes.json` + `Symbol.svelte` SVG path renderer is kept as-is. Scatter plot symbols need solid-fill, simple geometry to be legible at 6–12px — the current implementation already satisfies this.
 
-**Iconify escape hatch**: if a symbol value in the data or in `preset.symbols` starts with `i-`, the symbol renderer falls back to an iconify `<use>` or foreign object instead of the path-based `Shape.svelte`. This lets users do:
+The preset controls which symbols are used and in what order:
+
+```js
+// default preset
+symbols: ['circle', 'square', 'triangle', 'diamond', 'plus', 'cross', 'star',
+          'asterisk', 'heart', 'rounded-square']
+```
+
+Users can override the order or add custom symbols by passing additional entries to `createChartPreset()`:
 
 ```js
 const preset = createChartPreset({
-  symbols: ['circle', 'square', 'i-glyph:star', 'diamond']
+  symbols: ['diamond', 'circle', 'square', 'triangle']  // custom order
 })
 ```
 
-Standard shapes continue to use the SVG path renderer for performance. The iconify path is opt-in.
+**Custom symbols**: users can extend `shapes.json` by registering a custom SVG path under a new name. The path must be a solid-fill geometry designed for 6–12px rendering. No iconify dependency — symbols stay as plain SVG paths inline in the chart bundle.
 
 ---
 
-## Bar chart: `group` prop on `BarChart`
+## Bar chart: grouped bars via `fill` channel
 
-The `Bar` geom already has three rendering paths in `geoms/lib/bars.js`:
+`BarChart` is a wrapper on `Plot`. The `Bar` geom has three rendering paths in `geoms/lib/bars.js`:
 - `buildHorizontalBars` — triggered when y is band scale + x is continuous
 - `buildStackedBars` — triggered when `options.stack === true`
 - `buildGroupedBars` — default fallback
 
-The `BarChart` wrapper needs to expose a `group` prop and pass it as the `color` channel:
+**Grouped bars are automatic.** `Plot` aggregates/groups by `x`, `fill`, and `pattern`. When the `fill` channel maps to a field that has two or more distinct values per x category, `buildGroupedBars` produces side-by-side bars automatically — no separate `group` prop needed.
 
 ```svelte
-<!-- BarChart.svelte -->
-let { x, y, fill, group, stack = false, ... } = $props()
+<!-- Grouped bars — just pass fill pointing to a categorical field -->
+<BarChart data={sales} x="quarter" y="revenue" fill="region" />
 
-<Bar {x} {y} color={group ?? fill} {pattern} {stat} options={{ stack }} />
+<!-- Stacked bars — explicit opt-in -->
+<BarChart data={sales} x="quarter" y="revenue" fill="region" stack />
 ```
 
-When `group` is provided, it drives both the color channel (series coloring) and the grouped bar layout. When `group` is absent and `fill` refers to a data field, simple colored bars are produced. When `stack=true`, stacked bars override grouping.
+No changes to `BarChart.svelte` are required for grouped bar support. The `fill` prop is already the correct channel for both color encoding and the automatic grouping it produces.
 
 ---
 
@@ -247,12 +256,12 @@ Writes the `chart` section into `rokkit.config.js`. Users who skip get no `chart
 2. **Delete `brewing/palette.json`** — rewrite `assignColors()` to use shade-mapping
 3. **Opacity to preset** — remove hardcoded values from `Area`, `Box`, `Violin`
 4. **`ChartProvider`** — Svelte context component; `PlotState` reads preset from it
-5. **`BarChart` `group` prop** — one-line change, wires to existing `buildGroupedBars`
-6. **Jitter on `Point`** — `jitter` option in `buildPoints()`; expose on `ScatterPlot`
-7. **Iconify escape hatch in `Symbol.svelte`**
-8. **`rokkit init` chart prompt** — optional step in existing wizard
+5. **Jitter on `Point`** — `jitter` option in `buildPoints()`; expose on `ScatterPlot`
+6. **`rokkit init` chart prompt** — optional step in existing wizard
 
-Steps 1–4 are the core; 5–8 are independent and can ship separately.
+Steps 1–4 are the core; 5–6 are independent and can ship separately.
+
+Note: `BarChart` grouped bars require no changes — grouping is automatic when `fill` maps to a multi-value field. `Symbol.svelte` requires no changes — users extend by adding entries to `shapes.json`.
 
 ---
 
@@ -268,11 +277,8 @@ Steps 1–4 are the core; 5–8 are independent and can ship separately.
 | `packages/chart/src/geoms/Area.svelte` | Read `plotState.preset.opacity.area` |
 | `packages/chart/src/geoms/Box.svelte` | Read `plotState.preset.opacity.box` |
 | `packages/chart/src/geoms/Violin.svelte` | Read `plotState.preset.opacity.violin` |
-| `packages/chart/src/charts/BarChart.svelte` | Add `group` prop |
 | `packages/chart/src/geoms/Point.svelte` | Add `jitter` option |
-| `packages/chart/src/geoms/lib/bars.js` | Pass `group` channel through |
 | `packages/chart/src/lib/brewing/marks/points.js` | Add `jitterOffset()` helper |
-| `packages/chart/src/symbols/Shape.svelte` | Iconify escape hatch for `i-` prefixed names |
 | `packages/chart/src/index.js` | Export `ChartProvider`, `createChartPreset` |
 | `packages/cli/src/init.js` | Add optional chart config step |
 | `docs/design/17-chart-preset.md` | This document |

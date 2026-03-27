@@ -121,8 +121,8 @@
 
 	<h2>Size scale</h2>
 	<p>
-		The <code>size</code> field is mapped using a square-root scale (<code>scaleSqrt</code>) so
-		that bubble <em>area</em> is proportional to the data value, not radius. This is perceptually
-		correct — doubling the value doubles the visible area, not a misleadingly doubled radius.
+		The <code>size</code> field is mapped using a square-root scale (<code>scaleSqrt</code>) so that
+		bubble <em>area</em> is proportional to the data value, not radius. This is perceptually correct —
+		doubling the value doubles the visible area, not a misleadingly doubled radius.
 	</p>
 </article>

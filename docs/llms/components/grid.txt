@@ -1,0 +1,71 @@
+# Grid
+
+Responsive selectable tile grid. Items lay out in a CSS grid with a configurable minimum tile width. Keyboard navigation moves horizontally across tiles.
+
+## Import
+
+```javascript
+import { Grid } from '@rokkit/ui'
+```
+
+## Quick Start
+
+```svelte
+<script>
+  import { Grid } from '@rokkit/ui'
+
+  const themes = [
+    { label: 'Rokkit', value: 'rokkit', icon: 'i-glyph:sparkle' },
+    { label: 'Minimal', value: 'minimal', icon: 'i-glyph:minus' },
+    { label: 'Material', value: 'material', icon: 'i-glyph:layers' },
+  ]
+  let value = $state(null)
+</script>
+
+<Grid items={themes} bind:value onselect={(v) => console.log(v)} />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `items` | `unknown[]` | `[]` | Data array (objects or primitives) |
+| `fields` | `Record<string,string>` | `{}` | Field mapping overrides |
+| `value` | `unknown` | — | Selected value — use `bind:value` |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Tile size variant |
+| `disabled` | `boolean` | `false` | Disable all tiles |
+| `minSize` | `string` | `'120px'` | Minimum tile width (CSS value, e.g. `'8rem'`) |
+| `gap` | `string` | `'1rem'` | Grid gap (CSS value) |
+| `label` | `string` | — | Accessible label for the grid |
+| `onselect` | `(value, proxy) => void` | — | Called when a tile is selected |
+| `class` | `string` | `''` | Additional CSS classes |
+
+## Snippets
+
+- `itemContent(proxy)` — Custom tile content (proxy is a `ProxyItem`)
+
+## Keyboard Navigation
+
+| Key | Action |
+|-----|--------|
+| `ArrowRight` | Next tile |
+| `ArrowLeft` | Previous tile |
+| `ArrowDown` | Tile below |
+| `ArrowUp` | Tile above |
+| `Enter` / `Space` | Select focused tile |
+| `Home` / `End` | First / last tile |
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-grid` | Root element |
+| `data-grid-item` | Individual tile button |
+| `data-active` | Present on selected tile |
+| `data-disabled` | Present when tile is disabled |
+| `data-size` | Size variant |
+
+## Related
+
+- [list](/llms/components/list.txt) — Vertical list selection
+- [toggle](/llms/components/toggle.txt) — Horizontal radio-button group

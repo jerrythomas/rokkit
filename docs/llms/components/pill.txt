@@ -1,0 +1,45 @@
+# Pill
+
+Tag / chip component with optional remove button. Used in MultiSelect to display selected values, or standalone as a tag label.
+
+## Import
+
+```javascript
+import { Pill } from '@rokkit/ui'
+```
+
+## Quick Start
+
+```svelte
+<Pill value="typescript" />
+<Pill value={tag} removable onremove={() => removeTag(tag)} />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `unknown` | — | The item to display (object or primitive) |
+| `fields` | `Record<string,string>` | `{}` | Field mapping (e.g. `{ label: 'name' }`) |
+| `removable` | `boolean` | `false` | Show remove (×) button |
+| `disabled` | `boolean` | `false` | Disable remove button |
+| `icons` | `{ remove?: string }` | — | Override remove icon |
+| `onremove` | `(value) => void` | — | Called when remove button is clicked |
+| `class` | `string` | `''` | Additional CSS classes |
+
+## Snippets
+
+- `content(proxy)` — Custom pill content (proxy is a `ProxyItem`)
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-pill` | Root element |
+| `data-removable` | Present when remove button is shown |
+| `data-disabled` | Present when disabled |
+| `data-pill-remove` | Remove button |
+
+## Related
+
+- [multi-select](/llms/components/multi-select.txt) — Uses Pills to display selected values

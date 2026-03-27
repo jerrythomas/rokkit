@@ -83,7 +83,9 @@
 	{#snippet preview()}
 		<div class="flex gap-8">
 			<div class="max-w-[280px]">
-				<p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Lazy Load</p>
+				<p class="text-surface-z5 mb-2 text-xs font-semibold tracking-widest uppercase">
+					Lazy Load
+				</p>
 				<LazyTree
 					items={lazyTree}
 					value={selected}
@@ -92,7 +94,9 @@
 				/>
 			</div>
 			<div class="max-w-[280px]">
-				<p class="text-surface-z5 mb-2 text-xs font-semibold uppercase tracking-widest">Load More</p>
+				<p class="text-surface-z5 mb-2 text-xs font-semibold tracking-widest uppercase">
+					Load More
+				</p>
 				<LazyTree
 					items={paginatedItems}
 					value={selected2}

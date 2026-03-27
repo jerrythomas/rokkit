@@ -14,6 +14,7 @@ bun run lint           # zero errors (warnings acceptable)
 ```
 
 If themes CSS was changed:
+
 ```bash
 cd packages/themes && bun run build
 bun run lint           # re-run after build
@@ -56,6 +57,7 @@ EOF
 ```
 
 **Commit type guide:**
+
 - `feat:` — new component, new prop, new behavior
 - `fix:` — bug fix
 - `style:` — CSS/theme changes only
@@ -71,10 +73,12 @@ Append to `agents/journal.md`:
 ### <Feature Name> (YYYY-MM-DD)
 
 **What was done:**
+
 - <bullet 1>
 - <bullet 2>
 
 **Key decisions:**
+
 - <any design choices made>
 
 **Tests:** <N> passing. 0 lint errors.

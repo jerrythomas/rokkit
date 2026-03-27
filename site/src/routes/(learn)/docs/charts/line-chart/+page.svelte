@@ -103,7 +103,10 @@
 				<td><code>stat</code></td>
 				<td><code>string</code></td>
 				<td><code>'identity'</code></td>
-				<td><code>identity</code>, <code>sum</code>, <code>mean</code>, <code>min</code>, <code>max</code>, <code>count</code></td>
+				<td
+					><code>identity</code>, <code>sum</code>, <code>mean</code>, <code>min</code>,
+					<code>max</code>, <code>count</code></td
+				>
 			</tr>
 			<tr>
 				<td><code>curve</code></td>

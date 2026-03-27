@@ -1,0 +1,66 @@
+# CrossFilter
+
+Reactive filter context linking charts and filter controls. Charts with `filterable` geoms automatically dim or hide excluded data when a filter is active.
+
+## Import
+
+```javascript
+import { CrossFilter, FilterBar, FilterSlider, createCrossFilter } from '@rokkit/chart'
+```
+
+## Quick Start
+
+```svelte
+<CrossFilter mode="dim">
+  <FilterBar data={orders} field="category" valueField="amount" />
+  <FilterSlider field="price" min={0} max={500} label="Price" />
+  <BarChart data={orders} x="category" y="amount" stat="sum" />
+</CrossFilter>
+```
+
+## CrossFilter Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `crossfilter` | `CrossFilterInstance` | — | External instance (created internally if omitted) |
+| `mode` | `'dim' \| 'hide'` | `'dim'` | How unselected data appears |
+| `filters` | `FilterState` (bindable) | — | Read active filter state externally |
+
+## FilterBar Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `data` | `Object[]` | `[]` | Data rows |
+| `field` | `string` | — | Categorical dimension field |
+| `valueField` | `string` | — | Numeric value field for bar height |
+| `stat` | `string` | `'sum'` | Aggregation stat |
+| `width` | `number` | `300` | Width in pixels |
+| `height` | `number` | `120` | Height in pixels |
+| `mode` | `'light' \| 'dark'` | `'light'` | Palette mode |
+
+## FilterSlider Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `field` | `string` | — | Continuous field to filter |
+| `min` | `number` | — | Range minimum |
+| `max` | `number` | — | Range maximum |
+| `step` | `number` | `0.1` | Step increment |
+| `label` | `string` | `''` | Display label |
+
+## createCrossFilter()
+
+```javascript
+const cf = createCrossFilter()
+cf.toggleCategorical('region', 'North')
+cf.setRange('price', [10, 100])
+cf.clear('region')
+cf.clearAll()
+cf.isFiltered('region')        // boolean
+cf.isSelected('region', 'North')  // boolean
+cf.version                     // reactive counter
+```
+
+## Related
+
+- [BarChart](/llms/components/bar-chart.txt) — main chart type used with CrossFilter

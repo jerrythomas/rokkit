@@ -1,0 +1,40 @@
+# Shine
+
+Dynamic specular lighting effect that follows the mouse position. Uses an SVG `feLighting` filter to simulate a moving light source over the element.
+
+## Import
+
+```javascript
+import { Shine } from '@rokkit/ui'
+```
+
+## Quick Start
+
+```svelte
+<Shine>
+  <div class="card">Hover for shine effect</div>
+</Shine>
+
+<!-- Custom color -->
+<Shine color="rgb(var(--accent-500))" radius={400}>
+  <Card>Premium card</Card>
+</Shine>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `color` | `string` | `'rgb(var(--primary-500))'` | Light color |
+| `radius` | `number` | `300` | Light source distance — controls spread |
+| `depth` | `number` | `1` | Gaussian blur depth |
+| `surfaceScale` | `number` | `2` | Height of the surface for the filter |
+| `specularConstant` | `number` | `0.75` | Controls reflection size |
+| `specularExponent` | `number` | `120` | Controls focus — higher = brighter spot |
+| `class` | `string` | `''` | Additional CSS classes |
+
+## Notes
+
+- Each `Shine` instance generates a unique SVG filter ID to avoid conflicts
+- Effect fades out when mouse leaves the element
+- Combine with `Tilt` for a premium interactive card effect

@@ -221,15 +221,24 @@ async function build() {
     ['daisy-ui', 'rounded-full + bold fills'],
     ['bits-ui', 'rounded-lg + shadow-sm'],
     ['carbon', 'square + bottom-border inputs'],
-    ['ant-design', 'thin borders + dense layout'],
+    ['ant-design', 'thin borders + dense layout']
   ]) {
     await buildFile(join(srcDir, name, 'index.css'), `${name}.css`, label)
   }
 
   // Full bundle: base + all themes
   const allThemes = [
-    'base', 'rokkit', 'minimal', 'material', 'glass', 'grada-ui',
-    'shadcn', 'daisy-ui', 'bits-ui', 'carbon', 'ant-design'
+    'base',
+    'rokkit',
+    'minimal',
+    'material',
+    'glass',
+    'grada-ui',
+    'shadcn',
+    'daisy-ui',
+    'bits-ui',
+    'carbon',
+    'ant-design'
   ]
   const bundleParts = allThemes.map((name) => readFileSync(join(distDir, `${name}.css`), 'utf-8'))
   writeFileSync(join(distDir, 'index.css'), bundleParts.join('\n'), 'utf-8')

@@ -43,16 +43,16 @@
 
 ### Form Orchestration
 
-| Component        | Package         | Status      | Description                                          |
-| ---------------- | --------------- | ----------- | ---------------------------------------------------- |
-| FormRenderer     | `@rokkit/forms` | Implemented | Schema-driven form rendering with layout support     |
-| FormBuilder      | `@rokkit/forms` | Implemented | Reactive form state builder (class, not a component) |
-| InputField       | `@rokkit/forms` | Implemented | Labeled input wrapper with validation display        |
-| InfoField        | `@rokkit/forms` | Implemented | Read-only labeled field for display within forms     |
-| StatusList | `@rokkit/forms` | Implemented | Aggregated validation error list                     |
-| FieldLayout      | `@rokkit/forms` | Implemented | Layout wrapper for form field positioning            |
-| Input            | `@rokkit/forms` | Implemented | Universal base input component (wraps native inputs) |
-| ArrayEditor      | `@rokkit/forms` | Implemented | Editor for array-typed fields                        |
+| Component    | Package         | Status      | Description                                          |
+| ------------ | --------------- | ----------- | ---------------------------------------------------- |
+| FormRenderer | `@rokkit/forms` | Implemented | Schema-driven form rendering with layout support     |
+| FormBuilder  | `@rokkit/forms` | Implemented | Reactive form state builder (class, not a component) |
+| InputField   | `@rokkit/forms` | Implemented | Labeled input wrapper with validation display        |
+| InfoField    | `@rokkit/forms` | Implemented | Read-only labeled field for display within forms     |
+| StatusList   | `@rokkit/forms` | Implemented | Aggregated validation error list                     |
+| FieldLayout  | `@rokkit/forms` | Implemented | Layout wrapper for form field positioning            |
+| Input        | `@rokkit/forms` | Implemented | Universal base input component (wraps native inputs) |
+| ArrayEditor  | `@rokkit/forms` | Implemented | Editor for array-typed fields                        |
 
 ### Standalone Input Controls
 

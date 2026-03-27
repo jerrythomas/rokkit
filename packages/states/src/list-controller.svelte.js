@@ -44,7 +44,7 @@ export class ListController {
 	 * Process a single item for expanded key initialization.
 	 * @private
 	 */
-	// eslint-disable-next-line complexity
+	 
 	#initExpandedItem(item, index, fields, path) {
 		if (item === null || item === undefined || typeof item !== 'object') return
 		const children = item[fields.children]

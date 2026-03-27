@@ -125,7 +125,7 @@ export class Wrapper {
 	 * At root level with no parent: no-op.
 	 * When collapsible=false, skips closing the group but still moves focus to parent.
 	 */
-	// eslint-disable-next-line complexity
+	 
 	collapse(_path) {
 		if (!this.#focusedKey) return
 		const node = this.flatView.find((n) => n.key === this.#focusedKey)
@@ -177,7 +177,7 @@ export class Wrapper {
 	 * Unlike select(), this only applies to groups and never fires onselect.
 	 * No-op when collapsible=false.
 	 */
-	// eslint-disable-next-line complexity
+	 
 	toggle(path) {
 		if (!this.#collapsible) return
 		const key = path ?? this.#focusedKey

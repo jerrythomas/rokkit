@@ -24,13 +24,13 @@ Each new theme answers the question: "What would this library look like if it us
 
 ### Visual Style Per Theme
 
-| Theme | Border Radius | Borders | Focus Style | Feel |
-|---|---|---|---|---|
-| **shadcn** | `rounded-md` | `border-surface-z3` flat | `ring-2 ring-offset-2` | Clean, minimal |
-| **daisy-ui** | `rounded-full` buttons | Bold fills, solid colors | `outline-2 outline-offset-2` | Playful, colorful |
-| **bits-ui** | `rounded-lg` | `shadow-sm` + subtle border | Soft ring | Polished, premium |
-| **carbon** | `rounded-none` everywhere | Bottom-border inputs `border-b-2` | Square, heavy fill | Dense, enterprise |
-| **ant-design** | `rounded` (4px) | Thin 1px borders | `shadow-md` dropdowns | Clean, enterprise |
+| Theme          | Border Radius             | Borders                           | Focus Style                  | Feel              |
+| -------------- | ------------------------- | --------------------------------- | ---------------------------- | ----------------- |
+| **shadcn**     | `rounded-md`              | `border-surface-z3` flat          | `ring-2 ring-offset-2`       | Clean, minimal    |
+| **daisy-ui**   | `rounded-full` buttons    | Bold fills, solid colors          | `outline-2 outline-offset-2` | Playful, colorful |
+| **bits-ui**    | `rounded-lg`              | `shadow-sm` + subtle border       | Soft ring                    | Polished, premium |
+| **carbon**     | `rounded-none` everywhere | Bottom-border inputs `border-b-2` | Square, heavy fill           | Dense, enterprise |
+| **ant-design** | `rounded` (4px)           | Thin 1px borders                  | `shadow-md` dropdowns        | Clean, enterprise |
 
 ### Architecture
 
@@ -73,7 +73,7 @@ A new `palettes` field in `rokkit.config.js` lets users define named palettes wi
 export default {
   palettes: {
     brand: {
-      50:  'oklch(97% 0.01 250)',
+      50: 'oklch(97% 0.01 250)',
       100: 'oklch(93% 0.03 250)',
       200: 'oklch(87% 0.06 250)',
       300: 'oklch(79% 0.10 250)',
@@ -83,12 +83,12 @@ export default {
       700: 'oklch(41% 0.14 250)',
       800: 'oklch(33% 0.11 250)',
       900: 'oklch(25% 0.08 250)',
-      950: 'oklch(18% 0.05 250)',
+      950: 'oklch(18% 0.05 250)'
     }
   },
   colors: {
-    primary: 'brand',   // reference the custom palette
-    surface: 'zinc'     // still works with UnoCSS palettes
+    primary: 'brand', // reference the custom palette
+    surface: 'zinc' // still works with UnoCSS palettes
   }
 }
 ```
@@ -96,6 +96,7 @@ export default {
 ### Color Format Support
 
 Palette shade values accept **any valid CSS color string**:
+
 - Hex: `'#0f4c81'`
 - HSL: `'hsl(210 83% 27%)'`
 - OKLCH: `'oklch(65% 0.2 240)'`
@@ -110,7 +111,7 @@ These values flow directly into CSS custom properties (e.g. `--color-primary-500
 ```js
 export const DEFAULT_CONFIG = {
   palettes: {},
-  colors: { primary: 'violet', secondary: 'pink', accent: 'sky', surface: 'slate' },
+  colors: { primary: 'violet', secondary: 'pink', accent: 'sky', surface: 'slate' }
   // ...
 }
 ```
@@ -148,11 +149,11 @@ A single route in the site (`/themes` or `/mockups/themes`) shows all components
 
 ## Summary of Changes
 
-| Area | Files | Notes |
-|---|---|---|
-| New themes (5) | `packages/themes/src/{shadcn,daisy-ui,bits-ui,carbon,ant-design}/*.css` | ~22 files × 5 themes |
-| Build | `packages/themes/build.mjs`, `package.json` exports | Extend existing pattern |
-| CLI init | `packages/cli/src/init.js`, `doctor.js` | Add to theme picker + KNOWN_THEMES |
-| Palettes config | `packages/unocss/src/config.js`, `preset.ts` | Small change |
-| Tests | `packages/unocss/spec/*.spec.js` | Cover palettes merging |
-| Verification page | `site/src/routes/themes/+page.svelte` | New mockup page |
+| Area              | Files                                                                   | Notes                              |
+| ----------------- | ----------------------------------------------------------------------- | ---------------------------------- |
+| New themes (5)    | `packages/themes/src/{shadcn,daisy-ui,bits-ui,carbon,ant-design}/*.css` | ~22 files × 5 themes               |
+| Build             | `packages/themes/build.mjs`, `package.json` exports                     | Extend existing pattern            |
+| CLI init          | `packages/cli/src/init.js`, `doctor.js`                                 | Add to theme picker + KNOWN_THEMES |
+| Palettes config   | `packages/unocss/src/config.js`, `preset.ts`                            | Small change                       |
+| Tests             | `packages/unocss/spec/*.spec.js`                                        | Cover palettes merging             |
+| Verification page | `site/src/routes/themes/+page.svelte`                                   | New mockup page                    |

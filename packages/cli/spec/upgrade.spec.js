@@ -1,5 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { getRokkitPackages, detectPackageManager, buildInstallCommand, runUpgrade } from '../src/upgrade.js'
+import {
+	getRokkitPackages,
+	detectPackageManager,
+	buildInstallCommand,
+	runUpgrade
+} from '../src/upgrade.js'
 
 describe('getRokkitPackages', () => {
 	it('returns empty array when no @rokkit/* deps', () => {
@@ -80,7 +85,10 @@ describe('buildInstallCommand', () => {
 
 	it('builds pnpm command', () => {
 		const result = buildInstallCommand('pnpm', ['@rokkit/ui@1.1.0', '@rokkit/themes@2.0.0'])
-		expect(result).toEqual({ bin: 'pnpm', args: ['add', '@rokkit/ui@1.1.0', '@rokkit/themes@2.0.0'] })
+		expect(result).toEqual({
+			bin: 'pnpm',
+			args: ['add', '@rokkit/ui@1.1.0', '@rokkit/themes@2.0.0']
+		})
 	})
 
 	it('builds yarn command', () => {

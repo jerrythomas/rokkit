@@ -12,16 +12,14 @@ test.describe('CrossFilter playground', () => {
 	})
 
 	test('renders the FilterBar with 7 category bars', async ({ page }) => {
-		const filterBars = page
-			.locator('[data-cf-demo-filters] [data-plot-element="bar"]')
+		const filterBars = page.locator('[data-cf-demo-filters] [data-plot-element="bar"]')
 		await expect(filterBars.first()).toBeVisible()
 		const count = await filterBars.count()
 		expect(count).toBe(7)
 	})
 
 	test('renders the main BarChart with 7 bars', async ({ page }) => {
-		const mainBars = page
-			.locator('[data-cf-demo-chart] [data-plot-element="bar"]')
+		const mainBars = page.locator('[data-cf-demo-chart] [data-plot-element="bar"]')
 		await expect(mainBars.first()).toBeVisible()
 		const count = await mainBars.count()
 		expect(count).toBe(7)
@@ -38,16 +36,22 @@ test.describe('CrossFilter playground', () => {
 		await page.waitForTimeout(100)
 
 		// After selecting 1 category: 6 FilterBar bars should be dimmed
-		const dimmedFilterBars = page.locator('[data-cf-demo-filters] [data-plot-element="bar"][data-dimmed]')
+		const dimmedFilterBars = page.locator(
+			'[data-cf-demo-filters] [data-plot-element="bar"][data-dimmed]'
+		)
 		await expect(dimmedFilterBars).toHaveCount(6)
 
 		// Main BarChart bars excluded from the filter should also be dimmed
-		const dimmedMainBars = page.locator('[data-cf-demo-chart] [data-plot-element="bar"][data-dimmed]')
+		const dimmedMainBars = page.locator(
+			'[data-cf-demo-chart] [data-plot-element="bar"][data-dimmed]'
+		)
 		const dimmedCount = await dimmedMainBars.count()
 		expect(dimmedCount).toBeGreaterThan(0)
 	})
 
-	test('clicking the same bar again clears the filter and removes all dimming', async ({ page }) => {
+	test('clicking the same bar again clears the filter and removes all dimming', async ({
+		page
+	}) => {
 		const filterBars = page.locator('[data-cf-demo-filters] [data-plot-element="bar"]')
 		// Click to filter in
 		await filterBars.first().click()

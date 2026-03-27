@@ -1,0 +1,49 @@
+# Swatch
+
+Color / theme picker rendering a row of clickable tiles. Single or multi-select. Keyboard navigable (horizontal arrows).
+
+## Import
+
+```javascript
+import { Swatch } from '@rokkit/ui'
+```
+
+## Quick Start
+
+```svelte
+<script>
+  import { Swatch } from '@rokkit/ui'
+  const colors = [
+    { label: 'Red',   value: '#ef4444' },
+    { label: 'Blue',  value: '#3b82f6' },
+    { label: 'Green', value: '#22c55e' },
+  ]
+  let value = $state(null)
+</script>
+
+<Swatch options={colors} bind:value />
+<Swatch options={colors} bind:value multiple shape="circle" />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `options` | `unknown[]` | `[]` | Color/theme items |
+| `fields` | `Record<string,string>` | `{}` | Field mapping — `label`, `value`, `fill`, `stroke`, `disabled` |
+| `value` | `unknown` (bindable) | — | Selected value(s) — array when `multiple` |
+| `multiple` | `boolean` | `false` | Allow multiple selections |
+| `shape` | `'square' \| 'circle' \| 'rounded'` | `'square'` | Tile shape |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Tile size |
+| `disabled` | `boolean` | `false` | Disable all tiles |
+| `label` | `string` | — | Accessible group label |
+| `onchange` | `(value) => void` | — | Called on selection change |
+| `class` | `string` | `''` | Additional CSS classes |
+
+## Snippets
+
+- `item(proxy, selected)` — Custom tile content
+
+## Related
+
+- [PaletteManager](/llms/components/palette-manager.txt) — full palette config UI using Swatch internally

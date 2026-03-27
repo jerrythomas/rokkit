@@ -37,6 +37,6 @@ import { BoxPlot } from '@rokkit/chart'
 
 ## Notes
 
-- Uses BoxBrewer internally to compute min, Q1, median, Q3, max per group
+- Uses BoxBrewer internally (extends QuartileBrewer) to compute Q1, median, Q3, IQR whiskers per group
 - x must be a categorical field; y must be numeric raw observations
 - Box spans Q1–Q3, whiskers extend to min/max, median line drawn across box

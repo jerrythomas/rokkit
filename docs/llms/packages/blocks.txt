@@ -1,0 +1,67 @@
+# @rokkit/blocks
+
+Markdown block plugins for `@rokkit/ui`'s `MarkdownRenderer`. Renders fenced code blocks as
+interactive Svelte components instead of plain highlighted code.
+
+## Install
+
+```bash
+bun add @rokkit/blocks
+```
+
+## Import
+
+```js
+import { PlotPlugin, TablePlugin, SparklinePlugin, MermaidPlugin } from '@rokkit/blocks'
+```
+
+## Usage
+
+```svelte
+<script>
+  import { MarkdownRenderer } from '@rokkit/ui'
+  import { PlotPlugin, TablePlugin, MermaidPlugin } from '@rokkit/blocks'
+</script>
+
+<MarkdownRenderer {content} plugins={[PlotPlugin, TablePlugin, MermaidPlugin]} />
+```
+
+## API
+
+| Export | Language | Renders | Peer dep |
+|--------|----------|---------|----------|
+| `PlotPlugin` | `plot` | `Plot` or `FacetPlot` from `@rokkit/chart` | `@rokkit/chart` |
+| `TablePlugin` | `table` | `Table` from `@rokkit/ui` | `@rokkit/ui` |
+| `SparklinePlugin` | `sparkline` | `Sparkline` from `@rokkit/chart` | `@rokkit/chart` |
+| `MermaidPlugin` | `mermaid` | Mermaid diagram | `mermaid ≥ 11` (optional) |
+
+## Plugin format
+
+Each plugin is `{ language: string, component: SvelteComponent }` matching the `MarkdownPlugin`
+type from `@rokkit/ui`. The `language` field matches the fenced code block language identifier.
+
+## Code block formats
+
+**PlotPlugin** — JSON chart spec:
+```json
+{"type":"bar","data":[...],"x":"category","y":"value","fill":"category"}
+```
+
+**TablePlugin** — JSON array of objects or `{ data, fields }`:
+```json
+[{"name":"Alice","age":30},{"name":"Bob","age":25}]
+```
+
+**SparklinePlugin** — JSON sparkline spec:
+```json
+{"values":[10,20,15,30,25],"type":"line","color":"primary"}
+```
+
+**MermaidPlugin** — raw Mermaid syntax, passed directly to Mermaid renderer.
+
+## Peer dependencies
+
+- `@rokkit/ui` — required for `TablePlugin` and the `MarkdownPlugin` type
+- `@rokkit/chart` — required for `PlotPlugin` and `SparklinePlugin`
+- `mermaid ≥ 11.0.0` — optional, only needed for `MermaidPlugin`
+- `svelte ^5.0.0`

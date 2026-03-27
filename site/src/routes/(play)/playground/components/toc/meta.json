@@ -1,1 +1,6 @@
-{ "title": "Table of Contents", "category": "display", "icon": "i-glyph:list-unordered", "order": 12 }
+{
+  "title": "Table of Contents",
+  "category": "display",
+  "icon": "i-glyph:list-unordered",
+  "order": 12
+}

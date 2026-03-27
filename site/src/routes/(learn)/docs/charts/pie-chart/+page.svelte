@@ -52,8 +52,8 @@
 
 	<h2>Tooltip</h2>
 	<p>
-		Pass <code>tooltip</code> to show a hover tooltip. The default shows all row fields plus the
-		computed slice percentage:
+		Pass <code>tooltip</code> to show a hover tooltip. The default shows all row fields plus the computed
+		slice percentage:
 	</p>
 	<pre><code
 			>{`<!-- Default key-value tooltip with % -->
@@ -102,7 +102,10 @@
 				<td><code>stat</code></td>
 				<td><code>string</code></td>
 				<td><code>'sum'</code></td>
-				<td><code>sum</code>, <code>mean</code>, <code>min</code>, <code>max</code>, <code>count</code></td>
+				<td
+					><code>sum</code>, <code>mean</code>, <code>min</code>, <code>max</code>,
+					<code>count</code></td
+				>
 			</tr>
 			<tr>
 				<td><code>innerRadius</code></td>

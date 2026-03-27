@@ -9,7 +9,14 @@ import {
 	transformerVariantGroup
 } from 'unocss'
 import type { Preset } from 'unocss'
-import { shades, defaultPalette, DEFAULT_ICONS, iconShortcuts, Theme, defaultColors } from '@rokkit/core'
+import {
+	shades,
+	defaultPalette,
+	DEFAULT_ICONS,
+	iconShortcuts,
+	Theme,
+	defaultColors
+} from '@rokkit/core'
 import { iconCollections } from '@rokkit/core/vite'
 import { loadConfig } from './config.js'
 

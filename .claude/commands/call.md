@@ -16,12 +16,12 @@ Mode context:       data-mode="light|dark"
 ```
 
 **State attribute pattern** — use `undefined` to omit (keeps HTML clean):
+
 ```svelte
-data-open={isOpen || undefined}       ← present when true, absent when false
-data-selected={selected || undefined}
+data-open={isOpen || undefined} ← present when true, absent when false data-selected={selected ||
+  undefined}
 data-disabled={disabled || undefined}
-data-variant="primary"                ← enum, always present
-data-orientation="horizontal"         ← enum, always present
+data-variant="primary" ← enum, always present data-orientation="horizontal" ← enum, always present
 ```
 
 ## Component Props
@@ -38,6 +38,7 @@ disabled     — boolean disable
 ```
 
 **ProxyItem default field mappings** (what `fields` remaps from data):
+
 ```
 fields.label   ?? 'label'        → display text (NOT 'text', NOT 'name')
 fields.value   ?? 'value'        → semantic value

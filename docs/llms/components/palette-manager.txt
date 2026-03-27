@@ -1,0 +1,55 @@
+# PaletteManager
+
+Full color palette configuration UI with preset themes, custom color roles, hex input, and localStorage persistence. Used to let users customize the app color palette at runtime.
+
+## Import
+
+```javascript
+import { PaletteManager } from '@rokkit/ui'
+```
+
+## Quick Start
+
+```svelte
+<script>
+  import { PaletteManager } from '@rokkit/ui'
+  let palette = $state(null)
+</script>
+
+<PaletteManager bind:value={palette} storageKey="my-app-palette" autoApply />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `PaletteConfig` (bindable) | default palette | Current palette configuration |
+| `custom` | `PaletteConfig[]` (bindable) | `[]` | User-saved custom palettes |
+| `presets` | `PaletteConfig[]` | default presets | Built-in palette presets |
+| `storageKey` | `string` | — | localStorage key for persisting custom palettes |
+| `roles` | `ColorRole[]` | default roles | Color roles to show (e.g. `['primary', 'secondary', 'accent']`) |
+| `autoApply` | `boolean` | `true` | Apply palette to the DOM immediately on change |
+| `showPresets` | `boolean` | `true` | Show preset palette row |
+| `showSave` | `boolean` | `true` | Show save-as-custom button |
+| `compact` | `boolean` | `false` | Compact layout |
+| `icons` | `PaletteManagerIcons` | — | Override icon classes |
+| `onchange` | `(palette) => void` | — | Called when palette changes |
+| `onsave` | `(palette) => void` | — | Called when user saves a custom palette |
+| `onapply` | `(palette) => void` | — | Called when palette is applied to the DOM |
+| `class` | `string` | `''` | Additional CSS classes |
+
+## Snippets
+
+- `roleRow(role, proxy)` — Custom rendering for each color role row
+
+## Palette Utilities
+
+Color manipulation functions also exported from `@rokkit/ui`:
+
+```javascript
+import { hexToRgb, rgbToHex, hslToRgb, rgbToHsl, generateShades, applyPalette, savePalette, loadPalette } from '@rokkit/ui'
+```
+
+## Related
+
+- [swatch](/llms/components/swatch.txt) — Simple color tile picker

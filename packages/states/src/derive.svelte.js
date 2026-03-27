@@ -47,7 +47,7 @@ function collectVisibleNodes(items, fields, path, expandedKeys) {
 	return data
 }
 
-// eslint-disable-next-line complexity
+ 
 export function flatVisibleNodes(items, fields = DEFAULT_FIELDS, path = [], expandedKeys = null) {
 	if (!items || !Array.isArray(items)) return []
 	return collectVisibleNodes(items, fields, path, expandedKeys)
@@ -84,7 +84,7 @@ function makeLookupEntry(item, norm, fields) {
  * @param {SvelteMap} lookup  Accumulator map
  * @param {{ item: *, index: number, fields: *, path: Array<number> }} ctx
  */
-// eslint-disable-next-line complexity
+ 
 function visitLookupNode(lookup, ctx) {
 	const { item, index, fields, path } = ctx
 	const itemPath = [...path, index]

@@ -13,7 +13,9 @@ test.describe('ViolinPlot', () => {
 		await expect(page.locator('.preview-area svg').first()).toBeVisible()
 	})
 
-	test('renders grouped violin path elements (fill=drv groups within each class)', async ({ page }) => {
+	test('renders grouped violin path elements (fill=drv groups within each class)', async ({
+		page
+	}) => {
 		const violins = page.locator('.preview-area svg path[data-plot-element="violin"]')
 		const count = await violins.count()
 		// 12 unique (class, drv) combos with fill=drv default

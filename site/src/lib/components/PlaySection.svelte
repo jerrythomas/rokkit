@@ -44,7 +44,12 @@
 			<!-- Toolbar — inherits theme from preview-area's data-style -->
 			<Toolbar size="sm" width="fit" class="absolute top-3 right-3 z-30 rounded-lg">
 				{#if docsHref}
-					<a href={docsHref} data-toolbar-item title="View Documentation" aria-label="View Documentation">
+					<a
+						href={docsHref}
+						data-toolbar-item
+						title="View Documentation"
+						aria-label="View Documentation"
+					>
 						<span class="i-solar:book-2-bold-duotone" data-toolbar-icon aria-hidden="true"></span>
 					</a>
 				{/if}
@@ -58,7 +63,8 @@
 						title="View llms.txt"
 						aria-label="View llms.txt"
 					>
-						<span class="i-solar:file-text-bold-duotone" data-toolbar-icon aria-hidden="true"></span>
+						<span class="i-solar:file-text-bold-duotone" data-toolbar-icon aria-hidden="true"
+						></span>
 					</a>
 				{/if}
 
@@ -112,7 +118,9 @@
 			<div class="border-surface-z2 bg-surface-z1 flex w-72 flex-shrink-0 flex-col border-l">
 				{#if showControls && controls}
 					<div class="border-surface-z2 flex items-center justify-between border-b px-4 py-2">
-						<p class="text-surface-z5 text-[10px] font-semibold uppercase tracking-widest">Properties</p>
+						<p class="text-surface-z5 text-[10px] font-semibold tracking-widest uppercase">
+							Properties
+						</p>
 						<Button
 							icon="i-solar:close-circle-bold-duotone"
 							style="ghost"
@@ -121,14 +129,18 @@
 							onclick={() => (showControls = false)}
 						/>
 					</div>
-					<div class="flex flex-col gap-3 overflow-y-auto p-4 {showData && dataSnippet ? 'border-surface-z2 border-b' : 'flex-1'}">
+					<div
+						class="flex flex-col gap-3 overflow-y-auto p-4 {showData && dataSnippet
+							? 'border-surface-z2 border-b'
+							: 'flex-1'}"
+					>
 						{@render controls()}
 					</div>
 				{/if}
 
 				{#if showData && dataSnippet}
 					<div class="border-surface-z2 flex items-center justify-between border-b px-4 py-2">
-						<p class="text-surface-z5 text-[10px] font-semibold uppercase tracking-widest">Data</p>
+						<p class="text-surface-z5 text-[10px] font-semibold tracking-widest uppercase">Data</p>
 						<Button
 							icon="i-solar:close-circle-bold-duotone"
 							style="ghost"

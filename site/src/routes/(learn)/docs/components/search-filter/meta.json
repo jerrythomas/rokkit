@@ -1,0 +1,8 @@
+{
+  "title": "SearchFilter",
+  "description": "Structured search input that parses typed queries into filter objects",
+  "icon": "i-glyph:magnifer",
+  "category": "form-inputs",
+  "sequence": 70,
+  "llms": true
+}

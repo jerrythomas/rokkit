@@ -1,7 +1,7 @@
 <article data-article-root>
 	<p>
-		A data-driven SVG bar chart with palette-based color coding, optional gridlines, stacking,
-		data labels, and hover tooltips.
+		A data-driven SVG bar chart with palette-based color coding, optional gridlines, stacking, data
+		labels, and hover tooltips.
 	</p>
 
 	<h2>Basic usage</h2>
@@ -26,8 +26,7 @@
 		Use <code>fill</code> to assign palette colors by a field. Combine with <code>legend</code> to show
 		the color key:
 	</p>
-	<pre><code
-			>{`<BarChart data={sales} x="category" y="revenue" fill="region" legend />`}</code
+	<pre><code>{`<BarChart data={sales} x="category" y="revenue" fill="region" legend />`}</code
 		></pre>
 
 	<h2>Stacking and aggregation</h2>
@@ -53,8 +52,8 @@
 
 	<h2>Tooltips</h2>
 	<p>
-		Pass <code>tooltip</code> to show a hover tooltip with the row data. Pass a function to
-		customise the content:
+		Pass <code>tooltip</code> to show a hover tooltip with the row data. Pass a function to customise
+		the content:
 	</p>
 	<pre><code
 			>{`<!-- Default key-value tooltip -->
@@ -109,7 +108,10 @@
 				<td><code>stat</code></td>
 				<td><code>string</code></td>
 				<td><code>'identity'</code></td>
-				<td><code>sum</code>, <code>mean</code>, <code>min</code>, <code>max</code>, <code>count</code></td>
+				<td
+					><code>sum</code>, <code>mean</code>, <code>min</code>, <code>max</code>,
+					<code>count</code></td
+				>
 			</tr>
 			<tr>
 				<td><code>stack</code></td>

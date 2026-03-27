@@ -19,36 +19,325 @@
 The mpg dataset (from ggplot2) is the primary test fixture for all chart logic. 234 rows, categorical + numeric fields.
 
 **Files:**
+
 - Create: `packages/chart/spec/fixtures/mpg.json`
 
 - [ ] **Step 1: Create the mpg fixture file**
 
 ```json
 [
-  {"manufacturer":"audi","model":"a4","displ":1.8,"year":1999,"cyl":4,"trans":"auto(l5)","drv":"f","cty":18,"hwy":29,"fl":"p","class":"compact"},
-  {"manufacturer":"audi","model":"a4","displ":1.8,"year":1999,"cyl":4,"trans":"manual(m5)","drv":"f","cty":21,"hwy":29,"fl":"p","class":"compact"},
-  {"manufacturer":"audi","model":"a4","displ":2.0,"year":2008,"cyl":4,"trans":"manual(m6)","drv":"f","cty":20,"hwy":31,"fl":"p","class":"compact"},
-  {"manufacturer":"audi","model":"a4","displ":2.0,"year":2008,"cyl":4,"trans":"auto(av)","drv":"f","cty":21,"hwy":30,"fl":"p","class":"compact"},
-  {"manufacturer":"audi","model":"a4","displ":2.8,"year":1999,"cyl":6,"trans":"auto(l5)","drv":"f","cty":16,"hwy":26,"fl":"p","class":"compact"},
-  {"manufacturer":"audi","model":"a4","displ":2.8,"year":1999,"cyl":6,"trans":"manual(m5)","drv":"f","cty":18,"hwy":26,"fl":"p","class":"compact"},
-  {"manufacturer":"audi","model":"a4","displ":3.1,"year":2008,"cyl":6,"trans":"auto(av)","drv":"f","cty":18,"hwy":27,"fl":"p","class":"compact"},
-  {"manufacturer":"audi","model":"a4 quattro","displ":1.8,"year":1999,"cyl":4,"trans":"manual(m5)","drv":"4","cty":18,"hwy":26,"fl":"p","class":"compact"},
-  {"manufacturer":"audi","model":"a4 quattro","displ":1.8,"year":1999,"cyl":4,"trans":"auto(l5)","drv":"4","cty":16,"hwy":25,"fl":"p","class":"compact"},
-  {"manufacturer":"audi","model":"a4 quattro","displ":2.0,"year":2008,"cyl":4,"trans":"manual(m6)","drv":"4","cty":20,"hwy":28,"fl":"p","class":"compact"},
-  {"manufacturer":"chevrolet","model":"c1500 suburban 2wd","displ":5.3,"year":2008,"cyl":8,"trans":"auto(l4)","drv":"r","cty":14,"hwy":20,"fl":"r","class":"suv"},
-  {"manufacturer":"chevrolet","model":"corvette","displ":5.7,"year":1999,"cyl":8,"trans":"manual(m6)","drv":"r","cty":16,"hwy":26,"fl":"p","class":"2seater"},
-  {"manufacturer":"dodge","model":"caravan 2wd","displ":2.4,"year":1999,"cyl":4,"trans":"auto(l3)","drv":"f","cty":18,"hwy":24,"fl":"r","class":"minivan"},
-  {"manufacturer":"dodge","model":"dakota pickup 4wd","displ":3.9,"year":1999,"cyl":6,"trans":"auto(l4)","drv":"4","cty":13,"hwy":17,"fl":"r","class":"pickup"},
-  {"manufacturer":"ford","model":"expedition 2wd","displ":4.6,"year":1999,"cyl":8,"trans":"auto(l4)","drv":"r","cty":11,"hwy":17,"fl":"r","class":"suv"},
-  {"manufacturer":"honda","model":"civic","displ":1.6,"year":1999,"cyl":4,"trans":"manual(m5)","drv":"f","cty":28,"hwy":33,"fl":"r","class":"subcompact"},
-  {"manufacturer":"honda","model":"civic","displ":1.8,"year":2008,"cyl":4,"trans":"auto(l5)","drv":"f","cty":25,"hwy":36,"fl":"r","class":"subcompact"},
-  {"manufacturer":"hyundai","model":"sonata","displ":2.4,"year":2008,"cyl":4,"trans":"auto(l4)","drv":"f","cty":21,"hwy":30,"fl":"r","class":"midsize"},
-  {"manufacturer":"toyota","model":"camry","displ":2.2,"year":1999,"cyl":4,"trans":"manual(m5)","drv":"f","cty":21,"hwy":29,"fl":"r","class":"midsize"},
-  {"manufacturer":"toyota","model":"corolla","displ":1.8,"year":1999,"cyl":4,"trans":"auto(l4)","drv":"f","cty":26,"hwy":29,"fl":"r","class":"compact"},
-  {"manufacturer":"toyota","model":"4runner 4wd","displ":4.0,"year":2008,"cyl":6,"trans":"auto(l5)","drv":"4","cty":17,"hwy":21,"fl":"r","class":"suv"},
-  {"manufacturer":"volkswagen","model":"gti","displ":2.0,"year":2008,"cyl":4,"trans":"manual(m6)","drv":"f","cty":21,"hwy":29,"fl":"p","class":"compact"},
-  {"manufacturer":"volkswagen","model":"jetta","displ":2.5,"year":2008,"cyl":5,"trans":"auto(s6)","drv":"f","cty":21,"hwy":29,"fl":"r","class":"compact"},
-  {"manufacturer":"volkswagen","model":"passat","displ":2.0,"year":2008,"cyl":4,"trans":"auto(s6)","drv":"f","cty":19,"hwy":28,"fl":"p","class":"midsize"}
+  {
+    "manufacturer": "audi",
+    "model": "a4",
+    "displ": 1.8,
+    "year": 1999,
+    "cyl": 4,
+    "trans": "auto(l5)",
+    "drv": "f",
+    "cty": 18,
+    "hwy": 29,
+    "fl": "p",
+    "class": "compact"
+  },
+  {
+    "manufacturer": "audi",
+    "model": "a4",
+    "displ": 1.8,
+    "year": 1999,
+    "cyl": 4,
+    "trans": "manual(m5)",
+    "drv": "f",
+    "cty": 21,
+    "hwy": 29,
+    "fl": "p",
+    "class": "compact"
+  },
+  {
+    "manufacturer": "audi",
+    "model": "a4",
+    "displ": 2.0,
+    "year": 2008,
+    "cyl": 4,
+    "trans": "manual(m6)",
+    "drv": "f",
+    "cty": 20,
+    "hwy": 31,
+    "fl": "p",
+    "class": "compact"
+  },
+  {
+    "manufacturer": "audi",
+    "model": "a4",
+    "displ": 2.0,
+    "year": 2008,
+    "cyl": 4,
+    "trans": "auto(av)",
+    "drv": "f",
+    "cty": 21,
+    "hwy": 30,
+    "fl": "p",
+    "class": "compact"
+  },
+  {
+    "manufacturer": "audi",
+    "model": "a4",
+    "displ": 2.8,
+    "year": 1999,
+    "cyl": 6,
+    "trans": "auto(l5)",
+    "drv": "f",
+    "cty": 16,
+    "hwy": 26,
+    "fl": "p",
+    "class": "compact"
+  },
+  {
+    "manufacturer": "audi",
+    "model": "a4",
+    "displ": 2.8,
+    "year": 1999,
+    "cyl": 6,
+    "trans": "manual(m5)",
+    "drv": "f",
+    "cty": 18,
+    "hwy": 26,
+    "fl": "p",
+    "class": "compact"
+  },
+  {
+    "manufacturer": "audi",
+    "model": "a4",
+    "displ": 3.1,
+    "year": 2008,
+    "cyl": 6,
+    "trans": "auto(av)",
+    "drv": "f",
+    "cty": 18,
+    "hwy": 27,
+    "fl": "p",
+    "class": "compact"
+  },
+  {
+    "manufacturer": "audi",
+    "model": "a4 quattro",
+    "displ": 1.8,
+    "year": 1999,
+    "cyl": 4,
+    "trans": "manual(m5)",
+    "drv": "4",
+    "cty": 18,
+    "hwy": 26,
+    "fl": "p",
+    "class": "compact"
+  },
+  {
+    "manufacturer": "audi",
+    "model": "a4 quattro",
+    "displ": 1.8,
+    "year": 1999,
+    "cyl": 4,
+    "trans": "auto(l5)",
+    "drv": "4",
+    "cty": 16,
+    "hwy": 25,
+    "fl": "p",
+    "class": "compact"
+  },
+  {
+    "manufacturer": "audi",
+    "model": "a4 quattro",
+    "displ": 2.0,
+    "year": 2008,
+    "cyl": 4,
+    "trans": "manual(m6)",
+    "drv": "4",
+    "cty": 20,
+    "hwy": 28,
+    "fl": "p",
+    "class": "compact"
+  },
+  {
+    "manufacturer": "chevrolet",
+    "model": "c1500 suburban 2wd",
+    "displ": 5.3,
+    "year": 2008,
+    "cyl": 8,
+    "trans": "auto(l4)",
+    "drv": "r",
+    "cty": 14,
+    "hwy": 20,
+    "fl": "r",
+    "class": "suv"
+  },
+  {
+    "manufacturer": "chevrolet",
+    "model": "corvette",
+    "displ": 5.7,
+    "year": 1999,
+    "cyl": 8,
+    "trans": "manual(m6)",
+    "drv": "r",
+    "cty": 16,
+    "hwy": 26,
+    "fl": "p",
+    "class": "2seater"
+  },
+  {
+    "manufacturer": "dodge",
+    "model": "caravan 2wd",
+    "displ": 2.4,
+    "year": 1999,
+    "cyl": 4,
+    "trans": "auto(l3)",
+    "drv": "f",
+    "cty": 18,
+    "hwy": 24,
+    "fl": "r",
+    "class": "minivan"
+  },
+  {
+    "manufacturer": "dodge",
+    "model": "dakota pickup 4wd",
+    "displ": 3.9,
+    "year": 1999,
+    "cyl": 6,
+    "trans": "auto(l4)",
+    "drv": "4",
+    "cty": 13,
+    "hwy": 17,
+    "fl": "r",
+    "class": "pickup"
+  },
+  {
+    "manufacturer": "ford",
+    "model": "expedition 2wd",
+    "displ": 4.6,
+    "year": 1999,
+    "cyl": 8,
+    "trans": "auto(l4)",
+    "drv": "r",
+    "cty": 11,
+    "hwy": 17,
+    "fl": "r",
+    "class": "suv"
+  },
+  {
+    "manufacturer": "honda",
+    "model": "civic",
+    "displ": 1.6,
+    "year": 1999,
+    "cyl": 4,
+    "trans": "manual(m5)",
+    "drv": "f",
+    "cty": 28,
+    "hwy": 33,
+    "fl": "r",
+    "class": "subcompact"
+  },
+  {
+    "manufacturer": "honda",
+    "model": "civic",
+    "displ": 1.8,
+    "year": 2008,
+    "cyl": 4,
+    "trans": "auto(l5)",
+    "drv": "f",
+    "cty": 25,
+    "hwy": 36,
+    "fl": "r",
+    "class": "subcompact"
+  },
+  {
+    "manufacturer": "hyundai",
+    "model": "sonata",
+    "displ": 2.4,
+    "year": 2008,
+    "cyl": 4,
+    "trans": "auto(l4)",
+    "drv": "f",
+    "cty": 21,
+    "hwy": 30,
+    "fl": "r",
+    "class": "midsize"
+  },
+  {
+    "manufacturer": "toyota",
+    "model": "camry",
+    "displ": 2.2,
+    "year": 1999,
+    "cyl": 4,
+    "trans": "manual(m5)",
+    "drv": "f",
+    "cty": 21,
+    "hwy": 29,
+    "fl": "r",
+    "class": "midsize"
+  },
+  {
+    "manufacturer": "toyota",
+    "model": "corolla",
+    "displ": 1.8,
+    "year": 1999,
+    "cyl": 4,
+    "trans": "auto(l4)",
+    "drv": "f",
+    "cty": 26,
+    "hwy": 29,
+    "fl": "r",
+    "class": "compact"
+  },
+  {
+    "manufacturer": "toyota",
+    "model": "4runner 4wd",
+    "displ": 4.0,
+    "year": 2008,
+    "cyl": 6,
+    "trans": "auto(l5)",
+    "drv": "4",
+    "cty": 17,
+    "hwy": 21,
+    "fl": "r",
+    "class": "suv"
+  },
+  {
+    "manufacturer": "volkswagen",
+    "model": "gti",
+    "displ": 2.0,
+    "year": 2008,
+    "cyl": 4,
+    "trans": "manual(m6)",
+    "drv": "f",
+    "cty": 21,
+    "hwy": 29,
+    "fl": "p",
+    "class": "compact"
+  },
+  {
+    "manufacturer": "volkswagen",
+    "model": "jetta",
+    "displ": 2.5,
+    "year": 2008,
+    "cyl": 5,
+    "trans": "auto(s6)",
+    "drv": "f",
+    "cty": 21,
+    "hwy": 29,
+    "fl": "r",
+    "class": "compact"
+  },
+  {
+    "manufacturer": "volkswagen",
+    "model": "passat",
+    "displ": 2.0,
+    "year": 2008,
+    "cyl": 4,
+    "trans": "auto(s6)",
+    "drv": "f",
+    "cty": 19,
+    "hwy": 28,
+    "fl": "p",
+    "class": "midsize"
+  }
 ]
 ```
 
@@ -80,6 +369,7 @@ git commit -m "test(chart): add mpg dataset fixture for plot foundation tests"
 Extends existing `applyAggregate` with: `identity` as explicit built-in, helpers lookup by name, unknown stat warns + falls back to identity, and a unified `inferGroupByFields` helper that derives grouping keys from channel config.
 
 **Files:**
+
 - Create: `packages/chart/src/lib/plot/stat.js`
 - Create: `packages/chart/spec/plot/stat.spec.js`
 
@@ -197,7 +487,9 @@ describe('applyGeomStat', () => {
   })
 
   it('uses custom stat from helpers', () => {
-    const helpers = { stats: { p95: (vals) => vals.sort((a, b) => a - b)[Math.floor(vals.length * 0.95)] } }
+    const helpers = {
+      stats: { p95: (vals) => vals.sort((a, b) => a - b)[Math.floor(vals.length * 0.95)] }
+    }
     const result = applyGeomStat(mpg, { stat: 'p95', channels: { x: 'class', y: 'cty' } }, helpers)
     expect(result.length).toBeGreaterThan(0)
     expect(result[0]).toHaveProperty('class')
@@ -244,10 +536,12 @@ const BUILT_IN_STATS = {
  * @returns {Function|null}
  */
 export function resolveStat(name, helpers = {}) {
-  if (name === 'identity') return (data) => data  // identity: pass-through (receives full array)
+  if (name === 'identity') return (data) => data // identity: pass-through (receives full array)
   if (BUILT_IN_STATS[name]) return BUILT_IN_STATS[name]
   if (helpers?.stats?.[name]) return helpers.stats[name]
-  console.warn(`[Plot] Unknown stat "${name}" — falling back to identity. Add it to helpers.stats to suppress this warning.`)
+  console.warn(
+    `[Plot] Unknown stat "${name}" — falling back to identity. Add it to helpers.stats to suppress this warning.`
+  )
   return (data) => data
 }
 
@@ -302,7 +596,7 @@ export function applyGeomStat(data, geomConfig, helpers = {}) {
   let result = applyAggregate(data, {
     by: groupByFields,
     value: channels[primaryKey],
-    stat: statFn   // pass the resolved function, not the raw string name
+    stat: statFn // pass the resolved function, not the raw string name
   })
 
   // Merge additional value fields (size, theta) if present
@@ -342,6 +636,7 @@ git commit -m "feat(chart): add plot stat resolver with helpers extension and mp
 ### Task 3: Scale utilities — union domains and color scales
 
 **Files:**
+
 - Create: `packages/chart/src/lib/plot/scales.js`
 - Create: `packages/chart/spec/plot/scales.spec.js`
 
@@ -356,7 +651,7 @@ import {
   inferOrientation,
   buildUnifiedXScale,
   buildUnifiedYScale,
-  inferColorScaleType,
+  inferColorScaleType
 } from '../../src/lib/plot/scales.js'
 
 describe('inferFieldType', () => {
@@ -419,12 +714,12 @@ describe('buildUnifiedXScale', () => {
   it('respects explicit numeric domain override', () => {
     const scale = buildUnifiedXScale([mpg], 'cty', 500, { domain: [0, 50] })
     expect(scale.domain()).toEqual([0, 50])
-    expect(typeof scale.ticks).toBe('function')  // still linear
+    expect(typeof scale.ticks).toBe('function') // still linear
   })
 
   it('respects explicit categorical domain override (preserves band scale)', () => {
     const scale = buildUnifiedXScale([mpg], 'class', 500, { domain: ['suv', 'compact', 'midsize'] })
-    expect(typeof scale.bandwidth).toBe('function')  // still band
+    expect(typeof scale.bandwidth).toBe('function') // still band
     expect(scale.domain()).toEqual(['suv', 'compact', 'midsize'])
   })
 })
@@ -438,7 +733,7 @@ describe('buildUnifiedYScale', () => {
 
   it('builds scale from min to max hwy when not includeZero (scatter/line)', () => {
     const scale = buildUnifiedYScale([mpg], 'hwy', 400, { includeZero: false })
-    expect(scale.domain()[0]).toBeGreaterThan(0)  // should be ~17, not 0
+    expect(scale.domain()[0]).toBeGreaterThan(0) // should be ~17, not 0
     expect(scale.domain()[0]).toBeLessThan(20)
     expect(scale.domain()[1]).toBeGreaterThanOrEqual(36)
   })
@@ -447,7 +742,7 @@ describe('buildUnifiedYScale', () => {
     const ds1 = mpg.filter((r) => r.cty < 20)
     const ds2 = mpg.filter((r) => r.cty >= 20)
     const scale = buildUnifiedYScale([ds1, ds2], 'cty', 400, { includeZero: true })
-    expect(scale.domain()[1]).toBeGreaterThanOrEqual(28)  // covers both subsets
+    expect(scale.domain()[1]).toBeGreaterThanOrEqual(28) // covers both subsets
   })
 
   it('respects explicit domain override', () => {
@@ -525,7 +820,9 @@ import { max, extent } from 'd3-array'
 export function inferFieldType(data, field) {
   const values = data.map((d) => d[field]).filter((v) => v !== null && v !== undefined)
   if (values.length === 0) return 'band'
-  const isNumeric = values.every((v) => typeof v === 'number' || (!isNaN(Number(v)) && String(v).trim() !== ''))
+  const isNumeric = values.every(
+    (v) => typeof v === 'number' || (!isNaN(Number(v)) && String(v).trim() !== '')
+  )
   return isNumeric ? 'continuous' : 'band'
 }
 
@@ -553,7 +850,9 @@ export function inferOrientation(xType, yType) {
  */
 export function buildUnifiedXScale(datasets, field, width, opts = {}) {
   const allValues = datasets.flatMap((d) => d.map((r) => r[field]))
-  const isNumeric = allValues.every((v) => typeof v === 'number' || (!isNaN(Number(v)) && String(v).trim() !== ''))
+  const isNumeric = allValues.every(
+    (v) => typeof v === 'number' || (!isNaN(Number(v)) && String(v).trim() !== '')
+  )
 
   if (opts.domain) {
     // Respect explicit domain but preserve scale type based on value types
@@ -562,18 +861,27 @@ export function buildUnifiedXScale(datasets, field, width, opts = {}) {
       return scaleLinear().domain(opts.domain).range([0, width]).nice()
     }
     // Categorical explicit domain (e.g. reordering: ['suv', 'compact', 'midsize'])
-    return scaleBand().domain(opts.domain).range([0, width]).padding(opts.padding ?? 0.2)
+    return scaleBand()
+      .domain(opts.domain)
+      .range([0, width])
+      .padding(opts.padding ?? 0.2)
   }
 
   if (isNumeric) {
     const numericValues = allValues.map(Number)
     const [minVal, maxVal] = extent(numericValues)
     const domainMin = (opts.includeZero ?? false) ? 0 : (minVal ?? 0)
-    return scaleLinear().domain([domainMin, maxVal ?? 0]).range([0, width]).nice()
+    return scaleLinear()
+      .domain([domainMin, maxVal ?? 0])
+      .range([0, width])
+      .nice()
   }
 
   const domain = [...new Set(allValues)].filter((v) => v !== null && v !== undefined)
-  return scaleBand().domain(domain).range([0, width]).padding(opts.padding ?? 0.2)
+  return scaleBand()
+    .domain(domain)
+    .range([0, width])
+    .padding(opts.padding ?? 0.2)
 }
 
 /**
@@ -602,7 +910,10 @@ export function buildUnifiedYScale(datasets, field, height, opts = {}) {
   const allValues = datasets.flatMap((d) => d.map((r) => Number(r[field]))).filter((v) => !isNaN(v))
   const [minVal, maxVal] = extent(allValues)
   const domainMin = (opts.includeZero ?? true) ? 0 : (minVal ?? 0)
-  return scaleLinear().domain([domainMin, maxVal ?? 0]).range([height, 0]).nice()
+  return scaleLinear()
+    .domain([domainMin, maxVal ?? 0])
+    .range([height, 0])
+    .nice()
 }
 
 /**
@@ -644,6 +955,7 @@ git commit -m "feat(chart): add unified scale building and orientation inference
 Presets control the ordered colors, patterns, and symbols used for categorical series. Built-in presets: `default`, `accessible`, `print`. Custom presets via `helpers.presets`.
 
 **Files:**
+
 - Create: `packages/chart/src/lib/plot/preset.js`
 - Create: `packages/chart/spec/plot/preset.spec.js`
 
@@ -702,10 +1014,10 @@ describe('resolvePreset', () => {
   })
 
   it('merges partial preset with defaults (missing fields fall back)', () => {
-    const partial = { colors: ['#ff0000'] }  // no patterns or symbols
+    const partial = { colors: ['#ff0000'] } // no patterns or symbols
     const preset = resolvePreset(undefined, { preset: partial })
     expect(preset.colors).toEqual(['#ff0000'])
-    expect(preset.patterns).toEqual(DEFAULT_PRESET.patterns)  // fallback to default
+    expect(preset.patterns).toEqual(DEFAULT_PRESET.patterns) // fallback to default
     expect(preset.symbols).toEqual(DEFAULT_PRESET.symbols)
   })
 })
@@ -730,29 +1042,37 @@ import { SYMBOL_ORDER } from '../brewing/symbols.js'
 /** @typedef {{ colors: string[], patterns: string[], symbols: string[] }} PlotPreset */
 
 export const DEFAULT_PRESET = {
-  colors:   palette.map((p) => p.shades.light.fill),
+  colors: palette.map((p) => p.shades.light.fill),
   patterns: PATTERN_ORDER,
-  symbols:  SYMBOL_ORDER
+  symbols: SYMBOL_ORDER
 }
 
 // ColorBrewer qualitative Set2 — colorblind-friendly 8-color palette
 export const ACCESSIBLE_PRESET = {
-  colors:   ['#66c2a5','#fc8d62','#8da0cb','#e78ac3','#a6d854','#ffd92f','#e5c494','#b3b3b3'],
+  colors: ['#66c2a5', '#fc8d62', '#8da0cb', '#e78ac3', '#a6d854', '#ffd92f', '#e5c494', '#b3b3b3'],
   patterns: PATTERN_ORDER,
-  symbols:  SYMBOL_ORDER
+  symbols: SYMBOL_ORDER
 }
 
 // Greyscale + high-contrast patterns for print/PDF
 export const PRINT_PRESET = {
-  colors:   ['#f0f0f0','#bdbdbd','#969696','#737373','#525252','#252525','#000000'],
-  patterns: ['CrossHatch','DiagonalLines','Dots','Brick','Waves','Triangles','HorizontalLines'],
-  symbols:  SYMBOL_ORDER
+  colors: ['#f0f0f0', '#bdbdbd', '#969696', '#737373', '#525252', '#252525', '#000000'],
+  patterns: [
+    'CrossHatch',
+    'DiagonalLines',
+    'Dots',
+    'Brick',
+    'Waves',
+    'Triangles',
+    'HorizontalLines'
+  ],
+  symbols: SYMBOL_ORDER
 }
 
 const BUILT_IN_PRESETS = {
-  default:    DEFAULT_PRESET,
+  default: DEFAULT_PRESET,
   accessible: ACCESSIBLE_PRESET,
-  print:      PRINT_PRESET
+  print: PRINT_PRESET
 }
 
 /**
@@ -772,7 +1092,9 @@ export function resolvePreset(name, helpers = {}) {
   } else if (name && helpers?.presets?.[name]) {
     resolved = helpers.presets[name]
   } else if (name) {
-    console.warn(`[Plot] Unknown preset "${name}" — falling back to default. Add it to helpers.presets to suppress this warning.`)
+    console.warn(
+      `[Plot] Unknown preset "${name}" — falling back to default. Add it to helpers.presets to suppress this warning.`
+    )
     resolved = DEFAULT_PRESET
   } else if (helpers?.preset) {
     resolved = helpers.preset
@@ -782,9 +1104,9 @@ export function resolvePreset(name, helpers = {}) {
 
   // Merge with defaults so partial presets work
   return {
-    colors:   resolved.colors   ?? DEFAULT_PRESET.colors,
+    colors: resolved.colors ?? DEFAULT_PRESET.colors,
     patterns: resolved.patterns ?? DEFAULT_PRESET.patterns,
-    symbols:  resolved.symbols  ?? DEFAULT_PRESET.symbols
+    symbols: resolved.symbols ?? DEFAULT_PRESET.symbols
   }
 }
 ```
@@ -811,6 +1133,7 @@ git commit -m "feat(chart): add preset resolver with default/accessible/print bu
 A unified lookup utility used by PlotState to resolve all helper functions (format, tooltip, geoms, colorScale).
 
 **Files:**
+
 - Create: `packages/chart/src/lib/plot/helpers.js`
 - Create: `packages/chart/spec/plot/helpers.spec.js`
 
@@ -945,6 +1268,7 @@ git commit -m "feat(chart): add helpers resolver for format, tooltip, and custom
 The central reactive class. Registers geoms, runs stat transforms, builds unified scales, resolves colors/labels. Consumed via Svelte context by all child components.
 
 **Files:**
+
 - Create: `packages/chart/src/PlotState.svelte.js`
 - Create: `packages/chart/spec/PlotState.spec.js`
 
@@ -979,13 +1303,21 @@ describe('PlotState — label resolution', () => {
 describe('PlotState — geom registration and stat', () => {
   it('registerGeom stores a geom config', () => {
     const state = new PlotState({ data: mpg, channels: { x: 'class', y: 'cty' } })
-    const id = state.registerGeom({ type: 'bar', channels: { x: 'class', y: 'cty' }, stat: 'identity' })
+    const id = state.registerGeom({
+      type: 'bar',
+      channels: { x: 'class', y: 'cty' },
+      stat: 'identity'
+    })
     expect(typeof id).toBe('string')
   })
 
   it('geomData returns post-stat rows for registered geom (identity)', () => {
     const state = new PlotState({ data: mpg, channels: { x: 'class', y: 'cty' } })
-    const id = state.registerGeom({ type: 'bar', channels: { x: 'class', y: 'cty' }, stat: 'identity' })
+    const id = state.registerGeom({
+      type: 'bar',
+      channels: { x: 'class', y: 'cty' },
+      stat: 'identity'
+    })
     const rows = state.geomData(id)
     expect(rows).toBe(mpg)
   })
@@ -1005,8 +1337,9 @@ describe('PlotState — geom registration and stat', () => {
     const id = state.registerGeom({ type: 'bar', channels: { x: 'class', y: 'hwy' }, stat: 'mean' })
     const rows = state.geomData(id)
     const compact = rows.find((r) => r.class === 'compact')
-    const expectedMean = mpg.filter((r) => r.class === 'compact').reduce((a, r) => a + r.hwy, 0)
-      / mpg.filter((r) => r.class === 'compact').length
+    const expectedMean =
+      mpg.filter((r) => r.class === 'compact').reduce((a, r) => a + r.hwy, 0) /
+      mpg.filter((r) => r.class === 'compact').length
     expect(compact.hwy).toBeCloseTo(expectedMean)
   })
 })
@@ -1030,19 +1363,34 @@ describe('PlotState — color scale type inference', () => {
 
 describe('PlotState — orientation inference', () => {
   it('infers vertical when x is categorical (class)', () => {
-    const state = new PlotState({ data: mpg, channels: { x: 'class', y: 'cty' }, width: 600, height: 400 })
+    const state = new PlotState({
+      data: mpg,
+      channels: { x: 'class', y: 'cty' },
+      width: 600,
+      height: 400
+    })
     state.registerGeom({ type: 'bar', channels: { x: 'class', y: 'cty' }, stat: 'mean' })
     expect(state.orientation).toBe('vertical')
   })
 
   it('infers horizontal when y is categorical', () => {
-    const state = new PlotState({ data: mpg, channels: { x: 'cty', y: 'class' }, width: 600, height: 400 })
+    const state = new PlotState({
+      data: mpg,
+      channels: { x: 'cty', y: 'class' },
+      width: 600,
+      height: 400
+    })
     state.registerGeom({ type: 'bar', channels: { x: 'cty', y: 'class' }, stat: 'mean' })
     expect(state.orientation).toBe('horizontal')
   })
 
   it('infers none for scatter (both continuous)', () => {
-    const state = new PlotState({ data: mpg, channels: { x: 'cty', y: 'hwy' }, width: 600, height: 400 })
+    const state = new PlotState({
+      data: mpg,
+      channels: { x: 'cty', y: 'hwy' },
+      width: 600,
+      height: 400
+    })
     state.registerGeom({ type: 'point', channels: { x: 'cty', y: 'hwy' }, stat: 'identity' })
     expect(state.orientation).toBe('none')
   })
@@ -1050,21 +1398,36 @@ describe('PlotState — orientation inference', () => {
 
 describe('PlotState — scale domain includes zero for bar charts', () => {
   it('yScale starts at 0 for vertical bar chart', () => {
-    const state = new PlotState({ data: mpg, channels: { x: 'class', y: 'cty' }, width: 600, height: 400 })
+    const state = new PlotState({
+      data: mpg,
+      channels: { x: 'class', y: 'cty' },
+      width: 600,
+      height: 400
+    })
     state.registerGeom({ type: 'bar', channels: { x: 'class', y: 'cty' }, stat: 'mean' })
     expect(state.yScale.domain()[0]).toBe(0)
   })
 
   it('xScale starts at 0 for horizontal bar chart', () => {
-    const state = new PlotState({ data: mpg, channels: { x: 'cty', y: 'class' }, width: 600, height: 400 })
+    const state = new PlotState({
+      data: mpg,
+      channels: { x: 'cty', y: 'class' },
+      width: 600,
+      height: 400
+    })
     state.registerGeom({ type: 'bar', channels: { x: 'cty', y: 'class' }, stat: 'mean' })
     expect(state.xScale.domain()[0]).toBe(0)
   })
 
   it('yScale does NOT start at 0 for scatter (extent domain)', () => {
-    const state = new PlotState({ data: mpg, channels: { x: 'displ', y: 'hwy' }, width: 600, height: 400 })
+    const state = new PlotState({
+      data: mpg,
+      channels: { x: 'displ', y: 'hwy' },
+      width: 600,
+      height: 400
+    })
     state.registerGeom({ type: 'point', channels: { x: 'displ', y: 'hwy' }, stat: 'identity' })
-    expect(state.yScale.domain()[0]).toBeGreaterThan(0)  // hwy min is ~17, not 0
+    expect(state.yScale.domain()[0]).toBeGreaterThan(0) // hwy min is ~17, not 0
   })
 })
 
@@ -1080,7 +1443,12 @@ describe('PlotState — axisOrigin', () => {
   })
 
   it('axisOrigin can be set for quadrant mode', () => {
-    const state = new PlotState({ data: mpg, channels: { x: 'displ', y: 'hwy' }, width: 600, height: 400 })
+    const state = new PlotState({
+      data: mpg,
+      channels: { x: 'displ', y: 'hwy' },
+      width: 600,
+      height: 400
+    })
     state.registerGeom({ type: 'point', channels: { x: 'displ', y: 'hwy' }, stat: 'identity' })
     state.axisOrigin = [0, 0]
     // xAxisY should now be at yScale(0), not at chart bottom
@@ -1121,7 +1489,13 @@ Expected: FAIL.
 ```js
 // packages/chart/src/PlotState.svelte.js
 import { applyGeomStat } from './lib/plot/stat.js'
-import { inferFieldType, inferOrientation, buildUnifiedXScale, buildUnifiedYScale, inferColorScaleType } from './lib/plot/scales.js'
+import {
+  inferFieldType,
+  inferOrientation,
+  buildUnifiedXScale,
+  buildUnifiedYScale,
+  inferColorScaleType
+} from './lib/plot/scales.js'
 import { resolvePreset } from './lib/plot/preset.js'
 import { resolveFormat, resolveTooltip, resolveGeom } from './lib/plot/helpers.js'
 
@@ -1129,18 +1503,18 @@ let nextId = 0
 
 export class PlotState {
   // Config — all $state so mutations trigger reactive updates
-  #data          = $state([])
-  #channels      = $state({})
-  #labels        = $state({})
-  #helpers       = $state({})
-  #presetName    = $state(undefined)   // string name from PlotSpec.preset
+  #data = $state([])
+  #channels = $state({})
+  #labels = $state({})
+  #helpers = $state({})
+  #presetName = $state(undefined) // string name from PlotSpec.preset
   #colorMidpoint = $state(undefined)
-  #colorSpec     = $state(undefined)   // colorScale override from spec
-  #xDomain       = $state(undefined)
-  #yDomain       = $state(undefined)
-  #width         = $state(600)
-  #height        = $state(400)
-  #margin        = $state({ top: 20, right: 20, bottom: 40, left: 50 })
+  #colorSpec = $state(undefined) // colorScale override from spec
+  #xDomain = $state(undefined)
+  #yDomain = $state(undefined)
+  #width = $state(600)
+  #height = $state(400)
+  #margin = $state({ top: 20, right: 20, bottom: 40, left: 50 })
 
   // Registered geoms
   #geoms = $state([])
@@ -1153,8 +1527,8 @@ export class PlotState {
   // IMPORTANT: These MUST be $derived (not plain getters) so Svelte templates
   // re-render when #data, #channels, or #geoms change.
 
-  #innerWidth  = $derived(this.#width  - this.#margin.left - this.#margin.right)
-  #innerHeight = $derived(this.#height - this.#margin.top  - this.#margin.bottom)
+  #innerWidth = $derived(this.#width - this.#margin.left - this.#margin.right)
+  #innerHeight = $derived(this.#height - this.#margin.top - this.#margin.bottom)
 
   orientation = $derived.by(() => {
     const xField = this.#channels.x
@@ -1177,9 +1551,8 @@ export class PlotState {
   xScale = $derived.by(() => {
     const field = this.#channels.x
     if (!field) return null
-    const datasets = this.#geoms.length > 0
-      ? this.#geoms.map((g) => this.geomData(g.id))
-      : [this.#data]
+    const datasets =
+      this.#geoms.length > 0 ? this.#geoms.map((g) => this.geomData(g.id)) : [this.#data]
     // Horizontal bars: x carries the value axis → pin to 0
     const includeZero = this.orientation === 'horizontal'
     return buildUnifiedXScale(datasets, field, this.#innerWidth, {
@@ -1191,9 +1564,8 @@ export class PlotState {
   yScale = $derived.by(() => {
     const field = this.#channels.y
     if (!field) return null
-    const datasets = this.#geoms.length > 0
-      ? this.#geoms.map((g) => this.geomData(g.id))
-      : [this.#data]
+    const datasets =
+      this.#geoms.length > 0 ? this.#geoms.map((g) => this.geomData(g.id)) : [this.#data]
     // Vertical bars: y carries the value axis → pin to 0
     const includeZero = this.orientation === 'vertical'
     return buildUnifiedYScale(datasets, field, this.#innerHeight, {
@@ -1221,31 +1593,31 @@ export class PlotState {
   })
 
   constructor(config = {}) {
-    this.#data          = config.data          ?? []
-    this.#channels      = config.channels      ?? {}
-    this.#labels        = config.labels        ?? {}
-    this.#helpers       = config.helpers       ?? {}
-    this.#presetName    = config.preset        // string from PlotSpec.preset
+    this.#data = config.data ?? []
+    this.#channels = config.channels ?? {}
+    this.#labels = config.labels ?? {}
+    this.#helpers = config.helpers ?? {}
+    this.#presetName = config.preset // string from PlotSpec.preset
     this.#colorMidpoint = config.colorMidpoint
-    this.#colorSpec     = config.colorScale
-    this.#xDomain       = config.xDomain
-    this.#yDomain       = config.yDomain
-    this.#width         = config.width         ?? 600
-    this.#height        = config.height        ?? 400
+    this.#colorSpec = config.colorScale
+    this.#xDomain = config.xDomain
+    this.#yDomain = config.yDomain
+    this.#width = config.width ?? 600
+    this.#height = config.height ?? 400
   }
 
   update(config) {
-    if (config.data         !== undefined) this.#data          = config.data
-    if (config.channels     !== undefined) this.#channels      = config.channels
-    if (config.labels       !== undefined) this.#labels        = config.labels
-    if (config.helpers      !== undefined) this.#helpers       = config.helpers
-    if (config.preset       !== undefined) this.#presetName    = config.preset
-    if (config.colorMidpoint!== undefined) this.#colorMidpoint = config.colorMidpoint
-    if (config.colorScale   !== undefined) this.#colorSpec     = config.colorScale
-    if (config.xDomain      !== undefined) this.#xDomain       = config.xDomain
-    if (config.yDomain      !== undefined) this.#yDomain       = config.yDomain
-    if (config.width        !== undefined) this.#width         = config.width
-    if (config.height       !== undefined) this.#height        = config.height
+    if (config.data !== undefined) this.#data = config.data
+    if (config.channels !== undefined) this.#channels = config.channels
+    if (config.labels !== undefined) this.#labels = config.labels
+    if (config.helpers !== undefined) this.#helpers = config.helpers
+    if (config.preset !== undefined) this.#presetName = config.preset
+    if (config.colorMidpoint !== undefined) this.#colorMidpoint = config.colorMidpoint
+    if (config.colorScale !== undefined) this.#colorSpec = config.colorScale
+    if (config.xDomain !== undefined) this.#xDomain = config.xDomain
+    if (config.yDomain !== undefined) this.#yDomain = config.yDomain
+    if (config.width !== undefined) this.#width = config.width
+    if (config.height !== undefined) this.#height = config.height
   }
 
   // --- Geom registration ---
@@ -1266,7 +1638,11 @@ export class PlotState {
     const geom = this.#geoms.find((g) => g.id === id)
     if (!geom) return []
     const mergedChannels = { ...this.#channels, ...geom.channels }
-    return applyGeomStat(this.#data, { stat: geom.stat ?? 'identity', channels: mergedChannels }, this.#helpers)
+    return applyGeomStat(
+      this.#data,
+      { stat: geom.stat ?? 'identity', channels: mergedChannels },
+      this.#helpers
+    )
   }
 
   // --- Labels ---
@@ -1277,16 +1653,30 @@ export class PlotState {
 
   // --- Helpers ---
 
-  format(field)       { return resolveFormat(field, this.#helpers) }
-  tooltip()           { return resolveTooltip(this.#helpers) }
-  geomComponent(type) { return resolveGeom(type, this.#helpers) }
-  preset()            { return resolvePreset(this.#presetName, this.#helpers) }
+  format(field) {
+    return resolveFormat(field, this.#helpers)
+  }
+  tooltip() {
+    return resolveTooltip(this.#helpers)
+  }
+  geomComponent(type) {
+    return resolveGeom(type, this.#helpers)
+  }
+  preset() {
+    return resolvePreset(this.#presetName, this.#helpers)
+  }
 
   // --- Dimensions (for child components) ---
 
-  get margin()      { return this.#margin }
-  get innerWidth()  { return this.#innerWidth }
-  get innerHeight() { return this.#innerHeight }
+  get margin() {
+    return this.#margin
+  }
+  get innerWidth() {
+    return this.#innerWidth
+  }
+  get innerHeight() {
+    return this.#innerHeight
+  }
 }
 ```
 
@@ -1322,6 +1712,7 @@ git commit -m "feat(chart): add PlotState reactive class — stat pipeline, unif
 Document the public types and add PlotState to the package exports. No runtime logic — types only.
 
 **Files:**
+
 - Create: `packages/chart/src/lib/plot/types.js` (JSDoc typedef file)
 - Modify: `packages/chart/src/index.js`
 

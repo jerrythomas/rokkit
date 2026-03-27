@@ -1,0 +1,32 @@
+# Tilt
+
+3D tilt effect that follows the mouse position over the element. Wraps any content with a perspective transform.
+
+## Import
+
+```javascript
+import { Tilt } from '@rokkit/ui'
+```
+
+## Quick Start
+
+```svelte
+<Tilt maxRotation={15}>
+  <div class="card">Hover me</div>
+</Tilt>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `maxRotation` | `number` | `10` | Maximum rotation angle in degrees |
+| `setBrightness` | `boolean` | `false` | Modulate brightness based on mouse Y position |
+| `perspective` | `number` | `600` | CSS `perspective` value in pixels |
+| `class` | `string` | `''` | Additional CSS classes |
+
+## Notes
+
+- Effect resets to flat when the mouse leaves the element
+- Works with any child content
+- Combine with `Shine` for a premium card effect

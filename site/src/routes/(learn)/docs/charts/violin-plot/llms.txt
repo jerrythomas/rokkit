@@ -37,6 +37,6 @@ import { ViolinPlot } from '@rokkit/chart'
 
 ## Notes
 
-- Uses ViolinBrewer internally, shares quartile computation with BoxBrewer
+- Uses ViolinBrewer internally (extends QuartileBrewer, the shared base with BoxBrewer)
 - Wider sections of the violin indicate higher data density at that value
 - x must be categorical; y must be numeric raw observations

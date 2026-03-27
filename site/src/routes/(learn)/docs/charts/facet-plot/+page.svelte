@@ -12,7 +12,7 @@
 		<code>Plot</code>:
 	</p>
 	<pre><code
-		>{`<script>
+			>{`<script>
   import { FacetPlot } from '@rokkit/chart'
   import { mpg } from './data/mpg.js'
 <\/script>
@@ -24,7 +24,7 @@
   y="hwy"
   geoms={[{ type: 'bar', stat: 'mean' }]}
 />`}</code
-	></pre>
+		></pre>
 
 	<h2>Controlling the grid layout</h2>
 	<p>
@@ -33,7 +33,7 @@
 		<code>width / cols</code> pixels.
 	</p>
 	<pre><code
-		>{`<FacetPlot
+			>{`<FacetPlot
   data={data}
   facet={{ by: 'year', cols: 2 }}
   x="class" y="hwy"
@@ -41,16 +41,16 @@
   width={700}
   height={300}
 />`}</code
-	></pre>
+		></pre>
 
 	<h2>Axis scales</h2>
 	<p>
 		<code>facet.scales</code> controls whether panels share axes. The default is
-		<code>'fixed'</code>, which keeps the same y domain across all panels for honest comparison.
-		Use <code>'free'</code> when each panel's range varies too much to share an axis.
+		<code>'fixed'</code>, which keeps the same y domain across all panels for honest comparison. Use
+		<code>'free'</code> when each panel's range varies too much to share an axis.
 	</p>
 	<pre><code
-		>{`<!-- Same y axis across all panels (default) -->
+			>{`<!-- Same y axis across all panels (default) -->
 <FacetPlot ... facet={{ by: 'drv', scales: 'fixed' }} />
 
 <!-- Each panel fits its own data range -->
@@ -58,15 +58,15 @@
 
 <!-- Free y only, shared x -->
 <FacetPlot ... facet={{ by: 'drv', scales: 'free_y' }} />`}</code
-	></pre>
+		></pre>
 
 	<h2>Color encoding</h2>
 	<p>
-		Use <code>fill</code> to color bars (or points, lines) by a data field. The color domain is
-		computed from all data before splitting, so the same value gets the same color in every panel:
+		Use <code>fill</code> to color bars (or points, lines) by a data field. The color domain is computed
+		from all data before splitting, so the same value gets the same color in every panel:
 	</p>
 	<pre><code
-		>{`<!-- Color bars by drive type — consistent across panels -->
+			>{`<!-- Color bars by drive type — consistent across panels -->
 <FacetPlot
   data={mpg}
   facet={{ by: 'cyl' }}
@@ -75,7 +75,7 @@
   geoms={[{ type: 'bar', stat: 'mean' }]}
   legend
 />`}</code
-	></pre>
+		></pre>
 
 	<h2>Geom types</h2>
 	<p>
@@ -84,7 +84,7 @@
 		against its subset of data.
 	</p>
 	<pre><code
-		>{`<!-- Faceted line chart -->
+			>{`<!-- Faceted line chart -->
 <FacetPlot
   data={data}
   facet={{ by: 'region' }}
@@ -99,7 +99,7 @@
   x="displ" y="hwy"
   geoms={[{ type: 'point' }]}
 />`}</code
-	></pre>
+		></pre>
 
 	<h2>Props</h2>
 	<table>

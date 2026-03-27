@@ -21,7 +21,14 @@
 				<div data-cf-demo-layout>
 					<div data-cf-demo-filters>
 						<p data-cf-demo-hint>Click bars to filter by class:</p>
-						<FilterBar data={mpg} field="class" valueField="hwy" stat="count" width={280} height={110} />
+						<FilterBar
+							data={mpg}
+							field="class"
+							valueField="hwy"
+							stat="count"
+							width={280}
+							height={110}
+						/>
 
 						<p data-cf-demo-hint>Drag to filter highway MPG range:</p>
 						<FilterSlider field="hwy" min={hwyMin} max={hwyMax} step={1} label="Highway MPG" />
@@ -51,8 +58,13 @@
 				<strong>CrossFilter</strong> — wraps multiple charts and controls in a shared filter context.
 			</p>
 			<ul>
-				<li><strong>FilterBar</strong> — click a bar to add/remove that category from the active filter. Click again to deselect.</li>
-				<li><strong>FilterSlider</strong> — drag the handles to set a min/max range for a continuous field.</li>
+				<li>
+					<strong>FilterBar</strong> — click a bar to add/remove that category from the active filter.
+					Click again to deselect.
+				</li>
+				<li>
+					<strong>FilterSlider</strong> — drag the handles to set a min/max range for a continuous field.
+				</li>
 			</ul>
 			<p>Bars in the main chart are <em>dimmed</em> when excluded by the active class filter.</p>
 		</div>

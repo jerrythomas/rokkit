@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest'
+import { SvelteSet } from 'svelte/reactivity'
 import { FormBuilder } from '../../src/lib/builder.svelte.js'
 
 describe('FormBuilder', () => {
@@ -661,7 +662,7 @@ describe('FormBuilder', () => {
 
 			expect(formBuilder.isFieldDirty('name')).toBe(true)
 			expect(formBuilder.isFieldDirty('age')).toBe(false)
-			expect(formBuilder.dirtyFields).toEqual(new Set(['name']))
+			expect(formBuilder.dirtyFields).toEqual(new SvelteSet(['name']))
 		})
 
 		it('should track multiple dirty fields', () => {
@@ -670,7 +671,7 @@ describe('FormBuilder', () => {
 			formBuilder.updateField('name', 'Bob')
 			formBuilder.updateField('age', 25)
 
-			expect(formBuilder.dirtyFields).toEqual(new Set(['name', 'age']))
+			expect(formBuilder.dirtyFields).toEqual(new SvelteSet(['name', 'age']))
 		})
 
 		it('should become clean when value reverts to initial', () => {

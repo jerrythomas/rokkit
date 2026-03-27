@@ -35,7 +35,7 @@
 	{#snippet controls()}
 		<FormRenderer bind:data={props} {schema} {layout} />
 		<div class="mt-4 flex flex-col gap-1">
-			<p class="text-surface-z5 text-xs font-semibold uppercase tracking-widest">Items</p>
+			<p class="text-surface-z5 text-xs font-semibold tracking-widest uppercase">Items</p>
 			{#each items as item, i (i)}
 				<div class="flex items-center gap-2">
 					<select

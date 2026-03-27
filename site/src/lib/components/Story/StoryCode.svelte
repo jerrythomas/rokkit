@@ -39,7 +39,6 @@
 	} = $props()
 
 	// Convert single code string to files array if needed
-	// eslint-disable-next-line complexity
 	let codeFiles = $derived.by(() => {
 		// If files array is provided, use it
 		if (files && files.length > 0) {
@@ -77,7 +76,6 @@
 	/**
 	 * Copy code to clipboard
 	 */
-	// eslint-disable-next-line complexity
 	async function copyCode() {
 		try {
 			const textToCopy = typeof code === 'string' ? code : codeFiles[0]?.content || ''
@@ -89,7 +87,7 @@
 			oncopy?.({ code: textToCopy })
 		} catch (err) {
 			// eslint-disable-next-line no-console
-		console.error('Failed to copy code:', err)
+			console.error('Failed to copy code:', err)
 		}
 	}
 
@@ -113,7 +111,7 @@
 			oncopy?.({ file, content: file.content })
 		} catch (err) {
 			// eslint-disable-next-line no-console
-		console.error('Failed to copy code:', err)
+			console.error('Failed to copy code:', err)
 		}
 	}
 </script>

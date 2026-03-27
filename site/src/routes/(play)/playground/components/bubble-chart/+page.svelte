@@ -70,7 +70,7 @@
 	{#snippet preview()}
 		<div class="flex flex-col gap-8 p-6">
 			<div>
-				<h4 class="text-surface-z5 m-0 mb-3 text-xs uppercase tracking-widest font-semibold">
+				<h4 class="text-surface-z5 m-0 mb-3 text-xs font-semibold tracking-widest uppercase">
 					City vs Highway MPG (bubble = displacement)
 				</h4>
 				<BubbleChart

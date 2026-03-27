@@ -1,32 +1,32 @@
 <script>
-  import { getContext } from 'svelte'
-  import { toPatternId } from '../lib/brewing/patterns.js'
-  import { PATTERNS } from './patterns.js'
-  import PatternDef from './PatternDef.svelte'
+	import { getContext } from 'svelte'
+	import { toPatternId } from '../lib/brewing/patterns.js'
+	import { PATTERNS } from './patterns.js'
+	import PatternDef from './PatternDef.svelte'
 
-  /** @type {{ patterns?: Record<string, import('./patterns.js').PatternMark[]> }} */
-  let { patterns = PATTERNS } = $props()
+	/** @type {{ patterns?: Record<string, import('./patterns.js').PatternMark[]> }} */
+	let { patterns = PATTERNS } = $props()
 
-  const state = getContext('plot-state')
+	const state = getContext('plot-state')
 
-  const patternDefs = $derived.by(() => {
-    const defs = []
-    for (const [key, patternName] of (state.patterns ?? new Map()).entries()) {
-      const colorEntry = state.colors?.get(key) ?? { stroke: '#444' }
-      defs.push({
-        id: toPatternId(String(key)),
-        marks: patterns[patternName] ?? [],
-        stroke: colorEntry.stroke ?? '#444'
-      })
-    }
-    return defs
-  })
+	const patternDefs = $derived.by(() => {
+		const defs = []
+		for (const [key, patternName] of (state.patterns ?? new Map()).entries()) {
+			const colorEntry = state.colors?.get(key) ?? { stroke: '#444' }
+			defs.push({
+				id: toPatternId(String(key)),
+				marks: patterns[patternName] ?? [],
+				stroke: colorEntry.stroke ?? '#444'
+			})
+		}
+		return defs
+	})
 </script>
 
 {#if patternDefs.length > 0}
-  <defs data-plot-pattern-defs>
-    {#each patternDefs as def (def.id)}
-      <PatternDef id={def.id} marks={def.marks} stroke={def.stroke} />
-    {/each}
-  </defs>
+	<defs data-plot-pattern-defs>
+		{#each patternDefs as def (def.id)}
+			<PatternDef id={def.id} marks={def.marks} stroke={def.stroke} />
+		{/each}
+	</defs>
 {/if}

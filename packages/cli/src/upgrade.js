@@ -64,7 +64,8 @@ function resolveUpgradeAdapters(adapters) {
 					return null
 				}
 			}),
-		runInstall: adapters.runInstall ?? ((bin, args) => execFileSync(bin, args, { stdio: 'inherit' }))
+		runInstall:
+			adapters.runInstall ?? ((bin, args) => execFileSync(bin, args, { stdio: 'inherit' }))
 	}
 }
 

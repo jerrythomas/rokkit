@@ -45,10 +45,7 @@ const spec = chart(data)
   .legend()
 
 // aes() shorthand for multiple channels
-const spec = chart(data)
-  .aes({ x: 'date', y: 'revenue', color: 'region' })
-  .bar()
-  .legend()
+const spec = chart(data).aes({ x: 'date', y: 'revenue', color: 'region' }).bar().legend()
 ```
 
 ### ChartSpec internals
@@ -56,26 +53,69 @@ const spec = chart(data)
 ```javascript
 class ChartSpec {
   data = []
-  channels = {}      // x, y, color, pattern, fill, size, label, symbol
-  layers = []        // [{ type, data?, channels?, options? }]
-  options = {}       // grid, legend, axis_x, axis_y, width, height, responsive
+  channels = {} // x, y, color, pattern, fill, size, label, symbol
+  layers = [] // [{ type, data?, channels?, options? }]
+  options = {} // grid, legend, axis_x, axis_y, width, height, responsive
 
-  x(f)      { this.channels.x = f;     return this }
-  y(f)      { this.channels.y = f;     return this }
-  color(f)  { this.channels.color = f; return this }
-  pattern(f){ this.channels.pattern = f; return this }
-  aes(ch)   { Object.assign(this.channels, ch); return this }
+  x(f) {
+    this.channels.x = f
+    return this
+  }
+  y(f) {
+    this.channels.y = f
+    return this
+  }
+  color(f) {
+    this.channels.color = f
+    return this
+  }
+  pattern(f) {
+    this.channels.pattern = f
+    return this
+  }
+  aes(ch) {
+    Object.assign(this.channels, ch)
+    return this
+  }
 
-  bar(opts = {})   { this.layers.push({ type: 'bar',   ...opts }); return this }
-  line(opts = {})  { this.layers.push({ type: 'line',  ...opts }); return this }
-  area(opts = {})  { this.layers.push({ type: 'area',  ...opts }); return this }
-  arc(opts = {})   { this.layers.push({ type: 'arc',   ...opts }); return this }
-  point(opts = {}) { this.layers.push({ type: 'point', ...opts }); return this }
+  bar(opts = {}) {
+    this.layers.push({ type: 'bar', ...opts })
+    return this
+  }
+  line(opts = {}) {
+    this.layers.push({ type: 'line', ...opts })
+    return this
+  }
+  area(opts = {}) {
+    this.layers.push({ type: 'area', ...opts })
+    return this
+  }
+  arc(opts = {}) {
+    this.layers.push({ type: 'arc', ...opts })
+    return this
+  }
+  point(opts = {}) {
+    this.layers.push({ type: 'point', ...opts })
+    return this
+  }
 
-  grid(opts = {})       { this.options.grid = opts;     return this }
-  legend(opts = {})     { this.options.legend = opts;   return this }
-  axis(type, opts = {}) { this.options[`axis_${type}`] = opts; return this }
-  size(w, h)            { this.options.width = w; this.options.height = h; return this }
+  grid(opts = {}) {
+    this.options.grid = opts
+    return this
+  }
+  legend(opts = {}) {
+    this.options.legend = opts
+    return this
+  }
+  axis(type, opts = {}) {
+    this.options[`axis_${type}`] = opts
+    return this
+  }
+  size(w, h) {
+    this.options.width = w
+    this.options.height = h
+    return this
+  }
 }
 
 export function chart(data, channels = {}) {
@@ -88,9 +128,7 @@ export function chart(data, channels = {}) {
 Each layer can carry its own `data` and channel overrides, merged with the parent spec. Overriding `data` in a layer inherits parent scales unless that layer's channel domain exceeds the parent's — in which case scales are extended to fit.
 
 ```javascript
-chart(sales).aes({ x: 'date', y: 'actual' })
-  .bar()
-  .line({ data: forecast, y: 'forecast' })  // same xScale, y extended to include forecast range
+chart(sales).aes({ x: 'date', y: 'actual' }).bar().line({ data: forecast, y: 'forecast' }) // same xScale, y extended to include forecast range
 ```
 
 ---
@@ -253,20 +291,20 @@ Separate lightweight component — no ChartBrewer, no axes, no legend. Safe to e
 ```svelte
 <Sparkline data={[12, 45, 23, 67, 34, 89]} />
 <Sparkline data={rows} field="revenue" type="bar" color="danger" />
-<Sparkline data={rows} field="value"   type="area" width={120} height={32} />
+<Sparkline data={rows} field="value" type="area" width={120} height={32} />
 ```
 
 ### Props
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `data` | `number[] \| object[]` | — | Series data |
-| `field` | `string` | — | Field name if data is objects |
-| `type` | `'line' \| 'bar' \| 'area'` | `'line'` | Chart type |
-| `color` | `string` | `'primary'` | Semantic color role |
-| `width` | `number` | `80` | SVG width |
-| `height` | `number` | `24` | SVG height |
-| `min` / `max` | `number` | auto | Y domain override |
+| Prop          | Type                        | Default     | Description                   |
+| ------------- | --------------------------- | ----------- | ----------------------------- |
+| `data`        | `number[] \| object[]`      | —           | Series data                   |
+| `field`       | `string`                    | —           | Field name if data is objects |
+| `type`        | `'line' \| 'bar' \| 'area'` | `'line'`    | Chart type                    |
+| `color`       | `string`                    | `'primary'` | Semantic color role           |
+| `width`       | `number`                    | `80`        | SVG width                     |
+| `height`      | `number`                    | `24`        | SVG height                    |
+| `min` / `max` | `number`                    | auto        | Y domain override             |
 
 Uses `--color-{role}-500` / `--color-{role}-300` CSS variables directly. No `data-chart-*` attributes — too small to theme individually.
 
@@ -318,17 +356,17 @@ packages/chart/src/
 
 ## Build Order
 
-| Step | Work | Issues |
-|---|---|---|
-| 0 | Add `stroke-*-z*` + `fill-*-z*` utilities to `uno.config.js` | prerequisite |
-| 1 | `base/chart.css` + all 10 theme `chart.css` files | #99 |
-| 2 | `ChartSpec` builder + `chart()` factory | #100 |
-| 3 | `ChartBrewer` refactor (colors, patterns, scales, marks) | #100 |
-| 4 | `Sparkline` component | #105 |
-| 5 | `Plot.Line`, `Plot.Area`, `Plot.Point`, `Plot.Arc` | #107 |
-| 6 | `Chart.svelte` wrapper (spec= + children modes) | #99 |
-| 7 | `BarChart`, `LineChart`, `AreaChart`, `PieChart`, `ScatterPlot` | #99 |
-| 8 | Playground page + learn docs | #99 |
+| Step | Work                                                            | Issues       |
+| ---- | --------------------------------------------------------------- | ------------ |
+| 0    | Add `stroke-*-z*` + `fill-*-z*` utilities to `uno.config.js`    | prerequisite |
+| 1    | `base/chart.css` + all 10 theme `chart.css` files               | #99          |
+| 2    | `ChartSpec` builder + `chart()` factory                         | #100         |
+| 3    | `ChartBrewer` refactor (colors, patterns, scales, marks)        | #100         |
+| 4    | `Sparkline` component                                           | #105         |
+| 5    | `Plot.Line`, `Plot.Area`, `Plot.Point`, `Plot.Arc`              | #107         |
+| 6    | `Chart.svelte` wrapper (spec= + children modes)                 | #99          |
+| 7    | `BarChart`, `LineChart`, `AreaChart`, `PieChart`, `ScatterPlot` | #99          |
+| 8    | Playground page + learn docs                                    | #99          |
 
 ---
 

@@ -27,8 +27,8 @@
 
 	<h2>Color coding</h2>
 	<p>
-		Use <code>fill</code> to color boxes by a categorical field. Enable <code>legend</code> to
-		show the color key:
+		Use <code>fill</code> to color boxes by a categorical field. Enable <code>legend</code> to show the
+		color key:
 	</p>
 	<pre><code>{`<BoxPlot data={data} x="class" y="hwy" fill="drv" legend />`}</code></pre>
 
@@ -115,7 +115,6 @@
 	</table>
 
 	<p>
-		See also <a href="/docs/charts/violin-plot">ViolinPlot</a> for a continuous distribution shape
-		alternative.
+		See also <a href="/docs/charts/violin-plot">ViolinPlot</a> for a continuous distribution shape alternative.
 	</p>
 </article>

@@ -1,7 +1,7 @@
 <article data-article-root>
 	<p>
-		A lightweight inline SVG sparkline. No axes, no legend. Safe to embed in table cells, cards,
-		and text flow. Supports line, bar, and area variants.
+		A lightweight inline SVG sparkline. No axes, no legend. Safe to embed in table cells, cards, and
+		text flow. Supports line, bar, and area variants.
 	</p>
 
 	<h2>Basic usage</h2>
@@ -20,7 +20,8 @@
 
 	<h2>Area type</h2>
 	<p>Use <code>type="area"</code> for a filled sparkline:</p>
-	<pre><code>{`<Sparkline data={rows} field="value" type="area" width={120} height={32} />`}</code></pre>
+	<pre><code>{`<Sparkline data={rows} field="value" type="area" width={120} height={32} />`}</code
+		></pre>
 
 	<h2>Inline in text</h2>
 	<p>
@@ -98,7 +99,7 @@
 	<p>
 		Sparkline uses <code>--color-role-500</code> for strokes and bars, and
 		<code>--color-role-300</code> for area fills. These follow the same CSS variable convention as
-		the rest of Rokkit's theme system. No <code>data-chart-*</code> attributes — the component is
-		too small to theme individually.
+		the rest of Rokkit's theme system. No <code>data-chart-*</code> attributes — the component is too
+		small to theme individually.
 	</p>
 </article>

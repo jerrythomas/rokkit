@@ -1,0 +1,9 @@
+{
+  "title": "Blocks",
+  "description": "Markdown block plugins — render fenced code blocks as interactive chart, table, sparkline, or Mermaid components",
+  "icon": "i-glyph:code",
+  "package": "@rokkit/blocks",
+  "category": "toolkit",
+  "order": 2,
+  "since": "1.0.0-next.151"
+}

@@ -35,15 +35,18 @@
 <article data-article-root>
 	<p>
 		Display a list of validation rules, each with a pass/fail/warn/unknown status icon. Used for
-		password strength checkers, pre-submit form validation, system health checks, and any
-		multi-rule criteria display.
+		password strength checkers, pre-submit form validation, system health checks, and any multi-rule
+		criteria display.
 	</p>
 
 	<h2>Live Demo</h2>
 	<StatusList items={staticItems} />
 
 	<h2>Password Strength Example</h2>
-	<p>Rules update live as the user types — the root carries <code>role="status"</code> so screen readers announce changes.</p>
+	<p>
+		Rules update live as the user types — the root carries <code>role="status"</code> so screen readers
+		announce changes.
+	</p>
 	<div style="display:flex; flex-direction:column; gap:0.75rem; max-width:20rem;">
 		<input
 			type="password"
@@ -55,7 +58,8 @@
 	</div>
 
 	<h2>Quick Start</h2>
-	<Code content={`<script>
+	<Code
+		content={`<script>
   import { StatusList } from '@rokkit/ui'
 
   const items = [
@@ -66,10 +70,13 @@
   ]
 <\/script>
 
-<StatusList {items} />`} language="svelte" />
+<StatusList {items} />`}
+		language="svelte"
+	/>
 
 	<h2>Reactive Rules</h2>
-	<Code content={`<script>
+	<Code
+		content={`<script>
   import { StatusList } from '@rokkit/ui'
 
   let password = $state('')
@@ -91,7 +98,9 @@
 <\/script>
 
 <input type="password" bind:value={password} />
-<StatusList items={checks} />`} language="svelte" />
+<StatusList items={checks} />`}
+		language="svelte"
+	/>
 
 	<h2>All Status Values</h2>
 	<div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
@@ -126,7 +135,8 @@
 		<div data-card>
 			<h3>icons</h3>
 			<p>Override icon classes per status. Defaults to <code>DEFAULT_STATE_ICONS.badge</code>.</p>
-			<Code content={`<StatusList
+			<Code
+				content={`<StatusList
   {items}
   icons={{
     pass: 'i-solar:check-circle-bold',
@@ -134,7 +144,9 @@
     warn: 'i-solar:danger-triangle-bold',
     unknown: 'i-solar:question-circle-bold'
   }}
-/>`} language="svelte" />
+/>`}
+				language="svelte"
+			/>
 		</div>
 	</div>
 

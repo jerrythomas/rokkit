@@ -41,6 +41,7 @@ for categorical, a `[min, max]` tuple for continuous. No wrapper objects.
 Exposes a `filters` getter so `CrossFilter.svelte` can bind to the current state.
 
 **Files:**
+
 - Create: `packages/chart/src/crossfilter/createCrossFilter.svelte.js`
 - Create: `packages/chart/spec/crossfilter/createCrossFilter.svelte.spec.js`
 
@@ -200,7 +201,7 @@ export function createCrossFilter() {
     const f = filters.get(dimension)
     if (!f) return false
     if (f instanceof Set) return f.size > 0
-    return true  // range: always active if present
+    return true // range: always active if present
   }
 
   /**
@@ -268,7 +269,9 @@ export function createCrossFilter() {
 
   return {
     /** @readonly — reactive Map of current filter state */
-    get filters() { return filters },
+    get filters() {
+      return filters
+    },
     isFiltered,
     isDimmed,
     toggleCategorical,
@@ -303,6 +306,7 @@ Svelte context provider. Wraps child `Plot` components and provides the crossfil
 `crossfilter` prop (for spec/helpers API).
 
 **Files:**
+
 - Create: `packages/chart/src/crossfilter/CrossFilter.svelte`
 - Create: `packages/chart/spec/crossfilter/CrossFilter.spec.js`
 
@@ -400,6 +404,7 @@ are dimmed. Uses `instanceof Set` vs `Array.isArray` to distinguish filter types
 the spec's `FilterState = Map<string, Set | [number, number]>`.
 
 **Files:**
+
 - Create: `packages/chart/src/lib/plot/crossfilter.js`
 - Create: `packages/chart/spec/lib/plot/crossfilter.spec.js`
 
@@ -414,7 +419,7 @@ import { createCrossFilter } from '../../../src/crossfilter/createCrossFilter.sv
 
 const data = [
   { class: 'compact', displ: 1.8, hwy: 29 },
-  { class: 'suv',     displ: 5.3, hwy: 20 },
+  { class: 'suv', displ: 5.3, hwy: 20 },
   { class: 'midsize', displ: 2.4, hwy: 27 }
 ]
 
@@ -525,6 +530,7 @@ present. CrossFilter context is optional — Bar works without it.
 opacity (spec: 0.15 via `[data-dimmed] { opacity: 0.15 }`). Do NOT add inline `fill-opacity`.
 
 **Files:**
+
 - Modify: `packages/chart/src/geoms/Bar.svelte`
 - Create: `packages/chart/spec/geoms/Bar.crossfilter.spec.js`
 - Create: `packages/chart/spec/helpers/TestBarCF.svelte`
@@ -543,22 +549,28 @@ import { getContext } from 'svelte'
 import { applyDimming } from '../lib/plot/crossfilter.js'
 
 // CrossFilter context (optional — undefined if no CrossFilter wraps this chart)
-const cf     = getContext('crossfilter')
-const cfMode = getContext('crossfilter-mode')  // 'dim' | 'hide'
+const cf = getContext('crossfilter')
+const cfMode = getContext('crossfilter-mode') // 'dim' | 'hide'
 ```
 
 Add `filterable` to the `$props()` destructure:
+
 ```js
 // existing props + new:
 let { ..., filterable = false } = $props()
 ```
 
 Add a derived that attaches dimming state to bars:
+
 ```js
 // After the existing `const bars = $derived.by(() => { ... })`
 const barsWithDim = $derived.by(() => {
   if (!cf) return bars.map((b) => ({ ...b, dimmed: false }))
-  const dimmed = applyDimming(bars.map((b) => b.data), cf, { x, color })
+  const dimmed = applyDimming(
+    bars.map((b) => b.data),
+    cf,
+    { x, color }
+  )
   return bars.map((b, i) => ({ ...b, dimmed: dimmed[i]?.dimmed ?? false }))
 })
 ```
@@ -568,6 +580,7 @@ const barsWithDim = $derived.by(() => {
 Replace `{#each bars as bar (bar.key)}` with `{#each barsWithDim as bar (bar.key)}`.
 
 On each `<rect>`, add:
+
 - `data-dimmed={bar.dimmed ? true : undefined}` — attribute present when dimmed, absent when not
 - `onclick={filterable && x ? () => cf?.toggleCategorical(x, bar.data[x]) : undefined}`
 - `style:cursor={filterable ? 'pointer' : undefined}`
@@ -576,6 +589,7 @@ On each `<rect>`, add:
 Do NOT add `fill-opacity` — dimming opacity is handled by theme CSS via `[data-dimmed]`.
 
 Example template structure after changes:
+
 ```svelte
 {#each barsWithDim as bar (bar.key)}
   {#if cfMode !== 'hide' || !bar.dimmed}
@@ -626,7 +640,7 @@ import TestBarCF from '../helpers/TestBarCF.svelte'
 describe('Bar geom crossfilter', () => {
   const data = [
     { class: 'compact', hwy: 29 },
-    { class: 'suv',     hwy: 20 }
+    { class: 'suv', hwy: 20 }
   ]
 
   it('renders bars without data-dimmed when no filter active', () => {
@@ -698,6 +712,7 @@ A compact, always-filterable bar chart. Thin wrapper around `PlotChart + Bar (fi
 Must be placed inside an external `<CrossFilter>` wrapper — it does not create its own.
 
 **Files:**
+
 - Create: `packages/chart/src/crossfilter/FilterBar.svelte`
 - Create: `packages/chart/spec/crossfilter/FilterBar.spec.js`
 
@@ -712,14 +727,16 @@ import FilterBar from '../../src/crossfilter/FilterBar.svelte'
 
 const data = [
   { class: 'compact', hwy: 29 },
-  { class: 'suv',     hwy: 20 }
+  { class: 'suv', hwy: 20 }
 ]
 
 describe('FilterBar', () => {
   it('renders without crashing', () => {
-    expect(() => render(FilterBar, {
-      props: { data, field: 'class', valueField: 'hwy' }
-    })).not.toThrow()
+    expect(() =>
+      render(FilterBar, {
+        props: { data, field: 'class', valueField: 'hwy' }
+      })
+    ).not.toThrow()
   })
 
   it('renders data-plot-root (contains a Plot)', () => {
@@ -778,14 +795,7 @@ Expected: FAIL — `./FilterBar.svelte` not found.
 </script>
 
 <!-- FilterBar must be used inside a <CrossFilter> parent. Does not create its own context. -->
-<PlotChart
-  {data}
-  {width}
-  {height}
-  {mode}
-  grid={false}
-  legend={false}
->
+<PlotChart {data} {width} {height} {mode} grid={false} legend={false}>
   <Bar x={field} y={valueField} {stat} filterable={true} />
 </PlotChart>
 ```
@@ -818,6 +828,7 @@ HTML `<input type="range">` elements as an interim approach. When the `brush` ge
 component should be refactored to wrap `PlotChart + Point brush`.
 
 **Files:**
+
 - Create: `packages/chart/src/crossfilter/FilterSlider.svelte`
 - Create: `packages/chart/spec/crossfilter/FilterSlider.spec.js`
 
@@ -832,9 +843,11 @@ import FilterSlider from '../../src/crossfilter/FilterSlider.svelte'
 
 describe('FilterSlider', () => {
   it('renders without crashing', () => {
-    expect(() => render(FilterSlider, {
-      props: { field: 'displ', min: 1.6, max: 7.0 }
-    })).not.toThrow()
+    expect(() =>
+      render(FilterSlider, {
+        props: { field: 'displ', min: 1.6, max: 7.0 }
+      })
+    ).not.toThrow()
   })
 
   it('renders data-filter-slider container', () => {
@@ -895,7 +908,7 @@ Expected: FAIL — `./FilterSlider.svelte` not found.
 
   const cf = getContext('crossfilter')
 
-  let low  = $state(min)
+  let low = $state(min)
   let high = $state(max)
 
   function handleLow(e) {
@@ -916,7 +929,9 @@ Expected: FAIL — `./FilterSlider.svelte` not found.
   <div class="inputs">
     <input
       type="range"
-      {min} {max} {step}
+      {min}
+      {max}
+      {step}
       value={low}
       oninput={handleLow}
       aria-label="Minimum {label || field}"
@@ -924,7 +939,9 @@ Expected: FAIL — `./FilterSlider.svelte` not found.
     />
     <input
       type="range"
-      {min} {max} {step}
+      {min}
+      {max}
+      {step}
       value={high}
       oninput={handleHigh}
       aria-label="Maximum {label || field}"
@@ -978,6 +995,7 @@ git commit -m "feat(chart): add FilterSlider — dual range slider for continuou
 ### Task 7: Exports + update docs status
 
 **Files:**
+
 - Modify: `packages/chart/src/index.js`
 - Modify: `docs/features/07-Charts.md`
 
@@ -991,10 +1009,10 @@ Add after the existing exports:
 
 ```js
 // CrossFilter system
-export { createCrossFilter }           from './crossfilter/createCrossFilter.svelte.js'
-export { default as CrossFilter }      from './crossfilter/CrossFilter.svelte'
-export { default as FilterBar }        from './crossfilter/FilterBar.svelte'
-export { default as FilterSlider }     from './crossfilter/FilterSlider.svelte'
+export { createCrossFilter } from './crossfilter/createCrossFilter.svelte.js'
+export { default as CrossFilter } from './crossfilter/CrossFilter.svelte'
+export { default as FilterBar } from './crossfilter/FilterBar.svelte'
+export { default as FilterSlider } from './crossfilter/FilterSlider.svelte'
 ```
 
 - [ ] **Step 3: Update `docs/features/07-Charts.md` CrossFilter status**
@@ -1011,6 +1029,7 @@ Update these rows from 🔲 Planned to ✅ Implemented:
 ```
 
 Remaining 🔲 Planned (not in this plan set):
+
 - Brush filter (continuous range via drag on chart canvas) — requires `brush` geom
 - Playground e2e page at `/playground/charts/cross-filter` — site work, tracked separately
 
@@ -1045,6 +1064,7 @@ After Task 7, the CrossFilter layer is complete:
 - `crossfilter/FilterSlider.svelte` — dual range slider for continuous dimensions (tested, interim)
 
 **The full Plot system (Plans 1–4) is now complete:**
+
 - Plan 1: Pure-JS foundation (stat resolver, scale utilities, PlotState)
 - Plan 2: Rendering layer (geoms, Axis, Grid, Legend, Plot.svelte)
 - Plan 3: Facets and Animation (FacetPlot, AnimatedPlot, Timeline)

@@ -34,6 +34,7 @@ git log --oneline -5   # orient yourself
 ```
 
 If you need an isolated branch (large feature, experimental work), branch from develop:
+
 ```bash
 git checkout -b feature/<kebab-case-name>
 ```
@@ -41,11 +42,13 @@ git checkout -b feature/<kebab-case-name>
 ## Step 4: Classify the Work
 
 **Design Work (full pipeline)** — use when:
+
 - New component or new pattern
 - Architectural change
 - Anything that could be done multiple ways
 
 **Tactical Work (lightweight)** — use when:
+
 - Bug fix, small addition, clear scope
 
 For design work: agree on approach before writing code. For tactical work: confirm reasoning, then proceed.
@@ -59,6 +62,7 @@ Look in `docs/backlog/` for an existing item. If none:
 ```
 
 Format:
+
 ```markdown
 # <Feature Name>
 
@@ -85,6 +89,7 @@ For non-trivial work, create or update `docs/plans/README.md`:
 **Backlog ref:** docs/backlog/YYYY-MM-DD-<name>.md
 
 ## Tasks
+
 - [ ] Task 1
 - [ ] Task 2
 ```

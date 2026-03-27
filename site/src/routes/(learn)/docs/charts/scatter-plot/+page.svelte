@@ -1,7 +1,7 @@
 <article data-article-root>
 	<p>
-		A data-driven SVG scatter plot for correlation and distribution analysis. Supports color
-		coding, variable point size (bubble chart), custom markers, data labels, and hover tooltips.
+		A data-driven SVG scatter plot for correlation and distribution analysis. Supports color coding,
+		variable point size (bubble chart), custom markers, data labels, and hover tooltips.
 	</p>
 
 	<h2>Basic usage</h2>
@@ -23,10 +23,12 @@
 
 	<h2>Color coding</h2>
 	<p>
-		Use <code>color</code> to assign palette colors by category. Enable <code>legend</code> to
-		show the color key:
+		Use <code>color</code> to assign palette colors by category. Enable <code>legend</code> to show the
+		color key:
 	</p>
-	<pre><code>{`<ScatterPlot data={data} x="sessions" y="conversions" color="channel" legend />`}</code></pre>
+	<pre><code
+			>{`<ScatterPlot data={data} x="sessions" y="conversions" color="channel" legend />`}</code
+		></pre>
 
 	<h2>Bubble chart</h2>
 	<p>Map a numeric field to <code>size</code> to vary point radius:</p>

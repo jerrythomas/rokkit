@@ -11,11 +11,13 @@ cd packages/themes && bun run build
 ```
 
 Then check that the dist files were updated:
+
 ```bash
 ls -la packages/themes/dist/
 ```
 
 Expected output files:
+
 - `base.css`
 - `rokkit.css`
 - `minimal.css`
@@ -31,6 +33,7 @@ Expected output files:
 ## Verify in Browser
 
 After building, open:
+
 - `http://localhost:5175/playground/components/<changed-component>`
 - Use the toolbar Dropdown to cycle through all 4 themes
 - Verify no gradient bleed-through from rokkit into minimal/material/glass

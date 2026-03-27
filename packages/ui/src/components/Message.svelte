@@ -70,8 +70,6 @@
 	{/if}
 
 	{#if dismissible}
-		<button type="button" data-message-dismiss aria-label="Dismiss" onclick={ondismiss}
-			>×</button
-		>
+		<button type="button" data-message-dismiss aria-label="Dismiss" onclick={ondismiss}>×</button>
 	{/if}
 </div>

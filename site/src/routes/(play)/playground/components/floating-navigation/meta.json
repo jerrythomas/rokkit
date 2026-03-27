@@ -1,1 +1,6 @@
-{ "title": "Floating Navigation", "category": "layout", "icon": "i-glyph:floating-navigation", "order": 4 }
+{
+  "title": "Floating Navigation",
+  "category": "layout",
+  "icon": "i-glyph:floating-navigation",
+  "order": 4
+}

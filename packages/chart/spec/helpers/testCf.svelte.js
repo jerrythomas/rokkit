@@ -5,5 +5,5 @@ import { createCrossFilter } from '../../src/crossfilter/createCrossFilter.svelt
 export const testCf = createCrossFilter()
 
 export function resetTestCf() {
-  testCf.clearAll()
+	testCf.clearAll()
 }

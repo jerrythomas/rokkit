@@ -25,7 +25,7 @@ test.describe('BubbleChart', () => {
 			els.slice(0, 10).map((el) => ({
 				cx: el.getAttribute('cx'),
 				cy: el.getAttribute('cy'),
-				r:  el.getAttribute('r')
+				r: el.getAttribute('r')
 			}))
 		)
 		for (const { cx, cy, r } of attrs) {

@@ -1,0 +1,62 @@
+# Code
+
+Syntax-highlighted code block with optional line numbers and copy-to-clipboard button. Uses Shiki for highlighting.
+
+## Import
+
+```javascript
+import { Code } from '@rokkit/ui'
+```
+
+## Quick Start
+
+```svelte
+<Code code={snippet} language="svelte" />
+<Code code={jsCode} language="javascript" showLineNumbers />
+<Code code={cssCode} language="css" theme="light" showCopyButton={false} />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `code` | `string` | — | Source code string to display |
+| `language` | `string` | `'text'` | Language for syntax highlighting (e.g. `'svelte'`, `'javascript'`, `'css'`) |
+| `theme` | `'dark' \| 'light'` | `'dark'` | Shiki color theme |
+| `showLineNumbers` | `boolean` | `false` | Show line number gutter |
+| `showCopyButton` | `boolean` | `true` | Show copy-to-clipboard button |
+| `labels` | `Record<string, string>` | `{}` | Override UI strings (e.g. `{ copy: 'Copy', copied: 'Copied!' }`) |
+| `icons` | `CodeStateIcons` | — | Override icon classes |
+| `class` | `string` | `''` | Additional CSS classes |
+
+## Shiki Utilities
+
+Also exported from `@rokkit/ui` for async highlighting in server or custom contexts:
+
+```javascript
+import { highlightCode, preloadHighlighter, getSupportedLanguages } from '@rokkit/ui'
+
+// Async — returns highlighted HTML string
+const html = await highlightCode(code, { lang: 'svelte', theme: 'github-dark' })
+
+// Preload a language/theme to avoid first-render delay
+await preloadHighlighter({ lang: 'typescript', theme: 'github-light' })
+
+// List supported language IDs
+const langs = getSupportedLanguages()
+```
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-code` | Root element |
+| `data-language` | Language identifier |
+| `data-code-block` | Code content area |
+| `data-line-numbers` | Present when line numbers are shown |
+| `data-code-copy` | Copy button |
+| `data-copied` | Present on copy button for 2s after copy |
+
+## Related
+
+- [MarkdownRenderer](/llms/components/markdown-renderer.txt) — Renders markdown with embedded Code blocks

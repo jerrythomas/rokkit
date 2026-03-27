@@ -354,125 +354,125 @@ Feature: Accessible Charts
 
 ### Plot System
 
-| Feature | Status |
-|---------|--------|
-| `Plot.svelte` orchestrator | 🔲 Planned |
-| `PlotSpec` JSON schema | 🔲 Planned |
-| `PlotState` reactive class | 🔲 Planned |
-| Declarative geom children API | 🔲 Planned |
-| Spec-driven API | 🔲 Planned |
+| Feature                                         | Status     |
+| ----------------------------------------------- | ---------- |
+| `Plot.svelte` orchestrator                      | 🔲 Planned |
+| `PlotSpec` JSON schema                          | 🔲 Planned |
+| `PlotState` reactive class                      | 🔲 Planned |
+| Declarative geom children API                   | 🔲 Planned |
+| Spec-driven API                                 | 🔲 Planned |
 | Helpers pattern (stats, format, tooltip, geoms) | 🔲 Planned |
 
 ### Geoms
 
-| Feature | Status |
-|---------|--------|
-| Bar (vertical + horizontal via scale inference) | 🔲 Planned |
-| Bar stacked | 🔲 Planned |
-| Line | ✅ Implemented (extract to geom) |
-| Area | ✅ Implemented (extract to geom) |
-| Area stacked | 🔲 Planned |
-| Point / Scatter | ✅ Implemented (extract to geom) |
-| Box | ✅ Implemented (extract to geom) |
-| Violin | ✅ Implemented (extract to geom) |
-| Arc (pie + donut via innerRadius) | ✅ Implemented (extract to geom) |
-| Hexbin | 🔲 Planned (#121) |
-| Heatmap | 🔲 Planned (#122) |
-| Candlestick | 🔲 Planned (#123) |
-| Waterfall | 🔲 Planned (#124) |
-| Ribbon / Sankey | 🔲 Planned (#125) |
+| Feature                                         | Status                           |
+| ----------------------------------------------- | -------------------------------- |
+| Bar (vertical + horizontal via scale inference) | 🔲 Planned                       |
+| Bar stacked                                     | 🔲 Planned                       |
+| Line                                            | ✅ Implemented (extract to geom) |
+| Area                                            | ✅ Implemented (extract to geom) |
+| Area stacked                                    | 🔲 Planned                       |
+| Point / Scatter                                 | ✅ Implemented (extract to geom) |
+| Box                                             | ✅ Implemented (extract to geom) |
+| Violin                                          | ✅ Implemented (extract to geom) |
+| Arc (pie + donut via innerRadius)               | ✅ Implemented (extract to geom) |
+| Hexbin                                          | 🔲 Planned (#121)                |
+| Heatmap                                         | 🔲 Planned (#122)                |
+| Candlestick                                     | 🔲 Planned (#123)                |
+| Waterfall                                       | 🔲 Planned (#124)                |
+| Ribbon / Sankey                                 | 🔲 Planned (#125)                |
 
 ### Visual Encoding
 
-| Feature | Status |
-|---------|--------|
-| Categorical color scale (palette) | ✅ Implemented |
-| Sequential color scale | 🔲 Planned (#126) |
-| Diverging color scale | 🔲 Planned (#126) |
-| Pattern fills | ✅ Implemented |
-| Symbol shapes | ✅ Implemented |
-| Labels map + i18n-external contract | 🔲 Planned |
-| Tick formatters via helpers.format | 🔲 Planned |
-| Dark mode / theme integration | ✅ Implemented |
+| Feature                             | Status            |
+| ----------------------------------- | ----------------- |
+| Categorical color scale (palette)   | ✅ Implemented    |
+| Sequential color scale              | 🔲 Planned (#126) |
+| Diverging color scale               | 🔲 Planned (#126) |
+| Pattern fills                       | ✅ Implemented    |
+| Symbol shapes                       | ✅ Implemented    |
+| Labels map + i18n-external contract | 🔲 Planned        |
+| Tick formatters via helpers.format  | 🔲 Planned        |
+| Dark mode / theme integration       | ✅ Implemented    |
 
 ### Infrastructure
 
-| Feature | Status |
-|---------|--------|
-| Shared axis (Axis.svelte) | ✅ Implemented |
-| Quadrant-aware axis (axisOrigin) | 🔲 Planned (future) |
-| Shared grid | ✅ Implemented |
-| Shared legend (categorical) | ✅ Implemented |
-| Shared legend (gradient — sequential/diverging) | 🔲 Planned |
-| Stat transforms (built-in) | ✅ Implemented |
-| Stat via helpers.stats (custom) | 🔲 Planned |
-| Orientation via scale-type inference | 🔲 Planned |
+| Feature                                         | Status              |
+| ----------------------------------------------- | ------------------- |
+| Shared axis (Axis.svelte)                       | ✅ Implemented      |
+| Quadrant-aware axis (axisOrigin)                | 🔲 Planned (future) |
+| Shared grid                                     | ✅ Implemented      |
+| Shared legend (categorical)                     | ✅ Implemented      |
+| Shared legend (gradient — sequential/diverging) | 🔲 Planned          |
+| Stat transforms (built-in)                      | ✅ Implemented      |
+| Stat via helpers.stats (custom)                 | 🔲 Planned          |
+| Orientation via scale-type inference            | 🔲 Planned          |
 
 ### Facets
 
-| Feature | Status |
-|---------|--------|
-| `FacetPlot.svelte` | ✅ Implemented |
-| Fixed scales (shared domain) | ✅ Implemented |
-| Free scales (per-panel domain) | ✅ Implemented |
-| Missing values → gaps | ✅ Implemented |
-| Shared axis/legend across panels | 🔲 Planned |
+| Feature                          | Status         |
+| -------------------------------- | -------------- |
+| `FacetPlot.svelte`               | ✅ Implemented |
+| Fixed scales (shared domain)     | ✅ Implemented |
+| Free scales (per-panel domain)   | ✅ Implemented |
+| Missing values → gaps            | ✅ Implemented |
+| Shared axis/legend across panels | 🔲 Planned     |
 
 ### Animation
 
-| Feature | Status |
-|---------|--------|
-| `AnimatedPlot.svelte` | ✅ Implemented |
-| Frame normalization (fill missing with 0) | ✅ Implemented |
-| Static scales across frames | ✅ Implemented |
+| Feature                                    | Status         |
+| ------------------------------------------ | -------------- |
+| `AnimatedPlot.svelte`                      | ✅ Implemented |
+| Frame normalization (fill missing with 0)  | ✅ Implemented |
+| Static scales across frames                | ✅ Implemented |
 | Timeline controls (play/pause/scrub/speed) | ✅ Implemented |
-| Bar chart race (sorted positions) | 🔲 Planned |
-| `prefers-reduced-motion` | ✅ Implemented |
+| Bar chart race (sorted positions)          | 🔲 Planned     |
+| `prefers-reduced-motion`                   | ✅ Implemented |
 
 ### CrossFilter
 
-| Feature | Status |
-|---------|--------|
-| `CrossFilter` context provider | ✅ Implemented |
-| `createCrossFilter()` for spec API | ✅ Implemented |
-| Click filter (categorical) | ✅ Implemented |
-| Brush filter (continuous range) | 🔲 Planned |
-| Dimming filtered-out marks | ✅ Implemented |
-| `FilterBar` wrapper component | ✅ Implemented |
-| `FilterSlider` wrapper component | ✅ Implemented (interim — HTML inputs) |
+| Feature                            | Status                                 |
+| ---------------------------------- | -------------------------------------- |
+| `CrossFilter` context provider     | ✅ Implemented                         |
+| `createCrossFilter()` for spec API | ✅ Implemented                         |
+| Click filter (categorical)         | ✅ Implemented                         |
+| Brush filter (continuous range)    | 🔲 Planned                             |
+| Dimming filtered-out marks         | ✅ Implemented                         |
+| `FilterBar` wrapper component      | ✅ Implemented                         |
+| `FilterSlider` wrapper component   | ✅ Implemented (interim — HTML inputs) |
 
 ### Tooltips & Interactivity
 
-| Feature | Status |
-|---------|--------|
-| Default tooltip on hover | 🔲 Planned |
+| Feature                            | Status     |
+| ---------------------------------- | ---------- |
+| Default tooltip on hover           | 🔲 Planned |
 | Custom tooltip via helpers.tooltip | 🔲 Planned |
-| Click selection events | 🔲 Planned |
-| Zoom and pan | 🔲 Planned |
-| Keyboard navigation within charts | 🔲 Planned |
+| Click selection events             | 🔲 Planned |
+| Zoom and pan                       | 🔲 Planned |
+| Keyboard navigation within charts  | 🔲 Planned |
 
 ### Presets
 
-| Feature | Status |
-|---------|--------|
-| Default preset (21-color palette) | ✅ Implemented |
-| Named preset via helpers.presets | 🔲 Planned |
-| Built-in accessible preset (colorblind-safe) | 🔲 Planned |
-| Built-in print preset (greyscale + patterns) | 🔲 Planned |
-| Custom pattern registration via helpers.patterns | 🔲 Planned |
-| Custom symbol registration via helpers.symbols | 🔲 Planned |
+| Feature                                              | Status            |
+| ---------------------------------------------------- | ----------------- |
+| Default preset (21-color palette)                    | ✅ Implemented    |
+| Named preset via helpers.presets                     | 🔲 Planned        |
+| Built-in accessible preset (colorblind-safe)         | 🔲 Planned        |
+| Built-in print preset (greyscale + patterns)         | 🔲 Planned        |
+| Custom pattern registration via helpers.patterns     | 🔲 Planned        |
+| Custom symbol registration via helpers.symbols       | 🔲 Planned        |
 | Continuous color schemes (greens, blues, rdbu, etc.) | 🔲 Planned (#126) |
 
 ### Sparklines
 
-| Feature | Status |
-|---------|--------|
+| Feature                   | Status         |
+| ------------------------- | -------------- |
 | Sparkline — line/bar/area | ✅ Implemented |
 
 ### Accessibility
 
-| Feature | Status |
-|---------|--------|
-| aria-label on chart | 🔲 Planned |
-| Visually hidden data table | 🔲 Planned |
+| Feature                       | Status     |
+| ----------------------------- | ---------- |
+| aria-label on chart           | 🔲 Planned |
+| Visually hidden data table    | 🔲 Planned |
 | Keyboard focus on data points | 🔲 Planned |

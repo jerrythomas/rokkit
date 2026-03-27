@@ -18,7 +18,15 @@
 		children?: Snippet
 	}
 
-	const { href, onclick, variant = 'default', class: className = '', header, footer, children }: CardProps = $props()
+	const {
+		href,
+		onclick,
+		variant = 'default',
+		class: className = '',
+		header,
+		footer,
+		children
+	}: CardProps = $props()
 </script>
 
 {#snippet cardContent()}
@@ -46,7 +54,14 @@
 		{@render cardContent()}
 	</a>
 {:else if onclick}
-	<button type="button" data-card data-card-interactive data-variant={variant} class={className || undefined} {onclick}>
+	<button
+		type="button"
+		data-card
+		data-card-interactive
+		data-variant={variant}
+		class={className || undefined}
+		{onclick}
+	>
 		{@render cardContent()}
 	</button>
 {:else}
