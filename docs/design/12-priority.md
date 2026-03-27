@@ -2,7 +2,7 @@
 
 A working checklist of all pending work items collected from feature status tables and planned design documents. Organized by priority tier. Check off items as they are completed.
 
-Last updated: 2026-03-26 (Stack, Divider, Avatar, Badge implemented; chart preset fully implemented including CLI init/doctor and site config)
+Last updated: 2026-03-27 (multi-step forms + StepIndicator; glass→frosted theme rename; 6 extra theme variants (ant-design, bits-ui, carbon, daisy-ui, shadcn, grada-ui) for StepIndicator; frosted theme liquid glass revamp)
 
 ---
 
@@ -35,6 +35,9 @@ These components existed and were deleted in commit `4ef37ef4` (2026-02-18). Sou
 
 - [ ] Data-density controls — compact / default / comfortable density modes inherited from context (`docs/features/03-ThemingAndDesign.md`)
 - [x] Whitelabeling — full replacement of all visual defaults via skin + typography + icon + shape tokens; supported via rokkit preset, CLI init/doctor, and chart preset config (`docs/features/03-ThemingAndDesign.md`) (2026-03-27)
+- [x] Rename glass theme → frosted — selectors, build.mjs, CLI files, site files, test specs all updated; 11 themes now: base + rokkit + minimal + material + frosted + shadcn + daisy-ui + bits-ui + ant-design + carbon + grada-ui (2026-03-27)
+- [x] StepIndicator theme CSS — base structural layout + all 10 theme variants (including 6 extra themes); frosted variant uses specular borders + glass shine (2026-03-27)
+- [x] Frosted theme liquid glass revamp — `color-mix()` translucent surfaces, `rgba(255,255,255,0.2-0.28)` specular borders, inset top-edge box-shadow shine, `backdrop-blur-xl/2xl` on panels; button/card/dropdown/menu/switch/input updated (2026-03-27)
 
 ---
 

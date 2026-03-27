@@ -2601,3 +2601,41 @@ const sizeScale = buildSizeScale(data, 'value', 20) // → sqrt scale [0, 20]
 - `Plot.svelte`: `zoom` prop (default false); d3-zoom behavior attached to SVG via `$effect`; `style:cursor="grab"` when zoom active; cleanup on destroy
 
 **Final state:** 3161 tests passing, 0 lint errors.
+
+## 2026-03-27 — Multi-Step Forms, StepIndicator, Theme Rename, Frosted Revamp
+
+**Multi-Step Forms**
+
+- `FormBuilder` extended: `isMultiStep`, `totalSteps`, `currentStep`, `canAdvance`, `next()`/`prev()`/`goToStep()`, `validateStep()`
+- `StepIndicator.svelte` new presentational component — `data-step-indicator` ol, `data-step-item` li, `data-step-state` (complete/current/upcoming), `data-step-number`, `data-step-label`; keyboard accessible (complete steps are buttons)
+- `FormRenderer.svelte` updated: step-aware rendering, Prev/Next/Submit buttons, `data-form-step` + `data-form-step-content` data attributes
+- 28 tests in `spec/MultiStep.spec.svelte.js`
+- Learn docs: `site/src/routes/(learn)/docs/forms/multi-step/+page.svelte` with 3 code snippets
+- Playground: multi-step tab in `site/src/routes/(play)/playground/components/forms/+page.svelte`
+- Commits: `c34d0409`, `5a8d9a0f`
+
+**StepIndicator Theme CSS**
+
+- `packages/themes/src/base/step-indicator.css` — structural layout (flex, connectors, circle sizing)
+- All 10 theme variants created: rokkit, minimal, material, frosted, shadcn, daisy-ui, bits-ui, ant-design, carbon, grada-ui
+- Theme-specific shapes: carbon=square (radius 0), ant-design=4px, bits-ui=0.5rem, shadcn=rounded-md
+- Commit: `ec0634d9`
+
+**Glass → Frosted Theme Rename**
+
+- Folder renamed: `src/glass/` → `src/frosted/`, all selectors `[data-style='glass']` → `[data-style='frosted']`
+- `build.mjs`, `src/index.css`, CLI (init.js, doctor.js, specs), site files, e2e helpers all updated
+- 6 extra themes (ant-design, bits-ui, carbon, daisy-ui, shadcn, grada-ui) added step-indicator.css
+- Commit: `e723384f`
+
+**Frosted Theme Liquid Glass Revamp**
+
+- Replaced `bg-surface-z*/70` with `color-mix(in srgb, var(--color-surface-z4) 28%, transparent)` for proper translucency
+- Specular border highlights: `border-color: rgba(255,255,255,0.2-0.28)` on all surfaces
+- Inset glass shine: `box-shadow: inset 0 1px 0 rgba(255,255,255,0.18-0.25)` on button/card/switch/input
+- `backdrop-blur-xl` on buttons/triggers; `backdrop-blur-2xl` on panels (dropdown, menu)
+- Colored variants (primary/secondary/accent/danger): 60% `color-mix` saturation + white specular border
+- Files: button.css, card.css, dropdown.css, menu.css, switch.css, input.css
+- Commit: `c2c0dd36`
+
+**Final state:** 3189 tests passing, 0 lint errors.
