@@ -24,15 +24,17 @@
 <ol data-step-indicator>
 	{#each steps as label, index (index)}
 		{@const state = stepState(index)}
-		<li
-			data-step-item
-			data-step-state={state}
-			onclick={() => handleClick(index)}
-			role={state === 'complete' ? 'button' : undefined}
-			tabindex={state === 'complete' ? 0 : undefined}
-			onkeydown={(e) => e.key === 'Enter' && handleClick(index)}
-		>
-			<span data-step-number>{index + 1}</span>
+		<li data-step-item data-step-state={state}>
+			{#if state === 'complete'}
+				<button
+					type="button"
+					data-step-number
+					onclick={() => handleClick(index)}
+					onkeydown={(e) => e.key === 'Enter' && handleClick(index)}
+				>{index + 1}</button>
+			{:else}
+				<span data-step-number>{index + 1}</span>
+			{/if}
 			<span data-step-label>{label}</span>
 		</li>
 	{/each}

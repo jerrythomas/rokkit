@@ -202,8 +202,8 @@ describe('StepIndicator', () => {
 		const { container } = render(StepIndicator, {
 			props: { steps, current: 2, onclick: (i) => (clicked = i) }
 		})
-		const items = container.querySelectorAll('[data-step-item]')
-		fireEvent.click(items[0])
+		const button = container.querySelector('[data-step-item] button[data-step-number]')
+		fireEvent.click(button)
 		expect(clicked).toBe(0)
 	})
 

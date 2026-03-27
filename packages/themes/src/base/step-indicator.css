@@ -26,6 +26,15 @@
   height: 2px;
 }
 
+/* Reset button element when used as step-number (complete steps) */
+button[data-step-number] {
+  appearance: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+
 [data-step-number] {
   width: 2.5rem;
   height: 2.5rem;
