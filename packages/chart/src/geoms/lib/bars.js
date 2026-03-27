@@ -148,16 +148,54 @@ export function buildStackedBars(data, channels, xScale, yScale, colors, innerHe
 
 export function buildHorizontalBars(data, channels, xScale, yScale, colors, _innerHeight) {
 	const { x: xf, y: yf, color: cf } = channels
+	const isBand = typeof yScale?.bandwidth === 'function'
+
+	if (!isBand) {
+		// Linear y-scale: rank-based bar chart race.
+		// Each row has a numeric _rank that tweens smoothly between frames.
+		// No sub-grouping — each rank position holds exactly one entity.
+		const [r0, r1] = yScale.range() // [innerHeight, 0]
+		const [d0, d1] = yScale.domain() // [0, N-1]
+		const step = Math.max(Math.abs(r0 - r1) / Math.max(d1 - d0, 1), 1)
+		const barH = step * 0.9
+
+		return data.map((d) => {
+			const rankVal = Number(d[yf])
+			const colorKey = cf ? d[cf] : null
+			const colorEntry =
+				colors?.get(colorKey) ??
+				colors?.values().next().value ?? { fill: '#888', stroke: '#888' }
+
+			const centerY = yScale(rankVal) ?? 0
+			return {
+				data: d,
+				// Key by entity name (_entity) so Svelte reuses elements as rank tweens
+				key: `${String(d._entity ?? d[yf])}::${String(colorKey ?? '')}`,
+				x: 0,
+				y: centerY - barH / 2,
+				width: xScale(d[xf]) ?? 0,
+				height: barH,
+				fill: colorEntry.fill,
+				stroke: colorEntry.stroke,
+				patternId: null
+			}
+		})
+	}
+
+	// Band scale: standard grouped horizontal bars.
+	// Only create sub-bands when multiple entities share the same y-band (true grouping).
+	const yVals = new Set(data.map((d) => d[yf]))
 	const colorKeys = cf && !isLiteralColor(cf) ? [...new Set(data.map((d) => d[cf]))] : []
-	const subScale =
-		colorKeys.length > 1
-			? scaleBand().domain(colorKeys).range([0, yScale.bandwidth()]).padding(0.05)
-			: null
+	const hasSubBands = colorKeys.length > 1 && data.length > yVals.size
+	const subScale = hasSubBands
+		? scaleBand().domain(colorKeys).range([0, yScale.bandwidth()]).padding(0.05)
+		: null
 
 	return data.map((d) => {
 		const yVal = d[yf]
 		const colorKey = cf ? d[cf] : null
-		const colorEntry = colors?.get(colorKey) ??
+		const colorEntry =
+			colors?.get(colorKey) ??
 			colors?.values().next().value ?? { fill: '#888', stroke: '#888' }
 
 		const bandY = yScale(yVal) ?? 0
@@ -168,7 +206,7 @@ export function buildHorizontalBars(data, channels, xScale, yScale, colors, _inn
 			key: `${String(yVal)}::${String(colorKey ?? '')}`,
 			x: 0,
 			y: bandY + subY,
-			width: xScale(d[xf]),
+			width: xScale(d[xf]) ?? 0,
 			height: subScale ? subScale.bandwidth() : yScale.bandwidth(),
 			fill: colorEntry.fill,
 			stroke: colorEntry.stroke,

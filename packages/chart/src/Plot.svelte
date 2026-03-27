@@ -1,5 +1,7 @@
 <script>
 	import { setContext, getContext, untrack } from 'svelte'
+	import { zoom as d3Zoom } from 'd3-zoom'
+	import { select } from 'd3-selection'
 	import { PlotState } from './PlotState.svelte.js'
 	import { defaultPreset } from './lib/preset.js'
 	import Axis from './Plot/Axis.svelte'
@@ -30,6 +32,7 @@
 	 *   title?: string,
 	 *   summary?: string,
 	 *   tooltip?: boolean | ((data: Record<string, unknown>) => string),
+	 *   zoom?: boolean,
 	 *   children?: import('svelte').Snippet,
 	 * }}
 	 */
@@ -47,6 +50,7 @@
 		title = '',
 		summary = '',
 		tooltip = false,
+		zoom = false,
 		children
 	} = $props()
 
@@ -65,6 +69,7 @@
 			xDomain: spec?.xDomain,
 			yDomain: spec?.yDomain,
 			colorDomain: spec?.colorDomain,
+			orientation: spec?.orientation,
 			chartPreset
 		}
 	}
@@ -78,6 +83,23 @@
 	// Keep state in sync when reactive config changes
 	$effect(() => {
 		plotState.update(buildPlotConfig())
+	})
+
+	let svgEl = $state(null)
+
+	$effect(() => {
+		if (!zoom || !svgEl) return
+		const zoomBehavior = d3Zoom()
+			.scaleExtent([1, 8])
+			.on('zoom', (event) => {
+				plotState.applyZoom(event.transform)
+			})
+		const sel = select(svgEl)
+		sel.call(zoomBehavior)
+		return () => {
+			sel.on('.zoom', null)
+			plotState.resetZoom()
+		}
 	})
 
 	const svgWidth = $derived(spec?.width ?? width)
@@ -115,12 +137,14 @@
 	{/if}
 
 	<svg
+		bind:this={svgEl}
 		width={svgWidth}
 		height={svgHeight}
 		viewBox="0 0 {svgWidth} {svgHeight}"
 		role="img"
 		aria-label={chartTitle || 'Chart visualization'}
 		aria-description={chartSummary || undefined}
+		style:cursor={zoom ? 'grab' : undefined}
 	>
 		<!-- SVG pattern defs -->
 		<DefinePatterns />
@@ -147,7 +171,10 @@
 						y={geomSpec.y ?? spec?.y}
 						color={geomSpec.color ?? spec?.color}
 						fill={geomSpec.fill ?? spec?.fill}
+						pattern={geomSpec.pattern}
+						symbol={geomSpec.symbol}
 						stat={geomSpec.stat}
+						label={geomSpec.label}
 						options={geomSpec.options}
 					/>
 				{/if}

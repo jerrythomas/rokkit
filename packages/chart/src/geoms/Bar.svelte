@@ -34,6 +34,19 @@
 		return null
 	}
 
+	/**
+	 * Pick white or dark text based on perceived luminance of a hex fill color.
+	 * @param {string | undefined} hex
+	 * @returns {string}
+	 */
+	function contrastColor(hex) {
+		if (!hex || !hex.startsWith('#') || hex.length < 7) return 'white'
+		const r = parseInt(hex.slice(1, 3), 16) / 255
+		const g = parseInt(hex.slice(3, 5), 16) / 255
+		const b = parseInt(hex.slice(5, 7), 16) / 255
+		return 0.299 * r + 0.587 * g + 0.114 * b > 0.55 ? '#333' : 'white'
+	}
+
 	const plotState = getContext('plot-state')
 	const cf = getContext('crossfilter')
 	let id = $state(null)
@@ -64,13 +77,13 @@
 	const yScale = $derived(plotState.yScale)
 	const colors = $derived(plotState.colors)
 	const patterns = $derived(plotState.patterns)
-	const orientation = $derived(plotState.orientation)
+	const effectiveOrientation = $derived(options.orientation ?? plotState.orientation)
 	const innerHeight = $derived(plotState.innerHeight)
 
 	const bars = $derived.by(() => {
 		if (!data?.length || !xScale || !yScale) return []
 		const channels = { x, y, color: colorChannel, pattern }
-		if (orientation === 'horizontal') {
+		if (effectiveOrientation === 'horizontal') {
 			return buildHorizontalBars(data, channels, xScale, yScale, colors, innerHeight)
 		}
 		if (options.stack) {
@@ -147,15 +160,31 @@
 				/>
 			{/if}
 			{#if label}
-				{@const text = resolveLabel(bar.data, orientation === 'horizontal' ? x : y)}
+				{@const text = resolveLabel(bar.data, effectiveOrientation === 'horizontal' ? x : y)}
 				{#if text}
-					{#if orientation === 'horizontal'}
-						<LabelPill
-							x={bar.x + bar.width + (options.labelOffset ?? 8)}
-							y={bar.y + bar.height / 2}
-							{text}
-							color={bar.stroke ?? '#333'}
-						/>
+					{#if effectiveOrientation === 'horizontal'}
+						{#if options.labelInside}
+							{@const estimatedWidth = text.length * 7 + 16}
+							{@const fitsInside = bar.width >= estimatedWidth}
+							<text
+								x={fitsInside ? bar.x + bar.width - 8 : bar.x + bar.width + 6}
+								y={bar.y + bar.height / 2}
+								dominant-baseline="central"
+								text-anchor={fitsInside ? 'end' : 'start'}
+								font-size="11"
+								font-weight="600"
+								fill={fitsInside ? contrastColor(bar.fill) : (bar.stroke ?? '#555')}
+								pointer-events="none"
+								data-plot-element="label"
+							>{text}</text>
+						{:else}
+							<LabelPill
+								x={bar.x + bar.width + (options.labelOffset ?? 8)}
+								y={bar.y + bar.height / 2}
+								{text}
+								color={bar.stroke ?? '#333'}
+							/>
+						{/if}
 					{:else}
 						<LabelPill
 							x={bar.x + bar.width / 2}
