@@ -2639,3 +2639,24 @@ const sizeScale = buildSizeScale(data, 'value', 20) // → sqrt scale [0, 20]
 - Commit: `c2c0dd36`
 
 **Final state:** 3189 tests passing, 0 lint errors.
+
+## 2026-03-27 (continued)
+
+**Density System**
+
+- Created `packages/themes/src/base/density.css` — three CSS custom property scales:
+  - `compact`: tighter spacing (xs=0.125rem, sm=0.25rem, md=0.5rem), icons 1rem, smaller radius
+  - `comfortable` (default / `:root`): baseline (xs=0.25rem, sm=0.5rem, md=0.75rem), icons 1.25rem
+  - `cozy`: spacious (xs=0.375rem, sm=0.625rem, md=1rem), icons 1.5rem, larger radius
+- Imported `density.css` first in `base/index.css` so tokens cascade to all components
+- Updated 5 components to use `var(--density-*)` instead of hardcoded values:
+  - `button.css`: md/default height (`calc(icon-size + spacing-sm * 2)`), padding-inline, font-size, gap
+  - `list.css`: item padding-block/inline, font-size, line-height, gap; group label sizes
+  - `menu.css`: trigger height, item padding/font-size/gap, group padding
+  - `dropdown.css`: trigger height, option padding/font-size/line-height
+  - `card.css`: header/body/footer padding, border-radius → density-radius-base
+- Explicit `data-size` variants (sm/lg) remain hardcoded — independent override axis
+- Added density switcher (compact/comfortable/cozy buttons) to themes playground
+- Commit: `ad205f93`
+
+**Final state:** 3189 tests passing, 0 lint errors.
