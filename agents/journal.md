@@ -3,6 +3,25 @@
 Chronological log of confirmations, progress, milestones, and decisions.
 Design details live in `docs/design/` — modular docs per module.
 
+### Table multi-select + density system — complete (2026-03-27)
+
+**What was done:**
+
+- `packages/themes/src/base/density.css` — Created CSS custom property tiers: `:root`/`[data-density='comfortable']` (baseline), `[data-density='compact']` (dense), `[data-density='cozy']` (spacious); tokens: `--density-spacing-*`, `--density-font-size-*`, `--density-line-height`, `--density-icon-size`, `--density-radius-base`
+- `packages/themes/src/base/index.css` — Added `@import './density.css'` so tokens cascade everywhere
+- Updated `button.css`, `list.css`, `menu.css`, `dropdown.css`, `card.css` to use `var(--density-*)` tokens for their default/md size variants
+- `site/src/routes/(play)/playground/themes/+page.svelte` — Added density switcher (compact/comfortable/cozy) above themes grid
+- `packages/ui/src/types/table.ts` — Added `selectable?: 'single' | 'multi' | false` and `values?: unknown[]` to `TableProps`
+- `packages/ui/src/components/Table.svelte` — Wired `selectable` prop, `values = $bindable()`, `multiselect` option to `TableController`, `$effect` sync, `data-selectable` attribute, `handleSelectAction` guard; fixed `scrollIntoView?.()` for JSDOM compatibility
+- `packages/themes/src/base/table.css` — Added `cursor:default` rule for `[data-selectable='false']` rows
+- `packages/ui/spec/Table.spec.svelte.ts` — 7 new tests covering all selectable modes and multi-select interactions
+
+**Commits:** density system (prior session), `834935d2` (Table multi-select)
+
+**Tests:** 3196 passing. 0 lint errors.
+
+---
+
 ### Multi-step forms — complete (2026-03-27)
 
 **What was done:**

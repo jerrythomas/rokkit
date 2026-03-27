@@ -29,7 +29,7 @@ These components existed and were deleted in commit `4ef37ef4` (2026-02-18). Sou
 - [x] Navigation: Breadcrumb — implemented (`packages/ui/src/components/BreadCrumbs.svelte`)
 - [x] Layout components — Stack, Divider, Grid all implemented; Avatar and Badge also added (2026-03-26)
 - [x] Data Table — covered by `Table.svelte` with sorting, single selection, keyboard navigation, snippets, and full ARIA (`docs/features/06-ComponentLibrary.md`) (2026-03-27)
-  - [ ] Follow-up: add `values` binding + `selectable="single"|"multi"` prop for explicit multi-select mode
+  - [x] Follow-up: add `values` binding + `selectable="single"|"multi"` prop for explicit multi-select mode (2026-03-27)
 
 ### Theming & Design
 
