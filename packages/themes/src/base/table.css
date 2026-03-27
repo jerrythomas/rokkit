@@ -81,6 +81,10 @@
   transition: background-color 150ms ease;
 }
 
+[data-table][data-selectable='false'] [data-table-row] {
+  cursor: default;
+}
+
 [data-table-row]:focus {
   outline: none;
 }

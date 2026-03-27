@@ -241,4 +241,69 @@ describe('Table', () => {
 		const icon = container.querySelector('[data-cell-icon]')
 		expect(icon?.classList.contains('icon-F')).toBe(true)
 	})
+
+	// ─── Selectable prop ────────────────────────────────────────────
+
+	it('sets data-selectable attribute for single mode', () => {
+		const { container } = render(Table, { data: sampleData, selectable: 'single' })
+		expect(container.querySelector('[data-table]')?.getAttribute('data-selectable')).toBe('single')
+	})
+
+	it('sets data-selectable attribute for multi mode', () => {
+		const { container } = render(Table, { data: sampleData, selectable: 'multi' })
+		expect(container.querySelector('[data-table]')?.getAttribute('data-selectable')).toBe('multi')
+	})
+
+	it('omits data-selectable attribute when selectable is false', () => {
+		const { container } = render(Table, { data: sampleData, selectable: false })
+		expect(container.querySelector('[data-table]')?.hasAttribute('data-selectable')).toBe(false)
+	})
+
+	it('does not fire onselect when selectable is false', async () => {
+		const onselect = vi.fn()
+		const { container } = render(Table, { data: sampleData, selectable: false, onselect })
+		const row = container.querySelector('[data-table-row]')!
+		await fireEvent.click(row)
+		expect(onselect).not.toHaveBeenCalled()
+	})
+
+	// ─── Multi-select ───────────────────────────────────────────────
+
+	it('marks multiple rows as selected in multi mode', async () => {
+		const { container } = render(Table, { data: sampleData, selectable: 'multi' })
+		const rows = container.querySelectorAll('[data-table-row]')
+
+		await fireEvent.click(rows[0])
+		await fireEvent.click(rows[1], { ctrlKey: true })
+
+		const selected = container.querySelectorAll('[data-table-row][data-selected]')
+		expect(selected.length).toBe(2)
+	})
+
+	it('fires onselect for each row interaction in multi mode', async () => {
+		const onselect = vi.fn()
+		const { container } = render(Table, { data: sampleData, selectable: 'multi', onselect })
+		const rows = container.querySelectorAll('[data-table-row]')
+
+		await fireEvent.click(rows[0])
+		expect(onselect).toHaveBeenCalledTimes(1)
+
+		await fireEvent.click(rows[1], { ctrlKey: true })
+		expect(onselect).toHaveBeenCalledTimes(2)
+	})
+
+	it('ctrl+click toggles a row out of multi-selection', async () => {
+		const { container } = render(Table, { data: sampleData, selectable: 'multi' })
+		const rows = container.querySelectorAll('[data-table-row]')
+
+		await fireEvent.click(rows[0])
+		await fireEvent.click(rows[1], { ctrlKey: true })
+		// Both selected — now ctrl+click row[1] again to deselect
+		await fireEvent.click(rows[1], { ctrlKey: true })
+
+		const selected = container.querySelectorAll('[data-table-row][data-selected]')
+		expect(selected.length).toBe(1)
+		expect(rows[0].hasAttribute('data-selected')).toBe(true)
+		expect(rows[1].hasAttribute('data-selected')).toBe(false)
+	})
 })

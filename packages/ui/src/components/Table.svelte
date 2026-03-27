@@ -9,6 +9,8 @@
 		data = [],
 		columns: userColumns,
 		value,
+		values = $bindable<unknown[]>([]),
+		selectable = 'single' as 'single' | 'multi' | false,
 		caption,
 		size = 'md',
 		striped = false,
@@ -33,9 +35,17 @@
 			new TableController(data, {
 				columns: userColumns,
 				fields: userFields,
-				value
+				value,
+				multiselect: selectable === 'multi'
 			})
 	)
+
+	// Sync values binding from controller selection in multi-select mode
+	$effect(() => {
+		if (selectable === 'multi') {
+			values = controller.selected.slice()
+		}
+	})
 	let tableRef = $state<HTMLElement | null>(null)
 
 	// Sync data changes to controller
@@ -60,7 +70,7 @@
 		const target = el.querySelector(`[data-path="${key}"]`) as HTMLElement | null
 		if (target && target !== document.activeElement) {
 			target.focus()
-			target.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+			target.scrollIntoView?.({ block: 'nearest', inline: 'nearest' })
 		}
 	}
 
@@ -91,15 +101,15 @@
 	}
 
 	function handleSelectAction() {
+		if (selectable === false || disabled) return
+
 		const key = controller.focusedKey
 		if (!key) return
 
 		const proxy = controller.lookup.get(key)
 		if (!proxy) return
 
-		if (!disabled) {
-			onselect?.(proxy.value, proxy.value as Record<string, unknown>)
-		}
+		onselect?.(proxy.value, proxy.value as Record<string, unknown>)
 	}
 
 	// ─── Sort ───────────────────────────────────────────────────────
@@ -136,6 +146,7 @@
 	bind:this={tableRef}
 	data-table
 	data-size={size}
+	data-selectable={selectable || undefined}
 	data-disabled={disabled || undefined}
 	class={className || undefined}
 	onfocusin={handleFocusIn}

@@ -166,8 +166,14 @@ export interface TableProps {
 	/** Column definitions (auto-derived from data if not provided) */
 	columns?: TableColumn[]
 
-	/** Currently selected row value */
+	/** Currently selected row value (single-select) */
 	value?: unknown
+
+	/** Currently selected row values (multi-select, bindable) */
+	values?: unknown[]
+
+	/** Selection mode: 'single' (default), 'multi', or false (no selection) */
+	selectable?: 'single' | 'multi' | false
 
 	/** Table caption for accessibility */
 	caption?: string
