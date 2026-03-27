@@ -1,6 +1,6 @@
 <script>
 	// @ts-nocheck
-	import { FormRenderer, InfoField, FormBuilder, StatusList } from '@rokkit/forms'
+	import { FormRenderer, InfoField, FormBuilder, StatusList, StepIndicator } from '@rokkit/forms'
 	import { Button } from '@rokkit/ui'
 	import PlaySection from '$lib/components/PlaySection.svelte'
 
@@ -269,6 +269,57 @@
 		]
 	}
 
+	// ── Demo: Multi-Step ──────────────────────────────────────
+	let stepData = $state({})
+
+	const stepSchema = {
+		type: 'object',
+		properties: {
+			firstName: { type: 'string', required: true },
+			lastName: { type: 'string' },
+			email: { type: 'string', required: true, format: 'email' },
+			company: { type: 'string' },
+			plan: { type: 'string', required: true, enum: ['starter', 'pro', 'enterprise'] },
+			billing: { type: 'string', required: true, enum: ['monthly', 'annual'] }
+		}
+	}
+
+	const stepLayout = {
+		type: 'vertical',
+		elements: [
+			{
+				type: 'step',
+				label: 'Personal Info',
+				elements: [
+					{ scope: '#/firstName', label: 'First Name', props: { placeholder: 'Required' } },
+					{ scope: '#/lastName', label: 'Last Name', props: { placeholder: 'Optional' } },
+					{ scope: '#/email', label: 'Email', props: { placeholder: 'Required, must be valid' } }
+				]
+			},
+			{
+				type: 'step',
+				label: 'Organization',
+				elements: [{ scope: '#/company', label: 'Company Name', props: { placeholder: 'Optional' } }]
+			},
+			{
+				type: 'step',
+				label: 'Plan',
+				elements: [
+					{ scope: '#/plan', label: 'Plan', props: { renderer: 'toggle' } },
+					{ scope: '#/billing', label: 'Billing Cycle', props: { renderer: 'toggle' } }
+				]
+			}
+		]
+	}
+
+	const stepBuilder = new FormBuilder(stepData, stepSchema, stepLayout)
+	let stepSubmitted = $state(null)
+
+	async function handleStepSubmit(data) {
+		await new Promise((resolve) => setTimeout(resolve, 500))
+		stepSubmitted = data
+	}
+
 	// ── Validation demo ────────────────────────────────────────
 	let validationBuilder = new FormBuilder(
 		{ name: '', email: 'bad-email', age: 5 },
@@ -436,7 +487,7 @@
 		<div class="flex w-full max-w-[720px] flex-col gap-4 self-start p-2">
 			<!-- Tab navigation -->
 			<div class="flex flex-wrap gap-1">
-				{#each [{ id: 'input', label: 'Input Form' }, { id: 'flights', label: 'Pick a Flight' }, { id: 'hotels', label: 'Hotel Cards' }, { id: 'review', label: 'Itinerary Review' }, { id: 'mixed', label: 'Mixed Layout' }, { id: 'validation', label: 'Validation' }, { id: 'nested', label: 'Nested Form' }, { id: 'submit', label: 'Submit' }, { id: 'dirty', label: 'Dirty Tracking' }] as tab (tab.id)}
+				{#each [{ id: 'input', label: 'Input Form' }, { id: 'multistep', label: 'Multi-Step' }, { id: 'flights', label: 'Pick a Flight' }, { id: 'hotels', label: 'Hotel Cards' }, { id: 'review', label: 'Itinerary Review' }, { id: 'mixed', label: 'Mixed Layout' }, { id: 'validation', label: 'Validation' }, { id: 'nested', label: 'Nested Form' }, { id: 'submit', label: 'Submit' }, { id: 'dirty', label: 'Dirty Tracking' }] as tab (tab.id)}
 					<Button
 						label={tab.label}
 						size="sm"
@@ -457,6 +508,21 @@
 						layout={travelerLayout}
 						validateOn="blur"
 					/>
+				{:else if activeDemo === 'multistep'}
+					<h3 class="text-surface-z8 m-0 mb-3 text-sm font-semibold">Account Registration</h3>
+					<StepIndicator
+						steps={stepLayout.elements.map((el) => el.label)}
+						current={stepBuilder.currentStep}
+						onclick={(i) => stepBuilder.goToStep(i)}
+					/>
+					<div class="mt-4">
+						<FormRenderer builder={stepBuilder} validateOn="blur" onsubmit={handleStepSubmit} />
+					</div>
+					{#if stepSubmitted}
+						<div class="bg-success-z1 text-success-z7 mt-3 rounded p-2 text-xs">
+							Submitted successfully!
+						</div>
+					{/if}
 				{:else if activeDemo === 'flights'}
 					<h3 class="text-surface-z8 m-0 mb-3 text-sm font-semibold">Select Your Flight</h3>
 					<FormRenderer
@@ -590,6 +656,10 @@
 			<p class="m-0"><strong>Active:</strong> {activeDemo}</p>
 			{#if activeDemo === 'input'}
 				<InfoField label="Data" value={JSON.stringify(travelerData, null, 2)} />
+			{:else if activeDemo === 'multistep'}
+				<InfoField label="Step" value={`${stepBuilder.currentStep + 1} / ${stepBuilder.totalSteps}`} />
+				<InfoField label="Can Advance" value={stepBuilder.canAdvance ? 'Yes' : 'No'} />
+				<InfoField label="Data" value={JSON.stringify(stepBuilder.data, null, 2)} />
 			{:else if activeDemo === 'flights'}
 				<InfoField
 					label="Selected"
