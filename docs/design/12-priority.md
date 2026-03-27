@@ -121,7 +121,7 @@ These pages exist at `site/src/stories/` but show `<ComingSoon />`:
 
 - [x] `validation-report` — uses `StatusList` from `@rokkit/forms` (UI package restore still P1)
 - [x] `inputfield` — InputField, Input, InfoField from `@rokkit/forms`
-- [ ] `responsive-grid` — Layout/Grid component story (blocked on P1 Grid component)
+- [x] `responsive-grid` — Grid playground page at `site/src/routes/(play)/playground/components/grid/` with tile demo + custom snippet (2026-03-27)
 - [x] `forms/overview` — forms system intro and quick-start
 - [x] `forms/layout` — layout options (columns, sections, groups)
 - [x] `forms/schema` — schema-driven form generation
@@ -132,7 +132,7 @@ These pages exist at `site/src/stories/` but show `<ComingSoon />`:
 ### Component Design Documents (planned or missing)
 
 - [x] Card component design — `docs/design/components/card.md`
-- [~] Layout components design (Stack, Grid, Divider) — components implemented; formal design doc still missing
+- [x] Layout components design (Stack, Grid, Divider) — `docs/design/components/layout.md` (2026-03-27)
 - [x] Data Table design — `docs/design/components/data-table.md`
 - [x] Breadcrumb design — `docs/design/components/breadcrumbs.md`
 - [x] Tooltip design — `docs/design/components/tooltip.md`

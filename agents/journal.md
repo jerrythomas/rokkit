@@ -3,6 +3,18 @@
 Chronological log of confirmations, progress, milestones, and decisions.
 Design details live in `docs/design/` — modular docs per module.
 
+### P4 design docs + responsive-grid + layout doc — complete (2026-03-27)
+
+**What was done:**
+
+- `docs/design/06-themes.md` — Complete theme system reference: CSS layer architecture, color token z-levels, dark mode mechanics (`fixModeSelectors`), density CSS custom properties, `vibe` singleton API, `themable` action, adding a new theme
+- `docs/design/07-charts.md` — Chart system reference: component hierarchy (3 layers), PlotState, aesthetic channels, geom types, stat system, palette/preset, pattern fills, AnimatedPlot pipeline, FacetPlot, CrossFilter, accessibility, zoom
+- `docs/design/08-tools.md` — Toolchain reference: `rokkit.config.js`, `presetRokkit` (shortcuts, safelist, preflights, fonts), icon system, all CLI commands
+- `site/src/routes/(play)/playground/components/grid/` — Grid playground page exists (tile demo + custom snippets); added to playground index
+- `docs/design/components/layout.md` — Stack, Divider, Grid design doc with props, data attributes, CSS custom properties, usage examples
+
+**Commits:** see git log for individual commits
+
 ### Table multi-select + density system — complete (2026-03-27)
 
 **What was done:**

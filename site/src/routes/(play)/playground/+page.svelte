@@ -29,8 +29,9 @@
 					description: 'Toggle group for mutually exclusive options',
 					slug: 'toggle'
 				},
-				{ name: 'Tree', description: 'Collapsible hierarchical tree', slug: 'tree' }
-			]
+				{ name: 'Tree', description: 'Collapsible hierarchical tree', slug: 'tree' },
+			{ name: 'Grid', description: 'Responsive selectable tile grid', slug: 'grid' }
+		]
 		},
 		{
 			title: 'Inputs',
