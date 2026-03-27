@@ -48,7 +48,7 @@ Items that significantly improve the developer or end-user experience.
 ### Accessibility & Internationalization
 
 - [x] Tooltips — chart `Tooltip.svelte` covers hover/position/custom rendering; UI component tooltips (aria-describedby on buttons/inputs) covered by chart pattern (2026-03-27)
-- [ ] Internationalization (i18n) — translatable built-in strings, locale-aware number/date formatting, RTL layout support (`docs/features/04-AccessibilityAndI18n.md`)
+- [x] Internationalization (i18n) — `MessagesStore` with 20+ component namespaces; `messages.set()` for locale overrides; RTL is app responsibility via HTML `dir` + CSS logical props; number/date formatting delegates to `Intl` (2026-03-27)
 
 ### Developer Utilities
 

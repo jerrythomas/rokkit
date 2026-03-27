@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { TableProps, TableColumn, TableSortIcons } from '../types/table.js'
 	import { defaultTableSortIcons } from '../types/table.js'
-	import { TableController } from '@rokkit/states'
+	import { TableController, messages } from '@rokkit/states'
 	import { navigator } from '@rokkit/actions'
 	import { untrack } from 'svelte'
 
@@ -199,7 +199,7 @@
 					</tr>
 				{:else}
 					<tr data-table-empty-row>
-						<td data-table-empty colspan={controller.columns.length}> No data </td>
+						<td data-table-empty colspan={controller.columns.length}>{messages.current.table.empty}</td>
 					</tr>
 				{/if}
 			{:else}

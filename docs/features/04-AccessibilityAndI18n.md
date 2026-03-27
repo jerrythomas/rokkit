@@ -219,5 +219,5 @@ Feature: Internationalization
 | Focus management and trapping | ✅ Implemented |
 | ARIA attributes               | ✅ Implemented |
 | Screen reader support         | ✅ Implemented |
-| Tooltips                      | 🔲 Planned     |
-| Internationalization (i18n)   | 🔲 Planned     |
+| Tooltips                      | ✅ Implemented |
+| Internationalization (i18n)   | ✅ Implemented |

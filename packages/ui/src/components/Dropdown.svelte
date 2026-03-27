@@ -21,7 +21,7 @@
 	 *   data-direction         — panel direction (down | up)
 	 */
 	// @ts-nocheck
-	import { ProxyTree, Wrapper } from '@rokkit/states'
+	import { ProxyTree, Wrapper, messages } from '@rokkit/states'
 	import { Navigator, Trigger } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 
@@ -34,7 +34,7 @@
 		items = [],
 		fields = {},
 		value = $bindable(),
-		placeholder = 'Select...',
+		placeholder = messages.current.select,
 		icon,
 		size = 'md',
 		disabled = false,

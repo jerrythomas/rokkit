@@ -33,7 +33,7 @@
 		align = 'start',
 		name = 'tabs',
 		editable = false,
-		placeholder = 'Select a tab to view its content.',
+		placeholder = messages.current.tabs.placeholder,
 		disabled = false,
 		labels: userLabels = {},
 		class: className = '',

@@ -39,7 +39,7 @@
 	 */
 	// @ts-nocheck
 	import type { ProxyItem } from '@rokkit/states'
-	import { Wrapper, ProxyTree } from '@rokkit/states'
+	import { Wrapper, ProxyTree, messages } from '@rokkit/states'
 	import { SvelteSet } from 'svelte/reactivity'
 	import { Navigator, Trigger } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET, GROUP_SNIPPET } from '@rokkit/core'
@@ -56,7 +56,7 @@
 		fields = {},
 		value = $bindable(),
 		selected = $bindable<unknown>(null),
-		placeholder = 'Select...',
+		placeholder = messages.current.select,
 		size = 'md',
 		disabled = false,
 		filterable = false,

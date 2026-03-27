@@ -29,7 +29,8 @@ const defaultMessages = {
 		next: 'Next slide',
 		slides: 'Slide navigation'
 	},
-	tabs: { add: 'Add tab', remove: 'Remove tab' },
+	tabs: { add: 'Add tab', remove: 'Remove tab', placeholder: 'Select a tab to view its content.' },
+	table: { empty: 'No data', sortAscending: 'Sort ascending', sortDescending: 'Sort descending' },
 	code: { copy: 'Copy code', copied: 'Copied!' },
 	range: { lower: 'Lower bound', upper: 'Upper bound', value: 'Value' },
 	search_: { clear: 'Clear search' },

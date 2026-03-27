@@ -35,7 +35,16 @@ describe('MessagesStore', () => {
 				next: 'Next slide',
 				slides: 'Slide navigation'
 			})
-			expect(messages.current.tabs).toEqual({ add: 'Add tab', remove: 'Remove tab' })
+			expect(messages.current.tabs).toEqual({
+				add: 'Add tab',
+				remove: 'Remove tab',
+				placeholder: 'Select a tab to view its content.'
+			})
+			expect(messages.current.table).toEqual({
+				empty: 'No data',
+				sortAscending: 'Sort ascending',
+				sortDescending: 'Sort descending'
+			})
 			expect(messages.current.code).toEqual({ copy: 'Copy code', copied: 'Copied!' })
 			expect(messages.current.range).toEqual({
 				lower: 'Lower bound',

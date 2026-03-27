@@ -43,7 +43,7 @@ describe('MultiSelect', () => {
 
 	it('shows placeholder when nothing selected', () => {
 		const { container } = render(MultiSelect, { items: flatItems })
-		expect(container.querySelector('[data-select-placeholder]')?.textContent).toBe('Select...')
+		expect(container.querySelector('[data-select-placeholder]')?.textContent).toBe('Select an option')
 	})
 
 	it('shows custom placeholder', () => {

@@ -42,7 +42,7 @@ describe('Select', () => {
 	it('shows placeholder when no value selected', () => {
 		const { container } = render(Select, { items: flatItems })
 		const placeholder = container.querySelector('[data-select-placeholder]')
-		expect(placeholder?.textContent).toBe('Select...')
+		expect(placeholder?.textContent).toBe('Select an option')
 	})
 
 	it('shows custom placeholder', () => {
