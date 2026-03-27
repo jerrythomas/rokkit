@@ -38,8 +38,8 @@
 				></tr
 			>
 			<tr
-				><td><code>glass</code></td><td
-					>Glassmorphism with backdrop blur, transparency, and subtle borders</td
+				><td><code>frosted</code></td><td
+					>Liquid frosted glass with backdrop blur, specular borders, and translucent surfaces</td
 				></tr
 			>
 		</tbody>
