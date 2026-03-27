@@ -1,23 +1,31 @@
 /**
- * Dropdown - Glass Theme Styles
+ * Dropdown - Frosted Glass Theme Styles
  *
- * Glassmorphism with blur and transparency.
+ * Liquid frosted glass: translucent trigger + deeply blurred panel with specular border.
  */
 
 [data-style='frosted'] [data-dropdown-trigger] {
-  @apply bg-surface-z1/70 text-surface-z8 border-surface-z5/20 border bg-none backdrop-blur-md;
+  @apply text-surface-z8 border bg-none backdrop-blur-xl;
+  background: color-mix(in srgb, var(--color-surface-z3, #888) 25%, transparent);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
 }
 
 [data-style='frosted'] [data-dropdown-trigger]:hover:not(:disabled) {
-  @apply bg-surface-z2/80 text-surface-z10 border-surface-z5/30 bg-none;
+  @apply text-surface-z10 bg-none;
+  background: color-mix(in srgb, var(--color-surface-z3, #888) 36%, transparent);
+  border-color: rgba(255, 255, 255, 0.28);
 }
 
 [data-style='frosted'] [data-dropdown-trigger]:focus-visible {
-  @apply ring-surface-z5/40 ring-1 outline-none;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.25);
 }
 
 [data-style='frosted'] [data-dropdown][data-open='true'] [data-dropdown-trigger] {
-  @apply bg-primary-z5/30 border-primary-z5/50 bg-none;
+  @apply bg-none;
+  background: color-mix(in srgb, var(--color-primary-500, #6366f1) 35%, transparent);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 [data-style='frosted'] [data-dropdown-trigger] [data-dropdown-icon] {
@@ -29,7 +37,12 @@
 }
 
 [data-style='frosted'] [data-dropdown-panel] {
-  @apply bg-surface-z2/50 border-surface-z5/20 border bg-none shadow-lg backdrop-blur-lg;
+  @apply border bg-none shadow-xl backdrop-blur-2xl;
+  background: color-mix(in srgb, var(--color-surface-z2, #888) 45%, transparent);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 16px 48px rgba(0, 0, 0, 0.14);
 }
 
 [data-style='frosted'] [data-dropdown-option] {
@@ -38,13 +51,16 @@
 
 [data-style='frosted'] [data-dropdown-option]:hover:not(:disabled),
 [data-style='frosted'] [data-dropdown-option]:focus:not(:disabled) {
-  @apply bg-surface-z2/15 text-surface-z10 bg-none outline-none;
+  @apply text-surface-z10 bg-none outline-none;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 [data-style='frosted'] [data-dropdown-option][data-active='true'] {
-  @apply bg-primary-z5/20 text-surface-z10 bg-none;
+  @apply text-surface-z10 bg-none;
+  background: color-mix(in srgb, var(--color-primary-500, #6366f1) 22%, transparent);
 }
 
 [data-style='frosted'] [data-dropdown-separator] {
-  @apply bg-surface-z5/20 bg-none;
+  @apply bg-none;
+  background: rgba(255, 255, 255, 0.1);
 }

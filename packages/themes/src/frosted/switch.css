@@ -1,26 +1,41 @@
 /**
- * Switch - Glass Theme Styles
+ * Switch - Frosted Glass Theme Styles
+ *
+ * Liquid frosted glass: translucent track with specular border and blur.
  */
 
 [data-style='frosted'] [data-switch-track] {
-  @apply bg-surface-z2/50 border-surface-z5/20 border backdrop-blur-sm;
+  @apply border backdrop-blur-lg;
+  background: color-mix(in srgb, var(--color-surface-z4, #888) 25%, transparent);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 [data-style='frosted'] [data-switch-thumb] {
-  @apply bg-surface-z7/80 shadow-sm backdrop-blur-sm;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 [data-style='frosted'] [data-switch]:focus-visible [data-switch-track] {
-  @apply ring-primary-z5/70 ring-2 ring-offset-1;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 0 0 2px rgba(255, 255, 255, 0.25);
 }
 
 /* On state */
 [data-style='frosted'] [data-switch][aria-checked='true'] [data-switch-track] {
-  @apply bg-primary-z5/40 border-primary-z5/50;
+  background: color-mix(in srgb, var(--color-primary-500, #6366f1) 55%, transparent);
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
 }
 
 [data-style='frosted'] [data-switch][aria-checked='true'] [data-switch-thumb] {
-  @apply bg-white/90 shadow-md;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
 [data-style='frosted'] [data-switch-label] {

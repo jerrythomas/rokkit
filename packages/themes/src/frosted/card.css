@@ -1,7 +1,8 @@
 /**
- * Card - Glass Theme Styles
+ * Card - Frosted Glass Theme Styles
  *
- * Glassmorphism styling with blur and transparency.
+ * Liquid frosted glass: milky translucent surface, specular top-edge shine,
+ * deep backdrop blur. More opaque than Apple liquid glass but still glassy.
  */
 
 /* =============================================================================
@@ -9,7 +10,12 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-card] {
-  @apply bg-surface-z2/60 border-surface-z5/20 text-surface-z9 border shadow-lg backdrop-blur-md;
+  @apply text-surface-z9 border shadow-lg backdrop-blur-xl;
+  background: color-mix(in srgb, var(--color-surface-z3, #888) 30%, transparent);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 /* Interactive cards (buttons) */
@@ -18,16 +24,21 @@
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,
-    background-color 0.2s ease;
+    background 0.2s ease;
 }
 
 [data-style='frosted'] [data-card][data-card-interactive]:hover {
-  @apply bg-surface-z2/80 shadow-xl;
+  background: color-mix(in srgb, var(--color-surface-z3, #888) 42%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 16px 40px rgba(0, 0, 0, 0.14);
   transform: translateY(-2px);
 }
 
 [data-style='frosted'] [data-card][data-card-interactive]:active {
-  @apply shadow-lg;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 4px 16px rgba(0, 0, 0, 0.1);
   transform: translateY(0);
 }
 
@@ -36,7 +47,7 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-card-header] {
-  @apply border-surface-z5/20 border-b;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 [data-style='frosted'] [data-card-body] {
@@ -44,7 +55,8 @@
 }
 
 [data-style='frosted'] [data-card-footer] {
-  @apply border-surface-z5/20 text-surface-z7 border-t;
+  @apply text-surface-z7;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 /* =============================================================================
@@ -52,7 +64,10 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-card][data-card-interactive]:focus-visible {
-  @apply ring-surface-z5/40 ring-2 outline-none;
+  outline: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 0 0 2px rgba(255, 255, 255, 0.25);
 }
 
 /* =============================================================================
@@ -71,12 +86,17 @@
 
 /* Primary — tinted primary glass */
 [data-style='frosted'] [data-card][data-variant='primary'] {
-  @apply bg-primary-z4/40 border-primary-z5/30 text-on-primary border shadow-lg backdrop-blur-md;
+  @apply text-on-primary border shadow-lg backdrop-blur-xl;
+  background: color-mix(in srgb, var(--color-primary-500, #6366f1) 45%, transparent);
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 8px 32px rgba(0, 0, 0, 0.12);
 }
 
 [data-style='frosted'] [data-card][data-variant='primary'] [data-card-header],
 [data-style='frosted'] [data-card][data-variant='primary'] [data-card-footer] {
-  @apply border-primary-z4/20;
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 [data-style='frosted'] [data-card][data-variant='primary'] [data-card-body] {
@@ -85,12 +105,17 @@
 
 /* Secondary — tinted secondary glass */
 [data-style='frosted'] [data-card][data-variant='secondary'] {
-  @apply bg-secondary-z4/40 border-secondary-z5/30 text-on-secondary border shadow-lg backdrop-blur-md;
+  @apply text-on-secondary border shadow-lg backdrop-blur-xl;
+  background: color-mix(in srgb, var(--color-secondary-500, #ec4899) 45%, transparent);
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 8px 32px rgba(0, 0, 0, 0.12);
 }
 
 [data-style='frosted'] [data-card][data-variant='secondary'] [data-card-header],
 [data-style='frosted'] [data-card][data-variant='secondary'] [data-card-footer] {
-  @apply border-secondary-z4/20;
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 [data-style='frosted'] [data-card][data-variant='secondary'] [data-card-body] {
@@ -99,5 +124,7 @@
 
 /* Tertiary — barely-there frosted glass */
 [data-style='frosted'] [data-card][data-variant='tertiary'] {
-  @apply bg-surface-z3/30 border-surface-z5/10 text-surface-z7 border backdrop-blur-md;
+  @apply text-surface-z7 border backdrop-blur-xl;
+  background: color-mix(in srgb, var(--color-surface-z3, #888) 16%, transparent);
+  border-color: rgba(255, 255, 255, 0.12);
 }

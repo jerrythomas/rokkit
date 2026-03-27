@@ -31,21 +31,28 @@
   @apply border-surface-z5/20;
 }
 
-/* Input root: glass container — p-0.5 gives a small gap between border and content.
+/* Input root: frosted glass container — p-0.5 gives a small gap between border and content.
  * No backdrop-blur here: it creates a stacking context that traps select dropdowns.
- * The semi-transparent background provides the frosted glass look. */
+ * The semi-transparent background + specular border provides the liquid glass look. */
 [data-style='frosted'] [data-input-root] {
-  @apply bg-surface-z1/70 border-surface-z5/20 flex items-center rounded-md border p-0.5 transition-all;
+  @apply flex items-center rounded-md border p-0.5 transition-all;
+  background: color-mix(in srgb, var(--color-surface-z3, #888) 22%, transparent);
   background-image: none;
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
 
 [data-style='frosted'] [data-input-root]:hover {
-  @apply border-surface-z5/30;
+  border-color: rgba(255, 255, 255, 0.28);
 }
 
 [data-style='frosted'] [data-input-root]:focus-within {
-  @apply border-primary-z5/50 bg-surface-z1/70;
+  background: color-mix(in srgb, var(--color-surface-z3, #888) 28%, transparent);
   background-image: none;
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 0 0 2px rgba(255, 255, 255, 0.12);
 }
 
 /* Standard inputs inside wrapper */
