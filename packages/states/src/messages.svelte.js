@@ -1,5 +1,5 @@
 /**
- * Default messages for UI components
+ * Default (English) messages for all UI components.
  * @type {import('./types').Messages}
  */
 const defaultMessages = {
@@ -48,14 +48,48 @@ const defaultMessages = {
 }
 
 /**
- * Messages store for localized UI strings
+ * Deep-merge `overrides` onto `base`. One level deep for nested objects.
+ * @param {Record<string, unknown>} base
+ * @param {Record<string, unknown>} overrides
+ * @returns {Record<string, unknown>}
+ */
+function deepMerge(base, overrides) {
+	const result = { ...base }
+	for (const key of Object.keys(overrides)) {
+		const isObj = (v) => typeof v === 'object' && v !== null
+		result[key] =
+			isObj(overrides[key]) && isObj(result[key])
+				? { ...result[key], ...overrides[key] }
+				: overrides[key]
+	}
+	return result
+}
+
+/**
+ * Locale-aware messages store.
+ *
+ * Usage:
+ *   messages.register('de', { select: 'Option wählen…', table: { empty: 'Keine Daten' } })
+ *   messages.setLocale('de')   // activates 'de', falls back to 'en' for missing keys
+ *   messages.setLocale('en')   // back to defaults
+ *   messages.current           // reactive — re-renders on locale change
  */
 class MessagesStore {
+	/** @type {Record<string, Partial<import('./types').Messages>>} */
+	#registry = $state({})
+
+	/** @type {string} */
+	#locale = $state('en')
+
 	/** @type {import('./types').Messages} */
-	#messages = $state({ ...defaultMessages })
+	#messages = $derived.by(() => {
+		const overrides = this.#registry[this.#locale]
+		if (!overrides) return structuredClone(defaultMessages)
+		return /** @type {import('./types').Messages} */ (deepMerge(defaultMessages, overrides))
+	})
 
 	/**
-	 * Get the current messages
+	 * The active message set — reactive.
 	 * @returns {import('./types').Messages}
 	 */
 	get current() {
@@ -63,37 +97,46 @@ class MessagesStore {
 	}
 
 	/**
-	 * Merge a single key from custom into merged target.
-	 * @param {Record<string, unknown>} merged
-	 * @param {Record<string, unknown>} custom
-	 * @param {string} key
+	 * The active locale tag.
+	 * @returns {string}
 	 */
-	#mergeKey(merged, custom, key) {
-		const isObject = (v) => typeof v === 'object' && v !== null
-		if (isObject(custom[key]) && isObject(merged[key])) {
-			merged[key] = { ...merged[key], ...custom[key] }
-		} else {
-			merged[key] = custom[key]
-		}
+	get locale() {
+		return this.#locale
 	}
 
 	/**
-	 * Set custom messages (merges with defaults)
-	 * @param {Partial<import('./types').Messages>} custom
+	 * Register overrides for a locale. Missing keys fall back to English defaults.
+	 * @param {string} locale — BCP 47 tag or any identifier (e.g. 'de', 'fr-CA')
+	 * @param {Partial<import('./types').Messages>} overrides
 	 */
-	set(custom) {
-		const merged = { ...defaultMessages }
-		for (const key of Object.keys(custom)) {
-			this.#mergeKey(merged, custom, key)
-		}
-		this.#messages = merged
+	register(locale, overrides) {
+		this.#registry = { ...this.#registry, [locale]: overrides }
 	}
 
 	/**
-	 * Reset to default messages
+	 * Switch the active locale. Must have been registered first (or 'en' for defaults).
+	 * @param {string} locale
+	 */
+	setLocale(locale) {
+		this.#locale = locale
+	}
+
+	/**
+	 * Apply one-off overrides without naming a locale (convenience / backward compat).
+	 * Equivalent to register('_custom', overrides) + setLocale('_custom').
+	 * @param {Partial<import('./types').Messages>} overrides
+	 */
+	set(overrides) {
+		this.register('_custom', overrides)
+		this.setLocale('_custom')
+	}
+
+	/**
+	 * Reset to English defaults and clear the locale registry.
 	 */
 	reset() {
-		this.#messages = { ...defaultMessages }
+		this.#registry = {}
+		this.#locale = 'en'
 	}
 }
 

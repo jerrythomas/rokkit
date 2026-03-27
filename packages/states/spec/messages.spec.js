@@ -4,8 +4,8 @@ import { messages } from '../src/messages.svelte.js'
 describe('MessagesStore', () => {
 	afterEach(() => messages.reset())
 
-	describe('default messages', () => {
-		it('has existing flat string keys', () => {
+	describe('defaults (en)', () => {
+		it('has flat string keys', () => {
 			expect(messages.current.emptyList).toBe('No items found')
 			expect(messages.current.emptyTree).toBe('No data available')
 			expect(messages.current.loading).toBe('Loading...')
@@ -14,7 +14,7 @@ describe('MessagesStore', () => {
 			expect(messages.current.search).toBe('Search...')
 		})
 
-		it('has nested component label defaults', () => {
+		it('has nested component defaults', () => {
 			expect(messages.current.list).toEqual({ label: 'List' })
 			expect(messages.current.tree).toEqual({
 				label: 'Tree',
@@ -60,9 +60,53 @@ describe('MessagesStore', () => {
 			})
 			expect(messages.current.mode).toEqual({ system: 'System', light: 'Light', dark: 'Dark' })
 		})
+
+		it('locale is "en" by default', () => {
+			expect(messages.locale).toBe('en')
+		})
 	})
 
-	describe('set()', () => {
+	describe('register() + setLocale()', () => {
+		it('activates a registered locale', () => {
+			messages.register('de', { select: 'Option wählen…' })
+			messages.setLocale('de')
+			expect(messages.locale).toBe('de')
+			expect(messages.current.select).toBe('Option wählen…')
+		})
+
+		it('falls back to English for unregistered keys', () => {
+			messages.register('de', { select: 'Option wählen…' })
+			messages.setLocale('de')
+			expect(messages.current.emptyList).toBe('No items found')
+			expect(messages.current.tree.expand).toBe('Expand')
+		})
+
+		it('deep-merges nested objects — unspecified keys survive', () => {
+			messages.register('fr', { tree: { expand: 'Ouvrir' } })
+			messages.setLocale('fr')
+			expect(messages.current.tree.expand).toBe('Ouvrir')
+			expect(messages.current.tree.collapse).toBe('Collapse')
+			expect(messages.current.tree.label).toBe('Tree')
+		})
+
+		it('switching back to "en" restores defaults', () => {
+			messages.register('de', { select: 'Option wählen…' })
+			messages.setLocale('de')
+			messages.setLocale('en')
+			expect(messages.current.select).toBe('Select an option')
+		})
+
+		it('multiple locales can be registered independently', () => {
+			messages.register('de', { select: 'Option wählen…' })
+			messages.register('fr', { select: 'Choisir une option…' })
+			messages.setLocale('de')
+			expect(messages.current.select).toBe('Option wählen…')
+			messages.setLocale('fr')
+			expect(messages.current.select).toBe('Choisir une option…')
+		})
+	})
+
+	describe('set() — convenience / backward compat', () => {
 		it('deep-merges nested objects', () => {
 			messages.set({ tree: { expand: 'Ouvrir' } })
 			expect(messages.current.tree.expand).toBe('Ouvrir')
@@ -85,11 +129,13 @@ describe('MessagesStore', () => {
 	})
 
 	describe('reset()', () => {
-		it('restores all defaults including nested', () => {
-			messages.set({ tree: { expand: 'Ouvrir' }, loading: 'X' })
+		it('restores all defaults and clears locale', () => {
+			messages.register('de', { select: 'Option wählen…' })
+			messages.setLocale('de')
 			messages.reset()
+			expect(messages.locale).toBe('en')
+			expect(messages.current.select).toBe('Select an option')
 			expect(messages.current.tree.expand).toBe('Expand')
-			expect(messages.current.loading).toBe('Loading...')
 		})
 	})
 })
