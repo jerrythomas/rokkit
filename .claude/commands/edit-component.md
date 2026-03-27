@@ -4,81 +4,48 @@ description: Edit an existing @rokkit/ui component. Usage: /edit-component Compo
 
 You are editing an existing Rokkit UI component. Request: **$ARGUMENTS**
 
-## Mandatory Pre-Work
+## Step 1 — Read the Blueprint
 
-Read these files before touching any code:
+Read `docs/llms/component-blueprint.md` §§3–9 for the invariants that must not be broken:
+- Data-attribute conventions (§3)
+- ProxyItem API (§4)
+- Primitives wiring — Wrapper, Navigator, Trigger (§5)
+- Messages integration (§6)
+- Svelte 5 gotchas (§9)
 
-1. `agents/memory.md` — project gotchas (Svelte 5 reactivity, navigator click interception, etc.)
-2. `agents/design-patterns.md` — patterns cookbook
-3. `agents/references.md` — conventions
+Then read the component file itself and its spec file before making any changes.
 
-Then read the component file itself and all related test/spec files before making changes.
-
-## Architecture Invariants — Do Not Break
-
-### Svelte 5 Runes
-
-- Use `$props()`, `$state()`, `$derived()`, `$effect()` — never Svelte 4 patterns
-- `export let` → `$props()`, `$:` → `$derived()`, `on:event` → `onevent`
-- **Bindable + derived gotcha**: assigning to a `$bindable` prop inside a closure defined within `$derived` does NOT propagate to the parent. Define event handlers at component scope, outside `$derived`.
-
-### Data Attributes
-
-- All CSS hooks are `data-<component>-<element>` attributes — never classes
-- State: `data-open={isOpen || undefined}` — undefined omits the attribute
-- Required for navigation: `data-path={key}` on every interactive item
-
-### Navigator Interception
-
-- The `navigator` action intercepts ALL clicks on `[data-path]` elements
-- **Never add `onclick` on elements that also have `data-path`** — causes double-handling
-- Let navigator call the `onselect`/`ontoggle` wrapper methods
-
-### Controller / Wrapper Pattern
-
-```svelte
-const tree = $derived(new ProxyTree(items, fields))
-const wrapper = $derived(new Wrapper(tree, { onselect: handleSelect }))
-// handleSelect must be defined outside the $derived above ↑
-function handleSelect(v, proxy) { value = v; onchange?.(v) }
-```
-
-### ProxyItem Default Fields
-
-- `proxy.label` → `item[fields.label ?? 'label']` — default is `label`, NOT `text`
-- `proxy.value` → `item[fields.value ?? 'value']`
-- `proxy.get('icon')` → `item[fields.icon ?? 'icon']`
-
-## Zero-Errors Policy (Non-Negotiable)
-
-Before touching anything: run `bun run test:ui && bun run lint` and record the baseline. If errors exist before you start, fix them first — they are your responsibility regardless of who introduced them.
-
-After all changes: run both again. Do not commit until both return zero errors.
+## Step 2 — Baseline
 
 ```bash
-bun run test:ui        # unit tests — zero errors required
-bun run lint           # lint — zero errors required
+bun run test:ui && bun run lint   # record errors before touching anything
 ```
 
-Forbidden rationalizations: "no new errors", "pre-existing", "unrelated files". Zero means zero.
+If errors exist before you start, fix them first.
 
-## After Editing
+## Step 3 — Make the Change
 
-If you changed any theme CSS:
+Apply only what was requested. Do not refactor surrounding code, add comments to unchanged lines, or introduce features that weren't asked for.
+
+## Step 4 — If CSS changed
 
 ```bash
 cd packages/themes && bun run build   # MANDATORY — changes won't appear without this
 ```
 
-If you changed the component API (new props, renamed props, changed behavior):
+## Step 5 — Zero Errors
 
-- Update `site/static/llms/components/<name>.txt`
-- Update `site/src/routes/(learn)/docs/components/<name>/+page.svelte`
-- Update `site/src/routes/(learn)/docs/components/<name>/meta.json` if needed
+```bash
+bun run test:ui && bun run lint   # must be zero errors
+```
 
-## Commit on Completion
+## Step 6 — If API changed (new/renamed props, changed behavior)
 
-When tests and lint are clean:
+Update these files to stay in sync:
+- `docs/llms/components/<name>.txt`
+- `site/src/routes/(learn)/docs/components/<name>/+page.svelte`
+
+## Step 7 — Commit
 
 ```bash
 git add -p

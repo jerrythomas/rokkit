@@ -65,79 +65,101 @@ function deepMerge(base, overrides) {
 	return result
 }
 
-/**
- * Locale-aware messages store.
- *
- * Usage:
- *   messages.register('de', { select: 'Option wählen…', table: { empty: 'Keine Daten' } })
- *   messages.setLocale('de')   // activates 'de', falls back to 'en' for missing keys
- *   messages.setLocale('en')   // back to defaults
- *   messages.current           // reactive — re-renders on locale change
- */
 class MessagesStore {
-	/** @type {Record<string, Partial<import('./types').Messages>>} */
-	#registry = $state({})
+	#registry = {}
+	#locale = 'en'
 
-	/** @type {string} */
-	#locale = $state('en')
+	// ─── Flat string keys ─────────────────────────────────────────────────────
 
-	/** @type {import('./types').Messages} */
-	#messages = $derived.by(() => {
-		const overrides = this.#registry[this.#locale]
-		if (!overrides) return structuredClone(defaultMessages)
-		return /** @type {import('./types').Messages} */ (deepMerge(defaultMessages, overrides))
-	})
+	emptyList = $state(defaultMessages.emptyList)
+	emptyTree = $state(defaultMessages.emptyTree)
+	loading = $state(defaultMessages.loading)
+	noResults = $state(defaultMessages.noResults)
+	select = $state(defaultMessages.select)
+	search = $state(defaultMessages.search)
 
-	/**
-	 * The active message set — reactive.
-	 * @returns {import('./types').Messages}
-	 */
-	get current() {
-		return this.#messages
-	}
+	// ─── Nested component namespaces ──────────────────────────────────────────
 
-	/**
-	 * The active locale tag.
-	 * @returns {string}
-	 */
+	list = $state({ ...defaultMessages.list })
+	tree = $state({ ...defaultMessages.tree })
+	toolbar = $state({ ...defaultMessages.toolbar })
+	menu = $state({ ...defaultMessages.menu })
+	toggle = $state({ ...defaultMessages.toggle })
+	rating = $state({ ...defaultMessages.rating })
+	stepper = $state({ ...defaultMessages.stepper })
+	breadcrumbs = $state({ ...defaultMessages.breadcrumbs })
+	carousel = $state({ ...defaultMessages.carousel })
+	tabs = $state({ ...defaultMessages.tabs })
+	table = $state({ ...defaultMessages.table })
+	code = $state({ ...defaultMessages.code })
+	range = $state({ ...defaultMessages.range })
+	search_ = $state({ ...defaultMessages.search_ })
+	filter = $state({ ...defaultMessages.filter })
+	grid = $state({ ...defaultMessages.grid })
+	uploadProgress = $state({ ...defaultMessages.uploadProgress })
+	floatingNav = $state({ ...defaultMessages.floatingNav })
+	mode = $state({ ...defaultMessages.mode })
+
+	// ─── Active locale ─────────────────────────────────────────────────────────
+
+	/** Currently active locale tag (read-only). */
 	get locale() {
 		return this.#locale
 	}
 
+	// ─── Internals ─────────────────────────────────────────────────────────────
+
+	#apply() {
+		const overrides = this.#registry[this.#locale]
+		const computed = overrides
+			? /** @type {import('./types').Messages} */ (deepMerge(defaultMessages, overrides))
+			: structuredClone(defaultMessages)
+		Object.assign(this, computed)
+	}
+
+	// ─── Public API ────────────────────────────────────────────────────────────
+
 	/**
-	 * Register overrides for a locale. Missing keys fall back to English defaults.
+	 * Register translation overrides for a locale. Unspecified keys fall back to English defaults.
 	 * @param {string} locale — BCP 47 tag or any identifier (e.g. 'de', 'fr-CA')
 	 * @param {Partial<import('./types').Messages>} overrides
 	 */
 	register(locale, overrides) {
 		this.#registry = { ...this.#registry, [locale]: overrides }
+		this.#apply()
 	}
 
 	/**
-	 * Switch the active locale. Must have been registered first (or 'en' for defaults).
+	 * Switch to a previously registered locale. Use 'en' to restore English defaults.
 	 * @param {string} locale
 	 */
 	setLocale(locale) {
 		this.#locale = locale
+		this.#apply()
 	}
 
 	/**
 	 * Apply one-off overrides without naming a locale (convenience / backward compat).
-	 * Equivalent to register('_custom', overrides) + setLocale('_custom').
 	 * @param {Partial<import('./types').Messages>} overrides
 	 */
 	set(overrides) {
-		this.register('_custom', overrides)
-		this.setLocale('_custom')
+		this.#registry = { ...this.#registry, _custom: overrides }
+		this.#locale = '_custom'
+		this.#apply()
 	}
 
 	/**
-	 * Reset to English defaults and clear the locale registry.
+	 * Reset to English defaults and clear all registered locales.
 	 */
 	reset() {
 		this.#registry = {}
 		this.#locale = 'en'
+		this.#apply()
 	}
 }
 
+/**
+ * Reactive messages store. Access strings directly: `messages.select`, `messages.tree.expand`.
+ * Configure locale: `messages.register('de', {...})` + `messages.setLocale('de')`.
+ */
 export const messages = new MessagesStore()

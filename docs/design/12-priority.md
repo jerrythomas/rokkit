@@ -52,7 +52,7 @@ Items that significantly improve the developer or end-user experience.
 
 ### Developer Utilities
 
-- [ ] Custom component primitives — documented patterns and examples for building components on top of controllers, navigator, and ProxyItem (`docs/features/08-DeveloperUtilities.md`)
+- [x] Custom component primitives — `docs/llms/component-blueprint.md`: LLM-optimized blueprint covering all 4 tiers, ProxyItem/Wrapper/Navigator wiring, messages integration, theme CSS, file checklist, complete Tier 3 example; `/new-component` + `/edit-component` commands updated to single-source reference (2026-03-27)
 
 ### Charts — Core Functionality
 

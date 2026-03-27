@@ -372,15 +372,15 @@ export interface Props {
 
 2. **Per-instance** — each component accepts an optional `labels` prop (shallow-merged over the store values for that component).
 
-**Key file:** `packages/states/src/messages.svelte.js` — `messages.set()`, `messages.current`
+**Key file:** `packages/states/src/messages.svelte.js` — `MessagesStore` class, single `messages` export.
 
 **Naming convention — nested by component, semantic role:**
 
 ```
-messages.current.list.label        → aria-label on <nav>
-messages.current.tree.expand       → "Expand" for expand button
-messages.current.carousel.prev     → "Previous slide" aria-label
-messages.current.mode.system       → "System" label in ThemeSwitcher
+messages.list.label        → aria-label on <nav>
+messages.tree.expand       → "Expand" for expand button
+messages.carousel.prev     → "Previous slide" aria-label
+messages.mode.system       → "System" label in ThemeSwitcher
 ```
 
 **Pattern — using in a component:**
@@ -390,7 +390,7 @@ messages.current.mode.system       → "System" label in ThemeSwitcher
   import { messages } from '@rokkit/states'
 
   let { labels: userLabels, ...rest } = $props()
-  const labels = $derived({ ...messages.current.list, ...userLabels })
+  const labels = $derived({ ...messages.list, ...userLabels })
 </script>
 
 <nav aria-label={labels.label}>
@@ -401,15 +401,19 @@ messages.current.mode.system       → "System" label in ThemeSwitcher
 ```js
 // App startup (e.g., +layout.svelte)
 import { messages } from '@rokkit/states'
-messages.set({
+
+// Named locale (preferred)
+messages.register('fr', {
   tree: { expand: 'Ouvrir', collapse: 'Fermer', loading: 'Chargement…' },
   mode: { system: 'Système', light: 'Clair', dark: 'Sombre' }
 })
+messages.setLocale('fr')
+
+// One-off override (backward compat)
+messages.set({ tree: { expand: 'Ouvrir' } })
 ```
 
-**`messages.set()` must deep-merge** (nested objects), not shallow-merge, so partial overrides of one component don't wipe sibling components' defaults.
-
-**Status:** Design agreed — implementation tracked in backlog #64.
+`messages.set()` and `messages.register()` deep-merge one level — partial overrides of a namespace don't wipe sibling keys.
 
 ---
 
