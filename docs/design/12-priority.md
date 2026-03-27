@@ -112,7 +112,7 @@ Design documents that need to be written and patterns that need to be documented
 
 - [x] `docs/design/13-effects.md` — Animation and visual effects system
 - [x] `docs/design/06-themes.md` — Skin system, mode switching, CSS variable architecture (2026-03-27)
-- [ ] `docs/design/07-charts.md` — Chart rendering, animation, patterns, accessibility
+- [x] `docs/design/07-charts.md` — Chart rendering, animation, patterns, accessibility (2026-03-27)
 - [ ] `docs/design/08-tools.md` — CLI, icon sets, toolchain design
 
 ### Placeholder Story Pages (ComingSoon — need real content)
