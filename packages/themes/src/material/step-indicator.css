@@ -1,0 +1,41 @@
+/* StepIndicator — Material theme (elevation + subtle depth) */
+
+/* ── Number circles ── */
+
+[data-style='material'] [data-step-item][data-step-state='complete'] [data-step-number] {
+  @apply bg-primary-z5 border-primary-z5 text-on-primary bg-none;
+}
+
+[data-style='material'] [data-step-item][data-step-state='current'] [data-step-number] {
+  @apply bg-surface-z2 border-primary-z5 text-primary-z7 bg-none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-500, #6366f1) 15%, transparent);
+}
+
+[data-style='material'] [data-step-item][data-step-state='upcoming'] [data-step-number] {
+  @apply bg-surface-z2 border-surface-z3 text-surface-z5 bg-none;
+}
+
+/* ── Labels ── */
+
+[data-style='material'] [data-step-item][data-step-state='complete'] [data-step-label] {
+  @apply text-primary-z7 bg-none;
+}
+
+[data-style='material'] [data-step-item][data-step-state='current'] [data-step-label] {
+  @apply text-surface-z9 font-semibold bg-none;
+}
+
+[data-style='material'] [data-step-item][data-step-state='upcoming'] [data-step-label] {
+  @apply text-surface-z5 bg-none;
+}
+
+/* ── Connector lines ── */
+
+[data-style='material'] [data-step-item][data-step-state='complete']::after {
+  @apply bg-primary-z5;
+}
+
+[data-style='material'] [data-step-item][data-step-state='current']::after,
+[data-style='material'] [data-step-item][data-step-state='upcoming']::after {
+  @apply bg-surface-z3;
+}

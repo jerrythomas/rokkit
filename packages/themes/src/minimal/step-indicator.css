@@ -1,0 +1,40 @@
+/* StepIndicator — Minimal theme (flat, border-only) */
+
+/* ── Number circles ── */
+
+[data-style='minimal'] [data-step-item][data-step-state='complete'] [data-step-number] {
+  @apply bg-primary-z4 border-primary-z4 text-on-primary bg-none;
+}
+
+[data-style='minimal'] [data-step-item][data-step-state='current'] [data-step-number] {
+  @apply bg-transparent border-primary-z4 text-primary-z7 bg-none;
+}
+
+[data-style='minimal'] [data-step-item][data-step-state='upcoming'] [data-step-number] {
+  @apply bg-transparent border-surface-z3 text-surface-z5 bg-none;
+}
+
+/* ── Labels ── */
+
+[data-style='minimal'] [data-step-item][data-step-state='complete'] [data-step-label] {
+  @apply text-primary-z7 bg-none;
+}
+
+[data-style='minimal'] [data-step-item][data-step-state='current'] [data-step-label] {
+  @apply text-surface-z8 font-semibold bg-none;
+}
+
+[data-style='minimal'] [data-step-item][data-step-state='upcoming'] [data-step-label] {
+  @apply text-surface-z5 bg-none;
+}
+
+/* ── Connector lines ── */
+
+[data-style='minimal'] [data-step-item][data-step-state='complete']::after {
+  @apply bg-primary-z4;
+}
+
+[data-style='minimal'] [data-step-item][data-step-state='current']::after,
+[data-style='minimal'] [data-step-item][data-step-state='upcoming']::after {
+  @apply bg-surface-z3;
+}

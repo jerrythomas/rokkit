@@ -1,0 +1,65 @@
+/* StepIndicator — base structural styles */
+
+[data-step-indicator] {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: flex-start;
+}
+
+[data-step-item] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+/* Connector line between steps */
+[data-step-item]:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 1.25rem; /* vertically centered with the 2.5rem number circle */
+  left: 50%;
+  width: 100%;
+  height: 2px;
+}
+
+[data-step-number] {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  border-width: 2px;
+  border-style: solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  position: relative;
+  z-index: 1;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+[data-step-label] {
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  text-align: center;
+  max-width: 6rem;
+  line-height: 1.3;
+  transition: color 0.2s ease;
+}
+
+/* Interaction affordances */
+[data-step-item][data-step-state='complete'] {
+  cursor: pointer;
+}
+
+[data-step-item][data-step-state='current'],
+[data-step-item][data-step-state='upcoming'] {
+  cursor: default;
+}
