@@ -81,95 +81,100 @@ rk-item { ... }
 
 **Context:** Any persistent list-like component (List, Tree) that needs keyboard navigation, item selection, and custom snippet rendering. Also used in dropdown components (Select, MultiSelect, Menu) that pop a navigable list.
 
-**Architecture — Three Layers:**
+**Architecture — Four Layers:**
 
-| Layer       | Class / File                          | Responsibility                                                                                                                                                                                         |
-| ----------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `ProxyItem` | `@rokkit/states/proxy-item.svelte.js` | Read-only view of a raw item through a field map. Provides uniform `.text`, `.icon`, `.href`, `.value`, `.expanded`, `.disabled`, `.get('field')`.                                                     |
-| `Wrapper`   | `@rokkit/states/wrapper.svelte.js`    | Owns reactive state: `focusedKey`, `flatView` (flat array of `{ key, proxy, depth }`). Implements all navigation and selection actions (`moveNext`, `movePrev`, `select`, `expand`, `collapse`, etc.). |
-| `Navigator` | `@rokkit/actions/navigator.js`        | Plain class (not Svelte action). Attaches DOM `keydown`/`click` event listeners to a container element. Translates key events → actions → calls `wrapper[action](path)`.                               |
+| Layer       | Class / File                          | Responsibility                                                                                                                                   |
+| ----------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ProxyItem` | `@rokkit/states/proxy-item.svelte.js` | Read-only view of a raw item through a field map. Provides `.label`, `.icon`, `.href`, `.value`, `.expanded`, `.disabled`, `.get('field')`.      |
+| `ProxyTree` | `@rokkit/states/proxy-tree.svelte.js` | Wraps an items array with field mapping. Owns `flatView` (flat array of `{ key, proxy, level, hasChildren, type }`) and `lookup` Map.            |
+| `Wrapper`   | `@rokkit/states/wrapper.svelte.js`    | Navigation controller. Owns `focusedKey`, re-exposes `flatView`. Actions: `first`, `last`, `next`, `prev`, `select`, `expand`, `collapse`, etc. |
+| `Navigator` | `@rokkit/actions/navigator.js`        | Plain class. Attaches DOM `keydown`/`click` listeners on a container. Translates key events → calls `wrapper[action](key)`.                     |
 
-**Key constants:**
-
-- `PROXY_ITEM_FIELDS` — default field map: `{ text: 'label', value: 'value', icon: 'icon', href: 'href', children: 'children', type: 'type', disabled: 'disabled', expanded: 'expanded', snippet: 'snippet' }`. Note `text → 'label'` (not `'text'`).
-- `DEFAULT_STATE_ICONS.accordion` — default expand/collapse icons for collapsible components.
+**Key point:** `proxy.label` is the display text — default field is `label`, NOT `text`.
 
 **Pattern — Using the stack in a component:**
 
 ```svelte
 <script>
-  import { Wrapper, PROXY_ITEM_FIELDS } from '@rokkit/states'
+  // @ts-nocheck
+  import { Wrapper, ProxyTree } from '@rokkit/states'
   import { Navigator } from '@rokkit/actions'
-  import { DEFAULT_STATE_ICONS, resolveSnippet } from '@rokkit/core'
+  import { resolveSnippet, ITEM_SNIPPET, GROUP_SNIPPET } from '@rokkit/core'
 
   let {
     items = [],
     value = $bindable(),
     fields = {},
-    collapsible = false,
-    icons: userIcons,
+    onselect,
     class: className = '',
-    onselect
+    ...snippets
   } = $props()
 
-  const mergedFields = $derived({ ...PROXY_ITEM_FIELDS, ...fields })
-  const icons = $derived({ ...DEFAULT_STATE_ICONS.accordion, ...userIcons })
-  const wrapper = $derived(new Wrapper(items, value, mergedFields))
+  // handleSelect MUST be defined outside $derived — binding propagation requires it
+  function handleSelect(v, proxy) {
+    value = v
+    onselect?.(v, proxy.original)
+  }
+
+  const tree = $derived(new ProxyTree(items, fields))
+  const wrapper = $derived(new Wrapper(tree, { onselect: handleSelect }))
 
   let listRef = $state(null)
 
   $effect(() => {
     if (!listRef) return
-    const nav = new Navigator(listRef, wrapper, { collapsible })
-    nav.on('select', (proxy) => {
-      value = proxy.value
-      onselect?.(proxy.value, proxy.raw)
-    })
+    const nav = new Navigator(listRef, wrapper, {})
     return () => nav.destroy()
+  })
+
+  // Sync DOM focus to wrapper's focusedKey
+  $effect(() => {
+    const key = wrapper.focusedKey
+    if (!listRef || !key) return
+    const el = listRef.querySelector(`[data-path="${key}"]`)
+    if (el && el !== document.activeElement) {
+      el.focus()
+      el.scrollIntoView?.({ block: 'nearest' })
+    }
   })
 </script>
 
-<nav bind:this={listRef} data-list class={className}>
+<div bind:this={listRef} data-list class={className || undefined}>
   {#each wrapper.flatView as node (node.key)}
-    {#if node.proxy.type === 'separator'}
+    {#if node.type === 'separator'}
       <hr data-list-separator />
-    {:else if node.proxy.hasChildren}
-      <button
-        data-list-group
-        data-path={node.key}
-        aria-expanded={node.proxy.expanded}
-        disabled={!collapsible}
-      >
-        {#if resolveSnippet($$snippets, node.proxy, 'groupContent')}
-          {@render resolveSnippet($$snippets, node.proxy, 'groupContent')(node.proxy)}
-        {:else}
-          <!-- default group content -->
-        {/if}
-      </button>
+    {:else if node.hasChildren}
+      <div data-list-group data-path={node.key} role="group">
+        {@const content = resolveSnippet(snippets, node.proxy, GROUP_SNIPPET)}
+        {#if content}{@render content(node.proxy)}{:else}<span>{node.proxy.label}</span>{/if}
+      </div>
     {:else}
+      {@const isSelected = node.proxy.value === value}
+      {@const content = resolveSnippet(snippets, node.proxy, ITEM_SNIPPET)}
       <button
         data-list-item
         data-path={node.key}
-        data-active={node.proxy.value === value || undefined}
+        data-selected={isSelected || undefined}
+        data-disabled={node.proxy.disabled || undefined}
+        disabled={node.proxy.disabled}
+        tabindex={wrapper.focusedKey === node.key ? 0 : -1}
+        role="option"
+        aria-selected={isSelected}
       >
-        {#if resolveSnippet($$snippets, node.proxy, 'itemContent')}
-          {@render resolveSnippet($$snippets, node.proxy, 'itemContent')(node.proxy)}
-        {:else}
-          <!-- default item content -->
-        {/if}
+        {#if content}{@render content(node.proxy)}{:else}<span>{node.proxy.label}</span>{/if}
       </button>
     {/if}
   {/each}
-</nav>
+</div>
 ```
 
-**Flat DOM structure:** Groups do NOT wrap their children in a container element. The entire `wrapper.flatView` is rendered in a single flat loop. Expansion state is tracked by `Wrapper` and `flatView` only includes currently-visible items.
+**Flat DOM structure:** Groups do NOT wrap their children. The entire `wrapper.flatView` is a single flat loop. Expansion state is tracked by `Wrapper`; `flatView` only includes currently-visible nodes.
 
-**`expandedByPath` reactivity workaround:** Svelte 5 cannot track reactivity through a `$derived` Map → `proxy.expanded` (`$state`) in templates. Maintain a separate `$state<Record<string, boolean>>` synced after mutations. See `List.svelte` for implementation.
+**`expandedByKey` reactivity workaround:** Svelte 5 cannot track reactivity through a `$derived` Map → `proxy.expanded` (`$state`) in templates. Maintain a separate `$state<Record<string, boolean>>` synced after mutations. See `List.svelte` for the implementation.
 
-**Navigator click interception:** The `Navigator` intercepts clicks on elements with `data-path`. Do NOT add `onclick` on elements that also have `data-path` — this causes double-handling. Let Navigator handle all selection; use the `select` event for post-select logic.
+**Navigator click interception:** Navigator intercepts ALL clicks on `[data-path]` elements and calls `wrapper.select()`. **Never add `onclick` on elements that also have `data-path`** — it fires twice. Handle post-select logic via the `onselect` callback passed to `Wrapper`.
 
-**Used in:** List.svelte (production). Planned: Select, MultiSelect, Menu, Tree, Toggle.
+**Used in:** List, Tree, Select, MultiSelect, Menu, Dropdown, Toggle, Tabs.
 
 ---
 
@@ -196,11 +201,11 @@ rk-item { ... }
 ```svelte
 {#snippet defaultContent(proxy)}
   {#if proxy.icon}<span class={proxy.icon} aria-hidden="true"></span>{/if}
-  <span>{proxy.text}</span>
+  <span>{proxy.label}</span>
 {/snippet}
 
-<!-- In each loop -->
-{@const snippet = resolveSnippet($$snippets, proxy, 'itemContent') ?? defaultContent}
+<!-- In each loop (snippets spread from $props()) -->
+{@const snippet = resolveSnippet(snippets, proxy, 'itemContent') ?? defaultContent}
 {@render snippet(proxy)}
 ```
 
@@ -211,7 +216,7 @@ rk-item { ... }
 <List {items}>
   {#snippet itemContent(proxy)}
     <span class={proxy.icon}></span>
-    <span class="flex-1">{proxy.text}</span>
+    <span class="flex-1">{proxy.label}</span>
     <span class="badge">{proxy.get('status')}</span>
   {/snippet}
 </List>
@@ -223,8 +228,8 @@ rk-item { ... }
     { label: 'Carrot', snippet: 'vegetable' }
   ]}
 >
-  {#snippet fruit(proxy)}<span class="text-error-z5">{proxy.text}</span>{/snippet}
-  {#snippet vegetable(proxy)}<span class="text-success-z5">{proxy.text}</span>{/snippet}
+  {#snippet fruit(proxy)}<span class="text-error-z5">{proxy.label}</span>{/snippet}
+  {#snippet vegetable(proxy)}<span class="text-success-z5">{proxy.label}</span>{/snippet}
 </List>
 ```
 
@@ -232,7 +237,7 @@ rk-item { ... }
 
 ```svelte
 {#snippet itemContent(proxy)}
-  <span class="flex-1">{proxy.text}</span>
+  <span class="flex-1">{proxy.label}</span>
   <input
     type="checkbox"
     checked={proxy.get('checked')}
@@ -245,7 +250,7 @@ rk-item { ... }
 {/snippet}
 ```
 
-**Used in:** List, Tree (planned), Select, MultiSelect, Menu.
+**Used in:** List, Tree, Select, MultiSelect, Menu.
 
 ---
 
@@ -260,7 +265,7 @@ let { class: className = '', ...rest } = $props()
 ```
 
 ```html
-<nav data-list class="{className}"></nav>
+<nav data-list class={className || undefined}></nav>
 ```
 
 **Common use cases:**
@@ -274,7 +279,7 @@ let { class: className = '', ...rest } = $props()
 
 **Rule:** The `class` prop is additive — it appends to the component's own structural classes. Never replace them. If the component has no own classes (uses data-attribute CSS), the `class` prop is the only class on the root element.
 
-**Applied to:** List, Tree (planned), Select, MultiSelect, Menu, Toggle, Tabs, Toolbar.
+**Applied to:** List, Tree, Select, MultiSelect, Menu, Toggle, Tabs, Toolbar.
 
 ---
 
@@ -434,10 +439,10 @@ messages.set({ tree: { expand: 'Ouvrir' } })
 
 ```svelte
 <!-- fields.value defaults to 'value', so value binds to item.value -->
-<Select options={users} fields={{ text: 'name', value: 'id' }} bind:value={selectedUserId} />
+<Select items={users} fields={{ label: 'name', value: 'id' }} bind:value={selectedUserId} />
 
 <!-- For string arrays, the item IS the value -->
-<Toggle options={['day', 'week', 'month']} bind:value={period} />
+<Toggle items={['day', 'week', 'month']} bind:value={period} />
 ```
 
 **ItemProxy resolution order** for extracting value (`itemValue` getter):
@@ -450,8 +455,8 @@ messages.set({ tree: { expand: 'Ouvrir' } })
 `ListController.findByValue()` accepts both full item objects (deep equality) and extracted value-field primitives (fallback match via `item[fields.value]`). Components pass the extracted value directly:
 
 ```svelte
-let controller = new ListController(options, value, userFields)
-// value can be 'a' and controller finds { text: 'A', value: 'a' }
+let controller = new ListController(items, value, userFields)
+// value can be 'a' and controller finds { label: 'A', value: 'a' }
 ```
 
 **Guard pattern for value sync:**
