@@ -6,6 +6,7 @@
 	import { vibe } from '@rokkit/states'
 	import { themable } from '@rokkit/actions'
 	import { List } from '@rokkit/ui'
+	import { page } from '$app/state'
 	import ThemePanel from '$lib/components/ThemePanel.svelte'
 
 	let { children } = $props()
@@ -13,14 +14,19 @@
 	let themePanelOpen = $state(false)
 
 	const navItems = [
-		{ id: 'dashboard', label: 'Dashboard', icon: 'i-glyph:home', href: '/dashboard' },
-		{ id: 'explorer', label: 'Data Explorer', icon: 'i-glyph:table', href: '/explorer' },
-		{ id: 'analytics', label: 'Analytics', icon: 'i-glyph:chart', href: '/analytics' },
-		{ id: 'operations', label: 'Operations', icon: 'i-glyph:list-items', href: '/operations' },
-		{ id: 'notifications', label: 'Notifications', icon: 'i-glyph:bell', href: '/notifications' }
+		{ id: 'dashboard',     label: 'Dashboard',     icon: 'i-glyph:home',       href: '/dashboard' },
+		{ id: 'explorer',      label: 'Data Explorer', icon: 'i-glyph:table',       href: '/explorer' },
+		{ id: 'analytics',     label: 'Analytics',     icon: 'i-glyph:chart',       href: '/analytics' },
+		{ id: 'operations',    label: 'Operations',    icon: 'i-glyph:list-items',  href: '/operations' },
+		{ id: 'notifications', label: 'Notifications', icon: 'i-glyph:bell',        href: '/notifications' }
 	]
 
 	const navFields = { label: 'label', icon: 'icon', value: 'id' }
+
+	// Active item follows current route
+	const activeSection = $derived(
+		navItems.find((n) => page.url.pathname.startsWith(n.href))?.id ?? 'dashboard'
+	)
 </script>
 
 <svelte:body use:themable={{ theme: vibe, storageKey: 'rokkit-demo-theme' }} />
@@ -33,7 +39,10 @@
 		style="background: var(--color-surface-z1); border-color: var(--color-surface-z3)"
 	>
 		<!-- Logo -->
-		<div class="flex items-center gap-2 border-b px-4 py-4" style="border-color: var(--color-surface-z3)">
+		<div
+			class="flex items-center gap-2 border-b px-4 py-4"
+			style="border-color: var(--color-surface-z3)"
+		>
 			<span class="i-glyph:rocket text-primary-z6 text-xl"></span>
 			<span class="text-surface-z8 font-semibold tracking-tight">Rokkit Demo</span>
 		</div>
@@ -43,6 +52,7 @@
 			<List
 				items={navItems}
 				fields={navFields}
+				value={activeSection}
 				onselect={(item) => { window.location.href = item.href }}
 			/>
 		</div>

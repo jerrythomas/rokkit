@@ -2,21 +2,28 @@
 	// @ts-nocheck
 	import { AreaChart, BarChart, Sparkline } from '@rokkit/chart'
 	import { Table } from '@rokkit/ui'
+	import { vibe, watchMedia } from '@rokkit/states'
 
 	let { data } = $props()
 
 	const fmt = new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 })
-	const fmtCurrency = (v) => '$' + fmt.format(v)
-	const fmtPct = (v) => (v > 0 ? '+' : '') + v.toFixed(1) + '%'
+	const fmtCurrency = (v) => `$${  fmt.format(v)}`
+	const fmtPct = (v) => `${(v > 0 ? '+' : '') + v.toFixed(1)  }%`
+
+	// Resolve system → actual light/dark for chart mode prop
+	const systemDark = watchMedia('(prefers-color-scheme: dark)')
+	const chartMode = $derived(
+		vibe.mode === 'system' ? (systemDark.current ? 'dark' : 'light') : vibe.mode
+	)
 
 	// Orders table columns
 	const orderColumns = [
-		{ name: 'id', label: 'Order ID' },
+		{ name: 'id', label: 'Order ID', width: '120px' },
 		{ name: 'customer', label: 'Customer' },
 		{ name: 'category', label: 'Category' },
-		{ name: 'amount', label: 'Amount' },
+		{ name: 'amount', label: 'Amount', align: 'right' },
 		{ name: 'status', label: 'Status' },
-		{ name: 'date', label: 'Date' }
+		{ name: 'date', label: 'Date', width: '110px' }
 	]
 </script>
 
@@ -60,7 +67,7 @@
 			style="background: var(--color-surface-z2); border-color: var(--color-surface-z3)"
 		>
 			<div class="text-surface-z7 mb-4 font-medium">Revenue Trend</div>
-			<AreaChart data={data.revenue} x="month" y="revenue" height={220} />
+			<AreaChart data={data.revenue} x="month" y="revenue" height={220} mode={chartMode} />
 		</div>
 
 		<!-- By category -->
@@ -69,7 +76,7 @@
 			style="background: var(--color-surface-z2); border-color: var(--color-surface-z3)"
 		>
 			<div class="text-surface-z7 mb-4 font-medium">Revenue by Category</div>
-			<BarChart data={data.categories} x="revenue" y="category" height={220} />
+			<BarChart data={data.categories} x="revenue" y="category" height={220} mode={chartMode} />
 		</div>
 
 	</div>
@@ -98,10 +105,7 @@
 		<div class="border-b px-4 py-3" style="border-color: var(--color-surface-z3)">
 			<span class="text-surface-z7 font-medium">Recent Orders</span>
 		</div>
-		<Table
-			data={data.orders}
-			columns={orderColumns}
-		/>
+		<Table data={data.orders} columns={orderColumns} />
 	</div>
 
 </div>
