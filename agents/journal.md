@@ -2690,4 +2690,40 @@ const sizeScale = buildSizeScale(data, 'value', 20) // → sqrt scale [0, 20]
 - Added density switcher (compact/comfortable/cozy buttons) to themes playground
 - Commit: `ad205f93`
 
+## 2026-03-27 (continued) — i18n MessagesStore + Component Blueprint + design-patterns polish + CrossFilter in MarkdownRenderer
+
+**i18n MessagesStore class**
+
+- Rewrote `packages/states/src/messages.svelte.js` to use a `MessagesStore` class with `$state` fields, `get locale()` getter, `register()`/`setLocale()`/`set()`/`reset()` methods
+- `export const messages = new MessagesStore()` — single named export; all other functions removed from `index.js`
+- `Object.assign(this, computed)` for in-place mutation (Svelte 5 forbids `$derived` exports and reassignable `$state` exports)
+- Updated all 28+ `@rokkit/ui` components from `messages.current.*` → `messages.*`
+- Commits: `cb5335b3`, `6509d1a5`, `02c6632a`
+
+**Component Blueprint**
+
+- Created `docs/llms/component-blueprint.md` — single comprehensive LLM reference for all 4 tiers, ProxyTree/Wrapper/Navigator wiring, messages integration, snippet customization, theme CSS, file checklist, complete Tier 3 TagList example
+- Updated `/.claude/commands/new-component.md` and `edit-component.md` to reference blueprint instead of 5-file read chain
+- Commit: `6509d1a5`
+
+**design-patterns.md polish**
+
+- Navigator/Wrapper section: ProxyTree as 4th layer, `new Wrapper(tree, { onselect })`, `node.type`/`node.hasChildren`, `snippets` from `$props()` spread, `resolveSnippet` with constants, `proxy.original`
+- Snippet Customization: `proxy.text` → `proxy.label`, `$$snippets` → `snippets`
+- class prop: `class="{x}"` → `class={x || undefined}`
+- Value Binding Contract: `options` → `items`, `text` → `label` in examples
+- Removed all "Tree (planned)" — Tree is fully implemented
+- Commits: `e1e41390` (earlier pattern fixes), `e1e41390`
+
+**CrossFilter grouping in MarkdownRenderer**
+
+- Added optional `crossfilterWrapper?: Component<{ children?: Snippet }>` prop to `MarkdownRenderer.svelte`
+- Pre-pass groups plot code blocks with matching `"crossfilter"` field values into a shared wrapper instance
+- Injectable design keeps `@rokkit/ui` dep-free from `@rokkit/chart` — consumers pass `CrossFilter` from `@rokkit/chart` at call site
+- 4 new tests: group wrapping, separate groups, ungrouped passthrough, no-wrapper fallback
+- `CrossFilterStub.svelte` test fixture added
+- Commit: `73854f5e`
+
+**Final state:** 3206 tests passing, 0 lint errors.
+
 **Final state:** 3189 tests passing, 0 lint errors.
