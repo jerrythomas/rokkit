@@ -1,0 +1,36 @@
+{
+  "name": "@rokkit/demo",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-auto": "^6.1.0",
+    "@sveltejs/kit": "^2.42.1",
+    "@sveltejs/vite-plugin-svelte": "^6.2.0",
+    "@rokkit/unocss": "workspace:*",
+    "@unocss/extractor-svelte": "^66.5.1",
+    "@unocss/reset": "66.5.1",
+    "svelte": "^5.39.2",
+    "unocss": "^66.5.1",
+    "vite": "^7.1.6"
+  },
+  "dependencies": {
+    "@fontsource/open-sans": "^5.2.7",
+    "@fontsource/overpass": "^5.2.8",
+    "@rokkit/actions": "workspace:latest",
+    "@rokkit/chart": "workspace:latest",
+    "@rokkit/core": "workspace:latest",
+    "@rokkit/data": "workspace:latest",
+    "@rokkit/forms": "workspace:latest",
+    "@rokkit/icons": "workspace:latest",
+    "@rokkit/states": "workspace:latest",
+    "@rokkit/themes": "workspace:latest",
+    "@rokkit/unocss": "workspace:latest",
+    "@rokkit/ui": "workspace:latest"
+  }
+}
