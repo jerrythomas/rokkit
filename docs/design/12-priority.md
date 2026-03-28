@@ -53,6 +53,13 @@ Items that significantly improve the developer or end-user experience.
 ### Developer Utilities
 
 - [x] Custom component primitives — `docs/llms/component-blueprint.md`: LLM-optimized blueprint covering all 4 tiers, ProxyItem/Wrapper/Navigator wiring, messages integration, theme CSS, file checklist, complete Tier 3 example; `/new-component` + `/edit-component` commands updated to single-source reference (2026-03-27)
+- [ ] **CodeGroup site component** — tabbed multi-file code display with optional live preview (Svelte Snippet); preview collapsed by default shows code-only; no per-panel theme switcher (app-wide instead); site/src/lib/components/CodeGroup.svelte
+
+### Theming & Design
+
+- [ ] **Minimal List theme tweak** — match Nuxt UI sidebar collapsible style: quieter hover (text color only, no border), active = `border-l-2 border-l-secondary-z4` + `text-secondary-z7`; packages/themes/src/minimal/list.css
+- [ ] **ThemePanel component** — single unified settings panel for style (rokkit/minimal/material/frosted) + mode (light/dark/system) + density + palette presets + custom palette builder; replaces scattered per-page switchers
+- [ ] **Consistent state patterns design doc** — shared CSS custom property sets defining hover/active/focus/disabled behavior at element/group level; reduces per-component repetition in theme CSS; `docs/design/18-state-patterns.md`
 
 ### Charts — Core Functionality
 
