@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/svelte'
 import MarkdownRenderer from '../src/MarkdownRenderer.svelte'
 import StubPlugin from './fixtures/StubPlugin.svelte'
+import CrossFilterStub from './fixtures/CrossFilterStub.svelte'
 
 describe('MarkdownRenderer', () => {
 	it('renders plain markdown as HTML', () => {
@@ -60,5 +61,69 @@ describe('MarkdownRenderer', () => {
 
 	it('renders with no plugins prop without error', () => {
 		expect(() => render(MarkdownRenderer, { props: { markdown: '# Hello' } })).not.toThrow()
+	})
+})
+
+describe('MarkdownRenderer — CrossFilter grouping', () => {
+	const plotPlugins = [{ language: 'plot', component: StubPlugin }]
+
+	it('wraps co-grouped plot blocks in a crossfilterWrapper', () => {
+		const md = [
+			'```plot',
+			'{"data":[],"crossfilter":"group1"}',
+			'```',
+			'',
+			'```plot',
+			'{"data":[],"crossfilter":"group1"}',
+			'```'
+		].join('\n')
+		const { container } = render(MarkdownRenderer, {
+			props: { markdown: md, plugins: plotPlugins, crossfilterWrapper: CrossFilterStub }
+		})
+		expect(container.querySelectorAll('[data-crossfilter-group]')).toHaveLength(1)
+		expect(container.querySelectorAll('[data-stub-plugin]')).toHaveLength(2)
+	})
+
+	it('creates separate groups for different crossfilter IDs', () => {
+		const md = [
+			'```plot',
+			'{"data":[],"crossfilter":"g1"}',
+			'```',
+			'',
+			'```plot',
+			'{"data":[],"crossfilter":"g2"}',
+			'```'
+		].join('\n')
+		const { container } = render(MarkdownRenderer, {
+			props: { markdown: md, plugins: plotPlugins, crossfilterWrapper: CrossFilterStub }
+		})
+		expect(container.querySelectorAll('[data-crossfilter-group]')).toHaveLength(2)
+	})
+
+	it('does not group plots without crossfilter field', () => {
+		const md = ['```plot', '{"data":[]}', '```'].join('\n')
+		const { container } = render(MarkdownRenderer, {
+			props: { markdown: md, plugins: plotPlugins, crossfilterWrapper: CrossFilterStub }
+		})
+		expect(container.querySelectorAll('[data-crossfilter-group]')).toHaveLength(0)
+		expect(container.querySelectorAll('[data-stub-plugin]')).toHaveLength(1)
+	})
+
+	it('ignores crossfilterWrapper when not provided', () => {
+		const md = [
+			'```plot',
+			'{"data":[],"crossfilter":"group1"}',
+			'```',
+			'',
+			'```plot',
+			'{"data":[],"crossfilter":"group1"}',
+			'```'
+		].join('\n')
+		const { container } = render(MarkdownRenderer, {
+			props: { markdown: md, plugins: plotPlugins }
+		})
+		// No crossfilter wrapper — renders normally without grouping
+		expect(container.querySelectorAll('[data-crossfilter-group]')).toHaveLength(0)
+		expect(container.querySelectorAll('[data-stub-plugin]')).toHaveLength(2)
 	})
 })
