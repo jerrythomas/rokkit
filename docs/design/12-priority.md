@@ -55,9 +55,14 @@ Items that significantly improve the developer or end-user experience.
 - [x] Custom component primitives — `docs/llms/component-blueprint.md`: LLM-optimized blueprint covering all 4 tiers, ProxyItem/Wrapper/Navigator wiring, messages integration, theme CSS, file checklist, complete Tier 3 example; `/new-component` + `/edit-component` commands updated to single-source reference (2026-03-27)
 - [ ] **CodeGroup site component** — tabbed multi-file code display with optional live preview (Svelte Snippet); preview collapsed by default shows code-only; no per-panel theme switcher (app-wide instead); site/src/lib/components/CodeGroup.svelte
 
+### Demo App
+
+- [ ] **`demo/` showcase app** — standalone SvelteKit app at repo root; real-world business analytics app consuming `@rokkit/*` as peer deps; data via `+page.server.js` load functions with field-mapped components; sections: dashboard (charts/cards/sparklines), data explorer (table + crossfilter), analytics (scatter/violin/box/facets), operations (list/tree nav + forms + multi-step), notifications (alerts/status); curtain-reveal per section shows `+page.svelte` + load function in a slide-in code drawer
+- [ ] **`apps/` restructure** — once demo is functional: move `site/` → `apps/learn/`, move `demo/` → `apps/demo/`; update vitest workspace paths, bun.lock, deploy config; single structural commit
+
 ### Theming & Design
 
-- [ ] **Minimal List theme tweak** — match Nuxt UI sidebar collapsible style: quieter hover (text color only, no border), active = `border-l-2 border-l-secondary-z4` + `text-secondary-z7`; packages/themes/src/minimal/list.css
+- [ ] **Minimal List guide-line style** — continuous thin vertical guide line on group container (like tree indent lines); active item gets bolder/colored segment on that line; items indented so text aligns past the line (aligns with middle of parent icon); applies to both List and Tree; per-item left-borders are the wrong pattern for this aesthetic
 - [ ] **ThemePanel component** — single unified settings panel for style (rokkit/minimal/material/frosted) + mode (light/dark/system) + density + palette presets + custom palette builder; replaces scattered per-page switchers
 - [ ] **Consistent state patterns design doc** — shared CSS custom property sets defining hover/active/focus/disabled behavior at element/group level; reduces per-component repetition in theme CSS; `docs/design/18-state-patterns.md`
 
