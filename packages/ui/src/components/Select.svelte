@@ -56,7 +56,7 @@
 		fields = {},
 		value = $bindable(),
 		selected = $bindable<unknown>(null),
-		placeholder = messages.current.select,
+		placeholder = messages.select,
 		size = 'md',
 		disabled = false,
 		filterable = false,

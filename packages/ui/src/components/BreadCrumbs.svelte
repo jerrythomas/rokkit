@@ -25,7 +25,7 @@
 	const {
 		items = [],
 		fields,
-		label = messages.current.breadcrumbs.label,
+		label = messages.breadcrumbs.label,
 		icons: userIcons = {} as BreadCrumbsIcons,
 		onclick,
 		crumb,

@@ -50,7 +50,7 @@ export function buildThemeSwitcherOptions(
 	modes: ColorMode[],
 	labels: ThemeSwitcherLabels = {}
 ): ThemeSwitcherOption[] {
-	const mergedLabels = { ...messages.current.mode, ...labels }
+	const mergedLabels = { ...messages.mode, ...labels }
 	const all: ThemeSwitcherOption[] = [
 		{ value: 'system', text: mergedLabels.system, icon: icons.system },
 		{ value: 'light', text: mergedLabels.light, icon: icons.light },
@@ -73,7 +73,7 @@ export interface ThemeSwitcherToggleProps {
 	/** Override icons per mode */
 	icons?: ThemeSwitcherIcons
 
-	/** Override labels per mode. Merged over messages.current.mode */
+	/** Override labels per mode. Merged over messages.mode */
 	labels?: ThemeSwitcherLabels
 
 	/** Show text labels alongside icons. Default: false */

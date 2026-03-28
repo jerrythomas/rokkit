@@ -31,7 +31,7 @@
 	const content = $derived(snippets.content as ((dragging: boolean) => unknown) | undefined)
 
 	const resolvedLabels = $derived({
-		...messages.current.uploadTarget,
+		...messages.uploadTarget,
 		...labels
 	})
 

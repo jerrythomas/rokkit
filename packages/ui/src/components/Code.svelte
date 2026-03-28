@@ -15,7 +15,7 @@
 		class: className = ''
 	}: CodeProps & { labels?: Record<string, string> } = $props()
 
-	const labels = $derived({ ...messages.current.code, ...userLabels })
+	const labels = $derived({ ...messages.code, ...userLabels })
 
 	// Merge icons with defaults
 	const icons = $derived<CodeStateIcons>({ ...defaultCodeStateIcons, ...userIcons })

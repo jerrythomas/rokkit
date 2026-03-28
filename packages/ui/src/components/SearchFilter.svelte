@@ -16,8 +16,8 @@
 	}: SearchFilterProps & { labels?: Record<string, string> } = $props()
 
 	const labels = $derived({
-		clear: messages.current.search_.clear,
-		remove: messages.current.filter.remove,
+		clear: messages.search_.clear,
+		remove: messages.filter.remove,
 		...userLabels
 	})
 

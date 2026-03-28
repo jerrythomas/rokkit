@@ -61,7 +61,7 @@
 		size = 'md',
 		disabled = false,
 		collapsible = false,
-		label = messages.current.menu.label,
+		label = messages.menu.label,
 		icon,
 		showArrow = true,
 		align = 'start',

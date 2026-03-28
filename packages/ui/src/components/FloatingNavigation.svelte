@@ -16,7 +16,7 @@
 		observe = true,
 		observerOptions = { rootMargin: '-20% 0px -70% 0px', threshold: 0 },
 		size = 'md',
-		label = messages.current.floatingNav.label,
+		label = messages.floatingNav.label,
 		labels: userLabels = {},
 		onselect,
 		onpinchange,
@@ -24,7 +24,7 @@
 		class: className = ''
 	}: FloatingNavigationProps & { labels?: Record<string, string> } = $props()
 
-	const labels = $derived({ ...messages.current.floatingNav, ...userLabels })
+	const labels = $derived({ ...messages.floatingNav, ...userLabels })
 
 	const icons = $derived({
 		pin: DEFAULT_STATE_ICONS.action.pin,

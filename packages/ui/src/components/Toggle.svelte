@@ -13,7 +13,7 @@
 		showLabels = true,
 		size = 'md',
 		disabled = false,
-		label = messages.current.toggle.label,
+		label = messages.toggle.label,
 		class: className = '',
 		...snippets
 	}: ToggleProps & { [key: string]: unknown } = $props()

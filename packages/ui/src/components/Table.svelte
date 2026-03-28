@@ -199,7 +199,7 @@
 					</tr>
 				{:else}
 					<tr data-table-empty-row>
-						<td data-table-empty colspan={controller.columns.length}>{messages.current.table.empty}</td>
+						<td data-table-empty colspan={controller.columns.length}>{messages.table.empty}</td>
 					</tr>
 				{/if}
 			{:else}

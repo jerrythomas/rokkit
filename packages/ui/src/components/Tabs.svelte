@@ -33,7 +33,7 @@
 		align = 'start',
 		name = 'tabs',
 		editable = false,
-		placeholder = messages.current.tabs.placeholder,
+		placeholder = messages.tabs.placeholder,
 		disabled = false,
 		labels: userLabels = {},
 		class: className = '',
@@ -44,7 +44,7 @@
 		...snippets
 	}: TabsProps & { labels?: Record<string, string>; [key: string]: unknown } = $props()
 
-	const labels = $derived({ ...messages.current.tabs, ...userLabels })
+	const labels = $derived({ ...messages.tabs, ...userLabels })
 
 	// ─── Wrapper ──────────────────────────────────────────────────────────────
 

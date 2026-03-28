@@ -37,7 +37,7 @@ export interface UploadFileStatusProps {
 	/** Called when remove is clicked */
 	onremove?: (proxy: ProxyItem) => void
 
-	/** Label overrides merged with messages.current.uploadProgress */
+	/** Label overrides merged with messages.uploadProgress */
 	labels?: Record<string, string>
 
 	/** Icon class overrides for action buttons (cancel, retry, remove) */

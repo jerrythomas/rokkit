@@ -11,7 +11,7 @@
 		shape = 'square',
 		size = 'md',
 		disabled = false,
-		label = messages.current.swatch?.label ?? 'Select',
+		label = messages.swatch?.label ?? 'Select',
 		class: className = '',
 		onchange,
 		item: itemSnippet,

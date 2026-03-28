@@ -27,7 +27,7 @@
 		value = $bindable(0),
 		max = 5,
 		disabled = false,
-		label = messages.current.rating.label,
+		label = messages.rating.label,
 		icons: userIcons = {} as RatingIcons,
 		onchange,
 		class: className = ''

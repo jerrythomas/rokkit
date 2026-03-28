@@ -45,7 +45,7 @@
 		size = 'md',
 		disabled = false,
 		collapsible = false,
-		label = messages.current.list.label,
+		label = messages.list.label,
 		icons: userIcons = {} as ListIcons,
 		onselect,
 		class: className = '',

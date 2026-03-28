@@ -41,7 +41,7 @@
 		disabled = false,
 		minSize = '120px',
 		gap = '1rem',
-		label = messages.current.grid.label,
+		label = messages.grid.label,
 		onselect,
 		class: className = '',
 		...snippets

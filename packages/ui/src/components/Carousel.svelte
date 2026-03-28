@@ -43,7 +43,7 @@
 		children
 	}: CarouselProps & { labels?: Record<string, string> } = $props()
 
-	const labels = $derived({ ...messages.current.carousel, ...userLabels })
+	const labels = $derived({ ...messages.carousel, ...userLabels })
 
 	let hovered = $state(false)
 

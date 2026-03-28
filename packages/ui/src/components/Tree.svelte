@@ -43,7 +43,7 @@
 		[key: string]: unknown
 	} = $props()
 
-	const labels = $derived({ ...messages.current.tree, ...userLabels })
+	const labels = $derived({ ...messages.tree, ...userLabels })
 
 	const icons = $derived({ ...DEFAULT_STATE_ICONS.folder, ...userIcons })
 

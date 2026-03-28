@@ -22,7 +22,7 @@
 		compact = false,
 		showDividers = true,
 		disabled = false,
-		label = messages.current.toolbar.label,
+		label = messages.toolbar.label,
 		onclick,
 		class: className = '',
 		item: itemSnippet,

@@ -31,7 +31,7 @@
 		icons: userIcons = {} as Record<string, string>
 	}: UploadFileStatusProps = $props()
 
-	const labels = $derived({ ...messages.current.uploadProgress, ...userLabels })
+	const labels = $derived({ ...messages.uploadProgress, ...userLabels })
 	const icons = $derived({
 		cancel: DEFAULT_STATE_ICONS.action.cancel,
 		retry: DEFAULT_STATE_ICONS.action.retry,

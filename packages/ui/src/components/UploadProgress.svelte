@@ -38,7 +38,7 @@
 
 	// ─── Labels ──────────────────────────────────────────────────────────────
 
-	const labels = $derived({ ...messages.current.uploadProgress, ...userLabels })
+	const labels = $derived({ ...messages.uploadProgress, ...userLabels })
 
 	// ─── Field resolution ────────────────────────────────────────────────────
 	// Pass upload-specific field mappings through to List/Grid so ProxyItem

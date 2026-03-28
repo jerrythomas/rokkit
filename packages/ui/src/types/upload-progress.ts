@@ -100,7 +100,7 @@ export interface UploadProgressProps {
 	/** Called when clear all is clicked */
 	onclear?: () => void
 
-	/** Label overrides merged with messages.current.uploadProgress */
+	/** Label overrides merged with messages.uploadProgress */
 	labels?: Record<string, string>
 
 	/** Additional CSS classes */

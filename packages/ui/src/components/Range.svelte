@@ -20,7 +20,7 @@
 		class: className = ''
 	}: RangeProps & { labels?: Record<string, string> } = $props()
 
-	const labels = $derived({ ...messages.current.range, ...userLabels })
+	const labels = $derived({ ...messages.range, ...userLabels })
 
 	// ─── Pixel state ────────────────────────────────────────────────
 	let trackWidth = $state(0)

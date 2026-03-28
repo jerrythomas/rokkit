@@ -34,7 +34,7 @@
 		items = [],
 		fields = {},
 		value = $bindable(),
-		placeholder = messages.current.select,
+		placeholder = messages.select,
 		icon,
 		size = 'md',
 		disabled = false,

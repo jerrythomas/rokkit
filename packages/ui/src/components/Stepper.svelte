@@ -52,7 +52,7 @@
 		currentStage = $bindable(0),
 		linear = false,
 		orientation = 'horizontal',
-		label = messages.current.stepper.label,
+		label = messages.stepper.label,
 		icons: userIcons,
 		onclick,
 		content,

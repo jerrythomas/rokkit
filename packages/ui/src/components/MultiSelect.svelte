@@ -44,7 +44,7 @@
 		fields = {},
 		value = $bindable<unknown[]>([]),
 		selected = $bindable<unknown[]>([]),
-		placeholder = messages.current.select,
+		placeholder = messages.select,
 		size = 'md',
 		disabled = false,
 		maxDisplay = 3,

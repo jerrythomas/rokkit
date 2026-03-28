@@ -57,7 +57,7 @@ export interface ToggleProps {
 	/** Whether the entire toggle is disabled */
 	disabled?: boolean
 
-	/** Accessible label for the radiogroup. Default: messages.current.toggle.label */
+	/** Accessible label for the radiogroup. Default: messages.toggle.label */
 	label?: string
 
 	/** Additional CSS classes */

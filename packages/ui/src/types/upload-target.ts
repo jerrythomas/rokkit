@@ -51,7 +51,7 @@ export interface UploadTargetProps {
 	/** Disable the drop zone */
 	disabled?: boolean
 
-	/** Label overrides merged with messages.current.uploadTarget */
+	/** Label overrides merged with messages.uploadTarget */
 	labels?: Record<string, string>
 
 	/** Called with validated files after drop or browse */
