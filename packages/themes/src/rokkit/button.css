@@ -13,7 +13,7 @@
 [data-style='rokkit'] [data-button]:not([data-style])[data-variant='default'],
 [data-style='rokkit'] [data-button][data-style='default']:not([data-variant]),
 [data-style='rokkit'] [data-button]:not([data-style]):not([data-variant]) {
-  @apply from-surface-z3 to-surface-z2 border-surface-z4 text-surface-z8 border bg-gradient-to-b;
+  @apply from-surface-z3 to-surface-z2 border-surface-z4 text-surface-z8 border bg-gradient-to-r;
 }
 
 /* Primary variant */
