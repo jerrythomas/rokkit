@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
-	import DOMPurify from 'isomorphic-dompurify'
 
 	let { code }: { code: string } = $props()
 	let svgHtml = $state<string | null>(null)
@@ -8,7 +7,10 @@
 
 	onMount(async () => {
 		try {
-			const { default: mermaid } = await import('mermaid')
+			const [{ default: mermaid }, { default: DOMPurify }] = await Promise.all([
+				import('mermaid'),
+				import('dompurify')
+			])
 			mermaid.initialize({ startOnLoad: false, theme: 'default' })
 			const id = `mermaid-${Math.random().toString(36).slice(2)}`
 			const { svg } = await mermaid.render(id, code)

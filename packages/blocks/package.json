@@ -19,7 +19,7 @@
   },
   "files": ["src", "README.md"],
   "dependencies": {
-    "isomorphic-dompurify": "^2.0.0"
+    "dompurify": "^3.0.0"
   },
   "peerDependencies": {
     "@rokkit/chart": "workspace:*",

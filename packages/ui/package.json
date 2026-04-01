@@ -48,7 +48,7 @@
     "@rokkit/states": "workspace:*",
     "@rokkit/actions": "workspace:*",
     "marked": "^15.0.0",
-    "isomorphic-dompurify": "^2.0.0"
+    "dompurify": "^3.0.0"
   },
   "peerDependencies": {
     "shiki": "^3.23.0",
