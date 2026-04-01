@@ -20,6 +20,7 @@
     "vite": "^7.1.6"
   },
   "dependencies": {
+    "@fontsource/inter": "^5.2.8",
     "@fontsource/open-sans": "^5.2.7",
     "@fontsource/overpass": "^5.2.8",
     "@rokkit/actions": "workspace:latest",
@@ -30,7 +31,7 @@
     "@rokkit/icons": "workspace:latest",
     "@rokkit/states": "workspace:latest",
     "@rokkit/themes": "workspace:latest",
-    "@rokkit/unocss": "workspace:latest",
-    "@rokkit/ui": "workspace:latest"
+    "@rokkit/ui": "workspace:latest",
+    "@rokkit/unocss": "workspace:latest"
   }
 }

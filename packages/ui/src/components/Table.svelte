@@ -14,6 +14,7 @@
 		caption,
 		size = 'md',
 		striped = false,
+		responsive = false,
 		disabled = false,
 		fields: userFields,
 		onselect,
@@ -148,11 +149,12 @@
 	data-size={size}
 	data-selectable={selectable || undefined}
 	data-disabled={disabled || undefined}
+	data-table-responsive={responsive || undefined}
 	class={className || undefined}
 	onfocusin={handleFocusIn}
 	use:navigator={{ wrapper: controller, orientation: 'vertical' }}
 >
-	<table role="grid" aria-label={caption} data-striped={striped || undefined}>
+	<table role="grid" aria-label={caption} data-table-striped={striped || undefined}>
 		{#if caption}
 			<caption data-table-caption>{caption}</caption>
 		{/if}
@@ -221,12 +223,12 @@
 						>
 							{#each controller.columns as column (column.name)}
 								{#if cellSnippet}
-									<td data-table-cell data-column={column.name} style:text-align={column.align}>
+									<td data-table-cell data-column={column.name} data-label={column.label ?? column.name} style:text-align={column.align}>
 										{@render cellSnippet(getCellValue(row, column), column, row)}
 									</td>
 								{:else}
 									{@const cellIcon = getCellIcon(row, column)}
-									<td data-table-cell data-column={column.name} style:text-align={column.align}>
+									<td data-table-cell data-column={column.name} data-label={column.label ?? column.name} style:text-align={column.align}>
 										{#if cellIcon}
 											<span data-cell-icon class={cellIcon} aria-hidden="true"></span>
 										{/if}

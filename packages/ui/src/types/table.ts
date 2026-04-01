@@ -184,6 +184,9 @@ export interface TableProps {
 	/** Enable alternating row colors */
 	striped?: boolean
 
+	/** Enable responsive card layout on mobile (< 640px) */
+	responsive?: boolean
+
 	/** Whether the entire table is disabled */
 	disabled?: boolean
 

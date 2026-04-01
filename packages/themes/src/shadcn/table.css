@@ -64,7 +64,7 @@
    Striped
    ============================================================================= */
 
-[data-style='shadcn'] [data-striped='true'] [data-table-body] tr:nth-child(even) {
+[data-style='shadcn'] [data-table-striped] [data-table-body] tr:nth-child(even) {
   @apply bg-surface-z1;
 }
 

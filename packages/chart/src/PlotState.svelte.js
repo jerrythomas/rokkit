@@ -176,6 +176,9 @@ export class PlotState {
 		const field = this.#effectiveChannels.color
 		if (isLiteralColor(field)) return new Map([[null, { fill: field, stroke: field }]])
 		const values = this.#colorDomain ?? distinct(this.#data, field)
+		// No color channel but data exists → use first preset color for single-series rendering.
+		// This prevents geoms from falling back to gray (#888) on charts with no fill channel.
+		if (values.length === 0 && this.#data.length > 0) return assignColors([null], this.#mode, this.#chartPreset)
 		return assignColors(values, this.#mode, this.#chartPreset)
 	})
 

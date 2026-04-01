@@ -47,7 +47,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-table-row] {
-  @apply text-surface-z8 border-surface-z3 border-b;
+  @apply text-surface-z7 border-surface-z3 border-b;
 }
 
 [data-style='material'] [data-table-row]:hover {
@@ -66,7 +66,7 @@
    Striped
    ============================================================================= */
 
-[data-style='material'] [data-striped='true'] [data-table-body] tr:nth-child(even) {
+[data-style='material'] [data-table-striped] [data-table-body] tr:nth-child(even) {
   @apply bg-surface-z1;
 }
 
@@ -88,4 +88,23 @@
 
 [data-style='material'] [data-table-row][data-selected='true'] [data-cell-icon] {
   @apply text-primary-z6;
+}
+
+/* =============================================================================
+   Responsive Card Layout
+   ============================================================================= */
+
+@media (max-width: 639px) {
+  [data-style='material'] [data-table-responsive] [data-table-row] {
+    @apply bg-surface-z2 border-surface-z3 border bg-none shadow-sm;
+  }
+
+  [data-style='material'] [data-table-responsive] [data-table-cell]::before {
+    @apply text-surface-z5;
+  }
+
+  /* Disable striped alternating bg in card layout */
+  [data-style='material'] [data-table-responsive][data-table-striped] [data-table-body] tr:nth-child(even) {
+    background: unset;
+  }
 }

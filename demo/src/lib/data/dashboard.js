@@ -67,10 +67,21 @@ export function recentOrders() {
 /** KPI summary */
 export function kpiSummary() {
 	return {
-		revenue: { value: 8020000, change: 14.2, label: 'Total Revenue' },
-		orders: { value: 6432, change: 8.7, label: 'Total Orders' },
-		customers: { value: 1284, change: 22.1, label: 'Active Customers' },
-		avgOrder: { value: 1247, change: -3.4, label: 'Avg Order Value' }
+		revenue:   { value: 8020000, change: 14.2, label: 'Total Revenue',    sparkKey: 'revenue' },
+		orders:    { value: 6432,    change: 8.7,  label: 'Total Orders',     sparkKey: 'orders' },
+		customers: { value: 1284,    change: 22.1, label: 'Active Customers', sparkKey: 'customers' },
+		avgOrder:  { value: 1247,    change: -3.4, label: 'Avg Order Value',  sparkKey: 'avgOrder' }
+	}
+}
+
+/** Monthly sparklines for each KPI metric (12 months) */
+export function kpiSparklines() {
+	const base = [420, 380, 510, 490, 620, 580, 710, 690, 750, 820, 780, 910]
+	return {
+		revenue:   MONTHS.map((month, i) => ({ month, value: base[i] * 1000 })),
+		orders:    MONTHS.map((month, i) => ({ month, value: Math.round(base[i] * 0.8) })),
+		customers: MONTHS.map((month, i) => ({ month, value: Math.round(70 + i * 9.5 + [0,2,-1,3,1,4,2,5,3,6,4,7][i]) })),
+		avgOrder:  MONTHS.map((month, i) => ({ month, value: Math.round(1320 - i * 6 + [0,-15,20,-10,5,-20,10,15,-5,8,-12,3][i]) }))
 	}
 }
 

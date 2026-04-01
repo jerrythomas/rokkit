@@ -55,8 +55,17 @@ export function buildUnifiedYScale(datasets, field, height, opts = {}) {
 	if (opts.domain) {
 		return scaleLinear().domain(opts.domain).range([height, 0]).nice()
 	}
-	const allValues = datasets.flatMap((d) => d.map((r) => Number(r[field]))).filter((v) => !isNaN(v))
-	const [minVal, maxVal] = extent(allValues)
+	const rawValues = datasets.flatMap((d) => d.map((r) => r[field])).filter((v) => v !== null && v !== undefined)
+	const isNumeric = rawValues.length > 0 && rawValues.every(
+		(v) => typeof v === 'number' || (!isNaN(Number(v)) && String(v).trim() !== '')
+	)
+	if (!isNumeric) {
+		// Categorical y-axis (e.g. horizontal bar chart) — use scaleBand
+		const domain = [...new Set(rawValues.map(String))]
+		return scaleBand().domain(domain).range([height, 0]).padding(0.2)
+	}
+	const numericValues = rawValues.map(Number)
+	const [minVal, maxVal] = extent(numericValues)
 	const domainMin = (opts.includeZero ?? true) ? 0 : (minVal ?? 0)
 	return scaleLinear()
 		.domain([domainMin, maxVal ?? 0])

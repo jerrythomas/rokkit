@@ -87,7 +87,7 @@
 [data-button]:not([data-size]) {
   height: calc(var(--density-icon-size) + var(--density-spacing-sm) * 2);
   padding-inline: var(--density-spacing-lg);
-  font-size: var(--density-font-size-base);
+  font-size: 0.875rem;
   gap: var(--density-spacing-sm);
 }
 

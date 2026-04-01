@@ -64,11 +64,11 @@
    Striped — alternating rows
    ============================================================================= */
 
-[data-style='carbon'] [data-striped='true'] [data-table-body] tr:nth-child(even) {
+[data-style='carbon'] [data-table-striped] [data-table-body] tr:nth-child(even) {
   @apply bg-surface-z1;
 }
 
-[data-style='carbon'] [data-striped='true'] [data-table-body] tr:nth-child(odd) {
+[data-style='carbon'] [data-table-striped] [data-table-body] tr:nth-child(odd) {
   @apply bg-surface-z0;
 }
 

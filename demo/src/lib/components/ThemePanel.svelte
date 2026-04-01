@@ -1,7 +1,7 @@
 <script>
 	// @ts-nocheck
 	import { vibe } from '@rokkit/states'
-	import { Button, Toggle } from '@rokkit/ui'
+	import { Button, Select, Toggle } from '@rokkit/ui'
 
 	let { open = $bindable(false) } = $props()
 
@@ -44,7 +44,6 @@
 		vibe.colorMap = { ...vibe.colorMap, primary: p.primary, secondary: p.secondary }
 	}
 
-	// Bound values that write through to vibe
 	let style = $derived(vibe.style)
 	let mode = $derived(vibe.mode)
 	let density = $derived(vibe.density)
@@ -62,16 +61,12 @@
 
 <!-- Panel -->
 <aside
-	class="fixed top-0 right-0 z-50 h-full w-80 overflow-y-auto shadow-2xl transition-transform duration-300"
+	class="bg-surface-z1 border-surface-z3 fixed top-0 right-0 z-50 h-full w-80 overflow-y-auto border-l shadow-2xl transition-transform duration-300"
 	class:translate-x-full={!open}
 	class:translate-x-0={open}
-	style="background: var(--color-surface-z1); border-left: 1px solid var(--color-surface-z3)"
 >
 	<!-- Header -->
-	<div
-		class="flex items-center justify-between border-b p-4"
-		style="border-color: var(--color-surface-z3)"
-	>
+	<div class="border-surface-z3 flex items-center justify-between border-b p-4">
 		<div class="flex items-center gap-2">
 			<span class="i-glyph:palette text-primary-z6 text-lg"></span>
 			<span class="text-surface-z8 font-semibold">Theme Settings</span>
@@ -90,11 +85,10 @@
 		<!-- Style -->
 		<section>
 			<h3 class="text-surface-z5 mb-3 text-xs font-semibold tracking-widest uppercase">Style</h3>
-			<Toggle
-				options={styleOptions}
+			<Select
+				items={styleOptions}
 				value={style}
 				onchange={(v) => (vibe.style = v)}
-				class="grid grid-cols-2"
 			/>
 		</section>
 
@@ -128,9 +122,9 @@
 						type="button"
 						onclick={() => setPalette(p)}
 						class="flex items-center gap-3 rounded-lg border px-3 py-2 text-left transition-all"
-						style={activePalette === p.id
-							? 'border-color: var(--color-primary-z5); background: var(--color-surface-z2)'
-							: 'border-color: var(--color-surface-z3); background: transparent'}
+						class:border-primary-z5={activePalette === p.id}
+						class:bg-surface-z2={activePalette === p.id}
+						class:border-surface-z3={activePalette !== p.id}
 					>
 						<div class="flex gap-1">
 							<span class="h-4 w-4 rounded-full" style="background: {COLOR_HEX[p.primary]}"></span>

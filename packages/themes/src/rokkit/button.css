@@ -19,7 +19,7 @@
 /* Primary variant */
 [data-style='rokkit'] [data-button][data-style='default'][data-variant='primary'],
 [data-style='rokkit'] [data-button]:not([data-style])[data-variant='primary'] {
-  @apply from-primary-z5 to-secondary-z5 border-primary-z5 text-on-primary border bg-gradient-to-b;
+  @apply from-primary-z5 to-secondary-z5 border-primary-z5 text-on-primary border bg-gradient-to-r;
 }
 
 /* Secondary variant */

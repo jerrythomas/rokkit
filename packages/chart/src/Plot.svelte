@@ -51,10 +51,13 @@
 		summary = '',
 		tooltip = false,
 		zoom = false,
+		xFormat = undefined,
+		yFormat = undefined,
 		children
 	} = $props()
 
-	const chartPreset = getContext('chart-preset') ?? defaultPreset
+	const chartPresetCtx = getContext('chart-preset')
+	const chartPreset = $derived(chartPresetCtx?.current ?? defaultPreset)
 
 	function buildPlotConfig() {
 		return {
@@ -143,7 +146,6 @@
 		viewBox="0 0 {svgWidth} {svgHeight}"
 		role="img"
 		aria-label={chartTitle || 'Chart visualization'}
-		aria-description={chartSummary || undefined}
 		style:cursor={zoom ? 'grab' : undefined}
 	>
 		<!-- SVG pattern defs -->
@@ -182,8 +184,8 @@
 
 			<!-- Axes -->
 			{#if axes}
-				<Axis type="x" label={spec?.labels?.[spec?.x ?? ''] ?? ''} />
-				<Axis type="y" label={spec?.labels?.[spec?.y ?? ''] ?? ''} />
+				<Axis type="x" label={spec?.labels?.[spec?.x ?? ''] ?? ''} format={xFormat} />
+				<Axis type="y" label={spec?.labels?.[spec?.y ?? ''] ?? ''} format={yFormat} />
 			{/if}
 		</g>
 	</svg>
@@ -204,6 +206,14 @@
 		position: relative;
 		width: 100%;
 		height: auto;
+	}
+
+	[data-plot-root][data-mode='light'] {
+		color: #475569; /* slate-600 */
+	}
+
+	[data-plot-root][data-mode='dark'] {
+		color: #94a3b8; /* slate-400 */
 	}
 
 	svg {

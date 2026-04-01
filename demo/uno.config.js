@@ -1,4 +1,4 @@
-import { defineConfig } from 'unocss'
+import { defineConfig, transformerDirectives } from 'unocss'
 import { presetRokkit, presetBackgrounds } from '@rokkit/unocss'
 import config from './rokkit.config.js'
 import { createRequire } from 'module'
@@ -8,6 +8,7 @@ const glyphData = require('@rokkit/icons/glyph.json')
 const glyphIcons = Object.keys(glyphData.icons).map((n) => `i-glyph:${n}`)
 
 export default defineConfig({
+	transformers: [transformerDirectives()],
 	presets: [presetRokkit(config), presetBackgrounds()],
 	shortcuts: [
 		['text-on-primary', 'text-surface-50'],
@@ -31,12 +32,12 @@ export default defineConfig({
 		'i-glyph:palette',
 		'i-glyph:magic-stick',
 		'i-glyph:layers',
-		'i-glyph:list-items'
+    'i-glyph:list-items'
 	],
 	content: {
 		pipeline: {
 			include: [
-				'src/**/*.{svelte,js,ts}',
+				'src/**/*.{svelte,js,ts,css}',
 				'../packages/themes/src/**/*.css',
 				'../packages/ui/src/**/*.svelte'
 			]

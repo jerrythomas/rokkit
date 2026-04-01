@@ -30,7 +30,15 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
 		return gen
 	}
 
-	const sortByX = (rows) => [...rows].sort((a, b) => (a[xf] < b[xf] ? -1 : a[xf] > b[xf] ? 1 : 0))
+	// For band (categorical) x scales, sort by domain index to preserve intended ordering.
+	// For continuous scales, sort numerically so the path draws left-to-right.
+	const sortByX = (rows) => {
+		if (typeof xScale.bandwidth === 'function') {
+			const domain = xScale.domain()
+			return [...rows].sort((a, b) => domain.indexOf(a[xf]) - domain.indexOf(b[xf]))
+		}
+		return [...rows].sort((a, b) => (a[xf] < b[xf] ? -1 : a[xf] > b[xf] ? 1 : 0))
+	}
 
 	if (!cf) {
 		const entry = colors?.values().next().value ?? { fill: '#888', stroke: '#888' }

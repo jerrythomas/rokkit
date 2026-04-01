@@ -4,7 +4,7 @@
 
 	let { preset = createChartPreset(), children } = $props()
 
-	setContext('chart-preset', preset)
+	setContext('chart-preset', { get current() { return preset } })
 </script>
 
 {@render children?.()}

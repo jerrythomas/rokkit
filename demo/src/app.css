@@ -2,6 +2,9 @@
 @import '@fontsource/overpass';
 @import '@fontsource/overpass/300.css';
 @import '@fontsource/open-sans';
+@import '@fontsource/inter';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
 
 @import '@rokkit/themes/base.css';
 @import '@rokkit/themes/rokkit.css';
@@ -14,7 +17,34 @@ body {
   height: 100%;
 }
 
+/* Light mode */
+body[data-mode='light'],
+html:has(body[data-mode='light']) {
+  background-color: rgba(var(--color-surface-50), 1);
+}
+
+/* Dark mode */
+body[data-mode='dark'],
+html:has(body[data-mode='dark']) {
+  background-color: rgba(var(--color-surface-950), 1);
+}
+
+/* System mode — follow OS preference */
+@media (prefers-color-scheme: light) {
+  body[data-mode='system'],
+  html:has(body[data-mode='system']) {
+    background-color: rgba(var(--color-surface-50), 1);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body[data-mode='system'],
+  html:has(body[data-mode='system']) {
+    background-color: rgba(var(--color-surface-950), 1);
+  }
+}
+
 body {
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Inter', 'Open Sans', sans-serif;
   font-size: 14px;
 }

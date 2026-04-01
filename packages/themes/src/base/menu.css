@@ -57,7 +57,7 @@
 [data-menu]:not([data-size]) [data-menu-trigger] {
   height: calc(var(--density-icon-size) + var(--density-spacing-xs) * 2);
   padding-inline: var(--density-spacing-md);
-  font-size: var(--density-font-size-base);
+  font-size: 0.875rem;
 }
 
 [data-menu][data-size='lg'] [data-menu-trigger] {
@@ -202,7 +202,7 @@
   gap: var(--density-spacing-md);
   padding-block: var(--density-spacing-sm);
   padding-inline: var(--density-spacing-md);
-  font-size: var(--density-font-size-base);
+  font-size: 0.875rem;
 }
 
 [data-menu][data-size='lg'] [data-menu-item] {

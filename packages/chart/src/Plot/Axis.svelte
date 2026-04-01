@@ -2,7 +2,7 @@
 	import { getContext } from 'svelte'
 
 	/** @type {'x' | 'y'} */
-	let { type = 'x', label = '' } = $props()
+	let { type = 'x', label = '', format = undefined } = $props()
 
 	const state = getContext('plot-state')
 
@@ -41,7 +41,7 @@
 			<g transform="translate({tick.pos}, 0)" data-plot-tick>
 				<line x1="0" y1="0" x2="0" y2="6" stroke="currentColor" />
 				<text x="0" y="9" text-anchor="middle" dominant-baseline="hanging" data-plot-tick-label>
-					{tick.value}
+					{format ? format(tick.value) : tick.value}
 				</text>
 			</g>
 		{/each}
@@ -62,7 +62,7 @@
 			<g transform="translate(0, {tick.pos})" data-plot-tick>
 				<line x1="-6" y1="0" x2="0" y2="0" stroke="currentColor" />
 				<text x="-9" y="0" text-anchor="end" dominant-baseline="middle" data-plot-tick-label>
-					{tick.value}
+					{format ? format(tick.value) : tick.value}
 				</text>
 			</g>
 		{/each}

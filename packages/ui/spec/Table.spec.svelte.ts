@@ -125,7 +125,7 @@ describe('Table', () => {
 	it('applies striped attribute', () => {
 		const { container } = render(Table, { data: sampleData, striped: true })
 		const table = container.querySelector('table')
-		expect(table?.hasAttribute('data-striped')).toBe(true)
+		expect(table?.hasAttribute('data-table-striped')).toBe(true)
 	})
 
 	// ─── Disabled ───────────────────────────────────────────────────

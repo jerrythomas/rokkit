@@ -16,10 +16,12 @@
 		height = 400,
 		mode = 'light',
 		grid = true,
-		legend = false
+		legend = false,
+		xFormat = undefined,
+		yFormat = undefined
 	} = $props()
 </script>
 
-<Plot {data} {width} {height} {mode} {grid} {legend}>
+<Plot {data} {width} {height} {mode} {grid} {legend} {xFormat} {yFormat}>
 	<Area {x} {y} color={fill} {pattern} {stat} options={{ curve, stack }} />
 </Plot>

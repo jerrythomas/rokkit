@@ -47,7 +47,7 @@ button[data-list-item] {
   gap: var(--density-spacing-md);
   padding-block: var(--density-spacing-xs);
   padding-inline: var(--density-spacing-md);
-  font-size: var(--density-font-size-base);
+  font-size: 0.875rem;
   line-height: var(--density-line-height);
   text-decoration: none;
   cursor: pointer;
@@ -85,7 +85,7 @@ button[data-list-item] {
   gap: var(--density-spacing-md);
   padding-block: var(--density-spacing-xs);
   padding-inline: var(--density-spacing-md);
-  font-size: var(--density-font-size-base);
+  font-size: 0.875rem;
   line-height: var(--density-line-height);
 }
 
@@ -111,7 +111,7 @@ button[data-list-item] {
   width: 100%;
   gap: var(--density-spacing-sm);
   padding-block: var(--density-spacing-xs);
-  font-size: var(--density-font-size-sm);
+  font-size: 0.75rem;
   font-weight: 600;
   text-align: left;
   text-transform: uppercase;

@@ -17,10 +17,12 @@
 		stat = 'identity',
 		stack = false,
 		label = false,
-		tooltip = false
+		tooltip = false,
+		xFormat = undefined,
+		yFormat = undefined
 	} = $props()
 </script>
 
-<Plot {data} {width} {height} {mode} {grid} {legend} {tooltip}>
+<Plot {data} {width} {height} {mode} {grid} {legend} {tooltip} {xFormat} {yFormat}>
 	<Bar {x} {y} color={fill} {pattern} {label} {stat} options={{ stack }} />
 </Plot>

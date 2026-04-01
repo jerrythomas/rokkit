@@ -34,15 +34,9 @@
 <div class="flex h-screen overflow-hidden" data-density={vibe.density}>
 
 	<!-- Sidebar -->
-	<aside
-		class="flex w-56 flex-shrink-0 flex-col border-r"
-		style="background: var(--color-surface-z1); border-color: var(--color-surface-z3)"
-	>
+	<aside class="bg-surface-z1 border-surface-z3 hidden w-56 flex-shrink-0 flex-col border-r md:flex">
 		<!-- Logo -->
-		<div
-			class="flex items-center gap-2 border-b px-4 py-4"
-			style="border-color: var(--color-surface-z3)"
-		>
+		<div class="border-surface-z3 flex items-center gap-2 border-b px-4 py-4">
 			<span class="i-glyph:rocket text-primary-z6 text-xl"></span>
 			<span class="text-surface-z8 font-semibold tracking-tight">Rokkit Demo</span>
 		</div>
@@ -58,7 +52,7 @@
 		</div>
 
 		<!-- Footer -->
-		<div class="border-t px-4 py-3" style="border-color: var(--color-surface-z3)">
+		<div class="border-surface-z3 border-t px-4 py-3">
 			<span class="text-surface-z4 text-xs">@rokkit/demo</span>
 		</div>
 	</aside>
@@ -67,11 +61,14 @@
 	<div class="flex min-w-0 flex-1 flex-col overflow-hidden">
 
 		<!-- Header -->
-		<header
-			class="flex h-12 flex-shrink-0 items-center justify-between border-b px-6"
-			style="background: var(--color-surface-z1); border-color: var(--color-surface-z3)"
-		>
-			<div class="text-surface-z6 text-sm">Business Analytics</div>
+		<header class="bg-surface-z1 border-surface-z3 flex h-12 flex-shrink-0 items-center justify-between border-b px-4 md:px-6">
+			<div class="flex items-center gap-3">
+				<span class="i-glyph:rocket text-primary-z6 text-xl md:hidden"></span>
+				<span class="text-surface-z6 text-sm">
+					<span class="md:hidden">{navItems.find((n) => n.id === activeSection)?.label ?? 'Dashboard'}</span>
+					<span class="hidden md:inline">Business Analytics</span>
+				</span>
+			</div>
 			<button
 				type="button"
 				onclick={() => (themePanelOpen = true)}

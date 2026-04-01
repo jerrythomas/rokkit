@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-table-header] th {
-  @apply text-surface-z6 border-surface-z5/20 border-b;
+  @apply text-surface-z6 border-surface-z5/20 border-b bg-surface-z2/80 backdrop-blur-sm;
 }
 
 [data-style='frosted'] [data-table-header-cell][data-sortable='true']:hover {
@@ -62,7 +62,7 @@
    Striped
    ============================================================================= */
 
-[data-style='frosted'] [data-striped='true'] [data-table-body] tr:nth-child(even) {
+[data-style='frosted'] [data-table-striped] [data-table-body] tr:nth-child(even) {
   @apply bg-surface-z2/30;
 }
 
@@ -84,4 +84,23 @@
 
 [data-style='frosted'] [data-table-row][data-selected='true'] [data-cell-icon] {
   @apply text-primary-z6;
+}
+
+/* =============================================================================
+   Responsive Card Layout
+   ============================================================================= */
+
+@media (max-width: 639px) {
+  [data-style='frosted'] [data-table-responsive] [data-table-row] {
+    @apply bg-surface-z2/80 border-surface-z5/20 border backdrop-blur-sm;
+  }
+
+  [data-style='frosted'] [data-table-responsive] [data-table-cell]::before {
+    @apply text-surface-z5;
+  }
+
+  /* Disable striped alternating bg in card layout */
+  [data-style='frosted'] [data-table-responsive][data-table-striped] [data-table-body] tr:nth-child(even) {
+    background: unset;
+  }
 }
