@@ -1,7 +1,7 @@
 # Rokkit
 
-[![Test Coverage][coverage_badge]][coverage_url]
-[![Maintainability][maintainability_badge]][maintainability_url]
+[![Maintainability](https://qlty.sh/gh/jerrythomas/projects/rokkit/maintainability.svg)](https://qlty.sh/gh/jerrythomas/projects/rokkit)
+[![Code Coverage](https://qlty.sh/gh/jerrythomas/projects/rokkit/coverage.svg)](https://qlty.sh/gh/jerrythomas/projects/rokkit)
 
 ![Rokkit](rokkit.svg)
 
@@ -111,7 +111,3 @@ bun install
 bun dev
 ```
 
-[coverage_badge]: https://api.codeclimate.com/v1/badges/fd3e28efe14760b16f74/test_coverage
-[coverage_url]: https://codeclimate.com/github/jerrythomas/rokkit/test_coverage
-[maintainability_badge]: https://api.codeclimate.com/v1/badges/fd3e28efe14760b16f74/maintainability
-[maintainability_url]: https://codeclimate.com/github/jerrythomas/rokkit/maintainability
