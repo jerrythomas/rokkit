@@ -23,7 +23,7 @@ export function buildLines(data, channels, xScale, yScale, colors, curve) {
 	}
 	const toPoints = (rows) => rows.map((d) => ({ x: xPos(d), y: yScale(d[yf]), data: d }))
 
-	const sortByX = (rows) => [...rows].sort((a, b) => (a[xf] < b[xf] ? -1 : a[xf] > b[xf] ? 1 : 0))
+	const sortByX = (rows) => [...rows].sort((a, b) => xPos(a) - xPos(b))
 
 	if (!cf) {
 		const sorted = sortByX(data)
