@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/blocks",
-  "version": "1.0.0-next.151",
+  "version": "1.0.0-next.152",
   "description": "Markdown block plugins for Rokkit (Plot, Table, Sparkline, Mermaid)",
   "type": "module",
   "publishConfig": {
