@@ -31,6 +31,10 @@ body {
   @apply flex h-screen w-screen flex-col overflow-hidden;
   @apply font-body bg-surface-z1 text-surface-floating font-extralight;
 }
+
+body[data-mode='dark'] .i-logo\:github {
+  filter: invert(1);
+}
 app {
   @apply bg-surface-z1 text-surface-floating relative flex flex-1 flex-col overflow-hidden;
 }
