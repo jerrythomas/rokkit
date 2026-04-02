@@ -25,7 +25,9 @@
 
 	const id = `tt-${Math.random().toString(36).slice(2, 9)}`
 	let visible = $state(false)
-	let resolvedPosition = $state<'top' | 'bottom' | 'left' | 'right'>(position)
+	// positionOverride is set by auto-flip during show; null resets to the position prop
+	let positionOverride = $state<typeof position | null>(null)
+	const resolvedPosition = $derived(positionOverride ?? position)
 	let timer: ReturnType<typeof setTimeout> | null = null
 	let rootEl = $state<HTMLElement | null>(null)
 	let tooltipEl = $state<HTMLElement | null>(null)
@@ -60,7 +62,7 @@
 		if (!rootEl || !tooltipEl) return
 		const triggerRect = rootEl.getBoundingClientRect()
 		const tooltipRect = tooltipEl.getBoundingClientRect()
-		resolvedPosition = resolveFlip(triggerRect, tooltipRect, position)
+		positionOverride = resolveFlip(triggerRect, tooltipRect, position)
 	}
 
 	function show() {
@@ -71,6 +73,7 @@
 	function hide() {
 		if (timer) clearTimeout(timer)
 		visible = false
+		positionOverride = null
 	}
 
 	function onMouseEnter() {
@@ -89,6 +92,7 @@
 
 <span
 	data-tooltip-root
+	role="group"
 	aria-describedby={id}
 	class={className || undefined}
 	onmouseenter={onMouseEnter}
