@@ -44,7 +44,8 @@ export {
 	Divider,
 	Stack,
 	Badge,
-	Avatar
+	Avatar,
+	Tooltip
 } from './components/index.js'
 
 export { default as MarkdownRenderer } from './MarkdownRenderer.svelte'

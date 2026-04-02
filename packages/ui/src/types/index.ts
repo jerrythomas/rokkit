@@ -53,3 +53,6 @@ export * from './floating-navigation.js'
 export * from './upload-target.js'
 export * from './upload-file-status.js'
 export * from './upload-progress.js'
+
+// Tooltip Types
+export * from './tooltip.js'
