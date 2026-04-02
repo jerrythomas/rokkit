@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { render } from '@testing-library/svelte'
+import { render, fireEvent } from '@testing-library/svelte'
 import PlotPlugin from '../src/PlotPlugin.svelte'
 
 const validSpec = JSON.stringify({
@@ -62,5 +62,22 @@ describe('PlotPlugin', () => {
 		const { container } = render(PlotPlugin, { props: { code: animatedSpec } })
 		// Should render without error
 		expect(container.querySelector('svg')).toBeTruthy()
+	})
+
+	it('shows raw code when toggle button is clicked', async () => {
+		const { container } = render(PlotPlugin, { props: { code: validSpec } })
+		const toggle = container.querySelector('[data-plot-code-toggle]')!
+		await fireEvent.click(toggle)
+		expect(container.querySelector('[data-plot-code]')).toBeTruthy()
+		expect(container.querySelector('svg')).toBeFalsy()
+	})
+
+	it('returns to chart view when toggle is clicked again', async () => {
+		const { container } = render(PlotPlugin, { props: { code: validSpec } })
+		const toggle = container.querySelector('[data-plot-code-toggle]')!
+		await fireEvent.click(toggle)
+		await fireEvent.click(toggle)
+		expect(container.querySelector('svg')).toBeTruthy()
+		expect(container.querySelector('[data-plot-code]')).toBeFalsy()
 	})
 })
