@@ -23,6 +23,7 @@
   },
   "peerDependencies": {
     "@rokkit/chart": "workspace:*",
+    "@rokkit/core": "workspace:*",
     "@rokkit/ui": "workspace:*",
     "mermaid": ">=11.0.0",
     "svelte": "^5.0.0"
@@ -34,6 +35,7 @@
   },
   "devDependencies": {
     "@rokkit/chart": "workspace:*",
+    "@rokkit/core": "workspace:*",
     "@rokkit/ui": "workspace:*"
   }
 }

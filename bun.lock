@@ -66,7 +66,7 @@
     },
     "packages/actions": {
       "name": "@rokkit/actions",
-      "version": "1.0.0-next.152",
+      "version": "1.0.0-next.153",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "ramda": "^0.32.0",
@@ -78,7 +78,7 @@
     },
     "packages/app": {
       "name": "@rokkit/app",
-      "version": "1.0.0-next.152",
+      "version": "1.0.0-next.153",
       "dependencies": {
         "@rokkit/actions": "workspace:*",
         "@rokkit/core": "workspace:*",
@@ -104,16 +104,18 @@
     },
     "packages/blocks": {
       "name": "@rokkit/blocks",
-      "version": "1.0.0-next.152",
+      "version": "1.0.0-next.153",
       "dependencies": {
         "dompurify": "^3.0.0",
       },
       "devDependencies": {
         "@rokkit/chart": "workspace:*",
+        "@rokkit/core": "workspace:*",
         "@rokkit/ui": "workspace:*",
       },
       "peerDependencies": {
         "@rokkit/chart": "workspace:*",
+        "@rokkit/core": "workspace:*",
         "@rokkit/ui": "workspace:*",
         "mermaid": ">=11.0.0",
         "svelte": "^5.0.0",
@@ -124,7 +126,7 @@
     },
     "packages/chart": {
       "name": "@rokkit/chart",
-      "version": "1.0.0-next.152",
+      "version": "1.0.0-next.153",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "@rokkit/data": "workspace:latest",
@@ -143,7 +145,7 @@
     },
     "packages/cli": {
       "name": "@rokkit/cli",
-      "version": "1.0.0-next.152",
+      "version": "1.0.0-next.153",
       "bin": {
         "rokkit": "src/index.js",
       },
@@ -162,7 +164,7 @@
     },
     "packages/core": {
       "name": "@rokkit/core",
-      "version": "1.0.0-next.152",
+      "version": "1.0.0-next.153",
       "dependencies": {
         "@unocss/preset-mini": "^66.6.1",
         "date-fns": "^4.1.0",
@@ -174,7 +176,7 @@
     },
     "packages/data": {
       "name": "@rokkit/data",
-      "version": "1.0.0-next.152",
+      "version": "1.0.0-next.153",
       "dependencies": {
         "@lukeed/uuid": "^2.0.1",
         "@rokkit/core": "workspace:*",
@@ -186,7 +188,7 @@
     },
     "packages/forms": {
       "name": "@rokkit/forms",
-      "version": "1.0.0-next.152",
+      "version": "1.0.0-next.153",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "@rokkit/data": "workspace:latest",
@@ -197,7 +199,7 @@
     },
     "packages/helpers": {
       "name": "@rokkit/helpers",
-      "version": "1.0.0-next.152",
+      "version": "1.0.0-next.153",
       "dependencies": {
         "@vitest/expect": "^4.0.18",
         "ramda": "^0.32.0",
@@ -205,7 +207,7 @@
     },
     "packages/icons": {
       "name": "@rokkit/icons",
-      "version": "1.0.0-next.152",
+      "version": "1.0.0-next.153",
       "devDependencies": {
         "@iconify-json/solar": "^1.2.5",
         "@rokkit/cli": "workspace:latest",
@@ -214,7 +216,7 @@
     },
     "packages/states": {
       "name": "@rokkit/states",
-      "version": "1.0.0-next.152",
+      "version": "1.0.0-next.153",
       "dependencies": {
         "@rokkit/core": "workspace:*",
         "@rokkit/data": "workspace:*",
@@ -225,7 +227,7 @@
     },
     "packages/stories": {
       "name": "@rokkit/stories",
-      "version": "1.0.0-next.152",
+      "version": "1.0.0-next.153",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "@rokkit/states": "workspace:latest",
@@ -241,7 +243,7 @@
     },
     "packages/themes": {
       "name": "@rokkit/themes",
-      "version": "1.0.0-next.152",
+      "version": "1.0.0-next.153",
       "dependencies": {
         "@rokkit/core": "workspace:*",
       },
@@ -252,7 +254,7 @@
     },
     "packages/ui": {
       "name": "@rokkit/ui",
-      "version": "1.0.0-next.152",
+      "version": "1.0.0-next.153",
       "dependencies": {
         "@rokkit/actions": "workspace:*",
         "@rokkit/core": "workspace:*",
@@ -273,7 +275,7 @@
     },
     "packages/unocss": {
       "name": "@rokkit/unocss",
-      "version": "1.0.0-next.152",
+      "version": "1.0.0-next.153",
       "dependencies": {
         "@rokkit/core": "workspace:*",
         "@rokkit/icons": "workspace:*",
@@ -283,7 +285,7 @@
     },
     "site": {
       "name": "@rokkit/learn",
-      "version": "1.0.0-next.152",
+      "version": "1.0.0-next.153",
       "dependencies": {
         "@fontsource/open-sans": "^5.2.7",
         "@fontsource/overpass": "^5.2.8",

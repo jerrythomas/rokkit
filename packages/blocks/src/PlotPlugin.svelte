@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { PlotChart, FacetPlot, AnimatedPlot } from '@rokkit/chart'
+	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 
 	let { code }: { code: string } = $props()
 
 	let showCode = $state(false)
+
+	const icons = DEFAULT_STATE_ICONS.view
 
 	const result = $derived.by(() => {
 		try {
@@ -31,7 +34,7 @@
 			title={showCode ? 'Show chart' : 'Show code'}
 			aria-pressed={showCode}
 		>
-			{showCode ? 'chart' : '</>'}
+			<span class="i-rokkit:{showCode ? icons.chart : icons.code}"></span>
 		</button>
 
 		{#if showCode}
@@ -56,10 +59,11 @@
 		top: 0.375rem;
 		right: 0.375rem;
 		z-index: 1;
-		padding: 0.125rem 0.375rem;
-		font-size: 0.7rem;
-		font-family: monospace;
-		line-height: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.5rem;
+		height: 1.5rem;
 		border-radius: 0.25rem;
 		border: 1px solid currentColor;
 		background: transparent;
@@ -67,6 +71,7 @@
 		opacity: 0.4;
 		cursor: pointer;
 		transition: opacity 150ms ease;
+		font-size: 1rem;
 	}
 
 	[data-plot-code-toggle]:hover {

@@ -107,6 +107,10 @@ describe('Utility functions', () => {
 				passed: 'validity-passed',
 				unknown: 'validity-unknown',
 				warning: 'validity-warning'
+			},
+			view: {
+				code: 'view-code',
+				chart: 'view-chart'
 			}
 		})
 	})

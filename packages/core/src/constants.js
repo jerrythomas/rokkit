@@ -131,7 +131,9 @@ export const DEFAULT_ICONS = [
 	'align-horizontal-center',
 	'align-vertical-top',
 	'align-vertical-bottom',
-	'align-vertical-middle'
+	'align-vertical-middle',
+	'view-code',
+	'view-chart'
 ]
 
 export const DEFAULT_OPTIONS = {
