@@ -173,6 +173,75 @@ describe('PlotState — axisOrigin', () => {
 		const atZero = state.yScale(0)
 		expect(state.xAxisY).toBe(atZero)
 	})
+
+	it('xAxisY auto-positions at y=0 when domain spans zero', () => {
+		const data = [
+			{ x: 1, y: -30 },
+			{ x: 2, y: 50 },
+			{ x: 3, y: -10 }
+		]
+		const state = new PlotState({
+			data,
+			channels: { x: 'x', y: 'y' },
+			width: 600,
+			height: 400
+		})
+		// Domain includes negative values: auto-quadrant places x-axis at y=0
+		const yAtZero = state.yScale(0)
+		expect(state.xAxisY).toBe(yAtZero)
+		expect(yAtZero).toBeGreaterThan(0)
+		expect(yAtZero).toBeLessThan(state.innerHeight)
+	})
+
+	it('xAxisY stays at bottom for all-positive y data', () => {
+		const data = [
+			{ x: 1, y: 10 },
+			{ x: 2, y: 50 },
+			{ x: 3, y: 30 }
+		]
+		const state = new PlotState({
+			data,
+			channels: { x: 'x', y: 'y' },
+			width: 600,
+			height: 400
+		})
+		// All positive: domain starts at 0 (includeZero=true), x-axis at bottom
+		expect(state.xAxisY).toBeCloseTo(state.innerHeight, 1)
+	})
+
+	it('yAxisX auto-positions at x=0 when x domain spans zero', () => {
+		const data = [
+			{ x: -20, y: 10 },
+			{ x: 30, y: 50 },
+			{ x: -5, y: 30 }
+		]
+		const state = new PlotState({
+			data,
+			channels: { x: 'x', y: 'y' },
+			width: 600,
+			height: 400
+		})
+		const xAtZero = state.xScale(0)
+		expect(state.yAxisX).toBe(xAtZero)
+		expect(xAtZero).toBeGreaterThan(0)
+		expect(xAtZero).toBeLessThan(state.innerWidth)
+	})
+
+	it('yAxisX stays at left edge for all-positive x data', () => {
+		const data = [
+			{ x: 10, y: 10 },
+			{ x: 50, y: 50 }
+		]
+		const state = new PlotState({
+			data,
+			channels: { x: 'x', y: 'y' },
+			width: 600,
+			height: 400
+		})
+		// xDomain starts above 0, y-axis at left edge (xScale(domain[0]))
+		const domain = state.xScale.domain()
+		expect(state.yAxisX).toBe(state.xScale(domain[0]))
+	})
 })
 
 describe('PlotState — geomData with stat=boxplot', () => {

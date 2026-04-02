@@ -81,6 +81,31 @@ describe('buildGroupedBars', () => {
 		const bars = buildGroupedBars(data, { x: 'class', y: 'hwy' }, xScale, yScale, colors, 200)
 		expect(bars).toHaveLength(4)
 	})
+
+	it('renders negative bars correctly when domain spans zero', () => {
+		const negData = [
+			{ cat: 'A', val: 20 },
+			{ cat: 'B', val: -15 },
+			{ cat: 'C', val: 5 }
+		]
+		const xBand = scaleBand().domain(['A', 'B', 'C']).range([0, 300]).padding(0.2)
+		const yLin = scaleLinear().domain([-20, 25]).range([200, 0])
+		const baseline = yLin(0)
+
+		const bars = buildGroupedBars(negData, { x: 'cat', y: 'val' }, xBand, yLin, new Map(), 200)
+
+		const barA = bars.find((b) => b.data.cat === 'A')
+		const barB = bars.find((b) => b.data.cat === 'B')
+
+		// Positive bar: y is above baseline, height goes down to baseline
+		expect(barA?.y).toBeLessThan(baseline)
+		expect(barA?.y + barA?.height).toBeCloseTo(baseline, 1)
+
+		// Negative bar: y starts at baseline, extends downward
+		expect(barB?.y).toBeCloseTo(baseline, 1)
+		expect(barB?.height).toBeGreaterThan(0)
+		expect(barB?.y + barB?.height).toBeCloseTo(yLin(-15), 1)
+	})
 })
 
 describe('buildStackedBars', () => {

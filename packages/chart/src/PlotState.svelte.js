@@ -214,7 +214,10 @@ export class PlotState {
 		const crossVal = this.axisOrigin[1]
 		if (crossVal !== undefined) return this.yScale(crossVal)
 		const domain = this.yScale.domain?.()
-		return domain ? this.yScale(domain[0]) : this.#innerHeight
+		if (!domain) return this.#innerHeight
+		// Auto quadrant: place x-axis at y=0 when domain spans zero
+		if (domain[0] <= 0 && domain[domain.length - 1] >= 0) return this.yScale(0)
+		return this.yScale(domain[0])
 	})
 
 	yAxisX = $derived.by(() => {
@@ -222,7 +225,10 @@ export class PlotState {
 		const crossVal = this.axisOrigin[0]
 		if (crossVal !== undefined) return this.xScale(crossVal)
 		const domain = this.xScale.domain?.()
-		return domain ? this.xScale(domain[0]) : 0
+		if (!domain || typeof this.xScale.bandwidth === 'function') return 0
+		// Auto quadrant: place y-axis at x=0 when domain spans zero
+		if (domain[0] <= 0 && domain[domain.length - 1] >= 0) return this.xScale(0)
+		return this.xScale(domain[0])
 	})
 
 	constructor(config = {}) {

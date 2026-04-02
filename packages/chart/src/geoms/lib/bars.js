@@ -47,6 +47,14 @@ export function buildGroupedBars(data, channels, xScale, yScale, colors, innerHe
 			? scaleBand().domain(subDomain).range([0, bandScale.bandwidth()]).padding(0.05)
 			: null
 
+	// Baseline for bars: at y=0 when domain spans zero (supports negative bars),
+	// otherwise at the bottom of the chart area.
+	const yDomain = typeof yScale.bandwidth !== 'function' ? yScale.domain?.() : null
+	const baseline =
+		yDomain && yDomain[0] <= 0 && yDomain[yDomain.length - 1] >= 0
+			? (yScale(0) ?? innerHeight)
+			: innerHeight
+
 	return data.map((d, i) => {
 		const xVal = d[xf]
 		const colorKey = cf ? d[cf] : null
@@ -64,16 +72,15 @@ export function buildGroupedBars(data, channels, xScale, yScale, colors, innerHe
 		const subX = subScale && subKey ? (subScale(subKey) ?? 0) : 0
 		const barX = bandX + subX
 		const barWidth = subScale ? subScale.bandwidth() : bandScale.bandwidth()
-		const barY = yScale(d[yf])
-		const barHeight = innerHeight - barY
+		const barY = yScale(d[yf]) ?? baseline
 
 		return {
 			data: d,
 			key: `${String(xVal)}::${subKey}::${i}`,
 			x: barX,
-			y: barY,
+			y: Math.min(barY, baseline),
 			width: barWidth,
-			height: barHeight,
+			height: Math.abs(baseline - barY),
 			fill: colorEntry.fill,
 			stroke: colorEntry.stroke,
 			patternId
