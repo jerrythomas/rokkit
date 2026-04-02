@@ -8,8 +8,8 @@ import Area from './Plot/Area.svelte'
 import Point from './Plot/Point.svelte'
 import Arc from './Plot/Arc.svelte'
 
-// Export components (old Plot namespace — renamed to avoid collision with new PlotChart export)
-export const PlotLayers = {
+// Composable Plot primitives — use as <Plot.Root>, <Plot.Axis>, <Plot.Bar>, etc.
+export const Plot = {
 	Root,
 	Axis,
 	Bar,
@@ -20,6 +20,9 @@ export const PlotLayers = {
 	Point,
 	Arc
 }
+
+/** @deprecated Use Plot instead */
+export const PlotLayers = Plot
 
 // New Plot system
 export { default as PlotChart } from './Plot.svelte'

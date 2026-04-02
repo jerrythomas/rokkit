@@ -1,96 +1,47 @@
 <script>
 	import { getContext } from 'svelte'
-	import { ChartBrewer } from '../lib/brewing/index.svelte.js'
 
-	let {
-		x = null,
-		y = null,
-		fill = null,
-		color = '#4682b4',
-		opacity = 1,
-		animationDuration = 300,
-		onClick = null
-	} = $props()
+	let { data = undefined, x = undefined, y = undefined, fill = 'steelblue', opacity = 1 } = $props()
 
-	// Get brewer from context
-	const brewer = getContext('chart-brewer')
+	const state = getContext('plot-state')
 
-	// Set field mappings in the brewer
-	$effect(() => {
-		brewer.setFields({
-			x,
-			y,
-			color: fill
+	const bars = $derived.by(() => {
+		if (!state?.xScale || !state?.yScale) return []
+		const xScale = state.xScale
+		const yScale = state.yScale
+		const innerHeight = state.innerHeight
+		const src = data ?? []
+		if (!src.length) return []
+
+		const bw = typeof xScale.bandwidth === 'function' ? xScale.bandwidth() : 20
+		const padding = typeof xScale.bandwidth === 'function' ? bw * 0.05 : 0
+
+		return src.map((d) => {
+			const xVal = x ? d[x] : d
+			const yVal = y ? d[y] : d
+			const xPos = (xScale(xVal) ?? 0) + padding
+			const yPos = yScale(yVal) ?? 0
+			return {
+				x: xPos,
+				y: yPos,
+				width: bw * 0.9,
+				height: innerHeight - yPos,
+				label: `${xVal}: ${yVal}`
+			}
 		})
-
-		// Ensure scales are updated
-		brewer.createScales()
 	})
-
-	// Compute bars whenever data or fields change
-	let bars = $derived(brewer.createBars())
-
-	// Animation transition values
-	let initialY = $state(0)
-	let initialHeight = $state(0)
-
-	// Handle resetting animation state for new bars
-	$effect(() => {
-		if (bars && bars.length > 0) {
-			initialY = brewer.getDimensions().innerHeight
-			initialHeight = 0
-
-			// Reset to actual positions after a delay
-			setTimeout(() => {
-				initialY = 0
-				initialHeight = 0
-			}, 10)
-		}
-	})
-
-	// Handle bar click
-	function handleClick(event, bar) {
-		if (onClick) onClick(bar.data, event)
-	}
 </script>
 
-{#if bars && bars.length > 0}
-	<g class="chart-bars" data-plot-type="bar">
-		{#each bars as bar, i (bar.data[x])}
-			{@const barY = initialY > 0 ? brewer.getDimensions().innerHeight : bar.y}
-			{@const barHeight = initialHeight > 0 ? 0 : bar.height}
-
-			<!-- svelte-ignore a11y_no_noninteractive_element_interactions, a11y_click_events_have_key_events -->
-			<rect
-				class="bar"
-				x={bar.x}
-				y={barY}
-				width={bar.width}
-				height={barHeight}
-				fill={bar.color}
-				{opacity}
-				onclick={(event) => handleClick(event, bar)}
-				onmouseenter={(event) => {
-					event.target.setAttribute('opacity', Math.min(opacity + 0.2, 1))
-				}}
-				onmouseleave={(event) => {
-					event.target.setAttribute('opacity', opacity)
-				}}
-				style="transition: y {animationDuration}ms ease, height {animationDuration}ms ease;"
-				role="graphics-symbol"
-				aria-label="Bar representing {bar.data[x]} with value {bar.data[y]}"
-				data-plot-element="bar"
-				data-plot-value={bar.data[y]}
-				data-plot-category={bar.data[x]}
-			>
-				<title>{bar.data[x]}: {bar.data[y]}</title>
-			</rect>
-		{/each}
-	</g>
-{/if}
-
-<style>
-	.chart-bars .bar {
-		cursor: pointer;
-	}
-</style>
+{#each bars as bar, i (i)}
+	<rect
+		x={bar.x}
+		y={bar.y}
+		width={bar.width}
+		height={bar.height}
+		{fill}
+		{opacity}
+		data-plot-element="bar"
+		role="graphics-symbol"
+		aria-label={bar.label}
+	/>
+{/each}

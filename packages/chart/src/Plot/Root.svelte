@@ -1,107 +1,62 @@
 <script>
-	import { setContext } from 'svelte'
-	import { ChartBrewer } from '../lib/brewing/index.svelte.js'
+	import { setContext, untrack } from 'svelte'
+	import { PlotState } from '../PlotState.svelte.js'
+	import { defaultPreset } from '../lib/preset.js'
 
 	let {
 		data = [],
+		x = undefined,
+		y = undefined,
+		color = undefined,
 		width = 600,
 		height = 400,
-		margin = { top: 20, right: 30, bottom: 40, left: 50 },
-		fill = null,
-		responsive = true,
-		animationDuration = 300,
+		margin = undefined,
+		mode = 'light',
 		children
 	} = $props()
 
-	// Create chart brewer instance
-	let brewer = $state(new ChartBrewer())
-
-	$effect(() => {
-		brewer.setDimensions({ width, height, margin })
-	})
-
-	// Chart dimensions derived from brewer
-	let dimensions = $derived(brewer.getDimensions())
-
-	// Process data
-	$effect(() => {
-		// If data has a select method (dataset object), call it to get actual data
-		const chartData = data.select && typeof data.select === 'function' ? data.select() : data
-
-		// Update brewer with data and fields
-		brewer.setData(chartData)
-		brewer.setFields({ color: fill })
-
-		// Create scales after setting data
-		brewer.createScales()
-	})
-
-	// Provide chart context to child components
-	setContext('chart-brewer', brewer)
-
-	// Handle responsive behavior
-	let container
-
-	$effect(() => {
-		if (!responsive || !container || !document) return
-
-		const resizeObserver = new ResizeObserver((entries) => {
-			const entry = entries[0]
-			if (!entry) return
-
-			const containerWidth = entry.contentRect.width
-			const aspectRatio = height / width
-
-			// Update chart dimensions while maintaining aspect ratio
-			brewer.setDimensions({
-				width: containerWidth,
-				height: containerWidth * aspectRatio
+	const plotState = untrack(
+		() =>
+			new PlotState({
+				data,
+				channels: { x, y, color },
+				width,
+				height,
+				margin,
+				mode,
+				chartPreset: defaultPreset
 			})
+	)
 
-			// Update scales after dimensions change
-			brewer.createScales()
+	$effect(() => {
+		plotState.update({
+			data,
+			channels: { x, y, color },
+			width,
+			height,
+			margin,
+			mode,
+			chartPreset: defaultPreset
 		})
-
-		// Start observing container size
-		resizeObserver.observe(container)
-
-		return () => {
-			resizeObserver.disconnect()
-		}
 	})
+
+	setContext('plot-state', plotState)
+
+	const svgWidth = $derived(plotState.innerWidth + (margin?.left ?? 50) + (margin?.right ?? 30))
+	const svgHeight = $derived(plotState.innerHeight + (margin?.top ?? 20) + (margin?.bottom ?? 40))
+	const marginLeft = $derived(margin?.left ?? 50)
+	const marginTop = $derived(margin?.top ?? 20)
 </script>
 
-<div class="chart-container" bind:this={container} data-plot-root>
-	<svg
-		width={dimensions.width}
-		height={dimensions.height}
-		viewBox="0 0 {dimensions.width} {dimensions.height}"
-		role="img"
-		aria-label="Chart visualization"
-	>
-		<g
-			class="chart-area"
-			transform="translate({dimensions.margin.left}, {dimensions.margin.top})"
-			data-plot-canvas
-		>
-			{@render children?.()}
-		</g>
-	</svg>
-</div>
-
-<style>
-	.chart-container {
-		position: relative;
-		width: 100%;
-		height: auto;
-	}
-
-	svg {
-		display: block;
-		overflow: visible;
-	}
-
-	.chart-area {
-		pointer-events: all;
-	}
-</style>
+<svg
+	{width}
+	{height}
+	viewBox="0 0 {svgWidth} {svgHeight}"
+	role="img"
+	aria-label="Chart visualization"
+	data-plot-root
+>
+	<g transform="translate({marginLeft}, {marginTop})" data-plot-canvas>
+		{@render children?.()}
+	</g>
+</svg>
