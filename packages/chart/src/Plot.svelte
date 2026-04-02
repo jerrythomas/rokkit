@@ -59,10 +59,32 @@
 	const chartPresetCtx = getContext('chart-preset')
 	const chartPreset = $derived(chartPresetCtx?.current ?? defaultPreset)
 
+	// Responsive width: observe container and use actual pixel width for scale calculations
+	let svgEl = $state(null)
+	let containerEl = $state(null)
+	let observedWidth = $state(0)
+
+	$effect(() => {
+		if (!containerEl || typeof ResizeObserver === 'undefined') return
+		const ro = new ResizeObserver((entries) => {
+			const w = Math.floor(entries[0].contentRect.width)
+			if (w > 0) observedWidth = w
+		})
+		ro.observe(containerEl)
+		return () => ro.disconnect()
+	})
+
+	const effectiveWidth = $derived(observedWidth > 0 ? observedWidth : (spec?.width ?? width))
+	const svgHeight = $derived(spec?.height ?? height)
+	const showGrid = $derived(spec?.grid ?? grid)
+	const showLegend = $derived(spec?.legend ?? legend)
+	const chartTitle = $derived(spec?.title ?? title)
+	const chartSummary = $derived(spec?.summary ?? summary)
+
 	function buildPlotConfig() {
 		return {
 			data: spec?.data ?? data,
-			width: spec?.width ?? width,
+			width: effectiveWidth,
 			height: spec?.height ?? height,
 			mode,
 			margin,
@@ -88,8 +110,6 @@
 		plotState.update(buildPlotConfig())
 	})
 
-	let svgEl = $state(null)
-
 	$effect(() => {
 		if (!zoom || !svgEl) return
 		const zoomBehavior = d3Zoom()
@@ -104,13 +124,6 @@
 			plotState.resetZoom()
 		}
 	})
-
-	const svgWidth = $derived(spec?.width ?? width)
-	const svgHeight = $derived(spec?.height ?? height)
-	const showGrid = $derived(spec?.grid ?? grid)
-	const showLegend = $derived(spec?.legend ?? legend)
-	const chartTitle = $derived(spec?.title ?? title)
-	const chartSummary = $derived(spec?.summary ?? summary)
 
 	// Geoms from spec (spec-driven API)
 	const specGeoms = $derived(spec?.geoms ?? [])
@@ -134,20 +147,23 @@
 	}
 </script>
 
-<div class="plot-root" data-plot-root data-mode={mode}>
+<div class="plot-root" data-plot-root data-mode={mode} bind:this={containerEl}>
 	{#if chartTitle}
 		<div class="plot-title" data-plot-title>{chartTitle}</div>
 	{/if}
 
 	<svg
 		bind:this={svgEl}
-		width={svgWidth}
+		width={effectiveWidth}
 		height={svgHeight}
-		viewBox="0 0 {svgWidth} {svgHeight}"
+		viewBox="0 0 {effectiveWidth} {svgHeight}"
 		role="img"
 		aria-label={chartTitle || 'Chart visualization'}
 		style:cursor={zoom ? 'grab' : undefined}
 	>
+		{#if chartSummary}
+			<desc>{chartSummary}</desc>
+		{/if}
 		<!-- SVG pattern defs -->
 		<DefinePatterns />
 
@@ -209,11 +225,11 @@
 	}
 
 	[data-plot-root][data-mode='light'] {
-		color: #475569; /* slate-600 */
+		color: rgba(var(--color-surface-700, 59, 65, 77), 1);
 	}
 
 	[data-plot-root][data-mode='dark'] {
-		color: #94a3b8; /* slate-400 */
+		color: rgba(var(--color-surface-200, 224, 224, 224), 1);
 	}
 
 	svg {
