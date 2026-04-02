@@ -65,7 +65,7 @@
 	let observedWidth = $state(0)
 
 	$effect(() => {
-		if (!containerEl || typeof ResizeObserver === 'undefined') return
+		if (!containerEl) return
 		const ro = new ResizeObserver((entries) => {
 			const w = Math.floor(entries[0].contentRect.width)
 			if (w > 0) observedWidth = w
