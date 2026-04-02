@@ -26,6 +26,16 @@
   user-select: none;
 }
 
+[data-upload-target][data-size='small'] {
+  min-height: 4rem;
+  padding: 0.75rem;
+  gap: 0;
+}
+
+[data-upload-target][data-size='small'] [data-upload-icon] {
+  font-size: 1.25rem;
+}
+
 [data-upload-target]:focus {
   outline: none;
 }

@@ -45,11 +45,11 @@ describe('Plot.svelte', () => {
 		})
 
 		it('updates SVG width when ResizeObserver fires with a new container size', async () => {
-			let instance
+			let resizeCallback
 			class CapturingRO extends OriginalRO {
 				constructor(cb) {
 					super(cb)
-					instance = this
+					resizeCallback = cb
 				}
 			}
 			global.ResizeObserver = CapturingRO
@@ -59,14 +59,7 @@ describe('Plot.svelte', () => {
 			})
 
 			const root = container.querySelector('[data-plot-root]')
-			instance.simulateResize(root, {
-				width: 320,
-				height: 0,
-				top: 0,
-				left: 0,
-				right: 320,
-				bottom: 0
-			})
+			resizeCallback([{ target: root, contentRect: { width: 320, height: 0, top: 0, left: 0, right: 320, bottom: 0 } }])
 			await tick()
 
 			expect(Number(container.querySelector('svg').getAttribute('width'))).toBe(320)

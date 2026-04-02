@@ -60,6 +60,9 @@ export interface UploadTargetProps {
 	/** Called for each file that fails validation */
 	onerror?: (err: UploadError) => void
 
+	/** Size variant — full (default) fills available area; small shows only border + icon */
+	size?: 'full' | 'small'
+
 	/** Additional CSS classes */
 	class?: string
 

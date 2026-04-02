@@ -21,6 +21,7 @@
 		maxSize = Infinity,
 		multiple = false,
 		disabled = false,
+		size = 'full',
 		labels = {} as Record<string, string>,
 		onfiles,
 		onerror,
@@ -87,6 +88,7 @@
 
 <div
 	data-upload-target
+	data-size={size}
 	data-disabled={disabled || undefined}
 	data-dragging={dragging || undefined}
 	role="button"
@@ -106,8 +108,10 @@
 		{@render content(dragging)}
 	{:else}
 		<span data-upload-icon class="i-lucide:upload" aria-hidden="true"></span>
-		<p>Drop files here or click to browse</p>
-		<button type="button" data-upload-button {disabled}>Browse</button>
+		{#if size !== 'small'}
+			<p>Drop files here or click to browse</p>
+			<button type="button" data-upload-button {disabled}>Browse</button>
+		{/if}
 	{/if}
 
 	<input
