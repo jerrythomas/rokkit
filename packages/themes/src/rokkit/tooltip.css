@@ -1,0 +1,7 @@
+/**
+ * Tooltip - Rokkit Theme Styles
+ */
+
+[data-style='rokkit'] [data-tooltip-content] {
+  @apply bg-surface-z8 text-surface-z1;
+}

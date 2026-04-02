@@ -1,0 +1,64 @@
+/**
+ * Tooltip - Base Structural Styles
+ *
+ * Positions the tooltip bubble relative to its trigger via CSS.
+ * Visibility driven by data-tooltip-visible — never display:none,
+ * preserving layout anchor and allowing CSS transitions.
+ */
+
+[data-tooltip-root] {
+  position: relative;
+  display: inline-flex;
+}
+
+[data-tooltip-content] {
+  position: absolute;
+  z-index: 100;
+  max-width: 16rem;
+  width: max-content;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  pointer-events: none;
+  white-space: normal;
+  transition:
+    opacity 120ms ease,
+    visibility 120ms ease;
+}
+
+/* Position variants */
+[data-tooltip-content][data-tooltip-position='top'] {
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+[data-tooltip-content][data-tooltip-position='bottom'] {
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+[data-tooltip-content][data-tooltip-position='left'] {
+  right: calc(100% + 6px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+[data-tooltip-content][data-tooltip-position='right'] {
+  left: calc(100% + 6px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Visibility */
+[data-tooltip-content][data-tooltip-visible='false'] {
+  visibility: hidden;
+  opacity: 0;
+}
+
+[data-tooltip-content][data-tooltip-visible='true'] {
+  visibility: visible;
+  opacity: 1;
+}
