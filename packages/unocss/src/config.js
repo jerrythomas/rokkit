@@ -18,6 +18,14 @@ export const DEFAULT_CONFIG = {
 	icons: {
 		app: '@rokkit/icons/app.json'
 	},
+	typography: {
+		sans: null,
+		mono: null,
+		heading: null
+	},
+	shape: {
+		radius: null
+	},
 	switcher: 'manual',
 	storageKey: 'rokkit-theme'
 }
@@ -57,6 +65,8 @@ export function loadConfig(userConfig) {
 		skins: pick(cfg.skins, DEFAULT_CONFIG.skins),
 		themes: pick(cfg.themes, DEFAULT_CONFIG.themes),
 		icons: { ...DEFAULT_CONFIG.icons, ...cfg.icons },
+		typography: { ...DEFAULT_CONFIG.typography, ...cfg.typography },
+		shape: { ...DEFAULT_CONFIG.shape, ...cfg.shape },
 		switcher: pick(cfg.switcher, DEFAULT_CONFIG.switcher),
 		storageKey: pick(cfg.storageKey, DEFAULT_CONFIG.storageKey)
 	}

@@ -28,10 +28,10 @@ const THEME_CONFIG = {
 }
 
 const FONT_FAMILIES = {
-	mono: ['Victor Mono', 'monospace'],
-	heading: ['Open Sans', 'sans-serif'],
-	sans: ['Overpass', 'ui-serif', 'sans-serif'],
-	body: ['Open Sans', '-apple-system', 'system-ui', 'Segoe-UI', 'ui-serif', 'sans-serif']
+	mono: ['var(--font-mono)'],
+	heading: ['var(--font-heading)'],
+	sans: ['var(--font-sans)'],
+	body: ['var(--font-sans)']
 }
 
 function buildIconCollections(configIcons) {
@@ -49,12 +49,40 @@ function buildSafelist() {
 	]
 }
 
-function buildPreflights(theme) {
+const RADIUS_PRESETS = {
+	sharp: { sm: '0', md: '0', lg: '0', xl: '0', full: '9999px' },
+	rounded: { sm: '0.25rem', md: '0.375rem', lg: '0.5rem', xl: '0.75rem', full: '9999px' },
+	pill: { sm: '9999px', md: '9999px', lg: '9999px', xl: '9999px', full: '9999px' }
+}
+
+function buildTypographyVars(typography): string[] {
+	if (!typography) return []
+	return [
+		typography.sans ? `--font-sans:${typography.sans}` : '',
+		typography.mono ? `--font-mono:${typography.mono}` : '',
+		typography.heading ? `--font-heading:${typography.heading}` : ''
+	].filter(Boolean)
+}
+
+function buildRadiusVars(shape): string[] {
+	const radiusKey = shape?.radius
+	if (!radiusKey) return []
+	const preset = typeof radiusKey === 'string' ? RADIUS_PRESETS[radiusKey] : radiusKey
+	if (!preset) return []
+	return (['sm', 'md', 'lg', 'xl', 'full'] as const)
+		.filter((k) => preset[k] !== undefined)
+		.map((k) => `--radius-${k}:${preset[k]}`)
+}
+
+function buildPreflights(theme, config) {
 	const vars = theme.getPalette()
 	const cssVars = Object.entries(vars)
 		.map(([k, v]) => `${k}:${v}`)
 		.join(';')
-	return [{ getCSS: () => `:root{${cssVars}}` }]
+
+	const extraVars = [...buildTypographyVars(config.typography), ...buildRadiusVars(config.shape)]
+	const allVars = extraVars.length > 0 ? `${cssVars};${extraVars.join(';')}` : cssVars
+	return [{ getCSS: () => `:root{${allVars}}` }]
 }
 
 function buildShortcuts(theme, config) {
@@ -94,7 +122,7 @@ export function presetRokkit(options = {}): Preset {
 		extractors: [extractorSvelte()],
 		rules: [['hidden', { display: 'none' }]],
 		safelist: buildSafelist(),
-		preflights: buildPreflights(theme),
+		preflights: buildPreflights(theme, config),
 		shortcuts: buildShortcuts(theme, config),
 		theme: {
 			fontFamily: FONT_FAMILIES,

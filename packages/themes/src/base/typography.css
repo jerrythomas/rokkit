@@ -1,0 +1,31 @@
+/**
+ * Typography & Shape Tokens
+ *
+ * CSS custom properties for font families and border-radius scale.
+ * Override these in your application stylesheet to customize typography and shape.
+ *
+ * @example
+ * :root {
+ *   --font-sans: 'Inter', system-ui, sans-serif;
+ *   --font-mono: 'JetBrains Mono', monospace;
+ *   --font-heading: 'Cal Sans', 'Inter', sans-serif;
+ *
+ *   --radius-sm: 0;        --* sharp corners *--
+ *   --radius-md: 0;
+ *   --radius-lg: 0;
+ * }
+ */
+
+:root {
+  /* Font families */
+  --font-sans: 'Open Sans', -apple-system, system-ui, 'Segoe UI', ui-serif, sans-serif;
+  --font-mono: 'Victor Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  --font-heading: 'Open Sans', sans-serif;
+
+  /* Border-radius scale */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
+}

@@ -84,4 +84,32 @@ describe('loadConfig', () => {
 		expect(config.palettes).toEqual({ brand: { 500: '#fff' } })
 		expect(config).not.toHaveProperty('unknown')
 	})
+
+	it('should default typography to all nulls', () => {
+		const config = loadConfig()
+		expect(config.typography).toEqual({ sans: null, mono: null, heading: null })
+	})
+
+	it('should merge partial typography overrides', () => {
+		const config = loadConfig({ typography: { sans: "'Inter', system-ui, sans-serif" } })
+		expect(config.typography.sans).toBe("'Inter', system-ui, sans-serif")
+		expect(config.typography.mono).toBeNull()
+		expect(config.typography.heading).toBeNull()
+	})
+
+	it('should default shape to null radius', () => {
+		const config = loadConfig()
+		expect(config.shape).toEqual({ radius: null })
+	})
+
+	it('should accept shape radius preset name', () => {
+		const config = loadConfig({ shape: { radius: 'sharp' } })
+		expect(config.shape.radius).toBe('sharp')
+	})
+
+	it('should accept shape radius as custom object', () => {
+		const custom = { sm: '2px', md: '4px', lg: '8px', xl: '12px', full: '9999px' }
+		const config = loadConfig({ shape: { radius: custom } })
+		expect(config.shape.radius).toEqual(custom)
+	})
 })

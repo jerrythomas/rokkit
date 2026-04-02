@@ -5,6 +5,7 @@
  * Import individual files for tree-shaking, or this file for all base styles.
  */
 
+@import './typography.css';
 @import './density.css';
 @import './button.css';
 @import './item.css';
