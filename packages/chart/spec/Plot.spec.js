@@ -1,5 +1,6 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, afterEach } from 'vitest'
 import { render } from '@testing-library/svelte'
+import { tick } from 'svelte'
 import Plot from '../src/Plot.svelte'
 import mpg from './fixtures/mpg.json'
 
@@ -34,5 +35,49 @@ describe('Plot.svelte', () => {
 			geoms: [{ type: 'bar', stat: 'identity' }]
 		}
 		expect(() => render(Plot, { props: { spec, width: 400, height: 300 } })).not.toThrow()
+	})
+
+	describe('responsive width', () => {
+		const OriginalRO = global.ResizeObserver
+
+		afterEach(() => {
+			global.ResizeObserver = OriginalRO
+		})
+
+		it('updates SVG width when ResizeObserver fires with a new container size', async () => {
+			let instance
+			class CapturingRO extends OriginalRO {
+				constructor(cb) {
+					super(cb)
+					instance = this
+				}
+			}
+			global.ResizeObserver = CapturingRO
+
+			const { container } = render(Plot, {
+				props: { data: mpg.slice(0, 5), width: 400, height: 300, grid: false }
+			})
+
+			const root = container.querySelector('[data-plot-root]')
+			instance.simulateResize(root, {
+				width: 320,
+				height: 0,
+				top: 0,
+				left: 0,
+				right: 320,
+				bottom: 0
+			})
+			await tick()
+
+			expect(Number(container.querySelector('svg').getAttribute('width'))).toBe(320)
+		})
+
+		it('falls back to width prop when container reports zero width', () => {
+			const { container } = render(Plot, {
+				props: { data: mpg.slice(0, 5), width: 400, height: 300, grid: false }
+			})
+			// JSDOM's getBoundingClientRect returns 0 — effectiveWidth falls back to prop
+			expect(Number(container.querySelector('svg').getAttribute('width'))).toBe(400)
+		})
 	})
 })
