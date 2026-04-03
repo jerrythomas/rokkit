@@ -120,7 +120,7 @@
 
 	$effect(() => {
 		if (!isOpen || !panelRef) return
-		const nav = new Navigator(panelRef, wrapper, {})
+		const nav = new Navigator(panelRef, wrapper, { containScroll: true })
 		return () => nav.destroy()
 	})
 

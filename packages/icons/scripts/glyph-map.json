@@ -64,6 +64,7 @@
   { "name": "magic-stick-3", "solar": "magic-stick-3" },
   { "name": "magnifer", "solar": "magnifer" },
   { "name": "map-arrow-right", "solar": "map-arrow-right" },
+  { "name": "maximize-square", "solar": "maximize-square" },
   { "name": "minimize-square", "solar": "minimize-square" },
   { "name": "minimize-square-3", "solar": "minimize-square-3" },
   { "name": "minus-circle", "solar": "minus-circle" },

@@ -70,6 +70,7 @@ export class Navigator {
 	#root
 	#wrapper
 	#keymap
+	#containScroll
 
 	// Typeahead state
 	#buffer = ''
@@ -78,17 +79,21 @@ export class Navigator {
 	/**
 	 * @param {HTMLElement} root
 	 * @param {import('@rokkit/states').Wrapper} wrapper
-	 * @param {{ orientation?: string, dir?: string, collapsible?: boolean }} [options]
+	 * @param {{ orientation?: string, dir?: string, collapsible?: boolean, containScroll?: boolean }} [options]
 	 */
 	constructor(root, wrapper, options = {}) {
 		this.#root = root
 		this.#wrapper = wrapper
 		this.#keymap = buildKeymap(options)
+		this.#containScroll = options.containScroll ?? false
 
 		root.addEventListener('keydown', this.#onKeydown)
 		root.addEventListener('click', this.#onClick)
 		root.addEventListener('focusin', this.#onFocusin)
 		root.addEventListener('focusout', this.#onFocusout)
+		if (this.#containScroll) {
+			root.addEventListener('wheel', this.#onWheel, { passive: false })
+		}
 	}
 
 	destroy() {
@@ -96,6 +101,9 @@ export class Navigator {
 		this.#root.removeEventListener('click', this.#onClick)
 		this.#root.removeEventListener('focusin', this.#onFocusin)
 		this.#root.removeEventListener('focusout', this.#onFocusout)
+		if (this.#containScroll) {
+			this.#root.removeEventListener('wheel', this.#onWheel)
+		}
 		this.#clearTypeahead()
 	}
 
@@ -159,6 +167,14 @@ export class Navigator {
 			el.focus()
 			// focusin will re-fire with the item as target, handled above
 		}
+	}
+
+	// ─── Wheel ──────────────────────────────────────────────────────────────
+
+	#onWheel = (/** @type {WheelEvent} */ event) => {
+		// Prevent the wheel event from bubbling to parent scroll containers.
+		// Native scroll chaining is handled via CSS overscroll-behavior: contain.
+		event.stopPropagation()
 	}
 
 	// ─── Focusout ───────────────────────────────────────────────────────────

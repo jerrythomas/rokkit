@@ -179,7 +179,9 @@
   position: absolute;
   z-index: 50;
   min-width: 100%;
+  max-height: var(--select-dropdown-max-height, 200px);
   overflow-y: auto;
+  overscroll-behavior: contain;
   border-radius: 0.5rem;
 }
 

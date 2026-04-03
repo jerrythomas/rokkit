@@ -110,6 +110,7 @@
   min-width: 200px;
   max-height: 400px;
   overflow-y: auto;
+  overscroll-behavior: contain;
   border-radius: 0.5rem;
 }
 

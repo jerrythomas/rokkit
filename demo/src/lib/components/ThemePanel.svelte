@@ -19,9 +19,9 @@
 	]
 
 	const densityOptions = [
-		{ value: 'compact', label: 'Compact' },
-		{ value: 'comfortable', label: 'Comfortable' },
-		{ value: 'cozy', label: 'Cozy' }
+		{ value: 'compact', label: 'Compact', icon: 'i-glyph:minimize-square' },
+		{ value: 'comfortable', label: 'Comfortable', icon: 'i-glyph:align-vertical-spacing' },
+		{ value: 'cozy', label: 'Cozy', icon: 'i-glyph:maximize-square' }
 	]
 
 	const PALETTES = [
@@ -51,7 +51,7 @@
 	const colorOptions = AVAILABLE_COLORS.map((c) => ({ value: c, label: c }))
 
 	// Roles to show in the editor (ordered)
-	const COLOR_ROLES = ['surface', 'primary', 'secondary', 'accent', 'success', 'warning', 'danger']
+	const COLOR_ROLES = ['surface', 'primary', 'secondary', 'accent', 'info', 'success', 'warning', 'danger']
 
 	let activePalette = $state('default')
 
@@ -71,7 +71,7 @@
 
 	function setRole(role, color) {
 		activePalette = 'custom'
-		vibe.colorMap = { [role]: color }
+		vibe.colorMap = { ...vibe.colorMap, [role]: color }
 	}
 
 	// Current colorMap (reactive)
@@ -94,7 +94,7 @@
 
 <!-- Panel -->
 <aside
-	class="bg-surface-z1 border-surface-z3 fixed top-0 right-0 z-50 h-full w-80 overflow-y-auto border-l shadow-2xl transition-transform duration-300"
+	class="bg-surface-z1 border-surface-z3 fixed top-0 right-0 z-50 h-full w-96 overflow-y-auto border-l shadow-2xl transition-transform duration-300"
 	class:translate-x-full={!open}
 	class:translate-x-0={open}
 >
@@ -115,35 +115,36 @@
 
 	<div class="flex flex-col gap-6 p-4">
 
-		<!-- Style -->
-		<section>
-			<h3 class="text-surface-z5 mb-3 text-xs font-semibold tracking-widest uppercase">Style</h3>
-			<Select
-				items={styleOptions}
-				value={style}
-				onchange={(v) => (vibe.style = v)}
-			/>
-		</section>
-
-		<!-- Mode -->
-		<section>
-			<h3 class="text-surface-z5 mb-3 text-xs font-semibold tracking-widest uppercase">Mode</h3>
-			<Toggle
-				options={modeOptions}
-				fields={{ icon: 'icon' }}
-				value={mode}
-				onchange={(v) => (vibe.mode = v)}
-			/>
-		</section>
-
-		<!-- Density -->
-		<section>
-			<h3 class="text-surface-z5 mb-3 text-xs font-semibold tracking-widest uppercase">Density</h3>
-			<Toggle
-				options={densityOptions}
-				value={density}
-				onchange={(v) => (vibe.density = v)}
-			/>
+		<!-- Style / Mode / Density — label + control rows -->
+		<section class="flex flex-col gap-2">
+			<div class="flex items-center gap-3">
+				<span class="text-surface-z5 w-20 flex-shrink-0 text-xs font-semibold tracking-widest uppercase">Style</span>
+				<div class="flex-1">
+					<Select
+						items={styleOptions}
+						value={style}
+						onchange={(v) => (vibe.style = v)}
+					/>
+				</div>
+			</div>
+			<div class="flex items-center gap-3">
+				<span class="text-surface-z5 w-20 flex-shrink-0 text-xs font-semibold tracking-widest uppercase">Mode</span>
+				<Toggle
+					options={modeOptions}
+					fields={{ icon: 'icon' }}
+					value={mode}
+					onchange={(v) => (vibe.mode = v)}
+				/>
+			</div>
+			<div class="flex items-center gap-3">
+				<span class="text-surface-z5 w-20 flex-shrink-0 text-xs font-semibold tracking-widest uppercase">Density</span>
+				<Toggle
+					options={densityOptions}
+					fields={{ icon: 'icon' }}
+					value={density}
+					onchange={(v) => (vibe.density = v)}
+				/>
+			</div>
 		</section>
 
 		<!-- Palette presets -->
@@ -208,7 +209,6 @@
 			<div class="flex flex-col gap-1.5">
 				{#each COLOR_ROLES.slice(0, 4) as role (role)}
 					{@const current = currentMap[role] ?? 'slate'}
-					{@const hex = COLOR_500[current] ?? '#888'}
 					<div class="flex items-center gap-2">
 						<div class="flex gap-0.5">
 							{#each [100, 300, 500, 700, 900] as shade (shade)}

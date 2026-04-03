@@ -150,7 +150,7 @@
 	$effect(() => {
 		if (!isOpen || !dropdownRef) return
 		const dir = getComputedStyle(dropdownRef).direction || 'ltr'
-		const nav = new Navigator(dropdownRef, wrapper, { collapsible, dir })
+		const nav = new Navigator(dropdownRef, wrapper, { collapsible, dir, containScroll: true })
 		return () => nav.destroy()
 	})
 

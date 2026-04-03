@@ -6,12 +6,14 @@
       "name": "rokkit",
       "dependencies": {
         "@types/ramda": "^0.31.1",
+        "dompurify": "^3.3.3",
       },
       "devDependencies": {
         "@sveltejs/vite-plugin-svelte": "^6.2.0",
         "@testing-library/svelte": "^5.2.8",
         "@testing-library/user-event": "^14.6.1",
         "@types/bun": "^1.2.22",
+        "@types/dompurify": "^3.2.0",
         "@vitest/browser": "^3.2.4",
         "@vitest/coverage-v8": "^3.2.4",
         "bumpp": "^10.2.3",
@@ -703,6 +705,8 @@
     "@types/cookie": ["@types/cookie@0.6.0", "", {}, "sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA=="],
 
     "@types/deep-eql": ["@types/deep-eql@4.0.2", "", {}, "sha512-c9h9dVVMigMPc4bwTvC5dxqtqJZwQPePsWjPlpSOnojbor6pGqdk541lfA7AqFQr5pB1BRdq0juY9db81BwyFw=="],
+
+    "@types/dompurify": ["@types/dompurify@3.2.0", "", { "dependencies": { "dompurify": "*" } }, "sha512-Fgg31wv9QbLDA0SpTOXO3MaxySc4DKGLi8sna4/Utjo4r3ZRPdCt4UQee8BWr+Q5z21yifghREPJGYaEOEIACg=="],
 
     "@types/estree": ["@types/estree@1.0.8", "", {}, "sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w=="],
 
