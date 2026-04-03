@@ -14,8 +14,9 @@
 	let themePanelOpen = $state(false)
 
 	const navItems = [
-		{ id: 'dashboard',     label: 'Dashboard',     icon: 'i-glyph:home',       href: '/dashboard' },
-		{ id: 'explorer',      label: 'Data Explorer', icon: 'i-glyph:table',       href: '/explorer' },
+		{ id: 'dashboard',     label: 'Dashboard',     icon: 'i-glyph:home',        href: '/dashboard' },
+		{ id: 'crossfilter',   label: 'Crossfilter',   icon: 'i-glyph:filter',      href: '/crossfilter' },
+		{ id: 'showcase',      label: 'Components',    icon: 'i-glyph:widget',      href: '/showcase' },
 		{ id: 'analytics',     label: 'Analytics',     icon: 'i-glyph:chart',       href: '/analytics' },
 		{ id: 'operations',    label: 'Operations',    icon: 'i-glyph:list-items',  href: '/operations' },
 		{ id: 'notifications', label: 'Notifications', icon: 'i-glyph:bell',        href: '/notifications' }
