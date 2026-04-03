@@ -22,7 +22,7 @@
 		{ id: 'notifications', label: 'Notifications', icon: 'i-glyph:bell',        href: '/notifications' }
 	]
 
-	const navFields = { label: 'label', icon: 'icon', value: 'id' }
+	const navFields = { label: 'label', icon: 'icon', value: 'id', href: 'href' }
 
 	// Active item follows current route
 	const activeSection = $derived(
@@ -48,7 +48,6 @@
 				items={navItems}
 				fields={navFields}
 				value={activeSection}
-				onselect={(item) => { window.location.href = item.href }}
 			/>
 		</div>
 
