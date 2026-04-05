@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/states",
-  "version": "1.0.0-next.155",
+  "version": "1.0.0-next.156",
   "description": "Contains generic data manipulation functions that can be used in various components.",
   "repository": {
     "type": "git",
