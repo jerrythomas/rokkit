@@ -36,12 +36,14 @@ jobs:
           # Publish in dependency order so each package's deps are already on npm
           PACKAGES=(helpers cli icons core data actions themes unocss states ui forms blocks app chart stories)
           VERSION=$(node -p "require('./packages/helpers/package.json').version")
-          # Pre-release versions (containing '-') go to the 'next' tag; stable to 'latest'
+          # Pre-release versions (containing '-') go to 'next'; stable to 'latest'
+          # For now, pre-release versions are also tagged as 'latest'
           TAG=$(echo "$VERSION" | grep -q '-' && echo 'next' || echo 'latest')
           for name in "${PACKAGES[@]}"; do
             pkg="./packages/${name}/package.json"
             [ -f "$pkg" ] || continue
             grep -q '"private": true' "$pkg" 2>/dev/null && continue
+            PKG_NAME=$(node -p "require('$pkg').name")
             # rewrite workspace:* and workspace:latest → "latest"
             node -e "
               const fs = require('fs');
@@ -54,6 +56,9 @@ jobs:
               fs.writeFileSync('$pkg', JSON.stringify(p, null, 2) + '\n');
             "
             (cd "./packages/${name}" && npm publish --provenance --access public --tag "$TAG")
+            if [ "$TAG" = "next" ]; then
+              npm dist-tag add "${PKG_NAME}@${VERSION}" latest
+            fi
             git checkout -- "$pkg"
           done
 
