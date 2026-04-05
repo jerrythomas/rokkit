@@ -17,8 +17,8 @@
 		bins: binCount = 20,
 		width = 280,
 		height = 120,
-		color = 'var(--color-primary, steelblue)',
-		dimColor = 'var(--color-surface-z3, #ccc)'
+		color = 'rgb(var(--color-primary, 249 115 22))',
+		dimColor = 'rgb(var(--color-surface-z3, 203 213 225))'
 	} = $props()
 
 	const cf = getContext('crossfilter')
@@ -259,6 +259,7 @@
 		flex-direction: column;
 		gap: 4px;
 		font-size: 12px;
+		color: rgb(var(--color-surface-z6, 100 116 139));
 	}
 	[data-filter-histogram-label] {
 		font-weight: 600;
