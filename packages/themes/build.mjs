@@ -204,9 +204,10 @@ async function build() {
   // base.css: structural styles + palette CSS variable defaults
   const paletteCSS = readFileSync(join(srcDir, 'palette.css'), 'utf-8')
   const compiledPalette = await processCSS(paletteCSS, 'palette.css')
+  const zScaleCSS = theme.getZScaleCSS()
   const baseCSS = resolveImports(join(srcDir, 'base', 'index.css'))
   const compiledBase = await processCSS(baseCSS, 'base.css')
-  const baseFull = fixModeSelectors(compiledPalette + '\n' + compiledBase)
+  const baseFull = fixModeSelectors(compiledPalette + '\n' + zScaleCSS + '\n' + compiledBase)
   writeFileSync(join(distDir, 'base.css'), baseFull, 'utf-8')
   console.log('✓ dist/base.css (structural styles + palette defaults)')
 

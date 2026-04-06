@@ -211,4 +211,33 @@ export class Theme {
 	getShortcuts(name) {
 		return [...semanticShortcuts(name), ...contrastShortcuts(name)]
 	}
+
+	/**
+	 * Generates CSS custom property declarations for the semantic z0–z10 tone scale.
+	 *
+	 * Returns a CSS string with two blocks:
+	 * - `:root` — light-mode aliases (z0=50 … z10=950)
+	 * - `[data-mode="dark"]` — dark-mode aliases (z0=950 … z10=50)
+	 *
+	 * These let consumers write `var(--color-primary-z5)` instead of hardcoding
+	 * numeric shades, and the value automatically adapts to the active mode.
+	 */
+	getZScaleCSS() {
+		const names = Object.keys(this.#mapping)
+
+		const lightLines = names.flatMap((name) =>
+			Object.entries(TONE_MAP).map(
+				([zone, light]) => `  --color-${name}-${zone}: var(--color-${name}-${light});`
+			)
+		)
+
+		const darkLines = names.flatMap((name) =>
+			Object.entries(TONE_MAP).map(([zone, light]) => {
+				const dark = 1000 - light
+				return `  --color-${name}-${zone}: var(--color-${name}-${dark});`
+			})
+		)
+
+		return `:root {\n${lightLines.join('\n')}\n}\n[data-mode="dark"] {\n${darkLines.join('\n')}\n}`
+	}
 }
