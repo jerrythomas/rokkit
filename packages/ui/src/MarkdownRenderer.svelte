@@ -3,6 +3,7 @@
 	import type { Token, TokensList } from 'marked'
 	import type { Component, Snippet } from 'svelte'
 	import type { MarkdownPlugin } from './markdown-plugin.js'
+	import DOMPurify from 'dompurify'
 
 	interface Props {
 		markdown: string
@@ -15,13 +16,6 @@
 
 	let { markdown, plugins = [], crossfilterWrapper }: Props = $props()
 
-	let purify: { sanitize: (s: string) => string } | null = $state(null)
-	$effect(() => {
-		import('dompurify').then((m) => {
-			purify = m.default
-		})
-	})
-
 	const pluginMap = $derived(
 		Object.fromEntries(plugins.map((p) => [p.language.toLowerCase(), p.component]))
 	)
@@ -33,7 +27,7 @@
 			links: (tokens as TokensList).links ?? {}
 		}) as TokensList
 		const raw = marked.parser(tokenList)
-		return purify ? purify.sanitize(raw) : raw
+		return DOMPurify.sanitize(raw)
 	}
 
 	/** Extract crossfilter group ID from a code token's text, or null if absent/invalid. */
