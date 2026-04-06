@@ -133,8 +133,14 @@ export function semanticShortcuts(name) {
  */
 export function contrastShortcuts(name) {
 	return [
-		[`text-on-${name}`, `text-${name}-50 dark:text-${name}-50`],
-		[`text-on-${name}-muted`, `text-${name}-100 dark:text-${name}-200`]
+		[
+			new RegExp(`^text-on-${name}(\\/\\d+)?$`),
+			([, end]) => `text-${name}-50${end || ''} dark:text-${name}-50${end || ''}`
+		],
+		[
+			new RegExp(`^text-on-${name}-muted(\\/\\d+)?$`),
+			([, end]) => `text-${name}-100${end || ''} dark:text-${name}-200${end || ''}`
+		]
 	]
 }
 
