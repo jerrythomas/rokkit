@@ -36,9 +36,7 @@ jobs:
           # Publish in dependency order so each package's deps are already on npm
           PACKAGES=(helpers cli icons core data actions themes unocss states ui forms blocks app chart stories)
           VERSION=$(node -p "require('./packages/helpers/package.json').version")
-          # All versions publish with 'latest' tag; pre-release versions also get 'next' tag via alias
-          # Note: npm dist-tag add requires token auth which OIDC provenance doesn't support,
-          # so we publish directly with 'latest' for all versions (pre-release included).
+          # All versions publish with 'latest' tag.
           for name in "${PACKAGES[@]}"; do
             pkg="./packages/${name}/package.json"
             [ -f "$pkg" ] || continue
@@ -49,19 +47,13 @@ jobs:
               echo "Skipping ${PKG_NAME}@${VERSION} — already published"
               continue
             fi
-            # rewrite workspace:* and workspace:latest → "latest"
-            node -e "
-              const fs = require('fs');
-              const p = JSON.parse(fs.readFileSync('$pkg', 'utf8'));
-              for (const section of ['dependencies','peerDependencies']) {
-                for (const [k,v] of Object.entries(p[section] || {})) {
-                  if (v.startsWith('workspace:')) p[section][k] = 'latest';
-                }
-              }
-              fs.writeFileSync('$pkg', JSON.stringify(p, null, 2) + '\n');
-            "
-            (cd "./packages/${name}" && npm publish --provenance --access public --tag latest)
-            git checkout -- "$pkg"
+            # bun pm pack rewrites workspace:* deps automatically
+            (
+              cd "./packages/${name}"
+              TARBALL=$(bun pm pack)
+              bunx npm publish "$TARBALL" --provenance --access public --tag latest
+              rm -f "$TARBALL"
+            )
           done
 
       - name: Create GitHub release
