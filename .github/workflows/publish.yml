@@ -43,6 +43,12 @@ jobs:
             pkg="./packages/${name}/package.json"
             [ -f "$pkg" ] || continue
             grep -q '"private": true' "$pkg" 2>/dev/null && continue
+            PKG_NAME=$(node -p "require('$pkg').name")
+            # skip if already published (handles partial/retried runs)
+            if npm view "${PKG_NAME}@${VERSION}" version 2>/dev/null | grep -qF "${VERSION}"; then
+              echo "Skipping ${PKG_NAME}@${VERSION} — already published"
+              continue
+            fi
             # rewrite workspace:* and workspace:latest → "latest"
             node -e "
               const fs = require('fs');
