@@ -17,7 +17,7 @@
 
 /* On state */
 [data-style='rokkit'] [data-switch][aria-checked='true'] [data-switch-track] {
-  @apply from-primary-z4 to-secondary-z4 border-primary-z5 bg-gradient-to-b;
+  @apply from-primary-z4 to-secondary-z4 border-primary-z5 bg-gradient-to-r;
 }
 
 [data-style='rokkit'] [data-switch][aria-checked='true'] [data-switch-thumb] {

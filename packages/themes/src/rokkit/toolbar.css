@@ -54,7 +54,7 @@
 
 /* Active/pressed state */
 [data-style='rokkit'] [data-toolbar-item][data-active='true'] {
-  @apply from-primary-z5 to-secondary-z5 text-primary-z9 border-primary-z5 border bg-gradient-to-b;
+  @apply from-primary-z5 to-secondary-z5 text-primary-z9 border-primary-z5 border bg-gradient-to-r;
 }
 
 [data-style='rokkit'] [data-toolbar-item][data-active='true']:hover:not(:disabled) {

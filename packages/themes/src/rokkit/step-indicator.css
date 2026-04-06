@@ -3,7 +3,7 @@
 /* ── Number circles ── */
 
 [data-style='rokkit'] [data-step-item][data-step-state='complete'] [data-step-number] {
-  @apply bg-gradient-to-b from-primary-z5 to-secondary-z5 border-primary-z5 text-on-primary;
+  @apply bg-gradient-to-r from-primary-z5 to-secondary-z5 border-primary-z5 text-on-primary;
 }
 
 [data-style='rokkit'] [data-step-item][data-step-state='current'] [data-step-number] {

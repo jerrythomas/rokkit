@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-toggle] {
-  @apply from-surface-z3 to-surface-z2 border-surface-z4 rounded-lg border bg-gradient-to-b;
+  @apply from-surface-z3 to-surface-z2 border-surface-z4 rounded-lg border bg-gradient-to-r;
 }
 
 /* =============================================================================
@@ -22,12 +22,12 @@
 
 [data-style='rokkit'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']),
 [data-style='rokkit'] [data-toggle-option]:focus:not(:disabled):not([data-disabled='true']) {
-  @apply from-surface-z4 to-surface-z3 text-surface-z8 bg-gradient-to-b;
+  @apply from-surface-z4 to-surface-z3 text-surface-z8 bg-gradient-to-r;
 }
 
 /* Selected state */
 [data-style='rokkit'] [data-toggle-option][data-selected='true'] {
-  @apply from-primary-z5 to-secondary-z5 text-primary-z9 border-primary-z5 border bg-gradient-to-b shadow-sm;
+  @apply from-primary-z5 to-secondary-z5 text-primary-z9 border-primary-z5 border bg-gradient-to-r shadow-sm;
 }
 
 /* =============================================================================
