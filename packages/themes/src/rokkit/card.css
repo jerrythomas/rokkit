@@ -79,7 +79,7 @@
 }
 
 [data-style='rokkit'] [data-card][data-variant='primary'] [data-card-body] {
-  @apply text-on-primary/80;
+  color: rgba(var(--color-surface-50), 0.8);
 }
 
 /* Secondary — muted secondary surface */
@@ -93,7 +93,7 @@
 }
 
 [data-style='rokkit'] [data-card][data-variant='secondary'] [data-card-body] {
-  @apply text-on-secondary/80;
+  color: rgba(var(--color-surface-50), 0.8);
 }
 
 /* Tertiary — elevated surface, no color accent */
