@@ -50,7 +50,7 @@ jobs:
             # bun pm pack rewrites workspace:* deps automatically
             (
               cd "./packages/${name}"
-              TARBALL=$(bun pm pack)
+              TARBALL=$(bun pm pack | grep '\.tgz$')
               bunx npm publish "$TARBALL" --provenance --access public --tag latest
               rm -f "$TARBALL"
             )
