@@ -29,13 +29,6 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      - name: Build packages that need pre-publish compilation
-        run: |
-          # Themes: compile src/ CSS with UnoCSS → dist/
-          (cd packages/themes && bun run build.mjs)
-          # UnoCSS: compile TypeScript declarations
-          (cd packages/unocss && bunx tsc --project tsconfig.build.json 2>/dev/null || true)
-
       - name: Publish packages
         env:
           NODE_NO_WARNINGS: 1
@@ -43,7 +36,6 @@ jobs:
           # Publish in dependency order so each package's deps are already on npm
           PACKAGES=(helpers cli icons core data actions themes unocss states ui forms blocks app chart stories)
           VERSION=$(node -p "require('./packages/helpers/package.json').version")
-          # All versions publish with 'latest' tag.
           for name in "${PACKAGES[@]}"; do
             pkg="./packages/${name}/package.json"
             [ -f "$pkg" ] || continue
@@ -54,11 +46,14 @@ jobs:
               echo "Skipping ${PKG_NAME}@${VERSION} — already published"
               continue
             fi
-            # bun pm pack rewrites workspace:* deps automatically
-            # Continue on publish failures (e.g. ghost versions from prior failed
-            # runs where provenance was signed but publish was rejected by npm)
             (
               cd "./packages/${name}"
+              # Run prepublishOnly if defined (builds dist/, compiles TS, etc.)
+              if node -e "const s=require('./package.json').scripts||{}; process.exit(s.prepublishOnly?0:1)" 2>/dev/null; then
+                echo "Building ${PKG_NAME}..."
+                bun run prepublishOnly
+              fi
+              # bun pm pack rewrites workspace:* deps; doesn't run lifecycle scripts
               TARBALL=$(bun pm pack | grep '\.tgz$')
               bunx npm publish "$TARBALL" --provenance --access public --tag latest || {
                 echo "::warning::Failed to publish ${PKG_NAME}@${VERSION} — may need manual retry"
