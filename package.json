@@ -1,6 +1,6 @@
 {
   "name": "rokkit",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "prettier": "./config/.prettierrc",
   "module": "src/index.js",
