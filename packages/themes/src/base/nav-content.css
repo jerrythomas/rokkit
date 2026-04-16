@@ -1,0 +1,48 @@
+/* NavContent — base structural styles */
+
+[data-nav-content] {
+	display: flex;
+	min-height: 0;
+	width: 100%;
+}
+
+[data-nav-content][data-orientation='horizontal'] {
+	flex-direction: row;
+}
+
+[data-nav-content][data-orientation='vertical'] {
+	flex-direction: column;
+}
+
+[data-nav-content-nav] {
+	flex-shrink: 0;
+	overflow-y: auto;
+}
+
+[data-nav-content][data-orientation='horizontal'] [data-nav-content-nav] {
+	width: var(--nav-size, 280px);
+	border-right: 1px solid var(--color-surface-z3, #e0e0e0);
+}
+
+[data-nav-content][data-orientation='vertical'] [data-nav-content-nav] {
+	border-bottom: 1px solid var(--color-surface-z3, #e0e0e0);
+}
+
+[data-nav-content-main] {
+	flex: 1;
+	min-width: 0;
+	overflow-y: auto;
+}
+
+/* Responsive collapse for horizontal orientation */
+@media (max-width: 640px) {
+	[data-nav-content][data-collapsible][data-orientation='horizontal'] {
+		flex-direction: column;
+	}
+
+	[data-nav-content][data-collapsible][data-orientation='horizontal'] [data-nav-content-nav] {
+		width: 100%;
+		border-right: none;
+		border-bottom: 1px solid var(--color-surface-z3, #e0e0e0);
+	}
+}

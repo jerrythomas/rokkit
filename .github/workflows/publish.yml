@@ -29,6 +29,13 @@ jobs:
       - name: Install dependencies
         run: bun install
 
+      - name: Build packages that need pre-publish compilation
+        run: |
+          # Themes: compile src/ CSS with UnoCSS → dist/
+          (cd packages/themes && bun run build.mjs)
+          # UnoCSS: compile TypeScript declarations
+          (cd packages/unocss && bunx tsc --project tsconfig.build.json 2>/dev/null || true)
+
       - name: Publish packages
         env:
           NODE_NO_WARNINGS: 1

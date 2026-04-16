@@ -45,7 +45,9 @@ export {
 	Stack,
 	Badge,
 	Avatar,
-	Tooltip
+	Tooltip,
+	NavContent,
+	ResponsiveGrid
 } from './components/index.js'
 
 export { default as MarkdownRenderer } from './MarkdownRenderer.svelte'

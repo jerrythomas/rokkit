@@ -1,0 +1,61 @@
+# Rokkit InputField Component
+
+> Standalone labeled input wrapper with validation messaging, description, and status indicators.
+
+Package: `@rokkit/forms`
+
+## Quick Start
+
+```svelte
+<script>
+  import { InputField } from '@rokkit/forms'
+  let email = $state('')
+</script>
+
+<InputField
+  name="email"
+  label="Email"
+  type="email"
+  bind:value={email}
+  required
+  message={{ state: 'error', text: 'Invalid email address' }}
+/>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `string` | — | Input name; used for label `for` and aria |
+| `value` | bindable | — | Two-way bound input value |
+| `type` | `string` | `'text'` | Input type (text, email, number, etc.) |
+| `label` | `string` | — | Field label text |
+| `description` | `string` | — | Helper text below the field |
+| `status` | `string` | — | Field state (error, warning, success, info) |
+| `message` | `{ state, text }` | — | Validation message |
+| `required` | `boolean` | `false` | Required field indicator |
+| `disabled` | `boolean` | `false` | Disables input |
+| `dirty` | `boolean` | `false` | Marks field as user-modified |
+| `icon` | `string` | — | Optional icon class |
+| `nolabel` | `boolean` | `false` | Hide label |
+| `onchange` | `function` | — | Change handler |
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-field-root` | Root wrapper |
+| `data-field` | Inner field container |
+| `data-field-state` | Current state (error/warning/success/info) |
+| `data-field-type` | Input type |
+| `data-field-required` | Present when required |
+| `data-field-disabled` | Present when disabled |
+| `data-field-dirty` | Present when dirty |
+| `data-message` | Validation message text |
+| `data-message-state` | Message severity |
+
+## Behavior
+
+- Wraps the core `Input` component with label, description, and validation message
+- Derives display state from `status` prop or `message.state`
+- Works standalone or wired to `FormBuilder` for automatic validation
