@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/themes",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Theme styles for @rokkit/ui components",
   "repository": {
     "type": "git",

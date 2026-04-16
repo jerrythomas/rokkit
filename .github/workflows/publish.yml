@@ -48,10 +48,14 @@ jobs:
               continue
             fi
             # bun pm pack rewrites workspace:* deps automatically
+            # Continue on publish failures (e.g. ghost versions from prior failed
+            # runs where provenance was signed but publish was rejected by npm)
             (
               cd "./packages/${name}"
               TARBALL=$(bun pm pack | grep '\.tgz$')
-              bunx npm publish "$TARBALL" --provenance --access public --tag latest
+              bunx npm publish "$TARBALL" --provenance --access public --tag latest || {
+                echo "::warning::Failed to publish ${PKG_NAME}@${VERSION} — may need manual retry"
+              }
               rm -f "$TARBALL"
             )
           done
