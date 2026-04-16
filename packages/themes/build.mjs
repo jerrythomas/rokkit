@@ -118,7 +118,6 @@ function fixModeSelectors(css) {
   let i = 0
 
   while (i < css.length) {
-    // Find next { (opening of a declarations block)
     const braceOpen = css.indexOf('{', i)
     if (braceOpen === -1) {
       result += css.slice(i)
@@ -127,9 +126,7 @@ function fixModeSelectors(css) {
 
     const selectorText = css.slice(i, braceOpen)
 
-    // Only expand selectors that contain the problematic pattern
     if (modePattern.test(selectorText)) {
-      // Split on comma, but only top-level commas (not inside :not(), :is(), etc.)
       const parts = splitTopLevelSelectors(selectorText)
       const expanded = []
 
@@ -140,7 +137,7 @@ function fixModeSelectors(css) {
           // Compound form: [data-mode="X"][data-style="Y"]rest (same-element match)
           expanded.push(`${ws}${modeSelector}${styleSelector}${rest}`)
         }
-        // Always include original descendant form
+        // Always include original :is() form
         expanded.push(part)
       }
 
@@ -149,7 +146,6 @@ function fixModeSelectors(css) {
       result += selectorText + '{'
     }
 
-    // Find the matching closing brace, handling nesting
     let depth = 1
     let j = braceOpen + 1
     while (j < css.length && depth > 0) {
