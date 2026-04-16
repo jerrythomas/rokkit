@@ -10,14 +10,21 @@ npm install @rokkit/themes
 
 ## Available Themes
 
-Rokkit ships four visual themes. Each is a separate CSS file in `@rokkit/themes/dist/`:
+Rokkit ships 11 visual themes. Each is a separate CSS file:
 
-| Theme | File | Personality |
-|-------|------|-------------|
-| **rokkit** | `dist/rokkit.css` | Rich gradients, glowing borders, and vibrant accents. The default theme — applied without a wrapper attribute. |
-| **minimal** | `dist/minimal.css` | Clean, understated visual styling with subtle borders and soft backgrounds. |
-| **material** | `dist/material.css` | Material Design inspired styling with elevation shadows and depth. |
-| **glass** | `dist/glass.css` | Glassmorphism styling with backdrop blur, transparency, and subtle borders. |
+| Theme | Import path | Personality |
+|-------|-------------|-------------|
+| **rokkit** | `@rokkit/themes/rokkit.css` | Rich gradients, glowing borders, and vibrant accents. The default theme. |
+| **minimal** | `@rokkit/themes/minimal.css` | Clean, understated styling with subtle borders and soft backgrounds. |
+| **material** | `@rokkit/themes/material.css` | Material Design inspired with elevation shadows and depth. |
+| **frosted** | `@rokkit/themes/frosted.css` | Frosted glass with backdrop blur, transparency, and subtle borders. |
+| **shadcn** | `@rokkit/themes/shadcn.css` | Flat borders and ring focus — shadcn/ui-inspired. |
+| **daisy-ui** | `@rokkit/themes/daisy-ui.css` | Rounded-full buttons and bold fills — DaisyUI-inspired. |
+| **bits-ui** | `@rokkit/themes/bits-ui.css` | Rounded-lg and polished shadow-sm — Bits UI-inspired. |
+| **carbon** | `@rokkit/themes/carbon.css` | Square corners and bottom-border inputs — IBM Carbon-inspired. |
+| **ant-design** | `@rokkit/themes/ant-design.css` | Thin borders and dense layout — Ant Design-inspired. |
+| **grada-ui** | `@rokkit/themes/grada-ui.css` | Coral/purple gradient identity. |
+| **base** | `@rokkit/themes/base.css` | Structural styles only (layout, positioning — no visual treatment). |
 
 ## CSS Import Structure
 
@@ -25,27 +32,29 @@ Every Rokkit application needs two imports: the **base** file (structural layout
 
 ```css
 /* In your global CSS (e.g., app.css or +layout.svelte <style>) */
-@import '@rokkit/themes/dist/base';    /* Required — structural layout for all components */
-@import '@rokkit/themes/dist/rokkit';  /* One or more visual themes */
+@import '@rokkit/themes/base.css';    /* Required — structural layout for all components */
+@import '@rokkit/themes/rokkit.css';  /* One or more visual themes */
 ```
 
 Or import all themes at once (larger bundle, but lets you switch themes at runtime):
 
 ```css
-@import '@rokkit/themes/dist/base';
-@import '@rokkit/themes/dist/rokkit';
-@import '@rokkit/themes/dist/minimal';
-@import '@rokkit/themes/dist/material';
-@import '@rokkit/themes/dist/glass';
+@import '@rokkit/themes/base.css';
+@import '@rokkit/themes/rokkit.css';
+@import '@rokkit/themes/minimal.css';
+@import '@rokkit/themes/material.css';
+@import '@rokkit/themes/frosted.css';
+@import '@rokkit/themes/shadcn.css';
+/* ... etc. */
 ```
 
 ### Per-component imports (tree-shaking)
 
-Each theme directory also has per-component CSS files. Import only what you use for smaller bundles:
+Each theme directory also has per-component CSS source files. Import only what you use:
 
 ```css
-@import '@rokkit/themes/dist/base/button.css';
-@import '@rokkit/themes/dist/rokkit/button.css';
+@import '@rokkit/themes/base/button.css';
+@import '@rokkit/themes/rokkit/button.css';
 ```
 
 ## Activating a Theme with `data-style`
@@ -164,7 +173,7 @@ Create a theme CSS file that targets data attributes, then import it after the b
 
 ```css
 /* app.css */
-@import '@rokkit/themes/dist/base';
+@import '@rokkit/themes/base.css';
 @import './my-theme.css';
 ```
 
@@ -200,5 +209,5 @@ For utility classes (`bg-primary-z5`, `text-surface-z8`, `data-mode`, etc.) and 
 // In vite.config.js or SvelteKit app — CSS imports are typically in global CSS, not JS
 // But if needed from JS:
 import '@rokkit/themes/dist/base'
-import '@rokkit/themes/dist/rokkit'
+import '@rokkit/themes/rokkit.css'
 ```

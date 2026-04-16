@@ -14,10 +14,15 @@
 		height = 400,
 		mode = 'light',
 		grid = true,
-		legend = false
+		legend = false,
+		xFormat = undefined,
+		yFormat = undefined,
+		xTicks = undefined,
+		yTicks = undefined,
+		minorTicks = false
 	} = $props()
 </script>
 
-<Plot {data} {width} {height} {mode} {grid} {legend}>
+<Plot {data} {width} {height} {mode} {grid} {legend} {xFormat} {yFormat} {xTicks} {yTicks} {minorTicks}>
 	<Point {x} {y} {color} {size} />
 </Plot>

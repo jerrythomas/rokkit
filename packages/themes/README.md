@@ -16,13 +16,19 @@ bun add @rokkit/themes
 
 Available themes:
 
-| Theme      | Description                                                          |
-| ---------- | -------------------------------------------------------------------- |
-| `rokkit`   | Default — gradients and glowing borders                              |
-| `minimal`  | Clean and subtle                                                     |
-| `material` | Elevation and shadows                                                |
-| `glass`    | Blur and transparency                                                |
-| `base`     | Structural styles only (layout and positioning, no visual treatment) |
+| Theme        | Description                                                          |
+| ------------ | -------------------------------------------------------------------- |
+| `rokkit`     | Default — gradients and glowing borders                              |
+| `minimal`    | Clean and subtle                                                     |
+| `material`   | Elevation and shadows                                                |
+| `frosted`    | Frosted glass and blur                                               |
+| `shadcn`     | Flat borders and ring focus                                          |
+| `daisy-ui`   | Rounded-full and bold fills                                          |
+| `bits-ui`    | Rounded-lg and shadow-sm                                             |
+| `carbon`     | Square corners and bottom-border inputs                              |
+| `ant-design` | Thin borders and dense layout                                        |
+| `grada-ui`   | Coral/purple gradient identity                                       |
+| `base`       | Structural styles only (layout and positioning, no visual treatment) |
 
 ## Usage
 
@@ -47,7 +53,7 @@ import '@rokkit/themes'
 /* or */
 @import '@rokkit/themes/material.css';
 /* or */
-@import '@rokkit/themes/glass.css';
+@import '@rokkit/themes/frosted.css';
 ```
 
 ### Base structural styles only
@@ -97,12 +103,18 @@ Component attribute hooks follow the pattern `[data-style='my-theme'] [data-butt
 
 ```
 src/
-  base/       -- Structural styles (layout, spacing, positioning)
-  rokkit/     -- Default theme (gradients + borders)
-  minimal/    -- Clean + subtle theme
-  material/   -- Elevation + shadows theme
-  glass/      -- Blur + transparency theme
-  index.css   -- Full bundle entry point
+  base/        -- Structural styles (layout, spacing, positioning)
+  rokkit/      -- Default theme (gradients + borders)
+  minimal/     -- Clean + subtle theme
+  material/    -- Elevation + shadows theme
+  frosted/     -- Frosted glass + blur theme
+  shadcn/      -- Flat borders + ring focus theme
+  daisy-ui/    -- Rounded-full + bold fills theme
+  bits-ui/     -- Rounded-lg + shadow-sm theme
+  carbon/      -- Square + bottom-border inputs theme
+  ant-design/  -- Thin borders + dense layout theme
+  grada-ui/    -- Coral/purple gradient identity theme
+  index.css    -- Full bundle entry point
 ```
 
 ---

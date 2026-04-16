@@ -1,0 +1,56 @@
+# Rokkit UploadFileStatus Component
+
+> Displays file upload status with progress bar, file info, and action buttons.
+
+## Quick Start
+
+```svelte
+<script>
+  import { UploadFileStatus } from '@rokkit/ui'
+</script>
+
+<UploadFileStatus
+  {proxy}
+  cancelWhen={['uploading']}
+  retryWhen={['failed']}
+  removeWhen={['complete', 'failed']}
+  oncancel={(p) => cancelUpload(p)}
+  onretry={(p) => retryUpload(p)}
+  onremove={(p) => removeFile(p)}
+/>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `proxy` | `ProxyItem` | *required* | ProxyItem containing file data |
+| `cancelWhen` | `string[]` | `[]` | Statuses that show cancel button |
+| `retryWhen` | `string[]` | `[]` | Statuses that show retry button |
+| `removeWhen` | `string[]` | `[]` | Statuses that show remove button |
+| `oncancel` | `(proxy) => void` | — | Cancel callback |
+| `onretry` | `(proxy) => void` | — | Retry callback |
+| `onremove` | `(proxy) => void` | — | Remove callback |
+| `labels` | `Record<string, string>` | — | Custom status labels |
+| `icons` | `Record<string, string>` | — | Custom action icons |
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-upload-file-status` | Root container |
+| `data-status` | Current status value |
+| `data-upload-file-icon` | File type icon |
+| `data-upload-file-name` | File name |
+| `data-upload-file-size` | Formatted file size |
+| `data-upload-bar` | Progress bar track |
+| `data-upload-fill` | Progress bar fill |
+| `data-upload-status` | Status label |
+| `data-upload-actions` | Action buttons wrapper |
+
+## Behavior
+
+- Shows file icon (inferred from MIME type), name, and formatted size
+- Progress bar visible when 0 < progress < 100
+- Action buttons render conditionally based on current status matching the `*When` arrays
+- Status mapped to user-friendly label via `labels` prop

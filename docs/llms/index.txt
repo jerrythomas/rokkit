@@ -330,10 +330,13 @@ Utility class pattern: `{prefix}-{role}-z{n}`
 
 ### Menus & Actions
 
-- [Menu](/llms/components/dropdown.txt) — dropdown menu with grouped options
+- [Menu](/llms/components/menu.txt) — dropdown menu with trigger, keyboard nav, groups, collapsible sections
+- [Dropdown](/llms/components/dropdown.txt) — dropdown container with grouped options
 - [Toolbar](/llms/components/toolbar.txt) — horizontal action bar with sections
-- [FloatingAction](/llms/components/floating-actions.txt) — floating action button (FAB)
+- [ToolbarGroup](/llms/components/toolbar-group.txt) — semantic grouping container for toolbar items
+- [FloatingAction](/llms/components/floating-action.txt) — floating action button (FAB)
 - [FloatingNavigation](/llms/components/floating-navigation.txt) — floating back-to-top and section progress navigation
+- [Tooltip](/llms/components/tooltip.txt) — hover/focus tooltip with auto-flip positioning
 
 ### Form Inputs
 
@@ -349,21 +352,28 @@ Utility class pattern: `{prefix}-{role}-z{n}`
 
 - [UploadTarget](/llms/components/upload-target.txt) — drag-and-drop file zone with validation
 - [UploadProgress](/llms/components/upload-progress.txt) — file upload status orchestrator
+- [UploadFileStatus](/llms/components/upload-file-status.txt) — individual file upload status with progress bar and actions
 
 ### Layout & Display
 
 - [Card](/llms/components/card.txt) — content card container
 - [Grid](/llms/components/grid.txt) — responsive CSS grid layout wrapper
+- [Stack](/llms/components/stack.txt) — flexible layout container with direction, gap, alignment
+- [Divider](/llms/components/divider.txt) — visual separator line with optional label
 - [Stepper](/llms/components/stepper.txt) — step indicator / wizard progress
 - [ProgressBar](/llms/components/progress-bar.txt) — progress indicator
 - [BreadCrumbs](/llms/components/breadcrumbs.txt) — breadcrumb navigation
 - [Carousel](/llms/components/carousel.txt) — touch-friendly content carousel with auto-play
 - [Timeline](/llms/components/timeline.txt) — vertical timeline of events with icons and metadata
 - [Pill](/llms/components/pill.txt) — inline label/tag/badge with optional dismiss
+- [Avatar](/llms/components/avatar.txt) — user avatar with image, initials fallback, status indicator
+- [Badge](/llms/components/badge.txt) — numeric badge or dot indicator overlay
+- [Connector](/llms/components/connector.txt) — tree-style connector lines for hierarchical views
 
 ### Content & Feedback
 
 - [Button](/llms/components/button.txt) — primary action button with variants and loading state
+- [ButtonGroup](/llms/components/button-group.txt) — groups related buttons with consistent sizing
 - [Icon](/llms/components/icon.txt) — icon rendering via Iconify / UnoCSS class
 - [Message](/llms/components/message.txt) — inline status message (success/warning/error/info)
 - [AlertList](/llms/components/alert-list.txt) — dismissible alert stack with auto-dismiss
@@ -393,10 +403,12 @@ Utility class pattern: `{prefix}-{role}-z{n}`
 - [BoxPlot](/llms/components/box-plot.txt) — quartile box plot from raw observations
 - [ViolinPlot](/llms/components/violin-plot.txt) — distribution shape using QuartileBrewer
 - [Sparkline](/llms/components/sparkline.txt) — lightweight inline sparkline (no axes)
-- [PlotChart](/llms/components/plot-chart.txt) — low-level container with GeomBar/Line/Area/Point/Arc/Box/Violin
+- [PlotChart](/llms/components/plot-chart.txt) — low-level container with declarative geom API (Bar/Line/Area/Point/Arc/Box/Violin/Heatmap/Candlestick/Waterfall/Hexbin/Ribbon)
+- ChartLegend — standalone HTML legend, scrollable, multi-orientation, shared across charts
+- ChartExporter — SVG and PNG export with CSS variable inlining
 - [FacetPlot](/llms/components/facet-plot.txt) — small-multiples, one panel per facet value
 - [AnimatedPlot](/llms/components/animated-plot.txt) — frame-by-frame animation with play/pause controls
-- [CrossFilter](/llms/components/crossfilter.txt) — linked filter context with FilterBar, FilterSlider, createCrossFilter
+- [CrossFilter](/llms/components/crossfilter.txt) — linked filter context with FilterBar, FilterSlider, FilterHistogram
 
 ## Keyboard Navigation
 
@@ -414,13 +426,16 @@ All interactive components support:
 ## Import
 
 ```javascript
-import { List, Tree, LazyTree, Select, MultiSelect, Tabs, Toggle, Table, Toolbar, Menu } from '@rokkit/ui'
-import { UploadTarget, UploadProgress } from '@rokkit/ui'
-import { FloatingAction, FloatingNavigation } from '@rokkit/ui'
-import { Carousel, Grid, Pill, Timeline } from '@rokkit/ui'
+import { List, Tree, LazyTree, Select, MultiSelect, Tabs, Toggle, Table, Toolbar, ToolbarGroup, Menu } from '@rokkit/ui'
+import { Button, ButtonGroup, Dropdown } from '@rokkit/ui'
+import { UploadTarget, UploadProgress, UploadFileStatus } from '@rokkit/ui'
+import { FloatingAction, FloatingNavigation, Tooltip } from '@rokkit/ui'
+import { Card, Grid, Stack, Divider, Carousel, Pill, Timeline, Stepper, ProgressBar, BreadCrumbs } from '@rokkit/ui'
+import { Avatar, Badge, Connector } from '@rokkit/ui'
 import { Reveal, Tilt, Shine } from '@rokkit/ui'
 import { Swatch, PaletteManager } from '@rokkit/ui'
-import { Message, AlertList, Code, MarkdownRenderer } from '@rokkit/ui'
+import { Message, AlertList, StatusList, Code, MarkdownRenderer } from '@rokkit/ui'
+import { Switch, Range, Rating, SearchFilter } from '@rokkit/ui'
 import { Form, FormRenderer, StatusList } from '@rokkit/forms'
 import { BarChart, LineChart, AreaChart, ScatterPlot, BubbleChart, PieChart, BoxPlot, ViolinPlot } from '@rokkit/chart'
 import { PlotChart, GeomBar, GeomLine, GeomArea, GeomPoint, GeomArc, GeomBox, GeomViolin } from '@rokkit/chart'

@@ -12,10 +12,13 @@
 		height = 400,
 		mode = 'light',
 		grid = true,
-		legend = false
+		legend = false,
+		yFormat = undefined,
+		yTicks = undefined,
+		minorTicks = false
 	} = $props()
 </script>
 
-<Plot {data} {width} {height} {mode} {grid} {legend}>
+<Plot {data} {width} {height} {mode} {grid} {legend} {yFormat} {yTicks} {minorTicks}>
 	<Box {x} {y} {fill} />
 </Plot>

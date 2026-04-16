@@ -68,7 +68,13 @@ const preset = presetRokkit({
 |--------|------|---------|-------------|
 | `colors` | `Record<string, string>` | Default semantic palette | Map semantic names to Tailwind color names. Overrides individual entries — unspecified semantics keep defaults. |
 | `skins` | `Record<string, Record<string, string>>` | `{}` | Named palette overrides. Each skin generates a `skin-{name}` CSS class that injects its color variables. |
-| `icons` | `Record<string, string>` | `{ app: '@rokkit/icons/app.json' }` | Additional icon collections (JSON files). Merged with the built-in `rokkit` collection. |
+| `icons` | `Record<string, string>` | `{ app: '@rokkit/icons/app.json' }` | Additional icon collections (JSON files). Merged with the built-in `rokkit` and `semantic` collections. |
+| `icons.style` | `string` | `undefined` | Icon style variant suffix (e.g., `'solid'`, `'outline'`, `'duotone-outline'`). Applied to all semantic icon shortcuts. |
+| `icons.collection` | `string` | `undefined` | Override the default icon collection prefix. Default is `'semantic'` (`i-semantic:*`). Set to e.g. `'phosphor'` to use `i-phosphor:*`. |
+| `icons.overrides` | `Record<string, string>` | `{}` | Per-icon class overrides. Keys are shortcut names, values are full icon classes. |
+| `palettes` | `Record<string, Record<string, string>>` | `{}` | Custom color palettes with shade values. Merged into theme colors so names can be used in `colors`. |
+| `typography` | `{ sans?, mono?, heading? }` | All `null` | Font family CSS custom properties. Values are CSS font-family strings. |
+| `shape` | `{ radius? }` | `{ radius: null }` | Shape tokens. `radius` accepts `'sharp'`, `'rounded'`, `'pill'`, or a custom `{ sm, md, lg, xl, full }` object. |
 | `themes` | `string[]` | `['rokkit']` | Which CSS themes to activate (informational — does not import CSS; use CSS imports for that). |
 | `switcher` | `'manual' \| 'full'` | `'manual'` | Theme switcher mode hint (used by app-level UI, not by the preset itself). |
 | `storageKey` | `string` | `'rokkit-theme'` | `localStorage` key for persisting theme selection. |
@@ -127,13 +133,21 @@ See `docs/llms/index.txt` for the full tone utility guide and all supported pref
 
 ### Icon Shortcuts
 
-All Rokkit state icons are registered as shortcut aliases pointing to `i-rokkit:{name}`:
+All Rokkit state icons are registered as shortcut aliases pointing to the semantic icon collection (`i-semantic:{name}`):
 
 ```html
-<span class="checkbox-checked"></span>   <!-- → i-rokkit:checkbox-checked -->
-<span class="node-opened"></span>        <!-- → i-rokkit:node-opened -->
-<span class="action-add"></span>         <!-- → i-rokkit:action-add -->
+<span class="checkbox-checked"></span>   <!-- → i-semantic:checkbox-checked -->
+<span class="node-opened"></span>        <!-- → i-semantic:node-opened -->
+<span class="action-add"></span>         <!-- → i-semantic:action-add -->
 ```
+
+When `icons.style` is set (e.g., `'solid'`), shortcuts include the variant suffix:
+
+```html
+<span class="action-add"></span>         <!-- → i-semantic:action-add-solid -->
+```
+
+Available styles: `undefined` (default), `'solid'`, `'outline'`, `'duotone-outline'`.
 
 The full `DEFAULT_ICONS` list (70+ icons) is also added to the UnoCSS safelist.
 
@@ -157,7 +171,7 @@ presetRokkit({
 
 ### Dark Mode
 
-Dark mode uses `[data-mode="dark"]` and `[data-mode="light"]` attribute selectors on an ancestor element (not the `prefers-color-scheme` media query). This enables programmatic theme switching:
+Dark mode uses `:is([data-mode="dark"],[data-mode="dark"] *)` selectors, which match both when `data-mode` is on the same element or an ancestor. This enables programmatic theme switching:
 
 ```html
 <body data-mode="dark">   <!-- force dark -->

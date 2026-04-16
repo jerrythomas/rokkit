@@ -17,10 +17,15 @@
 		height = 400,
 		mode = 'light',
 		grid = true,
-		legend = false
+		legend = false,
+		xFormat = undefined,
+		yFormat = undefined,
+		xTicks = undefined,
+		yTicks = undefined,
+		minorTicks = false
 	} = $props()
 </script>
 
-<Plot {data} {width} {height} {mode} {grid} {legend} {tooltip}>
+<Plot {data} {width} {height} {mode} {grid} {legend} {tooltip} {xFormat} {yFormat} {xTicks} {yTicks} {minorTicks}>
 	<Line {x} {y} {color} {symbol} {label} {stat} options={{ curve }} />
 </Plot>

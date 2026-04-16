@@ -16,7 +16,9 @@ export const DEFAULT_CONFIG = {
 	skins: {},
 	themes: ['rokkit'],
 	icons: {
-		app: '@rokkit/icons/app.json'
+		app: '@rokkit/icons/app.json',
+		style: undefined,
+		collection: undefined
 	},
 	typography: {
 		sans: null,

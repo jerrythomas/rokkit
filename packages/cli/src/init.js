@@ -2,6 +2,51 @@
 import prompts from 'prompts'
 import { writeFileSync, readFileSync, existsSync } from 'fs'
 import { resolve } from 'path'
+import { execFileSync } from 'child_process'
+import { detectPackageManager, buildInstallCommand } from './upgrade.js'
+
+const ROKKIT_PACKAGES = ['@rokkit/ui', '@rokkit/unocss', '@rokkit/themes', '@rokkit/icons']
+const LOCKFILES = ['bun.lock', 'bun.lockb', 'pnpm-lock.yaml', 'yarn.lock', 'package-lock.json']
+
+/**
+ * Detect if the current directory is a SvelteKit project.
+ * @param {string} cwd
+ * @returns {boolean}
+ */
+export function detectSvelteKit(cwd) {
+	return existsSync(resolve(cwd, 'svelte.config.js')) || existsSync(resolve(cwd, 'svelte.config.ts'))
+}
+
+/**
+ * Install Rokkit packages via the detected package manager.
+ * Skips packages already in package.json.
+ * @param {string} cwd
+ * @param {{ runInstall?: (bin: string, args: string[]) => void }} [adapters]
+ */
+export function installPackages(cwd, adapters = {}) {
+	const pkgPath = resolve(cwd, 'package.json')
+	if (!existsSync(pkgPath)) {
+		console.warn('  No package.json found — skipping install')
+		return
+	}
+
+	const pkgJson = JSON.parse(readFileSync(pkgPath, 'utf-8'))
+	const allDeps = { ...(pkgJson.dependencies || {}), ...(pkgJson.devDependencies || {}) }
+	const missing = ROKKIT_PACKAGES.filter((p) => !allDeps[p])
+
+	if (missing.length === 0) {
+		console.info('  All Rokkit packages already installed')
+		return
+	}
+
+	const pm = detectPackageManager(LOCKFILES.filter((f) => existsSync(resolve(cwd, f))))
+	const { bin, args } = buildInstallCommand(pm, missing)
+	const runInstall = adapters.runInstall ?? ((b, a) => execFileSync(b, a, { stdio: 'inherit' }))
+
+	console.info(`  Installing ${missing.join(', ')} via ${pm}...`)
+	runInstall(bin, args)
+	console.info('  Packages installed')
+}
 
 const CHART_COLOR_SETS = {
 	default: ['blue', 'emerald', 'rose', 'amber', 'violet', 'sky', 'pink', 'teal',
@@ -71,6 +116,7 @@ export function generateConfig({
 	customColors,
 	icons,
 	iconPath,
+	iconStyle,
 	themes,
 	defaultTheme,
 	switcher,
@@ -86,9 +132,10 @@ export function generateConfig({
 		storageKey: 'rokkit-theme'
 	}
 
-	if (icons === 'custom' && iconPath) {
-		config.icons = { custom: iconPath }
-	}
+	const iconConfig = {}
+	if (iconStyle) iconConfig.style = iconStyle
+	if (icons === 'custom' && iconPath) iconConfig.custom = iconPath
+	if (Object.keys(iconConfig).length > 0) config.icons = iconConfig
 
 	if (includeChart) {
 		config.chart = generateChartConfig({ chartColors, chartShades })
@@ -184,6 +231,17 @@ const PROMPTS_CONFIG = [
 		name: 'surface',
 		message: 'Surface color',
 		initial: 'slate'
+	},
+	{
+		type: 'select',
+		name: 'iconStyle',
+		message: 'Icon style',
+		choices: [
+			{ title: 'Default (duotone)', value: undefined },
+			{ title: 'Solid', value: 'solid' },
+			{ title: 'Outline', value: 'outline' },
+			{ title: 'Duotone outline', value: 'duotone-outline' }
+		]
 	},
 	{
 		type: 'select',
@@ -335,9 +393,28 @@ function writeAppHtml(cwd, initScript, storageKey) {
 
 /**
  * Interactive init command — prompts the user, writes config files.
+ * @param {Record<string, unknown>} [_opts]
+ * @param {{ runInstall?: (bin: string, args: string[]) => void }} [adapters] — injectable for testing
  */
-export async function init() {
+export async function init(_opts = {}, adapters = {}) {
+	const cwd = process.cwd()
+
+	// Detect SvelteKit project
+	if (!detectSvelteKit(cwd)) {
+		console.warn('No svelte.config.js found — this may not be a SvelteKit project.')
+		const { proceed } = await prompts({
+			type: 'confirm',
+			name: 'proceed',
+			message: 'Continue anyway?',
+			initial: false
+		})
+		if (!proceed) return
+	}
+
 	console.info('Rokkit Init — Setting up your SvelteKit project\n')
+
+	// Install packages
+	installPackages(cwd, adapters)
 
 	const response = await prompts(PROMPTS_CONFIG)
 
@@ -351,7 +428,6 @@ export async function init() {
 	}
 
 	const config = generateConfig(response)
-	const cwd = process.cwd()
 
 	writeRokkitConfig(cwd, config)
 	writeUnoConfig(cwd)

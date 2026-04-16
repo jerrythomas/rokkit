@@ -18,10 +18,13 @@
 		grid = true,
 		legend = false,
 		xFormat = undefined,
-		yFormat = undefined
+		yFormat = undefined,
+		xTicks = undefined,
+		yTicks = undefined,
+		minorTicks = false
 	} = $props()
 </script>
 
-<Plot {data} {width} {height} {mode} {grid} {legend} {xFormat} {yFormat}>
+<Plot {data} {width} {height} {mode} {grid} {legend} {xFormat} {yFormat} {xTicks} {yTicks} {minorTicks}>
 	<Area {x} {y} color={fill} {pattern} {stat} options={{ curve, stack }} />
 </Plot>

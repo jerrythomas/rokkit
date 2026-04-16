@@ -22,8 +22,8 @@ import { loadConfig } from './config.js'
 
 const THEME_CONFIG = {
 	dark: {
-		light: '[data-mode="light"]',
-		dark: '[data-mode="dark"]'
+		light: ':is([data-mode="light"],[data-mode="light"] *)',
+		dark: ':is([data-mode="dark"],[data-mode="dark"] *)'
 	}
 }
 
@@ -37,6 +37,7 @@ const FONT_FAMILIES = {
 function buildIconCollections(configIcons) {
 	return iconCollections({
 		rokkit: '@rokkit/icons/ui.json',
+		semantic: '@rokkit/icons/semantic.json',
 		...configIcons
 	})
 }
@@ -97,7 +98,9 @@ function buildShortcuts(theme, config) {
 		shortcuts.push(...theme.getShortcuts(variant))
 	}
 
-	const baseIconShortcuts = iconShortcuts(DEFAULT_ICONS, 'i-rokkit')
+	const iconStyle = config.icons?.style || undefined
+	const iconCollection = config.icons?.collection ? `i-${config.icons.collection}` : 'i-semantic'
+	const baseIconShortcuts = iconShortcuts(DEFAULT_ICONS, iconCollection, iconStyle)
 	const overrides = (config.icons?.overrides as Record<string, string>) || {}
 	shortcuts.push(...Object.entries({ ...baseIconShortcuts, ...overrides }))
 

@@ -82,7 +82,7 @@ Note: Content between the component tags renders as tab content (like default sl
   let value = $state(items[0])
 </script>
 
-<Tabs {items} bind:value fields={{ text: 'name' }}>
+<Tabs {items} bind:value fields={{ label: 'name' }}>
   <div class="p-4">
     <h3>{value.name}</h3>
     <p>{value.content}</p>
@@ -96,7 +96,7 @@ Note: Content between the component tags renders as tab content (like default sl
   {#snippet child(item)}
     <div class="flex items-center gap-2">
       <span>{item.get('emoji')}</span>
-      <span>{item.get('text')}</span>
+      <span>{item.get('label')}</span>
     </div>
   {/snippet}
   
@@ -142,7 +142,7 @@ The `fields` prop allows adaptation to any data structure:
 
 ```javascript
 const fields = {
-  text: 'name',        // Map 'name' to tab label
+  label: 'name',       // Map 'name' to tab label
   content: 'body',     // Map 'body' to tab content
   image: 'thumbnail'   // Map 'thumbnail' to tab image
 }

@@ -19,10 +19,13 @@
 		label = false,
 		tooltip = false,
 		xFormat = undefined,
-		yFormat = undefined
+		yFormat = undefined,
+		xTicks = undefined,
+		yTicks = undefined,
+		minorTicks = false
 	} = $props()
 </script>
 
-<Plot {data} {width} {height} {mode} {grid} {legend} {tooltip} {xFormat} {yFormat}>
+<Plot {data} {width} {height} {mode} {grid} {legend} {tooltip} {xFormat} {yFormat} {xTicks} {yTicks} {minorTicks}>
 	<Bar {x} {y} color={fill} {pattern} {label} {stat} options={{ stack }} />
 </Plot>

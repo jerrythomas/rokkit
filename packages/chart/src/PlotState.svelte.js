@@ -11,7 +11,7 @@ import {
 import { resolvePreset } from './lib/plot/preset.js'
 import { resolveFormat, resolveTooltip, resolveGeom } from './lib/plot/helpers.js'
 import { defaultPreset } from './lib/preset.js'
-import { distinct, assignColors, isLiteralColor } from './lib/brewing/colors.js'
+import { distinct, assignColors, isLiteralColor, buildSequentialScale, buildDivergingScale } from './lib/brewing/colors.js'
 import { assignPatterns } from './lib/brewing/patterns.js'
 import { assignSymbols } from './lib/brewing/marks/points.js'
 
@@ -26,6 +26,7 @@ export class PlotState {
 	#presetName = $state(undefined)
 	#colorMidpoint = $state(undefined)
 	#colorSpec = $state(undefined)
+	#colorScheme = $state(undefined)
 	#colorDomain = $state(undefined)
 	#xDomain = $state(undefined)
 	#yDomain = $state(undefined)
@@ -41,6 +42,7 @@ export class PlotState {
 	#orientationOverride = $state(undefined)
 
 	axisOrigin = $state([undefined, undefined])
+	#axisOffset = $state(0)
 
 	#zoomTransform = $state(null)
 
@@ -91,6 +93,21 @@ export class PlotState {
 			colorScale: this.#colorSpec,
 			colorMidpoint: this.#colorMidpoint
 		})
+	})
+
+	// Continuous color scale (sequential or diverging) — null for categorical.
+	continuousColorScale = $derived.by(() => {
+		const field = this.#effectiveChannels.color
+		if (!field || this.colorScaleType === 'categorical') return null
+		const opts = {
+			colorScheme: this.#colorScheme,
+			colorDomain: this.#colorDomain,
+			colorMidpoint: this.#colorMidpoint
+		}
+		if (this.colorScaleType === 'diverging') {
+			return buildDivergingScale(this.#data, field, opts)
+		}
+		return buildSequentialScale(this.#data, field, opts)
 	})
 
 	xScale = $derived.by(() => {
@@ -215,9 +232,11 @@ export class PlotState {
 		if (crossVal !== undefined) return this.yScale(crossVal)
 		const domain = this.yScale.domain?.()
 		if (!domain) return this.#innerHeight
-		// Auto quadrant: place x-axis at y=0 when domain spans zero
+		// Auto quadrant: place x-axis at y=0 when domain spans zero (no offset)
 		if (domain[0] <= 0 && domain[domain.length - 1] >= 0) return this.yScale(0)
-		return this.yScale(domain[0])
+		// Q1-only: axis at bottom edge, optionally with offset
+		const base = this.yScale(domain[0])
+		return this.#axisOffset ? base + this.#axisOffset : base
 	})
 
 	yAxisX = $derived.by(() => {
@@ -226,9 +245,11 @@ export class PlotState {
 		if (crossVal !== undefined) return this.xScale(crossVal)
 		const domain = this.xScale.domain?.()
 		if (!domain || typeof this.xScale.bandwidth === 'function') return 0
-		// Auto quadrant: place y-axis at x=0 when domain spans zero
+		// Auto quadrant: place y-axis at x=0 when domain spans zero (no offset)
 		if (domain[0] <= 0 && domain[domain.length - 1] >= 0) return this.xScale(0)
-		return this.xScale(domain[0])
+		// Q1-only: axis at left edge, optionally with offset
+		const base = this.xScale(domain[0])
+		return this.#axisOffset ? base - this.#axisOffset : base
 	})
 
 	constructor(config = {}) {
@@ -240,6 +261,7 @@ export class PlotState {
 		this.#presetName = config.preset
 		this.#colorMidpoint = config.colorMidpoint
 		this.#colorSpec = config.colorScale
+		this.#colorScheme = config.colorScheme
 		this.#colorDomain = config.colorDomain
 		this.#xDomain = config.xDomain
 		this.#yDomain = config.yDomain
@@ -247,6 +269,7 @@ export class PlotState {
 		this.#height = config.height ?? 400
 		this.#mode = config.mode ?? 'light'
 		this.#chartPreset = config.chartPreset ?? defaultPreset
+		this.#axisOffset = config.axisOffset ?? 0
 		this.#marginOverride = config.margin ?? undefined
 		this.#orientationOverride = config.orientation ?? undefined
 	}
@@ -262,6 +285,7 @@ export class PlotState {
 		if (config.preset !== undefined) this.#presetName = config.preset
 		if (config.colorMidpoint !== undefined) this.#colorMidpoint = config.colorMidpoint
 		if (config.colorScale !== undefined) this.#colorSpec = config.colorScale
+		if (config.colorScheme !== undefined) this.#colorScheme = config.colorScheme
 		this.#colorDomain = config.colorDomain
 		this.#xDomain = config.xDomain
 		this.#yDomain = config.yDomain
@@ -269,6 +293,7 @@ export class PlotState {
 		if (config.height !== undefined) this.#height = config.height
 		if (config.mode !== undefined) this.#mode = config.mode
 		if (config.chartPreset !== undefined) this.#chartPreset = config.chartPreset
+		if (config.axisOffset !== undefined) this.#axisOffset = config.axisOffset
 		this.#marginOverride = config.margin ?? undefined
 		this.#orientationOverride = config.orientation ?? undefined
 	}

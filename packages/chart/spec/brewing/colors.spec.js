@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { assignColors, distinct, isLiteralColor } from '../../src/lib/brewing/colors.js'
+import { assignColors, distinct, isLiteralColor, buildSequentialScale, buildDivergingScale } from '../../src/lib/brewing/colors.js'
 import { defaultPreset, createChartPreset } from '../../src/lib/preset.js'
 import masterPalette from '../../src/lib/palette.json'
 
@@ -86,5 +86,67 @@ describe('distinct', () => {
 
 	it('returns empty array if field is null', () => {
 		expect(distinct([{ x: 1 }], null)).toEqual([])
+	})
+})
+
+describe('buildSequentialScale', () => {
+	const data = [{ v: 0 }, { v: 50 }, { v: 100 }]
+
+	it('returns a scale function that maps values to colors', () => {
+		const result = buildSequentialScale(data, 'v')
+		expect(result.type).toBe('sequential')
+		expect(typeof result.scale).toBe('function')
+		expect(typeof result.scale(50)).toBe('string')
+	})
+
+	it('infers domain from data', () => {
+		const result = buildSequentialScale(data, 'v')
+		expect(result.domain).toEqual([0, 100])
+	})
+
+	it('accepts explicit domain', () => {
+		const result = buildSequentialScale(data, 'v', { colorDomain: [10, 90] })
+		expect(result.domain).toEqual([10, 90])
+	})
+
+	it('returns different colors at domain extremes', () => {
+		const result = buildSequentialScale(data, 'v')
+		const low = result.scale(0)
+		const high = result.scale(100)
+		expect(low).not.toBe(high)
+	})
+
+	it('accepts a named color scheme', () => {
+		const result = buildSequentialScale(data, 'v', { colorScheme: 'viridis' })
+		expect(typeof result.scale(50)).toBe('string')
+	})
+})
+
+describe('buildDivergingScale', () => {
+	const data = [{ v: -10 }, { v: 0 }, { v: 10 }]
+
+	it('returns a diverging scale with three-point domain', () => {
+		const result = buildDivergingScale(data, 'v')
+		expect(result.type).toBe('diverging')
+		expect(result.domain).toEqual([-10, 0, 10])
+	})
+
+	it('uses custom midpoint', () => {
+		const result = buildDivergingScale(data, 'v', { colorMidpoint: 5 })
+		expect(result.domain).toEqual([-10, 5, 10])
+	})
+
+	it('accepts a named color scheme', () => {
+		const result = buildDivergingScale(data, 'v', { colorScheme: 'rdbu' })
+		expect(typeof result.scale(0)).toBe('string')
+	})
+
+	it('returns different colors at extremes vs midpoint', () => {
+		const result = buildDivergingScale(data, 'v', { colorScheme: 'rdbu' })
+		const low = result.scale(-10)
+		const mid = result.scale(0)
+		const high = result.scale(10)
+		expect(low).not.toBe(mid)
+		expect(mid).not.toBe(high)
 	})
 })

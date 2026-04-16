@@ -27,6 +27,8 @@ export const PlotLayers = Plot
 // New Plot system
 export { default as PlotChart } from './Plot.svelte'
 export { default as ChartProvider } from './ChartProvider.svelte'
+export { default as ChartLegend } from './ChartLegend.svelte'
+export { default as ChartExporter } from './ChartExporter.svelte'
 export { createChartPreset, defaultPreset } from './lib/preset.js'
 
 // Facets and Animation
@@ -41,6 +43,11 @@ export { default as GeomPoint } from './geoms/Point.svelte'
 export { default as GeomArc } from './geoms/Arc.svelte'
 export { default as GeomBox } from './geoms/Box.svelte'
 export { default as GeomViolin } from './geoms/Violin.svelte'
+export { default as GeomHeatmap } from './geoms/Heatmap.svelte'
+export { default as GeomCandlestick } from './geoms/Candlestick.svelte'
+export { default as GeomWaterfall } from './geoms/Waterfall.svelte'
+export { default as GeomHexbin } from './geoms/Hexbin.svelte'
+export { default as GeomRibbon } from './geoms/Ribbon.svelte'
 
 // Export standalone components
 export { default as Chart } from './Chart.svelte'
@@ -60,6 +67,7 @@ export { PlotState } from './PlotState.svelte.js'
 // Export utilities
 export { ChartBrewer } from './lib/brewing/index.svelte.js'
 export * from './lib/brewing/index.svelte.js'
+export { buildSequentialScale, buildDivergingScale } from './lib/brewing/colors.js'
 export { CartesianBrewer } from './lib/brewing/CartesianBrewer.svelte.js'
 export { PieBrewer } from './lib/brewing/PieBrewer.svelte.js'
 export { QuartileBrewer } from './lib/brewing/QuartileBrewer.svelte.js'

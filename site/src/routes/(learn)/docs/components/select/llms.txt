@@ -12,7 +12,7 @@ stack (identical to `List`) for consistent keyboard navigation and field mapping
 ### Props
 
 - `items: SelectItem[]` — Array of option objects or group objects (with `children`)
-- `fields: Record<string, string>` — Field mapping overrides (default: `{ text: 'text', value: 'value', icon: 'icon', children: 'children', disabled: 'disabled' }`)
+- `fields: Record<string, string>` — Field mapping overrides (default: `{ label: 'label', value: 'value', icon: 'icon', children: 'children', disabled: 'disabled' }`)
 - `value: unknown` (bindable) — Currently selected value (extracted via `fields.value`)
 - `selected: SelectItem | null` (bindable) — Currently selected raw item object
 - `placeholder: string` — Text shown when nothing is selected (default: `'Select...'`)
@@ -54,9 +54,9 @@ All snippets receive a `ProxyItem` instance:
   import { Select } from '@rokkit/ui'
 
   const fruits = [
-    { text: 'Apple', value: 'apple' },
-    { text: 'Banana', value: 'banana' },
-    { text: 'Cherry', value: 'cherry' }
+    { label: 'Apple', value: 'apple' },
+    { label: 'Banana', value: 'banana' },
+    { label: 'Cherry', value: 'cherry' }
   ]
   let value = $state(null)
 </script>
@@ -74,7 +74,7 @@ All snippets receive a `ProxyItem` instance:
     { name: 'United States', code: 'US' },
     { name: 'Germany', code: 'DE' }
   ]
-  const fields = { text: 'name', value: 'code' }
+  const fields = { label: 'name', value: 'code' }
   let value = $state(null)
 </script>
 
@@ -89,17 +89,17 @@ All snippets receive a `ProxyItem` instance:
 
   const items = [
     {
-      text: 'Fruits',
+      label: 'Fruits',
       children: [
-        { text: 'Apple', value: 'apple' },
-        { text: 'Banana', value: 'banana' }
+        { label: 'Apple', value: 'apple' },
+        { label: 'Banana', value: 'banana' }
       ]
     },
     {
-      text: 'Vegetables',
+      label: 'Vegetables',
       children: [
-        { text: 'Carrot', value: 'carrot' },
-        { text: 'Broccoli', value: 'broccoli' }
+        { label: 'Carrot', value: 'carrot' },
+        { label: 'Broccoli', value: 'broccoli' }
       ]
     }
   ]
@@ -164,7 +164,7 @@ Default `BASE_FIELDS` mapping (used when no `fields` prop is passed):
 
 ```js
 {
-  text: 'text',
+  label: 'label',
   value: 'value',
   icon: 'icon',
   href: 'href',
@@ -176,5 +176,5 @@ Default `BASE_FIELDS` mapping (used when no `fields` prop is passed):
 
 Override only the fields you need:
 ```js
-fields={{ text: 'name', value: 'id' }}
+fields={{ label: 'name', value: 'id' }}
 ```

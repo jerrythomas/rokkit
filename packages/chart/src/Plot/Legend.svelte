@@ -61,9 +61,31 @@
 			: []
 	)
 
+	// For continuous color scales, build a CSS gradient from sampled stops
+	const GRADIENT_STOPS = 10
 	const gradientStyle = $derived.by(() => {
-		if (isCategorical) return ''
-		return `background: linear-gradient(to right, #cfe2f3, #084594)`
+		const cs = state.continuousColorScale
+		if (!cs) return 'background: linear-gradient(to right, #cfe2f3, #084594)'
+		const domain = cs.domain
+		const min = domain[0]
+		const max = domain[domain.length - 1]
+		const stops = Array.from({ length: GRADIENT_STOPS + 1 }, (_, i) => {
+			const t = i / GRADIENT_STOPS
+			const value = min + t * (max - min)
+			return `${cs.scale(value)} ${(t * 100).toFixed(0)}%`
+		})
+		return `background: linear-gradient(to right, ${stops.join(', ')})`
+	})
+
+	// Min/max labels for continuous legend
+	const continuousLabels = $derived.by(() => {
+		const cs = state.continuousColorScale
+		if (!cs) return null
+		const domain = cs.domain
+		const fmt = state.format(state.colorField)
+		const min = fmt ? fmt(domain[0]) : String(domain[0])
+		const max = fmt ? fmt(domain[domain.length - 1]) : String(domain[domain.length - 1])
+		return { min, max }
 	})
 </script>
 
@@ -193,6 +215,12 @@
 {:else}
 	<div class="legend gradient" data-plot-legend>
 		<div class="gradient-bar" style={gradientStyle} data-plot-legend-gradient></div>
+		{#if continuousLabels}
+			<div class="gradient-labels">
+				<span>{continuousLabels.min}</span>
+				<span>{continuousLabels.max}</span>
+			</div>
+		{/if}
 	</div>
 {/if}
 
@@ -229,5 +257,12 @@
 		width: 180px;
 		height: 14px;
 		border-radius: 2px;
+	}
+	.gradient-labels {
+		display: flex;
+		justify-content: space-between;
+		width: 180px;
+		font-size: 11px;
+		opacity: 0.8;
 	}
 </style>

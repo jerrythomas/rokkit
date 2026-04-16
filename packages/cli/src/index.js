@@ -62,6 +62,14 @@ prog
 	})
 
 prog
+	.command('add')
+	.describe('Add Rokkit to an existing SvelteKit project (alias for init)')
+	.action(async (opts) => {
+		const { init } = await import('./init.js')
+		await init(opts)
+	})
+
+prog
 	.command('doctor')
 	.describe('Validate Rokkit project setup')
 	.option('--fix', 'Auto-fix safe issues')

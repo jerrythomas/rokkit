@@ -16,6 +16,11 @@
 	import Arc from './geoms/Arc.svelte'
 	import Box from './geoms/Box.svelte'
 	import Violin from './geoms/Violin.svelte'
+	import Heatmap from './geoms/Heatmap.svelte'
+	import Candlestick from './geoms/Candlestick.svelte'
+	import Waterfall from './geoms/Waterfall.svelte'
+	import Hexbin from './geoms/Hexbin.svelte'
+	import Ribbon from './geoms/Ribbon.svelte'
 
 	/**
 	 * @type {{
@@ -53,6 +58,9 @@
 		zoom = false,
 		xFormat = undefined,
 		yFormat = undefined,
+		xTicks = undefined,
+		yTicks = undefined,
+		minorTicks = false,
 		children
 	} = $props()
 
@@ -103,6 +111,9 @@
 			xDomain: spec?.xDomain,
 			yDomain: spec?.yDomain,
 			colorDomain: spec?.colorDomain,
+			colorScale: spec?.colorScale,
+			colorScheme: spec?.colorScheme,
+			colorMidpoint: spec?.colorMidpoint,
 			orientation: spec?.orientation,
 			chartPreset
 		}
@@ -145,7 +156,12 @@
 		point: Point,
 		arc: Arc,
 		box: Box,
-		violin: Violin
+		violin: Violin,
+		heatmap: Heatmap,
+		candlestick: Candlestick,
+		waterfall: Waterfall,
+		hexbin: Hexbin,
+		ribbon: Ribbon
 	}
 
 	/**
@@ -209,8 +225,8 @@
 
 			<!-- Axes -->
 			{#if axes}
-				<Axis type="x" label={spec?.labels?.[spec?.x ?? ''] ?? ''} format={xFormat} />
-				<Axis type="y" label={spec?.labels?.[spec?.y ?? ''] ?? ''} format={yFormat} />
+				<Axis type="x" label={spec?.labels?.[spec?.x ?? ''] ?? ''} format={xFormat} ticks={xTicks} {minorTicks} />
+				<Axis type="y" label={spec?.labels?.[spec?.y ?? ''] ?? ''} format={yFormat} ticks={yTicks} {minorTicks} />
 			{/if}
 		</g>
 	</svg>

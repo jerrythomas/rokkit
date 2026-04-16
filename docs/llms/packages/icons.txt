@@ -14,16 +14,26 @@ npm install @rokkit/icons
 
 ## Collections
 
-| Subpath import | Collection prefix | Count | Contents |
-|----------------|-------------------|-------|----------|
-| `@rokkit/icons` or `@rokkit/icons/ui.json` | `rokkit-ui` | 94 | Base UI icons — navigation, actions, states |
-| `@rokkit/icons/light.json` | `rokkit-light` | 5 | Outlined lightweight icons |
-| `@rokkit/icons/solid.json` | `rokkit-solid` | 12 | Solid filled icons |
-| `@rokkit/icons/twotone.json` | `rokkit-twotone` | 4 | Two-tone icons |
-| `@rokkit/icons/components.json` | `rokkit-components` | 49 | Component-type icons (for tooling/palettes) |
-| `@rokkit/icons/auth.json` | `rokkit-auth` | 107 | Auth provider logos (Google, GitHub, Firebase, etc.) |
-| `@rokkit/icons/app.json` | `rokkit-app` | 36 | Application-level icons |
-| `@rokkit/icons/utils` | — | — | Utility functions for icon conversion |
+| Subpath import | Collection prefix | Contents |
+|----------------|-------------------|----------|
+| `@rokkit/icons` or `@rokkit/icons/ui.json` | `rokkit` | Base UI icons — navigation, actions, states |
+| `@rokkit/icons/semantic.json` | `semantic` | Semantic icons with style variants (default for shortcuts) |
+| `@rokkit/icons/glyph.json` | `glyph` | Large icon set (600+ icons) for tooling, palettes, docs |
+| `@rokkit/icons/light.json` | `light` | Outlined lightweight icons |
+| `@rokkit/icons/solid.json` | `solid` | Solid filled icons |
+| `@rokkit/icons/twotone.json` | `twotone` | Two-tone icons |
+| `@rokkit/icons/components.json` | `components` | Component-type icons (alias for glyph) |
+| `@rokkit/icons/auth.json` | `auth` | Auth provider logos (Google, GitHub, Firebase, etc.) |
+| `@rokkit/icons/app.json` | `app` | Application-level icons |
+| `@rokkit/icons/utils` | — | Utility functions for icon conversion |
+
+The **semantic** collection is the default for component icon shortcuts. Each icon has four variants:
+- Default (duotone) — `accordion-closed`
+- Solid — `accordion-closed-solid`
+- Outline — `accordion-closed-outline`
+- Duotone outline — `accordion-closed-duotone-outline`
+
+Set `icons.style` in `rokkit.config.js` to switch all component icons globally (e.g., `style: 'solid'`).
 
 ---
 

@@ -1,7 +1,7 @@
 # Toolchain Design
 
 **Status:** Complete
-**Last updated:** 2026-03-27
+**Last updated:** 2026-04-16
 
 This document covers the Rokkit toolchain: the CLI (`@rokkit/cli`), the UnoCSS preset (`@rokkit/unocss`), the icon system, and `rokkit.config.js`.
 
@@ -46,9 +46,10 @@ export default {
 
   // Icon configuration
   icons: {
-    set: 'rokkit',           // which icon set to use
-    path: undefined,         // path to custom icon JSON
-    overrides: {}            // per-icon class overrides
+    app: '@rokkit/icons/app.json',   // additional icon collections
+    collection: undefined,           // default icon collection prefix (default: 'semantic')
+    style: undefined,                // variant suffix: 'solid' | 'outline' | 'duotone-outline'
+    overrides: {}                    // per-icon class overrides
   },
 
   // Theme variants to include
@@ -110,7 +111,8 @@ For each named skin (from `config.skins`):
 - `skin-<name>` shortcut that sets all CSS color variables for that skin
 
 For icons:
-- All `DEFAULT_ICONS` mapped to `i-rokkit-*` classes
+- All `DEFAULT_ICONS` mapped to `i-semantic:*` classes (configurable via `icons.collection`)
+- `config.icons.style` appends a variant suffix (e.g., `-solid`, `-outline`, `-duotone-outline`)
 - `config.icons.overrides` allows per-icon class substitution
 
 ### Safelist
@@ -143,14 +145,41 @@ Registered in the UnoCSS theme:
 
 ## Icon System
 
-### Curated Icon Sets
+### Icon Collections
 
-Rokkit ships a curated icon set at `@rokkit/icons/ui.json`. Icons are organized into semantic groups:
+Rokkit ships multiple icon collections in `@rokkit/icons`:
+
+| Collection | Prefix | Description |
+|-----------|--------|-------------|
+| `ui.json` | `rokkit` | Base UI icons |
+| `semantic.json` | `semantic` | Semantic icons with style variants (default for shortcuts) |
+| `glyph.json` | `glyph` | Large icon set (600+) |
+| `app.json` | `app` | Application icons |
+| `auth.json` | `auth` | Authentication/login brand icons |
+| `light.json` | `light` | Outlined variants |
+| `solid.json` | `solid` | Solid variants |
+| `twotone.json` | `twotone` | Two-tone variants |
+
+Icons are organized into semantic groups:
 
 - Navigation: arrows, chevrons, close, menu, expand/collapse
 - Status: check, warning, error, info, spinner
 - Action: edit, delete, add, search, filter, sort
 - Objects: file, folder, calendar, user, settings
+
+### Global Collection Override
+
+By default, component icon shortcuts resolve to the `semantic` collection (`i-semantic:*`). To swap the entire icon system:
+
+```js
+// rokkit.config.js
+export default {
+  icons: {
+    collection: 'phosphor',  // all shortcuts → i-phosphor:*
+    phosphor: '@iconify-json/phosphor/icons.json'
+  }
+}
+```
 
 ### Safelisting
 
@@ -198,9 +227,9 @@ The collection is passed to `presetIcons({ collections })` and becomes available
 
 The CLI is installed globally or run via `bunx rokkit` / `npx rokkit`.
 
-### `rokkit init`
+### `rokkit init` / `rokkit add`
 
-Interactive setup wizard. Prompts for:
+Interactive setup wizard. Detects existing SvelteKit projects and installs packages. Prompts for:
 
 1. **Color palette** — choose a preset skin (default/vibrant/seaweed) or define custom role-to-color mappings
 2. **Icon set** — built-in rokkit icons or custom path
@@ -209,11 +238,15 @@ Interactive setup wizard. Prompts for:
 5. **Theme switcher** — whether to scaffold a switcher UI component
 6. **Chart config** (optional) — color set (default/warm/cool) and shade contrast (standard/high/soft)
 
-Writes:
-- `rokkit.config.js` — configuration file
-- `uno.config.js` — UnoCSS config importing `presetRokkit`
-- Patches `app.css` with `@import '@rokkit/themes/dist/base.css'` and selected theme CSS imports
-- Patches `app.html` with `data-style`, `data-mode`, `data-density` attributes on `<body>`
+Flow:
+1. Detects SvelteKit project (checks for `svelte.config.js`)
+2. Installs `@rokkit/ui`, `@rokkit/unocss`, `@rokkit/themes`, `@rokkit/icons` via detected package manager
+3. Writes `rokkit.config.js` — configuration file
+4. Writes `uno.config.js` — UnoCSS config importing `presetRokkit`
+5. Patches `app.css` with base and selected theme CSS imports
+6. Patches `app.html` with flash-prevention init script
+
+`rokkit add` is an alias for `rokkit init`.
 
 ### `rokkit upgrade`
 

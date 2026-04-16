@@ -17,10 +17,15 @@
 		mode = 'light',
 		grid = true,
 		legend = false,
-		jitter = undefined
+		jitter = undefined,
+		xFormat = undefined,
+		yFormat = undefined,
+		xTicks = undefined,
+		yTicks = undefined,
+		minorTicks = false
 	} = $props()
 </script>
 
-<Plot {data} {width} {height} {mode} {grid} {legend} {tooltip}>
+<Plot {data} {width} {height} {mode} {grid} {legend} {tooltip} {xFormat} {yFormat} {xTicks} {yTicks} {minorTicks}>
 	<Point {x} {y} {color} {size} {symbol} {label} options={{ jitter }} />
 </Plot>

@@ -30,10 +30,10 @@ describe('presetRokkit', () => {
 		expect(iconNames).toContain('checkbox-checked')
 	})
 
-	it('should map accordion-opened to i-rokkit by default', () => {
+	it('should map accordion-opened to i-semantic by default', () => {
 		const preset = presetRokkit()
 		const entry = preset.shortcuts.find((s) => Array.isArray(s) && s[0] === 'accordion-opened')
-		expect(entry[1]).toBe('i-rokkit:accordion-opened')
+		expect(entry[1]).toBe('i-semantic:accordion-opened')
 	})
 
 	it('should apply icons.overrides to replace specific semantic shortcuts', () => {
@@ -44,12 +44,24 @@ describe('presetRokkit', () => {
 		expect(entry[1]).toBe('i-phosphor:folder-open')
 	})
 
-	it('should leave non-overridden shortcuts pointing to i-rokkit', () => {
+	it('should leave non-overridden shortcuts pointing to i-semantic', () => {
 		const preset = presetRokkit({
 			icons: { overrides: { 'folder-open': 'i-phosphor:folder-open' } }
 		})
 		const entry = preset.shortcuts.find((s) => Array.isArray(s) && s[0] === 'accordion-opened')
-		expect(entry[1]).toBe('i-rokkit:accordion-opened')
+		expect(entry[1]).toBe('i-semantic:accordion-opened')
+	})
+
+	it('should apply icon style variant suffix', () => {
+		const preset = presetRokkit({ icons: { style: 'solid' } })
+		const entry = preset.shortcuts.find((s) => Array.isArray(s) && s[0] === 'accordion-opened')
+		expect(entry[1]).toBe('i-semantic:accordion-opened-solid')
+	})
+
+	it('should use custom icon collection when specified', () => {
+		const preset = presetRokkit({ icons: { collection: 'phosphor' } })
+		const entry = preset.shortcuts.find((s) => Array.isArray(s) && s[0] === 'accordion-opened')
+		expect(entry[1]).toBe('i-phosphor:accordion-opened')
 	})
 
 	it('should generate skin shortcuts from config skins', () => {

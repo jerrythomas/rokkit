@@ -1,0 +1,38 @@
+# Rokkit Stack Component
+
+> Flexible layout container with configurable direction, gap, alignment, and justification.
+
+## Quick Start
+
+```svelte
+<script>
+  import { Stack, Button } from '@rokkit/ui'
+</script>
+
+<Stack direction="horizontal" gap="md" align="center">
+  <Button label="A" />
+  <Button label="B" />
+  <Button label="C" />
+</Stack>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `direction` | `'vertical' \| 'horizontal'` | `'vertical'` | Layout direction |
+| `gap` | `'none' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | Spacing between children |
+| `align` | `'start' \| 'center' \| 'end' \| 'stretch'` | — | Cross-axis alignment |
+| `justify` | `'start' \| 'center' \| 'end' \| 'between' \| 'around'` | — | Main-axis justification |
+| `children` | `Snippet` | *required* | Stack content |
+| `class` | `string` | — | Additional CSS classes |
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-stack` | Root container |
+| `data-direction` | Layout direction |
+| `data-gap` | Gap size |
+| `data-align` | Alignment (when set) |
+| `data-justify` | Justification (when set) |

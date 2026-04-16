@@ -60,5 +60,5 @@ import { FloatingNavigation } from '@rokkit/ui'
 
 ## Related
 
-- [floating-actions](/llms/components/floating-actions.txt) — Floating action button (FAB)
+- [floating-actions](/llms/components/floating-action.txt) — Floating action button (FAB)
 - [list](/llms/components/list.txt) — Vertical list navigation

@@ -17,36 +17,49 @@ npm install -g @rokkit/cli
 rokkit <command>
 ```
 
-## rokkit init
+## rokkit init / rokkit add
 
-Interactive setup for an existing SvelteKit project. Run from the project root.
+Interactive setup for an existing SvelteKit project. `rokkit add` is an alias. Run from the project root.
 
 ```bash
 npx @rokkit/cli@latest init
+npx @rokkit/cli@latest add   # same as init
 ```
+
+### Flow
+
+1. Detects SvelteKit project (checks for `svelte.config.js`)
+2. Installs `@rokkit/ui`, `@rokkit/unocss`, `@rokkit/themes`, `@rokkit/icons` via detected package manager
+3. Runs interactive prompts (see below)
+4. Writes config files
 
 ### Prompts
 
 | Prompt | Type | Description | Choices |
 |--------|------|-------------|---------|
 | `palette` | select | Color palette preset | `default` (orange/pink/sky), `vibrant` (blue/purple/sky), `seaweed` (sky/green/blue), `custom` |
-| `primary` | text | Primary color (Tailwind palette name) | Default: `orange`. **Conditional:** only shown when `palette` is `custom` |
-| `secondary` | text | Secondary color | Default: `pink`. **Conditional:** only shown when `palette` is `custom` |
-| `accent` | text | Accent color | Default: `sky`. **Conditional:** only shown when `palette` is `custom` |
-| `surface` | text | Surface color | Default: `slate`. **Conditional:** only shown when `palette` is `custom` |
+| `primary` | text | Primary color (Tailwind name) | Default: `orange`. **Conditional:** only when `palette` is `custom` |
+| `secondary` | text | Secondary color | Default: `pink`. **Conditional:** only when `palette` is `custom` |
+| `accent` | text | Accent color | Default: `sky`. **Conditional:** only when `palette` is `custom` |
+| `surface` | text | Surface color | Default: `slate`. **Conditional:** only when `palette` is `custom` |
+| `iconStyle` | select | Icon style variant | `Default (duotone)`, `Solid`, `Outline`, `Duotone outline` |
 | `icons` | select | Icon collections | `rokkit` (Rokkit icons only), `custom` (Rokkit + custom collection) |
-| `iconPath` | text | Path to custom icon collection JSON | Default: `./static/icons/custom.json`. **Conditional:** only shown when `icons` is `custom` |
-| `themes` | multiselect | Theme styles (select one or more) | `rokkit` (selected by default), `minimal`, `material` |
-| `switcher` | select | Theme switching mode | `system` (prefers-color-scheme only), `manual` (light/dark toggle), `full` (light/dark + style variants) |
+| `iconPath` | text | Path to custom icon collection JSON | Default: `./static/icons/custom.json`. **Conditional:** only when `icons` is `custom` |
+| `themes` | multiselect | Theme styles | `rokkit` (default), `minimal`, `material`, `frosted`, `grada-ui`, `shadcn`, `daisy-ui`, `bits-ui`, `carbon`, `ant-design` |
+| `defaultTheme` | select | Default theme style | **Conditional:** only when multiple themes selected |
+| `switcher` | select | Theme switching mode | `system` (prefers-color-scheme), `manual` (light/dark toggle), `full` (light/dark + style variants) |
+| `includeChart` | confirm | Include chart configuration? | Default: `true` |
+| `chartColors` | select | Chart color set | `default` (14 colors), `warm` (8 colors), `cool` (8 colors). **Conditional:** only when chart included |
+| `chartShades` | select | Chart shade contrast | `standard`, `high`, `soft`. **Conditional:** only when chart included |
 
 ### Files Written
 
 | File | Notes |
 |------|-------|
-| `rokkit.config.js` | Written with the generated config (colors, themes, switcher, storageKey). Skipped if the file already exists. |
-| `uno.config.js` | Written with `presetRokkit()` from `@rokkit/unocss`. Skipped if the file already exists (run `rokkit doctor` for migration hints). |
-| `src/app.css` | Prepends missing `@import` lines for `@unocss/reset/tailwind.css`, `@rokkit/themes/dist/base`, and each selected theme (e.g. `@rokkit/themes/dist/rokkit`). Creates the file if it does not exist. |
-| `src/app.html` | Injects a flash-prevention `<script>` after the `<body>` opening tag. Skipped when `switcher` is `system` (no script needed), when the file does not exist, or when the script is already present. The `full` switcher also sets `data-style`; the `manual` switcher sets `data-mode` only. |
+| `rokkit.config.js` | Colors, themes, switcher, storageKey, icons (with style), optional chart config. Skipped if exists. |
+| `uno.config.js` | Written with `presetRokkit()` from `@rokkit/unocss`. Skipped if exists. |
+| `src/app.css` | Prepends missing `@import` lines for `@unocss/reset/tailwind.css`, `@rokkit/themes/base.css`, and each selected theme. Creates if missing. |
+| `src/app.html` | Injects flash-prevention `<script>` after `<body>`. Skipped when `switcher` is `system`, file doesn't exist, or script is already present. |
 
 ### After init
 
@@ -125,3 +138,32 @@ rokkit build -i src -o build --config my-conf.json
 | `--config` | `-c` | `config.json` | Path to custom config file (resolved relative to the input folder) |
 | `--input` | `-i` | `./src` | Source folder containing icon subfolders |
 | `--output` | `-o` | `./lib` | Output folder for built Iconify packages |
+
+## rokkit upgrade
+
+Checks for `@rokkit/*` package updates and optionally installs them.
+
+```bash
+rokkit upgrade          # check only
+rokkit upgrade --apply  # install updates
+```
+
+Detects the package manager from lockfiles (bun, pnpm, yarn, npm) and runs the appropriate install command.
+
+## rokkit skin list / rokkit skin create
+
+Manage named skins in `rokkit.config.js`.
+
+```bash
+rokkit skin list              # list all skins defined in config
+rokkit skin create --name ocean  # scaffold a new skin entry
+```
+
+## rokkit theme list / rokkit theme create
+
+Manage themes.
+
+```bash
+rokkit theme list               # list built-in and custom themes
+rokkit theme create --name corp # scaffold a new CSS theme stub
+```

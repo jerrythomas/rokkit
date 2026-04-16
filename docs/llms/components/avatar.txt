@@ -1,0 +1,46 @@
+# Rokkit Avatar Component
+
+> Displays a user avatar with image, initials fallback, and optional status indicator.
+
+## Quick Start
+
+```svelte
+<script>
+  import { Avatar } from '@rokkit/ui'
+</script>
+
+<Avatar src="/photo.jpg" name="Jane Doe" />
+<Avatar name="Jane Doe" status="online" />
+<Avatar initials="JD" size="lg" shape="square" />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `src` | `string` | — | Image URL |
+| `alt` | `string` | — | Image alt text |
+| `name` | `string` | — | Full name — auto-derives initials if `initials` not provided |
+| `initials` | `string` | — | Explicit initials (overrides auto-derivation from name) |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | Size variant |
+| `status` | `'online' \| 'offline' \| 'away' \| 'busy'` | — | Status indicator dot |
+| `shape` | `'circle' \| 'square'` | `'circle'` | Shape variant |
+| `class` | `string` | — | Additional CSS classes |
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-avatar` | Root container |
+| `data-size` | Size variant value |
+| `data-shape` | Shape variant value |
+| `data-status` | Status value (when present) |
+| `data-avatar-img` | Image element |
+| `data-avatar-initials` | Initials fallback |
+| `data-avatar-status` | Status indicator dot |
+
+## Behavior
+
+- Shows image when `src` loads successfully; falls back to initials on error
+- Auto-derives initials from `name` (first + last initial) when `initials` not set
+- Falls back to `?` if no image, initials, or name provided

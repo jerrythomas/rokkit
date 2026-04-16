@@ -64,7 +64,6 @@
   "files": [
     "src",
     "dist",
-    "*.css",
     "build.mjs",
     "README.md",
     "LICENSE"
