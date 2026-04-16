@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/icons",
-  "version": "1.0.0-next.164",
+  "version": "1.0.0",
   "description": "A minimal icon set for use in Rokkit applications.",
   "repository": {
     "type": "git",
