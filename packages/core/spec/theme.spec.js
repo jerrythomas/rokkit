@@ -73,6 +73,58 @@ describe('Theme class', () => {
 	})
 })
 
+describe('Theme with colorSpace', () => {
+	it('should default to rgb color space', () => {
+		const theme = new Theme()
+		expect(theme.colorSpace).toBe('rgb')
+	})
+
+	it('should accept oklch color space', () => {
+		const theme = new Theme({ colorSpace: 'oklch' })
+		expect(theme.colorSpace).toBe('oklch')
+	})
+
+	it('should produce oklch-wrapped color rules', () => {
+		const theme = new Theme({ colorSpace: 'oklch' })
+		const colors = theme.getColorRules()
+		expect(colors.primary.DEFAULT).toBe('oklch(var(--color-primary) / <alpha-value>)')
+		expect(colors.primary[500]).toBe('oklch(var(--color-primary-500) / <alpha-value>)')
+	})
+
+	it('should produce hsl-wrapped color rules', () => {
+		const theme = new Theme({ colorSpace: 'hsl' })
+		const colors = theme.getColorRules()
+		expect(colors.primary.DEFAULT).toBe('hsl(var(--color-primary) / <alpha-value>)')
+		expect(colors.primary[500]).toBe('hsl(var(--color-primary-500) / <alpha-value>)')
+	})
+
+	it('should produce oklch palette values', () => {
+		const theme = new Theme({ colorSpace: 'oklch' })
+		const palette = theme.getPalette()
+		// OKLCH values are space-separated: "L C H"
+		const val = palette['--color-primary-500']
+		expect(val.split(' ')).toHaveLength(3)
+		expect(val).not.toContain(',')
+	})
+
+	it('should produce hsl palette values', () => {
+		const theme = new Theme({ colorSpace: 'hsl' })
+		const palette = theme.getPalette()
+		const val = palette['--color-primary-500']
+		expect(val).toMatch(/%/)
+		expect(val.split(' ')).toHaveLength(3)
+	})
+
+	it('should allow changing colorSpace after construction', () => {
+		const theme = new Theme()
+		expect(theme.colorSpace).toBe('rgb')
+		theme.colorSpace = 'oklch'
+		expect(theme.colorSpace).toBe('oklch')
+		const colors = theme.getColorRules()
+		expect(colors.primary.DEFAULT).toBe('oklch(var(--color-primary) / <alpha-value>)')
+	})
+})
+
 describe('shadesOf', () => {
 	it.each(palettes)('should generate shades using rgb modifier', (name) => {
 		const result = shadesOf(name, 'rgb')
@@ -124,6 +176,23 @@ describe('shadesOf', () => {
 			900: `rgb(var(--color-${name}-900) / <alpha-value>)`,
 			950: `rgb(var(--color-${name}-950) / <alpha-value>)`,
 			DEFAULT: `rgb(var(--color-${name}-500) / <alpha-value>)`
+		})
+	})
+	it.each(palettes)('should generate shades using oklch modifier', (name) => {
+		const result = shadesOf(name, 'oklch')
+		expect(result).toEqual({
+			50: `oklch(var(--color-${name}-50) / <alpha-value>)`,
+			100: `oklch(var(--color-${name}-100) / <alpha-value>)`,
+			200: `oklch(var(--color-${name}-200) / <alpha-value>)`,
+			300: `oklch(var(--color-${name}-300) / <alpha-value>)`,
+			400: `oklch(var(--color-${name}-400) / <alpha-value>)`,
+			500: `oklch(var(--color-${name}-500) / <alpha-value>)`,
+			600: `oklch(var(--color-${name}-600) / <alpha-value>)`,
+			700: `oklch(var(--color-${name}-700) / <alpha-value>)`,
+			800: `oklch(var(--color-${name}-800) / <alpha-value>)`,
+			900: `oklch(var(--color-${name}-900) / <alpha-value>)`,
+			950: `oklch(var(--color-${name}-950) / <alpha-value>)`,
+			DEFAULT: `oklch(var(--color-${name}-500) / <alpha-value>)`
 		})
 	})
 	it.each(palettes)('should generate shades with invalid modifier', (name) => {

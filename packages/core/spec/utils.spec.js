@@ -12,6 +12,10 @@ import {
 	getSnippet,
 	getImage,
 	hex2rgb,
+	hex2oklch,
+	oklch2hex,
+	hex2hsl,
+	hexToComponents,
 	colorToRgb
 } from '../src/utils.js'
 
@@ -268,6 +272,109 @@ describe('utils', () => {
 		it('should handle mixed case hex colors', () => {
 			expect(hex2rgb('#FF0000')).toBe('255,0,0')
 			expect(hex2rgb('#AbCdEf')).toBe('171,205,239')
+		})
+	})
+
+	describe('hex2oklch', () => {
+		it('should convert pure red to oklch components', () => {
+			const result = hex2oklch('#ff0000')
+			const [L, C, H] = result.split(' ').map(Number)
+			expect(L).toBeCloseTo(0.6279, 2)
+			expect(C).toBeCloseTo(0.2577, 2)
+			expect(H).toBeCloseTo(29.23, 0)
+		})
+
+		it('should convert white to oklch with zero chroma', () => {
+			const result = hex2oklch('#ffffff')
+			const [L, C] = result.split(' ').map(Number)
+			expect(L).toBeCloseTo(1.0, 2)
+			expect(C).toBeCloseTo(0, 2)
+		})
+
+		it('should convert black to oklch with zero lightness', () => {
+			const result = hex2oklch('#000000')
+			const [L, C] = result.split(' ').map(Number)
+			expect(L).toBeCloseTo(0, 2)
+			expect(C).toBeCloseTo(0, 2)
+		})
+
+		it('should return space-separated string', () => {
+			const result = hex2oklch('#f97316')
+			expect(result.split(' ')).toHaveLength(3)
+		})
+	})
+
+	describe('oklch2hex', () => {
+		it('should round-trip through hex2oklch', () => {
+			const colors = ['#ff0000', '#00ff00', '#0000ff', '#f97316', '#64748b']
+			for (const hex of colors) {
+				const [L, C, H] = hex2oklch(hex).split(' ').map(Number)
+				const result = oklch2hex(L, C, H)
+				// Allow ±1 per channel for rounding
+				const orig = hex.match(/\w\w/g).map((x) => parseInt(x, 16))
+				const back = result.replace('#', '').match(/\w\w/g).map((x) => parseInt(x, 16))
+				for (let i = 0; i < 3; i++) {
+					expect(Math.abs(orig[i] - back[i])).toBeLessThanOrEqual(1)
+				}
+			}
+		})
+	})
+
+	describe('hex2hsl', () => {
+		it('should convert pure red', () => {
+			expect(hex2hsl('#ff0000')).toBe('0 100% 50%')
+		})
+
+		it('should convert white', () => {
+			expect(hex2hsl('#ffffff')).toBe('0 0% 100%')
+		})
+
+		it('should convert mid-gray', () => {
+			const result = hex2hsl('#808080')
+			expect(result).toBe('0 0% 50%')
+		})
+
+		it('should convert orange', () => {
+			const result = hex2hsl('#f97316')
+			const parts = result.split(' ')
+			expect(parts).toHaveLength(3)
+			expect(parts[1]).toMatch(/%$/)
+			expect(parts[2]).toMatch(/%$/)
+		})
+	})
+
+	describe('hexToComponents', () => {
+		it('should delegate to hex2rgb for rgb space', () => {
+			expect(hexToComponents('#ff0000', 'rgb')).toBe('255,0,0')
+		})
+
+		it('should delegate to hex2hsl for hsl space', () => {
+			expect(hexToComponents('#ff0000', 'hsl')).toBe('0 100% 50%')
+		})
+
+		it('should delegate to hex2oklch for oklch space', () => {
+			const result = hexToComponents('#ff0000', 'oklch')
+			expect(result.split(' ')).toHaveLength(3)
+		})
+
+		it('should default to rgb', () => {
+			expect(hexToComponents('#ff0000')).toBe('255,0,0')
+		})
+	})
+
+	describe('colorToRgb with color space', () => {
+		it('should convert hex to oklch when space is oklch', () => {
+			const result = colorToRgb('#ff0000', 'oklch')
+			expect(result.split(' ')).toHaveLength(3)
+		})
+
+		it('should convert hex to hsl when space is hsl', () => {
+			expect(colorToRgb('#ff0000', 'hsl')).toBe('0 100% 50%')
+		})
+
+		it('should still pass through non-hex values regardless of space', () => {
+			expect(colorToRgb('oklch(60% 0.18 250)', 'oklch')).toBe('oklch(60% 0.18 250)')
+			expect(colorToRgb('rebeccapurple', 'hsl')).toBe('rebeccapurple')
 		})
 	})
 })

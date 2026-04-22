@@ -153,8 +153,13 @@
  */
 
 /**
+ * @typedef {'rgb' | 'hsl' | 'oklch'} ColorSpace
+ */
+
+/**
  * @typedef {Object} ColorTheme
  * @property {ColorMapping} [mapping] - The color mapping.
  * @property {ColorCollection} [colors] - The color collection.
+ * @property {ColorSpace} [colorSpace] - Color space for CSS variable values ('rgb', 'hsl', or 'oklch').
  */
 export default {}

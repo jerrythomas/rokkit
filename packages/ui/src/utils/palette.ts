@@ -20,6 +20,14 @@ export interface HSL {
 	l: number
 }
 
+export interface OKLCH {
+	L: number
+	C: number
+	H: number
+}
+
+export type ColorSpace = 'rgb' | 'hsl' | 'oklch'
+
 export type ShadeKey =
 	| '50'
 	| '100'
@@ -161,6 +169,106 @@ export function hexToHsl(hex: string): HSL {
  */
 export function hslToHex(hsl: HSL): string {
 	return rgbToHex(hslToRgb(hsl))
+}
+
+// =============================================================================
+// OKLCH Conversion Utilities
+// =============================================================================
+
+function srgbToLinear(c: number): number {
+	const s = c / 255
+	return s <= 0.04045 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4)
+}
+
+function linearToSrgb(c: number): number {
+	const s = c <= 0.0031308 ? c * 12.92 : 1.055 * Math.pow(c, 1 / 2.4) - 0.055
+	return Math.round(Math.max(0, Math.min(255, s * 255)))
+}
+
+// CSS Color Level 4 matrices (via XYZ D65) for round-trip precision.
+const SRGB_TO_XYZ: [number, number, number][] = [
+	[0.4123907993, 0.3575843394, 0.1804807884],
+	[0.2126390059, 0.7151686788, 0.0721923154],
+	[0.0193308187, 0.1191947798, 0.9505321522]
+]
+const XYZ_TO_LMS: [number, number, number][] = [
+	[0.8189330101, 0.3618667424, -0.1288597137],
+	[0.0329845436, 0.9293118715, 0.0361456387],
+	[0.0482003018, 0.2643662691, 0.633851707]
+]
+const LMS3_TO_OKLAB: [number, number, number][] = [
+	[0.2104542553, 0.793617785, -0.0040720468],
+	[1.9779984951, -2.428592205, 0.4505937099],
+	[0.0259040371, 0.7827717662, -0.808675766]
+]
+const OKLAB_TO_LMS3: [number, number, number][] = [
+	[1.0, 0.3963377774, 0.2158037573],
+	[1.0, -0.1055613458, -0.0638541728],
+	[1.0, -0.0894841775, -1.291485548]
+]
+const LMS_TO_XYZ: [number, number, number][] = [
+	[1.2270138511, -0.5577999807, 0.281256149],
+	[-0.0405801784, 1.1122568696, -0.0716766787],
+	[-0.0763812845, -0.4214819784, 1.5861632204]
+]
+const XYZ_TO_SRGB: [number, number, number][] = [
+	[3.2409699419, -1.5373831776, -0.4986107603],
+	[-0.9692436363, 1.8759675015, 0.0415550574],
+	[0.0556300797, -0.2039769589, 1.0569715142]
+]
+
+function matMul(m: [number, number, number][], v: number[]): number[] {
+	return m.map((row) => row[0] * v[0] + row[1] * v[1] + row[2] * v[2])
+}
+
+/**
+ * Convert RGB to OKLCH (via XYZ D65 for precision)
+ */
+export function rgbToOklch(rgb: RGB): OKLCH {
+	const lin = [srgbToLinear(rgb.r), srgbToLinear(rgb.g), srgbToLinear(rgb.b)]
+	const xyz = matMul(SRGB_TO_XYZ, lin)
+	const lms = matMul(XYZ_TO_LMS, xyz)
+	const lms3 = [Math.cbrt(lms[0]), Math.cbrt(lms[1]), Math.cbrt(lms[2])]
+	const [L, a, b] = matMul(LMS3_TO_OKLAB, lms3)
+
+	const C = Math.sqrt(a * a + b * b)
+	let H = (Math.atan2(b, a) * 180) / Math.PI
+	if (H < 0) H += 360
+
+	return { L, C, H }
+}
+
+/**
+ * Convert OKLCH to RGB (via XYZ D65 for precision)
+ */
+export function oklchToRgb(oklch: OKLCH): RGB {
+	const hRad = (oklch.H * Math.PI) / 180
+	const lab = [oklch.L, oklch.C * Math.cos(hRad), oklch.C * Math.sin(hRad)]
+
+	const lms3 = matMul(OKLAB_TO_LMS3, lab)
+	const lms = [lms3[0] ** 3, lms3[1] ** 3, lms3[2] ** 3]
+	const xyz = matMul(LMS_TO_XYZ, lms)
+	const lin = matMul(XYZ_TO_SRGB, xyz)
+
+	return {
+		r: linearToSrgb(lin[0]),
+		g: linearToSrgb(lin[1]),
+		b: linearToSrgb(lin[2])
+	}
+}
+
+/**
+ * Convert hex to OKLCH
+ */
+export function hexToOklch(hex: string): OKLCH {
+	return rgbToOklch(hexToRgb(hex))
+}
+
+/**
+ * Convert OKLCH to hex
+ */
+export function oklchToHex(oklch: OKLCH): string {
+	return rgbToHex(oklchToRgb(oklch))
 }
 
 // =============================================================================
@@ -524,12 +632,37 @@ export function getShades(color: string): Shades {
 // =============================================================================
 
 /**
+ * Format a hex color as CSS variable components for the given color space.
+ */
+function formatComponents(hex: string, colorSpace: ColorSpace): string {
+	switch (colorSpace) {
+		case 'hsl': {
+			const hsl = hexToHsl(hex)
+			return `${Math.round(hsl.h)} ${Math.round(hsl.s)}% ${Math.round(hsl.l)}%`
+		}
+		case 'oklch': {
+			const oklch = hexToOklch(hex)
+			const L = Math.round(oklch.L * 10000) / 10000
+			const C = Math.round(oklch.C * 10000) / 10000
+			const H = Math.round(oklch.H * 100) / 100
+			return `${L} ${C} ${H}`
+		}
+		case 'rgb':
+		default: {
+			const rgb = hexToRgb(hex)
+			return `${rgb.r},${rgb.g},${rgb.b}`
+		}
+	}
+}
+
+/**
  * Apply a color palette to the document root
  * Sets CSS variables for each color role and shade
  */
 export function applyPalette(
 	mapping: Partial<Record<ColorRole, string>>,
-	element: HTMLElement = document.documentElement
+	element: HTMLElement = document.documentElement,
+	colorSpace: ColorSpace = 'rgb'
 ): void {
 	for (const [role, color] of Object.entries(mapping)) {
 		if (!color) continue
@@ -537,14 +670,11 @@ export function applyPalette(
 		const shades = getShades(color)
 
 		for (const [shade, hex] of Object.entries(shades)) {
-			const rgb = hexToRgb(hex)
-			// Store as RGB values (comma-separated) for rgba() compatibility
-			element.style.setProperty(`--color-${role}-${shade}`, `${rgb.r},${rgb.g},${rgb.b}`)
+			element.style.setProperty(`--color-${role}-${shade}`, formatComponents(hex, colorSpace))
 		}
 
 		// Also set the default (500) as the base color variable
-		const baseRgb = hexToRgb(shades['500'])
-		element.style.setProperty(`--color-${role}`, `${baseRgb.r},${baseRgb.g},${baseRgb.b}`)
+		element.style.setProperty(`--color-${role}`, formatComponents(shades['500'], colorSpace))
 	}
 }
 

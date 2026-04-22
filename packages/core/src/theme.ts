@@ -7,7 +7,19 @@ import { colorToRgb } from './utils'
 const modifiers = {
 	hsl: (value) => `hsl(${value} / <alpha-value>)`,
 	rgb: (value) => `rgb(${value} / <alpha-value>)`,
+	oklch: (value) => `oklch(${value} / <alpha-value>)`,
 	none: (value) => value
+}
+
+/**
+ * CSS function wrappers for each color space, used by mapVariant().
+ * rgb uses legacy rgba() comma syntax for broad compatibility.
+ * hsl/oklch use modern space-separated syntax with / for alpha.
+ */
+const COLOR_SPACE_WRAPPERS = {
+	rgb: (varRef) => `rgba(${varRef},<alpha-value>)`,
+	hsl: (varRef) => `hsl(${varRef} / <alpha-value>)`,
+	oklch: (varRef) => `oklch(${varRef} / <alpha-value>)`
 }
 
 /**
@@ -37,13 +49,14 @@ export function shadesOf(name, modifier = 'none') {
  * @param {string} variant - The name of the variant to generate rules for.
  * @param {Object} colors - The object containing color definitions.
  * @param {Object} mapping - An object that maps variant names to color property names.
+ * @param {import('./utils').ColorSpace} [colorSpace] - Color space for component format.
  * @returns {import('./types').ShadeMappings} An array containing the color rules for both light and dark modes.
  */
-function generateColorRules(variant, colors, mapping) {
+function generateColorRules(variant, colors, mapping, colorSpace) {
 	return ['DEFAULT', ...shades].flatMap((shade) => [
 		{
 			key: shade === 'DEFAULT' ? `--color-${variant}` : `--color-${variant}-${shade}`,
-			value: colorToRgb(colors[mapping[variant]][`${shade}`])
+			value: colorToRgb(colors[mapping[variant]][`${shade}`], colorSpace)
 		}
 	])
 }
@@ -53,14 +66,15 @@ function generateColorRules(variant, colors, mapping) {
  *
  * @param {Object} [mapping=DEFAULT_THEME_MAPPING] - An object mapping variant names to color property names.
  * @param {Object} [colors=defaultColors]        - The object containing default color definitions.
+ * @param {import('./utils').ColorSpace} [colorSpace] - Color space for CSS variable values.
  * @returns {Array<Array>} An array containing two arrays, one for the light theme variant and another for the dark theme.
  */
-export function themeRules(mapping = DEFAULT_THEME_MAPPING, colors = defaultColors) {
+export function themeRules(mapping = DEFAULT_THEME_MAPPING, colors = defaultColors, colorSpace) {
 	mapping = { ...DEFAULT_THEME_MAPPING, ...mapping }
 	colors = { ...defaultColors, ...colors }
 	const variants = Object.keys(mapping)
 	const rules = variants
-		.flatMap((variant) => generateColorRules(variant, colors, mapping))
+		.flatMap((variant) => generateColorRules(variant, colors, mapping, colorSpace))
 		.reduce((acc, { key, value }) => ({ ...acc, [key]: value }), {})
 
 	return rules
@@ -150,14 +164,16 @@ export function contrastShortcuts(name) {
 export class Theme {
 	#colors
 	#mapping
+	#colorSpace
 
 	/**
 	 *
-	 * @param {import('./types.js').ColorTheme} param0
+	 * @param {import('./types.js').ColorTheme & { colorSpace?: import('./utils').ColorSpace }} param0
 	 */
-	constructor({ colors = defaultColors, mapping = DEFAULT_THEME_MAPPING } = {}) {
+	constructor({ colors = defaultColors, mapping = DEFAULT_THEME_MAPPING, colorSpace = 'rgb' } = {}) {
 		this.#colors = { ...defaultColors, ...colors }
 		this.#mapping = { ...DEFAULT_THEME_MAPPING, ...mapping }
+		this.#colorSpace = colorSpace
 	}
 
 	get colors() {
@@ -174,14 +190,22 @@ export class Theme {
 		this.#mapping = { ...mapping }
 	}
 
+	get colorSpace() {
+		return this.#colorSpace
+	}
+	set colorSpace(colorSpace) {
+		this.#colorSpace = colorSpace
+	}
+
 	mapVariant(color, variant) {
+		const wrap = COLOR_SPACE_WRAPPERS[this.#colorSpace] || COLOR_SPACE_WRAPPERS.rgb
 		return Object.keys(color).reduce(
 			(acc, key) => ({
 				...acc,
 				[key]:
 					key === 'DEFAULT'
-						? `rgba(var(--color-${variant}),<alpha-value>)`
-						: `rgba(var(--color-${variant}-${key}),<alpha-value>)`
+						? wrap(`var(--color-${variant})`)
+						: wrap(`var(--color-${variant}-${key})`)
 			}),
 			{}
 		)
@@ -203,7 +227,7 @@ export class Theme {
 		const useColors = { ...defaultColors, ...this.#colors }
 		const variants = Object.keys(useMapping)
 		const rules = variants
-			.flatMap((variant) => generateColorRules(variant, useColors, useMapping))
+			.flatMap((variant) => generateColorRules(variant, useColors, useMapping, this.#colorSpace))
 			.reduce((acc, { key, value }) => ({ ...acc, [key]: value }), {})
 		return rules
 	}
