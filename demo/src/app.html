@@ -3,16 +3,17 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sensei — Observatory</title>
     %sveltekit.head%
   </head>
   <body data-sveltekit-preload-data="hover">
     <script>
       ;(function () {
         try {
-          var t = JSON.parse(localStorage.getItem('rokkit-demo-theme') || '{}')
+          var t = JSON.parse(localStorage.getItem('sensei-theme') || '{}')
           var b = document.body
-          b.dataset.style = t.style || 'rokkit'
-          b.dataset.mode = t.mode || 'dark'
+          b.dataset.style = t.style || ''
+          b.dataset.mode = t.mode || (matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light')
           b.dataset.density = t.density || 'comfortable'
         } catch (e) {}
       })()

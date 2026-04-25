@@ -20,7 +20,9 @@
     "vite": "^7.1.6"
   },
   "dependencies": {
+    "@fontsource/fraunces": "^5.2.9",
     "@fontsource/inter": "^5.2.8",
+    "@fontsource/jetbrains-mono": "^5.2.8",
     "@fontsource/open-sans": "^5.2.7",
     "@fontsource/overpass": "^5.2.8",
     "@rokkit/actions": "workspace:latest",

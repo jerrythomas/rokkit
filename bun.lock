@@ -40,7 +40,9 @@
       "name": "@rokkit/demo",
       "version": "0.0.1",
       "dependencies": {
+        "@fontsource/fraunces": "^5.2.9",
         "@fontsource/inter": "^5.2.8",
+        "@fontsource/jetbrains-mono": "^5.2.8",
         "@fontsource/open-sans": "^5.2.7",
         "@fontsource/overpass": "^5.2.8",
         "@rokkit/actions": "workspace:latest",
@@ -68,7 +70,7 @@
     },
     "packages/actions": {
       "name": "@rokkit/actions",
-      "version": "1.0.0-next.153",
+      "version": "1.0.3",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "ramda": "^0.32.0",
@@ -80,7 +82,7 @@
     },
     "packages/app": {
       "name": "@rokkit/app",
-      "version": "1.0.0-next.153",
+      "version": "1.0.3",
       "dependencies": {
         "@rokkit/actions": "workspace:*",
         "@rokkit/core": "workspace:*",
@@ -106,7 +108,7 @@
     },
     "packages/blocks": {
       "name": "@rokkit/blocks",
-      "version": "1.0.0-next.153",
+      "version": "1.0.3",
       "dependencies": {
         "dompurify": "^3.0.0",
       },
@@ -128,7 +130,7 @@
     },
     "packages/chart": {
       "name": "@rokkit/chart",
-      "version": "1.0.0-next.153",
+      "version": "1.0.3",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "@rokkit/data": "workspace:latest",
@@ -147,7 +149,7 @@
     },
     "packages/cli": {
       "name": "@rokkit/cli",
-      "version": "1.0.0-next.153",
+      "version": "1.0.3",
       "bin": {
         "rokkit": "src/index.js",
       },
@@ -166,7 +168,7 @@
     },
     "packages/core": {
       "name": "@rokkit/core",
-      "version": "1.0.0-next.153",
+      "version": "1.0.3",
       "dependencies": {
         "@unocss/preset-mini": "^66.6.1",
         "date-fns": "^4.1.0",
@@ -178,7 +180,7 @@
     },
     "packages/data": {
       "name": "@rokkit/data",
-      "version": "1.0.0-next.153",
+      "version": "1.0.3",
       "dependencies": {
         "@lukeed/uuid": "^2.0.1",
         "@rokkit/core": "workspace:*",
@@ -190,7 +192,7 @@
     },
     "packages/forms": {
       "name": "@rokkit/forms",
-      "version": "1.0.0-next.153",
+      "version": "1.0.3",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "@rokkit/data": "workspace:latest",
@@ -201,7 +203,7 @@
     },
     "packages/helpers": {
       "name": "@rokkit/helpers",
-      "version": "1.0.0-next.153",
+      "version": "1.0.3",
       "dependencies": {
         "@vitest/expect": "^4.0.18",
         "ramda": "^0.32.0",
@@ -209,7 +211,7 @@
     },
     "packages/icons": {
       "name": "@rokkit/icons",
-      "version": "1.0.0-next.153",
+      "version": "1.0.3",
       "devDependencies": {
         "@iconify-json/solar": "^1.2.5",
         "@rokkit/cli": "workspace:latest",
@@ -218,7 +220,7 @@
     },
     "packages/states": {
       "name": "@rokkit/states",
-      "version": "1.0.0-next.153",
+      "version": "1.0.3",
       "dependencies": {
         "@rokkit/core": "workspace:*",
         "@rokkit/data": "workspace:*",
@@ -229,7 +231,7 @@
     },
     "packages/stories": {
       "name": "@rokkit/stories",
-      "version": "1.0.0-next.153",
+      "version": "1.0.3",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "@rokkit/states": "workspace:latest",
@@ -245,7 +247,7 @@
     },
     "packages/themes": {
       "name": "@rokkit/themes",
-      "version": "1.0.0-next.153",
+      "version": "1.0.3",
       "dependencies": {
         "@rokkit/core": "workspace:*",
       },
@@ -256,7 +258,7 @@
     },
     "packages/ui": {
       "name": "@rokkit/ui",
-      "version": "1.0.0-next.153",
+      "version": "1.0.3",
       "dependencies": {
         "@rokkit/actions": "workspace:*",
         "@rokkit/core": "workspace:*",
@@ -277,7 +279,7 @@
     },
     "packages/unocss": {
       "name": "@rokkit/unocss",
-      "version": "1.0.0-next.153",
+      "version": "1.0.3",
       "dependencies": {
         "@rokkit/core": "workspace:*",
         "@rokkit/icons": "workspace:*",
@@ -287,7 +289,7 @@
     },
     "site": {
       "name": "@rokkit/learn",
-      "version": "1.0.0-next.153",
+      "version": "1.0.3",
       "dependencies": {
         "@fontsource/open-sans": "^5.2.7",
         "@fontsource/overpass": "^5.2.8",
@@ -454,7 +456,11 @@
 
     "@exodus/bytes": ["@exodus/bytes@1.14.1", "", { "peerDependencies": { "@noble/hashes": "^1.8.0 || ^2.0.0" }, "optionalPeers": ["@noble/hashes"] }, "sha512-OhkBFWI6GcRMUroChZiopRiSp2iAMvEBK47NhJooDqz1RERO4QuZIZnjP63TXX8GAiLABkYmX+fuQsdJ1dd2QQ=="],
 
+    "@fontsource/fraunces": ["@fontsource/fraunces@5.2.9", "", {}, "sha512-XDzuddBtoC7BZgZdBn6b7hsFZY2+V1hgN7yca5fBTKuHjb/lOd45a0Ji8dTUgFhPoL7RdGupo+bC2BFSt6UH8Q=="],
+
     "@fontsource/inter": ["@fontsource/inter@5.2.8", "", {}, "sha512-P6r5WnJoKiNVV+zvW2xM13gNdFhAEpQ9dQJHt3naLvfg+LkF2ldgSLiF4T41lf1SQCM9QmkqPTn4TH568IRagg=="],
+
+    "@fontsource/jetbrains-mono": ["@fontsource/jetbrains-mono@5.2.8", "", {}, "sha512-6w8/SG4kqvIMu7xd7wt6x3idn1Qux3p9N62s6G3rfldOUYHpWcc2FKrqf+Vo44jRvqWj2oAtTHrZXEP23oSKwQ=="],
 
     "@fontsource/open-sans": ["@fontsource/open-sans@5.2.7", "", {}, "sha512-8yfgDYjE5O0vmTPdrcjV35y4yMnctsokmi9gN49Gcsr0sjzkMkR97AnKDe6OqZh2SFkYlR28fxOvi21bYEgMSw=="],
 

@@ -1,91 +1,271 @@
 <script>
-	// @ts-nocheck
 	import 'uno.css'
 	import '../app.css'
 
-	import { vibe } from '@rokkit/states'
-	import { themable } from '@rokkit/actions'
-	import { List } from '@rokkit/ui'
 	import { page } from '$app/state'
+	import { mainNav, projectGroups, settingsNav } from '$lib/data/navigation'
 	import ThemePanel from '$lib/components/ThemePanel.svelte'
 
 	let { children } = $props()
-
+	let sidebarCollapsed = $state(false)
 	let themePanelOpen = $state(false)
 
-	const navItems = [
-		{ id: 'dashboard',     label: 'Dashboard',     icon: 'i-glyph:home',        href: '/dashboard' },
-		{ id: 'crossfilter',   label: 'Crossfilter',   icon: 'i-glyph:filter',      href: '/crossfilter' },
-		{ id: 'showcase',      label: 'Components',    icon: 'i-glyph:widget',      href: '/showcase' },
-		{ id: 'analytics',     label: 'Analytics',     icon: 'i-glyph:chart',       href: '/analytics' },
-		{ id: 'operations',    label: 'Operations',    icon: 'i-glyph:list-items',  href: '/operations' },
-		{ id: 'notifications', label: 'Notifications', icon: 'i-glyph:bell',        href: '/notifications' }
-	]
-
-	const navFields = { label: 'label', icon: 'icon', value: 'id', href: 'href' }
-
-	// Active item follows current route
-	const activeSection = $derived(
-		navItems.find((n) => page.url.pathname.startsWith(n.href))?.id ?? 'dashboard'
+	const activeId = $derived(
+		mainNav.find((n) => page.url.pathname.startsWith(n.href))?.id ?? 'observatory'
 	)
 </script>
 
-<svelte:body use:themable={{ theme: vibe, storageKey: 'rokkit-demo-theme' }} />
+<div class="app-layout" class:collapsed={sidebarCollapsed}>
 
-<div class="flex h-screen overflow-hidden" data-density={vibe.density}>
+	<!-- ─── Sidebar ────────────────────────────────────────────────────────── -->
+	<aside class="sidebar">
 
-	<!-- Sidebar -->
-	<aside class="bg-surface-z1 border-surface-z3 hidden w-56 flex-shrink-0 flex-col border-r md:flex">
 		<!-- Logo -->
-		<div class="border-surface-z3 flex items-center gap-2 border-b px-4 py-4">
-			<span class="i-glyph:rocket text-primary-z6 text-xl"></span>
-			<span class="text-surface-z8 font-semibold tracking-tight">Rokkit Demo</span>
+		<div class="sidebar-header">
+			<span class="kanji" style="font-size: 20px; color: var(--shu);">先</span>
+			{#if !sidebarCollapsed}
+				<span class="sidebar-title">Sensei</span>
+			{/if}
+			<button
+				class="sidebar-collapse-btn"
+				onclick={() => (sidebarCollapsed = !sidebarCollapsed)}
+				title={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+			>
+				{sidebarCollapsed ? '›' : '‹'}
+			</button>
 		</div>
 
-		<!-- Navigation -->
-		<div class="flex-1 overflow-y-auto py-3">
-			<List
-				items={navItems}
-				fields={navFields}
-				value={activeSection}
-			/>
-		</div>
+		<!-- Main navigation -->
+		<nav class="sidebar-nav">
+			<div class="nav-section">
+				{#each mainNav as item (item.id)}
+					<a
+						href={item.href}
+						class="nav-item"
+						class:active={activeId === item.id}
+						title={sidebarCollapsed ? item.label : undefined}
+					>
+						<span class="kanji nav-kanji">{item.kanji}</span>
+						{#if !sidebarCollapsed}
+							<span class="nav-label">{item.label}</span>
+						{/if}
+					</a>
+				{/each}
+			</div>
+
+			<!-- Project groups -->
+			{#each projectGroups as group (group.label)}
+				<div class="nav-section">
+					{#if !sidebarCollapsed}
+						<span class="nav-group-label">{group.label}</span>
+					{/if}
+					{#if !group.collapsed}
+						{#each group.items as item (item.id)}
+							<a href={item.href} class="nav-item" title={sidebarCollapsed ? item.label : undefined}>
+								<span class="kanji nav-kanji">{item.kanji}</span>
+								{#if !sidebarCollapsed}
+									<span class="nav-label">{item.label}</span>
+									{#if item.badge}
+										<span class="nav-badge mono">{item.badge}</span>
+									{/if}
+								{/if}
+							</a>
+						{/each}
+					{/if}
+				</div>
+			{/each}
+		</nav>
 
 		<!-- Footer -->
-		<div class="border-surface-z3 border-t px-4 py-3">
-			<span class="text-surface-z4 text-xs">@rokkit/demo</span>
+		<div class="sidebar-footer">
+			<a href={settingsNav.href} class="nav-item" title={sidebarCollapsed ? 'Settings' : undefined}>
+				<span class="kanji nav-kanji">{settingsNav.kanji}</span>
+				{#if !sidebarCollapsed}
+					<span class="nav-label">{settingsNav.label}</span>
+				{/if}
+			</a>
+			<button
+				class="nav-item"
+				onclick={() => (themePanelOpen = true)}
+				title="Theme settings"
+			>
+				<span class="kanji nav-kanji">彩</span>
+				{#if !sidebarCollapsed}
+					<span class="nav-label">Theme</span>
+				{/if}
+			</button>
+			{#if !sidebarCollapsed}
+				<div class="sidebar-status">
+					<span class="status-dot"></span>
+					<span class="status-text">Daemon running</span>
+				</div>
+			{/if}
 		</div>
 	</aside>
 
-	<!-- Main -->
-	<div class="flex min-w-0 flex-1 flex-col overflow-hidden">
-
-		<!-- Header -->
-		<header class="bg-surface-z1 border-surface-z3 flex h-12 flex-shrink-0 items-center justify-between border-b px-4 md:px-6">
-			<div class="flex items-center gap-3">
-				<span class="i-glyph:rocket text-primary-z6 text-xl md:hidden"></span>
-				<span class="text-surface-z6 text-sm">
-					<span class="md:hidden">{navItems.find((n) => n.id === activeSection)?.label ?? 'Dashboard'}</span>
-					<span class="hidden md:inline">Business Analytics</span>
-				</span>
-			</div>
-			<button
-				type="button"
-				onclick={() => (themePanelOpen = true)}
-				class="text-surface-z5 hover:text-surface-z8 flex items-center gap-1.5 rounded px-2 py-1 text-xs transition-colors"
-				title="Theme settings"
-			>
-				<span class="i-glyph:palette text-base"></span>
-				Theme
-			</button>
-		</header>
-
-		<!-- Page content -->
-		<main class="flex-1 overflow-y-auto">
-			{@render children?.()}
-		</main>
-
-	</div>
+	<!-- ─── Main content ───────────────────────────────────────────────────── -->
+	<main class="main-content">
+		{@render children?.()}
+	</main>
 </div>
 
 <ThemePanel bind:open={themePanelOpen} />
+
+<style>
+	.app-layout {
+		display: grid;
+		grid-template-columns: 260px 1fr;
+		min-height: 100vh;
+		transition: grid-template-columns 200ms ease;
+	}
+	.app-layout.collapsed {
+		grid-template-columns: 64px 1fr;
+	}
+
+	/* ── Sidebar ────────────────────────────────────────────────── */
+	.sidebar {
+		background: var(--paper-2);
+		border-right: var(--hairline);
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+	}
+
+	.sidebar-header {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 16px 18px;
+		border-bottom: var(--hairline);
+	}
+
+	.sidebar-title {
+		font-family: var(--font-display);
+		font-size: 17px;
+		font-weight: 500;
+		color: var(--sumi);
+		letter-spacing: -0.02em;
+		flex: 1;
+	}
+
+	.sidebar-collapse-btn {
+		width: 24px;
+		height: 24px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--sumi-3);
+		font-size: 14px;
+		border-radius: 4px;
+		flex-shrink: 0;
+	}
+	.sidebar-collapse-btn:hover {
+		background: var(--paper-3);
+		color: var(--sumi);
+	}
+
+	/* ── Navigation ─────────────────────────────────────────────── */
+	.sidebar-nav {
+		flex: 1;
+		overflow-y: auto;
+		padding: 12px 0;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.nav-section {
+		display: flex;
+		flex-direction: column;
+		gap: 1px;
+		padding: 0 10px;
+	}
+
+	.nav-group-label {
+		font-size: 9.5px;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--sumi-4);
+		padding: 12px 8px 4px;
+	}
+
+	.nav-item {
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		align-items: center;
+		gap: 10px;
+		padding: 7px 10px;
+		border-radius: var(--radius);
+		color: var(--sumi-2);
+		text-decoration: none;
+		font-size: 13px;
+		font-weight: 400;
+		transition: all 120ms ease;
+		cursor: pointer;
+	}
+	.nav-item:hover {
+		background: var(--paper-3);
+		color: var(--sumi);
+	}
+	.nav-item.active {
+		background: var(--paper);
+		color: var(--sumi);
+	}
+	.nav-item.active .nav-kanji {
+		color: var(--shu);
+	}
+
+	.nav-kanji {
+		font-size: 16px;
+		color: var(--sumi-3);
+		width: 22px;
+		text-align: center;
+	}
+
+	.nav-label {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.nav-badge {
+		font-size: 10px;
+		color: var(--sumi-3);
+	}
+
+	/* ── Footer ─────────────────────────────────────────────────── */
+	.sidebar-footer {
+		border-top: var(--hairline);
+		padding: 8px 10px 12px;
+		display: flex;
+		flex-direction: column;
+		gap: 1px;
+	}
+
+	.sidebar-status {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		padding: 8px 10px 0;
+	}
+
+	.status-dot {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: var(--jade);
+	}
+
+	.status-text {
+		font-size: 10px;
+		color: var(--sumi-4);
+	}
+
+	/* ── Main content ───────────────────────────────────────────── */
+	.main-content {
+		overflow-y: auto;
+		padding: 32px 40px;
+		max-height: 100vh;
+	}
+</style>

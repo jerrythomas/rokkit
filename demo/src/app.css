@@ -1,50 +1,162 @@
 @import '@unocss/reset/tailwind.css';
-@import '@fontsource/overpass';
-@import '@fontsource/overpass/300.css';
-@import '@fontsource/open-sans';
+
+/* Fonts */
+@import '@fontsource/fraunces/latin-300.css';
+@import '@fontsource/fraunces/latin-400.css';
+@import '@fontsource/fraunces/latin-500.css';
+@import '@fontsource/fraunces/latin-600.css';
 @import '@fontsource/inter';
 @import '@fontsource/inter/500.css';
 @import '@fontsource/inter/600.css';
+@import '@fontsource/jetbrains-mono/latin-400.css';
+@import '@fontsource/jetbrains-mono/latin-500.css';
 
+/* Rokkit theme layers */
 @import '@rokkit/themes/base.css';
 @import '@rokkit/themes/rokkit.css';
 @import '@rokkit/themes/minimal.css';
 @import '@rokkit/themes/material.css';
 @import '@rokkit/themes/frosted.css';
 
-html,
-body {
-  height: 100%;
-}
+/* ─── Zen-Sumi Design Tokens ────────────────────────────────────────────────
+   Direct from the mockup tokens.css — used for the static mockup-replica phase.
+   These will be replaced by the rokkit design token system in Phase 5.
+   ──────────────────────────────────────────────────────────────────────────── */
 
-/* Light mode */
-body[data-mode='light'],
-html:has(body[data-mode='light']) {
-  background-color: rgba(var(--color-surface-50), 1);
+:root {
+  /* Washi paper — surface */
+  --paper:      oklch(0.975 0.008 85);
+  --paper-2:    oklch(0.955 0.010 85);
+  --paper-3:    oklch(0.920 0.012 85);
+  --paper-edge: oklch(0.880 0.015 85);
+
+  /* Sumi ink — text */
+  --sumi:   oklch(0.220 0.012 50);
+  --sumi-2: oklch(0.380 0.012 50);
+  --sumi-3: oklch(0.580 0.010 50);
+  --sumi-4: oklch(0.750 0.008 50);
+
+  /* Shu — primary accent */
+  --shu:      oklch(0.580 0.150 35);
+  --shu-soft: oklch(0.580 0.150 35 / 0.12);
+
+  /* Jade — positive */
+  --jade:      oklch(0.620 0.080 160);
+  --jade-soft: oklch(0.620 0.080 160 / 0.14);
+
+  /* Amber — warning */
+  --amber:      oklch(0.720 0.120 75);
+  --amber-soft: oklch(0.720 0.120 75 / 0.15);
+
+  /* Typography */
+  --font-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --font-ui:      'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono:    'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  --font-kanji:   'Yu Mincho', 'Hiragino Mincho ProN', 'Songti SC', serif;
+
+  /* Shape */
+  --radius:    6px;
+  --radius-lg: 10px;
+
+  /* Borders */
+  --hairline: 1px solid var(--paper-edge);
+  --ink-line: 1px solid oklch(0.220 0.012 50 / 0.12);
 }
 
 /* Dark mode */
-body[data-mode='dark'],
-html:has(body[data-mode='dark']) {
-  background-color: rgba(var(--color-surface-950), 1);
+[data-mode='dark'] {
+  --paper:      oklch(0.170 0.010 50);
+  --paper-2:    oklch(0.210 0.012 50);
+  --paper-3:    oklch(0.250 0.012 50);
+  --paper-edge: oklch(0.320 0.012 50);
+
+  --sumi:   oklch(0.940 0.008 85);
+  --sumi-2: oklch(0.780 0.008 85);
+  --sumi-3: oklch(0.600 0.010 85);
+  --sumi-4: oklch(0.420 0.012 85);
+
+  --shu:      oklch(0.700 0.150 35);
+  --shu-soft: oklch(0.700 0.150 35 / 0.18);
+  --jade:      oklch(0.720 0.090 160);
+  --jade-soft: oklch(0.720 0.090 160 / 0.18);
+  --amber:      oklch(0.780 0.120 75);
+  --amber-soft: oklch(0.780 0.120 75 / 0.20);
+
+  --ink-line: 1px solid oklch(0.940 0.008 85 / 0.12);
 }
 
-/* System mode — follow OS preference */
-@media (prefers-color-scheme: light) {
-  body[data-mode='system'],
-  html:has(body[data-mode='system']) {
-    background-color: rgba(var(--color-surface-50), 1);
-  }
-}
+/* ─── Global Base ────────────────────────────────────────────────────────── */
 
-@media (prefers-color-scheme: dark) {
-  body[data-mode='system'],
-  html:has(body[data-mode='system']) {
-    background-color: rgba(var(--color-surface-950), 1);
-  }
+html, body {
+  height: 100%;
 }
 
 body {
-  font-family: 'Inter', 'Open Sans', sans-serif;
-  font-size: 14px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--sumi);
+  background: var(--paper);
 }
+
+/* Utility classes from mockup */
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.display {
+  font-family: var(--font-display);
+  font-feature-settings: 'ss01';
+  letter-spacing: -0.02em;
+}
+
+.kanji {
+  font-family: var(--font-kanji);
+}
+
+/* Hairline divider */
+.hairline {
+  background: var(--paper-edge);
+  height: 1px;
+  border: none;
+}
+
+/* Ink dot (status indicator) */
+.ink-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--shu);
+}
+
+/* Sparkline stroke */
+.sparkline-path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Scrollbars — subtle */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: transparent; border-radius: 3px; }
+:hover::-webkit-scrollbar-thumb { background: oklch(0.5 0.01 50 / 0.2); }
+
+/* Focus ring */
+button:focus-visible {
+  outline: 1.5px solid var(--shu);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* Selection */
+::selection {
+  background: var(--shu-soft);
+}
+
+/* Light/dark mode bg for rokkit theme system (fallback) */
+body[data-mode='light'] { background-color: var(--paper); }
+body[data-mode='dark']  { background-color: var(--paper); }
