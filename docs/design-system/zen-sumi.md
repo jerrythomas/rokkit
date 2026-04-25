@@ -31,7 +31,7 @@ The design language values:
 | surface-z0 | Kami (paper) | `oklch(0.975 0.008 85)` | #f5f3ee | Main background |
 | surface-z1 | | `oklch(0.955 0.010 85)` | #ece9e2 | Cards, sidebar bg |
 | surface-z2 | | `oklch(0.920 0.012 85)` | #ddd9d0 | Inset areas, inputs |
-| surface-z3 | Paper edge | `oklch(0.880 0.015 85)` | #cec9be | Borders, dividers |
+| surface-z3 | Paper edge | `oklch(0.22 0.012 50 / 0.08)` | — | Borders (8% ink opacity) |
 | text-z10 | Sumi (ink) | `oklch(0.220 0.012 50)` | #2c2926 | Primary text |
 | text-z8 | | `oklch(0.380 0.012 50)` | #524e49 | Secondary text |
 | text-z6 | | `oklch(0.580 0.010 50)` | #8a867f | Tertiary/labels |

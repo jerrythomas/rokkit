@@ -132,7 +132,7 @@
 		gap: 28px;
 		padding: 28px 32px;
 		background: var(--paper-2);
-		border: var(--hairline);
+		border: var(--border-card);
 		border-radius: var(--radius-lg);
 	}
 	.ftr-detail {
@@ -175,7 +175,7 @@
 		gap: 24px;
 		padding: 28px 32px;
 		background: var(--paper-2);
-		border: var(--hairline);
+		border: var(--border-card);
 		border-radius: var(--radius-lg);
 	}
 	.koan-kanji {
@@ -234,12 +234,12 @@
 		gap: 14px;
 		padding: 14px 18px;
 		background: var(--paper-2);
-		border: var(--hairline);
+		border: var(--border-card);
 		border-radius: var(--radius);
 	}
-	.insight-card[data-tone='warn'] { border-left: 2px solid var(--amber); }
-	.insight-card[data-tone='good'] { border-left: 2px solid var(--jade); }
-	.insight-card[data-tone='mute'] { border-left: 2px solid var(--paper-edge); }
+	.insight-card[data-tone='warn'] { border-left: 2px solid var(--amber-soft); }
+	.insight-card[data-tone='good'] { border-left: 2px solid var(--jade-soft); }
+	.insight-card[data-tone='mute'] { border-left: 2px solid oklch(0.22 0.012 50 / 0.06); }
 	.insight-kanji {
 		font-size: 20px;
 		color: var(--sumi-3);
@@ -277,7 +277,7 @@
 		padding: 8px 12px;
 		background: var(--paper-2);
 		border-radius: var(--radius);
-		border: var(--hairline);
+		border: var(--border-card);
 	}
 	.teaching-item::before {
 		content: '✓ ';
@@ -304,21 +304,21 @@
 		text-transform: uppercase;
 		letter-spacing: 0.06em;
 		color: var(--sumi-4);
-		border-bottom: var(--hairline);
+		border-bottom: var(--ink-line);
 	}
 	.session-row {
 		font-size: 12.5px;
-		border-bottom: var(--hairline);
+		border-bottom: var(--ink-line);
 		transition: background 120ms ease;
 	}
 	.session-row:hover {
-		background: var(--paper-2);
+		background: oklch(0.22 0.012 50 / 0.03);
 	}
 	.session-ftr-dot {
 		width: 6px;
 		height: 6px;
 		border-radius: 50%;
-		background: var(--paper-edge);
+		background: var(--sumi-4);
 	}
 	.session-ftr-dot.ftr {
 		background: var(--jade);

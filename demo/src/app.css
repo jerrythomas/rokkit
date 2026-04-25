@@ -19,86 +19,102 @@
 @import '@rokkit/themes/frosted.css';
 
 /* ─── Zen-Sumi Design Tokens ────────────────────────────────────────────────
-   Direct from the mockup tokens.css — used for the static mockup-replica phase.
-   These will be replaced by the rokkit design token system in Phase 5.
+   Ported from sensei-dev/apps/desktop/src/lib/tokens.css
    ──────────────────────────────────────────────────────────────────────────── */
 
 :root {
-  /* Washi paper — surface */
-  --paper:      oklch(0.975 0.008 85);
-  --paper-2:    oklch(0.955 0.010 85);
-  --paper-3:    oklch(0.920 0.012 85);
-  --paper-edge: oklch(0.880 0.015 85);
-
-  /* Sumi ink — text */
-  --sumi:   oklch(0.220 0.012 50);
-  --sumi-2: oklch(0.380 0.012 50);
-  --sumi-3: oklch(0.580 0.010 50);
-  --sumi-4: oklch(0.750 0.008 50);
-
-  /* Shu — primary accent */
-  --shu:      oklch(0.580 0.150 35);
-  --shu-soft: oklch(0.580 0.150 35 / 0.12);
-
-  /* Jade — positive */
-  --jade:      oklch(0.620 0.080 160);
-  --jade-soft: oklch(0.620 0.080 160 / 0.14);
-
-  /* Amber — warning */
-  --amber:      oklch(0.720 0.120 75);
-  --amber-soft: oklch(0.720 0.120 75 / 0.15);
-
-  /* Typography */
+  /* ── Typography ─────────────────────────────────────────── */
   --font-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
   --font-ui:      'Inter', system-ui, -apple-system, sans-serif;
   --font-mono:    'JetBrains Mono', 'SF Mono', Menlo, monospace;
   --font-kanji:   'Yu Mincho', 'Hiragino Mincho ProN', 'Songti SC', serif;
 
-  /* Shape */
+  /* ── Paper (surface) ────────────────────────────────────── */
+  --paper:      oklch(0.975 0.008 85);
+  --paper-2:    oklch(0.955 0.010 85);
+  --paper-3:    oklch(0.920 0.012 85);
+  --paper-edge: oklch(0.22 0.012 50 / 0.08);  /* 8% opacity — barely visible */
+
+  /* ── Sumi (ink) ─────────────────────────────────────────── */
+  --sumi:   oklch(0.220 0.012 50);
+  --sumi-2: oklch(0.380 0.012 50);
+  --sumi-3: oklch(0.580 0.010 50);
+  --sumi-4: oklch(0.750 0.008 50);
+
+  /* ── Accent colors ──────────────────────────────────────── */
+  --shu:       oklch(0.580 0.150 35);
+  --shu-soft:  oklch(0.580 0.150 35 / 0.12);
+  --jade:      oklch(0.620 0.080 160);
+  --jade-soft: oklch(0.620 0.080 160 / 0.14);
+  --amber:      oklch(0.720 0.120 75);
+  --amber-soft: oklch(0.720 0.120 75 / 0.15);
+
+  /* ── Borders (graduated opacity) ────────────────────────── */
+  --hairline:     1px solid var(--paper-edge);                    /* subtle separator */
+  --border-card:  1px solid var(--paper-edge);                    /* card/panel edges */
+  --border-input: 1px solid oklch(0.22 0.012 50 / 0.12);         /* form inputs — slightly more visible */
+  --border-focus: 1px solid var(--sumi-3);                        /* focused inputs */
+  --border-active: 1px solid var(--sumi);                         /* selected/active */
+  --ink-line:     1px solid oklch(0.22 0.012 50 / 0.06);         /* very faint divider */
+
+  /* ── Radii ──────────────────────────────────────────────── */
   --radius:    6px;
   --radius-lg: 10px;
 
-  /* Borders */
-  --hairline: 1px solid var(--paper-edge);
-  --ink-line: 1px solid oklch(0.220 0.012 50 / 0.12);
+  /* ── Spacing scale (4px base) ───────────────────────────── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
 }
 
-/* Dark mode */
+/* ── Dark mode ────────────────────────────────────────────── */
 [data-mode='dark'] {
   --paper:      oklch(0.170 0.010 50);
   --paper-2:    oklch(0.210 0.012 50);
   --paper-3:    oklch(0.250 0.012 50);
-  --paper-edge: oklch(0.320 0.012 50);
+  --paper-edge: oklch(0.94 0.008 85 / 0.08);
 
   --sumi:   oklch(0.940 0.008 85);
   --sumi-2: oklch(0.780 0.008 85);
   --sumi-3: oklch(0.600 0.010 85);
   --sumi-4: oklch(0.420 0.012 85);
 
-  --shu:      oklch(0.700 0.150 35);
-  --shu-soft: oklch(0.700 0.150 35 / 0.18);
+  --shu:       oklch(0.700 0.150 35);
+  --shu-soft:  oklch(0.700 0.150 35 / 0.18);
   --jade:      oklch(0.720 0.090 160);
   --jade-soft: oklch(0.720 0.090 160 / 0.18);
   --amber:      oklch(0.780 0.120 75);
   --amber-soft: oklch(0.780 0.120 75 / 0.20);
 
-  --ink-line: 1px solid oklch(0.940 0.008 85 / 0.12);
+  --ink-line: 1px solid oklch(0.94 0.008 85 / 0.06);
 }
 
 /* ─── Global Base ────────────────────────────────────────────────────────── */
 
-html, body {
-  height: 100%;
+:root {
+  color-scheme: light dark;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-body {
+html, body {
+  height: 100%;
+  overflow: hidden;
   font-family: var(--font-ui);
   font-size: 13px;
   color: var(--sumi);
   background: var(--paper);
 }
 
-/* Utility classes from mockup */
+/* ── Utility classes ────────────────────────────────────────── */
+
 .mono {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
@@ -115,14 +131,48 @@ body {
   font-family: var(--font-kanji);
 }
 
-/* Hairline divider */
-.hairline {
-  background: var(--paper-edge);
-  height: 1px;
-  border: none;
+/* ── Sidebar vibrancy ───────────────────────────────────────── */
+
+.sidebar-vibrancy {
+  background: color-mix(in srgb, var(--paper-2) 85%, transparent);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
 }
 
-/* Ink dot (status indicator) */
+/* ── Button classes (from reference) ────────────────────────── */
+
+.btn-solid {
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--paper);
+  background: var(--sumi);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-family: var(--font-ui);
+  transition: opacity 0.14s;
+  white-space: nowrap;
+}
+.btn-solid:hover { opacity: 0.85; }
+
+.btn-outline {
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--sumi);
+  background: transparent;
+  border: var(--border-card);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-family: var(--font-ui);
+  transition: background 0.14s;
+  white-space: nowrap;
+}
+.btn-outline:hover { background: var(--paper-2); }
+
+/* ── Ink dot ────────────────────────────────────────────────── */
+
 .ink-dot {
   display: inline-block;
   width: 6px;
@@ -131,32 +181,23 @@ body {
   background: var(--shu);
 }
 
-/* Sparkline stroke */
-.sparkline-path {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.25;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
+/* ── Scrollbar ──────────────────────────────────────────────── */
 
-/* Scrollbars — subtle */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-thumb { background: transparent; border-radius: 3px; }
-:hover::-webkit-scrollbar-thumb { background: oklch(0.5 0.01 50 / 0.2); }
+:hover > ::-webkit-scrollbar-thumb,
+*:hover::-webkit-scrollbar-thumb { background: oklch(0.5 0.01 50 / 0.2); }
 
-/* Focus ring */
+/* ── Focus ──────────────────────────────────────────────────── */
+
 button:focus-visible {
   outline: 1.5px solid var(--shu);
   outline-offset: 2px;
   border-radius: 3px;
 }
 
-/* Selection */
+/* ── Selection ──────────────────────────────────────────────── */
+
 ::selection {
   background: var(--shu-soft);
 }
-
-/* Light/dark mode bg for rokkit theme system (fallback) */
-body[data-mode='light'] { background-color: var(--paper); }
-body[data-mode='dark']  { background-color: var(--paper); }

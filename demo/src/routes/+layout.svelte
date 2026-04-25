@@ -124,7 +124,9 @@
 
 	/* ── Sidebar ────────────────────────────────────────────────── */
 	.sidebar {
-		background: var(--paper-2);
+		background: color-mix(in srgb, var(--paper-2) 85%, transparent);
+		backdrop-filter: blur(20px) saturate(180%);
+		-webkit-backdrop-filter: blur(20px) saturate(180%);
 		border-right: var(--hairline);
 		display: flex;
 		flex-direction: column;
@@ -136,7 +138,7 @@
 		align-items: center;
 		gap: 10px;
 		padding: 16px 18px;
-		border-bottom: var(--hairline);
+		border-bottom: var(--ink-line);
 	}
 
 	.sidebar-title {
@@ -205,11 +207,11 @@
 		cursor: pointer;
 	}
 	.nav-item:hover {
-		background: var(--paper-3);
+		background: oklch(0.22 0.012 50 / 0.04);
 		color: var(--sumi);
 	}
 	.nav-item.active {
-		background: var(--paper);
+		background: oklch(0.22 0.012 50 / 0.06);
 		color: var(--sumi);
 	}
 	.nav-item.active .nav-kanji {
@@ -236,7 +238,7 @@
 
 	/* ── Footer ─────────────────────────────────────────────────── */
 	.sidebar-footer {
-		border-top: var(--hairline);
+		border-top: var(--ink-line);
 		padding: 8px 10px 12px;
 		display: flex;
 		flex-direction: column;

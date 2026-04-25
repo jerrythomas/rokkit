@@ -188,7 +188,9 @@
 
 	/* ── Rail ─────────────────────────────────────────────────── */
 	.wizard-rail {
-		background: var(--paper-2);
+		background: color-mix(in srgb, var(--paper-2) 85%, transparent);
+		backdrop-filter: blur(20px) saturate(180%);
+		-webkit-backdrop-filter: blur(20px) saturate(180%);
 		border-right: var(--hairline);
 		display: flex;
 		flex-direction: column;
@@ -199,7 +201,7 @@
 		align-items: center;
 		gap: 10px;
 		padding: 0 22px 20px;
-		border-bottom: var(--hairline);
+		border-bottom: var(--ink-line);
 	}
 	.rail-title {
 		font-size: 20px;
@@ -247,7 +249,7 @@
 		width: 6px;
 		height: 6px;
 		border-radius: 50%;
-		background: var(--paper-edge);
+		background: var(--sumi-4);
 	}
 	.step-text {
 		display: flex;
@@ -267,14 +269,14 @@
 
 	.rail-progress {
 		padding: 16px 22px 0;
-		border-top: var(--hairline);
+		border-top: var(--ink-line);
 		display: flex;
 		flex-direction: column;
 		gap: 6px;
 	}
 	.progress-track {
 		height: 3px;
-		background: var(--paper-edge);
+		background: oklch(0.22 0.012 50 / 0.08);
 		border-radius: 2px;
 		overflow: hidden;
 	}
@@ -345,7 +347,7 @@
 	.pillar {
 		padding: 18px;
 		background: var(--paper-2);
-		border: var(--hairline);
+		border: var(--border-card);
 		border-radius: var(--radius);
 		text-align: center;
 	}
@@ -366,7 +368,7 @@
 		justify-content: space-between;
 		padding: 8px 12px;
 		background: var(--paper-2);
-		border: var(--hairline);
+		border: var(--border-card);
 		border-radius: var(--radius);
 	}
 	.folder-path { font-size: 13px; color: var(--sumi); }
@@ -380,7 +382,7 @@
 		justify-content: center;
 		border-radius: 4px;
 	}
-	.folder-remove:hover { background: var(--paper-3); color: var(--shu); }
+	.folder-remove:hover { background: oklch(0.22 0.012 50 / 0.04); color: var(--shu); }
 
 	.folder-add {
 		display: flex;
@@ -391,11 +393,11 @@
 		padding: 10px 14px;
 		font-size: 13px;
 		background: var(--paper-2);
-		border: var(--hairline);
+		border: var(--border-input);
 		border-radius: var(--radius);
 		outline: none;
 	}
-	.folder-input:focus { border-color: var(--sumi-3); }
+	.folder-input:focus { border: var(--border-focus); }
 	.folder-btn {
 		padding: 10px 22px;
 		background: var(--sumi);
@@ -404,7 +406,7 @@
 		font-weight: 500;
 		border-radius: var(--radius);
 	}
-	.folder-btn:hover { opacity: 0.9; }
+	.folder-btn:hover { opacity: 0.85; }
 
 	/* ── Projects ─────────────────────────────────────────────── */
 	.projects-grid {
@@ -415,10 +417,10 @@
 	.project-card {
 		padding: 16px 18px;
 		background: var(--paper-2);
-		border: var(--hairline);
+		border: var(--border-card);
 		border-radius: var(--radius);
 	}
-	.project-card.confirmed { border-left: 2px solid var(--jade); }
+	.project-card.confirmed { border-left: 2px solid var(--jade-soft); }
 	.project-header {
 		display: flex;
 		justify-content: space-between;
@@ -446,7 +448,7 @@
 		justify-content: space-between;
 		padding-top: 24px;
 		margin-top: auto;
-		border-top: var(--hairline);
+		border-top: var(--ink-line);
 	}
 	.nav-btn {
 		padding: 10px 22px;
@@ -460,10 +462,10 @@
 		background: var(--sumi);
 		color: var(--paper);
 	}
-	.nav-btn.primary:hover:not(:disabled) { opacity: 0.9; }
+	.nav-btn.primary:hover:not(:disabled) { opacity: 0.85; }
 	.nav-btn.outline {
-		border: var(--ink-line);
+		border: var(--border-card);
 		color: var(--sumi-2);
 	}
-	.nav-btn.outline:hover:not(:disabled) { background: var(--paper-3); }
+	.nav-btn.outline:hover:not(:disabled) { background: var(--paper-2); }
 </style>
