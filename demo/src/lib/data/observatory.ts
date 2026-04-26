@@ -1,8 +1,14 @@
 import type { ObservatoryData } from '$lib/types'
+import { m } from '$lib/paraglide/messages.js'
+import { getLocale } from '$lib/paraglide/runtime.js'
+
+const LOCALE_MAP: Record<string, string> = { en: 'en-US', es: 'es-ES', ar: 'ar-SA' }
 
 export function loadObservatoryData(): ObservatoryData {
+	const locale = getLocale()
+	const dateLocale = LOCALE_MAP[locale] ?? 'en-US'
 	const today = new Date()
-	const dateStr = today.toLocaleDateString('en-US', {
+	const dateStr = today.toLocaleDateString(dateLocale, {
 		weekday: 'long',
 		month: 'long',
 		day: 'numeric'
@@ -21,113 +27,70 @@ export function loadObservatoryData(): ObservatoryData {
 		},
 		koan: {
 			kanji: '聴',
-			title: 'The assistant guesses your auth.',
-			explanation:
-				'In 3 of the last 5 sessions on lumen-cloud, the assistant hallucinated authentication middleware that doesn\'t exist. It reaches for Bearer tokens when your stack uses session cookies.',
-			impact: 'Teaching this pattern could save ~12 corrections per week.',
-			evidence: 'Sessions #1042, #1038, #1035'
+			title: m.obs_koan_title(),
+			explanation: m.obs_koan_body(),
+			impact: m.obs_koan_impact(),
+			evidence: m.obs_koan_evidence()
 		},
 		insights: [
 			{
 				id: 'i1',
 				kanji: '型',
-				title: 'Pattern recurring: retry-without-backoff',
-				body: 'Seen in 4 repos this week. The assistant writes retry loops without exponential backoff. A teaching could prevent this across all projects.',
+				title: m.obs_insight_1_title(),
+				body: m.obs_insight_1_body(),
 				tone: 'warn'
 			},
 			{
 				id: 'i2',
 				kanji: '直',
-				title: 'Teaching adopted: import ordering',
-				body: 'The import-ordering rule you taught 3 weeks ago has been applied in 89% of sessions. Zero corrections since adoption.',
+				title: m.obs_insight_2_title(),
+				body: m.obs_insight_2_body(),
 				tone: 'good'
 			},
 			{
 				id: 'i3',
 				kanji: '流',
-				title: 'Drift detected: test file placement',
-				body: 'Two projects disagree on test placement (__tests__/ vs colocated). Consider a cross-project teaching.',
+				title: m.obs_insight_3_title(),
+				body: m.obs_insight_3_body(),
 				tone: 'mute'
 			}
 		],
 		sessions: [
 			{
-				id: 's1',
-				project: 'lumen-studio',
-				title: 'Add export dialog with format picker',
-				ftr: true,
-				corrections: 0,
-				duration: '18m',
-				time: '2h ago',
-				outcome: 'shipped',
-				language: 'TypeScript',
-				stack: ['React', 'Zustand']
+				id: 's1', project: 'lumen-studio', title: m.obs_session_1(),
+				ftr: true, corrections: 0, duration: '18m', time: '2h ago',
+				outcome: 'shipped', language: 'TypeScript', stack: ['React', 'Zustand']
 			},
 			{
-				id: 's2',
-				project: 'lumen-cloud',
-				title: 'Fix auth middleware token refresh',
-				ftr: false,
-				corrections: 3,
-				duration: '34m',
-				time: '4h ago',
-				outcome: 'corrected',
-				language: 'TypeScript',
-				stack: ['Express', 'Redis']
+				id: 's2', project: 'lumen-cloud', title: m.obs_session_2(),
+				ftr: false, corrections: 3, duration: '34m', time: '4h ago',
+				outcome: 'corrected', language: 'TypeScript', stack: ['Express', 'Redis']
 			},
 			{
-				id: 's3',
-				project: 'brand-kit',
-				title: 'Generate SVG sprite from icon set',
-				ftr: true,
-				corrections: 0,
-				duration: '12m',
-				time: '5h ago',
-				outcome: 'shipped',
-				language: 'TypeScript',
-				stack: ['Node', 'SVG']
+				id: 's3', project: 'brand-kit', title: m.obs_session_3(),
+				ftr: true, corrections: 0, duration: '12m', time: '5h ago',
+				outcome: 'shipped', language: 'TypeScript', stack: ['Node', 'SVG']
 			},
 			{
-				id: 's4',
-				project: 'lumen-studio',
-				title: 'Refactor canvas zoom to use wheel events',
-				ftr: false,
-				corrections: 1,
-				duration: '22m',
-				time: '1d ago',
-				outcome: 'corrected',
-				language: 'TypeScript',
-				stack: ['React', 'Canvas']
+				id: 's4', project: 'lumen-studio', title: m.obs_session_4(),
+				ftr: false, corrections: 1, duration: '22m', time: '1d ago',
+				outcome: 'corrected', language: 'TypeScript', stack: ['React', 'Canvas']
 			},
 			{
-				id: 's5',
-				project: 'lumen-cloud',
-				title: 'Add rate limiting to public API endpoints',
-				ftr: true,
-				corrections: 0,
-				duration: '15m',
-				time: '1d ago',
-				outcome: 'shipped',
-				language: 'TypeScript',
-				stack: ['Express', 'Redis']
+				id: 's5', project: 'lumen-cloud', title: m.obs_session_5(),
+				ftr: true, corrections: 0, duration: '15m', time: '1d ago',
+				outcome: 'shipped', language: 'TypeScript', stack: ['Express', 'Redis']
 			},
 			{
-				id: 's6',
-				project: 'brand-kit',
-				title: 'Migrate color tokens to OKLCH',
-				ftr: false,
-				corrections: 2,
-				duration: '28m',
-				time: '2d ago',
-				outcome: 'corrected',
-				language: 'CSS',
-				stack: ['PostCSS']
+				id: 's6', project: 'brand-kit', title: m.obs_session_6(),
+				ftr: false, corrections: 2, duration: '28m', time: '2d ago',
+				outcome: 'corrected', language: 'CSS', stack: ['PostCSS']
 			}
 		],
 		adoptedTeachings: [
-			'Import ordering: external → internal → relative → types',
-			'Always use parameterized queries, never string interpolation',
-			'Prefer named exports over default exports'
+			m.obs_teaching_1(),
+			m.obs_teaching_2(),
+			m.obs_teaching_3()
 		]
 	}
 }

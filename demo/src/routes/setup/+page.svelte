@@ -104,7 +104,7 @@
 						</div>
 						<p class="wiz-footnote">{m.setup_welcome_time()}</p>
 					{:else}
-						<p class="wiz-body">This step will be implemented in a future iteration.</p>
+						<p class="wiz-body">{m.this_step_placeholder()}</p>
 					{/if}
 
 				{:else if current.id === 'folders'}
