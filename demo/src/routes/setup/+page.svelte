@@ -265,7 +265,6 @@
 		flex: 1;
 		overflow: auto;
 		padding: 44px 64px 32px;
-		max-width: 720px;
 	}
 
 	.wiz-header {

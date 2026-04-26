@@ -5,91 +5,84 @@
 	const { data } = $props()
 </script>
 
-<div class="observatory">
+<div class="obs-home">
 
-	<!-- Greeting -->
-	<div class="greeting">
-		<span class="greeting-date">{data.greeting.date}</span>
-		<span class="greeting-hello">Good morning, {data.greeting.name}.</span>
+	<!-- ─── Greeting + FTR ─────────────────────────────────────────────── -->
+	<div class="greeting-row">
+		<div class="greeting-left">
+			<span class="greeting-date mono">{data.greeting.date}</span>
+			<h1 class="greeting-title display">Good morning, {data.greeting.name}.</h1>
+		</div>
+		<div class="greeting-right">
+			<EnsoRing score={data.ftr.score} size={110} />
+			<div class="ftr-text">
+				<span class="ftr-label mono">First-Try-Right · {data.ftr.period}</span>
+				<Sparkline data={data.ftr.trend} width={150} height={36} />
+				<span class="ftr-delta mono">
+					{data.ftr.delta > 0 ? '↑' : '↓'} {Math.abs(data.ftr.delta)}% vs prior
+				</span>
+			</div>
+		</div>
 	</div>
 
-	<!-- FTR Hero -->
-	<section class="ftr-hero">
-		<div class="ftr-gauge">
-			<EnsoRing score={data.ftr.score} size={110} />
-		</div>
-		<div class="ftr-detail">
-			<h2 class="ftr-label">First-Try-Right</h2>
-			<div class="ftr-stats">
-				<span class="ftr-score display">{data.ftr.score}%</span>
-				<span class="ftr-delta" class:positive={data.ftr.delta > 0} class:negative={data.ftr.delta < 0}>
-					{data.ftr.delta > 0 ? '+' : ''}{data.ftr.delta}%
-				</span>
-				<span class="ftr-period mono">{data.ftr.period}</span>
-			</div>
-			<div class="ftr-trend">
-				<Sparkline data={data.ftr.trend} width={160} height={32} />
-			</div>
-		</div>
-	</section>
-
-	<!-- Hero Koan -->
+	<!-- ─── Hero Koan ──────────────────────────────────────────────────── -->
 	<section class="koan-hero">
-		<span class="koan-kanji kanji">{data.koan.kanji}</span>
-		<div class="koan-content">
-			<h2 class="koan-title">{data.koan.title}</h2>
-			<p class="koan-explanation">{data.koan.explanation}</p>
-			<p class="koan-impact">{data.koan.impact}</p>
-			<span class="koan-evidence mono">{data.koan.evidence}</span>
+		<div class="koan-left">
+			<span class="kanji koan-kanji">{data.koan.kanji}</span>
 		</div>
-	</section>
-
-	<!-- Insights -->
-	<section class="insights-section">
-		<h3 class="section-title">Insights</h3>
-		<div class="insights-grid">
-			{#each data.insights as insight (insight.id)}
-				<div class="insight-card" data-tone={insight.tone}>
-					<span class="insight-kanji kanji">{insight.kanji}</span>
-					<div class="insight-content">
-						<h4 class="insight-title">{insight.title}</h4>
-						<p class="insight-body">{insight.body}</p>
-					</div>
-				</div>
-			{/each}
-		</div>
-	</section>
-
-	<!-- Adopted Teachings -->
-	{#if data.adoptedTeachings.length > 0}
-		<section class="teachings-section">
-			<h3 class="section-title">System has learned</h3>
-			<ul class="teachings-list">
-				{#each data.adoptedTeachings as teaching}
-					<li class="teaching-item">{teaching}</li>
-				{/each}
-			</ul>
-		</section>
-	{/if}
-
-	<!-- Recent Sessions -->
-	<section class="sessions-section">
-		<h3 class="section-title">Recent sessions</h3>
-		<div class="sessions-table">
-			<div class="sessions-header">
-				<span></span>
-				<span>Project</span>
-				<span>Task</span>
-				<span>Corrections</span>
-				<span>Duration</span>
-				<span>When</span>
+		<div class="koan-right">
+			<h2 class="koan-title display">{data.koan.title}</h2>
+			<p class="koan-body">{data.koan.explanation}</p>
+			<div class="koan-actions">
+				<button class="btn-solid">Draft a persona →</button>
+				<span class="koan-impact">Projected FTR +14% · {data.koan.impact}</span>
+				<span style="flex:1"></span>
+				<span class="koan-evidence mono">{data.koan.evidence}</span>
 			</div>
+		</div>
+	</section>
+
+	<!-- ─── Insights + Adopted (two-column) ────────────────────────────── -->
+	<div class="two-col">
+		<section class="insights-col">
+			<h3 class="section-header display">Also worth noticing</h3>
+			<div class="insight-list">
+				{#each data.insights as insight (insight.id)}
+					<div class="insight-row" data-tone={insight.tone}>
+						<span class="kanji insight-kanji">{insight.kanji}</span>
+						<div class="insight-body">
+							<span class="insight-label">{insight.title}</span>
+							<span class="insight-text">{insight.body}</span>
+						</div>
+					</div>
+				{/each}
+			</div>
+		</section>
+
+		<section class="adopted-col">
+			<h3 class="section-header display">System has learned</h3>
+			<div class="adopted-list">
+				{#each data.adoptedTeachings as teaching, i}
+					<div class="adopted-card">
+						<span class="adopted-text">{teaching}</span>
+					</div>
+				{/each}
+			</div>
+		</section>
+	</div>
+
+	<!-- ─── Recent Sessions ────────────────────────────────────────────── -->
+	<section class="sessions-section">
+		<h3 class="section-header display">Recent sessions</h3>
+		<div class="sessions-table">
 			{#each data.sessions as session (session.id)}
 				<div class="session-row">
-					<span class="session-ftr-dot" class:ftr={session.ftr}></span>
+					<span class="session-dot" class:ftr={session.ftr}></span>
 					<span class="session-project mono">{session.project}</span>
 					<span class="session-title">{session.title}</span>
-					<span class="session-corrections mono">{session.corrections}</span>
+					<span class="session-corrections mono">
+						{session.corrections === 0 ? 'first-try' : `${session.corrections}×`}
+					</span>
 					<span class="session-duration mono">{session.duration}</span>
 					<span class="session-time mono">{session.time}</span>
 				</div>
@@ -99,190 +92,181 @@
 </div>
 
 <style>
-	.observatory {
-		max-width: 860px;
-		display: flex;
-		flex-direction: column;
-		gap: 32px;
+	.obs-home {
+		max-width: 1060px;
+		margin: 0 auto;
+		padding: 36px 48px 48px;
 	}
 
-	/* ── Greeting ─────────────────────────────────────────────── */
-	.greeting {
+	/* ── Greeting Row ─────────────────────────────────────────── */
+	.greeting-row {
 		display: flex;
-		flex-direction: column;
-		gap: 2px;
-	}
-	.greeting-date {
-		font-size: 12px;
-		color: var(--sumi-3);
-		font-weight: 500;
-	}
-	.greeting-hello {
-		font-family: var(--font-display);
-		font-size: 28px;
-		font-weight: 300;
-		color: var(--sumi);
-		letter-spacing: -0.02em;
-	}
-
-	/* ── FTR Hero ─────────────────────────────────────────────── */
-	.ftr-hero {
-		display: flex;
-		align-items: center;
-		gap: 28px;
-		padding: 28px 32px;
-		background: var(--paper-2);
-		border: var(--border-card);
-		border-radius: var(--radius-lg);
-	}
-	.ftr-detail {
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-	}
-	.ftr-label {
-		font-size: 11px;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.06em;
-		color: var(--sumi-3);
-		margin: 0;
-	}
-	.ftr-stats {
-		display: flex;
+		justify-content: space-between;
 		align-items: baseline;
-		gap: 10px;
+		margin-bottom: 32px;
 	}
-	.ftr-score {
-		font-size: 36px;
-		color: var(--sumi);
-	}
-	.ftr-delta {
-		font-size: 13px;
-		font-weight: 500;
-	}
-	.ftr-delta.positive { color: var(--jade); }
-	.ftr-delta.negative { color: var(--shu); }
-	.ftr-period {
-		font-size: 11px;
-		color: var(--sumi-4);
-	}
-
-	/* ── Koan Hero ────────────────────────────────────────────── */
-	.koan-hero {
-		display: grid;
-		grid-template-columns: auto 1fr;
-		gap: 24px;
-		padding: 28px 32px;
-		background: var(--paper-2);
-		border: var(--border-card);
-		border-radius: var(--radius-lg);
-	}
-	.koan-kanji {
-		font-size: 72px;
-		color: var(--shu);
-		line-height: 1;
-	}
-	.koan-content {
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-	}
-	.koan-title {
-		font-family: var(--font-display);
-		font-size: 20px;
-		font-weight: 400;
-		color: var(--sumi);
-		margin: 0;
-		letter-spacing: -0.01em;
-	}
-	.koan-explanation {
-		font-size: 13px;
-		color: var(--sumi-2);
-		line-height: 1.6;
-		margin: 0;
-	}
-	.koan-impact {
-		font-size: 12px;
-		color: var(--sumi-3);
-		margin: 0;
-	}
-	.koan-evidence {
-		font-size: 10px;
-		color: var(--sumi-4);
-	}
-
-	/* ── Section ──────────────────────────────────────────────── */
-	.section-title {
-		font-size: 11px;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.06em;
-		color: var(--sumi-3);
-		margin: 0 0 12px;
-	}
-
-	/* ── Insights ─────────────────────────────────────────────── */
-	.insights-grid {
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-	}
-	.insight-card {
-		display: grid;
-		grid-template-columns: auto 1fr;
-		gap: 14px;
-		padding: 14px 18px;
-		background: var(--paper-2);
-		border: var(--border-card);
-		border-radius: var(--radius);
-	}
-	.insight-card[data-tone='warn'] { border-left: 2px solid var(--amber-soft); }
-	.insight-card[data-tone='good'] { border-left: 2px solid var(--jade-soft); }
-	.insight-card[data-tone='mute'] { border-left: 2px solid oklch(0.22 0.012 50 / 0.06); }
-	.insight-kanji {
-		font-size: 20px;
-		color: var(--sumi-3);
-	}
-	.insight-content {
+	.greeting-left {
 		display: flex;
 		flex-direction: column;
 		gap: 4px;
 	}
-	.insight-title {
-		font-size: 13px;
-		font-weight: 500;
+	.greeting-date {
+		font-size: 10.5px;
+		text-transform: uppercase;
+		color: var(--sumi-3);
+		letter-spacing: 0.06em;
+	}
+	.greeting-title {
+		font-size: 28px;
+		font-weight: 300;
 		color: var(--sumi);
 		margin: 0;
 	}
-	.insight-body {
-		font-size: 12px;
-		color: var(--sumi-2);
-		line-height: 1.5;
-		margin: 0;
+	.greeting-right {
+		display: flex;
+		gap: 16px;
+		align-items: center;
 	}
-
-	/* ── Teachings ─────────────────────────────────────────────── */
-	.teachings-list {
-		list-style: none;
-		padding: 0;
-		margin: 0;
+	.ftr-text {
 		display: flex;
 		flex-direction: column;
-		gap: 6px;
+		gap: 4px;
+		min-width: 150px;
 	}
-	.teaching-item {
-		font-size: 12px;
+	.ftr-label {
+		font-size: 11px;
+		color: var(--sumi-3);
+	}
+	.ftr-delta {
+		font-size: 11px;
 		color: var(--sumi-2);
-		padding: 8px 12px;
-		background: var(--paper-2);
-		border-radius: var(--radius);
-		border: var(--border-card);
 	}
-	.teaching-item::before {
-		content: '✓ ';
-		color: var(--jade);
-		font-weight: 600;
+
+	/* ── Hero Koan ────────────────────────────────────────────── */
+	.koan-hero {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: 28px;
+		padding: 32px 34px 30px;
+		background: var(--paper-2);
+		border: var(--border-card);
+		border-radius: var(--radius-lg);
+		margin-bottom: 36px;
+	}
+	.koan-left {
+		position: relative;
+	}
+	.koan-kanji {
+		font-size: 96px;
+		color: var(--shu);
+		line-height: 1;
+	}
+	.koan-right {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+	.koan-title {
+		font-size: 28px;
+		font-weight: 400;
+		color: var(--sumi);
+		margin: 0;
+	}
+	.koan-body {
+		font-size: 14.5px;
+		color: var(--sumi-2);
+		line-height: 1.6;
+		margin: 0;
+	}
+	.koan-actions {
+		display: flex;
+		gap: 16px;
+		flex-wrap: wrap;
+		align-items: center;
+		margin-top: auto;
+	}
+	.koan-impact {
+		font-size: 12px;
+		color: var(--shu);
+	}
+	.koan-evidence {
+		font-size: 10.5px;
+		color: var(--sumi-4);
+	}
+
+	/* ── Section Header ───────────────────────────────────────── */
+	.section-header {
+		font-size: 17px;
+		font-weight: 400;
+		color: var(--sumi);
+		margin: 0 0 14px;
+	}
+
+	/* ── Two-Column (Insights + Adopted) ──────────────────────── */
+	.two-col {
+		display: grid;
+		grid-template-columns: 1.4fr 1fr;
+		gap: 30px;
+		margin-bottom: 40px;
+	}
+
+	/* Insights */
+	.insight-list {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+	.insight-row {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: 12px;
+		padding: 10px 12px;
+		border-radius: var(--radius);
+		transition: background 120ms ease;
+	}
+	.insight-row:hover {
+		background: oklch(0.22 0.012 50 / 0.03);
+	}
+	.insight-kanji {
+		font-size: 19px;
+		color: var(--sumi-3);
+	}
+	.insight-row[data-tone='warn'] .insight-kanji { color: var(--amber); }
+	.insight-row[data-tone='good'] .insight-kanji { color: var(--jade); }
+	.insight-body {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+	.insight-label {
+		font-size: 10.5px;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: var(--sumi-3);
+		font-weight: 500;
+	}
+	.insight-text {
+		font-size: 13.5px;
+		color: var(--sumi-2);
+		line-height: 1.5;
+	}
+
+	/* Adopted */
+	.adopted-list {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+	.adopted-card {
+		padding: 12px 14px;
+		background: var(--paper-2);
+		border-left: 2px solid var(--shu-soft);
+		border-radius: 0 var(--radius) var(--radius) 0;
+	}
+	.adopted-text {
+		font-size: 13px;
+		color: var(--sumi-2);
+		line-height: 1.5;
 	}
 
 	/* ── Sessions Table ───────────────────────────────────────── */
@@ -290,57 +274,51 @@
 		display: flex;
 		flex-direction: column;
 	}
-	.sessions-header,
 	.session-row {
 		display: grid;
-		grid-template-columns: 20px 120px 1fr 80px 60px 60px;
+		grid-template-columns: auto 120px 1fr auto auto auto;
+		gap: 16px;
 		align-items: center;
-		gap: 8px;
-		padding: 8px 12px;
-	}
-	.sessions-header {
-		font-size: 10px;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.06em;
-		color: var(--sumi-4);
-		border-bottom: var(--ink-line);
-	}
-	.session-row {
-		font-size: 12.5px;
+		padding: 9px 4px;
 		border-bottom: var(--ink-line);
 		transition: background 120ms ease;
 	}
 	.session-row:hover {
 		background: oklch(0.22 0.012 50 / 0.03);
 	}
-	.session-ftr-dot {
-		width: 6px;
-		height: 6px;
+	.session-dot {
+		width: 8px;
+		height: 8px;
 		border-radius: 50%;
 		background: var(--sumi-4);
 	}
-	.session-ftr-dot.ftr {
+	.session-dot.ftr {
 		background: var(--jade);
 	}
 	.session-project {
-		font-size: 11px;
+		font-size: 11.5px;
 		color: var(--sumi-3);
 	}
 	.session-title {
+		font-size: 13px;
 		color: var(--sumi);
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
 	.session-corrections {
-		font-size: 11px;
+		font-size: 10.5px;
 		color: var(--sumi-3);
-		text-align: center;
+		text-align: right;
 	}
-	.session-duration,
-	.session-time {
+	.session-duration {
 		font-size: 11px;
 		color: var(--sumi-3);
+		text-align: right;
+	}
+	.session-time {
+		font-size: 10.5px;
+		color: var(--sumi-4);
+		text-align: right;
 	}
 </style>

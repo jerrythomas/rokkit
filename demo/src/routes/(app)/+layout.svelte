@@ -263,7 +263,7 @@
 	/* ── Main content ───────────────────────────────────────────── */
 	.main-content {
 		overflow-y: auto;
-		padding: 32px 48px;
 		max-height: 100vh;
+		position: relative;
 	}
 </style>
