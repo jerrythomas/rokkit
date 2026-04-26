@@ -14,9 +14,13 @@
 </script>
 
 <div class="sessions-page">
-	<h1 class="page-title display">Sessions</h1>
 
-	<!-- Retro Cards -->
+	<div class="page-header">
+		<span class="page-subtitle mono">Cross-project retrospective</span>
+		<h1 class="page-title display">Sessions</h1>
+	</div>
+
+	<!-- ─── Retro Cards ───────────────────────────────────────── -->
 	<div class="retro-grid">
 		{#each data.retro as section (section.title)}
 			<div class="retro-card" data-tone={section.tone}>
@@ -33,7 +37,7 @@
 		{/each}
 	</div>
 
-	<!-- Filters -->
+	<!-- ─── Filters ───────────────────────────────────────────── -->
 	<div class="filter-bar">
 		<div class="filter-group">
 			{#each ['all', ...data.filters.outcomes] as outcome (outcome)}
@@ -59,24 +63,18 @@
 		</div>
 	</div>
 
-	<!-- Session List -->
-	<div class="session-list">
-		<div class="list-header">
-			<span></span>
-			<span>Project</span>
-			<span>Task</span>
-			<span>Corrections</span>
-			<span>Duration</span>
-			<span>When</span>
-		</div>
+	<!-- ─── Session List ──────────────────────────────────────── -->
+	<div class="sessions-table">
 		{#each filteredSessions as session (session.id)}
-			<div class="list-row" data-outcome={session.outcome}>
-				<span class="ftr-dot" class:ftr={session.ftr}></span>
-				<span class="project mono">{session.project}</span>
-				<span class="task">{session.title}</span>
-				<span class="corrections mono">{session.corrections}</span>
-				<span class="duration mono">{session.duration}</span>
-				<span class="time mono">{session.time}</span>
+			<div class="session-row">
+				<span class="session-dot" class:ftr={session.ftr}></span>
+				<span class="session-project mono">{session.project}</span>
+				<span class="session-title">{session.title}</span>
+				<span class="session-corrections mono">
+					{session.corrections === 0 ? 'first-try' : `${session.corrections}×`}
+				</span>
+				<span class="session-duration mono">{session.duration}</span>
+				<span class="session-time mono">{session.time}</span>
 			</div>
 		{/each}
 		{#if filteredSessions.length === 0}
@@ -87,12 +85,20 @@
 
 <style>
 	.sessions-page {
-		max-width: 920px;
-		display: flex;
-		flex-direction: column;
-		gap: 28px;
+		max-width: 1060px;
+		margin: 0 auto;
+		padding: 36px 48px 48px;
 	}
 
+	.page-header { margin-bottom: 32px; }
+	.page-subtitle {
+		font-size: 10.5px;
+		text-transform: uppercase;
+		color: var(--sumi-3);
+		letter-spacing: 0.06em;
+		display: block;
+		margin-bottom: 4px;
+	}
 	.page-title {
 		font-size: 28px;
 		font-weight: 300;
@@ -105,6 +111,7 @@
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
 		gap: 12px;
+		margin-bottom: 28px;
 	}
 	.retro-card {
 		padding: 16px 18px;
@@ -121,10 +128,9 @@
 		gap: 8px;
 		margin-bottom: 10px;
 	}
-	.retro-kanji {
-		font-size: 18px;
-		color: var(--sumi-3);
-	}
+	.retro-kanji { font-size: 18px; color: var(--sumi-3); }
+	.retro-card[data-tone='good'] .retro-kanji { color: var(--jade); }
+	.retro-card[data-tone='warn'] .retro-kanji { color: var(--amber); }
 	.retro-title {
 		font-size: 13px;
 		font-weight: 600;
@@ -150,11 +156,9 @@
 		display: flex;
 		gap: 16px;
 		flex-wrap: wrap;
+		margin-bottom: 20px;
 	}
-	.filter-group {
-		display: flex;
-		gap: 2px;
-	}
+	.filter-group { display: flex; gap: 2px; }
 	.filter-pill {
 		padding: 6px 12px;
 		font-size: 11.5px;
@@ -163,72 +167,27 @@
 		text-transform: capitalize;
 		transition: all 120ms ease;
 	}
-	.filter-pill:hover {
-		background: oklch(0.22 0.012 50 / 0.04);
-	}
-	.filter-pill.active {
-		background: var(--sumi);
-		color: var(--paper);
-	}
+	.filter-pill:hover { background: oklch(0.22 0.012 50 / 0.04); }
+	.filter-pill.active { background: var(--sumi); color: var(--paper); }
 
-	/* ── Session List ─────────────────────────────────────────── */
-	.list-header,
-	.list-row {
+	/* ── Sessions Table ───────────────────────────────────────── */
+	.sessions-table { display: flex; flex-direction: column; }
+	.session-row {
 		display: grid;
-		grid-template-columns: 20px 120px 1fr 80px 60px 60px;
+		grid-template-columns: auto 120px 1fr auto auto auto;
+		gap: 16px;
 		align-items: center;
-		gap: 8px;
-		padding: 8px 12px;
-	}
-	.list-header {
-		font-size: 10px;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.06em;
-		color: var(--sumi-4);
-		border-bottom: var(--ink-line);
-	}
-	.list-row {
-		font-size: 12.5px;
+		padding: 9px 4px;
 		border-bottom: var(--ink-line);
 		transition: background 120ms ease;
 	}
-	.list-row:hover {
-		background: oklch(0.22 0.012 50 / 0.03);
-	}
-	.ftr-dot {
-		width: 6px;
-		height: 6px;
-		border-radius: 50%;
-		background: var(--sumi-4);
-	}
-	.ftr-dot.ftr {
-		background: var(--jade);
-	}
-	.project {
-		font-size: 11px;
-		color: var(--sumi-3);
-	}
-	.task {
-		color: var(--sumi);
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-	.corrections {
-		font-size: 11px;
-		color: var(--sumi-3);
-		text-align: center;
-	}
-	.duration,
-	.time {
-		font-size: 11px;
-		color: var(--sumi-3);
-	}
-	.empty-state {
-		padding: 24px;
-		text-align: center;
-		color: var(--sumi-4);
-		font-size: 13px;
-	}
+	.session-row:hover { background: oklch(0.22 0.012 50 / 0.03); }
+	.session-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sumi-4); }
+	.session-dot.ftr { background: var(--jade); }
+	.session-project { font-size: 11.5px; color: var(--sumi-3); }
+	.session-title { font-size: 13px; color: var(--sumi); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+	.session-corrections { font-size: 10.5px; color: var(--sumi-3); text-align: right; }
+	.session-duration { font-size: 11px; color: var(--sumi-3); text-align: right; }
+	.session-time { font-size: 10.5px; color: var(--sumi-4); text-align: right; }
+	.empty-state { padding: 24px; text-align: center; color: var(--sumi-4); font-size: 13px; }
 </style>

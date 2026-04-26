@@ -1,4 +1,6 @@
 <script>
+	import { goto } from '$app/navigation'
+
 	const { data } = $props()
 
 	let currentStep = $state(3)
@@ -9,6 +11,7 @@
 		}))
 	)
 	const current = $derived(steps[currentStep])
+	const isLastStep = $derived(currentStep === steps.length - 1)
 
 	let folders = $state([...data.folders])
 	let newFolder = $state('')
@@ -26,7 +29,11 @@
 	}
 
 	function next() {
-		if (currentStep < steps.length - 1) currentStep++
+		if (isLastStep) {
+			goto('/observatory')
+		} else {
+			currentStep++
+		}
 	}
 	function back() {
 		if (currentStep > 0) currentStep--
@@ -158,9 +165,9 @@
 				<button
 					class="btn-solid"
 					onclick={next}
-					disabled={currentStep === steps.length - 1 || (current.id === 'folders' && folders.length === 0)}
+					disabled={!isLastStep && current.id === 'folders' && folders.length === 0}
 				>
-					{currentStep === steps.length - 1 ? 'Enter' : 'Continue'}
+					{isLastStep ? 'Enter' : 'Continue'}
 				</button>
 			</div>
 		</div>

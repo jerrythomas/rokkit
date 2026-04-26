@@ -1,11 +1,9 @@
 <script>
 	import { page } from '$app/state'
 	import { mainNav, projectGroups, settingsNav } from '$lib/data/navigation'
-	import ThemePanel from '$lib/components/ThemePanel.svelte'
 
 	let { children } = $props()
 	let sidebarCollapsed = $state(false)
-	let themePanelOpen = $state(false)
 
 	const activeId = $derived(
 		mainNav.find((n) => page.url.pathname.startsWith(n.href))?.id ?? 'observatory'
@@ -81,16 +79,6 @@
 					<span class="nav-label">{settingsNav.label}</span>
 				{/if}
 			</a>
-			<button
-				class="nav-item"
-				onclick={() => (themePanelOpen = true)}
-				title="Theme settings"
-			>
-				<span class="kanji nav-kanji">彩</span>
-				{#if !sidebarCollapsed}
-					<span class="nav-label">Theme</span>
-				{/if}
-			</button>
 			{#if !sidebarCollapsed}
 				<div class="sidebar-status">
 					<span class="status-dot"></span>
@@ -105,8 +93,6 @@
 		{@render children?.()}
 	</main>
 </div>
-
-<ThemePanel bind:open={themePanelOpen} />
 
 <style>
 	.app-layout {
