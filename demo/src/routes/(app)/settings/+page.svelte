@@ -1,5 +1,6 @@
 <script>
 	import PlaceholderPage from '$lib/components/PlaceholderPage.svelte'
+	import { m } from '$lib/paraglide/messages.js'
 </script>
 
-<PlaceholderPage kanji="設" title="Settings" description="Theme, density, palette, and language settings will be implemented in Phase 8." />
+<PlaceholderPage kanji="設" title={m.nav_settings()} description={m.placeholder_settings_desc()} />

@@ -1,4 +1,6 @@
 <script>
+	import { m } from '$lib/paraglide/messages.js'
+
 	const { data } = $props()
 
 	let activeFilter = $state('all')
@@ -16,8 +18,8 @@
 <div class="sessions-page">
 
 	<div class="page-header">
-		<span class="page-subtitle mono">Cross-project retrospective</span>
-		<h1 class="page-title display">Sessions</h1>
+		<span class="page-subtitle mono">{m.sessions_subtitle()}</span>
+		<h1 class="page-title display">{m.sessions_title()}</h1>
 	</div>
 
 	<!-- ─── Retro Cards ───────────────────────────────────────── -->
@@ -46,7 +48,7 @@
 					class:active={activeFilter === outcome}
 					onclick={() => (activeFilter = outcome)}
 				>
-					{outcome === 'all' ? 'All' : outcome}
+					{outcome === 'all' ? m.filter_all() : outcome}
 				</button>
 			{/each}
 		</div>
@@ -57,7 +59,7 @@
 					class:active={activeProject === project}
 					onclick={() => (activeProject = project)}
 				>
-					{project === 'all' ? 'All projects' : project}
+					{project === 'all' ? m.filter_all_projects() : project}
 				</button>
 			{/each}
 		</div>
@@ -71,14 +73,14 @@
 				<span class="session-project mono">{session.project}</span>
 				<span class="session-title">{session.title}</span>
 				<span class="session-corrections mono">
-					{session.corrections === 0 ? 'first-try' : `${session.corrections}×`}
+					{session.corrections === 0 ? m.session_first_try() : m.session_corrections({ count: session.corrections.toString() })}
 				</span>
 				<span class="session-duration mono">{session.duration}</span>
 				<span class="session-time mono">{session.time}</span>
 			</div>
 		{/each}
 		{#if filteredSessions.length === 0}
-			<div class="empty-state">No sessions match the current filters.</div>
+			<div class="empty-state">{m.no_sessions_match()}</div>
 		{/if}
 	</div>
 </div>

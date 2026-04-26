@@ -1,9 +1,15 @@
 <script>
 	import { page } from '$app/state'
-	import { mainNav, projectGroups, settingsNav } from '$lib/data/navigation'
+	import { getMainNav, getProjectGroups, getSettingsNav } from '$lib/data/navigation'
+	import { m } from '$lib/paraglide/messages.js'
+	import LanguageSwitcher from '$lib/components/LanguageSwitcher.svelte'
 
 	let { children } = $props()
 	let sidebarCollapsed = $state(false)
+
+	const mainNav = $derived(getMainNav())
+	const projectGroups = $derived(getProjectGroups())
+	const settingsNav = $derived(getSettingsNav())
 
 	const activeId = $derived(
 		mainNav.find((n) => page.url.pathname.startsWith(n.href))?.id ?? 'observatory'
@@ -80,9 +86,10 @@
 				{/if}
 			</a>
 			{#if !sidebarCollapsed}
+				<LanguageSwitcher />
 				<div class="sidebar-status">
 					<span class="status-dot"></span>
-					<span class="status-text">Daemon running</span>
+					<span class="status-text">{m.daemon_running()}</span>
 				</div>
 			{/if}
 		</div>

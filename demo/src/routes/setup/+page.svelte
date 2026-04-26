@@ -1,5 +1,6 @@
 <script>
 	import { goto } from '$app/navigation'
+	import { m } from '$lib/paraglide/messages.js'
 
 	const { data } = $props()
 
@@ -48,7 +49,7 @@
 		<aside class="wiz-rail">
 			<div class="rail-header">
 				<span class="kanji" style="font-size: 22px; color: var(--shu);">道</span>
-				<span class="rail-title display">Setup</span>
+				<span class="rail-title display">{m.setup_title()}</span>
 			</div>
 
 			<div class="rail-stages">
@@ -91,9 +92,9 @@
 						</div>
 					</div>
 					{#if current.id === 'welcome'}
-						<p class="wiz-body">A teacher does not write the code.</p>
+						<p class="wiz-body">{m.setup_welcome_body()}</p>
 						<div class="pillars">
-							{#each [['観', 'Observe', 'Watch how you and your assistants work together.'], ['教', 'Teach', 'Turn corrections into lasting patterns.'], ['守', 'Local', 'Nothing leaves your machine. Ever.']] as [k, t, d]}
+							{#each [['観', m.setup_pillar_observe(), m.setup_pillar_observe_desc()], ['教', m.setup_pillar_teach(), m.setup_pillar_teach_desc()], ['守', m.setup_pillar_local(), m.setup_pillar_local_desc()]] as [k, t, d]}
 								<div class="pillar">
 									<span class="kanji pillar-kanji">{k}</span>
 									<h3 class="pillar-title">{t}</h3>
@@ -101,7 +102,7 @@
 								</div>
 							{/each}
 						</div>
-						<p class="wiz-footnote">~4 minutes. Nothing leaves your machine.</p>
+						<p class="wiz-footnote">{m.setup_welcome_time()}</p>
 					{:else}
 						<p class="wiz-body">This step will be implemented in a future iteration.</p>
 					{/if}
@@ -110,8 +111,8 @@
 					<div class="wiz-header">
 						<span class="kanji wiz-kanji">{current.kanji}</span>
 						<div>
-							<h1 class="wiz-title display">Folders</h1>
-							<p class="wiz-tagline">Add the root paths where your code lives.</p>
+							<h1 class="wiz-title display">{m.setup_folders_title()}</h1>
+							<p class="wiz-tagline">{m.setup_folders_desc()}</p>
 						</div>
 					</div>
 					<div class="folders-list">
@@ -124,16 +125,16 @@
 					</div>
 					<form class="folder-add" onsubmit={(e) => { e.preventDefault(); addFolder() }}>
 						<input class="folder-input" type="text" placeholder="~/code/project" bind:value={newFolder} />
-						<button class="btn-solid" type="submit">Add</button>
+						<button class="btn-solid" type="submit">{m.setup_folders_add()}</button>
 					</form>
-					<p class="wiz-footnote">Minimum 1 folder required to continue.</p>
+					<p class="wiz-footnote">{m.setup_folders_min()}</p>
 
 				{:else if current.id === 'projects'}
 					<div class="wiz-header">
 						<span class="kanji wiz-kanji">{current.kanji}</span>
 						<div>
-							<h1 class="wiz-title display">Projects</h1>
-							<p class="wiz-tagline">Group related repositories into projects.</p>
+							<h1 class="wiz-title display">{m.setup_projects_title()}</h1>
+							<p class="wiz-tagline">{m.setup_projects_desc()}</p>
 						</div>
 					</div>
 					<div class="projects-grid">
@@ -156,7 +157,7 @@
 
 			<!-- ─── Bottom Progress Bar ────────────────────────────────── -->
 			<div class="wiz-bottom">
-				<button class="btn-outline" onclick={back} disabled={currentStep === 0}>Back</button>
+				<button class="btn-outline" onclick={back} disabled={currentStep === 0}>{m.setup_back()}</button>
 				<div class="progress-ticks">
 					{#each steps as _, i}
 						<span class="tick" class:filled={i <= currentStep}></span>
@@ -167,7 +168,7 @@
 					onclick={next}
 					disabled={!isLastStep && current.id === 'folders' && folders.length === 0}
 				>
-					{isLastStep ? 'Enter' : 'Continue'}
+					{isLastStep ? m.setup_enter() : m.setup_continue()}
 				</button>
 			</div>
 		</div>

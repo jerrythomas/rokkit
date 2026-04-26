@@ -1,6 +1,7 @@
 <script>
 	import Sparkline from '$lib/components/Sparkline.svelte'
 	import EnsoRing from '$lib/components/EnsoRing.svelte'
+	import { m } from '$lib/paraglide/messages.js'
 
 	const { data } = $props()
 </script>
@@ -11,15 +12,15 @@
 	<div class="greeting-row">
 		<div class="greeting-left">
 			<span class="greeting-date mono">{data.greeting.date}</span>
-			<h1 class="greeting-title display">Good morning, {data.greeting.name}.</h1>
+			<h1 class="greeting-title display">{m.greeting_morning({ name: data.greeting.name })}</h1>
 		</div>
 		<div class="greeting-right">
 			<EnsoRing score={data.ftr.score} size={110} />
 			<div class="ftr-text">
-				<span class="ftr-label mono">First-Try-Right · {data.ftr.period}</span>
+				<span class="ftr-label mono">{m.ftr_label()} · {data.ftr.period}</span>
 				<Sparkline data={data.ftr.trend} width={150} height={36} />
 				<span class="ftr-delta mono">
-					{data.ftr.delta > 0 ? '↑' : '↓'} {Math.abs(data.ftr.delta)}% vs prior
+					{m.ftr_vs_prior({ delta: Math.abs(data.ftr.delta).toString() })}
 				</span>
 			</div>
 		</div>
@@ -34,8 +35,8 @@
 			<h2 class="koan-title display">{data.koan.title}</h2>
 			<p class="koan-body">{data.koan.explanation}</p>
 			<div class="koan-actions">
-				<button class="btn-solid">Draft a persona →</button>
-				<span class="koan-impact">Projected FTR +14% · {data.koan.impact}</span>
+				<button class="btn-solid">{m.koan_action()}</button>
+				<span class="koan-impact">{m.koan_projected_ftr({ pct: '14' })} · {data.koan.impact}</span>
 				<span style="flex:1"></span>
 				<span class="koan-evidence mono">{data.koan.evidence}</span>
 			</div>
@@ -45,7 +46,7 @@
 	<!-- ─── Insights + Adopted (two-column) ────────────────────────────── -->
 	<div class="two-col">
 		<section class="insights-col">
-			<h3 class="section-header display">Also worth noticing</h3>
+			<h3 class="section-header display">{m.section_insights()}</h3>
 			<div class="insight-list">
 				{#each data.insights as insight (insight.id)}
 					<div class="insight-row" data-tone={insight.tone}>
@@ -60,7 +61,7 @@
 		</section>
 
 		<section class="adopted-col">
-			<h3 class="section-header display">System has learned</h3>
+			<h3 class="section-header display">{m.section_adopted()}</h3>
 			<div class="adopted-list">
 				{#each data.adoptedTeachings as teaching, i}
 					<div class="adopted-card">
@@ -73,7 +74,7 @@
 
 	<!-- ─── Recent Sessions ────────────────────────────────────────────── -->
 	<section class="sessions-section">
-		<h3 class="section-header display">Recent sessions</h3>
+		<h3 class="section-header display">{m.section_sessions()}</h3>
 		<div class="sessions-table">
 			{#each data.sessions as session (session.id)}
 				<div class="session-row">
@@ -81,7 +82,7 @@
 					<span class="session-project mono">{session.project}</span>
 					<span class="session-title">{session.title}</span>
 					<span class="session-corrections mono">
-						{session.corrections === 0 ? 'first-try' : `${session.corrections}×`}
+						{session.corrections === 0 ? m.session_first_try() : m.session_corrections({ count: session.corrections.toString() })}
 					</span>
 					<span class="session-duration mono">{session.duration}</span>
 					<span class="session-time mono">{session.time}</span>
