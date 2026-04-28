@@ -20,9 +20,9 @@ export async function goTo(page: Page, path: string, locale: Locale = 'en') {
 	await waitForFonts(page)
 }
 
-/** Set color mode via data-mode attribute on <html> */
+/** Set color mode via data-mode attribute on <body> */
 export async function setMode(page: Page, mode: Mode) {
-	await page.evaluate((m) => document.documentElement.setAttribute('data-mode', m), mode)
+	await page.evaluate((m) => document.body.setAttribute('data-mode', m), mode)
 	// Let CSS transitions settle
 	await page.waitForTimeout(300)
 }
