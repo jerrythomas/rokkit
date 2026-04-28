@@ -3,6 +3,23 @@
 Chronological log of confirmations, progress, milestones, and decisions.
 Design details live in `docs/design/` — modular docs per module.
 
+### Phase 3: Playwright Visual Baseline — complete (2026-04-28)
+
+**What was done:**
+
+- Installed Playwright in `demo/` with Chromium at 1440x900
+- Created test helpers (`e2e/helpers.ts`): locale navigation, mode switching (body data-mode), font wait
+- Observatory snapshots: 4 smoke + 5 full-page (en light/dark, es light, ar light/dark) + 4 section-level (sidebar, koan, insights, sessions table)
+- Sessions snapshots: 2 smoke + 3 full-page (en light/dark, ar RTL) + 2 section (retro, table) + 1 filtered state
+- Setup wizard snapshots: 2 smoke + 5 full-page (folders light/dark, welcome light, welcome ar-rtl, projects light) + 2 stepper rail (default + mid-wizard)
+- All 30 tests pass on Chromium with zero flaky diffs
+
+**Tests:** 30 visual regression tests, 22 snapshot PNGs
+
+**Commits:** `c7b177bc` config, `f4ef4abd` helpers, `616f5adc` observatory, `7a4fe487` sessions, `9d8ba7c1` setup wizard, `f93db9ac` Chromium-only cleanup
+
+---
+
 ### P4 design docs + responsive-grid + layout doc — complete (2026-03-27)
 
 **What was done:**
