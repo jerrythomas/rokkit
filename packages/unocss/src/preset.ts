@@ -52,7 +52,8 @@ function buildSafelist() {
 
 const RADIUS_PRESETS = {
 	sharp: { sm: '0', md: '0', lg: '0', xl: '0', full: '9999px' },
-	rounded: { sm: '0.25rem', md: '0.375rem', lg: '0.5rem', xl: '0.75rem', full: '9999px' },
+	soft: { sm: '0.125rem', md: '0.375rem', lg: '0.625rem', xl: '0.75rem', full: '9999px' },
+	rounded: { sm: '0.25rem', md: '0.5rem', lg: '0.75rem', xl: '1rem', full: '9999px' },
 	pill: { sm: '9999px', md: '9999px', lg: '9999px', xl: '9999px', full: '9999px' }
 }
 
