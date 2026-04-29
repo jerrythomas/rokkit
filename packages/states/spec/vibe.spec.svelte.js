@@ -84,6 +84,7 @@ describe('vibe', () => {
 			surface: 'slate',
 			primary: 'ambrosia',
 			secondary: 'pink',
+			tertiary: 'violet',
 			success: 'green',
 			warning: 'yellow'
 		})
