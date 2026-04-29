@@ -1,0 +1,41 @@
+/**
+ * Roundedness Axis — CSS Custom Property Scale
+ *
+ * Decoupled from density. Place data-radius on any container;
+ * descendants inherit automatically.
+ *
+ * Presets: sharp → soft (default) → rounded → pill
+ */
+
+:root,
+[data-radius='soft'] {
+  --radius-sm: 0.125rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.625rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
+}
+
+[data-radius='sharp'] {
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-full: 9999px;
+}
+
+[data-radius='rounded'] {
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-full: 9999px;
+}
+
+[data-radius='pill'] {
+  --radius-sm: 9999px;
+  --radius-md: 9999px;
+  --radius-lg: 9999px;
+  --radius-xl: 9999px;
+  --radius-full: 9999px;
+}

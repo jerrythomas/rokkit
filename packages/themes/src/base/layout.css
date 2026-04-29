@@ -1,0 +1,17 @@
+/**
+ * Layout Tokens — App-Level Spacing
+ *
+ * Structural layout dimensions for app shells.
+ * Override per-app by redefining these custom properties.
+ */
+
+:root {
+  --layout-sidebar-width: 240px;
+  --layout-sidebar-collapsed: 64px;
+  --layout-header-height: 56px;
+  --layout-content-max-width: 1280px;
+  --layout-section-gap: 2rem;
+  --layout-section-padding: 1.5rem;
+  --layout-content-padding: 2rem;
+  --layout-card-gap: 1rem;
+}
