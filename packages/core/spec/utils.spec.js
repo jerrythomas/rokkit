@@ -16,7 +16,8 @@ import {
 	oklch2hex,
 	hex2hsl,
 	hexToComponents,
-	colorToRgb
+	colorToRgb,
+	isIconClass
 } from '../src/utils.js'
 
 describe('utils', () => {
@@ -375,6 +376,26 @@ describe('utils', () => {
 		it('should still pass through non-hex values regardless of space', () => {
 			expect(colorToRgb('oklch(60% 0.18 250)', 'oklch')).toBe('oklch(60% 0.18 250)')
 			expect(colorToRgb('rebeccapurple', 'hsl')).toBe('rebeccapurple')
+		})
+	})
+	describe('isIconClass', () => {
+		it('should return true for CSS icon class strings', () => {
+			expect(isIconClass('i-lucide:home')).toBe(true)
+			expect(isIconClass('i-semantic:check')).toBe(true)
+			expect(isIconClass('i-glyph:settings')).toBe(true)
+		})
+
+		it('should return false for literal text (kanji, emoji, etc.)', () => {
+			expect(isIconClass('聴')).toBe(false)
+			expect(isIconClass('先')).toBe(false)
+			expect(isIconClass('🏠')).toBe(false)
+			expect(isIconClass('A')).toBe(false)
+		})
+
+		it('should return false for empty/null values', () => {
+			expect(isIconClass('')).toBe(false)
+			expect(isIconClass(null)).toBe(false)
+			expect(isIconClass(undefined)).toBe(false)
 		})
 	})
 })

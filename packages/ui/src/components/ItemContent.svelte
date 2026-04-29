@@ -1,4 +1,5 @@
 <script>
+	import { isIconClass } from '@rokkit/core'
 	const { proxy, showIcon = true, showSubtext = true } = $props()
 </script>
 
@@ -6,7 +7,11 @@
 	{#if proxy.get('avatar')}
 		<img data-item-avatar src={proxy.get('avatar')} alt={proxy.get('tooltip') ?? proxy.label} />
 	{:else if proxy.get('icon')}
-		<span data-item-icon class={proxy.get('icon')} aria-hidden="true"></span>
+		{#if isIconClass(proxy.get('icon'))}
+			<span data-item-icon class={proxy.get('icon')} aria-hidden="true"></span>
+		{:else}
+			<span data-item-icon-literal aria-hidden="true">{proxy.get('icon')}</span>
+		{/if}
 	{/if}
 {/if}
 {#if proxy.label || (showSubtext && proxy.get('subtext'))}

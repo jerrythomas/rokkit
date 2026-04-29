@@ -143,7 +143,9 @@ describe('Grid', () => {
 	it('renders item icons via default ItemContent', () => {
 		const { container } = render(Grid, { items: flatItems })
 		const tiles = container.querySelectorAll('[data-grid-item]')
-		const icon = tiles[0]?.querySelector('[data-item-icon]')
+		const icon =
+			tiles[0]?.querySelector('[data-item-icon]') ??
+			tiles[0]?.querySelector('[data-item-icon-literal]')
 		expect(icon).toBeTruthy()
 	})
 

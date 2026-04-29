@@ -391,6 +391,17 @@ export function colorToRgb(value, space) {
 	return value
 }
 
+
+/**
+ * Detects whether an icon value is a CSS class (i-*) or literal text (kanji, emoji, etc.)
+ * @param {string | null | undefined} icon
+ * @returns {boolean} true if icon is a CSS class string
+ */
+export function isIconClass(icon) {
+	if (!icon || typeof icon !== 'string') return false
+	return icon.startsWith('i-')
+}
+
 /**
  * Checks if a string is a valid image URL
  *
