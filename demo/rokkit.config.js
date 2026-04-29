@@ -2,7 +2,11 @@ export default {
 	colors: {
 		surface: 'slate',
 		primary: 'orange',
-		secondary: 'pink'
+		secondary: 'pink',
+		tertiary: 'violet'
+	},
+	shape: {
+		radius: 'soft'
 	},
 	skins: {
 		default: { surface: 'slate', primary: 'orange', secondary: 'pink' },

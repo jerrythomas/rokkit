@@ -57,9 +57,8 @@
   --border-active: 1px solid var(--sumi);                         /* selected/active */
   --ink-line:     1px solid oklch(0.22 0.012 50 / 0.06);         /* very faint divider */
 
-  /* ── Radii ──────────────────────────────────────────────── */
-  --radius:    6px;
-  --radius-lg: 10px;
+  /* ── Radii (bridge to generic tokens) ──────────────────── */
+  --radius: var(--radius-md);
 
   /* ── Spacing scale (4px base) ───────────────────────────── */
   --space-1: 4px;

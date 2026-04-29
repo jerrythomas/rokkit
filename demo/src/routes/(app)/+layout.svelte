@@ -16,7 +16,7 @@
 	)
 </script>
 
-<div class="app-layout" class:collapsed={sidebarCollapsed}>
+<div class="app-layout" class:collapsed={sidebarCollapsed} data-radius="soft">
 
 	<!-- ─── Sidebar ────────────────────────────────────────────────────────── -->
 	<aside class="sidebar">
@@ -104,12 +104,12 @@
 <style>
 	.app-layout {
 		display: grid;
-		grid-template-columns: 240px 1fr;
+		grid-template-columns: var(--layout-sidebar-width) 1fr;
 		min-height: 100vh;
 		transition: grid-template-columns 200ms ease;
 	}
 	.app-layout.collapsed {
-		grid-template-columns: 64px 1fr;
+		grid-template-columns: var(--layout-sidebar-collapsed) 1fr;
 	}
 
 	/* ── Sidebar ────────────────────────────────────────────────── */
