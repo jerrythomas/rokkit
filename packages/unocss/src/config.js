@@ -5,6 +5,7 @@ export const DEFAULT_CONFIG = {
 	colors: {
 		primary: DEFAULT_THEME_MAPPING.primary,
 		secondary: DEFAULT_THEME_MAPPING.secondary,
+		tertiary: DEFAULT_THEME_MAPPING.tertiary,
 		accent: DEFAULT_THEME_MAPPING.accent,
 		surface: DEFAULT_THEME_MAPPING.surface,
 		success: DEFAULT_THEME_MAPPING.success,

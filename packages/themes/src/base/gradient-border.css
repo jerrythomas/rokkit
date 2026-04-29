@@ -1,0 +1,32 @@
+/**
+ * Gradient Border Wrapper — Base Structural CSS
+ *
+ * Usage:
+ *   <div data-gradient-border>
+ *     <div data-gradient-border-inner>content</div>
+ *   </div>
+ *
+ * Themes set the gradient on [data-gradient-border] background.
+ * Non-gradient themes set background: transparent and use regular border.
+ */
+
+[data-gradient-border] {
+  padding: var(--density-border-width, 1px);
+  border-radius: var(--density-radius-base, var(--radius-md));
+  background: var(--gradient-border-bg, transparent);
+}
+
+[data-gradient-border-inner] {
+  border-radius: calc(var(--density-radius-base, var(--radius-md)) - var(--density-border-width, 1px));
+  background: var(--gradient-border-inner-bg, inherit);
+}
+
+/* Fallback: when no gradient, use a standard border */
+[data-gradient-border]:not([style*='--gradient-border-bg']) {
+  padding: 0;
+  border: var(--density-border-width, 1px) solid var(--gradient-border-color, currentColor);
+}
+
+[data-gradient-border]:not([style*='--gradient-border-bg']) [data-gradient-border-inner] {
+  border-radius: var(--density-radius-base, var(--radius-md));
+}

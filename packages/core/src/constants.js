@@ -156,6 +156,7 @@ export const DEFAULT_THEME_MAPPING = {
 	surface: 'slate',
 	primary: 'orange',
 	secondary: 'pink',
+	tertiary: 'violet',
 	accent: 'sky',
 	success: 'green',
 	warning: 'yellow',

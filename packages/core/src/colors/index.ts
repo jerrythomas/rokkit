@@ -10,6 +10,7 @@ export const defaultPalette = [
 	'surface',
 	'primary',
 	'secondary',
+	'tertiary',
 	'accent',
 	'success',
 	'warning',

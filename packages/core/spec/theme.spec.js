@@ -4,6 +4,24 @@ import { shadesOf, themeRules, semanticShortcuts, Theme } from '../src/theme'
 const palettes = ['primary', 'secondary', 'other']
 
 describe('Theme class', () => {
+	it('should include tertiary in default mapping', () => {
+		const theme = new Theme()
+		expect(theme.mapping).toHaveProperty('tertiary')
+	})
+
+	it('should generate tertiary palette rules', () => {
+		const theme = new Theme()
+		const palette = theme.getPalette()
+		expect(palette).toHaveProperty('--color-tertiary')
+		expect(palette).toHaveProperty('--color-tertiary-500')
+	})
+
+	it('should generate tertiary semantic shortcuts', () => {
+		const theme = new Theme()
+		const shortcuts = theme.getShortcuts('tertiary')
+		expect(shortcuts.length).toBeGreaterThan(0)
+	})
+
 	it('should set and get colors using public API only', () => {
 		const theme = new Theme()
 		const colors = { primary: { 500: 'rgb(1,2,3)' }, secondary: { 500: 'rgb(4,5,6)' } }
@@ -312,6 +330,18 @@ describe('themeRules', () => {
 		'--color-surface-800': '30,41,59',
 		'--color-surface-900': '15,23,42',
 		'--color-surface-950': '2,6,23',
+		'--color-tertiary': '167,139,250',
+		'--color-tertiary-100': '237,233,254',
+		'--color-tertiary-200': '221,214,254',
+		'--color-tertiary-300': '196,181,253',
+		'--color-tertiary-400': '167,139,250',
+		'--color-tertiary-50': '245,243,255',
+		'--color-tertiary-500': '139,92,246',
+		'--color-tertiary-600': '124,58,237',
+		'--color-tertiary-700': '109,40,217',
+		'--color-tertiary-800': '91,33,182',
+		'--color-tertiary-900': '76,29,149',
+		'--color-tertiary-950': '46,16,101',
 		'--color-warning': '250,204,21',
 		'--color-warning-100': '254,249,195',
 		'--color-warning-200': '254,240,138',
