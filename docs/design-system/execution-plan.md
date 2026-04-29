@@ -8,11 +8,11 @@
 ## Overview
 
 ```
-Phase 1: Demo App Foundation (SvelteKit + mockup replication)
-Phase 2: Internationalization (Paraglide + Spanish + Arabic/RTL)
-Phase 3: Playwright Baseline (visual regression snapshots)
-Phase 4: Design Token System (extend @rokkit/core + preset)
-Phase 5: Zen-Sumi Theme (new theme in demo, then promote)
+Phase 1: Demo App Foundation (SvelteKit + mockup replication)           ✅ DONE
+Phase 2: Internationalization (Paraglide + Spanish + Arabic/RTL)        ✅ DONE
+Phase 3: Playwright Baseline (visual regression snapshots)              ✅ DONE
+Phase 4: Design Token System (extend @rokkit/core + preset)             ✅ DONE
+Phase 5: Zen-Sumi Theme (new theme in demo, then promote)              ⬜ NEXT
 Phase 6: Component Migration (replace custom → rokkit, screen by screen)
 Phase 7: Theme Rebuild (rokkit, minimal, frosted, material)
 Phase 8: Settings Panel + Theme Switcher
@@ -194,7 +194,12 @@ setup-wizard.spec.ts
 
 ---
 
-## Phase 4: Design Token System
+## Phase 4: Design Token System ✅
+
+> **Status:** Complete. Commits `3d533bbe`..`500b1b04` on develop.
+> 7 sub-tasks: tertiary color + nullable resolution, roundedness axis, layout tokens, gradient border, literal icon support, UnoCSS preset updates, demo wiring.
+> 3292 unit tests passing, 30 e2e tests passing. Verified in browser.
+> Plan: `docs/superpowers/plans/2026-04-29-phase4-design-tokens.md`
 
 **Goal**: Extend @rokkit/core and @rokkit/unocss to support the new token architecture.
 

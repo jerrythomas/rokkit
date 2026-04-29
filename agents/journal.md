@@ -2743,4 +2743,54 @@ const sizeScale = buildSizeScale(data, 'value', 20) // → sqrt scale [0, 20]
 
 **Final state:** 3206 tests passing, 0 lint errors.
 
-**Final state:** 3189 tests passing, 0 lint errors.
+## 2026-04-29 — Phase 4: Design Token System (Complete)
+
+**Summary:** Extended @rokkit/core, @rokkit/themes, @rokkit/unocss, and @rokkit/ui with the new design token architecture. Wired all tokens into the demo app and verified in browser.
+
+**Tertiary color + nullable resolution**
+- Added `tertiary: 'violet'` to `DEFAULT_THEME_MAPPING` in constants.js
+- Added `tertiary` to `defaultPalette` in colors/index.ts
+- Added `tertiary` to `DEFAULT_CONFIG.colors` in unocss/config.js
+- Implemented `resolveColors()` in theme.ts with fallback chain: tertiary→primary, secondary→primary, accent→primary, error→danger
+- Updated Theme constructor and mapping setter to call `resolveColors()`
+- 8 new tests (3 tertiary existence + 5 nullable resolution)
+- Commits: `3d533bbe`..`cd500184`
+
+**Roundedness axis**
+- Created `packages/themes/src/base/radius.css` — 4 presets: sharp, soft (default), rounded, pill
+- Each preset defines `--radius-sm`, `--radius-md`, `--radius-lg`, `--radius-xl`, `--radius-full`
+- Decoupled from density: removed hardcoded fallbacks in `density.css`, now references `--radius-*` directly
+- Added `soft` preset to `RADIUS_PRESETS` in unocss/preset.ts
+- Commit: `3d533bbe`, `55240bbf`
+
+**Layout tokens**
+- Created `packages/themes/src/base/layout.css` — 8 tokens: sidebar-width (240px), sidebar-collapsed (64px), header-height (56px), content-max-width (1280px), section-gap, section-padding, content-padding, card-gap
+- Commit: `3d533bbe`
+
+**Gradient border wrapper**
+- Created `packages/themes/src/base/gradient-border.css` — structural pattern: outer element with gradient bg + padding as "border", inner element covers content
+- Fallback rule for non-gradient themes uses standard border
+- Commit: `6eddb226`
+
+**Literal icon support**
+- Added `isIconClass()` to `@rokkit/core/utils.js` — returns true for `i-*` CSS class strings, false for kanji/emoji/text
+- Updated `ItemContent.svelte` to branch: CSS class icons → `[data-item-icon]`, literal text → `[data-item-icon-literal]`
+- Added base CSS for `[data-item-icon-literal]` in item.css (flex-shrink, centered, density-icon-size)
+- 3 new tests for isIconClass
+- Commit: `4b527027`
+
+**Demo app wiring**
+- Added `tertiary: 'violet'` and `shape: { radius: 'soft' }` to demo/rokkit.config.js
+- Replaced hardcoded `240px`/`64px` sidebar widths with `var(--layout-sidebar-width)`/`var(--layout-sidebar-collapsed)` in layout.svelte
+- Replaced hardcoded `--radius: 6px` with `var(--radius-md)` in app.css
+- Added `data-radius="soft"` to app root div
+- Commit: `500b1b04`
+
+**Browser verification**
+- All tokens confirmed live in browser dev tools (layout, radius, tertiary color)
+- Radius axis responsive: sharp→0, soft→0.375rem, rounded→0.5rem, pill→9999px
+- Sidebar collapse works via layout tokens (240px → 64px)
+- All 4 screens render correctly (Observatory, Sessions, Setup, Settings)
+- No visual regressions
+
+**Final state:** 3292 tests passing (245 files), 30 e2e tests passing, 0 new lint errors.
