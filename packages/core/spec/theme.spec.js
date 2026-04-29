@@ -383,6 +383,38 @@ describe('themeRules', () => {
 	})
 })
 
+describe('resolveColors — nullable fallback chain', () => {
+  it('should resolve null tertiary to primary palette', () => {
+    const theme = new Theme({ mapping: { tertiary: null } })
+    const palette = theme.getPalette()
+    expect(palette['--color-tertiary-500']).toBe(palette['--color-primary-500'])
+  })
+
+  it('should resolve null secondary to primary palette', () => {
+    const theme = new Theme({ mapping: { secondary: null } })
+    const palette = theme.getPalette()
+    expect(palette['--color-secondary-500']).toBe(palette['--color-primary-500'])
+  })
+
+  it('should resolve null accent to primary palette', () => {
+    const theme = new Theme({ mapping: { accent: null } })
+    const palette = theme.getPalette()
+    expect(palette['--color-accent-500']).toBe(palette['--color-primary-500'])
+  })
+
+  it('should resolve null error to danger palette', () => {
+    const theme = new Theme({ mapping: { error: null } })
+    const palette = theme.getPalette()
+    expect(palette['--color-error-500']).toBe(palette['--color-danger-500'])
+  })
+
+  it('should not resolve explicitly set colors', () => {
+    const theme = new Theme({ mapping: { tertiary: 'teal' } })
+    const palette = theme.getPalette()
+    expect(palette['--color-tertiary-500']).not.toBe(palette['--color-primary-500'])
+  })
+})
+
 describe('semanticShortcuts', () => {
 	it('should generate shortcuts for secondary color', () => {
 		const shortcuts = semanticShortcuts('secondary')

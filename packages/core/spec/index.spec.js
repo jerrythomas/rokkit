@@ -49,7 +49,6 @@ describe('@rokkit/core', () => {
 			'hex2hsl',
 			'hexToComponents',
 			'colorToRgb',
-			'isIconClass',
 			'getImage',
 			'flattenNestedList',
 			'toInitCapCase',

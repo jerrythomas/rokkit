@@ -159,6 +159,32 @@ export function contrastShortcuts(name) {
 }
 
 /**
+ * Fallback chain for nullable color mappings.
+ * If a semantic color is null, it inherits from another semantic color.
+ */
+const COLOR_FALLBACKS = {
+	tertiary: 'primary',
+	secondary: 'primary',
+	accent: 'primary',
+	error: 'danger'
+}
+
+/**
+ * Resolves null values in a color mapping by following the fallback chain.
+ * @param {Record<string, string | null>} mapping
+ * @returns {Record<string, string>}
+ */
+function resolveColors(mapping) {
+	const resolved = { ...mapping }
+	for (const [key, fallbackKey] of Object.entries(COLOR_FALLBACKS)) {
+		if (resolved[key] === null || resolved[key] === undefined) {
+			resolved[key] = resolved[fallbackKey] ?? DEFAULT_THEME_MAPPING[fallbackKey]
+		}
+	}
+	return resolved
+}
+
+/**
  * Theme class for managing color palettes, mappings, and semantic shortcuts.
  */
 export class Theme {
@@ -172,7 +198,7 @@ export class Theme {
 	 */
 	constructor({ colors = defaultColors, mapping = DEFAULT_THEME_MAPPING, colorSpace = 'rgb' } = {}) {
 		this.#colors = { ...defaultColors, ...colors }
-		this.#mapping = { ...DEFAULT_THEME_MAPPING, ...mapping }
+		this.#mapping = resolveColors({ ...DEFAULT_THEME_MAPPING, ...mapping })
 		this.#colorSpace = colorSpace
 	}
 
@@ -187,7 +213,7 @@ export class Theme {
 		return this.#mapping
 	}
 	set mapping(mapping) {
-		this.#mapping = { ...mapping }
+		this.#mapping = resolveColors({ ...mapping })
 	}
 
 	get colorSpace() {
