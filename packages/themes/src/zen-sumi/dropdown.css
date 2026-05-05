@@ -1,0 +1,53 @@
+/**
+ * Dropdown - Zen-Sumi Theme Styles
+ *
+ * Hairline trigger. Panel: paper bg, no shadow.
+ * Options: transparent → surface-z2 on hover.
+ */
+
+[data-style='zen-sumi'] [data-dropdown-trigger] {
+  @apply border-surface-z3 text-surface-z7 border bg-transparent bg-none;
+}
+
+[data-style='zen-sumi'] [data-dropdown-trigger]:hover:not(:disabled) {
+  @apply text-surface-z9 border-surface-z4 bg-none;
+}
+
+[data-style='zen-sumi'] [data-dropdown-trigger]:focus-visible {
+  @apply outline-none;
+  box-shadow: 0 0 0 1px oklch(var(--color-surface-z5) / 1);
+}
+
+[data-style='zen-sumi'] [data-dropdown][data-open='true'] [data-dropdown-trigger] {
+  @apply border-surface-z5 bg-none;
+}
+
+[data-style='zen-sumi'] [data-dropdown-trigger] [data-dropdown-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='zen-sumi'] [data-dropdown-trigger] [data-dropdown-arrow] {
+  @apply text-surface-z4;
+}
+
+[data-style='zen-sumi'] [data-dropdown-panel] {
+  @apply bg-surface-z0 border-surface-z2 border bg-none;
+  box-shadow: none;
+}
+
+[data-style='zen-sumi'] [data-dropdown-option] {
+  @apply text-surface-z7;
+}
+
+[data-style='zen-sumi'] [data-dropdown-option]:hover:not(:disabled),
+[data-style='zen-sumi'] [data-dropdown-option]:focus:not(:disabled) {
+  @apply bg-surface-z2 text-surface-z9 bg-none outline-none;
+}
+
+[data-style='zen-sumi'] [data-dropdown-option][data-active='true'] {
+  @apply text-surface-z9 border-primary-z4 border-l-2 bg-none;
+}
+
+[data-style='zen-sumi'] [data-dropdown-separator] {
+  @apply bg-surface-z2 bg-none;
+}

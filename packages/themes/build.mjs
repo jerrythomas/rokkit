@@ -190,7 +190,7 @@ async function buildFile(inputPath, outputName, label) {
   const fullCSS = resolveImports(inputPath)
   const compiled = await processCSS(fullCSS, outputName)
   const fixed = fixModeSelectors(compiled)
-  writeFileSync(join(distDir, outputName), fixed, 'utf-8')
+  writeFileSync(join(distDir, outputName), fixed, 'utf-8') // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal — outputName is derived from a hardcoded string array, not user input
   console.log(`✓ dist/${outputName} (${label})`)
 }
 
@@ -218,7 +218,8 @@ async function build() {
     ['daisy-ui', 'rounded-full + bold fills'],
     ['bits-ui', 'rounded-lg + shadow-sm'],
     ['carbon', 'square + bottom-border inputs'],
-    ['ant-design', 'thin borders + dense layout']
+    ['ant-design', 'thin borders + dense layout'],
+    ['zen-sumi', 'ink on paper — no shadows, no gradients']
   ]) {
     await buildFile(join(srcDir, name, 'index.css'), `${name}.css`, label)
   }
@@ -235,8 +236,10 @@ async function build() {
     'daisy-ui',
     'bits-ui',
     'carbon',
-    'ant-design'
+    'ant-design',
+    'zen-sumi'
   ]
+  // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal — name is from a hardcoded string array, not user input
   const bundleParts = allThemes.map((name) => readFileSync(join(distDir, `${name}.css`), 'utf-8'))
   writeFileSync(join(distDir, 'index.css'), bundleParts.join('\n'), 'utf-8')
   console.log('✓ dist/index.css (full bundle)')

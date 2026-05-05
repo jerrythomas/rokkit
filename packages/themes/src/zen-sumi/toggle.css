@@ -1,0 +1,51 @@
+/**
+ * Toggle - Zen-Sumi Theme Styles
+ *
+ * Pill container with filled active state.
+ * Inactive: transparent. Hover: surface-z2. Active: ink fill (surface-z9).
+ */
+
+/* =============================================================================
+   Toggle Container
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-toggle] {
+  @apply bg-surface-z1 border-surface-z2 border;
+  border-radius: var(--radius-md, 0.375rem);
+}
+
+/* =============================================================================
+   Toggle Options
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-toggle-option] {
+  @apply text-surface-z6 border-0 border-solid border-transparent;
+}
+
+[data-style='zen-sumi'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']),
+[data-style='zen-sumi'] [data-toggle-option]:focus:not(:disabled):not([data-disabled='true']) {
+  @apply bg-surface-z2 text-surface-z8;
+}
+
+/* Selected state — ink fill */
+[data-style='zen-sumi'] [data-toggle-option][data-selected='true'] {
+  @apply bg-surface-z9 text-surface-z0 bg-none;
+  font-weight: 500;
+}
+
+/* =============================================================================
+   Toggle Icon
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-toggle-option] [data-toggle-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='zen-sumi'] [data-toggle-option]:hover:not(:disabled) [data-toggle-icon],
+[data-style='zen-sumi'] [data-toggle-option]:focus:not(:disabled) [data-toggle-icon] {
+  @apply text-surface-z7;
+}
+
+[data-style='zen-sumi'] [data-toggle-option][data-selected='true'] [data-toggle-icon] {
+  @apply text-surface-z1;
+}

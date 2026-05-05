@@ -1,0 +1,128 @@
+/**
+ * List - Zen-Sumi Theme Styles
+ *
+ * Transparent default. Paper-2 on hover. Ink bg + paper text on active.
+ * Primary (shu) accent on active icon.
+ * No shadows. Clean state transitions through background tone only.
+ */
+
+/* =============================================================================
+   List Container
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-list]:focus-within {
+  @apply outline-none;
+}
+
+/* =============================================================================
+   List Items
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-list] [data-list-item] {
+  @apply text-surface-z7 border-0 border-solid border-transparent bg-transparent;
+}
+
+[data-style='zen-sumi'] [data-list] a[data-list-item],
+[data-style='zen-sumi'] [data-list] button[data-list-item] {
+  @apply text-surface-z6;
+}
+
+/* Hover and focus — subtle paper wash */
+[data-style='zen-sumi']
+  [data-list]
+  [data-list-item]:hover:not(:disabled):not([data-disabled='true']),
+[data-style='zen-sumi']
+  [data-list]
+  [data-list-item]:focus:not(:disabled):not([data-disabled='true']) {
+  @apply bg-surface-z2 text-surface-z8 bg-none outline-none;
+}
+
+/* Active state — ink wash background */
+[data-style='zen-sumi'] [data-list] [data-list-item][data-active='true'] {
+  @apply bg-surface-z1 text-surface-z9 bg-none;
+}
+
+/* Active state — richer ink when list has focus */
+[data-style='zen-sumi'] [data-list]:focus-within [data-list-item][data-active='true'] {
+  @apply bg-surface-z2 text-surface-z9 bg-none;
+}
+
+/* Active + hover/focus */
+[data-style='zen-sumi'] [data-list] [data-list-item][data-active='true']:hover:not(:disabled),
+[data-style='zen-sumi'] [data-list] [data-list-item][data-active='true']:focus:not(:disabled) {
+  @apply bg-surface-z3 bg-none;
+}
+
+/* =============================================================================
+   Item Elements
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-list] [data-list-item] [data-item-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='zen-sumi'] [data-list] [data-list-item]:hover:not(:disabled) [data-item-icon],
+[data-style='zen-sumi'] [data-list] [data-list-item]:focus:not(:disabled) [data-item-icon] {
+  @apply text-surface-z6;
+}
+
+[data-style='zen-sumi'] [data-list] [data-list-item][data-active='true'] [data-item-icon] {
+  @apply text-primary-z5;
+}
+
+[data-style='zen-sumi'] [data-list] [data-list-item] [data-item-description] {
+  @apply text-surface-z5;
+}
+
+[data-style='zen-sumi'] [data-list] [data-list-item][data-active='true'] [data-item-description] {
+  @apply text-surface-z6;
+}
+
+[data-style='zen-sumi'] [data-list] [data-list-item] [data-item-badge] {
+  @apply text-surface-z6 border-surface-z3 border bg-transparent bg-none;
+}
+
+[data-style='zen-sumi'] [data-list] [data-list-item][data-active='true'] [data-item-badge] {
+  @apply text-surface-z8 border-surface-z4 bg-none;
+}
+
+/* =============================================================================
+   Groups
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-list] [data-list-group] {
+  @apply text-surface-z5;
+}
+
+[data-style='zen-sumi'] [data-list] [data-list-group]:hover:not(:disabled),
+[data-style='zen-sumi'] [data-list] [data-list-group]:focus:not(:disabled) {
+  @apply text-surface-z7 bg-none;
+}
+
+/* =============================================================================
+   Separator
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-list] [data-list-separator] {
+  @apply bg-surface-z2 bg-none;
+}
+
+/* =============================================================================
+   Multi-Selection
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-list] [data-list-item][data-selected='true'] {
+  @apply text-primary-z6 border-primary-z4 border-l-2;
+}
+
+[data-style='zen-sumi'] [data-list]:focus-within [data-list-item][data-selected='true'] {
+  @apply text-primary-z7 border-primary-z5 border-l-2;
+}
+
+[data-style='zen-sumi'] [data-list] [data-list-item][data-selected='true']:hover:not(:disabled) {
+  @apply text-primary-z8;
+}
+
+[data-style='zen-sumi'] [data-list] [data-list-item][data-selected='true'] [data-item-icon] {
+  @apply text-primary-z5;
+}

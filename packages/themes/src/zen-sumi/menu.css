@@ -1,0 +1,91 @@
+/**
+ * Menu - Zen-Sumi Theme Styles
+ *
+ * Hairline trigger. Dropdown: paper bg, hairline border, no shadow.
+ * Items: transparent default, surface-z2 hover.
+ */
+
+/* =============================================================================
+   Menu Trigger
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-menu-trigger] {
+  @apply border-surface-z3 text-surface-z7 border bg-transparent bg-none;
+}
+
+[data-style='zen-sumi'] [data-menu-trigger]:hover:not(:disabled) {
+  @apply text-surface-z9 border-surface-z4 bg-none;
+}
+
+[data-style='zen-sumi'] [data-menu-trigger]:focus-visible {
+  @apply outline-none;
+  box-shadow: 0 0 0 1px oklch(var(--color-surface-z5) / 1);
+}
+
+[data-style='zen-sumi'] [data-menu][data-open='true'] [data-menu-trigger] {
+  @apply border-surface-z5 bg-none;
+}
+
+/* Trigger elements */
+[data-style='zen-sumi'] [data-menu-trigger] [data-menu-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='zen-sumi'] [data-menu-trigger]:hover:not(:disabled) [data-menu-icon] {
+  @apply text-surface-z7;
+}
+
+[data-style='zen-sumi'] [data-menu-trigger] [data-menu-arrow] {
+  @apply text-surface-z4;
+}
+
+/* =============================================================================
+   Menu Dropdown — paper bg, hairline border, no shadow
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-menu-dropdown] {
+  @apply bg-surface-z0 border-surface-z2 border bg-none;
+  box-shadow: none;
+}
+
+/* =============================================================================
+   Menu Items
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-menu-item] {
+  @apply text-surface-z7 border-0 border-solid border-transparent;
+}
+
+[data-style='zen-sumi'] [data-menu-item]:hover:not(:disabled),
+[data-style='zen-sumi'] [data-menu-item]:focus:not(:disabled) {
+  @apply bg-surface-z2 text-surface-z9 bg-none outline-none;
+}
+
+/* Item elements */
+[data-style='zen-sumi'] [data-menu-item] [data-item-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='zen-sumi'] [data-menu-item]:hover:not(:disabled) [data-item-icon] {
+  @apply text-surface-z6;
+}
+
+[data-style='zen-sumi'] [data-menu-item] [data-item-description] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Groups
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-menu-group] {
+  @apply text-surface-z4;
+}
+
+/* =============================================================================
+   Divider
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-menu-separator] {
+  @apply bg-surface-z2 bg-none;
+}

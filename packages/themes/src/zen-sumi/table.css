@@ -1,0 +1,118 @@
+/**
+ * Table - Zen-Sumi Theme Styles
+ *
+ * Clean, flat rows. Header: uppercase small text, hairline bottom border.
+ * No shadow on header. Row hover: surface-z1 wash. No bg on selected — left border only.
+ */
+
+/* =============================================================================
+   Header
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-table-header] th {
+  @apply text-surface-z5 border-surface-z2 border-b bg-transparent;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+[data-style='zen-sumi'] [data-table-header-cell][data-sortable='true']:hover {
+  @apply text-surface-z8;
+}
+
+[data-style='zen-sumi'] [data-table-header-cell][data-sort-order='ascending'],
+[data-style='zen-sumi'] [data-table-header-cell][data-sort-order='descending'] {
+  @apply text-primary-z6;
+}
+
+[data-style='zen-sumi'] [data-table-sort-icon] {
+  @apply text-surface-z4;
+}
+
+[data-style='zen-sumi']
+  [data-table-header-cell][data-sort-order='ascending']
+  [data-table-sort-icon],
+[data-style='zen-sumi']
+  [data-table-header-cell][data-sort-order='descending']
+  [data-table-sort-icon] {
+  @apply text-primary-z5;
+}
+
+/* =============================================================================
+   Caption
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-table-caption] {
+  @apply text-surface-z6;
+}
+
+/* =============================================================================
+   Rows
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-table-row] {
+  @apply text-surface-z7 border-surface-z2 border-b;
+}
+
+[data-style='zen-sumi'] [data-table-row]:hover {
+  @apply bg-surface-z1 text-surface-z8 bg-none;
+}
+
+[data-style='zen-sumi'] [data-table-row]:focus {
+  @apply text-surface-z9 bg-none outline-none;
+  box-shadow: inset 0 0 0 1px oklch(var(--color-surface-z4) / 1);
+}
+
+[data-style='zen-sumi'] [data-table-row][data-selected='true'] {
+  @apply text-primary-z7 border-l-primary-z4 border-l-2 bg-none;
+}
+
+/* =============================================================================
+   Striped
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-table-striped] [data-table-body] tr:nth-child(even) {
+  @apply bg-surface-z1;
+}
+
+/* =============================================================================
+   Empty
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-table-empty] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Cell Icon
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-table-cell] [data-cell-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='zen-sumi'] [data-table-row][data-selected='true'] [data-cell-icon] {
+  @apply text-primary-z5;
+}
+
+/* =============================================================================
+   Responsive Card Layout
+   ============================================================================= */
+
+@media (max-width: 639px) {
+  [data-style='zen-sumi'] [data-table-responsive] [data-table-row] {
+    @apply border-surface-z2 border bg-none;
+  }
+
+  [data-style='zen-sumi'] [data-table-responsive] [data-table-cell]::before {
+    @apply text-surface-z5;
+  }
+
+  [data-style='zen-sumi']
+    [data-table-responsive][data-table-striped]
+    [data-table-body]
+    tr:nth-child(even) {
+    background: unset;
+  }
+}

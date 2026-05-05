@@ -1,0 +1,37 @@
+/**
+ * Message - Zen-Sumi Theme Styles
+ *
+ * Restrained message banners. No shadows. Light tint bg with hairline border.
+ */
+
+[data-style='zen-sumi'] [data-message-root][data-type='error'] {
+  @apply bg-error-z1 border-error-z2 text-error-z8;
+}
+[data-style='zen-sumi'] [data-message-root][data-type='error'] [data-message-icon],
+[data-style='zen-sumi'] [data-message-root][data-type='error'] [data-message-dismiss] {
+  @apply text-error-z5;
+}
+
+[data-style='zen-sumi'] [data-message-root][data-type='warning'] {
+  @apply bg-warning-z1 border-warning-z2 text-warning-z8;
+}
+[data-style='zen-sumi'] [data-message-root][data-type='warning'] [data-message-icon],
+[data-style='zen-sumi'] [data-message-root][data-type='warning'] [data-message-dismiss] {
+  @apply text-warning-z5;
+}
+
+[data-style='zen-sumi'] [data-message-root][data-type='info'] {
+  @apply bg-info-z1 border-info-z2 text-info-z8;
+}
+[data-style='zen-sumi'] [data-message-root][data-type='info'] [data-message-icon],
+[data-style='zen-sumi'] [data-message-root][data-type='info'] [data-message-dismiss] {
+  @apply text-info-z5;
+}
+
+[data-style='zen-sumi'] [data-message-root][data-type='success'] {
+  @apply bg-success-z1 border-success-z2 text-success-z8;
+}
+[data-style='zen-sumi'] [data-message-root][data-type='success'] [data-message-icon],
+[data-style='zen-sumi'] [data-message-root][data-type='success'] [data-message-dismiss] {
+  @apply text-success-z5;
+}

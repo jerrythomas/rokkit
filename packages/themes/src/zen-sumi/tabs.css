@@ -1,0 +1,78 @@
+/**
+ * Tabs - Zen-Sumi Theme Styles
+ *
+ * Pill-style tabs with filled active state (ink background, paper text).
+ * No underlines — depth through background fill only.
+ * Inactive: transparent. Hover: surface-z2 wash. Active: surface-z9 fill.
+ */
+
+/* =============================================================================
+   Tab List — borderless container
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-tabs-list] {
+  @apply bg-surface-z1 gap-1 border-0 p-1;
+  border-radius: var(--radius-md, 0.375rem);
+}
+
+[data-style='zen-sumi'] [data-tabs][data-orientation='vertical'] [data-tabs-list] {
+  @apply flex-col;
+}
+
+/* =============================================================================
+   Tab Triggers — pill fill, not underline
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-tabs-trigger] {
+  @apply text-surface-z6 bg-transparent border-0;
+  font-weight: 400;
+  border-radius: var(--radius-sm, 0.125rem);
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+[data-style='zen-sumi'] [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {
+  @apply bg-surface-z2 text-surface-z8;
+}
+
+[data-style='zen-sumi'] [data-tabs-trigger][data-selected] {
+  @apply bg-surface-z9 text-surface-z0 bg-none;
+  font-weight: 500;
+}
+
+/* Reset any gradient leakage */
+[data-style='zen-sumi'] [data-tabs-list]:focus-within [data-tabs-trigger][data-selected] {
+  @apply bg-none;
+}
+
+[data-style='zen-sumi']
+  [data-tabs][data-orientation='vertical']
+  [data-tabs-list]:focus-within
+  [data-tabs-trigger][data-selected] {
+  @apply bg-none;
+}
+
+/* =============================================================================
+   Tab Icon
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-tabs-trigger] [data-tabs-icon] {
+  @apply text-surface-z4;
+}
+
+[data-style='zen-sumi'] [data-tabs-trigger]:hover:not(:disabled) [data-tabs-icon] {
+  @apply text-surface-z6;
+}
+
+[data-style='zen-sumi'] [data-tabs-trigger][data-selected] [data-tabs-icon] {
+  @apply text-surface-z1;
+}
+
+/* =============================================================================
+   Tab Panel
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-tabs-content] {
+  @apply text-surface-z8;
+}

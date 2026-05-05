@@ -59,7 +59,11 @@
     "./carbon": { "style": "./src/carbon/index.css", "default": "./src/carbon/index.css" },
     "./carbon/*": { "style": "./src/carbon/*.css", "default": "./src/carbon/*.css" },
     "./ant-design": { "style": "./src/ant-design/index.css", "default": "./src/ant-design/index.css" },
-    "./ant-design/*": { "style": "./src/ant-design/*.css", "default": "./src/ant-design/*.css" }
+    "./ant-design/*": { "style": "./src/ant-design/*.css", "default": "./src/ant-design/*.css" },
+    "./dist/zen-sumi": { "style": "./dist/zen-sumi.css", "default": "./dist/zen-sumi.css" },
+    "./zen-sumi.css": { "style": "./dist/zen-sumi.css", "default": "./dist/zen-sumi.css" },
+    "./zen-sumi": { "style": "./src/zen-sumi/index.css", "default": "./src/zen-sumi/index.css" },
+    "./zen-sumi/*": { "style": "./src/zen-sumi/*.css", "default": "./src/zen-sumi/*.css" }
   },
   "files": [
     "src",

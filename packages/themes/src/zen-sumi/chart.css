@@ -1,0 +1,41 @@
+/**
+ * Chart - Zen-Sumi Theme Styles
+ *
+ * Ink-wash aesthetic. Axes and grids: hairline surface-z2.
+ * Labels: surface-z5 (secondary text). Dimmed elements: very low opacity.
+ */
+
+[data-style='zen-sumi'] [data-chart-axis-line],
+[data-style='zen-sumi'] [data-chart-tick] line {
+  @apply stroke-surface-z2;
+}
+
+[data-style='zen-sumi'] [data-chart-tick-label] {
+  @apply fill-surface-z5;
+}
+
+[data-style='zen-sumi'] [data-chart-grid-line] {
+  @apply stroke-surface-z2;
+  stroke-opacity: 0.4;
+  stroke-dasharray: 2 4;
+}
+
+[data-style='zen-sumi'] [data-chart-legend-label] {
+  @apply fill-surface-z5;
+}
+
+[data-style='zen-sumi'] [data-chart-legend-item]:hover {
+  @apply text-surface-z8;
+}
+
+[data-style='zen-sumi'] [data-plot-element='bar'][data-dimmed],
+[data-style='zen-sumi'] [data-plot-element='point'][data-dimmed],
+[data-style='zen-sumi'] [data-plot-element='arc'][data-dimmed],
+[data-style='zen-sumi'] [data-plot-element='line'][data-dimmed],
+[data-style='zen-sumi'] [data-plot-element='area'][data-dimmed] {
+  opacity: 0.1;
+}
+
+[data-style='zen-sumi'] [data-facet-title] {
+  @apply text-surface-z5;
+}

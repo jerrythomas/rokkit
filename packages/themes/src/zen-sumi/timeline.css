@@ -1,0 +1,46 @@
+/**
+ * Timeline - Zen-Sumi Theme Styles
+ *
+ * Restrained timeline. Completed/active: primary (shu) accent.
+ * Connectors: surface-z2 default, primary when completed.
+ */
+
+/* =============================================================================
+   Circle
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-timeline-circle] {
+  @apply border-surface-z3 text-surface-z5;
+}
+
+[data-style='zen-sumi'] [data-timeline-item][data-completed] [data-timeline-circle] {
+  @apply border-primary text-primary;
+}
+
+[data-style='zen-sumi'] [data-timeline-item][data-active] [data-timeline-circle] {
+  @apply border-primary text-primary;
+}
+
+/* =============================================================================
+   Connector
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-timeline-connector] {
+  @apply bg-surface-z2;
+}
+
+[data-style='zen-sumi'] [data-timeline-item][data-completed] [data-timeline-connector] {
+  @apply bg-primary;
+}
+
+/* =============================================================================
+   Body
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-timeline-title] {
+  @apply text-surface-z8;
+}
+
+[data-style='zen-sumi'] [data-timeline-description] {
+  @apply text-surface-z5;
+}
