@@ -1,4 +1,5 @@
 <script>
+	import { browser } from '$app/environment'
 	import { page } from '$app/state'
 	import { getMainNav, getProjectGroups, getSettingsNav } from '$lib/data/navigation'
 	import { m } from '$lib/paraglide/messages.js'
@@ -6,6 +7,19 @@
 
 	let { children } = $props()
 	let sidebarCollapsed = $state(false)
+
+	// Initialized from body.dataset.mode set by app.html inline script
+	let mode = $state(browser ? (document.body.dataset.mode || 'dark') : 'dark')
+
+	function toggleMode() {
+		mode = mode === 'dark' ? 'light' : 'dark'
+		document.body.dataset.mode = mode
+		try {
+			const stored = JSON.parse(localStorage.getItem('sensei-theme') || '{}')
+			stored.mode = mode
+			localStorage.setItem('sensei-theme', JSON.stringify(stored))
+		} catch {}
+	}
 
 	const mainNav = $derived(getMainNav())
 	const projectGroups = $derived(getProjectGroups())
@@ -23,11 +37,10 @@
 >
 	<!-- ─── Sidebar ────────────────────────────────────────────────────────── -->
 	<aside
-		class="sidebar flex flex-col overflow-hidden px-[14px] py-[22px] border-r border-surface-z2 backdrop-blur-xl saturate-[180%]"
-		style="background: color-mix(in srgb, var(--color-surface-100) 85%, transparent); -webkit-backdrop-filter: blur(20px) saturate(180%)"
+		class="sidebar flex flex-col overflow-hidden px-3.5 py-5.5 bg-surface-z1 border-r border-surface-z2"
 	>
 		<!-- Logo -->
-		<div class="flex items-center gap-[10px] px-[10px] pb-[18px]">
+		<div class="flex items-center gap-2.5 px-2.5 pb-4.5">
 			<span class="kanji text-[20px] text-primary-z5">先</span>
 			{#if !sidebarCollapsed}
 				<span class="font-display text-[17px] font-medium text-surface-z9 tracking-[-0.02em] flex-1">Sensei</span>
@@ -42,12 +55,12 @@
 		</div>
 
 		<!-- Main navigation -->
-		<nav class="flex-1 overflow-y-auto flex flex-col gap-[20px]">
+		<nav class="flex-1 overflow-y-auto flex flex-col gap-5">
 			<div class="flex flex-col gap-px">
 				{#each mainNav as item (item.id)}
 					<a
 						href={item.href}
-						class="group grid items-center gap-[10px] px-[10px] py-[7px] rounded-md text-[13px] font-normal no-underline cursor-pointer transition-colors duration-[120ms] {activeId === item.id ? 'bg-surface-z2 text-surface-z9' : 'text-surface-z7 hover:bg-surface-z1 hover:text-surface-z9'}"
+						class="group grid items-center gap-2.5 px-2.5 py-[7px] rounded-md text-[13px] font-normal no-underline cursor-pointer transition-colors duration-[120ms] {activeId === item.id ? 'bg-surface-z0 text-surface-z9' : 'text-surface-z7 hover:bg-surface-z2 hover:text-surface-z9'}"
 						style="grid-template-columns: auto 1fr auto"
 						title={sidebarCollapsed ? item.label : undefined}
 					>
@@ -63,13 +76,13 @@
 			{#each projectGroups as group (group.label)}
 				<div class="flex flex-col gap-px">
 					{#if !sidebarCollapsed}
-						<span class="text-[9.5px] font-semibold uppercase tracking-[0.08em] text-surface-z4 pt-[12px] px-[10px] pb-[4px]">{group.label}</span>
+						<span class="text-[9.5px] font-semibold uppercase tracking-[0.08em] text-surface-z4 pt-3 px-2.5 pb-1">{group.label}</span>
 					{/if}
 					{#if !group.collapsed}
 						{#each group.items as item (item.id)}
 							<a
 								href={item.href}
-								class="group grid items-center gap-[10px] px-[10px] py-[7px] rounded-md text-[13px] font-normal no-underline cursor-pointer transition-colors duration-[120ms] text-surface-z7 hover:bg-surface-z1 hover:text-surface-z9"
+								class="group grid items-center gap-2.5 px-2.5 py-[7px] rounded-md text-[13px] font-normal no-underline cursor-pointer transition-colors duration-[120ms] text-surface-z7 hover:bg-surface-z1 hover:text-surface-z9"
 								style="grid-template-columns: auto 1fr auto"
 								title={sidebarCollapsed ? item.label : undefined}
 							>
@@ -91,7 +104,7 @@
 		<div class="border-t border-surface-z2 pt-2 flex flex-col gap-px">
 			<a
 				href={settingsNav.href}
-				class="group grid items-center gap-[10px] px-[10px] py-[7px] rounded-md text-[13px] font-normal no-underline cursor-pointer transition-colors duration-[120ms] text-surface-z7 hover:bg-surface-z1 hover:text-surface-z9"
+				class="group grid items-center gap-2.5 px-2.5 py-[7px] rounded-md text-[13px] font-normal no-underline cursor-pointer transition-colors duration-[120ms] text-surface-z7 hover:bg-surface-z1 hover:text-surface-z9"
 				style="grid-template-columns: auto 1fr auto"
 				title={sidebarCollapsed ? 'Settings' : undefined}
 			>
@@ -100,9 +113,24 @@
 					<span class="whitespace-nowrap overflow-hidden text-ellipsis">{settingsNav.label}</span>
 				{/if}
 			</a>
+
+			<!-- Mode toggle -->
+			<button
+				type="button"
+				onclick={toggleMode}
+				class="group grid items-center gap-2.5 px-2.5 py-[7px] rounded-md text-[13px] font-normal cursor-pointer transition-colors duration-[120ms] text-surface-z7 hover:bg-surface-z1 hover:text-surface-z9"
+				style="grid-template-columns: auto 1fr auto"
+				title={mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+			>
+				<span class="text-[14px] w-[18px] text-center text-surface-z5 group-hover:text-surface-z7 {mode === 'dark' ? 'i-glyph:sun' : 'i-glyph:moon'}"></span>
+				{#if !sidebarCollapsed}
+					<span class="whitespace-nowrap overflow-hidden text-ellipsis">{mode === 'dark' ? 'Light mode' : 'Dark mode'}</span>
+				{/if}
+			</button>
+
 			{#if !sidebarCollapsed}
 				<LanguageSwitcher />
-				<div class="flex items-center gap-[6px] pt-2 px-[10px]">
+				<div class="flex items-center gap-1.5 pt-2 px-2.5">
 					<span class="w-[6px] h-[6px] rounded-full bg-success-z5 flex-shrink-0"></span>
 					<span class="text-[10px] text-surface-z4">{m.daemon_running()}</span>
 				</div>

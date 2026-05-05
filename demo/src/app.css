@@ -30,21 +30,19 @@
   --radius: var(--radius-md);
 }
 
-html, body {
+html {
+  height: 100%;
+}
+
+body {
   height: 100%;
   overflow: hidden;
   font-family: var(--font-sans);
   font-size: 13px;
-  color: var(--color-surface-900);
-  background: var(--color-surface-50);
+  background: oklch(var(--color-surface-z0) / 1);
+  color: oklch(var(--color-surface-z9) / 1);
 }
 
-/* Dark mode body colors */
-[data-mode='dark'] body,
-body[data-mode='dark'] {
-  color: var(--color-surface-100);
-  background: var(--color-surface-950);
-}
 
 /* ── Font utility classes ───────────────────────────────────── */
 
@@ -69,12 +67,12 @@ body[data-mode='dark'] {
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-thumb { background: transparent; border-radius: 3px; }
 :hover > ::-webkit-scrollbar-thumb,
-*:hover::-webkit-scrollbar-thumb { background: color-mix(in oklch, var(--color-surface-900) 20%, transparent); }
+*:hover::-webkit-scrollbar-thumb { background: color-mix(in oklch, oklch(var(--color-surface-z9) / 1) 20%, transparent); }
 
 /* ── Focus ──────────────────────────────────────────────────── */
 
 button:focus-visible {
-  outline: 1.5px solid var(--color-primary-500);
+  outline: 1.5px solid oklch(var(--color-primary-z5) / 1);
   outline-offset: 2px;
   border-radius: 3px;
 }
@@ -82,5 +80,5 @@ button:focus-visible {
 /* ── Selection ──────────────────────────────────────────────── */
 
 ::selection {
-  background: color-mix(in oklch, var(--color-primary-500) 12%, transparent);
+  background: color-mix(in oklch, oklch(var(--color-primary-z5) / 1) 12%, transparent);
 }
