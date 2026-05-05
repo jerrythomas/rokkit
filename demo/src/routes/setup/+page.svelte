@@ -94,7 +94,7 @@
 					{#if current.id === 'welcome'}
 						<p class="font-display text-[18px] font-light text-surface-z7 leading-relaxed m-0 mb-6">{m.setup_welcome_body()}</p>
 						<div class="grid grid-cols-3 gap-4 my-6">
-							{#each [['観', m.setup_pillar_observe(), m.setup_pillar_observe_desc()], ['教', m.setup_pillar_teach(), m.setup_pillar_teach_desc()], ['守', m.setup_pillar_local(), m.setup_pillar_local_desc()]] as [k, t, d]}
+							{#each [['観', m.setup_pillar_observe(), m.setup_pillar_observe_desc()], ['教', m.setup_pillar_teach(), m.setup_pillar_teach_desc()], ['守', m.setup_pillar_local(), m.setup_pillar_local_desc()]] as [k, t, d] (k)}
 								<div class="px-[18px] py-[18px] bg-surface-z1 border border-surface-z2 rounded-md text-center">
 									<span class="kanji text-[28px] text-primary-z5">{k}</span>
 									<h3 class="text-[14px] font-semibold text-surface-z9 mt-2 mb-1">{t}</h3>
@@ -158,7 +158,7 @@
 									<span class="mono text-[10px] text-surface-z5 uppercase">{project.role}</span>
 								</div>
 								<div class="flex gap-[6px] flex-wrap">
-									{#each project.repos as repo}
+									{#each project.repos as repo (repo)}
 										<span class="mono text-[11px] px-2 py-[3px] bg-surface-z2 rounded text-surface-z7">{repo}</span>
 									{/each}
 								</div>
@@ -177,7 +177,7 @@
 				>{m.setup_back()}</button>
 
 				<div class="flex-1 flex gap-1 items-center">
-					{#each steps as _, i}
+					{#each steps as _, i (i)}
 						<span
 							class="flex-1 h-[2px] rounded-[1px] transition-colors duration-200 {i <= currentStep ? 'bg-surface-z9' : 'bg-surface-z2'}"
 						></span>

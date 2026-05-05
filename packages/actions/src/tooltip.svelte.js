@@ -43,6 +43,7 @@ function resolveFlip(triggerRect, tooltipRect, preferred) {
 	return Object.keys(fits).find((p) => fits[p]) ?? preferred
 }
 
+// eslint-disable-next-line max-lines-per-function
 function positionTooltip(trigger, tooltipEl, preferred) {
 	const triggerRect = trigger.getBoundingClientRect()
 	const container = tooltipEl.parentElement
@@ -84,7 +85,9 @@ function positionTooltip(trigger, tooltipEl, preferred) {
 	tooltipEl.style.left = `${left}px`
 }
 
+// eslint-disable-next-line max-lines-per-function
 export function tooltip(node, options = {}) {
+	// eslint-disable-next-line max-lines-per-function
 	$effect(() => {
 		const opts = { content: '', position: 'top', delay: 300, ...options }
 		const id = uid()

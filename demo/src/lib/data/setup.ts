@@ -1,6 +1,7 @@
 import type { SetupData } from '$lib/types'
 import { m } from '$lib/paraglide/messages.js'
 
+// eslint-disable-next-line max-lines-per-function
 export function loadSetupData(): SetupData {
 	return {
 		steps: [

@@ -1,6 +1,5 @@
 <script>
 	// @ts-nocheck
-	import { onMount } from 'svelte'
 	import { page } from '$app/state'
 	import { ThemeSwitcherToggle } from '@rokkit/app'
 	import { media } from '$lib/media.js'

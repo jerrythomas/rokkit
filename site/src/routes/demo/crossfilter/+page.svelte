@@ -5,19 +5,19 @@
 
 	// ─── Aggregated data for filter charts ───────────────────────────────────────
 	const regionAgg = $derived.by(() => {
-		const map = new Map()
-		for (const row of sales) {
-			map.set(row.region, (map.get(row.region) ?? 0) + 1)
-		}
-		return [...map.entries()].map(([region, count]) => ({ region, count }))
+		const byRegion = sales.reduce((acc, row) => {
+			acc[row.region] = (acc[row.region] ?? 0) + 1
+			return acc
+		}, {})
+		return Object.entries(byRegion).map(([region, count]) => ({ region, count }))
 	})
 
 	const categoryAgg = $derived.by(() => {
-		const map = new Map()
-		for (const row of sales) {
-			map.set(row.category, (map.get(row.category) ?? 0) + 1)
-		}
-		return [...map.entries()].map(([category, count]) => ({ category, count }))
+		const byCategory = sales.reduce((acc, row) => {
+			acc[row.category] = (acc[row.category] ?? 0) + 1
+			return acc
+		}, {})
+		return Object.entries(byCategory).map(([category, count]) => ({ category, count }))
 	})
 
 	// ─── Active filters state ────────────────────────────────────────────────────

@@ -149,7 +149,7 @@
 	>
 		<g transform="translate({margin.left},{margin.top})">
 			<!-- Y axis ticks -->
-			{#each yTicks as tick}
+			{#each yTicks as tick (tick)}
 				<line
 					x1={0}
 					x2={innerWidth}
@@ -181,7 +181,7 @@
 			/>
 
 			<!-- X axis ticks -->
-			{#each xTicks as tick}
+			{#each xTicks as tick (tick)}
 				<text
 					x={xScale(tick)}
 					y={innerHeight + 12}
@@ -193,7 +193,7 @@
 			{/each}
 
 			<!-- Bars -->
-			{#each binned as b}
+			{#each binned as b (b.x0)}
 				{@const bx = xScale(b.x0) + 1}
 				{@const bw = Math.max(0, xScale(b.x1) - xScale(b.x0) - 1)}
 				{@const by = yScale(b.length)}

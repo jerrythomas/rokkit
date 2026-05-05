@@ -40,9 +40,11 @@
 	const continuousColor = $derived(plotState.continuousColorScale)
 
 	// Hex binning: group data points into hexagonal cells
+	// eslint-disable-next-line max-params, complexity
 	function hexBin(data, xField, yField, xScale, yScale, r) {
 		const dx = r * 2 * Math.sin(Math.PI / 3) // horizontal spacing
 		const dy = r * 1.5                        // vertical spacing
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const bins = new Map()
 
 		for (const d of data) {

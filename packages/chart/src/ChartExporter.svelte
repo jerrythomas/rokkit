@@ -26,6 +26,7 @@
 	 * @param {SVGSVGElement} svg
 	 * @returns {SVGSVGElement}
 	 */
+	// eslint-disable-next-line complexity
 	function inlineStyles(svg) {
 		const clone = /** @type {SVGSVGElement} */ (svg.cloneNode(true))
 		const computed = getComputedStyle(svg)

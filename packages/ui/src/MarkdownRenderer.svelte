@@ -56,6 +56,7 @@
 		if (!crossfilterWrapper) return tokens.map((t) => ({ type: 'token', token: t }))
 
 		const result: Segment[] = []
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const groupMap = new Map<string, { type: 'group'; id: string; items: Token[] }>()
 
 		for (const token of tokens) {

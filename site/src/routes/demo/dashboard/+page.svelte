@@ -2,7 +2,7 @@
 	// @ts-nocheck
 	import { PlotChart, Plot, Sparkline } from '@rokkit/chart'
 	import { Select } from '@rokkit/ui'
-	import { sales, salesByMonth } from '$lib/data/sales.js'
+	import { sales } from '$lib/data/sales.js'
 
 	// ─── View switcher ────────────────────────────────────────────────────────────
 	const views = ['Revenue', 'Orders', 'Profit']
@@ -28,33 +28,33 @@
 
 	// ─── Monthly trend for sparklines ─────────────────────────────────────────────
 	const monthlyTrend = $derived.by(() => {
-		const map = new Map()
-		for (const row of filteredSales) {
-			const entry = map.get(row.month) ?? { month: row.month, amount: 0, orders: 0, profit: 0 }
+		const byMonth = filteredSales.reduce((acc, row) => {
+			const entry = acc[row.month] ?? { month: row.month, amount: 0, orders: 0, profit: 0 }
 			entry.amount += row.amount
 			entry.orders += 1
 			entry.profit += row.profit
-			map.set(row.month, entry)
-		}
-		return [...map.values()].sort((a, b) => a.month.localeCompare(b.month))
+			acc[row.month] = entry
+			return acc
+		}, {})
+		return Object.values(byMonth).sort((a, b) => a.month.localeCompare(b.month))
 	})
 
 	// ─── Chart data ───────────────────────────────────────────────────────────────
 	const regionData = $derived.by(() => {
-		const map = new Map()
-		for (const row of filteredSales) {
-			map.set(row.region, (map.get(row.region) ?? 0) + row.amount)
-		}
-		return [...map.entries()].map(([region, amount]) => ({ region, amount }))
+		const byRegion = filteredSales.reduce((acc, row) => {
+			acc[row.region] = (acc[row.region] ?? 0) + row.amount
+			return acc
+		}, {})
+		return Object.entries(byRegion).map(([region, amount]) => ({ region, amount }))
 			.sort((a, b) => b.amount - a.amount)
 	})
 
 	const categoryData = $derived.by(() => {
-		const map = new Map()
-		for (const row of filteredSales) {
-			map.set(row.category, (map.get(row.category) ?? 0) + row.amount)
-		}
-		return [...map.entries()].map(([category, amount]) => ({ category, amount }))
+		const byCategory = filteredSales.reduce((acc, row) => {
+			acc[row.category] = (acc[row.category] ?? 0) + row.amount
+			return acc
+		}, {})
+		return Object.entries(byCategory).map(([category, amount]) => ({ category, amount }))
 	})
 
 	const chartField = $derived(
@@ -75,14 +75,14 @@
 
 	// ─── Top products table ───────────────────────────────────────────────────────
 	const topProds = $derived.by(() => {
-		const map = new Map()
-		for (const row of filteredSales) {
-			const entry = map.get(row.product) ?? { product: row.product, category: row.category, amount: 0, orders: 0 }
+		const byProduct = filteredSales.reduce((acc, row) => {
+			const entry = acc[row.product] ?? { product: row.product, category: row.category, amount: 0, orders: 0 }
 			entry.amount += row.amount
 			entry.orders += 1
-			map.set(row.product, entry)
-		}
-		return [...map.values()].sort((a, b) => b.amount - a.amount).slice(0, 8)
+			acc[row.product] = entry
+			return acc
+		}, {})
+		return Object.values(byProduct).sort((a, b) => b.amount - a.amount).slice(0, 8)
 	})
 
 	function fmtCurrency(v) {
@@ -102,7 +102,7 @@
 		<div class="flex items-center gap-3">
 			<!-- View switcher using Tabs -->
 			<div class="flex gap-1 rounded-lg border border-surface-z2 p-1 bg-surface-z1">
-				{#each views as v}
+				{#each views as v (v)}
 					<button
 						class="rounded-md px-3 py-1 text-sm transition-colors"
 						class:bg-surface-z3={selectedView === v}

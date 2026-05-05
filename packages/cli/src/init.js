@@ -396,6 +396,7 @@ function writeAppHtml(cwd, initScript, storageKey) {
  * @param {Record<string, unknown>} [_opts]
  * @param {{ runInstall?: (bin: string, args: string[]) => void }} [adapters] — injectable for testing
  */
+// eslint-disable-next-line max-lines-per-function
 export async function init(_opts = {}, adapters = {}) {
 	const cwd = process.cwd()
 

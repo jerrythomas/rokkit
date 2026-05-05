@@ -4,6 +4,7 @@ import { getLocale } from '$lib/paraglide/runtime.js'
 
 const LOCALE_MAP: Record<string, string> = { en: 'en-US', es: 'es-ES', ar: 'ar-SA' }
 
+// eslint-disable-next-line max-lines-per-function
 export function loadObservatoryData(): ObservatoryData {
 	const locale = getLocale()
 	const dateLocale = LOCALE_MAP[locale] ?? 'en-US'

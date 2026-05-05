@@ -34,7 +34,7 @@
 					<h3 class="text-[13px] font-semibold text-surface-z9 m-0">{section.title}</h3>
 				</div>
 				<ul class="list-none p-0 m-0 flex flex-col gap-[6px]">
-					{#each section.items as item}
+					{#each section.items as item (item)}
 						<li class="text-[11.5px] text-surface-z7 leading-[1.5]">{item}</li>
 					{/each}
 				</ul>

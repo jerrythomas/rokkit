@@ -98,7 +98,7 @@
 
 	<!-- ── Section tabs ──────────────────────────────────────────────────────────── -->
 	<div class="mb-8 flex flex-wrap gap-2 border-b border-surface-z2 pb-4">
-		{#each sections as s}
+		{#each sections as s (s.id)}
 			<button
 				class="rounded-lg px-3 py-1.5 text-sm transition-colors"
 				class:bg-surface-z3={activeSection === s.id}
@@ -119,7 +119,7 @@
 			<div>
 				<h2 class="text-surface-z7 mb-4 text-base font-semibold">Button Variants</h2>
 				<div class="flex flex-wrap gap-3">
-					{#each buttonVariants as variant}
+					{#each buttonVariants as variant (variant)}
 						<Button {variant}>{variant}</Button>
 					{/each}
 				</div>
@@ -128,7 +128,7 @@
 			<div>
 				<h2 class="text-surface-z7 mb-4 text-base font-semibold">Button Sizes</h2>
 				<div class="flex flex-wrap items-center gap-3">
-					{#each buttonSizes as size}
+					{#each buttonSizes as size (size)}
 						<Button variant="primary" {size}>{size}</Button>
 					{/each}
 				</div>
@@ -148,7 +148,7 @@
 			<div>
 				<h2 class="text-surface-z7 mb-4 text-base font-semibold">Badges</h2>
 				<div class="flex flex-wrap gap-2">
-					{#each ['default', 'primary', 'secondary', 'success', 'warning', 'danger'] as variant}
+					{#each ['default', 'primary', 'secondary', 'success', 'warning', 'danger'] as variant (variant)}
 						<Badge {variant}>{variant}</Badge>
 					{/each}
 				</div>
@@ -157,7 +157,7 @@
 			<div>
 				<h2 class="text-surface-z7 mb-4 text-base font-semibold">Pills</h2>
 				<div class="flex flex-wrap gap-2">
-					{#each ['Analytics', 'Infrastructure', 'Security', 'Collaboration', 'AI/ML'] as label}
+					{#each ['Analytics', 'Infrastructure', 'Security', 'Collaboration', 'AI/ML'] as label (label)}
 						<Pill>{label}</Pill>
 					{/each}
 				</div>
@@ -167,7 +167,7 @@
 				<h2 class="text-surface-z7 mb-4 text-base font-semibold">Sparklines</h2>
 				<div class="border-surface-z2 bg-surface-z1 rounded-xl border p-5">
 					<div class="grid grid-cols-3 gap-6">
-						{#each [{ label: 'Revenue', type: 'area', color: 'primary', field: 'amount' }, { label: 'Orders', type: 'bar', color: 'secondary', field: 'orders' }, { label: 'Profit', type: 'line', color: 'primary', field: 'orders' }] as s}
+						{#each [{ label: 'Revenue', type: 'area', color: 'primary', field: 'amount' }, { label: 'Orders', type: 'bar', color: 'secondary', field: 'orders' }, { label: 'Profit', type: 'line', color: 'primary', field: 'orders' }] as s (s.label)}
 							<div class="flex flex-col gap-1">
 								<span class="text-surface-z5 text-xs">{s.label}</span>
 								<Sparkline data={sparkData} field={s.field} type={s.type} color={s.color} width={120} height={36} />
@@ -233,7 +233,7 @@
 				<SearchFilter bind:value={searchQuery} placeholder="Search products..." />
 				{#if searchQuery}
 					<div class="mt-3 space-y-1">
-						{#each sales.filter(r => r.product.toLowerCase().includes(searchQuery.toLowerCase())).slice(0, 5) as row}
+						{#each sales.filter(r => r.product.toLowerCase().includes(searchQuery.toLowerCase())).slice(0, 5) as row, i (i)}
 							<div class="text-surface-z6 text-sm">{row.product} — {row.category}</div>
 						{/each}
 					</div>
@@ -297,7 +297,7 @@
 			{#if menuActionLog.length > 0}
 				<div class="border-surface-z2 bg-surface-z2 rounded-lg border p-4">
 					<p class="text-surface-z5 mb-2 text-xs font-semibold uppercase">Action Log</p>
-					{#each menuActionLog as entry}
+					{#each menuActionLog as entry, i (i)}
 						<p class="text-surface-z6 text-sm">{entry}</p>
 					{/each}
 				</div>
@@ -316,7 +316,7 @@
 						{/snippet}
 						{#snippet content()}
 							<div class="border-surface-z2 bg-surface-z1 rounded-lg border p-2 shadow-lg">
-								{#each menuItems.filter(Boolean) as item}
+								{#each menuItems.filter(Boolean) as item (item.value)}
 									<button
 										class="text-surface-z7 hover:bg-surface-z2 flex w-full items-center gap-2 rounded px-3 py-1.5 text-sm"
 										onclick={() => logAction(item.value)}
@@ -339,7 +339,7 @@
 	{#if activeSection === 'charts'}
 		<div class="space-y-8" data-section="charts">
 			<div class="flex flex-wrap gap-2">
-				{#each chartTypes as ct}
+				{#each chartTypes as ct (ct)}
 					<button
 						class="rounded-lg border px-3 py-1.5 text-sm transition-colors"
 						class:border-surface-z4={selectedChart === ct}
@@ -488,7 +488,7 @@
 			<div>
 				<h2 class="text-surface-z7 mb-4 text-base font-semibold">Progress Bars</h2>
 				<div class="space-y-3 max-w-md">
-					{#each [{ label: 'North America', value: 72 }, { label: 'Europe', value: 58 }, { label: 'Asia Pacific', value: 41 }, { label: 'Latin America', value: 18 }] as item}
+					{#each [{ label: 'North America', value: 72 }, { label: 'Europe', value: 58 }, { label: 'Asia Pacific', value: 41 }, { label: 'Latin America', value: 18 }] as item (item.label)}
 						<div class="flex items-center gap-3">
 							<span class="text-surface-z6 w-32 text-sm">{item.label}</span>
 							<div class="bg-surface-z3 h-2 flex-1 overflow-hidden rounded-full">

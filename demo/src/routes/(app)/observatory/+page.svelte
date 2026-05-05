@@ -71,7 +71,7 @@
 		<section>
 			<h3 class="font-display text-[17px] font-normal text-surface-z9 m-0 mb-[14px]">{m.section_adopted()}</h3>
 			<div class="flex flex-col gap-[10px]">
-				{#each data.adoptedTeachings as teaching}
+				{#each data.adoptedTeachings as teaching (teaching)}
 					<div
 						class="px-[14px] py-3 bg-surface-z1 rounded-r-md"
 						style="border-left: 2px solid color-mix(in oklch, var(--color-primary-500) 12%, transparent)"

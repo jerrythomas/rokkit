@@ -21,6 +21,7 @@ function seededRandom(seed) {
 	}
 }
 
+// eslint-disable-next-line max-lines-per-function
 function generateSales() {
 	const rand = seededRandom(42)
 	const records = []

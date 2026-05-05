@@ -43,6 +43,7 @@
 	const innerWidth = $derived(plotState.innerWidth)
 
 	// Compute Sankey-style layout
+	// eslint-disable-next-line max-lines-per-function, complexity
 	const ribbons = $derived.by(() => {
 		if (!data?.length) return { links: [], sourceNodes: [], targetNodes: [] }
 
@@ -55,7 +56,9 @@
 		}))
 
 		// Compute node positions
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const sourceMap = new Map()
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const targetMap = new Map()
 		for (const f of flows) {
 			sourceMap.set(f.source, (sourceMap.get(f.source) ?? 0) + f.value)
@@ -86,11 +89,14 @@
 		}
 
 		// Build ribbon paths
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const sourceOffsets = new Map(sourceNodes.map((n) => [n.name, n.y]))
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const targetOffsets = new Map(targetNodes.map((n) => [n.name, n.y]))
 		const x0 = 0
 		const x1 = innerWidth
 
+		// eslint-disable-next-line complexity
 		const links = flows.map((f, i) => {
 			const sy0 = sourceOffsets.get(f.source) ?? 0
 			const ty0 = targetOffsets.get(f.target) ?? 0

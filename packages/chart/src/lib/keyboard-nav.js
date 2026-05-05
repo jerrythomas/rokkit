@@ -10,6 +10,7 @@
  * @param {boolean} enabled
  */
 export function keyboardNav(node, enabled) {
+	// eslint-disable-next-line complexity
 	function handleKeydown(e) {
 		if (!enabled) return
 		if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return

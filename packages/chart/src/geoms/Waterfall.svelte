@@ -42,6 +42,7 @@
 	const xScale = $derived(plotState.xScale)
 	const yScale = $derived(plotState.yScale)
 
+	// eslint-disable-next-line max-lines-per-function
 	const bars = $derived.by(() => {
 		if (!data?.length || !xScale || !yScale) return []
 		const bw = typeof xScale.bandwidth === 'function' ? xScale.bandwidth() : 10
