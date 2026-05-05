@@ -15,24 +15,27 @@
 	)
 </script>
 
-<div class="sessions-page">
+<div class="max-w-[1060px] mx-auto px-[48px] pt-[36px] pb-[48px]">
 
-	<div class="page-header">
-		<span class="page-subtitle mono">{m.sessions_subtitle()}</span>
-		<h1 class="page-title display">{m.sessions_title()}</h1>
+	<div class="mb-8">
+		<span class="mono block text-[10.5px] uppercase text-surface-z5 tracking-[0.06em] mb-1">{m.sessions_subtitle()}</span>
+		<h1 class="font-display text-[28px] font-light text-surface-z9 m-0">{m.sessions_title()}</h1>
 	</div>
 
 	<!-- ─── Retro Cards ───────────────────────────────────────── -->
-	<div class="retro-grid">
+	<div class="retro-grid grid grid-cols-3 gap-3 mb-7">
 		{#each data.retro as section (section.title)}
-			<div class="retro-card" data-tone={section.tone}>
-				<div class="retro-header">
-					<span class="kanji retro-kanji">{section.kanji}</span>
-					<h3 class="retro-title">{section.title}</h3>
+			<div
+				class="px-[18px] py-4 bg-surface-z1 border border-surface-z2 rounded-md"
+				style="border-top: 2px solid {section.tone === 'good' ? 'color-mix(in oklch, var(--color-success-500) 14%, transparent)' : section.tone === 'warn' ? 'color-mix(in oklch, var(--color-warning-500) 15%, transparent)' : 'color-mix(in oklch, var(--color-surface-900) 6%, transparent)'}"
+			>
+				<div class="flex items-center gap-2 mb-[10px]">
+					<span class="kanji text-[18px] {section.tone === 'good' ? 'text-success-z5' : section.tone === 'warn' ? 'text-warning-z5' : 'text-surface-z5'}">{section.kanji}</span>
+					<h3 class="text-[13px] font-semibold text-surface-z9 m-0">{section.title}</h3>
 				</div>
-				<ul class="retro-list">
+				<ul class="list-none p-0 m-0 flex flex-col gap-[6px]">
 					{#each section.items as item}
-						<li>{item}</li>
+						<li class="text-[11.5px] text-surface-z7 leading-[1.5]">{item}</li>
 					{/each}
 				</ul>
 			</div>
@@ -40,23 +43,21 @@
 	</div>
 
 	<!-- ─── Filters ───────────────────────────────────────────── -->
-	<div class="filter-bar">
-		<div class="filter-group">
+	<div class="flex gap-4 flex-wrap mb-5">
+		<div class="filter-group flex gap-[2px]">
 			{#each ['all', ...data.filters.outcomes] as outcome (outcome)}
 				<button
-					class="filter-pill"
-					class:active={activeFilter === outcome}
+					class="filter-pill px-3 py-[6px] text-[11.5px] rounded-md capitalize transition-colors duration-[120ms] {activeFilter === outcome ? 'bg-surface-z9 text-surface-z0' : 'text-surface-z7 hover:bg-surface-z1'}"
 					onclick={() => (activeFilter = outcome)}
 				>
 					{outcome === 'all' ? m.filter_all() : outcome}
 				</button>
 			{/each}
 		</div>
-		<div class="filter-group">
+		<div class="filter-group flex gap-[2px]">
 			{#each ['all', ...data.filters.projects] as project (project)}
 				<button
-					class="filter-pill"
-					class:active={activeProject === project}
+					class="filter-pill px-3 py-[6px] text-[11.5px] rounded-md capitalize transition-colors duration-[120ms] {activeProject === project ? 'bg-surface-z9 text-surface-z0' : 'text-surface-z7 hover:bg-surface-z1'}"
 					onclick={() => (activeProject = project)}
 				>
 					{project === 'all' ? m.filter_all_projects() : project}
@@ -66,130 +67,24 @@
 	</div>
 
 	<!-- ─── Session List ──────────────────────────────────────── -->
-	<div class="sessions-table">
+	<div class="sessions-table flex flex-col">
 		{#each filteredSessions as session (session.id)}
-			<div class="session-row">
-				<span class="session-dot" class:ftr={session.ftr}></span>
-				<span class="session-project mono">{session.project}</span>
-				<span class="session-title">{session.title}</span>
-				<span class="session-corrections mono">
+			<div
+				class="grid items-center gap-4 px-1 py-[9px] border-b border-surface-z2 transition-colors hover:bg-surface-z1"
+				style="grid-template-columns: auto 120px 1fr auto auto auto"
+			>
+				<span class="w-2 h-2 rounded-full {session.ftr ? 'bg-success-z5' : 'bg-surface-z4'}"></span>
+				<span class="mono text-[11.5px] text-surface-z5">{session.project}</span>
+				<span class="text-[13px] text-surface-z9 whitespace-nowrap overflow-hidden text-ellipsis">{session.title}</span>
+				<span class="mono text-[10.5px] text-surface-z5 text-right">
 					{session.corrections === 0 ? m.session_first_try() : m.session_corrections({ count: session.corrections.toString() })}
 				</span>
-				<span class="session-duration mono">{session.duration}</span>
-				<span class="session-time mono">{session.time}</span>
+				<span class="mono text-[11px] text-surface-z5 text-right">{session.duration}</span>
+				<span class="mono text-[10.5px] text-surface-z4 text-right">{session.time}</span>
 			</div>
 		{/each}
 		{#if filteredSessions.length === 0}
-			<div class="empty-state">{m.no_sessions_match()}</div>
+			<div class="p-6 text-center text-surface-z4 text-[13px]">{m.no_sessions_match()}</div>
 		{/if}
 	</div>
 </div>
-
-<style>
-	.sessions-page {
-		max-width: 1060px;
-		margin: 0 auto;
-		padding: 36px 48px 48px;
-	}
-
-	.page-header { margin-bottom: 32px; }
-	.page-subtitle {
-		font-size: 10.5px;
-		text-transform: uppercase;
-		color: var(--sumi-3);
-		letter-spacing: 0.06em;
-		display: block;
-		margin-bottom: 4px;
-	}
-	.page-title {
-		font-size: 28px;
-		font-weight: 300;
-		color: var(--sumi);
-		margin: 0;
-	}
-
-	/* ── Retro Cards ──────────────────────────────────────────── */
-	.retro-grid {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 12px;
-		margin-bottom: 28px;
-	}
-	.retro-card {
-		padding: 16px 18px;
-		background: var(--paper-2);
-		border: var(--border-card);
-		border-radius: var(--radius);
-	}
-	.retro-card[data-tone='good'] { border-top: 2px solid var(--jade-soft); }
-	.retro-card[data-tone='warn'] { border-top: 2px solid var(--amber-soft); }
-	.retro-card[data-tone='mute'] { border-top: 2px solid oklch(0.22 0.012 50 / 0.06); }
-	.retro-header {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		margin-bottom: 10px;
-	}
-	.retro-kanji { font-size: 18px; color: var(--sumi-3); }
-	.retro-card[data-tone='good'] .retro-kanji { color: var(--jade); }
-	.retro-card[data-tone='warn'] .retro-kanji { color: var(--amber); }
-	.retro-title {
-		font-size: 13px;
-		font-weight: 600;
-		color: var(--sumi);
-		margin: 0;
-	}
-	.retro-list {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-		display: flex;
-		flex-direction: column;
-		gap: 6px;
-	}
-	.retro-list li {
-		font-size: 11.5px;
-		color: var(--sumi-2);
-		line-height: 1.5;
-	}
-
-	/* ── Filters ──────────────────────────────────────────────── */
-	.filter-bar {
-		display: flex;
-		gap: 16px;
-		flex-wrap: wrap;
-		margin-bottom: 20px;
-	}
-	.filter-group { display: flex; gap: 2px; }
-	.filter-pill {
-		padding: 6px 12px;
-		font-size: 11.5px;
-		border-radius: var(--radius);
-		color: var(--sumi-2);
-		text-transform: capitalize;
-		transition: all 120ms ease;
-	}
-	.filter-pill:hover { background: oklch(0.22 0.012 50 / 0.04); }
-	.filter-pill.active { background: var(--sumi); color: var(--paper); }
-
-	/* ── Sessions Table ───────────────────────────────────────── */
-	.sessions-table { display: flex; flex-direction: column; }
-	.session-row {
-		display: grid;
-		grid-template-columns: auto 120px 1fr auto auto auto;
-		gap: 16px;
-		align-items: center;
-		padding: 9px 4px;
-		border-bottom: var(--ink-line);
-		transition: background 120ms ease;
-	}
-	.session-row:hover { background: oklch(0.22 0.012 50 / 0.03); }
-	.session-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sumi-4); }
-	.session-dot.ftr { background: var(--jade); }
-	.session-project { font-size: 11.5px; color: var(--sumi-3); }
-	.session-title { font-size: 13px; color: var(--sumi); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-	.session-corrections { font-size: 10.5px; color: var(--sumi-3); text-align: right; }
-	.session-duration { font-size: 11px; color: var(--sumi-3); text-align: right; }
-	.session-time { font-size: 10.5px; color: var(--sumi-4); text-align: right; }
-	.empty-state { padding: 24px; text-align: center; color: var(--sumi-4); font-size: 13px; }
-</style>

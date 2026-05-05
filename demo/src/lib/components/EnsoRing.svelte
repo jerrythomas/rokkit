@@ -28,7 +28,7 @@
 	<circle
 		{cx} {cy} {r}
 		fill="none"
-		stroke="var(--paper-edge)"
+		stroke="var(--color-surface-200)"
 		stroke-width="8"
 		stroke-linecap="round"
 		stroke-dasharray={trackDashArray}
@@ -40,7 +40,7 @@
 	<circle
 		{cx} {cy} {r}
 		fill="none"
-		stroke="var(--shu)"
+		stroke="var(--color-primary-500)"
 		stroke-width="8"
 		stroke-linecap="round"
 		stroke-dasharray={dashArray}
@@ -57,7 +57,7 @@
 		font-family="var(--font-display)"
 		font-size={size * 0.28}
 		font-weight="300"
-		fill="var(--sumi)"
+		fill="var(--color-surface-900)"
 	>
 		{score}
 	</text>

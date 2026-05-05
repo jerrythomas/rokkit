@@ -1,0 +1,106 @@
+/**
+ * Input / Field — Zen-Sumi Theme
+ *
+ * Calm inputs. Hairline borders, no gradients, no glow on focus.
+ * Border simply darkens on focus — quiet, considered.
+ */
+
+/* =============================================================================
+   Field Root
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-field-root] {
+  @apply text-surface-z9 gap-1;
+}
+
+[data-style='zen-sumi'] [data-field] > label,
+[data-style='zen-sumi'] [data-form-root] label {
+  @apply text-surface-z7;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+[data-style='zen-sumi'] [data-field-info] {
+  @apply text-primary-z6 font-medium;
+}
+
+[data-style='zen-sumi'] [data-form-separator] {
+  @apply bg-surface-z2;
+}
+
+/* =============================================================================
+   Input Root — hairline border wrapper (no gradient border)
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-input-root] {
+  @apply bg-surface-z2 border-surface-z3 flex items-center rounded-md border;
+  transition: border-color 0.14s;
+}
+
+[data-style='zen-sumi'] [data-input-root]:focus-within {
+  @apply border-surface-z7;
+}
+
+/* =============================================================================
+   Text Inputs
+   ============================================================================= */
+
+[data-style='zen-sumi']
+  [data-input-root]
+  input:not([type='checkbox'], [type='radio'], [type='color']),
+[data-style='zen-sumi'] [data-input-root] select {
+  @apply bg-transparent text-surface-z9 border-none px-3 focus:outline-none;
+  font-size: 0.8125rem;
+  height: 2.25rem;
+}
+
+[data-style='zen-sumi'] [data-input-root] textarea {
+  @apply bg-transparent text-surface-z9 border-none px-3 py-2 focus:outline-none;
+  font-size: 0.8125rem;
+}
+
+/* =============================================================================
+   Select inside input-root
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-input-root] [data-select-trigger] {
+  @apply bg-transparent text-surface-z9 border-none shadow-none ring-0 focus:outline-none;
+  background-image: none;
+}
+
+/* =============================================================================
+   Disabled
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-field-root][data-field-disabled] [data-input-root] {
+  @apply bg-surface-z1 text-surface-z5 cursor-not-allowed;
+  opacity: 0.6;
+}
+
+/* =============================================================================
+   Error State
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-field-root][data-field-error] [data-input-root] {
+  @apply border-danger-z4;
+}
+
+[data-style='zen-sumi'] [data-field-root] [data-field-message] {
+  @apply text-surface-z6;
+  font-size: 0.6875rem;
+}
+
+[data-style='zen-sumi'] [data-field-root][data-field-error] [data-field-message] {
+  @apply text-danger-z5;
+}
+
+/* =============================================================================
+   Placeholder
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-input-root] input::placeholder,
+[data-style='zen-sumi'] [data-input-root] textarea::placeholder {
+  @apply text-surface-z4;
+}

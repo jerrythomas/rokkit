@@ -374,20 +374,25 @@ export function hexToComponents(hex, space) {
 }
 
 /**
- * Convert a CSS color value to r,g,b for use in CSS variables.
- * Hex values (#rrggbb) are converted to "r,g,b" for rgba() support.
- * All other CSS color formats (oklch, hsl, named) are returned as-is.
- * Non-string values are returned unchanged.
- * Note: non-hex values will NOT work with UnoCSS opacity utilities like bg-primary/50.
+ * Convert a CSS color value to components for use in CSS variables.
+ *
+ * - Hex (#rrggbb): converted to space-appropriate components via hexToComponents.
+ * - oklch(...) strings: inner components extracted (e.g. "0.58 0.15 35") so the
+ *   value is compatible with the oklch(var(--x) / alpha) wrapper pattern.
+ * - All other formats: returned as-is (no opacity-modifier support).
  *
  * @param {unknown} value
  * @param {ColorSpace} [space]
  * @returns {unknown}
  */
 export function colorToRgb(value, space) {
-	if (typeof value === 'string' && /^#[0-9a-fA-F]{6}$/.test(value)) {
+	if (typeof value !== 'string') return value
+	if (/^#[0-9a-fA-F]{6}$/.test(value)) {
 		return space ? hexToComponents(value, space) : hex2rgb(value)
 	}
+	// oklch(...) — extract inner components so the var can be used in oklch(var(--x) / alpha)
+	const oklchMatch = value.match(/^oklch\(\s*([^)]+?)\s*\)$/)
+	if (oklchMatch) return oklchMatch[1]
 	return value
 }
 

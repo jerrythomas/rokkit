@@ -42,38 +42,37 @@
 </script>
 
 <!-- Full-screen wizard layout — no app sidebar -->
-<div class="wizard-shell">
+<div class="w-full h-screen flex flex-col bg-surface-z0">
 
-	<div class="wizard-grid">
+	<div class="flex-1 grid min-h-0" style="grid-template-columns: 260px 1fr">
+
 		<!-- ─── Left Rail ──────────────────────────────────────────────── -->
-		<aside class="wiz-rail">
-			<div class="rail-header">
-				<span class="kanji" style="font-size: 22px; color: var(--shu);">道</span>
-				<span class="rail-title display">{m.setup_title()}</span>
+		<aside class="wiz-rail bg-surface-z1 border-r border-surface-z2 flex flex-col overflow-hidden px-[22px] py-[26px] gap-7">
+			<div class="flex items-center gap-[10px]">
+				<span class="kanji text-[22px] text-primary-z5">道</span>
+				<span class="font-display text-[20px] font-normal text-surface-z9">{m.setup_title()}</span>
 			</div>
 
-			<div class="rail-stages">
+			<div class="rail-stages flex-1 flex flex-col gap-px">
 				{#each steps as step, i (step.id)}
 					<button
-						class="stage"
-						class:completed={step.status === 'completed'}
-						class:current={step.status === 'current'}
-						class:pending={step.status === 'pending'}
+						class="stage {step.status} grid items-center gap-[10px] px-[10px] py-[7px] rounded-md border text-left transition-all duration-[120ms] {step.status === 'current' ? 'py-[10px] bg-surface-z0 border-surface-z2' : 'border-transparent'} {step.status === 'pending' ? 'cursor-default opacity-60' : 'cursor-pointer hover:bg-surface-z0'}"
+						style="grid-template-columns: 24px 1fr"
 						onclick={() => { if (step.status === 'completed') currentStep = i }}
 						disabled={step.status === 'pending'}
 					>
-						<span class="stage-icon">
+						<span class="flex items-center justify-center">
 							{#if step.status === 'completed'}
-								<span class="stage-check">✓</span>
+								<span class="text-success-z5 text-[13px] font-semibold">✓</span>
 							{:else if step.status === 'current'}
-								<span class="kanji stage-kanji">{step.kanji}</span>
+								<span class="kanji text-[15px] text-primary-z5">{step.kanji}</span>
 							{:else}
-								<span class="stage-dot"></span>
+								<span class="w-[5px] h-[5px] rounded-full bg-surface-z4 inline-block"></span>
 							{/if}
 						</span>
-						<span class="stage-text">
-							<span class="stage-label">{step.label}</span>
-							<span class="stage-desc">{step.description}</span>
+						<span class="flex flex-col">
+							<span class="text-[13px] font-medium {step.status === 'completed' ? 'text-surface-z7' : step.status === 'pending' ? 'text-surface-z4' : 'text-surface-z9'}">{step.label}</span>
+							<span class="text-[10px] {step.status === 'pending' ? 'text-surface-z4' : 'text-surface-z5'}">{step.description}</span>
 						</span>
 					</button>
 				{/each}
@@ -81,72 +80,86 @@
 		</aside>
 
 		<!-- ─── Main Content ───────────────────────────────────────────── -->
-		<div class="wiz-main-col">
-			<div class="wiz-content">
+		<div class="wiz-content flex flex-col min-h-0">
+			<div class="flex-1 overflow-auto px-[64px] pt-[44px] pb-8">
+
 				{#if current.id === 'welcome' || (current.id !== 'folders' && current.id !== 'projects')}
-					<div class="wiz-header">
-						<span class="kanji wiz-kanji">{current.kanji}</span>
+					<div class="flex items-center gap-4 mb-7">
+						<span class="kanji text-[36px] text-primary-z5">{current.kanji}</span>
 						<div>
-							<h1 class="wiz-title display">{current.label}</h1>
-							<p class="wiz-tagline">{current.description}</p>
+							<h1 class="font-display text-[28px] font-light text-surface-z9 m-0">{current.label}</h1>
+							<p class="text-[13px] text-surface-z5 mt-1 mb-0">{current.description}</p>
 						</div>
 					</div>
 					{#if current.id === 'welcome'}
-						<p class="wiz-body">{m.setup_welcome_body()}</p>
-						<div class="pillars">
+						<p class="font-display text-[18px] font-light text-surface-z7 leading-relaxed m-0 mb-6">{m.setup_welcome_body()}</p>
+						<div class="grid grid-cols-3 gap-4 my-6">
 							{#each [['観', m.setup_pillar_observe(), m.setup_pillar_observe_desc()], ['教', m.setup_pillar_teach(), m.setup_pillar_teach_desc()], ['守', m.setup_pillar_local(), m.setup_pillar_local_desc()]] as [k, t, d]}
-								<div class="pillar">
-									<span class="kanji pillar-kanji">{k}</span>
-									<h3 class="pillar-title">{t}</h3>
-									<p class="pillar-desc">{d}</p>
+								<div class="px-[18px] py-[18px] bg-surface-z1 border border-surface-z2 rounded-md text-center">
+									<span class="kanji text-[28px] text-primary-z5">{k}</span>
+									<h3 class="text-[14px] font-semibold text-surface-z9 mt-2 mb-1">{t}</h3>
+									<p class="text-[12px] text-surface-z7 leading-[1.5] m-0">{d}</p>
 								</div>
 							{/each}
 						</div>
-						<p class="wiz-footnote">{m.setup_welcome_time()}</p>
+						<p class="text-[11px] text-surface-z4 mt-4">{m.setup_welcome_time()}</p>
 					{:else}
-						<p class="wiz-body">{m.this_step_placeholder()}</p>
+						<p class="text-[14px] text-surface-z7 leading-relaxed">{m.this_step_placeholder()}</p>
 					{/if}
 
 				{:else if current.id === 'folders'}
-					<div class="wiz-header">
-						<span class="kanji wiz-kanji">{current.kanji}</span>
+					<div class="flex items-center gap-4 mb-7">
+						<span class="kanji text-[36px] text-primary-z5">{current.kanji}</span>
 						<div>
-							<h1 class="wiz-title display">{m.setup_folders_title()}</h1>
-							<p class="wiz-tagline">{m.setup_folders_desc()}</p>
+							<h1 class="font-display text-[28px] font-light text-surface-z9 m-0">{m.setup_folders_title()}</h1>
+							<p class="text-[13px] text-surface-z5 mt-1 mb-0">{m.setup_folders_desc()}</p>
 						</div>
 					</div>
-					<div class="folders-list">
+					<div class="flex flex-col gap-1 mb-3">
 						{#each folders as folder (folder)}
-							<div class="folder-row">
-								<span class="mono folder-path">{folder}</span>
-								<button class="folder-remove" onclick={() => removeFolder(folder)}>×</button>
+							<div class="flex items-center justify-between px-3 py-2 bg-surface-z1 border border-surface-z2 rounded-md">
+								<span class="mono text-[13px] text-surface-z9">{folder}</span>
+								<button
+									class="text-surface-z4 text-[16px] w-6 h-6 flex items-center justify-center rounded hover:bg-surface-z2 hover:text-primary-z5 transition-colors"
+									onclick={() => removeFolder(folder)}
+								>×</button>
 							</div>
 						{/each}
 					</div>
-					<form class="folder-add" onsubmit={(e) => { e.preventDefault(); addFolder() }}>
-						<input class="folder-input" type="text" placeholder="~/code/project" bind:value={newFolder} />
-						<button class="btn-solid" type="submit">{m.setup_folders_add()}</button>
+					<form class="flex gap-2" onsubmit={(e) => { e.preventDefault(); addFolder() }}>
+						<input
+							class="flex-1 px-[14px] py-[10px] text-[13px] bg-surface-z1 border border-surface-z3 rounded-md outline-none focus:border-surface-z7 text-surface-z9 transition-colors font-sans"
+							type="text"
+							placeholder="~/code/project"
+							bind:value={newFolder}
+						/>
+						<button
+							class="btn-solid bg-surface-z9 text-surface-z0 border-0 rounded-md px-4 py-[10px] text-[13px] font-medium cursor-pointer font-sans whitespace-nowrap transition-opacity hover:opacity-85"
+						>{m.setup_folders_add()}</button>
 					</form>
-					<p class="wiz-footnote">{m.setup_folders_min()}</p>
+					<p class="text-[11px] text-surface-z4 mt-4">{m.setup_folders_min()}</p>
 
 				{:else if current.id === 'projects'}
-					<div class="wiz-header">
-						<span class="kanji wiz-kanji">{current.kanji}</span>
+					<div class="flex items-center gap-4 mb-7">
+						<span class="kanji text-[36px] text-primary-z5">{current.kanji}</span>
 						<div>
-							<h1 class="wiz-title display">{m.setup_projects_title()}</h1>
-							<p class="wiz-tagline">{m.setup_projects_desc()}</p>
+							<h1 class="font-display text-[28px] font-light text-surface-z9 m-0">{m.setup_projects_title()}</h1>
+							<p class="text-[13px] text-surface-z5 mt-1 mb-0">{m.setup_projects_desc()}</p>
 						</div>
 					</div>
-					<div class="projects-grid">
+					<div class="flex flex-col gap-[10px]">
 						{#each data.projects as project (project.id)}
-							<div class="project-card" class:confirmed={project.confirmed}>
-								<div class="project-header">
-									<h3 class="project-name">{project.name}</h3>
-									<span class="project-role mono">{project.role}</span>
+							<div
+								class="px-[18px] py-4 bg-surface-z1 border border-surface-z2 rounded-md"
+								style="border-left: {project.confirmed ? `2px solid color-mix(in oklch, var(--color-success-500) 14%, transparent)` : 'none'}"
+							>
+								<div class="flex justify-between items-center mb-2">
+									<h3 class="text-[14px] font-medium text-surface-z9 m-0">{project.name}</h3>
+									<span class="mono text-[10px] text-surface-z5 uppercase">{project.role}</span>
 								</div>
-								<div class="project-repos">
+								<div class="flex gap-[6px] flex-wrap">
 									{#each project.repos as repo}
-										<span class="project-repo mono">{repo}</span>
+										<span class="mono text-[11px] px-2 py-[3px] bg-surface-z2 rounded text-surface-z7">{repo}</span>
 									{/each}
 								</div>
 							</div>
@@ -156,15 +169,23 @@
 			</div>
 
 			<!-- ─── Bottom Progress Bar ────────────────────────────────── -->
-			<div class="wiz-bottom">
-				<button class="btn-outline" onclick={back} disabled={currentStep === 0}>{m.setup_back()}</button>
-				<div class="progress-ticks">
+			<div class="wiz-bottom border-t border-surface-z2 px-[64px] py-[14px] flex items-center gap-5 bg-surface-z0">
+				<button
+					class="text-surface-z7 bg-transparent rounded-md px-4 py-[9px] text-[13px] font-medium cursor-pointer font-sans whitespace-nowrap border border-surface-z3 hover:bg-surface-z1 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+					onclick={back}
+					disabled={currentStep === 0}
+				>{m.setup_back()}</button>
+
+				<div class="flex-1 flex gap-1 items-center">
 					{#each steps as _, i}
-						<span class="tick" class:filled={i <= currentStep}></span>
+						<span
+							class="flex-1 h-[2px] rounded-[1px] transition-colors duration-200 {i <= currentStep ? 'bg-surface-z9' : 'bg-surface-z2'}"
+						></span>
 					{/each}
 				</div>
+
 				<button
-					class="btn-solid"
+					class="btn-solid bg-surface-z9 text-surface-z0 border-0 rounded-md px-4 py-[9px] text-[13px] font-medium cursor-pointer font-sans whitespace-nowrap transition-opacity hover:opacity-85 disabled:opacity-40 disabled:cursor-not-allowed"
 					onclick={next}
 					disabled={!isLastStep && current.id === 'folders' && folders.length === 0}
 				>
@@ -174,207 +195,3 @@
 		</div>
 	</div>
 </div>
-
-<style>
-	/* ── Shell: full viewport ──────────────────────────────────── */
-	.wizard-shell {
-		width: 100%;
-		height: 100vh;
-		display: flex;
-		flex-direction: column;
-		background: var(--paper);
-	}
-
-	.wizard-grid {
-		flex: 1;
-		display: grid;
-		grid-template-columns: 260px 1fr;
-		min-height: 0;
-	}
-
-	/* ── Left Rail ─────────────────────────────────────────────── */
-	.wiz-rail {
-		background: var(--paper-2);
-		border-right: var(--hairline);
-		display: flex;
-		flex-direction: column;
-		overflow: hidden;
-		padding: 26px 22px;
-		gap: 28px;
-	}
-
-	.rail-header {
-		display: flex;
-		align-items: center;
-		gap: 10px;
-	}
-	.rail-title {
-		font-size: 20px;
-		font-weight: 400;
-		color: var(--sumi);
-	}
-
-	.rail-stages {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		gap: 1px;
-	}
-
-	.stage {
-		display: grid;
-		grid-template-columns: 24px 1fr;
-		align-items: center;
-		gap: 10px;
-		padding: 7px 10px;
-		border-radius: var(--radius);
-		border: 1px solid transparent;
-		text-align: left;
-		transition: all 120ms ease;
-	}
-	.stage:hover:not(:disabled) {
-		background: oklch(0.22 0.012 50 / 0.03);
-	}
-	.stage.current {
-		padding: 10px 10px;
-		background: var(--paper);
-		border: var(--border-card);
-	}
-	.stage:disabled { cursor: default; }
-
-	.stage-icon {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	.stage-check { color: var(--jade); font-size: 13px; font-weight: 600; }
-	.stage-kanji { font-size: 15px; color: var(--shu); }
-	.stage-dot {
-		width: 5px; height: 5px;
-		border-radius: 50%;
-		background: var(--sumi-4);
-	}
-
-	.stage-text { display: flex; flex-direction: column; }
-	.stage-label { font-size: 13px; font-weight: 500; color: var(--sumi); }
-	.stage.completed .stage-label { color: var(--sumi-2); }
-	.stage.pending .stage-label { color: var(--sumi-4); }
-	.stage-desc { font-size: 10px; color: var(--sumi-3); }
-	.stage.pending .stage-desc { color: var(--sumi-4); }
-
-	/* ── Main Column ──────────────────────────────────────────── */
-	.wiz-main-col {
-		display: flex;
-		flex-direction: column;
-		min-height: 0;
-	}
-
-	.wiz-content {
-		flex: 1;
-		overflow: auto;
-		padding: 44px 64px 32px;
-	}
-
-	.wiz-header {
-		display: flex;
-		align-items: center;
-		gap: 16px;
-		margin-bottom: 28px;
-	}
-	.wiz-kanji { font-size: 36px; color: var(--shu); }
-	.wiz-title { font-size: 28px; font-weight: 300; color: var(--sumi); margin: 0; }
-	.wiz-tagline { font-size: 13px; color: var(--sumi-3); margin: 4px 0 0; }
-	.wiz-body {
-		font-family: var(--font-display);
-		font-size: 18px;
-		font-weight: 300;
-		color: var(--sumi-2);
-		line-height: 1.6;
-		margin: 0 0 24px;
-	}
-	.wiz-footnote { font-size: 11px; color: var(--sumi-4); margin-top: 16px; }
-
-	/* ── Pillars ──────────────────────────────────────────────── */
-	.pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 24px 0; }
-	.pillar {
-		padding: 18px;
-		background: var(--paper-2);
-		border: var(--border-card);
-		border-radius: var(--radius);
-		text-align: center;
-	}
-	.pillar-kanji { font-size: 28px; color: var(--shu); }
-	.pillar-title { font-size: 14px; font-weight: 600; color: var(--sumi); margin: 8px 0 4px; }
-	.pillar-desc { font-size: 12px; color: var(--sumi-2); line-height: 1.5; margin: 0; }
-
-	/* ── Folders ──────────────────────────────────────────────── */
-	.folders-list { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
-	.folder-row {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 8px 12px;
-		background: var(--paper-2);
-		border: var(--border-card);
-		border-radius: var(--radius);
-	}
-	.folder-path { font-size: 13px; color: var(--sumi); }
-	.folder-remove {
-		color: var(--sumi-4); font-size: 16px; width: 24px; height: 24px;
-		display: flex; align-items: center; justify-content: center; border-radius: 4px;
-	}
-	.folder-remove:hover { background: oklch(0.22 0.012 50 / 0.04); color: var(--shu); }
-	.folder-add { display: flex; gap: 8px; }
-	.folder-input {
-		flex: 1; padding: 10px 14px; font-size: 13px;
-		background: var(--paper-2); border: var(--border-input);
-		border-radius: var(--radius); outline: none;
-	}
-	.folder-input:focus { border: var(--border-focus); }
-
-	/* ── Projects ─────────────────────────────────────────────── */
-	.projects-grid { display: flex; flex-direction: column; gap: 10px; }
-	.project-card {
-		padding: 16px 18px;
-		background: var(--paper-2);
-		border: var(--border-card);
-		border-radius: var(--radius);
-	}
-	.project-card.confirmed { border-left: 2px solid var(--jade-soft); }
-	.project-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-	.project-name { font-size: 14px; font-weight: 500; color: var(--sumi); margin: 0; }
-	.project-role { font-size: 10px; color: var(--sumi-3); text-transform: uppercase; }
-	.project-repos { display: flex; gap: 6px; flex-wrap: wrap; }
-	.project-repo {
-		font-size: 11px; padding: 3px 8px;
-		background: oklch(0.22 0.012 50 / 0.04);
-		border-radius: 4px; color: var(--sumi-2);
-	}
-
-	/* ── Bottom Bar ───────────────────────────────────────────── */
-	.wiz-bottom {
-		border-top: var(--hairline);
-		padding: 14px 64px;
-		display: flex;
-		align-items: center;
-		gap: 20px;
-		background: var(--paper);
-	}
-
-	.progress-ticks {
-		flex: 1;
-		display: flex;
-		gap: 4px;
-		align-items: center;
-	}
-	.tick {
-		flex: 1;
-		height: 2px;
-		border-radius: 1px;
-		background: oklch(0.22 0.012 50 / 0.08);
-		transition: background 0.2s;
-	}
-	.tick.filled {
-		background: var(--sumi);
-	}
-</style>

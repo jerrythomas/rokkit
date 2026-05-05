@@ -16,19 +16,24 @@
 	)
 </script>
 
-<div class="app-layout" class:collapsed={sidebarCollapsed} data-radius="soft">
-
+<div
+	class="grid min-h-screen transition-[grid-template-columns] duration-200 ease-in-out"
+	style="grid-template-columns: {sidebarCollapsed ? 'var(--layout-sidebar-collapsed)' : 'var(--layout-sidebar-width)'} 1fr"
+	data-radius="soft"
+>
 	<!-- ─── Sidebar ────────────────────────────────────────────────────────── -->
-	<aside class="sidebar">
-
+	<aside
+		class="sidebar flex flex-col overflow-hidden px-[14px] py-[22px] border-r border-surface-z2 backdrop-blur-xl saturate-[180%]"
+		style="background: color-mix(in srgb, var(--color-surface-100) 85%, transparent); -webkit-backdrop-filter: blur(20px) saturate(180%)"
+	>
 		<!-- Logo -->
-		<div class="sidebar-header">
-			<span class="kanji" style="font-size: 20px; color: var(--shu);">先</span>
+		<div class="flex items-center gap-[10px] px-[10px] pb-[18px]">
+			<span class="kanji text-[20px] text-primary-z5">先</span>
 			{#if !sidebarCollapsed}
-				<span class="sidebar-title">Sensei</span>
+				<span class="font-display text-[17px] font-medium text-surface-z9 tracking-[-0.02em] flex-1">Sensei</span>
 			{/if}
 			<button
-				class="sidebar-collapse-btn"
+				class="w-6 h-6 flex items-center justify-center text-surface-z5 text-[14px] rounded flex-shrink-0 hover:bg-surface-z1 hover:text-surface-z9 transition-colors"
 				onclick={() => (sidebarCollapsed = !sidebarCollapsed)}
 				title={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
 			>
@@ -37,18 +42,18 @@
 		</div>
 
 		<!-- Main navigation -->
-		<nav class="sidebar-nav">
-			<div class="nav-section">
+		<nav class="flex-1 overflow-y-auto flex flex-col gap-[20px]">
+			<div class="flex flex-col gap-px">
 				{#each mainNav as item (item.id)}
 					<a
 						href={item.href}
-						class="nav-item"
-						class:active={activeId === item.id}
+						class="group grid items-center gap-[10px] px-[10px] py-[7px] rounded-md text-[13px] font-normal no-underline cursor-pointer transition-colors duration-[120ms] {activeId === item.id ? 'bg-surface-z2 text-surface-z9' : 'text-surface-z7 hover:bg-surface-z1 hover:text-surface-z9'}"
+						style="grid-template-columns: auto 1fr auto"
 						title={sidebarCollapsed ? item.label : undefined}
 					>
-						<span class="kanji nav-kanji">{item.kanji}</span>
+						<span class="kanji text-[14px] w-[18px] text-center {activeId === item.id ? 'text-primary-z5' : 'text-surface-z5 group-hover:text-surface-z7'}">{item.kanji}</span>
 						{#if !sidebarCollapsed}
-							<span class="nav-label">{item.label}</span>
+							<span class="whitespace-nowrap overflow-hidden text-ellipsis">{item.label}</span>
 						{/if}
 					</a>
 				{/each}
@@ -56,18 +61,23 @@
 
 			<!-- Project groups -->
 			{#each projectGroups as group (group.label)}
-				<div class="nav-section">
+				<div class="flex flex-col gap-px">
 					{#if !sidebarCollapsed}
-						<span class="nav-group-label">{group.label}</span>
+						<span class="text-[9.5px] font-semibold uppercase tracking-[0.08em] text-surface-z4 pt-[12px] px-[10px] pb-[4px]">{group.label}</span>
 					{/if}
 					{#if !group.collapsed}
 						{#each group.items as item (item.id)}
-							<a href={item.href} class="nav-item" title={sidebarCollapsed ? item.label : undefined}>
-								<span class="kanji nav-kanji">{item.kanji}</span>
+							<a
+								href={item.href}
+								class="group grid items-center gap-[10px] px-[10px] py-[7px] rounded-md text-[13px] font-normal no-underline cursor-pointer transition-colors duration-[120ms] text-surface-z7 hover:bg-surface-z1 hover:text-surface-z9"
+								style="grid-template-columns: auto 1fr auto"
+								title={sidebarCollapsed ? item.label : undefined}
+							>
+								<span class="kanji text-[14px] w-[18px] text-center text-surface-z5 group-hover:text-surface-z7">{item.kanji}</span>
 								{#if !sidebarCollapsed}
-									<span class="nav-label">{item.label}</span>
+									<span class="whitespace-nowrap overflow-hidden text-ellipsis">{item.label}</span>
 									{#if item.badge}
-										<span class="nav-badge mono">{item.badge}</span>
+										<span class="mono text-[10px] text-surface-z5">{item.badge}</span>
 									{/if}
 								{/if}
 							</a>
@@ -78,185 +88,30 @@
 		</nav>
 
 		<!-- Footer -->
-		<div class="sidebar-footer">
-			<a href={settingsNav.href} class="nav-item" title={sidebarCollapsed ? 'Settings' : undefined}>
-				<span class="kanji nav-kanji">{settingsNav.kanji}</span>
+		<div class="border-t border-surface-z2 pt-2 flex flex-col gap-px">
+			<a
+				href={settingsNav.href}
+				class="group grid items-center gap-[10px] px-[10px] py-[7px] rounded-md text-[13px] font-normal no-underline cursor-pointer transition-colors duration-[120ms] text-surface-z7 hover:bg-surface-z1 hover:text-surface-z9"
+				style="grid-template-columns: auto 1fr auto"
+				title={sidebarCollapsed ? 'Settings' : undefined}
+			>
+				<span class="kanji text-[14px] w-[18px] text-center text-surface-z5 group-hover:text-surface-z7">{settingsNav.kanji}</span>
 				{#if !sidebarCollapsed}
-					<span class="nav-label">{settingsNav.label}</span>
+					<span class="whitespace-nowrap overflow-hidden text-ellipsis">{settingsNav.label}</span>
 				{/if}
 			</a>
 			{#if !sidebarCollapsed}
 				<LanguageSwitcher />
-				<div class="sidebar-status">
-					<span class="status-dot"></span>
-					<span class="status-text">{m.daemon_running()}</span>
+				<div class="flex items-center gap-[6px] pt-2 px-[10px]">
+					<span class="w-[6px] h-[6px] rounded-full bg-success-z5 flex-shrink-0"></span>
+					<span class="text-[10px] text-surface-z4">{m.daemon_running()}</span>
 				</div>
 			{/if}
 		</div>
 	</aside>
 
 	<!-- ─── Main content ───────────────────────────────────────────────────── -->
-	<main class="main-content">
+	<main class="overflow-y-auto max-h-screen relative">
 		{@render children?.()}
 	</main>
 </div>
-
-<style>
-	.app-layout {
-		display: grid;
-		grid-template-columns: var(--layout-sidebar-width) 1fr;
-		min-height: 100vh;
-		transition: grid-template-columns 200ms ease;
-	}
-	.app-layout.collapsed {
-		grid-template-columns: var(--layout-sidebar-collapsed) 1fr;
-	}
-
-	/* ── Sidebar ────────────────────────────────────────────────── */
-	.sidebar {
-		background: color-mix(in srgb, var(--paper-2) 85%, transparent);
-		backdrop-filter: blur(20px) saturate(180%);
-		-webkit-backdrop-filter: blur(20px) saturate(180%);
-		border-right: var(--hairline);
-		display: flex;
-		flex-direction: column;
-		overflow: hidden;
-		padding: 22px 14px;
-		gap: 0;
-	}
-
-	.sidebar-header {
-		display: flex;
-		align-items: center;
-		gap: 10px;
-		padding: 0 10px 18px;
-	}
-
-	.sidebar-title {
-		font-family: var(--font-display);
-		font-size: 17px;
-		font-weight: 500;
-		color: var(--sumi);
-		letter-spacing: -0.02em;
-		flex: 1;
-	}
-
-	.sidebar-collapse-btn {
-		width: 24px;
-		height: 24px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		color: var(--sumi-3);
-		font-size: 14px;
-		border-radius: 4px;
-		flex-shrink: 0;
-	}
-	.sidebar-collapse-btn:hover {
-		background: oklch(0.22 0.012 50 / 0.04);
-		color: var(--sumi);
-	}
-
-	/* ── Navigation ─────────────────────────────────────────────── */
-	.sidebar-nav {
-		flex: 1;
-		overflow-y: auto;
-		display: flex;
-		flex-direction: column;
-		gap: 20px;
-	}
-
-	.nav-section {
-		display: flex;
-		flex-direction: column;
-		gap: 1px;
-	}
-
-	.nav-group-label {
-		font-size: 9.5px;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.08em;
-		color: var(--sumi-4);
-		padding: 12px 10px 4px;
-	}
-
-	.nav-item {
-		display: grid;
-		grid-template-columns: auto 1fr auto;
-		align-items: center;
-		gap: 10px;
-		padding: 7px 10px;
-		border-radius: var(--radius);
-		color: var(--sumi-2);
-		text-decoration: none;
-		font-size: 13px;
-		font-weight: 400;
-		transition: background 120ms ease, color 120ms ease;
-		cursor: pointer;
-	}
-	.nav-item:hover {
-		background: oklch(0.22 0.012 50 / 0.04);
-		color: var(--sumi);
-	}
-	.nav-item.active {
-		background: var(--paper-3);
-		color: var(--sumi);
-	}
-	.nav-item.active .nav-kanji {
-		color: var(--shu);
-	}
-
-	.nav-kanji {
-		font-size: 14px;
-		color: var(--sumi-3);
-		width: 18px;
-		text-align: center;
-	}
-
-	.nav-label {
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-
-	.nav-badge {
-		font-size: 10px;
-		color: var(--sumi-3);
-	}
-
-	/* ── Footer ─────────────────────────────────────────────────── */
-	.sidebar-footer {
-		border-top: var(--ink-line);
-		padding-top: 8px;
-		display: flex;
-		flex-direction: column;
-		gap: 1px;
-	}
-
-	.sidebar-status {
-		display: flex;
-		align-items: center;
-		gap: 6px;
-		padding: 8px 10px 0;
-	}
-
-	.status-dot {
-		width: 6px;
-		height: 6px;
-		border-radius: 50%;
-		background: var(--jade);
-	}
-
-	.status-text {
-		font-size: 10px;
-		color: var(--sumi-4);
-	}
-
-	/* ── Main content ───────────────────────────────────────────── */
-	.main-content {
-		overflow-y: auto;
-		max-height: 100vh;
-		position: relative;
-	}
-</style>

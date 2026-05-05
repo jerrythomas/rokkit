@@ -1,0 +1,160 @@
+/**
+ * List — Zen-Sumi Theme
+ *
+ * Transparent items, subtle hover, active items "pop" onto paper.
+ * Kanji/literal icons styled with mincho font.
+ * Continuous guide-line on groups (not per-item borders).
+ */
+
+/* =============================================================================
+   Container
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-list]:focus-within {
+  @apply outline-none;
+}
+
+/* =============================================================================
+   List Items
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-list] [data-list-item] {
+  @apply text-surface-z7 border-0 bg-transparent bg-none;
+  transition: background-color 0.1s;
+}
+
+[data-style='zen-sumi'] [data-list] a[data-list-item],
+[data-style='zen-sumi'] [data-list] button[data-list-item] {
+  @apply text-surface-z7;
+}
+
+/* Hover — paper-3 wash */
+[data-style='zen-sumi']
+  [data-list]
+  [data-list-item]:hover:not(:disabled):not([data-disabled='true']),
+[data-style='zen-sumi']
+  [data-list]
+  [data-list-item]:focus:not(:disabled):not([data-disabled='true']) {
+  @apply bg-surface-z2 text-surface-z9 bg-none outline-none;
+}
+
+/* Active — paper pop (surface-z0 = lightest, appears to come forward) */
+[data-style='zen-sumi'] [data-list] [data-list-item][data-active='true'] {
+  @apply bg-surface-z0 text-surface-z9 bg-none;
+}
+
+[data-style='zen-sumi'] [data-list]:focus-within [data-list-item][data-active='true'] {
+  @apply bg-surface-z0 text-surface-z10 bg-none;
+}
+
+[data-style='zen-sumi']
+  [data-list]
+  [data-list-item][data-active='true']:hover:not(:disabled),
+[data-style='zen-sumi']
+  [data-list]
+  [data-list-item][data-active='true']:focus:not(:disabled) {
+  @apply bg-surface-z1 text-surface-z10 bg-none;
+}
+
+/* =============================================================================
+   Multi-Selection
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-list] [data-list-item][data-selected='true'] {
+  @apply bg-surface-z0 text-surface-z9 bg-none;
+}
+
+[data-style='zen-sumi'] [data-list]:focus-within [data-list-item][data-selected='true'] {
+  @apply bg-surface-z0 text-surface-z10 bg-none;
+}
+
+[data-style='zen-sumi']
+  [data-list]
+  [data-list-item][data-selected='true']:hover:not(:disabled) {
+  @apply bg-surface-z1;
+}
+
+/* =============================================================================
+   Item Elements
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-list] [data-list-item] [data-item-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='zen-sumi']
+  [data-list]
+  [data-list-item]:hover:not(:disabled)
+  [data-item-icon],
+[data-style='zen-sumi']
+  [data-list]
+  [data-list-item]:focus:not(:disabled)
+  [data-item-icon] {
+  @apply text-surface-z7;
+}
+
+[data-style='zen-sumi']
+  [data-list]
+  [data-list-item][data-active='true']
+  [data-item-icon],
+[data-style='zen-sumi']
+  [data-list]:focus-within
+  [data-list-item][data-active='true']
+  [data-item-icon] {
+  @apply text-primary-z5;
+}
+
+/* Kanji / literal icon styling */
+[data-style='zen-sumi'] [data-list] [data-list-item] [data-item-icon-literal] {
+  font-family: 'Yu Mincho', 'Hiragino Mincho ProN', 'Songti SC', serif;
+  font-size: 1.1em;
+  line-height: 1;
+}
+
+[data-style='zen-sumi'] [data-list] [data-list-item] [data-item-description] {
+  @apply text-surface-z5;
+}
+
+[data-style='zen-sumi']
+  [data-list]
+  [data-list-item][data-active='true']
+  [data-item-description] {
+  @apply text-surface-z6;
+}
+
+[data-style='zen-sumi'] [data-list] [data-list-item] [data-item-badge] {
+  @apply text-surface-z5 bg-transparent bg-none border-0;
+  font-size: 0.6875rem;
+}
+
+[data-style='zen-sumi']
+  [data-list]
+  [data-list-item][data-active='true']
+  [data-item-badge] {
+  @apply text-primary-z5;
+}
+
+/* =============================================================================
+   Groups — continuous guide-line style
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-list] [data-list-group] {
+  @apply text-surface-z5;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+[data-style='zen-sumi'] [data-list] [data-list-group]:hover:not(:disabled),
+[data-style='zen-sumi'] [data-list] [data-list-group]:focus:not(:disabled) {
+  @apply text-surface-z7 bg-none;
+}
+
+/* =============================================================================
+   Separator
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-list] [data-list-separator] {
+  @apply bg-surface-z2 bg-none;
+}

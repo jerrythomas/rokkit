@@ -237,8 +237,8 @@ describe('utils', () => {
 		it('converts hex to r,g,b', () => {
 			expect(colorToRgb('#0f4c81')).toBe('15,76,129')
 		})
-		it('passes through oklch as-is', () => {
-			expect(colorToRgb('oklch(60% 0.18 250)')).toBe('oklch(60% 0.18 250)')
+		it('extracts inner components from oklch() strings', () => {
+			expect(colorToRgb('oklch(60% 0.18 250)')).toBe('60% 0.18 250')
 		})
 		it('passes through hsl as-is', () => {
 			expect(colorToRgb('hsl(210 83% 27%)')).toBe('hsl(210 83% 27%)')
@@ -373,8 +373,10 @@ describe('utils', () => {
 			expect(colorToRgb('#ff0000', 'hsl')).toBe('0 100% 50%')
 		})
 
-		it('should still pass through non-hex values regardless of space', () => {
-			expect(colorToRgb('oklch(60% 0.18 250)', 'oklch')).toBe('oklch(60% 0.18 250)')
+		it('extracts oklch components when value is oklch() string', () => {
+			expect(colorToRgb('oklch(60% 0.18 250)', 'oklch')).toBe('60% 0.18 250')
+		})
+		it('passes through non-oklch, non-hex values regardless of space', () => {
 			expect(colorToRgb('rebeccapurple', 'hsl')).toBe('rebeccapurple')
 		})
 	})

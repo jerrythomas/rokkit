@@ -1,0 +1,71 @@
+/**
+ * Dropdown — Zen-Sumi Theme
+ *
+ * Paper background, hairline border, no shadow.
+ * Shu selected indicator. Transparent items.
+ */
+
+/* =============================================================================
+   Trigger
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-dropdown-trigger] {
+  @apply bg-surface-z1 border-surface-z3 text-surface-z8 border bg-none;
+  transition: border-color 0.1s, background-color 0.1s;
+}
+
+[data-style='zen-sumi'] [data-dropdown-trigger]:hover:not(:disabled) {
+  @apply bg-surface-z2 border-surface-z4 text-surface-z9 bg-none;
+}
+
+[data-style='zen-sumi'] [data-dropdown-trigger]:focus-visible {
+  @apply outline-none ring-primary-z3 ring-1;
+}
+
+[data-style='zen-sumi'] [data-dropdown][data-open='true'] [data-dropdown-trigger] {
+  @apply bg-surface-z2 border-surface-z5 bg-none;
+}
+
+[data-style='zen-sumi'] [data-dropdown-trigger] [data-dropdown-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='zen-sumi'] [data-dropdown-trigger] [data-dropdown-arrow] {
+  @apply text-surface-z4;
+}
+
+/* =============================================================================
+   Panel — paper surface, hairline border
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-dropdown-panel] {
+  @apply bg-surface-z0 border-surface-z3 border bg-none;
+  box-shadow: 0 4px 12px oklch(0.220 0.012 50 / 0.06);
+}
+
+/* =============================================================================
+   Options
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-dropdown-option] {
+  @apply text-surface-z7 bg-transparent;
+  transition: background-color 0.1s;
+}
+
+[data-style='zen-sumi'] [data-dropdown-option]:hover:not(:disabled),
+[data-style='zen-sumi'] [data-dropdown-option]:focus:not(:disabled) {
+  @apply bg-surface-z1 text-surface-z9 bg-none outline-none;
+}
+
+/* Active/selected — paper pop with shu left indicator */
+[data-style='zen-sumi'] [data-dropdown-option][data-active='true'] {
+  @apply bg-surface-z0 text-primary-z6 border-l-2 border-primary-z5 bg-none;
+}
+
+/* =============================================================================
+   Separator
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-dropdown-separator] {
+  @apply bg-surface-z2 bg-none;
+}

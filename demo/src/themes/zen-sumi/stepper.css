@@ -1,0 +1,78 @@
+/**
+ * Stepper + StepIndicator — Zen-Sumi Theme
+ *
+ * Vertical rail. Completed: filled sumi circle.
+ * Current: outlined shu ring. Pending: empty kami circle.
+ */
+
+/* =============================================================================
+   Stepper (new Stepper.svelte component)
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-stepper] {
+  @apply text-surface-z8;
+}
+
+/* Connector line between steps */
+[data-style='zen-sumi'] [data-stepper-connector] {
+  @apply bg-surface-z2;
+}
+
+/* Step circle */
+[data-style='zen-sumi'] [data-stepper-circle] {
+  @apply bg-surface-z2 border-surface-z3 text-surface-z6 border;
+  transition: background-color 0.14s, border-color 0.14s;
+}
+
+/* Step label */
+[data-style='zen-sumi'] [data-stepper-label] {
+  @apply text-surface-z6;
+  font-size: 0.8125rem;
+}
+
+/* Sub-stage dots */
+[data-style='zen-sumi'] [data-stepper-dot] {
+  @apply bg-surface-z3;
+}
+
+/* =============================================================================
+   StepIndicator (StepIndicator.svelte, used in multi-step forms)
+   ============================================================================= */
+
+/* Complete step */
+[data-style='zen-sumi'] [data-step-item][data-step-state='complete'] [data-step-number] {
+  @apply bg-surface-z9 border-surface-z9 text-surface-z0 bg-none;
+}
+
+/* Current step — shu ring */
+[data-style='zen-sumi'] [data-step-item][data-step-state='current'] [data-step-number] {
+  @apply bg-transparent border-primary-z5 text-primary-z6 bg-none;
+}
+
+/* Upcoming step — subtle circle */
+[data-style='zen-sumi'] [data-step-item][data-step-state='upcoming'] [data-step-number] {
+  @apply bg-transparent border-surface-z3 text-surface-z5 bg-none;
+}
+
+/* Labels */
+[data-style='zen-sumi'] [data-step-item][data-step-state='complete'] [data-step-label] {
+  @apply text-surface-z8 bg-none;
+}
+
+[data-style='zen-sumi'] [data-step-item][data-step-state='current'] [data-step-label] {
+  @apply text-surface-z9 font-semibold bg-none;
+}
+
+[data-style='zen-sumi'] [data-step-item][data-step-state='upcoming'] [data-step-label] {
+  @apply text-surface-z5 bg-none;
+}
+
+/* Connector lines between steps */
+[data-style='zen-sumi'] [data-step-item][data-step-state='complete']::after {
+  @apply bg-surface-z9;
+}
+
+[data-style='zen-sumi'] [data-step-item][data-step-state='current']::after,
+[data-style='zen-sumi'] [data-step-item][data-step-state='upcoming']::after {
+  @apply bg-surface-z2;
+}

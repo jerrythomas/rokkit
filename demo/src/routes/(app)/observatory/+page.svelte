@@ -6,20 +6,20 @@
 	const { data } = $props()
 </script>
 
-<div class="obs-home">
+<div class="max-w-[1060px] mx-auto px-[48px] pt-[36px] pb-[48px]">
 
 	<!-- ─── Greeting + FTR ─────────────────────────────────────────────── -->
-	<div class="greeting-row">
-		<div class="greeting-left">
-			<span class="greeting-date mono">{data.greeting.date}</span>
-			<h1 class="greeting-title display">{m.greeting_morning({ name: data.greeting.name })}</h1>
+	<div class="greeting-row flex justify-between items-baseline mb-8">
+		<div class="flex flex-col gap-1">
+			<span class="mono text-[10.5px] uppercase text-surface-z5 tracking-[0.06em]">{data.greeting.date}</span>
+			<h1 class="font-display text-[28px] font-light text-surface-z9 m-0">{m.greeting_morning({ name: data.greeting.name })}</h1>
 		</div>
-		<div class="greeting-right">
+		<div class="flex gap-4 items-center">
 			<EnsoRing score={data.ftr.score} size={110} />
-			<div class="ftr-text">
-				<span class="ftr-label mono">{m.ftr_label()} · {data.ftr.period}</span>
+			<div class="flex flex-col gap-1 min-w-[150px]">
+				<span class="mono text-[11px] text-surface-z5">{m.ftr_label()} · {data.ftr.period}</span>
 				<Sparkline data={data.ftr.trend} width={150} height={36} />
-				<span class="ftr-delta mono">
+				<span class="mono text-[11px] text-surface-z7">
 					{m.ftr_vs_prior({ delta: Math.abs(data.ftr.delta).toString() })}
 				</span>
 			</div>
@@ -27,45 +27,56 @@
 	</div>
 
 	<!-- ─── Hero Koan ──────────────────────────────────────────────────── -->
-	<section class="koan-hero">
-		<div class="koan-left">
-			<span class="kanji koan-kanji">{data.koan.kanji}</span>
+	<section
+		class="koan-hero grid gap-[28px] p-[32px_34px_30px] bg-surface-z1 border border-surface-z2 rounded-lg mb-9"
+		style="grid-template-columns: auto 1fr"
+	>
+		<div class="relative">
+			<span class="kanji text-[96px] text-primary-z5 leading-none">{data.koan.kanji}</span>
 		</div>
-		<div class="koan-right">
-			<h2 class="koan-title display">{data.koan.title}</h2>
-			<p class="koan-body">{data.koan.explanation}</p>
-			<div class="koan-actions">
-				<button class="btn-solid">{m.koan_action()}</button>
-				<span class="koan-impact">{m.koan_projected_ftr({ pct: '14' })} · {data.koan.impact}</span>
-				<span style="flex:1"></span>
-				<span class="koan-evidence mono">{data.koan.evidence}</span>
+		<div class="flex flex-col gap-3">
+			<h2 class="font-display text-[28px] font-normal text-surface-z9 m-0">{data.koan.title}</h2>
+			<p class="text-[14.5px] text-surface-z7 leading-relaxed m-0">{data.koan.explanation}</p>
+			<div class="flex gap-4 flex-wrap items-center mt-auto">
+				<button class="bg-surface-z9 text-surface-z0 border-0 rounded-md px-4 py-2 text-[13px] font-medium cursor-pointer font-sans whitespace-nowrap transition-opacity hover:opacity-85">
+					{m.koan_action()}
+				</button>
+				<span class="text-[12px] text-primary-z5">{m.koan_projected_ftr({ pct: '14' })} · {data.koan.impact}</span>
+				<span class="flex-1"></span>
+				<span class="mono text-[10.5px] text-surface-z4">{data.koan.evidence}</span>
 			</div>
 		</div>
 	</section>
 
 	<!-- ─── Insights + Adopted (two-column) ────────────────────────────── -->
-	<div class="two-col">
+	<div class="grid gap-[30px] mb-10" style="grid-template-columns: 1.4fr 1fr">
 		<section class="insights-col">
-			<h3 class="section-header display">{m.section_insights()}</h3>
-			<div class="insight-list">
+			<h3 class="font-display text-[17px] font-normal text-surface-z9 m-0 mb-[14px]">{m.section_insights()}</h3>
+			<div class="flex flex-col gap-[2px]">
 				{#each data.insights as insight (insight.id)}
-					<div class="insight-row" data-tone={insight.tone}>
-						<span class="kanji insight-kanji">{insight.kanji}</span>
-						<div class="insight-body">
-							<span class="insight-label">{insight.title}</span>
-							<span class="insight-text">{insight.body}</span>
+					<div
+						class="grid gap-3 p-[10px_12px] rounded-md transition-colors hover:bg-surface-z1"
+						style="grid-template-columns: auto 1fr"
+					>
+						<span class="kanji text-[19px] {insight.tone === 'warn' ? 'text-warning-z5' : insight.tone === 'good' ? 'text-success-z5' : 'text-surface-z5'}">{insight.kanji}</span>
+						<div class="flex flex-col gap-[2px]">
+							<span class="text-[10.5px] uppercase tracking-[0.04em] text-surface-z5 font-medium">{insight.title}</span>
+							<span class="text-[13.5px] text-surface-z7 leading-[1.5]">{insight.body}</span>
 						</div>
 					</div>
 				{/each}
 			</div>
 		</section>
 
-		<section class="adopted-col">
-			<h3 class="section-header display">{m.section_adopted()}</h3>
-			<div class="adopted-list">
-				{#each data.adoptedTeachings as teaching, i}
-					<div class="adopted-card">
-						<span class="adopted-text">{teaching}</span>
+		<section>
+			<h3 class="font-display text-[17px] font-normal text-surface-z9 m-0 mb-[14px]">{m.section_adopted()}</h3>
+			<div class="flex flex-col gap-[10px]">
+				{#each data.adoptedTeachings as teaching}
+					<div
+						class="px-[14px] py-3 bg-surface-z1 rounded-r-md"
+						style="border-left: 2px solid color-mix(in oklch, var(--color-primary-500) 12%, transparent)"
+					>
+						<span class="text-[13px] text-surface-z7 leading-[1.5]">{teaching}</span>
 					</div>
 				{/each}
 			</div>
@@ -74,252 +85,23 @@
 
 	<!-- ─── Recent Sessions ────────────────────────────────────────────── -->
 	<section class="sessions-section">
-		<h3 class="section-header display">{m.section_sessions()}</h3>
-		<div class="sessions-table">
+		<h3 class="font-display text-[17px] font-normal text-surface-z9 m-0 mb-[14px]">{m.section_sessions()}</h3>
+		<div class="sessions-table flex flex-col">
 			{#each data.sessions as session (session.id)}
-				<div class="session-row">
-					<span class="session-dot" class:ftr={session.ftr}></span>
-					<span class="session-project mono">{session.project}</span>
-					<span class="session-title">{session.title}</span>
-					<span class="session-corrections mono">
+				<div
+					class="grid items-center gap-4 px-1 py-[9px] border-b border-surface-z2 transition-colors hover:bg-surface-z1"
+					style="grid-template-columns: auto 120px 1fr auto auto auto"
+				>
+					<span class="w-2 h-2 rounded-full {session.ftr ? 'bg-success-z5' : 'bg-surface-z4'}"></span>
+					<span class="mono text-[11.5px] text-surface-z5">{session.project}</span>
+					<span class="text-[13px] text-surface-z9 whitespace-nowrap overflow-hidden text-ellipsis">{session.title}</span>
+					<span class="mono text-[10.5px] text-surface-z5 text-right">
 						{session.corrections === 0 ? m.session_first_try() : m.session_corrections({ count: session.corrections.toString() })}
 					</span>
-					<span class="session-duration mono">{session.duration}</span>
-					<span class="session-time mono">{session.time}</span>
+					<span class="mono text-[11px] text-surface-z5 text-right">{session.duration}</span>
+					<span class="mono text-[10.5px] text-surface-z4 text-right">{session.time}</span>
 				</div>
 			{/each}
 		</div>
 	</section>
 </div>
-
-<style>
-	.obs-home {
-		max-width: 1060px;
-		margin: 0 auto;
-		padding: 36px 48px 48px;
-	}
-
-	/* ── Greeting Row ─────────────────────────────────────────── */
-	.greeting-row {
-		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-		margin-bottom: 32px;
-	}
-	.greeting-left {
-		display: flex;
-		flex-direction: column;
-		gap: 4px;
-	}
-	.greeting-date {
-		font-size: 10.5px;
-		text-transform: uppercase;
-		color: var(--sumi-3);
-		letter-spacing: 0.06em;
-	}
-	.greeting-title {
-		font-size: 28px;
-		font-weight: 300;
-		color: var(--sumi);
-		margin: 0;
-	}
-	.greeting-right {
-		display: flex;
-		gap: 16px;
-		align-items: center;
-	}
-	.ftr-text {
-		display: flex;
-		flex-direction: column;
-		gap: 4px;
-		min-width: 150px;
-	}
-	.ftr-label {
-		font-size: 11px;
-		color: var(--sumi-3);
-	}
-	.ftr-delta {
-		font-size: 11px;
-		color: var(--sumi-2);
-	}
-
-	/* ── Hero Koan ────────────────────────────────────────────── */
-	.koan-hero {
-		display: grid;
-		grid-template-columns: auto 1fr;
-		gap: 28px;
-		padding: 32px 34px 30px;
-		background: var(--paper-2);
-		border: var(--border-card);
-		border-radius: var(--radius-lg);
-		margin-bottom: 36px;
-	}
-	.koan-left {
-		position: relative;
-	}
-	.koan-kanji {
-		font-size: 96px;
-		color: var(--shu);
-		line-height: 1;
-	}
-	.koan-right {
-		display: flex;
-		flex-direction: column;
-		gap: 12px;
-	}
-	.koan-title {
-		font-size: 28px;
-		font-weight: 400;
-		color: var(--sumi);
-		margin: 0;
-	}
-	.koan-body {
-		font-size: 14.5px;
-		color: var(--sumi-2);
-		line-height: 1.6;
-		margin: 0;
-	}
-	.koan-actions {
-		display: flex;
-		gap: 16px;
-		flex-wrap: wrap;
-		align-items: center;
-		margin-top: auto;
-	}
-	.koan-impact {
-		font-size: 12px;
-		color: var(--shu);
-	}
-	.koan-evidence {
-		font-size: 10.5px;
-		color: var(--sumi-4);
-	}
-
-	/* ── Section Header ───────────────────────────────────────── */
-	.section-header {
-		font-size: 17px;
-		font-weight: 400;
-		color: var(--sumi);
-		margin: 0 0 14px;
-	}
-
-	/* ── Two-Column (Insights + Adopted) ──────────────────────── */
-	.two-col {
-		display: grid;
-		grid-template-columns: 1.4fr 1fr;
-		gap: 30px;
-		margin-bottom: 40px;
-	}
-
-	/* Insights */
-	.insight-list {
-		display: flex;
-		flex-direction: column;
-		gap: 2px;
-	}
-	.insight-row {
-		display: grid;
-		grid-template-columns: auto 1fr;
-		gap: 12px;
-		padding: 10px 12px;
-		border-radius: var(--radius);
-		transition: background 120ms ease;
-	}
-	.insight-row:hover {
-		background: oklch(0.22 0.012 50 / 0.03);
-	}
-	.insight-kanji {
-		font-size: 19px;
-		color: var(--sumi-3);
-	}
-	.insight-row[data-tone='warn'] .insight-kanji { color: var(--amber); }
-	.insight-row[data-tone='good'] .insight-kanji { color: var(--jade); }
-	.insight-body {
-		display: flex;
-		flex-direction: column;
-		gap: 2px;
-	}
-	.insight-label {
-		font-size: 10.5px;
-		text-transform: uppercase;
-		letter-spacing: 0.04em;
-		color: var(--sumi-3);
-		font-weight: 500;
-	}
-	.insight-text {
-		font-size: 13.5px;
-		color: var(--sumi-2);
-		line-height: 1.5;
-	}
-
-	/* Adopted */
-	.adopted-list {
-		display: flex;
-		flex-direction: column;
-		gap: 10px;
-	}
-	.adopted-card {
-		padding: 12px 14px;
-		background: var(--paper-2);
-		border-left: 2px solid var(--shu-soft);
-		border-radius: 0 var(--radius) var(--radius) 0;
-	}
-	.adopted-text {
-		font-size: 13px;
-		color: var(--sumi-2);
-		line-height: 1.5;
-	}
-
-	/* ── Sessions Table ───────────────────────────────────────── */
-	.sessions-table {
-		display: flex;
-		flex-direction: column;
-	}
-	.session-row {
-		display: grid;
-		grid-template-columns: auto 120px 1fr auto auto auto;
-		gap: 16px;
-		align-items: center;
-		padding: 9px 4px;
-		border-bottom: var(--ink-line);
-		transition: background 120ms ease;
-	}
-	.session-row:hover {
-		background: oklch(0.22 0.012 50 / 0.03);
-	}
-	.session-dot {
-		width: 8px;
-		height: 8px;
-		border-radius: 50%;
-		background: var(--sumi-4);
-	}
-	.session-dot.ftr {
-		background: var(--jade);
-	}
-	.session-project {
-		font-size: 11.5px;
-		color: var(--sumi-3);
-	}
-	.session-title {
-		font-size: 13px;
-		color: var(--sumi);
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-	.session-corrections {
-		font-size: 10.5px;
-		color: var(--sumi-3);
-		text-align: right;
-	}
-	.session-duration {
-		font-size: 11px;
-		color: var(--sumi-3);
-		text-align: right;
-	}
-	.session-time {
-		font-size: 10.5px;
-		color: var(--sumi-4);
-		text-align: right;
-	}
-</style>

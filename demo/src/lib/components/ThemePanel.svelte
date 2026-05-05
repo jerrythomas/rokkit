@@ -9,7 +9,8 @@
 		{ value: 'rokkit', label: 'Rokkit' },
 		{ value: 'minimal', label: 'Minimal' },
 		{ value: 'material', label: 'Material' },
-		{ value: 'frosted', label: 'Frosted' }
+		{ value: 'frosted', label: 'Frosted' },
+		{ value: 'zen-sumi', label: 'Zen-Sumi' }
 	]
 
 	const modeOptions = [

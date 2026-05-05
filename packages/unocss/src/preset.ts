@@ -111,7 +111,7 @@ function buildShortcuts(theme, config) {
 export function presetRokkit(options = {}): Preset {
 	const config = loadConfig(options)
 	const mergedColors = { ...defaultColors, ...config.palettes }
-	const theme = new Theme({ colors: mergedColors, mapping: config.colors })
+	const theme = new Theme({ colors: mergedColors, mapping: config.colors, colorSpace: config.colorSpace })
 
 	return {
 		name: 'rokkit',
