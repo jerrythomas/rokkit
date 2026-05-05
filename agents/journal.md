@@ -1,5 +1,22 @@
 # Project Journal
 
+### Phase 5.5: Zen-Sumi Theme — complete (2026-05-05)
+
+**What was done:**
+
+- Created 25 component CSS files in `packages/themes/src/zen-sumi/` covering all components: button, input, list, tabs, toggle, switch, tree, select, menu, dropdown, card, table, toolbar, search-filter, range, timeline, floating-navigation, toc, message, status-list, step-indicator, chart, swatch, floating-action, and index
+- Design language: no shadows, no gradients, hairline borders (surface-z2), ink-on-paper primary button (surface-z9 bg / surface-z0 text), shu vermillion accent (primary-z5), border-darkening focus (no glow rings), tabs as filled pills (surface-z9 active)
+- Updated `build.mjs` to compile zen-sumi and include it in the full bundle; added `// nosemgrep` suppressions for pre-existing false-positive path traversal warnings on hardcoded-array values
+- Updated `package.json` exports with four entry points: `./dist/zen-sumi`, `./zen-sumi.css`, `./zen-sumi`, `./zen-sumi/*`
+- Built successfully: `dist/zen-sumi.css` = 1938 lines of compiled CSS
+- Marked zen-sumi in priority checklist as done; sensei `rokkit.config.js` has commented `themes: ['zen-sumi']` ready to uncomment once published
+
+**Tests:** 3321 passed, 0 lint errors
+
+**Commits:** `546affd3` zen-sumi theme + build/exports
+
+---
+
 Chronological log of confirmations, progress, milestones, and decisions.
 Design details live in `docs/design/` — modular docs per module.
 

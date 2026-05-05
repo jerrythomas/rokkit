@@ -63,6 +63,7 @@ Items that significantly improve the developer or end-user experience.
 ### Theming & Design
 
 - [ ] **Minimal List guide-line style** — continuous thin vertical guide line on group container (like tree indent lines); active item gets bolder/colored segment on that line; items indented so text aligns past the line (aligns with middle of parent icon); applies to both List and Tree; per-item left-borders are the wrong pattern for this aesthetic
+- [x] **Zen-sumi theme** — 禅墨 ink-on-paper aesthetic; 25 component CSS files in `packages/themes/src/zen-sumi/`; no shadows, no gradients, hairline borders (surface-z2), ink-on-paper primary button (surface-z9/surface-z0), shu accent (primary-z5), border-darkening focus; exported as `@rokkit/themes/zen-sumi` (2026-05-05, `546affd3`)
 - [ ] **ThemePanel component** — single unified settings panel for style (rokkit/minimal/material/frosted) + mode (light/dark/system) + density + palette presets + custom palette builder; replaces scattered per-page switchers
 - [ ] **Consistent state patterns design doc** — shared CSS custom property sets defining hover/active/focus/disabled behavior at element/group level; reduces per-component repetition in theme CSS; `docs/design/18-state-patterns.md`
 
