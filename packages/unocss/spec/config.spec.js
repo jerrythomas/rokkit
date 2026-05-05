@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest'
-import { loadConfig, DEFAULT_CONFIG } from '../src/config.js'
+import { loadConfig, resolveColormap, DEFAULT_CONFIG } from '../src/config.js'
 
 describe('loadConfig', () => {
 	it('should return full defaults when called with no arguments', () => {
 		const config = loadConfig()
-		expect(config.colors).toEqual(DEFAULT_CONFIG.colors)
+		expect(config.skin).toEqual(DEFAULT_CONFIG.skin)
 		expect(config.skins).toEqual({})
 		expect(config.themes).toEqual(['rokkit'])
 		expect(config.icons).toEqual({ app: '@rokkit/icons/app.json' })
@@ -12,12 +12,19 @@ describe('loadConfig', () => {
 		expect(config.storageKey).toBe('rokkit-theme')
 	})
 
-	it('should merge user colors over defaults', () => {
+	it('should merge user skin over defaults', () => {
+		const config = loadConfig({ skin: { primary: 'blue', surface: 'zinc' } })
+		expect(config.skin.primary).toBe('blue')
+		expect(config.skin.surface).toBe('zinc')
+		expect(config.skin.secondary).toBe('pink')
+		expect(config.skin.accent).toBe('sky')
+	})
+
+	it('should accept colors as a backward-compatible alias for skin', () => {
 		const config = loadConfig({ colors: { primary: 'blue', surface: 'zinc' } })
-		expect(config.colors.primary).toBe('blue')
-		expect(config.colors.surface).toBe('zinc')
-		expect(config.colors.secondary).toBe('pink')
-		expect(config.colors.accent).toBe('sky')
+		expect(config.skin.primary).toBe('blue')
+		expect(config.skin.surface).toBe('zinc')
+		expect(config).not.toHaveProperty('colors')
 	})
 
 	it('should pass through skins as-is', () => {
@@ -85,6 +92,66 @@ describe('loadConfig', () => {
 		expect(config).not.toHaveProperty('unknown')
 	})
 
+	it('should pass through dual-palette skin objects ({ light, dark })', () => {
+		const config = loadConfig({
+			skin: { surface: { light: 'kami', dark: 'sumi' }, primary: 'shu' }
+		})
+		expect(config.skin.surface).toEqual({ light: 'kami', dark: 'sumi' })
+		expect(config.skin.primary).toBe('shu')
+	})
+
+	it('should pass through a partial dual-palette object with only light', () => {
+		const config = loadConfig({ skin: { surface: { light: 'kami' } } })
+		expect(config.skin.surface).toEqual({ light: 'kami' })
+	})
+
+	it('should strip darkPalettes as an unknown field', () => {
+		const config = loadConfig({ darkPalettes: { kami: { 50: '0.975 0.008 85' } } })
+		expect(config).not.toHaveProperty('darkPalettes')
+	})
+})
+
+describe('resolveColormap', () => {
+	it('should return skin when no skins are provided', () => {
+		const config = loadConfig({ skin: { primary: 'blue' } })
+		const colormap = resolveColormap(config)
+		expect(colormap.primary).toBe('blue')
+	})
+
+	it('should return skins.default when skins are provided', () => {
+		const config = loadConfig({
+			skins: { default: { primary: 'violet', surface: 'zinc' }, ocean: { primary: 'sky' } }
+		})
+		const colormap = resolveColormap(config)
+		expect(colormap.primary).toBe('violet')
+		expect(colormap.surface).toBe('zinc')
+	})
+
+	it('should fall back to skin when skins has no default key', () => {
+		const config = loadConfig({
+			skin: { primary: 'red' },
+			skins: { ocean: { primary: 'sky' } }
+		})
+		const colormap = resolveColormap(config)
+		expect(colormap.primary).toBe('red')
+	})
+
+	it('should treat colors alias + skins correctly — skins.default takes precedence', () => {
+		const config = loadConfig({
+			colors: { primary: 'green' },
+			skins: { default: { primary: 'violet' } }
+		})
+		const colormap = resolveColormap(config)
+		expect(colormap.primary).toBe('violet')
+	})
+
+	it('skin takes precedence over colors alias when both are provided', () => {
+		const config = loadConfig({ skin: { primary: 'blue' }, colors: { primary: 'red' } })
+		expect(config.skin.primary).toBe('blue')
+	})
+})
+
+describe('loadConfig — shape and typography', () => {
 	it('should default typography to all nulls', () => {
 		const config = loadConfig()
 		expect(config.typography).toEqual({ sans: null, mono: null, heading: null })

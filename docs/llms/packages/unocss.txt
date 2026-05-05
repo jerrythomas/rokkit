@@ -66,8 +66,8 @@ const preset = presetRokkit({
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `colors` | `Record<string, string>` | Default semantic palette | Map semantic names to Tailwind color names. Overrides individual entries — unspecified semantics keep defaults. |
-| `skins` | `Record<string, Record<string, string>>` | `{}` | Named palette overrides. Each skin generates a `skin-{name}` CSS class that injects its color variables. |
+| `colors` | `Record<string, string \| { light?: string, dark?: string }>` | Default semantic palette | Map semantic names to palette names. String value = auto z-flip for dark mode. Object `{ light, dark }` = separate named palettes per mode — rokkit generates an explicit `[data-mode="dark"]` var block. `colors` defines the default skin; `skins` defines named alternatives. |
+| `skins` | `Record<string, Record<string, string \| { light?, dark? }>>` | `{}` | Named colormaps — same syntax as `colors`. `colors` is the default skin; `skins` are named alternatives. Each generates a `skin-{name}` CSS class that injects its color variables. |
 | `icons` | `Record<string, string>` | `{ app: '@rokkit/icons/app.json' }` | Additional icon collections (JSON files). Merged with the built-in `rokkit` and `semantic` collections. |
 | `icons.style` | `string` | `undefined` | Icon style variant suffix (e.g., `'solid'`, `'outline'`, `'duotone-outline'`). Applied to all semantic icon shortcuts. |
 | `icons.collection` | `string` | `undefined` | Override the default icon collection prefix. Default is `'semantic'` (`i-semantic:*`). Set to e.g. `'phosphor'` to use `i-phosphor:*`. |
@@ -242,14 +242,31 @@ Pattern appearance is controlled via CSS custom properties: `--pattern-color`, `
 Place a `rokkit.config.js` at your project root to keep preset options out of your build config. `loadConfig` is called internally by `presetRokkit` and merges the file with inline options:
 
 ```js
-// rokkit.config.js
+// rokkit.config.js — simple (z-flip handles dark mode automatically)
 export default {
   colors: {
     primary: 'violet',
-    surface: 'zinc'
+    surface: 'zinc'     // same palette — shade scale flips for dark mode via base.css
   },
+  ...
+}
+```
+
+```js
+// rokkit.config.js — dual-palette (separate light/dark palette per role)
+export default {
+  palettes: {
+    kami: { 50: '0.985 0.005 85', /* … */ 950: '0.170 0.010 50' },
+    sumi: { 50: '0.975 0.008 85', /* … */ 950: '0.170 0.010 50' }
+  },
+  colors: {
+    surface: { light: 'kami', dark: 'sumi' },  // explicit dark palette
+    primary: 'shu'
+  },
+  colorSpace: 'oklch',
   skins: {
-    default:  { surface: 'shark' },
+    // colors IS the default skin — skins are named alternatives
+    ocean:    { surface: 'slate', primary: 'sky' },
     vibrant:  { primary: 'blue', secondary: 'purple' }
   },
   icons: {

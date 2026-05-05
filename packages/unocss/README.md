@@ -50,7 +50,7 @@ export default defineConfig({
       colors: {
         primary: 'indigo',
         secondary: 'violet',
-        surface: 'zinc'
+        surface: 'zinc'       // same palette flipped for dark mode automatically
       }
     })
   ]
@@ -58,6 +58,43 @@ export default defineConfig({
 ```
 
 Colors are referenced by palette name (e.g. Tailwind color names). The preset generates CSS variable-backed scale utilities like `bg-primary-z5`, `text-secondary-z8`, etc.
+
+### Dual-palette dark mode (separate light/dark palettes)
+
+When a single palette can't serve both light and dark mode well, specify separate palettes per mode:
+
+```ts
+presetRokkit({
+  palettes: {
+    kami: { 50: '0.985 0.005 85', /* … */ 950: '0.170 0.010 50' },  // warm paper tones
+    sumi: { 50: '0.975 0.008 85', /* … */ 950: '0.170 0.010 50' }   // ink tones (dark bg)
+  },
+  colors: {
+    surface: { light: 'kami', dark: 'sumi' },  // ← dual-palette syntax
+    primary: 'shu'                              // ← simple (z-flip applies)
+  },
+  colorSpace: 'oklch'
+})
+```
+
+- **Simple string** (`'kami'`) — one palette, shade scale flips automatically in `[data-mode="dark"]` via `base.css` z-tokens.
+- **`{ light, dark }` object** — rokkit generates explicit `[data-mode="dark"] { --color-surface-*: sumiValues }` vars so the z-flip uses the correct dark-specific shades.
+
+### Named skins
+
+`colors` defines the **default** colormap. `skins` define **named alternative** colormaps that can be activated at runtime:
+
+```ts
+presetRokkit({
+  colors: { surface: { light: 'kami', dark: 'sumi' }, primary: 'shu' },
+  skins: {
+    ocean:   { surface: 'slate', primary: 'sky',    secondary: 'teal' },
+    vibrant: { surface: 'zinc',  primary: 'violet', secondary: 'purple' }
+  }
+})
+```
+
+Each skin generates a `skin-{name}` CSS class. Skins support the same dual-palette `{ light, dark }` syntax as `colors` — the light palette is used for the scoped CSS variable overrides.
 
 ### Background patterns
 
@@ -91,11 +128,13 @@ Use `@rokkit/app`'s `ColorModeManager` to manage this automatically with OS pref
 
 ### `presetRokkit` options
 
-| Option   | Type                     | Description                                |
-| -------- | ------------------------ | ------------------------------------------ |
-| `colors` | `Record<string, string>` | Override semantic color → palette mappings |
-| `skins`  | `Record<string, object>` | Additional `skin-*` shortcut definitions   |
-| `icons`  | `Record<string, string>` | Additional icon collection paths           |
+| Option        | Type                                                        | Description                                                                                                     |
+| ------------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `colors`      | `Record<string, string \| { light?: string, dark?: string }>` | Semantic role → palette name. String = auto z-flip; `{ light, dark }` = separate palettes per mode.          |
+| `palettes`    | `Record<string, Record<string, string>>`                    | Custom palette definitions with shade values (50–950). Names usable in `colors` and `skins`.                   |
+| `skins`       | `Record<string, Record<string, string \| { light?, dark? }>>` | Named colormaps (same syntax as `colors`). Each generates a `skin-{name}` CSS class.                         |
+| `colorSpace`  | `'rgb' \| 'hsl' \| 'oklch'`                                | Color space for CSS variable values. Use `'oklch'` with bare component strings (`'0.58 0.15 35'`).             |
+| `icons`       | `Record<string, string>`                                    | Additional icon collection paths                                                                                |
 
 ---
 

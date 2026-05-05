@@ -64,9 +64,10 @@ describe('presetRokkit', () => {
 		expect(entry[1]).toBe('i-phosphor:accordion-opened')
 	})
 
-	it('should generate skin shortcuts from config skins', () => {
+	it('should generate skin shortcuts from config skins (multi-skin mode)', () => {
 		const preset = presetRokkit({
 			skins: {
+				default: { primary: 'orange', surface: 'slate' },
 				vibrant: { primary: 'blue', secondary: 'purple' }
 			}
 		})
@@ -89,7 +90,13 @@ describe('presetRokkit', () => {
 		expect(preset.theme.colors.primary).toHaveProperty('500')
 	})
 
-	it('should respect inline color overrides', () => {
+	it('should respect inline skin overrides', () => {
+		const preset = presetRokkit({ skin: { surface: 'zinc' } })
+		expect(preset.theme.colors).toHaveProperty('surface')
+		expect(preset.theme.colors.surface).toHaveProperty('500')
+	})
+
+	it('should accept colors as backward-compatible alias for skin', () => {
 		const preset = presetRokkit({ colors: { surface: 'zinc' } })
 		expect(preset.theme.colors).toHaveProperty('surface')
 		expect(preset.theme.colors.surface).toHaveProperty('500')
@@ -130,7 +137,7 @@ describe('presetRokkit', () => {
 			palettes: {
 				brand: { 50: '#f0f4ff', 500: '#0f4c81', 950: '#071c30' }
 			},
-			colors: { primary: 'brand' }
+			skin: { primary: 'brand' }
 		})
 		// Verify the custom palette key was injected into theme.colors
 		expect(preset.theme.colors).toHaveProperty('brand')
@@ -162,5 +169,178 @@ describe('presetRokkit', () => {
 			(s) => Array.isArray(s) && typeof s[0] === 'string' && s[0] === 'fill-primary-z5'
 		)
 		expect(found).toBe(true)
+	})
+
+	describe('preflights — dark mode CSS block', () => {
+		it('should not generate a [data-mode="dark"] block when all colors are plain strings', () => {
+			const preset = presetRokkit()
+			const css = preset.preflights[0].getCSS()
+			expect(css).toContain(':root{')
+			expect(css).not.toContain('[data-mode="dark"]')
+		})
+
+		it('should generate a [data-mode="dark"] block when any color uses dual-palette syntax', () => {
+			const preset = presetRokkit({
+				skin: { surface: { light: 'slate', dark: 'zinc' } }
+			})
+			const css = preset.preflights[0].getCSS()
+			expect(css).toContain(':root{')
+			expect(css).toContain('[data-mode="dark"]{')
+		})
+
+		it(':root should use the light palette for dual-palette roles', () => {
+			// slate-500 = #64748b → rgb(100, 116, 139) — stored as "100,116,139"
+			const preset = presetRokkit({
+				skin: { surface: { light: 'slate', dark: 'zinc' } }
+			})
+			const css = preset.preflights[0].getCSS()
+			const rootBlock = css.split('[data-mode')[0]
+			expect(rootBlock).toContain('--color-surface-500:100,116,139')
+		})
+
+		it('[data-mode="dark"] should use the dark palette for dual-palette roles', () => {
+			// zinc-500 = #71717a → rgb(113, 113, 122) — stored as "113,113,122"
+			const preset = presetRokkit({
+				skin: { surface: { light: 'slate', dark: 'zinc' } }
+			})
+			const css = preset.preflights[0].getCSS()
+			const darkBlock = css.split('[data-mode="dark"]')[1] ?? ''
+			expect(darkBlock).toContain('--color-surface-500:113,113,122')
+		})
+
+		it('should fall back to light palette in dark block when only light is specified', () => {
+			// slate-500 = #64748b → "100,116,139" — used in both blocks
+			const preset = presetRokkit({
+				skin: { surface: { light: 'slate' } }
+			})
+			const css = preset.preflights[0].getCSS()
+			expect(css).toContain('[data-mode="dark"]{')
+			const darkBlock = css.split('[data-mode="dark"]')[1] ?? ''
+			expect(darkBlock).toContain('--color-surface-500:100,116,139')
+		})
+
+		it('should only generate dark block for custom dual-palette, not for all roles', () => {
+			// When surface uses dual-palette, primary still uses plain string
+			const preset = presetRokkit({
+				skin: { surface: { light: 'slate', dark: 'zinc' }, primary: 'orange' }
+			})
+			const css = preset.preflights[0].getCSS()
+			expect(css).toContain('[data-mode="dark"]{')
+			// Dark block should include surface vars (different palette)
+			const darkBlock = css.split('[data-mode="dark"]')[1] ?? ''
+			expect(darkBlock).toContain('--color-surface-')
+		})
+
+		it('should generate dark block when all roles use dual-palette syntax', () => {
+			const preset = presetRokkit({
+				skin: {
+					surface: { light: 'slate', dark: 'zinc' },
+					primary: { light: 'blue', dark: 'indigo' }
+				}
+			})
+			const css = preset.preflights[0].getCSS()
+			expect(css).toContain('[data-mode="dark"]{')
+		})
+
+		it('should fall back to dark palette in light :root when only dark property is specified', () => {
+			// surface: { dark: 'zinc' } — no light → resolveMappingForMode('light') falls back to 'zinc'
+			// slate-500 → 100,116,139 | zinc-500 → 113,113,122
+			const preset = presetRokkit({ skin: { surface: { dark: 'zinc' } } })
+			const css = preset.preflights[0].getCSS()
+			const rootBlock = css.split('[data-mode')[0]
+			expect(rootBlock).toContain('--color-surface-500:113,113,122')  // zinc
+		})
+
+		it('should use dark palette in dark block when only dark property is specified', () => {
+			const preset = presetRokkit({ skin: { surface: { dark: 'zinc' } } })
+			const css = preset.preflights[0].getCSS()
+			const darkBlock = css.split('[data-mode="dark"]')[1] ?? ''
+			expect(darkBlock).toContain('--color-surface-500:113,113,122')  // zinc
+		})
+
+		it('should include typography vars in :root when typography is set', () => {
+			const preset = presetRokkit({ typography: { sans: 'Inter', mono: 'JetBrains Mono' } })
+			const css = preset.preflights[0].getCSS()
+			expect(css).toContain('--font-sans:Inter')
+			expect(css).toContain('--font-mono:JetBrains Mono')
+		})
+
+		it('should include radius vars in :root when a named shape preset is set', () => {
+			const preset = presetRokkit({ shape: { radius: 'soft' } })
+			const css = preset.preflights[0].getCSS()
+			expect(css).toContain('--radius-sm:0.125rem')
+			expect(css).toContain('--radius-md:0.375rem')
+			expect(css).toContain('--radius-full:9999px')
+		})
+
+		it('should include no radius vars when shape radius is an unknown preset name', () => {
+			const preset = presetRokkit({ shape: { radius: 'nonexistent' } })
+			const css = preset.preflights[0].getCSS()
+			expect(css).not.toContain('--radius-')
+		})
+
+		it('should include both typography and radius vars when both are set', () => {
+			const preset = presetRokkit({
+				typography: { sans: 'Inter' },
+				shape: { radius: 'rounded' }
+			})
+			const css = preset.preflights[0].getCSS()
+			expect(css).toContain('--font-sans:Inter')
+			expect(css).toContain('--radius-md:0.5rem')
+		})
+
+		it('should include no font vars when typography is not set', () => {
+			const preset = presetRokkit()
+			const css = preset.preflights[0].getCSS()
+			expect(css).not.toContain('--font-sans')
+			expect(css).not.toContain('--font-mono')
+		})
+	})
+
+	describe('shortcuts — skin and icon coverage', () => {
+		it('should produce no skin-* shortcuts when skins is empty', () => {
+			const preset = presetRokkit()
+			const skinShortcuts = preset.shortcuts.filter(
+				(s) => Array.isArray(s) && typeof s[0] === 'string' && s[0].startsWith('skin-')
+			)
+			expect(skinShortcuts).toHaveLength(0)
+		})
+
+		it('should produce one skin-* shortcut per skin in multi-skin mode', () => {
+			const preset = presetRokkit({
+				skins: {
+					default: { primary: 'orange', surface: 'slate' },
+					ocean:   { primary: 'sky',    surface: 'slate' }
+				}
+			})
+			const skinShortcuts = preset.shortcuts.filter(
+				(s) => Array.isArray(s) && typeof s[0] === 'string' && s[0].startsWith('skin-')
+			)
+			expect(skinShortcuts).toHaveLength(2)
+			expect(skinShortcuts.map(([k]) => k)).toContain('skin-default')
+			expect(skinShortcuts.map(([k]) => k)).toContain('skin-ocean')
+		})
+
+		it('should merge icon overrides with base shortcuts without duplicating non-overridden icons', () => {
+			const preset = presetRokkit({
+				icons: { overrides: { 'accordion-opened': 'i-custom:accordion' } }
+			})
+			const entry = preset.shortcuts.find(
+				(s) => Array.isArray(s) && s[0] === 'accordion-opened'
+			)
+			expect(entry[1]).toBe('i-custom:accordion')
+			// Non-overridden icons still use the default collection
+			const checkboxEntry = preset.shortcuts.find(
+				(s) => Array.isArray(s) && s[0] === 'checkbox-checked'
+			)
+			expect(checkboxEntry[1]).toBe('i-semantic:checkbox-checked')
+		})
+
+		it('should produce icon shortcuts with i-semantic prefix when no overrides are set', () => {
+			const preset = presetRokkit()
+			const entry = preset.shortcuts.find((s) => Array.isArray(s) && s[0] === 'accordion-opened')
+			// No overrides → uses default collection
+			expect(entry[1]).toBe('i-semantic:accordion-opened')
+		})
 	})
 })

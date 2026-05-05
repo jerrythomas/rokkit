@@ -18,7 +18,7 @@ import {
 	defaultColors
 } from '@rokkit/core'
 import { iconCollections } from '@rokkit/core/vite'
-import { loadConfig } from './config.js'
+import { loadConfig, resolveColormap } from './config.js'
 
 const THEME_CONFIG = {
 	dark: {
@@ -33,6 +33,54 @@ const FONT_FAMILIES = {
 	sans: ['var(--font-sans)'],
 	body: ['var(--font-sans)']
 }
+
+const RADIUS_PRESETS = {
+	sharp:   { sm: '0',        md: '0',        lg: '0',        xl: '0',      full: '9999px' },
+	soft:    { sm: '0.125rem', md: '0.375rem', lg: '0.625rem', xl: '0.75rem', full: '9999px' },
+	rounded: { sm: '0.25rem',  md: '0.5rem',   lg: '0.75rem',  xl: '1rem',   full: '9999px' },
+	pill:    { sm: '9999px',   md: '9999px',   lg: '9999px',   xl: '9999px', full: '9999px' }
+}
+
+// ─── Shared predicate ────────────────────────────────────────────────────────
+
+/**
+ * Returns true when a colormap value is a { light?, dark? } dual-palette object
+ * rather than a plain palette-name string.
+ */
+function isDualPalette(value) {
+	return value !== null && typeof value === 'object' && !Array.isArray(value)
+}
+
+// ─── Colormap helpers ────────────────────────────────────────────────────────
+
+/**
+ * Returns true when any role in a colormap uses dual-palette syntax.
+ */
+function hasDualPaletteMapping(colormap) {
+	return Object.values(colormap).some(isDualPalette)
+}
+
+/**
+ * Resolves a colormap to flat palette-name strings for a given mode.
+ * String values pass through unchanged.
+ * { light, dark } objects resolve to the matching side, falling back to the other.
+ */
+function resolveMappingForMode(colormap, mode) {
+	return Object.fromEntries(
+		Object.entries(colormap).map(([role, value]) => [
+			role,
+			isDualPalette(value)
+				? (mode === 'dark' ? (value.dark ?? value.light ?? null) : (value.light ?? value.dark ?? null))
+				: value
+		])
+	)
+}
+
+// ─── CSS var serialization ───────────────────────────────────────────────────
+
+const toCssBlock = (vars) => Object.entries(vars).map(([k, v]) => `${k}:${v}`).join(';')
+
+// ─── Builder helpers ─────────────────────────────────────────────────────────
 
 function buildIconCollections(configIcons) {
 	return iconCollections({
@@ -50,20 +98,12 @@ function buildSafelist() {
 	]
 }
 
-const RADIUS_PRESETS = {
-	sharp: { sm: '0', md: '0', lg: '0', xl: '0', full: '9999px' },
-	soft: { sm: '0.125rem', md: '0.375rem', lg: '0.625rem', xl: '0.75rem', full: '9999px' },
-	rounded: { sm: '0.25rem', md: '0.5rem', lg: '0.75rem', xl: '1rem', full: '9999px' },
-	pill: { sm: '9999px', md: '9999px', lg: '9999px', xl: '9999px', full: '9999px' }
-}
-
 function buildTypographyVars(typography): string[] {
 	if (!typography) return []
-	return [
-		typography.sans ? `--font-sans:${typography.sans}` : '',
-		typography.mono ? `--font-mono:${typography.mono}` : '',
-		typography.heading ? `--font-heading:${typography.heading}` : ''
-	].filter(Boolean)
+	const FONT_PROPS = { sans: '--font-sans', mono: '--font-mono', heading: '--font-heading' }
+	return Object.entries(FONT_PROPS)
+		.filter(([key]) => typography[key])
+		.map(([key, prop]) => `${prop}:${typography[key]}`)
 }
 
 function buildRadiusVars(shape): string[] {
@@ -76,42 +116,64 @@ function buildRadiusVars(shape): string[] {
 		.map((k) => `--radius-${k}:${preset[k]}`)
 }
 
-function buildPreflights(theme, config) {
-	const vars = theme.getPalette()
-	const cssVars = Object.entries(vars)
-		.map(([k, v]) => `${k}:${v}`)
-		.join(';')
-
+function buildPreflights(theme, colormap, config) {
+	const rootVars = toCssBlock(theme.getPalette())
 	const extraVars = [...buildTypographyVars(config.typography), ...buildRadiusVars(config.shape)]
-	const allVars = extraVars.length > 0 ? `${cssVars};${extraVars.join(';')}` : cssVars
-	return [{ getCSS: () => `:root{${allVars}}` }]
+	const allVars = extraVars.length > 0 ? `${rootVars};${extraVars.join(';')}` : rootVars
+
+	let darkBlock = ''
+	if (hasDualPaletteMapping(colormap)) {
+		const darkTheme = new Theme({
+			colors: { ...defaultColors, ...config.palettes },
+			mapping: resolveMappingForMode(colormap, 'dark'),
+			colorSpace: config.colorSpace
+		})
+		darkBlock = `[data-mode="dark"]{${toCssBlock(darkTheme.getPalette())}}`
+	}
+
+	return [{ getCSS: () => `:root{${allVars}}${darkBlock}` }]
 }
 
-function buildShortcuts(theme, config) {
-	const shortcuts = []
+function buildSkinShortcuts(theme, config) {
+	return Object.entries(config.skins).map(([name, mapping]) => [
+		`skin-${name}`,
+		theme.getPalette(resolveMappingForMode(mapping, 'light'))
+	])
+}
 
-	for (const [name, mapping] of Object.entries(config.skins)) {
-		shortcuts.push([`skin-${name}`, theme.getPalette(mapping)])
-	}
+function buildSemanticShortcuts(theme, colormap) {
+	return Object.keys(colormap).flatMap((variant) => theme.getShortcuts(variant))
+}
 
-	const variants = Object.keys(config.colors)
-	for (const variant of variants) {
-		shortcuts.push(...theme.getShortcuts(variant))
-	}
-
-	const iconStyle = config.icons?.style || undefined
+function buildIconShortcuts(config) {
 	const iconCollection = config.icons?.collection ? `i-${config.icons.collection}` : 'i-semantic'
-	const baseIconShortcuts = iconShortcuts(DEFAULT_ICONS, iconCollection, iconStyle)
-	const overrides = (config.icons?.overrides as Record<string, string>) || {}
-	shortcuts.push(...Object.entries({ ...baseIconShortcuts, ...overrides }))
-
-	return shortcuts
+	const base = iconShortcuts(DEFAULT_ICONS, iconCollection, config.icons?.style)
+	const overrides = (config.icons?.overrides as Record<string, string>) ?? {}
+	return Object.entries({ ...base, ...overrides })
 }
+
+function buildTheme(config, colormap) {
+	return new Theme({
+		colors: { ...defaultColors, ...config.palettes },
+		mapping: resolveMappingForMode(colormap, 'light'),
+		colorSpace: config.colorSpace
+	})
+}
+
+function buildShortcuts(theme, colormap, config) {
+	return [
+		...buildSkinShortcuts(theme, config),
+		...buildSemanticShortcuts(theme, colormap),
+		...buildIconShortcuts(config)
+	]
+}
+
+// ─── Preset ──────────────────────────────────────────────────────────────────
 
 export function presetRokkit(options = {}): Preset {
 	const config = loadConfig(options)
-	const mergedColors = { ...defaultColors, ...config.palettes }
-	const theme = new Theme({ colors: mergedColors, mapping: config.colors, colorSpace: config.colorSpace })
+	const colormap = resolveColormap(config)
+	const theme = buildTheme(config, colormap)
 
 	return {
 		name: 'rokkit',
@@ -126,8 +188,8 @@ export function presetRokkit(options = {}): Preset {
 		extractors: [extractorSvelte()],
 		rules: [['hidden', { display: 'none' }]],
 		safelist: buildSafelist(),
-		preflights: buildPreflights(theme, config),
-		shortcuts: buildShortcuts(theme, config),
+		preflights: buildPreflights(theme, colormap, config),
+		shortcuts: buildShortcuts(theme, colormap, config),
 		theme: {
 			fontFamily: FONT_FAMILIES,
 			colors: { ...theme.getColorRules(), ...config.palettes }

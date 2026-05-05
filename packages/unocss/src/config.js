@@ -1,20 +1,21 @@
 import { DEFAULT_THEME_MAPPING } from '@rokkit/core'
 
+const DEFAULT_SKIN = { ...DEFAULT_THEME_MAPPING }
+
 export const DEFAULT_CONFIG = {
 	palettes: {},
 	colorSpace: 'rgb',
-	colors: {
-		primary: DEFAULT_THEME_MAPPING.primary,
-		secondary: DEFAULT_THEME_MAPPING.secondary,
-		tertiary: DEFAULT_THEME_MAPPING.tertiary,
-		accent: DEFAULT_THEME_MAPPING.accent,
-		surface: DEFAULT_THEME_MAPPING.surface,
-		success: DEFAULT_THEME_MAPPING.success,
-		warning: DEFAULT_THEME_MAPPING.warning,
-		danger: DEFAULT_THEME_MAPPING.danger,
-		error: DEFAULT_THEME_MAPPING.error,
-		info: DEFAULT_THEME_MAPPING.info
-	},
+	/**
+	 * Single-skin mode: define the app's colormap directly.
+	 * Use this when the app has one fixed colormap.
+	 * Mutually exclusive with `skins` — if `skins` is provided, `skin` is ignored.
+	 */
+	skin: DEFAULT_SKIN,
+	/**
+	 * Multi-skin mode: named colormaps for programmatic or user-driven switching.
+	 * The `default` key is the active colormap when no skin is selected.
+	 * Mutually exclusive with `skin` — if `skins` is provided, `skin` is ignored.
+	 */
 	skins: {},
 	themes: ['rokkit'],
 	icons: {
@@ -34,49 +35,54 @@ export const DEFAULT_CONFIG = {
 	storageKey: 'rokkit-theme'
 }
 
-const KNOWN_KEYS = new Set(Object.keys(DEFAULT_CONFIG))
-
 /**
+ * Returns `value` when defined (non-null, non-undefined), otherwise `fallback`.
  * @param {unknown} value
  * @param {unknown} fallback
- * @returns {unknown}
  */
 function pick(value, fallback) {
-	return value !== undefined ? value : fallback
-}
-
-/**
- * Strip unknown keys from merged result
- * @param {Record<string, unknown>} result
- */
-function stripUnknownKeys(result) {
-	for (const key of Object.keys(result)) {
-		if (!KNOWN_KEYS.has(key)) delete result[key]
-	}
+	return value ?? fallback
 }
 
 /**
  * Merge user configuration with defaults.
  *
+ * Accepts `colors` as a backward-compatible alias for `skin`.
+ * Use `skin` (singular) for a single fixed colormap, or `skins` (plural) for
+ * multiple named colormaps. Providing `skins` takes precedence over `skin`.
+ *
  * @param {Partial<typeof DEFAULT_CONFIG>} [userConfig={}]
  * @returns {typeof DEFAULT_CONFIG}
  */
 export function loadConfig(userConfig) {
-	const cfg = userConfig || {}
-	const result = {
-		palettes: pick(cfg.palettes, DEFAULT_CONFIG.palettes),
+	const cfg = userConfig ?? {}
+	return {
+		palettes:   pick(cfg.palettes, DEFAULT_CONFIG.palettes),
 		colorSpace: pick(cfg.colorSpace, DEFAULT_CONFIG.colorSpace),
-		colors: { ...DEFAULT_CONFIG.colors, ...cfg.colors },
-		skins: pick(cfg.skins, DEFAULT_CONFIG.skins),
-		themes: pick(cfg.themes, DEFAULT_CONFIG.themes),
-		icons: { ...DEFAULT_CONFIG.icons, ...cfg.icons },
+		// 'colors' is a backward-compatible alias for 'skin'
+		skin:       { ...DEFAULT_SKIN, ...(cfg.skin ?? cfg.colors ?? {}) },
+		skins:      pick(cfg.skins, DEFAULT_CONFIG.skins),
+		themes:     pick(cfg.themes, DEFAULT_CONFIG.themes),
+		icons:      { ...DEFAULT_CONFIG.icons, ...cfg.icons },
 		typography: { ...DEFAULT_CONFIG.typography, ...cfg.typography },
-		shape: { ...DEFAULT_CONFIG.shape, ...cfg.shape },
-		switcher: pick(cfg.switcher, DEFAULT_CONFIG.switcher),
+		shape:      { ...DEFAULT_CONFIG.shape, ...cfg.shape },
+		switcher:   pick(cfg.switcher, DEFAULT_CONFIG.switcher),
 		storageKey: pick(cfg.storageKey, DEFAULT_CONFIG.storageKey)
 	}
+}
 
-	stripUnknownKeys(result)
-
-	return result
+/**
+ * Resolve the effective colormap from config.
+ *
+ * - Multi-skin mode (`skins` provided): uses `skins.default` if present, else falls back to `skin`.
+ * - Single-skin mode (`skin` provided): uses `skin` directly.
+ *
+ * @param {typeof DEFAULT_CONFIG} config
+ * @returns {Record<string, string | { light?: string, dark?: string }>}
+ */
+export function resolveColormap(config) {
+	if (Object.keys(config.skins).length > 0) {
+		return config.skins.default ?? config.skin
+	}
+	return config.skin
 }
