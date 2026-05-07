@@ -1,6 +1,7 @@
 <script>
 	import Sparkline from '$lib/components/Sparkline.svelte'
 	import EnsoRing from '$lib/components/EnsoRing.svelte'
+	import { Button } from '@rokkit/ui'
 	import { m } from '$lib/paraglide/messages.js'
 
 	const { data } = $props()
@@ -38,9 +39,7 @@
 			<h2 class="font-display text-[28px] font-normal text-surface-z9 m-0">{data.koan.title}</h2>
 			<p class="text-[14.5px] text-surface-z7 leading-relaxed m-0">{data.koan.explanation}</p>
 			<div class="flex gap-4 flex-wrap items-center mt-auto">
-				<button class="bg-surface-z9 text-surface-z0 border-0 rounded-md px-4 py-2 text-[13px] font-medium cursor-pointer font-sans whitespace-nowrap transition-opacity hover:opacity-85">
-					{m.koan_action()}
-				</button>
+				<Button label={m.koan_action()} />
 				<span class="text-[12px] text-primary-z5">{m.koan_projected_ftr({ pct: '14' })} · {data.koan.impact}</span>
 				<span class="flex-1"></span>
 				<span class="mono text-[10.5px] text-surface-z4">{data.koan.evidence}</span>

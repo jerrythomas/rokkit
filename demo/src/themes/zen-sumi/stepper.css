@@ -18,16 +18,39 @@
   @apply bg-surface-z2;
 }
 
-/* Step circle */
+[data-style='zen-sumi'] [data-stepper-connector][data-completed] {
+  @apply bg-surface-z9;
+}
+
+/* Step circle — default (pending) */
 [data-style='zen-sumi'] [data-stepper-circle] {
   @apply bg-surface-z2 border-surface-z3 text-surface-z6 border;
-  transition: background-color 0.14s, border-color 0.14s;
+  transition: background-color 0.14s, border-color 0.14s, color 0.14s;
+}
+
+/* Step circle — active (current) */
+[data-style='zen-sumi'] [data-stepper-step][data-active] [data-stepper-circle] {
+  @apply border-primary-z5 text-primary-z6 bg-transparent;
+  box-shadow: none;
+}
+
+/* Step circle — completed (sumi ink fill) */
+[data-style='zen-sumi'] [data-stepper-step][data-completed] [data-stepper-circle] {
+  @apply bg-surface-z9 border-surface-z9 text-surface-z0;
 }
 
 /* Step label */
 [data-style='zen-sumi'] [data-stepper-label] {
   @apply text-surface-z6;
   font-size: 0.8125rem;
+}
+
+[data-style='zen-sumi'] [data-stepper-step][data-active] [data-stepper-label] {
+  @apply text-surface-z9 font-medium;
+}
+
+[data-style='zen-sumi'] [data-stepper-step][data-completed] [data-stepper-label] {
+  @apply text-surface-z8;
 }
 
 /* Sub-stage dots */

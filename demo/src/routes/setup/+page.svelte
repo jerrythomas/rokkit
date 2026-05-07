@@ -1,5 +1,6 @@
 <script>
 	import { goto } from '$app/navigation'
+	import { Button } from '@rokkit/ui'
 	import { m } from '$lib/paraglide/messages.js'
 
 	const { data } = $props()
@@ -133,9 +134,7 @@
 							placeholder="~/code/project"
 							bind:value={newFolder}
 						/>
-						<button
-							class="btn-solid bg-surface-z9 text-surface-z0 border-0 rounded-md px-4 py-[10px] text-[13px] font-medium cursor-pointer font-sans whitespace-nowrap transition-opacity hover:opacity-85"
-						>{m.setup_folders_add()}</button>
+						<Button label={m.setup_folders_add()} type="submit" />
 					</form>
 					<p class="text-[11px] text-surface-z4 mt-4">{m.setup_folders_min()}</p>
 
@@ -170,11 +169,12 @@
 
 			<!-- ─── Bottom Progress Bar ────────────────────────────────── -->
 			<div class="wiz-bottom border-t border-surface-z2 px-[64px] py-[14px] flex items-center gap-5 bg-surface-z0">
-				<button
-					class="text-surface-z7 bg-transparent rounded-md px-4 py-[9px] text-[13px] font-medium cursor-pointer font-sans whitespace-nowrap border border-surface-z3 hover:bg-surface-z1 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+				<Button
+					style="outline"
+					label={m.setup_back()}
 					onclick={back}
 					disabled={currentStep === 0}
-				>{m.setup_back()}</button>
+				/>
 
 				<div class="flex-1 flex gap-1 items-center">
 					{#each steps as _, i (i)}
@@ -184,13 +184,11 @@
 					{/each}
 				</div>
 
-				<button
-					class="btn-solid bg-surface-z9 text-surface-z0 border-0 rounded-md px-4 py-[9px] text-[13px] font-medium cursor-pointer font-sans whitespace-nowrap transition-opacity hover:opacity-85 disabled:opacity-40 disabled:cursor-not-allowed"
+				<Button
+					label={isLastStep ? m.setup_enter() : m.setup_continue()}
 					onclick={next}
 					disabled={!isLastStep && current.id === 'folders' && folders.length === 0}
-				>
-					{isLastStep ? m.setup_enter() : m.setup_continue()}
-				</button>
+				/>
 			</div>
 		</div>
 	</div>

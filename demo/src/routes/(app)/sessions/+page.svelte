@@ -1,10 +1,21 @@
 <script>
+	import { Tabs } from '@rokkit/ui'
 	import { m } from '$lib/paraglide/messages.js'
 
 	const { data } = $props()
 
 	let activeFilter = $state('all')
 	let activeProject = $state('all')
+
+	const outcomeOptions = $derived([
+		{ label: m.filter_all(), value: 'all' },
+		...data.filters.outcomes.map((o) => ({ label: o, value: o }))
+	])
+
+	const projectOptions = $derived([
+		{ label: m.filter_all_projects(), value: 'all' },
+		...data.filters.projects.map((p) => ({ label: p, value: p }))
+	])
 
 	const filteredSessions = $derived(
 		data.sessions.filter((s) => {
@@ -44,26 +55,12 @@
 
 	<!-- ─── Filters ───────────────────────────────────────────── -->
 	<div class="flex gap-4 flex-wrap mb-5">
-		<div class="filter-group flex gap-[2px]">
-			{#each ['all', ...data.filters.outcomes] as outcome (outcome)}
-				<button
-					class="filter-pill px-3 py-[6px] text-[11.5px] rounded-md capitalize transition-colors duration-[120ms] {activeFilter === outcome ? 'bg-surface-z9 text-surface-z0' : 'text-surface-z7 hover:bg-surface-z1'}"
-					onclick={() => (activeFilter = outcome)}
-				>
-					{outcome === 'all' ? m.filter_all() : outcome}
-				</button>
-			{/each}
-		</div>
-		<div class="filter-group flex gap-[2px]">
-			{#each ['all', ...data.filters.projects] as project (project)}
-				<button
-					class="filter-pill px-3 py-[6px] text-[11.5px] rounded-md capitalize transition-colors duration-[120ms] {activeProject === project ? 'bg-surface-z9 text-surface-z0' : 'text-surface-z7 hover:bg-surface-z1'}"
-					onclick={() => (activeProject = project)}
-				>
-					{project === 'all' ? m.filter_all_projects() : project}
-				</button>
-			{/each}
-		</div>
+		<Tabs options={outcomeOptions} bind:value={activeFilter} name="outcome-filter">
+			{#snippet tabPanel()}{/snippet}
+		</Tabs>
+		<Tabs options={projectOptions} bind:value={activeProject} name="project-filter">
+			{#snippet tabPanel()}{/snippet}
+		</Tabs>
 	</div>
 
 	<!-- ─── Session List ──────────────────────────────────────── -->
