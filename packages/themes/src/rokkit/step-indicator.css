@@ -8,7 +8,7 @@
 
 [data-style='rokkit'] [data-step-item][data-step-state='current'] [data-step-number] {
   @apply bg-surface-z2 border-primary-z5 text-primary-z7;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-500, #6366f1) 20%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in oklch, oklch(var(--color-primary-z5) / 1) 20%, transparent);
 }
 
 [data-style='rokkit'] [data-step-item][data-step-state='upcoming'] [data-step-number] {

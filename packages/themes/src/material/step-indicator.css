@@ -8,7 +8,7 @@
 
 [data-style='material'] [data-step-item][data-step-state='current'] [data-step-number] {
   @apply bg-surface-z2 border-primary-z5 text-primary-z7 bg-none;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-500, #6366f1) 15%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in oklch, oklch(var(--color-primary-z5) / 1) 15%, transparent);
 }
 
 [data-style='material'] [data-step-item][data-step-state='upcoming'] [data-step-number] {

@@ -61,15 +61,15 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-card].retro-good {
-  border-top: 2px solid color-mix(in oklch, var(--color-success-500) 14%, transparent);
+  border-top: 2px solid color-mix(in oklch, oklch(var(--color-success-z5) / 1) 14%, transparent);
 }
 
 [data-style='zen-sumi'] [data-card].retro-warn {
-  border-top: 2px solid color-mix(in oklch, var(--color-warning-500) 15%, transparent);
+  border-top: 2px solid color-mix(in oklch, oklch(var(--color-warning-z5) / 1) 15%, transparent);
 }
 
 [data-style='zen-sumi'] [data-card].retro-mute {
-  border-top: 2px solid color-mix(in oklch, var(--color-surface-900) 6%, transparent);
+  border-top: 2px solid color-mix(in oklch, oklch(var(--color-surface-z9) / 1) 6%, transparent);
 }
 
 /* =============================================================================

@@ -28,7 +28,7 @@
 	<circle
 		{cx} {cy} {r}
 		fill="none"
-		stroke="var(--color-surface-200)"
+		stroke="oklch(var(--color-surface-z2) / 1)"
 		stroke-width="8"
 		stroke-linecap="round"
 		stroke-dasharray={trackDashArray}
@@ -40,7 +40,7 @@
 	<circle
 		{cx} {cy} {r}
 		fill="none"
-		stroke="var(--color-primary-500)"
+		stroke="oklch(var(--color-primary-z5) / 1)"
 		stroke-width="8"
 		stroke-linecap="round"
 		stroke-dasharray={dashArray}
@@ -57,7 +57,7 @@
 		font-family="var(--font-display)"
 		font-size={size * 0.28}
 		font-weight="300"
-		fill="var(--color-surface-900)"
+		fill="oklch(var(--color-surface-z9) / 1)"
 	>
 		{score}
 	</text>

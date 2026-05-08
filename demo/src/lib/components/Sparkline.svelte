@@ -1,6 +1,6 @@
 <script>
 	/** @type {{ data: number[], width?: number, height?: number, color?: string }} */
-	const { data, width = 120, height = 28, color = 'var(--color-primary-500)' } = $props()
+	const { data, width = 120, height = 28, color = 'oklch(var(--color-primary-z5) / 1)' } = $props()
 
 	const points = $derived(() => {
 		if (!data || data.length < 2) return ''

@@ -73,7 +73,7 @@
 				{#each data.adoptedTeachings as teaching (teaching)}
 					<div
 						class="px-[14px] py-3 bg-surface-z1 rounded-r-md"
-						style="border-left: 2px solid color-mix(in oklch, var(--color-primary-500) 12%, transparent)"
+						style="border-left: 2px solid color-mix(in oklch, oklch(var(--color-primary-z5) / 1) 12%, transparent)"
 					>
 						<span class="text-[13px] text-surface-z7 leading-[1.5]">{teaching}</span>
 					</div>

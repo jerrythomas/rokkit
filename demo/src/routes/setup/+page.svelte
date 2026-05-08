@@ -159,7 +159,7 @@
 						{#each data.projects as project (project.id)}
 							<div
 								class="px-[18px] py-4 bg-surface-z1 border border-surface-z2 rounded-md"
-								style="border-left: {project.confirmed ? `2px solid color-mix(in oklch, var(--color-success-500) 14%, transparent)` : 'none'}"
+								style="border-left: {project.confirmed ? `2px solid color-mix(in oklch, oklch(var(--color-success-z5) / 1) 14%, transparent)` : 'none'}"
 							>
 								<div class="flex justify-between items-center mb-2">
 									<h3 class="text-[14px] font-medium text-surface-z9 m-0">{project.name}</h3>
