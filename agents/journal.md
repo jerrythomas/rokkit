@@ -1,5 +1,19 @@
 # Project Journal
 
+### Phase 6 follow-up: CSS-driven list states — complete (2026-05-08)
+
+**What was done:**
+
+- Rewrote `demo/src/lib/components/ListItem.svelte`: removed all inline styles (`iconStyle` derived var, tick inline styles, subtitle inline styles). Added `data-item-status` attribute on the literal icon span; tick renders as `<span data-item-tick>`; subtitle always renders as `<span data-item-description>`. Zero inline styles — all visual state driven by CSS data-attribute selectors.
+- Fixed dark-mode active state in `demo/src/themes/zen-sumi/list.css`: replaced `bg-surface-z0 text-surface-z9` (which rendered as a white box in dark mode because z0=paper does not invert in zen-sumi) with `color-mix(in oklch, oklch(var(--color-primary-z5)/1) 10%, transparent)` + `box-shadow: inset 2px 0 0` left-border indicator. Mode-adaptive: no z-scale hardcoding.
+- Added complete wizard step CSS in `list.css` using `:disabled` (pending), `:not([data-active]):not(:disabled)` (done), `[data-active='true']` (current) — icon colors, tick opacity transition, description mono font. No inline styles needed in component.
+
+**Tests:** 3321 passed, 0 lint errors
+
+**Commits:** `801e6fa6` fix(demo): CSS-driven list states
+
+---
+
 ### Phase 5.5: Zen-Sumi Theme — complete (2026-05-05)
 
 **What was done:**
