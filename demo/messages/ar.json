@@ -114,5 +114,20 @@
   "this_step_placeholder": "سيتم تنفيذ هذه الخطوة في تكرار مستقبلي.",
   "role_frontend": "واجهة أمامية",
   "role_backend": "خلفية",
-  "role_library": "مكتبة"
+  "role_library": "مكتبة",
+  "settings_section_theme": "السمة",
+  "settings_section_appearance": "المظهر",
+  "settings_section_language": "اللغة",
+  "settings_mode": "الوضع",
+  "settings_density": "الكثافة",
+  "settings_radius": "الزوايا",
+  "settings_mode_light": "فاتح",
+  "settings_mode_dark": "داكن",
+  "settings_density_compact": "مضغوط",
+  "settings_density_comfortable": "مريح",
+  "settings_density_cozy": "دافئ",
+  "settings_radius_sharp": "حادة",
+  "settings_radius_soft": "ناعمة",
+  "settings_radius_rounded": "مدورة",
+  "settings_radius_pill": "حبة"
 }

@@ -15,7 +15,7 @@ Phase 4: Design Token System (extend @rokkit/core + preset)             ✅ DONE
 Phase 5: Zen-Sumi Theme (new theme in demo, then promote)              ✅ DONE
 Phase 6: Component Migration (replace custom → rokkit, screen by screen) ✅ DONE
 Phase 7: Theme Rebuild (rokkit, minimal, frosted, material)
-Phase 8: Settings Panel + Theme Switcher
+Phase 8: Settings Panel + Theme Switcher             ✅ DONE
 Phase 9: Final Verification
 ```
 

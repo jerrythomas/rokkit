@@ -1,5 +1,40 @@
 # Project Journal
 
+### Phase 8: Settings Panel + Theme Switcher — complete (2026-05-08)
+
+**What was done:**
+
+- Built `/settings` route — replaced placeholder with a full settings page
+- Live theme switcher: 5 theme style cards (zen-sumi, rokkit, minimal, material, frosted) with immediate `body.dataset.style` update
+- Appearance controls: Mode (Light/Dark), Density (Compact/Comfortable/Cozy), Corners (Sharp/Soft/Rounded/Pill) — all chip buttons wired to body dataset + localStorage
+- Language section: locale chips matching LanguageSwitcher behavior
+- Created `$lib/stores/theme.svelte.ts` — Svelte 5 rune store (`$state` getters) as single source of truth for all 4 axes, shared between `+layout.svelte` and `+page.svelte`
+- Updated layout: removed local `mode` state + `toggleMode`, imports `theme` store instead — sidebar mode button stays in sync with settings page
+- Added settings message keys to all 3 locales (en/es/ar): 16 keys per locale
+- All changes apply immediately; persisted to `sensei-theme` localStorage key
+
+**Tests:** 3321 passed, 0 lint errors
+
+**Commits:** (pending)
+
+---
+
+### Phase 7: Token migration + literal icon support — complete (2026-05-08)
+
+**What was done:**
+
+- Migrated all remaining `color-mix(in srgb, var(--color-*-500))` → `color-mix(in oklch, oklch(var(--color-*-z5)/1))` across all affected theme files:
+  - `frosted/button.css` (6 rules), `frosted/card.css` (5), `frosted/menu.css` (4), `frosted/switch.css` (2), `frosted/dropdown.css` (5), `frosted/step-indicator.css` (1)
+  - `rokkit/step-indicator.css` (1), `material/step-indicator.css` (1)
+- Fixed demo app: `EnsoRing.svelte` (3 old SVG stroke/fill tokens), `Sparkline.svelte` (default color), `observatory/+page.svelte` (inline style), `setup/+page.svelte` (project confirmed border), `zen-sumi/card.css` (retro-* borders — success, warning, mute all now z-scale oklch)
+- Added `[data-item-icon-literal]` color support to `rokkit`, `minimal`, `material`, `frosted` list.css — matching each theme's existing icon color pattern (default/hover/active states)
+
+**Tests:** 3321 passed, 0 lint errors
+
+**Commits:** `c5f70e10` feat(themes): Phase 7 token migration
+
+---
+
 ### Phase 6 follow-up: CSS-driven list states — complete (2026-05-08)
 
 **What was done:**

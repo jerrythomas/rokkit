@@ -114,5 +114,20 @@
   "this_step_placeholder": "This step will be implemented in a future iteration.",
   "role_frontend": "frontend",
   "role_backend": "backend",
-  "role_library": "library"
+  "role_library": "library",
+  "settings_section_theme": "Theme",
+  "settings_section_appearance": "Appearance",
+  "settings_section_language": "Language",
+  "settings_mode": "Mode",
+  "settings_density": "Density",
+  "settings_radius": "Corners",
+  "settings_mode_light": "Light",
+  "settings_mode_dark": "Dark",
+  "settings_density_compact": "Compact",
+  "settings_density_comfortable": "Comfortable",
+  "settings_density_cozy": "Cozy",
+  "settings_radius_sharp": "Sharp",
+  "settings_radius_soft": "Soft",
+  "settings_radius_rounded": "Rounded",
+  "settings_radius_pill": "Pill"
 }

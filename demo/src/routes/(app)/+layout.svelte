@@ -1,27 +1,14 @@
 <script>
-	import { browser } from '$app/environment'
 	import { page } from '$app/state'
 	import { getSidebarNav, getSettingsNav } from '$lib/data/navigation'
 	import { m } from '$lib/paraglide/messages.js'
 	import LanguageSwitcher from '$lib/components/LanguageSwitcher.svelte'
 	import { List } from '@rokkit/ui'
 	import ListItem from '$lib/components/ListItem.svelte'
+	import { theme } from '$lib/stores/theme.svelte'
 
 	let { children } = $props()
 	let sidebarCollapsed = $state(false)
-
-	// Initialized from body.dataset.mode set by app.html inline script
-	let mode = $state(browser ? (document.body.dataset.mode || 'dark') : 'dark')
-
-	function toggleMode() {
-		mode = mode === 'dark' ? 'light' : 'dark'
-		document.body.dataset.mode = mode
-		try {
-			const stored = JSON.parse(localStorage.getItem('sensei-theme') || '{}')
-			stored.mode = mode
-			localStorage.setItem('sensei-theme', JSON.stringify(stored))
-		} catch {}
-	}
 
 	const sidebarNav = $derived(getSidebarNav())
 	const settingsNav = $derived(getSettingsNav())
@@ -99,14 +86,14 @@
 			<!-- Mode toggle -->
 			<button
 				type="button"
-				onclick={toggleMode}
+				onclick={() => theme.toggleMode()}
 				class="group grid items-center gap-2.5 px-2.5 py-[7px] rounded-md text-[13px] font-normal cursor-pointer transition-colors duration-[120ms] text-surface-z7 hover:bg-surface-z1 hover:text-surface-z9"
 				style="grid-template-columns: auto 1fr auto"
-				title={mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+				title={theme.mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
 			>
-				<span class="text-[14px] w-[18px] text-center text-surface-z5 group-hover:text-surface-z7 {mode === 'dark' ? 'i-glyph:sun' : 'i-glyph:moon'}"></span>
+				<span class="text-[14px] w-[18px] text-center text-surface-z5 group-hover:text-surface-z7 {theme.mode === 'dark' ? 'i-glyph:sun' : 'i-glyph:moon'}"></span>
 				{#if !sidebarCollapsed}
-					<span class="whitespace-nowrap overflow-hidden text-ellipsis">{mode === 'dark' ? 'Light mode' : 'Dark mode'}</span>
+					<span class="whitespace-nowrap overflow-hidden text-ellipsis">{theme.mode === 'dark' ? 'Light mode' : 'Dark mode'}</span>
 				{/if}
 			</button>
 
