@@ -2811,3 +2811,55 @@ const sizeScale = buildSizeScale(data, 'value', 20) // → sqrt scale [0, 20]
 - No visual regressions
 
 **Final state:** 3292 tests passing (245 files), 30 e2e tests passing, 0 new lint errors.
+
+## 2026-05-07 — Phase 6: Component Migration (Batch 1)
+
+**Summary:** First batch of custom → @rokkit/ui component swaps in the demo app.
+
+**Migrations completed:**
+- Sessions filter pills → `<Tabs bind:value={activeFilter}>` + `<Tabs bind:value={activeProject}>`
+  - Options as `{label, value}` objects for i18n-translated 'all' label
+  - Empty `tabPanel` snippet suppresses panel rendering (filter-only use case)
+  - Filtering confirmed working in browser
+- Setup wizard bottom nav → `<Button style="outline">` (Back) + `<Button>` (Continue/Enter)
+- Setup wizard add-folder → `<Button type="submit">`
+- Observatory koan hero → `<Button label={m.koan_action()}>`
+- zen-sumi stepper.css: added missing active/completed state styles for `[data-stepper-step]`
+
+**Deferred:**
+- Session rows: custom 6-col grid is readable; Table/List migration adds little value for display-only rows
+- Retro cards: tone-specific top border (color-mix inline style) doesn't map to Card.variant cleanly
+- Wizard rail → Stepper: custom card-style rail doesn't match base Stepper's circle-connector layout
+- Sidebar nav: complex (URL active state, collapse, links, footer items) — next batch
+
+**Final state:** 3321 tests passing (245 files), 0 lint errors.
+**Commits:** `a912e652`
+
+## 2026-05-08 — Phase 6: Component Migration (Batch 2 + Bug Fix)
+
+**Summary:** Completed Phase 6 component migration and fixed a critical theme initialization bug.
+
+**Sidebar nav → `<List>`**
+- `layout.svelte` uses `<List>` with `href` field mapping — items render as `<a data-list-item>` with `aria-current`
+- `findActiveId()` derives active item from `page.url.pathname` via `startsWith` matching
+- `ListItem.svelte` — new custom snippet: handles kanji literal icons, badges, `collapsed` prop for icon-only mode
+- `getSidebarNav()` in `navigation.ts` flattens project groups via `children` field
+- `list.css` size="sm" override: 13px / 7px padding; group labels tiny-caps; badge transparent; wiz-steps stepper variant
+
+**Wizard rail → `<List>` (wiz-steps)**
+- `setup/+page.svelte` uses `<List class="wiz-steps">` with `wizardItems` driving `status` field
+- `ListItem.svelte` wizard mode: done=✓ fade-in, current=description + expanded padding, pending=muted + disabled
+- `list.css` `.wiz-steps`: reserved transparent border prevents layout shift; pending steps suppress hover
+
+**Retro cards → `<Card>`**
+- `sessions/+page.svelte` migrated to `<Card class="retro-{tone}">`
+- `card.css` adds `retro-good`, `retro-warn`, `retro-mute` — tone-coded `border-top` via CSS class (same `color-mix()` values as original inline styles)
+- No `header` snippet used → avoids unwanted divider border; content in default `children` slot
+
+**Bug fix: zen-sumi theme not activating**
+- Root cause: `app.html` inline script defaulted `data-style` to `''` (empty string)
+- All zen-sumi CSS is scoped to `[data-style='zen-sumi']` — with empty string, no hover, active, or focus styles applied
+- Fix: `b.dataset.style = t.style || 'zen-sumi'` — zen-sumi is now the default for new sessions
+- Verified: hover effects, active item highlight, tab active state all confirmed working in browser
+
+**Final state:** 3321 tests passing (245 files), 0 lint errors. Phase 6 complete.

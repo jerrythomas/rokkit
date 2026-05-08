@@ -1,5 +1,5 @@
 <script>
-	import { Tabs } from '@rokkit/ui'
+	import { Tabs, Card } from '@rokkit/ui'
 	import { m } from '$lib/paraglide/messages.js'
 
 	const { data } = $props()
@@ -36,10 +36,7 @@
 	<!-- ─── Retro Cards ───────────────────────────────────────── -->
 	<div class="retro-grid grid grid-cols-3 gap-3 mb-7">
 		{#each data.retro as section (section.title)}
-			<div
-				class="px-[18px] py-4 bg-surface-z1 border border-surface-z2 rounded-md"
-				style="border-top: 2px solid {section.tone === 'good' ? 'color-mix(in oklch, var(--color-success-500) 14%, transparent)' : section.tone === 'warn' ? 'color-mix(in oklch, var(--color-warning-500) 15%, transparent)' : 'color-mix(in oklch, var(--color-surface-900) 6%, transparent)'}"
-			>
+			<Card class="retro-{section.tone}">
 				<div class="flex items-center gap-2 mb-[10px]">
 					<span class="kanji text-[18px] {section.tone === 'good' ? 'text-success-z5' : section.tone === 'warn' ? 'text-warning-z5' : 'text-surface-z5'}">{section.kanji}</span>
 					<h3 class="text-[13px] font-semibold text-surface-z9 m-0">{section.title}</h3>
@@ -49,7 +46,7 @@
 						<li class="text-[11.5px] text-surface-z7 leading-[1.5]">{item}</li>
 					{/each}
 				</ul>
-			</div>
+			</Card>
 		{/each}
 	</div>
 

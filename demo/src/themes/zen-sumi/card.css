@@ -55,6 +55,24 @@
 }
 
 /* =============================================================================
+   Retro section cards — tone-coded accent border-top
+   Used on sessions screen to distinguish going-well / needs-attention / neutral sections.
+   Class is set by the parent template (retro-good, retro-warn, retro-mute).
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-card].retro-good {
+  border-top: 2px solid color-mix(in oklch, var(--color-success-500) 14%, transparent);
+}
+
+[data-style='zen-sumi'] [data-card].retro-warn {
+  border-top: 2px solid color-mix(in oklch, var(--color-warning-500) 15%, transparent);
+}
+
+[data-style='zen-sumi'] [data-card].retro-mute {
+  border-top: 2px solid color-mix(in oklch, var(--color-surface-900) 6%, transparent);
+}
+
+/* =============================================================================
    Focus
    ============================================================================= */
 

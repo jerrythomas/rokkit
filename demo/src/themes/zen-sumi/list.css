@@ -3,7 +3,8 @@
  *
  * Transparent items, subtle hover, active items "pop" onto paper.
  * Kanji/literal icons styled with mincho font.
- * Continuous guide-line on groups (not per-item borders).
+ * Group labels: tiny caps, very muted (surface-z4).
+ * Description hidden by default, revealed on active item only.
  */
 
 /* =============================================================================
@@ -11,7 +12,20 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-list]:focus-within {
-  @apply outline-none;
+  outline: none;
+}
+
+/* =============================================================================
+   Item sizing overrides — match original sidebar proportions
+   (base size="sm" gives 12px/4px padding, original was 13px/7px/10px gap)
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-list][data-size='sm'] a[data-list-item],
+[data-style='zen-sumi'] [data-list][data-size='sm'] button[data-list-item] {
+  padding-block: 7px;
+  padding-inline: 10px;
+  font-size: 0.8125rem;
+  gap: 10px;
 }
 
 /* =============================================================================
@@ -19,41 +33,88 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-list] [data-list-item] {
-  @apply text-surface-z7 border-0 bg-transparent bg-none;
-  transition: background-color 0.1s;
+  @apply text-surface-z7;
+  background: transparent;
+  border: none;
+  transition: background-color 0.12s, color 0.12s;
 }
 
 [data-style='zen-sumi'] [data-list] a[data-list-item],
 [data-style='zen-sumi'] [data-list] button[data-list-item] {
   @apply text-surface-z7;
+  border-radius: 6px;
 }
 
-/* Hover — paper-3 wash */
+/* Hover */
 [data-style='zen-sumi']
   [data-list]
   [data-list-item]:hover:not(:disabled):not([data-disabled='true']),
 [data-style='zen-sumi']
   [data-list]
   [data-list-item]:focus:not(:disabled):not([data-disabled='true']) {
-  @apply bg-surface-z2 text-surface-z9 bg-none outline-none;
+  @apply bg-surface-z2 text-surface-z9;
+  outline: none;
 }
 
-/* Active — paper pop (surface-z0 = lightest, appears to come forward) */
+/* Active — paper pop. In light mode z0 is lightest (lifts forward).
+   In dark mode z0 is darkest (sinks — ink pressed into paper).
+   Primary visual cue is text contrast: z7 → z9 (ΔL ≈ 0.34). */
 [data-style='zen-sumi'] [data-list] [data-list-item][data-active='true'] {
-  @apply bg-surface-z0 text-surface-z9 bg-none;
+  @apply bg-surface-z0 text-surface-z9;
+  font-weight: 500;
 }
 
 [data-style='zen-sumi'] [data-list]:focus-within [data-list-item][data-active='true'] {
-  @apply bg-surface-z0 text-surface-z10 bg-none;
+  @apply bg-surface-z0 text-surface-z10;
 }
 
+/* Active + hover */
 [data-style='zen-sumi']
   [data-list]
   [data-list-item][data-active='true']:hover:not(:disabled),
 [data-style='zen-sumi']
   [data-list]
   [data-list-item][data-active='true']:focus:not(:disabled) {
-  @apply bg-surface-z1 text-surface-z10 bg-none;
+  @apply bg-surface-z1 text-surface-z10;
+  font-weight: 500;
+}
+
+/* =============================================================================
+   Wizard Stepper Rail (.wiz-steps)
+   Adapts the list to a linear stepper: transparent border reserved on all items
+   so the active item's visible border causes no layout shift. Inline styles in
+   ListItem handle icon color and tick visibility via the status field.
+   ============================================================================= */
+
+/* Reserve 1px border on all steps — prevents layout shift when active item gains border */
+[data-style='zen-sumi'] .wiz-steps[data-list] [data-list-item] {
+  border: 1px solid transparent;
+}
+
+/* Current step — one step lighter than z2 rail, hairline border, expanded padding */
+[data-style='zen-sumi'] .wiz-steps[data-list][data-size='sm'] [data-list-item][data-active='true'] {
+  @apply bg-surface-z1 text-surface-z9;
+  border-color: oklch(var(--color-surface-z4) / 1);
+  padding-block: 10px;
+}
+
+/* Current step focus-within — slightly brighter text for keyboard users */
+[data-style='zen-sumi'] .wiz-steps[data-list]:focus-within [data-list-item][data-active='true'] {
+  @apply text-surface-z10;
+}
+
+/* Pending steps (future, disabled) — very muted, no browser opacity reduction */
+[data-style='zen-sumi'] .wiz-steps[data-list] button[data-list-item]:disabled {
+  @apply text-surface-z4;
+  opacity: 1;
+  cursor: default;
+}
+
+/* Suppress hover/focus on disabled pending steps */
+[data-style='zen-sumi'] .wiz-steps[data-list] button[data-list-item]:disabled:hover,
+[data-style='zen-sumi'] .wiz-steps[data-list] button[data-list-item]:disabled:focus {
+  background: transparent;
+  outline: none;
 }
 
 /* =============================================================================
@@ -61,23 +122,24 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-list] [data-list-item][data-selected='true'] {
-  @apply bg-surface-z0 text-surface-z9 bg-none;
+  @apply bg-surface-z2 text-surface-z9;
 }
 
 [data-style='zen-sumi'] [data-list]:focus-within [data-list-item][data-selected='true'] {
-  @apply bg-surface-z0 text-surface-z10 bg-none;
+  @apply bg-surface-z2 text-surface-z10;
 }
 
 [data-style='zen-sumi']
   [data-list]
   [data-list-item][data-selected='true']:hover:not(:disabled) {
-  @apply bg-surface-z1;
+  @apply bg-surface-z3;
 }
 
 /* =============================================================================
-   Item Elements
+   Item Elements — Icons
    ============================================================================= */
 
+/* CSS class icons (i-*) */
 [data-style='zen-sumi'] [data-list] [data-list-item] [data-item-icon] {
   @apply text-surface-z5;
 }
@@ -104,15 +166,44 @@
   @apply text-primary-z5;
 }
 
-/* Kanji / literal icon styling */
+/* Kanji / literal icons */
 [data-style='zen-sumi'] [data-list] [data-list-item] [data-item-icon-literal] {
+  @apply text-surface-z5;
   font-family: 'Yu Mincho', 'Hiragino Mincho ProN', 'Songti SC', serif;
-  font-size: 1.1em;
+  font-size: inherit;
   line-height: 1;
 }
 
+[data-style='zen-sumi']
+  [data-list]
+  [data-list-item]:hover:not(:disabled)
+  [data-item-icon-literal],
+[data-style='zen-sumi']
+  [data-list]
+  [data-list-item]:focus:not(:disabled)
+  [data-item-icon-literal] {
+  @apply text-surface-z7;
+}
+
+[data-style='zen-sumi']
+  [data-list]
+  [data-list-item][data-active='true']
+  [data-item-icon-literal],
+[data-style='zen-sumi']
+  [data-list]:focus-within
+  [data-list-item][data-active='true']
+  [data-item-icon-literal] {
+  @apply text-primary-z5;
+}
+
+/* =============================================================================
+   Item Elements — Text
+   ============================================================================= */
+
+/* Description: hidden by default, revealed on active item only */
 [data-style='zen-sumi'] [data-list] [data-list-item] [data-item-description] {
   @apply text-surface-z5;
+  display: none;
 }
 
 [data-style='zen-sumi']
@@ -120,35 +211,51 @@
   [data-list-item][data-active='true']
   [data-item-description] {
   @apply text-surface-z6;
+  display: block;
 }
 
+/* Badge */
 [data-style='zen-sumi'] [data-list] [data-list-item] [data-item-badge] {
-  @apply text-surface-z5 bg-transparent bg-none border-0;
-  font-size: 0.6875rem;
+  @apply text-surface-z5;
+  background: transparent;
+  border: none;
+  font-size: 0.75rem;
+  font-weight: 500;
+  flex-shrink: 0;
 }
 
 [data-style='zen-sumi']
   [data-list]
   [data-list-item][data-active='true']
   [data-item-badge] {
-  @apply text-primary-z5;
+  @apply text-surface-z7;
 }
 
 /* =============================================================================
-   Groups — continuous guide-line style
+   Groups — tiny caps, very muted, non-interactive section labels
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-list] [data-list-group] {
-  @apply text-surface-z5;
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.05em;
+  @apply text-surface-z4;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  margin-top: 1rem;
+  padding-block: 0.25rem;
+  padding-inline: 10px;
+}
+
+/* Non-collapsible group labels are just display text — never look disabled */
+[data-style='zen-sumi'] [data-list] button[data-list-group]:disabled {
+  opacity: 1;
+  cursor: default;
 }
 
 [data-style='zen-sumi'] [data-list] [data-list-group]:hover:not(:disabled),
 [data-style='zen-sumi'] [data-list] [data-list-group]:focus:not(:disabled) {
-  @apply text-surface-z7 bg-none;
+  @apply text-surface-z6;
+  background: transparent;
 }
 
 /* =============================================================================
@@ -156,5 +263,6 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-list] [data-list-separator] {
-  @apply bg-surface-z2 bg-none;
+  @apply bg-surface-z2;
+  background-image: none;
 }

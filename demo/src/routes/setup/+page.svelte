@@ -1,7 +1,8 @@
 <script>
 	import { goto } from '$app/navigation'
-	import { Button } from '@rokkit/ui'
+	import { Button, List } from '@rokkit/ui'
 	import { m } from '$lib/paraglide/messages.js'
+	import ListItem from '$lib/components/ListItem.svelte'
 
 	const { data } = $props()
 
@@ -14,6 +15,19 @@
 	)
 	const current = $derived(steps[currentStep])
 	const isLastStep = $derived(currentStep === steps.length - 1)
+
+	// Kanji is always shown — it's the step identity, not a counter.
+	// Status drives icon color and tick visibility in ListItem.
+	const wizardItems = $derived(
+		data.steps.map((s, i) => ({
+			id: s.id,
+			label: s.label,
+			description: s.description,
+			icon: s.kanji,
+			disabled: i > currentStep,
+			status: i < currentStep ? 'done' : i === currentStep ? 'current' : 'pending'
+		}))
+	)
 
 	let folders = $state([...data.folders])
 	let newFolder = $state('')
@@ -48,35 +62,30 @@
 	<div class="flex-1 grid min-h-0" style="grid-template-columns: 260px 1fr">
 
 		<!-- ─── Left Rail ──────────────────────────────────────────────── -->
-		<aside class="wiz-rail bg-surface-z1 border-r border-surface-z2 flex flex-col overflow-hidden px-[22px] py-[26px] gap-7">
+		<aside class="wiz-rail bg-surface-z2 border-r border-surface-z3 flex flex-col overflow-hidden px-[22px] py-[26px] gap-7">
 			<div class="flex items-center gap-[10px]">
 				<span class="kanji text-[22px] text-primary-z5">道</span>
 				<span class="font-display text-[20px] font-normal text-surface-z9">{m.setup_title()}</span>
 			</div>
 
-			<div class="rail-stages flex-1 flex flex-col gap-px">
-				{#each steps as step, i (step.id)}
-					<button
-						class="stage {step.status} grid items-center gap-[10px] px-[10px] py-[7px] rounded-md border text-left transition-all duration-[120ms] {step.status === 'current' ? 'py-[10px] bg-surface-z0 border-surface-z2' : 'border-transparent'} {step.status === 'pending' ? 'cursor-default opacity-60' : 'cursor-pointer hover:bg-surface-z0'}"
-						style="grid-template-columns: 24px 1fr"
-						onclick={() => { if (step.status === 'completed') currentStep = i }}
-						disabled={step.status === 'pending'}
-					>
-						<span class="flex items-center justify-center">
-							{#if step.status === 'completed'}
-								<span class="text-success-z5 text-[13px] font-semibold">✓</span>
-							{:else if step.status === 'current'}
-								<span class="kanji text-[15px] text-primary-z5">{step.kanji}</span>
-							{:else}
-								<span class="w-[5px] h-[5px] rounded-full bg-surface-z4 inline-block"></span>
-							{/if}
-						</span>
-						<span class="flex flex-col">
-							<span class="text-[13px] font-medium {step.status === 'completed' ? 'text-surface-z7' : step.status === 'pending' ? 'text-surface-z4' : 'text-surface-z9'}">{step.label}</span>
-							<span class="text-[10px] {step.status === 'pending' ? 'text-surface-z4' : 'text-surface-z5'}">{step.description}</span>
-						</span>
-					</button>
-				{/each}
+			<div class="rail-stages flex-1 flex flex-col gap-3.5">
+				<div class="text-[10px] tracking-[0.14em] uppercase text-surface-z5 px-[10px]">Setup</div>
+				<List
+					items={wizardItems}
+					fields={{ value: 'id', label: 'label', icon: 'icon', subtext: 'description', disabled: 'disabled' }}
+					value={data.steps[currentStep]?.id}
+					label="Setup steps"
+					size="sm"
+					class="gap-px wiz-steps"
+					onselect={(v) => {
+						const i = data.steps.findIndex((s) => s.id === v)
+						if (i !== -1 && i < currentStep) currentStep = i
+					}}
+				>
+					{#snippet itemContent(proxy)}
+						<ListItem {proxy} />
+					{/snippet}
+				</List>
 			</div>
 		</aside>
 
