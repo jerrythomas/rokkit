@@ -15,7 +15,7 @@
 
 **Tests:** 3321 passed, 0 lint errors
 
-**Commits:** (pending)
+**Commits:** `31faf83c` feat(demo): Phase 8 — Settings Panel + Theme Switcher
 
 ---
 
