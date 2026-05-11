@@ -1,5 +1,25 @@
 # Project Journal
 
+### Phase 9: Final Verification — complete (2026-05-11)
+
+**What was done:**
+
+- Updated `e2e/helpers.ts`: added `setStyle()`, `setDensity()`, `setRadius()` helpers alongside existing `setMode()`; added `Style`, `Density`, `Radius` types
+- Fixed broken `setup-wizard.e2e.ts`: replaced old `.stage.completed` / `.wiz-bottom .btn-solid` selectors with post-migration equivalents (`[data-button]` on wiz-bottom buttons; Back button = first, Continue = last)
+- Fixed broken `sessions.e2e.ts` filter test: replaced `.filter-group`/`.filter-pill` (old custom) with `[data-tabs][aria-label="outcome-filter"] [data-tabs-trigger]` (rokkit Tabs component)
+- Added `settings.e2e.ts`: smoke tests (load, 5 cards, appearance controls), behavior tests (theme/mode/density/radius apply to body.dataset immediately), and 2 snapshot tests (light + dark)
+- Added Cross-Theme Visual Regression suite in `settings.e2e.ts`: 10 observatory snapshots (all 5 themes × light/dark) + 5 settings-page snapshots (each theme, light mode)
+
+**Results:**
+- 55 e2e tests — all passing
+- 3321 unit tests — all passing
+- 0 lint errors
+- Demo app production build: ✅
+
+**Commits:** (pending)
+
+---
+
 ### Phase 8: Settings Panel + Theme Switcher — complete (2026-05-08)
 
 **What was done:**

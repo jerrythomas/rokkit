@@ -56,12 +56,13 @@ test.describe('Sessions', () => {
 
 	// ─── Filter interaction ──────────────────────────────────────────
 
-	test('filter: click shipped pill and capture filtered state', async ({ page }) => {
+	test('filter: click second outcome tab and capture filtered state', async ({ page }) => {
 		await goTo(page, '/sessions')
 		await setMode(page, 'light')
-		const firstFilterGroup = page.locator('.filter-group').first()
-		const shippedPill = firstFilterGroup.locator('.filter-pill').nth(1)
-		await shippedPill.click()
+		// Outcome filter: the first Tabs group. Click the second tab trigger (index 1).
+		const outcomeFilter = page.locator('[data-tabs][aria-label="outcome-filter"]')
+		const secondTab = outcomeFilter.locator('[data-tabs-trigger]').nth(1)
+		await secondTab.click()
 		await page.waitForTimeout(300)
 		await expect(page).toHaveScreenshot('sessions-filter-shipped.png', {
 			fullPage: true,
