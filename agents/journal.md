@@ -1,5 +1,36 @@
 # Project Journal
 
+### Semantic Ink + Extensible Color Roles — complete (2026-05-12)
+
+**What was done:**
+
+- **Zen-sumi focus ring cleanup** — simplified 13 `oklch(var(--color-*) / 1)` to `var(--color-*)` across 11 zen-sumi CSS files. Old pattern was invalid nested oklch after ColorSpace adapter wrapped values.
+- **Semantic Ink role** — added `ink` to `DEFAULT_THEME_MAPPING` with surface fallback. Inverted z-scale: `ink-z1` light=shade 900 (dark text), complements `surface-z1` light=shade 100 (light bg). Same z-level = matched contrast pair.
+- **Alias validation** — `isAlias()`, `validateAliases()` in config.js. Detects circular, chained, and missing-target aliases at build time.
+- **Alias-aware preset** — `buildTheme`, `buildPreflights`, `buildSemanticShortcuts` all filter aliases. `buildThemeColors` generates color rules for aliases pointing to target's CSS vars.
+- **Generalized dual-palette** — verified any role (not just surface) supports `{ light, dark }` palette syntax.
+- **Source-level theme distribution** — themes package.json exports remapped from `dist/` to `src/`. Consumers compile via their own UnoCSS. Breaking change (major bump on @rokkit/themes).
+- **Ink in demo** — `ink: { light: 'sumi', dark: 'kami' }` in default skin. ~120 text tokens migrated from `text-surface-zN` to `text-ink-zM` across 22 zen-sumi CSS files.
+- **Contrast warnings** — build-time OKLCH lightness check between ink/surface at z1, z3.
+- **Demo cleanup** — deleted outdated local zen-sumi copy (10 files, 1133 lines), switched to package import. Fixed all `oklch(var())` patterns in app.css, EnsoRing, Sparkline, inline styles.
+- **Docs** — updated llms, CLI, site learn pages to use source-level import paths.
+
+**Design spec:** `docs/superpowers/specs/2026-05-12-semantic-ink-and-extensible-roles-design.md`
+**Implementation plan:** `docs/superpowers/plans/2026-05-12-semantic-ink-extensible-roles.md`
+
+**Results:**
+- 3367 unit tests — all passing (19 new tests)
+- 0 lint errors
+- Demo + site builds: passing
+
+**Commits:** `09895724`–`d998e8f2` (14 commits on develop)
+
+**Backlog added:**
+- Settings sidebar cleanup — remove dark mode + language from sidebar
+- Settings skin customizer — predefined skin picker + semantic color customization
+
+---
+
 ### Phase 9: Final Verification — complete (2026-05-11)
 
 **What was done:**
