@@ -5,6 +5,7 @@ import * as functions from '../src/index.js'
 describe('@rokkit/core', () => {
 	it('should contain all exported functions', () => {
 		expect(Object.keys(functions)).toEqual([
+			'ColorSpace',
 			'FieldMapper',
 			'getItemAtIndex',
 			'getIndexForItem',
@@ -46,9 +47,6 @@ describe('@rokkit/core', () => {
 			'hex2rgb',
 			'hex2oklch',
 			'oklch2hex',
-			'hex2hsl',
-			'hexToComponents',
-			'colorToRgb',
 			'isIconClass',
 			'getImage',
 			'flattenNestedList',

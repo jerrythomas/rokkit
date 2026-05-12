@@ -14,9 +14,6 @@ import {
 	hex2rgb,
 	hex2oklch,
 	oklch2hex,
-	hex2hsl,
-	hexToComponents,
-	colorToRgb,
 	isIconClass
 } from '../src/utils.js'
 
@@ -233,28 +230,6 @@ describe('utils', () => {
 		})
 	})
 
-	describe('colorToRgb', () => {
-		it('converts hex to r,g,b', () => {
-			expect(colorToRgb('#0f4c81')).toBe('15,76,129')
-		})
-		it('extracts inner components from oklch() strings', () => {
-			expect(colorToRgb('oklch(60% 0.18 250)')).toBe('60% 0.18 250')
-		})
-		it('passes through hsl as-is', () => {
-			expect(colorToRgb('hsl(210 83% 27%)')).toBe('hsl(210 83% 27%)')
-		})
-		it('passes through named colors as-is', () => {
-			expect(colorToRgb('rebeccapurple')).toBe('rebeccapurple')
-		})
-		it('returns non-string values as-is', () => {
-			expect(colorToRgb(null)).toBeNull()
-			expect(colorToRgb(undefined)).toBeUndefined()
-		})
-		it('passes through 3-digit hex as-is (no conversion)', () => {
-			expect(colorToRgb('#fff')).toBe('#fff')
-		})
-	})
-
 	describe('hex2rgb', () => {
 		it('should convert hex color to rgb format', () => {
 			expect(hex2rgb('#ff0000')).toBe('255,0,0')
@@ -321,65 +296,6 @@ describe('utils', () => {
 		})
 	})
 
-	describe('hex2hsl', () => {
-		it('should convert pure red', () => {
-			expect(hex2hsl('#ff0000')).toBe('0 100% 50%')
-		})
-
-		it('should convert white', () => {
-			expect(hex2hsl('#ffffff')).toBe('0 0% 100%')
-		})
-
-		it('should convert mid-gray', () => {
-			const result = hex2hsl('#808080')
-			expect(result).toBe('0 0% 50%')
-		})
-
-		it('should convert orange', () => {
-			const result = hex2hsl('#f97316')
-			const parts = result.split(' ')
-			expect(parts).toHaveLength(3)
-			expect(parts[1]).toMatch(/%$/)
-			expect(parts[2]).toMatch(/%$/)
-		})
-	})
-
-	describe('hexToComponents', () => {
-		it('should delegate to hex2rgb for rgb space', () => {
-			expect(hexToComponents('#ff0000', 'rgb')).toBe('255,0,0')
-		})
-
-		it('should delegate to hex2hsl for hsl space', () => {
-			expect(hexToComponents('#ff0000', 'hsl')).toBe('0 100% 50%')
-		})
-
-		it('should delegate to hex2oklch for oklch space', () => {
-			const result = hexToComponents('#ff0000', 'oklch')
-			expect(result.split(' ')).toHaveLength(3)
-		})
-
-		it('should default to rgb', () => {
-			expect(hexToComponents('#ff0000')).toBe('255,0,0')
-		})
-	})
-
-	describe('colorToRgb with color space', () => {
-		it('should convert hex to oklch when space is oklch', () => {
-			const result = colorToRgb('#ff0000', 'oklch')
-			expect(result.split(' ')).toHaveLength(3)
-		})
-
-		it('should convert hex to hsl when space is hsl', () => {
-			expect(colorToRgb('#ff0000', 'hsl')).toBe('0 100% 50%')
-		})
-
-		it('extracts oklch components when value is oklch() string', () => {
-			expect(colorToRgb('oklch(60% 0.18 250)', 'oklch')).toBe('60% 0.18 250')
-		})
-		it('passes through non-oklch, non-hex values regardless of space', () => {
-			expect(colorToRgb('rebeccapurple', 'hsl')).toBe('rebeccapurple')
-		})
-	})
 	describe('isIconClass', () => {
 		it('should return true for CSS icon class strings', () => {
 			expect(isIconClass('i-lucide:home')).toBe(true)

@@ -139,7 +139,7 @@ export class ColorSpace {
 	 * @param {string} hex - #rrggbb
 	 * @returns {string}
 	 */
-	fromHex(hex) {
+	fromHex(_hex) {
 		throw new Error('Subclass must implement fromHex')
 	}
 
@@ -153,7 +153,7 @@ export class ColorSpace {
 	 * @param {*} value
 	 * @returns {*}
 	 */
-	wrap(value) {
+	wrap(_value) {
 		throw new Error('Subclass must implement wrap')
 	}
 
