@@ -82,7 +82,7 @@ npx @rokkit/cli@latest doctor --fix  # check and auto-fix where possible
 |----|-------------|-------------|
 | `config-exists` | `rokkit.config.js` exists | Yes — generates an empty `export default {}` config file |
 | `uno-uses-preset` | `uno.config.js` uses `presetRokkit()` | No — requires manual edit (see below) |
-| `css-imports` | `src/app.css` has theme imports (`@rokkit/themes/dist/base`) | Yes — prepends missing imports to `src/app.css` |
+| `css-imports` | `src/app.css` has theme imports (`@rokkit/themes/base.css`) | Yes — prepends missing imports to `src/app.css` |
 | `html-init-script` | `src/app.html` has theme init script (`rokkit-theme` / `data-mode`) | Yes — injects flash-prevention script after `<body>` tag |
 
 ### Exit codes

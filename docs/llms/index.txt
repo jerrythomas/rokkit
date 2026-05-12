@@ -66,8 +66,8 @@ export default {}
 Prepend to `src/app.css`:
 ```css
 @import '@unocss/reset/tailwind.css';
-@import '@rokkit/themes/dist/base';
-@import '@rokkit/themes/dist/rokkit';  /* also minimal, material if needed */
+@import '@rokkit/themes/base.css';
+@import '@rokkit/themes/rokkit.css';  /* also minimal, material if needed */
 ```
 
 ### `uno.config.js` does not use `presetRokkit()` (not auto-fixable)

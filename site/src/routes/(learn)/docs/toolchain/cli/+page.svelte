@@ -96,8 +96,8 @@
 			>
 			<tr
 				><td><code>src/app.css</code></td><td
-					>Prepends <code>@unocss/reset/tailwind.css</code>, <code>@rokkit/themes/dist/base</code>,
-					and each selected theme (e.g. <code>@rokkit/themes/dist/rokkit</code>). Creates the file
+					>Prepends <code>@unocss/reset/tailwind.css</code>, <code>@rokkit/themes/base.css</code>,
+					and each selected theme (e.g. <code>@rokkit/themes/rokkit.css</code>). Creates the file
 					if missing.</td
 				></tr
 			>
@@ -145,7 +145,7 @@
 			>
 			<tr
 				><td><code>css-imports</code></td><td
-					><code>app.css</code> has <code>@rokkit/themes/dist/base</code> import</td
+					><code>app.css</code> has <code>@rokkit/themes/base.css</code> import</td
 				><td>Yes — prepends missing imports</td></tr
 			>
 			<tr
