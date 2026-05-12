@@ -160,6 +160,57 @@ function buildIconShortcuts(config) {
 	return Object.entries({ ...base, ...overrides })
 }
 
+/**
+ * Parses the OKLCH lightness value from a palette shade string.
+ * Palette values are stored as "L C H" strings (e.g., "0.75 0.008 50").
+ */
+function parseLightness(oklchStr) {
+	if (!oklchStr || typeof oklchStr !== 'string') return null
+	const parts = oklchStr.trim().split(/\s+/)
+	return parts.length >= 1 ? parseFloat(parts[0]) : null
+}
+
+/**
+ * Resolves the palette object for a role from the colormap and config.
+ */
+function resolvePaletteForRole(role, colormap, config) {
+	const value = colormap[role]
+	if (!value || isAlias(value)) return null
+	const paletteName = isDualPalette(value) ? (value.light ?? value.dark) : value
+	return config.palettes[paletteName] ?? null
+}
+
+/**
+ * Checks OKLCH lightness contrast between ink and surface at key z-levels.
+ * Since ink has an inverted z-scale, ink-z1 maps to shade 900 while surface-z1 maps to shade 100.
+ * We check that these complementary shades have sufficient lightness difference.
+ */
+function checkInkContrast(config, colormap) {
+	const inkPalette = resolvePaletteForRole('ink', colormap, config)
+	const surfacePalette = resolvePaletteForRole('surface', colormap, config)
+	if (!inkPalette || !surfacePalette) return
+
+	// z1: surface-100 vs ink-900, z3: surface-300 vs ink-700
+	const checkLevels = [
+		{ z: 'z1', surfaceShade: 100, inkShade: 900 },
+		{ z: 'z3', surfaceShade: 300, inkShade: 700 },
+	]
+
+	for (const { z, surfaceShade, inkShade } of checkLevels) {
+		const surfaceL = parseLightness(surfacePalette[surfaceShade])
+		const inkL = parseLightness(inkPalette[inkShade])
+		if (surfaceL !== null && inkL !== null) {
+			const diff = Math.abs(surfaceL - inkL)
+			if (diff < 0.3) {
+				console.warn(
+					`rokkit: ink-${z} on surface-${z} has low lightness contrast (${diff.toFixed(2)}). ` +
+					`Consider a palette with more tonal range for ink.`
+				)
+			}
+		}
+	}
+}
+
 function buildTheme(config, colormap) {
 	// Filter out aliases — they don't get their own CSS variables
 	const nonAliasColormap = Object.fromEntries(
@@ -206,6 +257,7 @@ export function presetRokkit(options = {}): Preset {
 	const config = loadConfig(options)
 	const colormap = resolveColormap(config)
 	const theme = buildTheme(config, colormap)
+	checkInkContrast(config, colormap)
 
 	return {
 		name: 'rokkit',

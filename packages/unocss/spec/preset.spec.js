@@ -486,4 +486,52 @@ describe('presetRokkit', () => {
 			expect(entry[1]).toBe('i-semantic:accordion-opened')
 		})
 	})
+
+	describe('contrast warnings', () => {
+		it('should warn when ink and surface have low contrast at z1', () => {
+			const warnings = []
+			const origWarn = console.warn
+			console.warn = (msg) => warnings.push(msg)
+
+			try {
+				presetRokkit({
+					palettes: {
+						flat: {
+							50: '0.5 0 0', 100: '0.5 0 0', 200: '0.5 0 0', 300: '0.5 0 0',
+							400: '0.5 0 0', 500: '0.5 0 0', 600: '0.5 0 0', 700: '0.5 0 0',
+							800: '0.5 0 0', 900: '0.5 0 0', 950: '0.5 0 0'
+						}
+					},
+					colorSpace: 'oklch',
+					skins: {
+						default: {
+							surface: 'flat',
+							ink: 'flat',
+							primary: 'flat'
+						}
+					}
+				})
+			} finally {
+				console.warn = origWarn
+			}
+
+			expect(warnings.some(w => /contrast/i.test(w))).toBe(true)
+		})
+
+		it('should not warn when ink and surface have good contrast', () => {
+			const warnings = []
+			const origWarn = console.warn
+			console.warn = (msg) => warnings.push(msg)
+
+			try {
+				// Default preset uses slate for both ink and surface,
+				// but ink's z-scale is inverted so contrast is good
+				presetRokkit()
+			} finally {
+				console.warn = origWarn
+			}
+
+			expect(warnings.some(w => /contrast/i.test(w))).toBe(false)
+		})
+	})
 })
