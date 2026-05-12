@@ -48,7 +48,7 @@ describe('Theme class', () => {
 		const paletteCustom = theme.getPalette(customMapping)
 		expect(typeof paletteCustom).toBe('object')
 		expect(Object.keys(paletteCustom).length).toBeGreaterThan(0)
-		expect(paletteCustom['--color-accent']).toEqual('56,189,248')
+		expect(paletteCustom['--color-accent']).toEqual('rgb(56, 189, 248)')
 	})
 
 	it('should get semantic shortcuts', () => {
@@ -66,27 +66,27 @@ describe('Theme class', () => {
 		expect(colors).toHaveProperty('secondary')
 		expect(colors.secondary).toHaveProperty('500')
 		expect(colors.primary).toEqual({
-			1: 'rgba(var(--color-primary-1),<alpha-value>)',
-			100: 'rgba(var(--color-primary-100),<alpha-value>)',
-			2: 'rgba(var(--color-primary-2),<alpha-value>)',
-			200: 'rgba(var(--color-primary-200),<alpha-value>)',
-			3: 'rgba(var(--color-primary-3),<alpha-value>)',
-			300: 'rgba(var(--color-primary-300),<alpha-value>)',
-			4: 'rgba(var(--color-primary-4),<alpha-value>)',
-			400: 'rgba(var(--color-primary-400),<alpha-value>)',
-			5: 'rgba(var(--color-primary-5),<alpha-value>)',
-			50: 'rgba(var(--color-primary-50),<alpha-value>)',
-			500: 'rgba(var(--color-primary-500),<alpha-value>)',
-			6: 'rgba(var(--color-primary-6),<alpha-value>)',
-			600: 'rgba(var(--color-primary-600),<alpha-value>)',
-			7: 'rgba(var(--color-primary-7),<alpha-value>)',
-			700: 'rgba(var(--color-primary-700),<alpha-value>)',
-			8: 'rgba(var(--color-primary-8),<alpha-value>)',
-			800: 'rgba(var(--color-primary-800),<alpha-value>)',
-			9: 'rgba(var(--color-primary-9),<alpha-value>)',
-			900: 'rgba(var(--color-primary-900),<alpha-value>)',
-			950: 'rgba(var(--color-primary-950),<alpha-value>)',
-			DEFAULT: 'rgba(var(--color-primary),<alpha-value>)'
+			1: 'color-mix(in srgb, var(--color-primary-1) <alpha-value>%, transparent)',
+			100: 'color-mix(in srgb, var(--color-primary-100) <alpha-value>%, transparent)',
+			2: 'color-mix(in srgb, var(--color-primary-2) <alpha-value>%, transparent)',
+			200: 'color-mix(in srgb, var(--color-primary-200) <alpha-value>%, transparent)',
+			3: 'color-mix(in srgb, var(--color-primary-3) <alpha-value>%, transparent)',
+			300: 'color-mix(in srgb, var(--color-primary-300) <alpha-value>%, transparent)',
+			4: 'color-mix(in srgb, var(--color-primary-4) <alpha-value>%, transparent)',
+			400: 'color-mix(in srgb, var(--color-primary-400) <alpha-value>%, transparent)',
+			5: 'color-mix(in srgb, var(--color-primary-5) <alpha-value>%, transparent)',
+			50: 'color-mix(in srgb, var(--color-primary-50) <alpha-value>%, transparent)',
+			500: 'color-mix(in srgb, var(--color-primary-500) <alpha-value>%, transparent)',
+			6: 'color-mix(in srgb, var(--color-primary-6) <alpha-value>%, transparent)',
+			600: 'color-mix(in srgb, var(--color-primary-600) <alpha-value>%, transparent)',
+			7: 'color-mix(in srgb, var(--color-primary-7) <alpha-value>%, transparent)',
+			700: 'color-mix(in srgb, var(--color-primary-700) <alpha-value>%, transparent)',
+			8: 'color-mix(in srgb, var(--color-primary-8) <alpha-value>%, transparent)',
+			800: 'color-mix(in srgb, var(--color-primary-800) <alpha-value>%, transparent)',
+			9: 'color-mix(in srgb, var(--color-primary-9) <alpha-value>%, transparent)',
+			900: 'color-mix(in srgb, var(--color-primary-900) <alpha-value>%, transparent)',
+			950: 'color-mix(in srgb, var(--color-primary-950) <alpha-value>%, transparent)',
+			DEFAULT: 'color-mix(in srgb, var(--color-primary) <alpha-value>%, transparent)'
 		})
 	})
 })
@@ -105,32 +105,36 @@ describe('Theme with colorSpace', () => {
 	it('should produce oklch-wrapped color rules', () => {
 		const theme = new Theme({ colorSpace: 'oklch' })
 		const colors = theme.getColorRules()
-		expect(colors.primary.DEFAULT).toBe('oklch(var(--color-primary) / <alpha-value>)')
-		expect(colors.primary[500]).toBe('oklch(var(--color-primary-500) / <alpha-value>)')
+		expect(colors.primary.DEFAULT).toBe('color-mix(in oklch, var(--color-primary) <alpha-value>%, transparent)')
+		expect(colors.primary[500]).toBe('color-mix(in oklch, var(--color-primary-500) <alpha-value>%, transparent)')
 	})
 
 	it('should produce hsl-wrapped color rules', () => {
 		const theme = new Theme({ colorSpace: 'hsl' })
 		const colors = theme.getColorRules()
-		expect(colors.primary.DEFAULT).toBe('hsl(var(--color-primary) / <alpha-value>)')
-		expect(colors.primary[500]).toBe('hsl(var(--color-primary-500) / <alpha-value>)')
+		expect(colors.primary.DEFAULT).toBe('color-mix(in srgb, var(--color-primary) <alpha-value>%, transparent)')
+		expect(colors.primary[500]).toBe('color-mix(in srgb, var(--color-primary-500) <alpha-value>%, transparent)')
 	})
 
 	it('should produce oklch palette values', () => {
 		const theme = new Theme({ colorSpace: 'oklch' })
 		const palette = theme.getPalette()
-		// OKLCH values are space-separated: "L C H"
+		// OKLCH values are wrapped: "oklch(L C H)"
 		const val = palette['--color-primary-500']
-		expect(val.split(' ')).toHaveLength(3)
-		expect(val).not.toContain(',')
+		expect(val).toMatch(/^oklch\(/)
+		const inner = val.replace(/^oklch\(/, '').replace(/\)$/, '')
+		expect(inner.split(' ')).toHaveLength(3)
 	})
 
 	it('should produce hsl palette values', () => {
 		const theme = new Theme({ colorSpace: 'hsl' })
 		const palette = theme.getPalette()
+		// HSL values are wrapped: "hsl(H S% L%)"
 		const val = palette['--color-primary-500']
-		expect(val).toMatch(/%/)
-		expect(val.split(' ')).toHaveLength(3)
+		expect(val).toMatch(/^hsl\(/)
+		const inner = val.replace(/^hsl\(/, '').replace(/\)$/, '')
+		expect(inner).toMatch(/%/)
+		expect(inner.split(' ')).toHaveLength(3)
 	})
 
 	it('should allow changing colorSpace after construction', () => {
@@ -139,221 +143,198 @@ describe('Theme with colorSpace', () => {
 		theme.colorSpace = 'oklch'
 		expect(theme.colorSpace).toBe('oklch')
 		const colors = theme.getColorRules()
-		expect(colors.primary.DEFAULT).toBe('oklch(var(--color-primary) / <alpha-value>)')
+		expect(colors.primary.DEFAULT).toBe('color-mix(in oklch, var(--color-primary) <alpha-value>%, transparent)')
 	})
 })
 
 describe('shadesOf', () => {
-	it.each(palettes)('should generate shades using rgb modifier', (name) => {
+	it.each(palettes)('should generate shades using rgb space', (name) => {
 		const result = shadesOf(name, 'rgb')
 		expect(result).toEqual({
-			50: `rgb(var(--color-${name}-50) / <alpha-value>)`,
-			100: `rgb(var(--color-${name}-100) / <alpha-value>)`,
-			200: `rgb(var(--color-${name}-200) / <alpha-value>)`,
-			300: `rgb(var(--color-${name}-300) / <alpha-value>)`,
-			400: `rgb(var(--color-${name}-400) / <alpha-value>)`,
-			500: `rgb(var(--color-${name}-500) / <alpha-value>)`,
-			600: `rgb(var(--color-${name}-600) / <alpha-value>)`,
-			700: `rgb(var(--color-${name}-700) / <alpha-value>)`,
-			800: `rgb(var(--color-${name}-800) / <alpha-value>)`,
-			900: `rgb(var(--color-${name}-900) / <alpha-value>)`,
-			950: `rgb(var(--color-${name}-950) / <alpha-value>)`,
-			DEFAULT: `rgb(var(--color-${name}-500) / <alpha-value>)`
+			50: `color-mix(in srgb, var(--color-${name}-50) <alpha-value>%, transparent)`,
+			100: `color-mix(in srgb, var(--color-${name}-100) <alpha-value>%, transparent)`,
+			200: `color-mix(in srgb, var(--color-${name}-200) <alpha-value>%, transparent)`,
+			300: `color-mix(in srgb, var(--color-${name}-300) <alpha-value>%, transparent)`,
+			400: `color-mix(in srgb, var(--color-${name}-400) <alpha-value>%, transparent)`,
+			500: `color-mix(in srgb, var(--color-${name}-500) <alpha-value>%, transparent)`,
+			600: `color-mix(in srgb, var(--color-${name}-600) <alpha-value>%, transparent)`,
+			700: `color-mix(in srgb, var(--color-${name}-700) <alpha-value>%, transparent)`,
+			800: `color-mix(in srgb, var(--color-${name}-800) <alpha-value>%, transparent)`,
+			900: `color-mix(in srgb, var(--color-${name}-900) <alpha-value>%, transparent)`,
+			950: `color-mix(in srgb, var(--color-${name}-950) <alpha-value>%, transparent)`,
+			DEFAULT: `color-mix(in srgb, var(--color-${name}-500) <alpha-value>%, transparent)`
 		})
 	})
 
-	it.each(palettes)('should generate shades using hsl modifier', (name) => {
+	it.each(palettes)('should generate shades using hsl space', (name) => {
 		const result = shadesOf(name, 'hsl')
 		expect(result).toEqual({
-			50: `hsl(var(--color-${name}-50) / <alpha-value>)`,
-			100: `hsl(var(--color-${name}-100) / <alpha-value>)`,
-			200: `hsl(var(--color-${name}-200) / <alpha-value>)`,
-			300: `hsl(var(--color-${name}-300) / <alpha-value>)`,
-			400: `hsl(var(--color-${name}-400) / <alpha-value>)`,
-			500: `hsl(var(--color-${name}-500) / <alpha-value>)`,
-			600: `hsl(var(--color-${name}-600) / <alpha-value>)`,
-			700: `hsl(var(--color-${name}-700) / <alpha-value>)`,
-			800: `hsl(var(--color-${name}-800) / <alpha-value>)`,
-			900: `hsl(var(--color-${name}-900) / <alpha-value>)`,
-			950: `hsl(var(--color-${name}-950) / <alpha-value>)`,
-			DEFAULT: `hsl(var(--color-${name}-500) / <alpha-value>)`
+			50: `color-mix(in srgb, var(--color-${name}-50) <alpha-value>%, transparent)`,
+			100: `color-mix(in srgb, var(--color-${name}-100) <alpha-value>%, transparent)`,
+			200: `color-mix(in srgb, var(--color-${name}-200) <alpha-value>%, transparent)`,
+			300: `color-mix(in srgb, var(--color-${name}-300) <alpha-value>%, transparent)`,
+			400: `color-mix(in srgb, var(--color-${name}-400) <alpha-value>%, transparent)`,
+			500: `color-mix(in srgb, var(--color-${name}-500) <alpha-value>%, transparent)`,
+			600: `color-mix(in srgb, var(--color-${name}-600) <alpha-value>%, transparent)`,
+			700: `color-mix(in srgb, var(--color-${name}-700) <alpha-value>%, transparent)`,
+			800: `color-mix(in srgb, var(--color-${name}-800) <alpha-value>%, transparent)`,
+			900: `color-mix(in srgb, var(--color-${name}-900) <alpha-value>%, transparent)`,
+			950: `color-mix(in srgb, var(--color-${name}-950) <alpha-value>%, transparent)`,
+			DEFAULT: `color-mix(in srgb, var(--color-${name}-500) <alpha-value>%, transparent)`
 		})
 	})
-	it.each(palettes)('should generate shades using rgb modifier', (name) => {
-		const result = shadesOf(name, 'rgb')
-		expect(result).toEqual({
-			50: `rgb(var(--color-${name}-50) / <alpha-value>)`,
-			100: `rgb(var(--color-${name}-100) / <alpha-value>)`,
-			200: `rgb(var(--color-${name}-200) / <alpha-value>)`,
-			300: `rgb(var(--color-${name}-300) / <alpha-value>)`,
-			400: `rgb(var(--color-${name}-400) / <alpha-value>)`,
-			500: `rgb(var(--color-${name}-500) / <alpha-value>)`,
-			600: `rgb(var(--color-${name}-600) / <alpha-value>)`,
-			700: `rgb(var(--color-${name}-700) / <alpha-value>)`,
-			800: `rgb(var(--color-${name}-800) / <alpha-value>)`,
-			900: `rgb(var(--color-${name}-900) / <alpha-value>)`,
-			950: `rgb(var(--color-${name}-950) / <alpha-value>)`,
-			DEFAULT: `rgb(var(--color-${name}-500) / <alpha-value>)`
-		})
-	})
-	it.each(palettes)('should generate shades using oklch modifier', (name) => {
+
+	it.each(palettes)('should generate shades using oklch space', (name) => {
 		const result = shadesOf(name, 'oklch')
 		expect(result).toEqual({
-			50: `oklch(var(--color-${name}-50) / <alpha-value>)`,
-			100: `oklch(var(--color-${name}-100) / <alpha-value>)`,
-			200: `oklch(var(--color-${name}-200) / <alpha-value>)`,
-			300: `oklch(var(--color-${name}-300) / <alpha-value>)`,
-			400: `oklch(var(--color-${name}-400) / <alpha-value>)`,
-			500: `oklch(var(--color-${name}-500) / <alpha-value>)`,
-			600: `oklch(var(--color-${name}-600) / <alpha-value>)`,
-			700: `oklch(var(--color-${name}-700) / <alpha-value>)`,
-			800: `oklch(var(--color-${name}-800) / <alpha-value>)`,
-			900: `oklch(var(--color-${name}-900) / <alpha-value>)`,
-			950: `oklch(var(--color-${name}-950) / <alpha-value>)`,
-			DEFAULT: `oklch(var(--color-${name}-500) / <alpha-value>)`
+			50: `color-mix(in oklch, var(--color-${name}-50) <alpha-value>%, transparent)`,
+			100: `color-mix(in oklch, var(--color-${name}-100) <alpha-value>%, transparent)`,
+			200: `color-mix(in oklch, var(--color-${name}-200) <alpha-value>%, transparent)`,
+			300: `color-mix(in oklch, var(--color-${name}-300) <alpha-value>%, transparent)`,
+			400: `color-mix(in oklch, var(--color-${name}-400) <alpha-value>%, transparent)`,
+			500: `color-mix(in oklch, var(--color-${name}-500) <alpha-value>%, transparent)`,
+			600: `color-mix(in oklch, var(--color-${name}-600) <alpha-value>%, transparent)`,
+			700: `color-mix(in oklch, var(--color-${name}-700) <alpha-value>%, transparent)`,
+			800: `color-mix(in oklch, var(--color-${name}-800) <alpha-value>%, transparent)`,
+			900: `color-mix(in oklch, var(--color-${name}-900) <alpha-value>%, transparent)`,
+			950: `color-mix(in oklch, var(--color-${name}-950) <alpha-value>%, transparent)`,
+			DEFAULT: `color-mix(in oklch, var(--color-${name}-500) <alpha-value>%, transparent)`
 		})
 	})
-	it.each(palettes)('should generate shades with invalid modifier', (name) => {
-		const result = shadesOf(name, 'invalid')
-		expect(result).toEqual({
-			100: `var(--color-${name}-100)`,
-			200: `var(--color-${name}-200)`,
-			300: `var(--color-${name}-300)`,
-			400: `var(--color-${name}-400)`,
-			50: `var(--color-${name}-50)`,
-			500: `var(--color-${name}-500)`,
-			600: `var(--color-${name}-600)`,
-			700: `var(--color-${name}-700)`,
-			800: `var(--color-${name}-800)`,
-			900: `var(--color-${name}-900)`,
-			950: `var(--color-${name}-950)`,
-			DEFAULT: `var(--color-${name}-500)`
-		})
+
+	it('should default to rgb when no space is specified', (name) => {
+		const result = shadesOf('primary')
+		expect(result.DEFAULT).toBe('color-mix(in srgb, var(--color-primary-500) <alpha-value>%, transparent)')
+		expect(result[50]).toBe('color-mix(in srgb, var(--color-primary-50) <alpha-value>%, transparent)')
+	})
+
+	it('should throw for invalid color space', () => {
+		expect(() => shadesOf('primary', 'invalid')).toThrow('Unknown color space: invalid')
 	})
 })
 
 describe('themeRules', () => {
 	const paletteRules = {
-		'--color-accent': '56,189,248',
-		'--color-accent-100': '224,242,254',
-		'--color-accent-200': '186,230,253',
-		'--color-accent-300': '125,211,252',
-		'--color-accent-400': '56,189,248',
-		'--color-accent-50': '240,249,255',
-		'--color-accent-500': '14,165,233',
-		'--color-accent-600': '2,132,199',
-		'--color-accent-700': '3,105,161',
-		'--color-accent-800': '7,89,133',
-		'--color-accent-900': '12,74,110',
-		'--color-accent-950': '8,47,73',
-		'--color-danger': '248,113,113',
-		'--color-danger-100': '254,226,226',
-		'--color-danger-200': '254,202,202',
-		'--color-danger-300': '252,165,165',
-		'--color-danger-400': '248,113,113',
-		'--color-danger-50': '254,242,242',
-		'--color-danger-500': '239,68,68',
-		'--color-danger-600': '220,38,38',
-		'--color-danger-700': '185,28,28',
-		'--color-danger-800': '153,27,27',
-		'--color-danger-900': '127,29,29',
-		'--color-danger-950': '69,10,10',
-		'--color-error': '248,113,113',
-		'--color-error-100': '254,226,226',
-		'--color-error-200': '254,202,202',
-		'--color-error-300': '252,165,165',
-		'--color-error-400': '248,113,113',
-		'--color-error-50': '254,242,242',
-		'--color-error-500': '239,68,68',
-		'--color-error-600': '220,38,38',
-		'--color-error-700': '185,28,28',
-		'--color-error-800': '153,27,27',
-		'--color-error-900': '127,29,29',
-		'--color-error-950': '69,10,10',
-		'--color-info': '34,211,238',
-		'--color-info-100': '207,250,254',
-		'--color-info-200': '165,243,252',
-		'--color-info-300': '103,232,249',
-		'--color-info-400': '34,211,238',
-		'--color-info-50': '236,254,255',
-		'--color-info-500': '6,182,212',
-		'--color-info-600': '8,145,178',
-		'--color-info-700': '14,116,144',
-		'--color-info-800': '21,94,117',
-		'--color-info-900': '22,78,99',
-		'--color-info-950': '8,51,68',
-		'--color-primary': '251,146,60',
-		'--color-primary-100': '255,237,213',
-		'--color-primary-200': '254,215,170',
-		'--color-primary-300': '253,186,116',
-		'--color-primary-400': '251,146,60',
-		'--color-primary-50': '255,247,237',
-		'--color-primary-500': '249,115,22',
-		'--color-primary-600': '234,88,12',
-		'--color-primary-700': '194,65,12',
-		'--color-primary-800': '154,52,18',
-		'--color-primary-900': '124,45,18',
-		'--color-primary-950': '67,20,7',
-		'--color-secondary': '244,114,182',
-		'--color-secondary-100': '252,231,243',
-		'--color-secondary-200': '251,207,232',
-		'--color-secondary-300': '249,168,212',
-		'--color-secondary-400': '244,114,182',
-		'--color-secondary-50': '253,242,248',
-		'--color-secondary-500': '236,72,153',
-		'--color-secondary-600': '219,39,119',
-		'--color-secondary-700': '190,24,93',
-		'--color-secondary-800': '157,23,77',
-		'--color-secondary-900': '131,24,67',
-		'--color-secondary-950': '80,7,36',
-		'--color-success': '74,222,128',
-		'--color-success-100': '220,252,231',
-		'--color-success-200': '187,247,208',
-		'--color-success-300': '134,239,172',
-		'--color-success-400': '74,222,128',
-		'--color-success-50': '240,253,244',
-		'--color-success-500': '34,197,94',
-		'--color-success-600': '22,163,74',
-		'--color-success-700': '21,128,61',
-		'--color-success-800': '22,101,52',
-		'--color-success-900': '20,83,45',
-		'--color-success-950': '5,46,22',
-		'--color-surface': '148,163,184',
-		'--color-surface-100': '241,245,249',
-		'--color-surface-200': '226,232,240',
-		'--color-surface-300': '203,213,225',
-		'--color-surface-400': '148,163,184',
-		'--color-surface-50': '248,250,252',
-		'--color-surface-500': '100,116,139',
-		'--color-surface-600': '71,85,105',
-		'--color-surface-700': '51,65,85',
-		'--color-surface-800': '30,41,59',
-		'--color-surface-900': '15,23,42',
-		'--color-surface-950': '2,6,23',
-		'--color-tertiary': '167,139,250',
-		'--color-tertiary-100': '237,233,254',
-		'--color-tertiary-200': '221,214,254',
-		'--color-tertiary-300': '196,181,253',
-		'--color-tertiary-400': '167,139,250',
-		'--color-tertiary-50': '245,243,255',
-		'--color-tertiary-500': '139,92,246',
-		'--color-tertiary-600': '124,58,237',
-		'--color-tertiary-700': '109,40,217',
-		'--color-tertiary-800': '91,33,182',
-		'--color-tertiary-900': '76,29,149',
-		'--color-tertiary-950': '46,16,101',
-		'--color-warning': '250,204,21',
-		'--color-warning-100': '254,249,195',
-		'--color-warning-200': '254,240,138',
-		'--color-warning-300': '253,224,71',
-		'--color-warning-400': '250,204,21',
-		'--color-warning-50': '254,252,232',
-		'--color-warning-500': '234,179,8',
-		'--color-warning-600': '202,138,4',
-		'--color-warning-700': '161,98,7',
-		'--color-warning-800': '133,77,14',
-		'--color-warning-900': '113,63,18',
-		'--color-warning-950': '66,32,6'
+		'--color-accent': 'rgb(56, 189, 248)',
+		'--color-accent-100': 'rgb(224, 242, 254)',
+		'--color-accent-200': 'rgb(186, 230, 253)',
+		'--color-accent-300': 'rgb(125, 211, 252)',
+		'--color-accent-400': 'rgb(56, 189, 248)',
+		'--color-accent-50': 'rgb(240, 249, 255)',
+		'--color-accent-500': 'rgb(14, 165, 233)',
+		'--color-accent-600': 'rgb(2, 132, 199)',
+		'--color-accent-700': 'rgb(3, 105, 161)',
+		'--color-accent-800': 'rgb(7, 89, 133)',
+		'--color-accent-900': 'rgb(12, 74, 110)',
+		'--color-accent-950': 'rgb(8, 47, 73)',
+		'--color-danger': 'rgb(248, 113, 113)',
+		'--color-danger-100': 'rgb(254, 226, 226)',
+		'--color-danger-200': 'rgb(254, 202, 202)',
+		'--color-danger-300': 'rgb(252, 165, 165)',
+		'--color-danger-400': 'rgb(248, 113, 113)',
+		'--color-danger-50': 'rgb(254, 242, 242)',
+		'--color-danger-500': 'rgb(239, 68, 68)',
+		'--color-danger-600': 'rgb(220, 38, 38)',
+		'--color-danger-700': 'rgb(185, 28, 28)',
+		'--color-danger-800': 'rgb(153, 27, 27)',
+		'--color-danger-900': 'rgb(127, 29, 29)',
+		'--color-danger-950': 'rgb(69, 10, 10)',
+		'--color-error': 'rgb(248, 113, 113)',
+		'--color-error-100': 'rgb(254, 226, 226)',
+		'--color-error-200': 'rgb(254, 202, 202)',
+		'--color-error-300': 'rgb(252, 165, 165)',
+		'--color-error-400': 'rgb(248, 113, 113)',
+		'--color-error-50': 'rgb(254, 242, 242)',
+		'--color-error-500': 'rgb(239, 68, 68)',
+		'--color-error-600': 'rgb(220, 38, 38)',
+		'--color-error-700': 'rgb(185, 28, 28)',
+		'--color-error-800': 'rgb(153, 27, 27)',
+		'--color-error-900': 'rgb(127, 29, 29)',
+		'--color-error-950': 'rgb(69, 10, 10)',
+		'--color-info': 'rgb(34, 211, 238)',
+		'--color-info-100': 'rgb(207, 250, 254)',
+		'--color-info-200': 'rgb(165, 243, 252)',
+		'--color-info-300': 'rgb(103, 232, 249)',
+		'--color-info-400': 'rgb(34, 211, 238)',
+		'--color-info-50': 'rgb(236, 254, 255)',
+		'--color-info-500': 'rgb(6, 182, 212)',
+		'--color-info-600': 'rgb(8, 145, 178)',
+		'--color-info-700': 'rgb(14, 116, 144)',
+		'--color-info-800': 'rgb(21, 94, 117)',
+		'--color-info-900': 'rgb(22, 78, 99)',
+		'--color-info-950': 'rgb(8, 51, 68)',
+		'--color-primary': 'rgb(251, 146, 60)',
+		'--color-primary-100': 'rgb(255, 237, 213)',
+		'--color-primary-200': 'rgb(254, 215, 170)',
+		'--color-primary-300': 'rgb(253, 186, 116)',
+		'--color-primary-400': 'rgb(251, 146, 60)',
+		'--color-primary-50': 'rgb(255, 247, 237)',
+		'--color-primary-500': 'rgb(249, 115, 22)',
+		'--color-primary-600': 'rgb(234, 88, 12)',
+		'--color-primary-700': 'rgb(194, 65, 12)',
+		'--color-primary-800': 'rgb(154, 52, 18)',
+		'--color-primary-900': 'rgb(124, 45, 18)',
+		'--color-primary-950': 'rgb(67, 20, 7)',
+		'--color-secondary': 'rgb(244, 114, 182)',
+		'--color-secondary-100': 'rgb(252, 231, 243)',
+		'--color-secondary-200': 'rgb(251, 207, 232)',
+		'--color-secondary-300': 'rgb(249, 168, 212)',
+		'--color-secondary-400': 'rgb(244, 114, 182)',
+		'--color-secondary-50': 'rgb(253, 242, 248)',
+		'--color-secondary-500': 'rgb(236, 72, 153)',
+		'--color-secondary-600': 'rgb(219, 39, 119)',
+		'--color-secondary-700': 'rgb(190, 24, 93)',
+		'--color-secondary-800': 'rgb(157, 23, 77)',
+		'--color-secondary-900': 'rgb(131, 24, 67)',
+		'--color-secondary-950': 'rgb(80, 7, 36)',
+		'--color-success': 'rgb(74, 222, 128)',
+		'--color-success-100': 'rgb(220, 252, 231)',
+		'--color-success-200': 'rgb(187, 247, 208)',
+		'--color-success-300': 'rgb(134, 239, 172)',
+		'--color-success-400': 'rgb(74, 222, 128)',
+		'--color-success-50': 'rgb(240, 253, 244)',
+		'--color-success-500': 'rgb(34, 197, 94)',
+		'--color-success-600': 'rgb(22, 163, 74)',
+		'--color-success-700': 'rgb(21, 128, 61)',
+		'--color-success-800': 'rgb(22, 101, 52)',
+		'--color-success-900': 'rgb(20, 83, 45)',
+		'--color-success-950': 'rgb(5, 46, 22)',
+		'--color-surface': 'rgb(148, 163, 184)',
+		'--color-surface-100': 'rgb(241, 245, 249)',
+		'--color-surface-200': 'rgb(226, 232, 240)',
+		'--color-surface-300': 'rgb(203, 213, 225)',
+		'--color-surface-400': 'rgb(148, 163, 184)',
+		'--color-surface-50': 'rgb(248, 250, 252)',
+		'--color-surface-500': 'rgb(100, 116, 139)',
+		'--color-surface-600': 'rgb(71, 85, 105)',
+		'--color-surface-700': 'rgb(51, 65, 85)',
+		'--color-surface-800': 'rgb(30, 41, 59)',
+		'--color-surface-900': 'rgb(15, 23, 42)',
+		'--color-surface-950': 'rgb(2, 6, 23)',
+		'--color-tertiary': 'rgb(167, 139, 250)',
+		'--color-tertiary-100': 'rgb(237, 233, 254)',
+		'--color-tertiary-200': 'rgb(221, 214, 254)',
+		'--color-tertiary-300': 'rgb(196, 181, 253)',
+		'--color-tertiary-400': 'rgb(167, 139, 250)',
+		'--color-tertiary-50': 'rgb(245, 243, 255)',
+		'--color-tertiary-500': 'rgb(139, 92, 246)',
+		'--color-tertiary-600': 'rgb(124, 58, 237)',
+		'--color-tertiary-700': 'rgb(109, 40, 217)',
+		'--color-tertiary-800': 'rgb(91, 33, 182)',
+		'--color-tertiary-900': 'rgb(76, 29, 149)',
+		'--color-tertiary-950': 'rgb(46, 16, 101)',
+		'--color-warning': 'rgb(250, 204, 21)',
+		'--color-warning-100': 'rgb(254, 249, 195)',
+		'--color-warning-200': 'rgb(254, 240, 138)',
+		'--color-warning-300': 'rgb(253, 224, 71)',
+		'--color-warning-400': 'rgb(250, 204, 21)',
+		'--color-warning-50': 'rgb(254, 252, 232)',
+		'--color-warning-500': 'rgb(234, 179, 8)',
+		'--color-warning-600': 'rgb(202, 138, 4)',
+		'--color-warning-700': 'rgb(161, 98, 7)',
+		'--color-warning-800': 'rgb(133, 77, 14)',
+		'--color-warning-900': 'rgb(113, 63, 18)',
+		'--color-warning-950': 'rgb(66, 32, 6)'
 	}
 
 	it('should generate theme rules', () => {
@@ -365,18 +346,18 @@ describe('themeRules', () => {
 		const result = themeRules({ surface: 'zinc' })
 		const zincLight = {
 			...paletteRules,
-			'--color-surface': '161,161,170',
-			'--color-surface-100': '244,244,245',
-			'--color-surface-200': '228,228,231',
-			'--color-surface-300': '212,212,216',
-			'--color-surface-400': '161,161,170',
-			'--color-surface-50': '250,250,250',
-			'--color-surface-500': '113,113,122',
-			'--color-surface-600': '82,82,91',
-			'--color-surface-700': '63,63,70',
-			'--color-surface-800': '39,39,42',
-			'--color-surface-900': '24,24,27',
-			'--color-surface-950': '9,9,11'
+			'--color-surface': 'rgb(161, 161, 170)',
+			'--color-surface-100': 'rgb(244, 244, 245)',
+			'--color-surface-200': 'rgb(228, 228, 231)',
+			'--color-surface-300': 'rgb(212, 212, 216)',
+			'--color-surface-400': 'rgb(161, 161, 170)',
+			'--color-surface-50': 'rgb(250, 250, 250)',
+			'--color-surface-500': 'rgb(113, 113, 122)',
+			'--color-surface-600': 'rgb(82, 82, 91)',
+			'--color-surface-700': 'rgb(63, 63, 70)',
+			'--color-surface-800': 'rgb(39, 39, 42)',
+			'--color-surface-900': 'rgb(24, 24, 27)',
+			'--color-surface-950': 'rgb(9, 9, 11)'
 		}
 
 		expect(result).toEqual(zincLight)

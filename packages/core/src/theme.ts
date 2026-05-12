@@ -2,43 +2,25 @@
 // @ts-nocheck
 import { DEFAULT_THEME_MAPPING, defaultColors, TONE_MAP } from './constants'
 import { shades } from './colors/index'
-import { colorToRgb } from './utils'
-
-const modifiers = {
-	hsl: (value) => `hsl(${value} / <alpha-value>)`,
-	rgb: (value) => `rgb(${value} / <alpha-value>)`,
-	oklch: (value) => `oklch(${value} / <alpha-value>)`,
-	none: (value) => value
-}
+import { ColorSpace } from './color-space'
 
 /**
- * CSS function wrappers for each color space, used by mapVariant().
- * rgb uses legacy rgba() comma syntax for broad compatibility.
- * hsl/oklch use modern space-separated syntax with / for alpha.
- */
-const COLOR_SPACE_WRAPPERS = {
-	rgb: (varRef) => `rgba(${varRef},<alpha-value>)`,
-	hsl: (varRef) => `hsl(${varRef} / <alpha-value>)`,
-	oklch: (varRef) => `oklch(${varRef} / <alpha-value>)`
-}
-
-/**
- * Generate shades for a color using css varuable
+ * Generate shades for a color using css variable and a ColorSpace adapter.
  *
  * @param {string} name
- * @param {string} modifier
- * @returns
+ * @param {string|import('./color-space').ColorSpace} space - color space name or adapter instance
+ * @returns {Record<string|number, string>}
  */
-export function shadesOf(name, modifier = 'none') {
-	const fn = modifier in modifiers ? modifiers[modifier] : modifiers.none
+export function shadesOf(name, space = 'rgb') {
+	const adapter = typeof space === 'string' ? ColorSpace.create(space) : space
 
 	return shades.reduce(
 		(result, shade) => ({
 			...result,
-			[shade]: fn(`var(--color-${name}-${shade})`)
+			[shade]: adapter.themeColor(`--color-${name}-${shade}`)
 		}),
 		{
-			DEFAULT: fn(`var(--color-${name}-500)`)
+			DEFAULT: adapter.themeColor(`--color-${name}-500`)
 		}
 	)
 }
@@ -49,14 +31,14 @@ export function shadesOf(name, modifier = 'none') {
  * @param {string} variant - The name of the variant to generate rules for.
  * @param {Object} colors - The object containing color definitions.
  * @param {Object} mapping - An object that maps variant names to color property names.
- * @param {import('./utils').ColorSpace} [colorSpace] - Color space for component format.
+ * @param {import('./color-space').ColorSpace} adapter - ColorSpace adapter instance.
  * @returns {import('./types').ShadeMappings} An array containing the color rules for both light and dark modes.
  */
-function generateColorRules(variant, colors, mapping, colorSpace) {
+function generateColorRules(variant, colors, mapping, adapter) {
 	return ['DEFAULT', ...shades].flatMap((shade) => [
 		{
 			key: shade === 'DEFAULT' ? `--color-${variant}` : `--color-${variant}-${shade}`,
-			value: colorToRgb(colors[mapping[variant]][`${shade}`], colorSpace)
+			value: adapter.wrap(colors[mapping[variant]][`${shade}`])
 		}
 	])
 }
@@ -66,15 +48,16 @@ function generateColorRules(variant, colors, mapping, colorSpace) {
  *
  * @param {Object} [mapping=DEFAULT_THEME_MAPPING] - An object mapping variant names to color property names.
  * @param {Object} [colors=defaultColors]        - The object containing default color definitions.
- * @param {import('./utils').ColorSpace} [colorSpace] - Color space for CSS variable values.
+ * @param {string} [colorSpace] - Color space name for CSS variable values.
  * @returns {Array<Array>} An array containing two arrays, one for the light theme variant and another for the dark theme.
  */
 export function themeRules(mapping = DEFAULT_THEME_MAPPING, colors = defaultColors, colorSpace) {
 	mapping = { ...DEFAULT_THEME_MAPPING, ...mapping }
 	colors = { ...defaultColors, ...colors }
+	const adapter = ColorSpace.create(colorSpace || 'rgb')
 	const variants = Object.keys(mapping)
 	const rules = variants
-		.flatMap((variant) => generateColorRules(variant, colors, mapping, colorSpace))
+		.flatMap((variant) => generateColorRules(variant, colors, mapping, adapter))
 		.reduce((acc, { key, value }) => ({ ...acc, [key]: value }), {})
 
 	return rules
@@ -190,16 +173,16 @@ function resolveColors(mapping) {
 export class Theme {
 	#colors
 	#mapping
-	#colorSpace
+	#adapter
 
 	/**
 	 *
-	 * @param {import('./types.js').ColorTheme & { colorSpace?: import('./utils').ColorSpace }} param0
+	 * @param {import('./types.js').ColorTheme & { colorSpace?: string }} param0
 	 */
 	constructor({ colors = defaultColors, mapping = DEFAULT_THEME_MAPPING, colorSpace = 'rgb' } = {}) {
 		this.#colors = { ...defaultColors, ...colors }
 		this.#mapping = resolveColors({ ...DEFAULT_THEME_MAPPING, ...mapping })
-		this.#colorSpace = colorSpace
+		this.#adapter = ColorSpace.create(colorSpace)
 	}
 
 	get colors() {
@@ -217,21 +200,20 @@ export class Theme {
 	}
 
 	get colorSpace() {
-		return this.#colorSpace
+		return this.#adapter.name
 	}
 	set colorSpace(colorSpace) {
-		this.#colorSpace = colorSpace
+		this.#adapter = ColorSpace.create(colorSpace)
 	}
 
 	mapVariant(color, variant) {
-		const wrap = COLOR_SPACE_WRAPPERS[this.#colorSpace] || COLOR_SPACE_WRAPPERS.rgb
 		return Object.keys(color).reduce(
 			(acc, key) => ({
 				...acc,
 				[key]:
 					key === 'DEFAULT'
-						? wrap(`var(--color-${variant})`)
-						: wrap(`var(--color-${variant}-${key})`)
+						? this.#adapter.themeColor(`--color-${variant}`)
+						: this.#adapter.themeColor(`--color-${variant}-${key}`)
 			}),
 			{}
 		)
@@ -253,7 +235,7 @@ export class Theme {
 		const useColors = { ...defaultColors, ...this.#colors }
 		const variants = Object.keys(useMapping)
 		const rules = variants
-			.flatMap((variant) => generateColorRules(variant, useColors, useMapping, this.#colorSpace))
+			.flatMap((variant) => generateColorRules(variant, useColors, useMapping, this.#adapter))
 			.reduce((acc, { key, value }) => ({ ...acc, [key]: value }), {})
 		return rules
 	}

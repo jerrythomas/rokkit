@@ -189,34 +189,34 @@ describe('presetRokkit', () => {
 		})
 
 		it(':root should use the light palette for dual-palette roles', () => {
-			// slate-500 = #64748b → rgb(100, 116, 139) — stored as "100,116,139"
+			// slate-500 = #64748b → rgb(100, 116, 139)
 			const preset = presetRokkit({
 				skin: { surface: { light: 'slate', dark: 'zinc' } }
 			})
 			const css = preset.preflights[0].getCSS()
 			const rootBlock = css.split('[data-mode')[0]
-			expect(rootBlock).toContain('--color-surface-500:100,116,139')
+			expect(rootBlock).toContain('--color-surface-500:rgb(100, 116, 139)')
 		})
 
 		it('[data-mode="dark"] should use the dark palette for dual-palette roles', () => {
-			// zinc-500 = #71717a → rgb(113, 113, 122) — stored as "113,113,122"
+			// zinc-500 = #71717a → rgb(113, 113, 122)
 			const preset = presetRokkit({
 				skin: { surface: { light: 'slate', dark: 'zinc' } }
 			})
 			const css = preset.preflights[0].getCSS()
 			const darkBlock = css.split('[data-mode="dark"]')[1] ?? ''
-			expect(darkBlock).toContain('--color-surface-500:113,113,122')
+			expect(darkBlock).toContain('--color-surface-500:rgb(113, 113, 122)')
 		})
 
 		it('should fall back to light palette in dark block when only light is specified', () => {
-			// slate-500 = #64748b → "100,116,139" — used in both blocks
+			// slate-500 = #64748b → rgb(100, 116, 139) — used in both blocks
 			const preset = presetRokkit({
 				skin: { surface: { light: 'slate' } }
 			})
 			const css = preset.preflights[0].getCSS()
 			expect(css).toContain('[data-mode="dark"]{')
 			const darkBlock = css.split('[data-mode="dark"]')[1] ?? ''
-			expect(darkBlock).toContain('--color-surface-500:100,116,139')
+			expect(darkBlock).toContain('--color-surface-500:rgb(100, 116, 139)')
 		})
 
 		it('should only generate dark block for custom dual-palette, not for all roles', () => {
@@ -244,18 +244,18 @@ describe('presetRokkit', () => {
 
 		it('should fall back to dark palette in light :root when only dark property is specified', () => {
 			// surface: { dark: 'zinc' } — no light → resolveMappingForMode('light') falls back to 'zinc'
-			// slate-500 → 100,116,139 | zinc-500 → 113,113,122
+			// zinc-500 → rgb(113, 113, 122)
 			const preset = presetRokkit({ skin: { surface: { dark: 'zinc' } } })
 			const css = preset.preflights[0].getCSS()
 			const rootBlock = css.split('[data-mode')[0]
-			expect(rootBlock).toContain('--color-surface-500:113,113,122')  // zinc
+			expect(rootBlock).toContain('--color-surface-500:rgb(113, 113, 122)')  // zinc
 		})
 
 		it('should use dark palette in dark block when only dark property is specified', () => {
 			const preset = presetRokkit({ skin: { surface: { dark: 'zinc' } } })
 			const css = preset.preflights[0].getCSS()
 			const darkBlock = css.split('[data-mode="dark"]')[1] ?? ''
-			expect(darkBlock).toContain('--color-surface-500:113,113,122')  // zinc
+			expect(darkBlock).toContain('--color-surface-500:rgb(113, 113, 122)')  // zinc
 		})
 
 		it('should include typography vars in :root when typography is set', () => {
