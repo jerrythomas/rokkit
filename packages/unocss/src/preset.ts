@@ -202,6 +202,7 @@ function checkInkContrast(config, colormap) {
 		if (surfaceL !== null && inkL !== null) {
 			const diff = Math.abs(surfaceL - inkL)
 			if (diff < 0.3) {
+				// eslint-disable-next-line no-console
 				console.warn(
 					`rokkit: ink-${z} on surface-${z} has low lightness contrast (${diff.toFixed(2)}). ` +
 					`Consider a palette with more tonal range for ink.`
