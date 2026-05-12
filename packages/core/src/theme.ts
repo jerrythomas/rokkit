@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
-import { DEFAULT_THEME_MAPPING, defaultColors, TONE_MAP } from './constants'
+import { DEFAULT_THEME_MAPPING, defaultColors, TONE_MAP, INVERTED_ROLES } from './constants'
 import { shades } from './colors/index'
 import { ColorSpace } from './color-space'
 
@@ -259,15 +259,17 @@ export class Theme {
 		const names = Object.keys(this.#mapping)
 
 		const lightLines = names.flatMap((name) =>
-			Object.entries(TONE_MAP).map(
-				([zone, light]) => `  --color-${name}-${zone}: var(--color-${name}-${light});`
-			)
+			Object.entries(TONE_MAP).map(([zone, light]) => {
+				const value = INVERTED_ROLES.has(name) ? 1000 - light : light
+				return `  --color-${name}-${zone}: var(--color-${name}-${value});`
+			})
 		)
 
 		const darkLines = names.flatMap((name) =>
 			Object.entries(TONE_MAP).map(([zone, light]) => {
 				const dark = 1000 - light
-				return `  --color-${name}-${zone}: var(--color-${name}-${dark});`
+				const value = INVERTED_ROLES.has(name) ? light : dark
+				return `  --color-${name}-${zone}: var(--color-${name}-${value});`
 			})
 		)
 
