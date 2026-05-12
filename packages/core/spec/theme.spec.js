@@ -66,27 +66,27 @@ describe('Theme class', () => {
 		expect(colors).toHaveProperty('secondary')
 		expect(colors.secondary).toHaveProperty('500')
 		expect(colors.primary).toEqual({
-			1: 'color-mix(in srgb, var(--color-primary-1) <alpha-value>%, transparent)',
-			100: 'color-mix(in srgb, var(--color-primary-100) <alpha-value>%, transparent)',
-			2: 'color-mix(in srgb, var(--color-primary-2) <alpha-value>%, transparent)',
-			200: 'color-mix(in srgb, var(--color-primary-200) <alpha-value>%, transparent)',
-			3: 'color-mix(in srgb, var(--color-primary-3) <alpha-value>%, transparent)',
-			300: 'color-mix(in srgb, var(--color-primary-300) <alpha-value>%, transparent)',
-			4: 'color-mix(in srgb, var(--color-primary-4) <alpha-value>%, transparent)',
-			400: 'color-mix(in srgb, var(--color-primary-400) <alpha-value>%, transparent)',
-			5: 'color-mix(in srgb, var(--color-primary-5) <alpha-value>%, transparent)',
-			50: 'color-mix(in srgb, var(--color-primary-50) <alpha-value>%, transparent)',
-			500: 'color-mix(in srgb, var(--color-primary-500) <alpha-value>%, transparent)',
-			6: 'color-mix(in srgb, var(--color-primary-6) <alpha-value>%, transparent)',
-			600: 'color-mix(in srgb, var(--color-primary-600) <alpha-value>%, transparent)',
-			7: 'color-mix(in srgb, var(--color-primary-7) <alpha-value>%, transparent)',
-			700: 'color-mix(in srgb, var(--color-primary-700) <alpha-value>%, transparent)',
-			8: 'color-mix(in srgb, var(--color-primary-8) <alpha-value>%, transparent)',
-			800: 'color-mix(in srgb, var(--color-primary-800) <alpha-value>%, transparent)',
-			9: 'color-mix(in srgb, var(--color-primary-9) <alpha-value>%, transparent)',
-			900: 'color-mix(in srgb, var(--color-primary-900) <alpha-value>%, transparent)',
-			950: 'color-mix(in srgb, var(--color-primary-950) <alpha-value>%, transparent)',
-			DEFAULT: 'color-mix(in srgb, var(--color-primary) <alpha-value>%, transparent)'
+			1: 'color-mix(in srgb, var(--color-primary-1) calc(<alpha-value> * 100%), transparent)',
+			100: 'color-mix(in srgb, var(--color-primary-100) calc(<alpha-value> * 100%), transparent)',
+			2: 'color-mix(in srgb, var(--color-primary-2) calc(<alpha-value> * 100%), transparent)',
+			200: 'color-mix(in srgb, var(--color-primary-200) calc(<alpha-value> * 100%), transparent)',
+			3: 'color-mix(in srgb, var(--color-primary-3) calc(<alpha-value> * 100%), transparent)',
+			300: 'color-mix(in srgb, var(--color-primary-300) calc(<alpha-value> * 100%), transparent)',
+			4: 'color-mix(in srgb, var(--color-primary-4) calc(<alpha-value> * 100%), transparent)',
+			400: 'color-mix(in srgb, var(--color-primary-400) calc(<alpha-value> * 100%), transparent)',
+			5: 'color-mix(in srgb, var(--color-primary-5) calc(<alpha-value> * 100%), transparent)',
+			50: 'color-mix(in srgb, var(--color-primary-50) calc(<alpha-value> * 100%), transparent)',
+			500: 'color-mix(in srgb, var(--color-primary-500) calc(<alpha-value> * 100%), transparent)',
+			6: 'color-mix(in srgb, var(--color-primary-6) calc(<alpha-value> * 100%), transparent)',
+			600: 'color-mix(in srgb, var(--color-primary-600) calc(<alpha-value> * 100%), transparent)',
+			7: 'color-mix(in srgb, var(--color-primary-7) calc(<alpha-value> * 100%), transparent)',
+			700: 'color-mix(in srgb, var(--color-primary-700) calc(<alpha-value> * 100%), transparent)',
+			8: 'color-mix(in srgb, var(--color-primary-8) calc(<alpha-value> * 100%), transparent)',
+			800: 'color-mix(in srgb, var(--color-primary-800) calc(<alpha-value> * 100%), transparent)',
+			9: 'color-mix(in srgb, var(--color-primary-9) calc(<alpha-value> * 100%), transparent)',
+			900: 'color-mix(in srgb, var(--color-primary-900) calc(<alpha-value> * 100%), transparent)',
+			950: 'color-mix(in srgb, var(--color-primary-950) calc(<alpha-value> * 100%), transparent)',
+			DEFAULT: 'color-mix(in srgb, var(--color-primary) calc(<alpha-value> * 100%), transparent)'
 		})
 	})
 })
@@ -105,15 +105,15 @@ describe('Theme with colorSpace', () => {
 	it('should produce oklch-wrapped color rules', () => {
 		const theme = new Theme({ colorSpace: 'oklch' })
 		const colors = theme.getColorRules()
-		expect(colors.primary.DEFAULT).toBe('color-mix(in oklch, var(--color-primary) <alpha-value>%, transparent)')
-		expect(colors.primary[500]).toBe('color-mix(in oklch, var(--color-primary-500) <alpha-value>%, transparent)')
+		expect(colors.primary.DEFAULT).toBe('color-mix(in oklch, var(--color-primary) calc(<alpha-value> * 100%), transparent)')
+		expect(colors.primary[500]).toBe('color-mix(in oklch, var(--color-primary-500) calc(<alpha-value> * 100%), transparent)')
 	})
 
 	it('should produce hsl-wrapped color rules', () => {
 		const theme = new Theme({ colorSpace: 'hsl' })
 		const colors = theme.getColorRules()
-		expect(colors.primary.DEFAULT).toBe('color-mix(in srgb, var(--color-primary) <alpha-value>%, transparent)')
-		expect(colors.primary[500]).toBe('color-mix(in srgb, var(--color-primary-500) <alpha-value>%, transparent)')
+		expect(colors.primary.DEFAULT).toBe('color-mix(in srgb, var(--color-primary) calc(<alpha-value> * 100%), transparent)')
+		expect(colors.primary[500]).toBe('color-mix(in srgb, var(--color-primary-500) calc(<alpha-value> * 100%), transparent)')
 	})
 
 	it('should produce oklch palette values', () => {
@@ -143,7 +143,7 @@ describe('Theme with colorSpace', () => {
 		theme.colorSpace = 'oklch'
 		expect(theme.colorSpace).toBe('oklch')
 		const colors = theme.getColorRules()
-		expect(colors.primary.DEFAULT).toBe('color-mix(in oklch, var(--color-primary) <alpha-value>%, transparent)')
+		expect(colors.primary.DEFAULT).toBe('color-mix(in oklch, var(--color-primary) calc(<alpha-value> * 100%), transparent)')
 	})
 })
 
@@ -151,61 +151,61 @@ describe('shadesOf', () => {
 	it.each(palettes)('should generate shades using rgb space', (name) => {
 		const result = shadesOf(name, 'rgb')
 		expect(result).toEqual({
-			50: `color-mix(in srgb, var(--color-${name}-50) <alpha-value>%, transparent)`,
-			100: `color-mix(in srgb, var(--color-${name}-100) <alpha-value>%, transparent)`,
-			200: `color-mix(in srgb, var(--color-${name}-200) <alpha-value>%, transparent)`,
-			300: `color-mix(in srgb, var(--color-${name}-300) <alpha-value>%, transparent)`,
-			400: `color-mix(in srgb, var(--color-${name}-400) <alpha-value>%, transparent)`,
-			500: `color-mix(in srgb, var(--color-${name}-500) <alpha-value>%, transparent)`,
-			600: `color-mix(in srgb, var(--color-${name}-600) <alpha-value>%, transparent)`,
-			700: `color-mix(in srgb, var(--color-${name}-700) <alpha-value>%, transparent)`,
-			800: `color-mix(in srgb, var(--color-${name}-800) <alpha-value>%, transparent)`,
-			900: `color-mix(in srgb, var(--color-${name}-900) <alpha-value>%, transparent)`,
-			950: `color-mix(in srgb, var(--color-${name}-950) <alpha-value>%, transparent)`,
-			DEFAULT: `color-mix(in srgb, var(--color-${name}-500) <alpha-value>%, transparent)`
+			50: `color-mix(in srgb, var(--color-${name}-50) calc(<alpha-value> * 100%), transparent)`,
+			100: `color-mix(in srgb, var(--color-${name}-100) calc(<alpha-value> * 100%), transparent)`,
+			200: `color-mix(in srgb, var(--color-${name}-200) calc(<alpha-value> * 100%), transparent)`,
+			300: `color-mix(in srgb, var(--color-${name}-300) calc(<alpha-value> * 100%), transparent)`,
+			400: `color-mix(in srgb, var(--color-${name}-400) calc(<alpha-value> * 100%), transparent)`,
+			500: `color-mix(in srgb, var(--color-${name}-500) calc(<alpha-value> * 100%), transparent)`,
+			600: `color-mix(in srgb, var(--color-${name}-600) calc(<alpha-value> * 100%), transparent)`,
+			700: `color-mix(in srgb, var(--color-${name}-700) calc(<alpha-value> * 100%), transparent)`,
+			800: `color-mix(in srgb, var(--color-${name}-800) calc(<alpha-value> * 100%), transparent)`,
+			900: `color-mix(in srgb, var(--color-${name}-900) calc(<alpha-value> * 100%), transparent)`,
+			950: `color-mix(in srgb, var(--color-${name}-950) calc(<alpha-value> * 100%), transparent)`,
+			DEFAULT: `color-mix(in srgb, var(--color-${name}-500) calc(<alpha-value> * 100%), transparent)`
 		})
 	})
 
 	it.each(palettes)('should generate shades using hsl space', (name) => {
 		const result = shadesOf(name, 'hsl')
 		expect(result).toEqual({
-			50: `color-mix(in srgb, var(--color-${name}-50) <alpha-value>%, transparent)`,
-			100: `color-mix(in srgb, var(--color-${name}-100) <alpha-value>%, transparent)`,
-			200: `color-mix(in srgb, var(--color-${name}-200) <alpha-value>%, transparent)`,
-			300: `color-mix(in srgb, var(--color-${name}-300) <alpha-value>%, transparent)`,
-			400: `color-mix(in srgb, var(--color-${name}-400) <alpha-value>%, transparent)`,
-			500: `color-mix(in srgb, var(--color-${name}-500) <alpha-value>%, transparent)`,
-			600: `color-mix(in srgb, var(--color-${name}-600) <alpha-value>%, transparent)`,
-			700: `color-mix(in srgb, var(--color-${name}-700) <alpha-value>%, transparent)`,
-			800: `color-mix(in srgb, var(--color-${name}-800) <alpha-value>%, transparent)`,
-			900: `color-mix(in srgb, var(--color-${name}-900) <alpha-value>%, transparent)`,
-			950: `color-mix(in srgb, var(--color-${name}-950) <alpha-value>%, transparent)`,
-			DEFAULT: `color-mix(in srgb, var(--color-${name}-500) <alpha-value>%, transparent)`
+			50: `color-mix(in srgb, var(--color-${name}-50) calc(<alpha-value> * 100%), transparent)`,
+			100: `color-mix(in srgb, var(--color-${name}-100) calc(<alpha-value> * 100%), transparent)`,
+			200: `color-mix(in srgb, var(--color-${name}-200) calc(<alpha-value> * 100%), transparent)`,
+			300: `color-mix(in srgb, var(--color-${name}-300) calc(<alpha-value> * 100%), transparent)`,
+			400: `color-mix(in srgb, var(--color-${name}-400) calc(<alpha-value> * 100%), transparent)`,
+			500: `color-mix(in srgb, var(--color-${name}-500) calc(<alpha-value> * 100%), transparent)`,
+			600: `color-mix(in srgb, var(--color-${name}-600) calc(<alpha-value> * 100%), transparent)`,
+			700: `color-mix(in srgb, var(--color-${name}-700) calc(<alpha-value> * 100%), transparent)`,
+			800: `color-mix(in srgb, var(--color-${name}-800) calc(<alpha-value> * 100%), transparent)`,
+			900: `color-mix(in srgb, var(--color-${name}-900) calc(<alpha-value> * 100%), transparent)`,
+			950: `color-mix(in srgb, var(--color-${name}-950) calc(<alpha-value> * 100%), transparent)`,
+			DEFAULT: `color-mix(in srgb, var(--color-${name}-500) calc(<alpha-value> * 100%), transparent)`
 		})
 	})
 
 	it.each(palettes)('should generate shades using oklch space', (name) => {
 		const result = shadesOf(name, 'oklch')
 		expect(result).toEqual({
-			50: `color-mix(in oklch, var(--color-${name}-50) <alpha-value>%, transparent)`,
-			100: `color-mix(in oklch, var(--color-${name}-100) <alpha-value>%, transparent)`,
-			200: `color-mix(in oklch, var(--color-${name}-200) <alpha-value>%, transparent)`,
-			300: `color-mix(in oklch, var(--color-${name}-300) <alpha-value>%, transparent)`,
-			400: `color-mix(in oklch, var(--color-${name}-400) <alpha-value>%, transparent)`,
-			500: `color-mix(in oklch, var(--color-${name}-500) <alpha-value>%, transparent)`,
-			600: `color-mix(in oklch, var(--color-${name}-600) <alpha-value>%, transparent)`,
-			700: `color-mix(in oklch, var(--color-${name}-700) <alpha-value>%, transparent)`,
-			800: `color-mix(in oklch, var(--color-${name}-800) <alpha-value>%, transparent)`,
-			900: `color-mix(in oklch, var(--color-${name}-900) <alpha-value>%, transparent)`,
-			950: `color-mix(in oklch, var(--color-${name}-950) <alpha-value>%, transparent)`,
-			DEFAULT: `color-mix(in oklch, var(--color-${name}-500) <alpha-value>%, transparent)`
+			50: `color-mix(in oklch, var(--color-${name}-50) calc(<alpha-value> * 100%), transparent)`,
+			100: `color-mix(in oklch, var(--color-${name}-100) calc(<alpha-value> * 100%), transparent)`,
+			200: `color-mix(in oklch, var(--color-${name}-200) calc(<alpha-value> * 100%), transparent)`,
+			300: `color-mix(in oklch, var(--color-${name}-300) calc(<alpha-value> * 100%), transparent)`,
+			400: `color-mix(in oklch, var(--color-${name}-400) calc(<alpha-value> * 100%), transparent)`,
+			500: `color-mix(in oklch, var(--color-${name}-500) calc(<alpha-value> * 100%), transparent)`,
+			600: `color-mix(in oklch, var(--color-${name}-600) calc(<alpha-value> * 100%), transparent)`,
+			700: `color-mix(in oklch, var(--color-${name}-700) calc(<alpha-value> * 100%), transparent)`,
+			800: `color-mix(in oklch, var(--color-${name}-800) calc(<alpha-value> * 100%), transparent)`,
+			900: `color-mix(in oklch, var(--color-${name}-900) calc(<alpha-value> * 100%), transparent)`,
+			950: `color-mix(in oklch, var(--color-${name}-950) calc(<alpha-value> * 100%), transparent)`,
+			DEFAULT: `color-mix(in oklch, var(--color-${name}-500) calc(<alpha-value> * 100%), transparent)`
 		})
 	})
 
 	it('should default to rgb when no space is specified', (name) => {
 		const result = shadesOf('primary')
-		expect(result.DEFAULT).toBe('color-mix(in srgb, var(--color-primary-500) <alpha-value>%, transparent)')
-		expect(result[50]).toBe('color-mix(in srgb, var(--color-primary-50) <alpha-value>%, transparent)')
+		expect(result.DEFAULT).toBe('color-mix(in srgb, var(--color-primary-500) calc(<alpha-value> * 100%), transparent)')
+		expect(result[50]).toBe('color-mix(in srgb, var(--color-primary-50) calc(<alpha-value> * 100%), transparent)')
 	})
 
 	it('should throw for invalid color space', () => {

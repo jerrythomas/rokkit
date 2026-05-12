@@ -163,7 +163,7 @@ export class ColorSpace {
 	 * @returns {string}
 	 */
 	themeColor(varName) {
-		return `color-mix(in ${this.mixSpace}, var(${varName}) <alpha-value>%, transparent)`
+		return `color-mix(in ${this.mixSpace}, var(${varName}) calc(<alpha-value> * 100%), transparent)`
 	}
 
 	/**

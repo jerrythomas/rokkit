@@ -89,7 +89,7 @@ describe('ColorSpace', () => {
 		describe('themeColor', () => {
 			it('should produce color-mix with srgb', () => {
 				expect(rgb.themeColor('--color-primary-500')).toBe(
-					'color-mix(in srgb, var(--color-primary-500) <alpha-value>%, transparent)'
+					'color-mix(in srgb, var(--color-primary-500) calc(<alpha-value> * 100%), transparent)'
 				)
 			})
 		})
@@ -153,7 +153,7 @@ describe('ColorSpace', () => {
 		describe('themeColor', () => {
 			it('should produce color-mix with srgb', () => {
 				expect(hsl.themeColor('--color-primary-500')).toBe(
-					'color-mix(in srgb, var(--color-primary-500) <alpha-value>%, transparent)'
+					'color-mix(in srgb, var(--color-primary-500) calc(<alpha-value> * 100%), transparent)'
 				)
 			})
 		})
@@ -220,7 +220,7 @@ describe('ColorSpace', () => {
 		describe('themeColor', () => {
 			it('should produce color-mix with oklch', () => {
 				expect(oklch.themeColor('--color-primary-500')).toBe(
-					'color-mix(in oklch, var(--color-primary-500) <alpha-value>%, transparent)'
+					'color-mix(in oklch, var(--color-primary-500) calc(<alpha-value> * 100%), transparent)'
 				)
 			})
 		})
