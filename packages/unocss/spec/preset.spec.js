@@ -342,6 +342,87 @@ describe('presetRokkit', () => {
 		})
 	})
 
+	describe('alias and custom role support', () => {
+		it('should generate semantic shortcuts for alias roles', () => {
+			const preset = presetRokkit({
+				skins: {
+					default: {
+						surface: 'slate',
+						primary: 'orange',
+						paper: { alias: 'surface' }
+					}
+				}
+			})
+			// paper shortcuts should exist
+			const shortcuts = preset.shortcuts
+			const hasPaperShortcut = shortcuts.some((s) => {
+				if (typeof s === 'string') return s.includes('paper')
+				if (Array.isArray(s)) {
+					if (s[0] instanceof RegExp) return s[0].source.includes('paper')
+					if (typeof s[0] === 'string') return s[0].includes('paper')
+				}
+				return false
+			})
+			expect(hasPaperShortcut).toBe(true)
+		})
+
+		it('should generate color rules for alias that reference target CSS vars', () => {
+			const preset = presetRokkit({
+				skins: {
+					default: {
+						surface: 'slate',
+						primary: 'orange',
+						paper: { alias: 'surface' }
+					}
+				}
+			})
+			const colors = preset.theme.colors
+			expect(colors).toHaveProperty('paper')
+			// paper's shade 500 should reference --color-surface-500 (the target)
+			expect(colors.paper[500]).toContain('--color-surface-500')
+		})
+
+		it('should NOT generate CSS variable preflights for aliases', () => {
+			const preset = presetRokkit({
+				skins: {
+					default: {
+						surface: 'slate',
+						primary: 'orange',
+						paper: { alias: 'surface' }
+					}
+				}
+			})
+			const css = preset.preflights[0].getCSS()
+			// paper should NOT have its own CSS variables
+			expect(css).not.toContain('--color-paper')
+			// surface SHOULD have CSS variables
+			expect(css).toContain('--color-surface')
+		})
+
+		it('should generate full color rules for custom roles', () => {
+			const preset = presetRokkit({
+				skins: {
+					default: {
+						surface: 'slate',
+						primary: 'orange',
+						canvas: 'stone'
+					}
+				}
+			})
+			const colors = preset.theme.colors
+			expect(colors).toHaveProperty('canvas')
+			// canvas should reference its OWN CSS vars (not another role's)
+			expect(colors.canvas[500]).toContain('--color-canvas-500')
+		})
+
+		it('should include ink in default preset color rules', () => {
+			const preset = presetRokkit()
+			const colors = preset.theme.colors
+			expect(colors).toHaveProperty('ink')
+			expect(colors.ink[500]).toContain('--color-ink-500')
+		})
+	})
+
 	describe('shortcuts — skin and icon coverage', () => {
 		it('should produce no skin-* shortcuts when skins is empty', () => {
 			const preset = presetRokkit()

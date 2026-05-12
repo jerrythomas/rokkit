@@ -18,7 +18,7 @@ import {
 	defaultColors
 } from '@rokkit/core'
 import { iconCollections } from '@rokkit/core/vite'
-import { loadConfig, resolveColormap } from './config.js'
+import { loadConfig, resolveColormap, isAlias } from './config.js'
 
 const THEME_CONFIG = {
 	dark: {
@@ -122,10 +122,13 @@ function buildPreflights(theme, colormap, config) {
 	const allVars = extraVars.length > 0 ? `${rootVars};${extraVars.join(';')}` : rootVars
 
 	let darkBlock = ''
-	if (hasDualPaletteMapping(colormap)) {
+	const nonAliasColormap = Object.fromEntries(
+		Object.entries(colormap).filter(([, v]) => !isAlias(v))
+	)
+	if (hasDualPaletteMapping(nonAliasColormap)) {
 		const darkTheme = new Theme({
 			colors: { ...defaultColors, ...config.palettes },
-			mapping: resolveMappingForMode(colormap, 'dark'),
+			mapping: resolveMappingForMode(nonAliasColormap, 'dark'),
 			colorSpace: config.colorSpace
 		})
 		darkBlock = `[data-mode="dark"]{${toCssBlock(darkTheme.getPalette())}}`
@@ -135,10 +138,15 @@ function buildPreflights(theme, colormap, config) {
 }
 
 function buildSkinShortcuts(theme, config) {
-	return Object.entries(config.skins).map(([name, mapping]) => [
-		`skin-${name}`,
-		theme.getPalette(resolveMappingForMode(mapping, 'light'))
-	])
+	return Object.entries(config.skins).map(([name, mapping]) => {
+		const nonAliasMapping = Object.fromEntries(
+			Object.entries(mapping).filter(([, v]) => !isAlias(v))
+		)
+		return [
+			`skin-${name}`,
+			theme.getPalette(resolveMappingForMode(nonAliasMapping, 'light'))
+		]
+	})
 }
 
 function buildSemanticShortcuts(theme, colormap) {
@@ -153,11 +161,35 @@ function buildIconShortcuts(config) {
 }
 
 function buildTheme(config, colormap) {
+	// Filter out aliases — they don't get their own CSS variables
+	const nonAliasColormap = Object.fromEntries(
+		Object.entries(colormap).filter(([, v]) => !isAlias(v))
+	)
 	return new Theme({
 		colors: { ...defaultColors, ...config.palettes },
-		mapping: resolveMappingForMode(colormap, 'light'),
+		mapping: resolveMappingForMode(nonAliasColormap, 'light'),
 		colorSpace: config.colorSpace
 	})
+}
+
+function buildThemeColors(theme, colormap, config) {
+	const baseColors = { ...theme.getColorRules(), ...config.palettes }
+
+	// Add alias color rules — point alias name to target's CSS variables
+	for (const [role, value] of Object.entries(colormap)) {
+		if (isAlias(value)) {
+			const target = value.alias
+			if (baseColors[target]) {
+				// Generate color rules under the alias name that reference the target's CSS vars
+				baseColors[role] = theme.mapVariant(
+					theme.colors[theme.mapping[target]] || {},
+					target
+				)
+			}
+		}
+	}
+
+	return baseColors
 }
 
 function buildShortcuts(theme, colormap, config) {
@@ -192,7 +224,7 @@ export function presetRokkit(options = {}): Preset {
 		shortcuts: buildShortcuts(theme, colormap, config),
 		theme: {
 			fontFamily: FONT_FAMILIES,
-			colors: { ...theme.getColorRules(), ...config.palettes }
+			colors: buildThemeColors(theme, colormap, config)
 		},
 		transformers: [transformerDirectives(), transformerVariantGroup()]
 	}
