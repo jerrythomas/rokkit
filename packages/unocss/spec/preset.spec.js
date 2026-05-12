@@ -423,6 +423,23 @@ describe('presetRokkit', () => {
 		})
 	})
 
+	describe('generalized dual-palette', () => {
+		it('should generate dark overrides for any dual-palette role', () => {
+			const preset = presetRokkit({
+				palettes: {},
+				skins: {
+					default: {
+						surface: 'slate',
+						primary: { light: 'orange', dark: 'amber' }
+					}
+				}
+			})
+			const css = preset.preflights[0].getCSS()
+			expect(css).toContain('[data-mode="dark"]')
+			expect(css).toContain('--color-primary')
+		})
+	})
+
 	describe('shortcuts — skin and icon coverage', () => {
 		it('should produce no skin-* shortcuts when skins is empty', () => {
 			const preset = presetRokkit()
