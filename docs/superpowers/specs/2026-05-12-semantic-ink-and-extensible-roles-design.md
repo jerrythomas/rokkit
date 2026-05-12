@@ -209,6 +209,29 @@ Ink is the default text palette for body text, headings, labels, captions. `text
 11. Custom ink palette — zen-sumi with distinct sumi ink renders correctly
 12. Cross-theme regression — existing themes unaffected when ink defaults to inverted surface
 
+## Breaking Changes & Release
+
+Source-level theme distribution is a **breaking change**. Consumers currently import pre-compiled CSS (`@rokkit/themes/dist/zen-sumi.css`). After this change, the import resolves to source CSS that requires UnoCSS compilation in the consumer's build.
+
+### Affected packages (coordinated release)
+
+| Package | Bump | Reason |
+|---------|------|--------|
+| `@rokkit/themes` | **major** | Exports change from `dist/` to `src/`, consumers must have UnoCSS |
+| `@rokkit/core` | minor | New `ink` role in `DEFAULT_THEME_MAPPING`, inverted z-scale support |
+| `@rokkit/unocss` | minor | Alias resolution, custom role passthrough, validation |
+
+### Migration for consumers
+
+1. Ensure `presetRokkit()` is configured in `uno.config.js` (most consumers already have this)
+2. Ensure `transformerDirectives()` is included (already bundled by `presetRokkit()`)
+3. Update imports if using explicit `dist/` paths — drop the `dist/` prefix
+4. No code changes needed if importing via package name (`@rokkit/themes/zen-sumi`)
+
+### Release sequence
+
+All three packages must be published together. `@rokkit/core` and `@rokkit/unocss` ship first (minor bumps, non-breaking), then `@rokkit/themes` (major bump). The demo app and playground update simultaneously.
+
 ## Files Affected
 
 | File | Change |
