@@ -151,6 +151,97 @@ describe('resolveColormap', () => {
 	})
 })
 
+describe('alias validation', () => {
+	it('should detect alias objects in colormap', () => {
+		const config = loadConfig({
+			skins: {
+				default: {
+					surface: 'slate',
+					primary: 'orange',
+					paper: { alias: 'surface' }
+				}
+			}
+		})
+		const colormap = resolveColormap(config)
+		expect(colormap.paper).toEqual({ alias: 'surface' })
+	})
+
+	it('should reject circular aliases', () => {
+		expect(() => {
+			const config = loadConfig({
+				skins: {
+					default: {
+						surface: { alias: 'paper' },
+						paper: { alias: 'surface' },
+						primary: 'orange'
+					}
+				}
+			})
+			resolveColormap(config)
+		}).toThrow(/[Cc]ircular/)
+	})
+
+	it('should reject chained aliases', () => {
+		expect(() => {
+			const config = loadConfig({
+				skins: {
+					default: {
+						surface: 'slate',
+						paper: { alias: 'surface' },
+						parchment: { alias: 'paper' },
+						primary: 'orange'
+					}
+				}
+			})
+			resolveColormap(config)
+		}).toThrow(/[Cc]hain/)
+	})
+
+	it('should reject alias pointing to undefined role', () => {
+		expect(() => {
+			const config = loadConfig({
+				skins: {
+					default: {
+						surface: 'slate',
+						paper: { alias: 'canvas' },
+						primary: 'orange'
+					}
+				}
+			})
+			resolveColormap(config)
+		}).toThrow(/not defined/)
+	})
+
+	it('should accept valid forward alias', () => {
+		const config = loadConfig({
+			skins: {
+				default: {
+					surface: 'slate',
+					primary: 'orange',
+					paper: { alias: 'surface' }
+				}
+			}
+		})
+		expect(resolveColormap(config).paper).toEqual({ alias: 'surface' })
+	})
+
+	it('should accept custom roles as plain strings', () => {
+		const config = loadConfig({
+			skins: {
+				default: {
+					surface: 'slate',
+					primary: 'orange',
+					canvas: 'stone',
+					annotation: 'amber'
+				}
+			}
+		})
+		const colormap = resolveColormap(config)
+		expect(colormap.canvas).toBe('stone')
+		expect(colormap.annotation).toBe('amber')
+	})
+})
+
 describe('loadConfig — shape and typography', () => {
 	it('should default typography to all nulls', () => {
 		const config = loadConfig()

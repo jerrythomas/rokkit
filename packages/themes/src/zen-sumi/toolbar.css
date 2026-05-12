@@ -1,0 +1,86 @@
+/**
+ * Toolbar - Zen-Sumi Theme Styles
+ *
+ * Transparent base with hairline border by position.
+ * Items: surface-z6 → surface-z9 on hover. Active: primary-z5.
+ */
+
+/* =============================================================================
+   Toolbar Container
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-toolbar] {
+  @apply bg-transparent bg-none;
+}
+
+[data-style='zen-sumi'] [data-toolbar][data-toolbar-position='top'],
+[data-style='zen-sumi'] [data-toolbar]:not([data-toolbar-position]) {
+  @apply border-surface-z2 border-b;
+}
+
+[data-style='zen-sumi'] [data-toolbar][data-toolbar-position='bottom'] {
+  @apply border-surface-z2 border-t;
+}
+
+[data-style='zen-sumi'] [data-toolbar][data-toolbar-position='left'] {
+  @apply border-surface-z2 border-r;
+}
+
+[data-style='zen-sumi'] [data-toolbar][data-toolbar-position='right'] {
+  @apply border-surface-z2 border-l;
+}
+
+/* =============================================================================
+   Toolbar Items
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-toolbar-item] {
+  @apply text-ink-z4;
+}
+
+[data-style='zen-sumi'] [data-toolbar-item]:hover:not(:disabled):not([data-disabled='true']) {
+  @apply bg-surface-z2 text-ink-z1 bg-none;
+}
+
+[data-style='zen-sumi']
+  [data-toolbar-item]:focus-visible:not(:disabled):not([data-disabled='true']) {
+  @apply text-ink-z1 bg-none outline-none;
+  box-shadow: inset 0 0 0 1px var(--color-surface-z4);
+}
+
+/* Active/pressed state */
+[data-style='zen-sumi'] [data-toolbar-item][data-active='true'] {
+  @apply text-primary-z5 bg-none;
+}
+
+[data-style='zen-sumi'] [data-toolbar-item][data-active='true']:hover:not(:disabled) {
+  @apply text-primary-z6 bg-none;
+}
+
+/* =============================================================================
+   Toolbar Icon
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-toolbar-item] [data-toolbar-icon] {
+  @apply text-ink-z5;
+}
+
+[data-style='zen-sumi'] [data-toolbar-item]:hover:not(:disabled) [data-toolbar-icon] {
+  @apply text-ink-z2;
+}
+
+[data-style='zen-sumi'] [data-toolbar-item][data-active='true'] [data-toolbar-icon] {
+  @apply text-primary-z5;
+}
+
+/* =============================================================================
+   Separator & Divider
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-toolbar-separator] {
+  @apply bg-surface-z2 bg-none;
+}
+
+[data-style='zen-sumi'] [data-toolbar-divider] {
+  @apply bg-surface-z2 bg-none;
+}

@@ -1,5 +1,122 @@
 # Project Journal
 
+### Semantic Ink + Extensible Color Roles — complete (2026-05-12)
+
+**What was done:**
+
+- **Zen-sumi focus ring cleanup** — simplified 13 `oklch(var(--color-*) / 1)` to `var(--color-*)` across 11 zen-sumi CSS files. Old pattern was invalid nested oklch after ColorSpace adapter wrapped values.
+- **Semantic Ink role** — added `ink` to `DEFAULT_THEME_MAPPING` with surface fallback. Inverted z-scale: `ink-z1` light=shade 900 (dark text), complements `surface-z1` light=shade 100 (light bg). Same z-level = matched contrast pair.
+- **Alias validation** — `isAlias()`, `validateAliases()` in config.js. Detects circular, chained, and missing-target aliases at build time.
+- **Alias-aware preset** — `buildTheme`, `buildPreflights`, `buildSemanticShortcuts` all filter aliases. `buildThemeColors` generates color rules for aliases pointing to target's CSS vars.
+- **Generalized dual-palette** — verified any role (not just surface) supports `{ light, dark }` palette syntax.
+- **Source-level theme distribution** — themes package.json exports remapped from `dist/` to `src/`. Consumers compile via their own UnoCSS. Breaking change (major bump on @rokkit/themes).
+- **Ink in demo** — `ink: { light: 'sumi', dark: 'kami' }` in default skin. ~120 text tokens migrated from `text-surface-zN` to `text-ink-zM` across 22 zen-sumi CSS files.
+- **Contrast warnings** — build-time OKLCH lightness check between ink/surface at z1, z3.
+- **Demo cleanup** — deleted outdated local zen-sumi copy (10 files, 1133 lines), switched to package import. Fixed all `oklch(var())` patterns in app.css, EnsoRing, Sparkline, inline styles.
+- **Docs** — updated llms, CLI, site learn pages to use source-level import paths.
+
+**Design spec:** `docs/superpowers/specs/2026-05-12-semantic-ink-and-extensible-roles-design.md`
+**Implementation plan:** `docs/superpowers/plans/2026-05-12-semantic-ink-extensible-roles.md`
+
+**Results:**
+- 3367 unit tests — all passing (19 new tests)
+- 0 lint errors
+- Demo + site builds: passing
+
+**Commits:** `09895724`–`d998e8f2` (14 commits on develop)
+
+**Backlog added:**
+- Settings sidebar cleanup — remove dark mode + language from sidebar
+- Settings skin customizer — predefined skin picker + semantic color customization
+
+---
+
+### Phase 9: Final Verification — complete (2026-05-11)
+
+**What was done:**
+
+- Updated `e2e/helpers.ts`: added `setStyle()`, `setDensity()`, `setRadius()` helpers alongside existing `setMode()`; added `Style`, `Density`, `Radius` types
+- Fixed broken `setup-wizard.e2e.ts`: replaced old `.stage.completed` / `.wiz-bottom .btn-solid` selectors with post-migration equivalents (`[data-button]` on wiz-bottom buttons; Back button = first, Continue = last)
+- Fixed broken `sessions.e2e.ts` filter test: replaced `.filter-group`/`.filter-pill` (old custom) with `[data-tabs][aria-label="outcome-filter"] [data-tabs-trigger]` (rokkit Tabs component)
+- Added `settings.e2e.ts`: smoke tests (load, 5 cards, appearance controls), behavior tests (theme/mode/density/radius apply to body.dataset immediately), and 2 snapshot tests (light + dark)
+- Added Cross-Theme Visual Regression suite in `settings.e2e.ts`: 10 observatory snapshots (all 5 themes × light/dark) + 5 settings-page snapshots (each theme, light mode)
+
+**Results:**
+- 55 e2e tests — all passing
+- 3321 unit tests — all passing
+- 0 lint errors
+- Demo app production build: ✅
+
+**Commits:** `73b13037` feat(demo): Phase 9 — Final Verification e2e test suite
+
+---
+
+### Phase 8: Settings Panel + Theme Switcher — complete (2026-05-08)
+
+**What was done:**
+
+- Built `/settings` route — replaced placeholder with a full settings page
+- Live theme switcher: 5 theme style cards (zen-sumi, rokkit, minimal, material, frosted) with immediate `body.dataset.style` update
+- Appearance controls: Mode (Light/Dark), Density (Compact/Comfortable/Cozy), Corners (Sharp/Soft/Rounded/Pill) — all chip buttons wired to body dataset + localStorage
+- Language section: locale chips matching LanguageSwitcher behavior
+- Created `$lib/stores/theme.svelte.ts` — Svelte 5 rune store (`$state` getters) as single source of truth for all 4 axes, shared between `+layout.svelte` and `+page.svelte`
+- Updated layout: removed local `mode` state + `toggleMode`, imports `theme` store instead — sidebar mode button stays in sync with settings page
+- Added settings message keys to all 3 locales (en/es/ar): 16 keys per locale
+- All changes apply immediately; persisted to `sensei-theme` localStorage key
+
+**Tests:** 3321 passed, 0 lint errors
+
+**Commits:** `31faf83c` feat(demo): Phase 8 — Settings Panel + Theme Switcher
+
+---
+
+### Phase 7: Token migration + literal icon support — complete (2026-05-08)
+
+**What was done:**
+
+- Migrated all remaining `color-mix(in srgb, var(--color-*-500))` → `color-mix(in oklch, oklch(var(--color-*-z5)/1))` across all affected theme files:
+  - `frosted/button.css` (6 rules), `frosted/card.css` (5), `frosted/menu.css` (4), `frosted/switch.css` (2), `frosted/dropdown.css` (5), `frosted/step-indicator.css` (1)
+  - `rokkit/step-indicator.css` (1), `material/step-indicator.css` (1)
+- Fixed demo app: `EnsoRing.svelte` (3 old SVG stroke/fill tokens), `Sparkline.svelte` (default color), `observatory/+page.svelte` (inline style), `setup/+page.svelte` (project confirmed border), `zen-sumi/card.css` (retro-* borders — success, warning, mute all now z-scale oklch)
+- Added `[data-item-icon-literal]` color support to `rokkit`, `minimal`, `material`, `frosted` list.css — matching each theme's existing icon color pattern (default/hover/active states)
+
+**Tests:** 3321 passed, 0 lint errors
+
+**Commits:** `c5f70e10` feat(themes): Phase 7 token migration
+
+---
+
+### Phase 6 follow-up: CSS-driven list states — complete (2026-05-08)
+
+**What was done:**
+
+- Rewrote `demo/src/lib/components/ListItem.svelte`: removed all inline styles (`iconStyle` derived var, tick inline styles, subtitle inline styles). Added `data-item-status` attribute on the literal icon span; tick renders as `<span data-item-tick>`; subtitle always renders as `<span data-item-description>`. Zero inline styles — all visual state driven by CSS data-attribute selectors.
+- Fixed dark-mode active state in `demo/src/themes/zen-sumi/list.css`: replaced `bg-surface-z0 text-surface-z9` (which rendered as a white box in dark mode because z0=paper does not invert in zen-sumi) with `color-mix(in oklch, oklch(var(--color-primary-z5)/1) 10%, transparent)` + `box-shadow: inset 2px 0 0` left-border indicator. Mode-adaptive: no z-scale hardcoding.
+- Added complete wizard step CSS in `list.css` using `:disabled` (pending), `:not([data-active]):not(:disabled)` (done), `[data-active='true']` (current) — icon colors, tick opacity transition, description mono font. No inline styles needed in component.
+
+**Tests:** 3321 passed, 0 lint errors
+
+**Commits:** `801e6fa6` fix(demo): CSS-driven list states
+
+---
+
+### Phase 5.5: Zen-Sumi Theme — complete (2026-05-05)
+
+**What was done:**
+
+- Created 25 component CSS files in `packages/themes/src/zen-sumi/` covering all components: button, input, list, tabs, toggle, switch, tree, select, menu, dropdown, card, table, toolbar, search-filter, range, timeline, floating-navigation, toc, message, status-list, step-indicator, chart, swatch, floating-action, and index
+- Design language: no shadows, no gradients, hairline borders (surface-z2), ink-on-paper primary button (surface-z9 bg / surface-z0 text), shu vermillion accent (primary-z5), border-darkening focus (no glow rings), tabs as filled pills (surface-z9 active)
+- Updated `build.mjs` to compile zen-sumi and include it in the full bundle; added `// nosemgrep` suppressions for pre-existing false-positive path traversal warnings on hardcoded-array values
+- Updated `package.json` exports with four entry points: `./dist/zen-sumi`, `./zen-sumi.css`, `./zen-sumi`, `./zen-sumi/*`
+- Built successfully: `dist/zen-sumi.css` = 1938 lines of compiled CSS
+- Marked zen-sumi in priority checklist as done; sensei `rokkit.config.js` has commented `themes: ['zen-sumi']` ready to uncomment once published
+
+**Tests:** 3321 passed, 0 lint errors
+
+**Commits:** `546affd3` zen-sumi theme + build/exports
+
+---
+
 Chronological log of confirmations, progress, milestones, and decisions.
 Design details live in `docs/design/` — modular docs per module.
 
@@ -2794,3 +2911,55 @@ const sizeScale = buildSizeScale(data, 'value', 20) // → sqrt scale [0, 20]
 - No visual regressions
 
 **Final state:** 3292 tests passing (245 files), 30 e2e tests passing, 0 new lint errors.
+
+## 2026-05-07 — Phase 6: Component Migration (Batch 1)
+
+**Summary:** First batch of custom → @rokkit/ui component swaps in the demo app.
+
+**Migrations completed:**
+- Sessions filter pills → `<Tabs bind:value={activeFilter}>` + `<Tabs bind:value={activeProject}>`
+  - Options as `{label, value}` objects for i18n-translated 'all' label
+  - Empty `tabPanel` snippet suppresses panel rendering (filter-only use case)
+  - Filtering confirmed working in browser
+- Setup wizard bottom nav → `<Button style="outline">` (Back) + `<Button>` (Continue/Enter)
+- Setup wizard add-folder → `<Button type="submit">`
+- Observatory koan hero → `<Button label={m.koan_action()}>`
+- zen-sumi stepper.css: added missing active/completed state styles for `[data-stepper-step]`
+
+**Deferred:**
+- Session rows: custom 6-col grid is readable; Table/List migration adds little value for display-only rows
+- Retro cards: tone-specific top border (color-mix inline style) doesn't map to Card.variant cleanly
+- Wizard rail → Stepper: custom card-style rail doesn't match base Stepper's circle-connector layout
+- Sidebar nav: complex (URL active state, collapse, links, footer items) — next batch
+
+**Final state:** 3321 tests passing (245 files), 0 lint errors.
+**Commits:** `a912e652`
+
+## 2026-05-08 — Phase 6: Component Migration (Batch 2 + Bug Fix)
+
+**Summary:** Completed Phase 6 component migration and fixed a critical theme initialization bug.
+
+**Sidebar nav → `<List>`**
+- `layout.svelte` uses `<List>` with `href` field mapping — items render as `<a data-list-item>` with `aria-current`
+- `findActiveId()` derives active item from `page.url.pathname` via `startsWith` matching
+- `ListItem.svelte` — new custom snippet: handles kanji literal icons, badges, `collapsed` prop for icon-only mode
+- `getSidebarNav()` in `navigation.ts` flattens project groups via `children` field
+- `list.css` size="sm" override: 13px / 7px padding; group labels tiny-caps; badge transparent; wiz-steps stepper variant
+
+**Wizard rail → `<List>` (wiz-steps)**
+- `setup/+page.svelte` uses `<List class="wiz-steps">` with `wizardItems` driving `status` field
+- `ListItem.svelte` wizard mode: done=✓ fade-in, current=description + expanded padding, pending=muted + disabled
+- `list.css` `.wiz-steps`: reserved transparent border prevents layout shift; pending steps suppress hover
+
+**Retro cards → `<Card>`**
+- `sessions/+page.svelte` migrated to `<Card class="retro-{tone}">`
+- `card.css` adds `retro-good`, `retro-warn`, `retro-mute` — tone-coded `border-top` via CSS class (same `color-mix()` values as original inline styles)
+- No `header` snippet used → avoids unwanted divider border; content in default `children` slot
+
+**Bug fix: zen-sumi theme not activating**
+- Root cause: `app.html` inline script defaulted `data-style` to `''` (empty string)
+- All zen-sumi CSS is scoped to `[data-style='zen-sumi']` — with empty string, no hover, active, or focus styles applied
+- Fix: `b.dataset.style = t.style || 'zen-sumi'` — zen-sumi is now the default for new sessions
+- Verified: hover effects, active item highlight, tab active state all confirmed working in browser
+
+**Final state:** 3321 tests passing (245 files), 0 lint errors. Phase 6 complete.

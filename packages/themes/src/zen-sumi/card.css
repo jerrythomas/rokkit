@@ -1,0 +1,104 @@
+/**
+ * Card - Zen-Sumi Theme Styles
+ *
+ * Paper bg with hairline border. No shadows.
+ * Depth through background tone shifts only.
+ * Interactive: hover darkens border, bg shifts to surface-z2.
+ */
+
+/* =============================================================================
+   Base Card Styles
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-card] {
+  @apply bg-surface-z1 border-surface-z2 text-ink-z1 border bg-none;
+  box-shadow: none;
+}
+
+/* Interactive cards */
+[data-style='zen-sumi'] [data-card][data-card-interactive] {
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+[data-style='zen-sumi'] [data-card][data-card-interactive]:hover {
+  @apply border-surface-z4 bg-surface-z2 bg-none;
+}
+
+[data-style='zen-sumi'] [data-card][data-card-interactive]:active {
+  @apply bg-surface-z3 bg-none;
+}
+
+/* =============================================================================
+   Card Sections
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-card-header] {
+  @apply border-surface-z2 border-b;
+}
+
+[data-style='zen-sumi'] [data-card-body] {
+  @apply text-ink-z2;
+}
+
+[data-style='zen-sumi'] [data-card-footer] {
+  @apply border-surface-z2 text-ink-z4 border-t;
+}
+
+/* =============================================================================
+   Focus States
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-card][data-card-interactive]:focus-visible {
+  @apply outline-none;
+  box-shadow: 0 0 0 1px var(--color-surface-z5);
+}
+
+/* =============================================================================
+   Disabled State
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-card][data-card-interactive][data-disabled],
+[data-style='zen-sumi'] [data-card][data-card-interactive]:disabled {
+  @apply cursor-not-allowed opacity-50;
+}
+
+/* =============================================================================
+   Variants
+   ============================================================================= */
+
+/* Primary — shu vermillion fill */
+[data-style='zen-sumi'] [data-card][data-variant='primary'] {
+  @apply bg-primary-z5 border-primary-z6 text-on-primary border bg-none;
+  box-shadow: none;
+}
+
+[data-style='zen-sumi'] [data-card][data-variant='primary'] [data-card-header],
+[data-style='zen-sumi'] [data-card][data-variant='primary'] [data-card-footer] {
+  @apply border-primary-z4/40;
+}
+
+[data-style='zen-sumi'] [data-card][data-variant='primary'] [data-card-body] {
+  @apply text-on-primary/80;
+}
+
+/* Secondary */
+[data-style='zen-sumi'] [data-card][data-variant='secondary'] {
+  @apply bg-secondary-z4 border-secondary-z5 text-on-secondary border bg-none;
+  box-shadow: none;
+}
+
+[data-style='zen-sumi'] [data-card][data-variant='secondary'] [data-card-header],
+[data-style='zen-sumi'] [data-card][data-variant='secondary'] [data-card-footer] {
+  @apply border-secondary-z3/40;
+}
+
+[data-style='zen-sumi'] [data-card][data-variant='secondary'] [data-card-body] {
+  @apply text-on-secondary/80;
+}
+
+/* Tertiary — recessed surface, lighter border */
+[data-style='zen-sumi'] [data-card][data-variant='tertiary'] {
+  @apply bg-surface-z0 border-surface-z2 text-ink-z3 border bg-none;
+  box-shadow: none;
+}

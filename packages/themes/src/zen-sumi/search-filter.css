@@ -1,0 +1,49 @@
+/**
+ * SearchFilter - Zen-Sumi Theme Styles
+ *
+ * Hairline bordered input. Focus: border darkens. No ring glow.
+ */
+
+/* =============================================================================
+   Input
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-search-input] {
+  @apply text-ink-z2 border-surface-z3 border bg-transparent;
+}
+
+[data-style='zen-sumi'] [data-search-input]:focus {
+  @apply border-surface-z5 outline-none;
+}
+
+[data-style='zen-sumi'] [data-search-input]::placeholder {
+  @apply text-surface-z4;
+}
+
+/* =============================================================================
+   Clear Button
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-search-clear] {
+  @apply text-surface-z4;
+}
+
+[data-style='zen-sumi'] [data-search-clear]:hover {
+  @apply text-ink-z3;
+}
+
+/* =============================================================================
+   Tags
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-search-tag] {
+  @apply text-ink-z3 border-surface-z3 border bg-transparent bg-none;
+}
+
+[data-style='zen-sumi'] [data-search-tag-remove] {
+  @apply text-ink-z5;
+}
+
+[data-style='zen-sumi'] [data-search-tag-remove]:hover {
+  @apply text-ink-z2;
+}

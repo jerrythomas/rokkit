@@ -21,11 +21,11 @@
 
 [data-nav-content][data-orientation='horizontal'] [data-nav-content-nav] {
 	width: var(--nav-size, 280px);
-	border-right: 1px solid var(--color-surface-z3, #e0e0e0);
+	@apply border-r border-surface-z3;
 }
 
 [data-nav-content][data-orientation='vertical'] [data-nav-content-nav] {
-	border-bottom: 1px solid var(--color-surface-z3, #e0e0e0);
+	@apply border-b border-surface-z3;
 }
 
 [data-nav-content-main] {
@@ -43,6 +43,6 @@
 	[data-nav-content][data-collapsible][data-orientation='horizontal'] [data-nav-content-nav] {
 		width: 100%;
 		border-right: none;
-		border-bottom: 1px solid var(--color-surface-z3, #e0e0e0);
+		@apply border-b border-surface-z3;
 	}
 }

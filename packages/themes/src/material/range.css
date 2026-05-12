@@ -26,11 +26,11 @@
 
 [data-style='material'] [data-range-thumb][data-sliding] {
   @apply shadow-lg;
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 25%, transparent);
+  @apply ring-4 ring-primary-z5/25;
 }
 
 [data-style='material'] [data-range-thumb]:focus-visible {
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 25%, transparent);
+  @apply ring-4 ring-primary-z5/25;
 }
 
 /* =============================================================================

@@ -9,6 +9,7 @@
  * - minimal: Use data-style="minimal" wrapper (clean + subtle)
  * - material: Use data-style="material" wrapper (elevation + shadows)
  * - frosted: Use data-style="frosted" wrapper (frosted glass + blur)
+ * - zen-sumi: Use data-style="zen-sumi" wrapper (ink on paper)
  */
 
 @import './base/index.css';
@@ -16,3 +17,4 @@
 @import './minimal/index.css';
 @import './material/index.css';
 @import './frosted/index.css';
+@import './zen-sumi/index.css';

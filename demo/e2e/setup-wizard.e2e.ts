@@ -14,7 +14,12 @@ test.describe('Setup Wizard', () => {
 		await expect(page.locator('.wiz-content')).toBeVisible()
 	})
 
-	// ─── Full-page: Folders (default step) ──────────────────────────
+	test('wizard shows progress bar', async ({ page }) => {
+		await goTo(page, '/setup')
+		await expect(page.locator('.wiz-bottom')).toBeVisible()
+	})
+
+	// ─── Full-page: Folders (default step, currentStep=3) ───────────
 
 	test('setup-folders-light', async ({ page }) => {
 		await goTo(page, '/setup')
@@ -34,13 +39,16 @@ test.describe('Setup Wizard', () => {
 		})
 	})
 
-	// ─── Navigate to Welcome (step 0) — click first completed stage ──
+	// ─── Navigate to Welcome (step 0) via Back button ───────────────
 
 	test('setup-welcome-light', async ({ page }) => {
 		await goTo(page, '/setup')
 		await setMode(page, 'light')
-		// Navigate back to welcome by clicking the first .stage.completed button in the rail
-		await page.locator('.rail-stages .stage.completed').first().click()
+		// currentStep starts at 3 (Folders). Click Back 3× to reach Welcome (step 0).
+		const backBtn = page.locator('.wiz-bottom [data-button]').first()
+		await backBtn.click()
+		await backBtn.click()
+		await backBtn.click()
 		await page.waitForTimeout(200)
 		await expect(page).toHaveScreenshot('setup-welcome-light.png', {
 			fullPage: true,
@@ -51,8 +59,10 @@ test.describe('Setup Wizard', () => {
 	test('setup-welcome-ar-rtl', async ({ page }) => {
 		await goTo(page, '/setup', 'ar')
 		await setMode(page, 'light')
-		// Navigate back to welcome by clicking the first .stage.completed button in the rail
-		await page.locator('.rail-stages .stage.completed').first().click()
+		const backBtn = page.locator('.wiz-bottom [data-button]').first()
+		await backBtn.click()
+		await backBtn.click()
+		await backBtn.click()
 		await page.waitForTimeout(200)
 		await expect(page).toHaveScreenshot('setup-welcome-ar-rtl.png', {
 			fullPage: true,
@@ -60,13 +70,13 @@ test.describe('Setup Wizard', () => {
 		})
 	})
 
-	// ─── Navigate to Projects (step 5) — click Continue twice ───────
+	// ─── Navigate to Projects (step 5) — Continue twice from Folders ─
 
 	test('setup-projects-light', async ({ page }) => {
 		await goTo(page, '/setup')
 		await setMode(page, 'light')
-		// Navigate forward 2 times from folders (step 3) to projects (step 5)
-		const continueBtn = page.locator('.wiz-bottom .btn-solid')
+		// Step 3=Folders requires ≥1 folder before Continue is enabled. It's pre-populated.
+		const continueBtn = page.locator('.wiz-bottom [data-button]').last()
 		await continueBtn.click()
 		await continueBtn.click()
 		await page.waitForTimeout(200)
@@ -90,8 +100,7 @@ test.describe('Setup Wizard', () => {
 	test('section: stepper rail mid-wizard', async ({ page }) => {
 		await goTo(page, '/setup')
 		await setMode(page, 'light')
-		// Navigate to projects step (2x Continue) first
-		const continueBtn = page.locator('.wiz-bottom .btn-solid')
+		const continueBtn = page.locator('.wiz-bottom [data-button]').last()
 		await continueBtn.click()
 		await continueBtn.click()
 		await page.waitForTimeout(200)

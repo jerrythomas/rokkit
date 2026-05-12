@@ -65,11 +65,11 @@
 }
 
 [data-style='rokkit'] [data-upload-file-status][data-status='done'] [data-upload-status] {
-  @apply text-green-500;
+  @apply text-success-z5;
 }
 
 [data-style='rokkit'] [data-upload-file-status][data-status='error'] [data-upload-status] {
-  @apply text-red-500;
+  @apply text-danger-z5;
 }
 
 [data-style='rokkit'] [data-upload-file-status][data-status='pending'] [data-upload-status] {
@@ -78,11 +78,11 @@
 
 /* Status-based file icon tinting */
 [data-style='rokkit'] [data-upload-file-status][data-status='done'] [data-upload-file-icon] {
-  @apply text-green-500;
+  @apply text-success-z5;
 }
 
 [data-style='rokkit'] [data-upload-file-status][data-status='error'] [data-upload-file-icon] {
-  @apply text-red-500;
+  @apply text-danger-z5;
 }
 
 /* =============================================================================

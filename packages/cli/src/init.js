@@ -264,15 +264,10 @@ const PROMPTS_CONFIG = [
 		message: 'Theme styles',
 		choices: [
 			{ title: 'Rokkit', value: 'rokkit', selected: true },
-			{ title: 'Minimal', value: 'minimal' },
-			{ title: 'Material', value: 'material' },
-			{ title: 'Glass', value: 'frosted' },
-			{ title: 'Grada UI', value: 'grada-ui' },
-			{ value: 'shadcn', title: 'shadcn', hint: 'flat borders + ring focus' },
-			{ value: 'daisy-ui', title: 'daisy-ui', hint: 'rounded-full + bold fills' },
-			{ value: 'bits-ui', title: 'bits-ui', hint: 'rounded-lg + polished' },
-			{ value: 'carbon', title: 'carbon', hint: 'square edges + enterprise' },
-			{ value: 'ant-design', title: 'ant-design', hint: 'thin borders + dense' }
+			{ title: 'Minimal', value: 'minimal', hint: 'clean + subtle' },
+			{ title: 'Material', value: 'material', hint: 'elevation + shadows' },
+			{ title: 'Frosted', value: 'frosted', hint: 'frosted glass + blur' },
+			{ title: 'Zen-Sumi', value: 'zen-sumi', hint: 'ink on paper' }
 		],
 		min: 1
 	},

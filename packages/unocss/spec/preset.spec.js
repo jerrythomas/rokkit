@@ -189,34 +189,34 @@ describe('presetRokkit', () => {
 		})
 
 		it(':root should use the light palette for dual-palette roles', () => {
-			// slate-500 = #64748b → rgb(100, 116, 139) — stored as "100,116,139"
+			// slate-500 = #64748b → rgb(100, 116, 139)
 			const preset = presetRokkit({
 				skin: { surface: { light: 'slate', dark: 'zinc' } }
 			})
 			const css = preset.preflights[0].getCSS()
 			const rootBlock = css.split('[data-mode')[0]
-			expect(rootBlock).toContain('--color-surface-500:100,116,139')
+			expect(rootBlock).toContain('--color-surface-500:rgb(100, 116, 139)')
 		})
 
 		it('[data-mode="dark"] should use the dark palette for dual-palette roles', () => {
-			// zinc-500 = #71717a → rgb(113, 113, 122) — stored as "113,113,122"
+			// zinc-500 = #71717a → rgb(113, 113, 122)
 			const preset = presetRokkit({
 				skin: { surface: { light: 'slate', dark: 'zinc' } }
 			})
 			const css = preset.preflights[0].getCSS()
 			const darkBlock = css.split('[data-mode="dark"]')[1] ?? ''
-			expect(darkBlock).toContain('--color-surface-500:113,113,122')
+			expect(darkBlock).toContain('--color-surface-500:rgb(113, 113, 122)')
 		})
 
 		it('should fall back to light palette in dark block when only light is specified', () => {
-			// slate-500 = #64748b → "100,116,139" — used in both blocks
+			// slate-500 = #64748b → rgb(100, 116, 139) — used in both blocks
 			const preset = presetRokkit({
 				skin: { surface: { light: 'slate' } }
 			})
 			const css = preset.preflights[0].getCSS()
 			expect(css).toContain('[data-mode="dark"]{')
 			const darkBlock = css.split('[data-mode="dark"]')[1] ?? ''
-			expect(darkBlock).toContain('--color-surface-500:100,116,139')
+			expect(darkBlock).toContain('--color-surface-500:rgb(100, 116, 139)')
 		})
 
 		it('should only generate dark block for custom dual-palette, not for all roles', () => {
@@ -244,18 +244,18 @@ describe('presetRokkit', () => {
 
 		it('should fall back to dark palette in light :root when only dark property is specified', () => {
 			// surface: { dark: 'zinc' } — no light → resolveMappingForMode('light') falls back to 'zinc'
-			// slate-500 → 100,116,139 | zinc-500 → 113,113,122
+			// zinc-500 → rgb(113, 113, 122)
 			const preset = presetRokkit({ skin: { surface: { dark: 'zinc' } } })
 			const css = preset.preflights[0].getCSS()
 			const rootBlock = css.split('[data-mode')[0]
-			expect(rootBlock).toContain('--color-surface-500:113,113,122')  // zinc
+			expect(rootBlock).toContain('--color-surface-500:rgb(113, 113, 122)')  // zinc
 		})
 
 		it('should use dark palette in dark block when only dark property is specified', () => {
 			const preset = presetRokkit({ skin: { surface: { dark: 'zinc' } } })
 			const css = preset.preflights[0].getCSS()
 			const darkBlock = css.split('[data-mode="dark"]')[1] ?? ''
-			expect(darkBlock).toContain('--color-surface-500:113,113,122')  // zinc
+			expect(darkBlock).toContain('--color-surface-500:rgb(113, 113, 122)')  // zinc
 		})
 
 		it('should include typography vars in :root when typography is set', () => {
@@ -294,6 +294,149 @@ describe('presetRokkit', () => {
 			const css = preset.preflights[0].getCSS()
 			expect(css).not.toContain('--font-sans')
 			expect(css).not.toContain('--font-mono')
+		})
+	})
+
+	describe('color-mix alpha — opacity modifiers produce correct percentages', () => {
+		it('theme.colors should use calc(<alpha-value> * 100%) for rgb color space', () => {
+			const preset = presetRokkit()
+			const primary500 = preset.theme.colors.primary[500]
+			expect(primary500).toContain('calc(<alpha-value> * 100%)')
+			expect(primary500).toContain('color-mix(in srgb,')
+			expect(primary500).toContain('transparent)')
+		})
+
+		it('theme.colors should use calc(<alpha-value> * 100%) for oklch color space', () => {
+			const preset = presetRokkit({ colorSpace: 'oklch' })
+			const primary500 = preset.theme.colors.primary[500]
+			expect(primary500).toContain('calc(<alpha-value> * 100%)')
+			expect(primary500).toContain('color-mix(in oklch,')
+		})
+
+		it('theme.colors should use calc(<alpha-value> * 100%) for hsl color space', () => {
+			const preset = presetRokkit({ colorSpace: 'hsl' })
+			const primary500 = preset.theme.colors.primary[500]
+			expect(primary500).toContain('calc(<alpha-value> * 100%)')
+			expect(primary500).toContain('color-mix(in srgb,')
+		})
+
+		it('preflight CSS variables should contain wrapped color values for rgb', () => {
+			const preset = presetRokkit()
+			const css = preset.preflights[0].getCSS()
+			// rgb values should be wrapped: rgb(R, G, B) not bare R,G,B
+			expect(css).toMatch(/--color-primary-500:rgb\(\d+, \d+, \d+\)/)
+		})
+
+		it('preflight CSS variables should contain wrapped color values for oklch', () => {
+			const preset = presetRokkit({ colorSpace: 'oklch' })
+			const css = preset.preflights[0].getCSS()
+			// oklch values should be wrapped: oklch(L C H) not bare L C H
+			expect(css).toMatch(/--color-primary-500:oklch\([\d.]+ [\d.]+ [\d.]+\)/)
+		})
+
+		it('preflight CSS variables should contain wrapped color values for hsl', () => {
+			const preset = presetRokkit({ colorSpace: 'hsl' })
+			const css = preset.preflights[0].getCSS()
+			// hsl values should be wrapped: hsl(H S% L%) not bare H S% L%
+			expect(css).toMatch(/--color-primary-500:hsl\(\d+ \d+% \d+%\)/)
+		})
+	})
+
+	describe('alias and custom role support', () => {
+		it('should generate semantic shortcuts for alias roles', () => {
+			const preset = presetRokkit({
+				skins: {
+					default: {
+						surface: 'slate',
+						primary: 'orange',
+						paper: { alias: 'surface' }
+					}
+				}
+			})
+			// paper shortcuts should exist
+			const shortcuts = preset.shortcuts
+			const hasPaperShortcut = shortcuts.some((s) => {
+				if (typeof s === 'string') return s.includes('paper')
+				if (Array.isArray(s)) {
+					if (s[0] instanceof RegExp) return s[0].source.includes('paper')
+					if (typeof s[0] === 'string') return s[0].includes('paper')
+				}
+				return false
+			})
+			expect(hasPaperShortcut).toBe(true)
+		})
+
+		it('should generate color rules for alias that reference target CSS vars', () => {
+			const preset = presetRokkit({
+				skins: {
+					default: {
+						surface: 'slate',
+						primary: 'orange',
+						paper: { alias: 'surface' }
+					}
+				}
+			})
+			const colors = preset.theme.colors
+			expect(colors).toHaveProperty('paper')
+			// paper's shade 500 should reference --color-surface-500 (the target)
+			expect(colors.paper[500]).toContain('--color-surface-500')
+		})
+
+		it('should NOT generate CSS variable preflights for aliases', () => {
+			const preset = presetRokkit({
+				skins: {
+					default: {
+						surface: 'slate',
+						primary: 'orange',
+						paper: { alias: 'surface' }
+					}
+				}
+			})
+			const css = preset.preflights[0].getCSS()
+			// paper should NOT have its own CSS variables
+			expect(css).not.toContain('--color-paper')
+			// surface SHOULD have CSS variables
+			expect(css).toContain('--color-surface')
+		})
+
+		it('should generate full color rules for custom roles', () => {
+			const preset = presetRokkit({
+				skins: {
+					default: {
+						surface: 'slate',
+						primary: 'orange',
+						canvas: 'stone'
+					}
+				}
+			})
+			const colors = preset.theme.colors
+			expect(colors).toHaveProperty('canvas')
+			// canvas should reference its OWN CSS vars (not another role's)
+			expect(colors.canvas[500]).toContain('--color-canvas-500')
+		})
+
+		it('should include ink in default preset color rules', () => {
+			const preset = presetRokkit()
+			const colors = preset.theme.colors
+			expect(colors).toHaveProperty('ink')
+			expect(colors.ink[500]).toContain('--color-ink-500')
+		})
+	})
+
+	describe('generalized dual-palette', () => {
+		it('should generate dark overrides for any dual-palette role', () => {
+			const preset = presetRokkit({
+				palettes: {},
+				skins: {
+					default: {
+						surface: 'slate',
+						primary: { light: 'orange', dark: 'amber' }
+					}
+				}
+			})
+			const css = preset.preflights[0].getCSS()
+			expect(css).toContain('[data-mode="dark"]')
+			expect(css).toContain('--color-primary')
 		})
 	})
 
@@ -341,6 +484,54 @@ describe('presetRokkit', () => {
 			const entry = preset.shortcuts.find((s) => Array.isArray(s) && s[0] === 'accordion-opened')
 			// No overrides → uses default collection
 			expect(entry[1]).toBe('i-semantic:accordion-opened')
+		})
+	})
+
+	describe('contrast warnings', () => {
+		it('should warn when ink and surface have low contrast at z1', () => {
+			const warnings = []
+			const origWarn = console.warn
+			console.warn = (msg) => warnings.push(msg)
+
+			try {
+				presetRokkit({
+					palettes: {
+						flat: {
+							50: '0.5 0 0', 100: '0.5 0 0', 200: '0.5 0 0', 300: '0.5 0 0',
+							400: '0.5 0 0', 500: '0.5 0 0', 600: '0.5 0 0', 700: '0.5 0 0',
+							800: '0.5 0 0', 900: '0.5 0 0', 950: '0.5 0 0'
+						}
+					},
+					colorSpace: 'oklch',
+					skins: {
+						default: {
+							surface: 'flat',
+							ink: 'flat',
+							primary: 'flat'
+						}
+					}
+				})
+			} finally {
+				console.warn = origWarn
+			}
+
+			expect(warnings.some(w => /contrast/i.test(w))).toBe(true)
+		})
+
+		it('should not warn when ink and surface have good contrast', () => {
+			const warnings = []
+			const origWarn = console.warn
+			console.warn = (msg) => warnings.push(msg)
+
+			try {
+				// Default preset uses slate for both ink and surface,
+				// but ink's z-scale is inverted so contrast is good
+				presetRokkit()
+			} finally {
+				console.warn = origWarn
+			}
+
+			expect(warnings.some(w => /contrast/i.test(w))).toBe(false)
 		})
 	})
 })

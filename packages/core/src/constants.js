@@ -154,6 +154,7 @@ export const DEFAULT_KEYMAP = {
 
 export const DEFAULT_THEME_MAPPING = {
 	surface: 'slate',
+	ink: 'slate',
 	primary: 'orange',
 	secondary: 'pink',
 	tertiary: 'violet',
@@ -178,6 +179,9 @@ export const TONE_MAP = {
 	z9: 900,
 	z10: 950
 }
+
+export const INVERTED_ROLES = new Set(['ink'])
+
 /**
  * Splits an icon name into its group and key components.
  * @param {string} name - The icon name to split.

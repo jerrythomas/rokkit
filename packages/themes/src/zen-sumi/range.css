@@ -1,0 +1,62 @@
+/**
+ * Range - Zen-Sumi Theme Styles
+ *
+ * Surface-z3 track. Primary (shu) fill for selected range.
+ * Paper-z0 thumb with primary border.
+ */
+
+/* =============================================================================
+   Track
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-range-bar] {
+  @apply bg-surface-z2;
+}
+
+[data-style='zen-sumi'] [data-range-selected] {
+  @apply bg-primary bg-none;
+}
+
+/* =============================================================================
+   Thumb
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-range-thumb] {
+  @apply bg-surface-z0 border-primary border-2;
+}
+
+[data-style='zen-sumi'] [data-range-thumb][data-sliding] {
+  @apply bg-primary;
+}
+
+[data-style='zen-sumi'] [data-range-thumb]:focus-visible {
+  @apply bg-primary;
+}
+
+/* =============================================================================
+   Ticks
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-range-tick] {
+  @apply text-ink-z5;
+}
+
+[data-style='zen-sumi'] [data-tick-bar] {
+  @apply border-surface-z3;
+}
+
+[data-style='zen-sumi'] [data-tick-label] {
+  @apply text-ink-z5;
+}
+
+/* =============================================================================
+   Disabled
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-range][data-disabled] [data-range-thumb] {
+  @apply bg-surface-z2 border-surface-z3;
+}
+
+[data-style='zen-sumi'] [data-range][data-disabled] [data-range-selected] {
+  @apply bg-surface-z3;
+}

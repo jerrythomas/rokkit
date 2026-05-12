@@ -1,0 +1,22 @@
+/* TableOfContents — Zen-Sumi theme */
+
+[data-style='zen-sumi'] [data-toc] [data-toc-label] {
+  @apply text-surface-z4;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+[data-style='zen-sumi'] [data-toc] [data-toc-item] {
+  @apply text-ink-z5;
+}
+
+[data-style='zen-sumi'] [data-toc] [data-toc-item]:hover,
+[data-style='zen-sumi'] [data-toc] [data-toc-item][data-toc-focused] {
+  @apply text-ink-z2 outline-none;
+}
+
+[data-style='zen-sumi'] [data-toc] [data-toc-item][data-toc-active] {
+  @apply text-primary-z5 border-l-primary-z4;
+}

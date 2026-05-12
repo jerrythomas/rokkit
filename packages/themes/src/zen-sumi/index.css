@@ -1,0 +1,51 @@
+/**
+ * @rokkit/themes - Zen-Sumi Theme
+ *
+ * 禅墨 — The aesthetic of ink on paper. Restraint as luxury.
+ *
+ * Key principles:
+ *  - No shadows. Depth through background tone variation only.
+ *  - No gradients. Color conveys meaning, not decoration.
+ *  - Hairline borders (surface-z2). Paper-edge precision.
+ *  - Ink-on-paper primary: surface-z9 bg / surface-z0 text.
+ *  - Single accent: primary (shu/vermillion) for active and CTA.
+ *  - Focus: border darkens — no glow rings.
+ *
+ * Use with data-style="zen-sumi" wrapper.
+ */
+
+@import './button.css';
+@import './toolbar.css';
+@import './tabs.css';
+@import './toggle.css';
+@import './switch.css';
+@import './list.css';
+@import './tree.css';
+@import './select.css';
+@import './menu.css';
+@import './dropdown.css';
+@import './floating-action.css';
+@import './input.css';
+@import './table.css';
+@import './search-filter.css';
+@import './range.css';
+@import './timeline.css';
+@import './floating-navigation.css';
+@import './toc.css';
+@import './card.css';
+@import './message.css';
+@import './status-list.css';
+@import './step-indicator.css';
+@import './chart.css';
+@import './swatch.css';
+
+/* =============================================================================
+   Layout overrides — Ma (間) generous spacing
+   ============================================================================= */
+
+[data-style='zen-sumi'] {
+  --layout-section-gap: 2.5rem;
+  --layout-section-padding: 1.75rem;
+  --layout-content-padding: 2rem;
+  --layout-card-gap: 0.75rem;
+}

@@ -1,0 +1,68 @@
+/**
+ * FloatingAction - Zen-Sumi Theme Styles
+ *
+ * Paper bg with hairline border. No shadow.
+ * Hover: surface-z2 wash. No glow rings.
+ */
+
+/* =============================================================================
+   FAB Trigger Button
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-fab-trigger] {
+  @apply bg-surface-z1 text-ink-z2 border-surface-z2 border bg-none;
+  box-shadow: none;
+}
+
+[data-style='zen-sumi'] [data-fab-trigger]:hover:not(:disabled) {
+  @apply bg-surface-z2 text-ink-z1 border-surface-z4 bg-none;
+}
+
+[data-style='zen-sumi'] [data-fab-trigger]:focus-visible {
+  @apply outline-none;
+  box-shadow: 0 0 0 1px var(--color-surface-z5);
+}
+
+[data-style='zen-sumi'] [data-fab][data-open='true'] [data-fab-trigger] {
+  @apply bg-surface-z2 border-surface-z4 bg-none;
+  transform: rotate(45deg);
+}
+
+[data-style='zen-sumi'] [data-fab][data-open='true'] [data-fab-trigger]:hover:not(:disabled) {
+  @apply bg-none;
+}
+
+/* =============================================================================
+   FAB Items
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-fab-item] {
+  @apply bg-surface-z1 text-ink-z3 border-surface-z2 border bg-none;
+  box-shadow: none;
+}
+
+[data-style='zen-sumi'] [data-fab-item]:hover:not(:disabled) {
+  @apply bg-surface-z2 text-ink-z1 border-surface-z4 bg-none;
+}
+
+[data-style='zen-sumi'] [data-fab-item]:focus-visible {
+  @apply outline-none;
+  box-shadow: 0 0 0 1px var(--color-surface-z5);
+}
+
+/* Item icon */
+[data-style='zen-sumi'] [data-fab-item] [data-fab-item-icon] {
+  @apply text-ink-z5;
+}
+
+[data-style='zen-sumi'] [data-fab-item]:hover:not(:disabled) [data-fab-item-icon] {
+  @apply text-ink-z3;
+}
+
+/* =============================================================================
+   Backdrop
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-fab-backdrop] {
+  background: color-mix(in oklch, var(--color-surface-z9) 15%, transparent);
+}

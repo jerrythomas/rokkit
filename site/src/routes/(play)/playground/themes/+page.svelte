@@ -6,18 +6,7 @@
 	const DENSITIES = ['compact', 'comfortable', 'cozy']
 	let density = $state('comfortable')
 
-	const THEMES = [
-		'rokkit',
-		'minimal',
-		'material',
-		'frosted',
-		'grada-ui',
-		'shadcn',
-		'daisy-ui',
-		'bits-ui',
-		'carbon',
-		'ant-design'
-	]
+	const THEMES = ['rokkit', 'minimal', 'material', 'frosted', 'zen-sumi']
 
 	const BUTTON_VARIANTS = [
 		{ label: 'Default', variant: 'default' },
@@ -42,7 +31,7 @@
 <div class="overflow-auto p-6" data-density={density}>
 	<h1 class="text-surface-z8 mb-2 text-2xl font-bold">Theme Verification</h1>
 	<p class="text-surface-z5 mb-4 text-sm">
-		All 10 themes rendered side-by-side with the same component set.
+		All 5 themes rendered side-by-side with the same component set.
 	</p>
 
 	<div class="mb-6 flex items-center gap-3">

@@ -11,7 +11,7 @@
 		{ label: 'minimal', value: 'minimal' },
 		{ label: 'material', value: 'material' },
 		{ label: 'frosted', value: 'frosted' },
-		{ label: 'grada-ui', value: 'grada-ui' }
+		{ label: 'zen-sumi', value: 'zen-sumi' }
 	]
 	let showControls = $state(false)
 	let showData = $state(false)

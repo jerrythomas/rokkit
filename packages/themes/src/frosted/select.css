@@ -113,7 +113,7 @@
 }
 
 [data-style='frosted'] [data-select-checkbox][data-checked='true'] {
-  @apply bg-primary-z5 border-primary-z5 text-white;
+  @apply bg-primary-z5 border-primary-z5 text-on-primary;
 }
 
 /* Item elements */

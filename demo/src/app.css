@@ -17,7 +17,7 @@
 @import '@rokkit/themes/minimal.css';
 @import '@rokkit/themes/material.css';
 @import '@rokkit/themes/frosted.css';
-@import './themes/zen-sumi/index.css';
+@import '@rokkit/themes/zen-sumi.css';
 
 /* ─── Global Base ────────────────────────────────────────────────────────── */
 
@@ -39,8 +39,8 @@ body {
   overflow: hidden;
   font-family: var(--font-sans);
   font-size: 13px;
-  background: oklch(var(--color-surface-z0) / 1);
-  color: oklch(var(--color-surface-z9) / 1);
+  background: var(--color-surface-z0);
+  color: var(--color-ink-z1);
 }
 
 
@@ -67,12 +67,12 @@ body {
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-thumb { background: transparent; border-radius: 3px; }
 :hover > ::-webkit-scrollbar-thumb,
-*:hover::-webkit-scrollbar-thumb { background: color-mix(in oklch, oklch(var(--color-surface-z9) / 1) 20%, transparent); }
+*:hover::-webkit-scrollbar-thumb { background: color-mix(in oklch, var(--color-surface-z9) 20%, transparent); }
 
 /* ── Focus ──────────────────────────────────────────────────── */
 
 button:focus-visible {
-  outline: 1.5px solid oklch(var(--color-primary-z5) / 1);
+  outline: 1.5px solid var(--color-primary-z5);
   outline-offset: 2px;
   border-radius: 3px;
 }
@@ -80,5 +80,5 @@ button:focus-visible {
 /* ── Selection ──────────────────────────────────────────────── */
 
 ::selection {
-  background: color-mix(in oklch, oklch(var(--color-primary-z5) / 1) 12%, transparent);
+  background: color-mix(in oklch, var(--color-primary-z5) 12%, transparent);
 }

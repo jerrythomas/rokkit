@@ -1,0 +1,145 @@
+/**
+ * Input - Zen-Sumi Theme Styles
+ *
+ * Calm, bordered inputs. No glow on focus — just border darkening.
+ * Error: border becomes danger-z4. No background fill on error state.
+ */
+
+/* Input root: subtle border, paper background */
+[data-style='zen-sumi'] [data-input-root] {
+  @apply border-surface-z3 bg-surface-z1 relative flex items-center border;
+  background-image: none;
+  transition: border-color 150ms ease;
+}
+
+/* Hover: border darkens slightly */
+[data-style='zen-sumi'] [data-input-root]:hover:not(:focus-within) {
+  @apply border-surface-z4;
+  background-image: none;
+}
+
+/* Focus: border darkens — no glow */
+[data-style='zen-sumi'] [data-input-root]:focus-within {
+  @apply border-surface-z6;
+  background-image: none;
+}
+
+/* Inputs inside wrapper */
+[data-style='zen-sumi']
+  [data-input-root]
+  input:not([type='checkbox'], [type='radio'], [type='color']),
+[data-style='zen-sumi'] [data-input-root] textarea,
+[data-style='zen-sumi'] [data-input-root] select {
+  @apply text-ink-z1 w-full border-none bg-transparent px-2 py-1.5 outline-none;
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+}
+
+[data-style='zen-sumi'] [data-input-root] textarea {
+  @apply resize-vertical min-h-20 py-2;
+}
+
+/* Select inside input-root */
+[data-style='zen-sumi'] [data-input-root] [data-select-trigger] {
+  @apply text-ink-z1 border-none bg-transparent px-2 shadow-none ring-0 focus:outline-none;
+  font-size: 0.8125rem;
+  background-image: none;
+}
+
+[data-style='zen-sumi'] [data-input-root] [data-select-trigger]:hover:not(:disabled) {
+  @apply bg-transparent;
+  background-image: none;
+}
+
+[data-style='zen-sumi'] [data-input-root] [data-select][data-open='true'] [data-select-trigger] {
+  @apply border-none bg-transparent shadow-none ring-0;
+}
+
+/* Labels: smaller, spaced */
+[data-style='zen-sumi'] [data-field] > label {
+  @apply text-ink-z4 text-xs tracking-wide;
+  transition: color 150ms ease;
+}
+
+[data-style='zen-sumi'] [data-form-root] label {
+  @apply text-ink-z4 text-xs tracking-wide;
+}
+
+/* Focused label: primary accent */
+[data-style='zen-sumi'] [data-field]:has([data-input-root]:focus-within) > label {
+  @apply text-primary-z5;
+}
+
+/* Field root */
+[data-style='zen-sumi'] [data-field-root] {
+  @apply gap-1;
+}
+
+/* Info field value */
+[data-style='zen-sumi'] [data-field-info] {
+  @apply text-primary-z5;
+}
+
+/* Separator */
+[data-style='zen-sumi'] [data-form-separator] {
+  @apply border-surface-z2;
+}
+
+/* Disabled state */
+[data-style='zen-sumi'] [data-field-disabled] [data-input-root] {
+  @apply border-surface-z2 cursor-not-allowed opacity-40;
+}
+
+/* Error state — border becomes shu (primary/danger) */
+[data-style='zen-sumi'] [data-field-state='fail'] [data-input-root] {
+  @apply border-danger-z4;
+}
+
+[data-style='zen-sumi'] [data-field-state='fail'] [data-input-root]:hover:not(:focus-within) {
+  @apply border-danger-z5;
+}
+
+[data-style='zen-sumi'] [data-field-state='fail'] [data-input-root]:focus-within {
+  @apply border-danger-z5;
+}
+
+/* Pass state */
+[data-style='zen-sumi'] [data-field-state='pass'] [data-input-root] {
+  @apply border-success-z4;
+}
+
+[data-style='zen-sumi'] [data-field-state='pass'] [data-input-root]:focus-within {
+  @apply border-success-z5;
+}
+
+/* Description */
+[data-style='zen-sumi'] [data-description] {
+  @apply text-ink-z5 mt-0.5 text-xs;
+}
+
+/* Message */
+[data-style='zen-sumi'] [data-message] {
+  @apply text-danger-z5 mt-0.5 text-xs;
+}
+
+/* Checkbox */
+[data-style='zen-sumi'] [data-checkbox-icon] {
+  @apply text-ink-z5 text-lg;
+}
+
+[data-style='zen-sumi']
+  [data-checkbox-root][data-variant='custom']:has(input:checked)
+  [data-checkbox-icon] {
+  @apply text-primary-z5;
+}
+
+/* Checkbox label: primary on focus */
+[data-style='zen-sumi'] [data-field-type='checkbox'] [data-field]:has(:focus-within) > label {
+  @apply text-primary-z5;
+}
+
+/* Placeholders */
+[data-style='zen-sumi'] [data-input-root] input::placeholder,
+[data-style='zen-sumi'] [data-input-root] textarea::placeholder {
+  @apply text-surface-z4;
+}

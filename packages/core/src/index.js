@@ -10,6 +10,7 @@ export * from './nested.js'
 export * from './string.js'
 // skipcq: JS-E1004 - Needed for exposing all functions
 export * from './theme.js'
+export { ColorSpace } from './color-space.js'
 export { FieldMapper } from './field-mapper.js'
 export { getItemAtIndex, getIndexForItem } from './mapped-items.js'
 export { createEmitter } from './events.js'

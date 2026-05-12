@@ -1,0 +1,21 @@
+/**
+ * Swatch — Zen-Sumi Theme
+ * Selected: primary (shu) outline. Hover/focus: surface-z5 outline.
+ */
+
+[data-style='zen-sumi'] [data-swatch-item][data-selected] {
+  background: transparent;
+  @apply outline-primary-z5;
+}
+
+[data-style='zen-sumi']
+  [data-swatch-item]:hover:not(:disabled):not([data-disabled]):not([data-selected]),
+[data-style='zen-sumi']
+  [data-swatch-item]:focus-visible:not(:disabled):not([data-disabled]):not([data-selected]) {
+  @apply outline-surface-z4;
+}
+
+[data-style='zen-sumi'] [data-swatch-item][data-selected]:focus-visible {
+  @apply outline-primary-z6;
+  outline-offset: 3px;
+}

@@ -10,8 +10,7 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-card] {
-  @apply text-surface-z9 border shadow-lg backdrop-blur-xl;
-  background: color-mix(in srgb, var(--color-surface-z3, #888) 30%, transparent);
+  @apply text-surface-z9 border shadow-lg backdrop-blur-xl bg-surface-z3/30;
   border-color: rgba(255, 255, 255, 0.18);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.22),
@@ -28,7 +27,7 @@
 }
 
 [data-style='frosted'] [data-card][data-card-interactive]:hover {
-  background: color-mix(in srgb, var(--color-surface-z3, #888) 42%, transparent);
+  @apply bg-surface-z3/42;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.28),
     0 16px 40px rgba(0, 0, 0, 0.14);
@@ -86,8 +85,7 @@
 
 /* Primary — tinted primary glass */
 [data-style='frosted'] [data-card][data-variant='primary'] {
-  @apply text-on-primary border shadow-lg backdrop-blur-xl;
-  background: color-mix(in srgb, var(--color-primary-500, #6366f1) 45%, transparent);
+  @apply text-on-primary border shadow-lg backdrop-blur-xl bg-primary-z5/45;
   border-color: rgba(255, 255, 255, 0.22);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.28),
@@ -105,8 +103,7 @@
 
 /* Secondary — tinted secondary glass */
 [data-style='frosted'] [data-card][data-variant='secondary'] {
-  @apply text-on-secondary border shadow-lg backdrop-blur-xl;
-  background: color-mix(in srgb, var(--color-secondary-500, #ec4899) 45%, transparent);
+  @apply text-on-secondary border shadow-lg backdrop-blur-xl bg-secondary-z5/45;
   border-color: rgba(255, 255, 255, 0.22);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.28),
@@ -124,7 +121,6 @@
 
 /* Tertiary — barely-there frosted glass */
 [data-style='frosted'] [data-card][data-variant='tertiary'] {
-  @apply text-surface-z7 border backdrop-blur-xl;
-  background: color-mix(in srgb, var(--color-surface-z3, #888) 16%, transparent);
+  @apply text-surface-z7 border backdrop-blur-xl bg-surface-z3/16;
   border-color: rgba(255, 255, 255, 0.12);
 }

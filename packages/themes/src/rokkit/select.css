@@ -110,7 +110,7 @@
 }
 
 [data-style='rokkit'] [data-select-checkbox][data-checked='true'] {
-  @apply from-primary-z6 to-primary-z5 border-primary-z6 bg-gradient-to-b text-white;
+  @apply from-primary-z6 to-primary-z5 border-primary-z6 bg-gradient-to-b text-on-primary;
 }
 
 /* Item elements */

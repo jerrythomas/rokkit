@@ -72,6 +72,44 @@ export function loadConfig(userConfig) {
 }
 
 /**
+ * Returns true when a colormap value is an alias object ({ alias: 'target' }).
+ * @param {unknown} value
+ * @returns {boolean}
+ */
+export function isAlias(value) {
+	return value !== null && typeof value === 'object' && !Array.isArray(value) && 'alias' in value
+}
+
+/**
+ * Validates alias entries in a colormap.
+ * - Alias target must exist as a non-alias entry
+ * - No circular aliases (A→B, B→A)
+ * - No chained aliases (A→B, B→C where B is also an alias)
+ * @param {Record<string, unknown>} colormap
+ */
+function validateAliases(colormap) {
+	const aliases = Object.entries(colormap).filter(([, v]) => isAlias(v))
+
+	for (const [name, value] of aliases) {
+		const target = value.alias
+
+		// Target must exist in the colormap
+		if (!(target in colormap)) {
+			throw new Error(`Alias '${name}' points to '${target}' which is not defined in this skin.`)
+		}
+
+		// Target must not be another alias (no chaining)
+		if (isAlias(colormap[target])) {
+			// Check if it's circular (A→B, B→A)
+			if (colormap[target].alias === name) {
+				throw new Error(`Circular alias: '${name}' → '${target}' → '${name}'.`)
+			}
+			throw new Error(`Chained alias: '${name}' → '${target}' which is itself an alias. Aliases must point to a real palette.`)
+		}
+	}
+}
+
+/**
  * Resolve the effective colormap from config.
  *
  * - Multi-skin mode (`skins` provided): uses `skins.default` if present, else falls back to `skin`.
@@ -81,8 +119,12 @@ export function loadConfig(userConfig) {
  * @returns {Record<string, string | { light?: string, dark?: string }>}
  */
 export function resolveColormap(config) {
+	let colormap
 	if (Object.keys(config.skins).length > 0) {
-		return config.skins.default ?? config.skin
+		colormap = config.skins.default ?? config.skin
+	} else {
+		colormap = config.skin
 	}
-	return config.skin
+	validateAliases(colormap)
+	return colormap
 }

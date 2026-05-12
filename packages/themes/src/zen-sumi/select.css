@@ -1,0 +1,160 @@
+/**
+ * Select - Zen-Sumi Theme Styles
+ *
+ * Hairline border trigger. Dropdown: paper-z1 bg, no shadow.
+ * Options: transparent default, surface-z2 hover, primary accent on selected.
+ * Focus: border darkens — no ring glow.
+ */
+
+/* =============================================================================
+   Trigger Button
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-select-trigger] {
+  @apply text-ink-z3 border-surface-z3 border bg-transparent bg-none;
+}
+
+[data-style='zen-sumi'] [data-select-trigger]:hover:not(:disabled) {
+  @apply border-surface-z4 text-ink-z2 bg-none;
+}
+
+[data-style='zen-sumi'] [data-select-trigger]:focus-visible {
+  @apply outline-none;
+  box-shadow: 0 0 0 1px var(--color-surface-z5);
+}
+
+[data-style='zen-sumi'] [data-select][data-open='true'] [data-select-trigger] {
+  @apply border-surface-z5 bg-none;
+}
+
+/* =============================================================================
+   Placeholder
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-select-placeholder] {
+  @apply text-surface-z4;
+}
+
+/* =============================================================================
+   Arrow
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-select-arrow] {
+  @apply text-surface-z4;
+}
+
+[data-style='zen-sumi'] [data-select-trigger]:hover:not(:disabled) [data-select-arrow] {
+  @apply text-ink-z5;
+}
+
+/* =============================================================================
+   Tags (MultiSelect)
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-select-tag] {
+  @apply text-ink-z3 border-surface-z3 border bg-transparent bg-none;
+}
+
+[data-style='zen-sumi'] [data-select-tag-remove] {
+  @apply text-ink-z5;
+}
+
+[data-style='zen-sumi'] [data-select-tag-remove]:hover {
+  @apply text-ink-z2;
+}
+
+/* =============================================================================
+   Dropdown Panel — paper bg, hairline border, no shadow
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-select-dropdown] {
+  @apply bg-surface-z0 border-surface-z2 border bg-none;
+  box-shadow: none;
+}
+
+/* =============================================================================
+   Options
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-select-option] {
+  @apply text-ink-z3 border-0 border-solid border-transparent;
+}
+
+[data-style='zen-sumi'] [data-select-option]:hover:not(:disabled),
+[data-style='zen-sumi'] [data-select-option]:focus:not(:disabled) {
+  @apply bg-surface-z2 text-ink-z2 bg-none outline-none;
+}
+
+/* Selected state */
+[data-style='zen-sumi'] [data-select-option][data-selected='true'] {
+  @apply text-ink-z1 border-primary-z4 border-l-2 bg-none;
+}
+
+[data-style='zen-sumi']
+  [data-select-dropdown]:focus-within
+  [data-select-option][data-selected='true'] {
+  @apply text-primary-z6 border-primary-z5 border-l-2 bg-none;
+}
+
+/* Check mark */
+[data-style='zen-sumi'] [data-select-check] {
+  @apply text-primary-z5;
+}
+
+/* Checkbox */
+[data-style='zen-sumi'] [data-select-checkbox] {
+  @apply border-surface-z4 bg-transparent bg-none;
+}
+
+[data-style='zen-sumi'] [data-select-checkbox][data-checked='true'] {
+  @apply bg-primary-z5 border-primary-z5 bg-none text-on-primary;
+}
+
+/* Item elements */
+[data-style='zen-sumi'] [data-select-option] [data-item-description] {
+  @apply text-ink-z5;
+}
+
+[data-style='zen-sumi'] [data-select-option][data-selected='true'] [data-item-description] {
+  @apply text-primary-z5;
+}
+
+/* =============================================================================
+   Groups
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-select-group-label] {
+  @apply text-surface-z4;
+}
+
+/* =============================================================================
+   Divider
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-select-divider] {
+  @apply bg-surface-z2 bg-none;
+}
+
+/* =============================================================================
+   Filter Input
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-select-filter] {
+  @apply bg-surface-z0;
+}
+
+[data-style='zen-sumi'] [data-select-filter-input] {
+  @apply text-ink-z2 border-surface-z3 border bg-transparent;
+}
+
+[data-style='zen-sumi'] [data-select-filter-input]:focus {
+  @apply border-surface-z5;
+}
+
+[data-style='zen-sumi'] [data-select-filter-input]::placeholder {
+  @apply text-surface-z4;
+}
+
+[data-style='zen-sumi'] [data-select-empty] {
+  @apply text-ink-z5;
+}

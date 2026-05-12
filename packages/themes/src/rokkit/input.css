@@ -35,7 +35,7 @@
 }
 
 [data-style='rokkit'] [data-input-root]:focus-within {
-  @apply from-primary-500 to-secondary-500 border-transparent bg-gradient-to-r;
+  @apply from-primary-z5 to-secondary-z5 border-transparent bg-gradient-to-r;
 }
 
 /* Standard inputs inside wrapper */

@@ -192,13 +192,17 @@ button[data-form-reset]:disabled {
   @apply focus:outline-none;
 }
 
-/* Range slider thumb */
+/* Range slider thumb — theme layer sets --range-thumb via @apply on [data-range-thumb] */
+input[type='range'] {
+  --range-thumb: var(--color-primary);
+}
+
 input[type='range']::-webkit-slider-thumb {
   appearance: none;
   height: 16px;
   width: 16px;
   border-radius: 50%;
-  background: rgba(var(--color-primary-500));
+  background: var(--range-thumb);
   cursor: pointer;
 }
 
@@ -206,7 +210,7 @@ input[type='range']::-moz-range-thumb {
   height: 16px;
   width: 16px;
   border-radius: 50%;
-  background: rgba(var(--color-primary-500));
+  background: var(--range-thumb);
   cursor: pointer;
   border: none;
 }
@@ -246,7 +250,7 @@ input[type='radio'] {
 }
 
 input[type='radio']:checked {
-  border-color: rgba(var(--color-primary-500), 1);
+  @apply border-primary-z5 text-primary-z5;
 }
 
 input[type='radio']:checked::before {
@@ -255,7 +259,7 @@ input[type='radio']:checked::before {
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
-  background: rgba(var(--color-primary-500), 1);
+  background: currentColor;
   position: absolute;
   top: 50%;
   left: 50%;

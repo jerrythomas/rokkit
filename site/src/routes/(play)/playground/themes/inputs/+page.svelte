@@ -3,18 +3,7 @@
 	import { Button, Switch, Select, MultiSelect, Range } from '@rokkit/ui'
 	import { InputField } from '@rokkit/forms'
 
-	const THEMES = [
-		'rokkit',
-		'minimal',
-		'material',
-		'frosted',
-		'grada-ui',
-		'shadcn',
-		'daisy-ui',
-		'bits-ui',
-		'carbon',
-		'ant-design'
-	]
+	const THEMES = ['rokkit', 'minimal', 'material', 'frosted', 'zen-sumi']
 
 	const BUTTON_VARIANTS = [
 		{ label: 'Default', variant: 'default', style: 'default' },
@@ -62,7 +51,7 @@
 
 <div class="overflow-auto p-6">
 	<h1 class="text-surface-z8 mb-2 text-2xl font-bold">Inputs & Buttons</h1>
-	<p class="text-surface-z5 mb-8 text-sm">All 10 themes — full input types and button variants.</p>
+	<p class="text-surface-z5 mb-8 text-sm">All 5 themes — full input types and button variants.</p>
 
 	<div class="flex flex-col gap-8">
 		{#each THEMES as themeName (themeName)}

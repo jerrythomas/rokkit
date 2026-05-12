@@ -7,8 +7,7 @@
 }
 
 [data-style='frosted'] [data-step-item][data-step-state='current'] [data-step-number] {
-  @apply bg-surface-z2/60 border-primary-z4/70 text-primary-z7 bg-none backdrop-blur-sm;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-500, #6366f1) 15%, transparent);
+  @apply bg-surface-z2/60 border-primary-z4/70 text-primary-z7 bg-none backdrop-blur-sm ring-3 ring-primary-z5/15;
 }
 
 [data-style='frosted'] [data-step-item][data-step-state='upcoming'] [data-step-number] {

@@ -208,6 +208,6 @@ For utility classes (`bg-primary-z5`, `text-surface-z8`, `data-mode`, etc.) and 
 ```js
 // In vite.config.js or SvelteKit app — CSS imports are typically in global CSS, not JS
 // But if needed from JS:
-import '@rokkit/themes/dist/base'
+import '@rokkit/themes/base.css'
 import '@rokkit/themes/rokkit.css'
 ```

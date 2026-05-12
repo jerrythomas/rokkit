@@ -68,6 +68,20 @@
   @apply text-primary-z6;
 }
 
+/* Literal / kanji icons */
+[data-style='material'] [data-list] [data-list-item] [data-item-icon-literal] {
+  @apply text-surface-z5;
+}
+
+[data-style='material'] [data-list] [data-list-item]:hover:not(:disabled) [data-item-icon-literal],
+[data-style='material'] [data-list] [data-list-item]:focus:not(:disabled) [data-item-icon-literal] {
+  @apply text-surface-z7;
+}
+
+[data-style='material'] [data-list] [data-list-item][data-active='true'] [data-item-icon-literal] {
+  @apply text-primary-z6;
+}
+
 [data-style='material'] [data-list] [data-list-item] [data-item-description] {
   @apply text-surface-z5;
 }

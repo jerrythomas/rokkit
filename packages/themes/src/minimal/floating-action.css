@@ -59,5 +59,5 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-fab-backdrop] {
-  background: rgba(0, 0, 0, 0.2);
+  @apply bg-surface-z10/20;
 }

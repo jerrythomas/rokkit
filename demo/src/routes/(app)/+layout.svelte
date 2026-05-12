@@ -1,33 +1,27 @@
 <script>
-	import { browser } from '$app/environment'
 	import { page } from '$app/state'
-	import { getMainNav, getProjectGroups, getSettingsNav } from '$lib/data/navigation'
+	import { getSidebarNav, getSettingsNav } from '$lib/data/navigation'
 	import { m } from '$lib/paraglide/messages.js'
 	import LanguageSwitcher from '$lib/components/LanguageSwitcher.svelte'
+	import { List } from '@rokkit/ui'
+	import ListItem from '$lib/components/ListItem.svelte'
+	import { theme } from '$lib/stores/theme.svelte'
 
 	let { children } = $props()
 	let sidebarCollapsed = $state(false)
 
-	// Initialized from body.dataset.mode set by app.html inline script
-	let mode = $state(browser ? (document.body.dataset.mode || 'dark') : 'dark')
-
-	function toggleMode() {
-		mode = mode === 'dark' ? 'light' : 'dark'
-		document.body.dataset.mode = mode
-		try {
-			const stored = JSON.parse(localStorage.getItem('sensei-theme') || '{}')
-			stored.mode = mode
-			localStorage.setItem('sensei-theme', JSON.stringify(stored))
-		} catch {}
-	}
-
-	const mainNav = $derived(getMainNav())
-	const projectGroups = $derived(getProjectGroups())
+	const sidebarNav = $derived(getSidebarNav())
 	const settingsNav = $derived(getSettingsNav())
 
-	const activeId = $derived(
-		mainNav.find((n) => page.url.pathname.startsWith(n.href))?.id ?? 'observatory'
-	)
+	function findActiveId(nav, pathname) {
+		const roots = nav.filter((i) => i.href && pathname.startsWith(i.href))
+		if (roots.length) return roots[0].id
+		const nested = nav.flatMap((i) => i.children ?? [])
+		const match = nested.find((i) => pathname.startsWith(i.href))
+		return match?.id ?? 'observatory'
+	}
+
+	const activeId = $derived(findActiveId(sidebarNav, page.url.pathname))
 </script>
 
 <div
@@ -55,50 +49,25 @@
 		</div>
 
 		<!-- Main navigation -->
-		<nav class="flex-1 overflow-y-auto flex flex-col gap-5">
-			<div class="flex flex-col gap-px">
-				{#each mainNav as item (item.id)}
-					<a
-						href={item.href}
-						class="group grid items-center gap-2.5 px-2.5 py-[7px] rounded-md text-[13px] font-normal no-underline cursor-pointer transition-colors duration-[120ms] {activeId === item.id ? 'bg-surface-z0 text-surface-z9' : 'text-surface-z7 hover:bg-surface-z2 hover:text-surface-z9'}"
-						style="grid-template-columns: auto 1fr auto"
-						title={sidebarCollapsed ? item.label : undefined}
-					>
-						<span class="kanji text-[14px] w-[18px] text-center {activeId === item.id ? 'text-primary-z5' : 'text-surface-z5 group-hover:text-surface-z7'}">{item.kanji}</span>
-						{#if !sidebarCollapsed}
-							<span class="whitespace-nowrap overflow-hidden text-ellipsis">{item.label}</span>
-						{/if}
-					</a>
-				{/each}
-			</div>
-
-			<!-- Project groups -->
-			{#each projectGroups as group (group.label)}
-				<div class="flex flex-col gap-px">
+		<div class="flex-1 overflow-y-auto">
+			<List
+				items={sidebarNav}
+				fields={{ value: 'id', label: 'label', icon: 'kanji', href: 'href', badge: 'badge' }}
+				value={activeId}
+				label="Main navigation"
+				size="sm"
+				class="gap-px"
+			>
+				{#snippet itemContent(proxy)}
+					<ListItem {proxy} collapsed={sidebarCollapsed} />
+				{/snippet}
+				{#snippet groupContent(proxy)}
 					{#if !sidebarCollapsed}
-						<span class="text-[9.5px] font-semibold uppercase tracking-[0.08em] text-surface-z4 pt-3 px-2.5 pb-1">{group.label}</span>
+						<span data-item-label>{proxy.label}</span>
 					{/if}
-					{#if !group.collapsed}
-						{#each group.items as item (item.id)}
-							<a
-								href={item.href}
-								class="group grid items-center gap-2.5 px-2.5 py-[7px] rounded-md text-[13px] font-normal no-underline cursor-pointer transition-colors duration-[120ms] text-surface-z7 hover:bg-surface-z1 hover:text-surface-z9"
-								style="grid-template-columns: auto 1fr auto"
-								title={sidebarCollapsed ? item.label : undefined}
-							>
-								<span class="kanji text-[14px] w-[18px] text-center text-surface-z5 group-hover:text-surface-z7">{item.kanji}</span>
-								{#if !sidebarCollapsed}
-									<span class="whitespace-nowrap overflow-hidden text-ellipsis">{item.label}</span>
-									{#if item.badge}
-										<span class="mono text-[10px] text-surface-z5">{item.badge}</span>
-									{/if}
-								{/if}
-							</a>
-						{/each}
-					{/if}
-				</div>
-			{/each}
-		</nav>
+				{/snippet}
+			</List>
+		</div>
 
 		<!-- Footer -->
 		<div class="border-t border-surface-z2 pt-2 flex flex-col gap-px">
@@ -117,14 +86,14 @@
 			<!-- Mode toggle -->
 			<button
 				type="button"
-				onclick={toggleMode}
+				onclick={() => theme.toggleMode()}
 				class="group grid items-center gap-2.5 px-2.5 py-[7px] rounded-md text-[13px] font-normal cursor-pointer transition-colors duration-[120ms] text-surface-z7 hover:bg-surface-z1 hover:text-surface-z9"
 				style="grid-template-columns: auto 1fr auto"
-				title={mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+				title={theme.mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
 			>
-				<span class="text-[14px] w-[18px] text-center text-surface-z5 group-hover:text-surface-z7 {mode === 'dark' ? 'i-glyph:sun' : 'i-glyph:moon'}"></span>
+				<span class="text-[14px] w-[18px] text-center text-surface-z5 group-hover:text-surface-z7 {theme.mode === 'dark' ? 'i-glyph:sun' : 'i-glyph:moon'}"></span>
 				{#if !sidebarCollapsed}
-					<span class="whitespace-nowrap overflow-hidden text-ellipsis">{mode === 'dark' ? 'Light mode' : 'Dark mode'}</span>
+					<span class="whitespace-nowrap overflow-hidden text-ellipsis">{theme.mode === 'dark' ? 'Light mode' : 'Dark mode'}</span>
 				{/if}
 			</button>
 

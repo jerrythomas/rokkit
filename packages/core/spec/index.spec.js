@@ -5,6 +5,7 @@ import * as functions from '../src/index.js'
 describe('@rokkit/core', () => {
 	it('should contain all exported functions', () => {
 		expect(Object.keys(functions)).toEqual([
+			'ColorSpace',
 			'FieldMapper',
 			'getItemAtIndex',
 			'getIndexForItem',
@@ -28,6 +29,7 @@ describe('@rokkit/core', () => {
 			'DEFAULT_KEYMAP',
 			'DEFAULT_THEME_MAPPING',
 			'TONE_MAP',
+			'INVERTED_ROLES',
 			'stateIconsFromNames',
 			'DEFAULT_STATE_ICONS',
 			'detectDirection',
@@ -46,9 +48,6 @@ describe('@rokkit/core', () => {
 			'hex2rgb',
 			'hex2oklch',
 			'oklch2hex',
-			'hex2hsl',
-			'hexToComponents',
-			'colorToRgb',
 			'isIconClass',
 			'getImage',
 			'flattenNestedList',

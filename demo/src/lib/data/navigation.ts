@@ -37,3 +37,14 @@ export function getProjectGroups(): NavGroup[] {
 export function getSettingsNav() {
 	return { id: 'settings', kanji: '設', label: m.nav_settings(), href: '/settings' }
 }
+
+export function getSidebarNav() {
+	return [
+		...getMainNav(),
+		...getProjectGroups().map((g) => ({
+			id: g.label,
+			label: g.label,
+			children: g.items
+		}))
+	]
+}
