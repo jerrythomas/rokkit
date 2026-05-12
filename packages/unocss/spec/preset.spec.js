@@ -297,6 +297,51 @@ describe('presetRokkit', () => {
 		})
 	})
 
+	describe('color-mix alpha — opacity modifiers produce correct percentages', () => {
+		it('theme.colors should use calc(<alpha-value> * 100%) for rgb color space', () => {
+			const preset = presetRokkit()
+			const primary500 = preset.theme.colors.primary[500]
+			expect(primary500).toContain('calc(<alpha-value> * 100%)')
+			expect(primary500).toContain('color-mix(in srgb,')
+			expect(primary500).toContain('transparent)')
+		})
+
+		it('theme.colors should use calc(<alpha-value> * 100%) for oklch color space', () => {
+			const preset = presetRokkit({ colorSpace: 'oklch' })
+			const primary500 = preset.theme.colors.primary[500]
+			expect(primary500).toContain('calc(<alpha-value> * 100%)')
+			expect(primary500).toContain('color-mix(in oklch,')
+		})
+
+		it('theme.colors should use calc(<alpha-value> * 100%) for hsl color space', () => {
+			const preset = presetRokkit({ colorSpace: 'hsl' })
+			const primary500 = preset.theme.colors.primary[500]
+			expect(primary500).toContain('calc(<alpha-value> * 100%)')
+			expect(primary500).toContain('color-mix(in srgb,')
+		})
+
+		it('preflight CSS variables should contain wrapped color values for rgb', () => {
+			const preset = presetRokkit()
+			const css = preset.preflights[0].getCSS()
+			// rgb values should be wrapped: rgb(R, G, B) not bare R,G,B
+			expect(css).toMatch(/--color-primary-500:rgb\(\d+, \d+, \d+\)/)
+		})
+
+		it('preflight CSS variables should contain wrapped color values for oklch', () => {
+			const preset = presetRokkit({ colorSpace: 'oklch' })
+			const css = preset.preflights[0].getCSS()
+			// oklch values should be wrapped: oklch(L C H) not bare L C H
+			expect(css).toMatch(/--color-primary-500:oklch\([\d.]+ [\d.]+ [\d.]+\)/)
+		})
+
+		it('preflight CSS variables should contain wrapped color values for hsl', () => {
+			const preset = presetRokkit({ colorSpace: 'hsl' })
+			const css = preset.preflights[0].getCSS()
+			// hsl values should be wrapped: hsl(H S% L%) not bare H S% L%
+			expect(css).toMatch(/--color-primary-500:hsl\(\d+ \d+% \d+%\)/)
+		})
+	})
+
 	describe('shortcuts — skin and icon coverage', () => {
 		it('should produce no skin-* shortcuts when skins is empty', () => {
 			const preset = presetRokkit()
