@@ -1,11 +1,15 @@
 <script>
 	import { page } from '$app/state'
+	import { onMount } from 'svelte'
 	import { getSidebarNav, getSettingsNav } from '$lib/data/navigation'
 	import { m } from '$lib/paraglide/messages.js'
 	import { List } from '@rokkit/ui'
 	import ListItem from '$lib/components/ListItem.svelte'
+	import { theme } from '$lib/stores/theme.svelte'
 
 	let { children } = $props()
+
+	onMount(() => theme.restoreSkin())
 	let sidebarCollapsed = $state(false)
 
 	const sidebarNav = $derived(getSidebarNav())
