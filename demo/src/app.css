@@ -17,7 +17,7 @@
 @import '@rokkit/themes/minimal.css';
 @import '@rokkit/themes/material.css';
 @import '@rokkit/themes/frosted.css';
-@import './themes/zen-sumi/index.css';
+@import '@rokkit/themes/zen-sumi.css';
 
 /* ─── Global Base ────────────────────────────────────────────────────────── */
 
@@ -39,8 +39,8 @@ body {
   overflow: hidden;
   font-family: var(--font-sans);
   font-size: 13px;
-  background: oklch(var(--color-surface-z0) / 1);
-  color: oklch(var(--color-surface-z9) / 1);
+  background: var(--color-surface-z0);
+  color: var(--color-ink-z1);
 }
 
 
