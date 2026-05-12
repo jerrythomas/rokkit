@@ -9,6 +9,17 @@ describe('Theme class', () => {
 		expect(theme.mapping).toHaveProperty('tertiary')
 	})
 
+	it('should include ink in default mapping', () => {
+		const theme = new Theme()
+		expect(theme.mapping).toHaveProperty('ink')
+	})
+
+	it('should fallback ink to surface palette when not explicitly set', () => {
+		const theme = new Theme()
+		expect(theme.mapping.ink).toBe('slate')
+		expect(theme.mapping.surface).toBe('slate')
+	})
+
 	it('should generate tertiary palette rules', () => {
 		const theme = new Theme()
 		const palette = theme.getPalette()
@@ -263,6 +274,18 @@ describe('themeRules', () => {
 		'--color-info-800': 'rgb(21, 94, 117)',
 		'--color-info-900': 'rgb(22, 78, 99)',
 		'--color-info-950': 'rgb(8, 51, 68)',
+		'--color-ink': 'rgb(148, 163, 184)',
+		'--color-ink-100': 'rgb(241, 245, 249)',
+		'--color-ink-200': 'rgb(226, 232, 240)',
+		'--color-ink-300': 'rgb(203, 213, 225)',
+		'--color-ink-400': 'rgb(148, 163, 184)',
+		'--color-ink-50': 'rgb(248, 250, 252)',
+		'--color-ink-500': 'rgb(100, 116, 139)',
+		'--color-ink-600': 'rgb(71, 85, 105)',
+		'--color-ink-700': 'rgb(51, 65, 85)',
+		'--color-ink-800': 'rgb(30, 41, 59)',
+		'--color-ink-900': 'rgb(15, 23, 42)',
+		'--color-ink-950': 'rgb(2, 6, 23)',
 		'--color-primary': 'rgb(251, 146, 60)',
 		'--color-primary-100': 'rgb(255, 237, 213)',
 		'--color-primary-200': 'rgb(254, 215, 170)',

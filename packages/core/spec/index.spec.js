@@ -29,6 +29,7 @@ describe('@rokkit/core', () => {
 			'DEFAULT_KEYMAP',
 			'DEFAULT_THEME_MAPPING',
 			'TONE_MAP',
+			'INVERTED_ROLES',
 			'stateIconsFromNames',
 			'DEFAULT_STATE_ICONS',
 			'detectDirection',

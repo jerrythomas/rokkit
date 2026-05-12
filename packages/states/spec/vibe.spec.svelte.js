@@ -81,6 +81,7 @@ describe('vibe', () => {
 			danger: 'red',
 			error: 'red',
 			info: 'cyan',
+			ink: 'slate',
 			surface: 'slate',
 			primary: 'ambrosia',
 			secondary: 'pink',

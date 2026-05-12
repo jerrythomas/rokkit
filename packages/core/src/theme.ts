@@ -146,6 +146,7 @@ export function contrastShortcuts(name) {
  * If a semantic color is null, it inherits from another semantic color.
  */
 const COLOR_FALLBACKS = {
+	ink: 'surface',
 	tertiary: 'primary',
 	secondary: 'primary',
 	accent: 'primary',
