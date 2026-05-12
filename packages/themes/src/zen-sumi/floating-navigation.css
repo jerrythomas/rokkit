@@ -20,7 +20,7 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-floating-nav-title] {
-  @apply text-surface-z5;
+  @apply text-ink-z5;
 }
 
 [data-style='zen-sumi'] [data-floating-nav-pin] {
@@ -28,11 +28,11 @@
 }
 
 [data-style='zen-sumi'] [data-floating-nav-pin]:hover {
-  @apply text-surface-z7;
+  @apply text-ink-z3;
 }
 
 [data-style='zen-sumi'] [data-floating-nav-pin][aria-pressed='true'] {
-  @apply text-surface-z9;
+  @apply text-ink-z1;
 }
 
 /* =============================================================================
@@ -40,15 +40,15 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-floating-nav-item] {
-  @apply text-surface-z6;
+  @apply text-ink-z4;
 }
 
 [data-style='zen-sumi'] [data-floating-nav-item]:hover {
-  @apply bg-surface-z2 text-surface-z8 bg-none;
+  @apply bg-surface-z2 text-ink-z2 bg-none;
 }
 
 [data-style='zen-sumi'] [data-floating-nav-item][data-active] {
-  @apply bg-surface-z1 text-surface-z9 bg-none;
+  @apply bg-surface-z1 text-ink-z1 bg-none;
 }
 
 [data-style='zen-sumi'] [data-floating-nav-item]:focus-visible {
@@ -58,7 +58,7 @@
 
 /* Icon */
 [data-style='zen-sumi'] [data-floating-nav-icon] {
-  @apply text-surface-z5;
+  @apply text-ink-z5;
 }
 
 [data-style='zen-sumi'] [data-floating-nav-item][data-active] [data-floating-nav-icon] {

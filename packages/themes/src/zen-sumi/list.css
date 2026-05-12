@@ -19,12 +19,12 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-list] [data-list-item] {
-  @apply text-surface-z7 border-0 border-solid border-transparent bg-transparent;
+  @apply text-ink-z3 border-0 border-solid border-transparent bg-transparent;
 }
 
 [data-style='zen-sumi'] [data-list] a[data-list-item],
 [data-style='zen-sumi'] [data-list] button[data-list-item] {
-  @apply text-surface-z6;
+  @apply text-ink-z4;
 }
 
 /* Hover and focus — subtle paper wash */
@@ -34,17 +34,17 @@
 [data-style='zen-sumi']
   [data-list]
   [data-list-item]:focus:not(:disabled):not([data-disabled='true']) {
-  @apply bg-surface-z2 text-surface-z8 bg-none outline-none;
+  @apply bg-surface-z2 text-ink-z2 bg-none outline-none;
 }
 
 /* Active state — ink wash background */
 [data-style='zen-sumi'] [data-list] [data-list-item][data-active='true'] {
-  @apply bg-surface-z1 text-surface-z9 bg-none;
+  @apply bg-surface-z1 text-ink-z1 bg-none;
 }
 
 /* Active state — richer ink when list has focus */
 [data-style='zen-sumi'] [data-list]:focus-within [data-list-item][data-active='true'] {
-  @apply bg-surface-z2 text-surface-z9 bg-none;
+  @apply bg-surface-z2 text-ink-z1 bg-none;
 }
 
 /* Active + hover/focus */
@@ -58,12 +58,12 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-list] [data-list-item] [data-item-icon] {
-  @apply text-surface-z5;
+  @apply text-ink-z5;
 }
 
 [data-style='zen-sumi'] [data-list] [data-list-item]:hover:not(:disabled) [data-item-icon],
 [data-style='zen-sumi'] [data-list] [data-list-item]:focus:not(:disabled) [data-item-icon] {
-  @apply text-surface-z6;
+  @apply text-ink-z4;
 }
 
 [data-style='zen-sumi'] [data-list] [data-list-item][data-active='true'] [data-item-icon] {
@@ -71,19 +71,19 @@
 }
 
 [data-style='zen-sumi'] [data-list] [data-list-item] [data-item-description] {
-  @apply text-surface-z5;
+  @apply text-ink-z5;
 }
 
 [data-style='zen-sumi'] [data-list] [data-list-item][data-active='true'] [data-item-description] {
-  @apply text-surface-z6;
+  @apply text-ink-z4;
 }
 
 [data-style='zen-sumi'] [data-list] [data-list-item] [data-item-badge] {
-  @apply text-surface-z6 border-surface-z3 border bg-transparent bg-none;
+  @apply text-ink-z4 border-surface-z3 border bg-transparent bg-none;
 }
 
 [data-style='zen-sumi'] [data-list] [data-list-item][data-active='true'] [data-item-badge] {
-  @apply text-surface-z8 border-surface-z4 bg-none;
+  @apply text-ink-z2 border-surface-z4 bg-none;
 }
 
 /* =============================================================================
@@ -91,12 +91,12 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-list] [data-list-group] {
-  @apply text-surface-z5;
+  @apply text-ink-z5;
 }
 
 [data-style='zen-sumi'] [data-list] [data-list-group]:hover:not(:disabled),
 [data-style='zen-sumi'] [data-list] [data-list-group]:focus:not(:disabled) {
-  @apply text-surface-z7 bg-none;
+  @apply text-ink-z3 bg-none;
 }
 
 /* =============================================================================

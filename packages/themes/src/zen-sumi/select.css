@@ -11,11 +11,11 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-select-trigger] {
-  @apply text-surface-z7 border-surface-z3 border bg-transparent bg-none;
+  @apply text-ink-z3 border-surface-z3 border bg-transparent bg-none;
 }
 
 [data-style='zen-sumi'] [data-select-trigger]:hover:not(:disabled) {
-  @apply border-surface-z4 text-surface-z8 bg-none;
+  @apply border-surface-z4 text-ink-z2 bg-none;
 }
 
 [data-style='zen-sumi'] [data-select-trigger]:focus-visible {
@@ -44,7 +44,7 @@
 }
 
 [data-style='zen-sumi'] [data-select-trigger]:hover:not(:disabled) [data-select-arrow] {
-  @apply text-surface-z5;
+  @apply text-ink-z5;
 }
 
 /* =============================================================================
@@ -52,15 +52,15 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-select-tag] {
-  @apply text-surface-z7 border-surface-z3 border bg-transparent bg-none;
+  @apply text-ink-z3 border-surface-z3 border bg-transparent bg-none;
 }
 
 [data-style='zen-sumi'] [data-select-tag-remove] {
-  @apply text-surface-z5;
+  @apply text-ink-z5;
 }
 
 [data-style='zen-sumi'] [data-select-tag-remove]:hover {
-  @apply text-surface-z8;
+  @apply text-ink-z2;
 }
 
 /* =============================================================================
@@ -77,17 +77,17 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-select-option] {
-  @apply text-surface-z7 border-0 border-solid border-transparent;
+  @apply text-ink-z3 border-0 border-solid border-transparent;
 }
 
 [data-style='zen-sumi'] [data-select-option]:hover:not(:disabled),
 [data-style='zen-sumi'] [data-select-option]:focus:not(:disabled) {
-  @apply bg-surface-z2 text-surface-z8 bg-none outline-none;
+  @apply bg-surface-z2 text-ink-z2 bg-none outline-none;
 }
 
 /* Selected state */
 [data-style='zen-sumi'] [data-select-option][data-selected='true'] {
-  @apply text-surface-z9 border-primary-z4 border-l-2 bg-none;
+  @apply text-ink-z1 border-primary-z4 border-l-2 bg-none;
 }
 
 [data-style='zen-sumi']
@@ -112,7 +112,7 @@
 
 /* Item elements */
 [data-style='zen-sumi'] [data-select-option] [data-item-description] {
-  @apply text-surface-z5;
+  @apply text-ink-z5;
 }
 
 [data-style='zen-sumi'] [data-select-option][data-selected='true'] [data-item-description] {
@@ -144,7 +144,7 @@
 }
 
 [data-style='zen-sumi'] [data-select-filter-input] {
-  @apply text-surface-z8 border-surface-z3 border bg-transparent;
+  @apply text-ink-z2 border-surface-z3 border bg-transparent;
 }
 
 [data-style='zen-sumi'] [data-select-filter-input]:focus {
@@ -156,5 +156,5 @@
 }
 
 [data-style='zen-sumi'] [data-select-empty] {
-  @apply text-surface-z5;
+  @apply text-ink-z5;
 }

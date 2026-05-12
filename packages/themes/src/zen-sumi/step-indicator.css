@@ -11,7 +11,7 @@
 }
 
 [data-style='zen-sumi'] [data-step-item][data-step-state='upcoming'] [data-step-number] {
-  @apply bg-transparent border-surface-z2 text-surface-z5 bg-none;
+  @apply bg-transparent border-surface-z2 text-ink-z5 bg-none;
 }
 
 /* ── Labels ── */
@@ -21,7 +21,7 @@
 }
 
 [data-style='zen-sumi'] [data-step-item][data-step-state='current'] [data-step-label] {
-  @apply text-surface-z9 font-medium bg-none;
+  @apply text-ink-z1 font-medium bg-none;
 }
 
 [data-style='zen-sumi'] [data-step-item][data-step-state='upcoming'] [data-step-label] {

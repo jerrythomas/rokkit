@@ -19,12 +19,12 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-toggle-option] {
-  @apply text-surface-z6 border-0 border-solid border-transparent;
+  @apply text-ink-z4 border-0 border-solid border-transparent;
 }
 
 [data-style='zen-sumi'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']),
 [data-style='zen-sumi'] [data-toggle-option]:focus:not(:disabled):not([data-disabled='true']) {
-  @apply bg-surface-z2 text-surface-z8;
+  @apply bg-surface-z2 text-ink-z2;
 }
 
 /* Selected state — ink fill */
@@ -38,12 +38,12 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-toggle-option] [data-toggle-icon] {
-  @apply text-surface-z5;
+  @apply text-ink-z5;
 }
 
 [data-style='zen-sumi'] [data-toggle-option]:hover:not(:disabled) [data-toggle-icon],
 [data-style='zen-sumi'] [data-toggle-option]:focus:not(:disabled) [data-toggle-icon] {
-  @apply text-surface-z7;
+  @apply text-ink-z3;
 }
 
 [data-style='zen-sumi'] [data-toggle-option][data-selected='true'] [data-toggle-icon] {

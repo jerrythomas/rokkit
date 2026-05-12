@@ -9,12 +9,12 @@
 }
 
 [data-style='zen-sumi'] [data-toc] [data-toc-item] {
-  @apply text-surface-z5;
+  @apply text-ink-z5;
 }
 
 [data-style='zen-sumi'] [data-toc] [data-toc-item]:hover,
 [data-style='zen-sumi'] [data-toc] [data-toc-item][data-toc-focused] {
-  @apply text-surface-z8 outline-none;
+  @apply text-ink-z2 outline-none;
 }
 
 [data-style='zen-sumi'] [data-toc] [data-toc-item][data-toc-active] {

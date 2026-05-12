@@ -10,7 +10,7 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-timeline-circle] {
-  @apply border-surface-z3 text-surface-z5;
+  @apply border-surface-z3 text-ink-z5;
 }
 
 [data-style='zen-sumi'] [data-timeline-item][data-completed] [data-timeline-circle] {
@@ -38,9 +38,9 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-timeline-title] {
-  @apply text-surface-z8;
+  @apply text-ink-z2;
 }
 
 [data-style='zen-sumi'] [data-timeline-description] {
-  @apply text-surface-z5;
+  @apply text-ink-z5;
 }

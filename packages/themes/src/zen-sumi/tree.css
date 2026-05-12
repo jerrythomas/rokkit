@@ -22,7 +22,7 @@
 }
 
 [data-style='zen-sumi'] [data-tree-toggle-btn]:hover {
-  @apply text-surface-z6 bg-none;
+  @apply text-ink-z4 bg-none;
 }
 
 /* =============================================================================
@@ -30,12 +30,12 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-tree-item-content] {
-  @apply text-surface-z7;
+  @apply text-ink-z3;
 }
 
 [data-style='zen-sumi'] [data-tree-item-content]:hover:not(:disabled),
 [data-style='zen-sumi'] [data-tree-item-content]:focus:not(:disabled) {
-  @apply bg-surface-z2 text-surface-z9 bg-none outline-none;
+  @apply bg-surface-z2 text-ink-z1 bg-none outline-none;
 }
 
 /* Focus visible for keyboard navigation */
@@ -46,7 +46,7 @@
 
 /* Active/selected state */
 [data-style='zen-sumi'] [data-tree-item-content][data-active='true'] {
-  @apply text-surface-z9 bg-surface-z2 bg-none;
+  @apply text-ink-z1 bg-surface-z2 bg-none;
 }
 
 [data-style='zen-sumi'] [data-tree-item-content][data-active='true']:hover:not(:disabled) {
@@ -73,11 +73,11 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-tree-item-content] [data-item-icon] {
-  @apply text-surface-z5;
+  @apply text-ink-z5;
 }
 
 [data-style='zen-sumi'] [data-tree-item-content]:hover:not(:disabled) [data-item-icon] {
-  @apply text-surface-z6;
+  @apply text-ink-z4;
 }
 
 [data-style='zen-sumi'] [data-tree-item-content][data-active='true'] [data-item-icon] {
@@ -85,19 +85,19 @@
 }
 
 [data-style='zen-sumi'] [data-tree-item-content] [data-item-description] {
-  @apply text-surface-z5;
+  @apply text-ink-z5;
 }
 
 [data-style='zen-sumi'] [data-tree-item-content][data-active='true'] [data-item-description] {
-  @apply text-surface-z6;
+  @apply text-ink-z4;
 }
 
 [data-style='zen-sumi'] [data-tree-item-content] [data-item-badge] {
-  @apply text-surface-z6 border-surface-z3 border bg-transparent bg-none;
+  @apply text-ink-z4 border-surface-z3 border bg-transparent bg-none;
 }
 
 [data-style='zen-sumi'] [data-tree-item-content][data-active='true'] [data-item-badge] {
-  @apply text-surface-z8 border-surface-z4 bg-none;
+  @apply text-ink-z2 border-surface-z4 bg-none;
 }
 
 [data-style='zen-sumi']

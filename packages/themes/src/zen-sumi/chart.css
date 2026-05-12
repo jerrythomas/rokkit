@@ -25,7 +25,7 @@
 }
 
 [data-style='zen-sumi'] [data-chart-legend-item]:hover {
-  @apply text-surface-z8;
+  @apply text-ink-z2;
 }
 
 [data-style='zen-sumi'] [data-plot-element='bar'][data-dimmed],
@@ -37,5 +37,5 @@
 }
 
 [data-style='zen-sumi'] [data-facet-title] {
-  @apply text-surface-z5;
+  @apply text-ink-z5;
 }

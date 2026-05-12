@@ -11,7 +11,7 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-card] {
-  @apply bg-surface-z1 border-surface-z2 text-surface-z9 border bg-none;
+  @apply bg-surface-z1 border-surface-z2 text-ink-z1 border bg-none;
   box-shadow: none;
 }
 
@@ -38,11 +38,11 @@
 }
 
 [data-style='zen-sumi'] [data-card-body] {
-  @apply text-surface-z8;
+  @apply text-ink-z2;
 }
 
 [data-style='zen-sumi'] [data-card-footer] {
-  @apply border-surface-z2 text-surface-z6 border-t;
+  @apply border-surface-z2 text-ink-z4 border-t;
 }
 
 /* =============================================================================
@@ -99,6 +99,6 @@
 
 /* Tertiary — recessed surface, lighter border */
 [data-style='zen-sumi'] [data-card][data-variant='tertiary'] {
-  @apply bg-surface-z0 border-surface-z2 text-surface-z7 border bg-none;
+  @apply bg-surface-z0 border-surface-z2 text-ink-z3 border bg-none;
   box-shadow: none;
 }

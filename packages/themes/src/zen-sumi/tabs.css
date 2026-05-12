@@ -24,7 +24,7 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-tabs-trigger] {
-  @apply text-surface-z6 bg-transparent border-0;
+  @apply text-ink-z4 bg-transparent border-0;
   font-weight: 400;
   border-radius: var(--radius-sm, 0.125rem);
   transition:
@@ -33,7 +33,7 @@
 }
 
 [data-style='zen-sumi'] [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {
-  @apply bg-surface-z2 text-surface-z8;
+  @apply bg-surface-z2 text-ink-z2;
 }
 
 [data-style='zen-sumi'] [data-tabs-trigger][data-selected] {
@@ -62,7 +62,7 @@
 }
 
 [data-style='zen-sumi'] [data-tabs-trigger]:hover:not(:disabled) [data-tabs-icon] {
-  @apply text-surface-z6;
+  @apply text-ink-z4;
 }
 
 [data-style='zen-sumi'] [data-tabs-trigger][data-selected] [data-tabs-icon] {
@@ -74,5 +74,5 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-tabs-content] {
-  @apply text-surface-z8;
+  @apply text-ink-z2;
 }
