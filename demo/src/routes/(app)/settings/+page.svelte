@@ -2,6 +2,7 @@
 	import { m } from '$lib/paraglide/messages.js'
 	import { getLocale, setLocale, locales } from '$lib/paraglide/runtime.js'
 	import { theme } from '$lib/stores/theme.svelte'
+	import { skinDefinitions, availablePalettes, getPaletteColor } from '$lib/data/skins'
 
 	const currentLocale = $derived(getLocale())
 
@@ -44,6 +45,52 @@
 					<span class="text-[12px] font-medium leading-tight">{t.label}</span>
 					<span class="text-[10px] text-surface-z5 leading-tight">{t.desc}</span>
 				</button>
+			{/each}
+		</div>
+	</section>
+
+	<!-- ── Skin ────────────────────────────────────────────────────── -->
+	<section class="mb-9">
+		<div class="text-[10px] tracking-[0.14em] uppercase text-surface-z5 mb-3">SKIN</div>
+		<div class="flex gap-3">
+			{#each skinDefinitions as skin (skin.name)}
+				<button
+					class="flex flex-col items-center gap-2 px-4 py-3 rounded-md border transition-all duration-[120ms] cursor-pointer
+						{theme.skin === skin.name
+							? 'bg-surface-z2 border-primary-z5 ring-1 ring-primary-z5'
+							: 'bg-surface-z1 border-surface-z2 hover:bg-surface-z2 hover:border-surface-z4'}"
+					onclick={() => theme.setSkin(skin.name)}
+				>
+					<div class="flex gap-1">
+						{#each ['surface', 'primary', 'secondary', 'accent'] as role}
+							<span class="w-4 h-4 rounded-full" style="background: {getPaletteColor(skin[role])}"></span>
+						{/each}
+					</div>
+					<span class="text-[11px] font-medium">{skin.label}</span>
+				</button>
+			{/each}
+		</div>
+	</section>
+
+	<!-- ── Color Roles ─────────────────────────────────────────────── -->
+	<section class="mb-9">
+		<div class="text-[10px] tracking-[0.14em] uppercase text-surface-z5 mb-4">COLOR ROLES</div>
+		<div class="flex flex-col gap-3">
+			{#each ['surface', 'primary', 'secondary', 'accent'] as role}
+				<div class="flex items-center gap-4">
+					<span class="text-[13px] text-surface-z7 w-[80px] flex-shrink-0 capitalize">{role}</span>
+					<div class="flex gap-1.5 flex-wrap">
+						{#each availablePalettes as palette}
+							<button
+								class="w-5 h-5 rounded-full border-2 transition-all duration-[120ms] cursor-pointer
+									{theme.getRoleColor(role) === palette ? 'border-primary-z5 ring-1 ring-primary-z5' : 'border-transparent hover:border-surface-z4'}"
+								style="background: {getPaletteColor(palette)}"
+								onclick={() => theme.setRoleColor(role, palette)}
+								title={palette}
+							></button>
+						{/each}
+					</div>
+				</div>
 			{/each}
 		</div>
 	</section>
