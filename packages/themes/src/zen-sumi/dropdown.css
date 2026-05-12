@@ -15,7 +15,7 @@
 
 [data-style='zen-sumi'] [data-dropdown-trigger]:focus-visible {
   @apply outline-none;
-  box-shadow: 0 0 0 1px oklch(var(--color-surface-z5) / 1);
+  box-shadow: 0 0 0 1px var(--color-surface-z5);
 }
 
 [data-style='zen-sumi'] [data-dropdown][data-open='true'] [data-dropdown-trigger] {

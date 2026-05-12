@@ -41,7 +41,7 @@
 /* Focus visible for keyboard navigation */
 [data-style='zen-sumi'] [data-tree-item-content]:focus-visible {
   @apply outline-none;
-  box-shadow: inset 0 0 0 1px oklch(var(--color-surface-z4) / 1);
+  box-shadow: inset 0 0 0 1px var(--color-surface-z4);
 }
 
 /* Active/selected state */

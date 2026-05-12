@@ -61,7 +61,7 @@
 
 [data-style='zen-sumi'] [data-table-row]:focus {
   @apply text-surface-z9 bg-none outline-none;
-  box-shadow: inset 0 0 0 1px oklch(var(--color-surface-z4) / 1);
+  box-shadow: inset 0 0 0 1px var(--color-surface-z4);
 }
 
 [data-style='zen-sumi'] [data-table-row][data-selected='true'] {

@@ -20,7 +20,7 @@
 
 [data-style='zen-sumi'] [data-fab-trigger]:focus-visible {
   @apply outline-none;
-  box-shadow: 0 0 0 1px oklch(var(--color-surface-z5) / 1);
+  box-shadow: 0 0 0 1px var(--color-surface-z5);
 }
 
 [data-style='zen-sumi'] [data-fab][data-open='true'] [data-fab-trigger] {
@@ -47,7 +47,7 @@
 
 [data-style='zen-sumi'] [data-fab-item]:focus-visible {
   @apply outline-none;
-  box-shadow: 0 0 0 1px oklch(var(--color-surface-z5) / 1);
+  box-shadow: 0 0 0 1px var(--color-surface-z5);
 }
 
 /* Item icon */
@@ -64,5 +64,5 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-fab-backdrop] {
-  background: oklch(var(--color-surface-z9) / 0.15);
+  background: color-mix(in oklch, var(--color-surface-z9) 15%, transparent);
 }
