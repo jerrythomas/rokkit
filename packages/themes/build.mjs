@@ -49,14 +49,7 @@ const uno = await createGenerator({
     ...theme.getShortcuts('warning'),
     ...theme.getShortcuts('danger'),
     ...theme.getShortcuts('error'),
-    ...theme.getShortcuts('info'),
-    [/^text-on-primary(\/\d+)?$/, ([, end]) => `text-surface-50${end || ''}`],
-    [/^text-on-secondary(\/\d+)?$/, ([, end]) => `text-surface-50${end || ''}`],
-    [/^text-on-info(\/\d+)?$/, ([, end]) => `text-surface-50${end || ''}`],
-    [/^text-on-success(\/\d+)?$/, ([, end]) => `text-surface-50${end || ''}`],
-    [/^text-on-warning(\/\d+)?$/, ([, end]) => `text-surface-50${end || ''}`],
-    [/^text-on-error(\/\d+)?$/, ([, end]) => `text-surface-50${end || ''}`],
-    [/^text-on-surface(\/\d+)?$/, ([, end]) => `text-surface-50${end || ''}`]
+    ...theme.getShortcuts('info')
   ],
   theme: {
     colors: theme.getColorRules()
