@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-fab-trigger] {
-  @apply bg-primary-z5/80 text-white shadow-lg backdrop-blur-md;
+  @apply bg-primary-z5/80 text-on-primary shadow-lg backdrop-blur-md;
 }
 
 [data-style='frosted'] [data-fab-trigger]:hover:not(:disabled) {
@@ -56,6 +56,6 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-fab-backdrop] {
-  background: rgba(0, 0, 0, 0.3);
+  @apply bg-surface-z10/30;
   backdrop-filter: blur(4px);
 }

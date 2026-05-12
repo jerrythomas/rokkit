@@ -213,12 +213,6 @@ async function build() {
     ['minimal', 'clean + subtle'],
     ['material', 'elevation + shadows'],
     ['frosted', 'frosted glass + blur'],
-    ['grada-ui', 'coral/purple gradient identity'],
-    ['shadcn', 'flat borders + ring focus'],
-    ['daisy-ui', 'rounded-full + bold fills'],
-    ['bits-ui', 'rounded-lg + shadow-sm'],
-    ['carbon', 'square + bottom-border inputs'],
-    ['ant-design', 'thin borders + dense layout'],
     ['zen-sumi', 'ink on paper — no shadows, no gradients']
   ]) {
     await buildFile(join(srcDir, name, 'index.css'), `${name}.css`, label)
@@ -231,12 +225,6 @@ async function build() {
     'minimal',
     'material',
     'frosted',
-    'grada-ui',
-    'shadcn',
-    'daisy-ui',
-    'bits-ui',
-    'carbon',
-    'ant-design',
     'zen-sumi'
   ]
   // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal — name is from a hardcoded string array, not user input

@@ -20,7 +20,7 @@
 }
 
 [data-style='material'] [data-switch][aria-checked='true'] [data-switch-thumb] {
-  @apply bg-white shadow-lg;
+  @apply bg-surface-z0 shadow-lg;
 }
 
 [data-style='material'] [data-switch-label] {

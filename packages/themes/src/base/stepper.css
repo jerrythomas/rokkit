@@ -47,32 +47,28 @@
 }
 
 [data-stepper-step][data-completed] [data-stepper-circle] {
-  background-color: var(--color-primary-500, #3b82f6);
-  border-color: var(--color-primary-500, #3b82f6);
-  color: white;
+  @apply bg-primary-z5 border-primary-z5 text-surface-z0;
 }
 
 [data-stepper-step][data-active] [data-stepper-circle] {
-  border-color: var(--color-primary-500, #3b82f6);
-  color: var(--color-primary-500, #3b82f6);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-500, #3b82f6) 20%, transparent);
+  @apply border-primary-z5 text-primary-z5 ring-primary-z5/20 ring-3;
 }
 
 /* ─── Connector line ─── */
 
 [data-stepper-connector] {
+  @apply bg-surface-z3;
   flex: 1;
   height: 2px;
   min-width: 2rem;
   align-self: center;
   /* Vertically center with the circle (half of 2.5rem) */
   margin-top: 1.25rem;
-  background-color: var(--color-surface-300, #d1d5db);
   transition: background-color 0.2s ease;
 }
 
 [data-stepper-connector][data-completed] {
-  background-color: var(--color-primary-500, #3b82f6);
+  @apply bg-primary-z5;
 }
 
 /* Vertical orientation connectors */
@@ -104,10 +100,12 @@
 }
 
 [data-stepper-dot] {
+  @apply border-surface-z4;
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 9999px;
-  border: 1px solid var(--color-surface-400, #9ca3af);
+  border-width: 1px;
+  border-style: solid;
   background: transparent;
   cursor: pointer;
   padding: 0;
@@ -122,14 +120,11 @@
 }
 
 [data-stepper-dot][data-completed] {
-  background-color: var(--color-primary-500, #3b82f6);
-  border-color: var(--color-primary-500, #3b82f6);
+  @apply bg-primary-z5 border-primary-z5;
 }
 
 [data-stepper-dot][data-active] {
-  border-color: var(--color-primary-500, #3b82f6);
-  background-color: var(--color-primary-500, #3b82f6);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary-500, #3b82f6) 25%, transparent);
+  @apply bg-primary-z5 border-primary-z5 ring-primary-z5/25 ring-2;
 }
 
 /* ─── Content area ─── */

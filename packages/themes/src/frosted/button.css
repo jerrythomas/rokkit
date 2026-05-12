@@ -13,8 +13,7 @@
 [data-style='frosted'] [data-button]:not([data-style])[data-variant='default'],
 [data-style='frosted'] [data-button][data-style='default']:not([data-variant]),
 [data-style='frosted'] [data-button]:not([data-style]):not([data-variant]) {
-  @apply text-surface-z9 border backdrop-blur-xl;
-  background: color-mix(in oklch, oklch(var(--color-surface-z4) / 1) 28%, transparent);
+  @apply text-surface-z9 border backdrop-blur-xl bg-surface-z4/28;
   border-color: rgba(255, 255, 255, 0.22);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.2),
@@ -23,8 +22,7 @@
 
 [data-style='frosted'] [data-button][data-style='default'][data-variant='primary'],
 [data-style='frosted'] [data-button]:not([data-style])[data-variant='primary'] {
-  @apply text-on-primary border backdrop-blur-xl;
-  background: color-mix(in oklch, oklch(var(--color-primary-z5) / 1) 60%, transparent);
+  @apply text-on-primary border backdrop-blur-xl bg-primary-z5/60;
   border-color: rgba(255, 255, 255, 0.25);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.25),
@@ -33,8 +31,7 @@
 
 [data-style='frosted'] [data-button][data-style='default'][data-variant='secondary'],
 [data-style='frosted'] [data-button]:not([data-style])[data-variant='secondary'] {
-  @apply text-on-secondary border backdrop-blur-xl;
-  background: color-mix(in oklch, oklch(var(--color-secondary-z5) / 1) 60%, transparent);
+  @apply text-on-secondary border backdrop-blur-xl bg-secondary-z5/60;
   border-color: rgba(255, 255, 255, 0.25);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.25),
@@ -43,8 +40,7 @@
 
 [data-style='frosted'] [data-button][data-style='default'][data-variant='accent'],
 [data-style='frosted'] [data-button]:not([data-style])[data-variant='accent'] {
-  @apply text-on-accent border backdrop-blur-xl;
-  background: color-mix(in oklch, oklch(var(--color-accent-z5) / 1) 60%, transparent);
+  @apply text-on-accent border backdrop-blur-xl bg-accent-z5/60;
   border-color: rgba(255, 255, 255, 0.25);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.25),
@@ -53,8 +49,7 @@
 
 [data-style='frosted'] [data-button][data-style='default'][data-variant='danger'],
 [data-style='frosted'] [data-button]:not([data-style])[data-variant='danger'] {
-  @apply text-on-danger border backdrop-blur-xl;
-  background: color-mix(in oklch, oklch(var(--color-danger-z5) / 1) 60%, transparent);
+  @apply text-on-danger border backdrop-blur-xl bg-danger-z5/60;
   border-color: rgba(255, 255, 255, 0.25);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.25),
@@ -196,7 +191,7 @@
 
 [data-style='frosted'] [data-button][data-style='default']:hover:not(:disabled):not([data-disabled]),
 [data-style='frosted'] [data-button]:not([data-style]):hover:not(:disabled):not([data-disabled]) {
-  background: color-mix(in oklch, oklch(var(--color-surface-z4) / 1) 38%, transparent);
+  @apply bg-surface-z4/38;
   border-color: rgba(255, 255, 255, 0.3);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.28),

@@ -107,7 +107,7 @@
 }
 
 [data-style='zen-sumi'] [data-select-checkbox][data-checked='true'] {
-  @apply bg-primary-z5 border-primary-z5 bg-none text-white;
+  @apply bg-primary-z5 border-primary-z5 bg-none text-on-primary;
 }
 
 /* Item elements */

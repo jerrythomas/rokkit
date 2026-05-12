@@ -16,19 +16,14 @@ bun add @rokkit/themes
 
 Available themes:
 
-| Theme        | Description                                                          |
-| ------------ | -------------------------------------------------------------------- |
-| `rokkit`     | Default — gradients and glowing borders                              |
-| `minimal`    | Clean and subtle                                                     |
-| `material`   | Elevation and shadows                                                |
-| `frosted`    | Frosted glass and blur                                               |
-| `shadcn`     | Flat borders and ring focus                                          |
-| `daisy-ui`   | Rounded-full and bold fills                                          |
-| `bits-ui`    | Rounded-lg and shadow-sm                                             |
-| `carbon`     | Square corners and bottom-border inputs                              |
-| `ant-design` | Thin borders and dense layout                                        |
-| `grada-ui`   | Coral/purple gradient identity                                       |
-| `base`       | Structural styles only (layout and positioning, no visual treatment) |
+| Theme      | Description                                                          |
+| ---------- | -------------------------------------------------------------------- |
+| `rokkit`   | Default — gradients and glowing borders                              |
+| `minimal`  | Clean and subtle                                                     |
+| `material` | Elevation and shadows                                                |
+| `frosted`  | Frosted glass and blur                                               |
+| `zen-sumi` | Ink on paper — no shadows, no gradients                              |
+| `base`     | Structural styles only (layout and positioning, no visual treatment) |
 
 ## Usage
 
@@ -54,6 +49,8 @@ import '@rokkit/themes'
 @import '@rokkit/themes/material.css';
 /* or */
 @import '@rokkit/themes/frosted.css';
+/* or */
+@import '@rokkit/themes/zen-sumi.css';
 ```
 
 ### Base structural styles only
@@ -108,12 +105,7 @@ src/
   minimal/     -- Clean + subtle theme
   material/    -- Elevation + shadows theme
   frosted/     -- Frosted glass + blur theme
-  shadcn/      -- Flat borders + ring focus theme
-  daisy-ui/    -- Rounded-full + bold fills theme
-  bits-ui/     -- Rounded-lg + shadow-sm theme
-  carbon/      -- Square + bottom-border inputs theme
-  ant-design/  -- Thin borders + dense layout theme
-  grada-ui/    -- Coral/purple gradient identity theme
+  zen-sumi/    -- Ink on paper theme (no shadows, no gradients)
   index.css    -- Full bundle entry point
 ```
 

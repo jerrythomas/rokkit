@@ -5,15 +5,13 @@
  */
 
 [data-style='frosted'] [data-dropdown-trigger] {
-  @apply text-surface-z8 border bg-none backdrop-blur-xl;
-  background: color-mix(in oklch, oklch(var(--color-surface-z3) / 1) 25%, transparent);
+  @apply text-surface-z8 border bg-none backdrop-blur-xl bg-surface-z3/25;
   border-color: rgba(255, 255, 255, 0.2);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
 }
 
 [data-style='frosted'] [data-dropdown-trigger]:hover:not(:disabled) {
-  @apply text-surface-z10 bg-none;
-  background: color-mix(in oklch, oklch(var(--color-surface-z3) / 1) 36%, transparent);
+  @apply text-surface-z10 bg-none bg-surface-z3/36;
   border-color: rgba(255, 255, 255, 0.28);
 }
 
@@ -23,8 +21,7 @@
 }
 
 [data-style='frosted'] [data-dropdown][data-open='true'] [data-dropdown-trigger] {
-  @apply bg-none;
-  background: color-mix(in oklch, oklch(var(--color-primary-z5) / 1) 35%, transparent);
+  @apply bg-none bg-primary-z5/35;
   border-color: rgba(255, 255, 255, 0.3);
 }
 
@@ -37,8 +34,7 @@
 }
 
 [data-style='frosted'] [data-dropdown-panel] {
-  @apply border bg-none shadow-xl backdrop-blur-2xl;
-  background: color-mix(in oklch, oklch(var(--color-surface-z2) / 1) 45%, transparent);
+  @apply border bg-none shadow-xl backdrop-blur-2xl bg-surface-z2/45;
   border-color: rgba(255, 255, 255, 0.2);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.2),
@@ -56,8 +52,7 @@
 }
 
 [data-style='frosted'] [data-dropdown-option][data-active='true'] {
-  @apply text-surface-z10 bg-none;
-  background: color-mix(in oklch, oklch(var(--color-primary-z5) / 1) 22%, transparent);
+  @apply text-surface-z10 bg-none bg-primary-z5/22;
 }
 
 [data-style='frosted'] [data-dropdown-separator] {

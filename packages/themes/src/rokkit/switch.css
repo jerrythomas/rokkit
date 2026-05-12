@@ -21,7 +21,7 @@
 }
 
 [data-style='rokkit'] [data-switch][aria-checked='true'] [data-switch-thumb] {
-  @apply bg-white shadow-md;
+  @apply bg-surface-z0 shadow-md;
 }
 
 [data-style='rokkit'] [data-switch-label] {

@@ -49,7 +49,7 @@
 }
 
 [data-style='rokkit'] [data-floating-nav-item]:focus-visible {
-  @apply ring-primary-400 ring-2 outline-none;
+  @apply ring-primary-z4 ring-2 outline-none;
 }
 
 /* Icon */

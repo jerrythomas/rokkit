@@ -26,11 +26,11 @@
 
 [data-style='rokkit'] [data-range-thumb][data-sliding] {
   @apply shadow-xl;
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-secondary) 30%, transparent);
+  @apply ring-4 ring-secondary-z5/30;
 }
 
 [data-style='rokkit'] [data-range-thumb]:focus-visible {
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-secondary) 30%, transparent);
+  @apply ring-4 ring-secondary-z5/30;
 }
 
 /* =============================================================================

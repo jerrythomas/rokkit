@@ -8,12 +8,7 @@ const KNOWN_THEMES = [
 	'minimal',
 	'material',
 	'frosted',
-	'grada-ui',
-	'shadcn',
-	'daisy-ui',
-	'bits-ui',
-	'carbon',
-	'ant-design'
+	'zen-sumi'
 ]
 
 /**

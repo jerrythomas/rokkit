@@ -27,7 +27,7 @@
 
 /* Selected state */
 [data-style='material'] [data-toggle-option][data-selected='true'] {
-  @apply bg-primary-z5 bg-none text-white shadow-md;
+  @apply bg-primary-z5 bg-none text-on-primary shadow-md;
 }
 
 /* =============================================================================
@@ -44,5 +44,5 @@
 }
 
 [data-style='material'] [data-toggle-option][data-selected='true'] [data-toggle-icon] {
-  @apply text-white;
+  @apply text-on-primary;
 }

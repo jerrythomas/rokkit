@@ -17,8 +17,7 @@
 }
 
 [data-style='frosted'] [data-timeline-item][data-active] [data-timeline-circle] {
-  @apply border-primary/60 text-primary;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 15%, transparent);
+  @apply border-primary/60 text-primary ring-3 ring-primary-z5/15;
 }
 
 /* =============================================================================

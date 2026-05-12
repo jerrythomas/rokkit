@@ -34,7 +34,7 @@
 
 /* Selected state */
 [data-style='material'] [data-tabs-trigger][data-selected] {
-  @apply bg-primary-z5 text-white shadow-md;
+  @apply bg-primary-z5 text-on-primary shadow-md;
 }
 
 /* Reset rokkit gradients bleeding in from body[data-style='rokkit'] ancestor */
@@ -76,7 +76,7 @@
 }
 
 [data-style='material'] [data-tabs-trigger][data-selected] [data-tabs-icon] {
-  @apply text-white;
+  @apply text-on-primary;
 }
 
 /* =============================================================================
