@@ -1,13 +1,15 @@
 <script>
 	import { page } from '$app/state'
+	import { onMount } from 'svelte'
 	import { getSidebarNav, getSettingsNav } from '$lib/data/navigation'
 	import { m } from '$lib/paraglide/messages.js'
-	import LanguageSwitcher from '$lib/components/LanguageSwitcher.svelte'
 	import { List } from '@rokkit/ui'
 	import ListItem from '$lib/components/ListItem.svelte'
 	import { theme } from '$lib/stores/theme.svelte'
 
 	let { children } = $props()
+
+	onMount(() => theme.restoreSkin())
 	let sidebarCollapsed = $state(false)
 
 	const sidebarNav = $derived(getSidebarNav())
@@ -83,22 +85,7 @@
 				{/if}
 			</a>
 
-			<!-- Mode toggle -->
-			<button
-				type="button"
-				onclick={() => theme.toggleMode()}
-				class="group grid items-center gap-2.5 px-2.5 py-[7px] rounded-md text-[13px] font-normal cursor-pointer transition-colors duration-[120ms] text-surface-z7 hover:bg-surface-z1 hover:text-surface-z9"
-				style="grid-template-columns: auto 1fr auto"
-				title={theme.mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-			>
-				<span class="text-[14px] w-[18px] text-center text-surface-z5 group-hover:text-surface-z7 {theme.mode === 'dark' ? 'i-glyph:sun' : 'i-glyph:moon'}"></span>
-				{#if !sidebarCollapsed}
-					<span class="whitespace-nowrap overflow-hidden text-ellipsis">{theme.mode === 'dark' ? 'Light mode' : 'Dark mode'}</span>
-				{/if}
-			</button>
-
 			{#if !sidebarCollapsed}
-				<LanguageSwitcher />
 				<div class="flex items-center gap-1.5 pt-2 px-2.5">
 					<span class="w-[6px] h-[6px] rounded-full bg-success-z5 flex-shrink-0"></span>
 					<span class="text-[10px] text-surface-z4">{m.daemon_running()}</span>

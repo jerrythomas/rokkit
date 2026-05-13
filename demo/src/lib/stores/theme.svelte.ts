@@ -4,9 +4,20 @@
  */
 
 import { browser } from '$app/environment'
+import { applySkin, applyRoleColor, skinDefinitions } from '$lib/data/skins'
 
 function readBody(key: string, fallback: string) {
 	return browser ? (document.body.dataset[key] || fallback) : fallback
+}
+
+function readStored(key: string, fallback: string): string {
+	if (!browser) return fallback
+	try {
+		const stored = JSON.parse(localStorage.getItem('sensei-theme') || '{}')
+		return stored[key] ?? fallback
+	} catch {
+		return fallback
+	}
 }
 
 function persist(key: string, value: string) {
@@ -19,26 +30,98 @@ function persist(key: string, value: string) {
 	} catch {}
 }
 
+function persistSkinData(key: string, value: string) {
+	if (!browser) return
+	try {
+		const stored = JSON.parse(localStorage.getItem('sensei-theme') || '{}')
+		stored[key] = value
+		localStorage.setItem('sensei-theme', JSON.stringify(stored))
+	} catch {}
+}
+
+function clearRoleOverrides() {
+	if (!browser) return
+	try {
+		const stored = JSON.parse(localStorage.getItem('sensei-theme') || '{}')
+		const roles = ['surface', 'primary', 'secondary', 'accent']
+		for (const role of roles) {
+			delete stored[`role-${role}`]
+		}
+		localStorage.setItem('sensei-theme', JSON.stringify(stored))
+	} catch {}
+}
+
 function createThemeStore() {
 	let style    = $state(readBody('style',   'zen-sumi'))
 	let mode     = $state(readBody('mode',    'dark'))
 	let density  = $state(readBody('density', 'comfortable'))
 	let radius   = $state(readBody('radius',  'soft'))
+	let skin     = $state(readStored('skin',  'default'))
+
+	/** Per-role overrides: role -> paletteName */
+	let roleOverrides = $state<Record<string, string>>({})
+
+	// Initialize role overrides from localStorage
+	if (browser) {
+		try {
+			const stored = JSON.parse(localStorage.getItem('sensei-theme') || '{}')
+			const roles = ['surface', 'primary', 'secondary', 'accent']
+			for (const role of roles) {
+				if (stored[`role-${role}`]) {
+					roleOverrides[role] = stored[`role-${role}`]
+				}
+			}
+		} catch {}
+	}
 
 	return {
 		get style()   { return style },
 		get mode()    { return mode },
 		get density() { return density },
 		get radius()  { return radius },
+		get skin()    { return skin },
+		get roleOverrides() { return roleOverrides },
 
 		setStyle(v: string)   { style = v;   persist('style', v) },
 		setMode(v: string)    { mode = v;    persist('mode', v) },
 		setDensity(v: string) { density = v; persist('density', v) },
 		setRadius(v: string)  { radius = v;  persist('radius', v) },
 
+		setSkin(v: string) {
+			skin = v
+			roleOverrides = {}
+			clearRoleOverrides()
+			persistSkinData('skin', v)
+			applySkin(v)
+		},
+
+		setRoleColor(role: string, palette: string) {
+			roleOverrides = { ...roleOverrides, [role]: palette }
+			persistSkinData(`role-${role}`, palette)
+			applyRoleColor(role, palette)
+		},
+
+		/** Get the effective palette for a role (override or skin default) */
+		getRoleColor(role: string): string {
+			if (roleOverrides[role]) return roleOverrides[role]
+			const skinDef = skinDefinitions.find(s => s.name === skin)
+			return skinDef?.[role as keyof typeof skinDef] as string ?? ''
+		},
+
 		toggleMode() {
 			const next = mode === 'dark' ? 'light' : 'dark'
 			this.setMode(next)
+		},
+
+		/** Re-apply the current skin (called on mount to restore state) */
+		restoreSkin() {
+			if (skin !== 'default') {
+				applySkin(skin)
+			}
+			// Re-apply any role overrides on top
+			for (const [role, palette] of Object.entries(roleOverrides)) {
+				applyRoleColor(role, palette)
+			}
 		}
 	}
 }
