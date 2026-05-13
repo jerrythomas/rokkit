@@ -31,6 +31,9 @@
       "types": "./dist/index.d.ts",
       "import": "./src/index.js"
     },
+    "./hooks": {
+      "import": "./src/hooks.js"
+    },
     "./patterns.css": "./src/patterns.css"
   },
   "dependencies": {

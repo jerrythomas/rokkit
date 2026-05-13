@@ -1,5 +1,8 @@
 import { paraglideMiddleware } from '$lib/paraglide/server.js'
 import { getLocale, getTextDirection } from '$lib/paraglide/runtime.js'
+import { themeInitScript } from '@rokkit/unocss/hooks'
+
+const initScript = themeInitScript({ storageKey: 'sensei-theme', defaultStyle: 'zen-sumi' })
 
 /** @type {import('@sveltejs/kit').Handle} */
 export const handle = ({ event, resolve }) => {
@@ -8,6 +11,7 @@ export const handle = ({ event, resolve }) => {
 		return resolve(event, {
 			transformPageChunk({ html }) {
 				return html
+					.replace(/(<body[^>]*>)/, `$1${initScript}`)
 					.replace('%lang%', getLocale())
 					.replace('%dir%', getTextDirection())
 			}
