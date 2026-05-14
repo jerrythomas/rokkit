@@ -29,8 +29,8 @@
 <div class="max-w-[1060px] mx-auto px-[48px] pt-[36px] pb-[48px]">
 
 	<div class="mb-8">
-		<span class="mono block text-[10.5px] uppercase text-surface-z5 tracking-[0.06em] mb-1">{m.sessions_subtitle()}</span>
-		<h1 class="font-display text-[28px] font-light text-surface-z9 m-0">{m.sessions_title()}</h1>
+		<span class="mono block text-[10.5px] uppercase text-ink-z5 tracking-[0.06em] mb-1">{m.sessions_subtitle()}</span>
+		<h1 class="font-display text-[28px] font-light text-ink-z1 m-0">{m.sessions_title()}</h1>
 	</div>
 
 	<!-- ─── Retro Cards ───────────────────────────────────────── -->
@@ -38,12 +38,12 @@
 		{#each data.retro as section (section.title)}
 			<Card class="retro-{section.tone}">
 				<div class="flex items-center gap-2 mb-[10px]">
-					<span class="kanji text-[18px] {section.tone === 'good' ? 'text-success-z5' : section.tone === 'warn' ? 'text-warning-z5' : 'text-surface-z5'}">{section.kanji}</span>
-					<h3 class="text-[13px] font-semibold text-surface-z9 m-0">{section.title}</h3>
+					<span class="kanji text-[18px] {section.tone === 'good' ? 'text-success-z5' : section.tone === 'warn' ? 'text-warning-z5' : 'text-ink-z5'}">{section.kanji}</span>
+					<h3 class="text-[13px] font-semibold text-ink-z1 m-0">{section.title}</h3>
 				</div>
 				<ul class="list-none p-0 m-0 flex flex-col gap-[6px]">
 					{#each section.items as item (item)}
-						<li class="text-[11.5px] text-surface-z7 leading-[1.5]">{item}</li>
+						<li class="text-[11.5px] text-ink-z3 leading-[1.5]">{item}</li>
 					{/each}
 				</ul>
 			</Card>
@@ -68,12 +68,12 @@
 				style="grid-template-columns: auto 120px 1fr auto auto auto"
 			>
 				<span class="w-2 h-2 rounded-full {session.ftr ? 'bg-success-z5' : 'bg-surface-z4'}"></span>
-				<span class="mono text-[11.5px] text-surface-z5">{session.project}</span>
-				<span class="text-[13px] text-surface-z9 whitespace-nowrap overflow-hidden text-ellipsis">{session.title}</span>
-				<span class="mono text-[10.5px] text-surface-z5 text-right">
+				<span class="mono text-[11.5px] text-ink-z5">{session.project}</span>
+				<span class="text-[13px] text-ink-z1 whitespace-nowrap overflow-hidden text-ellipsis">{session.title}</span>
+				<span class="mono text-[10.5px] text-ink-z5 text-right">
 					{session.corrections === 0 ? m.session_first_try() : m.session_corrections({ count: session.corrections.toString() })}
 				</span>
-				<span class="mono text-[11px] text-surface-z5 text-right">{session.duration}</span>
+				<span class="mono text-[11px] text-ink-z5 text-right">{session.duration}</span>
 				<span class="mono text-[10.5px] text-surface-z4 text-right">{session.time}</span>
 			</div>
 		{/each}

@@ -6,8 +6,8 @@
 	<div class="flex items-center gap-4">
 		<span class="kanji text-[36px] text-primary-z5">{kanji}</span>
 		<div>
-			<h1 class="display text-[28px] font-light text-surface-z9 m-0">{title}</h1>
-			<p class="text-[13px] text-surface-z5 mt-1 mb-0">{description}</p>
+			<h1 class="display text-[28px] font-light text-ink-z1 m-0">{title}</h1>
+			<p class="text-[13px] text-ink-z5 mt-1 mb-0">{description}</p>
 		</div>
 	</div>
 </div>

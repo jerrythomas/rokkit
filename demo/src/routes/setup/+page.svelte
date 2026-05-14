@@ -65,11 +65,11 @@
 		<aside class="wiz-rail bg-surface-z2 border-r border-surface-z3 flex flex-col overflow-hidden px-[22px] py-[26px] gap-7">
 			<div class="flex items-center gap-[10px]">
 				<span class="kanji text-[22px] text-primary-z5">道</span>
-				<span class="font-display text-[20px] font-normal text-surface-z9">{m.setup_title()}</span>
+				<span class="font-display text-[20px] font-normal text-ink-z1">{m.setup_title()}</span>
 			</div>
 
 			<div class="rail-stages flex-1 flex flex-col gap-3.5">
-				<div class="text-[10px] tracking-[0.14em] uppercase text-surface-z5 px-[10px]">Setup</div>
+				<div class="text-[10px] tracking-[0.14em] uppercase text-ink-z5 px-[10px]">Setup</div>
 				<List
 					items={wizardItems}
 					fields={{ value: 'id', label: 'label', icon: 'icon', subtext: 'description', disabled: 'disabled' }}
@@ -97,38 +97,38 @@
 					<div class="flex items-center gap-4 mb-7">
 						<span class="kanji text-[36px] text-primary-z5">{current.kanji}</span>
 						<div>
-							<h1 class="font-display text-[28px] font-light text-surface-z9 m-0">{current.label}</h1>
-							<p class="text-[13px] text-surface-z5 mt-1 mb-0">{current.description}</p>
+							<h1 class="font-display text-[28px] font-light text-ink-z1 m-0">{current.label}</h1>
+							<p class="text-[13px] text-ink-z5 mt-1 mb-0">{current.description}</p>
 						</div>
 					</div>
 					{#if current.id === 'welcome'}
-						<p class="font-display text-[18px] font-light text-surface-z7 leading-relaxed m-0 mb-6">{m.setup_welcome_body()}</p>
+						<p class="font-display text-[18px] font-light text-ink-z3 leading-relaxed m-0 mb-6">{m.setup_welcome_body()}</p>
 						<div class="grid grid-cols-3 gap-4 my-6">
 							{#each [['観', m.setup_pillar_observe(), m.setup_pillar_observe_desc()], ['教', m.setup_pillar_teach(), m.setup_pillar_teach_desc()], ['守', m.setup_pillar_local(), m.setup_pillar_local_desc()]] as [k, t, d] (k)}
 								<div class="px-[18px] py-[18px] bg-surface-z1 border border-surface-z2 rounded-md text-center">
 									<span class="kanji text-[28px] text-primary-z5">{k}</span>
-									<h3 class="text-[14px] font-semibold text-surface-z9 mt-2 mb-1">{t}</h3>
-									<p class="text-[12px] text-surface-z7 leading-[1.5] m-0">{d}</p>
+									<h3 class="text-[14px] font-semibold text-ink-z1 mt-2 mb-1">{t}</h3>
+									<p class="text-[12px] text-ink-z3 leading-[1.5] m-0">{d}</p>
 								</div>
 							{/each}
 						</div>
 						<p class="text-[11px] text-surface-z4 mt-4">{m.setup_welcome_time()}</p>
 					{:else}
-						<p class="text-[14px] text-surface-z7 leading-relaxed">{m.this_step_placeholder()}</p>
+						<p class="text-[14px] text-ink-z3 leading-relaxed">{m.this_step_placeholder()}</p>
 					{/if}
 
 				{:else if current.id === 'folders'}
 					<div class="flex items-center gap-4 mb-7">
 						<span class="kanji text-[36px] text-primary-z5">{current.kanji}</span>
 						<div>
-							<h1 class="font-display text-[28px] font-light text-surface-z9 m-0">{m.setup_folders_title()}</h1>
-							<p class="text-[13px] text-surface-z5 mt-1 mb-0">{m.setup_folders_desc()}</p>
+							<h1 class="font-display text-[28px] font-light text-ink-z1 m-0">{m.setup_folders_title()}</h1>
+							<p class="text-[13px] text-ink-z5 mt-1 mb-0">{m.setup_folders_desc()}</p>
 						</div>
 					</div>
 					<div class="flex flex-col gap-1 mb-3">
 						{#each folders as folder (folder)}
 							<div class="flex items-center justify-between px-3 py-2 bg-surface-z1 border border-surface-z2 rounded-md">
-								<span class="mono text-[13px] text-surface-z9">{folder}</span>
+								<span class="mono text-[13px] text-ink-z1">{folder}</span>
 								<button
 									class="text-surface-z4 text-[16px] w-6 h-6 flex items-center justify-center rounded hover:bg-surface-z2 hover:text-primary-z5 transition-colors"
 									onclick={() => removeFolder(folder)}
@@ -138,7 +138,7 @@
 					</div>
 					<form class="flex gap-2" onsubmit={(e) => { e.preventDefault(); addFolder() }}>
 						<input
-							class="flex-1 px-[14px] py-[10px] text-[13px] bg-surface-z1 border border-surface-z3 rounded-md outline-none focus:border-surface-z7 text-surface-z9 transition-colors font-sans"
+							class="flex-1 px-[14px] py-[10px] text-[13px] bg-surface-z1 border border-surface-z3 rounded-md outline-none focus:border-surface-z7 text-ink-z1 transition-colors font-sans"
 							type="text"
 							placeholder="~/code/project"
 							bind:value={newFolder}
@@ -151,8 +151,8 @@
 					<div class="flex items-center gap-4 mb-7">
 						<span class="kanji text-[36px] text-primary-z5">{current.kanji}</span>
 						<div>
-							<h1 class="font-display text-[28px] font-light text-surface-z9 m-0">{m.setup_projects_title()}</h1>
-							<p class="text-[13px] text-surface-z5 mt-1 mb-0">{m.setup_projects_desc()}</p>
+							<h1 class="font-display text-[28px] font-light text-ink-z1 m-0">{m.setup_projects_title()}</h1>
+							<p class="text-[13px] text-ink-z5 mt-1 mb-0">{m.setup_projects_desc()}</p>
 						</div>
 					</div>
 					<div class="flex flex-col gap-[10px]">
@@ -162,12 +162,12 @@
 								style="border-left: {project.confirmed ? `2px solid color-mix(in oklch, var(--color-success-z5) 14%, transparent)` : 'none'}"
 							>
 								<div class="flex justify-between items-center mb-2">
-									<h3 class="text-[14px] font-medium text-surface-z9 m-0">{project.name}</h3>
-									<span class="mono text-[10px] text-surface-z5 uppercase">{project.role}</span>
+									<h3 class="text-[14px] font-medium text-ink-z1 m-0">{project.name}</h3>
+									<span class="mono text-[10px] text-ink-z5 uppercase">{project.role}</span>
 								</div>
 								<div class="flex gap-[6px] flex-wrap">
 									{#each project.repos as repo (repo)}
-										<span class="mono text-[11px] px-2 py-[3px] bg-surface-z2 rounded text-surface-z7">{repo}</span>
+										<span class="mono text-[11px] px-2 py-[3px] bg-surface-z2 rounded text-ink-z3">{repo}</span>
 									{/each}
 								</div>
 							</div>

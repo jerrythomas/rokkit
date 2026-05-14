@@ -49,21 +49,21 @@
 	const swatchSize = $derived(isPage ? 'w-5 h-5' : 'w-4 h-4')
 	const sectionLabelClass = $derived(
 		isPage
-			? 'text-[10px] tracking-[0.14em] uppercase text-surface-z5 mb-3'
-			: 'text-surface-z5 mb-2 text-xs font-semibold tracking-widest uppercase'
+			? 'text-[10px] tracking-[0.14em] uppercase text-ink-z5 mb-3'
+			: 'text-ink-z5 mb-2 text-xs font-semibold tracking-widest uppercase'
 	)
 	const appearanceLabelClass = $derived(
 		isPage
-			? 'text-[10px] tracking-[0.14em] uppercase text-surface-z5 mb-4'
-			: 'text-surface-z5 mb-2 text-xs font-semibold tracking-widest uppercase'
+			? 'text-[10px] tracking-[0.14em] uppercase text-ink-z5 mb-4'
+			: 'text-ink-z5 mb-2 text-xs font-semibold tracking-widest uppercase'
 	)
 
 	// Chip active/inactive styles
 	const chipActive = 'bg-surface-z9 text-surface-z0 border-surface-z9'
 	const chipInactive = $derived(
 		isPage
-			? 'bg-surface-z1 text-surface-z6 border-surface-z2 hover:bg-surface-z2 hover:text-surface-z8 hover:border-surface-z4'
-			: 'bg-surface-z1 text-surface-z6 border-surface-z2 hover:bg-surface-z2'
+			? 'bg-surface-z1 text-ink-z4 border-surface-z2 hover:bg-surface-z2 hover:text-ink-z2 hover:border-surface-z4'
+			: 'bg-surface-z1 text-ink-z4 border-surface-z2 hover:bg-surface-z2'
 	)
 
 	// Group appearance sections (mode, density, radius) need special handling for page layout
@@ -81,14 +81,14 @@
 					<button
 						class="flex flex-col items-center gap-[6px] px-3 py-4 rounded-md border text-center transition-all duration-[120ms] cursor-pointer
 							{theme.style === t.value
-								? 'bg-surface-z2 border-primary-z5 ring-1 ring-primary-z5 text-surface-z9'
-								: 'bg-surface-z1 border-surface-z2 text-surface-z7 hover:bg-surface-z2 hover:border-surface-z4'}"
+								? 'bg-surface-z2 border-primary-z5 ring-1 ring-primary-z5 text-ink-z1'
+								: 'bg-surface-z1 border-surface-z2 text-ink-z3 hover:bg-surface-z2 hover:border-surface-z4'}"
 						onclick={() => theme.setStyle(t.value)}
 						title={t.desc}
 					>
-						<span class="kanji text-[22px] {theme.style === t.value ? 'text-primary-z5' : 'text-surface-z5'}">{t.kanji}</span>
+						<span class="kanji text-[22px] {theme.style === t.value ? 'text-primary-z5' : 'text-ink-z5'}">{t.kanji}</span>
 						<span class="text-[12px] font-medium leading-tight">{t.label}</span>
-						<span class="text-[10px] text-surface-z5 leading-tight">{t.desc}</span>
+						<span class="text-[10px] text-ink-z5 leading-tight">{t.desc}</span>
 					</button>
 				{/each}
 			</div>
@@ -125,7 +125,7 @@
 			<div class="flex flex-col gap-3">
 				{#each ['surface', 'primary', 'secondary', 'accent'] as role (role)}
 					<div class="flex items-center gap-4">
-						<span class="text-[13px] text-surface-z7 w-[80px] flex-shrink-0 capitalize">{role}</span>
+						<span class="text-[13px] text-ink-z3 w-[80px] flex-shrink-0 capitalize">{role}</span>
 						<div class="flex gap-1.5 flex-wrap">
 							{#each availablePalettes as palette (palette)}
 								<button
@@ -150,7 +150,7 @@
 
 				{#if show('mode')}
 					<div class="flex items-center gap-6">
-						<span class="text-[13px] text-surface-z7 w-[80px] flex-shrink-0">{resolvedLabels.mode}</span>
+						<span class="text-[13px] text-ink-z3 w-[80px] flex-shrink-0">{resolvedLabels.mode}</span>
 						<div class="flex gap-1">
 							{#each [['light', 'Light'], ['dark', 'Dark']] as [v, label] (v)}
 								<button
@@ -165,7 +165,7 @@
 
 				{#if show('density')}
 					<div class="flex items-center gap-6">
-						<span class="text-[13px] text-surface-z7 w-[80px] flex-shrink-0">{resolvedLabels.density}</span>
+						<span class="text-[13px] text-ink-z3 w-[80px] flex-shrink-0">{resolvedLabels.density}</span>
 						<div class="flex gap-1">
 							{#each [['compact', 'Compact'], ['comfortable', 'Comfortable'], ['cozy', 'Cozy']] as [v, label] (v)}
 								<button
@@ -180,7 +180,7 @@
 
 				{#if show('radius')}
 					<div class="flex items-center gap-6">
-						<span class="text-[13px] text-surface-z7 w-[80px] flex-shrink-0">{resolvedLabels.radius}</span>
+						<span class="text-[13px] text-ink-z3 w-[80px] flex-shrink-0">{resolvedLabels.radius}</span>
 						<div class="flex gap-1">
 							{#each [['sharp', 'Sharp'], ['soft', 'Soft'], ['rounded', 'Rounded'], ['pill', 'Pill']] as [v, label] (v)}
 								<button
@@ -262,7 +262,7 @@
 
 	{#if show('skin')}
 		<section>
-			<h3 class="text-surface-z5 mb-3 text-xs font-semibold tracking-widest uppercase">{resolvedLabels.skin}</h3>
+			<h3 class="text-ink-z5 mb-3 text-xs font-semibold tracking-widest uppercase">{resolvedLabels.skin}</h3>
 			<div class="flex flex-col gap-1.5">
 				{#each skinDefinitions as s (s.name)}
 					<button
@@ -276,7 +276,7 @@
 								<span class="h-4 w-4 rounded-full" style="background:{getPaletteColor(s[role])}"></span>
 							{/each}
 						</div>
-						<span class="text-surface-z7 text-sm">{s.label}</span>
+						<span class="text-ink-z3 text-sm">{s.label}</span>
 						{#if theme.skin === s.name}
 							<span class="text-primary-z5 ml-auto text-xs">Active</span>
 						{/if}
@@ -288,11 +288,11 @@
 
 	{#if show('roles')}
 		<section>
-			<h3 class="text-surface-z5 mb-3 text-xs font-semibold tracking-widest uppercase">{resolvedLabels.roles}</h3>
+			<h3 class="text-ink-z5 mb-3 text-xs font-semibold tracking-widest uppercase">{resolvedLabels.roles}</h3>
 			<div class="flex flex-col gap-2.5">
 				{#each ['surface', 'primary', 'secondary', 'accent'] as role (role)}
 					<div class="flex items-start gap-2">
-						<span class="text-surface-z6 w-16 flex-shrink-0 text-xs capitalize pt-0.5">{role}</span>
+						<span class="text-ink-z4 w-16 flex-shrink-0 text-xs capitalize pt-0.5">{role}</span>
 						<div class="flex flex-wrap gap-1">
 							{#each availablePalettes as palette (palette)}
 								<button

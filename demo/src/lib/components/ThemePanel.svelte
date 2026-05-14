@@ -22,9 +22,9 @@
 >
 	<!-- Header -->
 	<div class="border-surface-z3 flex items-center justify-between border-b p-4">
-		<span class="text-surface-z8 text-sm font-semibold">Theme</span>
+		<span class="text-ink-z2 text-sm font-semibold">Theme</span>
 		<button
-			class="w-6 h-6 flex items-center justify-center text-surface-z5 rounded hover:text-surface-z9 hover:bg-surface-z2 cursor-pointer"
+			class="w-6 h-6 flex items-center justify-center text-ink-z5 rounded hover:text-ink-z1 hover:bg-surface-z2 cursor-pointer"
 			onclick={() => (open = false)}
 			aria-label="Close"
 		>&times;</button>

@@ -12,8 +12,8 @@
 	<div class="flex items-center gap-4 mb-10">
 		<span class="kanji text-[36px] text-primary-z5">設</span>
 		<div>
-			<h1 class="font-display text-[28px] font-light text-surface-z9 m-0">{m.nav_settings()}</h1>
-			<p class="text-[13px] text-surface-z5 mt-1 mb-0">Appearance, density, and language</p>
+			<h1 class="font-display text-[28px] font-light text-ink-z1 m-0">{m.nav_settings()}</h1>
+			<p class="text-[13px] text-ink-z5 mt-1 mb-0">Appearance, density, and language</p>
 		</div>
 	</div>
 

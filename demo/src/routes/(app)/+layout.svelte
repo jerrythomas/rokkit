@@ -39,10 +39,10 @@
 		<div class="flex items-center gap-2.5 px-2.5 pb-4.5">
 			<span class="kanji text-[20px] text-primary-z5">先</span>
 			{#if !sidebarCollapsed}
-				<span class="font-display text-[17px] font-medium text-surface-z9 tracking-[-0.02em] flex-1">Sensei</span>
+				<span class="font-display text-[17px] font-medium text-ink-z1 tracking-[-0.02em] flex-1">Sensei</span>
 			{/if}
 			<button
-				class="w-6 h-6 flex items-center justify-center text-surface-z5 text-[14px] rounded flex-shrink-0 hover:bg-surface-z1 hover:text-surface-z9 transition-colors"
+				class="w-6 h-6 flex items-center justify-center text-ink-z5 text-[14px] rounded flex-shrink-0 hover:bg-surface-z1 hover:text-ink-z1 transition-colors"
 				onclick={() => (sidebarCollapsed = !sidebarCollapsed)}
 				title={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
 			>
@@ -75,11 +75,11 @@
 		<div class="border-t border-surface-z2 pt-2 flex flex-col gap-px">
 			<a
 				href={settingsNav.href}
-				class="group grid items-center gap-2.5 px-2.5 py-[7px] rounded-md text-[13px] font-normal no-underline cursor-pointer transition-colors duration-[120ms] text-surface-z7 hover:bg-surface-z1 hover:text-surface-z9"
+				class="group grid items-center gap-2.5 px-2.5 py-[7px] rounded-md text-[13px] font-normal no-underline cursor-pointer transition-colors duration-[120ms] text-ink-z3 hover:bg-surface-z1 hover:text-ink-z1"
 				style="grid-template-columns: auto 1fr auto"
 				title={sidebarCollapsed ? 'Settings' : undefined}
 			>
-				<span class="kanji text-[14px] w-[18px] text-center text-surface-z5 group-hover:text-surface-z7">{settingsNav.kanji}</span>
+				<span class="kanji text-[14px] w-[18px] text-center text-ink-z5 group-hover:text-ink-z3">{settingsNav.kanji}</span>
 				{#if !sidebarCollapsed}
 					<span class="whitespace-nowrap overflow-hidden text-ellipsis">{settingsNav.label}</span>
 				{/if}
