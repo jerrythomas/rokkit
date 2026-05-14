@@ -8,7 +8,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "test:e2e": "playwright test",
-    "test:e2e:update": "playwright test --update-snapshots"
+    "test:e2e:update": "playwright test --update-snapshots",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",
@@ -16,13 +18,19 @@
     "@sveltejs/adapter-auto": "^6.1.0",
     "@sveltejs/kit": "^2.42.1",
     "@sveltejs/vite-plugin-svelte": "^6.2.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/svelte": "^5.3.1",
     "@unocss/extractor-svelte": "^66.5.1",
     "@unocss/reset": "66.5.1",
+    "@vitest/browser": "^4.1.6",
+    "jsdom": "^29.1.1",
     "svelte": "^5.39.2",
     "unocss": "^66.5.1",
-    "vite": "^7.1.6"
+    "vite": "^7.1.6",
+    "vitest": "^4.1.6"
   },
   "dependencies": {
+    "@fontsource/caveat": "^5.2.8",
     "@fontsource/fraunces": "^5.2.9",
     "@fontsource/inter": "^5.2.8",
     "@fontsource/jetbrains-mono": "^5.2.8",
@@ -38,6 +46,7 @@
     "@rokkit/states": "workspace:latest",
     "@rokkit/themes": "workspace:latest",
     "@rokkit/ui": "workspace:latest",
-    "@rokkit/unocss": "workspace:latest"
+    "@rokkit/unocss": "workspace:latest",
+    "minisearch": "^7.2.0"
   }
 }
