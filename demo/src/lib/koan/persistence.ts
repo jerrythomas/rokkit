@@ -3,7 +3,7 @@ const hasLS = () => typeof localStorage !== 'undefined'
 export function read<T>(key: string, schema: (v: unknown) => boolean): T | null {
 	if (!hasLS()) return null
 	const raw = localStorage.getItem(key)
-	if (raw == null) return null
+	if (raw === null) return null
 	try {
 		const parsed = JSON.parse(raw)
 		return schema(parsed) ? (parsed as T) : null
