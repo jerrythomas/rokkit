@@ -1,0 +1,39 @@
+// demo/src/lib/koan/types.ts
+import type { Component } from 'svelte'
+
+export type DemoCategory = 'theme' | 'navigation' | 'feedback' | 'forms' | 'data'
+
+export type DemoMeta = {
+	id: string
+	title: string
+	description: string
+	keywords: string[]
+	category: DemoCategory
+	icon: string
+	load: () => Promise<{ default: Component }>
+	preview?: () => Promise<{ default: Component }>
+}
+
+export type TimelineEntry = {
+	demoId: string
+	mountedAt: string
+	query: string
+}
+
+export type WizardMode = 'light' | 'dark' | 'auto'
+export type WizardDensity = 'compact' | 'normal' | 'comfortable'
+export type WizardRoundedness = 'sharp' | 'soft' | 'rounded' | 'pill'
+
+export type WizardState = {
+	preset: string
+	mode: WizardMode
+	density: WizardDensity
+	roundedness: WizardRoundedness
+	name: string
+}
+
+export type SavedTheme = WizardState & {
+	id: string
+	createdAt: string
+	updatedAt: string
+}
