@@ -10,6 +10,8 @@
 @import '@fontsource/inter/600.css';
 @import '@fontsource/jetbrains-mono/latin-400.css';
 @import '@fontsource/jetbrains-mono/latin-500.css';
+@import '@fontsource/caveat/400.css';
+@import '@fontsource/caveat/500.css';
 
 /* Rokkit theme layers */
 @import '@rokkit/themes/base.css';
@@ -28,6 +30,9 @@
 
   /* Bridge radius token */
   --radius: var(--radius-md);
+
+  /* Script / handwriting font */
+  --font-script: 'Caveat', cursive;
 }
 
 html {
