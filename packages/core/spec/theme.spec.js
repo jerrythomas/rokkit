@@ -519,4 +519,25 @@ describe('semanticShortcuts', () => {
 		const resultWithOpacity = callback(['bg-primary-z0/75', '/75'])
 		expect(resultWithOpacity).toBe('bg-primary-50/75 dark:bg-primary-950/75')
 	})
+
+	it('should invert light/dark for ink (INVERTED_ROLES)', () => {
+		const shortcuts = semanticShortcuts('ink')
+		// ink z1: light should be 900 (inverted from 100), dark should be 100
+		const z1Text = shortcuts.find(s => typeof s[0] === 'string' && s[0] === 'text-ink-z1')
+		expect(z1Text[1]).toBe('text-ink-900 dark:text-ink-100')
+
+		// ink z0: light should be 950 (inverted from 50), dark should be 50
+		const z0Bg = shortcuts.find(s => typeof s[0] === 'string' && s[0] === 'bg-ink-z0')
+		expect(z0Bg[1]).toBe('bg-ink-950 dark:bg-ink-50')
+
+		// ink z5: midpoint stays 500 (1000-500=500)
+		const z5Text = shortcuts.find(s => typeof s[0] === 'string' && s[0] === 'text-ink-z5')
+		expect(z5Text[1]).toBe('text-ink-500 dark:text-ink-500')
+	})
+
+	it('should NOT invert for normal roles like surface', () => {
+		const shortcuts = semanticShortcuts('surface')
+		const z1Text = shortcuts.find(s => typeof s[0] === 'string' && s[0] === 'text-surface-z1')
+		expect(z1Text[1]).toBe('text-surface-100 dark:text-surface-900')
+	})
 })

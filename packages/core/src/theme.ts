@@ -109,9 +109,11 @@ function toneShortcuts({ prefix, name, toneName, lightValue, darkValue }) {
  * @returns {Array} Array of shortcut definitions
  */
 export function semanticShortcuts(name) {
+	const inverted = INVERTED_ROLES.has(name)
 	const shortcuts = []
-	for (const [toneName, lightValue] of Object.entries(TONE_MAP)) {
-		const darkValue = 1000 - lightValue
+	for (const [toneName, toneValue] of Object.entries(TONE_MAP)) {
+		const lightValue = inverted ? 1000 - toneValue : toneValue
+		const darkValue  = inverted ? toneValue : 1000 - toneValue
 		for (const prefix of SEMANTIC_PREFIXES) {
 			shortcuts.push(...toneShortcuts({ prefix, name, toneName, lightValue, darkValue }))
 		}

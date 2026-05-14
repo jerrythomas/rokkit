@@ -104,7 +104,7 @@ export default {
 	skins: {
 		default:  {
 			surface:   { light: 'kami', dark: 'sumi' },
-			ink:       { light: 'sumi', dark: 'kami' },
+			ink:       { light: 'kami', dark: 'sumi' },
 			primary:   'shu',
 			secondary: 'hisui',
 			tertiary:  'kohaku',
