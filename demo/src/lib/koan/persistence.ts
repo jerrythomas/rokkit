@@ -1,4 +1,5 @@
-const hasLS = () => typeof localStorage !== 'undefined'
+const hasLS = () =>
+	typeof localStorage !== 'undefined' && typeof localStorage.getItem === 'function'
 
 export function read<T>(key: string, schema: (v: unknown) => boolean): T | null {
 	if (!hasLS()) return null
