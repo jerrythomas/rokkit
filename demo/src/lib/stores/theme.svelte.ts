@@ -22,7 +22,14 @@ function readStored(key: string, fallback: string): string {
 
 function persist(key: string, value: string) {
 	if (!browser) return
-	document.body.dataset[key] = value
+	// Resolve 'auto' mode to the actual system preference for body.dataset.mode
+	// so CSS [data-mode="dark"] selectors match. Keep 'auto' in localStorage so
+	// the user's choice persists across system theme changes.
+	let resolved = value
+	if (key === 'mode' && value === 'auto') {
+		resolved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+	}
+	document.body.dataset[key] = resolved
 	try {
 		const stored = JSON.parse(localStorage.getItem('rokkit-site') || '{}')
 		stored[key] = value

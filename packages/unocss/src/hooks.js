@@ -44,7 +44,7 @@ function buildInitScript(opts) {
 		? `'${opts.defaultMode}'`
 		: "(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light')"
 
-	return `<script>;(function(){try{var t=JSON.parse(localStorage.getItem('${key}')||'{}');var b=document.body;if(t.style||${ds})b.dataset.style=t.style||${ds};b.dataset.mode=t.mode||${dm};b.dataset.density=t.density||${dd};b.dataset.radius=t.radius||${dr};if(t.skin)b.dataset.skin=t.skin}catch(e){}})()</script>`
+	return `<script>;(function(){try{var t=JSON.parse(localStorage.getItem('${key}')||'{}');var b=document.body;if(t.style||${ds})b.dataset.style=t.style||${ds};var m=t.mode||${dm};if(m==='auto')m=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';b.dataset.mode=m;b.dataset.density=t.density||${dd};b.dataset.radius=t.radius||${dr};if(t.skin)b.dataset.skin=t.skin}catch(e){}})()</script>`
 }
 
 /**
