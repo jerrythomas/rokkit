@@ -71,7 +71,7 @@
 		</div>
 
 		<div class="action-row">
-			<img src="/arrow.svg" alt="" class="hand-arrow" />
+			<span class="hand-arrow" aria-hidden="true"></span>
 			<form class="input-row" onsubmit={handleSubmit}>
 				<Input
 					bind:value={query}
@@ -145,10 +145,14 @@
 		color: var(--color-accent-z5);
 	}
 	.hand-arrow {
+		display: block;
 		width: 30px;
-		height: auto;
+		height: 100px;
 		opacity: 0.7;
-		transform: rotate(-12deg);
+		transform: translateY(-80px) rotate(-12deg);
+		background: var(--color-accent-z5);
+		-webkit-mask: url(/arrow.svg) no-repeat center / contain;
+		        mask: url(/arrow.svg) no-repeat center / contain;
 	}
 	.input-row {
 		display: flex;
