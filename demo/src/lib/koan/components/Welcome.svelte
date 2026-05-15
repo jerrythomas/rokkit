@@ -2,7 +2,6 @@
 	import { Input } from '@rokkit/forms'
 	import { Button } from '@rokkit/ui'
 	import EmptyState from './EmptyState.svelte'
-	import AnnotationArrow from './AnnotationArrow.svelte'
 	import { theme } from '$lib/stores/theme.svelte'
 
 	let {
@@ -56,15 +55,13 @@
 		/>
 	</div>
 
-	<EmptyState
-		icon="○"
-		description="start with a word — theme, tabs, anything"
-	>
-		{#snippet action()}
-			<div class="action-area">
-				<div class="arrow-wrap" aria-hidden="true">
-					<AnnotationArrow direction="curve-down-right" width={120} height={64} />
-				</div>
+	<div class="hero">
+		<img src="/arrow.svg" alt="" class="hand-arrow" />
+		<EmptyState
+			icon="○"
+			description="start with a word — theme, tabs, anything"
+		>
+			{#snippet action()}
 				<form class="input-row" onsubmit={handleSubmit}>
 					<Input
 						bind:value={query}
@@ -73,9 +70,9 @@
 					/>
 					<Button icon="i-glyph:plain" variant="primary" type="submit" title="Send" aria-label="Send" />
 				</form>
-			</div>
-		{/snippet}
-	</EmptyState>
+			{/snippet}
+		</EmptyState>
+	</div>
 </div>
 
 <style>
@@ -93,18 +90,18 @@
 		display: flex;
 		gap: 8px;
 		z-index: 10;
+		color: var(--color-ink-z2);
 	}
-	.action-area {
+	.hero {
 		display: flex;
-		flex-direction: column;
-		align-items: flex-end;
-		gap: 4px;
-		position: relative;
+		align-items: center;
+		gap: 24px;
+		color: var(--color-accent-z5);
 	}
-	.arrow-wrap {
-		align-self: flex-end;
-		padding-right: 48px;
-		@apply text-accent-z5;
+	.hand-arrow {
+		width: 90px;
+		height: auto;
+		opacity: 0.8;
 	}
 	.input-row {
 		display: flex;

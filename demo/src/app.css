@@ -94,7 +94,7 @@ body {
   overflow: hidden;
   font-family: var(--font-sans);
   font-size: 13px;
-  background: var(--color-surface-z0);
+  background: var(--color-surface-z1);
   color: var(--color-ink-z1);
 }
 
