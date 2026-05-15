@@ -3,51 +3,31 @@
 	import Canvas from './Canvas.svelte'
 	import Welcome from './Welcome.svelte'
 	import BrandMark from './BrandMark.svelte'
-	import TimelineList from './TimelineList.svelte'
-	import { koan, recordVisit } from '../store.svelte'
+	import ConversationList from './ConversationList.svelte'
+	import { koan, submitQuery, selectDemo } from '../store.svelte'
 	import { themeStore, setMode } from '../theme-store.svelte'
-	import { runMatch, isStrongMatch, nextSuggestions } from '../match.svelte'
-	import { findById } from '../catalog'
+	import { runMatch } from '../match.svelte'
 
-	let hasInteracted = $state(koan.history.length > 0)
+	let hasInteracted = $state(koan.messages.length > 0)
 
 	const matches = $derived(runMatch(koan.query))
 	const suggestionItems = $derived(
-		koan.query.trim() ? matches.slice(0, 3) : nextSuggestions(koan.visitedThisSession)
+		koan.query.trim() ? matches.slice(0, 3) : []
 	)
 
 	function handleSubmit(q: string) {
-		koan.query = q
 		hasInteracted = true
-		const m = runMatch(q)
-		if (isStrongMatch(q, m)) {
-			recordVisit(m[0].id, q)
-		}
+		submitQuery(q)
 	}
 
 	function pickSuggestion(id: string) {
-		const demo = findById(id)
-		if (!demo) return
 		hasInteracted = true
-		recordVisit(id, koan.query)
+		selectDemo(id)
 	}
 
-	function selectTimeline(item: { id: string }) {
-		const demo = findById(item.id)
-		if (demo) recordVisit(item.id, koan.query)
+	function selectConversationDemo(demoId: string) {
+		selectDemo(demoId)
 	}
-
-	const timelineItems = $derived(
-		koan.history.map((h) => {
-			const demo = findById(h.demoId)
-			return {
-				id: h.demoId,
-				icon: demo?.icon ?? '○',
-				title: demo?.title ?? h.demoId,
-				timestamp: h.mountedAt
-			}
-		})
-	)
 
 	function cycleMode() {
 		const order = ['light', 'dark', 'auto'] as const
@@ -77,20 +57,22 @@
 				<BrandMark glyph="○" label="Koan" compact />
 			{/snippet}
 			{#snippet suggestions()}
-				<div class="chips">
-					{#each suggestionItems as s (s.id)}
-						<button type="button" class="chip" onclick={() => pickSuggestion(s.id)}>
-							<span aria-hidden="true">{s.icon}</span>
-							<span>{s.title}</span>
-						</button>
-					{/each}
-				</div>
+				{#if suggestionItems.length > 0}
+					<div class="chips">
+						{#each suggestionItems as s (s.id)}
+							<button type="button" class="chip" onclick={() => pickSuggestion(s.id)}>
+								<span aria-hidden="true">{s.icon}</span>
+								<span>{s.title}</span>
+							</button>
+						{/each}
+					</div>
+				{/if}
 			{/snippet}
 			{#snippet history()}
-				<TimelineList
-					items={timelineItems}
+				<ConversationList
+					messages={koan.messages}
 					activeId={koan.activeDemoId}
-					onselect={selectTimeline}
+					onselect={selectConversationDemo}
 				/>
 			{/snippet}
 			{#snippet footer()}

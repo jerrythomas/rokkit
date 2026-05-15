@@ -20,6 +20,24 @@ export type TimelineEntry = {
 	query: string
 }
 
+export type UserMessage = {
+	kind: 'user'
+	id: string
+	query: string
+	timestamp: string
+}
+
+export type ResponseMessage = {
+	kind: 'response'
+	id: string
+	query: string
+	matches: string[] // demo ids
+	copy: string // "I have a Theme Builder you can try." or "Here are a few options."
+	timestamp: string
+}
+
+export type ConversationMessage = UserMessage | ResponseMessage
+
 export type WizardMode = 'light' | 'dark' | 'auto'
 export type WizardDensity = 'compact' | 'normal' | 'comfortable'
 export type WizardRoundedness = 'sharp' | 'soft' | 'rounded' | 'pill'

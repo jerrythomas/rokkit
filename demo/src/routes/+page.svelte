@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Shell from '$lib/koan/components/Shell.svelte'
-	import { koan, recordVisit } from '$lib/koan/store.svelte'
+	import { koan, selectDemo } from '$lib/koan/store.svelte'
 	import { onMount } from 'svelte'
 
 	onMount(() => {
@@ -8,7 +8,7 @@
 		const demoId = params.get('demo')
 		const q = params.get('q')
 		if (q) koan.query = q
-		if (demoId) recordVisit(demoId, q ?? '')
+		if (demoId) selectDemo(demoId)
 	})
 </script>
 

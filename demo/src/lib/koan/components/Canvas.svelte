@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ShowcaseCanvas from './ShowcaseCanvas.svelte'
 	import Gallery from './Gallery.svelte'
-	import { koan, recordVisit } from '../store.svelte'
+	import { koan, selectDemo } from '../store.svelte'
 	import { catalog, findById } from '../catalog'
 	import { runMatch } from '../match.svelte'
 	import type { Component } from 'svelte'
@@ -27,7 +27,7 @@
 	}
 
 	function pickGalleryItem(item: { id: string }) {
-		recordVisit(item.id, koan.query)
+		selectDemo(item.id)
 	}
 
 	const galleryItems = $derived(matches.length > 0 ? matches : catalog)
