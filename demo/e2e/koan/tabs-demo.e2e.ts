@@ -1,43 +1,66 @@
 import { expect, test } from '@playwright/test'
 
-test('tabs demo renders two examples and switches panels', async ({ page }) => {
+async function openTabsDemo(page: any) {
 	await page.goto('/')
-	// Activate the tabs demo by typing into the query input
 	const input = page.getByPlaceholder('type here…')
 	await input.fill('tabs')
 	await input.press('Enter')
+	// Wait for the single preview area to be visible
+	await expect(page.locator('.preview')).toBeVisible({ timeout: 10000 })
+}
 
-	// Wait for the lazy-loaded demo component to render
-	await expect(page.getByText('With icons')).toBeVisible({ timeout: 10000 })
-	await expect(page.getByText('Simple')).toBeVisible()
+test('tabs demo renders a single preview (not two side-by-side)', async ({ page }) => {
+	await openTabsDemo(page)
 
-	// Switch tab in the icons example
-	const iconsExample = page.locator('.example', { hasText: 'With icons' })
-	await iconsExample.getByRole('tab', { name: 'Settings' }).click()
-	await expect(iconsExample.getByText('Configure your preferences')).toBeVisible()
+	// There should be exactly one .preview element
+	await expect(page.locator('.preview')).toHaveCount(1)
+
+	// The old "With icons" and "Simple" headings should NOT be present
+	await expect(page.getByText('With icons')).not.toBeVisible()
+	await expect(page.getByText('Simple')).not.toBeVisible()
+
+	// The Tabs component should render tab buttons
+	await expect(page.getByRole('tab', { name: 'Overview' })).toBeVisible()
+	await expect(page.getByRole('tab', { name: 'Settings' })).toBeVisible()
+	await expect(page.getByRole('tab', { name: 'Activity' })).toBeVisible()
 })
 
-test('tabs demo shows FormRenderer controls', async ({ page }) => {
-	await page.goto('/')
-	const input = page.getByPlaceholder('type here…')
-	await input.fill('tabs')
-	await input.press('Enter')
+test('tabs demo shows Layout and Field mapping control groups', async ({ page }) => {
+	await openTabsDemo(page)
 
-	await expect(page.getByText('With icons')).toBeVisible({ timeout: 10000 })
+	// Both fieldset legends must be present
+	await expect(page.locator('legend', { hasText: 'Layout' })).toBeVisible()
+	await expect(page.locator('legend', { hasText: 'Field mapping' })).toBeVisible()
 
-	// FormRenderer controls should be visible (use label elements for exactness)
+	// Layout controls
 	await expect(page.locator('label', { hasText: 'Orientation' }).first()).toBeVisible()
 	await expect(page.locator('label', { hasText: 'Position' }).first()).toBeVisible()
 	await expect(page.locator('label', { hasText: 'Align' }).first()).toBeVisible()
 	await expect(page.locator('label', { hasText: 'Disabled' }).first()).toBeVisible()
+
+	// Field mapping controls
+	await expect(page.locator('label', { hasText: 'Icon field' }).first()).toBeVisible()
+	await expect(page.locator('label', { hasText: 'Show icons' }).first()).toBeVisible()
 })
 
-test('tabs demo shows intro text', async ({ page }) => {
-	await page.goto('/')
-	const input = page.getByPlaceholder('type here…')
-	await input.fill('tabs')
-	await input.press('Enter')
+test('tabs demo has collapsible data preview', async ({ page }) => {
+	await openTabsDemo(page)
 
-	await expect(page.getByText('With icons')).toBeVisible({ timeout: 10000 })
-	await expect(page.getByText(/Tabs let you switch between related views/)).toBeVisible()
+	const details = page.locator('details.data')
+	await expect(details).toBeVisible()
+	await expect(details.locator('summary')).toHaveText('Data preview')
+})
+
+test('tabs demo intro mentions field mapping and image', async ({ page }) => {
+	await openTabsDemo(page)
+
+	await expect(page.locator('.intro')).toContainText('field mapping')
+	await expect(page.locator('.intro')).toContainText('image')
+})
+
+test('tabs demo switches panels', async ({ page }) => {
+	await openTabsDemo(page)
+
+	await page.getByRole('tab', { name: 'Settings' }).click()
+	await expect(page.locator('[data-tabs-content]', { hasText: 'Configure your preferences here.' })).toBeVisible()
 })

@@ -4,14 +4,47 @@
 
 	let value = $state('overview')
 
-	let props = $state({
+	let layout = $state({
 		orientation: 'horizontal',
 		position: 'before',
 		align: 'start',
 		disabled: false
 	})
 
-	const schema = {
+	let mapping = $state({
+		iconField: 'icon',
+		showIcons: true
+	})
+
+	const items = [
+		{
+			label: 'Overview',
+			value: 'overview',
+			icon: 'i-glyph:home',
+			image: 'i-glyph:user',
+			content: 'Welcome to the overview panel — your starting point.'
+		},
+		{
+			label: 'Settings',
+			value: 'settings',
+			icon: 'i-glyph:settings',
+			image: 'i-glyph:palette',
+			content: 'Configure your preferences here.'
+		},
+		{
+			label: 'Activity',
+			value: 'activity',
+			icon: 'i-glyph:chart',
+			image: 'i-glyph:bell',
+			content: 'View recent activity and event logs.'
+		}
+	]
+
+	const fields = $derived(
+		mapping.showIcons ? { icon: mapping.iconField } : { icon: '__none__' }
+	)
+
+	const layoutSchema = {
 		type: 'object',
 		properties: {
 			orientation: { type: 'string' },
@@ -20,8 +53,7 @@
 			disabled: { type: 'boolean' }
 		}
 	}
-
-	const layout = {
+	const layoutLayout = {
 		type: 'vertical',
 		elements: [
 			{
@@ -35,73 +67,64 @@
 		]
 	}
 
-	const tabs = [
-		{
-			label: 'Overview',
-			value: 'overview',
-			icon: 'i-glyph:home',
-			content: 'Welcome to the overview panel. This is the main dashboard view.'
-		},
-		{
-			label: 'Settings',
-			value: 'settings',
-			icon: 'i-glyph:settings',
-			content: 'Configure your preferences and application settings here.'
-		},
-		{
-			label: 'Activity',
-			value: 'activity',
-			icon: 'i-glyph:chart',
-			content: 'View recent activity and event logs.'
+	const mappingSchema = {
+		type: 'object',
+		properties: {
+			iconField: { type: 'string' },
+			showIcons: { type: 'boolean' }
 		}
-	]
-
-	const simpleTabs = [
-		{ label: 'Tab 1', value: 'tab1', content: 'Content for the first tab.' },
-		{ label: 'Tab 2', value: 'tab2', content: 'Content for the second tab.' },
-		{ label: 'Tab 3', value: 'tab3', content: 'Content for the third tab.' }
-	]
+	}
+	const mappingLayout = {
+		type: 'vertical',
+		elements: [
+			{ scope: '#/iconField', label: 'Icon field', props: { options: ['icon', 'image'] } },
+			{ scope: '#/showIcons', label: 'Show icons' }
+		]
+	}
 </script>
 
 <section class="tabs-demo">
 	<div class="grid">
 		<div class="preview">
-			<div class="example">
-				<h4>With icons</h4>
-				<Tabs
-					options={tabs}
-					bind:value
-					orientation={props.orientation}
-					position={props.position}
-					align={props.align}
-					disabled={props.disabled}
-				/>
-			</div>
-			<div class="example">
-				<h4>Simple</h4>
-				<Tabs
-					options={simpleTabs}
-					value="tab1"
-					orientation={props.orientation}
-					position={props.position}
-					align={props.align}
-					disabled={props.disabled}
-				/>
-			</div>
+			<Tabs
+				options={items}
+				bind:value
+				{fields}
+				orientation={layout.orientation}
+				position={layout.position}
+				align={layout.align}
+				disabled={layout.disabled}
+			/>
 		</div>
 		<div class="controls">
-			<FormRenderer bind:data={props} {schema} {layout} />
-			<InfoField label="Value" {value} />
+			<fieldset>
+				<legend>Layout</legend>
+				<FormRenderer bind:data={layout} schema={layoutSchema} layout={layoutLayout} />
+			</fieldset>
+			<fieldset>
+				<legend>Field mapping</legend>
+				<FormRenderer bind:data={mapping} schema={mappingSchema} layout={mappingLayout} />
+			</fieldset>
+			<InfoField label="Selected value" value={value} />
 		</div>
 	</div>
-	<p class="intro">Tabs let you switch between related views. Use the controls on the right to experiment with orientation, position, alignment, and the disabled state.</p>
+
+	<details class="data">
+		<summary>Data preview</summary>
+		<pre><code>{JSON.stringify(items, null, 2)}</code></pre>
+	</details>
+
+	<p class="intro">
+		Rokkit components adapt to your data via field mapping. Try mapping the icon field to
+		<code>image</code> — the same Tabs component renders different visuals without touching the data.
+	</p>
 </section>
 
 <style>
 	.tabs-demo {
 		display: flex;
 		flex-direction: column;
-		gap: 24px;
+		gap: 20px;
 		max-width: 1080px;
 		margin: 0 auto;
 	}
@@ -113,26 +136,47 @@
 	}
 
 	.preview {
-		display: flex;
-		flex-direction: column;
-		gap: 24px;
-	}
-
-	.example h4 {
-		@apply text-ink-z4;
-		margin: 0 0 8px;
-		font-size: 11px;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
+		@apply bg-surface-z0 border border-surface-z2;
+		padding: 20px;
+		border-radius: var(--radius-md, 6px);
 	}
 
 	.controls {
 		display: flex;
 		flex-direction: column;
-		gap: 12px;
+		gap: 16px;
 		@apply bg-surface-z0 border border-surface-z2;
 		padding: 16px;
 		border-radius: var(--radius-md, 6px);
+	}
+
+	fieldset {
+		@apply border border-surface-z2 text-ink-z1;
+		padding: 12px;
+		border-radius: var(--radius-sm, 4px);
+	}
+
+	legend {
+		@apply text-ink-z3;
+		padding: 0 6px;
+		font-size: 12px;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.data summary {
+		@apply text-ink-z3;
+		cursor: pointer;
+		font-size: 13px;
+	}
+
+	.data pre {
+		@apply bg-surface-z0 border border-surface-z2 text-ink-z2;
+		padding: 12px;
+		border-radius: var(--radius-sm, 4px);
+		overflow-x: auto;
+		font-size: 12px;
+		font-family: var(--font-mono);
 	}
 
 	.intro {
@@ -141,5 +185,13 @@
 		font-size: 22px;
 		margin: 0;
 		text-align: center;
+	}
+
+	.intro code {
+		font-family: var(--font-mono);
+		font-size: 15px;
+		@apply bg-surface-z2 text-ink-z1;
+		padding: 1px 6px;
+		border-radius: var(--radius-sm, 4px);
 	}
 </style>
