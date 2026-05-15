@@ -14,7 +14,8 @@ export function runMatch(query: string): DemoMeta[] {
 }
 
 export function isStrongMatch(query: string, results: DemoMeta[]): boolean {
-	if (results.length !== 1) return false
+	if (results.length === 0) return false
+	if (results.length === 1) return true
 	const q = query.trim().toLowerCase()
 	return results[0].title.toLowerCase() === q || results[0].id === q
 }
