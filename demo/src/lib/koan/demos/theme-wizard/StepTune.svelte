@@ -5,7 +5,7 @@
 	let { state = $bindable<WizardState>() }: { state?: WizardState } = $props()
 
 	const modes = ['light', 'dark', 'auto'] as const
-	const densities = ['compact', 'normal', 'comfortable'] as const
+	const densities = ['compact', 'comfortable', 'cozy'] as const
 	const radii = ['sharp', 'soft', 'rounded', 'pill'] as const
 </script>
 
