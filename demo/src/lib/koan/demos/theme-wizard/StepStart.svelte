@@ -1,36 +1,43 @@
 <script lang="ts">
 	import type { WizardState } from '../../types'
-
-	const presets = [
-		{ id: 'zen-sumi', name: 'Zen-Sumi', swatches: ['#0d0d0c', '#e2dfd6', '#9c4736', '#557b78', '#5a4a8a'] },
-		{ id: 'minimal',  name: 'Minimal',  swatches: ['#1a1a1a', '#f8f8f8', '#1f6feb', '#0e8a4a', '#d35400'] },
-		{ id: 'ocean',    name: 'Ocean',    swatches: ['#0d1b2a', '#e0fbfc', '#3a86ff', '#06d6a0', '#118ab2'] },
-		{ id: 'violet',   name: 'Violet',   swatches: ['#1a1230', '#f0eaff', '#7c3aed', '#a855f7', '#c084fc'] },
-		{ id: 'rose',     name: 'Rose',     swatches: ['#291015', '#fff1f3', '#e11d48', '#f43f5e', '#fb7185'] },
-		{ id: 'emerald',  name: 'Emerald',  swatches: ['#022c22', '#ecfdf5', '#059669', '#10b981', '#34d399'] }
-	]
+	import { skinDefinitions, getPaletteColor } from '$lib/data/skins'
 
 	let { state = $bindable<WizardState>() }: { state?: WizardState } = $props()
+
+	function swatches(skin: typeof skinDefinitions[number]) {
+		const entries: { role: string; palette: string }[] = [
+			{ role: 'surface', palette: skin.surface }
+		]
+		if (skin.darkSurface) entries.push({ role: 'surface (dark)', palette: skin.darkSurface })
+		entries.push({ role: 'ink', palette: skin.ink })
+		entries.push({ role: 'primary', palette: skin.primary })
+		entries.push({ role: 'secondary', palette: skin.secondary })
+		entries.push({ role: 'accent', palette: skin.accent })
+		return entries
+	}
 </script>
 
 <section class="step">
-	<h2>Pick a starting point</h2>
+	<h2>Pick a skin</h2>
 	<div class="grid">
-		{#each presets as p (p.id)}
+		{#each skinDefinitions as skin (skin.name)}
 			<button
 				type="button"
 				class="card"
-				class:selected={state?.preset === p.id}
-				onclick={() => { if (state) state.preset = p.id }}
-				aria-pressed={state?.preset === p.id}
+				class:selected={state?.preset === skin.name}
+				onclick={() => { if (state) state.preset = skin.name }}
+				aria-pressed={state?.preset === skin.name}
 			>
-				<span class="name">{p.name}</span>
-				<span class="swatches">
-					{#each p.swatches as c}
-						<span class="swatch" style="background: {c}"></span>
+				<span class="name">{skin.label}</span>
+				<div class="swatches">
+					{#each swatches(skin) as s}
+						<div class="swatch-cell">
+							<span class="swatch" style="background: {getPaletteColor(s.palette)}"></span>
+							<span class="role">{s.role}</span>
+							<span class="palette">{s.palette}</span>
+						</div>
 					{/each}
-				</span>
-				<span class="aa">Aa</span>
+				</div>
 			</button>
 		{/each}
 	</div>
@@ -44,18 +51,19 @@
 	}
 	.grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
 		gap: 12px;
 	}
 	.card {
 		display: flex;
 		flex-direction: column;
-		gap: 8px;
+		gap: 12px;
 		padding: 16px;
 		@apply bg-surface-z0 border border-surface-z2;
 		border-radius: var(--radius-md, 6px);
 		text-align: left;
 		cursor: pointer;
+		transition: border-color 120ms ease, box-shadow 120ms ease;
 	}
 	.card:hover {
 		@apply border-accent-z5;
@@ -70,17 +78,31 @@
 		font-weight: 500;
 	}
 	.swatches {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+		gap: 6px;
+	}
+	.swatch-cell {
 		display: flex;
-		gap: 4px;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 2px;
 	}
 	.swatch {
-		width: 24px;
-		height: 24px;
+		width: 28px;
+		height: 28px;
 		@apply border border-surface-z2;
 		border-radius: var(--radius-sm, 4px);
 	}
-	.aa {
+	.role {
+		@apply text-ink-z4;
+		font-size: 9px;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+	}
+	.palette {
 		@apply text-ink-z3;
-		font-size: 24px;
+		font-size: 10px;
+		font-family: var(--font-mono);
 	}
 </style>

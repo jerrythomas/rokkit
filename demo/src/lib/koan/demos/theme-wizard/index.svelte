@@ -12,15 +12,17 @@
 	let stepIdx = $state(0)
 
 	const wizardItems = $derived([
-		{ id: 'start', kanji: '始', label: 'Start',  description: 'Pick a base',     status: stepIdx > 0 ? 'done' : undefined,        disabled: false },
+		{ id: 'skin',  kanji: '色', label: 'Skin',   description: 'Pick a palette',  status: stepIdx > 0 ? 'done' : undefined,        disabled: false },
 		{ id: 'theme', kanji: '型', label: 'Theme',  description: 'Pick a style',    status: stepIdx > 1 ? 'done' : undefined,        disabled: stepIdx < 1 },
 		{ id: 'tune',  kanji: '調', label: 'Tune',   description: 'Mode + size',     status: stepIdx > 2 ? 'done' : undefined,        disabled: stepIdx < 2 },
 		{ id: 'save',  kanji: '結', label: 'Save',   description: 'Name & download', status: undefined,                               disabled: stepIdx < 3 }
 	])
 
+	const isLastStep = $derived(stepIdx === wizardItems.length - 1)
+
 	function makeBlank(): WizardState {
 		return {
-			preset: 'zen-sumi',
+			preset: 'default',
 			style: 'zen-sumi',
 			mode: 'auto',
 			density: 'comfortable',
@@ -84,9 +86,23 @@
 			{/if}
 		</div>
 
-		<div class="nav">
-			<Button label="Back" style="outline" disabled={stepIdx === 0} onclick={() => (stepIdx = Math.max(0, stepIdx - 1))} />
-			<Button label="Next" disabled={stepIdx === wizardItems.length - 1} onclick={() => (stepIdx = Math.min(wizardItems.length - 1, stepIdx + 1))} />
+		<div class="wiz-footer">
+			<Button
+				label="Back"
+				style="outline"
+				disabled={stepIdx === 0}
+				onclick={() => (stepIdx = Math.max(0, stepIdx - 1))}
+			/>
+			<div class="progress" aria-label="Step {stepIdx + 1} of {wizardItems.length}">
+				{#each wizardItems as _, i (i)}
+					<span class="bar" class:done={i <= stepIdx}></span>
+				{/each}
+			</div>
+			<Button
+				label={isLastStep ? 'Done' : 'Next'}
+				disabled={isLastStep}
+				onclick={() => (stepIdx = Math.min(wizardItems.length - 1, stepIdx + 1))}
+			/>
 		</div>
 	</div>
 </div>
@@ -115,11 +131,27 @@
 		padding: 24px 32px;
 		overflow: auto;
 	}
-	.nav {
+	.wiz-footer {
 		display: flex;
-		justify-content: space-between;
-		gap: 8px;
-		padding: 12px 32px;
-		@apply border-t border-surface-z2;
+		align-items: center;
+		gap: 20px;
+		padding: 14px 32px;
+		@apply border-t border-surface-z2 bg-surface-z0;
+	}
+	.progress {
+		flex: 1;
+		display: flex;
+		gap: 4px;
+		align-items: center;
+	}
+	.bar {
+		flex: 1;
+		height: 2px;
+		border-radius: 1px;
+		transition: background-color 200ms ease;
+		@apply bg-surface-z2;
+	}
+	.bar.done {
+		@apply bg-ink-z1;
 	}
 </style>

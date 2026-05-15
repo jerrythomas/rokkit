@@ -89,6 +89,8 @@ interface SkinDefinition {
 	name: string
 	label: string
 	surface: string
+	darkSurface?: string
+	ink: string
 	primary: string
 	secondary: string
 	accent: string
@@ -96,20 +98,20 @@ interface SkinDefinition {
 
 /** Full skin colormaps keyed by role (used for applySkin) */
 const skinColormaps: Record<string, Record<string, string>> = {
-	default: { surface: 'kami', primary: 'shu', secondary: 'hisui', accent: 'shu' },
-	ocean:   { surface: 'slate', primary: 'sky', secondary: 'teal', accent: 'cyan' },
-	violet:  { surface: 'zinc', primary: 'violet', secondary: 'purple', accent: 'indigo' },
-	rose:    { surface: 'stone', primary: 'rose', secondary: 'pink', accent: 'orange' },
-	emerald: { surface: 'slate', primary: 'emerald', secondary: 'teal', accent: 'cyan' },
+	default: { surface: 'kami',  ink: 'kami',  primary: 'shu',     secondary: 'hisui',  accent: 'shu'    },
+	ocean:   { surface: 'slate', ink: 'slate', primary: 'sky',     secondary: 'teal',   accent: 'cyan'   },
+	violet:  { surface: 'zinc',  ink: 'zinc',  primary: 'violet',  secondary: 'purple', accent: 'indigo' },
+	rose:    { surface: 'stone', ink: 'stone', primary: 'rose',    secondary: 'pink',   accent: 'orange' },
+	emerald: { surface: 'slate', ink: 'slate', primary: 'emerald', secondary: 'teal',   accent: 'cyan'   },
 }
 
 /** Predefined skins with display info */
 export const skinDefinitions: SkinDefinition[] = [
-	{ name: 'default', label: 'Zen Sumi', surface: 'kami', primary: 'shu', secondary: 'hisui', accent: 'shu' },
-	{ name: 'ocean',   label: 'Ocean',    surface: 'slate', primary: 'sky', secondary: 'teal', accent: 'cyan' },
-	{ name: 'violet',  label: 'Violet',   surface: 'zinc', primary: 'violet', secondary: 'purple', accent: 'indigo' },
-	{ name: 'rose',    label: 'Rose',     surface: 'stone', primary: 'rose', secondary: 'pink', accent: 'orange' },
-	{ name: 'emerald', label: 'Emerald',  surface: 'slate', primary: 'emerald', secondary: 'teal', accent: 'cyan' },
+	{ name: 'default', label: 'Zen Sumi', surface: 'kami',  darkSurface: 'sumi', ink: 'kami',  primary: 'shu',     secondary: 'hisui',  accent: 'shu'    },
+	{ name: 'ocean',   label: 'Ocean',    surface: 'slate',                       ink: 'slate', primary: 'sky',     secondary: 'teal',   accent: 'cyan'   },
+	{ name: 'violet',  label: 'Violet',   surface: 'zinc',                        ink: 'zinc',  primary: 'violet',  secondary: 'purple', accent: 'indigo' },
+	{ name: 'rose',    label: 'Rose',     surface: 'stone',                       ink: 'stone', primary: 'rose',    secondary: 'pink',   accent: 'orange' },
+	{ name: 'emerald', label: 'Emerald',  surface: 'slate',                       ink: 'slate', primary: 'emerald', secondary: 'teal',   accent: 'cyan'   },
 ]
 
 // ── Tailwind palette names available for individual role picking ─────────
@@ -206,7 +208,7 @@ function setRoleVariables(role: string, paletteName: string): void {
  */
 function clearRoleVariables(): void {
 	const el = document.documentElement
-	const roles = ['surface', 'primary', 'secondary', 'tertiary', 'accent', 'success', 'warning', 'danger', 'info']
+	const roles = ['surface', 'ink', 'primary', 'secondary', 'tertiary', 'accent', 'success', 'warning', 'danger', 'info']
 	for (const role of roles) {
 		for (const shade of shades) {
 			el.style.removeProperty(`--color-${role}-${shade}`)
