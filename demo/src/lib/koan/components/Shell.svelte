@@ -4,7 +4,7 @@
 	import Welcome from './Welcome.svelte'
 	import BrandMark from './BrandMark.svelte'
 	import ConversationList from './ConversationList.svelte'
-	import { koan, submitQuery, selectDemo } from '../store.svelte'
+	import { koan, submitQuery, selectDemo, requestReset, cancelReset, performReset } from '../store.svelte'
 	import { themeStore, setMode } from '../theme-store.svelte'
 	import { runMatch } from '../match.svelte'
 
@@ -73,6 +73,9 @@
 					messages={koan.messages}
 					activeId={koan.activeDemoId}
 					onselect={selectConversationDemo}
+					pendingReset={koan.pendingReset}
+					onConfirmReset={performReset}
+					onCancelReset={cancelReset}
 				/>
 			{/snippet}
 			{#snippet footer()}
@@ -80,16 +83,7 @@
 					<button type="button" class="mode" onclick={cycleMode}>
 						mode: {themeStore.mode}
 					</button>
-					<button
-						type="button"
-						class="reset"
-						onclick={() => {
-							if (confirm('Reset Koan? Clears themes and history.')) {
-								localStorage.clear()
-								location.reload()
-							}
-						}}
-					>
+					<button type="button" class="reset" onclick={requestReset}>
 						reset
 					</button>
 				</div>

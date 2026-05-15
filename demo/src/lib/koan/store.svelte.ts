@@ -3,6 +3,11 @@ import { read, write } from './persistence'
 import { runMatch } from './match.svelte'
 
 const MESSAGES_KEY = 'koan.messages'
+const RESET_FLAG_KEY = 'koan.reset.acknowledged'
+
+function loadResetAcknowledged(): boolean {
+	return read<boolean>(RESET_FLAG_KEY, (v) => typeof v === 'boolean') ?? false
+}
 
 function isConversationMessage(v: unknown): v is ConversationMessage {
 	if (typeof v !== 'object' || v === null) return false
@@ -26,7 +31,9 @@ export const koan = $state({
 	query: '',
 	activeDemoId: null as string | null,
 	messages: loadMessages(),
-	visitedThisSession: new Set<string>()
+	visitedThisSession: new Set<string>(),
+	pendingReset: false,
+	resetAcknowledged: loadResetAcknowledged()
 })
 
 export function selectDemo(demoId: string): void {
@@ -75,4 +82,25 @@ export function resetSession() {
 	koan.messages = []
 	koan.visitedThisSession.clear()
 	write(MESSAGES_KEY, [])
+}
+
+export function requestReset(): void {
+	if (koan.resetAcknowledged) {
+		performReset()
+		return
+	}
+	koan.pendingReset = true
+}
+
+export function cancelReset(): void {
+	koan.pendingReset = false
+}
+
+export function performReset(): void {
+	if (typeof localStorage !== 'undefined') {
+		localStorage.clear()
+		// Re-write the acknowledgement flag so future resets skip the prompt
+		localStorage.setItem(RESET_FLAG_KEY, JSON.stringify(true))
+	}
+	if (typeof location !== 'undefined') location.reload()
 }

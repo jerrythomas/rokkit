@@ -5,11 +5,17 @@
 	let {
 		messages = [] as ConversationMessage[],
 		activeId = null as string | null,
-		onselect
+		onselect,
+		pendingReset = false,
+		onConfirmReset,
+		onCancelReset
 	}: {
 		messages?: ConversationMessage[]
 		activeId?: string | null
 		onselect?: (demoId: string) => void
+		pendingReset?: boolean
+		onConfirmReset?: () => void
+		onCancelReset?: () => void
 	} = $props()
 </script>
 
@@ -54,6 +60,16 @@
 			</li>
 		{/if}
 	{/each}
+	{#if pendingReset}
+		<li class="msg system">
+			<span class="label">koan</span>
+			<p class="body">Reset everything — themes, history, conversation?</p>
+			<div class="actions">
+				<button type="button" class="action danger" onclick={onConfirmReset}>Yes, reset</button>
+				<button type="button" class="action" onclick={onCancelReset}>Cancel</button>
+			</div>
+		</li>
+	{/if}
 </ol>
 
 <style>
@@ -170,5 +186,40 @@
 	.anchor.active {
 		@apply bg-accent-z1 text-accent-z5;
 		font-weight: 500;
+	}
+
+	.msg.system .label {
+		@apply text-accent-z5;
+	}
+
+	.msg.system .body {
+		@apply text-ink-z2;
+		font-size: 13px;
+	}
+
+	.actions {
+		display: flex;
+		gap: 8px;
+		margin-top: 6px;
+	}
+
+	.action {
+		padding: 4px 10px;
+		border-radius: var(--radius-sm, 4px);
+		font-size: 12px;
+		cursor: pointer;
+		@apply bg-surface-z1 border border-surface-z2 text-ink-z2;
+	}
+
+	.action:hover {
+		@apply border-accent-z5 text-ink-z1;
+	}
+
+	.action.danger {
+		@apply bg-primary-z5 border-primary-z5 text-on-primary;
+	}
+
+	.action.danger:hover {
+		@apply bg-primary-z6;
 	}
 </style>
