@@ -27,7 +27,7 @@
 	let state = $state<WizardState>(themeStore.draft ?? makeBlank())
 
 	$effect(() => {
-		saveDraft($state.snapshot(state))
+		saveDraft({ ...state })
 	})
 
 	$effect(() => {
@@ -48,7 +48,7 @@
 		<StepTune bind:state />
 	{:else}
 		<StepSave
-			bind:state
+			bind:wizardState={state}
 			onsaved={(t) => {
 				setActiveTheme(t.id)
 				clearDraft()

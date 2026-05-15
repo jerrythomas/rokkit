@@ -5,26 +5,26 @@
 	import { saveTheme, setActiveTheme } from '../../theme-store.svelte'
 
 	let {
-		state = $bindable<WizardState>(),
+		wizardState = $bindable<WizardState>(),
 		onsaved
 	}: {
-		state?: WizardState
+		wizardState?: WizardState
 		onsaved?: (t: SavedTheme) => void
 	} = $props()
 
-	let saved = $state<SavedTheme | null>(null)
+	let savedTheme = $state<SavedTheme | null>(null)
 	let downloadOpen = $state(false)
-	let error = $state('')
+	let saveError = $state('')
 
 	function persist() {
-		if (!state) return
-		if (!state.name.trim()) {
-			error = 'Name is required.'
+		if (!wizardState) return
+		if (!wizardState.name.trim()) {
+			saveError = 'Name is required.'
 			return
 		}
-		error = ''
-		const theme = saveTheme(state)
-		saved = theme
+		saveError = ''
+		const theme = saveTheme(wizardState)
+		savedTheme = theme
 		setActiveTheme(theme.id)
 		onsaved?.(theme)
 	}
@@ -36,20 +36,20 @@
 		<span>Theme name</span>
 		<input
 			type="text"
-			bind:value={state.name}
+			bind:value={wizardState.name}
 			placeholder="e.g. My Theme"
 			aria-required="true"
 		/>
 	</label>
-	{#if error}
-		<p class="error">{error}</p>
+	{#if saveError}
+		<p class="error">{saveError}</p>
 	{/if}
 	<div class="actions">
 		<Button label="Save" onclick={persist} />
-		<Button label="Download" style="outline" disabled={!saved} onclick={() => (downloadOpen = true)} />
+		<Button label="Download" style="outline" disabled={!savedTheme} onclick={() => (downloadOpen = true)} />
 	</div>
-	{#if saved}
-		<DownloadModal bind:open={downloadOpen} theme={saved} />
+	{#if savedTheme}
+		<DownloadModal bind:open={downloadOpen} theme={savedTheme} />
 	{/if}
 </section>
 
