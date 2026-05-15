@@ -24,17 +24,19 @@
 		description="start with a word — theme, tabs, anything"
 	>
 		{#snippet action()}
-			<form class="input-row" onsubmit={handleSubmit}>
-				<Input
-					bind:value={query}
-					placeholder="type here…"
-					aria-label="What would you like to explore?"
-				/>
-				<Button type="submit" label="Open" variant="primary" />
-			</form>
-		{/snippet}
-		{#snippet annotation()}
-			<AnnotationArrow direction="up" />
+			<div class="action-area">
+				<div class="arrow-wrap" aria-hidden="true">
+					<AnnotationArrow direction="curve-down-right" width={120} height={64} />
+				</div>
+				<form class="input-row" onsubmit={handleSubmit}>
+					<Input
+						bind:value={query}
+						placeholder="type here…"
+						aria-label="What would you like to explore?"
+					/>
+					<Button icon="i-glyph:plain" variant="primary" type="submit" title="Send" aria-label="Send" />
+				</form>
+			</div>
 		{/snippet}
 	</EmptyState>
 </div>
@@ -45,6 +47,18 @@
 		align-items: center;
 		justify-content: center;
 		min-height: 100vh;
+	}
+	.action-area {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 4px;
+		position: relative;
+	}
+	.arrow-wrap {
+		align-self: flex-end;
+		padding-right: 48px;
+		@apply text-accent-z5;
 	}
 	.input-row {
 		display: flex;

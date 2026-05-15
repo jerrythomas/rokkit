@@ -1,5 +1,5 @@
 <script lang="ts">
-	type Direction = 'right' | 'left' | 'down' | 'up' | 'curve-tl' | 'curve-tr' | 'curve-bl' | 'curve-br'
+	type Direction = 'right' | 'left' | 'down' | 'up' | 'curve-tl' | 'curve-tr' | 'curve-bl' | 'curve-br' | 'curve-down-right'
 
 	let {
 		direction = 'right',
@@ -25,7 +25,8 @@
 		'curve-tl': `M ${width - 20} 20 Q ${width / 2} ${height} 20 ${height / 2}`,
 		'curve-tr': `M 20 20 Q ${width / 2} ${height} ${width - 20} ${height / 2}`,
 		'curve-bl': `M ${width - 20} ${height - 20} Q ${width / 2} 0 20 ${height / 2}`,
-		'curve-br': `M 20 ${height - 20} Q ${width / 2} 0 ${width - 20} ${height / 2}`
+		'curve-br': `M 20 ${height - 20} Q ${width / 2} 0 ${width - 20} ${height / 2}`,
+		'curve-down-right': `M 10 10 Q ${width / 2} ${height / 2} ${width - 20} ${height - 10}`
 	})
 
 	const arrowTip = $derived((() => {
