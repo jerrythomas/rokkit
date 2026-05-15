@@ -160,7 +160,7 @@
 		width: 30px;
 		height: 100px;
 		opacity: 0.7;
-		transform: translateY(-80px) rotate(-12deg);
+		transform: translateY(-40px) rotate(-12deg);
 		color: var(--color-accent-z5);
 	}
 	.input-row {
