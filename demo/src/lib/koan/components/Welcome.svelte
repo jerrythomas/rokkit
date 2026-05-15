@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Input } from '@rokkit/forms'
 	import { Button } from '@rokkit/ui'
-	import EmptyState from './EmptyState.svelte'
 	import { theme } from '$lib/stores/theme.svelte'
 
 	let {
@@ -30,6 +29,13 @@
 			default: return 'i-glyph:monitor'
 		}
 	}
+
+	const wordmarkSrc = $derived(
+		theme.mode === 'dark' ||
+		(theme.mode === 'auto' && typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+			? '/rokkit-dark.svg'
+			: '/rokkit-light.svg'
+	)
 </script>
 
 <div class="welcome">
@@ -56,32 +62,34 @@
 	</div>
 
 	<div class="hero">
-		<img src="/arrow.svg" alt="" class="hand-arrow" />
-		<EmptyState
-			icon="○"
-			description="start with a word — theme, tabs, anything"
-		>
-			{#snippet action()}
-				<form class="input-row" onsubmit={handleSubmit}>
-					<Input
-						bind:value={query}
-						placeholder="type here…"
-						aria-label="What would you like to explore?"
-					/>
-					<Button icon="i-glyph:plain" variant="primary" type="submit" title="Send" aria-label="Send" />
-				</form>
-			{/snippet}
-		</EmptyState>
+		<img class="wordmark" src={wordmarkSrc} alt="Rokkit" />
+
+		<div class="copy">
+			<h1>Build Beyond Limits</h1>
+			<p class="tagline">Empowering your UI with Rokkit</p>
+			<p class="lede">A data-driven Svelte 5 component library that adapts to your data, not the other way around.</p>
+		</div>
+
+		<div class="action-row">
+			<img src="/arrow.svg" alt="" class="hand-arrow" />
+			<form class="input-row" onsubmit={handleSubmit}>
+				<Input
+					bind:value={query}
+					placeholder="type here…"
+					aria-label="What would you like to explore?"
+				/>
+				<Button icon="i-glyph:plain" variant="primary" type="submit" title="Send" aria-label="Send" />
+			</form>
+		</div>
 	</div>
 </div>
 
 <style>
 	.welcome {
 		position: relative;
-		display: flex;
-		align-items: center;
-		justify-content: center;
 		min-height: 100vh;
+		overflow-y: auto;
+		color: var(--color-ink-z1);
 	}
 	.toolbar {
 		position: absolute;
@@ -90,18 +98,57 @@
 		display: flex;
 		gap: 8px;
 		z-index: 10;
+	}
+	/* Force toolbar buttons to inherit mode-reactive ink color */
+	.toolbar :global([data-button]) {
 		color: var(--color-ink-z2);
 	}
 	.hero {
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 80px 32px 40px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 32px;
+		text-align: center;
+	}
+	.wordmark {
+		width: clamp(280px, 50vw, 420px);
+		height: auto;
+	}
+	.copy h1 {
+		font-family: var(--font-display);
+		font-size: clamp(36px, 5vw, 56px);
+		font-weight: 300;
+		margin: 0 0 12px;
+		letter-spacing: -0.02em;
+		color: var(--color-ink-z1);
+	}
+	.copy .tagline {
+		font-family: var(--font-script, 'Caveat', cursive);
+		font-size: 24px;
+		color: var(--color-ink-z3);
+		margin: 0 0 16px;
+	}
+	.copy .lede {
+		font-size: 15px;
+		line-height: 1.6;
+		color: var(--color-ink-z2);
+		max-width: 480px;
+		margin: 0 auto;
+	}
+	.action-row {
 		display: flex;
 		align-items: center;
-		gap: 24px;
+		gap: 16px;
 		color: var(--color-accent-z5);
 	}
 	.hand-arrow {
-		width: 90px;
+		width: 30px;
 		height: auto;
-		opacity: 0.8;
+		opacity: 0.7;
+		transform: rotate(-12deg);
 	}
 	.input-row {
 		display: flex;

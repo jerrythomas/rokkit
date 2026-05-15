@@ -1,9 +1,9 @@
 import { expect, test } from '@playwright/test'
 
-test('welcome state shows enso, tagline, input, and Send button; no sidebar', async ({ page }) => {
+test('welcome state shows wordmark, hero copy, input, and Send button; no sidebar', async ({ page }) => {
 	await page.goto('/')
-	await expect(page.getByText('○')).toBeVisible()
-	await expect(page.getByText('start with a word')).toBeVisible()
+	await expect(page.locator('img.wordmark')).toBeVisible()
+	await expect(page.getByText('Build Beyond Limits')).toBeVisible()
 	await expect(page.getByRole('textbox')).toBeVisible()
 	await expect(page.getByRole('button', { name: 'Send' })).toBeVisible()
 	await expect(page.locator('aside.chat-panel')).toHaveCount(0)
