@@ -60,23 +60,21 @@
 		border: none;
 		border-radius: var(--radius-sm, 4px);
 		text-align: left;
-		color: var(--color-ink-z2);
+		@apply text-ink-z2;
 		cursor: pointer;
 		font-size: 13px;
 		transition: background 120ms ease;
 	}
 	.entry:hover {
-		background: var(--color-surface-z2);
-		color: var(--color-ink-z1);
+		@apply bg-surface-z2 text-ink-z1;
 	}
 	.entry.active {
-		background: var(--color-surface-z2);
-		color: var(--color-ink-z1);
+		@apply bg-surface-z2 text-ink-z1;
 	}
 	.icon {
 		font-size: 16px;
 		text-align: center;
-		color: var(--color-ink-z3);
+		@apply text-ink-z3;
 	}
 	.title {
 		overflow: hidden;
@@ -85,6 +83,6 @@
 	}
 	.time {
 		font-size: 11px;
-		color: var(--color-ink-z4);
+		@apply text-ink-z4;
 	}
 </style>

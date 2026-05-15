@@ -66,8 +66,7 @@
 		width: 360px;
 		height: 100vh;
 		padding: 20px 16px;
-		background: var(--color-surface-z0);
-		border-right: 1px solid var(--color-surface-z2);
+		@apply bg-surface-z0 border-r border-surface-z2;
 		box-sizing: border-box;
 	}
 	.brand-slot {
@@ -77,10 +76,8 @@
 		width: 100%;
 		min-height: 56px;
 		padding: 10px 12px;
-		background: var(--color-surface-z1);
-		border: 1px solid var(--color-surface-z2);
+		@apply bg-surface-z1 border border-surface-z2 text-ink-z1;
 		border-radius: var(--radius-md, 6px);
-		color: var(--color-ink-z1);
 		font: inherit;
 		font-size: 14px;
 		resize: none;
@@ -88,12 +85,12 @@
 	}
 	.input-area textarea:focus {
 		outline: none;
-		border-color: var(--color-accent-z5);
+		@apply border-accent-z5;
 	}
 	.input-area textarea::placeholder {
 		font-family: var(--font-script, 'Caveat', cursive);
 		font-size: 18px;
-		color: var(--color-ink-z4);
+		@apply text-ink-z4;
 	}
 	.suggestions {
 		display: flex;

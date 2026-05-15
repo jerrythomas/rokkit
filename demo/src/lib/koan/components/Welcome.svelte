@@ -51,10 +51,8 @@
 		width: 360px;
 		min-height: 48px;
 		padding: 12px 16px;
-		background: var(--color-surface-z0);
-		border: 1px solid var(--color-surface-z2);
+		@apply bg-surface-z0 border border-surface-z2 text-ink-z1;
 		border-radius: var(--radius-md, 6px);
-		color: var(--color-ink-z1);
 		font: inherit;
 		font-size: 16px;
 		text-align: center;
@@ -63,11 +61,11 @@
 	}
 	.input-wrap textarea:focus {
 		outline: none;
-		border-color: var(--color-accent-z5);
+		@apply border-accent-z5;
 	}
 	.input-wrap textarea::placeholder {
 		font-family: var(--font-script, 'Caveat', cursive);
 		font-size: 20px;
-		color: var(--color-ink-z4);
+		@apply text-ink-z4;
 	}
 </style>

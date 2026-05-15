@@ -29,6 +29,11 @@ export default defineConfig({
 		['text-on-surface', 'text-surface-50']
 	],
 	safelist: [
+		// Theme palette tokens — ensure z-alias CSS vars are always emitted
+		// (used via var(--color-*) in app.css color-mix() expressions)
+		'bg-surface-z0', 'bg-surface-z1', 'bg-surface-z2', 'bg-surface-z9',
+		'bg-primary-z5', 'text-primary-z5',
+		'text-ink-z1',
 		...glyphIcons,
 		'i-glyph:home',
 		'i-glyph:chart',

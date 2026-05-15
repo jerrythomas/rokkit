@@ -44,8 +44,7 @@ body {
   overflow: hidden;
   font-family: var(--font-sans);
   font-size: 13px;
-  background: var(--color-surface-z0);
-  color: var(--color-ink-z1);
+  @apply bg-surface-z0 text-ink-z1;
 }
 
 
@@ -87,3 +86,4 @@ button:focus-visible {
 ::selection {
   background: color-mix(in oklch, var(--color-primary-z5) 12%, transparent);
 }
+

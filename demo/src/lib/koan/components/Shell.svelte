@@ -133,25 +133,21 @@
 		align-items: center;
 		gap: 4px;
 		padding: 4px 10px;
-		background: var(--color-surface-z1);
-		border: 1px solid var(--color-surface-z2);
+		@apply bg-surface-z1 border border-surface-z2 text-ink-z2;
 		border-radius: 999px;
 		font-size: 12px;
-		color: var(--color-ink-z2);
 		cursor: pointer;
 	}
 	.chip:hover {
-		border-color: var(--color-accent-z5);
-		color: var(--color-ink-z1);
+		@apply border-accent-z5 text-ink-z1;
 	}
 	.footer {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 		font-size: 11px;
-		color: var(--color-ink-z4);
+		@apply text-ink-z4 border-t border-surface-z2;
 		padding-top: 8px;
-		border-top: 1px solid var(--color-surface-z2);
 	}
 	.footer button {
 		background: transparent;
@@ -161,6 +157,6 @@
 		font: inherit;
 	}
 	.footer button:hover {
-		color: var(--color-ink-z2);
+		@apply text-ink-z2;
 	}
 </style>

@@ -67,17 +67,17 @@
 		padding: 6px 10px;
 		background: transparent;
 		border: none;
-		color: var(--color-ink-z3);
+		@apply text-ink-z3;
 		cursor: pointer;
 		font: inherit;
 	}
 	.back:hover {
-		color: var(--color-ink-z1);
+		@apply text-ink-z1;
 	}
 	.error,
 	.loading {
 		text-align: center;
-		color: var(--color-ink-z3);
+		@apply text-ink-z3;
 		padding: 48px;
 	}
 </style>
