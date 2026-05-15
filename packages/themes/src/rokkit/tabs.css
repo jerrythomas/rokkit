@@ -35,7 +35,7 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-tabs-trigger] {
-  @apply bg-surface-z1 flex-shrink-0 rounded-t;
+  @apply bg-surface-z1 text-ink-z2 flex-shrink-0 rounded-t;
 }
 
 [data-style='rokkit'] [data-tabs][data-position='after'] [data-tabs-trigger] {
@@ -72,7 +72,7 @@
 
 /* Selected state */
 [data-style='rokkit'] [data-tabs-trigger][data-selected] {
-  @apply bg-surface-z3;
+  @apply bg-surface-z3 text-ink-z1;
 }
 
 [data-style='rokkit'] [data-tabs-list]:focus-within [data-tabs-trigger][data-selected] {

@@ -320,7 +320,7 @@
 	}
 
 	.mode-btn.mode-active {
-		@apply bg-primary-z5 border-primary-z5 text-ink-z1;
+		@apply bg-primary-z5 border-primary-z5 text-on-primary;
 	}
 
 	/* ── data pre ────────────────────────────────────────────── */
