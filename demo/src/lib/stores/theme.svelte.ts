@@ -13,7 +13,7 @@ function readBody(key: string, fallback: string) {
 function readStored(key: string, fallback: string): string {
 	if (!browser) return fallback
 	try {
-		const stored = JSON.parse(localStorage.getItem('sensei-theme') || '{}')
+		const stored = JSON.parse(localStorage.getItem('rokkit-site') || '{}')
 		return stored[key] ?? fallback
 	} catch {
 		return fallback
@@ -24,30 +24,30 @@ function persist(key: string, value: string) {
 	if (!browser) return
 	document.body.dataset[key] = value
 	try {
-		const stored = JSON.parse(localStorage.getItem('sensei-theme') || '{}')
+		const stored = JSON.parse(localStorage.getItem('rokkit-site') || '{}')
 		stored[key] = value
-		localStorage.setItem('sensei-theme', JSON.stringify(stored))
+		localStorage.setItem('rokkit-site', JSON.stringify(stored))
 	} catch {}
 }
 
 function persistSkinData(key: string, value: string) {
 	if (!browser) return
 	try {
-		const stored = JSON.parse(localStorage.getItem('sensei-theme') || '{}')
+		const stored = JSON.parse(localStorage.getItem('rokkit-site') || '{}')
 		stored[key] = value
-		localStorage.setItem('sensei-theme', JSON.stringify(stored))
+		localStorage.setItem('rokkit-site', JSON.stringify(stored))
 	} catch {}
 }
 
 function clearRoleOverrides() {
 	if (!browser) return
 	try {
-		const stored = JSON.parse(localStorage.getItem('sensei-theme') || '{}')
+		const stored = JSON.parse(localStorage.getItem('rokkit-site') || '{}')
 		const roles = ['surface', 'primary', 'secondary', 'accent']
 		for (const role of roles) {
 			delete stored[`role-${role}`]
 		}
-		localStorage.setItem('sensei-theme', JSON.stringify(stored))
+		localStorage.setItem('rokkit-site', JSON.stringify(stored))
 	} catch {}
 }
 
@@ -64,7 +64,7 @@ function createThemeStore() {
 	// Initialize role overrides from localStorage
 	if (browser) {
 		try {
-			const stored = JSON.parse(localStorage.getItem('sensei-theme') || '{}')
+			const stored = JSON.parse(localStorage.getItem('rokkit-site') || '{}')
 			const roles = ['surface', 'primary', 'secondary', 'accent']
 			for (const role of roles) {
 				if (stored[`role-${role}`]) {

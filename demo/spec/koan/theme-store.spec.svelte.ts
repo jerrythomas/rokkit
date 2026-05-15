@@ -38,13 +38,13 @@ describe('theme-store', () => {
 		const t = saveTheme(blankWizard)
 		setActiveTheme(t.id)
 		expect(themeStore.active?.id).toBe(t.id)
-		expect(localStorage.getItem('koan.theme.active')).toBe(JSON.stringify(t.id))
+		expect(localStorage.getItem('rokkit-site.theme.active')).toBe(JSON.stringify(t.id))
 	})
 
 	it('setMode persists', () => {
 		setMode('dark')
 		expect(themeStore.mode).toBe('dark')
-		expect(localStorage.getItem('koan.mode')).toBe(JSON.stringify('dark'))
+		expect(localStorage.getItem('rokkit-site.mode')).toBe(JSON.stringify('dark'))
 	})
 
 	it('saveDraft and clearDraft round-trip', () => {

@@ -51,7 +51,7 @@ describe('koan store', () => {
 
 	it('messages persist to localStorage', () => {
 		submitQuery('theme')
-		const stored = JSON.parse(localStorage.getItem('koan.messages')!)
+		const stored = JSON.parse(localStorage.getItem('rokkit-site.messages')!)
 		expect(Array.isArray(stored)).toBe(true)
 		expect(stored.length).toBe(2)
 	})
@@ -68,6 +68,6 @@ describe('koan store', () => {
 		expect(koan.messages).toEqual([])
 		expect(koan.activeDemoId).toBeNull()
 		expect(koan.visitedThisSession.size).toBe(0)
-		expect(localStorage.getItem('koan.messages')).toBe('[]')
+		expect(localStorage.getItem('rokkit-site.messages')).toBe('[]')
 	})
 })

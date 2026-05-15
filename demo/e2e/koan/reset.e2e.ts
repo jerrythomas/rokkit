@@ -56,7 +56,7 @@ test('confirming reset clears storage and reloads; subsequent reset skips prompt
 	await expect(page.getByText('start with a word')).toBeVisible({ timeout: 8000 })
 
 	// Acknowledgement flag should be in localStorage after reload
-	const acked = await page.evaluate(() => localStorage.getItem('koan.reset.acknowledged'))
+	const acked = await page.evaluate(() => localStorage.getItem('rokkit-site.reset.acknowledged'))
 	expect(acked).toBe('true')
 
 	// Navigate back to active state

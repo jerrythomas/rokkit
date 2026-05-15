@@ -2,8 +2,10 @@ import type { ConversationMessage, UserMessage, ResponseMessage } from './types'
 import { read, write } from './persistence'
 import { runMatch } from './match.svelte'
 
-const MESSAGES_KEY = 'koan.messages'
-const RESET_FLAG_KEY = 'koan.reset.acknowledged'
+// NOTE: Breaking change — keys renamed from 'koan.*' to 'rokkit-site.*'.
+// Existing local state under the old keys is silently ignored on next load.
+const MESSAGES_KEY = 'rokkit-site.messages'
+const RESET_FLAG_KEY = 'rokkit-site.reset.acknowledged'
 
 function loadResetAcknowledged(): boolean {
 	return read<boolean>(RESET_FLAG_KEY, (v) => typeof v === 'boolean') ?? false

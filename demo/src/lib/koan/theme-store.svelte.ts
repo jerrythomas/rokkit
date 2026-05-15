@@ -2,11 +2,13 @@ import type { SavedTheme, WizardMode, WizardState } from './types'
 import { read, write, clear } from './persistence'
 import { theme as legacyTheme } from '$lib/stores/theme.svelte'
 
+// NOTE: Breaking change — keys renamed from 'koan.*' to 'rokkit-site.*'.
+// Existing local state under the old keys is silently ignored on next load.
 const KEYS = {
-	active: 'koan.theme.active',
-	saved: 'koan.themes',
-	draft: 'koan.theme-wizard.draft',
-	mode: 'koan.mode'
+	active: 'rokkit-site.theme.active',
+	saved: 'rokkit-site.themes',
+	draft: 'rokkit-site.theme-wizard.draft',
+	mode: 'rokkit-site.mode'
 } as const
 
 function loadSaved(): SavedTheme[] {
@@ -66,7 +68,7 @@ export function setActiveTheme(id: string | null) {
 export function setMode(mode: WizardMode) {
 	themeStore.mode = mode
 	write(KEYS.mode, mode)
-	// Delegate to legacy theme store so 'sensei-theme.mode' is updated,
+	// Delegate to legacy theme store so 'rokkit-site.mode' is updated,
 	// which is read by the flash-prevention inline script in app.html on next paint.
 	legacyTheme.setMode(mode as string)
 }
