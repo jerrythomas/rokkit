@@ -2,22 +2,24 @@ import { expect, test } from '@playwright/test'
 
 async function openTabsDemo(page: any) {
 	await page.goto('/')
+	// Type 'tabs' in the search box and press Enter to navigate to the demo
 	const input = page.getByPlaceholder('type here…')
+	await expect(input).toBeVisible({ timeout: 10000 })
 	await input.fill('tabs')
 	await input.press('Enter')
-	// Wait for the single preview area to be visible
+	// Wait for the preview area to be visible
 	await expect(page.locator('.preview')).toBeVisible({ timeout: 10000 })
 }
 
-test('tabs demo renders a single preview (not two side-by-side)', async ({ page }) => {
+test('tabs demo renders a single preview with intro Caveat copy', async ({ page }) => {
 	await openTabsDemo(page)
 
-	// There should be exactly one .preview element
+	// Exactly one preview
 	await expect(page.locator('.preview')).toHaveCount(1)
 
-	// The old "With icons" and "Simple" headings should NOT be present
-	await expect(page.getByText('With icons')).not.toBeVisible()
-	await expect(page.getByText('Simple')).not.toBeVisible()
+	// Intro Caveat copy is present
+	await expect(page.locator('.intro')).toBeVisible()
+	await expect(page.locator('.intro')).toContainText('Have a poke around')
 
 	// The Tabs component should render tab buttons
 	await expect(page.getByRole('tab', { name: 'Overview' })).toBeVisible()
@@ -25,42 +27,67 @@ test('tabs demo renders a single preview (not two side-by-side)', async ({ page 
 	await expect(page.getByRole('tab', { name: 'Activity' })).toBeVisible()
 })
 
-test('tabs demo shows Layout and Field mapping control groups', async ({ page }) => {
+test('tabs demo shows 4 aspect cards', async ({ page }) => {
 	await openTabsDemo(page)
 
-	// Both fieldset legends must be present
-	await expect(page.locator('legend', { hasText: 'Layout' })).toBeVisible()
-	await expect(page.locator('legend', { hasText: 'Field mapping' })).toBeVisible()
+	await expect(page.locator('[data-aspect="visual"]')).toBeVisible()
+	await expect(page.locator('[data-aspect="fields"]')).toBeVisible()
+	await expect(page.locator('[data-aspect="content"]')).toBeVisible()
+	await expect(page.locator('[data-aspect="data"]')).toBeVisible()
+})
 
-	// Layout controls
+test('Visual aspect card shows orientation control', async ({ page }) => {
+	await openTabsDemo(page)
+
+	// Visual is the default active aspect
+	await expect(page.locator('[data-aspect="visual"]')).toHaveAttribute('aria-pressed', 'true')
+
+	// Orientation field should be present
 	await expect(page.locator('label', { hasText: 'Orientation' }).first()).toBeVisible()
-	await expect(page.locator('label', { hasText: 'Position' }).first()).toBeVisible()
-	await expect(page.locator('label', { hasText: 'Align' }).first()).toBeVisible()
-	await expect(page.locator('label', { hasText: 'Disabled' }).first()).toBeVisible()
+})
 
-	// Field mapping controls
+test('Field mapping aspect card shows iconField control', async ({ page }) => {
+	await openTabsDemo(page)
+
+	await page.locator('[data-aspect="fields"]').click()
+	await expect(page.locator('[data-aspect="fields"]')).toHaveAttribute('aria-pressed', 'true')
 	await expect(page.locator('label', { hasText: 'Icon field' }).first()).toBeVisible()
-	await expect(page.locator('label', { hasText: 'Show icons' }).first()).toBeVisible()
 })
 
-test('tabs demo has collapsible data preview', async ({ page }) => {
+test('Content aspect card shows contentMode toggle', async ({ page }) => {
 	await openTabsDemo(page)
 
-	const details = page.locator('details.data')
-	await expect(details).toBeVisible()
-	await expect(details.locator('summary')).toHaveText('Data preview')
+	await page.locator('[data-aspect="content"]').click()
+	await expect(page.locator('[data-aspect="content"]')).toHaveAttribute('aria-pressed', 'true')
+	await expect(page.locator('[data-contentmode="default"]')).toBeVisible()
+	await expect(page.locator('[data-contentmode="rich"]')).toBeVisible()
 })
 
-test('tabs demo intro mentions field mapping and image', async ({ page }) => {
+test('Content aspect card rich mode renders custom snippet', async ({ page }) => {
 	await openTabsDemo(page)
 
-	await expect(page.locator('.intro')).toContainText('field mapping')
-	await expect(page.locator('.intro')).toContainText('image')
+	// Navigate to Content aspect
+	await page.locator('[data-aspect="content"]').click()
+
+	// Switch to rich mode
+	await page.locator('[data-contentmode="rich"]').click()
+
+	// The rich panel should render inside the preview (3 panels, at least one visible)
+	await expect(page.locator('.rich-panel').first()).toBeVisible()
 })
 
-test('tabs demo switches panels', async ({ page }) => {
+test('Data aspect card shows JSON pre block', async ({ page }) => {
+	await openTabsDemo(page)
+
+	await page.locator('[data-aspect="data"]').click()
+	await expect(page.locator('[data-aspect="data"]')).toHaveAttribute('aria-pressed', 'true')
+	await expect(page.locator('.data-pre')).toBeVisible()
+	await expect(page.locator('.data-pre')).toContainText('Overview')
+})
+
+test('tabs demo switches tab panels on click', async ({ page }) => {
 	await openTabsDemo(page)
 
 	await page.getByRole('tab', { name: 'Settings' }).click()
-	await expect(page.locator('[data-tabs-content]', { hasText: 'Configure your preferences here.' })).toBeVisible()
+	await expect(page.locator('[data-tabs-content]', { hasText: 'Tune preferences' })).toBeVisible()
 })
