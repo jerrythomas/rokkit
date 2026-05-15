@@ -33,7 +33,8 @@
 	.canvas {
 		display: flex;
 		flex-direction: column;
-		min-height: 100vh;
+		height: 100vh;
+		overflow-y: auto;
 		@apply bg-surface-z1;
 	}
 	.canvas.has-grid {
@@ -43,6 +44,9 @@
 	}
 	.toolbar {
 		flex: 0 0 auto;
+		position: sticky;
+		top: 0;
+		z-index: 1;
 		padding: 12px 24px;
 		@apply border-b border-surface-z2 bg-surface-z1;
 	}
