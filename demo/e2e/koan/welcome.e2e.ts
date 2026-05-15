@@ -27,6 +27,17 @@ test('welcome toolbar: mode toggle changes body dataset mode', async ({ page }) 
 	expect(newMode).not.toBe(initialMode)
 })
 
+test('mode toggle on welcome changes body background', async ({ page }) => {
+	await page.goto('/')
+	await page.evaluate(() => localStorage.clear())
+	await page.reload()
+	const bgBefore = await page.evaluate(() => getComputedStyle(document.body).backgroundColor)
+	await page.getByLabel('Toggle theme mode').click()
+	await page.waitForTimeout(120)
+	const bgAfter = await page.evaluate(() => getComputedStyle(document.body).backgroundColor)
+	expect(bgBefore).not.toBe(bgAfter)
+})
+
 test('typing a query and pressing Enter migrates to active state', async ({ page }) => {
 	await page.goto('/')
 	const input = page.getByRole('textbox')
