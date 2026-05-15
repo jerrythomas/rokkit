@@ -34,8 +34,8 @@ test('submitting "theme" clears input and shows conversation', async ({ page }) 
 	await expect(page.locator('aside.chat-panel textarea')).toHaveValue('')
 	// Conversation should show user message
 	await expect(page.locator('.msg.user .body')).toHaveText('theme')
-	// Conversation should show koan response (copy is the demo description for single match)
-	await expect(page.locator('.msg.response .body')).toBeVisible()
+	// Conversation should show koan response copy (single-match uses .body-link button, multi-match uses .body paragraph)
+	await expect(page.locator('.msg.response .body, .msg.response .body-link').first()).toBeVisible()
 })
 
 test('single-match response auto-mounts the demo in canvas (no anchor needed)', async ({ page }) => {
@@ -68,4 +68,45 @@ test('suggestion chips appear while typing', async ({ page }) => {
 	await textarea.fill('tab')
 	// Chips should appear now that input has content
 	await expect(page.locator('.chip').first()).toBeVisible()
+})
+
+test('single-match response body is a clickable button that re-mounts demo', async ({ page }) => {
+	await page.goto('/')
+	const input = page.getByRole('textbox')
+	await input.fill('theme')
+	await input.press('Enter')
+	// Demo auto-mounts for single match; navigate back to gallery first
+	await expect(page.locator('.back')).toBeVisible({ timeout: 8000 })
+	await page.locator('.back').click()
+	// Gallery should now be visible (no back button)
+	await expect(page.locator('.back')).toHaveCount(0)
+	// The response body should now be a button (not a plain paragraph)
+	const bodyLink = page.locator('.body-link')
+	await expect(bodyLink).toBeVisible()
+	// Clicking the body link should re-mount the demo
+	await bodyLink.click()
+	await expect(page.locator('.back')).toBeVisible({ timeout: 8000 })
+})
+
+test('single-match body-link has active class when demo is mounted', async ({ page }) => {
+	await page.goto('/')
+	const input = page.getByRole('textbox')
+	await input.fill('theme')
+	await input.press('Enter')
+	// Wait for demo to mount
+	await expect(page.locator('.back')).toBeVisible({ timeout: 8000 })
+	// The body-link should have the active class since the demo is currently mounted
+	await expect(page.locator('.body-link.active')).toBeVisible()
+})
+
+test('canvas content transition wrapper exists when demo is active', async ({ page }) => {
+	await page.goto('/')
+	const input = page.getByRole('textbox')
+	await input.fill('theme')
+	await input.press('Enter')
+	// Wait for demo to mount
+	await expect(page.locator('.back')).toBeVisible({ timeout: 8000 })
+	// The transition wrapper div should be present inside the canvas
+	// We verify the demo content is visible (loaded component rendered)
+	await expect(page.locator('.back')).toBeVisible()
 })

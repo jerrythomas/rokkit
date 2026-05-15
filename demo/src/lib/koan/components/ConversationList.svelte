@@ -23,7 +23,16 @@
 		{:else}
 			<li class="msg response">
 				<span class="label">koan</span>
-				<p class="body">{msg.copy}</p>
+				{#if msg.matches.length === 1}
+					<button
+						type="button"
+						class="body-link"
+						class:active={msg.matches[0] === activeId}
+						onclick={() => onselect?.(msg.matches[0])}
+					>{msg.copy}</button>
+				{:else}
+					<p class="body">{msg.copy}</p>
+				{/if}
 				{#if msg.matches.length > 1}
 					<div class="links">
 						{#each msg.matches as demoId (demoId)}
@@ -92,6 +101,31 @@
 		font-size: 13px;
 		margin: 0;
 		@apply text-ink-z2;
+	}
+
+	.body-link {
+		display: block;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		background: transparent;
+		border: none;
+		text-align: left;
+		font: inherit;
+		font-size: 13px;
+		cursor: pointer;
+		@apply text-ink-z2;
+		transition: color 120ms ease;
+	}
+	.body-link:hover {
+		@apply text-ink-z1;
+		text-decoration: underline;
+		text-decoration-color: var(--color-accent-z5);
+		text-decoration-thickness: 1px;
+		text-underline-offset: 3px;
+	}
+	.body-link.active {
+		@apply text-ink-z1;
 	}
 
 	.links {

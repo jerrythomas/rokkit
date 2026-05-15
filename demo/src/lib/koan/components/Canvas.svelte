@@ -5,6 +5,11 @@
 	import { catalog, findById } from '../catalog'
 	import { runMatch } from '../match.svelte'
 	import type { Component } from 'svelte'
+	import { fly } from 'svelte/transition'
+	import { quintOut } from 'svelte/easing'
+
+	const reducedMotion =
+		typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 	const matches = $derived(runMatch(koan.query))
 	const active = $derived(koan.activeDemoId ? findById(koan.activeDemoId) : null)
@@ -45,18 +50,25 @@
 			</button>
 		{/if}
 	{/snippet}
-	{#if active}
-		{#if loadingError}
-			<p class="error">Couldn't load demo: {loadingError}</p>
-		{:else if loadedComponent}
-			{@const Demo = loadedComponent}
-			<Demo />
-		{:else}
-			<p class="loading">Loading…</p>
-		{/if}
-	{:else}
-		<Gallery items={galleryItems} {breadcrumb} onpick={pickGalleryItem} />
-	{/if}
+	{#key active?.id ?? '__gallery__'}
+		<div
+			in:fly={reducedMotion ? { duration: 0 } : { y: 24, duration: 280, easing: quintOut }}
+			style="will-change: transform, opacity;"
+		>
+			{#if active}
+				{#if loadingError}
+					<p class="error">Couldn't load demo: {loadingError}</p>
+				{:else if loadedComponent}
+					{@const Demo = loadedComponent}
+					<Demo />
+				{:else}
+					<p class="loading">Loading…</p>
+				{/if}
+			{:else}
+				<Gallery items={galleryItems} {breadcrumb} onpick={pickGalleryItem} />
+			{/if}
+		</div>
+	{/key}
 </ShowcaseCanvas>
 
 <style>
