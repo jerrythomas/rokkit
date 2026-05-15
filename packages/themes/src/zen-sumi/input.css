@@ -5,22 +5,28 @@
  * Error: border becomes danger-z4. No background fill on error state.
  */
 
-/* Input root: subtle border, paper background */
+/* Input root: subtle border, paper background.
+   Uses raw var() refs (not @apply) so the bg/border respect the
+   runtime [data-mode="dark"] cascade on body — UnoCSS @apply
+   compilation for z-tokens doesn't always flip with body's
+   data-mode in dev mode. */
 [data-style='zen-sumi'] [data-input-root] {
-  @apply border-surface-z3 bg-surface-z1 relative flex items-center border;
+  @apply relative flex items-center border;
+  background: var(--color-surface-z1);
+  border-color: var(--color-surface-z3);
   background-image: none;
   transition: border-color 150ms ease;
 }
 
 /* Hover: border darkens slightly */
 [data-style='zen-sumi'] [data-input-root]:hover:not(:focus-within) {
-  @apply border-surface-z4;
+  border-color: var(--color-surface-z4);
   background-image: none;
 }
 
 /* Focus: border darkens — no glow */
 [data-style='zen-sumi'] [data-input-root]:focus-within {
-  @apply border-surface-z6;
+  border-color: var(--color-surface-z6);
   background-image: none;
 }
 
@@ -30,7 +36,8 @@
   input:not([type='checkbox'], [type='radio'], [type='color']),
 [data-style='zen-sumi'] [data-input-root] textarea,
 [data-style='zen-sumi'] [data-input-root] select {
-  @apply text-ink-z1 w-full border-none bg-transparent px-2 py-1.5 outline-none;
+  @apply w-full border-none bg-transparent px-2 py-1.5 outline-none;
+  color: var(--color-ink-z1);
   font-size: 0.8125rem;
   line-height: 1.25rem;
 }
@@ -141,5 +148,5 @@
 /* Placeholders */
 [data-style='zen-sumi'] [data-input-root] input::placeholder,
 [data-style='zen-sumi'] [data-input-root] textarea::placeholder {
-  @apply text-surface-z4;
+  color: var(--color-surface-z4);
 }
