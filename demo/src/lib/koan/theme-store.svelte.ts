@@ -1,5 +1,6 @@
 import type { SavedTheme, WizardMode, WizardState } from './types'
 import { read, write, clear } from './persistence'
+import { theme as legacyTheme } from '$lib/stores/theme.svelte'
 
 const KEYS = {
 	active: 'koan.theme.active',
@@ -65,15 +66,9 @@ export function setActiveTheme(id: string | null) {
 export function setMode(mode: WizardMode) {
 	themeStore.mode = mode
 	write(KEYS.mode, mode)
-	if (typeof document !== 'undefined') {
-		const resolved =
-			mode === 'auto'
-				? window.matchMedia('(prefers-color-scheme: dark)').matches
-					? 'dark'
-					: 'light'
-				: mode
-		document.body.dataset.mode = resolved
-	}
+	// Delegate to legacy theme store so 'sensei-theme.mode' is updated,
+	// which is read by the flash-prevention inline script in app.html on next paint.
+	legacyTheme.setMode(mode as string)
 }
 
 let draftTimer: ReturnType<typeof setTimeout> | null = null
