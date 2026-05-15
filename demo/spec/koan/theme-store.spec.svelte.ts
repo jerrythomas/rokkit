@@ -11,8 +11,9 @@ import type { WizardState } from '../../src/lib/koan/types'
 
 const blankWizard: WizardState = {
 	preset: 'zen-sumi',
+	style: 'zen-sumi',
 	mode: 'auto',
-	density: 'normal',
+	density: 'comfortable',
 	roundedness: 'soft',
 	name: 'Test'
 }

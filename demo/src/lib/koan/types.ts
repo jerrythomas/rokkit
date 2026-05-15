@@ -39,11 +39,13 @@ export type ResponseMessage = {
 export type ConversationMessage = UserMessage | ResponseMessage
 
 export type WizardMode = 'light' | 'dark' | 'auto'
-export type WizardDensity = 'compact' | 'normal' | 'comfortable'
+export type WizardDensity = 'compact' | 'comfortable' | 'cozy'
 export type WizardRoundedness = 'sharp' | 'soft' | 'rounded' | 'pill'
+export type WizardStyle = 'zen-sumi' | 'rokkit' | 'minimal' | 'material' | 'frosted'
 
 export type WizardState = {
 	preset: string
+	style: WizardStyle
 	mode: WizardMode
 	density: WizardDensity
 	roundedness: WizardRoundedness
