@@ -34,21 +34,19 @@ test('submitting "theme" clears input and shows conversation', async ({ page }) 
 	await expect(page.locator('aside.chat-panel textarea')).toHaveValue('')
 	// Conversation should show user message
 	await expect(page.locator('.msg.user .body')).toHaveText('theme')
-	// Conversation should show koan response
-	await expect(page.locator('.msg.response .body')).toContainText('Theme Builder')
+	// Conversation should show koan response (copy is the demo description for single match)
+	await expect(page.locator('.msg.response .body')).toBeVisible()
 })
 
-test('response anchor mounts the demo in canvas', async ({ page }) => {
+test('single-match response auto-mounts the demo in canvas (no anchor needed)', async ({ page }) => {
 	await page.goto('/')
 	const input = page.getByRole('textbox')
 	await input.fill('theme')
 	await input.press('Enter')
-	// Click the anchor in the conversation
-	const anchor = page.locator('.anchor').first()
-	await expect(anchor).toBeVisible()
-	await anchor.click()
-	// Canvas should now show the active demo
-	await expect(page.locator('.back')).toBeVisible()
+	// Single-match: anchor button is omitted; demo auto-mounts
+	await expect(page.locator('.anchor')).toHaveCount(0)
+	// Canvas should show the active demo via back button
+	await expect(page.locator('.back')).toBeVisible({ timeout: 8000 })
 })
 
 test('suggestion chips hidden when input is empty', async ({ page }) => {

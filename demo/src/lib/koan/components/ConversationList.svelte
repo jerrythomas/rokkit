@@ -24,7 +24,7 @@
 			<li class="msg response">
 				<span class="label">koan</span>
 				<p class="body">{msg.copy}</p>
-				{#if msg.matches.length > 0}
+				{#if msg.matches.length > 1}
 					<div class="links">
 						{#each msg.matches as demoId (demoId)}
 							{@const demo = findById(demoId)}
