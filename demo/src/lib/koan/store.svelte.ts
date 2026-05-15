@@ -49,7 +49,7 @@ export function submitQuery(query: string): { matches: ReturnType<typeof runMatc
 		matches.length === 0
 			? "I don't have anything matching that yet."
 			: matches.length === 1
-				? `I have a ${matches[0].title} you can try.`
+				? matches[0].description
 				: `I have a few options that might fit.`
 	const respMsg: ResponseMessage = {
 		kind: 'response',
