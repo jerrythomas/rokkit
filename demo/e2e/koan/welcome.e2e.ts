@@ -9,6 +9,24 @@ test('welcome state shows enso, tagline, input, and Send button; no sidebar', as
 	await expect(page.locator('aside.chat-panel')).toHaveCount(0)
 })
 
+test('welcome toolbar: mode toggle button is visible', async ({ page }) => {
+	await page.goto('/')
+	await expect(page.getByRole('button', { name: 'Toggle theme mode' })).toBeVisible()
+})
+
+test('welcome toolbar: github link is visible', async ({ page }) => {
+	await page.goto('/')
+	await expect(page.getByRole('link', { name: 'GitHub' })).toBeVisible()
+})
+
+test('welcome toolbar: mode toggle changes body dataset mode', async ({ page }) => {
+	await page.goto('/')
+	const initialMode = await page.evaluate(() => document.body.dataset.mode)
+	await page.getByRole('button', { name: 'Toggle theme mode' }).click()
+	const newMode = await page.evaluate(() => document.body.dataset.mode)
+	expect(newMode).not.toBe(initialMode)
+})
+
 test('typing a query and pressing Enter migrates to active state', async ({ page }) => {
 	await page.goto('/')
 	const input = page.getByRole('textbox')
