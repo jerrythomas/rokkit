@@ -65,6 +65,15 @@ export function setActiveTheme(id: string | null) {
 export function setMode(mode: WizardMode) {
 	themeStore.mode = mode
 	write(KEYS.mode, mode)
+	if (typeof document !== 'undefined') {
+		const resolved =
+			mode === 'auto'
+				? window.matchMedia('(prefers-color-scheme: dark)').matches
+					? 'dark'
+					: 'light'
+				: mode
+		document.body.dataset.mode = resolved
+	}
 }
 
 let draftTimer: ReturnType<typeof setTimeout> | null = null
