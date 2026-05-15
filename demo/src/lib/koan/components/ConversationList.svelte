@@ -21,7 +21,7 @@
 				<span class="body">{msg.query}</span>
 			</li>
 		{:else}
-			<li class="msg response">
+			<li class="msg response" class:active={activeId !== null && msg.matches.includes(activeId)}>
 				<span class="label">koan</span>
 				{#if msg.matches.length === 1}
 					<button
@@ -70,8 +70,20 @@
 		display: flex;
 		flex-direction: column;
 		gap: 2px;
-		padding: 6px 8px;
+		padding: 6px 8px 6px 12px;
 		border-radius: var(--radius-sm, 4px);
+		position: relative;
+	}
+
+	.msg.response.active::before {
+		content: '';
+		position: absolute;
+		left: 2px;
+		top: 8px;
+		bottom: 8px;
+		width: 2px;
+		@apply bg-primary-z5;
+		border-radius: 1px;
 	}
 
 	.msg + .msg {
