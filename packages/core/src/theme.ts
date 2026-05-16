@@ -8,7 +8,10 @@ import {
   NAMED_TOKEN_SHADE_MAP,
   NAMED_TOKEN_ROLE_MAP,
   Z_COLLAPSE_MAP_SURFACE,
-  Z_COLLAPSE_MAP_INK
+  Z_COLLAPSE_MAP_INK,
+  Z_SLOTS,
+  SkinRole,
+  hasSoftCompanion
 } from './named-tokens'
 
 /**
@@ -301,25 +304,12 @@ export class Theme {
 	}
 
 	/**
-	 * Generate z-aliases for surface role using Z_COLLAPSE_MAP_SURFACE.
+	 * Generate z-aliases for surface or ink role using the provided map.
 	 */
-	#getZAliasesSurface(): Record<string, string> {
+	#getZAliasesFromMap(role: 'surface' | 'ink', map: Record<ZSlot, NamedToken>): Record<string, string> {
 		const result: Record<string, string> = {}
-		const Z_SLOTS = ['z0','z1','z2','z3','z4','z5','z6','z7','z8','z9','z10']
 		for (const z of Z_SLOTS) {
-			result[`--color-surface-${z}`] = `var(--${Z_COLLAPSE_MAP_SURFACE[z]})`
-		}
-		return result
-	}
-
-	/**
-	 * Generate z-aliases for ink role using Z_COLLAPSE_MAP_INK.
-	 */
-	#getZAliasesInk(): Record<string, string> {
-		const result: Record<string, string> = {}
-		const Z_SLOTS = ['z0','z1','z2','z3','z4','z5','z6','z7','z8','z9','z10']
-		for (const z of Z_SLOTS) {
-			result[`--color-ink-${z}`] = `var(--${Z_COLLAPSE_MAP_INK[z]})`
+			result[`--color-${role}-${z}`] = `var(--${map[z]})`
 		}
 		return result
 	}
@@ -329,8 +319,7 @@ export class Theme {
 	 */
 	#getZAliasesOther(role: string): Record<string, string> {
 		const result: Record<string, string> = {}
-		const Z_SLOTS = ['z0','z1','z2','z3','z4','z5','z6','z7','z8','z9','z10']
-		const hasSoft = NAMED_TOKENS.includes(`${role}-soft` as any)
+		const hasSoft = hasSoftCompanion(role)
 		const softTarget = hasSoft ? `${role}-soft` : role
 		for (const z of Z_SLOTS) {
 			const zNum = parseInt(z.slice(1), 10)
@@ -352,12 +341,12 @@ export class Theme {
 	 * This is the back-compat layer: existing `@apply bg-surface-z3` etc. resolves
 	 * through these aliases until consumers migrate to the named vocabulary.
 	 */
-	getZAliasesForCore(role: string): Record<string, string> {
+	getZAliasesForCore(role: SkinRole): Record<string, string> {
 		if (role === 'surface') {
-			return this.#getZAliasesSurface()
+			return this.#getZAliasesFromMap('surface', Z_COLLAPSE_MAP_SURFACE)
 		}
 		if (role === 'ink') {
-			return this.#getZAliasesInk()
+			return this.#getZAliasesFromMap('ink', Z_COLLAPSE_MAP_INK)
 		}
 		return this.#getZAliasesOther(role)
 	}

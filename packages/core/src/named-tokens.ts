@@ -19,6 +19,8 @@ export type SkinRole = 'surface' | 'ink' | 'primary' | 'accent' | 'success' | 'w
 
 export type ZSlot = 'z0' | 'z1' | 'z2' | 'z3' | 'z4' | 'z5' | 'z6' | 'z7' | 'z8' | 'z9' | 'z10'
 
+export const Z_SLOTS: ZSlot[] = ['z0', 'z1', 'z2', 'z3', 'z4', 'z5', 'z6', 'z7', 'z8', 'z9', 'z10']
+
 /**
  * Maps each named token to the palette shade index that backs it.
  * 'derived' indicates the token is computed from another palette (e.g., on-primary
@@ -125,6 +127,17 @@ export const Z_COLLAPSE_MAP_INK: Record<ZSlot, NamedToken> = {
   z8: 'paper-mute',
   z9: 'paper-soft',
   z10: 'paper'
+}
+
+const SOFT_TOKENS = new Set(NAMED_TOKENS.filter((t) => t.endsWith('-soft')))
+
+/**
+ * Returns true when the role has a `-soft` companion in the named vocabulary.
+ * Used to decide whether the role's tinted-background slot collapses to
+ * `var(--{role}-soft)` or to `var(--{role})`.
+ */
+export function hasSoftCompanion(role: string): boolean {
+  return SOFT_TOKENS.has(`${role}-soft`)
 }
 
 export function shadeForNamedToken(name: string): number | 'derived' | undefined {
