@@ -19,6 +19,7 @@
 
 import { createGenerator, presetWind3, transformerDirectives } from 'unocss'
 import { Theme } from '@rokkit/core'
+import { buildNamedShortcuts } from '@rokkit/unocss'
 import { readFileSync, writeFileSync, mkdirSync } from 'fs'
 import { resolve, dirname, join } from 'path'
 import { fileURLToPath } from 'url'
@@ -49,7 +50,8 @@ const uno = await createGenerator({
     ...theme.getShortcuts('warning'),
     ...theme.getShortcuts('danger'),
     ...theme.getShortcuts('error'),
-    ...theme.getShortcuts('info')
+    ...theme.getShortcuts('info'),
+    ...buildNamedShortcuts()
   ],
   theme: {
     colors: theme.getColorRules()
