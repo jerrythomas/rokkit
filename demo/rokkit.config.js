@@ -92,6 +92,14 @@ export default {
 
 	colorSpace: 'oklch',
 
+	tokens: 'core',
+
+	custom: {
+		canvas:        'kami.50',
+		'canvas-grid': '#d4d4d4',
+		'canvas-bleed': { light: 'kami.100', dark: 'sumi.900' }
+	},
+
 	shape: {
 		radius: 'soft'
 	},
