@@ -40,7 +40,7 @@ const uno = await createGenerator({
     })
   ],
   shortcuts: [
-    ['skin-default', theme.getPalette()],
+    ['skin-default', { ...theme.getPalette(), ...theme.getNamedTokens() }],
     ...theme.getShortcuts('surface'),
     ...theme.getShortcuts('primary'),
     ...theme.getShortcuts('secondary'),
