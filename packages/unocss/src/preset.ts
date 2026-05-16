@@ -212,7 +212,7 @@ function buildIconShortcuts(config) {
 }
 
 const NAMED_SHORTCUT_PREFIXES = [
-	{ prefix: 'bg', prop: 'background' },
+	{ prefix: 'bg', prop: 'background-color' },
 	{ prefix: 'text', prop: 'color' },
 	{ prefix: 'border', prop: 'border-color' },
 	{ prefix: 'border-t', prop: 'border-top-color' },

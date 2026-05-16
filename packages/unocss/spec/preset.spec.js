@@ -712,6 +712,16 @@ describe('presetRokkit', () => {
 			expect(str).toContain('--paper')
 		})
 
+		it('bg-* shortcuts use background-color (not the background shorthand)', () => {
+			const preset = presetRokkit()
+			const entry = preset.shortcuts.find(s => s[0] === 'bg-paper')
+			expect(entry).toBeDefined()
+			const expansion = entry[1]
+			// expansion is a CSS-properties object; key should be background-color
+			expect(expansion).toHaveProperty('background-color')
+			expect(expansion).not.toHaveProperty('background')
+		})
+
 		it('emits fill- and stroke- shortcuts for chart use', () => {
 			const preset = presetRokkit()
 			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
