@@ -15,6 +15,8 @@ export const NAMED_TOKENS = [
 
 export type NamedToken = (typeof NAMED_TOKENS)[number]
 
+export type SkinRole = 'surface' | 'ink' | 'primary' | 'accent' | 'success' | 'warning' | 'danger'
+
 /**
  * Maps each named token to the palette shade index that backs it.
  * 'derived' indicates the token is computed from another palette (e.g., on-primary
@@ -61,7 +63,7 @@ export const NAMED_TOKEN_SHADE_MAP: Record<NamedToken, number | 'derived'> = {
 /**
  * Maps each named token to the skin role whose palette it draws from.
  */
-export const NAMED_TOKEN_ROLE_MAP: Record<NamedToken, string> = {
+export const NAMED_TOKEN_ROLE_MAP: Record<NamedToken, SkinRole> = {
   paper: 'surface',
   'paper-soft': 'surface',
   'paper-mute': 'surface',
@@ -91,7 +93,7 @@ export const NAMED_TOKEN_ROLE_MAP: Record<NamedToken, string> = {
  * z2/z3 collapse to paper-mute, z5/z6 to ink-soft, z7/z8 to ink-mute,
  * z9/z10 to ink. This collapse is the contract: 4 surface tones in core mode.
  */
-export const Z_COLLAPSE_MAP_SURFACE: Record<string, NamedToken> = {
+export const Z_COLLAPSE_MAP_SURFACE: Record<ZSlot, NamedToken> = {
   z0: 'paper',
   z1: 'paper-soft',
   z2: 'paper-mute',
@@ -109,7 +111,7 @@ export const Z_COLLAPSE_MAP_SURFACE: Record<string, NamedToken> = {
  * Ink role uses the inverted z-scale (z0 = darkest = primary text).
  * In core mode, the same 4+4 named ladder is reused; this table just inverts.
  */
-export const Z_COLLAPSE_MAP_INK: Record<string, NamedToken> = {
+export const Z_COLLAPSE_MAP_INK: Record<ZSlot, NamedToken> = {
   z0: 'ink',
   z1: 'ink-mute',
   z2: 'ink-mute',
@@ -127,6 +129,6 @@ export function shadeForNamedToken(name: string): number | 'derived' | undefined
   return NAMED_TOKEN_SHADE_MAP[name as NamedToken]
 }
 
-export function roleForNamedToken(name: string): string | undefined {
+export function roleForNamedToken(name: string): SkinRole | undefined {
   return NAMED_TOKEN_ROLE_MAP[name as NamedToken]
 }

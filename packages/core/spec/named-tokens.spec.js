@@ -138,6 +138,18 @@ describe('Z_COLLAPSE_MAP_INK (inverted)', () => {
   it('maps z10 to paper (inverted)', () => {
     expect(Z_COLLAPSE_MAP_INK['z10']).toBe('paper')
   })
+
+  it('maps z5/z6 to paper-edge in the inverted middle ladder', () => {
+    expect(Z_COLLAPSE_MAP_INK['z5']).toBe('paper-edge')
+    expect(Z_COLLAPSE_MAP_INK['z6']).toBe('paper-edge')
+  })
+
+  it('maps z1/z2 to ink-mute and z3/z4 to ink-soft', () => {
+    expect(Z_COLLAPSE_MAP_INK['z1']).toBe('ink-mute')
+    expect(Z_COLLAPSE_MAP_INK['z2']).toBe('ink-mute')
+    expect(Z_COLLAPSE_MAP_INK['z3']).toBe('ink-soft')
+    expect(Z_COLLAPSE_MAP_INK['z4']).toBe('ink-soft')
+  })
 })
 
 describe('helpers', () => {
@@ -151,5 +163,9 @@ describe('helpers', () => {
 
   it('roleForNamedToken returns the role', () => {
     expect(roleForNamedToken('ink-mute')).toBe('ink')
+  })
+
+  it('roleForNamedToken returns undefined for unknown names', () => {
+    expect(roleForNamedToken('not-a-token')).toBeUndefined()
   })
 })
