@@ -448,6 +448,91 @@ describe('getZScaleCSS — inverted roles', () => {
 	})
 })
 
+describe('Theme.getNamedTokens', () => {
+  it('returns a CSS-var map keyed by --{named}', () => {
+    const theme = new Theme({
+      mapping: { surface: 'slate', ink: 'slate', primary: 'orange', accent: 'sky' },
+      colorSpace: 'rgb'
+    })
+    const tokens = theme.getNamedTokens('light')
+    expect(tokens).toHaveProperty('--paper')
+    expect(tokens).toHaveProperty('--paper-soft')
+    expect(tokens).toHaveProperty('--ink-mute')
+    expect(tokens).toHaveProperty('--primary')
+    expect(tokens).toHaveProperty('--accent-soft')
+  })
+
+  it('resolves paper to surface palette shade 50 in rgb', () => {
+    const theme = new Theme({
+      mapping: { surface: 'slate' },
+      colorSpace: 'rgb'
+    })
+    // slate-50 = #f8fafc → rgb(248, 250, 252)
+    const tokens = theme.getNamedTokens('light')
+    expect(tokens['--paper']).toBe('rgb(248, 250, 252)')
+  })
+
+  it('resolves ink to ink palette shade 900', () => {
+    const theme = new Theme({
+      mapping: { surface: 'slate', ink: 'slate' },
+      colorSpace: 'rgb'
+    })
+    // slate-900 = #0f172a → rgb(15, 23, 42)
+    const tokens = theme.getNamedTokens('light')
+    expect(tokens['--ink']).toBe('rgb(15, 23, 42)')
+  })
+
+  it('emits a value for every NAMED_TOKEN', () => {
+    const theme = new Theme({
+      mapping: { surface: 'slate', ink: 'slate', primary: 'orange' },
+      colorSpace: 'rgb'
+    })
+    const tokens = theme.getNamedTokens('light')
+    const NAMED_TOKENS = [
+      'paper', 'paper-soft', 'paper-mute', 'paper-edge',
+      'ink', 'ink-mute', 'ink-soft', 'ink-faint',
+      'primary', 'on-primary',
+      'accent', 'accent-soft',
+      'success', 'success-soft', 'warning', 'warning-soft', 'danger', 'danger-soft',
+      'focus-ring', 'shadow-tint'
+    ]
+    for (const name of NAMED_TOKENS) {
+      expect(tokens).toHaveProperty(`--${name}`)
+      expect(tokens[`--${name}`]).toBeTruthy()
+    }
+  })
+
+  it('emits *-soft variants with concrete color values', () => {
+    const theme = new Theme({
+      mapping: { surface: 'slate', primary: 'orange', accent: 'sky' },
+      colorSpace: 'rgb'
+    })
+    const tokens = theme.getNamedTokens('light')
+    expect(tokens['--accent-soft']).toMatch(/rgb\(\d+, \d+, \d+\)/)
+    expect(tokens['--success-soft']).toMatch(/rgb\(\d+, \d+, \d+\)/)
+  })
+
+  it('on-primary defaults to paper shade of surface (white-on-primary)', () => {
+    const theme = new Theme({
+      mapping: { surface: 'slate', primary: 'orange' },
+      colorSpace: 'rgb'
+    })
+    const tokens = theme.getNamedTokens('light')
+    // on-primary = surface shade 50 (paper) for white-on-primary contrast
+    expect(tokens['--on-primary']).toBe('rgb(248, 250, 252)')
+  })
+
+  it('falls back gracefully when a role mapping is missing', () => {
+    // No `accent` mapping provided — Theme's COLOR_FALLBACKS chains accent → primary.
+    const theme = new Theme({
+      mapping: { surface: 'slate', primary: 'orange' },
+      colorSpace: 'rgb'
+    })
+    const tokens = theme.getNamedTokens('light')
+    expect(tokens['--accent']).toBeTruthy()
+  })
+})
+
 describe('semanticShortcuts', () => {
 	it('should generate shortcuts for secondary color', () => {
 		const shortcuts = semanticShortcuts('secondary')

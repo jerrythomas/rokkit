@@ -3,6 +3,11 @@
 import { DEFAULT_THEME_MAPPING, defaultColors, TONE_MAP, INVERTED_ROLES } from './constants'
 import { shades } from './colors/index'
 import { ColorSpace } from './color-space'
+import {
+  NAMED_TOKENS,
+  NAMED_TOKEN_SHADE_MAP,
+  NAMED_TOKEN_ROLE_MAP
+} from './named-tokens'
 
 /**
  * Generate shades for a color using css variable and a ColorSpace adapter.
@@ -241,6 +246,50 @@ export class Theme {
 			.flatMap((variant) => generateColorRules(variant, useColors, useMapping, this.#adapter))
 			.reduce((acc, { key, value }) => ({ ...acc, [key]: value }), {})
 		return rules
+	}
+
+	/**
+	 * Returns the named-token layer as a map of `--{name}: <resolved value>` entries.
+	 *
+	 * Palette values are inlined — there is no `var(--color-{role}-{shade})` indirection.
+	 *
+	 * `on-primary` is derived: it picks the paper shade (50) of the surface palette so the
+	 * default contrast pair is "primary fill + white-ish text." Skins that need a different
+	 * pair should override via custom tokens.
+	 *
+	 * `*-soft` variants resolve to shade 100 of their role's palette.
+	 * `shadow-tint` resolves to shade 900 of the ink palette.
+	 *
+	 * @param {'light' | 'dark'} _mode — accepted for symmetry with future
+	 *   dark-aware derivations. Today the Theme is constructed with a mode-resolved
+	 *   mapping, so this parameter is informational.
+	 */
+	getNamedTokens(_mode = 'light') {
+		const colors = { ...defaultColors, ...this.#colors }
+		const result: Record<string, string> = {}
+
+		for (const name of NAMED_TOKENS) {
+			const role = NAMED_TOKEN_ROLE_MAP[name]
+			const shadeOrDerived = NAMED_TOKEN_SHADE_MAP[name]
+			const paletteName = this.#mapping[role]
+			if (!paletteName || !colors[paletteName]) continue
+
+			if (shadeOrDerived === 'derived') {
+				// on-primary: paper-equivalent of surface (shade 50) for white-on-primary
+				const surfacePaletteName = this.#mapping['surface']
+				const surfacePalette = colors[surfacePaletteName]
+				if (surfacePalette) {
+					result[`--${name}`] = this.#adapter.wrap(surfacePalette['50'])
+				}
+				continue
+			}
+
+			const raw = colors[paletteName][String(shadeOrDerived)]
+			if (raw !== undefined) {
+				result[`--${name}`] = this.#adapter.wrap(raw)
+			}
+		}
+		return result
 	}
 
 	getShortcuts(name) {
