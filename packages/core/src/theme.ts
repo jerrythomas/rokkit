@@ -6,7 +6,9 @@ import { ColorSpace } from './color-space'
 import {
   NAMED_TOKENS,
   NAMED_TOKEN_SHADE_MAP,
-  NAMED_TOKEN_ROLE_MAP
+  NAMED_TOKEN_ROLE_MAP,
+  Z_COLLAPSE_MAP_SURFACE,
+  Z_COLLAPSE_MAP_INK
 } from './named-tokens'
 
 /**
@@ -296,6 +298,68 @@ export class Theme {
 			}
 		}
 		return undefined
+	}
+
+	/**
+	 * Generate z-aliases for surface role using Z_COLLAPSE_MAP_SURFACE.
+	 */
+	#getZAliasesSurface(): Record<string, string> {
+		const result: Record<string, string> = {}
+		const Z_SLOTS = ['z0','z1','z2','z3','z4','z5','z6','z7','z8','z9','z10']
+		for (const z of Z_SLOTS) {
+			result[`--color-surface-${z}`] = `var(--${Z_COLLAPSE_MAP_SURFACE[z]})`
+		}
+		return result
+	}
+
+	/**
+	 * Generate z-aliases for ink role using Z_COLLAPSE_MAP_INK.
+	 */
+	#getZAliasesInk(): Record<string, string> {
+		const result: Record<string, string> = {}
+		const Z_SLOTS = ['z0','z1','z2','z3','z4','z5','z6','z7','z8','z9','z10']
+		for (const z of Z_SLOTS) {
+			result[`--color-ink-${z}`] = `var(--${Z_COLLAPSE_MAP_INK[z]})`
+		}
+		return result
+	}
+
+	/**
+	 * Generate z-aliases for other roles using tint-vs-solid 2-state collapse.
+	 */
+	#getZAliasesOther(role: string): Record<string, string> {
+		const result: Record<string, string> = {}
+		const Z_SLOTS = ['z0','z1','z2','z3','z4','z5','z6','z7','z8','z9','z10']
+		const hasSoft = NAMED_TOKENS.includes(`${role}-soft` as any)
+		const softTarget = hasSoft ? `${role}-soft` : role
+		for (const z of Z_SLOTS) {
+			const zNum = parseInt(z.slice(1), 10)
+			const target = zNum <= 2 ? softTarget : role
+			result[`--color-${role}-${z}`] = `var(--${target})`
+		}
+		return result
+	}
+
+	/**
+	 * Returns z-alias CSS-var assignments for back-compat in core mode.
+	 * `--color-{role}-z{n}` → `var(--{namedSlot})`.
+	 *
+	 * - surface: uses Z_COLLAPSE_MAP_SURFACE (z2/z3 → paper-mute, z9/z10 → ink, etc.)
+	 * - ink: uses Z_COLLAPSE_MAP_INK (inverted scale)
+	 * - primary/accent/status: tint-vs-solid 2-state collapse.
+	 *   z0–z2 → role-soft (if it exists) else role; z3+ → role.
+	 *
+	 * This is the back-compat layer: existing `@apply bg-surface-z3` etc. resolves
+	 * through these aliases until consumers migrate to the named vocabulary.
+	 */
+	getZAliasesForCore(role: string): Record<string, string> {
+		if (role === 'surface') {
+			return this.#getZAliasesSurface()
+		}
+		if (role === 'ink') {
+			return this.#getZAliasesInk()
+		}
+		return this.#getZAliasesOther(role)
 	}
 
 	getShortcuts(name) {

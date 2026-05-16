@@ -17,6 +17,8 @@ export type NamedToken = (typeof NAMED_TOKENS)[number]
 
 export type SkinRole = 'surface' | 'ink' | 'primary' | 'accent' | 'success' | 'warning' | 'danger'
 
+export type ZSlot = 'z0' | 'z1' | 'z2' | 'z3' | 'z4' | 'z5' | 'z6' | 'z7' | 'z8' | 'z9' | 'z10'
+
 /**
  * Maps each named token to the palette shade index that backs it.
  * 'derived' indicates the token is computed from another palette (e.g., on-primary
