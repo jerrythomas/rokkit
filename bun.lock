@@ -261,6 +261,7 @@
         "@rokkit/core": "workspace:*",
       },
       "devDependencies": {
+        "@rokkit/unocss": "workspace:*",
         "magic-string": "^0.30.21",
         "unocss": "^66.5.1",
       },

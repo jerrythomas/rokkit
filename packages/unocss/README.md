@@ -114,12 +114,22 @@ Import the pattern base CSS in your app:
 
 ## Token modes
 
-By default, the preset emits a trimmed 20-name token vocabulary
-(`--paper`, `--paper-soft`, `--paper-mute`, `--paper-edge`,
-`--ink`, `--ink-mute`, `--ink-soft`, `--ink-faint`,
-`--primary`, `--on-primary`, `--accent`, `--accent-soft`,
-`--success`, `--success-soft`, `--warning`, `--warning-soft`,
-`--danger`, `--danger-soft`, `--focus-ring`, `--shadow-tint`).
+By default, the preset emits a trimmed 24-name token vocabulary:
+
+| Group        | Tokens                                                              |
+| ------------ | ------------------------------------------------------------------- |
+| Surface      | `--paper`, `--paper-soft`, `--paper-mute`, `--paper-edge`           |
+| Ink          | `--ink`, `--ink-mute`, `--ink-soft`, `--ink-faint`                  |
+| Primary      | `--primary`, `--on-primary`                                         |
+| Accent       | `--accent`, `--accent-soft`                                         |
+| Status       | `--success` / `-soft`, `--warning` / `-soft`, `--danger` / `-soft`, `--error` / `-soft`, `--info` / `-soft` |
+| Misc         | `--focus-ring`, `--shadow-tint`                                     |
+
+Ink ladder semantics: `ink` = primary text, `ink-mute` = secondary,
+`ink-soft` = placeholder, `ink-faint` = disabled. Paper ladder:
+`paper` = canvas, `paper-soft` = card bg, `paper-mute` = subdued panel,
+`paper-edge` = hairline border tone. `*-soft` companions are the tinted-
+bg variant for status callouts and accent chips.
 
 Palette values are inlined — no `--color-{role}-{shade}` indirection.
 The `--color-{role}-z{0..10}` aliases are kept as a back-compat layer
@@ -152,9 +162,14 @@ properties:
 | `primary`        | `bg-primary`, `text-primary`, `fill-primary`, … |
 | `on-primary`     | `text-on-primary` (only)                    |
 | `accent`, `accent-soft` | `bg-accent`, `bg-accent-soft`, …       |
-| status (`success`, `warning`, `danger`) | full prefix set incl. `-soft` |
+| status (`success`, `warning`, `danger`, `error`, `info`) | full prefix set incl. `-soft` |
 | `focus-ring`     | `ring-focus-ring`, `border-focus-ring` (only) |
 | `shadow-tint`    | (no shortcuts — used in box-shadow expressions) |
+
+The same `buildNamedShortcuts()` helper is also exported from
+`@rokkit/unocss`, so themes-build pipelines (e.g.
+`@rokkit/themes/build.mjs`) can opt into the same vocabulary when
+compiling component CSS that uses `@apply bg-paper-mute` etc.
 
 ## Custom tokens
 
