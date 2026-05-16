@@ -274,22 +274,28 @@ export class Theme {
 			const paletteName = this.#mapping[role]
 			if (!paletteName || !colors[paletteName]) continue
 
-			if (shadeOrDerived === 'derived') {
-				// on-primary: paper-equivalent of surface (shade 50) for white-on-primary
-				const surfacePaletteName = this.#mapping['surface']
-				const surfacePalette = colors[surfacePaletteName]
-				if (surfacePalette) {
-					result[`--${name}`] = this.#adapter.wrap(surfacePalette['50'])
-				}
-				continue
-			}
+			const value = shadeOrDerived === 'derived'
+				? this.#resolveDerivedToken(name, colors)
+				: this.#adapter.wrap(colors[paletteName][String(shadeOrDerived)])
 
-			const raw = colors[paletteName][String(shadeOrDerived)]
-			if (raw !== undefined) {
-				result[`--${name}`] = this.#adapter.wrap(raw)
-			}
+			if (value !== undefined) result[`--${name}`] = value
 		}
 		return result
+	}
+
+	/**
+	 * Resolves a 'derived' named token. Today only `on-primary` is derived — it picks
+	 * shade 50 from the surface palette for the default white-on-primary contrast pair.
+	 */
+	#resolveDerivedToken(name: string, colors: Record<string, Record<string, string>>): string | undefined {
+		if (name === 'on-primary') {
+			const surfacePaletteName = this.#mapping['surface']
+			const surfacePalette = colors[surfacePaletteName]
+			if (surfacePalette?.['50']) {
+				return this.#adapter.wrap(surfacePalette['50'])
+			}
+		}
+		return undefined
 	}
 
 	getShortcuts(name) {

@@ -531,6 +531,23 @@ describe('Theme.getNamedTokens', () => {
     const tokens = theme.getNamedTokens('light')
     expect(tokens['--accent']).toBeTruthy()
   })
+
+  it('silently omits --on-primary when surface mapping is absent', () => {
+    // Note: Theme constructor's COLOR_FALLBACKS doesn't auto-fill 'surface',
+    // but DEFAULT_THEME_MAPPING provides it. We force the gap by deleting it
+    // post-construction via mapping setter to test the guard.
+    const theme = new Theme({
+      mapping: { surface: 'slate', primary: 'orange' },
+      colorSpace: 'rgb'
+    })
+    // Replace mapping with one that has primary but no surface
+    theme.mapping = { primary: 'orange', ink: 'slate' }
+    const tokens = theme.getNamedTokens('light')
+    // --on-primary should not be present (surfacePalette is undefined)
+    expect(tokens).not.toHaveProperty('--on-primary')
+    // --primary should still resolve
+    expect(tokens['--primary']).toBeTruthy()
+  })
 })
 
 describe('semanticShortcuts', () => {
