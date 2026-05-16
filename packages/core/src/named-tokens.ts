@@ -1,5 +1,5 @@
 /**
- * The 20 canonical named tokens that constitute the "core" emit vocabulary.
+ * The 24 canonical named tokens that constitute the "core" emit vocabulary.
  * Order is significant for tests and for predictable CSS-var output ordering.
  */
 export const NAMED_TOKENS = [
@@ -10,12 +10,16 @@ export const NAMED_TOKENS = [
   'success', 'success-soft',
   'warning', 'warning-soft',
   'danger', 'danger-soft',
+  'error', 'error-soft',
+  'info', 'info-soft',
   'focus-ring', 'shadow-tint'
 ] as const
 
 export type NamedToken = (typeof NAMED_TOKENS)[number]
 
-export type SkinRole = 'surface' | 'ink' | 'primary' | 'accent' | 'success' | 'warning' | 'danger'
+export type SkinRole =
+  | 'surface' | 'ink' | 'primary' | 'accent'
+  | 'success' | 'warning' | 'danger' | 'error' | 'info'
 
 export type ZSlot = 'z0' | 'z1' | 'z2' | 'z3' | 'z4' | 'z5' | 'z6' | 'z7' | 'z8' | 'z9' | 'z10'
 
@@ -60,6 +64,10 @@ export const NAMED_TOKEN_SHADE_MAP: Record<NamedToken, number | 'derived'> = {
   'warning-soft': 100,
   danger: 500,
   'danger-soft': 100,
+  error: 500,
+  'error-soft': 100,
+  info: 500,
+  'info-soft': 100,
   'focus-ring': 500,
   'shadow-tint': 900
 }
@@ -86,6 +94,10 @@ export const NAMED_TOKEN_ROLE_MAP: Record<NamedToken, SkinRole> = {
   'warning-soft': 'warning',
   danger: 'danger',
   'danger-soft': 'danger',
+  error: 'error',
+  'error-soft': 'error',
+  info: 'info',
+  'info-soft': 'info',
   'focus-ring': 'accent',
   'shadow-tint': 'ink'
 }

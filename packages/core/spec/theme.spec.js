@@ -494,6 +494,7 @@ describe('Theme.getNamedTokens', () => {
       'primary', 'on-primary',
       'accent', 'accent-soft',
       'success', 'success-soft', 'warning', 'warning-soft', 'danger', 'danger-soft',
+      'error', 'error-soft', 'info', 'info-soft',
       'focus-ring', 'shadow-tint'
     ]
     for (const name of NAMED_TOKENS) {
@@ -664,6 +665,7 @@ describe('Theme.getZAliasesForExtended (named-as-aliases-of-palette)', () => {
       'ink','ink-mute','ink-soft','ink-faint',
       'primary','on-primary','accent','accent-soft',
       'success','success-soft','warning','warning-soft','danger','danger-soft',
+      'error','error-soft','info','info-soft',
       'focus-ring','shadow-tint'
     ]
     for (const name of NAMED_TOKENS) {

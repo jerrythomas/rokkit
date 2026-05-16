@@ -10,8 +10,8 @@ import {
 } from '../src/named-tokens.ts'
 
 describe('NAMED_TOKENS', () => {
-  it('exports exactly 20 canonical names', () => {
-    expect(NAMED_TOKENS).toHaveLength(20)
+  it('exports exactly 24 canonical names', () => {
+    expect(NAMED_TOKENS).toHaveLength(24)
   })
 
   it('includes all surface tokens', () => {
@@ -34,7 +34,8 @@ describe('NAMED_TOKENS', () => {
 
   it('includes status tokens with soft companions', () => {
     expect(NAMED_TOKENS).toEqual(expect.arrayContaining([
-      'success', 'success-soft', 'warning', 'warning-soft', 'danger', 'danger-soft'
+      'success', 'success-soft', 'warning', 'warning-soft', 'danger', 'danger-soft',
+      'error', 'error-soft', 'info', 'info-soft'
     ]))
   })
 
@@ -64,6 +65,8 @@ describe('NAMED_TOKEN_SHADE_MAP', () => {
     expect(NAMED_TOKEN_SHADE_MAP['success']).toBe(500)
     expect(NAMED_TOKEN_SHADE_MAP['warning']).toBe(500)
     expect(NAMED_TOKEN_SHADE_MAP['danger']).toBe(500)
+    expect(NAMED_TOKEN_SHADE_MAP['error']).toBe(500)
+    expect(NAMED_TOKEN_SHADE_MAP['info']).toBe(500)
   })
 
   it('maps soft companions to shade 100', () => {
@@ -71,6 +74,8 @@ describe('NAMED_TOKEN_SHADE_MAP', () => {
     expect(NAMED_TOKEN_SHADE_MAP['success-soft']).toBe(100)
     expect(NAMED_TOKEN_SHADE_MAP['warning-soft']).toBe(100)
     expect(NAMED_TOKEN_SHADE_MAP['danger-soft']).toBe(100)
+    expect(NAMED_TOKEN_SHADE_MAP['error-soft']).toBe(100)
+    expect(NAMED_TOKEN_SHADE_MAP['info-soft']).toBe(100)
   })
 
   it('on-primary uses "derived" sentinel', () => {
@@ -104,6 +109,10 @@ describe('NAMED_TOKEN_ROLE_MAP', () => {
     expect(NAMED_TOKEN_ROLE_MAP['success-soft']).toBe('success')
     expect(NAMED_TOKEN_ROLE_MAP['warning']).toBe('warning')
     expect(NAMED_TOKEN_ROLE_MAP['danger']).toBe('danger')
+    expect(NAMED_TOKEN_ROLE_MAP['error']).toBe('error')
+    expect(NAMED_TOKEN_ROLE_MAP['error-soft']).toBe('error')
+    expect(NAMED_TOKEN_ROLE_MAP['info']).toBe('info')
+    expect(NAMED_TOKEN_ROLE_MAP['info-soft']).toBe('info')
   })
 
   it('routes focus-ring through accent and shadow-tint through ink', () => {
