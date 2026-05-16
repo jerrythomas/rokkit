@@ -1,5 +1,54 @@
 # Project Journal
 
+### Trimmed Token Vocabulary (release 1) — complete (2026-05-15)
+
+**What was done:**
+
+- **Named-token vocabulary constants** — `NAMED_TOKENS` in `@rokkit/core` defines the 20-name vocabulary
+- **`tokens` mode config** — `tokens: 'core'` (new default) emits 20 named vars with palette values inlined; `tokens: 'extended'` preserves legacy ~120-var output
+- **`--color-*-z*` aliases preserved** — back-compat z-alias layer emitted alongside named tokens; `getZAliasesForCore` / `getZAliasesForExtended` in `Theme`
+- **`custom` config block** — app-level tokens with palette-ref + mode-aware resolution; `customTokenResolver` + Uno shortcuts for color-valued custom tokens
+- **Named-layer Uno shortcuts** — `bg-paper`, `text-ink-mute`, etc. generated from named vocabulary; `bg-*` shortcuts use `background-color`
+- **Preflight branching** — `buildPreflights` branches on `tokens` mode to emit the right CSS var set
+- **Demo smoke test** — `tokens: 'core'` + `custom.canvas` wired in the demo app to verify end-to-end
+- **Docs** — `docs/unocss` updated with `tokens` mode and custom-tokens config documentation
+
+**Emit-size impact (per skin):**
+- `tokens: 'extended'` (today's behavior preserved): ~120 CSS vars
+- `tokens: 'core'` (new default): ~40 CSS vars (20 named + ~22 z-aliases)
+
+**Out of scope (next release):** migrate `packages/themes/src/base/*.css` to use named vars instead of z-scale patterns; migrate zen-sumi style; eventually drop the z-alias emit.
+
+**Spec:** `docs/superpowers/specs/2026-05-15-trimmed-token-vocabulary-design.md`
+**Plan:** `docs/superpowers/plans/2026-05-15-trimmed-token-vocabulary.md`
+
+**Results:**
+- 3469 unit tests — all passing
+- 1026 UI tests — all passing
+- 0 lint errors (14 pre-existing warnings)
+- Demo + site builds: passing
+
+**Commits (newest first):**
+- `e093efe4` docs(unocss): document tokens mode and custom-tokens config
+- `d76c99e0` demo: enable tokens:'core' and add custom canvas tokens as smoke test
+- `9d297cc6` refactor(unocss): dedupe palette-ref regex
+- `065ceac9` feat(unocss): Uno shortcuts for color-valued custom tokens
+- `c3bf46e8` refactor(unocss): bg-* named shortcuts use background-color
+- `c706ec54` feat(unocss): named-layer Uno shortcuts (bg-paper, text-ink-mute, etc.)
+- `58e9331b` refactor(unocss): tighten preflight emit — drop dead cast, refine dark trigger
+- `336e01f9` feat(unocss): preset preflights branch on tokens mode
+- `3c8bca5a` feat(unocss): custom-token resolver
+- `fc11b042` feat(unocss): config — tokens mode + custom block
+- `2cc9d1a9` feat(core): Theme.getZAliasesForExtended — named-as-palette-aliases
+- `ed5f6d53` refactor(core): tighten getZAliasesForCore types and dedupe Z_SLOTS
+- `0e5623ba` feat(core): Theme.getZAliasesForCore — back-compat z-alias layer
+- `efe9dcde` refactor(core): extract Theme #resolveDerivedToken to reduce complexity
+- `e8fd0e95` feat(core): Theme.getNamedTokens — palette-inlined named layer
+- `3406c54c` refactor(core): tighten named-token types + add edge-case tests
+- `33070edf` feat(core): add named-token vocabulary constants
+
+---
+
 ### Semantic Ink + Extensible Color Roles — complete (2026-05-12)
 
 **What was done:**
