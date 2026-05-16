@@ -351,6 +351,29 @@ export class Theme {
 		return this.#getZAliasesOther(role)
 	}
 
+	/**
+	 * Returns named tokens as CSS-var aliases pointing at the palette layer.
+	 * Used in extended mode where the preset emits the full --color-{role}-{shade}
+	 * palette; named tokens become thin syntactic aliases over the palette.
+	 *
+	 * `on-primary` aliases to `var(--color-surface-50)` (derived: paper of surface,
+	 * matching the core-mode resolution).
+	 */
+	getZAliasesForExtended(): Record<string, string> {
+		const result: Record<string, string> = {}
+		for (const name of NAMED_TOKENS) {
+			const role = NAMED_TOKEN_ROLE_MAP[name]
+			const shadeOrDerived = NAMED_TOKEN_SHADE_MAP[name]
+			if (shadeOrDerived === 'derived') {
+				// on-primary → surface.50
+				result[`--${name}`] = `var(--color-surface-50)`
+				continue
+			}
+			result[`--${name}`] = `var(--color-${role}-${shadeOrDerived})`
+		}
+		return result
+	}
+
 	getShortcuts(name) {
 		return [...semanticShortcuts(name), ...contrastShortcuts(name)]
 	}

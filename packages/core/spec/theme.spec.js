@@ -610,6 +610,69 @@ describe('Theme.getZAliasesForCore', () => {
   })
 })
 
+describe('Theme.getZAliasesForExtended (named-as-aliases-of-palette)', () => {
+  it('emits named tokens as aliases pointing at palette CSS vars', () => {
+    const theme = new Theme({
+      mapping: { surface: 'slate', ink: 'slate', primary: 'orange' },
+      colorSpace: 'rgb'
+    })
+    const aliases = theme.getZAliasesForExtended()
+    expect(aliases['--paper']).toBe('var(--color-surface-50)')
+    expect(aliases['--paper-soft']).toBe('var(--color-surface-100)')
+    expect(aliases['--paper-mute']).toBe('var(--color-surface-200)')
+    expect(aliases['--paper-edge']).toBe('var(--color-surface-400)')
+    expect(aliases['--ink']).toBe('var(--color-ink-900)')
+    expect(aliases['--ink-mute']).toBe('var(--color-ink-700)')
+    expect(aliases['--ink-soft']).toBe('var(--color-ink-500)')
+    expect(aliases['--ink-faint']).toBe('var(--color-ink-300)')
+    expect(aliases['--primary']).toBe('var(--color-primary-500)')
+    expect(aliases['--accent']).toBe('var(--color-accent-500)')
+    expect(aliases['--accent-soft']).toBe('var(--color-accent-100)')
+    expect(aliases['--success']).toBe('var(--color-success-500)')
+    expect(aliases['--danger-soft']).toBe('var(--color-danger-100)')
+  })
+
+  it('on-primary aliases to --color-surface-50 (derived rule)', () => {
+    const theme = new Theme({
+      mapping: { surface: 'slate', primary: 'orange' },
+      colorSpace: 'rgb'
+    })
+    const aliases = theme.getZAliasesForExtended()
+    expect(aliases['--on-primary']).toBe('var(--color-surface-50)')
+  })
+
+  it('focus-ring aliases to accent.500', () => {
+    const theme = new Theme({ mapping: { surface: 'slate', accent: 'sky' }, colorSpace: 'rgb' })
+    const aliases = theme.getZAliasesForExtended()
+    expect(aliases['--focus-ring']).toBe('var(--color-accent-500)')
+  })
+
+  it('shadow-tint aliases to ink.900', () => {
+    const theme = new Theme({ mapping: { surface: 'slate', ink: 'slate' }, colorSpace: 'rgb' })
+    const aliases = theme.getZAliasesForExtended()
+    expect(aliases['--shadow-tint']).toBe('var(--color-ink-900)')
+  })
+
+  it('emits an alias for every NAMED_TOKEN', () => {
+    const theme = new Theme({
+      mapping: { surface: 'slate', ink: 'slate', primary: 'orange' },
+      colorSpace: 'rgb'
+    })
+    const aliases = theme.getZAliasesForExtended()
+    const NAMED_TOKENS = [
+      'paper','paper-soft','paper-mute','paper-edge',
+      'ink','ink-mute','ink-soft','ink-faint',
+      'primary','on-primary','accent','accent-soft',
+      'success','success-soft','warning','warning-soft','danger','danger-soft',
+      'focus-ring','shadow-tint'
+    ]
+    for (const name of NAMED_TOKENS) {
+      expect(aliases).toHaveProperty(`--${name}`)
+      expect(aliases[`--${name}`]).toMatch(/^var\(--color-[a-z]+-\d+\)$/)
+    }
+  })
+})
+
 describe('semanticShortcuts', () => {
 	it('should generate shortcuts for secondary color', () => {
 		const shortcuts = semanticShortcuts('secondary')
