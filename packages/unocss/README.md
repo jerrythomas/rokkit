@@ -112,6 +112,87 @@ Import the pattern base CSS in your app:
 @import '@rokkit/unocss/patterns.css';
 ```
 
+## Token modes
+
+By default, the preset emits a trimmed 20-name token vocabulary
+(`--paper`, `--paper-soft`, `--paper-mute`, `--paper-edge`,
+`--ink`, `--ink-mute`, `--ink-soft`, `--ink-faint`,
+`--primary`, `--on-primary`, `--accent`, `--accent-soft`,
+`--success`, `--success-soft`, `--warning`, `--warning-soft`,
+`--danger`, `--danger-soft`, `--focus-ring`, `--shadow-tint`).
+
+Palette values are inlined — no `--color-{role}-{shade}` indirection.
+The `--color-{role}-z{0..10}` aliases are kept as a back-compat layer
+pointing at the named tokens, so existing code using `bg-surface-z3`
+etc. continues to work.
+
+For chart / data-viz needs that genuinely require the full 11-shade
+ladder, opt into extended mode:
+
+```js
+// uno.config.js
+export default defineConfig({
+  presets: [
+    presetRokkit({
+      tokens: 'extended'                       // full palette per role
+    })
+  ]
+})
+```
+
+### Named-layer Uno shortcuts
+
+The named tokens auto-emit Uno shortcuts for the common color
+properties:
+
+| Token            | Shortcuts                                   |
+| ---------------- | ------------------------------------------- |
+| `paper`, `paper-*` | `bg-paper`, `text-paper`, `border-paper`, … |
+| `ink`, `ink-*`     | `bg-ink`, `text-ink-mute`, …                |
+| `primary`        | `bg-primary`, `text-primary`, `fill-primary`, … |
+| `on-primary`     | `text-on-primary` (only)                    |
+| `accent`, `accent-soft` | `bg-accent`, `bg-accent-soft`, …       |
+| status (`success`, `warning`, `danger`) | full prefix set incl. `-soft` |
+| `focus-ring`     | `ring-focus-ring`, `border-focus-ring` (only) |
+| `shadow-tint`    | (no shortcuts — used in box-shadow expressions) |
+
+## Custom tokens
+
+For app-level CSS vars that components never read but the app needs
+(canvas backgrounds, mockup chrome, etc.), use the `custom` block:
+
+```js
+export default defineConfig({
+  presets: [
+    presetRokkit({
+      custom: {
+        canvas:        'kami.50',                              // palette ref
+        'canvas-grid': '#d4d4d4',                              // raw value
+        'canvas-bleed': { light: 'kami.100', dark: 'sumi.900' } // mode-aware
+      }
+    })
+  ]
+})
+```
+
+**Resolution rules:**
+- `'palette.shade'` strings resolve via the same `colorSpace` adapter
+  as named tokens.
+- Plain strings pass through verbatim (oklch / rgb / hex / `var(...)`).
+- `{ light, dark }` selects the mode-appropriate side; missing sides
+  fall back to the other.
+
+**Shortcuts:** Color-valued custom tokens auto-emit `bg-{name}`,
+`text-{name}`, `border-{name}`, `fill-{name}`, and `stroke-{name}`.
+Non-color tokens (sizes, durations) emit only the CSS var. The
+`ring-` prefix is reserved for tokens whose name ends in `-ring`
+(e.g., `'glow-ring'` → `ring-glow-ring`).
+
+**Reserved names:** Custom token names that collide with the named
+vocabulary (`paper`, `ink-mute`, `on-primary`, etc.) throw at
+config-load time — override those via the skin palette mapping,
+not via `custom`.
+
 ## Dark mode
 
 Dark mode is driven by the `data-mode` attribute on the `<html>` element, not a CSS class. Set `data-mode="dark"` to activate the dark theme and `data-mode="light"` (or omit) for light mode.
