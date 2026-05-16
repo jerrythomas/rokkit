@@ -644,4 +644,79 @@ describe('presetRokkit', () => {
 			expect(css).toContain('--paper:var(--color-surface-50)')
 		})
 	})
+
+	describe('shortcuts — named layer', () => {
+		it('emits bg-paper, bg-paper-soft, bg-paper-mute, bg-paper-edge', () => {
+			const preset = presetRokkit()
+			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			expect(keys).toContain('bg-paper')
+			expect(keys).toContain('bg-paper-soft')
+			expect(keys).toContain('bg-paper-mute')
+			expect(keys).toContain('bg-paper-edge')
+		})
+
+		it('emits text-ink, text-ink-mute, text-ink-soft, text-ink-faint', () => {
+			const preset = presetRokkit()
+			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			expect(keys).toContain('text-ink')
+			expect(keys).toContain('text-ink-mute')
+			expect(keys).toContain('text-ink-soft')
+			expect(keys).toContain('text-ink-faint')
+		})
+
+		it('emits text-on-primary but not bg-on-primary', () => {
+			const preset = presetRokkit()
+			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			expect(keys).toContain('text-on-primary')
+			expect(keys).not.toContain('bg-on-primary')
+		})
+
+		it('emits status soft shortcuts: bg-success-soft, bg-warning-soft, bg-danger-soft', () => {
+			const preset = presetRokkit()
+			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			expect(keys).toContain('bg-success-soft')
+			expect(keys).toContain('bg-warning-soft')
+			expect(keys).toContain('bg-danger-soft')
+		})
+
+		it('emits border-paper-edge for hairline borders', () => {
+			const preset = presetRokkit()
+			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			expect(keys).toContain('border-paper-edge')
+			expect(keys).toContain('border-t-paper-edge')
+			expect(keys).toContain('border-b-paper-edge')
+		})
+
+		it('emits ring-focus-ring but not bg-focus-ring', () => {
+			const preset = presetRokkit()
+			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			expect(keys).toContain('ring-focus-ring')
+			expect(keys).not.toContain('bg-focus-ring')
+			expect(keys).not.toContain('text-focus-ring')
+		})
+
+		it('does NOT emit shortcuts for shadow-tint', () => {
+			const preset = presetRokkit()
+			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			expect(keys).not.toContain('bg-shadow-tint')
+			expect(keys).not.toContain('text-shadow-tint')
+			expect(keys).not.toContain('border-shadow-tint')
+		})
+
+		it('bg-paper expands to background: var(--paper)', () => {
+			const preset = presetRokkit()
+			const entry = preset.shortcuts.find(s => s[0] === 'bg-paper')
+			expect(entry).toBeDefined()
+			const expansion = entry[1]
+			const str = typeof expansion === 'string' ? expansion : JSON.stringify(expansion)
+			expect(str).toContain('--paper')
+		})
+
+		it('emits fill- and stroke- shortcuts for chart use', () => {
+			const preset = presetRokkit()
+			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			expect(keys).toContain('fill-primary')
+			expect(keys).toContain('stroke-accent')
+		})
+	})
 })

@@ -15,7 +15,8 @@ import {
 	DEFAULT_ICONS,
 	iconShortcuts,
 	Theme,
-	defaultColors
+	defaultColors,
+	NAMED_TOKENS
 } from '@rokkit/core'
 import { iconCollections } from '@rokkit/core/vite'
 import { loadConfig, resolveColormap, isAlias } from './config.js'
@@ -210,6 +211,48 @@ function buildIconShortcuts(config) {
 	return Object.entries({ ...base, ...overrides })
 }
 
+const NAMED_SHORTCUT_PREFIXES = [
+	{ prefix: 'bg', prop: 'background' },
+	{ prefix: 'text', prop: 'color' },
+	{ prefix: 'border', prop: 'border-color' },
+	{ prefix: 'border-t', prop: 'border-top-color' },
+	{ prefix: 'border-b', prop: 'border-bottom-color' },
+	{ prefix: 'border-l', prop: 'border-left-color' },
+	{ prefix: 'border-r', prop: 'border-right-color' },
+	{ prefix: 'ring', prop: '--un-ring-color' },
+	{ prefix: 'fill', prop: 'fill' },
+	{ prefix: 'stroke', prop: 'stroke' }
+]
+
+/**
+ * Returns true when the named token should emit a shortcut for the given prefix.
+ * Implements skip logic:
+ * - `on-primary` → text-only (it's a contrast color)
+ * - `focus-ring` → ring and border prefixes only (focus uses outline/ring styles)
+ * - `shadow-tint` → no shortcuts (used in box-shadow expressions only)
+ */
+function shouldEmitShortcut(name, prefix) {
+	if (name === 'shadow-tint') return false
+	if (name === 'on-primary') return prefix === 'text'
+	if (name === 'focus-ring') return prefix === 'ring' || prefix.startsWith('border')
+	return true
+}
+
+/**
+ * Auto-emit Uno shortcuts for every named token.
+ * Each shortcut expands to a CSS object like { background: 'var(--paper)' }.
+ */
+function buildNamedShortcuts() {
+	const shortcuts = []
+	for (const name of NAMED_TOKENS) {
+		for (const { prefix, prop } of NAMED_SHORTCUT_PREFIXES) {
+			if (!shouldEmitShortcut(name, prefix)) continue
+			shortcuts.push([`${prefix}-${name}`, { [prop]: `var(--${name})` }])
+		}
+	}
+	return shortcuts
+}
+
 /**
  * Parses the OKLCH lightness value from a palette shade string.
  * Palette values are stored as "L C H" strings (e.g., "0.75 0.008 50").
@@ -298,6 +341,7 @@ function buildShortcuts(theme, colormap, config) {
 	return [
 		...buildSkinShortcuts(theme, config),
 		...buildSemanticShortcuts(theme, colormap),
+		...buildNamedShortcuts(),
 		...buildIconShortcuts(config)
 	]
 }
