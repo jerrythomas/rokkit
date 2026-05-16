@@ -143,7 +143,7 @@ function buildPreflights(theme, colormap, config) {
 		Object.entries(colormap).filter(([, v]) => !isAlias(v))
 	)
 	const hasDarkCustom = Object.values(config.custom ?? {}).some(
-		(v) => v && typeof v === 'object' && !Array.isArray(v) && ('light' in v || 'dark' in v)
+		(v) => v && typeof v === 'object' && !Array.isArray(v) && 'dark' in v
 	)
 
 	if (hasDualPaletteMapping(nonAliasColormap) || hasDarkCustom) {
@@ -177,7 +177,7 @@ function buildVarsForMode(theme, colormap, globalMode) {
 		for (const role of Object.keys(colormap)) {
 			if (isAlias(colormap[role])) continue
 			// Emit z-aliases for all non-alias roles (surface/ink use map-based; others use tint-vs-solid)
-			Object.assign(aliases, theme.getZAliasesForCore(role as any))
+			Object.assign(aliases, theme.getZAliasesForCore(role))
 		}
 		return { ...named, ...aliases }
 	}

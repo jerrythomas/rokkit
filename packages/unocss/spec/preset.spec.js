@@ -592,6 +592,25 @@ describe('presetRokkit', () => {
 			expect(css).toContain('[data-mode="dark"]')
 		})
 
+		it('does NOT emit [data-mode="dark"] block when custom has only light side', () => {
+			const preset = presetRokkit({
+				palettes: { kami: { 50: '#f8f8f3' } },
+				custom: { canvas: { light: 'kami.50' } }  // no dark key
+			})
+			const css = preset.preflights[0].getCSS()
+			expect(css).not.toContain('[data-mode="dark"]')
+		})
+
+		it('emits [data-mode="dark"] block when custom has dark-only side', () => {
+			// dark-only intentionally emits dark block — light cascade can pick a default
+			const preset = presetRokkit({
+				palettes: { sumi: { 900: '#0d0d0d' } },
+				custom: { canvas: { dark: 'sumi.900' } }
+			})
+			const css = preset.preflights[0].getCSS()
+			expect(css).toContain('[data-mode="dark"]')
+		})
+
 		it('throws when a custom token name collides with a reserved name', () => {
 			expect(() => presetRokkit({ custom: { paper: '#fff' } })).toThrow(/reserved/i)
 		})
