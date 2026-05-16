@@ -20,7 +20,7 @@ import {
 } from '@rokkit/core'
 import { iconCollections } from '@rokkit/core/vite'
 import { loadConfig, resolveColormap, isAlias } from './config.js'
-import { resolveCustomTokens, validateCustomTokenNames, isColorValue } from './custom-tokens.js'
+import { resolveCustomTokens, validateCustomTokenNames, isColorValue, PALETTE_REF_RE } from './custom-tokens.js'
 
 const THEME_CONFIG = {
 	dark: {
@@ -267,7 +267,7 @@ function isCustomTokenColor(value) {
 	}
 	if (typeof candidate !== 'string') return false
 	// Palette refs are colors
-	if (/^[a-z][a-z0-9_-]*\.\d+$/i.test(candidate)) return true
+	if (PALETTE_REF_RE.test(candidate)) return true
 	return isColorValue(candidate)
 }
 

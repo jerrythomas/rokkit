@@ -1,7 +1,7 @@
 import { ColorSpace, NAMED_TOKENS } from '@rokkit/core'
 
 const RESERVED_NAMES = new Set(NAMED_TOKENS)
-const PALETTE_REF_RE = /^[a-z][a-z0-9_-]*\.\d+$/i
+export const PALETTE_REF_RE = /^[a-z][a-z0-9_-]*\.\d+$/i
 const COLOR_VALUE_RE = /^(rgb|rgba|hsl|hsla|oklch|oklab|hwb|color)\(/
 const HEX_RE = /^#[0-9a-fA-F]{3,8}$/
 
