@@ -766,3 +766,43 @@ describe('semanticShortcuts', () => {
 		expect(z1Text[1]).toBe('text-surface-100 dark:text-surface-900')
 	})
 })
+
+describe('Theme.getNamedTokens with per-role modes', () => {
+  it('emits inline values when role is core and palette aliases when extended', () => {
+    const theme = new Theme({
+      mapping: { surface: 'slate', ink: 'slate', primary: 'orange', accent: 'sky' },
+      colorSpace: 'rgb'
+    })
+    const tokens = theme.getNamedTokens('light', {
+      surface: 'core', ink: 'core', primary: 'extended', accent: 'core'
+    })
+    // surface=core → inlined
+    expect(tokens['--paper']).toBe('rgb(248, 250, 252)')
+    // primary=extended → var() alias
+    expect(tokens['--primary']).toBe('var(--color-primary-500)')
+    // accent=core → inlined
+    expect(tokens['--accent']).toMatch(/rgb\(\d+, \d+, \d+\)/)
+  })
+
+  it('defaults to "core" for unspecified roles in per-role map', () => {
+    const theme = new Theme({
+      mapping: { surface: 'slate', ink: 'slate', primary: 'orange' },
+      colorSpace: 'rgb'
+    })
+    const tokens = theme.getNamedTokens('light', { primary: 'extended' })
+    // surface missing from map → core (inlined)
+    expect(tokens['--paper']).toMatch(/^rgb\(/)
+    // primary=extended → var()
+    expect(tokens['--primary']).toMatch(/^var\(/)
+  })
+
+  it('backward compat: undefined perRoleModes treats everything as core', () => {
+    const theme = new Theme({
+      mapping: { surface: 'slate', primary: 'orange' },
+      colorSpace: 'rgb'
+    })
+    const tokens = theme.getNamedTokens('light')
+    expect(tokens['--paper']).toMatch(/^rgb\(/)
+    expect(tokens['--primary']).toMatch(/^rgb\(/)
+  })
+})

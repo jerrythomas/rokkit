@@ -19,7 +19,7 @@ import {
 	NAMED_TOKENS
 } from '@rokkit/core'
 import { iconCollections } from '@rokkit/core/vite'
-import { loadConfig, resolveColormap, isAlias } from './config.js'
+import { loadConfig, resolveColormap, isAlias, resolveTokenMode } from './config.js'
 import { resolveCustomTokens, validateCustomTokenNames, isColorValue, PALETTE_REF_RE } from './custom-tokens.js'
 
 const THEME_CONFIG = {
@@ -123,10 +123,7 @@ function buildPreflights(theme, colormap, config) {
 
 	const extraVars = [...buildTypographyVars(config.typography), ...buildRadiusVars(config.shape)]
 
-	// Global mode (per-role decomposition can be added later; v1 supports uniform)
-	const globalMode = typeof config.tokens === 'string' ? config.tokens : 'core'
-
-	const lightVars = buildVarsForMode(theme, colormap, globalMode)
+	const lightVars = buildVarsForMode(theme, colormap, config)
 	const lightCustom = resolveCustomTokens(
 		config.custom ?? {},
 		config.palettes ?? {},
@@ -153,7 +150,7 @@ function buildPreflights(theme, colormap, config) {
 			mapping: resolveMappingForMode(nonAliasColormap, 'dark'),
 			colorSpace: config.colorSpace
 		})
-		const darkVars = buildVarsForMode(darkTheme, colormap, globalMode)
+		const darkVars = buildVarsForMode(darkTheme, colormap, config)
 		const darkCustom = resolveCustomTokens(
 			config.custom ?? {},
 			config.palettes ?? {},
@@ -167,25 +164,41 @@ function buildPreflights(theme, colormap, config) {
 }
 
 /**
+ * Builds a per-role mode map from config, covering every non-alias role in colormap.
+ */
+function buildPerRoleModes(config, colormap) {
+	const result: Record<string, 'core' | 'extended'> = {}
+	for (const role of Object.keys(colormap)) {
+		result[role] = resolveTokenMode(config, role)
+	}
+	return result
+}
+
+/**
  * Builds CSS-var assignments for one mode (light or dark).
  *  - core: named tokens (palette values inlined) + z-aliases pointing at named
  *  - extended: full palette (today's emit) + named tokens as palette aliases
+ * Supports per-role decomposition via config.tokens object.
  */
-function buildVarsForMode(theme, colormap, globalMode) {
-	if (globalMode === 'core') {
-		const named = theme.getNamedTokens()
-		const aliases = {}
-		for (const role of Object.keys(colormap)) {
-			if (isAlias(colormap[role])) continue
-			// Emit z-aliases for all non-alias roles (surface/ink use map-based; others use tint-vs-solid)
-			Object.assign(aliases, theme.getZAliasesForCore(role))
+function buildVarsForMode(theme, colormap, config) {
+	const perRoleModes = buildPerRoleModes(config, colormap)
+	const result: Record<string, string> = {}
+
+	// Named layer (per-token resolution based on role mode)
+	Object.assign(result, theme.getNamedTokens('light', perRoleModes))
+
+	// Per-role palette + z-alias emit
+	for (const role of Object.keys(colormap)) {
+		if (isAlias(colormap[role])) continue
+		const mode = perRoleModes[role]
+		if (mode === 'extended') {
+			Object.assign(result, theme.getPaletteForRole(role))
+			Object.assign(result, theme.getZAliasesForRoleExtended(role))
+		} else {
+			Object.assign(result, theme.getZAliasesForCore(role))
 		}
-		return { ...named, ...aliases }
 	}
-	// extended: today's full palette + named-as-aliases
-	const palette = theme.getPalette()
-	const namedAliases = theme.getZAliasesForExtended()
-	return { ...palette, ...namedAliases }
+	return result
 }
 
 function buildSkinShortcuts(theme, config) {

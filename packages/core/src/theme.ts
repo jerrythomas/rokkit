@@ -267,37 +267,58 @@ export class Theme {
 	 * @param {'light' | 'dark'} _mode — accepted for symmetry with future
 	 *   dark-aware derivations. Today the Theme is constructed with a mode-resolved
 	 *   mapping, so this parameter is informational.
+	 * @param perRoleModes — optional map of role → 'core' | 'extended'. When a token's
+	 *   role is 'extended', the value is a `var(--color-{role}-{shade})` alias instead
+	 *   of the inlined palette value. Defaults to 'core' for all unspecified roles
+	 *   (and for the whole map when undefined).
 	 */
-	getNamedTokens(_mode = 'light') {
+	getNamedTokens(_mode = 'light', perRoleModes?: Record<string, 'core' | 'extended'>) {
 		const colors = { ...defaultColors, ...this.#colors }
 		const result: Record<string, string> = {}
-
 		for (const name of NAMED_TOKENS) {
-			const role = NAMED_TOKEN_ROLE_MAP[name]
-			const shadeOrDerived = NAMED_TOKEN_SHADE_MAP[name]
-			const paletteName = this.#mapping[role]
-			if (!paletteName || !colors[paletteName]) continue
-
-			const value = shadeOrDerived === 'derived'
-				? this.#resolveDerivedToken(name, colors)
-				: this.#adapter.wrap(colors[paletteName][String(shadeOrDerived)])
-
+			const value = this.#resolveNamedToken(name, colors, perRoleModes)
 			if (value !== undefined) result[`--${name}`] = value
 		}
 		return result
 	}
 
 	/**
+	 * Resolves a single named token to its CSS value, respecting per-role mode.
+	 * Returns undefined when the role's palette is missing.
+	 */
+	#resolveNamedToken(name: string, colors: Record<string, Record<string, string>>, perRoleModes?: Record<string, 'core' | 'extended'>): string | undefined {
+		const role = NAMED_TOKEN_ROLE_MAP[name]
+		const shadeOrDerived = NAMED_TOKEN_SHADE_MAP[name]
+		const paletteName = this.#mapping[role]
+		if (!paletteName || !colors[paletteName]) return undefined
+		if (shadeOrDerived === 'derived') return this.#resolveDerivedToken(name, colors, perRoleModes)
+		return this.#resolveShadeToken(role, shadeOrDerived as number, colors[paletteName], perRoleModes)
+	}
+
+	/**
+	 * Resolves a shade-based named token value in either core (inline) or extended (alias) mode.
+	 */
+	#resolveShadeToken(role: string, shade: number, palette: Record<string, string>, perRoleModes?: Record<string, 'core' | 'extended'>): string | undefined {
+		const roleMode = perRoleModes?.[role] ?? 'core'
+		if (roleMode === 'extended') return `var(--color-${role}-${shade})`
+		const raw = palette[String(shade)]
+		return raw !== undefined ? this.#adapter.wrap(raw) : undefined
+	}
+
+	/**
 	 * Resolves a 'derived' named token. Today only `on-primary` is derived — it picks
 	 * shade 50 from the surface palette for the default white-on-primary contrast pair.
 	 */
-	#resolveDerivedToken(name: string, colors: Record<string, Record<string, string>>): string | undefined {
+	#resolveDerivedToken(name: string, colors: Record<string, Record<string, string>>, perRoleModes?: Record<string, 'core' | 'extended'>): string | undefined {
 		if (name === 'on-primary') {
 			const surfacePaletteName = this.#mapping['surface']
 			const surfacePalette = colors[surfacePaletteName]
-			if (surfacePalette?.['50']) {
-				return this.#adapter.wrap(surfacePalette['50'])
+			if (!surfacePalette?.['50']) return undefined
+			const surfaceMode = perRoleModes?.['surface'] ?? 'core'
+			if (surfaceMode === 'extended') {
+				return `var(--color-surface-50)`
 			}
+			return this.#adapter.wrap(surfacePalette['50'])
 		}
 		return undefined
 	}
@@ -370,6 +391,38 @@ export class Theme {
 				continue
 			}
 			result[`--${name}`] = `var(--color-${role}-${shadeOrDerived})`
+		}
+		return result
+	}
+
+	/**
+	 * Emit the full --color-{role}-{shade} palette CSS vars for a single role.
+	 * Mirrors what getPalette does for all roles, but scoped to one.
+	 */
+	getPaletteForRole(role: string): Record<string, string> {
+		const colors = { ...defaultColors, ...this.#colors }
+		const paletteName = this.#mapping[role]
+		if (!paletteName || !colors[paletteName]) return {}
+		const palette = colors[paletteName]
+		const result: Record<string, string> = {}
+		for (const shade of shades) {
+			if (palette[shade] !== undefined) {
+				result[`--color-${role}-${shade}`] = this.#adapter.wrap(palette[shade])
+			}
+		}
+		return result
+	}
+
+	/**
+	 * Emit z-aliases for one role in extended mode — they point at the palette vars,
+	 * using TONE_MAP for surface/non-inverted roles and the inverted map for ink.
+	 */
+	getZAliasesForRoleExtended(role: string): Record<string, string> {
+		const result: Record<string, string> = {}
+		const isInverted = INVERTED_ROLES.has(role)
+		for (const [zone, light] of Object.entries(TONE_MAP)) {
+			const shade = isInverted ? 1000 - light : light
+			result[`--color-${role}-${zone}`] = `var(--color-${role}-${shade})`
 		}
 		return result
 	}

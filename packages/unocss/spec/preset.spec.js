@@ -802,4 +802,67 @@ describe('presetRokkit', () => {
 			expect(keys).toContain('ring-glow-ring')
 		})
 	})
+
+	describe('preflights — per-role tokens mode', () => {
+		it('emits palette vars only for extended roles', () => {
+			const preset = presetRokkit({
+				tokens: { surface: 'core', primary: 'extended' }
+			})
+			const css = preset.preflights[0].getCSS()
+			// primary is extended → full palette emitted
+			expect(css).toMatch(/--color-primary-50:rgb/)
+			expect(css).toMatch(/--color-primary-500:rgb/)
+			// surface is core → no raw palette vars
+			expect(css).not.toMatch(/--color-surface-50:rgb/)
+			expect(css).not.toMatch(/--color-surface-900:rgb/)
+			// surface named layer is inlined
+			expect(css).toMatch(/--paper:rgb/)
+			expect(css).toMatch(/--paper-soft:rgb/)
+		})
+
+		it('emits named tokens as palette aliases for extended roles', () => {
+			const preset = presetRokkit({
+				tokens: { primary: 'extended' }
+			})
+			const css = preset.preflights[0].getCSS()
+			expect(css).toContain('--primary:var(--color-primary-500)')
+		})
+
+		it('emits named tokens inlined for core roles in mixed mode', () => {
+			const preset = presetRokkit({
+				tokens: { primary: 'extended' }   // surface defaults to 'core'
+			})
+			const css = preset.preflights[0].getCSS()
+			// --paper resolves to a concrete color, not a var()
+			expect(css).toMatch(/--paper:rgb\(\d+, \d+, \d+\)/)
+			// should NOT be var()-form
+			expect(css).not.toMatch(/--paper:var\(/)
+		})
+
+		it('emits z-aliases respecting per-role mode', () => {
+			const preset = presetRokkit({
+				tokens: { surface: 'core', primary: 'extended' }
+			})
+			const css = preset.preflights[0].getCSS()
+			// surface (core) → z-aliases point at named layer
+			expect(css).toContain('--color-surface-z1:var(--paper-soft)')
+			// primary (extended) → z-aliases point at palette vars
+			expect(css).toContain('--color-primary-z5:var(--color-primary-500)')
+		})
+
+		it('extended global mode still works (regression check)', () => {
+			const preset = presetRokkit({ tokens: 'extended' })
+			const css = preset.preflights[0].getCSS()
+			expect(css).toMatch(/--color-surface-50:rgb/)
+			expect(css).toMatch(/--color-primary-50:rgb/)
+			expect(css).toContain('--paper:var(--color-surface-50)')
+		})
+
+		it('core global mode still works (regression check)', () => {
+			const preset = presetRokkit({ tokens: 'core' })
+			const css = preset.preflights[0].getCSS()
+			expect(css).not.toMatch(/--color-surface-50:rgb/)
+			expect(css).toMatch(/--paper:rgb/)
+		})
+	})
 })
