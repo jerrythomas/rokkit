@@ -12,12 +12,14 @@
 
 /* Separator between form fields */
 [data-form-separator] {
-  @apply border-surface-z2 my-1 border-t;
+  border-top-color: var(--paper-mute);
+  @apply my-1 border-t;
 }
 
 /* Form group (fieldset for nested objects) */
 [data-form-group] {
-  @apply border-surface-z2 m-0 flex flex-col gap-3 border-l border-none p-0 pl-3;
+  border-left-color: var(--paper-mute);
+  @apply m-0 flex flex-col gap-3 border-l border-none p-0 pl-3;
 }
 
 [data-form-group-label] {
@@ -46,7 +48,8 @@
 }
 
 [data-severity='error'] [data-validation-count] {
-  @apply bg-error-z1 text-error-z7;
+  background-color: var(--error-soft);
+  color: var(--error);
 }
 
 [data-severity='warning'] > [data-validation-group-header] {
@@ -54,7 +57,8 @@
 }
 
 [data-severity='warning'] [data-validation-count] {
-  @apply bg-warning-z1 text-warning-z7;
+  background-color: var(--warning-soft);
+  color: var(--warning);
 }
 
 [data-severity='info'] > [data-validation-group-header] {
@@ -62,7 +66,8 @@
 }
 
 [data-severity='info'] [data-validation-count] {
-  @apply bg-info-z1 text-info-z7;
+  background-color: var(--info-soft);
+  color: var(--info);
 }
 
 [data-severity='success'] > [data-validation-group-header] {
@@ -70,7 +75,8 @@
 }
 
 [data-severity='success'] [data-validation-count] {
-  @apply bg-success-z1 text-success-z7;
+  background-color: var(--success-soft);
+  color: var(--success);
 }
 
 [data-validation-item] {
@@ -78,7 +84,11 @@
 }
 
 button[data-validation-item] {
-  @apply hover:bg-surface-z1 cursor-pointer border-none bg-transparent;
+  @apply cursor-pointer border-none bg-transparent;
+}
+
+button[data-validation-item]:hover {
+  background-color: var(--paper-soft);
 }
 
 /* Form actions (submit/reset buttons) */
@@ -88,11 +98,21 @@ button[data-validation-item] {
 
 button[data-form-submit],
 button[data-form-reset] {
-  @apply border-surface-z3 bg-surface-z1 hover:bg-surface-z2 cursor-pointer rounded border px-4 py-1.5 text-sm transition-colors;
+  border-color: var(--paper-mute);
+  background-color: var(--paper-soft);
+  @apply cursor-pointer rounded border px-4 py-1.5 text-sm transition-colors;
+}
+
+button[data-form-submit]:hover,
+button[data-form-reset]:hover {
+  background-color: var(--paper-mute);
 }
 
 button[data-form-submit] {
-  @apply bg-primary text-on-primary border-primary hover:opacity-90;
+  background-color: var(--primary);
+  color: var(--on-primary);
+  border-color: var(--primary);
+  @apply hover:opacity-90;
 }
 
 button[data-form-submit]:disabled,
@@ -250,7 +270,8 @@ input[type='radio'] {
 }
 
 input[type='radio']:checked {
-  @apply border-primary-z5 text-primary-z5;
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 input[type='radio']:checked::before {

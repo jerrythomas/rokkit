@@ -71,7 +71,8 @@
   border: none;
   border-radius: 9999px;
   cursor: pointer;
-  @apply bg-surface-z10/30 text-surface-z0;
+  background-color: color-mix(in srgb, var(--ink) 30%, transparent);
+  color: var(--paper);
   font-size: 1.25rem;
   z-index: 1;
   opacity: 0.7;

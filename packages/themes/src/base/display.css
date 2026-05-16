@@ -6,7 +6,8 @@
 }
 
 [data-display-title] {
-  @apply text-on-surface text-sm font-semibold;
+  color: var(--ink);
+  @apply text-sm font-semibold;
 }
 
 [data-display-field] {
@@ -14,16 +15,19 @@
 }
 
 [data-display-label] {
-  @apply text-on-surface/70 shrink-0 text-sm;
+  color: color-mix(in srgb, var(--ink) 70%, transparent);
+  @apply shrink-0 text-sm;
 }
 
 [data-display-value] {
-  @apply text-on-surface text-right text-sm;
+  color: var(--ink);
+  @apply text-right text-sm;
 }
 
 /* Badge format: pill style */
 [data-display-value][data-format='badge'] {
-  @apply bg-surface-z2 rounded-full px-2 py-0.5 text-xs font-medium;
+  background-color: var(--paper-mute);
+  @apply rounded-full px-2 py-0.5 text-xs font-medium;
 }
 
 /* Boolean format */
@@ -58,11 +62,14 @@
 }
 
 [data-display-card] {
-  @apply border-surface-z2 bg-surface flex flex-col gap-1 rounded border p-3;
+  border-color: var(--paper-mute);
+  background-color: var(--paper-edge);
+  @apply flex flex-col gap-1 rounded border p-3;
 }
 
 [data-display-card][data-selected] {
-  @apply border-primary ring-primary ring-1;
+  border-color: var(--primary);
+  @apply ring-primary ring-1;
 }
 
 [data-selectable] [data-display-card] {
@@ -70,7 +77,7 @@
 }
 
 [data-selectable] [data-display-card]:hover {
-  @apply bg-surface-z1;
+  background-color: var(--paper-soft);
 }
 
 /* Display list */
@@ -83,7 +90,8 @@
 }
 
 [data-display-list-item] {
-  @apply border-surface-z2 flex items-baseline gap-4 border-b py-1 last:border-0;
+  border-color: var(--paper-mute);
+  @apply flex items-baseline gap-4 border-b py-1 last:border-0;
 }
 
 [data-display-list-item] [data-display-field] {

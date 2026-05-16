@@ -47,17 +47,21 @@
 }
 
 [data-stepper-step][data-completed] [data-stepper-circle] {
-  @apply bg-primary-z5 border-primary-z5 text-surface-z0;
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: var(--paper);
 }
 
 [data-stepper-step][data-active] [data-stepper-circle] {
-  @apply border-primary-z5 text-primary-z5 ring-primary-z5/20 ring-3;
+  border-color: var(--primary);
+  color: var(--primary);
+  @apply ring-primary-z5/20 ring-3;
 }
 
 /* ─── Connector line ─── */
 
 [data-stepper-connector] {
-  @apply bg-surface-z3;
+  background-color: var(--paper-mute);
   flex: 1;
   height: 2px;
   min-width: 2rem;
@@ -68,7 +72,7 @@
 }
 
 [data-stepper-connector][data-completed] {
-  @apply bg-primary-z5;
+  background-color: var(--primary);
 }
 
 /* Vertical orientation connectors */
@@ -100,7 +104,7 @@
 }
 
 [data-stepper-dot] {
-  @apply border-surface-z4;
+  border-color: var(--paper-edge);
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 9999px;
@@ -120,11 +124,14 @@
 }
 
 [data-stepper-dot][data-completed] {
-  @apply bg-primary-z5 border-primary-z5;
+  background-color: var(--primary);
+  border-color: var(--primary);
 }
 
 [data-stepper-dot][data-active] {
-  @apply bg-primary-z5 border-primary-z5 ring-primary-z5/25 ring-2;
+  background-color: var(--primary);
+  border-color: var(--primary);
+  @apply ring-primary-z5/25 ring-2;
 }
 
 /* ─── Content area ─── */
