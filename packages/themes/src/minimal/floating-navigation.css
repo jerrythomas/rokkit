@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-floating-nav] {
-  @apply bg-surface-z1 border-surface-z4 border bg-none;
+  @apply bg-paper-soft border-paper-edge border bg-none;
 }
 
 /* =============================================================================
@@ -17,19 +17,19 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-floating-nav-title] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 [data-style='minimal'] [data-floating-nav-pin] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 [data-style='minimal'] [data-floating-nav-pin]:hover {
-  @apply text-surface-z8;
+  @apply text-ink-mute;
 }
 
 [data-style='minimal'] [data-floating-nav-pin][aria-pressed='true'] {
-  @apply text-surface-z9;
+  @apply text-ink;
 }
 
 /* =============================================================================
@@ -37,28 +37,28 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-floating-nav-item] {
-  @apply text-surface-z7;
+  @apply text-ink-mute;
 }
 
 [data-style='minimal'] [data-floating-nav-item]:hover {
-  @apply bg-surface-z2 text-surface-z9 bg-none;
+  @apply bg-paper-mute text-ink bg-none;
 }
 
 [data-style='minimal'] [data-floating-nav-item][data-active] {
-  @apply text-surface-z10 bg-surface-z2 bg-none;
+  @apply text-ink bg-paper-mute bg-none;
 }
 
 [data-style='minimal'] [data-floating-nav-item]:focus-visible {
-  @apply ring-surface-z5 ring-1 outline-none;
+  @apply ring-ink-soft ring-1 outline-none;
 }
 
 /* Icon */
 [data-style='minimal'] [data-floating-nav-icon] {
-  @apply text-surface-z6;
+  @apply text-ink-soft;
 }
 
 [data-style='minimal'] [data-floating-nav-item][data-active] [data-floating-nav-icon] {
-  @apply text-surface-z10;
+  @apply text-ink;
 }
 
 /* =============================================================================
@@ -66,5 +66,5 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-floating-nav-indicator] {
-  @apply bg-surface-z8 bg-none;
+  @apply bg-ink-mute bg-none;
 }

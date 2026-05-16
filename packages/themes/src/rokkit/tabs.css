@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-tabs-list] {
-  @apply border-surface-z3 gap-1 border-b-2 px-1;
+  @apply border-paper-mute gap-1 border-b-2 px-1;
 }
 
 [data-style='rokkit'] [data-tabs][data-position='after'] [data-tabs-list] {
@@ -35,7 +35,7 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-tabs-trigger] {
-  @apply bg-surface-z1 text-ink-z2 flex-shrink-0 rounded-t;
+  @apply bg-paper-soft text-ink-mute flex-shrink-0 rounded-t;
 }
 
 [data-style='rokkit'] [data-tabs][data-position='after'] [data-tabs-trigger] {
@@ -67,16 +67,16 @@
 }
 
 [data-style='rokkit'] [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {
-  @apply bg-surface-z2 text-surface-z8;
+  @apply bg-paper-mute text-ink-mute;
 }
 
 /* Selected state */
 [data-style='rokkit'] [data-tabs-trigger][data-selected] {
-  @apply bg-surface-z3 text-ink-z1;
+  @apply bg-paper-mute text-ink-mute;
 }
 
 [data-style='rokkit'] [data-tabs-list]:focus-within [data-tabs-trigger][data-selected] {
-  @apply from-primary-z5 to-secondary-z5 text-primary-z9 bg-gradient-to-b;
+  @apply from-primary to-secondary-z5 text-primary bg-gradient-to-b;
 }
 
 [data-style='rokkit']
@@ -91,15 +91,15 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-tabs-trigger] [data-tabs-icon] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 [data-style='rokkit'] [data-tabs-trigger]:hover:not(:disabled) [data-tabs-icon] {
-  @apply text-surface-z7;
+  @apply text-ink-mute;
 }
 
 [data-style='rokkit'] [data-tabs-trigger][data-selected] [data-tabs-icon] {
-  @apply text-primary-z7;
+  @apply text-primary;
 }
 
 /* =============================================================================
@@ -107,5 +107,5 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-tabs-content] {
-  @apply text-surface-z8;
+  @apply text-ink-mute;
 }

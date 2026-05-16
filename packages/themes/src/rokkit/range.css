@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-range-bar] {
-  @apply bg-surface-z2 border-surface-z3 border;
+  @apply bg-paper-mute border-paper-mute border;
 }
 
 [data-style='rokkit'] [data-range-selected] {
@@ -38,15 +38,15 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-range-tick] {
-  @apply text-surface-z6;
+  @apply text-ink-soft;
 }
 
 [data-style='rokkit'] [data-tick-bar] {
-  @apply border-surface-z5;
+  @apply border-ink-soft;
 }
 
 [data-style='rokkit'] [data-tick-label] {
-  @apply text-surface-z6;
+  @apply text-ink-soft;
 }
 
 /* =============================================================================
@@ -54,9 +54,9 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-range][data-disabled] [data-range-thumb] {
-  @apply bg-surface-z4 border-surface-z4;
+  @apply bg-paper-edge border-paper-edge;
 }
 
 [data-style='rokkit'] [data-range][data-disabled] [data-range-selected] {
-  @apply bg-surface-z4;
+  @apply bg-paper-edge;
 }

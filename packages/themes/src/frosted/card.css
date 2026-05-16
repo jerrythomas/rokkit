@@ -10,7 +10,7 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-card] {
-  @apply text-surface-z9 border shadow-lg backdrop-blur-xl bg-surface-z3/30;
+  @apply text-ink border shadow-lg backdrop-blur-xl bg-paper-mute/30;
   border-color: rgba(255, 255, 255, 0.18);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.22),
@@ -27,7 +27,7 @@
 }
 
 [data-style='frosted'] [data-card][data-card-interactive]:hover {
-  @apply bg-surface-z3/42;
+  @apply bg-paper-mute/42;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.28),
     0 16px 40px rgba(0, 0, 0, 0.14);
@@ -50,11 +50,11 @@
 }
 
 [data-style='frosted'] [data-card-body] {
-  @apply text-surface-z8;
+  @apply text-ink-mute;
 }
 
 [data-style='frosted'] [data-card-footer] {
-  @apply text-surface-z7;
+  @apply text-ink-mute;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
@@ -85,7 +85,7 @@
 
 /* Primary — tinted primary glass */
 [data-style='frosted'] [data-card][data-variant='primary'] {
-  @apply text-on-primary border shadow-lg backdrop-blur-xl bg-primary-z5/45;
+  @apply text-on-primary border shadow-lg backdrop-blur-xl bg-primary/45;
   border-color: rgba(255, 255, 255, 0.22);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.28),
@@ -121,6 +121,6 @@
 
 /* Tertiary — barely-there frosted glass */
 [data-style='frosted'] [data-card][data-variant='tertiary'] {
-  @apply text-surface-z7 border backdrop-blur-xl bg-surface-z3/16;
+  @apply text-ink-mute border backdrop-blur-xl bg-paper-mute/16;
   border-color: rgba(255, 255, 255, 0.12);
 }

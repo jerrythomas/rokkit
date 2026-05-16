@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-range-bar] {
-  @apply bg-surface-z2/50 border-surface-z5/20 border;
+  @apply bg-paper-mute/50 border-ink-soft/20 border;
 }
 
 [data-style='frosted'] [data-range-selected] {
@@ -25,11 +25,11 @@
 }
 
 [data-style='frosted'] [data-range-thumb][data-sliding] {
-  @apply ring-4 ring-primary-z5/20;
+  @apply ring-4 ring-primary/20;
 }
 
 [data-style='frosted'] [data-range-thumb]:focus-visible {
-  @apply ring-4 ring-primary-z5/20;
+  @apply ring-4 ring-primary/20;
 }
 
 /* =============================================================================
@@ -37,15 +37,15 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-range-tick] {
-  @apply text-surface-z6;
+  @apply text-ink-soft;
 }
 
 [data-style='frosted'] [data-tick-bar] {
-  @apply border-surface-z5/40;
+  @apply border-ink-soft/40;
 }
 
 [data-style='frosted'] [data-tick-label] {
-  @apply text-surface-z6;
+  @apply text-ink-soft;
 }
 
 /* =============================================================================
@@ -53,9 +53,9 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-range][data-disabled] [data-range-thumb] {
-  @apply bg-surface-z4/50 border-surface-z4/30;
+  @apply bg-paper-edge/50 border-paper-edge/30;
 }
 
 [data-style='frosted'] [data-range][data-disabled] [data-range-selected] {
-  @apply bg-surface-z4/30;
+  @apply bg-paper-edge/30;
 }

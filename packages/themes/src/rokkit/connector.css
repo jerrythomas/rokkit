@@ -7,5 +7,5 @@
 [data-style='rokkit'] [data-connector] [data-connector-v],
 [data-style='rokkit'] [data-connector] [data-connector-h],
 [data-style='rokkit'] [data-connector] [data-connector-corner] {
-  @apply border-surface-z3;
+  @apply border-paper-mute;
 }

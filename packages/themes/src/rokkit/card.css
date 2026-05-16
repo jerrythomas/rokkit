@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-card] {
-  @apply from-surface-z2 to-surface-z1 border-surface-z5 text-surface-z9 border bg-gradient-to-b shadow-lg;
+  @apply from-paper-mute to-paper-soft border-ink-soft text-ink border bg-gradient-to-b shadow-lg;
 }
 
 /* Interactive cards (buttons) */
@@ -35,15 +35,15 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-card-header] {
-  @apply border-surface-z4 border-b;
+  @apply border-paper-edge border-b;
 }
 
 [data-style='rokkit'] [data-card-body] {
-  @apply text-surface-z8;
+  @apply text-ink-mute;
 }
 
 [data-style='rokkit'] [data-card-footer] {
-  @apply border-surface-z4 text-surface-z7 border-t;
+  @apply border-paper-edge text-ink-mute border-t;
 }
 
 /* =============================================================================
@@ -51,7 +51,7 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-card][data-card-interactive]:focus-visible {
-  @apply ring-primary-z5 ring-2 outline-none;
+  @apply ring-primary ring-2 outline-none;
 }
 
 /* =============================================================================
@@ -70,12 +70,12 @@
 
 /* Primary — gradient from primary to secondary */
 [data-style='rokkit'] [data-card][data-variant='primary'] {
-  @apply from-primary-z5 to-secondary-z5 border-primary-z6 text-on-primary bg-gradient-to-br shadow-lg;
+  @apply from-primary to-secondary-z5 border-primary text-on-primary bg-gradient-to-br shadow-lg;
 }
 
 [data-style='rokkit'] [data-card][data-variant='primary'] [data-card-header],
 [data-style='rokkit'] [data-card][data-variant='primary'] [data-card-footer] {
-  @apply border-primary-z4/40;
+  @apply border-primary/40;
 }
 
 [data-style='rokkit'] [data-card][data-variant='primary'] [data-card-body] {
@@ -98,5 +98,5 @@
 
 /* Tertiary — elevated surface, no color accent */
 [data-style='rokkit'] [data-card][data-variant='tertiary'] {
-  @apply from-surface-z3 to-surface-z2 border-surface-z4 text-surface-z7 bg-gradient-to-b shadow;
+  @apply from-paper-mute to-paper-mute border-paper-edge text-ink-mute bg-gradient-to-b shadow;
 }

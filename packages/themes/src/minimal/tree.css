@@ -17,11 +17,11 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-tree-toggle-btn] {
-  @apply text-surface-z4;
+  @apply text-paper-edge;
 }
 
 [data-style='minimal'] [data-tree-toggle-btn]:hover {
-  @apply text-surface-z6 bg-none;
+  @apply text-ink-soft bg-none;
 }
 
 /* =============================================================================
@@ -29,26 +29,26 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-tree-item-content] {
-  @apply text-surface-z7;
+  @apply text-ink-mute;
 }
 
 [data-style='minimal'] [data-tree-item-content]:hover:not(:disabled),
 [data-style='minimal'] [data-tree-item-content]:focus:not(:disabled) {
-  @apply text-surface-z9 bg-none outline-none;
+  @apply text-ink bg-none outline-none;
 }
 
 /* Focus visible for keyboard navigation */
 [data-style='minimal'] [data-tree-item-content]:focus-visible {
-  @apply ring-surface-z5 ring-1 outline-none;
+  @apply ring-ink-soft ring-1 outline-none;
 }
 
 /* Active/selected state */
 [data-style='minimal'] [data-tree-item-content][data-active='true'] {
-  @apply text-primary-z7 border-primary-z4 border-l-2;
+  @apply text-primary border-primary border-l-2;
 }
 
 [data-style='minimal'] [data-tree-item-content][data-active='true']:hover:not(:disabled) {
-  @apply text-primary-z8;
+  @apply text-primary;
 }
 
 /* Reset rokkit gradients bleeding in from body[data-style='rokkit'] ancestor */
@@ -71,31 +71,31 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-tree-item-content] [data-item-icon] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 [data-style='minimal'] [data-tree-item-content]:hover:not(:disabled) [data-item-icon] {
-  @apply text-surface-z6;
+  @apply text-ink-soft;
 }
 
 [data-style='minimal'] [data-tree-item-content][data-active='true'] [data-item-icon] {
-  @apply text-primary-z5;
+  @apply text-primary;
 }
 
 [data-style='minimal'] [data-tree-item-content] [data-item-description] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 [data-style='minimal'] [data-tree-item-content][data-active='true'] [data-item-description] {
-  @apply text-primary-z6;
+  @apply text-primary;
 }
 
 [data-style='minimal'] [data-tree-item-content] [data-item-badge] {
-  @apply text-surface-z6 border-surface-z4 border bg-transparent bg-none;
+  @apply text-ink-soft border-paper-edge border bg-transparent bg-none;
 }
 
 [data-style='minimal'] [data-tree-item-content][data-active='true'] [data-item-badge] {
-  @apply text-primary-z7 border-primary-z4;
+  @apply text-primary border-primary;
 }
 
 [data-style='minimal']
@@ -117,19 +117,19 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-tree-node][data-selected='true'] [data-tree-item-content] {
-  @apply text-primary-z7 border-primary-z3 border-l-2;
+  @apply text-primary border-primary border-l-2;
 }
 
 [data-style='minimal']
   [data-tree]:focus-within
   [data-tree-node][data-selected='true']
   [data-tree-item-content] {
-  @apply text-primary-z7 border-primary-z4 border-l-2;
+  @apply text-primary border-primary border-l-2;
 }
 
 [data-style='minimal']
   [data-tree-node][data-selected='true']
   [data-tree-item-content]
   [data-item-icon] {
-  @apply text-primary-z5;
+  @apply text-primary;
 }

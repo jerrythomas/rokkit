@@ -18,12 +18,12 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-list] [data-list-item] {
-  @apply text-surface-z7 border-0 border-solid border-transparent;
+  @apply text-ink-mute border-0 border-solid border-transparent;
 }
 
 [data-style='minimal'] [data-list] a[data-list-item],
 [data-style='minimal'] [data-list] button[data-list-item] {
-  @apply text-surface-z6;
+  @apply text-ink-soft;
 }
 
 /* Hover and focus — text brightening only, no border */
@@ -33,12 +33,12 @@
 [data-style='minimal']
   [data-list]
   [data-list-item]:focus:not(:disabled):not([data-disabled='true']) {
-  @apply text-surface-z9 bg-none outline-none;
+  @apply text-ink bg-none outline-none;
 }
 
 /* Active state — muted when list not focused */
 [data-style='minimal'] [data-list] [data-list-item][data-active='true'] {
-  @apply text-surface-z8 border-secondary-z3 border-l-2 bg-none;
+  @apply text-ink-mute border-secondary-z3 border-l-2 bg-none;
 }
 
 /* Active state — full highlight when list has focus */
@@ -57,12 +57,12 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-list] [data-list-item] [data-item-icon] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 [data-style='minimal'] [data-list] [data-list-item]:hover:not(:disabled) [data-item-icon],
 [data-style='minimal'] [data-list] [data-list-item]:focus:not(:disabled) [data-item-icon] {
-  @apply text-surface-z6;
+  @apply text-ink-soft;
 }
 
 [data-style='minimal'] [data-list] [data-list-item][data-active='true'] [data-item-icon] {
@@ -71,12 +71,12 @@
 
 /* Literal / kanji icons */
 [data-style='minimal'] [data-list] [data-list-item] [data-item-icon-literal] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 [data-style='minimal'] [data-list] [data-list-item]:hover:not(:disabled) [data-item-icon-literal],
 [data-style='minimal'] [data-list] [data-list-item]:focus:not(:disabled) [data-item-icon-literal] {
-  @apply text-surface-z6;
+  @apply text-ink-soft;
 }
 
 [data-style='minimal'] [data-list] [data-list-item][data-active='true'] [data-item-icon-literal] {
@@ -84,7 +84,7 @@
 }
 
 [data-style='minimal'] [data-list] [data-list-item] [data-item-description] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 [data-style='minimal'] [data-list] [data-list-item][data-active='true'] [data-item-description] {
@@ -92,7 +92,7 @@
 }
 
 [data-style='minimal'] [data-list] [data-list-item] [data-item-badge] {
-  @apply text-surface-z6 border-surface-z4 border bg-transparent bg-none;
+  @apply text-ink-soft border-paper-edge border bg-transparent bg-none;
 }
 
 [data-style='minimal'] [data-list] [data-list-item][data-active='true'] [data-item-badge] {
@@ -104,13 +104,13 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-list] [data-list-group] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 /* Group hover — text-only, no border */
 [data-style='minimal'] [data-list] [data-list-group]:hover:not(:disabled),
 [data-style='minimal'] [data-list] [data-list-group]:focus:not(:disabled) {
-  @apply text-surface-z7 bg-none;
+  @apply text-ink-mute bg-none;
 }
 
 /* =============================================================================
@@ -118,7 +118,7 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-list] [data-list-separator] {
-  @apply bg-surface-z3 bg-none;
+  @apply bg-paper-mute bg-none;
 }
 
 /* =============================================================================

@@ -3,38 +3,38 @@
 /* ── Number circles ── */
 
 [data-style='zen-sumi'] [data-step-item][data-step-state='complete'] [data-step-number] {
-  @apply bg-primary-z5 border-primary-z5 text-on-primary bg-none;
+  @apply bg-primary border-primary text-on-primary bg-none;
 }
 
 [data-style='zen-sumi'] [data-step-item][data-step-state='current'] [data-step-number] {
-  @apply bg-transparent border-primary-z4 text-primary-z6 bg-none;
+  @apply bg-transparent border-primary text-primary bg-none;
 }
 
 [data-style='zen-sumi'] [data-step-item][data-step-state='upcoming'] [data-step-number] {
-  @apply bg-transparent border-surface-z2 text-ink-z5 bg-none;
+  @apply bg-transparent border-paper-mute text-paper-edge bg-none;
 }
 
 /* ── Labels ── */
 
 [data-style='zen-sumi'] [data-step-item][data-step-state='complete'] [data-step-label] {
-  @apply text-primary-z6 bg-none;
+  @apply text-primary bg-none;
 }
 
 [data-style='zen-sumi'] [data-step-item][data-step-state='current'] [data-step-label] {
-  @apply text-ink-z1 font-medium bg-none;
+  @apply text-ink-mute font-medium bg-none;
 }
 
 [data-style='zen-sumi'] [data-step-item][data-step-state='upcoming'] [data-step-label] {
-  @apply text-surface-z4 bg-none;
+  @apply text-paper-edge bg-none;
 }
 
 /* ── Connector lines ── */
 
 [data-style='zen-sumi'] [data-step-item][data-step-state='complete']::after {
-  @apply bg-primary-z4;
+  @apply bg-primary;
 }
 
 [data-style='zen-sumi'] [data-step-item][data-step-state='current']::after,
 [data-style='zen-sumi'] [data-step-item][data-step-state='upcoming']::after {
-  @apply bg-surface-z2;
+  @apply bg-paper-mute;
 }

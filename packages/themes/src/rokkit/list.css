@@ -17,12 +17,12 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-list] [data-list-item] {
-  @apply text-surface-z8 rounded-none border-0 border-solid border-transparent;
+  @apply text-ink-mute rounded-none border-0 border-solid border-transparent;
 }
 
 [data-style='rokkit'] [data-list] a[data-list-item],
 [data-style='rokkit'] [data-list] button[data-list-item] {
-  @apply text-surface-z7 rounded-none;
+  @apply text-ink-mute rounded-none;
 }
 
 /* Hover and focus (keyboard navigation) */
@@ -30,22 +30,22 @@
 [data-style='rokkit']
   [data-list]
   [data-list-item]:focus:not(:disabled):not([data-disabled='true']) {
-  @apply from-surface-z3 to-surface-z2 text-surface-z10 bg-gradient-to-r outline-none;
+  @apply from-paper-mute to-paper-mute text-ink bg-gradient-to-r outline-none;
 }
 
 /* Active state — muted gradient when list not focused */
 [data-style='rokkit'] [data-list] [data-list-item][data-active='true'] {
-  @apply from-surface-z3 to-surface-z2 text-primary-z9 bg-gradient-to-r;
+  @apply from-paper-mute to-paper-mute text-primary bg-gradient-to-r;
 }
 
 /* Active state — full gradient when list has focus */
 [data-style='rokkit'] [data-list]:focus-within [data-list-item][data-active='true'] {
-  @apply from-primary-z5 to-secondary-z5 text-on-primary bg-gradient-to-r;
+  @apply from-primary to-secondary-z5 text-on-primary bg-gradient-to-r;
 }
 
 /* Active + hover — same as focus-within gradient */
 [data-style='rokkit'] [data-list] [data-list-item][data-active='true']:hover:not(:disabled) {
-  @apply from-primary-z5 to-secondary-z5 text-on-primary bg-gradient-to-r;
+  @apply from-primary to-secondary-z5 text-on-primary bg-gradient-to-r;
 }
 
 /* =============================================================================
@@ -54,16 +54,16 @@
 
 [data-style='rokkit'] [data-list] [data-list-item] [data-item-icon] {
   font-size: 1rem;
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 [data-style='rokkit'] [data-list] [data-list-item]:hover:not(:disabled) [data-item-icon],
 [data-style='rokkit'] [data-list] [data-list-item]:focus:not(:disabled) [data-item-icon] {
-  @apply text-surface-z7;
+  @apply text-ink-mute;
 }
 
 [data-style='rokkit'] [data-list] [data-list-item][data-active='true'] [data-item-icon] {
-  @apply text-primary-z6;
+  @apply text-primary;
 }
 
 [data-style='rokkit']
@@ -79,16 +79,16 @@
 
 /* Literal / kanji icons */
 [data-style='rokkit'] [data-list] [data-list-item] [data-item-icon-literal] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 [data-style='rokkit'] [data-list] [data-list-item]:hover:not(:disabled) [data-item-icon-literal],
 [data-style='rokkit'] [data-list] [data-list-item]:focus:not(:disabled) [data-item-icon-literal] {
-  @apply text-surface-z7;
+  @apply text-ink-mute;
 }
 
 [data-style='rokkit'] [data-list] [data-list-item][data-active='true'] [data-item-icon-literal] {
-  @apply text-primary-z6;
+  @apply text-primary;
 }
 
 [data-style='rokkit']
@@ -104,11 +104,11 @@
 
 /* Item description */
 [data-style='rokkit'] [data-list] [data-list-item] [data-item-description] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 [data-style='rokkit'] [data-list] [data-list-item][data-active='true'] [data-item-description] {
-  @apply text-primary-z7;
+  @apply text-primary;
 }
 
 [data-style='rokkit']
@@ -124,18 +124,18 @@
 
 /* Item badge */
 [data-style='rokkit'] [data-list] [data-list-item] [data-item-badge] {
-  @apply text-surface-z6 from-surface-z3 to-surface-z2 border-surface-z4 border bg-gradient-to-b;
+  @apply text-ink-soft from-paper-mute to-paper-mute border-paper-edge border bg-gradient-to-b;
 }
 
 [data-style='rokkit'] [data-list] [data-list-item][data-active='true'] [data-item-badge] {
-  @apply text-primary-z8 from-primary-z3 to-primary-z2 border-primary-z4 border bg-gradient-to-b;
+  @apply text-primary from-primary to-primary border-primary border bg-gradient-to-b;
 }
 
 [data-style='rokkit']
   [data-list]:focus-within
   [data-list-item][data-active='true']
   [data-item-badge] {
-  @apply text-on-primary from-primary-z6 to-primary-z5 border-primary-z6;
+  @apply text-on-primary from-primary to-primary border-primary;
 }
 
 /* =============================================================================
@@ -157,7 +157,7 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-list] [data-list-group] {
-  @apply text-surface-z6 mt-2;
+  @apply text-ink-soft mt-2;
 }
 
 [data-style='rokkit'] [data-list] [data-list-group]:first-child {
@@ -170,7 +170,7 @@
 
 [data-style='rokkit'] [data-list] [data-list-group]:hover:not(:disabled),
 [data-style='rokkit'] [data-list] [data-list-group]:focus:not(:disabled) {
-  @apply from-surface-z4 to-surface-z3 text-surface-z8 bg-gradient-to-r;
+  @apply from-paper-edge to-paper-mute text-ink-mute bg-gradient-to-r;
 }
 
 /* =============================================================================
@@ -178,7 +178,7 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-list] [data-list-separator] {
-  @apply via-surface-z4 bg-gradient-to-r from-transparent to-transparent;
+  @apply via-paper-edge bg-gradient-to-r from-transparent to-transparent;
 }
 
 /* =============================================================================
@@ -186,17 +186,17 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-list] [data-list-item][data-selected='true'] {
-  @apply bg-primary-z3 text-primary-z9;
+  @apply bg-primary text-primary;
 }
 
 [data-style='rokkit'] [data-list]:focus-within [data-list-item][data-selected='true'] {
-  @apply bg-primary-z4 text-primary-z9;
+  @apply bg-primary text-primary;
 }
 
 [data-style='rokkit'] [data-list] [data-list-item][data-selected='true']:hover:not(:disabled) {
-  @apply bg-primary-z5;
+  @apply bg-primary;
 }
 
 [data-style='rokkit'] [data-list] [data-list-item][data-selected='true'] [data-item-icon] {
-  @apply text-primary-z6;
+  @apply text-primary;
 }

@@ -18,11 +18,11 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-tree-toggle-btn] {
-  @apply text-surface-z4;
+  @apply text-paper-edge;
 }
 
 [data-style='zen-sumi'] [data-tree-toggle-btn]:hover {
-  @apply text-ink-z4 bg-none;
+  @apply text-ink-soft bg-none;
 }
 
 /* =============================================================================
@@ -30,12 +30,12 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-tree-item-content] {
-  @apply text-ink-z3;
+  @apply text-ink-soft;
 }
 
 [data-style='zen-sumi'] [data-tree-item-content]:hover:not(:disabled),
 [data-style='zen-sumi'] [data-tree-item-content]:focus:not(:disabled) {
-  @apply bg-surface-z2 text-ink-z1 bg-none outline-none;
+  @apply bg-paper-mute text-ink-mute bg-none outline-none;
 }
 
 /* Focus visible for keyboard navigation */
@@ -46,11 +46,11 @@
 
 /* Active/selected state */
 [data-style='zen-sumi'] [data-tree-item-content][data-active='true'] {
-  @apply text-ink-z1 bg-surface-z2 bg-none;
+  @apply text-ink-mute bg-paper-mute bg-none;
 }
 
 [data-style='zen-sumi'] [data-tree-item-content][data-active='true']:hover:not(:disabled) {
-  @apply bg-surface-z3 bg-none;
+  @apply bg-paper-mute bg-none;
 }
 
 /* Reset rokkit gradients */
@@ -73,31 +73,31 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-tree-item-content] [data-item-icon] {
-  @apply text-ink-z5;
+  @apply text-paper-edge;
 }
 
 [data-style='zen-sumi'] [data-tree-item-content]:hover:not(:disabled) [data-item-icon] {
-  @apply text-ink-z4;
+  @apply text-ink-soft;
 }
 
 [data-style='zen-sumi'] [data-tree-item-content][data-active='true'] [data-item-icon] {
-  @apply text-primary-z5;
+  @apply text-primary;
 }
 
 [data-style='zen-sumi'] [data-tree-item-content] [data-item-description] {
-  @apply text-ink-z5;
+  @apply text-paper-edge;
 }
 
 [data-style='zen-sumi'] [data-tree-item-content][data-active='true'] [data-item-description] {
-  @apply text-ink-z4;
+  @apply text-ink-soft;
 }
 
 [data-style='zen-sumi'] [data-tree-item-content] [data-item-badge] {
-  @apply text-ink-z4 border-surface-z3 border bg-transparent bg-none;
+  @apply text-ink-soft border-paper-mute border bg-transparent bg-none;
 }
 
 [data-style='zen-sumi'] [data-tree-item-content][data-active='true'] [data-item-badge] {
-  @apply text-ink-z2 border-surface-z4 bg-none;
+  @apply text-ink-mute border-paper-edge bg-none;
 }
 
 [data-style='zen-sumi']
@@ -119,19 +119,19 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-tree-node][data-selected='true'] [data-tree-item-content] {
-  @apply text-primary-z6 border-primary-z3 border-l-2;
+  @apply text-primary border-primary border-l-2;
 }
 
 [data-style='zen-sumi']
   [data-tree]:focus-within
   [data-tree-node][data-selected='true']
   [data-tree-item-content] {
-  @apply text-primary-z7 border-primary-z4 border-l-2;
+  @apply text-primary border-primary border-l-2;
 }
 
 [data-style='zen-sumi']
   [data-tree-node][data-selected='true']
   [data-tree-item-content]
   [data-item-icon] {
-  @apply text-primary-z5;
+  @apply text-primary;
 }

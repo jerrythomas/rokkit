@@ -5,17 +5,17 @@
 
 [data-style='zen-sumi'] [data-swatch-item][data-selected] {
   background: transparent;
-  @apply outline-primary-z5;
+  @apply outline-primary;
 }
 
 [data-style='zen-sumi']
   [data-swatch-item]:hover:not(:disabled):not([data-disabled]):not([data-selected]),
 [data-style='zen-sumi']
   [data-swatch-item]:focus-visible:not(:disabled):not([data-disabled]):not([data-selected]) {
-  @apply outline-surface-z4;
+  @apply outline-paper-edge;
 }
 
 [data-style='zen-sumi'] [data-swatch-item][data-selected]:focus-visible {
-  @apply outline-primary-z6;
+  @apply outline-primary;
   outline-offset: 3px;
 }

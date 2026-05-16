@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-toggle] {
-  @apply border-surface-z3 rounded-lg border bg-transparent bg-none;
+  @apply border-paper-mute rounded-lg border bg-transparent bg-none;
 }
 
 /* =============================================================================
@@ -17,17 +17,17 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-toggle-option] {
-  @apply text-surface-z6 border-0 border-solid border-transparent;
+  @apply text-ink-soft border-0 border-solid border-transparent;
 }
 
 [data-style='minimal'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']),
 [data-style='minimal'] [data-toggle-option]:focus:not(:disabled):not([data-disabled='true']) {
-  @apply bg-surface-z2 text-surface-z8;
+  @apply bg-paper-mute text-ink-mute;
 }
 
 /* Selected state — subtle fill with primary bottom accent */
 [data-style='minimal'] [data-toggle-option][data-selected='true'] {
-  @apply bg-surface-z3 text-surface-z9 border-b-primary-z5 border-b-2;
+  @apply bg-paper-mute text-ink border-b-primary border-b-2;
 }
 
 /* =============================================================================
@@ -35,14 +35,14 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-toggle-option] [data-toggle-icon] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 [data-style='minimal'] [data-toggle-option]:hover:not(:disabled) [data-toggle-icon],
 [data-style='minimal'] [data-toggle-option]:focus:not(:disabled) [data-toggle-icon] {
-  @apply text-surface-z7;
+  @apply text-ink-mute;
 }
 
 [data-style='minimal'] [data-toggle-option][data-selected='true'] [data-toggle-icon] {
-  @apply text-surface-z8;
+  @apply text-ink-mute;
 }

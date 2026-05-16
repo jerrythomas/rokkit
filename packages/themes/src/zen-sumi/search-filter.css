@@ -9,15 +9,15 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-search-input] {
-  @apply text-ink-z2 border-surface-z3 border bg-transparent;
+  @apply text-ink-mute border-paper-mute border bg-transparent;
 }
 
 [data-style='zen-sumi'] [data-search-input]:focus {
-  @apply border-surface-z5 outline-none;
+  @apply border-ink-soft outline-none;
 }
 
 [data-style='zen-sumi'] [data-search-input]::placeholder {
-  @apply text-surface-z4;
+  @apply text-paper-edge;
 }
 
 /* =============================================================================
@@ -25,11 +25,11 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-search-clear] {
-  @apply text-surface-z4;
+  @apply text-paper-edge;
 }
 
 [data-style='zen-sumi'] [data-search-clear]:hover {
-  @apply text-ink-z3;
+  @apply text-ink-soft;
 }
 
 /* =============================================================================
@@ -37,13 +37,13 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-search-tag] {
-  @apply text-ink-z3 border-surface-z3 border bg-transparent bg-none;
+  @apply text-ink-soft border-paper-mute border bg-transparent bg-none;
 }
 
 [data-style='zen-sumi'] [data-search-tag-remove] {
-  @apply text-ink-z5;
+  @apply text-paper-edge;
 }
 
 [data-style='zen-sumi'] [data-search-tag-remove]:hover {
-  @apply text-ink-z2;
+  @apply text-ink-mute;
 }

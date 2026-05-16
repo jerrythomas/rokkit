@@ -10,7 +10,7 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-toggle] {
-  @apply bg-surface-z1 border-surface-z2 border;
+  @apply bg-paper-soft border-paper-mute border;
   border-radius: var(--radius-md, 0.375rem);
 }
 
@@ -19,17 +19,17 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-toggle-option] {
-  @apply text-ink-z4 border-0 border-solid border-transparent;
+  @apply text-ink-soft border-0 border-solid border-transparent;
 }
 
 [data-style='zen-sumi'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']),
 [data-style='zen-sumi'] [data-toggle-option]:focus:not(:disabled):not([data-disabled='true']) {
-  @apply bg-surface-z2 text-ink-z2;
+  @apply bg-paper-mute text-ink-mute;
 }
 
 /* Selected state — ink fill */
 [data-style='zen-sumi'] [data-toggle-option][data-selected='true'] {
-  @apply bg-surface-z9 text-surface-z0 bg-none;
+  @apply bg-ink text-paper bg-none;
   font-weight: 500;
 }
 
@@ -38,14 +38,14 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-toggle-option] [data-toggle-icon] {
-  @apply text-ink-z5;
+  @apply text-paper-edge;
 }
 
 [data-style='zen-sumi'] [data-toggle-option]:hover:not(:disabled) [data-toggle-icon],
 [data-style='zen-sumi'] [data-toggle-option]:focus:not(:disabled) [data-toggle-icon] {
-  @apply text-ink-z3;
+  @apply text-ink-soft;
 }
 
 [data-style='zen-sumi'] [data-toggle-option][data-selected='true'] [data-toggle-icon] {
-  @apply text-surface-z1;
+  @apply text-paper-soft;
 }

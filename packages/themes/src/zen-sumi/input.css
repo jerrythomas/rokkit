@@ -48,7 +48,7 @@
 
 /* Select inside input-root */
 [data-style='zen-sumi'] [data-input-root] [data-select-trigger] {
-  @apply text-ink-z1 border-none bg-transparent px-2 shadow-none ring-0 focus:outline-none;
+  @apply text-ink-mute border-none bg-transparent px-2 shadow-none ring-0 focus:outline-none;
   font-size: 0.8125rem;
   background-image: none;
 }
@@ -64,17 +64,17 @@
 
 /* Labels: smaller, spaced */
 [data-style='zen-sumi'] [data-field] > label {
-  @apply text-ink-z4 text-xs tracking-wide;
+  @apply text-ink-soft text-xs tracking-wide;
   transition: color 150ms ease;
 }
 
 [data-style='zen-sumi'] [data-form-root] label {
-  @apply text-ink-z4 text-xs tracking-wide;
+  @apply text-ink-soft text-xs tracking-wide;
 }
 
 /* Focused label: primary accent */
 [data-style='zen-sumi'] [data-field]:has([data-input-root]:focus-within) > label {
-  @apply text-primary-z5;
+  @apply text-primary;
 }
 
 /* Field root */
@@ -84,65 +84,65 @@
 
 /* Info field value */
 [data-style='zen-sumi'] [data-field-info] {
-  @apply text-primary-z5;
+  @apply text-primary;
 }
 
 /* Separator */
 [data-style='zen-sumi'] [data-form-separator] {
-  @apply border-surface-z2;
+  @apply border-paper-mute;
 }
 
 /* Disabled state */
 [data-style='zen-sumi'] [data-field-disabled] [data-input-root] {
-  @apply border-surface-z2 cursor-not-allowed opacity-40;
+  @apply border-paper-mute cursor-not-allowed opacity-40;
 }
 
 /* Error state — border becomes shu (primary/danger) */
 [data-style='zen-sumi'] [data-field-state='fail'] [data-input-root] {
-  @apply border-danger-z4;
+  @apply border-danger;
 }
 
 [data-style='zen-sumi'] [data-field-state='fail'] [data-input-root]:hover:not(:focus-within) {
-  @apply border-danger-z5;
+  @apply border-danger;
 }
 
 [data-style='zen-sumi'] [data-field-state='fail'] [data-input-root]:focus-within {
-  @apply border-danger-z5;
+  @apply border-danger;
 }
 
 /* Pass state */
 [data-style='zen-sumi'] [data-field-state='pass'] [data-input-root] {
-  @apply border-success-z4;
+  @apply border-success;
 }
 
 [data-style='zen-sumi'] [data-field-state='pass'] [data-input-root]:focus-within {
-  @apply border-success-z5;
+  @apply border-success;
 }
 
 /* Description */
 [data-style='zen-sumi'] [data-description] {
-  @apply text-ink-z5 mt-0.5 text-xs;
+  @apply text-paper-edge mt-0.5 text-xs;
 }
 
 /* Message */
 [data-style='zen-sumi'] [data-message] {
-  @apply text-danger-z5 mt-0.5 text-xs;
+  @apply text-danger mt-0.5 text-xs;
 }
 
 /* Checkbox */
 [data-style='zen-sumi'] [data-checkbox-icon] {
-  @apply text-ink-z5 text-lg;
+  @apply text-paper-edge text-lg;
 }
 
 [data-style='zen-sumi']
   [data-checkbox-root][data-variant='custom']:has(input:checked)
   [data-checkbox-icon] {
-  @apply text-primary-z5;
+  @apply text-primary;
 }
 
 /* Checkbox label: primary on focus */
 [data-style='zen-sumi'] [data-field-type='checkbox'] [data-field]:has(:focus-within) > label {
-  @apply text-primary-z5;
+  @apply text-primary;
 }
 
 /* Placeholders */

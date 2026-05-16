@@ -9,25 +9,25 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-table-header] th {
-  @apply text-surface-z6 border-surface-z5/20 border-b bg-surface-z2/80 backdrop-blur-sm;
+  @apply text-ink-soft border-ink-soft/20 border-b bg-paper-mute/80 backdrop-blur-sm;
 }
 
 [data-style='frosted'] [data-table-header-cell][data-sortable='true']:hover {
-  @apply text-surface-z9;
+  @apply text-ink;
 }
 
 [data-style='frosted'] [data-table-header-cell][data-sort-order='ascending'],
 [data-style='frosted'] [data-table-header-cell][data-sort-order='descending'] {
-  @apply text-primary-z8;
+  @apply text-primary;
 }
 
 [data-style='frosted'] [data-table-sort-icon] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 [data-style='frosted'] [data-table-header-cell][data-sort-order='ascending'] [data-table-sort-icon],
 [data-style='frosted'] [data-table-header-cell][data-sort-order='descending'] [data-table-sort-icon] {
-  @apply text-primary-z6;
+  @apply text-primary;
 }
 
 /* =============================================================================
@@ -35,7 +35,7 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-table-caption] {
-  @apply text-surface-z7;
+  @apply text-ink-mute;
 }
 
 /* =============================================================================
@@ -43,19 +43,19 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-table-row] {
-  @apply text-surface-z8 border-surface-z5/10 border-b;
+  @apply text-ink-mute border-ink-soft/10 border-b;
 }
 
 [data-style='frosted'] [data-table-row]:hover {
-  @apply bg-surface-z2/80;
+  @apply bg-paper-mute/80;
 }
 
 [data-style='frosted'] [data-table-row]:focus {
-  @apply bg-surface-z2/80 text-surface-z10 outline-none;
+  @apply bg-paper-mute/80 text-ink outline-none;
 }
 
 [data-style='frosted'] [data-table-row][data-selected='true'] {
-  @apply text-primary-z9 bg-primary-z5/40;
+  @apply text-primary bg-primary/40;
 }
 
 /* =============================================================================
@@ -63,7 +63,7 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-table-striped] [data-table-body] tr:nth-child(even) {
-  @apply bg-surface-z2/30;
+  @apply bg-paper-mute/30;
 }
 
 /* =============================================================================
@@ -71,7 +71,7 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-table-empty] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 /* =============================================================================
@@ -79,11 +79,11 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-table-cell] [data-cell-icon] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 [data-style='frosted'] [data-table-row][data-selected='true'] [data-cell-icon] {
-  @apply text-primary-z6;
+  @apply text-primary;
 }
 
 /* =============================================================================
@@ -92,11 +92,11 @@
 
 @media (max-width: 639px) {
   [data-style='frosted'] [data-table-responsive] [data-table-row] {
-    @apply bg-surface-z2/80 border-surface-z5/20 border backdrop-blur-sm;
+    @apply bg-paper-mute/80 border-ink-soft/20 border backdrop-blur-sm;
   }
 
   [data-style='frosted'] [data-table-responsive] [data-table-cell]::before {
-    @apply text-surface-z5;
+    @apply text-ink-soft;
   }
 
   /* Disable striped alternating bg in card layout */

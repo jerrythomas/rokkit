@@ -9,27 +9,27 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-table-header] th {
-  @apply text-surface-z6 border-surface-z4 border-b bg-surface-z2;
+  @apply text-ink-soft border-paper-edge border-b bg-paper-mute;
 }
 
 [data-style='rokkit'] [data-table-header-cell][data-sortable='true']:hover {
-  @apply text-surface-z8;
+  @apply text-ink-mute;
 }
 
 [data-style='rokkit'] [data-table-header-cell][data-sort-order='ascending'],
 [data-style='rokkit'] [data-table-header-cell][data-sort-order='descending'] {
-  @apply text-primary-z7;
+  @apply text-primary;
 }
 
 [data-style='rokkit'] [data-table-sort-icon] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 [data-style='rokkit'] [data-table-header-cell][data-sort-order='ascending'] [data-table-sort-icon],
 [data-style='rokkit']
   [data-table-header-cell][data-sort-order='descending']
   [data-table-sort-icon] {
-  @apply text-primary-z6;
+  @apply text-primary;
 }
 
 /* =============================================================================
@@ -37,7 +37,7 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-table-caption] {
-  @apply text-surface-z7;
+  @apply text-ink-mute;
 }
 
 /* =============================================================================
@@ -45,19 +45,19 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-table-row] {
-  @apply text-surface-z7 border-surface-z3 border-b;
+  @apply text-ink-mute border-paper-mute border-b;
 }
 
 [data-style='rokkit'] [data-table-row]:hover {
-  @apply from-surface-z3 to-surface-z2 bg-gradient-to-b;
+  @apply from-paper-mute to-paper-mute bg-gradient-to-b;
 }
 
 [data-style='rokkit'] [data-table-row]:focus {
-  @apply from-surface-z3 to-surface-z2 text-surface-z10 bg-gradient-to-b outline-none;
+  @apply from-paper-mute to-paper-mute text-ink bg-gradient-to-b outline-none;
 }
 
 [data-style='rokkit'] [data-table-row][data-selected='true'] {
-  @apply from-primary-z5 to-secondary-z5 text-primary-z9 bg-gradient-to-r;
+  @apply from-primary to-secondary-z5 text-primary bg-gradient-to-r;
 }
 
 /* =============================================================================
@@ -65,7 +65,7 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-table-striped] [data-table-body] tr:nth-child(even) {
-  @apply bg-surface-z3;
+  @apply bg-paper-mute;
 }
 
 /* =============================================================================
@@ -73,7 +73,7 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-table-empty] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 /* =============================================================================
@@ -81,11 +81,11 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-table-cell] [data-cell-icon] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 [data-style='rokkit'] [data-table-row][data-selected='true'] [data-cell-icon] {
-  @apply text-primary-z7;
+  @apply text-primary;
 }
 
 /* =============================================================================
@@ -94,11 +94,11 @@
 
 @media (max-width: 639px) {
   [data-style='rokkit'] [data-table-responsive] [data-table-row] {
-    @apply bg-surface-z2 border-surface-z4 border;
+    @apply bg-paper-mute border-paper-edge border;
   }
 
   [data-style='rokkit'] [data-table-responsive] [data-table-cell]::before {
-    @apply text-surface-z5;
+    @apply text-ink-soft;
   }
 
   /* Disable striped alternating bg in card layout */

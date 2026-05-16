@@ -4,41 +4,41 @@
 
 /* Type colors */
 [data-style='rokkit'] [data-message-root][data-type='error'] {
-  @apply bg-error-z1 border-error-z4 text-error-z8;
+  @apply bg-error-soft border-error text-error;
 }
 [data-style='rokkit'] [data-message-root][data-type='error'] [data-message-icon] {
-  @apply text-error-z6;
+  @apply text-error;
 }
 [data-style='rokkit'] [data-message-root][data-type='error'] [data-message-dismiss] {
-  @apply text-error-z6;
+  @apply text-error;
 }
 
 [data-style='rokkit'] [data-message-root][data-type='warning'] {
-  @apply bg-warning-z1 border-warning-z4 text-warning-z8;
+  @apply bg-warning-soft border-warning text-warning;
 }
 [data-style='rokkit'] [data-message-root][data-type='warning'] [data-message-icon] {
-  @apply text-warning-z6;
+  @apply text-warning;
 }
 [data-style='rokkit'] [data-message-root][data-type='warning'] [data-message-dismiss] {
-  @apply text-warning-z6;
+  @apply text-warning;
 }
 
 [data-style='rokkit'] [data-message-root][data-type='info'] {
-  @apply bg-info-z1 border-info-z4 text-info-z8;
+  @apply bg-info-soft border-info text-info;
 }
 [data-style='rokkit'] [data-message-root][data-type='info'] [data-message-icon] {
-  @apply text-info-z6;
+  @apply text-info;
 }
 [data-style='rokkit'] [data-message-root][data-type='info'] [data-message-dismiss] {
-  @apply text-info-z6;
+  @apply text-info;
 }
 
 [data-style='rokkit'] [data-message-root][data-type='success'] {
-  @apply bg-success-z1 border-success-z4 text-success-z8;
+  @apply bg-success-soft border-success text-success;
 }
 [data-style='rokkit'] [data-message-root][data-type='success'] [data-message-icon] {
-  @apply text-success-z6;
+  @apply text-success;
 }
 [data-style='rokkit'] [data-message-root][data-type='success'] [data-message-dismiss] {
-  @apply text-success-z6;
+  @apply text-success;
 }

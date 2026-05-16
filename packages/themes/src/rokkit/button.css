@@ -13,13 +13,13 @@
 [data-style='rokkit'] [data-button]:not([data-style])[data-variant='default'],
 [data-style='rokkit'] [data-button][data-style='default']:not([data-variant]),
 [data-style='rokkit'] [data-button]:not([data-style]):not([data-variant]) {
-  @apply from-surface-z3 to-surface-z2 border-surface-z4 text-surface-z8 border bg-gradient-to-r;
+  @apply from-paper-mute to-paper-mute border-paper-edge text-ink-mute border bg-gradient-to-r;
 }
 
 /* Primary variant */
 [data-style='rokkit'] [data-button][data-style='default'][data-variant='primary'],
 [data-style='rokkit'] [data-button]:not([data-style])[data-variant='primary'] {
-  @apply from-primary-z5 to-secondary-z5 border-primary-z5 text-on-primary border bg-gradient-to-r;
+  @apply from-primary to-secondary-z5 border-primary text-on-primary border bg-gradient-to-r;
 }
 
 /* Secondary variant */
@@ -31,13 +31,13 @@
 /* Accent variant */
 [data-style='rokkit'] [data-button][data-style='default'][data-variant='accent'],
 [data-style='rokkit'] [data-button]:not([data-style])[data-variant='accent'] {
-  @apply from-accent-z4 to-accent-z3 border-accent-z5 text-on-accent border bg-gradient-to-b;
+  @apply from-accent to-accent border-accent text-on-accent border bg-gradient-to-b;
 }
 
 /* Danger variant */
 [data-style='rokkit'] [data-button][data-style='default'][data-variant='danger'],
 [data-style='rokkit'] [data-button]:not([data-style])[data-variant='danger'] {
-  @apply from-danger-z4 to-danger-z3 border-danger-z5 text-on-danger border bg-gradient-to-b;
+  @apply from-danger to-danger border-danger text-on-danger border bg-gradient-to-b;
 }
 
 /* =============================================================================
@@ -46,11 +46,11 @@
 
 [data-style='rokkit'] [data-button][data-style='outline'][data-variant='default'],
 [data-style='rokkit'] [data-button][data-style='outline']:not([data-variant]) {
-  @apply border-surface-z4 text-surface-z7 border bg-transparent;
+  @apply border-paper-edge text-ink-mute border bg-transparent;
 }
 
 [data-style='rokkit'] [data-button][data-style='outline'][data-variant='primary'] {
-  @apply border-primary-z4 text-primary-z6 border bg-transparent;
+  @apply border-primary text-primary border bg-transparent;
 }
 
 [data-style='rokkit'] [data-button][data-style='outline'][data-variant='secondary'] {
@@ -58,11 +58,11 @@
 }
 
 [data-style='rokkit'] [data-button][data-style='outline'][data-variant='accent'] {
-  @apply border-accent-z4 text-accent-z6 border bg-transparent;
+  @apply border-accent text-accent border bg-transparent;
 }
 
 [data-style='rokkit'] [data-button][data-style='outline'][data-variant='danger'] {
-  @apply border-danger-z4 text-danger-z4 border bg-transparent;
+  @apply border-danger text-danger border bg-transparent;
 }
 
 /* =============================================================================
@@ -75,11 +75,11 @@
 
 [data-style='rokkit'] [data-button][data-style='ghost'][data-variant='default'],
 [data-style='rokkit'] [data-button][data-style='ghost']:not([data-variant]) {
-  @apply text-surface-z7;
+  @apply text-ink-mute;
 }
 
 [data-style='rokkit'] [data-button][data-style='ghost'][data-variant='primary'] {
-  @apply text-primary-z6;
+  @apply text-primary;
 }
 
 [data-style='rokkit'] [data-button][data-style='ghost'][data-variant='secondary'] {
@@ -87,11 +87,11 @@
 }
 
 [data-style='rokkit'] [data-button][data-style='ghost'][data-variant='accent'] {
-  @apply text-accent-z6;
+  @apply text-accent;
 }
 
 [data-style='rokkit'] [data-button][data-style='ghost'][data-variant='danger'] {
-  @apply text-danger-z4;
+  @apply text-danger;
 }
 
 /* =============================================================================
@@ -100,11 +100,11 @@
 
 [data-style='rokkit'] [data-button][data-style='gradient'][data-variant='default'],
 [data-style='rokkit'] [data-button][data-style='gradient']:not([data-variant]) {
-  @apply from-surface-z4 to-surface-z2 text-surface-z10 bg-gradient-to-br;
+  @apply from-paper-edge to-paper-mute text-ink bg-gradient-to-br;
 }
 
 [data-style='rokkit'] [data-button][data-style='gradient'][data-variant='primary'] {
-  @apply from-primary-z5 to-primary-z3 text-on-primary bg-gradient-to-br;
+  @apply from-primary to-primary text-on-primary bg-gradient-to-br;
 }
 
 [data-style='rokkit'] [data-button][data-style='gradient'][data-variant='secondary'] {
@@ -112,11 +112,11 @@
 }
 
 [data-style='rokkit'] [data-button][data-style='gradient'][data-variant='accent'] {
-  @apply from-accent-z5 to-accent-z3 text-on-accent bg-gradient-to-br;
+  @apply from-accent to-accent text-on-accent bg-gradient-to-br;
 }
 
 [data-style='rokkit'] [data-button][data-style='gradient'][data-variant='danger'] {
-  @apply from-danger-z5 to-danger-z3 text-on-danger bg-gradient-to-br;
+  @apply from-danger to-danger text-on-danger bg-gradient-to-br;
 }
 
 [data-style='rokkit']
@@ -130,11 +130,11 @@
 
 [data-style='rokkit'] [data-button][data-style='link'][data-variant='default'],
 [data-style='rokkit'] [data-button][data-style='link']:not([data-variant]) {
-  @apply text-surface-z7;
+  @apply text-ink-mute;
 }
 
 [data-style='rokkit'] [data-button][data-style='link'][data-variant='primary'] {
-  @apply text-primary-z6;
+  @apply text-primary;
 }
 
 [data-style='rokkit'] [data-button][data-style='link'][data-variant='secondary'] {
@@ -142,15 +142,15 @@
 }
 
 [data-style='rokkit'] [data-button][data-style='link'][data-variant='accent'] {
-  @apply text-accent-z6;
+  @apply text-accent;
 }
 
 [data-style='rokkit'] [data-button][data-style='link'][data-variant='danger'] {
-  @apply text-danger-z4;
+  @apply text-danger;
 }
 
 [data-style='rokkit'] [data-button][data-style='link']:hover:not(:disabled):not([data-disabled]) {
-  @apply text-primary-z7;
+  @apply text-primary;
 }
 
 /* =============================================================================
@@ -172,14 +172,14 @@
   [data-button][data-style='outline']:hover:not(:disabled):not([data-disabled]):not(
     [data-variant]
   ) {
-  @apply from-surface-z2 to-surface-z1 bg-gradient-to-b;
+  @apply from-paper-mute to-paper-soft bg-gradient-to-b;
 }
 
 [data-style='rokkit']
   [data-button][data-style='outline']:hover:not(:disabled):not(
     [data-disabled]
   )[data-variant='primary'] {
-  @apply from-primary-z2 to-primary-z1 bg-gradient-to-b;
+  @apply from-primary to-primary bg-gradient-to-b;
 }
 
 [data-style='rokkit']
@@ -193,14 +193,14 @@
   [data-button][data-style='outline']:hover:not(:disabled):not(
     [data-disabled]
   )[data-variant='accent'] {
-  @apply from-accent-z2 to-accent-z1 bg-gradient-to-b;
+  @apply from-accent-soft to-accent-soft bg-gradient-to-b;
 }
 
 [data-style='rokkit']
   [data-button][data-style='outline']:hover:not(:disabled):not(
     [data-disabled]
   )[data-variant='danger'] {
-  @apply from-danger-z2 to-danger-z1 bg-gradient-to-b;
+  @apply from-danger-soft to-danger-soft bg-gradient-to-b;
 }
 
 /* Ghost style hover */
@@ -210,14 +210,14 @@
   )[data-variant='default'],
 [data-style='rokkit']
   [data-button][data-style='ghost']:hover:not(:disabled):not([data-disabled]):not([data-variant]) {
-  @apply bg-surface-z2;
+  @apply bg-paper-mute;
 }
 
 [data-style='rokkit']
   [data-button][data-style='ghost']:hover:not(:disabled):not(
     [data-disabled]
   )[data-variant='primary'] {
-  @apply bg-primary-z1;
+  @apply bg-primary;
 }
 
 [data-style='rokkit']
@@ -231,14 +231,14 @@
   [data-button][data-style='ghost']:hover:not(:disabled):not(
     [data-disabled]
   )[data-variant='accent'] {
-  @apply bg-accent-z1;
+  @apply bg-accent-soft;
 }
 
 [data-style='rokkit']
   [data-button][data-style='ghost']:hover:not(:disabled):not(
     [data-disabled]
   )[data-variant='danger'] {
-  @apply bg-danger-z1;
+  @apply bg-danger-soft;
 }
 
 /* =============================================================================
@@ -255,7 +255,7 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-button]:focus-visible {
-  @apply ring-primary-z4 ring-2 outline-none;
+  @apply ring-primary ring-2 outline-none;
 }
 
 /* =============================================================================

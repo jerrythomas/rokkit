@@ -4,25 +4,25 @@
 
 [data-style='minimal'] [data-chart-axis-line],
 [data-style='minimal'] [data-chart-tick] line {
-  @apply stroke-surface-z3;
+  @apply stroke-paper-mute;
 }
 
 [data-style='minimal'] [data-chart-tick-label] {
-  @apply fill-surface-z5;
+  @apply fill-ink-soft;
 }
 
 [data-style='minimal'] [data-chart-grid-line] {
-  @apply stroke-surface-z3;
+  @apply stroke-paper-mute;
   stroke-opacity: 0.5;
   stroke-dasharray: 2 4;
 }
 
 [data-style='minimal'] [data-chart-legend-label] {
-  @apply fill-surface-z5;
+  @apply fill-ink-soft;
 }
 
 [data-style='minimal'] [data-chart-legend-item]:hover {
-  @apply text-surface-z8;
+  @apply text-ink-mute;
 }
 
 [data-style='minimal'] [data-plot-element='bar'][data-dimmed],
@@ -34,5 +34,5 @@
 }
 
 [data-style='minimal'] [data-facet-title] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }

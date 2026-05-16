@@ -7,25 +7,25 @@
 
 [data-style='zen-sumi'] [data-chart-axis-line],
 [data-style='zen-sumi'] [data-chart-tick] line {
-  @apply stroke-surface-z2;
+  @apply stroke-paper-mute;
 }
 
 [data-style='zen-sumi'] [data-chart-tick-label] {
-  @apply fill-surface-z5;
+  @apply fill-ink-soft;
 }
 
 [data-style='zen-sumi'] [data-chart-grid-line] {
-  @apply stroke-surface-z2;
+  @apply stroke-paper-mute;
   stroke-opacity: 0.4;
   stroke-dasharray: 2 4;
 }
 
 [data-style='zen-sumi'] [data-chart-legend-label] {
-  @apply fill-surface-z5;
+  @apply fill-ink-soft;
 }
 
 [data-style='zen-sumi'] [data-chart-legend-item]:hover {
-  @apply text-ink-z2;
+  @apply text-ink-mute;
 }
 
 [data-style='zen-sumi'] [data-plot-element='bar'][data-dimmed],
@@ -37,5 +37,5 @@
 }
 
 [data-style='zen-sumi'] [data-facet-title] {
-  @apply text-ink-z5;
+  @apply text-paper-edge;
 }

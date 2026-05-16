@@ -2,40 +2,40 @@
 
 /* Field root: text color, spacing, rounded */
 [data-style='rokkit'] [data-field-root] {
-  @apply text-surface-z9 gap-1 rounded-md transition-all;
+  @apply text-ink gap-1 rounded-md transition-all;
 }
 
 /* Disabled state */
 [data-style='rokkit'] [data-field-root][data-field-disabled] [data-input-root] {
-  @apply bg-surface-z3 text-surface-z6 cursor-not-allowed;
+  @apply bg-paper-mute text-ink-soft cursor-not-allowed;
 }
 
 /* Labels */
 [data-style='rokkit'] [data-field] > label {
-  @apply text-surface-z7;
+  @apply text-ink-mute;
 }
 
 [data-style='rokkit'] [data-form-root] label {
-  @apply text-surface-z7;
+  @apply text-ink-mute;
 }
 
 /* Info field value */
 [data-style='rokkit'] [data-field-info] {
-  @apply text-primary-z6 font-medium;
+  @apply text-primary font-medium;
 }
 
 /* Separator */
 [data-style='rokkit'] [data-form-separator] {
-  @apply border-surface-z2;
+  @apply border-paper-mute;
 }
 
 /* Input root: gradient border wrapper */
 [data-style='rokkit'] [data-input-root] {
-  @apply bg-surface-z4 flex items-center rounded-md p-px transition-all;
+  @apply bg-paper-edge flex items-center rounded-md p-px transition-all;
 }
 
 [data-style='rokkit'] [data-input-root]:focus-within {
-  @apply from-primary-z5 to-secondary-z5 border-transparent bg-gradient-to-r;
+  @apply from-primary to-secondary-z5 border-transparent bg-gradient-to-r;
 }
 
 /* Standard inputs inside wrapper */
@@ -43,19 +43,19 @@
   [data-input-root]
   input:not([type='checkbox'], [type='radio'], [type='color']),
 [data-style='rokkit'] [data-input-root] select {
-  @apply bg-surface-z2 text-surface-z8 rounded-md border-none px-3 focus:outline-none;
+  @apply bg-paper-mute text-ink-mute rounded-md border-none px-3 focus:outline-none;
   font-size: 0.875rem;
   height: 2.25rem;
 }
 
 [data-style='rokkit'] [data-input-root] textarea {
-  @apply bg-surface-z2 text-surface-z8 rounded-md border-none px-3 py-2 focus:outline-none;
+  @apply bg-paper-mute text-ink-mute rounded-md border-none px-3 py-2 focus:outline-none;
   font-size: 0.875rem;
 }
 
 /* Select inside input-root: remove trigger styles since input-root provides the border */
 [data-style='rokkit'] [data-input-root] [data-select-trigger] {
-  @apply bg-surface-z2 text-surface-z8 rounded-md border-none shadow-none ring-0 focus:outline-none;
+  @apply bg-paper-mute text-ink-mute rounded-md border-none shadow-none ring-0 focus:outline-none;
   background-image: none;
 }
 
@@ -66,7 +66,7 @@
 
 [data-style='rokkit'] [data-input-root] input::placeholder,
 [data-style='rokkit'] [data-input-root] textarea::placeholder {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 /* Checkbox field */
@@ -76,17 +76,17 @@
 
 /* Checkbox icon: theme-colored */
 [data-style='rokkit'] [data-checkbox-icon] {
-  @apply text-surface-z5 cursor-pointer rounded text-lg transition-colors;
+  @apply text-ink-soft cursor-pointer rounded text-lg transition-colors;
 }
 
 [data-style='rokkit'] [data-checkbox-icon]:focus-visible {
-  @apply outline-primary-z4 outline-2 outline-offset-2;
+  @apply outline-primary outline-2 outline-offset-2;
 }
 
 [data-style='rokkit']
   [data-checkbox-root][data-variant='custom']:has(input:checked)
   [data-checkbox-icon] {
-  @apply text-primary-z6;
+  @apply text-primary;
 }
 
 [data-style='rokkit'] [data-field] textarea {
@@ -99,13 +99,13 @@
 }
 
 [data-style='rokkit'] [data-field-type='color'] input[type='color'] {
-  @apply bg-surface-z2 flex min-h-11 flex-1 rounded-md focus:outline-none;
+  @apply bg-paper-mute flex min-h-11 flex-1 rounded-md focus:outline-none;
 }
 
 /* Description and message */
 [data-style='rokkit'] [data-description],
 [data-style='rokkit'] [data-message] {
-  @apply text-surface-z6;
+  @apply text-ink-soft;
 }
 
 [data-style='rokkit'] [data-message] {

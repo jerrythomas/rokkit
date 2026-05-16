@@ -3,38 +3,38 @@
 /* ── Number circles ── */
 
 [data-style='frosted'] [data-step-item][data-step-state='complete'] [data-step-number] {
-  @apply bg-primary-z5/80 border-primary-z4/60 text-on-primary bg-none backdrop-blur-sm;
+  @apply bg-primary/80 border-primary/60 text-on-primary bg-none backdrop-blur-sm;
 }
 
 [data-style='frosted'] [data-step-item][data-step-state='current'] [data-step-number] {
-  @apply bg-surface-z2/60 border-primary-z4/70 text-primary-z7 bg-none backdrop-blur-sm ring-3 ring-primary-z5/15;
+  @apply bg-paper-mute/60 border-primary/70 text-primary bg-none backdrop-blur-sm ring-3 ring-primary/15;
 }
 
 [data-style='frosted'] [data-step-item][data-step-state='upcoming'] [data-step-number] {
-  @apply bg-surface-z1/40 border-surface-z3/50 text-surface-z5 bg-none backdrop-blur-sm;
+  @apply bg-paper-soft/40 border-paper-mute/50 text-ink-soft bg-none backdrop-blur-sm;
 }
 
 /* ── Labels ── */
 
 [data-style='frosted'] [data-step-item][data-step-state='complete'] [data-step-label] {
-  @apply text-primary-z7 bg-none;
+  @apply text-primary bg-none;
 }
 
 [data-style='frosted'] [data-step-item][data-step-state='current'] [data-step-label] {
-  @apply text-surface-z9 font-semibold bg-none;
+  @apply text-ink font-semibold bg-none;
 }
 
 [data-style='frosted'] [data-step-item][data-step-state='upcoming'] [data-step-label] {
-  @apply text-surface-z5 bg-none;
+  @apply text-ink-soft bg-none;
 }
 
 /* ── Connector lines ── */
 
 [data-style='frosted'] [data-step-item][data-step-state='complete']::after {
-  @apply bg-primary-z4/70;
+  @apply bg-primary/70;
 }
 
 [data-style='frosted'] [data-step-item][data-step-state='current']::after,
 [data-style='frosted'] [data-step-item][data-step-state='upcoming']::after {
-  @apply bg-surface-z3/50;
+  @apply bg-paper-mute/50;
 }

@@ -4,7 +4,7 @@
 
 /* Field root: text color, spacing */
 [data-style='frosted'] [data-field-root] {
-  @apply text-surface-z9 gap-1 rounded-md transition-all;
+  @apply text-ink gap-1 rounded-md transition-all;
 }
 
 /* Disabled state */
@@ -14,28 +14,28 @@
 
 /* Labels */
 [data-style='frosted'] [data-field] > label {
-  @apply text-surface-z7;
+  @apply text-ink-mute;
 }
 
 [data-style='frosted'] [data-form-root] label {
-  @apply text-surface-z7;
+  @apply text-ink-mute;
 }
 
 /* Info field value */
 [data-style='frosted'] [data-field-info] {
-  @apply text-primary-z6 font-medium;
+  @apply text-primary font-medium;
 }
 
 /* Separator */
 [data-style='frosted'] [data-form-separator] {
-  @apply border-surface-z5/20;
+  @apply border-ink-soft/20;
 }
 
 /* Input root: frosted glass container — p-0.5 gives a small gap between border and content.
  * No backdrop-blur here: it creates a stacking context that traps select dropdowns.
  * The semi-transparent background + specular border provides the liquid glass look. */
 [data-style='frosted'] [data-input-root] {
-  @apply flex items-center rounded-md border p-0.5 transition-all bg-surface-z3/22;
+  @apply flex items-center rounded-md border p-0.5 transition-all bg-paper-mute/22;
   background-image: none;
   border-color: rgba(255, 255, 255, 0.2);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
@@ -46,7 +46,7 @@
 }
 
 [data-style='frosted'] [data-input-root]:focus-within {
-  @apply bg-surface-z3/28;
+  @apply bg-paper-mute/28;
   background-image: none;
   border-color: rgba(255, 255, 255, 0.35);
   box-shadow:
@@ -57,19 +57,19 @@
 /* Standard inputs inside wrapper */
 [data-style='frosted'] [data-input-root] input:not([type='checkbox'], [type='radio'], [type='color']),
 [data-style='frosted'] [data-input-root] select {
-  @apply text-surface-z8 rounded-md border-none bg-transparent px-3 focus:outline-none;
+  @apply text-ink-mute rounded-md border-none bg-transparent px-3 focus:outline-none;
   font-size: 0.875rem;
   height: 2.25rem;
 }
 
 [data-style='frosted'] [data-input-root] textarea {
-  @apply text-surface-z8 rounded-md border-none bg-transparent px-3 py-2 focus:outline-none;
+  @apply text-ink-mute rounded-md border-none bg-transparent px-3 py-2 focus:outline-none;
   font-size: 0.875rem;
 }
 
 /* Select inside input-root: suppress standalone glass select styles */
 [data-style='frosted'] [data-input-root] [data-select-trigger] {
-  @apply text-surface-z8 rounded-md border-none bg-transparent shadow-none ring-0 focus:outline-none;
+  @apply text-ink-mute rounded-md border-none bg-transparent shadow-none ring-0 focus:outline-none;
   background-image: none;
   backdrop-filter: none;
 }
@@ -82,7 +82,7 @@
 /* Placeholders */
 [data-style='frosted'] [data-input-root] input::placeholder,
 [data-style='frosted'] [data-input-root] textarea::placeholder {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 /* Checkbox field */
@@ -92,17 +92,17 @@
 
 /* Checkbox icon */
 [data-style='frosted'] [data-checkbox-icon] {
-  @apply text-surface-z5 cursor-pointer rounded text-lg transition-colors;
+  @apply text-ink-soft cursor-pointer rounded text-lg transition-colors;
 }
 
 [data-style='frosted'] [data-checkbox-icon]:focus-visible {
-  @apply outline-primary-z4 outline-2 outline-offset-2;
+  @apply outline-primary outline-2 outline-offset-2;
 }
 
 [data-style='frosted']
   [data-checkbox-root][data-variant='custom']:has(input:checked)
   [data-checkbox-icon] {
-  @apply text-primary-z6;
+  @apply text-primary;
 }
 
 [data-style='frosted'] [data-field] textarea {
@@ -121,7 +121,7 @@
 /* Description and message */
 [data-style='frosted'] [data-description],
 [data-style='frosted'] [data-message] {
-  @apply text-surface-z6;
+  @apply text-ink-soft;
 }
 
 [data-style='frosted'] [data-message] {
@@ -130,5 +130,5 @@
 
 /* Error state */
 [data-style='frosted'] [data-field-root][data-field-state='fail'] [data-input-root] {
-  @apply border-danger-z5/50;
+  @apply border-danger/50;
 }

@@ -10,7 +10,7 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-range-bar] {
-  @apply bg-surface-z2;
+  @apply bg-paper-mute;
 }
 
 [data-style='zen-sumi'] [data-range-selected] {
@@ -22,7 +22,7 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-range-thumb] {
-  @apply bg-surface-z0 border-primary border-2;
+  @apply bg-paper border-primary border-2;
 }
 
 [data-style='zen-sumi'] [data-range-thumb][data-sliding] {
@@ -38,15 +38,15 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-range-tick] {
-  @apply text-ink-z5;
+  @apply text-paper-edge;
 }
 
 [data-style='zen-sumi'] [data-tick-bar] {
-  @apply border-surface-z3;
+  @apply border-paper-mute;
 }
 
 [data-style='zen-sumi'] [data-tick-label] {
-  @apply text-ink-z5;
+  @apply text-paper-edge;
 }
 
 /* =============================================================================
@@ -54,9 +54,9 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-range][data-disabled] [data-range-thumb] {
-  @apply bg-surface-z2 border-surface-z3;
+  @apply bg-paper-mute border-paper-mute;
 }
 
 [data-style='zen-sumi'] [data-range][data-disabled] [data-range-selected] {
-  @apply bg-surface-z3;
+  @apply bg-paper-mute;
 }

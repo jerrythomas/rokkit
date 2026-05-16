@@ -13,7 +13,7 @@
 [data-style='frosted'] [data-button]:not([data-style])[data-variant='default'],
 [data-style='frosted'] [data-button][data-style='default']:not([data-variant]),
 [data-style='frosted'] [data-button]:not([data-style]):not([data-variant]) {
-  @apply text-surface-z9 border backdrop-blur-xl bg-surface-z4/28;
+  @apply text-ink border backdrop-blur-xl bg-paper-edge/28;
   border-color: rgba(255, 255, 255, 0.22);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.2),
@@ -22,7 +22,7 @@
 
 [data-style='frosted'] [data-button][data-style='default'][data-variant='primary'],
 [data-style='frosted'] [data-button]:not([data-style])[data-variant='primary'] {
-  @apply text-on-primary border backdrop-blur-xl bg-primary-z5/60;
+  @apply text-on-primary border backdrop-blur-xl bg-primary/60;
   border-color: rgba(255, 255, 255, 0.25);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.25),
@@ -40,7 +40,7 @@
 
 [data-style='frosted'] [data-button][data-style='default'][data-variant='accent'],
 [data-style='frosted'] [data-button]:not([data-style])[data-variant='accent'] {
-  @apply text-on-accent border backdrop-blur-xl bg-accent-z5/60;
+  @apply text-on-accent border backdrop-blur-xl bg-accent/60;
   border-color: rgba(255, 255, 255, 0.25);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.25),
@@ -49,7 +49,7 @@
 
 [data-style='frosted'] [data-button][data-style='default'][data-variant='danger'],
 [data-style='frosted'] [data-button]:not([data-style])[data-variant='danger'] {
-  @apply text-on-danger border backdrop-blur-xl bg-danger-z5/60;
+  @apply text-on-danger border backdrop-blur-xl bg-danger/60;
   border-color: rgba(255, 255, 255, 0.25);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.25),
@@ -62,13 +62,13 @@
 
 [data-style='frosted'] [data-button][data-style='outline'][data-variant='default'],
 [data-style='frosted'] [data-button][data-style='outline']:not([data-variant]) {
-  @apply text-surface-z8 border bg-transparent;
+  @apply text-ink-mute border bg-transparent;
   border-color: rgba(255, 255, 255, 0.28);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 [data-style='frosted'] [data-button][data-style='outline'][data-variant='primary'] {
-  @apply text-primary-z6 border bg-transparent;
+  @apply text-primary border bg-transparent;
   border-color: rgba(255, 255, 255, 0.28);
 }
 
@@ -78,12 +78,12 @@
 }
 
 [data-style='frosted'] [data-button][data-style='outline'][data-variant='accent'] {
-  @apply text-accent-z6 border bg-transparent;
+  @apply text-accent border bg-transparent;
   border-color: rgba(255, 255, 255, 0.28);
 }
 
 [data-style='frosted'] [data-button][data-style='outline'][data-variant='danger'] {
-  @apply text-danger-z4 border bg-transparent;
+  @apply text-danger border bg-transparent;
   border-color: rgba(255, 255, 255, 0.28);
 }
 
@@ -97,11 +97,11 @@
 
 [data-style='frosted'] [data-button][data-style='ghost'][data-variant='default'],
 [data-style='frosted'] [data-button][data-style='ghost']:not([data-variant]) {
-  @apply text-surface-z8;
+  @apply text-ink-mute;
 }
 
 [data-style='frosted'] [data-button][data-style='ghost'][data-variant='primary'] {
-  @apply text-primary-z6;
+  @apply text-primary;
 }
 
 [data-style='frosted'] [data-button][data-style='ghost'][data-variant='secondary'] {
@@ -109,11 +109,11 @@
 }
 
 [data-style='frosted'] [data-button][data-style='ghost'][data-variant='accent'] {
-  @apply text-accent-z6;
+  @apply text-accent;
 }
 
 [data-style='frosted'] [data-button][data-style='ghost'][data-variant='danger'] {
-  @apply text-danger-z4;
+  @apply text-danger;
 }
 
 /* =============================================================================
@@ -122,13 +122,13 @@
 
 [data-style='frosted'] [data-button][data-style='gradient'][data-variant='default'],
 [data-style='frosted'] [data-button][data-style='gradient']:not([data-variant]) {
-  @apply from-surface-z3/70 to-surface-z1/50 text-surface-z10 bg-gradient-to-br backdrop-blur-xl;
+  @apply from-paper-mute/70 to-paper-soft/50 text-ink bg-gradient-to-br backdrop-blur-xl;
   border-color: rgba(255, 255, 255, 0.2);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 [data-style='frosted'] [data-button][data-style='gradient'][data-variant='primary'] {
-  @apply from-primary-z5/80 to-primary-z3/60 text-on-primary bg-gradient-to-br backdrop-blur-xl;
+  @apply from-primary/80 to-primary/60 text-on-primary bg-gradient-to-br backdrop-blur-xl;
   border-color: rgba(255, 255, 255, 0.25);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
@@ -140,13 +140,13 @@
 }
 
 [data-style='frosted'] [data-button][data-style='gradient'][data-variant='accent'] {
-  @apply from-accent-z5/80 to-accent-z3/60 text-on-accent bg-gradient-to-br backdrop-blur-xl;
+  @apply from-accent/80 to-accent/60 text-on-accent bg-gradient-to-br backdrop-blur-xl;
   border-color: rgba(255, 255, 255, 0.25);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
 [data-style='frosted'] [data-button][data-style='gradient'][data-variant='danger'] {
-  @apply from-danger-z5/80 to-danger-z3/60 text-on-danger bg-gradient-to-br backdrop-blur-xl;
+  @apply from-danger/80 to-danger/60 text-on-danger bg-gradient-to-br backdrop-blur-xl;
   border-color: rgba(255, 255, 255, 0.25);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
@@ -162,11 +162,11 @@
 
 [data-style='frosted'] [data-button][data-style='link'][data-variant='default'],
 [data-style='frosted'] [data-button][data-style='link']:not([data-variant]) {
-  @apply text-surface-z8;
+  @apply text-ink-mute;
 }
 
 [data-style='frosted'] [data-button][data-style='link'][data-variant='primary'] {
-  @apply text-primary-z6;
+  @apply text-primary;
 }
 
 [data-style='frosted'] [data-button][data-style='link'][data-variant='secondary'] {
@@ -174,15 +174,15 @@
 }
 
 [data-style='frosted'] [data-button][data-style='link'][data-variant='accent'] {
-  @apply text-accent-z6;
+  @apply text-accent;
 }
 
 [data-style='frosted'] [data-button][data-style='link'][data-variant='danger'] {
-  @apply text-danger-z4;
+  @apply text-danger;
 }
 
 [data-style='frosted'] [data-button][data-style='link']:hover:not(:disabled):not([data-disabled]) {
-  @apply text-primary-z7;
+  @apply text-primary;
 }
 
 /* =============================================================================
@@ -191,7 +191,7 @@
 
 [data-style='frosted'] [data-button][data-style='default']:hover:not(:disabled):not([data-disabled]),
 [data-style='frosted'] [data-button]:not([data-style]):hover:not(:disabled):not([data-disabled]) {
-  @apply bg-surface-z4/38;
+  @apply bg-paper-edge/38;
   border-color: rgba(255, 255, 255, 0.3);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.28),

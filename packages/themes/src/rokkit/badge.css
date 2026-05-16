@@ -5,25 +5,25 @@
 /* Default variant */
 [data-style='rokkit'] [data-badge][data-variant='default'],
 [data-style='rokkit'] [data-badge]:not([data-variant]) {
-  @apply bg-surface-z5 text-surface-z1;
+  @apply bg-ink-soft text-paper-soft;
 }
 
 /* Primary */
 [data-style='rokkit'] [data-badge][data-variant='primary'] {
-  @apply bg-primary-z5 text-on-primary;
+  @apply bg-primary text-on-primary;
 }
 
 /* Success */
 [data-style='rokkit'] [data-badge][data-variant='success'] {
-  @apply bg-success-z5 text-on-success;
+  @apply bg-success text-on-success;
 }
 
 /* Warning */
 [data-style='rokkit'] [data-badge][data-variant='warning'] {
-  @apply bg-warning-z5 text-on-warning;
+  @apply bg-warning text-on-warning;
 }
 
 /* Error */
 [data-style='rokkit'] [data-badge][data-variant='error'] {
-  @apply bg-error-z5 text-on-error;
+  @apply bg-error text-on-error;
 }

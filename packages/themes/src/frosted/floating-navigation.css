@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-floating-nav] {
-  @apply bg-surface-z1/70 border-surface-z5/20 border shadow-xl backdrop-blur-xl;
+  @apply bg-paper-soft/70 border-ink-soft/20 border shadow-xl backdrop-blur-xl;
 }
 
 /* =============================================================================
@@ -17,19 +17,19 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-floating-nav-title] {
-  @apply text-surface-z6;
+  @apply text-ink-soft;
 }
 
 [data-style='frosted'] [data-floating-nav-pin] {
-  @apply text-surface-z6;
+  @apply text-ink-soft;
 }
 
 [data-style='frosted'] [data-floating-nav-pin]:hover {
-  @apply text-primary-z6;
+  @apply text-primary;
 }
 
 [data-style='frosted'] [data-floating-nav-pin][aria-pressed='true'] {
-  @apply text-primary-z7;
+  @apply text-primary;
 }
 
 /* =============================================================================
@@ -37,32 +37,32 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-floating-nav-item] {
-  @apply text-surface-z8;
+  @apply text-ink-mute;
 }
 
 [data-style='frosted'] [data-floating-nav-item]:hover {
-  @apply text-surface-z10 bg-surface-z2/50;
+  @apply text-ink bg-paper-mute/50;
 }
 
 [data-style='frosted'] [data-floating-nav-item][data-active] {
-  @apply text-primary-z7 bg-primary-z5/10;
+  @apply text-primary bg-primary/10;
 }
 
 [data-style='frosted'] [data-floating-nav-item]:focus-visible {
-  @apply ring-surface-z5/40 ring-2 outline-none;
+  @apply ring-ink-soft/40 ring-2 outline-none;
 }
 
 /* Icon */
 [data-style='frosted'] [data-floating-nav-icon] {
-  @apply text-surface-z6;
+  @apply text-ink-soft;
 }
 
 [data-style='frosted'] [data-floating-nav-item]:hover [data-floating-nav-icon] {
-  @apply text-primary-z6;
+  @apply text-primary;
 }
 
 [data-style='frosted'] [data-floating-nav-item][data-active] [data-floating-nav-icon] {
-  @apply text-primary-z7;
+  @apply text-primary;
 }
 
 /* =============================================================================
@@ -70,5 +70,5 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-floating-nav-indicator] {
-  @apply bg-primary-z5/80;
+  @apply bg-primary/80;
 }

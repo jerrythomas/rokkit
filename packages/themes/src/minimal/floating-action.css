@@ -9,19 +9,19 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-fab-trigger] {
-  @apply bg-surface-z1 text-surface-z8 border-surface-z4 border bg-none;
+  @apply bg-paper-soft text-ink-mute border-paper-edge border bg-none;
 }
 
 [data-style='minimal'] [data-fab-trigger]:hover:not(:disabled) {
-  @apply bg-surface-z2 text-surface-z10 border-surface-z5 bg-none;
+  @apply bg-paper-mute text-ink border-ink-soft bg-none;
 }
 
 [data-style='minimal'] [data-fab-trigger]:focus-visible {
-  @apply ring-surface-z5 ring-1 outline-none;
+  @apply ring-ink-soft ring-1 outline-none;
 }
 
 [data-style='minimal'] [data-fab][data-open='true'] [data-fab-trigger] {
-  @apply bg-surface-z3 border-surface-z5 bg-none;
+  @apply bg-paper-mute border-ink-soft bg-none;
   transform: rotate(45deg);
 }
 
@@ -34,24 +34,24 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-fab-item] {
-  @apply bg-surface-z1 text-surface-z7 border-surface-z4 border bg-none;
+  @apply bg-paper-soft text-ink-mute border-paper-edge border bg-none;
 }
 
 [data-style='minimal'] [data-fab-item]:hover:not(:disabled) {
-  @apply bg-surface-z2 text-surface-z9 border-surface-z5 bg-none;
+  @apply bg-paper-mute text-ink border-ink-soft bg-none;
 }
 
 [data-style='minimal'] [data-fab-item]:focus-visible {
-  @apply ring-surface-z5 ring-1 outline-none;
+  @apply ring-ink-soft ring-1 outline-none;
 }
 
 /* Item icon */
 [data-style='minimal'] [data-fab-item] [data-fab-item-icon] {
-  @apply text-surface-z6;
+  @apply text-ink-soft;
 }
 
 [data-style='minimal'] [data-fab-item]:hover:not(:disabled) [data-fab-item-icon] {
-  @apply text-surface-z8;
+  @apply text-ink-mute;
 }
 
 /* =============================================================================
@@ -59,5 +59,5 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-fab-backdrop] {
-  @apply bg-surface-z10/20;
+  @apply bg-ink/20;
 }

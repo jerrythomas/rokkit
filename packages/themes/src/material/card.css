@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-card] {
-  @apply bg-surface-z1 border-surface-z4 text-surface-z9 border bg-none shadow-sm;
+  @apply bg-paper-soft border-paper-edge text-ink border bg-none shadow-sm;
 }
 
 /* Interactive cards (buttons) */
@@ -33,15 +33,15 @@
    ============================================================================= */
 
 [data-style='material'] [data-card-header] {
-  @apply border-surface-z3 border-b;
+  @apply border-paper-mute border-b;
 }
 
 [data-style='material'] [data-card-body] {
-  @apply text-surface-z8;
+  @apply text-ink-mute;
 }
 
 [data-style='material'] [data-card-footer] {
-  @apply border-surface-z3 text-surface-z7 border-t;
+  @apply border-paper-mute text-ink-mute border-t;
 }
 
 /* =============================================================================
@@ -49,7 +49,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-card][data-card-interactive]:focus-visible {
-  @apply ring-primary-z4 ring-2 ring-offset-2 outline-none;
+  @apply ring-primary ring-2 ring-offset-2 outline-none;
 }
 
 /* =============================================================================
@@ -67,16 +67,16 @@
 
 /* Primary — tonal primary container (Material You style) */
 [data-style='material'] [data-card][data-variant='primary'] {
-  @apply bg-primary-z1 border-primary-z3 text-primary-z9 border bg-none shadow-sm;
+  @apply bg-primary border-primary text-primary border bg-none shadow-sm;
 }
 
 [data-style='material'] [data-card][data-variant='primary'] [data-card-header],
 [data-style='material'] [data-card][data-variant='primary'] [data-card-footer] {
-  @apply border-primary-z2;
+  @apply border-primary;
 }
 
 [data-style='material'] [data-card][data-variant='primary'] [data-card-body] {
-  @apply text-primary-z8;
+  @apply text-primary;
 }
 
 /* Secondary — tonal secondary container */
@@ -95,5 +95,5 @@
 
 /* Tertiary — elevated surface with no color accent */
 [data-style='material'] [data-card][data-variant='tertiary'] {
-  @apply bg-surface-z2 border-surface-z3 text-surface-z7 border bg-none shadow-none;
+  @apply bg-paper-mute border-paper-mute text-ink-mute border bg-none shadow-none;
 }

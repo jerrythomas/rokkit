@@ -11,7 +11,7 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-card] {
-  @apply bg-surface-z1 border-surface-z2 text-ink-z1 border bg-none;
+  @apply bg-paper-soft border-paper-mute text-ink-mute border bg-none;
   box-shadow: none;
 }
 
@@ -22,11 +22,11 @@
 }
 
 [data-style='zen-sumi'] [data-card][data-card-interactive]:hover {
-  @apply border-surface-z4 bg-surface-z2 bg-none;
+  @apply border-paper-edge bg-paper-mute bg-none;
 }
 
 [data-style='zen-sumi'] [data-card][data-card-interactive]:active {
-  @apply bg-surface-z3 bg-none;
+  @apply bg-paper-mute bg-none;
 }
 
 /* =============================================================================
@@ -34,15 +34,15 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-card-header] {
-  @apply border-surface-z2 border-b;
+  @apply border-paper-mute border-b;
 }
 
 [data-style='zen-sumi'] [data-card-body] {
-  @apply text-ink-z2;
+  @apply text-ink-mute;
 }
 
 [data-style='zen-sumi'] [data-card-footer] {
-  @apply border-surface-z2 text-ink-z4 border-t;
+  @apply border-paper-mute text-ink-soft border-t;
 }
 
 /* =============================================================================
@@ -69,13 +69,13 @@
 
 /* Primary — shu vermillion fill */
 [data-style='zen-sumi'] [data-card][data-variant='primary'] {
-  @apply bg-primary-z5 border-primary-z6 text-on-primary border bg-none;
+  @apply bg-primary border-primary text-on-primary border bg-none;
   box-shadow: none;
 }
 
 [data-style='zen-sumi'] [data-card][data-variant='primary'] [data-card-header],
 [data-style='zen-sumi'] [data-card][data-variant='primary'] [data-card-footer] {
-  @apply border-primary-z4/40;
+  @apply border-primary/40;
 }
 
 [data-style='zen-sumi'] [data-card][data-variant='primary'] [data-card-body] {
@@ -99,6 +99,6 @@
 
 /* Tertiary — recessed surface, lighter border */
 [data-style='zen-sumi'] [data-card][data-variant='tertiary'] {
-  @apply bg-surface-z0 border-surface-z2 text-ink-z3 border bg-none;
+  @apply bg-paper border-paper-mute text-ink-soft border bg-none;
   box-shadow: none;
 }

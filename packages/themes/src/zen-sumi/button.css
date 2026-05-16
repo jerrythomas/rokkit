@@ -15,12 +15,12 @@
 [data-style='zen-sumi'] [data-button]:not([data-style])[data-variant='default'],
 [data-style='zen-sumi'] [data-button][data-style='default']:not([data-variant]),
 [data-style='zen-sumi'] [data-button]:not([data-style]):not([data-variant]) {
-  @apply bg-surface-z9 text-surface-z0 border-transparent bg-none;
+  @apply bg-ink text-paper border-transparent bg-none;
 }
 
 [data-style='zen-sumi'] [data-button][data-style='default'][data-variant='primary'],
 [data-style='zen-sumi'] [data-button]:not([data-style])[data-variant='primary'] {
-  @apply bg-primary-z5 text-on-primary border-transparent bg-none;
+  @apply bg-primary text-on-primary border-transparent bg-none;
 }
 
 [data-style='zen-sumi'] [data-button][data-style='default'][data-variant='secondary'],
@@ -30,12 +30,12 @@
 
 [data-style='zen-sumi'] [data-button][data-style='default'][data-variant='accent'],
 [data-style='zen-sumi'] [data-button]:not([data-style])[data-variant='accent'] {
-  @apply bg-accent-z5 text-on-accent border-transparent bg-none;
+  @apply bg-accent text-on-accent border-transparent bg-none;
 }
 
 [data-style='zen-sumi'] [data-button][data-style='default'][data-variant='danger'],
 [data-style='zen-sumi'] [data-button]:not([data-style])[data-variant='danger'] {
-  @apply bg-danger-z5 text-on-danger border-transparent bg-none;
+  @apply bg-danger text-on-danger border-transparent bg-none;
 }
 
 /* =============================================================================
@@ -44,11 +44,11 @@
 
 [data-style='zen-sumi'] [data-button][data-style='outline'][data-variant='default'],
 [data-style='zen-sumi'] [data-button][data-style='outline']:not([data-variant]) {
-  @apply border-surface-z3 text-ink-z2 border bg-transparent;
+  @apply border-paper-mute text-ink-mute border bg-transparent;
 }
 
 [data-style='zen-sumi'] [data-button][data-style='outline'][data-variant='primary'] {
-  @apply border-primary-z4 text-primary-z6 border bg-transparent;
+  @apply border-primary text-primary border bg-transparent;
 }
 
 [data-style='zen-sumi'] [data-button][data-style='outline'][data-variant='secondary'] {
@@ -56,11 +56,11 @@
 }
 
 [data-style='zen-sumi'] [data-button][data-style='outline'][data-variant='accent'] {
-  @apply border-accent-z4 text-accent-z6 border bg-transparent;
+  @apply border-accent text-accent border bg-transparent;
 }
 
 [data-style='zen-sumi'] [data-button][data-style='outline'][data-variant='danger'] {
-  @apply border-danger-z4 text-danger-z5 border bg-transparent;
+  @apply border-danger text-danger border bg-transparent;
 }
 
 /* =============================================================================
@@ -73,11 +73,11 @@
 
 [data-style='zen-sumi'] [data-button][data-style='ghost'][data-variant='default'],
 [data-style='zen-sumi'] [data-button][data-style='ghost']:not([data-variant]) {
-  @apply text-ink-z3;
+  @apply text-ink-soft;
 }
 
 [data-style='zen-sumi'] [data-button][data-style='ghost'][data-variant='primary'] {
-  @apply text-primary-z6;
+  @apply text-primary;
 }
 
 [data-style='zen-sumi'] [data-button][data-style='ghost'][data-variant='secondary'] {
@@ -85,11 +85,11 @@
 }
 
 [data-style='zen-sumi'] [data-button][data-style='ghost'][data-variant='accent'] {
-  @apply text-accent-z6;
+  @apply text-accent;
 }
 
 [data-style='zen-sumi'] [data-button][data-style='ghost'][data-variant='danger'] {
-  @apply text-danger-z5;
+  @apply text-danger;
 }
 
 /* =============================================================================
@@ -99,11 +99,11 @@
 
 [data-style='zen-sumi'] [data-button][data-style='gradient'][data-variant='default'],
 [data-style='zen-sumi'] [data-button][data-style='gradient']:not([data-variant]) {
-  @apply bg-surface-z2 text-ink-z1 bg-none;
+  @apply bg-paper-mute text-ink-mute bg-none;
 }
 
 [data-style='zen-sumi'] [data-button][data-style='gradient'][data-variant='primary'] {
-  @apply bg-primary-z5 text-on-primary bg-none;
+  @apply bg-primary text-on-primary bg-none;
 }
 
 [data-style='zen-sumi'] [data-button][data-style='gradient'][data-variant='secondary'] {
@@ -111,11 +111,11 @@
 }
 
 [data-style='zen-sumi'] [data-button][data-style='gradient'][data-variant='accent'] {
-  @apply bg-accent-z5 text-on-accent bg-none;
+  @apply bg-accent text-on-accent bg-none;
 }
 
 [data-style='zen-sumi'] [data-button][data-style='gradient'][data-variant='danger'] {
-  @apply bg-danger-z5 text-on-danger bg-none;
+  @apply bg-danger text-on-danger bg-none;
 }
 
 /* =============================================================================
@@ -124,11 +124,11 @@
 
 [data-style='zen-sumi'] [data-button][data-style='link'][data-variant='default'],
 [data-style='zen-sumi'] [data-button][data-style='link']:not([data-variant]) {
-  @apply text-ink-z3;
+  @apply text-ink-soft;
 }
 
 [data-style='zen-sumi'] [data-button][data-style='link'][data-variant='primary'] {
-  @apply text-primary-z5;
+  @apply text-primary;
 }
 
 [data-style='zen-sumi'] [data-button][data-style='link'][data-variant='secondary'] {
@@ -136,15 +136,15 @@
 }
 
 [data-style='zen-sumi'] [data-button][data-style='link'][data-variant='accent'] {
-  @apply text-accent-z5;
+  @apply text-accent;
 }
 
 [data-style='zen-sumi'] [data-button][data-style='link'][data-variant='danger'] {
-  @apply text-danger-z5;
+  @apply text-danger;
 }
 
 [data-style='zen-sumi'] [data-button][data-style='link']:hover:not(:disabled):not([data-disabled]) {
-  @apply text-ink-z1;
+  @apply text-ink-mute;
 }
 
 /* =============================================================================
@@ -154,16 +154,16 @@
 [data-style='zen-sumi']
   [data-button][data-style='default']:hover:not(:disabled):not([data-disabled]),
 [data-style='zen-sumi'] [data-button]:not([data-style]):hover:not(:disabled):not([data-disabled]) {
-  @apply bg-surface-z10 bg-none;
+  @apply bg-ink bg-none;
 }
 
 [data-style='zen-sumi']
   [data-button][data-style='outline']:hover:not(:disabled):not([data-disabled]) {
-  @apply bg-surface-z1 border-surface-z5 bg-none;
+  @apply bg-paper-soft border-ink-soft bg-none;
 }
 
 [data-style='zen-sumi'] [data-button][data-style='ghost']:hover:not(:disabled):not([data-disabled]) {
-  @apply bg-surface-z2;
+  @apply bg-paper-mute;
 }
 
 /* =============================================================================

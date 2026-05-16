@@ -9,15 +9,15 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-upload-header] {
-  @apply text-surface-z7;
+  @apply text-ink-mute;
 }
 
 [data-style='rokkit'] [data-upload-clear] {
-  @apply border-surface-z4 text-surface-z6;
+  @apply border-paper-edge text-ink-soft;
 }
 
 [data-style='rokkit'] [data-upload-clear]:hover {
-  @apply bg-surface-z3 text-surface-z9;
+  @apply bg-paper-mute text-ink;
 }
 
 /* =============================================================================
@@ -25,11 +25,11 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-upload-file-status] {
-  @apply text-surface-z7;
+  @apply text-ink-mute;
 }
 
 [data-style='rokkit'] [data-upload-file-status]:hover {
-  @apply bg-surface-z2;
+  @apply bg-paper-mute;
 }
 
 /* =============================================================================
@@ -37,11 +37,11 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-upload-file-icon] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 [data-style='rokkit'] [data-upload-file-size] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 /* =============================================================================
@@ -49,11 +49,11 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-upload-bar] {
-  @apply bg-surface-z3;
+  @apply bg-paper-mute;
 }
 
 [data-style='rokkit'] [data-upload-fill] {
-  @apply from-primary-z5 to-secondary-z5 bg-gradient-to-r;
+  @apply from-primary to-secondary-z5 bg-gradient-to-r;
 }
 
 /* =============================================================================
@@ -61,28 +61,28 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-upload-file-status][data-status='uploading'] [data-upload-status] {
-  @apply text-primary-z6;
+  @apply text-primary;
 }
 
 [data-style='rokkit'] [data-upload-file-status][data-status='done'] [data-upload-status] {
-  @apply text-success-z5;
+  @apply text-success;
 }
 
 [data-style='rokkit'] [data-upload-file-status][data-status='error'] [data-upload-status] {
-  @apply text-danger-z5;
+  @apply text-danger;
 }
 
 [data-style='rokkit'] [data-upload-file-status][data-status='pending'] [data-upload-status] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 /* Status-based file icon tinting */
 [data-style='rokkit'] [data-upload-file-status][data-status='done'] [data-upload-file-icon] {
-  @apply text-success-z5;
+  @apply text-success;
 }
 
 [data-style='rokkit'] [data-upload-file-status][data-status='error'] [data-upload-file-icon] {
-  @apply text-danger-z5;
+  @apply text-danger;
 }
 
 /* =============================================================================
@@ -90,13 +90,13 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-upload-actions] button {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 [data-style='rokkit'] [data-upload-actions] button:hover {
-  @apply bg-surface-z3 text-surface-z9;
+  @apply bg-paper-mute text-ink;
 }
 
 [data-style='rokkit'] [data-upload-file-status][data-status='error'] [data-upload-retry]:hover {
-  @apply text-primary-z7;
+  @apply text-primary;
 }

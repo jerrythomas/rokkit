@@ -9,15 +9,15 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-search-input] {
-  @apply text-surface-z8 border-surface-z4 border bg-transparent;
+  @apply text-ink-mute border-paper-edge border bg-transparent;
 }
 
 [data-style='rokkit'] [data-search-input]:focus {
-  @apply border-primary-z5 ring-primary-z4 ring-1;
+  @apply border-primary ring-primary ring-1;
 }
 
 [data-style='rokkit'] [data-search-input]::placeholder {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 /* =============================================================================
@@ -25,11 +25,11 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-search-clear] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 [data-style='rokkit'] [data-search-clear]:hover {
-  @apply text-surface-z8;
+  @apply text-ink-mute;
 }
 
 /* =============================================================================
@@ -37,13 +37,13 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-search-tag] {
-  @apply text-surface-z7 from-surface-z3 to-surface-z2 border-surface-z4 border bg-gradient-to-b;
+  @apply text-ink-mute from-paper-mute to-paper-mute border-paper-edge border bg-gradient-to-b;
 }
 
 [data-style='rokkit'] [data-search-tag-remove] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 [data-style='rokkit'] [data-search-tag-remove]:hover {
-  @apply text-surface-z9;
+  @apply text-ink;
 }

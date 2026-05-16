@@ -10,12 +10,12 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-fab-trigger] {
-  @apply bg-surface-z1 text-ink-z2 border-surface-z2 border bg-none;
+  @apply bg-paper-soft text-ink-mute border-paper-mute border bg-none;
   box-shadow: none;
 }
 
 [data-style='zen-sumi'] [data-fab-trigger]:hover:not(:disabled) {
-  @apply bg-surface-z2 text-ink-z1 border-surface-z4 bg-none;
+  @apply bg-paper-mute text-ink-mute border-paper-edge bg-none;
 }
 
 [data-style='zen-sumi'] [data-fab-trigger]:focus-visible {
@@ -24,7 +24,7 @@
 }
 
 [data-style='zen-sumi'] [data-fab][data-open='true'] [data-fab-trigger] {
-  @apply bg-surface-z2 border-surface-z4 bg-none;
+  @apply bg-paper-mute border-paper-edge bg-none;
   transform: rotate(45deg);
 }
 
@@ -37,12 +37,12 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-fab-item] {
-  @apply bg-surface-z1 text-ink-z3 border-surface-z2 border bg-none;
+  @apply bg-paper-soft text-ink-soft border-paper-mute border bg-none;
   box-shadow: none;
 }
 
 [data-style='zen-sumi'] [data-fab-item]:hover:not(:disabled) {
-  @apply bg-surface-z2 text-ink-z1 border-surface-z4 bg-none;
+  @apply bg-paper-mute text-ink-mute border-paper-edge bg-none;
 }
 
 [data-style='zen-sumi'] [data-fab-item]:focus-visible {
@@ -52,11 +52,11 @@
 
 /* Item icon */
 [data-style='zen-sumi'] [data-fab-item] [data-fab-item-icon] {
-  @apply text-ink-z5;
+  @apply text-paper-edge;
 }
 
 [data-style='zen-sumi'] [data-fab-item]:hover:not(:disabled) [data-fab-item-icon] {
-  @apply text-ink-z3;
+  @apply text-ink-soft;
 }
 
 /* =============================================================================

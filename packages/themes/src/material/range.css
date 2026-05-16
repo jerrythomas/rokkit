@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-range-bar] {
-  @apply bg-surface-z3;
+  @apply bg-paper-mute;
 }
 
 [data-style='material'] [data-range-selected] {
@@ -26,11 +26,11 @@
 
 [data-style='material'] [data-range-thumb][data-sliding] {
   @apply shadow-lg;
-  @apply ring-4 ring-primary-z5/25;
+  @apply ring-4 ring-primary/25;
 }
 
 [data-style='material'] [data-range-thumb]:focus-visible {
-  @apply ring-4 ring-primary-z5/25;
+  @apply ring-4 ring-primary/25;
 }
 
 /* =============================================================================
@@ -38,15 +38,15 @@
    ============================================================================= */
 
 [data-style='material'] [data-range-tick] {
-  @apply text-surface-z6;
+  @apply text-ink-soft;
 }
 
 [data-style='material'] [data-tick-bar] {
-  @apply border-surface-z5;
+  @apply border-ink-soft;
 }
 
 [data-style='material'] [data-tick-label] {
-  @apply text-surface-z6;
+  @apply text-ink-soft;
 }
 
 /* =============================================================================
@@ -54,9 +54,9 @@
    ============================================================================= */
 
 [data-style='material'] [data-range][data-disabled] [data-range-thumb] {
-  @apply bg-surface-z4 border-surface-z4 shadow-none;
+  @apply bg-paper-edge border-paper-edge shadow-none;
 }
 
 [data-style='material'] [data-range][data-disabled] [data-range-selected] {
-  @apply bg-surface-z4;
+  @apply bg-paper-edge;
 }

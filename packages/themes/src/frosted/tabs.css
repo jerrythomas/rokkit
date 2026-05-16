@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-tabs-list] {
-  @apply bg-surface-z1/70 border-surface-z5/20 rounded-t-lg border-0 border-b px-0 backdrop-blur-md;
+  @apply bg-paper-soft/70 border-ink-soft/20 rounded-t-lg border-0 border-b px-0 backdrop-blur-md;
 }
 
 [data-style='frosted'] [data-tabs][data-position='after'] [data-tabs-list] {
@@ -21,16 +21,16 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-tabs-trigger] {
-  @apply text-surface-z6 bg-transparent;
+  @apply text-ink-soft bg-transparent;
 }
 
 [data-style='frosted'] [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {
-  @apply text-surface-z8 bg-surface-z2/15;
+  @apply text-ink-mute bg-paper-mute/15;
 }
 
 /* Selected state */
 [data-style='frosted'] [data-tabs-trigger][data-selected] {
-  @apply bg-primary-z5/40 text-primary-z9 border-primary-z5/50 border backdrop-blur-sm;
+  @apply bg-primary/40 text-primary border-primary/50 border backdrop-blur-sm;
 }
 
 /* =============================================================================
@@ -38,15 +38,15 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-tabs-trigger] [data-tabs-icon] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 [data-style='frosted'] [data-tabs-trigger]:hover:not(:disabled) [data-tabs-icon] {
-  @apply text-surface-z7;
+  @apply text-ink-mute;
 }
 
 [data-style='frosted'] [data-tabs-trigger][data-selected] [data-tabs-icon] {
-  @apply text-primary-z7;
+  @apply text-primary;
 }
 
 /* =============================================================================
@@ -54,5 +54,5 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-tabs-content] {
-  @apply text-surface-z8;
+  @apply text-ink-mute;
 }

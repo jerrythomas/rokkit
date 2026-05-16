@@ -3,38 +3,38 @@
 /* ── Number circles ── */
 
 [data-style='material'] [data-step-item][data-step-state='complete'] [data-step-number] {
-  @apply bg-primary-z5 border-primary-z5 text-on-primary bg-none;
+  @apply bg-primary border-primary text-on-primary bg-none;
 }
 
 [data-style='material'] [data-step-item][data-step-state='current'] [data-step-number] {
-  @apply bg-surface-z2 border-primary-z5 text-primary-z7 bg-none ring-3 ring-primary-z5/15;
+  @apply bg-paper-mute border-primary text-primary bg-none ring-3 ring-primary/15;
 }
 
 [data-style='material'] [data-step-item][data-step-state='upcoming'] [data-step-number] {
-  @apply bg-surface-z2 border-surface-z3 text-surface-z5 bg-none;
+  @apply bg-paper-mute border-paper-mute text-ink-soft bg-none;
 }
 
 /* ── Labels ── */
 
 [data-style='material'] [data-step-item][data-step-state='complete'] [data-step-label] {
-  @apply text-primary-z7 bg-none;
+  @apply text-primary bg-none;
 }
 
 [data-style='material'] [data-step-item][data-step-state='current'] [data-step-label] {
-  @apply text-surface-z9 font-semibold bg-none;
+  @apply text-ink font-semibold bg-none;
 }
 
 [data-style='material'] [data-step-item][data-step-state='upcoming'] [data-step-label] {
-  @apply text-surface-z5 bg-none;
+  @apply text-ink-soft bg-none;
 }
 
 /* ── Connector lines ── */
 
 [data-style='material'] [data-step-item][data-step-state='complete']::after {
-  @apply bg-primary-z5;
+  @apply bg-primary;
 }
 
 [data-style='material'] [data-step-item][data-step-state='current']::after,
 [data-style='material'] [data-step-item][data-step-state='upcoming']::after {
-  @apply bg-surface-z3;
+  @apply bg-paper-mute;
 }

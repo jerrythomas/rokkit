@@ -3,38 +3,38 @@
 /* ── Number circles ── */
 
 [data-style='rokkit'] [data-step-item][data-step-state='complete'] [data-step-number] {
-  @apply bg-gradient-to-r from-primary-z5 to-secondary-z5 border-primary-z5 text-on-primary;
+  @apply bg-gradient-to-r from-primary to-secondary-z5 border-primary text-on-primary;
 }
 
 [data-style='rokkit'] [data-step-item][data-step-state='current'] [data-step-number] {
-  @apply bg-surface-z2 border-primary-z5 text-primary-z7 ring-3 ring-primary-z5/20;
+  @apply bg-paper-mute border-primary text-primary ring-3 ring-primary/20;
 }
 
 [data-style='rokkit'] [data-step-item][data-step-state='upcoming'] [data-step-number] {
-  @apply bg-surface-z1 border-surface-z3 text-surface-z5;
+  @apply bg-paper-soft border-paper-mute text-ink-soft;
 }
 
 /* ── Labels ── */
 
 [data-style='rokkit'] [data-step-item][data-step-state='complete'] [data-step-label] {
-  @apply text-primary-z7;
+  @apply text-primary;
 }
 
 [data-style='rokkit'] [data-step-item][data-step-state='current'] [data-step-label] {
-  @apply text-surface-z9 font-semibold;
+  @apply text-ink font-semibold;
 }
 
 [data-style='rokkit'] [data-step-item][data-step-state='upcoming'] [data-step-label] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 /* ── Connector lines ── */
 
 [data-style='rokkit'] [data-step-item][data-step-state='complete']::after {
-  @apply bg-primary-z5;
+  @apply bg-primary;
 }
 
 [data-style='rokkit'] [data-step-item][data-step-state='current']::after,
 [data-style='rokkit'] [data-step-item][data-step-state='upcoming']::after {
-  @apply bg-surface-z3;
+  @apply bg-paper-mute;
 }

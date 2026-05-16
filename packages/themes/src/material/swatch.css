@@ -12,7 +12,7 @@
   [data-swatch-item]:hover:not(:disabled):not([data-disabled]):not([data-selected]),
 [data-style='material']
   [data-swatch-item]:focus-visible:not(:disabled):not([data-disabled]):not([data-selected]) {
-  @apply outline-primary-z4;
+  @apply outline-primary;
 }
 
 [data-style='material'] [data-swatch-item][data-selected]:focus-visible {

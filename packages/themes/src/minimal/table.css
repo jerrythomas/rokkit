@@ -9,27 +9,27 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-table-header] th {
-  @apply text-surface-z6 border-surface-z4 border-b bg-surface-z2;
+  @apply text-ink-soft border-paper-edge border-b bg-paper-mute;
 }
 
 [data-style='minimal'] [data-table-header-cell][data-sortable='true']:hover {
-  @apply text-surface-z8;
+  @apply text-ink-mute;
 }
 
 [data-style='minimal'] [data-table-header-cell][data-sort-order='ascending'],
 [data-style='minimal'] [data-table-header-cell][data-sort-order='descending'] {
-  @apply text-primary-z7;
+  @apply text-primary;
 }
 
 [data-style='minimal'] [data-table-sort-icon] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 [data-style='minimal'] [data-table-header-cell][data-sort-order='ascending'] [data-table-sort-icon],
 [data-style='minimal']
   [data-table-header-cell][data-sort-order='descending']
   [data-table-sort-icon] {
-  @apply text-primary-z6;
+  @apply text-primary;
 }
 
 /* =============================================================================
@@ -37,7 +37,7 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-table-caption] {
-  @apply text-surface-z7;
+  @apply text-ink-mute;
 }
 
 /* =============================================================================
@@ -45,19 +45,19 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-table-row] {
-  @apply text-surface-z7 border-surface-z3 border-b;
+  @apply text-ink-mute border-paper-mute border-b;
 }
 
 [data-style='minimal'] [data-table-row]:hover {
-  @apply text-surface-z9 bg-none;
+  @apply text-ink bg-none;
 }
 
 [data-style='minimal'] [data-table-row]:focus {
-  @apply text-surface-z9 ring-surface-z5 bg-none ring-1 outline-none;
+  @apply text-ink ring-ink-soft bg-none ring-1 outline-none;
 }
 
 [data-style='minimal'] [data-table-row][data-selected='true'] {
-  @apply text-primary-z8 border-l-primary-z4 border-l-2 bg-none;
+  @apply text-primary border-l-primary border-l-2 bg-none;
 }
 
 /* =============================================================================
@@ -65,7 +65,7 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-table-striped] [data-table-body] tr:nth-child(even) {
-  @apply bg-surface-z1;
+  @apply bg-paper-soft;
 }
 
 /* =============================================================================
@@ -73,7 +73,7 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-table-empty] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 /* =============================================================================
@@ -81,11 +81,11 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-table-cell] [data-cell-icon] {
-  @apply text-surface-z5;
+  @apply text-ink-soft;
 }
 
 [data-style='minimal'] [data-table-row][data-selected='true'] [data-cell-icon] {
-  @apply text-primary-z6;
+  @apply text-primary;
 }
 
 /* =============================================================================
@@ -94,11 +94,11 @@
 
 @media (max-width: 639px) {
   [data-style='minimal'] [data-table-responsive] [data-table-row] {
-    @apply border-surface-z3 border bg-none;
+    @apply border-paper-mute border bg-none;
   }
 
   [data-style='minimal'] [data-table-responsive] [data-table-cell]::before {
-    @apply text-surface-z5;
+    @apply text-ink-soft;
   }
 
   /* Disable striped alternating bg in card layout */
