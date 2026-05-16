@@ -191,6 +191,7 @@ describe('presetRokkit', () => {
 		it(':root should use the light palette for dual-palette roles', () => {
 			// slate-500 = #64748b → rgb(100, 116, 139)
 			const preset = presetRokkit({
+				tokens: 'extended',
 				skin: { surface: { light: 'slate', dark: 'zinc' } }
 			})
 			const css = preset.preflights[0].getCSS()
@@ -201,6 +202,7 @@ describe('presetRokkit', () => {
 		it('[data-mode="dark"] should use the dark palette for dual-palette roles', () => {
 			// zinc-500 = #71717a → rgb(113, 113, 122)
 			const preset = presetRokkit({
+				tokens: 'extended',
 				skin: { surface: { light: 'slate', dark: 'zinc' } }
 			})
 			const css = preset.preflights[0].getCSS()
@@ -211,6 +213,7 @@ describe('presetRokkit', () => {
 		it('should fall back to light palette in dark block when only light is specified', () => {
 			// slate-500 = #64748b → rgb(100, 116, 139) — used in both blocks
 			const preset = presetRokkit({
+				tokens: 'extended',
 				skin: { surface: { light: 'slate' } }
 			})
 			const css = preset.preflights[0].getCSS()
@@ -245,14 +248,14 @@ describe('presetRokkit', () => {
 		it('should fall back to dark palette in light :root when only dark property is specified', () => {
 			// surface: { dark: 'zinc' } — no light → resolveMappingForMode('light') falls back to 'zinc'
 			// zinc-500 → rgb(113, 113, 122)
-			const preset = presetRokkit({ skin: { surface: { dark: 'zinc' } } })
+			const preset = presetRokkit({ tokens: 'extended', skin: { surface: { dark: 'zinc' } } })
 			const css = preset.preflights[0].getCSS()
 			const rootBlock = css.split('[data-mode')[0]
 			expect(rootBlock).toContain('--color-surface-500:rgb(113, 113, 122)')  // zinc
 		})
 
 		it('should use dark palette in dark block when only dark property is specified', () => {
-			const preset = presetRokkit({ skin: { surface: { dark: 'zinc' } } })
+			const preset = presetRokkit({ tokens: 'extended', skin: { surface: { dark: 'zinc' } } })
 			const css = preset.preflights[0].getCSS()
 			const darkBlock = css.split('[data-mode="dark"]')[1] ?? ''
 			expect(darkBlock).toContain('--color-surface-500:rgb(113, 113, 122)')  // zinc
@@ -321,21 +324,21 @@ describe('presetRokkit', () => {
 		})
 
 		it('preflight CSS variables should contain wrapped color values for rgb', () => {
-			const preset = presetRokkit()
+			const preset = presetRokkit({ tokens: 'extended' })
 			const css = preset.preflights[0].getCSS()
 			// rgb values should be wrapped: rgb(R, G, B) not bare R,G,B
 			expect(css).toMatch(/--color-primary-500:rgb\(\d+, \d+, \d+\)/)
 		})
 
 		it('preflight CSS variables should contain wrapped color values for oklch', () => {
-			const preset = presetRokkit({ colorSpace: 'oklch' })
+			const preset = presetRokkit({ tokens: 'extended', colorSpace: 'oklch' })
 			const css = preset.preflights[0].getCSS()
 			// oklch values should be wrapped: oklch(L C H) not bare L C H
 			expect(css).toMatch(/--color-primary-500:oklch\([\d.]+ [\d.]+ [\d.]+\)/)
 		})
 
 		it('preflight CSS variables should contain wrapped color values for hsl', () => {
-			const preset = presetRokkit({ colorSpace: 'hsl' })
+			const preset = presetRokkit({ tokens: 'extended', colorSpace: 'hsl' })
 			const css = preset.preflights[0].getCSS()
 			// hsl values should be wrapped: hsl(H S% L%) not bare H S% L%
 			expect(css).toMatch(/--color-primary-500:hsl\(\d+ \d+% \d+%\)/)
@@ -532,6 +535,94 @@ describe('presetRokkit', () => {
 			}
 
 			expect(warnings.some(w => /contrast/i.test(w))).toBe(false)
+		})
+	})
+
+	describe('preflights — core mode (default)', () => {
+		it('emits the 18+ named tokens in :root', () => {
+			const preset = presetRokkit()
+			const css = preset.preflights[0].getCSS()
+			const rootBlock = css.split('[data-mode')[0]
+			expect(rootBlock).toContain('--paper:')
+			expect(rootBlock).toContain('--paper-soft:')
+			expect(rootBlock).toContain('--paper-mute:')
+			expect(rootBlock).toContain('--paper-edge:')
+			expect(rootBlock).toContain('--ink:')
+			expect(rootBlock).toContain('--ink-mute:')
+			expect(rootBlock).toContain('--primary:')
+			expect(rootBlock).toContain('--on-primary:')
+			expect(rootBlock).toContain('--accent:')
+			expect(rootBlock).toContain('--accent-soft:')
+			expect(rootBlock).toContain('--focus-ring:')
+		})
+
+		it('emits z-aliases pointing at named layer (no palette indirection)', () => {
+			const preset = presetRokkit()
+			const css = preset.preflights[0].getCSS()
+			expect(css).toContain('--color-surface-z0:var(--paper)')
+			expect(css).toContain('--color-surface-z1:var(--paper-soft)')
+			expect(css).toContain('--color-surface-z2:var(--paper-mute)')
+			expect(css).toContain('--color-surface-z3:var(--paper-mute)')
+			expect(css).toContain('--color-surface-z4:var(--paper-edge)')
+		})
+
+		it('does NOT emit raw palette vars in core mode', () => {
+			const preset = presetRokkit()
+			const css = preset.preflights[0].getCSS()
+			expect(css).not.toMatch(/--color-surface-50:rgb/)
+			expect(css).not.toMatch(/--color-surface-900:rgb/)
+		})
+
+		it('emits [data-mode="dark"] block when skin uses dual-palette', () => {
+			const preset = presetRokkit({
+				skin: { surface: { light: 'slate', dark: 'zinc' } }
+			})
+			const css = preset.preflights[0].getCSS()
+			expect(css).toContain('[data-mode="dark"]{')
+			const darkBlock = css.split('[data-mode="dark"]')[1] ?? ''
+			expect(darkBlock).toContain('--paper:')
+		})
+
+		it('emits [data-mode="dark"] block when custom uses { light, dark }', () => {
+			const preset = presetRokkit({
+				palettes: { kami: { 50: '#f8f8f3' }, sumi: { 900: '#0d0d0d' } },
+				custom: { bleed: { light: 'kami.50', dark: 'sumi.900' } }
+			})
+			const css = preset.preflights[0].getCSS()
+			expect(css).toContain('[data-mode="dark"]')
+		})
+
+		it('throws when a custom token name collides with a reserved name', () => {
+			expect(() => presetRokkit({ custom: { paper: '#fff' } })).toThrow(/reserved/i)
+		})
+
+		it('emits custom CSS vars in :root', () => {
+			const preset = presetRokkit({
+				palettes: { kami: { 50: '#f8f8f3' } },
+				custom: { canvas: 'kami.50', 'canvas-grid': '#d4d4d4' }
+			})
+			const css = preset.preflights[0].getCSS()
+			expect(css).toContain('--canvas:rgb(248, 248, 243)')
+			expect(css).toContain('--canvas-grid:#d4d4d4')
+		})
+	})
+
+	describe('preflights — extended mode', () => {
+		it('emits the full palette + named-as-aliases', () => {
+			const preset = presetRokkit({ tokens: 'extended' })
+			const css = preset.preflights[0].getCSS()
+			expect(css).toMatch(/--color-surface-50:rgb/)
+			expect(css).toMatch(/--color-surface-900:rgb/)
+			expect(css).toContain('--paper:var(--color-surface-50)')
+			expect(css).toContain('--ink:var(--color-ink-900)')
+		})
+
+		it('emits z-aliases in extended mode (today\'s behavior)', () => {
+			const preset = presetRokkit({ tokens: 'extended' })
+			const css = preset.preflights[0].getCSS()
+			// Extended mode keeps the original getZScaleCSS-style z scale,
+			// but with named tokens layered on top.
+			expect(css).toContain('--paper:var(--color-surface-50)')
 		})
 	})
 })

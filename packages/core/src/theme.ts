@@ -10,7 +10,6 @@ import {
   Z_COLLAPSE_MAP_SURFACE,
   Z_COLLAPSE_MAP_INK,
   Z_SLOTS,
-  SkinRole,
   hasSoftCompanion
 } from './named-tokens'
 
@@ -341,7 +340,8 @@ export class Theme {
 	 * This is the back-compat layer: existing `@apply bg-surface-z3` etc. resolves
 	 * through these aliases until consumers migrate to the named vocabulary.
 	 */
-	getZAliasesForCore(role: SkinRole): Record<string, string> {
+	/** Accepts SkinRole and any custom skin roles beyond the SkinRole literal union. */
+	getZAliasesForCore(role: string): Record<string, string> {
 		if (role === 'surface') {
 			return this.#getZAliasesFromMap('surface', Z_COLLAPSE_MAP_SURFACE)
 		}

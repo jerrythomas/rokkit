@@ -19,6 +19,7 @@ import {
 } from '@rokkit/core'
 import { iconCollections } from '@rokkit/core/vite'
 import { loadConfig, resolveColormap, isAlias } from './config.js'
+import { resolveCustomTokens, validateCustomTokenNames } from './custom-tokens.js'
 
 const THEME_CONFIG = {
 	dark: {
@@ -117,24 +118,73 @@ function buildRadiusVars(shape): string[] {
 }
 
 function buildPreflights(theme, colormap, config) {
-	const rootVars = toCssBlock(theme.getPalette())
-	const extraVars = [...buildTypographyVars(config.typography), ...buildRadiusVars(config.shape)]
-	const allVars = extraVars.length > 0 ? `${rootVars};${extraVars.join(';')}` : rootVars
+	validateCustomTokenNames(config.custom ?? {})
 
+	const extraVars = [...buildTypographyVars(config.typography), ...buildRadiusVars(config.shape)]
+
+	// Global mode (per-role decomposition can be added later; v1 supports uniform)
+	const globalMode = typeof config.tokens === 'string' ? config.tokens : 'core'
+
+	const lightVars = buildVarsForMode(theme, colormap, globalMode)
+	const lightCustom = resolveCustomTokens(
+		config.custom ?? {},
+		config.palettes ?? {},
+		config.colorSpace,
+		'light'
+	)
+	const lightAllVars = { ...lightVars, ...lightCustom }
+	const lightBlock = `:root{${toCssBlock(lightAllVars)}${
+		extraVars.length ? `;${extraVars.join(';')}` : ''
+	}}`
+
+	// Dark block: only when skin has dual-palette OR custom has { light, dark }
 	let darkBlock = ''
 	const nonAliasColormap = Object.fromEntries(
 		Object.entries(colormap).filter(([, v]) => !isAlias(v))
 	)
-	if (hasDualPaletteMapping(nonAliasColormap)) {
+	const hasDarkCustom = Object.values(config.custom ?? {}).some(
+		(v) => v && typeof v === 'object' && !Array.isArray(v) && ('light' in v || 'dark' in v)
+	)
+
+	if (hasDualPaletteMapping(nonAliasColormap) || hasDarkCustom) {
 		const darkTheme = new Theme({
 			colors: { ...defaultColors, ...config.palettes },
 			mapping: resolveMappingForMode(nonAliasColormap, 'dark'),
 			colorSpace: config.colorSpace
 		})
-		darkBlock = `[data-mode="dark"]{${toCssBlock(darkTheme.getPalette())}}`
+		const darkVars = buildVarsForMode(darkTheme, colormap, globalMode)
+		const darkCustom = resolveCustomTokens(
+			config.custom ?? {},
+			config.palettes ?? {},
+			config.colorSpace,
+			'dark'
+		)
+		darkBlock = `[data-mode="dark"]{${toCssBlock({ ...darkVars, ...darkCustom })}}`
 	}
 
-	return [{ getCSS: () => `:root{${allVars}}${darkBlock}` }]
+	return [{ getCSS: () => `${lightBlock}${darkBlock}` }]
+}
+
+/**
+ * Builds CSS-var assignments for one mode (light or dark).
+ *  - core: named tokens (palette values inlined) + z-aliases pointing at named
+ *  - extended: full palette (today's emit) + named tokens as palette aliases
+ */
+function buildVarsForMode(theme, colormap, globalMode) {
+	if (globalMode === 'core') {
+		const named = theme.getNamedTokens()
+		const aliases = {}
+		for (const role of Object.keys(colormap)) {
+			if (isAlias(colormap[role])) continue
+			// Emit z-aliases for all non-alias roles (surface/ink use map-based; others use tint-vs-solid)
+			Object.assign(aliases, theme.getZAliasesForCore(role as any))
+		}
+		return { ...named, ...aliases }
+	}
+	// extended: today's full palette + named-as-aliases
+	const palette = theme.getPalette()
+	const namedAliases = theme.getZAliasesForExtended()
+	return { ...palette, ...namedAliases }
 }
 
 function buildSkinShortcuts(theme, config) {
