@@ -38,18 +38,18 @@
 
 /* Active state — muted when list not focused */
 [data-style='minimal'] [data-list] [data-list-item][data-active='true'] {
-  @apply text-ink-mute border-secondary-z3 border-l-2 bg-none;
+  @apply text-ink-mute border-accent border-l-2 bg-none;
 }
 
 /* Active state — full highlight when list has focus */
 [data-style='minimal'] [data-list]:focus-within [data-list-item][data-active='true'] {
-  @apply text-secondary-z7 border-secondary-z4 border-l-2 bg-none;
+  @apply text-accent border-accent border-l-2 bg-none;
 }
 
 /* Active + hover/focus */
 [data-style='minimal'] [data-list] [data-list-item][data-active='true']:hover:not(:disabled),
 [data-style='minimal'] [data-list] [data-list-item][data-active='true']:focus:not(:disabled) {
-  @apply text-secondary-z8 bg-none;
+  @apply text-accent bg-none;
 }
 
 /* =============================================================================
@@ -66,7 +66,7 @@
 }
 
 [data-style='minimal'] [data-list] [data-list-item][data-active='true'] [data-item-icon] {
-  @apply text-secondary-z5;
+  @apply text-accent;
 }
 
 /* Literal / kanji icons */
@@ -80,7 +80,7 @@
 }
 
 [data-style='minimal'] [data-list] [data-list-item][data-active='true'] [data-item-icon-literal] {
-  @apply text-secondary-z5;
+  @apply text-accent;
 }
 
 [data-style='minimal'] [data-list] [data-list-item] [data-item-description] {
@@ -88,7 +88,7 @@
 }
 
 [data-style='minimal'] [data-list] [data-list-item][data-active='true'] [data-item-description] {
-  @apply text-secondary-z6;
+  @apply text-accent;
 }
 
 [data-style='minimal'] [data-list] [data-list-item] [data-item-badge] {
@@ -96,7 +96,7 @@
 }
 
 [data-style='minimal'] [data-list] [data-list-item][data-active='true'] [data-item-badge] {
-  @apply text-secondary-z7 border-secondary-z4 bg-none;
+  @apply text-accent border-accent bg-none;
 }
 
 /* =============================================================================
@@ -126,17 +126,17 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-list] [data-list-item][data-selected='true'] {
-  @apply text-secondary-z7 border-secondary-z3 border-l-2;
+  @apply text-accent border-accent border-l-2;
 }
 
 [data-style='minimal'] [data-list]:focus-within [data-list-item][data-selected='true'] {
-  @apply text-secondary-z7 border-secondary-z4 border-l-2;
+  @apply text-accent border-accent border-l-2;
 }
 
 [data-style='minimal'] [data-list] [data-list-item][data-selected='true']:hover:not(:disabled) {
-  @apply text-secondary-z8;
+  @apply text-accent;
 }
 
 [data-style='minimal'] [data-list] [data-list-item][data-selected='true'] [data-item-icon] {
-  @apply text-secondary-z5;
+  @apply text-accent;
 }

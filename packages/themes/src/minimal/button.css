@@ -22,7 +22,7 @@
 
 [data-style='minimal'] [data-button][data-style='default'][data-variant='secondary'],
 [data-style='minimal'] [data-button]:not([data-style])[data-variant='secondary'] {
-  @apply bg-secondary-z4 text-on-secondary border-transparent bg-none;
+  @apply bg-accent text-on-primary border-transparent bg-none;
 }
 
 [data-style='minimal'] [data-button][data-style='default'][data-variant='accent'],
@@ -49,7 +49,7 @@
 }
 
 [data-style='minimal'] [data-button][data-style='outline'][data-variant='secondary'] {
-  @apply border-secondary-z4 text-secondary-z6 border bg-transparent;
+  @apply border-accent text-accent border bg-transparent;
 }
 
 [data-style='minimal'] [data-button][data-style='outline'][data-variant='accent'] {
@@ -78,7 +78,7 @@
 }
 
 [data-style='minimal'] [data-button][data-style='ghost'][data-variant='secondary'] {
-  @apply text-secondary-z6;
+  @apply text-accent;
 }
 
 [data-style='minimal'] [data-button][data-style='ghost'][data-variant='accent'] {
@@ -103,7 +103,7 @@
 }
 
 [data-style='minimal'] [data-button][data-style='gradient'][data-variant='secondary'] {
-  @apply from-secondary-z5 to-secondary-z3 text-on-secondary bg-gradient-to-br;
+  @apply from-accent to-accent text-on-primary bg-gradient-to-br;
 }
 
 [data-style='minimal'] [data-button][data-style='gradient'][data-variant='accent'] {
@@ -133,7 +133,7 @@
 }
 
 [data-style='minimal'] [data-button][data-style='link'][data-variant='secondary'] {
-  @apply text-secondary-z6;
+  @apply text-accent;
 }
 
 [data-style='minimal'] [data-button][data-style='link'][data-variant='accent'] {

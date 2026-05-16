@@ -27,7 +27,7 @@
 }
 
 [data-style='rokkit'] [data-tabs-list]:focus-within {
-  @apply border-secondary outline-none;
+  @apply border-accent outline-none;
 }
 
 /* =============================================================================
@@ -76,7 +76,7 @@
 }
 
 [data-style='rokkit'] [data-tabs-list]:focus-within [data-tabs-trigger][data-selected] {
-  @apply from-primary to-secondary-z5 text-primary bg-gradient-to-b;
+  @apply from-primary to-accent text-primary bg-gradient-to-b;
 }
 
 [data-style='rokkit']

@@ -27,7 +27,7 @@
 
 /* Selected state */
 [data-style='rokkit'] [data-toggle-option][data-selected='true'] {
-  @apply from-primary to-secondary-z5 text-primary border-primary border bg-gradient-to-r shadow-sm;
+  @apply from-primary to-accent text-primary border-primary border bg-gradient-to-r shadow-sm;
 }
 
 /* =============================================================================

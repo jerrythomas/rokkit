@@ -81,16 +81,16 @@
 
 /* Secondary — solid secondary fill */
 [data-style='minimal'] [data-card][data-variant='secondary'] {
-  @apply bg-secondary-z4 border-secondary-z5 text-on-secondary border bg-none;
+  @apply bg-accent border-accent text-on-primary border bg-none;
 }
 
 [data-style='minimal'] [data-card][data-variant='secondary'] [data-card-header],
 [data-style='minimal'] [data-card][data-variant='secondary'] [data-card-footer] {
-  @apply border-secondary-z3/40;
+  @apply border-accent/40;
 }
 
 [data-style='minimal'] [data-card][data-variant='secondary'] [data-card-body] {
-  @apply text-on-secondary/80;
+  @apply text-on-primary/80;
 }
 
 /* Tertiary — recessed surface, lighter border */

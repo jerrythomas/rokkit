@@ -91,7 +91,7 @@
 [data-style='rokkit']
   [data-select-dropdown]:focus-within
   [data-select-option][data-selected='true'] {
-  @apply from-primary to-secondary-z5 text-primary border-l-primary border-l-2 bg-gradient-to-r;
+  @apply from-primary to-accent text-primary border-l-primary border-l-2 bg-gradient-to-r;
 }
 
 /* Selected + hover */

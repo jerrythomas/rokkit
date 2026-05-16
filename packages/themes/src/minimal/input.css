@@ -30,7 +30,7 @@
   left: 0;
   width: 0%;
   height: 2px;
-  @apply bg-secondary-z6;
+  @apply bg-accent;
   transition: width 0.3s ease;
 }
 
@@ -84,7 +84,7 @@
 
 /* Focused label: secondary color */
 [data-style='minimal'] [data-field]:has([data-input-root]:focus-within) > label {
-  @apply text-secondary-z6;
+  @apply text-accent;
 }
 
 /* Field root */
@@ -156,12 +156,12 @@
 [data-style='minimal']
   [data-checkbox-root][data-variant='custom']:has(input:checked)
   [data-checkbox-icon] {
-  @apply text-secondary-z6;
+  @apply text-accent;
 }
 
 /* Checkbox label: secondary on focus (checkbox has no input-root) */
 [data-style='minimal'] [data-field-type='checkbox'] [data-field]:has(:focus-within) > label {
-  @apply text-secondary-z6;
+  @apply text-accent;
 }
 
 /* Placeholders */

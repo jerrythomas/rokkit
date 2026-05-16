@@ -57,7 +57,7 @@
 }
 
 [data-style='rokkit'] [data-table-row][data-selected='true'] {
-  @apply from-primary to-secondary-z5 text-primary bg-gradient-to-r;
+  @apply from-primary to-accent text-primary bg-gradient-to-r;
 }
 
 /* =============================================================================

@@ -70,7 +70,7 @@
 
 /* Primary — gradient from primary to secondary */
 [data-style='rokkit'] [data-card][data-variant='primary'] {
-  @apply from-primary to-secondary-z5 border-primary text-on-primary bg-gradient-to-br shadow-lg;
+  @apply from-primary to-accent border-primary text-on-primary bg-gradient-to-br shadow-lg;
 }
 
 [data-style='rokkit'] [data-card][data-variant='primary'] [data-card-header],
@@ -84,16 +84,16 @@
 
 /* Secondary — muted secondary surface */
 [data-style='rokkit'] [data-card][data-variant='secondary'] {
-  @apply from-secondary-z4 to-secondary-z3 border-secondary-z5 text-on-secondary bg-gradient-to-b shadow;
+  @apply from-accent to-accent border-accent text-on-primary bg-gradient-to-b shadow;
 }
 
 [data-style='rokkit'] [data-card][data-variant='secondary'] [data-card-header],
 [data-style='rokkit'] [data-card][data-variant='secondary'] [data-card-footer] {
-  @apply border-secondary-z4/40;
+  @apply border-accent/40;
 }
 
 [data-style='rokkit'] [data-card][data-variant='secondary'] [data-card-body] {
-  @apply text-on-secondary/80;
+  @apply text-on-primary/80;
 }
 
 /* Tertiary — elevated surface, no color accent */

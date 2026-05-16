@@ -21,7 +21,7 @@
 }
 
 [data-style='rokkit'] [data-menu][data-open='true'] [data-menu-trigger] {
-  @apply from-primary to-secondary-z5 border-primary bg-gradient-to-r;
+  @apply from-primary to-accent border-primary bg-gradient-to-r;
 }
 
 /* Trigger elements */

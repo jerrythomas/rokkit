@@ -4,7 +4,7 @@
  */
 
 [data-style='rokkit'] [data-swatch-item][data-selected] {
-  @apply from-primary to-secondary-z5 bg-gradient-to-br;
+  @apply from-primary to-accent bg-gradient-to-br;
 }
 
 [data-style='rokkit']

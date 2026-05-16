@@ -40,12 +40,12 @@
 
 /* Active state — full gradient when list has focus */
 [data-style='rokkit'] [data-list]:focus-within [data-list-item][data-active='true'] {
-  @apply from-primary to-secondary-z5 text-on-primary bg-gradient-to-r;
+  @apply from-primary to-accent text-on-primary bg-gradient-to-r;
 }
 
 /* Active + hover — same as focus-within gradient */
 [data-style='rokkit'] [data-list] [data-list-item][data-active='true']:hover:not(:disabled) {
-  @apply from-primary to-secondary-z5 text-on-primary bg-gradient-to-r;
+  @apply from-primary to-accent text-on-primary bg-gradient-to-r;
 }
 
 /* =============================================================================

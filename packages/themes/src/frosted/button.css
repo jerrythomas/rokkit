@@ -31,7 +31,7 @@
 
 [data-style='frosted'] [data-button][data-style='default'][data-variant='secondary'],
 [data-style='frosted'] [data-button]:not([data-style])[data-variant='secondary'] {
-  @apply text-on-secondary border backdrop-blur-xl bg-secondary-z5/60;
+  @apply text-on-primary border backdrop-blur-xl bg-accent/60;
   border-color: rgba(255, 255, 255, 0.25);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.25),
@@ -73,7 +73,7 @@
 }
 
 [data-style='frosted'] [data-button][data-style='outline'][data-variant='secondary'] {
-  @apply text-secondary-z6 border bg-transparent;
+  @apply text-accent border bg-transparent;
   border-color: rgba(255, 255, 255, 0.28);
 }
 
@@ -105,7 +105,7 @@
 }
 
 [data-style='frosted'] [data-button][data-style='ghost'][data-variant='secondary'] {
-  @apply text-secondary-z6;
+  @apply text-accent;
 }
 
 [data-style='frosted'] [data-button][data-style='ghost'][data-variant='accent'] {
@@ -134,7 +134,7 @@
 }
 
 [data-style='frosted'] [data-button][data-style='gradient'][data-variant='secondary'] {
-  @apply from-secondary-z5/80 to-secondary-z3/60 text-on-secondary bg-gradient-to-br backdrop-blur-xl;
+  @apply from-accent/80 to-accent/60 text-on-primary bg-gradient-to-br backdrop-blur-xl;
   border-color: rgba(255, 255, 255, 0.25);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
@@ -170,7 +170,7 @@
 }
 
 [data-style='frosted'] [data-button][data-style='link'][data-variant='secondary'] {
-  @apply text-secondary-z6;
+  @apply text-accent;
 }
 
 [data-style='frosted'] [data-button][data-style='link'][data-variant='accent'] {

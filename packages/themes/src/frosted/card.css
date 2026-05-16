@@ -103,7 +103,7 @@
 
 /* Secondary — tinted secondary glass */
 [data-style='frosted'] [data-card][data-variant='secondary'] {
-  @apply text-on-secondary border shadow-lg backdrop-blur-xl bg-secondary-z5/45;
+  @apply text-on-primary border shadow-lg backdrop-blur-xl bg-accent/45;
   border-color: rgba(255, 255, 255, 0.22);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.28),
@@ -116,7 +116,7 @@
 }
 
 [data-style='frosted'] [data-card][data-variant='secondary'] [data-card-body] {
-  @apply text-on-secondary/80;
+  @apply text-on-primary/80;
 }
 
 /* Tertiary — barely-there frosted glass */

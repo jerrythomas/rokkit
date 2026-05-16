@@ -81,16 +81,16 @@
 
 /* Secondary — tonal secondary container */
 [data-style='material'] [data-card][data-variant='secondary'] {
-  @apply bg-secondary-z1 border-secondary-z3 text-secondary-z9 border bg-none shadow-sm;
+  @apply bg-accent-soft border-accent text-accent border bg-none shadow-sm;
 }
 
 [data-style='material'] [data-card][data-variant='secondary'] [data-card-header],
 [data-style='material'] [data-card][data-variant='secondary'] [data-card-footer] {
-  @apply border-secondary-z2;
+  @apply border-accent-soft;
 }
 
 [data-style='material'] [data-card][data-variant='secondary'] [data-card-body] {
-  @apply text-secondary-z8;
+  @apply text-accent;
 }
 
 /* Tertiary — elevated surface with no color accent */

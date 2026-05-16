@@ -5,7 +5,7 @@
 
 [data-style='minimal'] [data-swatch-item][data-selected] {
   background: transparent;
-  @apply outline-secondary-z5;
+  @apply outline-accent;
 }
 
 [data-style='minimal']
@@ -16,6 +16,6 @@
 }
 
 [data-style='minimal'] [data-swatch-item][data-selected]:focus-visible {
-  @apply outline-secondary-z6;
+  @apply outline-accent;
   outline-offset: 3px;
 }

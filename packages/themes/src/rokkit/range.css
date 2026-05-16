@@ -13,7 +13,7 @@
 }
 
 [data-style='rokkit'] [data-range-selected] {
-  @apply from-primary to-secondary bg-gradient-to-r;
+  @apply from-primary to-accent bg-gradient-to-r;
 }
 
 /* =============================================================================
@@ -21,16 +21,16 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-range-thumb] {
-  @apply bg-secondary border-secondary shadow-lg;
+  @apply bg-accent border-accent shadow-lg;
 }
 
 [data-style='rokkit'] [data-range-thumb][data-sliding] {
   @apply shadow-xl;
-  @apply ring-4 ring-secondary-z5/30;
+  @apply ring-4 ring-accent/30;
 }
 
 [data-style='rokkit'] [data-range-thumb]:focus-visible {
-  @apply ring-4 ring-secondary-z5/30;
+  @apply ring-4 ring-accent/30;
 }
 
 /* =============================================================================

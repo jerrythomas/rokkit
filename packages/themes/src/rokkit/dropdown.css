@@ -21,7 +21,7 @@
 }
 
 [data-style='rokkit'] [data-dropdown][data-open='true'] [data-dropdown-trigger] {
-  @apply from-primary to-secondary-z5 border-primary bg-gradient-to-r;
+  @apply from-primary to-accent border-primary bg-gradient-to-r;
 }
 
 [data-style='rokkit'] [data-dropdown-trigger] [data-dropdown-icon] {
@@ -58,7 +58,7 @@
 }
 
 [data-style='rokkit'] [data-dropdown-option][data-active='true'] {
-  @apply from-primary to-secondary-z5 text-primary bg-gradient-to-r;
+  @apply from-primary to-accent text-primary bg-gradient-to-r;
 }
 
 /* =============================================================================

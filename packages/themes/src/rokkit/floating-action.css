@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-fab-trigger] {
-  @apply from-primary to-secondary-z5 ring-primary bg-gradient-to-r text-on-primary shadow-lg ring-1;
+  @apply from-primary to-accent ring-primary bg-gradient-to-r text-on-primary shadow-lg ring-1;
 }
 
 [data-style='rokkit'] [data-fab-trigger]:hover:not(:disabled) {
