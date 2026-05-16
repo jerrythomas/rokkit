@@ -729,4 +729,77 @@ describe('presetRokkit', () => {
 			expect(keys).toContain('stroke-accent')
 		})
 	})
+
+	describe('custom-token shortcuts', () => {
+		it('emits bg-canvas shortcut for color-valued palette-ref custom token', () => {
+			const preset = presetRokkit({
+				palettes: { kami: { 50: '#f8f8f3' } },
+				custom: { canvas: 'kami.50' }
+			})
+			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			expect(keys).toContain('bg-canvas')
+			expect(keys).toContain('text-canvas')
+			expect(keys).toContain('border-canvas')
+		})
+
+		it('emits shortcuts for raw color values (oklch, hex, rgb)', () => {
+			const preset = presetRokkit({
+				custom: {
+					primary2: 'oklch(0.5 0.1 30)',
+					edge: '#d4d4d4',
+					flag: 'rgb(255, 0, 0)'
+				}
+			})
+			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			expect(keys).toContain('bg-primary2')
+			expect(keys).toContain('bg-edge')
+			expect(keys).toContain('bg-flag')
+		})
+
+		it('does NOT emit shortcuts for non-color custom values', () => {
+			const preset = presetRokkit({
+				custom: { 'grid-size': '8px', fade: '1.2s ease', spacer: '100%' }
+			})
+			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			expect(keys).not.toContain('bg-grid-size')
+			expect(keys).not.toContain('bg-fade')
+			expect(keys).not.toContain('bg-spacer')
+		})
+
+		it('emits shortcuts for mode-aware custom tokens (uses light value for color check)', () => {
+			const preset = presetRokkit({
+				palettes: { kami: { 50: '#f8f8f3' }, sumi: { 900: '#0d0d0d' } },
+				custom: { bleed: { light: 'kami.50', dark: 'sumi.900' } }
+			})
+			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			expect(keys).toContain('bg-bleed')
+		})
+
+		it('bg-canvas expansion uses var(--canvas)', () => {
+			const preset = presetRokkit({
+				palettes: { kami: { 50: '#f8f8f3' } },
+				custom: { canvas: 'kami.50' }
+			})
+			const entry = preset.shortcuts.find(s => s[0] === 'bg-canvas')
+			expect(entry).toBeDefined()
+			expect(entry[1]).toEqual({ 'background-color': 'var(--canvas)' })
+		})
+
+		it('does NOT emit ring-canvas for arbitrary tokens (ring is reserved for *-ring named or focus)', () => {
+			const preset = presetRokkit({
+				palettes: { kami: { 50: '#f8f8f3' } },
+				custom: { canvas: 'kami.50' }
+			})
+			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			expect(keys).not.toContain('ring-canvas')
+		})
+
+		it('emits ring shortcut when custom token name ends in -ring', () => {
+			const preset = presetRokkit({
+				custom: { 'glow-ring': '#ff0000' }
+			})
+			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			expect(keys).toContain('ring-glow-ring')
+		})
+	})
 })

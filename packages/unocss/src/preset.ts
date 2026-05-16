@@ -20,7 +20,7 @@ import {
 } from '@rokkit/core'
 import { iconCollections } from '@rokkit/core/vite'
 import { loadConfig, resolveColormap, isAlias } from './config.js'
-import { resolveCustomTokens, validateCustomTokenNames } from './custom-tokens.js'
+import { resolveCustomTokens, validateCustomTokenNames, isColorValue } from './custom-tokens.js'
 
 const THEME_CONFIG = {
 	dark: {
@@ -254,6 +254,45 @@ function buildNamedShortcuts() {
 }
 
 /**
+ * Returns true when a custom token resolves to a CSS color value.
+ * Palette refs (`'kami.50'`) are always colors. Raw values are checked
+ * with `isColorValue` (handles oklch/rgb/hsl/hex).
+ */
+function isCustomTokenColor(value) {
+	let candidate
+	if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
+		candidate = value.light ?? value.dark
+	} else {
+		candidate = value
+	}
+	if (typeof candidate !== 'string') return false
+	// Palette refs are colors
+	if (/^[a-z][a-z0-9_-]*\.\d+$/i.test(candidate)) return true
+	return isColorValue(candidate)
+}
+
+/**
+ * Auto-emit Uno shortcuts for color-valued custom tokens.
+ *
+ * Reuses NAMED_SHORTCUT_PREFIXES, but emits only the color-meaningful prefixes
+ * (bg, text, border, border-{t/b/l/r}, fill, stroke). The ring- prefix is
+ * reserved for tokens whose name ends in `-ring` (e.g., `glow-ring`).
+ */
+function buildCustomTokenShortcuts(config) {
+	const custom = config.custom ?? {}
+	const shortcuts = []
+	for (const [name, value] of Object.entries(custom)) {
+		if (!isCustomTokenColor(value)) continue
+		for (const { prefix, prop } of NAMED_SHORTCUT_PREFIXES) {
+			// ring- is reserved for -ring-named tokens (focus-ring pattern)
+			if (prefix === 'ring' && !name.endsWith('-ring')) continue
+			shortcuts.push([`${prefix}-${name}`, { [prop]: `var(--${name})` }])
+		}
+	}
+	return shortcuts
+}
+
+/**
  * Parses the OKLCH lightness value from a palette shade string.
  * Palette values are stored as "L C H" strings (e.g., "0.75 0.008 50").
  */
@@ -342,6 +381,7 @@ function buildShortcuts(theme, colormap, config) {
 		...buildSkinShortcuts(theme, config),
 		...buildSemanticShortcuts(theme, colormap),
 		...buildNamedShortcuts(),
+		...buildCustomTokenShortcuts(config),
 		...buildIconShortcuts(config)
 	]
 }
