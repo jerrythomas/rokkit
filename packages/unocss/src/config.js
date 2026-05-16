@@ -18,6 +18,8 @@ export const DEFAULT_CONFIG = {
 	 */
 	skins: {},
 	themes: ['rokkit'],
+	tokens: 'core',
+	custom: {},
 	icons: {
 		app: '@rokkit/icons/app.json',
 		style: undefined,
@@ -63,6 +65,8 @@ export function loadConfig(userConfig) {
 		skin:       { ...DEFAULT_SKIN, ...(cfg.skin ?? cfg.colors ?? {}) },
 		skins:      pick(cfg.skins, DEFAULT_CONFIG.skins),
 		themes:     pick(cfg.themes, DEFAULT_CONFIG.themes),
+		tokens:     validateTokens(cfg.tokens ?? DEFAULT_CONFIG.tokens),
+		custom:     pick(cfg.custom, DEFAULT_CONFIG.custom),
 		icons:      { ...DEFAULT_CONFIG.icons, ...cfg.icons },
 		typography: { ...DEFAULT_CONFIG.typography, ...cfg.typography },
 		shape:      { ...DEFAULT_CONFIG.shape, ...cfg.shape },
@@ -107,6 +111,60 @@ function validateAliases(colormap) {
 			throw new Error(`Chained alias: '${name}' → '${target}' which is itself an alias. Aliases must point to a real palette.`)
 		}
 	}
+}
+
+const VALID_TOKEN_MODES = new Set(['core', 'extended'])
+
+/**
+ * Validates per-role token modes in an object.
+ * @param {Record<string, unknown>} roleMap
+ */
+function validateTokenRoles(roleMap) {
+	for (const [role, mode] of Object.entries(roleMap)) {
+		if (!VALID_TOKEN_MODES.has(mode)) {
+			throw new Error(
+				`Invalid tokens mode for role "${role}": "${mode}". Expected "core" or "extended".`
+			)
+		}
+	}
+}
+
+/**
+ * Validates tokens configuration.
+ * Accepts:
+ * - A string: 'core' or 'extended' (applies globally to all roles)
+ * - An object: per-role mapping (e.g., { surface: 'core', primary: 'extended' })
+ * @param {unknown} value
+ * @returns {string | Record<string, string>}
+ */
+function validateTokens(value) {
+	if (typeof value === 'string') {
+		if (!VALID_TOKEN_MODES.has(value)) {
+			throw new Error(`Invalid tokens mode "${value}". Expected "core" or "extended".`)
+		}
+		return value
+	}
+	if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
+		validateTokenRoles(value)
+		return value
+	}
+	throw new Error(`tokens must be "core", "extended", or an object — got ${typeof value}.`)
+}
+
+/**
+ * Resolves the token mode for a specific role.
+ * - If config.tokens is a string, that's the mode for every role.
+ * - If it's a per-role object, look up the role; fall back to 'core' when absent.
+ * - If config.tokens is missing entirely, defaults to 'core'.
+ * @param {Partial<typeof DEFAULT_CONFIG>} config
+ * @param {string} role
+ * @returns {string}
+ */
+export function resolveTokenMode(config, role) {
+	const t = config.tokens
+	if (typeof t === 'string') return t
+	if (t && typeof t === 'object') return t[role] ?? 'core'
+	return 'core'
 }
 
 /**

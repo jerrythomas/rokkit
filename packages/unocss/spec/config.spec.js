@@ -271,3 +271,69 @@ describe('loadConfig — shape and typography', () => {
 		expect(config.shape.radius).toEqual(custom)
 	})
 })
+
+describe('loadConfig — tokens mode', () => {
+	it('defaults tokens to "core"', () => {
+		const config = loadConfig()
+		expect(config.tokens).toBe('core')
+	})
+
+	it('accepts tokens: "extended"', () => {
+		const config = loadConfig({ tokens: 'extended' })
+		expect(config.tokens).toBe('extended')
+	})
+
+	it('accepts per-role object: { surface: "core", primary: "extended" }', () => {
+		const config = loadConfig({ tokens: { surface: 'core', primary: 'extended' } })
+		expect(config.tokens).toEqual({ surface: 'core', primary: 'extended' })
+	})
+
+	it('throws on invalid tokens value (bogus string)', () => {
+		expect(() => loadConfig({ tokens: 'bogus' })).toThrow(/tokens/)
+	})
+
+	it('throws on per-role object with invalid mode', () => {
+		expect(() => loadConfig({ tokens: { surface: 'unknown' } })).toThrow(/tokens/)
+	})
+
+	it('throws on non-string non-object tokens value', () => {
+		expect(() => loadConfig({ tokens: 42 })).toThrow(/tokens/)
+	})
+})
+
+describe('loadConfig — custom tokens (placeholder field)', () => {
+	it('defaults custom to {}', () => {
+		const config = loadConfig()
+		expect(config.custom).toEqual({})
+	})
+
+	it('passes through custom as-is', () => {
+		const config = loadConfig({ custom: { canvas: 'kami.50', 'canvas-grid': '#d4d4d4' } })
+		expect(config.custom).toEqual({ canvas: 'kami.50', 'canvas-grid': '#d4d4d4' })
+	})
+})
+
+import { resolveTokenMode } from '../src/config.js'
+
+describe('resolveTokenMode', () => {
+	it('returns the global mode for any role when tokens is a string', () => {
+		const config = { tokens: 'extended' }
+		expect(resolveTokenMode(config, 'surface')).toBe('extended')
+		expect(resolveTokenMode(config, 'primary')).toBe('extended')
+	})
+
+	it('returns per-role mode when tokens is an object', () => {
+		const config = { tokens: { surface: 'extended', primary: 'core' } }
+		expect(resolveTokenMode(config, 'surface')).toBe('extended')
+		expect(resolveTokenMode(config, 'primary')).toBe('core')
+	})
+
+	it('defaults to "core" when a role is missing from per-role object', () => {
+		const config = { tokens: { surface: 'extended' } }
+		expect(resolveTokenMode(config, 'primary')).toBe('core')
+	})
+
+	it('defaults to "core" when config.tokens is missing entirely', () => {
+		expect(resolveTokenMode({}, 'surface')).toBe('core')
+	})
+})
