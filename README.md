@@ -27,6 +27,9 @@ Components have been separated into the following packages. Refer to the [storie
 - [@rokkit/icons](packages/icons)
 - [@rokkit/themes](packages/themes)
 - [@rokkit/ui](packages/ui)
+- [@rokkit/forms](packages/forms)
+- [@rokkit/chart](packages/chart)
+- [@rokkit/unocss](packages/unocss) — UnoCSS preset with named-token vocabulary (`--paper`, `--ink-mute`, `--accent-soft`, …) and `tokens: 'core' | 'extended'` modes
 
 ## Installation
 
@@ -97,7 +100,8 @@ We hope you enjoy using Rokkit in your projects!
 - [x] Unstyled
 - [x] Actions
 - [x] Utility functions
-- [x] Themes
+- [x] Themes (rokkit, minimal, material, frosted, zen-sumi + 6 extras)
+- [x] Named-token design system — 24-name vocabulary, palette-inlined emit, mode-aware custom tokens
 - [ ] Accessible
 - [ ] Responsive
 - [ ] Micro-animations
