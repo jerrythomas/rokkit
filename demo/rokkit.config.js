@@ -75,18 +75,37 @@ export default {
 		 *   z6 dark (faint) ← sumi-400: 0.420 0.012 85  (warm paper white)
 		 *   z9 dark (text)  ← sumi-100: 0.940 0.008 85  (primary text)
 		 */
+		/**
+		 * sumi — the dark-mode counterpart for the kami surface/ink axes.
+		 *
+		 * Convention matches kami: shade 50 = lightest, shade 950 = darkest.
+		 * The named-token shade map (`paper → 50`, `ink → 900`, etc.) reads
+		 * the same index in light and dark, so each side gets:
+		 *   - paper (bg)  = shade 50   = lightest sumi-ink in dark
+		 *   - ink (text)  = shade 900  = warm paper white in dark
+		 *
+		 * Wait — that's NOT what we want. For dark mode the page background
+		 * needs to be DARK and the text LIGHT. So sumi is INVERTED relative
+		 * to kami: index 50 holds the darkest sumi-ink (canvas), index 900
+		 * holds the lightest warm-paper (text). Same shade key, opposite
+		 * lightness scale.
+		 *
+		 * The palette is intentionally two-pole — the dark end (50–400)
+		 * holds sumi-ink tones (hue ~50, warm-shadow chroma); the light end
+		 * (700–950) holds warm-paper whites (hue ~85). 500 sits between.
+		 */
 		sumi: {
-			50:  '0.975 0.008 85',
-			100: '0.940 0.008 85',
-			200: '0.780 0.008 85',
-			300: '0.600 0.010 85',
-			400: '0.420 0.012 85',
+			50:  '0.170 0.010 50',
+			100: '0.210 0.012 50',
+			200: '0.250 0.012 50',
+			300: '0.320 0.012 50',
+			400: '0.420 0.010 50',
 			500: '0.570 0.010 50',
-			600: '0.420 0.010 50',
-			700: '0.320 0.012 50',
-			800: '0.250 0.012 50',
-			900: '0.210 0.012 50',
-			950: '0.170 0.010 50',
+			600: '0.420 0.012 85',
+			700: '0.600 0.010 85',
+			800: '0.780 0.008 85',
+			900: '0.940 0.008 85',
+			950: '0.975 0.008 85',
 		}
 	},
 
