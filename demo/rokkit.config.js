@@ -105,6 +105,25 @@ export default {
 	},
 
 	/**
+	 * Active skin (singular) — the preset uses this to resolve named tokens and
+	 * emit the [data-mode="dark"] block. Mirrors `skins.default` below; keeping
+	 * them in sync means switching skins at runtime can target named tokens too.
+	 */
+	skin: {
+		surface:   { light: 'kami', dark: 'sumi' },
+		ink:       { light: 'kami', dark: 'sumi' },
+		primary:   'shu',
+		secondary: 'hisui',
+		tertiary:  'kohaku',
+		accent:    'shu',
+		success:   'hisui',
+		warning:   'kohaku',
+		danger:    'shu',
+		error:     'shu',
+		info:      'kohaku'
+	},
+
+	/**
 	 * Multi-skin mode — the app supports programmatic / user-driven skin switching.
 	 * `default` is the active colormap on first load (zen-sumi OKLCH palette).
 	 * Other skins reference Tailwind named colors available via defaultColors merge.

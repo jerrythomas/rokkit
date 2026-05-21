@@ -96,9 +96,21 @@ interface SkinDefinition {
 	accent: string
 }
 
+/**
+ * A skin role can map to a single palette name (same in light + dark) or
+ * a dual-palette object `{ light, dark }` that swaps based on data-mode.
+ */
+type RoleMapping = string | { light: string; dark: string }
+
 /** Full skin colormaps keyed by role (used for applySkin) */
-const skinColormaps: Record<string, Record<string, string>> = {
-	default: { surface: 'kami',  ink: 'kami',  primary: 'shu',     secondary: 'hisui',  accent: 'shu'    },
+const skinColormaps: Record<string, Record<string, RoleMapping>> = {
+	default: {
+		surface: { light: 'kami', dark: 'sumi' },
+		ink:     { light: 'kami', dark: 'sumi' },
+		primary: 'shu',
+		secondary: 'hisui',
+		accent: 'shu'
+	},
 	ocean:   { surface: 'slate', ink: 'slate', primary: 'sky',     secondary: 'teal',   accent: 'cyan'   },
 	violet:  { surface: 'zinc',  ink: 'zinc',  primary: 'violet',  secondary: 'purple', accent: 'indigo' },
 	rose:    { surface: 'stone', ink: 'stone', primary: 'rose',    secondary: 'pink',   accent: 'orange' },
@@ -181,60 +193,89 @@ function wrapColor(value: string, isOklch: boolean): string {
 }
 
 /**
- * Set CSS variables for a single role using the given palette.
+ * Build CSS-var declarations for a role + palette, as a string fragment that
+ * can be inlined inside a `:root { … }` or `[data-mode="dark"] { … }` rule.
  */
-function setRoleVariables(role: string, paletteName: string): void {
+function declarationsFor(role: string, paletteName: string): string {
 	const paletteShades = getPaletteShades(paletteName)
-	if (!paletteShades) return
-
+	if (!paletteShades) return ''
 	const isOklch = isCustomPalette(paletteName)
-	const el = document.documentElement
-
+	const parts: string[] = []
 	for (const shade of shades) {
 		const value = paletteShades[shade]
 		if (value !== undefined) {
-			el.style.setProperty(`--color-${role}-${shade}`, wrapColor(value, isOklch))
+			parts.push(`--color-${role}-${shade}:${wrapColor(value, isOklch)};`)
 		}
 	}
-	// Also set the DEFAULT (no shade suffix)
 	const defaultValue = paletteShades[500]
 	if (defaultValue !== undefined) {
-		el.style.setProperty(`--color-${role}`, wrapColor(defaultValue, isOklch))
+		parts.push(`--color-${role}:${wrapColor(defaultValue, isOklch)};`)
 	}
+	return parts.join('')
+}
+
+const SKIN_STYLE_ID = 'koan-skin-overrides'
+
+function getSkinStyleEl(): HTMLStyleElement | null {
+	if (typeof document === 'undefined') return null
+	let el = document.getElementById(SKIN_STYLE_ID) as HTMLStyleElement | null
+	if (!el) {
+		el = document.createElement('style')
+		el.id = SKIN_STYLE_ID
+		document.head.appendChild(el)
+	}
+	return el
 }
 
 /**
- * Clear all role CSS variable overrides from the document root.
+ * Track per-role overrides so `applyRoleColor` can update a single role
+ * without losing other roles' applied palettes.
+ *
+ * Each role can map to either a single palette name (used for both modes)
+ * or a `{ light, dark }` pair.
  */
-function clearRoleVariables(): void {
-	const el = document.documentElement
-	const roles = ['surface', 'ink', 'primary', 'secondary', 'tertiary', 'accent', 'success', 'warning', 'danger', 'info']
-	for (const role of roles) {
-		for (const shade of shades) {
-			el.style.removeProperty(`--color-${role}-${shade}`)
+let activeOverrides: Record<string, RoleMapping> = {}
+
+function rewriteSkinStyle() {
+	const el = getSkinStyleEl()
+	if (!el) return
+	const lightDecls: string[] = []
+	const darkDecls: string[] = []
+	for (const [role, mapping] of Object.entries(activeOverrides)) {
+		if (typeof mapping === 'string') {
+			lightDecls.push(declarationsFor(role, mapping))
+		} else {
+			lightDecls.push(declarationsFor(role, mapping.light))
+			darkDecls.push(declarationsFor(role, mapping.dark))
 		}
-		el.style.removeProperty(`--color-${role}`)
 	}
+	const css = [
+		lightDecls.length ? `:root{${lightDecls.join('')}}` : '',
+		darkDecls.length ? `[data-mode="dark"]{${darkDecls.join('')}}` : ''
+	].join('')
+	el.textContent = css
 }
 
 /**
  * Apply a skin's CSS variables to the document.
- * Clears previous overrides and sets all roles from the skin colormap.
+ * Clears previous overrides and writes role → palette mappings. Dual-palette
+ * roles emit a light block at `:root` and a dark block at `[data-mode="dark"]`.
  */
 export function applySkin(skinName: string): void {
 	const colormap = skinColormaps[skinName]
 	if (!colormap) return
-
-	clearRoleVariables()
-
-	for (const [role, paletteName] of Object.entries(colormap)) {
-		setRoleVariables(role, paletteName)
-	}
+	activeOverrides = { ...colormap }
+	rewriteSkinStyle()
 }
 
 /**
- * Apply a single role override — sets CSS variables for that role.
+ * Apply a single role override — replaces the role's mapping (preserving the
+ * other roles) and re-emits the style element.
+ *
+ * Accepts either a single palette name (applies to both modes) or a
+ * `{ light, dark }` pair for explicit dual-palette overrides.
  */
-export function applyRoleColor(role: string, paletteName: string): void {
-	setRoleVariables(role, paletteName)
+export function applyRoleColor(role: string, palette: RoleMapping): void {
+	activeOverrides[role] = palette
+	rewriteSkinStyle()
 }
