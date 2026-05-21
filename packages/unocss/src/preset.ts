@@ -102,10 +102,24 @@ function buildSafelist() {
 
 function buildTypographyVars(typography): string[] {
 	if (!typography) return []
-	const FONT_PROPS = { sans: '--font-sans', mono: '--font-mono', heading: '--font-heading' }
-	return Object.entries(FONT_PROPS)
-		.filter(([key]) => typography[key])
-		.map(([key, prop]) => `${prop}:${typography[key]}`)
+	// Canonical (semantic) names match the named-token vocabulary:
+	//   --font-display — the heading / display typeface
+	//   --font-ui      — the body / UI typeface
+	//   --font-mono    — code, eyebrows, kbd shortcuts
+	// Legacy config keys (`heading`, `sans`) are still accepted; legacy CSS
+	// var names (`--font-heading`, `--font-sans`) are emitted as aliases for
+	// backward compat — see the typography.css base layer.
+	const display = typography.display ?? typography.heading
+	const ui = typography.ui ?? typography.sans
+	const mono = typography.mono
+	const vars: string[] = []
+	if (display) vars.push(`--font-display:${display}`)
+	if (ui) vars.push(`--font-ui:${ui}`)
+	if (mono) vars.push(`--font-mono:${mono}`)
+	// Legacy aliases — keep working for any consumer still reading the old names.
+	if (display) vars.push(`--font-heading:var(--font-display)`)
+	if (ui) vars.push(`--font-sans:var(--font-ui)`)
+	return vars
 }
 
 function buildRadiusVars(shape): string[] {

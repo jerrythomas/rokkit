@@ -264,8 +264,23 @@ describe('presetRokkit', () => {
 		it('should include typography vars in :root when typography is set', () => {
 			const preset = presetRokkit({ typography: { sans: 'Inter', mono: 'JetBrains Mono' } })
 			const css = preset.preflights[0].getCSS()
-			expect(css).toContain('--font-sans:Inter')
+			// New canonical names + legacy --font-sans alias for backward compat.
+			expect(css).toContain('--font-ui:Inter')
+			expect(css).toContain('--font-sans:var(--font-ui)')
 			expect(css).toContain('--font-mono:JetBrains Mono')
+		})
+
+		it('emits --font-display when typography.display is set', () => {
+			const preset = presetRokkit({ typography: { display: 'Fraunces' } })
+			const css = preset.preflights[0].getCSS()
+			expect(css).toContain('--font-display:Fraunces')
+			expect(css).toContain('--font-heading:var(--font-display)')
+		})
+
+		it('accepts legacy typography.heading config and maps to --font-display', () => {
+			const preset = presetRokkit({ typography: { heading: 'Cal Sans' } })
+			const css = preset.preflights[0].getCSS()
+			expect(css).toContain('--font-display:Cal Sans')
 		})
 
 		it('should include radius vars in :root when a named shape preset is set', () => {
@@ -288,15 +303,19 @@ describe('presetRokkit', () => {
 				shape: { radius: 'rounded' }
 			})
 			const css = preset.preflights[0].getCSS()
-			expect(css).toContain('--font-sans:Inter')
+			expect(css).toContain('--font-ui:Inter')
 			expect(css).toContain('--radius-md:0.5rem')
 		})
 
 		it('should include no font vars when typography is not set', () => {
 			const preset = presetRokkit()
 			const css = preset.preflights[0].getCSS()
-			expect(css).not.toContain('--font-sans')
+			expect(css).not.toContain('--font-ui')
+			expect(css).not.toContain('--font-display')
 			expect(css).not.toContain('--font-mono')
+			// Legacy aliases also absent when nothing to alias.
+			expect(css).not.toContain('--font-sans:var')
+			expect(css).not.toContain('--font-heading:var')
 		})
 	})
 

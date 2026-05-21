@@ -2,25 +2,37 @@
  * Typography & Shape Tokens
  *
  * CSS custom properties for font families and border-radius scale.
- * Override these in your application stylesheet to customize typography and shape.
+ *
+ * Canonical names match the named-token vocabulary's semantic intent:
+ *   --font-display — heading / display typeface
+ *   --font-ui      — body / UI typeface
+ *   --font-mono    — code, eyebrows, kbd shortcuts
+ *
+ * Legacy aliases `--font-heading` and `--font-sans` are emitted as
+ * `var(--font-display)` and `var(--font-ui)` for backward compatibility
+ * with any consumer that still reads the old names. Both stay in sync.
+ *
+ * Override these in your application stylesheet or via the preset's
+ * `typography: { display, ui, mono }` config to customize.
  *
  * @example
  * :root {
- *   --font-sans: 'Inter', system-ui, sans-serif;
- *   --font-mono: 'JetBrains Mono', monospace;
- *   --font-heading: 'Cal Sans', 'Inter', sans-serif;
- *
- *   --radius-sm: 0;        --* sharp corners *--
- *   --radius-md: 0;
- *   --radius-lg: 0;
+ *   --font-display: 'Fraunces', serif;
+ *   --font-ui:      'Inter', system-ui, sans-serif;
+ *   --font-mono:    'JetBrains Mono', monospace;
  * }
  */
 
-:root {
-  /* Font families */
-  --font-sans: 'Open Sans', -apple-system, system-ui, 'Segoe UI', ui-serif, sans-serif;
-  --font-mono: 'Victor Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
-  --font-heading: 'Open Sans', sans-serif;
+/* Defaults wrapped in :where() so specificity is 0 — any explicit :root
+   declaration (from the preset emit, an app stylesheet, or another theme)
+   wins without needing extra weight. Without :where(), this file would
+   override later preset emissions since both are :root, same specificity,
+   and the source order has this CSS loading after the preset preflight. */
+:where(:root) {
+  /* Font families — canonical names */
+  --font-display: 'Open Sans', sans-serif;
+  --font-ui:      'Open Sans', -apple-system, system-ui, 'Segoe UI', ui-serif, sans-serif;
+  --font-mono:    'Victor Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
 
   /* Border-radius scale */
   --radius-sm: 0.25rem;
@@ -28,4 +40,11 @@
   --radius-lg: 0.5rem;
   --radius-xl: 0.75rem;
   --radius-full: 9999px;
+}
+
+/* Legacy aliases — outside the :where() so they ALWAYS reflect whichever
+   --font-display / --font-ui value won in the cascade (default or preset). */
+:root {
+  --font-heading: var(--font-display);
+  --font-sans:    var(--font-ui);
 }
