@@ -54,10 +54,15 @@
 }
 
 /* Dark-mode override for --paper-edge.
-   The preset gives sumi.400 (lightness ~0.42) which lifts borders above
-   the canvas. For the zen-sumi aesthetic we want borders to recede —
-   darker than --paper (sumi.50, ~0.17), like an etched line in dark ink. */
+   The light mode etched pair is roughly:
+     paper #f7f4ec → oklch(0.965 0.013 88)
+     edge  #ddd5c4 → oklch(0.864 0.028 86)
+   Delta: L -0.10, C +0.015 — edge is darker AND more saturated.
+   Applying the same delta to dark mode (paper = sumi.50 ~ L 0.17):
+     dark edge = oklch(0.07 ish, higher chroma, warm hue)
+   In perception terms, low-lightness deltas read less than high-lightness
+   ones, so we go a little further to compensate. */
 [data-mode='dark'] {
-	--paper-edge: oklch(0.10 0.010 50);
+	--paper-edge: oklch(0.04 0.025 85);
 }
 
