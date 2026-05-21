@@ -1,4 +1,5 @@
 import { defineConfig, transformerDirectives } from 'unocss'
+import presetIcons from '@unocss/preset-icons'
 import { presetRokkit, presetBackgrounds } from '@rokkit/unocss'
 import config from './rokkit.config.js'
 import { createRequire } from 'module'
@@ -9,7 +10,17 @@ const glyphIcons = Object.keys(glyphData.icons).map((n) => `i-glyph:${n}`)
 
 export default defineConfig({
 	transformers: [transformerDirectives()],
-	presets: [presetRokkit(config), presetBackgrounds()],
+	presets: [
+		presetRokkit(config),
+		presetBackgrounds(),
+		presetIcons({
+			scale: 1.2,
+			extraProperties: {
+				display: 'inline-block',
+				'vertical-align': 'middle'
+			}
+		})
+	],
 	theme: {
 		fontSize: {
 			'2xs':  ['10px',   { 'line-height': '1.4' }],  // micro: timestamps, status labels
@@ -50,7 +61,26 @@ export default defineConfig({
 		'i-glyph:palette',
 		'i-glyph:magic-stick',
 		'i-glyph:layers',
-    'i-glyph:list-items'
+    'i-glyph:list-items',
+		// Iconify mdi-* icons used dynamically (via `class={item.icon}`)
+		// on the landing + /app conv list — UnoCSS scanner can't see them.
+		'i-mdi:chat-outline',
+		'i-mdi:layers-outline',
+		'i-mdi:palette',
+		'i-mdi:format-line-spacing',
+		'i-mdi:format-list-bulleted',
+		'i-mdi:table',
+		'i-mdi:magic-staff',
+		'i-mdi:refresh',
+		'i-mdi:widgets-outline',
+		'i-mdi:form-textbox',
+		'i-mdi:arrow-right',
+		'i-mdi:magnify',
+		'i-mdi:tab',
+		'i-mdi:file-tree',
+		'i-mdi:select-multiple',
+		'i-mdi:help-circle-outline',
+		'i-mdi:book-open-variant'
 	],
 	content: {
 		pipeline: {

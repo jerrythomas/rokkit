@@ -1,47 +1,373 @@
 <script lang="ts">
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
+
+	const navLinks = [
+		{ label: 'Components', href: '/app', active: true },
+		{ label: 'Themes', href: '/app' },
+		{ label: 'Docs', href: '/app' },
+		{ label: 'Playground', href: '/chat-lab' },
+		{ label: 'GitHub ↗', href: 'https://github.com/jerrythomas/rokkit' }
+	]
+
+	const fourPoints = [
+		{
+			icon: 'i-mdi:layers-outline',
+			title: 'Data is the API',
+			body: 'A List takes items. A Tree takes a nested shape. A Form reads its schema. No snippet trees, no recursive composition — pass the data, get a working control.'
+		},
+		{
+			icon: 'i-mdi:palette',
+			title: 'One config drives every look',
+			body: 'Pick a style (zen-sumi, rokkit, minimal, material), a skin (paper / ink / accent palette), a typography pair, a density. Set it once on the body — every component picks it up.'
+		},
+		{
+			icon: 'i-mdi:format-line-spacing',
+			title: 'Density is a data attribute',
+			body: 'Compact for a power-user table. Cozy for a settings page. Comfortable for an onboarding flow. Type stays put — only the rhythm changes.'
+		},
+		{
+			icon: 'i-mdi:chat-outline',
+			title: 'Embeddable in any AI surface',
+			body: "Every component is a typed artifact — items in, value out, no global state. Drop one into Claude, into your own chat, into Rokkit's playground. Same code, themed to its host."
+		}
+	]
+
+	const themedTabs = [
+		{ id: 'zen-sumi', label: 'zen-sumi', desc: 'underline · sumi accent' },
+		{ id: 'rokkit', label: 'rokkit', desc: 'filled block · brand red' },
+		{ id: 'minimal', label: 'minimal', desc: 'hairline only · ink' },
+		{ id: 'material', label: 'material', desc: 'pill bar · brand violet' }
+	]
+
+	const tabsExample = ['Overview', 'Theming', 'Anatomy', 'A11y', 'API']
+
+	const chatBullets = [
+		'Human-in-the-loop forms — AI proposes, user confirms',
+		'Themed to the host product, not to Rokkit',
+		"Same code in the embed, in your app, in Rokkit's own docs",
+		'Components serialize to and from JSON'
+	]
+
+	const planItems = [
+		{ label: 'Ship rokkit v2.0', done: true },
+		{ label: 'Launch the playground beta', done: true },
+		{ label: 'Improve a11y coverage', done: false }
+	]
+
+	const packages = [
+		{ pkg: '@rokkit/core', icon: 'i-mdi:layers-outline', desc: 'primitives, tokens, types' },
+		{ pkg: '@rokkit/data', icon: 'i-mdi:table', desc: 'item shapes, stores' },
+		{ pkg: '@rokkit/actions', icon: 'i-mdi:magic-staff', desc: 'svelte actions: themable, keyboard, focus' },
+		{ pkg: '@rokkit/states', icon: 'i-mdi:refresh', desc: 'finite states for interactive UI' },
+		{ pkg: '@rokkit/icons', icon: 'i-mdi:widgets-outline', desc: 'icon set · customizable' },
+		{ pkg: '@rokkit/themes', icon: 'i-mdi:palette', desc: 'styles · skins · typography pairs' },
+		{ pkg: '@rokkit/ui', icon: 'i-mdi:format-list-bulleted', desc: 'the components themselves' },
+		{ pkg: '@rokkit/chat', icon: 'i-mdi:chat-outline', desc: 'AI / chat embed kit', isNew: true }
+	]
 </script>
 
 <svelte:head>
 	<title>Rokkit — data-driven Svelte components</title>
 </svelte:head>
 
-<div class="landing-stub">
+<div class="landing">
+	<!-- ─── Nav ────────────────────────────────────────────────────── -->
 	<header class="nav">
-		<RokkitWordmark height={28} />
-		<nav>
-			<a href="/app">Components</a>
-			<a href="/app">Themes</a>
-			<a href="/app">Docs</a>
-			<a href="/app">Playground</a>
-			<a href="https://github.com/jerrythomas/rokkit">GitHub ↗</a>
+		<div class="nav-brand">
+			<RokkitWordmark height={28} />
+		</div>
+		<nav class="nav-links">
+			{#each navLinks as link (link.label)}
+				<a href={link.href} class:active={link.active}>{link.label}</a>
+			{/each}
 		</nav>
+		<div class="nav-spacer"></div>
+		<div class="nav-actions">
+			<span class="version-chip">v2.0 · svelte 5</span>
+			<a class="cta-primary" href="/app">
+				<span class="i-mdi:chat-outline icon-sm" aria-hidden="true"></span>
+				Open the playground
+			</a>
+		</div>
 	</header>
 
-	<main>
-		<section class="hero">
-			<div class="eyebrow">Landing page — under construction</div>
-			<h1>Pass the data. The component does the rest.</h1>
+	<!-- ─── Hero ───────────────────────────────────────────────────── -->
+	<section class="hero">
+		<div class="hero-text">
+			<div class="eyebrow">A data-driven Svelte 5 component library</div>
+			<h1>
+				Pass the data.<br />
+				The <em>component</em> does the rest.
+			</h1>
 			<p class="lede">
-				A data-driven Svelte 5 component library and design system.
-				The full marketing front door is being built — for now,
-				jump straight into the chat-first app demo.
+				A list is an items array. A tree is a nested shape. A form is its schema.
+				Rokkit components read their own data — selection, validation, theming,
+				keyboard, a11y — so your code stays about what the user sees, not how to
+				wire it.
 			</p>
-			<div class="cta">
-				<a href="/app" class="primary">Open the demo</a>
-				<a href="/chat-lab" class="secondary">Component lab</a>
+			<div class="hero-actions">
+				<a class="cta-primary" href="/app">
+					<span class="i-mdi:chat-outline icon-sm" aria-hidden="true"></span>
+					Open the playground
+				</a>
+				<a class="cta-secondary" href="/chat-lab">
+					Browse all 47 components →
+				</a>
+				<code class="install-cmd">
+					<span class="prompt">$</span> bun add @rokkit/ui
+				</code>
 			</div>
-		</section>
-	</main>
+		</div>
+
+		<div class="hero-mark">
+			<svg class="brushstroke" viewBox="0 0 360 360" width="380" height="380" aria-hidden="true">
+				<path
+					d="M 180 30 C 80 30, 30 110, 30 190 C 30 280, 120 330, 200 320 C 290 305, 330 220, 320 150 C 310 80, 240 40, 180 50"
+					stroke="var(--ink)"
+					stroke-width="60"
+					fill="none"
+					stroke-linecap="round"
+				/>
+			</svg>
+			<div class="mark-stack">
+				<RokkitWordmark height={88} />
+				<div class="mark-caption">
+					<span>data in</span>
+					<span class="arrow i-mdi:arrow-right" aria-hidden="true"></span>
+					<span>component out</span>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ─── Four Points ────────────────────────────────────────────── -->
+	<section class="four-points">
+		<div class="eyebrow">What makes Rokkit different</div>
+		<div class="points-grid">
+			{#each fourPoints as point (point.title)}
+				<div class="point">
+					<div class="point-icon">
+						<span class={point.icon} aria-hidden="true"></span>
+					</div>
+					<h3>{point.title}</h3>
+					<p>{point.body}</p>
+				</div>
+			{/each}
+		</div>
+	</section>
+
+	<!-- ─── Themed Tabs Row ────────────────────────────────────────── -->
+	<section class="themed-tabs">
+		<div class="section-header">
+			<div class="eyebrow">One component · four styles</div>
+			<h2>
+				The same <code>&lt;Tabs/&gt;</code>, rendered four ways — by changing one
+				attribute on the parent.
+			</h2>
+			<p class="section-lede">
+				No variant prop. No conditional CSS in the component. The style — zen-sumi
+				underline, rokkit block, minimal hairline, material pill — comes from
+				<code>data-style</code> on the body. Components don't know which one is on;
+				they just render.
+			</p>
+		</div>
+
+		<div class="tabs-grid">
+			{#each themedTabs as theme (theme.id)}
+				<div class="tabs-card" data-style={theme.id}>
+					<div class="tabs-card-head">
+						<code class="tabs-card-attr">data-style="{theme.label}"</code>
+						<span class="tabs-card-desc">{theme.desc}</span>
+					</div>
+					<div class="tabs-card-body">
+						<div class="tabs-mock" data-style={theme.id}>
+							<div class="tabs-mock-bar">
+								{#each tabsExample as tab, i (tab)}
+									<button type="button" class:on={i === 1}>{tab}</button>
+								{/each}
+							</div>
+							<div class="tabs-mock-content">
+								<strong>Theming · data-driven</strong>
+								<p>
+									One component definition. The look — bar, indicator, density —
+									comes from <code>data-style</code> on the parent.
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			{/each}
+		</div>
+	</section>
+
+	<!-- ─── Chat Embed ─────────────────────────────────────────────── -->
+	<section class="chat-embed">
+		<div class="chat-embed-text">
+			<div class="eyebrow accent">For AI · for chat surfaces</div>
+			<h2>Components that<br />belong in a conversation.</h2>
+			<p>
+				Stream a JSON spec from your model. Rokkit's <code>&lt;Form/&gt;</code>,
+				<code>&lt;Table/&gt;</code>, <code>&lt;Chart/&gt;</code> render the response
+				as a real, themed, interactive artifact. The user clicks. Your model gets
+				the result back.
+			</p>
+			<ul class="chat-bullets">
+				{#each chatBullets as bullet (bullet)}
+					<li>
+						<span class="arrow i-mdi:arrow-right" aria-hidden="true"></span>
+						{bullet}
+					</li>
+				{/each}
+			</ul>
+		</div>
+
+		<div class="chat-mock">
+			<div class="chat-mock-head">
+				<span class="status-dot"></span>
+				<span class="chat-mock-label">Inside a Claude / OpenAI chat</span>
+				<span class="chat-mock-meta">themed to host</span>
+			</div>
+			<div class="chat-mock-body">
+				<div class="chat-bubble user">
+					help me lock the Q3 plan — give me the three priorities and a deadline.
+				</div>
+				<div class="chat-artifact">
+					<span class="chat-artifact-icon">
+						<span class="i-mdi:form-textbox" aria-hidden="true"></span>
+					</span>
+					<div class="chat-artifact-content">
+						<div class="artifact-label">
+							rokkit · &lt;Form/&gt; · streamed from response
+						</div>
+						<div class="artifact-card">
+							<div class="artifact-title">Q3 plan · priorities</div>
+							<div class="artifact-sub">3 items · 1 date · editable</div>
+							<div class="plan-items">
+								{#each planItems as item (item.label)}
+									<div class="plan-item">
+										<span class="plan-checkbox" data-checked={item.done ? '' : undefined}>
+											{#if item.done}
+												<svg viewBox="0 0 10 10" width="10" height="10" aria-hidden="true">
+													<path d="M2 5 L4 7 L8 3" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+												</svg>
+											{/if}
+										</span>
+										{item.label}
+									</div>
+								{/each}
+							</div>
+							<div class="plan-deadline">
+								<span class="deadline-label">Deadline</span>
+								<span class="deadline-value">30 Sep 2026</span>
+							</div>
+							<div class="artifact-actions">
+								<button type="button" class="ghost">Edit</button>
+								<button type="button" class="accent">Confirm</button>
+							</div>
+						</div>
+						<div class="artifact-footer">
+							rendered from {'{ items: [...], deadline: "..." }'} · 11 lines of Svelte
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ─── Packages ───────────────────────────────────────────────── -->
+	<section class="packages">
+		<div class="section-header inline">
+			<div>
+				<div class="eyebrow">The eight packages</div>
+				<h2>Pull in only what you need.</h2>
+			</div>
+			<a class="see-all" href="https://npmjs.com/~jerrythomas">see all on npm ↗</a>
+		</div>
+		<div class="packages-grid">
+			{#each packages as pkg (pkg.pkg)}
+				<div class="package-card">
+					<div class="package-head">
+						<span class="package-icon">
+							<span class={pkg.icon} aria-hidden="true"></span>
+						</span>
+						<span class="package-name">{pkg.pkg}</span>
+					</div>
+					<div class="package-desc">{pkg.desc}</div>
+					{#if pkg.isNew}
+						<span class="new-badge">NEW</span>
+					{/if}
+				</div>
+			{/each}
+		</div>
+	</section>
+
+	<!-- ─── CTA + Footer ───────────────────────────────────────────── -->
+	<section class="cta">
+		<div class="cta-text">
+			<h2>The library is the chat is the docs.</h2>
+			<p>
+				Open the playground, ask for any component or how-to, get a real working
+				artifact back. Browse the same components from the sidebar. Read the same
+				docs they were mounted from.
+			</p>
+		</div>
+		<div class="cta-actions">
+			<a class="cta-primary lg" href="/app">
+				<span class="i-mdi:chat-outline icon-sm" aria-hidden="true"></span>
+				Open the playground
+			</a>
+			<a class="cta-secondary lg" href="/chat-lab">Read the docs</a>
+		</div>
+	</section>
+
+	<footer class="footer">
+		<div class="footer-brand">
+			<RokkitWordmark height={22} />
+			<span class="footer-meta">v2.0 · MIT · Svelte 5</span>
+		</div>
+		<div class="footer-links">
+			<span class="footer-repo">jerrythomas / rokkit</span>
+			<span class="footer-services">github · npm · vercel</span>
+		</div>
+	</footer>
 </div>
 
 <style>
-	.landing-stub {
+	.landing {
 		min-height: 100vh;
 		background: var(--paper);
 		color: var(--ink);
 		font-family: var(--font-ui);
 	}
+
+	/* Shared utility classes for icons & arrow indicators */
+	.icon-sm {
+		display: inline-block;
+		width: 14px;
+		height: 14px;
+		flex-shrink: 0;
+	}
+
+	.arrow {
+		display: inline-block;
+		width: 12px;
+		height: 12px;
+		color: var(--accent);
+		flex-shrink: 0;
+	}
+
+	.eyebrow {
+		font: 500 11px var(--font-mono);
+		color: var(--ink-soft);
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+	}
+
+	.eyebrow.accent {
+		color: var(--accent);
+	}
+
+	/* ─── Nav ────────────────────────────────────────────────────── */
 
 	.nav {
 		display: flex;
@@ -55,91 +381,850 @@
 		z-index: 5;
 	}
 
-	.nav nav {
+	.nav-brand {
+		display: inline-flex;
+		align-items: center;
+	}
+
+	.nav-links {
 		display: flex;
 		gap: 24px;
 		margin-left: 48px;
 	}
 
-	.nav nav a {
+	.nav-links a {
 		font: 500 13px var(--font-ui);
 		color: var(--ink-mute);
 		text-decoration: none;
 		white-space: nowrap;
 	}
 
-	.nav nav a:hover {
+	.nav-links a:hover {
 		color: var(--ink);
 	}
 
-	.hero {
-		max-width: 720px;
-		margin: 0 auto;
-		padding: 96px 32px 64px;
-		text-align: center;
+	.nav-links a.active {
+		color: var(--ink);
+	}
+
+	.nav-spacer {
+		flex: 1;
+	}
+
+	.nav-actions {
 		display: flex;
-		flex-direction: column;
-		gap: 20px;
 		align-items: center;
+		gap: 10px;
 	}
 
-	.eyebrow {
-		font: 500 11px var(--font-mono);
-		color: var(--accent);
-		letter-spacing: 0.16em;
-		text-transform: uppercase;
+	.version-chip {
+		font: 500 11.5px var(--font-mono);
+		color: var(--ink-soft);
+		padding: 3px 8px;
+		border: 1px solid var(--paper-edge);
+		border-radius: 4px;
+		white-space: nowrap;
 	}
 
-	.hero h1 {
-		font: 400 56px/1.05 var(--font-display);
-		color: var(--ink);
-		letter-spacing: -0.025em;
-		margin: 0;
-		max-width: 620px;
-	}
-
-	.lede {
-		font: 400 17px/1.55 var(--font-ui);
-		color: var(--ink-mute);
-		margin: 0;
-		max-width: 540px;
-	}
-
-	.cta {
-		margin-top: 16px;
-		display: flex;
-		gap: 12px;
-		flex-wrap: wrap;
-		justify-content: center;
-	}
-
-	.cta a {
+	.cta-primary {
 		display: inline-flex;
 		align-items: center;
-		height: 40px;
-		padding: 0 18px;
-		border-radius: 6px;
-		font: 500 14px var(--font-ui);
-		text-decoration: none;
-		border: 1px solid var(--paper-edge);
-	}
-
-	.cta .primary {
+		gap: 8px;
+		padding: 8px 14px;
 		background: var(--ink);
 		color: var(--paper);
-		border-color: var(--ink);
+		font: 500 13px var(--font-ui);
+		border-radius: 6px;
+		border: 0;
+		cursor: pointer;
+		text-decoration: none;
 	}
 
-	.cta .primary:hover {
+	.cta-primary:hover {
 		background: color-mix(in oklab, var(--ink) 85%, white);
 	}
 
-	.cta .secondary {
+	.cta-primary.lg {
+		padding: 14px 22px;
+		font-size: 14px;
+	}
+
+	.cta-secondary {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 12px 20px;
+		background: transparent;
+		color: var(--ink);
+		font: 500 14px var(--font-ui);
+		border-radius: 6px;
+		border: 1px solid var(--ink);
+		cursor: pointer;
+		text-decoration: none;
+	}
+
+	.cta-secondary:hover {
+		border-color: var(--ink-mute);
+		color: var(--ink-mute);
+	}
+
+	.cta-secondary.lg {
+		padding: 14px 22px;
+	}
+
+	/* ─── Hero ───────────────────────────────────────────────────── */
+
+	.hero {
+		padding: 80px 48px 64px;
+		display: grid;
+		grid-template-columns: 1fr 460px;
+		gap: 96px;
+		align-items: center;
+	}
+
+	.hero-text .eyebrow {
+		margin-bottom: 18px;
+	}
+
+	.hero h1 {
+		font: 300 64px/1.04 var(--font-display);
+		letter-spacing: -0.025em;
+		color: var(--ink);
+		margin: 0;
+	}
+
+	.hero h1 em {
+		color: var(--accent);
+		font-style: normal;
+		font-weight: 400;
+	}
+
+	.lede {
+		margin: 28px 0 0;
+		font: 400 17px/1.6 var(--font-ui);
+		color: var(--ink-mute);
+		max-width: 560px;
+	}
+
+	.hero-actions {
+		display: flex;
+		gap: 12px;
+		margin-top: 36px;
+		align-items: center;
+		flex-wrap: wrap;
+	}
+
+	.install-cmd {
+		font: 500 12.5px var(--font-mono);
+		color: var(--ink-mute);
+		padding: 10px 14px;
+		background: var(--paper-soft);
+		border: 1px solid var(--paper-edge);
+		border-radius: 6px;
+	}
+
+	.install-cmd .prompt {
+		color: var(--ink-faint);
+	}
+
+	.hero-mark {
+		display: flex;
+		justify-content: center;
+		position: relative;
+	}
+
+	.hero-mark > * {
+		position: absolute;
+	}
+
+	.hero-mark {
+		width: 420px;
+		height: 380px;
+	}
+
+	.brushstroke {
+		top: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		opacity: 0.06;
+	}
+
+	.mark-stack {
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 20px;
+	}
+
+	.mark-caption {
+		display: flex;
+		gap: 12px;
+		align-items: center;
+		font: 500 11px var(--font-mono);
+		color: var(--ink-soft);
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+
+	/* ─── Four Points ────────────────────────────────────────────── */
+
+	.four-points {
+		padding: 72px 48px;
+		border-top: 1px solid var(--paper-edge);
+		background: var(--paper-soft);
+	}
+
+	.four-points .eyebrow {
+		margin-bottom: 32px;
+	}
+
+	.points-grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 48px;
+	}
+
+	.point-icon {
+		width: 36px;
+		height: 36px;
+		display: grid;
+		place-items: center;
+		border-radius: 8px;
+		color: var(--accent);
+		background: var(--accent-soft);
+		border: 1px solid color-mix(in oklab, var(--accent) 22%, transparent);
+		margin-bottom: 14px;
+	}
+
+	.point-icon > span {
+		display: inline-block;
+		width: 18px;
+		height: 18px;
+	}
+
+	.point h3 {
+		font: 500 18px/1.3 var(--font-display);
+		color: var(--ink);
+		letter-spacing: -0.01em;
+		margin: 0 0 10px;
+	}
+
+	.point p {
+		font: 400 14px/1.6 var(--font-ui);
+		color: var(--ink-mute);
+		margin: 0;
+	}
+
+	/* ─── Section Header (shared) ────────────────────────────────── */
+
+	.section-header {
+		margin-bottom: 28px;
+	}
+
+	.section-header.inline {
+		display: flex;
+		align-items: flex-end;
+		justify-content: space-between;
+		gap: 20px;
+	}
+
+	.section-header .eyebrow {
+		margin-bottom: 10px;
+	}
+
+	.section-header h2 {
+		font: 300 36px/1.2 var(--font-display);
+		letter-spacing: -0.025em;
+		color: var(--ink);
+		margin: 0;
+		max-width: 720px;
+	}
+
+	.section-header h2 code {
+		font-family: var(--font-mono);
+		color: var(--accent);
+		font-size: 0.85em;
+	}
+
+	.section-lede {
+		font: 400 14px/1.55 var(--font-ui);
+		color: var(--ink-mute);
+		margin: 14px 0 0;
+		max-width: 640px;
+	}
+
+	.section-lede code {
+		font-family: var(--font-mono);
+		padding: 1px 5px;
+		border-radius: 3px;
+		background: var(--paper-soft);
+		border: 1px solid var(--paper-edge);
+		font-size: 12px;
+	}
+
+	/* ─── Themed Tabs Row ────────────────────────────────────────── */
+
+	.themed-tabs {
+		padding: 80px 48px;
+		border-top: 1px solid var(--paper-edge);
+	}
+
+	.tabs-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 14px;
+	}
+
+	.tabs-card {
 		background: var(--paper);
+		border: 1px solid var(--paper-edge);
+		border-radius: 10px;
+		overflow: hidden;
+	}
+
+	.tabs-card-head {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 10px 14px;
+		border-bottom: 1px solid var(--paper-edge);
+		background: var(--paper-soft);
+	}
+
+	.tabs-card-attr {
+		font: 500 11.5px var(--font-mono);
+		color: var(--ink-mute);
+	}
+
+	.tabs-card-desc {
+		font: 500 11px var(--font-mono);
+		color: var(--ink-soft);
+		margin-left: auto;
+		letter-spacing: 0.04em;
+	}
+
+	.tabs-card-body {
+		padding: 18px 18px 20px;
+	}
+
+	/* Tabs mock — different look per data-style */
+	.tabs-mock-bar {
+		display: flex;
+	}
+
+	.tabs-mock-bar button {
+		position: relative;
+		padding: 9px 14px;
+		font: 500 13px var(--font-ui);
+		background: transparent;
+		border: 0;
+		cursor: pointer;
+		color: var(--ink-soft);
+	}
+
+	.tabs-mock-bar button.on {
 		color: var(--ink);
 	}
 
-	.cta .secondary:hover {
-		border-color: var(--ink-soft);
+	.tabs-mock-content {
+		padding: 18px 4px 4px;
+		font: 400 13px/1.6 var(--font-ui);
+		color: var(--ink-mute);
+	}
+
+	.tabs-mock-content strong {
+		display: block;
+		font: 500 14.5px var(--font-display);
+		color: var(--ink);
+		margin-bottom: 6px;
+		letter-spacing: -0.005em;
+	}
+
+	.tabs-mock-content p {
+		margin: 0;
+	}
+
+	.tabs-mock-content code {
+		font: 500 12px var(--font-mono);
+		padding: 1px 5px;
+		background: var(--paper-soft);
+		border: 1px solid var(--paper-edge);
+		border-radius: 3px;
+		color: var(--ink-mute);
+	}
+
+	/* Style-specific tab presentations */
+	.tabs-mock[data-style='zen-sumi'] .tabs-mock-bar {
+		border-bottom: 1px solid var(--paper-edge);
+	}
+	.tabs-mock[data-style='zen-sumi'] .tabs-mock-bar button.on::after {
+		content: '';
+		position: absolute;
+		left: 14px;
+		right: 14px;
+		bottom: -1px;
+		height: 1.5px;
+		background: var(--accent);
+	}
+
+	.tabs-mock[data-style='rokkit'] .tabs-mock-bar {
+		gap: 4px;
+		padding: 0 0 1px;
+		border-bottom: 1px solid var(--paper-edge);
+	}
+	.tabs-mock[data-style='rokkit'] .tabs-mock-bar button {
+		border-radius: 6px 6px 0 0;
+	}
+	.tabs-mock[data-style='rokkit'] .tabs-mock-bar button.on {
+		background: var(--accent);
+		color: white;
+	}
+
+	.tabs-mock[data-style='minimal'] .tabs-mock-bar {
+		gap: 24px;
+		padding: 0;
+		border-bottom: 1px solid var(--paper-edge);
+	}
+	.tabs-mock[data-style='minimal'] .tabs-mock-bar button {
+		padding: 8px 0;
+		font-weight: 400;
+	}
+	.tabs-mock[data-style='minimal'] .tabs-mock-bar button.on {
+		font-weight: 500;
+	}
+	.tabs-mock[data-style='minimal'] .tabs-mock-bar button.on::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: -1px;
+		height: 1px;
+		background: var(--ink);
+	}
+
+	.tabs-mock[data-style='material'] .tabs-mock-bar {
+		gap: 4px;
+		padding: 4px;
+		background: var(--paper-soft);
+		border-radius: 9999px;
+		align-self: flex-start;
+		display: inline-flex;
+	}
+	.tabs-mock[data-style='material'] .tabs-mock-bar button {
+		border-radius: 9999px;
+		padding: 6px 14px;
+		font-size: 12.5px;
+	}
+	.tabs-mock[data-style='material'] .tabs-mock-bar button.on {
+		background: oklch(0.46 0.1 295);
+		color: white;
+	}
+
+	/* ─── Chat Embed ─────────────────────────────────────────────── */
+
+	.chat-embed {
+		padding: 88px 48px;
+		border-top: 1px solid var(--paper-edge);
+		background: var(--paper-soft);
+		display: grid;
+		grid-template-columns: 440px 1fr;
+		gap: 64px;
+		align-items: flex-start;
+	}
+
+	.chat-embed-text .eyebrow {
+		margin-bottom: 14px;
+	}
+
+	.chat-embed h2 {
+		font: 300 36px/1.2 var(--font-display);
+		letter-spacing: -0.025em;
+		color: var(--ink);
+		margin: 0 0 18px;
+	}
+
+	.chat-embed p {
+		font: 400 15px/1.65 var(--font-ui);
+		color: var(--ink-mute);
+		margin: 0;
+	}
+
+	.chat-embed code {
+		font-family: var(--font-mono);
+		padding: 1px 5px;
+		border-radius: 3px;
+		background: var(--paper);
+		border: 1px solid var(--paper-edge);
+		font-size: 12px;
+	}
+
+	.chat-bullets {
+		margin: 24px 0 0;
+		padding: 0;
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+
+	.chat-bullets li {
+		display: flex;
+		align-items: flex-start;
+		gap: 10px;
+		font: 400 14px/1.5 var(--font-ui);
+		color: var(--ink-mute);
+	}
+
+	.chat-bullets li .arrow {
+		margin-top: 4px;
+	}
+
+	.chat-mock {
+		border: 1px solid var(--paper-edge);
+		border-radius: 12px;
+		overflow: hidden;
+		background: var(--paper);
+		box-shadow: 0 1px 3px var(--shadow-tint);
+	}
+
+	.chat-mock-head {
+		padding: 10px 14px;
+		border-bottom: 1px solid var(--paper-edge);
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		background: var(--paper-soft);
+	}
+
+	.status-dot {
+		width: 8px;
+		height: 8px;
+		border-radius: 4px;
+		background: var(--success);
+	}
+
+	.chat-mock-label {
+		font: 500 11px var(--font-mono);
+		color: var(--ink-soft);
+		letter-spacing: 0.06em;
+		flex: 1;
+	}
+
+	.chat-mock-meta {
+		font: 500 10.5px var(--font-mono);
+		color: var(--ink-faint);
+		letter-spacing: 0.06em;
+	}
+
+	.chat-mock-body {
+		padding: 22px;
+		display: flex;
+		flex-direction: column;
+		gap: 18px;
+	}
+
+	.chat-bubble {
+		align-self: flex-end;
+		max-width: 78%;
+		padding: 10px 14px;
+		background: var(--paper-soft);
+		border: 1px solid var(--paper-edge);
+		border-radius: 8px;
+		font: 400 14px/1.5 var(--font-ui);
+		color: var(--ink);
+	}
+
+	.chat-artifact {
+		display: flex;
+		align-items: flex-start;
+		gap: 10px;
+	}
+
+	.chat-artifact-icon {
+		width: 26px;
+		height: 26px;
+		flex-shrink: 0;
+		display: grid;
+		place-items: center;
+		border: 1px solid var(--paper-edge);
+		border-radius: 6px;
+		background: var(--accent-soft);
+		color: var(--accent);
+	}
+
+	.chat-artifact-icon > span {
+		display: inline-block;
+		width: 14px;
+		height: 14px;
+	}
+
+	.chat-artifact-content {
+		flex: 1;
+	}
+
+	.artifact-label {
+		font: 500 10.5px var(--font-mono);
+		color: var(--ink-soft);
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		margin-bottom: 6px;
+	}
+
+	.artifact-card {
+		border: 1px solid var(--paper-edge);
+		border-radius: 8px;
+		padding: 14px;
+		background: var(--paper);
+	}
+
+	.artifact-title {
+		font: 500 13px var(--font-display);
+		color: var(--ink);
+		margin-bottom: 4px;
+		letter-spacing: -0.005em;
+	}
+
+	.artifact-sub {
+		font: 400 11.5px var(--font-mono);
+		color: var(--ink-soft);
+		margin-bottom: 12px;
+	}
+
+	.plan-items {
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+	}
+
+	.plan-item {
+		display: flex;
+		align-items: center;
+		gap: 9px;
+		padding: 8px 10px;
+		background: var(--paper-soft);
+		border: 1px solid var(--paper-edge);
+		border-radius: 5px;
+		font: 400 12.5px var(--font-ui);
+		color: var(--ink);
+	}
+
+	.plan-checkbox {
+		width: 14px;
+		height: 14px;
+		border: 1px solid var(--paper-edge);
+		border-radius: 3px;
+		flex-shrink: 0;
+		position: relative;
+		display: grid;
+		place-items: center;
+	}
+
+	.plan-checkbox[data-checked] {
+		background: var(--ink);
+		color: var(--paper);
+	}
+
+	.plan-deadline {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		margin-top: 12px;
+		padding-top: 12px;
+		border-top: 1px dashed var(--paper-edge);
+	}
+
+	.deadline-label {
+		font: 500 11.5px var(--font-ui);
+		color: var(--ink-mute);
+		flex: 1;
+	}
+
+	.deadline-value {
+		font: 500 12px var(--font-mono);
+		padding: 4px 10px;
+		background: var(--paper-soft);
+		border: 1px solid var(--paper-edge);
+		border-radius: 4px;
+	}
+
+	.artifact-actions {
+		display: flex;
+		gap: 6px;
+		margin-top: 14px;
+		justify-content: flex-end;
+	}
+
+	.artifact-actions button {
+		font: 500 12px var(--font-ui);
+		padding: 7px 14px;
+		border-radius: 5px;
+		cursor: pointer;
+	}
+
+	.artifact-actions .ghost {
+		background: transparent;
+		border: 1px solid var(--paper-edge);
+		color: var(--ink-mute);
+	}
+
+	.artifact-actions .accent {
+		background: var(--accent);
+		color: white;
+		border: 0;
+	}
+
+	.artifact-footer {
+		font: 500 10.5px var(--font-mono);
+		color: var(--ink-faint);
+		letter-spacing: 0.02em;
+		margin-top: 8px;
+	}
+
+	/* ─── Packages ───────────────────────────────────────────────── */
+
+	.packages {
+		padding: 72px 48px;
+		border-top: 1px solid var(--paper-edge);
+	}
+
+	.packages .section-header h2 {
+		font-size: 32px;
+	}
+
+	.see-all {
+		font: 500 13px var(--font-ui);
+		color: var(--ink-mute);
+		text-decoration: none;
+	}
+
+	.see-all:hover {
+		color: var(--ink);
+	}
+
+	.packages-grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 14px;
+	}
+
+	.package-card {
+		padding: 16px 16px 14px;
+		border: 1px solid var(--paper-edge);
+		border-radius: 8px;
+		background: var(--paper);
+		position: relative;
+	}
+
+	.package-head {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin-bottom: 8px;
+	}
+
+	.package-icon {
+		color: var(--accent);
+	}
+
+	.package-icon > span {
+		display: inline-block;
+		width: 14px;
+		height: 14px;
+	}
+
+	.package-name {
+		font: 500 13px var(--font-mono);
+		color: var(--ink);
+	}
+
+	.package-desc {
+		font: 400 12.5px/1.45 var(--font-ui);
+		color: var(--ink-soft);
+	}
+
+	.new-badge {
+		position: absolute;
+		top: 12px;
+		right: 12px;
+		font: 500 9px var(--font-mono);
+		padding: 2px 6px;
+		background: var(--accent);
+		color: white;
+		border-radius: 3px;
+		letter-spacing: 0.1em;
+	}
+
+	/* ─── CTA + Footer ───────────────────────────────────────────── */
+
+	.cta {
+		padding: 80px 48px;
+		border-top: 1px solid var(--paper-edge);
+		background: var(--paper-soft);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 32px;
+		flex-wrap: wrap;
+	}
+
+	.cta h2 {
+		font: 300 40px/1.2 var(--font-display);
+		letter-spacing: -0.025em;
+		color: var(--ink);
+		margin: 0 0 12px;
+	}
+
+	.cta p {
+		font: 400 15px/1.6 var(--font-ui);
+		color: var(--ink-mute);
+		margin: 0;
+		max-width: 600px;
+	}
+
+	.cta-actions {
+		display: flex;
+		gap: 10px;
+	}
+
+	.footer {
+		padding: 32px 48px 40px;
+		border-top: 1px solid var(--paper-edge);
+		display: flex;
+		align-items: flex-end;
+		gap: 48px;
+	}
+
+	.footer-brand {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		gap: 16px;
+	}
+
+	.footer-meta {
+		font: 500 11px var(--font-mono);
+		color: var(--ink-soft);
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+	}
+
+	.footer-links {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		align-items: flex-end;
+	}
+
+	.footer-repo {
+		font: 500 11.5px var(--font-mono);
+		color: var(--ink-mute);
+	}
+
+	.footer-services {
+		font: 500 11px var(--font-mono);
+		color: var(--ink-faint);
 	}
 </style>
