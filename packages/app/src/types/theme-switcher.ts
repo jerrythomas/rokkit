@@ -63,11 +63,31 @@ export function buildThemeSwitcherOptions(
 // Component Props
 // =============================================================================
 
+/**
+ * Visual variant.
+ * - `'single'` — one icon-only button that cycles between light and dark on click.
+ *   System mode is not part of the cycle. The icon shows the mode you'd switch *to*.
+ * - `'pair'`   — two buttons: light and dark. Equivalent to `includeSystem={false}`
+ *   for the legacy triad UI.
+ * - `'triad'`  — three buttons: system, light, dark. Default.
+ */
+export type ThemeSwitcherVariant = 'single' | 'pair' | 'triad'
+
 export interface ThemeSwitcherToggleProps {
-	/** Which modes to show. Default: ['system', 'light', 'dark'] */
+	/** Visual variant. Default: 'triad'. */
+	variant?: ThemeSwitcherVariant
+
+	/**
+	 * Which modes to show. Only honored for `variant: 'triad'`.
+	 * Default: `['system', 'light', 'dark']`.
+	 */
 	modes?: ColorMode[]
 
-	/** Whether to include system mode. Default: true. Shortcut for filtering 'system' from modes. */
+	/**
+	 * Whether to include system mode. Default: true. Shortcut for filtering 'system'
+	 * from modes. Only honored for `variant: 'triad'`. For `'pair'` and `'single'`
+	 * system is never included.
+	 */
 	includeSystem?: boolean
 
 	/** Override icons per mode */
@@ -76,7 +96,7 @@ export interface ThemeSwitcherToggleProps {
 	/** Override labels per mode. Merged over messages.mode */
 	labels?: ThemeSwitcherLabels
 
-	/** Show text labels alongside icons. Default: false */
+	/** Show text labels alongside icons. Ignored for `variant: 'single'`. Default: false */
 	showLabels?: boolean
 
 	/** Size variant. Default: 'sm' */
@@ -88,7 +108,7 @@ export interface ThemeSwitcherToggleProps {
 	/** Additional CSS classes */
 	class?: string
 
-	/** Custom snippet for rendering toggle items */
+	/** Custom snippet for rendering toggle items (only honored for `'pair'` / `'triad'`) */
 	item?: ToggleItemSnippet
 
 	/** Called when mode changes */

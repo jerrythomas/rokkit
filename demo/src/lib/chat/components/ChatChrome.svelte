@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte'
+	import { ThemeSwitcherToggle } from '@rokkit/app'
 
 	interface StyleOption {
 		id: string
@@ -13,8 +14,6 @@
 		style?: string
 		/** Current density id ("compact" | "cozy" | "comfortable") — bindable */
 		density?: string
-		/** Current mode ("light" | "dark") — bindable */
-		mode?: 'light' | 'dark'
 		/** Available styles for the picker. Empty disables the picker. */
 		styles?: StyleOption[]
 		/** Available density options (defaults to compact/cozy/comfortable) */
@@ -32,7 +31,6 @@
 	let {
 		style = $bindable('zen-sumi'),
 		density = $bindable('cozy'),
-		mode = $bindable('light'),
 		styles = [],
 		densities = [
 			{ id: 'compact', label: 'Compact' },
@@ -52,10 +50,6 @@
 	function pickStyle(id: string) {
 		style = id
 		pickerOpen = false
-	}
-
-	function toggleMode() {
-		mode = mode === 'dark' ? 'light' : 'dark'
 	}
 </script>
 
@@ -150,22 +144,5 @@
 		<div data-chat-chrome-actions>{@render actions()}</div>
 	{/if}
 
-	<button
-		type="button"
-		data-chat-chrome-mode-toggle
-		title={mode === 'dark' ? 'Light mode' : 'Dark mode'}
-		aria-label={mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-		onclick={toggleMode}
-	>
-		{#if mode === 'dark'}
-			<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true">
-				<circle cx="7" cy="7" r="2.4"/>
-				<path d="M7 1 v1.5 M7 11.5 v1.5 M1 7 h1.5 M11.5 7 h1.5 M2.7 2.7 l1 1 M10.3 10.3 l1 1 M2.7 11.3 l1 -1 M10.3 3.7 l1 -1"/>
-			</svg>
-		{:else}
-			<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" aria-hidden="true">
-				<path d="M11.5 8.5 A 5 5 0 1 1 5.5 2.5 A 4 4 0 0 0 11.5 8.5 Z"/>
-			</svg>
-		{/if}
-	</button>
+	<ThemeSwitcherToggle variant="single" />
 </header>

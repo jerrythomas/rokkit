@@ -16,9 +16,11 @@
 		{ id: 'material', label: 'material', colors: ['#FFFFFF', '#1F1F1F', '#6750A4'] }
 	]
 
+	import { vibe } from '@rokkit/states'
+
 	let style = $state('zen-sumi')
 	let density = $state('cozy')
-	let mode = $state<'light' | 'dark'>('light')
+	const mode = $derived<'light' | 'dark'>(vibe.mode === 'dark' ? 'dark' : 'light')
 	let collapsed = $state(false)
 	let composerValue = $state('')
 
@@ -33,6 +35,9 @@
 		document.documentElement.dataset.mode = mode
 		document.documentElement.dataset.style = style
 		document.documentElement.dataset.density = density
+		document.body.dataset.mode = mode
+		document.body.dataset.style = style
+		document.body.dataset.density = density
 	})
 </script>
 
@@ -44,7 +49,6 @@
 	<ChatChrome
 		bind:style
 		bind:density
-		bind:mode
 		{styles}
 		hideTrafficLights={false}
 	>

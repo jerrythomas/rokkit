@@ -7,8 +7,10 @@
 	} from '$lib/chat'
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
 	import { theme } from '$lib/stores/theme.svelte'
+	import { vibe } from '@rokkit/states'
 	import { koan, selectDemo } from '$lib/koan/store.svelte'
 	import { onMount } from 'svelte'
+	import { browser } from '$app/environment'
 
 	const styles = [
 		{ id: 'zen-sumi', label: 'zen-sumi', colors: ['#F7F3EA', '#2A2925', '#A83D1F'] },
@@ -20,7 +22,7 @@
 	// Local chrome bindings synced with the theme store
 	let style = $state(theme.style)
 	let density = $state(theme.density)
-	let mode = $state<'light' | 'dark'>(theme.mode === 'dark' ? 'dark' : 'light')
+	const mode = $derived<'light' | 'dark'>(theme.mode === 'dark' ? 'dark' : 'light')
 
 	$effect(() => {
 		if (style !== theme.style) theme.setStyle(style)
@@ -28,8 +30,19 @@
 	$effect(() => {
 		if (density !== theme.density) theme.setDensity(density)
 	})
+
+	// Bridge: ChatChrome's mode toggle (ThemeSwitcherToggle) writes to vibe.
+	// Sync vibe.mode → demo theme store so body.dataset.mode flips and the
+	// dark mode CSS responds. On mount we seed vibe from theme so the
+	// switcher reflects the persisted user choice.
+	onMount(() => {
+		if (browser) {
+			const persisted = theme.mode === 'dark' ? 'dark' : 'light'
+			if (vibe.mode !== persisted) vibe.mode = persisted
+		}
+	})
 	$effect(() => {
-		if (mode !== theme.mode) theme.setMode(mode)
+		if (vibe.mode !== theme.mode) theme.setMode(vibe.mode)
 	})
 
 	let collapsed = $state(false)
@@ -95,7 +108,6 @@
 	<ChatChrome
 		bind:style
 		bind:density
-		bind:mode
 		{styles}
 	>
 		{#snippet brand()}

@@ -7,6 +7,7 @@
 	import { ColorModeManager, type ColorMode } from '../utils/color-mode.svelte.js'
 
 	let {
+		variant = 'triad',
 		modes = ['system', 'light', 'dark'],
 		includeSystem = true,
 		icons: userIcons,
@@ -20,8 +21,17 @@
 	}: ThemeSwitcherToggleProps = $props()
 
 	const icons = $derived({ ...defaultThemeSwitcherIcons, ...userIcons })
-	const effectiveModes = $derived(includeSystem ? modes : modes.filter((m) => m !== 'system'))
+
+	// `single` and `pair` exclude system; `triad` honors `modes` + `includeSystem`.
+	const effectiveModes = $derived.by<ColorMode[]>(() => {
+		if (variant === 'single' || variant === 'pair') return ['light', 'dark']
+		return includeSystem ? modes : modes.filter((m) => m !== 'system')
+	})
+
 	const options = $derived(buildThemeSwitcherOptions(icons, effectiveModes, userLabels))
+
+	// `single` → Toggle's button variant (cycles); `pair` / `triad` → group.
+	const toggleVariant = $derived<'button' | 'group'>(variant === 'single' ? 'button' : 'group')
 
 	const manager = new ColorModeManager(vibe)
 	let value = $derived(manager.mode)
@@ -38,6 +48,7 @@
 </script>
 
 <Toggle
+	variant={toggleVariant}
 	{options}
 	{value}
 	onchange={handleChange}

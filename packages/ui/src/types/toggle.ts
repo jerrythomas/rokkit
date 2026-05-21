@@ -33,9 +33,21 @@ export type ToggleItemSnippet = Snippet<[ProxyItem, boolean]>
 // =============================================================================
 
 /**
+ * Visual variant of the Toggle.
+ * - `'group'` (default) — segmented radio-group rendering, one button per option.
+ * - `'button'` — single button that cycles through the options on each click.
+ *   The rendered content represents the *next* option (the one you'd switch to),
+ *   so users can read the click destination at a glance.
+ */
+export type ToggleVariant = 'group' | 'button'
+
+/**
  * Props for the Toggle component
  */
 export interface ToggleProps {
+	/** Visual variant. Default: 'group'. */
+	variant?: ToggleVariant
+
 	/** Array of toggle options (strings, numbers, or objects) */
 	options?: ToggleItem[]
 
