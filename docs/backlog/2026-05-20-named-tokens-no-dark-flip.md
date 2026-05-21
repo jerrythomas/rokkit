@@ -1,109 +1,38 @@
 # Named Tokens — Dark Mode Inversion Gap
 
 **Date:** 2026-05-20 (updated 2026-05-21)
-**Status:** Backlog — partial fix in place; deeper issue remains
+**Status:** Partial fix landed; full refactor planned
 
-## Status today
+## Status
 
-- Top-level `skin:` (dual-palette) is now present in `demo/rokkit.config.js`.
-- The runtime preset correctly emits a `[data-mode="dark"]` block for named tokens.
-- The demo's runtime `applySkin` now writes dual-palette overrides via a managed `<style>` element (`koan-skin-overrides`).
-- The previous compat workaround in `demo/src/lib/koan/compat.css` (which produced a circular reference against the preset's z-alias direction) has been removed.
+- **2026-05-20 (landed)**: Preset now emits `[data-mode="dark"]` for named tokens. Demo's `applySkin` writes a managed `<style>` element supporting dual-palette mappings. `compat.css` workaround removed.
+- **2026-05-20 (landed)**: Sumi palette inverted (50 = darkest, 950 = lightest) so dark mode visually flips. Stopgap that conflates "palette convention" with "role inversion."
+- **2026-05-21 (planned)**: Separate the two concerns via a per-role `invert: true` flag. Replaces the hardcoded `INVERTED_ROLES = new Set(['ink'])` so behavior is role-name-agnostic. Unifies `NAMED_TOKEN_SHADE_MAP` so paper- and ink-family tokens read low-end shades; invert flips via `1000 - shade`. Skips shade 500 in the ink ladder.
 
-So the preset emit is correctly *structurally* dual-palette. **Visually, dark mode is still wrong** because of an inversion mismatch described below.
+**Design spec:** `docs/superpowers/specs/2026-05-21-invert-flag-and-shade-map-design.md`
+**Implementation plan:** `docs/superpowers/plans/2026-05-21-invert-flag-refactor.md`
 
-## The remaining problem
+The plan is broken into 8 sequenced tasks (1–6 implementation, 7–8 docs + verification), each its own commit. Realistic cost: ~1–1.5 days of careful work with test re-baselining and Playwright snapshot updates.
 
-The named-token shade map (`packages/core/src/named-tokens.ts`):
+## Why the stopgap isn't enough
 
-| Named slot     | Shade |
-| -------------- | ----- |
-| `paper`        | 50    |
-| `paper-soft`   | 100   |
-| `paper-mute`   | 200   |
-| `paper-edge`   | 400   |
-| `ink`          | 900   |
-| `ink-mute`     | 700   |
-| `ink-soft`     | 500   |
-| `ink-faint`    | 300   |
+- Hardcoded `INVERTED_ROLES = new Set(['ink'])` couples behavior to a literal role name. If a user names their role `'pen'` or `'graphite'`, inversion silently breaks.
+- `NAMED_TOKEN_SHADE_MAP['ink-soft'] = 500` collides with surface mid-tones at the same shade (the "500-on-500" problem the user flagged).
+- The ink-family shade spread `[900, 700, 500, 300]` is asymmetric with paper-family `[50, 100, 200, 400]`. A unified low-end map + invert math is cleaner and removes the asymmetry.
 
-That mapping is applied regardless of mode. In **light** mode with `kami` palette (50 = lightest, 900 = darkest) that's correct:
-- `--paper`  = kami.50  = lightest (canvas) ✓
-- `--ink`    = kami.900 = darkest (text)   ✓
+## What's still pending (handled by the plan)
 
-In **dark** mode with `sumi` palette — and `sumi` as currently defined uses the **same direction** as kami (50 = lightest, 900 = darkest) — the preset emits:
-- `--paper`  = sumi.50  = very light → wrong, dark mode needs a dark canvas
-- `--ink`    = sumi.900 = very dark  → wrong, dark mode needs light text
-
-## Root cause
-
-The named-token system implicitly assumes that **shade index = semantic role**, so the same shade key must mean the same semantic value across modes. Both `paper` and `ink` use a fixed shade key.
-
-For that to work, the dark-side palette has to be defined with **inverted indices**:
-
-```
-// Current sumi (wrong direction for the named-token system)
-sumi: {
-  50:  '0.975 0.008 85',  // lightest — but in dark mode "paper" wants the DARKEST
-  900: '0.210 0.012 50'   // darkest  — but in dark mode "ink"   wants the LIGHTEST
-}
-
-// What sumi needs to be — index = semantic role identical to kami
-sumi: {
-  50:  '0.170 0.010 50',  // shade 50 = canvas → darkest in dark mode
-  100: '0.210 0.012 50',
-  ...
-  900: '0.940 0.008 85'   // shade 900 = ink → lightest in dark mode
-}
-```
-
-The comment in the current `sumi` palette block even hints at this:
-
-> "Designed as a two-pole scale: the 'light' end (50–400) holds warm paper whites for dark-mode text, and the 'dark' end (500–950) holds sumi-ink tones for dark-mode backgrounds. **The z-flip in base.css then maps z0→950 (ink bg) and z9→100 (primary text) automatically.**"
-
-So the palette was designed for the **z-flip** model: same palette indices in both modes, but the z-aliases flip direction. That worked when components were authored against `--color-*-z*`. The trimmed-vocab named tokens skip the z-alias layer and read shade indices directly — which makes them assume identical conventions in both palettes.
-
-## Two ways to fix
-
-### Option A — invert the dark palette definitions (preferred)
-
-Rewrite `sumi` (and any other "dark-target" palette) so that shade 50 is the **darkest** and shade 900 is the **lightest**. This keeps the named-token shade map mode-agnostic and is the spec's stated intent.
-
-Pros:
-- No changes to `@rokkit/core` or the preset.
-- Same `kami → sumi` mapping shape; just sumi values change.
-- Z-aliases continue to flip correctly because they reference the same indices.
-
-Cons:
-- Breaking change for any code that reads sumi shades directly by index.
-- The comment in sumi's own definition becomes correct (currently it's already half-right).
-
-### Option B — make the shade map mode-aware in the preset
-
-Teach the preset to use *different* shade indices per mode for "inverted" roles (`surface`, `ink`, …). E.g.:
-
-```
-NAMED_TOKEN_SHADE_MAP_DARK: {
-  'paper':       950,  // was 50
-  'paper-soft':  900,  // was 100
-  'paper-mute':  800,  // was 200
-  ...
-}
-```
-
-Pros:
-- Works with any palette defined "normally" (50 light → 900 dark).
-- No palette data changes.
-
-Cons:
-- New parallel constant; preset emit gets more conditional.
-- Doesn't match the "same shade = same semantic" spec intent.
-
-## Recommended path
-
-Option A. Invert `sumi` and any other intentionally-dark palette so the trimmed-vocab assumption holds. Add a Vitest fixture that asserts both modes resolve `--paper` to a low-lightness oklch value and `--ink` to a high-lightness oklch value, to catch this kind of inversion regression.
+- Theme accepts per-role `invertedRoles: Set<string>` override.
+- Preset reads `invert: true` from skin role mappings; threads to Theme.
+- `NAMED_TOKEN_SHADE_MAP` ink shades shift to low end; invert math (`1000 - shade`) applied.
+- `@rokkit/themes` dist regenerated.
+- Demo's `skin:` and `skins.default` add explicit `invert: true` to ink.
+- Demo's `applySkin` handles invert in the managed-style emit.
+- `INVERTED_ROLES` constant removed once all consumers thread the flag.
+- Documentation: add "Inverted roles and palette conventions" section to `docs/design/06-themes.md`.
 
 ## Out of scope
 
-- Changing the named-token vocabulary itself.
-- Migrating `@rokkit/themes/base.css` (the package's pre-built CSS uses the default single-palette skin and has no dark named block — that's the original investigation noted in the prior revision of this file; the runtime preset now does the right thing for dual-palette consumers).
+- Auto-detect palette direction by lightness comparison (rejected — fragile across color spaces; design choice should be explicit, not inferred).
+- Per-token invert overrides (e.g., "ink uses invert but ink-faint doesn't"). Inversion is per-role only.
+- Replacing the 24-name vocabulary itself.
