@@ -21,6 +21,10 @@
 @import '@rokkit/themes/frosted.css';
 @import '@rokkit/themes/zen-sumi.css';
 
+/* Koan compat (alias mockup tokens) + chat primitives */
+@import './lib/koan/compat.css';
+@import './lib/chat/styles/chat.css';
+
 /* ─── Global Base ────────────────────────────────────────────────────────── */
 
 :root {
