@@ -1,173 +1,246 @@
-# Role-Level `invert` Flag + Unified Shade Map — Design
+# Direct Token Mapping (Semantic Overrides) — Design
 
 **Status:** Draft for review
-**Date:** 2026-05-21
+**Date:** 2026-05-21 (pivoted from invert-flag design)
 **Owner:** Jerry
 
 ## Goal
 
-Make the trimmed-token vocabulary work correctly across light + dark modes for surface- and ink-style roles, **without coupling behavior to specific role names**. Replace the hardcoded `INVERTED_ROLES = new Set(['ink'])` with a configurable per-role `invert: true` flag. As part of the change, unify `NAMED_TOKEN_SHADE_MAP` so all paper- and ink-family tokens read shades from the low end of the palette; the `invert` flag flips reads to the high end via `1000 - shade`.
+Add a **per-token semantic mapping layer** to skin config so authors can map any named token directly to a `palette.shade` reference. The mapping mirrors the UnoCSS shortcuts pattern (short name → expansion). Eliminates the need for an `invert: true` role flag, the hardcoded `INVERTED_ROLES = new Set(['ink'])` constant, the `1000 - shade` math, and the implicit "palette convention" requirement. Authors get fine-grained control where they want it and keep convenience defaults elsewhere.
 
 ## Motivation
 
-Today's named-token system has three coupled problems:
+Today's named-token system has three layered concerns:
 
-1. **Role-name-coupled inversion.** The `INVERTED_ROLES` constant in `@rokkit/core/constants` hardcodes the role name `'ink'`. A user who aliases their role `'pen'` (or names it `'graphite'`) loses the inversion entirely.
+1. **Role mapping** (`surface: 'kami'`) — selects which palette feeds a role.
+2. **Shade map** (`NAMED_TOKEN_SHADE_MAP`) — decides which shade of that palette each named token reads (`paper → 50`, `ink → 900`).
+3. **Mode handling** — light vs dark resolution; requires the dark-side palette to follow an implicit "inverted convention" (50 = darkest) for the shade map to land on the right end of the palette.
 
-2. **Asymmetric shade map for ink vs paper.** `paper` uses shades `[50, 100, 200, 400]` (low end). `ink` uses `[900, 700, 500, 300]` (high end, irregular spread). The asymmetry forces ink-side palettes to be defined inverted-convention (50 = darkest) before the named tokens resolve correctly in dark mode — currently worked-around by manually inverting `sumi` in the demo config.
+The friction:
 
-3. **Mid-shade collision risk.** `ink-soft` reads shade `500`. If a surface or layer is also at shade 500 (e.g., via `--color-surface-z5`), the text becomes invisible.
+- **Role-name coupling.** Inversion behavior is hardcoded to the literal name `'ink'` via `INVERTED_ROLES`. A custom role name (e.g., `'pen'`) silently loses inversion.
+- **Implicit palette convention.** Dark palettes must be defined as inverted (50 = darkest) for the shade map to work in dark mode. Tailwind palettes don't follow this. Authors of dual-palette skins have to remember the rule.
+- **Mid-shade collision.** `ink-soft → shade 500` collides with any mid-surface tone at shade 500.
+- **All-or-nothing.** Adjusting a single token requires understanding the shade map, modes, and the inversion convention. There's no escape hatch.
+
+A **direct mapping layer** sidesteps all four. The token is named; the value is `palette.shade`. Done.
 
 ## Design
 
-### Per-role `invert: true`
+### Skin config gains a `tokens` block
 
-The skin config's role mapping accepts an optional `invert` field:
+```js
+// rokkit.config.js
+skin: {
+  // Existing role-level shorthand (still valid; resolves via NAMED_TOKEN_SHADE_MAP defaults)
+  surface: 'kami',
+  ink:     { light: 'kami', dark: 'sumi' },
+  primary: 'shu',
+  accent:  'shu',
+  success: 'hisui',
+  warning: 'kohaku',
+  danger:  'shu',
+
+  // NEW: per-token semantic overrides — direct palette.shade refs
+  tokens: {
+    'ink-faint':  'kami.500',                                            // single-mode override
+    'paper-edge': { light: 'kami.300', dark: 'sumi.300' },               // mode-aware override
+    'accent-soft': 'shu.100/12'                                          // alpha shorthand (TBD)
+  }
+}
+```
+
+Or, for authors who want **complete control** with no role-level shorthand at all:
 
 ```js
 skin: {
-  surface: { light: 'kami', dark: 'sumi' },              // no invert
-  ink:     { light: 'kami', dark: 'sumi', invert: true }, // inverted
-  primary: 'shu',                                          // no invert
-  accent:  'shu',
-  ...
+  tokens: {
+    paper:        { light: 'kami.50',  dark: 'sumi.950' },
+    'paper-soft': { light: 'kami.100', dark: 'sumi.900' },
+    'paper-mute': { light: 'kami.200', dark: 'sumi.800' },
+    'paper-edge': { light: 'kami.400', dark: 'sumi.600' },
+    ink:          { light: 'kami.900', dark: 'sumi.100' },
+    'ink-mute':   { light: 'kami.700', dark: 'sumi.300' },
+    'ink-soft':   { light: 'kami.500', dark: 'sumi.500' },
+    'ink-faint':  { light: 'kami.300', dark: 'sumi.700' },
+    primary:      'shu.500',
+    'on-primary': { light: 'kami.50', dark: 'sumi.50' },
+    accent:       'shu.500',
+    // …
+  }
 }
 ```
 
-Semantics: **a role with `invert: true` reads palette shades from the opposite (high) end of the palette.** Concretely, if `NAMED_TOKEN_SHADE_MAP[token] = shade`, the resolved palette index for inverted roles is `1000 - shade`.
+No role mapping required — the tokens block alone fully describes the skin.
 
-The flag applies symmetrically across modes — the math is `1000 - shade` regardless of light/dark.
+### Resolution precedence
 
-### Unified low-end shade map
+When emitting `--{token}` in the preset preflight, Theme uses this order:
 
-`NAMED_TOKEN_SHADE_MAP` changes so paper- and ink-family tokens all use low-end shades:
+1. **`skin.tokens[token]`** if present → resolved as `palette.shade` lookup (with optional `{ light, dark }` mode-awareness).
+2. **Role-level fallback** — `NAMED_TOKEN_ROLE_MAP[token]` gives the role; `skin.{role}` gives the palette; `NAMED_TOKEN_SHADE_MAP[token]` gives the shade. (Existing behavior, unchanged.)
+3. **Skip** the token if neither route resolves (palette missing, etc.).
 
-| Token | Current shade | New shade | Inverted (via flag, `1000 - shade`) |
-| --- | --- | --- | --- |
-| `paper`      | 50  | 50  | — |
-| `paper-soft` | 100 | 100 | — |
-| `paper-mute` | 200 | 200 | — |
-| `paper-edge` | 400 | 400 | — |
-| `ink`        | 900 | **50**  | **950** |
-| `ink-mute`   | 700 | **100** | **900** |
-| `ink-soft`   | 500 | **200** | **800** |
-| `ink-faint`  | 300 | **400** | **600** |
+This makes `tokens` a **strict override** — present means it wins; absent means fall back to defaults.
 
-Visual impact of changing ink's resolved shades:
+### Mode handling
 
-- `ink`: 900 → 950 (one step darker, marginal)
-- `ink-mute`: 700 → 900 (significantly darker — was secondary text, now closer to primary)
-- `ink-soft`: 500 → 800 (significantly darker — was placeholder, now closer to mute)
-- `ink-faint`: 300 → 600 (moderately darker — was barely-visible, now more readable)
+Per-token entries support the same `{ light, dark }` shape used for role mappings and for the `custom` config block. The preset already has a resolver for this (`packages/unocss/src/custom-tokens.js`'s mode-aware logic).
 
-This compresses the ink ladder visibly. Mitigation discussed under "Ink palette flatness" below.
+Authors no longer need a "palette convention" — they just specify which shade of which palette to read in each mode.
 
-**Shade 500 is no longer touched by any named token.** `paper-edge` (400) and `ink-faint` (600 after invert) sit on opposite sides of 500. Eliminates the 500-on-500 collision.
+### Why this is UnoCSS shortcuts-shaped
 
-### Palette conventions
+The mapping is declarative; the value is the expansion:
 
-Two conventions stay valid:
+```js
+// UnoCSS shortcuts — name → CSS class expansion
+shortcuts: {
+  btn:  'px-4 py-2 rounded bg-primary',
+  card: 'p-4 border border-paper-edge bg-paper-soft'
+}
 
-- **Light-to-dark palette** (Tailwind convention): 50 = lightest, 950 = darkest. Used for light-mode primary surfaces.
-- **Dark-to-light palette** (inverted): 50 = darkest, 950 = lightest. Used for dark-mode primary surfaces.
-
-A dual-palette role like `surface: { light: 'kami', dark: 'sumi' }` requires:
-- The `light` palette follows light-to-dark convention.
-- The `dark` palette follows dark-to-light convention.
-
-This is the implicit contract today (after the 2026-05-20 fix that inverted sumi); it becomes documented and explicit.
-
-### Worked examples
-
-**Light mode, `surface: kami, ink: { palette: kami, invert: true }` (single-palette demo):**
-
-| Token | Shade map | Invert | Palette index | Resolved (kami) |
-| --- | --- | --- | --- | --- |
-| `paper`      | 50  | no  | 50  | lightest |
-| `paper-mute` | 200 | no  | 200 | light-mid |
-| `ink`        | 50  | yes | 950 | darkest |
-| `ink-soft`   | 200 | yes | 800 | dark-mid |
-
-Light bg, dark text. ✓
-
-**Dark mode, `surface: { light: kami, dark: sumi }, ink: { light: kami, dark: sumi, invert: true }` (dual-palette):**
-
-| Token | Shade map | Invert | Palette index | Resolved (sumi, inverted convention) |
-| --- | --- | --- | --- | --- |
-| `paper`      | 50  | no  | 50  | darkest sumi (canvas) |
-| `paper-mute` | 200 | no  | 200 | dark-mid |
-| `ink`        | 50  | yes | 950 | lightest sumi (warm paper) |
-| `ink-soft`   | 200 | yes | 800 | light-mid |
-
-Dark bg, light text. ✓
-
-**Mixing it up — `ink: { light: 'sumi', dark: 'kami' }` (palette-swap, no invert flag):**
-
-This is the alternative pattern the user noted. Works without `invert: true` because the palette swap *already* puts the right shades on each side:
-
-| Token | Shade map | Light (sumi) | Dark (kami) |
-| --- | --- | --- | --- |
-| `ink` | 50 | sumi.50 = darkest sumi (dark text on light bg) | kami.50 = lightest kami (light text on dark bg) |
-
-Both palette-swap and `invert: true` are valid encodings of the same intent. `invert: true` is more flexible (works with single-palette skins too).
-
-### Ink palette flatness (recommendation)
-
-The new shade map reads ink-side tokens at `[950, 900, 800, 600]`. These are bunched at the dark end of a Tailwind-style palette, which reduces visual differentiation between `ink-mute`, `ink-soft`, and `ink-faint`.
-
-Recommendation: when designing palettes intended for ink-style use (i.e., to be read at the high-end shades via invert), define them with **compressed lightness** at the bunched end. For kami, that means making shades 600, 800, 900, 950 visually distinct enough to read as four hierarchy levels.
-
-This is a *design guideline*, not a system change. Documented in `docs/design/06-themes.md` (to be updated).
-
-### Z-aliases stay compatible
-
-`Z_COLLAPSE_MAP_SURFACE` and `Z_COLLAPSE_MAP_INK` continue to map z-slots to named tokens by *semantic intent*:
-
-```ts
-Z_COLLAPSE_MAP_INK: {
-  z0: 'ink',       // primary text
-  z1: 'ink-mute',
-  ...
-  z10: 'paper'
+// Skin tokens — name → palette reference
+tokens: {
+  ink:    'sumi.900',
+  paper:  'kami.50'
 }
 ```
 
-These remain unchanged. The named tokens they point at resolve through the new shade map + invert flag, so z-aliases continue working without modification.
+Both are short-name → spec mappings with sensible defaults available for the unspecified case.
+
+### What goes away
+
+- **`invert: true` flag** — not needed. If you want ink to read shade 100 in dark mode, write `ink: { dark: 'sumi.100' }` directly.
+- **`INVERTED_ROLES = new Set(['ink'])`** — not needed for the override path. The role-name coupling disappears; inversion intent is expressed in the token mapping itself. The constant stays as a fallback for the role-level shorthand path (backward compat).
+- **`1000 - shade` math** — not needed. The author picks shades explicitly.
+- **Implicit palette convention** ("dark palettes must be inverted-convention") — not needed for the override path. Authors can use any palette in any direction; the token mapping picks specific shades.
+
+### What stays
+
+- **`NAMED_TOKEN_SHADE_MAP`** — keeps current values as defaults (paper at [50, 100, 200, 400], ink at [900, 700, 500, 300]). Role-level shorthand still resolves through it.
+- **`NAMED_TOKEN_ROLE_MAP`** — same. Used by the role-level shorthand path.
+- **Z-aliases** — `Z_COLLAPSE_MAP_SURFACE`/`Z_COLLAPSE_MAP_INK` unchanged. They map z-slots to named tokens; named tokens then resolve through the new precedence.
+- **The 24-name vocabulary** — locked.
+
+### 500-on-500 collision
+
+Authors who explicitly use the `tokens` block can pick non-colliding shades. The default `ink-soft = 500` still has the collision risk for skins that rely on the shorthand only. Mitigations:
+
+- **Recommendation (documented):** when using role-level shorthand, design palettes so shade 500 of the surface palette is visually distinct from shade 500 of the ink palette. For single-palette skins (where surface and ink share a palette), explicitly override `ink-soft` to a different shade via the `tokens` block.
+- **Optional follow-up:** quietly bump `NAMED_TOKEN_SHADE_MAP['ink-soft']` from 500 to 600 in a future release. Small visual shift, eliminates the collision for everyone.
+
+### Backward compat
+
+All existing skins that use only role-level shorthand continue to work unchanged. Behavior is identical because:
+- The shade map is unchanged.
+- `INVERTED_ROLES` constant stays as the default fallback for the role-level resolver.
+
+New code can opt into per-token overrides. Existing code doesn't have to migrate.
+
+## Worked examples
+
+**Skin with single role-level mapping, override one token:**
+
+```js
+skin: {
+  surface: 'kami',
+  ink: 'kami',
+  primary: 'shu',
+  tokens: {
+    'ink-faint': 'kami.450'   // override the default (300) to bump contrast for disabled text
+  }
+}
+```
+
+Resolution:
+- `--paper` → role-level: surface=kami, shade map → kami.50
+- `--ink` → role-level: ink=kami (auto-inverted via INVERTED_ROLES default), shade map → kami.900
+- `--ink-faint` → tokens override → kami.450
+
+**Mode-aware, full direct mapping (no role shorthand):**
+
+```js
+skin: {
+  tokens: {
+    paper: { light: 'kami.50',  dark: 'sumi.950' },
+    ink:   { light: 'kami.900', dark: 'sumi.50' }
+    // …rest
+  }
+}
+```
+
+Resolution: every token reads its `tokens` entry; no role-level resolution needed; no palette convention required.
+
+**Custom role name, no special casing:**
+
+```js
+skin: {
+  tokens: {
+    pen:        'kami.900',
+    'pen-mute': 'kami.700'
+    // …
+  }
+}
+```
+
+If `pen-*` are added to the named-token vocabulary, this just works. No `INVERTED_ROLES.add('pen')` needed.
+
+## Implementation surface
+
+### `packages/unocss/src/config.js`
+
+- Validate `skin.tokens` against the NAMED_TOKENS set (typo guard).
+- Pass `tokens` through `loadConfig` to preset.
+
+### `packages/core/src/theme.ts`
+
+- `Theme` constructor accepts `tokenOverrides?: Record<string, string | { light?: string; dark?: string }>`.
+- `getNamedTokens(mode)` checks override map first; falls back to existing shade-map resolution if no override.
+- New helper: `parsePaletteRef(ref: string) → { palette, shade, alpha? }`. Reuses regex/logic from `custom-tokens.js`.
+
+### `packages/unocss/src/preset.ts`
+
+- Extract `config.skin.tokens` and pass to `new Theme({ tokenOverrides })`.
+- Apply the same override during dark-mode block emit (using the `{ light, dark }` resolution).
+
+### Demo
+
+- `demo/rokkit.config.js` — adopt `tokens` block as needed. The simplest move: keep role-level shorthand, add `tokens: {…}` only where defaults need adjusting.
+- `demo/src/lib/data/skins.ts` — handle `tokens` in `skinColormaps` and the managed-style writer.
+
+### Tests
+
+- `theme.spec.js` — add tests for the override precedence. Existing tests stay valid because defaults unchanged.
+- `config.spec.js` — add validation tests for the `tokens` block.
+- `preset.spec.js` — preflight emit tests for overrides + mode handling.
 
 ## Out of scope
 
-- Auto-detect palette direction (rejected — relies on lightness parsing that's fragile across color spaces).
-- Replacing the named-token vocabulary itself (the 24 names are locked).
-- Per-token invert override (e.g., "ink uses invert but ink-faint doesn't"). Inversion is per-role only.
+- Auto-detect palette direction.
+- Replacing the 24-name vocabulary.
+- Per-component theme overrides (different feature; `data-style` already covers that).
 
 ## Migration impact
 
-### Inside the repo
+**Inside the repo:**
+- `demo/rokkit.config.js` — optional. Existing role-level config works; adding `tokens: {…}` overrides is incremental.
+- No required changes elsewhere. `INVERTED_ROLES` stays as default fallback.
 
-- Every test that asserts `NAMED_TOKEN_SHADE_MAP['ink']` equals a specific value → update.
-- Every test that asserts resolved `--ink` is a specific palette value → re-verify with new math.
-- `INVERTED_ROLES.has(role)` call sites → switch to per-skin info passed through Theme.
-- Pre-built `@rokkit/themes/dist/*.css` → rebuild via `build.mjs`.
-- Demo `rokkit.config.js` → revert inverted-sumi-via-naming and add explicit `invert: true` to ink.
-
-### Downstream consumers
-
-- Any app authoring CSS against `--ink-mute` / `--ink-soft` / `--ink-faint` will see different colors after the refactor.
-- Any palette defined as the "dark side" of a dual-palette role must follow inverted-convention (50 = darkest). Tailwind palettes don't — they need an inversion helper to be used as dark sides.
-
-### Backward-compat shim
-
-The `INVERTED_ROLES` constant can stay as a deprecated re-export: when no `invertedRoles` is passed to `Theme`, fall back to it. The skin config can opt-in to the new flag explicitly. Eventually drop the constant.
+**Downstream consumers:**
+- Apps using only role-level shorthand: no change.
+- Apps wanting per-token control: opt-in via `tokens: {…}`.
 
 ## Success criteria
 
-- A new app declaring `ink: { palette: 'kami', invert: true }` (or `pen: ...`) gets correct light + dark text contrast with no name-based magic.
-- Dark mode flips for both surface and ink without manual palette inversion in the config (only invert flag needed; palette is defined under its own convention).
-- No test in `@rokkit/core`, `@rokkit/unocss`, or the demo references the role name `'ink'` for inversion-detection purposes.
-- 500 shade is no longer touched by any named token; collision risk eliminated.
+- An author can configure a custom-named role (`pen` → text role) by writing `tokens: { pen: 'kami.900', 'pen-mute': 'kami.700' }` with no system-level changes.
+- An author can override exactly one token's shade without touching the rest of the skin.
+- An author can avoid the 500-on-500 collision by explicitly setting `ink-soft` to a non-colliding shade.
+- An author who imports a normal-convention dark palette (e.g., Tailwind `slate`) can use it as the dark side of a role by writing `{ dark: 'slate.900' }` for paper and `{ dark: 'slate.100' }` for ink — no palette inversion needed.
+- Existing skins keep working without changes.
 
 ## Open questions
 
-1. **Should `invert: true` live in the skin role mapping (per skin) or in a global roles registry (shared by all skins)?** Per-skin is more flexible; global is DRYer. Likely both, with per-skin override.
-2. **What does `invert: true` mean when the role's palette is a single string vs `{ light, dark }`?** Same math (`1000 - shade`); palette resolution is independent.
-3. **What about non-ink inverted roles in the future?** e.g., a "stroke" role for borders that mirrors ink. The flag supports this without adding new names.
+1. **Alpha suffix in palette refs (`'shu.100/12'`)** — useful for `*-soft` companions. Worth adding now or defer?
+2. **Same shape for `custom: {…}`** — the existing `custom` block already supports palette refs and `{ light, dark }`. Should we unify so `custom` and `tokens` use the same resolver? (Likely yes — same code path.)
+3. **Validation** — should typos in token names (e.g., `'ink-fant'`) throw or warn? Lean toward warn-with-default (preserves DX) but error in CI mode.
