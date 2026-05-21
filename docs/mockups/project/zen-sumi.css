@@ -1,0 +1,418 @@
+/* ═══════════════════════════════════════════════════════════════════
+   ZEN-SUMI DESIGN SYSTEM
+   Semantic tokens + Tailwind-style utilities.
+   Aesthetic: washi paper, sumi ink, vermillion accent.
+   Restraint over ornament. Hairlines over shadows. Air over density.
+   ═══════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* ─── Raw palette (washi + sumi) ───────────────────────────── */
+  --washi-50:  oklch(0.985 0.006 85);
+  --washi-100: oklch(0.975 0.008 85);   /* page paper */
+  --washi-200: oklch(0.955 0.010 85);   /* raised paper */
+  --washi-300: oklch(0.920 0.012 85);   /* sunken paper */
+  --washi-400: oklch(0.880 0.015 85);   /* hairline edge */
+
+  --sumi-900: oklch(0.220 0.012 50);    /* ink primary */
+  --sumi-700: oklch(0.380 0.012 50);    /* ink secondary */
+  --sumi-500: oklch(0.580 0.010 50);    /* ink tertiary */
+  --sumi-300: oklch(0.750 0.008 50);    /* ink faint */
+
+  --shu-500:  oklch(0.580 0.150 35);    /* 朱 vermillion — the accent */
+  --jade-500: oklch(0.620 0.080 160);   /* positive */
+  --amber-500: oklch(0.720 0.120 75);   /* warning */
+
+  /* ─── Semantic tokens (use these) ──────────────────────────── */
+  --paper:      var(--washi-100);
+  --paper-2:    var(--washi-200);   /* raised — cards, inputs */
+  --paper-3:    var(--washi-300);   /* sunken — inset, hover */
+  --edge:       var(--washi-400);   /* hairlines */
+
+  --ink:        var(--sumi-900);    /* primary text */
+  --ink-2:      var(--sumi-700);    /* secondary text */
+  --ink-3:      var(--sumi-500);    /* tertiary — metadata, eyebrows */
+  --ink-4:      var(--sumi-300);    /* faint — disabled, placeholders */
+
+  --primary:    var(--ink);         /* primary buttons = ink on paper */
+  --on-primary: var(--paper);
+
+  --accent:     var(--shu-500);     /* vermillion — rationed */
+  --accent-soft: oklch(0.580 0.150 35 / 0.12);
+
+  --success:    var(--jade-500);
+  --success-soft: oklch(0.620 0.080 160 / 0.14);
+  --warning:    var(--amber-500);
+  --warning-soft: oklch(0.720 0.120 75 / 0.15);
+  --danger:     oklch(0.55 0.18 28);
+
+  --focus-ring: var(--shu-500);
+
+  /* ─── Fonts ────────────────────────────────────────────────── */
+  --font-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --font-ui:      'Inter', system-ui, -apple-system, Segoe UI, sans-serif;
+  --font-mono:    'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  --font-kanji:   'Yu Mincho', 'Hiragino Mincho ProN', 'Songti SC', serif;
+
+  /* ─── Type scale ───────────────────────────────────────────── */
+  /* 6 sizes for UI + 4 sizes for display. That is the whole budget. */
+  --text-xs:   11px;   /* labels, metadata, micro mono */
+  --text-sm:   13px;   /* secondary body, small UI */
+  --text-base: 15px;   /* default body, default UI */
+  --text-lg:   17px;   /* lead, h3 */
+  --text-xl:   22px;   /* h2, section titles */
+  --text-2xl:  28px;   /* h1, page titles */
+  --text-3xl:  40px;   /* display body */
+  --text-4xl:  56px;   /* hero */
+
+  --leading-tight:  1.2;
+  --leading-snug:   1.4;
+  --leading-normal: 1.6;
+  --leading-loose:  1.75;
+
+  --tracking-tight:  -0.02em;   /* display */
+  --tracking-normal: 0;
+  --tracking-wide:   0.18em;    /* eyebrows, uppercase labels */
+
+  /* ─── Spacing scale (4px base) ─────────────────────────────── */
+  /* 9 stops only. If you need 18px, use 16px or 20px. */
+  --space-0:  0;
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  24px;
+  --space-6:  32px;
+  --space-7:  48px;
+  --space-8:  64px;
+  --space-9:  96px;
+
+  /* ─── Radius ───────────────────────────────────────────────── */
+  --radius-sm: 4px;
+  --radius:    6px;
+  --radius-lg: 10px;
+  --radius-full: 9999px;
+
+  /* ─── Hairlines + shadows ──────────────────────────────────── */
+  /* The system prefers hairlines over shadows. Shadows are reserved
+     for things that genuinely lift (modals, palettes, hover cards). */
+  --hairline: 1px solid var(--edge);
+  --ink-line: 1px solid oklch(0.22 0.012 50 / 0.12);
+
+  --shadow-sm: 0 1px 2px oklch(0.22 0.012 50 / 0.04);
+  --shadow:    0 1px 3px oklch(0.22 0.012 50 / 0.06),
+               0 8px 24px oklch(0.22 0.012 50 / 0.06);
+  --shadow-lg: 0 24px 60px oklch(0.22 0.012 50 / 0.18);
+
+  /* ─── Motion ───────────────────────────────────────────────── */
+  --ease:      cubic-bezier(0.2, 0.6, 0.2, 1);
+  --dur-fast:  120ms;
+  --dur:       180ms;
+  --dur-slow:  280ms;
+}
+
+/* ─── Dark mode (night ink) ──────────────────────────────────── */
+[data-theme="dark"] {
+  --paper:    oklch(0.170 0.010 50);
+  --paper-2:  oklch(0.210 0.012 50);
+  --paper-3:  oklch(0.250 0.012 50);
+  --edge:     oklch(0.300 0.010 50);   /* hairlines slightly above paper-3 */
+
+  --ink:      oklch(0.940 0.008 85);
+  --ink-2:    oklch(0.780 0.008 85);
+  --ink-3:    oklch(0.600 0.010 85);
+  --ink-4:    oklch(0.420 0.012 85);
+
+  --accent:   oklch(0.700 0.150 35);
+  --accent-soft: oklch(0.700 0.150 35 / 0.18);
+  --success:  oklch(0.720 0.090 160);
+  --warning:  oklch(0.780 0.120 75);
+  --hairline: 1px solid var(--edge);
+  --ink-line: 1px solid oklch(0.94 0.008 85 / 0.12);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════════════════════════ */
+
+.zs, .zs *, .zs *::before, .zs *::after { box-sizing: border-box; }
+.zs {
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.zs button { font: inherit; color: inherit; background: none; border: none; padding: 0; cursor: pointer; }
+.zs input, .zs textarea, .zs select { font: inherit; color: inherit; }
+.zs a { color: inherit; text-decoration: none; }
+.zs h1, .zs h2, .zs h3, .zs h4, .zs p { margin: 0; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   SEMANTIC TYPOGRAPHY (use class names, not raw sizes)
+   ═══════════════════════════════════════════════════════════════════ */
+
+.zs-h1, .zs h1 { font-family: var(--font-display); font-weight: 400; font-size: var(--text-2xl); line-height: var(--leading-tight); letter-spacing: var(--tracking-tight); color: var(--ink); }
+.zs-h2, .zs h2 { font-family: var(--font-display); font-weight: 400; font-size: var(--text-xl); line-height: var(--leading-tight); letter-spacing: var(--tracking-tight); color: var(--ink); }
+.zs-h3, .zs h3 { font-family: var(--font-display); font-weight: 400; font-size: var(--text-lg); line-height: var(--leading-snug); color: var(--ink); }
+.zs-display     { font-family: var(--font-display); font-weight: 300; font-size: var(--text-3xl); line-height: var(--leading-tight); letter-spacing: var(--tracking-tight); }
+.zs-hero        { font-family: var(--font-display); font-weight: 300; font-size: var(--text-4xl); line-height: 1.05; letter-spacing: var(--tracking-tight); }
+
+.zs-body        { font-size: var(--text-base); line-height: var(--leading-normal); color: var(--ink-2); }
+.zs-body-sm     { font-size: var(--text-sm); line-height: var(--leading-normal); color: var(--ink-2); }
+.zs-meta        { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.zs-eyebrow     { font-size: var(--text-xs); letter-spacing: var(--tracking-wide); text-transform: uppercase; color: var(--ink-3); font-weight: 500; }
+.zs-kanji       { font-family: var(--font-kanji); font-weight: 400; color: var(--accent); }
+.zs-mono        { font-family: var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   TAILWIND-STYLE UTILITIES (scoped to .zs)
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Layout */
+.zs .flex { display: flex; }
+.zs .inline-flex { display: inline-flex; }
+.zs .grid { display: grid; }
+.zs .block { display: block; }
+.zs .inline-block { display: inline-block; }
+.zs .hidden { display: none; }
+
+.zs .flex-1 { flex: 1; }
+.zs .flex-col { flex-direction: column; }
+.zs .flex-wrap { flex-wrap: wrap; }
+.zs .items-start { align-items: flex-start; }
+.zs .items-center { align-items: center; }
+.zs .items-end { align-items: flex-end; }
+.zs .items-baseline { align-items: baseline; }
+.zs .justify-start { justify-content: flex-start; }
+.zs .justify-center { justify-content: center; }
+.zs .justify-end { justify-content: flex-end; }
+.zs .justify-between { justify-content: space-between; }
+
+.zs .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.zs .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.zs .grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+/* Gaps — same scale as spacing */
+.zs .gap-1 { gap: var(--space-1); }
+.zs .gap-2 { gap: var(--space-2); }
+.zs .gap-3 { gap: var(--space-3); }
+.zs .gap-4 { gap: var(--space-4); }
+.zs .gap-5 { gap: var(--space-5); }
+.zs .gap-6 { gap: var(--space-6); }
+.zs .gap-7 { gap: var(--space-7); }
+.zs .gap-8 { gap: var(--space-8); }
+
+/* Padding */
+.zs .p-0 { padding: 0; }
+.zs .p-1 { padding: var(--space-1); }
+.zs .p-2 { padding: var(--space-2); }
+.zs .p-3 { padding: var(--space-3); }
+.zs .p-4 { padding: var(--space-4); }
+.zs .p-5 { padding: var(--space-5); }
+.zs .p-6 { padding: var(--space-6); }
+.zs .p-7 { padding: var(--space-7); }
+.zs .p-8 { padding: var(--space-8); }
+
+.zs .px-2 { padding-left: var(--space-2); padding-right: var(--space-2); }
+.zs .px-3 { padding-left: var(--space-3); padding-right: var(--space-3); }
+.zs .px-4 { padding-left: var(--space-4); padding-right: var(--space-4); }
+.zs .px-5 { padding-left: var(--space-5); padding-right: var(--space-5); }
+.zs .px-6 { padding-left: var(--space-6); padding-right: var(--space-6); }
+.zs .px-7 { padding-left: var(--space-7); padding-right: var(--space-7); }
+
+.zs .py-1 { padding-top: var(--space-1); padding-bottom: var(--space-1); }
+.zs .py-2 { padding-top: var(--space-2); padding-bottom: var(--space-2); }
+.zs .py-3 { padding-top: var(--space-3); padding-bottom: var(--space-3); }
+.zs .py-4 { padding-top: var(--space-4); padding-bottom: var(--space-4); }
+.zs .py-5 { padding-top: var(--space-5); padding-bottom: var(--space-5); }
+.zs .py-6 { padding-top: var(--space-6); padding-bottom: var(--space-6); }
+
+/* Margin */
+.zs .mt-1 { margin-top: var(--space-1); }
+.zs .mt-2 { margin-top: var(--space-2); }
+.zs .mt-3 { margin-top: var(--space-3); }
+.zs .mt-4 { margin-top: var(--space-4); }
+.zs .mt-5 { margin-top: var(--space-5); }
+.zs .mt-6 { margin-top: var(--space-6); }
+.zs .mb-1 { margin-bottom: var(--space-1); }
+.zs .mb-2 { margin-bottom: var(--space-2); }
+.zs .mb-3 { margin-bottom: var(--space-3); }
+.zs .mb-4 { margin-bottom: var(--space-4); }
+.zs .mb-5 { margin-bottom: var(--space-5); }
+.zs .mb-6 { margin-bottom: var(--space-6); }
+
+/* Background */
+.zs .bg-paper   { background: var(--paper); }
+.zs .bg-paper-2 { background: var(--paper-2); }
+.zs .bg-paper-3 { background: var(--paper-3); }
+.zs .bg-ink     { background: var(--ink); color: var(--on-primary); }
+.zs .bg-accent  { background: var(--accent); color: var(--paper); }
+.zs .bg-accent-soft { background: var(--accent-soft); }
+.zs .bg-success-soft { background: var(--success-soft); }
+.zs .bg-warning-soft { background: var(--warning-soft); }
+
+/* Text color */
+.zs .text-ink    { color: var(--ink); }
+.zs .text-ink-2  { color: var(--ink-2); }
+.zs .text-ink-3  { color: var(--ink-3); }
+.zs .text-ink-4  { color: var(--ink-4); }
+.zs .text-accent { color: var(--accent); }
+.zs .text-success { color: var(--success); }
+.zs .text-warning { color: var(--warning); }
+.zs .text-paper  { color: var(--paper); }
+
+/* Text size — semantic aliases */
+.zs .text-xs   { font-size: var(--text-xs); }
+.zs .text-sm   { font-size: var(--text-sm); }
+.zs .text-base { font-size: var(--text-base); }
+.zs .text-lg   { font-size: var(--text-lg); }
+.zs .text-xl   { font-size: var(--text-xl); }
+.zs .text-2xl  { font-size: var(--text-2xl); }
+.zs .text-3xl  { font-size: var(--text-3xl); }
+
+/* Font weight */
+.zs .font-light { font-weight: 300; }
+.zs .font-normal { font-weight: 400; }
+.zs .font-medium { font-weight: 500; }
+.zs .font-semibold { font-weight: 600; }
+
+/* Text alignment */
+.zs .text-left { text-align: left; }
+.zs .text-center { text-align: center; }
+.zs .text-right { text-align: right; }
+.zs .uppercase { text-transform: uppercase; }
+
+/* Border */
+.zs .border    { border: var(--hairline); }
+.zs .border-t  { border-top: var(--hairline); }
+.zs .border-b  { border-bottom: var(--hairline); }
+.zs .border-l  { border-left: var(--hairline); }
+.zs .border-r  { border-right: var(--hairline); }
+.zs .border-ink { border: 1px solid var(--ink); }
+.zs .border-accent { border: 1px solid var(--accent); }
+.zs .border-none { border: none; }
+
+/* Radius */
+.zs .rounded-sm   { border-radius: var(--radius-sm); }
+.zs .rounded      { border-radius: var(--radius); }
+.zs .rounded-lg   { border-radius: var(--radius-lg); }
+.zs .rounded-full { border-radius: var(--radius-full); }
+
+/* Shadow */
+.zs .shadow-sm { box-shadow: var(--shadow-sm); }
+.zs .shadow    { box-shadow: var(--shadow); }
+.zs .shadow-lg { box-shadow: var(--shadow-lg); }
+
+/* Sizing */
+.zs .w-full { width: 100%; }
+.zs .h-full { height: 100%; }
+.zs .min-h-screen { min-height: 100vh; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   COMPONENT CLASSES
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Buttons — note the .zs prefix on every selector for specificity */
+.zs .zs-btn {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  padding: 9px 16px; font-size: var(--text-sm); font-weight: 500;
+  border-radius: var(--radius); border: 1px solid transparent;
+  background: transparent; color: var(--ink); cursor: pointer;
+  transition: background var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease),
+              transform var(--dur-fast) var(--ease);
+  white-space: nowrap;
+  line-height: 1.2;
+}
+.zs .zs-btn:active { transform: translateY(0.5px); }
+.zs .zs-btn:focus-visible { outline: 1.5px solid var(--focus-ring); outline-offset: 2px; }
+
+.zs .zs-btn-primary  { background: var(--ink); color: var(--on-primary); }
+.zs .zs-btn-primary:hover  { background: oklch(0.30 0.012 50); }
+
+.zs .zs-btn-secondary { border-color: var(--ink); color: var(--ink); }
+.zs .zs-btn-secondary:hover { background: var(--paper-3); }
+
+.zs .zs-btn-ghost { color: var(--ink-2); }
+.zs .zs-btn-ghost:hover { background: var(--paper-3); color: var(--ink); }
+
+.zs .zs-btn-sm { padding: 6px 12px; font-size: var(--text-xs); }
+.zs .zs-btn-lg { padding: 11px 18px; font-size: var(--text-sm); }
+
+/* Badges */
+.zs .zs-badge {
+  display: inline-flex; align-items: center; gap: var(--space-1);
+  padding: 2px 8px; font-family: var(--font-mono); font-size: var(--text-xs);
+  border-radius: var(--radius-sm); color: var(--ink-2); background: var(--paper-3);
+  border: 1px solid oklch(0.22 0.012 50 / 0.06);
+}
+.zs .zs-badge-success { color: var(--success); background: var(--success-soft); border-color: oklch(0.62 0.08 160 / 0.25); }
+.zs .zs-badge-warning { color: oklch(0.55 0.13 60); background: var(--warning-soft); border-color: oklch(0.72 0.12 75 / 0.30); }
+.zs .zs-badge-accent  { color: var(--accent);  background: var(--accent-soft);  border-color: oklch(0.58 0.15 35 / 0.28); }
+
+/* Cards */
+.zs-card {
+  background: var(--paper-2); border: var(--hairline);
+  border-radius: var(--radius-lg); padding: var(--space-5);
+}
+.zs-card-flush { background: var(--paper-2); border: var(--hairline); border-radius: var(--radius-lg); }
+
+/* Hairline rule */
+.zs-rule { height: 1px; background: var(--edge); border: none; margin: 0; }
+
+/* Input */
+.zs .zs-input {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  padding: 8px 12px; background: var(--paper-2); border: var(--hairline);
+  border-radius: var(--radius); font-size: var(--text-sm); color: var(--ink);
+  width: 100%;
+  transition: border-color var(--dur-fast) var(--ease);
+}
+.zs .zs-input:focus-within { border-color: var(--ink); }
+.zs .zs-input input {
+  flex: 1; background: transparent; border: none; outline: none; font-size: inherit; color: inherit;
+}
+.zs .zs-input input::placeholder { color: var(--ink-4); }
+
+/* Status dot */
+.zs-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; background: var(--ink-3); flex-shrink: 0; }
+.zs-dot-accent  { background: var(--accent); }
+.zs-dot-success { background: var(--success); }
+.zs-dot-warning { background: var(--warning); }
+
+/* Ink dot — same but smaller, for inline use */
+.zs-ink-dot { display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+
+/* Tauri-style window chrome */
+.zs-chrome {
+  height: 38px; display: flex; align-items: center;
+  padding: 0 14px; border-bottom: var(--hairline);
+  background: var(--paper); gap: var(--space-2); flex-shrink: 0;
+}
+.zs-traffic { display: flex; gap: 7px; }
+.zs-traffic > span { width: 12px; height: 12px; border-radius: 50%; display: block; background: var(--edge); }
+.zs-traffic > span:nth-child(1) { background: oklch(0.72 0.14 28); }
+.zs-traffic > span:nth-child(2) { background: oklch(0.82 0.13 85); }
+.zs-traffic > span:nth-child(3) { background: oklch(0.72 0.11 145); }
+.zs-chrome-title {
+  flex: 1; text-align: center; font-size: var(--text-xs); color: var(--ink-3); letter-spacing: 0.02em;
+}
+
+/* Sparkline path (used by SVG sparklines) */
+.zs-sparkline { fill: none; stroke: currentColor; stroke-width: 1.25; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Custom scrollbar — invisible until hover */
+.zs ::-webkit-scrollbar { width: 6px; height: 6px; }
+.zs ::-webkit-scrollbar-thumb { background: transparent; border-radius: 3px; }
+.zs:hover ::-webkit-scrollbar-thumb { background: oklch(0.5 0.01 50 / 0.2); }
+
+/* Focus ring */
+.zs button:focus-visible,
+.zs a:focus-visible { outline: 1.5px solid var(--focus-ring); outline-offset: 2px; border-radius: 3px; }
+
+@keyframes zsSpin { to { transform: rotate(360deg); } }
+.zs-spin { animation: zsSpin 1.2s linear infinite; }

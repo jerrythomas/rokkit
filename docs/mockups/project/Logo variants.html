@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Rokkit · logo variants</title>
+  <link rel="stylesheet" href="zen-sumi.css?v=2"/>
+  <style>
+    html, body { margin: 0; padding: 0; background: var(--paper); }
+    .zs { font-family: var(--font-ui); color: var(--ink); }
+    .page {
+      max-width: 1100px; margin: 0 auto;
+      padding: 56px 48px 96px;
+    }
+    .eyebrow {
+      font: 500 11px var(--font-mono); color: var(--ink-3);
+      letter-spacing: 0.2em; text-transform: uppercase;
+    }
+    h1 {
+      font: 300 44px/1.1 var(--font-display); letter-spacing: -0.025em;
+      color: var(--ink); margin: 12px 0 6px;
+    }
+    .lede { font: 400 15px/1.6 var(--font-ui); color: var(--ink-2); margin: 0 0 48px; max-width: 640px; }
+
+    h2 {
+      font: 400 22px/1.3 var(--font-display); letter-spacing: -0.015em;
+      color: var(--ink); margin: 56px 0 8px;
+    }
+    h2 + p {
+      font: 400 13.5px/1.6 var(--font-ui); color: var(--ink-3);
+      margin: 0 0 24px; max-width: 640px;
+    }
+
+    .grid {
+      display: grid; gap: 16px;
+      grid-template-columns: 1fr 1fr;
+    }
+    .card {
+      border: var(--hairline); border-radius: 10px; overflow: hidden;
+      background: var(--paper);
+    }
+    .card.dark { background: oklch(0.18 0.012 50); border-color: transparent; }
+    .card .stage {
+      height: 200px;
+      display: grid; place-items: center;
+      padding: 24px;
+    }
+    .card.icon .stage { height: 240px; }
+    .card .meta {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px;
+      background: var(--paper-2);
+      border-top: var(--hairline);
+    }
+    .card.dark .meta {
+      background: oklch(0.14 0.012 50);
+      border-top-color: oklch(0.25 0.012 50);
+    }
+    .card .meta .file {
+      font: 500 11.5px var(--font-mono);
+      color: var(--ink-2); letter-spacing: 0.02em;
+    }
+    .card.dark .meta .file { color: oklch(0.78 0.008 85); }
+    .card .meta .tag {
+      font: 500 10px var(--font-mono); color: var(--ink-3);
+      letter-spacing: 0.16em; text-transform: uppercase;
+      padding: 2px 7px; background: var(--paper); border: var(--hairline); border-radius: 3px;
+    }
+    .card.dark .meta .tag {
+      color: oklch(0.6 0.008 85);
+      background: oklch(0.22 0.012 50);
+      border-color: oklch(0.28 0.012 50);
+    }
+    .card img.wm { height: 56px; }
+    .card.icon img { height: 132px; }
+    .row3 { grid-template-columns: 1fr 1fr 1fr; }
+
+    .usage {
+      margin-top: 80px;
+      padding: 28px;
+      border: var(--hairline); border-radius: 10px;
+      background: var(--paper-2);
+    }
+    .usage h3 {
+      font: 500 15px var(--font-display); color: var(--ink);
+      letter-spacing: -0.005em; margin: 0 0 14px;
+    }
+    .usage pre {
+      margin: 0; padding: 14px 16px;
+      background: var(--paper); border: var(--hairline); border-radius: 6px;
+      font: 400 12px/1.65 var(--font-mono); color: var(--ink);
+      overflow-x: auto;
+    }
+    .usage .row { display: grid; grid-template-columns: 180px 1fr; gap: 24px; align-items: start; }
+    .usage .row + .row { margin-top: 18px; padding-top: 18px; border-top: 1px dashed var(--edge); }
+    .usage .file { font: 500 12px var(--font-mono); color: var(--ink); }
+    .usage .desc { font: 400 12.5px var(--font-ui); color: var(--ink-2); margin-top: 4px; }
+  </style>
+</head>
+<body class="zs">
+  <main class="page">
+    <div class="eyebrow">Brand assets</div>
+    <h1>Rokkit logo variants</h1>
+    <p class="lede">
+      Six SVG files generated from the source wordmark. All free of the original drop shadow.
+      Click any file name to download from the project tree.
+    </p>
+
+    <h2>Wordmark</h2>
+    <p>The full Rokkit lockup. The rocket is the letter <strong>I</strong> — it doubles as the standalone icon below.</p>
+    <div class="grid row3">
+
+      <div class="card">
+        <div class="stage"><img class="wm" src="assets/rokkit-wordmark.svg" alt="Rokkit wordmark"/></div>
+        <div class="meta">
+          <span class="file">rokkit-wordmark.svg</span>
+          <span class="tag">color</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stage"><img class="wm" src="assets/rokkit-wordmark-black.svg" alt="Rokkit wordmark · black"/></div>
+        <div class="meta">
+          <span class="file">rokkit-wordmark-black.svg</span>
+          <span class="tag">mono · ink</span>
+        </div>
+      </div>
+
+      <div class="card dark">
+        <div class="stage"><img class="wm" src="assets/rokkit-wordmark-white.svg" alt="Rokkit wordmark · white"/></div>
+        <div class="meta">
+          <span class="file">rokkit-wordmark-white.svg</span>
+          <span class="tag">mono · paper</span>
+        </div>
+      </div>
+
+    </div>
+
+    <h2>Icon</h2>
+    <p>Just the rocket — extracted from the wordmark's "I". The mono versions add three gap accents (nose band, window, wing seams) to give the silhouette character.</p>
+    <div class="grid row3">
+
+      <div class="card icon">
+        <div class="stage"><img src="assets/rokkit-icon.svg" alt="Rokkit icon"/></div>
+        <div class="meta">
+          <span class="file">rokkit-icon.svg</span>
+          <span class="tag">color</span>
+        </div>
+      </div>
+
+      <div class="card icon">
+        <div class="stage"><img src="assets/rokkit-icon-black.svg" alt="Rokkit icon · black"/></div>
+        <div class="meta">
+          <span class="file">rokkit-icon-black.svg</span>
+          <span class="tag">mono · ink</span>
+        </div>
+      </div>
+
+      <div class="card icon dark">
+        <div class="stage"><img src="assets/rokkit-icon-white.svg" alt="Rokkit icon · white"/></div>
+        <div class="meta">
+          <span class="file">rokkit-icon-white.svg</span>
+          <span class="tag">mono · paper</span>
+        </div>
+      </div>
+
+    </div>
+
+    <h2>Component-system mark</h2>
+    <p>A small square mark: a rounded screen frame with a tiny rocket peeking out of the bottom-right corner. Suggests the product — components that launch your interface. Use as favicon, app icon, sidebar rail.</p>
+    <div class="grid row3">
+
+      <div class="card icon">
+        <div class="stage" style="background: var(--paper-2);"><img src="assets/rokkit-component-black.svg" alt="Rokkit component mark" style="height: 96px; color: var(--ink);"/></div>
+        <div class="meta">
+          <span class="file">rokkit-component.svg</span>
+          <span class="tag">currentColor</span>
+        </div>
+      </div>
+
+      <div class="card icon">
+        <div class="stage"><img src="assets/rokkit-component-black.svg" alt="Rokkit component mark · black" style="height: 96px;"/></div>
+        <div class="meta">
+          <span class="file">rokkit-component-black.svg</span>
+          <span class="tag">mono · ink</span>
+        </div>
+      </div>
+
+      <div class="card icon dark">
+        <div class="stage"><img src="assets/rokkit-component-white.svg" alt="Rokkit component mark · white" style="height: 96px;"/></div>
+        <div class="meta">
+          <span class="file">rokkit-component-white.svg</span>
+          <span class="tag">mono · paper</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="usage">
+      <h3>Usage notes</h3>
+      <div class="row">
+        <div>
+          <div class="file">rokkit-wordmark.svg</div>
+          <div class="desc">primary mark · light backgrounds</div>
+        </div>
+        <pre>&lt;img src="assets/rokkit-wordmark.svg" alt="Rokkit" height="28"/&gt;</pre>
+      </div>
+      <div class="row">
+        <div>
+          <div class="file">rokkit-wordmark-black.svg</div>
+          <div class="desc">single-color on light · invoices, print, embed</div>
+        </div>
+        <pre>&lt;img src="assets/rokkit-wordmark-black.svg" alt="Rokkit" height="28"/&gt;</pre>
+      </div>
+      <div class="row">
+        <div>
+          <div class="file">rokkit-wordmark-white.svg</div>
+          <div class="desc">single-color on dark · footers, badges, dark-mode header</div>
+        </div>
+        <pre>&lt;img src="assets/rokkit-wordmark-white.svg" alt="Rokkit" height="28"/&gt;</pre>
+      </div>
+      <div class="row">
+        <div>
+          <div class="file">rokkit-icon.svg</div>
+          <div class="desc">app icon, favicon source, chat avatar, sidebar mark</div>
+        </div>
+        <pre>&lt;img src="assets/rokkit-icon.svg" alt="Rokkit" height="24"/&gt;</pre>
+      </div>
+      <div class="row">
+        <div>
+          <div class="file">rokkit-icon-black/white.svg</div>
+          <div class="desc">monochrome icon for dense rails, button glyphs</div>
+        </div>
+        <pre>&lt;img src="assets/rokkit-icon-black.svg" alt="Rokkit" height="20"/&gt;</pre>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
