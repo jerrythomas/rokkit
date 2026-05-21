@@ -18,6 +18,17 @@
 	--ink-3: var(--ink-soft);
 	--ink-4: var(--ink-faint);
 
+	/* Font stacks — match the design's typography intent.
+	   The mockup uses `--font-display` (Fraunces, serif) for headings and
+	   `--font-ui` (Inter, sans) for body. The Rokkit preset emits
+	   `--font-heading` and `--font-sans`, and the zen-sumi theme overrides
+	   `--font-heading` to Open Sans — so without these aliases, headings
+	   render in Open Sans instead of Fraunces. Fontsource imports for
+	   Fraunces + Inter live in app.css. */
+	--font-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+	--font-ui:      'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+	/* --font-mono is already emitted by the preset as JetBrains Mono. */
+
 	/* Shadow shorthand the mockup CSS uses inline. */
 	--shadow: 0 1px 3px var(--shadow-tint);
 
