@@ -1,0 +1,37 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Koan compat layer — alias mockup tokens to the Rokkit named vocabulary.
+   This file exists so the mockup CSS (rokkit.css / zen-sumi.css) can be
+   ported verbatim. Long-term we'll replace --paper-2 / --ink-3 / etc.
+   references with the canonical --paper-soft / --ink-soft ones; this
+   alias layer can then be deleted.
+   See docs/mockups/project/zen-sumi.css for the source of these names.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+	/* Surface ladder — mockup `--paper-2 / -3` map to Rokkit `--paper-soft / -mute`. */
+	--paper-2: var(--paper-soft);
+	--paper-3: var(--paper-mute);
+	--edge: var(--paper-edge);
+
+	/* Ink ladder — mockup `--ink-2 / -3 / -4` map to Rokkit `--ink-mute / -soft / -faint`. */
+	--ink-2: var(--ink-mute);
+	--ink-3: var(--ink-soft);
+	--ink-4: var(--ink-faint);
+
+	/* Hairline + shadow shorthand the mockup CSS uses inline. */
+	--hairline: 1px solid var(--paper-edge);
+	--shadow: 0 1px 3px var(--shadow-tint);
+
+	/* Mockup spacing scale (4px base) — Rokkit's density tokens drive component
+	   internals; this scale is for layout-level work in the Koan shell only. */
+	--space-0: 0;
+	--space-1: 4px;
+	--space-2: 8px;
+	--space-3: 12px;
+	--space-4: 16px;
+	--space-5: 24px;
+	--space-6: 32px;
+	--space-7: 48px;
+	--space-8: 64px;
+	--space-9: 96px;
+}
