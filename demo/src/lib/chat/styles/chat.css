@@ -13,11 +13,8 @@
 	display: block;
 }
 
-[data-chat-message] + [data-chat-message] {
-	margin-top: 22px;
-}
-
-/* Vertical dashed connector between consecutive messages */
+/* Vertical dashed connector between consecutive messages.
+   Stream parent provides the gap; connector extends through it. */
 [data-chat-message]::before {
 	content: '';
 	position: absolute;

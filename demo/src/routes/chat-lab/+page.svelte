@@ -250,7 +250,7 @@
 	}
 
 	.conv-active {
-		background: var(--paper-mute);
+		background: color-mix(in oklab, var(--accent) 6%, transparent);
 		color: var(--ink);
 		position: relative;
 	}

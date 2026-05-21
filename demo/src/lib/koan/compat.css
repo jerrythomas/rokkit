@@ -18,8 +18,12 @@
 	--ink-3: var(--ink-soft);
 	--ink-4: var(--ink-faint);
 
-	/* Hairline + shadow shorthand the mockup CSS uses inline. */
-	--hairline: 1px solid var(--paper-edge);
+	/* Hairline + shadow shorthand the mockup CSS uses inline.
+	   The raw --paper-edge is a real visible value; for structural lines
+	   (chrome border, column dividers, card separators) we want a softer
+	   read, so mix with transparent. Bump the percentage up if a line
+	   needs to feel more present. */
+	--hairline: 1px solid color-mix(in oklab, var(--paper-edge) 55%, transparent);
 	--shadow: 0 1px 3px var(--shadow-tint);
 
 	/* Mockup spacing scale (4px base) — Rokkit's density tokens drive component
@@ -34,4 +38,41 @@
 	--space-7: 48px;
 	--space-8: 64px;
 	--space-9: 96px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Dark mode override for named tokens.
+   The @rokkit/themes base.css today only flips --color-*-z* aliases in
+   [data-mode="dark"]; the named layer (--paper, --ink, ...) is emitted
+   ONLY at :root with light values. Until the preset is patched to emit
+   a dark named-layer block, this re-points the names to z-aliases that
+   do flip with mode. Remove this block once the preset is fixed.
+   See docs/backlog/2026-05-20-named-tokens-no-dark-flip.md.
+   ═══════════════════════════════════════════════════════════════════ */
+[data-mode='dark'] {
+	/* Surface — paper layer (dark mode = dark bg) */
+	--paper:      var(--color-surface-z0);
+	--paper-soft: var(--color-surface-z1);
+	--paper-mute: var(--color-surface-z2);
+	--paper-edge: var(--color-surface-z4);
+
+	/* Ink — text layer (dark mode = light text) */
+	--ink:        var(--color-ink-z0);
+	--ink-mute:   var(--color-ink-z2);
+	--ink-soft:   var(--color-ink-z5);
+	--ink-faint:  var(--color-ink-z7);
+
+	/* Primary / accent / status — z5 is the mid solid in both modes */
+	--primary:    var(--color-primary-z5);
+	--on-primary: var(--color-surface-z0);
+	--accent:     var(--color-accent-z5);
+	--accent-soft: color-mix(in oklab, var(--color-accent-z5) 18%, transparent);
+	--success:    var(--color-success-z5);
+	--success-soft: color-mix(in oklab, var(--color-success-z5) 18%, transparent);
+	--warning:    var(--color-warning-z5);
+	--warning-soft: color-mix(in oklab, var(--color-warning-z5) 18%, transparent);
+	--danger:     var(--color-danger-z5);
+	--danger-soft: color-mix(in oklab, var(--color-danger-z5) 18%, transparent);
+
+	--focus-ring: var(--color-accent-z5);
 }
