@@ -18,15 +18,18 @@
 	--ink-3: var(--ink-soft);
 	--ink-4: var(--ink-faint);
 
-	/* Hairline + shadow shorthand the mockup CSS uses inline.
-	   --paper-edge already sits at shade 400 — light enough to feel like a
-	   guide rather than a hard rule, but solid enough to read in both
-	   light and dark modes. Earlier we softened with color-mix() but
-	   that pushed contrast too low; using the raw token is the right
-	   balance for structural lines (chrome border, column dividers,
-	   card separators). */
-	--hairline: 1px solid var(--paper-edge);
+	/* Shadow shorthand the mockup CSS uses inline. */
 	--shadow: 0 1px 3px var(--shadow-tint);
+
+	/* NOTE — DO NOT add a --hairline custom property here that wraps
+	   `1px solid var(--paper-edge)`. CSS resolves the var() inside a
+	   custom property's value at the DECLARING element (here :root),
+	   bakes in the light --paper-edge, and inherits that as a frozen
+	   string. Child elements under [data-mode="dark"] never re-resolve
+	   the inner var() — borders stay light even though --paper-edge
+	   itself flipped. Use `1px solid var(--paper-edge)` inline in each
+	   border declaration instead; the var() resolves at the element
+	   scope where data-mode applies. */
 
 	/* Mockup spacing scale (4px base) — Rokkit's density tokens drive component
 	   internals; this scale is for layout-level work in the Koan shell only. */

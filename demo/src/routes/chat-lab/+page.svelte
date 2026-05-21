@@ -165,14 +165,14 @@
 		flex-shrink: 0;
 		display: flex;
 		flex-direction: column;
-		border-right: var(--hairline);
+		border-right: 1px solid var(--paper-edge);
 		background: var(--paper);
 		min-width: 0;
 	}
 
 	.chat-header {
 		padding: 12px 16px;
-		border-bottom: var(--hairline);
+		border-bottom: 1px solid var(--paper-edge);
 	}
 
 	.chat-title {
@@ -201,7 +201,7 @@
 
 	.canvas-head {
 		padding: 24px 28px 18px;
-		border-bottom: var(--hairline);
+		border-bottom: 1px solid var(--paper-edge);
 	}
 
 	.canvas-eyebrow {
@@ -292,7 +292,7 @@
 
 	.tabs-bar {
 		display: flex;
-		border-bottom: var(--hairline);
+		border-bottom: 1px solid var(--paper-edge);
 	}
 
 	.tabs-bar button {
@@ -336,7 +336,7 @@
 		font: 500 12px var(--font-mono);
 		padding: 1px 5px;
 		background: var(--paper-soft);
-		border: var(--hairline);
+		border: 1px solid var(--paper-edge);
 		border-radius: 3px;
 		color: var(--ink-mute);
 	}

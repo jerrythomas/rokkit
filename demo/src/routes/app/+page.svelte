@@ -390,14 +390,14 @@
 		flex-shrink: 0;
 		display: flex;
 		flex-direction: column;
-		border-right: var(--hairline);
+		border-right: 1px solid var(--paper-edge);
 		background: var(--paper);
 		min-width: 0;
 	}
 
 	.chat-header {
 		padding: 12px 16px;
-		border-bottom: var(--hairline);
+		border-bottom: 1px solid var(--paper-edge);
 	}
 
 	.chat-title {
@@ -462,7 +462,7 @@
 
 	.canvas-head {
 		padding: 24px 28px 18px;
-		border-bottom: var(--hairline);
+		border-bottom: 1px solid var(--paper-edge);
 	}
 
 	.canvas-head.preparing {

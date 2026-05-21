@@ -48,7 +48,7 @@
 		align-items: center;
 		gap: 24px;
 		padding: 18px 48px;
-		border-bottom: var(--hairline);
+		border-bottom: 1px solid var(--paper-edge);
 		background: var(--paper);
 		position: sticky;
 		top: 0;
@@ -121,7 +121,7 @@
 		border-radius: 6px;
 		font: 500 14px var(--font-ui);
 		text-decoration: none;
-		border: var(--hairline);
+		border: 1px solid var(--paper-edge);
 	}
 
 	.cta .primary {
