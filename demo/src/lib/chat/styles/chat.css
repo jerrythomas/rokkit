@@ -70,6 +70,13 @@
 	opacity: 0.6;
 }
 
+[data-chat-message-icon] {
+	display: inline-block;
+	width: 14px;
+	height: 14px;
+	color: currentColor;
+}
+
 /* Head row — eyebrow + author + timestamp */
 [data-chat-message-head] {
 	display: flex;

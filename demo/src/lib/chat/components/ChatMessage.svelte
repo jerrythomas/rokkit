@@ -10,8 +10,13 @@
 		who?: string
 		/** Relative timestamp, e.g. "just now", "2m" */
 		ago?: string
-		/** Optional icon for the leading node — falls back to a dot */
-		icon?: Snippet
+		/**
+		 * Icon for the leading node. Accepts either:
+		 *  - a Snippet for full custom rendering, or
+		 *  - a string CSS class (e.g. an Iconify class like `i-mdi:layers`).
+		 * Falls back to a dot (or thinking-dots for `kind="think"`) when absent.
+		 */
+		icon?: Snippet | string
 		/** Message body content */
 		children?: Snippet
 	}
@@ -24,12 +29,17 @@
 		icon,
 		children
 	}: ChatMessageProps = $props()
+
+	const iconIsSnippet = $derived(typeof icon === 'function')
+	const iconClass = $derived(typeof icon === 'string' ? icon : '')
 </script>
 
 <div data-chat-message data-kind={kind}>
 	<span data-chat-message-node>
-		{#if icon}
-			{@render icon()}
+		{#if iconIsSnippet}
+			{@render (icon as Snippet)()}
+		{:else if iconClass}
+			<span data-chat-message-icon class={iconClass} aria-hidden="true"></span>
 		{:else if kind === 'think'}
 			<span data-thinking-dots><span></span><span></span><span></span></span>
 		{:else}

@@ -2,7 +2,9 @@
 	import {
 		ChatChrome,
 		ChatComposer,
+		ChatMessage,
 		ChatSidebar,
+		ChatStream,
 		Chips
 	} from '$lib/chat'
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
@@ -48,6 +50,31 @@
 	let collapsed = $state(false)
 	let composerValue = $state('')
 
+	// Conversation phase state machine — drives chat-left + canvas content.
+	// 'welcome'  → no conversation yet; show eyebrow chips + hero
+	// 'thinking' → user submitted; show reasoning steps + canvas spinner
+	// 'response' → demo mounted on canvas (next round)
+	let phase = $state<'welcome' | 'thinking' | 'response'>('welcome')
+	let lastQuery = $state('')
+
+	function submitQuery(value: string) {
+		const trimmed = value.trim()
+		if (!trimmed) return
+		koan.query = trimmed
+		lastQuery = trimmed
+		composerValue = ''
+		phase = 'thinking'
+		// Response transition will land next round — for now the thinking
+		// state persists until the user starts a new conversation.
+	}
+
+	function startNewConversation() {
+		phase = 'welcome'
+		lastQuery = ''
+		composerValue = ''
+		koan.query = ''
+	}
+
 	// Hardcoded conversation history (will wire to real store later)
 	const today = [
 		{ id: 'h1', kind: 'build', icon: 'i-mdi:tab', title: 'Show me how Tabs work', ago: '12m' },
@@ -82,11 +109,6 @@
 		{ label: 'Build a custom skin', icon: 'i-mdi:palette' }
 	]
 
-	function submitQuery(value: string) {
-		koan.query = value
-		// TODO(stage C round 2): route to match flow / mount canvas content
-	}
-
 	function pickChip(item: { label?: string }) {
 		if (item.label) submitQuery(item.label)
 	}
@@ -116,7 +138,7 @@
 	</ChatChrome>
 
 	<div class="stage">
-		<ChatSidebar bind:collapsed onnew={() => (koan.query = '')}>
+		<ChatSidebar bind:collapsed onnew={startNewConversation}>
 			{#snippet children()}
 				<div class="group-label">Today</div>
 				{#each today as item (item.id)}
@@ -157,53 +179,116 @@
 
 		<aside class="chat-left">
 			<div class="chat-header">
-				<span class="chat-title">Conversation</span>
+				<span class="chat-title">
+					Conversation
+					{#if phase !== 'welcome'}
+						<span class="chat-sub">· {lastQuery}</span>
+					{/if}
+				</span>
 			</div>
-			<div class="welcome-stream">
-				<h2 class="welcome-hello">Welcome back.</h2>
-				<p class="welcome-lede">
-					What are you building today? Three places people usually start —
-				</p>
 
-				<section>
-					<div class="welcome-eyebrow">Build a component</div>
-					<Chips items={buildChips} onselect={pickChip} />
-				</section>
+			{#if phase === 'welcome'}
+				<div class="welcome-stream">
+					<h2 class="welcome-hello">Welcome back.</h2>
+					<p class="welcome-lede">
+						What are you building today? Three places people usually start —
+					</p>
 
-				<section>
-					<div class="welcome-eyebrow">How-to</div>
-					<Chips items={howChips} onselect={pickChip} />
-				</section>
+					<section>
+						<div class="welcome-eyebrow">Build a component</div>
+						<Chips items={buildChips} onselect={pickChip} />
+					</section>
 
-				<section>
-					<div class="welcome-eyebrow">Theme &amp; customize</div>
-					<Chips items={themeChips} onselect={pickChip} />
-				</section>
-			</div>
+					<section>
+						<div class="welcome-eyebrow">How-to</div>
+						<Chips items={howChips} onselect={pickChip} />
+					</section>
+
+					<section>
+						<div class="welcome-eyebrow">Theme &amp; customize</div>
+						<Chips items={themeChips} onselect={pickChip} />
+					</section>
+				</div>
+			{:else}
+				<ChatStream>
+					<ChatMessage
+						kind="user"
+						head="YOU"
+						who="Jerry"
+						ago="just now"
+						icon="i-mdi:chat-outline"
+					>
+						{lastQuery}
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="UNDERSTOOD"
+						who="Rokkit"
+						icon="i-mdi:layers-outline"
+					>
+						Three things — locate the matching component in
+						<code>@rokkit/ui</code>, mount it with sample data,
+						and surface the Svelte source you'd copy.
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="LOCATED"
+						icon="i-mdi:magnify"
+					>
+						Component reads <code>items</code> + binds
+						<code>value</code>. Style cascades from
+						<code>data-style</code> on the shell.
+					</ChatMessage>
+					<ChatMessage
+						kind="think"
+						head="MOUNTING"
+					>
+						wiring sample data and the style cascade…
+					</ChatMessage>
+				</ChatStream>
+			{/if}
+
 			<ChatComposer
 				bind:value={composerValue}
-				placeholder="Ask anything · type / for commands"
+				placeholder={phase === 'welcome'
+					? 'Ask anything · type / for commands'
+					: 'Refine · ask follow-ups · request another component'}
+				running={phase === 'thinking'}
 				onsubmit={submitQuery}
 			/>
 		</aside>
 
 		<main class="canvas">
-			<div class="welcome-hero">
-				<div class="mark"><RokkitWordmark {mode} height={64} /></div>
-				<div class="lede">Pass the data. The component does the rest.</div>
-				<div class="sub">
-					Type a question on the left. The answer mounts here — themed, density-tuned,
-					copyable, and identical to what you'd ship.
+			{#if phase === 'welcome'}
+				<div class="welcome-hero">
+					<div class="mark"><RokkitWordmark {mode} height={64} /></div>
+					<div class="lede">Pass the data. The component does the rest.</div>
+					<div class="sub">
+						Type a question on the left. The answer mounts here — themed,
+						density-tuned, copyable, and identical to what you'd ship.
+					</div>
+					<div class="meta">
+						<span>style</span>
+						<span class="meta-value">{style}</span>
+						<span class="meta-sep">·</span>
+						<span>47 components</span>
+						<span class="meta-sep">·</span>
+						<span>Svelte 5 runes</span>
+					</div>
 				</div>
-				<div class="meta">
-					<span>style</span>
-					<span class="meta-value">{style}</span>
-					<span class="meta-sep">·</span>
-					<span>47 components</span>
-					<span class="meta-sep">·</span>
-					<span>Svelte 5 runes</span>
+			{:else if phase === 'thinking'}
+				<div class="canvas-head preparing">
+					<div class="canvas-eyebrow">Canvas · preparing</div>
+					<div class="canvas-title">{lastQuery}</div>
+					<div class="canvas-sub">
+						A live preview, the source, and the levers that change its look.
+					</div>
 				</div>
-			</div>
+				<div class="canvas-body thinking">
+					<span class="koan-spinner" aria-hidden="true"></span>
+					<span class="thinking-step">mounting — step 3 of 4</span>
+				</div>
+			{/if}
 		</main>
 	</div>
 </div>
@@ -323,6 +408,19 @@
 		font: 500 14px var(--font-display);
 		color: var(--ink);
 		letter-spacing: -0.01em;
+		display: flex;
+		align-items: baseline;
+		gap: 6px;
+	}
+
+	.chat-sub {
+		font: 500 10.5px var(--font-mono);
+		color: var(--ink-soft);
+		letter-spacing: 0.02em;
+		max-width: 280px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	.welcome-stream {
@@ -355,15 +453,89 @@
 		margin-bottom: 6px;
 	}
 
-	/* ─── Canvas hero ────────────────────────────────────────────────── */
+	/* ─── Canvas ─────────────────────────────────────────────────────── */
 
 	.canvas {
 		flex: 1;
 		min-width: 0;
 		background: var(--paper);
+		display: flex;
+		flex-direction: column;
+		overflow: auto;
+	}
+
+	.canvas-head {
+		padding: 24px 28px 18px;
+		border-bottom: var(--hairline);
+	}
+
+	.canvas-head.preparing {
+		opacity: 0.55;
+	}
+
+	.canvas-eyebrow {
+		font: 500 10.5px var(--font-mono);
+		color: var(--ink-soft);
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		margin-bottom: 6px;
+	}
+
+	.canvas-title {
+		font: 400 22px var(--font-display);
+		color: var(--ink);
+		letter-spacing: -0.015em;
+	}
+
+	.canvas-sub {
+		margin-top: 6px;
+		font: 400 13.5px/1.55 var(--font-ui);
+		color: var(--ink-mute);
+		max-width: 640px;
+	}
+
+	.canvas-body {
+		flex: 1;
+		min-height: 0;
+	}
+
+	.canvas-body.thinking {
 		display: grid;
 		place-items: center;
-		overflow: auto;
+		gap: 14px;
+		padding: 56px;
+		grid-auto-flow: column;
+		grid-auto-columns: min-content;
+	}
+
+	.koan-spinner {
+		width: 18px;
+		height: 18px;
+		border-radius: 50%;
+		border: 1.5px solid var(--ink-soft);
+		border-top-color: transparent;
+		animation: koan-canvas-spin 0.8s linear infinite;
+		flex-shrink: 0;
+	}
+
+	@keyframes koan-canvas-spin {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	.thinking-step {
+		font: 500 12px var(--font-mono);
+		color: var(--ink-soft);
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		white-space: nowrap;
+	}
+
+	/* Welcome variant of canvas centers the hero */
+	.canvas:has(.welcome-hero) {
+		display: grid;
+		place-items: center;
 	}
 
 	.welcome-hero {
