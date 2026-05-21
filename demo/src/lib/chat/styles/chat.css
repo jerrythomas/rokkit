@@ -259,7 +259,7 @@
 }
 
 [data-chat-composer] textarea::placeholder {
-	color: var(--ink-faint);
+	color: var(--ink-soft);
 }
 
 [data-chat-composer-controls] {
@@ -284,7 +284,7 @@
 
 [data-chat-composer-hint] {
 	font: 500 10.5px var(--font-mono);
-	color: var(--ink-faint);
+	color: var(--ink-soft);
 	letter-spacing: 0.04em;
 	display: inline-flex;
 	align-items: center;
@@ -297,7 +297,7 @@
 	border: 1px solid var(--paper-edge);
 	border-radius: 3px;
 	background: var(--paper);
-	color: var(--ink-soft);
+	color: var(--ink-mute);
 }
 
 [data-chat-composer-send] {
@@ -742,7 +742,7 @@
 
 [data-chat-sidebar-new] kbd {
 	font: 500 10px var(--font-mono);
-	color: var(--ink-soft);
+	color: var(--ink-mute);
 }
 
 [data-chat-sidebar][data-collapsed] [data-chat-sidebar-new] {
@@ -802,12 +802,12 @@
 }
 
 [data-chat-sidebar-search] input::placeholder {
-	color: var(--ink-faint);
+	color: var(--ink-soft);
 }
 
 [data-chat-sidebar-search] kbd {
 	font: 500 9.5px var(--font-mono);
-	color: var(--ink-soft);
+	color: var(--ink-mute);
 	padding: 1px 5px;
 	border: 1px solid var(--paper-edge);
 	border-radius: 3px;

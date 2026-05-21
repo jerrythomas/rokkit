@@ -58,6 +58,21 @@ function clearRoleOverrides() {
 	} catch {}
 }
 
+function loadRoleOverrides(): Record<string, string> {
+	if (!browser) return {}
+	try {
+		const stored = JSON.parse(localStorage.getItem('rokkit-site') || '{}')
+		const roles = ['surface', 'primary', 'secondary', 'accent']
+		const result: Record<string, string> = {}
+		for (const role of roles) {
+			if (stored[`role-${role}`]) result[role] = stored[`role-${role}`]
+		}
+		return result
+	} catch {
+		return {}
+	}
+}
+
 function createThemeStore() {
 	let style    = $state(readBody('style',   'zen-sumi'))
 	let mode     = $state(readBody('mode',    'dark'))
@@ -65,21 +80,10 @@ function createThemeStore() {
 	let radius   = $state(readBody('radius',  'soft'))
 	let skin     = $state(readStored('skin',  'default'))
 
-	/** Per-role overrides: role -> paletteName */
-	let roleOverrides = $state<Record<string, string>>({})
-
-	// Initialize role overrides from localStorage
-	if (browser) {
-		try {
-			const stored = JSON.parse(localStorage.getItem('rokkit-site') || '{}')
-			const roles = ['surface', 'primary', 'secondary', 'accent']
-			for (const role of roles) {
-				if (stored[`role-${role}`]) {
-					roleOverrides[role] = stored[`role-${role}`]
-				}
-			}
-		} catch {}
-	}
+	/** Per-role overrides: role -> paletteName. Loaded once at create time
+	 *  via a helper so the $state initializer doesn't read its own initial
+	 *  value (which would trigger Svelte's "captures initial value" warning). */
+	let roleOverrides = $state<Record<string, string>>(loadRoleOverrides())
 
 	return {
 		get style()   { return style },

@@ -1,8 +1,5 @@
 <script lang="ts">
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
-	import { theme } from '$lib/stores/theme.svelte'
-
-	const mode = $derived<'light' | 'dark'>(theme.mode === 'dark' ? 'dark' : 'light')
 </script>
 
 <svelte:head>
@@ -11,7 +8,7 @@
 
 <div class="landing-stub">
 	<header class="nav">
-		<RokkitWordmark {mode} height={28} />
+		<RokkitWordmark height={28} />
 		<nav>
 			<a href="/app">Components</a>
 			<a href="/app">Themes</a>

@@ -19,11 +19,13 @@
 	--ink-4: var(--ink-faint);
 
 	/* Hairline + shadow shorthand the mockup CSS uses inline.
-	   The raw --paper-edge is a real visible value; for structural lines
-	   (chrome border, column dividers, card separators) we want a softer
-	   read, so mix with transparent. Bump the percentage up if a line
-	   needs to feel more present. */
-	--hairline: 1px solid color-mix(in oklab, var(--paper-edge) 55%, transparent);
+	   --paper-edge already sits at shade 400 — light enough to feel like a
+	   guide rather than a hard rule, but solid enough to read in both
+	   light and dark modes. Earlier we softened with color-mix() but
+	   that pushed contrast too low; using the raw token is the right
+	   balance for structural lines (chrome border, column dividers,
+	   card separators). */
+	--hairline: 1px solid var(--paper-edge);
 	--shadow: 0 1px 3px var(--shadow-tint);
 
 	/* Mockup spacing scale (4px base) — Rokkit's density tokens drive component

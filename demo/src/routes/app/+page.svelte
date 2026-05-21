@@ -133,7 +133,7 @@
 		{styles}
 	>
 		{#snippet brand()}
-			<RokkitWordmark {mode} height={20} />
+			<RokkitWordmark height={20} />
 		{/snippet}
 	</ChatChrome>
 
@@ -261,7 +261,7 @@
 		<main class="canvas">
 			{#if phase === 'welcome'}
 				<div class="welcome-hero">
-					<div class="mark"><RokkitWordmark {mode} height={64} /></div>
+					<div class="mark"><RokkitWordmark height={64} /></div>
 					<div class="lede">Pass the data. The component does the rest.</div>
 					<div class="sub">
 						Type a question on the left. The answer mounts here — themed,
@@ -321,10 +321,6 @@
 		text-transform: uppercase;
 	}
 
-	[data-chat-sidebar-scroll] > .group-label:first-child {
-		padding-top: 4px;
-	}
-
 	.conv {
 		display: flex;
 		align-items: center;
@@ -366,7 +362,7 @@
 
 	.conv-when {
 		font: 500 10px var(--font-mono);
-		color: var(--ink-faint);
+		color: var(--ink-soft);
 		letter-spacing: 0.02em;
 		flex-shrink: 0;
 	}
