@@ -3,10 +3,13 @@
 		ChatChrome,
 		ChatComposer,
 		ChatMessage,
+		ChatResponse,
 		ChatSidebar,
 		ChatStream,
-		Chips
+		Chips,
+		CodeBlock
 	} from '$lib/chat'
+	import { Tabs } from '@rokkit/ui'
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
 	import { theme } from '$lib/stores/theme.svelte'
 	import { vibe } from '@rokkit/states'
@@ -53,9 +56,42 @@
 	// Conversation phase state machine — drives chat-left + canvas content.
 	// 'welcome'  → no conversation yet; show eyebrow chips + hero
 	// 'thinking' → user submitted; show reasoning steps + canvas spinner
-	// 'response' → demo mounted on canvas (next round)
+	// 'response' → demo mounted on canvas as a ChatResponse artifact
 	let phase = $state<'welcome' | 'thinking' | 'response'>('welcome')
 	let lastQuery = $state('')
+	let demoType = $state<'tabs' | null>(null)
+	let thinkingTimer: ReturnType<typeof setTimeout> | null = null
+
+	// Tabs demo state — mounted in the canvas response card
+	const tabsItems = [
+		{ label: 'Overview' },
+		{ label: 'Theming' },
+		{ label: 'Anatomy' },
+		{ label: 'A11y' },
+		{ label: 'API' }
+	]
+	let activeTab = $state<unknown>('Theming')
+
+	const tabsCode = `<script>
+  import { Tabs } from '@rokkit/ui'
+
+  let items = $state([
+    { label: 'Overview',  content: overviewSnippet },
+    { label: 'Theming',   content: themingSnippet  },
+    { label: 'Anatomy',   content: anatomySnippet  },
+    { label: 'A11y',      content: a11ySnippet     },
+    { label: 'API',       content: apiSnippet      },
+  ])
+  let value = $state(null)
+<\/script>
+
+<Tabs bind:items bind:value />`
+
+	const tryChips = [
+		{ label: 'switch style → rokkit', icon: 'i-mdi:palette' },
+		{ label: 'show the .css too', icon: 'i-mdi:code-tags' },
+		{ label: 'wire it to a real list' }
+	]
 
 	function submitQuery(value: string) {
 		const trimmed = value.trim()
@@ -64,14 +100,35 @@
 		lastQuery = trimmed
 		composerValue = ''
 		phase = 'thinking'
-		// Response transition will land next round — for now the thinking
-		// state persists until the user starts a new conversation.
+		demoType = null
+
+		// Simulate think → mount delay. For now any query mounts the Tabs
+		// demo; real query→demo matching happens once the match flow is
+		// wired through.
+		if (thinkingTimer) clearTimeout(thinkingTimer)
+		thinkingTimer = setTimeout(() => {
+			phase = 'response'
+			demoType = 'tabs'
+		}, 1500)
+	}
+
+	function tryChip(item: { label?: string }) {
+		// Placeholder — wires to actual follow-up actions in a later pass.
+		if (item.label?.startsWith('switch style')) {
+			const next = style === 'zen-sumi' ? 'rokkit' : 'zen-sumi'
+			style = next
+		}
 	}
 
 	function startNewConversation() {
+		if (thinkingTimer) {
+			clearTimeout(thinkingTimer)
+			thinkingTimer = null
+		}
 		phase = 'welcome'
 		lastQuery = ''
 		composerValue = ''
+		demoType = null
 		koan.query = ''
 	}
 
@@ -209,7 +266,7 @@
 						<Chips items={themeChips} onselect={pickChip} />
 					</section>
 				</div>
-			{:else}
+			{:else if phase === 'thinking'}
 				<ChatStream>
 					<ChatMessage
 						kind="user"
@@ -245,6 +302,51 @@
 					>
 						wiring sample data and the style cascade…
 					</ChatMessage>
+				</ChatStream>
+			{:else if phase === 'response'}
+				<ChatStream>
+					<ChatMessage
+						kind="user"
+						head="YOU"
+						who="Jerry"
+						ago="2m"
+						icon="i-mdi:chat-outline"
+					>
+						{lastQuery}
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="MOUNTED"
+						who="Rokkit"
+						ago="just now"
+						icon="i-mdi:layers-outline"
+					>
+						<code>&lt;Tabs/&gt;</code> from <code>@rokkit/ui</code> on the canvas.
+						Five panes from <code>items</code>. The style on screen is whatever
+						<code>data-style</code> is set to — there is no <code>variant</code> prop.
+						<div class="mounted-callout">
+							<span class="callout-label">Canvas →</span>
+							<span>Tabs · how the data-driven API works</span>
+						</div>
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="EXPLAINED"
+						icon="i-mdi:book-open-variant"
+					>
+						<strong>Items in, value out.</strong> The component owns selection,
+						keyboard nav, focus, a11y. You hand it data, it hands you back
+						which one is active.
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="TRY"
+						icon="i-mdi:palette"
+					>
+						Flip the <em>style</em> at the top of the window — the same Tabs
+						re-renders. Or copy the source on the right and paste it in.
+					</ChatMessage>
+					<Chips items={tryChips} onselect={tryChip} />
 				</ChatStream>
 			{/if}
 
@@ -287,6 +389,51 @@
 				<div class="canvas-body thinking">
 					<span class="koan-spinner" aria-hidden="true"></span>
 					<span class="thinking-step">mounting — step 3 of 4</span>
+				</div>
+			{:else if phase === 'response' && demoType === 'tabs'}
+				<div class="canvas-head">
+					<div class="canvas-eyebrow">Mounted demo · live</div>
+					<div class="canvas-title">Tabs · how the data-driven API works</div>
+					<div class="canvas-sub">
+						Five panes from one <code>items</code> array. Selection is bound.
+						Style comes from <code>data-style</code> on the parent. Flip the
+						chrome toggle to see it re-render.
+					</div>
+				</div>
+				<div class="canvas-body response">
+					<ChatResponse
+						name="&lt;Tabs/&gt;"
+						meta="· @rokkit/ui · style={style}"
+						kicker="LIVE"
+					>
+						{#snippet icon()}
+							<span class="i-mdi:layers-outline" aria-hidden="true"></span>
+						{/snippet}
+						{#snippet children()}
+							<div class="tabs-mount">
+								<Tabs options={tabsItems} bind:value={activeTab} />
+							</div>
+						{/snippet}
+						{#snippet props()}
+							<span>items</span><span data-value>[5]</span>
+							<span data-sep>·</span>
+							<span>style</span><span data-value>{style}</span>
+							<span data-sep>·</span>
+							<span>bytes</span><span data-value>2.1kb</span>
+						{/snippet}
+						{#snippet actions()}
+							<button type="button">
+								<span class="i-mdi:content-copy" aria-hidden="true"></span>
+								Copy code
+							</button>
+							<button type="button">
+								<span class="i-mdi:download" aria-hidden="true"></span>
+								Download
+							</button>
+						{/snippet}
+					</ChatResponse>
+
+					<CodeBlock filename="Tabs.demo.svelte" language="svelte" code={tabsCode} />
 				</div>
 			{/if}
 		</main>
@@ -502,6 +649,37 @@
 		padding: 56px;
 		grid-auto-flow: column;
 		grid-auto-columns: min-content;
+	}
+
+	.canvas-body.response {
+		padding: 22px 28px 32px;
+		display: flex;
+		flex-direction: column;
+		gap: 18px;
+	}
+
+	.tabs-mount {
+		min-height: 120px;
+	}
+
+	/* MOUNTED message in-body callout */
+	:global([data-chat-message] .mounted-callout) {
+		margin-top: 8px;
+		padding: 8px 10px;
+		background: var(--accent-soft);
+		border-radius: 6px;
+		border: 1px dashed color-mix(in oklab, var(--accent) 30%, transparent);
+		font-size: 12.5px;
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+
+	:global([data-chat-message] .mounted-callout .callout-label) {
+		font: 500 10.5px var(--font-mono);
+		color: var(--accent);
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
 	}
 
 	.koan-spinner {
