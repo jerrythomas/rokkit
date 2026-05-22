@@ -3012,3 +3012,57 @@ const sizeScale = buildSizeScale(data, 'value', 20) // → sqrt scale [0, 20]
 - Verified: hover effects, active item highlight, tab active state all confirmed working in browser
 
 **Final state:** 3321 tests passing (245 files), 0 lint errors. Phase 6 complete.
+
+## 2026-05-22 — Koan C4: Theme Wizard response screen
+
+**Summary:** Implemented mockup C4 — the theme wizard mounted as a `<ChatResponse>` artifact on the canvas, triggered by theme/skin/palette/brand queries.
+
+**Files**
+- `demo/src/routes/app/+page.svelte` — extended `demoType` to `'tabs' | 'theme-wizard' | null`. Replaced the hardcoded `demoType = 'tabs'` with `pickDemoKind(query)`, which routes via `runMatch` from the existing catalog (theme-wizard already indexed with the right keywords). Added chat-left branch with YOU / STARTED / GLOSSARY messages + wizard chips. Added canvas branch with eyebrow "Theme wizard · live preview", title "Build a theme · step 02 of 04", and a `<ChatResponse>` (kicker=WIZARD, name=`<ThemeWizard/>`, meta=`· step 02 · skin`, propsRow=`style {style} · palette warm-gray + shu · dual-mode yes`, actions=Save preset / Export tokens.css / Preview live) wrapping the new `ThemeWizardCard`. Added small `.glossary` `:global` styling for the bullet list inside `ChatMessage`.
+- `demo/src/lib/koan/demos/theme-wizard/ThemeWizardCard.svelte` — new static-display component for step 02. Horizontal stepper (01 Style done → 02 Skin active → 03 Typography → 04 Preview & export), 4-card palette grid (warm-gray, slate, neutral, shu — first two IN USE), and 7-row role table (paper, paper-2, paper-3, edge, ink, ink-2, accent) with light/dark `PaletteStepPicker` cells (`data-active` toggled by `mode` prop, selected step outlined with the accent color).
+- `demo/src/routes/chat-lab/+page.svelte` — dropped 4 pre-existing lint errors (3 `{#snippet children()}` wrappers + 2 `console.log` debug calls) so the repo returns to 0 lint errors.
+
+**Decisions**
+- Chose the lighter "static display" path over reusing the existing 4-step interactive wizard. The chat-shell context is an artifact card, not an interactive flow — the mockup only renders step 02. Real save/export/Stage-by-stage navigation deferred per the backlog spec.
+- IN USE badge stays on palettes 0 + 1 (warm-gray + slate) per the mockup JSX, even though the propsRow says "warm-gray + shu". The mockup has the same inconsistency; not worth fixing in the static demo.
+- `mode` prop pipes through from `theme.mode` (already `$derived` in `+page.svelte`) so toggling mode in the chrome reactively swaps which picker column is highlighted.
+
+**Verification**
+- `bun run lint` — 0 errors (down from 7), 15 warnings (pre-existing).
+- `bun run test:ci` — 3480 / 3480 passing.
+- Browser: confirmed "Theme to my brand" welcome chip routes to theme-wizard; "Tabs · 5 panes" still routes to Tabs. Wizard renders with the full stepper, palette grid, and role table.
+
+## 2026-05-22 (cont.) — /app refactor: layout + sub-routes (incl. C5)
+
+**Summary:** Split the single-page `/app` chat shell into a layout + state-setter sub-routes. URLs now drive demo selection; bookmarkable showcases. Stage C5 (dark + collapsed showcase) ships on top of this as `/app/tabs?mode=dark&collapsed=true`.
+
+**Files**
+- New `demo/src/lib/koan/shell.svelte.ts` — shared `$state` module with `phase`, `demoType`, `lastQuery`, `collapsed`, `composerValue` + `setShellResponse(kind)` / `setShellWelcome()` helpers.
+- `demo/src/routes/app/+page.svelte` → renamed to `+layout.svelte`. Replaced local `$state` with `shell.*`. Replaced `setTimeout` → state-mutation with `setTimeout` → `goto(DEMO_ROUTE[kind])`. `startNewConversation` calls `goto('/app')`. URL-param handling: `?mode=light|dark`, `?collapsed=true|1`, `?q=...` read once in layout `onMount`. The layout's `{@render children?.()}` renders the active sub-route's empty marker page.
+- New `demo/src/routes/app/+page.svelte` — onMount calls `setShellWelcome()`.
+- New `demo/src/routes/app/tabs/+page.svelte` — onMount sets `shell.demoType='tabs'`, defaults `lastQuery` to "Show me how Tabs work" for direct nav.
+- New `demo/src/routes/app/wizard/+page.svelte` — onMount sets `shell.demoType='theme-wizard'`, defaults `lastQuery` to "Theme for our brand".
+- `docs/design/12-priority.md`, `docs/backlog/2026-05-22-koan-dark-collapsed-showcase.md` — C5 marked Shipped with the new URL form.
+
+**Decisions**
+- Shared `$state` module rather than context. Simpler, type-safe, no setContext/getContext dance, and the chat shell is a single application — no isolation concerns.
+- Layout renders all branched content; pages are state-setters. Alternative was three-slot snippets via context — significantly more boilerplate for the same outcome.
+- C5's URL became `/app/tabs?mode=dark&collapsed=true` instead of the original spec's `/app?demo=tabs&mode=dark&collapsed=true`. Tabs is now a real route so `?demo=` is redundant. The `mode` + `collapsed` params remain because they affect layout-level chrome state, not the canvas content.
+- Browser back/forward verified working: chip → goto(/app/tabs) → history.back() restores to /app welcome state.
+
+**Verification**
+- `bun run lint` — 0 errors, 16 warnings (one extra pre-existing complexity warning vs the prior baseline; no new errors introduced).
+- `bun run test:ci` — 3480 / 3480 passing.
+- Browser: `/app` (welcome), `/app/tabs` (Tabs response), `/app/wizard` (Theme wizard), `/app/tabs?mode=dark&collapsed=true` (C5 showcase) all render correctly. Back nav works.
+
+## 2026-05-22 (cont.) — Visual polish + sidebar collapse rework
+
+Small follow-on adjustments after the C4 ship:
+
+- `demo/src/lib/chat/styles/chat.css` — message connector now uses `--ink-soft × 0.45` (was `--ink-faint × 0.5` — invisible against zen-sumi paper). `[data-chat-chrome-prefs]` outer wrapper border + background dropped (style pill and density trio carry their own borders). Removed `[data-chat-chrome-traffic]` selectors + the brand's compensating `margin-left: 8px`.
+- `demo/src/lib/chat/components/ChatChrome.svelte` — removed `hideTrafficLights` prop + traffic-light markup entirely (the shell isn't a macOS window).
+- `demo/src/lib/chat/components/ChatSidebar.svelte` — when collapsed, the `+` new-conversation button moves out of the header and renders as a 32×32 action tile at the top of the scroll area. The footer is hidden entirely when collapsed (no more "9 conversations" text overflowing 48px column). The collapse-toggle sits alone in the header.
+- `demo/src/lib/chat/styles/chat.css` — replaced the old `[data-collapsed] [data-chat-sidebar-new]` rule with `[data-collapsed-action]` styling that matches the conv-mini tile rhythm. Removed the obsolete `[data-collapsed] [data-chat-sidebar-footer]` rule.
+- `demo/src/lib/koan/demos/theme-wizard/ThemeWizardCard.svelte` — dropped the `border-bottom` under the horizontal stepper (matches the mockup, which uses section spacing rather than a divider).
+- `demo/src/routes/+page.svelte` — removed the `@rokkit/chat` package entry from the landing page (chat components stay in `demo/src/lib/chat/`, promoted into `@rokkit/ui` after API validation, per the existing decision).
+- `demo/src/routes/chat-lab/+page.svelte` — cleaned up 4 pre-existing lint errors (3 useless `{#snippet children()}` wrappers, 2 console.log debug calls) and the now-stale `hideTrafficLights={false}` pass-through.

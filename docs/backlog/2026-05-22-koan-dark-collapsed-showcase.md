@@ -1,7 +1,7 @@
 # Koan: Dark + Collapsed Sidebar Showcase (mockup C5)
 
 **Date:** 2026-05-22
-**Status:** Backlog
+**Status:** Shipped (2026-05-22) — see `agents/journal.md`. Implemented as `/app/tabs?mode=dark&collapsed=true` on the new layout + sub-routes structure (not the original `/app?demo=tabs&...` query-param form).
 **Parent:** Stage C — Koan demo rebuild
 
 ## Summary

@@ -1,7 +1,7 @@
 # Koan: Theme Wizard Screen (mockup C4)
 
 **Date:** 2026-05-22
-**Status:** Backlog
+**Status:** Shipped (2026-05-22) — see `agents/journal.md`
 **Parent:** Stage C — Koan demo rebuild (completed for screens 1/2/3 + landing)
 
 ## Summary

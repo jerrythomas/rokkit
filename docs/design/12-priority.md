@@ -35,7 +35,7 @@ Major design-system initiative — phases 3–9, then release 1 of the trimmed t
 
 #### Demo App
 
-- [ ] **`demo/` showcase app** — Koan demo shell, theme wizard, and welcome page are live. The original business-analytics sections (dashboard / data explorer / analytics / operations / notifications) and the per-section curtain-reveal code drawer are not built. **Decide first:** revive the original business-analytics spec, or treat the Koan shell as the canonical showcase and close this item out.
+- [ ] **`demo/` showcase app** — Koan demo shell, theme wizard, welcome page, Tabs response (C3), Theme Wizard response (C4, shipped 2026-05-22), and Dark + collapsed showcase (C5, shipped 2026-05-22 — `/app/tabs?mode=dark&collapsed=true`) are live. `/app` is now a layout + sub-routes structure (`/app`, `/app/tabs`, `/app/wizard`) with real navigation. The original business-analytics sections (dashboard / data explorer / analytics / operations / notifications) and the per-section curtain-reveal code drawer are not built. **Decide first:** revive the original business-analytics spec, or treat the Koan shell as the canonical showcase and close this item out.
 - [ ] **`apps/` restructure** — once the demo direction above is confirmed: move `site/` → `apps/learn/`, move `demo/` → `apps/demo/`; update vitest workspace paths, `bun.lock`, deploy config. Single structural commit.
 
 #### Theming & Design
