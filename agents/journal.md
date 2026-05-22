@@ -3066,3 +3066,22 @@ Small follow-on adjustments after the C4 ship:
 - `demo/src/lib/koan/demos/theme-wizard/ThemeWizardCard.svelte` — dropped the `border-bottom` under the horizontal stepper (matches the mockup, which uses section spacing rather than a divider).
 - `demo/src/routes/+page.svelte` — removed the `@rokkit/chat` package entry from the landing page (chat components stay in `demo/src/lib/chat/`, promoted into `@rokkit/ui` after API validation, per the existing decision).
 - `demo/src/routes/chat-lab/+page.svelte` — cleaned up 4 pre-existing lint errors (3 useless `{#snippet children()}` wrappers, 2 console.log debug calls) and the now-stale `hideTrafficLights={false}` pass-through.
+
+## 2026-05-22 (cont.) — Decision: Koan is the canonical demo
+
+Closed out the `demo/` showcase item per the open-question phrasing in `docs/design/12-priority.md`.
+
+**Decision:** the Koan shell (chat panel + canvas) is the canonical demo for `@rokkit/ui`. The original business-analytics spec (dashboard / data explorer / analytics / operations / notifications + curtain-reveal code drawer) is superseded and will not be built.
+
+**Why**
+- The Koan shell has already proven, through C3 + C4 + C5, that the chat-first framing reads as a coherent demo: "ask for a component, see it mounted on the canvas with source + style chrome".
+- Chat-first is a stronger story for an AI-era component library than a generic business dashboard. The analytics framing predates the AI/chat pivot.
+- Maintaining two demos (chat + analytics) would split design attention and double the surface area for every theme/density/locale change.
+- The components that *would* benefit from a non-chat surface (charts, tables, dashboards) can still be demonstrated inside the Koan canvas as response artifacts — they're not blocked by the framing.
+
+**Follow-on backlog items (now tracked under P2 / Demo App)**
+- Koan catalog expansion — table, tree, multi-select, list, combo as `/app/<demo>` sub-routes. Several welcome chips already point at these (currently fall back to Tabs).
+- Interactive theme wizard (D1–D3) — wire the static C4 card to the existing theme-store primitives so swatches actually mutate.
+- `apps/` restructure — now unblocked. `site/`→`apps/learn/`, `demo/`→`apps/demo/`, single structural commit.
+
+No files changed by this entry beyond `docs/design/12-priority.md` and this journal.

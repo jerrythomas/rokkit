@@ -35,8 +35,10 @@ Major design-system initiative — phases 3–9, then release 1 of the trimmed t
 
 #### Demo App
 
-- [ ] **`demo/` showcase app** — Koan demo shell, theme wizard, welcome page, Tabs response (C3), Theme Wizard response (C4, shipped 2026-05-22), and Dark + collapsed showcase (C5, shipped 2026-05-22 — `/app/tabs?mode=dark&collapsed=true`) are live. `/app` is now a layout + sub-routes structure (`/app`, `/app/tabs`, `/app/wizard`) with real navigation. The original business-analytics sections (dashboard / data explorer / analytics / operations / notifications) and the per-section curtain-reveal code drawer are not built. **Decide first:** revive the original business-analytics spec, or treat the Koan shell as the canonical showcase and close this item out.
-- [ ] **`apps/` restructure** — once the demo direction above is confirmed: move `site/` → `apps/learn/`, move `demo/` → `apps/demo/`; update vitest workspace paths, `bun.lock`, deploy config. Single structural commit.
+- [x] **`demo/` showcase app** — Direction decided 2026-05-22: Koan (chat-shell + canvas) is the canonical demo. Original business-analytics spec (dashboard / data explorer / analytics / operations / notifications + curtain-reveal code drawer) is superseded. Shipped: Koan shell at `/app`, welcome page, Tabs response (C3), Theme Wizard response (C4), Dark + collapsed showcase (C5, `/app/tabs?mode=dark&collapsed=true`), layout + sub-routes architecture, conversation history sidebar, ThemePanel, catalog system. Future work tracked under the Koan catalog expansion item below.
+- [ ] **Koan catalog expansion** — add more demo responses to the catalog: table, tree, multi-select, list, combo, etc. Each becomes a `/app/<demo>` route with chat-left messages + canvas response card. Welcome chips that don't yet resolve (`Sortable data table`, `Tree select`, `Multi-select with chips`) currently fall back to Tabs — add the matching demos so they route correctly.
+- [ ] **Interactive theme wizard (D1–D3)** — wire the static C4 wizard card to mutate theme state live: click swatch → set role.step, click palette card → toggle IN USE, step nav, real Save preset + Export tokens.css. The existing 4-step `demo/src/lib/koan/demos/theme-wizard/` flow has the persistence + apply primitives already.
+- [ ] **`apps/` restructure** — move `site/` → `apps/learn/`, move `demo/` → `apps/demo/`; update vitest workspace paths, `bun.lock`, deploy config. Single structural commit. Now unblocked since the demo direction is decided.
 
 #### Theming & Design
 
