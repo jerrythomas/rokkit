@@ -10,7 +10,7 @@
 		Chips,
 		CodeBlock
 	} from '$lib/chat'
-	import { Tabs } from '@rokkit/ui'
+	import { Tabs, Table } from '@rokkit/ui'
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
 	import { theme } from '$lib/stores/theme.svelte'
 	import { vibe } from '@rokkit/states'
@@ -50,15 +50,18 @@
 
 	let thinkingTimer: ReturnType<typeof setTimeout> | null = null
 
-	type DemoKind = 'tabs' | 'theme-wizard'
+	type DemoKind = 'tabs' | 'theme-wizard' | 'table'
 	const DEMO_ROUTE: Record<DemoKind, string> = {
 		tabs: '/app/tabs',
-		'theme-wizard': '/app/wizard'
+		'theme-wizard': '/app/wizard',
+		table: '/app/table'
 	}
 
 	function pickDemoKind(query: string): DemoKind {
-		const matches = runMatch(query)
-		return matches[0]?.id === 'theme-wizard' ? 'theme-wizard' : 'tabs'
+		const top = runMatch(query)[0]?.id
+		if (top === 'theme-wizard') return 'theme-wizard'
+		if (top === 'table') return 'table'
+		return 'tabs'
 	}
 
 	function submitQuery(value: string) {
@@ -168,6 +171,31 @@
 <\/script>
 
 <Tabs bind:items bind:value />`
+
+	// Table demo state — sortable products table on the canvas
+	const tableData = [
+		{ name: 'Laptop', price: 1299, stock: 45 },
+		{ name: 'Phone', price: 899, stock: 120 },
+		{ name: 'Tablet', price: 599, stock: 78 },
+		{ name: 'Monitor', price: 449, stock: 32 },
+		{ name: 'Keyboard', price: 129, stock: 210 },
+		{ name: 'Mouse', price: 59, stock: 340 }
+	]
+
+	const tableCode = `<script>
+  import { Table } from '@rokkit/ui'
+
+  const products = [
+    { name: 'Laptop',   price: 1299, stock:  45 },
+    { name: 'Phone',    price:  899, stock: 120 },
+    { name: 'Tablet',   price:  599, stock:  78 },
+    { name: 'Monitor',  price:  449, stock:  32 },
+    { name: 'Keyboard', price:  129, stock: 210 },
+    { name: 'Mouse',    price:   59, stock: 340 }
+  ]
+<\/script>
+
+<Table data={products} caption="Products" />`
 
 	onMount(() => {
 		if (!browser) return
@@ -400,6 +428,51 @@
 					</ChatMessage>
 					<Chips items={wizardChips} onselect={tryChip} />
 				</ChatStream>
+			{:else if shell.phase === 'response' && shell.demoType === 'table'}
+				<ChatStream>
+					<ChatMessage
+						kind="user"
+						head="YOU"
+						who="Jerry"
+						ago="just now"
+						icon="i-mdi:chat-outline"
+					>
+						{shell.lastQuery}
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="MOUNTED"
+						who="Rokkit"
+						ago="just now"
+						icon="i-mdi:table"
+					>
+						<code>&lt;Table/&gt;</code> from <code>@rokkit/ui</code> on the canvas.
+						Columns inferred from the rows. Click a header to sort; shift-click
+						to sort by multiple columns.
+						<div class="mounted-callout">
+							<span class="callout-label">Canvas →</span>
+							<span>Sortable Products table</span>
+						</div>
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="EXPLAINED"
+						icon="i-mdi:book-open-variant"
+					>
+						<strong>Data in, sortable grid out.</strong> No column config needed
+						for the common case — Table reads the first row to derive columns,
+						types, and alignment. Override with <code>columns</code> when you
+						need formatters, fixed widths, or custom snippets.
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="TRY"
+						icon="i-mdi:gesture-tap"
+					>
+						Sort by <em>price</em>, then shift-click <em>stock</em> to add a
+						secondary sort. Or copy the source on the right.
+					</ChatMessage>
+				</ChatStream>
 			{/if}
 
 			<ChatComposer
@@ -526,6 +599,48 @@
 							</button>
 						{/snippet}
 					</ChatResponse>
+				</div>
+			{:else if shell.phase === 'response' && shell.demoType === 'table'}
+				<div class="canvas-head">
+					<div class="canvas-eyebrow">Mounted demo · live</div>
+					<div class="canvas-title">Table · sortable, data-driven</div>
+					<div class="canvas-sub">
+						Six rows of products. Columns inferred from the row shape — no schema
+						required. Click a header to sort; shift-click to add secondary sorts.
+					</div>
+				</div>
+				<div class="canvas-body response">
+					<ChatResponse
+						name="&lt;Table/&gt;"
+						meta="· @rokkit/ui · style={style}"
+						kicker="LIVE"
+					>
+						{#snippet icon()}
+							<span class="i-mdi:table" aria-hidden="true"></span>
+						{/snippet}
+						<div class="table-mount">
+							<Table data={tableData} caption="Products" />
+						</div>
+						{#snippet props()}
+							<span>rows</span><span data-value>[6]</span>
+							<span data-sep>·</span>
+							<span>columns</span><span data-value>inferred</span>
+							<span data-sep>·</span>
+							<span>sortable</span><span data-value>yes</span>
+						{/snippet}
+						{#snippet actions()}
+							<button type="button">
+								<span class="i-mdi:content-copy" aria-hidden="true"></span>
+								Copy code
+							</button>
+							<button type="button">
+								<span class="i-mdi:download" aria-hidden="true"></span>
+								Download
+							</button>
+						{/snippet}
+					</ChatResponse>
+
+					<CodeBlock filename="Table.demo.svelte" language="svelte" code={tableCode} />
 				</div>
 			{/if}
 		</main>
@@ -747,6 +862,10 @@
 	}
 
 	.tabs-mount {
+		min-height: 120px;
+	}
+
+	.table-mount {
 		min-height: 120px;
 	}
 

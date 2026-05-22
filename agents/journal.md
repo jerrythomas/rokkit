@@ -3085,3 +3085,22 @@ Closed out the `demo/` showcase item per the open-question phrasing in `docs/des
 - `apps/` restructure — now unblocked. `site/`→`apps/learn/`, `demo/`→`apps/demo/`, single structural commit.
 
 No files changed by this entry beyond `docs/design/12-priority.md` and this journal.
+
+## 2026-05-22 (cont.) — Koan catalog: Table demo added
+
+Started the Koan catalog expansion (first item under the Demo App backlog). Added a sortable Products table as `/app/table`.
+
+**Files**
+- New `demo/src/lib/koan/demos/table/meta.ts` — DemoMeta with keywords (table, data, sortable, columns, rows, sort, grid, tabular, spreadsheet, list, records, dataset). Icon: 表.
+- New `demo/src/lib/koan/demos/table/placeholder.svelte` — minimal mounted-component file so the `load` field of DemoMeta resolves; not actually mounted by the layout (the layout owns rendering), kept for symmetry with existing demos.
+- `demo/src/lib/koan/catalog.ts` — registered table.
+- `demo/src/lib/koan/shell.svelte.ts` — extended ShellDemoType union with `'table'`.
+- `demo/src/routes/app/+layout.svelte` — extended DemoKind union, DEMO_ROUTE, pickDemoKind. Added table sample data (Products: name/price/stock), table code snippet, chat-left branch (YOU / MOUNTED / EXPLAINED / TRY messages), canvas branch (ChatResponse with name=`<Table/>`, rows/columns/sortable propsRow, Copy code / Download actions, real Table + CodeBlock). Added `.table-mount` CSS rule.
+- New `demo/src/routes/app/table/+page.svelte` — state-setter; defaults lastQuery to "Sortable data table" on direct nav.
+
+**Verification**
+- lint: 0 errors, 16 warnings.
+- Browser: `/app/table` direct nav renders correctly; "Sortable data table" welcome chip routes to `/app/table` via runMatch; clicking Price column header sorts rows ascending (Mouse 59 → Laptop 1299).
+
+**Note on TreeTable**
+The user mentioned a TreeTable component exists, but I could only find a `TreeTable` *data type* in `packages/data/src/types.d.ts` — no `TreeTable.svelte` component. The user clarified that `Table.svelte` "supports both"; its docstring says "Supports flat tables", and I didn't find a hierarchy/children prop. Starting with flat data here; if hierarchical Table rendering is supported via column snippets or a wrapping pattern, a separate hierarchical-table demo can be added later.
