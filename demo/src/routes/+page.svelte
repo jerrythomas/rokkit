@@ -54,15 +54,14 @@
 		{ label: 'Improve a11y coverage', done: false }
 	]
 
-	const packages = [
+	const packages: { pkg: string; icon: string; desc: string; isNew?: boolean }[] = [
 		{ pkg: '@rokkit/core', icon: 'i-mdi:layers-outline', desc: 'primitives, tokens, types' },
 		{ pkg: '@rokkit/data', icon: 'i-mdi:table', desc: 'item shapes, stores' },
 		{ pkg: '@rokkit/actions', icon: 'i-mdi:magic-staff', desc: 'svelte actions: themable, keyboard, focus' },
 		{ pkg: '@rokkit/states', icon: 'i-mdi:refresh', desc: 'finite states for interactive UI' },
 		{ pkg: '@rokkit/icons', icon: 'i-mdi:widgets-outline', desc: 'icon set · customizable' },
 		{ pkg: '@rokkit/themes', icon: 'i-mdi:palette', desc: 'styles · skins · typography pairs' },
-		{ pkg: '@rokkit/ui', icon: 'i-mdi:format-list-bulleted', desc: 'the components themselves' },
-		{ pkg: '@rokkit/chat', icon: 'i-mdi:chat-outline', desc: 'AI / chat embed kit', isNew: true }
+		{ pkg: '@rokkit/ui', icon: 'i-mdi:format-list-bulleted', desc: 'the components themselves' }
 	]
 </script>
 

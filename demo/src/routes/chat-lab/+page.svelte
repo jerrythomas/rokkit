@@ -50,7 +50,6 @@
 		bind:style
 		bind:density
 		{styles}
-		hideTrafficLights={false}
 	>
 		{#snippet brand()}
 			<span class="brand-mark">Koan</span>
@@ -62,12 +61,10 @@
 
 	<div class="stage">
 		<ChatSidebar bind:collapsed onnew={() => alert('new conversation')}>
-			{#snippet children()}
-				<div class="conv-group">Today</div>
-				<div class="conv">Show me how Tabs work</div>
-				<div class="conv conv-active">Theme for our brand red</div>
-				<div class="conv">How do I bind a list to async data?</div>
-			{/snippet}
+			<div class="conv-group">Today</div>
+			<div class="conv">Show me how Tabs work</div>
+			<div class="conv conv-active">Theme for our brand red</div>
+			<div class="conv">How do I bind a list to async data?</div>
 			{#snippet collapsedBody()}
 				<div class="conv-mini" title="Show me how Tabs work">·</div>
 				<div class="conv-mini conv-mini-active" title="Theme for our brand red">·</div>
@@ -92,12 +89,12 @@
 				<ChatMessage kind="think" head="THINKING">
 					wiring sample data and the style cascade…
 				</ChatMessage>
-				<Chips items={chips} onselect={(c) => console.log('chip', c)} />
+				<Chips items={chips} onselect={() => {}} />
 			</ChatStream>
 			<ChatComposer
 				bind:value={composerValue}
 				placeholder="Ask anything · type / for commands"
-				onsubmit={(v) => console.log('submit', v)}
+				onsubmit={() => {}}
 			/>
 		</aside>
 
@@ -112,21 +109,19 @@
 					meta="· @rokkit/ui · style={style}"
 					kicker="LIVE"
 				>
-					{#snippet children()}
-						<div class="tabs-stub">
-							<div class="tabs-bar">
-								<button>Overview</button>
-								<button class="on">Theming</button>
-								<button>Anatomy</button>
-								<button>A11y</button>
-								<button>API</button>
-							</div>
-							<div class="tabs-content">
-								<strong>Theming · data-driven</strong>
-								<p>One component definition. The look comes from <code>data-style</code> on the parent.</p>
-							</div>
+					<div class="tabs-stub">
+						<div class="tabs-bar">
+							<button>Overview</button>
+							<button class="on">Theming</button>
+							<button>Anatomy</button>
+							<button>A11y</button>
+							<button>API</button>
 						</div>
-					{/snippet}
+						<div class="tabs-content">
+							<strong>Theming · data-driven</strong>
+							<p>One component definition. The look comes from <code>data-style</code> on the parent.</p>
+						</div>
+					</div>
 					{#snippet props()}
 						<span>items</span><span data-value>[5]</span>
 						<span data-sep>·</span>

@@ -47,21 +47,21 @@
 
 <aside data-chat-sidebar data-collapsed={collapsed ? '' : undefined}>
 	<div data-chat-sidebar-header>
-		<button
-			type="button"
-			data-chat-sidebar-new
-			onclick={onnew}
-			title={newLabel}
-			aria-label={newLabel}
-		>
-			<svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
-				<path d="M7 2 L7 12 M2 7 L12 7"/>
-			</svg>
-			{#if !collapsed}
+		{#if !collapsed}
+			<button
+				type="button"
+				data-chat-sidebar-new
+				onclick={onnew}
+				title={newLabel}
+				aria-label={newLabel}
+			>
+				<svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+					<path d="M7 2 L7 12 M2 7 L12 7"/>
+				</svg>
 				<span data-chat-sidebar-new-label>{newLabel}</span>
 				<kbd>⌘N</kbd>
-			{/if}
-		</button>
+			</button>
+		{/if}
 		<button
 			type="button"
 			data-chat-sidebar-collapse
@@ -96,14 +96,28 @@
 	{/if}
 
 	<div data-chat-sidebar-scroll>
-		{#if collapsed && collapsedBody}
-			{@render collapsedBody()}
+		{#if collapsed}
+			<button
+				type="button"
+				data-chat-sidebar-new
+				data-collapsed-action
+				onclick={onnew}
+				title={newLabel}
+				aria-label={newLabel}
+			>
+				<svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+					<path d="M7 2 L7 12 M2 7 L12 7"/>
+				</svg>
+			</button>
+			{#if collapsedBody}
+				{@render collapsedBody()}
+			{/if}
 		{:else if children}
 			{@render children()}
 		{/if}
 	</div>
 
-	{#if footer}
+	{#if footer && !collapsed}
 		<div data-chat-sidebar-footer>{@render footer()}</div>
 	{/if}
 </aside>

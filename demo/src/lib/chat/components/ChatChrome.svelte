@@ -24,8 +24,6 @@
 		crumb?: Snippet
 		/** Additional right-side action buttons (before the mode toggle) */
 		actions?: Snippet
-		/** Hide the macOS traffic-light decoration */
-		hideTrafficLights?: boolean
 	}
 
 	let {
@@ -39,8 +37,7 @@
 		],
 		brand,
 		crumb,
-		actions,
-		hideTrafficLights = false
+		actions
 	}: ChatChromeProps = $props()
 
 	let pickerOpen = $state(false)
@@ -54,12 +51,6 @@
 </script>
 
 <header data-chat-chrome>
-	{#if !hideTrafficLights}
-		<div data-chat-chrome-traffic aria-hidden="true">
-			<span></span><span></span><span></span>
-		</div>
-	{/if}
-
 	{#if brand}
 		<div data-chat-chrome-brand>{@render brand()}</div>
 	{/if}
