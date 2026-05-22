@@ -1,0 +1,35 @@
+/**
+ * Shared shell state for the /app chat-shell route + its sub-routes.
+ *
+ * The layout owns the chrome / sidebar / chat-left / canvas regions and renders
+ * branched content based on `phase` and `demoType`. Each sub-route's
+ * `+page.svelte` is a thin state-setter that updates these fields onMount, so
+ * URL navigation becomes the source of truth for which demo is mounted.
+ */
+export type ShellPhase = 'welcome' | 'thinking' | 'response'
+export type ShellDemoType = 'tabs' | 'theme-wizard'
+
+export const shell = $state<{
+	phase: ShellPhase
+	demoType: ShellDemoType | null
+	lastQuery: string
+	collapsed: boolean
+	composerValue: string
+}>({
+	phase: 'welcome',
+	demoType: null,
+	lastQuery: '',
+	collapsed: false,
+	composerValue: ''
+})
+
+export function setShellResponse(demoType: ShellDemoType, query?: string): void {
+	shell.phase = 'response'
+	shell.demoType = demoType
+	if (query) shell.lastQuery = query
+}
+
+export function setShellWelcome(): void {
+	shell.phase = 'welcome'
+	shell.demoType = null
+}
