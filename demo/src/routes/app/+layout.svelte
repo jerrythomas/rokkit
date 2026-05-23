@@ -125,7 +125,8 @@
 		{ label: 'Tabs · 5 panes', icon: 'i-mdi:tab' },
 		{ label: 'Sortable data table', icon: 'i-mdi:table' },
 		{ label: 'Tree select', icon: 'i-mdi:file-tree' },
-		{ label: 'Multi-select with chips', icon: 'i-mdi:select-multiple' }
+		{ label: 'Multi-select with chips', icon: 'i-mdi:select-multiple' },
+		{ label: 'List with collapsible groups', icon: 'i-mdi:format-list-bulleted' }
 	]
 	const howChips = [
 		{ label: 'How does theming work?', icon: 'i-mdi:help-circle-outline' },
