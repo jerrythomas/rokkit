@@ -10,7 +10,7 @@
 		Chips,
 		CodeBlock
 	} from '$lib/chat'
-	import { Tabs, Table, Tree } from '@rokkit/ui'
+	import { Tabs, Table, Tree, MultiSelect } from '@rokkit/ui'
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
 	import { theme } from '$lib/stores/theme.svelte'
 	import { vibe } from '@rokkit/states'
@@ -50,12 +50,13 @@
 
 	let thinkingTimer: ReturnType<typeof setTimeout> | null = null
 
-	type DemoKind = 'tabs' | 'theme-wizard' | 'table' | 'tree'
+	type DemoKind = 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select'
 	const DEMO_ROUTE: Record<DemoKind, string> = {
 		tabs: '/app/tabs',
 		'theme-wizard': '/app/wizard',
 		table: '/app/table',
-		tree: '/app/tree'
+		tree: '/app/tree',
+		'multi-select': '/app/multiselect'
 	}
 
 	function pickDemoKind(query: string): DemoKind {
@@ -63,6 +64,7 @@
 		if (top === 'theme-wizard') return 'theme-wizard'
 		if (top === 'table') return 'table'
 		if (top === 'tree') return 'tree'
+		if (top === 'multi-select') return 'multi-select'
 		return 'tabs'
 	}
 
@@ -238,6 +240,37 @@
 	]
 	const treeFields = { label: 'name', value: 'id' }
 	let treeValue = $state<unknown>(null)
+
+	// MultiSelect demo state — colors with chip overflow
+	const colorItems = [
+		{ label: 'Red', value: 'red' },
+		{ label: 'Orange', value: 'orange' },
+		{ label: 'Yellow', value: 'yellow' },
+		{ label: 'Green', value: 'green' },
+		{ label: 'Blue', value: 'blue' },
+		{ label: 'Indigo', value: 'indigo' },
+		{ label: 'Violet', value: 'violet' },
+		{ label: 'Pink', value: 'pink' }
+	]
+	let selectedColors = $state<string[]>(['red', 'blue'])
+
+	const multiSelectCode = `<script>
+  import { MultiSelect } from '@rokkit/ui'
+
+  const items = [
+    { label: 'Red',    value: 'red'    },
+    { label: 'Orange', value: 'orange' },
+    { label: 'Yellow', value: 'yellow' },
+    { label: 'Green',  value: 'green'  },
+    { label: 'Blue',   value: 'blue'   },
+    { label: 'Indigo', value: 'indigo' },
+    { label: 'Violet', value: 'violet' },
+    { label: 'Pink',   value: 'pink'   }
+  ]
+  let value = $state(['red', 'blue'])
+<\/script>
+
+<MultiSelect {items} bind:value placeholder="Select colors" />`
 
 	const treeCode = `<script>
   import { Tree } from '@rokkit/ui'
@@ -540,6 +573,51 @@
 						secondary sort. Or copy the source on the right.
 					</ChatMessage>
 				</ChatStream>
+			{:else if shell.phase === 'response' && shell.demoType === 'multi-select'}
+				<ChatStream>
+					<ChatMessage
+						kind="user"
+						head="YOU"
+						who="Jerry"
+						ago="just now"
+						icon="i-mdi:chat-outline"
+					>
+						{shell.lastQuery}
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="MOUNTED"
+						who="Rokkit"
+						ago="just now"
+						icon="i-mdi:select-multiple"
+					>
+						<code>&lt;MultiSelect/&gt;</code> from <code>@rokkit/ui</code> on the
+						canvas. Items mapped via <code>{'{ label, value }'}</code>; selected
+						values render as chips inside the trigger. <code>bind:value</code>
+						gives you an array of the picked values.
+						<div class="mounted-callout">
+							<span class="callout-label">Canvas →</span>
+							<span>Eight colors · two pre-selected</span>
+						</div>
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="EXPLAINED"
+						icon="i-mdi:book-open-variant"
+					>
+						<strong>One component, many choices.</strong> Click the trigger to
+						open the dropdown, click an option to toggle it. Click a chip in
+						the trigger to remove just that one. Keyboard nav works throughout.
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="TRY"
+						icon="i-mdi:gesture-tap"
+					>
+						Add a few more colors, then click a chip to remove it. The
+						<code>value</code> array updates live — useful for forms or filters.
+					</ChatMessage>
+				</ChatStream>
 			{:else if shell.phase === 'response' && shell.demoType === 'tree'}
 				<ChatStream>
 					<ChatMessage
@@ -753,6 +831,49 @@
 					</ChatResponse>
 
 					<CodeBlock filename="Table.demo.svelte" language="svelte" code={tableCode} />
+				</div>
+			{:else if shell.phase === 'response' && shell.demoType === 'multi-select'}
+				<div class="canvas-head">
+					<div class="canvas-eyebrow">Mounted demo · live</div>
+					<div class="canvas-title">MultiSelect · chips for picked values</div>
+					<div class="canvas-sub">
+						Eight colors; two start picked. Selected values render as chips
+						inside the trigger. Click a chip to remove. Field-mapped via
+						<code>{'{ label, value }'}</code>; <code>bind:value</code> gives an array.
+					</div>
+				</div>
+				<div class="canvas-body response">
+					<ChatResponse
+						name="&lt;MultiSelect/&gt;"
+						meta="· @rokkit/ui · style={style}"
+						kicker="LIVE"
+					>
+						{#snippet icon()}
+							<span class="i-mdi:select-multiple" aria-hidden="true"></span>
+						{/snippet}
+						<div class="multiselect-mount">
+							<MultiSelect items={colorItems} bind:value={selectedColors} placeholder="Select colors" />
+						</div>
+						{#snippet props()}
+							<span>options</span><span data-value>[8]</span>
+							<span data-sep>·</span>
+							<span>selected</span><span data-value>[{selectedColors.length}]</span>
+							<span data-sep>·</span>
+							<span>value</span><span data-value>{selectedColors.join(', ') || '—'}</span>
+						{/snippet}
+						{#snippet actions()}
+							<button type="button">
+								<span class="i-mdi:content-copy" aria-hidden="true"></span>
+								Copy code
+							</button>
+							<button type="button">
+								<span class="i-mdi:download" aria-hidden="true"></span>
+								Download
+							</button>
+						{/snippet}
+					</ChatResponse>
+
+					<CodeBlock filename="MultiSelect.demo.svelte" language="svelte" code={multiSelectCode} />
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'tree'}
 				<div class="canvas-head">
@@ -1009,6 +1130,7 @@
 	}
 
 	.canvas-body.response {
+		overflow-y: auto;
 		padding: 22px 28px 32px;
 		display: flex;
 		flex-direction: column;
@@ -1025,6 +1147,11 @@
 
 	.tree-mount {
 		min-height: 120px;
+	}
+
+	.multiselect-mount {
+		min-height: 80px;
+		max-width: 340px;
 	}
 
 	:global([data-chat-message] .mounted-callout) {

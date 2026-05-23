@@ -3123,3 +3123,26 @@ Added a hierarchical Tree demo at `/app/tree` with a file-tree shape (src + docs
 **Verification**
 - Lint: 0 errors, 16 warnings.
 - Browser: `/app/tree` direct nav renders folders + files; clicking `src` expands to show `components`, `utilities`, `index.ts`.
+
+## 2026-05-23 — Koan catalog: MultiSelect demo + canvas scroll fix + zen-sumi table dark-mode fix
+
+**Demo: MultiSelect with chips**
+
+- New `demo/src/lib/koan/demos/multi-select/` (meta.ts + placeholder.svelte). Keywords: multi, multi-select, multiple, select, pick, choose, chips, tag, options, checkbox, combo. Icon: 選.
+- `catalog.ts` — registered as the 6th demo.
+- `shell.svelte.ts` — ShellDemoType union extended with `'multi-select'`.
+- `+layout.svelte` — imported MultiSelect; extended DemoKind / DEMO_ROUTE / pickDemoKind; added colorItems sample data (8 rainbow colors), selectedColors $state (red + blue pre-picked), multiSelectCode snippet; chat-left branch (YOU / MOUNTED / EXPLAINED / TRY); canvas branch with ChatResponse showing live selection count + value list in propsRow, CodeBlock below.
+- New `demo/src/routes/app/multiselect/+page.svelte` state-setter.
+- Welcome chip "Multi-select with chips" now resolves correctly (was falling back to Tabs).
+
+**Fix: canvas scroll for response demos**
+
+User reported the canvas wasn't scrollable — Table preview's CodeBlock went off-screen and couldn't be reached. Root cause: `.canvas-body` is `flex: 1` (bounded by canvas height) but its content can exceed that; `.canvas { overflow: auto }` doesn't kick in because the flex layout treats body's allocated height as the canvas's content height. Fix: added `overflow-y: auto` to `.canvas-body.response`, making the body itself the vertical scroll container.
+
+**Fix: zen-sumi table headers invisible in dark mode**
+
+User reported headers in the table are almost invisible in dark mode. Root cause: `packages/themes/src/zen-sumi/table.css` used `text-paper-edge` (a paper-tone color) for text-on-paper at five sites — header, sort icon, empty state, cell icon, responsive cell label. Paper tones against paper background are by definition near-invisible. Fix: changed all five to ink-soft / ink-faint (ink tokens are the correct family for text). Rebuilt themes. Other themes (rokkit, minimal, material, frosted) don't have this bug.
+
+**Verification**
+- Lint: 0 errors, 16 warnings.
+- Browser: `/app/multiselect` renders correctly; trigger shows "2 selected from 8" with red + blue pre-picked. `/app/table?mode=dark` headers (NAME / PRICE / STOCK) are legible. Resizing window to 500px height confirms `.canvas-body.response` becomes scrollable (`scrollHeight > clientHeight`).

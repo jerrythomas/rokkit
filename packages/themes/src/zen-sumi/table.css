@@ -10,7 +10,7 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-table-header] th {
-  @apply text-paper-edge border-paper-mute border-b bg-transparent;
+  @apply text-ink-soft border-paper-mute border-b bg-transparent;
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.05em;
@@ -27,7 +27,7 @@
 }
 
 [data-style='zen-sumi'] [data-table-sort-icon] {
-  @apply text-paper-edge;
+  @apply text-ink-faint;
 }
 
 [data-style='zen-sumi']
@@ -81,7 +81,7 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-table-empty] {
-  @apply text-paper-edge;
+  @apply text-ink-soft;
 }
 
 /* =============================================================================
@@ -89,7 +89,7 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-table-cell] [data-cell-icon] {
-  @apply text-paper-edge;
+  @apply text-ink-soft;
 }
 
 [data-style='zen-sumi'] [data-table-row][data-selected='true'] [data-cell-icon] {
@@ -106,7 +106,7 @@
   }
 
   [data-style='zen-sumi'] [data-table-responsive] [data-table-cell]::before {
-    @apply text-paper-edge;
+    @apply text-ink-soft;
   }
 
   [data-style='zen-sumi']
