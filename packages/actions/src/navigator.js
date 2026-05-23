@@ -211,8 +211,30 @@ export class Navigator {
 		if (!key) return
 		const el = /** @type {HTMLElement|null} */ (this.#root.querySelector(`[data-path="${key}"]`))
 		if (!el) return
-		if (el !== document.activeElement) el.focus()
-		el.scrollIntoView?.({ block: 'nearest', inline: 'nearest' })
+		// preventScroll stops the browser from cascading the focus call
+		// up the ancestor chain and scrolling outer containers.
+		if (el !== document.activeElement) el.focus({ preventScroll: true })
+		this.#scrollItemIntoView(el)
+	}
+
+	/**
+	 * Scroll `el` into view *within `this.#root`* only — never walk ancestors.
+	 * This prevents page-jumping when the navigator's root is itself inside
+	 * a scrollable container (e.g. a Select dropdown inside a scrollable
+	 * canvas-body).
+	 * @param {HTMLElement} el
+	 */
+	#scrollItemIntoView(el) {
+		const root = this.#root
+		const itemTop = el.offsetTop
+		const itemBottom = itemTop + el.offsetHeight
+		const visibleTop = root.scrollTop
+		const visibleBottom = visibleTop + root.clientHeight
+		if (itemTop < visibleTop) {
+			root.scrollTop = itemTop
+		} else if (itemBottom > visibleBottom) {
+			root.scrollTop = itemBottom - root.clientHeight
+		}
 	}
 
 	// ─── Typeahead ───────────────────────────────────────────────────────────

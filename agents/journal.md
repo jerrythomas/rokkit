@@ -3253,3 +3253,40 @@ This makes the visible window deterministic per `maxRows` setting and theme-awar
 - Tests: 3480/3480 (existing Select tests pass; the prop is backward-compatible).
 
 **Catalog state (9 routes, 9 demos):** tabs, table, tree, multi-select, list, toasts, form, select, theme-wizard (at /app/theming). All nine welcome chips resolve correctly.
+
+## 2026-05-23 (cont.) — Select: focus-sync race + ancestor-clipping fixes
+
+User reported two new Select bugs after the maxRows fix:
+
+1. **Page scrolls on arrow nav** — pressing arrow keys inside the open dropdown moved the entire canvas-body scroll position, and additional items became visible above/below the dropdown's bounds.
+2. **Layout shift on second open** — first open showed 3 items (clipped by canvas-body bottom edge), second open showed 4+ items with the 4th partially hidden, dropdown could no longer scroll.
+
+User pinpointed the focus-sync $effect as a likely culprit. Confirmed: there were **two** focus-sync paths competing.
+
+**Root causes**
+
+- The Navigator class (`packages/actions/src/navigator.js`) owns focus + scroll via its private `#syncFocus()` method.
+- `Select.svelte` had a duplicate `$effect` that watched `wrapper.focusedKey` and called `target.focus()` + `target.scrollIntoView({ block: 'nearest' })` itself. Two implementations doing similar work, ordered nondeterministically across renders.
+- Both `focus()` and `scrollIntoView({ block: 'nearest' })` climb the ancestor chain — so when the dropdown was inside a scrollable parent (the demo's `canvas-body.response`), the focus/scroll calls scrolled that parent too.
+- The dropdown's `position: absolute` left it visually clipped by the same ancestor's `overflow-y: auto`. The dropdown's own max-height became irrelevant — what mattered was how much room the ancestor gave it.
+
+**Fixes**
+
+- `Select.svelte` — removed the duplicate focus-sync `$effect`. Single source of truth lives in Navigator's `#syncFocus()`.
+- `Navigator` (`packages/actions/src/navigator.js`):
+  - `#syncFocus()` now calls `el.focus({ preventScroll: true })` so the browser doesn't cascade-scroll outer containers.
+  - New `#scrollItemIntoView(el)` method scrolls **within `this.#root` only**, computed from `offsetTop` / `clientHeight` / `scrollTop` — never walks ancestors. Replaces the previous `el.scrollIntoView()` call.
+- `Select.svelte` — new `$effect` runs on open: computes the trigger's `getBoundingClientRect()` and sets the dropdown to `position: fixed` with explicit `top` / `left` / `right` / `bottom` (per `direction` + `align` props). Adds resize + ancestor-scroll listeners; closes the dropdown on outer scroll (standard popup behavior).
+
+**Why position: fixed**
+
+- Escapes any ancestor `overflow: auto/hidden` clipping. The dropdown lives in viewport coordinates, so a Select inside a card / modal / scrollable canvas no longer gets clipped by the container.
+- `[data-select]` has `position: relative` (the original abs anchor) but we override with inline `position: fixed`. CSS specificity is on our side (inline beats stylesheet).
+- Reposition on resize; close on outer scroll. Closing is the standard popup behavior — repositioning during scroll causes jitter.
+
+These are real `@rokkit/ui` improvements, not demo-specific.
+
+**Verification**
+- Lint: 0 errors, 17 warnings.
+- Tests: 3480/3480 (existing Select + Navigator tests pass; the API surface is unchanged).
+- Browser: second-open shows the expected 8 items (`maxRows`-derived 294px), dropdown is now positioned `fixed` (verified via computed style), scroll-to-bottom reaches Option 20.

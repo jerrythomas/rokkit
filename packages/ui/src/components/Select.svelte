@@ -275,18 +275,54 @@
 		})
 	})
 
-	// DOM focus sync
+	// Position the dropdown relative to the trigger using `position: fixed`
+	// so it escapes any ancestor `overflow: auto/hidden` clipping (common
+	// when Select lives inside a scrollable card/modal/canvas). Reposition
+	// on resize and ancestor scroll; close on the same so it doesn't drift
+	// away from the trigger.
+	function positionDropdown() {
+		if (!dropdownRef || !triggerRef) return
+		const r = triggerRef.getBoundingClientRect()
+		const gap = 4
+		dropdownRef.style.position = 'fixed'
+		dropdownRef.style.minWidth = `${r.width}px`
+		if (direction === 'up') {
+			dropdownRef.style.top = 'auto'
+			dropdownRef.style.bottom = `${window.innerHeight - r.top + gap}px`
+		} else {
+			dropdownRef.style.top = `${r.bottom + gap}px`
+			dropdownRef.style.bottom = 'auto'
+		}
+		if (align === 'end') {
+			dropdownRef.style.left = 'auto'
+			dropdownRef.style.right = `${window.innerWidth - r.right}px`
+		} else {
+			dropdownRef.style.left = `${r.left}px`
+			dropdownRef.style.right = 'auto'
+		}
+	}
+
 	$effect(() => {
-		const key = wrapper.focusedKey
-		if (!isOpen || !dropdownRef || !key) return
-		requestAnimationFrame(() => {
-			const target = dropdownRef?.querySelector(`[data-path="${key}"]`) as HTMLElement | null
-			if (target && target !== document.activeElement) {
-				target.focus()
-				target.scrollIntoView?.({ block: 'nearest' })
-			}
-		})
+		if (!isOpen || !dropdownRef || !triggerRef) return
+		positionDropdown()
+		const onResize = () => positionDropdown()
+		const onScroll = () => {
+			// Close on ancestor scroll — re-positioning while scrolling
+			// causes jitter; closing is the standard popup behavior.
+			isOpen = false
+		}
+		window.addEventListener('resize', onResize)
+		window.addEventListener('scroll', onScroll, true)
+		return () => {
+			window.removeEventListener('resize', onResize)
+			window.removeEventListener('scroll', onScroll, true)
+		}
 	})
+
+	// Focus sync is owned by Navigator (#syncFocus). The previous duplicate
+	// $effect here competed with Navigator's own focus + scroll logic and
+	// caused race conditions (page-scroll on arrow nav, layout shift on
+	// reopen). Single source of truth lives in the Navigator class.
 
 	// ─── Filter keyboard (native listener, fires before Navigator) ───────────
 
