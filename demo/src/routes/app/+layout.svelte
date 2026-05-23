@@ -10,7 +10,8 @@
 		Chips,
 		CodeBlock
 	} from '$lib/chat'
-	import { Tabs, Table, Tree, MultiSelect, List } from '@rokkit/ui'
+	import { Tabs, Table, Tree, MultiSelect, List, Button, AlertList } from '@rokkit/ui'
+	import { alerts } from '@rokkit/states'
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
 	import { theme } from '$lib/stores/theme.svelte'
 	import { vibe } from '@rokkit/states'
@@ -50,14 +51,15 @@
 
 	let thinkingTimer: ReturnType<typeof setTimeout> | null = null
 
-	type DemoKind = 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select' | 'list'
+	type DemoKind = 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select' | 'list' | 'toasts'
 	const DEMO_ROUTE: Record<DemoKind, string> = {
 		tabs: '/app/tabs',
 		'theme-wizard': '/app/wizard',
 		table: '/app/table',
 		tree: '/app/tree',
 		'multi-select': '/app/multiselect',
-		list: '/app/list'
+		list: '/app/list',
+		toasts: '/app/toasts'
 	}
 
 	function pickDemoKind(query: string): DemoKind {
@@ -67,6 +69,7 @@
 		if (top === 'tree') return 'tree'
 		if (top === 'multi-select') return 'multi-select'
 		if (top === 'list') return 'list'
+		if (top === 'toasts') return 'toasts'
 		return 'tabs'
 	}
 
@@ -126,7 +129,8 @@
 		{ label: 'Sortable data table', icon: 'i-mdi:table' },
 		{ label: 'Tree select', icon: 'i-mdi:file-tree' },
 		{ label: 'Multi-select with chips', icon: 'i-mdi:select-multiple' },
-		{ label: 'List with collapsible groups', icon: 'i-mdi:format-list-bulleted' }
+		{ label: 'List with collapsible groups', icon: 'i-mdi:format-list-bulleted' },
+		{ label: 'Toast notifications', icon: 'i-mdi:bell-outline' }
 	]
 	const howChips = [
 		{ label: 'How does theming work?', icon: 'i-mdi:help-circle-outline' },
@@ -243,6 +247,34 @@
 	]
 	const treeFields = { label: 'name', value: 'id' }
 	let treeValue = $state<unknown>(null)
+
+	// Toasts demo state — handlers + code snippet
+	type ToastTone = 'success' | 'warning' | 'error' | 'info'
+	const toastMessages: Record<ToastTone, string> = {
+		success: 'Changes saved successfully.',
+		warning: 'Your session expires in 5 minutes.',
+		error: 'Failed to connect — please retry.',
+		info: 'A new version is available.'
+	}
+
+	function showToast(tone: ToastTone) {
+		alerts.push({ type: tone, text: toastMessages[tone] })
+	}
+
+	const toastsCode = `<script>
+  import { Button, AlertList } from '@rokkit/ui'
+  import { alerts } from '@rokkit/states'
+
+  function notify(tone) {
+    alerts.push({ type: tone, text: 'Changes saved successfully.' })
+  }
+<\/script>
+
+<AlertList position="top-right" />
+
+<Button variant="primary" onclick={() => notify('success')}>
+  Show success
+</Button>`
 
 	// List demo state — settings menu with collapsible groups
 	const listItems = [
@@ -635,6 +667,51 @@
 						secondary sort. Or copy the source on the right.
 					</ChatMessage>
 				</ChatStream>
+			{:else if shell.phase === 'response' && shell.demoType === 'toasts'}
+				<ChatStream>
+					<ChatMessage
+						kind="user"
+						head="YOU"
+						who="Jerry"
+						ago="just now"
+						icon="i-mdi:chat-outline"
+					>
+						{shell.lastQuery}
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="MOUNTED"
+						who="Rokkit"
+						ago="just now"
+						icon="i-mdi:bell-outline"
+					>
+						<code>&lt;AlertList/&gt;</code> + the <code>alerts</code> store from
+						<code>@rokkit/states</code>. Push from anywhere — alerts stack at the
+						configured position, dismiss on click or timeout.
+						<div class="mounted-callout">
+							<span class="callout-label">Canvas →</span>
+							<span>Four buttons · one per tone</span>
+						</div>
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="EXPLAINED"
+						icon="i-mdi:book-open-variant"
+					>
+						<strong>Imperative, not declarative.</strong> Most components are
+						data-bound — Toasts aren't. You push an alert with
+						<code>alerts.push(&#123; type, text &#125;)</code> and the AlertList
+						mounted anywhere in the tree renders it. One store, many call sites.
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="TRY"
+						icon="i-mdi:gesture-tap"
+					>
+						Click a button on the canvas. Each tone gets a different border + icon.
+						Toasts auto-dismiss after a few seconds, or click them to dismiss early.
+					</ChatMessage>
+				</ChatStream>
 			{:else if shell.phase === 'response' && shell.demoType === 'list'}
 				<ChatStream>
 					<ChatMessage
@@ -939,6 +1016,62 @@
 					</ChatResponse>
 
 					<CodeBlock filename="Table.demo.svelte" language="svelte" code={tableCode} />
+				</div>
+			{:else if shell.phase === 'response' && shell.demoType === 'toasts'}
+				<div class="canvas-head">
+					<div class="canvas-eyebrow">Mounted demo · live</div>
+					<div class="canvas-title">Toasts · imperative notifications</div>
+					<div class="canvas-sub">
+						AlertList renders any pushed alert at the configured position. Four
+						tones — success, warning, error, info. Click a button to fire one.
+					</div>
+				</div>
+				<div class="canvas-body response">
+					<ChatResponse
+						name="&lt;AlertList/&gt;"
+						meta="· @rokkit/ui · style={style}"
+						kicker="LIVE"
+					>
+						{#snippet icon()}
+							<span class="i-mdi:bell-outline" aria-hidden="true"></span>
+						{/snippet}
+						<div class="toasts-mount">
+							<AlertList position="top-right" />
+							<div class="toast-buttons">
+								<Button variant="primary" onclick={() => showToast('success')}>
+									Show success
+								</Button>
+								<Button variant="default" onclick={() => showToast('warning')}>
+									Show warning
+								</Button>
+								<Button variant="danger" onclick={() => showToast('error')}>
+									Show error
+								</Button>
+								<Button variant="secondary" onclick={() => showToast('info')}>
+									Show info
+								</Button>
+							</div>
+						</div>
+						{#snippet props()}
+							<span>position</span><span data-value>top-right</span>
+							<span data-sep>·</span>
+							<span>tones</span><span data-value>[4]</span>
+							<span data-sep>·</span>
+							<span>store</span><span data-value>alerts</span>
+						{/snippet}
+						{#snippet actions()}
+							<button type="button" onclick={() => alerts.clear()}>
+								<span class="i-mdi:close-circle-outline" aria-hidden="true"></span>
+								Clear all
+							</button>
+							<button type="button">
+								<span class="i-mdi:content-copy" aria-hidden="true"></span>
+								Copy code
+							</button>
+						{/snippet}
+					</ChatResponse>
+
+					<CodeBlock filename="Toasts.demo.svelte" language="svelte" code={toastsCode} />
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'list'}
 				<div class="canvas-head">
@@ -1312,6 +1445,16 @@
 	.list-mount {
 		min-height: 120px;
 		max-width: 340px;
+	}
+
+	.toasts-mount {
+		min-height: 80px;
+	}
+
+	.toast-buttons {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 12px;
 	}
 
 	:global([data-chat-message] .mounted-callout) {

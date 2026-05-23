@@ -3168,3 +3168,31 @@ User reported the CodeBlock shrinks when the List expands, because flex children
 **Verification**
 - Lint: 0 errors, 16 warnings.
 - Browser: `/app/list` renders 3 collapsible groups; the WHEN TO USE callout explains the List vs Tree trade-off; at a 500px-tall viewport the body becomes scrollable (clientH 298 → scrollH 928) and the CodeBlock holds its full 595px height instead of being compressed.
+
+## 2026-05-23 (cont.) — Toasts demo + interactive Koan mode draft
+
+**Demo: Toast notifications**
+
+- `demo/src/lib/koan/demos/toasts/` already had meta + index.svelte; the catalog had registered it but no route existed.
+- New `demo/src/routes/app/toasts/+page.svelte` state-setter.
+- `shell.svelte.ts` — ShellDemoType union extended with `'toasts'`.
+- `+layout.svelte` — imported Button + AlertList from `@rokkit/ui` and `alerts` from `@rokkit/states`; extended DemoKind / DEMO_ROUTE / pickDemoKind; added showToast handler + per-tone messages, toastsCode snippet; chat-left branch (YOU / MOUNTED / EXPLAINED / TRY emphasizing imperative-not-declarative); canvas branch with ChatResponse hosting AlertList + four trigger buttons (success / warning / error / info), Clear-all action that calls alerts.clear(), CodeBlock below. `.toasts-mount` + `.toast-buttons` CSS.
+- New welcome chip "Toast notifications" added to buildChips so the demo is discoverable from welcome.
+- Welcome chip routes via runMatch through the existing toast keywords in the catalog meta.
+
+**Backlog draft: interactive Koan mode**
+
+`docs/backlog/2026-05-23-interactive-koan-mode.md` — architecture for moving Koan from static catalog + lexical match to LLM-driven intent routing. Three intent classes (show me / how-to / refine). The centerpiece is **response compositions**: each chat response is an ordered list of blocks (text / code / component / comparison), and the LLM picks `inline_capable` components from a whitelist + provides JSON props matching a schema. The LLM never writes Svelte source; the renderer stays deterministic.
+
+Two phases:
+- Phase 1: server-side LLM (Anthropic / OpenAI) via SvelteKit endpoint
+- Phase 2: in-browser LLM via transformers.js or web-llm — zero API cost, full privacy, offline after first download. Per user direction, this is the preferred long-term path.
+
+Memory updated at `~/.claude/projects/-Users-Jerry-Developer-rokkit/memory/project_koan_interactive_mode.md` so future sessions can pick this up.
+
+**Verification**
+- Lint: 0 errors, 17 warnings (one new max-lines-per-function warning on the layout's growing per-demo branch — pre-existing pattern).
+- Tests: 3480/3480.
+- Browser: `/app/toasts` direct nav renders four trigger buttons; clicking "Show success" pushes a green-bordered toast at top-right. Welcome chip "Toast notifications" routes to `/app/toasts`.
+
+**Catalog state (7 routes, 7 demos):** tabs, table, tree, multi-select, list, toasts, theme-wizard. All seven build-chips on the welcome page now resolve correctly.
