@@ -9,8 +9,9 @@ import tree from './demos/tree/meta'
 import multiSelect from './demos/multi-select/meta'
 import list from './demos/list/meta'
 import form from './demos/form/meta'
+import select from './demos/select/meta'
 
-export const catalog: DemoMeta[] = [themeWizard, tabs, toasts, table, tree, multiSelect, list, form]
+export const catalog: DemoMeta[] = [themeWizard, tabs, toasts, table, tree, multiSelect, list, form, select]
 
 export const miniIndex = new MiniSearch<DemoMeta>({
 	fields: ['title', 'keywords', 'description'],

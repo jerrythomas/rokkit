@@ -3223,3 +3223,33 @@ Historical journal entries (where the route WAS `/app/wizard`) left as-is — th
 - Browser: `/app/form` direct nav renders name/email/role/newsletter fields with validation. `/app/theming` direct nav renders the theme wizard (rename works).
 
 **Catalog state (8 routes, 8 demos):** tabs, table, tree, multi-select, list, toasts, form, theme-wizard (now at /app/theming). All eight welcome chips resolve correctly.
+
+## 2026-05-23 (cont.) — Select demo + maxRows prop fix
+
+**Demo: single-pick Select**
+
+- New `demo/src/lib/koan/demos/select/` (meta + placeholder). Keywords: select, dropdown, picker, pick, choose, option, single, combo. Icon: 択.
+- `catalog.ts` + `shell.svelte.ts` + `+layout.svelte` — wired through.
+- Sample data: 20 numbered options (`Option 01` through `Option 20`) — deliberately chosen to exercise scroll + keyboard nav with a long list.
+- Chat-left messages call out the `maxRows` prop and `--select-dropdown-max-height` CSS var.
+- "Single-pick select" welcome chip added.
+
+**Fix: missing `maxRows` prop on Select**
+
+User reported: with 20+ items the dropdown either didn't limit to N visible OR mouse-scroll wouldn't reach the last item. Investigation:
+
+- `maxRows` was declared in the **type** (`packages/ui/src/types/select.ts`) with default 5, but `Select.svelte` never destructured or used it.
+- The dropdown's `max-height` was a hardcoded `200px` CSS fallback on `[data-select-dropdown]`.
+
+Fix in `packages/ui/src/components/Select.svelte`:
+
+- Added `maxRows = 8` to the destructured props and the inline type.
+- New $effect runs once per open: measures the first option's height via `offsetHeight`, sets `--select-dropdown-max-height` on `dropdownRef` to `maxRows × itemHeight`. Consumer can still override via the CSS var directly.
+
+This makes the visible window deterministic per `maxRows` setting and theme-aware (since the measured item height already reflects the active theme + density). Verified in browser: with maxRows=8 and 20 items, dropdown clientHeight is 294px (≈ 8 × 37), scrollHeight is 740px (all 20), and scrolling to `scrollTop = scrollHeight - clientHeight` brings Option 20 fully into view.
+
+**Verification**
+- Lint: 0 errors, 17 warnings.
+- Tests: 3480/3480 (existing Select tests pass; the prop is backward-compatible).
+
+**Catalog state (9 routes, 9 demos):** tabs, table, tree, multi-select, list, toasts, form, select, theme-wizard (at /app/theming). All nine welcome chips resolve correctly.

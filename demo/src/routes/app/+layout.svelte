@@ -10,7 +10,7 @@
 		Chips,
 		CodeBlock
 	} from '$lib/chat'
-	import { Tabs, Table, Tree, MultiSelect, List, Button, AlertList } from '@rokkit/ui'
+	import { Tabs, Table, Tree, MultiSelect, Select, List, Button, AlertList } from '@rokkit/ui'
 	import { FormRenderer } from '@rokkit/forms'
 	import { alerts } from '@rokkit/states'
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
@@ -52,7 +52,7 @@
 
 	let thinkingTimer: ReturnType<typeof setTimeout> | null = null
 
-	type DemoKind = 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select' | 'list' | 'toasts' | 'form'
+	type DemoKind = 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select' | 'list' | 'toasts' | 'form' | 'select'
 	const DEMO_ROUTE: Record<DemoKind, string> = {
 		tabs: '/app/tabs',
 		'theme-wizard': '/app/theming',
@@ -61,7 +61,8 @@
 		'multi-select': '/app/multiselect',
 		list: '/app/list',
 		toasts: '/app/toasts',
-		form: '/app/form'
+		form: '/app/form',
+		select: '/app/select'
 	}
 
 	function pickDemoKind(query: string): DemoKind {
@@ -73,6 +74,7 @@
 		if (top === 'list') return 'list'
 		if (top === 'toasts') return 'toasts'
 		if (top === 'form') return 'form'
+		if (top === 'select') return 'select'
 		return 'tabs'
 	}
 
@@ -134,7 +136,8 @@
 		{ label: 'Multi-select with chips', icon: 'i-mdi:select-multiple' },
 		{ label: 'List with collapsible groups', icon: 'i-mdi:format-list-bulleted' },
 		{ label: 'Toast notifications', icon: 'i-mdi:bell-outline' },
-		{ label: 'Schema-driven form', icon: 'i-mdi:form-textbox' }
+		{ label: 'Schema-driven form', icon: 'i-mdi:form-textbox' },
+		{ label: 'Single-pick select', icon: 'i-mdi:menu-down' }
 	]
 	const howChips = [
 		{ label: 'How does theming work?', icon: 'i-mdi:help-circle-outline' },
@@ -251,6 +254,25 @@
 	]
 	const treeFields = { label: 'name', value: 'id' }
 	let treeValue = $state<unknown>(null)
+
+	// Select demo state — 20-item flat list to exercise scroll + key nav
+	const selectItems = Array.from({ length: 20 }, (_, i) => ({
+		label: `Option ${String(i + 1).padStart(2, '0')}`,
+		value: `opt-${i + 1}`
+	}))
+	let selectValue = $state<unknown>(null)
+
+	const selectCode = `<script>
+  import { Select } from '@rokkit/ui'
+
+  const items = Array.from({ length: 20 }, (_, i) => ({
+    label: \`Option \${String(i + 1).padStart(2, '0')}\`,
+    value: \`opt-\${i + 1}\`
+  }))
+  let value = $state(null)
+<\/script>
+
+<Select {items} bind:value placeholder="Pick an option" />`
 
 	// Form demo state — sign-up form driven by schema
 	let formData = $state({
@@ -711,6 +733,53 @@
 						secondary sort. Or copy the source on the right.
 					</ChatMessage>
 				</ChatStream>
+			{:else if shell.phase === 'response' && shell.demoType === 'select'}
+				<ChatStream>
+					<ChatMessage
+						kind="user"
+						head="YOU"
+						who="Jerry"
+						ago="just now"
+						icon="i-mdi:chat-outline"
+					>
+						{shell.lastQuery}
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="MOUNTED"
+						who="Rokkit"
+						ago="just now"
+						icon="i-mdi:menu-down"
+					>
+						<code>&lt;Select/&gt;</code> from <code>@rokkit/ui</code> on the canvas
+						— single-pick counterpart to MultiSelect. Twenty options stress-test
+						the scroll + keyboard navigation; <code>maxRows</code> caps the
+						visible window at 8 by default.
+						<div class="mounted-callout">
+							<span class="callout-label">Canvas →</span>
+							<span>20 options · scroll for the rest</span>
+						</div>
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="EXPLAINED"
+						icon="i-mdi:book-open-variant"
+					>
+						<strong>One value, many options.</strong> Same items + fields shape
+						as MultiSelect, but a single value binding. The dropdown caps its
+						height to <code>maxRows × item-height</code> and overflows with
+						scroll. Override per-component with the <code>maxRows</code> prop,
+						or globally with <code>--select-dropdown-max-height</code>.
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="TRY"
+						icon="i-mdi:gesture-tap"
+					>
+						Open the dropdown. Mouse-scroll to the bottom; arrow keys walk;
+						Home / End jump; type a few characters for prefix-match navigation.
+					</ChatMessage>
+				</ChatStream>
 			{:else if shell.phase === 'response' && shell.demoType === 'form'}
 				<ChatStream>
 					<ChatMessage
@@ -1109,6 +1178,42 @@
 					</ChatResponse>
 
 					<CodeBlock filename="Table.demo.svelte" language="svelte" code={tableCode} />
+				</div>
+			{:else if shell.phase === 'response' && shell.demoType === 'select'}
+				<div class="canvas-head">
+					<div class="canvas-eyebrow">Mounted demo · live</div>
+					<div class="canvas-title">Select · single-pick dropdown</div>
+					<div class="canvas-sub">
+						Twenty options to exercise scroll + keyboard navigation. Click the
+						trigger to open; arrow keys walk; Enter selects; Home/End jump.
+					</div>
+				</div>
+				<div class="canvas-body response">
+					<ChatResponse
+						name="&lt;Select/&gt;"
+						meta="· @rokkit/ui · style={style}"
+						kicker="LIVE"
+					>
+						{#snippet icon()}
+							<span class="i-mdi:menu-down" aria-hidden="true"></span>
+						{/snippet}
+						<div class="select-mount">
+							<Select items={selectItems} bind:value={selectValue} placeholder="Pick an option" />
+						</div>
+						{#snippet props()}
+							<span>options</span><span data-value>[20]</span>
+							<span data-sep>·</span>
+							<span>selected</span><span data-value>{String(selectValue ?? '—')}</span>
+						{/snippet}
+						{#snippet actions()}
+							<button type="button">
+								<span class="i-mdi:content-copy" aria-hidden="true"></span>
+								Copy code
+							</button>
+						{/snippet}
+					</ChatResponse>
+
+					<CodeBlock filename="Select.demo.svelte" language="svelte" code={selectCode} />
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'form'}
 				<div class="canvas-head">
@@ -1590,6 +1695,11 @@
 	.form-mount {
 		min-height: 120px;
 		max-width: 440px;
+	}
+
+	.select-mount {
+		min-height: 80px;
+		max-width: 340px;
 	}
 
 	.toast-buttons {

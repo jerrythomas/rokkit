@@ -63,6 +63,7 @@
 		filterPlaceholder = 'Search...',
 		align = 'start',
 		direction = 'down',
+		maxRows = 8,
 		icons: userIcons = {} as SelectIcons,
 		onchange,
 		class: className = '',
@@ -79,6 +80,7 @@
 		filterPlaceholder?: string
 		align?: 'start' | 'end'
 		direction?: 'up' | 'down'
+		maxRows?: number
 		icons?: SelectIcons
 		onchange?: (value: unknown, item: unknown) => void
 		class?: string
@@ -252,6 +254,25 @@
 		const dir = getComputedStyle(dropdownRef).direction || 'ltr'
 		const nav = new Navigator(dropdownRef, wrapper, { dir, containScroll: true })
 		return () => nav.destroy()
+	})
+
+	// Apply maxRows by measuring a real option after open and capping max-height.
+	// Runs once per open to avoid jitter; the CSS var still wins if the consumer
+	// sets --select-dropdown-max-height explicitly.
+	$effect(() => {
+		if (!isOpen || !dropdownRef) return
+		requestAnimationFrame(() => {
+			if (!dropdownRef) return
+			const firstOption = dropdownRef.querySelector('[data-select-option]') as HTMLElement | null
+			if (!firstOption) return
+			const itemH = firstOption.offsetHeight
+			if (itemH > 0) {
+				dropdownRef.style.setProperty(
+					'--select-dropdown-max-height',
+					`${maxRows * itemH}px`
+				)
+			}
+		})
 	})
 
 	// DOM focus sync
