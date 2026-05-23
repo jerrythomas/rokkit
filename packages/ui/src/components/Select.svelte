@@ -218,9 +218,29 @@
 				requestAnimationFrame(() => {
 					if (filterable) {
 						filterInputRef?.focus()
-					} else {
-						focusSelectedOrFirst()
+						return
 					}
+					focusSelectedOrFirst()
+					// Move DOM focus to the wrapper's focused item so subsequent
+					// keydown events fire inside the dropdown (Navigator is
+					// listening there). preventScroll + dropdown-only scroll
+					// to avoid moving ancestor containers.
+					requestAnimationFrame(() => {
+						if (!dropdownRef) return
+						const key = wrapper.focusedKey
+						if (!key) return
+						const el = dropdownRef.querySelector(`[data-path="${key}"]`) as HTMLElement | null
+						if (el) {
+							el.focus({ preventScroll: true })
+							const top = el.offsetTop
+							const bottom = top + el.offsetHeight
+							if (top < dropdownRef.scrollTop) {
+								dropdownRef.scrollTop = top
+							} else if (bottom > dropdownRef.scrollTop + dropdownRef.clientHeight) {
+								dropdownRef.scrollTop = bottom - dropdownRef.clientHeight
+							}
+						}
+					})
 				})
 			},
 			onclose: () => {
@@ -306,9 +326,13 @@
 		if (!isOpen || !dropdownRef || !triggerRef) return
 		positionDropdown()
 		const onResize = () => positionDropdown()
-		const onScroll = () => {
-			// Close on ancestor scroll — re-positioning while scrolling
-			// causes jitter; closing is the standard popup behavior.
+		const onScroll = (e: Event) => {
+			// Don't close on the dropdown's OWN internal scroll (mouse wheel
+			// inside the list, or scrollItemIntoView from keyboard nav).
+			// Only close when an ANCESTOR / outer container scrolls — at that
+			// point the trigger has moved and the fixed-position dropdown
+			// would drift away from it.
+			if (dropdownRef && e.target instanceof Node && dropdownRef.contains(e.target)) return
 			isOpen = false
 		}
 		window.addEventListener('resize', onResize)
