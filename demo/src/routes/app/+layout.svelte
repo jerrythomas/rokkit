@@ -10,7 +10,7 @@
 		Chips,
 		CodeBlock
 	} from '$lib/chat'
-	import { Tabs, Table, Tree, MultiSelect } from '@rokkit/ui'
+	import { Tabs, Table, Tree, MultiSelect, List } from '@rokkit/ui'
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
 	import { theme } from '$lib/stores/theme.svelte'
 	import { vibe } from '@rokkit/states'
@@ -50,13 +50,14 @@
 
 	let thinkingTimer: ReturnType<typeof setTimeout> | null = null
 
-	type DemoKind = 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select'
+	type DemoKind = 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select' | 'list'
 	const DEMO_ROUTE: Record<DemoKind, string> = {
 		tabs: '/app/tabs',
 		'theme-wizard': '/app/wizard',
 		table: '/app/table',
 		tree: '/app/tree',
-		'multi-select': '/app/multiselect'
+		'multi-select': '/app/multiselect',
+		list: '/app/list'
 	}
 
 	function pickDemoKind(query: string): DemoKind {
@@ -65,6 +66,7 @@
 		if (top === 'table') return 'table'
 		if (top === 'tree') return 'tree'
 		if (top === 'multi-select') return 'multi-select'
+		if (top === 'list') return 'list'
 		return 'tabs'
 	}
 
@@ -240,6 +242,65 @@
 	]
 	const treeFields = { label: 'name', value: 'id' }
 	let treeValue = $state<unknown>(null)
+
+	// List demo state — settings menu with collapsible groups
+	const listItems = [
+		{
+			label: 'General',
+			icon: 'i-mdi:cog-outline',
+			children: [
+				{ label: 'Profile', icon: 'i-mdi:account-outline' },
+				{ label: 'Account', icon: 'i-mdi:shield-account-outline' },
+				{ label: 'Notifications', icon: 'i-mdi:bell-outline' }
+			]
+		},
+		{
+			label: 'Appearance',
+			icon: 'i-mdi:palette-outline',
+			children: [
+				{ label: 'Theme', icon: 'i-mdi:invert-colors' },
+				{ label: 'Density', icon: 'i-mdi:format-line-spacing' },
+				{ label: 'Typography', icon: 'i-mdi:format-font' }
+			]
+		},
+		{
+			label: 'Advanced',
+			icon: 'i-mdi:tune',
+			children: [
+				{ label: 'Keyboard shortcuts', icon: 'i-mdi:keyboard-outline' },
+				{ label: 'Developer', icon: 'i-mdi:code-tags' }
+			]
+		}
+	]
+	let listValue = $state<unknown>(null)
+
+	const listCode = `<script>
+  import { List } from '@rokkit/ui'
+
+  const items = [
+    {
+      label: 'General',
+      icon: 'i-mdi:cog-outline',
+      children: [
+        { label: 'Profile',       icon: 'i-mdi:account-outline'         },
+        { label: 'Account',       icon: 'i-mdi:shield-account-outline'  },
+        { label: 'Notifications', icon: 'i-mdi:bell-outline'            }
+      ]
+    },
+    {
+      label: 'Appearance',
+      icon: 'i-mdi:palette-outline',
+      children: [
+        { label: 'Theme',      icon: 'i-mdi:invert-colors'        },
+        { label: 'Density',    icon: 'i-mdi:format-line-spacing'  },
+        { label: 'Typography', icon: 'i-mdi:format-font'          }
+      ]
+    }
+  ]
+  let value = $state(null)
+<\/script>
+
+<List {items} collapsible bind:value />`
 
 	// MultiSelect demo state — colors with chip overflow
 	const colorItems = [
@@ -573,6 +634,52 @@
 						secondary sort. Or copy the source on the right.
 					</ChatMessage>
 				</ChatStream>
+			{:else if shell.phase === 'response' && shell.demoType === 'list'}
+				<ChatStream>
+					<ChatMessage
+						kind="user"
+						head="YOU"
+						who="Jerry"
+						ago="just now"
+						icon="i-mdi:chat-outline"
+					>
+						{shell.lastQuery}
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="MOUNTED"
+						who="Rokkit"
+						ago="just now"
+						icon="i-mdi:format-list-bulleted"
+					>
+						<code>&lt;List/&gt;</code> from <code>@rokkit/ui</code> on the canvas
+						with <code>collapsible</code> turned on. Three group headers — General,
+						Appearance, Advanced — each owns its items via <code>children</code>.
+						<div class="mounted-callout">
+							<span class="callout-label">Canvas →</span>
+							<span>Settings menu · collapsible groups</span>
+						</div>
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="WHEN TO USE"
+						icon="i-mdi:compare-horizontal"
+					>
+						<strong>List with collapsible groups</strong> when the items are the
+						focus and the groups are just headings (settings panels, sidebar
+						navigation, command palettes). <strong>Tree</strong> when the
+						hierarchy itself is the point (file systems, org charts, multi-level
+						nesting).
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="TRY"
+						icon="i-mdi:gesture-tap"
+					>
+						Click a group header to collapse it. Click an item to select.
+						Same API works flat — drop the <code>children</code> for a flat list.
+					</ChatMessage>
+				</ChatStream>
 			{:else if shell.phase === 'response' && shell.demoType === 'multi-select'}
 				<ChatStream>
 					<ChatMessage
@@ -831,6 +938,49 @@
 					</ChatResponse>
 
 					<CodeBlock filename="Table.demo.svelte" language="svelte" code={tableCode} />
+				</div>
+			{:else if shell.phase === 'response' && shell.demoType === 'list'}
+				<div class="canvas-head">
+					<div class="canvas-eyebrow">Mounted demo · live</div>
+					<div class="canvas-title">List · collapsible groups</div>
+					<div class="canvas-sub">
+						Settings menu shape — three groups, each with its own items via
+						<code>children</code>. Click a group header to collapse. Same
+						component renders flat lists when you drop <code>children</code>.
+					</div>
+				</div>
+				<div class="canvas-body response">
+					<ChatResponse
+						name="&lt;List/&gt;"
+						meta="· @rokkit/ui · style={style}"
+						kicker="LIVE"
+					>
+						{#snippet icon()}
+							<span class="i-mdi:format-list-bulleted" aria-hidden="true"></span>
+						{/snippet}
+						<div class="list-mount">
+							<List items={listItems} collapsible bind:value={listValue} />
+						</div>
+						{#snippet props()}
+							<span>groups</span><span data-value>[3]</span>
+							<span data-sep>·</span>
+							<span>collapsible</span><span data-value>yes</span>
+							<span data-sep>·</span>
+							<span>selected</span><span data-value>{String((listValue as { label?: string } | null)?.label ?? '—')}</span>
+						{/snippet}
+						{#snippet actions()}
+							<button type="button">
+								<span class="i-mdi:content-copy" aria-hidden="true"></span>
+								Copy code
+							</button>
+							<button type="button">
+								<span class="i-mdi:download" aria-hidden="true"></span>
+								Download
+							</button>
+						{/snippet}
+					</ChatResponse>
+
+					<CodeBlock filename="List.demo.svelte" language="svelte" code={listCode} />
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'multi-select'}
 				<div class="canvas-head">
@@ -1137,6 +1287,10 @@
 		gap: 18px;
 	}
 
+	:global(.canvas-body.response > *) {
+		flex-shrink: 0;
+	}
+
 	.tabs-mount {
 		min-height: 120px;
 	}
@@ -1151,6 +1305,11 @@
 
 	.multiselect-mount {
 		min-height: 80px;
+		max-width: 340px;
+	}
+
+	.list-mount {
+		min-height: 120px;
 		max-width: 340px;
 	}
 

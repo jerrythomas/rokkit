@@ -3146,3 +3146,25 @@ User reported headers in the table are almost invisible in dark mode. Root cause
 **Verification**
 - Lint: 0 errors, 16 warnings.
 - Browser: `/app/multiselect` renders correctly; trigger shows "2 selected from 8" with red + blue pre-picked. `/app/table?mode=dark` headers (NAME / PRICE / STOCK) are legible. Resizing window to 500px height confirms `.canvas-body.response` becomes scrollable (`scrollHeight > clientHeight`).
+
+## 2026-05-23 (cont.) — Koan catalog: List with collapsible groups + flex-shrink fix
+
+**Demo: List with collapsible groups**
+
+- New `demo/src/lib/koan/demos/list/` (meta.ts + placeholder.svelte). Keywords: list, menu, sidebar, group, collapsible, expand, section, category. Icon: 列.
+- `catalog.ts` — registered as the 7th demo.
+- `shell.svelte.ts` — ShellDemoType union extended with `'list'`.
+- `+layout.svelte` — imported List; extended DemoKind / DEMO_ROUTE / pickDemoKind; added listItems sample data (3 groups: General / Appearance / Advanced, each with 2–3 items), listValue $state, listCode snippet; chat-left branch (YOU / MOUNTED / WHEN TO USE / TRY); canvas branch with ChatResponse + CodeBlock. New `.list-mount` CSS rule.
+- New `demo/src/routes/app/list/+page.svelte` state-setter.
+- The MOUNTED chat-left message includes a "WHEN TO USE" panel — counterpoint to the same panel in the Tree demo. List with collapsible groups for shallow grouping where items are the focus; Tree when hierarchy is the point.
+
+**Fix: canvas-body children flex-shrink**
+
+User reported the CodeBlock shrinks when the List expands, because flex children default to `flex-shrink: 1`. Added `:global(.canvas-body.response > *) { flex-shrink: 0 }` so the response card and code block hold their natural heights, and overflow triggers the body's vertical scroll. The `:global` is required — without it Svelte's scoped CSS doesn't reach the CodeBlock (which comes from another component file).
+
+**Backlog**
+- `docs/backlog/2026-05-22-tree-table-and-table-simplification.md` (added by user this session) — committed alongside this work for record-keeping.
+
+**Verification**
+- Lint: 0 errors, 16 warnings.
+- Browser: `/app/list` renders 3 collapsible groups; the WHEN TO USE callout explains the List vs Tree trade-off; at a 500px-tall viewport the body becomes scrollable (clientH 298 → scrollH 928) and the CodeBlock holds its full 595px height instead of being compressed.
