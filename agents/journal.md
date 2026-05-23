@@ -3104,3 +3104,22 @@ Started the Koan catalog expansion (first item under the Demo App backlog). Adde
 
 **Note on TreeTable**
 The user mentioned a TreeTable component exists, but I could only find a `TreeTable` *data type* in `packages/data/src/types.d.ts` — no `TreeTable.svelte` component. The user clarified that `Table.svelte` "supports both"; its docstring says "Supports flat tables", and I didn't find a hierarchy/children prop. Starting with flat data here; if hierarchical Table rendering is supported via column snippets or a wrapping pattern, a separate hierarchical-table demo can be added later.
+
+## 2026-05-22 (cont.) — Koan catalog: Tree demo added
+
+Added a hierarchical Tree demo at `/app/tree` with a file-tree shape (src + docs + package.json + README.md, with src nested 2 levels deep into components/ + utilities/).
+
+**Files**
+- New `demo/src/lib/koan/demos/tree/meta.ts` + placeholder.svelte. Keywords: tree, hierarchy, nested, select, folder, navigation, directory, outline, parent, child, children. Icon: 枝.
+- `catalog.ts` — registered.
+- `shell.svelte.ts` — ShellDemoType union extended with `'tree'`.
+- `+layout.svelte` — imported Tree; extended DemoKind / DEMO_ROUTE / pickDemoKind; added treeItems sample data, treeFields, treeValue $state, treeCode snippet; chat-left branch (YOU / MOUNTED / WHEN TO USE / TRY); canvas branch with ChatResponse + CodeBlock. New `.tree-mount` CSS rule.
+- New `demo/src/routes/app/tree/+page.svelte` state-setter.
+
+**Notable**
+- The MOUNTED message includes a "WHEN TO USE" panel: Tree for multi-level hierarchy (file systems, org charts); List with collapsible groups for shallow 1–2 level grouping where the groups are headings, not the focus. This came from the user's clarification mid-session that List handles "groups, collapsible groups, flat one level or mixed 1/2 levels". Helps users pick the right component before mounting.
+- Welcome chip "Tree select" now resolves correctly (was falling back to Tabs).
+
+**Verification**
+- Lint: 0 errors, 16 warnings.
+- Browser: `/app/tree` direct nav renders folders + files; clicking `src` expands to show `components`, `utilities`, `index.ts`.

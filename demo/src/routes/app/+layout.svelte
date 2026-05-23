@@ -10,7 +10,7 @@
 		Chips,
 		CodeBlock
 	} from '$lib/chat'
-	import { Tabs, Table } from '@rokkit/ui'
+	import { Tabs, Table, Tree } from '@rokkit/ui'
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
 	import { theme } from '$lib/stores/theme.svelte'
 	import { vibe } from '@rokkit/states'
@@ -50,17 +50,19 @@
 
 	let thinkingTimer: ReturnType<typeof setTimeout> | null = null
 
-	type DemoKind = 'tabs' | 'theme-wizard' | 'table'
+	type DemoKind = 'tabs' | 'theme-wizard' | 'table' | 'tree'
 	const DEMO_ROUTE: Record<DemoKind, string> = {
 		tabs: '/app/tabs',
 		'theme-wizard': '/app/wizard',
-		table: '/app/table'
+		table: '/app/table',
+		tree: '/app/tree'
 	}
 
 	function pickDemoKind(query: string): DemoKind {
 		const top = runMatch(query)[0]?.id
 		if (top === 'theme-wizard') return 'theme-wizard'
 		if (top === 'table') return 'table'
+		if (top === 'tree') return 'tree'
 		return 'tabs'
 	}
 
@@ -196,6 +198,71 @@
 <\/script>
 
 <Table data={products} caption="Products" />`
+
+	// Tree demo state — file-tree shape with deep nesting
+	const treeItems = [
+		{
+			name: 'src',
+			id: 'src',
+			children: [
+				{
+					name: 'components',
+					id: 'components',
+					children: [
+						{ name: 'Button.svelte', id: 'button' },
+						{ name: 'Input.svelte', id: 'input' },
+						{ name: 'Tabs.svelte', id: 'tabs' }
+					]
+				},
+				{
+					name: 'utilities',
+					id: 'utilities',
+					children: [
+						{ name: 'format.ts', id: 'format' },
+						{ name: 'parse.ts', id: 'parse' }
+					]
+				},
+				{ name: 'index.ts', id: 'index' }
+			]
+		},
+		{
+			name: 'docs',
+			id: 'docs',
+			children: [
+				{ name: 'getting-started.md', id: 'getting-started' },
+				{ name: 'api-reference.md', id: 'api-reference' }
+			]
+		},
+		{ name: 'package.json', id: 'package' },
+		{ name: 'README.md', id: 'readme' }
+	]
+	const treeFields = { label: 'name', value: 'id' }
+	let treeValue = $state<unknown>(null)
+
+	const treeCode = `<script>
+  import { Tree } from '@rokkit/ui'
+
+  const items = [
+    {
+      name: 'src', id: 'src',
+      children: [
+        {
+          name: 'components', id: 'components',
+          children: [
+            { name: 'Button.svelte', id: 'button' },
+            { name: 'Input.svelte',  id: 'input'  }
+          ]
+        },
+        { name: 'index.ts', id: 'index' }
+      ]
+    }
+  ]
+
+  const fields = { label: 'name', value: 'id' }
+  let value = $state(null)
+<\/script>
+
+<Tree {items} {fields} bind:value />`
 
 	onMount(() => {
 		if (!browser) return
@@ -473,6 +540,51 @@
 						secondary sort. Or copy the source on the right.
 					</ChatMessage>
 				</ChatStream>
+			{:else if shell.phase === 'response' && shell.demoType === 'tree'}
+				<ChatStream>
+					<ChatMessage
+						kind="user"
+						head="YOU"
+						who="Jerry"
+						ago="just now"
+						icon="i-mdi:chat-outline"
+					>
+						{shell.lastQuery}
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="MOUNTED"
+						who="Rokkit"
+						ago="just now"
+						icon="i-mdi:file-tree"
+					>
+						<code>&lt;Tree/&gt;</code> from <code>@rokkit/ui</code> on the canvas.
+						Nested items via <code>children</code>; label / value mapped from
+						the row shape via <code>fields</code>. Arrow keys + Enter navigate.
+						<div class="mounted-callout">
+							<span class="callout-label">Canvas →</span>
+							<span>File tree · expand / collapse</span>
+						</div>
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="WHEN TO USE"
+						icon="i-mdi:compare-horizontal"
+					>
+						<strong>Tree</strong> when the hierarchy is the point — multi-level
+						nesting, file systems, org charts. <strong>List with collapsible
+						groups</strong> for shallow 1–2 level grouping where the items are
+						the focus and the groups are just headings.
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="TRY"
+						icon="i-mdi:gesture-tap"
+					>
+						Click a folder to expand. Arrow keys walk the tree; Enter selects.
+						Selection is bound — <em>value</em> updates as you navigate.
+					</ChatMessage>
+				</ChatStream>
 			{/if}
 
 			<ChatComposer
@@ -641,6 +753,48 @@
 					</ChatResponse>
 
 					<CodeBlock filename="Table.demo.svelte" language="svelte" code={tableCode} />
+				</div>
+			{:else if shell.phase === 'response' && shell.demoType === 'tree'}
+				<div class="canvas-head">
+					<div class="canvas-eyebrow">Mounted demo · live</div>
+					<div class="canvas-title">Tree · hierarchical, navigable</div>
+					<div class="canvas-sub">
+						Nested folders + files. Click to expand; arrow keys walk the tree;
+						Enter selects. Field-mapped via <code>fields={'{'} label, value }</code>.
+					</div>
+				</div>
+				<div class="canvas-body response">
+					<ChatResponse
+						name="&lt;Tree/&gt;"
+						meta="· @rokkit/ui · style={style}"
+						kicker="LIVE"
+					>
+						{#snippet icon()}
+							<span class="i-mdi:file-tree" aria-hidden="true"></span>
+						{/snippet}
+						<div class="tree-mount">
+							<Tree items={treeItems} fields={treeFields} bind:value={treeValue} />
+						</div>
+						{#snippet props()}
+							<span>nodes</span><span data-value>nested</span>
+							<span data-sep>·</span>
+							<span>fields</span><span data-value>{'{ label, value }'}</span>
+							<span data-sep>·</span>
+							<span>selected</span><span data-value>{String(treeValue ?? '—')}</span>
+						{/snippet}
+						{#snippet actions()}
+							<button type="button">
+								<span class="i-mdi:content-copy" aria-hidden="true"></span>
+								Copy code
+							</button>
+							<button type="button">
+								<span class="i-mdi:download" aria-hidden="true"></span>
+								Download
+							</button>
+						{/snippet}
+					</ChatResponse>
+
+					<CodeBlock filename="Tree.demo.svelte" language="svelte" code={treeCode} />
 				</div>
 			{/if}
 		</main>
@@ -866,6 +1020,10 @@
 	}
 
 	.table-mount {
+		min-height: 120px;
+	}
+
+	.tree-mount {
 		min-height: 120px;
 	}
 
