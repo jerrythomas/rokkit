@@ -11,6 +11,7 @@
 		CodeBlock
 	} from '$lib/chat'
 	import { Tabs, Table, Tree, MultiSelect, List, Button, AlertList } from '@rokkit/ui'
+	import { FormRenderer } from '@rokkit/forms'
 	import { alerts } from '@rokkit/states'
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
 	import { theme } from '$lib/stores/theme.svelte'
@@ -51,15 +52,16 @@
 
 	let thinkingTimer: ReturnType<typeof setTimeout> | null = null
 
-	type DemoKind = 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select' | 'list' | 'toasts'
+	type DemoKind = 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select' | 'list' | 'toasts' | 'form'
 	const DEMO_ROUTE: Record<DemoKind, string> = {
 		tabs: '/app/tabs',
-		'theme-wizard': '/app/wizard',
+		'theme-wizard': '/app/theming',
 		table: '/app/table',
 		tree: '/app/tree',
 		'multi-select': '/app/multiselect',
 		list: '/app/list',
-		toasts: '/app/toasts'
+		toasts: '/app/toasts',
+		form: '/app/form'
 	}
 
 	function pickDemoKind(query: string): DemoKind {
@@ -70,6 +72,7 @@
 		if (top === 'multi-select') return 'multi-select'
 		if (top === 'list') return 'list'
 		if (top === 'toasts') return 'toasts'
+		if (top === 'form') return 'form'
 		return 'tabs'
 	}
 
@@ -130,7 +133,8 @@
 		{ label: 'Tree select', icon: 'i-mdi:file-tree' },
 		{ label: 'Multi-select with chips', icon: 'i-mdi:select-multiple' },
 		{ label: 'List with collapsible groups', icon: 'i-mdi:format-list-bulleted' },
-		{ label: 'Toast notifications', icon: 'i-mdi:bell-outline' }
+		{ label: 'Toast notifications', icon: 'i-mdi:bell-outline' },
+		{ label: 'Schema-driven form', icon: 'i-mdi:form-textbox' }
 	]
 	const howChips = [
 		{ label: 'How does theming work?', icon: 'i-mdi:help-circle-outline' },
@@ -247,6 +251,46 @@
 	]
 	const treeFields = { label: 'name', value: 'id' }
 	let treeValue = $state<unknown>(null)
+
+	// Form demo state — sign-up form driven by schema
+	let formData = $state({
+		name: '',
+		email: '',
+		role: 'user',
+		newsletter: true
+	})
+	const formSchema = {
+		type: 'object',
+		properties: {
+			name: { type: 'string', required: true },
+			email: { type: 'string', format: 'email', required: true },
+			role: { type: 'string', enum: ['admin', 'editor', 'viewer', 'user'] },
+			newsletter: { type: 'boolean' }
+		}
+	}
+
+	const formCode = `<script>
+  import { FormRenderer } from '@rokkit/forms'
+
+  let data = $state({
+    name: '',
+    email: '',
+    role: 'user',
+    newsletter: true
+  })
+
+  const schema = {
+    type: 'object',
+    properties: {
+      name:       { type: 'string', required: true },
+      email:      { type: 'string', format: 'email', required: true },
+      role:       { type: 'string', enum: ['admin', 'editor', 'viewer', 'user'] },
+      newsletter: { type: 'boolean' }
+    }
+  }
+<\/script>
+
+<FormRenderer bind:data {schema} />`
 
 	// Toasts demo state — handlers + code snippet
 	type ToastTone = 'success' | 'warning' | 'error' | 'info'
@@ -667,6 +711,55 @@
 						secondary sort. Or copy the source on the right.
 					</ChatMessage>
 				</ChatStream>
+			{:else if shell.phase === 'response' && shell.demoType === 'form'}
+				<ChatStream>
+					<ChatMessage
+						kind="user"
+						head="YOU"
+						who="Jerry"
+						ago="just now"
+						icon="i-mdi:chat-outline"
+					>
+						{shell.lastQuery}
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="MOUNTED"
+						who="Rokkit"
+						ago="just now"
+						icon="i-mdi:form-textbox"
+					>
+						<code>&lt;FormRenderer/&gt;</code> from <code>@rokkit/forms</code> on
+						the canvas. JSON-Schema-ish object in; the right input per type
+						(text / email / select / checkbox) is rendered, validated, and bound
+						to the data object via <code>bind:data</code>.
+						<div class="mounted-callout">
+							<span class="callout-label">Canvas →</span>
+							<span>Four fields · sign-up shape</span>
+						</div>
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="EXPLAINED"
+						icon="i-mdi:book-open-variant"
+					>
+						<strong>Schema in, form out.</strong> No template per field, no
+						per-input boilerplate. <code>required</code>, <code>format</code>,
+						and <code>enum</code> drive validation and rendering. Need more
+						control? Pass a <code>layout</code> for ordering / sections, or
+						switch to <code>FormBuilder</code> for imperative updates + dirty
+						tracking.
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="TRY"
+						icon="i-mdi:gesture-tap"
+					>
+						Type in the fields. <em>email</em> validates as you type;
+						<em>role</em> renders as a select because of the enum;
+						<em>newsletter</em> renders as a toggle because of the boolean type.
+					</ChatMessage>
+				</ChatStream>
 			{:else if shell.phase === 'response' && shell.demoType === 'toasts'}
 				<ChatStream>
 					<ChatMessage
@@ -1016,6 +1109,49 @@
 					</ChatResponse>
 
 					<CodeBlock filename="Table.demo.svelte" language="svelte" code={tableCode} />
+				</div>
+			{:else if shell.phase === 'response' && shell.demoType === 'form'}
+				<div class="canvas-head">
+					<div class="canvas-eyebrow">Mounted demo · live</div>
+					<div class="canvas-title">Form · schema-driven</div>
+					<div class="canvas-sub">
+						Four fields generated from a schema — text, email (validated),
+						select (enum-derived), boolean toggle. <code>bind:data</code> for
+						two-way binding.
+					</div>
+				</div>
+				<div class="canvas-body response">
+					<ChatResponse
+						name="&lt;FormRenderer/&gt;"
+						meta="· @rokkit/forms · style={style}"
+						kicker="LIVE"
+					>
+						{#snippet icon()}
+							<span class="i-mdi:form-textbox" aria-hidden="true"></span>
+						{/snippet}
+						<div class="form-mount">
+							<FormRenderer bind:data={formData} schema={formSchema} />
+						</div>
+						{#snippet props()}
+							<span>fields</span><span data-value>[4]</span>
+							<span data-sep>·</span>
+							<span>name</span><span data-value>{formData.name || '—'}</span>
+							<span data-sep>·</span>
+							<span>role</span><span data-value>{formData.role}</span>
+						{/snippet}
+						{#snippet actions()}
+							<button type="button">
+								<span class="i-mdi:content-copy" aria-hidden="true"></span>
+								Copy code
+							</button>
+							<button type="button">
+								<span class="i-mdi:download" aria-hidden="true"></span>
+								Download
+							</button>
+						{/snippet}
+					</ChatResponse>
+
+					<CodeBlock filename="Form.demo.svelte" language="svelte" code={formCode} />
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'toasts'}
 				<div class="canvas-head">
@@ -1449,6 +1585,11 @@
 
 	.toasts-mount {
 		min-height: 80px;
+	}
+
+	.form-mount {
+		min-height: 120px;
+		max-width: 440px;
 	}
 
 	.toast-buttons {

@@ -151,7 +151,7 @@ export type DemoMeta = {
 }
 ```
 
-The LLM sees the union of these tool specs as available functions. Routes accept the parameters as URL query params (`/app/wizard?palette=shu&step=500`) so each tool call lands as a deep-link.
+The LLM sees the union of these tool specs as available functions. Routes accept the parameters as URL query params (`/app/theming?palette=shu&step=500`) so each tool call lands as a deep-link.
 
 ## New files this would add
 
@@ -179,7 +179,7 @@ The LLM sees the union of these tool specs as available functions. Routes accept
 
 1. "Show me a sortable table" → mounts `/app/table` without a fast-path keyword match.
 2. "How does theming work?" → answer card on the canvas with prose + a short code example; no mount.
-3. "Theme to my brand red" → mounts `/app/wizard?palette=shu` with the wizard's role mapping pre-populated.
+3. "Theme to my brand red" → mounts `/app/theming?palette=shu` with the wizard's role mapping pre-populated.
 4. "Make it dark" (with a demo mounted) → toggles mode without remounting.
 5. First-query latency on a cold cache is shown with progress UI; subsequent queries on a warm cache feel instant.
 6. The fast-path (deterministic match) still handles the obvious cases without LLM call, keeping the common case fast and free.

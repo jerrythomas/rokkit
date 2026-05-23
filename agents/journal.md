@@ -3196,3 +3196,30 @@ Memory updated at `~/.claude/projects/-Users-Jerry-Developer-rokkit/memory/proje
 - Browser: `/app/toasts` direct nav renders four trigger buttons; clicking "Show success" pushes a green-bordered toast at top-right. Welcome chip "Toast notifications" routes to `/app/toasts`.
 
 **Catalog state (7 routes, 7 demos):** tabs, table, tree, multi-select, list, toasts, theme-wizard. All seven build-chips on the welcome page now resolve correctly.
+
+## 2026-05-23 (cont.) — Koan catalog: Form demo + /app/wizard → /app/theming
+
+**Demo: schema-driven form**
+
+- New `demo/src/lib/koan/demos/form/` (meta + placeholder). Keywords: form, input, schema, validation, sign-up, contact, json-schema. Icon: 入.
+- New `demo/src/routes/app/form/+page.svelte` state-setter.
+- `catalog.ts` + `shell.svelte.ts` + `+layout.svelte` — wired through.
+- Sample schema: name (required), email (required, format=email), role (enum=admin/editor/viewer/user), newsletter (boolean). Demonstrates the four most common input renders.
+- Chat-left messages emphasize "schema in, form out" — no per-input boilerplate, required/format/enum drive rendering and validation automatically.
+- "Schema-driven form" welcome chip added.
+
+**Route rename: /app/wizard → /app/theming**
+
+Per Jerry: `/app/wizard` was too generic given a real Wizard component may exist later. The theme-wizard demo is specifically about *theming*, so the route should reflect that.
+
+Renamed via `git mv demo/src/routes/app/wizard demo/src/routes/app/theming`. Updated:
+- `+layout.svelte` — `DEMO_ROUTE['theme-wizard']` from `/app/wizard` to `/app/theming`.
+- `docs/backlog/2026-05-23-interactive-koan-mode.md` — references updated.
+
+Historical journal entries (where the route WAS `/app/wizard`) left as-is — they're a record of what was committed at the time, not forward-looking spec.
+
+**Verification**
+- Lint: 0 errors, 17 warnings.
+- Browser: `/app/form` direct nav renders name/email/role/newsletter fields with validation. `/app/theming` direct nav renders the theme wizard (rename works).
+
+**Catalog state (8 routes, 8 demos):** tabs, table, tree, multi-select, list, toasts, form, theme-wizard (now at /app/theming). All eight welcome chips resolve correctly.
