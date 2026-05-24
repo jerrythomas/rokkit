@@ -12,8 +12,9 @@ import form from './demos/form/meta'
 import select from './demos/select/meta'
 import chart from './demos/chart/meta'
 import combo from './demos/combo/meta'
+import datePicker from './demos/date-picker/meta'
 
-export const catalog: DemoMeta[] = [themeWizard, tabs, toasts, table, tree, multiSelect, list, form, select, chart, combo]
+export const catalog: DemoMeta[] = [themeWizard, tabs, toasts, table, tree, multiSelect, list, form, select, chart, combo, datePicker]
 
 export const miniIndex = new MiniSearch<DemoMeta>({
 	fields: ['title', 'keywords', 'description'],

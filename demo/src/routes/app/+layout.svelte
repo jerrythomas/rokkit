@@ -53,7 +53,7 @@
 
 	let thinkingTimer: ReturnType<typeof setTimeout> | null = null
 
-	type DemoKind = 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select' | 'list' | 'toasts' | 'form' | 'select' | 'chart' | 'combo'
+	type DemoKind = 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select' | 'list' | 'toasts' | 'form' | 'select' | 'chart' | 'combo' | 'date-picker'
 	const DEMO_ROUTE: Record<DemoKind, string> = {
 		tabs: '/app/tabs',
 		'theme-wizard': '/app/theming',
@@ -65,7 +65,8 @@
 		form: '/app/form',
 		select: '/app/select',
 		chart: '/app/chart',
-		combo: '/app/combo'
+		combo: '/app/combo',
+		'date-picker': '/app/date'
 	}
 
 	function pickDemoKind(query: string): DemoKind {
@@ -80,6 +81,7 @@
 		if (top === 'select') return 'select'
 		if (top === 'chart') return 'chart'
 		if (top === 'combo') return 'combo'
+		if (top === 'date-picker') return 'date-picker'
 		return 'tabs'
 	}
 
@@ -144,7 +146,8 @@
 		{ label: 'Schema-driven form', icon: 'i-mdi:form-textbox' },
 		{ label: 'Single-pick select', icon: 'i-mdi:menu-down' },
 		{ label: 'Bar chart with quarterly revenue', icon: 'i-mdi:chart-bar' },
-		{ label: 'Combobox with type-to-filter', icon: 'i-mdi:magnify' }
+		{ label: 'Combobox with type-to-filter', icon: 'i-mdi:magnify' },
+		{ label: 'Date and time picker', icon: 'i-mdi:calendar' }
 	]
 	const howChips = [
 		{ label: 'How does theming work?', icon: 'i-mdi:help-circle-outline' },
@@ -261,6 +264,38 @@
 	]
 	const treeFields = { label: 'name', value: 'id' }
 	let treeValue = $state<unknown>(null)
+
+	// Date Picker demo state — event scheduling form
+	let dateData = $state({
+		eventDate: '2026-06-15',
+		startsAt: '2026-06-15T14:30'
+	})
+	const dateSchema = {
+		type: 'object',
+		properties: {
+			eventDate: { type: 'string', format: 'date', required: true },
+			startsAt: { type: 'string', format: 'date-time', required: true }
+		}
+	}
+
+	const dateCode = `<script>
+  import { FormRenderer } from '@rokkit/forms'
+
+  let data = $state({
+    eventDate: '2026-06-15',
+    startsAt: '2026-06-15T14:30'
+  })
+
+  const schema = {
+    type: 'object',
+    properties: {
+      eventDate: { type: 'string', format: 'date',      required: true },
+      startsAt:  { type: 'string', format: 'date-time', required: true }
+    }
+  }
+<\/script>
+
+<FormRenderer bind:data {schema} />`
 
 	// Combo demo state — filterable Select with country list
 	const countryItems = [
@@ -792,6 +827,56 @@
 					>
 						Sort by <em>price</em>, then shift-click <em>stock</em> to add a
 						secondary sort. Or copy the source on the right.
+					</ChatMessage>
+				</ChatStream>
+			{:else if shell.phase === 'response' && shell.demoType === 'date-picker'}
+				<ChatStream>
+					<ChatMessage
+						kind="user"
+						head="YOU"
+						who="Jerry"
+						ago="just now"
+						icon="i-mdi:chat-outline"
+					>
+						{shell.lastQuery}
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="MOUNTED"
+						who="Rokkit"
+						ago="just now"
+						icon="i-mdi:calendar"
+					>
+						<code>&lt;FormRenderer/&gt;</code> on the canvas with two fields —
+						<em>eventDate</em> uses <code>format: 'date'</code> and
+						<em>startsAt</em> uses <code>format: 'date-time'</code>. The
+						format hint dispatches to <code>InputDate</code> and
+						<code>InputDateTime</code> respectively — same string-type schema,
+						different renderer.
+						<div class="mounted-callout">
+							<span class="callout-label">Canvas →</span>
+							<span>Event date + start time</span>
+						</div>
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="EXPLAINED"
+						icon="i-mdi:book-open-variant"
+					>
+						<strong>Format-driven dispatch.</strong> The schema's
+						<code>format</code> property picks the right input — <em>date</em>,
+						<em>date-time</em>, <em>email</em>, <em>uri</em>, etc. Bound values
+						are ISO-8601 strings (yyyy-mm-dd or yyyy-mm-ddThh:mm). Compose with
+						<code>required</code>, <code>min</code>, <code>max</code> for
+						validation.
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="TRY"
+						icon="i-mdi:gesture-tap"
+					>
+						Click a field to open the native browser calendar / time picker.
+						Edit either one — the bound <code>data</code> updates live.
 					</ChatMessage>
 				</ChatStream>
 			{:else if shell.phase === 'response' && shell.demoType === 'combo'}
@@ -1333,6 +1418,46 @@
 					</ChatResponse>
 
 					<CodeBlock filename="Table.demo.svelte" language="svelte" code={tableCode} />
+				</div>
+			{:else if shell.phase === 'response' && shell.demoType === 'date-picker'}
+				<div class="canvas-head">
+					<div class="canvas-eyebrow">Mounted demo · live</div>
+					<div class="canvas-title">Date Picker · format-driven</div>
+					<div class="canvas-sub">
+						Two fields, one schema. <code>format: 'date'</code> →
+						<code>&lt;InputDate/&gt;</code>; <code>format: 'date-time'</code>
+						→ <code>&lt;InputDateTime/&gt;</code>. Native calendar / time
+						pickers, ISO-8601 strings out.
+					</div>
+				</div>
+				<div class="canvas-body response">
+					<ChatResponse
+						name="&lt;InputDate/&gt; · &lt;InputDateTime/&gt;"
+						meta="· @rokkit/forms · style={style}"
+						kicker="LIVE"
+					>
+						{#snippet icon()}
+							<span class="i-mdi:calendar" aria-hidden="true"></span>
+						{/snippet}
+						<div class="date-mount">
+							<FormRenderer bind:data={dateData} schema={dateSchema} />
+						</div>
+						{#snippet props()}
+							<span>fields</span><span data-value>[2]</span>
+							<span data-sep>·</span>
+							<span>eventDate</span><span data-value>{dateData.eventDate || '—'}</span>
+							<span data-sep>·</span>
+							<span>startsAt</span><span data-value>{dateData.startsAt || '—'}</span>
+						{/snippet}
+						{#snippet actions()}
+							<button type="button">
+								<span class="i-mdi:content-copy" aria-hidden="true"></span>
+								Copy code
+							</button>
+						{/snippet}
+					</ChatResponse>
+
+					<CodeBlock filename="DatePicker.demo.svelte" language="svelte" code={dateCode} />
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'combo'}
 				<div class="canvas-head">
@@ -1947,6 +2072,11 @@
 	.combo-mount {
 		min-height: 80px;
 		max-width: 340px;
+	}
+
+	.date-mount {
+		min-height: 120px;
+		max-width: 440px;
 	}
 
 	.toast-buttons {

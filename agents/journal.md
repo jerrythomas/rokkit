@@ -3335,3 +3335,30 @@ Note on Bun: `bun run dev` invokes the script which is `vite dev`. The `vite` bi
 - Browser: `/app/combo` direct nav opens the dropdown with the filter input. Typing "ne" narrows 42 options to 4 (Indonesia, Netherlands, New Zealand, Philippines).
 
 **Catalog state (11 routes, 11 demos):** tabs, table, tree, multi-select, list, toasts, form, select, chart, combo, theme-wizard. All 10 build-component welcome chips resolve correctly.
+
+## 2026-05-24 (cont.) — Koan catalog: Date Picker + customization sub-pages note
+
+**Demo: Date Picker**
+
+- New `demo/src/lib/koan/demos/date-picker/` (meta + placeholder). Keywords: date, datetime, picker, calendar, time, event, schedule, appointment, iso8601. Icon: 日.
+- `catalog.ts` + `shell.svelte.ts` + `+layout.svelte` — wired through.
+- Demonstrates **format-driven dispatch** in @rokkit/forms: a single string-type field renders as `<InputDate/>` when `format: 'date'`, or `<InputDateTime/>` when `format: 'date-time'`. Same FormRenderer API as the existing form demo, focused on dates.
+- Sample data: `eventDate: '2026-06-15'`, `startsAt: '2026-06-15T14:30'`. Bound values are ISO-8601 strings.
+- Route: `/app/date` (not `/app/date-picker` — keeping route names short).
+- New welcome chip "Date and time picker".
+
+**Customization sub-pages — backlog note**
+
+Per Jerry: each component-demo will eventually need sub-pages for variations — custom field mapping, custom snippets, event handlers, validation rules, lookup integrations. These act as follow-up questions in the chat:
+
+> "Show me Tabs" → `/app/tabs`
+> "How do I customize tab content?" → `/app/tabs/snippets`
+> "How do I map non-standard field names?" → `/app/tabs/mapping`
+
+Added a "Per-demo customization sub-pages (post-MVP)" section to `docs/backlog/2026-05-23-interactive-koan-mode.md`. The pattern: sub-routes are also thin state-setter pages that set a new `shell.demoVariant` field; the layout renders variant-specific messages + extra props on the canvas component. Sequenced AFTER the interactive chat ships, since they're the content the chat surfaces.
+
+**Verification**
+- Lint: 0 errors, 18 warnings.
+- Browser: `/app/date` direct nav renders both date inputs, bound values shown live in propsRow.
+
+**Catalog state (12 routes, 12 demos):** tabs, table, tree, multi-select, list, toasts, form, select, chart, combo, date-picker, theme-wizard. All 11 build-component welcome chips resolve correctly.

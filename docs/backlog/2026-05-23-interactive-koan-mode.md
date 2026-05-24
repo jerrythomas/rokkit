@@ -120,6 +120,26 @@ Run a small chat model entirely in the browser via WebGPU/WASM.
 - Pick the smallest viable model (Phi-3 mini ~1.5GB Q4-quantized, or smaller).
 - Show a one-time progress UI on first model load with copy explaining "first run downloads a local AI; subsequent loads are instant".
 
+## Per-demo customization sub-pages (post-MVP)
+
+Each component-demo will benefit from **follow-up sub-routes** that explore variations of the same component — custom field mapping, custom snippets, event handlers, validation rules, lookup integrations, etc. These act as follow-up questions in the chat:
+
+> "Show me Tabs" → `/app/tabs` (default demo)
+> ↳ "How do I customize tab content?" → `/app/tabs/snippets` (snippet variations)
+> ↳ "How do I map non-standard field names?" → `/app/tabs/mapping` (field mapping)
+> ↳ "How do I listen to tab changes?" → `/app/tabs/events` (event handlers)
+
+Pattern:
+
+- Each sub-route is its own page under `/app/<demo>/<variation>/`.
+- The state-setter pattern stays — sub-routes are also thin marker files that set `shell.demoType` and a `shell.demoVariant` (new field) on mount.
+- The layout renders variant-specific chat-left messages + canvas body when `demoVariant` is set; the canvas-mounted component receives extra props.
+- The LLM's tool spec for each demo declares the available variants so it can route follow-up questions to the right sub-route.
+
+This goes alongside the inline-composition work — it gives the user a way to drill deeper into one component without leaving the chat, and gives the LLM a richer set of navigable artifacts to surface.
+
+**Timing:** ship the interactive chat first (this spec). Customization sub-pages come after, since they're the *content* the chat surfaces; the chat plumbing has to exist first.
+
 ## Catalog entries become tool specs
 
 Extend `DemoMeta` with optional `tool` + `inline` fields:
