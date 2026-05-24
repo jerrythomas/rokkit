@@ -3290,3 +3290,31 @@ These are real `@rokkit/ui` improvements, not demo-specific.
 - Lint: 0 errors, 17 warnings.
 - Tests: 3480/3480 (existing Select + Navigator tests pass; the API surface is unchanged).
 - Browser: second-open shows the expected 8 items (`maxRows`-derived 294px), dropdown is now positioned `fixed` (verified via computed style), scroll-to-bottom reaches Option 20.
+
+## 2026-05-24 — Koan catalog: BarChart demo + SSR-safe localStorage
+
+**Demo: BarChart**
+
+- New `demo/src/lib/koan/demos/chart/` (meta + placeholder). Keywords: chart, graph, bar, plot, visualization, analytics, data, metrics, sales, series. Icon: 図.
+- `catalog.ts` + `shell.svelte.ts` + `+layout.svelte` — wired through. New `BarChart` import from `@rokkit/chart`.
+- Sample data: four rows of quarterly revenue (Q1: 42, Q2: 58, Q3: 51, Q4: 73). Maps `x="quarter" y="revenue"` — chart builds the SVG, axes, palette colors, gridlines, and tooltips.
+- Chat-left messages emphasize "field-mapped, declarative" — no D3 boilerplate; `x`, `y`, `fill`, `label`, `stack`, `stat` props cover the common cases.
+- New welcome chip "Bar chart with quarterly revenue".
+
+**SSR-safe localStorage guards**
+
+User noticed a Node v25 `--localstorage-file` warning when running the demo. Cause: vite (run under Node v25 via its `#!/usr/bin/env node` shebang, even when invoked through `bun run dev`) exposes a native `localStorage` global that emits a one-time warning on first access without the `--localstorage-file` CLI flag.
+
+Fixes at source:
+- `packages/states/src/vibe.svelte.js` — `Theme.load()` and `Theme.save()` short-circuit when `typeof localStorage === 'undefined'` (covers the pre-v25 Node case where localStorage doesn't exist, and silences the v25 warning by skipping access entirely during SSR — `globalThis` won't equal the runtime localStorage if our code never touches it).
+- `packages/ui/src/utils/palette.ts` — `savePalette()` and `loadPalette()` get the same guard.
+- Same file: converted the two existing `console.warn(\`...${key}...\`, e.message)` calls to `console.warn('... "%s"', key, e.message)` per semgrep CWE-134 (format-string injection). Updated two specs that asserted on the old signature.
+
+Note on Bun: `bun run dev` invokes the script which is `vite dev`. The `vite` bin's shebang is `#!/usr/bin/env node`, so vite runs in Node — not Bun — which is why the Node-specific warning appears despite the `bun run` entry point. Workaround if needed: `bunx --bun vite dev` (with the usual caveats about Vite + SvelteKit under Bun runtime).
+
+**Catalog state (10 routes, 10 demos):** tabs, table, tree, multi-select, list, toasts, form, select, chart, theme-wizard (at /app/theming). All nine build-component welcome chips resolve correctly.
+
+**Verification**
+- Lint: 0 errors, 18 warnings.
+- Tests: 3480/3480 (after updating the two vibe specs for the new console.warn signature).
+- Browser: `/app/chart` direct nav renders the BarChart with 4 quarterly bars + axes + gridlines.

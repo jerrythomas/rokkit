@@ -12,6 +12,7 @@
 	} from '$lib/chat'
 	import { Tabs, Table, Tree, MultiSelect, Select, List, Button, AlertList } from '@rokkit/ui'
 	import { FormRenderer } from '@rokkit/forms'
+	import { BarChart } from '@rokkit/chart'
 	import { alerts } from '@rokkit/states'
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
 	import { theme } from '$lib/stores/theme.svelte'
@@ -52,7 +53,7 @@
 
 	let thinkingTimer: ReturnType<typeof setTimeout> | null = null
 
-	type DemoKind = 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select' | 'list' | 'toasts' | 'form' | 'select'
+	type DemoKind = 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select' | 'list' | 'toasts' | 'form' | 'select' | 'chart'
 	const DEMO_ROUTE: Record<DemoKind, string> = {
 		tabs: '/app/tabs',
 		'theme-wizard': '/app/theming',
@@ -62,7 +63,8 @@
 		list: '/app/list',
 		toasts: '/app/toasts',
 		form: '/app/form',
-		select: '/app/select'
+		select: '/app/select',
+		chart: '/app/chart'
 	}
 
 	function pickDemoKind(query: string): DemoKind {
@@ -75,6 +77,7 @@
 		if (top === 'toasts') return 'toasts'
 		if (top === 'form') return 'form'
 		if (top === 'select') return 'select'
+		if (top === 'chart') return 'chart'
 		return 'tabs'
 	}
 
@@ -137,7 +140,8 @@
 		{ label: 'List with collapsible groups', icon: 'i-mdi:format-list-bulleted' },
 		{ label: 'Toast notifications', icon: 'i-mdi:bell-outline' },
 		{ label: 'Schema-driven form', icon: 'i-mdi:form-textbox' },
-		{ label: 'Single-pick select', icon: 'i-mdi:menu-down' }
+		{ label: 'Single-pick select', icon: 'i-mdi:menu-down' },
+		{ label: 'Bar chart with quarterly revenue', icon: 'i-mdi:chart-bar' }
 	]
 	const howChips = [
 		{ label: 'How does theming work?', icon: 'i-mdi:help-circle-outline' },
@@ -254,6 +258,27 @@
 	]
 	const treeFields = { label: 'name', value: 'id' }
 	let treeValue = $state<unknown>(null)
+
+	// Chart demo state — quarterly revenue, BarChart
+	const chartData = [
+		{ quarter: 'Q1', revenue: 42 },
+		{ quarter: 'Q2', revenue: 58 },
+		{ quarter: 'Q3', revenue: 51 },
+		{ quarter: 'Q4', revenue: 73 }
+	]
+
+	const chartCode = `<script>
+  import { BarChart } from '@rokkit/chart'
+
+  const sales = [
+    { quarter: 'Q1', revenue: 42 },
+    { quarter: 'Q2', revenue: 58 },
+    { quarter: 'Q3', revenue: 51 },
+    { quarter: 'Q4', revenue: 73 }
+  ]
+<\/script>
+
+<BarChart data={sales} x="quarter" y="revenue" />`
 
 	// Select demo state — 20-item flat list to exercise scroll + key nav
 	const selectItems = Array.from({ length: 20 }, (_, i) => ({
@@ -733,6 +758,53 @@
 						secondary sort. Or copy the source on the right.
 					</ChatMessage>
 				</ChatStream>
+			{:else if shell.phase === 'response' && shell.demoType === 'chart'}
+				<ChatStream>
+					<ChatMessage
+						kind="user"
+						head="YOU"
+						who="Jerry"
+						ago="just now"
+						icon="i-mdi:chat-outline"
+					>
+						{shell.lastQuery}
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="MOUNTED"
+						who="Rokkit"
+						ago="just now"
+						icon="i-mdi:chart-bar"
+					>
+						<code>&lt;BarChart/&gt;</code> from <code>@rokkit/chart</code> on the
+						canvas. Four rows of quarterly revenue, mapped to <code>x</code>
+						and <code>y</code> fields — the SVG is built from the data.
+						Palette colors, gridlines, and hover tooltips come for free.
+						<div class="mounted-callout">
+							<span class="callout-label">Canvas →</span>
+							<span>Quarterly revenue · Q1–Q4</span>
+						</div>
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="EXPLAINED"
+						icon="i-mdi:book-open-variant"
+					>
+						<strong>Field-mapped, declarative.</strong> No D3 boilerplate, no
+						manual axis math. The data shape drives everything via
+						<code>x</code>, <code>y</code>, <code>fill</code>, <code>label</code>,
+						<code>stack</code>, and <code>stat</code> props. Aggregations and
+						color grouping are one keyword each.
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="TRY"
+						icon="i-mdi:gesture-tap"
+					>
+						Hover a bar for the tooltip. Flip the chrome <em>style</em> to see
+						the chart re-skin via palette tokens — same data, different look.
+					</ChatMessage>
+				</ChatStream>
 			{:else if shell.phase === 'response' && shell.demoType === 'select'}
 				<ChatStream>
 					<ChatMessage
@@ -1178,6 +1250,49 @@
 					</ChatResponse>
 
 					<CodeBlock filename="Table.demo.svelte" language="svelte" code={tableCode} />
+				</div>
+			{:else if shell.phase === 'response' && shell.demoType === 'chart'}
+				<div class="canvas-head">
+					<div class="canvas-eyebrow">Mounted demo · live</div>
+					<div class="canvas-title">BarChart · data-driven SVG</div>
+					<div class="canvas-sub">
+						Quarterly revenue. Pass rows + <code>x</code>/<code>y</code> field
+						names; <code>&lt;BarChart/&gt;</code> handles the axes, palette,
+						gridlines, and tooltips.
+					</div>
+				</div>
+				<div class="canvas-body response">
+					<ChatResponse
+						name="&lt;BarChart/&gt;"
+						meta="· @rokkit/chart · style={style}"
+						kicker="LIVE"
+					>
+						{#snippet icon()}
+							<span class="i-mdi:chart-bar" aria-hidden="true"></span>
+						{/snippet}
+						<div class="chart-mount">
+							<BarChart data={chartData} x="quarter" y="revenue" />
+						</div>
+						{#snippet props()}
+							<span>rows</span><span data-value>[4]</span>
+							<span data-sep>·</span>
+							<span>x</span><span data-value>quarter</span>
+							<span data-sep>·</span>
+							<span>y</span><span data-value>revenue</span>
+						{/snippet}
+						{#snippet actions()}
+							<button type="button">
+								<span class="i-mdi:content-copy" aria-hidden="true"></span>
+								Copy code
+							</button>
+							<button type="button">
+								<span class="i-mdi:download" aria-hidden="true"></span>
+								Export SVG
+							</button>
+						{/snippet}
+					</ChatResponse>
+
+					<CodeBlock filename="Chart.demo.svelte" language="svelte" code={chartCode} />
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'select'}
 				<div class="canvas-head">
@@ -1700,6 +1815,11 @@
 	.select-mount {
 		min-height: 80px;
 		max-width: 340px;
+	}
+
+	.chart-mount {
+		min-height: 280px;
+		max-width: 640px;
 	}
 
 	.toast-buttons {
