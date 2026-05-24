@@ -719,16 +719,18 @@ export function resetPalette(
 }
 
 /**
- * Save palette to localStorage
+ * Save palette to localStorage. SSR-safe.
  */
 export function savePalette(key: string, mapping: Partial<Record<ColorRole, string>>): void {
+	if (typeof localStorage === 'undefined') return
 	localStorage.setItem(key, JSON.stringify(mapping))
 }
 
 /**
- * Load palette from localStorage
+ * Load palette from localStorage. SSR-safe.
  */
 export function loadPalette(key: string): Partial<Record<ColorRole, string>> | null {
+	if (typeof localStorage === 'undefined') return null
 	const stored = localStorage.getItem(key)
 	if (stored) {
 		try {

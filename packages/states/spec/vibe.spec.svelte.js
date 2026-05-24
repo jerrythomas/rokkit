@@ -166,7 +166,8 @@ describe('vibe', () => {
 		vibe.load('theme')
 
 		expect(console.warn).toHaveBeenCalledWith(
-			'Failed to load theme from storage for key "theme"',
+			'Failed to load theme from storage for key "%s"',
+			'theme',
 			'Unexpected token \'i\', "invalid json" is not valid JSON'
 		)
 		flushSync()
@@ -204,7 +205,8 @@ describe('vibe', () => {
 			vibe.save('invalid')
 
 			expect(console.warn).toHaveBeenCalledWith(
-				'Failed to save theme to storage for key "invalid"',
+				'Failed to save theme to storage for key "%s"',
+				'invalid',
 				'Mocked error'
 			)
 		})

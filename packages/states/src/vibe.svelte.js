@@ -131,6 +131,9 @@ class Vibe {
 	 * @param {string} key
 	 */
 	load(key) {
+		// SSR-safe: localStorage is undefined in pre-v25 Node and emits a
+		// warning under v25+ without --localstorage-file. Skip on the server.
+		if (typeof localStorage === 'undefined') return
 		try {
 			const stored = localStorage.getItem(key)
 			if (stored) {
@@ -138,7 +141,7 @@ class Vibe {
 			}
 		} catch (e) {
 			// eslint-disable-next-line no-console
-			console.warn(`Failed to load theme from storage for key "${key}"`, e.message)
+			console.warn('Failed to load theme from storage for key "%s"', key, e.message)
 		}
 	}
 
@@ -148,6 +151,7 @@ class Vibe {
 	 */
 	save(key) {
 		if (!key) throw new Error('Key is required')
+		if (typeof localStorage === 'undefined') return
 
 		try {
 			const config = {
@@ -159,7 +163,7 @@ class Vibe {
 			localStorage.setItem(key, JSON.stringify(config))
 		} catch (e) {
 			// eslint-disable-next-line no-console
-			console.warn(`Failed to save theme to storage for key "${key}"`, e.message)
+			console.warn('Failed to save theme to storage for key "%s"', key, e.message)
 		}
 	}
 
