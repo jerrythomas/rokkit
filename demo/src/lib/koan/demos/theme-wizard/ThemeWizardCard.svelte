@@ -4,15 +4,18 @@
 	}
 	const { mode = 'light' }: Props = $props()
 
-	const palettes: { id: string; label: string; swatches: string[] }[] = [
-		{ id: 'warm-gray', label: 'warm gray', swatches: ['#f7f3ea', '#ece4d2', '#d6c8a8', '#9c8e72', '#3a3528'] },
-		{ id: 'slate', label: 'slate', swatches: ['#f8fafc', '#e2e8f0', '#94a3b8', '#475569', '#0f172a'] },
-		{ id: 'neutral', label: 'neutral', swatches: ['#fafafa', '#e5e5e5', '#a3a3a3', '#525252', '#171717'] },
-		{ id: 'shu', label: 'shu', swatches: ['#fff2ee', '#fcd4c6', '#f08667', '#a83d1f', '#5c1d0e'] }
-	]
+	type Palette = { id: string; label: string; swatches: string[]; inUse: boolean }
+	type Role = { role: string; desc: string; light: [string, string]; dark: [string, string] }
+
+	const palettes = $state<Palette[]>([
+		{ id: 'warm-gray', label: 'warm gray', swatches: ['#f7f3ea', '#ece4d2', '#d6c8a8', '#9c8e72', '#3a3528'], inUse: true },
+		{ id: 'slate', label: 'slate', swatches: ['#f8fafc', '#e2e8f0', '#94a3b8', '#475569', '#0f172a'], inUse: true },
+		{ id: 'neutral', label: 'neutral', swatches: ['#fafafa', '#e5e5e5', '#a3a3a3', '#525252', '#171717'], inUse: false },
+		{ id: 'shu', label: 'shu', swatches: ['#fff2ee', '#fcd4c6', '#f08667', '#a83d1f', '#5c1d0e'], inUse: false }
+	])
 	const shadeLabels = ['50', '200', '500', '700', '950']
 
-	const roles: { role: string; desc: string; light: [string, string]; dark: [string, string] }[] = [
+	const roles = $state<Role[]>([
 		{ role: 'paper', desc: 'page surface', light: ['warm-gray', '100'], dark: ['warm-gray', '950'] },
 		{ role: 'paper-2', desc: 'raised, cards', light: ['warm-gray', '50'], dark: ['warm-gray', '900'] },
 		{ role: 'paper-3', desc: 'sunken, hover', light: ['warm-gray', '200'], dark: ['warm-gray', '800'] },
@@ -20,13 +23,23 @@
 		{ role: 'ink', desc: 'primary text', light: ['warm-gray', '900'], dark: ['warm-gray', '100'] },
 		{ role: 'ink-2', desc: 'secondary text', light: ['warm-gray', '700'], dark: ['warm-gray', '300'] },
 		{ role: 'accent', desc: 'links · ctas', light: ['shu', '500'], dark: ['shu', '400'] }
-	]
+	])
 
 	const ramps: Record<string, string[]> = {
 		'warm-gray': ['#fbf8f1', '#f0e9d8', '#dfd2af', '#c4b384', '#a18d59', '#7a6845', '#574832', '#3a3025', '#241d16', '#13100b'],
 		shu: ['#fff8f5', '#fdd6c6', '#f7a18b', '#ed7559', '#dd4d2e', '#a83d1f', '#7a2a14', '#52190c', '#310f07', '#1a0703']
 	}
 	const stepKeys = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '950']
+
+	function togglePalette(p: Palette) {
+		p.inUse = !p.inUse
+	}
+
+	function setRoleStep(r: Role, column: 'light' | 'dark', stepIndex: number) {
+		const step = stepKeys[stepIndex]
+		if (column === 'light') r.light = [r.light[0], step]
+		else r.dark = [r.dark[0], step]
+	}
 </script>
 
 <div class="wiz">
@@ -47,11 +60,17 @@
 			warning, danger).
 		</span>
 		<div class="palette-grid">
-			{#each palettes as p, i (p.id)}
-				<article class="palette-card" data-in-use={i < 2 ? '' : undefined}>
+			{#each palettes as p (p.id)}
+				<button
+					type="button"
+					class="palette-card"
+					data-in-use={p.inUse ? '' : undefined}
+					onclick={() => togglePalette(p)}
+					aria-pressed={p.inUse}
+				>
 					<header>
 						<span class="p-name">{p.label}</span>
-						{#if i < 2}<span class="p-badge">IN USE</span>{/if}
+						{#if p.inUse}<span class="p-badge">IN USE</span>{/if}
 					</header>
 					<div class="p-swatches">
 						{#each p.swatches as c, j (j)}
@@ -61,7 +80,7 @@
 					<div class="p-shades">
 						{#each shadeLabels as s (s)}<span>{s}</span>{/each}
 					</div>
-				</article>
+				</button>
 			{/each}
 		</div>
 	</section>
@@ -90,12 +109,15 @@
 						<span class="picker-pal">{r.light[0]}</span>
 						<div class="picker-ramp">
 							{#each lightRamp as c, i (i)}
-								<span
+								<button
+									type="button"
 									class="picker-swatch"
 									data-selected={stepKeys[i] === r.light[1] ? '' : undefined}
 									style="background: {c};"
-									title={stepKeys[i]}
-								></span>
+									title={`${r.light[0]} · ${stepKeys[i]}`}
+									aria-label={`Set ${r.role} light step to ${stepKeys[i]}`}
+									onclick={() => setRoleStep(r, 'light', i)}
+								></button>
 							{/each}
 						</div>
 						<span class="picker-step">·{r.light[1]}</span>
@@ -105,12 +127,15 @@
 						<span class="picker-pal">{r.dark[0]}</span>
 						<div class="picker-ramp">
 							{#each darkRamp as c, i (i)}
-								<span
+								<button
+									type="button"
 									class="picker-swatch"
 									data-selected={stepKeys[i] === r.dark[1] ? '' : undefined}
 									style="background: {c};"
-									title={stepKeys[i]}
-								></span>
+									title={`${r.dark[0]} · ${stepKeys[i]}`}
+									aria-label={`Set ${r.role} dark step to ${stepKeys[i]}`}
+									onclick={() => setRoleStep(r, 'dark', i)}
+								></button>
 							{/each}
 						</div>
 						<span class="picker-step">·{r.dark[1]}</span>
@@ -208,6 +233,15 @@
 		display: flex;
 		flex-direction: column;
 		gap: 6px;
+		text-align: left;
+		font: inherit;
+		color: inherit;
+		cursor: pointer;
+		transition: border-color 120ms ease, background 120ms ease;
+	}
+
+	.palette-card:hover {
+		border-color: color-mix(in oklab, var(--accent) 40%, var(--paper-edge));
 	}
 
 	.palette-card[data-in-use] {
@@ -333,8 +367,15 @@
 	.picker-swatch {
 		width: 14px;
 		height: 18px;
+		padding: 0;
 		border-radius: 2px;
 		border: 1px solid color-mix(in oklab, var(--ink) 8%, transparent);
+		cursor: pointer;
+		transition: transform 80ms ease, outline 80ms ease;
+	}
+
+	.picker-swatch:hover {
+		transform: scaleY(1.15);
 	}
 
 	.picker-swatch[data-selected] {

@@ -120,25 +120,55 @@ Run a small chat model entirely in the browser via WebGPU/WASM.
 - Pick the smallest viable model (Phi-3 mini ~1.5GB Q4-quantized, or smaller).
 - Show a one-time progress UI on first model load with copy explaining "first run downloads a local AI; subsequent loads are instant".
 
-## Per-demo customization sub-pages (post-MVP)
+## Per-demo customization variations (post-MVP)
 
-Each component-demo will benefit from **follow-up sub-routes** that explore variations of the same component — custom field mapping, custom snippets, event handlers, validation rules, lookup integrations, etc. These act as follow-up questions in the chat:
+Each component-demo will benefit from **variations** that explore the same component with different data, mapping, layout, snippets, event handlers, etc. — surfaced as follow-up questions in the chat.
 
-> "Show me Tabs" → `/app/tabs` (default demo)
-> ↳ "How do I customize tab content?" → `/app/tabs/snippets` (snippet variations)
-> ↳ "How do I map non-standard field names?" → `/app/tabs/mapping` (field mapping)
-> ↳ "How do I listen to tab changes?" → `/app/tabs/events` (event handlers)
+Two ways to expose them, picked per case:
 
-Pattern:
+**A. Dynamic on one page (preferred for most variations).**
 
-- Each sub-route is its own page under `/app/<demo>/<variation>/`.
-- The state-setter pattern stays — sub-routes are also thin marker files that set `shell.demoType` and a `shell.demoVariant` (new field) on mount.
-- The layout renders variant-specific chat-left messages + canvas body when `demoVariant` is set; the canvas-mounted component receives extra props.
-- The LLM's tool spec for each demo declares the available variants so it can route follow-up questions to the right sub-route.
+One route per component (`/app/tabs`). The page reads a `variant` URL param or chat-driven state, and swaps:
+- the data passed to the component (e.g. fewer items, grouped data, async-loaded data)
+- the field mapping (e.g. `fields={'{ label: title, value: slug }'}` instead of defaults)
+- the layout config (e.g. orientation prop, density)
+- snippet usage (custom cell/option renderers)
+- which event handlers are wired (live console of events emitted)
 
-This goes alongside the inline-composition work — it gives the user a way to drill deeper into one component without leaving the chat, and gives the LLM a richer set of navigable artifacts to surface.
+The component stays the same Svelte instance — only its props change. The chat-left messages update to reflect the variation. The URL is `/app/tabs?variant=snippets` and is still bookmarkable.
 
-**Timing:** ship the interactive chat first (this spec). Customization sub-pages come after, since they're the *content* the chat surfaces; the chat plumbing has to exist first.
+This is the cleaner pattern because:
+- One state owner per component (the page).
+- Side-by-side comparison: the user can toggle variations interactively without leaving the page.
+- The LLM's "refine the current demo" intent maps to swapping the variant in place — no navigation.
+- Less route proliferation.
+
+**B. Sub-routes (for substantially different demos).**
+
+`/app/tabs/grouped` as a real sibling route when the variation is *structurally* different enough that "same component, different props" undersells it (e.g. Tabs in vertical orientation with content panels that load from different endpoints — that's a different *story*, not just different props).
+
+This keeps the option open without forcing it on every variation.
+
+**Catalog tool spec:**
+
+Each catalog entry declares its variants:
+
+```ts
+inline?: {
+  capable: boolean
+  variants?: Array<{
+    id: string                  // 'snippets', 'mapping', 'async', 'grouped', …
+    label: string               // shown in chat as a follow-up suggestion chip
+    mode: 'dynamic' | 'route'   // dynamic = swap props on /app/<demo>?variant=ID
+                                // route   = navigate to /app/<demo>/<variant>
+    props?: object              // for dynamic variants
+  }>
+}
+```
+
+The LLM uses this to suggest follow-ups ("Try this with async data") and route them correctly. The state-setter pages stay tiny; the layout reads `shell.demoVariant` (set from URL param or chat) and merges variant props into the mounted component.
+
+**Timing:** ship the interactive chat first (this spec). Customization variants come after — they're the content the chat surfaces, and the plumbing has to exist first.
 
 ## Catalog entries become tool specs
 

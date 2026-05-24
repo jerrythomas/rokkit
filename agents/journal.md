@@ -3379,3 +3379,29 @@ Added a "Per-demo customization sub-pages (post-MVP)" section to `docs/backlog/2
 - Browser: `/app/stepper` direct nav renders 4 circles with connectors, the active "Preferences" step highlighted, "Complete & Next" button below, propsRow showing current=2 + active="Preferences".
 
 **Catalog state (13 routes, 13 demos):** tabs, table, tree, multi-select, list, toasts, form, select, chart, combo, date-picker, stepper, theme-wizard. All 12 build-component welcome chips resolve correctly.
+
+## 2026-05-24 (cont.) — Theme Wizard D1: in-card interactivity + customization architecture note
+
+**D1: interactive theme wizard (in-card)**
+
+`demo/src/lib/koan/demos/theme-wizard/ThemeWizardCard.svelte` now responds to clicks:
+
+- **Palette cards**: each card is a `<button>` that toggles its own `inUse` boolean. The IN USE badge appears / disappears as you click. Initial state: warm-gray + slate marked IN USE, neutral + shu off.
+- **Role pickers**: each swatch in the 10-step ramp is a `<button>` with `onclick` that calls `setRoleStep(role, 'light' | 'dark', index)`. The role's step updates, the selected outline moves, and the `·{step}` label refreshes.
+- Both palettes and roles are now `$state` arrays of typed objects (`Palette`, `Role`); mutations propagate via Svelte 5 fine-grained reactivity.
+- Subtle hover affordances: palette cards get an accent-tinted border on hover; swatches scale vertically by 1.15 on hover (no horizontal shift, so adjacent swatches don't reflow).
+
+This is the first real interactivity milestone for the theme-wizard. State is local to the card — D2 will wire it to live theme application (`theme.setSkin()` from the shared store) and D3 to Save preset + Export tokens.css.
+
+**Architecture note: customization variations**
+
+Per Jerry's question — instead of sub-folders for every customization, **dynamic-on-one-page** is the preferred pattern. Updated `docs/backlog/2026-05-23-interactive-koan-mode.md` to flip the previous "sub-routes" recommendation:
+
+- **Dynamic on one page (preferred for most variations)** — one route per component, variation state controlled by URL param or chat-driven state. Same Svelte instance, different props. Allows side-by-side comparison without remount.
+- **Sub-routes (for substantially different demos)** — kept as an escape hatch for cases where the variation is structurally different enough that "same component, different props" undersells it.
+
+Each catalog entry's tool spec declares its variants with `mode: 'dynamic' | 'route'`, letting the LLM pick correctly.
+
+**Verification**
+- Lint: 0 errors, 18 warnings.
+- Browser: `/app/theming` direct nav. Clicked neutral palette → IN USE badge appeared. Clicked role swatch at index 2 → step text changed to "·200", selection outline moved. Click handlers fire correctly with rAF-paced re-render.
