@@ -1,10 +1,24 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte'
 	import { Select } from '@rokkit/ui'
 
 	interface Props {
 		mode?: 'light' | 'dark'
 	}
 	const { mode = 'light' }: Props = $props()
+
+	// Wizard role name → Rokkit named-token CSS variable.
+	// The wizard's role labels (paper, paper-2, …) are mockup-conventions; the
+	// actual CSS vars the running app reads are --paper, --paper-soft, etc.
+	const ROLE_TO_VAR: Record<string, string> = {
+		'paper': '--paper',
+		'paper-2': '--paper-soft',
+		'paper-3': '--paper-mute',
+		'edge': '--paper-edge',
+		'ink': '--ink',
+		'ink-2': '--ink-mute',
+		'accent': '--accent'
+	}
 
 	type Palette = { id: string; label: string; swatches: string[]; inUse: boolean }
 	type Role = { role: string; desc: string; light: [string, string]; dark: [string, string] }
@@ -57,6 +71,46 @@
 		if (column === 'light') r.light = [paletteId, r.light[1]]
 		else r.dark = [paletteId, r.dark[1]]
 	}
+
+	// ─── Live theme application ───────────────────────────────────────────────
+	// Apply the current role mapping to the document root so the running app
+	// reskins as the user picks. Writes inline CSS variables on
+	// `documentElement` for the current `mode`. Reverts on component destroy.
+
+	const appliedVars = new Set<string>()
+
+	function applyRolesToDocument() {
+		if (typeof document === 'undefined') return
+		const root = document.documentElement
+		for (const r of roles) {
+			const varName = ROLE_TO_VAR[r.role]
+			if (!varName) continue
+			const [paletteId, step] = mode === 'dark' ? r.dark : r.light
+			const ramp = ramps[paletteId]
+			if (!ramp) continue
+			const idx = stepKeys.indexOf(step)
+			if (idx < 0) continue
+			const color = ramp[idx]
+			if (!color) continue
+			root.style.setProperty(varName, color)
+			appliedVars.add(varName)
+		}
+	}
+
+	function clearAppliedVars() {
+		if (typeof document === 'undefined') return
+		const root = document.documentElement
+		for (const v of appliedVars) root.style.removeProperty(v)
+		appliedVars.clear()
+	}
+
+	$effect(() => {
+		applyRolesToDocument()
+	})
+
+	onDestroy(() => {
+		clearAppliedVars()
+	})
 </script>
 
 <div class="wiz">

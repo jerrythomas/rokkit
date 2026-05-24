@@ -3422,3 +3422,27 @@ This naturally demonstrates composability — `<Select>` (a Rokkit catalog compo
 **Verification**
 - Lint: 0 errors.
 - Browser: opened first role's light palette Select → dropdown showed only "warm gray" + "slate" (the two IN-USE palettes). Picked slate → role label updated, ramp swatches re-rendered with slate colors (rgb 248/250/252 → 226/232/240).
+
+## 2026-05-24 (cont.) — Theme Wizard D2: live theme application
+
+The wizard's role-mapping state now writes directly to `document.documentElement`'s inline CSS variables, so the running app reskins as the user picks.
+
+**Implementation**
+
+- `ROLE_TO_VAR` map in `ThemeWizardCard.svelte` translates the wizard's mockup-conventional role names to the actual Rokkit named-token vars:
+  - `paper → --paper`, `paper-2 → --paper-soft`, `paper-3 → --paper-mute`, `edge → --paper-edge`, `ink → --ink`, `ink-2 → --ink-mute`, `accent → --accent`.
+- `applyRolesToDocument()` iterates the roles, looks up the per-role mapping (light or dark, based on the `mode` prop), resolves the ramp color at the chosen step, and calls `documentElement.style.setProperty(varName, color)`.
+- An `$effect` that reads `roles`, `mode`, etc. calls the function on every state change — Svelte 5 fine-grained reactivity keeps it minimal.
+- `appliedVars` Set tracks which vars we wrote. `onDestroy` clears all of them so the app's normal theme resumes when the wizard unmounts (route nav away).
+
+Crucially we write to `documentElement` (not `body`) so the inline styles cascade into the chat shell which is `position: fixed; inset: 0` — every component inheriting these vars reskins.
+
+**Verification**
+
+- `--paper` defaults to `#f7f3ea` (warm-gray @ 100) which matches the zen-sumi theme — the page looks identical on first load.
+- Clicked the `paper` row's step-7 swatch (warm-gray @ 700 = `#3a3025`). The entire shell (sidebar, chat-left, canvas, role-table) re-rendered in dark brown immediately. The selected outline moved to step 7, `·700` shows in the row, and `documentElement.style['--paper']` is `#3a3025`.
+- Navigating away clears the overrides via `onDestroy`.
+
+**Next**
+
+D3 — wire the wizard's footer actions: Save preset (persist the role mapping to localStorage), Export tokens.css (generate a downloadable CSS file with `--paper`, `--ink`, etc. set per the user's picks).
