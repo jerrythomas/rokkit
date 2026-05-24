@@ -3362,3 +3362,20 @@ Added a "Per-demo customization sub-pages (post-MVP)" section to `docs/backlog/2
 - Browser: `/app/date` direct nav renders both date inputs, bound values shown live in propsRow.
 
 **Catalog state (12 routes, 12 demos):** tabs, table, tree, multi-select, list, toasts, form, select, chart, combo, date-picker, theme-wizard. All 11 build-component welcome chips resolve correctly.
+
+## 2026-05-24 (cont.) — Koan catalog: Stepper demo
+
+**Demo: Multi-step Stepper**
+
+- New `demo/src/lib/koan/demos/stepper/` (meta + placeholder). Keywords: stepper, steps, wizard, checkout, flow, sign-up, onboarding, progress, multi-step, workflow. Icon: 段.
+- `catalog.ts` + `shell.svelte.ts` + `+layout.svelte` — wired through. New Stepper import from `@rokkit/ui`.
+- Sample data: a 4-step sign-up flow (Account / Profile / Preferences / Review) with the first two marked `completed`. Active step starts at index 2 (Preferences).
+- Includes a "Complete & Next" Button that demonstrates imperative step advancement.
+- Chat-left messages emphasize "steps are data, not markup" — array of `{ label, completed }` drives the display.
+- New welcome chip "Multi-step stepper".
+
+**Verification**
+- Lint: 0 errors, 18 warnings.
+- Browser: `/app/stepper` direct nav renders 4 circles with connectors, the active "Preferences" step highlighted, "Complete & Next" button below, propsRow showing current=2 + active="Preferences".
+
+**Catalog state (13 routes, 13 demos):** tabs, table, tree, multi-select, list, toasts, form, select, chart, combo, date-picker, stepper, theme-wizard. All 12 build-component welcome chips resolve correctly.

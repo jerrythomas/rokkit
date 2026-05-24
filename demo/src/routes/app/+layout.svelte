@@ -10,7 +10,7 @@
 		Chips,
 		CodeBlock
 	} from '$lib/chat'
-	import { Tabs, Table, Tree, MultiSelect, Select, List, Button, AlertList } from '@rokkit/ui'
+	import { Tabs, Table, Tree, MultiSelect, Select, List, Button, AlertList, Stepper } from '@rokkit/ui'
 	import { FormRenderer } from '@rokkit/forms'
 	import { BarChart } from '@rokkit/chart'
 	import { alerts } from '@rokkit/states'
@@ -53,7 +53,7 @@
 
 	let thinkingTimer: ReturnType<typeof setTimeout> | null = null
 
-	type DemoKind = 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select' | 'list' | 'toasts' | 'form' | 'select' | 'chart' | 'combo' | 'date-picker'
+	type DemoKind = 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select' | 'list' | 'toasts' | 'form' | 'select' | 'chart' | 'combo' | 'date-picker' | 'stepper'
 	const DEMO_ROUTE: Record<DemoKind, string> = {
 		tabs: '/app/tabs',
 		'theme-wizard': '/app/theming',
@@ -66,7 +66,8 @@
 		select: '/app/select',
 		chart: '/app/chart',
 		combo: '/app/combo',
-		'date-picker': '/app/date'
+		'date-picker': '/app/date',
+		stepper: '/app/stepper'
 	}
 
 	function pickDemoKind(query: string): DemoKind {
@@ -82,6 +83,7 @@
 		if (top === 'chart') return 'chart'
 		if (top === 'combo') return 'combo'
 		if (top === 'date-picker') return 'date-picker'
+		if (top === 'stepper') return 'stepper'
 		return 'tabs'
 	}
 
@@ -147,7 +149,8 @@
 		{ label: 'Single-pick select', icon: 'i-mdi:menu-down' },
 		{ label: 'Bar chart with quarterly revenue', icon: 'i-mdi:chart-bar' },
 		{ label: 'Combobox with type-to-filter', icon: 'i-mdi:magnify' },
-		{ label: 'Date and time picker', icon: 'i-mdi:calendar' }
+		{ label: 'Date and time picker', icon: 'i-mdi:calendar' },
+		{ label: 'Multi-step stepper', icon: 'i-mdi:stairs' }
 	]
 	const howChips = [
 		{ label: 'How does theming work?', icon: 'i-mdi:help-circle-outline' },
@@ -264,6 +267,40 @@
 	]
 	const treeFields = { label: 'name', value: 'id' }
 	let treeValue = $state<unknown>(null)
+
+	// Stepper demo state — 4-step signup flow
+	let stepperSteps = $state([
+		{ label: 'Account', completed: true },
+		{ label: 'Profile', completed: true },
+		{ label: 'Preferences' },
+		{ label: 'Review' }
+	])
+	let stepperCurrent = $state(2)
+
+	function stepperAdvance() {
+		stepperSteps[stepperCurrent] = { ...stepperSteps[stepperCurrent], completed: true }
+		if (stepperCurrent < stepperSteps.length - 1) stepperCurrent++
+	}
+
+	const stepperCode = `<script>
+  import { Stepper, Button } from '@rokkit/ui'
+
+  let steps = $state([
+    { label: 'Account',     completed: true },
+    { label: 'Profile',     completed: true },
+    { label: 'Preferences'                  },
+    { label: 'Review'                       }
+  ])
+  let current = $state(2)
+
+  function advance() {
+    steps[current] = { ...steps[current], completed: true }
+    if (current < steps.length - 1) current++
+  }
+<\/script>
+
+<Stepper {steps} bind:current onclick={(i) => current = i} />
+<Button onclick={advance}>Complete &amp; Next</Button>`
 
 	// Date Picker demo state — event scheduling form
 	let dateData = $state({
@@ -827,6 +864,54 @@
 					>
 						Sort by <em>price</em>, then shift-click <em>stock</em> to add a
 						secondary sort. Or copy the source on the right.
+					</ChatMessage>
+				</ChatStream>
+			{:else if shell.phase === 'response' && shell.demoType === 'stepper'}
+				<ChatStream>
+					<ChatMessage
+						kind="user"
+						head="YOU"
+						who="Jerry"
+						ago="just now"
+						icon="i-mdi:chat-outline"
+					>
+						{shell.lastQuery}
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="MOUNTED"
+						who="Rokkit"
+						ago="just now"
+						icon="i-mdi:stairs"
+					>
+						<code>&lt;Stepper/&gt;</code> from <code>@rokkit/ui</code> on the
+						canvas. Four steps — Account / Profile / Preferences / Review —
+						with two marked <code>completed</code>. Bind <code>current</code>
+						for two-way nav; pass <code>onclick</code> to handle step taps.
+						<div class="mounted-callout">
+							<span class="callout-label">Canvas →</span>
+							<span>4-step sign-up flow</span>
+						</div>
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="EXPLAINED"
+						icon="i-mdi:book-open-variant"
+					>
+						<strong>Steps are data, not markup.</strong> The array of
+						<code>{'{ label, completed }'}</code> drives the display. Set
+						<code>completed: true</code> as the user finishes each step;
+						clicking a completed step jumps back. The "Complete &amp; Next"
+						button below shows the imperative pattern for advancing
+						programmatically.
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="TRY"
+						icon="i-mdi:gesture-tap"
+					>
+						Click "Complete &amp; Next" to mark the active step done and
+						advance. Click any completed step header to revisit it.
 					</ChatMessage>
 				</ChatStream>
 			{:else if shell.phase === 'response' && shell.demoType === 'date-picker'}
@@ -1418,6 +1503,45 @@
 					</ChatResponse>
 
 					<CodeBlock filename="Table.demo.svelte" language="svelte" code={tableCode} />
+				</div>
+			{:else if shell.phase === 'response' && shell.demoType === 'stepper'}
+				<div class="canvas-head">
+					<div class="canvas-eyebrow">Mounted demo · live</div>
+					<div class="canvas-title">Stepper · sequenced progress</div>
+					<div class="canvas-sub">
+						Four steps, two already complete. Click a completed step header to
+						revisit; click "Complete &amp; Next" to advance.
+					</div>
+				</div>
+				<div class="canvas-body response">
+					<ChatResponse
+						name="&lt;Stepper/&gt;"
+						meta="· @rokkit/ui · style={style}"
+						kicker="LIVE"
+					>
+						{#snippet icon()}
+							<span class="i-mdi:stairs" aria-hidden="true"></span>
+						{/snippet}
+						<div class="stepper-mount">
+							<Stepper steps={stepperSteps} bind:current={stepperCurrent} onclick={(i: number) => (stepperCurrent = i)} />
+							<Button onclick={stepperAdvance}>Complete &amp; Next</Button>
+						</div>
+						{#snippet props()}
+							<span>steps</span><span data-value>[{stepperSteps.length}]</span>
+							<span data-sep>·</span>
+							<span>current</span><span data-value>{stepperCurrent}</span>
+							<span data-sep>·</span>
+							<span>active</span><span data-value>{stepperSteps[stepperCurrent]?.label}</span>
+						{/snippet}
+						{#snippet actions()}
+							<button type="button">
+								<span class="i-mdi:content-copy" aria-hidden="true"></span>
+								Copy code
+							</button>
+						{/snippet}
+					</ChatResponse>
+
+					<CodeBlock filename="Stepper.demo.svelte" language="svelte" code={stepperCode} />
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'date-picker'}
 				<div class="canvas-head">
@@ -2077,6 +2201,13 @@
 	.date-mount {
 		min-height: 120px;
 		max-width: 440px;
+	}
+
+	.stepper-mount {
+		min-height: 120px;
+		display: flex;
+		flex-direction: column;
+		gap: 18px;
 	}
 
 	.toast-buttons {
