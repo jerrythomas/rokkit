@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { Select } from '@rokkit/ui'
+
 	interface Props {
 		mode?: 'light' | 'dark'
 	}
@@ -27,9 +29,18 @@
 
 	const ramps: Record<string, string[]> = {
 		'warm-gray': ['#fbf8f1', '#f0e9d8', '#dfd2af', '#c4b384', '#a18d59', '#7a6845', '#574832', '#3a3025', '#241d16', '#13100b'],
-		shu: ['#fff8f5', '#fdd6c6', '#f7a18b', '#ed7559', '#dd4d2e', '#a83d1f', '#7a2a14', '#52190c', '#310f07', '#1a0703']
+		shu: ['#fff8f5', '#fdd6c6', '#f7a18b', '#ed7559', '#dd4d2e', '#a83d1f', '#7a2a14', '#52190c', '#310f07', '#1a0703'],
+		slate: ['#f8fafc', '#f1f5f9', '#e2e8f0', '#cbd5e1', '#94a3b8', '#64748b', '#475569', '#334155', '#1e293b', '#0f172a'],
+		neutral: ['#fafafa', '#f5f5f5', '#e5e5e5', '#d4d4d4', '#a3a3a3', '#737373', '#525252', '#404040', '#262626', '#171717']
 	}
 	const stepKeys = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '950']
+
+	// Available palettes for role assignment — only IN-USE palettes are picker
+	// options. Toggling a palette OFF in the catalog above hides it from these
+	// menus (and roles still bound to it keep their stored value).
+	const paletteOptions = $derived(
+		palettes.filter((p) => p.inUse).map((p) => ({ label: p.label, value: p.id }))
+	)
 
 	function togglePalette(p: Palette) {
 		p.inUse = !p.inUse
@@ -39,6 +50,12 @@
 		const step = stepKeys[stepIndex]
 		if (column === 'light') r.light = [r.light[0], step]
 		else r.dark = [r.dark[0], step]
+	}
+
+	function setRolePalette(r: Role, column: 'light' | 'dark', paletteId: unknown) {
+		if (typeof paletteId !== 'string') return
+		if (column === 'light') r.light = [paletteId, r.light[1]]
+		else r.dark = [paletteId, r.dark[1]]
 	}
 </script>
 
@@ -106,7 +123,15 @@
 					</div>
 
 					<div class="picker" data-active={mode === 'light' ? '' : undefined}>
-						<span class="picker-pal">{r.light[0]}</span>
+						<div class="picker-pal">
+							<Select
+								items={paletteOptions}
+								value={r.light[0]}
+								onchange={(v) => setRolePalette(r, 'light', v)}
+								size="sm"
+								aria-label={`${r.role} · light palette`}
+							/>
+						</div>
 						<div class="picker-ramp">
 							{#each lightRamp as c, i (i)}
 								<button
@@ -124,7 +149,15 @@
 					</div>
 
 					<div class="picker" data-active={mode === 'dark' ? '' : undefined}>
-						<span class="picker-pal">{r.dark[0]}</span>
+						<div class="picker-pal">
+							<Select
+								items={paletteOptions}
+								value={r.dark[0]}
+								onchange={(v) => setRolePalette(r, 'dark', v)}
+								size="sm"
+								aria-label={`${r.role} · dark palette`}
+							/>
+						</div>
 						<div class="picker-ramp">
 							{#each darkRamp as c, i (i)}
 								<button
@@ -350,13 +383,13 @@
 	}
 
 	.picker-pal {
+		min-width: 100px;
+		max-width: 100px;
+	}
+
+	.picker-pal :global([data-select-trigger]) {
 		font: 500 11.5px var(--font-mono);
-		color: var(--ink-mute);
-		min-width: 80px;
-		padding: 3px 8px;
-		background: var(--paper-soft);
-		border: 1px solid var(--paper-edge);
-		border-radius: 3px;
+		min-width: 100px;
 	}
 
 	.picker-ramp {

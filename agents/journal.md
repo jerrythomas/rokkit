@@ -3405,3 +3405,20 @@ Each catalog entry's tool spec declares its variants with `mode: 'dynamic' | 'ro
 **Verification**
 - Lint: 0 errors, 18 warnings.
 - Browser: `/app/theming` direct nav. Clicked neutral palette → IN USE badge appeared. Clicked role swatch at index 2 → step text changed to "·200", selection outline moved. Click handlers fire correctly with rAF-paced re-render.
+
+## 2026-05-24 (cont.) — Theme Wizard D1.5: per-role palette switcher
+
+User noted: there was no way to associate a palette with a role (e.g., "use slate for `paper`"). Without that, the wizard was step-only — you could change WHICH step within the current palette, but not WHICH palette.
+
+**Fix:**
+
+- Each role row's `picker-pal` element is now a real `<Select>` from `@rokkit/ui`, populated from a `$derived` `paletteOptions` list (only IN-USE palettes appear).
+- `setRolePalette(role, 'light'|'dark', paletteId)` updates `r.light[0]` or `r.dark[0]` without disturbing the step.
+- Extended the `ramps` table to include `slate` and `neutral` 10-step ramps so switching palettes actually changes the visible ramp colors.
+- CSS adjustment: `.picker-pal` becomes a 100px fixed-width container; the Select trigger inherits the wizard's mono-font sizing.
+
+This naturally demonstrates composability — `<Select>` (a Rokkit catalog component) is being used inside `<ThemeWizardCard>` (another demo). Same pattern future inline-composition responses will use.
+
+**Verification**
+- Lint: 0 errors.
+- Browser: opened first role's light palette Select → dropdown showed only "warm gray" + "slate" (the two IN-USE palettes). Picked slate → role label updated, ramp swatches re-rendered with slate colors (rgb 248/250/252 → 226/232/240).
