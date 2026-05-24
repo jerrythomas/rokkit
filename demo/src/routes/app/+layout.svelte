@@ -53,7 +53,7 @@
 
 	let thinkingTimer: ReturnType<typeof setTimeout> | null = null
 
-	type DemoKind = 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select' | 'list' | 'toasts' | 'form' | 'select' | 'chart'
+	type DemoKind = 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select' | 'list' | 'toasts' | 'form' | 'select' | 'chart' | 'combo'
 	const DEMO_ROUTE: Record<DemoKind, string> = {
 		tabs: '/app/tabs',
 		'theme-wizard': '/app/theming',
@@ -64,7 +64,8 @@
 		toasts: '/app/toasts',
 		form: '/app/form',
 		select: '/app/select',
-		chart: '/app/chart'
+		chart: '/app/chart',
+		combo: '/app/combo'
 	}
 
 	function pickDemoKind(query: string): DemoKind {
@@ -78,6 +79,7 @@
 		if (top === 'form') return 'form'
 		if (top === 'select') return 'select'
 		if (top === 'chart') return 'chart'
+		if (top === 'combo') return 'combo'
 		return 'tabs'
 	}
 
@@ -141,7 +143,8 @@
 		{ label: 'Toast notifications', icon: 'i-mdi:bell-outline' },
 		{ label: 'Schema-driven form', icon: 'i-mdi:form-textbox' },
 		{ label: 'Single-pick select', icon: 'i-mdi:menu-down' },
-		{ label: 'Bar chart with quarterly revenue', icon: 'i-mdi:chart-bar' }
+		{ label: 'Bar chart with quarterly revenue', icon: 'i-mdi:chart-bar' },
+		{ label: 'Combobox with type-to-filter', icon: 'i-mdi:magnify' }
 	]
 	const howChips = [
 		{ label: 'How does theming work?', icon: 'i-mdi:help-circle-outline' },
@@ -258,6 +261,39 @@
 	]
 	const treeFields = { label: 'name', value: 'id' }
 	let treeValue = $state<unknown>(null)
+
+	// Combo demo state — filterable Select with country list
+	const countryItems = [
+		'Argentina', 'Australia', 'Austria', 'Belgium', 'Brazil',
+		'Canada', 'Chile', 'China', 'Colombia', 'Denmark',
+		'Egypt', 'Finland', 'France', 'Germany', 'Greece',
+		'India', 'Indonesia', 'Ireland', 'Israel', 'Italy',
+		'Japan', 'Kenya', 'Mexico', 'Netherlands', 'New Zealand',
+		'Nigeria', 'Norway', 'Pakistan', 'Peru', 'Philippines',
+		'Poland', 'Portugal', 'South Africa', 'South Korea', 'Spain',
+		'Sweden', 'Switzerland', 'Thailand', 'Turkey', 'United Kingdom',
+		'United States', 'Vietnam'
+	].map((label) => ({ label, value: label.toLowerCase().replace(/\s+/g, '-') }))
+	let comboValue = $state<unknown>(null)
+
+	const comboCode = `<script>
+  import { Select } from '@rokkit/ui'
+
+  const countries = [
+    'Argentina', 'Australia', 'Brazil', 'Canada', 'France',
+    'Germany', 'India', 'Japan', 'Spain', 'United Kingdom',
+    'United States', /* …42 total… */
+  ].map(label => ({ label, value: label.toLowerCase().replace(/\\s+/g, '-') }))
+
+  let value = $state(null)
+<\/script>
+
+<Select
+  items={countries}
+  bind:value
+  filterable
+  placeholder="Type to search countries"
+/>`
 
 	// Chart demo state — quarterly revenue, BarChart
 	const chartData = [
@@ -758,6 +794,53 @@
 						secondary sort. Or copy the source on the right.
 					</ChatMessage>
 				</ChatStream>
+			{:else if shell.phase === 'response' && shell.demoType === 'combo'}
+				<ChatStream>
+					<ChatMessage
+						kind="user"
+						head="YOU"
+						who="Jerry"
+						ago="just now"
+						icon="i-mdi:chat-outline"
+					>
+						{shell.lastQuery}
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="MOUNTED"
+						who="Rokkit"
+						ago="just now"
+						icon="i-mdi:magnify"
+					>
+						<code>&lt;Select filterable/&gt;</code> from <code>@rokkit/ui</code>
+						on the canvas with a country list of 42 options. Same Select
+						component as before — the <code>filterable</code> prop is the
+						only difference. Type to narrow.
+						<div class="mounted-callout">
+							<span class="callout-label">Canvas →</span>
+							<span>Countries · type-to-filter</span>
+						</div>
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="WHEN TO USE"
+						icon="i-mdi:compare-horizontal"
+					>
+						<strong>Combobox</strong> when the option count is too large for a
+						casual scan — typing is faster than navigating. <strong>Plain
+						Select</strong> for short fixed lists (under ~10 options) where
+						the user just picks from what's visible.
+					</ChatMessage>
+					<ChatMessage
+						kind="info"
+						head="TRY"
+						icon="i-mdi:gesture-tap"
+					>
+						Open the dropdown. Start typing — e.g. "ne" narrows to Netherlands,
+						New Zealand. Arrow keys walk the filtered set; Enter selects;
+						Escape clears the filter without closing.
+					</ChatMessage>
+				</ChatStream>
 			{:else if shell.phase === 'response' && shell.demoType === 'chart'}
 				<ChatStream>
 					<ChatMessage
@@ -1250,6 +1333,45 @@
 					</ChatResponse>
 
 					<CodeBlock filename="Table.demo.svelte" language="svelte" code={tableCode} />
+				</div>
+			{:else if shell.phase === 'response' && shell.demoType === 'combo'}
+				<div class="canvas-head">
+					<div class="canvas-eyebrow">Mounted demo · live</div>
+					<div class="canvas-title">Combobox · type-to-filter Select</div>
+					<div class="canvas-sub">
+						42 countries. Same Select component as before — flip the
+						<code>filterable</code> prop and you get a search box at the top
+						of the dropdown. Type to narrow.
+					</div>
+				</div>
+				<div class="canvas-body response">
+					<ChatResponse
+						name="&lt;Select filterable/&gt;"
+						meta="· @rokkit/ui · style={style}"
+						kicker="LIVE"
+					>
+						{#snippet icon()}
+							<span class="i-mdi:magnify" aria-hidden="true"></span>
+						{/snippet}
+						<div class="combo-mount">
+							<Select items={countryItems} bind:value={comboValue} filterable placeholder="Type to search countries" />
+						</div>
+						{#snippet props()}
+							<span>options</span><span data-value>[42]</span>
+							<span data-sep>·</span>
+							<span>filterable</span><span data-value>yes</span>
+							<span data-sep>·</span>
+							<span>selected</span><span data-value>{String(comboValue ?? '—')}</span>
+						{/snippet}
+						{#snippet actions()}
+							<button type="button">
+								<span class="i-mdi:content-copy" aria-hidden="true"></span>
+								Copy code
+							</button>
+						{/snippet}
+					</ChatResponse>
+
+					<CodeBlock filename="Combo.demo.svelte" language="svelte" code={comboCode} />
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'chart'}
 				<div class="canvas-head">
@@ -1820,6 +1942,11 @@
 	.chart-mount {
 		min-height: 280px;
 		max-width: 640px;
+	}
+
+	.combo-mount {
+		min-height: 80px;
+		max-width: 340px;
 	}
 
 	.toast-buttons {

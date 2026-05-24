@@ -3318,3 +3318,20 @@ Note on Bun: `bun run dev` invokes the script which is `vite dev`. The `vite` bi
 - Lint: 0 errors, 18 warnings.
 - Tests: 3480/3480 (after updating the two vibe specs for the new console.warn signature).
 - Browser: `/app/chart` direct nav renders the BarChart with 4 quarterly bars + axes + gridlines.
+
+## 2026-05-24 (cont.) — Koan catalog: Combo (filterable Select)
+
+**Demo: Combobox**
+
+- New `demo/src/lib/koan/demos/combo/` (meta + placeholder). Keywords: combo, combobox, autocomplete, typeahead, filter, search. Icon: 探.
+- `catalog.ts` + `shell.svelte.ts` + `+layout.svelte` — wired through.
+- Implementation: same `Select` component from `@rokkit/ui` with `filterable={true}`. The Combobox isn't a separate component — it's a Select variant.
+- Sample data: 42 countries (Argentina through Vietnam), mapped to `{ label, value }` pairs.
+- Chat-left messages include a "WHEN TO USE" panel — Combobox for large option counts where typing beats scanning; plain Select for short fixed lists.
+- New welcome chip "Combobox with type-to-filter".
+
+**Verification**
+- Lint: 0 errors, 18 warnings.
+- Browser: `/app/combo` direct nav opens the dropdown with the filter input. Typing "ne" narrows 42 options to 4 (Indonesia, Netherlands, New Zealand, Philippines).
+
+**Catalog state (11 routes, 11 demos):** tabs, table, tree, multi-select, list, toasts, form, select, chart, combo, theme-wizard. All 10 build-component welcome chips resolve correctly.
