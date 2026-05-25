@@ -12,7 +12,22 @@ const meta: DemoMeta = {
 	],
 	category: 'navigation',
 	icon: '列',
-	load: () => import('./placeholder.svelte')
+	load: () => import('./placeholder.svelte'),
+	tool: {
+		name: 'mount_list',
+		description:
+			'Mount a List on the canvas, optionally with collapsible groups. Use for shallow 1–2 level grouping where the items are the focus (settings menus, sidebar nav, command palettes). For deeper hierarchy prefer Tree.',
+		parameters: {
+			items: 'Array of items; group items have a `children` array',
+			collapsible: 'boolean — enable expand/collapse on group headers',
+			fields: 'optional { label, value } field mapping'
+		}
+	},
+	inline: { capable: true },
+	variants: [
+		{ id: 'flat', label: 'Flat list (no groups)', mode: 'dynamic' },
+		{ id: 'snippets', label: 'Custom item snippets', mode: 'dynamic' }
+	]
 }
 
 export default meta

@@ -12,7 +12,26 @@ const meta: DemoMeta = {
 	],
 	category: 'data',
 	icon: '図',
-	load: () => import('./placeholder.svelte')
+	load: () => import('./placeholder.svelte'),
+	tool: {
+		name: 'mount_bar_chart',
+		description:
+			'Mount a BarChart on the canvas. Use when the user wants a data visualization — sales by quarter, counts by category, distributions, anything categorical → numeric.',
+		parameters: {
+			data: 'Array of rows',
+			x: 'field name for the x-axis (categorical)',
+			y: 'field name for the y-axis (numeric)',
+			fill: 'optional field name for color grouping',
+			stack: 'optional boolean — stack bars by color group',
+			stat: 'optional aggregation: sum | mean | count | …'
+		}
+	},
+	inline: { capable: true },
+	variants: [
+		{ id: 'grouped', label: 'Grouped by color', mode: 'dynamic' },
+		{ id: 'stacked', label: 'Stacked', mode: 'dynamic', props: { stack: true } },
+		{ id: 'with-labels', label: 'With data labels', mode: 'dynamic' }
+	]
 }
 
 export default meta

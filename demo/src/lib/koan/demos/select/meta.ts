@@ -12,7 +12,23 @@ const meta: DemoMeta = {
 	],
 	category: 'forms',
 	icon: '択',
-	load: () => import('./placeholder.svelte')
+	load: () => import('./placeholder.svelte'),
+	tool: {
+		name: 'mount_select',
+		description:
+			'Mount a single-pick Select dropdown. Use for short to moderately-long lists where the user picks one value. For 20+ items where typing helps, prefer the combobox tool.',
+		parameters: {
+			items: 'Array<{ label, value }> options',
+			value: 'optional pre-selected value',
+			maxRows: 'optional max visible rows in dropdown (default 8)',
+			placeholder: 'optional trigger placeholder text'
+		}
+	},
+	inline: { capable: true },
+	variants: [
+		{ id: 'grouped', label: 'Grouped options', mode: 'dynamic' },
+		{ id: 'with-icons', label: 'Options with icons', mode: 'dynamic' }
+	]
 }
 
 export default meta

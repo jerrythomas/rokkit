@@ -12,7 +12,22 @@ const meta: DemoMeta = {
 	],
 	category: 'forms',
 	icon: '入',
-	load: () => import('./placeholder.svelte')
+	load: () => import('./placeholder.svelte'),
+	tool: {
+		name: 'mount_form',
+		description:
+			'Mount a schema-driven FormRenderer on the canvas. Use when the user wants a form built from a JSON-Schema-ish object — sign-up, contact, settings, etc.',
+		parameters: {
+			data: 'object — bound form data',
+			schema: 'JSON-Schema-ish object with `properties`; type + format + enum + required drive rendering and validation'
+		}
+	},
+	inline: { capable: true },
+	variants: [
+		{ id: 'multi-step', label: 'Multi-step form', mode: 'dynamic' },
+		{ id: 'conditional', label: 'Conditional fields', mode: 'dynamic' },
+		{ id: 'with-lookups', label: 'Async lookups', mode: 'dynamic' }
+	]
 }
 
 export default meta

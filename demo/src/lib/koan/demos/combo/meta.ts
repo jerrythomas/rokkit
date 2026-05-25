@@ -12,7 +12,18 @@ const meta: DemoMeta = {
 	],
 	category: 'forms',
 	icon: '探',
-	load: () => import('./placeholder.svelte')
+	load: () => import('./placeholder.svelte'),
+	tool: {
+		name: 'mount_combobox',
+		description:
+			'Mount a filterable Select (combobox / autocomplete). Use when the option count is large enough that typing beats scrolling — countries, users, products, etc. For short fixed lists prefer mount_select.',
+		parameters: {
+			items: 'Array<{ label, value }> options (typically 15+)',
+			value: 'optional pre-selected value',
+			placeholder: 'optional trigger placeholder text'
+		}
+	},
+	inline: { capable: true }
 }
 
 export default meta

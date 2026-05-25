@@ -3488,3 +3488,42 @@ While exporting CSS, noticed `stepKeys` has `'950'` (not `'900'`) at index 9, bu
 6. Click "Reset to defaults". Toast confirms. `wizardState` re-initializes; step returns to `·100`, `--paper` returns to `#f0e9d8`. localStorage cleared.
 
 **Catalog state remains 13 routes. Theme wizard is now fully interactive.**
+
+## 2026-05-25 (cont.) — Catalog tool specs (schema-only)
+
+All 13 catalog entries now declare a `tool` / `inline` / `variants` block per the interactive-koan-mode draft.
+
+**Type changes** (`demo/src/lib/koan/types.ts`)
+
+- New exported types: `ToolParamSchema` (loose `Record<string, unknown>` for now), `DemoTool`, `DemoInline`, `DemoVariant`.
+- `DemoMeta` gains three optional fields: `tool?`, `inline?`, `variants?`.
+
+**Per-demo spec**
+
+Each demo's `meta.ts` describes:
+- `tool.name` — snake_case identifier the future LLM calls (e.g. `mount_tabs`, `mount_theme_wizard`).
+- `tool.description` — when to use this tool, written in LLM-prompt style.
+- `tool.parameters` — string sketches of bounded inputs (will tighten to a real JSON schema when we bind to a specific provider).
+- `inline.capable` — whether the demo reads sensibly when embedded inside a chat message (most do; theme-wizard + toasts don't).
+- `variants` — discoverable variations of the demo. Each declares `id` / `label` / `mode: 'dynamic' | 'route'` and optional `props`.
+
+Concrete variants registered:
+- **tabs**: vertical, with-icons
+- **table**: mapping, sticky-header, striped
+- **tree**: async, multi-select
+- **multi-select**: with-counts, no-overflow
+- **list**: flat, snippets
+- **form**: multi-step, conditional, with-lookups
+- **select**: grouped, with-icons
+- **chart**: grouped, stacked, with-labels
+- **combo**: (none yet — already a Select variant itself)
+- **date-picker**: with-validation, range
+- **stepper**: horizontal, vertical, with-content
+- **theme-wizard**: export, save-preset
+- **toasts**: (none — single canonical demo)
+
+Nothing in the runtime reads these yet. The point is shape: when the LLM router lands, every demo already declares its tool, inline capability, and variation menu in the same place its title/keywords/icon live.
+
+**Verification**
+- Lint: 0 errors, 20 warnings.
+- Tests: 3480/3480.

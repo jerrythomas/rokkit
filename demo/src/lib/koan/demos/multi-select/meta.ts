@@ -12,7 +12,22 @@ const meta: DemoMeta = {
 	],
 	category: 'forms',
 	icon: '選',
-	load: () => import('./placeholder.svelte')
+	load: () => import('./placeholder.svelte'),
+	tool: {
+		name: 'mount_multi_select',
+		description:
+			'Mount a MultiSelect on the canvas. Use when the user needs to pick multiple values from a list — tags, multi-pick filters, role assignment.',
+		parameters: {
+			items: 'Array<{ label, value }> options',
+			value: 'optional array of pre-selected values',
+			placeholder: 'optional trigger placeholder text'
+		}
+	},
+	inline: { capable: true },
+	variants: [
+		{ id: 'with-counts', label: 'With selection count', mode: 'dynamic' },
+		{ id: 'no-overflow', label: 'No chip overflow', mode: 'dynamic' }
+	]
 }
 
 export default meta

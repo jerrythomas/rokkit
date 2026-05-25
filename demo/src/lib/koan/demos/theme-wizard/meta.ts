@@ -11,7 +11,23 @@ const meta: DemoMeta = {
 	],
 	category: 'theme',
 	icon: '染',
-	load: () => import('./index.svelte')
+	load: () => import('./index.svelte'),
+	tool: {
+		name: 'mount_theme_wizard',
+		description:
+			'Mount the interactive theme wizard. Use when the user wants to customize the look — pick palettes, set role-step mappings, save a preset, export tokens.css. The wizard reskins the running app live as the user picks.',
+		parameters: {
+			palette: 'optional initial accent palette hint (shu | slate | neutral | warm-gray)',
+			step: 'optional initial accent step (50, 100, …, 950)'
+		}
+	},
+	// Theme wizard isn't inline-capable — the role table + live reskin needs
+	// the full canvas width to read well.
+	inline: { capable: false },
+	variants: [
+		{ id: 'export', label: 'Show tokens.css export', mode: 'dynamic' },
+		{ id: 'save-preset', label: 'Save a preset', mode: 'dynamic' }
+	]
 }
 
 export default meta

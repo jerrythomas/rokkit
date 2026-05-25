@@ -12,7 +12,22 @@ const meta: DemoMeta = {
 	],
 	category: 'navigation',
 	icon: '段',
-	load: () => import('./placeholder.svelte')
+	load: () => import('./placeholder.svelte'),
+	tool: {
+		name: 'mount_stepper',
+		description:
+			'Mount a multi-step Stepper. Use for sequenced flows — checkouts, sign-ups, onboarding wizards, anything with a clear ordered progression.',
+		parameters: {
+			steps: 'Array<{ label: string, completed?: boolean }>',
+			current: 'index of the active step'
+		}
+	},
+	inline: { capable: true },
+	variants: [
+		{ id: 'horizontal', label: 'Horizontal', mode: 'dynamic' },
+		{ id: 'vertical', label: 'Vertical', mode: 'dynamic' },
+		{ id: 'with-content', label: 'With per-step content', mode: 'dynamic' }
+	]
 }
 
 export default meta

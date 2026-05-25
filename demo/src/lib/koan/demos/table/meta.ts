@@ -11,7 +11,22 @@ const meta: DemoMeta = {
 	],
 	category: 'data',
 	icon: '表',
-	load: () => import('./placeholder.svelte')
+	load: () => import('./placeholder.svelte'),
+	tool: {
+		name: 'mount_table',
+		description:
+			'Mount a sortable Table on the canvas. Use when the user wants to display tabular data, sortable columns, a spreadsheet-like grid, or a sortable list of records.',
+		parameters: {
+			data: 'Array<Record<string, unknown>> — rows; columns are inferred from the first row',
+			caption: 'optional caption text'
+		}
+	},
+	inline: { capable: true },
+	variants: [
+		{ id: 'mapping', label: 'Custom field mapping', mode: 'dynamic' },
+		{ id: 'sticky-header', label: 'Sticky header on scroll', mode: 'dynamic' },
+		{ id: 'striped', label: 'Striped rows', mode: 'dynamic', props: { striped: true } }
+	]
 }
 
 export default meta
