@@ -16,7 +16,11 @@ const meta: DemoMeta = {
 			position: 'top-right | top-center | top-left | bottom-right | bottom-center | bottom-left'
 		}
 	},
-	inline: { capable: false }
+	inline: { capable: false },
+	variants: [
+		{ id: 'bottom-right', label: 'Bottom-right stack', mode: 'dynamic' },
+		{ id: 'auto-dismiss', label: 'Auto-dismiss after 3s', mode: 'dynamic' }
+	]
 }
 
 export default meta

@@ -3602,3 +3602,55 @@ Validated the chip pattern on a second demo. Stepper meta had three variants stu
 Pattern now proven on two demos. Next adopter would be near-zero-cost: declare variants in meta with `props`, add `$effect` to the route page, derive variant props in the layout, drop `VariantChips` in the canvas-sub.
 
 Tests: 3480/3480. Lint: 0 errors.
+
+## 2026-05-25 (cont.) — Variant scaffolding across all 13 demos
+
+Generalized the chip pattern to every demo. The user asked for the same treatment Tabs and Stepper got, applied to the remaining 11.
+
+**What changed everywhere**
+
+- Renamed `tabsVariantProps` / removed `stepperVariantProps` → one shared `variantProps` $derived that any branch can spread. Demos with variant props get them through `<Component {...baseProps} {...variantProps} />`.
+- Each `/app/X/+page.svelte` now reads `?variant=` via the same `$effect` Tabs uses. 11 files, identical 3-line pattern.
+- Each response canvas branch in `+layout.svelte` got:
+  - Eyebrow now appends `· variant: <label>` when active
+  - `<VariantChips/>` in the canvas-sub (one line per demo)
+  - `{...variantProps}` spread on the mounted component
+  - `variant: <id>` in the propsRow
+  - ChatResponse `meta` includes `variant=<id>`
+
+**Meta updates**
+
+- `combo` had no variants — added `no-filter` (real prop swap to plain Select) and `with-counts` (placeholder for future).
+- `toasts` had no variants — added `bottom-right` and `auto-dismiss` (placeholders for future).
+- Other demos kept their existing variant lists.
+
+**Behaviour coverage**
+
+Variants that have `props` and work end-to-end today:
+- `tabs.vertical`, `tabs.with-icons` ✓ (already done)
+- `stepper.vertical`, `stepper.with-content` ✓ (already done)
+- `table.striped` ✓ (browser-verified: alternate rows tint correctly)
+- `chart.stacked` ✓ (props flow through)
+- `combo.no-filter` ✓ (browser-verified: Select renders without filter input)
+
+Variants that show the chip + variant indicator but don't yet change the component visibly (deferred):
+- `theme-wizard.{export,save-preset}` — these are action triggers, not display variants
+- `table.{mapping,sticky-header}` — need code changes
+- `date-picker.{with-validation,range}` — need schema changes
+- `combo.with-counts` — needs custom render
+- `chart.{grouped,with-labels}` — need data shape changes
+- `select.{grouped,with-icons}` — need item shape changes
+- `form.{multi-step,conditional,with-lookups}` — need schema changes
+- `toasts.{bottom-right,auto-dismiss}` — need AlertList prop / setTimeout
+- `list.{flat,snippets}` — need items / snippet changes
+- `multi-select.{with-counts,no-overflow}` — need code changes
+- `tree.{async,multi-select}` — need component features
+
+This is intentional: the scaffolding lands first so every demo has a consistent UX (chip row, URL params, indicator), then real per-variant behaviour can be added incrementally in follow-ups without further plumbing churn.
+
+**Verified**
+
+- Lint: 0 errors, 20 pre-existing warnings.
+- All 13 `/app/<demo>` routes return 200.
+- `/app/table?variant=striped` → table rendered with striping, propsRow shows `variant: striped`.
+- `/app/combo?variant=no-filter` → Select renders without filter input, propsRow shows `filterable: no`.

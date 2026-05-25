@@ -23,7 +23,11 @@ const meta: DemoMeta = {
 			placeholder: 'optional trigger placeholder text'
 		}
 	},
-	inline: { capable: true }
+	inline: { capable: true },
+	variants: [
+		{ id: 'no-filter', label: 'Plain Select (no filter)', mode: 'dynamic', props: { filterable: false } },
+		{ id: 'with-counts', label: 'Show match count', mode: 'dynamic' }
+	]
 }
 
 export default meta

@@ -232,7 +232,9 @@
 		return meta?.variants?.find((v) => v.id === shell.demoVariant) ?? null
 	})
 
-	const tabsVariantProps = $derived<Record<string, unknown>>(
+	// Generic prop bag for any dynamic variant. Each demo branch spreads this
+	// after its base props so variants flow through with no per-demo plumbing.
+	const variantProps = $derived<Record<string, unknown>>(
 		activeVariant?.mode === 'dynamic' ? (activeVariant.props ?? {}) : {}
 	)
 
@@ -250,7 +252,7 @@
 	// example.
 	const tabsCode = $derived.by(() => {
 		const propLines: string[] = ['bind:value']
-		for (const [k, v] of Object.entries(tabsVariantProps)) {
+		for (const [k, v] of Object.entries(variantProps)) {
 			propLines.push(`${k}="${v}"`)
 		}
 		const tabsTag = `<Tabs options={items} ${propLines.join(' ')} />`
@@ -359,14 +361,8 @@ ${tabsTag}`
 		if (stepperCurrent < stepperSteps.length - 1) stepperCurrent++
 	}
 
-	const stepperVariantProps = $derived<Record<string, unknown>>(
-		shell.demoType === 'stepper' && activeVariant?.mode === 'dynamic'
-			? (activeVariant.props ?? {})
-			: {}
-	)
-
 	const stepperCode = $derived.by(() => {
-		const orientation = (stepperVariantProps.orientation as string | undefined) ?? 'horizontal'
+		const orientation = (variantProps.orientation as string | undefined) ?? 'horizontal'
 		const showContent = activeVariant?.id === 'with-content'
 		const orientLine = orientation === 'horizontal' ? '' : ` orientation="${orientation}"`
 		const contentBlock = showContent
@@ -1511,7 +1507,7 @@ ${tabsTag}`
 							<span class="i-mdi:layers-outline" aria-hidden="true"></span>
 						{/snippet}
 						<div class="tabs-mount">
-							<Tabs options={tabsItems} bind:value={activeTab} {...tabsVariantProps} />
+							<Tabs options={tabsItems} bind:value={activeTab} {...variantProps} />
 						</div>
 						{#snippet props()}
 							<span>items</span><span data-value>[5]</span>
@@ -1538,11 +1534,13 @@ ${tabsTag}`
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'theme-wizard'}
 				<div class="canvas-head">
-					<div class="canvas-eyebrow">Theme wizard · live preview</div>
+					<div class="canvas-eyebrow">Theme wizard · live preview{#if activeVariant} · variant: {activeVariant.label.toLowerCase()}{/if}</div>
 					<div class="canvas-title">Build a theme · step 02 of 04</div>
 					<div class="canvas-sub">
 						Style chosen; now map roles to palette steps. The right side previews
 						each role on the running app.
+						<br />
+						<VariantChips demoId="theme-wizard" basePath="/app/theming" activeId={activeVariant?.id ?? null} />
 					</div>
 				</div>
 				<div class="canvas-body response">
@@ -1580,24 +1578,26 @@ ${tabsTag}`
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'table'}
 				<div class="canvas-head">
-					<div class="canvas-eyebrow">Mounted demo · live</div>
+					<div class="canvas-eyebrow">Mounted demo · live{#if activeVariant} · variant: {activeVariant.label.toLowerCase()}{/if}</div>
 					<div class="canvas-title">Table · sortable, data-driven</div>
 					<div class="canvas-sub">
 						Six rows of products. Columns inferred from the row shape — no schema
 						required. Click a header to sort; shift-click to add secondary sorts.
+						<br />
+						<VariantChips demoId="table" basePath="/app/table" activeId={activeVariant?.id ?? null} />
 					</div>
 				</div>
 				<div class="canvas-body response">
 					<ChatResponse
 						name="&lt;Table/&gt;"
-						meta="· @rokkit/ui · style={style}"
+						meta={`· @rokkit/ui · style=${style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
 						kicker="LIVE"
 					>
 						{#snippet icon()}
 							<span class="i-mdi:table" aria-hidden="true"></span>
 						{/snippet}
-						<div class="table-mount">
-							<Table data={tableData} caption="Products" />
+						<div class="table-mount" data-variant={activeVariant?.id ?? undefined}>
+							<Table data={tableData} caption="Products" {...variantProps} />
 						</div>
 						{#snippet props()}
 							<span>rows</span><span data-value>[6]</span>
@@ -1605,6 +1605,10 @@ ${tabsTag}`
 							<span>columns</span><span data-value>inferred</span>
 							<span data-sep>·</span>
 							<span>sortable</span><span data-value>yes</span>
+							{#if activeVariant}
+								<span data-sep>·</span>
+								<span>variant</span><span data-value>{activeVariant.id}</span>
+							{/if}
 						{/snippet}
 						{#snippet actions()}
 							<button type="button">
@@ -1647,13 +1651,13 @@ ${tabsTag}`
 						{#snippet stepperContent(step: { text: string }, _index: number)}
 							<p class="step-blurb">{stepperBlurbs[step.text] ?? ''}</p>
 						{/snippet}
-						<div class="stepper-mount" data-orientation={stepperVariantProps.orientation ?? 'horizontal'}>
+						<div class="stepper-mount" data-orientation={variantProps.orientation ?? 'horizontal'}>
 							<Stepper
 								steps={stepperSteps}
 								bind:current={stepperCurrent}
 								onclick={(i: number) => (stepperCurrent = i)}
 								content={activeVariant?.id === 'with-content' ? stepperContent : undefined}
-								{...stepperVariantProps}
+								{...variantProps}
 							/>
 							<Button onclick={stepperAdvance}>Complete &amp; Next</Button>
 						</div>
@@ -1680,19 +1684,21 @@ ${tabsTag}`
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'date-picker'}
 				<div class="canvas-head">
-					<div class="canvas-eyebrow">Mounted demo · live</div>
+					<div class="canvas-eyebrow">Mounted demo · live{#if activeVariant} · variant: {activeVariant.label.toLowerCase()}{/if}</div>
 					<div class="canvas-title">Date Picker · format-driven</div>
 					<div class="canvas-sub">
 						Two fields, one schema. <code>format: 'date'</code> →
 						<code>&lt;InputDate/&gt;</code>; <code>format: 'date-time'</code>
 						→ <code>&lt;InputDateTime/&gt;</code>. Native calendar / time
 						pickers, ISO-8601 strings out.
+						<br />
+						<VariantChips demoId="date-picker" basePath="/app/date" activeId={activeVariant?.id ?? null} />
 					</div>
 				</div>
 				<div class="canvas-body response">
 					<ChatResponse
 						name="&lt;InputDate/&gt; · &lt;InputDateTime/&gt;"
-						meta="· @rokkit/forms · style={style}"
+						meta={`· @rokkit/forms · style=${style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
 						kicker="LIVE"
 					>
 						{#snippet icon()}
@@ -1707,6 +1713,10 @@ ${tabsTag}`
 							<span>eventDate</span><span data-value>{dateData.eventDate || '—'}</span>
 							<span data-sep>·</span>
 							<span>startsAt</span><span data-value>{dateData.startsAt || '—'}</span>
+							{#if activeVariant}
+								<span data-sep>·</span>
+								<span>variant</span><span data-value>{activeVariant.id}</span>
+							{/if}
 						{/snippet}
 						{#snippet actions()}
 							<button type="button">
@@ -1720,32 +1730,38 @@ ${tabsTag}`
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'combo'}
 				<div class="canvas-head">
-					<div class="canvas-eyebrow">Mounted demo · live</div>
+					<div class="canvas-eyebrow">Mounted demo · live{#if activeVariant} · variant: {activeVariant.label.toLowerCase()}{/if}</div>
 					<div class="canvas-title">Combobox · type-to-filter Select</div>
 					<div class="canvas-sub">
 						42 countries. Same Select component as before — flip the
 						<code>filterable</code> prop and you get a search box at the top
 						of the dropdown. Type to narrow.
+						<br />
+						<VariantChips demoId="combo" basePath="/app/combo" activeId={activeVariant?.id ?? null} />
 					</div>
 				</div>
 				<div class="canvas-body response">
 					<ChatResponse
 						name="&lt;Select filterable/&gt;"
-						meta="· @rokkit/ui · style={style}"
+						meta={`· @rokkit/ui · style=${style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
 						kicker="LIVE"
 					>
 						{#snippet icon()}
 							<span class="i-mdi:magnify" aria-hidden="true"></span>
 						{/snippet}
 						<div class="combo-mount">
-							<Select items={countryItems} bind:value={comboValue} filterable placeholder="Type to search countries" />
+							<Select items={countryItems} bind:value={comboValue} filterable placeholder="Type to search countries" {...variantProps} />
 						</div>
 						{#snippet props()}
 							<span>options</span><span data-value>[42]</span>
 							<span data-sep>·</span>
-							<span>filterable</span><span data-value>yes</span>
+							<span>filterable</span><span data-value>{variantProps.filterable === false ? 'no' : 'yes'}</span>
 							<span data-sep>·</span>
 							<span>selected</span><span data-value>{String(comboValue ?? '—')}</span>
+							{#if activeVariant}
+								<span data-sep>·</span>
+								<span>variant</span><span data-value>{activeVariant.id}</span>
+							{/if}
 						{/snippet}
 						{#snippet actions()}
 							<button type="button">
@@ -1759,25 +1775,27 @@ ${tabsTag}`
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'chart'}
 				<div class="canvas-head">
-					<div class="canvas-eyebrow">Mounted demo · live</div>
+					<div class="canvas-eyebrow">Mounted demo · live{#if activeVariant} · variant: {activeVariant.label.toLowerCase()}{/if}</div>
 					<div class="canvas-title">BarChart · data-driven SVG</div>
 					<div class="canvas-sub">
 						Quarterly revenue. Pass rows + <code>x</code>/<code>y</code> field
 						names; <code>&lt;BarChart/&gt;</code> handles the axes, palette,
 						gridlines, and tooltips.
+						<br />
+						<VariantChips demoId="chart" basePath="/app/chart" activeId={activeVariant?.id ?? null} />
 					</div>
 				</div>
 				<div class="canvas-body response">
 					<ChatResponse
 						name="&lt;BarChart/&gt;"
-						meta="· @rokkit/chart · style={style}"
+						meta={`· @rokkit/chart · style=${style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
 						kicker="LIVE"
 					>
 						{#snippet icon()}
 							<span class="i-mdi:chart-bar" aria-hidden="true"></span>
 						{/snippet}
 						<div class="chart-mount">
-							<BarChart data={chartData} x="quarter" y="revenue" />
+							<BarChart data={chartData} x="quarter" y="revenue" {...variantProps} />
 						</div>
 						{#snippet props()}
 							<span>rows</span><span data-value>[4]</span>
@@ -1785,6 +1803,10 @@ ${tabsTag}`
 							<span>x</span><span data-value>quarter</span>
 							<span data-sep>·</span>
 							<span>y</span><span data-value>revenue</span>
+							{#if activeVariant}
+								<span data-sep>·</span>
+								<span>variant</span><span data-value>{activeVariant.id}</span>
+							{/if}
 						{/snippet}
 						{#snippet actions()}
 							<button type="button">
@@ -1802,29 +1824,35 @@ ${tabsTag}`
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'select'}
 				<div class="canvas-head">
-					<div class="canvas-eyebrow">Mounted demo · live</div>
+					<div class="canvas-eyebrow">Mounted demo · live{#if activeVariant} · variant: {activeVariant.label.toLowerCase()}{/if}</div>
 					<div class="canvas-title">Select · single-pick dropdown</div>
 					<div class="canvas-sub">
 						Twenty options to exercise scroll + keyboard navigation. Click the
 						trigger to open; arrow keys walk; Enter selects; Home/End jump.
+						<br />
+						<VariantChips demoId="select" basePath="/app/select" activeId={activeVariant?.id ?? null} />
 					</div>
 				</div>
 				<div class="canvas-body response">
 					<ChatResponse
 						name="&lt;Select/&gt;"
-						meta="· @rokkit/ui · style={style}"
+						meta={`· @rokkit/ui · style=${style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
 						kicker="LIVE"
 					>
 						{#snippet icon()}
 							<span class="i-mdi:menu-down" aria-hidden="true"></span>
 						{/snippet}
 						<div class="select-mount">
-							<Select items={selectItems} bind:value={selectValue} placeholder="Pick an option" />
+							<Select items={selectItems} bind:value={selectValue} placeholder="Pick an option" {...variantProps} />
 						</div>
 						{#snippet props()}
 							<span>options</span><span data-value>[20]</span>
 							<span data-sep>·</span>
 							<span>selected</span><span data-value>{String(selectValue ?? '—')}</span>
+							{#if activeVariant}
+								<span data-sep>·</span>
+								<span>variant</span><span data-value>{activeVariant.id}</span>
+							{/if}
 						{/snippet}
 						{#snippet actions()}
 							<button type="button">
@@ -1838,18 +1866,20 @@ ${tabsTag}`
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'form'}
 				<div class="canvas-head">
-					<div class="canvas-eyebrow">Mounted demo · live</div>
+					<div class="canvas-eyebrow">Mounted demo · live{#if activeVariant} · variant: {activeVariant.label.toLowerCase()}{/if}</div>
 					<div class="canvas-title">Form · schema-driven</div>
 					<div class="canvas-sub">
 						Four fields generated from a schema — text, email (validated),
 						select (enum-derived), boolean toggle. <code>bind:data</code> for
 						two-way binding.
+						<br />
+						<VariantChips demoId="form" basePath="/app/form" activeId={activeVariant?.id ?? null} />
 					</div>
 				</div>
 				<div class="canvas-body response">
 					<ChatResponse
 						name="&lt;FormRenderer/&gt;"
-						meta="· @rokkit/forms · style={style}"
+						meta={`· @rokkit/forms · style=${style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
 						kicker="LIVE"
 					>
 						{#snippet icon()}
@@ -1864,6 +1894,10 @@ ${tabsTag}`
 							<span>name</span><span data-value>{formData.name || '—'}</span>
 							<span data-sep>·</span>
 							<span>role</span><span data-value>{formData.role}</span>
+							{#if activeVariant}
+								<span data-sep>·</span>
+								<span>variant</span><span data-value>{activeVariant.id}</span>
+							{/if}
 						{/snippet}
 						{#snippet actions()}
 							<button type="button">
@@ -1881,17 +1915,19 @@ ${tabsTag}`
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'toasts'}
 				<div class="canvas-head">
-					<div class="canvas-eyebrow">Mounted demo · live</div>
+					<div class="canvas-eyebrow">Mounted demo · live{#if activeVariant} · variant: {activeVariant.label.toLowerCase()}{/if}</div>
 					<div class="canvas-title">Toasts · imperative notifications</div>
 					<div class="canvas-sub">
 						AlertList renders any pushed alert at the configured position. Four
 						tones — success, warning, error, info. Click a button to fire one.
+						<br />
+						<VariantChips demoId="toasts" basePath="/app/toasts" activeId={activeVariant?.id ?? null} />
 					</div>
 				</div>
 				<div class="canvas-body response">
 					<ChatResponse
 						name="&lt;AlertList/&gt;"
-						meta="· @rokkit/ui · style={style}"
+						meta={`· @rokkit/ui · style=${style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
 						kicker="LIVE"
 					>
 						{#snippet icon()}
@@ -1920,6 +1956,10 @@ ${tabsTag}`
 							<span>tones</span><span data-value>[4]</span>
 							<span data-sep>·</span>
 							<span>store</span><span data-value>alerts</span>
+							{#if activeVariant}
+								<span data-sep>·</span>
+								<span>variant</span><span data-value>{activeVariant.id}</span>
+							{/if}
 						{/snippet}
 						{#snippet actions()}
 							<button type="button" onclick={() => alerts.clear()}>
@@ -1937,25 +1977,27 @@ ${tabsTag}`
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'list'}
 				<div class="canvas-head">
-					<div class="canvas-eyebrow">Mounted demo · live</div>
+					<div class="canvas-eyebrow">Mounted demo · live{#if activeVariant} · variant: {activeVariant.label.toLowerCase()}{/if}</div>
 					<div class="canvas-title">List · collapsible groups</div>
 					<div class="canvas-sub">
 						Settings menu shape — three groups, each with its own items via
 						<code>children</code>. Click a group header to collapse. Same
 						component renders flat lists when you drop <code>children</code>.
+						<br />
+						<VariantChips demoId="list" basePath="/app/list" activeId={activeVariant?.id ?? null} />
 					</div>
 				</div>
 				<div class="canvas-body response">
 					<ChatResponse
 						name="&lt;List/&gt;"
-						meta="· @rokkit/ui · style={style}"
+						meta={`· @rokkit/ui · style=${style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
 						kicker="LIVE"
 					>
 						{#snippet icon()}
 							<span class="i-mdi:format-list-bulleted" aria-hidden="true"></span>
 						{/snippet}
 						<div class="list-mount">
-							<List items={listItems} collapsible bind:value={listValue} />
+							<List items={listItems} collapsible bind:value={listValue} {...variantProps} />
 						</div>
 						{#snippet props()}
 							<span>groups</span><span data-value>[3]</span>
@@ -1963,6 +2005,10 @@ ${tabsTag}`
 							<span>collapsible</span><span data-value>yes</span>
 							<span data-sep>·</span>
 							<span>selected</span><span data-value>{String((listValue as { label?: string } | null)?.label ?? '—')}</span>
+							{#if activeVariant}
+								<span data-sep>·</span>
+								<span>variant</span><span data-value>{activeVariant.id}</span>
+							{/if}
 						{/snippet}
 						{#snippet actions()}
 							<button type="button">
@@ -1980,25 +2026,27 @@ ${tabsTag}`
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'multi-select'}
 				<div class="canvas-head">
-					<div class="canvas-eyebrow">Mounted demo · live</div>
+					<div class="canvas-eyebrow">Mounted demo · live{#if activeVariant} · variant: {activeVariant.label.toLowerCase()}{/if}</div>
 					<div class="canvas-title">MultiSelect · chips for picked values</div>
 					<div class="canvas-sub">
 						Eight colors; two start picked. Selected values render as chips
 						inside the trigger. Click a chip to remove. Field-mapped via
 						<code>{'{ label, value }'}</code>; <code>bind:value</code> gives an array.
+						<br />
+						<VariantChips demoId="multi-select" basePath="/app/multiselect" activeId={activeVariant?.id ?? null} />
 					</div>
 				</div>
 				<div class="canvas-body response">
 					<ChatResponse
 						name="&lt;MultiSelect/&gt;"
-						meta="· @rokkit/ui · style={style}"
+						meta={`· @rokkit/ui · style=${style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
 						kicker="LIVE"
 					>
 						{#snippet icon()}
 							<span class="i-mdi:select-multiple" aria-hidden="true"></span>
 						{/snippet}
 						<div class="multiselect-mount">
-							<MultiSelect items={colorItems} bind:value={selectedColors} placeholder="Select colors" />
+							<MultiSelect items={colorItems} bind:value={selectedColors} placeholder="Select colors" {...variantProps} />
 						</div>
 						{#snippet props()}
 							<span>options</span><span data-value>[8]</span>
@@ -2006,6 +2054,10 @@ ${tabsTag}`
 							<span>selected</span><span data-value>[{selectedColors.length}]</span>
 							<span data-sep>·</span>
 							<span>value</span><span data-value>{selectedColors.join(', ') || '—'}</span>
+							{#if activeVariant}
+								<span data-sep>·</span>
+								<span>variant</span><span data-value>{activeVariant.id}</span>
+							{/if}
 						{/snippet}
 						{#snippet actions()}
 							<button type="button">
@@ -2023,24 +2075,26 @@ ${tabsTag}`
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'tree'}
 				<div class="canvas-head">
-					<div class="canvas-eyebrow">Mounted demo · live</div>
+					<div class="canvas-eyebrow">Mounted demo · live{#if activeVariant} · variant: {activeVariant.label.toLowerCase()}{/if}</div>
 					<div class="canvas-title">Tree · hierarchical, navigable</div>
 					<div class="canvas-sub">
 						Nested folders + files. Click to expand; arrow keys walk the tree;
 						Enter selects. Field-mapped via <code>fields={'{'} label, value }</code>.
+						<br />
+						<VariantChips demoId="tree" basePath="/app/tree" activeId={activeVariant?.id ?? null} />
 					</div>
 				</div>
 				<div class="canvas-body response">
 					<ChatResponse
 						name="&lt;Tree/&gt;"
-						meta="· @rokkit/ui · style={style}"
+						meta={`· @rokkit/ui · style=${style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
 						kicker="LIVE"
 					>
 						{#snippet icon()}
 							<span class="i-mdi:file-tree" aria-hidden="true"></span>
 						{/snippet}
 						<div class="tree-mount">
-							<Tree items={treeItems} fields={treeFields} bind:value={treeValue} />
+							<Tree items={treeItems} fields={treeFields} bind:value={treeValue} {...variantProps} />
 						</div>
 						{#snippet props()}
 							<span>nodes</span><span data-value>nested</span>
@@ -2048,6 +2102,10 @@ ${tabsTag}`
 							<span>fields</span><span data-value>{'{ label, value }'}</span>
 							<span data-sep>·</span>
 							<span>selected</span><span data-value>{String(treeValue ?? '—')}</span>
+							{#if activeVariant}
+								<span data-sep>·</span>
+								<span>variant</span><span data-value>{activeVariant.id}</span>
+							{/if}
 						{/snippet}
 						{#snippet actions()}
 							<button type="button">
