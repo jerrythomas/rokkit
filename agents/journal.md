@@ -3903,3 +3903,46 @@ Save flows through the same `submitExport(...)` as the form, producing an `edite
 The block payload is still serializable (the `data` in `reshape` actions is plain JSON), so when we wire the LLM in Phase 2 the same structure can come out of a tool call.
 
 Lint: 0 errors, 41 pre-existing warnings.
+
+## 2026-05-25 (cont.) — Phase 2 scaffolding: in-browser LLM via web-llm
+
+Added `@mlc-ai/web-llm` and built the router-swap that replaces the mock with a real in-browser LLM. The UI is wired and verified; the actual model download is opt-in (~1–2 GB) and not exercised in this commit.
+
+**`lib/chat-demo/llm.svelte.ts`**
+
+- `llm` reactive store: `status` (`uninitialized | loading | ready | thinking | error`), `modelId`, `loadProgress`, `loadStage`, `errorMessage`, `webgpuSupported`.
+- `AVAILABLE_MODELS` — curated picks weighted by tool-calling fidelity: Llama 3.2 1B (fastest), Llama 3.2 3B (default, best balance), Hermes 3 3B (tool-calling tuned), Qwen 2.5 1.5B (lightweight).
+- `detectWebGPU()` — guards the toggle; `navigator.gpu` presence check before importing the (heavy) web-llm module.
+- `ensureEngine()` — lazy `import('@mlc-ai/web-llm')` + `CreateMLCEngine(modelId, { initProgressCallback })`. Reports progress into `llm.loadProgress` / `loadStage` reactively. Cached after first successful load.
+- `buildToolSpecs()` — turns the catalog's `tool: DemoTool` declarations into OpenAI-compatible function schemas. Parameters are typed as `string` for now (most demos describe shapes in prose); we tighten as we wire JSON schemas per demo.
+- `routeViaLLM(query)` — Phase-2 replacement for `routeQuery`. Calls the engine with `tools` + `tool_choice: 'auto'` + `temperature: 0.3`, parses the response into the same `Block[]` shape (prose for content, `component` blocks for tool calls). Same UI, no changes needed downstream.
+- `resetEngine()` — drops the cached engine so picking a different model triggers a fresh load.
+
+**Store**
+
+- `conversation.useLLM: boolean` (default false).
+- `submitQuery` branches: if `useLLM && llm.status !== 'error'`, await `routeViaLLM(text)` and push the assistant turn when it resolves. Otherwise mock path as before.
+
+**`/chat` page**
+
+- New LLM control row in the ChatChrome actions slot: ☐ 🤖 LLM toggle. When on: model dropdown (4 curated picks), "Load model" button (when uninitialized), live load progress percentage (when loading), green "ready" indicator (when ready), red error pill (when failed). Toggle is disabled when `webgpuSupported === false` with a tooltip explaining why.
+- WebGPU presence probed via `detectWebGPU()` on mount.
+
+**Browser-verified**
+
+- `/chat` renders with the LLM toggle in the chrome.
+- Toggling on reveals the model selector + Load button.
+- WebGPU detected as true in Chromium.
+- Lint: 0 errors.
+
+**What's not exercised yet** (intentionally)
+
+- Actually clicking "Load model" — that pulls ~1–2 GB. Left for user-initiated verification.
+- Tool-call parsing against real LLM output — the parser handles the OpenAI-compatible shape we expect from web-llm 0.2.83. If the model emits malformed JSON in `function.arguments`, we surface a one-line "Tool X returned invalid JSON arguments; skipping." prose block and continue.
+- Streaming output. `chat.completions.create` is awaited as a non-stream call for simplicity. Easy follow-up: switch to `stream: true` and incrementally render prose blocks.
+
+**Future wiring**
+
+- Tighten `buildToolSpecs()` parameter schemas as each demo gets a real JSON Schema.
+- Add a "system" message variant per demo that explains what the tool should produce (especially for data tools — current chart/table props vary by inferred shape).
+- Persist the chosen model + `useLLM` preference to localStorage.

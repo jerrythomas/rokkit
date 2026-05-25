@@ -9,7 +9,19 @@
 		resetConversation
 	} from '$lib/chat-demo/store.svelte'
 	import { tryParse, parseCSV } from '$lib/chat-demo/infer'
+	import {
+		llm,
+		ensureEngine,
+		resetEngine,
+		detectWebGPU,
+		AVAILABLE_MODELS
+	} from '$lib/chat-demo/llm.svelte'
 	import BlockList from '$lib/chat-demo/components/BlockList.svelte'
+
+	$effect(() => {
+		// Probe WebGPU on mount so the toggle shows the right state.
+		void detectWebGPU()
+	})
 
 	let composerValue = $state('')
 	let streamRef = $state<HTMLElement | null>(null)
@@ -132,6 +144,44 @@
 			<span class="route-label">Inline chat · scripted responses</span>
 		{/snippet}
 		{#snippet actions()}
+			<div class="llm-toggle" data-status={llm.status}>
+				<label class="llm-switch" title={llm.webgpuSupported === false ? 'WebGPU not available in this browser' : 'Use in-browser LLM instead of the mock router'}>
+					<input
+						type="checkbox"
+						bind:checked={conversation.useLLM}
+						disabled={llm.webgpuSupported === false}
+					/>
+					<span class="llm-switch-label">
+						<span class="i-mdi:robot-outline" aria-hidden="true"></span>
+						LLM
+					</span>
+				</label>
+				{#if conversation.useLLM}
+					<select bind:value={llm.modelId} disabled={llm.status === 'loading'} onchange={resetEngine}>
+						{#each AVAILABLE_MODELS as m (m.id)}
+							<option value={m.id}>{m.label} · {m.size}</option>
+						{/each}
+					</select>
+					{#if llm.status === 'uninitialized'}
+						<button type="button" class="llm-load-btn" onclick={() => ensureEngine()}>
+							<span class="i-mdi:download" aria-hidden="true"></span>
+							Load model
+						</button>
+					{:else if llm.status === 'loading'}
+						<span class="llm-progress" title={llm.loadStage}>
+							<span class="i-mdi:loading llm-spin" aria-hidden="true"></span>
+							{Math.round(llm.loadProgress * 100)}%
+						</span>
+					{:else if llm.status === 'ready' || llm.status === 'thinking'}
+						<span class="llm-ready">
+							<span class="i-mdi:check-circle-outline" aria-hidden="true"></span>
+							ready
+						</span>
+					{:else if llm.status === 'error'}
+						<span class="llm-error" title={llm.errorMessage}>error</span>
+					{/if}
+				{/if}
+			</div>
 			<button type="button" class="reset-btn" onclick={resetConversation}>
 				<span class="i-mdi:restore" aria-hidden="true"></span>
 				Reset
@@ -443,5 +493,94 @@
 	.drop-hint {
 		font: 400 13px var(--font-ui);
 		color: var(--ink-mute);
+	}
+
+	.llm-toggle {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 4px 8px;
+		border: 1px solid var(--paper-edge);
+		border-radius: 9999px;
+		background: var(--paper-soft);
+		font: 500 12px var(--font-ui);
+		color: var(--ink-mute);
+	}
+
+	.llm-toggle[data-status='ready'],
+	.llm-toggle[data-status='thinking'] {
+		border-color: var(--accent);
+		color: var(--accent);
+		background: color-mix(in oklab, var(--accent) 6%, var(--paper-soft));
+	}
+
+	.llm-toggle[data-status='error'] {
+		border-color: var(--danger, #c43838);
+		color: var(--danger, #c43838);
+	}
+
+	.llm-switch {
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+		cursor: pointer;
+	}
+
+	.llm-switch input[type='checkbox'] {
+		accent-color: var(--accent);
+	}
+
+	.llm-switch-label {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+	}
+
+	.llm-toggle select {
+		font: 500 11.5px var(--font-ui);
+		padding: 2px 4px;
+		border: 1px solid var(--paper-edge);
+		border-radius: 4px;
+		background: var(--paper);
+		color: var(--ink);
+		max-width: 160px;
+	}
+
+	.llm-load-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		height: 22px;
+		padding: 0 8px;
+		border: 1px solid var(--accent);
+		border-radius: 9999px;
+		background: var(--paper);
+		color: var(--accent);
+		font: 500 11.5px var(--font-ui);
+		cursor: pointer;
+	}
+
+	.llm-load-btn:hover {
+		background: var(--accent);
+		color: var(--paper);
+	}
+
+	.llm-progress,
+	.llm-ready,
+	.llm-error {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		font-size: 11.5px;
+	}
+
+	@keyframes spin {
+		from { transform: rotate(0); }
+		to { transform: rotate(360deg); }
+	}
+
+	:global(.llm-spin) {
+		animation: spin 1.2s linear infinite;
+		display: inline-block;
 	}
 </style>

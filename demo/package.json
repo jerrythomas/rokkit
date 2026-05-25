@@ -39,6 +39,7 @@
     "@fontsource/open-sans": "^5.2.7",
     "@fontsource/overpass": "^5.2.8",
     "@inlang/paraglide-js": "^2.16.1",
+    "@mlc-ai/web-llm": "^0.2.83",
     "@rokkit/actions": "workspace:latest",
     "@rokkit/app": "workspace:latest",
     "@rokkit/chart": "workspace:latest",

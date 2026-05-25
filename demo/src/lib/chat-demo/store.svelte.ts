@@ -6,13 +6,15 @@
 import type { ChatTurn, SuggestionAction } from './types'
 import { routeQuery, routeData } from './router'
 import { tryParse } from './infer'
+import { routeViaLLM, llm } from './llm.svelte'
 
 let nextId = 0
 const newId = () => `turn-${++nextId}-${Date.now()}`
 
-export const conversation = $state<{ turns: ChatTurn[]; thinking: boolean }>({
+export const conversation = $state<{ turns: ChatTurn[]; thinking: boolean; useLLM: boolean }>({
 	turns: [],
-	thinking: false
+	thinking: false,
+	useLLM: false
 })
 
 function thinkThen(turn: ChatTurn): void {
@@ -32,6 +34,22 @@ export function submitQuery(query: string): void {
 		role: 'user',
 		text
 	})
+	if (conversation.useLLM && llm.status !== 'error') {
+		conversation.thinking = true
+		routeViaLLM(text)
+			.then((blocks) => {
+				conversation.turns.push({
+					id: newId(),
+					timestamp: Date.now(),
+					role: 'assistant',
+					blocks
+				})
+			})
+			.finally(() => {
+				conversation.thinking = false
+			})
+		return
+	}
 	thinkThen({
 		id: newId(),
 		timestamp: Date.now(),
