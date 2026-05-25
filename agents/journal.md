@@ -3729,3 +3729,47 @@ The chat reads: USER → MOUNTED → EXPLAINED → TRY → TRY VARIANTS (chip ro
 - All 13 demos have the row when their meta declares variants.
 
 Lint: 0 errors.
+
+## 2026-05-25 (cont.) — /chat route + inline component renderer (mock)
+
+User asked: should the "rokkit + AI" story live alongside `/app` or in its own route, and how do we demonstrate inline tables/charts/forms without burning LLM tokens?
+
+Direction agreed: separate `/chat` route, mock router first, browser LLM later. Built phase 1 (b–d in the plan): scaffold + block renderer + scripted router.
+
+**Architecture**
+
+- `demo/src/lib/chat-demo/types.ts` — `Block` union of `prose | code | component | suggestions`. A `ChatTurn` is `{role: 'user' | 'assistant', …}` with `blocks: Block[]` for assistant turns. Same shape an LLM tool-call response would have, so swapping in a real model later doesn't touch the UI.
+- `demo/src/lib/chat-demo/router.ts` — `routeQuery(query): Block[]`. Keyword-based pattern match against `ROUTES[]`. Each route's `build(query)` returns the Block list. Routes are order-sensitive (more specific first — chart-grouped beats chart). Fallback returns a suggestion list.
+- `demo/src/lib/chat-demo/store.svelte.ts` — module-scoped `$state` conversation. `submitQuery(q)` pushes the user turn, fakes a 350ms "thinking" delay, then pushes the assistant turn. No persistence yet.
+- `demo/src/lib/chat-demo/components/InlineComponent.svelte` — dispatch on `tool` name → real `<BarChart/>`, `<Table/>`, `<List/>`, `<FormRenderer/>`. Wrapped in a `<figure>` with optional caption. Form clones the seed `data` per-mount so user edits don't leak back into the response.
+- `demo/src/lib/chat-demo/components/BlockList.svelte` — walks the Block list, renders prose / code / component / suggestion chips. Suggestion chip click → calls back into `submitQuery`.
+- `demo/src/routes/chat/+page.svelte` — chat-only chrome (no canvas, no sidebar). Welcome screen with seed suggestions if empty. ChatStream + ChatComposer. Auto-scrolls on new turn.
+
+**Routes shipped (5 archetypes)**
+
+- `chart` → quarterly revenue BarChart + "Try" chips (Group by product / Stack / Show as table).
+- `chart-grouped` (or stacked) → two-series Hardware/Software chart with legend; `stack: true` when the query says "stacked".
+- `table` → 6-row products Table with sort + "Try" chips.
+- `form` → 4-field FormRenderer (name/email/role/newsletter) driven by schema.
+- `list` → settings menu with 2 collapsible groups.
+
+**Browser-verified flows**
+
+- `/chat` → welcome screen with 4 seed chips.
+- Click "Quarterly revenue chart" → user turn + assistant prose + live BarChart + 3 suggestion chips, all in one scroll. Chart caption "QUARTERLY REVENUE · FY 2026".
+- Click "Group by product" suggestion → second turn, grouped chart with Hardware/Software bars + legend, caption "REVENUE BY PRODUCT".
+- Click "Sign-up form" seed → live FormRenderer with name/email/role(Select)/newsletter(toggle), all interactive.
+
+**Phase 2 plan (browser LLM)**
+
+The mock router is the only thing that needs to change. The UI doesn't care where `Block[]` comes from. When we wire the LLM:
+- Use `web-llm` (mlc-ai) with Llama 3.2 3B-Instruct or Qwen 2.5 1.5B in WebGPU — ~1 GB cached after first download, zero cost per query, tool-calling capable.
+- Pass each demo's `tool: DemoTool` declarations as the LLM's tool list (already in DemoMeta).
+- LLM picks a tool + emits props; we wrap with prose + suggestion blocks the same way.
+
+**Also in this commit**
+
+- "Canvas →" callouts in `/app` chat messages are now clickable buttons that reset the active variant (goto base path). Hover changes border from dashed to solid; `disabled` when no variant is active so they don't look clickable for nothing.
+- Note: today the `disabled` attribute only kicks in for the CURRENT canvas state, but the `<button>` element itself is always rendered. The first MOUNTED message in the chat history will become re-enabled later when we wire conversation history — clicking it then will reset the variant for that historical state.
+
+Lint: 0 errors, 28 pre-existing warnings.

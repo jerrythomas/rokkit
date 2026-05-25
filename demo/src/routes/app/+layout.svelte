@@ -240,6 +240,15 @@
 		goto(item.active ? route : `${route}?variant=${item.id}`)
 	}
 
+	// Used by the "Canvas →" callout in each chat MOUNTED message. Clears any
+	// active variant to return the canvas to its default state.
+	function resetVariant() {
+		if (!shell.demoType) return
+		const route = DEMO_ROUTE[shell.demoType as DemoKind]
+		if (!route) return
+		goto(route)
+	}
+
 	// `with-icons` variant has no `props` to merge — it changes the items shape
 	// instead (Tabs auto-renders an icon when present). Strip icons for other
 	// variants so the rendered snippet matches what we ship.
@@ -1197,10 +1206,10 @@ ${rows}
 						<code>&lt;Tabs/&gt;</code> from <code>@rokkit/ui</code> on the canvas.
 						Five panes from <code>items</code>. The style on screen is whatever
 						<code>data-style</code> is set to — there is no <code>variant</code> prop.
-						<div class="mounted-callout">
-							<span class="callout-label">Canvas →</span>
-							<span>Tabs · how the data-driven API works</span>
-						</div>
+						<button type="button" class="mounted-callout" onclick={resetVariant} disabled={!activeVariant}>
+								<span class="callout-label">Canvas →</span>
+								<span>Tabs · how the data-driven API works</span>
+							</button>
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
@@ -1296,10 +1305,10 @@ ${rows}
 						<code>&lt;Table/&gt;</code> from <code>@rokkit/ui</code> on the canvas.
 						Columns inferred from the rows. Click a header to sort; shift-click
 						to sort by multiple columns.
-						<div class="mounted-callout">
-							<span class="callout-label">Canvas →</span>
-							<span>Sortable Products table</span>
-						</div>
+						<button type="button" class="mounted-callout" onclick={resetVariant} disabled={!activeVariant}>
+								<span class="callout-label">Canvas →</span>
+								<span>Sortable Products table</span>
+							</button>
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
@@ -1349,10 +1358,10 @@ ${rows}
 						canvas. Four steps — Account / Profile / Preferences / Review —
 						with two marked <code>completed</code>. Bind <code>current</code>
 						for two-way nav; pass <code>onclick</code> to handle step taps.
-						<div class="mounted-callout">
-							<span class="callout-label">Canvas →</span>
-							<span>4-step sign-up flow</span>
-						</div>
+						<button type="button" class="mounted-callout" onclick={resetVariant} disabled={!activeVariant}>
+								<span class="callout-label">Canvas →</span>
+								<span>4-step sign-up flow</span>
+							</button>
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
@@ -1406,10 +1415,10 @@ ${rows}
 						format hint dispatches to <code>InputDate</code> and
 						<code>InputDateTime</code> respectively — same string-type schema,
 						different renderer.
-						<div class="mounted-callout">
-							<span class="callout-label">Canvas →</span>
-							<span>Event date + start time</span>
-						</div>
+						<button type="button" class="mounted-callout" onclick={resetVariant} disabled={!activeVariant}>
+								<span class="callout-label">Canvas →</span>
+								<span>Event date + start time</span>
+							</button>
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
@@ -1461,10 +1470,10 @@ ${rows}
 						on the canvas with a country list of 42 options. Same Select
 						component as before — the <code>filterable</code> prop is the
 						only difference. Type to narrow.
-						<div class="mounted-callout">
-							<span class="callout-label">Canvas →</span>
-							<span>Countries · type-to-filter</span>
-						</div>
+						<button type="button" class="mounted-callout" onclick={resetVariant} disabled={!activeVariant}>
+								<span class="callout-label">Canvas →</span>
+								<span>Countries · type-to-filter</span>
+							</button>
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
@@ -1515,10 +1524,10 @@ ${rows}
 						canvas. Four rows of quarterly revenue, mapped to <code>x</code>
 						and <code>y</code> fields — the SVG is built from the data.
 						Palette colors, gridlines, and hover tooltips come for free.
-						<div class="mounted-callout">
-							<span class="callout-label">Canvas →</span>
-							<span>Quarterly revenue · Q1–Q4</span>
-						</div>
+						<button type="button" class="mounted-callout" onclick={resetVariant} disabled={!activeVariant}>
+								<span class="callout-label">Canvas →</span>
+								<span>Quarterly revenue · Q1–Q4</span>
+							</button>
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
@@ -1569,10 +1578,10 @@ ${rows}
 						— single-pick counterpart to MultiSelect. Twenty options stress-test
 						the scroll + keyboard navigation; <code>maxRows</code> caps the
 						visible window at 8 by default.
-						<div class="mounted-callout">
-							<span class="callout-label">Canvas →</span>
-							<span>20 options · scroll for the rest</span>
-						</div>
+						<button type="button" class="mounted-callout" onclick={resetVariant} disabled={!activeVariant}>
+								<span class="callout-label">Canvas →</span>
+								<span>20 options · scroll for the rest</span>
+							</button>
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
@@ -1623,10 +1632,10 @@ ${rows}
 						the canvas. JSON-Schema-ish object in; the right input per type
 						(text / email / select / checkbox) is rendered, validated, and bound
 						to the data object via <code>bind:data</code>.
-						<div class="mounted-callout">
-							<span class="callout-label">Canvas →</span>
-							<span>Four fields · sign-up shape</span>
-						</div>
+						<button type="button" class="mounted-callout" onclick={resetVariant} disabled={!activeVariant}>
+								<span class="callout-label">Canvas →</span>
+								<span>Four fields · sign-up shape</span>
+							</button>
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
@@ -1678,10 +1687,10 @@ ${rows}
 						<code>&lt;AlertList/&gt;</code> + the <code>alerts</code> store from
 						<code>@rokkit/states</code>. Push from anywhere — alerts stack at the
 						configured position, dismiss on click or timeout.
-						<div class="mounted-callout">
-							<span class="callout-label">Canvas →</span>
-							<span>Four buttons · one per tone</span>
-						</div>
+						<button type="button" class="mounted-callout" onclick={resetVariant} disabled={!activeVariant}>
+								<span class="callout-label">Canvas →</span>
+								<span>Four buttons · one per tone</span>
+							</button>
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
@@ -1730,10 +1739,10 @@ ${rows}
 						<code>&lt;List/&gt;</code> from <code>@rokkit/ui</code> on the canvas
 						with <code>collapsible</code> turned on. Three group headers — General,
 						Appearance, Advanced — each owns its items via <code>children</code>.
-						<div class="mounted-callout">
-							<span class="callout-label">Canvas →</span>
-							<span>Settings menu · collapsible groups</span>
-						</div>
+						<button type="button" class="mounted-callout" onclick={resetVariant} disabled={!activeVariant}>
+								<span class="callout-label">Canvas →</span>
+								<span>Settings menu · collapsible groups</span>
+							</button>
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
@@ -1784,10 +1793,10 @@ ${rows}
 						canvas. Items mapped via <code>{'{ label, value }'}</code>; selected
 						values render as chips inside the trigger. <code>bind:value</code>
 						gives you an array of the picked values.
-						<div class="mounted-callout">
-							<span class="callout-label">Canvas →</span>
-							<span>Eight colors · two pre-selected</span>
-						</div>
+						<button type="button" class="mounted-callout" onclick={resetVariant} disabled={!activeVariant}>
+								<span class="callout-label">Canvas →</span>
+								<span>Eight colors · two pre-selected</span>
+							</button>
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
@@ -1835,10 +1844,10 @@ ${rows}
 						<code>&lt;Tree/&gt;</code> from <code>@rokkit/ui</code> on the canvas.
 						Nested items via <code>children</code>; label / value mapped from
 						the row shape via <code>fields</code>. Arrow keys + Enter navigate.
-						<div class="mounted-callout">
-							<span class="callout-label">Canvas →</span>
-							<span>File tree · expand / collapse</span>
-						</div>
+						<button type="button" class="mounted-callout" onclick={resetVariant} disabled={!activeVariant}>
+								<span class="callout-label">Canvas →</span>
+								<span>File tree · expand / collapse</span>
+							</button>
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
@@ -2965,10 +2974,28 @@ ${rows}
 		background: var(--accent-soft);
 		border-radius: 6px;
 		border: 1px dashed color-mix(in oklab, var(--accent) 30%, transparent);
+		font: inherit;
 		font-size: 12.5px;
+		color: var(--ink);
+		text-align: left;
 		display: flex;
 		align-items: center;
 		gap: 8px;
+		width: 100%;
+		cursor: pointer;
+		transition:
+			background 120ms,
+			border-color 120ms;
+	}
+
+	:global([data-chat-message] .mounted-callout:not(:disabled):hover) {
+		background: color-mix(in oklab, var(--accent) 10%, var(--paper-soft));
+		border-style: solid;
+	}
+
+	:global([data-chat-message] .mounted-callout:disabled) {
+		cursor: default;
+		opacity: 0.92;
 	}
 
 	:global([data-chat-message] .glossary) {

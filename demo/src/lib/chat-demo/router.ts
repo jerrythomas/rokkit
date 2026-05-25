@@ -1,0 +1,218 @@
+/**
+ * Mock query router — Phase 1 of the inline chat demo.
+ *
+ * `routeQuery(query)` returns a `Block[]` synchronously (with a small fake
+ * delay shimmed by the caller). The intent is the same shape we'd get from
+ * an LLM tool-call response: pick a tool from the catalog, fill in props,
+ * wrap with prose + suggestions.
+ *
+ * Phase 2 replaces this with an in-browser LLM (web-llm / transformers.js)
+ * that takes the catalog's `tool[]` definitions and returns the same
+ * Block[] structure. The renderer doesn't change.
+ */
+import type { Block } from './types'
+
+type Route = {
+	id: string
+	keywords: RegExp
+	build: (query: string) => Block[]
+}
+
+const ROUTES: Route[] = [
+	{
+		// Order matters: more specific patterns first. chart-grouped must beat
+		// the plain `chart` route since "grouped" implies "chart" too.
+		id: 'chart-grouped',
+		keywords: /\b(grouped|by product|stacked|two series|multi[-\s]?series)\b/i,
+		build: (q) => {
+			const stack = /\b(stack|stacked)\b/i.test(q)
+			return [
+				{
+					kind: 'prose',
+					text: stack
+						? 'Same chart, two series stacked by product. `stack: true` flips the layout from grouped to stacked without changing the data.'
+						: 'Same chart, two series grouped by product. `fill: "product"` tells BarChart to colour bars by the product field.'
+				},
+				{
+					kind: 'component',
+					tool: 'mount_bar_chart',
+					caption: stack ? 'Revenue stacked by product' : 'Revenue by product',
+					props: {
+						data: [
+							{ quarter: 'Q1', product: 'Hardware', revenue: 24 },
+							{ quarter: 'Q1', product: 'Software', revenue: 18 },
+							{ quarter: 'Q2', product: 'Hardware', revenue: 31 },
+							{ quarter: 'Q2', product: 'Software', revenue: 27 },
+							{ quarter: 'Q3', product: 'Hardware', revenue: 28 },
+							{ quarter: 'Q3', product: 'Software', revenue: 23 },
+							{ quarter: 'Q4', product: 'Hardware', revenue: 39 },
+							{ quarter: 'Q4', product: 'Software', revenue: 34 }
+						],
+						x: 'quarter',
+						y: 'revenue',
+						fill: 'product',
+						stack,
+						legend: true,
+						height: 240
+					}
+				}
+			]
+		}
+	},
+	{
+		id: 'chart',
+		keywords: /\b(chart|graph|bar|revenue|sales|quarter|visuali[sz]e|metrics?)\b/i,
+		build: () => [
+			{
+				kind: 'prose',
+				text: "Here's quarterly revenue from the example dataset. The chart is a real <BarChart/> from @rokkit/chart — pass rows + x/y field names and it handles axes, palette, gridlines."
+			},
+			{
+				kind: 'component',
+				tool: 'mount_bar_chart',
+				caption: 'Quarterly revenue · FY 2026',
+				props: {
+					data: [
+						{ quarter: 'Q1', revenue: 42 },
+						{ quarter: 'Q2', revenue: 58 },
+						{ quarter: 'Q3', revenue: 51 },
+						{ quarter: 'Q4', revenue: 73 }
+					],
+					x: 'quarter',
+					y: 'revenue',
+					height: 240,
+					grid: true
+				}
+			},
+			{
+				kind: 'suggestions',
+				intro: 'Try',
+				items: [
+					{ label: 'Group by product', query: 'Show a grouped bar chart by product' },
+					{ label: 'Stack the bars', query: 'Stack the chart by product' },
+					{ label: 'Show as a table', query: 'Show the same data as a table' }
+				]
+			}
+		]
+	},
+	{
+		id: 'table',
+		keywords: /\b(table|grid|rows?|product|inventory|stock|sortable)\b/i,
+		build: () => [
+			{
+				kind: 'prose',
+				text: 'Six rows from the products catalog. <Table/> infers columns from the row shape; click any header to sort.'
+			},
+			{
+				kind: 'component',
+				tool: 'mount_table',
+				caption: 'Products',
+				props: {
+					data: [
+						{ name: 'Laptop', price: 1299, stock: 45 },
+						{ name: 'Phone', price: 899, stock: 120 },
+						{ name: 'Tablet', price: 599, stock: 78 },
+						{ name: 'Monitor', price: 449, stock: 32 },
+						{ name: 'Keyboard', price: 129, stock: 210 },
+						{ name: 'Mouse', price: 59, stock: 340 }
+					],
+					caption: 'Products'
+				}
+			},
+			{
+				kind: 'suggestions',
+				intro: 'Try',
+				items: [
+					{ label: 'Plot as a chart', query: 'Visualize stock as a bar chart' },
+					{ label: 'Mapped columns', query: 'Same table with custom column labels' }
+				]
+			}
+		]
+	},
+	{
+		id: 'form',
+		keywords: /\b(form|schema|sign[\s-]?up|input|fields?|validation)\b/i,
+		build: () => [
+			{
+				kind: 'prose',
+				text: 'A schema-driven form via <FormRenderer/>. Four fields — text, email (validated), select (enum-derived), boolean toggle. `bind:data` round-trips a single object.'
+			},
+			{
+				kind: 'component',
+				tool: 'mount_form',
+				caption: 'Sign-up form',
+				props: {
+					schema: {
+						type: 'object',
+						properties: {
+							name: { type: 'string', required: true },
+							email: { type: 'string', format: 'email', required: true },
+							role: { type: 'string', enum: ['admin', 'editor', 'viewer', 'user'] },
+							newsletter: { type: 'boolean' }
+						}
+					},
+					data: { name: '', email: '', role: 'user', newsletter: true }
+				}
+			}
+		]
+	},
+	{
+		id: 'list',
+		keywords: /\b(list|settings|menu|options|nav|navigation)\b/i,
+		build: () => [
+			{
+				kind: 'prose',
+				text: 'Settings shape — three collapsible groups, items inside. Same <List/> renders flat if you drop `children`.'
+			},
+			{
+				kind: 'component',
+				tool: 'mount_list',
+				caption: 'Settings',
+				props: {
+					items: [
+						{
+							label: 'General',
+							icon: 'i-mdi:cog-outline',
+							children: [
+								{ label: 'Profile', icon: 'i-mdi:account-outline' },
+								{ label: 'Account', icon: 'i-mdi:shield-account-outline' },
+								{ label: 'Notifications', icon: 'i-mdi:bell-outline' }
+							]
+						},
+						{
+							label: 'Appearance',
+							icon: 'i-mdi:palette-outline',
+							children: [
+								{ label: 'Theme', icon: 'i-mdi:invert-colors' },
+								{ label: 'Density', icon: 'i-mdi:format-line-spacing' }
+							]
+						}
+					],
+					collapsible: true
+				}
+			}
+		]
+	}
+]
+
+const FALLBACK: Block[] = [
+	{
+		kind: 'prose',
+		text: "I don't have a scripted response for that yet. The mock router knows about charts, tables, forms, and lists. Try one of these:"
+	},
+	{
+		kind: 'suggestions',
+		items: [
+			{ label: 'Quarterly revenue chart', query: 'Show me a chart of quarterly revenue' },
+			{ label: 'Products table', query: 'Show me a sortable table of products' },
+			{ label: 'Sign-up form', query: 'Render a sign-up form from a schema' },
+			{ label: 'Settings list', query: 'Show a collapsible settings list' }
+		]
+	}
+]
+
+export function routeQuery(query: string): Block[] {
+	const match = ROUTES.find((r) => r.keywords.test(query))
+	if (!match) return FALLBACK
+	return match.build(query)
+}
