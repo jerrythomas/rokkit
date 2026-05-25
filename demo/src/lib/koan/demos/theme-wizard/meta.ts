@@ -25,8 +25,8 @@ const meta: DemoMeta = {
 	// the full canvas width to read well.
 	inline: { capable: false },
 	variants: [
-		{ id: 'export', label: 'Show tokens.css export', mode: 'dynamic' },
-		{ id: 'save-preset', label: 'Save a preset', mode: 'dynamic' }
+		{ id: 'tokens-preview', label: 'Show generated tokens.css', mode: 'dynamic' },
+		{ id: 'dark-only', label: 'Dark mode column only', mode: 'dynamic' }
 	]
 }
 

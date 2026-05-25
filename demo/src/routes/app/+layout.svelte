@@ -22,8 +22,7 @@
 	import { findById } from '$lib/koan/catalog'
 	import { shell } from '$lib/koan/shell.svelte'
 	import ThemeWizardCard from '$lib/koan/demos/theme-wizard/ThemeWizardCard.svelte'
-	import { savePreset, resetPreset, downloadTokensCss } from '$lib/koan/demos/theme-wizard/store.svelte'
-	import VariantChips from '$lib/koan/components/VariantChips.svelte'
+	import { savePreset, resetPreset, downloadTokensCss, exportTokensCss } from '$lib/koan/demos/theme-wizard/store.svelte'
 	import { onMount } from 'svelte'
 	import { browser } from '$app/environment'
 	import { goto } from '$app/navigation'
@@ -106,12 +105,6 @@
 		}, 1500)
 	}
 
-	function tryChip(item: { label?: string }) {
-		if (item.label?.startsWith('switch style')) {
-			style = style === 'zen-sumi' ? 'rokkit' : 'zen-sumi'
-		}
-	}
-
 	function startNewConversation() {
 		if (thinkingTimer) {
 			clearTimeout(thinkingTimer)
@@ -163,18 +156,6 @@
 	const themeChips = [
 		{ label: 'Theme to my brand', icon: 'i-mdi:palette' },
 		{ label: 'Build a custom skin', icon: 'i-mdi:palette' }
-	]
-
-	const tryChips = [
-		{ label: 'switch style → rokkit', icon: 'i-mdi:palette' },
-		{ label: 'show the .css too', icon: 'i-mdi:code-tags' },
-		{ label: 'wire it to a real list' }
-	]
-
-	const wizardChips = [
-		{ label: '← previous step' },
-		{ label: 'next step → typography' },
-		{ label: 'export tokens.css', icon: 'i-mdi:download' }
 	]
 
 	function pickChip(item: { label?: string }) {
@@ -237,6 +218,27 @@
 	const variantProps = $derived<Record<string, unknown>>(
 		activeVariant?.mode === 'dynamic' ? (activeVariant.props ?? {}) : {}
 	)
+
+	// Variant suggestions rendered in the chat panel (one chip per declared
+	// variant for the active demo). Replaces the per-demo static tryChips row.
+	const variantChipItems = $derived.by(() => {
+		if (!shell.demoType) return []
+		const meta = findById(shell.demoType)
+		const variants = meta?.variants ?? []
+		return variants.map((v) => ({
+			label: v.label,
+			icon: 'i-mdi:auto-fix',
+			id: v.id,
+			active: activeVariant?.id === v.id
+		}))
+	})
+
+	function pickVariant(item: { id?: string; active?: boolean }) {
+		if (!shell.demoType || !item.id) return
+		const route = DEMO_ROUTE[shell.demoType as DemoKind]
+		if (!route) return
+		goto(item.active ? route : `${route}?variant=${item.id}`)
+	}
 
 	// `with-icons` variant has no `props` to merge — it changes the items shape
 	// instead (Tabs auto-renders an icon when present). Strip icons for other
@@ -1166,6 +1168,13 @@ ${rows}
 					>
 						wiring sample data and the style cascade…
 					</ChatMessage>
+					{#if variantChipItems.length > 0}
+						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+							Pick a variant — same canvas, different shape or props. URL
+							updates so each pick is bookmarkable.
+						</ChatMessage>
+						<Chips items={variantChipItems} onselect={pickVariant} />
+					{/if}
 				</ChatStream>
 			{:else if shell.phase === 'response' && shell.demoType === 'tabs'}
 				<ChatStream>
@@ -1210,7 +1219,13 @@ ${rows}
 						Flip the <em>style</em> at the top of the window — the same Tabs
 						re-renders. Or copy the source on the right and paste it in.
 					</ChatMessage>
-					<Chips items={tryChips} onselect={tryChip} />
+					{#if variantChipItems.length > 0}
+						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+							Same component, different shape or props. Pick one to see it
+							re-render — bookmarkable via the URL.
+						</ChatMessage>
+						<Chips items={variantChipItems} onselect={pickVariant} />
+					{/if}
 				</ChatStream>
 			{:else if shell.phase === 'response' && shell.demoType === 'theme-wizard'}
 				<ChatStream>
@@ -1252,7 +1267,13 @@ ${rows}
 							<li><strong>Density</strong> — padding rhythm. Chrome-wide attribute.</li>
 						</ul>
 					</ChatMessage>
-					<Chips items={wizardChips} onselect={tryChip} />
+					{#if variantChipItems.length > 0}
+						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+							Want to see the wizard in a different shape? Pick one — same
+							canvas, different presentation.
+						</ChatMessage>
+						<Chips items={variantChipItems} onselect={pickVariant} />
+					{/if}
 				</ChatStream>
 			{:else if shell.phase === 'response' && shell.demoType === 'table'}
 				<ChatStream>
@@ -1298,6 +1319,13 @@ ${rows}
 						Sort by <em>price</em>, then shift-click <em>stock</em> to add a
 						secondary sort. Or copy the source on the right.
 					</ChatMessage>
+					{#if variantChipItems.length > 0}
+						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+							Pick a variant — same canvas, different shape or props. URL
+							updates so each pick is bookmarkable.
+						</ChatMessage>
+						<Chips items={variantChipItems} onselect={pickVariant} />
+					{/if}
 				</ChatStream>
 			{:else if shell.phase === 'response' && shell.demoType === 'stepper'}
 				<ChatStream>
@@ -1346,6 +1374,13 @@ ${rows}
 						Click "Complete &amp; Next" to mark the active step done and
 						advance. Click any completed step header to revisit it.
 					</ChatMessage>
+					{#if variantChipItems.length > 0}
+						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+							Pick a variant — same canvas, different shape or props. URL
+							updates so each pick is bookmarkable.
+						</ChatMessage>
+						<Chips items={variantChipItems} onselect={pickVariant} />
+					{/if}
 				</ChatStream>
 			{:else if shell.phase === 'response' && shell.demoType === 'date-picker'}
 				<ChatStream>
@@ -1396,6 +1431,13 @@ ${rows}
 						Click a field to open the native browser calendar / time picker.
 						Edit either one — the bound <code>data</code> updates live.
 					</ChatMessage>
+					{#if variantChipItems.length > 0}
+						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+							Pick a variant — same canvas, different shape or props. URL
+							updates so each pick is bookmarkable.
+						</ChatMessage>
+						<Chips items={variantChipItems} onselect={pickVariant} />
+					{/if}
 				</ChatStream>
 			{:else if shell.phase === 'response' && shell.demoType === 'combo'}
 				<ChatStream>
@@ -1443,6 +1485,13 @@ ${rows}
 						New Zealand. Arrow keys walk the filtered set; Enter selects;
 						Escape clears the filter without closing.
 					</ChatMessage>
+					{#if variantChipItems.length > 0}
+						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+							Pick a variant — same canvas, different shape or props. URL
+							updates so each pick is bookmarkable.
+						</ChatMessage>
+						<Chips items={variantChipItems} onselect={pickVariant} />
+					{/if}
 				</ChatStream>
 			{:else if shell.phase === 'response' && shell.demoType === 'chart'}
 				<ChatStream>
@@ -1490,6 +1539,13 @@ ${rows}
 						Hover a bar for the tooltip. Flip the chrome <em>style</em> to see
 						the chart re-skin via palette tokens — same data, different look.
 					</ChatMessage>
+					{#if variantChipItems.length > 0}
+						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+							Pick a variant — same canvas, different shape or props. URL
+							updates so each pick is bookmarkable.
+						</ChatMessage>
+						<Chips items={variantChipItems} onselect={pickVariant} />
+					{/if}
 				</ChatStream>
 			{:else if shell.phase === 'response' && shell.demoType === 'select'}
 				<ChatStream>
@@ -1537,6 +1593,13 @@ ${rows}
 						Open the dropdown. Mouse-scroll to the bottom; arrow keys walk;
 						Home / End jump; type a few characters for prefix-match navigation.
 					</ChatMessage>
+					{#if variantChipItems.length > 0}
+						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+							Pick a variant — same canvas, different shape or props. URL
+							updates so each pick is bookmarkable.
+						</ChatMessage>
+						<Chips items={variantChipItems} onselect={pickVariant} />
+					{/if}
 				</ChatStream>
 			{:else if shell.phase === 'response' && shell.demoType === 'form'}
 				<ChatStream>
@@ -1586,6 +1649,13 @@ ${rows}
 						<em>role</em> renders as a select because of the enum;
 						<em>newsletter</em> renders as a toggle because of the boolean type.
 					</ChatMessage>
+					{#if variantChipItems.length > 0}
+						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+							Pick a variant — same canvas, different shape or props. URL
+							updates so each pick is bookmarkable.
+						</ChatMessage>
+						<Chips items={variantChipItems} onselect={pickVariant} />
+					{/if}
 				</ChatStream>
 			{:else if shell.phase === 'response' && shell.demoType === 'toasts'}
 				<ChatStream>
@@ -1631,6 +1701,13 @@ ${rows}
 						Click a button on the canvas. Each tone gets a different border + icon.
 						Toasts auto-dismiss after a few seconds, or click them to dismiss early.
 					</ChatMessage>
+					{#if variantChipItems.length > 0}
+						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+							Pick a variant — same canvas, different shape or props. URL
+							updates so each pick is bookmarkable.
+						</ChatMessage>
+						<Chips items={variantChipItems} onselect={pickVariant} />
+					{/if}
 				</ChatStream>
 			{:else if shell.phase === 'response' && shell.demoType === 'list'}
 				<ChatStream>
@@ -1677,6 +1754,13 @@ ${rows}
 						Click a group header to collapse it. Click an item to select.
 						Same API works flat — drop the <code>children</code> for a flat list.
 					</ChatMessage>
+					{#if variantChipItems.length > 0}
+						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+							Pick a variant — same canvas, different shape or props. URL
+							updates so each pick is bookmarkable.
+						</ChatMessage>
+						<Chips items={variantChipItems} onselect={pickVariant} />
+					{/if}
 				</ChatStream>
 			{:else if shell.phase === 'response' && shell.demoType === 'multi-select'}
 				<ChatStream>
@@ -1722,6 +1806,13 @@ ${rows}
 						Add a few more colors, then click a chip to remove it. The
 						<code>value</code> array updates live — useful for forms or filters.
 					</ChatMessage>
+					{#if variantChipItems.length > 0}
+						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+							Pick a variant — same canvas, different shape or props. URL
+							updates so each pick is bookmarkable.
+						</ChatMessage>
+						<Chips items={variantChipItems} onselect={pickVariant} />
+					{/if}
 				</ChatStream>
 			{:else if shell.phase === 'response' && shell.demoType === 'tree'}
 				<ChatStream>
@@ -1767,6 +1858,13 @@ ${rows}
 						Click a folder to expand. Arrow keys walk the tree; Enter selects.
 						Selection is bound — <em>value</em> updates as you navigate.
 					</ChatMessage>
+					{#if variantChipItems.length > 0}
+						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+							Pick a variant — same canvas, different shape or props. URL
+							updates so each pick is bookmarkable.
+						</ChatMessage>
+						<Chips items={variantChipItems} onselect={pickVariant} />
+					{/if}
 				</ChatStream>
 			{/if}
 
@@ -1821,12 +1919,6 @@ ${rows}
 						{#if activeVariant}
 							<br /><em>Variant active</em> — {activeVariant.label.toLowerCase()}.
 						{/if}
-						<br />
-						<VariantChips
-							demoId="tabs"
-							basePath="/app/tabs"
-							activeId={activeVariant?.id ?? null}
-						/>
 					</div>
 				</div>
 				<div class="canvas-body response">
@@ -1871,26 +1963,40 @@ ${rows}
 					<div class="canvas-sub">
 						Style chosen; now map roles to palette steps. The right side previews
 						each role on the running app.
-						<br />
-						<VariantChips demoId="theme-wizard" basePath="/app/theming" activeId={activeVariant?.id ?? null} />
 					</div>
 				</div>
 				<div class="canvas-body response">
 					<ChatResponse
 						name="&lt;ThemeWizard/&gt;"
-						meta="· step 02 · skin"
+						meta={`· step 02 · skin${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
 						kicker="WIZARD"
 					>
 						{#snippet icon()}
 							<span class="i-mdi:palette" aria-hidden="true"></span>
 						{/snippet}
-						<ThemeWizardCard {mode} />
+						<div class="wizard-mount" data-variant={activeVariant?.id ?? undefined}>
+							<ThemeWizardCard {mode} />
+							{#if activeVariant?.id === 'tokens-preview'}
+								<div class="tokens-preview">
+									<div class="tokens-preview-head">
+										<span class="i-mdi:code-tags" aria-hidden="true"></span>
+										<strong>tokens.css</strong>
+										<span class="tokens-hint">live preview of the generated stylesheet</span>
+									</div>
+									<pre class="tokens-pre"><code>{exportTokensCss()}</code></pre>
+								</div>
+							{/if}
+						</div>
 						{#snippet props()}
 							<span>style</span><span data-value>{style}</span>
 							<span data-sep>·</span>
 							<span>palette</span><span data-value>warm-gray + shu</span>
 							<span data-sep>·</span>
-							<span>dual-mode</span><span data-value>yes</span>
+							<span>columns</span><span data-value>{activeVariant?.id === 'dark-only' ? 'dark only' : 'light + dark'}</span>
+							{#if activeVariant}
+								<span data-sep>·</span>
+								<span>variant</span><span data-value>{activeVariant.id}</span>
+							{/if}
 						{/snippet}
 						{#snippet actions()}
 							<button type="button" onclick={handleSaveWizardPreset}>
@@ -1915,8 +2021,6 @@ ${rows}
 					<div class="canvas-sub">
 						Six rows of products. Columns inferred from the row shape — no schema
 						required. Click a header to sort; shift-click to add secondary sorts.
-						<br />
-						<VariantChips demoId="table" basePath="/app/table" activeId={activeVariant?.id ?? null} />
 					</div>
 				</div>
 				<div class="canvas-body response">
@@ -1968,12 +2072,6 @@ ${rows}
 					<div class="canvas-sub">
 						Four steps, two already complete. Click a completed step header to
 						revisit; click "Complete &amp; Next" to advance.
-						<br />
-						<VariantChips
-							demoId="stepper"
-							basePath="/app/stepper"
-							activeId={activeVariant?.id ?? null}
-						/>
 					</div>
 				</div>
 				<div class="canvas-body response">
@@ -2028,8 +2126,6 @@ ${rows}
 						<code>&lt;InputDate/&gt;</code>; <code>format: 'date-time'</code>
 						→ <code>&lt;InputDateTime/&gt;</code>. Native calendar / time
 						pickers, ISO-8601 strings out.
-						<br />
-						<VariantChips demoId="date-picker" basePath="/app/date" activeId={activeVariant?.id ?? null} />
 					</div>
 				</div>
 				<div class="canvas-body response">
@@ -2073,8 +2169,6 @@ ${rows}
 						42 countries. Same Select component as before — flip the
 						<code>filterable</code> prop and you get a search box at the top
 						of the dropdown. Type to narrow.
-						<br />
-						<VariantChips demoId="combo" basePath="/app/combo" activeId={activeVariant?.id ?? null} />
 					</div>
 				</div>
 				<div class="canvas-body response">
@@ -2129,8 +2223,6 @@ ${rows}
 						Quarterly revenue. Pass rows + <code>x</code>/<code>y</code> field
 						names; <code>&lt;BarChart/&gt;</code> handles the axes, palette,
 						gridlines, and tooltips.
-						<br />
-						<VariantChips demoId="chart" basePath="/app/chart" activeId={activeVariant?.id ?? null} />
 					</div>
 				</div>
 				<div class="canvas-body response">
@@ -2177,8 +2269,6 @@ ${rows}
 					<div class="canvas-sub">
 						Twenty options to exercise scroll + keyboard navigation. Click the
 						trigger to open; arrow keys walk; Enter selects; Home/End jump.
-						<br />
-						<VariantChips demoId="select" basePath="/app/select" activeId={activeVariant?.id ?? null} />
 					</div>
 				</div>
 				<div class="canvas-body response">
@@ -2220,8 +2310,6 @@ ${rows}
 						Four fields generated from a schema — text, email (validated),
 						select (enum-derived), boolean toggle. <code>bind:data</code> for
 						two-way binding.
-						<br />
-						<VariantChips demoId="form" basePath="/app/form" activeId={activeVariant?.id ?? null} />
 					</div>
 				</div>
 				<div class="canvas-body response">
@@ -2268,8 +2356,6 @@ ${rows}
 					<div class="canvas-sub">
 						AlertList renders any pushed alert at the configured position. Four
 						tones — success, warning, error, info. Click a button to fire one.
-						<br />
-						<VariantChips demoId="toasts" basePath="/app/toasts" activeId={activeVariant?.id ?? null} />
 					</div>
 				</div>
 				<div class="canvas-body response">
@@ -2331,8 +2417,6 @@ ${rows}
 						Settings menu shape — three groups, each with its own items via
 						<code>children</code>. Click a group header to collapse. Same
 						component renders flat lists when you drop <code>children</code>.
-						<br />
-						<VariantChips demoId="list" basePath="/app/list" activeId={activeVariant?.id ?? null} />
 					</div>
 				</div>
 				<div class="canvas-body response">
@@ -2391,8 +2475,6 @@ ${rows}
 						Eight colors; two start picked. Selected values render as chips
 						inside the trigger. Click a chip to remove. Field-mapped via
 						<code>{'{ label, value }'}</code>; <code>bind:value</code> gives an array.
-						<br />
-						<VariantChips demoId="multi-select" basePath="/app/multiselect" activeId={activeVariant?.id ?? null} />
 					</div>
 				</div>
 				<div class="canvas-body response">
@@ -2446,8 +2528,6 @@ ${rows}
 					<div class="canvas-sub">
 						Nested folders + files. Click to expand; arrow keys walk the tree;
 						Enter selects. Field-mapped via <code>fields={'{'} label, value }</code>.
-						<br />
-						<VariantChips demoId="tree" basePath="/app/tree" activeId={activeVariant?.id ?? null} />
 					</div>
 				</div>
 				<div class="canvas-body response">
@@ -2810,6 +2890,49 @@ ${rows}
 	.date-mount {
 		min-height: 120px;
 		max-width: 440px;
+	}
+
+	.wizard-mount[data-variant='dark-only'] :global(.role-row > .picker:first-of-type) {
+		display: none;
+	}
+
+	.wizard-mount[data-variant='dark-only'] :global(.role-header) {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.tokens-preview {
+		margin-top: 18px;
+		border: 1px solid var(--paper-edge);
+		border-radius: 6px;
+		background: var(--paper-soft);
+		overflow: hidden;
+	}
+
+	.tokens-preview-head {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 10px 12px;
+		border-bottom: 1px solid var(--paper-edge);
+		font: 500 12.5px var(--font-ui);
+		color: var(--ink);
+	}
+
+	.tokens-hint {
+		margin-left: auto;
+		color: var(--ink-mute);
+		font-weight: 400;
+		font-size: 11.5px;
+	}
+
+	.tokens-pre {
+		margin: 0;
+		padding: 12px 14px;
+		max-height: 260px;
+		overflow: auto;
+		font: 12px/1.55 var(--font-mono, ui-monospace, monospace);
+		color: var(--ink-soft);
+		white-space: pre;
 	}
 
 	.stepper-mount {

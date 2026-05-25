@@ -3705,3 +3705,27 @@ Original `async` + `multi-select` variants weren't feasible without component ch
 
 - Lint: 0 errors (25 pre-existing warnings).
 - Browser-verified: chart.grouped (2-series bars + legend), chart.with-labels (value labels above bars), select.with-icons (icons in dropdown), select.grouped (group headers in dropdown), combo.with-counts (count in placeholder), toasts.bottom-right (AlertList moves to bottom-right), table.mapping (custom column labels + right-align).
+
+## 2026-05-25 (cont.) — Variant chips moved to chat as suggestions
+
+User feedback: "instead of the chips under the header for variants would it be nicer to have the variant chips as 'suggestions' in the chat. This would lead to a logical flow."
+
+Right call. The variant chips are conversational nudges ("try this next") — they belong with the assistant's reply, not stapled to the canvas chrome. The canvas keeps the eyebrow variant indicator + propsRow row; the chat is where the suggestions live now.
+
+**Implementation**
+- `Chips` component picked up an `active` field hook (+ optional `[data-chip-clear]` "· clear" suffix) so a chip can be styled as the currently-selected variant. CSS in chat.css highlights active chips with the accent border/tint pattern we already use elsewhere.
+- Layout has a `variantChipItems` $derived that maps `findById(shell.demoType).variants` to chip items (label, icon, id, active). `pickVariant(item)` either gotos `/app/<demo>?variant=<id>` or, if the item is already active, clears back to the base path.
+- Every demo's `ChatStream` got a "TRY VARIANTS" `ChatMessage` followed by a `<Chips items={variantChipItems} onselect={pickVariant} />`. Conditional on `variantChipItems.length > 0` so demos without variants don't render an empty row.
+- Removed the per-demo `<VariantChips/>` rows from each canvas-sub. Deleted the now-unused `VariantChips.svelte` component.
+- Reclassified theme-wizard variants. The old `export` and `save-preset` were action triggers in chip clothing — those are already in the canvas `actions` snippet. Replaced with real display variants:
+  - `tokens-preview` → renders an inline `<pre>` of the generated `tokens.css` below the wizard (live, re-derives as the user picks roles).
+  - `dark-only` → hides the light column via `.wizard-mount[data-variant='dark-only'] .picker:first-of-type { display: none }`. Useful for screenshots / when you only care about the dark palette mapping.
+
+**What it feels like**
+The chat reads: USER → MOUNTED → EXPLAINED → TRY → TRY VARIANTS (chip row). Picking a chip updates the URL, the eyebrow + propsRow, and the active chip — all without a remount. Logical flow.
+
+**Verified**
+- `/app/tabs?variant=vertical` → chat shows `Vertical orientation · clear` (active) + `With icons` (inactive). Canvas eyebrow says `· variant: vertical orientation`.
+- All 13 demos have the row when their meta declares variants.
+
+Lint: 0 errors.
