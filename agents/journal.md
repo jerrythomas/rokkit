@@ -3654,3 +3654,54 @@ This is intentional: the scaffolding lands first so every demo has a consistent 
 - All 13 `/app/<demo>` routes return 200.
 - `/app/table?variant=striped` → table rendered with striping, propsRow shows `variant: striped`.
 - `/app/combo?variant=no-filter` → Select renders without filter input, propsRow shows `filterable: no`.
+
+## 2026-05-25 (cont.) — Real behaviour for the deferred variants
+
+Filled in the gap from the scaffolding pass: every chip on every demo now changes something visible. Approach: derive items/data/columns/schema from the active variant id rather than spreading props the component doesn't have.
+
+**Chart (3 variants)**
+- `grouped` / `stacked` → swap `chartData` to a per-product 8-row dataset and pass `fill: 'product', legend: true` (plus `stack: true` for stacked). Browser-verified: two-series bars render with a Hardware/Software legend.
+- `with-labels` → `label: true` on BarChart. Value labels render above each bar.
+
+**Select (2 variants)**
+- `with-icons` → items get an `icon` field via a derived `selectIconItems`. Dropdown renders each option with its icon.
+- `grouped` → items become a 3-group nested shape (Frontend / Backend / Database). Select picks up group headers from `children`.
+
+**List (2 variants)**
+- `flat` → swap `listItems` to a flat 8-item array, and `collapsible={false}` when active.
+- `snippets` → defined a top-level `listItemSnippet` and passed it as `itemContent` when active. Each item renders with accent icon + label + a "CUSTOM" badge to make it obvious the snippet replaced the default.
+
+**MultiSelect (2 variants)**
+- `with-counts` → adds an "X of Y picked" line below the trigger.
+- `no-overflow` → CSS toggle on `.multiselect-mount[data-variant='no-overflow']` lets the chip strip wrap freely instead of clipping.
+
+**Toasts (2 variants)**
+- `bottom-right` → moved the shell's AlertList `position` to a $derived that returns 'bottom-right' when this variant is active and the demo is toasts. Verified the AlertList re-renders at the bottom-right corner.
+- `auto-dismiss` → `showToast()` passes `timeout: 3000` (vs `0`/persistent default) when this variant is active.
+
+**Combo (1 deferred variant)**
+- `with-counts` → placeholder swaps to "Type to search · 42 countries available"; below the trigger we render "Picked: France · 1 of 42" once the user picks.
+
+**Date Picker (2 variants)**
+- `with-validation` → schema gets `minimum: '2026-06-01'` + `maximum: '2026-12-31'` on `eventDate`.
+- `range` → schema becomes two `format: 'date'` fields (`eventDate`, `checkOut`) for a check-in / check-out pair.
+
+**Table (mapping, sticky-header — striped already worked)**
+- `mapping` → passes a `columns` prop with relabeled headers ("Product Name", "Unit Price (USD)", "On Hand") and right-aligned numeric columns.
+- `sticky-header` → swap to a 14-row dataset, wrap mount with `max-height: 340px; overflow: auto` and `position: sticky` on `[data-table-header-row]`.
+
+**Tree (variants reshuffled)**
+Original `async` + `multi-select` variants weren't feasible without component changes. Replaced with what's actually supported:
+- `deep` → 5-level nested dataset.
+- `dotted-lines` / `no-lines` → use Tree's `lineStyle` prop.
+
+**`tabsCode`, `selectCode`, `listCode`, `dateCode`, `tableCode`, `chartCode`** are all `$derived.by()` now — the displayed code snippet always matches the running component, across every variant.
+
+**Deliberately not done in this pass**
+- `form.{multi-step,conditional,with-lookups}` — multi-step needs a different component (`<MultiStep/>`), conditional needs JSON-schema rule wiring, with-lookups needs the lookups system. Each is a small feature unto itself; deferring.
+- `theme-wizard.{export,save-preset}` — these are action triggers (call `savePreset()` / `downloadTokensCss()`), not display variants. Could re-classify as `mode: 'route'` or remove them; keeping them as visible-chip placeholders for now since they hint at the action buttons.
+
+**Verification**
+
+- Lint: 0 errors (25 pre-existing warnings).
+- Browser-verified: chart.grouped (2-series bars + legend), chart.with-labels (value labels above bars), select.with-icons (icons in dropdown), select.grouped (group headers in dropdown), combo.with-counts (count in placeholder), toasts.bottom-right (AlertList moves to bottom-right), table.mapping (custom column labels + right-align).

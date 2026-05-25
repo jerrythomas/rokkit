@@ -276,8 +276,9 @@ ${itemsBlock}
 ${tabsTag}`
 	})
 
-	// Table demo state — sortable products table on the canvas
-	const tableData = [
+	// Table demo state — sortable products table on the canvas. The `mapping`
+	// variant remaps column headers + adds an inventory derived field.
+	const tableShort = [
 		{ name: 'Laptop', price: 1299, stock: 45 },
 		{ name: 'Phone', price: 899, stock: 120 },
 		{ name: 'Tablet', price: 599, stock: 78 },
@@ -285,8 +286,68 @@ ${tabsTag}`
 		{ name: 'Keyboard', price: 129, stock: 210 },
 		{ name: 'Mouse', price: 59, stock: 340 }
 	]
+	const tableLong = [
+		...tableShort,
+		{ name: 'Headphones', price: 199, stock: 67 },
+		{ name: 'Speaker', price: 249, stock: 41 },
+		{ name: 'Webcam', price: 89, stock: 158 },
+		{ name: 'Microphone', price: 149, stock: 22 },
+		{ name: 'Stand', price: 39, stock: 274 },
+		{ name: 'Lamp', price: 49, stock: 96 },
+		{ name: 'Charger', price: 29, stock: 412 },
+		{ name: 'Cable', price: 12, stock: 938 }
+	]
+	const tableData = $derived(activeVariant?.id === 'sticky-header' ? tableLong : tableShort)
+	const tableMappedColumns = [
+		{ name: 'name', label: 'Product Name', sortable: true },
+		{ name: 'price', label: 'Unit Price (USD)', sortable: true, align: 'end' },
+		{ name: 'stock', label: 'On Hand', sortable: true, align: 'end' }
+	]
+	const tableColumns = $derived(activeVariant?.id === 'mapping' ? tableMappedColumns : undefined)
 
-	const tableCode = `<script>
+	const tableCode = $derived.by(() => {
+		if (activeVariant?.id === 'mapping') {
+			return `<script>
+  import { Table } from '@rokkit/ui'
+
+  const products = [ /* same 6 rows */ ]
+
+  const columns = [
+    { name: 'name',  label: 'Product Name',    sortable: true },
+    { name: 'price', label: 'Unit Price (USD)', sortable: true, align: 'end' },
+    { name: 'stock', label: 'On Hand',          sortable: true, align: 'end' }
+  ]
+<\/script>
+
+<Table data={products} {columns} caption="Products" />`
+		}
+		if (activeVariant?.id === 'sticky-header') {
+			return `<script>
+  import { Table } from '@rokkit/ui'
+  // 14 rows
+  const products = [ /* … */ ]
+<\/script>
+
+<div style="max-height:340px;overflow:auto" class="sticky-wrap">
+  <Table data={products} caption="Products" />
+</div>
+
+<style>
+  .sticky-wrap :global([data-table-header-row]) {
+    position: sticky; top: 0; z-index: 1;
+    background: var(--paper);
+  }
+</style>`
+		}
+		if (activeVariant?.id === 'striped') {
+			return `<script>
+  import { Table } from '@rokkit/ui'
+  const products = [ /* same 6 rows */ ]
+<\/script>
+
+<Table data={products} striped caption="Products" />`
+		}
+		return `<script>
   import { Table } from '@rokkit/ui'
 
   const products = [
@@ -300,9 +361,10 @@ ${tabsTag}`
 <\/script>
 
 <Table data={products} caption="Products" />`
+	})
 
 	// Tree demo state — file-tree shape with deep nesting
-	const treeItems = [
+	const treeShallow = [
 		{
 			name: 'src',
 			id: 'src',
@@ -338,6 +400,36 @@ ${tabsTag}`
 		{ name: 'package.json', id: 'package' },
 		{ name: 'README.md', id: 'readme' }
 	]
+	const treeDeep = [
+		{
+			name: 'monorepo', id: 'monorepo',
+			children: [
+				{
+					name: 'packages', id: 'packages',
+					children: [
+						{
+							name: 'ui', id: 'ui',
+							children: [
+								{
+									name: 'src', id: 'ui-src',
+									children: [
+										{ name: 'components', id: 'ui-comp', children: [
+											{ name: 'Button.svelte', id: 'd-button' },
+											{ name: 'Select.svelte', id: 'd-select' }
+										] },
+										{ name: 'types.ts', id: 'd-types' }
+									]
+								}
+							]
+						},
+						{ name: 'states', id: 'states', children: [ { name: 'src', id: 'states-src', children: [ { name: 'wrapper.svelte.ts', id: 'd-wrapper' } ] } ] }
+					]
+				},
+				{ name: 'docs', id: 'd-docs', children: [ { name: 'design', id: 'd-design', children: [ { name: '01-overview.md', id: 'd-overview' } ] } ] }
+			]
+		}
+	]
+	const treeItems = $derived(activeVariant?.id === 'deep' ? treeDeep : treeShallow)
 	const treeFields = { label: 'name', value: 'id' }
 	let treeValue = $state<unknown>(null)
 
@@ -388,20 +480,94 @@ ${tabsTag}`
 <Button onclick={advance}>Complete &amp; Next</Button>`
 	})
 
-	// Date Picker demo state — event scheduling form
+	// Date Picker demo state — event scheduling form. Variants swap the schema
+	// shape: 'with-validation' adds min/max, 'range' adds a checkOut field.
 	let dateData = $state({
 		eventDate: '2026-06-15',
-		startsAt: '2026-06-15T14:30'
+		startsAt: '2026-06-15T14:30',
+		checkOut: '2026-06-22'
 	})
-	const dateSchema = {
+	const dateSchemaDefault = {
 		type: 'object',
 		properties: {
 			eventDate: { type: 'string', format: 'date', required: true },
 			startsAt: { type: 'string', format: 'date-time', required: true }
 		}
 	}
+	const dateSchemaValidation = {
+		type: 'object',
+		properties: {
+			eventDate: {
+				type: 'string',
+				format: 'date',
+				required: true,
+				minimum: '2026-06-01',
+				maximum: '2026-12-31'
+			},
+			startsAt: {
+				type: 'string',
+				format: 'date-time',
+				required: true
+			}
+		}
+	}
+	const dateSchemaRange = {
+		type: 'object',
+		properties: {
+			eventDate: { type: 'string', format: 'date', required: true },
+			checkOut: { type: 'string', format: 'date', required: true }
+		}
+	}
+	const dateSchema = $derived(
+		activeVariant?.id === 'with-validation'
+			? dateSchemaValidation
+			: activeVariant?.id === 'range'
+				? dateSchemaRange
+				: dateSchemaDefault
+	)
 
-	const dateCode = `<script>
+	const dateCode = $derived.by(() => {
+		if (activeVariant?.id === 'with-validation') {
+			return `<script>
+  import { FormRenderer } from '@rokkit/forms'
+
+  let data = $state({
+    eventDate: '2026-06-15',
+    startsAt: '2026-06-15T14:30'
+  })
+
+  const schema = {
+    type: 'object',
+    properties: {
+      eventDate: {
+        type: 'string', format: 'date', required: true,
+        minimum: '2026-06-01', maximum: '2026-12-31'
+      },
+      startsAt: { type: 'string', format: 'date-time', required: true }
+    }
+  }
+<\/script>
+
+<FormRenderer bind:data {schema} />`
+		}
+		if (activeVariant?.id === 'range') {
+			return `<script>
+  import { FormRenderer } from '@rokkit/forms'
+
+  let data = $state({ eventDate: '2026-06-15', checkOut: '2026-06-22' })
+
+  const schema = {
+    type: 'object',
+    properties: {
+      eventDate: { type: 'string', format: 'date', required: true },
+      checkOut:  { type: 'string', format: 'date', required: true }
+    }
+  }
+<\/script>
+
+<FormRenderer bind:data {schema} />`
+		}
+		return `<script>
   import { FormRenderer } from '@rokkit/forms'
 
   let data = $state({
@@ -419,6 +585,7 @@ ${tabsTag}`
 <\/script>
 
 <FormRenderer bind:data {schema} />`
+	})
 
 	// Combo demo state — filterable Select with country list
 	const countryItems = [
@@ -454,34 +621,138 @@ ${tabsTag}`
 />`
 
 	// Chart demo state — quarterly revenue, BarChart
-	const chartData = [
+	const chartFlat = [
 		{ quarter: 'Q1', revenue: 42 },
 		{ quarter: 'Q2', revenue: 58 },
 		{ quarter: 'Q3', revenue: 51 },
 		{ quarter: 'Q4', revenue: 73 }
 	]
+	const chartByProduct = [
+		{ quarter: 'Q1', product: 'Hardware', revenue: 24 },
+		{ quarter: 'Q1', product: 'Software', revenue: 18 },
+		{ quarter: 'Q2', product: 'Hardware', revenue: 31 },
+		{ quarter: 'Q2', product: 'Software', revenue: 27 },
+		{ quarter: 'Q3', product: 'Hardware', revenue: 28 },
+		{ quarter: 'Q3', product: 'Software', revenue: 23 },
+		{ quarter: 'Q4', product: 'Hardware', revenue: 39 },
+		{ quarter: 'Q4', product: 'Software', revenue: 34 }
+	]
 
-	const chartCode = `<script>
+	// Chart variants 'grouped' and 'stacked' want a fill field, so swap the dataset.
+	const chartData = $derived(
+		activeVariant?.id === 'grouped' || activeVariant?.id === 'stacked'
+			? chartByProduct
+			: chartFlat
+	)
+
+	const chartCode = $derived.by(() => {
+		const isGrouped = activeVariant?.id === 'grouped' || activeVariant?.id === 'stacked'
+		const propLine = ['data={sales}', 'x="quarter"', 'y="revenue"']
+		if (isGrouped) propLine.push('fill="product"', 'legend')
+		if (activeVariant?.id === 'stacked') propLine.push('stack')
+		if (activeVariant?.id === 'with-labels') propLine.push('label')
+		const rows = isGrouped
+			? `    { quarter: 'Q1', product: 'Hardware', revenue: 24 },\n    { quarter: 'Q1', product: 'Software', revenue: 18 },\n    /* …8 rows total */`
+			: `    { quarter: 'Q1', revenue: 42 },\n    { quarter: 'Q2', revenue: 58 },\n    { quarter: 'Q3', revenue: 51 },\n    { quarter: 'Q4', revenue: 73 }`
+		return `<script>
   import { BarChart } from '@rokkit/chart'
 
   const sales = [
-    { quarter: 'Q1', revenue: 42 },
-    { quarter: 'Q2', revenue: 58 },
-    { quarter: 'Q3', revenue: 51 },
-    { quarter: 'Q4', revenue: 73 }
+${rows}
   ]
 <\/script>
 
-<BarChart data={sales} x="quarter" y="revenue" />`
+<BarChart ${propLine.join(' ')} />`
+	})
 
-	// Select demo state — 20-item flat list to exercise scroll + key nav
-	const selectItems = Array.from({ length: 20 }, (_, i) => ({
+	// Select demo state — 20 flat options (default), with icons (with-icons),
+	// or organized into 3 groups (grouped). The shape is what changes; the
+	// component is the same.
+	const selectFlatItems = Array.from({ length: 20 }, (_, i) => ({
 		label: `Option ${String(i + 1).padStart(2, '0')}`,
 		value: `opt-${i + 1}`
 	}))
+	const selectIcons = [
+		'i-mdi:home', 'i-mdi:cog', 'i-mdi:account', 'i-mdi:bell-outline',
+		'i-mdi:folder-outline', 'i-mdi:image-outline', 'i-mdi:file-document-outline',
+		'i-mdi:cloud-outline', 'i-mdi:lock-outline', 'i-mdi:key-outline',
+		'i-mdi:database', 'i-mdi:chart-bar', 'i-mdi:calendar-outline',
+		'i-mdi:email-outline', 'i-mdi:phone', 'i-mdi:tag-outline',
+		'i-mdi:bookmark-outline', 'i-mdi:heart-outline', 'i-mdi:star-outline',
+		'i-mdi:check-circle-outline'
+	]
+	const selectIconItems = selectFlatItems.map((it, i) => ({ ...it, icon: selectIcons[i] }))
+	const selectGroupedItems = [
+		{
+			label: 'Frontend',
+			children: [
+				{ label: 'Svelte', value: 'svelte' },
+				{ label: 'React', value: 'react' },
+				{ label: 'Vue', value: 'vue' },
+				{ label: 'Solid', value: 'solid' }
+			]
+		},
+		{
+			label: 'Backend',
+			children: [
+				{ label: 'Bun', value: 'bun' },
+				{ label: 'Node.js', value: 'node' },
+				{ label: 'Deno', value: 'deno' },
+				{ label: 'Go', value: 'go' }
+			]
+		},
+		{
+			label: 'Database',
+			children: [
+				{ label: 'Postgres', value: 'postgres' },
+				{ label: 'SQLite', value: 'sqlite' },
+				{ label: 'MongoDB', value: 'mongodb' }
+			]
+		}
+	]
+	const selectItems = $derived(
+		activeVariant?.id === 'with-icons'
+			? selectIconItems
+			: activeVariant?.id === 'grouped'
+				? selectGroupedItems
+				: selectFlatItems
+	)
 	let selectValue = $state<unknown>(null)
 
-	const selectCode = `<script>
+	const selectCode = $derived.by(() => {
+		if (activeVariant?.id === 'with-icons') {
+			return `<script>
+  import { Select } from '@rokkit/ui'
+
+  const items = [
+    { label: 'Option 01', value: 'opt-1',  icon: 'i-mdi:home' },
+    { label: 'Option 02', value: 'opt-2',  icon: 'i-mdi:cog'  },
+    /* …20 rows */
+  ]
+  let value = $state(null)
+<\/script>
+
+<Select {items} bind:value placeholder="Pick an option" />`
+		}
+		if (activeVariant?.id === 'grouped') {
+			return `<script>
+  import { Select } from '@rokkit/ui'
+
+  const items = [
+    { label: 'Frontend', children: [
+      { label: 'Svelte', value: 'svelte' },
+      { label: 'React',  value: 'react'  },
+      /* … */
+    ]},
+    { label: 'Backend',  children: [ /* … */ ] },
+    { label: 'Database', children: [ /* … */ ] }
+  ]
+  let value = $state(null)
+<\/script>
+
+<Select {items} bind:value placeholder="Pick a tool" />`
+		}
+		return `<script>
   import { Select } from '@rokkit/ui'
 
   const items = Array.from({ length: 20 }, (_, i) => ({
@@ -492,6 +763,7 @@ ${tabsTag}`
 <\/script>
 
 <Select {items} bind:value placeholder="Pick an option" />`
+	})
 
 	// Form demo state — sign-up form driven by schema
 	let formData = $state({
@@ -543,8 +815,22 @@ ${tabsTag}`
 	}
 
 	function showToast(tone: ToastTone) {
-		alerts.push({ type: tone, text: toastMessages[tone] })
+		const timeout = activeVariant?.id === 'auto-dismiss' ? 3000 : 0
+		alerts.push({
+			type: tone,
+			text: toastMessages[tone],
+			dismissible: true,
+			timeout
+		})
 	}
+
+	// Toasts variant 'bottom-right' moves the shell's AlertList. Re-derived so
+	// the position flips live as the user clicks the chip.
+	const alertListPosition = $derived(
+		shell.demoType === 'toasts' && activeVariant?.id === 'bottom-right'
+			? 'bottom-right'
+			: 'top-right'
+	)
 
 	function handleSaveWizardPreset() {
 		savePreset()
@@ -577,7 +863,7 @@ ${tabsTag}`
 </Button>`
 
 	// List demo state — settings menu with collapsible groups
-	const listItems = [
+	const listGroupedItems = [
 		{
 			label: 'General',
 			icon: 'i-mdi:cog-outline',
@@ -605,9 +891,54 @@ ${tabsTag}`
 			]
 		}
 	]
+	const listFlatItems = [
+		{ label: 'Profile', icon: 'i-mdi:account-outline' },
+		{ label: 'Account', icon: 'i-mdi:shield-account-outline' },
+		{ label: 'Notifications', icon: 'i-mdi:bell-outline' },
+		{ label: 'Theme', icon: 'i-mdi:invert-colors' },
+		{ label: 'Density', icon: 'i-mdi:format-line-spacing' },
+		{ label: 'Typography', icon: 'i-mdi:format-font' },
+		{ label: 'Keyboard shortcuts', icon: 'i-mdi:keyboard-outline' },
+		{ label: 'Developer', icon: 'i-mdi:code-tags' }
+	]
+	const listItems = $derived(
+		activeVariant?.id === 'flat' ? listFlatItems : listGroupedItems
+	)
 	let listValue = $state<unknown>(null)
 
-	const listCode = `<script>
+	const listCode = $derived.by(() => {
+		if (activeVariant?.id === 'flat') {
+			return `<script>
+  import { List } from '@rokkit/ui'
+
+  // No children — List renders a flat list.
+  const items = [
+    { label: 'Profile',       icon: 'i-mdi:account-outline'        },
+    { label: 'Account',       icon: 'i-mdi:shield-account-outline' },
+    { label: 'Notifications', icon: 'i-mdi:bell-outline'           },
+    /* …8 items */
+  ]
+  let value = $state(null)
+<\/script>
+
+<List {items} bind:value />`
+		}
+		if (activeVariant?.id === 'snippets') {
+			return `<script>
+  import { List } from '@rokkit/ui'
+  const items = [/* same grouped settings menu */]
+  let value = $state(null)
+<\/script>
+
+<List {items} collapsible bind:value>
+  {#snippet itemContent(proxy)}
+    <span class={proxy.get('icon')} aria-hidden="true"></span>
+    <span class="custom-label">{proxy.label}</span>
+    <span class="custom-badge">{proxy.get('badge') ?? ''}</span>
+  {/snippet}
+</List>`
+		}
+		return `<script>
   import { List } from '@rokkit/ui'
 
   const items = [
@@ -634,6 +965,7 @@ ${tabsTag}`
 <\/script>
 
 <List {items} collapsible bind:value />`
+	})
 
 	// MultiSelect demo state — colors with chip overflow
 	const colorItems = [
@@ -1597,7 +1929,12 @@ ${tabsTag}`
 							<span class="i-mdi:table" aria-hidden="true"></span>
 						{/snippet}
 						<div class="table-mount" data-variant={activeVariant?.id ?? undefined}>
-							<Table data={tableData} caption="Products" {...variantProps} />
+							<Table
+								data={tableData}
+								columns={tableColumns}
+								caption="Products"
+								{...variantProps}
+							/>
 						</div>
 						{#snippet props()}
 							<span>rows</span><span data-value>[6]</span>
@@ -1750,7 +2087,18 @@ ${tabsTag}`
 							<span class="i-mdi:magnify" aria-hidden="true"></span>
 						{/snippet}
 						<div class="combo-mount">
-							<Select items={countryItems} bind:value={comboValue} filterable placeholder="Type to search countries" {...variantProps} />
+							<Select
+								items={countryItems}
+								bind:value={comboValue}
+								filterable={variantProps.filterable !== false}
+								placeholder={activeVariant?.id === 'with-counts'
+									? `Type to search · ${countryItems.length} countries available`
+									: 'Type to search countries'}
+								{...variantProps}
+							/>
+							{#if activeVariant?.id === 'with-counts' && comboValue}
+								<p class="combo-count">Picked: <strong>{String(comboValue)}</strong> · 1 of {countryItems.length}</p>
+							{/if}
 						</div>
 						{#snippet props()}
 							<span>options</span><span data-value>[42]</span>
@@ -1951,11 +2299,11 @@ ${tabsTag}`
 							</div>
 						</div>
 						{#snippet props()}
-							<span>position</span><span data-value>top-right</span>
+							<span>position</span><span data-value>{alertListPosition}</span>
 							<span data-sep>·</span>
 							<span>tones</span><span data-value>[4]</span>
 							<span data-sep>·</span>
-							<span>store</span><span data-value>alerts</span>
+							<span>timeout</span><span data-value>{activeVariant?.id === 'auto-dismiss' ? '3s' : 'persist'}</span>
 							{#if activeVariant}
 								<span data-sep>·</span>
 								<span>variant</span><span data-value>{activeVariant.id}</span>
@@ -1996,13 +2344,24 @@ ${tabsTag}`
 						{#snippet icon()}
 							<span class="i-mdi:format-list-bulleted" aria-hidden="true"></span>
 						{/snippet}
+						{#snippet listItemSnippet(proxy: { label: string; get: (k: string) => string | undefined })}
+							<span class={proxy.get('icon')} aria-hidden="true" style="margin-right:6px;color:var(--accent)"></span>
+							<span style="flex:1">{proxy.label}</span>
+							<span style="font:500 10px var(--font-ui);color:var(--accent);background:color-mix(in oklab,var(--accent) 12%,var(--paper-soft));padding:2px 6px;border-radius:4px">CUSTOM</span>
+						{/snippet}
 						<div class="list-mount">
-							<List items={listItems} collapsible bind:value={listValue} {...variantProps} />
+							<List
+								items={listItems}
+								collapsible={activeVariant?.id !== 'flat'}
+								bind:value={listValue}
+								itemContent={activeVariant?.id === 'snippets' ? listItemSnippet : undefined}
+								{...variantProps}
+							/>
 						</div>
 						{#snippet props()}
-							<span>groups</span><span data-value>[3]</span>
+							<span>shape</span><span data-value>{activeVariant?.id === 'flat' ? 'flat' : 'grouped [3]'}</span>
 							<span data-sep>·</span>
-							<span>collapsible</span><span data-value>yes</span>
+							<span>collapsible</span><span data-value>{activeVariant?.id === 'flat' ? 'no' : 'yes'}</span>
 							<span data-sep>·</span>
 							<span>selected</span><span data-value>{String((listValue as { label?: string } | null)?.label ?? '—')}</span>
 							{#if activeVariant}
@@ -2045,8 +2404,15 @@ ${tabsTag}`
 						{#snippet icon()}
 							<span class="i-mdi:select-multiple" aria-hidden="true"></span>
 						{/snippet}
-						<div class="multiselect-mount">
-							<MultiSelect items={colorItems} bind:value={selectedColors} placeholder="Select colors" {...variantProps} />
+						<div class="multiselect-mount" data-variant={activeVariant?.id ?? undefined}>
+							{#if activeVariant?.id === 'with-counts'}
+								<div class="ms-count-row">
+									<MultiSelect items={colorItems} bind:value={selectedColors} placeholder="Select colors" {...variantProps} />
+									<span class="ms-count">{selectedColors.length} of {colorItems.length} picked</span>
+								</div>
+							{:else}
+								<MultiSelect items={colorItems} bind:value={selectedColors} placeholder="Select colors" {...variantProps} />
+							{/if}
 						</div>
 						{#snippet props()}
 							<span>options</span><span data-value>[8]</span>
@@ -2128,7 +2494,7 @@ ${tabsTag}`
 	{#if children}{@render children()}{/if}
 
 	<!-- Shell-level AlertList so feedback from any demo (wizard save, etc.) shows -->
-	<AlertList position="top-right" />
+	<AlertList position={alertListPosition} />
 </div>
 
 <style>
@@ -2366,6 +2732,20 @@ ${tabsTag}`
 		min-height: 120px;
 	}
 
+	.table-mount[data-variant='sticky-header'] {
+		max-height: 340px;
+		overflow: auto;
+		border-radius: 6px;
+		border: 1px solid var(--paper-edge);
+	}
+
+	.table-mount[data-variant='sticky-header'] :global([data-table-header-row]) {
+		position: sticky;
+		top: 0;
+		z-index: 1;
+		background: var(--paper);
+	}
+
 	.tree-mount {
 		min-height: 120px;
 	}
@@ -2373,6 +2753,23 @@ ${tabsTag}`
 	.multiselect-mount {
 		min-height: 80px;
 		max-width: 340px;
+	}
+
+	.multiselect-mount[data-variant='no-overflow'] :global([data-multiselect-chips]) {
+		flex-wrap: wrap;
+		max-height: none;
+		overflow: visible;
+	}
+
+	.ms-count-row {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+
+	.ms-count {
+		font: 500 11.5px var(--font-ui);
+		color: var(--accent);
 	}
 
 	.list-mount {
@@ -2402,6 +2799,12 @@ ${tabsTag}`
 	.combo-mount {
 		min-height: 80px;
 		max-width: 340px;
+	}
+
+	.combo-count {
+		margin: 8px 0 0;
+		font: 400 12px var(--font-ui);
+		color: var(--ink-soft);
 	}
 
 	.date-mount {

@@ -28,9 +28,9 @@ const meta: DemoMeta = {
 	},
 	inline: { capable: true },
 	variants: [
-		{ id: 'grouped', label: 'Grouped by color', mode: 'dynamic' },
-		{ id: 'stacked', label: 'Stacked', mode: 'dynamic', props: { stack: true } },
-		{ id: 'with-labels', label: 'With data labels', mode: 'dynamic' }
+		{ id: 'grouped', label: 'Grouped by product', mode: 'dynamic', props: { fill: 'product', legend: true } },
+		{ id: 'stacked', label: 'Stacked', mode: 'dynamic', props: { fill: 'product', stack: true, legend: true } },
+		{ id: 'with-labels', label: 'With data labels', mode: 'dynamic', props: { label: true } }
 	]
 }
 

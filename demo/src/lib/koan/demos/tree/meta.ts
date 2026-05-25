@@ -25,8 +25,9 @@ const meta: DemoMeta = {
 	},
 	inline: { capable: true },
 	variants: [
-		{ id: 'async', label: 'Async-loaded children', mode: 'dynamic' },
-		{ id: 'multi-select', label: 'Multi-select', mode: 'dynamic' }
+		{ id: 'deep', label: 'Deeper nesting (5 levels)', mode: 'dynamic' },
+		{ id: 'dotted-lines', label: 'Dotted indent lines', mode: 'dynamic', props: { lineStyle: 'dotted' } },
+		{ id: 'no-lines', label: 'No indent lines', mode: 'dynamic', props: { lineStyle: 'none' } }
 	]
 }
 
