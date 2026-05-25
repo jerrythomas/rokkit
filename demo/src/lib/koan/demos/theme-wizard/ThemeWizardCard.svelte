@@ -1,53 +1,26 @@
 <script lang="ts">
 	import { onDestroy } from 'svelte'
 	import { Select } from '@rokkit/ui'
+	import {
+		wizardState,
+		ramps,
+		stepKeys,
+		shadeLabels,
+		ROLE_TO_VAR,
+		type Palette,
+		type Role
+	} from './store.svelte'
 
 	interface Props {
 		mode?: 'light' | 'dark'
 	}
 	const { mode = 'light' }: Props = $props()
 
-	// Wizard role name → Rokkit named-token CSS variable.
-	// The wizard's role labels (paper, paper-2, …) are mockup-conventions; the
-	// actual CSS vars the running app reads are --paper, --paper-soft, etc.
-	const ROLE_TO_VAR: Record<string, string> = {
-		'paper': '--paper',
-		'paper-2': '--paper-soft',
-		'paper-3': '--paper-mute',
-		'edge': '--paper-edge',
-		'ink': '--ink',
-		'ink-2': '--ink-mute',
-		'accent': '--accent'
-	}
-
-	type Palette = { id: string; label: string; swatches: string[]; inUse: boolean }
-	type Role = { role: string; desc: string; light: [string, string]; dark: [string, string] }
-
-	const palettes = $state<Palette[]>([
-		{ id: 'warm-gray', label: 'warm gray', swatches: ['#f7f3ea', '#ece4d2', '#d6c8a8', '#9c8e72', '#3a3528'], inUse: true },
-		{ id: 'slate', label: 'slate', swatches: ['#f8fafc', '#e2e8f0', '#94a3b8', '#475569', '#0f172a'], inUse: true },
-		{ id: 'neutral', label: 'neutral', swatches: ['#fafafa', '#e5e5e5', '#a3a3a3', '#525252', '#171717'], inUse: false },
-		{ id: 'shu', label: 'shu', swatches: ['#fff2ee', '#fcd4c6', '#f08667', '#a83d1f', '#5c1d0e'], inUse: false }
-	])
-	const shadeLabels = ['50', '200', '500', '700', '950']
-
-	const roles = $state<Role[]>([
-		{ role: 'paper', desc: 'page surface', light: ['warm-gray', '100'], dark: ['warm-gray', '950'] },
-		{ role: 'paper-2', desc: 'raised, cards', light: ['warm-gray', '50'], dark: ['warm-gray', '900'] },
-		{ role: 'paper-3', desc: 'sunken, hover', light: ['warm-gray', '200'], dark: ['warm-gray', '800'] },
-		{ role: 'edge', desc: 'hairlines', light: ['warm-gray', '300'], dark: ['warm-gray', '700'] },
-		{ role: 'ink', desc: 'primary text', light: ['warm-gray', '900'], dark: ['warm-gray', '100'] },
-		{ role: 'ink-2', desc: 'secondary text', light: ['warm-gray', '700'], dark: ['warm-gray', '300'] },
-		{ role: 'accent', desc: 'links · ctas', light: ['shu', '500'], dark: ['shu', '400'] }
-	])
-
-	const ramps: Record<string, string[]> = {
-		'warm-gray': ['#fbf8f1', '#f0e9d8', '#dfd2af', '#c4b384', '#a18d59', '#7a6845', '#574832', '#3a3025', '#241d16', '#13100b'],
-		shu: ['#fff8f5', '#fdd6c6', '#f7a18b', '#ed7559', '#dd4d2e', '#a83d1f', '#7a2a14', '#52190c', '#310f07', '#1a0703'],
-		slate: ['#f8fafc', '#f1f5f9', '#e2e8f0', '#cbd5e1', '#94a3b8', '#64748b', '#475569', '#334155', '#1e293b', '#0f172a'],
-		neutral: ['#fafafa', '#f5f5f5', '#e5e5e5', '#d4d4d4', '#a3a3a3', '#737373', '#525252', '#404040', '#262626', '#171717']
-	}
-	const stepKeys = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '950']
+	// $derived so reassigning wizardState.palettes / .roles (e.g. via
+	// resetPreset) propagates to the template — a plain const captures
+	// the initial array reference and never updates.
+	const palettes = $derived(wizardState.palettes)
+	const roles = $derived(wizardState.roles)
 
 	// Available palettes for role assignment — only IN-USE palettes are picker
 	// options. Toggling a palette OFF in the catalog above hides it from these

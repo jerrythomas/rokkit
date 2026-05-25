@@ -3446,3 +3446,45 @@ Crucially we write to `documentElement` (not `body`) so the inline styles cascad
 **Next**
 
 D3 — wire the wizard's footer actions: Save preset (persist the role mapping to localStorage), Export tokens.css (generate a downloadable CSS file with `--paper`, `--ink`, etc. set per the user's picks).
+
+## 2026-05-25 — Theme Wizard D3: Save preset + Export tokens.css + Reset
+
+The wizard's three footer action buttons are now real.
+
+**Shared store at `demo/src/lib/koan/demos/theme-wizard/store.svelte.ts`**
+
+Lifted `palettes`, `roles`, `ramps`, `stepKeys`, `shadeLabels`, and `ROLE_TO_VAR` out of the card and into a module-level `$state`. The store also owns:
+
+- `savePreset()` — writes `{ palettes, roles }` to localStorage under `rokkit-demo.theme-wizard-preset`. SSR-safe (typeof check).
+- `resetPreset()` — reassigns wizardState.palettes / .roles to defaults; clears the storage key.
+- `exportTokensCss()` — generates a CSS string with `:root { … }` (light) + `[data-mode="dark"] { … }` blocks containing the 7 named tokens (--paper, --paper-soft, --paper-mute, --paper-edge, --ink, --ink-mute, --accent), each with a trailing comment showing the source palette + step.
+- `downloadTokensCss()` — wraps the CSS in a Blob, creates a temp `<a download="tokens.css">`, clicks it, removes it, revokes the URL after 1s.
+
+Store loads from localStorage on first import — so reload restores the saved preset.
+
+**Layout wiring**
+
+Imported the store helpers in `+layout.svelte`; added `handleSaveWizardPreset` / `handleExportTokensCss` / `handleResetWizardPreset` that call the store fn + push a confirmation toast via `alerts.push()`. Wired to the ChatResponse `actions` snippet. Replaced "Preview live" (which already happens live) with "Reset to defaults" — more useful.
+
+**Shell-level AlertList**
+
+Moved `<AlertList position="top-right" />` out of the toasts canvas branch and into the shell root, so confirmations from the wizard (and any future demo) show regardless of which route is active. The toasts demo still works — the buttons just push into the same shared `alerts` store.
+
+**$derived bindings**
+
+ThemeWizardCard captured `wizardState.palettes` / `.roles` as plain `const` references — when `resetPreset()` reassigned those fields, the captured references stayed pointing at the old arrays. Switched to `const palettes = $derived(wizardState.palettes)` so reassignment propagates to the template.
+
+**Pre-existing data fix**
+
+While exporting CSS, noticed `stepKeys` has `'950'` (not `'900'`) at index 9, but some role defaults used `'900'` — leaving `--ink` and `--paper-soft` missing from exports. Normalized all `'900'` values in defaults to `'950'`.
+
+**End-to-end verified**
+
+1. Open `/app/theming`.
+2. Click paper row's step-6 swatch (warm-gray @ 600). The shell repaints; `--paper` becomes `#574832`.
+3. Click "Save preset". Toast confirms. localStorage has the snapshot.
+4. Reload the page. The wizard restores from localStorage — step-6 still selected, `--paper` still `#574832`.
+5. Click "Export tokens.css". A `tokens.css` file downloads with both `:root` and `[data-mode="dark"]` blocks covering all 7 named tokens.
+6. Click "Reset to defaults". Toast confirms. `wizardState` re-initializes; step returns to `·100`, `--paper` returns to `#f0e9d8`. localStorage cleared.
+
+**Catalog state remains 13 routes. Theme wizard is now fully interactive.**

@@ -21,6 +21,7 @@
 	import { runMatch } from '$lib/koan/match.svelte'
 	import { shell } from '$lib/koan/shell.svelte'
 	import ThemeWizardCard from '$lib/koan/demos/theme-wizard/ThemeWizardCard.svelte'
+	import { savePreset, resetPreset, downloadTokensCss } from '$lib/koan/demos/theme-wizard/store.svelte'
 	import { onMount } from 'svelte'
 	import { browser } from '$app/environment'
 	import { goto } from '$app/navigation'
@@ -458,6 +459,21 @@
 
 	function showToast(tone: ToastTone) {
 		alerts.push({ type: tone, text: toastMessages[tone] })
+	}
+
+	function handleSaveWizardPreset() {
+		savePreset()
+		alerts.push({ type: 'success', text: 'Theme preset saved.' })
+	}
+
+	function handleExportTokensCss() {
+		downloadTokensCss()
+		alerts.push({ type: 'info', text: 'tokens.css download started.' })
+	}
+
+	function handleResetWizardPreset() {
+		resetPreset()
+		alerts.push({ type: 'info', text: 'Theme preset reset to defaults.' })
 	}
 
 	const toastsCode = `<script>
@@ -1447,17 +1463,17 @@
 							<span>dual-mode</span><span data-value>yes</span>
 						{/snippet}
 						{#snippet actions()}
-							<button type="button">
+							<button type="button" onclick={handleSaveWizardPreset}>
 								<span class="i-mdi:content-save-outline" aria-hidden="true"></span>
 								Save preset
 							</button>
-							<button type="button">
+							<button type="button" onclick={handleExportTokensCss}>
 								<span class="i-mdi:download" aria-hidden="true"></span>
 								Export tokens.css
 							</button>
-							<button type="button">
-								<span class="i-mdi:refresh" aria-hidden="true"></span>
-								Preview live
+							<button type="button" onclick={handleResetWizardPreset}>
+								<span class="i-mdi:restore" aria-hidden="true"></span>
+								Reset to defaults
 							</button>
 						{/snippet}
 					</ChatResponse>
@@ -1763,7 +1779,7 @@
 							<span class="i-mdi:bell-outline" aria-hidden="true"></span>
 						{/snippet}
 						<div class="toasts-mount">
-							<AlertList position="top-right" />
+							<!-- AlertList lives at the shell root so feedback shows from any demo -->
 							<div class="toast-buttons">
 								<Button variant="primary" onclick={() => showToast('success')}>
 									Show success
@@ -1933,6 +1949,9 @@
 	</div>
 
 	{#if children}{@render children()}{/if}
+
+	<!-- Shell-level AlertList so feedback from any demo (wizard save, etc.) shows -->
+	<AlertList position="top-right" />
 </div>
 
 <style>
