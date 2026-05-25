@@ -259,7 +259,7 @@
 				{/each}
 
 				{#if conversation.thinking}
-					<ChatMessage kind="info" head="THINKING" icon="i-mdi:dots-horizontal">
+					<ChatMessage kind="info" status="thinking" icon="i-mdi:dots-horizontal">
 						<span class="thinking">Picking the right tool…</span>
 					</ChatMessage>
 				{/if}

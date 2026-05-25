@@ -1150,8 +1150,6 @@ ${rows}
 				<ChatStream>
 					<ChatMessage
 						kind="user"
-						head="YOU"
-
 						ago="just now"
 						icon="i-mdi:chat-outline"
 					>
@@ -1159,8 +1157,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="UNDERSTOOD"
-
+						status="understood"
 						icon="i-mdi:layers-outline"
 					>
 						Three things — locate the matching component in
@@ -1169,7 +1166,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="LOCATED"
+						status="located"
 						icon="i-mdi:magnify"
 					>
 						Component reads <code>items</code> + binds
@@ -1178,12 +1175,12 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="think"
-						head="MOUNTING"
+						status="mounting"
 					>
 						wiring sample data and the style cascade…
 					</ChatMessage>
 					{#if variantChipItems.length > 0}
-						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+						<ChatMessage kind="info" status="try-variants" icon="i-mdi:auto-fix">
 							Pick a variant — same canvas, different shape or props. URL
 							updates so each pick is bookmarkable.
 						</ChatMessage>
@@ -1194,8 +1191,6 @@ ${rows}
 				<ChatStream>
 					<ChatMessage
 						kind="user"
-						head="YOU"
-
 						ago="2m"
 						icon="i-mdi:chat-outline"
 					>
@@ -1203,8 +1198,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="MOUNTED"
-
+						status="mounted"
 						ago="just now"
 						icon="i-mdi:layers-outline"
 					>
@@ -1218,7 +1212,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="EXPLAINED"
+						status="explained"
 						icon="i-mdi:book-open-variant"
 					>
 						<strong>Items in, value out.</strong> The component owns selection,
@@ -1227,14 +1221,14 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="TRY"
+						status="try"
 						icon="i-mdi:palette"
 					>
 						Flip the <em>style</em> at the top of the window — the same Tabs
 						re-renders. Or copy the source on the right and paste it in.
 					</ChatMessage>
 					{#if variantChipItems.length > 0}
-						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+						<ChatMessage kind="info" status="try-variants" icon="i-mdi:auto-fix">
 							Same component, different shape or props. Pick one to see it
 							re-render — bookmarkable via the URL.
 						</ChatMessage>
@@ -1245,8 +1239,6 @@ ${rows}
 				<ChatStream>
 					<ChatMessage
 						kind="user"
-						head="YOU"
-
 						ago="just now"
 						icon="i-mdi:chat-outline"
 					>
@@ -1254,8 +1246,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="STARTED"
-
+						status="started"
 						ago="just now"
 						icon="i-mdi:palette"
 					>
@@ -1265,7 +1256,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="GLOSSARY"
+						status="glossary"
 						icon="i-mdi:book-open-variant"
 					>
 						<ul class="glossary">
@@ -1282,7 +1273,7 @@ ${rows}
 						</ul>
 					</ChatMessage>
 					{#if variantChipItems.length > 0}
-						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+						<ChatMessage kind="info" status="try-variants" icon="i-mdi:auto-fix">
 							Want to see the wizard in a different shape? Pick one — same
 							canvas, different presentation.
 						</ChatMessage>
@@ -1293,8 +1284,6 @@ ${rows}
 				<ChatStream>
 					<ChatMessage
 						kind="user"
-						head="YOU"
-
 						ago="just now"
 						icon="i-mdi:chat-outline"
 					>
@@ -1302,8 +1291,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="MOUNTED"
-
+						status="mounted"
 						ago="just now"
 						icon="i-mdi:table"
 					>
@@ -1317,7 +1305,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="EXPLAINED"
+						status="explained"
 						icon="i-mdi:book-open-variant"
 					>
 						<strong>Data in, sortable grid out.</strong> No column config needed
@@ -1327,14 +1315,14 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="TRY"
+						status="try"
 						icon="i-mdi:gesture-tap"
 					>
 						Sort by <em>price</em>, then shift-click <em>stock</em> to add a
 						secondary sort. Or copy the source on the right.
 					</ChatMessage>
 					{#if variantChipItems.length > 0}
-						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+						<ChatMessage kind="info" status="try-variants" icon="i-mdi:auto-fix">
 							Pick a variant — same canvas, different shape or props. URL
 							updates so each pick is bookmarkable.
 						</ChatMessage>
@@ -1345,8 +1333,6 @@ ${rows}
 				<ChatStream>
 					<ChatMessage
 						kind="user"
-						head="YOU"
-
 						ago="just now"
 						icon="i-mdi:chat-outline"
 					>
@@ -1354,8 +1340,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="MOUNTED"
-
+						status="mounted"
 						ago="just now"
 						icon="i-mdi:stairs"
 					>
@@ -1370,7 +1355,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="EXPLAINED"
+						status="explained"
 						icon="i-mdi:book-open-variant"
 					>
 						<strong>Steps are data, not markup.</strong> The array of
@@ -1382,14 +1367,14 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="TRY"
+						status="try"
 						icon="i-mdi:gesture-tap"
 					>
 						Click "Complete &amp; Next" to mark the active step done and
 						advance. Click any completed step header to revisit it.
 					</ChatMessage>
 					{#if variantChipItems.length > 0}
-						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+						<ChatMessage kind="info" status="try-variants" icon="i-mdi:auto-fix">
 							Pick a variant — same canvas, different shape or props. URL
 							updates so each pick is bookmarkable.
 						</ChatMessage>
@@ -1400,8 +1385,6 @@ ${rows}
 				<ChatStream>
 					<ChatMessage
 						kind="user"
-						head="YOU"
-
 						ago="just now"
 						icon="i-mdi:chat-outline"
 					>
@@ -1409,8 +1392,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="MOUNTED"
-
+						status="mounted"
 						ago="just now"
 						icon="i-mdi:calendar"
 					>
@@ -1427,7 +1409,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="EXPLAINED"
+						status="explained"
 						icon="i-mdi:book-open-variant"
 					>
 						<strong>Format-driven dispatch.</strong> The schema's
@@ -1439,14 +1421,14 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="TRY"
+						status="try"
 						icon="i-mdi:gesture-tap"
 					>
 						Click a field to open the native browser calendar / time picker.
 						Edit either one — the bound <code>data</code> updates live.
 					</ChatMessage>
 					{#if variantChipItems.length > 0}
-						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+						<ChatMessage kind="info" status="try-variants" icon="i-mdi:auto-fix">
 							Pick a variant — same canvas, different shape or props. URL
 							updates so each pick is bookmarkable.
 						</ChatMessage>
@@ -1457,8 +1439,6 @@ ${rows}
 				<ChatStream>
 					<ChatMessage
 						kind="user"
-						head="YOU"
-
 						ago="just now"
 						icon="i-mdi:chat-outline"
 					>
@@ -1466,8 +1446,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="MOUNTED"
-
+						status="mounted"
 						ago="just now"
 						icon="i-mdi:magnify"
 					>
@@ -1482,7 +1461,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="WHEN TO USE"
+						status="when-to-use"
 						icon="i-mdi:compare-horizontal"
 					>
 						<strong>Combobox</strong> when the option count is too large for a
@@ -1492,7 +1471,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="TRY"
+						status="try"
 						icon="i-mdi:gesture-tap"
 					>
 						Open the dropdown. Start typing — e.g. "ne" narrows to Netherlands,
@@ -1500,7 +1479,7 @@ ${rows}
 						Escape clears the filter without closing.
 					</ChatMessage>
 					{#if variantChipItems.length > 0}
-						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+						<ChatMessage kind="info" status="try-variants" icon="i-mdi:auto-fix">
 							Pick a variant — same canvas, different shape or props. URL
 							updates so each pick is bookmarkable.
 						</ChatMessage>
@@ -1511,8 +1490,6 @@ ${rows}
 				<ChatStream>
 					<ChatMessage
 						kind="user"
-						head="YOU"
-
 						ago="just now"
 						icon="i-mdi:chat-outline"
 					>
@@ -1520,8 +1497,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="MOUNTED"
-
+						status="mounted"
 						ago="just now"
 						icon="i-mdi:chart-bar"
 					>
@@ -1536,7 +1512,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="EXPLAINED"
+						status="explained"
 						icon="i-mdi:book-open-variant"
 					>
 						<strong>Field-mapped, declarative.</strong> No D3 boilerplate, no
@@ -1547,14 +1523,14 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="TRY"
+						status="try"
 						icon="i-mdi:gesture-tap"
 					>
 						Hover a bar for the tooltip. Flip the chrome <em>style</em> to see
 						the chart re-skin via palette tokens — same data, different look.
 					</ChatMessage>
 					{#if variantChipItems.length > 0}
-						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+						<ChatMessage kind="info" status="try-variants" icon="i-mdi:auto-fix">
 							Pick a variant — same canvas, different shape or props. URL
 							updates so each pick is bookmarkable.
 						</ChatMessage>
@@ -1565,8 +1541,6 @@ ${rows}
 				<ChatStream>
 					<ChatMessage
 						kind="user"
-						head="YOU"
-
 						ago="just now"
 						icon="i-mdi:chat-outline"
 					>
@@ -1574,8 +1548,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="MOUNTED"
-
+						status="mounted"
 						ago="just now"
 						icon="i-mdi:menu-down"
 					>
@@ -1590,7 +1563,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="EXPLAINED"
+						status="explained"
 						icon="i-mdi:book-open-variant"
 					>
 						<strong>One value, many options.</strong> Same items + fields shape
@@ -1601,14 +1574,14 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="TRY"
+						status="try"
 						icon="i-mdi:gesture-tap"
 					>
 						Open the dropdown. Mouse-scroll to the bottom; arrow keys walk;
 						Home / End jump; type a few characters for prefix-match navigation.
 					</ChatMessage>
 					{#if variantChipItems.length > 0}
-						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+						<ChatMessage kind="info" status="try-variants" icon="i-mdi:auto-fix">
 							Pick a variant — same canvas, different shape or props. URL
 							updates so each pick is bookmarkable.
 						</ChatMessage>
@@ -1619,8 +1592,6 @@ ${rows}
 				<ChatStream>
 					<ChatMessage
 						kind="user"
-						head="YOU"
-
 						ago="just now"
 						icon="i-mdi:chat-outline"
 					>
@@ -1628,8 +1599,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="MOUNTED"
-
+						status="mounted"
 						ago="just now"
 						icon="i-mdi:form-textbox"
 					>
@@ -1644,7 +1614,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="EXPLAINED"
+						status="explained"
 						icon="i-mdi:book-open-variant"
 					>
 						<strong>Schema in, form out.</strong> No template per field, no
@@ -1656,7 +1626,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="TRY"
+						status="try"
 						icon="i-mdi:gesture-tap"
 					>
 						Type in the fields. <em>email</em> validates as you type;
@@ -1664,7 +1634,7 @@ ${rows}
 						<em>newsletter</em> renders as a toggle because of the boolean type.
 					</ChatMessage>
 					{#if variantChipItems.length > 0}
-						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+						<ChatMessage kind="info" status="try-variants" icon="i-mdi:auto-fix">
 							Pick a variant — same canvas, different shape or props. URL
 							updates so each pick is bookmarkable.
 						</ChatMessage>
@@ -1675,8 +1645,6 @@ ${rows}
 				<ChatStream>
 					<ChatMessage
 						kind="user"
-						head="YOU"
-
 						ago="just now"
 						icon="i-mdi:chat-outline"
 					>
@@ -1684,8 +1652,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="MOUNTED"
-
+						status="mounted"
 						ago="just now"
 						icon="i-mdi:bell-outline"
 					>
@@ -1699,7 +1666,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="EXPLAINED"
+						status="explained"
 						icon="i-mdi:book-open-variant"
 					>
 						<strong>Imperative, not declarative.</strong> Most components are
@@ -1709,14 +1676,14 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="TRY"
+						status="try"
 						icon="i-mdi:gesture-tap"
 					>
 						Click a button on the canvas. Each tone gets a different border + icon.
 						Toasts auto-dismiss after a few seconds, or click them to dismiss early.
 					</ChatMessage>
 					{#if variantChipItems.length > 0}
-						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+						<ChatMessage kind="info" status="try-variants" icon="i-mdi:auto-fix">
 							Pick a variant — same canvas, different shape or props. URL
 							updates so each pick is bookmarkable.
 						</ChatMessage>
@@ -1727,8 +1694,6 @@ ${rows}
 				<ChatStream>
 					<ChatMessage
 						kind="user"
-						head="YOU"
-
 						ago="just now"
 						icon="i-mdi:chat-outline"
 					>
@@ -1736,8 +1701,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="MOUNTED"
-
+						status="mounted"
 						ago="just now"
 						icon="i-mdi:format-list-bulleted"
 					>
@@ -1751,7 +1715,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="WHEN TO USE"
+						status="when-to-use"
 						icon="i-mdi:compare-horizontal"
 					>
 						<strong>List with collapsible groups</strong> when the items are the
@@ -1762,14 +1726,14 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="TRY"
+						status="try"
 						icon="i-mdi:gesture-tap"
 					>
 						Click a group header to collapse it. Click an item to select.
 						Same API works flat — drop the <code>children</code> for a flat list.
 					</ChatMessage>
 					{#if variantChipItems.length > 0}
-						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+						<ChatMessage kind="info" status="try-variants" icon="i-mdi:auto-fix">
 							Pick a variant — same canvas, different shape or props. URL
 							updates so each pick is bookmarkable.
 						</ChatMessage>
@@ -1780,8 +1744,6 @@ ${rows}
 				<ChatStream>
 					<ChatMessage
 						kind="user"
-						head="YOU"
-
 						ago="just now"
 						icon="i-mdi:chat-outline"
 					>
@@ -1789,8 +1751,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="MOUNTED"
-
+						status="mounted"
 						ago="just now"
 						icon="i-mdi:select-multiple"
 					>
@@ -1805,7 +1766,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="EXPLAINED"
+						status="explained"
 						icon="i-mdi:book-open-variant"
 					>
 						<strong>One component, many choices.</strong> Click the trigger to
@@ -1814,14 +1775,14 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="TRY"
+						status="try"
 						icon="i-mdi:gesture-tap"
 					>
 						Add a few more colors, then click a chip to remove it. The
 						<code>value</code> array updates live — useful for forms or filters.
 					</ChatMessage>
 					{#if variantChipItems.length > 0}
-						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+						<ChatMessage kind="info" status="try-variants" icon="i-mdi:auto-fix">
 							Pick a variant — same canvas, different shape or props. URL
 							updates so each pick is bookmarkable.
 						</ChatMessage>
@@ -1832,8 +1793,6 @@ ${rows}
 				<ChatStream>
 					<ChatMessage
 						kind="user"
-						head="YOU"
-
 						ago="just now"
 						icon="i-mdi:chat-outline"
 					>
@@ -1841,8 +1800,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="MOUNTED"
-
+						status="mounted"
 						ago="just now"
 						icon="i-mdi:file-tree"
 					>
@@ -1856,7 +1814,7 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="WHEN TO USE"
+						status="when-to-use"
 						icon="i-mdi:compare-horizontal"
 					>
 						<strong>Tree</strong> when the hierarchy is the point — multi-level
@@ -1866,14 +1824,14 @@ ${rows}
 					</ChatMessage>
 					<ChatMessage
 						kind="info"
-						head="TRY"
+						status="try"
 						icon="i-mdi:gesture-tap"
 					>
 						Click a folder to expand. Arrow keys walk the tree; Enter selects.
 						Selection is bound — <em>value</em> updates as you navigate.
 					</ChatMessage>
 					{#if variantChipItems.length > 0}
-						<ChatMessage kind="info" head="TRY VARIANTS" icon="i-mdi:auto-fix">
+						<ChatMessage kind="info" status="try-variants" icon="i-mdi:auto-fix">
 							Pick a variant — same canvas, different shape or props. URL
 							updates so each pick is bookmarkable.
 						</ChatMessage>

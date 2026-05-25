@@ -6,16 +6,25 @@
 		/** Visual variant — drives node decoration and body typography */
 		kind?: 'user' | 'info' | 'think' | 'system'
 		/**
-		 * Per-message eyebrow label override (e.g. "MOUNTED", "EXPLAINED",
-		 * "THINKING"). When set, takes the label slot. When unset, the slot
-		 * falls back to `who` — see below.
+		 * Semantic status marker (kebab-case, e.g. "mounted", "explained",
+		 * "thinking", "try-variants"). Surfaces as `data-message-status` on
+		 * the message root so themes can skin badges per-status without the
+		 * label string being hardcoded in callers. When `head` is unset, the
+		 * label slot derives from this value (hyphens → spaces; CSS handles
+		 * casing via text-transform).
+		 */
+		status?: string
+		/**
+		 * Per-message eyebrow label override. Wins over status-derived and
+		 * who-derived labels. Use sparingly — prefer `status` so themes can
+		 * own the badge text.
 		 */
 		head?: string
 		/**
-		 * Author name, used as the label when `head` is unset. Defaults from
-		 * `kind` via the chat-wide `who` store:
-		 *  - user → store.user (default "YOU", commonly stays as-is)
-		 *  - info → store.assistant (default "ASSISTANT", configure to "Rokkit" etc.)
+		 * Author name fallback when neither `head` nor `status` is set.
+		 * Defaults from `kind` via the chat-wide `who` store:
+		 *  - user → store.user (canonical "you")
+		 *  - info → store.assistant (canonical "assistant", configure to "Rokkit" etc.)
 		 *  - think / system → no default
 		 * Pass an explicit empty string to suppress the label slot entirely.
 		 */
@@ -35,6 +44,7 @@
 
 	const {
 		kind = 'info',
+		status,
 		head,
 		who: whoProp,
 		ago,
@@ -42,22 +52,30 @@
 		children
 	}: ChatMessageProps = $props()
 
-	// Single label per turn: `head` (e.g. status badge) wins; otherwise the
-	// kind-default author name from the `who` store, optionally overridden
-	// per-message via the `who` prop. Pass `who=""` to drop the label slot.
+	// Single label per turn, resolved in priority order:
+	//   1. `head` — explicit per-message override
+	//   2. `status` — semantic marker, hyphens replaced with spaces (CSS
+	//      `text-transform: uppercase` does the visual casing)
+	//   3. `who` — kind-default author name from the chat-wide `who` store,
+	//      overridable per-message via the `who` prop. Pass `who=""` to drop
+	//      the label slot entirely.
 	const who = $derived.by(() => {
 		if (whoProp !== undefined) return whoProp
 		if (kind === 'user') return whoStore.user
 		if (kind === 'info') return whoStore.assistant
 		return undefined
 	})
-	const label = $derived(head ?? who)
+	const label = $derived.by(() => {
+		if (head !== undefined) return head
+		if (status) return status.replace(/-/g, ' ')
+		return who
+	})
 
 	const iconIsSnippet = $derived(typeof icon === 'function')
 	const iconClass = $derived(typeof icon === 'string' ? icon : '')
 </script>
 
-<div data-chat-message data-kind={kind}>
+<div data-chat-message data-kind={kind} data-message-status={status}>
 	<span data-chat-message-node>
 		{#if iconIsSnippet}
 			{@render (icon as Snippet)()}

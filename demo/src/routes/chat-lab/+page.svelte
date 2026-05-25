@@ -80,13 +80,13 @@
 				<span class="chat-title">Conversation <span class="chat-sub">· Tabs · mounted</span></span>
 			</div>
 			<ChatStream>
-				<ChatMessage kind="user" head="YOU" ago="2m">
+				<ChatMessage kind="user" ago="2m">
 					Mount a Tabs demo with five panes. Walk me through how the data-driven API works.
 				</ChatMessage>
-				<ChatMessage kind="info" head="MOUNTED" ago="just now">
+				<ChatMessage kind="info" status="mounted" ago="just now">
 					<code>&lt;Tabs/&gt;</code> from <code>@rokkit/ui</code> on the canvas. Five panes from <code>items</code>.
 				</ChatMessage>
-				<ChatMessage kind="think" head="THINKING">
+				<ChatMessage kind="think" status="thinking">
 					wiring sample data and the style cascade…
 				</ChatMessage>
 				<Chips items={chips} onselect={() => {}} />
