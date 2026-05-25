@@ -19,6 +19,7 @@
 	import { vibe } from '@rokkit/states'
 	import { koan } from '$lib/koan/store.svelte'
 	import { runMatch } from '$lib/koan/match.svelte'
+	import { findById } from '$lib/koan/catalog'
 	import { shell } from '$lib/koan/shell.svelte'
 	import ThemeWizardCard from '$lib/koan/demos/theme-wizard/ThemeWizardCard.svelte'
 	import { savePreset, resetPreset, downloadTokensCss } from '$lib/koan/demos/theme-wizard/store.svelte'
@@ -188,6 +189,20 @@
 		{ label: 'API' }
 	]
 	let activeTab = $state<unknown>('Theming')
+
+	// Look up the active variant for the current demo (set via ?variant= URL
+	// param by the route page). Dynamic variants merge their props into the
+	// mounted component; route variants navigate to a sub-route instead.
+	const activeVariant = $derived.by(() => {
+		if (!shell.demoType || !shell.demoVariant) return null
+		const meta = findById(shell.demoType)
+		return meta?.variants?.find((v) => v.id === shell.demoVariant) ?? null
+	})
+
+	function tabsVariantProps(): Record<string, unknown> {
+		if (activeVariant?.mode !== 'dynamic') return {}
+		return activeVariant.props ?? {}
+	}
 
 	const tabsCode = `<script>
   import { Tabs } from '@rokkit/ui'
@@ -1394,33 +1409,52 @@
 					<span class="thinking-step">mounting — step 3 of 4</span>
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'tabs'}
+				{@const variantProps = tabsVariantProps()}
 				<div class="canvas-head">
-					<div class="canvas-eyebrow">Mounted demo · live</div>
+					<div class="canvas-eyebrow">Mounted demo · live{#if activeVariant} · variant: {activeVariant.label.toLowerCase()}{/if}</div>
 					<div class="canvas-title">Tabs · how the data-driven API works</div>
 					<div class="canvas-sub">
 						Five panes from one <code>items</code> array. Selection is bound.
 						Style comes from <code>data-style</code> on the parent. Flip the
 						chrome toggle to see it re-render.
+						{#if activeVariant}
+							<br /><em>Variant active</em> — {activeVariant.label.toLowerCase()}.
+							Try variants:
+						{:else}
+							<br />Try variants:
+						{/if}
+						{#each findById('tabs')?.variants ?? [] as v (v.id)}
+							<button
+								type="button"
+								class="variant-chip"
+								data-active={activeVariant?.id === v.id ? '' : undefined}
+								onclick={() => goto(`/app/tabs${activeVariant?.id === v.id ? '' : `?variant=${v.id}`}`)}
+							>
+								{v.label}{#if activeVariant?.id === v.id} · clear{/if}
+							</button>
+						{/each}
 					</div>
 				</div>
 				<div class="canvas-body response">
 					<ChatResponse
 						name="&lt;Tabs/&gt;"
-						meta="· @rokkit/ui · style={style}"
+						meta={`· @rokkit/ui · style=${style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
 						kicker="LIVE"
 					>
 						{#snippet icon()}
 							<span class="i-mdi:layers-outline" aria-hidden="true"></span>
 						{/snippet}
 						<div class="tabs-mount">
-							<Tabs options={tabsItems} bind:value={activeTab} />
+							<Tabs options={tabsItems} bind:value={activeTab} {...variantProps} />
 						</div>
 						{#snippet props()}
 							<span>items</span><span data-value>[5]</span>
 							<span data-sep>·</span>
 							<span>style</span><span data-value>{style}</span>
-							<span data-sep>·</span>
-							<span>bytes</span><span data-value>2.1kb</span>
+							{#if activeVariant}
+								<span data-sep>·</span>
+								<span>variant</span><span data-value>{activeVariant.id}</span>
+							{/if}
 						{/snippet}
 						{#snippet actions()}
 							<button type="button">
@@ -2173,6 +2207,32 @@
 
 	.tabs-mount {
 		min-height: 120px;
+	}
+
+	.variant-chip {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		height: 24px;
+		padding: 0 10px;
+		margin: 4px 6px 0 0;
+		border: 1px solid var(--paper-edge);
+		border-radius: 9999px;
+		background: var(--paper-soft);
+		color: var(--ink-mute);
+		font: 500 11.5px var(--font-ui);
+		cursor: pointer;
+	}
+
+	.variant-chip:hover {
+		border-color: var(--ink-soft);
+		color: var(--ink);
+	}
+
+	.variant-chip[data-active] {
+		border-color: var(--accent);
+		color: var(--accent);
+		background: color-mix(in oklab, var(--accent) 6%, var(--paper-soft));
 	}
 
 	.table-mount {

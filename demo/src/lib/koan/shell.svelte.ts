@@ -12,12 +12,14 @@ export type ShellDemoType = 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-
 export const shell = $state<{
 	phase: ShellPhase
 	demoType: ShellDemoType | null
+	demoVariant: string | null
 	lastQuery: string
 	collapsed: boolean
 	composerValue: string
 }>({
 	phase: 'welcome',
 	demoType: null,
+	demoVariant: null,
 	lastQuery: '',
 	collapsed: false,
 	composerValue: ''
@@ -29,7 +31,12 @@ export function setShellResponse(demoType: ShellDemoType, query?: string): void 
 	if (query) shell.lastQuery = query
 }
 
+export function setShellVariant(variant: string | null): void {
+	shell.demoVariant = variant
+}
+
 export function setShellWelcome(): void {
 	shell.phase = 'welcome'
 	shell.demoType = null
+	shell.demoVariant = null
 }

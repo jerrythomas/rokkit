@@ -3527,3 +3527,35 @@ Nothing in the runtime reads these yet. The point is shape: when the LLM router 
 **Verification**
 - Lint: 0 errors, 20 warnings.
 - Tests: 3480/3480.
+
+## 2026-05-25 (cont.) — Dynamic variation prototype (Tabs)
+
+First proof-of-concept for the **dynamic-on-one-page** variant pattern outlined in the interactive-koan-mode draft. Picked Tabs as the test bed since its variants (`vertical`, `with-icons`) are real prop swaps with no schema gymnastics.
+
+**Plumbing**
+
+- `shell.svelte.ts` — added `demoVariant: string | null` field and `setShellVariant()` helper. `setShellWelcome()` now also clears the variant.
+- `app/tabs/+page.svelte` — `$effect` (not `onMount`) reads `page.url.searchParams.get('variant')` and writes to the shell. `$effect` over `onMount` so query-string changes update the shell without remount.
+- `+layout.svelte` — imports `findById` from the catalog. New `activeVariant` $derived looks up the current demo's variants array and finds the one matching `shell.demoVariant`. `tabsVariantProps()` returns the variant's `props` if `mode === 'dynamic'`.
+
+**Tabs canvas branch wired**
+
+- The `<Tabs>` element spreads `tabsVariantProps()` after its base props, so the variant overrides flow in.
+- Canvas eyebrow shows `· variant: vertical orientation` when active.
+- canvas-sub renders a row of variant chips from the catalog's `meta.variants`. Clicking a chip `goto`s `/app/tabs?variant=ID`. Clicking the already-active chip clears it (`goto('/app/tabs')`).
+- ChatResponse meta + propsRow include the variant id when active.
+- New `.variant-chip` styles in the layout: rounded-pill, accent border + tint when active.
+
+**Verified**
+
+- `/app/tabs?variant=vertical` → mounts vertically-oriented Tabs (panels on the left, content right).
+- Click "With icons" chip → URL updates to `?variant=with-icons`, meta + propsRow refresh, no remount.
+- Click the active chip → URL clears, default orientation returns.
+
+The pattern works. Future demos add their own `tabsVariantProps()`-style helper (or refactor to a generic one) and the same chip row applies — driven entirely by the catalog's `variants[]` array.
+
+**What's next, when we want it**
+
+- Real variant content beyond just prop swaps — e.g. Tabs `with-icons` variant needs an `items` array that includes icons, not just an `iconize=true` prop. The pattern can either ship variant data alongside `props` in the catalog, or have the layout pick variant-specific data inline.
+- Generalize the chip row helper so we don't write it per demo.
+- LLM tool calls map directly: `mountDemo('tabs', { variant: 'vertical' })` → same goto.
