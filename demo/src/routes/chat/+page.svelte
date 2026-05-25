@@ -11,10 +11,11 @@
 	import { tryParse, parseCSV } from '$lib/chat-demo/infer'
 	import {
 		llm,
-		ensureEngine,
-		resetEngine,
+		ensureWebLLMEngine,
+		resetWebLLMEngine,
 		detectWebGPU,
-		AVAILABLE_MODELS
+		OPENROUTER_MODELS,
+		WEBLLM_MODELS
 	} from '$lib/chat-demo/llm.svelte'
 	import BlockList from '$lib/chat-demo/components/BlockList.svelte'
 
@@ -144,41 +145,56 @@
 			<span class="route-label">Inline chat · scripted responses</span>
 		{/snippet}
 		{#snippet actions()}
-			<div class="llm-toggle" data-status={llm.status}>
-				<label class="llm-switch" title={llm.webgpuSupported === false ? 'WebGPU not available in this browser' : 'Use in-browser LLM instead of the mock router'}>
-					<input
-						type="checkbox"
-						bind:checked={conversation.useLLM}
-						disabled={llm.webgpuSupported === false}
-					/>
+			<div class="llm-toggle" data-active={llm.enabled || undefined}>
+				<label class="llm-switch" title="Use a real LLM instead of the mock router">
+					<input type="checkbox" bind:checked={llm.enabled} />
 					<span class="llm-switch-label">
 						<span class="i-mdi:robot-outline" aria-hidden="true"></span>
 						LLM
 					</span>
 				</label>
-				{#if conversation.useLLM}
-					<select bind:value={llm.modelId} disabled={llm.status === 'loading'} onchange={resetEngine}>
-						{#each AVAILABLE_MODELS as m (m.id)}
-							<option value={m.id}>{m.label} · {m.size}</option>
-						{/each}
+				{#if llm.enabled}
+					<select bind:value={llm.provider} class="llm-provider">
+						<option value="openrouter">OpenRouter (hosted, free)</option>
+						<option value="webllm" disabled={llm.webgpuSupported === false}>
+							Web-LLM (browser){llm.webgpuSupported === false ? ' · no WebGPU' : ''}
+						</option>
 					</select>
-					{#if llm.status === 'uninitialized'}
-						<button type="button" class="llm-load-btn" onclick={() => ensureEngine()}>
-							<span class="i-mdi:download" aria-hidden="true"></span>
-							Load model
-						</button>
-					{:else if llm.status === 'loading'}
-						<span class="llm-progress" title={llm.loadStage}>
-							<span class="i-mdi:loading llm-spin" aria-hidden="true"></span>
-							{Math.round(llm.loadProgress * 100)}%
-						</span>
-					{:else if llm.status === 'ready' || llm.status === 'thinking'}
-						<span class="llm-ready">
-							<span class="i-mdi:check-circle-outline" aria-hidden="true"></span>
-							ready
-						</span>
-					{:else if llm.status === 'error'}
-						<span class="llm-error" title={llm.errorMessage}>error</span>
+					{#if llm.provider === 'openrouter'}
+						<select bind:value={llm.openRouterModel} class="llm-model">
+							{#each OPENROUTER_MODELS as m (m.id)}
+								<option value={m.id}>{m.label}</option>
+							{/each}
+						</select>
+					{:else}
+						<select
+							bind:value={llm.webllmModel}
+							class="llm-model"
+							disabled={llm.webllmStatus === 'loading'}
+							onchange={resetWebLLMEngine}
+						>
+							{#each WEBLLM_MODELS as m (m.id)}
+								<option value={m.id}>{m.label} · {m.size}</option>
+							{/each}
+						</select>
+						{#if llm.webllmStatus === 'uninitialized'}
+							<button type="button" class="llm-load-btn" onclick={() => ensureWebLLMEngine()}>
+								<span class="i-mdi:download" aria-hidden="true"></span>
+								Load
+							</button>
+						{:else if llm.webllmStatus === 'loading'}
+							<span class="llm-progress" title={llm.webllmStage}>
+								<span class="i-mdi:loading llm-spin" aria-hidden="true"></span>
+								{Math.round(llm.webllmProgress * 100)}%
+							</span>
+						{:else if llm.webllmStatus === 'ready' || llm.webllmStatus === 'thinking'}
+							<span class="llm-ready">
+								<span class="i-mdi:check-circle-outline" aria-hidden="true"></span>
+								ready
+							</span>
+						{:else if llm.webllmStatus === 'error'}
+							<span class="llm-error" title={llm.errorMessage}>error</span>
+						{/if}
 					{/if}
 				{/if}
 			</div>
@@ -507,16 +523,21 @@
 		color: var(--ink-mute);
 	}
 
-	.llm-toggle[data-status='ready'],
-	.llm-toggle[data-status='thinking'] {
+	.llm-toggle[data-active] {
 		border-color: var(--accent);
 		color: var(--accent);
 		background: color-mix(in oklab, var(--accent) 6%, var(--paper-soft));
 	}
 
-	.llm-toggle[data-status='error'] {
-		border-color: var(--danger, #c43838);
-		color: var(--danger, #c43838);
+	.llm-provider,
+	.llm-model {
+		font: 500 11.5px var(--font-ui);
+		padding: 2px 4px;
+		border: 1px solid var(--paper-edge);
+		border-radius: 4px;
+		background: var(--paper);
+		color: var(--ink);
+		max-width: 200px;
 	}
 
 	.llm-switch {
@@ -534,16 +555,6 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 4px;
-	}
-
-	.llm-toggle select {
-		font: 500 11.5px var(--font-ui);
-		padding: 2px 4px;
-		border: 1px solid var(--paper-edge);
-		border-radius: 4px;
-		background: var(--paper);
-		color: var(--ink);
-		max-width: 160px;
 	}
 
 	.llm-load-btn {

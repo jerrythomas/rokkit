@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { untrack } from 'svelte'
 	import { Table, List } from '@rokkit/ui'
 	import { FormRenderer } from '@rokkit/forms'
 	import { BarChart } from '@rokkit/chart'
@@ -13,9 +14,12 @@
 	const { tool, props, caption }: Props = $props()
 
 	// Form needs a bindable `data` — clone the seed so the user can mutate it
-	// without leaking back into the response block. One instance per mount.
+	// without leaking back into the response block. untrack() because we want
+	// the initial value at mount, not a reactive read.
 	let formData = $state<Record<string, unknown>>(
-		tool === 'mount_form' ? { ...((props.data as Record<string, unknown>) ?? {}) } : {}
+		untrack(() =>
+			tool === 'mount_form' ? { ...((props.data as Record<string, unknown>) ?? {}) } : {}
+		)
 	)
 
 	const seedData = $derived(props.data ?? null)
@@ -24,9 +28,11 @@
 	// mutate the response block. Toggled via "Edit rows".
 	let editingTable = $state(false)
 	let tableRows = $state<Record<string, unknown>[]>(
-		tool === 'mount_table'
-			? JSON.parse(JSON.stringify((props.data as unknown[]) ?? []))
-			: []
+		untrack(() =>
+			tool === 'mount_table'
+				? JSON.parse(JSON.stringify((props.data as unknown[]) ?? []))
+				: []
+		)
 	)
 	const tableColumns = $derived<string[]>(
 		tool === 'mount_table' && Array.isArray(props.data)
@@ -184,7 +190,7 @@
 	{#if caption || hasExportableData}
 		<div class="inline-footer">
 			{#if caption}
-				<figcaption>{caption}</figcaption>
+				<span class="inline-caption">{caption}</span>
 			{:else}
 				<span></span>
 			{/if}
@@ -273,7 +279,7 @@
 		gap: 8px;
 	}
 
-	figcaption {
+	.inline-caption {
 		flex: 1;
 		font: 500 11.5px var(--font-ui);
 		color: var(--ink-mute);

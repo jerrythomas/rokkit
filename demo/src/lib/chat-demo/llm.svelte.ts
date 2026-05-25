@@ -1,32 +1,71 @@
 /**
- * Phase 2: in-browser LLM routing via @mlc-ai/web-llm.
+ * LLM routing with two providers:
  *
- * The model runs entirely in the browser (WebGPU) — no API key, no token
- * cost, no server round-trip after the initial ~600 MB-1 GB model
- * download. The downloaded weights are cached in the browser's
- * OPFS/IndexedDB after the first load.
+ * 1. OpenRouter (default) — hosted free-tier models (Llama, Gemma) via a
+ *    SvelteKit server endpoint that holds the API key. No download, fast
+ *    first response, but needs network + the server's OPENROUTER_API_KEY
+ *    env var.
+ * 2. Web-LLM (opt-in fallback) — @mlc-ai/web-llm runs the model entirely
+ *    in the browser (WebGPU). No API key, no network after the initial
+ *    ~1–2 GB download cached locally.
  *
- * This module is intentionally a 1-for-1 replacement for `routeQuery` in
- * the mock router. The Block[] shape coming out matches what the mock
- * produces, so the rest of the chat UI doesn't change.
- *
- * The user has to explicitly opt-in (click "Load model") because the
- * download is large and WebGPU isn't guaranteed to be present. The store
- * still defaults to the mock router; the page toggles which one is used.
+ * On OpenRouter failure (no key, rate limit, network) we surface a
+ * suggestion to switch to web-llm. Both providers emit the same Block[]
+ * shape so the chat UI doesn't care which one was used.
  */
 import type { Block } from './types'
 import { catalog } from '$lib/koan/catalog'
 
+export type LLMProvider = 'openrouter' | 'webllm'
 export type LLMStatus = 'uninitialized' | 'loading' | 'ready' | 'thinking' | 'error'
 
-export const DEFAULT_MODEL = 'Llama-3.2-3B-Instruct-q4f32_1-MLC'
+// ─── OpenRouter free-tier models ───────────────────────────────────────
 
 /**
- * Curated model list. All quantized to fit comfortably in browser memory.
- * Tool-calling fidelity is the main driver of the picks here — sub-3B
- * models often degrade significantly on multi-tool selection.
+ * Curated free OpenRouter models. The :free tier is upstream rate-limited
+ * aggressively, so having several to fall back to is the practical fix.
+ * The actual list rotates over time — refreshed against
+ * https://openrouter.ai/api/v1/models. Quoted sizes are approximate.
  */
-export const AVAILABLE_MODELS: Array<{ id: string; label: string; size: string; note?: string }> = [
+export const OPENROUTER_MODELS: Array<{ id: string; label: string; note?: string }> = [
+	{
+		id: 'openai/gpt-oss-20b:free',
+		label: 'gpt-oss · 20B (free)',
+		note: 'default · OpenAI open-weights, reliable JSON'
+	},
+	{
+		id: 'openai/gpt-oss-120b:free',
+		label: 'gpt-oss · 120B (free)',
+		note: 'strongest open OAI · slower'
+	},
+	{
+		id: 'qwen/qwen3-next-80b-a3b-instruct:free',
+		label: 'Qwen3 · 80B (free)',
+		note: 'good at structured output'
+	},
+	{
+		id: 'meta-llama/llama-3.3-70b-instruct:free',
+		label: 'Llama 3.3 · 70B (free)'
+	},
+	{
+		id: 'meta-llama/llama-3.2-3b-instruct:free',
+		label: 'Llama 3.2 · 3B (free)',
+		note: 'fastest if available'
+	},
+	{
+		id: 'google/gemma-4-26b-a4b-it:free',
+		label: 'Gemma 4 · 26B (free)'
+	},
+	{
+		id: 'deepseek/deepseek-v4-flash:free',
+		label: 'DeepSeek v4 Flash (free)',
+		note: 'fast'
+	}
+]
+
+// ─── Web-LLM models (opt-in download) ──────────────────────────────────
+
+export const WEBLLM_MODELS: Array<{ id: string; label: string; size: string; note?: string }> = [
 	{
 		id: 'Llama-3.2-1B-Instruct-q4f32_1-MLC',
 		label: 'Llama 3.2 · 1B',
@@ -37,7 +76,7 @@ export const AVAILABLE_MODELS: Array<{ id: string; label: string; size: string; 
 		id: 'Llama-3.2-3B-Instruct-q4f32_1-MLC',
 		label: 'Llama 3.2 · 3B',
 		size: '~2 GB',
-		note: 'best balance of speed + accuracy'
+		note: 'best balance'
 	},
 	{
 		id: 'Hermes-3-Llama-3.2-3B-q4f32_1-MLC',
@@ -52,45 +91,43 @@ export const AVAILABLE_MODELS: Array<{ id: string; label: string; size: string; 
 	}
 ]
 
+export const DEFAULT_OPENROUTER_MODEL = OPENROUTER_MODELS[0].id // openai/gpt-oss-20b:free
+export const DEFAULT_WEBLLM_MODEL = WEBLLM_MODELS[1].id
+
 export const llm = $state<{
-	status: LLMStatus
-	modelId: string
-	loadProgress: number
-	loadStage: string
+	provider: LLMProvider
+	enabled: boolean
+	openRouterModel: string
+	webllmModel: string
+	webllmStatus: LLMStatus
+	webllmProgress: number
+	webllmStage: string
 	errorMessage: string
 	webgpuSupported: boolean | null
 }>({
-	status: 'uninitialized',
-	modelId: DEFAULT_MODEL,
-	loadProgress: 0,
-	loadStage: '',
+	provider: 'openrouter',
+	enabled: false,
+	openRouterModel: DEFAULT_OPENROUTER_MODEL,
+	webllmModel: DEFAULT_WEBLLM_MODEL,
+	webllmStatus: 'uninitialized',
+	webllmProgress: 0,
+	webllmStage: '',
 	errorMessage: '',
 	webgpuSupported: null
 })
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-let engine: any = null
+let webllmEngine: any = null
 
-/**
- * Test for WebGPU availability without importing web-llm (so we can grey
- * out the LLM toggle before the user opts in).
- */
 export function detectWebGPU(): boolean {
 	if (typeof navigator === 'undefined') return false
-	if (typeof (navigator as { gpu?: unknown }).gpu === 'undefined') {
-		llm.webgpuSupported = false
-		return false
-	}
-	llm.webgpuSupported = true
-	return true
+	const supported = typeof (navigator as { gpu?: unknown }).gpu !== 'undefined'
+	llm.webgpuSupported = supported
+	return supported
 }
 
-/**
- * Build the OpenAI-compatible `tools` list from the catalog. Each demo's
- * `tool: DemoTool` becomes a function declaration. The parameters
- * schema is intentionally loose for now — most demos document param
- * shapes in prose; we lift those into JSON Schema as we tighten them.
- */
+// ─── Tool schema (shared by both providers) ────────────────────────────
+
 export function buildToolSpecs() {
 	return catalog
 		.filter((m) => m.tool)
@@ -113,75 +150,215 @@ export function buildToolSpecs() {
 		}))
 }
 
-const SYSTEM_PROMPT = [
-	'You are Rokkit — an assistant that responds by mounting live Svelte components in the chat.',
-	'When the user asks for a chart, table, form, list, etc., call the matching tool with reasonable props.',
-	'Always include a one-sentence prose reply alongside the tool call so the user understands the rendering.',
-	'Prefer tool calls over describing the answer in prose.',
-	"If the user's request doesn't fit any tool, say so briefly and suggest two concrete alternatives."
-].join(' ')
+/**
+ * The free OpenRouter tier doesn't route to providers that support
+ * OpenAI-style `tools` / `tool_choice`. Instead we ask the model to
+ * return a strict JSON envelope and parse it ourselves. The same
+ * envelope works for web-llm (which DOES support tool calls but is
+ * happier with this format too).
+ */
+const SYSTEM_PROMPT = (() => {
+	const tools = catalog
+		.filter((m) => m.tool)
+		.map(
+			(m) =>
+				`  - ${m.tool!.name}: ${m.tool!.description}\n    params: ${JSON.stringify(m.tool!.parameters ?? {})}`
+		)
+		.join('\n')
+	return [
+		'You are Rokkit — an assistant that responds by mounting live Svelte components in the chat.',
+		'You must reply with ONLY a JSON object (no prose outside, no markdown fence) of the shape:',
+		'  { "say": string, "render": [ { "tool": string, "props": object } ] }',
+		'`say` is one short sentence explaining what you rendered.',
+		'`render` is the list of components to mount inline; pick from these tools:',
+		tools,
+		'Pick reasonable props for the user request. If the user request does not fit any tool, return',
+		'  { "say": "...", "render": [] }',
+		'and put two concrete alternative requests as a comma-separated list in `say`.'
+	].join('\n')
+})()
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function parseCompletion(result: any): Block[] {
+	const blocks: Block[] = []
+	const choice = result?.choices?.[0]
+	const message = choice?.message
+	if (!message) return [{ kind: 'prose', text: '(empty response)' }]
+
+	const content = String(message.content ?? '').trim()
+
+	// 1. OpenAI-style tool_calls (web-llm + paid OpenRouter routes)
+	const toolCalls = (message.tool_calls ?? []) as Array<{
+		function?: { name?: string; arguments?: string }
+	}>
+	if (toolCalls.length > 0) {
+		if (content) blocks.push({ kind: 'prose', text: content })
+		for (const call of toolCalls) {
+			const name = call.function?.name
+			if (!name) continue
+			let parsed: Record<string, unknown> = {}
+			try {
+				parsed = call.function?.arguments ? JSON.parse(call.function.arguments) : {}
+			} catch {
+				blocks.push({
+					kind: 'prose',
+					text: `Tool ${name} returned invalid JSON arguments; skipping.`
+				})
+				continue
+			}
+			blocks.push({
+				kind: 'component',
+				tool: name,
+				props: parsed,
+				caption: `${name} · LLM tool call`
+			})
+		}
+		return blocks
+	}
+
+	// 2. JSON envelope { say, render: [{ tool, props }] } (free tier)
+	const json = extractJsonEnvelope(content)
+	if (json && typeof json === 'object') {
+		const env = json as { say?: unknown; render?: unknown }
+		if (typeof env.say === 'string' && env.say.trim()) {
+			blocks.push({ kind: 'prose', text: env.say })
+		}
+		if (Array.isArray(env.render)) {
+			for (const item of env.render) {
+				if (typeof item !== 'object' || item === null) continue
+				const cell = item as { tool?: unknown; props?: unknown }
+				if (typeof cell.tool === 'string') {
+					blocks.push({
+						kind: 'component',
+						tool: cell.tool,
+						props: (cell.props as Record<string, unknown>) ?? {},
+						caption: `${cell.tool} · LLM`
+					})
+				}
+			}
+		}
+		if (blocks.length > 0) return blocks
+	}
+
+	// 3. Plain-text fallback — the model ignored our schema. Surface what
+	// it said so the user can correct or rephrase.
+	if (content) return [{ kind: 'prose', text: content }]
+	return [{ kind: 'prose', text: '(no content or tool calls)' }]
+}
 
 /**
- * Initialise the engine on first use. Reports progress via the `llm`
- * reactive state. Safe to call multiple times — returns the cached
- * engine after the first successful load.
+ * Try to extract a JSON object from the model's response. Models often
+ * wrap output in ```json fences or add trailing prose — we strip those.
  */
-export async function ensureEngine() {
-	if (engine) return engine
+function extractJsonEnvelope(text: string): unknown {
+	const trimmed = text.trim()
+	if (!trimmed) return null
+	// Strip ```json ... ``` fence
+	const fence = trimmed.match(/```(?:json)?\s*([\s\S]+?)\s*```/i)
+	const candidate = fence ? fence[1] : trimmed
+	// Locate first { and matching closing }
+	const start = candidate.indexOf('{')
+	if (start < 0) return null
+	let depth = 0
+	for (let i = start; i < candidate.length; i++) {
+		const ch = candidate[i]
+		if (ch === '{') depth++
+		else if (ch === '}') {
+			depth--
+			if (depth === 0) {
+				try {
+					return JSON.parse(candidate.slice(start, i + 1))
+				} catch {
+					return null
+				}
+			}
+		}
+	}
+	return null
+}
+
+// ─── OpenRouter provider (default) ─────────────────────────────────────
+
+async function routeViaOpenRouter(query: string): Promise<Block[]> {
+	// Free tier providers don't all support OpenAI tool-calling. We ask the
+	// model to emit a strict JSON envelope (see SYSTEM_PROMPT) and parse it
+	// ourselves. response_format hints JSON-mode for providers that honour
+	// it; the parser is forgiving for those that don't.
+	const res = await fetch('/api/llm/openrouter', {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({
+			model: llm.openRouterModel,
+			messages: [
+				{ role: 'system', content: SYSTEM_PROMPT },
+				{ role: 'user', content: query }
+			],
+			response_format: { type: 'json_object' },
+			temperature: 0.3
+		})
+	})
+	if (!res.ok) {
+		const text = await res.text()
+		throw new Error(`${res.status} · ${text.slice(0, 200)}`)
+	}
+	return parseCompletion(await res.json())
+}
+
+// ─── Web-LLM provider (opt-in download) ────────────────────────────────
+
+export async function ensureWebLLMEngine() {
+	if (webllmEngine) return webllmEngine
 	if (!detectWebGPU()) {
-		llm.status = 'error'
-		llm.errorMessage = 'WebGPU is not available in this browser. Chrome 113+ on a discrete GPU is the most reliable target.'
+		llm.webllmStatus = 'error'
+		llm.errorMessage = 'WebGPU is not available in this browser.'
 		return null
 	}
-	llm.status = 'loading'
-	llm.loadProgress = 0
-	llm.loadStage = 'Initialising web-llm…'
+	llm.webllmStatus = 'loading'
+	llm.webllmProgress = 0
+	llm.webllmStage = 'Initialising web-llm…'
 	try {
-		const mod = await import('@mlc-ai/web-llm')
-		engine = await mod.CreateMLCEngine(llm.modelId, {
+		// CDN import: Vite's regex-based dependency scanner can't handle the
+		// npm bundle (Maximum call stack). The CDN URL is opaque to Vite so
+		// the browser fetches it directly.
+		const mod = await import(
+			/* @vite-ignore */ 'https://esm.run/@mlc-ai/web-llm@0.2.83'
+		)
+		webllmEngine = await mod.CreateMLCEngine(llm.webllmModel, {
 			initProgressCallback: (p: { progress: number; text: string }) => {
-				llm.loadProgress = p.progress
-				llm.loadStage = p.text
+				llm.webllmProgress = p.progress
+				llm.webllmStage = p.text
 			}
 		})
-		llm.status = 'ready'
-		llm.loadProgress = 1
-		llm.loadStage = 'Ready'
-		return engine
+		llm.webllmStatus = 'ready'
+		llm.webllmProgress = 1
+		llm.webllmStage = 'Ready'
+		return webllmEngine
 	} catch (e) {
-		llm.status = 'error'
+		llm.webllmStatus = 'error'
 		llm.errorMessage = (e as Error).message || String(e)
 		return null
 	}
 }
 
-/**
- * Drop the engine so the next route call re-loads. Used when the user
- * picks a different model.
- */
-export function resetEngine() {
-	engine = null
-	llm.status = 'uninitialized'
-	llm.loadProgress = 0
-	llm.loadStage = ''
+export function resetWebLLMEngine() {
+	webllmEngine = null
+	llm.webllmStatus = 'uninitialized'
+	llm.webllmProgress = 0
+	llm.webllmStage = ''
 	llm.errorMessage = ''
 }
 
-/**
- * Phase-2 replacement for routeQuery. Returns Block[] in the same shape
- * the mock produces, so the rest of the chat UI is unchanged.
- */
-export async function routeViaLLM(query: string): Promise<Block[]> {
-	const e = await ensureEngine()
+async function routeViaWebLLM(query: string): Promise<Block[]> {
+	const e = await ensureWebLLMEngine()
 	if (!e) {
 		return [
 			{
 				kind: 'prose',
-				text: `Couldn't initialise the in-browser LLM — ${llm.errorMessage || 'unknown error'}`
+				text: `Couldn't initialise web-llm — ${llm.errorMessage || 'unknown error'}`
 			}
 		]
 	}
-	llm.status = 'thinking'
+	llm.webllmStatus = 'thinking'
 	try {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const result: any = await e.chat.completions.create({
@@ -195,51 +372,47 @@ export async function routeViaLLM(query: string): Promise<Block[]> {
 		})
 		return parseCompletion(result)
 	} catch (err) {
-		return [
-			{ kind: 'prose', text: `LLM error: ${(err as Error).message || String(err)}` }
-		]
+		return [{ kind: 'prose', text: `Web-LLM error: ${(err as Error).message}` }]
 	} finally {
-		llm.status = 'ready'
+		llm.webllmStatus = 'ready'
 	}
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function parseCompletion(result: any): Block[] {
-	const blocks: Block[] = []
-	const choice = result?.choices?.[0]
-	const message = choice?.message
-	if (!message) {
-		return [{ kind: 'prose', text: '(empty response)' }]
-	}
-	if (message.content) {
-		blocks.push({ kind: 'prose', text: String(message.content) })
-	}
-	const toolCalls = (message.tool_calls ?? []) as Array<{
-		function?: { name?: string; arguments?: string }
-	}>
-	for (const call of toolCalls) {
-		const name = call.function?.name
-		if (!name) continue
-		let parsed: Record<string, unknown> = {}
+// ─── Public entry point ────────────────────────────────────────────────
+
+/**
+ * Route a query through whichever provider is currently selected. On
+ * OpenRouter failure, surfaces a "switch to web-llm" suggestion so the
+ * user can fall back without typing.
+ */
+export async function routeViaLLM(query: string): Promise<Block[]> {
+	if (llm.provider === 'openrouter') {
 		try {
-			parsed = call.function?.arguments ? JSON.parse(call.function.arguments) : {}
-		} catch {
-			// LLM emitted invalid JSON — skip the tool but flag it
-			blocks.push({
-				kind: 'prose',
-				text: `Tool ${name} returned invalid JSON arguments; skipping.`
-			})
-			continue
+			return await routeViaOpenRouter(query)
+		} catch (err) {
+			const msg = (err as Error).message || String(err)
+			return [
+				{
+					kind: 'prose',
+					text: `OpenRouter call failed — ${msg}. The free tier rate-limits aggressively; the in-browser model is available as a fallback.`
+				},
+				{
+					kind: 'suggestions',
+					intro: 'Or',
+					items: [
+						{
+							label: 'Switch to Web-LLM (downloads ~2 GB)',
+							query: '__switch_to_webllm',
+							action: { kind: 'switch-provider', provider: 'webllm' }
+						},
+						{
+							label: 'Retry',
+							query
+						}
+					]
+				}
+			]
 		}
-		blocks.push({
-			kind: 'component',
-			tool: name,
-			props: parsed,
-			caption: `${name} · LLM tool call`
-		})
 	}
-	if (blocks.length === 0) {
-		blocks.push({ kind: 'prose', text: '(no content or tool calls)' })
-	}
-	return blocks
+	return routeViaWebLLM(query)
 }

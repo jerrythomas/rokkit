@@ -3946,3 +3946,71 @@ Added `@mlc-ai/web-llm` and built the router-swap that replaces the mock with a 
 - Tighten `buildToolSpecs()` parameter schemas as each demo gets a real JSON Schema.
 - Add a "system" message variant per demo that explains what the tool should produce (especially for data tools — current chart/table props vary by inferred shape).
 - Persist the chosen model + `useLLM` preference to localStorage.
+
+## 2026-05-25 (cont.) — LLM via OpenRouter (default) + Web-LLM (opt-in fallback)
+
+Earlier Phase 2 commit only had Web-LLM, and that download is large enough (~1–2 GB) that nobody would actually try it. Rewired the LLM layer around two providers with OpenRouter as the default — instant, no download, just needs a free API key on the server.
+
+**Also fixed a Vite-vs-web-llm crash** that surfaced when the user clicked "Load model": Vite's dependency optimiser blows its call stack transforming the web-llm npm bundle (Maximum call stack exceeded in `vite/chunks/config.js:28332`). `optimizeDeps.exclude` alone wasn't enough — the package still hit the transform pipeline. Solution: import web-llm from `https://esm.run/@mlc-ai/web-llm@0.2.83` at request time via a `/* @vite-ignore */` dynamic import. The CDN URL is opaque to Vite so the browser fetches it directly.
+
+**Provider design**
+
+`lib/chat-demo/llm.svelte.ts` exposes:
+- `llm.provider: 'openrouter' | 'webllm'` — single source of truth
+- `llm.enabled: boolean` — master toggle
+- per-provider model picks (`openRouterModel`, `webllmModel`)
+- per-provider status (`webllmStatus`, `webllmProgress`)
+
+`routeViaLLM(query)` dispatches on `llm.provider`. On OpenRouter failure it returns a fallback block with a `switch-provider` suggestion chip that flips `llm.provider` via `submitAction`.
+
+**OpenRouter path**
+
+- `routes/api/llm/openrouter/+server.ts` — SvelteKit POST endpoint. Reads `OPENROUTER_API_KEY` from `$env/dynamic/private` (demo/.env.local) and forwards the body to `https://openrouter.ai/api/v1/chat/completions`. Adds `HTTP-Referer` + `X-Title`. Key stays server-side.
+- Client `routeViaOpenRouter` POSTs to `/api/llm/openrouter`. No tool-calling — free-tier providers don't all support it. Uses `response_format: { type: 'json_object' }` + a system prompt that defines a strict envelope.
+
+**JSON envelope**
+
+```
+{ "say": "one short sentence",
+  "render": [ { "tool": "<name>", "props": { ... } } ] }
+```
+
+System prompt enumerates the catalog's `tool: DemoTool` declarations so the model knows what tools exist + their parameter shapes. `parseCompletion` handles both the envelope AND OpenAI-style `tool_calls` for paid providers + Web-LLM. A best-effort JSON extractor strips ```` ```json ```` fences and walks brace depth to find the first complete object.
+
+**Curated free models (current)**
+
+The :free list rotates over time. Refreshed against the live `/api/v1/models` endpoint and picked:
+- `openai/gpt-oss-20b:free` (default — reliable JSON-mode)
+- `openai/gpt-oss-120b:free`
+- `qwen/qwen3-next-80b-a3b-instruct:free`
+- `meta-llama/llama-3.3-70b-instruct:free`
+- `meta-llama/llama-3.2-3b-instruct:free`
+- `google/gemma-4-26b-a4b-it:free`
+- `deepseek/deepseek-v4-flash:free`
+
+Notes from testing: Llama 3.2 3B and 3.3 70B were both upstream-rate-limited (429) at the moment. `gpt-oss-20b` returned cleanly.
+
+**UI**
+
+- Single ☐ 🤖 LLM master toggle
+- When on: provider dropdown (OpenRouter / Web-LLM) + per-provider model dropdown
+- Web-LLM dropdown disabled when WebGPU isn't available
+- Web-LLM keeps the Load button + progress %; OpenRouter doesn't need either
+
+**End-to-end verified**
+
+`/chat` → toggle LLM on → "Show a bar chart of quarterly revenue" → OpenRouter → gpt-oss-20b → JSON envelope → router parsed `mount_bar_chart` + props → BarChart rendered inline with Q1 120k / Q2 150k / Q3 170k / Q4 200k (the model picked the data). Caption "mount_bar_chart · LLM". Export data + Copy buttons present.
+
+Fall-back path also verified: 429 from rate-limited Llama → error prose + "Switch to Web-LLM" chip + "Retry" chip in the response.
+
+**Also fixed** while in here:
+- `state_referenced_locally` warnings in InlineComponent: wrapped `$state` initialisers reading `tool`/`props` in `untrack(() => ...)` so we capture the initial value without subscribing.
+- `a11y_figcaption_parent`: my footer wrapped the `<figcaption>` in a div. Changed to a `<span class="inline-caption">` since the figure no longer has a direct child figcaption.
+
+Lint: 0 errors, 45 pre-existing warnings.
+
+**Followups (lower priority)**
+
+- Streaming output. Current call is awaited; switching to `stream: true` + incremental block rendering would feel snappier on slower models.
+- Per-demo JSON Schema for `parameters`. Today all params are typed as `string` in the tool spec; the LLM mostly figures out reasonable shapes but tighter schemas would reduce failures on the larger demos (form, chart with fill).
+- Persist `llm.enabled` + `llm.provider` + model selections to localStorage so the toggle survives refresh.

@@ -49,6 +49,7 @@ export type DataNoteBlock = {
 export type SuggestionAction =
 	| { kind: 'reshape'; source: 'json' | 'csv'; data: unknown; force: 'table' | 'chart' | 'record' | 'list'; caption?: string }
 	| { kind: 'props'; tool: string; props: Record<string, unknown>; caption?: string }
+	| { kind: 'switch-provider'; provider: 'openrouter' | 'webllm' }
 
 export type SuggestionItem = {
 	label: string

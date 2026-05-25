@@ -11,10 +11,9 @@ import { routeViaLLM, llm } from './llm.svelte'
 let nextId = 0
 const newId = () => `turn-${++nextId}-${Date.now()}`
 
-export const conversation = $state<{ turns: ChatTurn[]; thinking: boolean; useLLM: boolean }>({
+export const conversation = $state<{ turns: ChatTurn[]; thinking: boolean }>({
 	turns: [],
-	thinking: false,
-	useLLM: false
+	thinking: false
 })
 
 function thinkThen(turn: ChatTurn): void {
@@ -34,7 +33,7 @@ export function submitQuery(query: string): void {
 		role: 'user',
 		text
 	})
-	if (conversation.useLLM && llm.status !== 'error') {
+	if (llm.enabled) {
 		conversation.thinking = true
 		routeViaLLM(text)
 			.then((blocks) => {
@@ -177,6 +176,24 @@ export function submitAction(item: { label?: string; action: SuggestionAction })
 					tool: action.tool,
 					props: action.props,
 					caption: action.caption
+				}
+			]
+		})
+		return
+	}
+	if (action.kind === 'switch-provider') {
+		llm.provider = action.provider
+		thinkThen({
+			id: newId(),
+			timestamp: Date.now(),
+			role: 'assistant',
+			blocks: [
+				{
+					kind: 'prose',
+					text:
+						action.provider === 'webllm'
+							? 'Switched to Web-LLM. Click "Load model" in the chrome — first-time download is ~1–2 GB and runs entirely in the browser after.'
+							: 'Switched to OpenRouter.'
 				}
 			]
 		})
