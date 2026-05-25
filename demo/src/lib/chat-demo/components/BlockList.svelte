@@ -1,7 +1,8 @@
 <script lang="ts">
-	import type { Block } from '../types'
+	import type { Block, SuggestionItem } from '../types'
 	import { CodeBlock } from '$lib/chat'
 	import InlineComponent from './InlineComponent.svelte'
+	import { submitAction } from '../store.svelte'
 
 	type Props = {
 		blocks: Block[]
@@ -9,6 +10,16 @@
 	}
 
 	const { blocks, onSuggestion }: Props = $props()
+
+	function handleSuggestion(item: SuggestionItem) {
+		// Data-aware action takes precedence; the text query is a fallback for
+		// when there's no action (or for the future LLM path).
+		if (item.action) {
+			submitAction({ label: item.label, action: item.action })
+			return
+		}
+		onSuggestion?.(item.query)
+	}
 </script>
 
 <div class="block-list">
@@ -47,7 +58,7 @@
 				{#if block.intro}<span class="block-suggestions-intro">{block.intro}</span>{/if}
 				<div class="block-suggestions-row">
 					{#each block.items as item (item.query)}
-						<button type="button" class="block-suggestion" onclick={() => onSuggestion?.(item.query)}>
+						<button type="button" class="block-suggestion" onclick={() => handleSuggestion(item)}>
 							{item.label}
 						</button>
 					{/each}

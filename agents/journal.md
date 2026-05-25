@@ -3865,3 +3865,41 @@ InputText fires its `onchange` callback on the native `change` event, not `input
 What this proves: the same `<FormRenderer/>` that handles schema-driven forms in /app handles arbitrary user-shaped data in /chat — and now it talks back. The catalog's `inline: { capable: true }` was never just for rendering; it implies a contract that any data going in can come back out.
 
 Lint: 0 errors, 38 pre-existing warnings.
+
+## 2026-05-25 (cont.) — Inline table editing + data-aware suggestions
+
+Two follow-ups to the bidirectional flow:
+
+**Inline table editing**
+
+Tables now have an "Edit rows" toggle. When on, the read-only Table swaps for a CSS-grid of native inputs (text / number / date / checkbox picked from the cell's value type). Each cell uses `oninput` rather than `onchange`, so the Save button enables on the first keystroke — no Tab dance like the form needs (we noted that gotcha last commit). Cancel reverts to the seed.
+
+Save flows through the same `submitExport(...)` as the form, producing an `edited.json` code block in the next assistant turn. Browser-verified: changed `EMEA·Hardware·124 → 999` and the new JSON came back with `"revenue": 999`.
+
+**Data-aware suggestions**
+
+`SuggestionItem` picked up an optional `action`:
+
+- `{ kind: 'reshape', source, data, force, caption? }` — re-routes the same data through `routeData(...)` with a forced shape. No second paste needed.
+- `{ kind: 'props', tool, props, caption? }` — mounts a different tool / props pair without going through inference. Used for "Stack the series".
+
+`inferShape(value, force?)` got a hint parameter. If the hint fits (e.g. an array of records can be forced to 'table' or 'chart'), we use it; otherwise we fall back to the normal heuristic. Auto-detect lives in `inferShapeAuto`.
+
+`submitAction({ label, action })` in the store dispatches based on kind: reshape → `routeData(...)` with the force hint; props → emit a one-block `component` turn. `BlockList` calls `submitAction` when an item has an action, otherwise it falls back to the text-query path (which is what the future LLM will use too).
+
+**Updated suggestions**
+
+- Table → "Chart Y by X" now reshapes the table data into a chart inline, no re-paste.
+- Chart → "Show as a table" reshapes back.
+- Chart with `fill` → "Stack the series" remounts BarChart with `stack: true` via the props action.
+- Record → "Wrap in a list" turns the single record into a 1-row table via reshape.
+
+**Browser-verified flow**
+
+1. Paste sales JSON (6 region/product/revenue records) → chart.
+2. Click "Show as a table" → reshape action fires, second turn is the same data as a Table.
+3. Click "Edit rows" → cell grid. Change a number. Save rows → next turn is the edited JSON. Round-trips a table the same way the form did.
+
+The block payload is still serializable (the `data` in `reshape` actions is plain JSON), so when we wire the LLM in Phase 2 the same structure can come out of a tool call.
+
+Lint: 0 errors, 41 pre-existing warnings.

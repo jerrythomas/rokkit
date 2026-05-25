@@ -3,7 +3,7 @@
  * for now (no persistence). Each user query becomes two turns: the user's
  * message + the assistant's pending → resolved blocks.
  */
-import type { ChatTurn } from './types'
+import type { ChatTurn, SuggestionAction } from './types'
 import { routeQuery, routeData } from './router'
 import { tryParse } from './infer'
 
@@ -118,6 +118,52 @@ export function submitExport(args: {
 			}
 		]
 	})
+}
+
+/**
+ * Dispatch a data-aware suggestion. Reshapes existing data through the
+ * inference pipeline with a forced shape, or remounts a component with
+ * different props. No re-parsing, no second paste — the user's data lives
+ * inside the action.
+ */
+export function submitAction(item: { label?: string; action: SuggestionAction }): void {
+	const { action, label } = item
+	const userText = label ? `[suggestion] ${label}` : '[suggestion]'
+	conversation.turns.push({
+		id: newId(),
+		timestamp: Date.now(),
+		role: 'user',
+		text: userText
+	})
+	if (action.kind === 'reshape') {
+		thinkThen({
+			id: newId(),
+			timestamp: Date.now(),
+			role: 'assistant',
+			blocks: routeData(action.source, action.data, label, action.force)
+		})
+		return
+	}
+	if (action.kind === 'props') {
+		thinkThen({
+			id: newId(),
+			timestamp: Date.now(),
+			role: 'assistant',
+			blocks: [
+				{
+					kind: 'prose',
+					text: `Re-rendered with new props for ${action.tool}.`
+				},
+				{
+					kind: 'component',
+					tool: action.tool,
+					props: action.props,
+					caption: action.caption
+				}
+			]
+		})
+		return
+	}
 }
 
 /**

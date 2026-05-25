@@ -40,10 +40,26 @@ export type DataNoteBlock = {
 	columns?: { name: string; type: string }[]
 }
 
+/**
+ * A suggestion can either (a) be plain text that gets submitted as a new query,
+ * or (b) carry a structured action that re-routes the existing data through
+ * the inference pipeline with a forced shape. The latter avoids the user
+ * pasting data in twice.
+ */
+export type SuggestionAction =
+	| { kind: 'reshape'; source: 'json' | 'csv'; data: unknown; force: 'table' | 'chart' | 'record' | 'list'; caption?: string }
+	| { kind: 'props'; tool: string; props: Record<string, unknown>; caption?: string }
+
+export type SuggestionItem = {
+	label: string
+	query: string
+	action?: SuggestionAction
+}
+
 export type SuggestionsBlock = {
 	kind: 'suggestions'
 	intro?: string
-	items: { label: string; query: string }[]
+	items: SuggestionItem[]
 }
 
 export type Block =

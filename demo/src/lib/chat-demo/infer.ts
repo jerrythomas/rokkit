@@ -187,7 +187,46 @@ function inferChartAxes(columns: FieldSummary[]): { x: string; y: string; fill?:
 	return out
 }
 
-export function inferShape(value: unknown): Inference {
+/**
+ * Optional hint to override the auto-detection. If `force` is provided and
+ * the data can plausibly fit that shape, we return that shape; otherwise we
+ * fall back to the normal inference. Used by data-aware suggestions
+ * ("Show as a table", "Chart Y by X").
+ */
+export function inferShape(
+	value: unknown,
+	force?: 'table' | 'chart' | 'record' | 'list'
+): Inference {
+	if (force === 'table' && Array.isArray(value) && value.every(isPlainObject)) {
+		const rows = value as Record<string, unknown>[]
+		const keys = Array.from(new Set(rows.flatMap((r) => Object.keys(r))))
+		const columns = keys.map((k) => summarizeColumn(rows, k))
+		return { kind: 'table', columns, rows }
+	}
+	if (force === 'chart' && Array.isArray(value) && value.every(isPlainObject)) {
+		const rows = value as Record<string, unknown>[]
+		const keys = Array.from(new Set(rows.flatMap((r) => Object.keys(r))))
+		const columns = keys.map((k) => summarizeColumn(rows, k))
+		const axes = inferChartAxes(columns)
+		if (axes) return { kind: 'chart', columns, rows, ...axes }
+		// Fall through to normal inference if we can't pick axes.
+	}
+	if (force === 'list' && Array.isArray(value)) {
+		return { kind: 'list', items: value }
+	}
+	if (force === 'record' && isPlainObject(value)) {
+		const keys = Object.keys(value)
+		const fields = keys.map((k) => ({
+			name: k,
+			type: detectType((value as Record<string, unknown>)[k]),
+			density: 1
+		}))
+		return { kind: 'record', fields, record: value as Record<string, unknown> }
+	}
+	return inferShapeAuto(value)
+}
+
+function inferShapeAuto(value: unknown): Inference {
 	// 1. Array of records → table or chart
 	if (Array.isArray(value)) {
 		if (value.length === 0) return { kind: 'list', items: [] }

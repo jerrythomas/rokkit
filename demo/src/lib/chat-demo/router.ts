@@ -251,9 +251,10 @@ const SHAPE_HEADLINE: Record<string, string> = {
 export function routeData(
 	source: 'json' | 'csv',
 	parsed: unknown,
-	originalQuery?: string
+	originalQuery?: string,
+	force?: 'table' | 'chart' | 'record' | 'list'
 ): Block[] {
-	const inf = inferShape(parsed)
+	const inf = inferShape(parsed, force)
 
 	if (inf.kind === 'error') {
 		return [{ kind: 'prose', text: `Could not parse the data — ${inf.message}` }]
@@ -279,8 +280,17 @@ export function routeData(
 			kind: 'suggestions',
 			intro: 'Or',
 			items: [
-				{ label: 'Show raw JSON', query: 'Show the data as JSON' },
-				{ label: 'Wrap in a list', query: 'Wrap this record in a one-item list' }
+				{
+					label: 'Wrap in a list',
+					query: 'Wrap this record in a one-item list',
+					action: {
+						kind: 'reshape',
+						source,
+						data: [inf.record],
+						force: 'table',
+						caption: 'as a 1-row table'
+					}
+				}
 			]
 		})
 	} else if (inf.kind === 'table') {
@@ -291,7 +301,7 @@ export function routeData(
 			caption: `${inf.rows.length} rows · ${inf.columns.length} columns`,
 			props: { data: inf.rows }
 		})
-		const chartAxes = inferShape(inf.rows)
+		const chartAxes = inferShape(inf.rows, 'chart')
 		if (chartAxes.kind === 'chart') {
 			blocks.push({
 				kind: 'suggestions',
@@ -299,7 +309,8 @@ export function routeData(
 				items: [
 					{
 						label: `Chart ${chartAxes.y} by ${chartAxes.x}`,
-						query: `Visualize this as a bar chart with x=${chartAxes.x} y=${chartAxes.y}`
+						query: `Visualize this as a bar chart with x=${chartAxes.x} y=${chartAxes.y}`,
+						action: { kind: 'reshape', source, data: inf.rows, force: 'chart' }
 					}
 				]
 			})
@@ -323,16 +334,27 @@ export function routeData(
 			caption: `${inf.y} by ${inf.x}${inf.fill ? ` (grouped by ${inf.fill})` : ''}`,
 			props
 		})
+		const stackProps: Record<string, unknown> = { ...props, stack: true }
 		blocks.push({
 			kind: 'suggestions',
 			intro: 'Or',
 			items: [
-				{ label: 'Show as a table', query: 'Show the data as a table' },
+				{
+					label: 'Show as a table',
+					query: 'Show the data as a table',
+					action: { kind: 'reshape', source, data: inf.rows, force: 'table' }
+				},
 				...(inf.fill
 					? [
 							{
 								label: 'Stack the series',
-								query: `Stack the chart by ${inf.fill}`
+								query: `Stack the chart by ${inf.fill}`,
+								action: {
+									kind: 'props' as const,
+									tool: 'mount_bar_chart',
+									props: stackProps,
+									caption: `${inf.y} stacked by ${inf.fill}`
+								}
 							}
 						]
 					: [])

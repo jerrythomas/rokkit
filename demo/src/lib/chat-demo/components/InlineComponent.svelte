@@ -20,6 +20,50 @@
 
 	const seedData = $derived(props.data ?? null)
 
+	// Tables: editable mode keeps a deep clone of the rows so edits don't
+	// mutate the response block. Toggled via "Edit rows".
+	let editingTable = $state(false)
+	let tableRows = $state<Record<string, unknown>[]>(
+		tool === 'mount_table'
+			? JSON.parse(JSON.stringify((props.data as unknown[]) ?? []))
+			: []
+	)
+	const tableColumns = $derived<string[]>(
+		tool === 'mount_table' && Array.isArray(props.data)
+			? Array.from(
+					new Set(
+						(props.data as Record<string, unknown>[]).flatMap((r) => Object.keys(r ?? {}))
+					)
+				)
+			: []
+	)
+	const isTableDirty = $derived.by(() => {
+		if (tool !== 'mount_table') return false
+		try {
+			return JSON.stringify(tableRows) !== JSON.stringify(props.data)
+		} catch {
+			return false
+		}
+	})
+
+	function cellInputType(value: unknown): 'number' | 'checkbox' | 'date' | 'text' {
+		if (typeof value === 'number') return 'number'
+		if (typeof value === 'boolean') return 'checkbox'
+		if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)) return 'date'
+		return 'text'
+	}
+
+	function setCell(rowIdx: number, col: string, raw: string | boolean) {
+		const original = tableRows[rowIdx]?.[col]
+		let next: unknown = raw
+		if (typeof original === 'number' && typeof raw === 'string') {
+			const n = Number(raw)
+			next = Number.isNaN(n) ? raw : n
+		}
+		// Boolean comes through as a real boolean from checkbox
+		tableRows[rowIdx] = { ...tableRows[rowIdx], [col]: next }
+	}
+
 	// True once the form has diverged from its initial value. Avoids the
 	// Save button feeling clickable when nothing's changed.
 	const isFormDirty = $derived.by(() => {
@@ -40,14 +84,29 @@
 		})
 	}
 
+	function saveTable() {
+		submitExport({
+			source: 'table',
+			caption,
+			data: JSON.parse(JSON.stringify(tableRows))
+		})
+		editingTable = false
+	}
+
+	function currentExportData(): unknown {
+		if (tool === 'mount_form') return formData
+		if (tool === 'mount_table') return tableRows
+		return props.data ?? props.items ?? null
+	}
+
 	function exportData() {
-		const data = tool === 'mount_form' ? formData : (props.data ?? props.items ?? null)
+		const data = currentExportData()
 		if (data === null) return
 		submitExport({ source: tool, caption, data })
 	}
 
 	async function copyJson() {
-		const data = tool === 'mount_form' ? formData : (props.data ?? props.items ?? null)
+		const data = currentExportData()
 		if (data === null) return
 		try {
 			await navigator.clipboard.writeText(JSON.stringify(data, null, 2))
@@ -68,7 +127,52 @@
 	{#if tool === 'mount_bar_chart'}
 		<BarChart {...props} />
 	{:else if tool === 'mount_table'}
-		<Table {...props} />
+		{#if editingTable}
+			<div class="cell-grid" style="grid-template-columns: repeat({tableColumns.length}, minmax(0, 1fr));">
+				{#each tableColumns as col (col)}
+					<div class="cell-header">{col}</div>
+				{/each}
+				{#each tableRows as row, rowIdx (rowIdx)}
+					{#each tableColumns as col (col)}
+						{@const value = row[col]}
+						{@const type = cellInputType(value)}
+						<div class="cell">
+							{#if type === 'checkbox'}
+								<input
+									type="checkbox"
+									checked={Boolean(value)}
+									onchange={(e) =>
+										setCell(rowIdx, col, (e.currentTarget as HTMLInputElement).checked)}
+								/>
+							{:else if type === 'number'}
+								<input
+									type="number"
+									value={value as number}
+									oninput={(e) =>
+										setCell(rowIdx, col, (e.currentTarget as HTMLInputElement).value)}
+								/>
+							{:else if type === 'date'}
+								<input
+									type="date"
+									value={value as string}
+									oninput={(e) =>
+										setCell(rowIdx, col, (e.currentTarget as HTMLInputElement).value)}
+								/>
+							{:else}
+								<input
+									type="text"
+									value={value as string ?? ''}
+									oninput={(e) =>
+										setCell(rowIdx, col, (e.currentTarget as HTMLInputElement).value)}
+								/>
+							{/if}
+						</div>
+					{/each}
+				{/each}
+			</div>
+		{:else}
+			<Table {...props} />
+		{/if}
 	{:else if tool === 'mount_list'}
 		<List {...props} />
 	{:else if tool === 'mount_form'}
@@ -97,6 +201,44 @@
 							<span class="i-mdi:content-save-outline" aria-hidden="true"></span>
 							Save changes
 						</button>
+					{:else if tool === 'mount_table'}
+						{#if editingTable}
+							<button
+								type="button"
+								class="inline-action"
+								onclick={saveTable}
+								disabled={!isTableDirty}
+								title={isTableDirty
+									? 'Save edited rows as a new turn'
+									: 'Edit a cell to enable saving'}
+							>
+								<span class="i-mdi:content-save-outline" aria-hidden="true"></span>
+								Save rows
+							</button>
+							<button
+								type="button"
+								class="inline-action subtle"
+								onclick={() => {
+									tableRows = JSON.parse(JSON.stringify(props.data ?? []))
+									editingTable = false
+								}}
+							>
+								Cancel
+							</button>
+						{:else}
+							<button
+								type="button"
+								class="inline-action"
+								onclick={() => (editingTable = true)}
+							>
+								<span class="i-mdi:table-edit" aria-hidden="true"></span>
+								Edit rows
+							</button>
+							<button type="button" class="inline-action subtle" onclick={exportData}>
+								<span class="i-mdi:export-variant" aria-hidden="true"></span>
+								Export
+							</button>
+						{/if}
 					{:else}
 						<button type="button" class="inline-action" onclick={exportData}>
 							<span class="i-mdi:export-variant" aria-hidden="true"></span>
@@ -184,5 +326,50 @@
 		font: 13px var(--font-ui);
 		color: var(--ink-mute);
 		padding: 8px;
+	}
+
+	.cell-grid {
+		display: grid;
+		gap: 1px;
+		background: var(--paper-edge);
+		border: 1px solid var(--paper-edge);
+		border-radius: 6px;
+		overflow: hidden;
+	}
+
+	.cell-header {
+		padding: 6px 8px;
+		background: var(--paper-soft);
+		font: 500 11px var(--font-mono);
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--ink-mute);
+	}
+
+	.cell {
+		background: var(--paper);
+		padding: 2px;
+	}
+
+	.cell input[type='text'],
+	.cell input[type='number'],
+	.cell input[type='date'] {
+		width: 100%;
+		padding: 6px 8px;
+		border: 1px solid transparent;
+		background: transparent;
+		font: 13px var(--font-ui);
+		color: var(--ink);
+		border-radius: 4px;
+	}
+
+	.cell input:focus {
+		outline: none;
+		border-color: var(--accent);
+		background: var(--paper-soft);
+	}
+
+	.cell input[type='checkbox'] {
+		margin: 8px;
 	}
 </style>
