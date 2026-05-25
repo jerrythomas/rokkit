@@ -61,6 +61,14 @@
 		{ pkg: '@rokkit/states', icon: 'i-mdi:refresh', desc: 'finite states for interactive UI' },
 		{ pkg: '@rokkit/icons', icon: 'i-mdi:widgets-outline', desc: 'icon set · customizable' },
 		{ pkg: '@rokkit/themes', icon: 'i-mdi:palette', desc: 'styles · skins · typography pairs' },
+		{ pkg: '@rokkit/forms', icon: 'i-mdi:form-textbox', desc: 'schema + layout forms' },
+		{ pkg: '@rokkit/chart', icon: 'i-mdi:chart-bar', desc: 'data-driven SVG charts' },
+		{
+			pkg: '@rokkit/blocks',
+			icon: 'i-mdi:code-tags',
+			desc: 'markdown code-fence plugins · chart, table, form, list, stepper',
+			isNew: true
+		},
 		{ pkg: '@rokkit/ui', icon: 'i-mdi:format-list-bulleted', desc: 'the components themselves' }
 	]
 </script>
@@ -113,6 +121,9 @@
 				keyboard, a11y — so your code stays about what the user sees, not how to
 				wire it.
 			</p>
+			<code class="install-cmd hero-install">
+				<span class="prompt">$</span> bun add @rokkit/ui
+			</code>
 			<div class="hero-actions">
 				<Button
 					href="/app"
@@ -129,9 +140,6 @@
 					iconRight="i-mdi:arrow-right"
 					label="Try the chat"
 				/>
-				<code class="install-cmd">
-					<span class="prompt">$</span> bun add @rokkit/ui
-				</code>
 			</div>
 		</div>
 
@@ -227,55 +235,76 @@
 					</li>
 				{/each}
 			</ul>
+			<div class="chat-embed-actions">
+				<Button
+					href="/chat"
+					variant="primary"
+					icon="i-mdi:robot-happy-outline"
+					iconRight="i-mdi:arrow-right"
+					label="Open the chat demo"
+				/>
+			</div>
 		</div>
 
 		<div class="chat-mock">
 			<div class="chat-mock-head">
 				<span class="status-dot"></span>
-				<span class="chat-mock-label">Inside a Claude / OpenAI chat</span>
-				<span class="chat-mock-meta">themed to host</span>
+				<span class="chat-mock-label">/chat · Rokkit demo</span>
+				<span class="chat-mock-meta">live components inline</span>
 			</div>
 			<div class="chat-mock-body">
-				<div class="chat-bubble user">
-					help me lock the Q3 plan — give me the three priorities and a deadline.
+				<!-- User turn -->
+				<div class="chat-msg chat-msg-user">
+					<div class="chat-msg-head">
+						<span class="chat-msg-tag">YOU</span>
+						<span class="chat-msg-who">Jerry</span>
+					</div>
+					<div class="chat-msg-body">
+						Lock the Q3 plan — give me the three priorities and a deadline.
+					</div>
 				</div>
-				<div class="chat-artifact">
-					<span class="chat-artifact-icon">
-						<span class="i-mdi:form-textbox" aria-hidden="true"></span>
-					</span>
-					<div class="chat-artifact-content">
-						<div class="artifact-label">
-							rokkit · &lt;Form/&gt; · streamed from response
-						</div>
-						<div class="artifact-card">
-							<div class="artifact-title">Q3 plan · priorities</div>
-							<div class="artifact-sub">3 items · 1 date · editable</div>
-							<div class="plan-items">
-								{#each planItems as item (item.label)}
-									<div class="plan-item">
-										<span class="plan-checkbox" data-checked={item.done ? '' : undefined}>
-											{#if item.done}
-												<svg viewBox="0 0 10 10" width="10" height="10" aria-hidden="true">
-													<path d="M2 5 L4 7 L8 3" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-												</svg>
-											{/if}
-										</span>
-										{item.label}
+
+				<!-- Assistant turn — prose + rendered form block -->
+				<div class="chat-msg chat-msg-assistant">
+					<div class="chat-msg-head">
+						<span class="chat-msg-tag accent">ROKKIT</span>
+						<span class="chat-msg-who">assistant</span>
+					</div>
+					<div class="chat-msg-body">
+						<p class="chat-prose">
+							Here's the Q3 plan as an editable form. Toggle the boxes and pick
+							a deadline — submit when ready and I'll continue.
+						</p>
+						<figure class="chat-block">
+							<div class="chat-block-card">
+								<div class="artifact-title">Q3 plan · priorities</div>
+								<div class="plan-items">
+									{#each planItems as item (item.label)}
+										<div class="plan-item">
+											<span class="plan-checkbox" data-checked={item.done ? '' : undefined}>
+												{#if item.done}
+													<svg viewBox="0 0 10 10" width="10" height="10" aria-hidden="true">
+														<path d="M2 5 L4 7 L8 3" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+													</svg>
+												{/if}
+											</span>
+											{item.label}
+										</div>
+									{/each}
+								</div>
+								<div class="plan-deadline">
+									<span class="deadline-label">Deadline</span>
+									<span class="deadline-value">30 Sep 2026</span>
+								</div>
+								<div class="chat-block-footer">
+									<span class="chat-block-caption">EDITABLE RECORD</span>
+									<div class="chat-block-actions">
+										<button type="button" class="chat-block-action">Save changes</button>
+										<button type="button" class="chat-block-action subtle">Copy</button>
 									</div>
-								{/each}
+								</div>
 							</div>
-							<div class="plan-deadline">
-								<span class="deadline-label">Deadline</span>
-								<span class="deadline-value">30 Sep 2026</span>
-							</div>
-							<div class="artifact-actions">
-								<button type="button" class="ghost">Edit</button>
-								<button type="button" class="accent">Confirm</button>
-							</div>
-						</div>
-						<div class="artifact-footer">
-							rendered from {'{ items: [...], deadline: "..." }'} · 11 lines of Svelte
-						</div>
+						</figure>
 					</div>
 				</div>
 			</div>
@@ -839,74 +868,118 @@
 		padding: 22px;
 		display: flex;
 		flex-direction: column;
-		gap: 18px;
+		gap: 20px;
 	}
 
-	.chat-bubble {
-		align-self: flex-end;
-		max-width: 78%;
-		padding: 10px 14px;
+	/* Chat-message layout mirrors /chat: tag chip + who, then body indented */
+	.chat-msg {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.chat-msg-head {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		font: 500 10.5px var(--font-mono);
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+
+	.chat-msg-tag {
+		padding: 2px 6px;
 		background: var(--paper-soft);
 		border: 1px solid var(--paper-edge);
-		border-radius: 8px;
-		font: 400 14px/1.5 var(--font-ui);
-		color: var(--ink);
+		border-radius: 4px;
+		color: var(--ink-mute);
 	}
 
-	.chat-artifact {
-		display: flex;
-		align-items: flex-start;
-		gap: 10px;
-	}
-
-	.chat-artifact-icon {
-		width: 26px;
-		height: 26px;
-		flex-shrink: 0;
-		display: grid;
-		place-items: center;
-		border: 1px solid var(--paper-edge);
-		border-radius: 6px;
-		background: var(--accent-soft);
+	.chat-msg-tag.accent {
+		background: color-mix(in oklab, var(--accent) 12%, var(--paper-soft));
+		border-color: color-mix(in oklab, var(--accent) 30%, var(--paper-edge));
 		color: var(--accent);
 	}
 
-	.chat-artifact-icon > span {
-		display: inline-block;
-		width: 14px;
-		height: 14px;
+	.chat-msg-who {
+		color: var(--ink-mute);
+		font-weight: 400;
+		font-size: 11px;
+		letter-spacing: 0;
+		text-transform: none;
 	}
 
-	.chat-artifact-content {
-		flex: 1;
+	.chat-msg-body {
+		font: 400 14px/1.55 var(--font-ui);
+		color: var(--ink);
 	}
 
-	.artifact-label {
-		font: 500 10.5px var(--font-mono);
-		color: var(--ink-soft);
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
-		margin-bottom: 6px;
+	.chat-prose {
+		margin: 0 0 12px;
 	}
 
-	.artifact-card {
+	.chat-block {
+		margin: 0;
+	}
+
+	.chat-block-card {
 		border: 1px solid var(--paper-edge);
 		border-radius: 8px;
 		padding: 14px;
+		background: var(--paper-soft);
+	}
+
+	.chat-block-footer {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin-top: 12px;
+		padding-top: 10px;
+		border-top: 1px dashed var(--paper-edge);
+	}
+
+	.chat-block-caption {
+		flex: 1;
+		font: 500 10.5px var(--font-mono);
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--ink-mute);
+	}
+
+	.chat-block-actions {
+		display: flex;
+		gap: 6px;
+	}
+
+	.chat-block-action {
+		font: 500 11.5px var(--font-ui);
+		padding: 5px 10px;
+		border: 1px solid var(--paper-edge);
+		border-radius: 6px;
 		background: var(--paper);
+		color: var(--ink-mute);
+		cursor: pointer;
+	}
+
+	.chat-block-action.subtle {
+		background: transparent;
+		border-color: transparent;
+	}
+
+	.chat-block-action:hover {
+		border-color: var(--accent);
+		color: var(--accent);
 	}
 
 	.artifact-title {
-		font: 500 13px var(--font-display);
+		font: 500 13.5px var(--font-display);
 		color: var(--ink);
-		margin-bottom: 4px;
+		margin-bottom: 10px;
 		letter-spacing: -0.005em;
 	}
 
-	.artifact-sub {
-		font: 400 11.5px var(--font-mono);
-		color: var(--ink-soft);
-		margin-bottom: 12px;
+	.chat-embed-actions {
+		margin-top: 18px;
 	}
 
 	.plan-items {
@@ -964,39 +1037,6 @@
 		background: var(--paper-soft);
 		border: 1px solid var(--paper-edge);
 		border-radius: 4px;
-	}
-
-	.artifact-actions {
-		display: flex;
-		gap: 6px;
-		margin-top: 14px;
-		justify-content: flex-end;
-	}
-
-	.artifact-actions button {
-		font: 500 12px var(--font-ui);
-		padding: 7px 14px;
-		border-radius: 5px;
-		cursor: pointer;
-	}
-
-	.artifact-actions .ghost {
-		background: transparent;
-		border: 1px solid var(--paper-edge);
-		color: var(--ink-mute);
-	}
-
-	.artifact-actions .accent {
-		background: var(--accent);
-		color: white;
-		border: 0;
-	}
-
-	.artifact-footer {
-		font: 500 10.5px var(--font-mono);
-		color: var(--ink-faint);
-		letter-spacing: 0.02em;
-		margin-top: 8px;
 	}
 
 	/* ─── Packages ───────────────────────────────────────────────── */

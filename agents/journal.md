@@ -4192,3 +4192,23 @@ Browser-verified: the four cards now visibly differ — zen-sumi (dark filled-bl
 **Note for follow-up**: the underlying cascade issue is architectural — to make data-style truly nestable in-document, the theme CSS would need either `@scope` blocks or distinct higher-specificity selectors per nest level. Not blocking, but worth noting for the library.
 
 Lint: 0 errors.
+
+## 2026-05-25 (cont.) — Home tidy: chat embed matches /chat, packages, library bugs logged
+
+User feedback while polishing the home page:
+
+1. **Chat-embed section didn't match the real chat layout** — old mock used "user bubble + small artifact card" which doesn't look like /chat at all. Rebuilt with the same shape /chat uses: `YOU Jerry` tag chip + `ROKKIT assistant` tag chip, narrating prose, then the rendered card with `EDITABLE RECORD` caption + `Save changes / Copy` action row. Added an "Open the chat demo" Button below the bullets so the section now has a way out to the real demo.
+
+2. **@rokkit/blocks missing from the packages grid** — added (with `isNew: true` flag). Also surfaced `@rokkit/forms` and `@rokkit/chart` which were missing.
+
+3. **Install hint placement next to two buttons looked odd** — moved the `bun add @rokkit/ui` install line ABOVE the hero buttons (not inline with them). New `.hero-install` class.
+
+4. **"Open the playground" primary button has poor contrast** (dark ink on saffron). Confirmed it's a library bug, not a demo issue. Filed in `docs/backlog/2026-05-25-theme-bugs-uncovered-by-home-showcase.md` along with two other theme bugs discovered while building the four-card showcase:
+
+   - **`text-on-primary` collides with preset-mini.** UnoCSS's preset-mini matches `text-on-primary` as `text-{color}` against the colors object before our `buildNamedShortcuts()` runs. The colors map has `on-primary → surface.50`, so the resolved color is `var(--color-surface-50)` instead of `var(--on-primary)`. They disagree noticeably in zen-sumi, hence the contrast problem.
+   - **`minimal` underline never renders.** Theme sets `border-b-[3px] border-b-transparent` then changes color on selected — but `<button>` elements default to `border: none`, so CSS forces width to 0. Needs an explicit `border-style: solid` somewhere in the cascade.
+   - **`rokkit` gradient only shows on `:focus-within`** AND `--primary` / `--accent` resolve to the same color in the current token set, so even when it does render the gradient is monochromatic.
+
+None of these block the demo — the home theme showcase still illustrates "same Tabs, four ways" using per-card iframes. But each is a real bug worth fixing in `@rokkit/themes` (and one in `@rokkit/unocss`).
+
+Lint: 0 errors. Tests: 3497.
