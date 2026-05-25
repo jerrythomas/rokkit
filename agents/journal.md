@@ -4131,3 +4131,42 @@ User fills the form → clicks Submit → FormPlugin dispatches `CustomEvent('bl
 Block.kind = 'component' + InlineComponent.svelte are still in the tree (used by the mock router for its scripted responses). Could be removed in a follow-up if we migrate the mock router to also emit markdown.
 
 Lint: 0 errors. Tests: 248 files, 1 pre-existing fail in `FormPlugin.spec` was a query-by-input that needed adjusting; fixed.
+
+## 2026-05-25 (cont.) — FormPlugin lookups + home page consistency
+
+**FormPlugin lookups**
+
+Lookups are a FormBuilder feature for cascading dropdowns (country → city) and option lists from URL/source data. Surfaced through FormPlugin so the LLM can ask for them in a `\`\`\`form` fence.
+
+- `FormSpec.lookups?: Record<string, LookupSpec>` — per-field lookup config
+- `LookupSpec`: `{ url?, source?, dependsOn?, fields?, cacheTime? }` — only JSON-safe patterns
+- `sanitiseLookups()` strips function-typed fields (`fetch`, `filter`) at the boundary because JSON can't carry callables and LLM output can't safely produce them
+- Passed through to `<FormRenderer lookups={...}/>` which feeds the FormBuilder instance
+
+System prompt picked up a third form example (cascading dropdowns):
+```
+{ "schema": { ... country, city ... },
+  "data": { ... },
+  "lookups": {
+    "country": { "source": [{ "value":"FR","label":"France" }, ...] },
+    "city":    { "url":"/api/cities?country={country}", "dependsOn":["country"] }
+  } }
+```
+
+Spec added: a lookup config doesn't crash; renders the form-plugin root.
+
+**Home page consistency**
+
+The home page rolled its own `<a class="cta-primary">` / `cta-secondary` instead of using `@rokkit/ui` Button. Bullet points from feedback:
+1. Inconsistent button styling vs the rest of the app
+2. No way to reach `/chat` from the home page
+
+Both addressed by importing `Button` from `@rokkit/ui` and using it everywhere:
+- Navbar: `Open the playground` (variant=primary) + new `Try the chat` (variant=default, links to `/chat`)
+- Hero actions: same two buttons at `size=lg` + the `bun add @rokkit/ui` install hint
+- Bottom CTA: same pair, lg
+- Nav links: added "Chat demo" → `/chat`; removed the "Playground" entry that pointed at the old `/chat-lab` scratch page
+
+Browser-verified the navbar shows both buttons styled identically to the in-app chrome.
+
+Lint: 0 errors.

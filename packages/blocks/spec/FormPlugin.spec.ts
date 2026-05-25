@@ -74,4 +74,21 @@ describe('FormPlugin', () => {
 		expect(btn.disabled).toBe(true)
 		expect(btn.textContent).toContain('Submitted')
 	})
+
+	it('accepts a lookups field with url + source patterns', () => {
+		const spec = JSON.stringify({
+			schema: {
+				type: 'object',
+				properties: { country: { type: 'string' }, city: { type: 'string' } }
+			},
+			data: { country: 'FR', city: '' },
+			lookups: {
+				country: { source: [{ value: 'FR', label: 'France' }] },
+				city: { url: '/api/cities?country={country}', dependsOn: ['country'] }
+			}
+		})
+		const { container } = render(FormPlugin, { props: { code: spec } })
+		expect(container.querySelector('[data-form-plugin]')).toBeTruthy()
+		expect(container.querySelector('[data-block-error]')).toBeFalsy()
+	})
 })

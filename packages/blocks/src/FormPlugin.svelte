@@ -2,10 +2,31 @@
 	import { FormRenderer } from '@rokkit/forms'
 	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 
+	interface LookupSpec {
+		/** URL template with {field} placeholders. */
+		url?: string
+		/** Pre-loaded option list (static, JSON-serialisable). */
+		source?: unknown[]
+		/** Field paths this lookup depends on. */
+		dependsOn?: string[]
+		/** Field mapping for the response data. */
+		fields?: Record<string, string>
+		/** Cache duration in milliseconds. */
+		cacheTime?: number
+	}
+
 	interface FormSpec {
 		schema: Record<string, unknown>
 		data?: Record<string, unknown>
 		layout?: Record<string, unknown>
+		/**
+		 * Field-level lookups. Each key is a field path; the value is a
+		 * LookupSpec. Only JSON-serialisable patterns are supported (url
+		 * templates + source arrays). Function-typed `fetch` / `filter`
+		 * hooks are dropped here — JSON can't carry callables and LLM
+		 * output can't safely produce them anyway.
+		 */
+		lookups?: Record<string, LookupSpec>
 		/**
 		 * Optional human-in-the-loop hook. When present, the plugin renders
 		 * a submit button labelled `submitLabel` (default "Submit"). On
@@ -15,6 +36,29 @@
 		 */
 		submitAction?: string
 		submitLabel?: string
+	}
+
+	/**
+	 * Strip non-JSON-safe fields from incoming lookups (e.g. `fetch` /
+	 * `filter` if someone tries to inject them via JSON-as-string). The
+	 * builder accepts only url + source patterns from this path.
+	 */
+	function sanitiseLookups(
+		raw: Record<string, LookupSpec> | undefined
+	): Record<string, LookupSpec> | undefined {
+		if (!raw || typeof raw !== 'object') return undefined
+		const out: Record<string, LookupSpec> = {}
+		for (const [path, lk] of Object.entries(raw)) {
+			if (!lk || typeof lk !== 'object') continue
+			const safe: LookupSpec = {}
+			if (typeof lk.url === 'string') safe.url = lk.url
+			if (Array.isArray(lk.source)) safe.source = lk.source
+			if (Array.isArray(lk.dependsOn)) safe.dependsOn = lk.dependsOn
+			if (lk.fields && typeof lk.fields === 'object') safe.fields = lk.fields
+			if (typeof lk.cacheTime === 'number') safe.cacheTime = lk.cacheTime
+			if (safe.url || safe.source) out[path] = safe
+		}
+		return Object.keys(out).length > 0 ? out : undefined
 	}
 
 	let { code }: { code: string } = $props()
@@ -82,6 +126,7 @@
 				bind:data
 				schema={spec.schema}
 				layout={spec.layout}
+				lookups={sanitiseLookups(spec.lookups) ?? {}}
 			/>
 			{#if spec.submitAction}
 				<div data-form-actions>

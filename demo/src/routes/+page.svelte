@@ -1,11 +1,12 @@
 <script lang="ts">
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
+	import { Button } from '@rokkit/ui'
 
 	const navLinks = [
 		{ label: 'Components', href: '/app', active: true },
+		{ label: 'Chat demo', href: '/chat' },
 		{ label: 'Themes', href: '/app' },
 		{ label: 'Docs', href: '/app' },
-		{ label: 'Playground', href: '/chat-lab' },
 		{ label: 'GitHub ↗', href: 'https://github.com/jerrythomas/rokkit' }
 	]
 
@@ -83,10 +84,19 @@
 		<div class="nav-spacer"></div>
 		<div class="nav-actions">
 			<span class="version-chip">v2.0 · svelte 5</span>
-			<a class="cta-primary" href="/app">
-				<span class="i-mdi:chat-outline icon-sm" aria-hidden="true"></span>
-				Open the playground
-			</a>
+			<Button
+				href="/chat"
+				variant="default"
+				icon="i-mdi:robot-happy-outline"
+				label="Try the chat"
+				title="Open the AI chat demo"
+			/>
+			<Button
+				href="/app"
+				variant="primary"
+				icon="i-mdi:layers-outline"
+				label="Open the playground"
+			/>
 		</div>
 	</header>
 
@@ -105,13 +115,21 @@
 				wire it.
 			</p>
 			<div class="hero-actions">
-				<a class="cta-primary" href="/app">
-					<span class="i-mdi:chat-outline icon-sm" aria-hidden="true"></span>
-					Open the playground
-				</a>
-				<a class="cta-secondary" href="/chat-lab">
-					Browse all 47 components →
-				</a>
+				<Button
+					href="/app"
+					variant="primary"
+					size="lg"
+					icon="i-mdi:layers-outline"
+					label="Open the playground"
+				/>
+				<Button
+					href="/chat"
+					variant="default"
+					size="lg"
+					icon="i-mdi:robot-happy-outline"
+					iconRight="i-mdi:arrow-right"
+					label="Try the chat"
+				/>
 				<code class="install-cmd">
 					<span class="prompt">$</span> bun add @rokkit/ui
 				</code>
@@ -311,11 +329,20 @@
 			</p>
 		</div>
 		<div class="cta-actions">
-			<a class="cta-primary lg" href="/app">
-				<span class="i-mdi:chat-outline icon-sm" aria-hidden="true"></span>
-				Open the playground
-			</a>
-			<a class="cta-secondary lg" href="/chat-lab">Read the docs</a>
+			<Button
+				href="/app"
+				variant="primary"
+				size="lg"
+				icon="i-mdi:layers-outline"
+				label="Open the playground"
+			/>
+			<Button
+				href="/chat"
+				variant="default"
+				size="lg"
+				icon="i-mdi:robot-happy-outline"
+				label="Try the chat"
+			/>
 		</div>
 	</section>
 
