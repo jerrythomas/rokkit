@@ -23,6 +23,7 @@
 	import { shell } from '$lib/koan/shell.svelte'
 	import ThemeWizardCard from '$lib/koan/demos/theme-wizard/ThemeWizardCard.svelte'
 	import { savePreset, resetPreset, downloadTokensCss } from '$lib/koan/demos/theme-wizard/store.svelte'
+	import VariantChips from '$lib/koan/components/VariantChips.svelte'
 	import { onMount } from 'svelte'
 	import { browser } from '$app/environment'
 	import { goto } from '$app/navigation'
@@ -180,15 +181,47 @@
 		if (item.label) submitQuery(item.label)
 	}
 
-	// Tabs demo state — mounted in the canvas response card
-	const tabsItems = [
-		{ label: 'Overview' },
-		{ label: 'Theming' },
-		{ label: 'Anatomy' },
-		{ label: 'A11y' },
-		{ label: 'API' }
+	// Tabs demo state — mounted in the canvas response card.
+	// Each item carries `content` so the active panel has something to render.
+	// `with-icons` variant adds an `icon` field that Tabs picks up automatically.
+	const baseTabsItems = [
+		{
+			label: 'Overview',
+			value: 'overview',
+			icon: 'i-mdi:layers-outline',
+			content:
+				'A Tabs component renders multiple panels from one items array. Selection is bound; click or arrow-key to switch.'
+		},
+		{
+			label: 'Theming',
+			value: 'theming',
+			icon: 'i-mdi:palette',
+			content:
+				'Style comes from the data-style attribute on the parent. Flip skin (zen-sumi / minimal / material) to see the same Tabs re-render against new tokens.'
+		},
+		{
+			label: 'Anatomy',
+			value: 'anatomy',
+			icon: 'i-mdi:shape-outline',
+			content:
+				'<Tabs> is a Wrapper + Navigator composition: Wrapper owns focusedKey + flatView; Navigator handles DOM events and scrolls items into view.'
+		},
+		{
+			label: 'A11y',
+			value: 'a11y',
+			icon: 'i-mdi:accessibility',
+			content:
+				'role="tablist" on the strip, role="tab" + aria-selected on each trigger, role="tabpanel" on each panel. Arrow keys move focus along the orientation axis.'
+		},
+		{
+			label: 'API',
+			value: 'api',
+			icon: 'i-mdi:code-tags',
+			content:
+				'Props: options, value (bindable), orientation, position, align. Snippets: itemContent, tabPanel, [named] per-item override. Events: onchange, onselect.'
+		}
 	]
-	let activeTab = $state<unknown>('Theming')
+	let activeTab = $state<unknown>('theming')
 
 	// Look up the active variant for the current demo (set via ?variant= URL
 	// param by the route page). Dynamic variants merge their props into the
@@ -199,25 +232,47 @@
 		return meta?.variants?.find((v) => v.id === shell.demoVariant) ?? null
 	})
 
-	function tabsVariantProps(): Record<string, unknown> {
-		if (activeVariant?.mode !== 'dynamic') return {}
-		return activeVariant.props ?? {}
-	}
+	const tabsVariantProps = $derived<Record<string, unknown>>(
+		activeVariant?.mode === 'dynamic' ? (activeVariant.props ?? {}) : {}
+	)
 
-	const tabsCode = `<script>
+	// `with-icons` variant has no `props` to merge — it changes the items shape
+	// instead (Tabs auto-renders an icon when present). Strip icons for other
+	// variants so the rendered snippet matches what we ship.
+	const tabsItems = $derived(
+		activeVariant?.id === 'with-icons'
+			? baseTabsItems
+			: baseTabsItems.map(({ label, value, content }) => ({ label, value, content }))
+	)
+
+	// Reflect the actual props the running Tabs receives. Re-derives when the
+	// variant flips so the user sees the snippet for THIS variant, not a fixed
+	// example.
+	const tabsCode = $derived.by(() => {
+		const propLines: string[] = ['bind:value']
+		for (const [k, v] of Object.entries(tabsVariantProps)) {
+			propLines.push(`${k}="${v}"`)
+		}
+		const tabsTag = `<Tabs options={items} ${propLines.join(' ')} />`
+		const itemsBlock = tabsItems
+			.map((it) => {
+				const fields = [`label: '${it.label}'`, `value: '${it.value}'`]
+				if ('icon' in it && it.icon) fields.push(`icon: '${it.icon}'`)
+				fields.push(`content: '…'`)
+				return `    { ${fields.join(', ')} }`
+			})
+			.join(',\n')
+		return `<script>
   import { Tabs } from '@rokkit/ui'
 
   let items = $state([
-    { label: 'Overview',  content: overviewSnippet },
-    { label: 'Theming',   content: themingSnippet  },
-    { label: 'Anatomy',   content: anatomySnippet  },
-    { label: 'A11y',      content: a11ySnippet     },
-    { label: 'API',       content: apiSnippet      },
+${itemsBlock}
   ])
-  let value = $state(null)
+  let value = $state('${String(activeTab)}')
 <\/script>
 
-<Tabs bind:items bind:value />`
+${tabsTag}`
+	})
 
 	// Table demo state — sortable products table on the canvas
 	const tableData = [
@@ -1409,7 +1464,6 @@
 					<span class="thinking-step">mounting — step 3 of 4</span>
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'tabs'}
-				{@const variantProps = tabsVariantProps()}
 				<div class="canvas-head">
 					<div class="canvas-eyebrow">Mounted demo · live{#if activeVariant} · variant: {activeVariant.label.toLowerCase()}{/if}</div>
 					<div class="canvas-title">Tabs · how the data-driven API works</div>
@@ -1419,20 +1473,13 @@
 						chrome toggle to see it re-render.
 						{#if activeVariant}
 							<br /><em>Variant active</em> — {activeVariant.label.toLowerCase()}.
-							Try variants:
-						{:else}
-							<br />Try variants:
 						{/if}
-						{#each findById('tabs')?.variants ?? [] as v (v.id)}
-							<button
-								type="button"
-								class="variant-chip"
-								data-active={activeVariant?.id === v.id ? '' : undefined}
-								onclick={() => goto(`/app/tabs${activeVariant?.id === v.id ? '' : `?variant=${v.id}`}`)}
-							>
-								{v.label}{#if activeVariant?.id === v.id} · clear{/if}
-							</button>
-						{/each}
+						<br />
+						<VariantChips
+							demoId="tabs"
+							basePath="/app/tabs"
+							activeId={activeVariant?.id ?? null}
+						/>
 					</div>
 				</div>
 				<div class="canvas-body response">
@@ -1445,7 +1492,7 @@
 							<span class="i-mdi:layers-outline" aria-hidden="true"></span>
 						{/snippet}
 						<div class="tabs-mount">
-							<Tabs options={tabsItems} bind:value={activeTab} {...variantProps} />
+							<Tabs options={tabsItems} bind:value={activeTab} {...tabsVariantProps} />
 						</div>
 						{#snippet props()}
 							<span>items</span><span data-value>[5]</span>
@@ -2206,33 +2253,17 @@
 	}
 
 	.tabs-mount {
-		min-height: 120px;
+		min-height: 180px;
 	}
 
-	.variant-chip {
-		display: inline-flex;
-		align-items: center;
-		gap: 6px;
-		height: 24px;
-		padding: 0 10px;
-		margin: 4px 6px 0 0;
-		border: 1px solid var(--paper-edge);
-		border-radius: 9999px;
-		background: var(--paper-soft);
-		color: var(--ink-mute);
-		font: 500 11.5px var(--font-ui);
-		cursor: pointer;
+	.tabs-mount :global([data-tabs-panel]:not([data-panel-active])) {
+		display: none;
 	}
 
-	.variant-chip:hover {
-		border-color: var(--ink-soft);
-		color: var(--ink);
-	}
-
-	.variant-chip[data-active] {
-		border-color: var(--accent);
-		color: var(--accent);
-		background: color-mix(in oklab, var(--accent) 6%, var(--paper-soft));
+	.tabs-mount :global([data-tabs-content]) {
+		padding: 14px 4px 4px;
+		color: var(--ink-soft);
+		font: 400 13.5px/1.55 var(--font-ui);
 	}
 
 	.table-mount {

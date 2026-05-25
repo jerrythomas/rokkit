@@ -3559,3 +3559,19 @@ The pattern works. Future demos add their own `tabsVariantProps()`-style helper 
 - Real variant content beyond just prop swaps — e.g. Tabs `with-icons` variant needs an `items` array that includes icons, not just an `iconize=true` prop. The pattern can either ship variant data alongside `props` in the catalog, or have the layout pick variant-specific data inline.
 - Generalize the chip row helper so we don't write it per demo.
 - LLM tool calls map directly: `mountDemo('tabs', { variant: 'vertical' })` → same goto.
+
+## 2026-05-25 (cont.) — Variant chips extracted; Tabs panels + reactive code
+
+Three things came out of trying the prototype on a fresh page:
+
+1. **Tab panels were invisible.** Items only had `label`/`icon`/`content`, but Tabs' active-panel check is `proxy.value === value`. With no `value` field on the items, `proxy.value` falls back to the raw item object — never equal to the string `value` state. Added `value: 'overview' | 'theming' | …` to each item and initialised `activeTab = 'theming'`. Panels now render under the strip when their tab is active.
+2. **Code block was a constant string** — it always showed the same snippet no matter the variant. Switched `tabsCode` to `$derived.by()` so the items array (with/without icons) and the props line (`orientation="vertical"` etc.) come from the same source that drives the live Tabs. Now the snippet and the rendered component are always the same shape.
+3. **Chip row was inline.** Extracted `demo/src/lib/koan/components/VariantChips.svelte` — takes `demoId`, `basePath`, `activeId`, reads `findById(demoId).variants`, renders the row, handles `goto` (including click-active-to-clear). Tabs branch dropped ~10 lines + the `.variant-chip` CSS block. Next demo that wants chips is a one-liner.
+
+**`with-icons` variant** keeps the full item objects (icons survive). All other variants strip icons via the `$derived` so the snippet matches what's rendered — no phantom icon fields the user can't see.
+
+**Verified**
+
+- `/app/tabs` — Theming tab selected, panel content visible, code block lists 5 items without icons, `<Tabs options={items} bind:value />`.
+- `/app/tabs?variant=vertical` — strip on the left, panel on the right, code block has `orientation="vertical"`.
+- `/app/tabs?variant=with-icons` — icons render in each trigger, items array in the code block includes the `icon:` field.
