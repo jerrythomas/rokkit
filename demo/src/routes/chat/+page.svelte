@@ -167,7 +167,7 @@
 							{/each}
 						</select>
 						<label class="llm-code-toggle" title="Ask the LLM to include code snippets in its response">
-							<input type="checkbox" bind:checked={llm.includeCode} />
+							<input type="checkbox" bind:checked={llm.showCode} />
 							<span>code</span>
 						</label>
 					{:else}
@@ -200,7 +200,7 @@
 							<span class="llm-error" title={llm.errorMessage}>error</span>
 						{/if}
 						<label class="llm-code-toggle" title="Ask the LLM to include code snippets in its response">
-							<input type="checkbox" bind:checked={llm.includeCode} />
+							<input type="checkbox" bind:checked={llm.showCode} />
 							<span>code</span>
 						</label>
 					{/if}

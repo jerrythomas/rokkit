@@ -50,6 +50,7 @@
         "@mlc-ai/web-llm": "^0.2.83",
         "@rokkit/actions": "workspace:latest",
         "@rokkit/app": "workspace:latest",
+        "@rokkit/blocks": "workspace:latest",
         "@rokkit/chart": "workspace:latest",
         "@rokkit/core": "workspace:latest",
         "@rokkit/data": "workspace:latest",
@@ -128,11 +129,13 @@
       "devDependencies": {
         "@rokkit/chart": "workspace:*",
         "@rokkit/core": "workspace:*",
+        "@rokkit/forms": "workspace:*",
         "@rokkit/ui": "workspace:*",
       },
       "peerDependencies": {
         "@rokkit/chart": "workspace:*",
         "@rokkit/core": "workspace:*",
+        "@rokkit/forms": "workspace:*",
         "@rokkit/ui": "workspace:*",
         "mermaid": ">=11.0.0",
         "svelte": "^5.0.0",

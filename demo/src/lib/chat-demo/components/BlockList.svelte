@@ -1,8 +1,47 @@
 <script lang="ts">
 	import type { Block, SuggestionItem } from '../types'
 	import { CodeBlock } from '$lib/chat'
+	import { MarkdownRenderer } from '@rokkit/ui'
+	import {
+		PlotPlugin,
+		TablePlugin,
+		FormPlugin,
+		ListPlugin,
+		StepperPlugin,
+		SparklinePlugin,
+		MermaidPlugin
+	} from '@rokkit/blocks'
 	import InlineComponent from './InlineComponent.svelte'
-	import { submitAction } from '../store.svelte'
+	import { submitAction, submitText } from '../store.svelte'
+	import { llm } from '../llm.svelte'
+
+	const PLUGINS = [
+		PlotPlugin,
+		TablePlugin,
+		FormPlugin,
+		ListPlugin,
+		StepperPlugin,
+		SparklinePlugin,
+		MermaidPlugin
+	]
+
+	let root = $state<HTMLElement | null>(null)
+
+	function handleBlockAction(e: Event) {
+		const ev = e as CustomEvent<{ name: string; payload: unknown }>
+		if (!ev.detail) return
+		// Forward human-in-the-loop submissions back into the conversation
+		// as a structured user message. The LLM/router picks up the JSON and
+		// continues from there.
+		const summary = `[${ev.detail.name}] ${JSON.stringify(ev.detail.payload)}`
+		submitText(summary)
+	}
+
+	$effect(() => {
+		if (!root) return
+		root.addEventListener('block-action', handleBlockAction)
+		return () => root?.removeEventListener('block-action', handleBlockAction)
+	})
 
 	type Props = {
 		blocks: Block[]
@@ -10,6 +49,14 @@
 	}
 
 	const { blocks, onSuggestion }: Props = $props()
+
+	// Code blocks are filtered at render time, not in the LLM/parser layer.
+	// The LLM emits whatever it considers useful; the user controls visibility
+	// via the llm.showCode toggle. The component blocks (charts, tables,
+	// forms) ARE the canonical rendering — code is a supplemental view.
+	const visibleBlocks = $derived(
+		blocks.filter((b) => b.kind !== 'code' || llm.showCode)
+	)
 
 	function handleSuggestion(item: SuggestionItem) {
 		// Data-aware action takes precedence; the text query is a fallback for
@@ -22,10 +69,14 @@
 	}
 </script>
 
-<div class="block-list">
-	{#each blocks as block, i (i)}
+<div class="block-list" bind:this={root}>
+	{#each visibleBlocks as block, i (i)}
 		{#if block.kind === 'prose'}
 			<p class="block-prose">{block.text}</p>
+		{:else if block.kind === 'markdown'}
+			<div class="block-markdown">
+				<MarkdownRenderer markdown={block.markdown} plugins={PLUGINS} />
+			</div>
 		{:else if block.kind === 'code'}
 			<CodeBlock
 				filename={block.filename ?? 'snippet'}

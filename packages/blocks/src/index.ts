@@ -3,6 +3,9 @@ import PlotPluginComponent from './PlotPlugin.svelte'
 import TablePluginComponent from './TablePlugin.svelte'
 import SparklinePluginComponent from './SparklinePlugin.svelte'
 import MermaidPluginComponent from './MermaidPlugin.svelte'
+import FormPluginComponent from './FormPlugin.svelte'
+import ListPluginComponent from './ListPlugin.svelte'
+import StepperPluginComponent from './StepperPlugin.svelte'
 
 export const PlotPlugin: MarkdownPlugin = {
 	language: 'plot',
@@ -22,4 +25,19 @@ export const SparklinePlugin: MarkdownPlugin = {
 export const MermaidPlugin: MarkdownPlugin = {
 	language: 'mermaid',
 	component: MermaidPluginComponent
+}
+
+export const FormPlugin: MarkdownPlugin = {
+	language: 'form',
+	component: FormPluginComponent
+}
+
+export const ListPlugin: MarkdownPlugin = {
+	language: 'list',
+	component: ListPluginComponent
+}
+
+export const StepperPlugin: MarkdownPlugin = {
+	language: 'stepper',
+	component: StepperPluginComponent
 }

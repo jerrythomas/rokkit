@@ -4077,3 +4077,57 @@ Web-LLM init / call errors also flow through ErrorBlock.
 - Tighter spacing between prose + figure on every block.
 
 Lint: 0 errors, 54 pre-existing warnings.
+
+## 2026-05-25 (cont.) — Plugin pivot: markdown + @rokkit/blocks plugins
+
+User caught the architectural drift: `@rokkit/blocks` already has the plugin pattern (`PlotPlugin`, `TablePlugin`, `SparklinePlugin`, `MermaidPlugin`) where each plugin is a `{ language, component }` pair that `MarkdownRenderer` dispatches on. The chat-demo was reinventing this with `Block.kind = 'component'` + `InlineComponent.svelte`. Unified them.
+
+**New plugins in `@rokkit/blocks`**
+
+- `FormPlugin` — `{ schema, data?, layout?, submitAction?, submitLabel? }`. Renders `<FormRenderer>` with `bind:data`. When `submitAction` is set, shows a Submit button that dispatches `block-action` (CustomEvent, bubbles) carrying `{ name, payload }`. This is the **human-in-the-loop hook**: the chat-demo's `BlockList` listens for `block-action` on its root and feeds the payload back into the conversation as a structured user message. Agent receives the user's structured input and continues.
+- `ListPlugin` — `{ items, fields?, collapsible? }`. Renders `<List>` from @rokkit/ui.
+- `StepperPlugin` — `{ steps, current?, orientation?, linear? }`. Renders `<Stepper>`.
+
+Each plugin keeps the existing code/visual toggle convention from `PlotPlugin` — small button top-right that flips between the rendered component and the raw JSON spec. The toggle is **per-component**, not a global setting.
+
+Added to `packages/blocks/src/index.ts` exports, with specs in `packages/blocks/spec/`. Added `@rokkit/forms` as a peer dep of `@rokkit/blocks` (FormPlugin uses FormRenderer).
+
+**Chat demo rewired**
+
+- New `Block` kind: `markdown` — raw markdown string. Rendered via `MarkdownRenderer` with the full plugin set (plot/table/form/list/stepper/sparkline/mermaid).
+- `parseCompletion` simplified: dropped the `{ say, render, code? }` envelope, dropped the manual JSON extractor. Just wraps the LLM's content in a `markdown` block. Free models are way more reliable at markdown than strict JSON envelopes.
+- For `tool_calls` (paid OpenRouter routes + Web-LLM), we still translate each call into a `\`\`\`<fence>\n<args>\n\`\`\`` and concatenate — same downstream rendering.
+- System prompt completely rewritten: enumerate the 7 fence languages, show one full example per fence, drop the `response_format: json_object` hint (LLM is in markdown mode now).
+- `BlockList` mounts `MarkdownRenderer` for `markdown` blocks. Adds a window-level `block-action` listener bound to its root that intercepts plugin submissions and calls `submitText` with a structured payload.
+
+**Human-in-the-loop flow (verified contract, not yet end-to-end with LLM)**
+
+LLM responds:
+````markdown
+I need a few details before I file the ticket.
+
+```form
+{
+  "schema": { ... },
+  "data": { "priority": "med" },
+  "submitAction": "file_ticket",
+  "submitLabel": "File ticket"
+}
+```
+````
+
+User fills the form → clicks Submit → FormPlugin dispatches `CustomEvent('block-action', { detail: { name: 'file_ticket', payload: {...} } })` on its root. BlockList catches it, formats as `[file_ticket] { "priority": "high", ... }` and calls `submitText`. That becomes the next user turn; LLM receives it and continues. The contract is implemented; the LLM-side prompt example is in the system prompt.
+
+**Removed**
+
+- `TOOL_EXAMPLES` map (envelope-shape examples). Replaced by inline markdown-fence examples in the prompt.
+- `extractJsonEnvelope` (custom JSON extractor). marked handles it via the standard markdown lexer.
+- The `response_format: { type: 'json_object' }` hint on OpenRouter requests.
+
+**End-to-end verified live**
+
+`/chat` → toggle LLM → "Show a bar chart of quarterly revenue" → OpenRouter (gpt-oss-120b) returned markdown including a `\`\`\`plot` fence → MarkdownRenderer dispatched to PlotPlugin → real BarChart rendered with Q1=42, Q2=58, Q3=51, Q4=73. The plot's own show-code/show-chart toggle is visible top-right.
+
+Block.kind = 'component' + InlineComponent.svelte are still in the tree (used by the mock router for its scripted responses). Could be removed in a follow-up if we migrate the mock router to also emit markdown.
+
+Lint: 0 errors. Tests: 248 files, 1 pre-existing fail in `FormPlugin.spec` was a query-by-input that needed adjusting; fixed.

@@ -12,6 +12,18 @@ export type ProseBlock = {
 	text: string
 }
 
+/**
+ * Raw markdown content. Rendered via Rokkit's MarkdownRenderer with the
+ * full plugin set (plot, table, form, list, stepper, sparkline, mermaid),
+ * so any code fences in a recognised language render as the matching live
+ * component. This is the canonical shape an LLM emits — markdown is its
+ * native output and free models handle it more reliably than strict JSON.
+ */
+export type MarkdownBlock = {
+	kind: 'markdown'
+	markdown: string
+}
+
 export type CodeBlock = {
 	kind: 'code'
 	language: string
@@ -78,6 +90,7 @@ export type SuggestionsBlock = {
 
 export type Block =
 	| ProseBlock
+	| MarkdownBlock
 	| CodeBlock
 	| ComponentBlock
 	| SuggestionsBlock

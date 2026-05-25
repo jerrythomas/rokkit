@@ -97,7 +97,7 @@ export const DEFAULT_WEBLLM_MODEL = WEBLLM_MODELS[1].id
 export const llm = $state<{
 	provider: LLMProvider
 	enabled: boolean
-	includeCode: boolean
+	showCode: boolean
 	openRouterModel: string
 	webllmModel: string
 	webllmStatus: LLMStatus
@@ -108,7 +108,7 @@ export const llm = $state<{
 }>({
 	provider: 'openrouter',
 	enabled: false,
-	includeCode: false,
+	showCode: false,
 	openRouterModel: DEFAULT_OPENROUTER_MODEL,
 	webllmModel: DEFAULT_WEBLLM_MODEL,
 	webllmStatus: 'uninitialized',
@@ -152,298 +152,128 @@ export function buildToolSpecs() {
 		}))
 }
 
-/**
- * The free OpenRouter tier doesn't route to providers that support
- * OpenAI-style `tools` / `tool_choice`. Instead we ask the model to
- * return a strict JSON envelope and parse it ourselves. The same
- * envelope works for web-llm (which DOES support tool calls but is
- * happier with this format too).
- *
- * The prompt does three things:
- * 1. Describes the envelope shape (say + render + optional code).
- * 2. Lists tools from the catalog so the model knows what exists.
- * 3. Embeds one full example per common tool so the model has a
- *    concrete prop shape to copy from. This dramatically reduces
- *    malformed responses — small free-tier models will faithfully
- *    mimic the examples but struggle to invent prop shapes.
- */
-const TOOL_EXAMPLES: Record<string, { user: string; envelope: object }> = {
-	mount_bar_chart: {
-		user: 'Show a bar chart of quarterly revenue',
-		envelope: {
-			say: "Here's quarterly revenue rendered as a bar chart.",
-			render: [
-				{
-					tool: 'mount_bar_chart',
-					props: {
-						data: [
-							{ quarter: 'Q1', revenue: 42 },
-							{ quarter: 'Q2', revenue: 58 },
-							{ quarter: 'Q3', revenue: 51 },
-							{ quarter: 'Q4', revenue: 73 }
-						],
-						x: 'quarter',
-						y: 'revenue',
-						height: 240,
-						grid: true
-					}
-				}
-			]
-		}
-	},
-	mount_table: {
-		user: 'Show a sortable products table',
-		envelope: {
-			say: 'Six rows of products, columns inferred from the row shape — click any header to sort.',
-			render: [
-				{
-					tool: 'mount_table',
-					props: {
-						data: [
-							{ name: 'Laptop', price: 1299, stock: 45 },
-							{ name: 'Phone', price: 899, stock: 120 },
-							{ name: 'Tablet', price: 599, stock: 78 }
-						],
-						caption: 'Products'
-					}
-				}
-			]
-		}
-	},
-	mount_form: {
-		user: 'Render a sign-up form',
-		envelope: {
-			say: 'A schema-driven form. `bind:data` round-trips the values.',
-			render: [
-				{
-					tool: 'mount_form',
-					props: {
-						schema: {
-							type: 'object',
-							properties: {
-								name: { type: 'string', required: true },
-								email: { type: 'string', format: 'email', required: true },
-								role: { type: 'string', enum: ['admin', 'editor', 'viewer'] },
-								newsletter: { type: 'boolean' }
-							}
-						},
-						data: { name: '', email: '', role: 'viewer', newsletter: true }
-					}
-				}
-			]
-		}
-	},
-	mount_list: {
-		user: 'Show a settings list with collapsible groups',
-		envelope: {
-			say: 'Settings shape — three groups, items inside.',
-			render: [
-				{
-					tool: 'mount_list',
-					props: {
-						items: [
-							{
-								label: 'General',
-								children: [{ label: 'Profile' }, { label: 'Account' }]
-							},
-							{
-								label: 'Appearance',
-								children: [{ label: 'Theme' }, { label: 'Density' }]
-							}
-						],
-						collapsible: true
-					}
-				}
-			]
-		}
-	},
-	mount_stepper: {
-		user: 'Show a 4-step sign-up flow with step 2 active',
-		envelope: {
-			say: 'A 4-step Stepper with steps 1 and 2 completed.',
-			render: [
-				{
-					tool: 'mount_stepper',
-					props: {
-						steps: [
-							{ text: 'Account', completed: true },
-							{ text: 'Profile', completed: true },
-							{ text: 'Preferences' },
-							{ text: 'Review' }
-						],
-						current: 2
-					}
-				}
-			]
-		}
-	}
-}
-
-function buildSystemPrompt(includeCode: boolean): string {
-	const tools = catalog
-		.filter((m) => m.tool)
-		.map(
-			(m) =>
-				`  - ${m.tool!.name}: ${m.tool!.description}\n    params: ${JSON.stringify(m.tool!.parameters ?? {})}`
-		)
-		.join('\n')
-	const examples = Object.entries(TOOL_EXAMPLES)
-		.map(
-			([, ex]) =>
-				`User: ${ex.user}\nAssistant: ${JSON.stringify(ex.envelope, null, 0)}`
-		)
-		.join('\n\n')
-	const lines = [
+function buildSystemPrompt(): string {
+	return [
 		'You are Rokkit — an assistant that responds by mounting live Svelte components in the chat.',
 		'',
-		'You MUST reply with ONLY a single JSON object (no prose outside, no markdown fence) of the shape:',
-		'  { "say": string,                        // one short sentence, < 25 words',
-		`    "render": [ { "tool": string, "props": object } ]${ 
-			includeCode ? ',\n    "code"?: [ { "language": string, "filename"?: string, "code": string } ] }' : ' }'}`,
+		'Respond in MARKDOWN. Prose narrates; live components come from fenced code blocks whose language is the component type. The renderer turns each fence into the matching live component. Available fences:',
 		'',
-		'`say` is one short sentence explaining the response.',
-		'`render` is the list of components to mount inline. Use it whenever you can express the answer as a UI.'
-	]
-	if (includeCode) {
-		lines.push(
-			'`code` is optional — include a code sample only when the user explicitly asks for source / a snippet / "how does this work". NEVER put code in `say`.'
-		)
-	} else {
-		lines.push(
-			'DO NOT include any `code` field. The user has code samples turned off — respond with `render` only.'
-		)
-	}
-	lines.push(
+		'  ```plot       — bar/line/area/scatter charts (Vega-Lite-ish PlotSpec)',
+		'  ```table      — sortable tabular data',
+		'  ```form       — schema-driven editable forms; supports submit actions',
+		'  ```list       — flat or grouped lists with optional collapsible groups',
+		'  ```stepper    — multi-step progress / wizard',
+		'  ```sparkline  — small inline trend lines',
+		'  ```mermaid    — diagrams / flowcharts',
 		'',
-		'Available tools (pick from these names; the params show fields the user might mention):',
-		tools,
+		'Each fence MUST contain ONE JSON object that matches that fence type. Use the examples below — copy shapes 1:1.',
 		'',
-		'Examples (always copy these prop shapes — they map 1:1 to what Rokkit components expect):',
-		examples,
+		'─── PLOT (bar chart) ──────────────────────',
+		'```plot',
+		'{ "data": [{"quarter":"Q1","revenue":42},{"quarter":"Q2","revenue":58},{"quarter":"Q3","revenue":51},{"quarter":"Q4","revenue":73}],',
+		'  "x":"quarter","y":"revenue","geoms":[{"type":"bar"}] }',
+		'```',
+		'',
+		'─── TABLE ─────────────────────────────────',
+		'```table',
+		'{ "columns":["name","price","stock"],',
+		'  "rows":[{"name":"Laptop","price":1299,"stock":45},{"name":"Phone","price":899,"stock":120}] }',
+		'```',
+		'',
+		'─── FORM (editable record) ────────────────',
+		'```form',
+		'{ "schema": { "type":"object","properties": {',
+		'    "name":{"type":"string","required":true},',
+		'    "email":{"type":"string","format":"email","required":true},',
+		'    "role":{"type":"string","enum":["admin","editor","viewer"]},',
+		'    "newsletter":{"type":"boolean"} } },',
+		'  "data": { "name":"", "email":"", "role":"viewer", "newsletter":true } }',
+		'```',
+		'',
+		'─── FORM (human-in-the-loop submit) ───────',
+		'When you need structured input from the human to continue, render a form with `submitAction`. On submit the renderer dispatches the data back as a new user message; you continue from there.',
+		'```form',
+		'{ "schema": { "type":"object","properties": {',
+		'    "priority":{"type":"string","enum":["low","med","high"]},',
+		'    "description":{"type":"string"} } },',
+		'  "data": { "priority":"med" },',
+		'  "submitAction":"file_ticket",',
+		'  "submitLabel":"File ticket" }',
+		'```',
+		'',
+		'─── LIST (grouped, collapsible) ───────────',
+		'```list',
+		'{ "items":[',
+		'    {"label":"General","children":[{"label":"Profile"},{"label":"Account"}]},',
+		'    {"label":"Appearance","children":[{"label":"Theme"},{"label":"Density"}]}],',
+		'  "collapsible":true }',
+		'```',
+		'',
+		'─── STEPPER ───────────────────────────────',
+		'```stepper',
+		'{ "steps":[',
+		'    {"text":"Account","completed":true},',
+		'    {"text":"Profile","completed":true},',
+		'    {"text":"Preferences"},',
+		'    {"text":"Review"} ],',
+		'  "current":2 }',
+		'```',
 		'',
 		'Rules:',
-		'- Output ONE JSON object only. No prose before or after. No ```json fences.',
-		'- Prop shapes MUST match the examples (data is an array of row objects; schema is JSON-Schema-ish; steps use `text` not `label`).',
-		'- If the request does not match any tool, return { "say": "...", "render": [] } where `say` suggests two concrete alternatives.',
-		'- Pick reasonable defaults; you do not need to ask the user for missing fields.'
-	)
-	return lines.join('\n')
+		'- Always mount a live component for UI requests — never describe a chart only in prose.',
+		'- Prop shapes MUST match the examples (steps use `text` not `label`; table uses `columns` + `rows`).',
+		'- Keep prose short — one or two sentences before the fence is enough.',
+		'- You may include source-code blocks (```svelte, ```ts, ```js) when the user explicitly asks for code; the renderer decides whether to show them.',
+		'- If the request does not fit any fence, respond with prose only and suggest two concrete alternatives.'
+	].join('\n')
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function parseCompletion(result: any): Block[] {
-	const blocks: Block[] = []
 	const choice = result?.choices?.[0]
 	const message = choice?.message
 	if (!message) return [{ kind: 'prose', text: '(empty response)' }]
 
 	const content = String(message.content ?? '').trim()
 
-	// 1. OpenAI-style tool_calls (web-llm + paid OpenRouter routes)
+	// 1. OpenAI-style tool_calls (web-llm + paid OpenRouter routes).
+	// Convert each tool call into a markdown fence the renderer's plugin
+	// system understands. The naming convention: tool `mount_bar_chart`
+	// → fence language `plot`, `mount_table` → `table`, etc.
 	const toolCalls = (message.tool_calls ?? []) as Array<{
 		function?: { name?: string; arguments?: string }
 	}>
 	if (toolCalls.length > 0) {
+		const blocks: Block[] = []
 		if (content) blocks.push({ kind: 'prose', text: content })
+		const out: string[] = []
 		for (const call of toolCalls) {
 			const name = call.function?.name
 			if (!name) continue
-			let parsed: Record<string, unknown> = {}
-			try {
-				parsed = call.function?.arguments ? JSON.parse(call.function.arguments) : {}
-			} catch {
-				blocks.push({
-					kind: 'prose',
-					text: `Tool ${name} returned invalid JSON arguments; skipping.`
-				})
-				continue
-			}
-			blocks.push({
-				kind: 'component',
-				tool: name,
-				props: parsed,
-				caption: `${name} · LLM tool call`
-			})
+			const lang = toolNameToFence(name)
+			if (!lang) continue
+			out.push(`\n\`\`\`${lang}\n${call.function?.arguments ?? '{}'}\n\`\`\`\n`)
 		}
+		if (out.length > 0) blocks.push({ kind: 'markdown', markdown: out.join('') })
 		return blocks
 	}
 
-	// 2. JSON envelope { say, render, code? } (free tier)
-	const json = extractJsonEnvelope(content)
-	if (json && typeof json === 'object') {
-		const env = json as { say?: unknown; render?: unknown; code?: unknown }
-		if (typeof env.say === 'string' && env.say.trim()) {
-			blocks.push({ kind: 'prose', text: env.say })
-		}
-		if (Array.isArray(env.render)) {
-			for (const item of env.render) {
-				if (typeof item !== 'object' || item === null) continue
-				const cell = item as { tool?: unknown; props?: unknown }
-				if (typeof cell.tool === 'string') {
-					blocks.push({
-						kind: 'component',
-						tool: cell.tool,
-						props: (cell.props as Record<string, unknown>) ?? {},
-						caption: `${cell.tool} · LLM`
-					})
-				}
-			}
-		}
-		// Respect the user's "include code" toggle. Even if the LLM emits a
-		// code field unprompted, filter it out unless the user opted in.
-		if (Array.isArray(env.code) && llm.includeCode) {
-			for (const item of env.code) {
-				if (typeof item !== 'object' || item === null) continue
-				const cell = item as { language?: unknown; filename?: unknown; code?: unknown }
-				if (typeof cell.code === 'string') {
-					blocks.push({
-						kind: 'code',
-						language: typeof cell.language === 'string' ? cell.language : 'text',
-						filename: typeof cell.filename === 'string' ? cell.filename : undefined,
-						code: cell.code
-					})
-				}
-			}
-		}
-		if (blocks.length > 0) return blocks
-	}
-
-	// 3. Plain-text fallback — the model ignored our schema. Surface what
-	// it said so the user can correct or rephrase.
-	if (content) return [{ kind: 'prose', text: content }]
-	return [{ kind: 'prose', text: '(no content or tool calls)' }]
+	// 2. Markdown body (preferred — the system prompt asks for it). Pass
+	// through verbatim; MarkdownRenderer + the plugin set turn ```plot,
+	// ```table, ```form, ```list, ```stepper fences into live components.
+	if (content) return [{ kind: 'markdown', markdown: content }]
+	return [{ kind: 'prose', text: '(empty response)' }]
 }
 
-/**
- * Try to extract a JSON object from the model's response. Models often
- * wrap output in ```json fences or add trailing prose — we strip those.
- */
-function extractJsonEnvelope(text: string): unknown {
-	const trimmed = text.trim()
-	if (!trimmed) return null
-	// Strip ```json ... ``` fence
-	const fence = trimmed.match(/```(?:json)?\s*([\s\S]+?)\s*```/i)
-	const candidate = fence ? fence[1] : trimmed
-	// Locate first { and matching closing }
-	const start = candidate.indexOf('{')
-	if (start < 0) return null
-	let depth = 0
-	for (let i = start; i < candidate.length; i++) {
-		const ch = candidate[i]
-		if (ch === '{') depth++
-		else if (ch === '}') {
-			depth--
-			if (depth === 0) {
-				try {
-					return JSON.parse(candidate.slice(start, i + 1))
-				} catch {
-					return null
-				}
-			}
-		}
-	}
+function toolNameToFence(name: string): string | null {
+	if (name === 'mount_bar_chart') return 'plot'
+	if (name === 'mount_table') return 'table'
+	if (name === 'mount_form') return 'form'
+	if (name === 'mount_list') return 'list'
+	if (name === 'mount_stepper') return 'stepper'
 	return null
 }
+
 
 // ─── OpenRouter provider (default) ─────────────────────────────────────
 
@@ -458,10 +288,9 @@ async function routeViaOpenRouter(query: string): Promise<Block[]> {
 		body: JSON.stringify({
 			model: llm.openRouterModel,
 			messages: [
-				{ role: 'system', content: buildSystemPrompt(llm.includeCode) },
+				{ role: 'system', content: buildSystemPrompt() },
 				{ role: 'user', content: query }
 			],
-			response_format: { type: 'json_object' },
 			temperature: 0.3
 		})
 	})
@@ -533,7 +362,7 @@ async function routeViaWebLLM(query: string): Promise<Block[]> {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const result: any = await e.chat.completions.create({
 			messages: [
-				{ role: 'system', content: buildSystemPrompt(llm.includeCode) },
+				{ role: 'system', content: buildSystemPrompt() },
 				{ role: 'user', content: query }
 			],
 			tools: buildToolSpecs(),
