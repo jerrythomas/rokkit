@@ -3829,3 +3829,39 @@ The catalog's `inline: { capable: true }` declarations + the `Block` shape are d
 Phase 2 LLM swap remains a one-file change: replace `routeQuery` with a call to web-llm. `routeData` stays as-is since the inference pipeline is local and synchronous either way.
 
 Lint: 0 errors, 37 pre-existing warnings.
+
+## 2026-05-25 (cont.) — Bidirectional flow: edits → JSON round-trip
+
+Picks up the inline-component story. The user can edit the form Rokkit renders for their data; now they can also push those edits back into the conversation as a JSON code block. Closes the round-trip and gives the demo a concrete "I edited it, here's what came out" moment.
+
+**InlineComponent.svelte**
+
+- Tracks `formData` (already had this) + a `seedData` derived from the incoming `props.data` for diffing.
+- New `isFormDirty` derived — `JSON.stringify(formData) !== JSON.stringify(seedData)`. Save button is disabled until the user actually changes something.
+- New footer row containing the figcaption (left) + an actions cluster (right):
+  - `Save changes` (form mode) — wired to `submitExport(...)`. Tooltip explains when it's enabled.
+  - `Export data` (table/list/chart) — pushes the current data as a JSON block.
+  - `Copy` — writes JSON to clipboard (best-effort; silently skipped if clipboard API unavailable).
+- Saves a JSON snapshot via `JSON.parse(JSON.stringify(formData))` so subsequent edits don't mutate the saved turn (avoids the user being confused when "their save" appears to keep changing).
+
+**Store**
+
+- New `submitExport({ source, data, caption })` — pushes a user turn ("Saved changes to '...' · N fields") then an assistant turn containing:
+  - prose ("Here's the updated value — copy or paste it back to keep the round-trip going.")
+  - a JSON code block named `edited.json`
+  - a `Render again` suggestion that paste the JSON string straight back into `submitText`, which routes it through inference and re-renders the form with the new values as the seed. Full loop.
+
+**FormRenderer gotcha (debugged)**
+
+InputText fires its `onchange` callback on the native `change` event, not `input`. That's blur-semantics on text inputs. Programmatic `.fill()` from a test runner won't trigger the bind until the field blurs (Tab / click-out). Real users blur naturally; tests need a Tab. Left a journal note here because we'll hit it again when wiring tests.
+
+**End-to-end verified**
+
+1. Paste user record → form mounts, Save disabled.
+2. Edit `name` → Tab → Save enables, `formData` shows the new value (instrumented via a temp `window.__formData` for debugging, then removed).
+3. Click Save → new turn appears with `edited.json` code block containing the edited record + a "Render again" chip.
+4. Click "Render again" → form re-renders with `Maya A-V` as the new seed. Loop closes.
+
+What this proves: the same `<FormRenderer/>` that handles schema-driven forms in /app handles arbitrary user-shaped data in /chat — and now it talks back. The catalog's `inline: { capable: true }` was never just for rendering; it implies a contract that any data going in can come back out.
+
+Lint: 0 errors, 38 pre-existing warnings.

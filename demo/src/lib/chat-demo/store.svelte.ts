@@ -68,6 +68,59 @@ export function submitData(args: {
 }
 
 /**
+ * Push an "I edited this; here's the new value" turn. Triggered from
+ * inside an inline component when the user clicks Save / Export. The user
+ * turn summarises what they did; the assistant turn shows the JSON.
+ */
+export function submitExport(args: {
+	source: string
+	data: unknown
+	caption?: string
+}): void {
+	const { source, data, caption } = args
+	const isObj = typeof data === 'object' && data !== null
+	const detail = Array.isArray(data)
+		? `${data.length} rows`
+		: isObj
+			? `${Object.keys(data as Record<string, unknown>).length} fields`
+			: 'value'
+	const label = caption ?? source
+	conversation.turns.push({
+		id: newId(),
+		timestamp: Date.now(),
+		role: 'user',
+		text: `Saved changes to "${label}" · ${detail}`
+	})
+	thinkThen({
+		id: newId(),
+		timestamp: Date.now(),
+		role: 'assistant',
+		blocks: [
+			{
+				kind: 'prose',
+				text: "Here's the updated value — copy or paste it back to keep the round-trip going."
+			},
+			{
+				kind: 'code',
+				language: 'json',
+				filename: 'edited.json',
+				code: JSON.stringify(data, null, 2)
+			},
+			{
+				kind: 'suggestions',
+				intro: 'Or',
+				items: [
+					{
+						label: 'Render again',
+						query: JSON.stringify(data)
+					}
+				]
+			}
+		]
+	})
+}
+
+/**
  * Try to parse a free-form text submission. If it parses as JSON or CSV,
  * route through the data pipeline; otherwise fall back to keyword routing.
  */
