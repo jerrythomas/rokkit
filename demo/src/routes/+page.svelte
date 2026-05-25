@@ -253,22 +253,20 @@
 				<span class="chat-mock-meta">live components inline</span>
 			</div>
 			<div class="chat-mock-body">
-				<!-- User turn — `who` defaults to "you" in ChatMessage; same convention here -->
+				<!-- User turn — single label, defaults to "you"; CSS uppercases to "YOU" via text-transform -->
 				<div class="chat-msg chat-msg-user">
 					<div class="chat-msg-head">
-						<span class="chat-msg-tag">YOU</span>
-						<span class="chat-msg-who">you</span>
+						<span class="chat-msg-tag">you</span>
 					</div>
 					<div class="chat-msg-body">
 						Lock the Q3 plan — give me the three priorities and a deadline.
 					</div>
 				</div>
 
-				<!-- Assistant turn — component default `who` is "assistant"; demo overrides to "Rokkit" -->
+				<!-- Assistant turn — configureWho({ assistant: 'Rokkit' }) replaces the default 'assistant' -->
 				<div class="chat-msg chat-msg-assistant">
 					<div class="chat-msg-head">
-						<span class="chat-msg-tag accent">ASSISTANT</span>
-						<span class="chat-msg-who">Rokkit</span>
+						<span class="chat-msg-tag accent">Rokkit</span>
 					</div>
 					<div class="chat-msg-body">
 						<p class="chat-prose">
@@ -899,14 +897,6 @@
 		background: color-mix(in oklab, var(--accent) 12%, var(--paper-soft));
 		border-color: color-mix(in oklab, var(--accent) 30%, var(--paper-edge));
 		color: var(--accent);
-	}
-
-	.chat-msg-who {
-		color: var(--ink-mute);
-		font-weight: 400;
-		font-size: 11px;
-		letter-spacing: 0;
-		text-transform: none;
 	}
 
 	.chat-msg-body {

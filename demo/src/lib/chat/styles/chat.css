@@ -93,15 +93,6 @@
 	height: 27px;
 }
 
-[data-chat-message-head] [data-who] {
-	color: var(--ink);
-	text-transform: none;
-	letter-spacing: 0;
-	font-family: var(--font-display);
-	font-weight: 500;
-	font-size: 13px;
-}
-
 [data-chat-message-head] [data-ago] {
 	letter-spacing: 0.04em;
 }

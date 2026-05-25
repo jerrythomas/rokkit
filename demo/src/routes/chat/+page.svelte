@@ -248,11 +248,11 @@
 
 				{#each conversation.turns as turn (turn.id)}
 					{#if turn.role === 'user'}
-						<ChatMessage kind="user" head="YOU" icon="i-mdi:chat-outline">
+						<ChatMessage kind="user" icon="i-mdi:chat-outline">
 							{turn.text}
 						</ChatMessage>
 					{:else}
-						<ChatMessage kind="info" head="ASSISTANT" icon="i-mdi:robot-happy-outline">
+						<ChatMessage kind="info" icon="i-mdi:robot-happy-outline">
 							<BlockList blocks={turn.blocks} onSuggestion={handleSuggestion} />
 						</ChatMessage>
 					{/if}

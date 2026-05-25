@@ -3,17 +3,14 @@
  * <ChatMessage/> in the conversation reads from here when its own `who` prop
  * is unset.
  *
- *   import { who } from '$lib/chat'
+ *   import { configureWho } from '$lib/chat'
+ *   configureWho({ assistant: 'Rokkit' })   // user stays the default 'you'
  *
- *   // Either mutate directly (re-runs as reactive state):
- *   who.user = 'Jerry'
- *   who.assistant = 'Rokkit'
- *
- *   // Or pass an object via configureWho():
- *   configureWho({ user: 'Jerry', assistant: 'Rokkit' })
- *
- * Defaults are 'you' / 'assistant'. The component still accepts a per-message
- * `who` override for cases where one turn needs a different label.
+ * Defaults are canonical lowercase names ('you' / 'assistant'). Visual
+ * casing is the theme's call via CSS (`[data-chat-message-head]` defaults
+ * to `text-transform: uppercase`). ChatMessage shows a single label per
+ * turn — either the per-message `head` (status badges like "MOUNTED" /
+ * "EXPLAINED") or this `who` value, in that order.
  */
 export const who = $state<{ user: string; assistant: string }>({
 	user: 'you',

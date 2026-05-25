@@ -5,16 +5,19 @@
 	interface ChatMessageProps {
 		/** Visual variant — drives node decoration and body typography */
 		kind?: 'user' | 'info' | 'think' | 'system'
-		/** Uppercase eyebrow label, e.g. "MOUNTED", "YOU", "THINKING" */
+		/**
+		 * Per-message eyebrow label override (e.g. "MOUNTED", "EXPLAINED",
+		 * "THINKING"). When set, takes the label slot. When unset, the slot
+		 * falls back to `who` — see below.
+		 */
 		head?: string
 		/**
-		 * Author name, rendered next to the head label. Defaults from `kind`:
-		 *  - user → "you"
-		 *  - info → "assistant"
+		 * Author name, used as the label when `head` is unset. Defaults from
+		 * `kind` via the chat-wide `who` store:
+		 *  - user → store.user (default "YOU", commonly stays as-is)
+		 *  - info → store.assistant (default "ASSISTANT", configure to "Rokkit" etc.)
 		 *  - think / system → no default
-		 * A consumer wiring this up to a real product would pass the user's
-		 * display name on user messages and the assistant brand (e.g. "Rokkit")
-		 * on info messages. Pass an empty string to suppress the slot.
+		 * Pass an explicit empty string to suppress the label slot entirely.
 		 */
 		who?: string
 		/** Relative timestamp, e.g. "just now", "2m" */
@@ -39,16 +42,16 @@
 		children
 	}: ChatMessageProps = $props()
 
-	// Default author name per kind, sourced from the chat-wide `who` store
-	// so a page can configure once (`who.user = 'Jerry'; who.assistant = 'Rokkit'`)
-	// and every message picks it up. Per-message override still wins via
-	// the `who` prop; pass an explicit empty string to suppress the slot.
+	// Single label per turn: `head` (e.g. status badge) wins; otherwise the
+	// kind-default author name from the `who` store, optionally overridden
+	// per-message via the `who` prop. Pass `who=""` to drop the label slot.
 	const who = $derived.by(() => {
 		if (whoProp !== undefined) return whoProp
 		if (kind === 'user') return whoStore.user
 		if (kind === 'info') return whoStore.assistant
 		return undefined
 	})
+	const label = $derived(head ?? who)
 
 	const iconIsSnippet = $derived(typeof icon === 'function')
 	const iconClass = $derived(typeof icon === 'string' ? icon : '')
@@ -66,10 +69,9 @@
 			<span data-chat-message-dot></span>
 		{/if}
 	</span>
-	{#if head || who || ago}
+	{#if label || ago}
 		<div data-chat-message-head>
-			{#if head}<span data-head>{head}</span>{/if}
-			{#if who}<span data-who>{who}</span>{/if}
+			{#if label}<span data-head>{label}</span>{/if}
 			{#if ago}<span data-ago>{ago}</span>{/if}
 		</div>
 	{/if}
