@@ -166,6 +166,10 @@
 								<option value={m.id}>{m.label}</option>
 							{/each}
 						</select>
+						<label class="llm-code-toggle" title="Ask the LLM to include code snippets in its response">
+							<input type="checkbox" bind:checked={llm.includeCode} />
+							<span>code</span>
+						</label>
 					{:else}
 						<select
 							bind:value={llm.webllmModel}
@@ -195,6 +199,10 @@
 						{:else if llm.webllmStatus === 'error'}
 							<span class="llm-error" title={llm.errorMessage}>error</span>
 						{/if}
+						<label class="llm-code-toggle" title="Ask the LLM to include code snippets in its response">
+							<input type="checkbox" bind:checked={llm.includeCode} />
+							<span>code</span>
+						</label>
 					{/if}
 				{/if}
 			</div>
@@ -527,6 +535,18 @@
 		border-color: var(--accent);
 		color: var(--accent);
 		background: color-mix(in oklab, var(--accent) 6%, var(--paper-soft));
+	}
+
+	.llm-code-toggle {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		font: 500 11.5px var(--font-ui);
+		cursor: pointer;
+	}
+
+	.llm-code-toggle input[type='checkbox'] {
+		accent-color: var(--accent);
 	}
 
 	.llm-provider,

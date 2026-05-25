@@ -97,6 +97,7 @@ export const DEFAULT_WEBLLM_MODEL = WEBLLM_MODELS[1].id
 export const llm = $state<{
 	provider: LLMProvider
 	enabled: boolean
+	includeCode: boolean
 	openRouterModel: string
 	webllmModel: string
 	webllmStatus: LLMStatus
@@ -107,6 +108,7 @@ export const llm = $state<{
 }>({
 	provider: 'openrouter',
 	enabled: false,
+	includeCode: false,
 	openRouterModel: DEFAULT_OPENROUTER_MODEL,
 	webllmModel: DEFAULT_WEBLLM_MODEL,
 	webllmStatus: 'uninitialized',
@@ -156,8 +158,128 @@ export function buildToolSpecs() {
  * return a strict JSON envelope and parse it ourselves. The same
  * envelope works for web-llm (which DOES support tool calls but is
  * happier with this format too).
+ *
+ * The prompt does three things:
+ * 1. Describes the envelope shape (say + render + optional code).
+ * 2. Lists tools from the catalog so the model knows what exists.
+ * 3. Embeds one full example per common tool so the model has a
+ *    concrete prop shape to copy from. This dramatically reduces
+ *    malformed responses — small free-tier models will faithfully
+ *    mimic the examples but struggle to invent prop shapes.
  */
-const SYSTEM_PROMPT = (() => {
+const TOOL_EXAMPLES: Record<string, { user: string; envelope: object }> = {
+	mount_bar_chart: {
+		user: 'Show a bar chart of quarterly revenue',
+		envelope: {
+			say: "Here's quarterly revenue rendered as a bar chart.",
+			render: [
+				{
+					tool: 'mount_bar_chart',
+					props: {
+						data: [
+							{ quarter: 'Q1', revenue: 42 },
+							{ quarter: 'Q2', revenue: 58 },
+							{ quarter: 'Q3', revenue: 51 },
+							{ quarter: 'Q4', revenue: 73 }
+						],
+						x: 'quarter',
+						y: 'revenue',
+						height: 240,
+						grid: true
+					}
+				}
+			]
+		}
+	},
+	mount_table: {
+		user: 'Show a sortable products table',
+		envelope: {
+			say: 'Six rows of products, columns inferred from the row shape — click any header to sort.',
+			render: [
+				{
+					tool: 'mount_table',
+					props: {
+						data: [
+							{ name: 'Laptop', price: 1299, stock: 45 },
+							{ name: 'Phone', price: 899, stock: 120 },
+							{ name: 'Tablet', price: 599, stock: 78 }
+						],
+						caption: 'Products'
+					}
+				}
+			]
+		}
+	},
+	mount_form: {
+		user: 'Render a sign-up form',
+		envelope: {
+			say: 'A schema-driven form. `bind:data` round-trips the values.',
+			render: [
+				{
+					tool: 'mount_form',
+					props: {
+						schema: {
+							type: 'object',
+							properties: {
+								name: { type: 'string', required: true },
+								email: { type: 'string', format: 'email', required: true },
+								role: { type: 'string', enum: ['admin', 'editor', 'viewer'] },
+								newsletter: { type: 'boolean' }
+							}
+						},
+						data: { name: '', email: '', role: 'viewer', newsletter: true }
+					}
+				}
+			]
+		}
+	},
+	mount_list: {
+		user: 'Show a settings list with collapsible groups',
+		envelope: {
+			say: 'Settings shape — three groups, items inside.',
+			render: [
+				{
+					tool: 'mount_list',
+					props: {
+						items: [
+							{
+								label: 'General',
+								children: [{ label: 'Profile' }, { label: 'Account' }]
+							},
+							{
+								label: 'Appearance',
+								children: [{ label: 'Theme' }, { label: 'Density' }]
+							}
+						],
+						collapsible: true
+					}
+				}
+			]
+		}
+	},
+	mount_stepper: {
+		user: 'Show a 4-step sign-up flow with step 2 active',
+		envelope: {
+			say: 'A 4-step Stepper with steps 1 and 2 completed.',
+			render: [
+				{
+					tool: 'mount_stepper',
+					props: {
+						steps: [
+							{ text: 'Account', completed: true },
+							{ text: 'Profile', completed: true },
+							{ text: 'Preferences' },
+							{ text: 'Review' }
+						],
+						current: 2
+					}
+				}
+			]
+		}
+	}
+}
+
+function buildSystemPrompt(includeCode: boolean): string {
 	const tools = catalog
 		.filter((m) => m.tool)
 		.map(
@@ -165,18 +287,48 @@ const SYSTEM_PROMPT = (() => {
 				`  - ${m.tool!.name}: ${m.tool!.description}\n    params: ${JSON.stringify(m.tool!.parameters ?? {})}`
 		)
 		.join('\n')
-	return [
+	const examples = Object.entries(TOOL_EXAMPLES)
+		.map(
+			([, ex]) =>
+				`User: ${ex.user}\nAssistant: ${JSON.stringify(ex.envelope, null, 0)}`
+		)
+		.join('\n\n')
+	const lines = [
 		'You are Rokkit — an assistant that responds by mounting live Svelte components in the chat.',
-		'You must reply with ONLY a JSON object (no prose outside, no markdown fence) of the shape:',
-		'  { "say": string, "render": [ { "tool": string, "props": object } ] }',
-		'`say` is one short sentence explaining what you rendered.',
-		'`render` is the list of components to mount inline; pick from these tools:',
+		'',
+		'You MUST reply with ONLY a single JSON object (no prose outside, no markdown fence) of the shape:',
+		'  { "say": string,                        // one short sentence, < 25 words',
+		`    "render": [ { "tool": string, "props": object } ]${ 
+			includeCode ? ',\n    "code"?: [ { "language": string, "filename"?: string, "code": string } ] }' : ' }'}`,
+		'',
+		'`say` is one short sentence explaining the response.',
+		'`render` is the list of components to mount inline. Use it whenever you can express the answer as a UI.'
+	]
+	if (includeCode) {
+		lines.push(
+			'`code` is optional — include a code sample only when the user explicitly asks for source / a snippet / "how does this work". NEVER put code in `say`.'
+		)
+	} else {
+		lines.push(
+			'DO NOT include any `code` field. The user has code samples turned off — respond with `render` only.'
+		)
+	}
+	lines.push(
+		'',
+		'Available tools (pick from these names; the params show fields the user might mention):',
 		tools,
-		'Pick reasonable props for the user request. If the user request does not fit any tool, return',
-		'  { "say": "...", "render": [] }',
-		'and put two concrete alternative requests as a comma-separated list in `say`.'
-	].join('\n')
-})()
+		'',
+		'Examples (always copy these prop shapes — they map 1:1 to what Rokkit components expect):',
+		examples,
+		'',
+		'Rules:',
+		'- Output ONE JSON object only. No prose before or after. No ```json fences.',
+		'- Prop shapes MUST match the examples (data is an array of row objects; schema is JSON-Schema-ish; steps use `text` not `label`).',
+		'- If the request does not match any tool, return { "say": "...", "render": [] } where `say` suggests two concrete alternatives.',
+		'- Pick reasonable defaults; you do not need to ask the user for missing fields.'
+	)
+	return lines.join('\n')
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function parseCompletion(result: any): Block[] {
@@ -216,10 +368,10 @@ function parseCompletion(result: any): Block[] {
 		return blocks
 	}
 
-	// 2. JSON envelope { say, render: [{ tool, props }] } (free tier)
+	// 2. JSON envelope { say, render, code? } (free tier)
 	const json = extractJsonEnvelope(content)
 	if (json && typeof json === 'object') {
-		const env = json as { say?: unknown; render?: unknown }
+		const env = json as { say?: unknown; render?: unknown; code?: unknown }
 		if (typeof env.say === 'string' && env.say.trim()) {
 			blocks.push({ kind: 'prose', text: env.say })
 		}
@@ -233,6 +385,22 @@ function parseCompletion(result: any): Block[] {
 						tool: cell.tool,
 						props: (cell.props as Record<string, unknown>) ?? {},
 						caption: `${cell.tool} · LLM`
+					})
+				}
+			}
+		}
+		// Respect the user's "include code" toggle. Even if the LLM emits a
+		// code field unprompted, filter it out unless the user opted in.
+		if (Array.isArray(env.code) && llm.includeCode) {
+			for (const item of env.code) {
+				if (typeof item !== 'object' || item === null) continue
+				const cell = item as { language?: unknown; filename?: unknown; code?: unknown }
+				if (typeof cell.code === 'string') {
+					blocks.push({
+						kind: 'code',
+						language: typeof cell.language === 'string' ? cell.language : 'text',
+						filename: typeof cell.filename === 'string' ? cell.filename : undefined,
+						code: cell.code
 					})
 				}
 			}
@@ -290,7 +458,7 @@ async function routeViaOpenRouter(query: string): Promise<Block[]> {
 		body: JSON.stringify({
 			model: llm.openRouterModel,
 			messages: [
-				{ role: 'system', content: SYSTEM_PROMPT },
+				{ role: 'system', content: buildSystemPrompt(llm.includeCode) },
 				{ role: 'user', content: query }
 			],
 			response_format: { type: 'json_object' },
@@ -353,8 +521,10 @@ async function routeViaWebLLM(query: string): Promise<Block[]> {
 	if (!e) {
 		return [
 			{
-				kind: 'prose',
-				text: `Couldn't initialise web-llm — ${llm.errorMessage || 'unknown error'}`
+				kind: 'error',
+				title: 'Web-LLM unavailable',
+				message: llm.errorMessage || 'Unknown initialisation error.',
+				hint: 'Switch back to OpenRouter, or check that this browser has WebGPU enabled.'
 			}
 		]
 	}
@@ -363,7 +533,7 @@ async function routeViaWebLLM(query: string): Promise<Block[]> {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const result: any = await e.chat.completions.create({
 			messages: [
-				{ role: 'system', content: SYSTEM_PROMPT },
+				{ role: 'system', content: buildSystemPrompt(llm.includeCode) },
 				{ role: 'user', content: query }
 			],
 			tools: buildToolSpecs(),
@@ -372,7 +542,15 @@ async function routeViaWebLLM(query: string): Promise<Block[]> {
 		})
 		return parseCompletion(result)
 	} catch (err) {
-		return [{ kind: 'prose', text: `Web-LLM error: ${(err as Error).message}` }]
+		const msg = (err as Error).message || String(err)
+		return [
+			{
+				kind: 'error',
+				title: 'Web-LLM request failed',
+				message: msg.length > 240 ? `${msg.slice(0, 240)  }…` : msg,
+				details: msg.length > 240 ? msg : undefined
+			}
+		]
 	} finally {
 		llm.webllmStatus = 'ready'
 	}
@@ -390,11 +568,34 @@ export async function routeViaLLM(query: string): Promise<Block[]> {
 		try {
 			return await routeViaOpenRouter(query)
 		} catch (err) {
-			const msg = (err as Error).message || String(err)
+			const raw = (err as Error).message || String(err)
+			// Match "<status> · ..." formed by routeViaOpenRouter.
+			const statusMatch = raw.match(/^(\d{3})\s+·\s+(.+)$/s)
+			const status = statusMatch ? statusMatch[1] : ''
+			const detail = statusMatch ? statusMatch[2] : raw
+			const title =
+				status === '429'
+					? 'Rate-limited by the free provider'
+					: status === '404'
+						? `Model unavailable (${llm.openRouterModel})`
+						: status === '503'
+							? 'OpenRouter unreachable'
+							: status
+								? `OpenRouter ${status}`
+								: 'OpenRouter request failed'
+			const hint =
+				status === '429'
+					? 'Try a different free model, retry in a moment, or switch to Web-LLM (one-time browser download).'
+					: status === '404'
+						? 'Pick another model from the dropdown — the free model list rotates.'
+						: 'Switch to Web-LLM if this keeps failing, or retry.'
 			return [
 				{
-					kind: 'prose',
-					text: `OpenRouter call failed — ${msg}. The free tier rate-limits aggressively; the in-browser model is available as a fallback.`
+					kind: 'error',
+					title,
+					message: detail.length > 240 ? `${detail.slice(0, 240)  }…` : detail,
+					details: detail.length > 240 ? detail : undefined,
+					hint
 				},
 				{
 					kind: 'suggestions',
@@ -405,10 +606,7 @@ export async function routeViaLLM(query: string): Promise<Block[]> {
 							query: '__switch_to_webllm',
 							action: { kind: 'switch-provider', provider: 'webllm' }
 						},
-						{
-							label: 'Retry',
-							query
-						}
+						{ label: 'Retry', query }
 					]
 				}
 			]

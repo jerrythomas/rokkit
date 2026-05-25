@@ -34,6 +34,23 @@
 			/>
 		{:else if block.kind === 'component'}
 			<InlineComponent tool={block.tool} props={block.props} caption={block.caption} />
+		{:else if block.kind === 'error'}
+			<div class="block-error">
+				<div class="block-error-head">
+					<span class="i-mdi:alert-circle-outline" aria-hidden="true"></span>
+					<span class="block-error-title">{block.title}</span>
+				</div>
+				<p class="block-error-message">{block.message}</p>
+				{#if block.details}
+					<details class="block-error-details">
+						<summary>show full details</summary>
+						<pre>{block.details}</pre>
+					</details>
+				{/if}
+				{#if block.hint}
+					<p class="block-error-hint">{block.hint}</p>
+				{/if}
+			</div>
 		{:else if block.kind === 'data-note'}
 			<div class="block-datanote">
 				<span class="block-datanote-tag">{block.source.toUpperCase()}</span>
@@ -127,6 +144,64 @@
 		color: var(--accent);
 		border-style: solid;
 		background: color-mix(in oklab, var(--accent) 6%, var(--paper-soft));
+	}
+
+	.block-error {
+		padding: 12px 14px;
+		border: 1px solid color-mix(in oklab, var(--danger, #c43838) 45%, transparent);
+		background: color-mix(in oklab, var(--danger, #c43838) 6%, var(--paper));
+		border-radius: 8px;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.block-error-head {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		font: 600 13px var(--font-ui);
+		color: var(--danger, #c43838);
+	}
+
+	.block-error-title {
+		line-height: 1.3;
+	}
+
+	.block-error-message {
+		margin: 0;
+		font: 400 13.5px/1.55 var(--font-ui);
+		color: var(--ink);
+		overflow-wrap: anywhere;
+		white-space: pre-wrap;
+	}
+
+	.block-error-hint {
+		margin: 0;
+		font: 400 12.5px/1.5 var(--font-ui);
+		color: var(--ink-mute);
+		padding-top: 6px;
+		border-top: 1px dashed color-mix(in oklab, var(--danger, #c43838) 25%, transparent);
+	}
+
+	.block-error-details summary {
+		font: 500 11.5px var(--font-mono);
+		color: var(--ink-mute);
+		cursor: pointer;
+		letter-spacing: 0.04em;
+	}
+
+	.block-error-details pre {
+		margin: 6px 0 0;
+		padding: 8px 10px;
+		max-height: 200px;
+		overflow: auto;
+		background: var(--paper-soft);
+		border-radius: 4px;
+		font: 11.5px/1.5 var(--font-mono);
+		color: var(--ink-soft);
+		white-space: pre-wrap;
+		overflow-wrap: anywhere;
 	}
 
 	.block-datanote {

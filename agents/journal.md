@@ -4014,3 +4014,66 @@ Lint: 0 errors, 45 pre-existing warnings.
 - Streaming output. Current call is awaited; switching to `stream: true` + incremental block rendering would feel snappier on slower models.
 - Per-demo JSON Schema for `parameters`. Today all params are typed as `string` in the tool spec; the LLM mostly figures out reasonable shapes but tighter schemas would reduce failures on the larger demos (form, chart with fill).
 - Persist `llm.enabled` + `llm.provider` + model selections to localStorage so the toggle survives refresh.
+
+## 2026-05-25 (cont.) — Prompt examples, code toggle, error block, layout fix
+
+Four issues caught while testing the LLM path:
+
+**System prompt with concrete examples**
+
+The prompt enumerated tool names + their `parameters` object (which is mostly prose). Small models had to invent prop shapes from scratch, and gpt-oss-20b would sometimes return `{ data: "Q1=42, Q2=58, ..." }` (string) instead of `data: [{ quarter, revenue }, ...]` (array).
+
+Fix: `TOOL_EXAMPLES` map with one full envelope example per tool (chart / table / form / list / stepper). The system prompt embeds these as `User: ... Assistant: { ... }` pairs. Smaller free models faithfully mimic; bigger ones use them as a template.
+
+Sample sizes per tool included so the LLM has a known good shape:
+- `mount_bar_chart` — 4 rows of `{ quarter, revenue }` + `x`, `y`, `height`, `grid`
+- `mount_table` — 3 rows + `caption`
+- `mount_form` — full JSON-Schema-ish object with `type/format/enum/required` + a `data` seed
+- `mount_list` — nested `children` array + `collapsible`
+- `mount_stepper` — 4 steps with `text` (not `label`) + `current: 2`
+
+Plus explicit rules:
+- ONE JSON object only, no prose around it, no ``` fences
+- Prop shapes MUST match examples
+- Empty-render fallback when nothing matches
+- Pick defaults; never ask the user for missing fields
+
+**Code-block field (configurable)**
+
+User wanted the option to include source-code snippets in chat responses. Added `code?: [{ language, filename?, code }]` to the envelope and a `☐ code` toggle in the LLM chrome (defaults OFF).
+
+The prompt branches on `llm.includeCode`:
+- ON: full envelope including code field + permission to emit when asked
+- OFF: explicit "DO NOT include a code field. The user has code samples turned off"
+
+`parseCompletion` also filters code blocks at the parse step when off — defence in depth.
+
+**Confirmed code is LLM-generated**: `grep -rn "InventoryTable" demo/src packages` returns zero matches. The Svelte file you saw came entirely from the LLM via the code field; there's no static InventoryTable.svelte anywhere in the repo. gpt-oss-120b (120B parameters) is big enough to generate ~20 lines of working Svelte from the prop shape the prompt taught it.
+
+**Dedicated ErrorBlock**
+
+`{ kind: 'error', title, message, details?, hint? }` rendered as a red-bordered card with:
+- alert icon + bold title
+- message body with `overflow-wrap: anywhere` so JSON URLs wrap
+- 240-char cap on the message; the rest goes in a collapsible `<details>` with `<pre>` (scrollable, max-height 200px)
+- hint line below a dashed separator
+
+`routeViaLLM`'s failure path now produces these instead of mashing the raw error into prose. Failure modes mapped to human titles:
+- 429 → "Rate-limited by the free provider"
+- 404 → "Model unavailable (<id>)" with hint to pick another
+- 503 → "OpenRouter unreachable"
+- otherwise → "OpenRouter <status>"
+
+Web-LLM init / call errors also flow through ErrorBlock.
+
+**Whitespace fix**
+
+`.inline-mount` had a `margin-top: 10px` on top of the BlockList's `gap: 12px`. Dropped the explicit margin — gap handles spacing now, no more double-gap between prose and the rendered table/chart/form.
+
+**Verified**
+
+- Error rendering: triggered a 429 on Llama 3.2 3B, got the red card with title "Rate-limited by the free provider" + wrapped message + hint + Retry / Switch-to-Web-LLM chips below.
+- Code toggle: default off → prompt tells model to skip `code`; toggling on lets it emit (verified earlier with gpt-oss-120b producing InventoryTable.svelte).
+- Tighter spacing between prose + figure on every block.
+
+Lint: 0 errors, 54 pre-existing warnings.

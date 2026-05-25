@@ -263,7 +263,7 @@
 
 <style>
 	.inline-mount {
-		margin: 10px 0 0;
+		margin: 0;
 		padding: 12px;
 		border: 1px solid var(--paper-edge);
 		border-radius: 8px;

@@ -41,6 +41,19 @@ export type DataNoteBlock = {
 }
 
 /**
+ * Structured error surface. Long upstream error messages used to overflow
+ * the prose block; this gives them a dedicated affordance with collapsible
+ * details and a copy button.
+ */
+export type ErrorBlock = {
+	kind: 'error'
+	title: string
+	message: string
+	details?: string
+	hint?: string
+}
+
+/**
  * A suggestion can either (a) be plain text that gets submitted as a new query,
  * or (b) carry a structured action that re-routes the existing data through
  * the inference pipeline with a forced shape. The latter avoids the user
@@ -69,6 +82,7 @@ export type Block =
 	| ComponentBlock
 	| SuggestionsBlock
 	| DataNoteBlock
+	| ErrorBlock
 
 export type ChatTurn = {
 	id: string
