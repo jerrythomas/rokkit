@@ -26,13 +26,32 @@ export type ComponentBlock = {
 	caption?: string
 }
 
+/**
+ * Lightweight metadata about an inference result — what shape we detected,
+ * how many rows, columns and their types. Rendered as a small "I see ..."
+ * row so the user can sanity-check the inference.
+ */
+export type DataNoteBlock = {
+	kind: 'data-note'
+	source: 'json' | 'csv' | 'attached'
+	shape: 'record' | 'table' | 'chart' | 'list' | 'json'
+	rowCount?: number
+	columnCount?: number
+	columns?: { name: string; type: string }[]
+}
+
 export type SuggestionsBlock = {
 	kind: 'suggestions'
 	intro?: string
 	items: { label: string; query: string }[]
 }
 
-export type Block = ProseBlock | CodeBlock | ComponentBlock | SuggestionsBlock
+export type Block =
+	| ProseBlock
+	| CodeBlock
+	| ComponentBlock
+	| SuggestionsBlock
+	| DataNoteBlock
 
 export type ChatTurn = {
 	id: string

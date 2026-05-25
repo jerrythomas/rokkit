@@ -3773,3 +3773,59 @@ The mock router is the only thing that needs to change. The UI doesn't care wher
 - Note: today the `disabled` attribute only kicks in for the CURRENT canvas state, but the `<button>` element itself is always rendered. The first MOUNTED message in the chat history will become re-enabled later when we wire conversation history — clicking it then will reset the variant for that historical state.
 
 Lint: 0 errors, 28 pre-existing warnings.
+
+## 2026-05-25 (cont.) — Data upload → smart UI inference
+
+Picks up where the chat scaffold left off. User asks: can the chat accept JSON or CSV and pick the right UI? That's the "data → live component" story we've been building toward. Built it end-to-end.
+
+**Inference pipeline**
+
+`demo/src/lib/chat-demo/infer.ts`:
+- `parseCSV(text)` — tiny RFC-4180-ish parser. Handles quoted fields with embedded commas + doubled `""` escapes. Coerces numeric / boolean strings after parsing so consumers don't have to.
+- `tryParse(text)` — detects JSON (starts with `{`/`[`) vs CSV (has comma + newline) and returns either `{ ok, value, format }` or `{ ok: false, error }`.
+- `inferShape(value)` — given a parsed value, returns one of:
+  - `record` (single object) → field list with inferred types
+  - `table` (array of records, no obvious chart axes or too many cols)
+  - `chart` (array of records with at least one categorical + one numeric column, ≤60 rows, ≤4 cols)
+  - `list` (flat array of primitives)
+  - `json` (fallback)
+- `schemaFromRecord(record)` — builds a JSON-Schema-ish object from the keys' detected types (string / number / boolean / date), so FormRenderer can present an editable view of arbitrary data.
+
+Type detection: ISO-8601 date regex, numeric regex over strings, boolean string check, then coalesce mixed columns to `string`.
+
+Chart-axis picking: first categorical column → x, first numeric → y, second categorical (if present) → `fill`. This is enough to make a useful chart out of any sales / revenue / metrics dataset without the user specifying axes.
+
+**Router**
+
+`router.ts` gets a new `routeData(source, parsed, originalQuery?)` returning `Block[]`. It always prepends a headline prose block + a `data-note` block (small chip strip showing source, shape, row count, column types), then the inferred component, then suggestions tailored to the shape:
+- record → "Show raw JSON", "Wrap in a list"
+- table → "Chart Y by X" if we can guess axes
+- chart → "Show as table", "Stack the series" when grouped
+
+**Store + composer**
+
+`submitText(text)` is the new front door — `tryParse`s the text first, routes to data pipeline if it looks like data, otherwise falls back to keyword `submitQuery`. `submitData({source, text, parsed, query})` pushes a user turn with a short summary ("pasted JSON · 6 rows · 3 fields") + an assistant turn with the inferred blocks.
+
+`routes/chat/+page.svelte`:
+- Composer gets an "Attach data" button (left actions snippet) tied to a hidden `<input type="file" accept=".json,.csv">`.
+- Window-level drag-and-drop overlay — drop a file anywhere, big dashed border + "Drop CSV or JSON to render it" appears.
+- Welcome screen has two new sample chips ("Try: paste sales JSON", "Try: paste a user record") that paste real sample data into the composer.
+- New `Block` kind: `data-note` — small monospace strip with the source tag (JSON / CSV), the detected shape, row count, and per-column name + type.
+
+**End-to-end verified**
+
+- Paste 6-row sales JSON (`{region, product, revenue}[]`) → chart with Hardware/Software bars grouped by region, legend, suggestion chips.
+- Paste single user record (`{name, email, role, joinedAt, active, signupCount}`) → editable form with the right input types: text for strings, native date picker for `joinedAt`, checkbox for `active`, number input for `signupCount`. Caption "EDITABLE RECORD".
+- Upload `sample-employees.csv` (5 rows, mixed types incl. ISO dates and "true"/"false" booleans) → sortable Table with all 5 employees; data-note shows `name(string) department(string) salary(number) startDate(date) remote(boolean)`. Booleans show as "true"/"false"; numbers/dates stay raw (formatting is a follow-up).
+
+**Composer + drop UI**
+
+`Attach data` button next to the textarea. Window-level drop overlay with accent dashed border on `dragover` (only when the drag includes files). File extension fallback to MIME type — `.csv` always goes through `parseCSV`, anything else through `tryParse` (JSON first).
+
+**What this proves**
+
+The catalog's `inline: { capable: true }` declarations + the `Block` shape are doing real work now. The same `<Table/>` / `<BarChart/>` / `<FormRenderer/>` that power `/app` render arbitrary user data with zero per-shape code — the inference layer just picks the right tool and props.
+
+Phase 2 LLM swap remains a one-file change: replace `routeQuery` with a call to web-llm. `routeData` stays as-is since the inference pipeline is local and synchronous either way.
+
+Lint: 0 errors, 37 pre-existing warnings.

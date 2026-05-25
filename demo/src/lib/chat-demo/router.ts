@@ -11,6 +11,7 @@
  * Block[] structure. The renderer doesn't change.
  */
 import type { Block } from './types'
+import { inferShape, schemaFromRecord, type FieldSummary, type Inference } from './infer'
 
 type Route = {
 	id: string
@@ -215,4 +216,156 @@ export function routeQuery(query: string): Block[] {
 	const match = ROUTES.find((r) => r.keywords.test(query))
 	if (!match) return FALLBACK
 	return match.build(query)
+}
+
+// ─── Data-driven routing ──────────────────────────────────────────────────
+
+function dataNote(
+	shape: Inference['kind'],
+	source: 'json' | 'csv',
+	columns: FieldSummary[] = [],
+	rowCount?: number
+): Block {
+	return {
+		kind: 'data-note',
+		source,
+		shape: shape === 'error' ? 'json' : shape,
+		rowCount,
+		columnCount: columns.length || undefined,
+		columns: columns.length
+			? columns.map((c) => ({ name: c.name, type: c.type }))
+			: undefined
+	}
+}
+
+const SHAPE_HEADLINE: Record<string, string> = {
+	record: 'Single record detected — rendered as an editable form. Edit any field; the schema was inferred from the value types.',
+	table:
+		"Tabular data detected — here's a sortable Table. Columns are inferred from the row shape (click any header to sort).",
+	chart:
+		'Numeric series detected — rendering as a BarChart. The first categorical column becomes x; the first numeric column becomes y; a second categorical column (if present) becomes the fill series.',
+	list: 'Flat list detected — rendering each item below.',
+	json: 'Could not infer a structured shape, falling back to a JSON code block.'
+}
+
+export function routeData(
+	source: 'json' | 'csv',
+	parsed: unknown,
+	originalQuery?: string
+): Block[] {
+	const inf = inferShape(parsed)
+
+	if (inf.kind === 'error') {
+		return [{ kind: 'prose', text: `Could not parse the data — ${inf.message}` }]
+	}
+
+	const headline: Block = { kind: 'prose', text: SHAPE_HEADLINE[inf.kind] }
+	const blocks: Block[] = [headline]
+
+	if (inf.kind === 'record') {
+		blocks.push(
+			dataNote('record', source, inf.fields as unknown as FieldSummary[])
+		)
+		blocks.push({
+			kind: 'component',
+			tool: 'mount_form',
+			caption: 'Editable record',
+			props: {
+				schema: schemaFromRecord(inf.record),
+				data: inf.record
+			}
+		})
+		blocks.push({
+			kind: 'suggestions',
+			intro: 'Or',
+			items: [
+				{ label: 'Show raw JSON', query: 'Show the data as JSON' },
+				{ label: 'Wrap in a list', query: 'Wrap this record in a one-item list' }
+			]
+		})
+	} else if (inf.kind === 'table') {
+		blocks.push(dataNote('table', source, inf.columns, inf.rows.length))
+		blocks.push({
+			kind: 'component',
+			tool: 'mount_table',
+			caption: `${inf.rows.length} rows · ${inf.columns.length} columns`,
+			props: { data: inf.rows }
+		})
+		const chartAxes = inferShape(inf.rows)
+		if (chartAxes.kind === 'chart') {
+			blocks.push({
+				kind: 'suggestions',
+				intro: 'Or',
+				items: [
+					{
+						label: `Chart ${chartAxes.y} by ${chartAxes.x}`,
+						query: `Visualize this as a bar chart with x=${chartAxes.x} y=${chartAxes.y}`
+					}
+				]
+			})
+		}
+	} else if (inf.kind === 'chart') {
+		blocks.push(dataNote('chart', source, inf.columns, inf.rows.length))
+		const props: Record<string, unknown> = {
+			data: inf.rows,
+			x: inf.x,
+			y: inf.y,
+			height: 280,
+			grid: true
+		}
+		if (inf.fill) {
+			props.fill = inf.fill
+			props.legend = true
+		}
+		blocks.push({
+			kind: 'component',
+			tool: 'mount_bar_chart',
+			caption: `${inf.y} by ${inf.x}${inf.fill ? ` (grouped by ${inf.fill})` : ''}`,
+			props
+		})
+		blocks.push({
+			kind: 'suggestions',
+			intro: 'Or',
+			items: [
+				{ label: 'Show as a table', query: 'Show the data as a table' },
+				...(inf.fill
+					? [
+							{
+								label: 'Stack the series',
+								query: `Stack the chart by ${inf.fill}`
+							}
+						]
+					: [])
+			]
+		})
+	} else if (inf.kind === 'list') {
+		blocks.push({
+			kind: 'component',
+			tool: 'mount_list',
+			caption: `${inf.items.length} items`,
+			props: {
+				items: inf.items.map((item) =>
+					typeof item === 'object' && item !== null ? item : { label: String(item) }
+				)
+			}
+		})
+	} else {
+		blocks.push({
+			kind: 'code',
+			language: 'json',
+			filename: 'data.json',
+			code: JSON.stringify(parsed, null, 2)
+		})
+	}
+
+	if (originalQuery && originalQuery.trim()) {
+		blocks.unshift({
+			kind: 'prose',
+			text: `For "${originalQuery.trim()}" — ${SHAPE_HEADLINE[inf.kind].toLowerCase()}`
+		})
+		// shift removes the headline we already added; re-pop it cleanly:
+		blocks.splice(1, 1)
+	}
+
+	return blocks
 }

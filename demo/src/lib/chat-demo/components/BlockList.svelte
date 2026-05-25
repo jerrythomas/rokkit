@@ -23,6 +23,25 @@
 			/>
 		{:else if block.kind === 'component'}
 			<InlineComponent tool={block.tool} props={block.props} caption={block.caption} />
+		{:else if block.kind === 'data-note'}
+			<div class="block-datanote">
+				<span class="block-datanote-tag">{block.source.toUpperCase()}</span>
+				<span class="block-datanote-shape">{block.shape}</span>
+				{#if block.rowCount !== undefined && block.rowCount !== null}
+					<span class="block-datanote-sep">·</span>
+					<span>{block.rowCount} rows</span>
+				{/if}
+				{#if block.columns}
+					<span class="block-datanote-sep">·</span>
+					<div class="block-datanote-cols">
+						{#each block.columns as col (col.name)}
+							<span class="block-datanote-col">
+								<code>{col.name}</code><span class="block-datanote-type">{col.type}</span>
+							</span>
+						{/each}
+					</div>
+				{/if}
+			</div>
 		{:else if block.kind === 'suggestions'}
 			<div class="block-suggestions">
 				{#if block.intro}<span class="block-suggestions-intro">{block.intro}</span>{/if}
@@ -97,5 +116,61 @@
 		color: var(--accent);
 		border-style: solid;
 		background: color-mix(in oklab, var(--accent) 6%, var(--paper-soft));
+	}
+
+	.block-datanote {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 6px;
+		padding: 8px 10px;
+		background: var(--paper-soft);
+		border: 1px dashed var(--paper-edge);
+		border-radius: 6px;
+		font: 500 11.5px var(--font-mono);
+		color: var(--ink-mute);
+	}
+
+	.block-datanote-tag {
+		padding: 2px 6px;
+		background: color-mix(in oklab, var(--accent) 16%, var(--paper-soft));
+		color: var(--accent);
+		border-radius: 4px;
+		font-size: 10.5px;
+		letter-spacing: 0.06em;
+	}
+
+	.block-datanote-shape {
+		text-transform: capitalize;
+		color: var(--ink);
+	}
+
+	.block-datanote-sep {
+		opacity: 0.5;
+	}
+
+	.block-datanote-cols {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px;
+	}
+
+	.block-datanote-col {
+		display: inline-flex;
+		align-items: baseline;
+		gap: 4px;
+	}
+
+	.block-datanote-col code {
+		font: 500 11px var(--font-mono);
+		color: var(--ink);
+		background: transparent;
+		padding: 0;
+	}
+
+	.block-datanote-type {
+		font-size: 10px;
+		color: var(--ink-mute);
+		font-weight: 400;
 	}
 </style>
