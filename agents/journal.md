@@ -3575,3 +3575,30 @@ Three things came out of trying the prototype on a fresh page:
 - `/app/tabs` — Theming tab selected, panel content visible, code block lists 5 items without icons, `<Tabs options={items} bind:value />`.
 - `/app/tabs?variant=vertical` — strip on the left, panel on the right, code block has `orientation="vertical"`.
 - `/app/tabs?variant=with-icons` — icons render in each trigger, items array in the code block includes the `icon:` field.
+
+## 2026-05-25 (cont.) — Variants in Stepper (second demo to adopt)
+
+Validated the chip pattern on a second demo. Stepper meta had three variants stubbed (`horizontal`, `vertical`, `with-content`); dropped `horizontal` since it's the default and pruned `vertical`'s label to `'Vertical orientation'` to match Tabs' style. `vertical` carries `{ orientation: 'vertical' }`; `with-content` swaps in a `content` snippet instead of props.
+
+**Plumbing reused**
+
+- `VariantChips` dropped straight in — `<VariantChips demoId="stepper" basePath="/app/stepper" activeId={activeVariant?.id ?? null}/>` is the whole call site.
+- `stepperVariantProps` $derived (gated on `shell.demoType === 'stepper'` so it doesn't leak into other demos that share `activeVariant`).
+- `app/stepper/+page.svelte` got the same `$effect` reading `?variant=` as the Tabs page.
+
+**Stepper-specific bits**
+
+- Fixed step shape: was `{ label: 'Account', completed }`; Stepper renders the visible label from `step.text` (it uses `step.label` for the short text inside the circle, defaulting to the step number). Steps now use `{ text: 'Account', completed: true }` — labels actually show below the circles in default mode.
+- Conditional `content` snippet pattern: declared `stepperContent` once at the markup level, then passed `content={activeVariant?.id === 'with-content' ? stepperContent : undefined}`. Tried wrapping `{#snippet content}` inside `{#if}` directly under `<Stepper>` first — that doesn't bind the snippet as a prop, the snippet has to be a top-level declaration that's passed conditionally.
+- `stepperCode` is `$derived.by()` like Tabs — the snippet block only appears in the displayed code when the `with-content` variant is active. orientation line only appears when not horizontal.
+- `.stepper-mount[data-orientation='vertical']` flips to `flex-direction: row` so the vertical stepper sits left of the Complete & Next button.
+
+**Verified**
+
+- `/app/stepper` — horizontal default, no extra code in the snippet, "Account / Profile / Preferences / Review" labels below each circle.
+- `/app/stepper?variant=vertical` — steps stacked, code shows `orientation="vertical"`.
+- `/app/stepper?variant=with-content` — blurb renders next to active step (Preferences → "Tell us how you want to be notified — email, in-app, or both."). Code shows the `{#snippet content(step, index)}` block.
+
+Pattern now proven on two demos. Next adopter would be near-zero-cost: declare variants in meta with `props`, add `$effect` to the route page, derive variant props in the layout, drop `VariantChips` in the canvas-sub.
+
+Tests: 3480/3480. Lint: 0 errors.

@@ -24,8 +24,7 @@ const meta: DemoMeta = {
 	},
 	inline: { capable: true },
 	variants: [
-		{ id: 'horizontal', label: 'Horizontal', mode: 'dynamic' },
-		{ id: 'vertical', label: 'Vertical', mode: 'dynamic' },
+		{ id: 'vertical', label: 'Vertical orientation', mode: 'dynamic', props: { orientation: 'vertical' } },
 		{ id: 'with-content', label: 'With per-step content', mode: 'dynamic' }
 	]
 }

@@ -340,11 +340,17 @@ ${tabsTag}`
 	let treeValue = $state<unknown>(null)
 
 	// Stepper demo state — 4-step signup flow
+	const stepperBlurbs: Record<string, string> = {
+		Account: 'Pick a username + password. Email verification will be sent after submit.',
+		Profile: 'Display name, time zone, and an optional avatar. All editable later.',
+		Preferences: 'Tell us how you want to be notified — email, in-app, or both.',
+		Review: 'Confirm what you entered, then click Finish to create the account.'
+	}
 	let stepperSteps = $state([
-		{ label: 'Account', completed: true },
-		{ label: 'Profile', completed: true },
-		{ label: 'Preferences' },
-		{ label: 'Review' }
+		{ text: 'Account', completed: true },
+		{ text: 'Profile', completed: true },
+		{ text: 'Preferences' },
+		{ text: 'Review' }
 	])
 	let stepperCurrent = $state(2)
 
@@ -353,25 +359,38 @@ ${tabsTag}`
 		if (stepperCurrent < stepperSteps.length - 1) stepperCurrent++
 	}
 
-	const stepperCode = `<script>
+	const stepperVariantProps = $derived<Record<string, unknown>>(
+		shell.demoType === 'stepper' && activeVariant?.mode === 'dynamic'
+			? (activeVariant.props ?? {})
+			: {}
+	)
+
+	const stepperCode = $derived.by(() => {
+		const orientation = (stepperVariantProps.orientation as string | undefined) ?? 'horizontal'
+		const showContent = activeVariant?.id === 'with-content'
+		const orientLine = orientation === 'horizontal' ? '' : ` orientation="${orientation}"`
+		const contentBlock = showContent
+			? `
+  {#snippet content(step, index)}
+    <p>{blurbs[step.text]}</p>
+  {/snippet}`
+			: ''
+		return `<script>
   import { Stepper, Button } from '@rokkit/ui'
 
   let steps = $state([
-    { label: 'Account',     completed: true },
-    { label: 'Profile',     completed: true },
-    { label: 'Preferences'                  },
-    { label: 'Review'                       }
+    { text: 'Account',     completed: true },
+    { text: 'Profile',     completed: true },
+    { text: 'Preferences'                  },
+    { text: 'Review'                       }
   ])
   let current = $state(2)
-
-  function advance() {
-    steps[current] = { ...steps[current], completed: true }
-    if (current < steps.length - 1) current++
-  }
 <\/script>
 
-<Stepper {steps} bind:current onclick={(i) => current = i} />
+<Stepper {steps} bind:current${orientLine} onclick={(i) => current = i}>${contentBlock}
+</Stepper>
 <Button onclick={advance}>Complete &amp; Next</Button>`
+	})
 
 	// Date Picker demo state — event scheduling form
 	let dateData = $state({
@@ -1603,24 +1622,39 @@ ${tabsTag}`
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'stepper'}
 				<div class="canvas-head">
-					<div class="canvas-eyebrow">Mounted demo · live</div>
+					<div class="canvas-eyebrow">Mounted demo · live{#if activeVariant} · variant: {activeVariant.label.toLowerCase()}{/if}</div>
 					<div class="canvas-title">Stepper · sequenced progress</div>
 					<div class="canvas-sub">
 						Four steps, two already complete. Click a completed step header to
 						revisit; click "Complete &amp; Next" to advance.
+						<br />
+						<VariantChips
+							demoId="stepper"
+							basePath="/app/stepper"
+							activeId={activeVariant?.id ?? null}
+						/>
 					</div>
 				</div>
 				<div class="canvas-body response">
 					<ChatResponse
 						name="&lt;Stepper/&gt;"
-						meta="· @rokkit/ui · style={style}"
+						meta={`· @rokkit/ui · style=${style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
 						kicker="LIVE"
 					>
 						{#snippet icon()}
 							<span class="i-mdi:stairs" aria-hidden="true"></span>
 						{/snippet}
-						<div class="stepper-mount">
-							<Stepper steps={stepperSteps} bind:current={stepperCurrent} onclick={(i: number) => (stepperCurrent = i)} />
+						{#snippet stepperContent(step: { text: string }, _index: number)}
+							<p class="step-blurb">{stepperBlurbs[step.text] ?? ''}</p>
+						{/snippet}
+						<div class="stepper-mount" data-orientation={stepperVariantProps.orientation ?? 'horizontal'}>
+							<Stepper
+								steps={stepperSteps}
+								bind:current={stepperCurrent}
+								onclick={(i: number) => (stepperCurrent = i)}
+								content={activeVariant?.id === 'with-content' ? stepperContent : undefined}
+								{...stepperVariantProps}
+							/>
 							<Button onclick={stepperAdvance}>Complete &amp; Next</Button>
 						</div>
 						{#snippet props()}
@@ -1628,7 +1662,11 @@ ${tabsTag}`
 							<span data-sep>·</span>
 							<span>current</span><span data-value>{stepperCurrent}</span>
 							<span data-sep>·</span>
-							<span>active</span><span data-value>{stepperSteps[stepperCurrent]?.label}</span>
+							<span>active</span><span data-value>{stepperSteps[stepperCurrent]?.text}</span>
+							{#if activeVariant}
+								<span data-sep>·</span>
+								<span>variant</span><span data-value>{activeVariant.id}</span>
+							{/if}
 						{/snippet}
 						{#snippet actions()}
 							<button type="button">
@@ -2318,6 +2356,17 @@ ${tabsTag}`
 		display: flex;
 		flex-direction: column;
 		gap: 18px;
+	}
+
+	.stepper-mount[data-orientation='vertical'] {
+		flex-direction: row;
+		align-items: flex-start;
+	}
+
+	.stepper-mount :global(.step-blurb) {
+		margin: 6px 0 0;
+		color: var(--ink-soft);
+		font: 400 13px/1.5 var(--font-ui);
 	}
 
 	.toast-buttons {
