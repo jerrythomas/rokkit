@@ -40,7 +40,6 @@
 		{ id: 'material', label: 'material', desc: 'pill bar · brand violet' }
 	]
 
-	const tabsExample = ['Overview', 'Theming', 'Anatomy', 'A11y', 'API']
 
 	const chatBullets = [
 		'Human-in-the-loop forms — AI proposes, user confirms',
@@ -197,20 +196,12 @@
 						<span class="tabs-card-desc">{theme.desc}</span>
 					</div>
 					<div class="tabs-card-body">
-						<div class="tabs-mock" data-style={theme.id}>
-							<div class="tabs-mock-bar">
-								{#each tabsExample as tab, i (tab)}
-									<button type="button" class:on={i === 1}>{tab}</button>
-								{/each}
-							</div>
-							<div class="tabs-mock-content">
-								<strong>Theming · data-driven</strong>
-								<p>
-									One component definition. The look — bar, indicator, density —
-									comes from <code>data-style</code> on the parent.
-								</p>
-							</div>
-						</div>
+						<iframe
+							class="tabs-frame"
+							title={`Tabs · ${theme.label}`}
+							src={`/embed/tabs?theme=${theme.id}`}
+							loading="lazy"
+						></iframe>
 					</div>
 				</div>
 			{/each}
@@ -733,120 +724,19 @@
 	}
 
 	.tabs-card-body {
-		padding: 18px 18px 20px;
+		padding: 4px 4px 6px;
 	}
 
-	/* Tabs mock — different look per data-style */
-	.tabs-mock-bar {
-		display: flex;
-	}
-
-	.tabs-mock-bar button {
-		position: relative;
-		padding: 9px 14px;
-		font: 500 13px var(--font-ui);
-		background: transparent;
-		border: 0;
-		cursor: pointer;
-		color: var(--ink-soft);
-	}
-
-	.tabs-mock-bar button.on {
-		color: var(--ink);
-	}
-
-	.tabs-mock-content {
-		padding: 18px 4px 4px;
-		font: 400 13px/1.6 var(--font-ui);
-		color: var(--ink-mute);
-	}
-
-	.tabs-mock-content strong {
+	/* Each card is an iframe so the theme cascade is isolated per card.
+	   Without this, the body's data-style would win the cascade for all
+	   four tabs (theme CSS uses identical-specificity selectors and
+	   zen-sumi.css is imported last in app.css). */
+	.tabs-frame {
 		display: block;
-		font: 500 14.5px var(--font-display);
-		color: var(--ink);
-		margin-bottom: 6px;
-		letter-spacing: -0.005em;
-	}
-
-	.tabs-mock-content p {
-		margin: 0;
-	}
-
-	.tabs-mock-content code {
-		font: 500 12px var(--font-mono);
-		padding: 1px 5px;
-		background: var(--paper-soft);
-		border: 1px solid var(--paper-edge);
-		border-radius: 3px;
-		color: var(--ink-mute);
-	}
-
-	/* Style-specific tab presentations */
-	.tabs-mock[data-style='zen-sumi'] .tabs-mock-bar {
-		border-bottom: 1px solid var(--paper-edge);
-	}
-	.tabs-mock[data-style='zen-sumi'] .tabs-mock-bar button.on::after {
-		content: '';
-		position: absolute;
-		left: 14px;
-		right: 14px;
-		bottom: -1px;
-		height: 1.5px;
-		background: var(--accent);
-	}
-
-	.tabs-mock[data-style='rokkit'] .tabs-mock-bar {
-		gap: 4px;
-		padding: 0 0 1px;
-		border-bottom: 1px solid var(--paper-edge);
-	}
-	.tabs-mock[data-style='rokkit'] .tabs-mock-bar button {
-		border-radius: 6px 6px 0 0;
-	}
-	.tabs-mock[data-style='rokkit'] .tabs-mock-bar button.on {
-		background: var(--accent);
-		color: white;
-	}
-
-	.tabs-mock[data-style='minimal'] .tabs-mock-bar {
-		gap: 24px;
-		padding: 0;
-		border-bottom: 1px solid var(--paper-edge);
-	}
-	.tabs-mock[data-style='minimal'] .tabs-mock-bar button {
-		padding: 8px 0;
-		font-weight: 400;
-	}
-	.tabs-mock[data-style='minimal'] .tabs-mock-bar button.on {
-		font-weight: 500;
-	}
-	.tabs-mock[data-style='minimal'] .tabs-mock-bar button.on::after {
-		content: '';
-		position: absolute;
-		left: 0;
-		right: 0;
-		bottom: -1px;
-		height: 1px;
-		background: var(--ink);
-	}
-
-	.tabs-mock[data-style='material'] .tabs-mock-bar {
-		gap: 4px;
-		padding: 4px;
-		background: var(--paper-soft);
-		border-radius: 9999px;
-		align-self: flex-start;
-		display: inline-flex;
-	}
-	.tabs-mock[data-style='material'] .tabs-mock-bar button {
-		border-radius: 9999px;
-		padding: 6px 14px;
-		font-size: 12.5px;
-	}
-	.tabs-mock[data-style='material'] .tabs-mock-bar button.on {
-		background: oklch(0.46 0.1 295);
-		color: white;
+		width: 100%;
+		height: 200px;
+		border: 0;
+		background: transparent;
 	}
 
 	/* ─── Chat Embed ─────────────────────────────────────────────── */

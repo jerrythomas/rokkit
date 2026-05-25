@@ -4170,3 +4170,25 @@ Both addressed by importing `Button` from `@rokkit/ui` and using it everywhere:
 Browser-verified the navbar shows both buttons styled identically to the in-app chrome.
 
 Lint: 0 errors.
+
+## 2026-05-25 (cont.) — Home theme showcase actually shows the themes now
+
+User caught: the four-card "same Tabs, four ways" section all looked identical. Was using hand-rolled CSS (`.tabs-mock`) — not the real Tabs component, not the real themes.
+
+First fix attempt: swap in real `<Tabs/>` instances inside cards with `data-style={theme.id}` on the card. **Didn't work.** Investigation showed why:
+
+- Theme CSS uses `[data-style='X'] [data-tabs-trigger][data-selected]` (specificity 0,3,0)
+- When DOM is `body[data-style="zen-sumi"] > div[data-style="rokkit"] > button`, BOTH selectors match the button (one via body, one via div) with identical specificity
+- Tiebreaker is source order; zen-sumi.css is imported last in app.css → zen-sumi always wins
+- Conclusion: nesting `data-style` doesn't re-scope in the current theme architecture; only the body's data-style matters
+
+Real fix: render each card in its own iframe. Each iframe is a separate document with its own `<body data-style="...">` so the cascade is naturally isolated.
+
+- New route `/embed/tabs?theme=<style>` — a minimal Svelte page that sets `documentElement.dataset.style` + `body.dataset.style` from the query param, then mounts a Tabs with 5 items (each with content). Transparent background + 0-padding html/body so the iframe blends into the host card.
+- Home page tabs-card now contains a single `<iframe class="tabs-frame" src="/embed/tabs?theme=zen-sumi" />` (etc.). All the `.tabs-mock-*` hand-rolled CSS deleted.
+
+Browser-verified: the four cards now visibly differ — zen-sumi (dark filled-block on selected), rokkit (card-style tabs with no fill), minimal (hairline underline + weight bump), material (pill-style in brand red on a paper-soft track).
+
+**Note for follow-up**: the underlying cascade issue is architectural — to make data-style truly nestable in-document, the theme CSS would need either `@scope` blocks or distinct higher-specificity selectors per nest level. Not blocking, but worth noting for the library.
+
+Lint: 0 errors.
