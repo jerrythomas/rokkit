@@ -253,22 +253,22 @@
 				<span class="chat-mock-meta">live components inline</span>
 			</div>
 			<div class="chat-mock-body">
-				<!-- User turn -->
+				<!-- User turn — `who` defaults to "you" in ChatMessage; same convention here -->
 				<div class="chat-msg chat-msg-user">
 					<div class="chat-msg-head">
 						<span class="chat-msg-tag">YOU</span>
-						<span class="chat-msg-who">Jerry</span>
+						<span class="chat-msg-who">you</span>
 					</div>
 					<div class="chat-msg-body">
 						Lock the Q3 plan — give me the three priorities and a deadline.
 					</div>
 				</div>
 
-				<!-- Assistant turn — prose + rendered form block -->
+				<!-- Assistant turn — component default `who` is "assistant"; demo overrides to "Rokkit" -->
 				<div class="chat-msg chat-msg-assistant">
 					<div class="chat-msg-head">
-						<span class="chat-msg-tag accent">ROKKIT</span>
-						<span class="chat-msg-who">assistant</span>
+						<span class="chat-msg-tag accent">ASSISTANT</span>
+						<span class="chat-msg-who">Rokkit</span>
 					</div>
 					<div class="chat-msg-body">
 						<p class="chat-prose">

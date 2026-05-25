@@ -8,8 +8,13 @@
 		ChatSidebar,
 		ChatStream,
 		Chips,
-		CodeBlock
+		CodeBlock,
+		configureWho
 	} from '$lib/chat'
+
+	// Brand the assistant once for this surface; every ChatMessage with
+	// kind='info' picks it up.
+	configureWho({ assistant: 'Rokkit' })
 	import { Tabs, Table, Tree, MultiSelect, Select, List, Button, AlertList, Stepper } from '@rokkit/ui'
 	import { FormRenderer } from '@rokkit/forms'
 	import { BarChart } from '@rokkit/chart'
@@ -1146,7 +1151,7 @@ ${rows}
 					<ChatMessage
 						kind="user"
 						head="YOU"
-						who="Jerry"
+
 						ago="just now"
 						icon="i-mdi:chat-outline"
 					>
@@ -1155,7 +1160,7 @@ ${rows}
 					<ChatMessage
 						kind="info"
 						head="UNDERSTOOD"
-						who="Rokkit"
+
 						icon="i-mdi:layers-outline"
 					>
 						Three things — locate the matching component in
@@ -1190,7 +1195,7 @@ ${rows}
 					<ChatMessage
 						kind="user"
 						head="YOU"
-						who="Jerry"
+
 						ago="2m"
 						icon="i-mdi:chat-outline"
 					>
@@ -1199,7 +1204,7 @@ ${rows}
 					<ChatMessage
 						kind="info"
 						head="MOUNTED"
-						who="Rokkit"
+
 						ago="just now"
 						icon="i-mdi:layers-outline"
 					>
@@ -1241,7 +1246,7 @@ ${rows}
 					<ChatMessage
 						kind="user"
 						head="YOU"
-						who="Jerry"
+
 						ago="just now"
 						icon="i-mdi:chat-outline"
 					>
@@ -1250,7 +1255,7 @@ ${rows}
 					<ChatMessage
 						kind="info"
 						head="STARTED"
-						who="Rokkit"
+
 						ago="just now"
 						icon="i-mdi:palette"
 					>
@@ -1289,7 +1294,7 @@ ${rows}
 					<ChatMessage
 						kind="user"
 						head="YOU"
-						who="Jerry"
+
 						ago="just now"
 						icon="i-mdi:chat-outline"
 					>
@@ -1298,7 +1303,7 @@ ${rows}
 					<ChatMessage
 						kind="info"
 						head="MOUNTED"
-						who="Rokkit"
+
 						ago="just now"
 						icon="i-mdi:table"
 					>
@@ -1341,7 +1346,7 @@ ${rows}
 					<ChatMessage
 						kind="user"
 						head="YOU"
-						who="Jerry"
+
 						ago="just now"
 						icon="i-mdi:chat-outline"
 					>
@@ -1350,7 +1355,7 @@ ${rows}
 					<ChatMessage
 						kind="info"
 						head="MOUNTED"
-						who="Rokkit"
+
 						ago="just now"
 						icon="i-mdi:stairs"
 					>
@@ -1396,7 +1401,7 @@ ${rows}
 					<ChatMessage
 						kind="user"
 						head="YOU"
-						who="Jerry"
+
 						ago="just now"
 						icon="i-mdi:chat-outline"
 					>
@@ -1405,7 +1410,7 @@ ${rows}
 					<ChatMessage
 						kind="info"
 						head="MOUNTED"
-						who="Rokkit"
+
 						ago="just now"
 						icon="i-mdi:calendar"
 					>
@@ -1453,7 +1458,7 @@ ${rows}
 					<ChatMessage
 						kind="user"
 						head="YOU"
-						who="Jerry"
+
 						ago="just now"
 						icon="i-mdi:chat-outline"
 					>
@@ -1462,7 +1467,7 @@ ${rows}
 					<ChatMessage
 						kind="info"
 						head="MOUNTED"
-						who="Rokkit"
+
 						ago="just now"
 						icon="i-mdi:magnify"
 					>
@@ -1507,7 +1512,7 @@ ${rows}
 					<ChatMessage
 						kind="user"
 						head="YOU"
-						who="Jerry"
+
 						ago="just now"
 						icon="i-mdi:chat-outline"
 					>
@@ -1516,7 +1521,7 @@ ${rows}
 					<ChatMessage
 						kind="info"
 						head="MOUNTED"
-						who="Rokkit"
+
 						ago="just now"
 						icon="i-mdi:chart-bar"
 					>
@@ -1561,7 +1566,7 @@ ${rows}
 					<ChatMessage
 						kind="user"
 						head="YOU"
-						who="Jerry"
+
 						ago="just now"
 						icon="i-mdi:chat-outline"
 					>
@@ -1570,7 +1575,7 @@ ${rows}
 					<ChatMessage
 						kind="info"
 						head="MOUNTED"
-						who="Rokkit"
+
 						ago="just now"
 						icon="i-mdi:menu-down"
 					>
@@ -1615,7 +1620,7 @@ ${rows}
 					<ChatMessage
 						kind="user"
 						head="YOU"
-						who="Jerry"
+
 						ago="just now"
 						icon="i-mdi:chat-outline"
 					>
@@ -1624,7 +1629,7 @@ ${rows}
 					<ChatMessage
 						kind="info"
 						head="MOUNTED"
-						who="Rokkit"
+
 						ago="just now"
 						icon="i-mdi:form-textbox"
 					>
@@ -1671,7 +1676,7 @@ ${rows}
 					<ChatMessage
 						kind="user"
 						head="YOU"
-						who="Jerry"
+
 						ago="just now"
 						icon="i-mdi:chat-outline"
 					>
@@ -1680,7 +1685,7 @@ ${rows}
 					<ChatMessage
 						kind="info"
 						head="MOUNTED"
-						who="Rokkit"
+
 						ago="just now"
 						icon="i-mdi:bell-outline"
 					>
@@ -1723,7 +1728,7 @@ ${rows}
 					<ChatMessage
 						kind="user"
 						head="YOU"
-						who="Jerry"
+
 						ago="just now"
 						icon="i-mdi:chat-outline"
 					>
@@ -1732,7 +1737,7 @@ ${rows}
 					<ChatMessage
 						kind="info"
 						head="MOUNTED"
-						who="Rokkit"
+
 						ago="just now"
 						icon="i-mdi:format-list-bulleted"
 					>
@@ -1776,7 +1781,7 @@ ${rows}
 					<ChatMessage
 						kind="user"
 						head="YOU"
-						who="Jerry"
+
 						ago="just now"
 						icon="i-mdi:chat-outline"
 					>
@@ -1785,7 +1790,7 @@ ${rows}
 					<ChatMessage
 						kind="info"
 						head="MOUNTED"
-						who="Rokkit"
+
 						ago="just now"
 						icon="i-mdi:select-multiple"
 					>
@@ -1828,7 +1833,7 @@ ${rows}
 					<ChatMessage
 						kind="user"
 						head="YOU"
-						who="Jerry"
+
 						ago="just now"
 						icon="i-mdi:chat-outline"
 					>
@@ -1837,7 +1842,7 @@ ${rows}
 					<ChatMessage
 						kind="info"
 						head="MOUNTED"
-						who="Rokkit"
+
 						ago="just now"
 						icon="i-mdi:file-tree"
 					>

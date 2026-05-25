@@ -4212,3 +4212,40 @@ User feedback while polishing the home page:
 None of these block the demo — the home theme showcase still illustrates "same Tabs, four ways" using per-card iframes. But each is a real bug worth fixing in `@rokkit/themes` (and one in `@rokkit/unocss`).
 
 Lint: 0 errors. Tests: 3497.
+
+## 2026-05-25 (cont.) — ChatMessage author defaults via a shared store
+
+User caught hardcoded "Jerry" everywhere and suggested: configure once at startup, render derived. Built exactly that.
+
+**`$lib/chat/who.svelte.ts`** — module-scoped `$state` with `user` / `assistant` keys defaulting to `"you"` / `"assistant"`. Plus a `configureWho({ user?, assistant? })` helper for the common pattern. Exported from `$lib/chat`.
+
+**ChatMessage component** now derives `who` from kind when no per-message prop is given:
+- `kind="user"` → `whoStore.user` (default `"you"`)
+- `kind="info"` → `whoStore.assistant` (default `"assistant"`)
+- per-message `who="..."` still wins; pass `who=""` to suppress
+
+**Pages** drop the hardcoded names entirely:
+- `/app/+layout.svelte`: one `configureWho({ assistant: 'Rokkit' })` at the top of the script. All 14 hardcoded `who="Jerry"` removed; all 14 `who="Rokkit"` removed.
+- `/chat/+page.svelte`: same — single `configureWho` call replaces every per-message override.
+- `/chat-lab/+page.svelte`: hardcoded names stripped.
+- Home-page mock: `Jerry` dropped; assistant brand-name `Rokkit` shown next to head=`ASSISTANT`.
+
+**Net effect**
+
+To rebrand the assistant for a new product, one line per surface:
+```ts
+configureWho({ assistant: 'Aurora' })
+```
+
+To wire the user's name in once auth lands:
+```ts
+configureWho({ user: session.displayName })
+```
+
+ChatMessage stays dumb — it reads from the store via `$derived.by()`. Per-message overrides are still there as the escape hatch.
+
+**Browser-verified:**
+- `/chat` → user msgs show `YOU you`; assistant msgs show `ASSISTANT Rokkit`.
+- `/app/tabs` → user `YOU you`; assistant turns keep their per-status heads (`MOUNTED Rokkit`, `EXPLAINED Rokkit`).
+
+Lint: 0 errors. Tests: 3497 (no test-surface change).

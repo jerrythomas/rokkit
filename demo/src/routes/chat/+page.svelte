@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { tick } from 'svelte'
-	import { ChatChrome, ChatComposer, ChatStream, ChatMessage } from '$lib/chat'
+	import { ChatChrome, ChatComposer, ChatStream, ChatMessage, configureWho } from '$lib/chat'
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
 	import {
 		conversation,
@@ -23,6 +23,10 @@
 		// Probe WebGPU on mount so the toggle shows the right state.
 		void detectWebGPU()
 	})
+
+	// Brand the assistant for this surface. User name stays at the default
+	// "you" — wire it up to a real session once we have auth.
+	configureWho({ assistant: 'Rokkit' })
 
 	let composerValue = $state('')
 	let streamRef = $state<HTMLElement | null>(null)
@@ -244,16 +248,11 @@
 
 				{#each conversation.turns as turn (turn.id)}
 					{#if turn.role === 'user'}
-						<ChatMessage kind="user" head="YOU" who="Jerry" icon="i-mdi:chat-outline">
+						<ChatMessage kind="user" head="YOU" icon="i-mdi:chat-outline">
 							{turn.text}
 						</ChatMessage>
 					{:else}
-						<ChatMessage
-							kind="info"
-							head="ROKKIT"
-							who="assistant"
-							icon="i-mdi:robot-happy-outline"
-						>
+						<ChatMessage kind="info" head="ASSISTANT" icon="i-mdi:robot-happy-outline">
 							<BlockList blocks={turn.blocks} onSuggestion={handleSuggestion} />
 						</ChatMessage>
 					{/if}

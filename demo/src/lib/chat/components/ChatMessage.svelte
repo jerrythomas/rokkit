@@ -1,12 +1,21 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte'
+	import { who as whoStore } from '../who.svelte'
 
 	interface ChatMessageProps {
 		/** Visual variant — drives node decoration and body typography */
 		kind?: 'user' | 'info' | 'think' | 'system'
 		/** Uppercase eyebrow label, e.g. "MOUNTED", "YOU", "THINKING" */
 		head?: string
-		/** Author name, rendered next to the head label */
+		/**
+		 * Author name, rendered next to the head label. Defaults from `kind`:
+		 *  - user → "you"
+		 *  - info → "assistant"
+		 *  - think / system → no default
+		 * A consumer wiring this up to a real product would pass the user's
+		 * display name on user messages and the assistant brand (e.g. "Rokkit")
+		 * on info messages. Pass an empty string to suppress the slot.
+		 */
 		who?: string
 		/** Relative timestamp, e.g. "just now", "2m" */
 		ago?: string
@@ -24,11 +33,22 @@
 	const {
 		kind = 'info',
 		head,
-		who,
+		who: whoProp,
 		ago,
 		icon,
 		children
 	}: ChatMessageProps = $props()
+
+	// Default author name per kind, sourced from the chat-wide `who` store
+	// so a page can configure once (`who.user = 'Jerry'; who.assistant = 'Rokkit'`)
+	// and every message picks it up. Per-message override still wins via
+	// the `who` prop; pass an explicit empty string to suppress the slot.
+	const who = $derived.by(() => {
+		if (whoProp !== undefined) return whoProp
+		if (kind === 'user') return whoStore.user
+		if (kind === 'info') return whoStore.assistant
+		return undefined
+	})
 
 	const iconIsSnippet = $derived(typeof icon === 'function')
 	const iconClass = $derived(typeof icon === 'string' ? icon : '')

@@ -80,10 +80,10 @@
 				<span class="chat-title">Conversation <span class="chat-sub">· Tabs · mounted</span></span>
 			</div>
 			<ChatStream>
-				<ChatMessage kind="user" head="YOU" who="Jerry" ago="2m">
+				<ChatMessage kind="user" head="YOU" ago="2m">
 					Mount a Tabs demo with five panes. Walk me through how the data-driven API works.
 				</ChatMessage>
-				<ChatMessage kind="info" head="MOUNTED" who="Rokkit" ago="just now">
+				<ChatMessage kind="info" head="MOUNTED" ago="just now">
 					<code>&lt;Tabs/&gt;</code> from <code>@rokkit/ui</code> on the canvas. Five panes from <code>items</code>.
 				</ChatMessage>
 				<ChatMessage kind="think" head="THINKING">
