@@ -1,0 +1,35 @@
+/**
+ * CodeBlock — Zen-Sumi theme.
+ *
+ * Inherits the Frame chrome (border, header bg). This file adds the
+ * mono typography + muted ink colours for the title row, lang chip,
+ * action buttons, and pre/code body.
+ */
+
+[data-style='zen-sumi'] [data-code-block-icon] {
+	@apply text-ink-soft;
+}
+
+[data-style='zen-sumi'] [data-code-block-filename] {
+	font: 500 11.5px var(--font-mono);
+	@apply text-ink-mute;
+}
+
+[data-style='zen-sumi'] [data-code-block-lang] {
+	font: 500 10px var(--font-mono);
+	@apply text-ink-soft border-paper-edge border;
+}
+
+[data-style='zen-sumi'] [data-code-block-actions] button {
+	font: 500 11px var(--font-mono);
+	@apply text-ink-soft;
+}
+
+[data-style='zen-sumi'] [data-code-block-actions] button:hover {
+	@apply bg-paper-mute text-ink;
+}
+
+[data-style='zen-sumi'] [data-code-block-body] pre {
+	font: 400 12px/1.65 var(--font-mono);
+	@apply text-ink;
+}

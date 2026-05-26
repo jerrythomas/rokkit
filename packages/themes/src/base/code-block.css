@@ -1,45 +1,36 @@
 /**
- * Base styling for CodeBlock internals.
+ * CodeBlock — base structural styles for the internals.
  *
- * Chrome (border / background / radius / header dividers) is handled by
- * Frame via [data-frame*]. This file just lays out the bits CodeBlock
- * puts INSIDE the frame header / body — the title row (icon, filename,
- * lang chip), action buttons, and the <pre>/<code> body.
+ * The outer chrome (border, radius, header divider) is Frame's job.
+ * This file just lays out what CodeBlock puts INSIDE the frame header
+ * (icon, filename, lang chip, action buttons) and body (<pre>/<code>).
+ * Per-theme files add colour and typography accents.
  */
 
 [data-code-block-header] {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: 8px;
+	gap: var(--density-spacing-sm);
 }
 
 [data-code-block-title] {
 	display: inline-flex;
 	align-items: center;
-	gap: 8px;
+	gap: var(--density-spacing-sm);
 }
 
 [data-code-block-icon] {
 	display: inline-block;
 	width: 13px;
 	height: 13px;
-	color: var(--ink-soft);
-}
-
-[data-code-block-filename] {
-	font: 500 11.5px var(--font-mono);
-	color: var(--ink-mute);
 }
 
 [data-code-block-lang] {
-	font: 500 10px var(--font-mono);
-	color: var(--ink-soft);
+	padding: 2px 6px;
+	border-radius: 3px;
 	letter-spacing: 0.12em;
 	text-transform: uppercase;
-	padding: 2px 6px;
-	border: 1px solid var(--paper-edge);
-	border-radius: 3px;
 }
 
 [data-code-block-actions] {
@@ -55,16 +46,9 @@
 	padding: 0 8px;
 	border: 0;
 	background: transparent;
-	font: 500 11px var(--font-mono);
-	color: var(--ink-soft);
 	cursor: pointer;
 	border-radius: 3px;
 	letter-spacing: 0.02em;
-}
-
-[data-code-block-actions] button:hover {
-	background: var(--paper-mute);
-	color: var(--ink);
 }
 
 [data-code-block-actions] button > span:first-child {
@@ -81,8 +65,6 @@
 	margin: 0;
 	padding: 10px 12px;
 	overflow-x: auto;
-	font: 400 12px/1.65 var(--font-mono);
-	color: var(--ink);
 	background: transparent;
 }
 

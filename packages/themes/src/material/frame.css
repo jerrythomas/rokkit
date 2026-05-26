@@ -1,0 +1,17 @@
+/**
+ * Frame — material theme.
+ * Border + background decoration. Base file owns layout / spacing.
+ */
+
+[data-style='material'] [data-frame] {
+	@apply bg-paper border-paper-edge border;
+}
+
+[data-style='material'] [data-frame-header] {
+	@apply bg-paper-soft border-paper-edge border-b;
+}
+
+[data-style='material'] [data-frame-footer] {
+	@apply bg-paper border-paper-edge;
+	border-top: 1px dashed var(--paper-edge);
+}

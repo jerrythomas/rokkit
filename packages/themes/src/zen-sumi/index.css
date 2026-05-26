@@ -33,6 +33,8 @@
 @import './floating-navigation.css';
 @import './toc.css';
 @import './card.css';
+@import './frame.css';
+@import './code-block.css';
 @import './message.css';
 @import './status-list.css';
 @import './step-indicator.css';

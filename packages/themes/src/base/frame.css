@@ -1,28 +1,25 @@
 /**
- * Base styling for @rokkit/ui Frame.
+ * Frame — base structural styles.
  *
- * Frame is the generic "card-with-header/body/footer" layout primitive
- * (see also Card, which adds interactive variants on top). Themes can
- * override any of the data-attribute hooks per style.
+ * Layout / spacing only. Per-theme files (zen-sumi/frame.css,
+ * material/frame.css, …) add the visual decoration (border, background,
+ * shadow) using the same `[data-frame-*]` hooks.
  */
 
 [data-frame] {
 	display: flex;
 	flex-direction: column;
-	border: 1px solid var(--paper-edge);
-	border-radius: 8px;
-	background: var(--paper);
+	border-radius: var(--density-radius-base);
 	overflow: hidden;
 }
 
 [data-frame-header] {
-	padding: 8px 12px;
-	background: var(--paper-soft);
-	border-bottom: 1px solid var(--paper-edge);
+	padding-block: var(--density-spacing-sm);
+	padding-inline: var(--density-spacing-md);
 }
 
 [data-frame-body] {
-	padding: 12px;
+	padding: var(--density-spacing-md);
 	flex: 1;
 	min-height: 0;
 }
@@ -34,7 +31,6 @@
 }
 
 [data-frame-footer] {
-	padding: 8px 12px;
-	border-top: 1px dashed var(--paper-edge);
-	background: var(--paper);
+	padding-block: var(--density-spacing-sm);
+	padding-inline: var(--density-spacing-md);
 }

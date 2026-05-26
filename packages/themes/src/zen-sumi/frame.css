@@ -1,0 +1,20 @@
+/**
+ * Frame — Zen-Sumi theme.
+ *
+ * Paper bg with hairline border. Header sits on the recessed paper-soft
+ * surface, footer carries a dashed top divider. No shadows.
+ */
+
+[data-style='zen-sumi'] [data-frame] {
+	@apply bg-paper border-paper-edge border;
+	box-shadow: none;
+}
+
+[data-style='zen-sumi'] [data-frame-header] {
+	@apply bg-paper-soft border-paper-edge border-b;
+}
+
+[data-style='zen-sumi'] [data-frame-footer] {
+	@apply bg-paper border-paper-edge;
+	border-top: 1px dashed var(--paper-edge);
+}
