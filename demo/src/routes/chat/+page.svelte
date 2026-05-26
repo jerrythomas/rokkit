@@ -18,7 +18,6 @@
 		OPENROUTER_MODELS,
 		WEBLLM_MODELS
 	} from '$lib/chat-demo/llm.svelte'
-	import { pluginDisplay } from '@rokkit/blocks'
 	import BlockList from '$lib/chat-demo/components/BlockList.svelte'
 
 	// ─── Mode (Scripted / OpenRouter / Web-LLM) — 3-way derived from llm state
@@ -243,10 +242,6 @@
 					<span class="llm-error" title={llm.errorMessage}>error</span>
 				{/if}
 			{/if}
-			<label class="llm-code-toggle" title="Show the source fence under each component (dev mode)">
-				<input type="checkbox" bind:checked={pluginDisplay.codeVisible} />
-				<span>code</span>
-			</label>
 			<Button
 				variant="default"
 				size="sm"
@@ -579,18 +574,6 @@
 	.drop-hint {
 		font: 400 13px var(--font-ui);
 		color: var(--ink-mute);
-	}
-
-	.llm-code-toggle {
-		display: inline-flex;
-		align-items: center;
-		gap: 4px;
-		font: 500 11.5px var(--font-ui);
-		cursor: pointer;
-	}
-
-	.llm-code-toggle input[type='checkbox'] {
-		accent-color: var(--accent);
 	}
 
 	.llm-model {

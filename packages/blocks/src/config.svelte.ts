@@ -9,11 +9,12 @@
  *   - the copy / download / export-svg buttons inside CodeBlock and
  *     on the chart itself
  *
- * Default: false — end-user surfaces stay clean. Developer surfaces
- * (this demo's chat, docs sites) flip it at the app root:
+ * Default: true — the plugins ship developer-friendly. Product
+ * surfaces that want a cleaner end-user view flip it off at the app
+ * root:
  *
  *   import { configurePluginDisplay } from '@rokkit/blocks'
- *   configurePluginDisplay({ codeVisible: true })
+ *   configurePluginDisplay({ codeVisible: false })
  *
  * Or mutate directly:
  *
@@ -29,7 +30,7 @@ export interface PluginDisplayConfig {
 }
 
 export const pluginDisplay = $state<PluginDisplayConfig>({
-	codeVisible: false
+	codeVisible: true
 })
 
 export function configurePluginDisplay(

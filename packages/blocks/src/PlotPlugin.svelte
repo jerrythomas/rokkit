@@ -127,12 +127,15 @@
 			{/if}
 		</div>
 
-		{#if showCode && pluginDisplay.codeVisible}
-			<div data-plot-code>
-				<CodeBlock code={prettyCode} language="plot" />
-			</div>
-		{/if}
 	</div>
+
+	{#if showCode && pluginDisplay.codeVisible}
+		<CodeBlock
+			code={prettyCode}
+			language="json"
+			filename={(spec?.title ?? 'plot').toString().toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.plot.json'}
+		/>
+	{/if}
 {/if}
 
 <style>
@@ -207,9 +210,5 @@
 	[data-plot-action] > span:first-child {
 		width: 14px;
 		height: 14px;
-	}
-
-	[data-plot-code] {
-		margin-top: 4px;
 	}
 </style>

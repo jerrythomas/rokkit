@@ -65,9 +65,14 @@ describe('PlotPlugin', () => {
 		expect(container.querySelector('svg')).toBeTruthy()
 	})
 
-	it('hides the code toggle by default (codeVisible=false)', () => {
-		const { container } = render(PlotPlugin, { props: { code: validSpec } })
-		expect(container.querySelector('[data-plot-code-toggle]')).toBeFalsy()
+	it('hides the code toggle when codeVisible=false', () => {
+		pluginDisplay.codeVisible = false
+		try {
+			const { container } = render(PlotPlugin, { props: { code: validSpec } })
+			expect(container.querySelector('[data-plot-code-toggle]')).toBeFalsy()
+		} finally {
+			pluginDisplay.codeVisible = true
+		}
 	})
 
 	it('renders a summary line with rows + channel mapping', () => {
@@ -92,11 +97,11 @@ describe('PlotPlugin', () => {
 			expect(container.querySelector('[data-plot-code-toggle]')).toBeTruthy()
 		})
 
-		it('shows code BELOW the chart when toggled on (chart stays visible)', async () => {
+		it('renders CodeBlock as a sibling of the chart when toggled on', async () => {
 			const { container } = render(PlotPlugin, { props: { code: validSpec } })
 			const toggle = container.querySelector('[data-plot-code-toggle]') as HTMLElement
 			await fireEvent.click(toggle)
-			expect(container.querySelector('[data-plot-code]')).toBeTruthy()
+			expect(container.querySelector('[data-code-block]')).toBeTruthy()
 			expect(container.querySelector('svg')).toBeTruthy()
 		})
 
@@ -106,7 +111,7 @@ describe('PlotPlugin', () => {
 			await fireEvent.click(toggle)
 			await fireEvent.click(toggle)
 			expect(container.querySelector('svg')).toBeTruthy()
-			expect(container.querySelector('[data-plot-code]')).toBeFalsy()
+			expect(container.querySelector('[data-code-block]')).toBeFalsy()
 		})
 	})
 })
