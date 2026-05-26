@@ -11,6 +11,7 @@
 	const { code }: Props = $props()
 
 	let showCode = $state(false)
+	let bodyRef = $state<HTMLDivElement | null>(null)
 
 	const parsed = $derived.by(() => {
 		try {
@@ -22,9 +23,10 @@
 
 	const spec = $derived(parsed.spec)
 
-	// Summary line: rows + the field-to-channel mapping ("x=quarter · y=revenue · fill=product").
+	// Summary line: rows + the field-to-channel mapping
+	// ("x=quarter · y=revenue · fill=product").
 	// PlotChart owns the title and all other rendering — the plugin's only
-	// additions are the summary line and (optional) view-code affordance.
+	// additions are the summary line and (optional) developer affordances.
 	const summary = $derived.by(() => {
 		if (!spec) return ''
 		const parts: string[] = []
@@ -40,6 +42,20 @@
 		}
 		return parts.join(' · ')
 	})
+
+	function downloadSvg() {
+		if (!bodyRef) return
+		const svg = bodyRef.querySelector('svg')
+		if (!svg) return
+		const serialized = new XMLSerializer().serializeToString(svg)
+		const blob = new Blob([serialized], { type: 'image/svg+xml' })
+		const url = URL.createObjectURL(blob)
+		const a = document.createElement('a')
+		a.href = url
+		a.download = (spec?.title?.replace(/\s+/g, '-').toLowerCase() ?? 'chart') + '.svg'
+		a.click()
+		URL.revokeObjectURL(url)
+	}
 </script>
 
 {#if parsed.error}
@@ -56,6 +72,15 @@
 			<div data-plot-header>
 				<button
 					type="button"
+					data-plot-export
+					onclick={downloadSvg}
+					title="Download chart as SVG"
+				>
+					<span class="i-mdi:image-outline" aria-hidden="true"></span>
+					<span>SVG</span>
+				</button>
+				<button
+					type="button"
 					data-plot-code-toggle
 					onclick={() => (showCode = !showCode)}
 					aria-pressed={showCode}
@@ -67,7 +92,7 @@
 			</div>
 		{/if}
 
-		<div data-plot-body>
+		<div data-plot-body bind:this={bodyRef}>
 			{#if spec?.facet}
 				<FacetPlot {...spec} />
 			{:else if spec?.animate}
@@ -86,8 +111,8 @@
 				<CodeBlock
 					{code}
 					language="plot"
-					allowCopy={pluginDisplay.allowCopy}
-					allowDownload={pluginDisplay.allowDownload}
+					allowCopy={true}
+					allowDownload={true}
 				/>
 			</div>
 		{/if}
@@ -105,9 +130,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;
+		gap: 4px;
 	}
 
-	[data-plot-code-toggle] {
+	[data-plot-code-toggle],
+	[data-plot-export] {
 		display: inline-flex;
 		align-items: center;
 		gap: 5px;
@@ -121,12 +148,14 @@
 		cursor: pointer;
 	}
 
-	[data-plot-code-toggle]:hover {
+	[data-plot-code-toggle]:hover,
+	[data-plot-export]:hover {
 		border-color: var(--accent);
 		color: var(--accent);
 	}
 
-	[data-plot-code-toggle] > span:first-child {
+	[data-plot-code-toggle] > span:first-child,
+	[data-plot-export] > span:first-child {
 		width: 14px;
 		height: 14px;
 	}

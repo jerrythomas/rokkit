@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte'
+	import { onMount } from 'svelte'
 	import { highlightCode } from '../utils/shiki.js'
 
 	/**
@@ -22,8 +23,11 @@
 		filename?: string
 		/** Max height (CSS length) of the scrollable code area. No cap if unset. */
 		height?: string
-		/** Shiki theme (light/dark). */
-		theme?: 'light' | 'dark'
+		/**
+		 * Shiki theme. 'auto' (default) follows body[data-mode]; pass 'light'
+		 * or 'dark' to force one.
+		 */
+		theme?: 'auto' | 'light' | 'dark'
 		/** Show the copy-to-clipboard button. Default: false. */
 		allowCopy?: boolean
 		/** Show the download-as-file button. Default: false. */
@@ -37,11 +41,47 @@
 		language = 'text',
 		filename = '',
 		height,
-		theme = 'dark',
+		theme = 'auto',
 		allowCopy = false,
 		allowDownload = false,
 		actions
 	}: Props = $props()
+
+	// Track body data-mode so the Shiki theme follows light/dark changes.
+	let bodyMode = $state<'light' | 'dark'>('dark')
+	onMount(() => {
+		const sync = () => {
+			const m = document.body?.dataset.mode
+			bodyMode = m === 'light' ? 'light' : 'dark'
+		}
+		sync()
+		const observer = new MutationObserver(sync)
+		observer.observe(document.body, { attributes: true, attributeFilter: ['data-mode'] })
+		return () => observer.disconnect()
+	})
+	const effectiveTheme = $derived(theme === 'auto' ? bodyMode : theme)
+
+	// Resolve Shiki output into reactive state. Using a $derived Promise here
+	// would have {#await} reset to pending on every reactivity tick (the
+	// $derived produces a *new* promise object each time), so we store the
+	// resolved HTML in $state and let the template branch on whether it's
+	// populated. The plain <pre><code>…</code></pre> fallback shows while
+	// Shiki initialises and on the rare error.
+	let highlighted = $state<string | null>(null)
+	$effect(() => {
+		const c = code
+		const l = language
+		const t = effectiveTheme
+		let cancelled = false
+		highlightCode(c, { lang: l, theme: t })
+			.then((html) => {
+				if (!cancelled) highlighted = html
+			})
+			.catch(() => {
+				if (!cancelled) highlighted = null
+			})
+		return () => { cancelled = true }
+	})
 
 	const hasActions = $derived(allowCopy || allowDownload || actions !== undefined)
 
@@ -65,8 +105,6 @@
 		a.click()
 		URL.revokeObjectURL(url)
 	}
-
-	const highlighted = $derived(highlightCode(code, { lang: language, theme }))
 </script>
 
 <div data-code-block style:max-height={height || undefined}>
@@ -98,14 +136,12 @@
 			{/if}
 		</div>
 	{/if}
-	{#await highlighted}
-		<pre data-code-block-body><code>{code}</code></pre>
-	{:then html}
+	{#if highlighted}
 		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-		<div data-code-block-body>{@html html}</div>
-	{:catch}
+		<div data-code-block-body>{@html highlighted}</div>
+	{:else}
 		<pre data-code-block-body><code>{code}</code></pre>
-	{/await}
+	{/if}
 </div>
 
 <!--

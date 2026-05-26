@@ -76,6 +76,27 @@ function resolveTheme(themeOption: string | undefined): BundledTheme {
 	return themeOption as BundledTheme
 }
 
+/**
+ * Map fence languages (used by @rokkit/blocks plugins) to a Shiki-known
+ * grammar. The fence is *semantic* (the renderer routes by language name),
+ * but the body is plain JSON — highlight it as such instead of falling
+ * back to unstyled text.
+ */
+const LANGUAGE_ALIASES: Record<string, BundledLanguage> = {
+	plot: 'json',
+	table: 'json',
+	form: 'json',
+	list: 'json',
+	stepper: 'json',
+	sparkline: 'json',
+	chart: 'json'
+}
+
+function resolveLang(input: string | undefined): BundledLanguage {
+	if (!input) return 'text' as BundledLanguage
+	return (LANGUAGE_ALIASES[input] ?? input) as BundledLanguage
+}
+
 function isValidCode(code: unknown): code is string {
 	return Boolean(code) && typeof code === 'string'
 }
@@ -84,7 +105,7 @@ export async function highlightCode(code: string, options: HighlightOptions = {}
 	if (!isValidCode(code)) throw new Error('Invalid code provided for highlighting')
 
 	const hl = await initializeHighlighter()
-	const lang = (options.lang ?? 'text') as BundledLanguage
+	const lang = resolveLang(options.lang as string | undefined)
 	const theme = resolveTheme(options.theme)
 	const loadedLangs = hl.getLoadedLanguages()
 	const effectiveLang = loadedLangs.includes(lang) ? lang : 'text'
