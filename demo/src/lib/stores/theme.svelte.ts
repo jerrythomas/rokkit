@@ -1,72 +1,53 @@
 /**
- * Shared theme state — syncs body dataset with Svelte reactive state.
- * Import this store in any component that needs to read or write theme axes.
+ * Skin / radius / role-overrides store — the demo's extras on top of vibe.
+ *
+ * Mode, style, and density live in `vibe` (from @rokkit/states), and the
+ * root +layout.svelte wires vibe to the DOM via `use:themable`. This store
+ * delegates those three through to vibe so existing call sites keep working,
+ * and owns the concepts vibe doesn't track natively:
+ *   - skin (named palette set; mutates CSS vars via applySkin)
+ *   - radius (corner rounding scale; mirrored to body.dataset.radius)
+ *   - per-role color overrides on top of the chosen skin
+ *
+ * Persistence:
+ *   - vibe state (mode/style/density)  → localStorage['rokkit-theme'], owned by
+ *     the `themable` action in the root layout.
+ *   - skin / radius / role overrides   → localStorage['rokkit-skin'], owned here.
  */
 
 import { browser } from '$app/environment'
+import { vibe } from '@rokkit/states'
 import { applySkin, applyRoleColor, skinDefinitions } from '$lib/data/skins'
 
-function readBody(key: string, fallback: string) {
-	return browser ? (document.body.dataset[key] || fallback) : fallback
-}
+const SKIN_KEY = 'rokkit-skin'
+const ROLES = ['surface', 'primary', 'secondary', 'accent'] as const
 
-function readStored(key: string, fallback: string): string {
+function readStored<T>(field: string, fallback: T): T {
 	if (!browser) return fallback
 	try {
-		const stored = JSON.parse(localStorage.getItem('rokkit-site') || '{}')
-		return stored[key] ?? fallback
+		const stored = JSON.parse(localStorage.getItem(SKIN_KEY) || '{}')
+		return (stored[field] as T) ?? fallback
 	} catch {
 		return fallback
 	}
 }
 
-function persist(key: string, value: string) {
-	if (!browser) return
-	// Resolve 'auto' mode to the actual system preference for body.dataset.mode
-	// so CSS [data-mode="dark"] selectors match. Keep 'auto' in localStorage so
-	// the user's choice persists across system theme changes.
-	let resolved = value
-	if (key === 'mode' && value === 'auto') {
-		resolved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-	}
-	document.body.dataset[key] = resolved
-	try {
-		const stored = JSON.parse(localStorage.getItem('rokkit-site') || '{}')
-		stored[key] = value
-		localStorage.setItem('rokkit-site', JSON.stringify(stored))
-	} catch {}
-}
-
-function persistSkinData(key: string, value: string) {
+function persistField(field: string, value: unknown) {
 	if (!browser) return
 	try {
-		const stored = JSON.parse(localStorage.getItem('rokkit-site') || '{}')
-		stored[key] = value
-		localStorage.setItem('rokkit-site', JSON.stringify(stored))
-	} catch {}
-}
-
-function clearRoleOverrides() {
-	if (!browser) return
-	try {
-		const stored = JSON.parse(localStorage.getItem('rokkit-site') || '{}')
-		const roles = ['surface', 'primary', 'secondary', 'accent']
-		for (const role of roles) {
-			delete stored[`role-${role}`]
-		}
-		localStorage.setItem('rokkit-site', JSON.stringify(stored))
+		const stored = JSON.parse(localStorage.getItem(SKIN_KEY) || '{}')
+		stored[field] = value
+		localStorage.setItem(SKIN_KEY, JSON.stringify(stored))
 	} catch {}
 }
 
 function loadRoleOverrides(): Record<string, string> {
 	if (!browser) return {}
 	try {
-		const stored = JSON.parse(localStorage.getItem('rokkit-site') || '{}')
-		const roles = ['surface', 'primary', 'secondary', 'accent']
+		const stored = JSON.parse(localStorage.getItem(SKIN_KEY) || '{}')
+		const overrides = (stored.roleOverrides as Record<string, string>) || {}
 		const result: Record<string, string> = {}
-		for (const role of roles) {
-			if (stored[`role-${role}`]) result[role] = stored[`role-${role}`]
-		}
+		for (const role of ROLES) if (overrides[role]) result[role] = overrides[role]
 		return result
 	} catch {
 		return {}
@@ -74,62 +55,78 @@ function loadRoleOverrides(): Record<string, string> {
 }
 
 function createThemeStore() {
-	let style    = $state(readBody('style',   'zen-sumi'))
-	let mode     = $state(readBody('mode',    'dark'))
-	let density  = $state(readBody('density', 'comfortable'))
-	let radius   = $state(readBody('radius',  'soft'))
-	let skin     = $state(readStored('skin',  'default'))
-
-	/** Per-role overrides: role -> paletteName. Loaded once at create time
-	 *  via a helper so the $state initializer doesn't read its own initial
-	 *  value (which would trigger Svelte's "captures initial value" warning). */
+	let radius = $state(readStored('radius', 'soft'))
+	let skin = $state(readStored('skin', 'default'))
 	let roleOverrides = $state<Record<string, string>>(loadRoleOverrides())
 
-	return {
-		get style()   { return style },
-		get mode()    { return mode },
-		get density() { return density },
-		get radius()  { return radius },
-		get skin()    { return skin },
-		get roleOverrides() { return roleOverrides },
+	function setRadius(v: string) {
+		radius = v
+		if (browser) document.body.dataset.radius = v
+		persistField('radius', v)
+	}
 
-		setStyle(v: string)   { style = v;   persist('style', v) },
-		setMode(v: string)    { mode = v;    persist('mode', v) },
-		setDensity(v: string) { density = v; persist('density', v) },
-		setRadius(v: string)  { radius = v;  persist('radius', v) },
+	if (browser) document.body.dataset.radius = radius
+
+	return {
+		// vibe delegates — read/write the canonical store directly.
+		get style() {
+			return vibe.style
+		},
+		get mode() {
+			return vibe.mode
+		},
+		get density() {
+			return vibe.density
+		},
+		setStyle(v: string) {
+			vibe.style = v
+		},
+		setMode(v: string) {
+			vibe.mode = v
+		},
+		setDensity(v: string) {
+			vibe.density = v
+		},
+		toggleMode() {
+			vibe.mode = vibe.mode === 'dark' ? 'light' : 'dark'
+		},
+
+		// Local-only state — skin and radius are vibe-adjacent extras.
+		get radius() {
+			return radius
+		},
+		get skin() {
+			return skin
+		},
+		get roleOverrides() {
+			return roleOverrides
+		},
+
+		setRadius,
 
 		setSkin(v: string) {
 			skin = v
 			roleOverrides = {}
-			clearRoleOverrides()
-			persistSkinData('skin', v)
+			persistField('skin', v)
+			persistField('roleOverrides', {})
 			applySkin(v)
 		},
 
 		setRoleColor(role: string, palette: string) {
 			roleOverrides = { ...roleOverrides, [role]: palette }
-			persistSkinData(`role-${role}`, palette)
+			persistField('roleOverrides', roleOverrides)
 			applyRoleColor(role, palette)
 		},
 
-		/** Get the effective palette for a role (override or skin default) */
 		getRoleColor(role: string): string {
 			if (roleOverrides[role]) return roleOverrides[role]
-			const skinDef = skinDefinitions.find(s => s.name === skin)
-			return skinDef?.[role as keyof typeof skinDef] as string ?? ''
+			const skinDef = skinDefinitions.find((s) => s.name === skin)
+			return (skinDef?.[role as keyof typeof skinDef] as string) ?? ''
 		},
 
-		toggleMode() {
-			const next = mode === 'dark' ? 'light' : 'dark'
-			this.setMode(next)
-		},
-
-		/** Re-apply the current skin (called on mount to restore state) */
+		// Re-apply skin and role overrides on mount.
 		restoreSkin() {
-			if (skin !== 'default') {
-				applySkin(skin)
-			}
-			// Re-apply any role overrides on top
+			if (skin !== 'default') applySkin(skin)
 			for (const [role, palette] of Object.entries(roleOverrides)) {
 				applyRoleColor(role, palette)
 			}
