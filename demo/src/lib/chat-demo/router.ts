@@ -27,6 +27,26 @@ const ROUTES: Route[] = [
 		keywords: /\b(grouped|by product|stacked|two series|multi[-\s]?series)\b/i,
 		build: (q) => {
 			const stack = /\b(stack|stacked)\b/i.test(q)
+			const spec = {
+				title: stack ? 'Revenue stacked by product' : 'Revenue by product',
+				data: [
+					{ quarter: 'Q1', product: 'Hardware', revenue: 24 },
+					{ quarter: 'Q1', product: 'Software', revenue: 18 },
+					{ quarter: 'Q2', product: 'Hardware', revenue: 31 },
+					{ quarter: 'Q2', product: 'Software', revenue: 27 },
+					{ quarter: 'Q3', product: 'Hardware', revenue: 28 },
+					{ quarter: 'Q3', product: 'Software', revenue: 23 },
+					{ quarter: 'Q4', product: 'Hardware', revenue: 39 },
+					{ quarter: 'Q4', product: 'Software', revenue: 34 }
+				],
+				x: 'quarter',
+				y: 'revenue',
+				fill: 'product',
+				stack,
+				legend: true,
+				geoms: [{ type: 'bar' }],
+				height: 240
+			}
 			return [
 				{
 					kind: 'prose',
@@ -35,27 +55,8 @@ const ROUTES: Route[] = [
 						: 'Same chart, two series grouped by product. `fill: "product"` tells BarChart to colour bars by the product field.'
 				},
 				{
-					kind: 'component',
-					tool: 'mount_bar_chart',
-					caption: stack ? 'Revenue stacked by product' : 'Revenue by product',
-					props: {
-						data: [
-							{ quarter: 'Q1', product: 'Hardware', revenue: 24 },
-							{ quarter: 'Q1', product: 'Software', revenue: 18 },
-							{ quarter: 'Q2', product: 'Hardware', revenue: 31 },
-							{ quarter: 'Q2', product: 'Software', revenue: 27 },
-							{ quarter: 'Q3', product: 'Hardware', revenue: 28 },
-							{ quarter: 'Q3', product: 'Software', revenue: 23 },
-							{ quarter: 'Q4', product: 'Hardware', revenue: 39 },
-							{ quarter: 'Q4', product: 'Software', revenue: 34 }
-						],
-						x: 'quarter',
-						y: 'revenue',
-						fill: 'product',
-						stack,
-						legend: true,
-						height: 240
-					}
+					kind: 'markdown',
+					markdown: '```plot\n' + JSON.stringify(spec) + '\n```'
 				}
 			]
 		}
@@ -69,10 +70,9 @@ const ROUTES: Route[] = [
 				text: "Here's quarterly revenue from the example dataset. The chart is a real <BarChart/> from @rokkit/chart — pass rows + x/y field names and it handles axes, palette, gridlines."
 			},
 			{
-				kind: 'component',
-				tool: 'mount_bar_chart',
-				caption: 'Quarterly revenue · FY 2026',
-				props: {
+				kind: 'markdown',
+				markdown: '```plot\n' + JSON.stringify({
+					title: 'Quarterly revenue · FY 2026',
 					data: [
 						{ quarter: 'Q1', revenue: 42 },
 						{ quarter: 'Q2', revenue: 58 },
@@ -81,11 +81,11 @@ const ROUTES: Route[] = [
 					],
 					x: 'quarter',
 					y: 'revenue',
+					geoms: [{ type: 'bar' }],
 					height: 220,
 					grid: true,
-					// Tight top margin — no title/legend, so default 20px leaves visible whitespace
 					margin: { top: 8, right: 16, bottom: 36, left: 44 }
-				}
+				}) + '\n```'
 			},
 			{
 				kind: 'suggestions',
