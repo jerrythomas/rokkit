@@ -2,14 +2,18 @@
 	import type { Snippet } from 'svelte'
 	import { onMount } from 'svelte'
 	import { highlightCode } from '../utils/shiki.js'
+	import Frame from './Frame.svelte'
 
 	/**
 	 * CodeBlock — code with chrome.
 	 *
-	 * Header: optional filename + language chip + optional action buttons
-	 * (copy / download). Body: shiki-highlighted code. All action buttons
-	 * are opt-in (default false) so end-user-facing surfaces stay clean;
-	 * dev-facing surfaces enable them per instance.
+	 * Wraps a Shiki-highlighted code body in a Frame whose header carries
+	 * the filename + language chip + optional action buttons (copy /
+	 * download). Adding the chrome on top of the same Frame primitive
+	 * the rest of the app uses keeps the visual rhythm consistent.
+	 *
+	 * Action buttons are opt-in: dev surfaces enable them per instance,
+	 * end-user surfaces default to plain.
 	 *
 	 * For a plain unstyled code surface (no chrome), use the lower-level
 	 * `<Code/>` component instead.
@@ -61,12 +65,10 @@
 	})
 	const effectiveTheme = $derived(theme === 'auto' ? bodyMode : theme)
 
-	// Resolve Shiki output into reactive state. Using a $derived Promise here
-	// would have {#await} reset to pending on every reactivity tick (the
-	// $derived produces a *new* promise object each time), so we store the
-	// resolved HTML in $state and let the template branch on whether it's
-	// populated. The plain <pre><code>…</code></pre> fallback shows while
-	// Shiki initialises and on the rare error.
+	// Store Shiki output in $state. Using a $derived Promise here would have
+	// {#await} reset to pending on every reactivity tick (each $derived call
+	// produces a new Promise reference). Fall back to a plain <pre> while
+	// Shiki initialises and on error.
 	let highlighted = $state<string | null>(null)
 	$effect(() => {
 		const c = code
@@ -83,7 +85,7 @@
 		return () => { cancelled = true }
 	})
 
-	const hasActions = $derived(allowCopy || allowDownload || actions !== undefined)
+	const hasHeader = $derived(Boolean(filename || language || allowCopy || allowDownload || actions))
 
 	let copied = $state(false)
 	async function copyCode() {
@@ -108,46 +110,43 @@
 </script>
 
 <div data-code-block style:max-height={height || undefined}>
-	{#if filename || language || hasActions}
-		<div data-code-block-header>
-			<div data-code-block-title>
-				<span data-code-block-icon class="i-mdi:code-tags" aria-hidden="true"></span>
-				{#if filename}<span data-code-block-filename>{filename}</span>{/if}
-				{#if language}<span data-code-block-lang>{language}</span>{/if}
-			</div>
-			{#if hasActions}
-				<div data-code-block-actions>
-					{#if allowCopy}
-						<button type="button" onclick={copyCode} title="Copy code">
-							<span class={copied ? 'i-mdi:check' : 'i-mdi:content-copy'} aria-hidden="true"></span>
-							<span>{copied ? 'Copied' : 'Copy'}</span>
-						</button>
-					{/if}
-					{#if allowDownload}
-						<button type="button" onclick={downloadCode} title="Download as file">
-							<span class="i-mdi:download" aria-hidden="true"></span>
-							<span>.{language || 'txt'}</span>
-						</button>
-					{/if}
-					{#if actions}
-						{@render actions()}
+	<Frame flush>
+		{#snippet header()}
+			{#if hasHeader}
+				<div data-code-block-header>
+					<div data-code-block-title>
+						<span data-code-block-icon class="i-mdi:code-tags" aria-hidden="true"></span>
+						{#if filename}<span data-code-block-filename>{filename}</span>{/if}
+						{#if language}<span data-code-block-lang>{language}</span>{/if}
+					</div>
+					{#if allowCopy || allowDownload || actions}
+						<div data-code-block-actions>
+							{#if allowCopy}
+								<button type="button" onclick={copyCode} title="Copy code">
+									<span class={copied ? 'i-mdi:check' : 'i-mdi:content-copy'} aria-hidden="true"></span>
+									<span>{copied ? 'Copied' : 'Copy'}</span>
+								</button>
+							{/if}
+							{#if allowDownload}
+								<button type="button" onclick={downloadCode} title="Download as file">
+									<span class="i-mdi:download" aria-hidden="true"></span>
+									<span>.{language || 'txt'}</span>
+								</button>
+							{/if}
+							{#if actions}
+								{@render actions()}
+							{/if}
+						</div>
 					{/if}
 				</div>
 			{/if}
-		</div>
-	{/if}
-	{#if highlighted}
-		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-		<div data-code-block-body>{@html highlighted}</div>
-	{:else}
-		<pre data-code-block-body><code>{code}</code></pre>
-	{/if}
+		{/snippet}
+
+		{#if highlighted}
+			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+			<div data-code-block-body>{@html highlighted}</div>
+		{:else}
+			<pre data-code-block-body><code>{code}</code></pre>
+		{/if}
+	</Frame>
 </div>
-
-<!--
-	No <style> block: chrome styling lives in @rokkit/themes/base/code-block.css
-	so themes can layer on top via attribute selectors
-	([data-code-block-*]). Add zen-sumi / material / etc. specific
-	overrides in their respective theme files.
--->
-

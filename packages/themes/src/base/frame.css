@@ -1,0 +1,40 @@
+/**
+ * Base styling for @rokkit/ui Frame.
+ *
+ * Frame is the generic "card-with-header/body/footer" layout primitive
+ * (see also Card, which adds interactive variants on top). Themes can
+ * override any of the data-attribute hooks per style.
+ */
+
+[data-frame] {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid var(--paper-edge);
+	border-radius: 8px;
+	background: var(--paper);
+	overflow: hidden;
+}
+
+[data-frame-header] {
+	padding: 8px 12px;
+	background: var(--paper-soft);
+	border-bottom: 1px solid var(--paper-edge);
+}
+
+[data-frame-body] {
+	padding: 12px;
+	flex: 1;
+	min-height: 0;
+}
+
+/* Artifacts that own their padding (charts, <pre> blocks, tables) opt
+ * out of the body padding via `flush`. */
+[data-frame-body][data-flush] {
+	padding: 0;
+}
+
+[data-frame-footer] {
+	padding: 8px 12px;
+	border-top: 1px dashed var(--paper-edge);
+	background: var(--paper);
+}

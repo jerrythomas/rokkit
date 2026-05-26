@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { PlotChart, FacetPlot, AnimatedPlot } from '@rokkit/chart'
-	import { CodeBlock } from '@rokkit/ui'
+	import { CodeBlock, Frame } from '@rokkit/ui'
 	import { pluginDisplay } from './config.svelte.js'
 
 	interface Props {
@@ -22,14 +22,8 @@
 	})
 
 	const spec = $derived(parsed.spec)
-
-	// Pretty-print the spec for the code-view panel. Falls back to the raw
-	// fence body if parsing failed so the user can still see what went in.
 	const prettyCode = $derived(spec ? JSON.stringify(spec, null, 2) : code)
 
-	// Summary: rows + channel mapping (rows[N] · x field · y field · fill field).
-	// Each part is a label+value pair so themes can decorate them
-	// differently (the /app surface formats values like "rows[4]").
 	const summary = $derived.by(() => {
 		if (!spec) return [] as Array<{ label: string; value: string }>
 		const parts: Array<{ label: string; value: string }> = []
@@ -63,7 +57,7 @@
 		const url = URL.createObjectURL(blob)
 		const a = document.createElement('a')
 		a.href = url
-		a.download = (spec?.title?.replace(/\s+/g, '-').toLowerCase() ?? 'chart') + '.svg'
+		a.download = `${spec?.title?.replace(/\s+/g, '-').toLowerCase() ?? 'chart'  }.svg`
 		a.click()
 		URL.revokeObjectURL(url)
 	}
@@ -79,84 +73,75 @@
 	</div>
 {:else}
 	<div data-plot-plugin>
-		<div data-plot-body bind:this={bodyRef}>
-			{#if spec?.facet}
-				<FacetPlot {...spec} />
-			{:else if spec?.animate}
-				<AnimatedPlot {...spec} />
-			{:else}
-				<PlotChart {spec} />
-			{/if}
-		</div>
+		<Frame flush>
+			<div data-plot-body bind:this={bodyRef}>
+				{#if spec?.facet}
+					<FacetPlot {...spec} />
+				{:else if spec?.animate}
+					<AnimatedPlot {...spec} />
+				{:else}
+					<PlotChart {spec} />
+				{/if}
+			</div>
 
-		<div data-plot-footer>
-			{#if summary.length}
-				<div data-plot-summary>
-					{#each summary as part, i (part.label)}
-						{#if i > 0}<span data-sep>·</span>{/if}
-						<span data-plot-summary-label>{part.label}</span>
-						<span data-plot-summary-value>{part.value}</span>
-					{/each}
+			{#snippet footer()}
+				<div data-plot-footer>
+					{#if summary.length}
+						<div data-plot-summary>
+							{#each summary as part, i (part.label)}
+								{#if i > 0}<span data-sep>·</span>{/if}
+								<span data-plot-summary-label>{part.label}</span>
+								<span data-plot-summary-value>{part.value}</span>
+							{/each}
+						</div>
+					{:else}
+						<span></span>
+					{/if}
+
+					{#if pluginDisplay.codeVisible}
+						<div data-plot-actions>
+							<button
+								type="button"
+								data-plot-action
+								data-plot-code-toggle
+								onclick={() => (showCode = !showCode)}
+								aria-pressed={showCode}
+								title={showCode ? 'Hide code' : 'View code'}
+							>
+								<span class={showCode ? 'i-mdi:eye-off-outline' : 'i-mdi:code-tags'} aria-hidden="true"></span>
+								<span>{showCode ? 'Hide code' : 'View code'}</span>
+							</button>
+							<button type="button" data-plot-action onclick={copyCode} title="Copy spec to clipboard">
+								<span class="i-mdi:content-copy" aria-hidden="true"></span>
+								<span>Copy code</span>
+							</button>
+							<button type="button" data-plot-action onclick={downloadSvg} title="Download chart as SVG">
+								<span class="i-mdi:download" aria-hidden="true"></span>
+								<span>Export SVG</span>
+							</button>
+						</div>
+					{/if}
 				</div>
-			{:else}
-				<span></span>
-			{/if}
-
-			{#if pluginDisplay.codeVisible}
-				<div data-plot-actions>
-					<button
-						type="button"
-						data-plot-action
-						data-plot-code-toggle
-						onclick={() => (showCode = !showCode)}
-						aria-pressed={showCode}
-						title={showCode ? 'Hide code' : 'View code'}
-					>
-						<span class={showCode ? 'i-mdi:eye-off-outline' : 'i-mdi:code-tags'} aria-hidden="true"></span>
-						<span>{showCode ? 'Hide code' : 'View code'}</span>
-					</button>
-					<button type="button" data-plot-action onclick={copyCode} title="Copy spec to clipboard">
-						<span class="i-mdi:content-copy" aria-hidden="true"></span>
-						<span>Copy code</span>
-					</button>
-					<button type="button" data-plot-action onclick={downloadSvg} title="Download chart as SVG">
-						<span class="i-mdi:download" aria-hidden="true"></span>
-						<span>Export SVG</span>
-					</button>
-				</div>
-			{/if}
-		</div>
-
+			{/snippet}
+		</Frame>
 	</div>
 
 	{#if showCode && pluginDisplay.codeVisible}
 		<CodeBlock
 			code={prettyCode}
 			language="json"
-			filename={(spec?.title ?? 'plot').toString().toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.plot.json'}
+			filename={`${(spec?.title ?? 'plot').toString().toLowerCase().replace(/[^a-z0-9]+/g, '-')  }.plot.json`}
 		/>
 	{/if}
 {/if}
 
 <style>
-	[data-plot-plugin] {
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-		padding: 12px;
-		border: 1px solid var(--paper-edge);
-		border-radius: 8px;
-		background: var(--paper);
-	}
-
 	[data-plot-footer] {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		gap: 12px;
 		flex-wrap: wrap;
-		padding-top: 8px;
-		border-top: 1px dashed var(--paper-edge);
 	}
 
 	[data-plot-summary] {

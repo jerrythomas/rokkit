@@ -4,6 +4,7 @@ export {
 	ButtonGroup,
 	Code,
 	CodeBlock,
+	Frame,
 	Menu,
 	Dropdown,
 	Select,

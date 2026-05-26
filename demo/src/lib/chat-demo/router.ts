@@ -56,7 +56,7 @@ const ROUTES: Route[] = [
 				},
 				{
 					kind: 'markdown',
-					markdown: '```plot\n' + JSON.stringify(spec) + '\n```'
+					markdown: `\`\`\`plot\n${  JSON.stringify(spec)  }\n\`\`\``
 				}
 			]
 		}
@@ -71,7 +71,7 @@ const ROUTES: Route[] = [
 			},
 			{
 				kind: 'markdown',
-				markdown: '```plot\n' + JSON.stringify({
+				markdown: `\`\`\`plot\n${  JSON.stringify({
 					title: 'Quarterly revenue · FY 2026',
 					data: [
 						{ quarter: 'Q1', revenue: 42 },
@@ -85,7 +85,7 @@ const ROUTES: Route[] = [
 					height: 220,
 					grid: true,
 					margin: { top: 8, right: 16, bottom: 36, left: 44 }
-				}) + '\n```'
+				})  }\n\`\`\``
 			},
 			{
 				kind: 'suggestions',

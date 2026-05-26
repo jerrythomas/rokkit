@@ -1,26 +1,17 @@
 /**
- * Base styling for @rokkit/ui CodeBlock.
+ * Base styling for CodeBlock internals.
  *
- * The component owns structure (data-code-block, data-code-block-header,
- * -title, -icon, -filename, -lang, -actions, -body); themes layer
- * styling. This is the no-style-by-default baseline that themes inherit
- * — overrides go in `<style>/code-block.css`.
+ * Chrome (border / background / radius / header dividers) is handled by
+ * Frame via [data-frame*]. This file just lays out the bits CodeBlock
+ * puts INSIDE the frame header / body — the title row (icon, filename,
+ * lang chip), action buttons, and the <pre>/<code> body.
  */
-
-[data-code-block] {
-	border: 1px solid var(--paper-edge);
-	border-radius: 6px;
-	background: var(--paper-soft);
-	overflow: hidden;
-}
 
 [data-code-block-header] {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 8px 12px;
-	background: var(--paper-soft);
-	border-bottom: 1px solid var(--paper-edge);
+	gap: 8px;
 }
 
 [data-code-block-title] {
@@ -83,7 +74,6 @@
 }
 
 [data-code-block-body] {
-	background: var(--paper);
 	overflow: auto;
 }
 
