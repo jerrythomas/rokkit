@@ -73,9 +73,10 @@ describe('PlotPlugin', () => {
 	it('renders a summary line with rows + channel mapping', () => {
 		const { container } = render(PlotPlugin, { props: { code: validSpec } })
 		const summary = container.querySelector('[data-plot-summary]')
-		expect(summary?.textContent).toContain('rows=2')
-		expect(summary?.textContent).toContain('x=year')
-		expect(summary?.textContent).toContain('y=revenue')
+		const text = summary?.textContent ?? ''
+		expect(text).toMatch(/rows\s*\[?2\]?/)
+		expect(text).toContain('year')
+		expect(text).toContain('revenue')
 	})
 
 	describe('with codeVisible=true', () => {

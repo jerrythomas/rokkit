@@ -59,8 +59,11 @@
 	letter-spacing: -0.005em;
 }
 
-[data-chat-message-body] code,
-[data-chat-message-body] [data-file] {
+/* Inline-code chips in prose. Scoped with :not(...) so the rule does NOT
+ * apply to <code> inside a CodeBlock (Shiki's <pre><code>…</code></pre>
+ * shouldn't get the inline chip's border + background + padding). */
+[data-chat-message-body] code:not([data-code-block] code),
+[data-chat-message-body] [data-file]:not([data-code-block] [data-file]) {
 	font: 500 12px var(--font-mono);
 	padding: 1px 6px;
 	border: 1px solid var(--paper-edge);

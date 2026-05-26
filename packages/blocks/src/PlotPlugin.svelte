@@ -25,29 +25,34 @@
 
 	// Pretty-print the spec for the code-view panel. Falls back to the raw
 	// fence body if parsing failed so the user can still see what went in.
-	const prettyCode = $derived(
-		spec ? JSON.stringify(spec, null, 2) : code
-	)
+	const prettyCode = $derived(spec ? JSON.stringify(spec, null, 2) : code)
 
-	// Summary line: rows + the field-to-channel mapping
-	// ("x=quarter · y=revenue · fill=product").
-	// PlotChart owns the title and all other rendering — the plugin's only
-	// additions are the summary line and (optional) developer affordances.
+	// Summary: rows + channel mapping (rows[N] · x field · y field · fill field).
+	// Each part is a label+value pair so themes can decorate them
+	// differently (the /app surface formats values like "rows[4]").
 	const summary = $derived.by(() => {
-		if (!spec) return ''
-		const parts: string[] = []
+		if (!spec) return [] as Array<{ label: string; value: string }>
+		const parts: Array<{ label: string; value: string }> = []
 		const rows = Array.isArray(spec.data) ? spec.data.length : 0
-		if (rows) parts.push(`rows=${rows}`)
+		if (rows) parts.push({ label: 'rows', value: `[${rows}]` })
 		const channels: Array<[string, string | undefined]> = [
 			['x', spec.x],
 			['y', spec.y],
 			['fill', spec.fill ?? spec.color]
 		]
 		for (const [name, field] of channels) {
-			if (typeof field === 'string' && field) parts.push(`${name}=${field}`)
+			if (typeof field === 'string' && field) parts.push({ label: name, value: field })
 		}
-		return parts.join(' · ')
+		return parts
 	})
+
+	async function copyCode() {
+		try {
+			await navigator.clipboard.writeText(prettyCode)
+		} catch {
+			// clipboard may be unavailable (insecure context); silent fail.
+		}
+	}
 
 	function downloadSvg() {
 		if (!bodyRef) return
@@ -74,30 +79,6 @@
 	</div>
 {:else}
 	<div data-plot-plugin>
-		{#if pluginDisplay.codeVisible}
-			<div data-plot-header>
-				<button
-					type="button"
-					data-plot-export
-					onclick={downloadSvg}
-					title="Download chart as SVG"
-				>
-					<span class="i-mdi:image-outline" aria-hidden="true"></span>
-					<span>SVG</span>
-				</button>
-				<button
-					type="button"
-					data-plot-code-toggle
-					onclick={() => (showCode = !showCode)}
-					aria-pressed={showCode}
-					title={showCode ? 'Hide code' : 'Show code'}
-				>
-					<span class={showCode ? 'i-mdi:eye-off-outline' : 'i-mdi:code-tags'} aria-hidden="true"></span>
-					<span>{showCode ? 'Hide code' : 'View code'}</span>
-				</button>
-			</div>
-		{/if}
-
 		<div data-plot-body bind:this={bodyRef}>
 			{#if spec?.facet}
 				<FacetPlot {...spec} />
@@ -108,18 +89,47 @@
 			{/if}
 		</div>
 
-		{#if summary}
-			<div data-plot-summary>{summary}</div>
-		{/if}
+		<div data-plot-footer>
+			{#if summary.length}
+				<div data-plot-summary>
+					{#each summary as part, i (part.label)}
+						{#if i > 0}<span data-sep>·</span>{/if}
+						<span data-plot-summary-label>{part.label}</span>
+						<span data-plot-summary-value>{part.value}</span>
+					{/each}
+				</div>
+			{:else}
+				<span></span>
+			{/if}
+
+			{#if pluginDisplay.codeVisible}
+				<div data-plot-actions>
+					<button
+						type="button"
+						data-plot-action
+						data-plot-code-toggle
+						onclick={() => (showCode = !showCode)}
+						aria-pressed={showCode}
+						title={showCode ? 'Hide code' : 'View code'}
+					>
+						<span class={showCode ? 'i-mdi:eye-off-outline' : 'i-mdi:code-tags'} aria-hidden="true"></span>
+						<span>{showCode ? 'Hide code' : 'View code'}</span>
+					</button>
+					<button type="button" data-plot-action onclick={copyCode} title="Copy spec to clipboard">
+						<span class="i-mdi:content-copy" aria-hidden="true"></span>
+						<span>Copy code</span>
+					</button>
+					<button type="button" data-plot-action onclick={downloadSvg} title="Download chart as SVG">
+						<span class="i-mdi:download" aria-hidden="true"></span>
+						<span>Export SVG</span>
+					</button>
+				</div>
+			{/if}
+		</div>
 
 		{#if showCode && pluginDisplay.codeVisible}
 			<div data-plot-code>
-				<CodeBlock
-					code={prettyCode}
-					language="plot"
-					allowCopy={true}
-					allowDownload={true}
-				/>
+				<CodeBlock code={prettyCode} language="plot" />
 			</div>
 		{/if}
 	</div>
@@ -129,47 +139,74 @@
 	[data-plot-plugin] {
 		display: flex;
 		flex-direction: column;
-		gap: 6px;
+		gap: 8px;
+		padding: 12px;
+		border: 1px solid var(--paper-edge);
+		border-radius: 8px;
+		background: var(--paper);
 	}
 
-	[data-plot-header] {
+	[data-plot-footer] {
 		display: flex;
 		align-items: center;
-		justify-content: flex-end;
-		gap: 4px;
+		justify-content: space-between;
+		gap: 12px;
+		flex-wrap: wrap;
+		padding-top: 8px;
+		border-top: 1px dashed var(--paper-edge);
 	}
 
-	[data-plot-code-toggle],
-	[data-plot-export] {
+	[data-plot-summary] {
+		display: inline-flex;
+		align-items: baseline;
+		flex-wrap: wrap;
+		gap: 4px;
+		font: 500 11px var(--font-mono);
+		color: var(--ink-mute);
+		letter-spacing: 0.04em;
+	}
+
+	[data-plot-summary-label] {
+		color: var(--ink-mute);
+	}
+
+	[data-plot-summary-value] {
+		color: var(--ink);
+	}
+
+	[data-plot-summary] [data-sep] {
+		opacity: 0.45;
+		margin: 0 2px;
+	}
+
+	[data-plot-actions] {
+		display: inline-flex;
+		align-items: center;
+		gap: 2px;
+	}
+
+	[data-plot-action] {
 		display: inline-flex;
 		align-items: center;
 		gap: 5px;
 		height: 24px;
 		padding: 0 8px;
-		border: 1px solid var(--paper-edge);
+		border: 0;
 		border-radius: 4px;
-		background: var(--paper);
+		background: transparent;
 		color: var(--ink-mute);
 		font: 500 11.5px var(--font-ui);
 		cursor: pointer;
 	}
 
-	[data-plot-code-toggle]:hover,
-	[data-plot-export]:hover {
-		border-color: var(--accent);
-		color: var(--accent);
+	[data-plot-action]:hover {
+		background: var(--paper-mute);
+		color: var(--ink);
 	}
 
-	[data-plot-code-toggle] > span:first-child,
-	[data-plot-export] > span:first-child {
+	[data-plot-action] > span:first-child {
 		width: 14px;
 		height: 14px;
-	}
-
-	[data-plot-summary] {
-		font: 500 11px var(--font-mono);
-		letter-spacing: 0.04em;
-		color: var(--ink-mute);
 	}
 
 	[data-plot-code] {
