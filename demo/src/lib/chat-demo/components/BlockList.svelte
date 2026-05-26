@@ -69,12 +69,12 @@
 	}
 </script>
 
-<div class="block-list" bind:this={root}>
+<div class="msg-list" bind:this={root}>
 	{#each visibleBlocks as block, i (i)}
 		{#if block.kind === 'prose'}
-			<p class="block-prose">{block.text}</p>
+			<p class="msg-prose">{block.text}</p>
 		{:else if block.kind === 'markdown'}
-			<div class="block-markdown">
+			<div class="msg-markdown">
 				<MarkdownRenderer markdown={block.markdown} plugins={PLUGINS} />
 			</div>
 		{:else if block.kind === 'code'}
@@ -86,47 +86,47 @@
 		{:else if block.kind === 'component'}
 			<InlineComponent tool={block.tool} props={block.props} caption={block.caption} />
 		{:else if block.kind === 'error'}
-			<div class="block-error">
-				<div class="block-error-head">
+			<div class="msg-error">
+				<div class="msg-error-head">
 					<span class="i-mdi:alert-circle-outline" aria-hidden="true"></span>
-					<span class="block-error-title">{block.title}</span>
+					<span class="msg-error-title">{block.title}</span>
 				</div>
-				<p class="block-error-message">{block.message}</p>
+				<p class="msg-error-message">{block.message}</p>
 				{#if block.details}
-					<details class="block-error-details">
+					<details class="msg-error-details">
 						<summary>show full details</summary>
 						<pre>{block.details}</pre>
 					</details>
 				{/if}
 				{#if block.hint}
-					<p class="block-error-hint">{block.hint}</p>
+					<p class="msg-error-hint">{block.hint}</p>
 				{/if}
 			</div>
 		{:else if block.kind === 'data-note'}
-			<div class="block-datanote">
-				<span class="block-datanote-tag">{block.source.toUpperCase()}</span>
-				<span class="block-datanote-shape">{block.shape}</span>
+			<div class="msg-datanote">
+				<span class="msg-datanote-tag">{block.source.toUpperCase()}</span>
+				<span class="msg-datanote-shape">{block.shape}</span>
 				{#if block.rowCount !== undefined && block.rowCount !== null}
-					<span class="block-datanote-sep">·</span>
+					<span class="msg-datanote-sep">·</span>
 					<span>{block.rowCount} rows</span>
 				{/if}
 				{#if block.columns}
-					<span class="block-datanote-sep">·</span>
-					<div class="block-datanote-cols">
+					<span class="msg-datanote-sep">·</span>
+					<div class="msg-datanote-cols">
 						{#each block.columns as col (col.name)}
-							<span class="block-datanote-col">
-								<code>{col.name}</code><span class="block-datanote-type">{col.type}</span>
+							<span class="msg-datanote-col">
+								<code>{col.name}</code><span class="msg-datanote-type">{col.type}</span>
 							</span>
 						{/each}
 					</div>
 				{/if}
 			</div>
 		{:else if block.kind === 'suggestions'}
-			<div class="block-suggestions">
-				{#if block.intro}<span class="block-suggestions-intro">{block.intro}</span>{/if}
-				<div class="block-suggestions-row">
+			<div class="msg-suggestions">
+				{#if block.intro}<span class="msg-suggestions-intro">{block.intro}</span>{/if}
+				<div class="msg-suggestions-row">
 					{#each block.items as item (item.query)}
-						<button type="button" class="block-suggestion" onclick={() => handleSuggestion(item)}>
+						<button type="button" class="msg-suggestion" onclick={() => handleSuggestion(item)}>
 							{item.label}
 						</button>
 					{/each}
@@ -137,26 +137,61 @@
 </div>
 
 <style>
-	.block-list {
+	.msg-list {
 		display: flex;
 		flex-direction: column;
 		gap: 8px;
 	}
 
-	.block-prose {
+	.msg-prose {
 		margin: 0;
 		font: 400 14px/1.6 var(--font-ui);
 		color: var(--ink);
 	}
 
-	.block-prose :global(code) {
+	.msg-prose :global(code) {
 		font: 12.5px var(--font-mono);
 		padding: 1px 5px;
 		background: var(--paper-soft);
 		border-radius: 4px;
 	}
 
-	.block-suggestions {
+	/* LLM markdown path: kill default browser margins on paragraphs / headings
+	 * so the gap before an inline plugin (chart / table / form) matches the
+	 * scripted prose block. Plugin blocks (data-plot-plugin etc.) stay flush. */
+	.msg-markdown :global(p),
+	.msg-markdown :global(h1),
+	.msg-markdown :global(h2),
+	.msg-markdown :global(h3),
+	.msg-markdown :global(h4),
+	.msg-markdown :global(ul),
+	.msg-markdown :global(ol) {
+		margin: 0;
+	}
+
+	.msg-markdown :global(p + *),
+	.msg-markdown :global(ul + *),
+	.msg-markdown :global(ol + *) {
+		margin-top: 8px;
+	}
+
+	.msg-markdown :global([data-plot-plugin]),
+	.msg-markdown :global([data-table-plugin]),
+	.msg-markdown :global([data-form-plugin]),
+	.msg-markdown :global([data-list-plugin]),
+	.msg-markdown :global([data-stepper-plugin]),
+	.msg-markdown :global([data-sparkline-plugin]) {
+		margin-top: 8px;
+	}
+
+	.msg-markdown :global(code) {
+		font: 12.5px var(--font-mono);
+		padding: 1px 5px;
+		background: var(--paper-soft);
+		border-radius: 4px;
+	}
+
+	.msg-suggestions {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
@@ -164,20 +199,20 @@
 		margin-top: 4px;
 	}
 
-	.block-suggestions-intro {
+	.msg-suggestions-intro {
 		font: 500 11px var(--font-mono);
 		letter-spacing: 0.12em;
 		text-transform: uppercase;
 		color: var(--ink-mute);
 	}
 
-	.block-suggestions-row {
+	.msg-suggestions-row {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 6px;
 	}
 
-	.block-suggestion {
+	.msg-suggestion {
 		display: inline-flex;
 		align-items: center;
 		height: 26px;
@@ -190,14 +225,14 @@
 		cursor: pointer;
 	}
 
-	.block-suggestion:hover {
+	.msg-suggestion:hover {
 		border-color: var(--accent);
 		color: var(--accent);
 		border-style: solid;
 		background: color-mix(in oklab, var(--accent) 6%, var(--paper-soft));
 	}
 
-	.block-error {
+	.msg-error {
 		padding: 12px 14px;
 		border: 1px solid color-mix(in oklab, var(--danger, #c43838) 45%, transparent);
 		background: color-mix(in oklab, var(--danger, #c43838) 6%, var(--paper));
@@ -207,7 +242,7 @@
 		gap: 8px;
 	}
 
-	.block-error-head {
+	.msg-error-head {
 		display: flex;
 		align-items: center;
 		gap: 8px;
@@ -215,11 +250,11 @@
 		color: var(--danger, #c43838);
 	}
 
-	.block-error-title {
+	.msg-error-title {
 		line-height: 1.3;
 	}
 
-	.block-error-message {
+	.msg-error-message {
 		margin: 0;
 		font: 400 13.5px/1.55 var(--font-ui);
 		color: var(--ink);
@@ -227,7 +262,7 @@
 		white-space: pre-wrap;
 	}
 
-	.block-error-hint {
+	.msg-error-hint {
 		margin: 0;
 		font: 400 12.5px/1.5 var(--font-ui);
 		color: var(--ink-mute);
@@ -235,14 +270,14 @@
 		border-top: 1px dashed color-mix(in oklab, var(--danger, #c43838) 25%, transparent);
 	}
 
-	.block-error-details summary {
+	.msg-error-details summary {
 		font: 500 11.5px var(--font-mono);
 		color: var(--ink-mute);
 		cursor: pointer;
 		letter-spacing: 0.04em;
 	}
 
-	.block-error-details pre {
+	.msg-error-details pre {
 		margin: 6px 0 0;
 		padding: 8px 10px;
 		max-height: 200px;
@@ -255,7 +290,7 @@
 		overflow-wrap: anywhere;
 	}
 
-	.block-datanote {
+	.msg-datanote {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
@@ -268,7 +303,7 @@
 		color: var(--ink-mute);
 	}
 
-	.block-datanote-tag {
+	.msg-datanote-tag {
 		padding: 2px 6px;
 		background: color-mix(in oklab, var(--accent) 16%, var(--paper-soft));
 		color: var(--accent);
@@ -277,35 +312,35 @@
 		letter-spacing: 0.06em;
 	}
 
-	.block-datanote-shape {
+	.msg-datanote-shape {
 		text-transform: capitalize;
 		color: var(--ink);
 	}
 
-	.block-datanote-sep {
+	.msg-datanote-sep {
 		opacity: 0.5;
 	}
 
-	.block-datanote-cols {
+	.msg-datanote-cols {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 4px;
 	}
 
-	.block-datanote-col {
+	.msg-datanote-col {
 		display: inline-flex;
 		align-items: baseline;
 		gap: 4px;
 	}
 
-	.block-datanote-col code {
+	.msg-datanote-col code {
 		font: 500 11px var(--font-mono);
 		color: var(--ink);
 		background: transparent;
 		padding: 0;
 	}
 
-	.block-datanote-type {
+	.msg-datanote-type {
 		font-size: 10px;
 		color: var(--ink-mute);
 		font-weight: 400;
