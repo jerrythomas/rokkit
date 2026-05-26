@@ -2,6 +2,7 @@
 	import { tick } from 'svelte'
 	import { ChatChrome, ChatComposer, ChatStream, ChatMessage, configureWho } from '$lib/chat'
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
+	import { Button, Toggle } from '@rokkit/ui'
 	import {
 		conversation,
 		submitText,
@@ -19,6 +20,32 @@
 	} from '$lib/chat-demo/llm.svelte'
 	import { pluginDisplay } from '@rokkit/blocks'
 	import BlockList from '$lib/chat-demo/components/BlockList.svelte'
+
+	// ─── Mode (Scripted / OpenRouter / Web-LLM) — 3-way derived from llm state
+	type Mode = 'scripted' | 'openrouter' | 'webllm'
+	const mode = $derived<Mode>(
+		!llm.enabled ? 'scripted' : llm.provider === 'webllm' ? 'webllm' : 'openrouter'
+	)
+	function setMode(next: Mode) {
+		if (next === 'scripted') {
+			llm.enabled = false
+			return
+		}
+		llm.enabled = true
+		llm.provider = next === 'webllm' ? 'webllm' : 'openrouter'
+	}
+	const modeOptions = [
+		{ value: 'scripted', label: 'Scripted', icon: 'i-mdi:script-text-outline' },
+		{ value: 'openrouter', label: 'OpenRouter', icon: 'i-mdi:cloud-outline' },
+		{ value: 'webllm', label: 'Web-LLM', icon: 'i-mdi:laptop' }
+	]
+	const crumbLabel = $derived(
+		mode === 'scripted'
+			? 'Inline chat · scripted responses'
+			: mode === 'openrouter'
+				? 'Inline chat · OpenRouter (hosted)'
+				: 'Inline chat · Web-LLM (browser)'
+	)
 
 	$effect(() => {
 		// Probe WebGPU on mount so the toggle shows the right state.
@@ -153,38 +180,48 @@
 <div class="chat-shell">
 	<ChatChrome>
 		{#snippet brand()}
-			<RokkitWordmark />
+			<a href="/" class="brand-link" title="Back to Rokkit home" aria-label="Rokkit home">
+				<RokkitWordmark />
+			</a>
 		{/snippet}
 		{#snippet crumb()}
-			<span class="route-label">Inline chat · scripted responses</span>
+			<span class="route-label">{crumbLabel}</span>
 		{/snippet}
 		{#snippet actions()}
-			<div class="llm-toggle" data-active={llm.enabled || undefined}>
-				<label class="llm-switch" title="Use a real LLM instead of the mock router">
-					<input type="checkbox" bind:checked={llm.enabled} />
-					<span class="llm-switch-label">
-						<span class="i-mdi:robot-outline" aria-hidden="true"></span>
-						LLM
-					</span>
-				</label>
-				{#if llm.enabled}
-					<select bind:value={llm.provider} class="llm-provider">
-						<option value="openrouter">OpenRouter (hosted, free)</option>
-						<option value="webllm" disabled={llm.webgpuSupported === false}>
-							Web-LLM (browser){llm.webgpuSupported === false ? ' · no WebGPU' : ''}
-						</option>
-					</select>
-					{#if llm.provider === 'openrouter'}
+			<Toggle
+				variant="group"
+				size="sm"
+				options={modeOptions}
+				value={mode}
+				onchange={(v) => setMode(v as Mode)}
+				showLabels={true}
+			/>
+			<Button
+				variant="default"
+				size="sm"
+				icon="i-mdi:restore"
+				label="Clear"
+				title="Clear the conversation"
+				onclick={resetConversation}
+			/>
+		{/snippet}
+	</ChatChrome>
+
+	{#if mode !== 'scripted'}
+		<div class="chat-subtoolbar">
+			<div class="subtoolbar-left">
+				{#if mode === 'openrouter'}
+					<label class="subtoolbar-field">
+						<span class="subtoolbar-label">Model</span>
 						<select bind:value={llm.openRouterModel} class="llm-model">
 							{#each OPENROUTER_MODELS as m (m.id)}
 								<option value={m.id}>{m.label}</option>
 							{/each}
 						</select>
-						<label class="llm-code-toggle" title="Ask the LLM to include code snippets in its response">
-							<input type="checkbox" bind:checked={pluginDisplay.codeVisible} />
-							<span>code</span>
-						</label>
-					{:else}
+					</label>
+				{:else}
+					<label class="subtoolbar-field">
+						<span class="subtoolbar-label">Model</span>
 						<select
 							bind:value={llm.webllmModel}
 							class="llm-model"
@@ -195,37 +232,33 @@
 								<option value={m.id}>{m.label} · {m.size}</option>
 							{/each}
 						</select>
-						{#if llm.webllmStatus === 'uninitialized'}
-							<button type="button" class="llm-load-btn" onclick={() => ensureWebLLMEngine()}>
-								<span class="i-mdi:download" aria-hidden="true"></span>
-								Load
-							</button>
-						{:else if llm.webllmStatus === 'loading'}
-							<span class="llm-progress" title={llm.webllmStage}>
-								<span class="i-mdi:loading llm-spin" aria-hidden="true"></span>
-								{Math.round(llm.webllmProgress * 100)}%
-							</span>
-						{:else if llm.webllmStatus === 'ready' || llm.webllmStatus === 'thinking'}
-							<span class="llm-ready">
-								<span class="i-mdi:check-circle-outline" aria-hidden="true"></span>
-								ready
-							</span>
-						{:else if llm.webllmStatus === 'error'}
-							<span class="llm-error" title={llm.errorMessage}>error</span>
-						{/if}
-						<label class="llm-code-toggle" title="Ask the LLM to include code snippets in its response">
-							<input type="checkbox" bind:checked={pluginDisplay.codeVisible} />
-							<span>code</span>
-						</label>
+					</label>
+					{#if llm.webllmStatus === 'uninitialized'}
+						<button type="button" class="llm-load-btn" onclick={() => ensureWebLLMEngine()}>
+							<span class="i-mdi:download" aria-hidden="true"></span>
+							Load
+						</button>
+					{:else if llm.webllmStatus === 'loading'}
+						<span class="llm-progress" title={llm.webllmStage}>
+							<span class="i-mdi:loading llm-spin" aria-hidden="true"></span>
+							{Math.round(llm.webllmProgress * 100)}%
+						</span>
+					{:else if llm.webllmStatus === 'ready' || llm.webllmStatus === 'thinking'}
+						<span class="llm-ready">
+							<span class="i-mdi:check-circle-outline" aria-hidden="true"></span>
+							ready
+						</span>
+					{:else if llm.webllmStatus === 'error'}
+						<span class="llm-error" title={llm.errorMessage}>error</span>
 					{/if}
 				{/if}
 			</div>
-			<button type="button" class="reset-btn" onclick={resetConversation}>
-				<span class="i-mdi:restore" aria-hidden="true"></span>
-				Reset
-			</button>
-		{/snippet}
-	</ChatChrome>
+			<label class="llm-code-toggle" title="Show the source fence under each component (dev mode)">
+				<input type="checkbox" bind:checked={pluginDisplay.codeVisible} />
+				<span>code</span>
+			</label>
+		</div>
+	{/if}
 
 	<div class="chat-body">
 		<div class="chat-stream-wrap" bind:this={streamRef}>
@@ -351,23 +384,37 @@
 		text-transform: uppercase;
 	}
 
-	.reset-btn {
-		display: inline-flex;
+	.chat-subtoolbar {
+		display: flex;
 		align-items: center;
-		gap: 6px;
-		height: 26px;
-		padding: 0 10px;
-		border: 1px solid var(--paper-edge);
-		border-radius: 9999px;
+		justify-content: space-between;
+		gap: 12px;
+		padding: 8px 24px;
+		border-bottom: 1px solid var(--paper-edge);
 		background: var(--paper-soft);
-		font: 500 12px var(--font-ui);
+		font: 400 12px var(--font-ui);
 		color: var(--ink-mute);
-		cursor: pointer;
+		flex-shrink: 0;
 	}
 
-	.reset-btn:hover {
-		border-color: var(--ink-soft);
-		color: var(--ink);
+	.subtoolbar-left {
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
+		flex-wrap: wrap;
+	}
+
+	.subtoolbar-field {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+	}
+
+	.subtoolbar-label {
+		font: 500 11px var(--font-mono);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--ink-mute);
 	}
 
 	.chat-body {
@@ -528,24 +575,6 @@
 		color: var(--ink-mute);
 	}
 
-	.llm-toggle {
-		display: inline-flex;
-		align-items: center;
-		gap: 8px;
-		padding: 4px 8px;
-		border: 1px solid var(--paper-edge);
-		border-radius: 9999px;
-		background: var(--paper-soft);
-		font: 500 12px var(--font-ui);
-		color: var(--ink-mute);
-	}
-
-	.llm-toggle[data-active] {
-		border-color: var(--accent);
-		color: var(--accent);
-		background: color-mix(in oklab, var(--accent) 6%, var(--paper-soft));
-	}
-
 	.llm-code-toggle {
 		display: inline-flex;
 		align-items: center;
@@ -558,7 +587,6 @@
 		accent-color: var(--accent);
 	}
 
-	.llm-provider,
 	.llm-model {
 		font: 500 11.5px var(--font-ui);
 		padding: 2px 4px;
@@ -566,24 +594,7 @@
 		border-radius: 4px;
 		background: var(--paper);
 		color: var(--ink);
-		max-width: 200px;
-	}
-
-	.llm-switch {
-		display: inline-flex;
-		align-items: center;
-		gap: 5px;
-		cursor: pointer;
-	}
-
-	.llm-switch input[type='checkbox'] {
-		accent-color: var(--accent);
-	}
-
-	.llm-switch-label {
-		display: inline-flex;
-		align-items: center;
-		gap: 4px;
+		max-width: 240px;
 	}
 
 	.llm-load-btn {

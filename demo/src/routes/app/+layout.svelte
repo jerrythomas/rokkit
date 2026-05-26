@@ -1072,7 +1072,9 @@ ${rows}
 		{styles}
 	>
 		{#snippet brand()}
-			<RokkitWordmark height={20} />
+			<a href="/" class="brand-link" title="Back to Rokkit home" aria-label="Rokkit home">
+				<RokkitWordmark height={20} />
+			</a>
 		{/snippet}
 	</ChatChrome>
 
