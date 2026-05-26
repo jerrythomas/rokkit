@@ -317,28 +317,44 @@ function toolNameToFence(name: string): string | null {
 
 // ─── OpenRouter provider (default) ─────────────────────────────────────
 
+const OPENROUTER_TIMEOUT_MS = 90_000
+
 async function routeViaOpenRouter(query: string): Promise<Block[]> {
-	// Free tier providers don't all support OpenAI tool-calling. We ask the
-	// model to emit a strict JSON envelope (see SYSTEM_PROMPT) and parse it
-	// ourselves. response_format hints JSON-mode for providers that honour
-	// it; the parser is forgiving for those that don't.
-	const res = await fetch('/api/llm/openrouter', {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({
-			model: llm.openRouterModel,
-			messages: [
-				{ role: 'system', content: buildSystemPrompt() },
-				{ role: 'user', content: query }
-			],
-			temperature: 0.3
+	// Free-tier providers can take 20–60 s for the first token; the browser's
+	// implicit fetch timeout otherwise surfaces as a generic "Failed to fetch"
+	// with no signal. Bound the wait explicitly so we can show a clear timeout
+	// message and the user knows to switch model/provider.
+	const ctrl = new AbortController()
+	const timer = setTimeout(() => ctrl.abort(), OPENROUTER_TIMEOUT_MS)
+	try {
+		const res = await fetch('/api/llm/openrouter', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({
+				model: llm.openRouterModel,
+				messages: [
+					{ role: 'system', content: buildSystemPrompt() },
+					{ role: 'user', content: query }
+				],
+				temperature: 0.3
+			}),
+			signal: ctrl.signal
 		})
-	})
-	if (!res.ok) {
-		const text = await res.text()
-		throw new Error(`${res.status} · ${text.slice(0, 200)}`)
+		if (!res.ok) {
+			const text = await res.text()
+			throw new Error(`${res.status} · ${text.slice(0, 200)}`)
+		}
+		return parseCompletion(await res.json())
+	} catch (err) {
+		// AbortError → our timeout fired. Normalise it to a status-tagged error
+		// so the caller's "<status> · ..." matcher can render a clean message.
+		if ((err as Error).name === 'AbortError') {
+			throw new Error(`408 · timed out after ${OPENROUTER_TIMEOUT_MS / 1000}s — the free-tier provider didn't respond in time`)
+		}
+		throw err
+	} finally {
+		clearTimeout(timer)
 	}
-	return parseCompletion(await res.json())
 }
 
 // ─── Web-LLM provider (opt-in download) ────────────────────────────────
@@ -450,17 +466,21 @@ export async function routeViaLLM(query: string): Promise<Block[]> {
 					? 'Rate-limited by the free provider'
 					: status === '404'
 						? `Model unavailable (${llm.openRouterModel})`
-						: status === '503'
-							? 'OpenRouter unreachable'
-							: status
-								? `OpenRouter ${status}`
-								: 'OpenRouter request failed'
+						: status === '408'
+							? 'OpenRouter timed out'
+							: status === '503'
+								? 'OpenRouter unreachable'
+								: status
+									? `OpenRouter ${status}`
+									: 'OpenRouter request failed'
 			const hint =
 				status === '429'
 					? 'Try a different free model, retry in a moment, or switch to Web-LLM (one-time browser download).'
 					: status === '404'
 						? 'Pick another model from the dropdown — the free model list rotates.'
-						: 'Switch to Web-LLM if this keeps failing, or retry.'
+						: status === '408'
+							? 'Free-tier latency varies. Retry, pick a smaller/faster model, or switch to Web-LLM.'
+							: 'Switch to Web-LLM if this keeps failing, or retry.'
 			return [
 				{
 					kind: 'error',
