@@ -3,6 +3,7 @@ export {
 	Button,
 	ButtonGroup,
 	Code,
+	CodeBlock,
 	Menu,
 	Dropdown,
 	Select,

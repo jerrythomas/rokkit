@@ -96,7 +96,6 @@ export const DEFAULT_WEBLLM_MODEL = WEBLLM_MODELS[1].id
 export const llm = $state<{
 	provider: LLMProvider
 	enabled: boolean
-	showCode: boolean
 	openRouterModel: string
 	webllmModel: string
 	webllmStatus: LLMStatus
@@ -107,7 +106,6 @@ export const llm = $state<{
 }>({
 	provider: 'openrouter',
 	enabled: false,
-	showCode: false,
 	openRouterModel: DEFAULT_OPENROUTER_MODEL,
 	webllmModel: DEFAULT_WEBLLM_MODEL,
 	webllmStatus: 'uninitialized',

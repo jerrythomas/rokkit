@@ -17,6 +17,7 @@
 		OPENROUTER_MODELS,
 		WEBLLM_MODELS
 	} from '$lib/chat-demo/llm.svelte'
+	import { pluginDisplay } from '@rokkit/blocks'
 	import BlockList from '$lib/chat-demo/components/BlockList.svelte'
 
 	$effect(() => {
@@ -180,7 +181,7 @@
 							{/each}
 						</select>
 						<label class="llm-code-toggle" title="Ask the LLM to include code snippets in its response">
-							<input type="checkbox" bind:checked={llm.showCode} />
+							<input type="checkbox" bind:checked={pluginDisplay.codeVisible} />
 							<span>code</span>
 						</label>
 					{:else}
@@ -213,7 +214,7 @@
 							<span class="llm-error" title={llm.errorMessage}>error</span>
 						{/if}
 						<label class="llm-code-toggle" title="Ask the LLM to include code snippets in its response">
-							<input type="checkbox" bind:checked={llm.showCode} />
+							<input type="checkbox" bind:checked={pluginDisplay.codeVisible} />
 							<span>code</span>
 						</label>
 					{/if}

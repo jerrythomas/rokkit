@@ -1,26 +1,50 @@
 <script lang="ts">
 	import { PlotChart, FacetPlot, AnimatedPlot } from '@rokkit/chart'
-	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
+	import { CodeBlock } from '@rokkit/ui'
+	import { pluginDisplay } from './config.svelte.js'
 
-	let { code }: { code: string } = $props()
+	interface Props {
+		/** Raw fence body — the JSON plot spec as it came from the markdown. */
+		code: string
+	}
+
+	const { code }: Props = $props()
 
 	let showCode = $state(false)
 
-	const icons = DEFAULT_STATE_ICONS.view
-
-	const result = $derived.by(() => {
+	const parsed = $derived.by(() => {
 		try {
-			const spec = JSON.parse(code)
-			return { spec, error: null }
+			return { spec: JSON.parse(code), error: null as string | null }
 		} catch (e) {
 			return { spec: null, error: e instanceof Error ? e.message : 'Invalid JSON' }
 		}
 	})
+
+	const spec = $derived(parsed.spec)
+
+	// Summary line: rows + the field-to-channel mapping ("x=quarter · y=revenue · fill=product").
+	// PlotChart owns the title and all other rendering — the plugin's only
+	// additions are the summary line and (optional) view-code affordance.
+	const summary = $derived.by(() => {
+		if (!spec) return ''
+		const parts: string[] = []
+		const rows = Array.isArray(spec.data) ? spec.data.length : 0
+		if (rows) parts.push(`rows=${rows}`)
+		const channels: Array<[string, string | undefined]> = [
+			['x', spec.x],
+			['y', spec.y],
+			['fill', spec.fill ?? spec.color]
+		]
+		for (const [name, field] of channels) {
+			if (typeof field === 'string' && field) parts.push(`${name}=${field}`)
+		}
+		return parts.join(' · ')
+	})
 </script>
 
-{#if result.error}
+{#if parsed.error}
 	<div data-block-error class="block-error">
-		<span>Plot error: {result.error}</span>
+		<span>Plot error: {parsed.error}</span>
 		<details>
 			<summary>Raw spec</summary>
 			<pre>{code}</pre>
@@ -28,62 +52,92 @@
 	</div>
 {:else}
 	<div data-plot-plugin>
-		<button
-			data-plot-code-toggle
-			onclick={() => (showCode = !showCode)}
-			title={showCode ? 'Show chart' : 'Show code'}
-			aria-pressed={showCode}
-		>
-			<span class="i-rokkit:{showCode ? icons.chart : icons.code}"></span>
-		</button>
+		{#if pluginDisplay.codeVisible}
+			<div data-plot-header>
+				<button
+					type="button"
+					data-plot-code-toggle
+					onclick={() => (showCode = !showCode)}
+					aria-pressed={showCode}
+					title={showCode ? 'Hide code' : 'Show code'}
+				>
+					<span class={showCode ? 'i-mdi:eye-off-outline' : 'i-mdi:code-tags'} aria-hidden="true"></span>
+					<span>{showCode ? 'Hide code' : 'View code'}</span>
+				</button>
+			</div>
+		{/if}
 
-		{#if showCode}
-			<pre data-plot-code>{code}</pre>
-		{:else if result.spec?.facet}
-			<FacetPlot {...result.spec} />
-		{:else if result.spec?.animate}
-			<AnimatedPlot {...result.spec} />
-		{:else}
-			<PlotChart spec={result.spec} />
+		<div data-plot-body>
+			{#if spec?.facet}
+				<FacetPlot {...spec} />
+			{:else if spec?.animate}
+				<AnimatedPlot {...spec} />
+			{:else}
+				<PlotChart {spec} />
+			{/if}
+		</div>
+
+		{#if summary}
+			<div data-plot-summary>{summary}</div>
+		{/if}
+
+		{#if showCode && pluginDisplay.codeVisible}
+			<div data-plot-code>
+				<CodeBlock
+					{code}
+					language="plot"
+					allowCopy={pluginDisplay.allowCopy}
+					allowDownload={pluginDisplay.allowDownload}
+				/>
+			</div>
 		{/if}
 	</div>
 {/if}
 
 <style>
 	[data-plot-plugin] {
-		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+
+	[data-plot-header] {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
 	}
 
 	[data-plot-code-toggle] {
-		position: absolute;
-		top: 0.375rem;
-		right: 0.375rem;
-		z-index: 1;
-		display: flex;
+		display: inline-flex;
 		align-items: center;
-		justify-content: center;
-		width: 1.5rem;
-		height: 1.5rem;
-		border-radius: 0.25rem;
-		border: 1px solid currentColor;
-		background: transparent;
-		color: inherit;
-		opacity: 0.4;
+		gap: 5px;
+		height: 24px;
+		padding: 0 8px;
+		border: 1px solid var(--paper-edge);
+		border-radius: 4px;
+		background: var(--paper);
+		color: var(--ink-mute);
+		font: 500 11.5px var(--font-ui);
 		cursor: pointer;
-		transition: opacity 150ms ease;
-		font-size: 1rem;
 	}
 
 	[data-plot-code-toggle]:hover {
-		opacity: 0.8;
+		border-color: var(--accent);
+		color: var(--accent);
 	}
 
-	[data-plot-code][data-plot-code] {
-		margin: 0;
-		padding: 1rem;
-		overflow-x: auto;
-		font-size: 0.75rem;
-		white-space: pre-wrap;
-		word-break: break-all;
+	[data-plot-code-toggle] > span:first-child {
+		width: 14px;
+		height: 14px;
+	}
+
+	[data-plot-summary] {
+		font: 500 11px var(--font-mono);
+		letter-spacing: 0.04em;
+		color: var(--ink-mute);
+	}
+
+	[data-plot-code] {
+		margin-top: 4px;
 	}
 </style>

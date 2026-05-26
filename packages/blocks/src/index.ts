@@ -7,6 +7,8 @@ import FormPluginComponent from './FormPlugin.svelte'
 import ListPluginComponent from './ListPlugin.svelte'
 import StepperPluginComponent from './StepperPlugin.svelte'
 
+export { pluginDisplay, configurePluginDisplay, type PluginDisplayConfig } from './config.svelte.js'
+
 export const PlotPlugin: MarkdownPlugin = {
 	language: 'plot',
 	component: PlotPluginComponent

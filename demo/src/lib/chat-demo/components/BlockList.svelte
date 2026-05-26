@@ -13,7 +13,6 @@
 	} from '@rokkit/blocks'
 	import InlineComponent from './InlineComponent.svelte'
 	import { submitAction, submitText } from '../store.svelte'
-	import { llm } from '../llm.svelte'
 
 	const PLUGINS = [
 		PlotPlugin,
@@ -50,13 +49,11 @@
 
 	const { blocks, onSuggestion }: Props = $props()
 
-	// Code blocks are filtered at render time, not in the LLM/parser layer.
-	// The LLM emits whatever it considers useful; the user controls visibility
-	// via the llm.showCode toggle. The component blocks (charts, tables,
-	// forms) ARE the canonical rendering — code is a supplemental view.
-	const visibleBlocks = $derived(
-		blocks.filter((b) => b.kind !== 'code' || llm.showCode)
-	)
+	// Plugin blocks (chart / table / form / …) own their own "view code"
+	// affordance — driven globally by @rokkit/blocks' pluginDisplay store.
+	// Standalone `kind: 'code'` blocks (filename + body) are rare here and
+	// always render; keep them visible.
+	const visibleBlocks = $derived(blocks)
 
 	function handleSuggestion(item: SuggestionItem) {
 		// Data-aware action takes precedence; the text query is a fallback for
