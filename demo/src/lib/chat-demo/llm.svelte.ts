@@ -207,12 +207,23 @@ function buildSystemPrompt(): string {
 		'  "current":2 }',
 		'```',
 		'',
+		'─── SUGGESTIONS (follow-up chips) ─────────',
+		'After the main component, ALWAYS offer 2–4 follow-up questions the user can click to continue. Render them as a single trailing `suggestions` fence:',
+		'```suggestions',
+		'{ "intro":"Try",',
+		'  "items":[',
+		'    {"label":"Group by product","query":"Show a grouped bar chart of revenue by product"},',
+		'    {"label":"Stack the bars","query":"Stack the same chart by product"},',
+		'    {"label":"Show as a table","query":"Show this data as a table"} ] }',
+		'```',
+		'Each item is a chip; clicking it sends the `query` back as the next user turn, so the queries should be plain prompts the user could have typed themselves. Omit `intro` if you have nothing better than "Try".',
+		'',
 		'Rules:',
 		'- Always mount a live component for UI requests — never describe a chart only in prose.',
 		'- Prop shapes MUST match the examples (steps use `text` not `label`; table uses `columns` + `rows`).',
 		'- Keep prose short — one or two sentences before the fence is enough.',
-		'- You may include source-code blocks (```svelte, ```ts, ```js) when the user explicitly asks for code; the renderer decides whether to show them.',
-		'- If the request does not fit any fence, respond with prose only and suggest two concrete alternatives.'
+		'- After any component, include a trailing ```suggestions``` fence with 2–4 next-step prompts. If the request did not fit any fence, the suggestions fence is the *only* fence — give the user something concrete to click.',
+		'- You may include source-code blocks (```svelte, ```ts, ```js) when the user explicitly asks for code; the renderer decides whether to show them.'
 	].join('\n')
 }
 
@@ -249,8 +260,49 @@ function parseCompletion(result: any): Block[] {
 	// 2. Markdown body (preferred — the system prompt asks for it). Pass
 	// through verbatim; MarkdownRenderer + the plugin set turn ```plot,
 	// ```table, ```form, ```list, ```stepper fences into live components.
-	if (content) return [{ kind: 'markdown', markdown: content }]
+	if (content) return splitSuggestions(content)
 	return [{ kind: 'prose', text: '(empty response)' }]
+}
+
+/**
+ * Pull any ```suggestions``` fences out of a markdown body into their own
+ * SuggestionsBlock(s) so BlockList renders them as clickable chips at the
+ * end of the turn (matching the scripted-router shape). MarkdownRenderer
+ * has no plugin for "suggestions", so leaving them inline would render as
+ * raw code blocks.
+ */
+const SUGGESTIONS_FENCE = /```suggestions\s*\n([\s\S]*?)```/gi
+function splitSuggestions(content: string): Block[] {
+	const suggestions: Block[] = []
+	const remaining = content.replace(SUGGESTIONS_FENCE, (_, body) => {
+		try {
+			const parsed = JSON.parse(String(body).trim())
+			const items = Array.isArray(parsed?.items) ? parsed.items : []
+			const safeItems = items
+				.filter((i: unknown): i is { label: string; query: string } =>
+					typeof i === 'object' && i !== null
+					&& typeof (i as { label?: unknown }).label === 'string'
+					&& typeof (i as { query?: unknown }).query === 'string'
+				)
+				.slice(0, 6)
+			if (safeItems.length > 0) {
+				suggestions.push({
+					kind: 'suggestions',
+					intro: typeof parsed?.intro === 'string' ? parsed.intro : undefined,
+					items: safeItems.map((i) => ({ label: i.label, query: i.query }))
+				})
+			}
+		} catch {
+			// Malformed JSON — drop silently rather than show a code block.
+		}
+		return ''
+	})
+	const trimmed = remaining.trim()
+	const blocks: Block[] = []
+	if (trimmed) blocks.push({ kind: 'markdown', markdown: trimmed })
+	blocks.push(...suggestions)
+	if (blocks.length === 0) blocks.push({ kind: 'prose', text: '(empty response)' })
+	return blocks
 }
 
 function toolNameToFence(name: string): string | null {
