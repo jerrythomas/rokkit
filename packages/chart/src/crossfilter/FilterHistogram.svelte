@@ -136,6 +136,7 @@
 	{#if label}
 		<div data-filter-histogram-label>{label}</div>
 	{/if}
+	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 	<svg
 		{width}
 		{height}
