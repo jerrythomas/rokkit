@@ -108,99 +108,10 @@
 	{/await}
 </div>
 
-<style>
-	[data-code-block] {
-		position: relative;
-		border-radius: 0.5rem;
-		overflow: hidden;
-		background: var(--paper-soft);
-		border: 1px solid var(--paper-edge);
-	}
+<!--
+	No <style> block: chrome styling lives in @rokkit/themes/base/code-block.css
+	so themes can layer on top via attribute selectors
+	([data-code-block-*]). Add zen-sumi / material / etc. specific
+	overrides in their respective theme files.
+-->
 
-	[data-code-block-header] {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 8px;
-		padding: 6px 10px;
-		border-bottom: 1px solid var(--paper-edge);
-		background: var(--paper);
-	}
-
-	[data-code-block-title] {
-		display: inline-flex;
-		align-items: center;
-		gap: 8px;
-		font: 500 11.5px var(--font-mono);
-		color: var(--ink-mute);
-	}
-
-	[data-code-block-icon] {
-		display: inline-block;
-		width: 14px;
-		height: 14px;
-	}
-
-	[data-code-block-filename] {
-		color: var(--ink);
-	}
-
-	[data-code-block-lang] {
-		padding: 1px 6px;
-		background: var(--paper-soft);
-		border: 1px solid var(--paper-edge);
-		border-radius: 3px;
-		color: var(--ink-mute);
-		font-size: 10.5px;
-		letter-spacing: 0.04em;
-		text-transform: uppercase;
-	}
-
-	[data-code-block-actions] {
-		display: inline-flex;
-		gap: 4px;
-	}
-
-	[data-code-block-actions] button {
-		display: inline-flex;
-		align-items: center;
-		gap: 5px;
-		height: 24px;
-		padding: 0 8px;
-		border: 1px solid transparent;
-		border-radius: 4px;
-		background: transparent;
-		color: var(--ink-mute);
-		font: 500 11.5px var(--font-ui);
-		cursor: pointer;
-	}
-
-	[data-code-block-actions] button:hover {
-		background: var(--paper-soft);
-		border-color: var(--paper-edge);
-		color: var(--ink);
-	}
-
-	[data-code-block-actions] button > span:first-child {
-		width: 14px;
-		height: 14px;
-	}
-
-	[data-code-block-body] {
-		overflow: auto;
-	}
-
-	[data-code-block-body] :global(pre) {
-		margin: 0;
-		padding: 10px 12px;
-		overflow-x: auto;
-		font-family: var(--font-mono);
-		font-size: 12px;
-		line-height: 1.55;
-		tab-size: 2;
-	}
-
-	[data-code-block-body] :global(code) {
-		font-family: inherit;
-	}
-</style>

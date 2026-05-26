@@ -8,14 +8,13 @@
 		ChatSidebar,
 		ChatStream,
 		Chips,
-		CodeBlock,
 		configureWho
 	} from '$lib/chat'
 
 	// Brand the assistant once for this surface; every ChatMessage with
 	// kind='info' picks it up.
 	configureWho({ assistant: 'Rokkit' })
-	import { Tabs, Table, Tree, MultiSelect, Select, List, Button, AlertList, Stepper } from '@rokkit/ui'
+	import { Tabs, Table, Tree, MultiSelect, Select, List, Button, AlertList, Stepper, CodeBlock } from '@rokkit/ui'
 	import { FormRenderer } from '@rokkit/forms'
 	import { BarChart } from '@rokkit/chart'
 	import { alerts } from '@rokkit/states'

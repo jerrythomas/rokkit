@@ -1,0 +1,104 @@
+/**
+ * Base styling for @rokkit/ui CodeBlock.
+ *
+ * The component owns structure (data-code-block, data-code-block-header,
+ * -title, -icon, -filename, -lang, -actions, -body); themes layer
+ * styling. This is the no-style-by-default baseline that themes inherit
+ * — overrides go in `<style>/code-block.css`.
+ */
+
+[data-code-block] {
+	border: 1px solid var(--paper-edge);
+	border-radius: 6px;
+	background: var(--paper-soft);
+	overflow: hidden;
+}
+
+[data-code-block-header] {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 8px 12px;
+	background: var(--paper-soft);
+	border-bottom: 1px solid var(--paper-edge);
+}
+
+[data-code-block-title] {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+
+[data-code-block-icon] {
+	display: inline-block;
+	width: 13px;
+	height: 13px;
+	color: var(--ink-soft);
+}
+
+[data-code-block-filename] {
+	font: 500 11.5px var(--font-mono);
+	color: var(--ink-mute);
+}
+
+[data-code-block-lang] {
+	font: 500 10px var(--font-mono);
+	color: var(--ink-soft);
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	padding: 2px 6px;
+	border: 1px solid var(--paper-edge);
+	border-radius: 3px;
+}
+
+[data-code-block-actions] {
+	display: inline-flex;
+	gap: 2px;
+}
+
+[data-code-block-actions] button {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	height: 22px;
+	padding: 0 8px;
+	border: 0;
+	background: transparent;
+	font: 500 11px var(--font-mono);
+	color: var(--ink-soft);
+	cursor: pointer;
+	border-radius: 3px;
+	letter-spacing: 0.02em;
+}
+
+[data-code-block-actions] button:hover {
+	background: var(--paper-mute);
+	color: var(--ink);
+}
+
+[data-code-block-actions] button > span:first-child {
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+}
+
+[data-code-block-body] {
+	background: var(--paper);
+	overflow: auto;
+}
+
+[data-code-block-body] pre {
+	margin: 0;
+	padding: 10px 12px;
+	overflow-x: auto;
+	font: 400 12px/1.65 var(--font-mono);
+	color: var(--ink);
+	background: transparent;
+}
+
+[data-code-block-body] code {
+	font: inherit;
+	background: transparent;
+	border: 0;
+	padding: 0;
+}

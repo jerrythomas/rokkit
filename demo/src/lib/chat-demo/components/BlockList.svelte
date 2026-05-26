@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { Block, SuggestionItem } from '../types'
-	import { CodeBlock } from '$lib/chat'
-	import { MarkdownRenderer } from '@rokkit/ui'
+	import { CodeBlock, MarkdownRenderer } from '@rokkit/ui'
 	import {
 		PlotPlugin,
 		TablePlugin,
