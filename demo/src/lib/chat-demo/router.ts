@@ -81,8 +81,10 @@ const ROUTES: Route[] = [
 					],
 					x: 'quarter',
 					y: 'revenue',
-					height: 240,
-					grid: true
+					height: 220,
+					grid: true,
+					// Tight top margin — no title/legend, so default 20px leaves visible whitespace
+					margin: { top: 8, right: 16, bottom: 36, left: 44 }
 				}
 			},
 			{

@@ -140,7 +140,7 @@
 	.block-list {
 		display: flex;
 		flex-direction: column;
-		gap: 12px;
+		gap: 8px;
 	}
 
 	.block-prose {

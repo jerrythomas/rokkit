@@ -67,15 +67,15 @@
 		{ label: 'Try: paste a user record', query: SAMPLE_USER }
 	]
 
-	async function send() {
+	function send() {
 		const q = composerValue.trim()
 		if (!q || conversation.thinking) return
 		composerValue = ''
 		attachError = null
 		// submitText auto-detects JSON / CSV; falls back to keyword routing.
+		// Scroll-to-bottom is handled by the $effect below (it watches
+		// turns.length + thinking); duplicating it here would fight that.
 		submitText(q)
-		await tick()
-		streamRef?.scrollTo({ top: streamRef.scrollHeight, behavior: 'smooth' })
 	}
 
 	function handleSuggestion(query: string) {
@@ -130,9 +130,18 @@
 		// Scroll on every new turn (incl. assistant reply).
 		void conversation.turns.length
 		void conversation.thinking
-		tick().then(() =>
-			streamRef?.scrollTo({ top: streamRef?.scrollHeight ?? 0, behavior: 'smooth' })
-		)
+		// Two rAFs after tick() so the ResizeObserver inside the BarChart / Table
+		// has fired and the figure's final height is settled before we measure
+		// scrollHeight. `behavior: 'instant'` keeps the snap-to-bottom from
+		// fighting concurrent layout shifts (otherwise the smooth animation
+		// targets a stale offset and feels janky).
+		tick().then(() => {
+			requestAnimationFrame(() => {
+				requestAnimationFrame(() => {
+					streamRef?.scrollTo({ top: streamRef?.scrollHeight ?? 0, behavior: 'instant' })
+				})
+			})
+		})
 	})
 </script>
 
