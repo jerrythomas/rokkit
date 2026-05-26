@@ -22,7 +22,8 @@
     "./utils/palette": {
       "types": "./src/utils/palette.ts",
       "default": "./src/utils/palette.ts"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "files": [
     "src",

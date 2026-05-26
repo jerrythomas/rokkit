@@ -2,6 +2,9 @@
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
 	import { Button } from '@rokkit/ui'
 	import { ThemeSwitcherToggle } from '@rokkit/app'
+	import pkg from '@rokkit/ui/package.json'
+
+	const version = pkg.version
 
 	const navLinks = [
 		{ label: 'Components', href: '/app', active: true },
@@ -91,7 +94,7 @@
 		</nav>
 		<div class="nav-spacer"></div>
 		<div class="nav-actions">
-			<span class="version-chip">v2.0 · svelte 5</span>
+			<span class="version-chip">v{version} · svelte 5</span>
 			<ThemeSwitcherToggle variant="triad" />
 			<Button
 				href="/chat"
@@ -380,7 +383,7 @@
 	<footer class="footer">
 		<div class="footer-brand">
 			<RokkitWordmark height={22} />
-			<span class="footer-meta">v2.0 · MIT · Svelte 5</span>
+			<span class="footer-meta">v{version} · MIT · Svelte 5</span>
 		</div>
 		<div class="footer-links">
 			<span class="footer-repo">jerrythomas / rokkit</span>
