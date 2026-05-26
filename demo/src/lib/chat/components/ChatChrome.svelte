@@ -18,6 +18,11 @@
 		styles?: StyleOption[]
 		/** Available density options (defaults to compact/cozy/comfortable) */
 		densities?: Array<{ id: string; label: string }>
+		/** Whether to render the density trio. Default true. Set false on
+		 * surfaces that don't expose density controls (e.g. the inline-chat
+		 * route, which has no density-aware density-aware affordances).
+		 */
+		showDensity?: boolean
 		/** Brand block snippet (wordmark / mark) */
 		brand?: Snippet
 		/** Breadcrumb snippet rendered right of the brand */
@@ -35,6 +40,7 @@
 			{ id: 'cozy', label: 'Cozy' },
 			{ id: 'comfortable', label: 'Comfortable' }
 		],
+		showDensity = true,
 		brand,
 		crumb,
 		actions
@@ -64,6 +70,7 @@
 
 	<div data-chat-chrome-spacer></div>
 
+	{#if showDensity || styles.length}
 	<div data-chat-chrome-prefs>
 		{#if styles.length}
 			<span data-chat-chrome-label>style</span>
@@ -110,26 +117,29 @@
 			<span data-chat-chrome-div></span>
 		{/if}
 
-		<span data-chat-chrome-label>density</span>
-		<div data-chat-chrome-trio role="group" aria-label="Density">
-			{#each densities as d (d.id)}
-				<button
-					type="button"
-					data-active={d.id === density ? '' : undefined}
-					title={d.label}
-					aria-label={d.label}
-					aria-pressed={d.id === density}
-					onclick={() => (density = d.id)}
-				>
-					<svg width="13" height="13" viewBox="0 0 14 14" aria-hidden="true">
-						<rect x="2" y={d.id === 'compact' ? 3 : d.id === 'cozy' ? 2.5 : 1.5} width="10" height="1.5" rx="0.7" fill="currentColor"/>
-						<rect x="2" y="6.25" width="10" height="1.5" rx="0.7" fill="currentColor"/>
-						<rect x="2" y={d.id === 'compact' ? 9.5 : d.id === 'cozy' ? 10 : 11} width="10" height="1.5" rx="0.7" fill="currentColor"/>
-					</svg>
-				</button>
-			{/each}
-		</div>
+		{#if showDensity}
+			<span data-chat-chrome-label>density</span>
+			<div data-chat-chrome-trio role="group" aria-label="Density">
+				{#each densities as d (d.id)}
+					<button
+						type="button"
+						data-active={d.id === density ? '' : undefined}
+						title={d.label}
+						aria-label={d.label}
+						aria-pressed={d.id === density}
+						onclick={() => (density = d.id)}
+					>
+						<svg width="13" height="13" viewBox="0 0 14 14" aria-hidden="true">
+							<rect x="2" y={d.id === 'compact' ? 3 : d.id === 'cozy' ? 2.5 : 1.5} width="10" height="1.5" rx="0.7" fill="currentColor"/>
+							<rect x="2" y="6.25" width="10" height="1.5" rx="0.7" fill="currentColor"/>
+							<rect x="2" y={d.id === 'compact' ? 9.5 : d.id === 'cozy' ? 10 : 11} width="10" height="1.5" rx="0.7" fill="currentColor"/>
+						</svg>
+					</button>
+				{/each}
+			</div>
+		{/if}
 	</div>
+	{/if}
 
 	{#if actions}
 		<div data-chat-chrome-actions>{@render actions()}</div>

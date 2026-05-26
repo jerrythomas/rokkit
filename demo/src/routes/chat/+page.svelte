@@ -178,14 +178,11 @@
 </svelte:head>
 
 <div class="chat-shell">
-	<ChatChrome>
+	<ChatChrome showDensity={false}>
 		{#snippet brand()}
 			<a href="/" class="brand-link" title="Back to Rokkit home" aria-label="Rokkit home">
 				<RokkitWordmark />
 			</a>
-		{/snippet}
-		{#snippet crumb()}
-			<span class="route-label">{crumbLabel}</span>
 		{/snippet}
 		{#snippet actions()}
 			<Toggle
@@ -196,6 +193,60 @@
 				onchange={(v) => setMode(v as Mode)}
 				showLabels={true}
 			/>
+		{/snippet}
+	</ChatChrome>
+
+	<div class="chat-subtoolbar">
+		<div class="subtoolbar-left">
+			<span class="route-label">{crumbLabel}</span>
+		</div>
+		<div class="subtoolbar-right">
+			{#if mode === 'openrouter'}
+				<label class="subtoolbar-field">
+					<span class="subtoolbar-label">Model</span>
+					<select bind:value={llm.openRouterModel} class="llm-model">
+						{#each OPENROUTER_MODELS as m (m.id)}
+							<option value={m.id}>{m.label}</option>
+						{/each}
+					</select>
+				</label>
+			{:else if mode === 'webllm'}
+				<label class="subtoolbar-field">
+					<span class="subtoolbar-label">Model</span>
+					<select
+						bind:value={llm.webllmModel}
+						class="llm-model"
+						disabled={llm.webllmStatus === 'loading'}
+						onchange={resetWebLLMEngine}
+					>
+						{#each WEBLLM_MODELS as m (m.id)}
+							<option value={m.id}>{m.label} · {m.size}</option>
+						{/each}
+					</select>
+				</label>
+				{#if llm.webllmStatus === 'uninitialized'}
+					<button type="button" class="llm-load-btn" onclick={() => ensureWebLLMEngine()}>
+						<span class="i-mdi:download" aria-hidden="true"></span>
+						Load
+					</button>
+				{:else if llm.webllmStatus === 'loading'}
+					<span class="llm-progress" title={llm.webllmStage}>
+						<span class="i-mdi:loading llm-spin" aria-hidden="true"></span>
+						{Math.round(llm.webllmProgress * 100)}%
+					</span>
+				{:else if llm.webllmStatus === 'ready' || llm.webllmStatus === 'thinking'}
+					<span class="llm-ready">
+						<span class="i-mdi:check-circle-outline" aria-hidden="true"></span>
+						ready
+					</span>
+				{:else if llm.webllmStatus === 'error'}
+					<span class="llm-error" title={llm.errorMessage}>error</span>
+				{/if}
+			{/if}
+			<label class="llm-code-toggle" title="Show the source fence under each component (dev mode)">
+				<input type="checkbox" bind:checked={pluginDisplay.codeVisible} />
+				<span>code</span>
+			</label>
 			<Button
 				variant="default"
 				size="sm"
@@ -204,61 +255,8 @@
 				title="Clear the conversation"
 				onclick={resetConversation}
 			/>
-		{/snippet}
-	</ChatChrome>
-
-	{#if mode !== 'scripted'}
-		<div class="chat-subtoolbar">
-			<div class="subtoolbar-left">
-				{#if mode === 'openrouter'}
-					<label class="subtoolbar-field">
-						<span class="subtoolbar-label">Model</span>
-						<select bind:value={llm.openRouterModel} class="llm-model">
-							{#each OPENROUTER_MODELS as m (m.id)}
-								<option value={m.id}>{m.label}</option>
-							{/each}
-						</select>
-					</label>
-				{:else}
-					<label class="subtoolbar-field">
-						<span class="subtoolbar-label">Model</span>
-						<select
-							bind:value={llm.webllmModel}
-							class="llm-model"
-							disabled={llm.webllmStatus === 'loading'}
-							onchange={resetWebLLMEngine}
-						>
-							{#each WEBLLM_MODELS as m (m.id)}
-								<option value={m.id}>{m.label} · {m.size}</option>
-							{/each}
-						</select>
-					</label>
-					{#if llm.webllmStatus === 'uninitialized'}
-						<button type="button" class="llm-load-btn" onclick={() => ensureWebLLMEngine()}>
-							<span class="i-mdi:download" aria-hidden="true"></span>
-							Load
-						</button>
-					{:else if llm.webllmStatus === 'loading'}
-						<span class="llm-progress" title={llm.webllmStage}>
-							<span class="i-mdi:loading llm-spin" aria-hidden="true"></span>
-							{Math.round(llm.webllmProgress * 100)}%
-						</span>
-					{:else if llm.webllmStatus === 'ready' || llm.webllmStatus === 'thinking'}
-						<span class="llm-ready">
-							<span class="i-mdi:check-circle-outline" aria-hidden="true"></span>
-							ready
-						</span>
-					{:else if llm.webllmStatus === 'error'}
-						<span class="llm-error" title={llm.errorMessage}>error</span>
-					{/if}
-				{/if}
-			</div>
-			<label class="llm-code-toggle" title="Show the source fence under each component (dev mode)">
-				<input type="checkbox" bind:checked={pluginDisplay.codeVisible} />
-				<span>code</span>
-			</label>
 		</div>
-	{/if}
+	</div>
 
 	<div class="chat-body">
 		<div class="chat-stream-wrap" bind:this={streamRef}>
@@ -397,11 +395,19 @@
 		flex-shrink: 0;
 	}
 
-	.subtoolbar-left {
+	.subtoolbar-left,
+	.subtoolbar-right {
 		display: inline-flex;
 		align-items: center;
 		gap: 12px;
 		flex-wrap: wrap;
+	}
+
+	.subtoolbar-left .route-label {
+		font: 500 11.5px var(--font-mono);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--ink-mute);
 	}
 
 	.subtoolbar-field {
