@@ -23,6 +23,12 @@
 
 	const spec = $derived(parsed.spec)
 
+	// Pretty-print the spec for the code-view panel. Falls back to the raw
+	// fence body if parsing failed so the user can still see what went in.
+	const prettyCode = $derived(
+		spec ? JSON.stringify(spec, null, 2) : code
+	)
+
 	// Summary line: rows + the field-to-channel mapping
 	// ("x=quarter · y=revenue · fill=product").
 	// PlotChart owns the title and all other rendering — the plugin's only
@@ -109,7 +115,7 @@
 		{#if showCode && pluginDisplay.codeVisible}
 			<div data-plot-code>
 				<CodeBlock
-					{code}
+					code={prettyCode}
 					language="plot"
 					allowCopy={true}
 					allowDownload={true}
