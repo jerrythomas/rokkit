@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte'
 	import { who as whoStore } from '../who.svelte'
+	import IconTimeline from './IconTimeline.svelte'
 
 	interface ChatMessageProps {
 		/** Visual variant — drives node decoration and body typography */
@@ -71,22 +72,18 @@
 		return who
 	})
 
-	const iconIsSnippet = $derived(typeof icon === 'function')
-	const iconClass = $derived(typeof icon === 'string' ? icon : '')
+	// `think` kind without an explicit icon shows the three animated dots
+	// instead of IconTimeline's default fill-dot. Other kinds with no icon
+	// inherit the default dot from IconTimeline.
+	const showThinkingDots = $derived(kind === 'think' && !icon)
 </script>
 
-<div data-chat-message data-kind={kind} data-message-status={status}>
-	<span data-chat-message-node>
-		{#if iconIsSnippet}
-			{@render (icon as Snippet)()}
-		{:else if iconClass}
-			<span data-chat-message-icon class={iconClass} aria-hidden="true"></span>
-		{:else if kind === 'think'}
-			<span data-thinking-dots><span></span><span></span><span></span></span>
-		{:else}
-			<span data-chat-message-dot></span>
-		{/if}
-	</span>
+<IconTimeline
+	icon={showThinkingDots ? thinkingDots : icon}
+	data-chat-message
+	data-kind={kind}
+	data-message-status={status}
+>
 	{#if label || ago}
 		<div data-chat-message-head>
 			{#if label}<span data-head>{label}</span>{/if}
@@ -98,4 +95,8 @@
 			{@render children()}
 		</div>
 	{/if}
-</div>
+</IconTimeline>
+
+{#snippet thinkingDots()}
+	<span data-thinking-dots><span></span><span></span><span></span></span>
+{/snippet}

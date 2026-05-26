@@ -6,6 +6,7 @@
 export { default as ChatChrome } from './components/ChatChrome.svelte'
 export { default as ChatComposer } from './components/ChatComposer.svelte'
 export { default as ChatMessage } from './components/ChatMessage.svelte'
+export { default as IconTimeline } from './components/IconTimeline.svelte'
 export { default as ChatResponse } from './components/ChatResponse.svelte'
 export { default as ChatSidebar } from './components/ChatSidebar.svelte'
 export { default as ChatStream } from './components/ChatStream.svelte'

@@ -14,7 +14,6 @@
  * shape so the chat UI doesn't care which one was used.
  */
 import type { Block } from './types'
-import { catalog } from '$lib/koan/catalog'
 
 export type LLMProvider = 'openrouter' | 'webllm'
 export type LLMStatus = 'uninitialized' | 'loading' | 'ready' | 'thinking' | 'error'
@@ -126,30 +125,6 @@ export function detectWebGPU(): boolean {
 	const supported = typeof (navigator as { gpu?: unknown }).gpu !== 'undefined'
 	llm.webgpuSupported = supported
 	return supported
-}
-
-// ─── Tool schema (shared by both providers) ────────────────────────────
-
-export function buildToolSpecs() {
-	return catalog
-		.filter((m) => m.tool)
-		.map((m) => ({
-			type: 'function' as const,
-			function: {
-				name: m.tool!.name,
-				description: m.tool!.description,
-				parameters: {
-					type: 'object',
-					properties: Object.fromEntries(
-						Object.entries(m.tool!.parameters ?? {}).map(([k, v]) => [
-							k,
-							{ type: 'string', description: String(v) }
-						])
-					),
-					required: []
-				}
-			}
-		}))
 }
 
 function buildSystemPrompt(): string {
@@ -372,14 +347,17 @@ async function routeViaWebLLM(query: string): Promise<Block[]> {
 	}
 	llm.webllmStatus = 'thinking'
 	try {
+		// No tools/tool_choice here — most free web-llm models (Llama-3.2-3B,
+		// Phi, etc.) don't implement function-calling and Web-LLM rejects the
+		// request outright. The system prompt instructs the model to emit
+		// markdown fences (plot/table/form/list/stepper); the same parser
+		// path as OpenRouter picks them up.
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const result: any = await e.chat.completions.create({
 			messages: [
 				{ role: 'system', content: buildSystemPrompt() },
 				{ role: 'user', content: query }
 			],
-			tools: buildToolSpecs(),
-			tool_choice: 'auto',
 			temperature: 0.3
 		})
 		return parseCompletion(result)
