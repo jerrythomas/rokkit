@@ -82,6 +82,7 @@
 				fill={cell.fill}
 				rx={rx}
 				data-plot-element="cell"
+				role="img"
 				onmouseenter={() => plotState.setHovered(cell.data)}
 				onmouseleave={() => plotState.clearHovered()}
 			>

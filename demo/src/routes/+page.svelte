@@ -1,6 +1,7 @@
 <script lang="ts">
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
 	import { Button } from '@rokkit/ui'
+	import { ThemeSwitcherToggle } from '@rokkit/app'
 
 	const navLinks = [
 		{ label: 'Components', href: '/app', active: true },
@@ -91,18 +92,20 @@
 		<div class="nav-spacer"></div>
 		<div class="nav-actions">
 			<span class="version-chip">v2.0 · svelte 5</span>
+			<ThemeSwitcherToggle variant="triad" />
 			<Button
 				href="/chat"
 				variant="default"
+				size="sm"
 				icon="i-mdi:robot-happy-outline"
-				label="Try the chat"
-				title="Open the AI chat demo"
+				title="Try the chat"
 			/>
 			<Button
 				href="/app"
 				variant="primary"
+				size="sm"
 				icon="i-mdi:layers-outline"
-				label="Open the playground"
+				title="Open the playground"
 			/>
 		</div>
 	</header>
@@ -305,6 +308,16 @@
 						</figure>
 					</div>
 				</div>
+
+				<!-- Status badge — single label; data-message-status="thinking" lets themes skin per-status -->
+				<div class="chat-msg chat-msg-status" data-message-status="thinking">
+					<div class="chat-msg-head">
+						<span class="chat-msg-tag">thinking</span>
+					</div>
+					<div class="chat-msg-body subtle">
+						picking the right tool…
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>
@@ -470,52 +483,6 @@
 		white-space: nowrap;
 	}
 
-	.cta-primary {
-		display: inline-flex;
-		align-items: center;
-		gap: 8px;
-		padding: 8px 14px;
-		background: var(--ink);
-		color: var(--paper);
-		font: 500 13px var(--font-ui);
-		border-radius: 6px;
-		border: 0;
-		cursor: pointer;
-		text-decoration: none;
-	}
-
-	.cta-primary:hover {
-		background: color-mix(in oklab, var(--ink) 85%, white);
-	}
-
-	.cta-primary.lg {
-		padding: 14px 22px;
-		font-size: 14px;
-	}
-
-	.cta-secondary {
-		display: inline-flex;
-		align-items: center;
-		gap: 8px;
-		padding: 12px 20px;
-		background: transparent;
-		color: var(--ink);
-		font: 500 14px var(--font-ui);
-		border-radius: 6px;
-		border: 1px solid var(--ink);
-		cursor: pointer;
-		text-decoration: none;
-	}
-
-	.cta-secondary:hover {
-		border-color: var(--ink-mute);
-		color: var(--ink-mute);
-	}
-
-	.cta-secondary.lg {
-		padding: 14px 22px;
-	}
-
 	/* ─── Hero ───────────────────────────────────────────────────── */
 
 	.hero {
@@ -559,12 +526,17 @@
 	}
 
 	.install-cmd {
+		display: inline-block;
 		font: 500 12.5px var(--font-mono);
 		color: var(--ink-mute);
 		padding: 10px 14px;
 		background: var(--paper-soft);
 		border: 1px solid var(--paper-edge);
 		border-radius: 6px;
+	}
+
+	.hero-install {
+		margin-top: 28px;
 	}
 
 	.install-cmd .prompt {
@@ -899,9 +871,23 @@
 		color: var(--accent);
 	}
 
+	/* Theme hook: skin badges by semantic status. */
+	[data-message-status='thinking'] .chat-msg-tag {
+		background: color-mix(in oklab, var(--secondary, var(--ink-mute)) 10%, var(--paper-soft));
+		border-color: color-mix(in oklab, var(--secondary, var(--ink-mute)) 24%, var(--paper-edge));
+		color: var(--secondary, var(--ink-mute));
+		font-style: italic;
+	}
+
 	.chat-msg-body {
 		font: 400 14px/1.55 var(--font-ui);
 		color: var(--ink);
+	}
+
+	.chat-msg-body.subtle {
+		color: var(--ink-mute);
+		font-style: italic;
+		font-size: 13px;
 	}
 
 	.chat-prose {
@@ -1072,11 +1058,17 @@
 	}
 
 	.package-icon {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 14px;
+		height: 14px;
 		color: var(--accent);
+		flex-shrink: 0;
 	}
 
 	.package-icon > span {
-		display: inline-block;
+		display: block;
 		width: 14px;
 		height: 14px;
 	}

@@ -140,7 +140,7 @@
 		{width}
 		{height}
 		style="display:block;cursor:crosshair;user-select:none"
-		role="img"
+		role="application"
 		aria-label="Histogram filter for {label || field}"
 		onmousedown={onMouseDown}
 		onmousemove={onMouseMove}

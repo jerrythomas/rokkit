@@ -106,6 +106,7 @@
 				stroke="white"
 				stroke-width="0.5"
 				data-plot-element="hex"
+				role="img"
 				onmouseenter={() => plotState.setHovered(h.data)}
 				onmouseleave={() => plotState.clearHovered()}
 			>

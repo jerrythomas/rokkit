@@ -133,6 +133,7 @@
 				fill={link.fill}
 				opacity="0.5"
 				data-plot-element="ribbon"
+				role="img"
 				onmouseenter={() => plotState.setHovered(link.data)}
 				onmouseleave={() => plotState.clearHovered()}
 			>

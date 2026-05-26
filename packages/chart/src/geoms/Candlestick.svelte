@@ -100,6 +100,7 @@
 				height={c.bodyHeight}
 				fill={c.fill}
 				data-plot-element="candle"
+				role="img"
 				onmouseenter={() => plotState.setHovered(c.data)}
 				onmouseleave={() => plotState.clearHovered()}
 			>

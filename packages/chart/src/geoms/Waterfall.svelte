@@ -91,6 +91,7 @@
 				height={bar.height}
 				fill={bar.fill}
 				data-plot-element="waterfall-bar"
+				role="img"
 				onmouseenter={() => plotState.setHovered(bar.data)}
 				onmouseleave={() => plotState.clearHovered()}
 			>
