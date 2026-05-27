@@ -4551,3 +4551,36 @@ Lint: 0 errors. Tests: 3500 passed.
 **Known follow-up**
 
 `[data-style='gradient']` variants in material/minimal/frosted (and the gradient-related code paths in frosted's filled buttons) still use `@apply from-X to-Y` and have the same latent dropout. They aren't user-visible in the default flows but worth the sweep when someone reaches for that style.
+
+## 2026-05-27 (cont.) — Theme flicker fix + accent revert
+
+Two follow-ups in this round:
+
+**Flicker on load — themeInitScript was being injected too late**
+
+The library ships `themeInitScript` in `@rokkit/unocss/hooks` and the demo's `hooks.server.js` was already wiring it. But the existing wiring injected the script via `transformPageChunk({ html }) => html.replace(/<body[^>]*>/, ...)` — right after `<body>` opens. The SSR HTML body ships with no `data-style` attribute. Between the body open tag and the inline script running, the browser had a brief window where CSS `[data-style='X']` selectors didn't match anything; first paint computed against the unprefixed cascade, then the script flipped the body's dataset and the theme snapped in.
+
+Plus the script wrote ONLY to `document.body`, which doesn't exist when the script is in `<head>`.
+
+Two-part fix:
+
+1. `packages/unocss/src/hooks.js` — script now writes to `document.documentElement.dataset` (which exists during `<head>` parsing) AND mirrors to `document.body.dataset` when the body is present. CSS selectors match through the html ancestor immediately. Also added `?theme=<id>` query-param lookup as the highest-priority source so the `/embed/tabs?theme=X` iframes paint correctly from the very first frame.
+
+2. `demo/src/hooks.server.js` — moved the injection from `<body>` to just before `</head>` so the script runs before the body element is parsed.
+
+3. `demo/src/routes/+layout.svelte` — read `document.documentElement.dataset.style` (already set by the inline script) and sync `vibe.style` to it. Without this, vibe's library default (`rokkit`) leaked through, themable's reactive effect saw vibe.style ≠ body.dataset.style on hydrate, and triggered a second body-attribute write — flicker between the inline-applied skin and themable's vibe-driven write. Now both agree from the start.
+
+Verified:
+- Fresh-load SSR HTML places the script inside `<head>` before `<body>` opens.
+- `document.documentElement.dataset.style` and `document.body.dataset.style` both read `zen-sumi` on first paint.
+- Embed iframes on the home theme showcase each paint in their `?theme=` value from the first frame (zen-sumi, rokkit, minimal, material).
+
+**Accent revert — back to shu**
+
+User flagged a green tint appearing after the previous round's `accent: 'hisui'` change. The demo's koan UI uses `text-accent-z5`, `border-accent-z5`, `bg-accent-z1` extensively as highlight/focus surfaces (ConversationList, PreviewCard, Shell, AnnotationArrow, etc.) — switching accent to jade made every highlight green, which read as a brand shift, not as a rokkit-gradient adjustment.
+
+Reverted `demo/rokkit.config.js`'s `accent: 'hisui'` back to `accent: 'shu'`. The rokkit theme's `linear-gradient(direction, var(--primary), var(--accent))` now flattens to a one-tone saffron fill — which the previous journal entry already documented as the expected fallback. The rokkit selected tab still reads as selected (paper-white text + saffron fill); just no two-tone sweep. Other surfaces (highlights, focus rings) return to saffron.
+
+If a future demo skin wants the two-tone branded gradient back, declare `accent` as a palette distinct from `primary` AND the koan UI's accent-* surfaces will follow that palette too. The trade is unavoidable until either (a) the koan UI uses `primary-z5` for highlights instead of `accent-z5`, or (b) rokkit's gradient picks its own per-theme stop palette independent of skin accent.
+
+Lint: 0 errors. Tests: 3500 passed.

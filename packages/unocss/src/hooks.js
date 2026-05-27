@@ -44,7 +44,13 @@ function buildInitScript(opts) {
 		? `'${opts.defaultMode}'`
 		: "(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light')"
 
-	return `<script>;(function(){try{var t=JSON.parse(localStorage.getItem('${key}')||'{}');var b=document.body;if(t.style||${ds})b.dataset.style=t.style||${ds};var m=t.mode||${dm};if(m==='auto')m=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';b.dataset.mode=m;b.dataset.density=t.density||${dd};b.dataset.radius=t.radius||${dr};if(t.skin)b.dataset.skin=t.skin}catch(e){}})()</script>`
+	// Write to BOTH documentElement and body. CSS selectors use
+	// `[data-style='X'] descendant` so matching the html element is
+	// sufficient — and the html element exists when this script runs
+	// in <head>, which gives us a true pre-paint application. The body
+	// mirror keeps the existing themable/SvelteKit data flow happy
+	// since `themable` reads/writes body.dataset.
+	return `<script>;(function(){try{var t=JSON.parse(localStorage.getItem('${key}')||'{}');var qs=new URLSearchParams(location.search);var qStyle=qs.get('theme');var r=document.documentElement;var b=document.body;var style=qStyle||t.style||${ds};if(style){r.dataset.style=style;if(b)b.dataset.style=style}var m=t.mode||${dm};if(m==='auto')m=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';r.dataset.mode=m;if(b)b.dataset.mode=m;var d=t.density||${dd};r.dataset.density=d;if(b)b.dataset.density=d;var rad=t.radius||${dr};r.dataset.radius=rad;if(b)b.dataset.radius=rad;if(t.skin){r.dataset.skin=t.skin;if(b)b.dataset.skin=t.skin}}catch(e){}})()</script>`
 }
 
 /**

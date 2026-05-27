@@ -10,8 +10,13 @@ export const handle = ({ event, resolve }) => {
 		event.request = request
 		return resolve(event, {
 			transformPageChunk({ html }) {
+				// Inject in `<head>` (just before `</head>`) so the script
+				// runs before the body element is parsed. The script writes
+				// to documentElement.dataset and to body when it exists —
+				// CSS selectors `[data-style='X'] descendant` match from the
+				// root and the page paints once in the correct skin.
 				return html
-					.replace(/(<body[^>]*>)/, `$1${initScript}`)
+					.replace(/<\/head>/, `${initScript}</head>`)
 					.replace('%lang%', getLocale())
 					.replace('%dir%', getTextDirection())
 			}

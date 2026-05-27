@@ -4,16 +4,19 @@
 	import { themable } from '@rokkit/actions'
 	import { vibe } from '@rokkit/states'
 
-	// Demo's canonical aesthetic is zen-sumi (ink on paper). The library's
-	// `DEFAULT_STYLES` constant excludes zen-sumi/frosted (they ship as
-	// optional themes, not in the default vocabulary), so expand the allowed
-	// list before setting the style — otherwise vibe's setter silently
-	// rejects the assignment and the demo lands on `rokkit`.
-	//
-	// themable's `load()` runs after this and respects any persisted choice
-	// in localStorage['rokkit-theme'], so returning users keep what they set.
+	// The library's `DEFAULT_STYLES` constant excludes zen-sumi/frosted
+	// (they ship as optional themes, not in the default vocabulary), so
+	// expand the allowed list before vibe can adopt them. `hooks.server.js`
+	// injects the flash-prevention init script — that's the source of
+	// truth for what the page initially paints in. Sync vibe to the
+	// already-applied style so themable's reactive effect on mount doesn't
+	// see a mismatch and trigger a second body-dataset write (visible
+	// flicker between paint and hydration).
 	vibe.allowedStyles = ['rokkit', 'minimal', 'material', 'frosted', 'zen-sumi']
-	vibe.style = 'zen-sumi'
+	if (typeof document !== 'undefined') {
+		const applied = document.documentElement.dataset.style || document.body?.dataset.style
+		if (applied) vibe.style = applied
+	}
 
 	let { children } = $props()
 </script>
