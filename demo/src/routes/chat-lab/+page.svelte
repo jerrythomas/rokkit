@@ -4,7 +4,7 @@
 		ChatComposer,
 		ChatMessage,
 		ChatResponse,
-		ChatSidebar,
+		ChatHistory,
 		ChatStream,
 		Chips
 	} from '$lib/chat'
@@ -60,7 +60,7 @@
 	</ChatChrome>
 
 	<div class="stage">
-		<ChatSidebar bind:collapsed onnew={() => alert('new conversation')}>
+		<ChatHistory bind:collapsed onnew={() => alert('new conversation')}>
 			<div class="conv-group">Today</div>
 			<div class="conv">Show me how Tabs work</div>
 			<div class="conv conv-active">Theme for our brand red</div>
@@ -73,7 +73,7 @@
 			{#snippet footer()}
 				<span>3 conversations</span>
 			{/snippet}
-		</ChatSidebar>
+		</ChatHistory>
 
 		<aside class="chat-left">
 			<div class="chat-header">

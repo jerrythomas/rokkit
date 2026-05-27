@@ -1,60 +1,89 @@
 /**
- * Module-scoped chat-demo conversation store. One conversation per session
- * for now (no persistence). Each user query becomes two turns: the user's
- * message + the assistant's pending → resolved blocks.
+ * Chat-demo conversation API. Backed by the shared conversation store in
+ * `$lib/koan/conversations` (surface='chat') — every submit lands as a
+ * user turn + an assistant `blocks` turn, persisted to localStorage so the
+ * shared sidebar can resume them later.
+ *
+ * The local `conversation` object exposes the chat-demo's existing reading
+ * shape (turns[], thinking) as getters over the shared store so callers
+ * don't need to know about the underlying schema.
  */
-import type { ChatTurn, SuggestionAction } from './types'
+import type { ChatTurn, Block, SuggestionAction } from './types'
 import { routeQuery, routeData } from './router'
 import { tryParse } from './infer'
 import { routeViaLLM, llm } from './llm.svelte'
+import {
+	startNew,
+	appendUser as sharedAppendUser,
+	appendAssistant as sharedAppendAssistant,
+	getCurrentConversation,
+	setCurrentId,
+	type Turn
+} from '$lib/koan/conversations.svelte'
 
-let nextId = 0
-const newId = () => `turn-${++nextId}-${Date.now()}`
+function toChatTurn(t: Turn): ChatTurn {
+	const timestamp = Date.parse(t.at)
+	if (t.kind === 'user') {
+		return { id: t.id, timestamp, role: 'user', text: t.text }
+	}
+	const blocks = t.body.kind === 'blocks' ? (t.body.blocks as Block[]) : []
+	return { id: t.id, timestamp, role: 'assistant', blocks }
+}
 
-export const conversation = $state<{ turns: ChatTurn[]; thinking: boolean }>({
-	turns: [],
-	thinking: false
-})
+let _thinking = $state(false)
 
-function thinkThen(turn: ChatTurn): void {
-	conversation.thinking = true
+export const conversation = {
+	get turns(): ChatTurn[] {
+		const conv = getCurrentConversation()
+		if (!conv || conv.surface !== 'chat') return []
+		return conv.turns.map(toChatTurn)
+	},
+	get thinking(): boolean {
+		return _thinking
+	},
+	set thinking(v: boolean) {
+		_thinking = v
+	}
+}
+
+/** Create the chat conversation lazily, or append a user turn if one exists. */
+function pushUser(text: string): void {
+	const cur = getCurrentConversation()
+	if (!cur || cur.surface !== 'chat') {
+		startNew('chat', text)
+		return
+	}
+	sharedAppendUser(text)
+}
+
+function pushAssistant(blocks: Block[]): void {
+	sharedAppendAssistant({ kind: 'blocks', blocks })
+}
+
+function thinkThenBlocks(blocks: Block[]): void {
+	_thinking = true
 	setTimeout(() => {
-		conversation.turns.push(turn)
-		conversation.thinking = false
+		pushAssistant(blocks)
+		_thinking = false
 	}, 350)
 }
 
 export function submitQuery(query: string): void {
 	const text = query.trim()
 	if (!text) return
-	conversation.turns.push({
-		id: newId(),
-		timestamp: Date.now(),
-		role: 'user',
-		text
-	})
+	pushUser(text)
 	if (llm.enabled) {
-		conversation.thinking = true
+		_thinking = true
 		routeViaLLM(text)
 			.then((blocks) => {
-				conversation.turns.push({
-					id: newId(),
-					timestamp: Date.now(),
-					role: 'assistant',
-					blocks
-				})
+				pushAssistant(blocks)
 			})
 			.finally(() => {
-				conversation.thinking = false
+				_thinking = false
 			})
 		return
 	}
-	thinkThen({
-		id: newId(),
-		timestamp: Date.now(),
-		role: 'assistant',
-		blocks: routeQuery(text)
-	})
+	thinkThenBlocks(routeQuery(text))
 }
 
 /**
@@ -70,18 +99,8 @@ export function submitData(args: {
 }): void {
 	const { source, text, parsed, query } = args
 	const summary = summariseUpload(source, text, parsed, query)
-	conversation.turns.push({
-		id: newId(),
-		timestamp: Date.now(),
-		role: 'user',
-		text: summary
-	})
-	thinkThen({
-		id: newId(),
-		timestamp: Date.now(),
-		role: 'assistant',
-		blocks: routeData(source, parsed, query)
-	})
+	pushUser(summary)
+	thinkThenBlocks(routeData(source, parsed, query))
 }
 
 /**
@@ -102,39 +121,29 @@ export function submitExport(args: {
 			? `${Object.keys(data as Record<string, unknown>).length} fields`
 			: 'value'
 	const label = caption ?? source
-	conversation.turns.push({
-		id: newId(),
-		timestamp: Date.now(),
-		role: 'user',
-		text: `Saved changes to "${label}" · ${detail}`
-	})
-	thinkThen({
-		id: newId(),
-		timestamp: Date.now(),
-		role: 'assistant',
-		blocks: [
-			{
-				kind: 'prose',
-				text: "Here's the updated value — copy or paste it back to keep the round-trip going."
-			},
-			{
-				kind: 'code',
-				language: 'json',
-				filename: 'edited.json',
-				code: JSON.stringify(data, null, 2)
-			},
-			{
-				kind: 'suggestions',
-				intro: 'Or',
-				items: [
-					{
-						label: 'Render again',
-						query: JSON.stringify(data)
-					}
-				]
-			}
-		]
-	})
+	pushUser(`Saved changes to "${label}" · ${detail}`)
+	thinkThenBlocks([
+		{
+			kind: 'prose',
+			text: "Here's the updated value — copy or paste it back to keep the round-trip going."
+		},
+		{
+			kind: 'code',
+			language: 'json',
+			filename: 'edited.json',
+			code: JSON.stringify(data, null, 2)
+		},
+		{
+			kind: 'suggestions',
+			intro: 'Or',
+			items: [
+				{
+					label: 'Render again',
+					query: JSON.stringify(data)
+				}
+			]
+		}
+	])
 }
 
 /**
@@ -146,57 +155,37 @@ export function submitExport(args: {
 export function submitAction(item: { label?: string; action: SuggestionAction }): void {
 	const { action, label } = item
 	const userText = label ? `[suggestion] ${label}` : '[suggestion]'
-	conversation.turns.push({
-		id: newId(),
-		timestamp: Date.now(),
-		role: 'user',
-		text: userText
-	})
+	pushUser(userText)
 	if (action.kind === 'reshape') {
-		thinkThen({
-			id: newId(),
-			timestamp: Date.now(),
-			role: 'assistant',
-			blocks: routeData(action.source, action.data, label, action.force)
-		})
+		thinkThenBlocks(routeData(action.source, action.data, label, action.force))
 		return
 	}
 	if (action.kind === 'props') {
-		thinkThen({
-			id: newId(),
-			timestamp: Date.now(),
-			role: 'assistant',
-			blocks: [
-				{
-					kind: 'prose',
-					text: `Re-rendered with new props for ${action.tool}.`
-				},
-				{
-					kind: 'component',
-					tool: action.tool,
-					props: action.props,
-					caption: action.caption
-				}
-			]
-		})
+		thinkThenBlocks([
+			{
+				kind: 'prose',
+				text: `Re-rendered with new props for ${action.tool}.`
+			},
+			{
+				kind: 'component',
+				tool: action.tool,
+				props: action.props,
+				caption: action.caption
+			}
+		])
 		return
 	}
 	if (action.kind === 'switch-provider') {
 		llm.provider = action.provider
-		thinkThen({
-			id: newId(),
-			timestamp: Date.now(),
-			role: 'assistant',
-			blocks: [
-				{
-					kind: 'prose',
-					text:
-						action.provider === 'webllm'
-							? 'Switched to Web-LLM. Click "Load model" in the chrome — first-time download is ~1–2 GB and runs entirely in the browser after.'
-							: 'Switched to OpenRouter.'
-				}
-			]
-		})
+		thinkThenBlocks([
+			{
+				kind: 'prose',
+				text:
+					action.provider === 'webllm'
+						? 'Switched to Web-LLM. Click "Load model" in the chrome — first-time download is ~1–2 GB and runs entirely in the browser after.'
+						: 'Switched to OpenRouter.'
+			}
+		])
 		return
 	}
 }
@@ -230,6 +219,6 @@ function summariseUpload(source: 'json' | 'csv', text: string, parsed: unknown, 
 }
 
 export function resetConversation(): void {
-	conversation.turns = []
-	conversation.thinking = false
+	setCurrentId(null)
+	_thinking = false
 }

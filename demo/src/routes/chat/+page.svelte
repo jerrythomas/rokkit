@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { tick } from 'svelte'
-	import { ChatComposer, ChatStream, ChatMessage, configureWho } from '$lib/chat'
+	import { ChatComposer, ChatStream, ChatMessage, ChatHistory, configureWho } from '$lib/chat'
 	import { Button, Toggle } from '@rokkit/ui'
 	import {
 		conversation,
@@ -8,6 +8,17 @@
 		submitData,
 		resetConversation
 	} from '$lib/chat-demo/store.svelte'
+	import {
+		conversations,
+		bucketByRecency,
+		recencyLabel,
+		loadConversation,
+		setCurrentId,
+		getCurrentId,
+		type Conversation
+	} from '$lib/koan/conversations.svelte'
+	import { findById } from '$lib/koan/catalog'
+	import { goto } from '$app/navigation'
 	import { tryParse, parseCSV } from '$lib/chat-demo/infer'
 	import {
 		llm,
@@ -107,6 +118,67 @@
 	function handleSuggestion(query: string) {
 		composerValue = query
 		send()
+	}
+
+	// Sidebar history — same shared store as /app. Cross-surface clicks
+	// route /app conversations back to their demo route; /chat conversations
+	// stay here and rehydrate the stream via getCurrentConversation().
+	let collapsed = $state(false)
+	const buckets = $derived(
+		conversations.length > 0
+			? bucketByRecency()
+			: { today: [], yesterday: [], earlier: [] }
+	)
+	const allConv = $derived([...buckets.today, ...buckets.yesterday, ...buckets.earlier])
+
+	const DEMO_ROUTE: Record<string, string> = {
+		tabs: '/app/tabs',
+		'theme-wizard': '/app/theming',
+		table: '/app/table',
+		tree: '/app/tree',
+		'multi-select': '/app/multiselect',
+		list: '/app/list',
+		toasts: '/app/toasts',
+		form: '/app/form',
+		select: '/app/select',
+		chart: '/app/chart',
+		combo: '/app/combo',
+		'date-picker': '/app/date',
+		stepper: '/app/stepper'
+	}
+
+	function convIcon(conv: Conversation): string {
+		if (conv.surface === 'chat') return 'i-mdi:chat-processing-outline'
+		const lastDemo = [...conv.turns]
+			.reverse()
+			.find((t) => t.kind === 'assistant' && t.body.kind === 'demo')
+		if (lastDemo && lastDemo.kind === 'assistant' && lastDemo.body.kind === 'demo') {
+			return findById(lastDemo.body.demoType)?.icon ?? 'i-mdi:chat-outline'
+		}
+		return 'i-mdi:chat-outline'
+	}
+
+	function resumeConversation(conv: Conversation) {
+		if (conv.surface === 'app') {
+			const lastDemo = [...conv.turns]
+				.reverse()
+				.find((t) => t.kind === 'assistant' && t.body.kind === 'demo')
+			if (lastDemo && lastDemo.kind === 'assistant' && lastDemo.body.kind === 'demo') {
+				loadConversation(conv.id)
+				const route = DEMO_ROUTE[lastDemo.body.demoType]
+				const variant = lastDemo.body.variant
+				goto(variant ? `${route}?variant=${variant}` : route)
+			}
+			return
+		}
+		loadConversation(conv.id)
+		// Stream re-renders reactively via the conversation.turns getter.
+	}
+
+	function startNewChat() {
+		setCurrentId(null)
+		composerValue = ''
+		attachError = null
 	}
 
 	async function handleFile(file: File) {
@@ -242,6 +314,77 @@
 		</div>
 	</div>
 
+	<div class="chat-layout">
+		<ChatHistory bind:collapsed onnew={startNewChat}>
+			{#if allConv.length === 0}
+				<div class="conv-empty">
+					<span class="i-mdi:chat-plus-outline" aria-hidden="true"></span>
+					<span>No history yet — ask Rokkit something to start.</span>
+				</div>
+			{/if}
+			{#if buckets.today.length > 0}
+				<div class="group-label">Today</div>
+				{#each buckets.today as conv (conv.id)}
+					<button
+						type="button"
+						class="conv"
+						class:conv-active={conv.id === getCurrentId()}
+						onclick={() => resumeConversation(conv)}
+					>
+						<span class="conv-icon {convIcon(conv)}" aria-hidden="true"></span>
+						<span class="conv-title">{conv.title}</span>
+						<span class="conv-when">{recencyLabel(conv)}</span>
+					</button>
+				{/each}
+			{/if}
+			{#if buckets.yesterday.length > 0}
+				<div class="group-label">Yesterday</div>
+				{#each buckets.yesterday as conv (conv.id)}
+					<button
+						type="button"
+						class="conv"
+						class:conv-active={conv.id === getCurrentId()}
+						onclick={() => resumeConversation(conv)}
+					>
+						<span class="conv-icon {convIcon(conv)}" aria-hidden="true"></span>
+						<span class="conv-title">{conv.title}</span>
+						<span class="conv-when">{recencyLabel(conv)}</span>
+					</button>
+				{/each}
+			{/if}
+			{#if buckets.earlier.length > 0}
+				<div class="group-label">Earlier</div>
+				{#each buckets.earlier as conv (conv.id)}
+					<button
+						type="button"
+						class="conv"
+						class:conv-active={conv.id === getCurrentId()}
+						onclick={() => resumeConversation(conv)}
+					>
+						<span class="conv-icon {convIcon(conv)}" aria-hidden="true"></span>
+						<span class="conv-title">{conv.title}</span>
+						<span class="conv-when">{recencyLabel(conv)}</span>
+					</button>
+				{/each}
+			{/if}
+			{#snippet collapsedBody()}
+				{#each allConv.slice(0, 8) as conv (conv.id)}
+					<button
+						type="button"
+						class="conv-mini"
+						class:conv-mini-active={conv.id === getCurrentId()}
+						title={conv.title}
+						onclick={() => resumeConversation(conv)}
+					>
+						<span class="conv-icon {convIcon(conv)}" aria-hidden="true"></span>
+					</button>
+				{/each}
+			{/snippet}
+			{#snippet footer()}
+				<span>{allConv.length} {allConv.length === 1 ? 'conversation' : 'conversations'}</span>
+			{/snippet}
+		</ChatHistory>
+
 	<div class="chat-body">
 		<div class="chat-stream-wrap" bind:this={streamRef}>
 			<ChatStream>
@@ -327,6 +470,7 @@
 			</ChatComposer>
 		</div>
 	</div>
+	</div>
 
 	{#if dragOver}
 		<div class="drop-overlay">
@@ -410,6 +554,12 @@
 		color: var(--ink-mute);
 	}
 
+	.chat-layout {
+		flex: 1;
+		display: flex;
+		min-height: 0;
+	}
+
 	.chat-body {
 		flex: 1;
 		display: flex;
@@ -418,6 +568,106 @@
 		width: 100%;
 		margin: 0 auto;
 		min-height: 0;
+	}
+
+	.group-label {
+		padding: 14px 8px 4px;
+		font: 500 10px var(--font-mono);
+		color: var(--ink-soft);
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	.conv {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 6px 8px;
+		margin: 1px 0;
+		width: 100%;
+		border: 0;
+		background: transparent;
+		border-radius: 6px;
+		color: var(--ink-mute);
+		cursor: pointer;
+		text-align: left;
+		font-family: var(--font-ui);
+	}
+
+	.conv:hover {
+		background: var(--paper-soft);
+		color: var(--ink);
+	}
+
+	.conv-active,
+	.conv-active:hover {
+		background: var(--paper-mute);
+		color: var(--ink);
+	}
+
+	.conv-icon {
+		width: 16px;
+		height: 16px;
+		flex-shrink: 0;
+		color: var(--ink-soft);
+		display: inline-block;
+	}
+
+	.conv-title {
+		flex: 1;
+		min-width: 0;
+		font: 450 12.5px var(--font-ui);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.conv-when {
+		font: 500 10px var(--font-mono);
+		color: var(--ink-soft);
+		letter-spacing: 0.02em;
+		flex-shrink: 0;
+	}
+
+	.conv-empty {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 14px 10px;
+		color: var(--ink-soft);
+		font: 400 12px var(--font-ui);
+		line-height: 1.4;
+	}
+
+	.conv-empty .i-mdi\:chat-plus-outline {
+		width: 16px;
+		height: 16px;
+		flex-shrink: 0;
+		color: var(--ink-mute);
+	}
+
+	.conv-mini {
+		width: 32px;
+		height: 32px;
+		display: grid;
+		place-items: center;
+		margin: 0 auto;
+		border: 0;
+		background: transparent;
+		border-radius: 6px;
+		color: var(--ink-soft);
+		cursor: pointer;
+	}
+
+	.conv-mini:hover {
+		background: var(--paper-soft);
+		color: var(--ink);
+	}
+
+	.conv-mini-active,
+	.conv-mini-active:hover {
+		background: var(--paper-mute);
+		color: var(--ink);
 	}
 
 	.chat-stream-wrap {

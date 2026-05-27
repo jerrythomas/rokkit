@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte'
 
-	interface ChatSidebarProps {
+	interface ChatHistoryProps {
 		/** Collapsed state — bindable */
 		collapsed?: boolean
 		/** Search query — bindable */
@@ -32,7 +32,7 @@
 		footer,
 		newLabel = 'New conversation',
 		searchPlaceholder = 'Search past · docs · components'
-	}: ChatSidebarProps = $props()
+	}: ChatHistoryProps = $props()
 
 	function toggleCollapsed() {
 		collapsed = !collapsed
@@ -45,12 +45,12 @@
 	}
 </script>
 
-<aside data-chat-sidebar data-collapsed={collapsed ? '' : undefined}>
-	<div data-chat-sidebar-header>
+<aside data-chat-history data-collapsed={collapsed ? '' : undefined}>
+	<div data-chat-history-header>
 		{#if !collapsed}
 			<button
 				type="button"
-				data-chat-sidebar-new
+				data-chat-history-new
 				onclick={onnew}
 				title={newLabel}
 				aria-label={newLabel}
@@ -58,13 +58,13 @@
 				<svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
 					<path d="M7 2 L7 12 M2 7 L12 7"/>
 				</svg>
-				<span data-chat-sidebar-new-label>{newLabel}</span>
+				<span data-chat-history-new-label>{newLabel}</span>
 				<kbd>⌘N</kbd>
 			</button>
 		{/if}
 		<button
 			type="button"
-			data-chat-sidebar-collapse
+			data-chat-history-collapse
 			onclick={toggleCollapsed}
 			title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
 			aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
@@ -79,7 +79,7 @@
 	</div>
 
 	{#if !collapsed}
-		<div data-chat-sidebar-search>
+		<div data-chat-history-search>
 			<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
 				<circle cx="7" cy="7" r="4.5"/>
 				<path d="M10.5 10.5 L14 14"/>
@@ -95,11 +95,11 @@
 		</div>
 	{/if}
 
-	<div data-chat-sidebar-scroll>
+	<div data-chat-history-scroll>
 		{#if collapsed}
 			<button
 				type="button"
-				data-chat-sidebar-new
+				data-chat-history-new
 				data-collapsed-action
 				onclick={onnew}
 				title={newLabel}
@@ -118,6 +118,6 @@
 	</div>
 
 	{#if footer && !collapsed}
-		<div data-chat-sidebar-footer>{@render footer()}</div>
+		<div data-chat-history-footer>{@render footer()}</div>
 	{/if}
 </aside>

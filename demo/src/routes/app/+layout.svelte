@@ -4,7 +4,7 @@
 		ChatComposer,
 		ChatMessage,
 		ChatResponse,
-		ChatSidebar,
+		ChatHistory,
 		ChatStream,
 		Chips,
 		configureWho
@@ -24,6 +24,17 @@
 	import { runMatch } from '$lib/koan/match.svelte'
 	import { findById } from '$lib/koan/catalog'
 	import { shell } from '$lib/koan/shell.svelte'
+	import {
+		conversations,
+		bucketByRecency,
+		recencyLabel,
+		startNew,
+		appendAssistant,
+		loadConversation,
+		setCurrentId,
+		getCurrentId,
+		type Conversation
+	} from '$lib/koan/conversations.svelte'
 	import ComposerSuggestions from '$lib/koan/components/ComposerSuggestions.svelte'
 	import type { DemoMeta } from '$lib/koan/types'
 	import ThemeWizardCard from '$lib/koan/demos/theme-wizard/ThemeWizardCard.svelte'
@@ -91,6 +102,9 @@
 		shell.composerValue = ''
 		shell.phase = 'thinking'
 		shell.demoType = null
+		shell.demoVariant = null
+
+		startNew('app', trimmed)
 
 		const nextKind = pickDemoKind(trimmed)
 		if (thinkingTimer) clearTimeout(thinkingTimer)
@@ -107,26 +121,97 @@
 		shell.lastQuery = ''
 		shell.composerValue = ''
 		koan.query = ''
+		setCurrentId(null)
 		goto('/app')
 	}
 
-	// Hardcoded conversation history (will wire to real store later)
-	const today = [
-		{ id: 'h1', icon: 'i-mdi:tab', title: 'Show me how Tabs work', ago: '12m' },
-		{ id: 'h2', icon: 'i-mdi:palette', title: 'Theme for our brand red', ago: '47m' },
-		{ id: 'h3', icon: 'i-mdi:help-circle-outline', title: 'How do I bind a list to async data?', ago: '2h' },
-		{ id: 'h4', icon: 'i-mdi:select-multiple', title: 'Multi-select with chip overflow', ago: '3h' }
-	]
-	const yesterday = [
-		{ id: 'h5', icon: 'i-mdi:file-tree', title: 'Compare List vs Tree', ago: 'yest' },
-		{ id: 'h6', icon: 'i-mdi:help-circle-outline', title: 'A11y for tree navigation', ago: 'yest' },
-		{ id: 'h7', icon: 'i-mdi:form-textbox', title: 'Form validation · per-field', ago: 'yest' }
-	]
-	const older = [
-		{ id: 'h8', icon: 'i-mdi:book-open-variant', title: 'When to use Combo vs Select?', ago: 'Mon' },
-		{ id: 'h9', icon: 'i-mdi:palette', title: 'Custom skin from brand palette', ago: 'Sun' }
-	]
-	const allConv = [...today, ...yesterday, ...older]
+	// Walk the conversation to find the latest user query (used for the chat-
+	// left header sub-line). Falls back to the conversation title for safety.
+	function lastUserText(conv: Conversation | undefined): string {
+		if (!conv) return ''
+		for (let i = conv.turns.length - 1; i >= 0; i--) {
+			const t = conv.turns[i]
+			if (t.kind === 'user') return t.text
+		}
+		return conv.title
+	}
+
+	function resumeConversation(conv: Conversation) {
+		if (conv.surface === 'chat') {
+			loadConversation(conv.id)
+			goto('/chat')
+			return
+		}
+		const lastDemo = [...conv.turns]
+			.reverse()
+			.find((t) => t.kind === 'assistant' && t.body.kind === 'demo')
+		if (!lastDemo || lastDemo.kind !== 'assistant' || lastDemo.body.kind !== 'demo') return
+		loadConversation(conv.id)
+		shell.lastQuery = lastUserText(conv)
+		shell.composerValue = ''
+		shell.demoType = lastDemo.body.demoType
+		shell.demoVariant = lastDemo.body.variant
+		shell.phase = 'response'
+		const route = DEMO_ROUTE[lastDemo.body.demoType as DemoKind]
+		const variant = lastDemo.body.variant
+		goto(variant ? `${route}?variant=${variant}` : route)
+	}
+
+	// Sidebar history — derived from the shared conversations store. Both
+	// /app and /chat surfaces appear here; clicking routes back to the right
+	// surface. recencyLabel formats the trailing "12m / yest / Mon" badge.
+	const buckets = $derived(
+		conversations.length > 0
+			? bucketByRecency()
+			: { today: [], yesterday: [], earlier: [] }
+	)
+	const allConv = $derived([...buckets.today, ...buckets.yesterday, ...buckets.earlier])
+
+	function demoIcon(demoType: string | null): string {
+		if (!demoType) return 'i-mdi:chat-outline'
+		return findById(demoType)?.icon ?? 'i-mdi:chat-outline'
+	}
+
+	function convIcon(conv: Conversation): string {
+		if (conv.surface === 'chat') return 'i-mdi:chat-processing-outline'
+		const lastDemo = [...conv.turns]
+			.reverse()
+			.find((t) => t.kind === 'assistant' && t.body.kind === 'demo')
+		if (lastDemo && lastDemo.kind === 'assistant' && lastDemo.body.kind === 'demo') {
+			return demoIcon(lastDemo.body.demoType)
+		}
+		return 'i-mdi:chat-outline'
+	}
+
+	// Emit the assistant turn after both demoType and demoVariant have
+	// settled. Fires on /app/<demo> mount and on ?variant=X changes. The
+	// rules below keep conversations honest:
+	//   - user turn → append the first assistant demo turn (initial response)
+	//   - same demoType, different variant → append (variant pick is a turn)
+	//   - different demoType → treat as side-trip browsing, no append
+	//     (new demos are reached via submitQuery which calls startNew)
+	$effect(() => {
+		if (shell.phase !== 'response' || !shell.demoType) return
+		const id = getCurrentId()
+		if (!id) return
+		const current = conversations.find((c) => c.id === id)
+		if (!current) return
+		const last = current.turns.at(-1)
+		const dt = shell.demoType
+		const dv = shell.demoVariant
+		if (last?.kind === 'user') {
+			appendAssistant({ kind: 'demo', demoType: dt, variant: dv })
+			return
+		}
+		if (
+			last?.kind === 'assistant' &&
+			last.body.kind === 'demo' &&
+			last.body.demoType === dt &&
+			last.body.variant !== dv
+		) {
+			appendAssistant({ kind: 'demo', demoType: dt, variant: dv })
+		}
+	})
 
 	// Welcome flow is input-first. As the user types, ComposerSuggestions
 	// matches against the catalog and surfaces the closest demos. Clicking
@@ -1038,42 +1123,78 @@ ${rows}
 
 <div class="koan-shell">
 	<div class="stage">
-		<ChatSidebar bind:collapsed={shell.collapsed} onnew={startNewConversation}>
-			<div class="group-label">Today</div>
-			{#each today as item (item.id)}
-				<button type="button" class="conv" data-conv-item>
-					<span class="conv-icon {item.icon}" aria-hidden="true"></span>
-					<span class="conv-title">{item.title}</span>
-					<span class="conv-when">{item.ago}</span>
-				</button>
-			{/each}
-			<div class="group-label">Yesterday</div>
-			{#each yesterday as item (item.id)}
-				<button type="button" class="conv" data-conv-item>
-					<span class="conv-icon {item.icon}" aria-hidden="true"></span>
-					<span class="conv-title">{item.title}</span>
-					<span class="conv-when">{item.ago}</span>
-				</button>
-			{/each}
-			<div class="group-label">Earlier this week</div>
-			{#each older as item (item.id)}
-				<button type="button" class="conv" data-conv-item>
-					<span class="conv-icon {item.icon}" aria-hidden="true"></span>
-					<span class="conv-title">{item.title}</span>
-					<span class="conv-when">{item.ago}</span>
-				</button>
-			{/each}
+		<ChatHistory bind:collapsed={shell.collapsed} onnew={startNewConversation}>
+			{#if allConv.length === 0}
+				<div class="conv-empty">
+					<span class="i-mdi:chat-plus-outline" aria-hidden="true"></span>
+					<span>No history yet — ask Rokkit something to start.</span>
+				</div>
+			{/if}
+			{#if buckets.today.length > 0}
+				<div class="group-label">Today</div>
+				{#each buckets.today as conv (conv.id)}
+					<button
+						type="button"
+						class="conv"
+						class:conv-active={conv.id === getCurrentId()}
+						data-conv-item
+						onclick={() => resumeConversation(conv)}
+					>
+						<span class="conv-icon {convIcon(conv)}" aria-hidden="true"></span>
+						<span class="conv-title">{conv.title}</span>
+						<span class="conv-when">{recencyLabel(conv)}</span>
+					</button>
+				{/each}
+			{/if}
+			{#if buckets.yesterday.length > 0}
+				<div class="group-label">Yesterday</div>
+				{#each buckets.yesterday as conv (conv.id)}
+					<button
+						type="button"
+						class="conv"
+						class:conv-active={conv.id === getCurrentId()}
+						data-conv-item
+						onclick={() => resumeConversation(conv)}
+					>
+						<span class="conv-icon {convIcon(conv)}" aria-hidden="true"></span>
+						<span class="conv-title">{conv.title}</span>
+						<span class="conv-when">{recencyLabel(conv)}</span>
+					</button>
+				{/each}
+			{/if}
+			{#if buckets.earlier.length > 0}
+				<div class="group-label">Earlier</div>
+				{#each buckets.earlier as conv (conv.id)}
+					<button
+						type="button"
+						class="conv"
+						class:conv-active={conv.id === getCurrentId()}
+						data-conv-item
+						onclick={() => resumeConversation(conv)}
+					>
+						<span class="conv-icon {convIcon(conv)}" aria-hidden="true"></span>
+						<span class="conv-title">{conv.title}</span>
+						<span class="conv-when">{recencyLabel(conv)}</span>
+					</button>
+				{/each}
+			{/if}
 			{#snippet collapsedBody()}
-				{#each allConv.slice(0, 8) as item (item.id)}
-					<div class="conv-mini" title={item.title}>
-						<span class="conv-icon {item.icon}" aria-hidden="true"></span>
-					</div>
+				{#each allConv.slice(0, 8) as conv (conv.id)}
+					<button
+						type="button"
+						class="conv-mini"
+						class:conv-mini-active={conv.id === getCurrentId()}
+						title={conv.title}
+						onclick={() => resumeConversation(conv)}
+					>
+						<span class="conv-icon {convIcon(conv)}" aria-hidden="true"></span>
+					</button>
 				{/each}
 			{/snippet}
 			{#snippet footer()}
-				<span>{allConv.length} conversations</span>
+				<span>{allConv.length} {allConv.length === 1 ? 'conversation' : 'conversations'}</span>
 			{/snippet}
-		</ChatSidebar>
+		</ChatHistory>
 
 		<aside class="chat-left">
 			<div class="chat-header">
@@ -2559,6 +2680,29 @@ ${rows}
 		color: var(--ink);
 	}
 
+	.conv-active,
+	.conv-active:hover {
+		background: var(--paper-mute);
+		color: var(--ink);
+	}
+
+	.conv-empty {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 14px 10px;
+		color: var(--ink-soft);
+		font: 400 12px var(--font-ui);
+		line-height: 1.4;
+	}
+
+	.conv-empty .i-mdi\:chat-plus-outline {
+		width: 16px;
+		height: 16px;
+		flex-shrink: 0;
+		color: var(--ink-mute);
+	}
+
 	.conv-icon {
 		width: 16px;
 		height: 16px;
@@ -2589,6 +2733,8 @@ ${rows}
 		display: grid;
 		place-items: center;
 		margin: 0 auto;
+		border: 0;
+		background: transparent;
 		border-radius: 6px;
 		color: var(--ink-soft);
 		cursor: pointer;
@@ -2596,6 +2742,12 @@ ${rows}
 
 	.conv-mini:hover {
 		background: var(--paper-soft);
+		color: var(--ink);
+	}
+
+	.conv-mini-active,
+	.conv-mini-active:hover {
+		background: var(--paper-mute);
 		color: var(--ink);
 	}
 
