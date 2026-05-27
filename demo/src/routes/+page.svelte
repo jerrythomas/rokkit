@@ -2,15 +2,13 @@
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
 	import { Button } from '@rokkit/ui'
 	import { vibe } from '@rokkit/states'
-	import { untrack } from 'svelte'
 
-	// Iframes are static demos — the URL sets style/skin/mode declaratively
-	// via data-* attributes on a wrapper inside each iframe document.
-	// Capturing mode at first render (via untrack) keeps the src stable so
-	// the iframe doesn't reload on every host mode toggle. Host toggles
-	// don't propagate into the iframes by design — they're snapshots,
-	// not live windows.
-	const initialMode = untrack(() => vibe.mode)
+	// Iframes follow the host's mode reactively — each toggle changes the
+	// `&mode=` query on every iframe src, which makes the browser reload
+	// the iframe. The inline init script inside re-applies the new mode
+	// before paint, so the visible result is "same iframe, mode flipped"
+	// — no flash because the init script writes data-mode pre-paint.
+	const iframeMode = $derived(vibe.mode)
 
 	const fourPoints = [
 		{
@@ -185,7 +183,7 @@
 						<iframe
 							class="tabs-frame"
 							title={`Tabs · ${theme.label}`}
-							src={`/embed/tabs?theme=${theme.id}&skin=${theme.skin}&mode=${initialMode}`}
+							src={`/embed/tabs?theme=${theme.id}&skin=${theme.skin}&mode=${iframeMode}`}
 							loading="lazy"
 						></iframe>
 					</div>
