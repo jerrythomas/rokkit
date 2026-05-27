@@ -1855,7 +1855,7 @@ ${rows}
 				<div class="canvas-body response">
 					<ChatResponse
 						name="&lt;Tabs/&gt;"
-						meta={`· @rokkit/ui · style=${style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
+						meta={`· @rokkit/ui · style=${vibe.style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
 						kicker="LIVE"
 					>
 						{#snippet icon()}
@@ -1867,7 +1867,7 @@ ${rows}
 						{#snippet props()}
 							<span>items</span><span data-value>[5]</span>
 							<span data-sep>·</span>
-							<span>style</span><span data-value>{style}</span>
+							<span>style</span><span data-value>{vibe.style}</span>
 							{#if activeVariant}
 								<span data-sep>·</span>
 								<span>variant</span><span data-value>{activeVariant.id}</span>
@@ -1919,7 +1919,7 @@ ${rows}
 							{/if}
 						</div>
 						{#snippet props()}
-							<span>style</span><span data-value>{style}</span>
+							<span>style</span><span data-value>{vibe.style}</span>
 							<span data-sep>·</span>
 							<span>palette</span><span data-value>warm-gray + shu</span>
 							<span data-sep>·</span>
@@ -1957,7 +1957,7 @@ ${rows}
 				<div class="canvas-body response">
 					<ChatResponse
 						name="&lt;Table/&gt;"
-						meta={`· @rokkit/ui · style=${style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
+						meta={`· @rokkit/ui · style=${vibe.style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
 						kicker="LIVE"
 					>
 						{#snippet icon()}
@@ -2008,7 +2008,7 @@ ${rows}
 				<div class="canvas-body response">
 					<ChatResponse
 						name="&lt;Stepper/&gt;"
-						meta={`· @rokkit/ui · style=${style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
+						meta={`· @rokkit/ui · style=${vibe.style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
 						kicker="LIVE"
 					>
 						{#snippet icon()}
@@ -2062,7 +2062,7 @@ ${rows}
 				<div class="canvas-body response">
 					<ChatResponse
 						name="&lt;InputDate/&gt; · &lt;InputDateTime/&gt;"
-						meta={`· @rokkit/forms · style=${style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
+						meta={`· @rokkit/forms · style=${vibe.style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
 						kicker="LIVE"
 					>
 						{#snippet icon()}
@@ -2105,7 +2105,7 @@ ${rows}
 				<div class="canvas-body response">
 					<ChatResponse
 						name="&lt;Select filterable/&gt;"
-						meta={`· @rokkit/ui · style=${style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
+						meta={`· @rokkit/ui · style=${vibe.style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
 						kicker="LIVE"
 					>
 						{#snippet icon()}
@@ -2159,7 +2159,7 @@ ${rows}
 				<div class="canvas-body response">
 					<ChatResponse
 						name="&lt;BarChart/&gt;"
-						meta={`· @rokkit/chart · style=${style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
+						meta={`· @rokkit/chart · style=${vibe.style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
 						kicker="LIVE"
 					>
 						{#snippet icon()}
@@ -2205,7 +2205,7 @@ ${rows}
 				<div class="canvas-body response">
 					<ChatResponse
 						name="&lt;Select/&gt;"
-						meta={`· @rokkit/ui · style=${style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
+						meta={`· @rokkit/ui · style=${vibe.style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
 						kicker="LIVE"
 					>
 						{#snippet icon()}
@@ -2246,7 +2246,7 @@ ${rows}
 				<div class="canvas-body response">
 					<ChatResponse
 						name="&lt;FormRenderer/&gt;"
-						meta={`· @rokkit/forms · style=${style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
+						meta={`· @rokkit/forms · style=${vibe.style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
 						kicker="LIVE"
 					>
 						{#snippet icon()}
@@ -2292,7 +2292,7 @@ ${rows}
 				<div class="canvas-body response">
 					<ChatResponse
 						name="&lt;AlertList/&gt;"
-						meta={`· @rokkit/ui · style=${style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
+						meta={`· @rokkit/ui · style=${vibe.style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
 						kicker="LIVE"
 					>
 						{#snippet icon()}
@@ -2353,7 +2353,7 @@ ${rows}
 				<div class="canvas-body response">
 					<ChatResponse
 						name="&lt;List/&gt;"
-						meta={`· @rokkit/ui · style=${style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
+						meta={`· @rokkit/ui · style=${vibe.style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
 						kicker="LIVE"
 					>
 						{#snippet icon()}
@@ -2411,7 +2411,7 @@ ${rows}
 				<div class="canvas-body response">
 					<ChatResponse
 						name="&lt;MultiSelect/&gt;"
-						meta={`· @rokkit/ui · style=${style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
+						meta={`· @rokkit/ui · style=${vibe.style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
 						kicker="LIVE"
 					>
 						{#snippet icon()}
@@ -2464,7 +2464,7 @@ ${rows}
 				<div class="canvas-body response">
 					<ChatResponse
 						name="&lt;Tree/&gt;"
-						meta={`· @rokkit/ui · style=${style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
+						meta={`· @rokkit/ui · style=${vibe.style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
 						kicker="LIVE"
 					>
 						{#snippet icon()}
