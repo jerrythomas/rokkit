@@ -38,7 +38,15 @@
 	let { children } = $props()
 </script>
 
-<svelte:body use:themable={{ theme: vibe, storageKey: 'rokkit-theme' }} />
+<!-- `storageKey` is omitted on /embed/* so the iframes neither persist
+	 their URL-driven style nor listen for storage events. Without this
+	 guard, four iframes each writing a different `?theme=` to the same
+	 localStorage key created a cascade: each write fires a `storage`
+	 event in the other documents, themable's handleStorage updates vibe,
+	 the embed's $effect re-sets it to the URL value, that writes back to
+	 storage, and the cycle continues — visible as the host header
+	 flickering through every embedded style. -->
+<svelte:body use:themable={{ theme: vibe, storageKey: isEmbed ? undefined : 'rokkit-theme' }} />
 
 <div class="site-shell" data-embed={isEmbed || undefined}>
 	{#if showHeader}
