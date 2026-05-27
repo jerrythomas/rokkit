@@ -4454,3 +4454,39 @@ Lint: 0 errors. Tests: 3500 passed.
 **Follow-up tracked**
 
 `/app/catalog` route — grouped sidebar (Data display, Selection, Forms & flows, Charts, Layout & feedback) linking to the same `/app/<demo>` routes. Lets users who prefer browsing find demos without composing a query. Should reuse `ComposerSuggestions`' demo-meta + onpick contract so both entry points feed into the same submit flow.
+
+## 2026-05-27 — Tabs base: border-style trap + zen-sumi default
+
+Two follow-ups from the home showcase work:
+
+**Tabs base — `border: none` is a footgun**
+
+User reported every minimal tab had a thick box border. Root cause: `base/tabs.css` set `border: none` on `[data-tabs-trigger]`. The shorthand expands to `border-width: medium` (browser default = 3px) + `border-style: none` + `border-color: currentcolor`. Width is 3px on every side — only invisible because style is none.
+
+When the earlier minimal fix added `border-style: solid` on the trigger (to make the `border-b-[3px]` underline render at all), it flipped style to solid on all four sides, so the existing 3px width became visible everywhere. Net effect: each tab grew a 3px box.
+
+Fix in `packages/themes/src/base/tabs.css`:
+```css
+[data-tabs-trigger] {
+  /* `border: none` expands to width:medium which leaks 3px on any side
+   * once a theme sets a solid style. Spell the safe baseline out. */
+  border-width: 0;
+  border-style: solid;
+  border-color: currentcolor;
+  ...
+}
+```
+
+Now any theme's `border-{side}-[Npx]` renders cleanly without needing a per-rule `border-style: solid` workaround. Reverted the `border-style: solid` line from `packages/themes/src/minimal/tabs.css` — the base does the job.
+
+Browser-verified the four-theme showcase iframes: zen-sumi keeps its ink fill, rokkit keeps its branded gradient, minimal shows ONLY the 3px bottom hairline on the selected tab, material keeps its saffron pill.
+
+**Default style — zen-sumi**
+
+User flagged that the demo lands on `rokkit` style on first visit. Looked at `packages/states/src/vibe.svelte.js` — class default is `style: 'rokkit'`. And critically `DEFAULT_STYLES = ['rokkit', 'minimal', 'material']` (from `packages/states/src/constants.js`) — `zen-sumi` and `frosted` are NOT in the allowed list, so vibe's setter silently rejects `vibe.style = 'zen-sumi'` if you try it without first expanding `allowedStyles`.
+
+Fix in `demo/src/routes/+layout.svelte`: before the `themable` action runs, expand `vibe.allowedStyles` to include all five themes the demo ships, then set `vibe.style = 'zen-sumi'`. `themable.load()` runs after that and respects any persisted choice in `localStorage['rokkit-theme']`, so existing users keep their pick — only first-time visitors land on zen-sumi.
+
+Verified: cleared localStorage, reloaded `/` → body.dataset.style === 'zen-sumi'. Home page renders in the ink-on-paper aesthetic that matches the project's canonical look.
+
+Lint: 0 errors. Tests: 3500 passed.

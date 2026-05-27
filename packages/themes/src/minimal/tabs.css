@@ -33,10 +33,6 @@
 
 [data-style='minimal'] [data-tabs-trigger] {
   @apply text-ink-soft border-b-[3px] border-b-transparent bg-transparent;
-  /* <button> elements default to `border-style: none`, which zeros the width
-   * set by `border-{side}-[3px]`. Forcing a style here lets the indicator
-   * actually render for any orientation/position variant below. */
-  border-style: solid;
   font-weight: 400;
   transition:
     color 150ms ease,

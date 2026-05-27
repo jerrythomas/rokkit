@@ -66,7 +66,14 @@
   gap: 0.375rem;
   padding: 0.5rem 0.75rem;
   cursor: pointer;
-  border: none;
+  /* `border: none` expands to `border-width: medium` (= 3px) which leaks
+   * a 3px ring on every side as soon as a theme sets `border-style: solid`.
+   * Spell the safe baseline out: zero width on all sides, solid style so
+   * any `border-{side}-[Npx]` from a theme renders without needing to
+   * re-declare the style. */
+  border-width: 0;
+  border-style: solid;
+  border-color: currentcolor;
   background: transparent;
   font-weight: 500;
   font-size: 0.875rem;
