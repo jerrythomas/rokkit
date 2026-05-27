@@ -25,6 +25,8 @@
 	import { runMatch } from '$lib/koan/match.svelte'
 	import { findById } from '$lib/koan/catalog'
 	import { shell } from '$lib/koan/shell.svelte'
+	import ComposerSuggestions from '$lib/koan/components/ComposerSuggestions.svelte'
+	import type { DemoMeta } from '$lib/koan/types'
 	import ThemeWizardCard from '$lib/koan/demos/theme-wizard/ThemeWizardCard.svelte'
 	import { savePreset, resetPreset, downloadTokensCss, exportTokensCss } from '$lib/koan/demos/theme-wizard/store.svelte'
 	import { onMount } from 'svelte'
@@ -138,74 +140,14 @@
 	]
 	const allConv = [...today, ...yesterday, ...older]
 
-	// Welcome chips are organized as a curated starter rail plus a categorized
-	// "browse all" view. The starter set surfaces the highest-value, most
-	// distinct demos so a first-time visitor sees breadth without a wall of
-	// chips. The full catalog expands inline on demand and is grouped by
-	// purpose so it scales as more demos land.
-	const starterChips = [
-		{ label: 'Tabs · 5 panes', icon: 'i-mdi:tab' },
-		{ label: 'Sortable data table', icon: 'i-mdi:table' },
-		{ label: 'Schema-driven form', icon: 'i-mdi:form-textbox' },
-		{ label: 'Bar chart with quarterly revenue', icon: 'i-mdi:chart-bar' },
-		{ label: 'Multi-select with chips', icon: 'i-mdi:select-multiple' },
-		{ label: 'Multi-step stepper', icon: 'i-mdi:stairs' }
-	]
-
-	const buildCatalog = [
-		{
-			group: 'Data display',
-			items: [
-				{ label: 'Sortable data table', icon: 'i-mdi:table' },
-				{ label: 'List with collapsible groups', icon: 'i-mdi:format-list-bulleted' },
-				{ label: 'Tree select', icon: 'i-mdi:file-tree' }
-			]
-		},
-		{
-			group: 'Selection',
-			items: [
-				{ label: 'Single-pick select', icon: 'i-mdi:menu-down' },
-				{ label: 'Multi-select with chips', icon: 'i-mdi:select-multiple' },
-				{ label: 'Combobox with type-to-filter', icon: 'i-mdi:magnify' }
-			]
-		},
-		{
-			group: 'Forms & flows',
-			items: [
-				{ label: 'Schema-driven form', icon: 'i-mdi:form-textbox' },
-				{ label: 'Multi-step stepper', icon: 'i-mdi:stairs' },
-				{ label: 'Date and time picker', icon: 'i-mdi:calendar' }
-			]
-		},
-		{
-			group: 'Charts',
-			items: [
-				{ label: 'Bar chart with quarterly revenue', icon: 'i-mdi:chart-bar' }
-			]
-		},
-		{
-			group: 'Layout & feedback',
-			items: [
-				{ label: 'Tabs · 5 panes', icon: 'i-mdi:tab' },
-				{ label: 'Toast notifications', icon: 'i-mdi:bell-outline' }
-			]
-		}
-	]
-	const totalExamples = buildCatalog.reduce((n, g) => n + g.items.length, 0)
-
-	let showAllExamples = $state(false)
-	const howChips = [
-		{ label: 'How does theming work?', icon: 'i-mdi:help-circle-outline' },
-		{ label: 'Bind a list to async data', icon: 'i-mdi:help-circle-outline' },
-		{ label: 'A11y for keyboard nav', icon: 'i-mdi:help-circle-outline' }
-	]
-	const themeChips = [
-		{ label: 'Theme to my brand', icon: 'i-mdi:palette' },
-		{ label: 'Build a custom skin', icon: 'i-mdi:palette' }
-	]
-
-	function pickChip(item: { label?: string }) {
-		if (item.label) submitQuery(item.label)
+	// Welcome flow is input-first. As the user types, ComposerSuggestions
+	// matches against the catalog and surfaces the closest demos. Clicking
+	// a suggestion submits its title as the query, going through the same
+	// thinking → goto path as a typed submission. The dedicated /app/catalog
+	// route (TBD) gives the same demos a sidebar-browse entry point for
+	// users who prefer to scan visually.
+	function pickSuggestion(demo: DemoMeta) {
+		submitQuery(demo.title)
 	}
 
 	// Tabs demo state — mounted in the canvas response card.
@@ -1171,40 +1113,21 @@ ${rows}
 				<div class="welcome-stream">
 					<h2 class="welcome-hello">Welcome back.</h2>
 					<p class="welcome-lede">
-						What are you building today? Three places people usually start —
+						Tell me what you want to build. As you type I'll match
+						components from the catalog — or press <kbd>⌘</kbd><kbd>↵</kbd>
+						to send.
 					</p>
 
-					<section>
-						<div class="welcome-eyebrow">Build a component</div>
-						{#if showAllExamples}
-							{#each buildCatalog as group (group.group)}
-								<div class="welcome-subgroup">
-									<div class="welcome-subgroup-label">{group.group}</div>
-									<Chips items={group.items} onselect={pickChip} />
-								</div>
-							{/each}
-							<button type="button" class="welcome-expand" onclick={() => (showAllExamples = false)}>
-								<span class="i-mdi:chevron-up" aria-hidden="true"></span>
-								Show fewer
-							</button>
-						{:else}
-							<Chips items={starterChips} onselect={pickChip} />
-							<button type="button" class="welcome-expand" onclick={() => (showAllExamples = true)}>
-								Browse all {totalExamples} examples
-								<span class="i-mdi:arrow-right" aria-hidden="true"></span>
-							</button>
-						{/if}
-					</section>
+					<ComposerSuggestions
+						query={shell.composerValue}
+						onpick={pickSuggestion}
+					/>
 
-					<section>
-						<div class="welcome-eyebrow">How-to</div>
-						<Chips items={howChips} onselect={pickChip} />
-					</section>
-
-					<section>
-						<div class="welcome-eyebrow">Theme &amp; customize</div>
-						<Chips items={themeChips} onselect={pickChip} />
-					</section>
+					<a class="welcome-browse" href="/app/catalog">
+						<span class="i-mdi:view-grid-outline" aria-hidden="true"></span>
+						Browse the full catalog
+						<span class="i-mdi:arrow-right" aria-hidden="true"></span>
+					</a>
 				</div>
 			{:else if shell.phase === 'thinking'}
 				<ChatStream>
@@ -2753,55 +2676,46 @@ ${rows}
 		margin: 0;
 	}
 
-	.welcome-eyebrow {
-		font: 500 10.5px var(--font-mono);
-		color: var(--ink-soft);
-		letter-spacing: 0.16em;
-		text-transform: uppercase;
-		margin-bottom: 6px;
+	.welcome-lede kbd {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 18px;
+		height: 18px;
+		padding: 0 4px;
+		margin: 0 1px;
+		font: 500 11px/1 var(--font-mono);
+		color: var(--ink-mute);
+		background: var(--paper-mute);
+		border: 1px solid var(--paper-edge);
+		border-radius: 3px;
+		vertical-align: 1px;
 	}
 
-	.welcome-subgroup {
-		display: flex;
-		flex-direction: column;
-		gap: 6px;
-		margin-top: 10px;
-	}
-
-	.welcome-subgroup:first-of-type {
-		margin-top: 0;
-	}
-
-	.welcome-subgroup-label {
-		font: 500 11px var(--font-ui);
-		color: var(--ink-soft);
-		letter-spacing: 0.02em;
-	}
-
-	.welcome-expand {
+	.welcome-browse {
 		display: inline-flex;
 		align-items: center;
 		gap: 6px;
-		margin-top: 10px;
+		margin-top: auto;
 		padding: 6px 10px;
 		font: 500 12px var(--font-ui);
 		color: var(--ink-mute);
 		background: transparent;
 		border: 0;
 		border-radius: var(--density-radius-base);
-		cursor: pointer;
+		text-decoration: none;
 		align-self: flex-start;
 		transition:
 			color 120ms ease,
 			background 120ms ease;
 	}
 
-	.welcome-expand:hover {
+	.welcome-browse:hover {
 		color: var(--ink);
 		background: var(--paper-mute);
 	}
 
-	.welcome-expand [class*='i-mdi'] {
+	.welcome-browse [class*='i-mdi'] {
 		width: 14px;
 		height: 14px;
 	}

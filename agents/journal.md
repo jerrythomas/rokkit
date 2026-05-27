@@ -4411,3 +4411,46 @@ Lint: 0 errors. Tests: 3500 passed.
 **Follow-up tracked**
 
 Library-wide `[data-style='gradient']` variant + frosted/material/minimal gradient buttons still rely on `@apply from-X to-Y` and will hit the same `bg-image: none` failure. Worth a sweep in a separate change since it's the same OKLCH color-mix recipe per variant.
+
+## 2026-05-26 (cont.) — /app welcome flips to chat-first discovery
+
+Replaced the chip-grid welcome (curated 6 starter + browse-all reveal from the earlier change) with a live, search-driven surface. The composer input is now the primary discovery path; suggestions update as the user types.
+
+**New component**
+
+`demo/src/lib/koan/components/ComposerSuggestions.svelte` — takes the composer's `query` value plus an `onpick` callback. Behaviour:
+
+- Empty input → "Try one of these" + 5 hand-picked starter demos (tabs, table, form, chart, multi-select).
+- Typed input → calls `runMatch(query)` (already in `lib/koan/match.svelte.ts`) and shows the top 5 by score, heading reads `{n} match{es} for "{query}"`.
+- Zero matches → heading switches to "No exact match — closest in catalog" and falls back to the first 5 catalog entries so the user is never staring at an empty surface.
+
+Each suggestion renders icon + title + one-line description + a subtle `↵` hover cue. Clicking submits the demo's `title` through the existing `submitQuery` path — same thinking → goto flow as a typed query.
+
+**Welcome layout rewrite** (`demo/src/routes/app/+layout.svelte`)
+
+Stripped:
+- `starterChips[6]`, `buildCatalog[5 groups]`, `howChips[3]`, `themeChips[2]`, `pickChip`, `showAllExamples` toggle, `welcome-eyebrow` × 3 sections, `welcome-subgroup*` classes, `welcome-expand` button.
+
+Kept the variant-chip path inside response phases (those are still relevant — they're per-demo discoverable variations like `Vertical orientation`, `With icons`).
+
+Added:
+- `pickSuggestion(demo)` — single handler that takes a `DemoMeta` and submits its title.
+- New welcome stream: `Welcome back.` hello, a short lede explaining the natural-language flow with the ⌘↵ kbd hint, `<ComposerSuggestions/>` directly under the lede, and a `Browse the full catalog →` link pinned to the bottom of the welcome area.
+- `.welcome-browse` link style + `.welcome-lede kbd` style for the inline keyboard hint.
+
+The browse link points at `/app/catalog` — that route is the planned grouped-sidebar entry point. Stubbed reference in the journal as the next piece of work, not built yet. The same demos will be reachable via either entry: composer search OR catalog sidebar → same /app/<demo> destinations.
+
+**Browser-verified (rokkit body)**
+
+- Empty welcome: shows the five starter prompts with kanji glyph icons (from each demo's `meta.icon`) and short descriptions. Browse link visible at the bottom of the welcome area.
+- Typed `pick from a tree` → heading reads `5 matches for "pick from a tree"`, suggestions are `Multi-Select`, `Tree Select`, `Date Picker`, `Select`, `Combobox` (miniIndex's title+keywords+description scoring).
+- Clicked `Tree Select` suggestion → query submits as "Tree Select", goes through the thinking phase, and lands on `/app/tree`.
+- Typed gibberish (`qzzzx wonkywidget`) → heading reads `No exact match — closest in catalog`, fallback list shows the first five catalog items so the surface stays useful.
+
+uno.config safelist updated with the mdi icons the welcome and suggestions need: `view-grid-outline`, `bell-outline`, `menu-down`, `chart-bar`, `calendar`, `stairs`, `auto-fix`.
+
+Lint: 0 errors. Tests: 3500 passed.
+
+**Follow-up tracked**
+
+`/app/catalog` route — grouped sidebar (Data display, Selection, Forms & flows, Charts, Layout & feedback) linking to the same `/app/<demo>` routes. Lets users who prefer browsing find demos without composing a query. Should reuse `ComposerSuggestions`' demo-meta + onpick contract so both entry points feed into the same submit flow.
