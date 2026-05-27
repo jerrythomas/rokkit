@@ -27,6 +27,10 @@
 		brand?: Snippet
 		/** Breadcrumb snippet rendered right of the brand */
 		crumb?: Snippet
+		/** Site-level nav links snippet (e.g. <SiteNav/>) — shown between
+		 * the brand block and the right-side preferences. Keeps the same
+		 * navigation visible on home, chat, and app routes. */
+		nav?: Snippet
 		/** Additional right-side action buttons (before the mode toggle) */
 		actions?: Snippet
 	}
@@ -43,6 +47,7 @@
 		showDensity = true,
 		brand,
 		crumb,
+		nav,
 		actions
 	}: ChatChromeProps = $props()
 
@@ -66,6 +71,10 @@
 			<span data-sep>/</span>
 			{@render crumb()}
 		</div>
+	{/if}
+
+	{#if nav}
+		<div data-chat-chrome-nav>{@render nav()}</div>
 	{/if}
 
 	<div data-chat-chrome-spacer></div>

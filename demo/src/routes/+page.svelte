@@ -1,16 +1,11 @@
 <script lang="ts">
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
+	import SiteNav from '$lib/components/SiteNav.svelte'
 	import { Button } from '@rokkit/ui'
 	import { ThemeSwitcherToggle } from '@rokkit/app'
 	import pkg from '@rokkit/ui/package.json'
 
 	const version = pkg.version
-
-	const navLinks = [
-		{ label: 'Components', href: '/app', active: true },
-		{ label: 'Chat demo', href: '/chat' },
-		{ label: 'GitHub ↗', href: 'https://github.com/jerrythomas/rokkit' }
-	]
 
 	const fourPoints = [
 		{
@@ -85,11 +80,7 @@
 		<div class="nav-brand">
 			<RokkitWordmark height={28} />
 		</div>
-		<nav class="nav-links">
-			{#each navLinks as link (link.label)}
-				<a href={link.href} class:active={link.active}>{link.label}</a>
-			{/each}
-		</nav>
+		<SiteNav homeIsActive={true} />
 		<div class="nav-spacer"></div>
 		<div class="nav-actions">
 			<span class="version-chip">v{version} · svelte 5</span>

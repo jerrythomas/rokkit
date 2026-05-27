@@ -19,6 +19,7 @@
 	import { BarChart } from '@rokkit/chart'
 	import { alerts } from '@rokkit/states'
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
+	import SiteNav from '$lib/components/SiteNav.svelte'
 	import { theme } from '$lib/stores/theme.svelte'
 	import { vibe } from '@rokkit/states'
 	import { koan } from '$lib/koan/store.svelte'
@@ -1058,6 +1059,9 @@ ${rows}
 			<a href="/" class="brand-link" title="Back to Rokkit home" aria-label="Rokkit home">
 				<RokkitWordmark height={20} />
 			</a>
+		{/snippet}
+		{#snippet nav()}
+			<SiteNav />
 		{/snippet}
 	</ChatChrome>
 

@@ -2,6 +2,7 @@
 	import { tick } from 'svelte'
 	import { ChatChrome, ChatComposer, ChatStream, ChatMessage, configureWho } from '$lib/chat'
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
+	import SiteNav from '$lib/components/SiteNav.svelte'
 	import { Button, Toggle } from '@rokkit/ui'
 	import {
 		conversation,
@@ -182,6 +183,9 @@
 			<a href="/" class="brand-link" title="Back to Rokkit home" aria-label="Rokkit home">
 				<RokkitWordmark />
 			</a>
+		{/snippet}
+		{#snippet nav()}
+			<SiteNav />
 		{/snippet}
 		{#snippet actions()}
 			<Toggle

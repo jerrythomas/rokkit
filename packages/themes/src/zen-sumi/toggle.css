@@ -37,15 +37,21 @@
    Toggle Icon
    ============================================================================= */
 
+/* Icons follow the option's text colour — `paper-edge` (hairline border
+ * tone) was the wrong baseline because it renders the icon nearly
+ * invisible against paper-soft/paper-mute in both modes. `ink-soft` at
+ * rest reads as "available but secondary," `ink-mute` on hover/focus
+ * matches the option label, and `paper` for selected contrasts cleanly
+ * against the ink fill. */
 [data-style='zen-sumi'] [data-toggle-option] [data-toggle-icon] {
-  @apply text-paper-edge;
+  @apply text-ink-soft;
 }
 
 [data-style='zen-sumi'] [data-toggle-option]:hover:not(:disabled) [data-toggle-icon],
 [data-style='zen-sumi'] [data-toggle-option]:focus:not(:disabled) [data-toggle-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='zen-sumi'] [data-toggle-option][data-selected='true'] [data-toggle-icon] {
-  @apply text-paper-soft;
+  @apply text-paper;
 }
