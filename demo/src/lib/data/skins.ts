@@ -216,6 +216,7 @@ function declarationsFor(role: string, paletteName: string): string {
 }
 
 const SKIN_STYLE_ID = 'koan-skin-overrides'
+const SKIN_SHEET_ID = 'koan-skin-sheet'
 
 function getSkinStyleEl(): HTMLStyleElement | null {
 	if (typeof document === 'undefined') return null
@@ -226,6 +227,90 @@ function getSkinStyleEl(): HTMLStyleElement | null {
 		document.head.appendChild(el)
 	}
 	return el
+}
+
+/**
+ * Same shape as `declarationsFor` but emits the inverted shade for each
+ * `--color-{role}-{shade}` slot — used to flip surface/ink in dark mode
+ * when the skin uses a single Tailwind-style palette that doesn't have
+ * an explicit dark counterpart. Maps 50 ↔ 950, 100 ↔ 900, …, 500 stays.
+ */
+function declarationsForInverted(role: string, paletteName: string): string {
+	const palette = getPaletteShades(paletteName)
+	if (!palette) return ''
+	const isOklch = isCustomPalette(paletteName)
+	const parts: string[] = []
+	for (const shade of shades) {
+		const n = Number(shade)
+		const inv = n === 500 ? 500 : 1000 - n
+		const value = palette[inv]
+		if (value !== undefined) {
+			parts.push(`--color-${role}-${shade}:${wrapColor(value, isOklch)};`)
+		}
+	}
+	const defaultValue = palette[500]
+	if (defaultValue !== undefined) {
+		parts.push(`--color-${role}:${wrapColor(defaultValue, isOklch)};`)
+	}
+	return parts.join('')
+}
+
+/**
+ * Build the CSS for a single named skin, scoped to `[data-skin='name']`
+ * for light mode and `[data-mode='dark'] [data-skin='name']` for dark.
+ *
+ * Light block: all role palettes + named-token aliases.
+ * Dark block: for single-palette surface/ink roles, emit the inverted
+ *   palette shades so dark mode actually reads dark (slate-50 light
+ *   becomes slate-950 dark, etc.). Dual-palette roles use their
+ *   declared dark side directly. Brand roles (primary/accent/…) keep
+ *   the same palette in dark — only surface/ink need inversion.
+ */
+function buildSkinCss(name: string, colormap: Record<string, RoleMapping>): string {
+	const lightDecls: string[] = []
+	const darkDecls: string[] = []
+	for (const [role, mapping] of Object.entries(colormap)) {
+		if (typeof mapping === 'string') {
+			lightDecls.push(declarationsFor(role, mapping))
+			if (role === 'surface' || role === 'ink') {
+				darkDecls.push(declarationsForInverted(role, mapping))
+			}
+		} else {
+			lightDecls.push(declarationsFor(role, mapping.light))
+			darkDecls.push(declarationsFor(role, mapping.dark))
+		}
+	}
+	const roles = new Set(Object.keys(colormap))
+	const aliases = namedTokenAliases(roles)
+	return [
+		`[data-skin='${name}']{${lightDecls.join('')}${aliases}}`,
+		darkDecls.length ? `[data-mode='dark'] [data-skin='${name}']{${darkDecls.join('')}}` : ''
+	].join('')
+}
+
+let skinSheetInstalled = false
+
+/**
+ * Install a single static `<style>` that defines all known skins as
+ * attribute-selector rules. Idempotent — runs once on first call.
+ *
+ * Lets consumers pick a skin declaratively (`<div data-skin='ocean'>`)
+ * instead of mutating CSS variables at runtime via `applySkin`. The
+ * cascade is then handled by CSS specificity: child elements under the
+ * `[data-skin='X']` element resolve `--paper`/`--primary`/etc. through
+ * that skin's aliases. Avoids the flash that runtime style-tag
+ * injection causes between mount and first repaint.
+ */
+export function installSkinSheet(): void {
+	if (skinSheetInstalled || typeof document === 'undefined') return
+	skinSheetInstalled = true
+	const css = Object.entries(skinColormaps)
+		.map(([name, colormap]) => buildSkinCss(name, colormap))
+		.join('')
+	const el = document.createElement('style')
+	el.id = SKIN_SHEET_ID
+	el.textContent = css
+	document.head.appendChild(el)
 }
 
 /**

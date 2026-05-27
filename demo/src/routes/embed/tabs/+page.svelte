@@ -1,56 +1,38 @@
 <script lang="ts">
 	/**
-	 * Embedded Tabs preview, themed via ?theme=<style>. Used by the home
-	 * page to render four side-by-side Tabs cards in their own iframes.
+	 * Embedded Tabs preview, themed via URL params:
+	 *   ?theme=<style>  e.g. zen-sumi | rokkit | minimal | material | frosted
+	 *   ?skin=<name>    e.g. default | ocean | violet | rose | emerald
+	 *   ?mode=light|dark|system
 	 *
-	 * Why iframes: the theme CSS uses `[data-style='X'] ...` selectors
-	 * with identical specificity across themes. When nested in the same
-	 * document, both rules match and the later-imported stylesheet wins
-	 * (zen-sumi.css is loaded last in app.css). Iframes isolate the
-	 * cascade so each preview gets the theme it actually asked for.
+	 * All three drive `data-*` attributes on the wrapper div declaratively
+	 * — the cascade picks up the right palette/style/mode via attribute
+	 * selectors. No `applySkin` JS injection, no postMessage listener;
+	 * each iframe is a static demo whose look is fixed at load time. The
+	 * `installSkinSheet()` import runs once and emits all skin definitions
+	 * as static CSS rules scoped to `[data-skin='X']`.
 	 *
-	 * The active style is set BEFORE paint by the inline init script
-	 * (hooks.server.js → themeInitScript), which reads `?theme=` from
-	 * the URL and writes `data-style` to both documentElement and body.
-	 * The root layout's themable action runs with `storageKey: undefined`
-	 * on /embed routes (so no save / no storage listener), and its
-	 * effect re-writes the same value vibe was synced to. No reactive
-	 * `vibe.style = theme` needed here — the page is a pure consumer
-	 * of the URL-driven dataset.
+	 * `mode='system'` is resolved to light/dark via matchMedia at script
+	 * time — the resolved value is what's set on the wrapper, so CSS
+	 * `[data-mode='dark']` / `[data-mode='light']` rules don't need to
+	 * know about 'system'.
 	 */
 	import { page } from '$app/state'
-	import { onMount } from 'svelte'
 	import { Tabs } from '@rokkit/ui'
-	import { vibe } from '@rokkit/states'
-	import { applySkin } from '$lib/data/skins'
+	import { installSkinSheet } from '$lib/data/skins'
+
+	installSkinSheet()
 
 	const theme = $derived(page.url.searchParams.get('theme') ?? 'zen-sumi')
-	const skin = $derived(page.url.searchParams.get('skin'))
-
-	// Each iframe is its own document, so applySkin's :root variable
-	// injection scopes naturally to this preview. Hardcoded one-time
-	// apply on mount — no reactivity needed since the URL params don't
-	// change during the iframe's lifetime.
-	//
-	// Mode (light/dark) follows the parent app:
-	//   - Initial mode comes via `?mode=` on the iframe src (handled by
-	//     the inline init script — applied before paint).
-	//   - Subsequent toggles propagate through a `rokkit:mode` postMessage
-	//     that the parent sends whenever its vibe.mode changes. Updating
-	//     vibe here flows through `themable` to the body's data-mode.
-	onMount(() => {
-		if (skin) applySkin(skin)
-
-		function onMessage(event: MessageEvent) {
-			const data = event.data
-			if (!data || typeof data !== 'object') return
-			if (data.type !== 'rokkit:mode') return
-			if (data.mode !== 'light' && data.mode !== 'dark') return
-			vibe.mode = data.mode
-		}
-		window.addEventListener('message', onMessage)
-		return () => window.removeEventListener('message', onMessage)
-	})
+	const skinParam = $derived(page.url.searchParams.get('skin') ?? 'default')
+	const modeParam = $derived(page.url.searchParams.get('mode') ?? 'system')
+	const mode = $derived(
+		modeParam === 'system' || modeParam === 'auto'
+			? typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches
+				? 'dark'
+				: 'light'
+			: modeParam
+	)
 
 	const items = [
 		{
@@ -91,7 +73,7 @@
 	<title>Tabs · {theme}</title>
 </svelte:head>
 
-<div class="embed-tabs">
+<div class="embed-tabs" data-style={theme} data-mode={mode} data-skin={skinParam}>
 	<Tabs options={items} bind:value={active} />
 </div>
 
