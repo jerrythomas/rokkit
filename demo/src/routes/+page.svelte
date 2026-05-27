@@ -1,6 +1,35 @@
 <script lang="ts">
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
 	import { Button } from '@rokkit/ui'
+	import { vibe } from '@rokkit/states'
+	import { untrack } from 'svelte'
+
+	// Iframes inherit mode at load via `&mode=` and follow live toggles
+	// via postMessage. Capturing the initial mode keeps the src attribute
+	// stable across toggles — otherwise re-binding src reloads the
+	// iframe on every mode change (visible as a flash + reset).
+	const initialMode = untrack(() => vibe.mode)
+	let iframeRefs = $state<HTMLIFrameElement[]>([])
+
+	function broadcastMode(target?: Window | null) {
+		const mode = vibe.mode
+		const post = (win: Window | null | undefined) => {
+			win?.postMessage({ type: 'rokkit:mode', mode }, '*')
+		}
+		if (target) {
+			post(target)
+		} else {
+			for (const fr of iframeRefs) post(fr?.contentWindow)
+		}
+	}
+
+	// Live toggles → broadcast to all mounted iframes. The `void` keeps
+	// ESLint's no-unused-expressions rule happy while keeping vibe.mode
+	// as the reactive dependency.
+	$effect(() => {
+		void vibe.mode
+		broadcastMode()
+	})
 
 	const fourPoints = [
 		{
@@ -165,7 +194,7 @@
 		</div>
 
 		<div class="tabs-grid">
-			{#each themedTabs as theme (theme.id)}
+			{#each themedTabs as theme, i (theme.id)}
 				<div class="tabs-card" data-style={theme.id}>
 					<div class="tabs-card-head">
 						<code class="tabs-card-attr">data-style="{theme.label}"</code>
@@ -173,10 +202,12 @@
 					</div>
 					<div class="tabs-card-body">
 						<iframe
+							bind:this={iframeRefs[i]}
 							class="tabs-frame"
 							title={`Tabs · ${theme.label}`}
-							src={`/embed/tabs?theme=${theme.id}&skin=${theme.skin}`}
+							src={`/embed/tabs?theme=${theme.id}&skin=${theme.skin}&mode=${initialMode}`}
 							loading="lazy"
+							onload={(e) => broadcastMode((e.currentTarget as HTMLIFrameElement).contentWindow)}
 						></iframe>
 					</div>
 				</div>

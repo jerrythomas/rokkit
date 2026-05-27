@@ -21,6 +21,7 @@
 	import { page } from '$app/state'
 	import { onMount } from 'svelte'
 	import { Tabs } from '@rokkit/ui'
+	import { vibe } from '@rokkit/states'
 	import { applySkin } from '$lib/data/skins'
 
 	const theme = $derived(page.url.searchParams.get('theme') ?? 'zen-sumi')
@@ -30,8 +31,25 @@
 	// injection scopes naturally to this preview. Hardcoded one-time
 	// apply on mount — no reactivity needed since the URL params don't
 	// change during the iframe's lifetime.
+	//
+	// Mode (light/dark) follows the parent app:
+	//   - Initial mode comes via `?mode=` on the iframe src (handled by
+	//     the inline init script — applied before paint).
+	//   - Subsequent toggles propagate through a `rokkit:mode` postMessage
+	//     that the parent sends whenever its vibe.mode changes. Updating
+	//     vibe here flows through `themable` to the body's data-mode.
 	onMount(() => {
 		if (skin) applySkin(skin)
+
+		function onMessage(event: MessageEvent) {
+			const data = event.data
+			if (!data || typeof data !== 'object') return
+			if (data.type !== 'rokkit:mode') return
+			if (data.mode !== 'light' && data.mode !== 'dark') return
+			vibe.mode = data.mode
+		}
+		window.addEventListener('message', onMessage)
+		return () => window.removeEventListener('message', onMessage)
 	})
 
 	const items = [
