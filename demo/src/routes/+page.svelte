@@ -9,8 +9,6 @@
 	const navLinks = [
 		{ label: 'Components', href: '/app', active: true },
 		{ label: 'Chat demo', href: '/chat' },
-		{ label: 'Themes', href: '/app' },
-		{ label: 'Docs', href: '/app' },
 		{ label: 'GitHub ↗', href: 'https://github.com/jerrythomas/rokkit' }
 	]
 
