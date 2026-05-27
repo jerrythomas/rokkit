@@ -65,18 +65,24 @@ const customPalettes: Record<string, Record<number, string>> = {
 		900: '0.380 0.065 75',
 		950: '0.300 0.050 75',
 	},
+	// sumi is the dark-mode counterpart of kami — the scale runs INVERTED
+	// so that the named-token mapping (`paper → surface.50`) gives the
+	// darkest value when surface is sumi in dark mode. shade 50 = sumi
+	// ink (dark canvas), shade 950 = warm paper-white (dark-mode text).
+	// Must match `rokkit.config.js` exactly so static UnoCSS preflight
+	// and the runtime skin sheet emit the same palette.
 	sumi: {
-		50:  '0.975 0.008 85',
-		100: '0.940 0.008 85',
-		200: '0.780 0.008 85',
-		300: '0.600 0.010 85',
-		400: '0.420 0.012 85',
+		50:  '0.170 0.010 50',
+		100: '0.210 0.012 50',
+		200: '0.250 0.012 50',
+		300: '0.320 0.012 50',
+		400: '0.420 0.010 50',
 		500: '0.570 0.010 50',
-		600: '0.420 0.010 50',
-		700: '0.320 0.012 50',
-		800: '0.250 0.012 50',
-		900: '0.210 0.012 50',
-		950: '0.170 0.010 50',
+		600: '0.420 0.012 85',
+		700: '0.600 0.010 85',
+		800: '0.780 0.008 85',
+		900: '0.940 0.008 85',
+		950: '0.975 0.008 85',
 	}
 }
 
@@ -282,9 +288,16 @@ function buildSkinCss(name: string, colormap: Record<string, RoleMapping>): stri
 	}
 	const roles = new Set(Object.keys(colormap))
 	const aliases = namedTokenAliases(roles)
+	// Dark selector matches BOTH cases: data-mode on the same element as
+	// data-skin (compound `[data-mode='dark'][data-skin='X']`) and on a
+	// data-mode ancestor (`[data-mode='dark'] [data-skin='X']`). The
+	// embed-iframe wrapper uses the same element for both attributes;
+	// other surfaces may set data-mode on body and data-skin on an inner
+	// element. Covering both keeps the cascade right either way.
+	const darkSelector = `[data-mode='dark'][data-skin='${name}'],[data-mode='dark'] [data-skin='${name}']`
 	return [
 		`[data-skin='${name}']{${lightDecls.join('')}${aliases}}`,
-		darkDecls.length ? `[data-mode='dark'] [data-skin='${name}']{${darkDecls.join('')}}` : ''
+		darkDecls.length ? `${darkSelector}{${darkDecls.join('')}}` : ''
 	].join('')
 }
 
