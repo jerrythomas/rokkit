@@ -1,11 +1,6 @@
 <script lang="ts">
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
-	import SiteNav from '$lib/components/SiteNav.svelte'
 	import { Button } from '@rokkit/ui'
-	import { ThemeSwitcherToggle } from '@rokkit/app'
-	import pkg from '@rokkit/ui/package.json'
-
-	const version = pkg.version
 
 	const fourPoints = [
 		{
@@ -75,32 +70,6 @@
 </svelte:head>
 
 <div class="landing">
-	<!-- ─── Nav ────────────────────────────────────────────────────── -->
-	<header class="nav">
-		<div class="nav-brand">
-			<RokkitWordmark height={28} />
-		</div>
-		<SiteNav homeIsActive={true} />
-		<div class="nav-spacer"></div>
-		<div class="nav-actions">
-			<span class="version-chip">v{version} · svelte 5</span>
-			<ThemeSwitcherToggle variant="triad" />
-			<Button
-				href="/chat"
-				variant="default"
-				size="sm"
-				icon="i-mdi:robot-happy-outline"
-				title="Try the chat"
-			/>
-			<Button
-				href="/app"
-				variant="primary"
-				size="sm"
-				icon="i-mdi:layers-outline"
-				title="Open the playground"
-			/>
-		</div>
-	</header>
 
 	<!-- ─── Hero ───────────────────────────────────────────────────── -->
 	<section class="hero">
@@ -369,16 +338,6 @@
 		</div>
 	</section>
 
-	<footer class="footer">
-		<div class="footer-brand">
-			<RokkitWordmark height={22} />
-			<span class="footer-meta">v{version} · MIT · Svelte 5</span>
-		</div>
-		<div class="footer-links">
-			<span class="footer-repo">jerrythomas / rokkit</span>
-			<span class="footer-services">github · npm · vercel</span>
-		</div>
-	</footer>
 </div>
 
 <style>
@@ -414,65 +373,6 @@
 
 	.eyebrow.accent {
 		color: var(--accent);
-	}
-
-	/* ─── Nav ────────────────────────────────────────────────────── */
-
-	.nav {
-		display: flex;
-		align-items: center;
-		gap: 24px;
-		padding: 18px 48px;
-		border-bottom: 1px solid var(--paper-edge);
-		background: var(--paper);
-		position: sticky;
-		top: 0;
-		z-index: 5;
-	}
-
-	.nav-brand {
-		display: inline-flex;
-		align-items: center;
-	}
-
-	.nav-links {
-		display: flex;
-		gap: 24px;
-		margin-left: 48px;
-	}
-
-	.nav-links a {
-		font: 500 13px var(--font-ui);
-		color: var(--ink-mute);
-		text-decoration: none;
-		white-space: nowrap;
-	}
-
-	.nav-links a:hover {
-		color: var(--ink);
-	}
-
-	.nav-links a.active {
-		color: var(--ink);
-	}
-
-	.nav-spacer {
-		flex: 1;
-	}
-
-	.nav-actions {
-		display: flex;
-		align-items: center;
-		gap: 10px;
-	}
-
-	.version-chip {
-		font: 500 11.5px var(--font-mono);
-		color: var(--ink-soft);
-		padding: 3px 8px;
-		border: 1px solid var(--paper-edge);
-		border-radius: 4px;
-		white-space: nowrap;
 	}
 
 	/* ─── Hero ───────────────────────────────────────────────────── */

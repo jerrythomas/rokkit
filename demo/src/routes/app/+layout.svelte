@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte'
 	import {
-		ChatChrome,
 		ChatComposer,
 		ChatMessage,
 		ChatResponse,
@@ -19,7 +18,6 @@
 	import { BarChart } from '@rokkit/chart'
 	import { alerts } from '@rokkit/states'
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
-	import SiteNav from '$lib/components/SiteNav.svelte'
 	import { theme } from '$lib/stores/theme.svelte'
 	import { vibe } from '@rokkit/states'
 	import { koan } from '$lib/koan/store.svelte'
@@ -39,23 +37,12 @@
 	}
 	const { children }: Props = $props()
 
-	const styles = [
-		{ id: 'zen-sumi', label: 'zen-sumi', colors: ['#F7F3EA', '#2A2925', '#A83D1F'] },
-		{ id: 'rokkit', label: 'rokkit', colors: ['#FFFFFF', '#1F2937', '#EF4136'] },
-		{ id: 'minimal', label: 'minimal', colors: ['#FAFAFA', '#0A0A0A', '#0A0A0A'] },
-		{ id: 'material', label: 'material', colors: ['#FFFFFF', '#1F1F1F', '#6750A4'] }
-	]
-
-	let style = $state(theme.style)
-	let density = $state(theme.density)
+	// Style / density used to bind to ChatChrome's controls here — those
+	// moved into the global SiteHeader (rendered by the root layout). The
+	// theme store still tracks the active mode for the `koan` canvas's
+	// chart rendering, so keep the vibe→theme.mode bridge.
 	const mode = $derived<'light' | 'dark'>(theme.mode === 'dark' ? 'dark' : 'light')
 
-	$effect(() => {
-		if (style !== theme.style) theme.setStyle(style)
-	})
-	$effect(() => {
-		if (density !== theme.density) theme.setDensity(density)
-	})
 	$effect(() => {
 		if (vibe.mode !== theme.mode) theme.setMode(vibe.mode)
 	})
@@ -1050,21 +1037,6 @@ ${rows}
 </svelte:head>
 
 <div class="koan-shell">
-	<ChatChrome
-		bind:style
-		bind:density
-		{styles}
-	>
-		{#snippet brand()}
-			<a href="/" class="brand-link" title="Back to Rokkit home" aria-label="Rokkit home">
-				<RokkitWordmark height={20} />
-			</a>
-		{/snippet}
-		{#snippet nav()}
-			<SiteNav />
-		{/snippet}
-	</ChatChrome>
-
 	<div class="stage">
 		<ChatSidebar bind:collapsed={shell.collapsed} onnew={startNewConversation}>
 			<div class="group-label">Today</div>
@@ -1848,7 +1820,7 @@ ${rows}
 					</div>
 					<div class="meta">
 						<span>style</span>
-						<span class="meta-value">{style}</span>
+						<span class="meta-value">{vibe.style}</span>
 						<span class="meta-sep">·</span>
 						<span>47 components</span>
 						<span class="meta-sep">·</span>
@@ -2538,8 +2510,11 @@ ${rows}
 
 <style>
 	.koan-shell {
-		position: fixed;
-		inset: 0;
+		/* Lives inside the root layout's <main>; flex column so the stage
+		 * (sidebar + content + composer) stretches to fill what's left after
+		 * the SiteHeader + SiteFooter take their share. */
+		flex: 1;
+		min-height: 0;
 		display: flex;
 		flex-direction: column;
 		background: var(--paper);

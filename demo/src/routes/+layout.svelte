@@ -3,6 +3,8 @@
 	import '../app.css'
 	import { themable } from '@rokkit/actions'
 	import { vibe } from '@rokkit/states'
+	import SiteHeader from '$lib/components/SiteHeader.svelte'
+	import SiteFooter from '$lib/components/SiteFooter.svelte'
 
 	// The library's `DEFAULT_STYLES` constant excludes zen-sumi/frosted
 	// (they ship as optional themes, not in the default vocabulary), so
@@ -29,4 +31,27 @@
 
 <svelte:body use:themable={{ theme: vibe, storageKey: 'rokkit-theme' }} />
 
-{@render children?.()}
+<div class="site-shell">
+	<SiteHeader />
+	<main class="site-main">
+		{@render children?.()}
+	</main>
+	<SiteFooter />
+</div>
+
+<style>
+	.site-shell {
+		min-height: 100vh;
+		display: flex;
+		flex-direction: column;
+		background: var(--paper);
+		color: var(--ink);
+	}
+
+	.site-main {
+		flex: 1;
+		min-height: 0;
+		display: flex;
+		flex-direction: column;
+	}
+</style>

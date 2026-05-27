@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { tick } from 'svelte'
-	import { ChatChrome, ChatComposer, ChatStream, ChatMessage, configureWho } from '$lib/chat'
-	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
-	import SiteNav from '$lib/components/SiteNav.svelte'
+	import { ChatComposer, ChatStream, ChatMessage, configureWho } from '$lib/chat'
 	import { Button, Toggle } from '@rokkit/ui'
 	import {
 		conversation,
@@ -178,16 +176,9 @@
 </svelte:head>
 
 <div class="chat-shell">
-	<ChatChrome showDensity={false}>
-		{#snippet brand()}
-			<a href="/" class="brand-link" title="Back to Rokkit home" aria-label="Rokkit home">
-				<RokkitWordmark />
-			</a>
-		{/snippet}
-		{#snippet nav()}
-			<SiteNav />
-		{/snippet}
-		{#snippet actions()}
+	<div class="chat-subtoolbar">
+		<div class="subtoolbar-left">
+			<span class="route-label">{crumbLabel}</span>
 			<Toggle
 				variant="group"
 				size="sm"
@@ -196,12 +187,6 @@
 				onchange={(v) => setMode(v as Mode)}
 				showLabels={true}
 			/>
-		{/snippet}
-	</ChatChrome>
-
-	<div class="chat-subtoolbar">
-		<div class="subtoolbar-left">
-			<span class="route-label">{crumbLabel}</span>
 		</div>
 		<div class="subtoolbar-right">
 			{#if mode === 'openrouter'}
@@ -366,8 +351,11 @@
 
 <style>
 	.chat-shell {
-		position: fixed;
-		inset: 0;
+		/* Lives inside the root layout's <main>; flex column so the
+		 * subtoolbar and content stretch to fill what's left after the
+		 * SiteHeader + SiteFooter take their share. */
+		flex: 1;
+		min-height: 0;
 		display: flex;
 		flex-direction: column;
 		background: var(--paper);
