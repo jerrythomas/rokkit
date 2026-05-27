@@ -138,20 +138,62 @@
 	]
 	const allConv = [...today, ...yesterday, ...older]
 
-	const buildChips = [
+	// Welcome chips are organized as a curated starter rail plus a categorized
+	// "browse all" view. The starter set surfaces the highest-value, most
+	// distinct demos so a first-time visitor sees breadth without a wall of
+	// chips. The full catalog expands inline on demand and is grouped by
+	// purpose so it scales as more demos land.
+	const starterChips = [
 		{ label: 'Tabs · 5 panes', icon: 'i-mdi:tab' },
 		{ label: 'Sortable data table', icon: 'i-mdi:table' },
-		{ label: 'Tree select', icon: 'i-mdi:file-tree' },
-		{ label: 'Multi-select with chips', icon: 'i-mdi:select-multiple' },
-		{ label: 'List with collapsible groups', icon: 'i-mdi:format-list-bulleted' },
-		{ label: 'Toast notifications', icon: 'i-mdi:bell-outline' },
 		{ label: 'Schema-driven form', icon: 'i-mdi:form-textbox' },
-		{ label: 'Single-pick select', icon: 'i-mdi:menu-down' },
 		{ label: 'Bar chart with quarterly revenue', icon: 'i-mdi:chart-bar' },
-		{ label: 'Combobox with type-to-filter', icon: 'i-mdi:magnify' },
-		{ label: 'Date and time picker', icon: 'i-mdi:calendar' },
+		{ label: 'Multi-select with chips', icon: 'i-mdi:select-multiple' },
 		{ label: 'Multi-step stepper', icon: 'i-mdi:stairs' }
 	]
+
+	const buildCatalog = [
+		{
+			group: 'Data display',
+			items: [
+				{ label: 'Sortable data table', icon: 'i-mdi:table' },
+				{ label: 'List with collapsible groups', icon: 'i-mdi:format-list-bulleted' },
+				{ label: 'Tree select', icon: 'i-mdi:file-tree' }
+			]
+		},
+		{
+			group: 'Selection',
+			items: [
+				{ label: 'Single-pick select', icon: 'i-mdi:menu-down' },
+				{ label: 'Multi-select with chips', icon: 'i-mdi:select-multiple' },
+				{ label: 'Combobox with type-to-filter', icon: 'i-mdi:magnify' }
+			]
+		},
+		{
+			group: 'Forms & flows',
+			items: [
+				{ label: 'Schema-driven form', icon: 'i-mdi:form-textbox' },
+				{ label: 'Multi-step stepper', icon: 'i-mdi:stairs' },
+				{ label: 'Date and time picker', icon: 'i-mdi:calendar' }
+			]
+		},
+		{
+			group: 'Charts',
+			items: [
+				{ label: 'Bar chart with quarterly revenue', icon: 'i-mdi:chart-bar' }
+			]
+		},
+		{
+			group: 'Layout & feedback',
+			items: [
+				{ label: 'Tabs · 5 panes', icon: 'i-mdi:tab' },
+				{ label: 'Toast notifications', icon: 'i-mdi:bell-outline' }
+			]
+		}
+	]
+	const totalExamples = buildCatalog.reduce((n, g) => n + g.items.length, 0)
+
+	let showAllExamples = $state(false)
 	const howChips = [
 		{ label: 'How does theming work?', icon: 'i-mdi:help-circle-outline' },
 		{ label: 'Bind a list to async data', icon: 'i-mdi:help-circle-outline' },
@@ -1134,7 +1176,24 @@ ${rows}
 
 					<section>
 						<div class="welcome-eyebrow">Build a component</div>
-						<Chips items={buildChips} onselect={pickChip} />
+						{#if showAllExamples}
+							{#each buildCatalog as group (group.group)}
+								<div class="welcome-subgroup">
+									<div class="welcome-subgroup-label">{group.group}</div>
+									<Chips items={group.items} onselect={pickChip} />
+								</div>
+							{/each}
+							<button type="button" class="welcome-expand" onclick={() => (showAllExamples = false)}>
+								<span class="i-mdi:chevron-up" aria-hidden="true"></span>
+								Show fewer
+							</button>
+						{:else}
+							<Chips items={starterChips} onselect={pickChip} />
+							<button type="button" class="welcome-expand" onclick={() => (showAllExamples = true)}>
+								Browse all {totalExamples} examples
+								<span class="i-mdi:arrow-right" aria-hidden="true"></span>
+							</button>
+						{/if}
 					</section>
 
 					<section>
@@ -2700,6 +2759,51 @@ ${rows}
 		letter-spacing: 0.16em;
 		text-transform: uppercase;
 		margin-bottom: 6px;
+	}
+
+	.welcome-subgroup {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		margin-top: 10px;
+	}
+
+	.welcome-subgroup:first-of-type {
+		margin-top: 0;
+	}
+
+	.welcome-subgroup-label {
+		font: 500 11px var(--font-ui);
+		color: var(--ink-soft);
+		letter-spacing: 0.02em;
+	}
+
+	.welcome-expand {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		margin-top: 10px;
+		padding: 6px 10px;
+		font: 500 12px var(--font-ui);
+		color: var(--ink-mute);
+		background: transparent;
+		border: 0;
+		border-radius: var(--density-radius-base);
+		cursor: pointer;
+		align-self: flex-start;
+		transition:
+			color 120ms ease,
+			background 120ms ease;
+	}
+
+	.welcome-expand:hover {
+		color: var(--ink);
+		background: var(--paper-mute);
+	}
+
+	.welcome-expand [class*='i-mdi'] {
+		width: 14px;
+		height: 14px;
 	}
 
 	.canvas {

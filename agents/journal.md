@@ -4346,3 +4346,28 @@ that for the one-shot body-dataset sync. Per-update writes still happen
 in `setRadius`. Svelte autofixer confirms no remaining issues.
 
 Lint: 0 errors. Tests: 3500 passed.
+
+## 2026-05-26 (cont.) — /app welcome: curated rail + inline catalog reveal
+
+User flagged that the build-component chip rail on `/app` will get cluttered as the Koan catalog grows past its current 12 demos. Picked "curated rail + browse all" — small change, big readability win, no extra route.
+
+**Change**
+
+`demo/src/routes/app/+layout.svelte`:
+
+- Replaced the flat `buildChips[12]` array with:
+  - `starterChips[6]` — Tabs, Sortable table, Schema-driven form, Bar chart, Multi-select, Stepper. Picked for breadth (one per major component family).
+  - `buildCatalog[5 groups]` — full set grouped by purpose: Data display, Selection, Forms & flows, Charts, Layout & feedback.
+- New `showAllExamples` `$state` toggle. When `false` the welcome renders the starter rail + a `Browse all 12 examples →` button. When `true` it renders the categorized groups + a `Show fewer` button.
+- Each group inside the expanded view has a small `welcome-subgroup-label` (between the eyebrow and the chips) so users can scan by category.
+- The expand toggle uses the same data-flow as before — picking a chip still calls `pickChip → submitQuery`, which sets the thinking phase and goes to the matching `/app/<demo>` route.
+
+`demo/uno.config.js`: safelisted `i-mdi:chevron-up` for the "Show fewer" affordance.
+
+**Net effect**
+
+Welcome state defaults to 6 starter chips for "Build a component" (down from 12), plus the unchanged "How-to" (3) and "Theme & customize" (2) sections. Total visible chips drop from 17 → 11. The full catalog is one click away, organized by purpose. Adding the next demo means appending one line to `buildCatalog[group].items`; no churn on the welcome density.
+
+Browser-verified (rokkit body): starter view renders 6 chips + `Browse all 12 examples →`. Clicking expands to 5 labeled subgroups (Data display 3, Selection 3, Forms & flows 3, Charts 1, Layout & feedback 2) + `Show fewer`. Clicking "Tabs · 5 panes" submits the query and navigates to `/app/tabs`.
+
+Lint: 0 errors. Tests: 3500 passed.

@@ -76,6 +76,7 @@ export default defineConfig({
 		'i-mdi:widgets-outline',
 		'i-mdi:form-textbox',
 		'i-mdi:arrow-right',
+		'i-mdi:chevron-up',
 		'i-mdi:magnify',
 		'i-mdi:tab',
 		'i-mdi:file-tree',
