@@ -3,8 +3,14 @@
 	import '../app.css'
 	import { themable } from '@rokkit/actions'
 	import { vibe } from '@rokkit/states'
+	import { page } from '$app/state'
 	import SiteHeader from '$lib/components/SiteHeader.svelte'
 	import SiteFooter from '$lib/components/SiteFooter.svelte'
+
+	// Footer is a marketing-page detail (version + credits). On the
+	// app-like routes (/chat, /app) we want every pixel for the canvas,
+	// so the footer only renders on the landing page.
+	const showFooter = $derived(page.url?.pathname === '/')
 
 	// The library's `DEFAULT_STYLES` constant excludes zen-sumi/frosted
 	// (they ship as optional themes, not in the default vocabulary), so
@@ -36,7 +42,9 @@
 	<main class="site-main">
 		{@render children?.()}
 	</main>
-	<SiteFooter />
+	{#if showFooter}
+		<SiteFooter />
+	{/if}
 </div>
 
 <style>
