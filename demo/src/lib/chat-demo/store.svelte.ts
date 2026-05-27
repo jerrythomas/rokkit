@@ -18,8 +18,17 @@ import {
 	appendAssistant as sharedAppendAssistant,
 	getCurrentConversation,
 	setCurrentId,
+	type ChatProvider,
 	type Turn
 } from '$lib/koan/conversations.svelte'
+
+/** Snapshot the current provider + model so the conversation records who
+ * produced each assistant turn. Resume can use this to restore the toggle. */
+function currentProviderStamp(): { provider: ChatProvider; model?: string } {
+	if (!llm.enabled) return { provider: 'scripted' }
+	if (llm.provider === 'webllm') return { provider: 'webllm', model: llm.webllmModel }
+	return { provider: 'openrouter', model: llm.openRouterModel }
+}
 
 function toChatTurn(t: Turn): ChatTurn {
 	const timestamp = Date.parse(t.at)
@@ -27,7 +36,9 @@ function toChatTurn(t: Turn): ChatTurn {
 		return { id: t.id, timestamp, role: 'user', text: t.text }
 	}
 	const blocks = t.body.kind === 'blocks' ? (t.body.blocks as Block[]) : []
-	return { id: t.id, timestamp, role: 'assistant', blocks }
+	const provider = t.body.kind === 'blocks' ? t.body.provider : undefined
+	const model = t.body.kind === 'blocks' ? t.body.model : undefined
+	return { id: t.id, timestamp, role: 'assistant', blocks, provider, model }
 }
 
 let _thinking = $state(false)
@@ -57,7 +68,8 @@ function pushUser(text: string): void {
 }
 
 function pushAssistant(blocks: Block[]): void {
-	sharedAppendAssistant({ kind: 'blocks', blocks })
+	const stamp = currentProviderStamp()
+	sharedAppendAssistant({ kind: 'blocks', blocks, ...stamp })
 }
 
 function thinkThenBlocks(blocks: Block[]): void {
@@ -221,4 +233,28 @@ function summariseUpload(source: 'json' | 'csv', text: string, parsed: unknown, 
 export function resetConversation(): void {
 	setCurrentId(null)
 	_thinking = false
+}
+
+/**
+ * Sync the llm toggle back to whatever the current chat conversation's
+ * most recent assistant turn used. Lets resume default to the original
+ * provider; the user can still switch mid-thread afterwards.
+ */
+export function syncLLMFromCurrentConversation(): void {
+	const conv = getCurrentConversation()
+	if (!conv || conv.surface !== 'chat') return
+	for (let i = conv.turns.length - 1; i >= 0; i--) {
+		const t = conv.turns[i]
+		if (t.kind !== 'assistant' || t.body.kind !== 'blocks' || !t.body.provider) continue
+		const { provider, model } = t.body
+		if (provider === 'scripted') {
+			llm.enabled = false
+		} else {
+			llm.enabled = true
+			llm.provider = provider
+			if (model && provider === 'openrouter') llm.openRouterModel = model
+			if (model && provider === 'webllm') llm.webllmModel = model
+		}
+		return
+	}
 }

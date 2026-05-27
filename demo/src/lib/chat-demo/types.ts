@@ -102,5 +102,14 @@ export type ChatTurn = {
 	timestamp: number
 } & (
 	| { role: 'user'; text: string }
-	| { role: 'assistant'; blocks: Block[]; pending?: boolean }
+	| {
+			role: 'assistant'
+			blocks: Block[]
+			pending?: boolean
+			/** Who produced this turn — captured at submit time so resume
+			 * can restore the toggle. */
+			provider?: 'scripted' | 'openrouter' | 'webllm'
+			/** Model id for openrouter / webllm (undefined for scripted). */
+			model?: string
+	  }
 )

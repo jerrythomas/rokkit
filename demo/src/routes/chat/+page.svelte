@@ -6,7 +6,8 @@
 		conversation,
 		submitText,
 		submitData,
-		resetConversation
+		resetConversation,
+		syncLLMFromCurrentConversation
 	} from '$lib/chat-demo/store.svelte'
 	import {
 		conversations,
@@ -59,6 +60,10 @@
 	$effect(() => {
 		// Probe WebGPU on mount so the toggle shows the right state.
 		void detectWebGPU()
+		// If we arrived with a current chat conversation (e.g. via the
+		// shared sidebar from /app), restore the toggle to whatever
+		// provider produced the last assistant turn.
+		syncLLMFromCurrentConversation()
 	})
 
 	// Brand the assistant for this surface. User name stays at the default
@@ -172,6 +177,7 @@
 			return
 		}
 		loadConversation(conv.id)
+		syncLLMFromCurrentConversation()
 		// Stream re-renders reactively via the conversation.turns getter.
 	}
 
@@ -248,72 +254,6 @@
 </svelte:head>
 
 <div class="chat-shell">
-	<div class="chat-subtoolbar">
-		<div class="subtoolbar-left">
-			<span class="route-label">{crumbLabel}</span>
-			<Toggle
-				variant="group"
-				size="sm"
-				options={modeOptions}
-				value={mode}
-				onchange={(v) => setMode(v as Mode)}
-				showLabels={true}
-			/>
-		</div>
-		<div class="subtoolbar-right">
-			{#if mode === 'openrouter'}
-				<label class="subtoolbar-field">
-					<span class="subtoolbar-label">Model</span>
-					<select bind:value={llm.openRouterModel} class="llm-model">
-						{#each OPENROUTER_MODELS as m (m.id)}
-							<option value={m.id}>{m.label}</option>
-						{/each}
-					</select>
-				</label>
-			{:else if mode === 'webllm'}
-				<label class="subtoolbar-field">
-					<span class="subtoolbar-label">Model</span>
-					<select
-						bind:value={llm.webllmModel}
-						class="llm-model"
-						disabled={llm.webllmStatus === 'loading'}
-						onchange={resetWebLLMEngine}
-					>
-						{#each WEBLLM_MODELS as m (m.id)}
-							<option value={m.id}>{m.label} · {m.size}</option>
-						{/each}
-					</select>
-				</label>
-				{#if llm.webllmStatus === 'uninitialized'}
-					<button type="button" class="llm-load-btn" onclick={() => ensureWebLLMEngine()}>
-						<span class="i-mdi:download" aria-hidden="true"></span>
-						Load
-					</button>
-				{:else if llm.webllmStatus === 'loading'}
-					<span class="llm-progress" title={llm.webllmStage}>
-						<span class="i-mdi:loading llm-spin" aria-hidden="true"></span>
-						{Math.round(llm.webllmProgress * 100)}%
-					</span>
-				{:else if llm.webllmStatus === 'ready' || llm.webllmStatus === 'thinking'}
-					<span class="llm-ready">
-						<span class="i-mdi:check-circle-outline" aria-hidden="true"></span>
-						ready
-					</span>
-				{:else if llm.webllmStatus === 'error'}
-					<span class="llm-error" title={llm.errorMessage}>error</span>
-				{/if}
-			{/if}
-			<Button
-				variant="default"
-				size="sm"
-				icon="i-mdi:restore"
-				label="Clear"
-				title="Clear the conversation"
-				onclick={resetConversation}
-			/>
-		</div>
-	</div>
-
 	<div class="chat-layout">
 		<ChatHistory bind:collapsed onnew={startNewChat}>
 			{#if allConv.length === 0}
@@ -386,6 +326,71 @@
 		</ChatHistory>
 
 	<div class="chat-body">
+		<div class="chat-subtoolbar">
+			<div class="subtoolbar-left">
+				<span class="route-label">{crumbLabel}</span>
+				<Toggle
+					variant="group"
+					size="sm"
+					options={modeOptions}
+					value={mode}
+					onchange={(v) => setMode(v as Mode)}
+					showLabels={true}
+				/>
+			</div>
+			<div class="subtoolbar-right">
+				{#if mode === 'openrouter'}
+					<label class="subtoolbar-field">
+						<span class="subtoolbar-label">Model</span>
+						<select bind:value={llm.openRouterModel} class="llm-model">
+							{#each OPENROUTER_MODELS as m (m.id)}
+								<option value={m.id}>{m.label}</option>
+							{/each}
+						</select>
+					</label>
+				{:else if mode === 'webllm'}
+					<label class="subtoolbar-field">
+						<span class="subtoolbar-label">Model</span>
+						<select
+							bind:value={llm.webllmModel}
+							class="llm-model"
+							disabled={llm.webllmStatus === 'loading'}
+							onchange={resetWebLLMEngine}
+						>
+							{#each WEBLLM_MODELS as m (m.id)}
+								<option value={m.id}>{m.label} · {m.size}</option>
+							{/each}
+						</select>
+					</label>
+					{#if llm.webllmStatus === 'uninitialized'}
+						<button type="button" class="llm-load-btn" onclick={() => ensureWebLLMEngine()}>
+							<span class="i-mdi:download" aria-hidden="true"></span>
+							Load
+						</button>
+					{:else if llm.webllmStatus === 'loading'}
+						<span class="llm-progress" title={llm.webllmStage}>
+							<span class="i-mdi:loading llm-spin" aria-hidden="true"></span>
+							{Math.round(llm.webllmProgress * 100)}%
+						</span>
+					{:else if llm.webllmStatus === 'ready' || llm.webllmStatus === 'thinking'}
+						<span class="llm-ready">
+							<span class="i-mdi:check-circle-outline" aria-hidden="true"></span>
+							ready
+						</span>
+					{:else if llm.webllmStatus === 'error'}
+						<span class="llm-error" title={llm.errorMessage}>error</span>
+					{/if}
+				{/if}
+				<Button
+					variant="default"
+					size="sm"
+					icon="i-mdi:restore"
+					label="Clear"
+					title="Clear the conversation"
+					onclick={resetConversation}
+				/>
+			</div>
+		</div>
 		<div class="chat-stream-wrap" bind:this={streamRef}>
 			<ChatStream>
 				{#if conversation.turns.length === 0}
@@ -420,7 +425,11 @@
 							{turn.text}
 						</ChatMessage>
 					{:else}
-						<ChatMessage kind="info" icon="i-mdi:robot-happy-outline">
+						<ChatMessage
+							kind="info"
+							icon="i-mdi:robot-happy-outline"
+							status={turn.provider}
+						>
 							<BlockList blocks={turn.blocks} onSuggestion={handleSuggestion} />
 						</ChatMessage>
 					{/if}

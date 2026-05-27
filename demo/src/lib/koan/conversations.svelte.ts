@@ -23,9 +23,16 @@ export interface UserTurn {
 	text: string
 }
 
+export type ChatProvider = 'scripted' | 'openrouter' | 'webllm'
+
 export type AssistantBody =
 	| { kind: 'demo'; demoType: ShellDemoType; variant: string | null }
-	| { kind: 'blocks'; blocks: unknown[] }
+	| {
+			kind: 'blocks'
+			blocks: unknown[]
+			provider?: ChatProvider
+			model?: string
+	  }
 	| { kind: 'markdown'; text: string }
 	| { kind: 'component'; component: string; props: unknown }
 	| { kind: 'error'; message: string }
