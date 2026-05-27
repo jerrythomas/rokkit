@@ -8,6 +8,7 @@
 
 import { defaultColors, shades } from '@rokkit/core'
 import { ColorSpace } from '@rokkit/core'
+import { NAMED_TOKENS, NAMED_TOKEN_SHADE_MAP, NAMED_TOKEN_ROLE_MAP } from '@rokkit/core'
 
 // ── Custom OKLCH palettes (copied from rokkit.config.js) ────────────────────
 
@@ -236,6 +237,35 @@ function getSkinStyleEl(): HTMLStyleElement | null {
  */
 let activeOverrides: Record<string, RoleMapping> = {}
 
+/**
+ * Build named-token aliases that point at the palette shades so the
+ * theme CSS (which reads `var(--primary)`, `var(--paper)`, etc.) picks
+ * up palette overrides written by `applySkin`. Without these, the demo
+ * runs in `tokens: 'core'` mode where named tokens are emitted as
+ * inlined OKLCH values at config-build time — they don't reference
+ * `--color-{role}-{shade}` and so palette overrides have no effect.
+ *
+ * Only emits aliases for roles the skin is overriding, so we don't
+ * accidentally null out tokens whose source role wasn't touched.
+ */
+function namedTokenAliases(roles: Set<string>): string {
+	const lines: string[] = []
+	for (const name of NAMED_TOKENS) {
+		const shadeOrDerived = NAMED_TOKEN_SHADE_MAP[name as keyof typeof NAMED_TOKEN_SHADE_MAP]
+		const role = NAMED_TOKEN_ROLE_MAP[name as keyof typeof NAMED_TOKEN_ROLE_MAP]
+		if (shadeOrDerived === 'derived') {
+			// on-primary derives from surface.50
+			if (roles.has('surface')) {
+				lines.push(`--${name}:var(--color-surface-50);`)
+			}
+			continue
+		}
+		if (!roles.has(role)) continue
+		lines.push(`--${name}:var(--color-${role}-${shadeOrDerived});`)
+	}
+	return lines.join('')
+}
+
 function rewriteSkinStyle() {
 	const el = getSkinStyleEl()
 	if (!el) return
@@ -249,9 +279,23 @@ function rewriteSkinStyle() {
 			darkDecls.push(declarationsFor(role, mapping.dark))
 		}
 	}
+	// Named-token aliases — only for roles in the override set. Lets
+	// theme CSS reading `var(--primary)` etc. follow palette swaps.
+	//
+	// Aliases must be emitted in BOTH the `:root` and `[data-mode="dark"]`
+	// blocks because the UnoCSS preflight emits a sizeable
+	// `[data-mode="dark"] { --primary: <inlined value>; ... }` rule that
+	// otherwise wins over our `:root` skin block in dark mode (the body
+	// has `data-mode="dark"`, so descendants see the dark block's value).
+	// Pointing them at the same `var(--color-{role}-{shade})` keeps both
+	// modes in sync — for single-palette skins the palette vars are
+	// only defined at :root, so the dark alias just resolves to the
+	// light palette value.
+	const overrideRoles = new Set(Object.keys(activeOverrides))
+	const aliases = namedTokenAliases(overrideRoles)
 	const css = [
-		lightDecls.length ? `:root{${lightDecls.join('')}}` : '',
-		darkDecls.length ? `[data-mode="dark"]{${darkDecls.join('')}}` : ''
+		lightDecls.length || aliases ? `:root{${lightDecls.join('')}${aliases}}` : '',
+		darkDecls.length || aliases ? `[data-mode="dark"]{${darkDecls.join('')}${aliases}}` : ''
 	].join('')
 	el.textContent = css
 }
