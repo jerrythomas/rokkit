@@ -8,18 +8,20 @@
 	 * document, both rules match and the later-imported stylesheet wins
 	 * (zen-sumi.css is loaded last in app.css). Iframes isolate the
 	 * cascade so each preview gets the theme it actually asked for.
+	 *
+	 * The active style is set BEFORE paint by the inline init script
+	 * (hooks.server.js → themeInitScript), which reads `?theme=` from
+	 * the URL and writes `data-style` to both documentElement and body.
+	 * The root layout's themable action runs with `storageKey: undefined`
+	 * on /embed routes (so no save / no storage listener), and its
+	 * effect re-writes the same value vibe was synced to. No reactive
+	 * `vibe.style = theme` needed here — the page is a pure consumer
+	 * of the URL-driven dataset.
 	 */
 	import { page } from '$app/state'
 	import { Tabs } from '@rokkit/ui'
-	import { vibe } from '@rokkit/states'
 
 	const theme = $derived(page.url.searchParams.get('theme') ?? 'zen-sumi')
-
-	// Drive the active style through vibe so the root layout's `themable`
-	// action and this preview agree. Just setting `document.body.dataset`
-	// here races with `themable`'s effect (also reactive on `vibe.style`),
-	// which resets the body back to the host's vibe choice.
-	vibe.allowedStyles = ['rokkit', 'minimal', 'material', 'frosted', 'zen-sumi']
 
 	const items = [
 		{
@@ -54,12 +56,6 @@
 		}
 	]
 	let active = $state<unknown>('theming')
-
-	$effect(() => {
-		vibe.style = theme
-		// Mirror on the html element too — themable only writes to body.
-		document.documentElement.dataset.style = theme
-	})
 </script>
 
 <svelte:head>
