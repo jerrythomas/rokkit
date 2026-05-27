@@ -47,43 +47,57 @@
 }
 
 [data-style='rokkit']
-  [data-tabs][data-orientation='vertical']
-  [data-tabs-list]:focus-within
-  [data-tabs-trigger][data-selected] {
-  @apply bg-gradient-to-r;
-}
-
-[data-style='rokkit']
   [data-tabs][data-orientation='vertical'][data-position='after']
   [data-tabs-trigger] {
   @apply rounded-none rounded-r;
-}
-
-[data-style='rokkit']
-  [data-tabs][data-orientation='vertical'][data-position='after']
-  [data-tabs-list]:focus-within
-  [data-tabs-trigger][data-selected] {
-  @apply bg-gradient-to-l;
 }
 
 [data-style='rokkit'] [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {
   @apply bg-paper-mute text-ink-mute;
 }
 
-/* Selected state */
+/* Selected — branded sheen at rest. The gradient is derived from `--primary`
+ * via OKLCH `color-mix` so it stays a real two-tone sweep even when the host
+ * skin maps accent and primary to the same palette. Previously the gradient
+ * was gated on `:focus-within`; dropped so the selected tab reads as selected
+ * without keyboard focus on the list. */
 [data-style='rokkit'] [data-tabs-trigger][data-selected] {
-  @apply bg-paper-mute text-ink-mute;
-}
-
-[data-style='rokkit'] [data-tabs-list]:focus-within [data-tabs-trigger][data-selected] {
-  @apply from-primary to-accent text-primary bg-gradient-to-b;
+  @apply text-on-primary;
+  background: linear-gradient(
+    to bottom,
+    var(--primary),
+    color-mix(in oklch, var(--primary) 70%, black)
+  );
 }
 
 [data-style='rokkit']
   [data-tabs][data-position='after']
-  [data-tabs-list]:focus-within
   [data-tabs-trigger][data-selected] {
-  @apply bg-gradient-to-t;
+  background: linear-gradient(
+    to top,
+    var(--primary),
+    color-mix(in oklch, var(--primary) 70%, black)
+  );
+}
+
+[data-style='rokkit']
+  [data-tabs][data-orientation='vertical']
+  [data-tabs-trigger][data-selected] {
+  background: linear-gradient(
+    to right,
+    var(--primary),
+    color-mix(in oklch, var(--primary) 70%, black)
+  );
+}
+
+[data-style='rokkit']
+  [data-tabs][data-orientation='vertical'][data-position='after']
+  [data-tabs-trigger][data-selected] {
+  background: linear-gradient(
+    to left,
+    var(--primary),
+    color-mix(in oklch, var(--primary) 70%, black)
+  );
 }
 
 /* =============================================================================
@@ -99,7 +113,7 @@
 }
 
 [data-style='rokkit'] [data-tabs-trigger][data-selected] [data-tabs-icon] {
-  @apply text-primary;
+  @apply text-on-primary;
 }
 
 /* =============================================================================

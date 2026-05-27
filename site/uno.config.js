@@ -182,7 +182,8 @@ const componentIcons = [
 export default defineConfig({
 	presets: [presetRokkit(config), presetBackgrounds()],
 	shortcuts: [
-		['text-on-primary', 'text-surface-50'],
+		// `text-on-primary` is handled by presetRokkit via the named-token
+		// vocabulary (resolves to `var(--on-primary)`). Don't override here.
 		['text-on-secondary', 'text-surface-50'],
 		['text-on-info', 'text-surface-50'],
 		['text-on-success', 'text-surface-50'],

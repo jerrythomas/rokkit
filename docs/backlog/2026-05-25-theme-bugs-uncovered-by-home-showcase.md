@@ -8,6 +8,10 @@ relies on these themes in production.
 Discovered: 2026-05-25 while iterating on `/`. Severity: cosmetic /
 contrast.
 
+**Status: all three fixed 2026-05-26.** See journal `2026-05-26 — Theme
+bugs uncovered by home showcase: all three fixed`. Root causes were not
+quite what the original investigation suspected — see fix notes inline.
+
 ## 1. `text-on-primary` not resolving to `var(--on-primary)`
 
 Symptom: in `zen-sumi`, the primary `<Button/>` (used on the home page

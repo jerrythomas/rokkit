@@ -55,7 +55,12 @@ function loadRoleOverrides(): Record<string, string> {
 }
 
 function createThemeStore() {
-	let radius = $state(readStored('radius', 'soft'))
+	// Read the initial radius once so the body-dataset sync below uses the
+	// stored value directly (not a reactive read of `radius`, which would
+	// only capture the initial value at module-load time and miss later
+	// updates — and trip Svelte's `state_referenced_locally` warning).
+	const initialRadius = readStored('radius', 'soft')
+	let radius = $state(initialRadius)
 	let skin = $state(readStored('skin', 'default'))
 	let roleOverrides = $state<Record<string, string>>(loadRoleOverrides())
 
@@ -65,7 +70,7 @@ function createThemeStore() {
 		persistField('radius', v)
 	}
 
-	if (browser) document.body.dataset.radius = radius
+	if (browser) document.body.dataset.radius = initialRadius
 
 	return {
 		// vibe delegates — read/write the canonical store directly.

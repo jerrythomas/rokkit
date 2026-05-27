@@ -4249,3 +4249,100 @@ ChatMessage stays dumb — it reads from the store via `$derived.by()`. Per-mess
 - `/app/tabs` → user `YOU you`; assistant turns keep their per-status heads (`MOUNTED Rokkit`, `EXPLAINED Rokkit`).
 
 Lint: 0 errors. Tests: 3497 (no test-surface change).
+
+## 2026-05-26 — Theme bugs uncovered by home showcase: all three fixed
+
+Cleaned up the three latent library bugs filed in
+`docs/backlog/2026-05-25-theme-bugs-uncovered-by-home-showcase.md`.
+
+**1. `text-on-primary` resolved to `var(--color-surface-50)` instead of `var(--on-primary)`**
+
+The bug report blamed preset-mini's `text-{color}` rule, but the actual
+cause was a leftover static shortcut in `demo/uno.config.js`
+(and `site/uno.config.js`):
+
+```js
+shortcuts: [
+  ['text-on-primary', 'text-surface-50'],  // ← override predates the named-token system
+  ['text-on-secondary', 'text-surface-50'],
+  ['text-on-surface', 'text-surface-50']
+],
+```
+
+That static shortcut beat presetRokkit's `buildNamedShortcuts()` entry
+(`['text-on-primary', { color: 'var(--on-primary)' }]`) because user-level
+shortcuts override preset-level ones. Removed the `text-on-primary` line
+from both configs; left the other two (no named token exists for
+`on-secondary` / `on-surface`).
+
+Browser-verified on rokkit body: home page CTA Button (variant=primary)
+now renders `color: oklch(0.985 0.005 85)` (matches `--on-primary`) on
+saffron — proper contrast. Previously it was rendering surface-50 which
+happened to be a darker warm-white that disagreed with `--on-primary`
+noticeably in zen-sumi.
+
+**2. `minimal` Tabs underline never rendered**
+
+`border-b-[3px]` sets `border-bottom-width: 3px` but doesn't touch
+`border-bottom-style`. `<button>` defaults to `border-style: none`, which
+CSS then forces width to 0. The 3px was silently ignored.
+
+Fix: added `border-style: solid` once on the trigger base in
+`packages/themes/src/minimal/tabs.css`. The horizontal/before, after, and
+vertical variants below all set width on a single side via
+`border-{side}-[3px]`; the explicit style on the base lets all of them
+render.
+
+Browser-verified: `oklch(0.38 0.012 50)` (ink-mute) hairline now visible
+under the selected tab in the home showcase iframe.
+
+**3. `rokkit` Tabs — selected-tab gradient only on `:focus-within`, also monochrome**
+
+Two concerns:
+
+(a) The branded gradient was gated on `[data-tabs-list]:focus-within`,
+so the selected tab read as a flat `paper-mute` block at rest. Dropped
+the gating so the gradient renders whenever a tab is selected, regardless
+of keyboard focus.
+
+(b) The previous gradient used `from-primary to-accent`. In demo skin
+config both roles map to the `shu` palette → `--primary === --accent` →
+monochromatic gradient. Tried `from-primary-z5 to-primary-z7` next, but
+in `tokens: 'core'` mode the z-aliases for non-surface/ink roles collapse
+to a 2-state range (`z0-z2 → role-soft`, `z3+ → role`) — both z5 and z7
+resolve to `var(--primary)`. Still monochrome.
+
+Final fix: derive the darker stop with OKLCH `color-mix`:
+
+```css
+[data-style='rokkit'] [data-tabs-trigger][data-selected] {
+  @apply text-on-primary;
+  background: linear-gradient(
+    to bottom,
+    var(--primary),
+    color-mix(in oklch, var(--primary) 70%, black)
+  );
+}
+```
+
+Works in any token mode and regardless of whether the host skin sets
+accent ≠ primary. Same pattern applied to the after / vertical-before /
+vertical-after orientation variants.
+
+Browser-verified: rokkit selected tab now reads `linear-gradient(
+oklch(0.58 0.15 35), oklch(0.406 0.105 35))` — a real two-tone saffron
+sweep at rest. Icon color updated from `text-primary` to `text-on-primary`
+so it stays legible against the dark stop.
+
+**Bonus: `theme.svelte.ts:45` reactivity warning**
+
+`[vite-plugin-svelte] state_referenced_locally` at the
+`if (browser) document.body.dataset.radius = radius` line —
+`radius` was a `$state(...)` value and the synchronous read at module-load
+captured only the initial value (a closure mistake per the warning).
+
+Fix: hoist the initial value into a local `const initialRadius`, then use
+that for the one-shot body-dataset sync. Per-update writes still happen
+in `setRadius`. Svelte autofixer confirms no remaining issues.
+
+Lint: 0 errors. Tests: 3500 passed.
