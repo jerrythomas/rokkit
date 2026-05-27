@@ -9,12 +9,16 @@
    ============================================================================= */
 
 /*
- * Branded fills use explicit linear-gradient(var(--{role}), color-mix(...))
- * rather than @apply from-{role} to-{role} — preset-wind3's gradient
- * utilities silently drop in @apply when only named tokens are emitted
- * (`tokens: 'core'` mode). The color-mix expression keeps the rokkit
- * "rich gradient" identity while resolving to a valid gradient regardless
- * of token mode or whether accent ≡ primary in the active skin.
+ * Branded fills use an explicit `linear-gradient(var(--primary),
+ * var(--accent))` rather than `@apply from-X to-Y bg-gradient-to-r` —
+ * preset-wind3's gradient utilities silently drop during @apply in
+ * `tokens: 'core'` mode, so the @apply path produces empty stops and an
+ * invisible button. Writing the gradient directly bypasses that bug.
+ *
+ * Skin can map accent === primary (the default for libraries that don't
+ * declare accent); the gradient then flattens to one tone, which is the
+ * expected fallback. The demo skin declares accent: 'hisui' so this
+ * surface gradients across saffron → jade.
  */
 
 /* Default variant */
@@ -30,44 +34,28 @@
 [data-style='rokkit'] [data-button][data-style='default'][data-variant='primary'],
 [data-style='rokkit'] [data-button]:not([data-style])[data-variant='primary'] {
   @apply border-primary text-on-primary border;
-  background: linear-gradient(
-    to right,
-    var(--primary),
-    color-mix(in oklch, var(--primary) 70%, black)
-  );
+  background: linear-gradient(to right, var(--primary), var(--accent));
 }
 
 /* Secondary variant */
 [data-style='rokkit'] [data-button][data-style='default'][data-variant='secondary'],
 [data-style='rokkit'] [data-button]:not([data-style])[data-variant='secondary'] {
   @apply border-accent text-on-primary border;
-  background: linear-gradient(
-    to bottom,
-    var(--accent),
-    color-mix(in oklch, var(--accent) 70%, black)
-  );
+  background: linear-gradient(to bottom, var(--accent), var(--accent));
 }
 
 /* Accent variant */
 [data-style='rokkit'] [data-button][data-style='default'][data-variant='accent'],
 [data-style='rokkit'] [data-button]:not([data-style])[data-variant='accent'] {
   @apply border-accent text-on-accent border;
-  background: linear-gradient(
-    to bottom,
-    var(--accent),
-    color-mix(in oklch, var(--accent) 70%, black)
-  );
+  background: linear-gradient(to bottom, var(--accent), var(--accent));
 }
 
 /* Danger variant */
 [data-style='rokkit'] [data-button][data-style='default'][data-variant='danger'],
 [data-style='rokkit'] [data-button]:not([data-style])[data-variant='danger'] {
   @apply border-danger text-on-danger border;
-  background: linear-gradient(
-    to bottom,
-    var(--danger),
-    color-mix(in oklch, var(--danger) 70%, black)
-  );
+  background: linear-gradient(to bottom, var(--danger), var(--danger));
 }
 
 /* =============================================================================

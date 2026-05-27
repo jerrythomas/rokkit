@@ -4490,3 +4490,64 @@ Fix in `demo/src/routes/+layout.svelte`: before the `themable` action runs, expa
 Verified: cleared localStorage, reloaded `/` → body.dataset.style === 'zen-sumi'. Home page renders in the ink-on-paper aesthetic that matches the project's canonical look.
 
 Lint: 0 errors. Tests: 3500 passed.
+
+## 2026-05-27 (cont.) — rokkit: real primary→accent gradient + hover-on-selected fix
+
+User feedback after the earlier `color-mix` patch:
+> "we should keep the original gradient from primary to secondary/accent
+> instead of the darker shade. we just need to declare a secondary/accent
+> color. … on hover the text color or the highlighted item changes, and
+> this text color on hover is not visible in both dark and light modes."
+
+Two concrete fixes plus an embed-page race that surfaced while verifying.
+
+**Gradient — primary → accent, not primary → darker-primary**
+
+Reverted the rokkit-tabs and rokkit-button `color-mix(in oklch, var(--primary) 70%, black)` darker-stop trick to use `var(--accent)` as the second stop. The user is right that this is the cleaner intent — the theme reads as a primary→accent sweep, and skins that don't declare a distinct accent fall back to a flat fill (which is acceptable).
+
+`@apply from-primary to-accent bg-gradient-to-r` still silently drops in core token mode, so the actual CSS is an explicit `background: linear-gradient(to direction, var(--primary), var(--accent))` declaration. Functionally identical.
+
+Touched: `packages/themes/src/rokkit/tabs.css` (all four orientation variants of the selected trigger), `packages/themes/src/rokkit/button.css` (primary variant gradient).
+
+**Demo config — accent: hisui**
+
+`demo/rokkit.config.js` had `accent: 'shu'` (same palette as primary) in both `skin` and `skins.default`. With the new gradient using `var(--accent)`, accent === primary collapses to a one-tone fill. Switched accent to `'hisui'` (jade) — gives a real saffron → jade sweep on rokkit. Other themes that use `text-accent` / `bg-accent` (zen-sumi, material) now render those surfaces in jade instead of saffron; the change is intentional and reads cleanly because jade is in the same OKLCH chroma range as the rest of the palette.
+
+**Hover-on-selected — keep the gradient**
+
+`[data-style='rokkit'] [data-tabs-trigger]:hover` had `bg-paper-mute text-ink-mute` with no `:not([data-selected])` guard. Hovering a selected tab overrode the gradient's `text-on-primary` (paper-white) with `text-ink-mute` (dark ink) while the gradient bg leaked through the `background-color` override — net effect was hard-to-read dark text on the saffron gradient in both modes.
+
+Fix in `packages/themes/src/rokkit/tabs.css`:
+```css
+[data-style='rokkit']
+  [data-tabs-trigger]:hover:not([data-selected]):not(:disabled):not([data-disabled]) {
+  @apply bg-paper-mute text-ink-mute;
+}
+```
+
+Verified by hover via Playwright: selected hover keeps `linear-gradient(saffron, jade)` + paper-white text; unselected hover gets paper-mute bg + ink-mute text. Both legible.
+
+**Embed page race**
+
+While verifying I noticed `/embed/tabs?theme=rokkit` was rendering with `body.dataset.style === 'zen-sumi'` even though the embed page's onMount/$effect set it to 'rokkit'. The root layout's `themable` action also writes to `body.dataset.style` from `vibe.style` (now defaulted to zen-sumi), and its reactive effect was overriding the embed page's direct dataset write.
+
+Fix in `demo/src/routes/embed/tabs/+page.svelte`: drive the active style through `vibe.style = theme` (after expanding `vibe.allowedStyles`), so themable's effect and the embed page agree. Mirror on documentElement too — themable only writes to body. Removed the racy `document.body.dataset.style` direct writes.
+
+Now each iframe on the home theme showcase isolates its theme via the proper vibe channel, not by setting dataset directly.
+
+**Verification — four-theme home showcase**
+
+| theme    | selected tab                                   |
+|----------|------------------------------------------------|
+| zen-sumi | ink fill `oklch(0.22)` + paper-white text       |
+| rokkit   | gradient `oklch(0.58 0.15 35) → oklch(0.62 0.08 160)` (saffron → jade), paper-white text |
+| minimal  | transparent bg, ink-mute text, 3px solid bottom hairline |
+| material | saffron pill bg `oklch(0.58)`, paper-white text |
+
+Hover-on-selected for rokkit keeps gradient + paper-white. Hover-on-unselected switches to paper-mute + ink-mute (readable).
+
+Lint: 0 errors. Tests: 3500 passed.
+
+**Known follow-up**
+
+`[data-style='gradient']` variants in material/minimal/frosted (and the gradient-related code paths in frosted's filled buttons) still use `@apply from-X to-Y` and have the same latent dropout. They aren't user-visible in the default flows but worth the sweep when someone reaches for that style.

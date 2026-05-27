@@ -134,7 +134,11 @@ export default {
 		primary:   'shu',
 		secondary: 'hisui',
 		tertiary:  'kohaku',
-		accent:    'shu',
+		// Accent is the second stop in the rokkit theme's branded
+		// `from-primary to-accent` gradient. Mapping it to hisui (jade)
+		// gives a real two-tone sweep — saffron → jade — instead of the
+		// monochrome saffron→saffron that resulted from accent=shu.
+		accent:    'hisui',
 		success:   'hisui',
 		warning:   'kohaku',
 		danger:    'shu',
@@ -154,7 +158,7 @@ export default {
 			primary:   'shu',
 			secondary: 'hisui',
 			tertiary:  'kohaku',
-			accent:    'shu',
+			accent:    'hisui',
 			success:   'hisui',
 			warning:   'kohaku',
 			danger:    'shu',

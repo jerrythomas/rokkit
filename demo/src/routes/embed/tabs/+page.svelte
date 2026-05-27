@@ -9,11 +9,17 @@
 	 * (zen-sumi.css is loaded last in app.css). Iframes isolate the
 	 * cascade so each preview gets the theme it actually asked for.
 	 */
-	import { onMount } from 'svelte'
 	import { page } from '$app/state'
 	import { Tabs } from '@rokkit/ui'
+	import { vibe } from '@rokkit/states'
 
 	const theme = $derived(page.url.searchParams.get('theme') ?? 'zen-sumi')
+
+	// Drive the active style through vibe so the root layout's `themable`
+	// action and this preview agree. Just setting `document.body.dataset`
+	// here races with `themable`'s effect (also reactive on `vibe.style`),
+	// which resets the body back to the host's vibe choice.
+	vibe.allowedStyles = ['rokkit', 'minimal', 'material', 'frosted', 'zen-sumi']
 
 	const items = [
 		{
@@ -49,13 +55,10 @@
 	]
 	let active = $state<unknown>('theming')
 
-	onMount(() => {
-		document.documentElement.dataset.style = theme
-		document.body.dataset.style = theme
-	})
 	$effect(() => {
+		vibe.style = theme
+		// Mirror on the html element too — themable only writes to body.
 		document.documentElement.dataset.style = theme
-		document.body.dataset.style = theme
 	})
 </script>
 
