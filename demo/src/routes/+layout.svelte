@@ -14,8 +14,14 @@
 	// flicker between paint and hydration).
 	vibe.allowedStyles = ['rokkit', 'minimal', 'material', 'frosted', 'zen-sumi']
 	if (typeof document !== 'undefined') {
-		const applied = document.documentElement.dataset.style || document.body?.dataset.style
-		if (applied) vibe.style = applied
+		const root = document.documentElement
+		const body = document.body
+		const style = root.dataset.style || body?.dataset.style
+		const mode = root.dataset.mode || body?.dataset.mode
+		const density = root.dataset.density || body?.dataset.density
+		if (style) vibe.style = style
+		if (mode === 'light' || mode === 'dark') vibe.mode = mode
+		if (density) vibe.density = density
 	}
 
 	let { children } = $props()

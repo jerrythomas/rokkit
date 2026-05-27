@@ -4584,3 +4584,39 @@ Reverted `demo/rokkit.config.js`'s `accent: 'hisui'` back to `accent: 'shu'`. Th
 If a future demo skin wants the two-tone branded gradient back, declare `accent` as a palette distinct from `primary` AND the koan UI's accent-* surfaces will follow that palette too. The trade is unavoidable until either (a) the koan UI uses `primary-z5` for highlights instead of `accent-z5`, or (b) rokkit's gradient picks its own per-theme stop palette independent of skin accent.
 
 Lint: 0 errors. Tests: 3500 passed.
+
+## 2026-05-27 (cont.) — Theme blink across nav + mode-flip on route change
+
+Two more follow-ups after the flash-prevention move:
+
+**Persistent blinking on header items**
+
+After moving the init script to `<head>` and writing to `documentElement.dataset.*`, `themable` was still only writing to `body.dataset.*` at runtime. The theme CSS uses a mix of two selector shapes:
+
+- `[data-mode='dark']` (bare attribute — matches anywhere on the ancestor chain)
+- `body[data-mode='dark']` (element-prefixed — matches body only)
+
+When `vibe.mode` changed at runtime, themable updated body, but `documentElement.dataset.mode` stayed at whatever the inline script wrote first. Both old and new mode rules then matched (`[data-mode='light']` via html, `[data-mode='dark']` via body) and the cascade winner depended on source order — yielding the partial / inconsistent style changes the user observed ("background didn't change but some bits did").
+
+Fix in `packages/actions/src/themable.svelte.js`: themable's effect now mirrors `style`/`mode`/`density` to `document.documentElement` in addition to the supplied `root` (when they differ). Keeps html and body in sync for runtime toggles.
+
+**Mode flip on home → /app**
+
+`ColorModeManager`'s constructor unconditionally set `target.mode = resolveMode(initialMode)` where `initialMode` defaulted to `'system'`. Every mount of a consumer (`<ThemeSwitcherToggle/>` on home, then again inside ChatChrome under /app) re-ran that constructor and force-resolved `vibe.mode` to the current OS preference — overriding whatever the user had explicitly set or what storage had persisted.
+
+User-visible effect: open home in dark mode → click around → navigate to /app → ChatChrome's ThemeSwitcherToggle mounts → manager constructor flips vibe.mode to OS resolved → page snaps to light.
+
+Fix in `packages/app/src/utils/color-mode.svelte.ts`: constructor now reads `target.mode` first. If it's already `light` / `dark`, adopt it as the resolved state without touching the target. Only when the target has no usable value do we fall back to deriving from `initialMode` and writing it back.
+
+**Layout sync — extended to mode + density**
+
+`demo/src/routes/+layout.svelte`'s initial sync only mirrored `style` from the inline-applied dataset. Mode and density were left to themable.load() — which is fine for localStorage-backed values, but if the inline script applied a value from `?theme=` or system-preference defaults that don't round-trip to storage, vibe would still be at its library defaults and themable's first effect would overwrite the inline-applied values. Extended the sync to read all three (style/mode/density) from documentElement → body fallback, and writes each through vibe's validating setters.
+
+**Verification**
+
+- Fresh-load `/` → html=zen-sumi/light, body=zen-sumi/light. Matches stored values, no observable mutation cycles.
+- Set localStorage to `{mode: 'dark'}`, reload, navigate to /app → both stay dark.
+- Click ThemeSwitcher light → both html.mode and body.mode flip to light → background goes from sumi-ink dark to washi paper light immediately.
+- Click ThemeSwitcher dark → both html.mode and body.mode flip to dark → background returns to sumi-ink.
+
+Lint: 0 errors. Tests: 3500 passed.

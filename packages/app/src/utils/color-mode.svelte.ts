@@ -42,8 +42,21 @@ export class ColorModeManager {
 	constructor(target: ThemeTarget, initialMode: ColorMode = 'system') {
 		this.#target = target
 		this.#mode = initialMode
-		this.#resolved = resolveMode(initialMode)
-		this.#target.mode = this.#resolved
+		// Don't override target.mode at construction. If the target already
+		// has a meaningful light/dark value (loaded from storage, set by the
+		// flash-prevention init script, or persisted by a prior session),
+		// adopt it as the resolved state. Only fall back to deriving from
+		// `initialMode` when the target has no value to read.
+		//
+		// Without this guard, every mount of a consumer like
+		// `<ThemeSwitcherToggle/>` flipped target.mode to OS preference,
+		// causing user-visible mode changes on navigation between routes.
+		if (target.mode === 'light' || target.mode === 'dark') {
+			this.#resolved = target.mode
+		} else {
+			this.#resolved = resolveMode(initialMode)
+			this.#target.mode = this.#resolved
+		}
 	}
 
 	get mode(): ColorMode {

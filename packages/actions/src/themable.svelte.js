@@ -41,6 +41,20 @@ export function themable(root, options) {
 		root.dataset.mode = theme.mode
 		root.dataset.density = theme.density
 
+		// Mirror onto documentElement too. The flash-prevention init script
+		// sets `html.dataset.*` before body parses; without this mirror,
+		// runtime mode/style changes write to `body` only and the html
+		// element retains its initial values. CSS rules using bare
+		// `[data-mode='dark']` (no element prefix) match via ancestors,
+		// so both the old html value and the new body value would apply,
+		// causing the partial / no-op style change users see when toggling.
+		if (typeof document !== 'undefined' && root !== document.documentElement) {
+			const el = document.documentElement
+			el.dataset.style = theme.style
+			el.dataset.mode = theme.mode
+			el.dataset.density = theme.density
+		}
+
 		// if (storageKey) theme.save(storageKey)
 	})
 }
