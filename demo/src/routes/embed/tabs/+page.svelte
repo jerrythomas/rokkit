@@ -19,9 +19,20 @@
 	 * of the URL-driven dataset.
 	 */
 	import { page } from '$app/state'
+	import { onMount } from 'svelte'
 	import { Tabs } from '@rokkit/ui'
+	import { applySkin } from '$lib/data/skins'
 
 	const theme = $derived(page.url.searchParams.get('theme') ?? 'zen-sumi')
+	const skin = $derived(page.url.searchParams.get('skin'))
+
+	// Each iframe is its own document, so applySkin's :root variable
+	// injection scopes naturally to this preview. Hardcoded one-time
+	// apply on mount — no reactivity needed since the URL params don't
+	// change during the iframe's lifetime.
+	onMount(() => {
+		if (skin) applySkin(skin)
+	})
 
 	const items = [
 		{

@@ -25,11 +25,15 @@
 		}
 	]
 
+	// Each iframe pairs a style (visual language) with a skin (palette).
+	// The four cards show the same <Tabs/> rendered with the same skin
+	// data flow but four different visual styles AND four different brand
+	// palettes — making the orthogonal nature of style vs skin explicit.
 	const themedTabs = [
-		{ id: 'zen-sumi', label: 'zen-sumi', desc: 'underline · sumi accent' },
-		{ id: 'rokkit', label: 'rokkit', desc: 'filled block · brand red' },
-		{ id: 'minimal', label: 'minimal', desc: 'hairline only · ink' },
-		{ id: 'material', label: 'material', desc: 'pill bar · brand violet' }
+		{ id: 'zen-sumi', skin: 'default', label: 'zen-sumi', desc: 'ink fill · saffron brand' },
+		{ id: 'rokkit',   skin: 'ocean',   label: 'rokkit',   desc: 'gradient · ocean brand' },
+		{ id: 'minimal',  skin: 'violet',  label: 'minimal',  desc: 'underline · violet brand' },
+		{ id: 'material', skin: 'rose',    label: 'material', desc: 'pill · rose brand' }
 	]
 
 
@@ -171,7 +175,7 @@
 						<iframe
 							class="tabs-frame"
 							title={`Tabs · ${theme.label}`}
-							src={`/embed/tabs?theme=${theme.id}`}
+							src={`/embed/tabs?theme=${theme.id}&skin=${theme.skin}`}
 							loading="lazy"
 						></iframe>
 					</div>
