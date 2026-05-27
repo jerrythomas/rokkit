@@ -7,10 +7,13 @@
 	import SiteHeader from '$lib/components/SiteHeader.svelte'
 	import SiteFooter from '$lib/components/SiteFooter.svelte'
 
-	// Footer is a marketing-page detail (version + credits). On the
-	// app-like routes (/chat, /app) we want every pixel for the canvas,
-	// so the footer only renders on the landing page.
-	const showFooter = $derived(page.url?.pathname === '/')
+	// `/embed/*` pages are loaded inside iframes (used by the home theme
+	// showcase). They get no site chrome — the iframe IS the chrome.
+	// On the app-like routes (/chat, /app) the header is still useful but
+	// the footer eats canvas pixels, so it's gated to the landing page.
+	const isEmbed = $derived(page.url?.pathname?.startsWith('/embed') ?? false)
+	const showHeader = $derived(!isEmbed)
+	const showFooter = $derived(!isEmbed && page.url?.pathname === '/')
 
 	// The library's `DEFAULT_STYLES` constant excludes zen-sumi/frosted
 	// (they ship as optional themes, not in the default vocabulary), so
@@ -37,8 +40,10 @@
 
 <svelte:body use:themable={{ theme: vibe, storageKey: 'rokkit-theme' }} />
 
-<div class="site-shell">
-	<SiteHeader />
+<div class="site-shell" data-embed={isEmbed || undefined}>
+	{#if showHeader}
+		<SiteHeader />
+	{/if}
 	<main class="site-main">
 		{@render children?.()}
 	</main>
