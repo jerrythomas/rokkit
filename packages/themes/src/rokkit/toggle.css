@@ -8,8 +8,14 @@
    Toggle Container
    ============================================================================= */
 
+/* `@apply from-X to-Y bg-gradient-to-r` silently drops in core token
+ * mode (preset-wind3 can't resolve `from-{role}` through @apply when
+ * only named tokens are emitted). The container and the selected
+ * option use explicit linear-gradient declarations that work in any
+ * token mode. */
 [data-style='rokkit'] [data-toggle] {
-  @apply from-paper-mute to-paper-mute border-paper-edge rounded-lg border bg-gradient-to-r;
+  @apply border-paper-edge rounded-lg border;
+  background: linear-gradient(to right, var(--paper-mute), var(--paper-mute));
 }
 
 /* =============================================================================
@@ -20,14 +26,19 @@
   @apply text-ink-soft;
 }
 
-[data-style='rokkit'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']),
-[data-style='rokkit'] [data-toggle-option]:focus:not(:disabled):not([data-disabled='true']) {
-  @apply from-paper-edge to-paper-mute text-ink-mute bg-gradient-to-r;
+/* Hover applies only to UNSELECTED options so the branded selected
+ * gradient isn't overridden when the cursor passes over it. */
+[data-style='rokkit'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']):not([data-selected='true']),
+[data-style='rokkit'] [data-toggle-option]:focus:not(:disabled):not([data-disabled='true']):not([data-selected='true']) {
+  @apply text-ink-mute;
+  background: linear-gradient(to right, var(--paper-edge), var(--paper-mute));
 }
 
-/* Selected state */
+/* Selected state — primary→accent branded sheen + on-primary label so
+ * the chip reads as filled in both modes regardless of token vocabulary. */
 [data-style='rokkit'] [data-toggle-option][data-selected='true'] {
-  @apply from-primary to-accent text-primary border-primary border bg-gradient-to-r shadow-sm;
+  @apply border-primary text-on-primary border shadow-sm;
+  background: linear-gradient(to right, var(--primary), var(--accent));
 }
 
 /* =============================================================================
@@ -44,5 +55,5 @@
 }
 
 [data-style='rokkit'] [data-toggle-option][data-selected='true'] [data-toggle-icon] {
-  @apply text-primary;
+  @apply text-on-primary;
 }
