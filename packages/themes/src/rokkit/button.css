@@ -8,36 +8,66 @@
    Default Style (filled)
    ============================================================================= */
 
+/*
+ * Branded fills use explicit linear-gradient(var(--{role}), color-mix(...))
+ * rather than @apply from-{role} to-{role} — preset-wind3's gradient
+ * utilities silently drop in @apply when only named tokens are emitted
+ * (`tokens: 'core'` mode). The color-mix expression keeps the rokkit
+ * "rich gradient" identity while resolving to a valid gradient regardless
+ * of token mode or whether accent ≡ primary in the active skin.
+ */
+
 /* Default variant */
 [data-style='rokkit'] [data-button][data-style='default'][data-variant='default'],
 [data-style='rokkit'] [data-button]:not([data-style])[data-variant='default'],
 [data-style='rokkit'] [data-button][data-style='default']:not([data-variant]),
 [data-style='rokkit'] [data-button]:not([data-style]):not([data-variant]) {
-  @apply from-paper-mute to-paper-mute border-paper-edge text-ink-mute border bg-gradient-to-r;
+  @apply border-paper-edge text-ink-mute border;
+  background: var(--paper-mute);
 }
 
 /* Primary variant */
 [data-style='rokkit'] [data-button][data-style='default'][data-variant='primary'],
 [data-style='rokkit'] [data-button]:not([data-style])[data-variant='primary'] {
-  @apply from-primary to-accent border-primary text-on-primary border bg-gradient-to-r;
+  @apply border-primary text-on-primary border;
+  background: linear-gradient(
+    to right,
+    var(--primary),
+    color-mix(in oklch, var(--primary) 70%, black)
+  );
 }
 
 /* Secondary variant */
 [data-style='rokkit'] [data-button][data-style='default'][data-variant='secondary'],
 [data-style='rokkit'] [data-button]:not([data-style])[data-variant='secondary'] {
-  @apply from-accent to-accent border-accent text-on-primary border bg-gradient-to-b;
+  @apply border-accent text-on-primary border;
+  background: linear-gradient(
+    to bottom,
+    var(--accent),
+    color-mix(in oklch, var(--accent) 70%, black)
+  );
 }
 
 /* Accent variant */
 [data-style='rokkit'] [data-button][data-style='default'][data-variant='accent'],
 [data-style='rokkit'] [data-button]:not([data-style])[data-variant='accent'] {
-  @apply from-accent to-accent border-accent text-on-accent border bg-gradient-to-b;
+  @apply border-accent text-on-accent border;
+  background: linear-gradient(
+    to bottom,
+    var(--accent),
+    color-mix(in oklch, var(--accent) 70%, black)
+  );
 }
 
 /* Danger variant */
 [data-style='rokkit'] [data-button][data-style='default'][data-variant='danger'],
 [data-style='rokkit'] [data-button]:not([data-style])[data-variant='danger'] {
-  @apply from-danger to-danger border-danger text-on-danger border bg-gradient-to-b;
+  @apply border-danger text-on-danger border;
+  background: linear-gradient(
+    to bottom,
+    var(--danger),
+    color-mix(in oklch, var(--danger) 70%, black)
+  );
 }
 
 /* =============================================================================

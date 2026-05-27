@@ -328,6 +328,11 @@ export class Theme {
 	 */
 	#getZAliasesFromMap(role: 'surface' | 'ink', map: Record<ZSlot, NamedToken>): Record<string, string> {
 		const result: Record<string, string> = {}
+		// Bare `--color-{role}` alias — points at the role's primary named
+		// slot. Lets preset-wind3 color utilities (bg-surface, from-surface,
+		// to-surface, etc.) resolve in core mode without forcing the full
+		// palette emit. Surface → paper, Ink → ink.
+		result[`--color-${role}`] = role === 'surface' ? 'var(--paper)' : 'var(--ink)'
 		for (const z of Z_SLOTS) {
 			result[`--color-${role}-${z}`] = `var(--${map[z]})`
 		}
@@ -341,6 +346,11 @@ export class Theme {
 		const result: Record<string, string> = {}
 		const hasSoft = hasSoftCompanion(role)
 		const softTarget = hasSoft ? `${role}-soft` : role
+		// Bare `--color-{role}` alias points at the named token so
+		// preset-wind3 color utilities (from-{role}, to-{role}, divide-{role},
+		// etc.) resolve in core mode — they read `--color-{role}` and we'd
+		// otherwise leave it undefined since core mode skips the palette emit.
+		result[`--color-${role}`] = `var(--${role})`
 		for (const z of Z_SLOTS) {
 			const zNum = parseInt(z.slice(1), 10)
 			const target = zNum <= 2 ? softTarget : role

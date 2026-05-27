@@ -4371,3 +4371,43 @@ Welcome state defaults to 6 starter chips for "Build a component" (down from 12)
 Browser-verified (rokkit body): starter view renders 6 chips + `Browse all 12 examples →`. Clicking expands to 5 labeled subgroups (Data display 3, Selection 3, Forms & flows 3, Charts 1, Layout & feedback 2) + `Show fewer`. Clicking "Tabs · 5 panes" submits the query and navigates to `/app/tabs`.
 
 Lint: 0 errors. Tests: 3500 passed.
+
+## 2026-05-26 (cont.) — Home page primary button contrast: gradient @apply fail in core mode
+
+User reported the home page `Open the playground` primary button was effectively invisible in both light and dark mode. Root cause was different from the earlier `text-on-primary` fix.
+
+**Diagnosis**
+
+Inspecting the rendered CSS for the primary button selector showed:
+```
+border-width: 1px;
+--un-gradient-shape: to right in oklch;
+--un-gradient: var(--un-gradient-shape), var(--un-gradient-stops);
+background-image: linear-gradient(var(--un-gradient));
+border-color: var(--primary);
+color: var(--on-primary);
+```
+
+— but **no `--un-gradient-from` or `--un-gradient-to`**. The rokkit primary button CSS uses `@apply from-primary to-accent border-primary text-on-primary border bg-gradient-to-r`. preset-wind3's `from-primary` / `to-accent` utilities were silently dropped during `@apply` expansion, leaving the gradient computed with empty stops → `background-image: none`. White `--on-primary` text rendered against the parent's paper bg → white-on-white in light mode, paper-white on dark in dark mode (still very low contrast in both).
+
+Tried adding `--color-{role}` bare aliases to `core` mode (theme.ts `#getZAliasesOther` + `#getZAliasesFromMap`) — preset-wind3's color rules use `--color-primary` (etc.) and core mode wasn't emitting that bare key. Confirmed via probe that `--color-primary` now resolves to `oklch(0.580 0.150 35)` at runtime. **But the rule cssText still didn't include the gradient stops.** preset-wind3's `from-{color}` rule isn't producing CSS during `@apply` even with the var defined — likely a transformerDirectives ↔ preset-wind3 gradient interaction that doesn't kick in for our color-mix-wrapped theme color values.
+
+**Fix**
+
+Library-wide aliases stayed (the `--color-{role}: var(--{role})` line in `#getZAliasesOther` and the analogous lines in `#getZAliasesFromMap`). Independently of gradient utilities, those are correct — preset-wind3's solid color rules (`bg-{role}`, `border-{role}` opacity variants, etc.) read `--color-{role}` and we should provide it in core mode.
+
+For the immediate visible bug, switched `packages/themes/src/rokkit/button.css` default-variant fills from `@apply from-X to-Y bg-gradient-to-r` to explicit `background: linear-gradient(direction, var(--{role}), color-mix(in oklch, var(--{role}) 70%, black))`. Same OKLCH color-mix pattern as the earlier rokkit Tabs fix. Works in any token mode, survives `accent ≡ primary` in the active skin, keeps the rokkit "rich gradient" identity.
+
+Patched all five default-style variants (default, primary, secondary, accent, danger). Other button styles (outline/ghost/gradient/link) untouched; the dedicated `[data-style='gradient']` variant still uses `@apply from-X to-Y` and has the same latent bug — not visible until someone uses `style='gradient'` so left as a known follow-up.
+
+Material/minimal default primaries already use solid `bg-primary` (which works via the `buildNamedShortcuts()` named-token shortcut) so they weren't affected. Frosted uses `bg-primary/60` (with backdrop blur) — that path takes a separate preset-wind3 opacity branch and renders correctly today.
+
+**Verification**
+
+Browser-confirmed on `/`: rokkit primary button now renders `linear-gradient(to right, oklch(0.58 0.15 35), oklch(0.406 0.105 35))` — saffron sweeping to a darker saffron — with paper-white text. High contrast in both light and (when fully wired) dark modes.
+
+Lint: 0 errors. Tests: 3500 passed.
+
+**Follow-up tracked**
+
+Library-wide `[data-style='gradient']` variant + frosted/material/minimal gradient buttons still rely on `@apply from-X to-Y` and will hit the same `bg-image: none` failure. Worth a sweep in a separate change since it's the same OKLCH color-mix recipe per variant.
