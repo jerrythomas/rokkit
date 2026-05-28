@@ -9,8 +9,12 @@
 		stepKeys,
 		shadeLabels,
 		ROLE_TO_VAR,
+		FONT_VAR,
+		fontCatalogs,
+		fontStack,
 		type Palette,
-		type Role
+		type Role,
+		type FontRole
 	} from './store.svelte'
 
 	interface Props {
@@ -82,6 +86,15 @@
 			root.style.setProperty(varName, color)
 			appliedVars.add(varName)
 		}
+		for (const role of ['display', 'ui', 'mono'] as FontRole[]) {
+			const stack = fontStack(role)
+			root.style.setProperty(FONT_VAR[role], stack)
+			appliedVars.add(FONT_VAR[role])
+		}
+	}
+
+	function pickFont(role: FontRole, choiceId: string) {
+		wizardState.fonts[role] = choiceId
 	}
 
 	function clearAppliedVars() {
@@ -257,25 +270,42 @@
 	</section>
 	{:else if activeStep === 2}
 		<section class="wiz-section">
-			<span class="lbl">Typography — coming soon</span>
+			<span class="lbl">Typography — display / UI / mono</span>
 			<span class="desc">
-				Pick the display, UI, and mono font families. For now, the theme uses
-				the running app's defaults — Fraunces · Inter · JetBrains Mono on
-				zen-sumi.
+				Pick the font stack for each role. Only system fonts and the demo's
+				already-loaded faces are listed — no network load on selection. Live
+				preview below each row shows the running app's render.
 			</span>
-			<div class="ph-card">
-				<div class="ph-row">
-					<span class="ph-key">--font-display</span>
-					<span class="ph-val" style="font: 500 18px var(--font-display)">The quick brown fox</span>
-				</div>
-				<div class="ph-row">
-					<span class="ph-key">--font-ui</span>
-					<span class="ph-val" style="font: 400 14px var(--font-ui)">The quick brown fox</span>
-				</div>
-				<div class="ph-row">
-					<span class="ph-key">--font-mono</span>
-					<span class="ph-val" style="font: 400 13px var(--font-mono)">const fox = 'brown'</span>
-				</div>
+			<div class="font-rows">
+				{#each ['display', 'ui', 'mono'] as FontRole[] as role (role)}
+					<div class="font-row">
+						<div class="font-row-head">
+							<span class="ph-key">--font-{role}</span>
+							<span class="font-row-desc">
+								{role === 'display' ? 'headings + display' : role === 'ui' ? 'body + UI' : 'code, eyebrows, kbd'}
+							</span>
+						</div>
+						<div class="font-choices">
+							{#each fontCatalogs[role] as choice (choice.id)}
+								<button
+									type="button"
+									class="font-card"
+									data-active={wizardState.fonts[role] === choice.id ? '' : undefined}
+									onclick={() => pickFont(role, choice.id)}
+									aria-pressed={wizardState.fonts[role] === choice.id}
+								>
+									<span class="font-card-sample" style="font-family: {choice.stack}">
+										{role === 'mono' ? "const fox = 'brown'" : 'Quick brown fox'}
+									</span>
+									<span class="font-card-meta">
+										<span class="font-card-name">{choice.label}</span>
+										{#if choice.note}<span class="font-card-note">· {choice.note}</span>{/if}
+									</span>
+								</button>
+							{/each}
+						</div>
+					</div>
+				{/each}
 			</div>
 		</section>
 	{:else if activeStep === 3}
@@ -623,32 +653,91 @@
 		color: var(--ink);
 	}
 
-	/* ─── Step 03 · Typography placeholder ───────────────────────────── */
-	.ph-card {
+	/* ─── Step 03 · Typography picker ────────────────────────────────── */
+	.font-rows {
 		display: flex;
 		flex-direction: column;
-		gap: 10px;
-		padding: 16px;
-		border: 1px dashed var(--paper-edge);
+		gap: 16px;
+	}
+
+	.font-row {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		padding: 14px;
+		border: 1px solid var(--paper-edge);
 		border-radius: 8px;
 		background: var(--paper-soft);
 	}
 
-	.ph-row {
-		display: grid;
-		grid-template-columns: 140px 1fr;
+	.font-row-head {
+		display: flex;
 		align-items: baseline;
-		gap: 14px;
+		gap: 10px;
 	}
 
 	.ph-key {
 		font: 500 11px var(--font-mono);
-		color: var(--ink-soft);
+		color: var(--ink-mute);
 		letter-spacing: 0.02em;
 	}
 
-	.ph-val {
+	.font-row-desc {
+		font: 400 11.5px var(--font-ui);
+		color: var(--ink-soft);
+	}
+
+	.font-choices {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+		gap: 8px;
+	}
+
+	.font-card {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 6px;
+		padding: 10px 12px;
+		border: 1px solid var(--paper-edge);
+		border-radius: 6px;
+		background: var(--paper);
+		text-align: left;
+		font: inherit;
+		color: inherit;
+		cursor: pointer;
+		transition: border-color 120ms ease, background 120ms ease;
+	}
+
+	.font-card:hover {
+		border-color: color-mix(in oklab, var(--accent) 40%, var(--paper-edge));
+	}
+
+	.font-card[data-active] {
+		border-color: var(--accent);
+		background: color-mix(in oklab, var(--accent) 6%, var(--paper));
+	}
+
+	.font-card-sample {
+		font-size: 16px;
+		line-height: 1.2;
 		color: var(--ink);
+	}
+
+	.font-card-meta {
+		display: inline-flex;
+		gap: 4px;
+		align-items: baseline;
+	}
+
+	.font-card-name {
+		font: 500 11.5px var(--font-mono);
+		color: var(--ink-mute);
+	}
+
+	.font-card-note {
+		font: 400 11px var(--font-ui);
+		color: var(--ink-soft);
 	}
 
 	/* ─── Step 04 · Preview tiles ────────────────────────────────────── */

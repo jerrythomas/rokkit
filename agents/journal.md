@@ -4864,3 +4864,70 @@ site's left sidebar eats half the viewport on mobile). Changed to
 
 Lint: 0 errors. Tests: not affected — site-only addition.
 
+
+## 2026-05-28 (cont.) — Theme wizard Step 03: real typography picker
+
+Replaced the "coming soon" placeholder with a working font-family picker.
+Picks live-apply across the running app and persist through the wizard's
+existing Save preset + Export tokens.css flow.
+
+**Store additions** (`theme-wizard/store.svelte.ts`)
+
+- New `FontRole = 'display' | 'ui' | 'mono'` + `FONT_VAR` map to
+  `--font-display` / `--font-ui` / `--font-mono`.
+- New `fontCatalogs: Record<FontRole, FontChoice[]>`. Each entry's `stack`
+  drops straight into the CSS var:
+  - display: Fraunces, Iowan/Georgia, Inter, System UI
+  - ui: Inter, System UI, Helvetica, Georgia
+  - mono: JetBrains Mono, SF / Menlo, Consolas
+- Only system fonts + the demo's already-loaded faces (Fraunces / Inter /
+  JetBrains Mono are loaded by `demo/rokkit.config.js`). Picking never
+  triggers a network load. Adding network-loaded Google Fonts etc. is a
+  future iteration once we wire a loader.
+- `wizardState.fonts: Record<FontRole, string>` tracks the chosen choice
+  id per role. `defaultFontChoiceIds()` returns `fraunces / inter /
+  jetbrains` (matches the running app's defaults).
+- `fontStack(role)` helper resolves an id to its stack.
+- `savePreset` / `resetPreset` / `loadStoredPreset` all carry the new
+  `fonts` field (with a forgiving default merge on load so old presets
+  still hydrate).
+- `exportTokensCss()` emits three new `:root` declarations alongside the
+  existing color tokens.
+
+**Card render** (`ThemeWizardCard.svelte`)
+
+- Step 03 body is three labeled rows (one per FontRole). Each row shows
+  the `--font-{role}` key + a one-line description ("headings + display"
+  / "body + UI" / "code, eyebrows, kbd").
+- Each row's choices render as a responsive grid of cards. Cards show the
+  rendered sample ("Quick brown fox" for display + ui, `const fox =
+  'brown'` for mono) in the corresponding `font-family` so users can
+  read-compare without picking first. Card name + note ("loaded" /
+  "native" / "literary serif") under the sample.
+- Active card carries `data-active` for accent border + faint tint.
+- `pickFont(role, choiceId)` writes to `wizardState.fonts[role]`. The
+  existing `applyRolesToDocument` $effect now also sets `--font-{role}`
+  on `documentElement.style` after applying the role colors — so the
+  whole running app reflows in the picked font immediately.
+
+**Verified in browser**
+
+- Wizard → step 03 renders all three rows with samples in the right
+  fonts. Fraunces / Inter / JetBrains Mono shown as active by default.
+- Click "Inter · sans display" under display → card flips to active,
+  `document.documentElement.style['--font-display']` reads
+  `'Inter', system-ui, sans-serif`, and `getComputedStyle(.canvas-title)
+  .fontFamily` returns `Inter, system-ui, sans-serif` — confirms the
+  running app reflowed.
+- `exportTokensCss()` now includes the three `--font-*` declarations in
+  the `:root` block alongside the color tokens (paper / paper-soft /
+  paper-mute / paper-edge / ink / ink-mute / accent).
+- Save preset → localStorage carries `fonts: { display, ui, mono }`.
+  Reload → defaults restore correctly (load merges with current defaults
+  to forgive partial / outdated preset blobs).
+
+**Commit**
+
+- `<next>` feat(demo/wizard): real typography picker in Step 03
+
+Lint: 0 errors. Tests: 3500 passed.

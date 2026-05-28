@@ -9,6 +9,44 @@
 
 export type Palette = { id: string; label: string; swatches: string[]; inUse: boolean }
 export type Role = { role: string; desc: string; light: [string, string]; dark: [string, string] }
+export type FontRole = 'display' | 'ui' | 'mono'
+export type FontChoice = { id: string; label: string; stack: string; note?: string }
+
+/**
+ * Curated font catalogs per role. Each entry's `stack` is dropped straight
+ * into `--font-{role}` and rendered immediately — system fallbacks first so
+ * picking a font never triggers a network load. Adding new fonts (Google
+ * Fonts etc.) is a future iteration once we wire a loader.
+ */
+export const fontCatalogs: Record<FontRole, FontChoice[]> = {
+	display: [
+		{ id: 'fraunces', label: 'Fraunces', stack: "'Fraunces', 'Iowan Old Style', Georgia, serif", note: 'literary serif (loaded)' },
+		{ id: 'iowan', label: 'Iowan / Georgia', stack: "'Iowan Old Style', Georgia, serif", note: 'system serif' },
+		{ id: 'inter-bold', label: 'Inter', stack: "'Inter', system-ui, sans-serif", note: 'sans display' },
+		{ id: 'system-ui', label: 'System UI', stack: "system-ui, -apple-system, sans-serif", note: 'native' }
+	],
+	ui: [
+		{ id: 'inter', label: 'Inter', stack: "'Inter', system-ui, -apple-system, sans-serif", note: 'loaded' },
+		{ id: 'system-ui', label: 'System UI', stack: "system-ui, -apple-system, sans-serif", note: 'native' },
+		{ id: 'helvetica', label: 'Helvetica', stack: "'Helvetica Neue', Helvetica, Arial, sans-serif", note: 'classic sans' },
+		{ id: 'georgia', label: 'Georgia', stack: "Georgia, 'Iowan Old Style', serif", note: 'serif body' }
+	],
+	mono: [
+		{ id: 'jetbrains', label: 'JetBrains Mono', stack: "'JetBrains Mono', 'SF Mono', Menlo, monospace", note: 'loaded' },
+		{ id: 'sf-mono', label: 'SF / Menlo', stack: "'SF Mono', Menlo, Consolas, monospace", note: 'native' },
+		{ id: 'consolas', label: 'Consolas', stack: "Consolas, 'Courier New', monospace", note: 'classic mono' }
+	]
+}
+
+export const FONT_VAR: Record<FontRole, string> = {
+	display: '--font-display',
+	ui: '--font-ui',
+	mono: '--font-mono'
+}
+
+function defaultFontChoiceIds(): Record<FontRole, string> {
+	return { display: 'fraunces', ui: 'inter', mono: 'jetbrains' }
+}
 
 export const stepKeys = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '950'] as const
 
@@ -57,14 +95,23 @@ function defaultRoles(): Role[] {
 	]
 }
 
-function loadStoredPreset(): { palettes: Palette[]; roles: Role[] } | null {
+function loadStoredPreset(): {
+	palettes: Palette[]
+	roles: Role[]
+	fonts: Record<FontRole, string>
+} | null {
 	if (typeof localStorage === 'undefined') return null
 	try {
 		const raw = localStorage.getItem(STORAGE_KEY)
 		if (!raw) return null
-		const parsed = JSON.parse(raw) as { palettes?: Palette[]; roles?: Role[] }
+		const parsed = JSON.parse(raw) as {
+			palettes?: Palette[]
+			roles?: Role[]
+			fonts?: Partial<Record<FontRole, string>>
+		}
 		if (!Array.isArray(parsed.palettes) || !Array.isArray(parsed.roles)) return null
-		return { palettes: parsed.palettes, roles: parsed.roles }
+		const fonts = { ...defaultFontChoiceIds(), ...(parsed.fonts ?? {}) }
+		return { palettes: parsed.palettes, roles: parsed.roles, fonts }
 	} catch {
 		return null
 	}
@@ -75,16 +122,26 @@ const initial = loadStoredPreset()
 export const wizardState = $state<{
 	palettes: Palette[]
 	roles: Role[]
+	fonts: Record<FontRole, string>
 }>({
 	palettes: initial?.palettes ?? defaultPalettes(),
-	roles: initial?.roles ?? defaultRoles()
+	roles: initial?.roles ?? defaultRoles(),
+	fonts: initial?.fonts ?? defaultFontChoiceIds()
 })
+
+/** Resolve the chosen id to its full font-stack string. */
+export function fontStack(role: FontRole): string {
+	const id = wizardState.fonts[role]
+	const choice = fontCatalogs[role].find((c) => c.id === id)
+	return choice?.stack ?? fontCatalogs[role][0].stack
+}
 
 export function savePreset(): void {
 	if (typeof localStorage === 'undefined') return
 	const snapshot = {
 		palettes: wizardState.palettes,
-		roles: wizardState.roles
+		roles: wizardState.roles,
+		fonts: wizardState.fonts
 	}
 	localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot))
 }
@@ -92,6 +149,7 @@ export function savePreset(): void {
 export function resetPreset(): void {
 	wizardState.palettes = defaultPalettes()
 	wizardState.roles = defaultRoles()
+	wizardState.fonts = defaultFontChoiceIds()
 	if (typeof localStorage !== 'undefined') localStorage.removeItem(STORAGE_KEY)
 }
 
@@ -112,10 +170,16 @@ export function exportTokensCss(): string {
 			darkDecls.push(`\t${varName}: ${darkRamp[darkIdx]}; /* ${r.dark[0]} · ${r.dark[1]} */`)
 		}
 	}
+	const fontDecls: string[] = []
+	for (const role of ['display', 'ui', 'mono'] as FontRole[]) {
+		const choice = fontCatalogs[role].find((c) => c.id === wizardState.fonts[role])
+		if (choice) fontDecls.push(`\t${FONT_VAR[role]}: ${choice.stack}; /* ${choice.label} */`)
+	}
 	return [
 		'/* Rokkit theme tokens — exported from the Koan Theme Wizard */',
 		':root {',
 		...lightDecls,
+		...fontDecls,
 		'}',
 		'',
 		'[data-mode="dark"] {',
