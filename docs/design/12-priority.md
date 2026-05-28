@@ -31,7 +31,7 @@ Major design-system initiative — phases 3–9, then release 1 of the trimmed t
 
 #### Developer Utilities
 
-- [ ] **CodeGroup site component** — tabbed multi-file code display with optional live preview (Svelte Snippet). Preview collapsed by default shows code-only. No per-panel theme switcher (app-wide instead). Lives at `site/src/lib/components/CodeGroup.svelte`.
+- [x] **CodeGroup site component** — Shipped 2026-05-28. Tree-based (chosen over tabs since real projects have nested folders). Tree-rail on the left at ≥ 768px; collapses to a top picker pill that opens a drawer overlay on narrower viewports — code area gets full width on mobile. Optional `preview` Svelte snippet, collapsed by default with a "Show preview" toggle per spec. Shiki highlighting + copy button. Lives at `site/src/lib/components/CodeGroup.svelte`; playground at `site/src/routes/(play)/playground/code-group/`.
 
 #### Demo App
 

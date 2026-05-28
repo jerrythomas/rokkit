@@ -4764,3 +4764,103 @@ wired into the ChatResponse action buttons. Only the step nav + content for
 - Step 04: 4 preview tiles render with current theme tokens.
 
 Lint: 0 errors. Tests: 3500 passed.
+
+## 2026-05-28 — CodeGroup site component
+
+Multi-file code display for the docs/learn site. Tree picker rather than
+tabs — user feedback was that tabs flatten the folder structure most code
+samples actually have ("src/lib/components/Button.svelte" alongside
+"src/routes/+page.svelte" reads as a tree, not a row of pills). Mobile
+considerations were the second design question: tabs scroll horizontally,
+but a tree-rail on the left can't fit beside the code on narrow viewports.
+
+**Layout — responsive grid**
+
+```
+DESKTOP (≥ 768px)             MOBILE (< 768px)
+┌────────┬─────────┐          ┌──────────────┐
+│ FILES  │ // code │          │ Btn.svelte ▾ │  ← picker pill
+│ ▼ src  │         │          ├──────────────┤
+│  Btn ✓ │         │          │ // code      │
+│  Input │         │          │              │
+│ ▼ rts  │         │          └──────────────┘
+│  page  │         │          (tap ▾ → tree slides in
+└────────┴─────────┘           as overlay on top of code)
+```
+
+CSS grid:
+- Default `grid-template-areas: 'rail code' / 'rail preview'` — rail
+  fills both rows on the left, code + preview stack on the right.
+- `@media (max-width: 767px)`: one-column grid `picker / code` (+ preview
+  row when expanded); `.picker` becomes visible (hidden on desktop) and
+  `.rail` flips to `position: absolute; top: 41px; left: 0;` —
+  `transform: translateX(-100%)` keeps it off-screen until the picker
+  toggles `data-open`. `.backdrop` covers the code panel when open, click
+  to close.
+
+**API**
+
+```ts
+{
+  files: Array<{
+    path: string         // 'src/lib/Button.svelte' — used as id + for tree placement
+    language: string     // Shiki lang id
+    code: string
+    name?: string        // display name override; defaults to path's last segment
+    icon?: string        // file icon override
+  }>
+  initialFile?: string   // which path to show first; defaults to files[0].path
+  class?: string
+  showCopyButton?: boolean
+  // snippet:
+  preview?: Snippet      // optional live demo; collapsed by default, opt-in
+                          // via the "Show preview" toggle (per spec)
+}
+```
+
+**Implementation notes**
+
+- Tree built by splitting each path on `/`, deduping intermediate folder
+  segments into a Map keyed by accumulated path. Final segment becomes a
+  file leaf carrying the full path as id. File icons derived from
+  extension (`i-file:svelte`, etc.); folders use `i-mdi:folder-outline`.
+- `handleTreeSelect` filters out folder selections — only file leaves
+  switch the panel. On mobile, also closes the drawer after a pick so the
+  user sees their selection immediately.
+- Shiki highlights through the existing `$lib/shiki.js` helper; theme
+  follows `vibe.mode` (github-dark / github-light) consistent with the
+  earlier `FileTabs` component.
+- Preview state is local (`previewExpanded = $state(false)`). The toggle
+  button shows `i-mdi:eye-outline` / `i-mdi:eye-off-outline` + label,
+  picks up `data-action[aria-expanded='true']` for the accent highlight.
+
+**Gotcha discovered + fixed during dev**
+
+The playground page demonstrates the component by passing Svelte source
+strings as the `code` value of each file. Those strings contained
+literal `</script>` tokens, which the *outer* Svelte parser saw and
+prematurely closed the page's own `<script>` block (1 error at line 28
+of the playground page). Fix: escape inner closers as `<\/script>` —
+classic JavaScript-in-Svelte gotcha worth remembering. The component
+itself isn't affected; only consumers writing inline Svelte examples.
+
+Initially also had `.rail { width: min(280px, 80vw); }` which overflowed
+when the containing element was narrower than 280px (e.g., when the
+site's left sidebar eats half the viewport on mobile). Changed to
+`min(280px, 100%)` so the rail stays inside its container.
+
+**Verified in browser**
+
+- Desktop 1280px: tree on left, code panel on right, Show preview reveals
+  preview pane below code. Tree expand/collapse works. Click `index.ts`
+  leaf → code panel shows index.ts contents (2 lines). Show preview →
+  toggle flips to "Hide preview", preview snippet renders.
+- Mobile 390px: tree hidden, picker pill at top. Click pill → rail
+  slides in as overlay (verified via `getBoundingClientRect`: rail
+  position: absolute, transform identity when open vs translateX(-100%)
+  when closed). z-index puts rail above the backdrop above the code.
+
+**Tested**
+
+Lint: 0 errors. Tests: not affected — site-only addition.
+
