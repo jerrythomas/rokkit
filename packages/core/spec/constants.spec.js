@@ -43,6 +43,16 @@ describe('Utility functions', () => {
 				opened: 'folder-opened',
 				closed: 'folder-closed'
 			},
+			file: {
+				default: 'file-default',
+				svelte: 'file-svelte',
+				js: 'file-js',
+				ts: 'file-ts',
+				css: 'file-css',
+				html: 'file-html',
+				json: 'file-json',
+				md: 'file-md'
+			},
 			node: {
 				opened: 'node-opened',
 				closed: 'node-closed'
@@ -110,7 +120,9 @@ describe('Utility functions', () => {
 			},
 			view: {
 				code: 'view-code',
-				chart: 'view-chart'
+				chart: 'view-chart',
+				preview: 'view-preview',
+				off: 'view-off'
 			}
 		})
 	})

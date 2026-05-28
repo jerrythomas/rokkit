@@ -22,6 +22,7 @@ export default {
 		app: '@rokkit/icons/app.json',
 		logo: '@rokkit/icons/auth.json',
 		glyph: '@rokkit/icons/glyph.json',
+		semantic: '@rokkit/icons/semantic.json',
 		file: './static/icons/files/icons.json',
 		solar: '@iconify-json/solar/icons.json'
 	},

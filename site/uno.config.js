@@ -120,6 +120,31 @@ const siteIcons = [
 
 const stateIcons = ['state-error', 'state-warning', 'state-success', 'state-info', 'state-unknown']
 
+const fileSemanticNames = [
+	'file-default',
+	'file-svelte',
+	'file-js',
+	'file-ts',
+	'file-css',
+	'file-html',
+	'file-json',
+	'file-md',
+	'folder-opened',
+	'folder-closed',
+	'view-preview',
+	'view-off',
+	'navigate-down'
+]
+// Include both bare semantic names (resolved via icon-shortcuts to
+// `i-semantic:*` at runtime) and the explicit `i-semantic:*` form
+// (used directly when components pass class strings through e.g. Tree's
+// ItemContent which requires the `i-*` prefix to recognize them as icon
+// classes — bare names get rendered as literal text there).
+const fileIcons = [
+	...fileSemanticNames,
+	...fileSemanticNames.map((n) => `i-semantic:${n}`)
+]
+
 const solarIcons = [
 	'i-solar:book-2-bold-duotone',
 	'i-solar:file-text-bold-duotone',
@@ -191,7 +216,7 @@ export default defineConfig({
 		['text-on-error', 'text-surface-50'],
 		['text-on-surface', 'text-surface-50']
 	],
-	safelist: [...siteIcons, ...componentIcons, ...allGlyphIcons, ...stateIcons, ...solarIcons],
+	safelist: [...siteIcons, ...componentIcons, ...allGlyphIcons, ...stateIcons, ...fileIcons, ...solarIcons],
 	content: {
 		pipeline: {
 			include: [

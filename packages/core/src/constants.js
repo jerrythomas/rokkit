@@ -87,6 +87,14 @@ export const DEFAULT_ICONS = [
 	'node-closed',
 	'folder-opened',
 	'folder-closed',
+	'file-default',
+	'file-svelte',
+	'file-js',
+	'file-ts',
+	'file-css',
+	'file-html',
+	'file-json',
+	'file-md',
 	'selector-opened',
 	'selector-closed',
 	'menu-opened',
@@ -133,7 +141,9 @@ export const DEFAULT_ICONS = [
 	'align-vertical-bottom',
 	'align-vertical-middle',
 	'view-code',
-	'view-chart'
+	'view-chart',
+	'view-preview',
+	'view-off'
 ]
 
 export const DEFAULT_OPTIONS = {

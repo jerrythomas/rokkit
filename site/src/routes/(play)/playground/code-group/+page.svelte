@@ -1,7 +1,6 @@
 <script>
 	// @ts-nocheck
-	import CodeGroup from '$lib/components/CodeGroup.svelte'
-	import { Button } from '@rokkit/ui'
+	import { CodeGroup, Button } from '@rokkit/ui'
 
 	const files = [
 		{

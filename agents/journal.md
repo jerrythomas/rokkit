@@ -4931,3 +4931,95 @@ existing Save preset + Export tokens.css flow.
 - `<next>` feat(demo/wizard): real typography picker in Step 03
 
 Lint: 0 errors. Tests: 3500 passed.
+
+## 2026-05-28 (cont.) — CodeGroup → @rokkit/ui + semantic file icons
+
+Three follow-ups to the freshly shipped CodeGroup, per user review:
+1. `i-mdi:*` references are external + bypass the override pattern — should
+   use Rokkit's semantic icons.
+2. CodeGroup belongs in `@rokkit/ui`, not `site/`.
+3. Provide per-language semantic file icon names (`file-default`,
+   `file-svelte`, etc.) mapped through `packages/icons/src/` (Solar source).
+
+**Icons (Phase C)**
+
+- Added 8 file-type semantic names to both `glyph-map.json` and
+  `semantic-map.json`:
+  - `file-default → file` · `file-svelte/js/ts → code-2` ·
+    `file-css → palette` · `file-html/json → code-square` ·
+    `file-md → notebook`
+  - Solar lacks per-language logos, so we group by aesthetic family;
+    consumers can override at the icon-collection level (replace
+    `file-svelte.svg`) or per-component via the `icons` prop.
+- Also added `view-preview → eye` and `view-off → eye-closed` semantic
+  names for the preview toggle.
+- Regenerated all variant SVGs (default / outline / solid / duotone-
+  outline) from Solar via the existing `add-solar-{semantic,glyphs}.js`
+  scripts, then rebundled the JSON via `rokkit-cli build`.
+- Extended `DEFAULT_ICONS` in `@rokkit/core` so the new names get
+  registered as UnoCSS shortcuts via `iconShortcuts`. Auto-grouping
+  through `stateIconsFromNames` produces `DEFAULT_STATE_ICONS.file.{ext}`
+  and `DEFAULT_STATE_ICONS.view.{preview,off}`.
+- Updated the `constants.spec.js` snapshot to cover the new groups.
+
+**CodeGroup → @rokkit/ui (Phase B)**
+
+- Moved `site/src/lib/components/CodeGroup.svelte` →
+  `packages/ui/src/components/CodeGroup.svelte`. Exported from the ui
+  index alongside `Code` and `CodeBlock`.
+- The code panel now reuses `<CodeBlock>` (already in ui) instead of
+  calling Shiki inline — encapsulates highlighting + copy + theme
+  tracking, and inherits future CodeBlock improvements.
+- The preview-toggle button now passes through CodeBlock's `actions`
+  snippet so it sits in the same header row as Copy. No separate header
+  layout.
+- Updated site playground to import from `@rokkit/ui`.
+
+**Semantic icons (Phase A)**
+
+- Replaced every `i-mdi:*` reference in CodeGroup with semantic names
+  from `DEFAULT_STATE_ICONS`. Picker chevron uses `navigate-down`;
+  copy/preview/close come through the `action` and `view` groups.
+- New `icons` prop following the Tree / Dropdown / BreadCrumbs pattern:
+  `{ file?, folder?, view?, action? }`. Each is merged with the matching
+  `DEFAULT_STATE_ICONS.*` group, so consumers can swap individual icons
+  without redeclaring the whole map.
+- File icons are picked by extension via a small EXT_TO_KEY map (svelte
+  / js / mjs / cjs / ts / tsx / css / scss / sass / html / htm / json /
+  yaml / yml / md / mdx). Unknown extensions fall back to
+  `icons.file.default`.
+
+**Gotcha: ItemContent + bare names**
+
+`ItemContent.svelte`'s `isIconClass()` only accepts `i-*`-prefixed
+classes as CSS-class icons — bare semantic names (the canonical form in
+`DEFAULT_STATE_ICONS`) get rendered as literal text via
+`<span data-item-icon-literal>`. Tree's own folder open/close icons are
+rendered through Tree's template directly (so the bare name works there
+via UnoCSS shortcuts), but file leaves go through ItemContent. CodeGroup
+now prefixes file icons with `i-semantic:` before handing them to the
+tree. The `asClass` helper makes the prefix opt-in: consumers passing a
+pre-prefixed class (e.g. `i-glyph:foo`) skip the prefix.
+
+**Site config additions**
+
+- `site/rokkit.config.js`: registered `semantic: '@rokkit/icons/semantic.json'`
+  so the `i-semantic:*` collection resolves (was previously absent,
+  meaning the default icon-shortcut output had no consumer).
+- `site/uno.config.js`: safelisted the new semantic file names + the
+  prefixed `i-semantic:file-*` forms. Bare names are needed for the
+  picker (whose template uses bare-name + UnoCSS shortcut expansion);
+  prefixed forms are needed for the tree leaves (whose ItemContent
+  requires the prefix).
+
+**Verified in browser** (site playground at `/playground/code-group`)
+
+- Desktop: tree shows correct per-extension glyphs — `<>` for svelte/js/
+  ts (code-2), 📦 for json/html (code-square), 📁 for folders. Picker
+  pill on mobile shows the icon for the current file. Preview toggle
+  reveals/hides the preview pane (uses `view-preview` / `view-off`).
+- All three CodeGroup behaviors (file switching, mobile drawer, preview
+  toggle) intact through the move.
+
+Lint: 0 errors. Tests: 3500 passed (including the updated constants
+spec).

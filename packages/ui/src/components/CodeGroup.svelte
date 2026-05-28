@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	// @ts-nocheck
 	/**
 	 * CodeGroup — multi-file code display with a hierarchical tree picker
@@ -10,40 +10,116 @@
 	 * that opens an overlay drawer, keeping code at full viewport width.
 	 *
 	 * Preview is rendered from an optional Svelte snippet, collapsed by
-	 * default per the priority spec — users opt in via the "Show preview"
-	 * toggle.
+	 * default — users opt in via the "Show preview" toggle.
+	 *
+	 * Icons follow the Rokkit semantic-icon pattern: defaults come from
+	 * `DEFAULT_STATE_ICONS` (the `file` / `folder` / `view` / `action`
+	 * groups). Consumers override per-group via the `icons` prop, same
+	 * shape as Tree / BreadCrumbs / Dropdown.
 	 */
-	import { highlightCode } from '$lib/shiki.js'
-	import { vibe } from '@rokkit/states'
-	import { Tree } from '@rokkit/ui'
+	import type { Snippet } from 'svelte'
+	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
+	import Tree from './Tree.svelte'
+	import CodeBlock from './CodeBlock.svelte'
 
-	/**
-	 * @typedef {Object} CodeGroupFile
-	 * @property {string} path - Full path used as id and for tree placement (e.g. 'src/lib/Button.svelte')
-	 * @property {string} language - Shiki language id
-	 * @property {string} code - Source code
-	 * @property {string} [name] - Display name override; defaults to the path's last segment
-	 * @property {string} [icon] - File icon class; defaults to extension lookup
-	 */
+	interface CodeGroupFile {
+		/** Full path used as id and for tree placement (e.g. 'src/lib/Button.svelte') */
+		path: string
+		/** Shiki language id */
+		language: string
+		/** Source code */
+		code: string
+		/** Display name override; defaults to the path's last segment */
+		name?: string
+		/** File icon override (full class name); defaults to the extension lookup */
+		icon?: string
+	}
+
+	interface IconOverrides {
+		file?: Partial<typeof DEFAULT_STATE_ICONS.file>
+		folder?: Partial<typeof DEFAULT_STATE_ICONS.folder>
+		view?: Partial<typeof DEFAULT_STATE_ICONS.view>
+		action?: Partial<typeof DEFAULT_STATE_ICONS.action>
+	}
+
+	interface Props {
+		files: CodeGroupFile[]
+		initialFile?: string
+		class?: string
+		icons?: IconOverrides
+		preview?: Snippet
+		showCopyButton?: boolean
+	}
 
 	let {
 		files = [],
 		initialFile,
 		class: className = '',
+		icons: userIcons = {},
 		preview,
 		showCopyButton = true
-	} = $props()
+	}: Props = $props()
 
-	let selectedPath = $state(initialFile ?? files[0]?.path ?? '')
+	const icons = $derived({
+		file: { ...DEFAULT_STATE_ICONS.file, ...(userIcons.file ?? {}) },
+		folder: { ...DEFAULT_STATE_ICONS.folder, ...(userIcons.folder ?? {}) },
+		view: { ...DEFAULT_STATE_ICONS.view, ...(userIcons.view ?? {}) },
+		action: { ...DEFAULT_STATE_ICONS.action, ...(userIcons.action ?? {}) }
+	})
+
+	let selectedPath = $state('')
+	$effect(() => {
+		if (!selectedPath && files.length > 0) {
+			selectedPath = initialFile ?? files[0].path
+		}
+	})
 	let drawerOpen = $state(false)
 	let previewExpanded = $state(false)
-	let copied = $state(false)
 
-	const KNOWN_EXTENSIONS = ['svelte', 'js', 'mjs', 'ts', 'tsx', 'css', 'html', 'json', 'md']
+	// Map file extensions to icon keys in icons.file. Unknown extensions fall
+	// back to icons.file.default. Consumers can extend by passing an icon
+	// override on individual file entries or via the icons prop.
+	const EXT_TO_KEY: Record<string, string> = {
+		svelte: 'svelte',
+		js: 'js',
+		mjs: 'js',
+		cjs: 'js',
+		ts: 'ts',
+		tsx: 'ts',
+		css: 'css',
+		scss: 'css',
+		sass: 'css',
+		html: 'html',
+		htm: 'html',
+		json: 'json',
+		yaml: 'json',
+		yml: 'json',
+		md: 'md',
+		mdx: 'md'
+	}
 
-	function getFileIcon(name) {
-		const ext = name.split('.').pop()?.toLowerCase()
-		return KNOWN_EXTENSIONS.includes(ext) ? `i-file:${ext}` : 'i-mdi:file-outline'
+	// ItemContent's isIconClass() only accepts `i-*` prefixed classes for
+	// class-based icons (bare names get rendered as literal text). Prefix
+	// semantic names with `i-semantic:` so Tree leaves render the icon
+	// correctly. Consumers passing prefixed strings via file.icon or the
+	// icons prop bypass the prefix.
+	function asClass(bareOrPrefixed: string): string {
+		return bareOrPrefixed.startsWith('i-')
+			? bareOrPrefixed
+			: `i-semantic:${bareOrPrefixed}`
+	}
+
+	function iconForFile(file: CodeGroupFile): string {
+		if (file.icon) return file.icon
+		const ext = (file.name ?? file.path).split('.').pop()?.toLowerCase() ?? ''
+		const key = EXT_TO_KEY[ext] ?? 'default'
+		return asClass(icons.file[key] ?? icons.file.default)
+	}
+
+	function iconForPath(path: string): string {
+		const ext = path.split('.').pop()?.toLowerCase() ?? ''
+		const key = EXT_TO_KEY[ext] ?? 'default'
+		return icons.file[key] ?? icons.file.default
 	}
 
 	const activeFile = $derived(files.find((f) => f.path === selectedPath))
@@ -53,10 +129,12 @@
 
 	// Build a hierarchical tree from the flat path list. Intermediate
 	// segments become folder nodes; the final segment becomes a file leaf
-	// carrying the original path as its id.
+	// carrying the original path as its id. Folder nodes get their icon
+	// from the Tree's default state (it owns folder open/closed via its
+	// own icons prop); file leaves get the per-extension semantic icon.
 	const tree = $derived.by(() => {
-		const root = []
-		const lookup = new Map()
+		const root: unknown[] = []
+		const lookup = new Map<string, Record<string, unknown>>()
 		for (const f of files) {
 			const parts = f.path.split('/').filter(Boolean)
 			let parentChildren = root
@@ -65,52 +143,32 @@
 				const part = parts[i]
 				const isLeaf = i === parts.length - 1
 				acc = acc ? `${acc}/${part}` : part
-				let node = lookup.get(acc)
+				let node = lookup.get(acc) as Record<string, unknown> | undefined
 				if (!node) {
 					node = {
 						id: acc,
 						name: part,
-						icon: isLeaf ? (f.icon ?? getFileIcon(part)) : 'i-mdi:folder-outline',
-						isFile: isLeaf,
+						icon: isLeaf ? iconForFile(f) : undefined,
 						children: isLeaf ? undefined : []
 					}
 					lookup.set(acc, node)
 					parentChildren.push(node)
 				}
-				if (!isLeaf) parentChildren = node.children
+				if (!isLeaf) parentChildren = node.children as unknown[]
 			}
 		}
 		return root
 	})
 
-	function handleTreeSelect(value) {
+	function handleTreeSelect(value: unknown) {
 		// Tree fires onselect for folders too; only switch the panel when
-		// the selection is a real file. Mobile: collapse the drawer after pick.
+		// the selection is a real file path. Closes the drawer on mobile
+		// after a pick so users see their selection immediately.
+		if (typeof value !== 'string') return
 		const file = files.find((f) => f.path === value)
 		if (!file) return
 		selectedPath = value
 		drawerOpen = false
-	}
-
-	const highlightedCode = $derived(
-		activeFile
-			? highlightCode(activeFile.code, {
-					lang: activeFile.language,
-					theme: vibe.mode === 'dark' ? 'github-dark' : 'github-light'
-				})
-			: Promise.resolve('')
-	)
-
-	async function copyCurrent() {
-		if (!activeFile) return
-		try {
-			await navigator.clipboard.writeText(activeFile.code)
-			copied = true
-			setTimeout(() => (copied = false), 1800)
-		} catch (e) {
-			// eslint-disable-next-line no-console
-			console.error('CodeGroup: clipboard write failed', e)
-		}
 	}
 </script>
 
@@ -127,9 +185,9 @@
 			aria-expanded={drawerOpen}
 			aria-controls="codegroup-drawer"
 		>
-			<span class="picker-icon {activeFile ? getFileIcon(activeFileName) : 'i-mdi:file-outline'}" aria-hidden="true"></span>
+			<span class="picker-icon {activeFile ? iconForPath(activeFile.path) : icons.file.default}" aria-hidden="true"></span>
 			<span class="picker-name">{activeFileName || 'Choose file'}</span>
-			<span class="picker-chevron i-mdi:chevron-down" aria-hidden="true"></span>
+			<span class="picker-chevron {icons.action.expand ?? 'navigate-down'}" aria-hidden="true"></span>
 		</button>
 
 		<!-- Tree rail (desktop). On mobile, becomes a drawer toggled by the
@@ -147,11 +205,11 @@
 				value={selectedPath}
 				size="sm"
 				onselect={handleTreeSelect}
+				icons={{ opened: icons.folder.opened, closed: icons.folder.closed }}
 			/>
 		</aside>
 
-		<!-- Backdrop covers the code area when the drawer is open on mobile.
-		     Click anywhere outside to close. -->
+		<!-- Backdrop covers the code area when the drawer is open on mobile. -->
 		{#if drawerOpen}
 			<button
 				type="button"
@@ -162,50 +220,28 @@
 		{/if}
 
 		<section class="code-pane" aria-label="Code">
-			<header class="code-head">
-				<div class="code-head-left">
-					<span class="code-icon {activeFile ? getFileIcon(activeFileName) : ''}" aria-hidden="true"></span>
-					<span class="code-name">{activeFileName}</span>
-				</div>
-				<div class="code-head-right">
-					{#if activeFile}
-						<span class="code-meta">{activeFile.code.split('\n').length} lines</span>
-					{/if}
-					{#if showCopyButton && activeFile}
-						<button type="button" class="code-action" onclick={copyCurrent} title="Copy code">
-							{#if copied}
-								<span class="i-mdi:check" aria-hidden="true"></span>
-								<span class="action-label">Copied</span>
-							{:else}
-								<span class="i-mdi:content-copy" aria-hidden="true"></span>
-								<span class="action-label">Copy</span>
-							{/if}
-						</button>
-					{/if}
-					{#if preview}
-						<button
-							type="button"
-							class="code-action"
-							onclick={() => (previewExpanded = !previewExpanded)}
-							aria-expanded={previewExpanded}
-							title={previewExpanded ? 'Hide preview' : 'Show preview'}
-						>
-							<span class={previewExpanded ? 'i-mdi:eye-off-outline' : 'i-mdi:eye-outline'} aria-hidden="true"></span>
-							<span class="action-label">{previewExpanded ? 'Hide preview' : 'Show preview'}</span>
-						</button>
-					{/if}
-				</div>
-			</header>
-
-			<div class="code-scroll">
-				{#await highlightedCode}
-					<div class="code-pending">Highlighting code…</div>
-				{:then html}
-					{@html html}
-				{:catch error}
-					<div class="code-error">Error highlighting code: {error.message}</div>
-				{/await}
-			</div>
+			{#if activeFile}
+				<CodeBlock
+					code={activeFile.code}
+					language={activeFile.language}
+					filename={activeFileName}
+					allowCopy={showCopyButton}
+				>
+					{#snippet actions()}
+						{#if preview}
+							<button
+								type="button"
+								onclick={() => (previewExpanded = !previewExpanded)}
+								aria-expanded={previewExpanded}
+								title={previewExpanded ? 'Hide preview' : 'Show preview'}
+							>
+								<span class={previewExpanded ? icons.view.off : icons.view.preview} aria-hidden="true"></span>
+								<span>{previewExpanded ? 'Hide preview' : 'Show preview'}</span>
+							</button>
+						{/if}
+					{/snippet}
+				</CodeBlock>
+			{/if}
 		</section>
 
 		{#if preview && previewExpanded}
@@ -315,94 +351,14 @@
 		flex-direction: column;
 		min-width: 0;
 		min-height: 0;
+		overflow: hidden;
 	}
 
-	.code-head {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 12px;
-		padding: 8px 14px;
-		border-bottom: 1px solid var(--paper-edge);
-		background: var(--paper);
-		font: 400 12.5px var(--font-ui);
-	}
-
-	.code-head-left,
-	.code-head-right {
-		display: inline-flex;
-		align-items: center;
-		gap: 10px;
-	}
-
-	.code-icon {
-		width: 16px;
-		height: 16px;
-		color: var(--ink-mute);
-	}
-
-	.code-name {
-		font: 500 13px var(--font-ui);
-		color: var(--ink);
-	}
-
-	.code-meta {
-		font: 500 10.5px var(--font-mono);
-		color: var(--ink-soft);
-		letter-spacing: 0.04em;
-	}
-
-	.code-action {
-		display: inline-flex;
-		align-items: center;
-		gap: 5px;
-		padding: 4px 8px;
-		border: 1px solid var(--paper-edge);
-		background: var(--paper-soft);
-		color: var(--ink-mute);
-		border-radius: 4px;
-		font: 500 11px var(--font-ui);
-		cursor: pointer;
-	}
-
-	.code-action:hover {
-		border-color: var(--ink-soft);
-		color: var(--ink);
-	}
-
-	.code-action[aria-expanded='true'] {
-		background: color-mix(in oklab, var(--accent) 8%, var(--paper-soft));
-		border-color: color-mix(in oklab, var(--accent) 40%, var(--paper-edge));
-		color: var(--accent);
-	}
-
-	.action-label {
-		font: 500 11px var(--font-ui);
-	}
-
-	.code-scroll {
+	.code-pane :global([data-code-block]) {
 		flex: 1;
-		overflow: auto;
 		min-height: 0;
-	}
-
-	.code-pending,
-	.code-error {
-		padding: 16px;
-		font: 400 12.5px var(--font-mono);
-		color: var(--ink-soft);
-	}
-
-	.code-error {
-		color: var(--danger, #b91c1c);
-	}
-
-	/* Shiki renders <pre><code>; trim default margins for compact embedding. */
-	.code-scroll :global(pre) {
-		margin: 0;
-		padding: 14px 16px;
-		font: 400 12.5px/1.55 var(--font-mono);
-		background: transparent;
+		display: flex;
+		flex-direction: column;
 	}
 
 	/* ─── Preview pane ─────────────────────────────────────────────────── */
@@ -459,10 +415,9 @@
 			grid-area: picker;
 		}
 
-		/* Tree becomes a drawer overlay on top of the code panel. */
 		.rail {
 			position: absolute;
-			top: 41px; /* picker height */
+			top: 41px;
 			left: 0;
 			bottom: 0;
 			width: min(280px, 100%);
