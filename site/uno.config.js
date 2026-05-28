@@ -120,36 +120,10 @@ const siteIcons = [
 
 const stateIcons = ['state-error', 'state-warning', 'state-success', 'state-info', 'state-unknown']
 
-// Bare semantic names — UnoCSS expands them via the `iconShortcuts`
-// registered by presetRokkit (e.g. `doc-svelte` → `i-semantic:doc-svelte`).
-// Note: `doc-*` (not `file-*`) because `file-` collides with UnoCSS's
-// `file:` pseudo-element variant (input[type=file]::file-selector-button)
-// — the variant consumes the `file-` prefix and the shortcut never fires.
-const fileIcons = [
-	'doc-default',
-	'doc-svelte',
-	'doc-js',
-	'doc-ts',
-	'doc-css',
-	'doc-html',
-	'doc-json',
-	'doc-md',
-	'doc-text',
-	'doc-pdf',
-	'doc-archive',
-	'media-image',
-	'media-video',
-	'media-audio',
-	'folder-opened',
-	'folder-closed',
-	'view-preview',
-	'view-off',
-	'view-code',
-	'navigate-down',
-	'action-copy',
-	'action-check',
-	'action-download'
-]
+// (semantic icon names from `DEFAULT_ICONS` — folder-*, doc-*, media-*,
+// action-*, view-*, navigate-* — are auto-safelisted by presetRokkit
+// and resolve through the `iconShortcuts` chain. No need to safelist
+// them here.)
 
 const solarIcons = [
 	'i-solar:book-2-bold-duotone',
@@ -222,7 +196,7 @@ export default defineConfig({
 		['text-on-error', 'text-surface-50'],
 		['text-on-surface', 'text-surface-50']
 	],
-	safelist: [...siteIcons, ...componentIcons, ...allGlyphIcons, ...stateIcons, ...fileIcons, ...solarIcons],
+	safelist: [...siteIcons, ...componentIcons, ...allGlyphIcons, ...stateIcons, ...solarIcons],
 	content: {
 		pipeline: {
 			include: [

@@ -181,8 +181,9 @@ export default {
 	},
 
 	icons: {
-		app:   '@rokkit/icons/app.json',
-		glyph: '@rokkit/icons/glyph.json'
+		app:   '@rokkit/icons/app.json'
+		// `rokkit`, `semantic`, and `glyph` collections are registered by
+		// the preset by default — no need to declare them here.
 	},
 
 	switcher:   'full',

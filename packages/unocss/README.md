@@ -96,6 +96,71 @@ presetRokkit({
 
 Each skin generates a `skin-{name}` CSS class. Skins support the same dual-palette `{ light, dark }` syntax as `colors` — the light palette is used for the scoped CSS variable overrides.
 
+### Icons
+
+`presetRokkit()` ships with three icon collections registered out of the box:
+
+| Collection prefix | Source                          | Use case                         |
+| ----------------- | ------------------------------- | -------------------------------- |
+| `i-rokkit:*`      | `@rokkit/icons/ui.json`         | curated minimal UI icon set      |
+| `i-semantic:*`    | `@rokkit/icons/semantic.json`   | role-named icons (`folder-opened`, `action-copy`, `doc-svelte`, …) |
+| `i-glyph:*`       | `@rokkit/icons/glyph.json`      | full Solar-glyph mapping         |
+
+Every name in `DEFAULT_ICONS` is also registered as a **bare-name UnoCSS shortcut** that expands to `i-semantic:{name}` and is auto-safelisted. So you can write `class="folder-opened"` directly — no prefix, no manual safelist entry. Components in `@rokkit/ui` use this idiom (Tree, Dropdown, BreadCrumbs, CodeBlock, CodeGroup…).
+
+```html
+<span class="folder-opened" aria-hidden="true"></span>  <!-- ✓ resolves -->
+<span class="i-semantic:folder-opened"></span>          <!-- ✓ equivalent, explicit -->
+<span class="i-glyph:folder-opened-outline"></span>     <!-- ✓ outline variant from glyph -->
+```
+
+#### Adding your own icons
+
+Register additional icon collections via the rokkit config's `icons` map. Keys become the UnoCSS collection prefix:
+
+```js
+// rokkit.config.js
+export default {
+  icons: {
+    lucide: '@iconify-json/lucide/icons.json',
+    mybrand: './static/icons/mybrand.json'
+  }
+}
+```
+
+Reference them as `i-lucide:home` / `i-mybrand:logo`.
+
+#### Adding bare-name shortcuts (your own glyphs)
+
+Use `icons.overrides` to add bare-name shortcuts on top of `DEFAULT_ICONS`. Keys are the bare class name; values are the full utility expression. Override keys are auto-safelisted.
+
+```js
+// rokkit.config.js
+export default {
+  icons: {
+    lucide: '@iconify-json/lucide/icons.json',
+    overrides: {
+      'brand-logo': 'i-mybrand:logo',
+      'doc-svelte': 'i-lucide:flame',          // override the default semantic mapping
+      'pizza':       'i-fluent-emoji:pizza'     // add a brand-new bare name
+    }
+  }
+}
+```
+
+Then write `class="brand-logo"`, `class="pizza"` directly in templates. Component-internal icons (Tree's `folder-opened`, CodeGroup's `doc-svelte`, etc.) automatically pick up the override.
+
+#### Variant style
+
+```js
+icons: {
+  style: 'outline'  // appends '-outline' to every default shortcut target
+                    // → 'folder-opened' resolves to 'i-semantic:folder-opened-outline'
+}
+```
+
+Other values match the Solar-bundle variants: `'solid'`, `'duotone-outline'`. Omit for the default (filled-duotone) variant.
+
 ### Background patterns
 
 ```ts

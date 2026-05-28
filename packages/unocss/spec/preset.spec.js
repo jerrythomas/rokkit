@@ -507,6 +507,28 @@ describe('presetRokkit', () => {
 			// No overrides → uses default collection
 			expect(entry[1]).toBe('i-semantic:accordion-opened')
 		})
+
+		it('should register rokkit / semantic / glyph icon collections by default', () => {
+			const preset = presetRokkit()
+			const iconsPreset = preset.presets.find((p) => p && p.name === '@unocss/preset-icons')
+			const collections = iconsPreset.options.collections
+			expect(collections.rokkit).toBeDefined()
+			expect(collections.semantic).toBeDefined()
+			expect(collections.glyph).toBeDefined()
+		})
+
+		it('should auto-safelist user-defined icon override keys', () => {
+			const preset = presetRokkit({
+				icons: {
+					overrides: {
+						'brand-logo': 'i-custom:logo',
+						pizza: 'i-fluent-emoji:pizza'
+					}
+				}
+			})
+			expect(preset.safelist).toContain('brand-logo')
+			expect(preset.safelist).toContain('pizza')
+		})
 	})
 
 	describe('contrast warnings', () => {

@@ -86,15 +86,27 @@ const toCssBlock = (vars) => Object.entries(vars).map(([k, v]) => `${k}:${v}`).j
 
 function buildIconCollections(configIcons) {
 	return iconCollections({
+		// Always-available collections so consumers can reference
+		// `i-rokkit:*`, `i-semantic:*`, `i-glyph:*` without declaring
+		// them in their rokkit.config.js icons map. Consumer entries
+		// in `configIcons` override these by name (e.g. `{ glyph: ... }`
+		// in the consumer config wins).
 		rokkit: '@rokkit/icons/ui.json',
 		semantic: '@rokkit/icons/semantic.json',
+		glyph: '@rokkit/icons/glyph.json',
 		...configIcons
 	})
 }
 
-function buildSafelist() {
+function buildSafelist(config) {
+	// User-defined icon-shortcut keys go in the safelist too so the
+	// shortcut chain emits CSS for them (else they're purged unless the
+	// consumer manually safelists). DEFAULT_ICONS already in via the
+	// constant list.
+	const overrideNames = Object.keys((config?.icons?.overrides as Record<string, unknown>) ?? {})
 	return [
 		...DEFAULT_ICONS,
+		...overrideNames,
 		...defaultPalette.flatMap((color) => shades.map((shade) => `bg-${color}-${shade}`)),
 		...defaultPalette.flatMap((color) => shades.map((shade) => `bg-${color}-${shade}/50`))
 	]
@@ -391,7 +403,7 @@ export function presetRokkit(options = {}): Preset {
 		],
 		extractors: [extractorSvelte()],
 		rules: [['hidden', { display: 'none' }]],
-		safelist: buildSafelist(),
+		safelist: buildSafelist(config),
 		preflights: buildPreflights(theme, colormap, config),
 		shortcuts: buildShortcuts(theme, colormap, config),
 		theme: {

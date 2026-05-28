@@ -19,10 +19,10 @@ export default {
 	},
 	themes: ['rokkit'],
 	icons: {
+		// `rokkit`, `semantic`, and `glyph` collections are registered
+		// by presetRokkit by default — no need to declare them here.
 		app: '@rokkit/icons/app.json',
 		logo: '@rokkit/icons/auth.json',
-		glyph: '@rokkit/icons/glyph.json',
-		semantic: '@rokkit/icons/semantic.json',
 		file: './static/icons/files/icons.json',
 		solar: '@iconify-json/solar/icons.json'
 	},

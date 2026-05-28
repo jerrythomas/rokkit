@@ -5175,3 +5175,66 @@ contains assertion for `image/jpeg` updated to `media-image`.
   `isIconClass` truth-table test. Same pattern.
 
 Lint: 0 errors. Tests: 3501 passed.
+
+## 2026-05-28 (cont.) — presetRokkit: glyph default + auto-safelist overrides
+
+User asked whether `presetRokkit` bundles the default icon map + glyphs by
+default. Most of it was already there; two gaps:
+
+1. `i-glyph:*` collection wasn't a default — every consumer
+   (demo, site) declared `glyph: '@rokkit/icons/glyph.json'` manually.
+2. User-defined `config.icons.overrides` shortcut keys weren't
+   auto-safelisted, so they'd silently purge unless the consumer also
+   added them to their own safelist.
+
+**Changes** (`packages/unocss/src/preset.ts`)
+
+- `buildIconCollections` now registers `glyph: '@rokkit/icons/glyph.json'`
+  alongside `rokkit` and `semantic` by default. Consumer entries still
+  override by name (so consumers who point `glyph` at a different bundle
+  win).
+- `buildSafelist(config)` now also includes `Object.keys(config.icons.overrides ?? {})`,
+  so any bare-name shortcut a consumer adds via the overrides map gets
+  the CSS rule emitted without extra safelist setup.
+
+**Spec coverage** (`packages/unocss/spec/preset.spec.js`)
+
+Two new cases in the existing `shortcuts — skin and icon coverage`
+block:
+- `should register rokkit / semantic / glyph icon collections by default`
+- `should auto-safelist user-defined icon override keys`
+
+**Consumer simplification**
+
+- `demo/rokkit.config.js`: dropped explicit `glyph` declaration —
+  preset provides it. Only `app: '@rokkit/icons/app.json'` remains.
+- `site/rokkit.config.js`: dropped explicit `glyph` + `semantic`
+  declarations (also defaults). Kept `app`, `logo`, `file`, `solar`
+  which are site-specific.
+- `site/uno.config.js`: dropped the ~30-entry `fileIcons` safelist
+  block — those names are all in `DEFAULT_ICONS` and were already
+  auto-safelisted by the preset. The extra entries were redundant
+  workarounds during the earlier debug session.
+
+**Docs** (`packages/unocss/README.md`)
+
+Added a new `### Icons` section under Setup with three subsections:
+- "Adding your own icons" — register collections via `config.icons.{alias}`
+- "Adding bare-name shortcuts (your own glyphs)" — use
+  `config.icons.overrides` to add or override entries in the
+  DEFAULT_ICONS shortcut map; keys auto-safelist
+- "Variant style" — `config.icons.style: 'outline'` etc.
+
+Also a table of the three always-available collections (`i-rokkit:`,
+`i-semantic:`, `i-glyph:`) so newcomers know what's free out of the box.
+
+**Verified in browser**
+
+After dropping the redundant safelist + collection declarations, the
+site playground at `/playground/code-group` still emits bare-name
+shortcut CSS rules (`.doc-svelte`, `.folder-opened`, `.view-preview`,
+`.action-copy`, `.media-image`, etc.) entirely through the preset's
+auto-registered safelist + shortcut chain. No manual safelist needed
+on the consumer side.
+
+Lint: 0 errors. Tests: 3503 passed (3501 + 2 new spec).
