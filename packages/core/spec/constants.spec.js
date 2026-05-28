@@ -19,6 +19,7 @@ describe('Utility functions', () => {
 				close: 'action-close',
 				copy: 'action-copy',
 				copysuccess: 'action-copysuccess',
+				download: 'action-download',
 				check: 'action-check',
 				pin: 'action-pin',
 				save: 'action-save',
@@ -51,7 +52,15 @@ describe('Utility functions', () => {
 				css: 'doc-css',
 				html: 'doc-html',
 				json: 'doc-json',
-				md: 'doc-md'
+				md: 'doc-md',
+				text: 'doc-text',
+				pdf: 'doc-pdf',
+				archive: 'doc-archive'
+			},
+			media: {
+				image: 'media-image',
+				video: 'media-video',
+				audio: 'media-audio'
 			},
 			node: {
 				opened: 'node-opened',

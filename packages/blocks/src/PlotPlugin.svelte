@@ -108,15 +108,15 @@
 								aria-pressed={showCode}
 								title={showCode ? 'Hide code' : 'View code'}
 							>
-								<span class={showCode ? 'i-mdi:eye-off-outline' : 'i-mdi:code-tags'} aria-hidden="true"></span>
+								<span class={showCode ? 'view-off' : 'view-code'} aria-hidden="true"></span>
 								<span>{showCode ? 'Hide code' : 'View code'}</span>
 							</button>
 							<button type="button" data-plot-action onclick={copyCode} title="Copy spec to clipboard">
-								<span class="i-mdi:content-copy" aria-hidden="true"></span>
+								<span class="action-copy" aria-hidden="true"></span>
 								<span>Copy code</span>
 							</button>
 							<button type="button" data-plot-action onclick={downloadSvg} title="Download chart as SVG">
-								<span class="i-mdi:download" aria-hidden="true"></span>
+								<span class="action-download" aria-hidden="true"></span>
 								<span>Export SVG</span>
 							</button>
 						</div>

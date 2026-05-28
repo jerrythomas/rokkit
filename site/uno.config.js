@@ -134,11 +134,21 @@ const fileIcons = [
 	'doc-html',
 	'doc-json',
 	'doc-md',
+	'doc-text',
+	'doc-pdf',
+	'doc-archive',
+	'media-image',
+	'media-video',
+	'media-audio',
 	'folder-opened',
 	'folder-closed',
 	'view-preview',
 	'view-off',
-	'navigate-down'
+	'view-code',
+	'navigate-down',
+	'action-copy',
+	'action-check',
+	'action-download'
 ]
 
 const solarIcons = [

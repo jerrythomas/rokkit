@@ -121,50 +121,50 @@ describe('validateFile', () => {
 
 describe('inferIcon', () => {
 	it('returns image icon for image/* types', () => {
-		expect(inferIcon('image/png')).toBe('i-lucide:image')
-		expect(inferIcon('image/jpeg')).toBe('i-lucide:image')
-		expect(inferIcon('image/svg+xml')).toBe('i-lucide:image')
+		expect(inferIcon('image/png')).toBe('media-image')
+		expect(inferIcon('image/jpeg')).toBe('media-image')
+		expect(inferIcon('image/svg+xml')).toBe('media-image')
 	})
 
 	it('returns video icon for video/* types', () => {
-		expect(inferIcon('video/mp4')).toBe('i-lucide:video')
-		expect(inferIcon('video/webm')).toBe('i-lucide:video')
+		expect(inferIcon('video/mp4')).toBe('media-video')
+		expect(inferIcon('video/webm')).toBe('media-video')
 	})
 
-	it('returns music icon for audio/* types', () => {
-		expect(inferIcon('audio/mpeg')).toBe('i-lucide:music')
-		expect(inferIcon('audio/wav')).toBe('i-lucide:music')
+	it('returns audio icon for audio/* types', () => {
+		expect(inferIcon('audio/mpeg')).toBe('media-audio')
+		expect(inferIcon('audio/wav')).toBe('media-audio')
 	})
 
-	it('returns file-text icon for application/pdf', () => {
-		expect(inferIcon('application/pdf')).toBe('i-lucide:file-text')
+	it('returns pdf icon for application/pdf', () => {
+		expect(inferIcon('application/pdf')).toBe('doc-pdf')
 	})
 
-	it('returns file-text icon for text/* types', () => {
-		expect(inferIcon('text/plain')).toBe('i-lucide:file-text')
-		expect(inferIcon('text/html')).toBe('i-lucide:file-text')
+	it('returns text icon for text/* types', () => {
+		expect(inferIcon('text/plain')).toBe('doc-text')
+		expect(inferIcon('text/html')).toBe('doc-text')
 	})
 
 	it('returns archive icon for archive types', () => {
-		expect(inferIcon('application/zip')).toBe('i-lucide:archive')
-		expect(inferIcon('application/gzip')).toBe('i-lucide:archive')
-		expect(inferIcon('application/x-tar')).toBe('i-lucide:archive')
+		expect(inferIcon('application/zip')).toBe('doc-archive')
+		expect(inferIcon('application/gzip')).toBe('doc-archive')
+		expect(inferIcon('application/x-tar')).toBe('doc-archive')
 	})
 
-	it('returns generic file icon for unknown types', () => {
-		expect(inferIcon('application/octet-stream')).toBe('i-lucide:file')
+	it('returns generic doc icon for unknown types', () => {
+		expect(inferIcon('application/octet-stream')).toBe('doc-default')
 	})
 
-	it('returns generic file icon for null', () => {
-		expect(inferIcon(null)).toBe('i-lucide:file')
+	it('returns generic doc icon for null', () => {
+		expect(inferIcon(null)).toBe('doc-default')
 	})
 
-	it('returns generic file icon for undefined', () => {
-		expect(inferIcon(undefined)).toBe('i-lucide:file')
+	it('returns generic doc icon for undefined', () => {
+		expect(inferIcon(undefined)).toBe('doc-default')
 	})
 
-	it('returns generic file icon for empty string', () => {
-		expect(inferIcon('')).toBe('i-lucide:file')
+	it('returns generic doc icon for empty string', () => {
+		expect(inferIcon('')).toBe('doc-default')
 	})
 })
 

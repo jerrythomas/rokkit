@@ -5098,3 +5098,80 @@ shadow-prone prefixes (`marker-`, `placeholder-`, `before-`, `after-`,
 `selection-`) for any semantic icon names UnoCSS shortcuts use.
 
 Lint: 0 errors. Tests: 3501 passed.
+
+## 2026-05-28 (cont.) — Drop hardcoded i-mdi / i-lucide refs from shared components
+
+Audit of `packages/**/*.svelte` and `packages/**/*.{js,ts}` for hardcoded
+icon class refs that bypass the semantic-icon override pattern. Three
+real violations beyond what `CodeGroup` already cleaned up:
+
+1. `@rokkit/ui/CodeBlock.svelte` — `i-mdi:code-tags`, `i-mdi:check`,
+   `i-mdi:content-copy`, `i-mdi:download`
+2. `@rokkit/blocks/PlotPlugin.svelte` — `i-mdi:eye-off-outline`,
+   `i-mdi:code-tags`, `i-mdi:content-copy`, `i-mdi:download`
+3. `@rokkit/ui/utils/upload.js::inferIcon()` — 6× `i-lucide:*` strings
+   for MIME-type icons (image / video / audio / file-text / archive / file)
+
+**Two new semantic groups added per user direction (Phase B)**
+
+- `media-*` — kept the prefix because there's no `media:` UnoCSS variant.
+  Group: `media-image` (Solar `gallery-minimalistic`), `media-video`
+  (`videocamera`), `media-audio` (`music-notes`).
+- `doc-*` — extended the existing doc group with `doc-text`
+  (`file-text`), `doc-pdf` (`document`), `doc-archive` (`archive`). The
+  doc-default fallback covers unknown / null / undefined MIME types.
+
+**Plus `action-download`** (Phase A) — Solar `download`. Adds to the
+existing `action-*` group alongside `copy`, `copysuccess`, `check`, etc.
+
+All 7 new names went through the usual pipeline:
+- `packages/icons/scripts/semantic-map.json` + `glyph-map.json`
+- `packages/core/src/constants.js` — `DEFAULT_ICONS` extended
+- `packages/core/spec/constants.spec.js` — group snapshot updated
+  (`doc` group now has 11 keys; new `media` group with 3 keys; `action`
+  group adds `download`)
+- Regenerated SVGs via `add-solar-{semantic,glyphs}.js`, rebundled JSON
+- Browser-verified the bare-name shortcut chain emits CSS for each new
+  semantic name (`.action-download`, `.media-image`, `.doc-pdf` etc.)
+
+**Component swaps**
+
+CodeBlock.svelte:
+- header icon: `i-mdi:code-tags` → `view-code`
+- copy/copied: `i-mdi:content-copy` / `i-mdi:check` → `action-copy` /
+  `action-check`
+- download: `i-mdi:download` → `action-download`
+
+PlotPlugin.svelte:
+- view-code toggle: `i-mdi:eye-off-outline` / `i-mdi:code-tags` →
+  `view-off` / `view-code`
+- copy spec: `i-mdi:content-copy` → `action-copy`
+- export SVG: `i-mdi:download` → `action-download`
+
+upload.js `inferIcon`:
+- `image/*` → `media-image`
+- `video/*` → `media-video`
+- `audio/*` → `media-audio`
+- `text/*` → `doc-text`
+- `application/pdf` → `doc-pdf`
+- archives (zip/gzip/x-tar) → `doc-archive`
+- everything else (unknown / null / undefined / empty) → `doc-default`
+
+**Test updates**
+
+`upload-utils.spec.js` — 9 assertions for `inferIcon` updated to expect
+the new semantic names. `UploadFileStatus.spec.svelte.ts` — class-
+contains assertion for `image/jpeg` updated to `media-image`.
+
+**Out of scope (not violations)**
+
+- `packages/stories/` — `i-solar:*` refs in Demo.svelte +
+  StoryViewer.svelte. That's the Storybook-style demo package, not a
+  shared UI component. Acceptable.
+- `packages/ui/spec/*.spec.ts` — `i-lucide:*` strings are TEST
+  FIXTURES (passed in as `icon` field on items to verify the component
+  renders whatever class string it's given). Not internal references.
+- `packages/core/spec/utils.spec.js` — `i-glyph:settings` in an
+  `isIconClass` truth-table test. Same pattern.
+
+Lint: 0 errors. Tests: 3501 passed.

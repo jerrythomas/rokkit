@@ -61,11 +61,11 @@ export function validateFile(file, { accept, maxSize } = {}) {
  * @returns {string}
  */
 const MIME_PREFIX_ICONS = [
-	['image/', 'i-lucide:image'],
-	['video/', 'i-lucide:video'],
-	['audio/', 'i-lucide:music'],
-	['text/', 'i-lucide:file-text'],
-	['application/pdf', 'i-lucide:file-text']
+	['image/', 'media-image'],
+	['video/', 'media-video'],
+	['audio/', 'media-audio'],
+	['text/', 'doc-text'],
+	['application/pdf', 'doc-pdf']
 ]
 
 function getPrefixIcon(mimeType) {
@@ -76,11 +76,11 @@ function getPrefixIcon(mimeType) {
 }
 
 export function inferIcon(mimeType) {
-	if (!mimeType) return 'i-lucide:file'
+	if (!mimeType) return 'doc-default'
 	const prefixIcon = getPrefixIcon(mimeType)
 	if (prefixIcon) return prefixIcon
-	if (ARCHIVE_TYPES.has(mimeType)) return 'i-lucide:archive'
-	return 'i-lucide:file'
+	if (ARCHIVE_TYPES.has(mimeType)) return 'doc-archive'
+	return 'doc-default'
 }
 
 /**

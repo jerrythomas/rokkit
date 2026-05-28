@@ -115,7 +115,7 @@
 			{#if hasHeader}
 				<div data-code-block-header>
 					<div data-code-block-title>
-						<span data-code-block-icon class="i-mdi:code-tags" aria-hidden="true"></span>
+						<span data-code-block-icon class="view-code" aria-hidden="true"></span>
 						{#if filename}<span data-code-block-filename>{filename}</span>{/if}
 						{#if language}<span data-code-block-lang>{language}</span>{/if}
 					</div>
@@ -123,13 +123,13 @@
 						<div data-code-block-actions>
 							{#if allowCopy}
 								<button type="button" onclick={copyCode} title="Copy code">
-									<span class={copied ? 'i-mdi:check' : 'i-mdi:content-copy'} aria-hidden="true"></span>
+									<span class={copied ? 'action-check' : 'action-copy'} aria-hidden="true"></span>
 									<span>{copied ? 'Copied' : 'Copy'}</span>
 								</button>
 							{/if}
 							{#if allowDownload}
 								<button type="button" onclick={downloadCode} title="Download as file">
-									<span class="i-mdi:download" aria-hidden="true"></span>
+									<span class="action-download" aria-hidden="true"></span>
 									<span>.{language || 'txt'}</span>
 								</button>
 							{/if}

@@ -235,7 +235,7 @@ describe('UploadFileStatus', () => {
 		})
 		const { container } = render(UploadFileStatus, { proxy })
 		const icon = container.querySelector('[data-upload-file-icon]')
-		expect(icon?.classList.contains('i-lucide:image')).toBe(true)
+		expect(icon?.classList.contains('media-image')).toBe(true)
 	})
 
 	it('uses semantic icon classes for action buttons', () => {
