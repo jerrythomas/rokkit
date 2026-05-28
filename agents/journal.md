@@ -4620,3 +4620,85 @@ Fix in `packages/app/src/utils/color-mode.svelte.ts`: constructor now reads `tar
 - Click ThemeSwitcher dark → both html.mode and body.mode flip to dark → background returns to sumi-ink.
 
 Lint: 0 errors. Tests: 3500 passed.
+
+## 2026-05-27 (cont.) — Shared conversation history across /app and /chat
+
+The /app and /chat surfaces each had their own conversation model — /app had a
+hardcoded today/yesterday/older sidebar with no real persistence, and /chat had
+an in-memory `conversation` store that reset on reload. Made them share a single
+persistent store so the sidebar is the same on both routes and conversations
+survive reload.
+
+**Schema** (`demo/src/lib/koan/conversations.svelte.ts`)
+- `Conversation` = `{id, title, surface: 'app'|'chat', createdAt, updatedAt, turns[]}`.
+- `Turn` is `user` (text) or `assistant` with discriminated body: `demo` (for /app
+  — demoType + variant), `blocks` (for /chat — opaque Block[] from chat-demo,
+  with optional `provider` + `model` tags), plus `markdown`/`component`/`error`
+  reserved.
+- localStorage persistence (`rokkit-conversations`), cap 20 — oldest pruned on
+  append. SSR-safe (guards `typeof localStorage`).
+- Module API: `startNew(surface, query)`, `appendUser`, `appendAssistant`,
+  `loadConversation`, `bucketByRecency()`, `recencyLabel()`, `removeConversation`,
+  `clearAll`. No exported `$derived` (Svelte 5 forbids module-scope derived
+  exports — `getCurrentConversation()` returns a fresh value).
+
+**/app wiring** (`demo/src/routes/app/+layout.svelte`)
+- `submitQuery` calls `startNew('app', query)` instead of just mutating shell.
+- A layout `$effect` watches `shell.demoType` + `shell.demoVariant` and appends
+  assistant demo turns when state settles. Dedupe rules:
+  - last turn is user → append (initial response)
+  - same demoType, different variant → append (variant pick is a new turn —
+    matches existing UI behavior per user feedback)
+  - different demoType → no-op (cross-demo URL nav within an existing conv is
+    "side-trip browsing", not new turns; new demos come via submitQuery which
+    starts a fresh conversation)
+- `resumeConversation(conv)` routes to the right `/app/<demo>?variant=X` for
+  app-surface convs, or `/chat` for chat-surface ones; shell state is
+  pre-populated so the post-mount $effect sees a matching last-turn and
+  doesn't double-append.
+
+**/chat wiring** (`demo/src/lib/chat-demo/store.svelte.ts`)
+- The chat-demo `conversation` object is now a thin shim: `turns` is a getter
+  that maps the current chat-surface conversation's Turns into the existing
+  `ChatTurn` shape; `thinking` stays as a local `$state`. All write paths
+  (`submitQuery`, `submitData`, `submitExport`, `submitAction`) delegate to
+  shared store helpers — first user turn creates the conv via `startNew`,
+  subsequent push via `appendUser` + `appendAssistant`.
+- Each assistant turn carries `{provider: 'scripted'|'openrouter'|'webllm',
+  model?}` — stamped from current `llm` state at submit time, so a single
+  conversation can record a mix of providers (mid-conversation switching is
+  still allowed).
+- `syncLLMFromCurrentConversation()` flips the toggle back to the last
+  assistant turn's provider/model on resume, so continuation defaults to the
+  original setup. Called from /chat's mount $effect (covers cross-surface
+  arrival from /app's sidebar) and resumeConversation.
+
+**Sidebar** (cross-surface)
+- ChatSidebar → renamed `ChatHistory` (component file, interface, ~30
+  `data-chat-sidebar-*` CSS attrs → `data-chat-history-*`). The name fits
+  the role now that the sidebar IS the persistent history.
+- Both `/app` and `/chat` render ChatHistory reading the same
+  `bucketByRecency()` (all surfaces). Cross-surface rows route to their
+  origin: app convs → `/app/<demo>?variant=X`, chat convs → `/chat`.
+- Per-conv icon: demo type's catalog icon for app convs;
+  `i-mdi:chat-processing-outline` for chat convs.
+
+**Layout polish on /chat**
+- Subtoolbar (mode toggle + model select + Clear) moved from spanning the full
+  width above the sidebar into the content column above the conversation
+  stream. Sidebar now extends top-to-bottom of the page.
+
+**Verified end-to-end in browser**
+- Empty state on first load. Submit query → conversation persists with user
+  turn + assistant turn. Variant pick → 3rd turn appended. Reload → history
+  restored. Resume from sidebar → URL restored with `?variant=` + last-turn
+  matches state (no double-append). Cross-surface resume in both directions.
+  Provider tagging visible as "scripted" / "openrouter" badge above each
+  assistant turn. Toggle restoration confirmed via a synthetic openrouter-
+  tagged turn (after click, toggle flipped from Scripted to OpenRouter).
+
+**Commits**
+- `34f197dd` feat(demo): shared conversation history across /app and /chat
+- `a37007cc` feat(demo/chat): tag turns with provider + model; subheader inside content
+
+Lint: 0 errors. Tests: 3500 passed.
