@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { onDestroy } from 'svelte'
 	import { Select } from '@rokkit/ui'
+	import { vibe } from '@rokkit/states'
+	import { siteStyles } from '$lib/data/site-styles'
 	import {
 		wizardState,
 		ramps,
@@ -15,6 +17,18 @@
 		mode?: 'light' | 'dark'
 	}
 	const { mode = 'light' }: Props = $props()
+
+	// Step nav — the 4 wizard steps with click-to-navigate. Default lands
+	// on Skin (step 02) which is where the live palette + role editing
+	// lives; Style / Typography / Preview are companion steps.
+	type WizStep = 0 | 1 | 2 | 3
+	let activeStep = $state<WizStep>(1)
+	const steps: Array<{ n: string; label: string }> = [
+		{ n: '01', label: 'Style' },
+		{ n: '02', label: 'Skin' },
+		{ n: '03', label: 'Typography' },
+		{ n: '04', label: 'Preview' }
+	]
 
 	// $derived so reassigning wizardState.palettes / .roles (e.g. via
 	// resetPreset) propagates to the template — a plain const captures
@@ -87,16 +101,53 @@
 </script>
 
 <div class="wiz">
-	<div class="wiz-steps" role="list">
-		<div class="wiz-step done" role="listitem"><span class="n">01</span>Style</div>
-		<span class="step-sep" aria-hidden="true">/</span>
-		<div class="wiz-step on" role="listitem" aria-current="step"><span class="n">02</span>Skin</div>
-		<span class="step-sep" aria-hidden="true">/</span>
-		<div class="wiz-step" role="listitem"><span class="n">03</span>Typography</div>
-		<span class="step-sep" aria-hidden="true">/</span>
-		<div class="wiz-step" role="listitem"><span class="n">04</span>Preview &amp; export</div>
+	<div class="wiz-steps" role="tablist" aria-label="Wizard steps">
+		{#each steps as s, i (s.n)}
+			<button
+				type="button"
+				class="wiz-step"
+				class:done={i < activeStep}
+				class:on={i === activeStep}
+				role="tab"
+				aria-selected={i === activeStep}
+				aria-current={i === activeStep ? 'step' : undefined}
+				onclick={() => (activeStep = i as WizStep)}
+			>
+				<span class="n">{s.n}</span>{s.label}
+			</button>
+			{#if i < steps.length - 1}
+				<span class="step-sep" aria-hidden="true">/</span>
+			{/if}
+		{/each}
 	</div>
 
+	{#if activeStep === 0}
+		<section class="wiz-section">
+			<span class="lbl">Style — thematic character</span>
+			<span class="desc">
+				Each style is a different visual personality across the same component set.
+				Click to flip the running app to it.
+			</span>
+			<div class="style-grid">
+				{#each siteStyles as s (s.id)}
+					<button
+						type="button"
+						class="style-card"
+						data-active={vibe.style === s.id ? '' : undefined}
+						onclick={() => (vibe.style = s.id)}
+						aria-pressed={vibe.style === s.id}
+					>
+						<div class="style-swatches">
+							{#each s.colors as c, j (j)}
+								<span class="style-swatch" style="background: {c};"></span>
+							{/each}
+						</div>
+						<div class="style-name">{s.label}</div>
+					</button>
+				{/each}
+			</div>
+		</section>
+	{:else if activeStep === 1}
 	<section class="wiz-section">
 		<span class="lbl">Palettes in this skin</span>
 		<span class="desc">
@@ -204,6 +255,71 @@
 			{/each}
 		</div>
 	</section>
+	{:else if activeStep === 2}
+		<section class="wiz-section">
+			<span class="lbl">Typography — coming soon</span>
+			<span class="desc">
+				Pick the display, UI, and mono font families. For now, the theme uses
+				the running app's defaults — Fraunces · Inter · JetBrains Mono on
+				zen-sumi.
+			</span>
+			<div class="ph-card">
+				<div class="ph-row">
+					<span class="ph-key">--font-display</span>
+					<span class="ph-val" style="font: 500 18px var(--font-display)">The quick brown fox</span>
+				</div>
+				<div class="ph-row">
+					<span class="ph-key">--font-ui</span>
+					<span class="ph-val" style="font: 400 14px var(--font-ui)">The quick brown fox</span>
+				</div>
+				<div class="ph-row">
+					<span class="ph-key">--font-mono</span>
+					<span class="ph-val" style="font: 400 13px var(--font-mono)">const fox = 'brown'</span>
+				</div>
+			</div>
+		</section>
+	{:else if activeStep === 3}
+		<section class="wiz-section">
+			<span class="lbl">Preview — your theme on real components</span>
+			<span class="desc">
+				A handful of components rendered against the roles you mapped. Save the
+				preset or export tokens.css from the action bar below.
+			</span>
+			<div class="preview-grid">
+				<div class="preview-tile">
+					<span class="preview-tag">Buttons</span>
+					<div class="preview-row">
+						<span class="btn primary">Primary</span>
+						<span class="btn default">Default</span>
+						<span class="btn ghost">Ghost</span>
+					</div>
+				</div>
+				<div class="preview-tile">
+					<span class="preview-tag">Input</span>
+					<div class="preview-input" aria-hidden="true">
+						<span class="preview-input-label">Email</span>
+						<span class="preview-input-field">you@example.com</span>
+					</div>
+				</div>
+				<div class="preview-tile">
+					<span class="preview-tag">Badges</span>
+					<div class="preview-row">
+						<span class="badge">stable</span>
+						<span class="badge accent">accent</span>
+						<span class="badge ink">ink</span>
+					</div>
+				</div>
+				<div class="preview-tile">
+					<span class="preview-tag">Surface stack</span>
+					<div class="surface-stack">
+						<div class="surface s-paper">paper</div>
+						<div class="surface s-soft">paper-soft</div>
+						<div class="surface s-mute">paper-mute</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	{/if}
 </div>
 
 <style>
@@ -225,9 +341,19 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 6px;
+		padding: 4px 6px;
+		border: 0;
+		background: transparent;
 		font: 500 12px var(--font-mono);
 		color: var(--ink-soft);
 		letter-spacing: 0.04em;
+		border-radius: 4px;
+		cursor: pointer;
+	}
+
+	.wiz-step:hover {
+		color: var(--ink-mute);
+		background: var(--paper-soft);
 	}
 
 	.wiz-step .n {
@@ -447,5 +573,208 @@
 		font: 500 11px var(--font-mono);
 		color: var(--ink-soft);
 		min-width: 28px;
+	}
+
+	/* ─── Step 01 · Style picker ─────────────────────────────────────── */
+	.style-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+		gap: 10px;
+	}
+
+	.style-card {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		padding: 14px;
+		border: 1px solid var(--paper-edge);
+		border-radius: 8px;
+		background: var(--paper);
+		text-align: left;
+		font: inherit;
+		color: inherit;
+		cursor: pointer;
+		transition: border-color 120ms ease, background 120ms ease;
+	}
+
+	.style-card:hover {
+		border-color: color-mix(in oklab, var(--accent) 40%, var(--paper-edge));
+	}
+
+	.style-card[data-active] {
+		border-color: var(--accent);
+		background: color-mix(in oklab, var(--accent) 6%, var(--paper));
+	}
+
+	.style-swatches {
+		display: flex;
+		gap: 3px;
+	}
+
+	.style-swatch {
+		width: 30px;
+		height: 24px;
+		border-radius: 3px;
+		border: 1px solid color-mix(in oklab, var(--ink) 8%, transparent);
+	}
+
+	.style-name {
+		font: 500 12.5px var(--font-mono);
+		color: var(--ink);
+	}
+
+	/* ─── Step 03 · Typography placeholder ───────────────────────────── */
+	.ph-card {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		padding: 16px;
+		border: 1px dashed var(--paper-edge);
+		border-radius: 8px;
+		background: var(--paper-soft);
+	}
+
+	.ph-row {
+		display: grid;
+		grid-template-columns: 140px 1fr;
+		align-items: baseline;
+		gap: 14px;
+	}
+
+	.ph-key {
+		font: 500 11px var(--font-mono);
+		color: var(--ink-soft);
+		letter-spacing: 0.02em;
+	}
+
+	.ph-val {
+		color: var(--ink);
+	}
+
+	/* ─── Step 04 · Preview tiles ────────────────────────────────────── */
+	.preview-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		gap: 10px;
+	}
+
+	.preview-tile {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		padding: 14px;
+		border: 1px solid var(--paper-edge);
+		border-radius: 8px;
+		background: var(--paper);
+	}
+
+	.preview-tag {
+		font: 500 10px var(--font-mono);
+		color: var(--ink-soft);
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+	}
+
+	.preview-row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+	}
+
+	.btn {
+		display: inline-flex;
+		align-items: center;
+		padding: 5px 12px;
+		border-radius: 4px;
+		font: 500 12px var(--font-ui);
+		border: 1px solid transparent;
+	}
+
+	.btn.primary {
+		background: var(--accent);
+		color: var(--paper);
+	}
+
+	.btn.default {
+		background: var(--paper-soft);
+		color: var(--ink);
+		border-color: var(--paper-edge);
+	}
+
+	.btn.ghost {
+		background: transparent;
+		color: var(--ink-mute);
+	}
+
+	.preview-input {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+
+	.preview-input-label {
+		font: 500 10px var(--font-mono);
+		color: var(--ink-soft);
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+
+	.preview-input-field {
+		padding: 6px 10px;
+		border: 1px solid var(--paper-edge);
+		border-radius: 4px;
+		background: var(--paper-soft);
+		font: 400 12.5px var(--font-ui);
+		color: var(--ink-mute);
+	}
+
+	.badge {
+		display: inline-flex;
+		align-items: center;
+		padding: 2px 8px;
+		border-radius: 9999px;
+		font: 500 10.5px var(--font-mono);
+		background: var(--paper-soft);
+		color: var(--ink-mute);
+		border: 1px solid var(--paper-edge);
+		letter-spacing: 0.02em;
+	}
+
+	.badge.accent {
+		background: color-mix(in oklab, var(--accent) 14%, var(--paper));
+		color: var(--accent);
+		border-color: color-mix(in oklab, var(--accent) 30%, var(--paper-edge));
+	}
+
+	.badge.ink {
+		background: var(--ink);
+		color: var(--paper);
+		border-color: var(--ink);
+	}
+
+	.surface-stack {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+
+	.surface {
+		padding: 6px 10px;
+		border-radius: 3px;
+		font: 500 11px var(--font-mono);
+		color: var(--ink-mute);
+		border: 1px solid var(--paper-edge);
+	}
+
+	.surface.s-paper {
+		background: var(--paper);
+	}
+
+	.surface.s-soft {
+		background: var(--paper-soft);
+	}
+
+	.surface.s-mute {
+		background: var(--paper-mute);
 	}
 </style>

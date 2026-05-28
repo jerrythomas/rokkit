@@ -4702,3 +4702,65 @@ survive reload.
 - `a37007cc` feat(demo/chat): tag turns with provider + model; subheader inside content
 
 Lint: 0 errors. Tests: 3500 passed.
+
+## 2026-05-27 (cont.) — Interactive theme wizard: step nav + Style + Preview steps
+
+The ThemeWizardCard's 01/02/03/04 stepper at the top was decorative — clicking did
+nothing, only Step 02 (Skin) content rendered. Made the stepper a real tab-list
+and added content for the three previously-empty steps.
+
+**Step nav**
+
+- `activeStep: 0|1|2|3` local state; the 4 step pills are `<button>` elements
+  with `role="tab"` + `aria-selected`/`aria-current="step"`. Click cycles
+  `activeStep`. The `.done` / `.on` classes follow `activeStep` instead of being
+  hardcoded.
+
+**Step 01 · Style** — new
+
+- 5-card grid of `siteStyles` (`zen-sumi` / `rokkit` / `minimal` / `material` /
+  `frosted`), each card shows the 3-color preview (paper/ink/accent) + name.
+- Click → `vibe.style = s.id`. The existing themable cascade picks up the
+  change and reskins the whole running app instantly — header pill,
+  ChatResponse, sidebar — everything.
+
+**Step 02 · Skin** — unchanged
+
+- Existing palette catalog + role table, wrapped in the `{#if activeStep === 1}`
+  branch.
+
+**Step 03 · Typography** — placeholder
+
+- Renders three rows showing `--font-display` / `--font-ui` / `--font-mono`
+  against the running app's current font stack. No interaction yet — copy
+  explicitly calls out "coming soon" because font-family picking needs its
+  own design pass (font loading + system fallbacks).
+
+**Step 04 · Preview** — new
+
+- 4-tile grid of components rendered against the current theme: Buttons
+  (primary / default / ghost), Input (label + field stub), Badges
+  (stable / accent / ink), Surface stack (paper / paper-soft / paper-mute).
+  Reads named tokens directly, so changes from Step 01 (style) and Step 02
+  (palette/role) propagate immediately — useful for confirming the theme
+  reads correctly on real surfaces before Save preset / Export tokens.css.
+
+**What was already interactive — corrected**
+
+The priority text said to wire swatch clicks, palette IN USE toggling, and
+Save/Export. Inspection showed those were already done — `setRoleStep()`,
+`togglePalette()`, `savePreset()`, `downloadTokensCss()` all existed and were
+wired into the ChatResponse action buttons. Only the step nav + content for
+01/03/04 was actually missing.
+
+**Verified in browser**
+
+- Step nav cycles. Active step has accent text + faint background.
+- Step 01: click zen-sumi while on rokkit → header style pill flips,
+  ChatResponse props row updates to `style zen-sumi`, the surrounding /app
+  surfaces all reskin.
+- Step 02: palette + role editing untouched.
+- Step 03: font samples in the running app's current stack.
+- Step 04: 4 preview tiles render with current theme tokens.
+
+Lint: 0 errors. Tests: 3500 passed.
