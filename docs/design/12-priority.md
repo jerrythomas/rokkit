@@ -42,7 +42,7 @@ Major design-system initiative — phases 3–9, then release 1 of the trimmed t
 
 #### Theming & Design
 
-- [ ] **Minimal List guide-line style** — continuous thin vertical guide line on group container (like tree indent lines); active item gets a bolder/colored segment on that line; items indented so text aligns past the line (aligns with middle of parent icon). Applies to both List and Tree. Per-item left-borders are the wrong pattern for this aesthetic.
+- [x] **Minimal List guide-line style** — Shipped 2026-05-28. Continuous 1px paper-edge guide line via `[data-list]::before` on the container; active item gets `box-shadow: inset 2px 0 0 0 var(--accent)` overlapping the line at its row (no per-item border). Tree mirrors the pattern on `[data-tree-item-content][data-active="true"]` using `var(--primary)` — keeps the existing Connector indent lines.
 - [ ] **Consistent state patterns design doc** — shared CSS custom-property sets defining hover/active/focus/disabled behavior at element/group level. Reduces per-component repetition in theme CSS. Target: `docs/design/18-state-patterns.md`.
 
 ### P1, P3, P4

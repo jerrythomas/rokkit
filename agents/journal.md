@@ -5238,3 +5238,51 @@ auto-registered safelist + shortcut chain. No manual safelist needed
 on the consumer side.
 
 Lint: 0 errors. Tests: 3503 passed (3501 + 2 new spec).
+
+## 2026-05-28 (cont.) — Minimal List/Tree guide-line style
+
+Per saved feedback: per-item left borders are the wrong aesthetic for
+minimal. The correct pattern is a continuous thin vertical guide line
+on the group container (matching the tree connector lines' tone), and
+the active item gets a bolder accent segment overlaying that guide
+line at its row.
+
+**`packages/themes/src/minimal/list.css`**
+
+- Container now has `position: relative` plus a `::before` rule that
+  draws a full-height 1px guide line at `left: 0` in `var(--paper-edge)`.
+- Items lose the `border-0 border-solid border-transparent` reset and
+  gain `padding-left: 0.75rem` so text/icons sit past the line.
+- Active state (and selected for multi-select) replaces the old
+  `border-l-2 border-accent` with `box-shadow: inset 2px 0 0 0
+  var(--accent)`. The 2px inset sits at the item's left edge — same
+  x-position as the container's `::before` — so the bolder colored
+  segment visually overlaps the 1px guide line.
+- Same pattern in both unfocused and focus-within active states; the
+  text color contrast handles the "is this list focused?" cue
+  (`ink-mute` vs `accent`).
+
+**`packages/themes/src/minimal/tree.css`**
+
+- Tree already has structural connector indent lines per depth via the
+  `Connector` component, so no container guide-line is added.
+- Active/selected states swap `border-l-2 border-primary` for
+  `box-shadow: inset 2px 0 0 0 var(--primary)` — same idiom as List.
+  The bolder segment sits next to the deepest connector line at the
+  active row, reading as a continuation of the tree's existing
+  visual language.
+
+**Verified**
+
+- Rendered CSS from `/app/list?theme=minimal`:
+  - `[data-style='minimal'] [data-list]::before { content: ''; position:
+    absolute; inset: 0 auto 0 0; width: 1px; background: var(--paper-edge); }`
+    — guide line present.
+  - `[data-style='minimal'] [data-list] [data-list-item]
+    [data-active='true'] { box-shadow: inset 2px 0 0 0 var(--accent); }`
+    — bolder segment present.
+  - No `border-left-width:2px` declarations in minimal rules anymore.
+- Tree's active rule shows `box-shadow: inset 2px 0 0 0 var(--primary)`
+  with no border-left.
+
+Lint: 0 errors. Tests: 3503 passed.

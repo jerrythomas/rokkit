@@ -42,9 +42,13 @@
   @apply ring-ink-soft ring-1 outline-none;
 }
 
-/* Active/selected state */
+/* Active/selected state — bolder colored segment at the content's
+   left edge (consistent with the minimal List guide-line aesthetic).
+   The tree's structural indent connector lines stay as-is; this is
+   the leaf-level active indicator. No per-item border. */
 [data-style='minimal'] [data-tree-item-content][data-active='true'] {
-  @apply text-primary border-primary border-l-2;
+  @apply text-primary;
+  box-shadow: inset 2px 0 0 0 var(--primary);
 }
 
 [data-style='minimal'] [data-tree-item-content][data-active='true']:hover:not(:disabled) {
@@ -117,14 +121,16 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-tree-node][data-selected='true'] [data-tree-item-content] {
-  @apply text-primary border-primary border-l-2;
+  @apply text-primary;
+  box-shadow: inset 2px 0 0 0 var(--primary);
 }
 
 [data-style='minimal']
   [data-tree]:focus-within
   [data-tree-node][data-selected='true']
   [data-tree-item-content] {
-  @apply text-primary border-primary border-l-2;
+  @apply text-primary;
+  box-shadow: inset 2px 0 0 0 var(--primary);
 }
 
 [data-style='minimal']

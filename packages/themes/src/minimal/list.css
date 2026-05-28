@@ -1,16 +1,34 @@
 /**
  * List - Minimal Theme Styles
  *
- * Clean, understated list with subtle left-border accents.
- * Hover is text-only (no border); active/selected uses secondary accent border.
+ * Clean, understated list with a continuous vertical guide line on the
+ * group container (1px paper-edge) and a bolder accent segment on the
+ * active item (2px inset box-shadow that visually replaces the guide
+ * line at that row). Same indent/guide aesthetic as the tree
+ * connectors — per-item left borders are intentionally avoided.
  */
 
 /* =============================================================================
    List Container
    ============================================================================= */
 
+[data-style='minimal'] [data-list] {
+  position: relative;
+}
+
 [data-style='minimal'] [data-list]:focus-within {
   @apply outline-none;
+}
+
+/* Continuous vertical guide line spanning the full container height.
+   Sits at the inside-left so active-item shadows can overlap precisely. */
+[data-style='minimal'] [data-list]::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 1px;
+  background: var(--paper-edge);
+  pointer-events: none;
 }
 
 /* =============================================================================
@@ -19,6 +37,8 @@
 
 [data-style='minimal'] [data-list] [data-list-item] {
   @apply text-ink-mute border-0 border-solid border-transparent;
+  position: relative;
+  padding-left: 0.75rem;
 }
 
 [data-style='minimal'] [data-list] a[data-list-item],
@@ -36,14 +56,18 @@
   @apply text-ink bg-none outline-none;
 }
 
-/* Active state — muted when list not focused */
+/* Active state — muted when list not focused.
+   Inset box-shadow overlays the container guide line at this row with
+   a bolder colored segment. No per-item border. */
 [data-style='minimal'] [data-list] [data-list-item][data-active='true'] {
-  @apply text-ink-mute border-accent border-l-2 bg-none;
+  @apply text-ink-mute bg-none;
+  box-shadow: inset 2px 0 0 0 var(--accent);
 }
 
 /* Active state — full highlight when list has focus */
 [data-style='minimal'] [data-list]:focus-within [data-list-item][data-active='true'] {
-  @apply text-accent border-accent border-l-2 bg-none;
+  @apply text-accent bg-none;
+  box-shadow: inset 2px 0 0 0 var(--accent);
 }
 
 /* Active + hover/focus */
@@ -126,11 +150,13 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-list] [data-list-item][data-selected='true'] {
-  @apply text-accent border-accent border-l-2;
+  @apply text-accent;
+  box-shadow: inset 2px 0 0 0 var(--accent);
 }
 
 [data-style='minimal'] [data-list]:focus-within [data-list-item][data-selected='true'] {
-  @apply text-accent border-accent border-l-2;
+  @apply text-accent;
+  box-shadow: inset 2px 0 0 0 var(--accent);
 }
 
 [data-style='minimal'] [data-list] [data-list-item][data-selected='true']:hover:not(:disabled) {
