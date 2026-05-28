@@ -5286,3 +5286,40 @@ line at its row.
   with no border-left.
 
 Lint: 0 errors. Tests: 3503 passed.
+
+## 2026-05-28 (cont.) — Koan catalog expansion: audit pass
+
+Priority item said "add more demo responses" + listed three chips that
+fell back to Tabs ("Sortable data table" / "Tree select" / "Multi-select
+with chips"). Audited the current state — it's done:
+
+**Inventory**
+
+13 catalog entries (`demo/src/lib/koan/demos/*/meta.ts`), 13 matching
+`/app/<demo>` routes, 13 branches in `pickDemoKind` in
+`+layout.svelte`. Names align (with the obvious `date-picker → /app/date`
+and `theme-wizard → /app/theming` URL mappings via the DEMO_ROUTE map).
+
+**runMatch verification**
+
+Reproduced the MiniSearch index config (title boost ×3, keywords ×2,
+description ×1, fuzzy 0.2, prefix true) in a node script and ran the
+three priority-listed queries:
+
+```
+"Sortable data table"     → table
+"Tree select"             → tree
+"Multi-select with chips" → multi-select
+```
+
+Plus "tabs", "how do tabs work", "show me a form" all resolve to their
+expected ids.
+
+**Follow-up noted, not blocking**
+
+The welcome page has `<a href="/app/catalog">Browse the full catalog</a>`
+but no route exists. Existing inline comment marks it TBD. Not part of
+this priority item — captured as a future enhancement (small grid-of-
+cards page over `catalog` from `lib/koan/catalog.ts`).
+
+Marked the priority item complete in docs/design/12-priority.md.
