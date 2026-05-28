@@ -43,15 +43,15 @@ describe('Utility functions', () => {
 				opened: 'folder-opened',
 				closed: 'folder-closed'
 			},
-			file: {
-				default: 'file-default',
-				svelte: 'file-svelte',
-				js: 'file-js',
-				ts: 'file-ts',
-				css: 'file-css',
-				html: 'file-html',
-				json: 'file-json',
-				md: 'file-md'
+			doc: {
+				default: 'doc-default',
+				svelte: 'doc-svelte',
+				js: 'doc-js',
+				ts: 'doc-ts',
+				css: 'doc-css',
+				html: 'doc-html',
+				json: 'doc-json',
+				md: 'doc-md'
 			},
 			node: {
 				opened: 'node-opened',

@@ -318,13 +318,22 @@ export function oklch2hex(L, C, H) {
 }
 
 /**
- * Detects whether an icon value is a CSS class (i-*) or literal text (kanji, emoji, etc.)
+ * Detects whether an icon value is a CSS class or a literal character
+ * (kanji, emoji, single letter, etc.).
+ *
+ * Anything more than one grapheme is treated as a class — including bare
+ * semantic names like `file-svelte` which UnoCSS expands to the configured
+ * icon collection via `iconShortcuts(DEFAULT_ICONS, …)`. Single characters
+ * (kanji, emoji, single letters) render as literal text.
+ *
  * @param {string | null | undefined} icon
- * @returns {boolean} true if icon is a CSS class string
+ * @returns {boolean} true if icon should render as a CSS class
  */
 export function isIconClass(icon) {
 	if (!icon || typeof icon !== 'string') return false
-	return icon.startsWith('i-')
+	// Spread to count graphemes, not UTF-16 code units, so multi-codepoint
+	// emoji (e.g. 👨‍👩‍👧‍👦) and single CJK characters don't get misread.
+	return [...icon].length > 1
 }
 
 /**

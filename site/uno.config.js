@@ -120,29 +120,25 @@ const siteIcons = [
 
 const stateIcons = ['state-error', 'state-warning', 'state-success', 'state-info', 'state-unknown']
 
-const fileSemanticNames = [
-	'file-default',
-	'file-svelte',
-	'file-js',
-	'file-ts',
-	'file-css',
-	'file-html',
-	'file-json',
-	'file-md',
+// Bare semantic names — UnoCSS expands them via the `iconShortcuts`
+// registered by presetRokkit (e.g. `doc-svelte` → `i-semantic:doc-svelte`).
+// Note: `doc-*` (not `file-*`) because `file-` collides with UnoCSS's
+// `file:` pseudo-element variant (input[type=file]::file-selector-button)
+// — the variant consumes the `file-` prefix and the shortcut never fires.
+const fileIcons = [
+	'doc-default',
+	'doc-svelte',
+	'doc-js',
+	'doc-ts',
+	'doc-css',
+	'doc-html',
+	'doc-json',
+	'doc-md',
 	'folder-opened',
 	'folder-closed',
 	'view-preview',
 	'view-off',
 	'navigate-down'
-]
-// Include both bare semantic names (resolved via icon-shortcuts to
-// `i-semantic:*` at runtime) and the explicit `i-semantic:*` form
-// (used directly when components pass class strings through e.g. Tree's
-// ItemContent which requires the `i-*` prefix to recognize them as icon
-// classes — bare names get rendered as literal text there).
-const fileIcons = [
-	...fileSemanticNames,
-	...fileSemanticNames.map((n) => `i-semantic:${n}`)
 ]
 
 const solarIcons = [

@@ -36,7 +36,7 @@
 	}
 
 	interface IconOverrides {
-		file?: Partial<typeof DEFAULT_STATE_ICONS.file>
+		doc?: Partial<typeof DEFAULT_STATE_ICONS.doc>
 		folder?: Partial<typeof DEFAULT_STATE_ICONS.folder>
 		view?: Partial<typeof DEFAULT_STATE_ICONS.view>
 		action?: Partial<typeof DEFAULT_STATE_ICONS.action>
@@ -61,7 +61,7 @@
 	}: Props = $props()
 
 	const icons = $derived({
-		file: { ...DEFAULT_STATE_ICONS.file, ...(userIcons.file ?? {}) },
+		doc: { ...DEFAULT_STATE_ICONS.doc, ...(userIcons.doc ?? {}) },
 		folder: { ...DEFAULT_STATE_ICONS.folder, ...(userIcons.folder ?? {}) },
 		view: { ...DEFAULT_STATE_ICONS.view, ...(userIcons.view ?? {}) },
 		action: { ...DEFAULT_STATE_ICONS.action, ...(userIcons.action ?? {}) }
@@ -76,8 +76,8 @@
 	let drawerOpen = $state(false)
 	let previewExpanded = $state(false)
 
-	// Map file extensions to icon keys in icons.file. Unknown extensions fall
-	// back to icons.file.default. Consumers can extend by passing an icon
+	// Map file extensions to icon keys in icons.doc. Unknown extensions fall
+	// back to icons.doc.default. Consumers can extend by passing an icon
 	// override on individual file entries or via the icons prop.
 	const EXT_TO_KEY: Record<string, string> = {
 		svelte: 'svelte',
@@ -98,28 +98,17 @@
 		mdx: 'md'
 	}
 
-	// ItemContent's isIconClass() only accepts `i-*` prefixed classes for
-	// class-based icons (bare names get rendered as literal text). Prefix
-	// semantic names with `i-semantic:` so Tree leaves render the icon
-	// correctly. Consumers passing prefixed strings via file.icon or the
-	// icons prop bypass the prefix.
-	function asClass(bareOrPrefixed: string): string {
-		return bareOrPrefixed.startsWith('i-')
-			? bareOrPrefixed
-			: `i-semantic:${bareOrPrefixed}`
-	}
-
 	function iconForFile(file: CodeGroupFile): string {
 		if (file.icon) return file.icon
 		const ext = (file.name ?? file.path).split('.').pop()?.toLowerCase() ?? ''
 		const key = EXT_TO_KEY[ext] ?? 'default'
-		return asClass(icons.file[key] ?? icons.file.default)
+		return icons.doc[key] ?? icons.doc.default
 	}
 
 	function iconForPath(path: string): string {
 		const ext = path.split('.').pop()?.toLowerCase() ?? ''
 		const key = EXT_TO_KEY[ext] ?? 'default'
-		return icons.file[key] ?? icons.file.default
+		return icons.doc[key] ?? icons.doc.default
 	}
 
 	const activeFile = $derived(files.find((f) => f.path === selectedPath))
@@ -185,7 +174,7 @@
 			aria-expanded={drawerOpen}
 			aria-controls="codegroup-drawer"
 		>
-			<span class="picker-icon {activeFile ? iconForPath(activeFile.path) : icons.file.default}" aria-hidden="true"></span>
+			<span class="picker-icon {activeFile ? iconForPath(activeFile.path) : icons.doc.default}" aria-hidden="true"></span>
 			<span class="picker-name">{activeFileName || 'Choose file'}</span>
 			<span class="picker-chevron {icons.action.expand ?? 'navigate-down'}" aria-hidden="true"></span>
 		</button>

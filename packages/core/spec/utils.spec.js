@@ -297,16 +297,22 @@ describe('utils', () => {
 	})
 
 	describe('isIconClass', () => {
-		it('should return true for CSS icon class strings', () => {
+		it('should return true for prefixed icon class strings', () => {
 			expect(isIconClass('i-lucide:home')).toBe(true)
 			expect(isIconClass('i-semantic:check')).toBe(true)
 			expect(isIconClass('i-glyph:settings')).toBe(true)
 		})
 
-		it('should return false for literal text (kanji, emoji, etc.)', () => {
+		it('should return true for bare semantic names (UnoCSS shortcuts)', () => {
+			expect(isIconClass('file-svelte')).toBe(true)
+			expect(isIconClass('folder-opened')).toBe(true)
+			expect(isIconClass('navigate-down')).toBe(true)
+		})
+
+		it('should return false for literal single characters (kanji, emoji, letters)', () => {
 			expect(isIconClass('聴')).toBe(false)
 			expect(isIconClass('先')).toBe(false)
-			expect(isIconClass('🏠')).toBe(false)
+			expect(isIconClass('🏠')).toBe(false) // surrogate pair, single codepoint
 			expect(isIconClass('A')).toBe(false)
 		})
 
