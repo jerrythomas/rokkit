@@ -24,6 +24,7 @@
 	import { runMatch } from '$lib/koan/match.svelte'
 	import { findById, DEMO_ROUTE as CATALOG_DEMO_ROUTE } from '$lib/koan/catalog'
 	import CatalogGrid from '$lib/koan/components/CatalogGrid.svelte'
+	import APIPanel from '$lib/koan/components/APIPanel.svelte'
 	import { shell } from '$lib/koan/shell.svelte'
 	import {
 		conversations,
@@ -302,10 +303,14 @@
 	// to closed when navigating to a different demo so we don't carry
 	// state across demos.
 	let tweaksOpen = $state(false)
+	// Canvas view mode — `live` shows the mounted demo, `api` swaps to
+	// the API reference panel. Reset to `live` when the demo changes
+	// so API ↔ Live state doesn't bleed across demos.
+	let canvasView = $state<'live' | 'api'>('live')
 	$effect(() => {
-		// shell.demoType change — close the form so the next demo starts clean.
 		void shell.demoType
 		tweaksOpen = false
+		canvasView = 'live'
 	})
 
 	// Hydrate `tweaksByDemo` from any persisted TweakTurn rows on the
@@ -2085,7 +2090,41 @@ ${rows}
 		</aside>
 
 		<main class="canvas">
-			{#if shell.phase === 'welcome'}
+			{#if shell.phase === 'response' && demoApi}
+				<nav class="canvas-view-toggle" role="tablist" aria-label="Canvas view">
+					<button
+						type="button"
+						role="tab"
+						data-active={canvasView === 'live' ? '' : undefined}
+						aria-selected={canvasView === 'live'}
+						onclick={() => (canvasView = 'live')}
+					>
+						Live
+					</button>
+					<button
+						type="button"
+						role="tab"
+						data-active={canvasView === 'api' ? '' : undefined}
+						aria-selected={canvasView === 'api'}
+						onclick={() => (canvasView = 'api')}
+					>
+						API
+					</button>
+				</nav>
+			{/if}
+
+			{#if shell.phase === 'response' && canvasView === 'api' && demoApi}
+				<div class="canvas-head">
+					<div class="canvas-eyebrow">API · reference</div>
+					<div class="canvas-title">{findById(shell.demoType ?? '')?.title ?? 'Component'} — public surface</div>
+					<div class="canvas-sub">
+						The props, events, and data-attribute hooks every consumer can rely on.
+					</div>
+				</div>
+				<div class="canvas-body api">
+					<APIPanel api={demoApi} />
+				</div>
+			{:else if shell.phase === 'welcome'}
 				<div class="welcome-hero">
 					<div class="mark"><RokkitWordmark height={64} /></div>
 					<div class="lede">Pass the data. The component does the rest.</div>
@@ -3083,6 +3122,7 @@ ${rows}
 		background: var(--paper);
 		display: flex;
 		flex-direction: column;
+		position: relative;
 		/* No scroll here — .canvas-body owns its scroll so the head
 		   stays pinned at the top while only the body content moves. */
 		overflow: hidden;
@@ -3145,9 +3185,44 @@ ${rows}
 		flex-shrink: 0;
 	}
 
-	.canvas-body.catalog {
+	.canvas-body.catalog,
+	.canvas-body.api {
 		overflow-y: auto;
 		padding: 16px 28px 32px;
+	}
+
+	.canvas-view-toggle {
+		position: absolute;
+		top: 14px;
+		right: 20px;
+		z-index: 5;
+		display: inline-flex;
+		padding: 2px;
+		gap: 1px;
+		border: 1px solid var(--paper-edge);
+		border-radius: 6px;
+		background: var(--paper-soft);
+	}
+
+	.canvas-view-toggle button {
+		padding: 3px 12px;
+		border: 0;
+		background: transparent;
+		color: var(--ink-mute);
+		font: 500 12px var(--font-ui);
+		cursor: pointer;
+		border-radius: 4px;
+		transition: background 120ms ease, color 120ms ease;
+	}
+
+	.canvas-view-toggle button:hover {
+		color: var(--ink);
+	}
+
+	.canvas-view-toggle button[data-active] {
+		background: var(--paper);
+		color: var(--ink);
+		box-shadow: 0 1px 2px color-mix(in oklch, var(--ink) 8%, transparent);
 	}
 
 	.tabs-mount {

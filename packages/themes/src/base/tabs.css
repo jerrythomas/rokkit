@@ -45,9 +45,15 @@
 
 [data-tabs][data-orientation='vertical'] [data-tabs-list] {
   flex-direction: column;
+  /* In vertical mode the list is a flex item perpendicular to the
+   * row-direction parent. Stretching it gives `justify-content` a
+   * height to distribute — without this the column collapses to
+   * fit-content and `align=center / end` have no spare space to
+   * move the tabs into. */
+  align-self: stretch;
 }
 
-/* Alignment */
+/* Alignment — main-axis distribution within the list */
 [data-tabs][data-align='center'] [data-tabs-list] {
   justify-content: center;
 }

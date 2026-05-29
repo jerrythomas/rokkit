@@ -31,9 +31,9 @@ const meta: DemoMeta = {
 		},
 		position: {
 			type: 'enum',
-			options: ['top', 'bottom', 'left', 'right'],
-			default: 'top',
-			desc: 'Strip placement relative to the panel'
+			options: ['before', 'after'],
+			default: 'before',
+			desc: 'Strip placement relative to the panel (top/left when before, bottom/right when after — depends on orientation)'
 		},
 		align: {
 			type: 'enum',
@@ -48,7 +48,7 @@ const meta: DemoMeta = {
 			{ name: 'value', type: 'any', default: 'null', desc: 'Selected tab value', bindable: true },
 			{ name: 'fields', type: 'FieldMapping', desc: 'Field mapping for label/value extraction from object items' },
 			{ name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'", desc: 'Layout axis of the tab strip' },
-			{ name: 'position', type: "'top' | 'bottom' | 'left' | 'right'", default: "'top'", desc: 'Strip placement relative to the panel' },
+			{ name: 'position', type: "'before' | 'after'", default: "'before'", desc: 'Strip placement relative to the panel — `before` puts it top (horizontal) or left (vertical); `after` puts it bottom/right' },
 			{ name: 'align', type: "'start' | 'center' | 'end'", default: "'start'", desc: 'Alignment of tabs within the strip' },
 			{ name: 'editable', type: 'boolean', default: 'false', desc: 'Enable add/remove tab buttons' },
 			{ name: 'placeholder', type: 'string', default: "'Select a tab…'", desc: 'Text shown when no tab is selected' },

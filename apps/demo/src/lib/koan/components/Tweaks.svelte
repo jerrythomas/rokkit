@@ -19,6 +19,7 @@
 	 * no submit step.
 	 */
 	import { FormRenderer } from '@rokkit/forms'
+	import SegmentedInput from './SegmentedInput.svelte'
 	import type { DemoPropSchema } from '$lib/koan/types'
 
 	interface Props {
@@ -51,13 +52,12 @@
 			}
 			if (spec.type === 'enum') {
 				properties[name] = { type: 'string' }
-				// 2-option enums collapse to a select for a compact one-row
-				// control (radio is too tall in the slab). 3+ options also
-				// use select so the slab doesn't grow with the option count.
-				element.renderer = 'select'
+				// Enums render as a segmented control — same vertical
+				// footprint as a select, no dropdown indirection, one
+				// row of pill buttons. SegmentedInput is registered as
+				// a custom renderer below.
+				element.renderer = 'segmented'
 				lookups[name] = { source: spec.options, filter: (src) => src }
-				// Selects + their label read better stacked (label above)
-				// than inline at narrow slab widths.
 				element.variant = 'stacked'
 			} else if (spec.type === 'boolean') {
 				properties[name] = { type: 'boolean' }
@@ -129,6 +129,7 @@
 			schema={spec.schema}
 			layout={spec.layout}
 			lookups={spec.lookups}
+			renderers={{ segmented: SegmentedInput }}
 			validateOn="change"
 			onupdate={handleUpdate}
 		/>
@@ -212,11 +213,29 @@
 		display: none;
 	}
 
+	/* Pull the per-field rows tighter than form-page rhythm —
+	   a control panel reads better with light vertical spacing. */
 	[data-tweaks-body] :global([data-form-field]) {
-		margin-bottom: 8px;
+		margin-bottom: 2px;
 	}
 
 	[data-tweaks-body] :global([data-form-field]:last-child) {
 		margin-bottom: 0;
+	}
+
+	[data-tweaks-body] :global([data-form-root]) {
+		gap: 2px;
+	}
+
+	[data-tweaks-body] :global([data-field-root]) {
+		padding: 0;
+	}
+
+	[data-tweaks-body] :global([data-field]) {
+		gap: 2px;
+	}
+
+	[data-tweaks-body] :global([data-description]) {
+		display: none;
 	}
 </style>
