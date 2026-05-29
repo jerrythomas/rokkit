@@ -295,6 +295,17 @@
 		shell.demoType ? findById(shell.demoType)?.props : undefined
 	)
 
+	// The Tweaks form is opt-in: the user clicks the tweak icon on the
+	// composer to surface it (no layout disruption when closed). Reset
+	// to closed when navigating to a different demo so we don't carry
+	// state across demos.
+	let tweaksOpen = $state(false)
+	$effect(() => {
+		// shell.demoType change — close the form so the next demo starts clean.
+		void shell.demoType
+		tweaksOpen = false
+	})
+
 	// Transient per-demo log of "prop X: from → to" changes. Rendered as
 	// chat messages in the response stream so the conversation captures
 	// the user's tuning journey ("orientation: horizontal → vertical;
@@ -1992,7 +2003,7 @@ ${rows}
 				</ChatStream>
 			{/if}
 
-			{#if shell.phase === 'response' && propsSchema}
+			{#if shell.phase === 'response' && propsSchema && tweaksOpen}
 				<div class="tweaks-slab" data-glide-in>
 					<Tweaks
 						schema={propsSchema}
@@ -2011,7 +2022,23 @@ ${rows}
 					: 'Refine · ask follow-ups · request another component'}
 				running={shell.phase === 'thinking'}
 				onsubmit={submitQuery}
-			/>
+			>
+				{#snippet rightActions()}
+					{#if shell.phase === 'response' && propsSchema}
+						<button
+							type="button"
+							class="composer-tweak-toggle"
+							data-on={tweaksOpen ? '' : undefined}
+							aria-pressed={tweaksOpen}
+							onclick={() => (tweaksOpen = !tweaksOpen)}
+							title={tweaksOpen ? 'Hide tweaks' : 'Show tweaks'}
+						>
+							<span class="i-mdi:tune-variant" aria-hidden="true"></span>
+							<span class="composer-tweak-label">tweak</span>
+						</button>
+					{/if}
+				{/snippet}
+			</ChatComposer>
 		</aside>
 
 		<main class="canvas">
@@ -2371,7 +2398,7 @@ ${rows}
 							<span class="i-mdi:chart-bar" aria-hidden="true"></span>
 						{/snippet}
 						<div class="chart-mount">
-							<BarChart data={chartData} x="quarter" y="revenue" {...variantProps} />
+							<BarChart data={chartData} x="quarter" y="revenue" {...variantProps} {...tweakProps} />
 						</div>
 						{#snippet props()}
 							<span>rows</span><span data-value>[4]</span>
@@ -2417,7 +2444,7 @@ ${rows}
 							<span class="i-mdi:menu-down" aria-hidden="true"></span>
 						{/snippet}
 						<div class="select-mount">
-							<Select items={selectItems} bind:value={selectValue} placeholder="Pick an option" {...variantProps} />
+							<Select items={selectItems} bind:value={selectValue} placeholder="Pick an option" {...variantProps} {...tweakProps} />
 						</div>
 						{#snippet props()}
 							<span>options</span><span data-value>[20]</span>
@@ -2625,11 +2652,11 @@ ${rows}
 						<div class="multiselect-mount" data-variant={activeVariant?.id ?? undefined}>
 							{#if activeVariant?.id === 'with-counts'}
 								<div class="ms-count-row">
-									<MultiSelect items={colorItems} bind:value={selectedColors} placeholder="Select colors" {...variantProps} />
+									<MultiSelect items={colorItems} bind:value={selectedColors} placeholder="Select colors" {...variantProps} {...tweakProps} />
 									<span class="ms-count">{selectedColors.length} of {colorItems.length} picked</span>
 								</div>
 							{:else}
-								<MultiSelect items={colorItems} bind:value={selectedColors} placeholder="Select colors" {...variantProps} />
+								<MultiSelect items={colorItems} bind:value={selectedColors} placeholder="Select colors" {...variantProps} {...tweakProps} />
 							{/if}
 						</div>
 						{#snippet props()}
@@ -2676,7 +2703,7 @@ ${rows}
 							<span class="i-mdi:file-tree" aria-hidden="true"></span>
 						{/snippet}
 						<div class="tree-mount">
-							<Tree items={treeItems} fields={treeFields} bind:value={treeValue} {...variantProps} />
+							<Tree items={treeItems} fields={treeFields} bind:value={treeValue} {...variantProps} {...tweakProps} />
 						</div>
 						{#snippet props()}
 							<span>nodes</span><span data-value>nested</span>
@@ -2868,6 +2895,40 @@ ${rows}
 			opacity: 1;
 			transform: translateY(0);
 		}
+	}
+
+	.composer-tweak-toggle {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		padding: 3px 8px;
+		border: 1px solid var(--paper-edge);
+		border-radius: 4px;
+		background: var(--paper-soft);
+		color: var(--ink-mute);
+		font: 500 11px var(--font-mono);
+		letter-spacing: 0.04em;
+		cursor: pointer;
+	}
+
+	.composer-tweak-toggle:hover {
+		border-color: var(--ink-soft);
+		color: var(--ink);
+	}
+
+	.composer-tweak-toggle[data-on] {
+		background: color-mix(in oklab, var(--accent) 10%, var(--paper));
+		border-color: color-mix(in oklab, var(--accent) 40%, var(--paper-edge));
+		color: var(--accent);
+	}
+
+	.composer-tweak-toggle .i-mdi\:tune-variant {
+		width: 12px;
+		height: 12px;
+	}
+
+	.composer-tweak-label {
+		font-size: 11px;
 	}
 
 	.chat-title {
