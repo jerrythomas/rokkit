@@ -35,7 +35,72 @@ const meta: DemoMeta = {
 			default: 'md',
 			desc: 'Row density'
 		}
-	}
+	},
+	api: {
+		props: [
+			{ name: 'items', type: 'any[]', default: '[]', desc: 'Array of items (objects or primitives)' },
+			{ name: 'fields', type: 'FieldMapping', desc: 'Remap data keys to component fields' },
+			{ name: 'value', type: 'any', default: 'null', desc: 'Currently selected item value', bindable: true },
+			{ name: 'collapsible', type: 'boolean', default: 'false', desc: 'Allow groups to expand/collapse' },
+			{ name: 'icons', type: 'Partial<IconMap>', desc: 'Override expand/collapse icons' },
+			{ name: 'disabled', type: 'boolean', default: 'false', desc: 'Disable the entire list' },
+			{ name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", desc: 'Row density' }
+		],
+		events: [
+			{ name: 'onselect', signature: '(value, proxy) => void', desc: 'Fires when an item is selected — receives raw value + ProxyItem' }
+		],
+		attrs: [
+			{ selector: '[data-list]', desc: 'Root container' },
+			{ selector: '[data-list-item]', desc: 'Item wrapper (carries data-active, data-disabled)' },
+			{ selector: '[data-list-group]', desc: 'Group header wrapper' },
+			{ selector: '[data-list-group-content]', desc: 'Children container (collapsible)' }
+		]
+	},
+	snippets: [
+		{
+			id: 'intro',
+			title: 'Basic — array of objects',
+			lang: 'svelte',
+			code: `<script>
+  import { List } from '@rokkit/ui'
+  const items = [
+    { label: 'Inbox',    icon: 'i-mdi:inbox', value: 'inbox' },
+    { label: 'Starred',  icon: 'i-mdi:star',  value: 'starred' },
+    { label: 'Archive',  icon: 'i-mdi:archive', value: 'archive' }
+  ]
+  let active = $state('inbox')
+</script>
+
+<List {items} bind:value={active} />`
+		},
+		{
+			id: 'nested',
+			title: 'Nested groups + collapsible',
+			lang: 'svelte',
+			code: `<List
+  items={[
+    { label: 'Mail', children: [
+      { label: 'Inbox',    value: 'inbox' },
+      { label: 'Drafts',   value: 'drafts' }
+    ]},
+    { label: 'Settings', children: [
+      { label: 'Profile',  value: 'profile' },
+      { label: 'Security', value: 'security' }
+    ]}
+  ]}
+  collapsible
+/>`
+		},
+		{
+			id: 'mapping',
+			title: 'Field mapping',
+			lang: 'svelte',
+			code: `<List
+  items={routes}
+  fields={{ label: 'name', value: 'path', icon: 'symbol' }}
+/>`
+		}
+	]
 }
 
 export default meta

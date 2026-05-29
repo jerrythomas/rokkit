@@ -34,7 +34,66 @@ const meta: DemoMeta = {
 			default: 'horizontal',
 			desc: 'Layout axis for the step indicator'
 		}
-	}
+	},
+	api: {
+		props: [
+			{ name: 'steps', type: 'StepDef[]', default: '[]', desc: 'Array of step objects' },
+			{ name: 'current', type: 'number', default: '0', desc: 'Active step index', bindable: true },
+			{ name: 'currentStage', type: 'number', default: '0', desc: 'Sub-stage within the active step', bindable: true },
+			{ name: 'linear', type: 'boolean', default: 'false', desc: 'Only allow forward progression' },
+			{ name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'", desc: 'Layout axis' },
+			{ name: 'icons', type: 'Partial<IconMap>', desc: 'Override the completed-state icon' }
+		],
+		events: [
+			{ name: 'onclick', signature: '(stepIndex) => void', desc: 'Fires when a step circle is clicked' }
+		],
+		attrs: [
+			{ selector: '[data-stepper]', desc: 'Root container' },
+			{ selector: '[data-step]', desc: 'Step wrapper (carries data-completed, data-current)' },
+			{ selector: '[data-step-circle]', desc: 'Step number/check circle' },
+			{ selector: '[data-step-label]', desc: 'Step text label' }
+		]
+	},
+	snippets: [
+		{
+			id: 'intro',
+			title: 'Basic — 3-step wizard',
+			lang: 'svelte',
+			code: `<script>
+  import { Stepper, Button } from '@rokkit/ui'
+  let active = $state(0)
+  const steps = [
+    { text: 'Account',  completed: true },
+    { text: 'Profile',  completed: false },
+    { text: 'Confirm',  completed: false }
+  ]
+</script>
+
+<Stepper {steps} bind:current={active} />
+<Button onclick={() => active++}>Next</Button>`
+		},
+		{
+			id: 'vertical',
+			title: 'Vertical orientation',
+			lang: 'svelte',
+			code: `<Stepper
+  {steps}
+  bind:current={active}
+  orientation="vertical"
+/>`
+		},
+		{
+			id: 'linear',
+			title: 'Linear (forward-only)',
+			lang: 'svelte',
+			code: `<Stepper
+  {steps}
+  bind:current={active}
+  linear
+  onclick={(i) => active = i}
+/>`
+		}
+	]
 }
 
 export default meta

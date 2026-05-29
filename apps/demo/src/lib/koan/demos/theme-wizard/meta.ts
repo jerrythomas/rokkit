@@ -27,6 +27,53 @@ const meta: DemoMeta = {
 	variants: [
 		{ id: 'tokens-preview', label: 'Show generated tokens.css', mode: 'dynamic' },
 		{ id: 'dark-only', label: 'Dark mode column only', mode: 'dynamic' }
+	],
+	api: {
+		props: [
+			{ name: 'palette', type: "'shu' | 'slate' | 'neutral' | 'warm-gray' | string", desc: 'Active accent palette' },
+			{ name: 'step', type: '50 | 100 | 200 | … | 950', default: '500', desc: 'Active accent step' },
+			{ name: 'mode', type: "'light' | 'dark'", default: "'light'", desc: 'Current mode column being edited' },
+			{ name: 'density', type: "'compact' | 'comfortable' | 'spacious'", default: "'comfortable'", desc: 'UI density preset' },
+			{ name: 'roundedness', type: "'square' | 'soft' | 'round'", default: "'soft'", desc: 'Corner radius preset' }
+		],
+		events: [
+			{ name: 'onsave', signature: '(preset) => void', desc: 'Fires when the user saves a theme preset' },
+			{ name: 'onexport', signature: '(css: string) => void', desc: 'Fires when the user exports tokens.css' }
+		],
+		attrs: [
+			{ selector: '[data-theme-wizard]', desc: 'Root container' },
+			{ selector: '[data-wizard-step]', desc: 'Step card (01 Style / 02 Skin / 03 Typography / 04 Preview)' },
+			{ selector: '[data-role-row]', desc: 'Per-role palette+step picker row' }
+		]
+	},
+	snippets: [
+		{
+			id: 'save-preset',
+			title: 'Save the wizard’s output to localStorage',
+			lang: 'js',
+			code: `import {
+  savePreset,
+  exportTokensCss
+} from '$lib/koan/demos/theme-wizard/store.svelte'
+
+// Persist the current role-step map under the named preset
+savePreset('my-brand')
+
+// Generate the tokens.css string for the active selection
+const css = exportTokensCss()
+console.log(css)`
+		},
+		{
+			id: 'apply-preset',
+			title: 'Apply a saved preset at runtime',
+			lang: 'ts',
+			code: `import { vibe } from '@rokkit/states'
+
+vibe.setSkin('my-brand')   // skin
+vibe.setStyle('zen-sumi')  // style theme
+vibe.setMode('dark')       // light | dark
+vibe.setDensity('compact')`
+		}
 	]
 }
 

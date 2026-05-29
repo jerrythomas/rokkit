@@ -48,7 +48,73 @@ const meta: DemoMeta = {
 			default: false,
 			desc: 'Render value labels on top of each bar'
 		}
-	}
+	},
+	api: {
+		props: [
+			{ name: 'data', type: 'Array<Record<string, unknown>>', default: '[]', desc: 'Rows used to build the bars' },
+			{ name: 'x', type: 'string', desc: 'Field name for the categorical x-axis' },
+			{ name: 'y', type: 'string', desc: 'Field name for the numeric y-axis' },
+			{ name: 'fill', type: 'string', desc: 'Optional field name for color grouping' },
+			{ name: 'stat', type: "'sum' | 'mean' | 'count' | 'min' | 'max'", default: "'sum'", desc: 'Aggregation when multiple rows share an x value' },
+			{ name: 'stack', type: 'boolean', default: 'false', desc: 'Stack grouped bars instead of grouping side-by-side' },
+			{ name: 'legend', type: 'boolean', default: 'false', desc: 'Show the color-group legend' },
+			{ name: 'label', type: 'boolean', default: 'false', desc: 'Render value labels on top of each bar' },
+			{ name: 'palette', type: 'string[]', desc: 'Optional override for the color palette' }
+		],
+		events: [
+			{ name: 'onhover', signature: '(row) => void', desc: 'Fires when the pointer enters a bar' }
+		],
+		attrs: [
+			{ selector: '[data-chart]', desc: 'Root SVG container' },
+			{ selector: '[data-bar]', desc: 'Individual bar (carries data-fill, data-group)' },
+			{ selector: '[data-axis]', desc: 'Axis group' },
+			{ selector: '[data-legend]', desc: 'Color-group legend' }
+		]
+	},
+	snippets: [
+		{
+			id: 'intro',
+			title: 'Basic — categorical x, numeric y',
+			lang: 'svelte',
+			code: `<script>
+  import { BarChart } from '@rokkit/chart'
+  const data = [
+    { quarter: 'Q1', revenue: 120 },
+    { quarter: 'Q2', revenue: 180 },
+    { quarter: 'Q3', revenue: 160 },
+    { quarter: 'Q4', revenue: 210 }
+  ]
+</script>
+
+<BarChart {data} x="quarter" y="revenue" />`
+		},
+		{
+			id: 'grouped',
+			title: 'Grouped by color field',
+			lang: 'svelte',
+			code: `<BarChart
+  {data}
+  x="quarter"
+  y="revenue"
+  fill="product"
+  legend
+/>`
+		},
+		{
+			id: 'stacked',
+			title: 'Stacked + value labels',
+			lang: 'svelte',
+			code: `<BarChart
+  {data}
+  x="quarter"
+  y="revenue"
+  fill="product"
+  stack
+  legend
+  label
+/>`
+		}
+	]
 }
 
 export default meta

@@ -42,7 +42,69 @@ const meta: DemoMeta = {
 			default: 'md',
 			desc: 'Row density'
 		}
-	}
+	},
+	api: {
+		props: [
+			{ name: 'items', type: 'any[]', default: '[]', desc: 'Nested array of node objects' },
+			{ name: 'fields', type: 'FieldMapping', desc: 'Remap data keys to component fields (text / value / children / icon)' },
+			{ name: 'value', type: 'any', default: 'null', desc: 'Currently selected node value', bindable: true },
+			{ name: 'lineStyle', type: "'solid' | 'dashed' | 'dotted' | 'none'", default: "'solid'", desc: 'Indent connector line style' },
+			{ name: 'icons', type: 'Partial<IconMap>', desc: 'Override expand/collapse icons' },
+			{ name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", desc: 'Row density' },
+			{ name: 'class', type: 'string', default: "''", desc: 'Additional CSS class names' }
+		],
+		events: [
+			{ name: 'onselect', signature: '(value, proxy) => void', desc: 'Fires when a node is selected — receives raw value + ProxyItem' }
+		],
+		attrs: [
+			{ selector: '[data-tree-root]', desc: 'Root container' },
+			{ selector: '[data-tree-item]', desc: 'Node wrapper' },
+			{ selector: '[data-tree-item-content]', desc: 'Node label + icon row (carries data-active)' },
+			{ selector: '[data-tree-connector]', desc: 'Indent guide line' }
+		]
+	},
+	snippets: [
+		{
+			id: 'intro',
+			title: 'Basic — nested children',
+			lang: 'svelte',
+			code: `<script>
+  import { Tree } from '@rokkit/ui'
+  const items = [
+    { text: 'Documents', children: [
+      { text: 'Resume.pdf', value: 'doc-resume' },
+      { text: 'Cover-letter.pdf', value: 'doc-cover' }
+    ]},
+    { text: 'Music', children: [
+      { text: 'Bach', value: 'm-bach' },
+      { text: 'Glass', value: 'm-glass' }
+    ]}
+  ]
+  let selected = $state(null)
+</script>
+
+<Tree {items} bind:value={selected} />`
+		},
+		{
+			id: 'mapping',
+			title: 'Field mapping',
+			lang: 'svelte',
+			code: `<Tree
+  items={users}
+  fields={{ text: 'name', value: 'id', children: 'reports' }}
+/>`
+		},
+		{
+			id: 'icons',
+			title: 'Custom expand/collapse icons',
+			lang: 'svelte',
+			code: `<Tree
+  {items}
+  icons={{ expanded: 'i-mdi:folder-open', collapsed: 'i-mdi:folder' }}
+  lineStyle="dotted"
+/>`
+		}
+	]
 }
 
 export default meta
