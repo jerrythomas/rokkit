@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "cp -r ../../docs/llms ./static && vite dev",
-    "build:themes": "cd ../packages/themes && bun run build",
+    "build:themes": "cd ../../packages/themes && bun run build",
     "build": "cp -r ../../docs/llms ./static && bun run build:themes && paraglide-js compile --project ./project.inlang --outdir ./src/paraglide && vite build",
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
