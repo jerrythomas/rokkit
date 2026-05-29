@@ -31,10 +31,14 @@
 		recencyLabel,
 		startNew,
 		appendAssistant,
+		appendTweak,
+		clearTweaksFor,
 		loadConversation,
 		setCurrentId,
 		getCurrentId,
-		type Conversation
+		getCurrentConversation,
+		type Conversation,
+		type TweakTurn
 	} from '$lib/koan/conversations.svelte'
 	import ComposerSuggestions from '$lib/koan/components/ComposerSuggestions.svelte'
 	import Tweaks from '$lib/koan/components/Tweaks.svelte'
@@ -293,15 +297,42 @@
 		tweaksOpen = false
 	})
 
-	// Transient per-demo log of "prop X: from → to" changes. Rendered as
-	// chat messages in the response stream so the conversation captures
-	// the user's tuning journey ("orientation: horizontal → vertical;
-	// align: start → center; …"). Reset when navigating away (different
-	// demo type clears the slot, see effect below).
-	type TweakLogEntry = { id: string; name: string; from: unknown; to: unknown; at: number }
-	let tweakLogByDemo = $state<Record<string, TweakLogEntry[]>>({})
-	const tweakLog = $derived<TweakLogEntry[]>(
-		shell.demoType ? (tweakLogByDemo[shell.demoType] ?? []) : []
+	// Hydrate `tweaksByDemo` from any persisted TweakTurn rows on the
+	// current conversation. Runs when the active demo or conversation
+	// changes (e.g. on resume), so the canvas remounts with the same
+	// values the conversation's chat log shows.
+	$effect(() => {
+		const demoType = shell.demoType
+		const conv = getCurrentConversation()
+		if (!demoType || !conv) return
+		const replayed: Record<string, unknown> = {}
+		for (const turn of conv.turns) {
+			if (turn.kind === 'tweak' && turn.demoType === demoType) {
+				replayed[turn.name] = turn.to
+			}
+		}
+		// Only assign when persisted state differs from the in-memory
+		// scratch — avoids a self-firing effect loop on every keystroke.
+		const current = tweaksByDemo[demoType] ?? {}
+		const sameKeys = Object.keys(replayed).length === Object.keys(current).length
+		const sameVals = sameKeys && Object.keys(replayed).every((k) => current[k] === replayed[k])
+		if (!sameVals) tweaksByDemo[demoType] = replayed
+	})
+
+	// Tweak log rows are sourced from the active conversation's turns —
+	// each `setTweak()` appends a TweakTurn via the conversations store,
+	// so the trail persists to localStorage and survives reload + resume.
+	// The renderer below filters to the active demoType so navigating
+	// between demos in one conversation keeps each demo's history scoped
+	// to its own response stream.
+	const tweakLog = $derived<TweakTurn[]>(
+		(() => {
+			const conv = getCurrentConversation()
+			if (!conv || !shell.demoType) return []
+			return conv.turns.filter(
+				(t): t is TweakTurn => t.kind === 'tweak' && t.demoType === shell.demoType
+			)
+		})()
 	)
 
 	function formatVal(v: unknown): string {
@@ -320,11 +351,7 @@
 		const from = cur[name] ?? variantProps[name] ?? schema?.default
 		if (from === value) return // no-op: nothing actually changed
 		tweaksByDemo[shell.demoType] = { ...cur, [name]: value }
-		const log = tweakLogByDemo[shell.demoType] ?? []
-		tweakLogByDemo[shell.demoType] = [
-			...log,
-			{ id: `tw_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`, name, from, to: value, at: Date.now() }
-		]
+		appendTweak(shell.demoType, name, from, value)
 	}
 
 	function resetTweaks() {
@@ -332,9 +359,7 @@
 		const nextTweaks = { ...tweaksByDemo }
 		delete nextTweaks[shell.demoType]
 		tweaksByDemo = nextTweaks
-		const nextLog = { ...tweakLogByDemo }
-		delete nextLog[shell.demoType]
-		tweakLogByDemo = nextLog
+		clearTweaksFor(shell.demoType)
 	}
 
 	async function copyTweaks() {

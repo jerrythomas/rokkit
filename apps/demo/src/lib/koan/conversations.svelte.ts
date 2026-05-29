@@ -11,6 +11,7 @@
 import type { ShellDemoType } from './shell.svelte'
 
 const STORAGE_KEY = 'rokkit-conversations'
+const CURRENT_KEY = 'rokkit-current-conversation'
 const MAX_CONVERSATIONS = 20
 
 export type ConversationId = string
@@ -21,6 +22,24 @@ export interface UserTurn {
 	id: string
 	at: string
 	text: string
+}
+
+/**
+ * A live prop tweak the user applied to the canvas component. Rendered
+ * in the response stream as a "prop: from → to" row so the conversation
+ * captures the tuning journey, and persisted with the conversation so
+ * the trail survives reload + resume. `demoType` lets the renderer
+ * scope rows to the currently mounted demo when one conversation spans
+ * multiple demos.
+ */
+export interface TweakTurn {
+	kind: 'tweak'
+	id: string
+	at: string
+	demoType: string
+	name: string
+	from: unknown
+	to: unknown
 }
 
 export type ChatProvider = 'scripted' | 'openrouter' | 'webllm'
@@ -44,7 +63,7 @@ export interface AssistantTurn {
 	body: AssistantBody
 }
 
-export type Turn = UserTurn | AssistantTurn
+export type Turn = UserTurn | AssistantTurn | TweakTurn
 
 export interface Conversation {
 	id: ConversationId
@@ -83,8 +102,25 @@ function isValidConversation(c: unknown): c is Conversation {
 	)
 }
 
+function loadCurrentIdFromStorage(): ConversationId | null {
+	if (typeof localStorage === 'undefined') return null
+	try {
+		return localStorage.getItem(CURRENT_KEY)
+	} catch {
+		return null
+	}
+}
+
 export const conversations = $state<Conversation[]>(loadFromStorage())
-const currentRef = $state<{ id: ConversationId | null }>({ id: null })
+// Restore the previously-active conversation id only if it still
+// exists in storage — protects against an orphaned id pointing at a
+// conversation that was pruned or cleared.
+const initialCurrent = (() => {
+	const stored = loadCurrentIdFromStorage()
+	if (stored && conversations.some((c) => c.id === stored)) return stored
+	return null
+})()
+const currentRef = $state<{ id: ConversationId | null }>({ id: initialCurrent })
 
 export function getCurrentId(): ConversationId | null {
 	return currentRef.id
@@ -92,6 +128,7 @@ export function getCurrentId(): ConversationId | null {
 
 export function setCurrentId(id: ConversationId | null): void {
 	currentRef.id = id
+	persistCurrentId()
 }
 
 /** Returns the active conversation by current id, or null. */
@@ -109,6 +146,16 @@ function persist(): void {
 	} catch (e) {
 		// eslint-disable-next-line no-console
 		console.warn('Failed to persist conversations', e)
+	}
+}
+
+function persistCurrentId(): void {
+	if (typeof localStorage === 'undefined') return
+	try {
+		if (currentRef.id) localStorage.setItem(CURRENT_KEY, currentRef.id)
+		else localStorage.removeItem(CURRENT_KEY)
+	} catch {
+		// Quota / private-mode failures — current-id is a UX nicety, not load-bearing.
 	}
 }
 
@@ -167,6 +214,7 @@ export function startNew(surface: ConversationSurface, query: string): Conversat
 	pruneOldest()
 	currentRef.id = id
 	persist()
+	persistCurrentId()
 	return id
 }
 
@@ -178,6 +226,46 @@ export function appendUser(text: string): void {
 	const turn: UserTurn = { kind: 'user', id: makeId('t'), at: nowIso(), text }
 	conversations[idx].turns.push(turn)
 	conversations[idx].updatedAt = turn.at
+	persist()
+}
+
+/** Append a tweak turn (live prop edit) to the current conversation. */
+export function appendTweak(
+	demoType: string,
+	name: string,
+	from: unknown,
+	to: unknown
+): void {
+	if (!currentRef.id) return
+	const idx = findIndexById(currentRef.id)
+	if (idx < 0) return
+	const turn: TweakTurn = {
+		kind: 'tweak',
+		id: makeId('t'),
+		at: nowIso(),
+		demoType,
+		name,
+		from,
+		to
+	}
+	conversations[idx].turns.push(turn)
+	conversations[idx].updatedAt = turn.at
+	persist()
+}
+
+/**
+ * Drop all tweak turns for a given demoType from the current
+ * conversation — backs the Tweaks slab's "Reset to defaults" button.
+ */
+export function clearTweaksFor(demoType: string): void {
+	if (!currentRef.id) return
+	const idx = findIndexById(currentRef.id)
+	if (idx < 0) return
+	const turns = conversations[idx].turns
+	const filtered = turns.filter((t) => !(t.kind === 'tweak' && t.demoType === demoType))
+	if (filtered.length === turns.length) return
+	conversations[idx].turns = filtered
+	conversations[idx].updatedAt = nowIso()
 	persist()
 }
 
@@ -220,6 +308,7 @@ export function loadConversation(id: ConversationId): Conversation | null {
 	currentRef.id = id
 	touch(id)
 	persist()
+	persistCurrentId()
 	return conv
 }
 
@@ -235,7 +324,10 @@ export function removeConversation(id: ConversationId): void {
 	const idx = findIndexById(id)
 	if (idx < 0) return
 	conversations.splice(idx, 1)
-	if (currentRef.id === id) currentRef.id = null
+	if (currentRef.id === id) {
+		currentRef.id = null
+		persistCurrentId()
+	}
 	persist()
 }
 
@@ -244,6 +336,7 @@ export function clearAll(): void {
 	conversations.splice(0, conversations.length)
 	currentRef.id = null
 	persist()
+	persistCurrentId()
 }
 
 // ── Bucketing (today / yesterday / earlier) ──────────────────────────────
