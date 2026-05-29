@@ -19,7 +19,6 @@
 	 * no submit step.
 	 */
 	import { FormRenderer } from '@rokkit/forms'
-	import SegmentedInput from './SegmentedInput.svelte'
 	import type { DemoPropSchema } from '$lib/koan/types'
 
 	interface Props {
@@ -52,19 +51,18 @@
 			}
 			if (spec.type === 'enum') {
 				properties[name] = { type: 'string' }
-				// Enums render as a segmented control — same vertical
-				// footprint as a select, no dropdown indirection, one
-				// row of pill buttons. SegmentedInput is registered as
-				// a custom renderer below.
-				element.renderer = 'segmented'
-				lookups[name] = { source: spec.options, filter: (src) => src }
+				// Enums use FormRenderer's built-in `toggle` renderer,
+				// which dogfoods `<Toggle>` from @rokkit/ui — one
+				// horizontal row of segmented buttons that picks up
+				// the active theme's toggle styling automatically.
+				element.renderer = 'toggle'
+				element.options = spec.options
 				element.variant = 'stacked'
 			} else if (spec.type === 'boolean') {
 				properties[name] = { type: 'boolean' }
-				element.renderer = 'toggle'
-				// Toggles look natural inline — label on the left, switch
-				// on the right (matches the global default for switch/
-				// checkbox/toggle in input.css).
+				// Boolean → `switch` renderer (iOS-style pill switch).
+				// Inline label-left/switch-right is the natural shape.
+				element.renderer = 'switch'
 				element.variant = 'inline'
 			} else if (spec.type === 'string') {
 				properties[name] = { type: 'string' }
@@ -91,8 +89,24 @@
 	}
 
 	const spec = $derived(buildFormSpec(propsSchema, values))
-	let formData = $state<Record<string, unknown>>(spec.data)
-	let prev = $state<Record<string, unknown>>({ ...spec.data })
+	// `$state` initialized from `$derived` only captures the INITIAL
+	// value — when the active demo changes (different propsSchema), the
+	// derived spec re-runs but formData/prev keep the prior demo's
+	// fields. The effect below re-seeds them when the prop *set*
+	// changes (= new demo); pure value updates from FormRenderer's
+	// own bind:data flow don't trigger a reset.
+	let formData = $state<Record<string, unknown>>({})
+	let prev = $state<Record<string, unknown>>({})
+
+	$effect(() => {
+		const data = spec.data
+		const newKeys = Object.keys(data).sort().join('|')
+		const curKeys = Object.keys(formData).sort().join('|')
+		if (newKeys !== curKeys) {
+			formData = { ...data }
+			prev = { ...data }
+		}
+	})
 
 	/** Diff the incoming data against `prev` and emit per-field changes. */
 	function handleUpdate(next: Record<string, unknown>) {
@@ -129,7 +143,6 @@
 			schema={spec.schema}
 			layout={spec.layout}
 			lookups={spec.lookups}
-			renderers={{ segmented: SegmentedInput }}
 			validateOn="change"
 			onupdate={handleUpdate}
 		/>
@@ -213,18 +226,15 @@
 		display: none;
 	}
 
-	/* Pull the per-field rows tighter than form-page rhythm —
-	   a control panel reads better with light vertical spacing. */
-	[data-tweaks-body] :global([data-form-field]) {
-		margin-bottom: 2px;
+	/* Slab is a control panel, not a form page — slightly tighter
+	   vertical rhythm than defaults but enough breathing room that
+	   adjacent fields don't read as a stack. */
+	[data-tweaks-body] :global([data-form-root]) {
+		gap: 10px;
 	}
 
 	[data-tweaks-body] :global([data-form-field]:last-child) {
 		margin-bottom: 0;
-	}
-
-	[data-tweaks-body] :global([data-form-root]) {
-		gap: 2px;
 	}
 
 	[data-tweaks-body] :global([data-field-root]) {
@@ -232,7 +242,7 @@
 	}
 
 	[data-tweaks-body] :global([data-field]) {
-		gap: 2px;
+		gap: 4px;
 	}
 
 	[data-tweaks-body] :global([data-description]) {

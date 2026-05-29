@@ -13,7 +13,7 @@
 	// Brand the assistant once for this surface; every ChatMessage with
 	// kind='info' picks it up.
 	configureWho({ assistant: 'Rokkit' })
-	import { Tabs, Table, Tree, MultiSelect, Select, List, Button, AlertList, Stepper, CodeBlock } from '@rokkit/ui'
+	import { Tabs, Table, Tree, MultiSelect, Select, List, Button, AlertList, Stepper, CodeBlock, Toggle } from '@rokkit/ui'
 	import { FormRenderer } from '@rokkit/forms'
 	import { BarChart } from '@rokkit/chart'
 	import { alerts } from '@rokkit/states'
@@ -287,15 +287,25 @@
 		shell.demoType ? findById(shell.demoType)?.props : undefined
 	)
 	const demoApi = $derived(shell.demoType ? findById(shell.demoType)?.api : undefined)
+	const demoSnippets = $derived(shell.demoType ? findById(shell.demoType)?.snippets : undefined)
 
-	// Whether the demo has anything for the details slab to show
-	// (Tweaks or API). Source snippets are read by the canvas-side
-	// CodeBlock, not the slab — so they don't gate the toggle.
+	// Canvas-view toggle options — always include `live`, conditionally
+	// include `code` (when snippets exist) and `api` (when api meta
+	// exists). Keeps the toggle compact when a demo hasn't filled in
+	// one of the sections yet.
+	const canvasViewOptions = $derived.by(() => {
+		const opts: Array<{ label: string; value: 'live' | 'code' | 'api' }> = [
+			{ label: 'Live', value: 'live' }
+		]
+		if (demoSnippets && demoSnippets.length > 0) opts.push({ label: 'Code', value: 'code' })
+		if (demoApi && demoApi.props.length > 0) opts.push({ label: 'API', value: 'api' })
+		return opts
+	})
+
+	// Whether the chat-left slab has anything to show (Tweaks only —
+	// API moved to canvas, Source moved to the Code mode there).
 	const hasDetails = $derived(
-		Boolean(
-			(propsSchema && Object.keys(propsSchema).length > 0) ||
-				(demoApi && demoApi.props.length > 0)
-		)
+		Boolean(propsSchema && Object.keys(propsSchema).length > 0)
 	)
 
 	// The details slab is opt-in: the user clicks the icon on the
@@ -303,10 +313,10 @@
 	// to closed when navigating to a different demo so we don't carry
 	// state across demos.
 	let tweaksOpen = $state(false)
-	// Canvas view mode — `live` shows the mounted demo, `api` swaps to
-	// the API reference panel. Reset to `live` when the demo changes
-	// so API ↔ Live state doesn't bleed across demos.
-	let canvasView = $state<'live' | 'api'>('live')
+	// Canvas view mode — `live` mounts the demo, `code` shows the
+	// snippets, `api` swaps to the reference panel. Reset to `live`
+	// when the demo changes so view state doesn't bleed across demos.
+	let canvasView = $state<'live' | 'code' | 'api'>('live')
 	$effect(() => {
 		void shell.demoType
 		tweaksOpen = false
@@ -428,7 +438,7 @@
 	// Reflect the actual props the running Tabs receives. Re-derives when the
 	// variant flips so the user sees the snippet for THIS variant, not a fixed
 	// example.
-	const tabsCode = $derived.by(() => {
+	const _tabsCode = $derived.by(() => {
 		const propLines: string[] = ['bind:value']
 		for (const [k, v] of Object.entries(variantProps)) {
 			propLines.push(`${k}="${v}"`)
@@ -483,7 +493,7 @@ ${tabsTag}`
 	]
 	const tableColumns = $derived(activeVariant?.id === 'mapping' ? tableMappedColumns : undefined)
 
-	const tableCode = $derived.by(() => {
+	const _tableCode = $derived.by(() => {
 		if (activeVariant?.id === 'mapping') {
 			return `<script>
   import { Table } from '@rokkit/ui'
@@ -631,7 +641,7 @@ ${tabsTag}`
 		if (stepperCurrent < stepperSteps.length - 1) stepperCurrent++
 	}
 
-	const stepperCode = $derived.by(() => {
+	const _stepperCode = $derived.by(() => {
 		const orientation = (variantProps.orientation as string | undefined) ?? 'horizontal'
 		const showContent = activeVariant?.id === 'with-content'
 		const orientLine = orientation === 'horizontal' ? '' : ` orientation="${orientation}"`
@@ -704,7 +714,7 @@ ${tabsTag}`
 				: dateSchemaDefault
 	)
 
-	const dateCode = $derived.by(() => {
+	const _dateCode = $derived.by(() => {
 		if (activeVariant?.id === 'with-validation') {
 			return `<script>
   import { FormRenderer } from '@rokkit/forms'
@@ -779,7 +789,7 @@ ${tabsTag}`
 	].map((label) => ({ label, value: label.toLowerCase().replace(/\s+/g, '-') }))
 	let comboValue = $state<unknown>(null)
 
-	const comboCode = `<script>
+	const _comboCode = `<script>
   import { Select } from '@rokkit/ui'
 
   const countries = [
@@ -823,7 +833,7 @@ ${tabsTag}`
 			: chartFlat
 	)
 
-	const chartCode = $derived.by(() => {
+	const _chartCode = $derived.by(() => {
 		const isGrouped = activeVariant?.id === 'grouped' || activeVariant?.id === 'stacked'
 		const propLine = ['data={sales}', 'x="quarter"', 'y="revenue"']
 		if (isGrouped) propLine.push('fill="product"', 'legend')
@@ -897,7 +907,7 @@ ${rows}
 	)
 	let selectValue = $state<unknown>(null)
 
-	const selectCode = $derived.by(() => {
+	const _selectCode = $derived.by(() => {
 		if (activeVariant?.id === 'with-icons') {
 			return `<script>
   import { Select } from '@rokkit/ui'
@@ -960,7 +970,7 @@ ${rows}
 		}
 	}
 
-	const formCode = `<script>
+	const _formCode = `<script>
   import { FormRenderer } from '@rokkit/forms'
 
   let data = $state({
@@ -1025,7 +1035,7 @@ ${rows}
 		alerts.push({ type: 'info', text: 'Theme preset reset to defaults.' })
 	}
 
-	const toastsCode = `<script>
+	const _toastsCode = `<script>
   import { Button, AlertList } from '@rokkit/ui'
   import { alerts } from '@rokkit/states'
 
@@ -1084,7 +1094,7 @@ ${rows}
 	)
 	let listValue = $state<unknown>(null)
 
-	const listCode = $derived.by(() => {
+	const _listCode = $derived.by(() => {
 		if (activeVariant?.id === 'flat') {
 			return `<script>
   import { List } from '@rokkit/ui'
@@ -1158,7 +1168,7 @@ ${rows}
 	]
 	let selectedColors = $state<string[]>(['red', 'blue'])
 
-	const multiSelectCode = `<script>
+	const _multiSelectCode = `<script>
   import { MultiSelect } from '@rokkit/ui'
 
   const items = [
@@ -1176,7 +1186,7 @@ ${rows}
 
 <MultiSelect {items} bind:value placeholder="Select colors" />`
 
-	const treeCode = `<script>
+	const _treeCode = `<script>
   import { Tree } from '@rokkit/ui'
 
   const items = [
@@ -2090,27 +2100,10 @@ ${rows}
 		</aside>
 
 		<main class="canvas">
-			{#if shell.phase === 'response' && demoApi}
-				<nav class="canvas-view-toggle" role="tablist" aria-label="Canvas view">
-					<button
-						type="button"
-						role="tab"
-						data-active={canvasView === 'live' ? '' : undefined}
-						aria-selected={canvasView === 'live'}
-						onclick={() => (canvasView = 'live')}
-					>
-						Live
-					</button>
-					<button
-						type="button"
-						role="tab"
-						data-active={canvasView === 'api' ? '' : undefined}
-						aria-selected={canvasView === 'api'}
-						onclick={() => (canvasView = 'api')}
-					>
-						API
-					</button>
-				</nav>
+			{#if shell.phase === 'response' && canvasViewOptions.length > 1}
+				<div class="canvas-view-toggle">
+					<Toggle options={canvasViewOptions} bind:value={canvasView} size="sm" />
+				</div>
 			{/if}
 
 			{#if shell.phase === 'response' && canvasView === 'api' && demoApi}
@@ -2123,6 +2116,24 @@ ${rows}
 				</div>
 				<div class="canvas-body api">
 					<APIPanel api={demoApi} />
+				</div>
+			{:else if shell.phase === 'response' && canvasView === 'code' && demoSnippets && demoSnippets.length > 0}
+				<div class="canvas-head">
+					<div class="canvas-eyebrow">Code · reference</div>
+					<div class="canvas-title">{findById(shell.demoType ?? '')?.title ?? 'Component'} — copyable examples</div>
+					<div class="canvas-sub">
+						The minimum source you'd paste into a project to recreate what the live mode shows.
+					</div>
+				</div>
+				<div class="canvas-body code">
+					{#each demoSnippets as snip (snip.id)}
+						<CodeBlock
+							code={snip.code}
+							filename={snip.title}
+							language={snip.lang ?? 'svelte'}
+							allowCopy
+						/>
+					{/each}
 				</div>
 			{:else if shell.phase === 'welcome'}
 				<div class="welcome-hero">
@@ -2211,7 +2222,6 @@ ${rows}
 						{/snippet}
 					</ChatResponse>
 
-					<CodeBlock filename="Tabs.demo.svelte" language="svelte" code={tabsCode} />
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'theme-wizard'}
 				<div class="canvas-head">
@@ -2320,7 +2330,6 @@ ${rows}
 						{/snippet}
 					</ChatResponse>
 
-					<CodeBlock filename="Table.demo.svelte" language="svelte" code={tableCode} />
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'stepper'}
 				<div class="canvas-head">
@@ -2372,7 +2381,6 @@ ${rows}
 						{/snippet}
 					</ChatResponse>
 
-					<CodeBlock filename="Stepper.demo.svelte" language="svelte" code={stepperCode} />
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'date-picker'}
 				<div class="canvas-head">
@@ -2416,7 +2424,6 @@ ${rows}
 						{/snippet}
 					</ChatResponse>
 
-					<CodeBlock filename="DatePicker.demo.svelte" language="svelte" code={dateCode} />
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'combo'}
 				<div class="canvas-head">
@@ -2470,7 +2477,6 @@ ${rows}
 						{/snippet}
 					</ChatResponse>
 
-					<CodeBlock filename="Combo.demo.svelte" language="svelte" code={comboCode} />
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'chart'}
 				<div class="canvas-head">
@@ -2517,7 +2523,6 @@ ${rows}
 						{/snippet}
 					</ChatResponse>
 
-					<CodeBlock filename="Chart.demo.svelte" language="svelte" code={chartCode} />
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'select'}
 				<div class="canvas-head">
@@ -2557,7 +2562,6 @@ ${rows}
 						{/snippet}
 					</ChatResponse>
 
-					<CodeBlock filename="Select.demo.svelte" language="svelte" code={selectCode} />
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'form'}
 				<div class="canvas-head">
@@ -2604,7 +2608,6 @@ ${rows}
 						{/snippet}
 					</ChatResponse>
 
-					<CodeBlock filename="Form.demo.svelte" language="svelte" code={formCode} />
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'toasts'}
 				<div class="canvas-head">
@@ -2664,7 +2667,6 @@ ${rows}
 						{/snippet}
 					</ChatResponse>
 
-					<CodeBlock filename="Toasts.demo.svelte" language="svelte" code={toastsCode} />
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'list'}
 				<div class="canvas-head">
@@ -2722,7 +2724,6 @@ ${rows}
 						{/snippet}
 					</ChatResponse>
 
-					<CodeBlock filename="List.demo.svelte" language="svelte" code={listCode} />
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'multi-select'}
 				<div class="canvas-head">
@@ -2776,7 +2777,6 @@ ${rows}
 						{/snippet}
 					</ChatResponse>
 
-					<CodeBlock filename="MultiSelect.demo.svelte" language="svelte" code={multiSelectCode} />
 				</div>
 			{:else if shell.phase === 'response' && shell.demoType === 'tree'}
 				<div class="canvas-head">
@@ -2822,7 +2822,6 @@ ${rows}
 						{/snippet}
 					</ChatResponse>
 
-					<CodeBlock filename="Tree.demo.svelte" language="svelte" code={treeCode} />
 				</div>
 			{/if}
 		</main>
@@ -3186,43 +3185,25 @@ ${rows}
 	}
 
 	.canvas-body.catalog,
-	.canvas-body.api {
+	.canvas-body.api,
+	.canvas-body.code {
 		overflow-y: auto;
 		padding: 16px 28px 32px;
 	}
 
+	.canvas-body.code {
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+	}
+
+	/* Just an anchor for positioning — Toggle owns its own visuals via
+	   the active theme's toggle.css. */
 	.canvas-view-toggle {
 		position: absolute;
 		top: 14px;
 		right: 20px;
 		z-index: 5;
-		display: inline-flex;
-		padding: 2px;
-		gap: 1px;
-		border: 1px solid var(--paper-edge);
-		border-radius: 6px;
-		background: var(--paper-soft);
-	}
-
-	.canvas-view-toggle button {
-		padding: 3px 12px;
-		border: 0;
-		background: transparent;
-		color: var(--ink-mute);
-		font: 500 12px var(--font-ui);
-		cursor: pointer;
-		border-radius: 4px;
-		transition: background 120ms ease, color 120ms ease;
-	}
-
-	.canvas-view-toggle button:hover {
-		color: var(--ink);
-	}
-
-	.canvas-view-toggle button[data-active] {
-		background: var(--paper);
-		color: var(--ink);
-		box-shadow: 0 1px 2px color-mix(in oklch, var(--ink) 8%, transparent);
 	}
 
 	.tabs-mount {

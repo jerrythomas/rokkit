@@ -1,8 +1,10 @@
 /**
  * Toggle - Zen-Sumi Theme Styles
  *
- * Pill container with filled active state.
- * Inactive: transparent. Hover: surface-z2. Active: ink fill (surface-z9).
+ * Pill container with primary-coloured active fill (shu vermillion).
+ * Inactive: transparent. Hover: surface-z2. Selected: primary fill on
+ * paper text — colourful enough that the active option is unambiguous
+ * at a glance, even in the small canvas-view-toggle (Live · Code · API).
  */
 
 /* =============================================================================
@@ -27,9 +29,9 @@
   @apply bg-paper-mute text-ink-mute;
 }
 
-/* Selected state — ink fill */
+/* Selected state — primary (shu) fill */
 [data-style='zen-sumi'] [data-toggle-option][data-selected='true'] {
-  @apply bg-ink text-paper bg-none;
+  @apply bg-primary text-on-primary bg-none;
   font-weight: 500;
 }
 
@@ -53,5 +55,5 @@
 }
 
 [data-style='zen-sumi'] [data-toggle-option][data-selected='true'] [data-toggle-icon] {
-  @apply text-paper;
+  @apply text-on-primary;
 }
