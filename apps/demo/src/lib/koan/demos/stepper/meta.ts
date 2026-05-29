@@ -26,7 +26,15 @@ const meta: DemoMeta = {
 	variants: [
 		{ id: 'vertical', label: 'Vertical orientation', mode: 'dynamic', props: { orientation: 'vertical' } },
 		{ id: 'with-content', label: 'With per-step content', mode: 'dynamic' }
-	]
+	],
+	props: {
+		orientation: {
+			type: 'enum',
+			options: ['horizontal', 'vertical'],
+			default: 'horizontal',
+			desc: 'Layout axis for the step indicator'
+		}
+	}
 }
 
 export default meta

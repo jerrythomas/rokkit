@@ -26,7 +26,14 @@ const meta: DemoMeta = {
 		{ id: 'mapping', label: 'Custom field mapping', mode: 'dynamic' },
 		{ id: 'sticky-header', label: 'Sticky header on scroll', mode: 'dynamic' },
 		{ id: 'striped', label: 'Striped rows', mode: 'dynamic', props: { striped: true } }
-	]
+	],
+	props: {
+		striped: {
+			type: 'boolean',
+			default: false,
+			desc: 'Alternate row background tone for scan-readability'
+		}
+	}
 }
 
 export default meta

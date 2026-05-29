@@ -28,7 +28,21 @@ const meta: DemoMeta = {
 		{ id: 'deep', label: 'Deeper nesting (5 levels)', mode: 'dynamic' },
 		{ id: 'dotted-lines', label: 'Dotted indent lines', mode: 'dynamic', props: { lineStyle: 'dotted' } },
 		{ id: 'no-lines', label: 'No indent lines', mode: 'dynamic', props: { lineStyle: 'none' } }
-	]
+	],
+	props: {
+		lineStyle: {
+			type: 'enum',
+			options: ['solid', 'dashed', 'dotted', 'none'],
+			default: 'solid',
+			desc: 'Indent connector line style'
+		},
+		size: {
+			type: 'enum',
+			options: ['sm', 'md', 'lg'],
+			default: 'md',
+			desc: 'Row density'
+		}
+	}
 }
 
 export default meta

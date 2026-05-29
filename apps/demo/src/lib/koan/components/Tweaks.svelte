@@ -47,7 +47,10 @@
 			const element: Record<string, unknown> = {
 				scope: `#/${name}`,
 				label: spec.label ?? name,
-				description: spec.desc
+				description: spec.desc,
+				// Compact label-inline-with-input layout — the playground
+				// reads as a control panel, not a form page.
+				variant: 'inline'
 			}
 			if (spec.type === 'enum') {
 				properties[name] = { type: 'string' }
@@ -191,17 +194,15 @@
 		padding: 6px 12px 10px;
 	}
 
-	/* FormRenderer renders a <div data-form-root> with one
-	   [data-form-field] per element. Hide the auto-submit/reset bar
-	   FormRenderer emits — tweaks save automatically on change, and
-	   our own header carries the Copy/Reset actions. */
+	/* Hide FormRenderer's auto-emitted Reset + Submit bar — tweaks
+	   save on every change and our own header carries Copy + Reset.
+	   The per-field inline layout (label-left, input-right) is opted
+	   into via `variant: 'inline'` on each layout element, so no
+	   density overrides are needed here. */
 	[data-tweaks-body] :global([data-form-actions]) {
 		display: none;
 	}
 
-	/* Tighten the per-field rhythm for the playground use case. The
-	   default FormRenderer styling is form-page-friendly; in the
-	   tweaks slab we want a compact knob row instead. */
 	[data-tweaks-body] :global([data-form-field]) {
 		margin-bottom: 8px;
 	}

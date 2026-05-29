@@ -18,6 +18,16 @@
 		onchange,
 		id,
 		renderers,
+		/**
+		 * Field layout — controls how the label and input are arranged.
+		 *
+		 * - `stacked` (default) — label above input. Best for form pages
+		 *   with full-width inputs and long labels.
+		 * - `inline` — label and input on the same row (label takes a
+		 *   fixed leading column). Best for compact control panels —
+		 *   playground knob rows, settings dialogs, tweak editors.
+		 */
+		variant = 'stacked',
 		...restProps
 	} = $props()
 
@@ -41,6 +51,7 @@
 	data-field-dirty={dirty || undefined}
 	data-field-empty={value === null || value === undefined}
 	data-has-icon={icon !== null && icon !== undefined}
+	data-field-layout={variant}
 >
 	<div data-field aria-label={description ?? label ?? name}>
 		{#if label && !nolabel}

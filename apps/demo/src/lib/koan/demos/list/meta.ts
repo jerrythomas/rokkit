@@ -27,7 +27,15 @@ const meta: DemoMeta = {
 	variants: [
 		{ id: 'flat', label: 'Flat list (no groups)', mode: 'dynamic' },
 		{ id: 'snippets', label: 'Custom item snippets', mode: 'dynamic' }
-	]
+	],
+	props: {
+		size: {
+			type: 'enum',
+			options: ['sm', 'md', 'lg'],
+			default: 'md',
+			desc: 'Row density'
+		}
+	}
 }
 
 export default meta

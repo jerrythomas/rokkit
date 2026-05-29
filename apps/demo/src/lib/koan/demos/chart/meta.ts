@@ -31,7 +31,24 @@ const meta: DemoMeta = {
 		{ id: 'grouped', label: 'Grouped by product', mode: 'dynamic', props: { fill: 'product', legend: true } },
 		{ id: 'stacked', label: 'Stacked', mode: 'dynamic', props: { fill: 'product', stack: true, legend: true } },
 		{ id: 'with-labels', label: 'With data labels', mode: 'dynamic', props: { label: true } }
-	]
+	],
+	props: {
+		stack: {
+			type: 'boolean',
+			default: false,
+			desc: 'Stack bars by color group instead of grouping side-by-side'
+		},
+		legend: {
+			type: 'boolean',
+			default: false,
+			desc: 'Show the color-group legend'
+		},
+		label: {
+			type: 'boolean',
+			default: false,
+			desc: 'Render value labels on top of each bar'
+		}
+	}
 }
 
 export default meta

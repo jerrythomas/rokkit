@@ -27,7 +27,14 @@ const meta: DemoMeta = {
 	variants: [
 		{ id: 'no-filter', label: 'Plain Select (no filter)', mode: 'dynamic', props: { filterable: false } },
 		{ id: 'with-counts', label: 'Show match count', mode: 'dynamic' }
-	]
+	],
+	props: {
+		filterable: {
+			type: 'boolean',
+			default: true,
+			desc: 'Type-to-narrow input; off renders as a plain Select'
+		}
+	}
 }
 
 export default meta

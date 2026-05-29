@@ -142,6 +142,24 @@ button[data-form-reset]:disabled {
   @apply flex-row items-center justify-between gap-2;
 }
 
+/* Inline layout variant — opt in per field via the `variant='inline'`
+   prop on InputField (or the equivalent `variant` field on a
+   FormRenderer layout element). Label sits in a fixed leading column,
+   the input takes the remaining row. Useful for control-panel
+   contexts (playground knobs, settings dialogs, tweak editors) where
+   the form-page rhythm reads as overkill. */
+[data-field-root][data-field-layout='inline'] > [data-field] {
+  @apply flex-row items-center gap-3;
+}
+
+[data-field-root][data-field-layout='inline'] > [data-field] > label {
+  @apply flex-none w-32 text-xs;
+}
+
+[data-field-root][data-field-layout='inline'] > [data-field] > :not(label) {
+  @apply flex-1 min-w-0;
+}
+
 /* Select: stretch to fill input wrapper — display:flex eliminates inline-block gap */
 [data-input-root] [data-select] {
   @apply flex-1 self-stretch;
