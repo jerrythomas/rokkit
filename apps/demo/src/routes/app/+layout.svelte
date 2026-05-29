@@ -41,7 +41,7 @@
 		type TweakTurn
 	} from '$lib/koan/conversations.svelte'
 	import ComposerSuggestions from '$lib/koan/components/ComposerSuggestions.svelte'
-	import Tweaks from '$lib/koan/components/Tweaks.svelte'
+	import DetailsSlab from '$lib/koan/components/DetailsSlab.svelte'
 	import type { DemoMeta } from '$lib/koan/types'
 	import ThemeWizardCard from '$lib/koan/demos/theme-wizard/ThemeWizardCard.svelte'
 	import { savePreset, resetPreset, downloadTokensCss, exportTokensCss } from '$lib/koan/demos/theme-wizard/store.svelte'
@@ -285,8 +285,22 @@
 	const propsSchema = $derived(
 		shell.demoType ? findById(shell.demoType)?.props : undefined
 	)
+	const demoApi = $derived(shell.demoType ? findById(shell.demoType)?.api : undefined)
+	const demoSnippets = $derived(shell.demoType ? findById(shell.demoType)?.snippets : undefined)
 
-	// The Tweaks form is opt-in: the user clicks the tweak icon on the
+	// Whether the demo has anything for the details slab to show (tweaks,
+	// API table, or source snippets). Gates the composer toggle and the
+	// slab render — when none are declared, the toggle is hidden so the
+	// composer row stays clean.
+	const hasDetails = $derived(
+		Boolean(
+			(propsSchema && Object.keys(propsSchema).length > 0) ||
+				(demoApi && demoApi.props.length > 0) ||
+				(demoSnippets && demoSnippets.length > 0)
+		)
+	)
+
+	// The details slab is opt-in: the user clicks the icon on the
 	// composer to surface it (no layout disruption when closed). Reset
 	// to closed when navigating to a different demo so we don't carry
 	// state across demos.
@@ -2033,14 +2047,17 @@ ${rows}
 				</ChatStream>
 			{/if}
 
-			{#if shell.phase === 'response' && propsSchema && tweaksOpen}
+			{#if shell.phase === 'response' && hasDetails && tweaksOpen && shell.demoType}
 				<div class="tweaks-slab" data-glide-in>
-					<Tweaks
-						schema={propsSchema}
-						values={tweakProps}
-						onchange={setTweak}
-						onreset={resetTweaks}
-						oncopy={copyTweaks}
+					<DetailsSlab
+						demoId={shell.demoType}
+						propsSchema={propsSchema}
+						tweakValues={tweakProps}
+						api={demoApi}
+						snippets={demoSnippets}
+						onTweakChange={setTweak}
+						onTweakReset={resetTweaks}
+						onTweakCopy={copyTweaks}
 					/>
 				</div>
 			{/if}
@@ -2054,14 +2071,14 @@ ${rows}
 				onsubmit={submitQuery}
 			>
 				{#snippet rightActions()}
-					{#if shell.phase === 'response' && propsSchema}
+					{#if shell.phase === 'response' && hasDetails}
 						<button
 							type="button"
 							class="composer-tweak-toggle"
 							data-on={tweaksOpen ? '' : undefined}
 							aria-pressed={tweaksOpen}
 							onclick={() => (tweaksOpen = !tweaksOpen)}
-							title={tweaksOpen ? 'Hide tweaks' : 'Show tweaks'}
+							title={tweaksOpen ? 'Hide details' : 'Show details (tweaks · API · source)'}
 						>
 							<span class="i-mdi:tune-variant" aria-hidden="true"></span>
 							<span class="composer-tweak-label">tweak</span>

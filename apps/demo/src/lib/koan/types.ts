@@ -77,6 +77,50 @@ export type DemoVariant = {
 	props?: Record<string, unknown>
 }
 
+/**
+ * Documented prop in the API tab. Unlike DemoPropSchema (which drives
+ * the live tweak editor and only lists *editable* props), ApiProp
+ * declarations cover the full public surface — items, value bindable,
+ * fields mappers, etc. Default is a string so unions ("'horizontal' |
+ * 'vertical'"), references ("[]"), and primitives all read the same.
+ */
+export type ApiProp = {
+	name: string
+	type: string
+	default?: string
+	desc: string
+	bindable?: boolean
+}
+
+export type ApiEvent = {
+	name: string
+	signature: string
+	desc: string
+}
+
+export type ApiAttr = {
+	selector: string
+	desc: string
+}
+
+export type DemoApi = {
+	props: ApiProp[]
+	events?: ApiEvent[]
+	attrs?: ApiAttr[]
+}
+
+/**
+ * Named source snippet shown in the Source tab. `title` is the heading
+ * inside the slab; `code` is the raw Svelte source; `lang` defaults to
+ * 'svelte' for highlighter routing.
+ */
+export type DemoSnippet = {
+	id: string
+	title: string
+	code: string
+	lang?: 'svelte' | 'ts' | 'js' | 'html' | 'css'
+}
+
 export type DemoMeta = {
 	id: string
 	title: string
@@ -95,6 +139,10 @@ export type DemoMeta = {
 	variants?: DemoVariant[]
 	/** Editable prop schema for inline tweaks. Maps prop name → schema. */
 	props?: Record<string, DemoPropSchema>
+	/** Documented API surface — props / events / data-attribute hooks. */
+	api?: DemoApi
+	/** Source examples shown in the Source tab, in display order. */
+	snippets?: DemoSnippet[]
 }
 
 export type TimelineEntry = {
