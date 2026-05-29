@@ -1,16 +1,24 @@
 <script lang="ts">
 	/**
-	 * Inline tweaks — renders editable prop controls based on a demo's
-	 * `props` schema. Mounts as a message inside the chat response stream.
-	 * Each control change calls `onchange(propName, newValue)`; the parent
-	 * layout writes into a `tweakProps` $state map that the canvas mount
-	 * spreads after the variant props.
+	 * Inline tweaks editor — wraps `<FormRenderer />` from @rokkit/forms so
+	 * the demo dogfoods its own form package. The DemoPropSchema each demo
+	 * declares is adapted on the fly into FormRenderer's schema + layout +
+	 * lookups shape; renderer choice per type:
 	 *
-	 * Re-anchor behavior: the parent re-renders this card as a new
-	 * assistant turn on each change, so the most-recent state always sits
-	 * near the composer while the older snapshots stay in the scrollback
-	 * as part of the conversation history.
+	 *   enum    → `radio`   (compact segmented feel via lookups source)
+	 *   boolean → `toggle`
+	 *   string  → `text`
+	 *   number  → `number`
+	 *
+	 * The form's onupdate fires with the full data object each change; we
+	 * diff against the previous values and emit a per-field onchange to
+	 * the parent so the chat-left can log "prop: from → to" turns.
+	 *
+	 * Header carries the playground actions (Reset, Copy) which sit
+	 * outside FormRenderer's own action bar — the form is value-only,
+	 * no submit step.
 	 */
+	import { FormRenderer } from '@rokkit/forms'
 	import type { DemoPropSchema } from '$lib/koan/types'
 
 	interface Props {
@@ -21,25 +29,65 @@
 		oncopy?: () => void
 	}
 
-	const { schema, values, onchange, onreset, oncopy }: Props = $props()
+	const { schema: propsSchema, values, onchange, onreset, oncopy }: Props = $props()
 
-	function currentValue(name: string): unknown {
-		const v = values[name]
-		if (v !== undefined) return v
-		return schema[name]?.default
+	/**
+	 * Build the FormRenderer spec from a DemoPropSchema. Returns the
+	 * triple { schema, layout, lookups } plus seed `data` populated with
+	 * each prop's current value (falling back to the schema default).
+	 */
+	function buildFormSpec(specs: Record<string, DemoPropSchema>, current: Record<string, unknown>) {
+		const properties: Record<string, { type: string }> = {}
+		const elements: Array<Record<string, unknown>> = []
+		const lookups: Record<string, { source: string[]; filter: (src: string[]) => string[] }> = {}
+		const data: Record<string, unknown> = {}
+
+		for (const [name, spec] of Object.entries(specs)) {
+			data[name] = current[name] ?? spec.default
+			const element: Record<string, unknown> = {
+				scope: `#/${name}`,
+				label: spec.label ?? name,
+				description: spec.desc
+			}
+			if (spec.type === 'enum') {
+				properties[name] = { type: 'string' }
+				element.renderer = 'radio'
+				lookups[name] = { source: spec.options, filter: (src) => src }
+			} else if (spec.type === 'boolean') {
+				properties[name] = { type: 'boolean' }
+				element.renderer = 'toggle'
+			} else if (spec.type === 'string') {
+				properties[name] = { type: 'string' }
+				element.renderer = 'text'
+				if (spec.placeholder) element.placeholder = spec.placeholder
+			} else if (spec.type === 'number') {
+				properties[name] = { type: 'number' }
+				element.renderer = 'number'
+				if (spec.min !== undefined) element.min = spec.min
+				if (spec.max !== undefined) element.max = spec.max
+				if (spec.step !== undefined) element.step = spec.step
+			}
+			elements.push(element)
+		}
+
+		return {
+			schema: { type: 'object', properties },
+			layout: { type: 'vertical', elements },
+			lookups,
+			data
+		}
 	}
 
-	function isEnum(s: DemoPropSchema): s is Extract<DemoPropSchema, { type: 'enum' }> {
-		return s.type === 'enum'
-	}
-	function isBool(s: DemoPropSchema): s is Extract<DemoPropSchema, { type: 'boolean' }> {
-		return s.type === 'boolean'
-	}
-	function isStr(s: DemoPropSchema): s is Extract<DemoPropSchema, { type: 'string' }> {
-		return s.type === 'string'
-	}
-	function isNum(s: DemoPropSchema): s is Extract<DemoPropSchema, { type: 'number' }> {
-		return s.type === 'number'
+	const spec = $derived(buildFormSpec(propsSchema, values))
+	let formData = $state<Record<string, unknown>>(spec.data)
+	let prev = $state<Record<string, unknown>>({ ...spec.data })
+
+	/** Diff the incoming data against `prev` and emit per-field changes. */
+	function handleUpdate(next: Record<string, unknown>) {
+		for (const [k, v] of Object.entries(next)) {
+			if (prev[k] !== v) onchange?.(k, v)
+		}
+		prev = { ...next }
 	}
 </script>
 
@@ -63,73 +111,22 @@
 		{/if}
 	</header>
 
-	<ul data-tweaks-list>
-		{#each Object.entries(schema) as [name, spec] (name)}
-			<li data-tweaks-row>
-				<div data-tweaks-label>
-					<span data-tweaks-name>{spec.label ?? name}</span>
-					{#if spec.desc}<span data-tweaks-desc>{spec.desc}</span>{/if}
-				</div>
-				<div data-tweaks-control>
-					{#if isEnum(spec)}
-						<div data-tweaks-segmented role="radiogroup" aria-label={name}>
-							{#each spec.options as opt (opt)}
-								{@const active = currentValue(name) === opt}
-								<button
-									type="button"
-									data-tweaks-segment
-									data-active={active ? '' : undefined}
-									role="radio"
-									aria-checked={active}
-									onclick={() => onchange?.(name, opt)}
-								>
-									{opt}
-								</button>
-							{/each}
-						</div>
-					{:else if isBool(spec)}
-						{@const v = Boolean(currentValue(name))}
-						<button
-							type="button"
-							data-tweaks-toggle
-							data-on={v ? '' : undefined}
-							role="switch"
-							aria-checked={v}
-							onclick={() => onchange?.(name, !v)}
-						>
-							<span data-tweaks-toggle-thumb></span>
-							<span data-tweaks-toggle-label>{v ? 'on' : 'off'}</span>
-						</button>
-					{:else if isStr(spec)}
-						<input
-							type="text"
-							data-tweaks-input
-							value={currentValue(name) as string}
-							placeholder={spec.placeholder ?? ''}
-							oninput={(e) => onchange?.(name, (e.currentTarget as HTMLInputElement).value)}
-						/>
-					{:else if isNum(spec)}
-						<input
-							type="number"
-							data-tweaks-input
-							value={currentValue(name) as number}
-							min={spec.min}
-							max={spec.max}
-							step={spec.step ?? 1}
-							oninput={(e) => onchange?.(name, Number((e.currentTarget as HTMLInputElement).value))}
-						/>
-					{/if}
-				</div>
-			</li>
-		{/each}
-	</ul>
+	<div data-tweaks-body>
+		<FormRenderer
+			bind:data={formData}
+			schema={spec.schema}
+			layout={spec.layout}
+			lookups={spec.lookups}
+			validateOn="change"
+			onupdate={handleUpdate}
+		/>
+	</div>
 </div>
 
 <style>
 	[data-tweaks] {
 		display: flex;
 		flex-direction: column;
-		gap: 0;
 		border: 1px solid var(--paper-edge);
 		border-radius: 8px;
 		background: var(--paper);
@@ -190,118 +187,26 @@
 		height: 12px;
 	}
 
-	[data-tweaks-list] {
-		list-style: none;
-		margin: 0;
+	[data-tweaks-body] {
 		padding: 6px 12px 10px;
-		display: flex;
-		flex-direction: column;
-		gap: 6px;
 	}
 
-	[data-tweaks-row] {
-		display: grid;
-		grid-template-columns: 120px 1fr;
-		align-items: center;
-		gap: 12px;
+	/* FormRenderer renders a <div data-form-root> with one
+	   [data-form-field] per element. Hide the auto-submit/reset bar
+	   FormRenderer emits — tweaks save automatically on change, and
+	   our own header carries the Copy/Reset actions. */
+	[data-tweaks-body] :global([data-form-actions]) {
+		display: none;
 	}
 
-	[data-tweaks-label] {
-		display: flex;
-		flex-direction: column;
-		gap: 1px;
+	/* Tighten the per-field rhythm for the playground use case. The
+	   default FormRenderer styling is form-page-friendly; in the
+	   tweaks slab we want a compact knob row instead. */
+	[data-tweaks-body] :global([data-form-field]) {
+		margin-bottom: 8px;
 	}
 
-	[data-tweaks-name] {
-		font: 500 11.5px var(--font-mono);
-		color: var(--ink);
-		letter-spacing: 0.02em;
-	}
-
-	[data-tweaks-desc] {
-		font: 400 10.5px var(--font-ui);
-		color: var(--ink-soft);
-		line-height: 1.3;
-	}
-
-	[data-tweaks-control] {
-		min-width: 0;
-	}
-
-	[data-tweaks-segmented] {
-		display: inline-flex;
-		gap: 0;
-		border: 1px solid var(--paper-edge);
-		border-radius: 4px;
-		overflow: hidden;
-		background: var(--paper-soft);
-	}
-
-	[data-tweaks-segment] {
-		padding: 3px 8px;
-		border: 0;
-		border-right: 1px solid var(--paper-edge);
-		background: transparent;
-		font: 500 11px var(--font-mono);
-		color: var(--ink-mute);
-		cursor: pointer;
-	}
-
-	[data-tweaks-segment]:last-child {
-		border-right: 0;
-	}
-
-	[data-tweaks-segment]:hover {
-		color: var(--ink);
-	}
-
-	[data-tweaks-segment][data-active] {
-		background: var(--accent);
-		color: var(--on-primary, var(--paper));
-	}
-
-	[data-tweaks-toggle] {
-		display: inline-flex;
-		align-items: center;
-		gap: 6px;
-		padding: 2px 8px 2px 4px;
-		border: 1px solid var(--paper-edge);
-		border-radius: 9999px;
-		background: var(--paper-soft);
-		cursor: pointer;
-	}
-
-	[data-tweaks-toggle-thumb] {
-		display: inline-block;
-		width: 12px;
-		height: 12px;
-		border-radius: 50%;
-		background: var(--ink-soft);
-		transition: background 120ms ease;
-	}
-
-	[data-tweaks-toggle][data-on] [data-tweaks-toggle-thumb] {
-		background: var(--accent);
-	}
-
-	[data-tweaks-toggle-label] {
-		font: 500 10.5px var(--font-mono);
-		color: var(--ink-mute);
-		min-width: 18px;
-	}
-
-	[data-tweaks-input] {
-		width: 100%;
-		padding: 3px 8px;
-		border: 1px solid var(--paper-edge);
-		border-radius: 4px;
-		background: var(--paper-soft);
-		color: var(--ink);
-		font: 400 12px var(--font-mono);
-	}
-
-	[data-tweaks-input]:focus {
-		outline: none;
-		border-color: var(--accent);
+	[data-tweaks-body] :global([data-form-field]:last-child) {
+		margin-bottom: 0;
 	}
 </style>
