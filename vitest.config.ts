@@ -23,7 +23,7 @@ export default defineConfig({
 				'**/spec/**',
 				'**/node_modules/**',
 				'**/dist/**',
-				'**/site/**',
+				'**/apps/learn/**',
 				'**/fixtures/**',
 				'**/types.ts',
 				'**/.worktrees/**'
@@ -67,12 +67,12 @@ export default defineConfig({
 				extends: true,
 				test: {
 					name: 'learn',
-					root: 'site'
+					root: 'apps/learn'
 				},
 				resolve: {
 					alias: {
-						$lib: path.resolve('./site/src/lib'),
-						$app: path.resolve('./site/src/app')
+						$lib: path.resolve('./apps/learn/src/lib'),
+						$app: path.resolve('./apps/learn/src/app')
 					}
 				}
 			}

@@ -34,7 +34,9 @@ rokkit/
     features/                   <-- Feature specs (Gherkin scenarios, vision)
     design/                     <-- Architecture and design docs (numbered: NN-xxx.md)
   packages/                     <-- Library packages (@rokkit/ui, states, actions, etc.)
-  site/                         <-- Documentation site + interactive demos + e2e tests
+  apps/
+    learn/                      <-- Documentation site + interactive playgrounds + e2e tests
+    demo/                       <-- Koan showcase app (/app + /chat + /embed)
 ```
 
 ## Key Design Principles
@@ -58,7 +60,7 @@ bun run test:ui                   # UI package tests
 bun run lint                      # 0 errors expected
 
 # E2E tests
-cd site && npx playwright test
+cd apps/learn && npx playwright test
 ```
 
 ## Conventions

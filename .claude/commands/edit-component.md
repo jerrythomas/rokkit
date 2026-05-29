@@ -43,7 +43,7 @@ bun run test:ui && bun run lint   # must be zero errors
 
 Update these files to stay in sync:
 - `docs/llms/components/<name>.txt`
-- `site/src/routes/(learn)/docs/components/<name>/+page.svelte`
+- `apps/learn/src/routes/(learn)/docs/components/<name>/+page.svelte`
 
 ## Step 7 — Commit
 

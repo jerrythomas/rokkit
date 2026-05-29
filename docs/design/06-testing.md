@@ -188,12 +188,12 @@ Every UI component must have unit tests covering:
 ### Configuration
 
 ```
-site/playwright.config.ts
+apps/learn/playwright.config.ts
 ```
 
 Key settings:
 
-- `testDir: 'e2e'` — test files live in `site/e2e/`
+- `testDir: 'e2e'` — test files live in `apps/learn/e2e/`
 - `testMatch: /.*\.e2e\.ts/` — only files named `*.e2e.ts` are collected
 - `fullyParallel: true` — all tests run concurrently
 - `retries: 2` on CI — flakiness mitigation
@@ -203,7 +203,7 @@ Key settings:
 ### Test location
 
 ```
-site/e2e/
+apps/learn/e2e/
   helpers.ts              ← shared utilities: goToPlayPage, setTheme, setMode
   list.e2e.ts
   select.e2e.ts
@@ -398,10 +398,10 @@ bun run test:ci
 bun run test:ui
 
 # E2E tests (requires build)
-cd site && npx playwright test
+cd apps/learn && npx playwright test
 
 # Update visual snapshots
-cd site && npx playwright test --update-snapshots
+cd apps/learn && npx playwright test --update-snapshots
 ```
 
 ### Coverage targets

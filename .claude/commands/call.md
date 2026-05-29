@@ -68,9 +68,9 @@ Component:    PascalCase.svelte          → MyComponent.svelte
 Unit test:    PascalCase.spec.svelte.ts  → MyComponent.spec.svelte.ts
 E2E test:     kebab-case.e2e.ts          → my-component.e2e.ts
 Theme CSS:    kebab-case.css             → my-component.css
-Playground:   site/src/routes/(play)/playground/components/kebab-case/+page.svelte
-Docs:         site/src/routes/(learn)/docs/components/kebab-case/+page.svelte
-LLMs txt:     site/static/llms/components/kebab-case.txt
+Playground:   apps/learn/src/routes/(play)/playground/components/kebab-case/+page.svelte
+Docs:         apps/learn/src/routes/(learn)/docs/components/kebab-case/+page.svelte
+LLMs txt:     apps/learn/static/llms/components/kebab-case.txt
 ```
 
 ## CSS Token Conventions

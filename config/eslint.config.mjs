@@ -51,9 +51,9 @@ export default [
       '**/app.d.ts',
       '**/_generated/**',
       '**/paraglide/**',
-      'site/src/routes/(learn)/customization/icons/fragments/**',
-      'site/src/routes/(learn)/elements/list/fragments/01-data-object.js',
-      'site/src/routes/(learn)/**/snippets/**'
+      'apps/learn/src/routes/(learn)/customization/icons/fragments/**',
+      'apps/learn/src/routes/(learn)/elements/list/fragments/01-data-object.js',
+      'apps/learn/src/routes/(learn)/**/snippets/**'
     ]
   },
   {
@@ -199,7 +199,7 @@ export default [
     }
   },
   {
-    files: ['**/site/src/**'],
+    files: ['**/apps/learn/src/**'],
     rules: {
       'svelte/no-at-html-tags': 'off',
       'no-console': 'warn',
@@ -209,9 +209,9 @@ export default [
   },
   {
     files: [
-      '**/site/src/routes/components/**',
-      '**/site/src/routes/playground/**',
-      '**/site/src/routes/(play)/playground/**',
+      '**/apps/learn/src/routes/components/**',
+      '**/apps/learn/src/routes/playground/**',
+      '**/apps/learn/src/routes/(play)/playground/**',
       '**/examples/**',
       '**/stories/**',
       '**/fragments/**'

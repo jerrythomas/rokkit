@@ -74,7 +74,7 @@ Icons are UnoCSS shortcuts (e.g. `state-error` → `i-rokkit:state-error`). Appl
 <span class={isExpanded ? icons.opened : icons.closed} aria-hidden="true"></span>
 ```
 
-**UnoCSS safelist:** Dynamic icon classes won't be detected by the scanner. If your component uses `state-error`, `state-info`, etc. as dynamic CSS classes, they must be in `site/uno.config.js` safelist — `stateIcons` array already covers `state-error/warning/success/info/unknown`. For other dynamically-applied shortcuts, add them to the safelist.
+**UnoCSS safelist:** Dynamic icon classes won't be detected by the scanner. If your component uses `state-error`, `state-info`, etc. as dynamic CSS classes, they must be in `apps/learn/uno.config.js` safelist — `stateIcons` array already covers `state-error/warning/success/info/unknown`. For other dynamically-applied shortcuts, add them to the safelist.
 
 **Available icon groups in `DEFAULT_STATE_ICONS`:**
 
@@ -542,7 +542,7 @@ Run after writing: `bun run test:ui`
 
 ## Step 6: Playground Page
 
-Location: `site/src/routes/(play)/playground/components/<name>/+page.svelte`
+Location: `apps/learn/src/routes/(play)/playground/components/<name>/+page.svelte`
 
 The playground page uses `PlaySection`, which provides:
 - **Line-grid preview area** — full height, centered content
@@ -610,12 +610,12 @@ let props = $state({ type: 'info', text: 'Hello' })
 
 **Register in both nav files** or the link 404s:
 
-1. `site/src/routes/(play)/playground/+page.svelte` — add to the appropriate GROUPS array:
+1. `apps/learn/src/routes/(play)/playground/+page.svelte` — add to the appropriate GROUPS array:
 ```js
 { name: 'My Component', description: 'Short description', slug: 'my-component' }
 ```
 
-2. `site/src/routes/(play)/playground/+layout.svelte` — add to the sidebar children array:
+2. `apps/learn/src/routes/(play)/playground/+layout.svelte` — add to the sidebar children array:
 ```js
 { title: 'My Component', slug: '/playground/components/my-component', icon: 'i-glyph:my-component' }
 ```
@@ -624,7 +624,7 @@ let props = $state({ type: 'info', text: 'Hello' })
 
 ## Step 6b: Playwright E2E Tests
 
-Location: `site/e2e/<name>.e2e.ts`
+Location: `apps/learn/e2e/<name>.e2e.ts`
 
 E2E tests run against the playground page in a real browser. They test keyboard navigation, mouse interaction, and visual appearance across all themes and modes.
 
@@ -735,7 +735,7 @@ test.describe('MyComponent', () => {
 - Use `setTheme` and `setMode` helpers for cross-theme snapshots — `setTheme` opens the Dropdown in `[data-toolbar]` to switch themes
 - Use `openDropdownViaKeyboard` helper for Tier 4 keyboard open flows
 - The playground page's first instance of the component is used for tests — make sure the first example in the preview is representative
-- Visual snapshot tests require a baseline run first: `cd site && npx playwright test e2e/<name>.e2e.ts --update-snapshots`
+- Visual snapshot tests require a baseline run first: `cd apps/learn && npx playwright test e2e/<name>.e2e.ts --update-snapshots`
 
 **Data field convention:** Items in playground examples must use `label` and `value` as default field names (ProxyItem defaults). If your component uses different defaults, specify `fields` prop explicitly.
 
@@ -743,8 +743,8 @@ test.describe('MyComponent', () => {
 
 ## Step 7: Doc Page — Live Interactive Documentation
 
-Location: `site/src/routes/(learn)/docs/components/<name>/+page.svelte`
-Also create: `site/src/routes/(learn)/docs/components/<name>/meta.json`
+Location: `apps/learn/src/routes/(learn)/docs/components/<name>/+page.svelte`
+Also create: `apps/learn/src/routes/(learn)/docs/components/<name>/meta.json`
 
 The doc page serves as documentation AND visual verification. Build it alongside the component so you can see what you're building.
 
@@ -826,7 +826,7 @@ Categories: `"inputs"`, `"display"`, `"navigation"`, `"layout"`, `"data"`, `"fee
 
 ## Step 7b: llms.txt — Machine-Readable Documentation
 
-Location: `site/static/llms/components/<name>.txt`
+Location: `apps/learn/static/llms/components/<name>.txt`
 
 An LLM-optimized markdown file for the component. Omit prose; focus on API, props, usage examples, and data attributes. Follow the pattern from existing files like `list.txt` or `message.txt`.
 
@@ -873,8 +873,8 @@ bun run test:ui              # all UI tests pass
 bun run lint                 # zero errors
 
 # E2E tests — generate baseline snapshots on first run, then verify on subsequent runs
-cd site && npx playwright test e2e/<name>.e2e.ts --update-snapshots   # first run: create baselines
-cd site && npx playwright test e2e/<name>.e2e.ts                       # subsequent: verify
+cd apps/learn && npx playwright test e2e/<name>.e2e.ts --update-snapshots   # first run: create baselines
+cd apps/learn && npx playwright test e2e/<name>.e2e.ts                       # subsequent: verify
 ```
 
 Visual verification checklist:

@@ -36,7 +36,7 @@ If the feature changed any component API, patterns, or architecture:
 
 - [ ] `docs/design/07-priority.md` — mark feature complete (`✅`)
 - [ ] `docs/design/NNN-<module>.md` — update if design changed
-- [ ] `site/static/llms/components/<name>.txt` — update if component API changed
+- [ ] `apps/learn/static/llms/components/<name>.txt` — update if component API changed
 - [ ] Relevant backlog item in `docs/backlog/` — mark done
 
 ## Step 4: Commit

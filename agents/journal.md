@@ -5323,3 +5323,58 @@ this priority item — captured as a future enhancement (small grid-of-
 cards page over `catalog` from `lib/koan/catalog.ts`).
 
 Marked the priority item complete in docs/design/12-priority.md.
+
+## 2026-05-28 (cont.) — apps/ restructure + state-patterns design doc
+
+**Restructure: `site/` → `apps/learn/`, `demo/` → `apps/demo/`**
+
+`git mv` preserved history. Updated structural paths:
+- root `package.json`: workspaces (`./apps/learn`, `./apps/demo`) +
+  `test:e2e` script
+- `vitest.config.ts`: `learn` project root + `$lib`/`$app` resolve
+  aliases + coverage `exclude` pattern
+- `apps/{learn,demo}/uno.config.js`: content `include` relatives
+  `../packages/` → `../../packages/`
+- `apps/learn/package.json`: `dev`/`build` scripts `../docs/llms` →
+  `../../docs/llms`
+- `config/eslint.config.mjs`: 5 occurrences of `site/...` patterns
+- `config/bump.config.js`: bump target file path
+- `CLAUDE.md` + `.claude/{commands,skills}/` + `agents/design-patterns.md`
+  + `docs/design/{05,06}-*.md` + `docs/design/12-priority.md`:
+  current-state path references
+
+Historical docs (`agents/journal.md`, `docs/backlog/`,
+`docs/superpowers/{plans,specs}/`, `docs/design-system/execution-plan.md`)
+intentionally not retroactively rewritten — they describe what was true
+at the time. (User will update the Vercel base-folder config separately.)
+
+Verified both apps' dev servers boot to 200 on `/`, `/app`, `/chat`,
+`/playground/code-group`. `bun install` clean. Tests pass.
+
+**State patterns design doc**
+
+`docs/design/18-state-patterns.md` lays out:
+- 8-state vocabulary split into transient (idle / hover / focus-visible /
+  pressed) and persistent (current / selected / disabled / read-only)
+- Group-vs-element distinction: `:focus-within` + element state combos
+- Three token tiers per state: surface (bg+fg), mark (the visual
+  indicator — bar / underline / fill), affordance (focus ring, cursor)
+- Element-vs-group token naming (`--state-current-mark` vs
+  `--state-current-mark-active`)
+- Refactoring before/after for the minimal List active state, showing
+  how component CSS becomes theme-agnostic when tokens express the
+  recipe
+- Phased migration plan starting with List + Tree, ~600-line reduction
+  estimate
+
+Migration itself is a separate item — the doc is the planning
+artifact. Out of scope: animations/transitions on state changes,
+form-field validity (covered by named tokens), and compound states.
+
+**Priority status**
+
+Both items marked complete in docs/design/12-priority.md. Open P2 items
+remaining are all crossed off; only the unchecked Koan-catalog-route
+TBD (a non-priority follow-up) is queued.
+
+Lint: 0 errors. Tests: 3503 passed.

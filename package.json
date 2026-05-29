@@ -10,7 +10,7 @@
     "test:unit": "vitest",
     "test:ci": "vitest run",
     "test:ui": "vitest run --project ui",
-    "test:e2e": "cd site && npx playwright test",
+    "test:e2e": "cd apps/learn && npx playwright test",
     "coverage": "vitest run --coverage",
     "format": "prettier --config config/.prettierrc --ignore-path config/.prettierignore --write .",
     "lint": "eslint --config config/eslint.config.mjs --fix",
@@ -50,8 +50,8 @@
   },
   "workspaces": [
     "./packages/*",
-    "./site",
-    "./demo"
+    "./apps/learn",
+    "./apps/demo"
   ],
   "dependencies": {
     "@types/ramda": "^0.31.1",

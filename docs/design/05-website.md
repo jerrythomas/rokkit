@@ -9,7 +9,7 @@ The learn site (`site`) is the primary documentation and interactive demo surfac
 The site is a SvelteKit application organized into two route groups that share a global layout and header but diverge in purpose and chrome.
 
 ```
-site/src/routes/
+apps/learn/src/routes/
   (learn)/                  ← documentation group
     docs/
       components/[slug]/    ← per-component doc pages
@@ -188,7 +188,7 @@ Individual playground pages may embed additional controls for variants, sizes, o
 
 ### Purpose
 
-Each component has a static plain-text file that provides a concise, machine-readable API reference for AI agents and LLMs. These files are authored by hand in `site/static/llms/`.
+Each component has a static plain-text file that provides a concise, machine-readable API reference for AI agents and LLMs. These files are authored by hand in `apps/learn/static/llms/`.
 
 ### File locations
 
@@ -539,7 +539,7 @@ Nexus is a fictional workspace application hosted at `/preview/*` inside the `(p
 ### Route structure
 
 ```
-site/src/routes/
+apps/learn/src/routes/
   (preview)/
     preview/
       +layout.svelte          ← app shell: Nexus top bar, List sidebar nav, ThemePanel overlay
