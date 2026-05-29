@@ -36,3 +36,29 @@ miniIndex.addAll(catalog)
 export function findById(id: string): DemoMeta | undefined {
 	return catalog.find((d) => d.id === id)
 }
+
+/**
+ * Stable route for a catalog demo. Most demo ids match their URL
+ * segment, but a few diverge (multi-select → multiselect, theme-wizard
+ * → theming, date-picker → date). Single source of truth for both the
+ * catalog grid and the shell layout's pickDemoKind flow.
+ */
+export const DEMO_ROUTE: Record<string, string> = {
+	tabs: '/app/tabs',
+	'theme-wizard': '/app/theming',
+	table: '/app/table',
+	tree: '/app/tree',
+	'multi-select': '/app/multiselect',
+	list: '/app/list',
+	toasts: '/app/toasts',
+	form: '/app/form',
+	select: '/app/select',
+	chart: '/app/chart',
+	combo: '/app/combo',
+	'date-picker': '/app/date',
+	stepper: '/app/stepper'
+}
+
+export function routeFor(id: string): string | null {
+	return DEMO_ROUTE[id] ?? null
+}

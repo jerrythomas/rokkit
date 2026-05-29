@@ -6,7 +6,7 @@
  * `+page.svelte` is a thin state-setter that updates these fields onMount, so
  * URL navigation becomes the source of truth for which demo is mounted.
  */
-export type ShellPhase = 'welcome' | 'thinking' | 'response'
+export type ShellPhase = 'welcome' | 'thinking' | 'response' | 'catalog'
 export type ShellDemoType = 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select' | 'list' | 'toasts' | 'form' | 'select' | 'chart' | 'combo' | 'date-picker' | 'stepper'
 
 export const shell = $state<{
@@ -37,6 +37,12 @@ export function setShellVariant(variant: string | null): void {
 
 export function setShellWelcome(): void {
 	shell.phase = 'welcome'
+	shell.demoType = null
+	shell.demoVariant = null
+}
+
+export function setShellCatalog(): void {
+	shell.phase = 'catalog'
 	shell.demoType = null
 	shell.demoVariant = null
 }

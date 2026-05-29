@@ -22,7 +22,8 @@
 	import { vibe } from '@rokkit/states'
 	import { koan } from '$lib/koan/store.svelte'
 	import { runMatch } from '$lib/koan/match.svelte'
-	import { findById } from '$lib/koan/catalog'
+	import { findById, DEMO_ROUTE as CATALOG_DEMO_ROUTE } from '$lib/koan/catalog'
+	import CatalogGrid from '$lib/koan/components/CatalogGrid.svelte'
 	import { shell } from '$lib/koan/shell.svelte'
 	import {
 		conversations,
@@ -62,21 +63,7 @@
 	let thinkingTimer: ReturnType<typeof setTimeout> | null = null
 
 	type DemoKind = 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select' | 'list' | 'toasts' | 'form' | 'select' | 'chart' | 'combo' | 'date-picker' | 'stepper'
-	const DEMO_ROUTE: Record<DemoKind, string> = {
-		tabs: '/app/tabs',
-		'theme-wizard': '/app/theming',
-		table: '/app/table',
-		tree: '/app/tree',
-		'multi-select': '/app/multiselect',
-		list: '/app/list',
-		toasts: '/app/toasts',
-		form: '/app/form',
-		select: '/app/select',
-		chart: '/app/chart',
-		combo: '/app/combo',
-		'date-picker': '/app/date',
-		stepper: '/app/stepper'
-	}
+	const DEMO_ROUTE = CATALOG_DEMO_ROUTE as Record<DemoKind, string>
 
 	function pickDemoKind(query: string): DemoKind {
 		const top = runMatch(query)[0]?.id
@@ -1304,6 +1291,24 @@ ${rows}
 						<span class="i-mdi:arrow-right" aria-hidden="true"></span>
 					</a>
 				</div>
+			{:else if shell.phase === 'catalog'}
+				<div class="welcome-stream">
+					<h2 class="welcome-hello">Catalog</h2>
+					<p class="welcome-lede">
+						Every component in the library. Pick a tile on the right to
+						mount it — or filter from the composer below.
+					</p>
+
+					<ComposerSuggestions
+						query={shell.composerValue}
+						onpick={pickSuggestion}
+					/>
+
+					<a class="welcome-browse" href="/app">
+						<span class="i-mdi:arrow-left" aria-hidden="true"></span>
+						Back to welcome
+					</a>
+				</div>
 			{:else if shell.phase === 'thinking'}
 				<ChatStream>
 					<ChatMessage
@@ -2058,6 +2063,18 @@ ${rows}
 						<span class="meta-sep">·</span>
 						<span>Svelte 5 runes</span>
 					</div>
+				</div>
+			{:else if shell.phase === 'catalog'}
+				<div class="canvas-head">
+					<div class="canvas-eyebrow">Browse · catalog</div>
+					<div class="canvas-title">Every component, one click away</div>
+					<div class="canvas-sub">
+						Type to filter, or jump straight into a tile. Each lands you
+						on the live demo with the chat on the left and Tweaks at hand.
+					</div>
+				</div>
+				<div class="canvas-body catalog">
+					<CatalogGrid filter={shell.composerValue} />
 				</div>
 			{:else if shell.phase === 'thinking'}
 				<div class="canvas-head preparing">
@@ -3079,6 +3096,11 @@ ${rows}
 
 	:global(.canvas-body.response > *) {
 		flex-shrink: 0;
+	}
+
+	.canvas-body.catalog {
+		overflow-y: auto;
+		padding: 16px 28px 32px;
 	}
 
 	.tabs-mount {
