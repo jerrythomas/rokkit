@@ -21,7 +21,27 @@ const meta: DemoMeta = {
 	variants: [
 		{ id: 'vertical', label: 'Vertical orientation', mode: 'dynamic', props: { orientation: 'vertical' } },
 		{ id: 'with-icons', label: 'With icons', mode: 'dynamic' }
-	]
+	],
+	props: {
+		orientation: {
+			type: 'enum',
+			options: ['horizontal', 'vertical'],
+			default: 'horizontal',
+			desc: 'Layout axis for the tab strip'
+		},
+		position: {
+			type: 'enum',
+			options: ['top', 'bottom', 'left', 'right'],
+			default: 'top',
+			desc: 'Strip placement relative to the panel'
+		},
+		align: {
+			type: 'enum',
+			options: ['start', 'center', 'end'],
+			default: 'start',
+			desc: 'Alignment of tabs along the strip'
+		}
+	}
 }
 
 export default meta

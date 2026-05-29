@@ -36,6 +36,7 @@
 		type Conversation
 	} from '$lib/koan/conversations.svelte'
 	import ComposerSuggestions from '$lib/koan/components/ComposerSuggestions.svelte'
+	import Tweaks from '$lib/koan/components/Tweaks.svelte'
 	import type { DemoMeta } from '$lib/koan/types'
 	import ThemeWizardCard from '$lib/koan/demos/theme-wizard/ThemeWizardCard.svelte'
 	import { savePreset, resetPreset, downloadTokensCss, exportTokensCss } from '$lib/koan/demos/theme-wizard/store.svelte'
@@ -279,6 +280,72 @@
 	const variantProps = $derived<Record<string, unknown>>(
 		activeVariant?.mode === 'dynamic' ? (activeVariant.props ?? {}) : {}
 	)
+
+	// Live tweak overrides — written by the inline Tweaks editor that
+	// sits anchored above the composer. Keyed by demo id so each demo
+	// keeps its own tweak set across navigations within the same
+	// session. Spreads AFTER variantProps so user tweaks win over a
+	// picked variant.
+	let tweaksByDemo = $state<Record<string, Record<string, unknown>>>({})
+	const tweakProps = $derived<Record<string, unknown>>(
+		shell.demoType ? (tweaksByDemo[shell.demoType] ?? {}) : {}
+	)
+
+	const propsSchema = $derived(
+		shell.demoType ? findById(shell.demoType)?.props : undefined
+	)
+
+	// Transient per-demo log of "prop X: from → to" changes. Rendered as
+	// chat messages in the response stream so the conversation captures
+	// the user's tuning journey ("orientation: horizontal → vertical;
+	// align: start → center; …"). Reset when navigating away (different
+	// demo type clears the slot, see effect below).
+	type TweakLogEntry = { id: string; name: string; from: unknown; to: unknown; at: number }
+	let tweakLogByDemo = $state<Record<string, TweakLogEntry[]>>({})
+	const tweakLog = $derived<TweakLogEntry[]>(
+		shell.demoType ? (tweakLogByDemo[shell.demoType] ?? []) : []
+	)
+
+	function formatVal(v: unknown): string {
+		if (v === undefined) return '(default)'
+		if (typeof v === 'string') return v
+		return JSON.stringify(v)
+	}
+
+	function setTweak(name: string, value: unknown) {
+		if (!shell.demoType) return
+		const cur = tweaksByDemo[shell.demoType] ?? {}
+		// Determine "from" — current tweak value, falling back to the
+		// active variant's value, then the schema default — so the diff
+		// reads as the user perceives it.
+		const schema = propsSchema?.[name]
+		const from = cur[name] ?? variantProps[name] ?? schema?.default
+		if (from === value) return // no-op: nothing actually changed
+		tweaksByDemo[shell.demoType] = { ...cur, [name]: value }
+		const log = tweakLogByDemo[shell.demoType] ?? []
+		tweakLogByDemo[shell.demoType] = [
+			...log,
+			{ id: `tw_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`, name, from, to: value, at: Date.now() }
+		]
+	}
+
+	function resetTweaks() {
+		if (!shell.demoType) return
+		const nextTweaks = { ...tweaksByDemo }
+		delete nextTweaks[shell.demoType]
+		tweaksByDemo = nextTweaks
+		const nextLog = { ...tweakLogByDemo }
+		delete nextLog[shell.demoType]
+		tweakLogByDemo = nextLog
+	}
+
+	async function copyTweaks() {
+		const merged = { ...variantProps, ...tweakProps }
+		await navigator.clipboard.writeText(JSON.stringify(merged, null, 2)).catch(() => {
+			// Clipboard write can reject on insecure contexts or denied permissions;
+			// silently no-op — the user can use the source view's copy as a fallback.
+		})
+	}
 
 	// Variant suggestions rendered in the chat panel (one chip per declared
 	// variant for the active demo). Replaces the per-demo static tryChips row.
@@ -1314,6 +1381,11 @@ ${rows}
 						</ChatMessage>
 						<Chips items={variantChipItems} onselect={pickVariant} />
 					{/if}
+					{#each tweakLog as entry (entry.id)}
+						<ChatMessage kind="user" status="tweak" icon="i-mdi:tune-variant">
+							<code>{entry.name}</code>: {formatVal(entry.from)} → {formatVal(entry.to)}
+						</ChatMessage>
+					{/each}
 				</ChatStream>
 			{:else if shell.phase === 'response' && shell.demoType === 'theme-wizard'}
 				<ChatStream>
@@ -1920,6 +1992,18 @@ ${rows}
 				</ChatStream>
 			{/if}
 
+			{#if shell.phase === 'response' && propsSchema}
+				<div class="tweaks-slab" data-glide-in>
+					<Tweaks
+						schema={propsSchema}
+						values={tweakProps}
+						onchange={setTweak}
+						onreset={resetTweaks}
+						oncopy={copyTweaks}
+					/>
+				</div>
+			{/if}
+
 			<ChatComposer
 				bind:value={shell.composerValue}
 				placeholder={shell.phase === 'welcome'
@@ -1983,7 +2067,7 @@ ${rows}
 							<span class="i-mdi:layers-outline" aria-hidden="true"></span>
 						{/snippet}
 						<div class="tabs-mount">
-							<Tabs options={tabsItems} bind:value={activeTab} {...variantProps} />
+							<Tabs options={tabsItems} bind:value={activeTab} {...variantProps} {...tweakProps} />
 						</div>
 						{#snippet props()}
 							<span>items</span><span data-value>[5]</span>
@@ -2764,6 +2848,26 @@ ${rows}
 	.chat-header {
 		padding: 12px 16px;
 		border-bottom: 1px solid var(--paper-edge);
+	}
+
+	.tweaks-slab {
+		flex-shrink: 0;
+		padding: 10px 14px 0;
+	}
+
+	.tweaks-slab[data-glide-in] {
+		animation: tweaks-glide-in 220ms ease-out;
+	}
+
+	@keyframes tweaks-glide-in {
+		from {
+			opacity: 0;
+			transform: translateY(8px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
 	}
 
 	.chat-title {

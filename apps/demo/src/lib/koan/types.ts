@@ -42,6 +42,24 @@ export type DemoInline = {
 }
 
 /**
+ * Editable prop schema for the inline-tweaks editor that renders as a
+ * message in the response stream. Each entry describes one prop the user
+ * can tweak live; the layout merges the current tweak values into the
+ * mounted component after the variant's props.
+ *
+ * Shape:
+ *  - `enum`    → segmented control / select; `options` lists the values
+ *  - `boolean` → toggle
+ *  - `string`  → text input
+ *  - `number`  → number input (optional `min`/`max`/`step` for range form)
+ */
+export type DemoPropSchema =
+	| { type: 'enum'; options: string[]; default: string; label?: string; desc?: string }
+	| { type: 'boolean'; default: boolean; label?: string; desc?: string }
+	| { type: 'string'; default: string; label?: string; desc?: string; placeholder?: string }
+	| { type: 'number'; default: number; label?: string; desc?: string; min?: number; max?: number; step?: number }
+
+/**
  * A discoverable variation of a demo — e.g. Tabs with custom snippets,
  * Table with custom field mapping, List with async data. Surfaced by the
  * LLM as follow-up suggestions ("Try this with async data") and routed
@@ -75,6 +93,8 @@ export type DemoMeta = {
 	inline?: DemoInline
 	/** Discoverable variations of this demo. */
 	variants?: DemoVariant[]
+	/** Editable prop schema for inline tweaks. Maps prop name → schema. */
+	props?: Record<string, DemoPropSchema>
 }
 
 export type TimelineEntry = {
