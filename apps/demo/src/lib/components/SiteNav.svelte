@@ -10,7 +10,8 @@
 	const { homeIsActive = false }: Props = $props()
 
 	const links = [
-		{ label: 'Components', href: '/app', match: (p: string) => p.startsWith('/app') || homeIsActive },
+		{ label: 'Components', href: '/app', match: (p: string) => p === '/app' || (p.startsWith('/app') && p !== '/app/catalog') || homeIsActive },
+		{ label: 'Catalog', href: '/app/catalog', match: (p: string) => p.startsWith('/app/catalog') },
 		{ label: 'Chat demo', href: '/chat', match: (p: string) => p.startsWith('/chat') },
 		{ label: 'GitHub ↗', href: 'https://github.com/jerrythomas/rokkit', external: true, match: () => false }
 	]

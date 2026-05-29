@@ -62,11 +62,26 @@
 
 <style>
 	.site-shell {
-		min-height: 100vh;
+		/* Pin to viewport so internal regions own their scroll. With
+		   `min-height: 100vh` the shell could grow past the viewport
+		   when a region needed more height, forcing the WHOLE page to
+		   scroll instead of each region scrolling inside its slot. */
+		height: 100vh;
+		height: 100dvh;
 		display: flex;
 		flex-direction: column;
 		background: var(--paper);
 		color: var(--ink);
+		overflow: hidden;
+	}
+
+	/* Landing page (the only route that renders SiteFooter) is
+	   long-form marketing content — opt it back into normal page
+	   scroll. The /app and /chat shells keep the viewport pin. */
+	.site-shell:has([data-site-footer]) {
+		height: auto;
+		min-height: 100vh;
+		overflow: visible;
 	}
 
 	.site-main {
@@ -74,5 +89,10 @@
 		min-height: 0;
 		display: flex;
 		flex-direction: column;
+		overflow: hidden;
+	}
+
+	.site-shell:has([data-site-footer]) .site-main {
+		overflow: visible;
 	}
 </style>

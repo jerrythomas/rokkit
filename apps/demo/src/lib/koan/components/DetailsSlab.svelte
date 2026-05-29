@@ -1,30 +1,29 @@
 <script lang="ts">
 	/**
-	 * 3-tab slab in the chat-left composer: Tweaks | API | Source.
+	 * 2-tab slab in the chat-left composer: Tweaks | API.
 	 *
 	 * - **Tweaks** — reuses the existing `<Tweaks/>` wrapper (FormRenderer-driven).
 	 *   Only enabled when the active demo declares `props`.
 	 * - **API** — props / events / data-attribute tables from `meta.api`.
 	 *   Disabled (with a hint) when the demo hasn't declared an API yet.
-	 * - **Source** — `meta.snippets` rendered as `<CodeBlock/>` cards with
-	 *   copy buttons.
+	 *
+	 * Source is intentionally NOT a tab here — the canvas already
+	 * renders a CodeBlock alongside the live preview, so duplicating it
+	 * in the slab would just compete for the user's attention.
 	 *
 	 * The tab strip self-selects the first ENABLED tab when the active
-	 * demo changes, so navigating between a demo that has tweaks and one
-	 * that only has API doesn't leave the slab on a disabled tab.
+	 * demo changes.
 	 */
-	import { CodeBlock } from '@rokkit/ui'
 	import Tweaks from './Tweaks.svelte'
-	import type { DemoApi, DemoPropSchema, DemoSnippet } from '../types'
+	import type { DemoApi, DemoPropSchema } from '../types'
 
-	type TabId = 'tweaks' | 'api' | 'source'
+	type TabId = 'tweaks' | 'api'
 
 	interface Props {
 		demoId: string
 		propsSchema?: Record<string, DemoPropSchema>
 		tweakValues?: Record<string, unknown>
 		api?: DemoApi
-		snippets?: DemoSnippet[]
 		onTweakChange?: (name: string, value: unknown) => void
 		onTweakReset?: () => void
 		onTweakCopy?: () => void
@@ -35,7 +34,6 @@
 		propsSchema,
 		tweakValues = {},
 		api,
-		snippets,
 		onTweakChange,
 		onTweakReset,
 		onTweakCopy
@@ -53,12 +51,6 @@
 			label: 'API',
 			enabled: Boolean(api && api.props.length > 0),
 			hint: 'Props · events · data-attributes'
-		},
-		{
-			id: 'source',
-			label: 'Source',
-			enabled: Boolean(snippets && snippets.length > 0),
-			hint: 'Copyable examples'
 		}
 	])
 
@@ -170,21 +162,6 @@
 				<p data-details-empty>
 					No API reference for this demo yet.
 				</p>
-			{/if}
-		{:else if activeTab === 'source'}
-			{#if snippets && snippets.length}
-				<div data-source-list>
-					{#each snippets as snip (snip.id)}
-						<CodeBlock
-							code={snip.code}
-							filename={snip.title}
-							language={snip.lang ?? 'svelte'}
-							allowCopy
-						/>
-					{/each}
-				</div>
-			{:else}
-				<p data-details-empty>No source examples for this demo yet.</p>
 			{/if}
 		{/if}
 	</div>
@@ -327,9 +304,4 @@
 		color: var(--ink);
 	}
 
-	[data-source-list] {
-		display: flex;
-		flex-direction: column;
-		gap: 10px;
-	}
 </style>

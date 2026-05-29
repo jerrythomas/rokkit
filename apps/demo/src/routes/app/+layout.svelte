@@ -286,17 +286,14 @@
 		shell.demoType ? findById(shell.demoType)?.props : undefined
 	)
 	const demoApi = $derived(shell.demoType ? findById(shell.demoType)?.api : undefined)
-	const demoSnippets = $derived(shell.demoType ? findById(shell.demoType)?.snippets : undefined)
 
-	// Whether the demo has anything for the details slab to show (tweaks,
-	// API table, or source snippets). Gates the composer toggle and the
-	// slab render — when none are declared, the toggle is hidden so the
-	// composer row stays clean.
+	// Whether the demo has anything for the details slab to show
+	// (Tweaks or API). Source snippets are read by the canvas-side
+	// CodeBlock, not the slab — so they don't gate the toggle.
 	const hasDetails = $derived(
 		Boolean(
 			(propsSchema && Object.keys(propsSchema).length > 0) ||
-				(demoApi && demoApi.props.length > 0) ||
-				(demoSnippets && demoSnippets.length > 0)
+				(demoApi && demoApi.props.length > 0)
 		)
 	)
 
@@ -2054,7 +2051,6 @@ ${rows}
 						propsSchema={propsSchema}
 						tweakValues={tweakProps}
 						api={demoApi}
-						snippets={demoSnippets}
 						onTweakChange={setTweak}
 						onTweakReset={resetTweaks}
 						onTweakCopy={copyTweaks}
@@ -2929,11 +2925,16 @@ ${rows}
 		border-right: 1px solid var(--paper-edge);
 		background: var(--paper);
 		min-width: 0;
+		min-height: 0;
+		/* Pin to the stage so the inner ChatStream can scroll inside
+		   while header / slab / composer stay anchored. */
+		overflow: hidden;
 	}
 
 	.chat-header {
 		padding: 12px 16px;
 		border-bottom: 1px solid var(--paper-edge);
+		flex-shrink: 0;
 	}
 
 	.tweaks-slab {
@@ -3078,15 +3079,19 @@ ${rows}
 	.canvas {
 		flex: 1;
 		min-width: 0;
+		min-height: 0;
 		background: var(--paper);
 		display: flex;
 		flex-direction: column;
-		overflow: auto;
+		/* No scroll here — .canvas-body owns its scroll so the head
+		   stays pinned at the top while only the body content moves. */
+		overflow: hidden;
 	}
 
 	.canvas-head {
 		padding: 24px 28px 18px;
 		border-bottom: 1px solid var(--paper-edge);
+		flex-shrink: 0;
 	}
 
 	.canvas-head.preparing {

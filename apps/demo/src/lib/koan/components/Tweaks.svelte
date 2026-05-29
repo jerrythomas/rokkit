@@ -47,28 +47,37 @@
 			const element: Record<string, unknown> = {
 				scope: `#/${name}`,
 				label: spec.label ?? name,
-				description: spec.desc,
-				// Compact label-inline-with-input layout — the playground
-				// reads as a control panel, not a form page.
-				variant: 'inline'
+				description: spec.desc
 			}
 			if (spec.type === 'enum') {
 				properties[name] = { type: 'string' }
-				element.renderer = 'radio'
+				// 2-option enums collapse to a select for a compact one-row
+				// control (radio is too tall in the slab). 3+ options also
+				// use select so the slab doesn't grow with the option count.
+				element.renderer = 'select'
 				lookups[name] = { source: spec.options, filter: (src) => src }
+				// Selects + their label read better stacked (label above)
+				// than inline at narrow slab widths.
+				element.variant = 'stacked'
 			} else if (spec.type === 'boolean') {
 				properties[name] = { type: 'boolean' }
 				element.renderer = 'toggle'
+				// Toggles look natural inline — label on the left, switch
+				// on the right (matches the global default for switch/
+				// checkbox/toggle in input.css).
+				element.variant = 'inline'
 			} else if (spec.type === 'string') {
 				properties[name] = { type: 'string' }
 				element.renderer = 'text'
 				if (spec.placeholder) element.placeholder = spec.placeholder
+				element.variant = 'stacked'
 			} else if (spec.type === 'number') {
 				properties[name] = { type: 'number' }
 				element.renderer = 'number'
 				if (spec.min !== undefined) element.min = spec.min
 				if (spec.max !== undefined) element.max = spec.max
 				if (spec.step !== undefined) element.step = spec.step
+				element.variant = 'stacked'
 			}
 			elements.push(element)
 		}
