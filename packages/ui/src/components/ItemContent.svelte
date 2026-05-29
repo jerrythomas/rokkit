@@ -1,6 +1,18 @@
-<script>
+<script lang="ts">
+	import type { ProxyItem } from '@rokkit/states'
 	import { isIconClass } from '@rokkit/core'
-	const { proxy, showIcon = true, showSubtext = true } = $props()
+
+	interface Props {
+		/** ProxyItem wrapper around the underlying data — exposes `label`,
+		 *  `get(field)`, mutable selection/expansion state, etc. */
+		proxy: ProxyItem
+		/** Render the avatar / icon slot. Default: true. */
+		showIcon?: boolean
+		/** Render the description / subtext line under the label. Default: true. */
+		showSubtext?: boolean
+	}
+
+	const { proxy, showIcon = true, showSubtext = true }: Props = $props()
 </script>
 
 {#if showIcon}

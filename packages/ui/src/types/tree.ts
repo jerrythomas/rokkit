@@ -14,8 +14,15 @@ import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 // =============================================================================
 
 /**
- * Field mapping configuration for tree data.
- * Extends base field mapping with tree-specific fields.
+ * Field mapping configuration for tree data — what the consumer passes
+ * to the Tree component. Both `expanded` and `level` are optional here
+ * because Tree falls back to `defaultTreeFields` for any field the
+ * consumer omits.
+ *
+ * Inside Tree the fields are merged with `defaultTreeFields` to produce
+ * a `ResolvedTreeFields` value where every key is guaranteed present.
+ * Downstream code that needs string field names without null-guards
+ * should use `ResolvedTreeFields` rather than `TreeFields`.
  */
 export interface TreeFields extends Record<string, string> {
 	/** Field for expanded state - default: 'expanded' */
@@ -23,6 +30,27 @@ export interface TreeFields extends Record<string, string> {
 
 	/** Field for node level/depth - default: 'level' */
 	level?: string
+}
+
+/**
+ * Tree fields after defaults have been applied — every field name is a
+ * non-null string. Use this type for any function or store that needs
+ * to read a field name without re-applying defaults.
+ *
+ * Construct from a `TreeFields` via `resolveTreeFields(fields)` (or by
+ * spreading `defaultTreeFields` first, e.g.
+ * `{ ...defaultTreeFields, ...userFields }`).
+ */
+export type ResolvedTreeFields = Required<TreeFields>
+
+/**
+ * Merge consumer-provided field overrides with the default field
+ * mapping so every key resolves to a string. Tree calls this once on
+ * its `fields` prop before passing the result to ProxyTree / line
+ * builders.
+ */
+export function resolveTreeFields(fields: TreeFields = {}): ResolvedTreeFields {
+	return { ...defaultTreeFields, ...fields }
 }
 
 /**
