@@ -1,4 +1,5 @@
 import type { DemoMeta } from '../../types'
+import { tabsDocs } from './docs'
 
 const meta: DemoMeta = {
 	id: 'tabs',
@@ -132,7 +133,8 @@ const meta: DemoMeta = {
   onremove={(t) => (items = items.filter((i) => i !== t))}
 />`
 		}
-	]
+	],
+	docs: tabsDocs
 }
 
 export default meta

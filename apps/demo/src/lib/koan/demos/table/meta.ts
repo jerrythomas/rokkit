@@ -1,4 +1,5 @@
 import type { DemoMeta } from '../../types'
+import { tableDocs } from './docs'
 
 const meta: DemoMeta = {
 	id: 'table',
@@ -100,7 +101,8 @@ const meta: DemoMeta = {
 <SearchFilter source={rows} bind:filtered />
 <Table data={filtered} {columns} />`
 		}
-	]
+	],
+	docs: tableDocs
 }
 
 export default meta

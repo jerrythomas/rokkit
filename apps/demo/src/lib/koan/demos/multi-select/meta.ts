@@ -1,4 +1,5 @@
 import type { DemoMeta } from '../../types'
+import { multiSelectDocs } from './docs'
 
 const meta: DemoMeta = {
 	id: 'multi-select',
@@ -97,7 +98,8 @@ const meta: DemoMeta = {
   maxDisplay={2}
 />`
 		}
-	]
+	],
+	docs: multiSelectDocs
 }
 
 export default meta

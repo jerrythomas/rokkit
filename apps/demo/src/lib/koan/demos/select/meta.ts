@@ -1,4 +1,5 @@
 import type { DemoMeta } from '../../types'
+import { selectDocs } from './docs'
 
 const meta: DemoMeta = {
 	id: 'select',
@@ -91,7 +92,8 @@ const meta: DemoMeta = {
   filterPlaceholder="Type a country…"
 />`
 		}
-	]
+	],
+	docs: selectDocs
 }
 
 export default meta

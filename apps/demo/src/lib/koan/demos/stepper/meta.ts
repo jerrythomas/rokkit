@@ -1,4 +1,5 @@
 import type { DemoMeta } from '../../types'
+import { stepperDocs } from './docs'
 
 const meta: DemoMeta = {
 	id: 'stepper',
@@ -93,7 +94,8 @@ const meta: DemoMeta = {
   onclick={(i) => active = i}
 />`
 		}
-	]
+	],
+	docs: stepperDocs
 }
 
 export default meta

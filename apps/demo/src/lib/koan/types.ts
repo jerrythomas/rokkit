@@ -143,6 +143,13 @@ export type DemoMeta = {
 	api?: DemoApi
 	/** Source examples shown in the Source tab, in display order. */
 	snippets?: DemoSnippet[]
+	/**
+	 * Long-form prose for the Docs canvas mode — design intent,
+	 * conceptual explanations, "when to use" guidance. Plain markdown;
+	 * `<MarkdownRenderer/>` sanitises before rendering. Migrated from
+	 * the apps/learn `/docs/components/<name>/+page.svelte` pages.
+	 */
+	docs?: string
 }
 
 export type TimelineEntry = {

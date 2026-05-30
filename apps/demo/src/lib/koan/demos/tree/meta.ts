@@ -1,4 +1,5 @@
 import type { DemoMeta } from '../../types'
+import { treeDocs } from './docs'
 
 const meta: DemoMeta = {
 	id: 'tree',
@@ -104,7 +105,8 @@ const meta: DemoMeta = {
   lineStyle="dotted"
 />`
 		}
-	]
+	],
+	docs: treeDocs
 }
 
 export default meta

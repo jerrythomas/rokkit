@@ -13,7 +13,7 @@
 	// Brand the assistant once for this surface; every ChatMessage with
 	// kind='info' picks it up.
 	configureWho({ assistant: 'Rokkit' })
-	import { Tabs, Table, Tree, MultiSelect, Select, List, Button, AlertList, Stepper, CodeBlock, Toggle } from '@rokkit/ui'
+	import { Tabs, Table, Tree, MultiSelect, Select, List, Button, AlertList, Stepper, CodeBlock, Toggle, MarkdownRenderer } from '@rokkit/ui'
 	import { FormRenderer } from '@rokkit/forms'
 	import { BarChart } from '@rokkit/chart'
 	import { alerts } from '@rokkit/states'
@@ -304,6 +304,7 @@
 		shell.demoType ? findById(shell.demoType)?.props : undefined
 	)
 	const demoApi = $derived(shell.demoType ? findById(shell.demoType)?.api : undefined)
+	const demoDocs = $derived(shell.demoType ? findById(shell.demoType)?.docs : undefined)
 
 	// Canvas-view toggle options — always include `live`, conditionally
 	// include `code` (when snippets exist) and `api` (when api meta
@@ -315,11 +316,12 @@
 	// in `api`.
 	const hasActiveCode = $derived(Boolean(shell.demoType))
 	const canvasViewOptions = $derived.by(() => {
-		const opts: Array<{ label: string; value: 'live' | 'code' | 'api' }> = [
+		const opts: Array<{ label: string; value: 'live' | 'code' | 'api' | 'docs' }> = [
 			{ label: 'Live', value: 'live' }
 		]
 		if (hasActiveCode) opts.push({ label: 'Code', value: 'code' })
 		if (demoApi && demoApi.props.length > 0) opts.push({ label: 'API', value: 'api' })
+		if (demoDocs) opts.push({ label: 'Docs', value: 'docs' })
 		return opts
 	})
 
@@ -337,7 +339,7 @@
 	// Canvas view mode — `live` mounts the demo, `code` shows the
 	// snippets, `api` swaps to the reference panel. Reset to `live`
 	// when the demo changes so view state doesn't bleed across demos.
-	let canvasView = $state<'live' | 'code' | 'api'>('live')
+	let canvasView = $state<'live' | 'code' | 'api' | 'docs'>('live')
 	$effect(() => {
 		void shell.demoType
 		tweaksOpen = false
@@ -2160,12 +2162,7 @@ ${rows}
 					</div>
 				</div>
 				<div class="canvas-body api">
-					<APIPanel
-						api={demoApi}
-						propsSchema={propsSchema}
-						tweakValues={tweakProps}
-						onTweak={setTweak}
-					/>
+					<APIPanel api={demoApi} />
 				</div>
 			{:else if shell.phase === 'response' && canvasView === 'code' && activeDemoCode}
 				<div class="canvas-head">
@@ -2183,6 +2180,20 @@ ${rows}
 						language="svelte"
 						allowCopy
 					/>
+				</div>
+			{:else if shell.phase === 'response' && canvasView === 'docs' && demoDocs}
+				<div class="canvas-head">
+					<div class="canvas-eyebrow">Docs · concepts</div>
+					<div class="canvas-title">{findById(shell.demoType ?? '')?.title ?? 'Component'} — design intent</div>
+					<div class="canvas-sub">
+						Long-form notes on the component's design principles, data shape, and when to reach
+						for it. Code samples and the API table live in their own canvas modes.
+					</div>
+				</div>
+				<div class="canvas-body docs">
+					<article data-demo-docs>
+						<MarkdownRenderer markdown={demoDocs} />
+					</article>
 				</div>
 			{:else if shell.phase === 'welcome'}
 				<div class="welcome-hero">
@@ -3260,9 +3271,62 @@ ${rows}
 
 	.canvas-body.catalog,
 	.canvas-body.api,
-	.canvas-body.code {
+	.canvas-body.code,
+	.canvas-body.docs {
 		overflow-y: auto;
 		padding: 16px 28px 32px;
+	}
+
+	[data-demo-docs] {
+		max-width: 720px;
+		font: 400 14.5px/1.65 var(--font-ui);
+		color: var(--ink);
+	}
+
+	[data-demo-docs] :global(h2) {
+		margin: 28px 0 10px;
+		font: 500 18px var(--font-display);
+		color: var(--ink);
+		letter-spacing: -0.01em;
+	}
+
+	[data-demo-docs] :global(h2:first-child) {
+		margin-top: 0;
+	}
+
+	[data-demo-docs] :global(h3) {
+		margin: 22px 0 8px;
+		font: 500 15px var(--font-display);
+		color: var(--ink);
+	}
+
+	[data-demo-docs] :global(p) {
+		margin: 0 0 14px;
+		color: var(--ink-mute);
+	}
+
+	[data-demo-docs] :global(ul),
+	[data-demo-docs] :global(ol) {
+		margin: 0 0 14px;
+		padding-left: 22px;
+		color: var(--ink-mute);
+	}
+
+	[data-demo-docs] :global(li) {
+		margin: 4px 0;
+	}
+
+	[data-demo-docs] :global(code) {
+		font: 400 13px var(--font-mono, ui-monospace, monospace);
+		background: var(--paper-soft);
+		padding: 1px 5px;
+		border-radius: 3px;
+		color: var(--ink);
+	}
+
+	[data-demo-docs] :global(strong) {
+		color: var(--ink);
+		font-weight: 600;
 	}
 
 	.canvas-body.code {

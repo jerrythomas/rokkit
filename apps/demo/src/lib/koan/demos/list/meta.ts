@@ -1,4 +1,5 @@
 import type { DemoMeta } from '../../types'
+import { listDocs } from './docs'
 
 const meta: DemoMeta = {
 	id: 'list',
@@ -100,7 +101,8 @@ const meta: DemoMeta = {
   fields={{ label: 'name', value: 'path', icon: 'symbol' }}
 />`
 		}
-	]
+	],
+	docs: listDocs
 }
 
 export default meta
