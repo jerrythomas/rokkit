@@ -18,6 +18,25 @@
   transition: border-color 150ms ease;
 }
 
+/* Toggle / Switch fields bring their own pill chrome via Toggle's
+   [data-toggle] container and the switch track — the surrounding
+   input-root border just paints a second, thicker frame around it.
+   Drop the wrapper border + background for these field types so
+   the control's own shape is the only one the eye reads. */
+[data-style='zen-sumi'] [data-field-type='toggle'] [data-input-root],
+[data-style='zen-sumi'] [data-field-type='switch'] [data-input-root] {
+  border-color: transparent;
+  background: transparent;
+  background-image: none;
+}
+
+[data-style='zen-sumi'] [data-field-type='toggle'] [data-input-root]:hover:not(:focus-within),
+[data-style='zen-sumi'] [data-field-type='switch'] [data-input-root]:hover:not(:focus-within),
+[data-style='zen-sumi'] [data-field-type='toggle'] [data-input-root]:focus-within,
+[data-style='zen-sumi'] [data-field-type='switch'] [data-input-root]:focus-within {
+  border-color: transparent;
+}
+
 /* Hover: border darkens slightly */
 [data-style='zen-sumi'] [data-input-root]:hover:not(:focus-within) {
   border-color: var(--color-surface-z4);
