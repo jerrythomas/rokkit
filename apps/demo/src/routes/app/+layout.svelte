@@ -287,17 +287,21 @@
 		shell.demoType ? findById(shell.demoType)?.props : undefined
 	)
 	const demoApi = $derived(shell.demoType ? findById(shell.demoType)?.api : undefined)
-	const demoSnippets = $derived(shell.demoType ? findById(shell.demoType)?.snippets : undefined)
 
 	// Canvas-view toggle options — always include `live`, conditionally
 	// include `code` (when snippets exist) and `api` (when api meta
 	// exists). Keeps the toggle compact when a demo hasn't filled in
 	// one of the sections yet.
+	// `code` option is gated on whether the demo has a `*Code`
+	// constant (all 13 currently do — see activeDemoCode below).
+	// `api` option is gated on whether the demo's meta has filled
+	// in `api`.
+	const hasActiveCode = $derived(Boolean(shell.demoType))
 	const canvasViewOptions = $derived.by(() => {
 		const opts: Array<{ label: string; value: 'live' | 'code' | 'api' }> = [
 			{ label: 'Live', value: 'live' }
 		]
-		if (demoSnippets && demoSnippets.length > 0) opts.push({ label: 'Code', value: 'code' })
+		if (hasActiveCode) opts.push({ label: 'Code', value: 'code' })
 		if (demoApi && demoApi.props.length > 0) opts.push({ label: 'API', value: 'api' })
 		return opts
 	})
@@ -438,7 +442,7 @@
 	// Reflect the actual props the running Tabs receives. Re-derives when the
 	// variant flips so the user sees the snippet for THIS variant, not a fixed
 	// example.
-	const _tabsCode = $derived.by(() => {
+	const tabsCode = $derived.by(() => {
 		const propLines: string[] = ['bind:value']
 		for (const [k, v] of Object.entries(variantProps)) {
 			propLines.push(`${k}="${v}"`)
@@ -493,7 +497,7 @@ ${tabsTag}`
 	]
 	const tableColumns = $derived(activeVariant?.id === 'mapping' ? tableMappedColumns : undefined)
 
-	const _tableCode = $derived.by(() => {
+	const tableCode = $derived.by(() => {
 		if (activeVariant?.id === 'mapping') {
 			return `<script>
   import { Table } from '@rokkit/ui'
@@ -641,7 +645,7 @@ ${tabsTag}`
 		if (stepperCurrent < stepperSteps.length - 1) stepperCurrent++
 	}
 
-	const _stepperCode = $derived.by(() => {
+	const stepperCode = $derived.by(() => {
 		const orientation = (variantProps.orientation as string | undefined) ?? 'horizontal'
 		const showContent = activeVariant?.id === 'with-content'
 		const orientLine = orientation === 'horizontal' ? '' : ` orientation="${orientation}"`
@@ -714,7 +718,7 @@ ${tabsTag}`
 				: dateSchemaDefault
 	)
 
-	const _dateCode = $derived.by(() => {
+	const dateCode = $derived.by(() => {
 		if (activeVariant?.id === 'with-validation') {
 			return `<script>
   import { FormRenderer } from '@rokkit/forms'
@@ -789,7 +793,7 @@ ${tabsTag}`
 	].map((label) => ({ label, value: label.toLowerCase().replace(/\s+/g, '-') }))
 	let comboValue = $state<unknown>(null)
 
-	const _comboCode = `<script>
+	const comboCode = `<script>
   import { Select } from '@rokkit/ui'
 
   const countries = [
@@ -833,7 +837,7 @@ ${tabsTag}`
 			: chartFlat
 	)
 
-	const _chartCode = $derived.by(() => {
+	const chartCode = $derived.by(() => {
 		const isGrouped = activeVariant?.id === 'grouped' || activeVariant?.id === 'stacked'
 		const propLine = ['data={sales}', 'x="quarter"', 'y="revenue"']
 		if (isGrouped) propLine.push('fill="product"', 'legend')
@@ -907,7 +911,7 @@ ${rows}
 	)
 	let selectValue = $state<unknown>(null)
 
-	const _selectCode = $derived.by(() => {
+	const selectCode = $derived.by(() => {
 		if (activeVariant?.id === 'with-icons') {
 			return `<script>
   import { Select } from '@rokkit/ui'
@@ -970,7 +974,7 @@ ${rows}
 		}
 	}
 
-	const _formCode = `<script>
+	const formCode = `<script>
   import { FormRenderer } from '@rokkit/forms'
 
   let data = $state({
@@ -1035,7 +1039,7 @@ ${rows}
 		alerts.push({ type: 'info', text: 'Theme preset reset to defaults.' })
 	}
 
-	const _toastsCode = `<script>
+	const toastsCode = `<script>
   import { Button, AlertList } from '@rokkit/ui'
   import { alerts } from '@rokkit/states'
 
@@ -1094,7 +1098,7 @@ ${rows}
 	)
 	let listValue = $state<unknown>(null)
 
-	const _listCode = $derived.by(() => {
+	const listCode = $derived.by(() => {
 		if (activeVariant?.id === 'flat') {
 			return `<script>
   import { List } from '@rokkit/ui'
@@ -1168,7 +1172,7 @@ ${rows}
 	]
 	let selectedColors = $state<string[]>(['red', 'blue'])
 
-	const _multiSelectCode = `<script>
+	const multiSelectCode = `<script>
   import { MultiSelect } from '@rokkit/ui'
 
   const items = [
@@ -1186,7 +1190,7 @@ ${rows}
 
 <MultiSelect {items} bind:value placeholder="Select colors" />`
 
-	const _treeCode = `<script>
+	const treeCode = `<script>
   import { Tree } from '@rokkit/ui'
 
   const items = [
@@ -1210,6 +1214,30 @@ ${rows}
 <\/script>
 
 <Tree {items} {fields} bind:value />`
+
+	/**
+	 * Single source code string that mirrors the LIVE canvas mount —
+	 * tracks variant + tweak state so the user sees exactly the code
+	 * they'd paste to recreate the current preview, not a static
+	 * example. Reads the matching `*Code` $derived constant per demo.
+	 */
+	const activeDemoCode = $derived.by(() => {
+		switch (shell.demoType) {
+			case 'tabs':          return tabsCode
+			case 'table':         return tableCode
+			case 'tree':          return treeCode
+			case 'stepper':       return stepperCode
+			case 'date-picker':   return dateCode
+			case 'combo':         return comboCode
+			case 'chart':         return chartCode
+			case 'select':        return selectCode
+			case 'form':          return formCode
+			case 'toasts':        return toastsCode
+			case 'list':          return listCode
+			case 'multi-select':  return multiSelectCode
+			default:              return ''
+		}
+	})
 
 	onMount(() => {
 		if (!browser) return
@@ -2117,23 +2145,22 @@ ${rows}
 				<div class="canvas-body api">
 					<APIPanel api={demoApi} />
 				</div>
-			{:else if shell.phase === 'response' && canvasView === 'code' && demoSnippets && demoSnippets.length > 0}
+			{:else if shell.phase === 'response' && canvasView === 'code' && activeDemoCode}
 				<div class="canvas-head">
-					<div class="canvas-eyebrow">Code · reference</div>
-					<div class="canvas-title">{findById(shell.demoType ?? '')?.title ?? 'Component'} — copyable examples</div>
+					<div class="canvas-eyebrow">Code · current preview</div>
+					<div class="canvas-title">{findById(shell.demoType ?? '')?.title ?? 'Component'} — source for this configuration</div>
 					<div class="canvas-sub">
-						The minimum source you'd paste into a project to recreate what the live mode shows.
+						Tracks the variant and tweaks from the Live view — copy and paste to recreate what's
+						mounted right now.
 					</div>
 				</div>
 				<div class="canvas-body code">
-					{#each demoSnippets as snip (snip.id)}
-						<CodeBlock
-							code={snip.code}
-							filename={snip.title}
-							language={snip.lang ?? 'svelte'}
-							allowCopy
-						/>
-					{/each}
+					<CodeBlock
+						code={activeDemoCode}
+						filename="{shell.demoType}.demo.svelte"
+						language="svelte"
+						allowCopy
+					/>
 				</div>
 			{:else if shell.phase === 'welcome'}
 				<div class="welcome-hero">
@@ -3180,8 +3207,33 @@ ${rows}
 		gap: 18px;
 	}
 
+	/* Other direct children (variant chips, footnotes) stay
+	   intrinsic-sized; the ChatResponse wrapping the live demo grows
+	   to fill the remaining canvas. */
 	:global(.canvas-body.response > *) {
 		flex-shrink: 0;
+	}
+
+	:global(.canvas-body.response > [data-chat-response]) {
+		flex: 1;
+		min-height: 0;
+		display: flex;
+		flex-direction: column;
+	}
+
+	/* Inside ChatResponse the mount wrapper takes the remaining height
+	   so the live component itself fills the canvas instead of sitting
+	   in a fixed min-height box with empty space underneath. */
+	:global(.canvas-body.response [data-chat-response-body]) {
+		flex: 1;
+		min-height: 0;
+		display: flex;
+		flex-direction: column;
+	}
+
+	:global(.canvas-body.response [data-chat-response-body] > *) {
+		flex: 1;
+		min-height: 0;
 	}
 
 	.canvas-body.catalog,

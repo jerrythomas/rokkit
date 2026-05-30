@@ -57,12 +57,14 @@
 				// the active theme's toggle styling automatically.
 				element.renderer = 'toggle'
 				element.options = spec.options
+				element.size = 'sm'
 				element.variant = 'stacked'
 			} else if (spec.type === 'boolean') {
 				properties[name] = { type: 'boolean' }
 				// Boolean → `switch` renderer (iOS-style pill switch).
 				// Inline label-left/switch-right is the natural shape.
 				element.renderer = 'switch'
+				element.size = 'sm'
 				element.variant = 'inline'
 			} else if (spec.type === 'string') {
 				properties[name] = { type: 'string' }
