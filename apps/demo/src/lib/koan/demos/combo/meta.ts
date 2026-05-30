@@ -1,4 +1,5 @@
 import type { DemoMeta } from '../../types'
+import { comboDocs } from './docs'
 
 const meta: DemoMeta = {
 	id: 'combo',
@@ -90,7 +91,8 @@ const meta: DemoMeta = {
   filterable={false}
 />`
 		}
-	]
+	],
+	docs: comboDocs
 }
 
 export default meta

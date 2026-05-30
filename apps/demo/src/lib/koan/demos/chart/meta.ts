@@ -1,4 +1,5 @@
 import type { DemoMeta } from '../../types'
+import { chartDocs } from './docs'
 
 const meta: DemoMeta = {
 	id: 'chart',
@@ -114,7 +115,8 @@ const meta: DemoMeta = {
   label
 />`
 		}
-	]
+	],
+	docs: chartDocs
 }
 
 export default meta

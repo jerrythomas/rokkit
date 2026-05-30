@@ -1,4 +1,5 @@
 import type { DemoMeta } from '../../types'
+import { toastsDocs } from './docs'
 
 const meta: DemoMeta = {
 	id: 'toasts',
@@ -71,7 +72,8 @@ const meta: DemoMeta = {
   max={3}
 />`
 		}
-	]
+	],
+	docs: toastsDocs
 }
 
 export default meta

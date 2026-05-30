@@ -3305,6 +3305,9 @@ ${rows}
 		color: var(--ink-mute);
 	}
 
+	/* Restore default list markers — UnoCSS / preflight strips them
+	   for the page baseline. Docs prose is one of the few places
+	   bullets/numerals are still expected, so set them explicitly. */
 	[data-demo-docs] :global(ul),
 	[data-demo-docs] :global(ol) {
 		margin: 0 0 14px;
@@ -3312,8 +3315,24 @@ ${rows}
 		color: var(--ink-mute);
 	}
 
+	[data-demo-docs] :global(ul) {
+		list-style: disc outside;
+	}
+
+	[data-demo-docs] :global(ol) {
+		list-style: decimal outside;
+	}
+
+	[data-demo-docs] :global(ul ul) {
+		list-style: circle outside;
+	}
+
 	[data-demo-docs] :global(li) {
 		margin: 4px 0;
+	}
+
+	[data-demo-docs] :global(li::marker) {
+		color: var(--ink-soft);
 	}
 
 	[data-demo-docs] :global(code) {

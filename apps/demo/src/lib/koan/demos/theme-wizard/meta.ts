@@ -1,4 +1,5 @@
 import type { DemoMeta } from '../../types'
+import { themeWizardDocs } from './docs'
 
 const meta: DemoMeta = {
 	id: 'theme-wizard',
@@ -74,7 +75,8 @@ vibe.setStyle('zen-sumi')  // style theme
 vibe.setMode('dark')       // light | dark
 vibe.setDensity('compact')`
 		}
-	]
+	],
+	docs: themeWizardDocs
 }
 
 export default meta

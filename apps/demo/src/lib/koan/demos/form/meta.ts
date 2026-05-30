@@ -1,4 +1,5 @@
 import type { DemoMeta } from '../../types'
+import { formDocs } from './docs'
 
 const meta: DemoMeta = {
 	id: 'form',
@@ -120,7 +121,8 @@ const meta: DemoMeta = {
 
 <FormRenderer bind:data {schema} {lookups} />`
 		}
-	]
+	],
+	docs: formDocs
 }
 
 export default meta

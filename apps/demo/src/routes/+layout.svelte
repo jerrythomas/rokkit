@@ -48,7 +48,11 @@
 	 flickering through every embedded style. -->
 <svelte:body use:themable={{ theme: vibe, storageKey: isEmbed ? undefined : 'rokkit-theme' }} />
 
-<div class="site-shell" data-embed={isEmbed || undefined}>
+<div
+	class="site-shell"
+	class:has-footer={showFooter}
+	data-embed={isEmbed || undefined}
+>
 	{#if showHeader}
 		<SiteHeader />
 	{/if}
@@ -77,8 +81,11 @@
 
 	/* Landing page (the only route that renders SiteFooter) is
 	   long-form marketing content — opt it back into normal page
-	   scroll. The /app and /chat shells keep the viewport pin. */
-	.site-shell:has([data-site-footer]) {
+	   scroll. The /app and /chat shells keep the viewport pin.
+	   Uses a class set in markup instead of `:has([data-site-footer])`
+	   because Svelte's scoped-CSS analyser can't see the attribute
+	   on the child SiteFooter component (would flag it unused). */
+	.site-shell.has-footer {
 		height: auto;
 		min-height: 100vh;
 		overflow: visible;
@@ -92,7 +99,7 @@
 		overflow: hidden;
 	}
 
-	.site-shell:has([data-site-footer]) .site-main {
+	.site-shell.has-footer .site-main {
 		overflow: visible;
 	}
 </style>
