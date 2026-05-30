@@ -22,6 +22,7 @@
 	import { vibe } from '@rokkit/states'
 	import { koan } from '$lib/koan/store.svelte'
 	import { runMatch } from '$lib/koan/match.svelte'
+	import { parseTweakIntent } from '$lib/koan/tweak-parser'
 	import { findById, DEMO_ROUTE as CATALOG_DEMO_ROUTE } from '$lib/koan/catalog'
 	import CatalogGrid from '$lib/koan/components/CatalogGrid.svelte'
 	import APIPanel from '$lib/koan/components/APIPanel.svelte'
@@ -90,6 +91,22 @@
 	function submitQuery(value: string) {
 		const trimmed = value.trim()
 		if (!trimmed) return
+
+		// Chat-driven prop tweak short-circuit. When the user is already
+		// on a demo (response phase) and the input parses as a tweak
+		// intent against the active demo's schema, apply it directly —
+		// no thinking phase, no goto. The setTweak helper writes both
+		// the in-memory state and a TweakTurn into the conversation, so
+		// the chat log already captures the diff.
+		if (shell.phase === 'response' && shell.demoType && propsSchema) {
+			const intent = parseTweakIntent(trimmed, propsSchema)
+			if (intent) {
+				setTweak(intent.name, intent.value)
+				shell.composerValue = ''
+				return
+			}
+		}
+
 		koan.query = trimmed
 		shell.lastQuery = trimmed
 		shell.composerValue = ''
