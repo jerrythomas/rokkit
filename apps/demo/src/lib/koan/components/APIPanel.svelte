@@ -6,14 +6,33 @@
 	 * canvas-head's [Live | API] segmented control) instead of inside
 	 * the chat-left slab; tabular content reads much better at canvas
 	 * width than at 350-ish slab width.
+	 *
+	 * Props rows that have a corresponding entry in `propsSchema` (the
+	 * Tweaks-editable subset) render an inline `<Toggle>` / `<Switch>`
+	 * in the **Default** column — clicking commits the change just
+	 * like the slab does, via `onTweak(name, value)`. Non-editable
+	 * props (no schema entry) keep the plain text default.
 	 */
-	import type { DemoApi } from '../types'
+	import { Toggle, Switch } from '@rokkit/ui'
+	import type { DemoApi, DemoPropSchema } from '../types'
 
 	interface Props {
 		api: DemoApi
+		propsSchema?: Record<string, DemoPropSchema>
+		tweakValues?: Record<string, unknown>
+		onTweak?: (name: string, value: unknown) => void
 	}
 
-	const { api }: Props = $props()
+	const { api, propsSchema, tweakValues = {}, onTweak }: Props = $props()
+
+	function schemaFor(name: string): DemoPropSchema | undefined {
+		return propsSchema?.[name]
+	}
+
+	function currentValue(name: string): unknown {
+		if (name in tweakValues) return tweakValues[name]
+		return propsSchema?.[name]?.default
+	}
 </script>
 
 <div data-api-panel>
@@ -33,13 +52,53 @@
 			</thead>
 			<tbody>
 				{#each api.props as p (p.name)}
-					<tr>
+					{@const spec = schemaFor(p.name)}
+					<tr data-editable={spec ? '' : undefined}>
 						<td>
 							<code>{p.name}</code>
 							{#if p.bindable}<span data-api-tag>bindable</span>{/if}
+							{#if spec}<span data-api-tag data-api-tag-editable>editable</span>{/if}
 						</td>
 						<td><code>{p.type}</code></td>
-						<td><code>{p.default ?? '—'}</code></td>
+						<td data-api-default>
+							{#if spec?.type === 'enum'}
+								{@const value = currentValue(p.name) as string}
+								<Toggle
+									options={spec.options}
+									{value}
+									size="sm"
+									onchange={(v) => onTweak?.(p.name, v)}
+								/>
+							{:else if spec?.type === 'boolean'}
+								{@const value = Boolean(currentValue(p.name))}
+								<Switch
+									{value}
+									onchange={(v) => onTweak?.(p.name, v)}
+								/>
+							{:else if spec?.type === 'number'}
+								{@const value = currentValue(p.name) as number}
+								<input
+									type="number"
+									class="api-input"
+									{value}
+									min={spec.min}
+									max={spec.max}
+									step={spec.step ?? 1}
+									oninput={(e) => onTweak?.(p.name, Number((e.currentTarget as HTMLInputElement).value))}
+								/>
+							{:else if spec?.type === 'string'}
+								{@const value = currentValue(p.name) as string ?? ''}
+								<input
+									type="text"
+									class="api-input"
+									{value}
+									placeholder={spec.placeholder ?? ''}
+									oninput={(e) => onTweak?.(p.name, (e.currentTarget as HTMLInputElement).value)}
+								/>
+							{:else}
+								<code>{p.default ?? '—'}</code>
+							{/if}
+						</td>
 						<td>{p.desc}</td>
 					</tr>
 				{/each}
@@ -134,7 +193,7 @@
 		text-align: left;
 		padding: 8px 12px;
 		border-bottom: 1px solid var(--paper-edge);
-		vertical-align: top;
+		vertical-align: middle;
 	}
 
 	[data-api-table] th {
@@ -154,6 +213,14 @@
 		background: var(--paper-soft);
 	}
 
+	[data-api-table] tbody tr[data-editable]:hover {
+		background: color-mix(in oklch, var(--accent) 6%, var(--paper-soft));
+	}
+
+	[data-api-default] {
+		min-width: 180px;
+	}
+
 	[data-api-tag] {
 		display: inline-block;
 		margin-left: 6px;
@@ -165,6 +232,28 @@
 		letter-spacing: 0.02em;
 		text-transform: uppercase;
 		vertical-align: middle;
+	}
+
+	[data-api-tag-editable] {
+		background: color-mix(in oklch, var(--ink) 8%, transparent);
+		color: var(--ink-soft);
+	}
+
+	.api-input {
+		width: 100%;
+		max-width: 240px;
+		padding: 4px 8px;
+		border: 1px solid var(--paper-edge);
+		border-radius: 4px;
+		background: var(--paper);
+		color: var(--ink);
+		font: 400 12.5px var(--font-mono, ui-monospace, monospace);
+		transition: border-color 120ms ease;
+	}
+
+	.api-input:focus {
+		outline: none;
+		border-color: var(--accent);
 	}
 
 	[data-api-attrs] {

@@ -2160,7 +2160,12 @@ ${rows}
 					</div>
 				</div>
 				<div class="canvas-body api">
-					<APIPanel api={demoApi} />
+					<APIPanel
+						api={demoApi}
+						propsSchema={propsSchema}
+						tweakValues={tweakProps}
+						onTweak={setTweak}
+					/>
 				</div>
 			{:else if shell.phase === 'response' && canvasView === 'code' && activeDemoCode}
 				<div class="canvas-head">
