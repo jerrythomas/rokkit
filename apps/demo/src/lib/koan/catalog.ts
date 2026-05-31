@@ -15,10 +15,17 @@ import combo from './demos/combo/meta'
 import datePicker from './demos/date-picker/meta'
 import stepper from './demos/stepper/meta'
 import button from './demos/button/meta'
+import badge from './demos/badge/meta'
+import pill from './demos/pill/meta'
+import avatar from './demos/avatar/meta'
+import divider from './demos/divider/meta'
+import message from './demos/message/meta'
+import swatch from './demos/swatch/meta'
 
 export const catalog: DemoMeta[] = [
 	themeWizard, tabs, toasts, table, tree, multiSelect, list, form, select,
-	chart, combo, datePicker, stepper, button
+	chart, combo, datePicker, stepper, button,
+	badge, pill, avatar, divider, message, swatch
 ]
 
 export const miniIndex = new MiniSearch<DemoMeta>({
@@ -61,7 +68,13 @@ export const DEMO_ROUTE: Record<string, string> = {
 	combo: '/app/combo',
 	'date-picker': '/app/date',
 	stepper: '/app/stepper',
-	button: '/app/button'
+	button: '/app/button',
+	badge: '/app/badge',
+	pill: '/app/pill',
+	avatar: '/app/avatar',
+	divider: '/app/divider',
+	message: '/app/message',
+	swatch: '/app/swatch'
 }
 
 export function routeFor(id: string): string | null {

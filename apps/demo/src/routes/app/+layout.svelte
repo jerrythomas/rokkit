@@ -71,7 +71,7 @@
 	type DemoKind =
 		| 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select' | 'list' | 'toasts'
 		| 'form' | 'select' | 'chart' | 'combo' | 'date-picker' | 'stepper'
-		| 'button'
+		| 'button' | 'badge' | 'pill' | 'avatar' | 'divider' | 'message' | 'swatch'
 	const DEMO_ROUTE = CATALOG_DEMO_ROUTE as Record<DemoKind, string>
 
 	function pickDemoKind(query: string): DemoKind {

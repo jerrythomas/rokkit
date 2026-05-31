@@ -22,6 +22,12 @@ export type ShellDemoType =
 	| 'date-picker'
 	| 'stepper'
 	| 'button'
+	| 'badge'
+	| 'pill'
+	| 'avatar'
+	| 'divider'
+	| 'message'
+	| 'swatch'
 
 export const shell = $state<{
 	phase: ShellPhase
