@@ -48,6 +48,10 @@ export type ShellDemoType =
 	| 'markdown-renderer'
 	| 'search-filter'
 	| 'palette-manager'
+	| 'dropdown'
+	| 'progress'
+	| 'upload-progress'
+	| 'upload-target'
 
 export const shell = $state<{
 	phase: ShellPhase

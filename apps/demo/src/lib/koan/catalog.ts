@@ -41,6 +41,10 @@ import code from './demos/code/meta'
 import markdownRenderer from './demos/markdown-renderer/meta'
 import searchFilter from './demos/search-filter/meta'
 import paletteManager from './demos/palette-manager/meta'
+import dropdown from './demos/dropdown/meta'
+import progress from './demos/progress/meta'
+import uploadProgress from './demos/upload-progress/meta'
+import uploadTarget from './demos/upload-target/meta'
 
 export const catalog: DemoMeta[] = [
 	themeWizard, tabs, toasts, table, tree, multiSelect, list, form, select,
@@ -50,7 +54,8 @@ export const catalog: DemoMeta[] = [
 	breadcrumbs, menu, toolbar, floatingAction, floatingNavigation,
 	stack, grid, card, carousel,
 	lazyTree, statusList, timeline,
-	code, markdownRenderer, searchFilter, paletteManager
+	code, markdownRenderer, searchFilter, paletteManager,
+	dropdown, progress, uploadProgress, uploadTarget
 ]
 
 export const miniIndex = new MiniSearch<DemoMeta>({
@@ -119,7 +124,11 @@ export const DEMO_ROUTE: Record<string, string> = {
 	code: '/app/code',
 	'markdown-renderer': '/app/markdown-renderer',
 	'search-filter': '/app/search-filter',
-	'palette-manager': '/app/palette-manager'
+	'palette-manager': '/app/palette-manager',
+	dropdown: '/app/dropdown',
+	progress: '/app/progress',
+	'upload-progress': '/app/upload-progress',
+	'upload-target': '/app/upload-target'
 }
 
 export function routeFor(id: string): string | null {
