@@ -75,6 +75,7 @@
 		| 'breadcrumbs' | 'menu' | 'toolbar' | 'floating-action' | 'floating-navigation'
 		| 'stack' | 'grid' | 'card' | 'carousel'
 		| 'lazy-tree' | 'status-list' | 'timeline'
+		| 'code' | 'markdown-renderer' | 'search-filter' | 'palette-manager'
 	const DEMO_ROUTE = CATALOG_DEMO_ROUTE as Record<DemoKind, string>
 
 	function pickDemoKind(query: string): DemoKind {

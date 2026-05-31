@@ -37,6 +37,10 @@ import carousel from './demos/carousel/meta'
 import lazyTree from './demos/lazy-tree/meta'
 import statusList from './demos/status-list/meta'
 import timeline from './demos/timeline/meta'
+import code from './demos/code/meta'
+import markdownRenderer from './demos/markdown-renderer/meta'
+import searchFilter from './demos/search-filter/meta'
+import paletteManager from './demos/palette-manager/meta'
 
 export const catalog: DemoMeta[] = [
 	themeWizard, tabs, toasts, table, tree, multiSelect, list, form, select,
@@ -45,7 +49,8 @@ export const catalog: DemoMeta[] = [
 	range, rating, switchDemo, toggle,
 	breadcrumbs, menu, toolbar, floatingAction, floatingNavigation,
 	stack, grid, card, carousel,
-	lazyTree, statusList, timeline
+	lazyTree, statusList, timeline,
+	code, markdownRenderer, searchFilter, paletteManager
 ]
 
 export const miniIndex = new MiniSearch<DemoMeta>({
@@ -110,7 +115,11 @@ export const DEMO_ROUTE: Record<string, string> = {
 	carousel: '/app/carousel',
 	'lazy-tree': '/app/lazy-tree',
 	'status-list': '/app/status-list',
-	timeline: '/app/timeline'
+	timeline: '/app/timeline',
+	code: '/app/code',
+	'markdown-renderer': '/app/markdown-renderer',
+	'search-filter': '/app/search-filter',
+	'palette-manager': '/app/palette-manager'
 }
 
 export function routeFor(id: string): string | null {

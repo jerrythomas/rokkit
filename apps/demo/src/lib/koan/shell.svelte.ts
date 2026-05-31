@@ -44,6 +44,10 @@ export type ShellDemoType =
 	| 'lazy-tree'
 	| 'status-list'
 	| 'timeline'
+	| 'code'
+	| 'markdown-renderer'
+	| 'search-filter'
+	| 'palette-manager'
 
 export const shell = $state<{
 	phase: ShellPhase
