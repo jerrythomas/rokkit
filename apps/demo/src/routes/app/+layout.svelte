@@ -73,6 +73,7 @@
 		| 'button' | 'badge' | 'pill' | 'avatar' | 'divider' | 'message' | 'swatch'
 		| 'range' | 'rating' | 'switch' | 'toggle'
 		| 'breadcrumbs' | 'menu' | 'toolbar' | 'floating-action' | 'floating-navigation'
+		| 'stack' | 'grid' | 'card' | 'carousel'
 	const DEMO_ROUTE = CATALOG_DEMO_ROUTE as Record<DemoKind, string>
 
 	function pickDemoKind(query: string): DemoKind {

@@ -30,13 +30,18 @@ import menu from './demos/menu/meta'
 import toolbar from './demos/toolbar/meta'
 import floatingAction from './demos/floating-action/meta'
 import floatingNavigation from './demos/floating-navigation/meta'
+import stack from './demos/stack/meta'
+import grid from './demos/grid/meta'
+import card from './demos/card/meta'
+import carousel from './demos/carousel/meta'
 
 export const catalog: DemoMeta[] = [
 	themeWizard, tabs, toasts, table, tree, multiSelect, list, form, select,
 	chart, combo, datePicker, stepper, button,
 	badge, pill, avatar, divider, message, swatch,
 	range, rating, switchDemo, toggle,
-	breadcrumbs, menu, toolbar, floatingAction, floatingNavigation
+	breadcrumbs, menu, toolbar, floatingAction, floatingNavigation,
+	stack, grid, card, carousel
 ]
 
 export const miniIndex = new MiniSearch<DemoMeta>({
@@ -94,7 +99,11 @@ export const DEMO_ROUTE: Record<string, string> = {
 	menu: '/app/menu',
 	toolbar: '/app/toolbar',
 	'floating-action': '/app/floating-action',
-	'floating-navigation': '/app/floating-navigation'
+	'floating-navigation': '/app/floating-navigation',
+	stack: '/app/stack',
+	grid: '/app/grid',
+	card: '/app/card',
+	carousel: '/app/carousel'
 }
 
 export function routeFor(id: string): string | null {

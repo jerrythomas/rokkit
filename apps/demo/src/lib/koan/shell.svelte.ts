@@ -37,6 +37,10 @@ export type ShellDemoType =
 	| 'toolbar'
 	| 'floating-action'
 	| 'floating-navigation'
+	| 'stack'
+	| 'grid'
+	| 'card'
+	| 'carousel'
 
 export const shell = $state<{
 	phase: ShellPhase
