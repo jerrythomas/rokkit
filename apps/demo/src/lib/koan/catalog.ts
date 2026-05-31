@@ -34,6 +34,9 @@ import stack from './demos/stack/meta'
 import grid from './demos/grid/meta'
 import card from './demos/card/meta'
 import carousel from './demos/carousel/meta'
+import lazyTree from './demos/lazy-tree/meta'
+import statusList from './demos/status-list/meta'
+import timeline from './demos/timeline/meta'
 
 export const catalog: DemoMeta[] = [
 	themeWizard, tabs, toasts, table, tree, multiSelect, list, form, select,
@@ -41,7 +44,8 @@ export const catalog: DemoMeta[] = [
 	badge, pill, avatar, divider, message, swatch,
 	range, rating, switchDemo, toggle,
 	breadcrumbs, menu, toolbar, floatingAction, floatingNavigation,
-	stack, grid, card, carousel
+	stack, grid, card, carousel,
+	lazyTree, statusList, timeline
 ]
 
 export const miniIndex = new MiniSearch<DemoMeta>({
@@ -103,7 +107,10 @@ export const DEMO_ROUTE: Record<string, string> = {
 	stack: '/app/stack',
 	grid: '/app/grid',
 	card: '/app/card',
-	carousel: '/app/carousel'
+	carousel: '/app/carousel',
+	'lazy-tree': '/app/lazy-tree',
+	'status-list': '/app/status-list',
+	timeline: '/app/timeline'
 }
 
 export function routeFor(id: string): string | null {

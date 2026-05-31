@@ -41,6 +41,9 @@ export type ShellDemoType =
 	| 'grid'
 	| 'card'
 	| 'carousel'
+	| 'lazy-tree'
+	| 'status-list'
+	| 'timeline'
 
 export const shell = $state<{
 	phase: ShellPhase
