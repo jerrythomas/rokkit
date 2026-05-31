@@ -7,7 +7,21 @@
  * URL navigation becomes the source of truth for which demo is mounted.
  */
 export type ShellPhase = 'welcome' | 'thinking' | 'response' | 'catalog'
-export type ShellDemoType = 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select' | 'list' | 'toasts' | 'form' | 'select' | 'chart' | 'combo' | 'date-picker' | 'stepper'
+export type ShellDemoType =
+	| 'tabs'
+	| 'theme-wizard'
+	| 'table'
+	| 'tree'
+	| 'multi-select'
+	| 'list'
+	| 'toasts'
+	| 'form'
+	| 'select'
+	| 'chart'
+	| 'combo'
+	| 'date-picker'
+	| 'stepper'
+	| 'button'
 
 export const shell = $state<{
 	phase: ShellPhase

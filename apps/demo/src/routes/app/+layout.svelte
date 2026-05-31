@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte'
+	import type { Snippet, Component } from 'svelte'
 	import {
 		ChatComposer,
 		ChatMessage,
@@ -68,7 +68,10 @@
 
 	let thinkingTimer: ReturnType<typeof setTimeout> | null = null
 
-	type DemoKind = 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select' | 'list' | 'toasts' | 'form' | 'select' | 'chart' | 'combo' | 'date-picker' | 'stepper'
+	type DemoKind =
+		| 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select' | 'list' | 'toasts'
+		| 'form' | 'select' | 'chart' | 'combo' | 'date-picker' | 'stepper'
+		| 'button'
 	const DEMO_ROUTE = CATALOG_DEMO_ROUTE as Record<DemoKind, string>
 
 	function pickDemoKind(query: string): DemoKind {
@@ -305,6 +308,38 @@
 	)
 	const demoApi = $derived(shell.demoType ? findById(shell.demoType)?.api : undefined)
 	const demoDocs = $derived(shell.demoType ? findById(shell.demoType)?.docs : undefined)
+	const currentMeta = $derived(shell.demoType ? findById(shell.demoType) : undefined)
+
+	// The 13 demos that ship with a hand-rolled canvas-body branch in
+	// this layout (rich variant/tweak logic). All other catalog entries
+	// fall through to the generic dynamic-mount branch — they just
+	// load `meta.load()` and render the resulting component as the
+	// canvas content. Lets us keep the demo catalog open-ended without
+	// growing the layout file by hundreds of lines per addition.
+	const RICH_DEMOS = new Set([
+		'tabs', 'theme-wizard', 'table', 'stepper', 'date-picker',
+		'combo', 'chart', 'select', 'form', 'toasts', 'list',
+		'multi-select', 'tree'
+	])
+	const isDynamicDemo = $derived(
+		shell.demoType !== null && !RICH_DEMOS.has(shell.demoType as string)
+	)
+
+	// Load the component for the active dynamic demo. `meta.load()`
+	// returns a Promise — keep the Promise in a local state so the
+	// template's `{#await}` block can render a small loading state
+	// while the chunk fetches, and we re-resolve only when demoType
+	// changes (not every reactive update).
+	let dynamicDemoPromise = $state<Promise<{ default: Component }> | null>(null)
+	$effect(() => {
+		const type = shell.demoType
+		if (!type || RICH_DEMOS.has(type)) {
+			dynamicDemoPromise = null
+			return
+		}
+		const meta = findById(type)
+		dynamicDemoPromise = meta?.load() ?? null
+	})
 
 	// Canvas-view toggle options — always include `live`, conditionally
 	// include `code` (when snippets exist) and `api` (when api meta
@@ -2883,6 +2918,32 @@ ${rows}
 					</ChatResponse>
 
 				</div>
+			{:else if shell.phase === 'response' && isDynamicDemo && currentMeta}
+				<div class="canvas-head">
+					<div class="canvas-eyebrow">Mounted demo · live</div>
+					<div class="canvas-title">{currentMeta.title}</div>
+					<div class="canvas-sub">{currentMeta.description}</div>
+				</div>
+				<div class="canvas-body response">
+					<ChatResponse
+						name={`<${currentMeta.title.replace(/\s+/g, '')}/>`}
+						meta={`· @rokkit/ui · style=${vibe.style}`}
+						kicker="LIVE"
+					>
+						{#if dynamicDemoPromise}
+							{#await dynamicDemoPromise}
+								<div class="dyn-loading"><span class="koan-spinner" aria-hidden="true"></span></div>
+							{:then mod}
+								{@const C = mod.default as Component}
+								<div class="dyn-mount">
+									<C {...tweakProps} />
+								</div>
+							{:catch err}
+								<div class="dyn-error">Failed to load demo: {err.message}</div>
+							{/await}
+						{/if}
+					</ChatResponse>
+				</div>
 			{/if}
 		</main>
 	</div>
@@ -3365,6 +3426,27 @@ ${rows}
 
 	.tabs-mount {
 		min-height: 180px;
+	}
+
+	.dyn-mount {
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+		min-height: 180px;
+	}
+
+	.dyn-loading,
+	.dyn-error {
+		display: grid;
+		place-items: center;
+		padding: 32px;
+		color: var(--ink-mute);
+		font: 400 13px var(--font-ui);
+		min-height: 120px;
+	}
+
+	.dyn-error {
+		color: var(--error, var(--ink));
 	}
 
 	.tabs-mount :global([data-tabs-panel]:not([data-panel-active])) {

@@ -14,8 +14,12 @@ import chart from './demos/chart/meta'
 import combo from './demos/combo/meta'
 import datePicker from './demos/date-picker/meta'
 import stepper from './demos/stepper/meta'
+import button from './demos/button/meta'
 
-export const catalog: DemoMeta[] = [themeWizard, tabs, toasts, table, tree, multiSelect, list, form, select, chart, combo, datePicker, stepper]
+export const catalog: DemoMeta[] = [
+	themeWizard, tabs, toasts, table, tree, multiSelect, list, form, select,
+	chart, combo, datePicker, stepper, button
+]
 
 export const miniIndex = new MiniSearch<DemoMeta>({
 	fields: ['title', 'keywords', 'description'],
@@ -56,7 +60,8 @@ export const DEMO_ROUTE: Record<string, string> = {
 	chart: '/app/chart',
 	combo: '/app/combo',
 	'date-picker': '/app/date',
-	stepper: '/app/stepper'
+	stepper: '/app/stepper',
+	button: '/app/button'
 }
 
 export function routeFor(id: string): string | null {
