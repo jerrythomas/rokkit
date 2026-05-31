@@ -25,12 +25,13 @@ export interface UserTurn {
 }
 
 /**
- * A live prop tweak the user applied to the canvas component. Rendered
- * in the response stream as a "prop: from → to" row so the conversation
- * captures the tuning journey, and persisted with the conversation so
- * the trail survives reload + resume. `demoType` lets the renderer
- * scope rows to the currently mounted demo when one conversation spans
- * multiple demos.
+ * A live prop tweak the user applied to the canvas component. Persisted
+ * with the conversation so the canvas restores to the same values on
+ * reload + resume — replayed by the layout on mount into the in-memory
+ * `tweaksByDemo` map. No longer surfaced as a chat-stream row (felt
+ * noisy when clicking through enum values); the canvas's own tweak
+ * strip shows the live count instead. `demoType` scopes rows to the
+ * currently mounted demo when one conversation spans multiple demos.
  */
 export interface TweakTurn {
 	kind: 'tweak'

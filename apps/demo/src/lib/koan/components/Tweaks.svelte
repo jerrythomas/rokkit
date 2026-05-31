@@ -12,7 +12,9 @@
 	 *
 	 * The form's onupdate fires with the full data object each change; we
 	 * diff against the previous values and emit a per-field onchange to
-	 * the parent so the chat-left can log "prop: from → to" turns.
+	 * the parent. The parent persists each change as a TweakTurn so the
+	 * canvas restores on reload, and the canvas strip surfaces the active
+	 * tweak count.
 	 *
 	 * Header carries the playground actions (Reset, Copy) which sit
 	 * outside FormRenderer's own action bar — the form is value-only,

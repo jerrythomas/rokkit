@@ -39,8 +39,7 @@
 		setCurrentId,
 		getCurrentId,
 		getCurrentConversation,
-		type Conversation,
-		type TweakTurn
+		type Conversation
 	} from '$lib/koan/conversations.svelte'
 	import ComposerSuggestions from '$lib/koan/components/ComposerSuggestions.svelte'
 	import DetailsSlab from '$lib/koan/components/DetailsSlab.svelte'
@@ -99,9 +98,9 @@
 		// Chat-driven prop tweak short-circuit. When the user is already
 		// on a demo (response phase) and the input parses as a tweak
 		// intent against the active demo's schema, apply it directly —
-		// no thinking phase, no goto. The setTweak helper writes both
-		// the in-memory state and a TweakTurn into the conversation, so
-		// the chat log already captures the diff.
+		// no thinking phase, no goto. The setTweak helper writes the
+		// in-memory state and persists a TweakTurn so the canvas restores
+		// to the same values on reload.
 		if (shell.phase === 'response' && shell.demoType && propsSchema) {
 			const intent = parseTweakIntent(trimmed, propsSchema)
 			if (intent) {
@@ -404,27 +403,12 @@
 		if (!sameVals) tweaksByDemo[demoType] = replayed
 	})
 
-	// Tweak log rows are sourced from the active conversation's turns —
-	// each `setTweak()` appends a TweakTurn via the conversations store,
-	// so the trail persists to localStorage and survives reload + resume.
-	// The renderer below filters to the active demoType so navigating
-	// between demos in one conversation keeps each demo's history scoped
-	// to its own response stream.
-	const tweakLog = $derived<TweakTurn[]>(
-		(() => {
-			const conv = getCurrentConversation()
-			if (!conv || !shell.demoType) return []
-			return conv.turns.filter(
-				(t): t is TweakTurn => t.kind === 'tweak' && t.demoType === shell.demoType
-			)
-		})()
-	)
-
-	function formatVal(v: unknown): string {
-		if (v === undefined) return '(default)'
-		if (typeof v === 'string') return v
-		return JSON.stringify(v)
-	}
+	// Count of props the user has tweaked away from default for the active
+	// demo. Drives the canvas strip ("N tweaks active — Reset"). Tweaks
+	// still persist as TweakTurn rows in the conversation store so the
+	// trail survives reload — they just no longer render as chat
+	// messages (felt noisy when clicking through enum values).
+	const tweakCount = $derived(Object.keys(tweakProps).length)
 
 	function setTweak(name: string, value: unknown) {
 		if (!shell.demoType) return
@@ -1531,11 +1515,6 @@ ${rows}
 						</ChatMessage>
 						<Chips items={variantChipItems} onselect={pickVariant} />
 					{/if}
-					{#each tweakLog as entry (entry.id)}
-						<ChatMessage kind="user" status="tweak" icon="i-mdi:tune-variant">
-							<code>{entry.name}</code>: {formatVal(entry.from)} → {formatVal(entry.to)}
-						</ChatMessage>
-					{/each}
 				</ChatStream>
 			{:else if shell.phase === 'response' && shell.demoType === 'theme-wizard'}
 				<ChatStream>
@@ -2186,6 +2165,19 @@ ${rows}
 			{#if shell.phase === 'response' && canvasViewOptions.length > 1}
 				<div class="canvas-view-toggle">
 					<Toggle options={canvasViewOptions} bind:value={canvasView} size="sm" />
+				</div>
+			{/if}
+
+			{#if shell.phase === 'response' && tweakCount > 0}
+				<div class="canvas-tweaks-strip" role="status">
+					<span class="i-mdi:tune-variant" aria-hidden="true"></span>
+					<span class="canvas-tweaks-count">
+						{tweakCount} tweak{tweakCount === 1 ? '' : 's'} active
+					</span>
+					<span class="canvas-tweaks-spacer"></span>
+					<button type="button" class="canvas-tweaks-reset" onclick={resetTweaks}>
+						Reset
+					</button>
 				</div>
 			{/if}
 
@@ -3414,6 +3406,56 @@ ${rows}
 		display: flex;
 		flex-direction: column;
 		gap: 14px;
+	}
+
+	/* Surfaces the count of props the user has tweaked away from default
+	   on the active demo. Only renders when there's something to show, so
+	   the canvas reads as clean when running default props. Reset reuses
+	   the slab's reset path — clears in-memory + drops persisted
+	   TweakTurn rows. */
+	.canvas-tweaks-strip {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 6px 20px;
+		border-bottom: 1px solid var(--paper-edge);
+		background: var(--paper-soft);
+		font: 500 11px var(--font-mono);
+		color: var(--ink-mute);
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		flex-shrink: 0;
+	}
+
+	.canvas-tweaks-strip .i-mdi\:tune-variant {
+		width: 13px;
+		height: 13px;
+		color: var(--ink-soft);
+	}
+
+	.canvas-tweaks-count {
+		color: var(--ink);
+	}
+
+	.canvas-tweaks-spacer {
+		flex: 1;
+	}
+
+	.canvas-tweaks-reset {
+		padding: 2px 8px;
+		border: 1px solid var(--paper-edge);
+		border-radius: 4px;
+		background: var(--paper);
+		color: var(--ink-mute);
+		font: 500 11px var(--font-ui);
+		letter-spacing: 0;
+		text-transform: none;
+		cursor: pointer;
+	}
+
+	.canvas-tweaks-reset:hover {
+		border-color: var(--ink-soft);
+		color: var(--ink);
 	}
 
 	/* Just an anchor for positioning — Toggle owns its own visuals via
