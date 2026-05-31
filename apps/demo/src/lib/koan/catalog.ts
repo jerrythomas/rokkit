@@ -21,11 +21,16 @@ import avatar from './demos/avatar/meta'
 import divider from './demos/divider/meta'
 import message from './demos/message/meta'
 import swatch from './demos/swatch/meta'
+import range from './demos/range/meta'
+import rating from './demos/rating/meta'
+import switchDemo from './demos/switch/meta'
+import toggle from './demos/toggle/meta'
 
 export const catalog: DemoMeta[] = [
 	themeWizard, tabs, toasts, table, tree, multiSelect, list, form, select,
 	chart, combo, datePicker, stepper, button,
-	badge, pill, avatar, divider, message, swatch
+	badge, pill, avatar, divider, message, swatch,
+	range, rating, switchDemo, toggle
 ]
 
 export const miniIndex = new MiniSearch<DemoMeta>({
@@ -74,7 +79,11 @@ export const DEMO_ROUTE: Record<string, string> = {
 	avatar: '/app/avatar',
 	divider: '/app/divider',
 	message: '/app/message',
-	swatch: '/app/swatch'
+	swatch: '/app/swatch',
+	range: '/app/range',
+	rating: '/app/rating',
+	switch: '/app/switch',
+	toggle: '/app/toggle'
 }
 
 export function routeFor(id: string): string | null {

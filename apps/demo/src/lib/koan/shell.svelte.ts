@@ -28,6 +28,10 @@ export type ShellDemoType =
 	| 'divider'
 	| 'message'
 	| 'swatch'
+	| 'range'
+	| 'rating'
+	| 'switch'
+	| 'toggle'
 
 export const shell = $state<{
 	phase: ShellPhase

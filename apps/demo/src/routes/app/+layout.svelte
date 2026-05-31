@@ -72,6 +72,7 @@
 		| 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select' | 'list' | 'toasts'
 		| 'form' | 'select' | 'chart' | 'combo' | 'date-picker' | 'stepper'
 		| 'button' | 'badge' | 'pill' | 'avatar' | 'divider' | 'message' | 'swatch'
+		| 'range' | 'rating' | 'switch' | 'toggle'
 	const DEMO_ROUTE = CATALOG_DEMO_ROUTE as Record<DemoKind, string>
 
 	function pickDemoKind(query: string): DemoKind {
