@@ -23,5 +23,16 @@ test('handles trailing newline before closing backtick', () => {
 })
 
 test('throws on file without the expected pattern', () => {
-  assert.throws(() => convert('const x = 1'), /no matching `export const/i)
+  assert.throws(() => convert('const x = 1'), /no matching/i)
+})
+
+test('strips leading JSDoc preamble before the export', () => {
+  const input = [
+    '/**',
+    ' * docstring line 1',
+    ' * docstring line 2 with `code`',
+    ' */',
+    'export const xDocs = `# Body`'
+  ].join('\n')
+  assert.equal(convert(input), '# Body')
 })
