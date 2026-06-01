@@ -3,79 +3,62 @@ import { chartDocs } from './docs'
 
 const meta: DemoMeta = {
 	id: 'chart',
-	title: 'Bar Chart',
+	title: 'Charts',
 	description:
-		'Data-driven chart with field-mapped axes. Pass rows + x/y fields and the SVG is built for you — palette colors, gridlines, hover tooltips out of the box.',
+		'Nine field-mapped chart components — bars, lines, areas, pies, scatter, bubble, box, violin, sparkline. Pass rows + field names, get an SVG.',
 	keywords: [
-		'chart', 'charts', 'graph', 'graphs', 'bar', 'plot', 'plots',
-		'visualization', 'viz', 'analytics', 'data', 'metrics',
-		'revenue', 'sales', 'series', 'svg'
+		'chart', 'charts', 'graph', 'graphs', 'plot', 'plots',
+		'visualization', 'viz', 'analytics', 'data', 'metrics', 'svg',
+		'bar', 'bar-chart', 'line', 'line-chart', 'area', 'area-chart',
+		'pie', 'pie-chart', 'scatter', 'scatter-plot', 'bubble', 'bubble-chart',
+		'box', 'box-plot', 'violin', 'violin-plot', 'sparkline', 'spark-line',
+		'trends', 'distribution', 'kpi', 'inline-chart'
 	],
 	category: 'data',
 	icon: '図',
-	load: () => import('./placeholder.svelte'),
+	load: () => import('./index.svelte'),
 	tool: {
-		name: 'mount_bar_chart',
+		name: 'mount_charts',
 		description:
-			'Mount a BarChart on the canvas. Use when the user wants a data visualization — sales by quarter, counts by category, distributions, anything categorical → numeric.',
-		parameters: {
-			data: 'Array of rows',
-			x: 'field name for the x-axis (categorical)',
-			y: 'field name for the y-axis (numeric)',
-			fill: 'optional field name for color grouping',
-			stack: 'optional boolean — stack bars by color group',
-			stat: 'optional aggregation: sum | mean | count | …'
-		}
+			'Mount the Charts gallery on the canvas — shows the nine chart shapes from @rokkit/chart side by side.',
+		parameters: {}
 	},
 	inline: { capable: true },
-	variants: [
-		{ id: 'grouped', label: 'Grouped by product', mode: 'dynamic', props: { fill: 'product', legend: true } },
-		{ id: 'stacked', label: 'Stacked', mode: 'dynamic', props: { fill: 'product', stack: true, legend: true } },
-		{ id: 'with-labels', label: 'With data labels', mode: 'dynamic', props: { label: true } }
-	],
-	props: {
-		stack: {
-			type: 'boolean',
-			default: false,
-			desc: 'Stack bars by color group instead of grouping side-by-side'
-		},
-		legend: {
-			type: 'boolean',
-			default: false,
-			desc: 'Show the color-group legend'
-		},
-		label: {
-			type: 'boolean',
-			default: false,
-			desc: 'Render value labels on top of each bar'
-		}
-	},
+	variants: [],
 	api: {
 		props: [
-			{ name: 'data', type: 'Array<Record<string, unknown>>', default: '[]', desc: 'Rows used to build the bars' },
-			{ name: 'x', type: 'string', desc: 'Field name for the categorical x-axis' },
-			{ name: 'y', type: 'string', desc: 'Field name for the numeric y-axis' },
-			{ name: 'fill', type: 'string', desc: 'Optional field name for color grouping' },
-			{ name: 'stat', type: "'sum' | 'mean' | 'count' | 'min' | 'max'", default: "'sum'", desc: 'Aggregation when multiple rows share an x value' },
-			{ name: 'stack', type: 'boolean', default: 'false', desc: 'Stack grouped bars instead of grouping side-by-side' },
-			{ name: 'legend', type: 'boolean', default: 'false', desc: 'Show the color-group legend' },
-			{ name: 'label', type: 'boolean', default: 'false', desc: 'Render value labels on top of each bar' },
-			{ name: 'palette', type: 'string[]', desc: 'Optional override for the color palette' }
+			{ name: 'data', type: 'Array<Record<string, unknown>>', default: '[]', desc: 'Row array — same shape across every chart' },
+			{ name: 'x', type: 'string', desc: 'Field name for the x-axis (Bar / Line / Area / Scatter / Bubble / Box / Violin)' },
+			{ name: 'y', type: 'string', desc: 'Field name for the y-axis (and the slice value on Pie)' },
+			{ name: 'fill', type: 'string', desc: 'Colour-group field on Bar / Area / Box / Violin / Pie' },
+			{ name: 'color', type: 'string', desc: 'Colour-group field on Line / Scatter / Bubble' },
+			{ name: 'size', type: 'string', desc: 'Bubble-radius field on BubbleChart (and optional on ScatterPlot)' },
+			{ name: 'stat', type: "'identity' | 'sum' | 'mean' | 'count' | 'min' | 'max'", default: 'varies', desc: 'Aggregation when rows share an x; default `identity` (Bar/Line/Area) or `sum` (Pie)' },
+			{ name: 'stack', type: 'boolean', default: 'false', desc: 'Stack grouped series instead of side-by-side (Bar / Area)' },
+			{ name: 'legend', type: 'boolean', default: 'false', desc: 'Render the colour-group legend' },
+			{ name: 'grid', type: 'boolean', default: 'true', desc: 'Background gridlines (Cartesian charts only)' },
+			{ name: 'tooltip', type: 'boolean', default: 'false', desc: 'Hover tooltip with the underlying row' },
+			{ name: 'innerRadius', type: 'number', default: '0', desc: 'Pie inner radius — set non-zero for a donut' },
+			{ name: 'width', type: 'number', default: '600', desc: 'SVG width (400 for Pie; smaller for Sparkline)' },
+			{ name: 'height', type: 'number', default: '400', desc: 'SVG height' }
 		],
 		events: [
-			{ name: 'onhover', signature: '(row) => void', desc: 'Fires when the pointer enters a bar' }
+			{ name: 'onhover', signature: '(row) => void', desc: 'Fires when the pointer enters a data point (Cartesian charts with tooltip enabled)' }
 		],
 		attrs: [
 			{ selector: '[data-chart]', desc: 'Root SVG container' },
-			{ selector: '[data-bar]', desc: 'Individual bar (carries data-fill, data-group)' },
+			{ selector: '[data-bar]', desc: 'Bar mark (carries data-fill, data-group)' },
+			{ selector: '[data-line]', desc: 'Line / Area mark' },
+			{ selector: '[data-arc]', desc: 'Pie slice' },
+			{ selector: '[data-point]', desc: 'Scatter / Bubble dot' },
 			{ selector: '[data-axis]', desc: 'Axis group' },
-			{ selector: '[data-legend]', desc: 'Color-group legend' }
+			{ selector: '[data-legend]', desc: 'Colour-group legend' }
 		]
 	},
 	snippets: [
 		{
-			id: 'intro',
-			title: 'Basic — categorical x, numeric y',
+			id: 'bar',
+			title: 'BarChart',
 			lang: 'svelte',
 			code: `<script>
   import { BarChart } from '@rokkit/chart'
@@ -90,30 +73,52 @@ const meta: DemoMeta = {
 <BarChart {data} x="quarter" y="revenue" />`
 		},
 		{
-			id: 'grouped',
-			title: 'Grouped by color field',
+			id: 'line',
+			title: 'LineChart',
 			lang: 'svelte',
-			code: `<BarChart
-  {data}
-  x="quarter"
-  y="revenue"
-  fill="product"
-  legend
-/>`
+			code: `<LineChart {data} x="month" y="revenue" color="product" legend />`
 		},
 		{
-			id: 'stacked',
-			title: 'Stacked + value labels',
+			id: 'area',
+			title: 'AreaChart',
 			lang: 'svelte',
-			code: `<BarChart
-  {data}
-  x="quarter"
-  y="revenue"
-  fill="product"
-  stack
-  legend
-  label
-/>`
+			code: `<AreaChart {data} x="month" y="revenue" fill="product" stack legend />`
+		},
+		{
+			id: 'pie',
+			title: 'PieChart',
+			lang: 'svelte',
+			code: `<PieChart {data} y="share" fill="segment" innerRadius={60} legend />`
+		},
+		{
+			id: 'scatter',
+			title: 'ScatterPlot',
+			lang: 'svelte',
+			code: `<ScatterPlot {data} x="displ" y="hwy" color="class" legend />`
+		},
+		{
+			id: 'bubble',
+			title: 'BubbleChart',
+			lang: 'svelte',
+			code: `<BubbleChart {data} x="cty" y="hwy" size="displ" color="class" legend />`
+		},
+		{
+			id: 'box',
+			title: 'BoxPlot',
+			lang: 'svelte',
+			code: `<BoxPlot {data} x="class" y="hwy" fill="drv" legend />`
+		},
+		{
+			id: 'violin',
+			title: 'ViolinPlot',
+			lang: 'svelte',
+			code: `<ViolinPlot {data} x="class" y="hwy" fill="drv" legend />`
+		},
+		{
+			id: 'sparkline',
+			title: 'Sparkline',
+			lang: 'svelte',
+			code: `<Sparkline data={[12, 45, 23, 67, 34, 89, 56, 72, 41, 90]} type="area" width={120} height={32} />`
 		}
 	],
 	docs: chartDocs

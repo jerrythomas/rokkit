@@ -1,14 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
-	import { setShellResponse, setShellVariant, shell } from '$lib/koan/shell.svelte'
-	import { page } from '$app/state'
+	import { setShellResponse, shell } from '$lib/koan/shell.svelte'
 
 	onMount(() => {
-		if (!shell.lastQuery) shell.lastQuery = 'Bar chart'
+		if (!shell.lastQuery) shell.lastQuery = 'Show me charts'
 		setShellResponse('chart')
-	})
-
-	$effect(() => {
-		setShellVariant(page.url.searchParams.get('variant'))
 	})
 </script>

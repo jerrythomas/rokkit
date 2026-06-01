@@ -15,7 +15,6 @@
 	configureWho({ assistant: 'Rokkit' })
 	import { Tabs, Table, Tree, MultiSelect, Select, List, Button, AlertList, Stepper, CodeBlock, Toggle, MarkdownRenderer } from '@rokkit/ui'
 	import { FormRenderer } from '@rokkit/forms'
-	import { BarChart } from '@rokkit/chart'
 	import { alerts } from '@rokkit/states'
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
 	import { theme } from '$lib/stores/theme.svelte'
@@ -324,7 +323,7 @@
 	// growing the layout file by hundreds of lines per addition.
 	const RICH_DEMOS = new Set([
 		'tabs', 'theme-wizard', 'table', 'stepper', 'date-picker',
-		'combo', 'chart', 'select', 'form', 'toasts', 'list',
+		'combo', 'select', 'form', 'toasts', 'list',
 		'multi-select', 'tree'
 	])
 	const isDynamicDemo = $derived(
@@ -857,51 +856,6 @@ ${tabsTag}`
   placeholder="Type to search countries"
 />`
 
-	// Chart demo state — quarterly revenue, BarChart
-	const chartFlat = [
-		{ quarter: 'Q1', revenue: 42 },
-		{ quarter: 'Q2', revenue: 58 },
-		{ quarter: 'Q3', revenue: 51 },
-		{ quarter: 'Q4', revenue: 73 }
-	]
-	const chartByProduct = [
-		{ quarter: 'Q1', product: 'Hardware', revenue: 24 },
-		{ quarter: 'Q1', product: 'Software', revenue: 18 },
-		{ quarter: 'Q2', product: 'Hardware', revenue: 31 },
-		{ quarter: 'Q2', product: 'Software', revenue: 27 },
-		{ quarter: 'Q3', product: 'Hardware', revenue: 28 },
-		{ quarter: 'Q3', product: 'Software', revenue: 23 },
-		{ quarter: 'Q4', product: 'Hardware', revenue: 39 },
-		{ quarter: 'Q4', product: 'Software', revenue: 34 }
-	]
-
-	// Chart variants 'grouped' and 'stacked' want a fill field, so swap the dataset.
-	const chartData = $derived(
-		activeVariant?.id === 'grouped' || activeVariant?.id === 'stacked'
-			? chartByProduct
-			: chartFlat
-	)
-
-	const chartCode = $derived.by(() => {
-		const isGrouped = activeVariant?.id === 'grouped' || activeVariant?.id === 'stacked'
-		const propLine = ['data={sales}', 'x="quarter"', 'y="revenue"']
-		if (isGrouped) propLine.push('fill="product"', 'legend')
-		if (activeVariant?.id === 'stacked') propLine.push('stack')
-		if (activeVariant?.id === 'with-labels') propLine.push('label')
-		const rows = isGrouped
-			? `    { quarter: 'Q1', product: 'Hardware', revenue: 24 },\n    { quarter: 'Q1', product: 'Software', revenue: 18 },\n    /* …8 rows total */`
-			: `    { quarter: 'Q1', revenue: 42 },\n    { quarter: 'Q2', revenue: 58 },\n    { quarter: 'Q3', revenue: 51 },\n    { quarter: 'Q4', revenue: 73 }`
-		return `<script>
-  import { BarChart } from '@rokkit/chart'
-
-  const sales = [
-${rows}
-  ]
-<\/script>
-
-<BarChart ${propLine.join(' ')} />`
-	})
-
 	// Select demo state — 20 flat options (default), with icons (with-icons),
 	// or organized into 3 groups (grouped). The shape is what changes; the
 	// component is the same.
@@ -1274,7 +1228,6 @@ ${rows}
 			case 'stepper':       return stepperCode
 			case 'date-picker':   return dateCode
 			case 'combo':         return comboCode
-			case 'chart':         return chartCode
 			case 'select':        return selectCode
 			case 'form':          return formCode
 			case 'toasts':        return toastsCode
@@ -1764,57 +1717,6 @@ ${rows}
 						Open the dropdown. Start typing — e.g. "ne" narrows to Netherlands,
 						New Zealand. Arrow keys walk the filtered set; Enter selects;
 						Escape clears the filter without closing.
-					</ChatMessage>
-					{#if variantChipItems.length > 0}
-						<ChatMessage kind="info" status="try-variants" icon="i-mdi:auto-fix">
-							Pick a variant — same canvas, different shape or props. URL
-							updates so each pick is bookmarkable.
-						</ChatMessage>
-						<Chips items={variantChipItems} onselect={pickVariant} />
-					{/if}
-				</ChatStream>
-			{:else if shell.phase === 'response' && shell.demoType === 'chart'}
-				<ChatStream>
-					<ChatMessage
-						kind="user"
-						ago="just now"
-						icon="i-mdi:chat-outline"
-					>
-						{shell.lastQuery}
-					</ChatMessage>
-					<ChatMessage
-						kind="info"
-						status="mounted"
-						ago="just now"
-						icon="i-mdi:chart-bar"
-					>
-						<code>&lt;BarChart/&gt;</code> from <code>@rokkit/chart</code> on the
-						canvas. Four rows of quarterly revenue, mapped to <code>x</code>
-						and <code>y</code> fields — the SVG is built from the data.
-						Palette colors, gridlines, and hover tooltips come for free.
-						<button type="button" class="mounted-callout" onclick={resetVariant} disabled={!activeVariant}>
-								<span class="callout-label">Canvas →</span>
-								<span>Quarterly revenue · Q1–Q4</span>
-							</button>
-					</ChatMessage>
-					<ChatMessage
-						kind="info"
-						status="explained"
-						icon="i-mdi:book-open-variant"
-					>
-						<strong>Field-mapped, declarative.</strong> No D3 boilerplate, no
-						manual axis math. The data shape drives everything via
-						<code>x</code>, <code>y</code>, <code>fill</code>, <code>label</code>,
-						<code>stack</code>, and <code>stat</code> props. Aggregations and
-						color grouping are one keyword each.
-					</ChatMessage>
-					<ChatMessage
-						kind="info"
-						status="try"
-						icon="i-mdi:gesture-tap"
-					>
-						Hover a bar for the tooltip. Flip the chrome <em>style</em> to see
-						the chart re-skin via palette tokens — same data, different look.
 					</ChatMessage>
 					{#if variantChipItems.length > 0}
 						<ChatMessage kind="info" status="try-variants" icon="i-mdi:auto-fix">
@@ -2567,52 +2469,6 @@ ${rows}
 							<button type="button">
 								<span class="i-mdi:content-copy" aria-hidden="true"></span>
 								Copy code
-							</button>
-						{/snippet}
-					</ChatResponse>
-
-				</div>
-			{:else if shell.phase === 'response' && shell.demoType === 'chart'}
-				<div class="canvas-head">
-					<div class="canvas-eyebrow">Mounted demo · live{#if activeVariant} · variant: {activeVariant.label.toLowerCase()}{/if}</div>
-					<div class="canvas-title">BarChart · data-driven SVG</div>
-					<div class="canvas-sub">
-						Quarterly revenue. Pass rows + <code>x</code>/<code>y</code> field
-						names; <code>&lt;BarChart/&gt;</code> handles the axes, palette,
-						gridlines, and tooltips.
-					</div>
-				</div>
-				<div class="canvas-body response">
-					<ChatResponse
-						name="&lt;BarChart/&gt;"
-						meta={`· @rokkit/chart · style=${vibe.style}${activeVariant ? ` · variant=${activeVariant.id}` : ''}`}
-						kicker="LIVE"
-					>
-						{#snippet icon()}
-							<span class="i-mdi:chart-bar" aria-hidden="true"></span>
-						{/snippet}
-						<div class="chart-mount">
-							<BarChart data={chartData} x="quarter" y="revenue" {...variantProps} {...tweakProps} />
-						</div>
-						{#snippet props()}
-							<span>rows</span><span data-value>[4]</span>
-							<span data-sep>·</span>
-							<span>x</span><span data-value>quarter</span>
-							<span data-sep>·</span>
-							<span>y</span><span data-value>revenue</span>
-							{#if activeVariant}
-								<span data-sep>·</span>
-								<span>variant</span><span data-value>{activeVariant.id}</span>
-							{/if}
-						{/snippet}
-						{#snippet actions()}
-							<button type="button">
-								<span class="i-mdi:content-copy" aria-hidden="true"></span>
-								Copy code
-							</button>
-							<button type="button">
-								<span class="i-mdi:download" aria-hidden="true"></span>
-								Export SVG
 							</button>
 						{/snippet}
 					</ChatResponse>
@@ -3569,11 +3425,6 @@ ${rows}
 	.select-mount {
 		min-height: 80px;
 		max-width: 340px;
-	}
-
-	.chart-mount {
-		min-height: 280px;
-		max-width: 640px;
 	}
 
 	.combo-mount {
