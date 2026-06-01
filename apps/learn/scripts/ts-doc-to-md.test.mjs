@@ -36,3 +36,17 @@ test('strips leading JSDoc preamble before the export', () => {
   ].join('\n')
   assert.equal(convert(input), '# Body')
 })
+
+test('unescapes literal backslash matching TS template-literal runtime', () => {
+  // Source bytes: \\\` (3 backslashes + backtick)
+  // TS lexer: \\ → \, then \` → `, runtime = "\`" (2 chars)
+  const input = "export const xDocs = `\\\\\\`x`"
+  assert.equal(convert(input), '\\`x')
+})
+
+test('handles double-escaped backslash before backtick', () => {
+  // Source bytes: \\\\\\` (5 backslashes + backtick)
+  // TS lexer: \\ → \, \\ → \, \` → `, runtime = "\\`" (3 chars)
+  const input = "export const xDocs = `\\\\\\\\\\\\`x`"
+  assert.equal(convert(input), '\\\\`x')
+})

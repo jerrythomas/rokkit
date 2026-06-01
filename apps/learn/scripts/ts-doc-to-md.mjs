@@ -9,6 +9,7 @@ export function convert(source) {
   const m = stripped.match(PATTERN)
   if (!m) throw new Error('no matching "export const NAME = `...`" pattern found')
   return m[1]
+    .replace(/\\\\/g, '\\')
     .replace(/\\`/g, '`')
     .replace(/\\\$\{/g, '${')
 }
