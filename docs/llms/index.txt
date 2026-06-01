@@ -318,7 +318,7 @@ Utility class pattern: `{prefix}-{role}-z{n}`
 
 ## Guides
 
-Long-form prose covering framework concepts. Mirrors what users see at `/app/guide-*` in the demo app.
+Long-form prose covering framework concepts. Mirrors what users see at `/guides/*` in the demo app.
 
 - [guides/getting-started.txt](/llms/guides/getting-started.txt) — install, theme setup, first component
 - [guides/data-binding.txt](/llms/guides/data-binding.txt) — fields prop, default field names, primitives

@@ -1,5 +1,71 @@
 # Project Journal
 
+## 2026-06-01 — Split guides into /guides section + migrate prose docs to .md
+
+Two coordinated changes landed on `develop`. Backlog/spec/plan:
+`docs/backlog/2026-06-01-guides-section-split.md` and
+`docs/plans/2026-06-01-guides-section.md`.
+
+**Information architecture**
+
+Eleven guide pages moved out of the `/app` chat-shell into a dedicated
+`/guides` section with its own layout — top-bar with brand + section nav
++ search, 240px left TOC rail grouped by category, scrollable content
+column. No composer / conversation list / canvas tabs. The chat shell
+now hosts only interactive demos.
+
+- New routes: `/guides/` (index, cards by category) and
+  `/guides/[slug]/+page.svelte` (renders content via the existing
+  `GuidePage` component).
+- Registry at `src/lib/guides/index.ts` exports the ordered `guides`
+  array, `findGuide(slug)`, and `guidesByCategory()`. All three are
+  consumed by the layout, index page, and slug route.
+- `Search.svelte` wires `minisearch` over title / description / content.
+- Layout uses a deterministic `min-height: 0` chain so both rail and
+  content column scroll independently — the previously hit-bug class
+  where a missing `min-height: 0` somewhere up the flex/grid path
+  silently kills scroll.
+- Legacy URLs preserved: `/app/guide-[slug]` is a 301 to `/guides/<slug>`.
+- 11 demo folders (`koan/demos/guide-*/`), 11 static route folders
+  (`/app/guide-*/`), and 11 `ShellDemoType`/`DemoKind`/`catalog` literals
+  removed.
+
+**Storage migration: .ts → .md**
+
+All 59 prose-doc files (11 guide bodies + 48 component docs) moved from
+TypeScript template-literal exports (`` export const xDocs = `…` ``) to
+plain `.md` files loaded via Vite's `?raw` import suffix. Eliminates
+~300 hand-escaped `\` ` and `\${` sequences across the tree, gives full
+markdown editor support (preview, syntax highlighting, format-on-save),
+and lets non-developers edit prose without touching TS.
+
+Converter discovered two real bugs during execution:
+- `tabs/docs.ts` has a JSDoc preamble before its export — the regex
+  anchored at `^\s*export\s+const` rejected it. Fixed by stripping a
+  leading `/** ... */` block before pattern-matching.
+- Initial converter unescaped `` \` `` and `\${` but not `\\` → `\`.
+  Result: source `\\\`` (4 source bytes, TS runtime `\` + `` ` ``, 2
+  chars) was producing `\\` + `` ` `` (3 chars) in `.md` output — one
+  extra visible backslash visible in rendered code blocks. Verified
+  against the bun-evaluated TS runtime that the converter output now
+  matches byte-for-byte. Affected 5 files documenting nested
+  template-literal / fenced-block syntax (`code/docs.md`,
+  `markdown-renderer/docs.md`, `guide-charts/content.md`,
+  `guide-ai-chatbots/content.md`, plus the JSDoc-preamble case).
+- All 59 generated `.md` files validated with prettier 3.8
+  `--embedded-language-formatting=off` (so code-fence content isn't
+  reformatted). 16 files needed cosmetic normalization (table column
+  padding, `*italic*` → `_italic_`, list marker style); applied.
+
+**Verification**
+
+`bun run test:ci` — 3518/3518 pass (was 3511 — added 7 new
+`guides/index.spec.ts` tests). `bun run lint` — 0 errors. Production
+build clean. Legacy URL redirect verified.
+
+**Commits**: `3bade079`, `8a747b1e`, `7a23ed4b`, `7250af66`, `0de107cb`,
+`2a2aab8f`, `2533b08e`, plus the journal/cleanup commit.
+
 ### Trimmed Token Vocabulary (release 1) — complete (2026-05-15)
 
 **What was done:**

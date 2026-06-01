@@ -94,5 +94,5 @@ prose via fenced `plot` code blocks:
 \\`\\`\\`
 ```
 
-See the [AI Chatbots guide](/app/guide-ai-chatbots) for how this
+See the [AI Chatbots guide](/guides/ai-chatbots) for how this
 plays with LLM responses.

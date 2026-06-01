@@ -18,7 +18,7 @@ Reactive state machines + proxies:
 - **Stores** — `alerts` (for AlertList), `messages`
   (localised labels), `vibe` (the active style / skin / mode).
 
-See the [Utilities](/app/guide-utilities) guide for how to use
+See the [Utilities](/guides/utilities) guide for how to use
 controllers + proxies to build your own components.
 
 ## `@rokkit/data`
@@ -77,7 +77,7 @@ Pure utilities — no Svelte runes, no dependencies:
 ## `@rokkit/blocks`
 
 MarkdownRenderer plugins that turn fenced code blocks into live
-components — see the [AI Chatbots](/app/guide-ai-chatbots) guide
+components — see the [AI Chatbots](/guides/ai-chatbots) guide
 for the integration story.
 
 | Plugin            | Language    | Renders                   |

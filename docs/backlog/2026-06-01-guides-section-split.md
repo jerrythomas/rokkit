@@ -1,7 +1,7 @@
 # Split guides into their own `/guides` section + migrate prose-doc storage to `.md`
 
 **Date:** 2026-06-01
-**Status:** Drafted — design approved, awaiting implementation plan
+**Status:** Shipped (2026-06-01) — see `agents/journal.md`
 **Parent:** Koan / Learn app information architecture
 
 ## Summary
