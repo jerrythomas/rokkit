@@ -49,22 +49,8 @@ import buttonGroup from './demos/button-group/meta'
 import tooltip from './demos/tooltip/meta'
 import codeGroup from './demos/code-group/meta'
 import effects from './demos/effects/meta'
-import guideGettingStarted from './demos/guide-getting-started/meta'
-import guideDataBinding from './demos/guide-data-binding/meta'
-import guideComposability from './demos/guide-composability/meta'
-import guideTheming from './demos/guide-theming/meta'
-import guideAccessibility from './demos/guide-accessibility/meta'
-import guideForms from './demos/guide-forms/meta'
-import guideCharts from './demos/guide-charts/meta'
-import guideUtilities from './demos/guide-utilities/meta'
-import guideToolkit from './demos/guide-toolkit/meta'
-import guideToolchain from './demos/guide-toolchain/meta'
-import guideAiChatbots from './demos/guide-ai-chatbots/meta'
 
 export const catalog: DemoMeta[] = [
-	guideGettingStarted, guideDataBinding, guideComposability,
-	guideTheming, guideAccessibility, guideForms, guideCharts,
-	guideUtilities, guideToolkit, guideToolchain, guideAiChatbots,
 	themeWizard, tabs, toasts, table, tree, multiSelect, list, form, select,
 	chart, combo, datePicker, stepper, button,
 	badge, pill, avatar, divider, message, swatch,
@@ -151,18 +137,7 @@ export const DEMO_ROUTE: Record<string, string> = {
 	'button-group': '/app/button-group',
 	tooltip: '/app/tooltip',
 	'code-group': '/app/code-group',
-	effects: '/app/effects',
-	'guide-getting-started': '/app/guide-getting-started',
-	'guide-data-binding': '/app/guide-data-binding',
-	'guide-composability': '/app/guide-composability',
-	'guide-theming': '/app/guide-theming',
-	'guide-accessibility': '/app/guide-accessibility',
-	'guide-forms': '/app/guide-forms',
-	'guide-charts': '/app/guide-charts',
-	'guide-utilities': '/app/guide-utilities',
-	'guide-toolkit': '/app/guide-toolkit',
-	'guide-toolchain': '/app/guide-toolchain',
-	'guide-ai-chatbots': '/app/guide-ai-chatbots'
+	effects: '/app/effects'
 }
 
 export function routeFor(id: string): string | null {

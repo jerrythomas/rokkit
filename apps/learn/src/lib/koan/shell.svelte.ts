@@ -56,17 +56,6 @@ export type ShellDemoType =
 	| 'tooltip'
 	| 'code-group'
 	| 'effects'
-	| 'guide-getting-started'
-	| 'guide-data-binding'
-	| 'guide-composability'
-	| 'guide-theming'
-	| 'guide-accessibility'
-	| 'guide-forms'
-	| 'guide-charts'
-	| 'guide-utilities'
-	| 'guide-toolkit'
-	| 'guide-toolchain'
-	| 'guide-ai-chatbots'
 
 export const shell = $state<{
 	phase: ShellPhase
