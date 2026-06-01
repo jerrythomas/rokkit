@@ -2,18 +2,18 @@
 	/** @type {{ score: number, size?: number }} */
 	const { score, size = 100 } = $props()
 
-	const cx = size / 2
-	const cy = size / 2
-	const r = (size - 16) / 2
-	const circumference = 2 * Math.PI * r
+	const cx = $derived(size / 2)
+	const cy = $derived(size / 2)
+	const r = $derived((size - 16) / 2)
+	const circumference = $derived(2 * Math.PI * r)
 	// Arc spans 300 degrees, starting at -150
-	const arcLength = (300 / 360) * circumference
-	const filledLength = (score / 100) * arcLength
-	const dashArray = `${filledLength} ${circumference - filledLength}`
-	const trackDashArray = `${arcLength} ${circumference - arcLength}`
-	const dashOffset = -((360 - 300) / 2 / 360) * circumference
-	const viewBox = `0 0 ${size} ${size}`
-	const transform = `rotate(-90 ${cx} ${cy})`
+	const arcLength = $derived((300 / 360) * circumference)
+	const filledLength = $derived((score / 100) * arcLength)
+	const dashArray = $derived(`${filledLength} ${circumference - filledLength}`)
+	const trackDashArray = $derived(`${arcLength} ${circumference - arcLength}`)
+	const dashOffset = $derived(-((360 - 300) / 2 / 360) * circumference)
+	const viewBox = $derived(`0 0 ${size} ${size}`)
+	const transform = $derived(`rotate(-90 ${cx} ${cy})`)
 </script>
 
 <svg width={size} height={size} viewBox={viewBox} class="enso-ring">

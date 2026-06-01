@@ -1,4 +1,5 @@
 <script>
+	import { untrack } from 'svelte'
 	import { goto } from '$app/navigation'
 	import { Button, List } from '@rokkit/ui'
 	import { m } from '$lib/paraglide/messages.js'
@@ -29,7 +30,7 @@
 		}))
 	)
 
-	let folders = $state([...data.folders])
+	let folders = $state(untrack(() => [...data.folders]))
 	let newFolder = $state('')
 
 	function addFolder() {

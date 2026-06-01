@@ -4,8 +4,8 @@
   "version": "1.0.6",
   "type": "module",
   "scripts": {
-    "dev": "cp -r ../../docs/llms ./static && vite dev",
-    "build": "cp -r ../../docs/llms ./static && vite build",
+    "dev": "cp -r ../../docs/llms ./static && svelte-kit sync && vite dev",
+    "build": "cp -r ../../docs/llms ./static && svelte-kit sync && vite build",
     "preview": "vite preview",
     "test:e2e": "playwright test",
     "test:e2e:update": "playwright test --update-snapshots",
