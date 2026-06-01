@@ -103,7 +103,11 @@
 	)
 
 	const seedSuggestions = [
-		{ label: 'Quarterly revenue chart', query: 'Show me a chart of quarterly revenue' },
+		{ label: 'Bar chart', query: 'Show me a bar chart of quarterly revenue' },
+		{ label: 'Line chart', query: 'Show monthly revenue as a line chart' },
+		{ label: 'Pie chart', query: 'Show market share by segment as a pie chart' },
+		{ label: 'Scatter plot', query: 'Show a scatter plot of displacement vs highway mpg' },
+		{ label: 'Box plot', query: 'Show highway mpg as a box plot by class' },
 		{ label: 'Products table', query: 'Show me a sortable table of products' },
 		{ label: 'Try: paste sales JSON', query: SAMPLE_SALES },
 		{ label: 'Try: paste a user record', query: SAMPLE_USER }

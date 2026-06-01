@@ -21,10 +21,14 @@ type Route = {
 
 const ROUTES: Route[] = [
 	{
-		// Order matters: more specific patterns first. chart-grouped must beat
-		// the plain `chart` route since "grouped" implies "chart" too.
+		// Order matters: chart-grouped is the "stacked / grouped *bars*" case
+		// for the bar-chart variant slabs. Narrowed to require an explicit
+		// "bar", "product", or "series" mention so "stacked area" falls
+		// through to the area-chart route below instead of producing a bar
+		// chart. Plain `stacked` alone is too ambiguous (could be stacked
+		// area / stacked column / stacked anything).
 		id: 'chart-grouped',
-		keywords: /\b(grouped|by product|stacked|two series|multi[-\s]?series)\b/i,
+		keywords: /\b(grouped[\s-]?bar|stacked[\s-]?bar|stack[\s-]?the[\s-]?bars?|by[\s-]?product|two[\s-]?series|multi[\s-]?series)\b/i,
 		build: (q) => {
 			const stack = /\b(stack|stacked)\b/i.test(q)
 			const spec = {
@@ -60,6 +64,279 @@ const ROUTES: Route[] = [
 				}
 			]
 		}
+	},
+	{
+		id: 'line-chart',
+		keywords: /\b(line[\s-]?chart|line[\s-]?graph|trend(s)?|over[\s-]?time|monthly|time[\s-]?series)\b/i,
+		build: () => [
+			{
+				kind: 'prose',
+				text: 'Monthly revenue across two products as a <LineChart/>. `color: "product"` splits the series — two trend lines instead of one.'
+			},
+			{
+				kind: 'markdown',
+				markdown: `\`\`\`plot\n${JSON.stringify({
+					title: 'Monthly revenue · trends by product',
+					data: [
+						{ month: 'Jan', product: 'Pro', revenue: 80 },
+						{ month: 'Feb', product: 'Pro', revenue: 92 },
+						{ month: 'Mar', product: 'Pro', revenue: 110 },
+						{ month: 'Apr', product: 'Pro', revenue: 105 },
+						{ month: 'May', product: 'Pro', revenue: 128 },
+						{ month: 'Jun', product: 'Pro', revenue: 145 },
+						{ month: 'Jan', product: 'Lite', revenue: 30 },
+						{ month: 'Feb', product: 'Lite', revenue: 38 },
+						{ month: 'Mar', product: 'Lite', revenue: 42 },
+						{ month: 'Apr', product: 'Lite', revenue: 50 },
+						{ month: 'May', product: 'Lite', revenue: 48 },
+						{ month: 'Jun', product: 'Lite', revenue: 55 }
+					],
+					x: 'month',
+					y: 'revenue',
+					color: 'product',
+					legend: true,
+					geoms: [{ type: 'line' }],
+					height: 240,
+					grid: true,
+					margin: { top: 8, right: 16, bottom: 36, left: 44 }
+				})}\n\`\`\``
+			},
+			{
+				kind: 'suggestions',
+				intro: 'Try',
+				items: [
+					{ label: 'Same data as area', query: 'Show monthly revenue as a stacked area chart' },
+					{ label: 'Show as a table', query: 'Show the monthly revenue data as a table' }
+				]
+			}
+		]
+	},
+	{
+		id: 'area-chart',
+		keywords: /\b(area[\s-]?chart|area[\s-]?graph|filled[\s-]?line|stacked[\s-]?area)\b/i,
+		build: () => [
+			{
+				kind: 'prose',
+				text: 'Same monthly data, stacked as filled areas. Each band reads as "this product\'s contribution"; the top edge is the total.'
+			},
+			{
+				kind: 'markdown',
+				markdown: `\`\`\`plot\n${JSON.stringify({
+					title: 'Monthly revenue · stacked area',
+					data: [
+						{ month: 'Jan', product: 'Pro', revenue: 80 },
+						{ month: 'Feb', product: 'Pro', revenue: 92 },
+						{ month: 'Mar', product: 'Pro', revenue: 110 },
+						{ month: 'Apr', product: 'Pro', revenue: 105 },
+						{ month: 'May', product: 'Pro', revenue: 128 },
+						{ month: 'Jun', product: 'Pro', revenue: 145 },
+						{ month: 'Jan', product: 'Lite', revenue: 30 },
+						{ month: 'Feb', product: 'Lite', revenue: 38 },
+						{ month: 'Mar', product: 'Lite', revenue: 42 },
+						{ month: 'Apr', product: 'Lite', revenue: 50 },
+						{ month: 'May', product: 'Lite', revenue: 48 },
+						{ month: 'Jun', product: 'Lite', revenue: 55 }
+					],
+					x: 'month',
+					y: 'revenue',
+					fill: 'product',
+					stack: true,
+					legend: true,
+					geoms: [{ type: 'area' }],
+					height: 240,
+					grid: true,
+					margin: { top: 8, right: 16, bottom: 36, left: 44 }
+				})}\n\`\`\``
+			},
+			{
+				kind: 'suggestions',
+				intro: 'Try',
+				items: [
+					{ label: 'Switch to lines', query: 'Show monthly revenue as a line chart' }
+				]
+			}
+		]
+	},
+	{
+		id: 'pie-chart',
+		keywords: /\b(pie[\s-]?chart|donut|share[s]?|market[\s-]?share|segment(s|ation)?|distribution[\s-]?of)\b/i,
+		build: () => [
+			{
+				kind: 'prose',
+				text: 'Market share by segment as a donut. `innerRadius` carves out the centre; `fill: "segment"` colours one slice per segment.'
+			},
+			{
+				kind: 'markdown',
+				markdown: `\`\`\`plot\n${JSON.stringify({
+					title: 'Market share by segment',
+					data: [
+						{ segment: 'Mobile', share: 42 },
+						{ segment: 'Desktop', share: 35 },
+						{ segment: 'Tablet', share: 15 },
+						{ segment: 'Smart TV', share: 5 },
+						{ segment: 'Other', share: 3 }
+					],
+					y: 'share',
+					fill: 'segment',
+					legend: true,
+					geoms: [{ type: 'arc', options: { innerRadius: 60 } }],
+					height: 280,
+					margin: { top: 8, right: 16, bottom: 8, left: 16 }
+				})}\n\`\`\``
+			},
+			{
+				kind: 'suggestions',
+				intro: 'Try',
+				items: [
+					{ label: 'Same data as a bar chart', query: 'Show segment share as a bar chart' }
+				]
+			}
+		]
+	},
+	{
+		id: 'scatter-plot',
+		keywords: /\b(scatter[\s-]?(plot|chart)?|x[\s-]?vs[\s-]?y|correlation|displacement)\b/i,
+		build: () => [
+			{
+				kind: 'prose',
+				text: 'Engine displacement vs highway mpg — one point per car, coloured by class. Classic <ScatterPlot/>: paired numeric + a categorical color channel.'
+			},
+			{
+				kind: 'markdown',
+				markdown: `\`\`\`plot\n${JSON.stringify({
+					title: 'Engine displacement vs highway mpg',
+					data: [
+						{ class: 'compact', displ: 1.4, hwy: 35 },
+						{ class: 'compact', displ: 1.6, hwy: 33 },
+						{ class: 'compact', displ: 1.8, hwy: 31 },
+						{ class: 'midsize', displ: 2.0, hwy: 30 },
+						{ class: 'midsize', displ: 2.4, hwy: 28 },
+						{ class: 'midsize', displ: 3.0, hwy: 25 },
+						{ class: 'suv', displ: 3.0, hwy: 23 },
+						{ class: 'suv', displ: 3.5, hwy: 22 },
+						{ class: 'suv', displ: 4.0, hwy: 20 },
+						{ class: 'suv', displ: 4.6, hwy: 18 },
+						{ class: 'pickup', displ: 4.0, hwy: 19 },
+						{ class: 'pickup', displ: 5.0, hwy: 17 },
+						{ class: 'pickup', displ: 5.7, hwy: 16 }
+					],
+					x: 'displ',
+					y: 'hwy',
+					color: 'class',
+					legend: true,
+					geoms: [{ type: 'point' }],
+					height: 280,
+					grid: true,
+					margin: { top: 8, right: 16, bottom: 36, left: 44 }
+				})}\n\`\`\``
+			},
+			{
+				kind: 'suggestions',
+				intro: 'Try',
+				items: [
+					{ label: 'Size by displacement', query: 'Show the same data as a bubble chart with size by displacement' }
+				]
+			}
+		]
+	},
+	{
+		id: 'bubble-chart',
+		keywords: /\b(bubble[\s-]?(chart|plot)?|size[\s-]?(field|by))\b/i,
+		build: () => [
+			{
+				kind: 'prose',
+				text: 'City vs highway mpg with bubble size mapped to engine displacement. <BubbleChart/> = ScatterPlot + a `size` channel.'
+			},
+			{
+				kind: 'markdown',
+				markdown: `\`\`\`plot\n${JSON.stringify({
+					title: 'City vs highway mpg · size = displ',
+					data: [
+						{ class: 'compact', cty: 28, hwy: 35, displ: 1.4 },
+						{ class: 'compact', cty: 26, hwy: 33, displ: 1.6 },
+						{ class: 'midsize', cty: 22, hwy: 30, displ: 2.0 },
+						{ class: 'midsize', cty: 20, hwy: 28, displ: 2.4 },
+						{ class: 'suv', cty: 17, hwy: 23, displ: 3.0 },
+						{ class: 'suv', cty: 16, hwy: 22, displ: 3.5 },
+						{ class: 'suv', cty: 14, hwy: 20, displ: 4.0 },
+						{ class: 'pickup', cty: 14, hwy: 19, displ: 4.0 },
+						{ class: 'pickup', cty: 12, hwy: 17, displ: 5.0 },
+						{ class: 'pickup', cty: 11, hwy: 16, displ: 5.7 }
+					],
+					x: 'cty',
+					y: 'hwy',
+					color: 'class',
+					legend: true,
+					geoms: [{ type: 'point', size: 'displ' }],
+					height: 280,
+					grid: true,
+					margin: { top: 8, right: 16, bottom: 36, left: 44 }
+				})}\n\`\`\``
+			}
+		]
+	},
+	{
+		id: 'box-plot',
+		keywords: /\b(box[\s-]?plot|boxplot|quartile|whisker|outlier|five[\s-]?number)\b/i,
+		build: () => [
+			{
+				kind: 'prose',
+				text: 'Highway mpg distribution per class — five-number summary (min, Q1, median, Q3, max) per category. <BoxPlot/> takes raw rows; the box is computed.'
+			},
+			{
+				kind: 'markdown',
+				markdown: `\`\`\`plot\n${JSON.stringify({
+					title: 'Highway mpg distribution by class',
+					data: [
+						{ class: 'compact', hwy: 35 }, { class: 'compact', hwy: 33 }, { class: 'compact', hwy: 31 }, { class: 'compact', hwy: 29 }, { class: 'compact', hwy: 27 },
+						{ class: 'midsize', hwy: 30 }, { class: 'midsize', hwy: 28 }, { class: 'midsize', hwy: 26 }, { class: 'midsize', hwy: 25 }, { class: 'midsize', hwy: 24 },
+						{ class: 'suv', hwy: 23 }, { class: 'suv', hwy: 22 }, { class: 'suv', hwy: 20 }, { class: 'suv', hwy: 18 }, { class: 'suv', hwy: 17 },
+						{ class: 'pickup', hwy: 19 }, { class: 'pickup', hwy: 17 }, { class: 'pickup', hwy: 16 }, { class: 'pickup', hwy: 15 }, { class: 'pickup', hwy: 14 }
+					],
+					x: 'class',
+					y: 'hwy',
+					geoms: [{ type: 'box' }],
+					height: 260,
+					grid: true,
+					margin: { top: 8, right: 16, bottom: 36, left: 44 }
+				})}\n\`\`\``
+			},
+			{
+				kind: 'suggestions',
+				intro: 'Try',
+				items: [
+					{ label: 'Same data as violin', query: 'Show highway mpg as a violin plot by class' }
+				]
+			}
+		]
+	},
+	{
+		id: 'violin-plot',
+		keywords: /\b(violin[\s-]?(plot)?|density|kernel[\s-]?density)\b/i,
+		build: () => [
+			{
+				kind: 'prose',
+				text: 'Same raw data as the box plot, drawn as a violin — the silhouette is the kernel-density estimate, so you see the full shape, not just the quartiles.'
+			},
+			{
+				kind: 'markdown',
+				markdown: `\`\`\`plot\n${JSON.stringify({
+					title: 'Highway mpg density by class',
+					data: [
+						{ class: 'compact', hwy: 35 }, { class: 'compact', hwy: 33 }, { class: 'compact', hwy: 31 }, { class: 'compact', hwy: 29 }, { class: 'compact', hwy: 27 },
+						{ class: 'midsize', hwy: 30 }, { class: 'midsize', hwy: 28 }, { class: 'midsize', hwy: 26 }, { class: 'midsize', hwy: 25 }, { class: 'midsize', hwy: 24 },
+						{ class: 'suv', hwy: 23 }, { class: 'suv', hwy: 22 }, { class: 'suv', hwy: 20 }, { class: 'suv', hwy: 18 }, { class: 'suv', hwy: 17 },
+						{ class: 'pickup', hwy: 19 }, { class: 'pickup', hwy: 17 }, { class: 'pickup', hwy: 16 }, { class: 'pickup', hwy: 15 }, { class: 'pickup', hwy: 14 }
+					],
+					x: 'class',
+					y: 'hwy',
+					geoms: [{ type: 'violin' }],
+					height: 260,
+					grid: true,
+					margin: { top: 8, right: 16, bottom: 36, left: 44 }
+				})}\n\`\`\``
+			}
+		]
 	},
 	{
 		id: 'chart',
@@ -201,12 +478,26 @@ const ROUTES: Route[] = [
 const FALLBACK: Block[] = [
 	{
 		kind: 'prose',
-		text: "I don't have a scripted response for that yet. The mock router knows about charts, tables, forms, and lists. Try one of these:"
+		text: "I don't have a scripted response for that yet. The mock router knows about charts (bar, line, area, pie, scatter, bubble, box, violin), tables, forms, and lists. Try one of these:"
 	},
 	{
 		kind: 'suggestions',
+		intro: 'Charts',
 		items: [
-			{ label: 'Quarterly revenue chart', query: 'Show me a chart of quarterly revenue' },
+			{ label: 'Bar chart', query: 'Show me a bar chart of quarterly revenue' },
+			{ label: 'Line chart', query: 'Show monthly revenue as a line chart' },
+			{ label: 'Area chart', query: 'Show monthly revenue as a stacked area chart' },
+			{ label: 'Pie chart', query: 'Show market share by segment as a pie chart' },
+			{ label: 'Scatter plot', query: 'Show a scatter plot of displacement vs highway mpg' },
+			{ label: 'Bubble chart', query: 'Show a bubble chart with size by displacement' },
+			{ label: 'Box plot', query: 'Show highway mpg as a box plot by class' },
+			{ label: 'Violin plot', query: 'Show highway mpg as a violin plot by class' }
+		]
+	},
+	{
+		kind: 'suggestions',
+		intro: 'Other shapes',
+		items: [
 			{ label: 'Products table', query: 'Show me a sortable table of products' },
 			{ label: 'Sign-up form', query: 'Render a sign-up form from a schema' },
 			{ label: 'Settings list', query: 'Show a collapsible settings list' }
