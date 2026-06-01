@@ -1,18 +1,25 @@
-import { paraglideMiddleware } from '$lib/paraglide/server'
-import rtlDetect from 'rtl-detect'
+import { paraglideMiddleware } from '$lib/paraglide/server.js'
+import { getLocale, getTextDirection } from '$lib/paraglide/runtime.js'
+import { themeInitScript } from '@rokkit/unocss/hooks'
+
+const initScript = themeInitScript({ storageKey: 'rokkit-theme', defaultStyle: 'zen-sumi' })
 
 /** @type {import('@sveltejs/kit').Handle} */
-const handleParaglide = ({ event, resolve }) =>
-	paraglideMiddleware(event.request, ({ request, locale }) => {
+export const handle = ({ event, resolve }) => {
+	return paraglideMiddleware(event.request, ({ request }) => {
 		event.request = request
-
 		return resolve(event, {
-			transformPageChunk: ({ html }) =>
-				html
-					.replace('%paraglide.lang%', locale)
-					.replace('%paraglide.textDirection%', rtlDetect.getLangDir(locale))
+			transformPageChunk({ html }) {
+				// Inject in `<head>` (just before `</head>`) so the script
+				// runs before the body element is parsed. The script writes
+				// to documentElement.dataset and to body when it exists —
+				// CSS selectors `[data-style='X'] descendant` match from the
+				// root and the page paints once in the correct skin.
+				return html
+					.replace(/<\/head>/, `${initScript}</head>`)
+					.replace('%lang%', getLocale())
+					.replace('%dir%', getTextDirection())
+			}
 		})
 	})
-
-/** @type {import('@sveltejs/kit').Handle} */
-export const handle = handleParaglide
+}

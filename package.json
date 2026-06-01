@@ -50,8 +50,7 @@
   },
   "workspaces": [
     "./packages/*",
-    "./apps/learn",
-    "./apps/demo"
+    "./apps/learn"
   ],
   "dependencies": {
     "@types/ramda": "^0.31.1",

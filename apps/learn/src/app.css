@@ -1,15 +1,19 @@
 @import '@unocss/reset/tailwind.css';
-@import '@fontsource/victor-mono';
-@import '@fontsource/victor-mono/latin.css';
-@import '@fontsource/victor-mono/300.css';
-@import '@fontsource/victor-mono/300-italic.css';
-@import '@fontsource/overpass';
-@import '@fontsource/overpass/100.css';
-@import '@fontsource/overpass/200.css';
-@import '@fontsource/overpass/300.css';
-@import '@fontsource/open-sans';
-@import '@fontsource/open-sans/300.css';
 
+/* Fonts */
+@import '@fontsource/fraunces/latin-300.css';
+@import '@fontsource/fraunces/latin-400.css';
+@import '@fontsource/fraunces/latin-500.css';
+@import '@fontsource/fraunces/latin-600.css';
+@import '@fontsource/inter';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/jetbrains-mono/latin-400.css';
+@import '@fontsource/jetbrains-mono/latin-500.css';
+@import '@fontsource/caveat/400.css';
+@import '@fontsource/caveat/500.css';
+
+/* Rokkit theme layers */
 @import '@rokkit/themes/base.css';
 @import '@rokkit/themes/rokkit.css';
 @import '@rokkit/themes/minimal.css';
@@ -17,45 +21,126 @@
 @import '@rokkit/themes/frosted.css';
 @import '@rokkit/themes/zen-sumi.css';
 
-/* Learn-site specific overrides loaded after package */
-@import './theme/base/shiki.css';
-@import './theme/base/article.css';
-@import './theme/base/typography.css';
+/* Koan compat (alias mockup tokens) + chat primitives */
+@import './lib/koan/compat.css';
+@import './lib/chat/styles/chat.css';
+
+/* ─── Global Base ────────────────────────────────────────────────────────── */
+
+:root {
+  color-scheme: light dark;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Bridge radius token */
+  --radius: var(--radius-md);
+
+  /* Script / handwriting font */
+  --font-script: 'Caveat', cursive;
+
+  /* Semantic z-scale aliases — light mode defaults */
+  --color-surface-z0:  var(--color-surface-50);
+  --color-surface-z1:  var(--color-surface-100);
+  --color-surface-z2:  var(--color-surface-200);
+  --color-surface-z3:  var(--color-surface-300);
+  --color-surface-z4:  var(--color-surface-400);
+  --color-surface-z5:  var(--color-surface-500);
+  --color-surface-z6:  var(--color-surface-600);
+  --color-surface-z7:  var(--color-surface-700);
+  --color-surface-z8:  var(--color-surface-800);
+  --color-surface-z9:  var(--color-surface-900);
+  --color-surface-z10: var(--color-surface-950);
+  --color-ink-z0:  var(--color-ink-950);
+  --color-ink-z1:  var(--color-ink-900);
+  --color-ink-z2:  var(--color-ink-800);
+  --color-ink-z3:  var(--color-ink-700);
+  --color-ink-z4:  var(--color-ink-600);
+  --color-ink-z5:  var(--color-ink-500);
+  --color-ink-z6:  var(--color-ink-400);
+  --color-ink-z7:  var(--color-ink-300);
+  --color-ink-z8:  var(--color-ink-200);
+  --color-ink-z9:  var(--color-ink-100);
+  --color-ink-z10: var(--color-ink-50);
+}
+
+/* Semantic z-scale aliases — dark mode inverts the scale */
+[data-mode="dark"] {
+  --color-surface-z0:  var(--color-surface-950);
+  --color-surface-z1:  var(--color-surface-900);
+  --color-surface-z2:  var(--color-surface-800);
+  --color-surface-z3:  var(--color-surface-700);
+  --color-surface-z4:  var(--color-surface-600);
+  --color-surface-z5:  var(--color-surface-500);
+  --color-surface-z6:  var(--color-surface-400);
+  --color-surface-z7:  var(--color-surface-300);
+  --color-surface-z8:  var(--color-surface-200);
+  --color-surface-z9:  var(--color-surface-100);
+  --color-surface-z10: var(--color-surface-50);
+  --color-ink-z0:  var(--color-ink-50);
+  --color-ink-z1:  var(--color-ink-100);
+  --color-ink-z2:  var(--color-ink-200);
+  --color-ink-z3:  var(--color-ink-300);
+  --color-ink-z4:  var(--color-ink-400);
+  --color-ink-z5:  var(--color-ink-500);
+  --color-ink-z6:  var(--color-ink-600);
+  --color-ink-z7:  var(--color-ink-700);
+  --color-ink-z8:  var(--color-ink-800);
+  --color-ink-z9:  var(--color-ink-900);
+  --color-ink-z10: var(--color-ink-950);
+}
+
+html {
+  min-height: 100%;
+}
 
 body {
-  @apply flex h-screen w-screen flex-col overflow-hidden;
-  @apply font-body bg-surface-z1 text-surface-floating font-extralight;
+  min-height: 100%;
+  /* Removed `overflow: hidden` — it was blocking scroll on the landing.
+     The /app route uses position: fixed on its shell, so it doesn't
+     rely on body overflow-hidden. */
+  font-family: var(--font-sans);
+  font-size: 13px;
+  background: var(--color-surface-z1);
+  color: var(--color-ink-z1);
 }
 
-body[data-mode='dark'] .i-logo\:github {
-  filter: invert(1);
-}
-app {
-  @apply bg-surface-z1 text-surface-floating relative flex flex-1 flex-col overflow-hidden;
+
+/* ── Font utility classes ───────────────────────────────────── */
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
 }
 
-main {
-  @apply flex-1;
+.display {
+  font-family: var(--font-display);
+  font-feature-settings: 'ss01';
+  letter-spacing: -0.02em;
 }
 
-[data-story-root] {
-  @apply space-y-8;
+.kanji {
+  font-family: var(--font-kanji, 'Yu Mincho', 'Hiragino Mincho ProN', 'Songti SC', serif);
 }
 
-[data-playground-root] > header {
-  @apply border-surface-z2 bg-surface-z2 space-y-2 border-b px-6 py-8;
+/* ── Scrollbar ──────────────────────────────────────────────── */
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: transparent; border-radius: 3px; }
+:hover > ::-webkit-scrollbar-thumb,
+*:hover::-webkit-scrollbar-thumb { background: color-mix(in oklch, var(--color-surface-z9) 20%, transparent); }
+
+/* ── Focus ──────────────────────────────────────────────────── */
+
+button:focus-visible {
+  outline: 1.5px solid var(--color-primary-z5);
+  outline-offset: 2px;
+  border-radius: 3px;
 }
 
-/* Playground preview area grid */
-.preview-area {
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
-  background-size: 24px 24px;
+/* ── Selection ──────────────────────────────────────────────── */
+
+::selection {
+  background: color-mix(in oklch, var(--color-primary-z5) 12%, transparent);
 }
 
-[data-mode='dark'] .preview-area {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-}

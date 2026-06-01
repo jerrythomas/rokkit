@@ -24,6 +24,7 @@ export default defineConfig({
 				'**/node_modules/**',
 				'**/dist/**',
 				'**/apps/learn/**',
+				'**/apps/archive/**',
 				'**/fixtures/**',
 				'**/types.ts',
 				'**/.worktrees/**'
@@ -67,11 +68,17 @@ export default defineConfig({
 				extends: true,
 				test: {
 					name: 'learn',
-					root: 'apps/learn'
+					root: 'apps/learn',
+					setupFiles: ['./spec/setup.ts']
 				},
 				resolve: {
 					alias: {
 						$lib: path.resolve('./apps/learn/src/lib'),
+						// `$app/environment` is the SvelteKit virtual module that
+						// `theme.svelte.ts` reaches for. The root vitest config
+						// doesn't load the sveltekit() plugin, so we alias it to
+						// a stub that exports the four expected fields.
+						'$app/environment': path.resolve('./apps/learn/spec/stubs/app-environment.ts'),
 						$app: path.resolve('./apps/learn/src/app')
 					}
 				}

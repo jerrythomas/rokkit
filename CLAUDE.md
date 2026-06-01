@@ -35,8 +35,8 @@ rokkit/
     design/                     <-- Architecture and design docs (numbered: NN-xxx.md)
   packages/                     <-- Library packages (@rokkit/ui, states, actions, etc.)
   apps/
-    learn/                      <-- Documentation site + interactive playgrounds + e2e tests
-    demo/                       <-- Koan showcase app (/app + /chat + /embed)
+    learn/                      <-- Koan showcase + framework guides + per-component demos (deployed)
+    archive/                    <-- Old learn site preserved during transition; remove once production verified
 ```
 
 ## Key Design Principles
