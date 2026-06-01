@@ -1,0 +1,27 @@
+import { test } from 'node:test'
+import assert from 'node:assert/strict'
+import { convert } from './ts-doc-to-md.mjs'
+
+test('strips export const scaffolding', () => {
+  const input = "export const buttonDocs = `# Button\n\nA button.`"
+  assert.equal(convert(input), '# Button\n\nA button.')
+})
+
+test('unescapes backticks', () => {
+  const input = "export const xDocs = `Use \\`code\\` inline.`"
+  assert.equal(convert(input), 'Use `code` inline.')
+})
+
+test("unescapes template interpolation sequences", () => {
+  const input = "export const xDocs = `Var: \\${name}`"
+  assert.equal(convert(input), 'Var: ${name}')
+})
+
+test('handles trailing newline before closing backtick', () => {
+  const input = "export const xDocs = `# H1\n\nbody\n`\n"
+  assert.equal(convert(input), '# H1\n\nbody\n')
+})
+
+test('throws on file without the expected pattern', () => {
+  assert.throws(() => convert('const x = 1'), /no matching `export const/i)
+})
