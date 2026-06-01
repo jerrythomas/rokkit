@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { progressDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'progress',
 	title: 'ProgressBar',
@@ -57,7 +56,7 @@ const meta: DemoMeta = {
 			code: `<ProgressBar value={null} />`
 		}
 	],
-	docs: progressDocs
+	docs
 }
 
 export default meta

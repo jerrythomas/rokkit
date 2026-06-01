@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { ratingDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'rating',
 	title: 'Rating',
@@ -33,7 +32,7 @@ const meta: DemoMeta = {
 		{ id: 'hearts', title: 'Hearts', lang: 'svelte',
 			code: `<Rating bind:value max={10}\n  icons={{ filled: 'i-mdi:heart', empty: 'i-mdi:heart-outline' }} />` }
 	],
-	docs: ratingDocs
+	docs
 }
 
 export default meta

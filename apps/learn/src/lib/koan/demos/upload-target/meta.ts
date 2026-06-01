@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { uploadTargetDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'upload-target',
 	title: 'UploadTarget',
@@ -69,7 +68,7 @@ const meta: DemoMeta = {
 			code: `<UploadTarget size="sm" onfiles={handle} />`
 		}
 	],
-	docs: uploadTargetDocs
+	docs
 }
 
 export default meta

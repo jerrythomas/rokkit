@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { toggleDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'toggle',
 	title: 'Toggle',
@@ -38,7 +37,7 @@ const meta: DemoMeta = {
 		{ id: 'icons', title: 'With icons', lang: 'svelte',
 			code: `<Toggle\n  options={[\n    { label: 'Left',  value: 'left',  icon: 'i-mdi:format-align-left' },\n    { label: 'Right', value: 'right', icon: 'i-mdi:format-align-right' }\n  ]}\n  bind:value\n/>` }
 	],
-	docs: toggleDocs
+	docs
 }
 
 export default meta

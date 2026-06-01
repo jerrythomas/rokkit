@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { floatingNavigationDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'floating-navigation',
 	title: 'FloatingNavigation',
@@ -73,7 +72,7 @@ const meta: DemoMeta = {
 			code: `<FloatingNavigation {items} bind:value observe={false} />`
 		}
 	],
-	docs: floatingNavigationDocs
+	docs
 }
 
 export default meta

@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { carouselDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'carousel',
 	title: 'Carousel',
@@ -82,7 +81,7 @@ const meta: DemoMeta = {
 </Carousel>`
 		}
 	],
-	docs: carouselDocs
+	docs
 }
 
 export default meta

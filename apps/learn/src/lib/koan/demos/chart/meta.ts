@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { chartDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'chart',
 	title: 'Charts',
@@ -121,7 +120,7 @@ const meta: DemoMeta = {
 			code: `<Sparkline data={[12, 45, 23, 67, 34, 89, 56, 72, 41, 90]} type="area" width={120} height={32} />`
 		}
 	],
-	docs: chartDocs
+	docs
 }
 
 export default meta

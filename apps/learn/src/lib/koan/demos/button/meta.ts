@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { buttonDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'button',
 	title: 'Button',
@@ -79,7 +78,7 @@ const meta: DemoMeta = {
 <Button href="https://github.com/..." target="_blank">Repo</Button>`
 		}
 	],
-	docs: buttonDocs
+	docs
 }
 
 export default meta

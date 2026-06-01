@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { toolbarDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'toolbar',
 	title: 'Toolbar',
@@ -85,7 +84,7 @@ const meta: DemoMeta = {
 			code: `<Toolbar items={tools} position="left" compact />`
 		}
 	],
-	docs: toolbarDocs
+	docs
 }
 
 export default meta

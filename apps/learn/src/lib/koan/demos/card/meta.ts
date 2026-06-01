@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { cardDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'card',
 	title: 'Card',
@@ -81,7 +80,7 @@ const meta: DemoMeta = {
 <Card variant="tertiary"><h3>Tertiary</h3></Card>`
 		}
 	],
-	docs: cardDocs
+	docs
 }
 
 export default meta

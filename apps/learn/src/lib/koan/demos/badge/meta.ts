@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { badgeDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'badge',
 	title: 'Badge',
@@ -37,7 +36,7 @@ const meta: DemoMeta = {
 		{ id: 'overflow', title: 'Overflow with max', lang: 'svelte',
 			code: `<Badge count={150} max={99} />`}
 	],
-	docs: badgeDocs
+	docs
 }
 
 export default meta

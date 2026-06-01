@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { searchFilterDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'search-filter',
 	title: 'SearchFilter',
@@ -62,7 +61,7 @@ const meta: DemoMeta = {
 />`
 		}
 	],
-	docs: searchFilterDocs
+	docs
 }
 
 export default meta

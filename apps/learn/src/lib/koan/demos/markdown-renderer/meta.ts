@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { markdownRendererDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'markdown-renderer',
 	title: 'MarkdownRenderer',
@@ -64,7 +63,7 @@ console.log('hello')
 />`
 		}
 	],
-	docs: markdownRendererDocs
+	docs
 }
 
 export default meta

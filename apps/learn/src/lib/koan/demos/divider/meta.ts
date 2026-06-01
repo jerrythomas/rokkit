@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { dividerDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'divider',
 	title: 'Divider',
@@ -33,7 +32,7 @@ const meta: DemoMeta = {
 		{ id: 'vertical', title: 'Vertical (inside a flex row)', lang: 'svelte',
 			code: `<div style="display: flex; gap: 12px; height: 32px;">\n  <span>Left</span>\n  <Divider orientation="vertical" />\n  <span>Right</span>\n</div>`}
 	],
-	docs: dividerDocs
+	docs
 }
 
 export default meta

@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { uploadProgressDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'upload-progress',
 	title: 'UploadProgress',
@@ -71,7 +70,7 @@ const meta: DemoMeta = {
 			code: `<UploadProgress files={images} view="grid" />`
 		}
 	],
-	docs: uploadProgressDocs
+	docs
 }
 
 export default meta

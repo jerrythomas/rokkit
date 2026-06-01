@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { tooltipDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'tooltip',
 	title: 'Tooltip',
@@ -71,7 +70,7 @@ const meta: DemoMeta = {
 </Tooltip>`
 		}
 	],
-	docs: tooltipDocs
+	docs
 }
 
 export default meta

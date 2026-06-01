@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { messageDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'message',
 	title: 'Message',
@@ -42,7 +41,7 @@ const meta: DemoMeta = {
 		{ id: 'rich', title: 'Rich content + actions', lang: 'svelte',
 			code: `<Message type="warning">\n  <strong>Heads up.</strong> Migration at 2 AM UTC.\n  {#snippet actions()}\n    <Button>Retry</Button>\n  {/snippet}\n</Message>` }
 	],
-	docs: messageDocs
+	docs
 }
 
 export default meta

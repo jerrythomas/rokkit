@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { datePickerDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'date-picker',
 	title: 'Date Picker',
@@ -94,7 +93,7 @@ const meta: DemoMeta = {
 }`
 		}
 	],
-	docs: datePickerDocs
+	docs
 }
 
 export default meta

@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { treeDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'tree',
 	title: 'Tree Select',
@@ -106,7 +105,7 @@ const meta: DemoMeta = {
 />`
 		}
 	],
-	docs: treeDocs
+	docs
 }
 
 export default meta

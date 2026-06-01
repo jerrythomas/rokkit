@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { rangeDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'range',
 	title: 'Range',
@@ -40,7 +39,7 @@ const meta: DemoMeta = {
 		{ id: 'range', title: 'Range mode', lang: 'svelte',
 			code: `<Range range bind:lower bind:upper min={0} max={100} />` }
 	],
-	docs: rangeDocs
+	docs
 }
 
 export default meta

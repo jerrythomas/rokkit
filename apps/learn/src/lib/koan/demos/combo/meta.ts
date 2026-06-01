@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { comboDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'combo',
 	title: 'Combobox',
@@ -92,7 +91,7 @@ const meta: DemoMeta = {
 />`
 		}
 	],
-	docs: comboDocs
+	docs
 }
 
 export default meta

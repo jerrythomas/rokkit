@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { tabsDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'tabs',
 	title: 'Tabs',
@@ -134,7 +133,7 @@ const meta: DemoMeta = {
 />`
 		}
 	],
-	docs: tabsDocs
+	docs
 }
 
 export default meta

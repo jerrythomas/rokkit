@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { listDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'list',
 	title: 'List with Groups',
@@ -102,7 +101,7 @@ const meta: DemoMeta = {
 />`
 		}
 	],
-	docs: listDocs
+	docs
 }
 
 export default meta

@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { pillDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'pill',
 	title: 'Pill',
@@ -38,7 +37,7 @@ const meta: DemoMeta = {
 		{ id: 'removable', title: 'Removable', lang: 'svelte',
 			code: `<Pill value="svelte" removable onremove={(v) => removeTag(v)} />` }
 	],
-	docs: pillDocs
+	docs
 }
 
 export default meta

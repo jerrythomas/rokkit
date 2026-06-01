@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { dropdownDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'dropdown',
 	title: 'Dropdown',
@@ -80,7 +79,7 @@ const meta: DemoMeta = {
 			code: `<Dropdown items={options} bind:value align="end" direction="up" />`
 		}
 	],
-	docs: dropdownDocs
+	docs
 }
 
 export default meta

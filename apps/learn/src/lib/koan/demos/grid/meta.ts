@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { gridDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'grid',
 	title: 'Grid',
@@ -72,7 +71,7 @@ const meta: DemoMeta = {
 			code: `<Grid items={data} fields={{ label: 'title', value: 'id' }} />`
 		}
 	],
-	docs: gridDocs
+	docs
 }
 
 export default meta

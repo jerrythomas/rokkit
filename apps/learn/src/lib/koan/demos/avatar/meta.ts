@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { avatarDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'avatar',
 	title: 'Avatar',
@@ -41,7 +40,7 @@ const meta: DemoMeta = {
 		{ id: 'status', title: 'Presence', lang: 'svelte',
 			code: `<Avatar name="Online" status="online" />` }
 	],
-	docs: avatarDocs
+	docs
 }
 
 export default meta

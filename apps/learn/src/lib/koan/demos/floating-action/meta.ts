@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { floatingActionDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'floating-action',
 	title: 'FloatingAction',
@@ -83,7 +82,7 @@ const meta: DemoMeta = {
 </div>`
 		}
 	],
-	docs: floatingActionDocs
+	docs
 }
 
 export default meta

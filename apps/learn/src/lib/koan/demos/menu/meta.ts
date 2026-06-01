@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { menuDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'menu',
 	title: 'Menu',
@@ -89,7 +88,7 @@ const meta: DemoMeta = {
 			code: `<Menu items={actions} label="More" align="end" direction="up" />`
 		}
 	],
-	docs: menuDocs
+	docs
 }
 
 export default meta

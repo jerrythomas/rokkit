@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { lazyTreeDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'lazy-tree',
 	title: 'LazyTree',
@@ -78,7 +77,7 @@ const meta: DemoMeta = {
 }`
 		}
 	],
-	docs: lazyTreeDocs
+	docs
 }
 
 export default meta

@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { timelineDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'timeline',
 	title: 'Timeline',
@@ -77,7 +76,7 @@ const meta: DemoMeta = {
 ]`
 		}
 	],
-	docs: timelineDocs
+	docs
 }
 
 export default meta

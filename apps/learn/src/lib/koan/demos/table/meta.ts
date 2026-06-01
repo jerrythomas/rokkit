@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { tableDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'table',
 	title: 'Sortable Table',
@@ -102,7 +101,7 @@ const meta: DemoMeta = {
 <Table data={filtered} {columns} />`
 		}
 	],
-	docs: tableDocs
+	docs
 }
 
 export default meta

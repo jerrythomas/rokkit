@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { paletteManagerDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'palette-manager',
 	title: 'PaletteManager',
@@ -73,7 +72,7 @@ const meta: DemoMeta = {
 			code: `<PaletteManager bind:value={palette} compact />`
 		}
 	],
-	docs: paletteManagerDocs
+	docs
 }
 
 export default meta

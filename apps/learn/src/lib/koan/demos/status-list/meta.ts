@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { statusListDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'status-list',
 	title: 'StatusList',
@@ -65,7 +64,7 @@ const meta: DemoMeta = {
 <StatusList items={checks} />`
 		}
 	],
-	docs: statusListDocs
+	docs
 }
 
 export default meta

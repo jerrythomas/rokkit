@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { switchDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'switch',
 	title: 'Switch',
@@ -34,7 +33,7 @@ const meta: DemoMeta = {
 		{ id: 'labels', title: 'With labels', lang: 'svelte',
 			code: `<Switch bind:value showLabels\n  options={[{ label: 'Off', value: false }, { label: 'On', value: true }]} />` }
 	],
-	docs: switchDocs
+	docs
 }
 
 export default meta

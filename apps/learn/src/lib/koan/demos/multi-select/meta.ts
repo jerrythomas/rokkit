@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { multiSelectDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'multi-select',
 	title: 'Multi-Select',
@@ -99,7 +98,7 @@ const meta: DemoMeta = {
 />`
 		}
 	],
-	docs: multiSelectDocs
+	docs
 }
 
 export default meta

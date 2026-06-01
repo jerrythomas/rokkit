@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { buttonGroupDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'button-group',
 	title: 'ButtonGroup',
@@ -60,7 +59,7 @@ const meta: DemoMeta = {
 <ButtonGroup size="lg">...</ButtonGroup>`
 		}
 	],
-	docs: buttonGroupDocs
+	docs
 }
 
 export default meta

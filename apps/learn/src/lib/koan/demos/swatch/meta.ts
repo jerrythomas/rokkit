@@ -1,6 +1,5 @@
 import type { DemoMeta } from '../../types'
-import { swatchDocs } from './docs'
-
+import docs from './docs.md?raw'
 const meta: DemoMeta = {
 	id: 'swatch',
 	title: 'Swatch',
@@ -41,7 +40,7 @@ const meta: DemoMeta = {
 		{ id: 'multi', title: 'Multi-select circles', lang: 'svelte',
 			code: `<Swatch options={colours} bind:value multiple shape="circle" />` }
 	],
-	docs: swatchDocs
+	docs
 }
 
 export default meta
