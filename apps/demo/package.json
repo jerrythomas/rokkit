@@ -4,8 +4,8 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev": "vite dev",
-    "build": "vite build",
+    "dev": "cp -r ../../docs/llms ./static && vite dev",
+    "build": "cp -r ../../docs/llms ./static && vite build",
     "preview": "vite preview",
     "test:e2e": "playwright test",
     "test:e2e:update": "playwright test --update-snapshots",

@@ -77,6 +77,9 @@
 		| 'code' | 'markdown-renderer' | 'search-filter' | 'palette-manager'
 		| 'dropdown' | 'progress' | 'upload-progress' | 'upload-target'
 		| 'button-group' | 'tooltip' | 'code-group' | 'effects'
+		| 'guide-getting-started' | 'guide-data-binding' | 'guide-composability'
+		| 'guide-theming' | 'guide-accessibility' | 'guide-forms' | 'guide-charts'
+		| 'guide-utilities' | 'guide-toolkit' | 'guide-toolchain' | 'guide-ai-chatbots'
 	const DEMO_ROUTE = CATALOG_DEMO_ROUTE as Record<DemoKind, string>
 
 	function pickDemoKind(query: string): DemoKind {

@@ -1,7 +1,15 @@
 // demo/src/lib/koan/types.ts
 import type { Component } from 'svelte'
 
-export type DemoCategory = 'theme' | 'navigation' | 'feedback' | 'forms' | 'data'
+export type DemoCategory =
+	| 'theme'
+	| 'navigation'
+	| 'layout'
+	| 'feedback'
+	| 'forms'
+	| 'data'
+	| 'content'
+	| 'guide'
 
 /**
  * JSON-Schema-ish parameter description. Kept loose (Record<string, unknown>)

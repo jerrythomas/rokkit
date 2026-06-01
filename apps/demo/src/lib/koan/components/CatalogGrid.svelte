@@ -19,13 +19,25 @@
 	}
 	const { filter = '' }: Props = $props()
 
-	const CATEGORY_ORDER: DemoCategory[] = ['theme', 'navigation', 'data', 'forms', 'feedback']
+	const CATEGORY_ORDER: DemoCategory[] = [
+		'guide',
+		'theme',
+		'navigation',
+		'layout',
+		'data',
+		'forms',
+		'feedback',
+		'content'
+	]
 	const CATEGORY_LABEL: Record<DemoCategory, string> = {
+		guide: 'Guides',
 		theme: 'Theme',
 		navigation: 'Navigation',
+		layout: 'Layout',
 		data: 'Data',
 		forms: 'Forms',
-		feedback: 'Feedback'
+		feedback: 'Feedback',
+		content: 'Content'
 	}
 
 	const visible = $derived.by(() => {

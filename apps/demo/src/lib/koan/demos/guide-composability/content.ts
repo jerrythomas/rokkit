@@ -1,0 +1,97 @@
+export const guideContent = `# Composability
+
+Every Rokkit component exposes named **snippet slots**. Pass a
+snippet to replace any part of the component's rendering — item
+content, group headers, empty states — without forking the
+component or fighting with CSS overrides.
+
+## Why snippets, not slots
+
+Svelte 5 snippets are the clean equivalent of render props or
+named slots from earlier eras. They keep your customization
+logic co-located with your usage, not inside the library, and
+they receive **strongly-typed arguments** (the item proxy, the
+index, etc.) so customization is type-safe.
+
+The library handles data logic, keyboard navigation, and ARIA;
+you control the pixels.
+
+## itemContent — replace the inside of a row
+
+The most common snippet is \`itemContent\`. Every selection
+component (\`List\`, \`Menu\`, \`Tree\`, \`Select\`, \`Grid\`) accepts it.
+The snippet receives a \`ProxyItem\` you can read fields off:
+
+\`\`\`svelte
+<List items={users}>
+  {#snippet itemContent(proxy)}
+    <span class="i-mdi:account" />
+    <strong>{proxy.label}</strong>
+    <em>{proxy.get('role')}</em>
+  {/snippet}
+</List>
+\`\`\`
+
+The component still renders the row wrapper (the \`<button>\` with
+\`data-path\` that the navigator needs) — your snippet just fills
+the **content** inside.
+
+## groupContent — customize group headers
+
+For collapsible / grouped components (\`List\`, \`Menu\`, \`Select\`)
+\`groupContent\` overrides the heading row of a group:
+
+\`\`\`svelte
+<Menu items={grouped}>
+  {#snippet groupContent(proxy)}
+    <span class="i-mdi:folder" />
+    {proxy.label}
+    <span class="count">{proxy.get('children').length}</span>
+  {/snippet}
+</Menu>
+\`\`\`
+
+## Per-item snippets
+
+Set \`item.snippet = 'name'\` on a data row to opt that single
+row into a **named** snippet instead of the default. Useful when
+one item needs a special layout (e.g. a "create new…" row):
+
+\`\`\`svelte
+<List items={[
+  ...users,
+  { snippet: 'create', label: '+ New user' }
+]}>
+  {#snippet itemContent(proxy)}
+    <span>{proxy.label}</span>
+  {/snippet}
+
+  {#snippet create(proxy)}
+    <button class="primary">{proxy.label}</button>
+  {/snippet}
+</List>
+\`\`\`
+
+Per-item snippets fall back to \`itemContent\` if the named
+snippet isn't defined, so you can introduce them progressively.
+
+## Layout-level snippets
+
+Some components expose snippets for chrome around the rows:
+
+| Snippet | Component | Purpose |
+| --- | --- | --- |
+| \`crumb\` | BreadCrumbs | Replace each crumb's content |
+| \`slide\` | Carousel | Render slide \`i\` of \`count\` |
+| \`tag\` | SearchFilter | Custom filter chip styling |
+| \`content\` | UploadTarget / Timeline | Drop-zone body / per-step extra |
+| \`header\` / \`footer\` | Card | Top + bottom zones inside the card |
+| \`tooltipContent\` | Tooltip | Rich bubble body |
+
+## Snippets receive ProxyItem, not your raw data
+
+The \`proxy\` argument is a thin reactive wrapper around your
+row. Use \`proxy.label\`, \`proxy.value\`, \`proxy.get('field')\` —
+those resolve via your \`fields\` mapping, so the snippet keeps
+working when you rename source keys.
+`
