@@ -1,0 +1,55 @@
+# Combo
+
+Searchable single-value picker — Select with built-in filtering. Combines a text input that filters options with a dropdown panel of matches. Use when an option list is too long to scan visually.
+
+## Import
+
+```javascript
+import { Combo } from '@rokkit/ui'
+```
+
+## Quick Start
+
+```svelte
+<script>
+  import { Combo } from '@rokkit/ui'
+
+  const countries = [
+    { label: 'United States', value: 'US' },
+    { label: 'United Kingdom', value: 'UK' },
+    { label: 'India', value: 'IN' },
+    /* …42 more rows… */
+  ]
+
+  let country = $state(null)
+</script>
+
+<Combo items={countries} bind:value={country} placeholder="Type to search…" />
+```
+
+## Props
+
+- \`items\` — option array (objects with \`label\` + \`value\`, or primitives)
+- \`fields\` — remap data keys to component fields
+- \`value\` — selected value (bindable)
+- \`placeholder\` — input placeholder text
+- \`filterable\` — enable text filter (default \`true\`; set false for Select-like behaviour)
+- \`size\` — \`sm\` / \`md\` / \`lg\` (default \`md\`)
+- \`disabled\` — disable interaction
+- \`maxRows\` — visible-row cap before scrolling
+
+## Combo vs Select vs Dropdown
+
+- \`Dropdown\` — short option lists, no filter (see [dropdown.txt](./dropdown.txt))
+- \`Select\` — single-pick with optional virtualization (see [select.txt](./select.txt))
+- \`Combo\` — single-pick **with** filter input baked into the trigger (this component)
+
+## Field mapping
+
+```svelte
+<Combo
+  items={data}
+  fields={{ label: 'name', value: 'id', description: 'subtitle' }}
+  bind:value
+/>
+```

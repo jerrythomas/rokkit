@@ -1,0 +1,48 @@
+# DatePicker
+
+Calendar-grid date picker. Renders a month view with arrow navigation between months, click-to-pick, keyboard navigation (arrow keys, PageUp / PageDown for months, Home / End for week boundaries), and a min/max range constraint.
+
+## Import
+
+```javascript
+import { DatePicker } from '@rokkit/ui'
+```
+
+## Quick Start
+
+```svelte
+<script>
+  import { DatePicker } from '@rokkit/ui'
+
+  let date = $state(new Date())
+</script>
+
+<DatePicker bind:value={date} />
+```
+
+## Props
+
+- \`value\` — selected date (bindable \`Date\` or \`null\`)
+- \`min\` — earliest selectable date (\`Date\`)
+- \`max\` — latest selectable date (\`Date\`)
+- \`firstDayOfWeek\` — \`0\` (Sunday, default) to \`6\` (Saturday)
+- \`locale\` — locale string for weekday + month labels (defaults to active app locale)
+- \`disabled\` — disable interaction
+- \`disabledDates\` — array of \`Date\` values to exclude
+- \`weekend\` — whether weekend days are visually distinguished (default \`true\`)
+- \`showWeekNumbers\` — toggle the ISO-week column
+
+## Keyboard
+
+- Arrow keys — navigate days
+- PageUp / PageDown — previous / next month
+- Shift+PageUp / Shift+PageDown — previous / next year
+- Home / End — start / end of week
+- Enter / Space — select focused date
+
+## Data attributes
+
+- \`[data-date-picker]\` — root
+- \`[data-date-picker-grid]\` — month grid
+- \`[data-date-picker-day]\` — each day cell (carries \`data-selected\`, \`data-today\`, \`data-weekend\`, \`data-disabled\`)
+- \`[data-date-picker-nav]\` — month/year navigation header

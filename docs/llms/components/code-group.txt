@@ -1,0 +1,51 @@
+# CodeGroup
+
+Multi-file code display with a hierarchical tree picker on the left and an optional live preview panel. Tree-based (not tabs) because real projects have nested folders. Below 768px the tree collapses into a "current file" pill that opens an overlay drawer.
+
+## Import
+
+```javascript
+import { CodeGroup } from '@rokkit/ui'
+```
+
+## Quick Start
+
+```svelte
+<script>
+  import { CodeGroup } from '@rokkit/ui'
+
+  const files = [
+    { path: 'src/App.svelte', language: 'svelte', code: appSrc },
+    { path: 'src/lib/Button.svelte', language: 'svelte', code: buttonSrc },
+    { path: 'package.json', language: 'json', code: pkgSrc }
+  ]
+</script>
+
+<CodeGroup {files} initialFile="src/App.svelte" />
+```
+
+## File shape
+
+```typescript
+interface CodeGroupFile {
+  path: string          // 'src/lib/Button.svelte' — used as id + tree placement
+  language: string      // Shiki language id
+  code: string          // raw source
+  name?: string         // optional display name (defaults to last path segment)
+  icon?: string         // optional file icon (defaults to extension lookup)
+}
+```
+
+## Props
+
+- \`files\` — array of \`CodeGroupFile\`
+- \`initialFile\` — path of the file selected on first mount
+- \`icons\` — override the doc / folder / view / action icon groups
+- \`preview\` — optional Svelte snippet, collapsed by default
+- \`showCopyButton\` — toggle the copy button on the code block (default \`true\`)
+
+## When to use CodeGroup vs Code vs CodeBlock
+
+- \`Code\` — single inline snippet in prose (see [code.txt](./code.txt))
+- \`CodeBlock\` — single snippet with a filename header
+- \`CodeGroup\` — multiple related files with a tree picker (this component)

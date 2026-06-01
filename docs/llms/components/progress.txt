@@ -1,0 +1,24 @@
+# Progress / ProgressBar
+
+Determinate + indeterminate progress bar. The Rokkit demo references this as \`progress\`; the underlying component is exported as \`ProgressBar\`.
+
+See [progress-bar.txt](./progress-bar.txt) for the full reference. This file exists as an alias so LLM consumers querying by either name find the same content.
+
+## TL;DR
+
+```javascript
+import { ProgressBar } from '@rokkit/ui'
+```
+
+```svelte
+<ProgressBar value={40} />        <!-- 40% (max defaults to 100) -->
+<ProgressBar value={1024} max={2048} />
+<ProgressBar value={null} />      <!-- indeterminate -->
+```
+
+Two props: \`value\` (\`number | null\`; \`null\` triggers indeterminate mode) and \`max\` (default 100). Root carries \`role="progressbar"\`.
+
+## When to use ProgressBar vs UploadProgress
+
+- \`ProgressBar\` — a single bar showing one number's progress.
+- \`UploadProgress\` — composes ProgressBar inside a list / grid of files, each with status and progress (see [upload-progress.txt](./upload-progress.txt)).

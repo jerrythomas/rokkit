@@ -1,0 +1,82 @@
+# Charts
+
+The \`@rokkit/chart\` package ships nine prebuilt chart components plus a lower-level \`<Plot>\` for custom compositions. Every chart is field-mapped — pass row data and name the x/y/fill/color/size fields; the SVG is built for you.
+
+## Import
+
+```javascript
+import {
+  BarChart,
+  LineChart,
+  AreaChart,
+  PieChart,
+  ScatterPlot,
+  BubbleChart,
+  BoxPlot,
+  ViolinPlot,
+  Sparkline
+} from '@rokkit/chart'
+```
+
+## The nine shapes
+
+| Component | Use when… | Detailed reference |
+| --- | --- | --- |
+| \`BarChart\` | categorical × numeric | [bar-chart.txt](./bar-chart.txt) |
+| \`LineChart\` | ordered × numeric (trends) | [line-chart.txt](./line-chart.txt) |
+| \`AreaChart\` | LineChart with area filled | [area-chart.txt](./area-chart.txt) |
+| \`PieChart\` | parts of a whole | [pie-chart.txt](./pie-chart.txt) |
+| \`ScatterPlot\` | numeric × numeric, color channel | [scatter-plot.txt](./scatter-plot.txt) |
+| \`BubbleChart\` | scatter + size channel | [bubble-chart.txt](./bubble-chart.txt) |
+| \`BoxPlot\` | 5-number summary per category | [box-plot.txt](./box-plot.txt) |
+| \`ViolinPlot\` | box + density curve | [violin-plot.txt](./violin-plot.txt) |
+| \`Sparkline\` | inline KPI / table cell | [sparkline.txt](./sparkline.txt) |
+
+## Shared prop vocabulary
+
+All Cartesian charts share most props:
+
+```svelte
+<BarChart
+  data={rows}
+  x="quarter"
+  y="revenue"
+  fill="product"      // Bar / Area / Box / Violin / Pie
+  color="product"     // Line / Scatter / Bubble (Pie uses 'fill')
+  size="population"   // Bubble only (also optional on Scatter)
+  stat="sum"          // sum / mean / count / min / max / identity
+  stack
+  legend
+  grid
+  tooltip
+  width={600}
+  height={400}
+/>
+```
+
+## When to drop to \`<Plot>\`
+
+For multiple geoms on one canvas (e.g. bar + line overlay), faceted small multiples, or custom encodings, compose explicit geoms inside a \`<Plot>\`:
+
+```svelte
+<Plot data={sales} width={600} height={300}>
+  <GeomBar x="quarter" y="revenue" />
+  <GeomLine x="quarter" y="forecast" color="primary" />
+</Plot>
+```
+
+## Markdown / LLM integration
+
+Plot blocks render inside markdown via \`@rokkit/blocks\`:
+
+````markdown
+```plot
+{ "data": [...], "x": "quarter", "y": "revenue", "geoms": [{"type": "bar"}] }
+```
+````
+
+The geom \`type\` accepts: \`bar\`, \`line\`, \`area\`, \`point\`, \`arc\`, \`box\`, \`violin\`, \`heatmap\`, \`candlestick\`, \`waterfall\`, \`hexbin\`, \`ribbon\`. See [plot-chart.txt](./plot-chart.txt) for the full Plot reference.
+
+## Theming
+
+Colour palette comes from the active theme's semantic roles (\`--primary\`, \`--accent\`, \`--success\`, …). Override per-instance via the \`palette\` prop (array of CSS colour strings).

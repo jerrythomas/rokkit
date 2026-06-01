@@ -1,0 +1,71 @@
+# Effects (Tilt / Shine / Reveal)
+
+Three motion / decoration wrappers from \`@rokkit/ui\`. Each wraps arbitrary content; none introduces layout. Compose freely.
+
+## Imports
+
+```javascript
+import { Tilt, Shine, Reveal } from '@rokkit/ui'
+```
+
+## Tilt — pointer-tracking 3D rotation
+
+Wrapped element rotates toward the mouse on \`mousemove\`, snaps back on \`mouseleave\`. Optional brightness adjustment based on pointer Y.
+
+```svelte
+<Tilt maxRotation={12} perspective={600} setBrightness>
+  <Card>Hover me</Card>
+</Tilt>
+```
+
+Props: \`maxRotation\` (deg, default 10) · \`perspective\` (px, default 600) · \`setBrightness\` (boolean, default false).
+
+See also: [tilt.txt](./tilt.txt) for the standalone reference.
+
+## Shine — pointer-tracking specular highlight
+
+SVG \`feSpecularLighting\` filter that follows the cursor — adds a "light source follows your finger" feel to glossy surfaces.
+
+```svelte
+<Shine color="rgb(var(--accent))" radius={300} depth={1}>
+  <Card class="glossy">Glossy surface</Card>
+</Shine>
+```
+
+Props: \`color\` · \`radius\` (light distance, default 300) · \`depth\` (gaussian blur, default 1) · \`surfaceScale\` (default 2) · \`specularConstant\` (default 0.75) · \`specularExponent\` (focus / sharpness, default 120).
+
+See also: [shine.txt](./shine.txt).
+
+## Reveal — scroll-triggered fade / slide in
+
+IntersectionObserver-based reveal animation. Children animate in once they cross the viewport's threshold. Direction, distance, duration, and per-child stagger are configurable.
+
+```svelte
+<Reveal direction="up" stagger={120} once={true}>
+  <Card>Reveals first…</Card>
+  <Card>…then this one…</Card>
+  <Card>…then this one.</Card>
+</Reveal>
+```
+
+Props: \`direction\` (\`up\` default / \`down\` / \`left\` / \`right\` / \`none\`) · \`distance\` (CSS length, default \`1.5rem\`) · \`duration\` (ms, default 600) · \`delay\` (ms, default 0) · \`stagger\` (per-child delay increment, default 0) · \`once\` (default \`true\`) · \`threshold\` (0–1, default 0.1) · \`easing\` (CSS easing string).
+
+See also: [reveal.txt](./reveal.txt).
+
+## Composing all three
+
+These are pure wrappers — they stack naturally:
+
+```svelte
+<Reveal direction="up">
+  <Tilt maxRotation={8}>
+    <Shine>
+      <Card>Reveals on scroll, tilts on hover, catches a highlight</Card>
+    </Shine>
+  </Tilt>
+</Reveal>
+```
+
+## Reduced motion
+
+All three respect \`prefers-reduced-motion\` — animations collapse to instantaneous transitions when the OS setting is enabled.

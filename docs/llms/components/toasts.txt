@@ -1,0 +1,57 @@
+# Toasts (AlertList)
+
+Toast notifications — short, time-limited feedback after an action. The demo references this as \`toasts\`; the underlying component is exported as \`AlertList\` and consumed via the \`alerts\` store from \`@rokkit/states\`.
+
+## Imports
+
+```javascript
+import { AlertList } from '@rokkit/ui'
+import { alerts } from '@rokkit/states'
+```
+
+## Quick Start
+
+```svelte
+<script>
+  import { AlertList } from '@rokkit/ui'
+  import { alerts } from '@rokkit/states'
+
+  function notify(tone) {
+    alerts.push({ type: tone, text: \`This is a \${tone} toast\` })
+  }
+</script>
+
+<AlertList position="top-right" />
+
+<button onclick={() => notify('success')}>Show success</button>
+<button onclick={() => notify('warning')}>Show warning</button>
+<button onclick={() => notify('error')}>Show error</button>
+<button onclick={() => notify('info')}>Show info</button>
+```
+
+## API — \`alerts\` store
+
+\`\`\`typescript
+alerts.push({
+  type: 'success' | 'warning' | 'error' | 'info',
+  text: string,
+  dismissible?: boolean,    // default false (auto-dismisses)
+  timeout?: number,          // ms; defaults: 4000 when not dismissible, 0 when dismissible
+  actions?: Snippet
+})
+\`\`\`
+
+\`alerts.dismiss(id)\` removes a specific alert. \`alerts.current\` exposes the live array (reactive).
+
+## AlertList props
+
+- \`position\` — \`'top-right'\` (default) / \`'top-center'\` / \`'top-left'\` / \`'bottom-right'\` / \`'bottom-center'\` / \`'bottom-left'\`
+- \`class\` — extra CSS classes
+
+AlertList portals to \`document.body\` so its \`position: fixed\` layout isn't clipped by ancestor \`overflow: auto\` containers.
+
+## When to use Toasts vs Message
+
+- \`AlertList\` (this) — transient feedback layered over the app
+- \`Message\` (see [message.txt](./message.txt)) — inline status block embedded in the layout
+- \`StatusList\` (see [status-list.txt](./status-list.txt)) — checklist of pass/fail/warn rules

@@ -313,7 +313,24 @@ Utility class pattern: `{prefix}-{role}-z{n}`
 - [cli.txt](/llms/cli.txt) — CLI reference (`rokkit init`, `rokkit doctor`, icon tools)
 - [composability.txt](/llms/composability.txt) — Snippets, ProxyItem API, per-item routing, interactive snippet patterns
 - [packages/](/llms/packages/) — per-package documentation
-- [components/](/llms/components/) — component reference (40+ components)
+- [components/](/llms/components/) — component reference (50+ components)
+- [guides/](/llms/guides/) — framework-level long-form guides (see below)
+
+## Guides
+
+Long-form prose covering framework concepts. Mirrors what users see at `/app/guide-*` in the demo app.
+
+- [guides/getting-started.txt](/llms/guides/getting-started.txt) — install, theme setup, first component
+- [guides/data-binding.txt](/llms/guides/data-binding.txt) — fields prop, default field names, primitives
+- [guides/composability.txt](/llms/guides/composability.txt) — itemContent + groupContent + per-item snippets
+- [guides/theming.txt](/llms/guides/theming.txt) — skins / styles / modes; data-attribute styling
+- [guides/accessibility.txt](/llms/guides/accessibility.txt) — keyboard, ARIA, focus, i18n, reduced motion
+- [guides/forms.txt](/llms/guides/forms.txt) — schema-driven, lookups, dependencies, custom renderers
+- [guides/charts.txt](/llms/guides/charts.txt) — nine prebuilt shapes + when to drop to `<Plot>`
+- [guides/utilities.txt](/llms/guides/utilities.txt) — controllers + navigator pattern
+- [guides/toolkit.txt](/llms/guides/toolkit.txt) — companion packages (states / data / actions / core / blocks / themes)
+- [guides/toolchain.txt](/llms/guides/toolchain.txt) — CLI (init, doctor, upgrade, skin, theme)
+- [guides/ai-chatbots.txt](/llms/guides/ai-chatbots.txt) — `@rokkit/blocks` plugin pattern for LLM chat UIs (fenced markdown → live components)
 
 ## Component Index
 
@@ -324,6 +341,7 @@ Utility class pattern: `{prefix}-{role}-z{n}`
 - [LazyTree](/llms/components/lazy-tree.txt) — tree with on-demand lazy-loaded children and root pagination
 - [Select](/llms/components/select.txt) — dropdown single-selection with typeahead filter
 - [MultiSelect](/llms/components/multi-select.txt) — dropdown multi-selection with pills
+- [Combo](/llms/components/combo.txt) — single-pick **with** built-in filter input
 - [Toggle](/llms/components/toggle.txt) — radio-style button group
 - [Tabs](/llms/components/tabs.txt) — tabbed content panels (horizontal/vertical)
 - [Table](/llms/components/table.txt) — sortable data table with row selection
@@ -346,6 +364,7 @@ Utility class pattern: `{prefix}-{role}-z{n}`
 - [RadioGroup](/llms/components/radiogroup.txt) — radio button group (rendered by `@rokkit/forms`; not directly importable from `@rokkit/ui`)
 - [Range](/llms/components/range.txt) — range slider
 - [Rating](/llms/components/rating.txt) — star rating input
+- [DatePicker](/llms/components/date-picker.txt) — calendar-grid date picker with keyboard nav
 - [SearchFilter](/llms/components/search-filter.txt) — structured filter parser
 
 ### Upload
@@ -361,7 +380,7 @@ Utility class pattern: `{prefix}-{role}-z{n}`
 - [Stack](/llms/components/stack.txt) — flexible layout container with direction, gap, alignment
 - [Divider](/llms/components/divider.txt) — visual separator line with optional label
 - [Stepper](/llms/components/stepper.txt) — step indicator / wizard progress
-- [ProgressBar](/llms/components/progress-bar.txt) — progress indicator
+- [ProgressBar](/llms/components/progress-bar.txt) — progress indicator (also see [progress.txt](/llms/components/progress.txt) as an alias)
 - [BreadCrumbs](/llms/components/breadcrumbs.txt) — breadcrumb navigation
 - [Carousel](/llms/components/carousel.txt) — touch-friendly content carousel with auto-play
 - [Timeline](/llms/components/timeline.txt) — vertical timeline of events with icons and metadata
@@ -379,10 +398,13 @@ Utility class pattern: `{prefix}-{role}-z{n}`
 - [AlertList](/llms/components/alert-list.txt) — dismissible alert stack with auto-dismiss
 - [StatusList](/llms/components/status-list.txt) — grouped validation message summary (`@rokkit/forms`)
 - [Code](/llms/components/code.txt) — syntax-highlighted code block with copy button
+- [CodeGroup](/llms/components/code-group.txt) — multi-file code display with hierarchical tree picker + optional preview
 - [MarkdownRenderer](/llms/components/markdown-renderer.txt) — Markdown-to-HTML renderer with DOMPurify sanitization and Svelte component plugins
+- [Toasts](/llms/components/toasts.txt) — `AlertList` + `alerts` store entry point for time-limited feedback
 
 ### Animation & Effects
 
+- [Effects](/llms/components/effects.txt) — overview of the three motion wrappers; compose freely
 - [Reveal](/llms/components/reveal.txt) — scroll-triggered slide-in animation via IntersectionObserver
 - [Tilt](/llms/components/tilt.txt) — 3D tilt effect that follows mouse position
 - [Shine](/llms/components/shine.txt) — dynamic specular lighting effect following the mouse
@@ -391,9 +413,11 @@ Utility class pattern: `{prefix}-{role}-z{n}`
 
 - [Swatch](/llms/components/swatch.txt) — color / theme picker with single or multi-select
 - [PaletteManager](/llms/components/palette-manager.txt) — full palette configuration UI with presets and localStorage persistence
+- [ThemeWizard](/llms/components/theme-wizard.txt) — interactive multi-step theme builder composing Stepper + PaletteManager + Swatch + Tabs
 
 ### Charts (`@rokkit/chart`)
 
+- [Charts overview](/llms/components/chart.txt) — the nine prebuilt chart shapes + shared prop vocabulary + when to drop to `<Plot>`
 - [BarChart](/llms/components/bar-chart.txt) — bar chart with grouping, stacking, aggregation, and labels
 - [LineChart](/llms/components/line-chart.txt) — line chart with multi-series, symbols, and curve interpolation
 - [AreaChart](/llms/components/area-chart.txt) — area chart with optional stacking

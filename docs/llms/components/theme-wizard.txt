@@ -1,0 +1,28 @@
+# Theme Wizard
+
+Interactive multi-step theme builder shipped in the demo app at \`/app/theming\`. Walks the user through picking a style (rokkit / minimal / material / zen-sumi), mapping roles to palette steps, choosing typography, and previewing the result. Exports a \`tokens.css\` you can drop into your own app.
+
+The wizard itself is composed from primitives:
+
+- [stepper.txt](./stepper.txt) — the step navigator
+- [palette-manager.txt](./palette-manager.txt) — the role × palette grid
+- [swatch.txt](./swatch.txt) — the colour-step pickers
+- [tabs.txt](./tabs.txt) — the preview tabs
+
+If you want to embed a similar wizard in your own app, compose those four pieces against the rokkit-config schema (\`primary\` / \`secondary\` / \`accent\` / \`surface\` / \`success\` / \`warning\` / \`danger\` / \`info\` roles, each mapped to a Tailwind palette name + step per light/dark mode).
+
+## Programmatic equivalent
+
+The same configuration can be generated via the CLI:
+
+```bash
+npx @rokkit/cli@latest init      # interactive bootstrap
+npx @rokkit/cli@latest skin      # add a new skin to an existing project
+npx @rokkit/cli@latest theme     # scaffold a new style stub
+```
+
+See [../cli.txt](../cli.txt) for the full CLI reference.
+
+## Demo
+
+Live at \`/app/theming\` in the demo app — open it, mutate the skin, watch every other component on the page re-skin in real time.
