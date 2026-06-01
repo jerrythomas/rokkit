@@ -52,6 +52,10 @@ export type ShellDemoType =
 	| 'progress'
 	| 'upload-progress'
 	| 'upload-target'
+	| 'button-group'
+	| 'tooltip'
+	| 'code-group'
+	| 'effects'
 
 export const shell = $state<{
 	phase: ShellPhase
