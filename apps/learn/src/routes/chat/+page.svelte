@@ -49,12 +49,8 @@
 		{ value: 'openrouter', label: 'OpenRouter', icon: 'i-mdi:cloud-outline' },
 		{ value: 'webllm', label: 'Web-LLM', icon: 'i-mdi:laptop' }
 	]
-	const crumbLabel = $derived(
-		mode === 'scripted'
-			? 'Inline chat · scripted responses'
-			: mode === 'openrouter'
-				? 'Inline chat · OpenRouter (hosted)'
-				: 'Inline chat · Web-LLM (browser)'
+	const modeLabel = $derived(
+		mode === 'scripted' ? 'Scripted' : mode === 'openrouter' ? 'OpenRouter' : 'Web-LLM'
 	)
 
 	$effect(() => {
@@ -258,6 +254,75 @@
 </svelte:head>
 
 <div class="chat-shell">
+	<div class="chat-subtoolbar">
+		<div class="subtoolbar-zone subtoolbar-left">
+			<Toggle
+				variant="group"
+				size="sm"
+				options={modeOptions}
+				value={mode}
+				onchange={(v) => setMode(v as Mode)}
+				showLabels={true}
+			/>
+		</div>
+		<div class="subtoolbar-zone subtoolbar-center">
+			<span class="title-kicker">Inline Chat</span>
+			<span class="title-sep">·</span>
+			<span class="title-mode">{modeLabel}</span>
+		</div>
+		<div class="subtoolbar-zone subtoolbar-right">
+			{#if mode === 'openrouter'}
+				<label class="subtoolbar-field">
+					<span class="subtoolbar-label">Model</span>
+					<select bind:value={llm.openRouterModel} class="llm-model">
+						{#each OPENROUTER_MODELS as m (m.id)}
+							<option value={m.id}>{m.label}</option>
+						{/each}
+					</select>
+				</label>
+			{:else if mode === 'webllm'}
+				<label class="subtoolbar-field">
+					<span class="subtoolbar-label">Model</span>
+					<select
+						bind:value={llm.webllmModel}
+						class="llm-model"
+						disabled={llm.webllmStatus === 'loading'}
+						onchange={resetWebLLMEngine}
+					>
+						{#each WEBLLM_MODELS as m (m.id)}
+							<option value={m.id}>{m.label} · {m.size}</option>
+						{/each}
+					</select>
+				</label>
+				{#if llm.webllmStatus === 'uninitialized'}
+					<button type="button" class="llm-load-btn" onclick={() => ensureWebLLMEngine()}>
+						<span class="i-mdi:download" aria-hidden="true"></span>
+						Load
+					</button>
+				{:else if llm.webllmStatus === 'loading'}
+					<span class="llm-progress" title={llm.webllmStage}>
+						<span class="i-mdi:loading llm-spin" aria-hidden="true"></span>
+						{Math.round(llm.webllmProgress * 100)}%
+					</span>
+				{:else if llm.webllmStatus === 'ready' || llm.webllmStatus === 'thinking'}
+					<span class="llm-ready">
+						<span class="i-mdi:check-circle-outline" aria-hidden="true"></span>
+						ready
+					</span>
+				{:else if llm.webllmStatus === 'error'}
+					<span class="llm-error" title={llm.errorMessage}>error</span>
+				{/if}
+			{/if}
+			<Button
+				variant="default"
+				size="sm"
+				icon="i-mdi:restore"
+				label="Clear"
+				title="Start a new conversation (current one stays in history)"
+				onclick={resetConversation}
+			/>
+		</div>
+	</div>
 	<div class="chat-layout">
 		<ChatHistory bind:collapsed onnew={startNewChat}>
 			{#if allConv.length === 0}
@@ -330,71 +395,6 @@
 		</ChatHistory>
 
 	<div class="chat-body">
-		<div class="chat-subtoolbar">
-			<div class="subtoolbar-left">
-				<span class="route-label">{crumbLabel}</span>
-				<Toggle
-					variant="group"
-					size="sm"
-					options={modeOptions}
-					value={mode}
-					onchange={(v) => setMode(v as Mode)}
-					showLabels={true}
-				/>
-			</div>
-			<div class="subtoolbar-right">
-				{#if mode === 'openrouter'}
-					<label class="subtoolbar-field">
-						<span class="subtoolbar-label">Model</span>
-						<select bind:value={llm.openRouterModel} class="llm-model">
-							{#each OPENROUTER_MODELS as m (m.id)}
-								<option value={m.id}>{m.label}</option>
-							{/each}
-						</select>
-					</label>
-				{:else if mode === 'webllm'}
-					<label class="subtoolbar-field">
-						<span class="subtoolbar-label">Model</span>
-						<select
-							bind:value={llm.webllmModel}
-							class="llm-model"
-							disabled={llm.webllmStatus === 'loading'}
-							onchange={resetWebLLMEngine}
-						>
-							{#each WEBLLM_MODELS as m (m.id)}
-								<option value={m.id}>{m.label} · {m.size}</option>
-							{/each}
-						</select>
-					</label>
-					{#if llm.webllmStatus === 'uninitialized'}
-						<button type="button" class="llm-load-btn" onclick={() => ensureWebLLMEngine()}>
-							<span class="i-mdi:download" aria-hidden="true"></span>
-							Load
-						</button>
-					{:else if llm.webllmStatus === 'loading'}
-						<span class="llm-progress" title={llm.webllmStage}>
-							<span class="i-mdi:loading llm-spin" aria-hidden="true"></span>
-							{Math.round(llm.webllmProgress * 100)}%
-						</span>
-					{:else if llm.webllmStatus === 'ready' || llm.webllmStatus === 'thinking'}
-						<span class="llm-ready">
-							<span class="i-mdi:check-circle-outline" aria-hidden="true"></span>
-							ready
-						</span>
-					{:else if llm.webllmStatus === 'error'}
-						<span class="llm-error" title={llm.errorMessage}>error</span>
-					{/if}
-				{/if}
-				<Button
-					variant="default"
-					size="sm"
-					icon="i-mdi:restore"
-					label="Clear"
-					title="Clear the conversation"
-					onclick={resetConversation}
-				/>
-			</div>
-		</div>
 		<div class="chat-stream-wrap" bind:this={streamRef}>
 			<ChatStream>
 				{#if conversation.turns.length === 0}
@@ -519,18 +519,11 @@
 		color: var(--ink);
 	}
 
-	.route-label {
-		font: 500 12px var(--font-mono);
-		letter-spacing: 0.08em;
-		color: var(--ink-mute);
-		text-transform: uppercase;
-	}
-
 	.chat-subtoolbar {
-		display: flex;
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr) auto;
 		align-items: center;
-		justify-content: space-between;
-		gap: 12px;
+		gap: 16px;
 		padding: 8px 24px;
 		border-bottom: 1px solid var(--paper-edge);
 		background: var(--paper-soft);
@@ -539,19 +532,35 @@
 		flex-shrink: 0;
 	}
 
-	.subtoolbar-left,
-	.subtoolbar-right {
+	.subtoolbar-zone {
 		display: inline-flex;
 		align-items: center;
 		gap: 12px;
-		flex-wrap: wrap;
+		/* No wrap — toggle stays anchored left, model + clear stay anchored
+		   right, centre title truncates with ellipsis if there isn't room. */
+		flex-wrap: nowrap;
 	}
 
-	.subtoolbar-left .route-label {
+	.subtoolbar-center {
+		justify-self: center;
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 		font: 500 11.5px var(--font-mono);
-		letter-spacing: 0.08em;
+		letter-spacing: 0.12em;
 		text-transform: uppercase;
 		color: var(--ink-mute);
+	}
+
+	.title-kicker {
+		color: var(--ink-soft);
+	}
+	.title-sep {
+		color: var(--ink-faint);
+	}
+	.title-mode {
+		color: var(--ink);
 	}
 
 	.subtoolbar-field {
