@@ -1,38 +1,28 @@
 <script lang="ts">
 	import { page } from '$app/state'
-	import { guidesByCategory } from '$lib/guides'
+	import { TableOfContents } from '@rokkit/app'
+	import { guidesByCategory, type GuideCategory } from '$lib/guides'
 	import Search from '$lib/guides/Search.svelte'
 
 	const { children } = $props()
 
 	const grouped = guidesByCategory()
-	const categories = ['basics', 'data', 'design', 'workflows', 'advanced'] as const
-	const categoryLabels: Record<(typeof categories)[number], string> = {
-		basics: 'basics',
-		data: 'data',
-		design: 'design',
-		workflows: 'workflows',
-		advanced: 'advanced'
-	}
+	const categories: GuideCategory[] = ['basics', 'data', 'design', 'workflows', 'advanced']
 
 	const activeSlug = $derived(page.params.slug ?? null)
+
+	// The TableOfContents component re-renders when activeSlug changes
+	// (different guide loaded = different headings). Force a re-mount via
+	// keyed block in the template.
 </script>
 
 <div class="guides-shell">
-	<header class="topbar">
-		<a href="/" class="brand">道 Rokkit</a>
-		<nav class="topnav" aria-label="Sections">
-			<a href="/guides" class:active={!activeSlug}>Guides</a>
-			<a href="/app">Koan</a>
-		</nav>
+	<aside class="rail" aria-label="Guides table of contents">
 		<div class="search-slot"><Search /></div>
-	</header>
-
-	<div class="body">
-		<nav class="rail" aria-label="Guides table of contents">
+		<nav>
 			{#each categories as cat (cat)}
 				{#if grouped[cat].length > 0}
-					<div class="cat-label">{categoryLabels[cat]}</div>
+					<div class="cat-label">{cat}</div>
 					<ul>
 						{#each grouped[cat] as g (g.slug)}
 							<li>
@@ -49,75 +39,57 @@
 				{/if}
 			{/each}
 		</nav>
-		<main class="content">
+	</aside>
+
+	<main id="guides-main" class="content">
+		<div class="content-inner">
 			{@render children?.()}
-		</main>
-	</div>
+		</div>
+	</main>
+
+	<aside class="page-toc" aria-label="On this page">
+		{#key activeSlug}
+			<TableOfContents container="guides-main" />
+		{/key}
+	</aside>
 </div>
 
 <style>
-	/* Scroll architecture — load-bearing.
-	   Every flex/grid ancestor on the path to a scroll container needs
-	   min-height: 0, or the flex item refuses to shrink below content
-	   height and scrollbars disappear.
-	   See docs/backlog/2026-06-01-guides-section-split.md. */
+	/* Scroll architecture — load-bearing. Every flex/grid ancestor on
+	   the path to a scroll container needs min-height: 0, or the flex
+	   item refuses to shrink below content height and scroll silently
+	   disappears. */
 	.guides-shell {
-		height: 100dvh;
-		display: flex;
-		flex-direction: column;
-		min-height: 0;
-		background: var(--paper, #fff);
-	}
-	.topbar {
-		flex: 0 0 auto;
-		display: flex;
-		align-items: center;
-		gap: 24px;
-		padding: 12px 24px;
-		border-bottom: 1px solid var(--paper-edge, #e0dccc);
-	}
-	.brand {
-		font: 600 16px var(--font-display);
-		color: var(--ink);
-		text-decoration: none;
-		letter-spacing: -0.01em;
-	}
-	.topnav {
-		display: flex;
-		gap: 16px;
-		margin-right: auto;
-	}
-	.topnav a {
-		font: 400 13px var(--font-ui);
-		color: var(--ink-soft, #666);
-		text-decoration: none;
-		padding: 4px 0;
-		border-bottom: 1px solid transparent;
-	}
-	.topnav a:hover {
-		color: var(--ink);
-	}
-	.topnav a.active {
-		color: var(--ink);
-		border-bottom-color: var(--ink);
-	}
-	.search-slot {
-		flex: 0 0 auto;
-	}
-	.body {
-		flex: 1 1 auto;
+		height: 100%;
 		min-height: 0;
 		display: grid;
-		grid-template-columns: 240px 1fr;
+		grid-template-columns: 260px 1fr 220px;
+		background: var(--paper, #fff);
 		overflow: hidden;
 	}
+
 	.rail {
 		overflow-y: auto;
 		min-height: 0;
 		padding: 16px 12px;
 		border-right: 1px solid var(--paper-edge, #e0dccc);
 		background: var(--paper-soft, #faf8f3);
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
 	}
+	.search-slot {
+		flex: 0 0 auto;
+	}
+	.search-slot :global(.search) {
+		max-width: none;
+	}
+
+	.rail nav {
+		flex: 1 1 auto;
+		min-height: 0;
+	}
+
 	.cat-label {
 		font: 500 10px var(--font-mono);
 		letter-spacing: 0.12em;
@@ -145,9 +117,21 @@
 		background: var(--ink, #1a1a1a);
 		color: var(--paper, #fff);
 	}
+
 	.content {
 		overflow-y: auto;
 		min-height: 0;
 		padding: 32px 48px 64px;
+	}
+	.content-inner {
+		max-width: 760px;
+		margin: 0 auto;
+	}
+
+	.page-toc {
+		overflow-y: auto;
+		min-height: 0;
+		padding: 32px 16px 64px;
+		border-left: 1px solid var(--paper-edge, #e0dccc);
 	}
 </style>
