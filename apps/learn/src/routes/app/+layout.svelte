@@ -2070,9 +2070,21 @@ ${tabsTag}`
 		</aside>
 
 		<main class="canvas">
-			{#if shell.phase === 'response' && canvasViewOptions.length > 1}
+			{#if shell.phase === 'response' && currentMeta}
 				<div class="canvas-view-toggle">
-					<Toggle options={canvasViewOptions} bind:value={canvasView} size="sm" />
+					{#if canvasViewOptions.length > 1}
+						<Toggle options={canvasViewOptions} bind:value={canvasView} size="sm" />
+					{/if}
+					<a
+						class="llms-badge"
+						href={`/llms/components/${currentMeta.id}.txt`}
+						target="_blank"
+						rel="noopener noreferrer"
+						title="LLM-ready spec for {currentMeta.title}"
+					>
+						<span class="i-mdi:file-document-outline" aria-hidden="true"></span>
+						<span>llms.txt</span>
+					</a>
 				</div>
 			{/if}
 
@@ -3327,6 +3339,34 @@ ${tabsTag}`
 		top: 14px;
 		right: 20px;
 		z-index: 5;
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+	}
+
+	.llms-badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 4px 10px;
+		font: 500 11px var(--font-mono);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--ink-mute);
+		background: var(--paper-soft);
+		border: 1px solid var(--paper-edge);
+		border-radius: var(--density-radius-base, 4px);
+		text-decoration: none;
+		transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
+	}
+	.llms-badge:hover {
+		color: var(--ink);
+		border-color: var(--ink-faint);
+		background: var(--paper);
+	}
+	.llms-badge [class^='i-'] {
+		width: 12px;
+		height: 12px;
 	}
 
 	.tabs-mount {
