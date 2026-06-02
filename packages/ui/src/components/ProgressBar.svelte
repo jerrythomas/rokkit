@@ -1,12 +1,5 @@
 <script lang="ts">
-	interface ProgressBarProps {
-		/** Current progress value (null = indeterminate) */
-		value?: number | null
-		/** Maximum value (default: 100) */
-		max?: number
-		/** Additional CSS class */
-		class?: string
-	}
+	import type { ProgressBarProps } from '../types/progress-bar.js'
 
 	const { value = null, max = 100, class: className = '' }: ProgressBarProps = $props()
 

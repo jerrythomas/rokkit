@@ -17,39 +17,10 @@
 	 * groups). Consumers override per-group via the `icons` prop, same
 	 * shape as Tree / BreadCrumbs / Dropdown.
 	 */
-	import type { Snippet } from 'svelte'
 	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
+	import type { CodeGroupFile, CodeGroupProps } from '../types/code.js'
 	import Tree from './Tree.svelte'
 	import CodeBlock from './CodeBlock.svelte'
-
-	interface CodeGroupFile {
-		/** Full path used as id and for tree placement (e.g. 'src/lib/Button.svelte') */
-		path: string
-		/** Shiki language id */
-		language: string
-		/** Source code */
-		code: string
-		/** Display name override; defaults to the path's last segment */
-		name?: string
-		/** File icon override (full class name); defaults to the extension lookup */
-		icon?: string
-	}
-
-	interface IconOverrides {
-		doc?: Partial<typeof DEFAULT_STATE_ICONS.doc>
-		folder?: Partial<typeof DEFAULT_STATE_ICONS.folder>
-		view?: Partial<typeof DEFAULT_STATE_ICONS.view>
-		action?: Partial<typeof DEFAULT_STATE_ICONS.action>
-	}
-
-	interface Props {
-		files: CodeGroupFile[]
-		initialFile?: string
-		class?: string
-		icons?: IconOverrides
-		preview?: Snippet
-		showCopyButton?: boolean
-	}
 
 	let {
 		files = [],
@@ -58,7 +29,7 @@
 		icons: userIcons = {},
 		preview,
 		showCopyButton = true
-	}: Props = $props()
+	}: CodeGroupProps = $props()
 
 	const icons = $derived({
 		doc: { ...DEFAULT_STATE_ICONS.doc, ...(userIcons.doc ?? {}) },

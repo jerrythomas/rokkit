@@ -1,9 +1,4 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte'
-	import { onMount } from 'svelte'
-	import { highlightCode } from '../utils/shiki.js'
-	import Frame from './Frame.svelte'
-
 	/**
 	 * CodeBlock — code with chrome.
 	 *
@@ -18,27 +13,10 @@
 	 * For a plain unstyled code surface (no chrome), use the lower-level
 	 * `<Code/>` component instead.
 	 */
-	interface Props {
-		/** The code body */
-		code: string
-		/** Language label shown as a chip in the header and used for highlighting */
-		language?: string
-		/** Filename label shown in the header */
-		filename?: string
-		/** Max height (CSS length) of the scrollable code area. No cap if unset. */
-		height?: string
-		/**
-		 * Shiki theme. 'auto' (default) follows body[data-mode]; pass 'light'
-		 * or 'dark' to force one.
-		 */
-		theme?: 'auto' | 'light' | 'dark'
-		/** Show the copy-to-clipboard button. Default: false. */
-		allowCopy?: boolean
-		/** Show the download-as-file button. Default: false. */
-		allowDownload?: boolean
-		/** Optional extra-actions slot rendered after copy/download. */
-		actions?: Snippet
-	}
+	import { onMount } from 'svelte'
+	import { highlightCode } from '../utils/shiki.js'
+	import type { CodeBlockProps } from '../types/code.js'
+	import Frame from './Frame.svelte'
 
 	const {
 		code,
@@ -49,7 +27,7 @@
 		allowCopy = false,
 		allowDownload = false,
 		actions
-	}: Props = $props()
+	}: CodeBlockProps = $props()
 
 	// Track body data-mode so the Shiki theme follows light/dark changes.
 	let bodyMode = $state<'light' | 'dark'>('dark')

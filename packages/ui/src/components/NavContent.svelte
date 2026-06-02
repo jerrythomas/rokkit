@@ -1,20 +1,5 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte'
-
-	interface NavContentProps {
-		/** Layout orientation */
-		orientation?: 'horizontal' | 'vertical'
-		/** Nav panel width (horizontal) or height (vertical) */
-		navSize?: string
-		/** Collapse nav on small screens */
-		collapsible?: boolean
-		/** Nav panel snippet */
-		nav: Snippet
-		/** Content panel snippet */
-		content: Snippet
-		/** Additional CSS class */
-		class?: string
-	}
+	import type { NavContentProps } from '../types/nav-content.js'
 
 	const {
 		orientation = 'horizontal',

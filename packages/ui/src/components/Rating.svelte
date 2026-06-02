@@ -1,27 +1,7 @@
 <script lang="ts">
 	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 	import { messages } from '@rokkit/states'
-
-	interface RatingIcons {
-		filled?: string
-		empty?: string
-		half?: string
-	}
-
-	interface RatingProps {
-		/** Current rating value (bindable) */
-		value?: number
-		/** Maximum number of stars (default: 5) */
-		max?: number
-		/** Disabled state */
-		disabled?: boolean
-		/** Custom icons for rating states */
-		icons?: RatingIcons
-		/** Called when value changes */
-		onchange?: (value: number) => void
-		/** Additional CSS class */
-		class?: string
-	}
+	import type { RatingIcons, RatingProps } from '../types/rating.js'
 
 	let {
 		value = $bindable(0),
@@ -31,7 +11,7 @@
 		icons: userIcons = {} as RatingIcons,
 		onchange,
 		class: className = ''
-	}: RatingProps & { label?: string } = $props()
+	}: RatingProps = $props()
 
 	const icons = $derived({ ...DEFAULT_STATE_ICONS.rating, ...userIcons })
 

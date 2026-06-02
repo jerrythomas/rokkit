@@ -1,6 +1,4 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte'
-
 	/**
 	 * Frame — generic header / body / footer container.
 	 *
@@ -14,21 +12,9 @@
 	 * the right pattern. For an interactive card (link or button), use
 	 * `<Card/>` instead.
 	 */
-	interface Props {
-		/** Top slot — title, action chips, status badges, etc. */
-		header?: Snippet
-		/** Main content. */
-		children?: Snippet
-		/** Bottom slot — metadata, actions, secondary controls. */
-		footer?: Snippet
-		/**
-		 * When true, the body slot has zero padding so the inner artifact
-		 * (a chart, a `<pre>`, a table) controls its own padding.
-		 */
-		flush?: boolean
-	}
+	import type { FrameProps } from '../types/frame.js'
 
-	const { header, children, footer, flush = false }: Props = $props()
+	const { header, children, footer, flush = false }: FrameProps = $props()
 </script>
 
 <div data-frame>

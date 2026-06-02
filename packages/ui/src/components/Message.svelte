@@ -1,27 +1,6 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte'
 	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
-
-	interface MessageProps {
-		/** Alert type — controls color and icon */
-		type?: 'error' | 'info' | 'success' | 'warning'
-		/** Icon class overrides per type */
-		icons?: { error?: string; info?: string; success?: string; warning?: string }
-		/** Text content (shorthand; children takes precedence) */
-		text?: string
-		/** Show dismiss button */
-		dismissible?: boolean
-		/** Auto-dismiss after N ms. Defaults to 4000 unless dismissible (persistent). Pass 0 to disable. */
-		timeout?: number
-		/** Optional action buttons snippet */
-		actions?: Snippet
-		/** Rich content (takes precedence over text) */
-		children?: Snippet
-		/** Called when dismissed (button click or timeout) */
-		ondismiss?: () => void
-		/** Additional CSS class */
-		class?: string
-	}
+	import type { MessageProps } from '../types/message.js'
 
 	const {
 		type = 'error',

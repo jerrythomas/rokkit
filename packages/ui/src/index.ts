@@ -30,6 +30,7 @@ export {
 	Pill,
 	Rating,
 	Connector,
+	ItemContent,
 	Stepper,
 	Switch,
 	Table,

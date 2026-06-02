@@ -1,32 +1,7 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte'
 	import { swipeable, keyboard } from '@rokkit/actions'
 	import { messages } from '@rokkit/states'
-
-	interface CarouselProps {
-		/** Number of slides (required when using children snippet) */
-		count?: number
-		/** Current slide index (bindable) */
-		current?: number
-		/** Auto-advance slides */
-		autoplay?: boolean
-		/** Autoplay interval in milliseconds (default: 5000) */
-		interval?: number
-		/** Wrap around at ends (default: true) */
-		loop?: boolean
-		/** Show navigation dots (default: true) */
-		showDots?: boolean
-		/** Show prev/next arrow buttons (default: true) */
-		showArrows?: boolean
-		/** Transition effect (default: 'slide') */
-		transition?: 'slide' | 'fade' | 'none'
-		/** Additional CSS class */
-		class?: string
-		/** Slide content — receives (index, current) */
-		slide?: Snippet<[number, number]>
-		/** Children snippet (alternative to slide) */
-		children?: Snippet
-	}
+	import type { CarouselProps } from '../types/carousel.js'
 
 	let {
 		count = 0,
@@ -41,7 +16,7 @@
 		class: className = '',
 		slide,
 		children
-	}: CarouselProps & { labels?: Record<string, string> } = $props()
+	}: CarouselProps = $props()
 
 	const labels = $derived({ ...messages.carousel, ...userLabels })
 

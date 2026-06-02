@@ -1,12 +1,5 @@
 <script lang="ts">
-	interface DividerProps {
-		/** Orientation of the divider */
-		orientation?: 'horizontal' | 'vertical'
-		/** Optional label text displayed in the center */
-		label?: string
-		/** Additional CSS class */
-		class?: string
-	}
+	import type { DividerProps } from '../types/divider.js'
 
 	const { orientation = 'horizontal', label, class: className = '' }: DividerProps = $props()
 </script>

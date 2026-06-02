@@ -9,15 +9,9 @@
 	 */
 
 	import type { ConnectorType } from '../types/tree.js'
+	import type { ConnectorProps } from '../types/connector.js'
 
-	interface Props {
-		/** The type of connector to render */
-		type?: ConnectorType
-		/** Right-to-left layout support */
-		rtl?: boolean
-	}
-
-	const { type = 'empty', rtl = false }: Props = $props()
+	const { type = 'empty', rtl = false }: ConnectorProps = $props()
 
 	const validTypes: ConnectorType[] = ['last', 'child', 'sibling', 'empty']
 	const validatedType = $derived(validTypes.includes(type) ? type : 'empty')

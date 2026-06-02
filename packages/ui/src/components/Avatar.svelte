@@ -1,22 +1,5 @@
 <script lang="ts">
-	interface AvatarProps {
-		/** Image source URL */
-		src?: string
-		/** Alt text for the image */
-		alt?: string
-		/** Explicit initials to display as fallback */
-		initials?: string
-		/** Full name — auto-derives initials if initials prop not provided */
-		name?: string
-		/** Size variant */
-		size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-		/** Online presence status */
-		status?: 'online' | 'offline' | 'away' | 'busy'
-		/** Shape variant */
-		shape?: 'circle' | 'square'
-		/** Additional CSS class */
-		class?: string
-	}
+	import type { AvatarProps } from '../types/avatar.js'
 
 	const {
 		src,

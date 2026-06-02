@@ -1,46 +1,7 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte'
 	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 	import { messages } from '@rokkit/states'
-
-	interface StepperStep {
-		/** Step label (shown below circle) */
-		text: string
-		/** Short text inside circle (default: step number) */
-		label?: string
-		/** Step is finished (shows checkmark) */
-		completed?: boolean
-		/** Step cannot be navigated to */
-		disabled?: boolean
-		/** Number of sub-stages within this step (default: 1) */
-		stages?: number
-	}
-
-	interface StepperIcons {
-		/** Icon class for check/completed state */
-		check?: string
-	}
-
-	interface StepperProps {
-		/** Array of step definitions */
-		steps?: StepperStep[]
-		/** Current step index (bindable) */
-		current?: number
-		/** Current sub-stage within step (bindable, 0-based) */
-		currentStage?: number
-		/** Only allow clicking completed steps + first incomplete */
-		linear?: boolean
-		/** Layout orientation */
-		orientation?: 'horizontal' | 'vertical'
-		/** Custom icons */
-		icons?: StepperIcons
-		/** Callback when a step or dot is clicked */
-		onclick?: (step: number, stage?: number) => void
-		/** Content snippet rendered below the stepper */
-		content?: Snippet<[StepperStep, number]>
-		/** Additional CSS class */
-		class?: string
-	}
+	import type { StepperIcons, StepperProps } from '../types/stepper.js'
 
 	const defaultIcons: StepperIcons = {
 		check: DEFAULT_STATE_ICONS.action.check
@@ -57,7 +18,7 @@
 		onclick,
 		content,
 		class: className = ''
-	}: StepperProps & { label?: string } = $props()
+	}: StepperProps = $props()
 
 	const icons = $derived<StepperIcons>({ ...defaultIcons, ...userIcons })
 

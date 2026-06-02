@@ -1,22 +1,5 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte'
-
-	interface CardProps {
-		/** Optional href to render as a link */
-		href?: string
-		/** Click handler (only applies when no href) */
-		onclick?: () => void
-		/** Visual variant */
-		variant?: 'default' | 'primary' | 'secondary' | 'tertiary'
-		/** Additional CSS class */
-		class?: string
-		/** Card header snippet */
-		header?: Snippet
-		/** Card footer snippet */
-		footer?: Snippet
-		/** Card body content */
-		children?: Snippet
-	}
+	import type { CardProps } from '../types/card.js'
 
 	const {
 		href,

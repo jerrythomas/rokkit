@@ -1,26 +1,7 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte'
 	import { ProxyItem, messages } from '@rokkit/states'
 	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
-
-	interface BreadCrumbsIcons {
-		separator?: string
-	}
-
-	interface BreadCrumbsProps {
-		/** Array of breadcrumb items */
-		items?: unknown[]
-		/** Custom field mappings */
-		fields?: Record<string, string>
-		/** Custom icons */
-		icons?: BreadCrumbsIcons
-		/** Callback when a breadcrumb is clicked */
-		onclick?: (value: unknown, item: unknown) => void
-		/** Custom snippet for rendering each crumb */
-		crumb?: Snippet<[ProxyItem, boolean]>
-		/** Additional CSS class */
-		class?: string
-	}
+	import type { BreadCrumbsIcons, BreadCrumbsProps } from '../types/breadcrumbs.js'
 
 	const {
 		items = [],
@@ -30,7 +11,7 @@
 		onclick,
 		crumb,
 		class: className = ''
-	}: BreadCrumbsProps & { label?: string } = $props()
+	}: BreadCrumbsProps = $props()
 
 	const icons = $derived({ separator: DEFAULT_STATE_ICONS.navigate.right, ...userIcons })
 

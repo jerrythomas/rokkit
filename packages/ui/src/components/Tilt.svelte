@@ -1,17 +1,5 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte'
-
-	interface TiltProps {
-		/** Maximum rotation angle in degrees (default: 10) */
-		maxRotation?: number
-		/** Whether to adjust brightness based on mouse Y position */
-		setBrightness?: boolean
-		/** CSS perspective value in pixels (default: 600) */
-		perspective?: number
-		/** Additional CSS class */
-		class?: string
-		children?: Snippet
-	}
+	import type { TiltProps } from '../types/tilt.js'
 
 	const {
 		maxRotation = 10,

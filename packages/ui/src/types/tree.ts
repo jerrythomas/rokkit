@@ -25,10 +25,24 @@ import { DEFAULT_STATE_ICONS } from '@rokkit/core'
  * should use `ResolvedTreeFields` rather than `TreeFields`.
  */
 export interface TreeFields extends Record<string, string> {
-	/** Field for expanded state - default: 'expanded' */
+	/**
+	 * Name of the field on each tree item that holds its expanded state.
+	 * The value at that field is expected to be a `boolean`.
+	 *
+	 * Optional — falls back to the default field name `'expanded'`. After
+	 * `resolveTreeFields` is applied the resolved key is guaranteed present
+	 * (see {@link ResolvedTreeFields}).
+	 */
 	expanded?: string
 
-	/** Field for node level/depth - default: 'level' */
+	/**
+	 * Name of the field on each tree item that holds its depth in the tree.
+	 * The value at that field is expected to be a `number`.
+	 *
+	 * Optional — falls back to the default field name `'level'`. After
+	 * `resolveTreeFields` is applied the resolved key is guaranteed present
+	 * (see {@link ResolvedTreeFields}).
+	 */
 	level?: string
 }
 

@@ -1,18 +1,5 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte'
-
-	interface ResponsiveGridProps {
-		/** Minimum column width (CSS value) */
-		minWidth?: string
-		/** Gap between cells (CSS value) */
-		gap?: string
-		/** Maximum number of columns */
-		maxCols?: number
-		/** Grid children */
-		children: Snippet
-		/** Additional CSS class */
-		class?: string
-	}
+	import type { ResponsiveGridProps } from '../types/responsive-grid.js'
 
 	const {
 		minWidth = '240px',

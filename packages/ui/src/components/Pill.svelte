@@ -1,31 +1,8 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte'
 	import { ProxyItem } from '@rokkit/states'
 	import { keyboard } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
-
-	interface PillIcons {
-		remove?: string
-	}
-
-	interface PillProps {
-		/** Item data (string or object) */
-		value: unknown
-		/** Custom field mappings */
-		fields?: Record<string, string>
-		/** Show remove button */
-		removable?: boolean
-		/** Disabled state */
-		disabled?: boolean
-		/** Custom icons */
-		icons?: PillIcons
-		/** Called when remove is triggered (click or Delete/Backspace key) */
-		onremove?: (value: unknown) => void
-		/** Custom content snippet */
-		content?: Snippet<[ProxyItem]>
-		/** Additional CSS class */
-		class?: string
-	}
+	import type { PillIcons, PillProps } from '../types/pill.js'
 
 	const {
 		value,

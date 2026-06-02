@@ -1,20 +1,5 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte'
-
-	interface BadgeProps {
-		/** Numeric count to display */
-		count?: number
-		/** Maximum count before showing "max+" (default: 99) */
-		max?: number
-		/** Visual variant */
-		variant?: 'default' | 'primary' | 'success' | 'warning' | 'error'
-		/** Show as a small dot without content */
-		dot?: boolean
-		/** Content to wrap — when provided, badge positions absolutely over the child */
-		children?: Snippet
-		/** Additional CSS class */
-		class?: string
-	}
+	import type { BadgeProps } from '../types/badge.js'
 
 	const {
 		count,

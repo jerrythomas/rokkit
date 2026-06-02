@@ -1,24 +1,6 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte'
 	import { id } from '@rokkit/core'
-
-	interface ShineProps {
-		/** Light color (default: 'rgb(var(--primary-500))') */
-		color?: string
-		/** Light source distance/height — controls spread (default: 300) */
-		radius?: number
-		/** Gaussian blur depth (default: 1) */
-		depth?: number
-		/** Height of the surface for the light filter (default: 2) */
-		surfaceScale?: number
-		/** The bigger the value the bigger the reflection (default: 0.75) */
-		specularConstant?: number
-		/** Controls focus for the light source — bigger = brighter (default: 120) */
-		specularExponent?: number
-		/** Additional CSS class */
-		class?: string
-		children?: Snippet
-	}
+	import type { ShineProps } from '../types/shine.js'
 
 	const {
 		color = 'rgb(var(--primary-500))',

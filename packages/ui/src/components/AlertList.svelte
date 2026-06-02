@@ -2,20 +2,8 @@
 	import type { Snippet } from 'svelte'
 	import { SvelteSet } from 'svelte/reactivity'
 	import { alerts } from '@rokkit/states'
+	import type { AlertListProps } from '../types/alert-list.js'
 	import Message from './Message.svelte'
-
-	interface AlertListProps {
-		/** Screen position for the toast stack */
-		position?:
-			| 'top-right'
-			| 'top-center'
-			| 'top-left'
-			| 'bottom-right'
-			| 'bottom-center'
-			| 'bottom-left'
-		/** Additional CSS class */
-		class?: string
-	}
 
 	const { position = 'top-right', class: className = '' }: AlertListProps = $props()
 
