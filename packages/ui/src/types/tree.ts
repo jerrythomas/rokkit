@@ -24,7 +24,13 @@ import { DEFAULT_STATE_ICONS } from '@rokkit/core'
  * Downstream code that needs string field names without null-guards
  * should use `ResolvedTreeFields` rather than `TreeFields`.
  */
-export interface TreeFields extends Record<string, string> {
+export interface TreeFields {
+	// Index signature must allow `undefined` so the optional keys below
+	// (typed as `string | undefined`) are assignable. Extending
+	// `Record<string, string>` here would conflict with the optionals
+	// and produce TS2411 in any strict downstream consumer.
+	[field: string]: string | undefined
+
 	/**
 	 * Name of the field on each tree item that holds its expanded state.
 	 * The value at that field is expected to be a `boolean`.
@@ -64,7 +70,11 @@ export type ResolvedTreeFields = Required<TreeFields>
  * builders.
  */
 export function resolveTreeFields(fields: TreeFields = {}): ResolvedTreeFields {
-	return { ...defaultTreeFields, ...fields }
+	// `Required<TreeFields>` cannot strip `undefined` from the index
+	// signature on its own, so spread-inference fails the contract even
+	// though `defaultTreeFields` provides every key. Cast through unknown
+	// to assert the post-merge shape.
+	return { ...defaultTreeFields, ...fields } as unknown as ResolvedTreeFields
 }
 
 /**
