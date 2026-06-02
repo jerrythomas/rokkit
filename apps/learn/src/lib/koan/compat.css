@@ -1,29 +1,17 @@
 /* ═══════════════════════════════════════════════════════════════════
-   Koan compat layer — alias mockup tokens to the Rokkit named vocabulary.
-   This file exists so the mockup CSS (rokkit.css / zen-sumi.css) can be
-   ported verbatim. Long-term we'll replace --paper-2 / --ink-3 / etc.
-   references with the canonical --paper-soft / --ink-soft ones; this
-   alias layer can then be deleted.
-   See docs/mockups/project/zen-sumi.css for the source of these names.
+   Koan compat layer — small bridge between mockup CSS and the Rokkit
+   named-token vocabulary. Most mockup aliases (--paper-2/-3, --edge,
+   --ink-2/-3/-4, --space-0..9) have been removed once their last
+   consumer migrated to canonical names; what remains is the --shadow
+   shorthand still used by lib/chat/styles/chat.css.
    ═══════════════════════════════════════════════════════════════════ */
 
 :root {
-	/* Surface ladder — mockup `--paper-2 / -3` map to Rokkit `--paper-soft / -mute`. */
-	--paper-2: var(--paper-soft);
-	--paper-3: var(--paper-mute);
-	--edge: var(--paper-edge);
-
-	/* Ink ladder — mockup `--ink-2 / -3 / -4` map to Rokkit `--ink-mute / -soft / -faint`. */
-	--ink-2: var(--ink-mute);
-	--ink-3: var(--ink-soft);
-	--ink-4: var(--ink-faint);
-
-	/* Font stacks now come from the @rokkit/themes base layer + the demo's
-	   rokkit.config.js `typography: { display, sans, mono }` config. The
-	   preset emits --font-display, --font-ui, --font-mono (with --font-heading
-	   and --font-sans as back-compat aliases). No override needed here. */
-
-	/* Shadow shorthand the mockup CSS uses inline. */
+	/* Shadow shorthand the mockup chat CSS uses inline.
+	   Note: the inner var(--shadow-tint) is substituted at :root and
+	   inherits as a frozen string — see the --paper-edge note below.
+	   That's acceptable here because --shadow-tint doesn't change per
+	   mode in any meaningful way for this shorthand. */
 	--shadow: 0 1px 3px var(--shadow-tint);
 
 	/* `--paper-edge` light/dark values come from `overrides:` in rokkit.config.js
@@ -33,18 +21,4 @@
 	   CSS resolves the inner var() at the declaring element, bakes in the
 	   light value, and never re-resolves under [data-mode="dark"]. Inline the
 	   `1px solid var(--paper-edge)` at each border site instead. */
-
-	/* Mockup spacing scale (4px base) — Rokkit's density tokens drive component
-	   internals; this scale is for layout-level work in the Koan shell only. */
-	--space-0: 0;
-	--space-1: 4px;
-	--space-2: 8px;
-	--space-3: 12px;
-	--space-4: 16px;
-	--space-5: 24px;
-	--space-6: 32px;
-	--space-7: 48px;
-	--space-8: 64px;
-	--space-9: 96px;
 }
-

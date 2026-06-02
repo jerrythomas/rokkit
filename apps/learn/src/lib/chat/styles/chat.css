@@ -2,7 +2,7 @@
    Koan chat primitives — visual treatment.
    Components emit data-* attributes; this file owns all styling.
    Tokens come from the Rokkit named vocabulary (--paper, --ink-mute,
-   --accent, --accent-soft, …) plus the compat aliases in koan/compat.css.
+   --accent, --accent-soft, …) plus the --shadow shorthand in koan/compat.css.
    ═══════════════════════════════════════════════════════════════════ */
 
 /* ─── ChatMessage ────────────────────────────────────────────────── */
