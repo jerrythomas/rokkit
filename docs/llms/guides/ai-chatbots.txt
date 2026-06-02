@@ -104,7 +104,7 @@ LIST spec:
 ```
 
 The `docs/llms/` directory ships ready-made versions of these
-specs — see [llms.txt](/llms.txt) and the per-component files
+specs — see [llms.txt](/llms/index.txt) and the per-component files
 under `/llms/components/`.
 
 ## Crossfilter — linked dashboards from one prompt

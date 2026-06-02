@@ -22,12 +22,24 @@
 
 	const tokens = $derived(marked.lexer(markdown))
 
+	// DOMPurify ships as a fully-initialised object in browser environments and
+	// as a factory function on the server (it needs to be bound to a DOM window
+	// — usually jsdom — before .sanitize is available). To stay SSR-safe without
+	// pulling jsdom into every consumer's build, fall back to a pass-through
+	// when .sanitize is unavailable. Consumers rendering untrusted markdown in
+	// SSR contexts should pre-sanitize before passing it to this component;
+	// post-hydration the client runs the real sanitiser regardless.
+	const sanitize: (raw: string) => string =
+		typeof DOMPurify?.sanitize === 'function'
+			? (raw) => DOMPurify.sanitize(raw) as string
+			: (raw) => raw
+
 	function tokenToSafeHtml(token: Token): string {
 		const tokenList = Object.assign([token], {
 			links: (tokens as TokensList).links ?? {}
 		}) as TokensList
 		const raw = marked.parser(tokenList)
-		return DOMPurify.sanitize(raw)
+		return sanitize(raw)
 	}
 
 	/** Extract crossfilter group ID from a code token's text, or null if absent/invalid. */
