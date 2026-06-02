@@ -35,16 +35,93 @@ switching:
 
 ## Semantic colour tokens
 
-Themes resolve to a small vocabulary of semantic tokens used by
+Themes resolve to a small vocabulary of named tokens used by
 components:
 
-- `--paper` / `--paper-soft` / `--paper-edge` — surfaces.
-- `--ink` / `--ink-mute` / `--ink-soft` — text + lines.
-- `--primary` / `--secondary` / `--accent` — brand colors.
-- `--success` / `--warning` / `--danger` / `--info` — state.
+- `--paper` / `--paper-soft` / `--paper-mute` / `--paper-edge` — surfaces.
+- `--ink` / `--ink-mute` / `--ink-soft` / `--ink-faint` — text + lines.
+- `--primary` / `--on-primary` — brand.
+- `--accent` / `--accent-soft` — highlight.
+- `--success` / `--warning` / `--danger` / `--info` (+ `*-soft`) — state.
+- `--focus-ring` / `--shadow-tint` — affordances.
 
-Each role auto-inverts for dark mode without explicit `@media
-(prefers-color-scheme)` rules.
+Each named token auto-resolves to the right shade of the role's
+palette per mode — no explicit `@media (prefers-color-scheme)`
+rules. Light vs dark is selected via `[data-mode="dark"]`.
+
+### Consume tokens via utility classes, not custom-property wrappers
+
+For every named token (except `shadow-tint`), `presetRokkit` emits
+matching utility classes:
+
+| Prefix     | CSS property      | Example              |
+|------------|-------------------|----------------------|
+| `bg-`      | background-color  | `bg-paper-soft`      |
+| `text-`    | color             | `text-ink-mute`      |
+| `border-`  | border-color      | `border-paper-edge`  |
+| `border-t/-b/-l/-r-` | per-side  | `border-t-paper-edge` |
+| `ring-`    | --un-ring-color   | `ring-focus-ring`    |
+| `fill-`    | fill              | `fill-primary`       |
+| `stroke-`  | stroke            | `stroke-accent`      |
+
+```html
+<!-- canonical hairline pattern: 1px solid border in the etched edge tone -->
+<div class="border border-paper-edge">…</div>
+
+<!-- top-only hairline divider -->
+<div class="border-t border-t-paper-edge">…</div>
+```
+
+**Avoid wrapping `var()` tokens in custom properties.** CSS
+substitutes `var()` references inside a custom property's value at
+the *declaring* element, bakes in the resolved string, and inherits
+that frozen value. So:
+
+```css
+/* DON'T — value is baked at :root and never re-resolves under [data-mode="dark"] */
+:root { --hairline: 1px solid var(--paper-edge); }
+```
+
+…produces borders that don't flip in dark mode even when
+`--paper-edge` itself flips. The utility-class form
+(`border border-paper-edge`) resolves `var(--paper-edge)` at the
+*consuming* element where `[data-mode]` applies, so dark-mode
+overrides land correctly.
+
+### Customizing named tokens
+
+To replace a named token's resolved value — per mode if needed —
+use the `overrides:` block in `rokkit.config.js`. Reserved names
+override the named-token default via cascade order; non-reserved
+names emit as new custom tokens. Same pipeline either way.
+
+```js
+// rokkit.config.js
+export default {
+  palettes: {
+    kami: { /* light surface ladder */ },
+    sumi: { /* dark surface ladder */ }
+  },
+  skin: { surface: { light: 'kami', dark: 'sumi' }, /* … */ },
+  overrides: {
+    // Reserved name: replaces the named-token default per mode.
+    // Useful when the default shade (here sumi.400) doesn't land
+    // where you want it in dark mode.
+    'paper-edge':  { light: 'kami.400', dark: 'oklch(0.04 0.025 85)' },
+
+    // Non-reserved name: emits as a brand-new CSS var (`--canvas`,
+    // `--canvas-grid`, …). Color-valued ones also get auto-emitted
+    // bg-/text-/border- shortcuts.
+    canvas:        'kami.50',
+    'canvas-grid': '#d4d4d4',
+    'canvas-bleed': { light: 'kami.100', dark: 'sumi.900' }
+  }
+}
+```
+
+Values can be palette refs (`'kami.400'`), raw CSS color literals
+(`'#222222'`, `'oklch(...)'`, `'rgb(...)'`), or `{ light, dark }`
+objects to set each mode independently.
 
 ## Data-attribute styling
 

@@ -7,18 +7,9 @@
    ═══════════════════════════════════════════════════════════════════ */
 
 :root {
-	/* Shadow shorthand the mockup chat CSS uses inline.
-	   Note: the inner var(--shadow-tint) is substituted at :root and
-	   inherits as a frozen string — see the --paper-edge note below.
-	   That's acceptable here because --shadow-tint doesn't change per
-	   mode in any meaningful way for this shorthand. */
+	/* Shadow shorthand for the mockup chat CSS. Reusable because --shadow-tint
+	   doesn't meaningfully flip per mode for this expression. Prefer utility
+	   classes (`border border-paper-edge`, `bg-paper`, etc.) over wrapping
+	   `var(--paper-edge)` in another custom property — see theming.txt. */
 	--shadow: 0 1px 3px var(--shadow-tint);
-
-	/* `--paper-edge` light/dark values come from `overrides:` in rokkit.config.js
-	   (light: kami.400; dark: a tone darker than --paper so the hairline reads
-	   as an etched line, not a raised edge). NOTE — do NOT wrap that value in
-	   another custom property like `--hairline: 1px solid var(--paper-edge)`:
-	   CSS resolves the inner var() at the declaring element, bakes in the
-	   light value, and never re-resolves under [data-mode="dark"]. Inline the
-	   `1px solid var(--paper-edge)` at each border site instead. */
 }
