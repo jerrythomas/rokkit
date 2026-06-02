@@ -1,5 +1,62 @@
 # Project Journal
 
+## 2026-06-02 — Merge `custom:` into `overrides:` in rokkit.config
+
+**Breaking change to the preset config API.** Replaced the two-block
+`custom:` / (proposed) `overrides:` split with a single `overrides:`
+block that accepts any token name. Reserved names (e.g. `paper-edge`)
+override the named-token defaults via cascade order; non-reserved names
+emit as new custom tokens. Same resolution pipeline for both — palette
+ref → light/dark pick → colorSpace adapter.
+
+**Motivation**
+
+When porting Rokkit tokens into the sensei app, a `paper-edge` override
+in dark mode was needed (default `sumi.400` is lighter than `sumi.50`
+paper bg → "lifted edge" instead of an etched hairline). The previous
+`custom:` block rejected reserved names with "use the skin palette
+mapping instead", but skin mapping is role-level, not token-level — no
+way to redirect one shade without disturbing the rest. The compat.css
+override pattern worked but pushed config concerns into stylesheets.
+
+**Why a single field, not two**
+
+The check between custom-vs-override added nothing — the resolver is
+name-agnostic and the cascade does the right thing automatically.
+Dropping the validator collapses the API surface to one concept: "CSS
+custom-property definitions, resolved per-mode."
+
+**Changes**
+
+- `packages/unocss/src/custom-tokens.js`: dropped
+  `validateCustomTokenNames`; renamed `resolveCustomTokens` →
+  `resolveTokens`; removed the `NAMED_TOKENS` import (no longer needed).
+- `packages/unocss/src/config.js`: `DEFAULT_CONFIG.custom: {}` →
+  `DEFAULT_CONFIG.overrides: {}`; `loadConfig` reads `cfg.overrides`.
+- `packages/unocss/src/preset.ts`: imports `NAMED_TOKENS`, builds a
+  `NAMED_TOKEN_SET` used by `buildOverrideTokenShortcuts` to skip
+  shortcut emission for reserved-name overrides (the named layer
+  already emits those). Resolver call sites switched to
+  `config.overrides`; dark-block trigger now keys off `hasDarkOverride`.
+- `apps/learn/rokkit.config.js`: `custom:` → `overrides:`, with
+  `'paper-edge': { light: 'kami.400', dark: 'oklch(0.04 0.025 85)' }`
+  folded in as proof of the new mechanism.
+- `apps/learn/src/lib/koan/compat.css`: removed the
+  `[data-mode='dark'] { --paper-edge: ... }` block and the explanatory
+  comment block — now config-driven.
+- Tests rewritten for the merged field, plus two new assertions:
+  reserved-name overrides win in `:root`, and per-mode reserved-name
+  overrides land correctly in both `:root` and `[data-mode="dark"]`.
+
+**Migration impact**
+
+External consumers (sensei) need a one-shot rename of `custom:` →
+`overrides:` in their `rokkit.config.js`. No semantic change for
+non-reserved entries.
+
+Lint: 0 errors (84 pre-existing warnings unchanged). Tests:
+3518 passed (3518).
+
 ## 2026-06-01 — Split guides into /guides section + migrate prose docs to .md
 
 Two coordinated changes landed on `develop`. Backlog/spec/plan:

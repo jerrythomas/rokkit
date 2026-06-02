@@ -301,15 +301,26 @@ describe('loadConfig — tokens mode', () => {
 	})
 })
 
-describe('loadConfig — custom tokens (placeholder field)', () => {
-	it('defaults custom to {}', () => {
+describe('loadConfig — overrides', () => {
+	it('defaults overrides to {}', () => {
 		const config = loadConfig()
-		expect(config.custom).toEqual({})
+		expect(config.overrides).toEqual({})
 	})
 
-	it('passes through custom as-is', () => {
-		const config = loadConfig({ custom: { canvas: 'kami.50', 'canvas-grid': '#d4d4d4' } })
-		expect(config.custom).toEqual({ canvas: 'kami.50', 'canvas-grid': '#d4d4d4' })
+	it('passes through overrides as-is', () => {
+		const config = loadConfig({ overrides: { canvas: 'kami.50', 'canvas-grid': '#d4d4d4' } })
+		expect(config.overrides).toEqual({ canvas: 'kami.50', 'canvas-grid': '#d4d4d4' })
+	})
+
+	it('accepts both reserved named-token names and new custom names in the same block', () => {
+		const config = loadConfig({
+			overrides: {
+				'paper-edge': { light: 'kami.400', dark: 'sumi.800' },
+				canvas: 'kami.50'
+			}
+		})
+		expect(config.overrides).toHaveProperty('paper-edge')
+		expect(config.overrides).toHaveProperty('canvas')
 	})
 })
 

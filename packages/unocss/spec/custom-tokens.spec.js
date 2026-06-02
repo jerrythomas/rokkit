@@ -1,25 +1,24 @@
 import { describe, it, expect } from 'vitest'
-import { resolveCustomTokens, validateCustomTokenNames, isColorValue } from '../src/custom-tokens.js'
+import { resolveTokens, isColorValue } from '../src/custom-tokens.js'
 
-describe('resolveCustomTokens', () => {
+describe('resolveTokens', () => {
   const palettes = {
-    kami: { 50: '#f8f8f3', 100: '#f0f0e8', 900: '#1a1a1a' },
-    sumi: { 50: '#fafafa', 900: '#0d0d0d' }
+    kami: { 50: '#f8f8f3', 100: '#f0f0e8', 400: '#ddd5c4', 900: '#1a1a1a' },
+    sumi: { 50: '#fafafa', 800: '#222222', 900: '#0d0d0d' }
   }
 
   it('resolves "palette.shade" refs via the colorSpace adapter', () => {
-    const result = resolveCustomTokens(
+    const result = resolveTokens(
       { canvas: 'kami.50' },
       palettes,
       'rgb',
       'light'
     )
-    // kami.50 = #f8f8f3 → rgb(248, 248, 243)
     expect(result['--canvas']).toBe('rgb(248, 248, 243)')
   })
 
   it('passes raw string values through verbatim', () => {
-    const result = resolveCustomTokens(
+    const result = resolveTokens(
       { 'canvas-grid': '#d4d4d4', tau: 'oklch(0.5 0.1 30)' },
       palettes,
       'rgb',
@@ -30,27 +29,27 @@ describe('resolveCustomTokens', () => {
   })
 
   it('selects light value from { light, dark } in light mode', () => {
-    const result = resolveCustomTokens(
+    const result = resolveTokens(
       { bleed: { light: 'kami.50', dark: 'sumi.900' } },
       palettes,
       'rgb',
       'light'
     )
-    expect(result['--bleed']).toBe('rgb(248, 248, 243)') // kami.50
+    expect(result['--bleed']).toBe('rgb(248, 248, 243)')
   })
 
   it('selects dark value from { light, dark } in dark mode', () => {
-    const result = resolveCustomTokens(
+    const result = resolveTokens(
       { bleed: { light: 'kami.50', dark: 'sumi.900' } },
       palettes,
       'rgb',
       'dark'
     )
-    expect(result['--bleed']).toBe('rgb(13, 13, 13)') // sumi.900
+    expect(result['--bleed']).toBe('rgb(13, 13, 13)')
   })
 
   it('falls back to the other side when only one side is provided', () => {
-    const result = resolveCustomTokens(
+    const result = resolveTokens(
       { bleed: { light: 'kami.50' } },
       palettes,
       'rgb',
@@ -59,12 +58,12 @@ describe('resolveCustomTokens', () => {
     expect(result['--bleed']).toBe('rgb(248, 248, 243)')
   })
 
-  it('returns empty object when custom is empty', () => {
-    expect(resolveCustomTokens({}, palettes, 'rgb', 'light')).toEqual({})
+  it('returns empty object when overrides is empty', () => {
+    expect(resolveTokens({}, palettes, 'rgb', 'light')).toEqual({})
   })
 
   it('throws when a palette ref points to unknown palette', () => {
-    expect(() => resolveCustomTokens(
+    expect(() => resolveTokens(
       { canvas: 'unknown.50' },
       palettes,
       'rgb',
@@ -73,33 +72,26 @@ describe('resolveCustomTokens', () => {
   })
 
   it('throws when a palette ref points to unknown shade', () => {
-    expect(() => resolveCustomTokens(
+    expect(() => resolveTokens(
       { canvas: 'kami.999' },
       palettes,
       'rgb',
       'light'
     )).toThrow(/999/)
   })
-})
 
-describe('validateCustomTokenNames', () => {
-  it('throws when a custom token name collides with a NAMED_TOKEN', () => {
-    expect(() => validateCustomTokenNames({ paper: 'kami.50' })).toThrow(/reserved/i)
-    expect(() => validateCustomTokenNames({ 'ink-mute': 'kami.700' })).toThrow(/reserved/i)
-    expect(() => validateCustomTokenNames({ 'on-primary': '#fff' })).toThrow(/reserved/i)
-    expect(() => validateCustomTokenNames({ 'focus-ring': '#fff' })).toThrow(/reserved/i)
-  })
-
-  it('allows non-reserved names', () => {
-    expect(() => validateCustomTokenNames({
-      canvas: 'kami.50',
-      'canvas-grid': '#d4d4d4',
-      'tauri-traffic': 'oklch(0.72 0.14 28)'
-    })).not.toThrow()
-  })
-
-  it('passes silently for empty custom object', () => {
-    expect(() => validateCustomTokenNames({})).not.toThrow()
+  it('accepts reserved named-token names — caller decides via cascade order which value wins', () => {
+    // The merged `overrides` field accepts any name. Reserved names like
+    // `paper-edge` are emitted alongside non-reserved ones; the preset's
+    // merge order is what makes the reserved-name entries override the
+    // named-token defaults. The resolver itself is name-agnostic.
+    const result = resolveTokens(
+      { 'paper-edge': { light: 'kami.400', dark: 'sumi.800' } },
+      palettes,
+      'rgb',
+      'dark'
+    )
+    expect(result['--paper-edge']).toBe('rgb(34, 34, 34)')
   })
 })
 

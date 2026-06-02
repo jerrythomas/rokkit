@@ -624,46 +624,82 @@ describe('presetRokkit', () => {
 			expect(darkBlock).toContain('--paper:')
 		})
 
-		it('emits [data-mode="dark"] block when custom uses { light, dark }', () => {
+		it('emits [data-mode="dark"] block when an override uses { light, dark }', () => {
 			const preset = presetRokkit({
 				palettes: { kami: { 50: '#f8f8f3' }, sumi: { 900: '#0d0d0d' } },
-				custom: { bleed: { light: 'kami.50', dark: 'sumi.900' } }
+				overrides: { bleed: { light: 'kami.50', dark: 'sumi.900' } }
 			})
 			const css = preset.preflights[0].getCSS()
 			expect(css).toContain('[data-mode="dark"]')
 		})
 
-		it('does NOT emit [data-mode="dark"] block when custom has only light side', () => {
+		it('does NOT emit [data-mode="dark"] block when an override has only light side', () => {
 			const preset = presetRokkit({
 				palettes: { kami: { 50: '#f8f8f3' } },
-				custom: { canvas: { light: 'kami.50' } }  // no dark key
+				overrides: { canvas: { light: 'kami.50' } }
 			})
 			const css = preset.preflights[0].getCSS()
 			expect(css).not.toContain('[data-mode="dark"]')
 		})
 
-		it('emits [data-mode="dark"] block when custom has dark-only side', () => {
-			// dark-only intentionally emits dark block — light cascade can pick a default
+		it('emits [data-mode="dark"] block when an override has dark-only side', () => {
 			const preset = presetRokkit({
 				palettes: { sumi: { 900: '#0d0d0d' } },
-				custom: { canvas: { dark: 'sumi.900' } }
+				overrides: { canvas: { dark: 'sumi.900' } }
 			})
 			const css = preset.preflights[0].getCSS()
 			expect(css).toContain('[data-mode="dark"]')
 		})
 
-		it('throws when a custom token name collides with a reserved name', () => {
-			expect(() => presetRokkit({ custom: { paper: '#fff' } })).toThrow(/reserved/i)
-		})
-
-		it('emits custom CSS vars in :root', () => {
+		it('emits new (non-reserved) override CSS vars in :root', () => {
 			const preset = presetRokkit({
 				palettes: { kami: { 50: '#f8f8f3' } },
-				custom: { canvas: 'kami.50', 'canvas-grid': '#d4d4d4' }
+				overrides: { canvas: 'kami.50', 'canvas-grid': '#d4d4d4' }
 			})
 			const css = preset.preflights[0].getCSS()
 			expect(css).toContain('--canvas:rgb(248, 248, 243)')
 			expect(css).toContain('--canvas-grid:#d4d4d4')
+		})
+
+		it('reserved-name overrides win over the named-token default in :root', () => {
+			const preset = presetRokkit({
+				palettes: {
+					kami: {
+						50: '#ffffff', 100: '#ffffff', 200: '#ffffff', 300: '#ffffff',
+						400: '#aaaaaa', 500: '#ffffff', 600: '#ffffff', 700: '#ffffff',
+						800: '#222222', 900: '#000000', 950: '#000000'
+					}
+				},
+				overrides: { 'paper-edge': 'kami.800' }
+			})
+			const css = preset.preflights[0].getCSS()
+			const rootBlock = css.split('[data-mode')[0]
+			// Override emits AFTER the default named-token assignment, so the
+			// rightmost `--paper-edge:` wins.
+			expect(rootBlock).toContain('--paper-edge:rgb(34, 34, 34)')
+		})
+
+		it('reserved-name override with { light, dark } applies per-mode', () => {
+			const preset = presetRokkit({
+				palettes: {
+					kami: {
+						50: '#ffffff', 100: '#ffffff', 200: '#ffffff', 300: '#ffffff',
+						400: '#aaaaaa', 500: '#ffffff', 600: '#ffffff', 700: '#ffffff',
+						800: '#222222', 900: '#000000', 950: '#000000'
+					},
+					sumi: {
+						50: '#111111', 100: '#111111', 200: '#111111', 300: '#111111',
+						400: '#333333', 500: '#111111', 600: '#111111', 700: '#111111',
+						800: '#cccccc', 900: '#ffffff', 950: '#ffffff'
+					}
+				},
+				skin: { surface: { light: 'kami', dark: 'sumi' }, ink: { light: 'kami', dark: 'sumi' } },
+				overrides: { 'paper-edge': { light: 'kami.400', dark: 'sumi.800' } }
+			})
+			const css = preset.preflights[0].getCSS()
+			const [rootBlock, darkBlock] = css.split('[data-mode="dark"]')
+			expect(rootBlock).toContain('--paper-edge:rgb(170, 170, 170)')
+			expect(darkBlock).toContain('--paper-edge:rgb(204, 204, 204)')
 		})
 	})
 
@@ -771,11 +807,11 @@ describe('presetRokkit', () => {
 		})
 	})
 
-	describe('custom-token shortcuts', () => {
-		it('emits bg-canvas shortcut for color-valued palette-ref custom token', () => {
+	describe('override-token shortcuts', () => {
+		it('emits bg-canvas shortcut for color-valued palette-ref override', () => {
 			const preset = presetRokkit({
 				palettes: { kami: { 50: '#f8f8f3' } },
-				custom: { canvas: 'kami.50' }
+				overrides: { canvas: 'kami.50' }
 			})
 			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
 			expect(keys).toContain('bg-canvas')
@@ -785,7 +821,7 @@ describe('presetRokkit', () => {
 
 		it('emits shortcuts for raw color values (oklch, hex, rgb)', () => {
 			const preset = presetRokkit({
-				custom: {
+				overrides: {
 					primary2: 'oklch(0.5 0.1 30)',
 					edge: '#d4d4d4',
 					flag: 'rgb(255, 0, 0)'
@@ -797,9 +833,9 @@ describe('presetRokkit', () => {
 			expect(keys).toContain('bg-flag')
 		})
 
-		it('does NOT emit shortcuts for non-color custom values', () => {
+		it('does NOT emit shortcuts for non-color override values', () => {
 			const preset = presetRokkit({
-				custom: { 'grid-size': '8px', fade: '1.2s ease', spacer: '100%' }
+				overrides: { 'grid-size': '8px', fade: '1.2s ease', spacer: '100%' }
 			})
 			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
 			expect(keys).not.toContain('bg-grid-size')
@@ -807,10 +843,10 @@ describe('presetRokkit', () => {
 			expect(keys).not.toContain('bg-spacer')
 		})
 
-		it('emits shortcuts for mode-aware custom tokens (uses light value for color check)', () => {
+		it('emits shortcuts for mode-aware override tokens (uses light value for color check)', () => {
 			const preset = presetRokkit({
 				palettes: { kami: { 50: '#f8f8f3' }, sumi: { 900: '#0d0d0d' } },
-				custom: { bleed: { light: 'kami.50', dark: 'sumi.900' } }
+				overrides: { bleed: { light: 'kami.50', dark: 'sumi.900' } }
 			})
 			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
 			expect(keys).toContain('bg-bleed')
@@ -819,25 +855,25 @@ describe('presetRokkit', () => {
 		it('bg-canvas expansion uses var(--canvas)', () => {
 			const preset = presetRokkit({
 				palettes: { kami: { 50: '#f8f8f3' } },
-				custom: { canvas: 'kami.50' }
+				overrides: { canvas: 'kami.50' }
 			})
 			const entry = preset.shortcuts.find(s => s[0] === 'bg-canvas')
 			expect(entry).toBeDefined()
 			expect(entry[1]).toEqual({ 'background-color': 'var(--canvas)' })
 		})
 
-		it('does NOT emit ring-canvas for arbitrary tokens (ring is reserved for *-ring named or focus)', () => {
+		it('does NOT emit ring-canvas for arbitrary override tokens (ring is reserved for *-ring named or focus)', () => {
 			const preset = presetRokkit({
 				palettes: { kami: { 50: '#f8f8f3' } },
-				custom: { canvas: 'kami.50' }
+				overrides: { canvas: 'kami.50' }
 			})
 			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
 			expect(keys).not.toContain('ring-canvas')
 		})
 
-		it('emits ring shortcut when custom token name ends in -ring', () => {
+		it('emits ring shortcut when override token name ends in -ring', () => {
 			const preset = presetRokkit({
-				custom: { 'glow-ring': '#ff0000' }
+				overrides: { 'glow-ring': '#ff0000' }
 			})
 			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
 			expect(keys).toContain('ring-glow-ring')

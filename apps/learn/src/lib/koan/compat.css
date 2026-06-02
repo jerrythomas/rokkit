@@ -26,23 +26,13 @@
 	/* Shadow shorthand the mockup CSS uses inline. */
 	--shadow: 0 1px 3px var(--shadow-tint);
 
-	/* Border tone in light mode comes from --paper-edge (kami.400) — slightly
-	   darker than the paper bg, creating a soft "raised edge" look. In dark
-	   mode the preset would give us sumi.400 which is LIGHTER than the
-	   --paper (sumi.50) bg, producing a "lifted edge" look. We want the
-	   opposite there: borders darker than the canvas, like an etched line
-	   that recedes. Override --paper-edge in [data-mode='dark'] below to
-	   a value darker than --paper. */
-
-	/* NOTE — DO NOT add a --hairline custom property here that wraps
-	   `1px solid var(--paper-edge)`. CSS resolves the var() inside a
-	   custom property's value at the DECLARING element (here :root),
-	   bakes in the light --paper-edge, and inherits that as a frozen
-	   string. Child elements under [data-mode="dark"] never re-resolve
-	   the inner var() — borders stay light even though --paper-edge
-	   itself flipped. Use `1px solid var(--paper-edge)` inline in each
-	   border declaration instead; the var() resolves at the element
-	   scope where data-mode applies. */
+	/* `--paper-edge` light/dark values come from `overrides:` in rokkit.config.js
+	   (light: kami.400; dark: a tone darker than --paper so the hairline reads
+	   as an etched line, not a raised edge). NOTE — do NOT wrap that value in
+	   another custom property like `--hairline: 1px solid var(--paper-edge)`:
+	   CSS resolves the inner var() at the declaring element, bakes in the
+	   light value, and never re-resolves under [data-mode="dark"]. Inline the
+	   `1px solid var(--paper-edge)` at each border site instead. */
 
 	/* Mockup spacing scale (4px base) — Rokkit's density tokens drive component
 	   internals; this scale is for layout-level work in the Koan shell only. */
@@ -56,18 +46,5 @@
 	--space-7: 48px;
 	--space-8: 64px;
 	--space-9: 96px;
-}
-
-/* Dark-mode override for --paper-edge.
-   The light mode etched pair is roughly:
-     paper #f7f4ec → oklch(0.965 0.013 88)
-     edge  #ddd5c4 → oklch(0.864 0.028 86)
-   Delta: L -0.10, C +0.015 — edge is darker AND more saturated.
-   Applying the same delta to dark mode (paper = sumi.50 ~ L 0.17):
-     dark edge = oklch(0.07 ish, higher chroma, warm hue)
-   In perception terms, low-lightness deltas read less than high-lightness
-   ones, so we go a little further to compensate. */
-[data-mode='dark'] {
-	--paper-edge: oklch(0.04 0.025 85);
 }
 

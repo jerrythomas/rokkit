@@ -14,12 +14,13 @@ import {
 	defaultPalette,
 	DEFAULT_ICONS,
 	iconShortcuts,
+	NAMED_TOKENS,
 	Theme,
 	defaultColors
 } from '@rokkit/core'
 import { iconCollections } from '@rokkit/core/vite'
 import { loadConfig, resolveColormap, isAlias, resolveTokenMode } from './config.js'
-import { resolveCustomTokens, validateCustomTokenNames, isColorValue, PALETTE_REF_RE } from './custom-tokens.js'
+import { resolveTokens, isColorValue, PALETTE_REF_RE } from './custom-tokens.js'
 import { NAMED_SHORTCUT_PREFIXES, buildNamedShortcuts } from './named-shortcuts.js'
 
 const THEME_CONFIG = {
@@ -145,45 +146,45 @@ function buildRadiusVars(shape): string[] {
 }
 
 function buildPreflights(theme, colormap, config) {
-	validateCustomTokenNames(config.custom ?? {})
-
 	const extraVars = [...buildTypographyVars(config.typography), ...buildRadiusVars(config.shape)]
 
 	const lightVars = buildVarsForMode(theme, colormap, config)
-	const lightCustom = resolveCustomTokens(
-		config.custom ?? {},
+	const lightOverrides = resolveTokens(
+		config.overrides ?? {},
 		config.palettes ?? {},
 		config.colorSpace,
 		'light'
 	)
-	const lightAllVars = { ...lightVars, ...lightCustom }
+	// Overrides merged after named-token defaults so reserved-name entries
+	// (e.g. `paper-edge`) win over the skin-derived value.
+	const lightAllVars = { ...lightVars, ...lightOverrides }
 	const lightBlock = `:root{${toCssBlock(lightAllVars)}${
 		extraVars.length ? `;${extraVars.join(';')}` : ''
 	}}`
 
-	// Dark block: only when skin has dual-palette OR custom has { light, dark }
+	// Dark block: only when skin has dual-palette OR an override has { light, dark } (or dark-only)
 	let darkBlock = ''
 	const nonAliasColormap = Object.fromEntries(
 		Object.entries(colormap).filter(([, v]) => !isAlias(v))
 	)
-	const hasDarkCustom = Object.values(config.custom ?? {}).some(
+	const hasDarkOverride = Object.values(config.overrides ?? {}).some(
 		(v) => v && typeof v === 'object' && !Array.isArray(v) && 'dark' in v
 	)
 
-	if (hasDualPaletteMapping(nonAliasColormap) || hasDarkCustom) {
+	if (hasDualPaletteMapping(nonAliasColormap) || hasDarkOverride) {
 		const darkTheme = new Theme({
 			colors: { ...defaultColors, ...config.palettes },
 			mapping: resolveMappingForMode(nonAliasColormap, 'dark'),
 			colorSpace: config.colorSpace
 		})
 		const darkVars = buildVarsForMode(darkTheme, colormap, config)
-		const darkCustom = resolveCustomTokens(
-			config.custom ?? {},
+		const darkOverrides = resolveTokens(
+			config.overrides ?? {},
 			config.palettes ?? {},
 			config.colorSpace,
 			'dark'
 		)
-		darkBlock = `[data-mode="dark"]{${toCssBlock({ ...darkVars, ...darkCustom })}}`
+		darkBlock = `[data-mode="dark"]{${toCssBlock({ ...darkVars, ...darkOverrides })}}`
 	}
 
 	return [{ getCSS: () => `${lightBlock}${darkBlock}` }]
@@ -251,11 +252,11 @@ function buildIconShortcuts(config) {
 }
 
 /**
- * Returns true when a custom token resolves to a CSS color value.
+ * Returns true when a token override resolves to a CSS color value.
  * Palette refs (`'kami.50'`) are always colors. Raw values are checked
  * with `isColorValue` (handles oklch/rgb/hsl/hex).
  */
-function isCustomTokenColor(value) {
+function isOverrideTokenColor(value) {
 	let candidate
 	if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
 		candidate = value.light ?? value.dark
@@ -263,25 +264,24 @@ function isCustomTokenColor(value) {
 		candidate = value
 	}
 	if (typeof candidate !== 'string') return false
-	// Palette refs are colors
 	if (PALETTE_REF_RE.test(candidate)) return true
 	return isColorValue(candidate)
 }
 
 /**
- * Auto-emit Uno shortcuts for color-valued custom tokens.
- *
- * Reuses NAMED_SHORTCUT_PREFIXES, but emits only the color-meaningful prefixes
- * (bg, text, border, border-{t/b/l/r}, fill, stroke). The ring- prefix is
- * reserved for tokens whose name ends in `-ring` (e.g., `glow-ring`).
+ * Auto-emit Uno shortcuts for color-valued override tokens that are NOT
+ * reserved named tokens (those already have shortcuts emitted by the named
+ * layer). Reuses NAMED_SHORTCUT_PREFIXES, but emits only the color-meaningful
+ * prefixes (bg, text, border, border-{t/b/l/r}, fill, stroke). The ring-
+ * prefix is reserved for tokens whose name ends in `-ring`.
  */
-function buildCustomTokenShortcuts(config) {
-	const custom = config.custom ?? {}
+function buildOverrideTokenShortcuts(config, namedTokenSet) {
+	const overrides = config.overrides ?? {}
 	const shortcuts = []
-	for (const [name, value] of Object.entries(custom)) {
-		if (!isCustomTokenColor(value)) continue
+	for (const [name, value] of Object.entries(overrides)) {
+		if (namedTokenSet.has(name)) continue
+		if (!isOverrideTokenColor(value)) continue
 		for (const { prefix, prop } of NAMED_SHORTCUT_PREFIXES) {
-			// ring- is reserved for -ring-named tokens (focus-ring pattern)
 			if (prefix === 'ring' && !name.endsWith('-ring')) continue
 			shortcuts.push([`${prefix}-${name}`, { [prop]: `var(--${name})` }])
 		}
@@ -373,12 +373,14 @@ function buildThemeColors(theme, colormap, config) {
 	return baseColors
 }
 
+const NAMED_TOKEN_SET: Set<string> = new Set(NAMED_TOKENS)
+
 function buildShortcuts(theme, colormap, config) {
 	return [
 		...buildSkinShortcuts(theme, config),
 		...buildSemanticShortcuts(theme, colormap),
 		...buildNamedShortcuts(),
-		...buildCustomTokenShortcuts(config),
+		...buildOverrideTokenShortcuts(config, NAMED_TOKEN_SET),
 		...buildIconShortcuts(config)
 	]
 }

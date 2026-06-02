@@ -113,10 +113,18 @@ export default {
 
 	tokens: 'core',
 
-	custom: {
+	overrides: {
+		// Add new tokens beyond the named vocabulary.
 		canvas:        'kami.50',
 		'canvas-grid': '#d4d4d4',
-		'canvas-bleed': { light: 'kami.100', dark: 'sumi.900' }
+		'canvas-bleed': { light: 'kami.100', dark: 'sumi.900' },
+
+		// Reserved-name overrides — these replace the named-token defaults
+		// emitted by the skin pipeline. `paper-edge` in dark mode would
+		// otherwise resolve to sumi.400 (LIGHTER than the sumi.50 paper bg)
+		// and produce a "lifted edge" look. Pin it to a value DARKER than
+		// the canvas so the etched hairline reads correctly.
+		'paper-edge': { light: 'kami.400', dark: 'oklch(0.04 0.025 85)' }
 	},
 
 	shape: {

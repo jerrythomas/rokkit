@@ -19,7 +19,7 @@ export const DEFAULT_CONFIG = {
 	skins: {},
 	themes: ['rokkit'],
 	tokens: 'core',
-	custom: {},
+	overrides: {},
 	icons: {
 		app: '@rokkit/icons/app.json',
 		style: undefined,
@@ -66,7 +66,7 @@ export function loadConfig(userConfig) {
 		skins:      pick(cfg.skins, DEFAULT_CONFIG.skins),
 		themes:     pick(cfg.themes, DEFAULT_CONFIG.themes),
 		tokens:     validateTokens(cfg.tokens ?? DEFAULT_CONFIG.tokens),
-		custom:     pick(cfg.custom, DEFAULT_CONFIG.custom),
+		overrides:  pick(cfg.overrides, DEFAULT_CONFIG.overrides),
 		icons:      { ...DEFAULT_CONFIG.icons, ...cfg.icons },
 		typography: { ...DEFAULT_CONFIG.typography, ...cfg.typography },
 		shape:      { ...DEFAULT_CONFIG.shape, ...cfg.shape },
