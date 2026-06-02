@@ -141,7 +141,7 @@ export const Z_COLLAPSE_MAP_INK: Record<ZSlot, NamedToken> = {
   z10: 'paper'
 }
 
-const SOFT_TOKENS = new Set(NAMED_TOKENS.filter((t) => t.endsWith('-soft')))
+const SOFT_TOKENS: Set<string> = new Set(NAMED_TOKENS.filter((t) => t.endsWith('-soft')))
 
 /**
  * Returns true when the role has a `-soft` companion in the named vocabulary.
