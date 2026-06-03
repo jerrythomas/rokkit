@@ -280,23 +280,29 @@ const tree = $derived(new ProxyTree(items, fields))
 </div>
 ```
 
-### 5d. ListController (Tier 3 alternative — flat lists only)
+### 5d. ProxyTable / ProxyTableTree (Tier 3 — tabular data)
 
-Use `ListController` instead of `Wrapper` when:
-- Items are flat (no tree/hierarchy needed)
-- You need multi-select state management
-- You need column-aware navigation (Table)
+Use a `ProxyTable` (or `ProxyTableTree` for hierarchical rows) as the data layer when the component is grid-shaped:
+
+- `ProxyTable` adds `columns` + `sortState` + `sortBy()` on top of the flat ProxyTree.
+- `ProxyTableTree` keeps the same API but sorts siblings within each parent so hierarchy survives.
+
+A plain `Wrapper` navigates over either — the data-layer split is the only difference from List/Tree.
 
 ```js
-import { TableController, ListController } from '@rokkit/states'
-import { navigator } from '@rokkit/actions'  // Svelte action form
+import { ProxyTable, ProxyTableTree, Wrapper } from '@rokkit/states'
+import { Navigator } from '@rokkit/actions'
 
-// ListController tracks selection + focus for flat lists
-const controller = untrack(() => new ListController(data, { value, multiselect }))
+const proxyTable = $derived(new ProxyTable(rows, { columns, onsort }))
+const wrapper = $derived(
+  new Wrapper(proxyTable, { onselect, collapsible: false, multiselect })
+)
 
-// use:navigator action form (alternative to Navigator class)
-// <div use:navigator={{ wrapper: controller, orientation: 'vertical' }}>
+// Click a header → proxyTable.sortBy(col.name, event.shiftKey)
+// `wrapper.flatView` is the (sorted) row order, `wrapper.selectedKeys` is the selection
 ```
+
+For TreeTable, swap in `ProxyTableTree` and pass `collapsible: true` to the Wrapper.
 
 ---
 

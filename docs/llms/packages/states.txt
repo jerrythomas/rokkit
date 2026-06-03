@@ -15,10 +15,8 @@ npm install @rokkit/states
 ```javascript
 import {
   ProxyItem, LazyProxyItem, BASE_FIELDS,
-  ProxyTree,
+  ProxyTree, ProxyTable, ProxyTableTree,
   Wrapper, LazyWrapper,
-  ListController,
-  TableController,
   vibe,
   messages,
   watchMedia, defaultBreakpoints
@@ -239,82 +237,29 @@ new LazyWrapper(proxyTree, { onselect?, onchange?, onlazyload? }?)
 
 ---
 
-## ListController
+## ProxyTable
 
-Flat-list navigation state controller. Manages focus, selection, and multi-select for `Select`, `MultiSelect`, `Menu`, and `Toolbar` components.
+Tabular data layer. Extends `ProxyTree` and adds columns + sort state. The same `Wrapper` and `Navigator` that drive lists/trees can navigate over a `ProxyTable` without modification — it just has a different shape on its data layer.
 
-**When to use:** Backing controller for dropdown and toolbar components. Prefer `Wrapper` + `ProxyTree` for persistent/tree-based components.
+**When to use:** Backing data for the `Table` component, or whenever you need flat tabular rows with sortable columns and reactive selection.
 
 ### Constructor
 
 ```javascript
-new ListController(items, value, fields, options?)
+new ProxyTable(data?, options?)
+// options: { columns?, fields?, onsort? }
 ```
 
-`options.multiselect` — enable multi-selection (default `false`).
+Columns are auto-derived from `data` when not provided. Each column gets `{ sortable: true, sorted: 'none' }` defaults.
 
 ### Properties
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `items` | `unknown[]` | Raw items array (`$state`) |
-| `fields` | `object` | Field mapping config |
-| `focusedKey` | `string\|null` | Currently focused item key (`$state`) |
-| `selectedKeys` | `SvelteSet<string>` | Set of selected keys |
-| `expandedKeys` | `SvelteSet<string>` | Set of expanded group keys |
-| `data` | array | Flat visible nodes (`$derived`) |
-| `lookup` | `Map` | All items by key (`$derived`) |
-| `selected` | `unknown[]` | Array of selected item values (`$derived`) |
-| `focused` | `unknown` | Focused item value (`$derived`) |
-
-### Navigation methods
-
-| Method | Description |
-|--------|-------------|
-| `moveTo(path)` | Focus item at path key |
-| `moveToIndex(index)` | Focus item at data index; called internally by all navigation methods |
-| `moveFirst()` | Focus first non-disabled item |
-| `moveLast()` | Focus last non-disabled item |
-| `moveNext()` | Focus next non-disabled item |
-| `movePrev()` | Focus previous non-disabled item |
-
-### Selection methods
-
-| Method | Description |
-|--------|-------------|
-| `select(key)` | Single-select item at key |
-| `extendSelection(key)` | Toggle-select in multiselect mode; single-select otherwise |
-| `selectRange(key)` | Range-select from anchor to key (Shift+click, multiselect only) |
-| `findByText(query, startAfterKey?)` | Typeahead match by label prefix (wraps around) |
-| `update(items)` | Replace the items array |
-
----
-
-## TableController
-
-Tabular data controller. Composes a `ListController` for row focus/selection/navigation and adds column metadata and multi-column sorting.
-
-**When to use:** Backing controller for the `Table` component.
-
-### Constructor
-
-```javascript
-new TableController(data?, options?)
-// options: { columns?, fields?, value?, multiselect? }
-```
-
-Columns are auto-derived from data if not provided. Each column gets `{ sortable: true, sorted: 'none' }` defaults.
-
-### Properties (own)
-
-| Property | Type | Description |
-|----------|------|-------------|
 | `columns` | `object[]` | Column definitions with `name`, `sortable`, `sorted` (`$state`) |
 | `sortState` | `{ column, direction }[]` | Active sort stack (`$state`) |
-
-### Properties (delegated from ListController)
-
-`data`, `lookup`, `focusedKey`, `focused`, `selected`, `selectedKeys`
+| `flatView` | array | Inherited from ProxyTree (`$derived`) |
+| `lookup` | `Map` | Inherited from ProxyTree (`$derived`) |
 
 ### Sort methods
 
@@ -322,16 +267,39 @@ Columns are auto-derived from data if not provided. Each column gets `{ sortable
 |--------|-------------|
 | `sortBy(columnName, extend?)` | Toggle sort on a column. Cycles `none → ascending → descending → none`. `extend=true` (Shift+click) adds to sort stack |
 | `clearSort()` | Clear all sort state; restore original data order |
+| `update(data)` | Replace underlying rows; re-applies any active sort |
+| `updateColumns(columns)` | Replace column definitions; preserves sorted state for surviving columns |
 
-### Navigation/selection methods (delegated)
+### Hooks
 
-`moveFirst()`, `moveLast()`, `moveNext()`, `movePrev()`, `moveTo(path)`, `moveToIndex(index)`, `select(key)`, `extendSelection(key)`
+- `_compareRows(a, b)` and `_sortedData(rows)` are protected and can be overridden by subclasses (used by `ProxyTableTree` for hierarchy-aware sort).
 
-### Update method
+---
 
-| Method | Description |
-|--------|-------------|
-| `update(data)` | Replace data source; re-applies current sort if active |
+## ProxyTableTree
+
+Hierarchical analog of ProxyTable. Accepts nested rows (each row may carry `children: []`) and sorts siblings within each parent so the parent/child structure survives any sort.
+
+**When to use:** Backing data for the `TreeTable` component, or whenever you need a sortable grid over hierarchical rows.
+
+### Constructor
+
+```javascript
+new ProxyTableTree(data?, options?)
+// options: { columns?, fields?, onsort? }
+//   fields.children customizes the child-array field (default: 'children')
+```
+
+### Helpers for flat shapes
+
+Use `nestByPath` / `nestByColumns` from `@rokkit/data` to convert flat shapes into the nested form ProxyTableTree expects.
+
+```javascript
+import { nestByPath, nestByColumns } from '@rokkit/data'
+
+const nestedFromPath = nestByPath(rows, { column: 'path' })
+const nestedFromGroups = nestByColumns(rows, ['region', 'country'])
+```
 
 ---
 
@@ -487,10 +455,8 @@ const media = watchMedia({
 
 ```javascript
 import { ProxyItem, LazyProxyItem, BASE_FIELDS } from '@rokkit/states'
-import { ProxyTree }                             from '@rokkit/states'
+import { ProxyTree, ProxyTable, ProxyTableTree } from '@rokkit/states'
 import { Wrapper, LazyWrapper }                  from '@rokkit/states'
-import { ListController }                        from '@rokkit/states'
-import { TableController }                       from '@rokkit/states'
 import { vibe }                                  from '@rokkit/states'
 import { messages }                              from '@rokkit/states'
 import { watchMedia, defaultBreakpoints }        from '@rokkit/states'
@@ -500,4 +466,4 @@ import { watchMedia, defaultBreakpoints }        from '@rokkit/states'
 
 - [@rokkit/ui](/llms/packages/ui.txt) — components that consume these state primitives
 - [@rokkit/core](/llms/packages/core.txt) — BASE_FIELDS, FieldMapper
-- [@rokkit/actions](/llms/packages/actions.txt) — `navigator` action that drives Wrapper/ListController
+- [@rokkit/actions](/llms/packages/actions.txt) — `Navigator` class that drives Wrapper instances

@@ -1,51 +1,59 @@
 # Utilities
 
-Rokkit's interactivity is built on two composable primitives:
-**controllers** (pure state machines with no DOM dependency) and
-the **`navigator` Svelte action** (which binds a controller to
-the DOM and adds keyboard + ARIA handling).
+Rokkit's interactivity is built on three composable primitives:
+**ProxyTree** (a reactive data layer), **Wrapper** (a pure state
+machine for navigation and selection), and the **`Navigator`
+class** (which binds a Wrapper to the DOM and adds keyboard +
+ARIA handling).
 
 This split is what lets you test interaction logic without a
 browser and build your own accessible components by reusing the
-same controllers Rokkit uses internally.
+same primitives Rokkit uses internally.
 
-## Controllers
+## Wrapper — navigation state
 
-A controller owns the **state** of an interactive widget:
+A `Wrapper` owns the **state** of an interactive widget:
 
 - focused / selected item.
-- expanded set (for trees, accordions).
-- navigation methods (`moveNext`, `movePrevious`, `moveTo`,
-  `moveFirst`, `moveLast`, `expand`, `collapse`, `select`).
-- events (`onmove`, `onselect`, `onexpand`).
+- expanded set (for trees, accordions, collapsible groups).
+- navigation methods (`next`, `prev`, `first`, `last`,
+  `moveTo`, `expand`, `collapse`, `select`, `toggle`,
+  `extend`, `range`).
+- callbacks (`onselect`, `onchange`).
 
 ```js
-import { ListController } from '@rokkit/states'
+import { ProxyTree, Wrapper } from '@rokkit/states'
 
-const c = new ListController(items)
-c.moveFirst()                    // focus first
-c.moveNext()                     // focus next
-c.select()                       // select focused, fire onselect
-c.focusedKey                     // 'k_0'
-c.value                          // the selected items' raw value
+const tree = new ProxyTree(items, fields)
+const w = new Wrapper(tree, { onselect, collapsible: true })
+
+w.first(null)                   // focus first navigable item
+w.next(null)                    // focus next
+w.select(null)                  // select focused, fire onselect
+w.focusedKey                    // '0'
+w.selected                      // the selected item's value
 ```
 
-`NestedController` adds expand / collapse semantics for trees,
-with tree-style behaviour built in: `expand()` on an
-already-expanded group focuses the first child;
-`collapse()` on a child focuses the parent.
+For lazy-loading trees, use `LazyWrapper` — it adds sentinel
+detection and on-demand `fetch()` calls.
 
-## The `navigator` action
+For tabular data, use `ProxyTable` instead of `ProxyTree` — it
+adds columns + sort while keeping the same `flatView`/`lookup`
+interface Wrapper consumes.
 
-`use:navigator={controller}` on any container element:
+## The `Navigator` class
+
+Mounted on a container element, `Navigator` binds DOM events
+to a Wrapper:
 
 - adds `keydown` handlers for arrows / Home / End / Enter /
-  Space / Escape / typeahead.
+  Space / Escape / typeahead / ctrl-Space / shift-Space.
 - attaches `click` handlers that read `data-path` from the
-  target's ancestry.
-- writes `aria-activedescendant` / `aria-selected` /
-  `aria-expanded` to the relevant elements.
-- emits `move` and `select` events you can hook into.
+  target's ancestry (including ctrl/cmd-click for toggle and
+  shift-click for range, when the wrapper opts in to multiselect).
+- syncs DOM focus and contains `scrollIntoView` to the root.
+- watches `focusin` / `focusout` to redirect focus and call
+  `wrapper.blur()` when focus leaves the list.
 
 The only contract on the markup side: each interactive row
 carries `data-path={node.key}`.
@@ -54,18 +62,26 @@ carries `data-path={node.key}`.
 
 ```svelte
 <script>
-  import { ListController } from '@rokkit/states'
-  import { navigator } from '@rokkit/actions'
+  import { ProxyTree, Wrapper } from '@rokkit/states'
+  import { Navigator } from '@rokkit/actions'
 
   let { items, value = $bindable() } = $props()
-  const c = new ListController(items)
-  c.moveToValue(value)
 
-  function handleSelect(v) { value = v }
+  const tree = $derived(new ProxyTree(items))
+  const w = $derived(new Wrapper(tree, { onselect: (v) => (value = v) }))
+
+  $effect(() => w.moveToValue(value))
+
+  let rootRef = $state(null)
+  $effect(() => {
+    if (!rootRef) return
+    const nav = new Navigator(rootRef, w, { orientation: 'vertical' })
+    return () => nav.destroy()
+  })
 </script>
 
-<ul use:navigator={c} role="listbox" tabindex="0">
-  {#each c.flatView as node (node.key)}
+<ul bind:this={rootRef} role="listbox" tabindex="0">
+  {#each w.flatView as node (node.key)}
     <li
       data-path={node.key}
       data-active={node.proxy.value === value || undefined}
