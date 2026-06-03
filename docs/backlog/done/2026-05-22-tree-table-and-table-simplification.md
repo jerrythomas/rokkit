@@ -1,7 +1,10 @@
 # Tree-Table Support + Table Component Simplification
 
 **Date:** 2026-05-22
-**Status:** Backlog — design + implementation
+**Status:** Closed 2026-06-03 — both parts shipped.
+- Part A landed in `4a6022a4 feat(states): add ProxyTable as tabular data layer` + `cfaf066a refactor(ui): migrate Table to ProxyTable + Wrapper + Navigator class` (Table.svelte script 144 → 93 lines, all 33 existing specs pass unchanged).
+- Part B landed in `0631cf65 feat(ui): add TreeTable + nestByPath/nestByColumns helpers` with the per-sibling-sort `ProxyTableTree`, the `nestByPath` / `nestByColumns` data helpers, and the `<TreeTable>` component. Demo at `apps/learn/src/lib/koan/demos/tree-table/`.
+- Follow-up tweak `9cd20d4d refactor(ui): TreeTable hierarchy column shows label at every level` cleaned up the first-column convention for `nestByColumns` and switched chevrons to the `node-opened`/`node-closed` semantic icons.
 **Site Applicability:** Library work (`@rokkit/ui` Table, `@rokkit/data` helpers) — site-agnostic, applies to current Koan/learn app.
 **Related:** `2026-05-20-actions-controllers-simplification-investigation.md`, ADR-003
 

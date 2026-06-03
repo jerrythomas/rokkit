@@ -139,6 +139,7 @@
 
 <div
 	bind:this={tableRef}
+	data-table
 	data-tree-table
 	data-size={size}
 	data-selectable={selectable || undefined}
@@ -255,6 +256,9 @@
 														<Connector type={lineType} />
 													{/if}
 												{/each}
+												{#if !entry.isExpandable}
+													<span data-tree-table-empty aria-hidden="true"></span>
+												{/if}
 											</span>
 										{/if}
 										{@render cellSnippet(getCellValue(row, column), column, row)}
@@ -288,6 +292,9 @@
 														<Connector type={lineType} />
 													{/if}
 												{/each}
+												{#if !entry.isExpandable}
+													<span data-tree-table-empty aria-hidden="true"></span>
+												{/if}
 											</span>
 										{/if}
 										{#if cellIcon}
