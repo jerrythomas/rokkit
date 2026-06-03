@@ -1,9 +1,9 @@
 ## Tabular data, sortable out of the box
 
 Tables display structured rows with sortable columns and keyboard
-navigation. Built on the same navigator pattern as List, the Table
-component auto-derives columns from your data — get started with just
-an array of objects.
+navigation. Built on the same `ProxyTable + Wrapper + Navigator` stack
+as List/Tree, the Table component auto-derives columns from your data —
+get started with just an array of objects.
 
 ## Notable features
 
@@ -11,9 +11,15 @@ an array of objects.
 - **Click-to-sort** — ascending → descending → none, per column
 - **Shift-click** — adds secondary sort columns for multi-column sort
 - **Keyboard nav** — arrow keys, Home, End, Enter to select
+- **Single or multi-select** — `selectable="single"` (default) or
+  `selectable="multi"` for ctrl/cmd-click toggle and shift-click range
 - **Custom columns** — declare `columns` for labels, width, alignment,
   cell formatters, and `sortable: false`
 - **Composable** — pair with `SearchFilter` to filter rows reactively
+
+For hierarchical rows (nested children, drilldowns, rollups), use the
+[TreeTable](/app/tree-table) component instead — it adds chevron + indent +
+per-sibling sort on top of the same data layer.
 
 ## Basic example
 
@@ -29,6 +35,16 @@ it; the bound `value` reflects the selection.
 All columns are sortable by default. Click a header to cycle through
 ascending → descending → unsorted. Hold **Shift** while clicking to
 add secondary sort columns.
+
+## Multi-select
+
+Pass `selectable="multi"` and bind `values` (an array) to enable
+ctrl/cmd-click toggle and shift-click range selection. The same
+keyboard shortcuts (`Ctrl+Space`, `Shift+Space`) work as well.
+
+```svelte
+<Table {data} selectable="multi" bind:values={picked} />
+```
 
 ## Custom columns and formatters
 
