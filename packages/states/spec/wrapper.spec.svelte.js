@@ -644,14 +644,190 @@ describe('Wrapper — no-op methods', () => {
 		expect(w.focusedKey).toBe('1')
 	})
 
-	it('extend() does not throw', () => {
+	it('extend() is a no-op when multiselect=false', () => {
 		const w = new Wrapper(new ProxyTree(flat))
-		expect(() => w.extend('0')).not.toThrow()
+		w.moveTo('1')
+		w.extend('0')
+		expect(w.focusedKey).toBe('1')
+		expect(w.selectedKeys.size).toBe(0)
 	})
 
-	it('range() does not throw', () => {
+	it('range() is a no-op when multiselect=false', () => {
 		const w = new Wrapper(new ProxyTree(flat))
-		expect(() => w.range('0')).not.toThrow()
+		w.moveTo('1')
+		w.range('2')
+		expect(w.focusedKey).toBe('1')
+		expect(w.selectedKeys.size).toBe(0)
+	})
+})
+
+// ─── Multi-select ─────────────────────────────────────────────────────────────
+
+describe('Wrapper — multiselect: select()', () => {
+	it('select() populates selectedKeys with the chosen key', () => {
+		const w = new Wrapper(new ProxyTree(flat), { multiselect: true })
+		w.select('1')
+		expect(Array.from(w.selectedKeys)).toEqual(['1'])
+	})
+
+	it('select() replaces any prior selection (single-click semantics)', () => {
+		const w = new Wrapper(new ProxyTree(flat), { multiselect: true })
+		w.select('0')
+		w.select('2')
+		expect(Array.from(w.selectedKeys)).toEqual(['2'])
+	})
+
+	it('select() sets anchor for subsequent range()', () => {
+		const w = new Wrapper(new ProxyTree(flat), { multiselect: true })
+		w.select('0')
+		w.range('2')
+		// All three items are now selected (0..2)
+		expect(Array.from(w.selectedKeys).sort()).toEqual(['0', '1', '2'])
+	})
+
+	it('selected getter returns array of leaf values in multi-select mode', () => {
+		const items = [{ label: 'A', value: 'a' }, { label: 'B', value: 'b' }, { label: 'C', value: 'c' }]
+		const w = new Wrapper(new ProxyTree(items), { multiselect: true })
+		w.select('0')
+		w.range('2')
+		expect(w.selected).toEqual(['a', 'b', 'c'])
+	})
+})
+
+describe('Wrapper — multiselect: extend()', () => {
+	it('extend() adds key to selectedKeys', () => {
+		const w = new Wrapper(new ProxyTree(flat), { multiselect: true })
+		w.select('0')
+		w.extend('2')
+		expect(Array.from(w.selectedKeys).sort()).toEqual(['0', '2'])
+	})
+
+	it('extend() toggles off an already-selected key', () => {
+		const w = new Wrapper(new ProxyTree(flat), { multiselect: true })
+		w.select('0')
+		w.extend('2')
+		w.extend('2')
+		expect(Array.from(w.selectedKeys)).toEqual(['0'])
+	})
+
+	it('extend() updates focusedKey to the extended target', () => {
+		const w = new Wrapper(new ProxyTree(flat), { multiselect: true })
+		w.select('0')
+		w.extend('2')
+		expect(w.focusedKey).toBe('2')
+	})
+
+	it('extend() resets the anchor for subsequent range()', () => {
+		const w = new Wrapper(new ProxyTree(flat), { multiselect: true })
+		w.select('0')
+		w.extend('1')
+		w.range('2')
+		// New anchor is '1' (from extend), so range('2') selects 1..2 + clears prior
+		expect(Array.from(w.selectedKeys).sort()).toEqual(['1', '2'])
+	})
+
+	it('extend() fires onselect with the leaf value', () => {
+		const onselect = vi.fn()
+		const items = [{ label: 'A', value: 'a' }, { label: 'B', value: 'b' }]
+		const w = new Wrapper(new ProxyTree(items), { onselect, multiselect: true })
+		w.extend('1')
+		expect(onselect).toHaveBeenCalledWith('b', expect.anything())
+	})
+
+	it('extend() on a group does not add to selectedKeys (groups are not values)', () => {
+		const w = new Wrapper(new ProxyTree(nested), { multiselect: true })
+		w.extend('0') // Fruits group
+		expect(w.selectedKeys.size).toBe(0)
+		expect(w.focusedKey).toBe('0')
+	})
+
+	it('extend() with null path falls back to focusedKey', () => {
+		const w = new Wrapper(new ProxyTree(flat), { multiselect: true })
+		w.moveTo('1')
+		w.extend(null)
+		expect(Array.from(w.selectedKeys)).toEqual(['1'])
+	})
+})
+
+describe('Wrapper — multiselect: range()', () => {
+	it('range() selects [anchor..path] inclusive', () => {
+		const items = [{ label: 'A' }, { label: 'B' }, { label: 'C' }, { label: 'D' }]
+		const w = new Wrapper(new ProxyTree(items), { multiselect: true })
+		w.select('0')
+		w.range('2')
+		expect(Array.from(w.selectedKeys).sort()).toEqual(['0', '1', '2'])
+	})
+
+	it('range() works backward from anchor', () => {
+		const items = [{ label: 'A' }, { label: 'B' }, { label: 'C' }, { label: 'D' }]
+		const w = new Wrapper(new ProxyTree(items), { multiselect: true })
+		w.select('3')
+		w.range('1')
+		expect(Array.from(w.selectedKeys).sort()).toEqual(['1', '2', '3'])
+	})
+
+	it('range() replaces any prior selection', () => {
+		const items = [{ label: 'A' }, { label: 'B' }, { label: 'C' }, { label: 'D' }]
+		const w = new Wrapper(new ProxyTree(items), { multiselect: true })
+		w.select('0')
+		w.extend('2') // selectedKeys = ['0','2'], anchor moves to '2'
+		w.range('3') // anchor is '2', so range = ['2','3'] — replaces prior selection
+		expect(Array.from(w.selectedKeys).sort()).toEqual(['2', '3'])
+	})
+
+	it('range() skips separators (only navigable items selected)', () => {
+		const items = [{ label: 'A' }, { type: 'separator' }, { label: 'B' }, { label: 'C' }]
+		const w = new Wrapper(new ProxyTree(items), { multiselect: true })
+		w.select('0')
+		w.range('3')
+		// Separator at index 1 is excluded by #navigable; selection wraps the 3 real items
+		expect(Array.from(w.selectedKeys).sort()).toEqual(['0', '2', '3'])
+	})
+
+	it('range() updates focusedKey to the target', () => {
+		const w = new Wrapper(new ProxyTree(flat), { multiselect: true })
+		w.select('0')
+		w.range('2')
+		expect(w.focusedKey).toBe('2')
+	})
+
+	it('range() with no anchor falls back to select()', () => {
+		const w = new Wrapper(new ProxyTree(flat), { multiselect: true })
+		w.range('1')
+		expect(Array.from(w.selectedKeys)).toEqual(['1'])
+	})
+
+	it('range() with unknown anchor or target is a no-op', () => {
+		const w = new Wrapper(new ProxyTree(flat), { multiselect: true })
+		w.select('0')
+		w.range('does-not-exist')
+		expect(Array.from(w.selectedKeys)).toEqual(['0'])
+	})
+})
+
+describe('Wrapper — multiselect: selected getter', () => {
+	it('returns single value when multiselect=false (back-compat)', () => {
+		const items = [{ label: 'A', value: 'a' }, { label: 'B', value: 'b' }]
+		const w = new Wrapper(new ProxyTree(items))
+		w.select('1')
+		expect(w.selected).toBe('b')
+	})
+
+	it('returns empty array when nothing selected in multiselect mode', () => {
+		const w = new Wrapper(new ProxyTree(flat), { multiselect: true })
+		expect(w.selected).toEqual([])
+	})
+
+	it('returns array preserving selectedKeys iteration order', () => {
+		const items = [
+			{ label: 'A', value: 'a' },
+			{ label: 'B', value: 'b' },
+			{ label: 'C', value: 'c' }
+		]
+		const w = new Wrapper(new ProxyTree(items), { multiselect: true })
+		w.select('0')
+		w.extend('2')
+		expect(w.selected).toEqual(['a', 'c'])
 	})
 })
 
