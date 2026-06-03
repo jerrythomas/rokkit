@@ -17,3 +17,4 @@ export {
 } from './infer'
 export { parseFilters } from './parser'
 export { filterData, filterObjectArray } from './filter'
+export { nestByPath, nestByColumns } from './nest'

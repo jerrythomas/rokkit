@@ -34,6 +34,7 @@ export {
 	Stepper,
 	Switch,
 	Table,
+	TreeTable,
 	SearchFilter,
 	Range,
 	Timeline,

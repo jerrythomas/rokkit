@@ -13,6 +13,7 @@ describe('components', () => {
 			'BASE_FIELDS',
 			'ProxyTree',
 			'ProxyTable',
+			'ProxyTableTree',
 			'Wrapper',
 			'LazyWrapper',
 			'watchMedia',

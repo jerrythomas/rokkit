@@ -57,8 +57,16 @@ export class ProxyTable extends ProxyTree {
 		if (this.sortState.length === 0) {
 			this.replace(data)
 		} else {
-			this.replace(this.#sortedData())
+			this.replace(this._sortedData(this.#rawData))
 		}
+	}
+
+	/**
+	 * Protected accessor for subclasses that need to re-sort the underlying
+	 * data (e.g. ProxyTableTree on column-update).
+	 */
+	get _rawData() {
+		return this.#rawData
 	}
 
 	/**
@@ -93,7 +101,7 @@ export class ProxyTable extends ProxyTree {
 			? this.#extendSortState(columnName, nextDirection)
 			: this.#singleSortState(columnName, nextDirection)
 		this.#syncColumnFlags()
-		this.replace(this.#sortedData())
+		this.replace(this._sortedData(this.#rawData))
 		this.#onsort?.(this.sortState)
 	}
 
@@ -136,15 +144,32 @@ export class ProxyTable extends ProxyTree {
 		})
 	}
 
-	#sortedData() {
-		if (this.sortState.length === 0) return this.#rawData
-		return [...this.#rawData].sort((a, b) => {
-			for (const { column, direction } of this.sortState) {
-				const cmp = direction === 'ascending' ? ascending : descending
-				const result = cmp(a[column], b[column])
-				if (result !== 0) return result
-			}
-			return 0
-		})
+	/**
+	 * Apply the current sortState to a row array. Subclasses (ProxyTableTree)
+	 * override to walk hierarchical structures.
+	 *
+	 * @param {Array<Record<string, unknown>>} rows
+	 * @returns {Array<Record<string, unknown>>}
+	 */
+	_sortedData(rows) {
+		if (this.sortState.length === 0) return rows
+		return [...rows].sort((a, b) => this._compareRows(a, b))
+	}
+
+	/**
+	 * Compare two rows under the current sortState. Used by `_sortedData()`
+	 * and by subclasses that sort over a hierarchical row tree.
+	 *
+	 * @param {Record<string, unknown>} a
+	 * @param {Record<string, unknown>} b
+	 * @returns {number}
+	 */
+	_compareRows(a, b) {
+		for (const { column, direction } of this.sortState) {
+			const cmp = direction === 'ascending' ? ascending : descending
+			const result = cmp(a[column], b[column])
+			if (result !== 0) return result
+		}
+		return 0
 	}
 }
