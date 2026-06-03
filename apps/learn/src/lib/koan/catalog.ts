@@ -5,6 +5,7 @@ import themeWizard from './demos/theme-wizard/meta'
 import tabs from './demos/tabs/meta'
 import toasts from './demos/toasts/meta'
 import table from './demos/table/meta'
+import treeTable from './demos/tree-table/meta'
 import tree from './demos/tree/meta'
 import multiSelect from './demos/multi-select/meta'
 import list from './demos/list/meta'
@@ -51,7 +52,7 @@ import codeGroup from './demos/code-group/meta'
 import effects from './demos/effects/meta'
 
 export const catalog: DemoMeta[] = [
-	themeWizard, tabs, toasts, table, tree, multiSelect, list, form, select,
+	themeWizard, tabs, toasts, table, treeTable, tree, multiSelect, list, form, select,
 	chart, combo, datePicker, stepper, button,
 	badge, pill, avatar, divider, message, swatch,
 	range, rating, switchDemo, toggle,
