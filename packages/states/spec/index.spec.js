@@ -14,6 +14,7 @@ describe('components', () => {
 			'LazyProxyItem',
 			'BASE_FIELDS',
 			'ProxyTree',
+			'ProxyTable',
 			'Wrapper',
 			'LazyWrapper',
 			'watchMedia',

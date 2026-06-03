@@ -183,6 +183,19 @@ export class ProxyTree {
 	}
 
 	/**
+	 * Replace all root items. Reassigns #rootProxies to trigger $derived.
+	 * Keys are regenerated from the new item positions — focusedKey
+	 * continuity across replace is the caller's concern.
+	 *
+	 * @param {unknown[]} items  Raw items to use as new roots
+	 */
+	replace(items) {
+		this.#rootProxies = (items ?? []).map((raw, i) =>
+			this.#factory(raw, this.#fields, String(i), 1)
+		)
+	}
+
+	/**
 	 * Add children to an existing proxy node.
 	 * Uses proxy.set('children', rawItems) so ProxyItem's version counter
 	 * triggers #buildChildren() recomputation. The flatView and lookup
