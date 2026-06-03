@@ -105,16 +105,16 @@
 			<p>
 				Flat rows that should be grouped by one or more columns — pass through
 				<code>nestByColumns(rows, ['region', 'country'])</code>. Synthetic group
-				rows carry a <code>__group</code> flag.
+				rows carry <code>__label</code> so the tree column shows the group value
+				at each level (EMEA → France → Paris) without duplicating the original
+				grouping columns.
 			</p>
 		</header>
 		<TreeTable
 			data={nestedFromColumns}
 			caption="Revenue by region → country → city"
 			columns={[
-				{ name: 'region', label: 'Region', hierarchy: true },
-				{ name: 'country', label: 'Country' },
-				{ name: 'city', label: 'City' },
+				{ name: 'city', label: 'Location', hierarchy: true },
 				{ name: 'revenue', label: 'Revenue ($k)', align: 'right' }
 			]}
 		/>

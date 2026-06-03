@@ -69,6 +69,54 @@ describe('TreeTable', () => {
 		expect(headers[1]?.getAttribute('data-hierarchy')).toBe('true')
 	})
 
+	it('hierarchy cell shows row.__label when set (group rows from nestByColumns)', () => {
+		const labeled = [
+			{
+				__group: true,
+				__column: 'region',
+				__label: 'EMEA',
+				region: 'EMEA',
+				children: [{ city: 'Paris', revenue: 320 }]
+			}
+		]
+		const { container } = render(TreeTable, {
+			data: labeled,
+			columns: [
+				{ name: 'city', label: 'Location', hierarchy: true },
+				{ name: 'revenue', label: 'Revenue' }
+			]
+		})
+		const cells = container.querySelectorAll('td[data-hierarchy="true"] [data-cell-value]')
+		// Root row is a group → renders __label ('EMEA') even though hierarchy column is 'city'
+		expect(cells[0]?.textContent?.trim()).toBe('EMEA')
+	})
+
+	it('hierarchy cell falls back to column value for leaf rows', async () => {
+		const data = [
+			{
+				__group: true,
+				__column: 'region',
+				__label: 'EMEA',
+				region: 'EMEA',
+				children: [{ city: 'Paris', revenue: 320 }]
+			}
+		]
+		const { container } = render(TreeTable, {
+			data,
+			columns: [
+				{ name: 'city', label: 'Location', hierarchy: true },
+				{ name: 'revenue', label: 'Revenue' }
+			]
+		})
+		// Expand the group → first leaf shows its city value
+		const toggle = container.querySelector('[data-tree-table-toggle]') as HTMLElement
+		await fireEvent.click(toggle)
+		await waitFor(() => {
+			const cells = container.querySelectorAll('td[data-hierarchy="true"] [data-cell-value]')
+			expect(cells[1]?.textContent?.trim()).toBe('Paris')
+		})
+	})
+
 	it('renders connector lines only inside the hierarchy column', () => {
 		const { container } = render(TreeTable, { data: nested, columns })
 		const hierarchyCells = container.querySelectorAll('td[data-hierarchy="true"]')

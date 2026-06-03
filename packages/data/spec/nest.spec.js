@@ -122,11 +122,20 @@ describe('nestByColumns', () => {
 		expect(nested[0].children.map((c) => c.country)).toEqual(['USA', 'Canada'])
 	})
 
-	it('exposes __group + __column on synthetic group rows', () => {
+	it('exposes __group + __column + __label on synthetic group rows', () => {
 		const rows = [{ region: 'EU', x: 1 }]
 		const nested = nestByColumns(rows, ['region'])
 		expect(nested[0].__group).toBe(true)
 		expect(nested[0].__column).toBe('region')
+		expect(nested[0].__label).toBe('EU')
+	})
+
+	it('__label is set per level so tree-table renders the right value at every depth', () => {
+		const rows = [{ region: 'EU', country: 'France' }, { region: 'EU', country: 'Germany' }]
+		const nested = nestByColumns(rows, ['region', 'country'])
+		expect(nested[0].__label).toBe('EU')
+		expect(nested[0].children[0].__label).toBe('France')
+		expect(nested[0].children[1].__label).toBe('Germany')
 	})
 
 	it('accepts a custom groupRowFactory', () => {

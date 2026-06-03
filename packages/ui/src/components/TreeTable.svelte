@@ -46,7 +46,7 @@
 
 	const icons = $derived<TableSortIcons & { opened: string; closed: string }>({
 		...defaultTableSortIcons,
-		...DEFAULT_STATE_ICONS.folder,
+		...DEFAULT_STATE_ICONS.node,
 		...userIcons
 	})
 
@@ -112,6 +112,20 @@
 		const cellValue = getCellValue(row, column)
 		if (column.formatter) return column.formatter(cellValue, row)
 		return cellValue !== null && cellValue !== undefined ? String(cellValue) : ''
+	}
+
+	/**
+	 * The hierarchy cell shows the same column at every level. Group rows
+	 * synthesised by `nestByColumns` carry `__label` (the grouping value),
+	 * which we render in place of the column's normal field — that way the
+	 * tree column displays e.g. "EMEA", "France", "Paris" at each depth
+	 * even though the actual grouping column changes per level.
+	 *
+	 * Leaf rows (no `__label`) fall through to the column's regular value.
+	 */
+	function formatHierarchyValue(row: Record<string, unknown>, column: TableColumn): string {
+		if (row.__label !== undefined && row.__label !== null) return String(row.__label)
+		return formatCellValue(row, column)
 	}
 
 	function getCellIcon(row: Record<string, unknown>, column: TableColumn): string | null {
@@ -279,7 +293,11 @@
 										{#if cellIcon}
 											<span data-cell-icon class={cellIcon} aria-hidden="true"></span>
 										{/if}
-										<span data-cell-value>{formatCellValue(row, column)}</span>
+										<span data-cell-value
+											>{hierarchy
+												? formatHierarchyValue(row, column)
+												: formatCellValue(row, column)}</span
+										>
 									</td>
 								{/if}
 							{/each}
