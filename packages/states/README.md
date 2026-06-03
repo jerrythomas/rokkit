@@ -1,6 +1,6 @@
 # @rokkit/states
 
-Reactive state management for Rokkit UI components — ProxyItem, ProxyTree, Wrapper, ListController.
+Reactive state management for Rokkit UI components — ProxyItem, ProxyTree, ProxyTable, Wrapper, LazyWrapper.
 
 ## Installation
 
@@ -16,7 +16,7 @@ bun add @rokkit/states
 
 - **ProxyItem / ProxyTree** — normalize arbitrary data objects into a unified, field-mapped interface for rendering
 - **Wrapper** — navigation controller for persistent components (List, Tree, Tabs). Owns focus, movement, selection, and expansion state
-- **ListController** — lower-level reactive base for selection and expansion state
+- **ProxyTable** — tabular data layer that adds columns + sort to a flat ProxyTree
 - **Utilities** — i18n messages, theme mode tracking, media query breakpoints
 
 These classes are used internally by `@rokkit/ui` components. You can also use them directly to build custom components or drive navigation logic outside of the standard components.
@@ -86,17 +86,20 @@ wrapper.collapse(pathKey)
 wrapper.moveToValue(value) // sync focus to match an external value
 ```
 
-### ListController — base reactive state
+### ProxyTable — tabular data layer
 
 ```js
-import { ListController } from '@rokkit/states'
+import { ProxyTable, Wrapper } from '@rokkit/states'
 
-const ctrl = new ListController()
+const table = new ProxyTable(rows, { columns, fields, onsort })
+const wrapper = new Wrapper(table, { onselect, multiselect, collapsible: false })
 
-ctrl.selectedKeys // SvelteSet of selected path keys
-ctrl.expandedKeys // SvelteSet of expanded path keys
-ctrl.focusedKey // currently focused key
-ctrl.data // flat array of visible nodes
+table.columns // [{ name, label, sortable, sorted }, …]
+table.sortState // [{ column, direction }, …] in priority order
+table.sortBy('name', false) // cycle: none → ascending → descending → none
+table.sortBy('age', true) // multi-column sort (Shift+click)
+table.clearSort() // restore original order
+table.update(newRows) // re-applies any active sort
 ```
 
 ### vibe — reactive theme mode

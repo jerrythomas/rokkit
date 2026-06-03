@@ -6,9 +6,7 @@ describe('components', () => {
 	it('should contain all exported components', () => {
 		expect(Object.keys(components)).toEqual([
 			'alerts',
-			'TableController',
 			'vibe',
-			'ListController',
 			'messages',
 			'ProxyItem',
 			'LazyProxyItem',

@@ -13,7 +13,6 @@ describe('actions', () => {
 			'keyboard',
 			'pannable',
 			'swipeable',
-			'navigator',
 			'themable',
 			'skinnable',
 			'dismissable',

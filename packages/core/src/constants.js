@@ -7,8 +7,8 @@ export const ITEM_SNIPPET = 'itemContent'
 export const GROUP_SNIPPET = 'groupContent'
 /**
  * @deprecated Use BASE_FIELDS from @rokkit/core instead.
- * Retained for legacy ListController/FieldMapper/Proxy consumers (Toolbar, Table).
- * Will be removed when those components migrate to Wrapper+Navigator.
+ * Retained for the FieldMapper class and its derive/mapping/nested helpers,
+ * which a few non-UI consumers still rely on. Migrate consumers and remove.
  * @type {import('./types).FieldMapping} Fields
  */
 export const DEFAULT_FIELDS = {

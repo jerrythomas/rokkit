@@ -1,7 +1,5 @@
 export { alerts } from './alerts.svelte.js'
-export { TableController } from './table-controller.svelte.js'
 export { vibe } from './vibe.svelte.js'
-export { ListController } from './list-controller.svelte.js'
 export { messages } from './messages.svelte.js'
 export { ProxyItem, LazyProxyItem, BASE_FIELDS } from './proxy-item.svelte.js'
 export { ProxyTree } from './proxy-tree.svelte.js'
