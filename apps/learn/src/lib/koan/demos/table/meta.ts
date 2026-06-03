@@ -99,6 +99,20 @@ const meta: DemoMeta = {
 
 <SearchFilter source={rows} bind:filtered />
 <Table data={filtered} {columns} />`
+		},
+		{
+			id: 'multi-select',
+			title: 'Multi-row selection',
+			lang: 'svelte',
+			code: `<script>
+  import { Table } from '@rokkit/ui'
+  let picked = $state([])
+</script>
+
+<!-- ctrl/cmd-click toggles, shift-click range-selects -->
+<Table {data} selectable="multi" bind:values={picked} />
+
+<p>Selected {picked.length} row{picked.length === 1 ? '' : 's'}</p>`
 		}
 	],
 	docs

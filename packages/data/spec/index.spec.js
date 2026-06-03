@@ -26,7 +26,9 @@ describe('library', () => {
 			'mergeColumnEnhancements',
 			'parseFilters',
 			'filterData',
-			'filterObjectArray'
+			'filterObjectArray',
+			'nestByPath',
+			'nestByColumns'
 		])
 	})
 })

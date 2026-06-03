@@ -2,6 +2,7 @@
 
 **Date:** 2026-05-23
 **Status:** Draft — architecture spec, not yet scheduled
+**Site Applicability:** Applies to current Koan shell (`apps/learn/src/lib/koan/`) — replaces today's `setTimeout` + lexical `runMatch`.
 **Parent:** Stage D — Koan demo catalog (component-mounting + answering questions)
 
 ## Summary

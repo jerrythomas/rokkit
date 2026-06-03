@@ -2,6 +2,7 @@
 
 **Date:** 2026-05-20
 **Status:** Backlog — mockup phase
+**Site Applicability:** Applies to current Koan shell (`apps/learn/src/lib/koan/`, components like `Shell.svelte`, `ChatPanel.svelte`, `Canvas.svelte`). Path references in this doc (`demo/src/lib/koan/...`) predate the move into `apps/learn/`.
 
 ## Summary
 

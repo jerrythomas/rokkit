@@ -160,5 +160,5 @@
 /* Placeholders */
 [data-style='material'] [data-input-root] input::placeholder,
 [data-style='material'] [data-input-root] textarea::placeholder {
-  @apply text-paper-edge;
+  @apply text-ink-soft;
 }

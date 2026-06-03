@@ -17,7 +17,7 @@
 }
 
 [data-style='zen-sumi'] [data-search-input]::placeholder {
-  @apply text-paper-edge;
+  @apply text-ink-soft;
 }
 
 /* =============================================================================

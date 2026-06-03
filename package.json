@@ -1,6 +1,6 @@
 {
   "name": "rokkit",
-  "version": "1.1.1",
+  "version": "1.1.3",
   "private": true,
   "prettier": "./config/.prettierrc",
   "module": "src/index.js",
@@ -14,7 +14,9 @@
     "coverage": "vitest run --coverage",
     "format": "prettier --config config/.prettierrc --ignore-path config/.prettierignore --write .",
     "lint": "eslint --config config/eslint.config.mjs --fix",
-    "bump": "bumpp --configFilePath config/bump.config.js",
+    "check:types": "for d in packages/*/ apps/*/; do if [ -f \"${d}tsconfig.json\" ]; then echo \"→ tsc ${d}\"; (cd \"$d\" && bunx tsc --noEmit) || exit 1; fi; done",
+    "check": "bun run lint && bun run check:types && bun run test:ci",
+    "bump": "bun run check && bumpp --configFilePath config/bump.config.js",
     "bump:next": "bumpp --configFilePath config/bump.config.js --preid=next",
     "upgrade:all": "find ./packages -type d -depth 1 -exec sh -c 'cd \"{}\" && bun update --latest' \\;",
     "publish:all": "for dir in ./packages/*/; do grep -q '\"private\": true' \"${dir}package.json\" 2>/dev/null || (cd \"$dir\" && bun publish); done",
@@ -39,11 +41,15 @@
     "prettier-plugin-svelte": "^3.5.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "rimraf": "^6.0.1",
+    "simple-git-hooks": "^2.13.1",
     "svelte": "^5.53.3",
     "svelte-eslint-parser": "^1.5.1",
     "typescript-eslint": "^8.56.1",
     "vite": "^7.1.6",
     "vitest": "^3.2.4"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "bun run check:types"
   },
   "peerDependencies": {
     "typescript": "^5.9.2"

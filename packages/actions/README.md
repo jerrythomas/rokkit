@@ -12,24 +12,31 @@ bun add @rokkit/actions
 
 ## Overview
 
-`@rokkit/actions` provides the DOM event layer that `@rokkit/ui` components build on. The main export is `Navigator` — a class that wires keyboard, click, and focus events on a container element to a `Wrapper` or `ListController` instance. The package also includes standalone Svelte `use:` actions for effects like ripple, magnetic snap, reveal animations, dismissal on click-outside, and declarative keyboard shortcuts.
+`@rokkit/actions` provides the DOM event layer that `@rokkit/ui` components build on. The main export is `Navigator` — a class that wires keyboard, click, and focus events on a container element to a `Wrapper` (or any IWrapper-shaped object) instance. The package also includes standalone Svelte `use:` actions for effects like ripple, magnetic snap, reveal animations, dismissal on click-outside, and declarative keyboard shortcuts.
 
 ## Usage
 
-### navigator — keyboard and click navigation
+### Navigator — keyboard and click navigation
 
-The `navigator` action connects a container element's DOM events to a Wrapper controller. It handles `ArrowUp`/`ArrowDown`/`ArrowLeft`/`ArrowRight`, `Home`, `End`, `Enter`, `Space`, typeahead, and click-to-select.
+The `Navigator` class wires a container element's DOM events to a Wrapper. It handles `ArrowUp`/`ArrowDown`/`ArrowLeft`/`ArrowRight`, `Home`, `End`, `Enter`, `Space`, typeahead, click-to-select, ctrl/cmd-click toggle, shift-click range, and contained `scrollIntoView`.
 
 ```svelte
 <script>
-  import { navigator } from '@rokkit/actions'
+  import { Navigator } from '@rokkit/actions'
   import { ProxyTree, Wrapper } from '@rokkit/states'
 
   const tree = new ProxyTree(items)
   const wrapper = new Wrapper(tree, { onselect })
+
+  let rootRef = $state(null)
+  $effect(() => {
+    if (!rootRef) return
+    const nav = new Navigator(rootRef, wrapper, { orientation: 'vertical' })
+    return () => nav.destroy()
+  })
 </script>
 
-<ul use:navigator={{ controller: wrapper, orientation: 'vertical' }}>
+<ul bind:this={rootRef}>
   {#each wrapper.flatView as node (node.key)}
     <li data-path={node.key}>{node.proxy.label}</li>
   {/each}
@@ -38,18 +45,15 @@ The `navigator` action connects a container element's DOM events to a Wrapper co
 
 The `data-path` attribute on each item is required — Navigator uses it to resolve which item was clicked or focused.
 
-### Navigator class (imperative usage)
+Options:
 
 ```js
-import { Navigator } from '@rokkit/actions'
-
-const nav = new Navigator(containerEl, wrapper, {
+new Navigator(containerEl, wrapper, {
   orientation: 'vertical', // 'vertical' | 'horizontal'
-  collapsible: true // enable expand/collapse key handling
+  dir: 'ltr',              // 'ltr' | 'rtl' — arrow-key direction
+  collapsible: false,      // enable expand/collapse key handling
+  containScroll: false     // stop wheel events from bubbling to parents
 })
-
-// Clean up when done
-nav.destroy()
 ```
 
 ### keyboard — declarative shortcut binding
@@ -169,8 +173,7 @@ const action = resolveAction(keymap, event) // returns action string or null
 
 | Export          | Type          | Description                                    |
 | --------------- | ------------- | ---------------------------------------------- |
-| `Navigator`     | Class         | DOM event wiring for Wrapper/ListController    |
-| `navigator`     | Svelte action | `use:navigator` wrapper around Navigator class |
+| `Navigator`     | Class         | DOM event wiring for Wrapper                   |
 | `keyboard`      | Svelte action | Declarative keyboard shortcut binding          |
 | `ripple`        | Svelte action | Material Design ink ripple on click            |
 | `hoverLift`     | Svelte action | Elevation shadow on hover                      |

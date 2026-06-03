@@ -1,0 +1,155 @@
+# Rokkit TreeTable Component
+
+> Hierarchical tabular data — sortable columns, expand/collapse per row, tree connectors in one designated column.
+
+TreeTable is the hierarchical analog of Table. It accepts **nested rows** (each row may carry a `children: []` array). One column owns the expand chevron + tree connectors; the rest render flat values exactly like in Table. Sorting reorders siblings within each parent so the hierarchy is preserved.
+
+Built on the same `Wrapper + Navigator class` pattern as List/Tree/Table, with `ProxyTableTree` from `@rokkit/states` as the data layer.
+
+## Quick Start
+
+```svelte
+<script>
+  import { TreeTable } from '@rokkit/ui'
+
+  const data = [
+    {
+      region: 'EMEA',
+      sales: 1840,
+      children: [
+        { region: 'France', sales: 540 },
+        { region: 'Germany', sales: 920 },
+        { region: 'UK', sales: 380 }
+      ]
+    },
+    {
+      region: 'AMER',
+      sales: 2640,
+      children: [
+        { region: 'USA', sales: 1820 },
+        { region: 'Canada', sales: 820 }
+      ]
+    }
+  ]
+</script>
+
+<TreeTable {data} caption="Sales by region" />
+```
+
+## Three ways to feed it
+
+TreeTable consumes one canonical shape — nested rows with `children: []`. Two pure helpers in `@rokkit/data` convert the common flat shapes:
+
+### Nested rows (canonical)
+
+```svelte
+<TreeTable
+  data={[
+    { region: 'EMEA', sales: 1840, children: [
+      { region: 'France', sales: 540 },
+      { region: 'Germany', sales: 920 }
+    ]}
+  ]}
+/>
+```
+
+### From a separator-delimited path
+
+```svelte
+<script>
+  import { nestByPath } from '@rokkit/data'
+
+  const flat = [
+    { path: 'engineering', headcount: 24 },
+    { path: 'engineering/web', headcount: 11 },
+    { path: 'engineering/web/frontend', headcount: 7 }
+  ]
+  const data = nestByPath(flat, { column: 'path' })
+</script>
+
+<TreeTable {data} />
+```
+
+### From group-by columns
+
+```svelte
+<script>
+  import { nestByColumns } from '@rokkit/data'
+
+  const flat = [
+    { region: 'EMEA', country: 'France', revenue: 320 },
+    { region: 'EMEA', country: 'Germany', revenue: 280 },
+    { region: 'AMER', country: 'USA', revenue: 480 }
+  ]
+  const data = nestByColumns(flat, ['region', 'country'])
+</script>
+
+<TreeTable {data} />
+```
+
+Synthetic group rows produced by `nestByColumns` carry `__group: true` + `__column: <column>` so cell snippets can detect them.
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `data` | `Record<string, unknown>[]` | `[]` | Nested rows |
+| `columns` | `TreeTableColumn[]` | auto-derived | Column definitions; set `column.hierarchy: true` to pick the chevron column (defaults to the first column) |
+| `value` | `unknown` | — | Currently selected row value (single-select) |
+| `values` | `unknown[]` | `[]` | Selected row values (multi-select, bindable) |
+| `selectable` | `'single' \| 'multi' \| false` | `'single'` | Selection mode |
+| `caption` | `string` | — | Caption text (also sets aria-label) |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Row density |
+| `striped` | `boolean` | `false` | Alternate row background tone |
+| `disabled` | `boolean` | `false` | Disable all interaction |
+| `lineStyle` | `'none' \| 'solid' \| 'dashed' \| 'dotted'` | `'solid'` | Connector line style |
+| `fields` | `TableFields & { children?: string }` | — | Field mapping; `fields.children` customizes the child-array field |
+| `icons` | `TableSortIcons & { opened?, closed? }` | defaults | Override sort + folder icons |
+| `onselect` | `(value, row) => void` | — | Selection callback |
+| `onsort` | `(sortState) => void` | — | Sort callback |
+
+### TreeTableColumn
+
+Extends `TableColumn` (same shape — `name`, `label`, `sortable`, `width`, `align`, `formatter`, `fields`, etc.) with one extra flag:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `hierarchy` | `boolean` | If true, this column renders the chevron + indent + tree connectors. Only one column should be flagged. |
+
+## Keyboard
+
+| Key | Action |
+|-----|--------|
+| `ArrowUp` / `ArrowDown` | Move between visible rows (skips collapsed subtrees) |
+| `ArrowRight` | Expand focused row, or move to first child if already open |
+| `ArrowLeft` | Collapse focused row, or move to parent if already closed |
+| `Home` / `End` | Move to first / last visible row |
+| `Enter` / `Space` | Select |
+| `Ctrl/Cmd + Click` / `Ctrl/Cmd + Space` | Toggle in multi-select |
+| `Shift + Click` / `Shift + Space` | Range select in multi-select |
+| typeahead | Buffered character input matches row label prefix |
+
+## DOM hooks
+
+| Selector | Description |
+|----------|-------------|
+| `[data-tree-table]` | Root container |
+| `[data-tree-table-row]` | Body row — carries `data-tree-level`, `data-selected`, `aria-expanded` |
+| `[data-table-cell][data-hierarchy="true"]` | The hierarchy cell (contains the chevron + connector prefix) |
+| `[data-tree-table-cell-prefix]` | Wrapper holding the row's tree connectors + toggle button |
+| `[data-tree-table-toggle]` | Expand/collapse chevron button (also carries `data-accordion-trigger`) |
+
+## Sort semantics
+
+Sort is **per-sibling group**. A single sort by `region` reorders the top-level rows alphabetically AND reorders the children inside each parent — but a `France` child never lifts out from under `EMEA`. Shift+click extends the sort to multiple columns; clicking the same column a third time clears it from the stack.
+
+## Synthetic group rows
+
+When you build the data via `nestByColumns`, the synthesized group rows carry `__group: true` + `__column: <column>` so a custom `cell` snippet can render them differently (aggregated totals, bolder typography, distinct background, …). Pass a custom `groupRowFactory` to `nestByColumns` if you want richer group rows.
+
+## Related
+
+- [Table](/llms/components/table.txt) — flat sortable grid (the underlying primitive)
+- [Tree](/llms/components/tree.txt) — hierarchical navigation list
+- [ProxyTable / ProxyTableTree](/llms/packages/states.txt) — data layer
+- [Navigator](/llms/packages/actions.txt) — DOM event wiring

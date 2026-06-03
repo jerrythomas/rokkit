@@ -16,33 +16,42 @@ build your own accessible components.
 - Focus management — focus returns to the trigger on close.
 - Type-ahead search where it makes sense (selects, dropdowns).
 
-## The navigator pattern
+## The Wrapper + Navigator pattern
 
-Rokkit's interactivity is built on two composable primitives:
+Rokkit's interactivity is built on three composable primitives:
 
-- **Controllers** — pure state machines (`ListController`,
-  `NestedController`, etc.) with no DOM dependency.
-- **`navigator` action** — a Svelte action that binds a
-  controller to a container element, attaches keyboard
-  handlers, and manages ARIA attributes.
+- **ProxyTree / ProxyTable** — reactive data layer.
+- **Wrapper / LazyWrapper** — pure state machine for focus,
+  selection, and expansion. No DOM dependency.
+- **`Navigator` class** — binds a Wrapper to a container
+  element, attaches keyboard / click / focus handlers, and
+  contains `scrollIntoView` to the list.
 
-The separation means you can use a controller in tests **without
-a browser**, and swap the visual rendering without touching the
-interaction logic.
+The separation means you can test interaction logic **without
+a browser**, and swap the visual rendering without touching
+the navigation behavior.
 
 ```svelte
 <script>
-  import { ListController } from '@rokkit/states'
-  import { navigator } from '@rokkit/actions'
+  import { ProxyTree, Wrapper } from '@rokkit/states'
+  import { Navigator } from '@rokkit/actions'
 
-  const controller = new ListController(items)
+  const tree = $derived(new ProxyTree(items))
+  const wrapper = $derived(new Wrapper(tree, { onselect }))
+
+  let rootRef = $state(null)
+  $effect(() => {
+    if (!rootRef) return
+    const nav = new Navigator(rootRef, wrapper, { orientation: 'vertical' })
+    return () => nav.destroy()
+  })
 </script>
 
-<ul use:navigator={controller}>
-  {#each controller.flatView as node (node.key)}
+<ul bind:this={rootRef}>
+  {#each wrapper.flatView as node (node.key)}
     <li
       data-path={node.key}
-      data-active={node.proxy.value === controller.value || undefined}
+      data-active={node.proxy.value === wrapper.selected || undefined}
     >
       {node.proxy.label}
     </li>
@@ -51,8 +60,8 @@ interaction logic.
 ```
 
 That's the entire interaction layer for an arrow-key-navigable
-list. Same controller powers `List`, `Menu`, and
-`MultiSelect` internally.
+list. The same primitives power `List`, `Menu`, `Tree`,
+`MultiSelect`, `Tabs`, `Toolbar`, and `Table` internally.
 
 ## Screen-reader semantics
 

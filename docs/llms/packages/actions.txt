@@ -67,71 +67,60 @@ With options:
 
 ---
 
-## `navigator` — Keyboard Navigation (full controller integration)
+## `Navigator` — Keyboard Navigation (class)
 
-The full-featured navigation action used internally by all Rokkit UI components. Pairs with a `Wrapper`/controller from `@rokkit/states`. Handles keyboard, clicks, typeahead, scrollIntoView, and focus management.
+The full-featured navigation primitive used internally by all Rokkit UI components. Pairs with a `Wrapper` (or `LazyWrapper`) from `@rokkit/states` and binds DOM events on a container element to its methods.
 
-Requires a `wrapper` option — a controller instance that implements `movePrev()`, `moveNext()`, `moveFirst()`, `moveLast()`, `select()`, `expand()`, `collapse()`, etc.
+Calls `wrapper[action](path)` directly — no CustomEvent dispatch in the middle.
 
-Dispatches a single `action` custom event rather than per-action events:
+### Constructor
 
+```javascript
+new Navigator(rootEl, wrapper, options?)
 ```
-CustomEvent('action', { detail: { name: 'move'|'select'|'toggle', data: { value, selected } } })
-```
-
-### Options
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `wrapper` | Controller instance | required | State controller to drive |
-| `orientation` | `'vertical'|'horizontal'` | `'vertical'` | Arrow key axis |
-| `dir` | `'ltr'|'rtl'` | `'ltr'` | Text direction |
-| `nested` | `boolean` | `false` | Enable expand/collapse keys |
-| `typeahead` | `boolean` | `false` | Enable character typeahead search |
+| `orientation` | `'vertical'\|'horizontal'` | `'vertical'` | Arrow-key axis |
+| `dir` | `'ltr'\|'rtl'` | `'ltr'` | Text direction |
+| `collapsible` | `boolean` | `false` | Enable expand/collapse arrow-key handling |
+| `containScroll` | `boolean` | `false` | Stop wheel events from bubbling to parents |
 
 ### Features
 
-- **Keyboard**: maps keys to controller methods via configurable keymap
-- **Clicks**: resolves `select`, `extend` (Ctrl/Cmd+click), `range` (Shift+click), `toggle` (accordion trigger)
-- **Typeahead**: buffers printable characters (500 ms reset), calls `wrapper.findByText()` and `wrapper.moveTo()`
-- **scrollIntoView**: scrolls focused item into view after navigation
+- **Keyboard**: maps keys to wrapper methods via the configurable keymap (`buildKeymap`)
+- **Clicks**: resolves `select`, `extend` (Ctrl/Cmd+click), `range` (Shift+click), `toggle` (any `[data-accordion-trigger]` element)
+- **Typeahead**: buffers printable characters (~500 ms reset), calls `wrapper.findByText()` and `wrapper.moveTo()`
+- **Focus**: syncs DOM focus to the wrapper's `focusedKey` and contains `scrollIntoView` to the root
 - **Native links**: `<a href>` elements navigate naturally; state is still updated
+- **Blur**: calls `wrapper.blur?.()` when focus leaves the root (used by dropdowns)
 
 ### Usage
 
 ```svelte
 <script>
-  import { navigator } from '@rokkit/actions'
-  import { ListController } from '@rokkit/states'
+  import { Navigator } from '@rokkit/actions'
+  import { ProxyTree, Wrapper } from '@rokkit/states'
 
-  const wrapper = new ListController(items)
+  const tree = $derived(new ProxyTree(items))
+  const wrapper = $derived(new Wrapper(tree, { onselect }))
+
+  let rootRef = $state(null)
+  $effect(() => {
+    if (!rootRef) return
+    const nav = new Navigator(rootRef, wrapper, { orientation: 'vertical' })
+    return () => nav.destroy()
+  })
 </script>
 
-<ul
-  use:navigator={{ wrapper, typeahead: true }}
-  onaction={handleAction}
->
-  {#each items as item}
-    <li data-path={item.id}>{item.label}</li>
+<ul bind:this={rootRef}>
+  {#each wrapper.flatView as node (node.key)}
+    <li data-path={node.key}>{node.proxy.label}</li>
   {/each}
 </ul>
 ```
 
----
-
-## `Navigator` class
-
-The underlying class powering `use:navigator`. Use directly (without `$effect`) when you need imperative control, e.g. inside `$effect` blocks or framework-agnostic code.
-
-```javascript
-import { Navigator } from '@rokkit/actions'
-
-const nav = new Navigator(rootEl, wrapper, { collapsible: true })
-// later:
-nav.destroy()
-```
-
-Constructor options mirror the `navigator` action options (`orientation`, `dir`, `collapsible`).
+Each interactive element must carry `data-path={node.key}` — Navigator walks up from the click/focus target to resolve which item was activated.
 
 ---
 

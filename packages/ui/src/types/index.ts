@@ -36,6 +36,7 @@ export * from './palette.js'
 
 // Table Types
 export * from './table.js'
+export * from './tree-table.js'
 
 // SearchFilter Types
 export * from './search-filter.js'

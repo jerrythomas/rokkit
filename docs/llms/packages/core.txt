@@ -53,7 +53,7 @@ import { BASE_FIELDS } from '@rokkit/core'
 
 ### `DEFAULT_FIELDS` constant
 
-Legacy mapping (used by `FieldMapper` and older `ListController`-based code). Prefer `BASE_FIELDS` for new work.
+Legacy mapping retained for the `FieldMapper` class. Prefer `BASE_FIELDS` for new work.
 
 ### `getNestedFields(fields)`
 

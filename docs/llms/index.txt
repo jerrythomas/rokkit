@@ -135,8 +135,8 @@ Verify that `<body>` is on its own line in `src/app.html`. The script is injecte
 | `@rokkit/forms` | Dynamic form generation from JSON schema |
 | `@rokkit/chart` | Data visualization (PlotChart, FacetPlot, AnimatedPlot, Sparkline, CrossFilter, GeomBar/Line/Area/Point/etc.) |
 | `@rokkit/blocks` | Rich content blocks for tables and plots (PlotPlugin, TablePlugin, SparklinePlugin, MermaidPlugin) |
-| `@rokkit/states` | State management (ProxyItem, LazyProxyItem, ProxyTree, Wrapper, LazyWrapper, ListController, TableController, vibe, messages, watchMedia) |
-| `@rokkit/actions` | Svelte actions (navigable, hoverLift, magnetic, ripple) |
+| `@rokkit/states` | State management (ProxyItem, LazyProxyItem, ProxyTree, ProxyTable, ProxyTableTree, Wrapper, LazyWrapper, vibe, messages, watchMedia) |
+| `@rokkit/actions` | DOM event layer + Svelte actions (Navigator class, navigable, hoverLift, magnetic, ripple) |
 | `@rokkit/core` | Core utilities and field mapping |
 | `@rokkit/data` | Data manipulation utilities |
 | `@rokkit/themes` | CSS themes (rokkit, minimal, material) |
@@ -345,6 +345,7 @@ Long-form prose covering framework concepts. Mirrors what users see at `/guides/
 - [Toggle](/llms/components/toggle.txt) — radio-style button group
 - [Tabs](/llms/components/tabs.txt) — tabbed content panels (horizontal/vertical)
 - [Table](/llms/components/table.txt) — sortable data table with row selection
+- [TreeTable](/llms/components/tree-table.txt) — hierarchical sortable table; sort preserves parent/child
 
 ### Menus & Actions
 

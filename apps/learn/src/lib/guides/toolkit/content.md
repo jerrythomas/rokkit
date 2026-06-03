@@ -9,17 +9,18 @@ useful even if you're not consuming `@rokkit/ui` directly.
 
 Reactive state machines + proxies:
 
-- **Controllers** — `ListController`, `NestedController`,
-  `Wrapper` (multi-select) — the same state machines every
-  selection component uses.
-- **Proxies** — `ProxyItem`, `ProxyTree`, `LazyProxyItem` —
-  thin reactive wrappers that adapt your raw data via the
-  `fields` mapping.
+- **Wrapper / LazyWrapper** — the navigation + selection state
+  machine every list-shaped component uses. Opt in to
+  multi-select via `{ multiselect: true }`.
+- **Proxies** — `ProxyItem`, `ProxyTree`, `ProxyTable`,
+  `LazyProxyItem` — thin reactive wrappers that adapt your
+  raw data via the `fields` mapping. `ProxyTable` adds columns
+  + sort for tabular data.
 - **Stores** — `alerts` (for AlertList), `messages`
   (localised labels), `vibe` (the active style / skin / mode).
 
 See the [Utilities](/guides/utilities) guide for how to use
-controllers + proxies to build your own components.
+wrappers + proxies to build your own components.
 
 ## `@rokkit/data`
 

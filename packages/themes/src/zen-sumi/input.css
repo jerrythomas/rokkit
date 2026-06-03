@@ -167,5 +167,5 @@
 /* Placeholders */
 [data-style='zen-sumi'] [data-input-root] input::placeholder,
 [data-style='zen-sumi'] [data-input-root] textarea::placeholder {
-  color: var(--color-surface-z4);
+  @apply text-ink-soft;
 }

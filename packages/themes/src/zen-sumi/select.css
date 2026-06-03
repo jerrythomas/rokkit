@@ -152,7 +152,7 @@
 }
 
 [data-style='zen-sumi'] [data-select-filter-input]::placeholder {
-  @apply text-paper-edge;
+  @apply text-ink-soft;
 }
 
 [data-style='zen-sumi'] [data-select-empty] {

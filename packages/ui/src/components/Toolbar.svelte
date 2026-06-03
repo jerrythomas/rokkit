@@ -6,11 +6,8 @@
 		ToolbarItemHandlers
 	} from '../types/toolbar.js'
 	import { getSnippet } from '../types/menu.js'
-	import { ProxyItem, messages } from '@rokkit/states'
-	import { ListController } from '@rokkit/states'
-	import { SvelteMap } from 'svelte/reactivity'
-	import { navigator } from '@rokkit/actions'
-	import { untrack } from 'svelte'
+	import { ProxyItem, ProxyTree, Wrapper, messages } from '@rokkit/states'
+	import { Navigator } from '@rokkit/actions'
 
 	const {
 		items = [],
@@ -40,125 +37,53 @@
 		return new ProxyItem(item, userFields)
 	}
 
-	// ─── Controller + Navigator ────────────────────────────────────
-
-	/** Only interactive items are tracked by the controller */
-	function isInteractive(item: ToolbarItem): boolean {
-		const proxy = createProxy(item)
-		const type = proxy.type
-		return type !== 'separator' && type !== 'spacer'
-	}
-
-	const interactiveItems = $derived(items.filter(isInteractive))
-
-	/** Map from item → its data-path key (index within interactive items) */
-	const itemPathMap = $derived.by(() => {
-		const map = new SvelteMap<unknown, string>()
-		let idx = 0
-		for (const item of items) {
-			if (isInteractive(item)) {
-				map.set(item, String(idx))
-				idx++
-			}
-		}
-		return map
-	})
+	// ─── Wrapper + Navigator ────────────────────────────────────
 
 	const orientation = $derived<'horizontal' | 'vertical'>(
 		position === 'left' || position === 'right' ? 'vertical' : 'horizontal'
 	)
-
-	let controller = untrack(() => {
-		const c = new ListController(interactiveItems, undefined, userFields)
-		c.moveFirst()
-		return c
-	})
-	let containerRef: HTMLElement | null = $state(null)
-
-	$effect(() => {
-		controller.update(interactiveItems)
-	})
-
-	// Sync controller position when a toolbar item receives focus (e.g. Tab from outside)
-	$effect(() => {
-		if (!containerRef) return
-		const el = containerRef
-
-		function onFocusIn(event: Event) {
-			const target = event.target as HTMLElement
-			const path = target.closest('[data-path]')?.getAttribute('data-path')
-			if (path) {
-				controller.moveTo(path)
-			}
-		}
-
-		el.addEventListener('focusin', onFocusIn)
-		return () => el.removeEventListener('focusin', onFocusIn)
-	})
-
-	function focusKeyedItem(el: HTMLElement, key: string) {
-		const target = el.querySelector(`[data-path="${key}"]`) as HTMLElement | null
-		if (target && target !== document.activeElement) target.focus()
-	}
-
-	// Focus the item matching controller.focusedKey on navigator action events
-	$effect(() => {
-		if (!containerRef) return
-		const el = containerRef
-
-		function onAction(event: Event) {
-			const detail = (event as CustomEvent).detail
-			if (detail.name === 'move') {
-				const key = controller.focusedKey
-				if (key) focusKeyedItem(el, key)
-			}
-			if (detail.name === 'select') handleSelectAction()
-		}
-
-		el.addEventListener('action', onAction)
-		return () => el.removeEventListener('action', onAction)
-	})
-
-	/**
-	 * Handle the navigator's select action (Enter/Space or click on data-path item)
-	 */
-	function handleSelectAction() {
-		const key = controller.focusedKey
-		if (!key) return
-		const proxy = controller.lookup.get(key)
-		if (!proxy) return
-		const itemProxy = createProxy(proxy.value)
-		handleItemClick(itemProxy)
-	}
-
-	/**
-	 * Get the data-path key for an item
-	 */
-	function getPathKey(item: ToolbarItem): string | undefined {
-		return itemPathMap.get(item)
-	}
-
-	// ─── Item Handlers ─────────────────────────────────────────────
 
 	function handleItemClick(proxy: ProxyItem) {
 		if (proxy.disabled || disabled) return
 		onclick?.(proxy.value, proxy.original as ToolbarItem)
 	}
 
-	function handleItemKeyDown(event: KeyboardEvent, proxy: ProxyItem) {
-		if (event.key === 'Enter' || event.key === ' ') {
-			event.preventDefault()
-			handleItemClick(proxy)
-		}
-	}
+	const proxyTree = $derived(new ProxyTree(items, userFields))
+	const wrapper = $derived(
+		new Wrapper(proxyTree, {
+			onselect: (_value: unknown, proxy: ProxyItem) => handleItemClick(proxy),
+			collapsible: false
+		})
+	)
+
+	let containerRef: HTMLElement | null = $state(null)
+
+	// Mount Navigator on the root; destroy + re-mount when wrapper recreates.
+	$effect(() => {
+		if (!containerRef) return
+		const w = wrapper
+		const dir = getComputedStyle(containerRef).direction === 'rtl' ? 'rtl' : 'ltr'
+		const nav = new Navigator(containerRef, w, { orientation, dir })
+		// Park focus on the first interactive item so Tab into the toolbar lands there.
+		w.first(null)
+		return () => nav.destroy()
+	})
+
+	// ─── Item Handlers ─────────────────────────────────────────────
 
 	/**
-	 * Create handlers object for custom snippets
+	 * Handlers passed to custom snippets so they can wire click/keydown
+	 * back through the toolbar's onclick + disabled semantics.
 	 */
 	function createHandlers(proxy: ProxyItem): ToolbarItemHandlers {
 		return {
 			onclick: () => handleItemClick(proxy),
-			onkeydown: (event: KeyboardEvent) => handleItemKeyDown(event, proxy)
+			onkeydown: (event: KeyboardEvent) => {
+				if (event.key === 'Enter' || event.key === ' ') {
+					event.preventDefault()
+					handleItemClick(proxy)
+				}
+			}
 		}
 	}
 
@@ -224,11 +149,10 @@
 	<div data-toolbar-divider aria-hidden="true"></div>
 {/snippet}
 
-{#snippet renderItem(proxy: ProxyItem, item: ToolbarItem)}
+{#snippet renderItem(proxy: ProxyItem, pathKey: string)}
 	{@const customSnippet = resolveItemSnippet(proxy)}
 	{@const handlers = createHandlers(proxy)}
 	{@const itemType = proxy.type}
-	{@const pathKey = getPathKey(item)}
 
 	{#if itemType === 'separator'}
 		{@render separator()}
@@ -261,13 +185,12 @@
 	role="toolbar"
 	aria-label={label}
 	aria-disabled={disabled || undefined}
-	use:navigator={{ wrapper: controller, orientation }}
 >
 	{#if hasItems}
 		<!-- Data-driven items -->
 		{#each items as item, index (index)}
 			{@const proxy = createProxy(item)}
-			{@render renderItem(proxy, item)}
+			{@render renderItem(proxy, String(index))}
 		{/each}
 	{:else if hasSlots}
 		<!-- Slot-based content -->

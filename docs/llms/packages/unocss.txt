@@ -73,6 +73,7 @@ const preset = presetRokkit({
 | `icons.collection` | `string` | `undefined` | Override the default icon collection prefix. Default is `'semantic'` (`i-semantic:*`). Set to e.g. `'phosphor'` to use `i-phosphor:*`. |
 | `icons.overrides` | `Record<string, string>` | `{}` | Per-icon class overrides. Keys are shortcut names, values are full icon classes. |
 | `palettes` | `Record<string, Record<string, string>>` | `{}` | Custom color palettes with shade values. Merged into theme colors so names can be used in `colors`. |
+| `overrides` | `Record<string, string \| { light?, dark? }>` | `{}` | Replace named-token defaults and/or emit new custom tokens, all in one block. Reserved names (e.g. `paper-edge`) override the named-token value via cascade order; non-reserved names emit as new `--{name}` CSS vars. Values can be palette refs (`'kami.400'`), raw CSS colors, or `{ light, dark }` objects. Color-valued non-reserved entries auto-get `bg-/text-/border-` shortcuts. |
 | `typography` | `{ sans?, mono?, heading? }` | All `null` | Font family CSS custom properties. Values are CSS font-family strings. |
 | `shape` | `{ radius? }` | `{ radius: null }` | Shape tokens. `radius` accepts `'sharp'`, `'rounded'`, `'pill'`, or a custom `{ sm, md, lg, xl, full }` object. |
 | `themes` | `string[]` | `['rokkit']` | Which CSS themes to activate (informational — does not import CSS; use CSS imports for that). |
@@ -114,6 +115,56 @@ Generates CSS custom property rules for each semantic variant:
 ```
 
 These are consumed by `@rokkit/themes` and are the source of all component colors.
+
+### Named Token Shortcuts
+
+For every named token (`paper`, `paper-soft`, `paper-mute`, `paper-edge`, `ink`, `ink-mute`, `ink-soft`, `ink-faint`, `primary`, `accent`, `accent-soft`, `success` / `warning` / `danger` / `error` / `info` (+ `*-soft`), `on-primary`, `focus-ring`), the preset emits utility classes with these prefixes:
+
+| Prefix | CSS property | Notes |
+|--------|--------------|-------|
+| `bg-` | `background-color` | not emitted for `on-primary`, `focus-ring`, `shadow-tint` |
+| `text-` | `color` | |
+| `border-` | `border-color` | |
+| `border-t-` / `-b-` / `-l-` / `-r-` | per-side `border-color` | |
+| `ring-` | `--un-ring-color` | emitted only for `focus-ring` (and `*-ring`-suffixed override tokens) |
+| `fill-` | `fill` | for SVG |
+| `stroke-` | `stroke` | for SVG |
+
+```html
+<!-- Hairline border in the canonical etched-edge tone -->
+<div class="border border-paper-edge">…</div>
+
+<!-- Top-only divider -->
+<div class="border-t border-t-paper-edge">…</div>
+
+<!-- Focus ring -->
+<button class="ring ring-focus-ring">…</button>
+```
+
+**Prefer these utility classes over wrapping `var(--paper-edge)` etc. in a custom property.** CSS substitutes `var()` inside a custom property's value at the *declaring* element and inherits the resolved string — so `--hairline: 1px solid var(--paper-edge)` declared on `:root` won't flip when `--paper-edge` changes under `[data-mode="dark"]`. Utility classes resolve `var()` at the consuming element, where `[data-mode]` applies. See [guides/theming.txt](/llms/guides/theming.txt#customizing-named-tokens).
+
+### Customizing Named Tokens
+
+To replace a named token's value (per mode if needed) or to add brand-new tokens, use the `overrides:` block in `rokkit.config.js`:
+
+```js
+// rokkit.config.js
+export default {
+  overrides: {
+    // Reserved-name override — replaces the named-token default
+    // via cascade order. Useful when the auto-derived dark-mode
+    // shade doesn't read correctly against the dark paper bg.
+    'paper-edge': { light: 'kami.400', dark: 'oklch(0.04 0.025 85)' },
+
+    // New custom tokens — emit as `--canvas`, `--canvas-grid`, etc.
+    // Color-valued entries also auto-get bg-/text-/border-canvas shortcuts.
+    canvas: 'kami.50',
+    'canvas-grid': '#d4d4d4'
+  }
+}
+```
+
+Values accept palette refs (`'kami.400'`), raw CSS colors (`'#222222'`, `'oklch(...)'`, `'rgb(...)'`), or `{ light, dark }` objects.
 
 ### Semantic Tone Shortcuts
 

@@ -167,5 +167,5 @@
 /* Placeholders */
 [data-style='minimal'] [data-input-root] input::placeholder,
 [data-style='minimal'] [data-input-root] textarea::placeholder {
-  @apply text-paper-mute;
+  @apply text-ink-soft;
 }

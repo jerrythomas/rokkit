@@ -1,9 +1,8 @@
 <script lang="ts">
 	import type { TableProps, TableColumn, TableSortIcons } from '../types/table.js'
 	import { defaultTableSortIcons } from '../types/table.js'
-	import { TableController, messages } from '@rokkit/states'
-	import { navigator } from '@rokkit/actions'
-	import { untrack } from 'svelte'
+	import { ProxyItem, ProxyTable, Wrapper, messages } from '@rokkit/states'
+	import { Navigator } from '@rokkit/actions'
 
 	let {
 		data = [],
@@ -29,99 +28,49 @@
 
 	const icons = $derived<TableSortIcons>({ ...defaultTableSortIcons, ...userIcons })
 
-	// ─── Controller ─────────────────────────────────────────────────
+	// ─── ProxyTable + Wrapper ───────────────────────────────────────
 
-	let controller = untrack(
-		() =>
-			new TableController(data, {
-				columns: userColumns,
-				fields: userFields,
-				value,
-				multiselect: selectable === 'multi'
-			})
+	const multiselect = $derived(selectable === 'multi')
+
+	const proxyTable = $derived(
+		new ProxyTable(data, { columns: userColumns, fields: userFields, onsort })
 	)
 
-	// Sync values binding from controller selection in multi-select mode
+	const wrapper = $derived(
+		new Wrapper(proxyTable, {
+			onselect: (_v: unknown, proxy: ProxyItem) => {
+				if (selectable === false || disabled) return
+				onselect?.(proxy.value, proxy.value as Record<string, unknown>)
+			},
+			collapsible: false,
+			multiselect
+		})
+	)
+
+	// Sync value bindings out
 	$effect(() => {
-		if (selectable === 'multi') {
-			values = controller.selected.slice()
-		}
+		wrapper.moveToValue(value)
 	})
+	$effect(() => {
+		if (multiselect) values = (wrapper.selected as unknown[]).slice()
+	})
+
+	// Mount Navigator on the table root
 	let tableRef = $state<HTMLElement | null>(null)
-
-	// Sync data changes to controller
-	$effect(() => {
-		controller.update(data)
-	})
-
-	// Sync columns changes
-	$effect(() => {
-		if (userColumns) {
-			controller.columns = userColumns.map((c) => ({
-				sortable: true,
-				sorted: 'none',
-				...c
-			}))
-		}
-	})
-
-	// ─── Focus management ───────────────────────────────────────────
-
-	function focusByKey(el: HTMLElement, key: string) {
-		const target = el.querySelector(`[data-path="${key}"]`) as HTMLElement | null
-		if (target && target !== document.activeElement) {
-			target.focus()
-			target.scrollIntoView?.({ block: 'nearest', inline: 'nearest' })
-		}
-	}
-
 	$effect(() => {
 		if (!tableRef) return
-		const el = tableRef
-
-		function onAction(event: Event) {
-			const detail = (event as CustomEvent).detail
-			if (detail.name === 'move') {
-				const key = controller.focusedKey
-				if (key) focusByKey(el, key)
-			}
-			if (detail.name === 'select') handleSelectAction()
-		}
-
-		el.addEventListener('action', onAction)
-		return () => el.removeEventListener('action', onAction)
+		const w = wrapper
+		const dir = getComputedStyle(tableRef).direction === 'rtl' ? 'rtl' : 'ltr'
+		const nav = new Navigator(tableRef, w, { orientation: 'vertical', dir })
+		return () => nav.destroy()
 	})
 
-	function handleFocusIn(event: FocusEvent) {
-		const target = event.target as HTMLElement
-		if (!target) return
-		const path = target.dataset.path
-		if (path !== undefined) {
-			controller.moveTo(path)
-		}
-	}
-
-	function handleSelectAction() {
-		if (selectable === false || disabled) return
-
-		const key = controller.focusedKey
-		if (!key) return
-
-		const proxy = controller.lookup.get(key)
-		if (!proxy) return
-
-		onselect?.(proxy.value, proxy.value as Record<string, unknown>)
-	}
-
-	// ─── Sort ───────────────────────────────────────────────────────
+	// ─── Sort + cell rendering helpers ──────────────────────────────
 
 	function handleSort(event: MouseEvent, column: TableColumn) {
 		if (column.sortable === false || disabled) return
-		controller.sortBy(column.name, event.shiftKey)
-		onsort?.(controller.sortState)
+		proxyTable.sortBy(column.name, event.shiftKey)
 	}
-
-	// ─── Cell rendering helpers ─────────────────────────────────────
 
 	function getCellValue(row: Record<string, unknown>, column: TableColumn): unknown {
 		const fieldName = column.fields?.text ?? column.name
@@ -129,9 +78,9 @@
 	}
 
 	function formatCellValue(row: Record<string, unknown>, column: TableColumn): string {
-		const value = getCellValue(row, column)
-		if (column.formatter) return column.formatter(value, row)
-		return value !== null && value !== undefined ? String(value) : ''
+		const cellValue = getCellValue(row, column)
+		if (column.formatter) return column.formatter(cellValue, row)
+		return cellValue !== null && cellValue !== undefined ? String(cellValue) : ''
 	}
 
 	function getCellIcon(row: Record<string, unknown>, column: TableColumn): string | null {
@@ -151,8 +100,6 @@
 	data-disabled={disabled || undefined}
 	data-table-responsive={responsive || undefined}
 	class={className || undefined}
-	onfocusin={handleFocusIn}
-	use:navigator={{ wrapper: controller, orientation: 'vertical' }}
 >
 	<table role="grid" aria-label={caption} data-table-striped={striped || undefined}>
 		{#if caption}
@@ -161,10 +108,10 @@
 
 		<thead data-table-header>
 			{#if headerSnippet}
-				{@render headerSnippet(controller.columns, controller.sortState)}
+				{@render headerSnippet(proxyTable.columns, proxyTable.sortState)}
 			{:else}
 				<tr>
-					{#each controller.columns as column (column.name)}
+					{#each proxyTable.columns as column (column.name)}
 						<th
 							data-table-header-cell
 							data-column={column.name}
@@ -192,25 +139,27 @@
 		</thead>
 
 		<tbody data-table-body>
-			{#if controller.data.length === 0}
+			{#if wrapper.flatView.length === 0}
 				{#if emptySnippet}
 					<tr data-table-empty-row>
-						<td colspan={controller.columns.length}>
+						<td colspan={proxyTable.columns.length}>
 							{@render emptySnippet()}
 						</td>
 					</tr>
 				{:else}
 					<tr data-table-empty-row>
-						<td data-table-empty colspan={controller.columns.length}>{messages.table.empty}</td>
+						<td data-table-empty colspan={proxyTable.columns.length}
+							>{messages.table.empty}</td
+						>
 					</tr>
 				{/if}
 			{:else}
-				{#each controller.data as entry, rowIndex (entry.key)}
-					{@const row = entry.value as Record<string, unknown>}
-					{@const isSelected = controller.selectedKeys.has(entry.key)}
-					{@const isFocused = controller.focusedKey === entry.key}
+				{#each wrapper.flatView as entry, rowIndex (entry.key)}
+					{@const row = entry.proxy.value as Record<string, unknown>}
+					{@const isSelected = wrapper.selectedKeys.has(entry.key)}
+					{@const isFocused = wrapper.focusedKey === entry.key}
 					{#if rowSnippet}
-						{@render rowSnippet(row, controller.columns, rowIndex, isSelected)}
+						{@render rowSnippet(row, proxyTable.columns, rowIndex, isSelected)}
 					{:else}
 						<tr
 							data-table-row
@@ -221,7 +170,7 @@
 							aria-rowindex={rowIndex + 1}
 							tabindex={isFocused ? 0 : -1}
 						>
-							{#each controller.columns as column (column.name)}
+							{#each proxyTable.columns as column (column.name)}
 								{#if cellSnippet}
 									<td data-table-cell data-column={column.name} data-label={column.label ?? column.name} style:text-align={column.align}>
 										{@render cellSnippet(getCellValue(row, column), column, row)}
