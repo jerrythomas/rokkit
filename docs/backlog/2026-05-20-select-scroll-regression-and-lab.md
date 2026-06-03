@@ -2,6 +2,7 @@
 
 **Date:** 2026-05-20
 **Status:** Backlog — important; investigate before fixing
+**Site Applicability:** Library regression in `@rokkit/ui` Select — applies. Lab page lives next to the existing demo at `apps/learn/src/routes/app/select/` (e.g. `app/select/lab/+page.svelte`).
 
 ## Summary
 
@@ -31,7 +32,7 @@ Confirm which of these are broken, which are working, before scoping the fix.
 
 ## Select Lab Page
 
-New route (location TBD — `site/learn/playground/select-lab` or `demo/select-lab`) with side-by-side variants of Select rendering the same long list:
+New route at `apps/learn/src/routes/app/select/lab/+page.svelte` (sits beside the existing `/app/select` demo). Side-by-side variants of Select rendering the same long list:
 
 - **A — Current Select** (with the regression) — control
 - **B — Select using Menu's scroll approach** — port Menu's behavior to Select

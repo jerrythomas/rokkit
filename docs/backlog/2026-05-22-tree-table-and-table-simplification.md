@@ -2,6 +2,7 @@
 
 **Date:** 2026-05-22
 **Status:** Backlog — design + implementation
+**Site Applicability:** Library work (`@rokkit/ui` Table, `@rokkit/data` helpers) — site-agnostic, applies to current Koan/learn app.
 **Related:** `2026-05-20-actions-controllers-simplification-investigation.md`, ADR-003
 
 ## Summary

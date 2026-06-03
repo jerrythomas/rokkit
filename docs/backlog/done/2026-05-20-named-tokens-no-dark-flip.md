@@ -1,7 +1,7 @@
 # Named Tokens — Dark Mode + Per-Token Control
 
 **Date:** 2026-05-20 (updated 2026-05-21 after design pivot)
-**Status:** Partial fix landed; full refactor planned via direct token mapping
+**Status:** Closed 2026-06-03 — **superseded by the trimmed token vocabulary** (24 named tokens at `packages/core/src/named-tokens.ts`). The dark-mode emit (`[data-mode="dark"]` blocks), `tokenOverrides`, and `ROLE_TO_VAR` mapping all shipped as part of the trimmed-vocab release (journal: "Trimmed Token Vocabulary (release 1) — complete 2026-05-15"). The 2026-05-21 direct-token-mapping plan is moot.
 
 ## Status
 

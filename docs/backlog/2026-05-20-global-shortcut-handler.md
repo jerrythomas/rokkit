@@ -2,6 +2,7 @@
 
 **Date:** 2026-05-20
 **Status:** Backlog — design later
+**Site Applicability:** Applies to current Koan shell (`apps/learn/src/lib/koan/`) — motivates the Cmd+K + command palette in the new app.
 
 ## Summary
 

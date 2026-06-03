@@ -1,7 +1,7 @@
 # Settings Sidebar Cleanup
 
 **Date:** 2026-05-12
-**Status:** Backlog
+**Status:** Closed 2026-06-03 — stale. Targeted the legacy sidebar (`+layout.svelte` with mode toggle + language chips + `/settings` link). The settings route now lives at `apps/learn/src/routes/(legacy)/(app)/settings/` and the new Koan shell has no such sidebar.
 
 ## Summary
 

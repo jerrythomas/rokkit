@@ -2,6 +2,7 @@
 
 **Date:** 2026-05-20
 **Status:** Backlog — investigation only, do not implement yet
+**Site Applicability:** Library work (`@rokkit/ui`, `@rokkit/actions`) — site-agnostic, applies to current Koan/learn app.
 
 ## Summary
 

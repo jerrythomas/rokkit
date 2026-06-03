@@ -1,7 +1,7 @@
 # Settings Skin Customizer
 
 **Date:** 2026-05-12
-**Status:** Backlog
+**Status:** Closed 2026-06-03 — stale. Targeted the legacy `/settings` page (now under `apps/learn/src/routes/(legacy)/(app)/settings/`). Skin/theme customization in the new Koan/learn app is covered by the shipped Theme Wizard. Re-open as a new item if a Koan-side skin panel is wanted.
 
 ## Summary
 
