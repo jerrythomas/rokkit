@@ -14,6 +14,7 @@ export const NAMED_SHORTCUT_PREFIXES = [
 	{ prefix: 'border-l', prop: 'border-left-color' },
 	{ prefix: 'border-r', prop: 'border-right-color' },
 	{ prefix: 'ring', prop: '--un-ring-color' },
+	{ prefix: 'outline', prop: 'outline-color' },
 	{ prefix: 'fill', prop: 'fill' },
 	{ prefix: 'stroke', prop: 'stroke' }
 ]
@@ -27,13 +28,22 @@ export const NAMED_SHORTCUT_PREFIXES = [
 export function shouldEmitShortcut(name, prefix) {
 	if (name === 'shadow-tint') return false
 	if (name === 'on-primary') return prefix === 'text'
-	if (name === 'focus-ring') return prefix === 'ring' || prefix.startsWith('border')
+	if (name === 'focus-ring')
+		return (
+			prefix === 'ring' ||
+			prefix === 'outline' ||
+			prefix === 'divide' ||
+			prefix.startsWith('border')
+		)
 	return true
 }
 
 /**
  * Auto-emit Uno shortcuts for every named token, expanding to a CSS-properties
  * object like `{ 'background-color': 'var(--paper)' }`.
+ *
+ * `divide-` is delegated to Wind3's own utility via the arbitrary-value form
+ * because divide is a child-combinator rule, not a flat property on the element.
  *
  * Used by both `presetRokkit` (app-side) and `@rokkit/themes/build.mjs`
  * (themes-build pipeline) so authors can `@apply bg-paper-mute` consistently.
@@ -44,6 +54,9 @@ export function buildNamedShortcuts() {
 		for (const { prefix, prop } of NAMED_SHORTCUT_PREFIXES) {
 			if (!shouldEmitShortcut(name, prefix)) continue
 			shortcuts.push([`${prefix}-${name}`, { [prop]: `var(--${name})` }])
+		}
+		if (shouldEmitShortcut(name, 'divide')) {
+			shortcuts.push([`divide-${name}`, `divide-[var(--${name})]`])
 		}
 	}
 	return shortcuts
