@@ -74,7 +74,7 @@ const DEFAULT_SKIN_BASE = {
 }
 
 const SKIN_PRESETS = {
-	default: { primary: 'orange', accent: 'sky', surface: 'slate' },
+	default: {},
 	vibrant: { primary: 'blue', accent: 'sky', surface: 'slate' },
 	seaweed: {
 		primary: 'sky',
@@ -90,9 +90,10 @@ const SKIN_PRESETS = {
 
 /**
  * Resolve a named-token rgb skin from a preset or custom colors.
- * `ink` defaults to the `surface` palette; `secondary`/`tertiary` are dropped
- * (no named token reads them — the preset's DEFAULT_SKIN merge still provides
- * them if a consumer re-adds them for z-scale palette emit).
+ * `ink` defaults to the `surface` palette. Only the named-token roles are
+ * emitted; `secondary`/`tertiary` are intentionally omitted (no named token
+ * reads them). A consumer who needs them can add them to their config's skin
+ * directly — @rokkit/unocss's loadConfig merges extra roles through.
  * @param {string} palette
  * @param {Record<string, string>} [customColors]
  * @returns {Record<string, string>}
@@ -127,6 +128,15 @@ export function generateChartConfig({ chartColors, chartShades }) {
 	}
 }
 
+/**
+ * Build a Rokkit config object from the user's init choices.
+ * Emits the named-token `skin` shape (skin + colorSpace + tokens), plus
+ * optional `icons` and `chart` sections.
+ * @param {{ palette: string, customColors?: Record<string, string>, icons?: string,
+ *   iconPath?: string, iconStyle?: string, themes: string[], defaultTheme?: string,
+ *   switcher: string, includeChart?: boolean, chartColors?: string, chartShades?: string }} opts
+ * @returns {Record<string, unknown>}
+ */
 export function generateConfig({
 	palette,
 	customColors,
