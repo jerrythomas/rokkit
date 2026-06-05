@@ -15,11 +15,17 @@ describe('generateConfig', () => {
 			themes: ['rokkit'],
 			switcher: 'manual'
 		})
-		expect(config.colors).toBeDefined()
-		expect(config.colors.primary).toBe('orange')
+		expect(config.skin).toBeDefined()
+		expect(config.skin.primary).toBe('orange')
+		expect(config.skin.surface).toBe('slate')
+		expect(config.skin.ink).toBe('slate')
+		expect(config.skin.secondary).toBeUndefined()
+		expect(config.colorSpace).toBe('rgb')
+		expect(config.tokens).toBe('core')
 		expect(config.themes).toEqual(['rokkit'])
 		expect(config.defaultTheme).toBe('rokkit')
 		expect(config.switcher).toBe('manual')
+		expect(config.colors).toBeUndefined()
 	})
 
 	it('should use explicit defaultTheme when provided', () => {
@@ -50,20 +56,21 @@ describe('generateConfig', () => {
 			themes: ['rokkit'],
 			switcher: 'manual'
 		})
-		expect(config.colors.primary).toBe('blue')
-		expect(config.colors.secondary).toBe('purple')
+		expect(config.skin.primary).toBe('blue')
+		expect(config.skin.accent).toBe('sky')
 	})
 
 	it('should apply custom colors', () => {
 		const config = generateConfig({
 			palette: 'custom',
-			customColors: { primary: 'red', secondary: 'teal' },
+			customColors: { primary: 'red', surface: 'stone' },
 			icons: 'rokkit',
 			themes: ['rokkit'],
 			switcher: 'system'
 		})
-		expect(config.colors.primary).toBe('red')
-		expect(config.colors.secondary).toBe('teal')
+		expect(config.skin.primary).toBe('red')
+		expect(config.skin.surface).toBe('stone')
+		expect(config.skin.ink).toBe('stone')
 		expect(config.switcher).toBe('system')
 	})
 

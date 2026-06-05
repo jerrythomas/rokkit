@@ -61,12 +61,23 @@ const CHART_SHADE_PRESETS = {
 	soft:     { light: { fill: '400', stroke: '600' }, dark: { fill: '600', stroke: '300' } }
 }
 
+// Base rgb skin — named-token roles only (no secondary/tertiary; ink defaults to surface).
+const DEFAULT_SKIN_BASE = {
+	primary: 'orange',
+	accent: 'sky',
+	surface: 'slate',
+	success: 'green',
+	warning: 'yellow',
+	danger: 'red',
+	error: 'red',
+	info: 'cyan'
+}
+
 const SKIN_PRESETS = {
-	default: { primary: 'orange', secondary: 'pink', accent: 'sky', surface: 'slate' },
-	vibrant: { primary: 'blue', secondary: 'purple', accent: 'sky', surface: 'slate' },
+	default: { primary: 'orange', accent: 'sky', surface: 'slate' },
+	vibrant: { primary: 'blue', accent: 'sky', surface: 'slate' },
 	seaweed: {
 		primary: 'sky',
-		secondary: 'green',
 		accent: 'blue',
 		surface: 'zinc',
 		danger: 'rose',
@@ -77,26 +88,31 @@ const SKIN_PRESETS = {
 	}
 }
 
-const DEFAULT_COLORS = {
-	primary: 'orange',
-	secondary: 'pink',
-	accent: 'sky',
-	surface: 'slate',
-	success: 'green',
-	warning: 'yellow',
-	danger: 'red',
-	error: 'red',
-	info: 'cyan'
-}
-
 /**
- * Generate a Rokkit config object from user choices.
- * @param {{ palette: string, customColors?: Record<string, string>, icons: string, iconPath?: string, themes: string[], switcher: string }} opts
- * @returns {Record<string, unknown>}
+ * Resolve a named-token rgb skin from a preset or custom colors.
+ * `ink` defaults to the `surface` palette; `secondary`/`tertiary` are dropped
+ * (no named token reads them — the preset's DEFAULT_SKIN merge still provides
+ * them if a consumer re-adds them for z-scale palette emit).
+ * @param {string} palette
+ * @param {Record<string, string>} [customColors]
+ * @returns {Record<string, string>}
  */
-function resolveColors(palette, customColors) {
-	if (palette === 'custom') return { ...DEFAULT_COLORS, ...customColors }
-	return { ...DEFAULT_COLORS, ...(SKIN_PRESETS[palette] || {}) }
+function resolveSkin(palette, customColors) {
+	const merged =
+		palette === 'custom'
+			? { ...DEFAULT_SKIN_BASE, ...customColors }
+			: { ...DEFAULT_SKIN_BASE, ...(SKIN_PRESETS[palette] || {}) }
+	return {
+		surface: merged.surface,
+		ink: merged.ink ?? merged.surface,
+		primary: merged.primary,
+		accent: merged.accent,
+		success: merged.success,
+		warning: merged.warning,
+		danger: merged.danger,
+		error: merged.error,
+		info: merged.info
+	}
 }
 
 /**
@@ -125,7 +141,9 @@ export function generateConfig({
 	chartShades
 }) {
 	const config = {
-		colors: resolveColors(palette, customColors),
+		skin: resolveSkin(palette, customColors),
+		colorSpace: 'rgb',
+		tokens: 'core',
 		themes,
 		defaultTheme: defaultTheme || themes[0],
 		switcher,
