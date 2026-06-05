@@ -6,6 +6,7 @@ import { execFileSync } from 'child_process'
 import { detectPackageManager, buildInstallCommand } from './upgrade.js'
 
 const ROKKIT_PACKAGES = ['@rokkit/ui', '@rokkit/unocss', '@rokkit/themes', '@rokkit/icons']
+const LOCKFILES = ['bun.lock', 'bun.lockb', 'pnpm-lock.yaml', 'yarn.lock', 'package-lock.json']
 
 const NAMED_TOKEN_HEADER = `/**
  * Rokkit token configuration — consumed by presetRokkit() in uno.config.js.
@@ -42,7 +43,6 @@ export function serializeRokkitConfig(config) {
 	const palettesNote = config.palettes ? OKLCH_PALETTES_NOTE : ''
 	return `${NAMED_TOKEN_HEADER}${palettesNote}export default ${JSON.stringify(config, null, 2)}\n`
 }
-const LOCKFILES = ['bun.lock', 'bun.lockb', 'pnpm-lock.yaml', 'yarn.lock', 'package-lock.json']
 
 /**
  * Detect if the current directory is a SvelteKit project.
