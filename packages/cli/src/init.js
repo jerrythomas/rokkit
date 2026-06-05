@@ -6,6 +6,42 @@ import { execFileSync } from 'child_process'
 import { detectPackageManager, buildInstallCommand } from './upgrade.js'
 
 const ROKKIT_PACKAGES = ['@rokkit/ui', '@rokkit/unocss', '@rokkit/themes', '@rokkit/icons']
+
+const NAMED_TOKEN_HEADER = `/**
+ * Rokkit token configuration — consumed by presetRokkit() in uno.config.js.
+ *
+ * Maps semantic roles (surface, ink, primary, accent, status…) to palettes.
+ * The preset emits the named-token vocabulary used throughout components:
+ *
+ *   Surface  bg-paper · bg-paper-soft · bg-paper-mute · border-paper-edge
+ *   Text     text-ink · text-ink-mute · text-ink-soft · text-ink-faint
+ *   Accent   bg-primary · text-on-primary · bg-accent · bg-accent-soft
+ *   Status   bg-success-soft · text-success   (+ warning / danger / error / info)
+ *
+ * Tokens flip automatically under [data-mode="dark"]. The older z-scale
+ * utilities (bg-surface-z0, text-primary-z5) still resolve for back-compat,
+ * but new code should prefer the named tokens above.
+ *
+ * tokens: 'core' emits the named vocabulary; 'extended' also emits the full
+ * 11-shade palette ladder per role (for charts / data-viz).
+ */
+`
+
+const OKLCH_PALETTES_NOTE = `/**
+ * palettes: bare OKLCH "L C H" components (colorSpace: 'oklch'). surface/ink use
+ * a { light, dark } dual palette — kami (warm paper) in light, sumi (ink) in dark.
+ */
+`
+
+/**
+ * Serialize a rokkit config object to a JS module string with a header comment.
+ * @param {Record<string, unknown>} config
+ * @returns {string}
+ */
+export function serializeRokkitConfig(config) {
+	const palettesNote = config.palettes ? OKLCH_PALETTES_NOTE : ''
+	return `${NAMED_TOKEN_HEADER}${palettesNote}export default ${JSON.stringify(config, null, 2)}\n`
+}
 const LOCKFILES = ['bun.lock', 'bun.lockb', 'pnpm-lock.yaml', 'yarn.lock', 'package-lock.json']
 
 /**
@@ -432,7 +468,7 @@ function writeRokkitConfig(cwd, config) {
 		console.warn('  rokkit.config.js already exists — skipping')
 		return
 	}
-	writeFileSync(configPath, `export default ${JSON.stringify(config, null, 2)}\n`)
+	writeFileSync(configPath, serializeRokkitConfig(config))
 	console.info('  Created rokkit.config.js')
 }
 

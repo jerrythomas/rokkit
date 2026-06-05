@@ -4,7 +4,9 @@ import {
 	generateChartConfig,
 	generateUnoConfig,
 	generateAppCssImports,
-	generateInitScript
+	generateInitScript,
+	serializeRokkitConfig,
+	generateZenSumiConfig
 } from '../src/init.js'
 
 describe('generateConfig', () => {
@@ -206,5 +208,24 @@ describe('generateInitScript', () => {
 	it('should use custom defaultStyle for full switcher', () => {
 		const script = generateInitScript('full', 'rokkit-theme', 'frosted')
 		expect(script).toContain("|| 'frosted'")
+	})
+})
+
+describe('serializeRokkitConfig', () => {
+	it('prepends a named-token header and emits parseable JSON for the rgb starter', () => {
+		const config = generateConfig({ palette: 'default', icons: 'rokkit', themes: ['rokkit'], switcher: 'manual' })
+		const src = serializeRokkitConfig(config)
+		expect(src).toContain('named-token vocabulary')
+		expect(src).toContain('bg-paper')
+		expect(src).toContain('text-on-primary')
+		expect(src).toContain('back-compat')
+		const json = src.slice(src.indexOf('export default') + 'export default'.length).trim().replace(/\n$/, '')
+		expect(JSON.parse(json).skin.primary).toBe('orange')
+	})
+
+	it('includes a palettes note for the OKLCH starter', () => {
+		const src = serializeRokkitConfig(generateZenSumiConfig({}))
+		expect(src).toContain('palettes')
+		expect(src).toContain('oklch')
 	})
 })
