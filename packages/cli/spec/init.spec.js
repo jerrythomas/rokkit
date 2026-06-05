@@ -7,6 +7,26 @@ import {
 	generateInitScript
 } from '../src/init.js'
 
+describe('generateConfig — zen-sumi', () => {
+	it('should generate the zen-sumi OKLCH starter', () => {
+		const config = generateConfig({
+			palette: 'zen-sumi',
+			icons: 'rokkit',
+			themes: ['rokkit', 'zen-sumi'],
+			switcher: 'full'
+		})
+		expect(config.colorSpace).toBe('oklch')
+		expect(config.tokens).toBe('core')
+		expect(config.palettes.kami).toBeDefined()
+		expect(config.palettes.shu['500']).toBe('0.580 0.150 35')
+		expect(config.skin.surface).toEqual({ light: 'kami', dark: 'sumi' })
+		expect(config.skin.ink).toEqual({ light: 'kami', dark: 'sumi' })
+		expect(config.skin.primary).toBe('shu')
+		expect(config.shape.radius).toBe('soft')
+		expect(config.colors).toBeUndefined()
+	})
+})
+
 describe('generateConfig', () => {
 	it('should generate default config object', () => {
 		const config = generateConfig({

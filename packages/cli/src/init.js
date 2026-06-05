@@ -116,6 +116,78 @@ function resolveSkin(palette, customColors) {
 	}
 }
 
+// Zen-Sumi OKLCH palettes — bare "L C H" components (colorSpace: 'oklch').
+const ZEN_SUMI_PALETTES = {
+	kami: {
+		50: '0.985 0.005 85', 100: '0.975 0.008 85', 200: '0.955 0.010 85',
+		300: '0.920 0.012 85', 400: '0.850 0.010 70', 500: '0.750 0.008 50',
+		600: '0.580 0.010 50', 700: '0.380 0.012 50', 800: '0.280 0.012 50',
+		900: '0.220 0.012 50', 950: '0.170 0.010 50'
+	},
+	sumi: {
+		50: '0.170 0.010 50', 100: '0.210 0.012 50', 200: '0.250 0.012 50',
+		300: '0.320 0.012 50', 400: '0.420 0.010 50', 500: '0.570 0.010 50',
+		600: '0.420 0.012 85', 700: '0.600 0.010 85', 800: '0.780 0.008 85',
+		900: '0.940 0.008 85', 950: '0.975 0.008 85'
+	},
+	shu: {
+		50: '0.970 0.020 35', 100: '0.940 0.040 35', 200: '0.880 0.070 35',
+		300: '0.800 0.100 35', 400: '0.700 0.130 35', 500: '0.580 0.150 35',
+		600: '0.500 0.140 35', 700: '0.420 0.120 35', 800: '0.350 0.100 35',
+		900: '0.280 0.080 35', 950: '0.220 0.060 35'
+	},
+	hisui: {
+		50: '0.970 0.015 160', 100: '0.940 0.030 160', 200: '0.880 0.050 160',
+		300: '0.800 0.065 160', 400: '0.720 0.075 160', 500: '0.620 0.080 160',
+		600: '0.540 0.075 160', 700: '0.460 0.065 160', 800: '0.380 0.055 160',
+		900: '0.300 0.045 160', 950: '0.240 0.035 160'
+	},
+	kohaku: {
+		50: '0.980 0.020 75', 100: '0.950 0.040 75', 200: '0.900 0.070 75',
+		300: '0.850 0.095 75', 400: '0.790 0.110 75', 500: '0.720 0.120 75',
+		600: '0.640 0.110 75', 700: '0.560 0.095 75', 800: '0.470 0.080 75',
+		900: '0.380 0.065 75', 950: '0.300 0.050 75'
+	}
+}
+
+/**
+ * Build the Zen-Sumi OKLCH starter (ink-on-paper, dual-palette dark mode).
+ * @param {{ themes?: string[], defaultTheme?: string, switcher?: string,
+ *   includeChart?: boolean, chartColors?: string, chartShades?: string }} [opts]
+ * @returns {Record<string, unknown>}
+ */
+export function generateZenSumiConfig(opts = {}) {
+	const { themes, defaultTheme, switcher, includeChart, chartColors, chartShades } = opts
+	const config = {
+		palettes: ZEN_SUMI_PALETTES,
+		colorSpace: 'oklch',
+		tokens: 'core',
+		skin: {
+			surface: { light: 'kami', dark: 'sumi' },
+			ink: { light: 'kami', dark: 'sumi' },
+			primary: 'shu',
+			accent: 'shu',
+			success: 'hisui',
+			warning: 'kohaku',
+			danger: 'shu',
+			error: 'shu',
+			info: 'kohaku'
+		},
+		shape: { radius: 'soft' },
+		typography: {
+			display: "'Fraunces', 'Iowan Old Style', Georgia, serif",
+			sans: "'Inter', system-ui, -apple-system, sans-serif",
+			mono: "'JetBrains Mono', 'SF Mono', Menlo, monospace"
+		},
+		themes: themes && themes.length ? themes : ['rokkit', 'zen-sumi'],
+		defaultTheme: defaultTheme || 'zen-sumi',
+		switcher: switcher || 'full',
+		storageKey: 'rokkit-theme'
+	}
+	if (includeChart) config.chart = generateChartConfig({ chartColors, chartShades })
+	return config
+}
+
 /**
  * Build the chart config section from user prompt answers.
  * @param {{ chartColors: string, chartShades: string }} opts
@@ -150,6 +222,10 @@ export function generateConfig({
 	chartColors,
 	chartShades
 }) {
+	if (palette === 'zen-sumi') {
+		return generateZenSumiConfig({ themes, defaultTheme, switcher, includeChart, chartColors, chartShades })
+	}
+
 	const config = {
 		skin: resolveSkin(palette, customColors),
 		colorSpace: 'rgb',
@@ -233,6 +309,7 @@ const PROMPTS_CONFIG = [
 			{ title: 'Default (orange/pink/sky)', value: 'default' },
 			{ title: 'Vibrant (blue/purple/sky)', value: 'vibrant' },
 			{ title: 'Seaweed (sky/green/blue)', value: 'seaweed' },
+			{ title: 'Zen-Sumi (OKLCH ink-on-paper)', value: 'zen-sumi' },
 			{ title: 'Custom', value: 'custom' }
 		]
 	},
