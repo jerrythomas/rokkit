@@ -7,7 +7,7 @@ import {
 	generateInitScript
 } from '../src/init.js'
 
-describe('generateConfig — zen-sumi', () => {
+describe('generateConfig', () => {
 	it('should generate the zen-sumi OKLCH starter', () => {
 		const config = generateConfig({
 			palette: 'zen-sumi',
@@ -25,9 +25,7 @@ describe('generateConfig — zen-sumi', () => {
 		expect(config.shape.radius).toBe('soft')
 		expect(config.colors).toBeUndefined()
 	})
-})
 
-describe('generateConfig', () => {
 	it('should generate default config object', () => {
 		const config = generateConfig({
 			palette: 'default',

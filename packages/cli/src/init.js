@@ -151,6 +151,18 @@ const ZEN_SUMI_PALETTES = {
 }
 
 /**
+ * Build the chart config section from user prompt answers.
+ * @param {{ chartColors: string, chartShades: string }} opts
+ * @returns {Record<string, unknown>}
+ */
+export function generateChartConfig({ chartColors, chartShades }) {
+	return {
+		colors: CHART_COLOR_SETS[chartColors] ?? CHART_COLOR_SETS.default,
+		shades: CHART_SHADE_PRESETS[chartShades] ?? CHART_SHADE_PRESETS.standard
+	}
+}
+
+/**
  * Build the Zen-Sumi OKLCH starter (ink-on-paper, dual-palette dark mode).
  * @param {{ themes?: string[], defaultTheme?: string, switcher?: string,
  *   includeChart?: boolean, chartColors?: string, chartShades?: string }} [opts]
@@ -186,18 +198,6 @@ export function generateZenSumiConfig(opts = {}) {
 	}
 	if (includeChart) config.chart = generateChartConfig({ chartColors, chartShades })
 	return config
-}
-
-/**
- * Build the chart config section from user prompt answers.
- * @param {{ chartColors: string, chartShades: string }} opts
- * @returns {Record<string, unknown>}
- */
-export function generateChartConfig({ chartColors, chartShades }) {
-	return {
-		colors: CHART_COLOR_SETS[chartColors] ?? CHART_COLOR_SETS.default,
-		shades: CHART_SHADE_PRESETS[chartShades] ?? CHART_SHADE_PRESETS.standard
-	}
 }
 
 /**
