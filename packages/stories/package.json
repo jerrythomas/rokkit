@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/stories",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Utilities for building tutorials.",
   "repository": {
     "type": "git",
