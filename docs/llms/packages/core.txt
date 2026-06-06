@@ -112,7 +112,7 @@ shadesOf('primary') // { DEFAULT: 'var(--color-primary-500)', 50: 'var(--color-p
 
 ### `semanticShortcuts(name)` / `contrastShortcuts(name)`
 
-Generate UnoCSS shortcut arrays for semantic tone utilities (`bg-primary-z5`, etc.) and on-color text utilities (`text-on-primary`).
+Generate UnoCSS shortcut arrays for semantic z-scale tone utilities (`bg-primary-z5`, etc.) and on-color text utilities (`text-on-primary`). Note: z-scale is the back-compat layer — app code should prefer named tokens (`bg-primary`, `bg-paper`), which `presetRokkit` emits via `buildNamedShortcuts`.
 
 ### `DEFAULT_THEME_MAPPING` constant
 

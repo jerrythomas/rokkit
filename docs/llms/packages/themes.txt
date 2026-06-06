@@ -201,7 +201,7 @@ Skins are useful for scoping different color palettes to different sections of a
 
 ## Utility Classes and Data Attributes
 
-For utility classes (`bg-primary-z5`, `text-surface-z8`, `data-mode`, etc.) and the full data attribute reference, see `docs/llms/index.txt`.
+For utility classes (named tokens: `bg-paper`, `text-ink`, `bg-primary`, `text-on-primary`; z-scale `bg-*-z*` is back-compat) and the full data attribute reference, see `docs/llms/index.txt`.
 
 ## Import
 

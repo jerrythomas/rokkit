@@ -166,21 +166,24 @@ export default {
 
 Values accept palette refs (`'kami.400'`), raw CSS colors (`'#222222'`, `'oklch(...)'`, `'rgb(...)'`), or `{ light, dark }` objects.
 
-### Semantic Tone Shortcuts
+### Named Token Shortcuts
 
-For each semantic color (`primary`, `surface`, `success`, etc.), `presetRokkit` generates tone shortcuts that automatically adapt between light and dark mode:
+`presetRokkit` emits named-token utilities that adapt between light and dark mode:
 
 ```html
-<!-- Light mode: bg-orange-500 | Dark mode: bg-orange-500 -->
-<div class="bg-primary-z5">
-
-<!-- Light mode: text-slate-700 | Dark mode: text-slate-300 -->
-<span class="text-surface-z7">
+<!-- surface / text -->
+<div class="bg-paper text-ink border border-paper-edge">
+<!-- accent + status -->
+<span class="bg-success-soft text-success">Active</span>
+<button class="bg-primary text-on-primary">Save</button>
 ```
 
-Tone scale: `z0` (lightest, shade 50) through `z10` (darkest, shade 950).
+Groups: `paper*` (surface), `ink*` (text), `primary`/`on-primary`, `accent`/`-soft`,
+status `*`/`-soft`, `focus-ring`, `shadow-tint`. The legacy z-scale utilities
+(`bg-primary-z5`, `text-surface-z7`) remain as a back-compat layer pointing at the
+named tokens; `tokens: 'extended'` adds the full 11-shade palette ladder per role.
 
-See `docs/llms/index.txt` for the full tone utility guide and all supported prefixes.
+See `docs/llms/index.txt` for the full named-token guide and all supported prefixes.
 
 ### Icon Shortcuts
 
