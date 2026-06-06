@@ -229,7 +229,7 @@ Field roles are the keys you use in the `fields` prop. They map from Rokkit's se
 
 `data-palette` sets the active color skin (e.g. `skin-vibrant-orange`). Managed reactively by the `vibe` store (`@rokkit/states`) and `themable` action (`@rokkit/actions`).
 
-### UnoCSS Utility Classes (primary authoring model)
+### UnoCSS Utility Classes (how to apply tokens)
 
 Do NOT use CSS variables in `<style>` blocks — they are not theme-aware. Use utility classes:
 
@@ -291,7 +291,7 @@ should use named tokens. Opt into the full 11-shade palette ladder per role with
 <span class="text-error">Failed</span>
 
 <!-- Table row separator -->
-<tr class="border-b border-paper-mute last:border-b-0">
+<tr class="border-b border-paper-edge last:border-b-0">
   <td class="px-4 py-2.5 text-ink-mute">...</td>
 </tr>
 ```
