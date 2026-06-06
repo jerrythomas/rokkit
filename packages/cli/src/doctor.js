@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { resolve } from 'path'
+import { loadConfig as loadParsedConfig } from './config.js'
 import {
 	generateUnoConfig,
 	generateAppCssImports,
@@ -356,15 +357,67 @@ function handleResults(checks, cwd, failures, fix) {
 }
 
 /**
+ * Validate a parsed rokkit config for the named-token system. All advisory (warn).
+ * @param {Record<string, unknown> | null} config
+ * @returns {Array<{ id: string, label: string, status: 'warn', fixable: false, fix: string }>}
+ */
+export function validateConfigShape(config) {
+	if (!config) return []
+	const checks = []
+	const usesColorsAlias = Boolean(config.colors) && !config.skin
+	const colormap = config.skins?.default ?? config.skin ?? config.colors ?? {}
+
+	if (!('ink' in colormap)) {
+		checks.push({
+			id: 'skin-ink-role',
+			label: 'skin defines an `ink` role',
+			status: 'warn',
+			fixable: false,
+			fix: "Add `ink: '<palette>'` (reusing the surface palette is fine) — without it, ink-* text tokens fall back to the surface palette."
+		})
+	}
+	if (config.colorSpace === 'oklch' && Object.keys(config.palettes ?? {}).length === 0) {
+		checks.push({
+			id: 'oklch-needs-palettes',
+			label: 'colorSpace `oklch` has a `palettes` block',
+			status: 'warn',
+			fixable: false,
+			fix: 'oklch values need a `palettes` block of bare "L C H" components; Tailwind named colors are rgb.'
+		})
+	}
+	if (usesColorsAlias) {
+		checks.push({
+			id: 'colors-alias',
+			label: 'config uses `skin` (not the legacy `colors` alias)',
+			status: 'warn',
+			fixable: false,
+			fix: 'Rename `colors:` to `skin:` — `colors` is a back-compat alias.'
+		})
+	}
+	return checks
+}
+
+/**
  * Interactive doctor command — validates project setup.
  * @param {{ fix?: boolean }} [opts]
  */
-export function doctor(opts = {}) {
+export async function doctor(opts = {}) {
 	const cwd = process.cwd()
 	const checks = runChecks(createFsAdapter(cwd))
 
 	console.info('Rokkit Doctor\n')
 	const failures = printChecks(checks)
+
+	const parsed = await loadParsedConfig({ cwd })
+	const shapeChecks = validateConfigShape(parsed)
+	if (shapeChecks.length > 0) {
+		console.info('\nConfig shape:')
+		for (const c of shapeChecks) {
+			console.info(`  WARN  ${c.label}`)
+			console.info(`        ${c.fix}`)
+		}
+	}
+
 	handleResults(checks, cwd, failures, opts.fix ?? false)
 	console.info('')
 }

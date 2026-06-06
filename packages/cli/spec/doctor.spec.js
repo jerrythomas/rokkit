@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { runChecks, defaultStarterSource } from '../src/doctor.js'
+import { runChecks, defaultStarterSource, validateConfigShape } from '../src/doctor.js'
 
 describe('runChecks', () => {
 	it('should report pass when rokkit.config.js exists', () => {
@@ -208,6 +208,38 @@ describe('runChecks', () => {
 		const results = runChecks(fs)
 		const themeCheck = results.find((r) => r.id === 'css-theme')
 		expect(themeCheck.status).toBe('pass')
+	})
+})
+
+describe('validateConfigShape', () => {
+	it('warns when the colormap has no ink role', () => {
+		const checks = validateConfigShape({ skin: { surface: 'slate', primary: 'orange' }, colorSpace: 'rgb' })
+		const ink = checks.find((c) => c.id === 'skin-ink-role')
+		expect(ink.status).toBe('warn')
+	})
+
+	it('passes (no ink warning) when ink is present', () => {
+		const checks = validateConfigShape({ skin: { surface: 'slate', ink: 'slate', primary: 'orange' } })
+		expect(checks.find((c) => c.id === 'skin-ink-role')).toBeUndefined()
+	})
+
+	it('warns when colorSpace is oklch but palettes is empty', () => {
+		const checks = validateConfigShape({ skin: { surface: 'kami', ink: 'kami' }, colorSpace: 'oklch' })
+		expect(checks.find((c) => c.id === 'oklch-needs-palettes').status).toBe('warn')
+	})
+
+	it('warns when using the legacy colors alias', () => {
+		const checks = validateConfigShape({ colors: { surface: 'slate', ink: 'slate' } })
+		expect(checks.find((c) => c.id === 'colors-alias').status).toBe('warn')
+	})
+
+	it('reads the colormap from skins.default', () => {
+		const checks = validateConfigShape({ skins: { default: { surface: 'slate', primary: 'orange' } } })
+		expect(checks.find((c) => c.id === 'skin-ink-role')).toBeDefined()
+	})
+
+	it('returns [] for a null config', () => {
+		expect(validateConfigShape(null)).toEqual([])
 	})
 })
 
