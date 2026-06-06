@@ -205,9 +205,15 @@ in addition to `runChecks`. When the config can't be loaded, these checks are sk
 
 | id | Condition | Message |
 |----|-----------|---------|
-| `skin-ink-role` | colormap (skin / colors / skins.default) has no `ink` role | `ink` role missing — text tokens (ink-*) fall back to the surface palette. Add `ink: '<palette>'`. |
+| `skin-ink-role` | the active colormap has no `ink` role | `ink` role missing — text tokens (ink-*) fall back to the surface palette. Add `ink: '<palette>'`. |
 | `oklch-needs-palettes` | `colorSpace: 'oklch'` and no/empty `palettes` | oklch values require a `palettes` block; named Tailwind colors are rgb. |
 | `colors-alias` | uses `colors:` instead of `skin:` | `colors:` is a back-compat alias; prefer `skin:`. |
+
+The "active colormap" is resolved with the same precedence the preset's
+`resolveColormap` uses: `skins.default ?? skin ?? colors`. Validating the same
+colormap the preset actually resolves means a warning fires exactly when the
+token emit would be affected (e.g. an ink-less `skins.default` that shadows a
+valid `skin`).
 
 #### 2.3 Legacy z-scale migration hints (new, advisory)
 
