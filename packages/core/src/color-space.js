@@ -165,24 +165,6 @@ export class ColorSpace {
 	themeColor(varName) {
 		return `color-mix(in ${this.mixSpace}, var(${varName}) calc(<alpha-value> * 100%), transparent)`
 	}
-
-	/**
-	 * Factory method to create a ColorSpace adapter by name.
-	 * @param {string} space - 'rgb', 'hsl', or 'oklch'
-	 * @returns {ColorSpace}
-	 */
-	static create(space) {
-		switch (space) {
-			case 'rgb':
-				return new RgbColorSpace()
-			case 'hsl':
-				return new HslColorSpace()
-			case 'oklch':
-				return new OklchColorSpace()
-			default:
-				throw new Error(`Unknown color space: ${space}`)
-		}
-	}
 }
 
 // ── RGB adapter ─────────────────────────────────────────────────────────
@@ -304,5 +286,25 @@ export class OklchColorSpace extends ColorSpace {
 
 		// Named color or other — pass through
 		return value
+	}
+}
+
+// ── Factory ─────────────────────────────────────────────────────────────
+
+/**
+ * Factory method to create a ColorSpace adapter by name.
+ * @param {string} space - 'rgb', 'hsl', or 'oklch'
+ * @returns {ColorSpace}
+ */
+ColorSpace.create = function create(space) {
+	switch (space) {
+		case 'rgb':
+			return new RgbColorSpace()
+		case 'hsl':
+			return new HslColorSpace()
+		case 'oklch':
+			return new OklchColorSpace()
+		default:
+			throw new Error(`Unknown color space: ${space}`)
 	}
 }
