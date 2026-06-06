@@ -219,15 +219,45 @@ Field roles are the keys you use in the `fields` prop. They map from Rokkit's se
 
 ### Data Attributes
 
+The theme is driven by data-attributes on `<html>`/`<body>`:
+
 ```html
 <body
-  data-style="rokkit"         <!-- visual personality: rokkit | material | minimal -->
+  data-style="rokkit"         <!-- visual personality: rokkit | minimal | material -->
   data-mode="dark"            <!-- light | dark -->
-  data-density="comfortable"  <!-- compact | default | comfortable — planned; not yet applied by theme CSS, no visual effect without custom CSS -->
+  data-density="comfortable"  <!-- compact | comfortable | cozy -->
 >
 ```
 
-`data-palette` sets the active color skin (e.g. `skin-vibrant-orange`). Managed reactively by the `vibe` store (`@rokkit/states`) and `themable` action (`@rokkit/actions`).
+### Applying & persisting the theme (don't hand-roll this)
+
+Do NOT write `data-mode` by hand, read/write `localStorage`, or build your own save
+logic. Use the **`vibe` store** (`@rokkit/states`) + the **`themable` action**
+(`@rokkit/actions`) + **`ThemeSwitcherToggle`** (`@rokkit/app`). The action loads from
+storage on mount, writes `data-style`/`data-mode`/`data-density` (mirrored to `<html>`
+to match the flash-prevention init script), saves on every change, and syncs across tabs
+via the `storage` event.
+
+```svelte
+<!-- once, at the app root (e.g. +layout.svelte) -->
+<script>
+  import { vibe } from '@rokkit/states'
+  import { themable } from '@rokkit/actions'
+</script>
+<svelte:body use:themable={{ theme: vibe, storageKey: 'app-theme' }} />
+```
+
+```svelte
+<!-- anywhere: the mode control. Drives vibe.mode → themable writes data-mode -->
+<script>import { ThemeSwitcherToggle } from '@rokkit/app'</script>
+<ThemeSwitcherToggle variant="single" />   <!-- or variant="triad" for system | light | dark -->
+```
+
+`vibe` is a singleton with reactive `mode` (`light`|`dark`), `style`
+(`rokkit`|`minimal`|`material`), `density`, `direction`, plus `load(key)` / `save(key)` /
+`update(partial)`. Switch the visual style by setting `vibe.style = 'minimal'` — no manual
+DOM writes. (`storageKey` must match the key used by the `rokkit init` flash-prevention
+script in `app.html`.)
 
 ### UnoCSS Utility Classes (how to apply tokens)
 
