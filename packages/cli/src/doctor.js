@@ -1,7 +1,14 @@
 /* eslint-disable no-console */
 import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { resolve } from 'path'
-import { generateUnoConfig, generateAppCssImports, generateInitScript, generateChartConfig } from './init.js'
+import {
+	generateUnoConfig,
+	generateAppCssImports,
+	generateInitScript,
+	generateChartConfig,
+	generateConfig,
+	serializeRokkitConfig
+} from './init.js'
 
 const KNOWN_THEMES = [
 	'rokkit',
@@ -10,6 +17,23 @@ const KNOWN_THEMES = [
 	'frosted',
 	'zen-sumi'
 ]
+
+/**
+ * Build the default named-token starter config source used by `doctor --fix`.
+ * @returns {string}
+ */
+export function defaultStarterSource() {
+	const config = generateConfig({
+		palette: 'default',
+		icons: 'rokkit',
+		themes: ['rokkit'],
+		switcher: 'manual',
+		includeChart: true,
+		chartColors: 'default',
+		chartShades: 'standard'
+	})
+	return serializeRokkitConfig(config)
+}
 
 /**
  * Check config file existence
@@ -163,7 +187,7 @@ function createFsAdapter(cwd) {
  */
 function applyGenerateConfig(cwd, label) {
 	const configPath = resolve(cwd, 'rokkit.config.js')
-	writeFileSync(configPath, 'export default {}\n')
+	writeFileSync(configPath, defaultStarterSource())
 	console.info(`  Fixed: ${label}`)
 }
 

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { runChecks } from '../src/doctor.js'
+import { runChecks, defaultStarterSource } from '../src/doctor.js'
 
 describe('runChecks', () => {
 	it('should report pass when rokkit.config.js exists', () => {
@@ -208,5 +208,15 @@ describe('runChecks', () => {
 		const results = runChecks(fs)
 		const themeCheck = results.find((r) => r.id === 'css-theme')
 		expect(themeCheck.status).toBe('pass')
+	})
+})
+
+describe('defaultStarterSource', () => {
+	it('produces a real named-token starter, not an empty config', () => {
+		const src = defaultStarterSource()
+		expect(src).not.toBe('export default {}\n')
+		expect(src).toContain('skin')
+		const json = src.slice(src.indexOf('export default') + 'export default'.length).trim().replace(/\n$/, '')
+		expect(JSON.parse(json).skin.ink).toBeDefined()
 	})
 })
