@@ -238,6 +238,11 @@ describe('validateConfigShape', () => {
 		expect(checks.find((c) => c.id === 'skin-ink-role')).toBeDefined()
 	})
 
+	it('does not warn when ink is present in skins.default', () => {
+		const checks = validateConfigShape({ skins: { default: { surface: 'slate', ink: 'slate', primary: 'orange' } } })
+		expect(checks.find((c) => c.id === 'skin-ink-role')).toBeUndefined()
+	})
+
 	it('returns [] for a null config', () => {
 		expect(validateConfigShape(null)).toEqual([])
 	})

@@ -364,7 +364,8 @@ function handleResults(checks, cwd, failures, fix) {
 export function validateConfigShape(config) {
 	if (!config) return []
 	const checks = []
-	const usesColorsAlias = Boolean(config.colors) && !config.skin
+	const usesColorsAlias =
+		typeof config.colors === 'object' && config.colors !== null && !Array.isArray(config.colors) && !config.skin
 	const colormap = config.skins?.default ?? config.skin ?? config.colors ?? {}
 
 	if (!('ink' in colormap)) {
