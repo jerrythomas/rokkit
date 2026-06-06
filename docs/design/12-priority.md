@@ -31,6 +31,8 @@ Major design-system initiative — phases 3–9, then release 1 of the trimmed t
 
 #### Developer Utilities
 
+- [x] **CLI + LLM-docs → named tokens** — Shipped 2026-06-06. `rokkit init` generates the named-token `skin` shape (rgb + new Zen-Sumi OKLCH starters, header comment); `rokkit doctor` writes a real starter on `--fix`, validates config shape, and gives advisory z-scale migration hints; `docs/llms/*` + `unocss/README.md` rewritten named-token-first. Breaking to generated config shape (`colors` → `skin`); existing configs work via the preset alias. See journal 2026-06-06.
+
 - [x] **CodeGroup site component** — Shipped 2026-05-28. Tree-based (chosen over tabs since real projects have nested folders). Tree-rail on the left at ≥ 768px; collapses to a top picker pill that opens a drawer overlay on narrower viewports — code area gets full width on mobile. Optional `preview` Svelte snippet, collapsed by default with a "Show preview" toggle per spec. Shiki highlighting + copy button. Lives at `site/src/lib/components/CodeGroup.svelte`; playground at `site/src/routes/(play)/playground/code-group/`.
 
 #### Demo App
