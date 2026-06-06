@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
-import { existsSync, readFileSync, writeFileSync, readdirSync, statSync } from 'fs'
-import { resolve } from 'path'
+import { existsSync, readFileSync, writeFileSync, readdirSync } from 'fs'
+import { resolve, extname } from 'path'
 import { loadConfig as loadParsedConfig } from './config.js'
 import {
 	generateUnoConfig,
@@ -375,8 +375,9 @@ const INK_Z = {
 function suggestNamedToken(role, z) {
 	if (role === 'surface') return SURFACE_Z[z]
 	if (role === 'ink') return INK_Z[z]
-	// accent + status roles have a `-soft` companion; primary does not.
-	if (role !== 'primary' && (z === 'z1' || z === 'z2')) return `${role}-soft`
+	// accent + status roles collapse z0–z2 to their `-soft` tint (matches
+	// @rokkit/core theme.ts getZAliasesOther: zNum <= 2). primary has no `-soft`.
+	if (role !== 'primary' && Number(z.slice(1)) <= 2) return `${role}-soft`
 	return role
 }
 
@@ -410,7 +411,8 @@ const SCAN_EXTS = new Set(['.svelte', '.css', '.ts', '.js'])
 
 /**
  * Recursively gather scannable source files under cwd/src.
- * Skips node_modules and uno.config.js (its safelist legitimately lists z-utilities).
+ * Skips node_modules, symlinks (avoids recursion loops), and uno.config.js
+ * (its safelist legitimately lists z-utilities).
  * @param {string} cwd
  * @returns {Array<{ path: string, content: string }>}
  */
@@ -419,12 +421,12 @@ function gatherSrcFiles(cwd) {
 	if (!existsSync(root)) return []
 	const out = []
 	const walk = (dir) => {
-		for (const name of readdirSync(dir)) {
-			if (name === 'node_modules') continue
-			const full = resolve(dir, name)
-			if (statSync(full).isDirectory()) {
+		for (const dirent of readdirSync(dir, { withFileTypes: true })) {
+			if (dirent.isSymbolicLink() || dirent.name === 'node_modules') continue
+			const full = resolve(dir, dirent.name)
+			if (dirent.isDirectory()) {
 				walk(full)
-			} else if (SCAN_EXTS.has(full.slice(full.lastIndexOf('.'))) && !full.endsWith('uno.config.js')) {
+			} else if (dirent.isFile() && SCAN_EXTS.has(extname(dirent.name)) && !full.endsWith('uno.config.js')) {
 				out.push({ path: full.slice(cwd.length + 1), content: readFileSync(full, 'utf-8') })
 			}
 		}
@@ -500,9 +502,9 @@ export async function doctor(opts = {}) {
 	if (count > 0) {
 		console.info(`\nLegacy z-scale utilities (advisory — ${count} in ${byFile.length} file(s)):`)
 		for (const { path: filePath, hits } of byFile.slice(0, 10)) {
-			const examples = [...new Map(hits.map((h) => [h.token, h.suggestion]))].slice(0, 3)
-			const shown = examples.map(([t, s]) => `${t} → ${s}`).join(', ')
-			console.info(`  ${filePath}: ${shown}${hits.length > 3 ? ', …' : ''}`)
+			const examples = [...new Map(hits.map((h) => [h.token, h.suggestion]))]
+			const shown = examples.slice(0, 3).map(([t, s]) => `${t} → ${s}`).join(', ')
+			console.info(`  ${filePath}: ${shown}${examples.length > 3 ? ', …' : ''}`)
 		}
 		console.info('        Named tokens are preferred; z-scale still works via back-compat.')
 	}

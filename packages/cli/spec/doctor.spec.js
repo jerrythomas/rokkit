@@ -281,4 +281,11 @@ describe('findLegacyZUtilities', () => {
 		const files = [{ path: 'src/C.svelte', content: 'bg-paper text-ink bg-primary text-on-primary' }]
 		expect(findLegacyZUtilities(files).count).toBe(0)
 	})
+
+	it('maps z0 on accent/status roles to the -soft tint', () => {
+		const files = [{ path: 'src/D.svelte', content: 'bg-accent-z0 bg-info-z0' }]
+		const suggestions = findLegacyZUtilities(files).byFile[0].hits.map((h) => h.suggestion)
+		expect(suggestions).toContain('bg-accent-soft')
+		expect(suggestions).toContain('bg-info-soft')
+	})
 })
