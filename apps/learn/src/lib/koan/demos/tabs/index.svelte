@@ -157,7 +157,7 @@
 
 <!-- ── aspect cards ───────────────────────────────────────────────── -->
 <div class="aspect-row">
-	{#each aspects as aspect}
+	{#each aspects as aspect (aspect.id)}
 		<button
 			class="aspect-card"
 			class:active={activeAspect === aspect.id}

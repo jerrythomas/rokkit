@@ -30,7 +30,7 @@
 			>
 				<span class="name">{skin.label}</span>
 				<div class="swatches">
-					{#each swatches(skin) as s}
+					{#each swatches(skin) as s (s.role)}
 						<div class="swatch-cell">
 							<span class="swatch" style="background: {getPaletteColor(s.palette)}"></span>
 							<span class="role">{s.role}</span>

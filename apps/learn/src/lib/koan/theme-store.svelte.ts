@@ -1,4 +1,5 @@
 import type { SavedTheme, WizardMode, WizardState } from './types'
+import { SvelteDate } from 'svelte/reactivity'
 import { read, write, clear } from './persistence'
 import { theme as legacyTheme } from '$lib/stores/theme.svelte'
 
@@ -42,7 +43,7 @@ export const themeStore = $state({
 })
 
 export function saveTheme(state: WizardState): SavedTheme {
-	const now = new Date().toISOString()
+	const now = new SvelteDate().toISOString()
 	const theme: SavedTheme = {
 		...state,
 		id: `t-${Date.now().toString(36)}`,

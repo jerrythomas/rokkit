@@ -66,6 +66,13 @@
 
 	let thinkingTimer: ReturnType<typeof setTimeout> | null = null
 
+	// Declared early so submitQuery (below) can read it without tripping
+	// no-use-before-define. Reactive, so evaluation order at runtime is
+	// unaffected.
+	const propsSchema = $derived(
+		shell.demoType ? findById(shell.demoType)?.props : undefined
+	)
+
 	type DemoKind =
 		| 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select' | 'list' | 'toasts'
 		| 'form' | 'select' | 'chart' | 'combo' | 'date-picker' | 'stepper'
@@ -308,9 +315,6 @@
 		shell.demoType ? (tweaksByDemo[shell.demoType] ?? {}) : {}
 	)
 
-	const propsSchema = $derived(
-		shell.demoType ? findById(shell.demoType)?.props : undefined
-	)
 	const demoApi = $derived(shell.demoType ? findById(shell.demoType)?.api : undefined)
 	const demoDocs = $derived(shell.demoType ? findById(shell.demoType)?.docs : undefined)
 	const currentMeta = $derived(shell.demoType ? findById(shell.demoType) : undefined)

@@ -9,6 +9,7 @@
  */
 
 import type { ShellDemoType } from './shell.svelte'
+import { SvelteDate } from 'svelte/reactivity'
 
 const STORAGE_KEY = 'rokkit-conversations'
 const CURRENT_KEY = 'rokkit-current-conversation'
@@ -355,7 +356,7 @@ function startOfDay(d: Date): number {
 export function bucketByRecency(surface?: ConversationSurface): ConversationBuckets {
 	const pool = surface ? conversations.filter((c) => c.surface === surface) : conversations
 	const sorted = [...pool].sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt))
-	const now = new Date()
+	const now = new SvelteDate()
 	const todayStart = startOfDay(now)
 	const yesterdayStart = todayStart - 24 * 60 * 60 * 1000
 
@@ -382,7 +383,7 @@ export function recencyLabel(c: Conversation): string {
 	if (days === 1) return 'yest'
 	if (days < 7) {
 		const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-		return weekdays[new Date(t).getDay()]
+		return weekdays[new SvelteDate(t).getDay()]
 	}
-	return new Date(t).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+	return new SvelteDate(t).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
 }

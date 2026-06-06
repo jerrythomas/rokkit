@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onDestroy } from 'svelte'
+	import { SvelteSet } from 'svelte/reactivity'
 	import { Select } from '@rokkit/ui'
 	import { vibe } from '@rokkit/states'
 	import { siteStyles } from '$lib/data/site-styles'
@@ -68,7 +69,7 @@
 	// reskins as the user picks. Writes inline CSS variables on
 	// `documentElement` for the current `mode`. Reverts on component destroy.
 
-	const appliedVars = new Set<string>()
+	const appliedVars = new SvelteSet<string>()
 
 	function applyRolesToDocument() {
 		if (typeof document === 'undefined') return
