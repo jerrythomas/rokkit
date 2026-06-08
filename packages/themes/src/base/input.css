@@ -169,6 +169,11 @@ button[data-form-reset]:disabled {
 [data-input-root] [data-select] [data-select-trigger] {
   @apply flex-1 self-stretch;
   min-width: 0;
+  /* Fill the field (via self-stretch) instead of imposing the standalone control
+     height — so a control embedded in a form field is the same height as a plain
+     field (the wrapper owns the height). Any control embedded in [data-input-root]
+     should follow this contract. */
+  height: auto;
 }
 
 /* Checkbox icon */

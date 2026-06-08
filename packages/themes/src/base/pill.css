@@ -11,6 +11,9 @@
   white-space: nowrap;
   outline: none;
   vertical-align: middle;
+  /* Align to the smallest control rung (pills are the compact end of the family);
+     min-height so content can still grow. */
+  min-height: var(--control-h-sm);
 }
 
 [data-pill-icon] {

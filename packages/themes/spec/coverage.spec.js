@@ -139,4 +139,21 @@ describe('control-height scale is shared + consistent', () => {
 	it('Input aligns to the md control height', () => {
 		expect(css('base', 'input')).toMatch(/min-height:\s*var\(--control-h-md\)/)
 	})
+	it('Switch bounding height uses the control scale per size', () => {
+		const c = css('base', 'switch')
+		expect(c).toMatch(/min-height:\s*var\(--control-h-sm\)/)
+		expect(c).toMatch(/min-height:\s*var\(--control-h-md\)/)
+		expect(c).toMatch(/min-height:\s*var\(--control-h-lg\)/)
+	})
+	it('Range aligns to the md control height', () => {
+		expect(css('base', 'range')).toMatch(/\[data-range\][\s\S]*?height:\s*var\(--control-h-md\)/)
+	})
+	it('Pill aligns to the sm control rung', () => {
+		expect(css('base', 'pill')).toMatch(/min-height:\s*var\(--control-h-sm\)/)
+	})
+	it('a control embedded in a form field fills it (no doubled height)', () => {
+		expect(css('base', 'input')).toMatch(
+			/\[data-input-root\] \[data-select\] \[data-select-trigger\][\s\S]*?height:\s*auto/
+		)
+	})
 })
