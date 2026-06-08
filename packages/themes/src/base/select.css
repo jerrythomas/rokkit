@@ -49,20 +49,20 @@
 
 /* Size variants */
 [data-select][data-size='sm'] [data-select-trigger] {
-  height: 1.75rem;
+  height: var(--control-h-sm);
   padding-inline: 0.5rem;
   font-size: 0.75rem;
 }
 
 [data-select][data-size='md'] [data-select-trigger],
 [data-select]:not([data-size]) [data-select-trigger] {
-  height: 2.25rem;
+  height: var(--control-h-md);
   padding-inline: 0.75rem;
   font-size: 0.875rem;
 }
 
 [data-select][data-size='lg'] [data-select-trigger] {
-  height: 2.75rem;
+  height: var(--control-h-lg);
   padding-inline: 1rem;
   font-size: 1rem;
 }

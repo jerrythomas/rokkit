@@ -7,6 +7,15 @@
  * Axes: compact → comfortable (default) → cozy
  */
 
+/* Control heights — fixed scale (rem, so they track font-size). Density drives
+   internal spacing/padding/typography, NOT the control height, so same-size
+   controls (button, select, dropdown, menu, toggle, input) always align. */
+:root {
+  --control-h-sm: 1.75rem;
+  --control-h-md: 2.25rem;
+  --control-h-lg: 2.75rem;
+}
+
 :root,
 [data-density='comfortable'] {
   --density-spacing-base: 1rem;

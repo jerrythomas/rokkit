@@ -115,3 +115,28 @@ describe('per-style color coverage', () => {
 		expect(c).toMatch(/@apply [^}]*(bg-|text-|border-)/)
 	})
 })
+
+/**
+ * Consistent control-height scale — every trigger/text control sizes its height
+ * from the shared, fixed --control-h-* tokens so same-size controls align.
+ */
+describe('control-height scale is shared + consistent', () => {
+	it('density.css defines the fixed control-height tokens (rem)', () => {
+		const d = css('base', 'density')
+		expect(d).toMatch(/--control-h-sm:\s*1\.75rem/)
+		expect(d).toMatch(/--control-h-md:\s*2\.25rem/)
+		expect(d).toMatch(/--control-h-lg:\s*2\.75rem/)
+	})
+	it.each(['button', 'select', 'dropdown', 'menu', 'toggle'])(
+		'%s sizes its control from --control-h-{sm,md,lg}',
+		(comp) => {
+			const c = css('base', comp)
+			expect(c).toMatch(/height:\s*var\(--control-h-sm\)/)
+			expect(c).toMatch(/height:\s*var\(--control-h-md\)/)
+			expect(c).toMatch(/height:\s*var\(--control-h-lg\)/)
+		}
+	)
+	it('Input aligns to the md control height', () => {
+		expect(css('base', 'input')).toMatch(/min-height:\s*var\(--control-h-md\)/)
+	})
+})

@@ -201,6 +201,10 @@ button[data-form-reset]:disabled {
 /* Input wrapper: horizontal for input + icon */
 [data-input-root] {
   @apply flex flex-row items-center;
+  /* Align to the shared control-height scale so a text field lines up with
+     buttons/selects/etc. at the default (md) size. min-height (not height) so
+     a textarea still grows past one line. */
+  min-height: var(--control-h-md);
 }
 
 /* Input elements fill available width */

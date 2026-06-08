@@ -47,20 +47,20 @@
 
 /* Size variants */
 [data-dropdown][data-size='sm'] [data-dropdown-trigger] {
-  height: 1.5rem;
+  height: var(--control-h-sm);
   padding-inline: 0.5rem;
   font-size: 0.75rem;
 }
 
 [data-dropdown][data-size='md'] [data-dropdown-trigger],
 [data-dropdown]:not([data-size]) [data-dropdown-trigger] {
-  height: calc(var(--density-icon-size) + var(--density-spacing-xs) * 2);
+  height: var(--control-h-md);
   padding-inline: var(--density-spacing-md);
   font-size: 0.875rem;
 }
 
 [data-dropdown][data-size='lg'] [data-dropdown-trigger] {
-  height: 2.5rem;
+  height: var(--control-h-lg);
   padding-inline: 0.75rem;
   font-size: 1rem;
 }
