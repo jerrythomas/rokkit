@@ -38,55 +38,11 @@
   /* Script / handwriting font */
   --font-script: 'Caveat', cursive;
 
-  /* Semantic z-scale aliases — light mode defaults */
-  --color-surface-z0:  var(--color-surface-50);
-  --color-surface-z1:  var(--color-surface-100);
-  --color-surface-z2:  var(--color-surface-200);
-  --color-surface-z3:  var(--color-surface-300);
-  --color-surface-z4:  var(--color-surface-400);
-  --color-surface-z5:  var(--color-surface-500);
-  --color-surface-z6:  var(--color-surface-600);
-  --color-surface-z7:  var(--color-surface-700);
-  --color-surface-z8:  var(--color-surface-800);
-  --color-surface-z9:  var(--color-surface-900);
-  --color-surface-z10: var(--color-surface-950);
-  --color-ink-z0:  var(--color-ink-950);
-  --color-ink-z1:  var(--color-ink-900);
-  --color-ink-z2:  var(--color-ink-800);
-  --color-ink-z3:  var(--color-ink-700);
-  --color-ink-z4:  var(--color-ink-600);
-  --color-ink-z5:  var(--color-ink-500);
-  --color-ink-z6:  var(--color-ink-400);
-  --color-ink-z7:  var(--color-ink-300);
-  --color-ink-z8:  var(--color-ink-200);
-  --color-ink-z9:  var(--color-ink-100);
-  --color-ink-z10: var(--color-ink-50);
-}
-
-/* Semantic z-scale aliases — dark mode inverts the scale */
-[data-mode="dark"] {
-  --color-surface-z0:  var(--color-surface-950);
-  --color-surface-z1:  var(--color-surface-900);
-  --color-surface-z2:  var(--color-surface-800);
-  --color-surface-z3:  var(--color-surface-700);
-  --color-surface-z4:  var(--color-surface-600);
-  --color-surface-z5:  var(--color-surface-500);
-  --color-surface-z6:  var(--color-surface-400);
-  --color-surface-z7:  var(--color-surface-300);
-  --color-surface-z8:  var(--color-surface-200);
-  --color-surface-z9:  var(--color-surface-100);
-  --color-surface-z10: var(--color-surface-50);
-  --color-ink-z0:  var(--color-ink-50);
-  --color-ink-z1:  var(--color-ink-100);
-  --color-ink-z2:  var(--color-ink-200);
-  --color-ink-z3:  var(--color-ink-300);
-  --color-ink-z4:  var(--color-ink-400);
-  --color-ink-z5:  var(--color-ink-500);
-  --color-ink-z6:  var(--color-ink-600);
-  --color-ink-z7:  var(--color-ink-700);
-  --color-ink-z8:  var(--color-ink-800);
-  --color-ink-z9:  var(--color-ink-900);
-  --color-ink-z10: var(--color-ink-950);
+  /* NOTE: --color-{surface,ink}-z* are emitted by presetRokkit (core mode):
+     each z-level aliases a named token (e.g. --color-surface-z1 → var(--paper-soft))
+     and flips under [data-mode="dark"]. We previously redefined them here pointing
+     at the full palette (--color-surface-50…), which core mode does NOT emit — that
+     left the z-vars empty (body rendered transparent). Removed; rely on the preset. */
 }
 
 html {
