@@ -56,29 +56,14 @@ describe('toggle — button/single variant is themed (variant-agnostic)', () => 
  * are never invisible (even under a style mismatch).
  */
 describe('base default colors close the audited gaps', () => {
-	it('ProgressBar/Pill/Rating colors are NOT in base (headless base)', () => {
-		// base must stay structure-only — no themed color tokens for these.
+	it('refactored component colors are NOT in base (headless base)', () => {
+		// base stays structure-only — no themed color tokens for these.
 		expect(css('base', 'progress')).not.toMatch(/var\(--primary/)
 		expect(css('base', 'pill')).not.toMatch(/var\(--ink\b/)
 		expect(css('base', 'rating')).not.toMatch(/var\(--warning/)
-	})
-
-	it('Grid tiles + active state are colored', () => {
-		const c = css('base', 'grid')
-		expect(c).toMatch(/\[data-grid-item\][\s\S]*?color:\s*var\(--/)
-		expect(c).toMatch(/\[data-grid-item\]\[data-active\][\s\S]*?var\(--primary/)
-	})
-
-	it('Tooltip bubble is colored (inverse)', () => {
-		const c = css('base', 'tooltip')
-		expect(c).toMatch(/\[data-tooltip-content\][\s\S]*?background:\s*var\(--ink/)
-		expect(c).toMatch(/\[data-tooltip-content\][\s\S]*?color:\s*var\(--paper/)
-	})
-
-	it('Table focused row + TreeTable group row are distinguished', () => {
-		const c = css('base', 'table')
-		expect(c).toMatch(/\[data-focused\][\s\S]*?background:\s*var\(--/)
-		expect(c).toMatch(/\[data-group\][\s\S]*?var\(--/)
+		expect(css('base', 'grid')).not.toMatch(/color:\s*var\(--(ink|primary|paper-edge)/)
+		expect(css('base', 'tooltip')).not.toMatch(/var\(--(ink|paper)/)
+		expect(css('base', 'table')).not.toMatch(/data-focused|data-group/)
 	})
 
 	it('Stepper check icon inherits its circle color', () => {
@@ -107,5 +92,18 @@ describe('per-style color coverage', () => {
 	})
 	it.each(STYLES)('%s colors Rating filled icon', (style) => {
 		expect(css(style, 'rating')).toMatch(/data-filled\] \[data-rating-icon\][\s\S]*?text-warning/)
+	})
+	it.each(STYLES)('%s colors Grid tiles + active', (style) => {
+		const c = css(style, 'grid')
+		expect(c).toMatch(/\[data-grid-item\][\s\S]*?(text-ink|border-paper)/)
+		expect(c).toMatch(/data-grid-item\]\[data-active\][\s\S]*?(text-primary|border-primary)/)
+	})
+	it.each(STYLES)('%s colors Tooltip bubble', (style) => {
+		expect(css(style, 'tooltip')).toMatch(/\[data-tooltip-content\][\s\S]*?bg-ink/)
+	})
+	it.each(STYLES)('%s distinguishes Table focused + group rows', (style) => {
+		const c = css(style, 'table')
+		expect(c).toMatch(/data-focused\][\s\S]*?bg-/)
+		expect(c).toMatch(/data-group\][\s\S]*?bg-/)
 	})
 })

@@ -91,38 +91,3 @@
 [data-grid][data-size='lg'] [data-grid-item] [data-item-icon] {
   font-size: 2rem;
 }
-
-/* =============================================================================
-   Default Colors (flipping named tokens — applies to every style)
-   Mirrors rokkit/grid.css using raw var(--token) so non-rokkit styles
-   inherit tile borders, hover/focus, active selection, and icon tinting.
-   ============================================================================= */
-
-[data-grid-item] {
-  border-color: var(--paper-edge);
-  color: var(--ink-mute);
-}
-
-[data-grid-item]:hover:not(:disabled):not([data-disabled]),
-[data-grid-item]:focus:not(:disabled):not([data-disabled]) {
-  border-color: var(--ink-soft);
-  background: var(--paper-mute);
-  color: var(--ink);
-}
-
-[data-grid-item][data-active] {
-  border-color: var(--primary);
-  color: var(--primary);
-}
-
-[data-grid-item] [data-item-icon] {
-  color: var(--ink-soft);
-}
-
-[data-grid-item]:hover:not(:disabled):not([data-disabled]) [data-item-icon] {
-  color: var(--ink-mute);
-}
-
-[data-grid-item][data-active] [data-item-icon] {
-  color: var(--primary);
-}
