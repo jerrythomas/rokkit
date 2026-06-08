@@ -136,3 +136,50 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* =============================================================================
+   Button Variant — single cycling control
+   The `button` variant renders one <button data-toggle-variant="button"> with
+   the icon as a direct child (no [data-toggle-option]). Give it real control
+   structure + sizing here; color lives in the style themes (variant-agnostic).
+   ============================================================================= */
+
+[data-toggle][data-toggle-variant='button'] {
+  justify-content: center;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 150ms ease;
+  user-select: none;
+}
+
+[data-toggle][data-toggle-variant='button']:focus,
+[data-toggle][data-toggle-variant='button']:focus-visible {
+  outline: none;
+}
+
+[data-toggle][data-toggle-variant='button']:disabled,
+[data-toggle][data-toggle-variant='button'][data-toggle-disabled='true'] {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Square control sized to match the option height scale */
+[data-toggle][data-toggle-variant='button'][data-toggle-size='sm'] {
+  height: 1.5rem;
+  min-width: 1.5rem;
+}
+
+[data-toggle][data-toggle-variant='button'][data-toggle-size='md'],
+[data-toggle][data-toggle-variant='button']:not([data-toggle-size]) {
+  height: 2rem;
+  min-width: 2rem;
+}
+
+[data-toggle][data-toggle-variant='button'][data-toggle-size='lg'] {
+  height: 2.5rem;
+  min-width: 2.5rem;
+}

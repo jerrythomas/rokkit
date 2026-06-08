@@ -57,3 +57,29 @@
 [data-style='zen-sumi'] [data-toggle-option][data-selected='true'] [data-toggle-icon] {
   @apply text-on-primary;
 }
+
+/* =============================================================================
+   Button Variant — single cycling control (variant-agnostic color)
+   Higher specificity than the [data-toggle] container rule above, so it
+   neutralises the group-pill chrome and gives the single button the same
+   flipping icon treatment an unselected option gets.
+   ============================================================================= */
+
+[data-style='zen-sumi'] [data-toggle][data-toggle-variant='button'] {
+  @apply border-transparent bg-transparent text-ink-soft;
+  background-image: none;
+}
+
+[data-style='zen-sumi'] [data-toggle][data-toggle-variant='button']:hover:not(:disabled):not([data-toggle-disabled='true']),
+[data-style='zen-sumi'] [data-toggle][data-toggle-variant='button']:focus-visible:not(:disabled):not([data-toggle-disabled='true']) {
+  @apply bg-paper-mute text-ink-mute;
+}
+
+[data-style='zen-sumi'] [data-toggle][data-toggle-variant='button'] [data-toggle-icon] {
+  @apply text-ink-soft;
+}
+
+[data-style='zen-sumi'] [data-toggle][data-toggle-variant='button']:hover:not(:disabled) [data-toggle-icon],
+[data-style='zen-sumi'] [data-toggle][data-toggle-variant='button']:focus-visible:not(:disabled) [data-toggle-icon] {
+  @apply text-ink-mute;
+}
