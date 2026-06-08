@@ -1,0 +1,291 @@
+/**
+ * PaletteManager — Base structural styles + flipping default colors.
+ *
+ * Uses raw var(--token) named tokens (complete colors that flip under
+ * [data-mode="dark"]) so the component is usable in every theme without a
+ * dedicated theme layer. Structure first, readable colors second.
+ *
+ * Parts (from PaletteManager.svelte):
+ *   data-palette-manager / data-compact          — root container
+ *   data-palette-presets / -label / -list        — preset section
+ *   data-palette-preset / -swatch / -name         — preset card (--preset-color)
+ *   data-palette-custom / -label / -list / -item  — saved custom palettes
+ *   data-palette-editor                           — role rows wrapper
+ *   data-palette-role / -label / -controls        — single role row
+ *   data-palette-color-select / -color-input      — color pickers
+ *   data-palette-hex-toggle                        — toggle preset/hex entry
+ *   data-palette-shades / -shade (data-shade)      — generated shade ramp
+ *   data-palette-actions / -save / -apply          — footer buttons
+ *   data-palette-*-icon                            — glyph spans
+ */
+
+/* =============================================================================
+   Container
+   ============================================================================= */
+
+[data-palette-manager] {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--paper-edge);
+  border-radius: var(--radius-md, 0.375rem);
+  background-color: var(--paper);
+  color: var(--ink);
+  font-size: 0.875rem;
+}
+
+[data-palette-manager][data-compact] {
+  gap: 0.625rem;
+  padding: 0.625rem;
+}
+
+/* =============================================================================
+   Section labels (presets / custom)
+   ============================================================================= */
+
+[data-palette-presets-label],
+[data-palette-custom-label] {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-mute);
+}
+
+/* =============================================================================
+   Presets
+   ============================================================================= */
+
+[data-palette-presets-list] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+[data-palette-preset] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.625rem;
+  border: 1px solid var(--paper-edge);
+  border-radius: var(--radius-md, 0.375rem);
+  background-color: var(--paper-soft);
+  color: var(--ink);
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease;
+}
+
+[data-palette-preset]:hover {
+  background-color: var(--paper-mute);
+}
+
+[data-palette-preset][data-active] {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+[data-palette-preset-swatch] {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  border: 1px solid var(--paper-edge);
+  background-color: var(--preset-color, var(--primary));
+}
+
+[data-palette-preset-name] {
+  white-space: nowrap;
+}
+
+/* =============================================================================
+   Custom palettes
+   ============================================================================= */
+
+[data-palette-custom-list] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+[data-palette-custom-item] {
+  padding: 0.375rem 0.625rem;
+  border: 1px solid var(--paper-edge);
+  border-radius: var(--radius-md, 0.375rem);
+  background-color: var(--paper-soft);
+  color: var(--ink-mute);
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease;
+}
+
+[data-palette-custom-item]:hover {
+  background-color: var(--paper-mute);
+  color: var(--ink);
+}
+
+[data-palette-custom-item][data-active] {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* =============================================================================
+   Editor / role rows
+   ============================================================================= */
+
+[data-palette-editor] {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+[data-palette-role] {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+[data-palette-role-label] {
+  flex: 0 0 6rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+[data-palette-role-controls] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+/* =============================================================================
+   Color pickers
+   ============================================================================= */
+
+[data-palette-color-select],
+[data-palette-color-input] {
+  padding: 0.3125rem 0.5rem;
+  border: 1px solid var(--paper-edge);
+  border-radius: var(--radius-md, 0.375rem);
+  background-color: var(--paper-soft);
+  color: var(--ink);
+  font-size: 0.8125rem;
+  line-height: 1.2;
+}
+
+[data-palette-color-input]::placeholder {
+  color: var(--ink-faint);
+}
+
+[data-palette-color-select]:focus-visible,
+[data-palette-color-input]:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+  border-color: var(--primary);
+}
+
+[data-palette-hex-toggle] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 1px solid var(--paper-edge);
+  border-radius: var(--radius-md, 0.375rem);
+  background-color: var(--paper-soft);
+  color: var(--ink-mute);
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+[data-palette-hex-toggle]:hover {
+  background-color: var(--paper-mute);
+  color: var(--ink);
+}
+
+/* =============================================================================
+   Shade ramp
+   ============================================================================= */
+
+[data-palette-shades] {
+  display: inline-flex;
+  margin-left: auto;
+  border-radius: var(--radius-md, 0.375rem);
+  overflow: hidden;
+  border: 1px solid var(--paper-edge);
+}
+
+[data-palette-shade] {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* =============================================================================
+   Actions
+   ============================================================================= */
+
+[data-palette-actions] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+[data-palette-save],
+[data-palette-apply] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.4375rem 0.875rem;
+  border-radius: var(--radius-md, 0.375rem);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease;
+}
+
+/* Save = secondary / outlined */
+[data-palette-save] {
+  border: 1px solid var(--paper-edge);
+  background-color: var(--paper-soft);
+  color: var(--ink-mute);
+}
+
+[data-palette-save]:hover {
+  background-color: var(--paper-mute);
+  color: var(--ink);
+}
+
+/* Apply = primary action */
+[data-palette-apply] {
+  border: 1px solid var(--primary);
+  background-color: var(--primary);
+  color: var(--on-primary);
+}
+
+[data-palette-apply]:hover {
+  background-color: var(--primary-soft);
+  border-color: var(--primary-soft);
+}
+
+/* Icon glyphs follow their button's text color */
+[data-palette-presets-icon],
+[data-palette-hex-icon],
+[data-palette-save-icon],
+[data-palette-check-icon] {
+  color: inherit;
+}

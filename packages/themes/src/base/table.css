@@ -92,6 +92,21 @@
   outline: none;
 }
 
+/* Default state colors (flipping named tokens — applies to every style).
+   data-focused = keyboard-focused row (Table + TreeTable emit it as a bare
+   attribute). data-group = synthesised group row in TreeTable. Scoped under
+   [data-table] so the bare attribute selectors don't bleed into other
+   components. Selected/hover remain owned by per-style theme CSS. */
+[data-table] tr[data-table-row][data-focused] {
+  background: var(--paper-mute);
+}
+
+[data-table] tr[data-table-row][data-group] {
+  background: var(--paper-soft);
+  color: var(--ink);
+  font-weight: 500;
+}
+
 /* =============================================================================
    Cells
    ============================================================================= */

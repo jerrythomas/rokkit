@@ -40,3 +40,11 @@
 [data-rating-item][data-filled] {
   opacity: 1;
 }
+
+[data-rating-icon] {
+  color: var(--ink-faint);
+}
+
+[data-rating-item][data-filled] [data-rating-icon] {
+  color: var(--warning);
+}

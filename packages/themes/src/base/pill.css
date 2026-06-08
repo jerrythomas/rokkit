@@ -11,6 +11,8 @@
   white-space: nowrap;
   outline: none;
   vertical-align: middle;
+  background: var(--paper-mute);
+  color: var(--ink);
 }
 
 [data-pill-icon] {
@@ -35,15 +37,18 @@
   border-radius: 9999px;
   cursor: pointer;
   background: transparent;
-  color: inherit;
+  color: var(--ink-soft);
   opacity: 0.6;
-  transition: opacity 0.15s ease;
+  transition:
+    opacity 0.15s ease,
+    color 0.15s ease;
   font-size: 0.75rem;
   flex-shrink: 0;
 }
 
 [data-pill-remove]:hover {
   opacity: 1;
+  color: var(--ink);
 }
 
 [data-pill-remove]:disabled {

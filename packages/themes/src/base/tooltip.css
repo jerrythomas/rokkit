@@ -62,3 +62,15 @@
   visibility: visible;
   opacity: 1;
 }
+
+/* =============================================================================
+   Default Colors (flipping named tokens — applies to every style)
+   Tooltips are inverse: dark bubble on light text. Mirrors rokkit/tooltip.css
+   using raw var(--token). The component renders no arrow element, so only the
+   bubble (data-tooltip-content) is colored.
+   ============================================================================= */
+
+[data-tooltip-content] {
+  background: var(--ink);
+  color: var(--paper);
+}
