@@ -1,0 +1,13 @@
+/**
+ * Rating - Zen-Sumi Theme Styles
+ *
+ * Faint empty icons, warning-toned filled icons.
+ */
+
+[data-style='zen-sumi'] [data-rating-icon] {
+  @apply text-ink-faint;
+}
+
+[data-style='zen-sumi'] [data-rating-item][data-filled] [data-rating-icon] {
+  @apply text-warning;
+}

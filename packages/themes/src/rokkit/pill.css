@@ -1,0 +1,17 @@
+/**
+ * Pill - Rokkit Theme Styles
+ *
+ * Muted surface chip with soft remove affordance.
+ */
+
+[data-style='rokkit'] [data-pill] {
+  @apply bg-paper-mute text-ink;
+}
+
+[data-style='rokkit'] [data-pill-remove] {
+  @apply text-ink-soft;
+}
+
+[data-style='rokkit'] [data-pill-remove]:hover:not(:disabled) {
+  @apply text-ink;
+}

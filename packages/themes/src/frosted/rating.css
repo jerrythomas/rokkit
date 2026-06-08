@@ -1,0 +1,13 @@
+/**
+ * Rating - Frosted Theme Styles
+ *
+ * Faint empty icons, warning-toned filled icons.
+ */
+
+[data-style='frosted'] [data-rating-icon] {
+  @apply text-ink-faint;
+}
+
+[data-style='frosted'] [data-rating-item][data-filled] [data-rating-icon] {
+  @apply text-warning;
+}

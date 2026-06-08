@@ -56,22 +56,11 @@ describe('toggle — button/single variant is themed (variant-agnostic)', () => 
  * are never invisible (even under a style mismatch).
  */
 describe('base default colors close the audited gaps', () => {
-	it('ProgressBar track + fill have a background', () => {
-		const c = css('base', 'progress')
-		expect(c).toMatch(/\[data-progress\][\s\S]*?background:\s*var\(--/)
-		expect(c).toMatch(/\[data-progress-bar\][\s\S]*?background:\s*var\(--primary/)
-	})
-
-	it('Pill has a surface + text color', () => {
-		const c = css('base', 'pill')
-		expect(c).toMatch(/\[data-pill\][\s\S]*?background:\s*var\(--/)
-		expect(c).toMatch(/\[data-pill\][\s\S]*?color:\s*var\(--/)
-	})
-
-	it('Rating colors empty vs filled icons', () => {
-		const c = css('base', 'rating')
-		expect(c).toMatch(/\[data-rating-icon\][\s\S]*?color:\s*var\(--/)
-		expect(c).toMatch(/\[data-filled\] \[data-rating-icon\][\s\S]*?color:\s*var\(--warning/)
+	it('ProgressBar/Pill/Rating colors are NOT in base (headless base)', () => {
+		// base must stay structure-only — no themed color tokens for these.
+		expect(css('base', 'progress')).not.toMatch(/var\(--primary/)
+		expect(css('base', 'pill')).not.toMatch(/var\(--ink\b/)
+		expect(css('base', 'rating')).not.toMatch(/var\(--warning/)
 	})
 
 	it('Grid tiles + active state are colored', () => {
@@ -101,5 +90,22 @@ describe('base default colors close the audited gaps', () => {
 		expect(pm).toContain('[data-palette-manager]')
 		expect(pm).toMatch(/var\(--/)
 		expect(css('base', 'index')).toContain('palette-manager.css')
+	})
+})
+
+/**
+ * Per-style coverage — the headless-base principle: color lives in EACH style, so a
+ * style that forgets a component fails here (the gap is immediately actionable).
+ * Extended per component as they move from base default → per-style.
+ */
+describe('per-style color coverage', () => {
+	it.each(STYLES)('%s colors ProgressBar fill', (style) => {
+		expect(css(style, 'progress')).toMatch(/\[data-progress-bar\][\s\S]*?bg-primary/)
+	})
+	it.each(STYLES)('%s colors Pill surface', (style) => {
+		expect(css(style, 'pill')).toMatch(/\[data-pill\][\s\S]*?bg-/)
+	})
+	it.each(STYLES)('%s colors Rating filled icon', (style) => {
+		expect(css(style, 'rating')).toMatch(/data-filled\] \[data-rating-icon\][\s\S]*?text-warning/)
 	})
 })
