@@ -1,0 +1,97 @@
+/**
+ * PaletteManager — Rokkit Theme
+ * Color layer for the headless base structure in base/palette-manager.css.
+ */
+
+/* Container */
+[data-style='rokkit'] [data-palette-manager] {
+  @apply bg-paper text-ink border-paper-edge;
+}
+
+/* Section labels */
+[data-style='rokkit'] [data-palette-presets-label],
+[data-style='rokkit'] [data-palette-custom-label] {
+  @apply text-ink-mute;
+}
+
+/* Presets */
+[data-style='rokkit'] [data-palette-preset] {
+  @apply bg-paper-soft text-ink border-paper-edge;
+}
+
+[data-style='rokkit'] [data-palette-preset]:hover {
+  @apply bg-paper-mute;
+}
+
+[data-style='rokkit'] [data-palette-preset][data-active] {
+  @apply text-primary border-primary;
+}
+
+[data-style='rokkit'] [data-palette-preset-swatch] {
+  @apply border-paper-edge;
+}
+
+/* Custom palettes */
+[data-style='rokkit'] [data-palette-custom-item] {
+  @apply bg-paper-soft text-ink-mute border-paper-edge;
+}
+
+[data-style='rokkit'] [data-palette-custom-item]:hover {
+  @apply bg-paper-mute text-ink;
+}
+
+[data-style='rokkit'] [data-palette-custom-item][data-active] {
+  @apply text-primary border-primary;
+}
+
+/* Role rows */
+[data-style='rokkit'] [data-palette-role-label] {
+  @apply text-ink;
+}
+
+/* Color pickers */
+[data-style='rokkit'] [data-palette-color-select],
+[data-style='rokkit'] [data-palette-color-input] {
+  @apply bg-paper-soft text-ink border-paper-edge;
+}
+
+[data-style='rokkit'] [data-palette-color-input]::placeholder {
+  @apply text-ink-faint;
+}
+
+[data-style='rokkit'] [data-palette-color-select]:focus-visible,
+[data-style='rokkit'] [data-palette-color-input]:focus-visible {
+  @apply outline-focus-ring border-focus-ring;
+}
+
+/* Hex toggle */
+[data-style='rokkit'] [data-palette-hex-toggle] {
+  @apply bg-paper-soft text-ink-mute border-paper-edge;
+}
+
+[data-style='rokkit'] [data-palette-hex-toggle]:hover {
+  @apply bg-paper-mute text-ink;
+}
+
+/* Shade ramp */
+[data-style='rokkit'] [data-palette-shades] {
+  @apply border-paper-edge;
+}
+
+/* Actions — Save = secondary / outlined */
+[data-style='rokkit'] [data-palette-save] {
+  @apply bg-paper-soft text-ink-mute border-paper-edge;
+}
+
+[data-style='rokkit'] [data-palette-save]:hover {
+  @apply bg-paper-mute text-ink;
+}
+
+/* Actions — Apply = primary */
+[data-style='rokkit'] [data-palette-apply] {
+  @apply bg-primary text-on-primary border-primary;
+}
+
+[data-style='rokkit'] [data-palette-apply]:hover {
+  @apply bg-accent border-accent;
+}

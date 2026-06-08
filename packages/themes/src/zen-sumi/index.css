@@ -42,6 +42,7 @@
 @import './step-indicator.css';
 @import './chart.css';
 @import './swatch.css';
+@import './palette-manager.css';
 @import './progress.css';
 @import './pill.css';
 @import './rating.css';

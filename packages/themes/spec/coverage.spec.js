@@ -29,6 +29,9 @@ function css(layer, comp) {
 	return existsSync(path) ? readFileSync(path, 'utf-8') : ''
 }
 
+/** Strip /* *​/ block comments so assertions match real CSS, not prose. */
+const stripComments = (s) => s.replace(/\/\*[\s\S]*?\*\//g, '')
+
 describe('toggle — button/single variant is themed (variant-agnostic)', () => {
 	it('base gives the button variant real control sizing', () => {
 		const base = css('base', 'toggle')
@@ -70,10 +73,10 @@ describe('base default colors close the audited gaps', () => {
 		expect(css('base', 'stepper')).toContain('[data-stepper-check-icon]')
 	})
 
-	it('PaletteManager has a base theme that is imported', () => {
+	it('PaletteManager base is structural (no themed-color utilities), and imported', () => {
 		const pm = css('base', 'palette-manager')
-		expect(pm).toContain('[data-palette-manager]')
-		expect(pm).toMatch(/var\(--/)
+		expect(pm).toContain('[data-palette-manager]') // structure present
+		expect(stripComments(pm)).not.toMatch(/@apply/) // color lives in the style layers, not base
 		expect(css('base', 'index')).toContain('palette-manager.css')
 	})
 })
@@ -105,5 +108,10 @@ describe('per-style color coverage', () => {
 		const c = css(style, 'table')
 		expect(c).toMatch(/data-focused\][\s\S]*?bg-/)
 		expect(c).toMatch(/data-group\][\s\S]*?bg-/)
+	})
+	it.each(STYLES)('%s colors PaletteManager', (style) => {
+		const c = css(style, 'palette-manager')
+		expect(c).toContain('[data-palette-manager]')
+		expect(c).toMatch(/@apply [^}]*(bg-|text-|border-)/)
 	})
 })
