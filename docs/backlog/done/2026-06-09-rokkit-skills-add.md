@@ -1,6 +1,6 @@
 # `rokkit skills add` — ship AI skills with the CLI
 
-**Status:** Spec — approved 2026-06-09, ready to plan
+**Status:** Shipped 2026-06-09 (v1.1.13). `rokkit skills list` / `rokkit skills add [names] [--all] [--force]` bundle `semantic-styles-rokkit` + `rokkit-components` in `@rokkit/cli` and install into `.claude/skills/`. See `agents/journal.md` (2026-06-09).
 
 ## Summary
 

@@ -1,7 +1,18 @@
 # Select Scroll Handling — Regression Investigation + Lab Page
 
 **Date:** 2026-05-20
-**Status:** Backlog — important; investigate before fixing
+**Status:** Resolved (2026-05-23) — the scroll regression is fixed. `291c5f38`
+(removed the duplicate focus-sync `$effect` that raced with Navigator's
+`#syncFocus`; Navigator now uses `focus({ preventScroll: true })` + a private
+`#scrollItemIntoView` that scrolls only within its own root, no ancestor
+traversal; dropdown switched to `position: fixed` to escape ancestor `overflow`
+clipping) and `cb32f722` (focus first item on open via rAF; outer scroll
+listener excludes the dropdown's own scroll). Earlier `7f3ad0c2` added wheel
+`stopPropagation` + `overscroll-behavior: contain`.
+Deferred (always stretch goals, never part of the regression itself):
+PageUp/PageDown key bindings, 100+ item virtualization, a `/app/select/lab`
+page, and Playwright e2e coverage for scroll. Spin these into a separate
+follow-up item if wanted.
 **Site Applicability:** Library regression in `@rokkit/ui` Select — applies. Lab page lives next to the existing demo at `apps/learn/src/routes/app/select/` (e.g. `app/select/lab/+page.svelte`).
 
 ## Summary
