@@ -22,6 +22,28 @@ the entire app instantly — no rebuild.
 <html data-style="zen-sumi" data-skin="default" data-mode="dark"></html>
 ```
 
+### Prevent the flash on first paint (SSR)
+
+For SvelteKit apps, inject the pre-paint script with `themeHook` so the
+persisted style/mode/density apply before first render (no FOUC):
+
+```js
+// src/hooks.server.ts
+import { themeHook } from '@rokkit/unocss/hooks'
+
+export const handle = themeHook({
+  storageKey: 'app-theme',   // must match the themable storageKey
+  defaultMode: 'system',     // resolves prefers-color-scheme pre-paint; or 'light' | 'dark'
+  defaultStyle: 'rokkit'
+})
+```
+
+`defaultMode: 'system'` (the default when omitted) resolves the OS
+preference to a concrete `light`/`dark` before paint — so the page never
+renders an invalid `data-mode="system"`. `'auto'` is accepted as a legacy
+alias. Compose with other hooks via `sequence(themeHook(), …)`.
+(Requires `@rokkit/unocss` ≥ 1.1.12.)
+
 ## Theme imports
 
 Each style ships its own CSS file. Import the base + the style

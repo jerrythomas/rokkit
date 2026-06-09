@@ -1,0 +1,7 @@
+/**
+ * Tooltip - Zen-Sumi Theme Styles
+ */
+
+[data-style='zen-sumi'] [data-tooltip-content] {
+  @apply bg-ink text-paper;
+}

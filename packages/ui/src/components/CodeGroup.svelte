@@ -94,7 +94,7 @@
 	// own icons prop); file leaves get the per-extension semantic icon.
 	const tree = $derived.by(() => {
 		const root: unknown[] = []
-		const lookup = new Map<string, Record<string, unknown>>()
+		const lookup: Record<string, Record<string, unknown>> = {}
 		for (const f of files) {
 			const parts = f.path.split('/').filter(Boolean)
 			let parentChildren = root
@@ -103,7 +103,7 @@
 				const part = parts[i]
 				const isLeaf = i === parts.length - 1
 				acc = acc ? `${acc}/${part}` : part
-				let node = lookup.get(acc) as Record<string, unknown> | undefined
+				let node = lookup[acc]
 				if (!node) {
 					node = {
 						id: acc,
@@ -111,7 +111,7 @@
 						icon: isLeaf ? iconForFile(f) : undefined,
 						children: isLeaf ? undefined : []
 					}
-					lookup.set(acc, node)
+					lookup[acc] = node
 					parentChildren.push(node)
 				}
 				if (!isLeaf) parentChildren = node.children as unknown[]

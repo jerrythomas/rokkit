@@ -219,82 +219,110 @@ Field roles are the keys you use in the `fields` prop. They map from Rokkit's se
 
 ### Data Attributes
 
+The theme is driven by data-attributes on `<html>`/`<body>`:
+
 ```html
 <body
-  data-style="rokkit"         <!-- visual personality: rokkit | material | minimal -->
+  data-style="rokkit"         <!-- visual personality: rokkit | minimal | material -->
   data-mode="dark"            <!-- light | dark -->
-  data-density="comfortable"  <!-- compact | default | comfortable — planned; not yet applied by theme CSS, no visual effect without custom CSS -->
+  data-density="comfortable"  <!-- compact | comfortable | cozy -->
 >
 ```
 
-`data-palette` sets the active color skin (e.g. `skin-vibrant-orange`). Managed reactively by the `vibe` store (`@rokkit/states`) and `themable` action (`@rokkit/actions`).
+### Applying & persisting the theme (don't hand-roll this)
 
-### UnoCSS Utility Classes (primary authoring model)
+Do NOT write `data-mode` by hand, read/write `localStorage`, or build your own save
+logic. Use the **`vibe` store** (`@rokkit/states`) + the **`themable` action**
+(`@rokkit/actions`) + **`ThemeSwitcherToggle`** (`@rokkit/app`). The action loads from
+storage on mount, writes `data-style`/`data-mode`/`data-density` (mirrored to `<html>`
+to match the flash-prevention init script), saves on every change, and syncs across tabs
+via the `storage` event.
+
+```svelte
+<!-- once, at the app root (e.g. +layout.svelte) -->
+<script>
+  import { vibe } from '@rokkit/states'
+  import { themable } from '@rokkit/actions'
+</script>
+<svelte:body use:themable={{ theme: vibe, storageKey: 'app-theme' }} />
+```
+
+```svelte
+<!-- anywhere: the mode control. Drives vibe.mode → themable writes data-mode -->
+<script>import { ThemeSwitcherToggle } from '@rokkit/app'</script>
+<ThemeSwitcherToggle variant="single" />   <!-- or variant="triad" for system | light | dark -->
+```
+
+`vibe` is a singleton with reactive `mode` (`light`|`dark`), `style`
+(`rokkit`|`minimal`|`material`), `density`, `direction`, plus `load(key)` / `save(key)` /
+`update(partial)`. Switch the visual style by setting `vibe.style = 'minimal'` — no manual
+DOM writes. (`storageKey` must match the key used by the `rokkit init` flash-prevention
+script in `app.html`.)
+
+### UnoCSS Utility Classes (how to apply tokens)
 
 Do NOT use CSS variables in `<style>` blocks — they are not theme-aware. Use utility classes:
 
 ```svelte
 <!-- ✅ Correct: theme-aware, responds to data-mode switching -->
-<div class="bg-surface-z1 border border-surface-z3 text-surface-z8 rounded-lg p-4">
-  <h2 class="text-primary-z6 font-semibold">Title</h2>
-  <p class="text-surface-z5 text-sm">Subtitle</p>
+<div class="bg-paper-soft border border-paper-edge text-ink rounded-lg p-4">
+  <h2 class="text-primary font-semibold">Title</h2>
+  <p class="text-ink-mute text-sm">Subtitle</p>
 </div>
 
 <!-- ❌ Wrong: not theme-aware -->
-<div style="background: var(--color-surface-z1)">...</div>
+<div style="background: var(--paper-soft)">...</div>
 ```
 
-### Z-Scale Color System
+### Named Token Vocabulary (primary authoring model)
 
-Each semantic role (`surface`, `primary`, `secondary`, `accent`, `success`, `warning`, `error`, `info`) has 10 z-levels:
+Components use **named tokens** that flip automatically under `[data-mode="dark"]`.
+The core vocabulary (`tokens: 'core'`):
 
-| Level | Light      | Dark       | Use                        |
-|-------|-----------|-----------|----------------------------|
-| `z1`  | shade-50  | shade-950 | Page background            |
-| `z2`  | shade-100 | shade-900 | Card / panel background    |
-| `z3`  | shade-200 | shade-800 | Subtle borders, dividers   |
-| `z4`  | shade-300 | shade-700 | Input backgrounds          |
-| `z5`  | shade-500 | shade-600 | Muted text, placeholders   |
-| `z6`  | shade-600 | shade-500 | Interactive / link color   |
-| `z7`  | shade-700 | shade-300 | Secondary text             |
-| `z8`  | shade-800 | shade-200 | Body text                  |
-| `z9`  | shade-900 | shade-100 | Primary text               |
-| `z10` | shade-950 | shade-50  | Maximum contrast           |
+| Group   | Tokens                                                        | Use                                   |
+|---------|---------------------------------------------------------------|---------------------------------------|
+| Surface | `paper` · `paper-soft` · `paper-mute` · `paper-edge`          | canvas / card / panel / hairline      |
+| Text    | `ink` · `ink-mute` · `ink-soft` · `ink-faint`                 | body / secondary / placeholder / disabled |
+| Primary | `primary` · `on-primary`                                      | CTA fill / text on primary            |
+| Accent  | `accent` · `accent-soft`                                      | accent fill / tinted accent bg        |
+| Status  | `success`/`-soft`, `warning`/`-soft`, `danger`/`-soft`, `error`/`-soft`, `info`/`-soft` | solid / tinted-bg callout |
+| Misc    | `focus-ring` · `shadow-tint`                                  | focus ring / shadow color             |
 
-Utility class pattern: `{prefix}-{role}-z{n}`
+Prefixes: `bg-`, `text-`, `border-` (+ `-t/-b/-l/-r`), `fill-`, `stroke-`, `ring-`,
+`outline-`, `divide-`. Example: `bg-paper`, `text-ink-mute`, `border-paper-edge`,
+`text-on-primary`, `bg-success-soft text-success`.
 
-| Prefix    | Example             | Use             |
-|-----------|---------------------|-----------------|
-| `bg-`     | `bg-surface-z1`     | Background      |
-| `text-`   | `text-surface-z8`   | Text color      |
-| `border-` | `border-surface-z3` | Border color    |
+**Legacy:** z-scale utilities (`bg-surface-z0`, `text-primary-z5`, …) still resolve
+as a back-compat layer that collapses onto the named tokens above, but new code
+should use named tokens. Opt into the full 11-shade palette ladder per role with
+`tokens: 'extended'` (for charts / data-viz).
 
 ### Common Patterns
 
 ```svelte
 <!-- Page background -->
-<div class="bg-surface-z1 text-surface-z8">
+<div class="bg-paper text-ink">
 
 <!-- Card -->
-<div class="bg-surface-z1 border border-surface-z3 rounded-lg p-4">
+<div class="bg-paper-soft border border-paper-edge rounded-lg p-4">
 
 <!-- Section header -->
-<h2 class="text-xs font-semibold text-surface-z5 uppercase tracking-wider">
+<h2 class="text-xs font-semibold text-ink-soft uppercase tracking-wider">
 
 <!-- Primary link -->
-<a class="text-primary-z6 hover:text-primary-z7 transition-colors">
+<a class="text-primary hover:text-accent transition-colors">
 
 <!-- Input field -->
-<input class="bg-surface-z2 border border-surface-z3 text-surface-z8 focus:border-primary-z5 focus:outline-none rounded px-3 py-2">
+<input class="bg-paper-mute border border-paper-edge text-ink focus:border-primary focus:outline-none rounded px-3 py-2">
 
 <!-- Status indicators -->
-<span class="text-warning-z6">Stale</span>
-<span class="text-success-z6">Active</span>
-<span class="text-error-z6">Failed</span>
+<span class="text-warning">Stale</span>
+<span class="text-success">Active</span>
+<span class="text-error">Failed</span>
 
 <!-- Table row separator -->
-<tr class="border-b border-surface-z2 last:border-b-0">
-  <td class="px-4 py-2.5 text-surface-z7">...</td>
+<tr class="border-b border-paper-edge last:border-b-0">
+  <td class="px-4 py-2.5 text-ink-mute">...</td>
 </tr>
 ```
 
@@ -305,7 +333,7 @@ Utility class pattern: `{prefix}-{role}-z{n}`
 <div style="background: {color}22; color: {color}">
 
 <!-- ❌ Not OK: use utility class instead -->
-<div style="background: var(--color-surface-z1)">
+<div style="background: var(--paper-soft)">
 ```
 
 ## Reference

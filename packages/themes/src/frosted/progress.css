@@ -1,0 +1,13 @@
+/**
+ * ProgressBar - Frosted Theme Styles
+ *
+ * Default track + primary fill colors.
+ */
+
+[data-style='frosted'] [data-progress] {
+  @apply bg-paper-mute;
+}
+
+[data-style='frosted'] [data-progress-bar] {
+  @apply bg-primary;
+}

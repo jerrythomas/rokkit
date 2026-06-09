@@ -1,0 +1,7 @@
+/**
+ * Tooltip - Glass Theme Styles
+ */
+
+[data-style='frosted'] [data-tooltip-content] {
+  @apply bg-ink text-paper;
+}

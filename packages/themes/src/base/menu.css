@@ -48,20 +48,20 @@
 
 /* Size variants */
 [data-menu][data-size='sm'] [data-menu-trigger] {
-  height: 1.5rem;
+  height: var(--control-h-sm);
   padding-inline: 0.5rem;
   font-size: 0.75rem;
 }
 
 [data-menu][data-size='md'] [data-menu-trigger],
 [data-menu]:not([data-size]) [data-menu-trigger] {
-  height: calc(var(--density-icon-size) + var(--density-spacing-xs) * 2);
+  height: var(--control-h-md);
   padding-inline: var(--density-spacing-md);
   font-size: 0.875rem;
 }
 
 [data-menu][data-size='lg'] [data-menu-trigger] {
-  height: 2.5rem;
+  height: var(--control-h-lg);
   padding-inline: 0.75rem;
   font-size: 1rem;
 }

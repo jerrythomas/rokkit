@@ -1,4 +1,5 @@
 import type { ConversationMessage, UserMessage, ResponseMessage } from './types'
+import { SvelteSet, SvelteDate } from 'svelte/reactivity'
 import { read, write } from './persistence'
 import { runMatch } from './match.svelte'
 
@@ -33,7 +34,7 @@ export const koan = $state({
 	query: '',
 	activeDemoId: null as string | null,
 	messages: loadMessages(),
-	visitedThisSession: new Set<string>(),
+	visitedThisSession: new SvelteSet<string>(),
 	pendingReset: false,
 	resetAcknowledged: loadResetAcknowledged()
 })
@@ -47,7 +48,7 @@ export function submitQuery(query: string): { matches: ReturnType<typeof runMatc
 	const q = query.trim()
 	if (!q) return { matches: [] }
 	const matches = runMatch(q)
-	const ts = new Date().toISOString()
+	const ts = new SvelteDate().toISOString()
 	const userMsg: UserMessage = {
 		kind: 'user',
 		id: `u-${Date.now().toString(36)}`,

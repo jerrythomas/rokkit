@@ -13,7 +13,8 @@
   position: relative;
   display: grid;
   grid-template-rows: auto auto;
-  height: 2.5rem;
+  /* Align to the shared control-height scale (no size prop → md). */
+  height: var(--control-h-md);
   user-select: none;
 }
 

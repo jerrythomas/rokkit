@@ -35,7 +35,7 @@
 	<section>
 		<header>Gap scale comparison (vertical)</header>
 		<div class="scale-row">
-			{#each ['xs', 'sm', 'md', 'lg', 'xl'] as g}
+			{#each ['xs', 'sm', 'md', 'lg', 'xl'] as g (g)}
 				<div class="scale-col">
 					<Stack gap={g as 'xs' | 'sm' | 'md' | 'lg' | 'xl'}>
 						<div class="dot"></div>

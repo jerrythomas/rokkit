@@ -48,14 +48,14 @@
 	})
 
 	const grouped = $derived.by(() => {
-		const buckets = new Map<DemoCategory, DemoMeta[]>()
+		const buckets: Partial<Record<DemoCategory, DemoMeta[]>> = {}
 		for (const demo of visible) {
-			const list = buckets.get(demo.category) ?? []
+			const list = buckets[demo.category] ?? []
 			list.push(demo)
-			buckets.set(demo.category, list)
+			buckets[demo.category] = list
 		}
 		return CATEGORY_ORDER.flatMap((cat) => {
-			const items = buckets.get(cat)
+			const items = buckets[cat]
 			return items?.length ? [{ category: cat, items }] : []
 		})
 	})

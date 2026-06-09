@@ -64,20 +64,6 @@ export interface TreeFields {
 export type ResolvedTreeFields = Required<TreeFields>
 
 /**
- * Merge consumer-provided field overrides with the default field
- * mapping so every key resolves to a string. Tree calls this once on
- * its `fields` prop before passing the result to ProxyTree / line
- * builders.
- */
-export function resolveTreeFields(fields: TreeFields = {}): ResolvedTreeFields {
-	// `Required<TreeFields>` cannot strip `undefined` from the index
-	// signature on its own, so spread-inference fails the contract even
-	// though `defaultTreeFields` provides every key. Cast through unknown
-	// to assert the post-merge shape.
-	return { ...defaultTreeFields, ...fields } as unknown as ResolvedTreeFields
-}
-
-/**
  * Default field mapping values for tree
  */
 export const defaultTreeFields: Required<Omit<TreeFields, 'fields'>> = {
@@ -96,6 +82,20 @@ export const defaultTreeFields: Required<Omit<TreeFields, 'fields'>> = {
 	badge: 'badge',
 	expanded: 'expanded',
 	level: 'level'
+}
+
+/**
+ * Merge consumer-provided field overrides with the default field
+ * mapping so every key resolves to a string. Tree calls this once on
+ * its `fields` prop before passing the result to ProxyTree / line
+ * builders.
+ */
+export function resolveTreeFields(fields: TreeFields = {}): ResolvedTreeFields {
+	// `Required<TreeFields>` cannot strip `undefined` from the index
+	// signature on its own, so spread-inference fails the contract even
+	// though `defaultTreeFields` provides every key. Cast through unknown
+	// to assert the post-merge shape.
+	return { ...defaultTreeFields, ...fields } as unknown as ResolvedTreeFields
 }
 
 // =============================================================================

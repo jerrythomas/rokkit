@@ -1,0 +1,7 @@
+/**
+ * Tooltip - Minimal Theme Styles
+ */
+
+[data-style='minimal'] [data-tooltip-content] {
+  @apply bg-ink text-paper;
+}

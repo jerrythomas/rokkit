@@ -68,6 +68,16 @@
   @apply text-primary border-l-primary border-l-2 bg-none;
 }
 
+/* Keyboard-focused row + synthesised TreeTable group row */
+[data-style='zen-sumi'] [data-table] tr[data-table-row][data-focused] {
+  @apply bg-paper-mute;
+}
+
+[data-style='zen-sumi'] [data-table] tr[data-table-row][data-group] {
+  @apply bg-paper-soft text-ink;
+  font-weight: 500;
+}
+
 /* =============================================================================
    Striped
    ============================================================================= */

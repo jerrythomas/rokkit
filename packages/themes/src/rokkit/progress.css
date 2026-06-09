@@ -1,0 +1,13 @@
+/**
+ * ProgressBar - Rokkit Theme Styles
+ *
+ * Default track + primary fill colors.
+ */
+
+[data-style='rokkit'] [data-progress] {
+  @apply bg-paper-mute;
+}
+
+[data-style='rokkit'] [data-progress-bar] {
+  @apply bg-primary;
+}

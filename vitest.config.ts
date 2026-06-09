@@ -39,6 +39,7 @@ export default defineConfig({
 			{ extends: true, test: { name: 'cli', root: 'packages/cli' } },
 			{ extends: true, test: { name: 'core', root: 'packages/core' } },
 			{ extends: true, test: { name: 'unocss', root: 'packages/unocss' } },
+			{ extends: true, test: { name: 'themes', root: 'packages/themes' } },
 			{ extends: true, test: { name: 'data', root: 'packages/data' } },
 			{
 				extends: true,

@@ -1,0 +1,26 @@
+/**
+ * Grid - Material Theme Styles
+ *
+ * Tile borders, hover/focus effects, selection highlight.
+ */
+
+[data-style='material'] [data-grid-item] {
+  @apply border-paper-edge text-ink-mute;
+}
+
+[data-style='material'] [data-grid-item]:hover:not(:disabled):not([data-disabled]),
+[data-style='material'] [data-grid-item]:focus:not(:disabled):not([data-disabled]) {
+  @apply border-ink-soft bg-paper-mute text-ink;
+}
+
+[data-style='material'] [data-grid-item][data-active] {
+  @apply border-primary text-primary;
+}
+
+[data-style='material'] [data-grid-item] [data-item-icon] {
+  @apply text-ink-soft;
+}
+
+[data-style='material'] [data-grid-item][data-active] [data-item-icon] {
+  @apply text-primary;
+}

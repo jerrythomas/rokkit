@@ -33,7 +33,7 @@
 		<section>
 			<header>Accepted ({accepted.length})</header>
 			<ul class="result">
-				{#each accepted as line}
+				{#each accepted as line (line)}
 					<li>{line}</li>
 				{/each}
 			</ul>
@@ -44,7 +44,7 @@
 		<section>
 			<header>Rejected ({rejected.length})</header>
 			<ul class="result rejected">
-				{#each rejected as r}
+				{#each rejected as r (r.name)}
 					<li>
 						<code>{r.name}</code> — {r.reason === 'type' ? 'wrong type' : 'too large'}
 					</li>

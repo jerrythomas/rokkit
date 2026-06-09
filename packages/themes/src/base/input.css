@@ -169,6 +169,11 @@ button[data-form-reset]:disabled {
 [data-input-root] [data-select] [data-select-trigger] {
   @apply flex-1 self-stretch;
   min-width: 0;
+  /* Fill the field (via self-stretch) instead of imposing the standalone control
+     height — so a control embedded in a form field is the same height as a plain
+     field (the wrapper owns the height). Any control embedded in [data-input-root]
+     should follow this contract. */
+  height: auto;
 }
 
 /* Checkbox icon */
@@ -201,6 +206,10 @@ button[data-form-reset]:disabled {
 /* Input wrapper: horizontal for input + icon */
 [data-input-root] {
   @apply flex flex-row items-center;
+  /* Align to the shared control-height scale so a text field lines up with
+     buttons/selects/etc. at the default (md) size. min-height (not height) so
+     a textarea still grows past one line. */
+  min-height: var(--control-h-md);
 }
 
 /* Input elements fill available width */

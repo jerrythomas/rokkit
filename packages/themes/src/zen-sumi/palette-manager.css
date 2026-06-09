@@ -1,0 +1,97 @@
+/**
+ * PaletteManager — Zen-Sumi Theme
+ * Color layer for the headless base structure in base/palette-manager.css.
+ */
+
+/* Container */
+[data-style='zen-sumi'] [data-palette-manager] {
+  @apply bg-paper text-ink border-paper-edge;
+}
+
+/* Section labels */
+[data-style='zen-sumi'] [data-palette-presets-label],
+[data-style='zen-sumi'] [data-palette-custom-label] {
+  @apply text-ink-mute;
+}
+
+/* Presets */
+[data-style='zen-sumi'] [data-palette-preset] {
+  @apply bg-paper-soft text-ink border-paper-edge;
+}
+
+[data-style='zen-sumi'] [data-palette-preset]:hover {
+  @apply bg-paper-mute;
+}
+
+[data-style='zen-sumi'] [data-palette-preset][data-active] {
+  @apply text-primary border-primary;
+}
+
+[data-style='zen-sumi'] [data-palette-preset-swatch] {
+  @apply border-paper-edge;
+}
+
+/* Custom palettes */
+[data-style='zen-sumi'] [data-palette-custom-item] {
+  @apply bg-paper-soft text-ink-mute border-paper-edge;
+}
+
+[data-style='zen-sumi'] [data-palette-custom-item]:hover {
+  @apply bg-paper-mute text-ink;
+}
+
+[data-style='zen-sumi'] [data-palette-custom-item][data-active] {
+  @apply text-primary border-primary;
+}
+
+/* Role rows */
+[data-style='zen-sumi'] [data-palette-role-label] {
+  @apply text-ink;
+}
+
+/* Color pickers */
+[data-style='zen-sumi'] [data-palette-color-select],
+[data-style='zen-sumi'] [data-palette-color-input] {
+  @apply bg-paper-soft text-ink border-paper-edge;
+}
+
+[data-style='zen-sumi'] [data-palette-color-input]::placeholder {
+  @apply text-ink-faint;
+}
+
+[data-style='zen-sumi'] [data-palette-color-select]:focus-visible,
+[data-style='zen-sumi'] [data-palette-color-input]:focus-visible {
+  @apply outline-focus-ring border-focus-ring;
+}
+
+/* Hex toggle */
+[data-style='zen-sumi'] [data-palette-hex-toggle] {
+  @apply bg-paper-soft text-ink-mute border-paper-edge;
+}
+
+[data-style='zen-sumi'] [data-palette-hex-toggle]:hover {
+  @apply bg-paper-mute text-ink;
+}
+
+/* Shade ramp */
+[data-style='zen-sumi'] [data-palette-shades] {
+  @apply border-paper-edge;
+}
+
+/* Actions — Save = secondary / outlined */
+[data-style='zen-sumi'] [data-palette-save] {
+  @apply bg-paper-soft text-ink-mute border-paper-edge;
+}
+
+[data-style='zen-sumi'] [data-palette-save]:hover {
+  @apply bg-paper-mute text-ink;
+}
+
+/* Actions — Apply = primary */
+[data-style='zen-sumi'] [data-palette-apply] {
+  @apply bg-primary text-on-primary border-primary;
+}
+
+[data-style='zen-sumi'] [data-palette-apply]:hover {
+  @apply bg-accent border-accent;
+}

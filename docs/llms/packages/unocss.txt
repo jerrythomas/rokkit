@@ -166,21 +166,14 @@ export default {
 
 Values accept palette refs (`'kami.400'`), raw CSS colors (`'#222222'`, `'oklch(...)'`, `'rgb(...)'`), or `{ light, dark }` objects.
 
-### Semantic Tone Shortcuts
+### Legacy z-scale utilities (back-compat)
 
-For each semantic color (`primary`, `surface`, `success`, etc.), `presetRokkit` generates tone shortcuts that automatically adapt between light and dark mode:
+The older z-scale utilities (`bg-primary-z5`, `text-surface-z7`, …) still resolve as a
+back-compat layer pointing at the named tokens above — existing code keeps working, but
+new code should use the named-token shortcuts. `tokens: 'extended'` additionally emits
+the full 11-shade palette ladder per role (for charts / data-viz).
 
-```html
-<!-- Light mode: bg-orange-500 | Dark mode: bg-orange-500 -->
-<div class="bg-primary-z5">
-
-<!-- Light mode: text-slate-700 | Dark mode: text-slate-300 -->
-<span class="text-surface-z7">
-```
-
-Tone scale: `z0` (lightest, shade 50) through `z10` (darkest, shade 950).
-
-See `docs/llms/index.txt` for the full tone utility guide and all supported prefixes.
+See `docs/llms/index.txt` for the full named-token guide and all supported prefixes.
 
 ### Icon Shortcuts
 

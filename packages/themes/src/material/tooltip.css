@@ -1,0 +1,7 @@
+/**
+ * Tooltip - Material Theme Styles
+ */
+
+[data-style='material'] [data-tooltip-content] {
+  @apply bg-ink text-paper;
+}

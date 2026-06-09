@@ -8,6 +8,42 @@ import { detectPackageManager, buildInstallCommand } from './upgrade.js'
 const ROKKIT_PACKAGES = ['@rokkit/ui', '@rokkit/unocss', '@rokkit/themes', '@rokkit/icons']
 const LOCKFILES = ['bun.lock', 'bun.lockb', 'pnpm-lock.yaml', 'yarn.lock', 'package-lock.json']
 
+const NAMED_TOKEN_HEADER = `/**
+ * Rokkit token configuration — consumed by presetRokkit() in uno.config.js.
+ *
+ * Maps semantic roles (surface, ink, primary, accent, status…) to palettes.
+ * The preset emits the named-token vocabulary used throughout components:
+ *
+ *   Surface  bg-paper · bg-paper-soft · bg-paper-mute · border-paper-edge
+ *   Text     text-ink · text-ink-mute · text-ink-soft · text-ink-faint
+ *   Accent   bg-primary · text-on-primary · bg-accent · bg-accent-soft
+ *   Status   bg-success-soft · text-success   (+ warning / danger / error / info)
+ *
+ * Tokens flip automatically under [data-mode="dark"]. The older z-scale
+ * utilities (bg-surface-z0, text-primary-z5) still resolve for back-compat,
+ * but new code should prefer the named tokens above.
+ *
+ * tokens: 'core' emits the named vocabulary; 'extended' also emits the full
+ * 11-shade palette ladder per role (for charts / data-viz).
+ */
+`
+
+const OKLCH_PALETTES_NOTE = `/**
+ * palettes: bare OKLCH "L C H" components (colorSpace: 'oklch'). surface/ink use
+ * a { light, dark } dual palette — kami (warm paper) in light, sumi (ink) in dark.
+ */
+`
+
+/**
+ * Serialize a rokkit config object to a JS module string with a header comment.
+ * @param {Record<string, unknown>} config
+ * @returns {string}
+ */
+export function serializeRokkitConfig(config) {
+	const palettesNote = config.palettes ? OKLCH_PALETTES_NOTE : ''
+	return `${NAMED_TOKEN_HEADER}${palettesNote}export default ${JSON.stringify(config, null, 2)}\n`
+}
+
 /**
  * Detect if the current directory is a SvelteKit project.
  * @param {string} cwd
@@ -61,12 +97,23 @@ const CHART_SHADE_PRESETS = {
 	soft:     { light: { fill: '400', stroke: '600' }, dark: { fill: '600', stroke: '300' } }
 }
 
+// Base rgb skin — named-token roles only (no secondary/tertiary; ink defaults to surface).
+const DEFAULT_SKIN_BASE = {
+	primary: 'orange',
+	accent: 'sky',
+	surface: 'slate',
+	success: 'green',
+	warning: 'yellow',
+	danger: 'red',
+	error: 'red',
+	info: 'cyan'
+}
+
 const SKIN_PRESETS = {
-	default: { primary: 'orange', secondary: 'pink', accent: 'sky', surface: 'slate' },
-	vibrant: { primary: 'blue', secondary: 'purple', accent: 'sky', surface: 'slate' },
+	default: {},
+	vibrant: { primary: 'blue', accent: 'sky', surface: 'slate' },
 	seaweed: {
 		primary: 'sky',
-		secondary: 'green',
 		accent: 'blue',
 		surface: 'zinc',
 		danger: 'rose',
@@ -77,26 +124,66 @@ const SKIN_PRESETS = {
 	}
 }
 
-const DEFAULT_COLORS = {
-	primary: 'orange',
-	secondary: 'pink',
-	accent: 'sky',
-	surface: 'slate',
-	success: 'green',
-	warning: 'yellow',
-	danger: 'red',
-	error: 'red',
-	info: 'cyan'
+/**
+ * Resolve a named-token rgb skin from a preset or custom colors.
+ * `ink` defaults to the `surface` palette. Only the named-token roles are
+ * emitted; `secondary`/`tertiary` are intentionally omitted (no named token
+ * reads them). A consumer who needs them can add them to their config's skin
+ * directly — @rokkit/unocss's loadConfig merges extra roles through.
+ * @param {string} palette
+ * @param {Record<string, string>} [customColors]
+ * @returns {Record<string, string>}
+ */
+function resolveSkin(palette, customColors) {
+	const merged =
+		palette === 'custom'
+			? { ...DEFAULT_SKIN_BASE, ...customColors }
+			: { ...DEFAULT_SKIN_BASE, ...(SKIN_PRESETS[palette] || {}) }
+	return {
+		surface: merged.surface,
+		ink: merged.ink ?? merged.surface,
+		primary: merged.primary,
+		accent: merged.accent,
+		success: merged.success,
+		warning: merged.warning,
+		danger: merged.danger,
+		error: merged.error,
+		info: merged.info
+	}
 }
 
-/**
- * Generate a Rokkit config object from user choices.
- * @param {{ palette: string, customColors?: Record<string, string>, icons: string, iconPath?: string, themes: string[], switcher: string }} opts
- * @returns {Record<string, unknown>}
- */
-function resolveColors(palette, customColors) {
-	if (palette === 'custom') return { ...DEFAULT_COLORS, ...customColors }
-	return { ...DEFAULT_COLORS, ...(SKIN_PRESETS[palette] || {}) }
+// Zen-Sumi OKLCH palettes — bare "L C H" components (colorSpace: 'oklch').
+const ZEN_SUMI_PALETTES = {
+	kami: {
+		50: '0.985 0.005 85', 100: '0.975 0.008 85', 200: '0.955 0.010 85',
+		300: '0.920 0.012 85', 400: '0.850 0.010 70', 500: '0.750 0.008 50',
+		600: '0.580 0.010 50', 700: '0.380 0.012 50', 800: '0.280 0.012 50',
+		900: '0.220 0.012 50', 950: '0.170 0.010 50'
+	},
+	sumi: {
+		50: '0.170 0.010 50', 100: '0.210 0.012 50', 200: '0.250 0.012 50',
+		300: '0.320 0.012 50', 400: '0.420 0.010 50', 500: '0.570 0.010 50',
+		600: '0.420 0.012 85', 700: '0.600 0.010 85', 800: '0.780 0.008 85',
+		900: '0.940 0.008 85', 950: '0.975 0.008 85'
+	},
+	shu: {
+		50: '0.970 0.020 35', 100: '0.940 0.040 35', 200: '0.880 0.070 35',
+		300: '0.800 0.100 35', 400: '0.700 0.130 35', 500: '0.580 0.150 35',
+		600: '0.500 0.140 35', 700: '0.420 0.120 35', 800: '0.350 0.100 35',
+		900: '0.280 0.080 35', 950: '0.220 0.060 35'
+	},
+	hisui: {
+		50: '0.970 0.015 160', 100: '0.940 0.030 160', 200: '0.880 0.050 160',
+		300: '0.800 0.065 160', 400: '0.720 0.075 160', 500: '0.620 0.080 160',
+		600: '0.540 0.075 160', 700: '0.460 0.065 160', 800: '0.380 0.055 160',
+		900: '0.300 0.045 160', 950: '0.240 0.035 160'
+	},
+	kohaku: {
+		50: '0.980 0.020 75', 100: '0.950 0.040 75', 200: '0.900 0.070 75',
+		300: '0.850 0.095 75', 400: '0.790 0.110 75', 500: '0.720 0.120 75',
+		600: '0.640 0.110 75', 700: '0.560 0.095 75', 800: '0.470 0.080 75',
+		900: '0.380 0.065 75', 950: '0.300 0.050 75'
+	}
 }
 
 /**
@@ -111,6 +198,53 @@ export function generateChartConfig({ chartColors, chartShades }) {
 	}
 }
 
+/**
+ * Build the Zen-Sumi OKLCH starter (ink-on-paper, dual-palette dark mode).
+ * @param {{ themes?: string[], defaultTheme?: string, switcher?: string,
+ *   includeChart?: boolean, chartColors?: string, chartShades?: string }} [opts]
+ * @returns {Record<string, unknown>}
+ */
+export function generateZenSumiConfig(opts = {}) {
+	const { themes, defaultTheme, switcher, includeChart, chartColors, chartShades } = opts
+	const config = {
+		palettes: ZEN_SUMI_PALETTES,
+		colorSpace: 'oklch',
+		tokens: 'core',
+		skin: {
+			surface: { light: 'kami', dark: 'sumi' },
+			ink: { light: 'kami', dark: 'sumi' },
+			primary: 'shu',
+			accent: 'shu',
+			success: 'hisui',
+			warning: 'kohaku',
+			danger: 'shu',
+			error: 'shu',
+			info: 'kohaku'
+		},
+		shape: { radius: 'soft' },
+		typography: {
+			display: "'Fraunces', 'Iowan Old Style', Georgia, serif",
+			sans: "'Inter', system-ui, -apple-system, sans-serif",
+			mono: "'JetBrains Mono', 'SF Mono', Menlo, monospace"
+		},
+		themes: themes && themes.length ? themes : ['rokkit', 'zen-sumi'],
+		defaultTheme: defaultTheme || 'zen-sumi',
+		switcher: switcher || 'full',
+		storageKey: 'rokkit-theme'
+	}
+	if (includeChart) config.chart = generateChartConfig({ chartColors, chartShades })
+	return config
+}
+
+/**
+ * Build a Rokkit config object from the user's init choices.
+ * Emits the named-token `skin` shape (skin + colorSpace + tokens), plus
+ * optional `icons` and `chart` sections.
+ * @param {{ palette: string, customColors?: Record<string, string>, icons?: string,
+ *   iconPath?: string, iconStyle?: string, themes: string[], defaultTheme?: string,
+ *   switcher: string, includeChart?: boolean, chartColors?: string, chartShades?: string }} opts
+ * @returns {Record<string, unknown>}
+ */
 export function generateConfig({
 	palette,
 	customColors,
@@ -124,8 +258,14 @@ export function generateConfig({
 	chartColors,
 	chartShades
 }) {
+	if (palette === 'zen-sumi') {
+		return generateZenSumiConfig({ themes, defaultTheme, switcher, includeChart, chartColors, chartShades })
+	}
+
 	const config = {
-		colors: resolveColors(palette, customColors),
+		skin: resolveSkin(palette, customColors),
+		colorSpace: 'rgb',
+		tokens: 'core',
 		themes,
 		defaultTheme: defaultTheme || themes[0],
 		switcher,
@@ -205,6 +345,7 @@ const PROMPTS_CONFIG = [
 			{ title: 'Default (orange/pink/sky)', value: 'default' },
 			{ title: 'Vibrant (blue/purple/sky)', value: 'vibrant' },
 			{ title: 'Seaweed (sky/green/blue)', value: 'seaweed' },
+			{ title: 'Zen-Sumi (OKLCH ink-on-paper)', value: 'zen-sumi' },
 			{ title: 'Custom', value: 'custom' }
 		]
 	},
@@ -327,7 +468,7 @@ function writeRokkitConfig(cwd, config) {
 		console.warn('  rokkit.config.js already exists — skipping')
 		return
 	}
-	writeFileSync(configPath, `export default ${JSON.stringify(config, null, 2)}\n`)
+	writeFileSync(configPath, serializeRokkitConfig(config))
 	console.info('  Created rokkit.config.js')
 }
 

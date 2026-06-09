@@ -1,0 +1,13 @@
+/**
+ * Rating - Minimal Theme Styles
+ *
+ * Faint empty icons, warning-toned filled icons.
+ */
+
+[data-style='minimal'] [data-rating-icon] {
+  @apply text-ink-faint;
+}
+
+[data-style='minimal'] [data-rating-item][data-filled] [data-rating-icon] {
+  @apply text-warning;
+}

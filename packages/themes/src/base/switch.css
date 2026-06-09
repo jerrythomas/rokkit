@@ -30,6 +30,22 @@
   cursor: not-allowed;
 }
 
+/* Bounding height aligns to the shared control scale (so a switch lines up with
+   buttons/inputs/etc. in a row); the track/thumb keep their geometry, centered
+   via align-items: center. */
+[data-switch][data-switch-size='sm'] {
+  min-height: var(--control-h-sm);
+}
+
+[data-switch][data-switch-size='md'],
+[data-switch]:not([data-switch-size]) {
+  min-height: var(--control-h-md);
+}
+
+[data-switch][data-switch-size='lg'] {
+  min-height: var(--control-h-lg);
+}
+
 /* =============================================================================
    Track
    ============================================================================= */

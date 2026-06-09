@@ -1,0 +1,13 @@
+/**
+ * Rating - Rokkit Theme Styles
+ *
+ * Faint empty icons, warning-toned filled icons.
+ */
+
+[data-style='rokkit'] [data-rating-icon] {
+  @apply text-ink-faint;
+}
+
+[data-style='rokkit'] [data-rating-item][data-filled] [data-rating-icon] {
+  @apply text-warning;
+}

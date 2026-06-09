@@ -34,7 +34,12 @@
 	const toggleVariant = $derived<'button' | 'group'>(variant === 'single' ? 'button' : 'group')
 
 	const manager = new ColorModeManager(vibe)
-	let value = $derived(manager.mode)
+	// `triad` shows the abstract mode (so 'system' can be the selected option);
+	// `single`/`pair` only deal with light/dark, so they reflect the RESOLVED mode —
+	// otherwise a 'system' mode falls outside their [light, dark] options and the
+	// control mislabels (e.g. shows "switch to light" while already light → first
+	// click is a no-op).
+	let value = $derived(variant === 'triad' ? manager.mode : manager.resolved)
 
 	onMount(() => {
 		return manager.listen()

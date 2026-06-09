@@ -1,0 +1,13 @@
+/**
+ * ProgressBar - Material Theme Styles
+ *
+ * Default track + primary fill colors.
+ */
+
+[data-style='material'] [data-progress] {
+  @apply bg-paper-mute;
+}
+
+[data-style='material'] [data-progress-bar] {
+  @apply bg-primary;
+}

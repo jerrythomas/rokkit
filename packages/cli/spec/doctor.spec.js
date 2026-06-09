@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { runChecks } from '../src/doctor.js'
+import { runChecks, defaultStarterSource, validateConfigShape, findLegacyZUtilities } from '../src/doctor.js'
 
 describe('runChecks', () => {
 	it('should report pass when rokkit.config.js exists', () => {
@@ -208,5 +208,84 @@ describe('runChecks', () => {
 		const results = runChecks(fs)
 		const themeCheck = results.find((r) => r.id === 'css-theme')
 		expect(themeCheck.status).toBe('pass')
+	})
+})
+
+describe('validateConfigShape', () => {
+	it('warns when the colormap has no ink role', () => {
+		const checks = validateConfigShape({ skin: { surface: 'slate', primary: 'orange' }, colorSpace: 'rgb' })
+		const ink = checks.find((c) => c.id === 'skin-ink-role')
+		expect(ink.status).toBe('warn')
+	})
+
+	it('passes (no ink warning) when ink is present', () => {
+		const checks = validateConfigShape({ skin: { surface: 'slate', ink: 'slate', primary: 'orange' } })
+		expect(checks.find((c) => c.id === 'skin-ink-role')).toBeUndefined()
+	})
+
+	it('warns when colorSpace is oklch but palettes is empty', () => {
+		const checks = validateConfigShape({ skin: { surface: 'kami', ink: 'kami' }, colorSpace: 'oklch' })
+		expect(checks.find((c) => c.id === 'oklch-needs-palettes').status).toBe('warn')
+	})
+
+	it('warns when using the legacy colors alias', () => {
+		const checks = validateConfigShape({ colors: { surface: 'slate', ink: 'slate' } })
+		expect(checks.find((c) => c.id === 'colors-alias').status).toBe('warn')
+	})
+
+	it('reads the colormap from skins.default', () => {
+		const checks = validateConfigShape({ skins: { default: { surface: 'slate', primary: 'orange' } } })
+		expect(checks.find((c) => c.id === 'skin-ink-role')).toBeDefined()
+	})
+
+	it('does not warn when ink is present in skins.default', () => {
+		const checks = validateConfigShape({ skins: { default: { surface: 'slate', ink: 'slate', primary: 'orange' } } })
+		expect(checks.find((c) => c.id === 'skin-ink-role')).toBeUndefined()
+	})
+
+	it('returns [] for a null config', () => {
+		expect(validateConfigShape(null)).toEqual([])
+	})
+})
+
+describe('defaultStarterSource', () => {
+	it('produces a real named-token starter, not an empty config', () => {
+		const src = defaultStarterSource()
+		expect(src).not.toBe('export default {}\n')
+		expect(src).toContain('skin')
+		const json = src.slice(src.indexOf('export default') + 'export default'.length).trim().replace(/\n$/, '')
+		expect(JSON.parse(json).skin.ink).toBeDefined()
+	})
+})
+
+describe('findLegacyZUtilities', () => {
+	it('detects surface z-utilities and maps them to named tokens', () => {
+		const files = [{ path: 'src/A.svelte', content: '<div class="bg-surface-z1 text-surface-z9 border-surface-z3">' }]
+		const { count, byFile } = findLegacyZUtilities(files)
+		expect(count).toBe(3)
+		const suggestions = byFile[0].hits.map((h) => h.suggestion)
+		expect(suggestions).toContain('bg-paper-soft')
+		expect(suggestions).toContain('text-ink')
+		expect(suggestions).toContain('border-paper-mute')
+	})
+
+	it('maps primary/status z-utilities', () => {
+		const files = [{ path: 'src/B.svelte', content: 'text-primary-z5 bg-success-z1' }]
+		const { byFile } = findLegacyZUtilities(files)
+		const suggestions = byFile[0].hits.map((h) => h.suggestion)
+		expect(suggestions).toContain('text-primary')
+		expect(suggestions).toContain('bg-success-soft')
+	})
+
+	it('returns zero hits for named-token-only code', () => {
+		const files = [{ path: 'src/C.svelte', content: 'bg-paper text-ink bg-primary text-on-primary' }]
+		expect(findLegacyZUtilities(files).count).toBe(0)
+	})
+
+	it('maps z0 on accent/status roles to the -soft tint', () => {
+		const files = [{ path: 'src/D.svelte', content: 'bg-accent-z0 bg-info-z0' }]
+		const suggestions = findLegacyZUtilities(files).byFile[0].hits.map((h) => h.suggestion)
+		expect(suggestions).toContain('bg-accent-soft')
+		expect(suggestions).toContain('bg-info-soft')
 	})
 })

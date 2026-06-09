@@ -27,6 +27,8 @@
 @import './floating-action.css';
 @import './input.css';
 @import './table.css';
+@import './grid.css';
+@import './tooltip.css';
 @import './search-filter.css';
 @import './range.css';
 @import './timeline.css';
@@ -40,6 +42,10 @@
 @import './step-indicator.css';
 @import './chart.css';
 @import './swatch.css';
+@import './palette-manager.css';
+@import './progress.css';
+@import './pill.css';
+@import './rating.css';
 
 /* =============================================================================
    Layout overrides — Ma (間) generous spacing

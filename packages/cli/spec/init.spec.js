@@ -4,10 +4,30 @@ import {
 	generateChartConfig,
 	generateUnoConfig,
 	generateAppCssImports,
-	generateInitScript
+	generateInitScript,
+	serializeRokkitConfig,
+	generateZenSumiConfig
 } from '../src/init.js'
 
 describe('generateConfig', () => {
+	it('should generate the zen-sumi OKLCH starter', () => {
+		const config = generateConfig({
+			palette: 'zen-sumi',
+			icons: 'rokkit',
+			themes: ['rokkit', 'zen-sumi'],
+			switcher: 'full'
+		})
+		expect(config.colorSpace).toBe('oklch')
+		expect(config.tokens).toBe('core')
+		expect(config.palettes.kami).toBeDefined()
+		expect(config.palettes.shu['500']).toBe('0.580 0.150 35')
+		expect(config.skin.surface).toEqual({ light: 'kami', dark: 'sumi' })
+		expect(config.skin.ink).toEqual({ light: 'kami', dark: 'sumi' })
+		expect(config.skin.primary).toBe('shu')
+		expect(config.shape.radius).toBe('soft')
+		expect(config.colors).toBeUndefined()
+	})
+
 	it('should generate default config object', () => {
 		const config = generateConfig({
 			palette: 'default',
@@ -15,11 +35,17 @@ describe('generateConfig', () => {
 			themes: ['rokkit'],
 			switcher: 'manual'
 		})
-		expect(config.colors).toBeDefined()
-		expect(config.colors.primary).toBe('orange')
+		expect(config.skin).toBeDefined()
+		expect(config.skin.primary).toBe('orange')
+		expect(config.skin.surface).toBe('slate')
+		expect(config.skin.ink).toBe('slate')
+		expect(config.skin.secondary).toBeUndefined()
+		expect(config.colorSpace).toBe('rgb')
+		expect(config.tokens).toBe('core')
 		expect(config.themes).toEqual(['rokkit'])
 		expect(config.defaultTheme).toBe('rokkit')
 		expect(config.switcher).toBe('manual')
+		expect(config.colors).toBeUndefined()
 	})
 
 	it('should use explicit defaultTheme when provided', () => {
@@ -50,20 +76,21 @@ describe('generateConfig', () => {
 			themes: ['rokkit'],
 			switcher: 'manual'
 		})
-		expect(config.colors.primary).toBe('blue')
-		expect(config.colors.secondary).toBe('purple')
+		expect(config.skin.primary).toBe('blue')
+		expect(config.skin.accent).toBe('sky')
 	})
 
 	it('should apply custom colors', () => {
 		const config = generateConfig({
 			palette: 'custom',
-			customColors: { primary: 'red', secondary: 'teal' },
+			customColors: { primary: 'red', surface: 'stone' },
 			icons: 'rokkit',
 			themes: ['rokkit'],
 			switcher: 'system'
 		})
-		expect(config.colors.primary).toBe('red')
-		expect(config.colors.secondary).toBe('teal')
+		expect(config.skin.primary).toBe('red')
+		expect(config.skin.surface).toBe('stone')
+		expect(config.skin.ink).toBe('stone')
 		expect(config.switcher).toBe('system')
 	})
 
@@ -181,5 +208,24 @@ describe('generateInitScript', () => {
 	it('should use custom defaultStyle for full switcher', () => {
 		const script = generateInitScript('full', 'rokkit-theme', 'frosted')
 		expect(script).toContain("|| 'frosted'")
+	})
+})
+
+describe('serializeRokkitConfig', () => {
+	it('prepends a named-token header and emits parseable JSON for the rgb starter', () => {
+		const config = generateConfig({ palette: 'default', icons: 'rokkit', themes: ['rokkit'], switcher: 'manual' })
+		const src = serializeRokkitConfig(config)
+		expect(src).toContain('named-token vocabulary')
+		expect(src).toContain('bg-paper')
+		expect(src).toContain('text-on-primary')
+		expect(src).toContain('back-compat')
+		const json = src.slice(src.indexOf('export default') + 'export default'.length).trim().replace(/\n$/, '')
+		expect(JSON.parse(json).skin.primary).toBe('orange')
+	})
+
+	it('includes a palettes note for the OKLCH starter', () => {
+		const src = serializeRokkitConfig(generateZenSumiConfig({}))
+		expect(src).toContain('palettes')
+		expect(src).toContain('oklch')
 	})
 })

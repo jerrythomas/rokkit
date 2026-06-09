@@ -57,7 +57,7 @@ export default defineConfig({
 })
 ```
 
-Colors are referenced by palette name (e.g. Tailwind color names). The preset generates CSS variable-backed scale utilities like `bg-primary-z5`, `text-secondary-z8`, etc.
+Colors are referenced by palette name (e.g. Tailwind color names). The preset emits the named-token vocabulary (`bg-paper`, `text-ink`, `bg-primary`, `text-on-primary`, `*-soft`); the z-scale utilities (`bg-primary-z5`, `text-surface-z8`) remain as a back-compat layer pointing at the named tokens.
 
 ### Dual-palette dark mode (separate light/dark palettes)
 

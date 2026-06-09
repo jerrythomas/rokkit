@@ -79,7 +79,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each visible as row}
+				{#each visible as row (row.name)}
 					<tr>
 						<td>{row.name}</td>
 						<td>{row.role}</td>

@@ -1,0 +1,13 @@
+/**
+ * ProgressBar - Zen-Sumi Theme Styles
+ *
+ * Default track + primary fill colors.
+ */
+
+[data-style='zen-sumi'] [data-progress] {
+  @apply bg-paper-mute;
+}
+
+[data-style='zen-sumi'] [data-progress-bar] {
+  @apply bg-primary;
+}

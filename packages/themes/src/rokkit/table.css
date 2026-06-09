@@ -60,6 +60,16 @@
   @apply from-primary to-accent text-primary bg-gradient-to-r;
 }
 
+/* Keyboard-focused row + synthesised TreeTable group row */
+[data-style='rokkit'] [data-table] tr[data-table-row][data-focused] {
+  @apply bg-paper-mute;
+}
+
+[data-style='rokkit'] [data-table] tr[data-table-row][data-group] {
+  @apply bg-paper-soft text-ink;
+  font-weight: 500;
+}
+
 /* =============================================================================
    Striped
    ============================================================================= */

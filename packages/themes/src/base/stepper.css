@@ -52,6 +52,12 @@
   color: var(--paper);
 }
 
+/* Check glyph inside a completed circle follows the circle's color
+   (var(--paper) on a --primary background → correct contrast). */
+[data-stepper-check-icon] {
+  color: inherit;
+}
+
 [data-stepper-step][data-active] [data-stepper-circle] {
   border-color: var(--primary);
   color: var(--primary);

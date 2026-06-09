@@ -1,5 +1,57 @@
 # Project Journal
 
+## 2026-06-06 — CLI `init`/`doctor` + LLM docs modernized to named tokens
+
+**Why.** The token system moved to the named-token vocabulary (`bg-paper`,
+`text-ink`, `text-on-primary`, `*-soft`) with `tokens: 'core'`, but `rokkit
+init`/`doctor` and the LLM-facing docs still spoke the legacy `colors:` +
+z-scale dialect. An LLM (or developer) inferring "how Rokkit works" was being
+steered to write outdated configs (the original report was an LLM-written
+`rokkit.config.js` whose header described `surface`/z-scale). This closes that
+gap end-to-end. Spec: `docs/superpowers/specs/2026-06-05-cli-named-token-config-and-doctor-design.md`;
+plan: `docs/superpowers/plans/2026-06-05-cli-named-token-config-and-doctor.md`.
+
+**CLI `init` (`packages/cli/src/init.js`).**
+- `generateConfig` now emits the named-token `skin` shape — `skin` (with an
+  `ink` role; `ink` defaults to `surface`), `colorSpace: 'rgb'`, `tokens:
+  'core'` — instead of the legacy `colors:` alias. `secondary`/`tertiary` are
+  dropped from emitted skins (no named token reads them).
+- New `generateZenSumiConfig` + a `zen-sumi` palette prompt choice: a second
+  selectable starter shipping the OKLCH ink-on-paper palettes (kami/sumi/shu/
+  hisui/kohaku, copied from `apps/learn`), dual-palette `surface`/`ink`,
+  `shape.radius: 'soft'`, typography.
+- `serializeRokkitConfig` prepends a concise named-token header comment
+  (names the vocabulary, marks z-scale as back-compat); OKLCH starter also gets
+  a palettes note. `writeRokkitConfig` routes through it.
+- **Breaking** to *generated* output shape (`colors` → `skin`); existing user
+  configs keep working via the preset's `colors:` back-compat alias.
+- Commits: `3727860b`, `1fdd9435`, `34a18a53`, `cd07eb07`, `2617db35`, `77958e6b`.
+
+**CLI `doctor` (`packages/cli/src/doctor.js`).**
+- `--fix` for a missing config now writes the real named-token starter
+  (`defaultStarterSource`) instead of `export default {}`. (`0fc81481`)
+- New pure `validateConfigShape(config)` — advisory warnings for: missing `ink`
+  role, `colorSpace: 'oklch'` with no `palettes`, legacy `colors:` alias. Colormap
+  precedence mirrors the preset's `resolveColormap` (`skins.default ?? skin ??
+  colors`). (`28d695fb`, `3bdeb346`; spec precedence note `968d2234`)
+- New pure `findLegacyZUtilities(files)` + `gatherSrcFiles(cwd)` — scans `src/**`
+  for z-scale utilities and prints advisory named-token suggestions (never fails
+  the doctor, never affects exit code). z0–z2 on accent/status correctly collapse
+  to `-soft`, matching `theme.ts getZAliasesOther`. (`8a8dfb30`, `0eae0f9c`)
+
+**LLM-facing docs.**
+- `docs/llms/index.txt` Theming section rewritten: named-token vocabulary table +
+  examples lead; z-scale demoted to one "Legacy" back-compat note. (`df3f2a74`, `4297259b`)
+- `docs/llms/packages/{unocss,themes,core}.txt` + `packages/unocss/README.md`
+  reframed to named-token-first (z-scale = back-compat). Fixed a duplicate
+  "Named Token Shortcuts" heading in `unocss.txt`. (`e081c229`, `4ec37f7a`)
+
+**Verification.** `bun run test:ci` → 255 files, 3519 passed (+16 new CLI tests,
+zero regressions). `bun run lint` → 0 errors (75 pre-existing warnings). Smoke-tested
+both generated starters. Out of scope (unchanged): preset z-scale back-compat;
+the `~/.claude` `semantic-styles-rokkit` skill (lives outside the repo — flag for
+separate update).
+
 ## 2026-06-02 — Merge `custom:` into `overrides:` in rokkit.config
 
 **Breaking change to the preset config API.** Replaced the two-block
