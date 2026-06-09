@@ -28,7 +28,7 @@
 
    Files written: `rokkit.config.js`, `uno.config.js`, `src/app.css`, `src/app.html`
 
-   See [cli.txt](/llms/cli.txt) for full CLI reference.
+   See [cli.txt](/llms/cli.txt) for full CLI reference (includes `rokkit skills` for installing AI skill guides).
 
 ## Verify & Fix
 
@@ -139,7 +139,7 @@ Verify that `<body>` is on its own line in `src/app.html`. The script is injecte
 | `@rokkit/actions` | DOM event layer + Svelte actions (Navigator class, navigable, hoverLift, magnetic, ripple) |
 | `@rokkit/core` | Core utilities and field mapping |
 | `@rokkit/data` | Data manipulation utilities |
-| `@rokkit/themes` | CSS themes (rokkit, minimal, material) |
+| `@rokkit/themes` | CSS themes (rokkit, minimal, material, frosted, zen-sumi) |
 | `@rokkit/unocss` | UnoCSS preset (`presetRokkit`) |
 | `@rokkit/app` | App-level UI chrome (ThemeSwitcherToggle, TableOfContents) |
 | `@rokkit/icons` | Icon system with Iconify integration |

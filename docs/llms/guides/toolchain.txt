@@ -72,6 +72,17 @@ selectors components target, pre-filled with comments. You
 override the visual recipe (border-radius, shadows, surface
 treatments); the data-attribute structure stays the same.
 
+## skills — install AI skill guides
+
+```bash
+npx @rokkit/cli@latest skills list          # show available bundled skills
+npx @rokkit/cli@latest skills add           # interactive picker
+npx @rokkit/cli@latest skills add --all     # install all skills
+```
+
+Copies bundled SKILL.md guides into `.claude/skills/` for use with
+Claude Code and compatible AI assistants. Available since v1.1.13.
+
 ## CLI reference
 
 For the full command surface (flags, advanced options, exit
@@ -82,7 +93,7 @@ ships at the same path.
 ## Editor / build integration
 
 - **UnoCSS preset** — `@rokkit/unocss` adds Rokkit's semantic
-  token shortcuts (`paper-z3`, `ink-mute`, etc.) plus the
+  token shortcuts (`bg-paper-soft`, `text-ink-mute`, etc.) plus the
   preflight CSS variables.
 - **`@rokkit/vite`** — optional Vite plugin that auto-imports
   the configured icon collection JSON.

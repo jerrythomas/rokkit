@@ -45,7 +45,7 @@ npx @rokkit/cli@latest add   # same as init
 | `iconStyle` | select | Icon style variant | `Default (duotone)`, `Solid`, `Outline`, `Duotone outline` |
 | `icons` | select | Icon collections | `rokkit` (Rokkit icons only), `custom` (Rokkit + custom collection) |
 | `iconPath` | text | Path to custom icon collection JSON | Default: `./static/icons/custom.json`. **Conditional:** only when `icons` is `custom` |
-| `themes` | multiselect | Theme styles | `rokkit` (default), `minimal`, `material`, `frosted`, `grada-ui`, `shadcn`, `daisy-ui`, `bits-ui`, `carbon`, `ant-design` |
+| `themes` | multiselect | Theme styles | `rokkit` (default), `minimal`, `material`, `frosted`, `zen-sumi`, `grada-ui`, `shadcn`, `daisy-ui`, `bits-ui`, `carbon`, `ant-design` |
 | `defaultTheme` | select | Default theme style | **Conditional:** only when multiple themes selected |
 | `switcher` | select | Theme switching mode | `system` (prefers-color-scheme), `manual` (light/dark toggle), `full` (light/dark + style variants) |
 | `includeChart` | confirm | Include chart configuration? | Default: `true` |
@@ -166,4 +166,29 @@ Manage themes.
 ```bash
 rokkit theme list               # list built-in and custom themes
 rokkit theme create --name corp # scaffold a new CSS theme stub
+```
+
+## rokkit skills
+
+Manage bundled AI skill guides (SKILL.md files) for Claude Code and compatible AI assistants. Available since v1.1.13.
+
+```bash
+rokkit skills list              # list available bundled skills (marks already-installed ones)
+rokkit skills add               # interactive multiselect — pick skills to install
+rokkit skills add <name> [...]  # install one or more named skills by name
+rokkit skills add --all         # install all available skills
+rokkit skills add --force       # overwrite existing installed skills
+```
+
+Skills are copied into `.claude/skills/<name>/SKILL.md` in your project root.
+
+| Flag | Description |
+|------|-------------|
+| `--all` | Install all available bundled skills |
+| `--force` | Overwrite skills that are already installed |
+
+```bash
+# Example: check what's available, then install everything
+npx @rokkit/cli@latest skills list
+npx @rokkit/cli@latest skills add --all
 ```
