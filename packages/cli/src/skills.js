@@ -21,9 +21,14 @@ const DEFAULT_SKILLS_DIR = (() => {
  * @returns {{ name: string, description: string }}
  */
 export function parseFrontmatter(md) {
+	// Keep these as literal regexes — do NOT collapse into a dynamic
+	// `new RegExp(`^${key}:...`)` helper: the keys are fixed, so the dynamic form
+	// adds nothing but trips the no-dynamic-regex lint, and the literals are
+	// plainly linear-time. The `?.[1]?.trim() ?? ''` chain returns '' for a
+	// missing block, a missing field, or a bare `key:` with no value.
 	const block = md.match(/^---\n([\s\S]*?)\n---/)?.[1] ?? ''
-	const name = block.match(/^name:\s*(.+)$/m)?.[1].trim() ?? ''
-	const description = block.match(/^description:\s*(.+)$/m)?.[1].trim() ?? ''
+	const name = block.match(/^name:\s*(.+)$/m)?.[1]?.trim() ?? ''
+	const description = block.match(/^description:\s*(.+)$/m)?.[1]?.trim() ?? ''
 	return { name, description }
 }
 
