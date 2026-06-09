@@ -1,0 +1,39 @@
+# ViolinPlot
+
+Data-driven SVG violin plot. Shows distribution shape — wider sections indicate higher density. Shares `QuartileBrewer` base with `BoxPlot`.
+
+## Import
+
+```javascript
+import { ViolinPlot } from '@rokkit/chart'
+```
+
+## Quick Start
+
+```svelte
+<ViolinPlot data={data} x="class" y="hwy" />
+<ViolinPlot data={data} x="class" y="hwy" fill="drv" legend />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `data` | `Object[]` | `[]` | Raw observations array |
+| `x` | `string` | — | Categorical grouping field |
+| `y` | `string` | — | Numeric value field (raw observations, not pre-aggregated) |
+| `fill` | `string` | — | Color grouping field |
+| `width` | `number` | `600` | SVG width in pixels |
+| `height` | `number` | `400` | SVG height in pixels |
+| `mode` | `'light' \| 'dark'` | `'light'` | Color palette mode |
+| `grid` | `boolean` | `true` | Show gridlines |
+| `legend` | `boolean` | `false` | Show color legend |
+
+## Notes
+
+- Uses `ViolinBrewer` internally (extends `QuartileBrewer`, the shared base with `BoxBrewer`)
+- x must be categorical; y must be numeric raw observations
+
+## Related
+
+- [BoxPlot](/llms/components/box-plot.txt) — quartile box variant using the same base class

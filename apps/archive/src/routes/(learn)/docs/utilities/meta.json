@@ -1,7 +1,0 @@
-{
-  "title": "Utilities",
-  "description": "Controllers, navigator pattern, and custom component primitives",
-  "icon": "i-glyph:layers",
-  "category": "guide",
-  "order": 9
-}

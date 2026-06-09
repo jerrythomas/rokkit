@@ -50,11 +50,7 @@ export default [
       'packages/chart/src/Plot/**',
       '**/app.d.ts',
       '**/_generated/**',
-      '**/paraglide/**',
-      'apps/archive/src/routes/(learn)/customization/icons/fragments/**',
-      'apps/archive/src/routes/(learn)/elements/list/fragments/01-data-object.js',
-      'apps/archive/src/routes/(learn)/**/snippets/**',
-      'apps/archive/**'
+      '**/paraglide/**'
     ]
   },
   {
@@ -200,21 +196,8 @@ export default [
     }
   },
   {
-    files: ['**/apps/archive/src/**'],
-    rules: {
-      'svelte/no-at-html-tags': 'off',
-      'no-console': 'warn',
-      '@typescript-eslint/no-unused-vars': 'warn',
-      '@typescript-eslint/ban-ts-comment': 'off'
-    }
-  },
-  {
     files: [
-      '**/apps/archive/src/routes/components/**',
-      '**/apps/archive/src/routes/playground/**',
-      '**/apps/archive/src/routes/(play)/playground/**',
       '**/examples/**',
-      '**/stories/**',
       '**/fragments/**'
     ],
     rules: {

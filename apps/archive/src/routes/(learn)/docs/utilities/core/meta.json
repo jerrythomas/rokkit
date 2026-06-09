@@ -1,8 +1,0 @@
-{
-  "title": "Core",
-  "description": "Field mapping utilities, theme helpers, and string utilities",
-  "icon": "i-glyph:settings",
-  "category": "utilities",
-  "order": 9,
-  "tags": ["core", "field-mapping", "FieldMapper", "mapFields", "utilities"]
-}

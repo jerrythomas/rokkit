@@ -1,7 +1,0 @@
-{
-  "title": "Installation",
-  "description": "Install Rokkit and configure your SvelteKit project",
-  "icon": "i-glyph:box",
-  "category": "getting-started",
-  "order": 2
-}

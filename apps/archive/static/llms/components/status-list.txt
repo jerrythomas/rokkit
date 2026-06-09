@@ -1,0 +1,156 @@
+# Rokkit StatusList Component
+
+> Grouped validation message summary with severity counts and optional click-to-focus.
+
+`StatusList` is a display component from `@rokkit/forms`. It groups validation messages by severity (error → warning → info → success) and shows a count header per group. The component renders nothing when the items array is empty, making it safe to always mount.
+
+## Quick Start
+
+```svelte
+<script>
+  import { StatusList, FormBuilder } from '@rokkit/forms'
+
+  const builder = new FormBuilder(data, schema, layout)
+</script>
+
+<!-- Show errors only -->
+<StatusList items={builder.errors} />
+
+<!-- Show all messages -->
+<StatusList items={builder.messages} />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `items` | `Array<{ path, state, text }>` | `[]` | Validation messages to display |
+| `onclick` | `(path: string) => void` | — | When provided, items render as buttons; called with item path on click |
+| `class` | `string` | `''` | Additional CSS classes on root element |
+
+### Item Shape
+
+```ts
+{
+  path: string                                   // Field identifier; used as key and for onclick
+  state: 'error' | 'warning' | 'info' | 'success' // Severity
+  text: string                                   // Human-readable message
+}
+```
+
+`builder.errors` and `builder.messages` already return items in this shape.
+
+## Severity Grouping
+
+Items are automatically grouped in this order: error → warning → info → success. Each group with at least one item gets a count header ("2 errors", "1 warning", etc.). Groups with no items are omitted.
+
+## Click-to-Focus
+
+Pass `onclick` to navigate to the failing field when a user clicks a validation item:
+
+```svelte
+<StatusList
+  items={builder.errors}
+  onclick={(path) => {
+    document.querySelector(`[data-scope="#/${path}"]`)
+      ?.querySelector('input, select, textarea')
+      ?.focus()
+  }}
+/>
+```
+
+When `onclick` is provided, each item renders as a `<button type="button">` for keyboard accessibility. Without `onclick`, items are plain `<div>` elements.
+
+## Use Cases
+
+### Pre-Submit Summary
+
+Show all errors before allowing submission. Combine with click-to-focus for guided correction:
+
+```svelte
+<script>
+  import { FormBuilder, FormRenderer, StatusList } from '@rokkit/forms'
+
+  const builder = new FormBuilder(data, schema, layout)
+  let attempted = $state(false)
+
+  async function handleSubmit(visibleData, { isValid }) {
+    attempted = true
+    if (!isValid) return
+    await save(visibleData)
+  }
+
+  function focusField(path) {
+    document.querySelector(`[data-scope="#/${path}"]`)
+      ?.querySelector('input, select, textarea')
+      ?.focus()
+  }
+</script>
+
+{#if attempted}
+  <StatusList items={builder.errors} onclick={focusField} />
+{/if}
+<FormRenderer {builder} onsubmit={handleSubmit} />
+```
+
+### Password Strength Rules
+
+Live rule checking as the user types. Build a reactive checks array:
+
+```svelte
+<script>
+  import { StatusList } from '@rokkit/forms'
+
+  let password = $state('')
+
+  const checks = $derived([
+    {
+      path: 'length',
+      state: password.length >= 8 ? 'success' : 'error',
+      text: 'At least 8 characters'
+    },
+    {
+      path: 'uppercase',
+      state: /[A-Z]/.test(password) ? 'success' : 'error',
+      text: 'Contains an uppercase letter'
+    },
+    {
+      path: 'number',
+      state: /[0-9]/.test(password) ? 'success' : 'warning',
+      text: 'Contains a number (recommended)'
+    },
+    {
+      path: 'special',
+      state: /[^A-Za-z0-9]/.test(password) ? 'success' : 'warning',
+      text: 'Contains a special character (recommended)'
+    }
+  ])
+</script>
+
+<input type="password" bind:value={password} placeholder="New password" />
+<StatusList items={checks} />
+```
+
+## Data Attributes
+
+| Attribute | Element | Values | Description |
+|-----------|---------|--------|-------------|
+| `data-validation-report` | root `div` | presence | Component root; theme hook |
+| `data-validation-group` | group `div` | presence | One per severity level present |
+| `data-severity` | group `div` | `error` `warning` `info` `success` | Drives group header color |
+| `data-validation-group-header` | header `div` | presence | Contains count + label |
+| `data-validation-count` | `span` | presence | Numeric count of items in group |
+| `data-validation-item` | `div` or `button` | presence | Individual message item |
+| `data-status` | item element | `error` `warning` `info` `success` | Drives item color |
+
+## Accessibility
+
+- Root carries `role="status"` (polite live region) — screen readers announce updates when the list changes, e.g. as the user types a password
+- When `onclick` is provided, items are `<button type="button">` elements for keyboard navigation
+- Item text fully describes the rule and its outcome; no additional aria attributes needed
+
+## Import
+
+```js
+import { StatusList } from '@rokkit/forms'
+```

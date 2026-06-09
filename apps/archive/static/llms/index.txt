@@ -1,0 +1,444 @@
+# Rokkit — LLM Reference Index
+
+> Data-driven, accessible UI components for Svelte 5
+
+## Quick Setup
+
+**Always use the CLI — manual setup leads to configuration errors.**
+
+1. Create a SvelteKit project:
+   ```bash
+   npm create svelte@latest myapp
+   cd myapp
+   npm install
+   ```
+
+2. Initialize Rokkit:
+   ```bash
+   npx @rokkit/cli@latest init
+   ```
+
+   The `init` command is interactive. It prompts for:
+   - **Color palette:** `default` (orange/pink/sky) | `vibrant` (blue/purple/sky) | `seaweed` (sky/green/blue) | `custom`
+   - If `custom`: primary, secondary, accent, surface colors (Tailwind palette names, e.g. `orange`)
+   - **Icon collection:** Rokkit built-in | Rokkit + custom collection
+   - If custom: path to custom icon collection JSON
+   - **Theme styles** (multi-select, min 1): `rokkit` | `minimal` | `material`
+   - **Theme switching:** `system` (prefers-color-scheme) | `manual` (light/dark toggle) | `full` (light/dark + style variants)
+
+   Files written: `rokkit.config.js`, `uno.config.js`, `src/app.css`, `src/app.html`
+
+   See [cli.txt](/llms/cli.txt) for full CLI reference.
+
+## Verify & Fix
+
+After setup, or when things seem broken:
+
+```bash
+npx @rokkit/cli@latest doctor
+```
+
+Runs 4 checks:
+- `rokkit.config.js` exists
+- `uno.config.js` uses `presetRokkit()`
+- `src/app.css` has theme imports
+- `src/app.html` has theme init script
+
+Auto-fix 3 of 4 checks:
+```bash
+npx @rokkit/cli@latest doctor --fix
+```
+
+Exit codes: `0` = all pass, `1` = any failures.
+
+## Troubleshooting
+
+### `rokkit.config.js` missing
+
+`doctor --fix` can auto-generate an empty config. If running manually:
+```js
+// rokkit.config.js — minimal valid config
+export default {}
+```
+
+### `app.css` missing theme imports
+
+Prepend to `src/app.css`:
+```css
+@import '@unocss/reset/tailwind.css';
+@import '@rokkit/themes/base.css';
+@import '@rokkit/themes/rokkit.css';  /* also minimal, material if needed */
+```
+
+### `uno.config.js` does not use `presetRokkit()` (not auto-fixable)
+
+`doctor --fix` cannot overwrite an existing `uno.config.js`. Add the preset manually:
+
+```js
+// uno.config.js
+import { defineConfig } from 'unocss'
+import { presetRokkit } from '@rokkit/unocss'
+
+export default defineConfig({
+  presets: [presetRokkit()]
+})
+```
+
+### `src/app.html` missing theme init script
+
+The init script reads saved theme preferences from `localStorage` and applies them to `document.body` before the page renders, preventing a flash-of-unstyled-content (FOUC).
+
+**When it is NOT needed:** if `switcher` is set to `system` in `rokkit.config.js`, the theme follows `prefers-color-scheme` and no script is written or required.
+
+**When it IS needed** (`manual` or `full` switcher): `doctor --fix` injects the script automatically, but only if `<body>` is on its own line. To add it manually, insert the following immediately after the `<body>` tag in `src/app.html`:
+
+For `manual` mode (light/dark toggle only):
+```html
+<body>
+    <script>
+      (function () {
+        try {
+          var t = JSON.parse(localStorage.getItem('rokkit-theme') || '{}')
+          var b = document.body
+          b.dataset.mode = t.mode || 'dark'
+        } catch (e) {}
+      })()
+    </script>
+```
+
+For `full` mode (light/dark + style variants):
+```html
+<body>
+    <script>
+      (function () {
+        try {
+          var t = JSON.parse(localStorage.getItem('rokkit-theme') || '{}')
+          var b = document.body
+          b.dataset.style = t.style || 'rokkit'
+          b.dataset.mode = t.mode || 'dark'
+        } catch (e) {}
+      })()
+    </script>
+```
+
+Replace `'rokkit-theme'` with your `storageKey` value if you changed it in `rokkit.config.js`.
+
+### Theme init script missing after --fix
+
+Verify that `<body>` is on its own line in `src/app.html`. The script is injected immediately after `<body>`.
+
+## Packages
+
+| Package | Description |
+|---------|-------------|
+| `@rokkit/ui` | Main UI components (40+ components) |
+| `@rokkit/forms` | Dynamic form generation from JSON schema |
+| `@rokkit/chart` | Data visualization (PlotChart, FacetPlot, AnimatedPlot, Sparkline, CrossFilter, GeomBar/Line/Area/Point/etc.) |
+| `@rokkit/blocks` | Rich content blocks for tables and plots (PlotPlugin, TablePlugin, SparklinePlugin, MermaidPlugin) |
+| `@rokkit/states` | State management (ProxyItem, LazyProxyItem, ProxyTree, Wrapper, LazyWrapper, ListController, TableController, vibe, messages, watchMedia) |
+| `@rokkit/actions` | Svelte actions (navigable, hoverLift, magnetic, ripple) |
+| `@rokkit/core` | Core utilities and field mapping |
+| `@rokkit/data` | Data manipulation utilities |
+| `@rokkit/themes` | CSS themes (rokkit, minimal, material) |
+| `@rokkit/unocss` | UnoCSS preset (`presetRokkit`) |
+| `@rokkit/app` | App-level UI chrome (ThemeSwitcherToggle, TableOfContents) |
+| `@rokkit/icons` | Icon system with Iconify integration |
+
+Package reference: [packages/](/llms/packages/)
+
+## Standard API Pattern
+
+Most selection components share this pattern:
+
+```svelte
+<Component
+  items={data}                 <!-- the data array -->
+  bind:value                   <!-- selected value (bindable) -->
+  fields={{ label: 'name' }}   <!-- map data fields to component expectations -->
+  onchange={(v, item) => {}}   <!-- selection callback -->
+/>
+```
+
+## Field Mapping System
+
+Map any data structure without transforming data:
+
+```svelte
+<script>
+  const users = [
+    { userId: 1, fullName: 'Alice', avatarUrl: '/alice.jpg' }
+  ]
+  const fields = {
+    value: 'userId',
+    label: 'fullName',
+    icon: 'avatarUrl'
+  }
+</script>
+
+<Select items={users} {fields} bind:value />
+```
+
+### Field Roles Reference
+
+Field roles are the keys you use in the `fields` prop. They map from Rokkit's semantic names to your data's property names.
+
+| Field role | Default data key | Description | Used by |
+|------------|-----------------|-------------|---------|
+| `label` | `'label'` | Display text | All components |
+| `value` | `'value'` | Selection value (what `bind:value` receives) | Select, List, Toggle, etc. |
+| `icon` | `'icon'` | Icon CSS class | List, Select, Menu, Tree |
+| `avatar` | `'image'` | Avatar image URL | List, Select |
+| `subtext` | `'description'` | Secondary text below label | List, Select |
+| `tooltip` | `'title'` | Tooltip text | All |
+| `badge` | `'badge'` | Badge value | List |
+| `shortcut` | `'shortcut'` | Keyboard shortcut label | Menu |
+| `children` | `'children'` | Nested items for groups/trees | List (groups), Tree |
+| `snippet` | `'snippet'` | Named snippet to route the item to | List, Select, Tree |
+| `href` | `'href'` | Link URL — renders item as `<a>` | List, Menu |
+| `hrefTarget` | `'target'` | Link target (`_blank`, etc.) | List, Menu |
+| `disabled` | `'disabled'` | Disables the item | All |
+| `expanded` | `'expanded'` | Initial expand state | List, Tree |
+| `selected` | `'selected'` | Initial selected state | List |
+| `id` | `'id'` | Unique identifier | All |
+
+**Default mapping:** if you pass no `fields` prop, Rokkit uses field names directly — a property named `label` becomes the display text, `value` becomes the selection value, etc.
+
+**Primitive arrays:** strings and numbers work without any field mapping. `['Alice', 'Bob']` gives you both `label` and `value` set to the primitive itself.
+
+```svelte
+<!-- Primitives work without fields -->
+<Select items={['Alice', 'Bob', 'Carol']} bind:value />
+
+<!-- Object array with explicit mapping -->
+<Select items={users} fields={{ label: 'fullName', value: 'userId' }} bind:value />
+```
+
+**Same pattern everywhere:** `items` + `fields` + `bind:value` works identically across List, Select, MultiSelect, Tree, Tabs, Toggle, Table, Menu — no adapters needed.
+
+## Theming
+
+### Data Attributes
+
+```html
+<body
+  data-style="rokkit"         <!-- visual personality: rokkit | material | minimal -->
+  data-mode="dark"            <!-- light | dark -->
+  data-density="comfortable"  <!-- compact | default | comfortable — planned; not yet applied by theme CSS, no visual effect without custom CSS -->
+>
+```
+
+`data-palette` sets the active color skin (e.g. `skin-vibrant-orange`). Managed reactively by the `vibe` store (`@rokkit/states`) and `themable` action (`@rokkit/actions`).
+
+### UnoCSS Utility Classes (primary authoring model)
+
+Do NOT use CSS variables in `<style>` blocks — they are not theme-aware. Use utility classes:
+
+```svelte
+<!-- ✅ Correct: theme-aware, responds to data-mode switching -->
+<div class="bg-surface-z1 border border-surface-z3 text-surface-z8 rounded-lg p-4">
+  <h2 class="text-primary-z6 font-semibold">Title</h2>
+  <p class="text-surface-z5 text-sm">Subtitle</p>
+</div>
+
+<!-- ❌ Wrong: not theme-aware -->
+<div style="background: var(--color-surface-z1)">...</div>
+```
+
+### Z-Scale Color System
+
+Each semantic role (`surface`, `primary`, `secondary`, `accent`, `success`, `warning`, `error`, `info`) has 10 z-levels:
+
+| Level | Light      | Dark       | Use                        |
+|-------|-----------|-----------|----------------------------|
+| `z1`  | shade-50  | shade-950 | Page background            |
+| `z2`  | shade-100 | shade-900 | Card / panel background    |
+| `z3`  | shade-200 | shade-800 | Subtle borders, dividers   |
+| `z4`  | shade-300 | shade-700 | Input backgrounds          |
+| `z5`  | shade-500 | shade-600 | Muted text, placeholders   |
+| `z6`  | shade-600 | shade-500 | Interactive / link color   |
+| `z7`  | shade-700 | shade-300 | Secondary text             |
+| `z8`  | shade-800 | shade-200 | Body text                  |
+| `z9`  | shade-900 | shade-100 | Primary text               |
+| `z10` | shade-950 | shade-50  | Maximum contrast           |
+
+Utility class pattern: `{prefix}-{role}-z{n}`
+
+| Prefix    | Example             | Use             |
+|-----------|---------------------|-----------------|
+| `bg-`     | `bg-surface-z1`     | Background      |
+| `text-`   | `text-surface-z8`   | Text color      |
+| `border-` | `border-surface-z3` | Border color    |
+
+### Common Patterns
+
+```svelte
+<!-- Page background -->
+<div class="bg-surface-z1 text-surface-z8">
+
+<!-- Card -->
+<div class="bg-surface-z1 border border-surface-z3 rounded-lg p-4">
+
+<!-- Section header -->
+<h2 class="text-xs font-semibold text-surface-z5 uppercase tracking-wider">
+
+<!-- Primary link -->
+<a class="text-primary-z6 hover:text-primary-z7 transition-colors">
+
+<!-- Input field -->
+<input class="bg-surface-z2 border border-surface-z3 text-surface-z8 focus:border-primary-z5 focus:outline-none rounded px-3 py-2">
+
+<!-- Status indicators -->
+<span class="text-warning-z6">Stale</span>
+<span class="text-success-z6">Active</span>
+<span class="text-error-z6">Failed</span>
+
+<!-- Table row separator -->
+<tr class="border-b border-surface-z2 last:border-b-0">
+  <td class="px-4 py-2.5 text-surface-z7">...</td>
+</tr>
+```
+
+### Inline styles: only for dynamic computed values
+
+```svelte
+<!-- ✅ OK: computed in JS, can't be a static class -->
+<div style="background: {color}22; color: {color}">
+
+<!-- ❌ Not OK: use utility class instead -->
+<div style="background: var(--color-surface-z1)">
+```
+
+## Reference
+
+- [cli.txt](/llms/cli.txt) — CLI reference (`rokkit init`, `rokkit doctor`, icon tools)
+- [composability.txt](/llms/composability.txt) — Snippets, ProxyItem API, per-item routing, interactive snippet patterns
+- [packages/](/llms/packages/) — per-package documentation
+- [components/](/llms/components/) — component reference (40+ components)
+
+## Component Index
+
+### Selection & Navigation
+
+- [List](/llms/components/list.txt) — vertical list with selection, grouping, lazy loading
+- [Tree](/llms/components/tree.txt) — hierarchical tree view with expand/collapse
+- [LazyTree](/llms/components/lazy-tree.txt) — tree with on-demand lazy-loaded children and root pagination
+- [Select](/llms/components/select.txt) — dropdown single-selection with typeahead filter
+- [MultiSelect](/llms/components/multi-select.txt) — dropdown multi-selection with pills
+- [Toggle](/llms/components/toggle.txt) — radio-style button group
+- [Tabs](/llms/components/tabs.txt) — tabbed content panels (horizontal/vertical)
+- [Table](/llms/components/table.txt) — sortable data table with row selection
+
+### Menus & Actions
+
+- [Menu](/llms/components/menu.txt) — dropdown menu with trigger, keyboard nav, groups, collapsible sections
+- [Dropdown](/llms/components/dropdown.txt) — dropdown container with grouped options
+- [Toolbar](/llms/components/toolbar.txt) — horizontal action bar with sections
+- [ToolbarGroup](/llms/components/toolbar-group.txt) — semantic grouping container for toolbar items
+- [FloatingAction](/llms/components/floating-action.txt) — floating action button (FAB)
+- [FloatingNavigation](/llms/components/floating-navigation.txt) — floating back-to-top and section progress navigation
+- [Tooltip](/llms/components/tooltip.txt) — hover/focus tooltip with auto-flip positioning
+
+### Form Inputs
+
+- [Form](/llms/components/form.txt) — schema-driven dynamic form
+- [CheckBox](/llms/components/checkbox.txt) — checkbox input (rendered by `@rokkit/forms`; not directly importable from `@rokkit/ui`)
+- [Switch](/llms/components/switch.txt) — boolean on/off toggle
+- [RadioGroup](/llms/components/radiogroup.txt) — radio button group (rendered by `@rokkit/forms`; not directly importable from `@rokkit/ui`)
+- [Range](/llms/components/range.txt) — range slider
+- [Rating](/llms/components/rating.txt) — star rating input
+- [SearchFilter](/llms/components/search-filter.txt) — structured filter parser
+
+### Upload
+
+- [UploadTarget](/llms/components/upload-target.txt) — drag-and-drop file zone with validation
+- [UploadProgress](/llms/components/upload-progress.txt) — file upload status orchestrator
+- [UploadFileStatus](/llms/components/upload-file-status.txt) — individual file upload status with progress bar and actions
+
+### Layout & Display
+
+- [Card](/llms/components/card.txt) — content card container
+- [Grid](/llms/components/grid.txt) — responsive CSS grid layout wrapper
+- [Stack](/llms/components/stack.txt) — flexible layout container with direction, gap, alignment
+- [Divider](/llms/components/divider.txt) — visual separator line with optional label
+- [Stepper](/llms/components/stepper.txt) — step indicator / wizard progress
+- [ProgressBar](/llms/components/progress-bar.txt) — progress indicator
+- [BreadCrumbs](/llms/components/breadcrumbs.txt) — breadcrumb navigation
+- [Carousel](/llms/components/carousel.txt) — touch-friendly content carousel with auto-play
+- [Timeline](/llms/components/timeline.txt) — vertical timeline of events with icons and metadata
+- [Pill](/llms/components/pill.txt) — inline label/tag/badge with optional dismiss
+- [Avatar](/llms/components/avatar.txt) — user avatar with image, initials fallback, status indicator
+- [Badge](/llms/components/badge.txt) — numeric badge or dot indicator overlay
+- [Connector](/llms/components/connector.txt) — tree-style connector lines for hierarchical views
+
+### Content & Feedback
+
+- [Button](/llms/components/button.txt) — primary action button with variants and loading state
+- [ButtonGroup](/llms/components/button-group.txt) — groups related buttons with consistent sizing
+- [Icon](/llms/components/icon.txt) — icon rendering via Iconify / UnoCSS class
+- [Message](/llms/components/message.txt) — inline status message (success/warning/error/info)
+- [AlertList](/llms/components/alert-list.txt) — dismissible alert stack with auto-dismiss
+- [StatusList](/llms/components/status-list.txt) — grouped validation message summary (`@rokkit/forms`)
+- [Code](/llms/components/code.txt) — syntax-highlighted code block with copy button
+- [MarkdownRenderer](/llms/components/markdown-renderer.txt) — Markdown-to-HTML renderer with DOMPurify sanitization and Svelte component plugins
+
+### Animation & Effects
+
+- [Reveal](/llms/components/reveal.txt) — scroll-triggered slide-in animation via IntersectionObserver
+- [Tilt](/llms/components/tilt.txt) — 3D tilt effect that follows mouse position
+- [Shine](/llms/components/shine.txt) — dynamic specular lighting effect following the mouse
+
+### Color & Theming
+
+- [Swatch](/llms/components/swatch.txt) — color / theme picker with single or multi-select
+- [PaletteManager](/llms/components/palette-manager.txt) — full palette configuration UI with presets and localStorage persistence
+
+### Charts (`@rokkit/chart`)
+
+- [BarChart](/llms/components/bar-chart.txt) — bar chart with grouping, stacking, aggregation, and labels
+- [LineChart](/llms/components/line-chart.txt) — line chart with multi-series, symbols, and curve interpolation
+- [AreaChart](/llms/components/area-chart.txt) — area chart with optional stacking
+- [ScatterPlot](/llms/components/scatter-plot.txt) — scatter plot with color and symbol encoding
+- [BubbleChart](/llms/components/bubble-chart.txt) — three-variable chart with scaleSqrt bubble sizing
+- [PieChart](/llms/components/pie-chart.txt) — pie/donut chart with innerRadius
+- [BoxPlot](/llms/components/box-plot.txt) — quartile box plot from raw observations
+- [ViolinPlot](/llms/components/violin-plot.txt) — distribution shape using QuartileBrewer
+- [Sparkline](/llms/components/sparkline.txt) — lightweight inline sparkline (no axes)
+- [PlotChart](/llms/components/plot-chart.txt) — low-level container with declarative geom API (Bar/Line/Area/Point/Arc/Box/Violin/Heatmap/Candlestick/Waterfall/Hexbin/Ribbon)
+- ChartLegend — standalone HTML legend, scrollable, multi-orientation, shared across charts
+- ChartExporter — SVG and PNG export with CSS variable inlining
+- [FacetPlot](/llms/components/facet-plot.txt) — small-multiples, one panel per facet value
+- [AnimatedPlot](/llms/components/animated-plot.txt) — frame-by-frame animation with play/pause controls
+- [CrossFilter](/llms/components/crossfilter.txt) — linked filter context with FilterBar, FilterSlider, FilterHistogram
+
+## Keyboard Navigation
+
+All interactive components support:
+
+| Key | Action |
+|-----|--------|
+| `Tab` | Move focus between components |
+| `ArrowUp/Down` | Navigate items |
+| `ArrowLeft/Right` | Expand/collapse or navigate tabs |
+| `Enter/Space` | Select/activate |
+| `Escape` | Close overlays |
+| `Home/End` | Jump to first/last item |
+
+## Import
+
+```javascript
+import { List, Tree, LazyTree, Select, MultiSelect, Tabs, Toggle, Table, Toolbar, ToolbarGroup, Menu } from '@rokkit/ui'
+import { Button, ButtonGroup, Dropdown } from '@rokkit/ui'
+import { UploadTarget, UploadProgress, UploadFileStatus } from '@rokkit/ui'
+import { FloatingAction, FloatingNavigation, Tooltip } from '@rokkit/ui'
+import { Card, Grid, Stack, Divider, Carousel, Pill, Timeline, Stepper, ProgressBar, BreadCrumbs } from '@rokkit/ui'
+import { Avatar, Badge, Connector } from '@rokkit/ui'
+import { Reveal, Tilt, Shine } from '@rokkit/ui'
+import { Swatch, PaletteManager } from '@rokkit/ui'
+import { Message, AlertList, StatusList, Code, MarkdownRenderer } from '@rokkit/ui'
+import { Switch, Range, Rating, SearchFilter } from '@rokkit/ui'
+import { Form, FormRenderer, StatusList } from '@rokkit/forms'
+import { BarChart, LineChart, AreaChart, ScatterPlot, BubbleChart, PieChart, BoxPlot, ViolinPlot } from '@rokkit/chart'
+import { PlotChart, GeomBar, GeomLine, GeomArea, GeomPoint, GeomArc, GeomBox, GeomViolin } from '@rokkit/chart'
+import { FacetPlot, AnimatedPlot, Sparkline } from '@rokkit/chart'
+import { CrossFilter, FilterBar, FilterSlider, createCrossFilter } from '@rokkit/chart'
+```

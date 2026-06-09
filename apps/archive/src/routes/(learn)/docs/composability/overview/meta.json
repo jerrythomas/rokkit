@@ -1,7 +1,0 @@
-{
-  "title": "Overview",
-  "description": "The snippet model: customize rendering without modifying components",
-  "icon": "i-glyph:layers",
-  "category": "composability",
-  "order": 1
-}

@@ -1,7 +1,0 @@
-{
-  "title": "Controllers",
-  "description": "Pure state machines for list navigation, selection, and tree traversal",
-  "icon": "i-glyph:cpu-bolt",
-  "category": "utilities",
-  "order": 2
-}

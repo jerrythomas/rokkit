@@ -1,8 +1,0 @@
-/* Required for all Rokkit projects */
-@import '@rokkit/themes/base.css';   /* structural layout for all components */
-
-/* Import one or more visual themes */
-@import '@rokkit/themes/rokkit.css';    /* rich gradients, glowing borders */
-@import '@rokkit/themes/minimal.css';   /* clean, subtle borders */
-@import '@rokkit/themes/material.css';  /* elevation shadows and depth */
-@import '@rokkit/themes/frosted.css';   /* liquid frosted glass with backdrop blur */

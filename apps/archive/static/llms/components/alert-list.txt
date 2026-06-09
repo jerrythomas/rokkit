@@ -1,0 +1,51 @@
+# AlertList
+
+Global toast notification portal. Renders a stack of `Message` components anchored to a screen corner, mounted directly on `document.body` to avoid overflow clipping.
+
+## Import
+
+```javascript
+import { AlertList } from '@rokkit/ui'
+```
+
+## Setup
+
+Place once in your app layout:
+
+```svelte
+<!-- +layout.svelte -->
+<script>
+  import { AlertList } from '@rokkit/ui'
+</script>
+
+<AlertList position="top-right" />
+<slot />
+```
+
+## Pushing Alerts
+
+```javascript
+import { alerts } from '@rokkit/states'
+
+// Auto-dismiss after 3s
+alerts.push({ type: 'success', text: 'Saved!', timeout: 3000 })
+
+// Persistent with dismiss button
+alerts.push({ type: 'error', text: 'Upload failed', dismissible: true })
+
+// Info with no timeout
+alerts.push({ type: 'info', text: 'Processing...', timeout: 0 })
+```
+
+Alert types: `'error'`, `'info'`, `'success'`, `'warning'`
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `position` | `'top-right' \| 'top-center' \| 'top-left' \| 'bottom-right' \| 'bottom-center' \| 'bottom-left'` | `'top-right'` | Stack position on screen |
+| `class` | `string` | `''` | Additional CSS classes |
+
+## Related
+
+- [message](/llms/components/message.txt) — Inline alert component

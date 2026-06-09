@@ -1,7 +1,0 @@
-{
-  "title": "BreadCrumbs",
-  "description": "Navigation breadcrumb component for hierarchical navigation",
-  "category": "navigation-selection",
-  "icon": "i-glyph:crumbs",
-  "sequence": 110
-}

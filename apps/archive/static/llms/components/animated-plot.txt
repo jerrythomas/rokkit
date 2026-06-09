@@ -1,0 +1,68 @@
+# AnimatedPlot
+
+Chart that steps through discrete frames of a dataset — one frame per distinct value of a field (e.g. `year`, `quarter`). Axes are fixed across all frames so values are comparable. Includes play/pause, scrub, and speed controls.
+
+## Import
+
+```javascript
+import { AnimatedPlot } from '@rokkit/chart'
+```
+
+## Quick Start
+
+```svelte
+<script>
+  import { AnimatedPlot } from '@rokkit/chart'
+  import { browser } from '$app/environment'
+</script>
+
+{#if browser}
+  <AnimatedPlot
+    data={mpg}
+    animate={{ by: 'year' }}
+    x="class"
+    y="hwy"
+    geoms={[{ type: 'bar', stat: 'mean' }]}
+  />
+{/if}
+```
+
+`{#if browser}` is required — `AnimatedPlot` uses `requestAnimationFrame`, unavailable during SSR.
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `data` | `Object[]` | `[]` | Full dataset containing all frames |
+| `animate` | `{ by, duration?, loop? }` | — | **Required.** Animation config |
+| `x` | `string` | — | Field for the X axis |
+| `y` | `string` | — | Field for the Y axis |
+| `color` | `string` | — | Field for color assignment (consistent across frames) |
+| `geoms` | `GeomSpec[]` | `[]` | Geom specs — same format as `PlotChart` |
+| `width` | `number` | `600` | SVG width in pixels |
+| `height` | `number` | `400` | SVG height in pixels |
+| `grid` | `boolean` | `true` | Show gridlines |
+| `legend` | `boolean` | `false` | Show color legend |
+| `mode` | `'light' \| 'dark'` | `'light'` | Color palette mode |
+
+## animate object
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| `by` | `string` | — | Field whose distinct values become frames (sorted order) |
+| `duration` | `number` | `800` | Milliseconds per frame at 1× speed |
+| `loop` | `boolean` | `false` | Restart from the first frame after the last |
+
+## Playback Controls
+
+Built-in timeline below the chart: play/pause, scrub slider, frame label, speed selector (0.5×, 1×, 2×, 4×). Respects `prefers-reduced-motion`.
+
+## Notes
+
+- Missing data combinations per frame are filled with zero for smooth animation
+- Supports all geom types: `bar`, `line`, `point`, `area`
+
+## Related
+
+- [PlotChart](/llms/components/plot-chart.txt) — static chart (same geom API)
+- [FacetPlot](/llms/components/facet-plot.txt) — small-multiples layout

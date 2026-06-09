@@ -1,0 +1,62 @@
+# Rokkit Menu Component
+
+> Dropdown menu with trigger button, keyboard navigation, groups, and collapsible sections.
+
+## Quick Start
+
+```svelte
+<script>
+  import { Menu } from '@rokkit/ui'
+
+  const items = [
+    { label: 'Edit', icon: 'action-edit' },
+    { label: 'Delete', icon: 'action-remove' },
+    { type: 'separator' },
+    { label: 'Settings' }
+  ]
+</script>
+
+<Menu {items} label="Actions" onselect={(val) => console.log(val)} />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `items` | `unknown[]` | `[]` | Menu items array |
+| `fields` | `Record<string, string>` | `{}` | Field mapping |
+| `value` | `unknown` | — | Current selected value |
+| `size` | `string` | `'md'` | Size variant |
+| `disabled` | `boolean` | `false` | Disable menu |
+| `collapsible` | `boolean` | `false` | Allow group collapse/expand |
+| `label` | `string` | `'Menu'` | Trigger button label |
+| `icon` | `string` | — | Trigger icon class |
+| `showArrow` | `boolean` | `true` | Show dropdown arrow |
+| `align` | `'start' \| 'end'` | `'start'` | Dropdown alignment |
+| `direction` | `'up' \| 'down'` | `'down'` | Dropdown direction |
+| `icons` | `{ opened, closed }` | — | Custom expand/collapse icons |
+| `onselect` | `(value, proxy) => void` | — | Selection callback |
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-menu` | Root container |
+| `data-menu-trigger` | Trigger button |
+| `data-menu-dropdown` | Dropdown container |
+| `data-menu-item` | Leaf item button |
+| `data-menu-group` | Group header button |
+| `data-menu-separator` | Separator element |
+| `data-path` | Item key (for navigation) |
+| `data-level` | Nesting depth |
+| `data-active` | Highlights current value match |
+| `data-open` | Dropdown open state |
+| `data-disabled` | Disabled state |
+
+## Behavior
+
+- Click/Enter/Space on trigger opens dropdown
+- Arrow keys navigate items; Escape closes
+- Groups support collapse/expand when `collapsible` enabled
+- Closes on selection, returns focus to trigger
+- Supports custom snippets via `itemContent`, `groupContent`

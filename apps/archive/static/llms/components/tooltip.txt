@@ -1,0 +1,42 @@
+# Rokkit Tooltip Component
+
+> Hover/focus tooltip with auto-flip positioning and configurable delay.
+
+## Quick Start
+
+```svelte
+<script>
+  import { Tooltip, Button } from '@rokkit/ui'
+</script>
+
+<Tooltip content="Save your work" position="top">
+  <Button label="Save" />
+</Tooltip>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `content` | `string` | `''` | Tooltip text |
+| `position` | `'top' \| 'bottom' \| 'left' \| 'right'` | `'top'` | Preferred position |
+| `delay` | `number` | `300` | Show delay in milliseconds |
+| `children` | `Snippet` | — | Trigger element to wrap |
+| `tooltipContent` | `Snippet` | — | Custom tooltip body (overrides `content`) |
+| `class` | `string` | — | Additional CSS classes |
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-tooltip-root` | Wrapper element |
+| `data-tooltip-content` | Tooltip bubble |
+| `data-tooltip-position` | Actual position (after auto-flip) |
+| `data-tooltip-visible` | `'true'` or `'false'` |
+
+## Behavior
+
+- Shows on mouseenter/focusin after delay; hides on mouseleave/focusout/Escape
+- Auto-flips position when preferred side would overflow viewport
+- Unique ID per instance for `aria-describedby` accessibility
+- Supports custom content via `tooltipContent` snippet

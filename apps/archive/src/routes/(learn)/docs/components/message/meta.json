@@ -1,8 +1,0 @@
-{
-  "title": "Message",
-  "description": "Alert and notification message component",
-  "icon": "i-glyph:message",
-  "category": "display",
-  "sequence": 60,
-  "llms": true
-}

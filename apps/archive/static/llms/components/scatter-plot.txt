@@ -1,0 +1,39 @@
+# ScatterPlot
+
+Data-driven SVG scatter plot. Shows correlation between two numeric fields. Supports color coding, symbol assignment, and value labels.
+
+## Import
+
+```javascript
+import { ScatterPlot } from '@rokkit/chart'
+```
+
+## Quick Start
+
+```svelte
+<ScatterPlot data={rows} x="gdp" y="life_exp" />
+<ScatterPlot data={rows} x="gdp" y="life_exp" color="region" symbol="region" legend tooltip />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `data` | `Object[]` | `[]` | Data rows |
+| `x` | `string` | — | Numeric field for X axis |
+| `y` | `string` | — | Numeric field for Y axis |
+| `color` | `string` | — | Field for point color |
+| `size` | `string` | — | Field for point size (use `BubbleChart` for prominent sizing) |
+| `symbol` | `string` | — | Field for marker symbol shape |
+| `label` | `boolean \| string \| (d) => string` | `false` | Show value labels |
+| `width` | `number` | `600` | SVG width in pixels |
+| `height` | `number` | `400` | SVG height in pixels |
+| `mode` | `'light' \| 'dark'` | `'light'` | Color palette mode |
+| `grid` | `boolean` | `true` | Show gridlines |
+| `legend` | `boolean` | `false` | Show color legend |
+| `tooltip` | `boolean \| (d) => string` | `false` | Hover tooltip |
+
+## Related
+
+- [BubbleChart](/llms/components/bubble-chart.txt) — scatter with prominent bubble sizing (scaleSqrt)
+- [PlotChart](/llms/components/plot-chart.txt) — low-level API with `GeomPoint`

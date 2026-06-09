@@ -1,0 +1,37 @@
+# Rokkit ButtonGroup Component
+
+> Groups related buttons with consistent sizing and semantic role.
+
+## Quick Start
+
+```svelte
+<script>
+  import { Button, ButtonGroup } from '@rokkit/ui'
+</script>
+
+<ButtonGroup size="sm">
+  <Button label="Left" />
+  <Button label="Center" />
+  <Button label="Right" />
+</ButtonGroup>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size applied to all buttons in group |
+| `children` | `Snippet` | — | Button elements to group |
+| `class` | `string` | — | Additional CSS classes |
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-button-group` | Root container |
+| `data-size` | Size variant |
+
+## Behavior
+
+- Wraps buttons with `role="group"` for accessibility
+- Applies consistent sizing to all child buttons

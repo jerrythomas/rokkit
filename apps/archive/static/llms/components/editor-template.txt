@@ -1,0 +1,81 @@
+# Rokkit Editor Template
+
+> Pre-built composition pattern: Tree (navigation) + FormRenderer (content) for editing hierarchical data.
+
+This is not a standalone component but a documented composition pattern using existing Rokkit components.
+
+## Pattern
+
+```
++----------------------------------+
+|  Tree (nav)  |  FormRenderer     |
+|              |                   |
+|  > Config    |  name: [______]   |
+|    v Server  |  host: [______]   |
+|      > Auth  |  port: [______]   |
++----------------------------------+
+```
+
+## Implementation
+
+```svelte
+<script>
+  import { NavContent, Tree } from '@rokkit/ui'
+  import { FormRenderer, FormBuilder } from '@rokkit/forms'
+
+  let items = $state([
+    { label: 'Server', children: [
+      { label: 'Auth', type: 'auth' },
+      { label: 'Logging', type: 'logging' }
+    ]},
+    { label: 'Database', type: 'database' }
+  ])
+
+  let selectedNode = $state(null)
+
+  // Schema varies per node type
+  const schemas = {
+    auth: { type: 'object', properties: { username: { type: 'string' }, password: { type: 'string' } } },
+    logging: { type: 'object', properties: { level: { type: 'string' }, path: { type: 'string' } } },
+    database: { type: 'object', properties: { host: { type: 'string' }, port: { type: 'number' } } }
+  }
+
+  let formBuilder = $derived(
+    selectedNode ? new FormBuilder(schemas[selectedNode.type], selectedNode.data) : null
+  )
+</script>
+
+<NavContent orientation="horizontal" navSize="260px">
+  {#snippet nav()}
+    <Tree {items} onselect={(value) => selectedNode = value} />
+  {/snippet}
+  {#snippet content()}
+    {#if formBuilder}
+      <FormRenderer builder={formBuilder} />
+    {:else}
+      <p>Select a node to edit</p>
+    {/if}
+  {/snippet}
+</NavContent>
+```
+
+## Key Wiring Points
+
+- **Tree selection** drives which schema/data the FormRenderer shows
+- **Schema varies per node type** — map node types to JSON schemas
+- Use `FormBuilder` to create reactive form state from schema + data
+- Empty state shown when no node is selected
+
+## Use Cases
+
+- Config editors (server settings, environment variables)
+- CMS content trees (pages, sections, blocks)
+- Permission matrices (roles, resources)
+- Build pipeline editors (stages, steps)
+
+## Components Used
+
+- `NavContent` — side-by-side layout with responsive collapse
+- `Tree` — hierarchical navigation with expand/collapse
+- `FormRenderer` — schema-driven form rendering
+- `FormBuilder` — reactive form state management

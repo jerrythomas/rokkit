@@ -1,0 +1,38 @@
+# BubbleChart
+
+Data-driven SVG bubble chart. Three-variable correlation: x position, y position, and bubble size. Size is mapped with `scaleSqrt` so bubble area is proportional to the value.
+
+## Import
+
+```javascript
+import { BubbleChart } from '@rokkit/chart'
+```
+
+## Quick Start
+
+```svelte
+<BubbleChart data={data} x="cty" y="hwy" size="displ" />
+<BubbleChart data={data} x="cty" y="hwy" size="displ" color="class" legend tooltip />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `data` | `Object[]` | `[]` | Data rows |
+| `x` | `string` | — | Numeric field for X axis |
+| `y` | `string` | — | Numeric field for Y axis |
+| `size` | `string` | — | Numeric field for bubble size |
+| `color` | `string` | — | Field for bubble color |
+| `symbol` | `string` | — | Field for marker symbol shape |
+| `width` | `number` | `600` | SVG width in pixels |
+| `height` | `number` | `400` | SVG height in pixels |
+| `mode` | `'light' \| 'dark'` | `'light'` | Color palette mode |
+| `grid` | `boolean` | `true` | Show gridlines |
+| `legend` | `boolean` | `false` | Show color legend |
+| `tooltip` | `boolean \| (d) => string` | `false` | Hover tooltip |
+
+## Related
+
+- [ScatterPlot](/llms/components/scatter-plot.txt) — scatter without prominent sizing
+- [PlotChart](/llms/components/plot-chart.txt) — low-level API with `GeomPoint`

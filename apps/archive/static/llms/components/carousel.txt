@@ -1,0 +1,62 @@
+# Carousel
+
+Image or content carousel with autoplay, keyboard navigation, swipe support, dot indicators, and prev/next arrows.
+
+## Import
+
+```javascript
+import { Carousel } from '@rokkit/ui'
+```
+
+## Quick Start
+
+```svelte
+<script>
+  import { Carousel } from '@rokkit/ui'
+  const images = ['/img/a.jpg', '/img/b.jpg', '/img/c.jpg']
+  let current = $state(0)
+</script>
+
+<Carousel count={images.length} bind:current autoplay>
+  {#snippet slide(i)}
+    <img src={images[i]} alt="Slide {i + 1}" />
+  {/snippet}
+</Carousel>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `count` | `number` | `0` | Number of slides (required when using the `slide` snippet) |
+| `current` | `number` | `0` | Active slide index — use `bind:current` |
+| `autoplay` | `boolean` | `false` | Auto-advance slides |
+| `interval` | `number` | `5000` | Autoplay interval in ms |
+| `loop` | `boolean` | `true` | Wrap around at first/last slide |
+| `showDots` | `boolean` | `true` | Show dot navigation indicators |
+| `showArrows` | `boolean` | `true` | Show prev/next arrow buttons |
+| `transition` | `'slide' \| 'fade' \| 'none'` | `'slide'` | Slide transition style |
+| `class` | `string` | `''` | Additional CSS classes |
+
+## Snippets
+
+- `slide(index, current)` — Render each slide by index
+- `children` — Alternative to `slide`; render all slides yourself
+
+## Keyboard & Touch
+
+- `ArrowLeft` / `ArrowRight` — Navigate prev/next
+- Swipe left/right — Navigate on touch devices
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-carousel` | Root element |
+| `data-carousel-track` | Slide container |
+| `data-carousel-slide` | Individual slide wrapper |
+| `data-active` | Present on the current slide |
+| `data-carousel-dots` | Dot indicator container |
+| `data-carousel-dot` | Individual dot |
+| `data-carousel-prev` | Previous button |
+| `data-carousel-next` | Next button |

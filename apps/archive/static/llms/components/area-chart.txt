@@ -1,0 +1,43 @@
+# AreaChart
+
+Data-driven SVG area chart. Same API as LineChart with optional stacking. Use for cumulative trends and part-to-whole over time.
+
+## Import
+
+```javascript
+import { AreaChart } from '@rokkit/chart'
+```
+
+## Quick Start
+
+```svelte
+<AreaChart data={rows} x="month" y="revenue" />
+<AreaChart data={rows} x="month" y="revenue" color="region" stack legend />
+```
+
+## Props
+
+Same as `LineChart` plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `data` | `Object[]` | `[]` | Data rows |
+| `x` | `string` | — | Field for X axis |
+| `y` | `string` | — | Field for Y axis |
+| `color` | `string` | — | Field for area color grouping |
+| `symbol` | `string` | — | Field for marker symbol |
+| `stat` | `string` | `'identity'` | Aggregation stat |
+| `curve` | `'linear' \| 'smooth' \| 'step'` | `'linear'` | Line interpolation |
+| `stack` | `boolean` | `false` | Stack areas |
+| `label` | `boolean \| string \| (d) => string` | `false` | Value labels |
+| `width` | `number` | `600` | SVG width in pixels |
+| `height` | `number` | `400` | SVG height in pixels |
+| `mode` | `'light' \| 'dark'` | `'light'` | Color palette mode |
+| `grid` | `boolean` | `true` | Show gridlines |
+| `legend` | `boolean` | `false` | Show color legend |
+| `tooltip` | `boolean \| (d) => string` | `false` | Hover tooltip |
+
+## Related
+
+- [LineChart](/llms/components/line-chart.txt) — unfilled version
+- [PlotChart](/llms/components/plot-chart.txt) — low-level API with `GeomArea`

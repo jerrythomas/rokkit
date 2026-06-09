@@ -1,0 +1,41 @@
+# LineChart
+
+Data-driven SVG line chart. Supports multi-series color grouping, marker symbols, aggregation stats, curve interpolation, and value labels.
+
+## Import
+
+```javascript
+import { LineChart } from '@rokkit/chart'
+```
+
+## Quick Start
+
+```svelte
+<LineChart data={rows} x="month" y="value" />
+<LineChart data={rows} x="month" y="value" color="region" symbol="region" curve="smooth" legend />
+<LineChart data={rows} x="month" y="value" color="region" label tooltip />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `data` | `Object[]` | `[]` | Data rows |
+| `x` | `string` | — | Field for X axis |
+| `y` | `string` | — | Field for Y axis |
+| `color` | `string` | — | Field for line color grouping |
+| `symbol` | `string` | — | Field for marker symbol assignment |
+| `stat` | `string` | `'identity'` | Aggregation: `identity`, `sum`, `mean`, `min`, `max`, `count` |
+| `curve` | `'linear' \| 'smooth' \| 'step'` | `'linear'` | Line interpolation style |
+| `label` | `boolean \| string \| (d) => string` | `false` | Show value labels at each point |
+| `width` | `number` | `600` | SVG width in pixels |
+| `height` | `number` | `400` | SVG height in pixels |
+| `mode` | `'light' \| 'dark'` | `'light'` | Color palette mode |
+| `grid` | `boolean` | `true` | Show gridlines |
+| `legend` | `boolean` | `false` | Show color legend |
+| `tooltip` | `boolean \| (d) => string` | `false` | Hover tooltip |
+
+## Related
+
+- [AreaChart](/llms/components/area-chart.txt) — filled version of line chart
+- [PlotChart](/llms/components/plot-chart.txt) — low-level API with `GeomLine`

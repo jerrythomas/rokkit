@@ -1,8 +1,0 @@
-{
-  "title": "Connector",
-  "description": "Visual connectors for tree and nested layouts",
-  "icon": "i-glyph:git-merge",
-  "category": "utilities",
-  "tags": ["connector", "visual", "tree", "nested", "layout"],
-  "experimental": false
-}

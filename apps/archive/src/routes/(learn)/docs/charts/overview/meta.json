@@ -1,7 +1,0 @@
-{
-  "title": "Overview",
-  "description": "Chart architecture, theme color integration, and dark mode support",
-  "icon": "i-glyph:chart",
-  "category": "charts",
-  "order": 1
-}

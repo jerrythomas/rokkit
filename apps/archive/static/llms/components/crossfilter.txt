@@ -1,0 +1,76 @@
+# CrossFilter
+
+Reactive filter context shared across child charts. Charts with `filterable` geoms dim or hide unselected data when a filter is active.
+
+## Import
+
+```javascript
+import { CrossFilter, FilterBar, FilterSlider, createCrossFilter } from '@rokkit/chart'
+```
+
+## Quick Start
+
+```svelte
+<CrossFilter mode="dim" bind:filters>
+  <FilterBar data={orders} field="category" valueField="amount" />
+  <FilterSlider field="price" min={0} max={500} label="Price" />
+  <BarChart data={orders} x="category" y="amount" />
+</CrossFilter>
+```
+
+Charts inside `CrossFilter` automatically receive the filter context. Geoms with `filterable` respond to active filters.
+
+## CrossFilter Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `crossfilter` | `CrossFilterInstance` | — | External instance (optional — created internally if omitted) |
+| `mode` | `'dim' \| 'hide'` | `'dim'` | How unselected data is shown — dimmed or hidden |
+| `filters` | `FilterState` (bindable) | — | Bind to read active filters externally |
+
+## FilterBar Props
+
+Bar chart widget for categorical filtering. Click a bar to filter by that category.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `data` | `Object[]` | `[]` | Data rows |
+| `field` | `string` | — | Categorical dimension field |
+| `valueField` | `string` | — | Numeric value field |
+| `stat` | `string` | `'sum'` | Aggregation stat |
+| `width` | `number` | `300` | Width in pixels |
+| `height` | `number` | `120` | Height in pixels |
+| `mode` | `'light' \| 'dark'` | `'light'` | Palette mode |
+
+## FilterSlider Props
+
+Dual range slider for continuous (numeric) filtering.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `field` | `string` | — | Continuous dimension field |
+| `min` | `number` | — | Range minimum |
+| `max` | `number` | — | Range maximum |
+| `step` | `number` | `0.1` | Slider step |
+| `label` | `string` | `''` | Display label |
+
+## createCrossFilter()
+
+Create an instance manually for use outside `<CrossFilter>`:
+
+```javascript
+const cf = createCrossFilter()
+
+cf.toggleCategorical('region', 'North')   // toggle category selection
+cf.setRange('price', [10, 100])            // set numeric range
+cf.clear('region')                         // clear one dimension
+cf.clearAll()                              // clear all filters
+cf.isFiltered('region')                    // boolean — any filter on dimension?
+cf.isSelected('region', 'North')           // boolean — specific value selected?
+cf.version                                 // reactive counter, increments on every mutation
+```
+
+## Related
+
+- [PlotChart](/llms/components/plot-chart.txt) — low-level chart with `filterable` geoms
+- [BarChart](/llms/components/bar-chart.txt) — high-level chart, also works inside CrossFilter

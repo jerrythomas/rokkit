@@ -1,0 +1,43 @@
+# Rokkit Connector Component
+
+> Tree-style connector lines for hierarchical visualizations.
+
+## Quick Start
+
+```svelte
+<script>
+  import { Connector } from '@rokkit/ui'
+</script>
+
+<Connector type="child" />
+<Connector type="last" />
+<Connector type="sibling" />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `type` | `'last' \| 'child' \| 'sibling' \| 'empty'` | `'empty'` | Connector type |
+| `rtl` | `boolean` | `false` | Right-to-left layout |
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-connector` | Root element |
+| `data-connector-type` | Connector type |
+| `data-connector-rtl` | Present when RTL mode |
+| `data-connector-v` | Vertical line |
+| `data-connector-h` | Horizontal line |
+| `data-connector-corner` | Corner element (RTL) |
+| `data-connector-full` | Full vertical line |
+
+## Connector Types
+
+| Type | Renders | Use for |
+|------|---------|---------|
+| `child` | Full vertical + horizontal | Node with siblings below |
+| `last` | Partial vertical + horizontal | Terminal node in group |
+| `sibling` | Full vertical only | Continues downward |
+| `empty` | Nothing | Spacing placeholder |

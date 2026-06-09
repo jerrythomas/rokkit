@@ -1,0 +1,374 @@
+# Rokkit Rating Component
+
+> Interactive star rating component with keyboard navigation and customizable icons.
+
+The Rating component provides an accessible way to display and collect ratings, with support for custom icons, hover effects, and keyboard navigation.
+
+## Quick Start
+
+```svelte
+<script>
+  import { Rating } from '@rokkit/ui'
+
+  let rating = $state(0)
+</script>
+
+<Rating bind:value={rating} />
+<p>You rated: {rating} out of 5</p>
+```
+
+## Core Concepts
+
+### Value Range
+
+Rating uses integer values from 0 to max:
+
+```svelte
+<script>
+  import { Rating } from '@rokkit/ui'
+
+  let rating = $state(3)  // 3 out of 5
+</script>
+
+<Rating bind:value={rating} max={5} />
+```
+
+### Custom Max
+
+Change the maximum rating value:
+
+```svelte
+<!-- 10-star rating -->
+<Rating bind:value={rating} max={10} />
+
+<!-- 3-star rating -->
+<Rating bind:value={rating} max={3} />
+```
+
+### Custom Icons
+
+Override filled and empty state icons:
+
+```svelte
+<script>
+  import { Rating } from '@rokkit/ui'
+
+  const heartIcons = {
+    filled: 'fa-solid fa-heart',
+    empty: 'fa-regular fa-heart'
+  }
+</script>
+
+<Rating bind:value={rating} stateIcons={heartIcons} />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `number` | `0` | Current rating (use `bind:value`) |
+| `max` | `number` | `5` | Maximum rating value |
+| `disabled` | `boolean` | `false` | Disables interaction |
+| `stateIcons` | `object` | `defaultStateIcons.rating` | Custom icons |
+| `placeholder` | `string` | `'Rating'` | Accessible label prefix |
+| `id` | `string` | `null` | Element ID |
+| `name` | `string` | `null` | Form input name |
+| `tabindex` | `number` | `0` | Tab index |
+| `onchange` | `function` | `undefined` | Change event handler |
+
+### State Icons Object
+
+```javascript
+const stateIcons = {
+  filled: 'icon-class-for-filled',
+  empty: 'icon-class-for-empty'
+}
+```
+
+## Keyboard Navigation
+
+| Key | Action |
+|-----|--------|
+| `ArrowRight` / `ArrowUp` | Increase rating |
+| `ArrowLeft` / `ArrowDown` | Decrease rating |
+| `0-9` | Set rating directly |
+
+## Component Structure
+
+```
+[data-rating]
+└── [data-rating-item]            // Repeated for each star
+    └── [data-filled]             // Present when star is filled
+```
+
+## Data Attributes for Styling
+
+| Attribute | Element | Purpose |
+|-----------|---------|---------|
+| `[data-rating]` | Root | Main container |
+| `[data-rating][data-rating-disabled]` | Root | Disabled state |
+| `[data-rating-item]` | Item | Individual star |
+| `[data-rating-item][data-filled]` | Item | Star is filled/selected |
+| `[data-rating-item][data-hovering]` | Item | Hover state |
+
+### Styling Example
+
+```css
+[data-rating] {
+  display: inline-flex;
+  gap: 4px;
+  cursor: pointer;
+  user-select: none;
+}
+
+[data-rating][data-rating-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+[data-rating-item] {
+  font-size: 1.5rem;
+  color: var(--surface-400);
+  transition: color 0.15s, transform 0.15s;
+}
+
+[data-rating-item][data-filled] {
+  color: var(--warning-500);
+}
+
+[data-rating-item][data-hovering] {
+  color: var(--warning-400);
+  transform: scale(1.1);
+}
+
+[data-rating]:focus-visible {
+  outline: 2px solid var(--primary-500);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+```
+
+## Accessibility
+
+- Uses `role="radiogroup"` on container
+- Each star has `role="option"`
+- `aria-checked` indicates selection
+- `aria-label` provides context (e.g., "Rating 3 out of 5")
+- Full keyboard navigation
+- Hidden input for form submission
+
+## Import
+
+```javascript
+// Named import
+import { Rating } from '@rokkit/ui'
+
+// Default import
+import Rating from '@rokkit/ui/rating'
+```
+
+## TypeScript Types
+
+```typescript
+interface RatingProps {
+  value?: number
+  max?: number
+  disabled?: boolean
+  stateIcons?: {
+    filled: string
+    empty: string
+  }
+  placeholder?: string
+  id?: string
+  name?: string
+  tabindex?: number
+  onchange?: (event: { value: number }) => void
+}
+```
+
+## Examples
+
+### Basic Rating
+
+```svelte
+<script>
+  import { Rating } from '@rokkit/ui'
+
+  let rating = $state(0)
+</script>
+
+<Rating bind:value={rating} />
+<p>Rating: {rating}/5</p>
+```
+
+### Product Rating
+
+```svelte
+<script>
+  import { Rating } from '@rokkit/ui'
+
+  let productRating = $state(4)
+</script>
+
+<div class="product-rating">
+  <Rating bind:value={productRating} />
+  <span class="rating-text">{productRating} out of 5 stars</span>
+</div>
+```
+
+### Custom Scale
+
+```svelte
+<script>
+  import { Rating } from '@rokkit/ui'
+
+  let satisfaction = $state(7)
+</script>
+
+<label>
+  How satisfied are you? (1-10)
+  <Rating bind:value={satisfaction} max={10} />
+</label>
+```
+
+### Heart Rating
+
+```svelte
+<script>
+  import { Rating } from '@rokkit/ui'
+
+  let love = $state(3)
+  const heartIcons = {
+    filled: 'fa-solid fa-heart',
+    empty: 'fa-regular fa-heart'
+  }
+</script>
+
+<Rating bind:value={love} stateIcons={heartIcons} />
+```
+
+### Emoji Rating
+
+```svelte
+<script>
+  import { Rating } from '@rokkit/ui'
+
+  let mood = $state(3)
+  const emojiIcons = {
+    filled: '😊',
+    empty: '😐'
+  }
+</script>
+
+<Rating bind:value={mood} stateIcons={emojiIcons} max={5} />
+```
+
+### Read-Only Display
+
+```svelte
+<script>
+  import { Rating } from '@rokkit/ui'
+
+  const reviews = [
+    { name: 'Alice', rating: 5 },
+    { name: 'Bob', rating: 4 },
+    { name: 'Charlie', rating: 3 }
+  ]
+</script>
+
+{#each reviews as review}
+  <div class="review">
+    <span>{review.name}</span>
+    <Rating value={review.rating} disabled />
+  </div>
+{/each}
+```
+
+### Form Integration
+
+```svelte
+<script>
+  import { Rating } from '@rokkit/ui'
+
+  let feedback = $state({
+    quality: 0,
+    service: 0,
+    value: 0
+  })
+
+  function handleSubmit() {
+    console.log('Feedback:', feedback)
+  }
+</script>
+
+<form onsubmit|preventDefault={handleSubmit}>
+  <div class="rating-field">
+    <label>Product Quality</label>
+    <Rating name="quality" bind:value={feedback.quality} />
+  </div>
+
+  <div class="rating-field">
+    <label>Customer Service</label>
+    <Rating name="service" bind:value={feedback.service} />
+  </div>
+
+  <div class="rating-field">
+    <label>Value for Money</label>
+    <Rating name="value" bind:value={feedback.value} />
+  </div>
+
+  <button type="submit">Submit Feedback</button>
+</form>
+```
+
+### With Change Handler
+
+```svelte
+<script>
+  import { Rating } from '@rokkit/ui'
+
+  let rating = $state(0)
+
+  function handleChange(event) {
+    console.log('New rating:', event.value)
+    // Could save to server, show animation, etc.
+  }
+</script>
+
+<Rating bind:value={rating} onchange={handleChange} />
+```
+
+### Compact Rating
+
+```svelte
+<script>
+  import { Rating } from '@rokkit/ui'
+</script>
+
+<div class="compact-rating">
+  <Rating value={4} max={5} disabled />
+  <span>4.0</span>
+  <span class="count">(128 reviews)</span>
+</div>
+
+<style>
+  .compact-rating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.875rem;
+  }
+  .compact-rating :global(rk-rating icon) {
+    font-size: 1rem;
+  }
+  .count {
+    color: var(--text-muted);
+  }
+</style>
+```
+
+## Related Components
+
+- **Icon** - Used for rating stars
+- **ProgressBar** - For displaying percentages
+- **Range** - For selecting numeric values

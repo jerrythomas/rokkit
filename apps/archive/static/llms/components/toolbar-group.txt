@@ -1,0 +1,42 @@
+# Rokkit ToolbarGroup Component
+
+> Semantic grouping container for toolbar items with consistent gap spacing.
+
+## Quick Start
+
+```svelte
+<script>
+  import { Toolbar, ToolbarGroup, Button } from '@rokkit/ui'
+</script>
+
+<Toolbar>
+  <ToolbarGroup label="Formatting">
+    <Button icon="text-bold" />
+    <Button icon="text-italic" />
+  </ToolbarGroup>
+  <ToolbarGroup label="Alignment">
+    <Button icon="align-left" />
+    <Button icon="align-center" />
+  </ToolbarGroup>
+</Toolbar>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `string` | — | Accessibility label for the group |
+| `gap` | `'none' \| 'sm' \| 'md' \| 'lg'` | `'sm'` | Gap between items |
+| `children` | `Snippet` | — | Group content |
+| `class` | `string` | — | Additional CSS classes |
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-toolbar-group` | Root container |
+| `data-toolbar-group-gap` | Gap size |
+
+## Behavior
+
+- Sets `role="group"` and `aria-label` for accessibility

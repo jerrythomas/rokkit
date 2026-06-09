@@ -1,0 +1,43 @@
+# Rokkit Badge Component
+
+> Numeric badge or dot indicator, optionally overlaid on child content.
+
+## Quick Start
+
+```svelte
+<script>
+  import { Badge } from '@rokkit/ui'
+</script>
+
+<Badge count={5} variant="error">
+  <button>Notifications</button>
+</Badge>
+
+<Badge dot variant="success" />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `count` | `number` | — | Numeric count to display |
+| `max` | `number` | `99` | Maximum before showing "max+" |
+| `variant` | `'default' \| 'primary' \| 'success' \| 'warning' \| 'error'` | `'default'` | Color variant |
+| `dot` | `boolean` | `false` | Show as small dot without text |
+| `children` | `Snippet` | — | Content to wrap with badge overlay |
+| `class` | `string` | — | Additional CSS classes |
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-badge-wrapper` | Wrapper div (when children provided) |
+| `data-badge` | Badge element |
+| `data-variant` | Visual variant |
+| `data-dot` | Present when dot mode active |
+
+## Behavior
+
+- Standalone or overlay mode (wraps children when provided)
+- Shows "99+" when count exceeds max
+- Sets `aria-label` to "{count} notifications" for accessibility

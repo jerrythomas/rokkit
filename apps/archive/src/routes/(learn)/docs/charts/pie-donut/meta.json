@@ -1,7 +1,0 @@
-{
-  "title": "Pie / Donut",
-  "description": "Proportional segment chart with optional center label",
-  "icon": "i-glyph:pie-chart-2",
-  "category": "charts",
-  "order": 5
-}

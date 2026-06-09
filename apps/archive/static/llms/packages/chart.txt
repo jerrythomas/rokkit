@@ -1,0 +1,147 @@
+# @rokkit/chart
+
+D3-powered composable chart components for Svelte 5. High-level chart components, a low-level declarative geom API, faceted and animated plots, inline sparklines, and a reactive crossfilter system for linked views.
+
+## Install
+
+```bash
+npm install @rokkit/chart
+```
+
+## Component Reference
+
+### High-level charts
+
+| Component | File | Description |
+|-----------|------|-------------|
+| `BarChart` | [bar-chart.txt](/llms/components/bar-chart.txt) | Bar chart with grouping, stacking, aggregation, labels |
+| `LineChart` | [line-chart.txt](/llms/components/line-chart.txt) | Line chart with multi-series, symbols, curve interpolation |
+| `AreaChart` | [area-chart.txt](/llms/components/area-chart.txt) | Area chart with optional stacking |
+| `ScatterPlot` | [scatter-plot.txt](/llms/components/scatter-plot.txt) | Scatter plot with color/symbol encoding |
+| `BubbleChart` | [bubble-chart.txt](/llms/components/bubble-chart.txt) | Three-variable chart with scaleSqrt bubble sizing |
+| `PieChart` | [pie-chart.txt](/llms/components/pie-chart.txt) | Pie/donut chart with `innerRadius` |
+| `BoxPlot` | [box-plot.txt](/llms/components/box-plot.txt) | Quartile box plot from raw observations |
+| `ViolinPlot` | [violin-plot.txt](/llms/components/violin-plot.txt) | Distribution shape using QuartileBrewer |
+| `Sparkline` | [sparkline.txt](/llms/components/sparkline.txt) | Lightweight inline sparkline (no axes) |
+
+### Composition & animation
+
+| Component | File | Description |
+|-----------|------|-------------|
+| `PlotChart` | [plot-chart.txt](/llms/components/plot-chart.txt) | Low-level container with spec-driven or declarative geom API |
+| `ChartProvider` | — | Context provider for chart presets |
+| `ChartLegend` | — | Standalone HTML legend — scrollable, multi-orientation, shared across charts |
+| `ChartExporter` | — | SVG and PNG export with CSS variable inlining and retina scaling |
+| `FacetPlot` | [facet-plot.txt](/llms/components/facet-plot.txt) | Small-multiples — one panel per facet value |
+| `AnimatedPlot` | [animated-plot.txt](/llms/components/animated-plot.txt) | Frame-by-frame animation with play/pause controls |
+
+### Geom components (declarative, used inside PlotChart)
+
+| Component | Type string | Description |
+|-----------|-------------|-------------|
+| `GeomBar` | `bar` | Vertical/horizontal bars with grouping and stacking |
+| `GeomLine` | `line` | Multi-series line traces with curve options |
+| `GeomArea` | `area` | Filled areas, optional stacking |
+| `GeomPoint` | `point` | Scatter/bubble points with size encoding |
+| `GeomArc` | `arc` | Pie/donut slices |
+| `GeomBox` | `box` | Box plot whiskers and quartiles |
+| `GeomViolin` | `violin` | Violin distribution shapes |
+| `GeomHeatmap` | `heatmap` | Matrix of colored cells — band scales on both axes, continuous color |
+| `GeomCandlestick` | `candlestick` | OHLC financial chart — open/high/low/close channels |
+| `GeomWaterfall` | `waterfall` | Sequential running-total bars with connectors |
+| `GeomHexbin` | `hexbin` | 2D density binning with hexagonal cells |
+| `GeomRibbon` | `ribbon` | Sankey-style flow between categorical groups |
+
+### Filtering
+
+| Component | File | Description |
+|-----------|------|-------------|
+| `CrossFilter` | [crossfilter.txt](/llms/components/crossfilter.txt) | Linked filter context — FilterBar, FilterSlider, FilterHistogram, createCrossFilter |
+
+## Common Props (all high-level charts)
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `data` | `Object[]` | `[]` | Data rows array |
+| `width` | `number` | `600` | SVG width in pixels |
+| `height` | `number` | `400` | SVG height in pixels |
+| `mode` | `'light' \| 'dark'` | `'light'` | Color palette mode |
+| `grid` | `boolean` | `true` | Show gridlines |
+| `legend` | `boolean` | `false` | Show color legend |
+| `tooltip` | `boolean \| (d) => string` | `false` | Hover tooltip |
+| `xFormat` | `(v) => string` | `undefined` | X-axis tick formatter |
+| `yFormat` | `(v) => string` | `undefined` | Y-axis tick formatter |
+| `xTicks` | `number` | `6` | X-axis tick count |
+| `yTicks` | `number` | `6` | Y-axis tick count |
+| `minorTicks` | `boolean` | `false` | Show minor tick marks between major ticks |
+
+## Continuous Color Scales
+
+For heatmaps, hexbins, and other density visualizations, use sequential or diverging color scales:
+
+```javascript
+import { buildSequentialScale, buildDivergingScale } from '@rokkit/chart'
+
+// Sequential: 0→100 mapped to a blue gradient
+const seq = buildSequentialScale(data, 'value', { colorScheme: 'blues' })
+
+// Diverging: -10→0→10 mapped to red-white-blue
+const div = buildDivergingScale(data, 'delta', { colorScheme: 'rdbu', colorMidpoint: 0 })
+```
+
+Available sequential schemes: `blues`, `greens`, `oranges`, `purples`, `reds`, `viridis`, `inferno`, `magma`, `plasma`, `cividis`, `turbo`, `warm`, `cool`, and more.
+
+Available diverging schemes: `rdbu`, `rdylbu`, `rdylgn`, `brbg`, `piyg`, `prgn`, `puor`, `spectral`.
+
+Configure via `PlotSpec`:
+
+```javascript
+const spec = {
+  data, x: 'day', y: 'hour', color: 'value',
+  colorScale: 'sequential',    // 'categorical' | 'sequential' | 'diverging'
+  colorScheme: 'viridis',
+  geoms: [{ type: 'heatmap' }],
+  legend: true
+}
+```
+
+## Plot State (advanced)
+
+`PlotState` is the reactive state manager used by `PlotChart`. It coordinates scales, colors, and geom registration.
+
+```javascript
+import { PlotState } from '@rokkit/chart'
+```
+
+## Presets
+
+```javascript
+import { createChartPreset, defaultPreset } from '@rokkit/chart'
+
+const custom = createChartPreset({
+  colors: ['blue', 'rose', 'amber'],
+  opacity: { area: 0.4 }
+})
+```
+
+## Brewer System (advanced)
+
+Brewers transform raw data into chart-ready geometry. Extend to build custom chart types.
+
+```javascript
+import { ChartBrewer, CartesianBrewer, PieBrewer, QuartileBrewer, BoxBrewer, ViolinBrewer } from '@rokkit/chart'
+```
+
+| Class | Extends | Use for |
+|-------|---------|---------|
+| `ChartBrewer` | — | Base class — override `transform()`, add `$derived` mark properties |
+| `CartesianBrewer` | `ChartBrewer` | X/Y cartesian charts with scales |
+| `PieBrewer` | `ChartBrewer` | Pie/donut charts |
+| `QuartileBrewer` | `ChartBrewer` | Shared quartile transform + scales for box/violin |
+| `BoxBrewer` | `QuartileBrewer` | Adds `boxes` derived property |
+| `ViolinBrewer` | `QuartileBrewer` | Adds `violins` derived property |
+
+## Related
+
+- `@rokkit/data` — Dataset pipelines for aggregation, joins, rollups
+- `@rokkit/blocks` — Render charts from Markdown fenced code blocks

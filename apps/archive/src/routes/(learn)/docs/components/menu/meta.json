@@ -1,8 +1,0 @@
-{
-  "title": "Menu",
-  "description": "Dropdown menu with keyboard navigation and grouped items",
-  "icon": "i-glyph:dropdown",
-  "category": "navigation-selection",
-  "tags": ["menu", "dropdown", "navigation", "actions"],
-  "experimental": false
-}

@@ -1,0 +1,36 @@
+# Rokkit Divider Component
+
+> Visual separator line with optional centered label.
+
+## Quick Start
+
+```svelte
+<script>
+  import { Divider } from '@rokkit/ui'
+</script>
+
+<Divider />
+<Divider label="OR" />
+<Divider orientation="vertical" />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Separator direction |
+| `label` | `string` | — | Optional centered label text |
+| `class` | `string` | — | Additional CSS classes |
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-divider` | Root container |
+| `data-orientation` | Orientation value |
+| `data-divider-label` | Label span (when present) |
+
+## Behavior
+
+- Renders `role="separator"` with `aria-orientation` for accessibility
+- Label renders centered on the divider line when provided

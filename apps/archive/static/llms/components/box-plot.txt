@@ -1,0 +1,39 @@
+# BoxPlot
+
+Data-driven SVG box plot. Computes quartile statistics (Q1, median, Q3, IQR whiskers) from raw observations automatically.
+
+## Import
+
+```javascript
+import { BoxPlot } from '@rokkit/chart'
+```
+
+## Quick Start
+
+```svelte
+<BoxPlot data={data} x="class" y="hwy" />
+<BoxPlot data={data} x="class" y="hwy" fill="drv" legend />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `data` | `Object[]` | `[]` | Raw observations array |
+| `x` | `string` | — | Categorical grouping field |
+| `y` | `string` | — | Numeric value field (raw observations, not pre-aggregated) |
+| `fill` | `string` | — | Color grouping field |
+| `width` | `number` | `600` | SVG width in pixels |
+| `height` | `number` | `400` | SVG height in pixels |
+| `mode` | `'light' \| 'dark'` | `'light'` | Color palette mode |
+| `grid` | `boolean` | `true` | Show gridlines |
+| `legend` | `boolean` | `false` | Show color legend |
+
+## Notes
+
+- Box spans Q1–Q3, whiskers extend to IQR bounds, median line across box
+- Uses `BoxBrewer` internally (extends `QuartileBrewer`)
+
+## Related
+
+- [ViolinPlot](/llms/components/violin-plot.txt) — distribution shape variant using the same `QuartileBrewer` base

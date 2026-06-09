@@ -1,7 +1,0 @@
-{
-  "title": "Data Table",
-  "description": "Tabular data display with sorting, selection, and keyboard navigation",
-  "icon": "i-glyph:table",
-  "category": "display",
-  "order": 27
-}

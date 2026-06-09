@@ -1,7 +1,0 @@
-{
-  "title": "Overview",
-  "description": "CLI commands, icon set integration, and project setup automation",
-  "icon": "i-glyph:settings",
-  "category": "toolchain",
-  "order": 1
-}

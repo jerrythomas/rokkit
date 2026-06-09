@@ -1,0 +1,51 @@
+# BarChart
+
+Data-driven SVG bar chart. Supports grouped and stacked bars, aggregation stats, color/pattern encoding, value labels, and tooltips.
+
+## Import
+
+```javascript
+import { BarChart } from '@rokkit/chart'
+```
+
+## Quick Start
+
+```svelte
+<BarChart data={sales} x="category" y="revenue" />
+<BarChart data={sales} x="quarter" y="revenue" fill="region" stat="sum" stack legend />
+<BarChart data={sales} x="category" y="revenue" fill="region" label tooltip />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `data` | `Object[]` | `[]` | Data rows |
+| `x` | `string` | — | Field for X axis (categories) |
+| `y` | `string` | — | Field for Y axis (values) |
+| `fill` | `string` | — | Field for palette color assignment |
+| `pattern` | `string` | — | Field for pattern fill assignment |
+| `stat` | `string` | `'identity'` | Aggregation: `identity`, `sum`, `mean`, `min`, `max`, `count` |
+| `stack` | `boolean` | `false` | Stack bars by color group |
+| `label` | `boolean \| string \| (d) => string` | `false` | Show value labels — `true` = y value, string = field name, function = custom |
+| `width` | `number` | `600` | SVG width in pixels |
+| `height` | `number` | `400` | SVG height in pixels |
+| `mode` | `'light' \| 'dark'` | `'light'` | Color palette mode |
+| `grid` | `boolean` | `true` | Show gridlines |
+| `legend` | `boolean` | `false` | Show color legend |
+| `tooltip` | `boolean \| (d) => string` | `false` | Hover tooltip — `true` = key-value default |
+
+## Examples
+
+```svelte
+<!-- Stacked bar with sum aggregation -->
+<BarChart data={data} x="quarter" y="revenue" fill="region" stat="sum" stack legend tooltip />
+
+<!-- Custom label format -->
+<BarChart data={data} x="category" y="revenue" label={(d) => `$${d.revenue.toLocaleString()}`} />
+```
+
+## Related
+
+- [PlotChart](/llms/components/plot-chart.txt) — low-level API with `GeomBar`
+- [FacetPlot](/llms/components/facet-plot.txt) — small-multiples layout

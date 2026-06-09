@@ -1,0 +1,36 @@
+# Rokkit InfoField Component
+
+> Read-only labeled display field for showing data values without input.
+
+Package: `@rokkit/forms`
+
+## Quick Start
+
+```svelte
+<script>
+  import { InfoField } from '@rokkit/forms'
+</script>
+
+<InfoField name="status" label="Status" value="Active" />
+<InfoField name="created" label="Created" value="2026-01-15" description="Account creation date" />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `string` | — | Field identifier |
+| `value` | `unknown` | — | Value to display (shows em dash if undefined) |
+| `label` | `string` | — | Field label |
+| `description` | `string` | — | Optional helper text |
+| `class` | `string` | — | Additional CSS classes |
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-field-root` | Root wrapper |
+| `data-field` | Inner field container |
+| `data-field-type` | Always `"info"` |
+| `data-field-empty` | Present when value is undefined |
+| `data-field-info` | Value display element |
