@@ -39,3 +39,25 @@ export function listSkills({ skillsDir = DEFAULT_SKILLS_DIR } = {}) {
 		.filter((s) => s.name)
 		.sort((a, b) => a.name.localeCompare(b.name))
 }
+
+/**
+ * Copy named skills into <cwd>/.claude/skills/<name>/ (idempotent).
+ * @param {string[]} names
+ * @param {{ cwd?: string, force?: boolean, skillsDir?: string }} [opts]
+ * @returns {Array<{ name: string, status: 'added' | 'skipped' | 'unknown' }>}
+ */
+export function installSkills(
+	names,
+	{ cwd = process.cwd(), force = false, skillsDir = DEFAULT_SKILLS_DIR } = {}
+) {
+	const targetRoot = resolve(cwd, '.claude', 'skills')
+	return names.map((name) => {
+		const src = join(skillsDir, name)
+		if (!existsSync(join(src, 'SKILL.md'))) return { name, status: 'unknown' }
+		const dest = join(targetRoot, name)
+		if (existsSync(dest) && !force) return { name, status: 'skipped' }
+		mkdirSync(targetRoot, { recursive: true })
+		cpSync(src, dest, { recursive: true })
+		return { name, status: 'added' }
+	})
+}

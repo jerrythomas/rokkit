@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { parseFrontmatter, listSkills } from '../src/skills.js'
 
 describe('parseFrontmatter', () => {
@@ -27,5 +27,51 @@ describe('listSkills (bundled catalog)', () => {
 	it('is sorted by name', () => {
 		const names = listSkills().map((s) => s.name)
 		expect(names).toEqual([...names].sort())
+	})
+})
+
+import { mkdtempSync, rmSync, existsSync as fsExists } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join as pjoin } from 'node:path'
+import { installSkills } from '../src/skills.js'
+
+describe('installSkills', () => {
+	let cwd
+	beforeEach(() => {
+		cwd = mkdtempSync(pjoin(tmpdir(), 'rokkit-skills-'))
+	})
+	afterEach(() => {
+		rmSync(cwd, { recursive: true, force: true })
+	})
+
+	it('copies a skill into .claude/skills/<name>/', () => {
+		const res = installSkills(['semantic-styles-rokkit'], { cwd })
+		expect(res).toEqual([{ name: 'semantic-styles-rokkit', status: 'added' }])
+		expect(fsExists(pjoin(cwd, '.claude/skills/semantic-styles-rokkit/SKILL.md'))).toBe(true)
+	})
+
+	it('installs rokkit-components too', () => {
+		expect(installSkills(['rokkit-components'], { cwd })[0].status).toBe('added')
+		expect(fsExists(pjoin(cwd, '.claude/skills/rokkit-components/SKILL.md'))).toBe(true)
+	})
+
+	it('skips an existing skill unless force is set', () => {
+		installSkills(['semantic-styles-rokkit'], { cwd })
+		expect(installSkills(['semantic-styles-rokkit'], { cwd })[0].status).toBe('skipped')
+		expect(installSkills(['semantic-styles-rokkit'], { cwd, force: true })[0].status).toBe('added')
+	})
+
+	it('reports unknown skills and writes nothing for them', () => {
+		const res = installSkills(['does-not-exist'], { cwd })
+		expect(res).toEqual([{ name: 'does-not-exist', status: 'unknown' }])
+		expect(fsExists(pjoin(cwd, '.claude/skills/does-not-exist'))).toBe(false)
+	})
+
+	it('every catalog skill is installable by its listed name (frontmatter name === dir)', () => {
+		for (const s of listSkills()) {
+			expect(installSkills([s.name], { cwd, force: true })).toEqual([
+				{ name: s.name, status: 'added' }
+			])
+		}
 	})
 })
