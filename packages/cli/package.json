@@ -36,6 +36,7 @@
   "files": [
     "lib/**/*",
     "src/**/*.js",
+    "skills/**",
     "dist/**/*.d.ts",
     "README.md",
     "package.json",
