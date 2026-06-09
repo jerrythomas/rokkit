@@ -1,7 +1,7 @@
 # Global Shortcut Handler — App-Level Commands
 
 **Date:** 2026-05-20
-**Status:** Backlog — design later
+**Status:** Designed 2026-06-09 — see `docs/design/19-command-system.md` (v1 = registry + `shortcuts` action + Cmd/Ctrl+K palette + conflict detection, consumer-first in `apps/learn/src/lib/koan/`). Implementation pending.
 **Site Applicability:** Applies to current Koan shell (`apps/learn/src/lib/koan/`) — motivates the Cmd+K + command palette in the new app.
 
 ## Summary
