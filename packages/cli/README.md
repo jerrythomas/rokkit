@@ -135,3 +135,21 @@ lib/
 ---
 
 Part of [Rokkit](https://github.com/jerrythomas/rokkit) — a Svelte 5 component library and design system.
+
+## AI skills
+
+Rokkit ships curated AI skills (SKILL.md guides) that teach coding agents how to
+use the library well — theming with the named-token system and building UI with
+the components.
+
+```bash
+rokkit skills list                       # see the catalog
+rokkit skills add semantic-styles-rokkit # install one
+rokkit skills add                        # interactive multi-select
+rokkit skills add --all                  # install everything
+rokkit skills add <name> --force         # overwrite an existing install
+```
+
+Skills install into your project's `.claude/skills/<name>/`, so they're shared
+with your team via version control. Browse the source under
+[`packages/cli/skills/`](./skills).

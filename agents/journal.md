@@ -1,5 +1,45 @@
 # Project Journal
 
+## 2026-06-09 — `rokkit skills list|add` — AI skill guides shipped with the CLI
+
+**Why.** Coding agents working in Rokkit projects needed authoritative guides for
+the two most error-prone areas: theming with the named-token system and building
+UI with components. Bundling SKILL.md files directly into `@rokkit/cli` lets any
+consumer project pull them in with a single command. Spec:
+`docs/backlog/2026-06-08-rokkit-skills-add.md`; plan:
+`docs/superpowers/plans/2026-06-08-rokkit-skills-add.md`.
+
+**CLI commands (`packages/cli/src/skills.js`, wired in `src/index.js`).**
+- `rokkit skills list` — reads YAML frontmatter from bundled SKILL.md files and
+  prints a formatted catalog (name, version, description, tags).
+- `rokkit skills add [names…]` — installs named skills into the consumer project's
+  `.claude/skills/<name>/SKILL.md`; no args → interactive multi-select via
+  `prompts`; `--all` installs every bundled skill; `--force` overwrites an
+  existing install (default: skip if present).
+- Skills resolve against `__dirname/../skills/` inside the package, so they
+  travel with the published tarball.
+
+**Bundled skills (v1 catalog).**
+- `semantic-styles-rokkit` — migrated from the global `~/.claude` skill; covers
+  the named-token vocabulary, `skin`/`overrides` config, and UnoCSS shortcuts.
+  (`e340526e`)
+- `rokkit-components` — net-new, consumer-usage focused: data-first API patterns,
+  field mapping, snippets, keyboard navigation, and theming hooks.
+  (`0c75e845`)
+
+**Packaging.**
+- `"skills/**"` added to `packages/cli/package.json` `files` array so both
+  SKILL.md files ride the published package. `bun pm pack --dry-run` confirms
+  count = 2. (`8972b8b6`)
+
+**Commits:** `e340526e` (bundle semantic-styles-rokkit skill) · `0c75e845`
+(add rokkit-components skill) · `8c3361d1` (catalog listing from frontmatter) ·
+`2238a81a` (install skills into .claude/skills) · `2576a572` (wire list|add
+commands) · `8972b8b6` (include skills/ in published package).
+
+**Verification.** `bun run test:ci` passes (existing suite). `bun run lint` →
+0 errors. Pack dry-run shows both SKILL.md files.
+
 ## 2026-06-06 — CLI `init`/`doctor` + LLM docs modernized to named tokens
 
 **Why.** The token system moved to the named-token vocabulary (`bg-paper`,
