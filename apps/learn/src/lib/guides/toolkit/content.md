@@ -93,6 +93,6 @@ for the integration story.
 
 ## `@rokkit/themes`
 
-Shipped styles: `rokkit`, `minimal`, `material`, `zen-sumi`.
+Shipped styles: `rokkit`, `minimal`, `material`, `frosted`, `zen-sumi`.
 Each is a self-contained CSS file consuming the same named-token
 vocabulary so they're swappable at runtime via `data-style`.

@@ -94,6 +94,7 @@ export const DEMO_ROUTE: Record<string, string> = {
 	tabs: '/app/tabs',
 	'theme-wizard': '/app/theming',
 	table: '/app/table',
+	'tree-table': '/app/tree-table',
 	tree: '/app/tree',
 	'multi-select': '/app/multiselect',
 	list: '/app/list',

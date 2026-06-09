@@ -7,7 +7,7 @@ charts, navigation outlines, parent/child catalogs.
 
 ## Basic example
 
-Pass a nested array of objects with `text`, `value`, and optionally
+Pass a nested array of objects with `label`, `value`, and optionally
 `icon` and `children`. Nodes that have a `children` array are
 rendered as expandable branches.
 
@@ -31,7 +31,7 @@ the `fields` prop to remap without transforming your data:
 ```svelte
 <Tree
   items={users}
-  fields={{ text: 'name', value: 'id', children: 'reports' }}
+  fields={{ label: 'name', value: 'id', children: 'reports' }}
 />
 ```
 

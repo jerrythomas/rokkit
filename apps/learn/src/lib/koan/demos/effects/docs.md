@@ -38,7 +38,7 @@ Adds a soft "light source follows your finger" feel — great on
 glossy cards and elevated surfaces.
 
 ```svelte
-<Shine color="rgb(var(--accent))">
+<Shine color="var(--accent)">
   <Card class="glossy">Glossy surface</Card>
 </Shine>
 ```

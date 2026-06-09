@@ -20,8 +20,8 @@ The init command is interactive. It prompts for:
 - **Icon collection** — Rokkit's built-in collection, or
   Rokkit plus a custom collection JSON.
 - **Theme styles** (multi-select) — `rokkit`, `minimal`,
-  `material`. Pick one or more; the CLI sets up the import
-  - the `data-style` attribute for the first.
+  `material`, `frosted`, `zen-sumi`. Pick one or more; the CLI
+  sets up the import and the `data-style` attribute for the first.
 - **Theme switching** — `system` (prefers-color-scheme),
   `manual` (light / dark toggle), or `full` (both light/dark
   and style variants).
@@ -51,26 +51,42 @@ Reads your `rokkit.config.js`, checks the registry for newer
 Reports breaking-change notes inline so you know what to
 hand-merge.
 
-## skin — generate a new skin
+## skin — list and create skins
 
 ```bash
-npx @rokkit/cli@latest skin
+npx @rokkit/cli@latest skin list    # list skins defined in rokkit.config.js
+npx @rokkit/cli@latest skin create  # scaffold a new skin entry (--name <name>)
 ```
 
-Interactive skin builder — pick palette and step per role for
-each mode (light / dark). Emits a `skins/my-skin.css` that you
-can import alongside the base theme.
+The `skin create` command walks you through picking palette and
+step per role for each mode (light / dark), then adds the new
+skin entry to your `rokkit.config.js`.
 
-## theme — scaffold a new style
+## theme — list and scaffold styles
 
 ```bash
-npx @rokkit/cli@latest theme
+npx @rokkit/cli@latest theme list    # list built-in and custom themes
+npx @rokkit/cli@latest theme create  # scaffold a new custom theme CSS file (--name <name>)
 ```
 
-Creates a stub theme CSS file with all the data-attribute
-selectors components target, pre-filled with comments. You
-override the visual recipe (border-radius, shadows, surface
-treatments); the data-attribute structure stays the same.
+`theme create` produces a stub CSS file with all the
+data-attribute selectors components target, pre-filled with
+comments. Override the visual recipe (border-radius, shadows,
+surface treatments); the data-attribute structure stays the same.
+
+## skills — install AI skill guides
+
+```bash
+npx @rokkit/cli@latest skills list          # list available Rokkit AI skills
+npx @rokkit/cli@latest skills add           # interactive: pick skills to install
+npx @rokkit/cli@latest skills add --all     # install all available skills
+npx @rokkit/cli@latest skills add --force   # overwrite already-installed skills
+```
+
+The `skills add` command installs bundled `SKILL.md` guides into
+`.claude/skills/` so Claude Code can pick up Rokkit-specific
+workflows (new-component patterns, theme authoring, etc.) as
+local skills in your project.
 
 ## CLI reference
 
@@ -82,13 +98,13 @@ ships at the same path.
 ## Editor / build integration
 
 - **UnoCSS preset** — `@rokkit/unocss` adds Rokkit's semantic
-  token shortcuts (`paper-z3`, `ink-mute`, etc.) plus the
-  preflight CSS variables.
+  token shortcuts (`bg-paper-soft`, `text-ink-mute`, etc.) plus
+  the preflight CSS variables.
 - **`@rokkit/vite`** — optional Vite plugin that auto-imports
   the configured icon collection JSON.
-- **`@rokkit/skinnable`** — Svelte action variant of UnoCSS
-  for components that want to set their own `data-style`
-  instead of inheriting from `<html>`.
+- **`skinnable`** (from `@rokkit/actions`) — Svelte action for
+  components that want to set their own `data-style` instead
+  of inheriting from `<html>`.
 
 ## Icon collections
 

@@ -6,7 +6,7 @@ filterable search, and full snippet-driven rendering.
 
 ## Basic example
 
-Array of objects with `text` and optionally `icon` fields, bound
+Array of objects with `label` and optionally `icon` fields, bound
 `value`. Set `disabled: true` on any item to make it unselectable:
 
 ```svelte
@@ -20,7 +20,7 @@ Use `fields` to point Select at your data's own keys:
 ```svelte
 <Select
   items={countries}
-  fields={{ text: 'name', value: 'code', icon: 'flag' }}
+  fields={{ label: 'name', value: 'code', icon: 'flag' }}
   bind:value={countryCode}
 />
 ```

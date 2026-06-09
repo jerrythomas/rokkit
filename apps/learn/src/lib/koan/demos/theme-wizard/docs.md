@@ -45,20 +45,19 @@ preset. This is the final read before saving.
 ```ts
 import { vibe } from '@rokkit/states'
 
-vibe.setSkin('my-brand')    // skin (palette role-steps)
-vibe.setStyle('zen-sumi')   // style theme (visual language)
-vibe.setMode('dark')        // light | dark
-vibe.setDensity('compact')  // compact | cozy | spacious
+vibe.style   = 'zen-sumi'  // style theme (visual language)
+vibe.mode    = 'dark'      // 'light' | 'dark'
+vibe.density = 'compact'   // 'compact' | 'cozy' | 'comfortable'
 ```
 
 The wizard's "Save preset" button is the GUI equivalent of those
-four `vibe.*` setters.
+`vibe` property assignments.
 
 ## Why role-step instead of raw colours?
 
 Rokkit themes don't bake hex codes into components. Each component
-references a _role_ (e.g. `--color-primary`, `--color-ink-z1`); the
-theme resolves that role to a _step_ in a chosen palette. This
+references a named token (e.g. `--primary`, `--ink`, `--accent`);
+the theme resolves that token to a step in a chosen palette. This
 double indirection means:
 
 - Themes can be re-coloured by swapping the palette, not editing
