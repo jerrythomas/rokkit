@@ -75,3 +75,26 @@ describe('installSkills', () => {
 		}
 	})
 })
+
+import { runSkillsAdd } from '../src/skills.js'
+
+describe('runSkillsAdd (no prompt when names or --all given)', () => {
+	let cwd
+	beforeEach(() => {
+		cwd = mkdtempSync(pjoin(tmpdir(), 'rokkit-skills-'))
+	})
+	afterEach(() => {
+		rmSync(cwd, { recursive: true, force: true })
+	})
+
+	it('installs explicitly-named skills without prompting', async () => {
+		await runSkillsAdd(['rokkit-components'], { cwd })
+		expect(fsExists(pjoin(cwd, '.claude/skills/rokkit-components/SKILL.md'))).toBe(true)
+	})
+
+	it('--all installs the entire catalog', async () => {
+		await runSkillsAdd([], { cwd, all: true })
+		expect(fsExists(pjoin(cwd, '.claude/skills/semantic-styles-rokkit/SKILL.md'))).toBe(true)
+		expect(fsExists(pjoin(cwd, '.claude/skills/rokkit-components/SKILL.md'))).toBe(true)
+	})
+})

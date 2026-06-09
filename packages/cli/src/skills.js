@@ -2,6 +2,7 @@
 import { readFileSync, readdirSync, existsSync, mkdirSync, cpSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import prompts from 'prompts'
 
 // The catalog ships inside the package: packages/cli/skills/ in dev/test,
 // node_modules/@rokkit/cli/skills/ once installed. One relative path, both worlds.
@@ -60,4 +61,76 @@ export function installSkills(
 		cpSync(src, dest, { recursive: true })
 		return { name, status: 'added' }
 	})
+}
+
+/**
+ * Print the catalog, marking already-installed skills.
+ * @param {{ skillsDir?: string, cwd?: string }} [opts]
+ */
+export async function runSkillsList({ skillsDir, cwd = process.cwd() } = {}) {
+	const catalog = listSkills({ skillsDir })
+	if (catalog.length === 0) {
+		console.info('No skills available.')
+		return
+	}
+	const installedRoot = resolve(cwd, '.claude', 'skills')
+	console.info('Available Rokkit skills:\n')
+	for (const s of catalog) {
+		const mark = existsSync(join(installedRoot, s.name, 'SKILL.md')) ? '✓ ' : '  '
+		console.info(`${mark}${s.name}`)
+		console.info(`     ${s.description}`)
+	}
+	console.info('\nInstall with: rokkit skills add <name> [...]   (or --all)')
+}
+
+/**
+ * Resolve which skills to install, then copy and report.
+ * @param {string[]} names
+ * @param {{ all?: boolean, force?: boolean, skillsDir?: string, cwd?: string }} [opts]
+ */
+export async function runSkillsAdd(
+	names,
+	{ all = false, force = false, skillsDir, cwd = process.cwd() } = {}
+) {
+	const catalog = listSkills({ skillsDir })
+	let selected = names
+	if (all) {
+		selected = catalog.map((s) => s.name)
+	} else if (selected.length === 0) {
+		const res = await prompts({
+			type: 'multiselect',
+			name: 'picked',
+			message: 'Select skills to add',
+			choices: catalog.map((s) => ({ title: s.name, value: s.name, description: s.description }))
+		})
+		selected = res.picked ?? []
+	}
+	if (selected.length === 0) {
+		console.info('No skills selected.')
+		return
+	}
+	const results = installSkills(selected, { cwd, force, skillsDir })
+	for (const r of results) {
+		if (r.status === 'added') console.info(`  added .claude/skills/${r.name}`)
+		else if (r.status === 'skipped')
+			console.info(`  skipped ${r.name} (exists — use --force to overwrite)`)
+		else console.error(`  unknown skill: ${r.name}`)
+	}
+	if (results.some((r) => r.status === 'unknown')) {
+		console.error(`\nValid skills: ${catalog.map((s) => s.name).join(', ')}`)
+		process.exitCode = 1
+	}
+}
+
+/**
+ * CLI entry for `rokkit skills` subcommands.
+ * @param {'list' | 'add'} sub
+ * @param {{ _?: string[], all?: boolean, force?: boolean }} [opts]
+ */
+export async function skillsCommand(sub, opts = {}) {
+	if (sub === 'add') {
+		await runSkillsAdd(opts._ ?? [], { all: opts.all, force: opts.force })
+	} else {
+		await runSkillsList()
+	}
 }
