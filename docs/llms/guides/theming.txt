@@ -169,19 +169,17 @@ fight component classes — there usually aren't any.
 ## Roles + Palettes
 
 Build a custom skin by mapping the semantic roles
-(`primary` / `secondary` / `accent` / …) to Tailwind palette
-names, then a step (50–950) per mode:
+(`primary` / `accent` / `surface` / …) to palette names — a built-in
+Tailwind color name (e.g. `'orange'`) or a custom palette you define.
+Use a `{ light, dark }` object to map a role to a different palette per mode:
 
 ```js
 // rokkit.config.js
 export default {
   skin: {
-    default: {
-      primary: { light: { color: 'orange', step: 500 },
-                 dark:  { color: 'orange', step: 400 } },
-      accent:  { color: 'sky', step: 500 },
-      surface: 'slate'
-    }
+    primary: 'orange',
+    accent:  'sky',
+    surface: { light: 'kami', dark: 'sumi' }
   }
 }
 ```
