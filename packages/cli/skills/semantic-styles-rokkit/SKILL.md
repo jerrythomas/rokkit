@@ -1,0 +1,390 @@
+---
+name: semantic-styles-rokkit
+description: Use when building, styling, or auditing a Rokkit-powered app (Svelte 5 + UnoCSS presetRokkit) — covers the named-token vocabulary (paper / ink / primary / on-primary / *-soft), the rokkit.config.js palette→skin→tokens pipeline, dual-palette dark mode, migrating legacy z-scale utilities (bg-surface-z0, text-primary-z5) to named tokens, and the rokkit init / rokkit doctor CLI.
+---
+
+# Semantic Styles — Rokkit
+
+Rokkit's token pipeline turns a small config into a consistent, themeable, dark-mode-ready
+set of utility classes. Components use **named tokens** (`bg-paper`, `text-ink`,
+`text-on-primary`) — never raw hex/oklch values. That indirection is the consistency
+guarantee: change the config, the whole app reskins.
+
+```
+rokkit.config.js
+  palettes + skin + colorSpace + tokens
+       ↓
+  UnoCSS preset (presetRokkit)  →  CSS custom properties + utility classes
+       ↓
+  Components use named-token utilities:  bg-paper · text-ink · bg-primary · text-on-primary
+  (legacy z-scale utilities — bg-surface-z1 — still resolve via back-compat aliases)
+```
+
+The pipeline has three layers. Most authoring happens in **Layer 3 (named tokens)**.
+
+---
+
+## Layer 1 — Palettes
+
+**What:** A palette is a named 11-stop color scale from shade `50` (lightest) to `950`
+(darkest), declared in `rokkit.config.js` under `palettes:`.
+
+**Why:** Each role needs a range of shades so hover, active, tint-on-surface, and
+text-on-fill all come from one color family. 11 stops gives resolution without banding.
+
+**Two formats:**
+
+*RGB hex* — standard web colors; use when you have an existing brand palette:
+```js
+palettes: { shu: { 50: '#FEF3EE', 500: '#E8552B', 950: '#3C100A' } }
+// colorSpace: 'rgb' (default — may be omitted)
+```
+
+*OKLCH bare components* — perceptual, uniform lightness steps; best for palettes designed
+from scratch (increment L by equal steps for balanced results):
+```js
+palettes: { shu: { 50: '0.970 0.020 35', 500: '0.580 0.150 35', 950: '0.220 0.060 35' } },
+colorSpace: 'oklch'   // REQUIRED when palette values are bare "L C H" components
+```
+
+The preset wraps values into complete colors when it emits CSS vars (see Layer 3).
+
+---
+
+## Layer 2 — Skin and skins
+
+**What:** A skin maps semantic role names to palette names. The core roles that back the
+named-token vocabulary are: `surface`, `ink`, `primary`, `accent`, `success`, `warning`,
+`danger`, `error`, `info`. (`secondary`/`tertiary` are accepted but no named token reads
+them — they only matter if you also use `extended` z-scale utilities for those roles.)
+
+**Why:** Decoupling role from palette lets you swap the whole scheme in config, not code.
+`bg-paper` doesn't know whether `surface` is `kami`, `slate`, or `zinc`.
+
+### Single skin (`skin:`) — one fixed colormap
+```js
+skin: {
+  surface: 'slate',  ink: 'slate',   // ink backs the ink-* text tokens
+  primary: 'orange', accent: 'sky',
+  success: 'green', warning: 'yellow', danger: 'red', error: 'red', info: 'cyan',
+}
+```
+`colors:` is accepted as a back-compat alias but **prefer `skin:`**. Always include an
+`ink` role — without it the `ink-*` text tokens silently fall back to the surface palette.
+
+### Multi-skin (`skins:`) — named colormaps for runtime switching
+```js
+skins: {
+  default: { surface: { light: 'kami', dark: 'sumi' }, ink: { light: 'kami', dark: 'sumi' }, primary: 'shu' },
+  ocean:   { surface: 'slate', primary: 'sky', accent: 'teal' },
+}
+```
+`skins.default` is active on first load. **Use `skin:` OR `skins:`, not both** — providing
+`skins:` makes `skin:` ignored.
+
+### `tokens:` — which CSS the preset emits
+```js
+tokens: 'core'      // default — emit the 24 named tokens (palette values inlined) + z-aliases
+tokens: 'extended'  // also emit the full 11-shade ladder (--color-{role}-{shade}) per role
+```
+`'core'` is the default and what apps should use. Reach for `'extended'` only when you need
+the full ladder (charts / data-viz). Per-role is allowed: `tokens: { surface: 'extended' }`.
+
+---
+
+## Layer 2b — Dual-palette dark mode (how the flip actually works)
+
+**Named tokens flip in dark mode ONLY when the skin uses a dual-palette `{ light, dark }`
+mapping for a role (or an override carries a `dark` value).** The preset emits a
+`[data-mode="dark"]` block redefining the tokens **only then** — there is no automatic
+z-flip in the themes CSS anymore.
+
+```js
+skin: {
+  surface: { light: 'kami', dark: 'sumi' },   // ← emits the dark block
+  ink:     { light: 'kami', dark: 'sumi' },
+  primary: 'shu',                              // single palette — constant across modes (correct for an accent)
+}
+```
+
+The trick is that the **dark palette is authored inverted** relative to the light one, so
+the same shade index reads correctly per mode:
+
+| token (shade) | light (`kami`)        | dark (`sumi`)         |
+|---------------|-----------------------|-----------------------|
+| `--paper` (50)  | `0.985…` (light bg)  | `0.170…` (dark bg)    |
+| `--ink` (900)   | `0.220…` (dark text) | `0.940…` (light text) |
+
+> **Gotcha:** a **single-palette** surface (e.g. `surface: 'slate'`) emits **no dark
+> block → no flip** → effectively light-only. For dark mode, make `surface` and `ink`
+> dual-palette (the canonical `kami`/`sumi` OKLCH pair, where `sumi` is authored inverted).
+> The `rokkit init` "Zen-Sumi" starter ships this; the plain Tailwind starter does not.
+
+Dark mode flips when `data-mode="dark"` is on `<html>`/`<body>` — see the wiring section
+below for how to apply and persist that correctly.
+
+---
+
+## Applying & persisting the theme (don't hand-roll this)
+
+**Never** hand-roll `data-mode` writes, `localStorage` save/load, or your own theme store.
+The pattern is: the **`vibe` store** (`@rokkit/states`) holds reactive state; the
+**`themable` action** (`@rokkit/actions`) syncs it to the DOM + storage; **`ThemeSwitcherToggle`**
+(`@rokkit/app`) is the ready-made control.
+
+**1. Wire the root once** (e.g. `+layout.svelte`). `themable` loads from storage on mount,
+writes `data-style`/`data-mode`/`data-density` (mirrored to `<html>` to match the
+flash-prevention init script), **saves on every change**, and syncs across tabs via the
+`storage` event:
+
+```svelte
+<script>
+  import { vibe } from '@rokkit/states'
+  import { themable } from '@rokkit/actions'
+</script>
+<svelte:body use:themable={{ theme: vibe, storageKey: 'app-theme' }} />
+```
+
+**2. Add the mode control** anywhere — it drives `vibe.mode`, which `themable` then writes:
+
+```svelte
+<script>import { ThemeSwitcherToggle } from '@rokkit/app'</script>
+<ThemeSwitcherToggle variant="single" />                 <!-- one button, cycles light ↔ dark -->
+<ThemeSwitcherToggle variant="triad" />                  <!-- group: system | light | dark (default) -->
+<ThemeSwitcherToggle variant="triad" includeSystem={false} />  <!-- group: light | dark -->
+```
+
+**3. Switch the visual style** by setting state — no DOM writes:
+```svelte
+<button onclick={() => (vibe.style = 'minimal')}>Minimal</button>
+```
+
+**4. Prevent the flash on first paint.** Inject the pre-paint script so the persisted
+theme applies before first render. SvelteKit apps use the SSR `themeHook`; static apps use
+the script `rokkit init` writes into `app.html`:
+
+```js
+// src/hooks.server.ts
+import { themeHook } from '@rokkit/unocss/hooks'
+export const handle = themeHook({ storageKey: 'app-theme', defaultMode: 'system' })
+```
+
+`defaultMode: 'system'` (also the default when omitted) resolves `prefers-color-scheme`
+to a concrete `light`/`dark` pre-paint — never an invalid `data-mode="system"`. `'auto'`
+is accepted as a legacy alias. (Requires `@rokkit/unocss` ≥ 1.1.12.)
+
+`vibe` (singleton) exposes reactive `mode` (`light`|`dark`), `style`
+(`rokkit`|`minimal`|`material`), `density` (`compact`|`comfortable`|`cozy`), `direction`,
+plus `load(key)` / `save(key)` / `update(partial)`. `ThemeSwitcherToggle` lives in
+`@rokkit/app` (the store-wired shell package), built on `@rokkit/ui`'s `Toggle`; it adds
+`system` on top of `vibe.mode` via `ColorModeManager` (resolving `system` through
+`prefers-color-scheme`). The `storageKey` must be the same everywhere — `themable`,
+`ThemeSwitcherToggle`'s store, and the flash-prevention script (step 4).
+
+---
+
+## Layer 3 — Named tokens (what components use)
+
+The 24-token core vocabulary, all flipping automatically under `[data-mode="dark"]`:
+
+| Group   | Tokens                                                  | Use                                              |
+|---------|---------------------------------------------------------|--------------------------------------------------|
+| Surface | `paper` · `paper-soft` · `paper-mute` · `paper-edge`    | canvas · card · subdued panel · hairline border  |
+| Text    | `ink` · `ink-mute` · `ink-soft` · `ink-faint`           | body · secondary · placeholder · disabled        |
+| Primary | `primary` · `on-primary`                                | CTA fill · text/icon on a primary fill           |
+| Accent  | `accent` · `accent-soft`                                | accent fill · tinted accent background           |
+| Status  | `success`/`-soft`, `warning`/`-soft`, `danger`/`-soft`, `error`/`-soft`, `info`/`-soft` | solid status · tinted callout bg |
+| Misc    | `focus-ring` · `shadow-tint`                            | focus ring color · shadow color                  |
+
+**Prefixes:** `bg-`, `text-`, `border-` (+ `border-t/-b/-l/-r`), `fill-`, `stroke-`,
+`ring-`, `outline-`, `divide-`. Two constraints: `on-primary` emits **text only**
+(`text-on-primary`); `focus-ring` emits ring/outline/border/divide only; `shadow-tint`
+emits no utility (used inside `box-shadow` expressions).
+
+```html
+<!-- card -->
+<div class="bg-paper-soft border border-paper-edge rounded-md p-4">
+  <h3 class="text-ink text-sm font-medium">Title</h3>
+  <p class="text-ink-mute text-xs mt-1">Description</p>
+</div>
+
+<!-- primary button + status badge -->
+<button class="bg-primary text-on-primary rounded-md px-3 py-2">Save</button>
+<span class="bg-success-soft text-success text-xs px-2 py-0.5 rounded-full">Active</span>
+
+<!-- input -->
+<input class="bg-paper border border-paper-edge text-ink rounded-md px-3 py-2
+              focus:border-primary focus:outline-none text-[13px]" />
+```
+
+### CSS custom properties
+
+Named tokens emit `--{token}` vars holding **complete color values** —
+`--paper: oklch(0.985 0.005 85)` (oklch) or `--primary: rgb(232, 85, 43)` (rgb). Use them
+directly in CSS-only contexts; for alpha, use `color-mix` (the form the preset itself uses):
+```css
+.thing      { background: var(--paper); border-color: var(--paper-edge); }
+.thing-50pc { background: color-mix(in oklch, var(--primary) 50%, transparent); }
+```
+Prefer utility classes over raw vars where you can. (In `core` mode the legacy
+`--color-{role}-z{n}` vars are aliases pointing at named tokens, so they too resolve to
+complete colors — the old "wrap bare components in `rgb()`/`oklch()`" rule no longer
+applies in core mode.)
+
+### Legacy z-scale utilities (back-compat)
+
+The older z-scale utilities (`bg-surface-z0`, `text-surface-z9`, `text-primary-z5`, …)
+**still resolve** as a back-compat layer that collapses onto the named tokens above —
+existing code keeps working. New code should use named tokens. See the migration section.
+
+---
+
+## Migrating from z-scale to named tokens
+
+`rokkit doctor` scans `src/**` and prints the suggested replacement per occurrence
+(advisory — it never rewrites your code). The mapping it uses:
+
+**Surface role** (`{prefix}-surface-z{n}` → `{prefix}-{token}`):
+
+| z | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+|---|---|---|---|---|---|---|---|---|---|---|----|
+| token | `paper` | `paper-soft` | `paper-mute` | `paper-mute` | `paper-edge` | `ink-soft` | `ink-soft` | `ink-mute` | `ink-mute` | `ink` | `ink` |
+
+**Ink role** (inverted scale):
+
+| z | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+|---|---|---|---|---|---|---|---|---|---|---|----|
+| token | `ink` | `ink-mute` | `ink-mute` | `ink-soft` | `ink-soft` | `paper-edge` | `paper-edge` | `paper-mute` | `paper-mute` | `paper-soft` | `paper` |
+
+**Accent / status roles** (`primary`, `accent`, `success`, `warning`, `danger`, `error`,
+`info`): `z0–z2 → {role}-soft` (tinted background), `z3+ → {role}` (solid). Exception:
+`primary` has **no** `-soft` companion — `primary-z*` all map to `primary`; for a tinted
+primary background use `accent-soft` or a custom token.
+
+Common rewrites:
+```
+bg-surface-z0   → bg-paper            text-surface-z9 → text-ink
+bg-surface-z1   → bg-paper-soft       text-surface-z7 → text-ink-mute
+border-surface-z3 → border-paper-edge text-surface-z5 → text-ink-soft
+text-primary-z5 → text-primary        bg-success-z1   → bg-success-soft
+```
+
+---
+
+## Rokkit CLI — `init` and `doctor`
+
+**`rokkit init`** scaffolds `rokkit.config.js` in the named-token shape (a header comment
+documents the vocabulary). Two starters via the palette prompt:
+- **Tailwind (rgb)** — `skin` of Tailwind palette names, `colorSpace: 'rgb'`, `tokens: 'core'`. Single-palette → light-leaning (see Layer 2b).
+- **Zen-Sumi (OKLCH)** — ships `palettes` (kami/sumi/shu/…), `colorSpace: 'oklch'`, dual-palette `surface`/`ink` → full dark mode out of the box.
+
+**`rokkit doctor`** validates an existing setup. Beyond file checks (config exists,
+`uno.config.js` uses `presetRokkit(config)`, `app.css` imports a theme, `app.html` has the
+mode init script), it runs **advisory** config-shape warnings and migration hints — none
+fail the command or block `--fix`:
+
+| Check | Warns when |
+|-------|-----------|
+| `skin-ink-role` | the active colormap has no `ink` role (text tokens fall back) |
+| `oklch-needs-palettes` | `colorSpace: 'oklch'` but no `palettes` block |
+| `colors-alias` | config uses the legacy `colors:` instead of `skin:` |
+| legacy z-utilities | `src/**` contains `bg-surface-z*` / `text-primary-z*` etc. (prints named-token suggestions) |
+
+The "active colormap" is resolved the same way the preset does: `skins.default ?? skin ??
+colors`. Run `rokkit doctor --fix` to auto-write a real starter config when one is missing.
+
+---
+
+## Typography configuration
+
+Set faces in config; the preset emits CSS vars and Tailwind `fontFamily` keys.
+```js
+typography: {
+  display: "'Fraunces', 'Iowan Old Style', Georgia, serif",  // heading/display face
+  sans:    "'Inter', system-ui, sans-serif",                 // UI/body face (alias: `ui`)
+  mono:    "'JetBrains Mono', 'SF Mono', Menlo, monospace",
+}
+```
+Canonical config keys are `display` / `ui` / `mono`; `heading` / `sans` are accepted
+aliases. Usage classes: `font-heading` (display face), `font-body` (UI face), `font-mono`.
+```html
+<h1 class="font-heading text-2xl text-ink">Page Title</h1>
+<p  class="font-body text-[13px] text-ink-mute">Description</p>
+<code class="font-mono text-xs text-ink-soft">path/to/file.ts</code>
+```
+
+---
+
+## Shape / radius configuration
+
+`shape: { radius: 'soft' }` selects a preset emitting `--radius-{sm,md,lg,xl,full}`.
+
+| Preset | sm | md | lg | xl | full | Personality |
+|--------|----|----|----|----|------|-------------|
+| `sharp` | 0 | 0 | 0 | 0 | 9999px | Minimal, editorial |
+| `soft` | 2px | 6px | 10px | 12px | 9999px | Professional, calm |
+| `rounded` | 4px | 8px | 12px | 16px | 9999px | Friendly, modern |
+| `pill` | 9999px | 9999px | 9999px | 9999px | 9999px | Playful, pill-native |
+
+Custom: `shape: { radius: { sm: '2px', md: '6px', lg: '10px', xl: '14px', full: '9999px' } }`.
+Use the Tailwind radius utilities that map to the vars (`rounded-md`, `rounded-lg`, …) —
+never `rounded-[6px]`, which bypasses the config.
+
+---
+
+## Spacing
+
+Rokkit inherits Tailwind's 4px-grid spacing. **Stay on the 4px grid, use Tailwind names.**
+
+| Tailwind | px | When |
+|----------|----|------|
+| `1` / `2` / `3` | 4 / 8 / 12 | tight gap · component gap · compact padding |
+| `4` / `6` | 16 / 24 | default padding · panel padding |
+| `8` / `12` / `16` | 32 / 48 / 64 | section separation · page padding · hero whitespace |
+
+Density: **compact** (tables/sidebars) `gap-1`/`gap-2`, `p-2`/`p-3`; **comfortable**
+(cards/forms) `gap-3`/`gap-4`, `p-4`/`p-6`; **relaxed** (marketing) `16–24px+`.
+
+---
+
+## Full config example
+
+```js
+// rokkit.config.js
+export default {
+  palettes: {
+    kami: { 50: '0.985 0.005 85', /* … */ 950: '0.170 0.010 50' },  // light surface (warm paper)
+    sumi: { 50: '0.170 0.010 50', /* … */ 950: '0.975 0.008 85' },  // dark surface (inverted ink)
+    shu:  { 50: '0.970 0.020 35', 500: '0.580 0.150 35', 950: '0.220 0.060 35' },  // accent
+  },
+  colorSpace: 'oklch',          // required for bare "L C H" palette values
+  tokens: 'core',               // emit the named-token vocabulary (default)
+  skin: {
+    surface: { light: 'kami', dark: 'sumi' },   // dual-palette → dark mode
+    ink:     { light: 'kami', dark: 'sumi' },
+    primary: 'shu', accent: 'shu',
+    success: 'hisui', warning: 'kohaku', danger: 'shu', error: 'shu', info: 'kohaku',
+  },
+  typography: { display: "'Fraunces', Georgia, serif", sans: "'Inter', sans-serif", mono: "'JetBrains Mono', monospace" },
+  shape: { radius: 'soft' },
+  switcher: 'full',             // 'system' | 'manual' | 'full'
+  storageKey: 'app-theme',
+}
+```
+
+---
+
+## Common mistakes
+
+| Mistake | Why it fails | Fix |
+|---|---|---|
+| `color: #3D3730` in a component | breaks on theme change | `text-ink` (or the right named token) |
+| Using `bg-surface-z5` / `text-primary-z5` in new code | legacy back-compat layer | named tokens — see migration table (or run `rokkit doctor`) |
+| Single-palette `surface` but expecting dark mode | no `[data-mode]` block is emitted | make `surface`/`ink` dual-palette `{ light, dark }` |
+| Skin with no `ink` role | `ink-*` text tokens fall back to surface | add `ink: '<palette>'` (reuse surface is fine) |
+| Using `skin:` and `skins:` together | `skins:` silently wins | pick one |
+| `oklch(0.58 0.15 35)` literal in a component | loses theming + composability | `bg-primary` / `var(--primary)` |
+| Double-wrapping in core mode: `oklch(var(--paper))` | `--paper` is already a complete color | use `var(--paper)` directly |
+| `colorSpace: 'oklch'` with hex palettes (or vice-versa) | wrap form won't match values | match `colorSpace` to the palette format |
+| `border-radius: 6px` / `font-family: 'Inter'` hardcoded | bypasses shape/typography config | `rounded-md` / `font-body` |
+| `@apply bg-paper` on `body {}` | descendant-combinator shortcut can't match `body` when `data-mode` is on it | `body { background: var(--paper); }` |

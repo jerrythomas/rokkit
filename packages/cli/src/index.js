@@ -121,4 +121,22 @@ prog
 		await theme('create', opts)
 	})
 
+prog
+	.command('skills list')
+	.describe('List available Rokkit AI skills')
+	.action(async () => {
+		const { skillsCommand } = await import('./skills.js')
+		await skillsCommand('list')
+	})
+
+prog
+	.command('skills add')
+	.describe('Add Rokkit AI skills to .claude/skills/')
+	.option('--all', 'Install all available skills')
+	.option('--force', 'Overwrite an existing skill')
+	.action(async (opts) => {
+		const { skillsCommand } = await import('./skills.js')
+		await skillsCommand('add', opts)
+	})
+
 prog.parse(process.argv)

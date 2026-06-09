@@ -191,11 +191,18 @@ describe('generateInitScript', () => {
 		expect(script).toContain('localStorage.getItem')
 		expect(script).toContain('rokkit-theme')
 		expect(script).toContain('dataset.mode')
+		// resolves a stored/default 'system'|'auto' against the OS — no hardcoded dark default
+		expect(script).toContain('prefers-color-scheme')
+		expect(script).toContain("|| 'system'")
+		expect(script).not.toContain("|| 'dark'")
 	})
 
-	it('should return null for system switcher', () => {
+	it('should resolve prefers-color-scheme for system switcher', () => {
 		const script = generateInitScript('system')
-		expect(script).toBeNull()
+		// themes flip on [data-mode="dark"] only, so 'system' must set data-mode from the OS
+		expect(script).toContain('prefers-color-scheme')
+		expect(script).toContain('dataset.mode')
+		expect(script).not.toContain('dataset.style')
 	})
 
 	it('should include data-style for full switcher', () => {

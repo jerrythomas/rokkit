@@ -314,13 +314,30 @@ export function generateAppCssImports(themes) {
 
 /**
  * Generate the flash-prevention script for app.html.
- * Returns null when no script is needed (system switcher).
+ *
+ * Themes flip on `[data-mode="dark"]` only — there is no `@media
+ * (prefers-color-scheme)` fallback — so every switcher needs a script that
+ * resolves the mode pre-paint (mirrors `@rokkit/unocss`'s `themeHook`):
+ * - `system` tracks the OS preference directly (no persisted toggle).
+ * - `manual` / `full` read the persisted mode and resolve a stored-or-default
+ *   `'system'`/`'auto'` against the OS preference (default: follow the OS).
+ *
  * @param {string} switcher — 'system' | 'manual' | 'full'
  * @param {string} [storageKey='rokkit-theme']
- * @returns {string | null}
+ * @param {string} [defaultStyle='rokkit']
+ * @returns {string} the `<script>` tag to inject after `<body>`
  */
 export function generateInitScript(switcher, storageKey = 'rokkit-theme', defaultStyle = 'rokkit') {
-	if (switcher === 'system') return null
+	if (switcher === 'system') {
+		return `    <script>
+      (function () {
+        try {
+          document.body.dataset.mode =
+            matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        } catch (e) {}
+      })()
+    </script>`
+	}
 
 	const setStyle =
 		switcher === 'full' ? `b.dataset.style = t.style || '${defaultStyle}'\n          ` : ''
@@ -330,7 +347,10 @@ export function generateInitScript(switcher, storageKey = 'rokkit-theme', defaul
         try {
           var t = JSON.parse(localStorage.getItem('${storageKey}') || '{}')
           var b = document.body
-          ${setStyle}b.dataset.mode = t.mode || 'dark'
+          ${setStyle}var m = t.mode || 'system'
+          if (m === 'system' || m === 'auto')
+            m = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+          b.dataset.mode = m
         } catch (e) {}
       })()
     </script>`
