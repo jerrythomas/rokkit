@@ -6,17 +6,19 @@
 the two most error-prone areas: theming with the named-token system and building
 UI with components. Bundling SKILL.md files directly into `@rokkit/cli` lets any
 consumer project pull them in with a single command. Spec:
-`docs/backlog/2026-06-08-rokkit-skills-add.md`; plan:
-`docs/superpowers/plans/2026-06-08-rokkit-skills-add.md`.
+`docs/backlog/2026-06-09-rokkit-skills-add.md`; plan:
+`docs/superpowers/plans/2026-06-09-rokkit-skills-add.md`.
 
 **CLI commands (`packages/cli/src/skills.js`, wired in `src/index.js`).**
-- `rokkit skills list` — reads YAML frontmatter from bundled SKILL.md files and
-  prints a formatted catalog (name, version, description, tags).
+- `rokkit skills list` — reads the `name`/`description` YAML frontmatter from each
+  bundled SKILL.md and prints the catalog (name + description), marking
+  already-installed skills with a `✓`.
 - `rokkit skills add [names…]` — installs named skills into the consumer project's
   `.claude/skills/<name>/SKILL.md`; no args → interactive multi-select via
   `prompts`; `--all` installs every bundled skill; `--force` overwrites an
   existing install (default: skip if present).
-- Skills resolve against `__dirname/../skills/` inside the package, so they
+- Skills resolve against `../skills/` relative to the module (via
+  `new URL('../skills/', import.meta.url)`, ESM) inside the package, so they
   travel with the published tarball.
 
 **Bundled skills (v1 catalog).**
