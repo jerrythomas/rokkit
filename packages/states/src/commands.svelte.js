@@ -15,6 +15,8 @@
 
 const MOD_ORDER = ['ctrl', 'meta', 'alt', 'shift']
 
+const MODIFIER_ALIAS = { cmd: 'meta', meta: 'meta', ctrl: 'ctrl', control: 'ctrl', shift: 'shift', alt: 'alt', option: 'alt' }
+
 function isMac() {
 	if (typeof navigator === 'undefined') return false
 	return /Mac|iPhone|iPad|iPod/.test(navigator.platform || navigator.userAgent || '')
@@ -28,10 +30,7 @@ export function normalizeShortcut(shortcut) {
 		const p = raw.trim()
 		if (!p) continue
 		if (p === 'mod') mods.add(isMac() ? 'meta' : 'ctrl')
-		else if (p === 'cmd' || p === 'meta') mods.add('meta')
-		else if (p === 'ctrl' || p === 'control') mods.add('ctrl')
-		else if (p === 'shift') mods.add('shift')
-		else if (p === 'alt' || p === 'option') mods.add('alt')
+		else if (MODIFIER_ALIAS[p]) mods.add(MODIFIER_ALIAS[p])
 		else key = p
 	}
 	return [...MOD_ORDER.filter((m) => mods.has(m)), key].join('+')
@@ -63,6 +62,10 @@ class CommandRegistry {
 			// eslint-disable-next-line no-console
 			console.warn(`[commands] duplicate id "${cmd.id}" — replacing existing registration`)
 			this.#commands[idx] = cmd
+			// drop any shortcut(s) previously indexed to this id (avoid stale bindings)
+			for (const [sc, owner] of this.#byShortcut) {
+				if (owner === cmd.id) this.#byShortcut.delete(sc)
+			}
 		} else {
 			this.#commands = [...this.#commands, cmd]
 		}

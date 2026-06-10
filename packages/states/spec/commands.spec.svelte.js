@@ -16,6 +16,21 @@ describe('shortcut normalization', () => {
 		expect(eventToShortcut(keydown({ key: 'k', ctrl: true }))).toBe('ctrl+k')
 		expect(eventToShortcut(keydown({ key: 'P', ctrl: true, shift: true }))).toBe('ctrl+shift+p')
 	})
+	it('resolves mod to meta on macOS', () => {
+		const original = Object.getOwnPropertyDescriptor(globalThis.navigator, 'platform')
+		Object.defineProperty(globalThis.navigator, 'platform', { value: 'MacIntel', configurable: true })
+		try {
+			expect(normalizeShortcut('mod+k')).toBe('meta+k')
+		} finally {
+			// Restore previous descriptor; if there was none, delete the own property so the
+			// prototype-chain value (empty string in jsdom) takes over again.
+			if (original) {
+				Object.defineProperty(globalThis.navigator, 'platform', original)
+			} else {
+				Object.defineProperty(globalThis.navigator, 'platform', { value: '', configurable: true })
+			}
+		}
+	})
 })
 
 describe('CommandRegistry', () => {
@@ -73,6 +88,25 @@ describe('CommandRegistry', () => {
 		off()
 		expect(commands.all.map((c) => c.id)).not.toContain('m1')
 		expect(commands.all.map((c) => c.id)).not.toContain('m2')
+	})
+
+	it('re-registering an id with a new shortcut drops the old binding', () => {
+		commands.register({ id: 'x', label: 'X', shortcut: 'mod+k', run: () => {} })
+		commands.register({ id: 'x', label: 'X', shortcut: 'mod+j', run: () => {} })
+		expect(commands.resolve(keydown({ key: 'k', ctrl: true }))).toBeNull()
+		expect(commands.resolve(keydown({ key: 'j', ctrl: true }))?.id).toBe('x')
+	})
+
+	it('re-registering an id without a shortcut clears its old binding', () => {
+		commands.register({ id: 'y', label: 'Y', shortcut: 'mod+k', run: () => {} })
+		commands.register({ id: 'y', label: 'Y', run: () => {} })
+		expect(commands.resolve(keydown({ key: 'k', ctrl: true }))).toBeNull()
+	})
+
+	it('resolves a plain-key shortcut end to end', () => {
+		const run = vi.fn()
+		commands.register({ id: 'help', label: 'Help', shortcut: '?', run })
+		expect(commands.resolve(keydown({ key: '?' }))?.id).toBe('help')
 	})
 })
 
