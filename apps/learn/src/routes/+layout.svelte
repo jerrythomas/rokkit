@@ -6,6 +6,7 @@
 	import { page } from '$app/state'
 	import SiteHeader from '$lib/components/SiteHeader.svelte'
 	import SiteFooter from '$lib/components/SiteFooter.svelte'
+	import { skinDefinitions } from '$lib/data/skins'
 
 	// `/embed/*` pages are loaded inside iframes (used by the home theme
 	// showcase). They get no site chrome — the iframe IS the chrome.
@@ -24,6 +25,9 @@
 	// see a mismatch and trigger a second body-dataset write (visible
 	// flicker between paint and hydration).
 	vibe.allowedStyles = ['rokkit', 'minimal', 'material', 'frosted', 'zen-sumi']
+	// Set before themable runs vibe.load() so a persisted non-default skin restores
+	// on every route (not just /app). Mirrors allowedStyles above.
+	vibe.allowedSkins = skinDefinitions.map((s) => s.name)
 	if (typeof document !== 'undefined') {
 		const root = document.documentElement
 		const body = document.body
