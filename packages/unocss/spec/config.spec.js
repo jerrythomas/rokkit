@@ -5,7 +5,10 @@ describe('loadConfig', () => {
 	it('should return full defaults when called with no arguments', () => {
 		const config = loadConfig()
 		expect(config.skin).toEqual(DEFAULT_CONFIG.skin)
-		expect(config.skins).toEqual({})
+		// Built-in skins are always merged in; the consumer supplied none.
+		expect(config.skins).toHaveProperty('default')
+		expect(config.skins).toHaveProperty('ocean')
+		expect(config.hasUserSkins).toBe(false)
 		expect(config.themes).toEqual(['rokkit'])
 		expect(config.icons).toEqual({ app: '@rokkit/icons/app.json' })
 		expect(config.switcher).toBe('manual')
@@ -27,13 +30,19 @@ describe('loadConfig', () => {
 		expect(config).not.toHaveProperty('colors')
 	})
 
-	it('should pass through skins as-is', () => {
+	it('should merge user skins over the built-in skins', () => {
 		const skins = {
 			vibrant: { primary: 'blue', secondary: 'purple' },
 			ocean: { primary: 'cyan', surface: 'slate' }
 		}
 		const config = loadConfig({ skins })
-		expect(config.skins).toEqual(skins)
+		// User skins win over built-ins of the same name (ocean) and are added.
+		expect(config.skins.vibrant).toEqual(skins.vibrant)
+		expect(config.skins.ocean).toEqual(skins.ocean)
+		// Built-ins the user did not override remain available.
+		expect(config.skins).toHaveProperty('default')
+		expect(config.skins).toHaveProperty('emerald')
+		expect(config.hasUserSkins).toBe(true)
 	})
 
 	it('should merge user icons with default app collection', () => {

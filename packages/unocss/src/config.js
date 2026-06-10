@@ -1,4 +1,5 @@
 import { DEFAULT_THEME_MAPPING } from '@rokkit/core'
+import { BUILTIN_SKINS } from './builtin-skins.js'
 
 const DEFAULT_SKIN = { ...DEFAULT_THEME_MAPPING }
 
@@ -58,12 +59,23 @@ function pick(value, fallback) {
  */
 export function loadConfig(userConfig) {
 	const cfg = userConfig ?? {}
+	// Built-in skins are always available as `[data-skin]` blocks. User skins
+	// merge ON TOP, so a user's `default` / named skin overrides the built-in.
+	const userSkins = cfg.skins ?? {}
 	return {
 		palettes:   pick(cfg.palettes, DEFAULT_CONFIG.palettes),
 		colorSpace: pick(cfg.colorSpace, DEFAULT_CONFIG.colorSpace),
 		// 'colors' is a backward-compatible alias for 'skin'
 		skin:       { ...DEFAULT_SKIN, ...(cfg.skin ?? cfg.colors ?? {}) },
-		skins:      pick(cfg.skins, DEFAULT_CONFIG.skins),
+		skins:      { ...BUILTIN_SKINS, ...userSkins },
+		// Whether the consumer explicitly opted into multi-skin mode. Built-in
+		// skins alone do NOT flip the preset into multi-skin mode — single-skin
+		// `skin` behavior is preserved unless the user supplies their own skins.
+		hasUserSkins: Object.keys(userSkins).length > 0,
+		// The consumer's own `default` colormap, if they supplied one. Used by
+		// resolveColormap so the always-present built-in `default` never shadows
+		// the single-skin `skin` fallback.
+		userDefaultSkin: userSkins.default,
 		themes:     pick(cfg.themes, DEFAULT_CONFIG.themes),
 		tokens:     validateTokens(cfg.tokens ?? DEFAULT_CONFIG.tokens),
 		overrides:  pick(cfg.overrides, DEFAULT_CONFIG.overrides),
@@ -178,8 +190,12 @@ export function resolveTokenMode(config, role) {
  */
 export function resolveColormap(config) {
 	let colormap
-	if (Object.keys(config.skins).length > 0) {
-		colormap = config.skins.default ?? config.skin
+	// Multi-skin mode is driven by USER-supplied skins, not the always-present
+	// built-ins — otherwise built-ins would shadow the single-skin `skin`.
+	// Likewise we use the user's OWN `default` skin (not the built-in default)
+	// so `skins` without a `default` key still falls back to `skin`.
+	if (config.hasUserSkins) {
+		colormap = config.userDefaultSkin ?? config.skin
 	} else {
 		colormap = config.skin
 	}
