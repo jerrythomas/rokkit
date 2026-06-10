@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { commands, normalizeShortcut, eventToShortcut } from '../src/commands.svelte.js'
+import { messages } from '../src/messages.svelte.js'
 
 function keydown(props) {
 	return { key: props.key, ctrlKey: !!props.ctrl, metaKey: !!props.meta, altKey: !!props.alt, shiftKey: !!props.shift, preventDefault() {} }
@@ -72,5 +73,14 @@ describe('CommandRegistry', () => {
 		off()
 		expect(commands.all.map((c) => c.id)).not.toContain('m1')
 		expect(commands.all.map((c) => c.id)).not.toContain('m2')
+	})
+})
+
+describe('command messages namespace', () => {
+	it('exposes default palette chrome strings', () => {
+		expect(typeof messages.command.placeholder).toBe('string')
+		expect(messages.command.placeholder.length).toBeGreaterThan(0)
+		expect(typeof messages.command.noResults).toBe('string')
+		expect(typeof messages.command.label).toBe('string')
 	})
 })
