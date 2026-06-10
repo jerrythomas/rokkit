@@ -13,7 +13,7 @@ npm install @rokkit/app
 ## Exports
 
 ```javascript
-import { ThemeSwitcherToggle, TableOfContents } from '@rokkit/app'
+import { ThemeSwitcherToggle, SkinSwitcherToggle, TableOfContents } from '@rokkit/app'
 import { ColorModeManager, resolveMode } from '@rokkit/app'
 ```
 
@@ -203,10 +203,48 @@ Low-level utility used internally by `ThemeSwitcherToggle`. Wraps a Svelte store
 
 ---
 
+---
+
+## SkinSwitcherToggle
+
+A compact toggle for switching between named color skins. Reads available skins from
+`vibe.allowedSkins` (or an explicit `skins` prop) and writes the selected skin back to
+`vibe.skin`. The `themable` action picks up the change and writes `data-skin` onto the
+root element, updating the CSS cascade.
+
+### Quick Start
+
+```svelte
+<script>
+  import { SkinSwitcherToggle } from '@rokkit/app'
+  import { vibe } from '@rokkit/states'
+
+  vibe.allowedSkins = ['default', 'ocean', 'violet', 'rose', 'emerald']
+</script>
+
+<SkinSwitcherToggle />
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `skins` | `Array<string \| { name: string; label?: string; icon?: string }>` | `vibe.allowedSkins` | Skins to display. Defaults to the full `allowedSkins` list. |
+| `labels` | `Record<string, string>` | `{}` | Display-label overrides keyed by skin name. |
+| `showLabels` | `boolean` | `false` | Show text labels alongside icons. |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'sm'` | Size variant. |
+| `disabled` | `boolean` | `false` | Disable all options. |
+| `class` | `string` | `''` | Additional CSS classes. |
+| `onchange` | `(skin: string) => void` | — | Called after `vibe.skin` is updated with the new skin name. |
+
+Full reference: [SkinSwitcherToggle component doc](/llms/components/skin-switcher-toggle.txt).
+
+---
+
 ## Import
 
 ```javascript
-import { ThemeSwitcherToggle, TableOfContents } from '@rokkit/app'
+import { ThemeSwitcherToggle, SkinSwitcherToggle, TableOfContents } from '@rokkit/app'
 ```
 
 ## Related

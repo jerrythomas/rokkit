@@ -12,6 +12,7 @@ import utilitiesContent from './utilities/content.md?raw'
 import toolkitContent from './toolkit/content.md?raw'
 import toolchainContent from './toolchain/content.md?raw'
 import commandsContent from './commands/content.md?raw'
+import skinsContent from './skins/content.md?raw'
 
 export type GuideCategory = 'basics' | 'data' | 'design' | 'workflows' | 'advanced'
 
@@ -52,6 +53,13 @@ export const guides: Guide[] = [
 		description: 'Themes, layouts, design tokens, and how to build a brand-aware skin.',
 		category: 'design',
 		content: themingContent
+	},
+	{
+		slug: 'skins',
+		title: 'Skins',
+		description: 'Named palette skins — define, switch at runtime, and apply dynamically with skinnable.',
+		category: 'design',
+		content: skinsContent
 	},
 	{
 		slug: 'accessibility',

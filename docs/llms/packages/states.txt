@@ -316,12 +316,14 @@ Singleton reactive store for the current theme state. Components and actions rea
 | `mode` | `'light'\|'dark'` | `'dark'` | Color scheme |
 | `density` | `'cozy'\|'compact'\|'comfortable'` | `'comfortable'` | Spacing density |
 | `style` | `string` | `'rokkit'` | Active theme style name |
+| `skin` | `string` | `'default'` | Active named skin. The setter rejects values not in `allowedSkins` and no-ops when the value matches the current skin. The `themable` action writes this as `data-skin` onto the root element. |
 | `direction` | `'ltr'\|'rtl'` | auto-detected | Text direction |
 | `isRTL` | `boolean` | — | Convenience flag for RTL |
 | `palette` | `object` | — | Derived color rules from `colorMap` + `colors` (`$derived`) |
 | `colors` | `object` | — | Base color definitions |
 | `colorMap` | `object` | — | Maps semantic color roles to base color keys |
 | `allowedStyles` | `string[]` | `DEFAULT_STYLES` | Whitelist of valid style values |
+| `allowedSkins` | `string[]` | `['default']` | Whitelist of valid skin values. Set this before assigning `vibe.skin` so the new value is accepted. Used by `SkinSwitcherToggle` as its default option list. |
 
 ### Methods
 
@@ -340,12 +342,17 @@ import { vibe } from '@rokkit/states'
 // Read
 console.log(vibe.mode)     // 'dark'
 console.log(vibe.density)  // 'comfortable'
+console.log(vibe.skin)     // 'default'
 
 // Write
 vibe.mode = 'light'
 vibe.density = 'compact'
 
-// Persist
+// Skins — set allowedSkins first so the setter accepts the value
+vibe.allowedSkins = ['default', 'ocean', 'violet', 'rose', 'emerald']
+vibe.skin = 'ocean'
+
+// Persist (saves style, mode, density, direction, skin)
 vibe.save('myapp-theme')
 // Later:
 vibe.load('myapp-theme')

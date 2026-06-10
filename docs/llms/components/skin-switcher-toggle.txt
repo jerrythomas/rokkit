@@ -1,0 +1,116 @@
+# Rokkit SkinSwitcherToggle Component
+
+> Segmented toggle for switching between named palette skins. Drives `vibe.skin` from `@rokkit/states`.
+
+`SkinSwitcherToggle` reads the list of available skins from `vibe.allowedSkins` (or an explicit `skins` prop) and renders a `Toggle` (variant `"group"`) whose selection is wired directly to `vibe.skin`. Selecting an option writes back to the store; any component wrapped by `themable` reacts immediately.
+
+## Quick Start
+
+```svelte
+<script>
+  import { SkinSwitcherToggle } from '@rokkit/app'
+  import { vibe } from '@rokkit/states'
+
+  // Set before component mounts so the store accepts the values
+  vibe.allowedSkins = ['default', 'ocean', 'violet', 'rose', 'emerald']
+</script>
+
+<SkinSwitcherToggle />
+```
+
+No additional props required — the component connects to `vibe` automatically.
+
+## How It Works
+
+1. `vibe.allowedSkins` is the source of truth for which skins are valid.
+2. `SkinSwitcherToggle` derives its option list from `skins ?? vibe.allowedSkins`.
+3. On selection, it calls `vibe.skin = newValue`, which `themable` picks up and writes as `data-skin` onto the root element — updating the CSS cascade app-wide.
+4. The currently selected option mirrors `vibe.skin` (reactive `$derived`).
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `skins` | `Array<string \| { name: string; label?: string; icon?: string }>` | `vibe.allowedSkins` | Skins to show. Strings use the skin name as both value and label. Objects can supply a custom `label` and/or `icon` class. Defaults to the full `vibe.allowedSkins` list when omitted. |
+| `labels` | `Record<string, string>` | `{}` | Display-label overrides keyed by skin name. Applied when `skins` is a string array (no per-item label). |
+| `showLabels` | `boolean` | `false` | Show text labels alongside icons. |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'sm'` | Size variant passed through to the underlying `Toggle`. |
+| `disabled` | `boolean` | `false` | Disable all options. |
+| `class` | `string` | `''` | Additional CSS classes forwarded to the `Toggle` root. |
+| `onchange` | `(skin: string) => void` | — | Called after `vibe.skin` is updated with the new skin name. |
+
+## Examples
+
+### Icon-only toggle (default)
+
+```svelte
+<SkinSwitcherToggle />
+```
+
+Options are derived from `vibe.allowedSkins`; each skin's name is the label.
+
+### Explicit skin list with custom labels
+
+```svelte
+<SkinSwitcherToggle
+  skins={['default', 'ocean', 'violet']}
+  labels={{ default: 'Zen', ocean: 'Ocean', violet: 'Violet' }}
+  showLabels
+  size="md"
+/>
+```
+
+### Object-form skins with icons
+
+```svelte
+<SkinSwitcherToggle
+  skins={[
+    { name: 'default', label: 'Zen',    icon: 'i-lucide:leaf' },
+    { name: 'ocean',   label: 'Ocean',  icon: 'i-lucide:waves' },
+    { name: 'violet',  label: 'Violet', icon: 'i-lucide:sparkles' }
+  ]}
+  showLabels
+/>
+```
+
+### With change callback
+
+```svelte
+<SkinSwitcherToggle onchange={(skin) => console.log('active skin:', skin)} />
+```
+
+## Full Wiring Example (SvelteKit layout)
+
+```svelte
+<!-- src/routes/+layout.svelte -->
+<script>
+  import { themable } from '@rokkit/actions'
+  import { vibe } from '@rokkit/states'
+  import { SkinSwitcherToggle } from '@rokkit/app'
+
+  vibe.allowedSkins = ['default', 'ocean', 'violet', 'rose', 'emerald']
+
+  let { children } = $props()
+</script>
+
+<svelte:body use:themable={{ theme: vibe, storageKey: 'app-theme' }} />
+
+<header>
+  <SkinSwitcherToggle />
+</header>
+
+{@render children()}
+```
+
+## Import
+
+```javascript
+import { SkinSwitcherToggle } from '@rokkit/app'
+```
+
+## Related
+
+- [Skins guide](/llms/guides/skins.txt) — skin concepts, `data-skin` mechanism, `skinnable` action
+- [Toggle component](/llms/components/toggle.txt) — underlying component used by SkinSwitcherToggle
+- [@rokkit/states vibe](/llms/packages/states.txt) — `vibe.skin` / `vibe.allowedSkins` reference
+- [@rokkit/app package](/llms/packages/app.txt) — full app-package component list

@@ -178,20 +178,31 @@ Activate it with `data-style` just like a built-in theme:
 
 ## Skins
 
-Skins are pre-built color bundles applied via a CSS class on any ancestor element. They layer a specific color palette on top of the active theme, without changing the structural or visual style:
+Skins are pre-built color bundles applied via the `data-skin` attribute on any ancestor element.
+They layer a specific color palette on top of the active theme without changing the structural or
+visual style. The `presetRokkit` UnoCSS preset emits a `[data-skin='name']` preflight block for
+each configured skin — placing the attribute on an element scopes that palette to its subtree.
 
-```svelte
-<!-- Applied to any container or wrapper -->
-<div class="skin-default">...</div>
-<div class="skin-vibrant">...</div>
-<div class="skin-seaweed">...</div>
+```html
+<!-- App-wide skin on <html> (written by themable + vibe.skin) -->
+<html data-skin="ocean">
+
+<!-- Section-scoped skin -->
+<div data-skin="violet">…</div>
 ```
 
-Skins are useful for scoping different color palettes to different sections of a page without changing the overall theme.
+For app-wide skin switching, use `vibe.skin` from `@rokkit/states` and the `themable` action
+from `@rokkit/actions`. `themable` writes `data-skin` reactively. For per-widget dynamic palettes
+not defined at build time, use `use:skinnable` from `@rokkit/actions`.
+
+Built-in skins: `default`, `ocean`, `violet`, `rose`, `emerald`.
+
+See the [Skins guide](/llms/guides/skins.txt) for the full runtime-switching pattern and the
+[`@rokkit/unocss` package](/llms/packages/unocss.txt) for how skins are emitted as preflight CSS.
 
 **Skin vs. `data-style`:**
-- `data-style` selects the visual personality (gradients, shadows, border radius, transitions)
-- Skins change the color palette within that personality
+- `data-style` selects the visual personality (gradients, shadows, border radius, transitions).
+- `data-skin` changes the color palette within that personality.
 
 ## Utility Classes and Data Attributes
 

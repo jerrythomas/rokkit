@@ -196,22 +196,43 @@ Available styles: `undefined` (default), `'solid'`, `'outline'`, `'duotone-outli
 
 The full `DEFAULT_ICONS` list (70+ icons) is also added to the UnoCSS safelist.
 
-### Skin Shortcuts
+### Skin Preflights
 
-Each entry in `options.skins` generates a `skin-{name}` class that injects a CSS variable override block for that palette:
+Each entry in `options.skins` (other than `default`) generates a `[data-skin='name']`
+preflight CSS block. Setting `data-skin='name'` on any ancestor element scopes that palette
+to the subtree — the `themable` action writes it to the root element, making it app-wide.
 
 ```js
 presetRokkit({
   skins: {
-    ocean: { primary: 'sky', secondary: 'teal', surface: 'zinc' }
+    ocean: { surface: 'slate', ink: 'slate', primary: 'sky', accent: 'teal' }
   }
 })
 ```
 
-```html
-<div class="skin-ocean">
-  <!-- All components inside use sky/teal/zinc palette -->
-</div>
+The preset emits (in the UnoCSS preflight):
+
+```css
+/* light block — always emitted for non-default skins */
+[data-skin='ocean'] { --paper: oklch(…); --primary: oklch(…); … }
+
+/* dark block — only emitted when the skin has a dual-palette role */
+[data-mode='dark'][data-skin='ocean'] { --paper: oklch(…); … }
+```
+
+The `default` skin is **not** emitted as a `[data-skin='default']` block — its vars live
+in the `:root` preflight, so `data-skin='default'` simply inherits `:root`.
+
+> **Note:** The earlier `skin-{name}` CSS class approach has been removed. Use the
+> `data-skin='name'` attribute (written by `themable` / `vibe.skin`) instead.
+
+Built-in skins (`default`, `ocean`, `violet`, `rose`, `emerald`) are exported as
+`BUILTIN_SKINS` from `@rokkit/unocss` and merged automatically — consumer `skins` in
+`rokkit.config.js` merge on top and can override built-in entries by name.
+
+```js
+import { BUILTIN_SKINS } from '@rokkit/unocss'
+// { default, ocean, violet, rose, emerald }
 ```
 
 ### Dark Mode
