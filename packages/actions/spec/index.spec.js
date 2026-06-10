@@ -23,7 +23,8 @@ describe('actions', () => {
 			'hoverLift',
 			'magnetic',
 			'ripple',
-		'tooltip'
+		'tooltip',
+			'shortcuts'
 		])
 	})
 })
