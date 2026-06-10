@@ -1,0 +1,265 @@
+# Commands & Shortcuts
+
+Rokkit ships a lightweight command system that unifies keyboard shortcuts and
+a searchable palette in one coherent API. Three pieces work together:
+
+| Piece | Package | Role |
+| --- | --- | --- |
+| `commands` registry | `@rokkit/states` | Defines + stores all commands; app-wide singleton |
+| `use:shortcuts` action | `@rokkit/actions` | Listens globally for keydown, resolves via the registry |
+| `<CommandPalette>` | `@rokkit/ui` | Modal search UI backed by `commands.all` |
+
+---
+
+## The Command Shape
+
+A command is a plain object you register with the `commands` registry:
+
+```js
+/** @typedef {Object} Command
+ * @property {string}        id        — unique key; re-registering the same id replaces and warns
+ * @property {string}        label     — display text shown in the palette (consumer-localised)
+ * @property {() => void}    run       — called on shortcut match or palette select
+ * @property {string}        [shortcut]  — e.g. 'mod+k' | 'mod+shift+p' | '?'
+ * @property {string}        [group]     — palette category header
+ * @property {boolean}       [global]    — fire even while a text input is focused (default false)
+ * @property {() => boolean} [enabled]   — optional dynamic gate; returning false suppresses execution
+ * @property {string[]}      [keywords]  — extra search terms for the palette filter
+ */
+```
+
+`mod` is a portable modifier: it resolves to `Cmd` on macOS and `Ctrl` everywhere
+else. Write `'mod+k'` and the system normalises it at runtime — no platform
+branching in consumer code.
+
+---
+
+## Registering Commands
+
+Use `commands.register()` for a single command or `commands.registerMany()` for
+a batch. Both return an **unregister** function — call it to tear down on
+component destroy.
+
+### Single registration
+
+```svelte
+<script>
+  import { commands } from '@rokkit/states'
+  import { onMount } from 'svelte'
+
+  onMount(() => {
+    return commands.register({
+      id: 'save',
+      label: 'Save document',
+      shortcut: 'mod+s',
+      group: 'file',
+      run: () => saveDocument()
+    })
+  })
+</script>
+```
+
+`onMount` returns the unregister function, so Svelte calls it automatically on
+component destroy.
+
+### Batch registration (preferred for layout-level commands)
+
+```svelte
+<script>
+  import { commands } from '@rokkit/states'
+  import { onMount } from 'svelte'
+
+  let paletteOpen = $state(false)
+
+  onMount(() => {
+    return commands.registerMany([
+      {
+        id: 'palette.open',
+        label: 'Open command palette',
+        shortcut: 'mod+k',
+        global: true,
+        group: 'general',
+        run: () => { paletteOpen = true }
+      },
+      {
+        id: 'theme.toggle',
+        label: 'Toggle light / dark',
+        shortcut: 'mod+shift+l',
+        group: 'theme',
+        run: () => { vibe.mode = vibe.mode === 'dark' ? 'light' : 'dark' }
+      }
+    ])
+  })
+</script>
+```
+
+The pattern above mirrors the real wiring in `apps/learn/src/routes/app/+layout.svelte`.
+`registerMany` returns a single unregister that tears down all commands.
+
+---
+
+## Wiring the Shortcuts Action
+
+Apply `use:shortcuts={commands}` once to the root element of your app (or the
+layout wrapper). It attaches a `window` keydown listener through `$effect` and
+delegates resolution to the registry:
+
+```svelte
+<script>
+  import { commands } from '@rokkit/states'
+  import { shortcuts } from '@rokkit/actions'
+</script>
+
+<div class="app-shell" use:shortcuts={commands}>
+  {@render children()}
+</div>
+```
+
+The action takes any object that implements `{ resolve(event): Command|null, execute(id): void }` — the `commands` registry satisfies that interface. Because it uses `$effect` internally, swapping the registry reference triggers a clean re-bind.
+
+**Input focus guard.** Unless a command has `global: true`, the action silently
+ignores keystrokes while a text input, textarea, select, or `contenteditable`
+element holds focus. This prevents shortcut collisions with normal typing.
+
+---
+
+## Adding the Command Palette
+
+Bind `paletteOpen` to `CommandPalette.open`. Register an `'mod+k'`
+command with `global: true` that flips it to `true` — that command then
+appears in the palette itself so users can discover it:
+
+```svelte
+<script>
+  import { CommandPalette } from '@rokkit/ui'
+  import { commands } from '@rokkit/states'
+  import { shortcuts } from '@rokkit/actions'
+  import { onMount } from 'svelte'
+
+  let paletteOpen = $state(false)
+
+  onMount(() => {
+    return commands.register({
+      id: 'palette.open',
+      label: 'Open command palette',
+      shortcut: 'mod+k',
+      global: true,
+      group: 'general',
+      run: () => { paletteOpen = true }
+    })
+  })
+</script>
+
+<div use:shortcuts={commands}>
+  {@render children()}
+  <CommandPalette bind:open={paletteOpen} />
+</div>
+```
+
+`CommandPalette` renders a backdrop + modal with a live-filter input. It reads
+`commands.all` directly — every registered command is immediately searchable
+without extra wiring.
+
+---
+
+## Shortcut Grammar
+
+Shortcuts are strings with `+`-separated parts. Order does not matter in
+the string — the system normalises modifiers internally.
+
+| Token | Resolves to |
+| --- | --- |
+| `mod` | `cmd` on macOS, `ctrl` elsewhere |
+| `ctrl` / `control` | `ctrl` |
+| `meta` / `cmd` | `meta` |
+| `alt` / `option` | `alt` |
+| `shift` | `shift` |
+| any other token | the key (lowercased) |
+
+Examples: `'mod+k'`, `'mod+shift+p'`, `'?'`, `'mod+shift+l'`, `'ctrl+/'`.
+
+### Conflict detection
+
+When two commands claim the same normalised shortcut, the first registrant
+wins; the second logs a console warning:
+
+```
+[commands] shortcut "mod+k" already bound to "palette.open"; "other.cmd" will not receive it
+```
+
+Duplicate `id` replacements are also warned:
+
+```
+[commands] duplicate id "palette.open" — replacing existing registration
+```
+
+---
+
+## Scope & Lifecycle
+
+The `commands` registry is a module-level singleton — commands registered in
+any component or route are pooled together. This means:
+
+- **Register in `onMount`, return the unregister** — ensures commands mount
+  with the component and tear down cleanly on destroy.
+- **`registerMany` returns one function** that cleans up all commands at once.
+- **Layout-level commands** (palette open, theme toggle, new conversation) are
+  registered in the app layout's `onMount` and live for the session.
+- **Route-level commands** (save, undo) can be registered in individual page
+  components; they disappear when the page unmounts.
+
+---
+
+## i18n
+
+`CommandPalette` reads its chrome strings from `messages.command`:
+
+| Key | Default | Use |
+| --- | --- | --- |
+| `messages.command.placeholder` | `'Run a command…'` | Input placeholder |
+| `messages.command.noResults` | `'No commands found'` | Empty state text |
+| `messages.command.label` | `'Command palette'` | ARIA dialog label |
+
+Override via the standard messages API:
+
+```js
+import { messages } from '@rokkit/states'
+
+messages.set({
+  command: {
+    placeholder: 'Saisir une commande…',
+    noResults: 'Aucune commande trouvée',
+    label: 'Palette de commandes'
+  }
+})
+```
+
+Command `label` strings are consumer-provided — localise them in your
+`registerMany` call to match your app locale.
+
+---
+
+## Resolving and Executing Programmatically
+
+```js
+import { commands } from '@rokkit/states'
+
+// Resolve from a keyboard event (used by the shortcuts action internally)
+const cmd = commands.resolve(keyboardEvent) // Command | null
+
+// Execute by id (bypasses shortcut, checks enabled gate)
+commands.execute('save')
+
+// Read all registered commands
+commands.all // Command[]
+```
+
+`normalizeShortcut` and `eventToShortcut` are exported from `@rokkit/states`
+for advanced use (custom shortcut UIs, shortcut display formatting):
+
+```js
+import { normalizeShortcut, eventToShortcut } from '@rokkit/states'
+
+normalizeShortcut('mod+K')          // 'meta+k' on macOS, 'ctrl+k' elsewhere
+eventToShortcut(keyboardEvent)      // canonical string from a live event
+```

@@ -11,6 +11,7 @@ import aiChatbotsContent from './ai-chatbots/content.md?raw'
 import utilitiesContent from './utilities/content.md?raw'
 import toolkitContent from './toolkit/content.md?raw'
 import toolchainContent from './toolchain/content.md?raw'
+import commandsContent from './commands/content.md?raw'
 
 export type GuideCategory = 'basics' | 'data' | 'design' | 'workflows' | 'advanced'
 
@@ -100,6 +101,13 @@ export const guides: Guide[] = [
 		description: 'Build, lint, test setup — the developer-side conventions Rokkit assumes.',
 		category: 'advanced',
 		content: toolchainContent
+	},
+	{
+		slug: 'commands',
+		title: 'Commands & Shortcuts',
+		description: 'Register commands, bind keyboard shortcuts, and wire the CommandPalette.',
+		category: 'advanced',
+		content: commandsContent
 	}
 ]
 

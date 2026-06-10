@@ -1,0 +1,136 @@
+# Rokkit CommandPalette Component
+
+> Keyboard-driven command search modal backed by the `commands` registry.
+
+`CommandPalette` renders a backdrop + dialog that lets users search and run any
+registered command by label, id, or keywords. It reads `commands.all` from
+`@rokkit/states` directly — no prop wiring required for the command list.
+
+## Quick Start
+
+```svelte
+<script>
+  import { CommandPalette } from '@rokkit/ui'
+  import { commands } from '@rokkit/states'
+  import { shortcuts } from '@rokkit/actions'
+  import { onMount } from 'svelte'
+
+  let open = $state(false)
+
+  onMount(() => {
+    return commands.register({
+      id: 'palette.open',
+      label: 'Open command palette',
+      shortcut: 'mod+k',
+      global: true,
+      run: () => { open = true }
+    })
+  })
+</script>
+
+<div use:shortcuts={commands}>
+  {@render children()}
+  <CommandPalette bind:open />
+</div>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `open` | `boolean` | `false` | Controls visibility — use `bind:open` |
+| `placeholder` | `string` | `messages.command.placeholder` | Input placeholder text. Falls back to `'Run a command…'` when omitted |
+
+Both props are optional. `open` is `$bindable` — the palette closes itself on
+Escape, Enter-run, and click-outside, resetting `open` to `false`.
+
+## Keyboard Behaviour
+
+| Key | Action |
+|-----|--------|
+| `ArrowDown` | Move selection down |
+| `ArrowUp` | Move selection up |
+| `Enter` | Run the active command and close |
+| `Escape` | Close without running |
+| `click outside` | Close without running (via `dismissable` action) |
+
+Typing in the input resets the active index to 0 and filters results live.
+
+## Search / Filter
+
+The input filters `commands.all` by a case-insensitive substring match against
+`cmd.label`, `cmd.id`, and `cmd.keywords` (joined). When the query is empty,
+all registered commands are shown.
+
+## Data Attributes
+
+Style the palette by selecting on these attributes — no component-level class
+props are provided.
+
+| Attribute | Element | Notes |
+|-----------|---------|-------|
+| `data-command-backdrop` | Fullscreen overlay `<div>` | Behind the dialog |
+| `data-command-palette` | Dialog `<div>` | `role="dialog" aria-modal="true"` |
+| `data-command-input` | `<input type="text">` | Search/filter field |
+| `data-command-list` | `<ul>` | `role="listbox"` — hidden when results empty |
+| `data-command-item` | `<li>` | `role="option"` — one per matching command |
+| `data-active` | on `[data-command-item]` | Present (no value) on the currently active item |
+| `data-command-label` | `<span>` inside item | Command label text |
+| `data-command-shortcut` | `<span>` inside item | Shortcut string; rendered only when `cmd.shortcut` is set |
+| `data-command-empty` | `<p>` | Shown when no commands match the filter |
+
+### CSS example
+
+```css
+[data-command-backdrop] {
+  position: fixed;
+  inset: 0;
+  background: oklch(0 0 0 / 0.5);
+  display: grid;
+  place-items: center;
+}
+
+[data-command-palette] {
+  width: min(640px, 90vw);
+  border-radius: 0.75rem;
+  background: var(--paper);
+  box-shadow: 0 20px 60px var(--shadow-tint);
+}
+
+[data-command-item][data-active] {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+```
+
+## i18n
+
+The palette reads three strings from `messages.command`:
+
+| Key | Default |
+|-----|---------|
+| `messages.command.placeholder` | `'Run a command…'` |
+| `messages.command.noResults` | `'No commands found'` |
+| `messages.command.label` | `'Command palette'` (ARIA `aria-label`) |
+
+Override via `messages.set({ command: { … } })` from `@rokkit/states`.
+Passing `placeholder` directly as a prop takes precedence over the message.
+
+## ARIA
+
+The dialog element carries `role="dialog"` and `aria-modal="true"`. Its
+`aria-label` is `messages.command.label`. The list is `role="listbox"`;
+each item is `role="option"` with `aria-selected` reflecting the active index.
+The input receives `autofocus` when the palette opens.
+
+## Import
+
+```javascript
+import { CommandPalette } from '@rokkit/ui'
+```
+
+## Related
+
+- [Commands & Shortcuts guide](/llms/guides/commands.txt) — full wiring guide
+- [@rokkit/states commands section](/llms/packages/states.txt) — registry API
+- [@rokkit/actions shortcuts section](/llms/packages/actions.txt) — keyboard capture action

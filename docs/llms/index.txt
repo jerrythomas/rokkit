@@ -135,8 +135,8 @@ Verify that `<body>` is on its own line in `src/app.html`. The script is injecte
 | `@rokkit/forms` | Dynamic form generation from JSON schema |
 | `@rokkit/chart` | Data visualization (PlotChart, FacetPlot, AnimatedPlot, Sparkline, CrossFilter, GeomBar/Line/Area/Point/etc.) |
 | `@rokkit/blocks` | Rich content blocks for tables and plots (PlotPlugin, TablePlugin, SparklinePlugin, MermaidPlugin) |
-| `@rokkit/states` | State management (ProxyItem, LazyProxyItem, ProxyTree, ProxyTable, ProxyTableTree, Wrapper, LazyWrapper, vibe, messages, watchMedia) |
-| `@rokkit/actions` | DOM event layer + Svelte actions (Navigator class, navigable, hoverLift, magnetic, ripple) |
+| `@rokkit/states` | State management (ProxyItem, LazyProxyItem, ProxyTree, ProxyTable, ProxyTableTree, Wrapper, LazyWrapper, vibe, messages, watchMedia, commands) |
+| `@rokkit/actions` | DOM event layer + Svelte actions (Navigator class, shortcuts, hoverLift, magnetic, ripple, and more) |
 | `@rokkit/core` | Core utilities and field mapping |
 | `@rokkit/data` | Data manipulation utilities |
 | `@rokkit/themes` | CSS themes (rokkit, minimal, material, frosted, zen-sumi) |
@@ -359,6 +359,7 @@ Long-form prose covering framework concepts. Mirrors what users see at `/guides/
 - [guides/toolkit.txt](/llms/guides/toolkit.txt) — companion packages (states / data / actions / core / blocks / themes)
 - [guides/toolchain.txt](/llms/guides/toolchain.txt) — CLI (init, doctor, upgrade, skin, theme)
 - [guides/ai-chatbots.txt](/llms/guides/ai-chatbots.txt) — `@rokkit/blocks` plugin pattern for LLM chat UIs (fenced markdown → live components)
+- [guides/commands.txt](/llms/guides/commands.txt) — commands registry, shortcuts action, CommandPalette wiring
 
 ## Component Index
 
@@ -377,6 +378,7 @@ Long-form prose covering framework concepts. Mirrors what users see at `/guides/
 
 ### Menus & Actions
 
+- [CommandPalette](/llms/components/command-palette.txt) — modal command search backed by the `commands` registry
 - [Menu](/llms/components/menu.txt) — dropdown menu with trigger, keyboard nav, groups, collapsible sections
 - [Dropdown](/llms/components/dropdown.txt) — dropdown container with grouped options
 - [Toolbar](/llms/components/toolbar.txt) — horizontal action bar with sections
@@ -480,7 +482,7 @@ All interactive components support:
 
 ```javascript
 import { List, Tree, LazyTree, Select, MultiSelect, Tabs, Toggle, Table, Toolbar, ToolbarGroup, Menu } from '@rokkit/ui'
-import { Button, ButtonGroup, Dropdown } from '@rokkit/ui'
+import { CommandPalette, Button, ButtonGroup, Dropdown } from '@rokkit/ui'
 import { UploadTarget, UploadProgress, UploadFileStatus } from '@rokkit/ui'
 import { FloatingAction, FloatingNavigation, Tooltip } from '@rokkit/ui'
 import { Card, Grid, Stack, Divider, Carousel, Pill, Timeline, Stepper, ProgressBar, BreadCrumbs } from '@rokkit/ui'

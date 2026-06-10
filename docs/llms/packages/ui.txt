@@ -1,0 +1,97 @@
+# @rokkit/ui
+
+> Main UI component library for Rokkit. 40+ components covering selection, navigation, forms, feedback, layout, charts, and theming.
+
+See [index.txt](/llms/index.txt) for the full component catalogue, import reference, and standard API pattern.
+
+Individual component references live in [components/](/llms/components/).
+
+## Install
+
+```bash
+npm install @rokkit/ui
+```
+
+---
+
+## CommandPalette
+
+Modal command search UI backed by the `commands` registry from `@rokkit/states`.
+
+```svelte
+<script>
+  import { CommandPalette } from '@rokkit/ui'
+  import { commands } from '@rokkit/states'
+  import { shortcuts } from '@rokkit/actions'
+  import { onMount } from 'svelte'
+
+  let paletteOpen = $state(false)
+
+  onMount(() => {
+    return commands.register({
+      id: 'palette.open',
+      label: 'Open command palette',
+      shortcut: 'mod+k',
+      global: true,
+      run: () => { paletteOpen = true }
+    })
+  })
+</script>
+
+<div use:shortcuts={commands}>
+  {@render children()}
+  <CommandPalette bind:open={paletteOpen} />
+</div>
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `open` | `boolean` | `false` | Controls visibility — use `bind:open` |
+| `placeholder` | `string` | `messages.command.placeholder` | Input placeholder; falls back to `'Run a command…'` |
+
+### How it works
+
+- Reads `commands.all` from `@rokkit/states` — no separate `items` prop
+- Filters by case-insensitive substring match on `label`, `id`, and `keywords`
+- Closes itself on Enter (runs command), Escape, and click-outside
+- Chrome strings come from `messages.command` (`placeholder`, `noResults`, `label`)
+
+### Data attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-command-backdrop` | Fullscreen overlay |
+| `data-command-palette` | Dialog container (`role="dialog" aria-modal="true"`) |
+| `data-command-input` | Filter `<input>` |
+| `data-command-list` | Results `<ul>` (`role="listbox"`) |
+| `data-command-item` | Result `<li>` (`role="option"`) |
+| `[data-active]` | On active `[data-command-item]` |
+| `data-command-label` | Label `<span>` inside item |
+| `data-command-shortcut` | Shortcut `<span>` inside item (rendered only when `cmd.shortcut` is set) |
+| `data-command-empty` | Empty-state `<p>` when no results |
+
+Full reference: [components/command-palette.txt](/llms/components/command-palette.txt)
+
+---
+
+## Import
+
+```javascript
+import { CommandPalette } from '@rokkit/ui'
+
+// Full set — see index.txt for the complete list
+import {
+  List, Tree, LazyTree, Select, MultiSelect, Tabs, Toggle, Table,
+  Toolbar, ToolbarGroup, Menu, CommandPalette,
+  Button, ButtonGroup, Dropdown
+} from '@rokkit/ui'
+```
+
+## Related packages
+
+- [@rokkit/states](/llms/packages/states.txt) — `commands` registry, `vibe`, `messages`, proxy/wrapper classes
+- [@rokkit/actions](/llms/packages/actions.txt) — `shortcuts` action, `Navigator`, gesture actions
+- [@rokkit/forms](/llms/packages/forms.txt) — schema-driven form generation
+- [@rokkit/chart](/llms/packages/chart.txt) — data visualisation components
