@@ -1,0 +1,39 @@
+/**
+ * CommandPalette - Zen-Sumi Theme Styles
+ *
+ * 禅墨 — Ink on paper. Hairline border, no shadow, restraint as luxury.
+ * Active item: paper-mute surface with primary accent border (no glow).
+ */
+
+[data-style='zen-sumi'] [data-command-backdrop] {
+	background: rgb(0 0 0 / 0.2);
+}
+
+[data-style='zen-sumi'] [data-command-palette] {
+	@apply bg-paper border-paper-mute border;
+	box-shadow: none;
+}
+
+[data-style='zen-sumi'] [data-command-input] {
+	@apply text-ink-mute placeholder:text-paper-edge;
+}
+
+[data-style='zen-sumi'] [data-command-item] {
+	@apply text-ink-soft;
+}
+
+[data-style='zen-sumi'] [data-command-item][data-active] {
+	@apply bg-paper-mute text-ink-mute border-l-primary border-l-2;
+}
+
+[data-style='zen-sumi'] [data-command-shortcut] {
+	@apply text-paper-edge;
+}
+
+[data-style='zen-sumi'] [data-command-label] {
+	@apply text-paper-edge text-xs font-medium;
+}
+
+[data-style='zen-sumi'] [data-command-empty] {
+	@apply text-paper-edge;
+}

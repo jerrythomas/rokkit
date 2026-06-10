@@ -1,0 +1,37 @@
+/**
+ * CommandPalette - Rokkit Theme Styles
+ *
+ * Rich gradients and glowing borders.
+ */
+
+[data-style='rokkit'] [data-command-backdrop] {
+	background: rgb(0 0 0 / 0.4);
+}
+
+[data-style='rokkit'] [data-command-palette] {
+	@apply bg-paper-soft border-paper-edge border;
+}
+
+[data-style='rokkit'] [data-command-input] {
+	@apply text-ink placeholder:text-ink-faint;
+}
+
+[data-style='rokkit'] [data-command-item] {
+	@apply text-ink;
+}
+
+[data-style='rokkit'] [data-command-item][data-active] {
+	@apply bg-primary text-on-primary;
+}
+
+[data-style='rokkit'] [data-command-shortcut] {
+	@apply text-ink-mute;
+}
+
+[data-style='rokkit'] [data-command-label] {
+	@apply text-ink-soft text-xs font-medium;
+}
+
+[data-style='rokkit'] [data-command-empty] {
+	@apply text-ink-mute;
+}

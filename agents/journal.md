@@ -1,5 +1,28 @@
 # Project Journal
 
+## 2026-06-10 — CommandPalette themed across all 5 styles (Task 5 of command system)
+
+**Why.** The CommandPalette component was already built but had no theme coverage in
+`@rokkit/themes`. Without it, the palette renders as a bare floating box — no surface
+colour, no active-item highlight, no backdrop scrim.
+
+**What shipped.**
+- `packages/themes/src/base/command-palette.css` — structural only (layout, sizing, no color).
+- `packages/themes/src/{rokkit,minimal,material,frosted,zen-sumi}/command-palette.css` — colour
+  and surface per style, each including `[data-command-item][data-active]` with a `bg-` token.
+- All 6 `index.css` files updated with `@import './command-palette.css'`.
+- Coverage guard extended: 6 new assertions added to `packages/themes/spec/coverage.spec.js`.
+- Full themes suite: 66/66 pass (was 60 before new tests were added).
+
+**Active-item token choices per style.**
+| Style     | Active bg token      | Active text token |
+| --------- | -------------------- | ----------------- |
+| rokkit    | `bg-primary`         | `text-on-primary` |
+| minimal   | `bg-paper-mute`      | `text-ink` + `border-l-accent` |
+| material  | `bg-primary`         | `text-on-primary` |
+| frosted   | `bg-primary/80`      | `text-on-primary` |
+| zen-sumi  | `bg-paper-mute`      | `text-ink-mute` + `border-l-primary` |
+
 ## 2026-06-09 — `rokkit skills list|add` — AI skill guides shipped with the CLI
 
 **Why.** Coding agents working in Rokkit projects needed authoritative guides for

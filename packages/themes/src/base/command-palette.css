@@ -1,0 +1,35 @@
+/**
+ * CommandPalette - Base Structural Styles
+ *
+ * Layout, positioning, and sizing only.
+ * No colors, shadows, or visual theming — those belong in theme styles.
+ */
+
+[data-command-backdrop] {
+	@apply fixed inset-0 z-50 flex items-start justify-center;
+	padding-top: 12vh;
+}
+
+[data-command-palette] {
+	@apply flex w-full max-w-xl flex-col gap-1 rounded-lg p-2 shadow-lg;
+}
+
+[data-command-input] {
+	@apply w-full bg-transparent px-3 py-2 outline-none;
+}
+
+[data-command-list] {
+	@apply m-0 flex max-h-80 list-none flex-col gap-0.5 overflow-y-auto p-0;
+}
+
+[data-command-item] {
+	@apply flex cursor-pointer items-center justify-between rounded-md px-3 py-2;
+}
+
+[data-command-empty] {
+	@apply px-3 py-6 text-center text-sm;
+}
+
+[data-command-shortcut] {
+	@apply ml-auto text-xs;
+}

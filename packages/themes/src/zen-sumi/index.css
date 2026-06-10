@@ -46,6 +46,7 @@
 @import './progress.css';
 @import './pill.css';
 @import './rating.css';
+@import './command-palette.css';
 
 /* =============================================================================
    Layout overrides — Ma (間) generous spacing

@@ -1,0 +1,42 @@
+/**
+ * CommandPalette - Frosted Glass Theme Styles
+ *
+ * Translucent panel with deep blur and specular highlights.
+ */
+
+[data-style='frosted'] [data-command-backdrop] {
+	background: rgb(0 0 0 / 0.3);
+	backdrop-filter: blur(2px);
+}
+
+[data-style='frosted'] [data-command-palette] {
+	@apply border backdrop-blur-2xl bg-paper-mute/45;
+	border-color: rgba(255, 255, 255, 0.2);
+	box-shadow:
+		inset 0 1px 0 rgba(255, 255, 255, 0.2),
+		0 16px 48px rgba(0, 0, 0, 0.18);
+}
+
+[data-style='frosted'] [data-command-input] {
+	@apply text-ink placeholder:text-ink-soft;
+}
+
+[data-style='frosted'] [data-command-item] {
+	@apply text-ink-mute;
+}
+
+[data-style='frosted'] [data-command-item][data-active] {
+	@apply bg-primary/80 text-on-primary;
+}
+
+[data-style='frosted'] [data-command-shortcut] {
+	@apply text-ink-soft;
+}
+
+[data-style='frosted'] [data-command-label] {
+	@apply text-ink-soft text-xs font-medium;
+}
+
+[data-style='frosted'] [data-command-empty] {
+	@apply text-ink-soft;
+}
