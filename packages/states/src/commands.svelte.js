@@ -60,6 +60,7 @@ class CommandRegistry {
 	register(cmd) {
 		const idx = this.#commands.findIndex((c) => c.id === cmd.id)
 		if (idx >= 0) {
+			// eslint-disable-next-line no-console
 			console.warn(`[commands] duplicate id "${cmd.id}" — replacing existing registration`)
 			this.#commands[idx] = cmd
 		} else {
@@ -69,6 +70,7 @@ class CommandRegistry {
 			const norm = normalizeShortcut(cmd.shortcut)
 			const owner = this.#byShortcut.get(norm)
 			if (owner && owner !== cmd.id) {
+				// eslint-disable-next-line no-console
 				console.warn(
 					`[commands] shortcut "${cmd.shortcut}" already bound to "${owner}"; "${cmd.id}" will not receive it`
 				)
@@ -97,6 +99,7 @@ class CommandRegistry {
 	execute(id) {
 		const cmd = this.#commands.find((c) => c.id === id)
 		if (!cmd) {
+			// eslint-disable-next-line no-console
 			console.warn(`[commands] unknown command "${id}"`)
 			return
 		}

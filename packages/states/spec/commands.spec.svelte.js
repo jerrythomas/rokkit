@@ -3,7 +3,7 @@ import { commands, normalizeShortcut, eventToShortcut } from '../src/commands.sv
 import { messages } from '../src/messages.svelte.js'
 
 function keydown(props) {
-	return { key: props.key, ctrlKey: !!props.ctrl, metaKey: !!props.meta, altKey: !!props.alt, shiftKey: !!props.shift, preventDefault() {} }
+	return { key: props.key, ctrlKey: Boolean(props.ctrl), metaKey: Boolean(props.meta), altKey: Boolean(props.alt), shiftKey: Boolean(props.shift), preventDefault() {} }
 }
 
 describe('shortcut normalization', () => {
