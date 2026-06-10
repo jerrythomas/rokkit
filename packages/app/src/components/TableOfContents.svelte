@@ -96,7 +96,7 @@
 		scrollToHeading(id)
 	}
 
-	function handleKeydown(event) {
+	function handleKeyup(event) {
 		if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
 			event.preventDefault()
 			handlePrevious()
@@ -124,7 +124,7 @@
 		bind:this={navEl}
 		data-toc
 		aria-label="On this page"
-		onkeyup={handleKeydown}
+		onkeyup={handleKeyup}
 	>
 		<p data-toc-label>On this page</p>
 		<ul data-toc-list>
