@@ -38,6 +38,9 @@ These mirror the theming trio (`vibe` / `themable` / `ThemeSwitcherToggle`).
   catalog) and a commands guide, plus package/component docs.
 - **First consumer + live demo** — the learn app's `/app` shell wires the public APIs and
   demonstrates them.
+- **Legacy keyboard consolidation** — remove the redundant `kbd.js` resolver + `navigable` action
+  (superseded by `keymap.js` + `navigator`), migrating the one remaining consumer
+  (`TableOfContents`) to `navigator`.
 
 ## Non-goals (deferred)
 
@@ -131,6 +134,35 @@ export const commands = new CommandRegistry()
   store (a new `command` namespace, exactly as `SearchFilter` uses `messages.search_`/`messages.filter`).
 - **Command `label`s** → consumer-supplied strings (the app localizes them however it does i18n).
 
+## Keyboard surface & legacy consolidation
+
+After this work, `@rokkit/actions` has **three** clean, non-overlapping keyboard concerns:
+
+| Concern | API | Scope |
+|---|---|---|
+| Widget input keys | `keyboard` (`use:keyboard`) | element-local key → CustomEvent (`remove`/`submit`/`add`); used by `Pill`, `Carousel` |
+| In-widget list navigation | `keymap.js` (`buildKeymap`/`resolveAction`) + `navigator` | arrow/Enter/Home/End within a focused list (Tree, List, Select, Menu…) |
+| Global command shortcuts | `commands.resolve` + `shortcuts` | global `'mod+k'`-style keystroke → command dispatch (this design) |
+
+The legacy **`kbd.js`** resolver + **`navigable`** action are a fourth, redundant nav
+implementation (with their own meta/ctrl folding) superseded by `keymap.js`/`navigator`. `kbd.js`
+is internal — only `navigable` imports it (the `utils.js` references are dead comments); `navigable`
+is a public export but its only repo consumer is `TableOfContents` (`@rokkit/app`). Consolidation
+(folded into this effort):
+
+1. Migrate `TableOfContents` from `use:navigable` (+ `onprevious`/`onnext`/`onselect`) to the
+   modern `navigator` pattern (or a minimal inline arrow/Enter handler — decided in the plan after
+   reading its existing handlers).
+2. Remove `navigable.svelte.js` + its export from the `@rokkit/actions` index and the
+   `NavigableOptions`/`NavigableHandlers` types.
+3. Remove `kbd.js` + `kbd.spec.js` (no remaining consumer); tidy the dead kbd comments in `utils.js`.
+4. Update `packages/actions/README.md` + `docs/llms/packages/actions.txt`.
+
+**Breaking change:** removing the `navigable` export is a minor breaking change to
+`@rokkit/actions`' public API — `TableOfContents` (the only known consumer) is migrated in the same
+change; note it in the release. Command shortcuts stay a distinct concern and are **not** routed
+through the nav keymaps.
+
 ## Consumer wiring + live demo (`apps/learn`)
 
 `apps/learn` becomes the first consumer and the live demo:
@@ -161,9 +193,13 @@ export const commands = new CommandRegistry()
 4. `apps/learn`: wire `/app` (register commands, `use:shortcuts`, render palette) + demo/catalog.
 5. Skill `command-system-rokkit`.
 6. Guides + reference docs (llms guide, learn guide page, component + package docs).
+7. **Legacy nav consolidation** (independent of 1–6; can land first or alongside): migrate
+   `TableOfContents` → `navigator`; remove `navigable` + `kbd.js` + their types/spec; tidy
+   `utils.js`; update `@rokkit/actions` README + `docs/llms/packages/actions.txt`.
 
 Each step yields working, testable software; ships on the normal patch cadence (touches
-`@rokkit/states`, `@rokkit/actions`, `@rokkit/ui`, `@rokkit/themes`, `@rokkit/cli` → a coordinated release).
+`@rokkit/states`, `@rokkit/actions`, `@rokkit/ui`, `@rokkit/themes`, `@rokkit/cli` → a coordinated
+release; the `navigable` removal makes the `@rokkit/actions` bump a minor/breaking note).
 
 ## Testing
 
@@ -178,3 +214,6 @@ Each step yields working, testable software; ships on the normal patch cadence (
 - **cli:** the skills catalog test now expects the 3rd skill (`command-system-rokkit`).
 - **themes:** coverage guard — each style themes `[data-command-palette]` (headless-base).
 - **learn:** one light Playwright check — Cmd+K opens the palette and runs a command.
+- **consolidation:** `TableOfContents` keyboard nav (prev/next/select) still works after migrating
+  off `navigable`; `kbd.spec.js` removed; `@rokkit/actions` index no longer exports `navigable`;
+  full `@rokkit/actions` + `@rokkit/app` suites stay green.
