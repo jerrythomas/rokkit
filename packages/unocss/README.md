@@ -94,7 +94,7 @@ presetRokkit({
 })
 ```
 
-Each skin generates a `skin-{name}` CSS class. Skins support the same dual-palette `{ light, dark }` syntax as `colors` — the light palette is used for the scoped CSS variable overrides.
+Each skin is emitted as a `[data-skin='name']` CSS block (the default skin's tokens go on `:root`, so it needs no attribute). Switch skins by setting `data-skin` on an ancestor (e.g. via `vibe.skin` + the `themable` action). Skins support the same dual-palette `{ light, dark }` syntax as `colors` — dual-palette skins also emit a `[data-mode='dark'][data-skin='name']` block. A small set of built-in skins ships out of the box.
 
 ### Icons
 
@@ -293,7 +293,7 @@ Use `@rokkit/app`'s `ColorModeManager` to manage this automatically with OS pref
 | ------------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
 | `colors`      | `Record<string, string \| { light?: string, dark?: string }>` | Semantic role → palette name. String = auto z-flip; `{ light, dark }` = separate palettes per mode.          |
 | `palettes`    | `Record<string, Record<string, string>>`                    | Custom palette definitions with shade values (50–950). Names usable in `colors` and `skins`.                   |
-| `skins`       | `Record<string, Record<string, string \| { light?, dark? }>>` | Named colormaps (same syntax as `colors`). Each generates a `skin-{name}` CSS class.                         |
+| `skins`       | `Record<string, Record<string, string \| { light?, dark? }>>` | Named colormaps (same syntax as `colors`). Each emits a `[data-skin='name']` CSS block (default on `:root`).  |
 | `colorSpace`  | `'rgb' \| 'hsl' \| 'oklch'`                                | Color space for CSS variable values. Use `'oklch'` with bare component strings (`'0.58 0.15 35'`).             |
 | `icons`       | `Record<string, string>`                                    | Additional icon collection paths                                                                                |
 
