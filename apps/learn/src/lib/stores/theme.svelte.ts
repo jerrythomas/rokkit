@@ -3,24 +3,34 @@
  *
  * Mode, style, and density live in `vibe` (from @rokkit/states), and the
  * root +layout.svelte wires vibe to the DOM via `use:themable`. This store
- * delegates those three through to vibe so existing call sites keep working,
- * and owns the concepts vibe doesn't track natively:
- *   - skin (named palette set; mutates CSS vars via applySkin)
+ * delegates those three through to vibe so existing call sites keep working.
+ *
+ * Skin switching now also delegates to `vibe.skin` — the root layout's
+ * `use:themable` action writes `data-skin` on the body whenever `vibe.skin`
+ * changes, and the UnoCSS preset emits `[data-skin='name']` CSS blocks for
+ * all skins defined in `rokkit.config.js`. No runtime `<style>` injection
+ * is needed for named skins.
+ *
+ * This store owns the concepts vibe doesn't track natively:
  *   - radius (corner rounding scale; mirrored to body.dataset.radius)
- *   - per-role color overrides on top of the chosen skin
+ *   - per-role color overrides on top of the chosen skin (Phase 2 concern)
  *
  * Persistence:
- *   - vibe state (mode/style/density)  → localStorage['rokkit-theme'], owned by
- *     the `themable` action in the root layout.
- *   - skin / radius / role overrides   → localStorage['rokkit-skin'], owned here.
+ *   - vibe state (mode/style/density/skin) → localStorage['rokkit-theme'],
+ *     owned by the `themable` action in the root layout.
+ *   - radius / role overrides → localStorage['rokkit-skin'], owned here.
  */
 
 import { browser } from '$app/environment'
 import { vibe } from '@rokkit/states'
-import { applySkin, applyRoleColor, skinDefinitions } from '$lib/data/skins'
+import { applyRoleColor, skinDefinitions } from '$lib/data/skins'
 
 const SKIN_KEY = 'rokkit-skin'
 const ROLES = ['surface', 'primary', 'secondary', 'accent'] as const
+
+// Register all known skins with vibe so SkinSwitcherToggle (which reads
+// vibe.allowedSkins) and vibe.skin validation both know the full list.
+vibe.allowedSkins = skinDefinitions.map((s) => s.name)
 
 function readStored<T>(field: string, fallback: T): T {
 	if (!browser) return fallback
@@ -61,7 +71,6 @@ function createThemeStore() {
 	// updates — and trip Svelte's `state_referenced_locally` warning).
 	const initialRadius = readStored('radius', 'soft')
 	let radius = $state(initialRadius)
-	let skin = $state(readStored('skin', 'default'))
 	let roleOverrides = $state<Record<string, string>>(loadRoleOverrides())
 
 	function setRadius(v: string) {
@@ -96,12 +105,14 @@ function createThemeStore() {
 			vibe.mode = vibe.mode === 'dark' ? 'light' : 'dark'
 		},
 
-		// Local-only state — skin and radius are vibe-adjacent extras.
+		// Local-only state — radius is a vibe-adjacent extra.
+		// skin delegates to vibe.skin (which themable writes to data-skin on
+		// the body; the UnoCSS preset's [data-skin='name'] CSS handles the rest).
 		get radius() {
 			return radius
 		},
 		get skin() {
-			return skin
+			return vibe.skin
 		},
 		get roleOverrides() {
 			return roleOverrides
@@ -110,11 +121,13 @@ function createThemeStore() {
 		setRadius,
 
 		setSkin(v: string) {
-			skin = v
+			// Clear per-role overrides when switching skins (they were relative
+			// to the previous skin's palette baseline).
 			roleOverrides = {}
-			persistField('skin', v)
 			persistField('roleOverrides', {})
-			applySkin(v)
+			// Delegate to vibe — themable will write data-skin on the body,
+			// and the preset CSS [data-skin='v'] handles the palette cascade.
+			vibe.skin = v
 		},
 
 		setRoleColor(role: string, palette: string) {
@@ -125,13 +138,16 @@ function createThemeStore() {
 
 		getRoleColor(role: string): string {
 			if (roleOverrides[role]) return roleOverrides[role]
-			const skinDef = skinDefinitions.find((s) => s.name === skin)
+			const skinDef = skinDefinitions.find((s) => s.name === vibe.skin)
 			return (skinDef?.[role as keyof typeof skinDef] as string) ?? ''
 		},
 
-		// Re-apply skin and role overrides on mount.
+		// Re-apply per-role color overrides on mount. Skin itself no longer
+		// needs restoring — vibe.skin is loaded from localStorage by themable
+		// (it's saved as part of the 'rokkit-theme' key since vibe.save()
+		// includes skin). Role overrides still need JS re-application because
+		// they are not in the config-emitted CSS.
 		restoreSkin() {
-			if (skin !== 'default') applySkin(skin)
 			for (const [role, palette] of Object.entries(roleOverrides)) {
 				applyRoleColor(role, palette)
 			}
