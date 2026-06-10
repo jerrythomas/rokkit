@@ -1,4 +1,4 @@
-const DEFAULT_THEME = { style: 'rokkit', mode: 'dark', density: 'comfortable' }
+const DEFAULT_THEME = { style: 'rokkit', mode: 'dark', density: 'comfortable', skin: 'default' }
 
 /**
  * Update the theme attributes when the state changes.
@@ -26,7 +26,7 @@ export function themable(root, options) {
 					theme.update(newTheme)
 				} catch (e) {
 					// eslint-disable-next-line no-console
-					console.warn(`Failed to parse theme from storage event for key "${storageKey}"`, e)
+					console.warn('Failed to parse theme from storage event for key "%s"', storageKey, e)
 				}
 			}
 		}
@@ -40,6 +40,7 @@ export function themable(root, options) {
 		root.dataset.style = theme.style
 		root.dataset.mode = theme.mode
 		root.dataset.density = theme.density
+		root.dataset.skin = theme.skin
 
 		// Mirror onto documentElement too. The flash-prevention init script
 		// sets `html.dataset.*` before body parses; without this mirror,
@@ -53,6 +54,7 @@ export function themable(root, options) {
 			el.dataset.style = theme.style
 			el.dataset.mode = theme.mode
 			el.dataset.density = theme.density
+			el.dataset.skin = theme.skin
 		}
 
 		// if (storageKey) theme.save(storageKey)
