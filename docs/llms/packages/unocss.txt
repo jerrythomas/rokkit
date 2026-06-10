@@ -67,7 +67,7 @@ const preset = presetRokkit({
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `colors` | `Record<string, string \| { light?: string, dark?: string }>` | Default semantic palette | Map semantic names to palette names. String value = auto z-flip for dark mode. Object `{ light, dark }` = separate named palettes per mode — rokkit generates an explicit `[data-mode="dark"]` var block. `colors` defines the default skin; `skins` defines named alternatives. |
-| `skins` | `Record<string, Record<string, string \| { light?, dark? }>>` | `{}` | Named colormaps — same syntax as `colors`. `colors` is the default skin; `skins` are named alternatives. Each generates a `skin-{name}` CSS class that injects its color variables. |
+| `skins` | `Record<string, Record<string, string \| { light?, dark? }>>` | `{}` | Named colormaps — same syntax as `colors`. The default skin's tokens go on `:root`; each non-default skin emits a `[data-skin='name']` CSS block (+ `[data-mode='dark'][data-skin='name']` for dual-palette). Merged with the shipped `BUILTIN_SKINS`. |
 | `icons` | `Record<string, string>` | `{ app: '@rokkit/icons/app.json' }` | Additional icon collections (JSON files). Merged with the built-in `rokkit` and `semantic` collections. |
 | `icons.style` | `string` | `undefined` | Icon style variant suffix (e.g., `'solid'`, `'outline'`, `'duotone-outline'`). Applied to all semantic icon shortcuts. |
 | `icons.collection` | `string` | `undefined` | Override the default icon collection prefix. Default is `'semantic'` (`i-semantic:*`). Set to e.g. `'phosphor'` to use `i-phosphor:*`. |
