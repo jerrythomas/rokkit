@@ -1,6 +1,5 @@
 <script>
 	// @ts-nocheck
-	import { navigable } from '@rokkit/actions'
 	import { onMount } from 'svelte'
 
 	let { container = 'main-content' } = $props()
@@ -97,6 +96,19 @@
 		scrollToHeading(id)
 	}
 
+	function handleKeydown(event) {
+		if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
+			event.preventDefault()
+			handlePrevious()
+		} else if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
+			event.preventDefault()
+			handleNext()
+		} else if (event.key === 'Enter' || event.key === ' ') {
+			event.preventDefault()
+			handleSelect()
+		}
+	}
+
 	onMount(() => {
 		scan()
 		observe()
@@ -112,10 +124,7 @@
 		bind:this={navEl}
 		data-toc
 		aria-label="On this page"
-		use:navigable
-		onprevious={handlePrevious}
-		onnext={handleNext}
-		onselect={handleSelect}
+		onkeyup={handleKeydown}
 	>
 		<p data-toc-label>On this page</p>
 		<ul data-toc-list>
