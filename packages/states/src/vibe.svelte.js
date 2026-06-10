@@ -22,8 +22,10 @@ function isAllowedValue(value, allowed, current) {
  */
 class Vibe {
 	#allowedStyles = $state(DEFAULT_STYLES)
+	#allowedSkins = $state(['default'])
 	#mode = $state('dark')
 	#style = $state('rokkit')
+	#skin = $state('default')
 	#colors = $state(defaultColors)
 	#density = $state('comfortable')
 	#direction = $state(detectDirection())
@@ -51,6 +53,23 @@ class Vibe {
 		if (styles.length > 0) {
 			this.#allowedStyles = styles
 		}
+	}
+
+	get allowedSkins() {
+		return this.#allowedSkins
+	}
+
+	set allowedSkins(input) {
+		const skins = (Array.isArray(input) ? input : [input]).filter(Boolean)
+		if (skins.length > 0) this.#allowedSkins = skins
+	}
+
+	get skin() {
+		return this.#skin
+	}
+
+	set skin(value) {
+		if (isAllowedValue(value, this.#allowedSkins, this.#skin)) this.#skin = value
 	}
 
 	get colorMap() {
@@ -158,7 +177,8 @@ class Vibe {
 				style: this.#style,
 				mode: this.#mode,
 				density: this.#density,
-				direction: this.#direction
+				direction: this.#direction,
+				skin: this.#skin
 			}
 			localStorage.setItem(key, JSON.stringify(config))
 		} catch (e) {
@@ -176,6 +196,7 @@ class Vibe {
 		this.mode = value.mode
 		this.density = value.density
 		this.direction = value.direction
+		if (value.skin) this.skin = value.skin
 	}
 
 	/**

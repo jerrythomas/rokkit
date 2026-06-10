@@ -114,7 +114,8 @@ describe('vibe', () => {
 			style: 'minimal',
 			mode: 'light',
 			density: 'compact',
-			direction: 'ltr'
+			direction: 'ltr',
+			skin: 'default'
 		})
 	})
 
@@ -175,6 +176,30 @@ describe('vibe', () => {
 		expect(vibe.style).toBe('minimal')
 		expect(vibe.mode).toBe('light')
 		expect(vibe.density).toBe('compact')
+	})
+
+	describe('vibe.skin', () => {
+		it('defaults to "default"', () => {
+			expect(vibe.skin).toBe('default')
+		})
+		it('only accepts an allowed skin', () => {
+			vibe.allowedSkins = ['default', 'ocean']
+			vibe.skin = 'ocean'
+			expect(vibe.skin).toBe('ocean')
+			vibe.skin = 'nope'
+			expect(vibe.skin).toBe('ocean')
+		})
+		it('persists skin in save() and restores in load()', () => {
+			vibe.allowedSkins = ['default', 'ocean']
+			vibe.skin = 'ocean'
+			vibe.save('skin-test')
+			expect(JSON.parse(localStorage.getItem('skin-test'))).toEqual(
+				expect.objectContaining({ skin: 'ocean' })
+			)
+			vibe.skin = 'default'
+			vibe.load('skin-test')
+			expect(vibe.skin).toBe('ocean')
+		})
 	})
 
 	describe('mocked', () => {
