@@ -166,9 +166,8 @@ The UnoCSS preset emits one CSS block per skin:
   /* ... */
 }
 
-/* dark mode override for dual-palette skins */
-[data-mode='dark'][data-skin='ocean'],
-[data-mode='dark'] [data-skin='ocean'] {
+/* dark mode override for dual-palette skins (single compound selector) */
+[data-mode='dark'][data-skin='ocean'] {
   --paper: /* slate.950 (inverted) */;
   --ink:   /* slate.50 (inverted) */;
 }
