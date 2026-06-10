@@ -1,5 +1,5 @@
 // Components
-export { ThemeSwitcherToggle, TableOfContents } from './components/index.js'
+export { ThemeSwitcherToggle, SkinSwitcherToggle, TableOfContents } from './components/index.js'
 
 // Types
 export * from './types/index.js'
