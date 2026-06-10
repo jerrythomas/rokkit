@@ -100,7 +100,7 @@ type ColorMode = 'system' | 'light' | 'dark'
 
 ## TableOfContents
 
-An on-page navigation component that scans the DOM for `h2` and `h3` headings inside a scrollable container and renders a linked list. Tracks which heading is currently in view using `IntersectionObserver`. Keyboard navigation is handled by an inline `keyup` handler on the `<nav>` (Arrow keys move focus, Enter/Space scrolls to the heading).
+An on-page navigation component that scans the DOM for `h2` and `h3` headings inside a scrollable container and renders a linked list. Tracks which heading is currently in view using `IntersectionObserver`. Keyboard navigation uses the `keyboard` action from `@rokkit/actions`, mapping arrow keys → focus and Enter/Space → scroll via `previous`/`next`/`select` events on the `<nav>`.
 
 The component is **invisible when there is only one or zero headings** — it only renders when `headings.length > 1`.
 
@@ -148,7 +148,7 @@ The optional chaining (`?.`) is important: `toc` may be `null` before the compon
 
 ### Keyboard Navigation
 
-Handled by an inline `onkeyup` listener on the `<nav>` element — the keys below map to focus/scroll actions:
+The `keyboard` action (`@rokkit/actions`) on the `<nav>` maps keys to `previous`/`next`/`select` events — the keys below:
 
 | Key | Action |
 |-----|--------|
