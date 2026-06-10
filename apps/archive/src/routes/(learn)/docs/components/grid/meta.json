@@ -1,7 +1,0 @@
-{
-  "title": "Grid",
-  "description": "Responsive CSS grid wrapper for card and item layouts",
-  "icon": "i-glyph:widget-5",
-  "category": "layout",
-  "order": 29
-}

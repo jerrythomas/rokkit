@@ -1,7 +1,0 @@
-{
-  "title": "Accessibility",
-  "description": "Data table fallback, keyboard navigation between data points, screen reader announcements",
-  "icon": "i-glyph:accessibility",
-  "category": "charts",
-  "order": 8
-}

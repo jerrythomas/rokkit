@@ -1,7 +1,0 @@
-{
-  "category": "display",
-  "title": "Table",
-  "icon": "i-glyph:table",
-  "description": "Display tabular data with headers, footer & caption.",
-  "llms": true
-}

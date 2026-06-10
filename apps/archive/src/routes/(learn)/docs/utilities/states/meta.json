@@ -1,8 +1,0 @@
-{
-  "title": "States",
-  "description": "State primitives, controllers, and reactive stores from @rokkit/states",
-  "icon": "i-glyph:layers-minimalistic",
-  "category": "utilities",
-  "order": 8,
-  "tags": ["states", "ProxyItem", "ListController", "vibe", "controller", "reactive"]
-}

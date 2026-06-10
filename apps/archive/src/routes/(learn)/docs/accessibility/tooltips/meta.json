@@ -1,7 +1,0 @@
-{
-  "title": "Tooltips",
-  "description": "Hover and focus triggered tooltips linked via aria-describedby",
-  "icon": "i-glyph:chat-round",
-  "category": "accessibility",
-  "order": 3
-}

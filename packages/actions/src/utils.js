@@ -1,11 +1,5 @@
 import { find, toPairs } from 'ramda'
 
-// const defaultNavigationOptions = {
-// 	orientation: 'vertical',
-// 	dir: 'ltr',
-// 	nested: false,
-// 	enabled: true
-// }
 /**
  * Finds the closest ancestor of the given element that has the given attribute.
  *
@@ -47,32 +41,6 @@ export function handleAction(actions, event) {
 	}
 }
 
-// /**
-//  *  Maps keys to actions based on the configuration.
-//  *
-//  * @param {import('./types').NavigableOptions} options
-//  * @param {import('./types').NavigableHandlers} handlers
-//  */
-// export function getKeyboardActions(options, handlers) {
-// 	const { horizontal, nested } = options
-// 	if (!options.enabled) return {}
-
-// 	const common = {
-// 		Enter: handlers.select,
-// 		' ': handlers.select
-// 	}
-// 	const movement = horizontal
-// 		? { ArrowLeft: handlers.previous, ArrowRight: handlers.next }
-// 		: { ArrowUp: handlers.previous, ArrowDown: handlers.next }
-// 	const change = horizontal
-// 		? { ArrowUp: handlers.collapse, ArrowDown: handlers.expand }
-// 		: { ArrowLeft: handlers.collapse, ArrowRight: handlers.expand }
-
-// 	if (nested) return { ...common, ...movement, ...change }
-// 	return { ...common, ...movement }
-// }
-// Keyboard related functions moved to kbd.js
-
 /**
  * Finds and returns an index path based on data-path attribute
  *
@@ -85,9 +53,6 @@ export function getPathFromEvent(event) {
 	// return node ? getPathFromKey(node.getAttribute('data-path')) : null
 }
 
-// createKeyboardActionMap moved to kbd.js
-
-// createModifierKeyboardActionMap moved to kbd.js
 /**
  * Identifies if an element is a collapsible icon
  * @param {HTMLElement} target
@@ -123,8 +88,6 @@ function isAccordionTrigger(target) {
 	const trigger = findClosestWithAttribute(target, 'data-accordion-trigger')
 	return trigger !== null
 }
-// getKeyboardAction moved to kbd.js
-
 function isToggleTarget(target) {
 	return isNodeToggle(target) || isNodeToggle(target.parentElement) || isAccordionTrigger(target)
 }

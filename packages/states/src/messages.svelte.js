@@ -44,7 +44,12 @@ const defaultMessages = {
 		remove: 'Remove'
 	},
 	floatingNav: { label: 'Page navigation', pin: 'Pin navigation', unpin: 'Unpin navigation' },
-	mode: { system: 'System', light: 'Light', dark: 'Dark' }
+	mode: { system: 'System', light: 'Light', dark: 'Dark' },
+	command: {
+		placeholder: 'Run a command…',
+		noResults: 'No commands found',
+		label: 'Command palette'
+	},
 }
 
 /**
@@ -99,6 +104,7 @@ class MessagesStore {
 	uploadProgress = $state({ ...defaultMessages.uploadProgress })
 	floatingNav = $state({ ...defaultMessages.floatingNav })
 	mode = $state({ ...defaultMessages.mode })
+	command = $state({ ...defaultMessages.command })
 
 	// ─── Active locale ─────────────────────────────────────────────────────────
 

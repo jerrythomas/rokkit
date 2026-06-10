@@ -1,9 +1,0 @@
-{
-  "title": "LazyTree",
-  "description": "Tree with on-demand lazy-loaded children",
-  "icon": "i-glyph:tree",
-  "category": "navigation-selection",
-  "tags": ["tree", "lazy", "async", "hierarchical", "navigation"],
-  "experimental": false,
-  "llms": true
-}

@@ -13,12 +13,13 @@
 	// Brand the assistant once for this surface; every ChatMessage with
 	// kind='info' picks it up.
 	configureWho({ assistant: 'Rokkit' })
-	import { Tabs, Table, Tree, MultiSelect, Select, List, Button, AlertList, Stepper, CodeBlock, Toggle, MarkdownRenderer } from '@rokkit/ui'
+	import { Tabs, Table, Tree, MultiSelect, Select, List, Button, AlertList, Stepper, CodeBlock, Toggle, MarkdownRenderer, CommandPalette } from '@rokkit/ui'
 	import { FormRenderer } from '@rokkit/forms'
-	import { alerts } from '@rokkit/states'
+	import { alerts, commands } from '@rokkit/states'
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
 	import { theme } from '$lib/stores/theme.svelte'
 	import { vibe } from '@rokkit/states'
+	import { shortcuts } from '@rokkit/actions'
 	import { koan } from '$lib/koan/store.svelte'
 	import { runMatch } from '$lib/koan/match.svelte'
 	import { parseTweakIntent } from '$lib/koan/tweak-parser'
@@ -53,6 +54,8 @@
 		children?: Snippet
 	}
 	const { children }: Props = $props()
+
+	let paletteOpen = $state(false)
 
 	// Style / density used to bind to ChatChrome's controls here — those
 	// moved into the global SiteHeader (rendered by the root layout). The
@@ -1260,6 +1263,31 @@ ${tabsTag}`
 			koan.query = q
 			shell.lastQuery = q
 		}
+
+		return commands.registerMany([
+			{
+				id: 'palette.open',
+				label: 'Open command palette',
+				shortcut: 'mod+k',
+				global: true,
+				group: 'general',
+				run: () => { paletteOpen = true }
+			},
+			{
+				id: 'theme.toggle',
+				label: 'Toggle light / dark',
+				shortcut: 'mod+shift+l',
+				group: 'theme',
+				run: () => { vibe.mode = vibe.mode === 'dark' ? 'light' : 'dark' }
+			},
+			{
+				id: 'conversation.new',
+				label: 'New conversation',
+				shortcut: 'mod+shift+n',
+				group: 'general',
+				run: startNewConversation
+			}
+		])
 	})
 </script>
 
@@ -1267,7 +1295,7 @@ ${tabsTag}`
 	<title>Koan — Rokkit demo</title>
 </svelte:head>
 
-<div class="koan-shell">
+<div class="koan-shell" use:shortcuts={commands}>
 	<div class="stage">
 		<ChatHistory bind:collapsed={shell.collapsed} onnew={startNewConversation}>
 			{#if allConv.length === 0}
@@ -2823,6 +2851,8 @@ ${tabsTag}`
 
 	<!-- Shell-level AlertList so feedback from any demo (wizard save, etc.) shows -->
 	<AlertList position={alertListPosition} />
+
+	<CommandPalette bind:open={paletteOpen} />
 </div>
 
 <style>

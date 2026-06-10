@@ -413,13 +413,13 @@ Every component needs two CSS files: **base** (layout) and **style files** (visu
 
 ```css
 [data-style='rokkit'] [data-component-item] {
-  @apply bg-surface-z2 text-surface-z7;
+  @apply bg-paper-soft text-ink;
 }
 [data-style='rokkit'] [data-component-item]:hover:not([data-disabled]) {
-  @apply bg-surface-z3 text-surface-z9;
+  @apply bg-paper-mute text-ink;
 }
 [data-style='rokkit'] [data-component-item][data-selected] {
-  @apply from-primary-z5 to-secondary-z5 text-on-primary bg-gradient-to-b;
+  @apply bg-primary text-on-primary bg-gradient-to-b from-primary to-accent;
 }
 ```
 
@@ -427,13 +427,13 @@ Every component needs two CSS files: **base** (layout) and **style files** (visu
 
 ```css
 [data-style='minimal'] [data-component-item] {
-  @apply text-surface-z7 bg-none;
+  @apply text-ink bg-none;
 }
 [data-style='minimal'] [data-component-item]:hover:not([data-disabled]) {
-  @apply border-l-2 border-l-secondary-z4 bg-none;
+  @apply border-l-2 border-l-accent bg-none;
 }
 [data-style='minimal'] [data-component-item][data-selected] {
-  @apply border-l-2 border-l-primary-z4 text-primary-z7 bg-none;
+  @apply border-l-2 border-l-primary text-primary bg-none;
 }
 ```
 

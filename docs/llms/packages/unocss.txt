@@ -77,6 +77,7 @@ const preset = presetRokkit({
 | `typography` | `{ sans?, mono?, heading? }` | All `null` | Font family CSS custom properties. Values are CSS font-family strings. |
 | `shape` | `{ radius? }` | `{ radius: null }` | Shape tokens. `radius` accepts `'sharp'`, `'rounded'`, `'pill'`, or a custom `{ sm, md, lg, xl, full }` object. |
 | `themes` | `string[]` | `['rokkit']` | Which CSS themes to activate (informational — does not import CSS; use CSS imports for that). |
+| `tokens` | `'core'\|'extended'` | `'core'` | Token vocabulary level. `'core'` emits the named-token shortcuts (`bg-paper`, `text-ink`, etc.). `'extended'` also emits the full 11-shade palette ladder per role (for charts / data-viz). |
 | `switcher` | `'manual' \| 'full'` | `'manual'` | Theme switcher mode hint (used by app-level UI, not by the preset itself). |
 | `storageKey` | `string` | `'rokkit-theme'` | `localStorage` key for persisting theme selection. |
 
@@ -329,9 +330,55 @@ Then use `presetRokkit()` with no arguments — the config file is auto-loaded.
 
 For the full utility class reference (tone scale, semantic color patterns, `data-mode`, `data-style`, etc.), see `docs/llms/index.txt`.
 
+## themeHook — SvelteKit SSR flash prevention
+
+Imported from `@rokkit/unocss/hooks`. Injects a synchronous inline script into `<body>` that reads persisted theme settings from `localStorage` and applies them as `data-*` attributes before first paint — preventing FOUC (flash of unstyled content). Requires `@rokkit/unocss` ≥ 1.1.12.
+
+```js
+// src/hooks.server.ts
+import { themeHook } from '@rokkit/unocss/hooks'
+
+export const handle = themeHook({
+  storageKey: 'app-theme',   // must match the themable storageKey (default: 'rokkit-theme')
+  defaultMode: 'system',     // 'system' (default) | 'light' | 'dark'
+  defaultStyle: 'rokkit'     // fallback style if nothing is persisted
+})
+```
+
+Compose with other hooks via `sequence()`:
+
+```js
+import { sequence } from '@sveltejs/kit/hooks'
+import { themeHook } from '@rokkit/unocss/hooks'
+
+export const handle = sequence(themeHook(), paraglideHandle)
+```
+
+### `themeHook(options?)` options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `storageKey` | `string` | `'rokkit-theme'` | `localStorage` key for persisted settings |
+| `defaultMode` | `string` | `'system'` | Fallback mode when nothing is persisted. `'system'` (and legacy alias `'auto'`) resolves `prefers-color-scheme` pre-paint so the page never renders `data-mode="system"`. Also accepts `'light'` or `'dark'`. |
+| `defaultStyle` | `string` | — | Fallback style if nothing is persisted |
+| `defaultDensity` | `string` | `'comfortable'` | Fallback density |
+| `defaultRadius` | `string` | `'soft'` | Fallback radius |
+
+If you need to compose with your own `transformPageChunk`, use the lower-level `themeInitScript()` export:
+
+```js
+import { themeInitScript } from '@rokkit/unocss/hooks'
+
+const initScript = themeInitScript({ storageKey: 'my-key' })
+// In transformPageChunk: html.replace(/(<body[^>]*>)/, `$1${initScript}`)
+```
+
+See also: [guides/theming.txt](/llms/guides/theming.txt) for the full SSR flash prevention guide.
+
 ## Import
 
 ```js
 import { presetRokkit } from '@rokkit/unocss'
 import { presetBackgrounds } from '@rokkit/unocss'  // optional
+import { themeHook, themeInitScript } from '@rokkit/unocss/hooks'  // SSR flash prevention
 ```

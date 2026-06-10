@@ -1,7 +1,0 @@
-{
-  "title": "Card",
-  "description": "Container card component for organizing content",
-  "category": "display",
-  "sequence": 50,
-  "icon": "i-glyph:card"
-}

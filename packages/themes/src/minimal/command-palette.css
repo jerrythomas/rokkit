@@ -1,0 +1,37 @@
+/**
+ * CommandPalette - Minimal Theme Styles
+ *
+ * Clean, understated styling with subtle borders.
+ */
+
+[data-style='minimal'] [data-command-backdrop] {
+	background: rgb(0 0 0 / 0.25);
+}
+
+[data-style='minimal'] [data-command-palette] {
+	@apply bg-paper-soft border-paper-mute border;
+}
+
+[data-style='minimal'] [data-command-input] {
+	@apply text-ink placeholder:text-ink-soft;
+}
+
+[data-style='minimal'] [data-command-item] {
+	@apply text-ink-mute;
+}
+
+[data-style='minimal'] [data-command-item][data-active] {
+	@apply bg-paper-mute text-ink border-l-accent border-l-2;
+}
+
+[data-style='minimal'] [data-command-shortcut] {
+	@apply text-ink-soft;
+}
+
+[data-style='minimal'] [data-command-label] {
+	@apply text-ink-soft text-xs font-medium;
+}
+
+[data-style='minimal'] [data-command-empty] {
+	@apply text-ink-soft;
+}

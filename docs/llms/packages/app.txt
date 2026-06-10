@@ -100,7 +100,7 @@ type ColorMode = 'system' | 'light' | 'dark'
 
 ## TableOfContents
 
-An on-page navigation component that scans the DOM for `h2` and `h3` headings inside a scrollable container and renders a linked list. Tracks which heading is currently in view using `IntersectionObserver`. Keyboard navigation is provided via the `navigable` action from `@rokkit/actions`.
+An on-page navigation component that scans the DOM for `h2` and `h3` headings inside a scrollable container and renders a linked list. Tracks which heading is currently in view using `IntersectionObserver`. Keyboard navigation uses the `keyboard` action from `@rokkit/actions`, mapping arrow keys → focus and Enter/Space → scroll via `previous`/`next`/`select` events on the `<nav>`.
 
 The component is **invisible when there is only one or zero headings** — it only renders when `headings.length > 1`.
 
@@ -148,7 +148,7 @@ The optional chaining (`?.`) is important: `toc` may be `null` before the compon
 
 ### Keyboard Navigation
 
-Uses `use:navigable` from `@rokkit/actions`. The `navigable` action fires `onprevious`, `onnext`, and `onselect` events on the `<nav>` element:
+The `keyboard` action (`@rokkit/actions`) on the `<nav>` maps keys to `previous`/`next`/`select` events — the keys below:
 
 | Key | Action |
 |-----|--------|
@@ -212,5 +212,5 @@ import { ThemeSwitcherToggle, TableOfContents } from '@rokkit/app'
 ## Related
 
 - [@rokkit/states](/llms/packages/states.txt) — `vibe` store and theme primitives
-- [@rokkit/actions](/llms/packages/actions.txt) — `navigable` action used by TableOfContents
+- [@rokkit/actions](/llms/packages/actions.txt) — Svelte actions (`navigator`, `shortcuts`, `themable`, …)
 - [@rokkit/ui Toggle](/llms/components/toggle.txt) — underlying toggle component used by ThemeSwitcherToggle

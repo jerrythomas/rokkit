@@ -16,14 +16,14 @@ describe('actions', () => {
 			'themable',
 			'skinnable',
 			'dismissable',
-			'navigable',
 			'fillable',
 			'delegateKeyboardEvents',
 			'reveal',
 			'hoverLift',
 			'magnetic',
 			'ripple',
-		'tooltip'
+		'tooltip',
+			'shortcuts'
 		])
 	})
 })

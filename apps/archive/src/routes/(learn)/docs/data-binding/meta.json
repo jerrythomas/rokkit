@@ -1,7 +1,0 @@
-{
-  "title": "Data Binding",
-  "description": "How Rokkit maps any data shape to components without transformation",
-  "icon": "i-glyph:database",
-  "category": "guide",
-  "order": 2
-}

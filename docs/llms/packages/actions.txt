@@ -16,57 +16,6 @@ npm install @rokkit/actions
 
 ---
 
-## `navigable` — Keyboard Navigation (simple)
-
-The lightweight keyboard navigation action. Listens on **keyup** and dispatches five custom events. Use this when you want keyboard-driven custom UI without a full controller/wrapper stack.
-
-### Events dispatched
-
-| Event | Default key(s) — vertical | Default key(s) — horizontal |
-|-------|---------------------------|------------------------------|
-| `previous` | `ArrowUp` | `ArrowLeft` |
-| `next` | `ArrowDown` | `ArrowRight` |
-| `select` | `Enter`, `Space` | `Enter`, `Space` |
-| `collapse` | `ArrowLeft` (when `nested: true`) | `ArrowUp` (when `nested: true`) |
-| `expand` | `ArrowRight` (when `nested: true`) | `ArrowDown` (when `nested: true`) |
-
-### Options
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `orientation` | `'vertical'|'horizontal'` | `'vertical'` | Arrow key axis |
-| `dir` | `'ltr'|'rtl'` | `'ltr'` | Text direction (reverses horizontal collapse/expand) |
-| `nested` | `boolean` | `false` | Enable collapse/expand key bindings |
-| `enabled` | `boolean` | `true` | Disable all key handling when `false` |
-
-### Usage
-
-```svelte
-<nav
-  use:navigable
-  onprevious={handlePrevious}
-  onnext={handleNext}
-  onselect={handleSelect}
->
-  <!-- items with data-path attributes -->
-</nav>
-```
-
-With options:
-
-```svelte
-<div
-  use:navigable={{ orientation: 'horizontal', nested: true }}
-  onprevious={prev}
-  onnext={next}
-  oncollapse={collapse}
-  onexpand={expand}
-  onselect={select}
->
-```
-
----
-
 ## `Navigator` — Keyboard Navigation (class)
 
 The full-featured navigation primitive used internally by all Rokkit UI components. Pairs with a `Wrapper` (or `LazyWrapper`) from `@rokkit/states` and binds DOM events on a container element to its methods.
@@ -451,14 +400,60 @@ const action = resolveAction(keyboardEvent, keymap)
 
 ---
 
+---
+
+## `shortcuts` — Global Keyboard Shortcut Capture
+
+Attaches a `window` keydown listener that resolves each event against a command
+registry and dispatches the matched command. Used in conjunction with the
+`commands` singleton from `@rokkit/states` to implement app-wide keyboard
+shortcuts.
+
+`@rokkit/actions` stays independent of `@rokkit/states` — `shortcuts` accepts
+any object that satisfies `{ resolve(event): Command|null, execute(id): void }`.
+
+### Usage
+
+```svelte
+<script>
+  import { commands } from '@rokkit/states'
+  import { shortcuts } from '@rokkit/actions'
+</script>
+
+<!-- Apply once to the app root or layout wrapper -->
+<div use:shortcuts={commands}>
+  {@render children()}
+</div>
+```
+
+### How it works
+
+1. On mount (inside `$effect`), registers a `window` keydown listener.
+2. On each keydown, calls `registry.resolve(event)` to find a matching command.
+3. If no match, does nothing.
+4. If the focused element is a text input / textarea / select / `contenteditable`
+   and the command does **not** have `global: true`, the keystroke is ignored.
+5. Otherwise calls `event.preventDefault()` and `registry.execute(cmd.id)`.
+6. When the registry reference changes, `$effect` tears down the old listener
+   and re-registers — no manual cleanup required.
+
+### Parameter
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `registry` | `{ resolve(KeyboardEvent): {id:string, global?:boolean}\|null, execute(string): void }` | Command registry; pass the `commands` singleton from `@rokkit/states` |
+
+---
+
 ## Import
 
 ```javascript
 import {
   // Actions
-  navigable, navigator, keyboard, pannable, swipeable,
+  keyboard, pannable, swipeable,
   themable, skinnable, dismissable, fillable, reveal,
   hoverLift, magnetic, ripple, delegateKeyboardEvents,
+  shortcuts,
 
   // Classes
   Navigator, Trigger,
@@ -472,5 +467,6 @@ import {
 
 ## Related
 
-- [@rokkit/states](/llms/packages/states.txt) — controller/wrapper classes that pair with `navigator` and `Navigator`
+- [@rokkit/states](/llms/packages/states.txt) — controller/wrapper classes that pair with `Navigator`; `commands` registry that `shortcuts` resolves against
 - [@rokkit/ui](/llms/components/list.txt) — components that use these actions internally
+- [Commands & Shortcuts guide](/llms/guides/commands.txt) — end-to-end wiring

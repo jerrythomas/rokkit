@@ -9,17 +9,20 @@ without touching structure.
 
 Three orthogonal dimensions:
 
-| Dimension | Drives | Default |
-| --- | --- | --- |
-| `data-style` | Visual character (`rokkit`, `minimal`, `material`, `zen-sumi`) | `rokkit` |
-| `data-skin` | Palette mapping (roles → tailwind colours) | `default` |
-| `data-mode` | Light / dark | `light` |
+| Dimension | Mechanism | Drives | Default |
+| --- | --- | --- | --- |
+| `data-style` | HTML attribute | Visual character (`rokkit`, `minimal`, `material`, `zen-sumi`) | `rokkit` |
+| skin | CSS class `skin-{name}` on an ancestor | Palette mapping (roles → colours) | built-in default |
+| `data-mode` | HTML attribute | Light / dark | `light` |
 
-All three are attributes on `<html>`. Flipping any one re-skins
-the entire app instantly — no rebuild.
+`data-style` and `data-mode` are attributes on `<html>` (or any ancestor). Skins are applied via a `skin-{name}` **CSS class** on any ancestor element — the UnoCSS preset emits a `skin-${name}` shortcut for each named skin in your config. Flipping any dimension re-skins the app instantly — no rebuild.
 
 ```html
-<html data-style="zen-sumi" data-skin="default" data-mode="dark"></html>
+<!-- style + mode as attributes on <html> -->
+<html data-style="zen-sumi" data-mode="dark">
+
+<!-- skin as a class on any ancestor -->
+<div class="skin-ocean">…</div>
 ```
 
 ### Prevent the flash on first paint (SSR)
@@ -166,19 +169,17 @@ fight component classes — there usually aren't any.
 ## Roles + Palettes
 
 Build a custom skin by mapping the semantic roles
-(`primary` / `secondary` / `accent` / …) to Tailwind palette
-names, then a step (50–950) per mode:
+(`primary` / `accent` / `surface` / …) to palette names — a built-in
+Tailwind color name (e.g. `'orange'`) or a custom palette you define.
+Use a `{ light, dark }` object to map a role to a different palette per mode:
 
 ```js
 // rokkit.config.js
 export default {
   skin: {
-    default: {
-      primary: { light: { color: 'orange', step: 500 },
-                 dark:  { color: 'orange', step: 400 } },
-      accent:  { color: 'sky', step: 500 },
-      surface: 'slate'
-    }
+    primary: 'orange',
+    accent:  'sky',
+    surface: { light: 'kami', dark: 'sumi' }
   }
 }
 ```

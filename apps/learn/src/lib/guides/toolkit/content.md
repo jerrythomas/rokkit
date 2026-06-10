@@ -48,8 +48,8 @@ Svelte actions used as building blocks:
 
 - `navigator` — keyboard + ARIA handler attached to any
   container (see Utilities guide).
-- `navigable` — the legacy single-controller binder; kept
-  for backward compat.
+- `shortcuts` — global keyboard-shortcut capture; resolves
+  keystrokes against the command registry (see Commands guide).
 - `tooltip` — lazy-mount Tooltip wrapper (also exposed as
   the `<Tooltip>` component).
 - `ripple` — material-style click ripple.
@@ -93,6 +93,6 @@ for the integration story.
 
 ## `@rokkit/themes`
 
-Shipped styles: `rokkit`, `minimal`, `material`, `zen-sumi`.
+Shipped styles: `rokkit`, `minimal`, `material`, `frosted`, `zen-sumi`.
 Each is a self-contained CSS file consuming the same named-token
 vocabulary so they're swappable at runtime via `data-style`.

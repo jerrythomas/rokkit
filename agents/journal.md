@@ -1,5 +1,60 @@
 # Project Journal
 
+## 2026-06-10 — Command system shipped (v1.1.14)
+
+**Why.** Keyboard shortcuts + a Cmd+K palette were ad-hoc/absent (the `⌘K` badge was decorative).
+Built a public, first-class command system parallel to theming, plus a guided skill — and folded in
+the long-pending legacy keyboard-nav consolidation.
+
+**Shipped (5 packages + learn + skill + docs).** `commands` registry + `normalizeShortcut`/
+`eventToShortcut` + `command` messages namespace (`@rokkit/states`); `shortcuts` action — structural
+`{resolve,execute}` param, no states dep, input-focus guard (`@rokkit/actions`); `CommandPalette`
+(`@rokkit/ui`) themed across all 5 styles (`@rokkit/themes`); wired into `apps/learn` `/app`
+(`use:shortcuts={commands}` + `<CommandPalette>` + palette.open/theme.toggle/conversation.new);
+`command-system-rokkit` skill (catalog → 3 skills) + commands guide + reference docs. Design:
+`docs/design/19-command-system.md`. Built via subagent-driven dev (two-stage review per task — caught
+a Critical re-register index-leak, a ui package-root export gap, and navigable doc-drift).
+
+**Consolidation.** Removed legacy `kbd.js` + `navigable` action (superseded by `keymap.js`/`navigator`),
+migrated `TableOfContents` to the `keyboard` action. Also removed 86 leftover `apps/archive/static`
+files missed in the earlier archive removal.
+
+**Breaking.** `navigable` export removed from `@rokkit/actions` (only consumer was `TableOfContents`,
+migrated in the same change).
+
+**Verification.** `test:ci` 3553 pass · lint 0 errors · final holistic review = ship.
+
+**Commits.** `9d66dbf3` … `52984635` (registry → messages → shortcuts → palette → themes → learn wiring →
+ToC migration → navigable/kbd removal → skill → docs → ToC keyboard-action remap). Released as v1.1.14.
+
+**Next (designed, not yet built).** Skin system — first-class `data-skin` dimension
+(`docs/design/20-skin-system.md`).
+
+---
+
+## 2026-06-10 — CommandPalette themed across all 5 styles (Task 5 of command system)
+
+**Why.** The CommandPalette component was already built but had no theme coverage in
+`@rokkit/themes`. Without it, the palette renders as a bare floating box — no surface
+colour, no active-item highlight, no backdrop scrim.
+
+**What shipped.**
+- `packages/themes/src/base/command-palette.css` — structural only (layout, sizing, no color).
+- `packages/themes/src/{rokkit,minimal,material,frosted,zen-sumi}/command-palette.css` — colour
+  and surface per style, each including `[data-command-item][data-active]` with a `bg-` token.
+- All 6 `index.css` files updated with `@import './command-palette.css'`.
+- Coverage guard extended: 6 new assertions added to `packages/themes/spec/coverage.spec.js`.
+- Full themes suite: 66/66 pass (was 60 before new tests were added).
+
+**Active-item token choices per style.**
+| Style     | Active bg token      | Active text token |
+| --------- | -------------------- | ----------------- |
+| rokkit    | `bg-primary`         | `text-on-primary` |
+| minimal   | `bg-paper-mute`      | `text-ink` + `border-l-accent` |
+| material  | `bg-primary`         | `text-on-primary` |
+| frosted   | `bg-primary/80`      | `text-on-primary` |
+| zen-sumi  | `bg-paper-mute`      | `text-ink-mute` + `border-l-primary` |
+
 ## 2026-06-09 — `rokkit skills list|add` — AI skill guides shipped with the CLI
 
 **Why.** Coding agents working in Rokkit projects needed authoritative guides for

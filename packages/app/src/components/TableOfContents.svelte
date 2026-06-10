@@ -1,7 +1,7 @@
 <script>
 	// @ts-nocheck
-	import { navigable } from '@rokkit/actions'
 	import { onMount } from 'svelte'
+	import { keyboard } from '@rokkit/actions'
 
 	let { container = 'main-content' } = $props()
 
@@ -97,6 +97,13 @@
 		scrollToHeading(id)
 	}
 
+	// Arrow/Enter keys → previous/next/select events, dispatched by the `keyboard` action.
+	const navKeys = {
+		previous: ['ArrowUp', 'ArrowLeft'],
+		next: ['ArrowDown', 'ArrowRight'],
+		select: ['Enter', ' ']
+	}
+
 	onMount(() => {
 		scan()
 		observe()
@@ -112,7 +119,7 @@
 		bind:this={navEl}
 		data-toc
 		aria-label="On this page"
-		use:navigable
+		use:keyboard={navKeys}
 		onprevious={handlePrevious}
 		onnext={handleNext}
 		onselect={handleSelect}

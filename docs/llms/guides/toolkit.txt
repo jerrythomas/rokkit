@@ -48,8 +48,8 @@ Svelte actions used as building blocks:
 
 - `navigator` — keyboard + ARIA handler attached to any
   container (see Utilities guide).
-- `navigable` — the legacy single-controller binder; kept
-  for backward compat.
+- `shortcuts` — global keyboard-shortcut capture; resolves
+  keystrokes against the command registry (see Commands guide).
 - `tooltip` — lazy-mount Tooltip wrapper (also exposed as
   the `<Tooltip>` component).
 - `ripple` — material-style click ripple.

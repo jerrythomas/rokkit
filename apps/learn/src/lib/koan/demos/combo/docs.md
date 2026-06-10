@@ -35,7 +35,7 @@ templates, async fetches, and filterable sync sources.
 
 <Select
   items={countries}
-  fields={{ text: 'name', value: 'code' }}
+  fields={{ label: 'name', value: 'code' }}
   bind:value={code}
   filterable
   filterPlaceholder="Type a country..."

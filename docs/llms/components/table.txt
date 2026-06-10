@@ -48,9 +48,12 @@ The Table component renders flat data as an accessible table. Columns can be aut
 | `data` | `Record<string,unknown>[]` | `[]` | Row data array |
 | `columns` | `TableColumn[]` | auto | Column definitions (auto-derived if omitted) |
 | `value` | `unknown` | — | Selected row value — use `bind:value` |
+| `values` | `unknown[]` | `[]` | Multi-selected row values — use `bind:values` |
+| `selectable` | `'single'|'multi'|false` | `'single'` | Selection mode |
 | `caption` | `string` | — | Table caption for accessibility |
 | `size` | `'sm'|'md'|'lg'` | `'md'` | Size variant |
 | `striped` | `boolean` | `false` | Alternating row colors |
+| `responsive` | `boolean` | `false` | Adds responsive scroll wrapper |
 | `disabled` | `boolean` | `false` | Disable row selection |
 | `fields` | `TableFields` | `{value:'id'}` | Row-level field mapping |
 | `icons` | `TableSortIcons` | — | Override sort icons |
@@ -195,9 +198,12 @@ interface TableProps {
   data?: Record<string, unknown>[]
   columns?: TableColumn[]
   value?: unknown
+  values?: unknown[]
+  selectable?: 'single' | 'multi' | false
   caption?: string
   size?: 'sm' | 'md' | 'lg'
   striped?: boolean
+  responsive?: boolean
   disabled?: boolean
   fields?: TableFields
   icons?: TableSortIcons

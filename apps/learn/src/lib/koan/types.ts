@@ -154,8 +154,7 @@ export type DemoMeta = {
 	/**
 	 * Long-form prose for the Docs canvas mode — design intent,
 	 * conceptual explanations, "when to use" guidance. Plain markdown;
-	 * `<MarkdownRenderer/>` sanitises before rendering. Migrated from
-	 * the apps/archive `/docs/components/<name>/+page.svelte` pages.
+	 * `<MarkdownRenderer/>` sanitises before rendering.
 	 */
 	docs?: string
 }

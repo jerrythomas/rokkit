@@ -1,7 +1,0 @@
-{
-  "title": "Accessibility & i18n",
-  "description": "Keyboard navigation, ARIA, screen reader support, and internationalization",
-  "icon": "i-glyph:accessibility",
-  "category": "guide",
-  "order": 5
-}

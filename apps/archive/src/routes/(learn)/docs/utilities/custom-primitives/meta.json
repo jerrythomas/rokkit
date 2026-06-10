@@ -1,7 +1,0 @@
-{
-  "title": "Custom Primitives",
-  "description": "Patterns for building your own accessible components using controllers and navigator",
-  "icon": "i-glyph:code",
-  "category": "utilities",
-  "order": 4
-}

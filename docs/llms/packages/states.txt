@@ -451,6 +451,93 @@ const media = watchMedia({
 
 ---
 
+---
+
+## commands
+
+App-wide command registry. Defines commands (keyboard shortcuts + labelled
+actions) as a singleton that both the `shortcuts` action and `CommandPalette`
+read from. See [Commands & Shortcuts guide](/llms/guides/commands.txt).
+
+### Command shape
+
+```javascript
+/** @typedef {Object} Command
+ * @property {string}        id        — unique key; re-registering same id replaces + warns
+ * @property {string}        label     — display text shown in CommandPalette (consumer-localised)
+ * @property {() => void}    run       — called on shortcut match or palette select
+ * @property {string}        [shortcut]  — e.g. 'mod+k' | 'mod+shift+p' | '?'
+ * @property {string}        [group]     — palette category header
+ * @property {boolean}       [global]    — fire even while text input is focused (default false)
+ * @property {() => boolean} [enabled]   — optional gate; returning false suppresses execution
+ * @property {string[]}      [keywords]  — extra palette search terms
+ */
+```
+
+`mod` resolves to `Cmd` on macOS and `Ctrl` everywhere else.
+
+### Registry API
+
+| Method / Property | Signature | Description |
+|-------------------|-----------|-------------|
+| `register(cmd)` | `(Command) => () => void` | Register one command; returns unregister fn |
+| `registerMany(cmds)` | `(Command[]) => () => void` | Register a batch; returns single unregister fn |
+| `unregister(id)` | `(string) => void` | Remove a command by id |
+| `execute(id)` | `(string) => void` | Run a command by id (checks `enabled` gate) |
+| `resolve(event)` | `(KeyboardEvent) => Command\|null` | Match a keyboard event to a command |
+| `all` | `Command[]` | Reactive array of all registered commands (`$state`) |
+
+### Usage
+
+```svelte
+<script>
+  import { commands } from '@rokkit/states'
+  import { onMount } from 'svelte'
+
+  let paletteOpen = $state(false)
+
+  onMount(() => {
+    return commands.registerMany([
+      {
+        id: 'palette.open',
+        label: 'Open command palette',
+        shortcut: 'mod+k',
+        global: true,
+        group: 'general',
+        run: () => { paletteOpen = true }
+      }
+    ])
+  })
+</script>
+```
+
+### normalizeShortcut / eventToShortcut
+
+Two utility functions exported alongside `commands`:
+
+```javascript
+import { normalizeShortcut, eventToShortcut } from '@rokkit/states'
+
+normalizeShortcut('mod+K')      // 'meta+k' on macOS, 'ctrl+k' elsewhere
+eventToShortcut(keyboardEvent)  // canonical string built from a live KeyboardEvent
+```
+
+Use these when building custom shortcut display UIs or comparing shortcut strings.
+
+### messages.command
+
+`CommandPalette` reads its chrome strings from `messages.command`:
+
+| Key | Default |
+|-----|---------|
+| `messages.command.placeholder` | `'Run a command…'` |
+| `messages.command.noResults` | `'No commands found'` |
+| `messages.command.label` | `'Command palette'` |
+
+Override via `messages.set({ command: { … } })`.
+
+---
+
 ## Import
 
 ```javascript
@@ -460,10 +547,11 @@ import { Wrapper, LazyWrapper }                  from '@rokkit/states'
 import { vibe }                                  from '@rokkit/states'
 import { messages }                              from '@rokkit/states'
 import { watchMedia, defaultBreakpoints }        from '@rokkit/states'
+import { commands, normalizeShortcut, eventToShortcut } from '@rokkit/states'
 ```
 
 ## Related packages
 
 - [@rokkit/ui](/llms/packages/ui.txt) — components that consume these state primitives
 - [@rokkit/core](/llms/packages/core.txt) — BASE_FIELDS, FieldMapper
-- [@rokkit/actions](/llms/packages/actions.txt) — `Navigator` class that drives Wrapper instances
+- [@rokkit/actions](/llms/packages/actions.txt) — `Navigator` class that drives Wrapper instances; `shortcuts` action that resolves keystrokes against the commands registry

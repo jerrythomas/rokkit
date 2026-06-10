@@ -75,43 +75,6 @@ Applied via ancestor data attributes:
 
 ---
 
-## Story/Tutorial Conventions
-
-### Structure
-
-```
-component/
-├── +page.svelte          # Clean HTML + layout only
-├── stories.js            # StoryBuilder with import.meta.glob
-├── fragments/            # Code snippets (never inline in +page.svelte)
-│   ├── 01-basic.svelte
-│   └── 02-advanced.svelte
-├── intro/
-│   └── App.svelte        # Interactive example
-└── meta.json             # Page metadata
-```
-
-### stories.js (canonical)
-
-```js
-import { StoryBuilder } from '$lib/builder.svelte.js'
-
-const modules = import.meta.glob('./*/**/App.svelte', { import: 'default' })
-const sources = import.meta.glob('./*/**/*', { query: '?raw', import: 'default' })
-
-export const storyBuilder = new StoryBuilder(sources, modules)
-```
-
-### Rules
-
-- Keep `+page.svelte` clean — only HTML structure and layout
-- Use `<article data-article-root>` as the root wrapper
-- All code in `fragments/` — never inline in `+page.svelte`
-- Use `<Code {...storyBuilder.getFragment(n)} />` for code blocks
-- Use `<StoryViewer {...storyBuilder.getExample('name')} />` for demos
-
----
-
 ## Color/Skin System
 
 UnoCSS-based color system using CSS variables for runtime theme switching:
@@ -186,6 +149,5 @@ Standard props: `items`/`options`, `value` (bindable), `fields`, `onchange`/`ons
 | `@rokkit/icons`    | `packages/icons/`                                  | SVG icon sets                                                   |
 | `@rokkit/states`   | `packages/states/`                                 | Reactive state (ListController, NestedController, Proxy)        |
 | `@rokkit/themes`   | `packages/themes/`                                 | CSS themes (base + rokkit/minimal/material/glass)               |
-| `@rokkit/tutorial` | `packages/tutorial/`                               | Tutorial utilities                                              |
 | `@rokkit/ui`       | `packages/ui/`                                     | UI components                                                   |
 | `site`             | Documentation site + interactive demos + e2e tests |

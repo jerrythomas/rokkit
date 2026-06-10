@@ -1,7 +1,7 @@
 # Global Shortcut Handler — App-Level Commands
 
 **Date:** 2026-05-20
-**Status:** Backlog — design later
+**Status:** Designed 2026-06-09 — see `docs/design/19-command-system.md`. Promoted to a public, first-class feature (parallel to theming): `commands` in `@rokkit/states`, `shortcuts` action in `@rokkit/actions`, `CommandPalette` in `@rokkit/ui`, plus a `command-system-rokkit` skill + commands guide. Implementation pending.
 **Site Applicability:** Applies to current Koan shell (`apps/learn/src/lib/koan/`) — motivates the Cmd+K + command palette in the new app.
 
 ## Summary

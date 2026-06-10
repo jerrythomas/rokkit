@@ -1,8 +1,0 @@
-{
-  "title": "Inputs",
-  "description": "Form field with label, description, and validation states",
-  "icon": "i-glyph:forms",
-  "category": "forms",
-  "sequence": 35,
-  "llms": false
-}

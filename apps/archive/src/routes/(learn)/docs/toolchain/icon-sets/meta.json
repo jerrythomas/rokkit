@@ -1,7 +1,0 @@
-{
-  "title": "Icon Sets",
-  "description": "Curated navigation, status, action, and object icons with tree-shaking",
-  "icon": "i-glyph:stars",
-  "category": "toolchain",
-  "order": 3
-}

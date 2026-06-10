@@ -1,8 +1,0 @@
-{
-  "title": "Keyboard Navigation",
-  "description": "Built-in keyboard navigation, ARIA support, and the navigator pattern",
-  "icon": "i-glyph:keyboard",
-  "category": "accessibility",
-  "order": 2,
-  "tags": ["keyboard", "navigation", "accessibility", "aria", "navigator"]
-}

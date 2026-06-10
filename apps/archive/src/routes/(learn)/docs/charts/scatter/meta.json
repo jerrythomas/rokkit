@@ -1,7 +1,0 @@
-{
-  "title": "Scatter",
-  "description": "X/Y correlation plot with optional size and color encoding",
-  "icon": "i-glyph:chart",
-  "category": "charts",
-  "order": 6
-}

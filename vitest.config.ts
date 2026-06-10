@@ -24,7 +24,6 @@ export default defineConfig({
 				'**/node_modules/**',
 				'**/dist/**',
 				'**/apps/learn/**',
-				'**/apps/archive/**',
 				'**/fixtures/**',
 				'**/types.ts',
 				'**/.worktrees/**'
@@ -51,8 +50,6 @@ export default defineConfig({
 				extends: true,
 				test: { name: 'states', root: 'packages/states', setupFiles: ['spec/setup.js'] }
 			},
-			{ extends: true, test: { name: 'stories', root: 'packages/stories' } },
-			{ extends: true, test: { name: 'tutorial', root: 'packages/tutorial' } },
 			{
 				extends: true,
 				test: { name: 'ui', root: 'packages/ui', setupFiles: ['../helpers/src/mocks/index.js'] }

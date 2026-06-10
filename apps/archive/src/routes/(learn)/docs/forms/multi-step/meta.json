@@ -1,7 +1,0 @@
-{
-  "title": "Multi-Step Forms",
-  "description": "Sequential steps with per-step validation and a step indicator",
-  "icon": "i-glyph:list-check",
-  "category": "forms",
-  "order": 6
-}

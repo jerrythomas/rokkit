@@ -116,6 +116,17 @@ describe('per-style color coverage', () => {
 	})
 })
 
+describe('command palette is themed across styles', () => {
+	it('base gives the palette structural layout', () => {
+		expect(css('base', 'command-palette')).toContain('[data-command-palette]')
+	})
+	it.each(STYLES)('%s colors the command palette + active item', (style) => {
+		const c = css(style, 'command-palette')
+		expect(c).toContain('[data-command-palette]')
+		expect(c).toMatch(/data-command-item\]\[data-active\][\s\S]*?bg-/)
+	})
+})
+
 /**
  * Consistent control-height scale — every trigger/text control sizes its height
  * from the shared, fixed --control-h-* tokens so same-size controls align.

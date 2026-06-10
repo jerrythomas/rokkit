@@ -1,8 +1,0 @@
-{
-  "title": "State Management",
-  "description": "Value binding, controlled components, and reactive state patterns",
-  "icon": "i-glyph:graph-new",
-  "category": "utilities",
-  "order": 5,
-  "tags": ["state", "binding", "reactive", "controlled", "value"]
-}

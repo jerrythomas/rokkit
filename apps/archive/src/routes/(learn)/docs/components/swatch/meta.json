@@ -1,8 +1,0 @@
-{
-  "title": "Swatch",
-  "description": "Color and theme picker with single or multi-select modes",
-  "icon": "i-glyph:color-swatch",
-  "category": "display",
-  "sequence": 65,
-  "llms": true
-}

@@ -52,7 +52,8 @@ export {
 	Avatar,
 	Tooltip,
 	NavContent,
-	ResponsiveGrid
+	ResponsiveGrid,
+	CommandPalette
 } from './components/index.js'
 
 export { default as MarkdownRenderer } from './MarkdownRenderer.svelte'

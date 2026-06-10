@@ -7,7 +7,7 @@ and fully customisable option rendering via snippets.
 
 ## Basic example
 
-Pass an array of objects with `text` and optionally `value` fields,
+Pass an array of objects with `label` and optionally `value` fields,
 then bind `value` to an array of the selected values:
 
 ```svelte
@@ -16,13 +16,13 @@ then bind `value` to an array of the selected values:
 
 ## Field mapping
 
-When your data doesn't use `text` / `value` as field names, remap
+When your data doesn't use `label` / `value` as field names, remap
 without transforming:
 
 ```svelte
 <MultiSelect
   items={users}
-  fields={{ text: 'name', value: 'id' }}
+  fields={{ label: 'name', value: 'id' }}
   bind:value
 />
 ```
@@ -36,8 +36,8 @@ presentational.
 ```svelte
 <MultiSelect
   items={[
-    { text: 'Fruits',     children: [{ text: 'Apple', value: 'a' }] },
-    { text: 'Vegetables', children: [{ text: 'Carrot', value: 'c' }] }
+    { label: 'Fruits',     children: [{ label: 'Apple', value: 'a' }] },
+    { label: 'Vegetables', children: [{ label: 'Carrot', value: 'c' }] }
   ]}
   bind:value
 />

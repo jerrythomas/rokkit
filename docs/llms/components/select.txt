@@ -46,9 +46,9 @@ The Select component provides a dropdown selection interface that adapts to any 
 | `selected` | `SelectItem|null` | — | Selected item reference — use `bind:selected` |
 | `placeholder` | `string` | — | Placeholder text when nothing selected |
 | `size` | `'sm'|'md'|'lg'` | `'md'` | Size variant |
-| `align` | `'left'|'right'|'start'|'end'` | `'left'` | Dropdown alignment |
+| `align` | `'start'|'end'` | `'start'` | Dropdown alignment |
 | `direction` | `'up'|'down'` | `'down'` | Dropdown slide direction |
-| `maxRows` | `number` | `5` | Visible rows in dropdown |
+| `maxRows` | `number` | `8` | Visible rows in dropdown |
 | `disabled` | `boolean` | `false` | Disable the select |
 | `filterable` | `boolean` | `false` | Show typeahead filter input |
 | `filterPlaceholder` | `string` | — | Placeholder for filter input |
@@ -181,7 +181,7 @@ interface SelectProps {
   selected?: SelectItem | null
   placeholder?: string
   size?: 'sm' | 'md' | 'lg'
-  align?: 'left' | 'right' | 'start' | 'end'
+  align?: 'start' | 'end'
   direction?: 'up' | 'down'
   maxRows?: number
   disabled?: boolean

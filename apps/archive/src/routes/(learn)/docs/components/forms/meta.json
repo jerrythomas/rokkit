@@ -1,6 +1,0 @@
-{
-  "title": "FormRenderer",
-  "description": "Schema-driven form rendering with display components, validation, and mixed layouts",
-  "icon": "i-glyph:file-text",
-  "category": "display"
-}

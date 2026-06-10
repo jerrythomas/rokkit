@@ -10,7 +10,7 @@ npm install @rokkit/themes
 
 ## Available Themes
 
-Rokkit ships 11 visual themes. Each is a separate CSS file:
+Rokkit ships 5 visual themes plus the structural base. Each is a separate CSS file:
 
 | Theme | Import path | Personality |
 |-------|-------------|-------------|
@@ -18,12 +18,7 @@ Rokkit ships 11 visual themes. Each is a separate CSS file:
 | **minimal** | `@rokkit/themes/minimal.css` | Clean, understated styling with subtle borders and soft backgrounds. |
 | **material** | `@rokkit/themes/material.css` | Material Design inspired with elevation shadows and depth. |
 | **frosted** | `@rokkit/themes/frosted.css` | Frosted glass with backdrop blur, transparency, and subtle borders. |
-| **shadcn** | `@rokkit/themes/shadcn.css` | Flat borders and ring focus — shadcn/ui-inspired. |
-| **daisy-ui** | `@rokkit/themes/daisy-ui.css` | Rounded-full buttons and bold fills — DaisyUI-inspired. |
-| **bits-ui** | `@rokkit/themes/bits-ui.css` | Rounded-lg and polished shadow-sm — Bits UI-inspired. |
-| **carbon** | `@rokkit/themes/carbon.css` | Square corners and bottom-border inputs — IBM Carbon-inspired. |
-| **ant-design** | `@rokkit/themes/ant-design.css` | Thin borders and dense layout — Ant Design-inspired. |
-| **grada-ui** | `@rokkit/themes/grada-ui.css` | Coral/purple gradient identity. |
+| **zen-sumi** | `@rokkit/themes/zen-sumi.css` | Ink-on-paper aesthetic using OKLCH colour space. |
 | **base** | `@rokkit/themes/base.css` | Structural styles only (layout, positioning — no visual treatment). |
 
 ## CSS Import Structure
@@ -44,8 +39,7 @@ Or import all themes at once (larger bundle, but lets you switch themes at runti
 @import '@rokkit/themes/minimal.css';
 @import '@rokkit/themes/material.css';
 @import '@rokkit/themes/frosted.css';
-@import '@rokkit/themes/shadcn.css';
-/* ... etc. */
+@import '@rokkit/themes/zen-sumi.css';
 ```
 
 ### Per-component imports (tree-shaking)

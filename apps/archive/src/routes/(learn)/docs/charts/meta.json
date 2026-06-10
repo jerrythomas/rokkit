@@ -1,7 +1,0 @@
-{
-  "title": "Charts",
-  "description": "SVG charts with animation, theming, interactivity, and accessibility",
-  "icon": "i-glyph:chart",
-  "category": "charts",
-  "order": 21
-}

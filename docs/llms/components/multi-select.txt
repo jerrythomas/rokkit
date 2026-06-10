@@ -1,8 +1,8 @@
 # Rokkit MultiSelect Component
 
-> Dropdown component for selecting multiple items with pill/tag display.
+> Dropdown component for selecting multiple items with tag display.
 
-MultiSelect extends Select for multi-item selection. Selected values are shown as removable pills inside the trigger. Supports grouping, typeahead filtering, and field mapping.
+MultiSelect extends Select for multi-item selection. Selected values are shown as removable tags inside the trigger. Supports grouping and field mapping.
 
 ## Quick Start
 
@@ -10,15 +10,15 @@ MultiSelect extends Select for multi-item selection. Selected values are shown a
 <script>
   import { MultiSelect } from '@rokkit/ui'
 
-  let options = ['JavaScript', 'TypeScript', 'Svelte', 'React', 'Vue']
+  let items = ['JavaScript', 'TypeScript', 'Svelte', 'React', 'Vue']
   let value = $state([])
 </script>
 
-<MultiSelect {options} bind:value placeholder="Select languages..." />
+<MultiSelect {items} bind:value placeholder="Select languages..." />
 <p>Selected: {value.join(', ')}</p>
 ```
 
-## Object Options
+## Object Items
 
 ```svelte
 <script>
@@ -35,39 +35,35 @@ MultiSelect extends Select for multi-item selection. Selected values are shown a
   let selected = $state([])
 </script>
 
-<MultiSelect options={tags} {fields} bind:value bind:selected />
+<MultiSelect {items} {fields} bind:value bind:selected />
 ```
 
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `options` | `SelectItem[]` | `[]` | Options array |
-| `fields` | `SelectFields` | defaults | Field mapping |
+| `items` | `unknown[]` | `[]` | Data array (objects or primitives) |
+| `fields` | `Record<string,string>` | `{}` | Field mapping |
 | `value` | `unknown[]` | `[]` | Selected values array — use `bind:value` |
-| `selected` | `SelectItem[]` | `[]` | Selected items — use `bind:selected` |
+| `selected` | `unknown[]` | `[]` | Selected items — use `bind:selected` |
 | `placeholder` | `string` | — | Placeholder when nothing selected |
 | `size` | `'sm'|'md'|'lg'` | `'md'` | Size variant |
-| `align` | `'left'|'right'|'start'|'end'` | `'left'` | Dropdown alignment |
+| `align` | `'start'|'end'` | `'start'` | Dropdown alignment |
 | `direction` | `'up'|'down'` | `'down'` | Dropdown direction |
-| `maxRows` | `number` | `5` | Visible rows in dropdown |
-| `maxDisplay` | `number` | — | Max pills shown before "+N more" |
+| `maxDisplay` | `number` | `3` | Max tags shown before count indicator |
 | `disabled` | `boolean` | `false` | Disable the component |
-| `filterable` | `boolean` | `false` | Show typeahead filter input |
-| `filterPlaceholder` | `string` | — | Placeholder for filter input |
-| `icons` | `SelectStateIcons` | — | Override state icons |
+| `icons` | `MultiSelectIcons` | — | Override state icons |
 | `class` | `string` | `''` | Additional CSS classes |
 
 ## Field Mapping
 
-Same as [Select](/llms/components/select.txt) — uses `SelectFields`:
+Same as [Select](/llms/components/select.txt):
 
 | Field | Default |
 |-------|---------|
 | `value` | `'value'` |
-| `text` | `'text'` |
+| `label` | `'label'` |
 | `icon` | `'icon'` |
-| `description` | `'description'` |
 | `disabled` | `'disabled'` |
 | `children` | `'children'` |
 
@@ -79,20 +75,21 @@ Same as [Select](/llms/components/select.txt) — uses `SelectFields`:
 
 ## Max Display
 
-Collapse excess pills to a "+N more" indicator:
+Collapse excess tags to a count indicator:
 
 ```svelte
-<MultiSelect {options} bind:value maxDisplay={3} />
+<MultiSelect {items} bind:value maxDisplay={3} />
 ```
 
 ## Snippets
 
-### Custom Selected Values Display
+Supports `itemContent` and `groupContent` snippets (same as Select) for customizing option rendering in the dropdown. The trigger tag display is hardcoded — there is no `selectedValues` snippet.
 
 ```svelte
-<MultiSelect {options} bind:value>
-  {#snippet selectedValues(items, fields)}
-    <span>{items.length} selected</span>
+<MultiSelect {items} bind:value>
+  {#snippet itemContent(proxy)}
+    <span class={proxy.get('icon')}></span>
+    <span>{proxy.label}</span>
   {/snippet}
 </MultiSelect>
 ```
@@ -113,10 +110,15 @@ Same as Select:
 
 | Attribute | Description |
 |-----------|-------------|
-| `data-multiselect` | Root element |
-| `data-select-trigger` | Trigger area |
-| `data-select-pill` | Selected value pill |
+| `data-multiselect` | Root element (also has `data-select` for theme compat) |
+| `data-select-trigger` | Trigger button |
+| `data-select-tags` | Tags container |
+| `data-select-tag` | Individual selected tag |
+| `data-select-tag-text` | Tag label text |
+| `data-select-tag-remove` | Tag remove button |
+| `data-select-count` | Count indicator when exceeding maxDisplay |
 | `data-select-dropdown` | Dropdown container |
+| `data-select-option` | Option items in dropdown |
 | `data-open` | Open state |
 
 ## Import
@@ -129,25 +131,28 @@ import { MultiSelect } from '@rokkit/ui'
 
 ```typescript
 interface MultiSelectProps {
-  options?: SelectItem[]
-  fields?: SelectFields
+  items?: unknown[]
+  fields?: Record<string, string>
   value?: unknown[]
-  selected?: SelectItem[]
+  selected?: unknown[]
   placeholder?: string
   size?: 'sm' | 'md' | 'lg'
-  align?: 'left' | 'right' | 'start' | 'end'
+  align?: 'start' | 'end'
   direction?: 'up' | 'down'
-  maxRows?: number
   maxDisplay?: number
   disabled?: boolean
-  filterable?: boolean
-  filterPlaceholder?: string
-  icons?: SelectStateIcons
+  icons?: MultiSelectIcons
   class?: string
-  onchange?: (values: unknown[], items: SelectItem[]) => void
-  selectedValues?: Snippet<[SelectItem[], SelectFields]>
-  item?: Snippet<[SelectItem, SelectFields, SelectItemHandlers, boolean]>
-  groupLabel?: Snippet<[SelectItem, SelectFields]>
+  onchange?: (values: unknown[], items: unknown[]) => void
+  itemContent?: Snippet<[ProxyItem]>
+  groupContent?: Snippet<[ProxyItem]>
+}
+
+interface MultiSelectIcons {
+  opened?: string  // dropdown open arrow
+  closed?: string  // dropdown closed arrow
+  checked?: string // checkbox indicator on selected option
+  remove?: string  // tag remove button
 }
 ```
 

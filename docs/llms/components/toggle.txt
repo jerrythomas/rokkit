@@ -39,6 +39,7 @@ String arrays also work — each string becomes both the label and value:
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
+| `variant` | `'group'\|'button'` | `'group'` | `'group'` = segmented radio group; `'button'` = single cycling button |
 | `options` | `unknown[]` | `[]` | Array of toggle options (strings or objects) |
 | `fields` | `Record<string, string>` | `{}` | Field mapping overrides |
 | `value` | `unknown` | — | Selected value — use `bind:value` |
@@ -46,6 +47,7 @@ String arrays also work — each string becomes both the label and value:
 | `showLabels` | `boolean` | `true` | Show text labels alongside icons |
 | `size` | `'sm'\|'md'\|'lg'` | `'md'` | Size variant |
 | `disabled` | `boolean` | `false` | Disable all options |
+| `label` | `string` | from messages | Accessible `aria-label` for the group (or button title fallback) |
 | `class` | `string` | `''` | Additional CSS classes |
 
 ## Field Mapping
@@ -116,6 +118,23 @@ Override the default rendering with an `itemContent` snippet:
 ```
 
 The snippet receives a `ProxyItem` instance. Use `proxy.label`, `proxy.value`, `proxy.get('icon')`, etc.
+
+## Button Variant
+
+`variant="button"` renders a single cycling button that advances through options on each click. The button shows the **next** option (what you'd switch to). Useful for compact mode toggles:
+
+```svelte
+<script>
+  const modes = [
+    { value: 'system', icon: 'i-lucide:monitor', label: 'System' },
+    { value: 'light',  icon: 'i-lucide:sun',     label: 'Light' },
+    { value: 'dark',   icon: 'i-lucide:moon',    label: 'Dark' }
+  ]
+  let value = $state('system')
+</script>
+
+<Toggle variant="button" options={modes} bind:value showLabels={false} />
+```
 
 ## Keyboard Navigation
 

@@ -13,7 +13,7 @@ Every collection component (`List`, `Select`, `Tree`, `Tabs`, `Table`, etc.) acc
       <img src={proxy.get('avatar')} class="h-8 w-8 rounded-full" />
       <div>
         <p class="font-medium">{proxy.label}</p>
-        <p class="text-surface-z5 text-xs">{proxy.get('role')}</p>
+        <p class="text-ink-mute text-xs">{proxy.get('role')}</p>
       </div>
     </div>
   {/snippet}
@@ -62,11 +62,11 @@ Route different items to different snippets by setting `snippet` on the data ite
 <List {items}>
   {#snippet fruit(proxy)}
     <span>{proxy.label}</span>
-    <span class="text-xs text-error-z5">fruit</span>
+    <span class="text-xs text-error">fruit</span>
   {/snippet}
   {#snippet vegetable(proxy)}
     <span>{proxy.label}</span>
-    <span class="text-xs text-success-z5">veggie</span>
+    <span class="text-xs text-success">veggie</span>
   {/snippet}
 </List>
 ```

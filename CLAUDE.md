@@ -36,7 +36,6 @@ rokkit/
   packages/                     <-- Library packages (@rokkit/ui, states, actions, etc.)
   apps/
     learn/                      <-- Koan showcase + framework guides + per-component demos (deployed)
-    archive/                    <-- Old learn site preserved during transition; remove once production verified
 ```
 
 ## Key Design Principles

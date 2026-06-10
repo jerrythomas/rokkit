@@ -69,10 +69,9 @@ console.log(css)`
 			lang: 'ts',
 			code: `import { vibe } from '@rokkit/states'
 
-vibe.setSkin('my-brand')   // skin
-vibe.setStyle('zen-sumi')  // style theme
-vibe.setMode('dark')       // light | dark
-vibe.setDensity('compact')`
+vibe.style = 'zen-sumi'  // style theme
+vibe.mode = 'dark'       // light | dark
+vibe.density = 'compact' // compact | cozy | comfortable`
 		}
 	],
 	docs
