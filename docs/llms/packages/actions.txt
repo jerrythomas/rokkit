@@ -16,57 +16,6 @@ npm install @rokkit/actions
 
 ---
 
-## `navigable` — Keyboard Navigation (simple)
-
-The lightweight keyboard navigation action. Listens on **keyup** and dispatches five custom events. Use this when you want keyboard-driven custom UI without a full controller/wrapper stack.
-
-### Events dispatched
-
-| Event | Default key(s) — vertical | Default key(s) — horizontal |
-|-------|---------------------------|------------------------------|
-| `previous` | `ArrowUp` | `ArrowLeft` |
-| `next` | `ArrowDown` | `ArrowRight` |
-| `select` | `Enter`, `Space` | `Enter`, `Space` |
-| `collapse` | `ArrowLeft` (when `nested: true`) | `ArrowUp` (when `nested: true`) |
-| `expand` | `ArrowRight` (when `nested: true`) | `ArrowDown` (when `nested: true`) |
-
-### Options
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `orientation` | `'vertical'|'horizontal'` | `'vertical'` | Arrow key axis |
-| `dir` | `'ltr'|'rtl'` | `'ltr'` | Text direction (reverses horizontal collapse/expand) |
-| `nested` | `boolean` | `false` | Enable collapse/expand key bindings |
-| `enabled` | `boolean` | `true` | Disable all key handling when `false` |
-
-### Usage
-
-```svelte
-<nav
-  use:navigable
-  onprevious={handlePrevious}
-  onnext={handleNext}
-  onselect={handleSelect}
->
-  <!-- items with data-path attributes -->
-</nav>
-```
-
-With options:
-
-```svelte
-<div
-  use:navigable={{ orientation: 'horizontal', nested: true }}
-  onprevious={prev}
-  onnext={next}
-  oncollapse={collapse}
-  onexpand={expand}
-  onselect={select}
->
-```
-
----
-
 ## `Navigator` — Keyboard Navigation (class)
 
 The full-featured navigation primitive used internally by all Rokkit UI components. Pairs with a `Wrapper` (or `LazyWrapper`) from `@rokkit/states` and binds DOM events on a container element to its methods.
@@ -456,7 +405,7 @@ const action = resolveAction(keyboardEvent, keymap)
 ```javascript
 import {
   // Actions
-  navigable, navigator, keyboard, pannable, swipeable,
+  keyboard, pannable, swipeable,
   themable, skinnable, dismissable, fillable, reveal,
   hoverLift, magnetic, ripple, delegateKeyboardEvents,
 

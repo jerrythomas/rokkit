@@ -16,7 +16,6 @@ describe('actions', () => {
 			'themable',
 			'skinnable',
 			'dismissable',
-			'navigable',
 			'fillable',
 			'delegateKeyboardEvents',
 			'reveal',
