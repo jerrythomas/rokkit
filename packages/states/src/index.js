@@ -1,6 +1,7 @@
 export { alerts } from './alerts.svelte.js'
 export { vibe } from './vibe.svelte.js'
 export { messages } from './messages.svelte.js'
+export { commands, normalizeShortcut, eventToShortcut } from './commands.svelte.js'
 export { ProxyItem, LazyProxyItem, BASE_FIELDS } from './proxy-item.svelte.js'
 export { ProxyTree } from './proxy-tree.svelte.js'
 export { ProxyTable } from './proxy-table.svelte.js'
