@@ -195,7 +195,7 @@ export default {
 	},
 
 	switcher:   'full',
-	storageKey: 'sensei-theme',
+	storageKey: 'rokkit-learn-app',
 
 	chart: {
 		colors: ['sky', 'emerald', 'rose', 'amber', 'violet', 'blue', 'pink', 'teal'],

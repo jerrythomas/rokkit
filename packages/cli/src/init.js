@@ -35,6 +35,21 @@ const OKLCH_PALETTES_NOTE = `/**
 `
 
 /**
+ * Derive a safe localStorage key from an npm package name.
+ * Strips the scope, keeps case, maps unsafe chars to '-'. Returns '' when there
+ * is no usable name — the caller then omits `storageKey` rather than baking in a
+ * hardcoded default (the consumer config / library fallback decides instead).
+ * @param {string} [name]
+ * @returns {string}
+ */
+export function storageKeyFromName(name) {
+	return String(name ?? '')
+		.replace(/^@/, '')
+		.replace(/[^a-zA-Z0-9_-]+/g, '-')
+		.replace(/^-+|-+$/g, '')
+}
+
+/**
  * Serialize a rokkit config object to a JS module string with a header comment.
  * @param {Record<string, unknown>} config
  * @returns {string}
@@ -201,11 +216,12 @@ export function generateChartConfig({ chartColors, chartShades }) {
 /**
  * Build the Zen-Sumi OKLCH starter (ink-on-paper, dual-palette dark mode).
  * @param {{ themes?: string[], defaultTheme?: string, switcher?: string,
- *   includeChart?: boolean, chartColors?: string, chartShades?: string }} [opts]
+ *   includeChart?: boolean, chartColors?: string, chartShades?: string,
+ *   storageKey?: string }} [opts]
  * @returns {Record<string, unknown>}
  */
 export function generateZenSumiConfig(opts = {}) {
-	const { themes, defaultTheme, switcher, includeChart, chartColors, chartShades } = opts
+	const { themes, defaultTheme, switcher, includeChart, chartColors, chartShades, storageKey } = opts
 	const config = {
 		palettes: ZEN_SUMI_PALETTES,
 		colorSpace: 'oklch',
@@ -230,7 +246,7 @@ export function generateZenSumiConfig(opts = {}) {
 		themes: themes && themes.length ? themes : ['rokkit', 'zen-sumi'],
 		defaultTheme: defaultTheme || 'zen-sumi',
 		switcher: switcher || 'full',
-		storageKey: 'rokkit-theme'
+		...(storageKey ? { storageKey } : {})
 	}
 	if (includeChart) config.chart = generateChartConfig({ chartColors, chartShades })
 	return config
@@ -242,7 +258,8 @@ export function generateZenSumiConfig(opts = {}) {
  * optional `icons` and `chart` sections.
  * @param {{ palette: string, customColors?: Record<string, string>, icons?: string,
  *   iconPath?: string, iconStyle?: string, themes: string[], defaultTheme?: string,
- *   switcher: string, includeChart?: boolean, chartColors?: string, chartShades?: string }} opts
+ *   switcher: string, includeChart?: boolean, chartColors?: string, chartShades?: string,
+ *   storageKey?: string }} opts
  * @returns {Record<string, unknown>}
  */
 export function generateConfig({
@@ -256,10 +273,11 @@ export function generateConfig({
 	switcher,
 	includeChart,
 	chartColors,
-	chartShades
+	chartShades,
+	storageKey
 }) {
 	if (palette === 'zen-sumi') {
-		return generateZenSumiConfig({ themes, defaultTheme, switcher, includeChart, chartColors, chartShades })
+		return generateZenSumiConfig({ themes, defaultTheme, switcher, includeChart, chartColors, chartShades, storageKey })
 	}
 
 	const config = {
@@ -269,7 +287,7 @@ export function generateConfig({
 		themes,
 		defaultTheme: defaultTheme || themes[0],
 		switcher,
-		storageKey: 'rokkit-theme'
+		...(storageKey ? { storageKey } : {})
 	}
 
 	const iconConfig = {}
@@ -583,6 +601,14 @@ export async function init(_opts = {}, adapters = {}) {
 			surface: response.surface
 		}
 	}
+
+	let appName
+	try {
+		appName = JSON.parse(readFileSync(resolve(cwd, 'package.json'), 'utf-8')).name
+	} catch {
+		appName = undefined
+	}
+	response.storageKey = storageKeyFromName(appName)
 
 	const config = generateConfig(response)
 

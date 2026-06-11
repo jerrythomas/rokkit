@@ -15,17 +15,18 @@
  *   - radius (corner rounding scale; mirrored to body.dataset.radius)
  *   - per-role color overrides on top of the chosen skin (Phase 2 concern)
  *
- * Persistence:
- *   - vibe state (mode/style/density/skin) → localStorage['rokkit-theme'],
+ * Persistence (all keyed off the single `STORAGE_KEY` from rokkit.config.js):
+ *   - vibe state (mode/style/density/skin) → localStorage[STORAGE_KEY],
  *     owned by the `themable` action in the root layout.
- *   - radius / role overrides → localStorage['rokkit-skin'], owned here.
+ *   - radius / role overrides → localStorage[`${STORAGE_KEY}-skin`], owned here.
  */
 
 import { browser } from '$app/environment'
 import { vibe } from '@rokkit/states'
 import { applyRoleColor, skinDefinitions } from '$lib/data/skins'
+import { STORAGE_KEY } from '$lib/theme-config'
 
-const SKIN_KEY = 'rokkit-skin'
+const SKIN_KEY = `${STORAGE_KEY}-skin`
 const ROLES = ['surface', 'primary', 'secondary', 'accent'] as const
 
 // Register all known skins with vibe so SkinSwitcherToggle (which reads

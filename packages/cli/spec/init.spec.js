@@ -6,7 +6,8 @@ import {
 	generateAppCssImports,
 	generateInitScript,
 	serializeRokkitConfig,
-	generateZenSumiConfig
+	generateZenSumiConfig,
+	storageKeyFromName
 } from '../src/init.js'
 
 describe('generateConfig', () => {
@@ -103,6 +104,40 @@ describe('generateConfig', () => {
 			switcher: 'manual'
 		})
 		expect(config.icons.custom).toBe('./static/icons/custom.json')
+	})
+})
+
+describe('storageKeyFromName', () => {
+	it('derives a safe key from a scoped package name', () => {
+		expect(storageKeyFromName('@acme/dashboard')).toBe('acme-dashboard')
+	})
+	it('keeps a simple name as-is', () => {
+		expect(storageKeyFromName('my-learn-app')).toBe('my-learn-app')
+	})
+	it('returns empty string when there is no usable name (no hardcoded default)', () => {
+		expect(storageKeyFromName(undefined)).toBe('')
+		expect(storageKeyFromName('')).toBe('')
+	})
+})
+
+describe('generateConfig storageKey', () => {
+	it('uses the provided storageKey', () => {
+		const config = generateConfig({
+			palette: 'default', icons: 'rokkit', themes: ['rokkit'], switcher: 'manual', storageKey: 'my-app'
+		})
+		expect(config.storageKey).toBe('my-app')
+	})
+	it('omits storageKey when none is provided (no hardcoded rokkit-theme default)', () => {
+		const config = generateConfig({
+			palette: 'default', icons: 'rokkit', themes: ['rokkit'], switcher: 'manual'
+		})
+		expect(config.storageKey).toBeUndefined()
+	})
+	it('threads storageKey through the zen-sumi starter', () => {
+		const config = generateConfig({
+			palette: 'zen-sumi', icons: 'rokkit', themes: ['rokkit', 'zen-sumi'], switcher: 'full', storageKey: 'zen-app'
+		})
+		expect(config.storageKey).toBe('zen-app')
 	})
 })
 
