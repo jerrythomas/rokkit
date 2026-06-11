@@ -231,7 +231,7 @@ const activeOverrides: Record<string, RoleMapping> = {}
 /**
  * Build named-token aliases that point at the palette shades so the
  * theme CSS (which reads `var(--primary)`, `var(--paper)`, etc.) picks
- * up palette overrides written by `applySkin`. Without these, the demo
+ * up palette overrides written by `applyRoleColor`. Without these, the demo
  * runs in `tokens: 'core'` mode where named tokens are emitted as
  * inlined OKLCH values at config-build time — they don't reference
  * `--color-{role}-{shade}` and so palette overrides have no effect.
