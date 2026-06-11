@@ -331,7 +331,7 @@ Singleton reactive store for the current theme state. Components and actions rea
 |--------|-------------|
 | `update({ style?, mode?, density?, direction? })` | Batch update multiple theme properties |
 | `load(key)` | Load and apply theme from `localStorage` |
-| `save(key)` | Persist current theme (`style`, `mode`, `density`, `direction`) to `localStorage` |
+| `save(key)` | Persist current theme (`style`, `mode`, `density`, `direction`, `skin`) to `localStorage` |
 | `detectDirection()` | Re-detect direction from the document's lang attribute |
 
 ### Usage example
@@ -362,26 +362,48 @@ vibe.load('myapp-theme')
 
 ## messages
 
-Singleton reactive store for localised UI strings. All Rokkit components read from `messages.current` for their labels and ARIA strings.
+Singleton reactive store for localised UI strings. All Rokkit components read directly from `messages` fields for their labels and ARIA strings.
 
 **When to use:** Override default English strings for internationalisation or to customise button/label text in components.
 
 ### Properties
 
+All string fields are direct `$state` on the `messages` instance — there is no `.current` indirection:
+
 | Property | Type | Description |
 |----------|------|-------------|
-| `current` | `Messages` | The current message map (`$state`) |
+| `emptyList` | `string` | Shown when a list has no items |
+| `emptyTree` | `string` | Shown when a tree has no data |
+| `loading` | `string` | Loading placeholder text |
+| `noResults` | `string` | Shown when a search/filter returns nothing |
+| `select` | `string` | Default select placeholder |
+| `search` | `string` | Search input placeholder |
+| `list` | `object` | `{ label }` |
+| `tree` | `object` | `{ label, expand, collapse, loading, loadMore }` |
+| `toolbar` | `object` | `{ label }` |
+| `menu` | `object` | `{ label }` |
+| `table` | `object` | `{ empty, sortAscending, sortDescending }` |
+| `command` | `object` | `{ placeholder, noResults, label }` |
+| (and more…) | | See default keys list below |
 
 ### Methods
 
 | Method | Description |
 |--------|-------------|
-| `set(custom)` | Deep-merge custom strings over defaults. Partial updates are fine — only supplied keys are replaced. |
-| `reset()` | Restore all defaults |
+| `register(locale, overrides)` | Register translation overrides for a locale. Unspecified keys fall back to English defaults. |
+| `setLocale(locale)` | Switch to a previously registered locale. Use `'en'` to restore English defaults. |
+| `set(custom)` | Deep-merge custom strings over defaults without naming a locale. Partial updates are fine — only supplied keys are replaced. |
+| `reset()` | Restore all defaults and clear all registered locales |
+
+### `locale` getter
+
+```javascript
+messages.locale  // e.g. 'en', 'de', '_custom'
+```
 
 ### Default message keys
 
-`emptyList`, `emptyTree`, `loading`, `noResults`, `select`, `search`, `list`, `tree`, `toolbar`, `menu`, `toggle`, `rating`, `stepper`, `breadcrumbs`, `carousel`, `tabs`, `code`, `range`, `search_`, `filter`, `grid`, `uploadProgress`, `floatingNav`, `mode`
+`emptyList`, `emptyTree`, `loading`, `noResults`, `select`, `search`, `list`, `tree`, `toolbar`, `menu`, `toggle`, `rating`, `stepper`, `breadcrumbs`, `carousel`, `tabs`, `table`, `code`, `range`, `search_`, `filter`, `grid`, `uploadProgress`, `floatingNav`, `mode`, `command`
 
 ### Usage example
 
@@ -395,8 +417,17 @@ messages.set({
   select: 'Choisir une option'
 })
 
-// Read in a component
-messages.current.emptyList  // 'Aucun élément trouvé'
+// Read in a component — access directly, no .current
+messages.emptyList  // 'Aucun élément trouvé'
+messages.command.placeholder  // 'Run a command…'
+
+// i18n: register a locale and switch to it
+messages.register('de', {
+  emptyList: 'Keine Einträge',
+  select: 'Option auswählen'
+})
+messages.setLocale('de')
+messages.locale  // 'de'
 ```
 
 ---
@@ -533,7 +564,7 @@ Use these when building custom shortcut display UIs or comparing shortcut string
 
 ### messages.command
 
-`CommandPalette` reads its chrome strings from `messages.command`:
+`CommandPalette` reads its chrome strings from `messages.command` directly:
 
 | Key | Default |
 |-----|---------|
@@ -541,7 +572,7 @@ Use these when building custom shortcut display UIs or comparing shortcut string
 | `messages.command.noResults` | `'No commands found'` |
 | `messages.command.label` | `'Command palette'` |
 
-Override via `messages.set({ command: { … } })`.
+Override via `messages.set({ command: { … } })` or `messages.register('locale', { command: { … } })`.
 
 ---
 

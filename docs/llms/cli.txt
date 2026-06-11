@@ -56,7 +56,7 @@ npx @rokkit/cli@latest add   # same as init
 
 | File | Notes |
 |------|-------|
-| `rokkit.config.js` | Colors, themes, switcher, storageKey, icons (with style), optional chart config. Skipped if exists. |
+| `rokkit.config.js` | Colors, themes, switcher, storageKey, icons (with style), optional chart config. Skipped if exists. `storageKey` is derived from the project's `package.json` name (omitted if none). |
 | `uno.config.js` | Written with `presetRokkit()` from `@rokkit/unocss`. Skipped if exists. |
 | `src/app.css` | Prepends missing `@import` lines for `@unocss/reset/tailwind.css`, `@rokkit/themes/base.css`, and each selected theme. Creates if missing. |
 | `src/app.html` | Injects flash-prevention `<script>` after `<body>`. Skipped when `switcher` is `system`, file doesn't exist, or script is already present. |
@@ -192,3 +192,5 @@ Skills are copied into `.claude/skills/<name>/SKILL.md` in your project root.
 npx @rokkit/cli@latest skills list
 npx @rokkit/cli@latest skills add --all
 ```
+
+Bundled skills: `semantic-styles-rokkit` (theming/tokens), `rokkit-components` (component usage), `command-system-rokkit` (shortcuts + palette), `skin-system-rokkit` (skins).

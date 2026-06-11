@@ -58,13 +58,13 @@ constant across modes — correct for brand accents.
 The preset ships five built-in skins in `@rokkit/unocss`. Their `[data-skin='name']` CSS
 blocks are emitted automatically — no config needed to use them:
 
-| Skin | Surface | Primary | Accent |
-|------|---------|---------|--------|
-| `default` | (DEFAULT_THEME_MAPPING) | — | — |
-| `ocean` | `slate` | `sky` | `teal` |
-| `violet` | `zinc` | `violet` | `indigo` |
-| `rose` | `stone` | `rose` | `orange` |
-| `emerald` | `slate` | `emerald` | `cyan` |
+| Skin | Surface | Ink | Primary | Accent |
+|------|---------|-----|---------|--------|
+| `default` | (DEFAULT_THEME_MAPPING) | `slate` | — | — |
+| `ocean` | `slate` | `slate` | `sky` | `teal` |
+| `violet` | `zinc` | `zinc` | `violet` | `indigo` |
+| `rose` | `stone` | `stone` | `rose` | `orange` |
+| `emerald` | `slate` | `slate` | `emerald` | `cyan` |
 
 Consumer `skins:` in `rokkit.config.js` merge on top and can override or extend these.
 

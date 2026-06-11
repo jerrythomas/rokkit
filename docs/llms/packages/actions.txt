@@ -473,7 +473,7 @@ import {
   keyboard, pannable, swipeable,
   themable, skinnable, dismissable, fillable, reveal,
   hoverLift, magnetic, ripple, delegateKeyboardEvents,
-  shortcuts,
+  shortcuts, tooltip,
 
   // Classes
   Navigator, Trigger,

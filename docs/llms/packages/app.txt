@@ -2,7 +2,7 @@
 
 > Application-level components for SvelteKit apps: theme switching and on-page navigation.
 
-The `@rokkit/app` package provides higher-level components that sit above the core UI library. They integrate with `@rokkit/states` (the `vibe` store) and `@rokkit/actions`, and are designed to be dropped directly into SvelteKit layouts.
+The `@rokkit/app` package provides higher-level components that sit above the core UI library. It exports `ThemeSwitcherToggle`, `SkinSwitcherToggle`, and `TableOfContents`. They integrate with `@rokkit/states` (the `vibe` store) and `@rokkit/actions`, and are designed to be dropped directly into SvelteKit layouts.
 
 ## Install
 
@@ -46,8 +46,9 @@ No props required — it connects to the `vibe` store automatically.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `modes` | `ColorMode[]` | `['system', 'light', 'dark']` | Which modes to include in the toggle |
-| `includeSystem` | `boolean` | `true` | Shortcut to exclude the `'system'` option |
+| `variant` | `'single' \| 'pair' \| 'triad'` | `'triad'` | Toggle layout: `'single'` = cycling light/dark-only button; `'pair'` = two-button group (light/dark, no system); `'triad'` = three-button group (system/light/dark). |
+| `modes` | `ColorMode[]` | `['system', 'light', 'dark']` | Which modes to include in the toggle (honored by `'triad'` variant) |
+| `includeSystem` | `boolean` | `true` | Shortcut to exclude the `'system'` option (honored by `'triad'` variant) |
 | `icons` | `{ system?: string, light?: string, dark?: string }` | — | Override icon CSS classes per mode |
 | `labels` | `{ system?: string, light?: string, dark?: string }` | — | Override display labels per mode |
 | `showLabels` | `boolean` | `false` | Show text labels alongside icons |
@@ -250,5 +251,5 @@ import { ThemeSwitcherToggle, SkinSwitcherToggle, TableOfContents } from '@rokki
 ## Related
 
 - [@rokkit/states](/llms/packages/states.txt) — `vibe` store and theme primitives
-- [@rokkit/actions](/llms/packages/actions.txt) — Svelte actions (`navigator`, `shortcuts`, `themable`, …)
-- [@rokkit/ui Toggle](/llms/components/toggle.txt) — underlying toggle component used by ThemeSwitcherToggle
+- [@rokkit/actions](/llms/packages/actions.txt) — Svelte actions (`themable`, `skinnable`, `shortcuts`, …) and the `Navigator` class
+- [@rokkit/ui Toggle](/llms/components/toggle.txt) — underlying toggle component used by ThemeSwitcherToggle and SkinSwitcherToggle

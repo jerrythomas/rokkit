@@ -19,11 +19,11 @@
    ```
 
    The `init` command is interactive. It prompts for:
-   - **Color palette:** `default` (orange/pink/sky) | `vibrant` (blue/purple/sky) | `seaweed` (sky/green/blue) | `custom`
+   - **Color palette:** `default` (orange/pink/sky) | `vibrant` (blue/purple/sky) | `seaweed` (sky/green/blue) | `zen-sumi` (OKLCH ink-on-paper) | `custom`
    - If `custom`: primary, secondary, accent, surface colors (Tailwind palette names, e.g. `orange`)
    - **Icon collection:** Rokkit built-in | Rokkit + custom collection
    - If custom: path to custom icon collection JSON
-   - **Theme styles** (multi-select, min 1): `rokkit` | `minimal` | `material`
+   - **Theme styles** (multi-select, min 1): `rokkit` | `minimal` | `material` | `frosted` | `zen-sumi`
    - **Theme switching:** `system` (prefers-color-scheme) | `manual` (light/dark toggle) | `full` (light/dark + style variants)
 
    Files written: `rokkit.config.js`, `uno.config.js`, `src/app.css`, `src/app.html`
@@ -141,7 +141,7 @@ Verify that `<body>` is on its own line in `src/app.html`. The script is injecte
 | `@rokkit/data` | Data manipulation utilities |
 | `@rokkit/themes` | CSS themes (rokkit, minimal, material, frosted, zen-sumi) |
 | `@rokkit/unocss` | UnoCSS preset (`presetRokkit`) |
-| `@rokkit/app` | App-level UI chrome (ThemeSwitcherToggle, TableOfContents) |
+| `@rokkit/app` | App-level UI chrome (ThemeSwitcherToggle, SkinSwitcherToggle, TableOfContents) |
 | `@rokkit/icons` | Icon system with Iconify integration |
 
 Package reference: [packages/](/llms/packages/)
@@ -223,7 +223,7 @@ The theme is driven by data-attributes on `<html>`/`<body>`:
 
 ```html
 <body
-  data-style="rokkit"         <!-- visual personality: rokkit | minimal | material -->
+  data-style="rokkit"         <!-- visual personality: rokkit | minimal | material | frosted | zen-sumi -->
   data-mode="dark"            <!-- light | dark -->
   data-density="comfortable"  <!-- compact | comfortable | cozy -->
 >
@@ -250,7 +250,8 @@ via the `storage` event.
 ```svelte
 <!-- anywhere: the mode control. Drives vibe.mode → themable writes data-mode -->
 <script>import { ThemeSwitcherToggle } from '@rokkit/app'</script>
-<ThemeSwitcherToggle variant="single" />   <!-- or variant="triad" for system | light | dark -->
+<ThemeSwitcherToggle />                    <!-- default variant="triad": system | light | dark group -->
+<ThemeSwitcherToggle variant="single" />   <!-- cycling light/dark-only button -->
 ```
 
 `vibe` is a singleton with reactive `mode` (`light`|`dark`), `style`
@@ -352,6 +353,7 @@ Long-form prose covering framework concepts. Mirrors what users see at `/guides/
 - [guides/data-binding.txt](/llms/guides/data-binding.txt) — fields prop, default field names, primitives
 - [guides/composability.txt](/llms/guides/composability.txt) — itemContent + groupContent + per-item snippets
 - [guides/theming.txt](/llms/guides/theming.txt) — skins / styles / modes; data-attribute styling
+- [guides/skins.txt](/llms/guides/skins.txt) — named skins, the data-skin cascade, BUILTIN_SKINS, SkinSwitcherToggle, skinnable
 - [guides/accessibility.txt](/llms/guides/accessibility.txt) — keyboard, ARIA, focus, i18n, reduced motion
 - [guides/forms.txt](/llms/guides/forms.txt) — schema-driven, lookups, dependencies, custom renderers
 - [guides/charts.txt](/llms/guides/charts.txt) — nine prebuilt shapes + when to drop to `<Plot>`

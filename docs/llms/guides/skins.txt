@@ -54,12 +54,12 @@ as a `[data-skin='default']` block because that would be redundant.
 ### Configuring skins in `rokkit.config.js`
 
 Add a `skins:` map to your `rokkit.config.js`. The keys become the skin
-names; values are colormaps in the same role-vocabulary as `colors:`.
+names; values are colormaps in the same role-vocabulary as `skin:`.
 
 ```javascript
 // rokkit.config.js — single-palette skins (same palette in light + dark)
 export default {
-  colors: {
+  skin: {
     surface: 'slate',
     ink:     'slate',
     primary: 'orange',
@@ -87,7 +87,7 @@ export default {
     kami: { 50: '0.985 0.005 85', /* …shades…*/ 950: '0.170 0.010 50' },
     sumi: { 50: '0.170 0.010 50', /* …shades…*/ 950: '0.975 0.008 85' }
   },
-  colors: {
+  skin: {
     surface: { light: 'kami', dark: 'sumi' },
     ink:     { light: 'kami', dark: 'sumi' },
     primary: 'shu'
@@ -117,7 +117,7 @@ preflight blocks:
 ```
 
 `data-skin='default'` is not written as an explicit selector — the
-`:root` preflight (your `colors:` config) already provides those values.
+`:root` preflight (your `skin:` config) already provides those values.
 
 The attribute can be placed anywhere in the tree; components inside that
 subtree inherit the scoped palette. Setting it on `<html>` or `<body>`
