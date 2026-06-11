@@ -145,7 +145,7 @@ function createThemeStore() {
 
 		// Re-apply per-role color overrides on mount. Skin itself no longer
 		// needs restoring — vibe.skin is loaded from localStorage by themable
-		// (it's saved as part of the 'rokkit-theme' key since vibe.save()
+		// (it's saved under STORAGE_KEY / 'rokkit-learn-app' since vibe.save()
 		// includes skin). Role overrides still need JS re-application because
 		// they are not in the config-emitted CSS.
 		restoreSkin() {

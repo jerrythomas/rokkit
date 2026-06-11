@@ -59,9 +59,9 @@ const meta: DemoMeta = {
 			code: `<script>
   import { MultiSelect } from '@rokkit/ui'
   const items = [
-    { text: 'Red',   value: 'r' },
-    { text: 'Green', value: 'g' },
-    { text: 'Blue',  value: 'b' }
+    { label: 'Red',   value: 'r' },
+    { label: 'Green', value: 'g' },
+    { label: 'Blue',  value: 'b' }
   ]
   let selected = $state(['r', 'g'])
 </script>
@@ -74,7 +74,7 @@ const meta: DemoMeta = {
 			lang: 'svelte',
 			code: `<MultiSelect
   items={users}
-  fields={{ text: 'name', value: 'id' }}
+  fields={{ label: 'name', value: 'id' }}
   bind:value={selectedIds}
 />`
 		},
@@ -84,13 +84,13 @@ const meta: DemoMeta = {
 			lang: 'svelte',
 			code: `<MultiSelect
   items={[
-    { text: 'Fruits', children: [
-      { text: 'Apple',  value: 'a' },
-      { text: 'Banana', value: 'b' }
+    { label: 'Fruits', children: [
+      { label: 'Apple',  value: 'a' },
+      { label: 'Banana', value: 'b' }
     ]},
-    { text: 'Vegetables', children: [
-      { text: 'Carrot', value: 'c' },
-      { text: 'Dill',   value: 'd' }
+    { label: 'Vegetables', children: [
+      { label: 'Carrot', value: 'c' },
+      { label: 'Dill',   value: 'd' }
     ]}
   ]}
   bind:value

@@ -267,7 +267,7 @@
 			value: 'theming',
 			icon: 'i-mdi:palette',
 			content:
-				'Style comes from the data-style attribute on the parent. Flip skin (zen-sumi / minimal / material) to see the same Tabs re-render against new tokens.'
+				'Style comes from the data-style attribute on the parent. Flip the style — zen-sumi / minimal / material — to see the same Tabs re-render against new tokens.'
 		},
 		{
 			label: 'Anatomy',

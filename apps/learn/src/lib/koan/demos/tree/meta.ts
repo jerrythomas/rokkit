@@ -46,7 +46,7 @@ const meta: DemoMeta = {
 	api: {
 		props: [
 			{ name: 'items', type: 'any[]', default: '[]', desc: 'Nested array of node objects' },
-			{ name: 'fields', type: 'FieldMapping', desc: 'Remap data keys to component fields (text / value / children / icon)' },
+			{ name: 'fields', type: 'FieldMapping', desc: 'Remap data keys to component fields (label / value / children / icon)' },
 			{ name: 'value', type: 'any', default: 'null', desc: 'Currently selected node value', bindable: true },
 			{ name: 'lineStyle', type: "'solid' | 'dashed' | 'dotted' | 'none'", default: "'solid'", desc: 'Indent connector line style' },
 			{ name: 'icons', type: 'Partial<IconMap>', desc: 'Override expand/collapse icons' },
@@ -71,13 +71,13 @@ const meta: DemoMeta = {
 			code: `<script>
   import { Tree } from '@rokkit/ui'
   const items = [
-    { text: 'Documents', children: [
-      { text: 'Resume.pdf', value: 'doc-resume' },
-      { text: 'Cover-letter.pdf', value: 'doc-cover' }
+    { label: 'Documents', children: [
+      { label: 'Resume.pdf', value: 'doc-resume' },
+      { label: 'Cover-letter.pdf', value: 'doc-cover' }
     ]},
-    { text: 'Music', children: [
-      { text: 'Bach', value: 'm-bach' },
-      { text: 'Glass', value: 'm-glass' }
+    { label: 'Music', children: [
+      { label: 'Bach', value: 'm-bach' },
+      { label: 'Glass', value: 'm-glass' }
     ]}
   ]
   let selected = $state(null)
@@ -91,7 +91,7 @@ const meta: DemoMeta = {
 			lang: 'svelte',
 			code: `<Tree
   items={users}
-  fields={{ text: 'name', value: 'id', children: 'reports' }}
+  fields={{ label: 'name', value: 'id', children: 'reports' }}
 />`
 		},
 		{
