@@ -5,11 +5,11 @@ import { loadConfig as loadParsedConfig } from './config.js'
 import {
 	generateUnoConfig,
 	generateAppCssImports,
-	generateInitScript,
 	generateChartConfig,
 	generateConfig,
 	serializeRokkitConfig
 } from './init.js'
+import { themeInitScript } from '@rokkit/unocss/hooks'
 
 const KNOWN_THEMES = [
 	'rokkit',
@@ -220,8 +220,15 @@ function applyPatchHtml(cwd, label) {
 	const htmlPath = resolve(cwd, 'src/app.html')
 	if (!existsSync(htmlPath)) return false
 	const html = readFileSync(htmlPath, 'utf-8')
-	const script = generateInitScript('manual', 'rokkit-theme')
-	if (!script || html.includes('rokkit-theme')) return false
+	// Use the project's configured storageKey so the injected script reads the
+	// same localStorage slot the app persists to — don't hardcode a key.
+	const configPath = resolve(cwd, 'rokkit.config.js')
+	const storageKey = existsSync(configPath)
+		? readFileSync(configPath, 'utf-8').match(/storageKey:\s*['"]([^'"]+)['"]/)?.[1]
+		: undefined
+	const marker = storageKey || 'rokkit-theme'
+	if (html.includes(marker)) return false
+	const script = themeInitScript({ storageKey })
 	const patched = html.replace(/(<body[^>]*>)/, `$1\n${script}`)
 	writeFileSync(htmlPath, patched)
 	console.info(`  Fixed: ${label}`)
