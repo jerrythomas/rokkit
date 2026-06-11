@@ -31,7 +31,7 @@ export const defaultThemeSwitcherIcons: Required<ThemeSwitcherIcons> = {
 
 export interface ThemeSwitcherOption {
 	value: ColorMode
-	text: string
+	label: string
 	icon: string
 	[key: string]: unknown
 }
@@ -52,9 +52,9 @@ export function buildThemeSwitcherOptions(
 ): ThemeSwitcherOption[] {
 	const mergedLabels = { ...messages.mode, ...labels }
 	const all: ThemeSwitcherOption[] = [
-		{ value: 'system', text: mergedLabels.system, icon: icons.system },
-		{ value: 'light', text: mergedLabels.light, icon: icons.light },
-		{ value: 'dark', text: mergedLabels.dark, icon: icons.dark }
+		{ value: 'system', label: mergedLabels.system, icon: icons.system },
+		{ value: 'light', label: mergedLabels.light, icon: icons.light },
+		{ value: 'dark', label: mergedLabels.dark, icon: icons.dark }
 	]
 	return all.filter((o) => modes.includes(o.value))
 }
