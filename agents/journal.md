@@ -1,5 +1,36 @@
 # Project Journal
 
+## 2026-06-10 — Skin system + follow-ups + docs/CLI sync (v1.1.15)
+
+**Skin system (public, first-class — parallel to theming).** `vibe.skin` + `vibe.allowedSkins`
+(`@rokkit/states`, persisted); `themable` writes `data-skin` (`@rokkit/actions`); preset emits
+`[data-skin='name']` blocks (default on `:root`, + dark variant) + `BUILTIN_SKINS`
+(default/ocean/violet/rose/emerald), **`skin-{name}` class removed** (`@rokkit/unocss` + `palette.css`);
+`SkinSwitcherToggle` (`@rokkit/app`); `skinnable` rehabilitated as the runtime var-applicator; learn
+promoted onto `vibe.skin`+`data-skin`; `skin-system-rokkit` skill (catalog → 4) + skins guide. Design:
+`docs/design/20-skin-system.md`. Built subagent-driven (two-stage review) — reviews caught a cross-package
+test break, the config-merge edge cases, two `@rokkit/app` export gaps, an allowedSkins-before-load
+ordering bug, and several stale `skin-{name}` doc refs.
+
+**Follow-ups.** Fixed `ThemeSwitcherToggle` (options keyed by `label`, not the nonexistent `text` field —
+empty aria-labels); removed dead skin-injection code in learn `skins.ts`; single-sourced the theme
+`storageKey` — `rokkit init` derives it from `package.json` name (omit, don't hardcode), learn reads
+`'rokkit-learn-app'` via a `$lib/theme-config` accessor used by the SSR hook, `themable`, and the store.
+
+**Dead code + sync audit.** Removed leftover `packages/stories` cruft (the package was already deleted).
+Audited guides/llms/learn/CLI/config for drift and fixed it: the CLI flash script now reuses
+`@rokkit/unocss` `themeInitScript` (no more hand-rolled divergence); `doctor` uses the configured
+storageKey; llms docs corrected (`skin:` canonical, `messages` direct-access, `switcher` system, variant
+prop, skills catalog, troubleshooting → `themeHook`); learn demo `fields` use `label`; learn config drops
+the redundant `skin:` block.
+
+**Breaking.** `skin-{name}` utility class removed from `presetRokkit` output — use `data-skin='name'`.
+(Plus the earlier `navigable` removal from `@rokkit/actions`, shipped here too.)
+
+**Verification.** `test:ci` 3566 pass · lint 0 errors · 4 skills in the catalog · final review = ship.
+
+---
+
 ## 2026-06-10 — Command system shipped (v1.1.14)
 
 **Why.** Keyboard shortcuts + a Cmd+K palette were ad-hoc/absent (the `⌘K` badge was decorative).
