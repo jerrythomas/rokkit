@@ -252,30 +252,50 @@ Events: `swipeLeft`, `swipeRight`, `swipeUp`, `swipeDown`
 
 ## `themable` — Theme Attribute Sync
 
-Syncs a theme state object to `data-style`, `data-mode`, and `data-density` attributes on the root element. Optionally persists to `localStorage` and syncs across tabs via the `storage` event.
+Syncs a theme state object to `data-style`, `data-mode`, `data-density`, and `data-skin`
+attributes on the root element. Optionally persists to `localStorage` and syncs across tabs
+via the `storage` event. It also mirrors all four attributes onto `document.documentElement`
+so that bare `[data-mode='dark']` / `[data-skin='name']` CSS rules (which match via ancestors)
+stay consistent when the action is applied to `<body>` rather than `<html>`.
 
 ```svelte
-<div use:themable={{ theme, storageKey: 'app-theme' }}>
+<svelte:body use:themable={{ theme: vibe, storageKey: 'app-theme' }} />
 ```
 
 ### Options
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `theme` | Theme state object | `{ style: 'rokkit', mode: 'dark', density: 'comfortable' }` | Reactive theme state with `style`, `mode`, `density` |
-| `storageKey` | `string` | — | Key for `localStorage` persistence and cross-tab sync |
+| `theme` | Theme state object | `{ style: 'rokkit', mode: 'dark', density: 'comfortable', skin: 'default' }` | Reactive theme state — typically the `vibe` singleton from `@rokkit/states`. Must expose `style`, `mode`, `density`, and `skin`. |
+| `storageKey` | `string` | — | Key for `localStorage` persistence and cross-tab sync. When provided, `theme.load(key)` is called on mount and `theme.save(key)` is called in a reactive `$effect`. Omit for embed/iframe contexts to avoid cross-document storage races. |
+
+`themable` writes `data-skin` in the same reactive `$effect` as the other attributes, so any
+change to `vibe.skin` immediately updates the DOM and the CSS cascade re-evaluates the active
+`[data-skin='name']` preflight block emitted by `presetRokkit`. For named skins defined in
+`rokkit.config.js`, this is all that is needed — no extra code required.
 
 ---
 
-## `skinnable` — CSS Variable Injection
+## `skinnable` — Runtime CSS Variable Injection
 
-Applies CSS custom properties directly to an element's inline style. Useful for per-instance theming.
+Applies CSS custom properties directly to an element's inline style. Complements the
+`data-skin` cascade: use `vibe.skin` + `themable` for app-wide named skins that are defined
+at build time; use `skinnable` to apply a colorset that is not pre-baked — for example a
+dynamic palette coming from a server response or a user-configured color scheme.
 
 ```svelte
-<div use:skinnable={{ '--color-accent': '#7c3aed', '--radius': '0.5rem' }}>
+<script>
+  import { skinnable } from '@rokkit/actions'
+</script>
+
+<div use:skinnable={{ '--primary': 'oklch(0.62 0.15 35)', '--accent': 'oklch(0.65 0.12 160)' }}>
+  <!-- Components inside see the overridden named tokens -->
+</div>
 ```
 
-Accepts an `Object.<string, string>` — keys are CSS variable names, values are the values to set. Reactive: re-runs when the variables object changes.
+Accepts `Record<string, string>` — keys are CSS variable names (include the `--` prefix),
+values are CSS color strings. The `$effect` inside the action is reactive: when the variables
+object reference changes, all properties are re-applied via `element.style.setProperty`.
 
 ---
 
@@ -453,7 +473,7 @@ import {
   keyboard, pannable, swipeable,
   themable, skinnable, dismissable, fillable, reveal,
   hoverLift, magnetic, ripple, delegateKeyboardEvents,
-  shortcuts,
+  shortcuts, tooltip,
 
   // Classes
   Navigator, Trigger,

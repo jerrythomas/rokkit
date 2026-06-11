@@ -61,9 +61,9 @@ const meta: DemoMeta = {
 			code: `<script>
   import { Select } from '@rokkit/ui'
   const items = [
-    { text: 'Light', value: 'light' },
-    { text: 'Dark',  value: 'dark' },
-    { text: 'Auto',  value: 'auto' }
+    { label: 'Light', value: 'light' },
+    { label: 'Dark',  value: 'dark' },
+    { label: 'Auto',  value: 'auto' }
   ]
   let mode = $state('light')
 </script>
@@ -76,7 +76,7 @@ const meta: DemoMeta = {
 			lang: 'svelte',
 			code: `<Select
   items={countries}
-  fields={{ text: 'name', value: 'code', icon: 'flag' }}
+  fields={{ label: 'name', value: 'code', icon: 'flag' }}
   bind:value={countryCode}
 />`
 		},
@@ -86,7 +86,7 @@ const meta: DemoMeta = {
 			lang: 'svelte',
 			code: `<Select
   items={countries}
-  fields={{ text: 'name', value: 'code' }}
+  fields={{ label: 'name', value: 'code' }}
   filterable
   filterPlaceholder="Type a country…"
 />`

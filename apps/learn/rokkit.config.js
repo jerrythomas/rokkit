@@ -132,30 +132,6 @@ export default {
 	},
 
 	/**
-	 * Active skin (singular) — the preset uses this to resolve named tokens and
-	 * emit the [data-mode="dark"] block. Mirrors `skins.default` below; keeping
-	 * them in sync means switching skins at runtime can target named tokens too.
-	 */
-	skin: {
-		surface:   { light: 'kami', dark: 'sumi' },
-		ink:       { light: 'kami', dark: 'sumi' },
-		primary:   'shu',
-		secondary: 'hisui',
-		tertiary:  'kohaku',
-		// Accent stays aligned with primary so highlight surfaces across
-		// the demo (`text-accent-z5`, `border-accent-z5`, `bg-accent-z1`)
-		// read in the saffron brand color. The rokkit theme's gradient
-		// flattens to a one-tone saffron fill when accent === primary,
-		// which is the documented fallback.
-		accent:    'shu',
-		success:   'hisui',
-		warning:   'kohaku',
-		danger:    'shu',
-		error:     'shu',
-		info:      'kohaku'
-	},
-
-	/**
 	 * Multi-skin mode — the app supports programmatic / user-driven skin switching.
 	 * `default` is the active colormap on first load (zen-sumi OKLCH palette).
 	 * Other skins reference Tailwind named colors available via defaultColors merge.
@@ -195,7 +171,7 @@ export default {
 	},
 
 	switcher:   'full',
-	storageKey: 'sensei-theme',
+	storageKey: 'rokkit-learn-app',
 
 	chart: {
 		colors: ['sky', 'emerald', 'rose', 'amber', 'violet', 'blue', 'pink', 'teal'],

@@ -109,21 +109,6 @@ interface SkinDefinition {
  */
 type RoleMapping = string | { light: string; dark: string }
 
-/** Full skin colormaps keyed by role (used for applySkin) */
-const skinColormaps: Record<string, Record<string, RoleMapping>> = {
-	default: {
-		surface: { light: 'kami', dark: 'sumi' },
-		ink:     { light: 'kami', dark: 'sumi' },
-		primary: 'shu',
-		secondary: 'hisui',
-		accent: 'shu'
-	},
-	ocean:   { surface: 'slate', ink: 'slate', primary: 'sky',     secondary: 'teal',   accent: 'cyan'   },
-	violet:  { surface: 'zinc',  ink: 'zinc',  primary: 'violet',  secondary: 'purple', accent: 'indigo' },
-	rose:    { surface: 'stone', ink: 'stone', primary: 'rose',    secondary: 'pink',   accent: 'orange' },
-	emerald: { surface: 'slate', ink: 'slate', primary: 'emerald', secondary: 'teal',   accent: 'cyan'   },
-}
-
 /** Predefined skins with display info */
 export const skinDefinitions: SkinDefinition[] = [
 	{ name: 'default', label: 'Zen Sumi', surface: 'kami',  darkSurface: 'sumi', ink: 'kami',  primary: 'shu',     secondary: 'hisui',  accent: 'shu'    },
@@ -222,7 +207,6 @@ function declarationsFor(role: string, paletteName: string): string {
 }
 
 const SKIN_STYLE_ID = 'koan-skin-overrides'
-const SKIN_SHEET_ID = 'koan-skin-sheet'
 
 function getSkinStyleEl(): HTMLStyleElement | null {
 	if (typeof document === 'undefined') return null
@@ -236,109 +220,18 @@ function getSkinStyleEl(): HTMLStyleElement | null {
 }
 
 /**
- * Same shape as `declarationsFor` but emits the inverted shade for each
- * `--color-{role}-{shade}` slot — used to flip surface/ink in dark mode
- * when the skin uses a single Tailwind-style palette that doesn't have
- * an explicit dark counterpart. Maps 50 ↔ 950, 100 ↔ 900, …, 500 stays.
- */
-function declarationsForInverted(role: string, paletteName: string): string {
-	const palette = getPaletteShades(paletteName)
-	if (!palette) return ''
-	const isOklch = isCustomPalette(paletteName)
-	const parts: string[] = []
-	for (const shade of shades) {
-		const n = Number(shade)
-		const inv = n === 500 ? 500 : 1000 - n
-		const value = palette[inv]
-		if (value !== undefined) {
-			parts.push(`--color-${role}-${shade}:${wrapColor(value, isOklch)};`)
-		}
-	}
-	const defaultValue = palette[500]
-	if (defaultValue !== undefined) {
-		parts.push(`--color-${role}:${wrapColor(defaultValue, isOklch)};`)
-	}
-	return parts.join('')
-}
-
-/**
- * Build the CSS for a single named skin, scoped to `[data-skin='name']`
- * for light mode and `[data-mode='dark'] [data-skin='name']` for dark.
- *
- * Light block: all role palettes + named-token aliases.
- * Dark block: for single-palette surface/ink roles, emit the inverted
- *   palette shades so dark mode actually reads dark (slate-50 light
- *   becomes slate-950 dark, etc.). Dual-palette roles use their
- *   declared dark side directly. Brand roles (primary/accent/…) keep
- *   the same palette in dark — only surface/ink need inversion.
- */
-function buildSkinCss(name: string, colormap: Record<string, RoleMapping>): string {
-	const lightDecls: string[] = []
-	const darkDecls: string[] = []
-	for (const [role, mapping] of Object.entries(colormap)) {
-		if (typeof mapping === 'string') {
-			lightDecls.push(declarationsFor(role, mapping))
-			if (role === 'surface' || role === 'ink') {
-				darkDecls.push(declarationsForInverted(role, mapping))
-			}
-		} else {
-			lightDecls.push(declarationsFor(role, mapping.light))
-			darkDecls.push(declarationsFor(role, mapping.dark))
-		}
-	}
-	const roles = new Set(Object.keys(colormap))
-	const aliases = namedTokenAliases(roles)
-	// Dark selector matches BOTH cases: data-mode on the same element as
-	// data-skin (compound `[data-mode='dark'][data-skin='X']`) and on a
-	// data-mode ancestor (`[data-mode='dark'] [data-skin='X']`). The
-	// embed-iframe wrapper uses the same element for both attributes;
-	// other surfaces may set data-mode on body and data-skin on an inner
-	// element. Covering both keeps the cascade right either way.
-	const darkSelector = `[data-mode='dark'][data-skin='${name}'],[data-mode='dark'] [data-skin='${name}']`
-	return [
-		`[data-skin='${name}']{${lightDecls.join('')}${aliases}}`,
-		darkDecls.length ? `${darkSelector}{${darkDecls.join('')}}` : ''
-	].join('')
-}
-
-let skinSheetInstalled = false
-
-/**
- * Install a single static `<style>` that defines all known skins as
- * attribute-selector rules. Idempotent — runs once on first call.
- *
- * Lets consumers pick a skin declaratively (`<div data-skin='ocean'>`)
- * instead of mutating CSS variables at runtime via `applySkin`. The
- * cascade is then handled by CSS specificity: child elements under the
- * `[data-skin='X']` element resolve `--paper`/`--primary`/etc. through
- * that skin's aliases. Avoids the flash that runtime style-tag
- * injection causes between mount and first repaint.
- */
-export function installSkinSheet(): void {
-	if (skinSheetInstalled || typeof document === 'undefined') return
-	skinSheetInstalled = true
-	const css = Object.entries(skinColormaps)
-		.map(([name, colormap]) => buildSkinCss(name, colormap))
-		.join('')
-	const el = document.createElement('style')
-	el.id = SKIN_SHEET_ID
-	el.textContent = css
-	document.head.appendChild(el)
-}
-
-/**
  * Track per-role overrides so `applyRoleColor` can update a single role
  * without losing other roles' applied palettes.
  *
  * Each role can map to either a single palette name (used for both modes)
  * or a `{ light, dark }` pair.
  */
-let activeOverrides: Record<string, RoleMapping> = {}
+const activeOverrides: Record<string, RoleMapping> = {}
 
 /**
  * Build named-token aliases that point at the palette shades so the
  * theme CSS (which reads `var(--primary)`, `var(--paper)`, etc.) picks
- * up palette overrides written by `applySkin`. Without these, the demo
+ * up palette overrides written by `applyRoleColor`. Without these, the demo
  * runs in `tokens: 'core'` mode where named tokens are emitted as
  * inlined OKLCH values at config-build time — they don't reference
  * `--color-{role}-{shade}` and so palette overrides have no effect.
@@ -396,18 +289,6 @@ function rewriteSkinStyle() {
 		darkDecls.length || aliases ? `[data-mode="dark"]{${darkDecls.join('')}${aliases}}` : ''
 	].join('')
 	el.textContent = css
-}
-
-/**
- * Apply a skin's CSS variables to the document.
- * Clears previous overrides and writes role → palette mappings. Dual-palette
- * roles emit a light block at `:root` and a dark block at `[data-mode="dark"]`.
- */
-export function applySkin(skinName: string): void {
-	const colormap = skinColormaps[skinName]
-	if (!colormap) return
-	activeOverrides = { ...colormap }
-	rewriteSkinStyle()
 }
 
 /**

@@ -19,6 +19,7 @@ describe('listSkills (bundled catalog)', () => {
 		expect(names).toContain('semantic-styles-rokkit')
 		expect(names).toContain('rokkit-components')
 		expect(names).toContain('command-system-rokkit')
+		expect(names).toContain('skin-system-rokkit')
 		for (const s of skills) {
 			expect(s.name).toBeTruthy()
 			expect(s.description.length).toBeGreaterThan(0)

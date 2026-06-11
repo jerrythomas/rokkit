@@ -42,3 +42,16 @@ describe('ThemeSwitcherToggle single variant reflects the resolved mode', () => 
 		expect(singleIconClass()).toMatch(/light/)
 	})
 })
+
+describe('ThemeSwitcherToggle group variant renders option labels', () => {
+	// Regression: options were keyed by `text` but Toggle reads `label` (BASE_FIELDS.label),
+	// leaving every option's aria-label empty. Each option must now carry a real label.
+	it('gives each group option a non-empty aria-label', () => {
+		const { container } = render(ThemeSwitcherToggle, { props: { variant: 'triad' } })
+		const options = container.querySelectorAll('[data-toggle-option]')
+		expect(options.length).toBe(3)
+		for (const option of options) {
+			expect((option.getAttribute('aria-label') ?? '').length).toBeGreaterThan(0)
+		}
+	})
+})

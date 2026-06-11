@@ -12,18 +12,25 @@ Three orthogonal dimensions:
 | Dimension | Mechanism | Drives | Default |
 | --- | --- | --- | --- |
 | `data-style` | HTML attribute | Visual character (`rokkit`, `minimal`, `material`, `zen-sumi`) | `rokkit` |
-| skin | CSS class `skin-{name}` on an ancestor | Palette mapping (roles → colours) | built-in default |
-| `data-mode` | HTML attribute | Light / dark | `light` |
+| `data-skin` | HTML attribute | Palette mapping (roles → colours) | `default` |
+| `data-mode` | HTML attribute | Light / dark | `dark` |
 
-`data-style` and `data-mode` are attributes on `<html>` (or any ancestor). Skins are applied via a `skin-{name}` **CSS class** on any ancestor element — the UnoCSS preset emits a `skin-${name}` shortcut for each named skin in your config. Flipping any dimension re-skins the app instantly — no rebuild.
+All three are data attributes on `<html>` (or any ancestor). `presetRokkit` emits a
+`[data-skin='name']` CSS preflight block for each named skin — placing the attribute on an
+element scopes that palette to its subtree. Flipping any dimension re-skins the app instantly
+without a rebuild.
 
 ```html
-<!-- style + mode as attributes on <html> -->
-<html data-style="zen-sumi" data-mode="dark">
+<!-- style + skin + mode as attributes on <html> -->
+<html data-style="zen-sumi" data-skin="ocean" data-mode="dark">
 
-<!-- skin as a class on any ancestor -->
-<div class="skin-ocean">…</div>
+<!-- section-scoped skin -->
+<div data-skin="violet">…</div>
 ```
+
+For app-wide runtime switching use `vibe.skin` + `vibe.allowedSkins` from `@rokkit/states`
+and the `themable` action from `@rokkit/actions`. See the
+[Skins guide](/llms/guides/skins.txt) for the full pattern.
 
 ### Prevent the flash on first paint (SSR)
 

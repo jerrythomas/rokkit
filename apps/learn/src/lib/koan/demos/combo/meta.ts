@@ -73,7 +73,7 @@ const meta: DemoMeta = {
 
 <Select
   items={countries}
-  fields={{ text: 'name', value: 'code' }}
+  fields={{ label: 'name', value: 'code' }}
   bind:value={code}
   filterable
   filterPlaceholder="Type a country…"
@@ -85,7 +85,7 @@ const meta: DemoMeta = {
 			lang: 'svelte',
 			code: `<Select
   items={countries}
-  fields={{ text: 'name', value: 'code' }}
+  fields={{ label: 'name', value: 'code' }}
   bind:value={code}
   filterable={false}
 />`

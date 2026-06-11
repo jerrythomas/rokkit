@@ -6,6 +6,8 @@
 	import { page } from '$app/state'
 	import SiteHeader from '$lib/components/SiteHeader.svelte'
 	import SiteFooter from '$lib/components/SiteFooter.svelte'
+	import { skinDefinitions } from '$lib/data/skins'
+	import { STORAGE_KEY } from '$lib/theme-config'
 
 	// `/embed/*` pages are loaded inside iframes (used by the home theme
 	// showcase). They get no site chrome — the iframe IS the chrome.
@@ -24,6 +26,9 @@
 	// see a mismatch and trigger a second body-dataset write (visible
 	// flicker between paint and hydration).
 	vibe.allowedStyles = ['rokkit', 'minimal', 'material', 'frosted', 'zen-sumi']
+	// Set before themable runs vibe.load() so a persisted non-default skin restores
+	// on every route (not just /app). Mirrors allowedStyles above.
+	vibe.allowedSkins = skinDefinitions.map((s) => s.name)
 	if (typeof document !== 'undefined') {
 		const root = document.documentElement
 		const body = document.body
@@ -46,7 +51,7 @@
 	 the embed's $effect re-sets it to the URL value, that writes back to
 	 storage, and the cycle continues — visible as the host header
 	 flickering through every embedded style. -->
-<svelte:body use:themable={{ theme: vibe, storageKey: isEmbed ? undefined : 'rokkit-theme' }} />
+<svelte:body use:themable={{ theme: vibe, storageKey: isEmbed ? undefined : STORAGE_KEY }} />
 
 <div
 	class="site-shell"

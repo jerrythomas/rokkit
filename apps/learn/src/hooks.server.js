@@ -1,8 +1,9 @@
 import { paraglideMiddleware } from '$lib/paraglide/server.js'
 import { getLocale, getTextDirection } from '$lib/paraglide/runtime.js'
 import { themeInitScript } from '@rokkit/unocss/hooks'
+import { STORAGE_KEY } from '$lib/theme-config'
 
-const initScript = themeInitScript({ storageKey: 'rokkit-theme', defaultStyle: 'zen-sumi' })
+const initScript = themeInitScript({ storageKey: STORAGE_KEY, defaultStyle: 'zen-sumi' })
 
 /** @type {import('@sveltejs/kit').Handle} */
 export const handle = ({ event, resolve }) => {

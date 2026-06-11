@@ -8,9 +8,11 @@
 	 * All three drive `data-*` attributes on the wrapper div declaratively
 	 * — the cascade picks up the right palette/style/mode via attribute
 	 * selectors. No `applySkin` JS injection, no postMessage listener;
-	 * each iframe is a static demo whose look is fixed at load time. The
-	 * `installSkinSheet()` import runs once and emits all skin definitions
-	 * as static CSS rules scoped to `[data-skin='X']`.
+	 * each iframe is a static demo whose look is fixed at load time.
+	 *
+	 * Skin CSS is now emitted at build time by the UnoCSS preset as
+	 * `[data-skin='name']` rules in uno.css — no runtime installSkinSheet()
+	 * needed.
 	 *
 	 * `mode='system'` is resolved to light/dark via matchMedia at script
 	 * time — the resolved value is what's set on the wrapper, so CSS
@@ -19,9 +21,6 @@
 	 */
 	import { page } from '$app/state'
 	import { Tabs } from '@rokkit/ui'
-	import { installSkinSheet } from '$lib/data/skins'
-
-	installSkinSheet()
 
 	const theme = $derived(page.url.searchParams.get('theme') ?? 'zen-sumi')
 	const skinParam = $derived(page.url.searchParams.get('skin') ?? 'default')

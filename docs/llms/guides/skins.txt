@@ -1,0 +1,251 @@
+# Skins
+
+A **skin** is a named palette mapping that swaps the color roles
+(`surface`, `ink`, `primary`, `accent`, …) used across every component
+without changing the visual personality (gradients, radii, shadows) set
+by the active `data-style`. Skins, styles, and modes are three orthogonal
+dimensions:
+
+| Dimension    | Mechanism            | Drives                                              | Default   |
+| ------------ | -------------------- | --------------------------------------------------- | --------- |
+| `data-style` | HTML data attribute  | Visual character (`rokkit`, `minimal`, `zen-sumi`…) | `rokkit`  |
+| `data-skin`  | HTML data attribute  | Palette mapping (roles → Tailwind/custom colors)    | `default` |
+| `data-mode`  | HTML data attribute  | Light / dark                                        | `dark`    |
+
+**Skin vs style vs mode:**
+- `data-style` picks the visual personality — gradients, shadows, border radius.
+- `data-skin` swaps the color palette within that personality. The same
+  `rokkit` style can wear an `ocean` skin or a `rose` skin and look
+  completely different in hue while keeping the same chrome.
+- `data-mode` flips between light and dark tones. Both variants are baked
+  into each skin's CSS block.
+
+All three are set as `data-*` attributes — typically on `<html>` — and
+propagate by CSS inheritance. Flipping any dimension re-skins instantly
+without a page rebuild.
+
+```html
+<html data-style="rokkit" data-skin="ocean" data-mode="dark">
+```
+
+---
+
+## Defining skins
+
+### Built-in skins
+
+`@rokkit/unocss` ships five built-in skins exported from
+`@rokkit/unocss` as `BUILTIN_SKINS`:
+
+```javascript
+import { BUILTIN_SKINS } from '@rokkit/unocss'
+// {
+//   default: { …DEFAULT_THEME_MAPPING },
+//   ocean:   { surface: 'slate', ink: 'slate', primary: 'sky',     accent: 'teal'   },
+//   violet:  { surface: 'zinc',  ink: 'zinc',  primary: 'violet',  accent: 'indigo' },
+//   rose:    { surface: 'stone', ink: 'stone', primary: 'rose',    accent: 'orange' },
+//   emerald: { surface: 'slate', ink: 'slate', primary: 'emerald', accent: 'cyan'   }
+// }
+```
+
+The `default` skin is the active palette at `:root` — it is not emitted
+as a `[data-skin='default']` block because that would be redundant.
+
+### Configuring skins in `rokkit.config.js`
+
+Add a `skins:` map to your `rokkit.config.js`. The keys become the skin
+names; values are colormaps in the same role-vocabulary as `skin:`.
+
+```javascript
+// rokkit.config.js — single-palette skins (same palette in light + dark)
+export default {
+  skin: {
+    surface: 'slate',
+    ink:     'slate',
+    primary: 'orange',
+    accent:  'sky'
+  },
+  skins: {
+    ocean:   { surface: 'slate',  ink: 'slate',  primary: 'sky',    accent: 'teal'   },
+    violet:  { surface: 'zinc',   ink: 'zinc',   primary: 'violet', accent: 'indigo' },
+    rose:    { surface: 'stone',  ink: 'stone',  primary: 'rose',   accent: 'orange' },
+    emerald: { surface: 'slate',  ink: 'slate',  primary: 'emerald',accent: 'cyan'   }
+  }
+}
+```
+
+### Dual-palette skins (separate light / dark palette)
+
+Use a `{ light, dark }` object for any role that should flip palettes
+between modes. The preset emits a separate `[data-mode='dark'][data-skin='name']`
+block for skins that contain at least one dual-palette role.
+
+```javascript
+// rokkit.config.js — dual-palette skin
+export default {
+  palettes: {
+    kami: { 50: '0.985 0.005 85', /* …shades…*/ 950: '0.170 0.010 50' },
+    sumi: { 50: '0.170 0.010 50', /* …shades…*/ 950: '0.975 0.008 85' }
+  },
+  skin: {
+    surface: { light: 'kami', dark: 'sumi' },
+    ink:     { light: 'kami', dark: 'sumi' },
+    primary: 'shu'
+  },
+  skins: {
+    ocean: { surface: 'slate', ink: 'slate', primary: 'sky', accent: 'teal' }
+  }
+}
+```
+
+`presetRokkit` merges consumer `skins` on top of `BUILTIN_SKINS`, so
+built-ins are always available unless you override a name.
+
+---
+
+## The `data-skin` CSS mechanism
+
+For every skin name other than `default`, the preset emits two CSS
+preflight blocks:
+
+```css
+/* light block — always emitted */
+[data-skin='ocean'] { --paper: oklch(…); --primary: oklch(…); … }
+
+/* dark block — only for skins with a dual-palette role */
+[data-mode='dark'][data-skin='ocean'] { --paper: oklch(…); … }
+```
+
+`data-skin='default'` is not written as an explicit selector — the
+`:root` preflight (your `skin:` config) already provides those values.
+
+The attribute can be placed anywhere in the tree; components inside that
+subtree inherit the scoped palette. Setting it on `<html>` or `<body>`
+makes it app-wide:
+
+```html
+<!-- App-wide skin -->
+<html data-skin="ocean">
+
+<!-- Section-scoped skin -->
+<div data-skin="violet">
+  <!-- components here use the violet palette -->
+</div>
+```
+
+---
+
+## Runtime switching
+
+### Setting `vibe.allowedSkins` and `vibe.skin` early
+
+Set `vibe.allowedSkins` before `themable` runs so that a persisted or
+programmatic skin value will be accepted. Then write to `vibe.skin` to
+change the active skin — the `themable` action picks up the change and
+writes `data-skin` onto the root element.
+
+```javascript
+// +layout.svelte or app entry point — run before themable
+import { vibe } from '@rokkit/states'
+
+vibe.allowedSkins = ['default', 'ocean', 'violet', 'rose', 'emerald']
+
+// Switch skin programmatically
+vibe.skin = 'ocean'   // must be in allowedSkins; silent no-op if not
+```
+
+`vibe.skin` defaults to `'default'`. The setter rejects values not in
+`vibe.allowedSkins` and rejects the current value (idempotent write).
+
+### `themable` writes `data-skin`
+
+The `themable` action from `@rokkit/actions` keeps `data-skin` in sync
+with `vibe.skin`. No extra code is needed — the same `use:themable` call
+that wires mode/style/density also handles skin:
+
+```svelte
+<!-- src/routes/+layout.svelte (or the root element) -->
+<script>
+  import { themable } from '@rokkit/actions'
+  import { vibe } from '@rokkit/states'
+
+  vibe.allowedSkins = ['default', 'ocean', 'violet', 'rose', 'emerald']
+</script>
+
+<svelte:body use:themable={{ theme: vibe, storageKey: 'app-theme' }} />
+```
+
+`themable` also persists the active skin to `localStorage` (under the
+`storageKey` key) and restores it on reload. Cross-tab sync is handled
+automatically via the `storage` event.
+
+### `SkinSwitcherToggle`
+
+`@rokkit/app` exports a ready-made toggle for switching between named
+skins. It reads available options from `vibe.allowedSkins` by default
+and writes back to `vibe.skin` on selection.
+
+```svelte
+<script>
+  import { SkinSwitcherToggle } from '@rokkit/app'
+  import { vibe } from '@rokkit/states'
+
+  vibe.allowedSkins = ['default', 'ocean', 'violet', 'rose', 'emerald']
+</script>
+
+<SkinSwitcherToggle />
+```
+
+Pass a custom `skins` array to restrict or reorder the options shown:
+
+```svelte
+<SkinSwitcherToggle
+  skins={['default', 'ocean', 'violet']}
+  showLabels
+  size="md"
+/>
+```
+
+Full prop reference: [SkinSwitcherToggle component doc](/llms/components/skin-switcher-toggle.txt).
+
+---
+
+## `skinnable` — dynamic / per-instance skins
+
+`skinnable` from `@rokkit/actions` injects CSS custom properties as
+inline styles on any element. Use it when the skin is not pre-baked into
+the CSS (e.g. a server-configured palette or a user-generated color
+scheme) and you can't use `data-skin`.
+
+```svelte
+<script>
+  import { skinnable } from '@rokkit/actions'
+</script>
+
+<div use:skinnable={{ '--primary': 'oklch(0.62 0.15 35)', '--accent': 'oklch(0.65 0.12 160)' }}>
+  <!-- Components inside see the overridden tokens -->
+</div>
+```
+
+`skinnable` accepts `Record<string, string>` — CSS var name → value.
+The `$effect` inside the action is reactive: if the variable object
+changes, the styles are re-applied.
+
+**When to choose `skinnable` over `data-skin`:**
+- Use `data-skin` (+ `vibe.skin`) for named skins defined at build time.
+- Use `skinnable` for runtime-generated or per-widget palettes not known
+  at build time — e.g. a chat message bubble tinted by the sender's
+  assigned color.
+
+---
+
+## Summary
+
+| Need | Approach |
+| --- | --- |
+| App-wide named skin (build-time) | `skins:` in `rokkit.config.js`, `vibe.allowedSkins`, `vibe.skin` |
+| Toggle between named skins | `<SkinSwitcherToggle>` |
+| Section-scoped static skin | `data-skin='name'` on a container element |
+| Dynamic / server-generated skin | `use:skinnable={{ '--primary': '…' }}` |
+
+See also: [Theming & Design](/llms/guides/theming.txt) for styles, modes, and named tokens.

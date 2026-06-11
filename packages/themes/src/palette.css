@@ -2,6 +2,11 @@
   :root {
     --scroll-width: 0.5rem;
     --tab-size: 2;
-    @apply skin-default;
+    /*
+     * The default skin's named-token vars (--paper, --ink, --primary, …) now
+     * come from the preset's `:root` preflight. `themable` writes
+     * data-skin='default' by default, and `[data-skin='default']` resolves to
+     * :root (it's the active default), so :root already carries those vars.
+     */
   }
 }

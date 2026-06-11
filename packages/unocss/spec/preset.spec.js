@@ -64,16 +64,17 @@ describe('presetRokkit', () => {
 		expect(entry[1]).toBe('i-phosphor:accordion-opened')
 	})
 
-	it('should generate skin shortcuts from config skins (multi-skin mode)', () => {
+	it('should generate [data-skin] preflight blocks from config skins (multi-skin mode)', () => {
 		const preset = presetRokkit({
 			skins: {
 				default: { primary: 'orange', surface: 'slate' },
 				vibrant: { primary: 'blue', secondary: 'purple' }
 			}
 		})
-		const skinEntry = preset.shortcuts.find((s) => Array.isArray(s) && s[0] === 'skin-vibrant')
-		expect(skinEntry).toBeDefined()
-		expect(typeof skinEntry[1]).toBe('object')
+		const css = preset.preflights.map((p) => p.getCSS()).join('\n')
+		expect(css).toContain("[data-skin='vibrant']")
+		// The resolved default skin lives in :root, not a [data-skin] block.
+		expect(css).not.toContain("[data-skin='default']")
 	})
 
 	it('should include font families in theme', () => {
@@ -319,6 +320,41 @@ describe('presetRokkit', () => {
 		})
 	})
 
+	describe('preflights — skin blocks', () => {
+		function skinCss(config = {}) {
+			const preset = presetRokkit(config)
+			return preset.preflights.map((p) => p.getCSS()).join('\n')
+		}
+		it('emits [data-skin="ocean"] for a non-default skin', () => {
+			expect(
+				skinCss({
+					skins: {
+						default: { surface: 'slate', primary: 'sky' },
+						ocean: { surface: 'slate', primary: 'teal' }
+					}
+				})
+			).toContain("[data-skin='ocean']")
+		})
+		it('emits a dark selector for a dual-palette skin', () => {
+			expect(
+				skinCss({
+					skins: {
+						default: { surface: 'slate', primary: 'sky' },
+						duo: { surface: { light: 'slate', dark: 'zinc' }, primary: 'sky' }
+					}
+				})
+			).toMatch(/\[data-mode=['"]dark['"]\]\[data-skin=['"]duo['"]\]/)
+		})
+		it('built-in skins are available with no skins config', () => {
+			expect(skinCss({})).toContain("[data-skin='ocean']")
+		})
+		it('does not emit a skin-default utility-class shortcut', () => {
+			const preset = presetRokkit({ skins: { default: { surface: 'slate', primary: 'sky' } } })
+			const names = (preset.shortcuts ?? []).map((s) => (Array.isArray(s) ? s[0] : s))
+			expect(names).not.toContain('skin-default')
+		})
+	})
+
 	describe('color-mix alpha — opacity modifiers produce correct percentages', () => {
 		it('theme.colors should use calc(<alpha-value> * 100%) for rgb color space', () => {
 			const preset = presetRokkit()
@@ -463,7 +499,7 @@ describe('presetRokkit', () => {
 	})
 
 	describe('shortcuts — skin and icon coverage', () => {
-		it('should produce no skin-* shortcuts when skins is empty', () => {
+		it('should never produce skin-* utility-class shortcuts (replaced by [data-skin] blocks)', () => {
 			const preset = presetRokkit()
 			const skinShortcuts = preset.shortcuts.filter(
 				(s) => Array.isArray(s) && typeof s[0] === 'string' && s[0].startsWith('skin-')
@@ -471,19 +507,22 @@ describe('presetRokkit', () => {
 			expect(skinShortcuts).toHaveLength(0)
 		})
 
-		it('should produce one skin-* shortcut per skin in multi-skin mode', () => {
+		it('should produce a [data-skin] block per non-default skin in multi-skin mode', () => {
 			const preset = presetRokkit({
 				skins: {
 					default: { primary: 'orange', surface: 'slate' },
 					ocean:   { primary: 'sky',    surface: 'slate' }
 				}
 			})
+			// No skin-* utility-class shortcuts are emitted any more.
 			const skinShortcuts = preset.shortcuts.filter(
 				(s) => Array.isArray(s) && typeof s[0] === 'string' && s[0].startsWith('skin-')
 			)
-			expect(skinShortcuts).toHaveLength(2)
-			expect(skinShortcuts.map(([k]) => k)).toContain('skin-default')
-			expect(skinShortcuts.map(([k]) => k)).toContain('skin-ocean')
+			expect(skinShortcuts).toHaveLength(0)
+			// Named skins are emitted as [data-skin] preflight blocks; default → :root.
+			const css = preset.preflights.map((p) => p.getCSS()).join('\n')
+			expect(css).toContain("[data-skin='ocean']")
+			expect(css).not.toContain("[data-skin='default']")
 		})
 
 		it('should merge icon overrides with base shortcuts without duplicating non-overridden icons', () => {

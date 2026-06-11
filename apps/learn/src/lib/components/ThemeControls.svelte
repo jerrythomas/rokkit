@@ -1,6 +1,7 @@
 <script>
 	import { theme } from '$lib/stores/theme.svelte'
 	import { skinDefinitions, availablePalettes, getPaletteColor } from '$lib/data/skins'
+	import { SkinSwitcherToggle } from '@rokkit/app'
 
 	/** @type {{ layout?: 'page' | 'panel', sections?: string[], labels?: Record<string, string>, currentLocale?: string, locales?: string[], localeLabels?: Record<string, string>, onLocaleChange?: (locale: string) => void }} */
 	let {
@@ -98,24 +99,11 @@
 	{#if show('skin')}
 		<section class="mb-9">
 			<div class={sectionLabelClass}>{resolvedLabels.skin}</div>
-			<div class="flex gap-3">
-				{#each skinDefinitions as skin (skin.name)}
-					<button
-						class="flex flex-col items-center gap-2 px-4 py-3 rounded-md border transition-all duration-[120ms] cursor-pointer
-							{theme.skin === skin.name
-								? 'bg-surface-z2 border-primary-z5 ring-1 ring-primary-z5'
-								: 'bg-surface-z1 border-surface-z2 hover:bg-surface-z2 hover:border-surface-z4'}"
-						onclick={() => theme.setSkin(skin.name)}
-					>
-						<div class="flex gap-1">
-							{#each ['surface', 'primary', 'secondary', 'accent'] as role (role)}
-								<span class="w-4 h-4 rounded-full" style="background: {getPaletteColor(skin[role])}"></span>
-							{/each}
-						</div>
-						<span class="text-[11px] font-medium">{skin.label}</span>
-					</button>
-				{/each}
-			</div>
+			<SkinSwitcherToggle
+				skins={skinDefinitions.map((s) => ({ name: s.name, label: s.label }))}
+				showLabels
+				size="md"
+			/>
 		</section>
 	{/if}
 
@@ -263,26 +251,11 @@
 	{#if show('skin')}
 		<section>
 			<h3 class="text-ink-z5 mb-3 text-xs font-semibold tracking-widest uppercase">{resolvedLabels.skin}</h3>
-			<div class="flex flex-col gap-1.5">
-				{#each skinDefinitions as s (s.name)}
-					<button
-						type="button"
-						onclick={() => theme.setSkin(s.name)}
-						class="flex items-center gap-3 rounded-lg border px-3 py-2 text-left transition-all cursor-pointer
-							{theme.skin === s.name ? 'border-primary-z5 bg-surface-z2' : 'border-surface-z3 hover:bg-surface-z2'}"
-					>
-						<div class="flex gap-1">
-							{#each ['surface', 'primary', 'secondary', 'accent'] as role (role)}
-								<span class="h-4 w-4 rounded-full" style="background:{getPaletteColor(s[role])}"></span>
-							{/each}
-						</div>
-						<span class="text-ink-z3 text-sm">{s.label}</span>
-						{#if theme.skin === s.name}
-							<span class="text-primary-z5 ml-auto text-xs">Active</span>
-						{/if}
-					</button>
-				{/each}
-			</div>
+			<SkinSwitcherToggle
+				skins={skinDefinitions.map((s) => ({ name: s.name, label: s.label }))}
+				showLabels
+				size="sm"
+			/>
 		</section>
 	{/if}
 
@@ -301,7 +274,7 @@
 									style="background:{getPaletteColor(palette)}"
 									onclick={() => theme.setRoleColor(role, palette)}
 									title={palette}
-								/>
+								></button>
 							{/each}
 						</div>
 					</div>

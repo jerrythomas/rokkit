@@ -7,7 +7,8 @@ describe('themable', () => {
 	const theme = $state({
 		style: 'rokkit',
 		mode: 'dark',
-		density: 'comfortable'
+		density: 'comfortable',
+		skin: 'default'
 	})
 
 	describe('memory', () => {
@@ -50,6 +51,19 @@ describe('themable', () => {
 			expect(root.dataset.style).toBe('material')
 			expect(root.dataset.mode).toBe('light')
 			expect(root.dataset.density).toBe('compact')
+
+			cleanup()
+		})
+
+		it('writes data-skin to the node and mirrors to documentElement', () => {
+			const root = document.createElement('div')
+			const cleanup = $effect.root(() => themable(root, { theme }))
+			flushSync()
+
+			theme.skin = 'ocean'
+			flushSync()
+			expect(root.dataset.skin).toBe('ocean')
+			expect(document.documentElement.dataset.skin).toBe('ocean')
 
 			cleanup()
 		})
@@ -112,7 +126,8 @@ describe('themable', () => {
 					style: 'material',
 					mode: 'dark',
 					density: 'comfortable',
-					direction: 'ltr'
+					direction: 'ltr',
+					skin: 'default'
 				})
 			)
 
@@ -128,7 +143,8 @@ describe('themable', () => {
 					style: 'material',
 					mode: 'light',
 					density: 'comfortable',
-					direction: 'ltr'
+					direction: 'ltr',
+					skin: 'default'
 				})
 			)
 
@@ -144,7 +160,8 @@ describe('themable', () => {
 					style: 'material',
 					mode: 'light',
 					density: 'compact',
-					direction: 'ltr'
+					direction: 'ltr',
+					skin: 'default'
 				})
 			)
 

@@ -45,7 +45,7 @@ Returns a complete UnoCSS `Preset` object. All configuration is optional — def
 import { presetRokkit } from '@rokkit/unocss'
 
 const preset = presetRokkit({
-  colors: {
+  skin: {
     primary: 'violet',   // override semantic color → Tailwind palette name
     surface: 'zinc'
   },
@@ -57,7 +57,7 @@ const preset = presetRokkit({
     solar: '@iconify-json/solar/icons.json'
   },
   themes: ['rokkit'],
-  switcher: 'manual',   // 'manual' | 'full'
+  switcher: 'manual',   // 'system' | 'manual' | 'full'
   storageKey: 'rokkit-theme'
 })
 ```
@@ -66,29 +66,31 @@ const preset = presetRokkit({
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `colors` | `Record<string, string \| { light?: string, dark?: string }>` | Default semantic palette | Map semantic names to palette names. String value = auto z-flip for dark mode. Object `{ light, dark }` = separate named palettes per mode — rokkit generates an explicit `[data-mode="dark"]` var block. `colors` defines the default skin; `skins` defines named alternatives. |
-| `skins` | `Record<string, Record<string, string \| { light?, dark? }>>` | `{}` | Named colormaps — same syntax as `colors`. `colors` is the default skin; `skins` are named alternatives. Each generates a `skin-{name}` CSS class that injects its color variables. |
+| `skin` | `Record<string, string \| { light?: string, dark?: string }>` | Default semantic palette | Map semantic names to palette names. String value = auto z-flip for dark mode. Object `{ light, dark }` = separate named palettes per mode — rokkit generates an explicit `[data-mode="dark"]` var block. `skin` defines the default skin; `skins` defines named alternatives. `colors` is accepted as a backward-compatible alias for `skin`. |
+| `skins` | `Record<string, Record<string, string \| { light?, dark? }>>` | `{}` | Named colormaps — same syntax as `skin`. The default skin's tokens go on `:root`; each non-default skin emits a `[data-skin='name']` CSS block (+ `[data-mode='dark'][data-skin='name']` for dual-palette). Merged with the shipped `BUILTIN_SKINS`. |
 | `icons` | `Record<string, string>` | `{ app: '@rokkit/icons/app.json' }` | Additional icon collections (JSON files). Merged with the built-in `rokkit` and `semantic` collections. |
 | `icons.style` | `string` | `undefined` | Icon style variant suffix (e.g., `'solid'`, `'outline'`, `'duotone-outline'`). Applied to all semantic icon shortcuts. |
 | `icons.collection` | `string` | `undefined` | Override the default icon collection prefix. Default is `'semantic'` (`i-semantic:*`). Set to e.g. `'phosphor'` to use `i-phosphor:*`. |
 | `icons.overrides` | `Record<string, string>` | `{}` | Per-icon class overrides. Keys are shortcut names, values are full icon classes. |
-| `palettes` | `Record<string, Record<string, string>>` | `{}` | Custom color palettes with shade values. Merged into theme colors so names can be used in `colors`. |
+| `palettes` | `Record<string, Record<string, string>>` | `{}` | Custom color palettes with shade values. Merged into theme colors so names can be used in `skin`. |
 | `overrides` | `Record<string, string \| { light?, dark? }>` | `{}` | Replace named-token defaults and/or emit new custom tokens, all in one block. Reserved names (e.g. `paper-edge`) override the named-token value via cascade order; non-reserved names emit as new `--{name}` CSS vars. Values can be palette refs (`'kami.400'`), raw CSS colors, or `{ light, dark }` objects. Color-valued non-reserved entries auto-get `bg-/text-/border-` shortcuts. |
 | `typography` | `{ sans?, mono?, heading? }` | All `null` | Font family CSS custom properties. Values are CSS font-family strings. |
 | `shape` | `{ radius? }` | `{ radius: null }` | Shape tokens. `radius` accepts `'sharp'`, `'rounded'`, `'pill'`, or a custom `{ sm, md, lg, xl, full }` object. |
 | `themes` | `string[]` | `['rokkit']` | Which CSS themes to activate (informational — does not import CSS; use CSS imports for that). |
 | `tokens` | `'core'\|'extended'` | `'core'` | Token vocabulary level. `'core'` emits the named-token shortcuts (`bg-paper`, `text-ink`, etc.). `'extended'` also emits the full 11-shade palette ladder per role (for charts / data-viz). |
-| `switcher` | `'manual' \| 'full'` | `'manual'` | Theme switcher mode hint (used by app-level UI, not by the preset itself). |
+| `switcher` | `'system' \| 'manual' \| 'full'` | `'manual'` | Theme switcher mode hint (used by app-level UI, not by the preset itself). |
 | `storageKey` | `string` | `'rokkit-theme'` | `localStorage` key for persisting theme selection. |
 
 ### Default Color Mapping
 
 ```js
 {
+  surface:   'slate',
+  ink:       'slate',
   primary:   'orange',
   secondary: 'pink',
+  tertiary:  'violet',
   accent:    'sky',
-  surface:   'slate',
   success:   'green',
   warning:   'yellow',
   danger:    'red',
@@ -107,15 +109,19 @@ const preset = presetRokkit({
 
 ### Color Palette Tokens
 
-Generates CSS custom property rules for each semantic variant:
+In the default `tokens: 'core'` mode the preset emits **named tokens** as complete color values for each semantic role. These use the color space configured in `colorSpace` (default `'rgb'`):
 
 ```css
---color-primary:     249,115,22;    /* z5 / 500 shade */
---color-primary-50:  255,247,237;
-/* ... through -950 */
+--primary:       rgb(249,115,22);   /* shade 500 */
+--primary-soft:  rgb(254,243,199);  /* tinted background */
+--paper:         rgb(248,250,252);  /* surface shade 50 */
+--ink:           rgb(15,23,42);     /* surface shade 900 (inverted) */
+/* ... all named tokens ... */
 ```
 
-These are consumed by `@rokkit/themes` and are the source of all component colors.
+These named tokens are consumed by `@rokkit/themes` CSS and all component utility classes (`bg-primary`, `text-ink`, `bg-paper`, etc.).
+
+When `tokens: 'extended'` is set (globally or per-role), the preset also emits the full 11-shade palette ladder (`--color-{role}-50` through `--color-{role}-950`) as well as z-alias vars. Use this for charts and data-viz that need direct shade access.
 
 ### Named Token Shortcuts
 
@@ -196,22 +202,43 @@ Available styles: `undefined` (default), `'solid'`, `'outline'`, `'duotone-outli
 
 The full `DEFAULT_ICONS` list (70+ icons) is also added to the UnoCSS safelist.
 
-### Skin Shortcuts
+### Skin Preflights
 
-Each entry in `options.skins` generates a `skin-{name}` class that injects a CSS variable override block for that palette:
+Each entry in `options.skins` (other than `default`) generates a `[data-skin='name']`
+preflight CSS block. Setting `data-skin='name'` on any ancestor element scopes that palette
+to the subtree — the `themable` action writes it to the root element, making it app-wide.
 
 ```js
 presetRokkit({
   skins: {
-    ocean: { primary: 'sky', secondary: 'teal', surface: 'zinc' }
+    ocean: { surface: 'slate', ink: 'slate', primary: 'sky', accent: 'teal' }
   }
 })
 ```
 
-```html
-<div class="skin-ocean">
-  <!-- All components inside use sky/teal/zinc palette -->
-</div>
+The preset emits (in the UnoCSS preflight):
+
+```css
+/* light block — always emitted for non-default skins */
+[data-skin='ocean'] { --paper: oklch(…); --primary: oklch(…); … }
+
+/* dark block — only emitted when the skin has a dual-palette role */
+[data-mode='dark'][data-skin='ocean'] { --paper: oklch(…); … }
+```
+
+The `default` skin is **not** emitted as a `[data-skin='default']` block — its vars live
+in the `:root` preflight, so `data-skin='default'` simply inherits `:root`.
+
+> **Note:** The earlier `skin-{name}` CSS class approach has been removed. Use the
+> `data-skin='name'` attribute (written by `themable` / `vibe.skin`) instead.
+
+Built-in skins (`default`, `ocean`, `violet`, `rose`, `emerald`) are exported as
+`BUILTIN_SKINS` from `@rokkit/unocss` and merged automatically — consumer `skins` in
+`rokkit.config.js` merge on top and can override built-in entries by name.
+
+```js
+import { BUILTIN_SKINS } from '@rokkit/unocss'
+// { default, ocean, violet, rose, emerald }
 ```
 
 ### Dark Mode
@@ -231,14 +258,26 @@ The `dark:` variant in utility classes respects this selector:
 
 ### Font Families
 
-Registers these font family tokens in the UnoCSS theme:
+Registers CSS variable–backed font family tokens in the UnoCSS theme. The actual font names are **not baked into the preset** — they are populated at build time from the `typography:` config in `rokkit.config.js`. The preset emits CSS vars (`--font-display`, `--font-ui`, `--font-mono`) and the theme keys point at those vars:
 
-| Token | Fonts |
-|-------|-------|
-| `font-body` | Open Sans, system-ui fallbacks |
-| `font-heading` | Open Sans, sans-serif |
-| `font-sans` | Overpass, ui-serif, sans-serif |
-| `font-mono` | Victor Mono, monospace |
+| Token | CSS variable | Populated from `typography:` key |
+|-------|-------------|----------------------------------|
+| `font-sans` / `font-body` | `var(--font-sans)` → `var(--font-ui)` | `typography.sans` or `typography.ui` |
+| `font-heading` | `var(--font-heading)` → `var(--font-display)` | `typography.heading` or `typography.display` |
+| `font-mono` | `var(--font-mono)` | `typography.mono` |
+
+Example — set fonts in `rokkit.config.js`:
+
+```js
+export default {
+  typography: {
+    sans: "'Inter', system-ui, sans-serif",
+    mono: "'JetBrains Mono', monospace"
+  }
+}
+```
+
+If `typography` is omitted (or a key is `null`), no `--font-*` var is emitted and the browser falls back to inherited fonts.
 
 ### Additional Rules
 
@@ -289,7 +328,7 @@ Place a `rokkit.config.js` at your project root to keep preset options out of yo
 ```js
 // rokkit.config.js — simple (z-flip handles dark mode automatically)
 export default {
-  colors: {
+  skin: {
     primary: 'violet',
     surface: 'zinc'     // same palette — shade scale flips for dark mode via base.css
   },
@@ -304,13 +343,13 @@ export default {
     kami: { 50: '0.985 0.005 85', /* … */ 950: '0.170 0.010 50' },
     sumi: { 50: '0.975 0.008 85', /* … */ 950: '0.170 0.010 50' }
   },
-  colors: {
+  skin: {
     surface: { light: 'kami', dark: 'sumi' },  // explicit dark palette
     primary: 'shu'
   },
   colorSpace: 'oklch',
   skins: {
-    // colors IS the default skin — skins are named alternatives
+    // skin IS the default colormap — skins are named alternatives
     ocean:    { surface: 'slate', primary: 'sky' },
     vibrant:  { primary: 'blue', secondary: 'purple' }
   },

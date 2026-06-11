@@ -228,16 +228,58 @@ function buildVarsForMode(theme, colormap, config) {
 	return result
 }
 
-function buildSkinShortcuts(theme, config) {
-	return Object.entries(config.skins).map(([name, mapping]) => {
-		const nonAliasMapping = Object.fromEntries(
-			Object.entries(mapping).filter(([, v]) => !isAlias(v))
-		)
-		return [
-			`skin-${name}`,
-			theme.getPalette(resolveMappingForMode(nonAliasMapping, 'light'))
-		]
+/**
+ * The skin name treated as the active default. Its named-token vars are carried
+ * by the `:root` preflight (see buildPreflights), so we never emit a competing
+ * `[data-skin='default']` block — `data-skin='default'` simply inherits `:root`.
+ */
+const DEFAULT_SKIN_NAME = 'default'
+
+/**
+ * Builds the named-token CSS-var block for one skin in a single mode, using the
+ * SAME var-building helper (`buildVarsForMode`) that `:root` uses. The resulting
+ * vars are therefore identical in form to the `:root`/dark blocks — we only
+ * change the selector. Aliases are stripped (they get no own CSS vars).
+ */
+function buildSkinVars(mapping, config, mode) {
+	const nonAliasMapping = Object.fromEntries(
+		Object.entries(mapping).filter(([, v]) => !isAlias(v))
+	)
+	const theme = new Theme({
+		colors: { ...defaultColors, ...config.palettes },
+		mapping: resolveMappingForMode(nonAliasMapping, mode),
+		colorSpace: config.colorSpace
 	})
+	return buildVarsForMode(theme, nonAliasMapping, config)
+}
+
+/**
+ * Emits `[data-skin='name']` preflight blocks for every configured skin EXCEPT
+ * the resolved default (whose vars live in `:root`). Mirrors buildPreflights:
+ *  - light block: `[data-skin='name']{…light vars…}`
+ *  - dark block (only when the skin has a dual-palette role):
+ *      `[data-mode='dark'][data-skin='name']{…dark vars…}`
+ * The dark selector uses single-quoted attributes; the test contract accepts
+ * either quoting, and single quotes match the `data-skin` quoting used here.
+ */
+function buildSkinPreflights(config) {
+	return Object.entries(config.skins)
+		.filter(([name]) => name !== DEFAULT_SKIN_NAME)
+		.map(([name, mapping]) => {
+			const lightVars = buildSkinVars(mapping, config, 'light')
+			const lightBlock = `[data-skin='${name}']{${toCssBlock(lightVars)}}`
+
+			const nonAliasMapping = Object.fromEntries(
+				Object.entries(mapping).filter(([, v]) => !isAlias(v))
+			)
+			let darkBlock = ''
+			if (hasDualPaletteMapping(nonAliasMapping)) {
+				const darkVars = buildSkinVars(mapping, config, 'dark')
+				darkBlock = `[data-mode='dark'][data-skin='${name}']{${toCssBlock(darkVars)}}`
+			}
+
+			return { getCSS: () => `${lightBlock}${darkBlock}` }
+		})
 }
 
 function buildSemanticShortcuts(theme, colormap) {
@@ -377,7 +419,6 @@ const NAMED_TOKEN_SET: Set<string> = new Set(NAMED_TOKENS)
 
 function buildShortcuts(theme, colormap, config) {
 	return [
-		...buildSkinShortcuts(theme, config),
 		...buildSemanticShortcuts(theme, colormap),
 		...buildNamedShortcuts(),
 		...buildOverrideTokenShortcuts(config, NAMED_TOKEN_SET),
@@ -406,7 +447,7 @@ export function presetRokkit(options = {}): Preset {
 		extractors: [extractorSvelte()],
 		rules: [['hidden', { display: 'none' }]],
 		safelist: buildSafelist(config),
-		preflights: buildPreflights(theme, colormap, config),
+		preflights: [...buildPreflights(theme, colormap, config), ...buildSkinPreflights(config)],
 		shortcuts: buildShortcuts(theme, colormap, config),
 		theme: {
 			fontFamily: FONT_FAMILIES,
