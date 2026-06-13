@@ -3,7 +3,8 @@
  */
 
 [data-style='frosted'] [data-message-root][data-type='error'] {
-  @apply bg-error-soft/50 border-error/40 text-error backdrop-blur-sm;
+  @apply border-error/40 text-error backdrop-blur-sm;
+  background-color: color-mix(in oklch, var(--error-soft) 50%, transparent);
 }
 [data-style='frosted'] [data-message-root][data-type='error'] [data-message-icon],
 [data-style='frosted'] [data-message-root][data-type='error'] [data-message-dismiss] {
@@ -11,7 +12,8 @@
 }
 
 [data-style='frosted'] [data-message-root][data-type='warning'] {
-  @apply bg-warning-soft/50 border-warning/40 text-warning backdrop-blur-sm;
+  @apply border-warning/40 text-warning backdrop-blur-sm;
+  background-color: color-mix(in oklch, var(--warning-soft) 50%, transparent);
 }
 [data-style='frosted'] [data-message-root][data-type='warning'] [data-message-icon],
 [data-style='frosted'] [data-message-root][data-type='warning'] [data-message-dismiss] {
@@ -19,7 +21,8 @@
 }
 
 [data-style='frosted'] [data-message-root][data-type='info'] {
-  @apply bg-info-soft/50 border-info/40 text-info backdrop-blur-sm;
+  @apply border-info/40 text-info backdrop-blur-sm;
+  background-color: color-mix(in oklch, var(--info-soft) 50%, transparent);
 }
 [data-style='frosted'] [data-message-root][data-type='info'] [data-message-icon],
 [data-style='frosted'] [data-message-root][data-type='info'] [data-message-dismiss] {
@@ -27,7 +30,8 @@
 }
 
 [data-style='frosted'] [data-message-root][data-type='success'] {
-  @apply bg-success-soft/50 border-success/40 text-success backdrop-blur-sm;
+  @apply border-success/40 text-success backdrop-blur-sm;
+  background-color: color-mix(in oklch, var(--success-soft) 50%, transparent);
 }
 [data-style='frosted'] [data-message-root][data-type='success'] [data-message-icon],
 [data-style='frosted'] [data-message-root][data-type='success'] [data-message-dismiss] {

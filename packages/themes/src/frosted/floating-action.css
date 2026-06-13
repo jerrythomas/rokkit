@@ -18,11 +18,12 @@
 }
 
 [data-style='frosted'] [data-fab-trigger]:focus-visible {
-  @apply ring-ink-soft/40 ring-2 outline-none;
+  @apply ring-2 outline-none;
+  --un-ring-color: color-mix(in oklch, var(--ink-soft) 40%, transparent);
 }
 
 [data-style='frosted'] [data-fab][data-open='true'] [data-fab-trigger] {
-  @apply bg-ink-soft/80;
+  background-color: color-mix(in oklch, var(--ink-soft) 80%, transparent);
   transform: rotate(45deg);
 }
 
@@ -31,15 +32,19 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-fab-item] {
-  @apply text-ink bg-paper-soft/70 border-ink-soft/20 border shadow-md backdrop-blur-md;
+  @apply text-ink border shadow-md backdrop-blur-md;
+  background-color: color-mix(in oklch, var(--paper-soft) 70%, transparent);
+  border-color: color-mix(in oklch, var(--ink-soft) 20%, transparent);
 }
 
 [data-style='frosted'] [data-fab-item]:hover:not(:disabled) {
-  @apply text-ink bg-paper-mute/80 shadow-lg;
+  @apply text-ink shadow-lg;
+  background-color: color-mix(in oklch, var(--paper-mute) 80%, transparent);
 }
 
 [data-style='frosted'] [data-fab-item]:focus-visible {
-  @apply ring-ink-soft/40 ring-2 outline-none;
+  @apply ring-2 outline-none;
+  --un-ring-color: color-mix(in oklch, var(--ink-soft) 40%, transparent);
 }
 
 /* Item icon */

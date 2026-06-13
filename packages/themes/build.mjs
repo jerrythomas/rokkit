@@ -178,16 +178,53 @@ function splitTopLevelSelectors(text) {
   return parts
 }
 
+// ─── Regression guard: no @apply may survive into dist ────────────────────────
+
+/**
+ * Strip /* … *​/ block comments so the scan matches real CSS, not prose
+ * (some files document the @apply pitfall in comments). Mirrors the
+ * `stripComments` helper in spec/coverage.spec.js.
+ */
+const stripComments = (s) => s.replace(/\/\*[\s\S]*?\*\//g, '')
+
+/**
+ * Fail the build if any real `@apply` directive survived into a dist file.
+ *
+ * A leftover `@apply` means a utility didn't resolve (e.g. a named-token
+ * `/opacity` shortcut, which UnoCSS can't expand) and would ship raw to
+ * consumers — triggering `[lightningcss minify] Unknown at rule: @apply`
+ * and rendering nothing. This is the recurrence guard for issue #135.
+ */
+function assertNoApply(outputName) {
+  const content = readFileSync(join(distDir, outputName), 'utf-8') // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal — outputName is derived from a hardcoded string array, not user input
+  const lines = stripComments(content).split('\n')
+  const offending = []
+  lines.forEach((line, i) => {
+    if (/@apply\b/.test(line)) offending.push(`  dist/${outputName}:${i + 1}  ${line.trim()}`)
+  })
+  if (offending.length > 0) {
+    throw new Error(
+      `Unresolved @apply leaked into dist/${outputName} (issue #135 recurrence).\n` +
+        `These utilities did not resolve during build — rewrite them to raw CSS ` +
+        `(e.g. color-mix for named-token /opacity):\n${offending.join('\n')}`
+    )
+  }
+}
+
 // ─── Build ────────────────────────────────────────────────────────────────────
 
 const srcDir = join(__dirname, 'src')
 const distDir = join(__dirname, 'dist')
+
+/** Names of every dist file emitted by this build, scanned by the guard. */
+const emitted = []
 
 async function buildFile(inputPath, outputName, label) {
   const fullCSS = resolveImports(inputPath)
   const compiled = await processCSS(fullCSS, outputName)
   const fixed = fixModeSelectors(compiled)
   writeFileSync(join(distDir, outputName), fixed, 'utf-8') // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal — outputName is derived from a hardcoded string array, not user input
+  emitted.push(outputName)
   console.log(`✓ dist/${outputName} (${label})`)
 }
 
@@ -202,6 +239,7 @@ async function build() {
   const compiledBase = await processCSS(baseCSS, 'base.css')
   const baseFull = fixModeSelectors(compiledPalette + '\n' + zScaleCSS + '\n' + compiledBase)
   writeFileSync(join(distDir, 'base.css'), baseFull, 'utf-8')
+  emitted.push('base.css')
   console.log('✓ dist/base.css (structural styles + palette defaults)')
 
   // Per-theme files
@@ -227,7 +265,11 @@ async function build() {
   // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal — name is from a hardcoded string array, not user input
   const bundleParts = allThemes.map((name) => readFileSync(join(distDir, `${name}.css`), 'utf-8'))
   writeFileSync(join(distDir, 'index.css'), bundleParts.join('\n'), 'utf-8')
+  emitted.push('index.css')
   console.log('✓ dist/index.css (full bundle)')
+
+  // Regression guard (#135): no unresolved @apply may ship in dist.
+  for (const outputName of emitted) assertNoApply(outputName)
 
   console.log('\n@rokkit/themes build complete.')
 }

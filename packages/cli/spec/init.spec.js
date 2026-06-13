@@ -201,6 +201,9 @@ describe('generateUnoConfig', () => {
 		expect(content).toContain("import config from './rokkit.config.js'")
 		expect(content).toContain('presetRokkit(config)')
 		expect(content).toContain('defineConfig')
+		// transformerDirectives lets consumers use @apply in their own CSS (issue #135)
+		expect(content).toContain('transformerDirectives')
+		expect(content).toContain('transformers: [transformerDirectives()]')
 	})
 })
 

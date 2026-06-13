@@ -17,15 +17,20 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-select-trigger] {
-  @apply text-ink-mute bg-paper-soft/70 border-ink-soft/20 border backdrop-blur-md;
+  @apply text-ink-mute border backdrop-blur-md;
+  background-color: color-mix(in oklch, var(--paper-soft) 70%, transparent);
+  border-color: color-mix(in oklch, var(--ink-soft) 20%, transparent);
 }
 
 [data-style='frosted'] [data-select-trigger]:hover:not(:disabled) {
-  @apply text-ink bg-paper-mute/80 border-ink-soft/30;
+  @apply text-ink;
+  background-color: color-mix(in oklch, var(--paper-mute) 80%, transparent);
+  border-color: color-mix(in oklch, var(--ink-soft) 30%, transparent);
 }
 
 [data-style='frosted'] [data-select-trigger]:focus-visible {
-  @apply ring-ink-soft/40 ring-1 outline-none;
+  @apply ring-1 outline-none;
+  --un-ring-color: color-mix(in oklch, var(--ink-soft) 40%, transparent);
 }
 
 [data-style='frosted'] [data-select][data-open='true'] [data-select-trigger] {
@@ -57,7 +62,8 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-select-tag] {
-  @apply text-ink-mute bg-paper-mute/15;
+  @apply text-ink-mute;
+  background-color: color-mix(in oklch, var(--paper-mute) 15%, transparent);
 }
 
 [data-style='frosted'] [data-select-tag-remove] {
@@ -73,7 +79,9 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-select-dropdown] {
-  @apply bg-paper-mute/50 border-ink-soft/20 border shadow-lg backdrop-blur-lg;
+  @apply border shadow-lg backdrop-blur-lg;
+  background-color: color-mix(in oklch, var(--paper-mute) 50%, transparent);
+  border-color: color-mix(in oklch, var(--ink-soft) 20%, transparent);
 }
 
 /* =============================================================================
@@ -86,11 +94,13 @@
 
 [data-style='frosted'] [data-select-option]:hover:not(:disabled),
 [data-style='frosted'] [data-select-option]:focus:not(:disabled) {
-  @apply text-ink bg-paper-mute/80;
+  @apply text-ink;
+  background-color: color-mix(in oklch, var(--paper-mute) 80%, transparent);
 }
 
 [data-style='frosted'] [data-select-option]:focus-visible {
-  @apply ring-ink-soft/40 ring-1 outline-none ring-inset;
+  @apply ring-1 outline-none ring-inset;
+  --un-ring-color: color-mix(in oklch, var(--ink-soft) 40%, transparent);
 }
 
 [data-style='frosted'] [data-select-option][data-selected='true'] {
@@ -109,7 +119,8 @@
 
 /* Checkbox */
 [data-style='frosted'] [data-select-checkbox] {
-  @apply border-ink-soft/40 bg-paper-soft/70;
+  border-color: color-mix(in oklch, var(--ink-soft) 40%, transparent);
+  background-color: color-mix(in oklch, var(--paper-soft) 70%, transparent);
 }
 
 [data-style='frosted'] [data-select-checkbox][data-checked='true'] {
@@ -150,7 +161,7 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-select-divider] {
-  @apply bg-ink-soft/20;
+  background-color: color-mix(in oklch, var(--ink-soft) 20%, transparent);
 }
 
 /* =============================================================================
@@ -158,15 +169,18 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-select-filter] {
-  @apply bg-paper-mute/30;
+  background-color: color-mix(in oklch, var(--paper-mute) 30%, transparent);
 }
 
 [data-style='frosted'] [data-select-filter-input] {
-  @apply text-ink-mute border-ink-soft/20 bg-paper-soft/50 border;
+  @apply text-ink-mute border;
+  border-color: color-mix(in oklch, var(--ink-soft) 20%, transparent);
+  background-color: color-mix(in oklch, var(--paper-soft) 50%, transparent);
 }
 
 [data-style='frosted'] [data-select-filter-input]:focus {
-  @apply border-primary/50 ring-ink-soft/30 ring-1;
+  @apply border-primary/50 ring-1;
+  --un-ring-color: color-mix(in oklch, var(--ink-soft) 30%, transparent);
 }
 
 [data-style='frosted'] [data-select-filter-input]::placeholder {

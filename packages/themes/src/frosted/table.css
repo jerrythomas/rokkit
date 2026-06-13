@@ -9,7 +9,9 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-table-header] th {
-  @apply text-ink-soft border-ink-soft/20 border-b bg-paper-mute/80 backdrop-blur-sm;
+  @apply text-ink-soft border-b backdrop-blur-sm;
+  border-color: color-mix(in oklch, var(--ink-soft) 20%, transparent);
+  background-color: color-mix(in oklch, var(--paper-mute) 80%, transparent);
 }
 
 [data-style='frosted'] [data-table-header-cell][data-sortable='true']:hover {
@@ -43,15 +45,17 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-table-row] {
-  @apply text-ink-mute border-ink-soft/10 border-b;
+  @apply text-ink-mute border-b;
+  border-color: color-mix(in oklch, var(--ink-soft) 10%, transparent);
 }
 
 [data-style='frosted'] [data-table-row]:hover {
-  @apply bg-paper-mute/80;
+  background-color: color-mix(in oklch, var(--paper-mute) 80%, transparent);
 }
 
 [data-style='frosted'] [data-table-row]:focus {
-  @apply bg-paper-mute/80 text-ink outline-none;
+  @apply text-ink outline-none;
+  background-color: color-mix(in oklch, var(--paper-mute) 80%, transparent);
 }
 
 [data-style='frosted'] [data-table-row][data-selected='true'] {
@@ -73,7 +77,7 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-table-striped] [data-table-body] tr:nth-child(even) {
-  @apply bg-paper-mute/30;
+  background-color: color-mix(in oklch, var(--paper-mute) 30%, transparent);
 }
 
 /* =============================================================================
@@ -102,7 +106,9 @@
 
 @media (max-width: 639px) {
   [data-style='frosted'] [data-table-responsive] [data-table-row] {
-    @apply bg-paper-mute/80 border-ink-soft/20 border backdrop-blur-sm;
+    @apply border backdrop-blur-sm;
+    background-color: color-mix(in oklch, var(--paper-mute) 80%, transparent);
+    border-color: color-mix(in oklch, var(--ink-soft) 20%, transparent);
   }
 
   [data-style='frosted'] [data-table-responsive] [data-table-cell]::before {

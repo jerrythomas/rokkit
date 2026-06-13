@@ -7,11 +7,14 @@
 }
 
 [data-style='frosted'] [data-step-item][data-step-state='current'] [data-step-number] {
-  @apply bg-paper-mute/60 border-primary/70 text-primary bg-none backdrop-blur-sm ring-3 ring-primary/15;
+  @apply border-primary/70 text-primary bg-none backdrop-blur-sm ring-3 ring-primary/15;
+  background-color: color-mix(in oklch, var(--paper-mute) 60%, transparent);
 }
 
 [data-style='frosted'] [data-step-item][data-step-state='upcoming'] [data-step-number] {
-  @apply bg-paper-soft/40 border-paper-mute/50 text-ink-soft bg-none backdrop-blur-sm;
+  @apply text-ink-soft bg-none backdrop-blur-sm;
+  background-color: color-mix(in oklch, var(--paper-soft) 40%, transparent);
+  border-color: color-mix(in oklch, var(--paper-mute) 50%, transparent);
 }
 
 /* ── Labels ── */
@@ -36,5 +39,5 @@
 
 [data-style='frosted'] [data-step-item][data-step-state='current']::after,
 [data-style='frosted'] [data-step-item][data-step-state='upcoming']::after {
-  @apply bg-paper-mute/50;
+  background-color: color-mix(in oklch, var(--paper-mute) 50%, transparent);
 }

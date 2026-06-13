@@ -10,7 +10,8 @@
 
 [data-style='frosted'] [data-toc] [data-toc-item]:hover,
 [data-style='frosted'] [data-toc] [data-toc-item][data-toc-focused] {
-  @apply text-ink bg-paper-mute/15 outline-none;
+  @apply text-ink outline-none;
+  background-color: color-mix(in oklch, var(--paper-mute) 15%, transparent);
 }
 
 [data-style='frosted'] [data-toc] [data-toc-item][data-toc-active] {
