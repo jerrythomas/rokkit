@@ -1,7 +1,5 @@
 <script>
 	import { setContext, getContext, untrack } from 'svelte'
-	import { zoom as d3Zoom } from 'd3-zoom'
-	import { select } from 'd3-selection'
 	import { PlotState } from './PlotState.svelte.js'
 	import { defaultPreset } from './lib/preset.js'
 	import Axis from './Plot/Axis.svelte'
@@ -132,15 +130,26 @@
 
 	$effect(() => {
 		if (!zoom || !svgEl) return
-		const zoomBehavior = d3Zoom()
-			.scaleExtent([1, 8])
-			.on('zoom', (event) => {
-				plotState.applyZoom(event.transform)
-			})
-		const sel = select(svgEl)
-		sel.call(zoomBehavior)
+		// d3-zoom/d3-selection are client-only; load them dynamically so they are
+		// not bundled into (and tree-shaken-as-unused from) the SSR/main bundle.
+		let cancelled = false
+		let detach
+		Promise.all([import('d3-zoom'), import('d3-selection')]).then(
+			([{ zoom: d3Zoom }, { select }]) => {
+				if (cancelled || !svgEl) return
+				const zoomBehavior = d3Zoom()
+					.scaleExtent([1, 8])
+					.on('zoom', (event) => {
+						plotState.applyZoom(event.transform)
+					})
+				const sel = select(svgEl)
+				sel.call(zoomBehavior)
+				detach = () => sel.on('.zoom', null)
+			}
+		)
 		return () => {
-			sel.on('.zoom', null)
+			cancelled = true
+			detach?.()
 			plotState.resetZoom()
 		}
 	})
