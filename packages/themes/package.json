@@ -42,6 +42,7 @@
     "LICENSE"
   ],
   "scripts": {
+    "prepare": "bun run build.mjs",
     "prepublishOnly": "bun run build.mjs && cp ../../LICENSE .",
     "postpublish": "rm -f LICENSE",
     "build": "bun run build.mjs"
