@@ -9,25 +9,30 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-toolbar] {
-  @apply bg-paper-soft/70 backdrop-blur-md;
+  @apply backdrop-blur-md;
+  background-color: color-mix(in oklch, var(--paper-soft) 70%, transparent);
 }
 
 /* Position-based borders */
 [data-style='frosted'] [data-toolbar][data-toolbar-position='top'],
 [data-style='frosted'] [data-toolbar]:not([data-toolbar-position]) {
-  @apply border-ink-soft/20 border-b;
+  @apply border-b;
+  border-color: color-mix(in oklch, var(--ink-soft) 20%, transparent);
 }
 
 [data-style='frosted'] [data-toolbar][data-toolbar-position='bottom'] {
-  @apply border-ink-soft/20 border-t;
+  @apply border-t;
+  border-color: color-mix(in oklch, var(--ink-soft) 20%, transparent);
 }
 
 [data-style='frosted'] [data-toolbar][data-toolbar-position='left'] {
-  @apply border-ink-soft/20 border-r;
+  @apply border-r;
+  border-color: color-mix(in oklch, var(--ink-soft) 20%, transparent);
 }
 
 [data-style='frosted'] [data-toolbar][data-toolbar-position='right'] {
-  @apply border-ink-soft/20 border-l;
+  @apply border-l;
+  border-color: color-mix(in oklch, var(--ink-soft) 20%, transparent);
 }
 
 /* =============================================================================
@@ -39,11 +44,14 @@
 }
 
 [data-style='frosted'] [data-toolbar-item]:hover:not(:disabled):not([data-disabled='true']) {
-  @apply text-ink bg-paper-mute/15;
+  @apply text-ink;
+  background-color: color-mix(in oklch, var(--paper-mute) 15%, transparent);
 }
 
 [data-style='frosted'] [data-toolbar-item]:focus-visible:not(:disabled):not([data-disabled='true']) {
-  @apply text-ink ring-ink-soft/40 bg-paper-mute/15 ring-1 outline-none;
+  @apply text-ink ring-1 outline-none;
+  --un-ring-color: color-mix(in oklch, var(--ink-soft) 40%, transparent);
+  background-color: color-mix(in oklch, var(--paper-mute) 15%, transparent);
 }
 
 /* Active/pressed state */
@@ -76,9 +84,9 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-toolbar-separator] {
-  @apply bg-ink-soft/20;
+  background-color: color-mix(in oklch, var(--ink-soft) 20%, transparent);
 }
 
 [data-style='frosted'] [data-toolbar-divider] {
-  @apply bg-ink-soft/20;
+  background-color: color-mix(in oklch, var(--ink-soft) 20%, transparent);
 }

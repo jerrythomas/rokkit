@@ -5,7 +5,8 @@
  */
 
 [data-style='frosted'] [data-switch-track] {
-  @apply border backdrop-blur-lg bg-paper-edge/25;
+  @apply border backdrop-blur-lg;
+  background-color: color-mix(in oklch, var(--paper-edge) 25%, transparent);
   border-color: rgba(255, 255, 255, 0.2);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }

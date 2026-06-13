@@ -13,7 +13,8 @@
 [data-style='frosted'] [data-button]:not([data-style])[data-variant='default'],
 [data-style='frosted'] [data-button][data-style='default']:not([data-variant]),
 [data-style='frosted'] [data-button]:not([data-style]):not([data-variant]) {
-  @apply text-ink border backdrop-blur-xl bg-paper-edge/28;
+  @apply text-ink border backdrop-blur-xl;
+  background-color: color-mix(in oklch, var(--paper-edge) 28%, transparent);
   border-color: rgba(255, 255, 255, 0.22);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.2),
@@ -191,7 +192,7 @@
 
 [data-style='frosted'] [data-button][data-style='default']:hover:not(:disabled):not([data-disabled]),
 [data-style='frosted'] [data-button]:not([data-style]):hover:not(:disabled):not([data-disabled]) {
-  @apply bg-paper-edge/38;
+  background-color: color-mix(in oklch, var(--paper-edge) 38%, transparent);
   border-color: rgba(255, 255, 255, 0.3);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.28),

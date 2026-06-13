@@ -312,11 +312,12 @@ export function generateConfig({
  * @returns {string}
  */
 export function generateUnoConfig() {
-	return `import { defineConfig } from 'unocss'
+	return `import { defineConfig, transformerDirectives } from 'unocss'
 import { presetRokkit } from '@rokkit/unocss'
 import config from './rokkit.config.js'
 
 export default defineConfig({
+  transformers: [transformerDirectives()],
   presets: [presetRokkit(config)]
 })
 `

@@ -5,13 +5,15 @@
  */
 
 [data-style='frosted'] [data-dropdown-trigger] {
-  @apply text-ink-mute border bg-none backdrop-blur-xl bg-paper-mute/25;
+  @apply text-ink-mute border bg-none backdrop-blur-xl;
+  background-color: color-mix(in oklch, var(--paper-mute) 25%, transparent);
   border-color: rgba(255, 255, 255, 0.2);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
 }
 
 [data-style='frosted'] [data-dropdown-trigger]:hover:not(:disabled) {
-  @apply text-ink bg-none bg-paper-mute/36;
+  @apply text-ink bg-none;
+  background-color: color-mix(in oklch, var(--paper-mute) 36%, transparent);
   border-color: rgba(255, 255, 255, 0.28);
 }
 
@@ -34,7 +36,8 @@
 }
 
 [data-style='frosted'] [data-dropdown-panel] {
-  @apply border bg-none shadow-xl backdrop-blur-2xl bg-paper-mute/45;
+  @apply border bg-none shadow-xl backdrop-blur-2xl;
+  background-color: color-mix(in oklch, var(--paper-mute) 45%, transparent);
   border-color: rgba(255, 255, 255, 0.2);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.2),

@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/themes",
-  "version": "1.1.15",
+  "version": "1.1.16",
   "description": "Theme styles for @rokkit/ui components",
   "repository": {
     "type": "git",
@@ -10,38 +10,40 @@
   "main": "./src/index.js",
   "exports": {
     ".": {
-      "style": "./src/index.css",
+      "style": "./dist/index.css",
       "import": "./src/index.js",
       "default": "./src/index.js"
     },
-    "./styles": { "style": "./src/index.css", "default": "./src/index.css" },
-    "./base.css": { "style": "./src/base/index.css", "default": "./src/base/index.css" },
-    "./rokkit.css": { "style": "./src/rokkit/index.css", "default": "./src/rokkit/index.css" },
-    "./minimal.css": { "style": "./src/minimal/index.css", "default": "./src/minimal/index.css" },
-    "./material.css": { "style": "./src/material/index.css", "default": "./src/material/index.css" },
-    "./frosted.css": { "style": "./src/frosted/index.css", "default": "./src/frosted/index.css" },
-    "./zen-sumi.css": { "style": "./src/zen-sumi/index.css", "default": "./src/zen-sumi/index.css" },
-    "./base": { "style": "./src/base/index.css", "default": "./src/base/index.css" },
+    "./styles": { "style": "./dist/index.css", "default": "./dist/index.css" },
+    "./base.css": { "style": "./dist/base.css", "default": "./dist/base.css" },
+    "./rokkit.css": { "style": "./dist/rokkit.css", "default": "./dist/rokkit.css" },
+    "./minimal.css": { "style": "./dist/minimal.css", "default": "./dist/minimal.css" },
+    "./material.css": { "style": "./dist/material.css", "default": "./dist/material.css" },
+    "./frosted.css": { "style": "./dist/frosted.css", "default": "./dist/frosted.css" },
+    "./zen-sumi.css": { "style": "./dist/zen-sumi.css", "default": "./dist/zen-sumi.css" },
+    "./base": { "style": "./dist/base.css", "default": "./dist/base.css" },
     "./base/*": { "style": "./src/base/*.css", "default": "./src/base/*.css" },
-    "./rokkit": { "style": "./src/rokkit/index.css", "default": "./src/rokkit/index.css" },
+    "./rokkit": { "style": "./dist/rokkit.css", "default": "./dist/rokkit.css" },
     "./rokkit/*": { "style": "./src/rokkit/*.css", "default": "./src/rokkit/*.css" },
-    "./minimal": { "style": "./src/minimal/index.css", "default": "./src/minimal/index.css" },
+    "./minimal": { "style": "./dist/minimal.css", "default": "./dist/minimal.css" },
     "./minimal/*": { "style": "./src/minimal/*.css", "default": "./src/minimal/*.css" },
-    "./material": { "style": "./src/material/index.css", "default": "./src/material/index.css" },
+    "./material": { "style": "./dist/material.css", "default": "./dist/material.css" },
     "./material/*": { "style": "./src/material/*.css", "default": "./src/material/*.css" },
-    "./frosted": { "style": "./src/frosted/index.css", "default": "./src/frosted/index.css" },
+    "./frosted": { "style": "./dist/frosted.css", "default": "./dist/frosted.css" },
     "./frosted/*": { "style": "./src/frosted/*.css", "default": "./src/frosted/*.css" },
-    "./zen-sumi": { "style": "./src/zen-sumi/index.css", "default": "./src/zen-sumi/index.css" },
+    "./zen-sumi": { "style": "./dist/zen-sumi.css", "default": "./dist/zen-sumi.css" },
     "./zen-sumi/*": { "style": "./src/zen-sumi/*.css", "default": "./src/zen-sumi/*.css" }
   },
   "files": [
     "src",
+    "dist",
     "build.mjs",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
-    "prepublishOnly": "cp ../../LICENSE .",
+    "prepare": "bun run build.mjs",
+    "prepublishOnly": "bun run build.mjs && cp ../../LICENSE .",
     "postpublish": "rm -f LICENSE",
     "build": "bun run build.mjs"
   },

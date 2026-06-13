@@ -9,7 +9,8 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-timeline-circle] {
-  @apply border-ink-soft/30 text-ink-soft;
+  @apply text-ink-soft;
+  border-color: color-mix(in oklch, var(--ink-soft) 30%, transparent);
 }
 
 [data-style='frosted'] [data-timeline-item][data-completed] [data-timeline-circle] {
@@ -25,7 +26,7 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-timeline-connector] {
-  @apply bg-ink-soft/20;
+  background-color: color-mix(in oklch, var(--ink-soft) 20%, transparent);
 }
 
 [data-style='frosted'] [data-timeline-item][data-completed] [data-timeline-connector] {

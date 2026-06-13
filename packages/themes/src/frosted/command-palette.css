@@ -10,7 +10,8 @@
 }
 
 [data-style='frosted'] [data-command-palette] {
-	@apply border backdrop-blur-2xl bg-paper-mute/45;
+	@apply border backdrop-blur-2xl;
+	background-color: color-mix(in oklch, var(--paper-mute) 45%, transparent);
 	border-color: rgba(255, 255, 255, 0.2);
 	box-shadow:
 		inset 0 1px 0 rgba(255, 255, 255, 0.2),

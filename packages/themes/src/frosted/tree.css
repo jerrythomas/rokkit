@@ -9,7 +9,8 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-tree]:focus-within {
-  @apply ring-ink-soft/40 rounded ring-1;
+  @apply rounded ring-1;
+  --un-ring-color: color-mix(in oklch, var(--ink-soft) 40%, transparent);
 }
 
 /* =============================================================================
@@ -21,7 +22,8 @@
 }
 
 [data-style='frosted'] [data-tree-toggle-btn]:hover {
-  @apply text-ink-mute bg-paper-mute/15;
+  @apply text-ink-mute;
+  background-color: color-mix(in oklch, var(--paper-mute) 15%, transparent);
 }
 
 /* =============================================================================
@@ -34,12 +36,14 @@
 
 [data-style='frosted'] [data-tree-item-content]:hover:not(:disabled),
 [data-style='frosted'] [data-tree-item-content]:focus:not(:disabled) {
-  @apply text-ink bg-paper-mute/15 outline-none;
+  @apply text-ink outline-none;
+  background-color: color-mix(in oklch, var(--paper-mute) 15%, transparent);
 }
 
 /* Focus visible for keyboard navigation */
 [data-style='frosted'] [data-tree-item-content]:focus-visible {
-  @apply ring-ink-soft/40 ring-1 outline-none;
+  @apply ring-1 outline-none;
+  --un-ring-color: color-mix(in oklch, var(--ink-soft) 40%, transparent);
 }
 
 /* Active/selected state */
@@ -76,7 +80,8 @@
 }
 
 [data-style='frosted'] [data-tree-item-content] [data-item-badge] {
-  @apply text-ink-soft bg-paper-mute/15;
+  @apply text-ink-soft;
+  background-color: color-mix(in oklch, var(--paper-mute) 15%, transparent);
 }
 
 [data-style='frosted'] [data-tree-item-content][data-active='true'] [data-item-badge] {

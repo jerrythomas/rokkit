@@ -9,7 +9,9 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-toggle] {
-  @apply bg-paper-soft/70 border-ink-soft/20 rounded-lg border backdrop-blur-md;
+  @apply rounded-lg border backdrop-blur-md;
+  background-color: color-mix(in oklch, var(--paper-soft) 70%, transparent);
+  border-color: color-mix(in oklch, var(--ink-soft) 20%, transparent);
 }
 
 /* =============================================================================
@@ -22,7 +24,8 @@
 
 [data-style='frosted'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']),
 [data-style='frosted'] [data-toggle-option]:focus:not(:disabled):not([data-disabled='true']) {
-  @apply text-ink-mute bg-paper-mute/15;
+  @apply text-ink-mute;
+  background-color: color-mix(in oklch, var(--paper-mute) 15%, transparent);
 }
 
 /* Selected state */

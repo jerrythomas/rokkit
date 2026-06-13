@@ -9,7 +9,9 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-range-bar] {
-  @apply bg-paper-mute/50 border-ink-soft/20 border;
+  @apply border;
+  background-color: color-mix(in oklch, var(--paper-mute) 50%, transparent);
+  border-color: color-mix(in oklch, var(--ink-soft) 20%, transparent);
 }
 
 [data-style='frosted'] [data-range-selected] {
@@ -41,7 +43,7 @@
 }
 
 [data-style='frosted'] [data-tick-bar] {
-  @apply border-ink-soft/40;
+  border-color: color-mix(in oklch, var(--ink-soft) 40%, transparent);
 }
 
 [data-style='frosted'] [data-tick-label] {
@@ -53,9 +55,10 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-range][data-disabled] [data-range-thumb] {
-  @apply bg-paper-edge/50 border-paper-edge/30;
+  background-color: color-mix(in oklch, var(--paper-edge) 50%, transparent);
+  border-color: color-mix(in oklch, var(--paper-edge) 30%, transparent);
 }
 
 [data-style='frosted'] [data-range][data-disabled] [data-range-selected] {
-  @apply bg-paper-edge/30;
+  background-color: color-mix(in oklch, var(--paper-edge) 30%, transparent);
 }

@@ -62,5 +62,6 @@
 
 /* Count badge */
 [data-style='frosted'] [data-status-count] {
-  @apply bg-paper-mute/60 text-ink-mute font-semibold backdrop-blur-sm;
+  @apply text-ink-mute font-semibold backdrop-blur-sm;
+  background-color: color-mix(in oklch, var(--paper-mute) 60%, transparent);
 }

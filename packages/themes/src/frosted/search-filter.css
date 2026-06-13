@@ -9,11 +9,14 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-search-input] {
-  @apply text-ink-mute border-ink-soft/20 bg-paper-soft/50 border backdrop-blur-md;
+  @apply text-ink-mute border backdrop-blur-md;
+  border-color: color-mix(in oklch, var(--ink-soft) 20%, transparent);
+  background-color: color-mix(in oklch, var(--paper-soft) 50%, transparent);
 }
 
 [data-style='frosted'] [data-search-input]:focus {
-  @apply border-primary/50 ring-ink-soft/30 ring-1;
+  @apply border-primary/50 ring-1;
+  --un-ring-color: color-mix(in oklch, var(--ink-soft) 30%, transparent);
 }
 
 [data-style='frosted'] [data-search-input]::placeholder {
@@ -37,7 +40,8 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-search-tag] {
-  @apply text-ink-mute bg-paper-mute/15;
+  @apply text-ink-mute;
+  background-color: color-mix(in oklch, var(--paper-mute) 15%, transparent);
 }
 
 [data-style='frosted'] [data-search-tag-remove] {

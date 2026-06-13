@@ -28,14 +28,15 @@
 
 /* Separator */
 [data-style='frosted'] [data-form-separator] {
-  @apply border-ink-soft/20;
+  border-color: color-mix(in oklch, var(--ink-soft) 20%, transparent);
 }
 
 /* Input root: frosted glass container — p-0.5 gives a small gap between border and content.
  * No backdrop-blur here: it creates a stacking context that traps select dropdowns.
  * The semi-transparent background + specular border provides the liquid glass look. */
 [data-style='frosted'] [data-input-root] {
-  @apply flex items-center rounded-md border p-0.5 transition-all bg-paper-mute/22;
+  @apply flex items-center rounded-md border p-0.5 transition-all;
+  background-color: color-mix(in oklch, var(--paper-mute) 22%, transparent);
   background-image: none;
   border-color: rgba(255, 255, 255, 0.2);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
@@ -46,7 +47,7 @@
 }
 
 [data-style='frosted'] [data-input-root]:focus-within {
-  @apply bg-paper-mute/28;
+  background-color: color-mix(in oklch, var(--paper-mute) 28%, transparent);
   background-image: none;
   border-color: rgba(255, 255, 255, 0.35);
   box-shadow:
