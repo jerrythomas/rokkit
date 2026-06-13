@@ -1,0 +1,22 @@
+{
+	// Committed so Cloudflare's `wrangler deploy` deploys the SvelteKit
+	// (adapter-cloudflare) output directly instead of running its interactive
+	// auto-config (which injects a broken `wrangler types --check` step).
+	//
+	// The build must emit `.svelte-kit/cloudflare/` — set the build env var
+	// CF_PAGES=1 in the Cloudflare project so svelte.config.js selects
+	// @sveltejs/adapter-cloudflare. Locally and on other hosts adapter-auto is
+	// used instead, so this file is ignored there.
+	//
+	// nodejs_compat is required: the site has a server endpoint
+	// (src/routes/api/llm/openrouter) that runs in the Worker, not prerendered.
+	"name": "rokkit-learn",
+	"compatibility_date": "2026-06-13",
+	"compatibility_flags": ["nodejs_compat"],
+	"main": ".svelte-kit/cloudflare/_worker.js",
+	"assets": {
+		"binding": "ASSETS",
+		"directory": ".svelte-kit/cloudflare"
+	},
+	"observability": { "enabled": true }
+}
