@@ -20,7 +20,7 @@
 import { createGenerator, presetWind3, transformerDirectives } from 'unocss'
 import { Theme } from '@rokkit/core'
 import { buildNamedShortcuts } from '@rokkit/unocss'
-import { readFileSync, writeFileSync, mkdirSync } from 'fs'
+import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'fs'
 import { resolve, dirname, join } from 'path'
 import { fileURLToPath } from 'url'
 import MagicString from 'magic-string'
@@ -228,6 +228,29 @@ async function buildFile(inputPath, outputName, label) {
   console.log(`✓ dist/${outputName} (${label})`)
 }
 
+/**
+ * Compile every per-component CSS file (e.g. src/frosted/button.css) into
+ * dist/<style>/<component>.css, expanding @apply just like the bundled files.
+ *
+ * Consumers that import a single component path (e.g.
+ * `@rokkit/themes/frosted/button.css`) get resolved CSS, not raw @apply — the
+ * `./<style>/*` exports point here. index.css is skipped (it is only an
+ * aggregator of @imports, already compiled into dist/<style>.css).
+ */
+async function buildComponentFiles(style) {
+  mkdirSync(join(distDir, style), { recursive: true }) // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal — style is from a hardcoded string array, not user input
+  const files = readdirSync(join(srcDir, style)) // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal — style is from a hardcoded string array, not user input
+    .filter((f) => f.endsWith('.css') && f !== 'index.css')
+    .sort()
+  for (const file of files) {
+    const outputName = `${style}/${file}`
+    const compiled = await processCSS(readFileSync(join(srcDir, style, file), 'utf-8'), outputName) // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal — style/file enumerate a hardcoded src dir, not user input
+    writeFileSync(join(distDir, outputName), fixModeSelectors(compiled), 'utf-8') // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal — derived from enumerated src files, not user input
+    emitted.push(outputName)
+  }
+  console.log(`✓ dist/${style}/*.css (${files.length} components)`)
+}
+
 async function build() {
   mkdirSync(distDir, { recursive: true })
 
@@ -251,6 +274,11 @@ async function build() {
     ['zen-sumi', 'ink on paper — no shadows, no gradients']
   ]) {
     await buildFile(join(srcDir, name, 'index.css'), `${name}.css`, label)
+  }
+
+  // Per-component files: dist/<style>/<component>.css (for `./<style>/*` exports)
+  for (const style of ['base', 'rokkit', 'minimal', 'material', 'frosted', 'zen-sumi']) {
+    await buildComponentFiles(style)
   }
 
   // Full bundle: base + all themes
