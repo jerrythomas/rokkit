@@ -123,7 +123,15 @@
 
 [data-style='frosted'] [data-button][data-style='gradient'][data-variant='default'],
 [data-style='frosted'] [data-button][data-style='gradient']:not([data-variant]) {
-  @apply from-paper-mute/70 to-paper-soft/50 text-ink bg-gradient-to-br backdrop-blur-xl;
+  /* paper-* are named-token shortcuts, not wind3 colors, so they silently drop as
+     gradient stops under @apply (unlike primary/accent/danger below). Write the
+     translucent gradient directly. See rokkit/button.css for the same workaround. */
+  background: linear-gradient(
+    to bottom right,
+    color-mix(in oklch, var(--paper-mute) 70%, transparent),
+    color-mix(in oklch, var(--paper-soft) 50%, transparent)
+  );
+  @apply text-ink backdrop-blur-xl;
   border-color: rgba(255, 255, 255, 0.2);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }

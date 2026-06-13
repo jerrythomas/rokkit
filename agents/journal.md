@@ -1,5 +1,34 @@
 # Project Journal
 
+## 2026-06-13 — Frosted gradient + per-component dist follow-ups; learn Cloudflare deploy (v1.1.17)
+
+**Themes follow-ups (from v1.1.16).** Fixed the two non-blocking items noted last release.
+(a) The frosted `gradient`/`default` button silently rendered no fill: `from-paper-mute/70
+to-paper-soft/50` are named-token *shortcuts*, not wind3 colors, so they drop as `@apply`
+gradient stops (unlike primary/accent/danger, which resolve via `theme.getColorRules()` and
+were left untouched). Rewrote it as raw `background: linear-gradient(… color-mix(in oklch,
+var(--paper-mute) 70%, transparent) …)` — same workaround as `rokkit/button.css`. The #135
+build guard can't catch this class (a dropped stop leaves no `@apply` behind), so it was
+visual-only. (b) `build.mjs` now compiles every `src/<style>/<comp>.css` →
+`dist/<style>/<comp>.css` (177 files, all `@apply` expanded + scanned by the guard), and the
+`./<style>/*` exports point at `dist` instead of raw `src` — single-component imports now get
+resolved CSS, not raw `@apply`.
+
+**learn Cloudflare deploy config.** Mirrors `dbd-rs/site`: `svelte.config.js` "keep both"
+adapter selection (`@sveltejs/adapter-cloudflare` when `CF_PAGES`/`WORKERS_CI`, else
+`adapter-auto`); committed `wrangler.jsonc` (`_worker.js` + Static Assets + `nodejs_compat`).
+Unlike dbd (fully static), learn ships as a Worker — it has a server endpoint
+(`api/llm/openrouter`) and SSR routes — so no global prerender (per-section `guides` prerender
+stays). `CF_PAGES=1` build emits `.svelte-kit/cloudflare/_worker.js`; the default build still
+selects adapter-auto.
+
+**Verification.** dist 0 real `@apply` (incl. per-component); `test:ci` 3566 · themes 66 ·
+cli 192 · lint 0 errors; both learn build paths exit 0; published v1.1.17 tarball confirmed
+(per-component dist present, default gradient `color-mix` shipped, `./<style>/*` exports →
+dist). npm: all packages live at 1.1.17; Publish CI green.
+
+---
+
 ## 2026-06-10 — Fix @rokkit/themes @apply leak / lightningcss warnings (v1.1.16)
 
 **Bug.** Consumer sites saw `[lightningcss minify] Unknown at rule: @apply`. Root cause = three
