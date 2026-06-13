@@ -1,5 +1,28 @@
 # Project Journal
 
+## 2026-06-10 — Fix @rokkit/themes @apply leak / lightningcss warnings (v1.1.16)
+
+**Bug.** Consumer sites saw `[lightningcss minify] Unknown at rule: @apply`. Root cause = three
+compounding defects: (1) `rokkit init`'s generated `uno.config.js` had no `transformerDirectives()`,
+so consumers resolved no `@apply`; (2) `@rokkit/themes` shipped `src` (raw `@apply`), never the
+resolved `dist` (built by `build.mjs` but unexported/unpackaged); (3) frosted's `/opacity`
+named-token `@apply` (`bg-paper-edge/38`, …) can't resolve via shortcuts anywhere — broken
+translucency + guaranteed leak. (Recurrence of closed #135.)
+
+**Fix.** Ship resolved `dist`: `exports` → `./dist/*.css`, `files` += `dist`, `prepublishOnly` +
+new `prepare` build it (workspace self-heals on install; consumers get the pre-built tarball).
+Rewrote ~100 `/opacity` `@apply` → `color-mix(in oklch, var(--token) N%, transparent)` across
+frosted (restores translucency + kills the leak). Added a `build.mjs` guard that fails the build on
+any real `@apply` left in dist (so #135 can't silently recur). Added `transformerDirectives()` to the
+CLI's generated `uno.config.js` for consumers' own `@apply`.
+
+**Verification.** dist 0 real `@apply`; the learn app (a consumer) builds with zero `@apply`/
+lightningcss warnings; `test:ci` 3566 · themes 66 · cli 126. **Follow-ups (non-blocking):** one frosted
+gradient-stop `/opacity` silently drops (no leak — visual only); per-component `./<style>/*` exports
+stay on `src`.
+
+---
+
 ## 2026-06-10 — Skin system + follow-ups + docs/CLI sync (v1.1.15)
 
 **Skin system (public, first-class — parallel to theming).** `vibe.skin` + `vibe.allowedSkins`
