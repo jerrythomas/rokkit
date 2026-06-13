@@ -11,7 +11,7 @@ import adapterCloudflare from '@sveltejs/adapter-cloudflare'
 //     The site is NOT fully static — it has a server endpoint
 //     (api/llm/openrouter) and SSR routes — so it ships as a Worker, not a
 //     prerendered bundle. Per-section prerender (guides/+layout.ts) still works.
-const onCloudflare = !!process.env.CF_PAGES || !!process.env.WORKERS_CI
+const onCloudflare = Boolean(process.env.CF_PAGES) || Boolean(process.env.WORKERS_CI)
 const adapter = onCloudflare ? adapterCloudflare() : adapterAuto()
 
 /** @type {import('@sveltejs/kit').Config} */
