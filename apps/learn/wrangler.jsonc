@@ -17,6 +17,12 @@
 	"name": "rokkit",
 	"compatibility_date": "2026-06-13",
 	"compatibility_flags": ["nodejs_compat"],
+	// Made explicit to silence wrangler's "enabled by default" warnings. These
+	// keep the current behavior: the site is served at <name>.<subdomain>.workers.dev
+	// and each deployment gets a versioned preview URL. Set either to false to
+	// turn it off (e.g. workers_dev: false if you serve only from a custom domain).
+	"workers_dev": true,
+	"preview_urls": true,
 	"main": ".svelte-kit/cloudflare/_worker.js",
 	"assets": {
 		"binding": "ASSETS",
