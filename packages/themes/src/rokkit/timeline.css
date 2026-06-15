@@ -18,7 +18,7 @@
 }
 
 [data-style='rokkit'] [data-timeline-item][data-active] [data-timeline-circle] {
-  @apply border-primary text-primary ring-3 ring-primary/20;
+  @apply border-primary text-ink ring-3 ring-primary/20;
 }
 
 /* =============================================================================

@@ -14,11 +14,11 @@
 }
 
 [data-style='zen-sumi'] [data-timeline-item][data-completed] [data-timeline-circle] {
-  @apply border-primary text-primary;
+  @apply border-primary text-ink;
 }
 
 [data-style='zen-sumi'] [data-timeline-item][data-active] [data-timeline-circle] {
-  @apply border-primary text-primary;
+  @apply border-primary text-ink;
 }
 
 /* =============================================================================

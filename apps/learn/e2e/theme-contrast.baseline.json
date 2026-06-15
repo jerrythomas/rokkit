@@ -1,17 +1,13 @@
 [
-	"avatar|data-avatar",
-	"avatar|data-avatar-initials",
 	"button|data-button",
 	"message|data-message-root",
 	"message|data-message-text",
 	"multiselect|data-select-tag",
 	"multiselect|data-select-tag-text",
-	"stepper|data-stepper-circle",
 	"table|data-table-header-cell",
 	"table|data-table-header-text",
 	"tabs|data-tabs-label",
 	"tabs|data-tabs-trigger",
-	"timeline|data-timeline-circle",
 	"toggle|data-toggle-label",
 	"toggle|data-toggle-option",
 	"tooltip|data-button"

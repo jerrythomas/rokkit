@@ -47,7 +47,9 @@
 }
 
 [data-stepper-step][data-completed] [data-stepper-circle] {
-  background-color: var(--primary);
+  /* darkened fill so the white check/number meets AA (mid-tone primary-500
+     fill fails with white — same Option-A treatment as filled buttons) */
+  background-color: color-mix(in oklch, var(--primary) 70%, black);
   border-color: var(--primary);
   color: var(--paper);
 }
@@ -60,7 +62,9 @@
 
 [data-stepper-step][data-active] [data-stepper-circle] {
   border-color: var(--primary);
-  color: var(--primary);
+  /* ink number (not saffron) so it reads on the page; the saffron border + ring
+     keep the active accent */
+  color: var(--ink);
   @apply ring-primary/20 ring-3;
 }
 
