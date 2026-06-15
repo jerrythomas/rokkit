@@ -24,7 +24,7 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-tabs-trigger] {
-  @apply text-ink-soft bg-transparent border-0;
+  @apply text-ink-mute bg-transparent border-0;
   font-weight: 400;
   border-radius: var(--radius-sm, 0.125rem);
   transition:
@@ -33,7 +33,7 @@
 }
 
 [data-style='zen-sumi'] [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {
-  @apply bg-paper-mute text-ink-mute;
+  @apply bg-paper-mute text-ink;
 }
 
 [data-style='zen-sumi'] [data-tabs-trigger][data-selected] {

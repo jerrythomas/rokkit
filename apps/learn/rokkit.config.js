@@ -150,10 +150,13 @@ export default {
 			error:     'shu',
 			info:      'kohaku'
 		},
-		ocean:    { surface: 'slate', primary: 'sky',     secondary: 'teal',   accent: 'cyan' },
-		violet:   { surface: 'zinc',  primary: 'violet',  secondary: 'purple', accent: 'indigo' },
-		rose:     { surface: 'stone', primary: 'rose',    secondary: 'pink',   accent: 'orange' },
-		emerald:  { surface: 'slate', primary: 'emerald', secondary: 'teal',   accent: 'cyan' }
+		// Brand skins reuse the dual-palette kami/sumi neutral for surface+ink so
+		// named tokens flip in dark mode (a single Tailwind palette emits no
+		// [data-mode='dark'] block). Only primary/secondary/accent carry the brand.
+		ocean:    { surface: { light: 'kami', dark: 'sumi' }, ink: { light: 'kami', dark: 'sumi' }, primary: 'sky',     secondary: 'teal',   accent: 'cyan' },
+		violet:   { surface: { light: 'kami', dark: 'sumi' }, ink: { light: 'kami', dark: 'sumi' }, primary: 'violet',  secondary: 'purple', accent: 'indigo' },
+		rose:     { surface: { light: 'kami', dark: 'sumi' }, ink: { light: 'kami', dark: 'sumi' }, primary: 'rose',    secondary: 'pink',   accent: 'orange' },
+		emerald:  { surface: { light: 'kami', dark: 'sumi' }, ink: { light: 'kami', dark: 'sumi' }, primary: 'emerald', secondary: 'teal',   accent: 'cyan' }
 	},
 
 	themes: ['rokkit', 'minimal', 'material', 'frosted', 'zen-sumi'],
