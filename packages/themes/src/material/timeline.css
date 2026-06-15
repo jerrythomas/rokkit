@@ -14,7 +14,7 @@
 
 [data-style='material'] [data-timeline-item][data-completed] [data-timeline-circle] {
   @apply  border-primary text-on-primary shadow-sm;
-  background-color: color-mix(in oklch, var(--primary) 70%, black);
+  background-color: var(--primary);
 }
 
 [data-style='material'] [data-timeline-item][data-active] [data-timeline-circle] {
@@ -30,7 +30,7 @@
 }
 
 [data-style='material'] [data-timeline-item][data-completed] [data-timeline-connector] {
-  background-color: color-mix(in oklch, var(--primary) 70%, black);
+  background-color: var(--primary);
 }
 
 /* =============================================================================

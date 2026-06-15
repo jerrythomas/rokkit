@@ -2,7 +2,7 @@
 // @ts-nocheck
 import { DEFAULT_THEME_MAPPING, defaultColors, TONE_MAP, INVERTED_ROLES } from './constants'
 import { shades } from './colors/index'
-import { ColorSpace } from './color-space'
+import { ColorSpace, relativeLuminance } from './color-space'
 import {
   NAMED_TOKENS,
   NAMED_TOKEN_SHADE_MAP,
@@ -133,24 +133,41 @@ export function semanticShortcuts(name) {
 /**
  * Generates "on-color" text shortcuts for readable text on colored backgrounds.
  *
- * - `text-on-{name}` → high contrast text for use on z5+ backgrounds (always light text)
- * - `text-on-{name}-muted` → slightly muted but still readable on z5+ backgrounds
+ * The on-color is whichever of near-black / near-white best contrasts with the
+ * role's z5 fill (the principle: a 500-shade fill takes black OR white text —
+ * never a mid tint, which fails AA on bright fills like vermillion). The caller
+ * passes the resolved on-color hex (see `Theme.#onColorHex`); we emit it as an
+ * arbitrary-value utility so it stays a single CSS color, opacity-composable.
  *
- * @param {string} name - Color name (e.g., 'primary', 'surface')
+ * - `text-on-{name}` → readable text on a z5+ fill
+ * - `text-on-{name}-muted` → same on-color (kept for back-compat callers)
+ *
+ * @param {string} name - Color name (e.g., 'primary', 'accent', 'danger')
+ * @param {string} [onColor='#fafafa'] - resolved on-color hex for this role
  * @returns {Array} Array of shortcut definitions
  */
-export function contrastShortcuts(name) {
+export function contrastShortcuts(name, onColor = '#fafafa') {
 	return [
-		[
-			new RegExp(`^text-on-${name}(\\/\\d+)?$`),
-			([, end]) => `text-${name}-50${end || ''} dark:text-${name}-50${end || ''}`
-		],
-		[
-			new RegExp(`^text-on-${name}-muted(\\/\\d+)?$`),
-			([, end]) => `text-${name}-100${end || ''} dark:text-${name}-200${end || ''}`
-		]
+		[new RegExp(`^text-on-${name}(\\/\\d+)?$`), ([, end]) => `text-[${onColor}]${end || ''}`],
+		[new RegExp(`^text-on-${name}-muted(\\/\\d+)?$`), ([, end]) => `text-[${onColor}]${end || ''}`]
 	]
 }
+
+/**
+ * Near-black / near-white on-color endpoints. Not pure #000/#fff — a hair of
+ * lift reads softer on a saturated fill while still clearing AA (near-black is
+ * dark enough that even a mid-bright vermillion 500 reaches ~5:1).
+ */
+const ON_COLOR_DARK = '#161616'
+const ON_COLOR_LIGHT = '#fafafa'
+/**
+ * Fill luminance where ON_COLOR_DARK and ON_COLOR_LIGHT give equal WCAG contrast:
+ * solve (Yf+0.05)² = (Y_dark+0.05)(Y_light+0.05) with Y_dark≈0.0074, Y_light≈0.956
+ * → Yf ≈ 0.190. Fills at/above this take dark text; below take light text. (Truly
+ * mid-luminance fills near this point clear neither pair at AA — that's the
+ * palette author's choice to make, per "pick a 500 where black or white works".)
+ */
+const ON_COLOR_Y_CROSSOVER = 0.19
 
 /**
  * Fallback chain for nullable color mappings.
@@ -306,21 +323,30 @@ export class Theme {
 	}
 
 	/**
-	 * Resolves a 'derived' named token. Today only `on-primary` is derived — it picks
-	 * shade 50 from the surface palette for the default white-on-primary contrast pair.
+	 * Resolves a 'derived' named token. Today only `on-primary` is derived — it's
+	 * the auto on-color (near-black or near-white) for the primary fill, so the
+	 * default pair always clears AA whether primary-500 is bright (→ black) or
+	 * dark (→ white). Skins still override `on-primary` for a bespoke pair.
 	 */
-	#resolveDerivedToken(name: string, colors: Record<string, Record<string, string>>, perRoleModes?: Record<string, 'core' | 'extended'>): string | undefined {
+	#resolveDerivedToken(name: string, colors: Record<string, Record<string, string>>, _perRoleModes?: Record<string, 'core' | 'extended'>): string | undefined {
 		if (name === 'on-primary') {
-			const surfacePaletteName = this.#mapping['surface']
-			const surfacePalette = colors[surfacePaletteName]
-			if (!surfacePalette?.['50']) return undefined
-			const surfaceMode = perRoleModes?.['surface'] ?? 'core'
-			if (surfaceMode === 'extended') {
-				return `var(--color-surface-50)`
-			}
-			return this.#adapter.wrap(surfacePalette['50'])
+			return this.#adapter.wrap(this.#onColorHex('primary', colors))
 		}
 		return undefined
+	}
+
+	/**
+	 * Picks the readable on-color (near-black / near-white hex) for a role's z5
+	 * fill by its relative luminance. Bright fills (vermillion, teal, amber) take
+	 * dark text; dark fills (violet, indigo) take light text. Falls back to light
+	 * when the fill can't be measured (matches the historical default).
+	 */
+	#onColorHex(role: string, colors: Record<string, Record<string, string>>): string {
+		const palette = colors[this.#mapping[role]]
+		const fill = palette?.['500']
+		const y = fill !== undefined ? relativeLuminance(fill, this.#adapter.name) : null
+		if (y === null) return ON_COLOR_LIGHT
+		return y >= ON_COLOR_Y_CROSSOVER ? ON_COLOR_DARK : ON_COLOR_LIGHT
 	}
 
 	/**
@@ -387,17 +413,18 @@ export class Theme {
 	 * Used in extended mode where the preset emits the full --color-{role}-{shade}
 	 * palette; named tokens become thin syntactic aliases over the palette.
 	 *
-	 * `on-primary` aliases to `var(--color-surface-50)` (derived: paper of surface,
-	 * matching the core-mode resolution).
+	 * `on-primary` resolves to the auto on-color for the primary fill (near-black
+	 * or near-white), matching the core-mode derivation.
 	 */
 	getZAliasesForExtended(): Record<string, string> {
+		const colors = { ...defaultColors, ...this.#colors }
 		const result: Record<string, string> = {}
 		for (const name of NAMED_TOKENS) {
 			const role = NAMED_TOKEN_ROLE_MAP[name]
 			const shadeOrDerived = NAMED_TOKEN_SHADE_MAP[name]
 			if (shadeOrDerived === 'derived') {
-				// on-primary → surface.50
-				result[`--${name}`] = `var(--color-surface-50)`
+				// on-primary → auto on-color (black/white) for the primary fill
+				result[`--${name}`] = this.#adapter.wrap(this.#onColorHex('primary', colors))
 				continue
 			}
 			result[`--${name}`] = `var(--color-${role}-${shadeOrDerived})`
@@ -438,7 +465,8 @@ export class Theme {
 	}
 
 	getShortcuts(name) {
-		return [...semanticShortcuts(name), ...contrastShortcuts(name)]
+		const colors = { ...defaultColors, ...this.#colors }
+		return [...semanticShortcuts(name), ...contrastShortcuts(name, this.#onColorHex(name, colors))]
 	}
 
 	/**

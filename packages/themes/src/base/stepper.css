@@ -47,11 +47,10 @@
 }
 
 [data-stepper-step][data-completed] [data-stepper-circle] {
-  /* darkened fill so the white check/number meets AA (mid-tone primary-500
-     fill fails with white — same Option-A treatment as filled buttons) */
-  background-color: color-mix(in oklch, var(--primary) 70%, black);
+  /* solid brand fill + on-primary text (dark, reads on the bright 500). */
+  background-color: var(--primary);
   border-color: var(--primary);
-  color: var(--paper);
+  color: var(--on-primary);
 }
 
 /* Check glyph inside a completed circle follows the circle's color

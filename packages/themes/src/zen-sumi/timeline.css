@@ -30,7 +30,7 @@
 }
 
 [data-style='zen-sumi'] [data-timeline-item][data-completed] [data-timeline-connector] {
-  background-color: color-mix(in oklch, var(--primary) 70%, black);
+  background-color: var(--primary);
 }
 
 /* =============================================================================

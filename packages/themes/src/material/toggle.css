@@ -28,7 +28,7 @@
 /* Selected state */
 [data-style='material'] [data-toggle-option][data-selected='true'] {
   @apply  bg-none text-on-primary shadow-md;
-  background-color: color-mix(in oklch, var(--primary) 70%, black);
+  background-color: var(--primary);
 }
 
 /* =============================================================================

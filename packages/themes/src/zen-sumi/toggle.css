@@ -32,7 +32,7 @@
 /* Selected state — primary (shu) fill */
 [data-style='zen-sumi'] [data-toggle-option][data-selected='true'] {
   @apply  text-on-primary bg-none;
-  background-color: color-mix(in oklch, var(--primary) 70%, black);
+  background-color: var(--primary);
   font-weight: 500;
 }
 

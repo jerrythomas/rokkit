@@ -21,17 +21,20 @@ export default {
 		},
 		/** shu — vermillion, primary accent */
 		shu: {
-			50:  '0.970 0.020 35',
-			100: '0.940 0.040 35',
-			200: '0.880 0.070 35',
-			300: '0.800 0.100 35',
-			400: '0.700 0.130 35',
-			500: '0.580 0.150 35',
-			600: '0.500 0.140 35',
-			700: '0.420 0.120 35',
-			800: '0.350 0.100 35',
-			900: '0.280 0.080 35',
-			950: '0.220 0.060 35',
+			// Vermillion brand. 500 = #e8552b (oklch 0.641 0.190 36); a bright,
+			// saturated base where black text reads (~5.8:1) — the fill stays the
+			// brand color, contrast comes from the on-color, not from darkening it.
+			50:  '0.970 0.022 38',
+			100: '0.938 0.052 38',
+			200: '0.880 0.092 37',
+			300: '0.805 0.130 37',
+			400: '0.725 0.165 37',
+			500: '0.641 0.190 36',
+			600: '0.555 0.175 35',
+			700: '0.470 0.150 34',
+			800: '0.390 0.122 33',
+			900: '0.315 0.092 33',
+			950: '0.245 0.066 33',
 		},
 		/** hisui — jade green, secondary / success */
 		hisui: {
@@ -124,13 +127,12 @@ export default {
 		// otherwise resolve to sumi.400 (LIGHTER than the sumi.50 paper bg)
 		// and produce a "lifted edge" look. Pin it to a value DARKER than
 		// the canvas so the etched hairline reads correctly.
-		'paper-edge': { light: 'kami.400', dark: 'oklch(0.04 0.025 85)' },
+		'paper-edge': { light: 'kami.400', dark: 'oklch(0.04 0.025 85)' }
 
-		// Filled controls darken their brand fill (color-mix toward black) for AA
-		// text. on-primary must therefore be CONSTANT light — the derived default
-		// (surface.50) flips to a dark sumi tone in dark mode, which would be
-		// dark-on-dark on the darkened fill. Pin it near-white for both modes.
-		'on-primary': 'kami.50'
+		// `on-primary` is no longer overridden — the core now auto-derives every
+		// on-color (near-black / near-white) from the fill's luminance. The bright
+		// vermillion #e8552b (L0.641) resolves to near-black text (~5:1), the brand
+		// stays the brand, and dark-primary skins (violet) get white automatically.
 	},
 
 	shape: {
@@ -159,7 +161,7 @@ export default {
 		// Brand skins reuse the dual-palette kami/sumi neutral for surface+ink so
 		// named tokens flip in dark mode (a single Tailwind palette emits no
 		// [data-mode='dark'] block). Only primary/secondary/accent carry the brand.
-		ocean:    { surface: { light: 'kami', dark: 'sumi' }, ink: { light: 'kami', dark: 'sumi' }, primary: 'sky',     secondary: 'teal',   accent: 'cyan' },
+		ocean:    { surface: { light: 'kami', dark: 'sumi' }, ink: { light: 'kami', dark: 'sumi' }, primary: 'teal',    secondary: 'emerald', accent: 'sky' },
 		violet:   { surface: { light: 'kami', dark: 'sumi' }, ink: { light: 'kami', dark: 'sumi' }, primary: 'violet',  secondary: 'purple', accent: 'indigo' },
 		rose:     { surface: { light: 'kami', dark: 'sumi' }, ink: { light: 'kami', dark: 'sumi' }, primary: 'rose',    secondary: 'pink',   accent: 'orange' },
 		emerald:  { surface: { light: 'kami', dark: 'sumi' }, ink: { light: 'kami', dark: 'sumi' }, primary: 'emerald', secondary: 'teal',   accent: 'cyan' }

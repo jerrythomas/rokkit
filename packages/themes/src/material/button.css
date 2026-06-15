@@ -18,25 +18,25 @@
 [data-style='material'] [data-button][data-style='default'][data-variant='primary'],
 [data-style='material'] [data-button]:not([data-style])[data-variant='primary'] {
   @apply  text-on-primary bg-none shadow-md;
-  background-color: color-mix(in oklch, var(--primary) 70%, black);
+  background-color: var(--primary);
 }
 
 [data-style='material'] [data-button][data-style='default'][data-variant='secondary'],
 [data-style='material'] [data-button]:not([data-style])[data-variant='secondary'] {
   @apply  text-on-primary bg-none shadow-md;
-  background-color: color-mix(in oklch, var(--accent) 70%, black);
+  background-color: var(--accent);
 }
 
 [data-style='material'] [data-button][data-style='default'][data-variant='accent'],
 [data-style='material'] [data-button]:not([data-style])[data-variant='accent'] {
   @apply  text-on-accent bg-none shadow-md;
-  background-color: color-mix(in oklch, var(--accent) 70%, black);
+  background-color: var(--accent);
 }
 
 [data-style='material'] [data-button][data-style='default'][data-variant='danger'],
 [data-style='material'] [data-button]:not([data-style])[data-variant='danger'] {
   @apply  text-on-danger bg-none shadow-md;
-  background-color: color-mix(in oklch, var(--danger) 70%, black);
+  background-color: var(--danger);
 }
 
 /* =============================================================================

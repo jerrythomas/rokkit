@@ -27,8 +27,8 @@ export const Z_SLOTS: ZSlot[] = ['z0', 'z1', 'z2', 'z3', 'z4', 'z5', 'z6', 'z7',
 
 /**
  * Maps each named token to the palette shade index that backs it.
- * 'derived' indicates the token is computed from another palette (e.g., on-primary
- * picks the paper shade of the surface palette by default for white-on-primary).
+ * 'derived' indicates the token is computed (e.g., on-primary is the auto
+ * on-color — near-black or near-white — picked by the primary fill's luminance).
  *
  *   paper:        50  (lightest surface tone, canvas)
  *   paper-soft:   100 (card background)
@@ -39,7 +39,7 @@ export const Z_SLOTS: ZSlot[] = ['z0', 'z1', 'z2', 'z3', 'z4', 'z5', 'z6', 'z7',
  *   ink-soft:     500 (placeholder)
  *   ink-faint:    300 (disabled)
  *   primary:      500 (CTA fill)
- *   on-primary:   derived — surface.50 default (white-on-primary)
+ *   on-primary:   derived — auto on-color (near-black/white) for primary fill
  *   accent / status: 500 (solid)
  *   *-soft:       100 (tinted-bg companion)
  *   focus-ring:   500 of accent
