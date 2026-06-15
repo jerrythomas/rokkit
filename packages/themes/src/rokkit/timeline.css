@@ -13,7 +13,8 @@
 }
 
 [data-style='rokkit'] [data-timeline-item][data-completed] [data-timeline-circle] {
-  @apply bg-primary border-primary text-on-primary;
+  @apply  border-primary text-on-primary;
+  background-color: color-mix(in oklch, var(--primary) 70%, black);
 }
 
 [data-style='rokkit'] [data-timeline-item][data-active] [data-timeline-circle] {
@@ -29,7 +30,7 @@
 }
 
 [data-style='rokkit'] [data-timeline-item][data-completed] [data-timeline-connector] {
-  @apply bg-primary;
+  background-color: color-mix(in oklch, var(--primary) 70%, black);
 }
 
 /* =============================================================================

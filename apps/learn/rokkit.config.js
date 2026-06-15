@@ -126,11 +126,11 @@ export default {
 		// the canvas so the etched hairline reads correctly.
 		'paper-edge': { light: 'kami.400', dark: 'oklch(0.04 0.025 85)' },
 
-		// Dark text on primary fills. The default skin's `shu` (and the brand
-		// skins' sky/violet/rose/emerald) are light/mid-tone 500s — white
-		// `on-primary` fails AA on them (~2.4:1). A dark ink reads ~6:1 and is
-		// constant across modes (the primary fill doesn't flip).
-		'on-primary': 'kami.950'
+		// Filled controls darken their brand fill (color-mix toward black) for AA
+		// text. on-primary must therefore be CONSTANT light — the derived default
+		// (surface.50) flips to a dark sumi tone in dark mode, which would be
+		// dark-on-dark on the darkened fill. Pin it near-white for both modes.
+		'on-primary': 'kami.50'
 	},
 
 	shape: {

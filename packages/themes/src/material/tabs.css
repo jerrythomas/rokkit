@@ -34,7 +34,8 @@
 
 /* Selected state */
 [data-style='material'] [data-tabs-trigger][data-selected] {
-  @apply bg-primary text-on-primary shadow-md;
+  @apply  text-on-primary shadow-md;
+  background-color: color-mix(in oklch, var(--primary) 70%, black);
 }
 
 /* Reset rokkit gradients bleeding in from body[data-style='rokkit'] ancestor */

@@ -235,7 +235,7 @@
   [data-button][data-style='ghost']:hover:not(:disabled):not(
     [data-disabled]
   )[data-variant='primary'] {
-  @apply bg-primary;
+  background-color: color-mix(in oklch, var(--primary) 70%, black);
 }
 
 [data-style='rokkit']
