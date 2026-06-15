@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-table-header] th {
-  @apply text-ink-soft border-b backdrop-blur-sm;
+  @apply text-ink-mute border-b backdrop-blur-sm;
   border-color: color-mix(in oklch, var(--ink-soft) 20%, transparent);
   background-color: color-mix(in oklch, var(--paper-mute) 80%, transparent);
 }
@@ -24,7 +24,7 @@
 }
 
 [data-style='frosted'] [data-table-sort-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='frosted'] [data-table-header-cell][data-sort-order='ascending'] [data-table-sort-icon],
@@ -85,7 +85,7 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-table-empty] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 /* =============================================================================
@@ -93,7 +93,7 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-table-cell] [data-cell-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='frosted'] [data-table-row][data-selected='true'] [data-cell-icon] {
@@ -112,7 +112,7 @@
   }
 
   [data-style='frosted'] [data-table-responsive] [data-table-cell]::before {
-    @apply text-ink-soft;
+    @apply text-ink-mute;
   }
 
   /* Disable striped alternating bg in card layout */

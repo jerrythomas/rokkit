@@ -25,7 +25,7 @@
 }
 
 [data-style='rokkit'] [data-dropdown-trigger] [data-dropdown-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='rokkit'] [data-dropdown-trigger]:hover:not(:disabled) [data-dropdown-icon] {
@@ -33,7 +33,7 @@
 }
 
 [data-style='rokkit'] [data-dropdown-trigger] [data-dropdown-arrow] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 /* =============================================================================

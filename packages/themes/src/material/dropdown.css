@@ -21,11 +21,11 @@
 }
 
 [data-style='material'] [data-dropdown-trigger] [data-dropdown-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='material'] [data-dropdown-trigger] [data-dropdown-arrow] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='material'] [data-dropdown-panel] {

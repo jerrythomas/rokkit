@@ -14,6 +14,7 @@
 	 * can be grouped by component. Keep instances small but text-bearing.
 	 */
 	import { page } from '$app/state'
+	import { vibe } from '@rokkit/states'
 	import {
 		Button, Badge, Pill, Card, List, Tree, Table, Tabs, Select, MultiSelect,
 		Menu, Dropdown, Toggle, Switch, ProgressBar, Range, Rating, Timeline,
@@ -31,6 +32,19 @@
 				: 'light'
 			: modeParam
 	)
+
+	// CRITICAL for the contrast audit: this embed page renders inside the app's
+	// <body>, which the root layout's `themable` action pins to `vibe`. A
+	// wrapper-only data-style would collide with that outer body scope — both
+	// `[data-style='X'] [part]` and `[data-style='<vibe>'] [part]` match the
+	// same element at equal specificity, so the later-emitted style wins and the
+	// audit measures a style MIX, not the requested one. Drive `vibe` itself so
+	// `themable` sets <body> to the SAME style/skin/mode → one consistent scope.
+	$effect(() => {
+		vibe.style = style
+		vibe.mode = mode
+		vibe.skin = skin
+	})
 
 	// representative data + bindable state
 	const listItems = [

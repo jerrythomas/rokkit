@@ -28,11 +28,11 @@
 }
 
 [data-style='frosted'] [data-dropdown-trigger] [data-dropdown-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='frosted'] [data-dropdown-trigger] [data-dropdown-arrow] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='frosted'] [data-dropdown-panel] {

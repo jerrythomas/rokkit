@@ -54,7 +54,7 @@
 
 [data-style='rokkit'] [data-list] [data-list-item] [data-item-icon] {
   font-size: 1rem;
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='rokkit'] [data-list] [data-list-item]:hover:not(:disabled) [data-item-icon],
@@ -79,7 +79,7 @@
 
 /* Literal / kanji icons */
 [data-style='rokkit'] [data-list] [data-list-item] [data-item-icon-literal] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='rokkit'] [data-list] [data-list-item]:hover:not(:disabled) [data-item-icon-literal],
@@ -104,7 +104,7 @@
 
 /* Item description */
 [data-style='rokkit'] [data-list] [data-list-item] [data-item-description] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='rokkit'] [data-list] [data-list-item][data-active='true'] [data-item-description] {
@@ -124,7 +124,7 @@
 
 /* Item badge */
 [data-style='rokkit'] [data-list] [data-list-item] [data-item-badge] {
-  @apply text-ink-soft from-paper-mute to-paper-mute border-paper-edge border bg-gradient-to-b;
+  @apply text-ink-mute from-paper-mute to-paper-mute border-paper-edge border bg-gradient-to-b;
 }
 
 [data-style='rokkit'] [data-list] [data-list-item][data-active='true'] [data-item-badge] {
@@ -157,7 +157,7 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-list] [data-list-group] {
-  @apply text-ink-soft mt-2;
+  @apply text-ink-mute mt-2;
 }
 
 [data-style='rokkit'] [data-list] [data-list-group]:first-child {

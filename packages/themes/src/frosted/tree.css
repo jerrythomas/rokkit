@@ -18,7 +18,7 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-tree-toggle-btn] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='frosted'] [data-tree-toggle-btn]:hover {
@@ -60,7 +60,7 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-tree-item-content] [data-item-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='frosted'] [data-tree-item-content]:hover:not(:disabled) [data-item-icon] {
@@ -72,7 +72,7 @@
 }
 
 [data-style='frosted'] [data-tree-item-content] [data-item-description] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='frosted'] [data-tree-item-content][data-active='true'] [data-item-description] {
@@ -80,7 +80,7 @@
 }
 
 [data-style='frosted'] [data-tree-item-content] [data-item-badge] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
   background-color: color-mix(in oklch, var(--paper-mute) 15%, transparent);
 }
 

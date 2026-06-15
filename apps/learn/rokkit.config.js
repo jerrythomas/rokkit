@@ -124,7 +124,13 @@ export default {
 		// otherwise resolve to sumi.400 (LIGHTER than the sumi.50 paper bg)
 		// and produce a "lifted edge" look. Pin it to a value DARKER than
 		// the canvas so the etched hairline reads correctly.
-		'paper-edge': { light: 'kami.400', dark: 'oklch(0.04 0.025 85)' }
+		'paper-edge': { light: 'kami.400', dark: 'oklch(0.04 0.025 85)' },
+
+		// Dark text on primary fills. The default skin's `shu` (and the brand
+		// skins' sky/violet/rose/emerald) are light/mid-tone 500s — white
+		// `on-primary` fails AA on them (~2.4:1). A dark ink reads ~6:1 and is
+		// constant across modes (the primary fill doesn't flip).
+		'on-primary': 'kami.950'
 	},
 
 	shape: {

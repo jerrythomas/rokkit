@@ -56,12 +56,18 @@ export function collectContrast({ mode }) {
 		return [0, 1, 2].map((i) => Math.round(fg[i] * a + bg[i] * (1 - a)))
 	}
 	const pageBg = mode === 'dark' ? [17, 17, 17] : [255, 255, 255]
+	// Returns the composited background, or null when an ancestor paints a
+	// gradient/image (background-image) — we can't read a single color from it,
+	// so contrast is indeterminate and the element is skipped rather than
+	// falsely flagged (e.g. rokkit's gradient-filled primary buttons/tabs).
 	const effectiveBg = (el) => {
 		let node = el
 		let solid = null
 		const layers = []
 		while (node && node !== document.documentElement) {
-			const bg = toRGBA(getComputedStyle(node).backgroundColor)
+			const cs = getComputedStyle(node)
+			if (cs.backgroundImage && cs.backgroundImage !== 'none') return null
+			const bg = toRGBA(cs.backgroundColor)
 			if (bg[3] > 0) {
 				if (bg[3] >= 0.999) { solid = [bg[0], bg[1], bg[2]]; break }
 				layers.push(bg)
@@ -96,6 +102,7 @@ export function collectContrast({ mode }) {
 		const color = toRGBA(cs.color)
 		if (color[3] < 0.1) continue
 		const bg = effectiveBg(el)
+		if (!bg) continue // gradient/image fill — contrast indeterminate, skip
 		const fg = color[3] >= 0.999 ? [color[0], color[1], color[2]] : over(color, bg)
 		const ratio = contrast(relLum(fg), relLum(bg))
 		const px = parseFloat(cs.fontSize)

@@ -19,12 +19,12 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-list] [data-list-item] {
-  @apply text-ink-soft border-0 border-solid border-transparent bg-transparent;
+  @apply text-ink-mute border-0 border-solid border-transparent bg-transparent;
 }
 
 [data-style='zen-sumi'] [data-list] a[data-list-item],
 [data-style='zen-sumi'] [data-list] button[data-list-item] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 /* Hover and focus — subtle paper wash */
@@ -58,12 +58,12 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-list] [data-list-item] [data-item-icon] {
-  @apply text-paper-edge;
+  @apply text-ink-mute;
 }
 
 [data-style='zen-sumi'] [data-list] [data-list-item]:hover:not(:disabled) [data-item-icon],
 [data-style='zen-sumi'] [data-list] [data-list-item]:focus:not(:disabled) [data-item-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='zen-sumi'] [data-list] [data-list-item][data-active='true'] [data-item-icon] {
@@ -71,15 +71,15 @@
 }
 
 [data-style='zen-sumi'] [data-list] [data-list-item] [data-item-description] {
-  @apply text-paper-edge;
+  @apply text-ink-mute;
 }
 
 [data-style='zen-sumi'] [data-list] [data-list-item][data-active='true'] [data-item-description] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='zen-sumi'] [data-list] [data-list-item] [data-item-badge] {
-  @apply text-ink-soft border-paper-mute border bg-transparent bg-none;
+  @apply text-ink-mute border-paper-mute border bg-transparent bg-none;
 }
 
 [data-style='zen-sumi'] [data-list] [data-list-item][data-active='true'] [data-item-badge] {
@@ -91,12 +91,12 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-list] [data-list-group] {
-  @apply text-paper-edge;
+  @apply text-ink-mute;
 }
 
 [data-style='zen-sumi'] [data-list] [data-list-group]:hover:not(:disabled),
 [data-style='zen-sumi'] [data-list] [data-list-group]:focus:not(:disabled) {
-  @apply text-ink-soft bg-none;
+  @apply text-ink-mute bg-none;
 }
 
 /* =============================================================================
