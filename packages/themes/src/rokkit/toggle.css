@@ -23,7 +23,7 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-toggle-option] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 /* Hover applies only to UNSELECTED options so the branded selected
@@ -46,7 +46,7 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-toggle-option] [data-toggle-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='rokkit'] [data-toggle-option]:hover:not(:disabled) [data-toggle-icon],
@@ -66,7 +66,7 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-toggle][data-toggle-variant='button'] {
-  @apply border-transparent bg-transparent text-ink-soft;
+  @apply border-transparent bg-transparent text-ink-mute;
   background-image: none;
 }
 
@@ -76,7 +76,7 @@
 }
 
 [data-style='rokkit'] [data-toggle][data-toggle-variant='button'] [data-toggle-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='rokkit'] [data-toggle][data-toggle-variant='button']:hover:not(:disabled) [data-toggle-icon],
