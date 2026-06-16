@@ -1,0 +1,29 @@
+/**
+ * Divider - Zen-Sumi Theme Styles
+ *
+ * Hairline ink-on-paper rule. The base leaves the line uncolored, so without
+ * this the divider is invisible — pin it to the paper-edge hairline tone.
+ */
+
+[data-style='zen-sumi'] [data-divider][data-orientation='horizontal']::before,
+[data-style='zen-sumi'] [data-divider][data-orientation='horizontal']::after {
+  @apply bg-paper-edge;
+}
+
+[data-style='zen-sumi'] [data-divider][data-orientation='vertical']::before,
+[data-style='zen-sumi'] [data-divider][data-orientation='vertical']::after {
+  @apply bg-paper-edge;
+}
+
+/* No-label divider — color the element itself (no ::before/::after spacers). */
+[data-style='zen-sumi'] [data-divider][data-orientation='horizontal']:not(:has([data-divider-label])) {
+  @apply bg-paper-edge;
+}
+
+[data-style='zen-sumi'] [data-divider][data-orientation='vertical']:not(:has([data-divider-label])) {
+  @apply bg-paper-edge;
+}
+
+[data-style='zen-sumi'] [data-divider-label] {
+  @apply text-ink-mute;
+}

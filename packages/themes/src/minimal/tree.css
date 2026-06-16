@@ -5,6 +5,17 @@
  */
 
 /* =============================================================================
+   Connector Lines — hairline tone (mode-aware), not currentColor (which
+   renders white in dark mode and greyish in light).
+   ============================================================================= */
+
+[data-style='minimal'] [data-tree]:not([data-line-style='none']) [data-connector-v],
+[data-style='minimal'] [data-tree]:not([data-line-style='none']) [data-connector-h],
+[data-style='minimal'] [data-tree]:not([data-line-style='none']) [data-connector-corner] {
+  @apply border-paper-edge;
+}
+
+/* =============================================================================
    Tree Container
    ============================================================================= */
 
