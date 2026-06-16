@@ -6,6 +6,7 @@
 	import { page } from '$app/state'
 	import SiteHeader from '$lib/components/SiteHeader.svelte'
 	import SiteFooter from '$lib/components/SiteFooter.svelte'
+	import Seo from '$lib/components/Seo.svelte'
 	import { skinDefinitions } from '$lib/data/skins'
 	import { STORAGE_KEY } from '$lib/theme-config'
 
@@ -52,6 +53,10 @@
 	 storage, and the cycle continues — visible as the host header
 	 flickering through every embedded style. -->
 <svelte:body use:themable={{ theme: vibe, storageKey: isEmbed ? undefined : STORAGE_KEY }} />
+
+<!-- Per-page <head> SEO (title/description/canonical/OG/Twitter/JSON-LD).
+	 Routes override via `page.data.seo` returned from their `load`. -->
+<Seo seo={page.data?.seo} />
 
 <div
 	class="site-shell"

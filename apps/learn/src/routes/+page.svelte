@@ -77,10 +77,6 @@
 	]
 </script>
 
-<svelte:head>
-	<title>Rokkit — data-driven Svelte components</title>
-</svelte:head>
-
 <div class="landing">
 
 	<!-- ─── Hero ───────────────────────────────────────────────────── -->

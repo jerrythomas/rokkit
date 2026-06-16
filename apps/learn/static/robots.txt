@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Interactive app shells / iframe embeds carry meta robots="noindex".
+# They're left crawlable so that directive is seen; only crawl-budget-heavy
+# embeds are disallowed.
+Disallow: /embed/
+
+Sitemap: https://rokkit.sensei-hq.com/sitemap.xml
