@@ -84,7 +84,7 @@
 			options={siteDensities}
 			fields={{ value: 'id' }}
 			value={vibe.density}
-			onchange={(v) => (vibe.density = v)}
+			onchange={(v) => (vibe.density = v as string)}
 			label="Density"
 		>
 			{#snippet itemContent(proxy)}
