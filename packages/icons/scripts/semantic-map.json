@@ -99,7 +99,7 @@
   { "name": "selector-opened", "solar": "alt-arrow-up" },
   { "name": "sort-ascending", "solar": "sort-from-bottom-to-top" },
   { "name": "sort-descending", "solar": "sort-from-top-to-bottom" },
-  { "name": "sort-none", "solar": "sort" },
+  { "name": "sort-none", "solar": "sort-vertical" },
   { "name": "state-error", "solar": "danger" },
   { "name": "state-info", "solar": "info-circle" },
   { "name": "state-success", "solar": "check-circle" },

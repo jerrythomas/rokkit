@@ -95,7 +95,7 @@
 		{ label: 'Design', completed: true },
 		{ label: 'Development', active: true }
 	]
-	const stepperSteps = [{ label: 'Account', completed: true }, { label: 'Profile' }]
+	const stepperSteps = [{ text: 'Account', completed: true }, { text: 'Profile' }]
 	let stepperCurrent = $state(1)
 	const crumbItems = [
 		{ label: 'Home', href: '/' },

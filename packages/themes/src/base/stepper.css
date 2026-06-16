@@ -74,9 +74,12 @@
   flex: 1;
   height: 2px;
   min-width: 2rem;
-  align-self: center;
-  /* Vertically center with the circle (half of 2.5rem) */
-  margin-top: 1.25rem;
+  /* Align to the circle's vertical center, NOT the full step height. The step
+     is `circle + label below`, so `align-self: center` drops the line into the
+     label gap (reads as bottom-aligned). Pin to the top and offset by the
+     circle's radius (1.25rem) minus half the line height. */
+  align-self: flex-start;
+  margin-top: calc(1.25rem - 1px);
   transition: background-color 0.2s ease;
 }
 

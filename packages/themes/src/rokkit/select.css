@@ -87,11 +87,12 @@
   @apply bg-paper-mute text-primary border-l-primary border-l-2;
 }
 
-/* Selected state — full gradient when dropdown has focus */
+/* Selected state — full gradient when dropdown has focus. The option now has a
+   primary→accent FILL, so its text must be on-primary (teal-on-teal otherwise). */
 [data-style='rokkit']
   [data-select-dropdown]:focus-within
   [data-select-option][data-selected='true'] {
-  @apply from-primary to-accent text-primary border-l-primary border-l-2 bg-gradient-to-r;
+  @apply from-primary to-accent text-on-primary border-l-primary border-l-2 bg-gradient-to-r;
 }
 
 /* Selected + hover */
@@ -130,7 +131,7 @@
   [data-select-dropdown]:focus-within
   [data-select-option][data-selected='true']
   [data-item-icon] {
-  @apply text-primary;
+  @apply text-on-primary;
 }
 
 [data-style='rokkit'] [data-select-option] [data-item-description] {
@@ -141,12 +142,22 @@
   @apply text-primary;
 }
 
+/* Description also rides the primary fill when the dropdown has focus. */
+[data-style='rokkit']
+  [data-select-dropdown]:focus-within
+  [data-select-option][data-selected='true']
+  [data-item-description] {
+  @apply text-on-primary;
+}
+
 [data-style='rokkit'] [data-select-option] [data-item-badge] {
   @apply text-ink-mute bg-paper-mute;
 }
 
+/* Selected badge sits on a primary fill → on-primary text (not text-primary,
+   which would be primary-on-primary). */
 [data-style='rokkit'] [data-select-option][data-selected='true'] [data-item-badge] {
-  @apply text-primary bg-primary;
+  @apply text-on-primary bg-primary;
 }
 
 /* =============================================================================
