@@ -2,8 +2,17 @@
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
 	import SiteNav from '$lib/components/SiteNav.svelte'
 	import { ThemeSwitcherToggle } from '@rokkit/app'
+	import { Toggle } from '@rokkit/ui'
 	import { vibe } from '@rokkit/states'
 	import { siteStyles, siteDensities } from '$lib/data/site-styles'
+
+	// Vertical offset of the density-line rects per option — tighter gaps read
+	// as "compact", looser as "comfortable".
+	const densityRows = {
+		compact: { top: 3, bottom: 9.5 },
+		cozy: { top: 2.5, bottom: 10 },
+		comfortable: { top: 1.5, bottom: 11 }
+	}
 
 	let pickerOpen = $state(false)
 	const currentStyle = $derived(siteStyles.find((s) => s.id === vibe.style))
@@ -68,41 +77,28 @@
 		<span data-site-header-div></span>
 
 		<span data-site-header-label>density</span>
-		<div data-site-header-trio role="group" aria-label="Density">
-			{#each siteDensities as d (d.id)}
-				<button
-					type="button"
-					data-active={d.id === vibe.density ? '' : undefined}
-					title={d.label}
-					aria-label={d.label}
-					aria-pressed={d.id === vibe.density}
-					onclick={() => (vibe.density = d.id)}
-				>
-					<svg width="13" height="13" viewBox="0 0 14 14" aria-hidden="true">
-						<rect
-							x="2"
-							y={d.id === 'compact' ? 3 : d.id === 'cozy' ? 2.5 : 1.5}
-							width="10"
-							height="1.5"
-							rx="0.7"
-							fill="currentColor"
-						/>
-						<rect x="2" y="6.25" width="10" height="1.5" rx="0.7" fill="currentColor" />
-						<rect
-							x="2"
-							y={d.id === 'compact' ? 9.5 : d.id === 'cozy' ? 10 : 11}
-							width="10"
-							height="1.5"
-							rx="0.7"
-							fill="currentColor"
-						/>
-					</svg>
-				</button>
-			{/each}
-		</div>
+		<Toggle
+			variant="group"
+			size="sm"
+			class="site-header-toggle"
+			options={siteDensities}
+			fields={{ value: 'id' }}
+			value={vibe.density}
+			onchange={(v) => (vibe.density = v)}
+			label="Density"
+		>
+			{#snippet itemContent(proxy)}
+				{@const rows = densityRows[proxy.value] ?? densityRows.comfortable}
+				<svg width="13" height="13" viewBox="0 0 14 14" aria-hidden="true">
+					<rect x="2" y={rows.top} width="10" height="1.5" rx="0.7" fill="currentColor" />
+					<rect x="2" y="6.25" width="10" height="1.5" rx="0.7" fill="currentColor" />
+					<rect x="2" y={rows.bottom} width="10" height="1.5" rx="0.7" fill="currentColor" />
+				</svg>
+			{/snippet}
+		</Toggle>
 	</div>
 
-	<ThemeSwitcherToggle variant="triad" />
+	<ThemeSwitcherToggle variant="triad" class="site-header-toggle" />
 </header>
 
 <style>
@@ -222,8 +218,12 @@
 		margin: 0 6px;
 	}
 
-	[data-site-header-trio] {
-		display: inline-flex;
+	/* Header toggles — the density switcher and the ThemeSwitcherToggle are both
+	   Toggle components, styled here to match the original compact density
+	   button-group (fixed neutral chrome, theme-independent). The [data-site-header]
+	   prefix is scoped (so it outranks the per-style theme toggle CSS); the inner
+	   parts are :global because they live inside the child Toggle component. */
+	[data-site-header] :global(.site-header-toggle) {
 		gap: 1px;
 		padding: 2px;
 		background: var(--paper-soft);
@@ -231,29 +231,29 @@
 		border-radius: var(--density-radius-base);
 	}
 
-	[data-site-header-trio] button {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
+	[data-site-header] :global(.site-header-toggle [data-toggle-option]) {
 		width: 24px;
 		height: 22px;
+		min-width: 0;
+		padding: 0;
 		border: 0;
-		background: transparent;
-		color: var(--ink-soft);
-		cursor: pointer;
 		border-radius: 3px;
-		transition:
-			background 100ms ease,
-			color 100ms ease;
+		background: transparent;
+		background-image: none;
+		color: var(--ink-soft);
 	}
 
-	[data-site-header-trio] button:hover {
+	[data-site-header] :global(.site-header-toggle [data-toggle-option]:hover:not(:disabled)) {
 		color: var(--ink-mute);
 		background: var(--paper-mute);
 	}
 
-	[data-site-header-trio] button[data-active] {
+	[data-site-header] :global(.site-header-toggle [data-toggle-option][data-selected]) {
 		background: var(--ink);
 		color: var(--paper);
+	}
+
+	[data-site-header] :global(.site-header-toggle [data-toggle-icon]) {
+		color: inherit;
 	}
 </style>

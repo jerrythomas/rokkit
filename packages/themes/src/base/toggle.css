@@ -74,8 +74,11 @@
   padding-inline: 0.375rem;
 }
 
+/* Icon-only options are square — min-width matches the height (same treatment
+   the `button` variant gets), so a lone icon sits in a square, not a portrait box. */
 [data-toggle][data-toggle-size='sm']:not([data-toggle-labels='true']) [data-toggle-option] {
   padding-inline: 0.25rem;
+  min-width: var(--control-h-sm);
 }
 
 [data-toggle][data-toggle-size='sm'] [data-toggle-icon] {
@@ -98,6 +101,7 @@
 [data-toggle][data-toggle-size='md']:not([data-toggle-labels='true']) [data-toggle-option],
 [data-toggle]:not([data-toggle-size]):not([data-toggle-labels='true']) [data-toggle-option] {
   padding-inline: 0.375rem;
+  min-width: var(--control-h-md);
 }
 
 [data-toggle][data-toggle-size='md'] [data-toggle-icon],
@@ -118,6 +122,7 @@
 
 [data-toggle][data-toggle-size='lg']:not([data-toggle-labels='true']) [data-toggle-option] {
   padding-inline: 0.5rem;
+  min-width: var(--control-h-lg);
 }
 
 [data-toggle][data-toggle-size='lg'] [data-toggle-icon] {
