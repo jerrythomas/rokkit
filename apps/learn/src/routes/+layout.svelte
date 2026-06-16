@@ -96,6 +96,15 @@
 		overflow: visible;
 	}
 
+	/* /embed/* pages render long-form content (e.g. the gallery grid) that can
+	   exceed the viewport. The home showcase iframes are sized to their content
+	   so they never scroll; the standalone gallery needs normal page scroll. */
+	.site-shell[data-embed] {
+		height: auto;
+		min-height: 100vh;
+		overflow: visible;
+	}
+
 	.site-main {
 		flex: 1;
 		min-height: 0;
@@ -104,7 +113,8 @@
 		overflow: hidden;
 	}
 
-	.site-shell.has-footer .site-main {
+	.site-shell.has-footer .site-main,
+	.site-shell[data-embed] .site-main {
 		overflow: visible;
 	}
 </style>
