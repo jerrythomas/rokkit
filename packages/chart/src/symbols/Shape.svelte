@@ -2,7 +2,7 @@
 	import type { SVGAttributes } from 'svelte/elements'
 	import { namedShapes } from './constants'
 
-	type Props = {
+	export type Props = {
 		x?: number
 		y?: number
 		size?: number

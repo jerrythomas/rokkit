@@ -165,6 +165,8 @@
         "ramda": "^0.32.0",
       },
       "devDependencies": {
+        "@sveltejs/package": "^2.5.8",
+        "@sveltejs/vite-plugin-svelte": "^6.2.4",
         "@types/d3-array": "^3.2.2",
         "@types/d3-axis": "^3.0.6",
         "@types/d3-format": "^3.0.4",
@@ -176,6 +178,9 @@
         "@types/d3-zoom": "^3.0.8",
         "@types/ramda": "^0.31.1",
         "svelte-check": "^4.4.3",
+      },
+      "peerDependencies": {
+        "svelte": "^5.0.0",
       },
     },
     "packages/cli": {
@@ -233,8 +238,13 @@
         "ramda": "^0.32.0",
       },
       "devDependencies": {
+        "@sveltejs/package": "^2.5.8",
+        "@sveltejs/vite-plugin-svelte": "^6.2.4",
         "@types/ramda": "^0.31.1",
         "svelte-check": "^4.4.3",
+      },
+      "peerDependencies": {
+        "svelte": "^5.0.0",
       },
     },
     "packages/helpers": {
@@ -289,6 +299,8 @@
         "marked": "^15.0.0",
       },
       "devDependencies": {
+        "@sveltejs/package": "^2.5.8",
+        "@sveltejs/vite-plugin-svelte": "^6.2.4",
         "svelte": "^5.53.5",
         "svelte-check": "^4.4.3",
         "typescript": "^5.9.3",

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { SVGAttributes } from 'svelte/elements'
 
-	interface Props extends Omit<SVGAttributes<SVGRectElement>, 'x' | 'y' | 'fill' | 'stroke'> {
+	export interface Props extends Omit<SVGAttributes<SVGRectElement>, 'x' | 'y' | 'fill' | 'stroke'> {
 		x?: number
 		y?: number
 		size?: number
