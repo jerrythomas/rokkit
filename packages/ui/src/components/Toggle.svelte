@@ -1,6 +1,6 @@
 <script lang="ts">
-	// @ts-nocheck
 	import type { ToggleProps } from '../types/toggle.js'
+	import type { ProxyItem } from '@rokkit/states'
 	import { Wrapper, ProxyTree, messages } from '@rokkit/states'
 	import { Navigator } from '@rokkit/actions'
 	import { resolveSnippet } from '@rokkit/core'
@@ -43,7 +43,7 @@
 
 	// ─── Selection handler ─────────────────────────────────────────────────────
 
-	function handleSelect(extractedValue, proxy) {
+	function handleSelect(extractedValue: unknown, proxy: ProxyItem) {
 		if (proxy.disabled || disabled) return
 		if (extractedValue !== value) {
 			value = extractedValue

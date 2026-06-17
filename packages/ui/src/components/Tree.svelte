@@ -1,5 +1,4 @@
 <script lang="ts">
-	// @ts-nocheck
 	/**
 	 * Tree — Hierarchical data navigation with tree lines and keyboard navigation.
 	 *
@@ -22,7 +21,7 @@
 	let {
 		items = [],
 		fields = {},
-		value,
+		value = $bindable(),
 		size = 'md',
 		lineStyle = 'solid',
 		labels: userLabels = {},

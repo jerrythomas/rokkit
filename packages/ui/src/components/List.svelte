@@ -41,7 +41,7 @@
 	let {
 		items = [],
 		fields = {},
-		value,
+		value = $bindable(),
 		size = 'md',
 		disabled = false,
 		collapsible = false,
