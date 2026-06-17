@@ -1,5 +1,41 @@
 # Project Journal
 
+## 2026-06-17 (cont.) — Typed dist via @sveltejs/package + @rokkit/unocss/hooks typed export
+
+Closed the last-mile packaging gap surfaced by a downstream consumer: rokkit's
+component packages shipped `.svelte` with no `.svelte.d.ts`, so a consumer WITHOUT
+the Svelte tooling (pure `tsc`) got no component types.
+
+**@rokkit/unocss/hooks** (`947f8efc`): the `./hooks` subpath had no `types`
+condition → implicit `any`. Added `types: ./dist/hooks.d.ts` (built by
+prepublishOnly) and declared `@sveltejs/kit` as an **optional** peer dep (+ devDep
+for the build) so `themeHook` types as `Handle` instead of `any`. `src/hooks.js`
+already had full JSDoc.
+
+**@sveltejs/package rollout** (`ca1ad79b` app pilot, `a6fdc577` ui/chart/forms):
+each component package now runs `svelte-package -i src -o dist` to emit
+`dist/**/*.svelte.d.ts` (+ `.d.ts`). The **hybrid** wiring keeps `svelte`/`default`
+→ `src` (workspace + dev stay zero-build) and points only the `types` condition →
+`dist`. Generated types are real — e.g. `ThemeSwitcherToggle` resolves to
+`Component<ThemeSwitcherToggleProps>`. dist is gitignored, built at publish.
+- ui/app were source-only (`types: src/index.ts`); chart/forms previously built
+  `dist/index.d.ts` with `tsc`, which can't emit `.svelte.d.ts` — replaced their tsc
+  declaration build with svelte-package and removed the dead `tsconfig.build.json`.
+- chart/forms gained a `svelte` peerDependency (svelte-package flagged it missing);
+  forms' `./lib` subpath gained a types condition.
+- Exported the local `Props` type from chart's Shape/RoundedSquare so the
+  `symbols/index.js` barrel's `components` object literal can emit declarations.
+- Each package got a `svelte.config.js` (vitePreprocess) so svelte-package can
+  transpile `lang="ts"` standalone.
+
+Proven end-to-end: a pure-`tsc` consumer importing `@rokkit/app` resolves real
+component types through the app→ui dist chain with zero errors. The site can drop
+its local ThemeToggle workaround and consume `@rokkit/app` directly next release.
+Publish builds in dependency order, so each package's deps are built before it.
+Full gate green: svelte-check 0 across ui/app/chart/forms, 3566 tests, lint 0;
+no apps/learn regression. Backlog `2026-06-17-svelte-component-types-for-tsc-consumers`
+moved to `done/`.
+
 ## 2026-06-17 — Library-wide lang="ts" migration complete + svelte-check in the gate (type-health Task 2)
 
 **The whole component library is now TypeScript.** Migrated the last 97

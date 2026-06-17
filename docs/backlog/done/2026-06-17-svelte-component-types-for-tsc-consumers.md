@@ -1,7 +1,13 @@
 # `.svelte` Component Types for Pure-`tsc` Consumers
 
 **Date:** 2026-06-17
-**Status:** Backlog — packaging gap; needs `@sveltejs/package` (or equivalent `.svelte.d.ts` emission)
+**Status:** ✅ Done (2026-06-17) — `@sveltejs/package` now emits typed dist
+(`dist/**/*.svelte.d.ts`) for `@rokkit/{app,ui,chart,forms}`; the `types` export
+condition points at it while `svelte`/`default` stay → `src` (workspace + dev remain
+zero-build; dist is gitignored, built at publish via `prepublishOnly`). Commits:
+`ca1ad79b` (app pilot), `a6fdc577` (ui/chart/forms rollout). Verified a pure-`tsc`
+consumer resolves `@rokkit/app`'s components end-to-end through the app→ui dist chain
+with zero errors. Option 1 (svelte-package) from below was taken.
 **Site Applicability:** External TS consumers of `@rokkit/{ui,app,chart,forms}` that do **not**
 use the Svelte language tooling (svelte-check / `@sveltejs/vite-plugin-svelte`).
 
