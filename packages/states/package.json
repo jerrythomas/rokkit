@@ -24,7 +24,9 @@
   "files": [
     "src/**/*.js",
     "src/**/*.svelte",
+    "dist/**/*.d.ts",
     "README.md",
+    "package.json",
     "LICENSE"
   ],
   "exports": {
