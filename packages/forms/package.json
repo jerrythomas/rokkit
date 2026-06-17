@@ -17,7 +17,8 @@
     "prepublishOnly": "cp ../../LICENSE . && tsc --project tsconfig.build.json",
     "postpublish": "rm -f LICENSE",
     "clean": "rm -rf dist",
-    "build": "bun clean && bun prepublishOnly"
+    "build": "bun clean && bun prepublishOnly",
+    "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "files": [
     "src/**/*.js",
@@ -46,6 +47,7 @@
     "ramda": "^0.32.0"
   },
   "devDependencies": {
-    "@types/ramda": "^0.31.1"
+    "@types/ramda": "^0.31.1",
+    "svelte-check": "^4.4.3"
   }
 }
