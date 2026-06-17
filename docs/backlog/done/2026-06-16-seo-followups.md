@@ -1,7 +1,11 @@
 # SEO Follow-ups — Indexable Component Docs + PNG OG Image
 
 **Date:** 2026-06-16
-**Status:** Backlog — follow-ups to the SEO baseline (commit `94e0040f`)
+**Status:** Shipped 2026-06-16 (commit `feeede85`). Both follow-ups done:
+prerendered indexable `/components` index + `/components/[name]` (all 49 catalog
+components, per-page `<Seo>`, in the sitemap) as the content counterpart to the
+noindex `/app` shell; and a rasterized 1200×630 `og-image.png` (X/Twitter-
+compatible) with `SITE.ogImage` pointing at it (SVG kept as source).
 **Site Applicability:** `apps/learn` (routes + static assets).
 
 ## Context
