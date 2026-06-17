@@ -6,7 +6,8 @@
     "declarationDir": "./dist",
     "emitDeclarationOnly": true,
     "outDir": "./dist",
-    "rootDir": "."
+    "rootDir": "src"
   },
+  "include": ["src/**/*"],
   "exclude": ["**/spec/**", "**/test/**", "dist"]
 }
