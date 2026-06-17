@@ -80,7 +80,9 @@
 			const [paletteId, step] = mode === 'dark' ? r.dark : r.light
 			const ramp = ramps[paletteId]
 			if (!ramp) continue
-			const idx = stepKeys.indexOf(step)
+			// Role steps are stored as `string`; stepKeys is `as const`, so narrow
+			// for the lookup (same pattern as store.svelte's indexOf calls).
+			const idx = stepKeys.indexOf(step as (typeof stepKeys)[number])
 			if (idx < 0) continue
 			const color = ramp[idx]
 			if (!color) continue

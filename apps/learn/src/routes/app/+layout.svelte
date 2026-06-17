@@ -14,6 +14,7 @@
 	// kind='info' picks it up.
 	configureWho({ assistant: 'Rokkit' })
 	import { Tabs, Table, Tree, MultiSelect, Select, List, Button, AlertList, Stepper, CodeBlock, Toggle, MarkdownRenderer, CommandPalette } from '@rokkit/ui'
+	import type { TableColumn } from '@rokkit/ui'
 	import { FormRenderer } from '@rokkit/forms'
 	import { alerts, commands } from '@rokkit/states'
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
@@ -541,10 +542,10 @@ ${tabsTag}`
 		{ name: 'Cable', price: 12, stock: 938 }
 	]
 	const tableData = $derived(activeVariant?.id === 'sticky-header' ? tableLong : tableShort)
-	const tableMappedColumns = [
+	const tableMappedColumns: TableColumn[] = [
 		{ name: 'name', label: 'Product Name', sortable: true },
-		{ name: 'price', label: 'Unit Price (USD)', sortable: true, align: 'end' },
-		{ name: 'stock', label: 'On Hand', sortable: true, align: 'end' }
+		{ name: 'price', label: 'Unit Price (USD)', sortable: true, align: 'right' },
+		{ name: 'stock', label: 'On Hand', sortable: true, align: 'right' }
 	]
 	const tableColumns = $derived(activeVariant?.id === 'mapping' ? tableMappedColumns : undefined)
 
@@ -2067,7 +2068,6 @@ ${tabsTag}`
 						demoId={shell.demoType}
 						propsSchema={propsSchema}
 						tweakValues={tweakProps}
-						api={demoApi}
 						onTweakChange={setTweak}
 						onTweakReset={resetTweaks}
 						onTweakCopy={copyTweaks}
@@ -2389,10 +2389,10 @@ ${tabsTag}`
 						{#snippet icon()}
 							<span class="i-mdi:stairs" aria-hidden="true"></span>
 						{/snippet}
-						{#snippet stepperContent(step: { text: string }, _index: number)}
-							<p class="step-blurb">{stepperBlurbs[step.text] ?? ''}</p>
-						{/snippet}
 						<div class="stepper-mount" data-orientation={variantProps.orientation ?? 'horizontal'}>
+							{#snippet stepperContent(step: { text: string }, _index: number)}
+								<p class="step-blurb">{stepperBlurbs[step.text] ?? ''}</p>
+							{/snippet}
 							<Stepper
 								steps={stepperSteps}
 								bind:current={stepperCurrent}
@@ -2681,12 +2681,12 @@ ${tabsTag}`
 						{#snippet icon()}
 							<span class="i-mdi:format-list-bulleted" aria-hidden="true"></span>
 						{/snippet}
-						{#snippet listItemSnippet(proxy: { label: string; get: (k: string) => string | undefined })}
-							<span class={proxy.get('icon')} aria-hidden="true" style="margin-right:6px;color:var(--accent)"></span>
-							<span style="flex:1">{proxy.label}</span>
-							<span style="font:500 10px var(--font-ui);color:var(--accent);background:color-mix(in oklab,var(--accent) 12%,var(--paper-soft));padding:2px 6px;border-radius:4px">CUSTOM</span>
-						{/snippet}
 						<div class="list-mount">
+							{#snippet listItemSnippet(proxy: { label: string; get: (k: string) => string | undefined })}
+								<span class={proxy.get('icon')} aria-hidden="true" style="margin-right:6px;color:var(--accent)"></span>
+								<span style="flex:1">{proxy.label}</span>
+								<span style="font:500 10px var(--font-ui);color:var(--accent);background:color-mix(in oklab,var(--accent) 12%,var(--paper-soft));padding:2px 6px;border-radius:4px">CUSTOM</span>
+							{/snippet}
 							<List
 								items={listItems}
 								collapsible={activeVariant?.id !== 'flat'}

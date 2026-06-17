@@ -1,8 +1,8 @@
 <script lang="ts">
 	/**
 	 * Embedded Tabs preview, themed via URL params:
-	 *   ?theme=<style>  e.g. zen-sumi | rokkit | minimal | material | frosted
-	 *   ?skin=<name>    e.g. default | ocean | violet | rose | emerald
+	 *   ?theme={style}  e.g. zen-sumi | rokkit | minimal | material | frosted
+	 *   ?skin={name}    e.g. default | ocean | violet | rose | emerald
 	 *   ?mode=light|dark|system
 	 *
 	 * All three drive `data-*` attributes on the wrapper div declaratively
