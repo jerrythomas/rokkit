@@ -1,5 +1,23 @@
-<script>
+<script lang="ts">
 	import { getContext, onMount, onDestroy } from 'svelte'
+	import type { PlotState } from '../PlotState.svelte.js'
+
+	type Node = { name: string; y: number; height: number }
+
+	type Options = {
+		source?: string
+		target?: string
+		value?: string
+	}
+
+	type Props = {
+		x?: string
+		y?: string
+		color?: string
+		fill?: string
+		stat?: string
+		options?: Options
+	}
 
 	let {
 		x = undefined,
@@ -8,15 +26,15 @@
 		fill: fillProp = undefined,
 		stat = 'identity',
 		options = {}
-	} = $props()
+	}: Props = $props()
 
 	const sourceField = $derived(options.source ?? 'source')
 	const targetField = $derived(options.target ?? 'target')
 	const valueField = $derived(options.value ?? 'value')
 	const colorChannel = $derived(fillProp ?? color)
 
-	const plotState = getContext('plot-state')
-	let id = $state(null)
+	const plotState = getContext<PlotState>('plot-state')
+	let id = $state<string | null>(null)
 
 	onMount(() => {
 		id = plotState.registerGeom({
@@ -57,9 +75,9 @@
 
 		// Compute node positions
 		// eslint-disable-next-line svelte/prefer-svelte-reactivity
-		const sourceMap = new Map()
+		const sourceMap = new Map<string, number>()
 		// eslint-disable-next-line svelte/prefer-svelte-reactivity
-		const targetMap = new Map()
+		const targetMap = new Map<string, number>()
 		for (const f of flows) {
 			sourceMap.set(f.source, (sourceMap.get(f.source) ?? 0) + f.value)
 			targetMap.set(f.target, (targetMap.get(f.target) ?? 0) + f.value)
@@ -72,7 +90,7 @@
 
 		// Position source nodes on left
 		let sourceY = 0
-		const sourceNodes = []
+		const sourceNodes: Node[] = []
 		for (const [name, value] of sourceMap) {
 			const h = (value / totalSource) * availHeight
 			sourceNodes.push({ name, y: sourceY, height: h })
@@ -81,7 +99,7 @@
 
 		// Position target nodes on right
 		let targetY = 0
-		const targetNodes = []
+		const targetNodes: Node[] = []
 		for (const [name, value] of targetMap) {
 			const h = (value / totalTarget) * availHeight
 			targetNodes.push({ name, y: targetY, height: h })

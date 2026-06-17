@@ -1,7 +1,8 @@
-<script>
+<script lang="ts">
 	import { getContext } from 'svelte'
+	import type { ChartBrewer } from '../lib/brewing/brewer.svelte.js'
 
-	const brewer = getContext('chart-brewer')
+	const brewer = getContext<ChartBrewer>('chart-brewer')
 </script>
 
 {#if brewer && brewer.arcs && brewer.arcs.length > 0}

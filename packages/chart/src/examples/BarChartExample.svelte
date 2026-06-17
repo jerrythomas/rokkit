@@ -1,6 +1,8 @@
-<script>
+<script lang="ts">
 	import { Plot } from '../index.js'
 	import { dataset } from '@rokkit/data'
+
+	type Row = Record<string, unknown>
 
 	// Sample data
 	const sampleData = [
@@ -14,33 +16,28 @@
 	]
 
 	// Use the dataset class to process the data
-	const data = dataset(sampleData)
+	const data: Row[] = dataset(sampleData)
 		.groupBy('category')
-		.summarize('name', { count: (values) => values.length })
+		.summarize('name', { count: (values: unknown[]) => values.length })
 		.rollup()
+		.select()
 
 	// Chart dimensions
 	const width = 600
 	const height = 400
 	const margin = { top: 20, right: 100, bottom: 60, left: 60 }
-
-	// Click handler for bars
-	function handleBarClick(item) {
-		console.log('Bar clicked:', item)
-		alert(`Clicked on ${item.category} with count ${item.count}`)
-	}
 </script>
 
 <div class="example">
 	<h2>Bar Chart Example</h2>
 
 	<div class="chart-wrapper">
-		<Plot.Root {data} {width} {height} {margin} fill="category">
-			<Plot.Grid direction="y" lineStyle="dashed" />
-			<Plot.Axis type="x" field="category" label="Product Category" />
-			<Plot.Axis type="y" field="count" label="Number of Products" />
-			<Plot.Bar x="category" y="count" fill="category" onClick={handleBarClick} />
-			<Plot.Legend title="Categories" />
+		<Plot.Root {data} x="category" y="count" color="category" {width} {height} {margin}>
+			<Plot.Grid />
+			<Plot.Axis type="x" label="Product Category" />
+			<Plot.Axis type="y" label="Number of Products" />
+			<Plot.Bar {data} x="category" y="count" fill="category" />
+			<Plot.Legend labels={{ category: 'Categories' }} />
 		</Plot.Root>
 	</div>
 

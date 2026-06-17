@@ -1,7 +1,21 @@
-<script>
+<script lang="ts">
+	import type { Readable } from 'svelte/store'
 	import { format } from 'd3-format'
 	import { get } from 'svelte/store'
 	import Label from './Label.svelte'
+
+	type Scales = { x: (value: number) => number }
+
+	type Props = {
+		rank: number
+		value: number
+		name: string
+		formatString?: string
+		scales: Readable<Scales>
+		height?: number
+		fill?: string
+		spaceBetween?: number
+	}
 
 	let {
 		rank,
@@ -12,7 +26,7 @@
 		height = 60,
 		fill,
 		spaceBetween = 5
-	} = $props()
+	}: Props = $props()
 
 	const textHeight = 16
 	const charWidth = 12

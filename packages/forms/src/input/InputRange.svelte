@@ -1,21 +1,11 @@
-<script>
-	/**
-	 * @typedef {Object} InputRangeProps
-	 * @property {number} value
-	 * @property {Function} onchange
-	 * @property {Function} onfocus
-	 * @property {Function} onblur
-	 * @property {number} min
-	 * @property {number} max
-	 * @property {number} step
-	 * @property {string} list
-	 * @property {boolean} required
-	 * @property {boolean} disabled
-	 * @property {string} name
-	 * @property {string} id
-	 */
+<script lang="ts">
+	import type { HTMLInputAttributes } from 'svelte/elements'
 
-	/** @type {InputRangeProps & { [key: string]: any }} */
+	type Props = Omit<HTMLInputAttributes, 'value' | 'onchange'> & {
+		value?: number
+		onchange?: (value: number) => void
+	}
+
 	let {
 		value = $bindable(),
 		min = undefined,
@@ -30,10 +20,10 @@
 		onfocus,
 		onblur,
 		...rest
-	} = $props()
+	}: Props = $props()
 
-	function handleChange(event) {
-		value = event.target.valueAsNumber
+	function handleChange(event: Event & { currentTarget: HTMLInputElement }) {
+		value = event.currentTarget.valueAsNumber
 		onchange?.(value)
 	}
 </script>

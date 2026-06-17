@@ -191,8 +191,12 @@ export class PlotState {
 	// use it instead of deriving distinct values from the local panel data.
 	colors = $derived.by(() => {
 		const field = this.#effectiveChannels.color
-		// eslint-disable-next-line svelte/prefer-svelte-reactivity
-		if (isLiteralColor(field)) return new Map([[null, { fill: field, stroke: field }]])
+		if (isLiteralColor(field)) {
+			/** @type {Map<unknown, { fill: string, stroke: string }>} */
+			// eslint-disable-next-line svelte/prefer-svelte-reactivity
+			const literal = new Map([[null, { fill: field, stroke: field }]])
+			return literal
+		}
 		const values = this.#colorDomain ?? distinct(this.#data, field)
 		// No color channel but data exists → use first preset color for single-series rendering.
 		// This prevents geoms from falling back to gray (#888) on charts with no fill channel.

@@ -1,10 +1,23 @@
-<script>
+<script lang="ts">
 	/**
 	 * Renders an array of objects as a styled list.
 	 */
 	import DisplayValue from './DisplayValue.svelte'
 
-	let { data = [], fields = [], title, class: className = '' } = $props()
+	type DisplayField = {
+		key: string
+		label?: string
+		format?: string
+	}
+
+	type Props = {
+		data?: Array<Record<string, unknown>>
+		fields?: DisplayField[]
+		title?: string
+		class?: string
+	}
+
+	let { data = [], fields = [], title, class: className = '' }: Props = $props()
 </script>
 
 <div data-display-list class={className}>

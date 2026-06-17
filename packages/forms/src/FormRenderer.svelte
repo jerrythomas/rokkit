@@ -1,19 +1,70 @@
-<script>
+<script lang="ts">
 	/**
 	 * FormRenderer component with snippet-based rendering
 	 * Handles defaultInput, info, separator, display components, and custom child snippet selection.
 	 * Supports form submission with validate-before-submit, loading state, and optional action buttons.
 	 */
 
-	import { onMount, untrack } from 'svelte'
+	import { onMount, untrack, type Snippet, type Component } from 'svelte'
 	import InputField from './InputField.svelte'
 	import InfoField from './InfoField.svelte'
 	import { FormBuilder } from './lib/builder.svelte.js'
+	import type { LookupConfig } from './lib/lookup.svelte.js'
 	import { defaultRenderers } from './lib/renderers.js'
 	import DisplayTable from './display/DisplayTable.svelte'
 	import DisplayCardGrid from './display/DisplayCardGrid.svelte'
 	import DisplaySection from './display/DisplaySection.svelte'
 	import DisplayList from './display/DisplayList.svelte'
+
+	/** A single element produced by FormBuilder.elements. */
+	type FormElement = {
+		scope?: string
+		type?: string
+		value?: unknown
+		override?: boolean
+		props?: Record<string, unknown> & {
+			elements?: FormElement[]
+		}
+	}
+
+	type ValidateMode = 'blur' | 'change' | 'manual'
+
+	type ExternalValidation = { state?: string; text?: string } | null | undefined
+
+	type ActionsContext = {
+		submitting: boolean
+		isValid: boolean
+		isDirty: boolean
+		submit: (e: Event) => void | Promise<void>
+		reset: () => void
+	}
+
+	type Props = {
+		/** Optional external builder instance */
+		builder?: FormBuilder
+		/** Direct data prop (alternative to builder) */
+		data?: Record<string, unknown>
+		schema?: Record<string, unknown> | null
+		layout?: Record<string, unknown> | null
+		/** Lookup configurations */
+		lookups?: Record<string, LookupConfig>
+		/** Validation mode */
+		validateOn?: ValidateMode
+		/** Custom type renderers (merged with defaults) */
+		renderers?: Record<string, Component<Record<string, unknown>>>
+		onupdate?: (data: Record<string, unknown>) => void
+		onvalidate?: (fieldPath: string, value: unknown, event: string) => ExternalValidation
+		onselect?: (selected: unknown, item: unknown) => void
+		onsubmit?: (
+			data: Record<string, unknown>,
+			meta: { isValid: boolean; errors: unknown[] }
+		) => void | Promise<void>
+		/** Custom actions snippet */
+		actions?: Snippet<[ActionsContext]>
+		className?: string
+		/** Custom snippet rendered when an element opts into an override */
+		child?: Snippet<[FormElement]>
+	} & Record<string, unknown>
 
 	let {
 		// Optional external builder instance
@@ -50,7 +101,7 @@
 
 		// Pass through any other props
 		...props
-	} = $props()
+	}: Props = $props()
 
 	// Merged renderer registry
 	const allRenderers = $derived({ ...defaultRenderers, ...renderers })
@@ -68,7 +119,7 @@
 	// Sync external data prop changes to builder (effect only tracks `data`, not formBuilder.data,
 	// to avoid a proxy-vs-raw-value comparison loop)
 	$effect(() => {
-		formBuilder.data = data
+		if (data !== undefined) formBuilder.data = data
 	})
 
 	$effect(() => {
@@ -80,7 +131,7 @@
 	})
 
 	// Apply external validation result for a field path
-	function applyExternalValidation(fieldPath, value, event) {
+	function applyExternalValidation(fieldPath: string, value: unknown, event: string) {
 		if (!onvalidate) return
 		const result = onvalidate(fieldPath, value, event)
 		if (result && typeof result === 'object' && result.state) {
@@ -89,8 +140,8 @@
 	}
 
 	// Handle field value changes
-	function handleFieldChange(element, newValue) {
-		const fieldPath = element.scope.replace(/^#\//, '')
+	function handleFieldChange(element: FormElement, newValue: unknown) {
+		const fieldPath = (element.scope ?? '').replace(/^#\//, '')
 		formBuilder.updateField(fieldPath, newValue)
 		data = formBuilder.data
 		if (onupdate) onupdate(data)
@@ -99,8 +150,8 @@
 	}
 
 	// Handle blur events for validation
-	function handleFieldBlur(element) {
-		const fieldPath = element.scope.replace(/^#\//, '')
+	function handleFieldBlur(element: FormElement) {
+		const fieldPath = (element.scope ?? '').replace(/^#\//, '')
 		const currentValue = formBuilder.getValue(fieldPath)
 		if (validateOn === 'blur') formBuilder.validateField(fieldPath)
 		applyExternalValidation(fieldPath, currentValue, 'blur')
@@ -108,20 +159,20 @@
 
 	// Submission state
 	let submitting = $state(false)
-	let formRoot = $state(null)
+	let formRoot = $state<HTMLElement | null>(null)
 
 	// Focus the first invalid field in the form
 	function focusFirstError() {
 		const firstError = formBuilder.errors[0]
 		if (!firstError || !formRoot) return
-		const field = formRoot.querySelector(
+		const field = formRoot.querySelector<HTMLElement>(
 			`[data-scope="#/${firstError.path}"] input, [data-scope="#/${firstError.path}"] select, [data-scope="#/${firstError.path}"] textarea`
 		)
 		field?.focus?.()
 	}
 
 	// Handle form submission: validate → focus first error → call onsubmit → snapshot
-	async function handleSubmit(e) {
+	async function handleSubmit(e: Event) {
 		e.preventDefault()
 		if (submitting || !onsubmit) return
 
@@ -148,6 +199,23 @@
 	function handleReset() {
 		formBuilder.reset()
 		data = formBuilder.data
+	}
+
+	// Narrow a dynamic display value into an array of records for list/table/card displays
+	function toRecordArray(value: unknown): Array<Record<string, unknown>> {
+		return Array.isArray(value) ? (value.filter((v) => v !== null && typeof v === 'object') as Array<Record<string, unknown>>) : []
+	}
+
+	// Narrow a dynamic display value into a record for section displays
+	function toRecord(value: unknown): Record<string, unknown> {
+		return value !== null && typeof value === 'object' && !Array.isArray(value)
+			? (value as Record<string, unknown>)
+			: {}
+	}
+
+	// Narrow a dynamic prop value into a display string
+	function asText(value: unknown): string | undefined {
+		return typeof value === 'string' ? value : undefined
 	}
 </script>
 
@@ -229,7 +297,7 @@
 {/if}
 
 <!-- Render a single element by type -->
-{#snippet renderElement(element)}
+{#snippet renderElement(element: FormElement)}
 	{#if element.type === 'separator'}
 		<div data-form-separator></div>
 	{:else if element.type === 'group'}
@@ -242,20 +310,20 @@
 			{/each}
 		</fieldset>
 	{:else if element.type === 'display-table'}
-		<DisplayTable data={element.value} {...element.props} {onselect} />
+		<DisplayTable data={toRecordArray(element.value)} {...element.props} {onselect} />
 	{:else if element.type === 'display-cards'}
-		<DisplayCardGrid data={element.value} {...element.props} {onselect} />
+		<DisplayCardGrid data={toRecordArray(element.value)} {...element.props} {onselect} />
 	{:else if element.type === 'display-section'}
-		<DisplaySection data={element.value} {...element.props} />
+		<DisplaySection data={toRecord(element.value)} {...element.props} />
 	{:else if element.type === 'display-list'}
-		<DisplayList data={element.value} {...element.props} />
+		<DisplayList data={toRecordArray(element.value)} {...element.props} />
 	{:else if element.type === 'info'}
 		<div data-form-field data-scope={element.scope}>
 			<InfoField
 				name={element.scope}
 				value={element.value}
-				label={element.props?.label}
-				description={element.props?.description}
+				label={asText(element.props?.label)}
+				description={asText(element.props?.description)}
 			/>
 		</div>
 	{:else if element.override && child}

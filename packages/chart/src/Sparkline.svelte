@@ -1,12 +1,22 @@
-<script>
+<script lang="ts">
 	import { scaleLinear } from 'd3-scale'
 	import { line as d3line, area as d3area, curveCatmullRom } from 'd3-shape'
 	import PatternDef from './patterns/PatternDef.svelte'
 	import { PATTERNS } from './patterns/patterns.js'
 
-	/**
-	 * @type {number[] | object[]}
-	 */
+	type Props = {
+		data?: number[] | Record<string, unknown>[]
+		field?: string
+		type?: 'line' | 'area' | 'bar'
+		curve?: 'linear' | 'smooth'
+		color?: string
+		pattern?: keyof typeof PATTERNS
+		width?: number
+		height?: number
+		min?: number
+		max?: number
+	}
+
 	let {
 		data = [],
 		field = undefined,
@@ -18,9 +28,13 @@
 		height = 24,
 		min = undefined,
 		max = undefined
-	} = $props()
+	}: Props = $props()
 
-	const values = $derived(field ? data.map((d) => Number(d[field])) : data.map(Number))
+	const values = $derived(
+		data.map((d) =>
+			field && typeof d === 'object' && d !== null ? Number(d[field]) : Number(d)
+		)
+	)
 
 	const yMin = $derived(min ?? Math.min(...values))
 	const yMax = $derived(max ?? Math.max(...values))
@@ -33,7 +47,7 @@
 	const yScale = $derived(scaleLinear().domain([yMin, yMax]).range([height, 0]))
 
 	const linePath = $derived.by(() => {
-		const gen = d3line()
+		const gen = d3line<number>()
 			.x((_, i) => xScale(i))
 			.y((v) => yScale(v))
 		if (curve === 'smooth') gen.curve(curveCatmullRom)
@@ -41,7 +55,7 @@
 	})
 
 	const areaPath = $derived.by(() => {
-		const gen = d3area()
+		const gen = d3area<number>()
 			.x((_, i) => xScale(i))
 			.y0(height)
 			.y1((v) => yScale(v))

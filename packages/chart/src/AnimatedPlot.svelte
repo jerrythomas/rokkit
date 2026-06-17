@@ -1,38 +1,43 @@
-<script>
+<script lang="ts">
 	import { onMount, onDestroy } from 'svelte'
+	import type { Snippet } from 'svelte'
 	import { tweened } from 'svelte/motion'
 	import { sineInOut } from 'svelte/easing'
 	import { extractFrames, completeFrames, computeStaticDomains } from './lib/plot/frames.js'
 	import { applyGeomStat } from './lib/plot/stat.js'
+	import type { GeomSpec, PlotHelpers, PlotSpec } from './lib/plot/types.js'
 	import Timeline from './Plot/Timeline.svelte'
 	import PlotChart from './Plot.svelte'
 
-	/**
-	 * @type {{
-	 *   data: Object[],
-	 *   animate: { by: string, duration?: number, loop?: boolean },
-	 *   x?: string,
-	 *   y?: string,
-	 *   color?: string,
-	 *   fill?: string,
-	 *   pattern?: string,
-	 *   symbol?: string,
-	 *   geom?: string,
-	 *   stat?: string,
-	 *   geoms?: import('./lib/plot/types.js').GeomSpec[],
-	 *   helpers?: import('./lib/plot/types.js').PlotHelpers,
-	 *   width?: number,
-	 *   height?: number,
-	 *   mode?: 'light' | 'dark',
-	 *   grid?: boolean,
-	 *   legend?: boolean,
-	 *   tween?: boolean,
-	 *   sorted?: boolean,
-	 *   dynamicDomain?: boolean,
-	 *   label?: boolean | string | ((data: Record<string, unknown>) => string),
-	 *   children?: import('svelte').Snippet
-	 * }}
-	 */
+	type Row = Record<string, unknown>
+	type Animate = { by: string; duration?: number; loop?: boolean }
+	type AggChannels = { x?: string; y?: string; color?: string; frame?: string }
+
+	type Props = {
+		data?: Row[]
+		animate: Animate
+		x?: string
+		y?: string
+		color?: string
+		fill?: string
+		pattern?: string
+		symbol?: string
+		geom?: string
+		stat?: string
+		geoms?: GeomSpec[]
+		helpers?: PlotHelpers
+		width?: number
+		height?: number
+		mode?: 'light' | 'dark'
+		grid?: boolean
+		legend?: boolean
+		tween?: boolean
+		sorted?: boolean
+		dynamicDomain?: boolean
+		label?: boolean | string | ((data: Row) => string)
+		children?: Snippet
+	}
+
 	let {
 		data = [],
 		animate,
@@ -56,7 +61,7 @@
 		dynamicDomain = false,
 		label = false,
 		children
-	} = $props()
+	}: Props = $props()
 
 	// Effective geom list: explicit array takes precedence; otherwise build from shorthand props
 	const effectiveGeoms = $derived(
@@ -78,7 +83,7 @@
 		const firstNonIdentity = effectiveGeoms.find((g) => g.stat && g.stat !== 'identity')
 		if (!firstNonIdentity) return { data, geoms: effectiveGeoms }
 
-		const aggChannels = { y }
+		const aggChannels: AggChannels = { y }
 		if (x) aggChannels.x = x
 		if (color) aggChannels.color = color
 		aggChannels.frame = animate.by
@@ -124,7 +129,7 @@
 		if (typeof window.matchMedia !== 'function') return
 		const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
 		prefersReducedMotion = mq.matches
-		const handler = (e) => { prefersReducedMotion = e.matches }
+		const handler = (e: MediaQueryListEvent) => { prefersReducedMotion = e.matches }
 		mq.addEventListener('change', handler)
 		return () => mq.removeEventListener('change', handler)
 	})
@@ -146,7 +151,7 @@
 		}
 	}
 
-	function tick(time) {
+	function tick(time: number) {
 		if (!playing) return
 		if (time - lastTime >= msPerFrame) {
 			lastTime = time
@@ -169,7 +174,7 @@
 	})
 
 	// Reduced motion: step frames on interval instead of rAF
-	let reducedInterval = 0
+	let reducedInterval: ReturnType<typeof setInterval> | undefined
 	$effect(() => {
 		if (!playing || !prefersReducedMotion) {
 			clearInterval(reducedInterval)
@@ -203,35 +208,36 @@
 
 	function handlePlay() { playing = true }
 	function handlePause() { playing = false }
-	function handleScrub(index) { playing = false; currentIndex = index }
-	function handleSpeed(s) { speed = s }
+	function handleScrub(index: number) { playing = false; currentIndex = index }
+	function handleSpeed(s: number) { speed = s }
 
 	// Detect horizontal bar chart race: sorted=true AND y is a categorical string field
 	const isHorizontalRace = $derived.by(() => {
-		if (!sorted || !prepared.data.length) return false
+		if (!sorted || !prepared.data.length || !y) return false
 		const sample = prepared.data[0]
-		return y && typeof sample[y] === 'string'
+		return typeof sample[y] === 'string'
 	})
 
 	// Number of unique entities (y categories) for horizontal race yDomain
 	const entityCount = $derived.by(() => {
-		if (!isHorizontalRace) return 0
-		return new Set(prepared.data.map((d) => d[y])).size
+		if (!isHorizontalRace || !y) return 0
+		const field = y
+		return new Set(prepared.data.map((d) => d[field])).size
 	})
 
 	// Tweened display data — smoothly interpolates values between frames.
 	// Tween duration is 1.1× the frame interval so tweens always overlap:
 	// when the next frame fires, the previous tween is ~91% complete.
 	// displayTween.set() starts from the current in-flight value → seamless continuous motion.
-	const displayTween = tweened([], { duration: 0 })
+	const displayTween = tweened<Row[]>([], { duration: 0 })
 
 	$effect(() => {
 		const raw = currentFrameData
-		const xField = x
-		const yField = y
+		const xField = x ?? ''
+		const yField = y ?? ''
 
 		// Build display target for this frame
-		let target
+		let target: Row[]
 		if (isHorizontalRace) {
 			const ranked = raw.slice().sort((a, b) => Number(b[xField]) - Number(a[xField]))
 			const n = ranked.length
@@ -345,7 +351,7 @@
 	const xDomainForFrame = $derived(
 		isHorizontalRace && dynamicDomain ? $xDomainTween : staticDomains.xDomain
 	)
-	const frameSpec = $derived({
+	const frameSpec = $derived<PlotSpec>({
 		data: $displayTween,
 		x,
 		y: isHorizontalRace ? '_rank' : y,

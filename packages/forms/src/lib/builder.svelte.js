@@ -106,10 +106,10 @@ function setNestedValue(data, keys, value) {
  * FormBuilder class for dynamically generating forms from data structures
  */
 export class FormBuilder {
-	/** @type {Object} */
+	/** @type {Record<string, unknown>} */
 	#data = $state({})
 
-	/** @type {Object} - Snapshot of data at construction (or last snapshot()) */
+	/** @type {Record<string, unknown>} - Snapshot of data at construction (or last snapshot()) */
 	#initialData = {}
 
 	/** @type {Object} */
@@ -144,7 +144,7 @@ export class FormBuilder {
 	}
 	/**
 	 * Get the current data
-	 * @returns {Object} Current data object
+	 * @returns {Record<string, unknown>} Current data object
 	 */
 	get data() {
 		return this.#data
@@ -152,7 +152,7 @@ export class FormBuilder {
 
 	/**
 	 * Set the data
-	 * @param {Object} value - New data object
+	 * @param {Record<string, unknown>} value - New data object
 	 */
 	set data(value) {
 		this.#data = value
@@ -219,7 +219,7 @@ export class FormBuilder {
 
 	/**
 	 * Create a new FormBuilder instance
-	 * @param {Object} [data={}] - Initial data object
+	 * @param {Record<string, unknown>} [data={}] - Initial data object
 	 * @param {Object|null} [schema=null] - Optional schema override
 	 * @param {Object|null} [layout=null] - Optional layout override
 	 * @param {Object<string, import('./lookup.svelte.js').LookupConfig>} [lookups={}] - Lookup configurations
@@ -740,7 +740,7 @@ export class FormBuilder {
 	 * Get form data with hidden field values stripped out
 	 * Hidden fields are those absent from this.elements (the derived list)
 	 * Does not mutate this.#data
-	 * @returns {Object} Filtered data containing only visible field keys
+	 * @returns {Record<string, unknown>} Filtered data containing only visible field keys
 	 */
 	getVisibleData() {
 		const visiblePaths = new SvelteSet(

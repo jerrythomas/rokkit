@@ -1,25 +1,37 @@
-<script>
+<script lang="ts">
 	import { setContext } from 'svelte'
+	import type { Snippet } from 'svelte'
 	import { ChartBrewer } from './lib/brewing/brewer.svelte.js'
+	import type { ChartSpec } from './spec/chart-spec.js'
 
-	/**
-	 * @type {{
-	 *   spec?: import('./spec/chart-spec.js').ChartSpec,
-	 *   data?: Object[],
-	 *   x?: string,
-	 *   y?: string,
-	 *   color?: string,
-	 *   pattern?: string,
-	 *   fill?: string,
-	 *   size?: string,
-	 *   label?: string,
-	 *   symbol?: string,
-	 *   width?: number,
-	 *   height?: number,
-	 *   mode?: 'light' | 'dark',
-	 *   children?: import('svelte').Snippet
-	 * }}
-	 */
+	type Channels = {
+		x?: string
+		y?: string
+		color?: string
+		pattern?: string
+		fill?: string
+		size?: string
+		label?: string
+		symbol?: string
+	}
+
+	type Props = {
+		spec?: ChartSpec
+		data?: Record<string, unknown>[]
+		x?: string
+		y?: string
+		color?: string
+		pattern?: string
+		fill?: string
+		size?: string
+		label?: string
+		symbol?: string
+		width?: number
+		height?: number
+		mode?: 'light' | 'dark'
+		children?: Snippet
+	}
+
 	let {
 		spec = undefined,
 		data = [],
@@ -35,13 +47,13 @@
 		height = 400,
 		mode = 'light',
 		children
-	} = $props()
+	}: Props = $props()
 
 	const brewer = new ChartBrewer()
 	setContext('chart-brewer', brewer)
 
-	function buildChannels() {
-		const channels = {}
+	function buildChannels(): Channels {
+		const channels: Channels = {}
 		if (x) channels.x = x
 		if (y) channels.y = y
 		if (color) channels.color = color

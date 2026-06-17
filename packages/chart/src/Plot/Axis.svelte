@@ -1,18 +1,20 @@
-<script>
+<script lang="ts">
 	import { getContext } from 'svelte'
+	import type { PlotState } from '../PlotState.svelte.js'
 
-	/**
-	 * @type {{
-	 *   type?: 'x' | 'y',
-	 *   label?: string,
-	 *   format?: (v: unknown) => string,
-	 *   ticks?: number,
-	 *   minorTicks?: boolean,
-	 *   showLine?: boolean,
-	 *   showTicks?: boolean,
-	 *   showLabels?: boolean,
-	 * }}
-	 */
+	type Props = {
+		type?: 'x' | 'y'
+		label?: string
+		format?: (v: unknown) => string
+		ticks?: number
+		minorTicks?: boolean
+		showLine?: boolean
+		showTicks?: boolean
+		showLabels?: boolean
+	}
+
+	type Tick = { value: unknown; pos: number; minor: boolean }
+
 	let {
 		type = 'x',
 		label = '',
@@ -22,25 +24,26 @@
 		showLine = true,
 		showTicks = true,
 		showLabels = true
-	} = $props()
+	}: Props = $props()
 
-	const state = getContext('plot-state')
+	const state = getContext<PlotState>('plot-state')
 
 	const MINOR_DIVISIONS = 4
 
-	const xTicks = $derived.by(() => {
-		const s = state.xScale
+	function buildTicks(s: PlotState['xScale']): Tick[] {
 		if (!s) return []
 		if (typeof s.bandwidth === 'function') {
-			return s.domain().map((val) => ({
+			return s.domain().map((val: unknown) => ({
 				value: val,
 				pos: (s(val) ?? 0) + s.bandwidth() / 2,
 				minor: false
 			}))
 		}
-		const major = s.ticks(tickCount).map((val) => ({ value: val, pos: s(val), minor: false }))
+		const major: Tick[] = s
+			.ticks(tickCount)
+			.map((val: number) => ({ value: val, pos: s(val), minor: false }))
 		if (!minorTicks || major.length < 2) return major
-		const result = []
+		const result: Tick[] = []
 		for (let i = 0; i < major.length; i++) {
 			result.push(major[i])
 			if (i < major.length - 1) {
@@ -51,32 +54,10 @@
 			}
 		}
 		return result
-	})
+	}
 
-	const yTicks = $derived.by(() => {
-		const s = state.yScale
-		if (!s) return []
-		if (typeof s.bandwidth === 'function') {
-			return s.domain().map((val) => ({
-				value: val,
-				pos: (s(val) ?? 0) + s.bandwidth() / 2,
-				minor: false
-			}))
-		}
-		const major = s.ticks(tickCount).map((val) => ({ value: val, pos: s(val), minor: false }))
-		if (!minorTicks || major.length < 2) return major
-		const result = []
-		for (let i = 0; i < major.length; i++) {
-			result.push(major[i])
-			if (i < major.length - 1) {
-				const step = (major[i + 1].pos - major[i].pos) / MINOR_DIVISIONS
-				for (let j = 1; j < MINOR_DIVISIONS; j++) {
-					result.push({ value: null, pos: major[i].pos + step * j, minor: true })
-				}
-			}
-		}
-		return result
-	})
+	const xTicks = $derived(buildTicks(state.xScale))
+	const yTicks = $derived(buildTicks(state.yScale))
 
 	const xTransform = $derived(`translate(0, ${state.xAxisY ?? state.innerHeight})`)
 	const yTransform = $derived(`translate(${state.yAxisX ?? 0}, 0)`)

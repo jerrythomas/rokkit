@@ -1,14 +1,25 @@
-<script>
+<script lang="ts">
 	import { getContext } from 'svelte'
+	import type { createCrossFilter } from './createCrossFilter.svelte.js'
+
+	type CrossFilter = ReturnType<typeof createCrossFilter>
 
 	/**
 	 * Dual range slider for a continuous crossfilter dimension.
 	 * NOTE: Interim implementation using HTML range inputs.
 	 * The spec calls for a Plot+Point+brush architecture, deferred until brush geom is implemented.
 	 */
-	let { field, min, max, step = 0.1, label = '' } = $props()
+	type Props = {
+		field: string
+		min?: number
+		max?: number
+		step?: number
+		label?: string
+	}
 
-	const cf = getContext('crossfilter')
+	let { field, min, max, step = 0.1, label = '' }: Props = $props()
+
+	const cf = getContext<CrossFilter | undefined>('crossfilter')
 
 	// Initialize from props; $effect keeps in sync when min/max change
 	let low = $state(0)
@@ -19,12 +30,12 @@
 		high = max ?? 100
 	})
 
-	function handleLow(e) {
+	function handleLow(e: Event & { currentTarget: HTMLInputElement }) {
 		low = Math.min(Number(e.currentTarget.value), high)
 		cf?.setRange(field, [low, high])
 	}
 
-	function handleHigh(e) {
+	function handleHigh(e: Event & { currentTarget: HTMLInputElement }) {
 		high = Math.max(Number(e.currentTarget.value), low)
 		cf?.setRange(field, [low, high])
 	}

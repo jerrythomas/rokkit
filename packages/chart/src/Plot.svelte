@@ -1,7 +1,9 @@
-<script>
+<script lang="ts">
 	import { setContext, getContext, untrack } from 'svelte'
+	import type { Snippet } from 'svelte'
 	import { PlotState } from './PlotState.svelte.js'
 	import { defaultPreset } from './lib/preset.js'
+	import type { PlotSpec, PlotHelpers } from './lib/plot/types.js'
 	import Axis from './Plot/Axis.svelte'
 	import Grid from './Plot/Grid.svelte'
 	import Legend from './Plot/Legend.svelte'
@@ -20,25 +22,33 @@
 	import Hexbin from './geoms/Hexbin.svelte'
 	import Ribbon from './geoms/Ribbon.svelte'
 
-	/**
-	 * @type {{
-	 *   data?: Object[],
-	 *   spec?: import('./lib/plot/types.js').PlotSpec,
-	 *   helpers?: import('./lib/plot/types.js').PlotHelpers,
-	 *   width?: number,
-	 *   height?: number,
-	 *   mode?: 'light' | 'dark',
-	 *   grid?: boolean,
-	 *   axes?: boolean,
-	 *   margin?: { top: number, right: number, bottom: number, left: number },
-	 *   legend?: boolean,
-	 *   title?: string,
-	 *   summary?: string,
-	 *   tooltip?: boolean | ((data: Record<string, unknown>) => string),
-	 *   zoom?: boolean,
-	 *   children?: import('svelte').Snippet,
-	 * }}
-	 */
+	type Row = Record<string, unknown>
+	type Margin = { top: number; right: number; bottom: number; left: number }
+	type ChartPresetCtx = { current: typeof defaultPreset }
+
+	type Props = {
+		data?: Row[]
+		spec?: PlotSpec
+		helpers?: PlotHelpers
+		width?: number
+		height?: number
+		mode?: 'light' | 'dark'
+		grid?: boolean
+		axes?: boolean
+		margin?: Margin
+		legend?: boolean
+		title?: string
+		summary?: string
+		tooltip?: boolean | ((data: Row) => string)
+		zoom?: boolean
+		xFormat?: (v: unknown) => string
+		yFormat?: (v: unknown) => string
+		xTicks?: number
+		yTicks?: number
+		minorTicks?: boolean
+		children?: Snippet
+	}
+
 	let {
 		data = [],
 		spec = undefined,
@@ -60,14 +70,14 @@
 		yTicks = undefined,
 		minorTicks = false,
 		children
-	} = $props()
+	}: Props = $props()
 
-	const chartPresetCtx = getContext('chart-preset')
+	const chartPresetCtx = getContext<ChartPresetCtx | undefined>('chart-preset')
 	const chartPreset = $derived(chartPresetCtx?.current ?? defaultPreset)
 
 	// Responsive width: observe container and use actual pixel width for scale calculations
-	let svgEl = $state(null)
-	let containerEl = $state(null)
+	let svgEl = $state<SVGSVGElement | null>(null)
+	let containerEl = $state<HTMLDivElement | null>(null)
 	let observedWidth = $state(0)
 
 	$effect(() => {
@@ -90,7 +100,9 @@
 	// Accessible data table — screen reader fallback
 	const tableData = $derived(spec?.data ?? data)
 	const tableColumns = $derived.by(() => {
-		const cols = [spec?.x, spec?.y, spec?.color ?? spec?.fill].filter(Boolean)
+		const cols = [spec?.x, spec?.y, spec?.color ?? spec?.fill].filter(
+			(c): c is string => Boolean(c)
+		)
 		if (cols.length > 0) return cols
 		const first = tableData[0]
 		return first ? Object.keys(first) : []
@@ -133,11 +145,11 @@
 		// d3-zoom/d3-selection are client-only; load them dynamically so they are
 		// not bundled into (and tree-shaken-as-unused from) the SSR/main bundle.
 		let cancelled = false
-		let detach
+		let detach: (() => void) | undefined
 		Promise.all([import('d3-zoom'), import('d3-selection')]).then(
 			([{ zoom: d3Zoom }, { select }]) => {
 				if (cancelled || !svgEl) return
-				const zoomBehavior = d3Zoom()
+				const zoomBehavior = d3Zoom<SVGSVGElement, unknown>()
 					.scaleExtent([1, 8])
 					.on('zoom', (event) => {
 						plotState.applyZoom(event.transform)
@@ -173,11 +185,8 @@
 		ribbon: Ribbon
 	}
 
-	/**
-	 * @param {string} type
-	 */
-	function resolveGeomComponent(type) {
-		return helpers?.geoms?.[type] ?? GEOM_COMPONENTS[type]
+	function resolveGeomComponent(type: string) {
+		return helpers?.geoms?.[type] ?? GEOM_COMPONENTS[type as keyof typeof GEOM_COMPONENTS]
 	}
 </script>
 

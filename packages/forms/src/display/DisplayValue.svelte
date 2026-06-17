@@ -1,17 +1,20 @@
-<script>
+<script lang="ts">
 	/**
 	 * Format-aware value display component.
 	 * Renders a value with formatting based on the `format` hint.
 	 */
 
-	let { value, format = 'text' } = $props()
+	type Props = {
+		value?: unknown
+		format?: string
+	}
+
+	let { value, format = 'text' }: Props = $props()
 
 	/**
 	 * Format a duration value (minutes) into human-readable string.
-	 * @param {number} minutes
-	 * @returns {string}
 	 */
-	function formatDuration(minutes) {
+	function formatDuration(minutes: unknown): string {
 		if (typeof minutes !== 'number') return String(minutes)
 		const h = Math.floor(minutes / 60)
 		const m = minutes % 60
@@ -20,12 +23,18 @@
 		return `${m}m`
 	}
 
-	const valueFormatters = {
+	function toDate(v: unknown): Date {
+		if (v instanceof Date) return v
+		if (typeof v === 'number') return new Date(v)
+		return new Date(String(v))
+	}
+
+	const valueFormatters: Record<string, (v: unknown) => string> = {
 		currency: (v) =>
-			new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(v),
-		datetime: (v) => new Date(v).toLocaleString(),
+			new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(v)),
+		datetime: (v) => toDate(v).toLocaleString(),
 		duration: (v) => formatDuration(v),
-		number: (v) => new Intl.NumberFormat().format(v),
+		number: (v) => new Intl.NumberFormat().format(Number(v)),
 		boolean: (v) => (v ? '✓' : '✗')
 	}
 

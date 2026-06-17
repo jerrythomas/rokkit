@@ -5,7 +5,7 @@ import { toPatternId } from '../../lib/brewing/patterns.js'
  * Builds area path geometry for multi-series area charts.
  *
  * @param {Object[]} data
- * @param {{ x: string, y: string, color?: string }} channels
+ * @param {{ x: string, y: string, color?: string, pattern?: string }} channels
  * @param {Function} xScale
  * @param {Function} yScale
  * @param {Map<unknown, {fill: string, stroke: string}>} colors
@@ -80,7 +80,7 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
  * Builds stacked area paths using d3 stack layout.
  *
  * @param {Object[]} data
- * @param {{ x: string, y: string, color: string }} channels
+ * @param {{ x: string, y: string, color?: string, pattern?: string }} channels
  * @param {Function} xScale
  * @param {Function} yScale
  * @param {Map<unknown, {fill: string, stroke: string}>} colors

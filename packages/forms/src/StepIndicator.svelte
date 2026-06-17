@@ -1,22 +1,24 @@
-<script>
+<script lang="ts">
 	/**
 	 * StepIndicator — standalone presentational component showing multi-step form progress.
 	 * Place anywhere on the page; wire to FormBuilder.currentStep and FormBuilder.goToStep.
 	 */
 
-	let {
-		steps = [],
-		current = 0,
-		onclick = undefined
-	} = $props()
+	type Props = {
+		steps?: string[]
+		current?: number
+		onclick?: (index: number) => void
+	}
 
-	function stepState(index) {
+	let { steps = [], current = 0, onclick = undefined }: Props = $props()
+
+	function stepState(index: number): 'complete' | 'current' | 'upcoming' {
 		if (index < current) return 'complete'
 		if (index === current) return 'current'
 		return 'upcoming'
 	}
 
-	function handleClick(index) {
+	function handleClick(index: number) {
 		if (index < current) onclick?.(index)
 	}
 </script>

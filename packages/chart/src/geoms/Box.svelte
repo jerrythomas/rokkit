@@ -1,11 +1,20 @@
-<script>
+<script lang="ts">
 	import { getContext, onMount, onDestroy } from 'svelte'
+	import type { PlotState } from '../PlotState.svelte.js'
 	import { buildBoxes } from '../lib/brewing/marks/boxes.js'
 
-	let { x, y, fill, stat = 'boxplot', options = {} } = $props()
+	type Props = {
+		x?: string
+		y?: string
+		fill?: string
+		stat?: string
+		options?: { opacity?: number }
+	}
 
-	const plotState = getContext('plot-state')
-	let id = $state(null)
+	let { x, y, fill, stat = 'boxplot', options = {} }: Props = $props()
+
+	const plotState = getContext<PlotState>('plot-state')
+	let id = $state<string | null>(null)
 
 	// fill ?? x drives the colors map for both box interior and whisker strokes
 	const fillChannel = $derived(fill ?? x)

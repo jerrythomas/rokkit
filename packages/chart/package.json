@@ -56,5 +56,17 @@
     "d3-transition": "^3.0.1",
     "d3-zoom": "^3.0.0",
     "ramda": "^0.32.0"
+  },
+  "devDependencies": {
+    "@types/d3-array": "^3.2.2",
+    "@types/d3-axis": "^3.0.6",
+    "@types/d3-format": "^3.0.4",
+    "@types/d3-scale": "^4.0.9",
+    "@types/d3-scale-chromatic": "^3.1.0",
+    "@types/d3-selection": "^3.0.11",
+    "@types/d3-shape": "^3.1.8",
+    "@types/d3-transition": "^3.0.9",
+    "@types/d3-zoom": "^3.0.8",
+    "@types/ramda": "^0.31.1"
   }
 }

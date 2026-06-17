@@ -1,5 +1,19 @@
-<script>
+<script lang="ts">
 	import { getContext, onMount, onDestroy } from 'svelte'
+	import type { PlotState } from '../PlotState.svelte.js'
+
+	type Row = Record<string, unknown>
+	type Scale = (value: unknown) => number | undefined
+	type Bin = { cx: number; cy: number; count: number; points: Row[] }
+
+	type Props = {
+		x?: string
+		y?: string
+		color?: string
+		fill?: string
+		stat?: string
+		options?: { radius?: number }
+	}
 
 	let {
 		x,
@@ -8,12 +22,12 @@
 		fill: fillProp = undefined,
 		stat = 'identity',
 		options = {}
-	} = $props()
+	}: Props = $props()
 
 	const radius = $derived(options.radius ?? 20)
 
-	const plotState = getContext('plot-state')
-	let id = $state(null)
+	const plotState = getContext<PlotState>('plot-state')
+	let id = $state<string | null>(null)
 
 	onMount(() => {
 		id = plotState.registerGeom({
@@ -41,15 +55,22 @@
 
 	// Hex binning: group data points into hexagonal cells
 	// eslint-disable-next-line max-params, complexity
-	function hexBin(data, xField, yField, xScale, yScale, r) {
+	function hexBin(
+		rows: Row[],
+		xField: string | undefined,
+		yField: string | undefined,
+		xScale: Scale,
+		yScale: Scale,
+		r: number
+	): Bin[] {
 		const dx = r * 2 * Math.sin(Math.PI / 3) // horizontal spacing
 		const dy = r * 1.5                        // vertical spacing
 		// eslint-disable-next-line svelte/prefer-svelte-reactivity
-		const bins = new Map()
+		const bins = new Map<string, Bin>()
 
-		for (const d of data) {
-			const px = xScale(d[xField])
-			const py = yScale(d[yField])
+		for (const d of rows) {
+			const px = xScale(d[xField ?? ''])
+			const py = yScale(d[yField ?? ''])
 			if (px === null || px === undefined || py === null || py === undefined) continue
 
 			// Find nearest hex center
@@ -59,10 +80,11 @@
 			const cy = row * dy
 			const key = `${col},${row}`
 
-			if (!bins.has(key)) {
-				bins.set(key, { cx, cy, count: 0, points: [] })
+			let bin = bins.get(key)
+			if (!bin) {
+				bin = { cx, cy, count: 0, points: [] }
+				bins.set(key, bin)
 			}
-			const bin = bins.get(key)
 			bin.count++
 			bin.points.push(d)
 		}
@@ -70,7 +92,7 @@
 	}
 
 	// Build hexagon path for a given radius
-	function hexPath(r) {
+	function hexPath(r: number) {
 		const angles = [0, 1, 2, 3, 4, 5].map((i) => ((i * 60 - 30) * Math.PI) / 180)
 		return `${angles.map((a, i) => `${i === 0 ? 'M' : 'L'}${r * Math.cos(a)},${r * Math.sin(a)}`).join('')  }Z`
 	}

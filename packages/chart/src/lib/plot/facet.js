@@ -6,7 +6,7 @@ import { extent } from 'd3-array'
  *
  * @param {Object[]} data
  * @param {string} field
- * @returns {Map<unknown, Object[]>}
+ * @returns {Map<unknown, Record<string, unknown>[]>}
  */
 export function splitByField(data, field) {
 	const map = new Map()

@@ -3,13 +3,14 @@ import { toPatternId } from '../../brewing/patterns.js'
 
 /**
  * Builds arc geometry for pie/donut charts.
- * @param {Object[]} data
- * @param {{ color: string, y: string, pattern?: string }} channels
+ * @param {Record<string, unknown>[]} data
+ * @param {{ color?: string, y?: string, pattern?: string }} channels
  * @param {Map} colors
  * @param {number} width
  * @param {number} height
  * @param {{ innerRadius?: number }} opts
  * @param {Map<unknown, string>} [patterns]
+ * @returns {{ d: string | null, fill: string, stroke: string, key: unknown, patternId: string | null, pct: number, centroid: [number, number], data: Record<string, unknown> }[]}
  */
 export function buildArcs(data, channels, colors, width, height, opts = {}, patterns) {
 	const { color: lf, y: yf } = channels

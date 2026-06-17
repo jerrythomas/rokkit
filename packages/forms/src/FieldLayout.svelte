@@ -1,14 +1,38 @@
-<script>
-	import { getContext } from 'svelte'
+<script lang="ts">
+	import { getContext, type Component } from 'svelte'
 	import { omit } from 'ramda'
-	import InputField from './input/InputField.svelte'
+	import InputField from './InputField.svelte'
 	import FieldLayout from './FieldLayout.svelte'
 
-	const registry = getContext('registry')
+	type Registry = {
+		wrappers: Record<string, Component<Record<string, unknown>>>
+		components: Record<string, Component<Record<string, unknown>>>
+	}
 
-	let { value = $bindable({}), schema = {}, path = [], onchange } = $props()
+	type LayoutSchema = {
+		wrapper?: string
+		key?: string
+		component?: string
+		elements?: LayoutSchema[]
+		props?: Record<string, unknown>
+		[key: string]: unknown
+	}
 
-	let Wrapper = registry.wrappers[schema.wrapper] ?? registry.wrappers.default
+	/** Recursive field-value tree: each node is itself an indexable record of nodes. */
+	type FieldTree = { [key: string]: FieldTree }
+
+	type Props = {
+		value?: FieldTree
+		schema?: LayoutSchema
+		path?: string[]
+		onchange?: (value: unknown) => void
+	}
+
+	const registry = getContext<Registry>('registry')
+
+	let { value = $bindable({}), schema = {}, path = [], onchange }: Props = $props()
+
+	let Wrapper = registry.wrappers[schema.wrapper ?? ''] ?? registry.wrappers.default
 	let wrapperProps = omit(['wrapper', 'elements', 'key'], schema)
 </script>
 
@@ -34,7 +58,11 @@
 				<Component {...item.props} value={item.key ? value[item.key] : null} />
 			{:else}
 				{@const name = elementPath.join('.')}
-				<InputField {name} bind:value={value[item.key]} {...item.props} {onchange} />
+				{#if item.key}
+					<InputField {name} bind:value={value[item.key]} {...item.props} {onchange} />
+				{:else}
+					<InputField {name} {...item.props} {onchange} />
+				{/if}
 			{/if}
 		{/each}
 	</Wrapper>

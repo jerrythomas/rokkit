@@ -1,8 +1,24 @@
-<script>
+<script lang="ts">
 	import Plot from '../Plot.svelte'
 	import Box from '../geoms/Box.svelte'
 
-	/** @type {import('../lib/plot/chartProps.js').BoxViolinChartProps} */
+	type Row = Record<string, unknown>
+
+	type Props = {
+		data?: Row[]
+		x?: string
+		y?: string
+		fill?: string
+		width?: number
+		height?: number
+		mode?: 'light' | 'dark'
+		grid?: boolean
+		legend?: boolean
+		yFormat?: (v: unknown) => string
+		yTicks?: number
+		minorTicks?: boolean
+	}
+
 	let {
 		data = [],
 		x = undefined,
@@ -16,7 +32,7 @@
 		yFormat = undefined,
 		yTicks = undefined,
 		minorTicks = false
-	} = $props()
+	}: Props = $props()
 </script>
 
 <Plot {data} {width} {height} {mode} {grid} {legend} {yFormat} {yTicks} {minorTicks}>

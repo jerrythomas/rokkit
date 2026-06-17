@@ -13,7 +13,7 @@ const ANCHOR_ORDER = ['iqr_max', 'q3', 'median', 'q1', 'iqr_min']
  * Violin body uses the lighter fill shade; outline uses the darker stroke shade.
  *
  * @param {Object[]} data
- * @param {{ x: string, fill?: string }} channels
+ * @param {{ x?: string, fill?: string }} channels
  *   `fill` drives violin interior and outline (defaults to x-field).
  * @param {import('d3-scale').ScaleBand} xScale
  * @param {import('d3-scale').ScaleLinear} yScale

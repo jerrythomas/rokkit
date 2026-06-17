@@ -1,9 +1,24 @@
-<script>
+<script lang="ts">
 	import { getContext } from 'svelte'
+	import type { PlotState } from '../PlotState.svelte.js'
 
-	let { data = undefined, x = undefined, y = undefined, fill = 'steelblue', opacity = 1 } = $props()
+	type Datum = Record<string, unknown> | number
 
-	const state = getContext('plot-state')
+	type Props = {
+		data?: Datum[]
+		x?: string
+		y?: string
+		fill?: string
+		opacity?: number
+	}
+
+	let { data = undefined, x = undefined, y = undefined, fill = 'steelblue', opacity = 1 }: Props =
+		$props()
+
+	const state = getContext<PlotState>('plot-state')
+
+	const accessor = (d: Datum, field: string | undefined): unknown =>
+		field && typeof d === 'object' ? d[field] : d
 
 	const bars = $derived.by(() => {
 		if (!state?.xScale || !state?.yScale) return []
@@ -24,8 +39,8 @@
 				: innerHeight
 
 		return src.map((d) => {
-			const xVal = x ? d[x] : d
-			const yVal = y ? d[y] : d
+			const xVal = accessor(d, x)
+			const yVal = accessor(d, y)
 			const xPos = (xScale(xVal) ?? 0) + padding
 			const yPos = yScale(yVal) ?? baseline
 			return {

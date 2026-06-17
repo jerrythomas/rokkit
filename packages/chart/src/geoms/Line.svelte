@@ -1,9 +1,30 @@
-<script>
+<script lang="ts">
 	import { getContext, onMount, onDestroy } from 'svelte'
+	import type { PlotState } from '../PlotState.svelte.js'
 	import { buildLines } from '../lib/brewing/marks/lines.js'
 	import { buildSymbolPath } from '../lib/brewing/marks/points.js'
 	import { keyboardNav } from '../lib/keyboard-nav.js'
 	import LabelPill from './LabelPill.svelte'
+
+	type Row = Record<string, unknown>
+	type Options = {
+		curve?: 'linear' | 'smooth' | 'step'
+		strokeWidth?: number
+		markerRadius?: number
+		labelOffset?: { x?: number; y?: number }
+	}
+
+	type Props = {
+		x?: string
+		y?: string
+		color?: string
+		symbol?: string
+		label?: boolean | string | ((data: Row) => unknown)
+		stat?: string
+		options?: Options
+		onselect?: (data: Row) => void
+		keyboard?: boolean
+	}
 
 	let {
 		x,
@@ -15,21 +36,17 @@
 		options = {},
 		onselect = undefined,
 		keyboard = false
-	} = $props()
+	}: Props = $props()
 
-	/**
-	 * @param {Record<string, unknown>} data
-	 * @returns {string | null}
-	 */
-	function resolveLabel(data) {
+	function resolveLabel(data: Row): string | null {
 		if (!label) return null
-		if (label === true) return String(data[y] ?? '')
+		if (label === true) return String((y ? data[y] : undefined) ?? '')
 		if (typeof label === 'function') return String(label(data) ?? '')
 		return typeof label === 'string' ? String(data[label] ?? '') : null
 	}
 
-	const plotState = getContext('plot-state')
-	let id = $state(null)
+	const plotState = getContext<PlotState>('plot-state')
+	let id = $state<string | null>(null)
 
 	onMount(() => {
 		id = plotState.registerGeom({

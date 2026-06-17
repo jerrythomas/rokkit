@@ -1,15 +1,29 @@
-<script>
-	// @ts-nocheck
+<script lang="ts">
 	import { getContext } from 'svelte'
-	import { bin, extent, max } from 'd3-array'
+	import { bin, extent, max, type Bin } from 'd3-array'
 	import { scaleLinear } from 'd3-scale'
 	import { format } from 'd3-format'
+	import type { createCrossFilter } from './createCrossFilter.svelte.js'
+
+	type Row = Record<string, unknown>
+	type CrossFilter = ReturnType<typeof createCrossFilter>
 
 	/**
 	 * Interactive histogram with brush selection for crossfilter range dimensions.
 	 * Renders bins as bars; mouse drag selects a range and calls cf.setRange().
 	 * Click without dragging clears the filter.
 	 */
+	type Props = {
+		data?: Row[]
+		field?: string
+		label?: string
+		bins?: number
+		width?: number
+		height?: number
+		color?: string
+		dimColor?: string
+	}
+
 	let {
 		data = [],
 		field = '',
@@ -19,9 +33,9 @@
 		height = 120,
 		color = 'rgb(var(--color-primary, 249 115 22))',
 		dimColor = 'rgb(var(--color-surface-z3, 203 213 225))'
-	} = $props()
+	}: Props = $props()
 
-	const cf = getContext('crossfilter')
+	const cf = getContext<CrossFilter | undefined>('crossfilter')
 
 	const margin = { top: 8, right: 10, bottom: 22, left: 32 }
 
@@ -30,12 +44,16 @@
 
 	// Compute histogram bins from data
 	const binner = $derived(
-		bin()
-			.value((d) => d[field])
+		bin<Row, number>()
+			.value((d) => Number(d[field]))
 			.thresholds(binCount)
 	)
-	const binned = $derived(data.length > 0 ? binner(data) : [])
-	const domainExtent = $derived(data.length > 0 ? extent(data, (d) => d[field]) : [0, 1])
+	const binned = $derived<Bin<Row, number>[]>(data.length > 0 ? binner(data) : [])
+	const domainExtent = $derived.by<[number, number]>(() => {
+		if (data.length === 0) return [0, 1]
+		const [lo, hi] = extent(data, (d) => Number(d[field]))
+		return [lo ?? 0, hi ?? 1]
+	})
 
 	// Scales
 	const xScale = $derived(
@@ -53,12 +71,17 @@
 			: scaleLinear().domain([0, 1]).range([innerHeight, 0])
 	)
 
-	// Active range from crossfilter
-	const activeRange = $derived(cf?.filters?.get(field))
+	// Active range from crossfilter — the histogram only operates on continuous
+	// [min, max] dimensions, so ignore categorical Set filters.
+	const activeRange = $derived.by<[number, number] | null>(() => {
+		const f = cf?.filters?.get(field)
+		if (Array.isArray(f) && f.length === 2) return [f[0], f[1]]
+		return null
+	})
 
 	// Brush state
-	let brushStartPx = $state(null)
-	let brushEndPx = $state(null)
+	let brushStartPx = $state<number | null>(null)
+	let brushEndPx = $state<number | null>(null)
 	let brushing = $state(false)
 
 	// Brush rect in pixel space
@@ -77,32 +100,34 @@
 		return { x: lo, width: Math.max(1, hi - lo) }
 	})
 
-	function pixelToValue(px) {
+	function pixelToValue(px: number) {
 		return xScale.invert(Math.max(0, Math.min(innerWidth, px)))
 	}
 
-	function getLocalX(e) {
+	function getLocalX(e: MouseEvent & { currentTarget: Element }) {
 		const svgEl = e.currentTarget.closest('svg')
+		if (!svgEl) return 0
 		const rect = svgEl.getBoundingClientRect()
 		return e.clientX - rect.left - margin.left
 	}
 
-	function onMouseDown(e) {
+	function onMouseDown(e: MouseEvent & { currentTarget: Element }) {
 		brushStartPx = getLocalX(e)
 		brushEndPx = brushStartPx
 		brushing = true
 	}
 
-	function onMouseMove(e) {
+	function onMouseMove(e: MouseEvent & { currentTarget: Element }) {
 		if (!brushing) return
 		brushEndPx = getLocalX(e)
 	}
 
 	function onMouseUp() {
-		if (!brushing) return
+		if (!brushing || brushStartPx === null) return
 		brushing = false
-		const lo = Math.min(brushStartPx, brushEndPx)
-		const hi = Math.max(brushStartPx, brushEndPx)
+		const end = brushEndPx ?? brushStartPx
+		const lo = Math.min(brushStartPx, end)
+		const hi = Math.max(brushStartPx, end)
 		if (hi - lo < 3) {
 			// Treat as click — clear filter
 			cf?.clearFilter(field)
@@ -118,10 +143,10 @@
 	}
 
 	// Check if a bin is within active range
-	function binInRange(b) {
+	function binInRange(b: Bin<Row, number>) {
 		if (!activeRange) return true
 		const [lo, hi] = activeRange
-		return b.x1 > lo && b.x0 < hi
+		return (b.x1 ?? 0) > lo && (b.x0 ?? 0) < hi
 	}
 
 	// Y-axis tick values (2-3 ticks)
@@ -195,8 +220,8 @@
 
 			<!-- Bars -->
 			{#each binned as b (b.x0)}
-				{@const bx = xScale(b.x0) + 1}
-				{@const bw = Math.max(0, xScale(b.x1) - xScale(b.x0) - 1)}
+				{@const bx = xScale(b.x0 ?? 0) + 1}
+				{@const bw = Math.max(0, xScale(b.x1 ?? 0) - xScale(b.x0 ?? 0) - 1)}
 				{@const by = yScale(b.length)}
 				{@const bh = innerHeight - by}
 				<rect

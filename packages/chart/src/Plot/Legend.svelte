@@ -1,12 +1,16 @@
-<script>
+<script lang="ts">
 	import { getContext } from 'svelte'
+	import type { PlotState } from '../PlotState.svelte.js'
 	import { toPatternId } from '../lib/brewing/patterns.js'
 	import { buildSymbolPath } from '../lib/brewing/marks/points.js'
 
-	/** @type {Record<string, string>} */
-	let { labels = {} } = $props()
+	type Props = {
+		labels?: Record<string, string>
+	}
 
-	const state = getContext('plot-state')
+	let { labels = {} }: Props = $props()
+
+	const state = getContext<PlotState>('plot-state')
 
 	const isCategorical = $derived(state.colorScaleType === 'categorical')
 	const isLineGeom = $derived(state.geomTypes?.has('line') ?? false)

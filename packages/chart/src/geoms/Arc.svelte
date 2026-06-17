@@ -1,12 +1,25 @@
-<script>
+<script lang="ts">
 	import { getContext, onMount, onDestroy } from 'svelte'
+	import type { PlotState } from '../PlotState.svelte.js'
 	import { buildArcs } from '../lib/brewing/marks/arcs.js'
+
+	type Row = Record<string, unknown>
 
 	/**
 	 * `fill` is the primary prop name; `color` is accepted as an alias for
 	 * spec-driven usage (Plot.svelte passes `color` to all geoms generically).
-	 * @type {{ theta?: string, fill?: string, color?: string, pattern?: string, stat?: string, labelFn?: (data: Record<string, unknown>) => string, options?: { innerRadius?: number } }}
 	 */
+	type Props = {
+		theta?: string
+		fill?: string
+		color?: string
+		pattern?: string
+		stat?: string
+		labelFn?: (data: Row) => string
+		options?: { innerRadius?: number }
+		onselect?: (data: Row) => void
+	}
+
 	let {
 		theta,
 		fill,
@@ -16,12 +29,12 @@
 		stat = 'identity',
 		options = {},
 		onselect = undefined
-	} = $props()
+	}: Props = $props()
 
 	const fillField = $derived(fill ?? color)
 
-	const plotState = getContext('plot-state')
-	let id = $state(null)
+	const plotState = getContext<PlotState>('plot-state')
+	let id = $state<string | null>(null)
 
 	onMount(() => {
 		id = plotState.registerGeom({

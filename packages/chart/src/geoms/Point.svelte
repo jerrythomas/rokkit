@@ -1,9 +1,33 @@
-<script>
+<script lang="ts">
 	import { getContext, onMount, onDestroy } from 'svelte'
 	import { scaleSqrt } from 'd3-scale'
+	import type { PlotState } from '../PlotState.svelte.js'
 	import { buildPoints } from '../lib/brewing/marks/points.js'
 	import { keyboardNav } from '../lib/keyboard-nav.js'
 	import LabelPill from './LabelPill.svelte'
+
+	type Row = Record<string, unknown>
+	type Options = {
+		minRadius?: number
+		maxRadius?: number
+		radius?: number
+		opacity?: number
+		jitter?: { width?: number; height?: number } | null
+		labelOffset?: { x?: number; y?: number }
+	}
+
+	type Props = {
+		x?: string
+		y?: string
+		color?: string
+		size?: string
+		symbol?: string
+		label?: boolean | string | ((data: Row) => unknown)
+		stat?: string
+		options?: Options
+		onselect?: (data: Row) => void
+		keyboard?: boolean
+	}
 
 	let {
 		x,
@@ -16,21 +40,17 @@
 		options = {},
 		onselect = undefined,
 		keyboard = false
-	} = $props()
+	}: Props = $props()
 
-	/**
-	 * @param {Record<string, unknown>} data
-	 * @returns {string | null}
-	 */
-	function resolveLabel(data) {
+	function resolveLabel(data: Row): string | null {
 		if (!label) return null
-		if (label === true) return String(data[y] ?? '')
+		if (label === true) return String((y ? data[y] : undefined) ?? '')
 		if (typeof label === 'function') return String(label(data) ?? '')
 		return typeof label === 'string' ? String(data[label] ?? '') : null
 	}
 
-	const plotState = getContext('plot-state')
-	let id = $state(null)
+	const plotState = getContext<PlotState>('plot-state')
+	let id = $state<string | null>(null)
 
 	onMount(() => {
 		id = plotState.registerGeom({
@@ -88,7 +108,7 @@
 {#if points.length > 0}
 	<g data-plot-geom="point">
 		<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-		{#each points as pt, i (`${i}::${pt.data[x]}::${pt.data[y]}`)}
+		{#each points as pt, i (`${i}::${pt.data[x ?? '']}::${pt.data[y ?? '']}`)}
 			{#if pt.symbolPath}
 				<path
 					transform="translate({pt.cx},{pt.cy})"
@@ -101,7 +121,7 @@
 					role={onselect || keyboard ? 'button' : 'graphics-symbol'}
 					tabindex={onselect || keyboard ? 0 : undefined}
 					style:cursor={onselect ? 'pointer' : undefined}
-					aria-label="{pt.data[x]}, {pt.data[y]}"
+					aria-label="{pt.data[x ?? '']}, {pt.data[y ?? '']}"
 					onmouseenter={() => plotState.setHovered(pt.data)}
 					onmouseleave={() => plotState.clearHovered()}
 					onclick={onselect ? () => onselect(pt.data) : undefined}
@@ -121,7 +141,7 @@
 					role={onselect || keyboard ? 'button' : 'graphics-symbol'}
 					tabindex={onselect || keyboard ? 0 : undefined}
 					style:cursor={onselect ? 'pointer' : undefined}
-					aria-label="{pt.data[x]}, {pt.data[y]}"
+					aria-label="{pt.data[x ?? '']}, {pt.data[y ?? '']}"
 					onmouseenter={() => plotState.setHovered(pt.data)}
 					onmouseleave={() => plotState.clearHovered()}
 					onclick={onselect ? () => onselect(pt.data) : undefined}

@@ -1,18 +1,18 @@
-<script>
+<script lang="ts">
 	import { Select } from '@rokkit/ui'
 
-	/**
-	 * @typedef {Object} InputSelectProps
-	 * @property {any} value - Selected value (bindable)
-	 * @property {Object} [fields] - Field mapping for options
-	 * @property {Array<Object|string>} [options] - Static options array (strings or objects)
-	 * @property {string} [placeholder] - Placeholder text
-	 * @property {boolean} [disabled] - Whether the select is disabled
-	 * @property {string} [size] - Size variant
-	 * @property {Function} [onchange] - Change callback
-	 */
+	type Option = string | Record<string, unknown>
 
-	/** @type {InputSelectProps & { [key: string]: any }} */
+	type Props = {
+		value?: unknown
+		fields?: Record<string, string>
+		options?: Option[]
+		placeholder?: string
+		disabled?: boolean
+		size?: 'sm' | 'md' | 'lg'
+		onchange?: (value: unknown, item: unknown) => void
+	}
+
 	let {
 		value = $bindable(),
 		fields,
@@ -22,18 +22,18 @@
 		size,
 		onchange,
 		..._rest
-	} = $props()
+	}: Props = $props()
+
+	function isEmptyOption(opt: Option): boolean {
+		return opt === '' || (typeof opt === 'object' && opt?.value === '')
+	}
 
 	// Check if options include an empty string (used as "none" option)
-	const hasEmptyOption = $derived(
-		options.some((opt) => opt === '' || (typeof opt === 'object' && opt?.value === ''))
-	)
+	const hasEmptyOption = $derived(options.some(isEmptyOption))
 
 	// Filter out empty strings — Select + ProxyItem handles string options natively
 	const filteredOptions = $derived(
-		hasEmptyOption
-			? options.filter((opt) => opt !== '' && !(typeof opt === 'object' && opt?.value === ''))
-			: options
+		hasEmptyOption ? options.filter((opt) => !isEmptyOption(opt)) : options
 	)
 
 	// Use placeholder for empty option, or provide a default clear label

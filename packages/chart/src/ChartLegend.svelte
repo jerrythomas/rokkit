@@ -1,34 +1,38 @@
-<script>
+<script lang="ts">
 	import { buildSymbolPath } from './lib/brewing/marks/points.js'
+
+	type LegendItem = {
+		key: string
+		label: string
+		fill?: string
+		stroke?: string
+		patternId?: string
+		shape?: string
+	}
+
+	type LegendGroup = {
+		type?: 'color' | 'pattern' | 'symbol'
+		label?: string
+		items: LegendItem[]
+	}
 
 	/**
 	 * Standalone chart legend — HTML-based, usable outside of Plot context.
 	 * Accepts `groups` from a chart's brewer or from multiple charts for shared legends.
-	 *
-	 * @type {{
-	 *   groups: Array<{
-	 *     type?: 'color' | 'pattern' | 'symbol',
-	 *     label?: string,
-	 *     items: Array<{
-	 *       key: string,
-	 *       label: string,
-	 *       fill?: string,
-	 *       stroke?: string,
-	 *       patternId?: string,
-	 *       shape?: string,
-	 *     }>
-	 *   }>,
-	 *   orientation?: 'horizontal' | 'vertical' | 'wrap',
-	 *   gradient?: { style: string, min: string, max: string } | null,
-	 *   swatchStyle?: 'fill' | 'line' | 'point',
-	 * }}
 	 */
+	type Props = {
+		groups?: LegendGroup[]
+		orientation?: 'horizontal' | 'vertical' | 'wrap'
+		gradient?: { style: string; min: string; max: string } | null
+		swatchStyle?: 'fill' | 'line' | 'point'
+	}
+
 	let {
 		groups = [],
 		orientation = 'horizontal',
 		gradient = null,
 		swatchStyle = 'fill'
-	} = $props()
+	}: Props = $props()
 </script>
 
 <div

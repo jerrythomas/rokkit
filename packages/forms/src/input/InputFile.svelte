@@ -1,19 +1,11 @@
-<script>
-	/**
-	 * @typedef {Object} InputFileProps
-	 * @property {FileList} value
-	 * @property {Function} onchange
-	 * @property {Function} onfocus
-	 * @property {Function} onblur
-	 * @property {string} accept
-	 * @property {boolean} multiple
-	 * @property {boolean} required
-	 * @property {boolean} disabled
-	 * @property {string} name
-	 * @property {string} id
-	 */
+<script lang="ts">
+	import type { HTMLInputAttributes } from 'svelte/elements'
 
-	/** @type {InputFileProps & { [key: string]: any }} */
+	type Props = Omit<HTMLInputAttributes, 'value' | 'onchange'> & {
+		value?: FileList | null
+		onchange?: (value: FileList | null) => void
+	}
+
 	let {
 		value = $bindable(),
 		onchange,
@@ -26,10 +18,10 @@
 		name,
 		id,
 		...rest
-	} = $props()
+	}: Props = $props()
 
-	function handleChange(event) {
-		value = event.target.files
+	function handleChange(event: Event & { currentTarget: HTMLInputElement }) {
+		value = event.currentTarget.files
 		onchange?.(value)
 	}
 </script>

@@ -1,5 +1,25 @@
-<script>
+<script lang="ts">
 	import { getContext, onMount, onDestroy } from 'svelte'
+	import type { PlotState } from '../PlotState.svelte.js'
+
+	type Options = {
+		open?: string
+		high?: string
+		low?: string
+		close?: string
+		upColor?: string
+		downColor?: string
+		wickWidth?: number
+	}
+
+	type Props = {
+		x?: string
+		y?: string
+		color?: string
+		fill?: string
+		stat?: string
+		options?: Options
+	}
 
 	let {
 		x,
@@ -8,7 +28,7 @@
 		fill: fillProp = undefined,
 		stat = 'identity',
 		options = {}
-	} = $props()
+	}: Props = $props()
 
 	const open = $derived(options.open ?? 'open')
 	const high = $derived(options.high ?? 'high')
@@ -18,8 +38,8 @@
 	const downColor = $derived(options.downColor ?? '#ef4444')
 	const wickWidth = $derived(options.wickWidth ?? 1)
 
-	const plotState = getContext('plot-state')
-	let id = $state(null)
+	const plotState = getContext<PlotState>('plot-state')
+	let id = $state<string | null>(null)
 
 	onMount(() => {
 		// Register with y pointing to 'high' so the y scale covers the full range
@@ -52,7 +72,7 @@
 		const bodyOffset = (bw - bodyWidth) / 2
 
 		return data.map((d, i) => {
-			const xPos = (xScale(d[x]) ?? 0) + bodyOffset
+			const xPos = (xScale(d[x ?? '']) ?? 0) + bodyOffset
 			const openVal = Number(d[open])
 			const closeVal = Number(d[close])
 			const highVal = Number(d[high])
@@ -62,7 +82,7 @@
 			const bodyBottom = yScale(isUp ? openVal : closeVal)
 
 			return {
-				key: `${d[x]}-${i}`,
+				key: `${d[x ?? '']}-${i}`,
 				// Body
 				bodyX: xPos,
 				bodyY: bodyTop,
@@ -104,7 +124,7 @@
 				onmouseenter={() => plotState.setHovered(c.data)}
 				onmouseleave={() => plotState.clearHovered()}
 			>
-				<title>{c.data[x]}: O={c.data[open]} H={c.data[high]} L={c.data[low]} C={c.data[close]}</title>
+				<title>{c.data[x ?? '']}: O={c.data[open]} H={c.data[high]} L={c.data[low]} C={c.data[close]}</title>
 			</rect>
 		{/each}
 	</g>

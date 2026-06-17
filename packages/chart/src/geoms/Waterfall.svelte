@@ -1,5 +1,23 @@
-<script>
+<script lang="ts">
 	import { getContext, onMount, onDestroy } from 'svelte'
+	import type { PlotState } from '../PlotState.svelte.js'
+
+	type Options = {
+		positiveColor?: string
+		negativeColor?: string
+		totalColor?: string
+		totalField?: string
+		connectorWidth?: number
+	}
+
+	type Props = {
+		x?: string
+		y?: string
+		color?: string
+		fill?: string
+		stat?: string
+		options?: Options
+	}
 
 	let {
 		x,
@@ -8,7 +26,7 @@
 		fill: fillProp = undefined,
 		stat = 'identity',
 		options = {}
-	} = $props()
+	}: Props = $props()
 
 	const positiveColor = $derived(options.positiveColor ?? '#22c55e')
 	const negativeColor = $derived(options.negativeColor ?? '#ef4444')
@@ -16,8 +34,8 @@
 	const totalField = $derived(options.totalField ?? undefined)
 	const connectorWidth = $derived(options.connectorWidth ?? 0.5)
 
-	const plotState = getContext('plot-state')
-	let id = $state(null)
+	const plotState = getContext<PlotState>('plot-state')
+	let id = $state<string | null>(null)
 
 	onMount(() => {
 		id = plotState.registerGeom({
@@ -49,21 +67,23 @@
 
 		let cumulative = 0
 		return data.map((d, i) => {
-			const xVal = d[x]
-			const yVal = Number(d[y])
+			const xVal = d[x ?? '']
+			const yVal = Number(d[y ?? ''])
 			const isTotal = totalField ? Boolean(d[totalField]) : false
 			const xPos = xScale(xVal) ?? 0
-			let barTop, barBottom, fill
+			let barTop: number
+			let barBottom: number
+			let fill: string
 
 			if (isTotal) {
-				barTop = yScale(Math.max(0, cumulative))
-				barBottom = yScale(0)
+				barTop = yScale(Math.max(0, cumulative)) ?? 0
+				barBottom = yScale(0) ?? 0
 				fill = totalColor
 			} else {
 				const start = cumulative
 				cumulative += yVal
-				barTop = yScale(Math.max(start, cumulative))
-				barBottom = yScale(Math.min(start, cumulative))
+				barTop = yScale(Math.max(start, cumulative)) ?? 0
+				barBottom = yScale(Math.min(start, cumulative)) ?? 0
 				fill = yVal >= 0 ? positiveColor : negativeColor
 			}
 
@@ -95,7 +115,7 @@
 				onmouseenter={() => plotState.setHovered(bar.data)}
 				onmouseleave={() => plotState.clearHovered()}
 			>
-				<title>{bar.data[x]}: {bar.data[y]}</title>
+				<title>{bar.data[x ?? '']}: {bar.data[y ?? '']}</title>
 			</rect>
 			<!-- Connector line to next bar -->
 			{#if i < bars.length - 1}

@@ -1,15 +1,39 @@
-<script>
+<script lang="ts">
 	import { scaleLinear } from 'd3-scale'
 	import { id as uniqueId } from '@rokkit/core'
 
-	let { x = 0, y = 0, textSize = 5, height = 10, width = 100, tickCount = 5, scale } = $props()
+	type ColorScale = {
+		(value: number): string
+		domain(): number[]
+		ticks(count?: number): number[]
+	}
+
+	type Props = {
+		x?: number
+		y?: number
+		textSize?: number
+		height?: number
+		width?: number
+		tickCount?: number
+		scale: ColorScale
+	}
+
+	let {
+		x = 0,
+		y = 0,
+		textSize = 5,
+		height = 10,
+		width = 100,
+		tickCount = 5,
+		scale
+	}: Props = $props()
 
 	let scaleTicks = $derived(
-		scaleLinear()
+		scaleLinear<number>()
 			.range([x, x + width])
 			.domain(scale.domain())
 	)
-	let scalePercent = $derived(scaleLinear().range([0, 100]).domain(scale.domain()))
+	let scalePercent = $derived(scaleLinear<number>().range([0, 100]).domain(scale.domain()))
 	let ticks = $derived(
 		scale.ticks.apply(scale, [tickCount]).map((d) => ({ x: scaleTicks(d), value: d }))
 	)

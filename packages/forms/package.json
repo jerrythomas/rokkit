@@ -44,5 +44,8 @@
     "@rokkit/states": "workspace:latest",
     "@rokkit/ui": "workspace:latest",
     "ramda": "^0.32.0"
+  },
+  "devDependencies": {
+    "@types/ramda": "^0.31.1"
   }
 }

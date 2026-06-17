@@ -1,18 +1,8 @@
-<script>
-	import { Toggle } from '@rokkit/ui'
+<script lang="ts">
+	import { Toggle, type ToggleProps } from '@rokkit/ui'
 
-	/**
-	 * @typedef {Object} InputToggleProps
-	 * @property {any} value - Selected value (bindable)
-	 * @property {Array<Object|string>} [options] - Options array (strings or objects)
-	 * @property {Object} [fields] - Field mapping for option data
-	 * @property {boolean} [disabled] - Whether the toggle is disabled
-	 * @property {string} [size] - Size variant ('sm' | 'md' | 'lg')
-	 * @property {boolean} [showLabels] - Show text labels
-	 * @property {Function} [onchange] - Change callback
-	 */
+	type Props = Pick<ToggleProps, 'value' | 'options' | 'fields' | 'disabled' | 'size' | 'showLabels' | 'onchange'>
 
-	/** @type {InputToggleProps & { [key: string]: any }} */
 	let {
 		value = $bindable(),
 		options = [],
@@ -22,7 +12,7 @@
 		showLabels,
 		onchange,
 		..._rest
-	} = $props()
+	}: Props = $props()
 </script>
 
 <Toggle {options} {fields} bind:value {onchange} {disabled} {size} {showLabels} />
