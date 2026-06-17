@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - 'v*'
+  # Manual re-publish (reads versions from package.json, skips already-published).
+  workflow_dispatch:
 
 jobs:
   publish:
@@ -27,7 +29,11 @@ jobs:
           node-version: 24.x
 
       - name: Install dependencies
-        run: bun install
+        # --ignore-scripts: skip lifecycle scripts (notably @rokkit/themes' `prepare`,
+        # which runs build.mjs → imports @rokkit/core → date-fns and fails mid-install
+        # on newer bun). The publish step builds each package via `prepublishOnly`
+        # after install completes (deps fully linked), so no build is needed here.
+        run: bun install --ignore-scripts
 
       - name: Publish packages
         env:
