@@ -1,9 +1,11 @@
-<script>
+<script lang="ts">
 	import { commands, messages } from '@rokkit/states'
 	import { dismissable } from '@rokkit/actions'
 
-	/** @type {{ open?: boolean, placeholder?: string }} */
-	let { open = $bindable(false), placeholder } = $props()
+	/** Minimal command shape this palette reads (states' Command typedef isn't exported). */
+	type CommandLike = { id: string; label: string; keywords?: string[] }
+
+	let { open = $bindable(false), placeholder }: { open?: boolean; placeholder?: string } = $props()
 
 	let query = $state('')
 	let activeIndex = $state(0)
@@ -14,7 +16,7 @@
 		label: messages.command.label
 	})
 
-	function score(cmd, q) {
+	function score(cmd: CommandLike, q: string) {
 		const hay = `${cmd.label} ${cmd.id} ${(cmd.keywords ?? []).join(' ')}`.toLowerCase()
 		return hay.includes(q)
 	}
@@ -30,14 +32,14 @@
 		activeIndex = 0
 	}
 
-	function runAt(index) {
+	function runAt(index: number) {
 		const cmd = results[index]
 		if (!cmd) return
 		close()
 		commands.execute(cmd.id)
 	}
 
-	function onkeydown(event) {
+	function onkeydown(event: KeyboardEvent) {
 		if (event.key === 'ArrowDown') {
 			event.preventDefault()
 			activeIndex = Math.min(activeIndex + 1, results.length - 1)

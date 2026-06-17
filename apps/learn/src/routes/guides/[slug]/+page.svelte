@@ -3,8 +3,6 @@
 	const { data } = $props()
 </script>
 
-<svelte:head><title>{data.guide.title} — Rokkit Guides</title></svelte:head>
-
 <GuidePage markdown={data.guide.content} />
 
 <footer class="follow-up">

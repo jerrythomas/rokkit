@@ -94,7 +94,7 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-tabs-trigger] [data-tabs-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='rokkit'] [data-tabs-trigger]:hover:not(:disabled) [data-tabs-icon] {

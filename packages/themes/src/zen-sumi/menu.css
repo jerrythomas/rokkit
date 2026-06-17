@@ -10,7 +10,7 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-menu-trigger] {
-  @apply border-paper-mute text-ink-soft border bg-transparent bg-none;
+  @apply border-paper-mute text-ink-mute border bg-transparent bg-none;
 }
 
 [data-style='zen-sumi'] [data-menu-trigger]:hover:not(:disabled) {
@@ -28,15 +28,15 @@
 
 /* Trigger elements */
 [data-style='zen-sumi'] [data-menu-trigger] [data-menu-icon] {
-  @apply text-paper-edge;
+  @apply text-ink-mute;
 }
 
 [data-style='zen-sumi'] [data-menu-trigger]:hover:not(:disabled) [data-menu-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='zen-sumi'] [data-menu-trigger] [data-menu-arrow] {
-  @apply text-paper-edge;
+  @apply text-ink-mute;
 }
 
 /* =============================================================================
@@ -53,7 +53,7 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-menu-item] {
-  @apply text-ink-soft border-0 border-solid border-transparent;
+  @apply text-ink-mute border-0 border-solid border-transparent;
 }
 
 [data-style='zen-sumi'] [data-menu-item]:hover:not(:disabled),
@@ -63,15 +63,15 @@
 
 /* Item elements */
 [data-style='zen-sumi'] [data-menu-item] [data-item-icon] {
-  @apply text-paper-edge;
+  @apply text-ink-mute;
 }
 
 [data-style='zen-sumi'] [data-menu-item]:hover:not(:disabled) [data-item-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='zen-sumi'] [data-menu-item] [data-item-description] {
-  @apply text-paper-edge;
+  @apply text-ink-mute;
 }
 
 /* =============================================================================
@@ -79,7 +79,7 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-menu-group] {
-  @apply text-paper-edge;
+  @apply text-ink-mute;
 }
 
 /* =============================================================================

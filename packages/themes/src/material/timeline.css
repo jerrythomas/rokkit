@@ -13,11 +13,12 @@
 }
 
 [data-style='material'] [data-timeline-item][data-completed] [data-timeline-circle] {
-  @apply bg-primary border-primary text-on-primary shadow-sm;
+  @apply  border-primary text-on-primary shadow-sm;
+  background-color: var(--primary);
 }
 
 [data-style='material'] [data-timeline-item][data-active] [data-timeline-circle] {
-  @apply border-primary text-primary ring-3 ring-primary/25;
+  @apply border-primary text-ink ring-3 ring-primary/25;
 }
 
 /* =============================================================================
@@ -29,7 +30,7 @@
 }
 
 [data-style='material'] [data-timeline-item][data-completed] [data-timeline-connector] {
-  @apply bg-primary;
+  background-color: var(--primary);
 }
 
 /* =============================================================================

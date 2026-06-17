@@ -160,16 +160,19 @@ Two mechanisms handle this:
 When text sits on a colored background, use these tokens for legible contrast:
 
 ```
-text-on-primary    → text-surface-50
-text-on-secondary  → text-surface-50
-text-on-info       → text-surface-50
-text-on-success    → text-surface-50
-text-on-warning    → text-surface-50
-text-on-error      → text-surface-50
-text-on-surface    → text-surface-50
+text-on-primary    ┐
+text-on-secondary  │  auto near-black (#161616) or near-white (#fafafa),
+text-on-info       │  whichever contrasts with the role's 500 fill — picked
+text-on-success    ├─ from the fill's relative luminance (crossover Y≈0.19).
+text-on-warning    │  A bright 500 (vermillion/teal/amber) → black text; a
+text-on-error      │  dark 500 (violet/indigo) → white text.
+text-on-surface    ┘
 ```
 
-These are registered as static shortcuts in `build.mjs`.
+The on-color is derived in `@rokkit/core` (`relativeLuminance` +
+`Theme.#onColorHex`). `text-on-primary` resolves to the runtime `--on-primary`
+var (per-skin, overridable); the other `text-on-{role}` utilities are baked as
+static shortcuts in `build.mjs` from the default theme.
 
 ---
 

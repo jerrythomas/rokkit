@@ -1,5 +1,44 @@
 # Project Journal
 
+## 2026-06-15 — Theme-contrast regression checkpoint + auto on-color (vermillion restored)
+
+**Regression checkpoint.** Built an isolated component gallery (`apps/learn/
+src/routes/embed/gallery`) + a Playwright WCAG-contrast gate (`e2e/
+theme-contrast.e2e.ts` + `contrast-collector.mjs`) that drives the full
+style × mode × skin matrix (5×2×5) and ratchets against
+`theme-contrast.baseline.json` (`comp|part` keys). Burned the content debt
+down (33→12 keys): `text-ink-soft`/`text-paper-edge` → `text-ink-mute`
+across table/list/tree/select/menu/dropdown/divider/tabs; stepper/timeline
+active circles use `--ink` number with the saffron ring kept; 4 brand skins
+made dual-palette (kami/sumi) so named tokens flip in dark. Quarantined 4
+orphaned koan e2e specs (old Shell/Welcome composer, no route mounts).
+
+**Vermillion course-correction.** Option A (darkening filled controls via
+`color-mix(var(--role) 70%, black)`) muddied the brand vermillion to brown.
+Reverted all filled controls back to **solid `var(--role)`** and re-anchored
+`shu`-500 at `#e8552b` (oklch 0.641 0.190 36) — the fill IS the brand color;
+contrast comes from the on-color, not from darkening the fill.
+
+**Auto on-color (the general fix).** `@rokkit/core` now derives every
+on-color (near-black `#161616` / near-white `#fafafa`) from the fill's
+relative luminance, instead of a fixed light tint. New
+`relativeLuminance(value, space)` in `color-space.js` (hex / bare-RGB /
+bare-OKLCH → Y via inverse OKLab matrices). `Theme.#onColorHex(role)` picks
+the endpoint at the `Y≈0.19` crossover; `--on-primary` (runtime, per-skin)
+and the baked `text-on-{accent,danger,…}` utilities both use it. Result: a
+bright 500 (vermillion, teal, amber) gets readable black text; a dark 500
+(violet, indigo) gets white — automatically, per "pick a 500 where black or
+white works." Removed the hand-set `on-primary` learn override. Ocean skin
+set to teal / emerald / sky.
+
+Solid filled controls (all variants, all skins) now clear AA. Remaining
+baselined debt is deliberate/marginal: frosted translucent glass fills,
+`ink-mute`-in-dark (4.07), message status soft-bg. Gate green.
+
+Verified: core 240 ✓, full unit suite 3566 ✓, lint 0 errors, e2e 56 passed /
+28 skipped / 0 failed, contrast gate ✓; vermillion #e8552b renders bright
+(not brown) in light + dark with readable near-black text, ocean = teal.
+
 ## 2026-06-13 — Frosted gradient + per-component dist follow-ups; learn Cloudflare deploy (v1.1.17)
 
 **Themes follow-ups (from v1.1.16).** Fixed the two non-blocking items noted last release.

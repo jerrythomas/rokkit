@@ -5,7 +5,10 @@ const KEYCODE_ESC = 27
  * A svelte action function that captures clicks outside the element or escape keypress
  * emits a `dismiss` event. This is useful for closing a modal or dropdown.
  *
- * @param {HTMLElement} node
+ * The third Action generic declares the `ondismiss` attribute so consumers using
+ * `use:dismissable ondismiss={...}` type-check (the event is a CustomEvent).
+ *
+ * @type {import('svelte/action').Action<HTMLElement, undefined, { ondismiss?: (event: CustomEvent<HTMLElement | undefined>) => void }>}
  */
 export function dismissable(node) {
 	const handleClick = (event) => {

@@ -22,5 +22,5 @@
 }
 
 [data-style='rokkit'] [data-divider-label] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }

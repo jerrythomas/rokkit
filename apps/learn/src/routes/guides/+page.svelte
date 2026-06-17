@@ -5,8 +5,6 @@
 	const categories: GuideCategory[] = ['basics', 'data', 'design', 'workflows', 'advanced']
 </script>
 
-<svelte:head><title>Guides — Rokkit</title></svelte:head>
-
 <h1>Guides</h1>
 <p class="lead">Long-form reference for building with Rokkit.</p>
 

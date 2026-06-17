@@ -3,7 +3,7 @@
  */
 
 [data-style='rokkit'] [data-avatar] {
-  @apply bg-paper-edge text-ink-mute;
+  @apply bg-paper-edge text-ink;
 }
 
 /* Status dot colors */

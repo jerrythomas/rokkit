@@ -21,7 +21,7 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-toggle-option] {
-  @apply text-ink-soft border-0 border-solid border-transparent;
+  @apply text-ink-mute border-0 border-solid border-transparent;
 }
 
 [data-style='zen-sumi'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']),
@@ -31,7 +31,8 @@
 
 /* Selected state — primary (shu) fill */
 [data-style='zen-sumi'] [data-toggle-option][data-selected='true'] {
-  @apply bg-primary text-on-primary bg-none;
+  @apply  text-on-primary bg-none;
+  background-color: var(--primary);
   font-weight: 500;
 }
 
@@ -46,7 +47,7 @@
  * matches the option label, and `paper` for selected contrasts cleanly
  * against the ink fill. */
 [data-style='zen-sumi'] [data-toggle-option] [data-toggle-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='zen-sumi'] [data-toggle-option]:hover:not(:disabled) [data-toggle-icon],
@@ -66,7 +67,7 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-toggle][data-toggle-variant='button'] {
-  @apply border-transparent bg-transparent text-ink-soft;
+  @apply border-transparent bg-transparent text-ink-mute;
   background-image: none;
 }
 
@@ -76,7 +77,7 @@
 }
 
 [data-style='zen-sumi'] [data-toggle][data-toggle-variant='button'] [data-toggle-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='zen-sumi'] [data-toggle][data-toggle-variant='button']:hover:not(:disabled) [data-toggle-icon],

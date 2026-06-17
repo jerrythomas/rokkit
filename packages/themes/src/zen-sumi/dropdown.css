@@ -6,7 +6,7 @@
  */
 
 [data-style='zen-sumi'] [data-dropdown-trigger] {
-  @apply border-paper-mute text-ink-soft border bg-transparent bg-none;
+  @apply border-paper-mute text-ink-mute border bg-transparent bg-none;
 }
 
 [data-style='zen-sumi'] [data-dropdown-trigger]:hover:not(:disabled) {
@@ -23,11 +23,11 @@
 }
 
 [data-style='zen-sumi'] [data-dropdown-trigger] [data-dropdown-icon] {
-  @apply text-paper-edge;
+  @apply text-ink-mute;
 }
 
 [data-style='zen-sumi'] [data-dropdown-trigger] [data-dropdown-arrow] {
-  @apply text-paper-edge;
+  @apply text-ink-mute;
 }
 
 [data-style='zen-sumi'] [data-dropdown-panel] {
@@ -36,7 +36,7 @@
 }
 
 [data-style='zen-sumi'] [data-dropdown-option] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='zen-sumi'] [data-dropdown-option]:hover:not(:disabled),

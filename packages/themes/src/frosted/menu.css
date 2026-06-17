@@ -33,7 +33,7 @@
 
 /* Trigger elements */
 [data-style='frosted'] [data-menu-trigger] [data-menu-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='frosted'] [data-menu-trigger]:hover:not(:disabled) [data-menu-icon] {
@@ -41,7 +41,7 @@
 }
 
 [data-style='frosted'] [data-menu-trigger] [data-menu-arrow] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 /* =============================================================================
@@ -78,7 +78,7 @@
 
 /* Item elements */
 [data-style='frosted'] [data-menu-item] [data-item-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='frosted'] [data-menu-item]:hover:not(:disabled) [data-item-icon] {
@@ -86,7 +86,7 @@
 }
 
 [data-style='frosted'] [data-menu-item] [data-item-description] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 /* =============================================================================
@@ -94,7 +94,7 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-menu-group] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 /* =============================================================================

@@ -6,6 +6,7 @@
 	import { page } from '$app/state'
 	import SiteHeader from '$lib/components/SiteHeader.svelte'
 	import SiteFooter from '$lib/components/SiteFooter.svelte'
+	import Seo from '$lib/components/Seo.svelte'
 	import { skinDefinitions } from '$lib/data/skins'
 	import { STORAGE_KEY } from '$lib/theme-config'
 
@@ -53,6 +54,10 @@
 	 flickering through every embedded style. -->
 <svelte:body use:themable={{ theme: vibe, storageKey: isEmbed ? undefined : STORAGE_KEY }} />
 
+<!-- Per-page <head> SEO (title/description/canonical/OG/Twitter/JSON-LD).
+	 Routes override via `page.data.seo` returned from their `load`. -->
+<Seo seo={page.data?.seo} />
+
 <div
 	class="site-shell"
 	class:has-footer={showFooter}
@@ -96,6 +101,15 @@
 		overflow: visible;
 	}
 
+	/* /embed/* pages render long-form content (e.g. the gallery grid) that can
+	   exceed the viewport. The home showcase iframes are sized to their content
+	   so they never scroll; the standalone gallery needs normal page scroll. */
+	.site-shell[data-embed] {
+		height: auto;
+		min-height: 100vh;
+		overflow: visible;
+	}
+
 	.site-main {
 		flex: 1;
 		min-height: 0;
@@ -104,7 +118,8 @@
 		overflow: hidden;
 	}
 
-	.site-shell.has-footer .site-main {
+	.site-shell.has-footer .site-main,
+	.site-shell[data-embed] .site-main {
 		overflow: visible;
 	}
 </style>

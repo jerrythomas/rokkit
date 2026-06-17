@@ -21,7 +21,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-tabs-trigger] {
-  @apply text-ink-soft rounded-t-lg bg-transparent;
+  @apply text-ink-mute rounded-t-lg bg-transparent;
 }
 
 [data-style='material'] [data-tabs][data-position='after'] [data-tabs-trigger] {
@@ -34,7 +34,8 @@
 
 /* Selected state */
 [data-style='material'] [data-tabs-trigger][data-selected] {
-  @apply bg-primary text-on-primary shadow-md;
+  @apply  text-on-primary shadow-md;
+  background-color: var(--primary);
 }
 
 /* Reset rokkit gradients bleeding in from body[data-style='rokkit'] ancestor */
@@ -68,7 +69,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-tabs-trigger] [data-tabs-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='material'] [data-tabs-trigger]:hover:not(:disabled) [data-tabs-icon] {

@@ -513,14 +513,15 @@ describe('Theme.getNamedTokens', () => {
     expect(tokens['--success-soft']).toMatch(/rgb\(\d+, \d+, \d+\)/)
   })
 
-  it('on-primary defaults to paper shade of surface (white-on-primary)', () => {
+  it('derives --on-primary as the auto on-color for the primary fill', () => {
     const theme = new Theme({
       mapping: { surface: 'slate', primary: 'orange' },
       colorSpace: 'rgb'
     })
     const tokens = theme.getNamedTokens('light')
-    // on-primary = surface shade 50 (paper) for white-on-primary contrast
-    expect(tokens['--on-primary']).toBe('rgb(248, 250, 252)')
+    // orange-500 is a bright fill → near-black text (#161616) clears AA, where
+    // a light tint would fail. The on-color is luminance-picked from the fill.
+    expect(tokens['--on-primary']).toBe('rgb(22, 22, 22)')
   })
 
   it('falls back gracefully when a role mapping is missing', () => {
@@ -533,21 +534,21 @@ describe('Theme.getNamedTokens', () => {
     expect(tokens['--accent']).toBeTruthy()
   })
 
-  it('silently omits --on-primary when surface mapping is absent', () => {
-    // Note: Theme constructor's COLOR_FALLBACKS doesn't auto-fill 'surface',
-    // but DEFAULT_THEME_MAPPING provides it. We force the gap by deleting it
-    // post-construction via mapping setter to test the guard.
+  it('derives --on-primary from primary (independent of surface), omits only when primary is absent', () => {
     const theme = new Theme({
       mapping: { surface: 'slate', primary: 'orange' },
       colorSpace: 'rgb'
     })
-    // Replace mapping with one that has primary but no surface
+    // on-primary now reads the PRIMARY fill's luminance — so it's emitted even
+    // with no surface mapping.
     theme.mapping = { primary: 'orange', ink: 'slate' }
-    const tokens = theme.getNamedTokens('light')
-    // --on-primary should not be present (surfacePalette is undefined)
-    expect(tokens).not.toHaveProperty('--on-primary')
-    // --primary should still resolve
+    let tokens = theme.getNamedTokens('light')
+    expect(tokens['--on-primary']).toBe('rgb(22, 22, 22)')
     expect(tokens['--primary']).toBeTruthy()
+    // …and omitted only when the primary palette itself is missing (the guard).
+    theme.mapping = { ink: 'slate' }
+    tokens = theme.getNamedTokens('light')
+    expect(tokens).not.toHaveProperty('--on-primary')
   })
 })
 
@@ -633,13 +634,14 @@ describe('Theme.getZAliasesForExtended (named-as-aliases-of-palette)', () => {
     expect(aliases['--danger-soft']).toBe('var(--color-danger-100)')
   })
 
-  it('on-primary aliases to --color-surface-50 (derived rule)', () => {
+  it('on-primary resolves to the auto on-color (derived rule)', () => {
     const theme = new Theme({
       mapping: { surface: 'slate', primary: 'orange' },
       colorSpace: 'rgb'
     })
     const aliases = theme.getZAliasesForExtended()
-    expect(aliases['--on-primary']).toBe('var(--color-surface-50)')
+    // orange-500 bright fill → near-black on-color (concrete, not a palette alias)
+    expect(aliases['--on-primary']).toBe('rgb(22, 22, 22)')
   })
 
   it('focus-ring aliases to accent.500', () => {
@@ -670,6 +672,11 @@ describe('Theme.getZAliasesForExtended (named-as-aliases-of-palette)', () => {
     ]
     for (const name of NAMED_TOKENS) {
       expect(aliases).toHaveProperty(`--${name}`)
+      if (name === 'on-primary') {
+        // derived: a concrete auto on-color, not a palette alias
+        expect(aliases['--on-primary']).toMatch(/^rgb\(\d+, \d+, \d+\)$/)
+        continue
+      }
       expect(aliases[`--${name}`]).toMatch(/^var\(--color-[a-z]+-\d+\)$/)
     }
   })

@@ -5,6 +5,17 @@
  */
 
 /* =============================================================================
+   Connector Lines — hairline tone (mode-aware), not currentColor (which
+   renders white in dark mode and greyish in light).
+   ============================================================================= */
+
+[data-style='minimal'] [data-tree]:not([data-line-style='none']) [data-connector-v],
+[data-style='minimal'] [data-tree]:not([data-line-style='none']) [data-connector-h],
+[data-style='minimal'] [data-tree]:not([data-line-style='none']) [data-connector-corner] {
+  @apply border-paper-edge;
+}
+
+/* =============================================================================
    Tree Container
    ============================================================================= */
 
@@ -17,11 +28,11 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-tree-toggle-btn] {
-  @apply text-paper-edge;
+  @apply text-ink-mute;
 }
 
 [data-style='minimal'] [data-tree-toggle-btn]:hover {
-  @apply text-ink-soft bg-none;
+  @apply text-ink-mute bg-none;
 }
 
 /* =============================================================================
@@ -75,11 +86,11 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-tree-item-content] [data-item-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='minimal'] [data-tree-item-content]:hover:not(:disabled) [data-item-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='minimal'] [data-tree-item-content][data-active='true'] [data-item-icon] {
@@ -87,7 +98,7 @@
 }
 
 [data-style='minimal'] [data-tree-item-content] [data-item-description] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='minimal'] [data-tree-item-content][data-active='true'] [data-item-description] {
@@ -95,7 +106,7 @@
 }
 
 [data-style='minimal'] [data-tree-item-content] [data-item-badge] {
-  @apply text-ink-soft border-paper-edge border bg-transparent bg-none;
+  @apply text-ink-mute border-paper-edge border bg-transparent bg-none;
 }
 
 [data-style='minimal'] [data-tree-item-content][data-active='true'] [data-item-badge] {

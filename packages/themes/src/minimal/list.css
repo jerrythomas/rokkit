@@ -43,7 +43,7 @@
 
 [data-style='minimal'] [data-list] a[data-list-item],
 [data-style='minimal'] [data-list] button[data-list-item] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 /* Hover and focus — text brightening only, no border */
@@ -81,12 +81,12 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-list] [data-list-item] [data-item-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='minimal'] [data-list] [data-list-item]:hover:not(:disabled) [data-item-icon],
 [data-style='minimal'] [data-list] [data-list-item]:focus:not(:disabled) [data-item-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='minimal'] [data-list] [data-list-item][data-active='true'] [data-item-icon] {
@@ -95,12 +95,12 @@
 
 /* Literal / kanji icons */
 [data-style='minimal'] [data-list] [data-list-item] [data-item-icon-literal] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='minimal'] [data-list] [data-list-item]:hover:not(:disabled) [data-item-icon-literal],
 [data-style='minimal'] [data-list] [data-list-item]:focus:not(:disabled) [data-item-icon-literal] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='minimal'] [data-list] [data-list-item][data-active='true'] [data-item-icon-literal] {
@@ -108,7 +108,7 @@
 }
 
 [data-style='minimal'] [data-list] [data-list-item] [data-item-description] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='minimal'] [data-list] [data-list-item][data-active='true'] [data-item-description] {
@@ -116,7 +116,7 @@
 }
 
 [data-style='minimal'] [data-list] [data-list-item] [data-item-badge] {
-  @apply text-ink-soft border-paper-edge border bg-transparent bg-none;
+  @apply text-ink-mute border-paper-edge border bg-transparent bg-none;
 }
 
 [data-style='minimal'] [data-list] [data-list-item][data-active='true'] [data-item-badge] {
@@ -128,7 +128,7 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-list] [data-list-group] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 /* Group hover — text-only, no border */

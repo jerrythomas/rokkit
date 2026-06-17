@@ -13,7 +13,9 @@ export interface StyleOption {
 	colors: string[]
 }
 
-export interface DensityOption {
+// `type` (not `interface`) so it satisfies the Toggle's `ToggleItem`
+// (`Record<string, unknown>`) index signature when passed as `options`.
+export type DensityOption = {
 	id: string
 	label: string
 }

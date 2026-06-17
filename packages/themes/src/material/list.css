@@ -56,7 +56,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-list] [data-list-item] [data-item-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='material'] [data-list] [data-list-item]:hover:not(:disabled) [data-item-icon],
@@ -70,7 +70,7 @@
 
 /* Literal / kanji icons */
 [data-style='material'] [data-list] [data-list-item] [data-item-icon-literal] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='material'] [data-list] [data-list-item]:hover:not(:disabled) [data-item-icon-literal],
@@ -83,7 +83,7 @@
 }
 
 [data-style='material'] [data-list] [data-list-item] [data-item-description] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='material'] [data-list] [data-list-item][data-active='true'] [data-item-description] {
@@ -91,7 +91,7 @@
 }
 
 [data-style='material'] [data-list] [data-list-item] [data-item-badge] {
-  @apply bg-paper-mute text-ink-soft rounded-full bg-none;
+  @apply bg-paper-mute text-ink-mute rounded-full bg-none;
 }
 
 [data-style='material'] [data-list] [data-list-item][data-active='true'] [data-item-badge] {
@@ -103,7 +103,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-list] [data-list-group] {
-  @apply text-ink-soft font-medium;
+  @apply text-ink-mute font-medium;
 }
 
 [data-style='material'] [data-list] [data-list-group]:hover:not(:disabled),

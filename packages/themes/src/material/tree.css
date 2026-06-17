@@ -5,6 +5,17 @@
  */
 
 /* =============================================================================
+   Connector Lines — hairline tone (mode-aware), not currentColor (which
+   renders white in dark mode and greyish in light).
+   ============================================================================= */
+
+[data-style='material'] [data-tree]:not([data-line-style='none']) [data-connector-v],
+[data-style='material'] [data-tree]:not([data-line-style='none']) [data-connector-h],
+[data-style='material'] [data-tree]:not([data-line-style='none']) [data-connector-corner] {
+  @apply border-paper-edge;
+}
+
+/* =============================================================================
    Tree Container
    ============================================================================= */
 
@@ -17,7 +28,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-tree-toggle-btn] {
-  @apply text-ink-soft rounded-full;
+  @apply text-ink-mute rounded-full;
 }
 
 [data-style='material'] [data-tree-toggle-btn]:hover {
@@ -73,7 +84,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-tree-item-content] [data-item-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='material'] [data-tree-item-content]:hover:not(:disabled) [data-item-icon] {
@@ -85,7 +96,7 @@
 }
 
 [data-style='material'] [data-tree-item-content] [data-item-description] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='material'] [data-tree-item-content][data-active='true'] [data-item-description] {
@@ -93,7 +104,7 @@
 }
 
 [data-style='material'] [data-tree-item-content] [data-item-badge] {
-  @apply text-ink-soft bg-paper-mute rounded-full bg-none;
+  @apply text-ink-mute bg-paper-mute rounded-full bg-none;
 }
 
 [data-style='material'] [data-tree-item-content][data-active='true'] [data-item-badge] {

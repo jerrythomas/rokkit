@@ -17,7 +17,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-toggle-option] {
-  @apply text-ink-soft rounded-full;
+  @apply text-ink-mute rounded-full;
 }
 
 [data-style='material'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']),
@@ -27,7 +27,8 @@
 
 /* Selected state */
 [data-style='material'] [data-toggle-option][data-selected='true'] {
-  @apply bg-primary bg-none text-on-primary shadow-md;
+  @apply  bg-none text-on-primary shadow-md;
+  background-color: var(--primary);
 }
 
 /* =============================================================================
@@ -35,7 +36,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-toggle-option] [data-toggle-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='material'] [data-toggle-option]:hover:not(:disabled) [data-toggle-icon],
@@ -55,7 +56,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-toggle][data-toggle-variant='button'] {
-  @apply border-transparent bg-transparent text-ink-soft;
+  @apply border-transparent bg-transparent text-ink-mute;
   background-image: none;
 }
 
@@ -65,7 +66,7 @@
 }
 
 [data-style='material'] [data-toggle][data-toggle-variant='button'] [data-toggle-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='material'] [data-toggle][data-toggle-variant='button']:hover:not(:disabled) [data-toggle-icon],

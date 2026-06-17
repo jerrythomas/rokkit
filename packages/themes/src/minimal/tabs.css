@@ -32,7 +32,7 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-tabs-trigger] {
-  @apply text-ink-soft border-b-[3px] border-b-transparent bg-transparent;
+  @apply text-ink-mute border-b-[3px] border-b-transparent bg-transparent;
   font-weight: 400;
   transition:
     color 150ms ease,
@@ -135,7 +135,7 @@
 }
 
 [data-style='minimal'] [data-tabs-trigger]:hover:not(:disabled) [data-tabs-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='minimal'] [data-tabs-trigger][data-selected] [data-tabs-icon] {

@@ -47,9 +47,10 @@
 }
 
 [data-stepper-step][data-completed] [data-stepper-circle] {
+  /* solid brand fill + on-primary text (dark, reads on the bright 500). */
   background-color: var(--primary);
   border-color: var(--primary);
-  color: var(--paper);
+  color: var(--on-primary);
 }
 
 /* Check glyph inside a completed circle follows the circle's color
@@ -60,7 +61,9 @@
 
 [data-stepper-step][data-active] [data-stepper-circle] {
   border-color: var(--primary);
-  color: var(--primary);
+  /* ink number (not saffron) so it reads on the page; the saffron border + ring
+     keep the active accent */
+  color: var(--ink);
   @apply ring-primary/20 ring-3;
 }
 
@@ -71,9 +74,12 @@
   flex: 1;
   height: 2px;
   min-width: 2rem;
-  align-self: center;
-  /* Vertically center with the circle (half of 2.5rem) */
-  margin-top: 1.25rem;
+  /* Align to the circle's vertical center, NOT the full step height. The step
+     is `circle + label below`, so `align-self: center` drops the line into the
+     label gap (reads as bottom-aligned). Pin to the top and offset by the
+     circle's radius (1.25rem) minus half the line height. */
+  align-self: flex-start;
+  margin-top: calc(1.25rem - 1px);
   transition: background-color 0.2s ease;
 }
 

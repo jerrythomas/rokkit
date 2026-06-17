@@ -1,6 +1,6 @@
 ---
 name: semantic-styles-rokkit
-description: Use when building, styling, or auditing a Rokkit-powered app (Svelte 5 + UnoCSS presetRokkit) — covers the named-token vocabulary (paper / ink / primary / on-primary / *-soft), the rokkit.config.js palette→skin→tokens pipeline, dual-palette dark mode, migrating legacy z-scale utilities (bg-surface-z0, text-primary-z5) to named tokens, and the rokkit init / rokkit doctor CLI.
+description: Use when building, styling, or auditing a Rokkit-powered app (Svelte 5 + UnoCSS presetRokkit) — covers the named-token vocabulary (paper / ink / primary / on-primary / *-soft), EXTENDING it with custom tokens via `overrides:` and the full palette ladder via `tokens: 'extended'`, the rokkit.config.js palette→skin→tokens pipeline, dual-palette dark mode, migrating legacy z-scale utilities (bg-surface-z0, text-primary-z5) to named tokens, and the rokkit init / rokkit doctor CLI.
 ---
 
 # Semantic Styles — Rokkit
@@ -239,6 +239,72 @@ existing code keeps working. New code should use named tokens. See the migration
 
 ---
 
+## Layer 3b — Extending the vocabulary (`overrides` + `tokens: extended`)
+
+**The named-token set is the _default_ vocabulary, not a hard limit.** When a design needs
+a token the core set lacks — a second accent tone, a dedicated `on-accent` text color, a
+divider-line color — add it. Don't conclude "core only has `accent`/`accent-soft`, so this
+can't be expressed." Two mechanisms:
+
+### `overrides:` — add (or retune) named tokens
+
+`overrides` is a `{ name: value }` map in `rokkit.config.js`. Each entry emits a `--<name>`
+CSS var **and** auto-generates color utilities for it. Value forms:
+
+- **Palette reference** — `'<palette>.<shade>'`, **dot notation** (`'sky.600'`, NOT
+  `'sky-600'`). The palette must be one you declared in `palettes:` (see the gotcha below).
+- **Raw color** — any CSS color string: `'#0ea5e9'`, `'oklch(0.55 0.13 245)'`.
+- **Per-mode** — `{ light, dark }`, each side a palette ref or raw color. Including a `dark`
+  side emits/extends the `[data-mode="dark"]` block so the token flips automatically.
+
+```js
+// rokkit.config.js
+overrides: {
+  'accent-2':    'sky.600',                              // a second, deeper accent tone
+  'on-accent':   'kami.50',                              // readable text on an accent fill
+  'accent-line': { light: 'sky.200', dark: 'sky.800' }, // divider that flips per mode
+  'brand-ring':  'sky.500',                              // a custom focus ring (see -ring rule)
+  'paper-edge':  'oklch(0.62 0.02 245)',                 // RETUNE a reserved token (see below)
+}
+```
+
+This makes `bg-accent-2` · `text-accent-2` · `border-accent-2` · `text-on-accent` ·
+`border-accent-line` · `ring-brand-ring` … all real utilities, plus `var(--accent-2)` etc.
+in CSS.
+
+**Generated prefixes** (per color-valued override): `bg-`, `text-`, `border-`
+(+ `border-t/-b/-l/-r`), `outline-`, `fill-`, `stroke-`. **`ring-<name>` is emitted only
+when the name ends in `-ring`** (e.g. `brand-ring` → `ring-brand-ring`).
+
+**Reserved-name overrides win.** Naming an override after a built-in token (`paper-edge`,
+`accent`, `focus-ring`, …) replaces that token's skin-derived value — the way to retune one
+token without touching the palette. Reserved names already own their utilities, so no extra
+shortcut is generated for them; the override only changes the value.
+
+> **Gotcha — palette refs resolve against your `palettes:` block, not Tailwind's built-in
+> names.** `'sky.600'` works only if `sky` is declared in `palettes:`. If a role uses a
+> Tailwind palette purely by name (`skin: { accent: 'sky' }` with no `palettes.sky`), either
+> declare that palette in `palettes:` or give the override a raw color / `{ light, dark }`
+> value. An unknown palette or shade throws at build time.
+
+### `tokens: 'extended'` — expose the full palette ladder
+
+When you want *arbitrary shades* of a role rather than a few named tokens, switch that role
+(or the whole config) to `extended`. It emits the full 11-shade ladder as
+`--color-{role}-{shade}` vars + `bg-/text-/border-…-{role}-{shade}` utilities:
+
+```js
+tokens: { accent: 'extended' }   // → bg-accent-600, text-accent-300, var(--color-accent-700), …
+// or globally: tokens: 'extended'
+```
+
+**Which to reach for:** `overrides` for a *small set of semantic* tokens (`on-accent`,
+`accent-line`) — they read as intent and survive a palette swap. `extended` for
+*programmatic* shade access (charts, data-viz, a component that walks the whole ramp).
+Default stays `'core'`.
+
+---
+
 ## Migrating from z-scale to named tokens
 
 `rokkit doctor` scans `src/**` and prints the suggested replacement per occurrence
@@ -378,6 +444,8 @@ export default {
 
 | Mistake | Why it fails | Fix |
 |---|---|---|
+| "core only emits `accent`/`accent-soft`, so I can't have `accent-2`/`on-accent`" | the vocabulary is extensible, not fixed | add them under `overrides:` (or use `tokens: 'extended'`) — see Layer 3b |
+| Override palette ref `'sky-600'` (hyphen) | refs use **dot** notation | `'sky.600'` (and `sky` must be in `palettes:`) |
 | `color: #3D3730` in a component | breaks on theme change | `text-ink` (or the right named token) |
 | Using `bg-surface-z5` / `text-primary-z5` in new code | legacy back-compat layer | named tokens — see migration table (or run `rokkit doctor`) |
 | Single-palette `surface` but expecting dark mode | no `[data-mode]` block is emitted | make `surface`/`ink` dual-palette `{ light, dark }` |

@@ -1,0 +1,27 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rokkit — data-driven Svelte 5 components">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1a1714"/>
+      <stop offset="1" stop-color="#2a1410"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="96" y1="150" x2="900" y2="150" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#e8552b"/>
+      <stop offset="1" stop-color="#f0875f"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1200" height="8" fill="url(#accent)"/>
+
+  <text x="96" y="210" font-family="'Fraunces','Iowan Old Style',Georgia,serif" font-size="118" font-weight="600" fill="#fafafa">Rokkit</text>
+  <text x="98" y="300" font-family="'Inter',system-ui,sans-serif" font-size="44" font-weight="500" fill="url(#accent)">Pass the data. The component does the rest.</text>
+
+  <text x="96" y="392" font-family="'Inter',system-ui,sans-serif" font-size="30" font-weight="400" fill="#bdb6ad">A data-driven Svelte 5 component library &amp; design system.</text>
+  <text x="96" y="438" font-family="'Inter',system-ui,sans-serif" font-size="30" font-weight="400" fill="#bdb6ad">Field mapping · selection · validation · theming · a11y.</text>
+
+  <g font-family="'JetBrains Mono','SF Mono',monospace" font-size="26" fill="#8a837b">
+    <rect x="96" y="500" width="404" height="62" rx="10" fill="#000000" fill-opacity="0.28" stroke="#3a322c"/>
+    <text x="122" y="540"><tspan fill="#e8552b">$</tspan> bun add @rokkit/ui</text>
+    <text x="1104" y="540" text-anchor="end" fill="#8a837b">rokkit.sensei-hq.com</text>
+  </g>
+</svg>

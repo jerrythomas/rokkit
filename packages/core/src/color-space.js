@@ -42,6 +42,73 @@ function matMul(m, v) {
 	return m.map((row) => row[0] * v[0] + row[1] * v[1] + row[2] * v[2])
 }
 
+// Inverse OKLab matrices (for OKLCH → XYZ, to recover relative luminance Y).
+const OKLAB_TO_LMS3 = [
+	[1, 0.3963377774, 0.2158037573],
+	[1, -0.1055613458, -0.0638541728],
+	[1, -0.0894841775, -1.291485548]
+]
+const LMS_TO_XYZ = [
+	[1.2270138511, -0.5577999807, 0.281256149],
+	[-0.0405801784, 1.1122568696, -0.0716766787],
+	[-0.0763812845, -0.4214819784, 1.5861632204]
+]
+
+/**
+ * Relative luminance (Y, 0–1 per WCAG) of an sRGB triplet.
+ * @param {number} r @param {number} g @param {number} b — 0–255
+ * @returns {number}
+ */
+function rgbLuminance(r, g, b) {
+	const lin = [srgbToLinear(r), srgbToLinear(g), srgbToLinear(b)]
+	return 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2]
+}
+
+/**
+ * Relative luminance (Y) of an OKLCH color. Y is the XYZ Y component, so we
+ * only need OKLab → LMS → XYZ — no full sRGB round-trip.
+ * @param {number} L @param {number} C @param {number} H — H in degrees
+ * @returns {number}
+ */
+function oklchLuminance(L, C, H) {
+	const hr = (H * Math.PI) / 180
+	const lab = [L, C * Math.cos(hr), C * Math.sin(hr)]
+	const lms = matMul(OKLAB_TO_LMS3, lab).map((v) => v ** 3)
+	return matMul(LMS_TO_XYZ, lms)[1]
+}
+
+/**
+ * Relative luminance (Y, 0–1) of a palette value in the given color space.
+ * Accepts hex (`#rrggbb`), bare RGB (`"r,g,b"` / `"r g b"`), and bare OKLCH
+ * (`"L C H"`). Returns null when the value can't be parsed — callers should
+ * treat null as "unknown" and fall back to a safe default.
+ *
+ * @param {string} value
+ * @param {string} [space] — 'rgb' | 'oklch' | 'hsl'; disambiguates bare channels
+ * @returns {number | null}
+ */
+export function relativeLuminance(value, space = 'rgb') {
+	if (typeof value !== 'string') return null
+	const v = value.trim()
+	if (HEX_RE.test(v)) {
+		const [r, g, b] = parseHex(v)
+		return rgbLuminance(r, g, b)
+	}
+	if (space === 'oklch' && /^[\d.]+\s+[\d.]+\s+[\d.]+$/.test(v)) {
+		const [L, C, H] = v.split(/\s+/).map(Number)
+		return oklchLuminance(L, C, H)
+	}
+	if (/^\d+\s*,\s*\d+\s*,\s*\d+$/.test(v)) {
+		const [r, g, b] = v.split(',').map((s) => Number(s.trim()))
+		return rgbLuminance(r, g, b)
+	}
+	if (/^\d+\s+\d+\s+\d+$/.test(v)) {
+		const [r, g, b] = v.trim().split(/\s+/).map(Number)
+		return rgbLuminance(r, g, b)
+	}
+	return null
+}
+
 // ── Hex parsing helper ──────────────────────────────────────────────────
 
 /**
