@@ -306,6 +306,15 @@
         "@unocss/extractor-svelte": "^66.6.1",
         "unocss": "^66.6.1",
       },
+      "devDependencies": {
+        "@sveltejs/kit": "^2.42.1",
+      },
+      "peerDependencies": {
+        "@sveltejs/kit": "^2.0.0",
+      },
+      "optionalPeers": [
+        "@sveltejs/kit",
+      ],
     },
   },
   "overrides": {
