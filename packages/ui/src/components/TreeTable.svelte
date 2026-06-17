@@ -177,7 +177,8 @@
 						>
 							<span data-table-header-text>{column.label ?? column.name}</span>
 							{#if column.sortable !== false}
-								{@const sortIcon = icons[column.sorted ?? 'none'] ?? icons.none}
+								{@const sortIcon =
+									icons[(column.sorted ?? 'none') as keyof TableSortIcons] ?? icons.none}
 								<span data-table-sort-icon class={sortIcon} aria-hidden="true"></span>
 							{/if}
 						</th>

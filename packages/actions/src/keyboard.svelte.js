@@ -12,10 +12,14 @@ const defaultKeyMappings = {
 }
 
 /**
- * Handle keyboard events
+ * Handle keyboard events.
  *
- * @param {HTMLElement} root
- * @param {import('./types.js').KeyboardConfig} options - Custom key mappings
+ * The dispatched event names are derived from the keys of the supplied
+ * `KeyboardConfig` (e.g. a config of `{ prev, next }` dispatches `prev`/`next`),
+ * so the third Action generic declares an open-ended set of `on*` CustomEvent
+ * attributes so consumers using `use:keyboard onprev={...}` type-check.
+ *
+ * @type {import('svelte/action').Action<HTMLElement, import('./types.js').KeyboardConfig | null | undefined, Record<`on${string}`, (event: CustomEvent<string>) => void>>}
  */
 export function keyboard(root, options = null) {
 	const keyMappings = options ?? defaultKeyMappings

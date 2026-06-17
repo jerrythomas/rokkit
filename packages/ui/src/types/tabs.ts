@@ -80,11 +80,11 @@ export interface TabsProps {
 	/** Additional CSS classes */
 	class?: string
 
-	/** Called when selection changes */
-	onchange?: (value: unknown, item: TabsItem) => void
+	/** Called when selection changes — receives the value and the tab's ProxyItem */
+	onchange?: (value: unknown, item: ProxyItem) => void
 
-	/** Called when a tab is selected (fires on every click, including same tab) */
-	onselect?: (value: unknown, item: TabsItem) => void
+	/** Called when a tab is selected (fires on every click, including same tab) — receives the value and the tab's ProxyItem */
+	onselect?: (value: unknown, item: ProxyItem) => void
 
 	/** Called when a new tab is requested (editable mode) */
 	onadd?: () => void

@@ -12,6 +12,7 @@
 	 *   data-dragging       — present when files dragged over
 	 *   data-disabled       — when disabled
 	 */
+	import type { Snippet } from 'svelte'
 	import type { UploadTargetProps } from '../types/upload-target.js'
 	import { messages } from '@rokkit/states'
 	import { matchesAccept } from '../utils/upload.js'
@@ -29,7 +30,7 @@
 		...snippets
 	}: UploadTargetProps & { [key: string]: unknown } = $props()
 
-	const content = $derived(snippets.content as ((dragging: boolean) => unknown) | undefined)
+	const content = $derived(snippets.content as Snippet<[dragging: boolean]> | undefined)
 
 	const resolvedLabels = $derived({
 		...messages.uploadTarget,

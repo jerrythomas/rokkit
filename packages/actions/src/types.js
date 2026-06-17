@@ -6,6 +6,26 @@
  */
 
 /**
+ * Options for the `swipeable` action. All fields are optional; unspecified
+ * fields fall back to the action's internal defaults.
+ *
+ * @typedef {Object} SwipeableOptions
+ * @property {boolean} [horizontal] - Detect horizontal swipes (default true)
+ * @property {boolean} [vertical]   - Detect vertical swipes (default false)
+ * @property {number}  [threshold]  - Minimum distance in px to register a swipe (default 100)
+ * @property {boolean} [enabled]    - Whether the action is active (default true)
+ * @property {number}  [minSpeed]   - Minimum swipe speed in px/s (default 300)
+ */
+
+/**
+ * @typedef {Object} Coords
+ * @property {number} x   - Current x position
+ * @property {number} y   - Current y position
+ * @property {number} [dx] - Delta x since last event (panmove only)
+ * @property {number} [dy] - Delta y since last event (panmove only)
+ */
+
+/**
  * @typedef {Object<string, (string[]|RegExp) >} KeyboardConfig
  */
 

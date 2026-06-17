@@ -43,6 +43,9 @@ const defaultMessages = {
 		retry: 'Retry',
 		remove: 'Remove'
 	},
+	uploadTarget: {
+		dropzone: 'File upload drop zone'
+	},
 	floatingNav: { label: 'Page navigation', pin: 'Pin navigation', unpin: 'Unpin navigation' },
 	mode: { system: 'System', light: 'Light', dark: 'Dark' },
 	command: {
@@ -102,6 +105,7 @@ class MessagesStore {
 	filter = $state({ ...defaultMessages.filter })
 	grid = $state({ ...defaultMessages.grid })
 	uploadProgress = $state({ ...defaultMessages.uploadProgress })
+	uploadTarget = $state({ ...defaultMessages.uploadTarget })
 	floatingNav = $state({ ...defaultMessages.floatingNav })
 	mode = $state({ ...defaultMessages.mode })
 	command = $state({ ...defaultMessages.command })
