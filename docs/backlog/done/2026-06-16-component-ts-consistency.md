@@ -1,7 +1,13 @@
 # Component `lang="ts"` Consistency Audit
 
 **Date:** 2026-06-16
-**Status:** Backlog — large, mechanical-ish migration; do package-by-package
+**Status:** ✅ Done (2026-06-17) — every `.svelte` component in `packages/*/src` is now
+`lang="ts"`. `@rokkit/chart` (61) + `@rokkit/forms` (35) migrated in commit `5c1a5b3b`
+(both svelte-check 0 errors; chart/forms gained a svelte-check `tsconfig.json` + `@types/d3-*`
+/ `@types/ramda` devDeps; forms declaration-emit path fixed in `261d4f31`). Final two strays —
+`@rokkit/app` TableOfContents (also dropped a `@ts-nocheck`) + `@rokkit/helpers` MockItem —
+migrated in `9a397aae`, which also added svelte-check to the gate. No type suppressions
+introduced; several latent bugs fixed along the way.
 **Site Applicability:** Library packages (`@rokkit/chart`, `@rokkit/forms`, `@rokkit/actions`,
 `@rokkit/app`, `@rokkit/helpers`).
 

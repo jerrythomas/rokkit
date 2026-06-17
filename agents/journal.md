@@ -1,5 +1,44 @@
 # Project Journal
 
+## 2026-06-17 — Library-wide lang="ts" migration complete + svelte-check in the gate (type-health Task 2)
+
+**The whole component library is now TypeScript.** Migrated the last 97
+plain-`<script>` `.svelte` components to `<script lang="ts">`: `@rokkit/chart`
+(61) and `@rokkit/forms` (35) via two parallel per-package agents (commit
+`5c1a5b3b`), plus the final two strays — `@rokkit/app` TableOfContents (also
+dropped a `@ts-nocheck`, fully typed) and `@rokkit/helpers` MockItem
+(`9a397aae`). chart and forms both svelte-check **0 errors** (forms keeps 2
+accepted `state_referenced_locally` warnings in FieldLayout). No type
+suppressions (`@ts-ignore`/`@ts-nocheck`/`@ts-expect-error`/`as any`/
+`as unknown as`) introduced anywhere — every fix is a real type.
+
+**d3 typing infra.** chart's d3 imports (d3-scale/shape/array/…) ship no types,
+and `@types/d3`'s transitive submodule types don't hoist under bun, so the
+individual `@types/d3-*` packages are listed directly as chart devDeps (+
+`@types/ramda`). chart/forms each got a svelte-check `tsconfig.json` mirroring
+`@rokkit/ui`. Generators/scales typed with explicit generics (`line<Row>()`,
+`scaleLinear<number>()`) so accessor callbacks stop inferring `any`.
+
+**svelte-check is now in the release gate.** New root `check:svelte` step runs
+svelte-check over ui/app/chart/forms (all 0 errors); wired into `bun run check`
+(= `lint && check:types && check:svelte && test:ci`), which `bump` runs. chart
+and forms gained a `check` script + svelte-check devDep so each verifies
+standalone. Gate verified end-to-end: 0 lint errors, tsc clean, svelte-check 0
+errors ×4, 3566 tests pass.
+
+**Latent bugs fixed by typing** (no behavior change): chart `examples/
+BarChartExample` used a stale `Plot.*` API that never existed (dead demo,
+rewritten to real props); `PlotState` colors-map key typed so Ribbon's `.get`
+resolves; forms `lib/Input` emitted non-standard camelCase
+`minLength`/`maxLength` attributes (→ `minlength`/`maxlength`); forms
+FieldLayout had a broken import path. Also fixed a pre-existing forms packaging
+defect — `tsconfig.build.json` `rootDir: "."` emitted declarations to
+`dist/src/index.d.ts` while `package.json` `types` pointed at `dist/index.d.ts`
+(consumers got no types); set `rootDir: "src"` (commit `261d4f31`).
+
+Backlog `2026-06-16-component-ts-consistency` and `-svelte-check-type-health`
+both moved to `done/`. Lint: 0 errors. Tests: 3566 passed.
+
 ## 2026-06-15 — Theme-contrast regression checkpoint + auto on-color (vermillion restored)
 
 **Regression checkpoint.** Built an isolated component gallery (`apps/learn/
