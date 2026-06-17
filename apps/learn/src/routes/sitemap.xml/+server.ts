@@ -1,4 +1,5 @@
 import { guides } from '$lib/guides'
+import { catalog } from '$lib/koan/catalog'
 import { SITE } from '$lib/seo'
 
 // Prerendered to a static /sitemap.xml. Only indexable content routes are
@@ -10,7 +11,9 @@ export function GET() {
 	const urls = [
 		{ loc: '/', priority: '1.0' },
 		{ loc: '/guides', priority: '0.8' },
-		...guides.map((g) => ({ loc: `/guides/${g.slug}`, priority: '0.7' }))
+		...guides.map((g) => ({ loc: `/guides/${g.slug}`, priority: '0.7' })),
+		{ loc: '/components', priority: '0.8' },
+		...catalog.map((c) => ({ loc: `/components/${c.id}`, priority: '0.6' }))
 	]
 
 	const body =

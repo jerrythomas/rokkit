@@ -18,8 +18,9 @@ export const SITE = {
 	/** Default meta description (≤ ~160 chars for clean SERP snippets). */
 	description:
 		'Rokkit is a data-driven Svelte 5 component library and design system: components adapt to your data via field mapping, with built-in selection, validation, theming, keyboard nav, and accessibility.',
-	/** Social-share card, 1200×630. Served from /static. */
-	ogImage: '/og-image.svg',
+	/** Social-share card, 1200×630 PNG (X/Twitter doesn't render SVG og:image).
+	 *  Rasterized from og-image.svg (the source of truth). */
+	ogImage: '/og-image.png',
 	twitter: '@senseihq',
 	github: 'https://github.com/jerrythomas/rokkit',
 	locale: 'en'
