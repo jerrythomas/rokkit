@@ -1,13 +1,18 @@
-<script>
+<script lang="ts">
 	import { getContext } from 'svelte'
+	import type { PatternMark } from './patterns.js'
+	import type { PlotState } from '../PlotState.svelte.js'
 	import { toPatternId } from '../lib/brewing/patterns.js'
 	import { PATTERNS } from './patterns.js'
 	import PatternDef from './PatternDef.svelte'
 
-	/** @type {{ patterns?: Record<string, import('./patterns.js').PatternMark[]> }} */
-	let { patterns = PATTERNS } = $props()
+	type Props = {
+		patterns?: Record<string, PatternMark[]>
+	}
 
-	const state = getContext('plot-state')
+	let { patterns = PATTERNS }: Props = $props()
+
+	const state = getContext<PlotState>('plot-state')
 
 	const patternDefs = $derived.by(() => {
 		const defs = []

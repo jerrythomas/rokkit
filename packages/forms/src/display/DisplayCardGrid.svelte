@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	/**
 	 * Renders an array of objects as a responsive card grid.
 	 * Each card displays fields with formatted values.
@@ -6,17 +6,34 @@
 	import DisplayValue from './DisplayValue.svelte'
 	import { SvelteSet } from 'svelte/reactivity'
 
-	let { data = [], fields = [], select, title, onselect, class: className = '' } = $props()
+	type DisplayField = {
+		key: string
+		label?: string
+		format?: string
+	}
+
+	type DisplayItem = Record<string, unknown>
+
+	type Props = {
+		data?: DisplayItem[]
+		fields?: DisplayField[]
+		select?: 'one' | 'many'
+		title?: string
+		onselect?: (selected: DisplayItem | DisplayItem[], item: DisplayItem) => void
+		class?: string
+	}
+
+	let { data = [], fields = [], select, title, onselect, class: className = '' }: Props = $props()
 
 	let selectedIndex = $state(-1)
-	let selectedIndices = new SvelteSet()
+	let selectedIndices = new SvelteSet<number>()
 
-	function selectOne(item, index) {
+	function selectOne(item: DisplayItem, index: number) {
 		selectedIndex = index
 		onselect?.(item, item)
 	}
 
-	function selectMany(item, index) {
+	function selectMany(item: DisplayItem, index: number) {
 		const next = new SvelteSet(selectedIndices)
 		if (next.has(index)) {
 			next.delete(index)
@@ -28,13 +45,13 @@
 		onselect?.(selected, item)
 	}
 
-	function handleCardClick(item, index) {
+	function handleCardClick(item: DisplayItem, index: number) {
 		if (!select) return
 		if (select === 'one') selectOne(item, index)
 		else if (select === 'many') selectMany(item, index)
 	}
 
-	function isSelected(index) {
+	function isSelected(index: number) {
 		if (select === 'one') return selectedIndex === index
 		if (select === 'many') return selectedIndices.has(index)
 		return false

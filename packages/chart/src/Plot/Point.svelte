@@ -1,5 +1,18 @@
-<script>
+<script lang="ts">
 	import { getContext } from 'svelte'
+	import type { PlotState } from '../PlotState.svelte.js'
+
+	type Datum = Record<string, unknown> | number
+
+	type Props = {
+		data?: Datum[]
+		x?: string
+		y?: string
+		r?: number
+		fill?: string
+		stroke?: string
+		strokeWidth?: number
+	}
 
 	let {
 		data = [],
@@ -9,17 +22,22 @@
 		fill = 'steelblue',
 		stroke = 'white',
 		strokeWidth = 1
-	} = $props()
+	}: Props = $props()
 
-	const state = getContext('plot-state')
+	const state = getContext<PlotState>('plot-state')
+
+	const accessor = (d: Datum, field: string | undefined): unknown =>
+		field && typeof d === 'object' ? d[field] : d
 
 	const points = $derived.by(() => {
 		if (!state?.xScale || !state?.yScale || !data?.length) return []
+		const xScale = state.xScale
+		const yScale = state.yScale
 		return data
 			.map((d) => ({
-				cx: state.xScale(x ? d[x] : d) ?? null,
-				cy: state.yScale(y ? d[y] : d) ?? null,
-				label: `(${x ? d[x] : d}, ${y ? d[y] : d})`
+				cx: xScale(accessor(d, x)) ?? null,
+				cy: yScale(accessor(d, y)) ?? null,
+				label: `(${accessor(d, x)}, ${accessor(d, y)})`
 			}))
 			.filter((p) => p.cx !== null && p.cy !== null)
 	})

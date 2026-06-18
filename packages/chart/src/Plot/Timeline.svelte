@@ -1,16 +1,15 @@
-<script>
-	/**
-	 * @type {{
-	 *   frameKeys: unknown[],
-	 *   currentIndex: number,
-	 *   playing: boolean,
-	 *   speed: number,
-	 *   onplay: () => void,
-	 *   onpause: () => void,
-	 *   onscrub: (index: number) => void,
-	 *   onspeed: (speed: number) => void
-	 * }}
-	 */
+<script lang="ts">
+	type Props = {
+		frameKeys?: unknown[]
+		currentIndex?: number
+		playing?: boolean
+		speed?: number
+		onplay?: () => void
+		onpause?: () => void
+		onscrub?: (index: number) => void
+		onspeed?: (speed: number) => void
+	}
+
 	let {
 		frameKeys = [],
 		currentIndex = 0,
@@ -20,7 +19,7 @@
 		onpause,
 		onscrub,
 		onspeed
-	} = $props()
+	}: Props = $props()
 
 	const safeIndex = $derived(
 		frameKeys.length === 0 ? 0 : Math.min(currentIndex, frameKeys.length - 1)

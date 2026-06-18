@@ -1,11 +1,27 @@
-<script>
+<script lang="ts">
 	import { getContext, onMount, onDestroy } from 'svelte'
+	import type { PlotState } from '../PlotState.svelte.js'
 	import { buildAreas, buildStackedAreas } from './lib/areas.js'
 
-	let { x, y, color, pattern, stat = 'identity', options = {} } = $props()
+	type Options = {
+		stack?: boolean
+		curve?: 'linear' | 'smooth' | 'step'
+		opacity?: number
+	}
 
-	const plotState = getContext('plot-state')
-	let id = $state(null)
+	type Props = {
+		x?: string
+		y?: string
+		color?: string
+		pattern?: string
+		stat?: string
+		options?: Options
+	}
+
+	let { x, y, color, pattern, stat = 'identity', options = {} }: Props = $props()
+
+	const plotState = getContext<PlotState>('plot-state')
+	let id = $state<string | null>(null)
 
 	onMount(() => {
 		id = plotState.registerGeom({
@@ -35,7 +51,7 @@
 	const patterns = $derived(plotState.patterns)
 
 	const areas = $derived.by(() => {
-		if (!data?.length || !xScale || !yScale) return []
+		if (!data?.length || !xScale || !yScale || !x || !y) return []
 		const channels = { x, y, color, pattern }
 		if (options.stack) {
 			return buildStackedAreas(data, channels, xScale, yScale, colors, options.curve, patterns)
@@ -59,20 +75,22 @@
 			{/if}
 		{/each}
 		<!-- Invisible hit circles for tooltip: one per data point -->
-		{#each data as d, i (`hover::${i}`)}
-			{@const px = typeof xScale?.bandwidth === 'function' ? (xScale(d[x]) ?? 0) + xScale.bandwidth() / 2 : (xScale?.(d[x]) ?? 0)}
-			{@const py = yScale?.(d[y]) ?? 0}
-			<circle
-				cx={px}
-				cy={py}
-				r="8"
-				fill="transparent"
-				stroke="none"
-				role="presentation"
-				data-plot-element="area-hover"
-				onmouseenter={() => plotState.setHovered(d)}
-				onmouseleave={() => plotState.clearHovered()}
-			/>
-		{/each}
+		{#if x && y}
+			{#each data as d, i (`hover::${i}`)}
+				{@const px = typeof xScale?.bandwidth === 'function' ? (xScale(d[x]) ?? 0) + xScale.bandwidth() / 2 : (xScale?.(d[x]) ?? 0)}
+				{@const py = yScale?.(d[y]) ?? 0}
+				<circle
+					cx={px}
+					cy={py}
+					r="8"
+					fill="transparent"
+					stroke="none"
+					role="presentation"
+					data-plot-element="area-hover"
+					onmouseenter={() => plotState.setHovered(d)}
+					onmouseleave={() => plotState.clearHovered()}
+				/>
+			{/each}
+		{/if}
 	</g>
 {/if}

@@ -1,3 +1,5 @@
+<script lang="ts"></script>
+
 <svg
 	class="plot"
 	fill="currentColor"

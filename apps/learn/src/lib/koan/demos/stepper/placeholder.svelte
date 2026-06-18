@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { Stepper, Button } from '@rokkit/ui'
+	import type { StepperStep } from '@rokkit/ui'
 
-	let steps = $state([
-		{ label: 'Account', completed: true },
-		{ label: 'Profile', completed: true },
-		{ label: 'Preferences' },
-		{ label: 'Review' }
+	let steps = $state<StepperStep[]>([
+		{ text: 'Account', completed: true },
+		{ text: 'Profile', completed: true },
+		{ text: 'Preferences' },
+		{ text: 'Review' }
 	])
 	let current = $state(2)
 

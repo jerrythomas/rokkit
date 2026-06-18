@@ -1,4 +1,7 @@
-export interface SkinSwitcherOption {
+// A `type` alias (not an `interface`) so it satisfies the
+// `Record<string, unknown>` index signature that Toggle's `ToggleItem`
+// expects — TS interfaces don't implicitly carry an index signature.
+export type SkinSwitcherOption = {
 	value: string
 	label: string
 	icon?: string

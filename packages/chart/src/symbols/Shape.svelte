@@ -1,5 +1,21 @@
-<script>
+<script lang="ts">
+	import type { SVGAttributes } from 'svelte/elements'
 	import { namedShapes } from './constants'
+
+	export type Props = {
+		x?: number
+		y?: number
+		size?: number
+		fill?: string
+		stroke?: string
+		thickness?: number
+		name?: string
+		onclick?: SVGAttributes<SVGPathElement>['onclick']
+		onmouseover?: SVGAttributes<SVGPathElement>['onmouseover']
+		onmouseleave?: SVGAttributes<SVGPathElement>['onmouseleave']
+		onfocus?: SVGAttributes<SVGPathElement>['onfocus']
+		onblur?: SVGAttributes<SVGPathElement>['onblur']
+	}
 
 	let {
 		x = 0,
@@ -14,9 +30,11 @@
 		onmouseleave,
 		onfocus,
 		onblur
-	} = $props()
+	}: Props = $props()
 
-	let d = $derived(name in namedShapes ? namedShapes[name](size) : namedShapes['circle'](size))
+	let d = $derived(
+		String(name in namedShapes ? namedShapes[name](size) : namedShapes['circle'](size))
+	)
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->

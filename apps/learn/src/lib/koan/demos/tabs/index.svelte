@@ -6,7 +6,14 @@
 	// ── preview state ────────────────────────────────────────────────
 	let value = $state('overview')
 
-	let layout = $state({
+	// Typed with the narrow Tabs unions so the bound form values flow straight
+	// into <Tabs> without widening to `string`.
+	let layout = $state<{
+		orientation: 'horizontal' | 'vertical'
+		position: 'before' | 'after'
+		align: 'start' | 'center' | 'end'
+		disabled: boolean
+	}>({
 		orientation: 'horizontal',
 		position: 'before',
 		align: 'start',

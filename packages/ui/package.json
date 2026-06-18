@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/ui",
-  "version": "1.1.18",
+  "version": "1.2.0",
   "description": "Data driven UI components for Rokkit applications",
   "repository": {
     "type": "git",
@@ -8,33 +8,34 @@
   },
   "type": "module",
   "svelte": "./src/index.ts",
-  "types": "./src/index.ts",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./src/index.ts",
+      "types": "./dist/index.d.ts",
       "svelte": "./src/index.ts",
       "default": "./src/index.ts"
     },
     "./types": {
-      "types": "./src/types/index.ts",
+      "types": "./dist/types/index.d.ts",
       "default": "./src/types/index.ts"
     },
     "./utils/palette": {
-      "types": "./src/utils/palette.ts",
+      "types": "./dist/utils/palette.d.ts",
       "default": "./src/utils/palette.ts"
     },
     "./package.json": "./package.json"
   },
   "files": [
     "src",
+    "dist/**/*.d.ts",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
-    "prepublishOnly": "cp ../../LICENSE .",
+    "prepublishOnly": "cp ../../LICENSE . && bun run build",
     "postpublish": "rm -f LICENSE",
     "check": "svelte-check --tsconfig ./tsconfig.json",
-    "build": "echo 'No build step needed for source-only package'"
+    "build": "svelte-package -i src -o dist"
   },
   "keywords": [
     "ui",
@@ -56,6 +57,8 @@
     "svelte": "^5.0.0"
   },
   "devDependencies": {
+    "@sveltejs/package": "^2.5.8",
+    "@sveltejs/vite-plugin-svelte": "^6.2.4",
     "svelte": "^5.53.5",
     "svelte-check": "^4.4.3",
     "typescript": "^5.9.3"

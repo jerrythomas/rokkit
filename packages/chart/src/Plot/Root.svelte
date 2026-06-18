@@ -1,7 +1,22 @@
-<script>
+<script lang="ts">
 	import { setContext, untrack } from 'svelte'
+	import type { Snippet } from 'svelte'
 	import { PlotState } from '../PlotState.svelte.js'
 	import { defaultPreset } from '../lib/preset.js'
+
+	type Margin = { top?: number; right?: number; bottom?: number; left?: number }
+
+	type Props = {
+		data?: Record<string, unknown>[]
+		x?: string
+		y?: string
+		color?: string
+		width?: number
+		height?: number
+		margin?: Margin
+		mode?: 'light' | 'dark'
+		children?: Snippet
+	}
 
 	let {
 		data = [],
@@ -13,7 +28,7 @@
 		margin = undefined,
 		mode = 'light',
 		children
-	} = $props()
+	}: Props = $props()
 
 	const plotState = untrack(
 		() =>

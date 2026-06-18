@@ -1,5 +1,15 @@
-<script>
+<script lang="ts">
 	import { getContext, onMount, onDestroy } from 'svelte'
+	import type { PlotState } from '../PlotState.svelte.js'
+
+	type Props = {
+		x?: string
+		y?: string
+		color?: string
+		fill?: string
+		stat?: string
+		options?: { rounded?: number }
+	}
 
 	let {
 		x,
@@ -8,12 +18,12 @@
 		fill: fillProp,
 		stat = 'identity',
 		options = {}
-	} = $props()
+	}: Props = $props()
 
 	const colorChannel = $derived(fillProp ?? color)
 
-	const plotState = getContext('plot-state')
-	let id = $state(null)
+	const plotState = getContext<PlotState>('plot-state')
+	let id = $state<string | null>(null)
 
 	onMount(() => {
 		id = plotState.registerGeom({
@@ -47,15 +57,16 @@
 		const bwY = typeof yScale.bandwidth === 'function' ? yScale.bandwidth() : 0
 
 		return data.map((d, i) => {
-			const xVal = d[x]
-			const yVal = d[y]
+			const xVal = d[x ?? '']
+			const yVal = d[y ?? '']
 			const colorVal = colorChannel ? d[colorChannel] : null
 			let cellFill = '#ccc'
 
 			if (continuousColor) {
 				cellFill = continuousColor.scale(Number(colorVal))
-			} else if (categoricalColors?.has(colorVal)) {
-				cellFill = categoricalColors.get(colorVal).fill
+			} else {
+				const entry = categoricalColors?.get(colorVal)
+				if (entry) cellFill = entry.fill
 			}
 
 			return {
@@ -86,7 +97,7 @@
 				onmouseenter={() => plotState.setHovered(cell.data)}
 				onmouseleave={() => plotState.clearHovered()}
 			>
-				<title>{cell.data[x]}, {cell.data[y]}: {colorChannel ? cell.data[colorChannel] : ''}</title>
+				<title>{cell.data[x ?? '']}, {cell.data[y ?? '']}: {colorChannel ? cell.data[colorChannel] : ''}</title>
 			</rect>
 		{/each}
 	</g>

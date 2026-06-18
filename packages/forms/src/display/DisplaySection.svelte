@@ -1,10 +1,22 @@
-<script>
+<script lang="ts">
 	/**
 	 * Renders an object as key-value pairs (detail/summary view).
 	 */
 	import DisplayValue from './DisplayValue.svelte'
 
-	let { data = {}, fields = [], title } = $props()
+	type DisplayField = {
+		key: string
+		label?: string
+		format?: string
+	}
+
+	type Props = {
+		data?: Record<string, unknown>
+		fields?: DisplayField[]
+		title?: string
+	}
+
+	let { data = {}, fields = [], title }: Props = $props()
 </script>
 
 <div data-display-section>

@@ -1,5 +1,80 @@
 # Project Journal
 
+## 2026-06-17 (cont.) — Typed dist via @sveltejs/package + @rokkit/unocss/hooks typed export
+
+Closed the last-mile packaging gap surfaced by a downstream consumer: rokkit's
+component packages shipped `.svelte` with no `.svelte.d.ts`, so a consumer WITHOUT
+the Svelte tooling (pure `tsc`) got no component types.
+
+**@rokkit/unocss/hooks** (`947f8efc`): the `./hooks` subpath had no `types`
+condition → implicit `any`. Added `types: ./dist/hooks.d.ts` (built by
+prepublishOnly) and declared `@sveltejs/kit` as an **optional** peer dep (+ devDep
+for the build) so `themeHook` types as `Handle` instead of `any`. `src/hooks.js`
+already had full JSDoc.
+
+**@sveltejs/package rollout** (`ca1ad79b` app pilot, `a6fdc577` ui/chart/forms):
+each component package now runs `svelte-package -i src -o dist` to emit
+`dist/**/*.svelte.d.ts` (+ `.d.ts`). The **hybrid** wiring keeps `svelte`/`default`
+→ `src` (workspace + dev stay zero-build) and points only the `types` condition →
+`dist`. Generated types are real — e.g. `ThemeSwitcherToggle` resolves to
+`Component<ThemeSwitcherToggleProps>`. dist is gitignored, built at publish.
+- ui/app were source-only (`types: src/index.ts`); chart/forms previously built
+  `dist/index.d.ts` with `tsc`, which can't emit `.svelte.d.ts` — replaced their tsc
+  declaration build with svelte-package and removed the dead `tsconfig.build.json`.
+- chart/forms gained a `svelte` peerDependency (svelte-package flagged it missing);
+  forms' `./lib` subpath gained a types condition.
+- Exported the local `Props` type from chart's Shape/RoundedSquare so the
+  `symbols/index.js` barrel's `components` object literal can emit declarations.
+- Each package got a `svelte.config.js` (vitePreprocess) so svelte-package can
+  transpile `lang="ts"` standalone.
+
+Proven end-to-end: a pure-`tsc` consumer importing `@rokkit/app` resolves real
+component types through the app→ui dist chain with zero errors. The site can drop
+its local ThemeToggle workaround and consume `@rokkit/app` directly next release.
+Publish builds in dependency order, so each package's deps are built before it.
+Full gate green: svelte-check 0 across ui/app/chart/forms, 3566 tests, lint 0;
+no apps/learn regression. Backlog `2026-06-17-svelte-component-types-for-tsc-consumers`
+moved to `done/`.
+
+## 2026-06-17 — Library-wide lang="ts" migration complete + svelte-check in the gate (type-health Task 2)
+
+**The whole component library is now TypeScript.** Migrated the last 97
+plain-`<script>` `.svelte` components to `<script lang="ts">`: `@rokkit/chart`
+(61) and `@rokkit/forms` (35) via two parallel per-package agents (commit
+`5c1a5b3b`), plus the final two strays — `@rokkit/app` TableOfContents (also
+dropped a `@ts-nocheck`, fully typed) and `@rokkit/helpers` MockItem
+(`9a397aae`). chart and forms both svelte-check **0 errors** (forms keeps 2
+accepted `state_referenced_locally` warnings in FieldLayout). No type
+suppressions (`@ts-ignore`/`@ts-nocheck`/`@ts-expect-error`/`as any`/
+`as unknown as`) introduced anywhere — every fix is a real type.
+
+**d3 typing infra.** chart's d3 imports (d3-scale/shape/array/…) ship no types,
+and `@types/d3`'s transitive submodule types don't hoist under bun, so the
+individual `@types/d3-*` packages are listed directly as chart devDeps (+
+`@types/ramda`). chart/forms each got a svelte-check `tsconfig.json` mirroring
+`@rokkit/ui`. Generators/scales typed with explicit generics (`line<Row>()`,
+`scaleLinear<number>()`) so accessor callbacks stop inferring `any`.
+
+**svelte-check is now in the release gate.** New root `check:svelte` step runs
+svelte-check over ui/app/chart/forms (all 0 errors); wired into `bun run check`
+(= `lint && check:types && check:svelte && test:ci`), which `bump` runs. chart
+and forms gained a `check` script + svelte-check devDep so each verifies
+standalone. Gate verified end-to-end: 0 lint errors, tsc clean, svelte-check 0
+errors ×4, 3566 tests pass.
+
+**Latent bugs fixed by typing** (no behavior change): chart `examples/
+BarChartExample` used a stale `Plot.*` API that never existed (dead demo,
+rewritten to real props); `PlotState` colors-map key typed so Ribbon's `.get`
+resolves; forms `lib/Input` emitted non-standard camelCase
+`minLength`/`maxLength` attributes (→ `minlength`/`maxlength`); forms
+FieldLayout had a broken import path. Also fixed a pre-existing forms packaging
+defect — `tsconfig.build.json` `rootDir: "."` emitted declarations to
+`dist/src/index.d.ts` while `package.json` `types` pointed at `dist/index.d.ts`
+(consumers got no types); set `rootDir: "src"` (commit `261d4f31`).
+
+Backlog `2026-06-16-component-ts-consistency` and `-svelte-check-type-health`
+both moved to `done/`. Lint: 0 errors. Tests: 3566 passed.
+
 ## 2026-06-15 — Theme-contrast regression checkpoint + auto on-color (vermillion restored)
 
 **Regression checkpoint.** Built an isolated component gallery (`apps/learn/

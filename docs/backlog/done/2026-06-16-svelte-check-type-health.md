@@ -1,7 +1,13 @@
 # apps/learn svelte-check Type-Health + Gate
 
 **Date:** 2026-06-16
-**Status:** Backlog — pre-existing type debt surfaced by svelte-check; not currently gated
+**Status:** ✅ Done (2026-06-17) — all `@rokkit/ui`, `@rokkit/app`, and `apps/learn`
+svelte-check errors cleared (Task 1: commits `6a25c443`, `f8f54b1e`, `42138a29`), and
+svelte-check is now wired into the `bun run check` release gate via a new `check:svelte`
+step over ui/app/chart/forms (commit `9a397aae`). No type suppressions introduced.
+Remaining `apps/learn` errors are third-party `node_modules` type-def conflicts
+(bun-types↔vite, mermaid, unconfig) + stale local dependency `dist` + one `@rokkit/ui`
+Button anchor-variant cast that only the SvelteKit config flags — none in `apps/learn/src`.
 **Site Applicability:** `apps/learn` (consumer) + `@rokkit/ui` / `@rokkit/states` Props/types.
 
 ## Summary

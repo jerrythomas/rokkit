@@ -1,32 +1,35 @@
-<script>
+<script lang="ts">
+	import type { Snippet } from 'svelte'
 	import { splitByField, getFacetDomains } from './lib/plot/facet.js'
 	import { distinct } from './lib/brewing/colors.js'
+	import type { GeomSpec, PlotHelpers } from './lib/plot/types.js'
 	import PlotPanel from './FacetPlot/Panel.svelte'
 
-	/**
-	 * @type {{
-	 *   data: Object[],
-	 *   facet: { by: string, cols?: number, scales?: 'fixed'|'free'|'free_x'|'free_y' },
-	 *   x?: string,
-	 *   y?: string,
-	 *   color?: string,
-	 *   fill?: string,
-	 *   pattern?: string,
-	 *   symbol?: string,
-	 *   geom?: string,
-	 *   stat?: string,
-	 *   geoms?: import('./lib/plot/types.js').GeomSpec[],
-	 *   helpers?: import('./lib/plot/types.js').PlotHelpers,
-	 *   panelWidth?: number,
-	 *   panelHeight?: number,
-	 *   width?: number,
-	 *   height?: number,
-	 *   mode?: 'light' | 'dark',
-	 *   grid?: boolean,
-	 *   legend?: boolean,
-	 *   children?: import('svelte').Snippet
-	 * }}
-	 */
+	type Facet = { by: string; cols?: number; scales?: 'fixed' | 'free' | 'free_x' | 'free_y' }
+
+	type Props = {
+		data?: Record<string, unknown>[]
+		facet: Facet
+		x?: string
+		y?: string
+		color?: string
+		fill?: string
+		pattern?: string
+		symbol?: string
+		geom?: string
+		stat?: string
+		geoms?: GeomSpec[]
+		helpers?: PlotHelpers
+		panelWidth?: number
+		panelHeight?: number
+		width?: number
+		height?: number
+		mode?: 'light' | 'dark'
+		grid?: boolean
+		legend?: boolean
+		children?: Snippet
+	}
+
 	let {
 		data = [],
 		facet,
@@ -48,7 +51,7 @@
 		grid = true,
 		legend = false,
 		children
-	} = $props()
+	}: Props = $props()
 
 	// `fill` is accepted as an alias for `color` (bar/area semantics vs line/point)
 	const colorChannel = $derived(fill ?? color)

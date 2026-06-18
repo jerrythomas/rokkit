@@ -1,21 +1,24 @@
-<script>
+<script lang="ts">
 	import { setContext, untrack } from 'svelte'
+	import type { Snippet } from 'svelte'
 	import { createCrossFilter } from './createCrossFilter.svelte.js'
 
-	/**
-	 * @type {{
-	 *   crossfilter?: ReturnType<typeof createCrossFilter>,
-	 *   mode?: 'dim' | 'hide',
-	 *   filters?: import('./createCrossFilter.svelte.js').FilterState,
-	 *   children?: import('svelte').Snippet
-	 * }}
-	 */
+	type CrossFilter = ReturnType<typeof createCrossFilter>
+	type FilterState = CrossFilter['filters']
+
+	type Props = {
+		crossfilter?: CrossFilter
+		mode?: 'dim' | 'hide'
+		filters?: FilterState
+		children?: Snippet
+	}
+
 	let {
 		crossfilter: externalCf = undefined,
 		mode = 'dim',
 		filters = $bindable(),
 		children
-	} = $props()
+	}: Props = $props()
 
 	// Use an externally provided instance (spec/helpers API) or create one internally.
 	// untrack() suppresses "captures initial value" warning — intentional: the cf

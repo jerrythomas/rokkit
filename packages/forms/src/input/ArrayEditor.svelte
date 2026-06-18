@@ -1,17 +1,21 @@
-<script>
+<script lang="ts">
 	import { defaultRenderers, resolveRenderer } from '../lib/renderers.js'
 	import FormRenderer from '../FormRenderer.svelte'
 
-	/**
-	 * @typedef {Object} ArrayEditorProps
-	 * @property {Array} [value] - The array value (bindable)
-	 * @property {Function} [onchange] - Called with new array on any change
-	 * @property {Object} [items] - JSON Schema for each array item (from schema.items)
-	 * @property {boolean} [disabled]
-	 * @property {boolean} [readonly]
-	 */
+	type ItemSchema = {
+		type?: string
+		default?: unknown
+		properties?: Record<string, ItemSchema>
+	}
 
-	/** @type {ArrayEditorProps & { [key: string]: any }} */
+	type Props = {
+		value?: unknown[]
+		onchange?: (value: unknown[]) => void
+		items?: ItemSchema
+		disabled?: boolean
+		readonly?: boolean
+	}
+
 	let {
 		value = $bindable([]),
 		onchange,
@@ -19,28 +23,42 @@
 		disabled = false,
 		readonly = false,
 		..._rest
-	} = $props()
+	}: Props = $props()
 
 	// Normalize: treat undefined/null as empty array
 	const safeValue = $derived(Array.isArray(value) ? value : [])
 
+	// Narrow a dynamic array item into a record for object-schema rendering
+	function toRecord(item: unknown): Record<string, unknown> {
+		return item !== null && typeof item === 'object' && !Array.isArray(item)
+			? (item as Record<string, unknown>)
+			: {}
+	}
+
 	// Item schema — default to string if not provided
-	const itemSchema = $derived(items ?? { type: 'string' })
+	const itemSchema = $derived<ItemSchema>(items ?? { type: 'string' })
 
 	// Resolve the primitive renderer once (reused for all items)
 	const PrimitiveComponent = $derived(
 		itemSchema.type !== 'object'
-			? resolveRenderer({ type: itemSchema.type }, defaultRenderers)
+			? resolveRenderer({ type: itemSchema.type ?? 'string' }, defaultRenderers)
 			: null
 	)
 
-	function typeDefault(type) {
-		return (
-			{ string: '', number: 0, integer: 0, boolean: false, array: [], object: {} }[type] ?? null
-		)
+	const TYPE_DEFAULTS: Record<string, unknown> = {
+		string: '',
+		number: 0,
+		integer: 0,
+		boolean: false,
+		array: [],
+		object: {}
 	}
 
-	function createDefaultItem(schema) {
+	function typeDefault(type: string | undefined): unknown {
+		return TYPE_DEFAULTS[type ?? ''] ?? null
+	}
+
+	function createDefaultItem(schema: ItemSchema): unknown {
 		if (schema.type === 'object') {
 			return Object.fromEntries(
 				Object.entries(schema.properties ?? {}).map(([k, s]) => [
@@ -59,13 +77,13 @@
 		onchange?.(newValue)
 	}
 
-	function removeItem(index) {
+	function removeItem(index: number) {
 		const newValue = safeValue.filter((_, i) => i !== index)
 		value = newValue
 		onchange?.(newValue)
 	}
 
-	function updateItem(index, newItemValue) {
+	function updateItem(index: number, newItemValue: unknown) {
 		const newValue = safeValue.map((item, i) => (i === index ? newItemValue : item))
 		value = newValue
 		onchange?.(newValue)
@@ -83,14 +101,14 @@
 				<div data-array-editor-item-content>
 					{#if itemSchema.type === 'object'}
 						<FormRenderer
-							data={item}
+							data={toRecord(item)}
 							schema={itemSchema}
 							onupdate={(newData) => updateItem(index, newData)}
 						/>
-					{:else}
+					{:else if PrimitiveComponent}
 						<PrimitiveComponent
 							value={item}
-							onchange={(newVal) => updateItem(index, newVal)}
+							onchange={(newVal: unknown) => updateItem(index, newVal)}
 							{disabled}
 							{readonly}
 						/>

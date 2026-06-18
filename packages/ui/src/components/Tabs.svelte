@@ -17,7 +17,6 @@
 	 * Tab panels are rendered separately from triggers. Only the active panel
 	 * receives data-panel-active. Navigator ignores panels (no data-path on them).
 	 */
-	// @ts-nocheck
 	import type { TabsProps } from '../types/tabs.js'
 	import type { ProxyItem } from '@rokkit/states'
 	import { Wrapper, ProxyTree, messages } from '@rokkit/states'
@@ -52,7 +51,7 @@
 	const wrapper = $derived(
 		new Wrapper(proxyTree, {
 			onchange,
-			onselect: (v, proxy) => {
+			onselect: (v: unknown, proxy: ProxyItem) => {
 				value = v
 				onselect?.(v, proxy)
 			}

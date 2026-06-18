@@ -8,11 +8,6 @@ class AlertsStore {
 		return this.#items
 	}
 
-	/**
-	 * Push a new alert. Returns the alert id.
-	 * @param {{ type?: string, text?: string, dismissible?: boolean, timeout?: number, actions?: unknown }} alert
-	 * @returns {string}
-	 */
 	#scheduleTimer(id, timeout) {
 		if (timeout > 0) {
 			this.#timers.set(
@@ -22,7 +17,11 @@ class AlertsStore {
 		}
 	}
 
-	 
+	/**
+	 * Push a new alert. Returns the alert id.
+	 * @param {{ type?: string, text?: string, dismissible?: boolean, timeout?: number, actions?: unknown }} [alert]
+	 * @returns {string}
+	 */
 	push({
 		type = 'info',
 		text,

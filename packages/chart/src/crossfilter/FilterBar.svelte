@@ -1,6 +1,17 @@
-<script>
+<script lang="ts">
 	import PlotChart from '../Plot.svelte'
 	import Bar from '../geoms/Bar.svelte'
+	import type { PlotSpec } from '../lib/plot/types.js'
+
+	type Props = {
+		data?: Record<string, unknown>[]
+		field?: string
+		valueField?: string
+		stat?: string
+		width?: number
+		height?: number
+		mode?: 'light' | 'dark'
+	}
 
 	let {
 		data = [],
@@ -10,9 +21,9 @@
 		width = 300,
 		height = 120,
 		mode = 'light'
-	} = $props()
+	}: Props = $props()
 
-	const spec = $derived({
+	const spec = $derived<PlotSpec>({
 		x: field,
 		y: valueField
 	})

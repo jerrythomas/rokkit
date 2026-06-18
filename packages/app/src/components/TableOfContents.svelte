@@ -1,18 +1,19 @@
-<script>
-	// @ts-nocheck
+<script lang="ts">
 	import { onMount } from 'svelte'
 	import { keyboard } from '@rokkit/actions'
 
-	let { container = 'main-content' } = $props()
+	type Heading = { id: string; text: string; level: string }
 
-	let headings = $state([])
+	let { container = 'main-content' }: { container?: string } = $props()
+
+	let headings = $state<Heading[]>([])
 	let activeId = $state('')
 	let focusedIndex = $state(0)
-	let navEl = $state(null)
-	let observer = null
-	let scrollLockTimer = null
+	let navEl = $state<HTMLElement | null>(null)
+	let observer: IntersectionObserver | null = null
+	let scrollLockTimer: ReturnType<typeof setTimeout> | null = null
 
-	function slugify(text) {
+	function slugify(text: string | null) {
 		return (text ?? '')
 			.toLowerCase()
 			.trim()
@@ -40,7 +41,7 @@
 		observer?.disconnect()
 		const main = getContainer()
 		if (!main || headings.length === 0) return
-		observer = new IntersectionObserver(
+		const obs = new IntersectionObserver(
 			(entries) => {
 				const visible = entries
 					.filter((e) => e.isIntersecting)
@@ -49,17 +50,18 @@
 			},
 			{ root: main, rootMargin: '-5% 0px -70% 0px' }
 		)
+		observer = obs
 		headings.forEach(({ id }) => {
 			const el = document.getElementById(id)
-			if (el) observer.observe(el)
+			if (el) obs.observe(el)
 		})
 	}
 
-	function scrollToHeading(id) {
-		const el = document.getElementById(id)
+	function scrollToHeading(id: string | undefined) {
+		const el = document.getElementById(id ?? '')
 		const main = getContainer()
 		if (!el || !main) return
-		clearTimeout(scrollLockTimer)
+		clearTimeout(scrollLockTimer ?? undefined)
 		scrollLockTimer = setTimeout(() => {
 			scrollLockTimer = null
 		}, 1000)
@@ -74,7 +76,7 @@
 	}
 
 	function getItems() {
-		return navEl?.querySelectorAll('[data-toc-item]') ?? []
+		return navEl?.querySelectorAll<HTMLElement>('[data-toc-item]') ?? []
 	}
 
 	function handlePrevious() {
@@ -109,7 +111,7 @@
 		observe()
 		return () => {
 			observer?.disconnect()
-			clearTimeout(scrollLockTimer)
+			clearTimeout(scrollLockTimer ?? undefined)
 		}
 	})
 </script>

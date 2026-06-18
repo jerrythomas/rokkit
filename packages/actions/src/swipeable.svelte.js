@@ -122,9 +122,15 @@ function getListeners(node, options, track) {
 /**
  * A svelte action function that captures swipe actions and emits event for corresponding movements.
  *
- * @param {HTMLElement} node
- * @param {import(./types).SwipeableOptions} options
- * @returns {import('./types').SvelteActionReturn}
+ * The third Action generic declares the `onswipe*` attributes so consumers using
+ * `use:swipeable onswipeLeft={...}` type-check (each is a CustomEvent).
+ *
+ * @type {import('svelte/action').Action<HTMLElement, import('./types.js').SwipeableOptions | undefined, {
+ *   onswipeLeft?: (event: CustomEvent<undefined>) => void,
+ *   onswipeRight?: (event: CustomEvent<undefined>) => void,
+ *   onswipeUp?: (event: CustomEvent<undefined>) => void,
+ *   onswipeDown?: (event: CustomEvent<undefined>) => void
+ * }>}
  */
 export function swipeable(node, options = defaultOptions) {
 	const track = {}

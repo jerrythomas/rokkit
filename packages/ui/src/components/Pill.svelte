@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { ProxyItem } from '@rokkit/states'
-	import { keyboard } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 	import type { PillIcons, PillProps } from '../types/pill.js'
 
@@ -19,11 +18,17 @@
 
 	const proxy = $derived(new ProxyItem(value, fields))
 
-	const keyMap = $derived(removable && !disabled ? { remove: ['Delete', 'Backspace'] } : {})
-
 	function handleRemove() {
 		if (!disabled) {
 			onremove?.(value)
+		}
+	}
+
+	function handleKeydown(event: KeyboardEvent) {
+		if (!removable || disabled) return
+		if (event.key === 'Delete' || event.key === 'Backspace') {
+			event.preventDefault()
+			handleRemove()
 		}
 	}
 </script>
@@ -33,8 +38,8 @@
 	data-pill
 	data-pill-disabled={disabled || undefined}
 	class={className || undefined}
-	use:keyboard={keyMap}
-	onremove={handleRemove}
+	role={removable && !disabled ? 'button' : undefined}
+	onkeydown={handleKeydown}
 	tabindex={removable && !disabled ? 0 : undefined}
 >
 	{#if content}

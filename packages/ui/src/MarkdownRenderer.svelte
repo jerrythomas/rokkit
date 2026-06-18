@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { marked } from 'marked'
-	import type { Token, TokensList } from 'marked'
+	import type { Token, Tokens, TokensList } from 'marked'
 	import type { Component, Snippet } from 'svelte'
 	import type { MarkdownPlugin } from './markdown-plugin.js'
 	import DOMPurify from 'dompurify'
@@ -61,7 +61,7 @@
 	 * - { type: 'token', token } — all other tokens
 	 */
 	type Segment =
-		| { type: 'group'; id: string; items: Token[] }
+		| { type: 'group'; id: string; items: Tokens.Code[] }
 		| { type: 'token'; token: Token }
 
 	const segments = $derived.by((): Segment[] => {
@@ -69,10 +69,12 @@
 
 		const result: Segment[] = []
 		// eslint-disable-next-line svelte/prefer-svelte-reactivity
-		const groupMap = new Map<string, { type: 'group'; id: string; items: Token[] }>()
+		const groupMap = new Map<string, { type: 'group'; id: string; items: Tokens.Code[] }>()
 
 		for (const token of tokens) {
 			const cfId = getCfGroup(token)
+			// getCfGroup only returns a non-null id for `type: 'code'` tokens,
+			// so a grouped token is always a Code token (carries lang + text).
 			if (cfId) {
 				let group = groupMap.get(cfId)
 				if (!group) {
@@ -80,7 +82,7 @@
 					groupMap.set(cfId, group)
 					result.push(group)
 				}
-				group.items.push(token)
+				group.items.push(token as Tokens.Code)
 			} else {
 				result.push({ type: 'token', token })
 			}

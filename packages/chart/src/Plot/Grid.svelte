@@ -1,18 +1,19 @@
-<script>
+<script lang="ts">
 	import { getContext } from 'svelte'
+	import type { PlotState } from '../PlotState.svelte.js'
 
-	const state = getContext('plot-state')
+	const state = getContext<PlotState>('plot-state')
 
 	const xGridLines = $derived.by(() => {
 		const s = state.xScale
 		if (!s || typeof s.bandwidth !== 'function') return []
-		return s.domain().map((val) => ({ pos: (s(val) ?? 0) + s.bandwidth() / 2 }))
+		return s.domain().map((val: unknown) => ({ pos: (s(val) ?? 0) + s.bandwidth() / 2 }))
 	})
 
 	const yGridLines = $derived.by(() => {
 		const s = state.yScale
 		if (!s || typeof s.ticks !== 'function') return []
-		return s.ticks(6).map((val) => ({ pos: s(val) }))
+		return s.ticks(6).map((val: number) => ({ pos: s(val) }))
 	})
 </script>
 

@@ -1,16 +1,22 @@
-<script>
+<script lang="ts">
 	import { getContext } from 'svelte'
+	import type { PlotState } from '../PlotState.svelte.js'
 
-	/** @type {{ tooltip?: boolean | ((data: Record<string, unknown>) => string) }} */
-	let { tooltip = true } = $props()
+	type Row = Record<string, unknown>
 
-	const plotState = getContext('plot-state')
+	type Props = {
+		tooltip?: boolean | ((data: Row) => string)
+	}
+
+	let { tooltip = true }: Props = $props()
+
+	const plotState = getContext<PlotState>('plot-state')
 
 	let mouseX = $state(0)
 	let mouseY = $state(0)
 
 	$effect(() => {
-		function onMove(e) {
+		function onMove(e: MouseEvent) {
 			mouseX = e.clientX
 			mouseY = e.clientY
 		}
@@ -21,7 +27,7 @@
 	const hovered = $derived(plotState.hovered)
 	const mode = $derived(plotState.mode)
 
-	function formatDefault(data) {
+	function formatDefault(data: Row) {
 		return Object.entries(data)
 			.filter(([, v]) => v !== undefined && v !== null)
 			.map(

@@ -71,12 +71,21 @@ function processValue(value, operator) {
 }
 
 /**
+ * A parsed filter condition.
+ *
+ * @typedef {Object} FilterObject
+ * @property {string}                  [column]  - Column to filter (undefined = search all columns)
+ * @property {string}                  operator  - Comparison operator
+ * @property {string|number|RegExp}    value     - Filter value
+ */
+
+/**
  * Parses a search string and extracts filters based on a predefined regular expression pattern.
  * Each filter captures column, operator, and value components. Any remaining text that
  * does not fit the pattern is considered a general search term.
  *
  * @param {string} string - The search string to parse for filters.
- * @returns {Object[]} - An array of filter objects each containing the column, operator, and value,
+ * @returns {FilterObject[]} - An array of filter objects each containing the column, operator, and value,
  *                       plus an additional object for general search if there is remaining text.
  */
 export function parseFilters(string) {

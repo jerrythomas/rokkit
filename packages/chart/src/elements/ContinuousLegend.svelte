@@ -1,5 +1,22 @@
-<script>
+<script lang="ts">
 	import { scaleLinear } from 'd3-scale'
+
+	type ColorScale = {
+		(value: number): string
+		domain(): number[]
+		ticks?(count?: number): number[]
+	}
+
+	type Props = {
+		x?: number
+		y?: number
+		textSize?: number
+		height?: number
+		width?: number
+		tickCount?: number
+		scale: ColorScale
+		id?: string
+	}
 
 	let {
 		x = 0,
@@ -10,10 +27,10 @@
 		tickCount = 5,
 		scale,
 		id = 'legend'
-	} = $props()
+	}: Props = $props()
 
 	let scaleTicks = $derived(
-		scaleLinear()
+		scaleLinear<number>()
 			.range([x, x + width])
 			.domain(scale.domain())
 	)

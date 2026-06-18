@@ -1,14 +1,33 @@
-<script>
+<script lang="ts">
 	/**
 	 * StatusList — grouped summary of validation messages
 	 * Groups items by severity (error, warning, info, success) with count headers.
 	 * Supports click-to-focus via onclick callback.
 	 */
 
-	const SEVERITY_ORDER = ['error', 'warning', 'info', 'success']
-	const SEVERITY_LABELS = { error: 'error', warning: 'warning', info: 'info', success: 'success' }
+	type Severity = 'error' | 'warning' | 'info' | 'success'
 
-	let { items = [], onclick = undefined, class: className = '' } = $props()
+	type StatusItem = {
+		state: Severity
+		path: string
+		text: string
+	}
+
+	type Props = {
+		items?: StatusItem[]
+		onclick?: (path: string) => void
+		class?: string
+	}
+
+	const SEVERITY_ORDER: Severity[] = ['error', 'warning', 'info', 'success']
+	const SEVERITY_LABELS: Record<Severity, string> = {
+		error: 'error',
+		warning: 'warning',
+		info: 'info',
+		success: 'success'
+	}
+
+	let { items = [], onclick = undefined, class: className = '' }: Props = $props()
 
 	const grouped = $derived(
 		SEVERITY_ORDER.map((state) => ({

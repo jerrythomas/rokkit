@@ -1,8 +1,25 @@
-<script>
+<script lang="ts">
 	import Plot from '../Plot.svelte'
 	import Arc from '../geoms/Arc.svelte'
 
-	/** @type {import('../lib/plot/chartProps.js').PieChartProps} */
+	type Row = Record<string, unknown>
+
+	type Props = {
+		data?: Row[]
+		label?: string
+		y?: string
+		fill?: string
+		pattern?: string
+		innerRadius?: number
+		labelFn?: (data: Row) => string
+		tooltip?: boolean | ((data: Row) => string)
+		width?: number
+		height?: number
+		mode?: 'light' | 'dark'
+		legend?: boolean
+		stat?: string
+	}
+
 	let {
 		data = [],
 		label = undefined,
@@ -17,7 +34,7 @@
 		mode = 'light',
 		legend = false,
 		stat = 'sum'
-	} = $props()
+	}: Props = $props()
 </script>
 
 <Plot

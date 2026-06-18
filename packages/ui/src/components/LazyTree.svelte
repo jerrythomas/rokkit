@@ -1,5 +1,4 @@
 <script lang="ts">
-	// @ts-nocheck
 	/**
 	 * LazyTree — Tree + lazy loading.
 	 *
@@ -20,7 +19,7 @@
 	let {
 		items = [],
 		fields = {},
-		value,
+		value = $bindable(),
 		size = 'md',
 		lineStyle = 'solid',
 		labels: userLabels = {},
@@ -34,7 +33,7 @@
 		items?: unknown[]
 		fields?: Record<string, string>
 		value?: unknown
-		size?: string
+		size?: 'sm' | 'md' | 'lg'
 		lineStyle?: 'none' | 'solid' | 'dashed' | 'dotted'
 		labels?: Record<string, string>
 		icons?: { opened?: string; closed?: string }
@@ -51,7 +50,7 @@
 
 	const proxyTree = $derived(
 		new ProxyTree(items, fields, {
-			createProxy: (raw, f, key, level) =>
+			createProxy: (raw: unknown, f: Record<string, string>, key: string, level: number) =>
 				new LazyProxyItem(
 					raw,
 					f,

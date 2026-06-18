@@ -52,7 +52,7 @@
 	<section>
 		<header>Vertical — compact</header>
 		<div class="vertical-wrap">
-			<Toolbar items={verticalTools} position="left" compact width="auto" {...spread} />
+			<Toolbar items={verticalTools} position="left" compact width="fit" {...spread} />
 		</div>
 	</section>
 </div>

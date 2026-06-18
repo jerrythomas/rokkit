@@ -7,7 +7,7 @@ import { dataset } from '@rokkit/data'
  *
  * @param {Object[]} data
  * @param {string} timeField
- * @returns {Map<unknown, Object[]>}
+ * @returns {Map<unknown, Record<string, unknown>[]>}
  */
 export function extractFrames(data, timeField) {
 	const map = new Map()
@@ -28,9 +28,9 @@ export function extractFrames(data, timeField) {
  * with no further per-frame normalization needed.
  *
  * @param {Object[]} data - pre-aggregated rows, one per (x, color?, byField)
- * @param {{ x?: string, y: string, color?: string }} channels
+ * @param {{ x?: string, y?: string, color?: string }} channels
  * @param {string} byField - the frame field (e.g. 'year')
- * @returns {Object[]}
+ * @returns {Record<string, unknown>[]}
  */
 export function completeFrames(data, channels, byField) {
 	const { x: xf, y: yf, color: cf } = channels
@@ -62,7 +62,7 @@ export function completeFrames(data, channels, byField) {
  * be negative.
  *
  * @param {Object[]} data - full dataset (before frame extraction)
- * @param {{ x: string, y: string }} channels
+ * @param {{ x?: string, y?: string }} channels
  * @returns {{ xDomain: unknown[], yDomain: [number, number] }}
  */
 export function computeStaticDomains(data, channels) {

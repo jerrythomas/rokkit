@@ -1,24 +1,11 @@
-<script>
-	/**
-	 * @typedef {Object} InputPasswordProps
-	 * @property {string} value
-	 * @property {Function} onchange
-	 * @property {Function} onfocus
-	 * @property {Function} onblur
-	 * @property {string} placeholder
-	 * @property {boolean} required
-	 * @property {boolean} disabled
-	 * @property {boolean} readonly
-	 * @property {string} name
-	 * @property {string} id
-	 * @property {string} autocomplete
-	 * @property {number} maxlength
-	 * @property {number} minlength
-	 * @property {string} pattern
-	 * @property {number} size
-	 */
+<script lang="ts">
+	import type { HTMLInputAttributes } from 'svelte/elements'
 
-	/** @type {InputPasswordProps & { [key: string]: any }} */
+	type Props = Omit<HTMLInputAttributes, 'value' | 'onchange'> & {
+		value?: string
+		onchange?: (value: string) => void
+	}
+
 	let {
 		value = $bindable(),
 		onchange,
@@ -36,10 +23,10 @@
 		pattern,
 		size,
 		...rest
-	} = $props()
+	}: Props = $props()
 
-	function handleChange(event) {
-		value = event.target.value
+	function handleChange(event: Event & { currentTarget: HTMLInputElement }) {
+		value = event.currentTarget.value
 		onchange?.(value)
 	}
 </script>

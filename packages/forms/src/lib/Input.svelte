@@ -1,8 +1,35 @@
-<script>
+<script lang="ts">
 	/**
 	 * Universal Input wrapper component supporting all HTML input types
 	 * Provides consistent interface with label, description, message handling
 	 */
+
+	type Message = { state: 'error' | 'warning' | 'info' | 'success'; text: string }
+
+	type SelectOption = string | { value: unknown; label?: string }
+
+	type Props = {
+		type?: string
+		value?: unknown
+		label?: string
+		description?: string
+		message?: Message | null
+		placeholder?: string
+		required?: boolean
+		disabled?: boolean
+		readonly?: boolean
+		min?: number | string
+		max?: number | string
+		step?: number | string
+		pattern?: string
+		minLength?: number
+		maxLength?: number
+		options?: SelectOption[]
+		className?: string
+		onchange?: (value: unknown) => void
+		onfocus?: (event: FocusEvent) => void
+		onblur?: (event: FocusEvent) => void
+	} & Record<string, unknown>
 
 	let {
 		// Core input properties
@@ -39,10 +66,10 @@
 
 		// Pass through any other props
 		...props
-	} = $props()
+	}: Props = $props()
 
 	// Determine layout class based on input type
-	function getLayoutClass(inputType) {
+	function getLayoutClass(inputType: string): string {
 		switch (inputType) {
 			case 'checkbox':
 				return 'input-layout-checkbox'
@@ -54,14 +81,21 @@
 	}
 
 	// Resolve new value from event based on input type
-	function resolveValue(event) {
-		if (type === 'checkbox' || type === 'radio') return event.target.checked
-		if (type === 'number' || type === 'range') return event.target.valueAsNumber
-		return event.target.value
+	function resolveValue(
+		event: Event & { currentTarget: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement }
+	): unknown {
+		const target = event.currentTarget
+		if ((type === 'checkbox' || type === 'radio') && target instanceof HTMLInputElement)
+			return target.checked
+		if ((type === 'number' || type === 'range') && target instanceof HTMLInputElement)
+			return target.valueAsNumber
+		return target.value
 	}
 
 	// Handle change events
-	function handleChange(event) {
+	function handleChange(
+		event: Event & { currentTarget: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement }
+	) {
 		value = resolveValue(event)
 		if (onchange) onchange(value)
 	}
@@ -85,7 +119,7 @@
 			<input
 				id={fieldId}
 				{type}
-				checked={value}
+				checked={Boolean(value)}
 				{required}
 				{disabled}
 				{readonly}
@@ -134,8 +168,8 @@
 					{required}
 					{disabled}
 					{readonly}
-					{minLength}
-					{maxLength}
+					minlength={minLength}
+					maxlength={maxLength}
 					aria-describedby={ariaDescribedBy}
 					onchange={handleChange}
 					{onfocus}
@@ -155,8 +189,8 @@
 					{max}
 					{step}
 					{pattern}
-					{minLength}
-					{maxLength}
+					minlength={minLength}
+					maxlength={maxLength}
 					aria-describedby={ariaDescribedBy}
 					onchange={handleChange}
 					{onfocus}

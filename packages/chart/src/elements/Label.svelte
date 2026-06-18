@@ -1,5 +1,14 @@
-<script>
-	let { x, y, text, angle = 0, small = false, anchor = 'middle' } = $props()
+<script lang="ts">
+	type Props = {
+		x: number
+		y: number
+		text: string
+		angle?: number
+		small?: boolean
+		anchor?: string
+	}
+
+	let { x, y, text, angle = 0, small = false, anchor = 'middle' }: Props = $props()
 
 	let transform = $derived(`translate(${x},${y}) rotate(${angle})`)
 	let validAnchor = $derived(['start', 'middle', 'end'].includes(anchor) ? anchor : 'middle')

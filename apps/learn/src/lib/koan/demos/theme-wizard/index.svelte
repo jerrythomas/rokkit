@@ -31,19 +31,21 @@
 		}
 	}
 
-	let state = $state<WizardState>(themeStore.draft ?? makeBlank())
+	// Named `wizard` (not `state`) so the local binding does not shadow the
+	// `$state` rune in svelte-check's type resolution.
+	let wizard = $state<WizardState>(themeStore.draft ?? makeBlank())
 
 	$effect(() => {
-		saveDraft({ ...state })
+		saveDraft({ ...wizard })
 	})
 
 	$effect(() => {
 		// Live application via theme store — handles colormap + CSS vars + localStorage
-		theme.setSkin(state.preset)
-		theme.setStyle(state.style)
-		theme.setMode(state.mode)
-		theme.setDensity(state.density)
-		theme.setRadius(state.roundedness)
+		theme.setSkin(wizard.preset)
+		theme.setStyle(wizard.style)
+		theme.setMode(wizard.mode)
+		theme.setDensity(wizard.density)
+		theme.setRadius(wizard.roundedness)
 	})
 </script>
 
@@ -70,14 +72,14 @@
 	<div class="wiz-main">
 		<div class="wiz-content">
 			{#if stepIdx === 0}
-				<StepStart bind:state />
+				<StepStart bind:state={wizard} />
 			{:else if stepIdx === 1}
-				<StepTheme bind:state />
+				<StepTheme bind:state={wizard} />
 			{:else if stepIdx === 2}
-				<StepTune bind:state />
+				<StepTune bind:state={wizard} />
 			{:else}
 				<StepSave
-					bind:wizardState={state}
+					bind:wizardState={wizard}
 					onsaved={(t) => {
 						setActiveTheme(t.id)
 						clearDraft()

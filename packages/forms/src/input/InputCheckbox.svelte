@@ -1,29 +1,21 @@
-<script>
+<script lang="ts">
+	import type { HTMLInputAttributes } from 'svelte/elements'
 	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 	import { isNil } from 'ramda'
 
-	/**
-	 * @typedef {ObjectIcon} StateIcons
-	 * @property {string} checked
-	 * @property {string} unchecked
-	 * @property {string} unknown
-	 */
+	type StateIcons = {
+		checked?: string
+		unchecked?: string
+		unknown?: string
+	}
 
-	/**
-	 * @typedef {Object} InputCheckboxProps
-	 * @property {null|Boolean} value
-	 * @property {'default'|'custom'} variant -
-	 * @property {StateIcons} icons
-	 * @property {Function} onchange
-	 * @property {Function} onfocus
-	 * @property {Function} onblur
-	 * @property {boolean} required
-	 * @property {boolean} disabled
-	 * @property {string} name
-	 * @property {string} id
-	 */
+	type Props = Omit<HTMLInputAttributes, 'value' | 'onchange'> & {
+		value?: boolean | null
+		variant?: 'default' | 'custom'
+		icons?: StateIcons
+		onchange?: (value: boolean) => void
+	}
 
-	/** @type {InputCheckboxProps & { [key: string]: any }} */
 	let {
 		value = $bindable(),
 		variant = 'custom',
@@ -36,15 +28,15 @@
 		name,
 		id,
 		...rest
-	} = $props()
+	}: Props = $props()
 
-	function handleChange(event) {
-		value = Boolean(event.target.checked)
+	function handleChange(event: Event & { currentTarget: HTMLInputElement }) {
+		value = Boolean(event.currentTarget.checked)
 		onchange?.(value)
 	}
 
 	function toggle() {
-		value = !Boolean(value)
+		value = !value
 		onchange?.(value)
 	}
 

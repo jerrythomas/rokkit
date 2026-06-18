@@ -1,24 +1,11 @@
-<script>
-	/**
-	 * @typedef {Object} InputTextAreaProps
-	 * @property {string} value
-	 * @property {Function} onchange
-	 * @property {Function} onfocus
-	 * @property {Function} onblur
-	 * @property {string} placeholder
-	 * @property {boolean} required
-	 * @property {boolean} disabled
-	 * @property {boolean} readonly
-	 * @property {string} name
-	 * @property {string} id
-	 * @property {number} rows
-	 * @property {number} cols
-	 * @property {number} maxlength
-	 * @property {number} minlength
-	 * @property {string} wrap
-	 */
+<script lang="ts">
+	import type { HTMLTextareaAttributes } from 'svelte/elements'
 
-	/** @type {InputTextAreaProps & { [key: string]: any }} */
+	type Props = Omit<HTMLTextareaAttributes, 'value' | 'onchange'> & {
+		value?: string
+		onchange?: (value: string) => void
+	}
+
 	let {
 		value = $bindable(),
 		onchange,
@@ -36,10 +23,10 @@
 		minlength,
 		wrap,
 		...rest
-	} = $props()
+	}: Props = $props()
 
-	function handleChange(event) {
-		value = event.target.value
+	function handleChange(event: Event & { currentTarget: HTMLTextAreaElement }) {
+		value = event.currentTarget.value
 		onchange?.(value)
 	}
 </script>

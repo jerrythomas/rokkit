@@ -205,7 +205,7 @@
 			return
 		}
 		const parsed = tryParse(text)
-		if (!parsed.ok) {
+		if (parsed.ok === false) {
 			attachError = parsed.error
 			return
 		}

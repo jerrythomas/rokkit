@@ -61,8 +61,8 @@ export function jitterOffset(i, range) {
 
 /**
  * Builds point geometry for scatter/bubble charts.
- * @param {Object[]} data
- * @param {{ x: string, y: string, color?: string, size?: string, symbol?: string }} channels
+ * @param {Record<string, unknown>[]} data
+ * @param {{ x?: string, y?: string, color?: string, size?: string, symbol?: string }} channels
  * @param {Function} xScale
  * @param {Function} yScale
  * @param {Map} colors
@@ -70,6 +70,7 @@ export function jitterOffset(i, range) {
  * @param {Map<unknown, string>|null} symbolMap  — maps symbol field value → shape name
  * @param {number} defaultRadius
  * @param {{ width?: number, height?: number }|null} jitter
+ * @returns {{ data: Record<string, unknown>, cx: number, cy: number, r: number, fill: string, stroke: string, symbolPath: string | null, key: unknown }[]}
  */
 export function buildPoints(
 	data,

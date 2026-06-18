@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { HTMLAnchorAttributes } from 'svelte/elements'
 	import type { ButtonProps } from '../types/button.js'
 	import { ProxyItem } from '@rokkit/states'
 	import ItemContent from './ItemContent.svelte'
@@ -24,6 +25,11 @@
 
 	const isIconOnly = $derived(Boolean(icon) && !label && !children)
 	const isDisabled = $derived(disabled || loading)
+
+	// `rest` carries `<button>` attribute types (ButtonProps extends HTMLButtonAttributes);
+	// when rendering the link variant, re-type the passthrough attrs as anchor attrs so the
+	// element-specific event-handler signatures (e.g. onclick targeting HTMLAnchorElement) line up.
+	const anchorRest = $derived(rest as HTMLAnchorAttributes)
 
 	/**
 	 * Create a ProxyItem for default content rendering.
@@ -56,7 +62,7 @@
 		class={className || undefined}
 		aria-label={label}
 		aria-busy={loading || undefined}
-		{...rest}
+		{...anchorRest}
 	>
 		{#if children}
 			{@render children()}

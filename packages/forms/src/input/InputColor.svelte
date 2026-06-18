@@ -1,18 +1,11 @@
-<script>
-	/**
-	 * @typedef {Object} InputColorProps
-	 * @property {string} value
-	 * @property {Function} onchange
-	 * @property {Function} onfocus
-	 * @property {Function} onblur
-	 * @property {boolean} required
-	 * @property {boolean} disabled
-	 * @property {string} name
-	 * @property {string} id
-	 * @property {string} autocomplete
-	 */
+<script lang="ts">
+	import type { HTMLInputAttributes } from 'svelte/elements'
 
-	/** @type {InputColorProps & { [key: string]: any }} */
+	type Props = Omit<HTMLInputAttributes, 'value' | 'onchange'> & {
+		value?: string
+		onchange?: (value: string) => void
+	}
+
 	let {
 		value = $bindable(),
 		onchange,
@@ -24,10 +17,10 @@
 		id,
 		autocomplete,
 		...rest
-	} = $props()
+	}: Props = $props()
 
-	function handleChange(event) {
-		value = event.target.value
+	function handleChange(event: Event & { currentTarget: HTMLInputElement }) {
+		value = event.currentTarget.value
 		onchange?.(value)
 	}
 </script>

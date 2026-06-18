@@ -1,8 +1,33 @@
-<script>
+<script lang="ts">
 	import { getContext, onMount, onDestroy } from 'svelte'
+	import type { PlotState } from '../PlotState.svelte.js'
+	import type { createCrossFilter } from '../crossfilter/createCrossFilter.svelte.js'
 	import { buildGroupedBars, buildStackedBars, buildHorizontalBars } from './lib/bars.js'
 	import { keyboardNav } from '../lib/keyboard-nav.js'
 	import LabelPill from './LabelPill.svelte'
+
+	type Row = Record<string, unknown>
+	type CrossFilter = ReturnType<typeof createCrossFilter>
+	type Options = {
+		stack?: boolean
+		orientation?: 'horizontal' | 'vertical'
+		labelInside?: boolean
+		labelOffset?: number
+	}
+
+	type Props = {
+		x?: string
+		y?: string
+		color?: string
+		fill?: string
+		pattern?: string
+		label?: boolean | string | ((data: Row) => unknown)
+		stat?: string
+		options?: Options
+		filterable?: boolean
+		onselect?: (data: Row) => void
+		keyboard?: boolean
+	}
 
 	let {
 		x,
@@ -16,19 +41,14 @@
 		filterable = false,
 		onselect = undefined,
 		keyboard = false
-	} = $props()
+	}: Props = $props()
 
 	// `fill` is accepted as an alias for `color` (consistent with Arc.svelte)
 	const colorChannel = $derived(fillProp ?? color)
 
-	/**
-	 * @param {Record<string, unknown>} data
-	 * @param {string} defaultField
-	 * @returns {string | null}
-	 */
-	function resolveLabel(data, defaultField) {
+	function resolveLabel(data: Row, defaultField: string | undefined): string | null {
 		if (!label) return null
-		if (label === true) return String(data[defaultField] ?? '')
+		if (label === true) return String((defaultField ? data[defaultField] : undefined) ?? '')
 		if (typeof label === 'function') return String(label(data) ?? '')
 		if (typeof label === 'string') return String(data[label] ?? '')
 		return null
@@ -36,10 +56,8 @@
 
 	/**
 	 * Pick white or dark text based on perceived luminance of a hex fill color.
-	 * @param {string | undefined} hex
-	 * @returns {string}
 	 */
-	function contrastColor(hex) {
+	function contrastColor(hex: string | undefined): string {
 		if (!hex || !hex.startsWith('#') || hex.length < 7) return 'white'
 		const r = parseInt(hex.slice(1, 3), 16) / 255
 		const g = parseInt(hex.slice(3, 5), 16) / 255
@@ -47,9 +65,9 @@
 		return 0.299 * r + 0.587 * g + 0.114 * b > 0.55 ? '#333' : 'white'
 	}
 
-	const plotState = getContext('plot-state')
-	const cf = getContext('crossfilter')
-	let id = $state(null)
+	const plotState = getContext<PlotState>('plot-state')
+	const cf = getContext<CrossFilter | undefined>('crossfilter')
+	let id = $state<string | null>(null)
 
 	onMount(() => {
 		id = plotState.registerGeom({
@@ -92,8 +110,7 @@
 		return buildGroupedBars(data, channels, xScale, yScale, colors, innerHeight, patterns)
 	})
 
-	/** @type {Record<string, boolean>} */
-	let dimmedByKey = $state({})
+	let dimmedByKey = $state<Record<string, boolean>>({})
 
 	$effect(() => {
 		if (!cf) {
@@ -104,7 +121,7 @@
 		// Reading it here establishes a reactive dependency so the effect re-runs
 		// whenever any filter changes — including changes from sibling FilterBars.
 		void cf.version
-		const next = /** @type {Record<string, boolean>} */ ({})
+		const next: Record<string, boolean> = {}
 		for (const bar of bars) {
 			const dimmedByX = x ? cf.isDimmed(x, bar.data[x]) : false
 			const dimmedByY = y ? cf.isDimmed(y, bar.data[y]) : false
@@ -113,7 +130,7 @@
 		dimmedByKey = next
 	})
 
-	function handleBarClick(barX) {
+	function handleBarClick(barX: unknown) {
 		if (!filterable || !x || !cf) return
 		cf.toggleCategorical(x, barX)
 	}
@@ -132,8 +149,8 @@
 				stroke={bar.stroke ?? 'none'}
 				stroke-width={bar.stroke ? 0.5 : 0}
 				data-plot-element="bar"
-				data-plot-value={bar.data[y]}
-				data-plot-category={bar.data[x]}
+				data-plot-value={bar.data[y ?? '']}
+				data-plot-category={bar.data[x ?? '']}
 				data-dimmed={dimmedByKey[bar.key] ? true : undefined}
 				style:cursor={filterable || onselect ? 'pointer' : undefined}
 				onclick={filterable && x ? () => { handleBarClick(bar.data[x]); onselect?.(bar.data) } : onselect ? () => onselect(bar.data) : undefined}
@@ -143,11 +160,11 @@
 				role={filterable || onselect || keyboard ? 'button' : 'graphics-symbol'}
 				tabindex={filterable || onselect || keyboard ? 0 : undefined}
 				use:keyboardNav={keyboard}
-				aria-label="{bar.data[x]}: {bar.data[y]}"
+				aria-label="{bar.data[x ?? '']}: {bar.data[y ?? '']}"
 				onmouseenter={() => plotState.setHovered(bar.data)}
 				onmouseleave={() => plotState.clearHovered()}
 			>
-				<title>{bar.data[x]}: {bar.data[y]}</title>
+				<title>{bar.data[x ?? '']}: {bar.data[y ?? '']}</title>
 			</rect>
 			{#if bar.patternId}
 				<rect

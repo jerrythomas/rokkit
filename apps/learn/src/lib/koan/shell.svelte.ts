@@ -11,6 +11,7 @@ export type ShellDemoType =
 	| 'tabs'
 	| 'theme-wizard'
 	| 'table'
+	| 'tree-table'
 	| 'tree'
 	| 'multi-select'
 	| 'list'

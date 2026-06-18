@@ -13,9 +13,10 @@ import type { ProxyItem } from '@rokkit/states'
 // =============================================================================
 
 /**
- * Generic toggle item - can be any object with mapped fields
+ * Generic toggle item — data-driven, so it accepts primitives
+ * (string/number) as well as objects with mapped fields.
  */
-export type ToggleItem = Record<string, unknown>
+export type ToggleItem = string | number | Record<string, unknown>
 
 // =============================================================================
 // Snippet Types

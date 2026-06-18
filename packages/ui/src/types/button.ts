@@ -6,6 +6,7 @@
  */
 
 import type { Snippet } from 'svelte'
+import type { HTMLButtonAttributes } from 'svelte/elements'
 
 // =============================================================================
 // Variant & Style Types
@@ -22,9 +23,14 @@ export type ButtonStyle = 'default' | 'outline' | 'ghost' | 'gradient' | 'link'
 // =============================================================================
 
 /**
- * Props for the Button component
+ * Props for the Button component.
+ *
+ * Extends native `<button>` attributes so consumers can pass `aria-*`,
+ * `onclick`, `title`, `name`, `form`, etc. The native `style` and `type`
+ * keys are omitted because this component repurposes `style` (visual
+ * treatment) and narrows `type` to the valid button types.
  */
-export interface ButtonProps {
+export interface ButtonProps extends Omit<HTMLButtonAttributes, 'style' | 'type'> {
 	/** Semantic color variant */
 	variant?: ButtonVariant
 

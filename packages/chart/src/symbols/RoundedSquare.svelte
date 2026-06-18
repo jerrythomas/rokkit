@@ -1,4 +1,14 @@
-<script>
+<script lang="ts">
+	import type { SVGAttributes } from 'svelte/elements'
+
+	export interface Props extends Omit<SVGAttributes<SVGRectElement>, 'x' | 'y' | 'fill' | 'stroke'> {
+		x?: number
+		y?: number
+		size?: number
+		fill?: string
+		stroke?: string
+	}
+
 	let {
 		x = 0,
 		y = 0,
@@ -10,10 +20,9 @@
 		onmouseleave,
 		onfocus,
 		...restProps
-	} = $props()
+	}: Props = $props()
 
 	let r = $derived(size * 3.534)
-	let props = $derived({ rx: r * 0.1, ry: r * 0.1, ...restProps })
 </script>
 
 <rect
@@ -23,7 +32,9 @@
 	height={r * 2}
 	{fill}
 	{stroke}
-	{...props}
+	rx={r * 0.1}
+	ry={r * 0.1}
+	{...restProps}
 	role="button"
 	{onclick}
 	{onmouseover}

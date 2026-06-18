@@ -80,7 +80,7 @@
 
 <IconTimeline
 	icon={showThinkingDots ? thinkingDots : icon}
-	data-chat-message
+	data-chat-message=""
 	data-kind={kind}
 	data-message-status={status}
 >

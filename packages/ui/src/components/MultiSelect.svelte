@@ -24,7 +24,6 @@
 	 *   data-select-divider     — divider between groups
 	 *   data-path, data-selected, data-checked, data-disabled, data-open, data-size
 	 */
-	// @ts-nocheck
 	import type { ProxyItem } from '@rokkit/states'
 	import { Wrapper, ProxyTree, messages } from '@rokkit/states'
 	import { SvelteSet } from 'svelte/reactivity'
@@ -92,9 +91,10 @@
 	// Force groups expanded + disabled (non-navigable labels)
 	const processedItems = $derived(
 		items.map((item) => {
-			const children = item[childrenField]
+			const asRecord = item as Record<string, unknown>
+			const children = asRecord[childrenField]
 			if (Array.isArray(children) && children.length > 0) {
-				return { ...item, expanded: true, disabled: true }
+				return { ...asRecord, expanded: true, disabled: true }
 			}
 			return item
 		})

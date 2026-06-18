@@ -28,7 +28,15 @@ function handleEvent(node, event, name, coords) {
 /**
  * Makes an element pannable with mouse or touch events.
  *
- * @param {HTMLElement} node The DOM element to apply the panning action.
+ * The third Action generic declares the `onpan*` attributes so consumers using
+ * `use:pannable onpanstart={...}` type-check. `panstart`/`panend` carry the
+ * pointer position; `panmove` additionally carries the delta (dx/dy).
+ *
+ * @type {import('svelte/action').Action<HTMLElement, undefined, {
+ *   onpanstart?: (event: CustomEvent<import('./types.js').Coords>) => void,
+ *   onpanmove?: (event: CustomEvent<import('./types.js').Coords>) => void,
+ *   onpanend?: (event: CustomEvent<import('./types.js').Coords>) => void
+ * }>}
  */
 export function pannable(node) {
 	let coords = { x: 0, y: 0 }

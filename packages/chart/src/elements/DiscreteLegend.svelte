@@ -1,4 +1,20 @@
-<script>
+<script lang="ts">
+	type ColorScale = {
+		(value: number): string
+		ticks(count?: number): number[]
+	}
+
+	type Props = {
+		x?: number
+		y?: number
+		textSize?: number
+		size?: number
+		space?: number
+		padding?: number
+		scale: ColorScale
+		tickCount?: number
+	}
+
 	let {
 		x = 0,
 		y = 0,
@@ -8,7 +24,7 @@
 		padding = 5,
 		scale,
 		tickCount = 10
-	} = $props()
+	}: Props = $props()
 
 	let sizeWithSpace = $derived(size + space)
 	let ticks = $derived(scale.ticks.apply(scale, [tickCount]))

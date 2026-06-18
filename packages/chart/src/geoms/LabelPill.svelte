@@ -1,6 +1,12 @@
-<script>
-	/** @type {{ x: number, y: number, text: string, color?: string }} */
-	let { x, y, text, color = '#333' } = $props()
+<script lang="ts">
+	type Props = {
+		x: number
+		y: number
+		text: string
+		color?: string
+	}
+
+	let { x, y, text, color = '#333' }: Props = $props()
 
 	const w = $derived(Math.max(36, String(text).length * 7 + 12))
 </script>

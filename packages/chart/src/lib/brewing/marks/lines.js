@@ -2,12 +2,12 @@ import { line, curveCatmullRom, curveStep } from 'd3-shape'
 
 /**
  * @param {Object[]} data
- * @param {{ x: string, y: string, color?: string }} channels
+ * @param {{ x?: string, y?: string, color?: string }} channels
  * @param {Function} xScale
  * @param {Function} yScale
  * @param {Map} colors
  * @param {'linear'|'smooth'|'step'} [curve]
- * @returns {{ d: string, fill: string, stroke: string, points: {x:number, y:number, data:Object}[], key?: unknown }[]}
+ * @returns {{ d: string | null, fill: string, stroke: string, points: {x:number, y:number, data: Record<string, unknown>}[], key?: unknown }[]}
  */
 export function buildLines(data, channels, xScale, yScale, colors, curve) {
 	const { x: xf, y: yf, color: cf } = channels

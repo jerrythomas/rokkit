@@ -1,12 +1,28 @@
-<script>
+<script lang="ts">
+	import type { Component } from 'svelte'
+	import type { SVGAttributes } from 'svelte/elements'
 	import { uniq } from 'ramda'
 
-	let {
-		size = 10,
-		patternUnits = 'userSpaceOnUse',
-		/** @type {Array<import('./types').Pattern>} */
-		patterns = []
-	} = $props()
+	type PatternComponentProps = {
+		size?: number
+		fill?: string
+		stroke?: string
+	}
+
+	type Pattern = {
+		id: string
+		component: Component<PatternComponentProps>
+		fill?: string
+		stroke?: string
+	}
+
+	type Props = {
+		size?: number
+		patternUnits?: SVGAttributes<SVGPatternElement>['patternUnits']
+		patterns?: Pattern[]
+	}
+
+	let { size = 10, patternUnits = 'userSpaceOnUse', patterns = [] }: Props = $props()
 
 	let names = $derived(uniq(patterns.map(({ id }) => id)))
 </script>

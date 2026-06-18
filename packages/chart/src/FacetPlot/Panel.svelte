@@ -1,8 +1,28 @@
-<script>
+<script lang="ts">
+	import type { Snippet } from 'svelte'
 	import PlotChart from '../Plot.svelte'
+	import type { GeomSpec, PlotHelpers } from '../lib/plot/types.js'
+
+	type Props = {
+		data?: Record<string, unknown>[]
+		x?: string
+		y?: string
+		color?: string
+		geoms?: GeomSpec[]
+		helpers?: PlotHelpers
+		width?: number
+		height?: number
+		mode?: 'light' | 'dark'
+		grid?: boolean
+		legend?: boolean
+		xDomain?: unknown[]
+		yDomain?: [number, number]
+		colorDomain?: unknown[]
+		children?: Snippet
+	}
 
 	let {
-		data,
+		data = [],
 		x,
 		y,
 		color,
@@ -17,7 +37,7 @@
 		yDomain,
 		colorDomain,
 		children
-	} = $props()
+	}: Props = $props()
 
 	// Build spec with domain overrides so PlotState uses them
 	const spec = $derived({

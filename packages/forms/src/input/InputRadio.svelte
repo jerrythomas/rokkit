@@ -1,21 +1,20 @@
-<script>
-	import { getItemAtIndex, getIndexForItem, noop } from '@rokkit/core'
+<script lang="ts">
+	import { getItemAtIndex, getIndexForItem, noop, type FieldMapping } from '@rokkit/core'
 	import { ProxyItem } from '@rokkit/states'
-	// import { equals } from 'ramda'
-	/**
-	 * @typedef {Object} InputRadioProps
-	 * @property {string} [class]
-	 * @property {any} value
-	 * @property {Object} [fields]
-	 * @property {any} [options]
-	 * @property {boolean} [disabled]
-	 * @property {boolean} [flip]
-	 * @property {Function} onchange
-	 * @property {Function} onfocus
-	 * @property {Function} onblur
-	 */
 
-	/** @type {InputRadioProps & { [key: string]: any }} */
+	type Props = {
+		class?: string
+		value?: unknown
+		fields?: FieldMapping
+		options?: unknown[]
+		disabled?: boolean
+		flip?: boolean
+		onchange?: (value: unknown) => void
+		onfocus?: (event: FocusEvent) => void
+		onblur?: (event: FocusEvent) => void
+		[key: string]: unknown
+	}
+
 	let {
 		class: className = '',
 		value = $bindable(),
@@ -26,7 +25,7 @@
 		onfocus,
 		onblur,
 		...rest
-	} = $props()
+	}: Props = $props()
 
 	let currentIndex = $derived(getIndexForItem(options, value))
 
@@ -34,10 +33,6 @@
 		value = getItemAtIndex(options, currentIndex)
 		onchange?.(value)
 	}
-
-	// $effect.pre(() => {
-	// 	currentIndex = getIndexForItem(options, value)
-	// })
 </script>
 
 <radio-group class={className} class:disabled>

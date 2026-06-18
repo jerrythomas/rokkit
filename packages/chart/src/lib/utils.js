@@ -142,9 +142,15 @@ export function transform(x, y) {
 
 import { scaledPath } from '@rokkit/core'
 
+/**
+ * Builds a collection of size-scaling path generators keyed by shape name.
+ *
+ * @param {Record<string, string|number|(string|number)[]>} paths
+ * @returns {Record<string, (size: number) => string|number>}
+ */
 export function scaledPathCollection(paths) {
 	return Object.entries(paths).reduce(
 		(acc, [key, value]) => ({ ...acc, [key]: (s) => scaledPath(s, value) }),
-		{}
+		/** @type {Record<string, (size: number) => string|number>} */ ({})
 	)
 }

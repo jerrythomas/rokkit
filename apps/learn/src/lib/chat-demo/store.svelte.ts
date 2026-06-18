@@ -35,6 +35,11 @@ function toChatTurn(t: Turn): ChatTurn {
 	if (t.kind === 'user') {
 		return { id: t.id, timestamp, role: 'user', text: t.text }
 	}
+	// `tweak` turns are canvas-scoped and never carry chat content; render them
+	// as an empty assistant turn. Only `assistant` turns have a `body`.
+	if (t.kind !== 'assistant') {
+		return { id: t.id, timestamp, role: 'assistant', blocks: [] }
+	}
 	const blocks = t.body.kind === 'blocks' ? (t.body.blocks as Block[]) : []
 	const provider = t.body.kind === 'blocks' ? t.body.provider : undefined
 	const model = t.body.kind === 'blocks' ? t.body.model : undefined

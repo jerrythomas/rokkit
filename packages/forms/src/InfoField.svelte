@@ -1,5 +1,13 @@
-<script>
-	let { class: className, name, value, label, description } = $props()
+<script lang="ts">
+	type Props = {
+		class?: string
+		name?: string
+		value?: unknown
+		label?: string
+		description?: string
+	}
+
+	let { class: className, name, value, label, description }: Props = $props()
 </script>
 
 <div

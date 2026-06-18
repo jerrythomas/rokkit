@@ -1,7 +1,34 @@
 <script lang="ts">
-	// @ts-nocheck
-	import { Wrapper, ProxyTree, messages } from '@rokkit/states'
+	import type { Snippet } from 'svelte'
+	import type { ProxyItem } from '@rokkit/states'
+	import { Wrapper, ProxyTree } from '@rokkit/states'
 	import { Navigator } from '@rokkit/actions'
+
+	interface SwatchProps {
+		/** Color options — primitives (hex/name strings) or objects with mapped fields */
+		options?: Array<string | number | Record<string, unknown>>
+		/** Field mapping for object options (value, fill, stroke, …) */
+		fields?: Record<string, string>
+		/** Selected value (bindable). Array when `multiple`. */
+		value?: unknown
+		/** Allow multiple selection */
+		multiple?: boolean
+		/** Swatch shape */
+		shape?: 'square' | 'circle'
+		/** Size variant */
+		size?: 'sm' | 'md' | 'lg'
+		/** Disable the whole group */
+		disabled?: boolean
+		/** Accessible group label */
+		label?: string
+		/** Additional CSS classes */
+		class?: string
+		/** Called when selection changes */
+		onchange?: (value: unknown, item: unknown) => void
+		/** Custom snippet for rendering a swatch (receives proxy + selected) */
+		item?: Snippet<[ProxyItem, boolean]>
+		[key: string]: unknown
+	}
 
 	let {
 		options = [],
@@ -11,12 +38,12 @@
 		shape = 'square',
 		size = 'md',
 		disabled = false,
-		label = messages.swatch?.label ?? 'Select',
+		label = 'Select',
 		class: className = '',
 		onchange,
 		item: itemSnippet,
 		..._rest
-	} = $props()
+	}: SwatchProps = $props()
 
 	const proxyTree = $derived(new ProxyTree(options, userFields))
 	const wrapper = $derived(new Wrapper(proxyTree, { onselect: handleSelect }))
@@ -33,12 +60,12 @@
 		wrapper.moveToValue(value)
 	})
 
-	function isSelected(proxy) {
+	function isSelected(proxy: ProxyItem) {
 		if (multiple && Array.isArray(value)) return value.includes(proxy.value)
 		return proxy.value === value
 	}
 
-	function toggleMultiValue(extracted, original) {
+	function toggleMultiValue(extracted: unknown, original: unknown) {
 		const arr = Array.isArray(value) ? [...value] : []
 		const idx = arr.indexOf(extracted)
 		if (idx >= 0) arr.splice(idx, 1)
@@ -47,13 +74,13 @@
 		onchange?.(value, original)
 	}
 
-	function selectSingleValue(extracted, original) {
+	function selectSingleValue(extracted: unknown, original: unknown) {
 		if (extracted === value) return
 		value = extracted
 		onchange?.(extracted, original)
 	}
 
-	function handleSelect(extracted, proxy) {
+	function handleSelect(extracted: unknown, proxy: ProxyItem) {
 		if (proxy.disabled || disabled) return
 		if (multiple) toggleMultiValue(extracted, proxy.original)
 		else selectSingleValue(extracted, proxy.original)

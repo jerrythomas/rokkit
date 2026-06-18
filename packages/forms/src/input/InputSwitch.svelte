@@ -1,17 +1,11 @@
-<script>
-	import { Switch } from '@rokkit/ui'
+<script lang="ts">
+	import { Switch, type SwitchProps } from '@rokkit/ui'
 
-	/**
-	 * @typedef {Object} InputSwitchProps
-	 * @property {string} name
-	 * @property {any} value
-	 * @property {[any, any]} options
-	 * @property {Object} fields
-	 * @property {Function} onchange
-	 */
+	type Props = SwitchProps & {
+		name?: string
+	}
 
-	/** @type {InputSwitchProps & { [key: string]: any }} */
-	let { name, value = $bindable(), options, fields, onchange, ...restProps } = $props()
+	let { name, value = $bindable(), options, fields, onchange, ...restProps }: Props = $props()
 </script>
 
 <input {name} type="hidden" bind:value />

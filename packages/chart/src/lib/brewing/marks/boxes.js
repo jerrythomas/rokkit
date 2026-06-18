@@ -8,7 +8,7 @@
  * Box body uses the lighter fill shade; whiskers and median use the darker stroke shade.
  *
  * @param {Object[]} data - Pre-aggregated rows with quartile fields
- * @param {{ x: string, fill?: string }} channels
+ * @param {{ x?: string, fill?: string }} channels
  *   `fill` drives the box and whisker color (defaults to x-field).
  * @param {import('d3-scale').ScaleBand} xScale
  * @param {import('d3-scale').ScaleLinear} yScale
