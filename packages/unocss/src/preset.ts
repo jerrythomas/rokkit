@@ -214,15 +214,13 @@ function buildVarsForMode(theme, colormap, config) {
 	// Named layer (per-token resolution based on role mode)
 	Object.assign(result, theme.getNamedTokens('light', perRoleModes))
 
-	// Per-role palette + z-alias emit
+	// Per-role palette + bare alias emit
 	for (const role of Object.keys(colormap)) {
 		if (isAlias(colormap[role])) continue
-		const mode = perRoleModes[role]
-		if (mode === 'extended') {
+		if (perRoleModes[role] === 'extended') {
 			Object.assign(result, theme.getPaletteForRole(role))
-			Object.assign(result, theme.getZAliasesForRoleExtended(role))
 		} else {
-			Object.assign(result, theme.getZAliasesForCore(role))
+			Object.assign(result, theme.getRoleBaseAlias(role))
 		}
 	}
 	return result
@@ -361,13 +359,13 @@ function checkInkContrast(config, colormap) {
 	const surfacePalette = resolvePaletteForRole('surface', colormap, config)
 	if (!inkPalette || !surfacePalette) return
 
-	// z1: surface-100 vs ink-900, z3: surface-300 vs ink-700
+	// Check shade pairs: surface-100 vs ink-900, surface-300 vs ink-700
 	const checkLevels = [
-		{ z: 'z1', surfaceShade: 100, inkShade: 900 },
-		{ z: 'z3', surfaceShade: 300, inkShade: 700 },
+		{ surfaceShade: 100, inkShade: 900 },
+		{ surfaceShade: 300, inkShade: 700 },
 	]
 
-	for (const { z, surfaceShade, inkShade } of checkLevels) {
+	for (const { surfaceShade, inkShade } of checkLevels) {
 		const surfaceL = parseLightness(surfacePalette[surfaceShade])
 		const inkL = parseLightness(inkPalette[inkShade])
 		if (surfaceL !== null && inkL !== null) {
@@ -375,7 +373,7 @@ function checkInkContrast(config, colormap) {
 			if (diff < 0.3) {
 				// eslint-disable-next-line no-console
 				console.warn(
-					`rokkit: ink-${z} on surface-${z} has low lightness contrast (${diff.toFixed(2)}). ` +
+					`rokkit: ink-${inkShade} on surface-${surfaceShade} has low lightness contrast (${diff.toFixed(2)}). ` +
 					`Consider a palette with more tonal range for ink.`
 				)
 			}

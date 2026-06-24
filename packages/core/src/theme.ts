@@ -6,11 +6,7 @@ import { ColorSpace, relativeLuminance } from './color-space'
 import {
   NAMED_TOKENS,
   NAMED_TOKEN_SHADE_MAP,
-  NAMED_TOKEN_ROLE_MAP,
-  Z_COLLAPSE_MAP_SURFACE,
-  Z_COLLAPSE_MAP_INK,
-  Z_SLOTS,
-  hasSoftCompanion
+  NAMED_TOKEN_ROLE_MAP
 } from './named-tokens'
 
 /**
@@ -291,63 +287,18 @@ export class Theme {
 		return y >= ON_COLOR_Y_CROSSOVER ? ON_COLOR_DARK : ON_COLOR_LIGHT
 	}
 
-	/**
-	 * Generate z-aliases for surface or ink role using the provided map.
-	 */
-	#getZAliasesFromMap(role: 'surface' | 'ink', map: Record<ZSlot, NamedToken>): Record<string, string> {
-		const result: Record<string, string> = {}
-		// Bare `--color-{role}` alias — points at the role's primary named
-		// slot. Lets preset-wind3 color utilities (bg-surface, from-surface,
-		// to-surface, etc.) resolve in core mode without forcing the full
-		// palette emit. Surface → paper, Ink → ink.
-		result[`--color-${role}`] = role === 'surface' ? 'var(--paper)' : 'var(--ink)'
-		for (const z of Z_SLOTS) {
-			result[`--color-${role}-${z}`] = `var(--${map[z]})`
-		}
-		return result
+	#surfaceInkAlias(role: 'surface' | 'ink'): Record<string, string> {
+		return { [`--color-${role}`]: role === 'surface' ? 'var(--paper)' : 'var(--ink)' }
 	}
 
-	/**
-	 * Generate z-aliases for other roles using tint-vs-solid 2-state collapse.
-	 */
-	#getZAliasesOther(role: string): Record<string, string> {
-		const result: Record<string, string> = {}
-		const hasSoft = hasSoftCompanion(role)
-		const softTarget = hasSoft ? `${role}-soft` : role
-		// Bare `--color-{role}` alias points at the named token so
-		// preset-wind3 color utilities (from-{role}, to-{role}, divide-{role},
-		// etc.) resolve in core mode — they read `--color-{role}` and we'd
-		// otherwise leave it undefined since core mode skips the palette emit.
-		result[`--color-${role}`] = `var(--${role})`
-		for (const z of Z_SLOTS) {
-			const zNum = parseInt(z.slice(1), 10)
-			const target = zNum <= 2 ? softTarget : role
-			result[`--color-${role}-${z}`] = `var(--${target})`
-		}
-		return result
+	#otherRoleAlias(role: string): Record<string, string> {
+		return { [`--color-${role}`]: `var(--${role})` }
 	}
 
-	/**
-	 * Returns z-alias CSS-var assignments for back-compat in core mode.
-	 * `--color-{role}-z{n}` → `var(--{namedSlot})`.
-	 *
-	 * - surface: uses Z_COLLAPSE_MAP_SURFACE (z2/z3 → paper-mute, z9/z10 → ink, etc.)
-	 * - ink: uses Z_COLLAPSE_MAP_INK (inverted scale)
-	 * - primary/accent/status: tint-vs-solid 2-state collapse.
-	 *   z0–z2 → role-soft (if it exists) else role; z3+ → role.
-	 *
-	 * This is the back-compat layer: existing `@apply bg-surface-z3` etc. resolves
-	 * through these aliases until consumers migrate to the named vocabulary.
-	 */
-	/** Accepts SkinRole and any custom skin roles beyond the SkinRole literal union. */
-	getZAliasesForCore(role: string): Record<string, string> {
-		if (role === 'surface') {
-			return this.#getZAliasesFromMap('surface', Z_COLLAPSE_MAP_SURFACE)
-		}
-		if (role === 'ink') {
-			return this.#getZAliasesFromMap('ink', Z_COLLAPSE_MAP_INK)
-		}
-		return this.#getZAliasesOther(role)
+	/** Bare `--color-{role}` alias backing preset-wind3 utilities (from-/to-/divide-) in core mode. */
+	getRoleBaseAlias(role: string): Record<string, string> {
+		if (role === 'surface' || role === 'ink') return this.#surfaceInkAlias(role)
+		return this.#otherRoleAlias(role)
 	}
 
 	/**
@@ -388,20 +339,6 @@ export class Theme {
 			if (palette[shade] !== undefined) {
 				result[`--color-${role}-${shade}`] = this.#adapter.wrap(palette[shade])
 			}
-		}
-		return result
-	}
-
-	/**
-	 * Emit z-aliases for one role in extended mode — they point at the palette vars,
-	 * using TONE_MAP for surface/non-inverted roles and the inverted map for ink.
-	 */
-	getZAliasesForRoleExtended(role: string): Record<string, string> {
-		const result: Record<string, string> = {}
-		const isInverted = INVERTED_ROLES.has(role)
-		for (const [zone, light] of Object.entries(TONE_MAP)) {
-			const shade = isInverted ? 1000 - light : light
-			result[`--color-${role}-${zone}`] = `var(--color-${role}-${shade})`
 		}
 		return result
 	}

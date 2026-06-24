@@ -557,63 +557,32 @@ describe('Theme.getNamedTokens', () => {
   })
 })
 
-describe('Theme.getZAliasesForCore', () => {
-  it('emits surface z-aliases pointing at the named layer', () => {
-    const theme = new Theme({
-      mapping: { surface: 'slate', ink: 'slate' },
-      colorSpace: 'rgb'
-    })
-    const aliases = theme.getZAliasesForCore('surface')
-    expect(aliases['--color-surface-z0']).toBe('var(--paper)')
-    expect(aliases['--color-surface-z1']).toBe('var(--paper-soft)')
-    expect(aliases['--color-surface-z2']).toBe('var(--paper-mute)')
-    expect(aliases['--color-surface-z3']).toBe('var(--paper-mute)')
-    expect(aliases['--color-surface-z4']).toBe('var(--paper-edge)')
-    expect(aliases['--color-surface-z9']).toBe('var(--ink)')
-    expect(aliases['--color-surface-z10']).toBe('var(--ink)')
+describe('Theme.getRoleBaseAlias', () => {
+  it('returns bare --color-surface alias pointing at var(--paper)', () => {
+    const theme = new Theme({ mapping: { surface: 'slate', ink: 'slate' }, colorSpace: 'rgb' })
+    const alias = theme.getRoleBaseAlias('surface')
+    expect(alias).toEqual({ '--color-surface': 'var(--paper)' })
   })
 
-  it('emits ink z-aliases pointing at the inverted named layer', () => {
-    const theme = new Theme({
-      mapping: { surface: 'slate', ink: 'slate' },
-      colorSpace: 'rgb'
-    })
-    const aliases = theme.getZAliasesForCore('ink')
-    expect(aliases['--color-ink-z0']).toBe('var(--ink)')
-    expect(aliases['--color-ink-z9']).toBe('var(--paper-soft)')
-    expect(aliases['--color-ink-z10']).toBe('var(--paper)')
+  it('returns bare --color-ink alias pointing at var(--ink)', () => {
+    const theme = new Theme({ mapping: { surface: 'slate', ink: 'slate' }, colorSpace: 'rgb' })
+    const alias = theme.getRoleBaseAlias('ink')
+    expect(alias).toEqual({ '--color-ink': 'var(--ink)' })
   })
 
-  it('emits primary z-aliases collapsed to --primary (no soft companion)', () => {
-    const theme = new Theme({
-      mapping: { surface: 'slate', primary: 'orange' },
-      colorSpace: 'rgb'
-    })
-    const aliases = theme.getZAliasesForCore('primary')
-    expect(aliases['--color-primary-z5']).toBe('var(--primary)')
-    // primary has no -soft companion; z0-z2 collapse to --primary too
-    expect(aliases['--color-primary-z1']).toBe('var(--primary)')
+  it('returns bare --color-{role} alias for other roles', () => {
+    const theme = new Theme({ mapping: { surface: 'slate', primary: 'orange' }, colorSpace: 'rgb' })
+    expect(theme.getRoleBaseAlias('primary')).toEqual({ '--color-primary': 'var(--primary)' })
+    expect(theme.getRoleBaseAlias('accent')).toEqual({ '--color-accent': 'var(--accent)' })
   })
 
-  it('emits accent z-aliases with accent-soft at z0-z2 and accent at z5+', () => {
-    const theme = new Theme({
-      mapping: { surface: 'slate', accent: 'sky' },
-      colorSpace: 'rgb'
-    })
-    const aliases = theme.getZAliasesForCore('accent')
-    expect(aliases['--color-accent-z5']).toBe('var(--accent)')
-    expect(aliases['--color-accent-z1']).toBe('var(--accent-soft)')
-  })
-
-  it('emits status z-aliases (success) with success-soft at low z and success at high z', () => {
-    const theme = new Theme({
-      mapping: { surface: 'slate', success: 'green' },
-      colorSpace: 'rgb'
-    })
-    const aliases = theme.getZAliasesForCore('success')
-    expect(aliases['--color-success-z1']).toBe('var(--success-soft)')
-    expect(aliases['--color-success-z5']).toBe('var(--success)')
-    expect(aliases['--color-success-z7']).toBe('var(--success)')
+  it('does not emit any z-tone vars', () => {
+    const theme = new Theme({ mapping: { surface: 'slate', ink: 'slate', primary: 'orange' }, colorSpace: 'rgb' })
+    for (const role of ['surface', 'ink', 'primary']) {
+      const alias = theme.getRoleBaseAlias(role)
+      const keys = Object.keys(alias)
+      expect(keys.some(k => /z\d/.test(k))).toBe(false)
+    }
   })
 })
 
