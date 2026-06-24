@@ -39,11 +39,18 @@ describe('LockMode', () => {
 		expect(el?.getAttribute('data-style')).toBe('rokkit')
 	})
 
-	it('keeps data-mode pinned to the locked value even though root has different mode', () => {
+	it('follows runtime data-style changes on the document root (action wired in)', async () => {
 		const { container } = render(LockModeTest, { mode: 'dark' })
 		flushSync()
 		const el = container.querySelector('[data-mode]')
-		// Root has data-mode="light" but the wrapper is locked to "dark"
+		expect(el?.getAttribute('data-style')).toBe('rokkit')
+
+		// Change the root style at runtime; the action's MutationObserver mirrors it.
+		document.documentElement.dataset.style = 'minimal'
+		await new Promise((resolve) => setTimeout(resolve, 0))
+
+		expect(el?.getAttribute('data-style')).toBe('minimal')
+		// mode stays pinned to the locked value
 		expect(el?.getAttribute('data-mode')).toBe('dark')
 	})
 
