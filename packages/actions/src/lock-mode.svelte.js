@@ -8,6 +8,9 @@
  * style/skin/density changes via a MutationObserver on the document root; only
  * `mode` stays pinned.
  *
+ * Note: the locked mode is fixed at mount — to change it, re-mount the element
+ * (e.g. via a Svelte {#key} block).
+ *
  * @param {HTMLElement} node
  * @param {'dark'|'light'} mode
  */
@@ -33,6 +36,8 @@ export function lockMode(node, mode) {
 			attributes: true,
 			attributeFilter: ['data-style', 'data-skin', 'data-density']
 		})
+		// Mirrored attrs are intentionally NOT removed on disconnect — the
+		// wrapper element is orphaned on unmount.
 		return () => observer.disconnect()
 	})
 }

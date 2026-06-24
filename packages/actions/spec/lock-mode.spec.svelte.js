@@ -36,6 +36,8 @@ describe('lockMode', () => {
 		const cleanup = $effect.root(() => lockMode(node, 'dark'))
 		flushSync()
 
+		// data-mode is excluded from the observer's attributeFilter, so this
+		// asserts the initial sync set mode (not an observer reaction).
 		document.documentElement.dataset.mode = 'dark' // root flips
 		expect(node.dataset.mode).toBe('dark') // still locked dark
 		cleanup()

@@ -15,6 +15,7 @@ describe('actions', () => {
 			'swipeable',
 			'themable',
 			'skinnable',
+			'lockMode',
 			'dismissable',
 			'fillable',
 			'delegateKeyboardEvents',
