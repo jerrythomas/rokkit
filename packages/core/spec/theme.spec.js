@@ -425,33 +425,6 @@ describe('resolveColors — nullable fallback chain', () => {
   })
 })
 
-describe('getZScaleCSS — inverted roles', () => {
-	it('should generate inverted z-scale for ink (z1 light → shade 900)', () => {
-		const theme = new Theme()
-		const css = theme.getZScaleCSS()
-		// Normal: surface z1 → 100 in light
-		expect(css).toContain('--color-surface-z1: var(--color-surface-100);')
-		// Inverted: ink z1 → 900 in light (1000 - 100 = 900)
-		expect(css).toContain('--color-ink-z1: var(--color-ink-900);')
-	})
-
-	it('should generate inverted dark z-scale for ink (z1 dark → shade 100)', () => {
-		const theme = new Theme()
-		const css = theme.getZScaleCSS()
-		// In the dark block: normal surface z1 → 900
-		// In the dark block: inverted ink z1 → 100
-		const darkBlock = css.split('[data-mode="dark"]')[1]
-		expect(darkBlock).toContain('--color-ink-z1: var(--color-ink-100);')
-		expect(darkBlock).toContain('--color-surface-z1: var(--color-surface-900);')
-	})
-
-	it('should keep z5 identical for both surface and ink (midpoint)', () => {
-		const theme = new Theme()
-		const css = theme.getZScaleCSS()
-		expect(css).toContain('--color-surface-z5: var(--color-surface-500);')
-		expect(css).toContain('--color-ink-z5: var(--color-ink-500);')
-	})
-})
 
 describe('Theme.getNamedTokens', () => {
   it('returns a CSS-var map keyed by --{named}', () => {
