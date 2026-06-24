@@ -4,6 +4,14 @@
 	let { ...spread }: Record<string, unknown> = $props()
 </script>
 
+<!--
+	The data-testid anchors sit on the inner region <div>, not on <LockMode>
+	itself. That is intentional: LockMode follows the Stack convention of not
+	forwarding rest props, so a data-testid can't be placed on the wrapper. The
+	inner div inherits the locked token context (--paper, --ink, …) from its
+	<LockMode> ancestor's [data-mode], which is exactly what e2e/lock-mode.e2e.ts
+	asserts against.
+-->
 <div class="demo-grid">
 	<section>
 		<header>Always dark — inside any page mode</header>
@@ -66,7 +74,10 @@
 		color: var(--ink-soft);
 	}
 
-	.demo-region {
+	/* .demo-region lands on the <LockMode> wrapper <div> (a child component's
+	   element), so it's out of this component's scoped-CSS reach — target it
+	   via :global scoped under .demo-grid. */
+	.demo-grid :global(.demo-region) {
 		border-radius: 10px;
 		overflow: hidden;
 	}

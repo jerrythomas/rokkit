@@ -9,7 +9,7 @@ const meta: DemoMeta = {
 		'lock-mode', 'lockmode', 'dark', 'light', 'color-mode', 'theme', 'pin',
 		'region', 'forced-colors', 'mode', 'dual-mode', 'contrast'
 	],
-	category: 'theming',
+	category: 'theme',
 	icon: 'i-mdi:theme-light-dark',
 	load: () => import('./index.svelte'),
 	tool: {
