@@ -300,11 +300,12 @@ Classes are composable but semantically opaque. Data attributes carry meaning �
 ```css
 /* Theme CSS — reads like documentation */
 [data-list-item][data-selected='true'] {
-  background: var(--color-primary-z2);
+  background: var(--primary);
+  color: var(--on-primary);
 }
 
 [data-list-item][data-focused='true'] {
-  outline: 2px solid var(--color-primary-500);
+  outline: 2px solid var(--focus-ring);
 }
 ```
 
@@ -455,20 +456,21 @@ Mode (dark/light: inverts the variable values)
 └──────────────────────────────────────┘
 ```
 
-### Semantic color scale (z-index system)
+### Named-token color vocabulary
 
-Instead of specific shade numbers, theme CSS uses semantic z-indexed references:
+Instead of specific shade numbers, theme CSS uses named tokens:
 
-- `bg-surface-z1` through `bg-surface-z10`
-- z1 = lightest in light mode, darkest in dark mode
-- z10 = darkest in light mode, lightest in dark mode
+- Surface: `bg-paper`, `bg-paper-soft`, `bg-paper-mute`, `border-paper-edge`
+- Text: `text-ink`, `text-ink-mute`, `text-ink-soft`, `text-ink-faint`
+- Interactive: `bg-primary`, `text-on-primary`, `ring-focus-ring`
+- Status: `bg-success-soft`, `text-success`, etc.
 
-This means a theme written once works correctly in both color modes without any conditional logic.
+Named tokens flip automatically under `[data-mode="dark"]` when the skin uses a dual-palette mapping — a theme written once works correctly in both color modes.
 
 ### What component authors do
 
 1. Apply `data-*` attributes for every meaningful element and state
-2. Use semantic color shortcuts (`bg-surface-z2`) — never hardcoded colors
+2. Use named-token utilities (`bg-paper-soft`, `text-ink-mute`) — never hardcoded colors
 3. Never import or apply CSS inside a component — that lives in theme files
 
 ---

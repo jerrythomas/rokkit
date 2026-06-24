@@ -47,7 +47,7 @@ The zen-sumi theme uses Japanese aesthetic vocabulary as its design language:
 | Kami | 紙 | Paper | Surface/background |
 | Shu | 朱 | Vermillion | Primary accent |
 | Ma | 間 | Negative space | Spacing/padding |
-| Notan | 濃淡 | Light-dark balance | z-scale system |
+| Notan | 濃淡 | Light-dark balance | light/dark token system |
 | Wabi-sabi | 侘寂 | Beauty in restraint | Minimal aesthetic |
 
 This vocabulary is specific to zen-sumi. The generic token system uses clear English names.
@@ -65,8 +65,8 @@ This vocabulary is specific to zen-sumi. The generic token system uses clear Eng
 │  (derived from semantic tokens, set per-theme)      │
 ├─────────────────────────────────────────────────────┤
 │  Layer 2: Semantic Tokens                           │
-│  --color-primary-z5, --density-spacing-md           │
-│  (mapped from primitives via z-scale/density axis)  │
+│  --primary, --paper, --ink-mute, --density-spacing-md│
+│  (named tokens mapped from primitives per skin/mode)│
 ├─────────────────────────────────────────────────────┤
 │  Layer 1: Primitive Tokens                          │
 │  --color-primary-500, --font-sans, --radius-md      │
@@ -77,20 +77,20 @@ This vocabulary is specific to zen-sumi. The generic token system uses clear Eng
 **Layer 1 — Primitives**: Raw color shades (50–950), font stacks, spacing base units,
 radius values. Never referenced directly by components.
 
-**Layer 2 — Semantic**: Named aliases that adapt to context.
-`--color-primary-z5` resolves to shade 500 in light mode, 500 in dark mode (inverted
-for other zones). Density tokens like `--density-spacing-md` change based on
+**Layer 2 — Semantic**: Named tokens that adapt to context.
+`--primary`, `--paper`, `--ink-mute` etc. resolve to the correct complete color value
+for the active skin and mode. Density tokens like `--density-spacing-md` change based on
 `data-density`. These are the tokens components reference.
 
 **Layer 3 — Component**: Optional per-theme overrides for specific component parts.
-`--button-bg` might map to `--color-primary-z5` in most themes but to a gradient
+`--button-bg` might map to `var(--primary)` in most themes but to a gradient
 in rokkit. Most themes skip this layer entirely — semantic tokens are sufficient.
 
 ### Token Namespacing
 
 ```
 --color-{variant}-{shade}     Primitive   --color-primary-500
---color-{variant}-{zone}      Semantic    --color-primary-z5
+--{token}                     Semantic    --primary, --paper, --ink-mute
 --density-{category}-{size}   Semantic    --density-spacing-md
 --radius-{size}               Primitive   --radius-md
 --font-{role}                 Primitive   --font-sans
@@ -427,13 +427,13 @@ Themes that don't use gradient borders simply set `[data-gradient-border]` to
 │  Generates:          │     │                      │
 │  • CSS variables     │     │  Consumes:           │
 │  • UnoCSS shortcuts  │     │  • CSS variables     │
-│  • z-scale aliases   │     │  • UnoCSS utilities  │
+│  • named-token vars  │     │  • UnoCSS utilities  │
 │  • skin presets      │     │                      │
 └──────────────────────┘     └─────────────────────┘
         JS / Build time              CSS / Build time
 ```
 
-**JS factory** handles: color palette generation, z-scale mapping, density tokens,
+**JS factory** handles: color palette generation, named-token emission, density tokens,
 radius presets, font declarations, skin presets, nullable inheritance resolution.
 
 **CSS files** handle: per-component visual styling (gradients, shadows, blur, borders),
@@ -506,8 +506,8 @@ function resolveColors(input: Partial<ColorMapping>): ColorMapping {
 The factory produces:
 
 1. **CSS custom properties** (preflight) — injected into `:root`
-2. **UnoCSS shortcuts** — `bg-primary-z5`, `text-on-surface`, `skin-ocean`
-3. **z-scale CSS** — `:root` + `[data-mode="dark"]` blocks
+2. **UnoCSS shortcuts** — `bg-primary`, `text-ink-mute`, `bg-paper-soft`, `text-on-primary`, `skin-ocean`
+3. **Named-token CSS** — `:root` + `[data-mode="dark"]` blocks
 4. **Density CSS** — `[data-density]` blocks
 5. **Radius CSS** — `--radius-*` variables
 

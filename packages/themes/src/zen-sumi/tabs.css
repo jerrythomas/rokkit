@@ -3,7 +3,7 @@
  *
  * Pill-style tabs with filled active state (ink background, paper text).
  * No underlines — depth through background fill only.
- * Inactive: transparent. Hover: surface-z2 wash. Active: surface-z9 fill.
+ * Inactive: transparent. Hover: paper-mute wash. Active: ink fill.
  */
 
 /* =============================================================================

@@ -110,9 +110,9 @@ Returns a UnoCSS color shades object that references CSS variables:
 shadesOf('primary') // { DEFAULT: 'var(--color-primary-500)', 50: 'var(--color-primary-50)', ... }
 ```
 
-### `semanticShortcuts(name)` / `contrastShortcuts(name)`
+### `contrastShortcuts(name)`
 
-Generate UnoCSS shortcut arrays for semantic z-scale tone utilities (`bg-primary-z5`, etc.) and on-color text utilities (`text-on-primary`). Note: z-scale is the back-compat layer — app code should prefer named tokens (`bg-primary`, `bg-paper`), which `presetRokkit` emits via `buildNamedShortcuts`.
+Generate UnoCSS shortcut arrays for on-color text utilities (`text-on-primary`, etc.). App code uses named tokens (`bg-primary`, `bg-paper`) emitted by `presetRokkit` via `buildNamedShortcuts`.
 
 ### `DEFAULT_THEME_MAPPING` constant
 
@@ -121,14 +121,6 @@ The default semantic-color → Tailwind palette mapping:
 ```js
 { surface: 'slate', primary: 'orange', secondary: 'pink', accent: 'sky',
   success: 'green', warning: 'yellow', danger: 'red', error: 'red', info: 'cyan' }
-```
-
-### `TONE_MAP` constant
-
-Maps `z0`–`z10` tone names to Tailwind shade numbers (50–950):
-
-```js
-{ z0: 50, z1: 100, z2: 200, ..., z10: 950 }
 ```
 
 ## String Utilities

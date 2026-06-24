@@ -68,7 +68,7 @@ All spec files using `{ text: '...' }` as a **field mapping key** (not content) 
 **Important distinction:** Only change `text:` when it is the _field mapping role_ key. Do not change:
 
 - String content like `{ text: 'Hello world' }` where `text` is a data property name
-- CSS class strings like `text-sm`, `text-surface-z5`
+- CSS class strings like `text-sm`, `text-ink-soft`
 - `InputText`, `inputText` component/variable names
 
 ### Backward compat

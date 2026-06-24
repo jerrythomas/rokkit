@@ -926,14 +926,15 @@ For tree view, the flat file array is grouped by the `path` field into a nested 
 The full theme system design is in `docs/design/10-theming.md`. The key principle for component authors:
 
 1. Apply `data-*` attributes for every meaningful element and state
-2. Use semantic color shortcuts (`bg-surface-z2`, `text-primary-z8`) — never hardcoded colors
+2. Use named-token utilities (`bg-paper-soft`, `text-ink-mute`, `bg-primary`) — never hardcoded colors
 3. Never write CSS inside component files — all visual style lives in theme files under `packages/themes/src/`
 
 Theme CSS targets data attributes exclusively:
 
 ```css
 [data-list-item][data-active] {
-  background: var(--color-primary-z2);
+  background: var(--primary);
+  color: var(--on-primary);
 }
 [data-list-item][data-disabled] {
   opacity: 0.5;

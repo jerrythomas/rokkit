@@ -2,7 +2,7 @@
  * Dropdown - Zen-Sumi Theme Styles
  *
  * Hairline trigger. Panel: paper bg, no shadow.
- * Options: transparent → surface-z2 on hover.
+ * Options: transparent → paper-mute on hover.
  */
 
 [data-style='zen-sumi'] [data-dropdown-trigger] {

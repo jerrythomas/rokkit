@@ -173,24 +173,24 @@ The playground home (`/playground`) currently shows a flat card grid. Replace wi
 
 <div class="p-8">
   <div class="mb-8">
-    <h2 class="text-surface-z8 mb-1 text-2xl font-semibold">Component Playground</h2>
-    <p class="text-surface-z5">Select a component to open its interactive playground.</p>
+    <h2 class="text-ink mb-1 text-2xl font-semibold">Component Playground</h2>
+    <p class="text-ink-soft">Select a component to open its interactive playground.</p>
   </div>
 
   {#each GROUPS as group}
     <section class="mb-10">
       <div class="mb-4 flex items-center gap-2">
-        <span class="{group.icon} text-secondary-z7 text-xl" aria-hidden="true"></span>
-        <h3 class="text-surface-z7 m-0 text-base font-semibold">{group.title}</h3>
+        <span class="{group.icon} text-ink-mute text-xl" aria-hidden="true"></span>
+        <h3 class="text-ink-mute m-0 text-base font-semibold">{group.title}</h3>
       </div>
       <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {#each group.components as component (component.slug)}
           <Card
-            class="hover:border-primary-z5 cursor-pointer transition-colors"
+            class="hover:border-primary cursor-pointer transition-colors"
             onclick={() => goto(`/playground/components/${component.slug}`)}
           >
-            <h4 class="text-surface-z8 mb-1 text-sm font-semibold">{component.name}</h4>
-            <p class="text-surface-z5 mb-3 text-xs leading-relaxed">{component.description}</p>
+            <h4 class="text-ink mb-1 text-sm font-semibold">{component.name}</h4>
+            <p class="text-ink-soft mb-3 text-xs leading-relaxed">{component.description}</p>
             <Button
               size="sm"
               variant="ghost"
@@ -576,7 +576,7 @@ git commit -m "test(e2e): add effects/combined-section pages, add playground e2e
     </ul>
   </div>
 
-  <p class="text-surface-z5 mt-6">
+  <p class="text-ink-soft mt-6">
     See the <a href="/docs/forms">Forms guide</a> for conditional fields, lookup sources, and multi-step
     forms.
   </p>
@@ -655,9 +655,9 @@ The `Grid` component is a responsive tile grid. Props: `items`, `fields`, `value
     <pre><code
         >{`{#snippet itemContent(proxy)}
   <div class="flex flex-col items-center gap-1 p-2">
-    <span class="{proxy.icon} text-2xl text-secondary-z7"></span>
+    <span class="{proxy.icon} text-2xl text-ink-mute"></span>
     <span class="text-xs font-medium">{proxy.label}</span>
-    <span class="text-xs text-surface-z5">{proxy.get('count')} items</span>
+    <span class="text-xs text-ink-soft">{proxy.get('count')} items</span>
   </div>
 {/snippet}
 

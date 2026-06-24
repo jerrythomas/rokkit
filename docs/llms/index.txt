@@ -275,10 +275,7 @@ Prefixes: `bg-`, `text-`, `border-` (+ `-t/-b/-l/-r`), `fill-`, `stroke-`, `ring
 `outline-`, `divide-`. Example: `bg-paper`, `text-ink-mute`, `border-paper-edge`,
 `text-on-primary`, `bg-success-soft text-success`.
 
-**Legacy:** z-scale utilities (`bg-surface-z0`, `text-primary-z5`, …) still resolve
-as a back-compat layer that collapses onto the named tokens above, but new code
-should use named tokens. Opt into the full 11-shade palette ladder per role with
-`tokens: 'extended'` (for charts / data-viz).
+Opt into the full 11-shade palette ladder per role with `tokens: 'extended'` (for charts / data-viz).
 
 ### Common Patterns
 

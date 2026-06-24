@@ -19,7 +19,7 @@ Major design-system initiative — phases 3–9, then release 1 of the trimmed t
 - **Phase 8 (2026-05-08)** — Settings panel + live theme switcher; ThemePanel modernized.
 - **Phase 9 (2026-05-11)** — Final e2e verification: 55 e2e tests, cross-theme visual regression (5 themes × light/dark).
 - **ColorSpace adapter (2026-05-11)** — Pluggable color-space wrapping for palette values.
-- **Semantic Ink + Extensible Roles (2026-05-12)** — `ink` role with inverted z-scale; alias validation; generalized dual-palette (any role accepts `{ light, dark }`).
+- **Semantic Ink + Extensible Roles (2026-05-12)** — `ink` role (inverted palette mapping for text tokens); alias validation; generalized dual-palette (any role accepts `{ light, dark }`).
 - **Trimmed Token Vocabulary release 1 (2026-05-15)** — `tokens: 'core'` (new default) emits 18→24 named tokens (`--paper`, `--ink-mute`, `--accent-soft`, …) with palette values inlined; `tokens: 'extended'` preserves legacy ~120-var output; `custom` config block for app-level tokens; per-role tokens mode. ~120 → ~40 CSS vars per skin.
 - **Trimmed Token Vocabulary release 1.x (post 2026-05-15)** — `base/*.css` + all style themes migrated to named vocabulary; `secondary` refs → `accent`; `buildNamedShortcuts` extracted for themes build.
 
@@ -33,7 +33,7 @@ Major design-system initiative — phases 3–9, then release 1 of the trimmed t
 
 - [x] **`rokkit skills add` — ship AI skills with the CLI** — Shipped 2026-06-09. `rokkit skills list` / `rokkit skills add [names] [--all] [--force]` install bundled SKILL.md guides into a consumer's `.claude/skills/`. v1 catalog: `semantic-styles-rokkit` + `rokkit-components`. Skills live in `packages/cli/skills/` and ride the published package. See journal 2026-06-09.
 
-- [x] **CLI + LLM-docs → named tokens** — Shipped 2026-06-06. `rokkit init` generates the named-token `skin` shape (rgb + new Zen-Sumi OKLCH starters, header comment); `rokkit doctor` writes a real starter on `--fix`, validates config shape, and gives advisory z-scale migration hints; `docs/llms/*` + `unocss/README.md` rewritten named-token-first. Breaking to generated config shape (`colors` → `skin`); existing configs work via the preset alias. See journal 2026-06-06.
+- [x] **CLI + LLM-docs → named tokens** — Shipped 2026-06-06. `rokkit init` generates the named-token `skin` shape (rgb + new Zen-Sumi OKLCH starters, header comment); `rokkit doctor` writes a real starter on `--fix` and validates config shape; `docs/llms/*` + `unocss/README.md` rewritten named-token-first. Breaking to generated config shape (`colors` → `skin`); existing configs work via the preset alias. See journal 2026-06-06.
 
 - [x] **CodeGroup site component** — Shipped 2026-05-28. Tree-based (chosen over tabs since real projects have nested folders). Tree-rail on the left at ≥ 768px; collapses to a top picker pill that opens a drawer overlay on narrower viewports — code area gets full width on mobile. Optional `preview` Svelte snippet, collapsed by default with a "Show preview" toggle per spec. Shiki highlighting + copy button. Lives at `site/src/lib/components/CodeGroup.svelte`; playground at `site/src/routes/(play)/playground/code-group/`.
 

@@ -228,8 +228,8 @@ rk-item { ... }
     { label: 'Carrot', snippet: 'vegetable' }
   ]}
 >
-  {#snippet fruit(proxy)}<span class="text-error-z5">{proxy.label}</span>{/snippet}
-  {#snippet vegetable(proxy)}<span class="text-success-z5">{proxy.label}</span>{/snippet}
+  {#snippet fruit(proxy)}<span class="text-error">{proxy.label}</span>{/snippet}
+  {#snippet vegetable(proxy)}<span class="text-success">{proxy.label}</span>{/snippet}
 </List>
 ```
 

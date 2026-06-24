@@ -31,9 +31,9 @@ without changing the palette.
 │  e.g. primary=teal, surface=zinc     │
 ├──────────────────────────────────────┤
 │  Mode layer  (data-mode)             │
-│  Selects light or dark values from   │
-│  each scale via z-index inversion.   │
-│  e.g. dark: z1=darkest, z10=lightest │
+│  Selects light or dark named-token   │
+│  values for the active skin role.    │
+│  e.g. --paper flips dark in dark mode│
 ├──────────────────────────────────────┤
 │  Style layer  (data-style)           │
 │  Controls component shape, shadow,   │
@@ -44,37 +44,33 @@ without changing the palette.
 
 ---
 
-## Z-Index Semantic Color Scale
+## Named-Token Color Vocabulary
 
-Instead of referencing concrete shade numbers (e.g., `slate-200`), theme CSS uses
-semantic z-indexed references: `bg-surface-z1` through `bg-surface-z10`.
+Instead of referencing concrete shade numbers (e.g., `slate-200`), theme CSS and utility
+classes use semantic named tokens that flip automatically between light and dark mode.
 
-The z-index maps to different concrete shades depending on the active mode:
+| Group   | Tokens                                              | Semantic meaning                         |
+| ------- | --------------------------------------------------- | ---------------------------------------- |
+| Surface | `paper` · `paper-soft` · `paper-mute` · `paper-edge` | canvas · card bg · subdued panel · border |
+| Text    | `ink` · `ink-mute` · `ink-soft` · `ink-faint`      | body · secondary · placeholder · disabled |
+| Primary | `primary` · `on-primary`                            | CTA fill · text on a primary fill        |
+| Accent  | `accent` · `accent-soft`                            | accent fill · tinted accent bg           |
+| Status  | `success`/`-soft`, `warning`/`-soft`, `danger`/`-soft`, `error`/`-soft`, `info`/`-soft` | solid / tinted callout |
+| Misc    | `focus-ring` · `shadow-tint`                        | focus ring · shadow color                |
 
-| Shortcut | Light Mode | Dark Mode | Semantic meaning           |
-| -------- | ---------- | --------- | -------------------------- |
-| `z1`     | shade-50   | shade-950 | Background, lowest surface |
-| `z2`     | shade-100  | shade-900 | Card, panel background     |
-| `z3`     | shade-200  | shade-800 | Subtle elevation           |
-| `z4`     | shade-300  | shade-700 | Input backgrounds          |
-| `z5`     | shade-500  | shade-600 | Mid-range (borders)        |
-| `z6`     | shade-600  | shade-500 | Inverse mid-range          |
-| `z7`     | shade-700  | shade-300 | Elevated text              |
-| `z8`     | shade-800  | shade-200 | Secondary text             |
-| `z9`     | shade-900  | shade-100 | Primary text               |
-| `z10`    | shade-950  | shade-50  | Maximum contrast           |
-
-This mapping means a theme file written once is automatically correct in both light and dark
-mode. There is no need for `@media (prefers-color-scheme)` blocks or `.dark` selectors in
-theme CSS — swapping `data-mode` swaps the underlying z-index resolution.
+A theme file written once is correct in both light and dark mode — swapping `data-mode`
+redefines the token values without any `@media` blocks or `.dark` selectors.
 
 ```css
 /* This rule works correctly in both light and dark mode */
 [data-list-item][data-active] {
-  background-color: var(--color-primary-z2);
-  color: var(--color-primary-z9);
+  background-color: var(--primary);
+  color: var(--on-primary);
 }
 ```
+
+For chart / data-viz work requiring the full shade ladder, use `tokens: 'extended'` in
+`rokkit.config.js` — this emits `--color-{role}-{shade}` vars (50–950) per role.
 
 ---
 
@@ -94,8 +90,7 @@ CSS custom properties — never direct Tailwind color names.
 | `error` / `danger`    | Error state, destructive actions    | red, rose           |
 | `info`                | Informational messages              | blue, sky           |
 
-Each role generates a full z-indexed shortcut set (`bg-{role}-z1` through `bg-{role}-z10`,
-and equivalent `text-` and `border-` variants).
+Each role feeds into the named-token vocabulary (e.g. `surface` → `paper`/`ink`, `primary` → `primary`/`on-primary`). Use `tokens: 'extended'` to also emit the full 11-shade ladder per role for charts and data-viz.
 
 ---
 
@@ -175,8 +170,8 @@ shortcuts: [
 ```
 
 `theme.getPalette(mapping)` returns a UnoCSS utility string that sets all CSS custom
-properties for that skin's color roles. `theme.getShortcuts(role)` returns the z-indexed
-shortcut rules for that role.
+properties for that skin's color roles. `theme.getShortcuts(role)` returns the on-color
+contrast shortcut rules for that role (e.g. `text-on-primary`).
 
 ### Runtime Skin Switching via `data-palette`
 
@@ -249,24 +244,29 @@ interface between the skin layer and theme CSS:
 ```css
 /* What @apply skin-sea-green expands to (simplified) */
 :root {
-  --color-primary-50: /* teal-50 */;
-  --color-primary-100: /* teal-100 */;
-  /* ... through 950 */
-  --color-surface-50: /* zinc-50 */;
-  /* ... through 950 */
-  /* ... all roles */
+  --primary: /* teal-500 */;
+  --on-primary: /* near-black or near-white by contrast */;
+  --paper: /* zinc-50 */;
+  --paper-soft: /* zinc-100 */;
+  --paper-mute: /* zinc-200 */;
+  --paper-edge: /* zinc-300 */;
+  --ink: /* zinc-900 */;
+  /* ... other named tokens */
+}
+[data-mode="dark"] {
+  --paper: /* zinc-950 */;
+  /* ... dark values for each token */
 }
 ```
 
 Theme CSS never references `teal-500` or `zinc-200` directly. It references
-`var(--color-primary-z4)` which resolves through the z-index → shade mapping and then
-through the custom property. The full resolution chain:
+named tokens such as `var(--primary)` or `var(--paper)`, which resolve to the correct
+complete color value for the active skin and mode. The full resolution chain:
 
 ```
-[data-list-item][data-active] { background: var(--color-primary-z2) }
-  → z2 maps to shade-100 in light, shade-900 in dark
-  → var(--color-primary-100) in light mode
-  → teal-100 in the sea-green skin
+[data-list-item][data-active] { background: var(--primary); color: var(--on-primary) }
+  → --primary resolves to teal-500 in the sea-green skin
+  → --on-primary resolves to near-white (auto-selected for contrast)
 ```
 
 ---
@@ -297,23 +297,23 @@ Theme CSS files target those attributes and apply visual styles.
 ```css
 /* Theme CSS file — packages/themes/src/rokkit/list.css */
 [data-list] {
-  background: var(--color-surface-z1);
-  border: 1px solid var(--color-surface-z4);
+  background: var(--paper-soft);
+  border: 1px solid var(--paper-edge);
   border-radius: var(--radius-md);
 }
 
 [data-list-item] {
-  color: var(--color-surface-z9);
+  color: var(--ink);
   padding: 0.5rem 0.75rem;
 }
 
 [data-list-item][data-active] {
-  background: var(--color-primary-z2);
-  color: var(--color-primary-z9);
+  background: var(--primary);
+  color: var(--on-primary);
 }
 
 [data-list-item][data-focused] {
-  outline: 2px solid var(--color-primary-z6);
+  outline: 2px solid var(--focus-ring);
   outline-offset: -2px;
 }
 
@@ -436,10 +436,3 @@ Both token vars (`--paper`, `--ink`, `--accent-soft`, …) and `@rokkit/themes` 
 inside the locked region, so component appearance is fully correct — not just token colors.
 The component renders `data-mode` statically and `lockMode` mirrors `data-style` onto the
 same element, so both attributes the themes CSS needs land together on the wrapper.
-
-> **Known limitation (light-in-dark only):** the legacy `-z` alias layer
-> (`--color-{role}-z{n}`) in `@rokkit/themes` emits its *light* values under `:root` only,
-> so a `mode="light"` region nested in a dark page inherits the root's dark `-z` values for
-> the handful of theme rules still using them (mostly shadow/border tints). Named tokens —
-> the overwhelming majority of styling — are correct. This edge disappears once the legacy
-> z-scale is removed (see the drop-legacy-z-scale effort). Dark-in-light is unaffected.

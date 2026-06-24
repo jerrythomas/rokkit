@@ -28,14 +28,14 @@ The design language values:
 
 | Token | Name | OKLCH | Hex (approx) | Usage |
 |-------|------|-------|--------------|-------|
-| surface-z0 | Kami (paper) | `oklch(0.975 0.008 85)` | #f5f3ee | Main background |
-| surface-z1 | | `oklch(0.955 0.010 85)` | #ece9e2 | Cards, sidebar bg |
-| surface-z2 | | `oklch(0.920 0.012 85)` | #ddd9d0 | Inset areas, inputs |
-| surface-z3 | Paper edge | `oklch(0.22 0.012 50 / 0.08)` | — | Borders (8% ink opacity) |
-| text-z10 | Sumi (ink) | `oklch(0.220 0.012 50)` | #2c2926 | Primary text |
-| text-z8 | | `oklch(0.380 0.012 50)` | #524e49 | Secondary text |
-| text-z6 | | `oklch(0.580 0.010 50)` | #8a867f | Tertiary/labels |
-| text-z4 | | `oklch(0.750 0.008 50)` | #b8b4ad | Disabled/faint |
+| `paper` (shade 50) | Kami (paper) | `oklch(0.975 0.008 85)` | #f5f3ee | Main background |
+| `paper-soft` (shade 100) | | `oklch(0.955 0.010 85)` | #ece9e2 | Cards, sidebar bg |
+| `paper-mute` (shade 200) | | `oklch(0.920 0.012 85)` | #ddd9d0 | Inset areas, inputs |
+| `paper-edge` (shade 300) | Paper edge | `oklch(0.22 0.012 50 / 0.08)` | — | Borders (8% ink opacity) |
+| `ink` (shade 900) | Sumi (ink) | `oklch(0.220 0.012 50)` | #2c2926 | Primary text |
+| `ink-mute` (shade 700) | | `oklch(0.380 0.012 50)` | #524e49 | Secondary text |
+| `ink-soft` (shade 500) | | `oklch(0.580 0.010 50)` | #8a867f | Tertiary/labels |
+| `ink-faint` (shade 300) | | `oklch(0.750 0.008 50)` | #b8b4ad | Disabled/faint |
 | primary | Shu (朱) | `oklch(0.580 0.150 35)` | #c44d2a | Primary accent |
 | success | Hisui (翡翠) | `oklch(0.620 0.080 160)` | #3d8c6e | Positive states |
 | warning | Kohaku (琥珀) | `oklch(0.720 0.120 75)` | #c09030 | Warning/caution |
@@ -47,11 +47,11 @@ at similar perceived lightness:
 
 | Token | OKLCH |
 |-------|-------|
-| surface-z0 | `oklch(0.170 0.010 85)` |
-| surface-z1 | `oklch(0.210 0.012 85)` |
-| surface-z2 | `oklch(0.250 0.014 85)` |
-| surface-z3 | `oklch(0.300 0.015 85)` |
-| text-z10 | `oklch(0.950 0.008 85)` |
+| `paper` (shade 50) | `oklch(0.170 0.010 85)` |
+| `paper-soft` (shade 100) | `oklch(0.210 0.012 85)` |
+| `paper-mute` (shade 200) | `oklch(0.250 0.014 85)` |
+| `paper-edge` (shade 300) | `oklch(0.300 0.015 85)` |
+| `ink` (shade 900) | `oklch(0.950 0.008 85)` |
 | primary (shu) | `oklch(0.650 0.140 35)` |
 | success (hisui) | `oklch(0.680 0.075 160)` |
 | warning (kohaku) | `oklch(0.760 0.110 75)` |
@@ -202,15 +202,15 @@ Zen-sumi uses the **soft** radius preset:
 ```css
 /* Primary filled */
 [data-style='zen-sumi'] [data-button][data-variant='primary'] {
-  background: var(--color-surface-z9);
-  color: var(--color-surface-z0);
+  background: var(--ink);
+  color: var(--paper);
   border: none;
 }
 
 /* CTA / accent */
 [data-style='zen-sumi'] [data-button][data-variant='accent'] {
-  background: var(--color-primary-z5);
-  color: var(--color-surface-z0);
+  background: var(--primary);
+  color: var(--on-primary);
 }
 ```
 
@@ -315,7 +315,7 @@ The `data-item-icon-literal` attribute lets themes style literal icons different
 
 This change applies globally to all components: List, Tree, Menu, Select, Tabs, etc.
 Sized 18–20px for nav icons, up to 96px for hero sections.
-Color: primary-z5 for active, surface-z6 for inactive.
+Color: primary for active, ink-soft for inactive.
 
 ### Sparklines
 
@@ -323,7 +323,7 @@ Thin line charts with shu stroke:
 ```css
 stroke-width: 1.25px;
 stroke-linecap: round;
-stroke: var(--color-primary-z5);
+stroke: var(--primary);
 ```
 
 ### Enso Ring (arc gauge)
@@ -353,7 +353,7 @@ with light ink and vermillion accents evokes traditional Japanese calligraphy.
 Key adjustments:
 - Shu accent becomes slightly lighter for readability
 - Borders become more subtle (lower opacity)
-- Card backgrounds use surface-z1 (slightly lighter than bg)
+- Card backgrounds use paper-soft (slightly lighter than bg)
 - Shadows are eliminated entirely (zen-sumi never uses shadows)
 
 ---

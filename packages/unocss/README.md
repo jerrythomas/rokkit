@@ -57,7 +57,7 @@ export default defineConfig({
 })
 ```
 
-Colors are referenced by palette name (e.g. Tailwind color names). The preset emits the named-token vocabulary (`bg-paper`, `text-ink`, `bg-primary`, `text-on-primary`, `*-soft`); the z-scale utilities (`bg-primary-z5`, `text-surface-z8`) remain as a back-compat layer pointing at the named tokens.
+Colors are referenced by palette name (e.g. Tailwind color names). The preset emits the named-token vocabulary (`bg-paper`, `text-ink`, `bg-primary`, `text-on-primary`, `*-soft`).
 
 ### Dual-palette dark mode (separate light/dark palettes)
 
@@ -197,9 +197,6 @@ Ink ladder semantics: `ink` = primary text, `ink-mute` = secondary,
 bg variant for status callouts and accent chips.
 
 Palette values are inlined — no `--color-{role}-{shade}` indirection.
-The `--color-{role}-z{0..10}` aliases are kept as a back-compat layer
-pointing at the named tokens, so existing code using `bg-surface-z3`
-etc. continues to work.
 
 For chart / data-viz needs that genuinely require the full 11-shade
 ladder, opt into extended mode:

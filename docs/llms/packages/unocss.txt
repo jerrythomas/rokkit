@@ -173,12 +173,7 @@ export default {
 
 Values accept palette refs (`'kami.400'`), raw CSS colors (`'#222222'`, `'oklch(...)'`, `'rgb(...)'`), or `{ light, dark }` objects.
 
-### Legacy z-scale utilities (back-compat)
-
-The older z-scale utilities (`bg-primary-z5`, `text-surface-z7`, …) still resolve as a
-back-compat layer pointing at the named tokens above — existing code keeps working, but
-new code should use the named-token shortcuts. `tokens: 'extended'` additionally emits
-the full 11-shade palette ladder per role (for charts / data-viz).
+`tokens: 'extended'` additionally emits the full 11-shade palette ladder per role (for charts / data-viz).
 
 See `docs/llms/index.txt` for the full named-token guide and all supported prefixes.
 

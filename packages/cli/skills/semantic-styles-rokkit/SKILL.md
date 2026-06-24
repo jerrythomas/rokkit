@@ -1,6 +1,6 @@
 ---
 name: semantic-styles-rokkit
-description: Use when building, styling, or auditing a Rokkit-powered app (Svelte 5 + UnoCSS presetRokkit) — covers the named-token vocabulary (paper / ink / primary / on-primary / *-soft), EXTENDING it with custom tokens via `overrides:` and the full palette ladder via `tokens: 'extended'`, the rokkit.config.js palette→skin→tokens pipeline, dual-palette dark mode, migrating legacy z-scale utilities (bg-surface-z0, text-primary-z5) to named tokens, and the rokkit init / rokkit doctor CLI.
+description: Use when building, styling, or auditing a Rokkit-powered app (Svelte 5 + UnoCSS presetRokkit) — covers the named-token vocabulary (paper / ink / primary / on-primary / *-soft), EXTENDING it with custom tokens via `overrides:` and the full palette ladder via `tokens: 'extended'`, the rokkit.config.js palette→skin→tokens pipeline, dual-palette dark mode, and the rokkit init / rokkit doctor CLI.
 ---
 
 # Semantic Styles — Rokkit
@@ -17,7 +17,6 @@ rokkit.config.js
   UnoCSS preset (presetRokkit)  →  CSS custom properties + utility classes
        ↓
   Components use named-token utilities:  bg-paper · text-ink · bg-primary · text-on-primary
-  (legacy z-scale utilities — bg-surface-z1 — still resolve via back-compat aliases)
 ```
 
 The pipeline has three layers. Most authoring happens in **Layer 3 (named tokens)**.
@@ -56,7 +55,7 @@ The preset wraps values into complete colors when it emits CSS vars (see Layer 3
 **What:** A skin maps semantic role names to palette names. The core roles that back the
 named-token vocabulary are: `surface`, `ink`, `primary`, `accent`, `success`, `warning`,
 `danger`, `error`, `info`. (`secondary`/`tertiary` are accepted but no named token reads
-them — they only matter if you also use `extended` z-scale utilities for those roles.)
+them — they only matter if you opt into `tokens: 'extended'` for those roles.)
 
 **Why:** Decoupling role from palette lets you swap the whole scheme in config, not code.
 `bg-paper` doesn't know whether `surface` is `kami`, `slate`, or `zinc`.
@@ -84,7 +83,7 @@ skins: {
 
 ### `tokens:` — which CSS the preset emits
 ```js
-tokens: 'core'      // default — emit the 24 named tokens (palette values inlined) + z-aliases
+tokens: 'core'      // default — emit the 24 named tokens (palette values inlined)
 tokens: 'extended'  // also emit the full 11-shade ladder (--color-{role}-{shade}) per role
 ```
 `'core'` is the default and what apps should use. Reach for `'extended'` only when you need
@@ -226,16 +225,7 @@ directly in CSS-only contexts; for alpha, use `color-mix` (the form the preset i
 .thing      { background: var(--paper); border-color: var(--paper-edge); }
 .thing-50pc { background: color-mix(in oklch, var(--primary) 50%, transparent); }
 ```
-Prefer utility classes over raw vars where you can. (In `core` mode the legacy
-`--color-{role}-z{n}` vars are aliases pointing at named tokens, so they too resolve to
-complete colors — the old "wrap bare components in `rgb()`/`oklch()`" rule no longer
-applies in core mode.)
-
-### Legacy z-scale utilities (back-compat)
-
-The older z-scale utilities (`bg-surface-z0`, `text-surface-z9`, `text-primary-z5`, …)
-**still resolve** as a back-compat layer that collapses onto the named tokens above —
-existing code keeps working. New code should use named tokens. See the migration section.
+Prefer utility classes over raw vars where you can.
 
 ---
 
@@ -305,38 +295,6 @@ Default stays `'core'`.
 
 ---
 
-## Migrating from z-scale to named tokens
-
-`rokkit doctor` scans `src/**` and prints the suggested replacement per occurrence
-(advisory — it never rewrites your code). The mapping it uses:
-
-**Surface role** (`{prefix}-surface-z{n}` → `{prefix}-{token}`):
-
-| z | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
-|---|---|---|---|---|---|---|---|---|---|---|----|
-| token | `paper` | `paper-soft` | `paper-mute` | `paper-mute` | `paper-edge` | `ink-soft` | `ink-soft` | `ink-mute` | `ink-mute` | `ink` | `ink` |
-
-**Ink role** (inverted scale):
-
-| z | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
-|---|---|---|---|---|---|---|---|---|---|---|----|
-| token | `ink` | `ink-mute` | `ink-mute` | `ink-soft` | `ink-soft` | `paper-edge` | `paper-edge` | `paper-mute` | `paper-mute` | `paper-soft` | `paper` |
-
-**Accent / status roles** (`primary`, `accent`, `success`, `warning`, `danger`, `error`,
-`info`): `z0–z2 → {role}-soft` (tinted background), `z3+ → {role}` (solid). Exception:
-`primary` has **no** `-soft` companion — `primary-z*` all map to `primary`; for a tinted
-primary background use `accent-soft` or a custom token.
-
-Common rewrites:
-```
-bg-surface-z0   → bg-paper            text-surface-z9 → text-ink
-bg-surface-z1   → bg-paper-soft       text-surface-z7 → text-ink-mute
-border-surface-z3 → border-paper-edge text-surface-z5 → text-ink-soft
-text-primary-z5 → text-primary        bg-success-z1   → bg-success-soft
-```
-
----
-
 ## Rokkit CLI — `init` and `doctor`
 
 **`rokkit init`** scaffolds `rokkit.config.js` in the named-token shape (a header comment
@@ -354,7 +312,6 @@ fail the command or block `--fix`:
 | `skin-ink-role` | the active colormap has no `ink` role (text tokens fall back) |
 | `oklch-needs-palettes` | `colorSpace: 'oklch'` but no `palettes` block |
 | `colors-alias` | config uses the legacy `colors:` instead of `skin:` |
-| legacy z-utilities | `src/**` contains `bg-surface-z*` / `text-primary-z*` etc. (prints named-token suggestions) |
 
 The "active colormap" is resolved the same way the preset does: `skins.default ?? skin ??
 colors`. Run `rokkit doctor --fix` to auto-write a real starter config when one is missing.
@@ -447,7 +404,6 @@ export default {
 | "core only emits `accent`/`accent-soft`, so I can't have `accent-2`/`on-accent`" | the vocabulary is extensible, not fixed | add them under `overrides:` (or use `tokens: 'extended'`) — see Layer 3b |
 | Override palette ref `'sky-600'` (hyphen) | refs use **dot** notation | `'sky.600'` (and `sky` must be in `palettes:`) |
 | `color: #3D3730` in a component | breaks on theme change | `text-ink` (or the right named token) |
-| Using `bg-surface-z5` / `text-primary-z5` in new code | legacy back-compat layer | named tokens — see migration table (or run `rokkit doctor`) |
 | Single-palette `surface` but expecting dark mode | no `[data-mode]` block is emitted | make `surface`/`ink` dual-palette `{ light, dark }` |
 | Skin with no `ink` role | `ink-*` text tokens fall back to surface | add `ink: '<palette>'` (reuse surface is fine) |
 | Using `skin:` and `skins:` together | `skins:` silently wins | pick one |

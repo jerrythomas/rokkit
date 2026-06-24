@@ -183,8 +183,8 @@ A skin defines the color personality of the application. It maps semantic color 
 ```mermaid
 flowchart TD
     A[Skin file\nskin-my-brand.css] -->|sets CSS custom properties| B[:root scope\n--color-primary-*\n--color-secondary-*\n--color-surface-*\n--color-accent-*]
-    B --> C[Theme CSS\nreads var--color-primary-z5]
-    B --> D[Component styles\nreads var--color-surface-z2]
+    B --> C[Theme CSS\nreads var--primary]
+    B --> D[Component styles\nreads var--paper-soft]
     C --> E[Rendered UI]
     D --> E
 ```
@@ -219,9 +219,9 @@ A skin file is a single CSS file that sets token values on `:root`. Every token 
   /* ... 50 through 950 ... */
 
   /* ── Surface ─────────────────────────────────────────────
-     Backgrounds and structural surfaces. z1 = lightest in
-     light mode (darkest in dark mode). z10 = opposite.
-     The z-scale inverts automatically with data-mode="dark". */
+     Backgrounds and structural surfaces. Named tokens
+     (--paper, --paper-soft, etc.) flip under data-mode="dark"
+     via the dual-palette skin mapping.                      */
   --color-surface-50: #fafafa;
   /* ... */
   --color-surface-950: #09090b;
@@ -254,7 +254,7 @@ A skin file is a single CSS file that sets token values on `:root`. Every token 
 | `error` / `danger` | `--color-error-*`     | Negative state feedback                        |
 | `info`             | `--color-info-*`      | Neutral informational state                    |
 
-Each role provides the full 50–950 shade scale. Theme CSS reads specific shades via the z-index semantic layer (`bg-surface-z2` resolves to `--color-surface-100` in light mode and `--color-surface-900` in dark mode).
+Each role provides the full 50–950 shade scale (available in `tokens: 'extended'` mode). In `tokens: 'core'` mode (the default), theme CSS reads named tokens (`var(--paper-soft)`, `var(--primary)`, etc.) that resolve to the correct shade for the active skin and mode.
 
 ### Skin activation
 
@@ -351,17 +351,15 @@ border-color: var(--color-secondary-300);
 background: #dcfce7;
 ```
 
-For the z-index semantic layer, theme authors can reference the compiled UnoCSS utilities (`bg-surface-z2`) when working inside a UnoCSS build, or they can write the raw CSS variable chain directly when not using UnoCSS:
+Theme authors reference named tokens via UnoCSS utilities or raw CSS vars:
 
 ```css
 /* With UnoCSS */
-@apply bg-surface-z2 text-surface-z9;
+@apply bg-paper-soft text-ink;
 
-/* Without UnoCSS — equivalent explicit form */
-background-color: light-dark(
-  var(--color-surface-100),
-  /* z2 in light mode */ var(--color-surface-900) /* z2 in dark mode (inverted) */
-);
+/* Without UnoCSS — raw CSS vars (complete colors, no wrapping needed) */
+background-color: var(--paper-soft);
+color: var(--ink);
 ```
 
 ### Scaffold generation — `rokkit theme create`
@@ -415,9 +413,9 @@ The scaffold is immediately importable and renders with no styles applied. The d
 When both a custom theme and a custom skin are in use, the skin sets token values and the theme reads them. Swapping the skin file changes colors without touching the theme file:
 
 ```
-skin-my-brand.css   →  sets  --color-primary-*, --color-surface-*, etc.
+skin-my-brand.css   →  sets  --primary, --paper, --paper-soft, --ink, etc.
                                     ↓
-my-theme/list.css   →  reads via  var(--color-primary-100), var(--color-surface-z2)
+my-theme/list.css   →  reads via  var(--primary), var(--paper-soft), var(--ink)
 ```
 
 Activation uses independent data attributes:
@@ -426,7 +424,7 @@ Activation uses independent data attributes:
 <html data-palette="my-brand" data-style="my-theme" data-mode="dark"></html>
 ```
 
-The three attributes are orthogonal. Any skin works with any theme style. Any theme style works in either color mode, provided it uses the z-index token system.
+The three attributes are orthogonal. Any skin works with any theme style. Any theme style works in either color mode, provided it uses the named-token system.
 
 ---
 

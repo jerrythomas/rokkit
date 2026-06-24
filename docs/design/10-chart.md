@@ -941,14 +941,14 @@ Charts consume the Rokkit theme variable system:
   --chart-text-muted: var(--text-2, #6b7280);
   --chart-grid: var(--border-1, #e5e7eb);
   --chart-axis: var(--text-2, #4b5563);
-  --chart-selection: var(--color-primary-z4);
-  --chart-brush: var(--color-primary-z2);
-  --chart-brush-border: var(--color-primary-z6);
+  --chart-selection: color-mix(in oklch, var(--primary) 60%, transparent);
+  --chart-brush: color-mix(in oklch, var(--primary) 20%, transparent);
+  --chart-brush-border: var(--primary);
   --chart-dimmed: 0.2; /* opacity for non-selected marks in highlight mode */
 }
 ```
 
-Dark mode is automatic via the theme's z-index inversion system — no conditional logic in chart CSS.
+Dark mode is automatic via named-token flipping — no conditional logic in chart CSS.
 
 ### Palette and Theme Shades
 

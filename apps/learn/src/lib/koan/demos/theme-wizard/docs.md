@@ -62,7 +62,7 @@ double indirection means:
 
 - Themes can be re-coloured by swapping the palette, not editing
   every component.
-- Mode (light/dark) just flips the z-scale direction without
+- Mode (light/dark) flips the named-token values without
   rewriting tokens.
 - Accessibility contrast can be enforced at the role-step layer,
   not per-component.
