@@ -12,8 +12,8 @@
    data-mode in dev mode. */
 [data-style='zen-sumi'] [data-input-root] {
   @apply relative flex items-center border;
-  background: var(--color-surface-z1);
-  border-color: var(--color-surface-z3);
+  background: var(--paper-soft);
+  border-color: var(--paper-mute);
   background-image: none;
   transition: border-color 150ms ease;
 }
@@ -39,13 +39,13 @@
 
 /* Hover: border darkens slightly */
 [data-style='zen-sumi'] [data-input-root]:hover:not(:focus-within) {
-  border-color: var(--color-surface-z4);
+  border-color: var(--paper-edge);
   background-image: none;
 }
 
 /* Focus: border darkens — no glow */
 [data-style='zen-sumi'] [data-input-root]:focus-within {
-  border-color: var(--color-surface-z6);
+  border-color: var(--ink-soft);
   background-image: none;
 }
 
@@ -56,7 +56,7 @@
 [data-style='zen-sumi'] [data-input-root] textarea,
 [data-style='zen-sumi'] [data-input-root] select {
   @apply w-full border-none bg-transparent px-2 py-1.5 outline-none;
-  color: var(--color-ink-z1);
+  color: var(--ink-mute);
   font-size: 0.8125rem;
   line-height: 1.25rem;
 }

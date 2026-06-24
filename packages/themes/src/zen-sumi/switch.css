@@ -16,7 +16,7 @@
 }
 
 [data-style='zen-sumi'] [data-switch]:focus-visible [data-switch-track] {
-  box-shadow: 0 0 0 2px var(--color-surface-z5);
+  box-shadow: 0 0 0 2px var(--ink-soft);
 }
 
 /* On state — shu vermillion */

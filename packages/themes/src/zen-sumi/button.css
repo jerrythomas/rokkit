@@ -180,5 +180,5 @@
 
 [data-style='zen-sumi'] [data-button]:focus-visible {
   @apply outline-none;
-  box-shadow: 0 0 0 1px var(--color-surface-z5);
+  box-shadow: 0 0 0 1px var(--ink-soft);
 }

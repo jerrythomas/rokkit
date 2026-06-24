@@ -169,7 +169,7 @@
 				{#each patternItems as item (item.key)}
 					<div class="legend-item" data-plot-legend-item>
 						<svg width="14" height="14" data-plot-legend-swatch>
-							<rect width="14" height="14" fill="var(--color-surface-z2, #ccc)" />
+							<rect width="14" height="14" fill="var(--paper-mute, #ccc)" />
 							<rect width="14" height="14" fill="url(#{item.patternId})" />
 						</svg>
 						<span class="label" data-plot-legend-label>{item.label}</span>
@@ -242,7 +242,7 @@
 		font-size: 12px;
 	}
 	.legend-section {
-		border-top: 1px solid var(--color-surface-z3, #e0e0e0);
+		border-top: 1px solid var(--paper-mute, #e0e0e0);
 		padding-top: 6px;
 	}
 	.legend-item {
