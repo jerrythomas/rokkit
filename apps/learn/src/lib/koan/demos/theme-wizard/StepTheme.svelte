@@ -31,20 +31,20 @@
 </section>
 
 <style>
-	.step h2 { @apply text-ink-z1; margin: 0 0 16px; font-size: 18px; }
+	.step h2 { @apply text-ink-mute; margin: 0 0 16px; font-size: 18px; }
 	.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
 	.card {
 		display: flex;
 		flex-direction: column;
 		gap: 6px;
 		padding: 16px;
-		@apply bg-surface-z0 border border-surface-z2;
+		@apply bg-paper border border-paper-mute;
 		border-radius: var(--radius-md, 6px);
 		text-align: left;
 		cursor: pointer;
 	}
-	.card:hover { @apply border-accent-z5; }
-	.card.selected { @apply border-primary-z5; box-shadow: 0 0 0 2px var(--color-primary-z5); }
-	.name { @apply text-ink-z1; font-size: 14px; font-weight: 500; }
-	.tagline { @apply text-ink-z3; font-family: var(--font-script, 'Caveat', cursive); font-size: 18px; }
+	.card:hover { @apply border-accent; }
+	.card.selected { @apply border-primary; box-shadow: 0 0 0 2px var(--primary); }
+	.name { @apply text-ink-mute; font-size: 14px; font-weight: 500; }
+	.tagline { @apply text-ink-soft; font-family: var(--font-script, 'Caveat', cursive); font-size: 18px; }
 </style>

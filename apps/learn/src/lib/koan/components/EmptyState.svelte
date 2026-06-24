@@ -46,17 +46,17 @@
 	.icon {
 		font-size: 96px;
 		line-height: 1;
-		@apply text-ink-z1;
+		@apply text-ink-mute;
 	}
 	.title {
 		margin: 0;
 		font-size: 24px;
-		@apply text-ink-z1;
+		@apply text-ink-mute;
 	}
 	.description {
 		margin: 0;
 		max-width: 480px;
-		@apply text-ink-z3;
+		@apply text-ink-soft;
 		font-family: var(--font-script, 'Caveat', cursive);
 		font-size: 22px;
 		line-height: 1.4;

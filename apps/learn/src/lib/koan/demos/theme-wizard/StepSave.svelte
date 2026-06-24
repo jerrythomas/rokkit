@@ -55,7 +55,7 @@
 
 <style>
 	.step h2 {
-		@apply text-ink-z1;
+		@apply text-ink-mute;
 		margin: 0 0 16px;
 	}
 	.field {
@@ -65,17 +65,17 @@
 		max-width: 360px;
 	}
 	.field span {
-		@apply text-ink-z3;
+		@apply text-ink-soft;
 		font-size: 12px;
 	}
 	.field input {
-		@apply bg-surface-z1 border border-surface-z2 text-ink-z1;
+		@apply bg-paper-soft border border-paper-mute text-ink-mute;
 		padding: 8px 12px;
 		border-radius: var(--radius-md, 6px);
 		font: inherit;
 	}
 	.error {
-		@apply text-danger-z5;
+		@apply text-danger;
 		margin: 0;
 		font-size: 13px;
 	}

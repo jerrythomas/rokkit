@@ -64,7 +64,7 @@
 
 <style>
 	.step h2 {
-		@apply text-ink-z1;
+		@apply text-ink-mute;
 		margin: 0 0 16px;
 	}
 	.layout {
@@ -83,12 +83,12 @@
 		gap: 16px;
 	}
 	fieldset {
-		@apply border border-surface-z2;
+		@apply border border-paper-mute;
 		padding: 12px;
 		border-radius: var(--radius-md, 6px);
 	}
 	legend {
-		@apply text-ink-z3;
+		@apply text-ink-soft;
 		padding: 0 6px;
 		font-size: 12px;
 	}
@@ -98,12 +98,12 @@
 		gap: 6px;
 	}
 	.chip {
-		@apply bg-surface-z1 border border-surface-z2 text-ink-z2;
+		@apply bg-paper-soft border border-paper-mute text-ink-mute;
 		padding: 4px 12px;
 		border-radius: 999px;
 		cursor: pointer;
 	}
 	.chip.selected {
-		@apply bg-primary-z5 text-surface-z0 border-primary-z5;
+		@apply bg-primary text-paper border-primary;
 	}
 </style>

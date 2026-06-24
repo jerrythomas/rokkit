@@ -29,14 +29,14 @@
 	.glyph {
 		font-size: 96px;
 		line-height: 1;
-		@apply text-ink-z1;
+		@apply text-ink-mute;
 		transition: font-size 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
 		font-family: var(--font-display, inherit);
 	}
 	.label {
 		font-size: 28px;
 		font-weight: 500;
-		@apply text-ink-z1;
+		@apply text-ink-mute;
 		letter-spacing: -0.02em;
 		opacity: 1;
 		transition:

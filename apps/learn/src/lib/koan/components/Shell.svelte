@@ -109,20 +109,20 @@
 		align-items: center;
 		gap: 4px;
 		padding: 4px 10px;
-		@apply bg-surface-z1 border border-surface-z2 text-ink-z2;
+		@apply bg-paper-soft border border-paper-mute text-ink-mute;
 		border-radius: 999px;
 		font-size: 12px;
 		cursor: pointer;
 	}
 	.chip:hover {
-		@apply border-accent-z5 text-ink-z1;
+		@apply border-accent text-ink-mute;
 	}
 	.footer {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 		font-size: 11px;
-		@apply text-ink-z4 border-t border-surface-z2;
+		@apply text-ink-soft border-t border-paper-mute;
 		padding-top: 8px;
 	}
 	.footer button {
@@ -133,6 +133,6 @@
 		font: inherit;
 	}
 	.footer button:hover {
-		@apply text-ink-z2;
+		@apply text-ink-mute;
 	}
 </style>

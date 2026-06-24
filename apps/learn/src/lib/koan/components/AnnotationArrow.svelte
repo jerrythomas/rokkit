@@ -56,7 +56,7 @@
 		flex-direction: column;
 		align-items: center;
 		gap: 4px;
-		@apply text-accent-z5;
+		@apply text-accent;
 	}
 	.label {
 		font-family: var(--font-script, 'Caveat', cursive);

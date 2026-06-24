@@ -116,12 +116,12 @@
 		min-height: 480px;
 		max-width: 980px;
 		margin: 0 auto;
-		@apply border border-surface-z2;
+		@apply border border-paper-mute;
 		border-radius: var(--radius-md, 6px);
 		overflow: hidden;
 	}
 	.wiz-rail {
-		@apply bg-surface-z1 border-r border-surface-z2;
+		@apply bg-paper-soft border-r border-paper-mute;
 		padding: 16px 12px;
 	}
 	.wiz-main {
@@ -138,7 +138,7 @@
 		align-items: center;
 		gap: 20px;
 		padding: 14px 32px;
-		@apply border-t border-surface-z2 bg-surface-z0;
+		@apply border-t border-paper-mute bg-paper;
 	}
 	.progress {
 		flex: 1;
@@ -151,9 +151,9 @@
 		height: 2px;
 		border-radius: 1px;
 		transition: background-color 200ms ease;
-		@apply bg-surface-z2;
+		@apply bg-paper-mute;
 	}
 	.bar.done {
-		@apply bg-ink-z1;
+		@apply bg-ink-mute;
 	}
 </style>

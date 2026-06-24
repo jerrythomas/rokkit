@@ -25,7 +25,7 @@
 		flex-direction: column;
 		gap: 8px;
 		padding: 20px;
-		@apply bg-surface-z0 border border-surface-z2;
+		@apply bg-paper border border-paper-mute;
 		border-radius: var(--radius-md, 6px);
 		text-align: left;
 		color: inherit;
@@ -35,22 +35,22 @@
 			transform 120ms ease;
 	}
 	.card:hover {
-		@apply border-accent-z5;
+		@apply border-accent;
 		transform: translateY(-1px);
 	}
 	.icon {
 		font-size: 32px;
 		line-height: 1;
-		@apply text-ink-z1;
+		@apply text-ink-mute;
 	}
 	.title {
 		font-size: 16px;
 		font-weight: 500;
-		@apply text-ink-z1;
+		@apply text-ink-mute;
 	}
 	.description {
 		font-size: 13px;
-		@apply text-ink-z3;
+		@apply text-ink-soft;
 		line-height: 1.4;
 		flex: 1 1 auto;
 	}
@@ -58,6 +58,6 @@
 		margin-top: 8px;
 		font-family: var(--font-script, 'Caveat', cursive);
 		font-size: 16px;
-		@apply text-accent-z5;
+		@apply text-accent;
 	}
 </style>

@@ -227,7 +227,7 @@
 
 	/* ── intro ───────────────────────────────────────────────── */
 	.intro {
-		@apply text-ink-z3;
+		@apply text-ink-soft;
 		font-family: var(--font-script, 'Caveat', cursive);
 		font-size: 26px;
 		margin: 0;
@@ -236,7 +236,7 @@
 
 	/* ── preview ─────────────────────────────────────────────── */
 	.preview {
-		@apply bg-surface-z0 border border-surface-z2;
+		@apply bg-paper border border-paper-mute;
 		padding: 24px;
 		border-radius: var(--radius-md, 6px);
 	}
@@ -262,16 +262,16 @@
 			border-color 0.15s,
 			box-shadow 0.15s,
 			transform 0.12s;
-		@apply bg-surface-z0 border border-surface-z2 text-ink-z1;
+		@apply bg-paper border border-paper-mute text-ink-mute;
 	}
 
 	.aspect-card:hover {
-		@apply border-accent-z5;
+		@apply border-accent;
 		transform: translateY(-1px);
 	}
 
 	.aspect-card.active {
-		@apply border-primary-z5 bg-surface-z1;
+		@apply border-primary bg-paper-soft;
 		box-shadow: 0 2px 8px oklch(0 0 0 / 0.1);
 		transform: translateY(-2px);
 	}
@@ -279,19 +279,19 @@
 	.aspect-title {
 		font-size: 14px;
 		font-weight: 500;
-		@apply text-ink-z1;
+		@apply text-ink-mute;
 	}
 
 	.aspect-tagline {
 		font-family: var(--font-script, 'Caveat', cursive);
 		font-size: 22px;
 		line-height: 1.2;
-		@apply text-ink-z3;
+		@apply text-ink-soft;
 	}
 
 	/* ── panel area ──────────────────────────────────────────── */
 	.panel-area {
-		@apply bg-surface-z0 border border-surface-z2;
+		@apply bg-paper border border-paper-mute;
 		padding: 20px;
 		border-radius: var(--radius-md, 6px);
 		display: flex;
@@ -303,7 +303,7 @@
 		font-family: var(--font-script, 'Caveat', cursive);
 		font-size: 18px;
 		font-style: italic;
-		@apply text-ink-z3;
+		@apply text-ink-soft;
 		margin: 0;
 	}
 
@@ -319,20 +319,20 @@
 		font-size: 14px;
 		cursor: pointer;
 		transition: background 0.12s, border-color 0.12s;
-		@apply bg-surface-z1 border border-surface-z2 text-ink-z2;
+		@apply bg-paper-soft border border-paper-mute text-ink-mute;
 	}
 
 	.mode-btn:hover {
-		@apply border-accent-z5 text-ink-z1;
+		@apply border-accent text-ink-mute;
 	}
 
 	.mode-btn.mode-active {
-		@apply bg-primary-z5 border-primary-z5 text-on-primary;
+		@apply bg-primary border-primary text-on-primary;
 	}
 
 	/* ── data pre ────────────────────────────────────────────── */
 	.data-pre {
-		@apply bg-surface-z0 border border-surface-z2 text-ink-z2;
+		@apply bg-paper border border-paper-mute text-ink-mute;
 		padding: 12px;
 		border-radius: var(--radius-sm, 4px);
 		overflow-x: auto;
@@ -350,7 +350,7 @@
 	}
 
 	.rich-panel h3 {
-		@apply text-ink-z1;
+		@apply text-ink-mute;
 		font-size: 20px;
 		font-weight: 600;
 		margin: 0;
@@ -359,7 +359,7 @@
 	.rich-panel .tag {
 		font-family: var(--font-script, 'Caveat', cursive);
 		font-size: 20px;
-		@apply text-ink-z3;
+		@apply text-ink-soft;
 		margin: 0;
 	}
 </style>

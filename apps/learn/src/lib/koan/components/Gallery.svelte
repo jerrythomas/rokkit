@@ -49,7 +49,7 @@
 		margin: 0;
 		font-family: var(--font-script, 'Caveat', cursive);
 		font-size: 22px;
-		@apply text-ink-z3;
+		@apply text-ink-soft;
 	}
 	.grid {
 		display: grid;

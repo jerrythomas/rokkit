@@ -98,7 +98,7 @@
 		top: 8px;
 		bottom: 8px;
 		width: 2px;
-		@apply bg-primary-z5;
+		@apply bg-primary;
 		border-radius: 1px;
 	}
 
@@ -118,17 +118,17 @@
 	}
 
 	.msg.user .label {
-		@apply text-ink-z4;
+		@apply text-ink-soft;
 	}
 
 	.msg.response .label {
-		@apply text-accent-z5;
+		@apply text-accent;
 	}
 
 	.body {
 		font-size: 13px;
 		margin: 0;
-		@apply text-ink-z2;
+		@apply text-ink-mute;
 	}
 
 	.body-link {
@@ -142,18 +142,18 @@
 		font: inherit;
 		font-size: 13px;
 		cursor: pointer;
-		@apply text-ink-z2;
+		@apply text-ink-mute;
 		transition: color 120ms ease;
 	}
 	.body-link:hover {
-		@apply text-ink-z1;
+		@apply text-ink-mute;
 		text-decoration: underline;
-		text-decoration-color: var(--color-accent-z5);
+		text-decoration-color: var(--accent);
 		text-decoration-thickness: 1px;
 		text-underline-offset: 3px;
 	}
 	.body-link.active {
-		@apply text-ink-z1;
+		@apply text-ink-mute;
 	}
 
 	.links {
@@ -175,25 +175,25 @@
 		font-size: 13px;
 		cursor: pointer;
 		text-align: left;
-		@apply text-accent-z5 bg-surface-z1;
+		@apply text-accent bg-paper-soft;
 		transition: background 120ms ease;
 	}
 
 	.anchor:hover {
-		@apply bg-surface-z2 text-ink-z1;
+		@apply bg-paper-mute text-ink-mute;
 	}
 
 	.anchor.active {
-		@apply bg-accent-z1 text-accent-z5;
+		@apply bg-accent-soft text-accent;
 		font-weight: 500;
 	}
 
 	.msg.system .label {
-		@apply text-accent-z5;
+		@apply text-accent;
 	}
 
 	.msg.system .body {
-		@apply text-ink-z2;
+		@apply text-ink-mute;
 		font-size: 13px;
 	}
 
@@ -208,18 +208,18 @@
 		border-radius: var(--radius-sm, 4px);
 		font-size: 12px;
 		cursor: pointer;
-		@apply bg-surface-z1 border border-surface-z2 text-ink-z2;
+		@apply bg-paper-soft border border-paper-mute text-ink-mute;
 	}
 
 	.action:hover {
-		@apply border-accent-z5 text-ink-z1;
+		@apply border-accent text-ink-mute;
 	}
 
 	.action.danger {
-		@apply bg-primary-z5 border-primary-z5 text-on-primary;
+		@apply bg-primary border-primary text-on-primary;
 	}
 
 	.action.danger:hover {
-		@apply bg-primary-z6;
+		@apply bg-primary;
 	}
 </style>

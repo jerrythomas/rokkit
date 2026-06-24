@@ -31,7 +31,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 12px;
-		@apply bg-surface-z0 border border-surface-z2;
+		@apply bg-paper border border-paper-mute;
 		padding: 16px;
 		border-radius: var(--radius-md, 6px);
 	}
@@ -44,11 +44,11 @@
 		display: flex;
 		flex-direction: column;
 		gap: 4px;
-		@apply text-ink-z3;
+		@apply text-ink-soft;
 		font-size: 12px;
 	}
 	.field input {
-		@apply bg-surface-z1 border border-surface-z2 text-ink-z1;
+		@apply bg-paper-soft border border-paper-mute text-ink-mute;
 		padding: 6px 10px;
 		border-radius: var(--radius-sm, 4px);
 		font: inherit;
