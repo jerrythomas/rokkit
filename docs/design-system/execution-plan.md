@@ -216,7 +216,7 @@ setup-wizard.spec.ts
   error     → danger  (if null)
   ```
 - Update `Theme` class to call `resolveColors()` on construction
-- Update named-token shortcut generation to include `tertiary` role if needed
+- Update `semanticShortcuts()` to generate shortcuts for `tertiary`
 
 **Verify**: Unit tests for nullable resolution, all existing tests pass.
 
@@ -450,7 +450,7 @@ For each component, write CSS matching the mockup treatment:
 **Identity**: Gradient-forward, vibrant, energetic.
 
 Key changes:
-- CTA/highlight: gradient from `primary` to `accent` (left → right, adapts to orientation)
+- CTA/highlight: gradient from `primary-z5` to `secondary-z5` (left → right, adapts to orientation)
 - Input focus: gradient border (using `[data-gradient-border]`)
 - Buttons: gradient fill for default, gradient border for outline
 - Active states: gradient background tint
@@ -476,7 +476,7 @@ Key changes:
 **Identity**: Elevation, surfaces, tonal containers.
 
 Key changes:
-- CTA/highlight: tonal container (role-soft bg) + elevation shadow
+- CTA/highlight: tonal container (variant-z1 bg) + elevation shadow
 - Input focus: border + filled background
 - Input default: filled variant (tinted bg) or outlined
 - Buttons: elevation shadow, no gradient

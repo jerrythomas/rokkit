@@ -173,8 +173,8 @@ Create `getting-started/quick-start/+page.svelte`:
 ```svelte
 <article data-article-root>
   <div data-card class="py-12 text-center">
-    <span class="i-solar:hourglass-bold-duotone text-ink-mute mb-4 block text-4xl"></span>
-    <p class="text-ink-soft">Quick start guide coming soon.</p>
+    <span class="i-solar:hourglass-bold-duotone text-surface-z4 mb-4 block text-4xl"></span>
+    <p class="text-surface-z5">Quick start guide coming soon.</p>
   </div>
 </article>
 ```
@@ -300,8 +300,8 @@ Create `data-binding/data-sources/+page.svelte`:
 ```svelte
 <article data-article-root>
   <div data-card class="py-12 text-center">
-    <span class="i-solar:hourglass-bold-duotone text-ink-mute mb-4 block text-4xl"></span>
-    <p class="text-ink-soft">Data sources documentation coming soon.</p>
+    <span class="i-solar:hourglass-bold-duotone text-surface-z4 mb-4 block text-4xl"></span>
+    <p class="text-surface-z5">Data sources documentation coming soon.</p>
   </div>
 </article>
 ```
@@ -513,8 +513,8 @@ Create `theming/density/+page.svelte` and `theming/whitelabeling/+page.svelte`:
 ```svelte
 <article data-article-root>
   <div data-card class="py-12 text-center">
-    <span class="i-solar:hourglass-bold-duotone text-ink-mute mb-4 block text-4xl"></span>
-    <p class="text-ink-soft">Coming soon.</p>
+    <span class="i-solar:hourglass-bold-duotone text-surface-z4 mb-4 block text-4xl"></span>
+    <p class="text-surface-z5">Coming soon.</p>
   </div>
 </article>
 ```
@@ -770,8 +770,8 @@ Each needs a `meta.json` and `+page.svelte`. Pattern:
 ```svelte
 <article data-article-root>
   <div data-card class="py-12 text-center">
-    <span class="i-solar:hourglass-bold-duotone text-ink-mute mb-4 block text-4xl"></span>
-    <p class="text-ink-soft">Badge component documentation coming soon.</p>
+    <span class="i-solar:hourglass-bold-duotone text-surface-z4 mb-4 block text-4xl"></span>
+    <p class="text-surface-z5">Badge component documentation coming soon.</p>
   </div>
 </article>
 ```
@@ -1017,28 +1017,28 @@ Create the `(preview)` route group with the Nexus app shell layout and a floatin
   {#if open}
     <div data-card class="flex w-56 flex-col gap-4 p-4 shadow-lg">
       <div>
-        <p class="text-ink-soft mb-2 text-xs font-semibold tracking-wide uppercase">Skin</p>
+        <p class="text-surface-z5 mb-2 text-xs font-semibold tracking-wide uppercase">Skin</p>
         <div class="flex flex-wrap gap-1">
           {#each skins as skin}
             <button
               class="rounded border px-2 py-1 text-xs capitalize transition-colors
                 {vibe.palette === skin
-                ? 'bg-primary border-transparent text-on-primary'
-                : 'border-paper-edge text-ink-soft hover:bg-paper-mute'}"
+                ? 'bg-primary-z6 border-transparent text-white'
+                : 'border-surface-z3 text-surface-z6 hover:bg-surface-z2'}"
               onclick={() => (vibe.palette = skin)}>{skin}</button
             >
           {/each}
         </div>
       </div>
       <div>
-        <p class="text-ink-soft mb-2 text-xs font-semibold tracking-wide uppercase">Mode</p>
+        <p class="text-surface-z5 mb-2 text-xs font-semibold tracking-wide uppercase">Mode</p>
         <div class="flex gap-1">
           {#each modes as mode}
             <button
               class="flex-1 rounded border px-2 py-1 text-xs capitalize transition-colors
                 {vibe.mode === mode
-                ? 'bg-primary border-transparent text-on-primary'
-                : 'border-paper-edge text-ink-soft hover:bg-paper-mute'}"
+                ? 'bg-primary-z6 border-transparent text-white'
+                : 'border-surface-z3 text-surface-z6 hover:bg-surface-z2'}"
               onclick={() => (vibe.mode = mode)}>{mode}</button
             >
           {/each}
@@ -1047,7 +1047,7 @@ Create the `(preview)` route group with the Nexus app shell layout and a floatin
     </div>
   {/if}
   <button
-    class="bg-primary hover:bg-primary flex h-10 w-10 items-center justify-center rounded-full text-white shadow-lg transition-colors"
+    class="bg-primary-z6 hover:bg-primary-z7 flex h-10 w-10 items-center justify-center rounded-full text-white shadow-lg transition-colors"
     onclick={() => (open = !open)}
     aria-label="Toggle theme panel"
     aria-expanded={open}
@@ -1083,17 +1083,17 @@ Create the `(preview)` route group with the Nexus app shell layout and a floatin
 <div class="flex min-h-screen flex-col">
   <!-- Top bar -->
   <header
-    class="border-paper-edge bg-paper-soft flex h-14 flex-shrink-0 items-center justify-between border-b px-4"
+    class="border-surface-z2 bg-surface-z1 flex h-14 flex-shrink-0 items-center justify-between border-b px-4"
   >
     <div class="flex items-center gap-3">
-      <span class="i-solar:atom-bold-duotone text-primary text-2xl" aria-hidden="true"></span>
-      <span class="text-ink text-lg font-bold">Nexus</span>
-      <span class="text-ink-mute hidden text-xs sm:inline">Project Workspace</span>
+      <span class="i-solar:atom-bold-duotone text-primary-z6 text-2xl" aria-hidden="true"></span>
+      <span class="text-surface-z8 text-lg font-bold">Nexus</span>
+      <span class="text-surface-z4 hidden text-xs sm:inline">Project Workspace</span>
     </div>
     <div class="flex items-center gap-2">
       <a
         href="/"
-        class="text-ink-soft hover:text-ink flex items-center gap-1 text-xs no-underline"
+        class="text-surface-z5 hover:text-surface-z8 flex items-center gap-1 text-xs no-underline"
       >
         <span class="i-solar:arrow-left-bold-duotone text-sm" aria-hidden="true"></span>
         Back to Docs
@@ -1105,7 +1105,7 @@ Create the `(preview)` route group with the Nexus app shell layout and a floatin
   <div class="flex min-h-0 flex-1 overflow-hidden">
     <!-- Sidebar -->
     <aside
-      class="border-paper-edge bg-paper-soft hidden w-52 flex-shrink-0 flex-col overflow-y-auto border-r md:flex"
+      class="border-surface-z2 bg-surface-z1 hidden w-52 flex-shrink-0 flex-col overflow-y-auto border-r md:flex"
     >
       <div class="p-3 pt-4">
         <List items={navItems} {fields} value={page.url.pathname} />
@@ -1113,7 +1113,7 @@ Create the `(preview)` route group with the Nexus app shell layout and a floatin
     </aside>
 
     <!-- Main content -->
-    <main class="bg-paper flex-1 overflow-y-auto">
+    <main class="bg-surface-z0 flex-1 overflow-y-auto">
       {@render children()}
     </main>
   </div>
@@ -1223,8 +1223,8 @@ git commit -m "feat(preview): add Nexus app shell layout with floating theme pan
   <!-- Header -->
   <div class="flex items-center justify-between">
     <div>
-      <h1 class="text-ink text-2xl font-bold">Dashboard</h1>
-      <p class="text-ink-soft text-sm">Good morning — here's what's happening today.</p>
+      <h1 class="text-surface-z8 text-2xl font-bold">Dashboard</h1>
+      <p class="text-surface-z5 text-sm">Good morning — here's what's happening today.</p>
     </div>
     <Toolbar>
       <Button icon="i-solar:add-circle-bold-duotone">New Task</Button>
@@ -1236,11 +1236,11 @@ git commit -m "feat(preview): add Nexus app shell layout with floating theme pan
     {#each kpis as kpi}
       <div data-card class="p-4">
         <div class="mb-3 flex items-start justify-between">
-          <p class="text-ink-soft text-sm">{kpi.label}</p>
-          <span class="{kpi.icon} text-primary text-xl" aria-hidden="true"></span>
+          <p class="text-surface-z5 text-sm">{kpi.label}</p>
+          <span class="{kpi.icon} text-primary-z6 text-xl" aria-hidden="true"></span>
         </div>
-        <p class="text-ink text-3xl font-bold">{kpi.value}</p>
-        <p class="text-ink-mute mt-1 text-xs">{kpi.change}</p>
+        <p class="text-surface-z8 text-3xl font-bold">{kpi.value}</p>
+        <p class="text-surface-z4 mt-1 text-xs">{kpi.change}</p>
       </div>
     {/each}
   </div>
@@ -1248,14 +1248,14 @@ git commit -m "feat(preview): add Nexus app shell layout with floating theme pan
   <!-- Activity -->
   <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
     <div data-card class="p-4">
-      <h2 class="text-ink-mute mb-3 text-sm font-semibold">Recent Activity</h2>
+      <h2 class="text-surface-z7 mb-3 text-sm font-semibold">Recent Activity</h2>
       <List items={recentActivity} fields={activityFields} />
     </div>
 
     <div data-card class="flex min-h-40 flex-col items-center justify-center gap-2 p-4 text-center">
-      <span class="i-solar:chart-bold-duotone text-ink-faint text-3xl" aria-hidden="true"></span>
-      <p class="text-ink-soft text-sm">Sprint velocity chart</p>
-      <p class="text-ink-mute text-xs">Coming soon — charts in progress</p>
+      <span class="i-solar:chart-bold-duotone text-surface-z3 text-3xl" aria-hidden="true"></span>
+      <p class="text-surface-z5 text-sm">Sprint velocity chart</p>
+      <p class="text-surface-z4 text-xs">Coming soon — charts in progress</p>
     </div>
   </div>
 </div>
@@ -1331,7 +1331,7 @@ git commit -m "feat(preview): add dashboard page"
 
 <div class="flex flex-col gap-6 p-6">
   <div class="flex items-center justify-between">
-    <h1 class="text-ink text-2xl font-bold">Projects</h1>
+    <h1 class="text-surface-z8 text-2xl font-bold">Projects</h1>
     <Toolbar>
       <Button icon="i-solar:add-circle-bold-duotone">New Task</Button>
     </Toolbar>
@@ -1354,22 +1354,22 @@ git commit -m "feat(preview): add dashboard page"
   <!-- Task tree + detail panel -->
   <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
     <div data-card class="p-4">
-      <h2 class="text-ink-mute mb-3 text-sm font-semibold">Tasks</h2>
+      <h2 class="text-surface-z7 mb-3 text-sm font-semibold">Tasks</h2>
       <Tree items={projects} fields={treeFields} collapsible bind:value={selectedTask} />
     </div>
 
     <div data-card class="p-4">
       {#if selectedTask}
-        <h2 class="text-ink-mute mb-4 text-sm font-semibold">Task Detail</h2>
+        <h2 class="text-surface-z7 mb-4 text-sm font-semibold">Task Detail</h2>
         <div class="flex flex-col gap-3">
-          <p class="text-ink font-medium">{selectedTask}</p>
-          <p class="text-ink-soft text-sm">Assignee, due date, and inline editing coming soon.</p>
+          <p class="text-surface-z8 font-medium">{selectedTask}</p>
+          <p class="text-surface-z5 text-sm">Assignee, due date, and inline editing coming soon.</p>
         </div>
       {:else}
         <div class="flex h-full min-h-40 flex-col items-center justify-center gap-2 text-center">
-          <span class="i-solar:cursor-bold-duotone text-ink-faint text-3xl" aria-hidden="true"
+          <span class="i-solar:cursor-bold-duotone text-surface-z3 text-3xl" aria-hidden="true"
           ></span>
-          <p class="text-ink-soft text-sm">Select a task to view details</p>
+          <p class="text-surface-z5 text-sm">Select a task to view details</p>
         </div>
       {/if}
     </div>
@@ -1406,7 +1406,7 @@ git commit -m "feat(preview): add projects page with tree navigation"
 
 <div class="flex flex-col gap-6 p-6">
   <div class="flex items-center justify-between">
-    <h1 class="text-ink text-2xl font-bold">Reports</h1>
+    <h1 class="text-surface-z8 text-2xl font-bold">Reports</h1>
     <Toolbar>
       <Select
         items={periodOptions}
@@ -1418,22 +1418,22 @@ git commit -m "feat(preview): add projects page with tree navigation"
 
   <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
     <div data-card class="flex min-h-52 flex-col items-center justify-center gap-2 p-4 text-center">
-      <span class="i-solar:chart-2-bold-duotone text-ink-faint text-3xl" aria-hidden="true"></span>
-      <p class="text-ink-soft text-sm">Task completion — Bar Chart</p>
-      <p class="text-ink-mute text-xs">Chart integration in progress</p>
+      <span class="i-solar:chart-2-bold-duotone text-surface-z3 text-3xl" aria-hidden="true"></span>
+      <p class="text-surface-z5 text-sm">Task completion — Bar Chart</p>
+      <p class="text-surface-z4 text-xs">Chart integration in progress</p>
     </div>
 
     <div data-card class="flex min-h-52 flex-col items-center justify-center gap-2 p-4 text-center">
-      <span class="i-solar:chart-bold-duotone text-ink-faint text-3xl" aria-hidden="true"></span>
-      <p class="text-ink-soft text-sm">Velocity over time — Line Chart</p>
-      <p class="text-ink-mute text-xs">Chart integration in progress</p>
+      <span class="i-solar:chart-bold-duotone text-surface-z3 text-3xl" aria-hidden="true"></span>
+      <p class="text-surface-z5 text-sm">Velocity over time — Line Chart</p>
+      <p class="text-surface-z4 text-xs">Chart integration in progress</p>
     </div>
   </div>
 
   <div data-card class="flex min-h-32 flex-col items-center justify-center gap-2 p-4 text-center">
-    <span class="i-solar:table-bold-duotone text-ink-faint text-3xl" aria-hidden="true"></span>
-    <p class="text-ink-soft text-sm">Summary Data Table</p>
-    <p class="text-ink-mute text-xs">DataTable component coming soon</p>
+    <span class="i-solar:table-bold-duotone text-surface-z3 text-3xl" aria-hidden="true"></span>
+    <p class="text-surface-z5 text-sm">Summary Data Table</p>
+    <p class="text-surface-z4 text-xs">DataTable component coming soon</p>
   </div>
 </div>
 ```
@@ -1470,7 +1470,7 @@ git commit -m "feat(preview): add reports page"
 </script>
 
 <div class="flex flex-col gap-6 p-6">
-  <h1 class="text-ink text-2xl font-bold">Admin</h1>
+  <h1 class="text-surface-z8 text-2xl font-bold">Admin</h1>
 
   <Tabs
     items={tabs}
@@ -1481,41 +1481,41 @@ git commit -m "feat(preview): add reports page"
   <div class="mt-2">
     {#if activeTab === 'profile'}
       <div data-card class="flex max-w-lg flex-col gap-4 p-6">
-        <h2 class="text-ink-mute text-base font-semibold">Profile Settings</h2>
-        <p class="text-ink-soft text-sm">
+        <h2 class="text-surface-z7 text-base font-semibold">Profile Settings</h2>
+        <p class="text-surface-z5 text-sm">
           Full form editing with FormRenderer, validation, and lookup fields will be demonstrated
           here.
         </p>
         <div class="flex flex-col gap-3 opacity-60">
-          <div class="bg-paper-mute h-9 rounded-md"></div>
-          <div class="bg-paper-mute h-9 rounded-md"></div>
-          <div class="bg-paper-mute h-9 rounded-md"></div>
+          <div class="bg-surface-z2 h-9 rounded-md"></div>
+          <div class="bg-surface-z2 h-9 rounded-md"></div>
+          <div class="bg-surface-z2 h-9 rounded-md"></div>
         </div>
-        <p class="text-ink-mute text-xs">FormRenderer integration coming soon</p>
+        <p class="text-surface-z4 text-xs">FormRenderer integration coming soon</p>
       </div>
     {:else if activeTab === 'team'}
       <div
         data-card
         class="flex min-h-40 flex-col items-center justify-center gap-2 p-6 text-center"
       >
-        <span class="i-solar:table-bold-duotone text-ink-faint text-3xl" aria-hidden="true"></span>
-        <p class="text-ink-soft text-sm">Team members DataTable</p>
-        <p class="text-ink-mute text-xs">DataTable component coming soon</p>
+        <span class="i-solar:table-bold-duotone text-surface-z3 text-3xl" aria-hidden="true"></span>
+        <p class="text-surface-z5 text-sm">Team members DataTable</p>
+        <p class="text-surface-z4 text-xs">DataTable component coming soon</p>
       </div>
     {:else if activeTab === 'appearance'}
       <div data-card class="flex max-w-sm flex-col gap-4 p-6">
-        <h2 class="text-ink-mute text-base font-semibold">Appearance</h2>
-        <p class="text-ink-soft text-sm">
+        <h2 class="text-surface-z7 text-base font-semibold">Appearance</h2>
+        <p class="text-surface-z5 text-sm">
           Use the theme panel (bottom-right) to switch skin and mode live.
         </p>
         <div class="flex flex-col gap-2">
-          <p class="text-ink-soft text-xs font-semibold tracking-wide uppercase">
+          <p class="text-surface-z5 text-xs font-semibold tracking-wide uppercase">
             Available Skins
           </p>
           <div class="flex flex-wrap gap-2">
             {#each skins as skin}
               <span
-                class="border-paper-edge text-ink-soft rounded border px-2 py-1 text-xs capitalize"
+                class="border-surface-z3 text-surface-z6 rounded border px-2 py-1 text-xs capitalize"
                 >{skin}</span
               >
             {/each}
@@ -1548,7 +1548,7 @@ In the header section, add a "Preview" link alongside the GitHub link:
 <!-- Add after the ThemeSwitcherToggle -->
 <a
   href="/preview"
-  class="text-ink-soft hover:text-ink hover:bg-paper-mute flex h-9 items-center gap-1.5 rounded-md px-3 text-sm no-underline"
+  class="text-surface-z5 hover:text-surface-z8 hover:bg-surface-z2 flex h-9 items-center gap-1.5 rounded-md px-3 text-sm no-underline"
   title="Preview — Nexus App"
 >
   <span class="i-solar:atom-bold-duotone inline-block text-base" aria-hidden="true"></span>
