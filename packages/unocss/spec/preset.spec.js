@@ -622,17 +622,18 @@ describe('presetRokkit', () => {
 		it('emits the 18+ named tokens in :root', () => {
 			const preset = presetRokkit()
 			const css = preset.preflights[0].getCSS()
-			expect(css).toContain('--paper:')
-			expect(css).toContain('--paper-soft:')
-			expect(css).toContain('--paper-mute:')
-			expect(css).toContain('--paper-edge:')
-			expect(css).toContain('--ink:')
-			expect(css).toContain('--ink-mute:')
-			expect(css).toContain('--primary:')
-			expect(css).toContain('--on-primary:')
-			expect(css).toContain('--accent:')
-			expect(css).toContain('--accent-soft:')
-			expect(css).toContain('--focus-ring:')
+			const lightRegion = css.split('[data-mode="dark"]')[0]
+			expect(lightRegion).toContain('--paper:')
+			expect(lightRegion).toContain('--paper-soft:')
+			expect(lightRegion).toContain('--paper-mute:')
+			expect(lightRegion).toContain('--paper-edge:')
+			expect(lightRegion).toContain('--ink:')
+			expect(lightRegion).toContain('--ink-mute:')
+			expect(lightRegion).toContain('--primary:')
+			expect(lightRegion).toContain('--on-primary:')
+			expect(lightRegion).toContain('--accent:')
+			expect(lightRegion).toContain('--accent-soft:')
+			expect(lightRegion).toContain('--focus-ring:')
 		})
 
 		it('emits z-aliases pointing at named layer (no palette indirection)', () => {
@@ -711,9 +712,10 @@ describe('presetRokkit', () => {
 				overrides: { 'paper-edge': 'kami.800' }
 			})
 			const css = preset.preflights[0].getCSS()
+			const lightRegion = css.split('[data-mode="dark"]')[0]
 			// Override emits AFTER the default named-token assignment, so the
 			// rightmost `--paper-edge:` wins.
-			expect(css).toContain('--paper-edge:rgb(34, 34, 34)')
+			expect(lightRegion).toContain('--paper-edge:rgb(34, 34, 34)')
 		})
 
 		it('reserved-name override with { light, dark } applies per-mode', () => {
@@ -737,6 +739,25 @@ describe('presetRokkit', () => {
 			const [rootBlock, darkBlock] = css.split('[data-mode="dark"]')
 			expect(rootBlock).toContain('--paper-edge:rgb(170, 170, 170)')
 			expect(darkBlock).toContain('--paper-edge:rgb(204, 204, 204)')
+		})
+
+		it('emits light token vars under :root and [data-mode="light"] so a nested data-mode="light" re-asserts them', () => {
+			const preset = presetRokkit()
+			const css = preset.preflights[0].getCSS()
+
+			expect(css).toContain(':root, [data-mode="light"]{')
+			const lightIdx = css.indexOf('[data-mode="light"]')
+			expect(lightIdx).toBeGreaterThan(-1)
+			expect(css.slice(lightIdx)).toContain('--paper:')
+		})
+
+		it('keeps mode-independent vars (radius/font) under :root only', () => {
+			const preset = presetRokkit({ shape: { radius: 'soft' } })
+			const css = preset.preflights[0].getCSS()
+			const start = css.indexOf(':root, [data-mode="light"]{')
+			const lightBlock = css.slice(start, css.indexOf('}', start) + 1)
+			expect(lightBlock).not.toContain('--radius-md')
+			expect(css).toContain('--radius-md')
 		})
 	})
 
@@ -915,25 +936,6 @@ describe('presetRokkit', () => {
 			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
 			expect(keys).toContain('ring-glow-ring')
 		})
-	})
-
-	it('emits light token vars under :root and [data-mode="light"] so a nested data-mode="light" re-asserts them', () => {
-		const preset = presetRokkit()
-		const css = preset.preflights[0].getCSS()
-
-		expect(css).toContain(':root, [data-mode="light"]{')
-		const lightIdx = css.indexOf('[data-mode="light"]')
-		expect(lightIdx).toBeGreaterThan(-1)
-		expect(css.slice(lightIdx)).toContain('--paper:')
-	})
-
-	it('keeps mode-independent vars (radius/font) under :root only', () => {
-		const preset = presetRokkit({ shape: { radius: 'soft' } })
-		const css = preset.preflights[0].getCSS()
-		const start = css.indexOf(':root, [data-mode="light"]{')
-		const lightBlock = css.slice(start, css.indexOf('}', start) + 1)
-		expect(lightBlock).not.toContain('--radius-md')
-		expect(css).toContain('--radius-md')
 	})
 
 	describe('preflights — per-role tokens mode', () => {
