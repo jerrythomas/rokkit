@@ -3,8 +3,6 @@ import {
   NAMED_TOKENS,
   NAMED_TOKEN_SHADE_MAP,
   NAMED_TOKEN_ROLE_MAP,
-  Z_COLLAPSE_MAP_SURFACE,
-  Z_COLLAPSE_MAP_INK,
   shadeForNamedToken,
   roleForNamedToken
 } from '../src/named-tokens.ts'
@@ -118,46 +116,6 @@ describe('NAMED_TOKEN_ROLE_MAP', () => {
   it('routes focus-ring through accent and shadow-tint through ink', () => {
     expect(NAMED_TOKEN_ROLE_MAP['focus-ring']).toBe('accent')
     expect(NAMED_TOKEN_ROLE_MAP['shadow-tint']).toBe('ink')
-  })
-})
-
-describe('Z_COLLAPSE_MAP_SURFACE (z-slot → named slot)', () => {
-  it('collapses z2/z3 to paper-mute', () => {
-    expect(Z_COLLAPSE_MAP_SURFACE['z2']).toBe('paper-mute')
-    expect(Z_COLLAPSE_MAP_SURFACE['z3']).toBe('paper-mute')
-  })
-
-  it('collapses z9/z10 to ink', () => {
-    expect(Z_COLLAPSE_MAP_SURFACE['z9']).toBe('ink')
-    expect(Z_COLLAPSE_MAP_SURFACE['z10']).toBe('ink')
-  })
-
-  it('maps z0..z4 to paper ladder', () => {
-    expect(Z_COLLAPSE_MAP_SURFACE['z0']).toBe('paper')
-    expect(Z_COLLAPSE_MAP_SURFACE['z1']).toBe('paper-soft')
-    expect(Z_COLLAPSE_MAP_SURFACE['z4']).toBe('paper-edge')
-  })
-})
-
-describe('Z_COLLAPSE_MAP_INK (inverted)', () => {
-  it('maps z0 to ink (inverted)', () => {
-    expect(Z_COLLAPSE_MAP_INK['z0']).toBe('ink')
-  })
-
-  it('maps z10 to paper (inverted)', () => {
-    expect(Z_COLLAPSE_MAP_INK['z10']).toBe('paper')
-  })
-
-  it('maps z5/z6 to paper-edge in the inverted middle ladder', () => {
-    expect(Z_COLLAPSE_MAP_INK['z5']).toBe('paper-edge')
-    expect(Z_COLLAPSE_MAP_INK['z6']).toBe('paper-edge')
-  })
-
-  it('maps z1/z2 to ink-mute and z3/z4 to ink-soft', () => {
-    expect(Z_COLLAPSE_MAP_INK['z1']).toBe('ink-mute')
-    expect(Z_COLLAPSE_MAP_INK['z2']).toBe('ink-mute')
-    expect(Z_COLLAPSE_MAP_INK['z3']).toBe('ink-soft')
-    expect(Z_COLLAPSE_MAP_INK['z4']).toBe('ink-soft')
   })
 })
 

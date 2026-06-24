@@ -183,20 +183,6 @@ export const DEFAULT_THEME_MAPPING = {
 	info: 'cyan'
 }
 
-export const TONE_MAP = {
-	z0: 50,
-	z1: 100,
-	z2: 200,
-	z3: 300,
-	z4: 400,
-	z5: 500,
-	z6: 600,
-	z7: 700,
-	z8: 800,
-	z9: 900,
-	z10: 950
-}
-
 export const INVERTED_ROLES = new Set(['ink'])
 
 /**
