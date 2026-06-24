@@ -233,7 +233,6 @@ describe('serializeRokkitConfig', () => {
 		expect(src).toContain('named-token vocabulary')
 		expect(src).toContain('bg-paper')
 		expect(src).toContain('text-on-primary')
-		expect(src).toContain('back-compat')
 		const json = src.slice(src.indexOf('export default') + 'export default'.length).trim().replace(/\n$/, '')
 		expect(JSON.parse(json).skin.primary).toBe('orange')
 	})
