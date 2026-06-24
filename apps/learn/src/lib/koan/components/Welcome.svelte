@@ -100,7 +100,7 @@
 		position: relative;
 		min-height: 100vh;
 		overflow-y: auto;
-		color: var(--color-ink-z1);
+		color: var(--ink-mute);
 	}
 	.toolbar {
 		position: absolute;
@@ -112,7 +112,7 @@
 	}
 	/* Force toolbar buttons to inherit mode-reactive ink color */
 	.toolbar :global([data-button]) {
-		color: var(--color-ink-z2);
+		color: var(--ink-mute);
 	}
 	.hero {
 		max-width: 720px;
@@ -134,18 +134,18 @@
 		font-weight: 300;
 		margin: 0 0 12px;
 		letter-spacing: -0.02em;
-		color: var(--color-ink-z1);
+		color: var(--ink-mute);
 	}
 	.copy .tagline {
 		font-family: var(--font-script, 'Caveat', cursive);
 		font-size: 24px;
-		color: var(--color-ink-z3);
+		color: var(--ink-soft);
 		margin: 0 0 16px;
 	}
 	.copy .lede {
 		font-size: 15px;
 		line-height: 1.6;
-		color: var(--color-ink-z2);
+		color: var(--ink-mute);
 		max-width: 480px;
 		margin: 0 auto;
 	}
@@ -153,7 +153,7 @@
 		display: flex;
 		align-items: center;
 		gap: 16px;
-		color: var(--color-accent-z5);
+		color: var(--accent);
 	}
 	.hand-arrow {
 		display: block;
@@ -161,7 +161,7 @@
 		height: 100px;
 		opacity: 0.7;
 		transform: translateY(-40px) rotate(-12deg);
-		color: var(--color-accent-z5);
+		color: var(--accent);
 	}
 	.input-row {
 		display: flex;

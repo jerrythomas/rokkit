@@ -1,8 +1,8 @@
 /**
  * Chart - Zen-Sumi Theme Styles
  *
- * Ink-wash aesthetic. Axes and grids: hairline surface-z2.
- * Labels: surface-z5 (secondary text). Dimmed elements: very low opacity.
+ * Ink-wash aesthetic. Axes and grids: hairline paper-mute.
+ * Labels: ink-soft (secondary text). Dimmed elements: very low opacity.
  */
 
 [data-style='zen-sumi'] [data-chart-axis-line],

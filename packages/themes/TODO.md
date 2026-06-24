@@ -35,11 +35,11 @@ Each theme should define its own site-nav variant consistent with its design lan
 }
 
 .site-nav [data-list]:not(:focus-within) [data-list-item][data-active='true'] {
-  @apply from-primary-z5 to-secondary-z5 text-primary-z9 border-l-primary-z4 border-l-2 bg-gradient-to-r;
+  @apply from-primary to-accent text-on-primary border-l-primary border-l-2 bg-gradient-to-r;
 }
 
 .site-nav [data-list]:not(:focus-within) [data-list-item][data-active='true'] [data-item-icon] {
-  @apply text-primary-z9;
+  @apply text-on-primary;
 }
 ```
 

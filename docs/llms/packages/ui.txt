@@ -14,6 +14,53 @@ npm install @rokkit/ui
 
 ---
 
+## LockMode
+
+Renders a subtree pinned to a fixed color mode regardless of the document mode. Statically
+renders `data-mode` for a correct SSR first paint, then applies the `lockMode` action from
+`@rokkit/actions` on hydration to mirror the root's `data-style`/`data-skin`/`data-density`
+and observe runtime changes.
+
+```svelte
+<script>
+  import { LockMode } from '@rokkit/ui'
+</script>
+
+<!-- Always renders in dark mode, even inside a light-mode document -->
+<LockMode mode="dark">
+  <Card>This card is always dark</Card>
+</LockMode>
+
+<!-- Light island inside a dark page -->
+<LockMode mode="light">
+  <Button>Always light</Button>
+</LockMode>
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `mode` | `'dark'\|'light'` | required | Color mode to lock this region to |
+| `children` | `Snippet` | required | Content rendered inside the locked region |
+| `class` | `string` | `''` | Additional CSS class on the wrapper `<div>` |
+
+### How it works
+
+- Renders a `<div data-mode={mode}>` so `@rokkit/themes` component CSS (which keys off
+  `[data-mode][data-style]`) engages from the first server render.
+- Applies `use:lockMode={mode}` (from `@rokkit/actions`) on hydration: mirrors `data-style`,
+  `data-skin`, and `data-density` from `document.documentElement` and observes root
+  mutations, keeping the locked region's style/skin/density in sync.
+- The locked mode is fixed at mount. Re-mount with a different `mode` prop to change it.
+
+Prerequisite: the `@rokkit/unocss` preset must be at version ≥ 1.2.1, which emits light
+token vars under `:root, [data-mode="light"]` (making a nested `data-mode="light"` element
+re-assert them). Dark works with any version since `[data-mode="dark"]` was always a
+standalone selector.
+
+---
+
 ## CommandPalette
 
 Modal command search UI backed by the `commands` registry from `@rokkit/states`.
@@ -79,12 +126,12 @@ Full reference: [components/command-palette.txt](/llms/components/command-palett
 ## Import
 
 ```javascript
-import { CommandPalette } from '@rokkit/ui'
+import { CommandPalette, LockMode } from '@rokkit/ui'
 
 // Full set — see index.txt for the complete list
 import {
   List, Tree, LazyTree, Select, MultiSelect, Tabs, Toggle, Table,
-  Toolbar, ToolbarGroup, Menu, CommandPalette,
+  Toolbar, ToolbarGroup, Menu, CommandPalette, LockMode,
   Button, ButtonGroup, Dropdown
 } from '@rokkit/ui'
 ```

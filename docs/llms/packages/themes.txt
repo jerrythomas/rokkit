@@ -206,7 +206,7 @@ See the [Skins guide](/llms/guides/skins.txt) for the full runtime-switching pat
 
 ## Utility Classes and Data Attributes
 
-For utility classes (named tokens: `bg-paper`, `text-ink`, `bg-primary`, `text-on-primary`; z-scale `bg-*-z*` is back-compat) and the full data attribute reference, see `docs/llms/index.txt`.
+For utility classes (named tokens: `bg-paper`, `text-ink`, `bg-primary`, `text-on-primary`) and the full data attribute reference, see `docs/llms/index.txt`.
 
 ## Import
 

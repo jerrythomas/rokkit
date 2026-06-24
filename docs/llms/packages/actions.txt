@@ -250,6 +250,37 @@ Events: `swipeLeft`, `swipeRight`, `swipeUp`, `swipeDown`
 
 ---
 
+## `lockMode` — Fixed Color Mode Region
+
+Pins a subtree to a fixed color mode (`'dark'` or `'light'`) regardless of the document's
+active mode. On mount it mirrors the root's `data-style`, `data-skin`, and `data-density`
+onto the element and forces `data-mode` to the locked value. A `MutationObserver` keeps
+the mirrored attributes in sync when the root changes at runtime; the mode stays pinned.
+
+Mode is fixed at mount — the value passed at creation time is used for the lifetime of the
+effect. To change the locked mode, re-mount the element.
+
+```svelte
+<script>
+  import { lockMode } from '@rokkit/actions'
+</script>
+
+<section use:lockMode={'dark'}>
+  <!-- Always renders in dark mode regardless of document mode -->
+</section>
+```
+
+### Signature
+
+```javascript
+lockMode(node: HTMLElement, mode: 'dark' | 'light'): void
+```
+
+Use the `LockMode` component from `@rokkit/ui` for SSR-safe usage — it statically renders
+`data-mode` on the server and applies this action on hydration.
+
+---
+
 ## `themable` — Theme Attribute Sync
 
 Syncs a theme state object to `data-style`, `data-mode`, `data-density`, and `data-skin`
@@ -471,7 +502,7 @@ any object that satisfies `{ resolve(event): Command|null, execute(id): void }`.
 import {
   // Actions
   keyboard, pannable, swipeable,
-  themable, skinnable, dismissable, fillable, reveal,
+  themable, skinnable, lockMode, dismissable, fillable, reveal,
   hoverLift, magnetic, ripple, delegateKeyboardEvents,
   shortcuts, tooltip,
 

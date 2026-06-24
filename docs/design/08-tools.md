@@ -105,7 +105,7 @@ export default defineConfig({
 ### Shortcuts
 
 For each color role (primary, secondary, surface, etc.):
-- z-level semantic shortcuts (`bg-surface-z2`, `text-primary-z6`, etc.) that resolve to the correct Tailwind shade pair for light/dark mode
+- named-token shortcuts (`bg-paper`, `text-ink-mute`, `bg-primary`, `text-on-primary`, etc.) that resolve automatically for light/dark mode
 
 For each named skin (from `config.skins`):
 - `skin-<name>` shortcut that sets all CSS color variables for that skin

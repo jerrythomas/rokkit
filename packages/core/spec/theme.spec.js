@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { shadesOf, themeRules, semanticShortcuts, Theme } from '../src/theme'
+import { shadesOf, themeRules, Theme } from '../src/theme'
 import { INVERTED_ROLES } from '../src/constants'
 
 const palettes = ['primary', 'secondary', 'other']
@@ -28,10 +28,13 @@ describe('Theme class', () => {
 		expect(palette).toHaveProperty('--color-tertiary-500')
 	})
 
-	it('should generate tertiary semantic shortcuts', () => {
+	it('should generate tertiary contrast shortcuts', () => {
 		const theme = new Theme()
 		const shortcuts = theme.getShortcuts('tertiary')
-		expect(shortcuts.length).toBeGreaterThan(0)
+		expect(shortcuts.length).toBe(2)
+		expect(shortcuts[0][0]).toBeInstanceOf(RegExp)
+		expect(shortcuts[0][0].source).toContain('text-on-tertiary')
+		expect(shortcuts[1][0].source).toContain('text-on-tertiary-muted')
 	})
 
 	it('should set and get colors using public API only', () => {
@@ -63,11 +66,13 @@ describe('Theme class', () => {
 		expect(paletteCustom['--color-accent']).toEqual('rgb(56, 189, 248)')
 	})
 
-	it('should get semantic shortcuts', () => {
+	it('should get contrast shortcuts only', () => {
 		const theme = new Theme()
 		const shortcuts = theme.getShortcuts('secondary')
 		expect(Array.isArray(shortcuts)).toBe(true)
-		expect(shortcuts.length).toBeGreaterThan(0)
+		expect(shortcuts.length).toBe(2)
+		expect(shortcuts[0][0].source).toContain('text-on-secondary')
+		expect(shortcuts[1][0].source).toContain('text-on-secondary-muted')
 	})
 
 	it('should get colors using shadesOf', () => {
@@ -420,33 +425,6 @@ describe('resolveColors — nullable fallback chain', () => {
   })
 })
 
-describe('getZScaleCSS — inverted roles', () => {
-	it('should generate inverted z-scale for ink (z1 light → shade 900)', () => {
-		const theme = new Theme()
-		const css = theme.getZScaleCSS()
-		// Normal: surface z1 → 100 in light
-		expect(css).toContain('--color-surface-z1: var(--color-surface-100);')
-		// Inverted: ink z1 → 900 in light (1000 - 100 = 900)
-		expect(css).toContain('--color-ink-z1: var(--color-ink-900);')
-	})
-
-	it('should generate inverted dark z-scale for ink (z1 dark → shade 100)', () => {
-		const theme = new Theme()
-		const css = theme.getZScaleCSS()
-		// In the dark block: normal surface z1 → 900
-		// In the dark block: inverted ink z1 → 100
-		const darkBlock = css.split('[data-mode="dark"]')[1]
-		expect(darkBlock).toContain('--color-ink-z1: var(--color-ink-100);')
-		expect(darkBlock).toContain('--color-surface-z1: var(--color-surface-900);')
-	})
-
-	it('should keep z5 identical for both surface and ink (midpoint)', () => {
-		const theme = new Theme()
-		const css = theme.getZScaleCSS()
-		expect(css).toContain('--color-surface-z5: var(--color-surface-500);')
-		expect(css).toContain('--color-ink-z5: var(--color-ink-500);')
-	})
-})
 
 describe('Theme.getNamedTokens', () => {
   it('returns a CSS-var map keyed by --{named}', () => {
@@ -552,63 +530,32 @@ describe('Theme.getNamedTokens', () => {
   })
 })
 
-describe('Theme.getZAliasesForCore', () => {
-  it('emits surface z-aliases pointing at the named layer', () => {
-    const theme = new Theme({
-      mapping: { surface: 'slate', ink: 'slate' },
-      colorSpace: 'rgb'
-    })
-    const aliases = theme.getZAliasesForCore('surface')
-    expect(aliases['--color-surface-z0']).toBe('var(--paper)')
-    expect(aliases['--color-surface-z1']).toBe('var(--paper-soft)')
-    expect(aliases['--color-surface-z2']).toBe('var(--paper-mute)')
-    expect(aliases['--color-surface-z3']).toBe('var(--paper-mute)')
-    expect(aliases['--color-surface-z4']).toBe('var(--paper-edge)')
-    expect(aliases['--color-surface-z9']).toBe('var(--ink)')
-    expect(aliases['--color-surface-z10']).toBe('var(--ink)')
+describe('Theme.getRoleBaseAlias', () => {
+  it('returns bare --color-surface alias pointing at var(--paper)', () => {
+    const theme = new Theme({ mapping: { surface: 'slate', ink: 'slate' }, colorSpace: 'rgb' })
+    const alias = theme.getRoleBaseAlias('surface')
+    expect(alias).toEqual({ '--color-surface': 'var(--paper)' })
   })
 
-  it('emits ink z-aliases pointing at the inverted named layer', () => {
-    const theme = new Theme({
-      mapping: { surface: 'slate', ink: 'slate' },
-      colorSpace: 'rgb'
-    })
-    const aliases = theme.getZAliasesForCore('ink')
-    expect(aliases['--color-ink-z0']).toBe('var(--ink)')
-    expect(aliases['--color-ink-z9']).toBe('var(--paper-soft)')
-    expect(aliases['--color-ink-z10']).toBe('var(--paper)')
+  it('returns bare --color-ink alias pointing at var(--ink)', () => {
+    const theme = new Theme({ mapping: { surface: 'slate', ink: 'slate' }, colorSpace: 'rgb' })
+    const alias = theme.getRoleBaseAlias('ink')
+    expect(alias).toEqual({ '--color-ink': 'var(--ink)' })
   })
 
-  it('emits primary z-aliases collapsed to --primary (no soft companion)', () => {
-    const theme = new Theme({
-      mapping: { surface: 'slate', primary: 'orange' },
-      colorSpace: 'rgb'
-    })
-    const aliases = theme.getZAliasesForCore('primary')
-    expect(aliases['--color-primary-z5']).toBe('var(--primary)')
-    // primary has no -soft companion; z0-z2 collapse to --primary too
-    expect(aliases['--color-primary-z1']).toBe('var(--primary)')
+  it('returns bare --color-{role} alias for other roles', () => {
+    const theme = new Theme({ mapping: { surface: 'slate', primary: 'orange' }, colorSpace: 'rgb' })
+    expect(theme.getRoleBaseAlias('primary')).toEqual({ '--color-primary': 'var(--primary)' })
+    expect(theme.getRoleBaseAlias('accent')).toEqual({ '--color-accent': 'var(--accent)' })
   })
 
-  it('emits accent z-aliases with accent-soft at z0-z2 and accent at z5+', () => {
-    const theme = new Theme({
-      mapping: { surface: 'slate', accent: 'sky' },
-      colorSpace: 'rgb'
-    })
-    const aliases = theme.getZAliasesForCore('accent')
-    expect(aliases['--color-accent-z5']).toBe('var(--accent)')
-    expect(aliases['--color-accent-z1']).toBe('var(--accent-soft)')
-  })
-
-  it('emits status z-aliases (success) with success-soft at low z and success at high z', () => {
-    const theme = new Theme({
-      mapping: { surface: 'slate', success: 'green' },
-      colorSpace: 'rgb'
-    })
-    const aliases = theme.getZAliasesForCore('success')
-    expect(aliases['--color-success-z1']).toBe('var(--success-soft)')
-    expect(aliases['--color-success-z5']).toBe('var(--success)')
-    expect(aliases['--color-success-z7']).toBe('var(--success)')
+  it('does not emit any z-tone vars', () => {
+    const theme = new Theme({ mapping: { surface: 'slate', ink: 'slate', primary: 'orange' }, colorSpace: 'rgb' })
+    for (const role of ['surface', 'ink', 'primary']) {
+      const alias = theme.getRoleBaseAlias(role)
+      const keys = Object.keys(alias)
+      expect(keys.some(k => /z\d/.test(k))).toBe(false)
+    }
   })
 })
 
@@ -682,99 +629,6 @@ describe('Theme.getZAliasesForExtended (named-as-aliases-of-palette)', () => {
   })
 })
 
-describe('semanticShortcuts', () => {
-	it('should generate shortcuts for secondary color', () => {
-		const shortcuts = semanticShortcuts('secondary')
-		expect(shortcuts.length).toBe(11 * 3 * 14)
-		expect(shortcuts[0]).toEqual([/^(.+):bg-secondary-z0(\/\d+)?$/, expect.any(Function)])
-		expect(shortcuts[1]).toEqual([/^bg-secondary-z0(\/\d+)?$/, expect.any(Function)])
-		expect(shortcuts[2]).toEqual(['bg-secondary-z0', 'bg-secondary-50 dark:bg-secondary-950'])
-		expect(shortcuts[3]).toEqual([/^(.+):border-secondary-z0(\/\d+)?$/, expect.any(Function)])
-		expect(shortcuts[4]).toEqual([/^border-secondary-z0(\/\d+)?$/, expect.any(Function)])
-		expect(shortcuts[5]).toEqual([
-			'border-secondary-z0',
-			'border-secondary-50 dark:border-secondary-950'
-		])
-		// border-l at index 6-8
-		expect(shortcuts[6]).toEqual([/^(.+):border-l-secondary-z0(\/\d+)?$/, expect.any(Function)])
-		expect(shortcuts[7]).toEqual([/^border-l-secondary-z0(\/\d+)?$/, expect.any(Function)])
-		expect(shortcuts[8]).toEqual([
-			'border-l-secondary-z0',
-			'border-l-secondary-50 dark:border-l-secondary-950'
-		])
-		// text at index 18-20
-		expect(shortcuts[18]).toEqual([/^(.+):text-secondary-z0(\/\d+)?$/, expect.any(Function)])
-		expect(shortcuts[19]).toEqual([/^text-secondary-z0(\/\d+)?$/, expect.any(Function)])
-		expect(shortcuts[20]).toEqual([
-			'text-secondary-z0',
-			'text-secondary-50 dark:text-secondary-950'
-		])
-	})
-
-	it('should execute variant pattern callback function (line 85)', () => {
-		const shortcuts = semanticShortcuts('primary')
-
-		// Find the variant pattern shortcut (first regex shortcut)
-		const variantShortcut = shortcuts.find(
-			([pattern]) => pattern instanceof RegExp && pattern.source.includes('(.+)')
-		)
-
-		expect(variantShortcut).toBeDefined()
-		const [, callback] = variantShortcut
-
-		// Test the callback function with matched groups
-		const result = callback(['hover:bg-primary-z0', 'hover', undefined])
-		expect(result).toBe('hover:bg-primary-50 hover:dark:bg-primary-950')
-
-		// Test with opacity
-		const resultWithOpacity = callback(['hover:bg-primary-z0/50', 'hover', '/50'])
-		expect(resultWithOpacity).toBe('hover:bg-primary-50/50 hover:dark:bg-primary-950/50')
-	})
-
-	it('should execute opacity pattern callback function (line 92)', () => {
-		const shortcuts = semanticShortcuts('primary')
-
-		// Find the opacity pattern shortcut (second regex shortcut without variant group)
-		const opacityShortcut = shortcuts.find(
-			([pattern]) =>
-				pattern instanceof RegExp &&
-				!pattern.source.includes('(.+)') &&
-				pattern.source.includes('(\\/')
-		)
-
-		expect(opacityShortcut).toBeDefined()
-		const [, callback] = opacityShortcut
-
-		// Test the callback function
-		const result = callback(['bg-primary-z0', undefined])
-		expect(result).toBe('bg-primary-50 dark:bg-primary-950')
-
-		// Test with opacity
-		const resultWithOpacity = callback(['bg-primary-z0/75', '/75'])
-		expect(resultWithOpacity).toBe('bg-primary-50/75 dark:bg-primary-950/75')
-	})
-
-	it('should invert light/dark for ink (INVERTED_ROLES)', () => {
-		const shortcuts = semanticShortcuts('ink')
-		// ink z1: light should be 900 (inverted from 100), dark should be 100
-		const z1Text = shortcuts.find(s => typeof s[0] === 'string' && s[0] === 'text-ink-z1')
-		expect(z1Text[1]).toBe('text-ink-900 dark:text-ink-100')
-
-		// ink z0: light should be 950 (inverted from 50), dark should be 50
-		const z0Bg = shortcuts.find(s => typeof s[0] === 'string' && s[0] === 'bg-ink-z0')
-		expect(z0Bg[1]).toBe('bg-ink-950 dark:bg-ink-50')
-
-		// ink z5: midpoint stays 500 (1000-500=500)
-		const z5Text = shortcuts.find(s => typeof s[0] === 'string' && s[0] === 'text-ink-z5')
-		expect(z5Text[1]).toBe('text-ink-500 dark:text-ink-500')
-	})
-
-	it('should NOT invert for normal roles like surface', () => {
-		const shortcuts = semanticShortcuts('surface')
-		const z1Text = shortcuts.find(s => typeof s[0] === 'string' && s[0] === 'text-surface-z1')
-		expect(z1Text[1]).toBe('text-surface-100 dark:text-surface-900')
-	})
-})
 
 describe('Theme.getNamedTokens with per-role modes', () => {
   it('emits inline values when role is core and palette aliases when extended', () => {

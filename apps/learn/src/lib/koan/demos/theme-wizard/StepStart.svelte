@@ -45,7 +45,7 @@
 
 <style>
 	.step h2 {
-		@apply text-ink-z1;
+		@apply text-ink-mute;
 		margin: 0 0 16px;
 		font-size: 18px;
 	}
@@ -59,21 +59,21 @@
 		flex-direction: column;
 		gap: 12px;
 		padding: 16px;
-		@apply bg-surface-z0 border border-surface-z2;
+		@apply bg-paper border border-paper-mute;
 		border-radius: var(--radius-md, 6px);
 		text-align: left;
 		cursor: pointer;
 		transition: border-color 120ms ease, box-shadow 120ms ease;
 	}
 	.card:hover {
-		@apply border-accent-z5;
+		@apply border-accent;
 	}
 	.card.selected {
-		@apply border-primary-z5;
-		box-shadow: 0 0 0 2px var(--color-primary-z5);
+		@apply border-primary;
+		box-shadow: 0 0 0 2px var(--primary);
 	}
 	.name {
-		@apply text-ink-z1;
+		@apply text-ink-mute;
 		font-size: 14px;
 		font-weight: 500;
 	}
@@ -91,17 +91,17 @@
 	.swatch {
 		width: 28px;
 		height: 28px;
-		@apply border border-surface-z2;
+		@apply border border-paper-mute;
 		border-radius: var(--radius-sm, 4px);
 	}
 	.role {
-		@apply text-ink-z4;
+		@apply text-ink-soft;
 		font-size: 9px;
 		text-transform: uppercase;
 		letter-spacing: 0.04em;
 	}
 	.palette {
-		@apply text-ink-z3;
+		@apply text-ink-soft;
 		font-size: 10px;
 		font-family: var(--font-mono);
 	}

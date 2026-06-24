@@ -57,6 +57,7 @@ export type ShellDemoType =
 	| 'tooltip'
 	| 'code-group'
 	| 'effects'
+	| 'lock-mode'
 
 export const shell = $state<{
 	phase: ShellPhase

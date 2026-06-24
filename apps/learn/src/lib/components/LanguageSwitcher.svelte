@@ -8,7 +8,7 @@
 <div class="flex gap-[2px]">
 	{#each locales as locale (locale)}
 		<button
-			class="px-2 py-1 text-[10px] font-medium rounded tracking-[0.04em] transition-all duration-[120ms] {currentLocale === locale ? 'bg-surface-z9 text-surface-z0' : 'text-surface-z4 hover:bg-surface-z1 hover:text-ink-z3'}"
+			class="px-2 py-1 text-[10px] font-medium rounded tracking-[0.04em] transition-all duration-[120ms] {currentLocale === locale ? 'bg-ink text-paper' : 'text-paper-edge hover:bg-paper-soft hover:text-ink-soft'}"
 			onclick={() => setLocale(locale)}
 		>
 			{localeLabels[locale] ?? locale}

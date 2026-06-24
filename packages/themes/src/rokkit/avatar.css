@@ -23,7 +23,7 @@
   @apply bg-error;
 }
 
-/* Status dot border matches surrounding background — uses surface-z1 as a neutral */
+/* Status dot border matches surrounding background — uses paper-soft as a neutral */
 [data-style='rokkit'] [data-avatar-status] {
   @apply border-paper-soft;
 }

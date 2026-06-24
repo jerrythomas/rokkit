@@ -18,6 +18,7 @@ export {
 	List,
 	Tree,
 	LazyTree,
+	LockMode,
 	FloatingAction,
 	FloatingNavigation,
 	PaletteManager,

@@ -5847,3 +5847,114 @@ remaining are all crossed off; only the unchecked Koan-catalog-route
 TBD (a non-priority follow-up) is queued.
 
 Lint: 0 errors. Tests: 3503 passed.
+
+## 2026-06-23 — LockMode feature: fixed-mode regions
+
+**What was built**
+
+Full end-to-end implementation of the LockMode feature — pins any subtree to a fixed
+color mode (`dark` or `light`) regardless of the document mode. Four deliverables:
+
+1. **Preset light-block symmetry fix** (`packages/unocss/src/preset.ts`) — light token
+   vars are now emitted under `:root, [data-mode="light"]` instead of `:root` only.
+   This makes `data-mode="light"` nestable (dark was already a standalone selector; now
+   light is symmetric). Added two regression tests in `packages/unocss/spec/preset.spec.js`.
+
+2. **`lockMode` action** (`packages/actions/src/lock-mode.svelte.js`) — Svelte action
+   that on mount copies `data-style`/`data-skin`/`data-density` from
+   `document.documentElement` onto the element, forces `data-mode` to the locked value,
+   and installs a `MutationObserver` to re-sync style/skin/density on root changes.
+   Mode is fixed at mount; observer disconnects on destroy. Exported from
+   `packages/actions/src/index.js`. Four spec tests in
+   `packages/actions/spec/lock-mode.spec.svelte.js`.
+
+3. **`LockMode` component** (`packages/ui/src/components/LockMode.svelte`) — SSR-safe
+   wrapper: statically renders `data-mode={mode}` (correct on first paint) then applies
+   `use:lockMode={mode}` on hydration. Props: `mode` (required), `children`, `class`.
+   Types: `packages/ui/src/types/lock-mode.ts`. Exported via
+   `packages/ui/src/components/index.ts`.
+
+4. **Demo + e2e** (`apps/learn/src/routes/(app)/lock-mode/`,
+   `apps/learn/e2e/lock-mode.e2e.ts`) — live doc page in the koan demo app at
+   `/app/lock-mode` demonstrating a dark island in a light page and a light island in a
+   dark page. Two Playwright e2e tests verify `--paper` token differs between the locked
+   region and the surrounding document.
+
+**Key design decisions**
+
+- Bidirectional locking enabled by the `:root, [data-mode="light"]` preset change.
+  Without it, a `data-mode="light"` on a nested element would inherit dark vars from
+  `[data-mode="dark"]` on the root and get no light override.
+- `lockMode` mirrors `style`/`skin`/`density` (not `direction`), matching what `themable`
+  actually stamps on the root.
+- Mode is intentionally fixed at mount (not reactive to prop changes) — the action is a
+  one-time sync, not a binding. Re-mount to change mode.
+- `LockMode` component favoured over raw action for the SSR-safety guarantee: static
+  `data-mode` on the server ensures tokens and component CSS are correct before JS runs.
+
+**Feature commit hashes**
+
+- `59d90fe0` — fix(unocss): emit light vars under :root,[data-mode=light]
+- `808fc35c` — feat(actions): add lockMode action
+- `4efd691b` — feat(ui): add LockMode component
+- `1522c88d` — test(learn): e2e + demo page for LockMode
+- `d9ee27d3`, `1d8e3a13`, `b8ffbc9f`, `2afc592a` — additional task work
+
+Lint: 0 errors (88 warnings, all pre-existing). Tests: 3579 passed (261 files).
+
+---
+
+## 2026-06-24 — Drop legacy z-scale
+
+Removed the legacy z-tone token dialect entirely — `--color-{role}-z{n}` CSS vars and
+`bg-surface-z1` / `text-primary-z5` utility classes. These had been a back-compat layer
+collapsing onto the named tokens; named tokens (`paper`/`ink`/`primary`/…) are now the only
+vocabulary. The unrelated `tokens: 'extended'` numeric ladder (`--color-{role}-{shade}`) is
+kept.
+
+**What changed**
+
+- **Consumers migrated first** (build stayed green throughout): `apps/learn/src` via a
+  throwaway codemod applying the documented mapping (surface z0=paper … z9/z10=ink; ink
+  inverted; primary→primary; status z0–z2→`-soft`, z3+→solid); `packages/themes/src` (12
+  zen-sumi files) + `packages/chart` z-tone refs migrated (chart's numeric ladder left
+  intact); dead z-tone safelist dropped from `apps/learn/uno.config.js`.
+- **Generators removed**: z-utility shortcut generation (`semanticShortcuts`/`toneShortcuts`
+  /`SEMANTIC_PREFIXES`; `getShortcuts` now returns only the on-color `contrastShortcuts`);
+  z-var emission in the preset `buildVarsForMode` — the bare `--color-{role}` alias (backs
+  preset-wind3 `from-`/`to-`/`divide-` utilities) was PRESERVED via a new `getRoleBaseAlias`;
+  `getZScaleCSS` + its `@rokkit/themes` build injection; the dead `TONE_MAP`,
+  `ZSlot`/`Z_SLOTS`/`Z_COLLAPSE_MAP_*`; and the `rokkit doctor` z-scale advisory.
+- **Docs**: z-scale teaching removed from live docs (skills, `docs/llms` source,
+  `docs/design/*`, `unocss/README.md`, `init.js` header, themes CSS comments). Dated/
+  historical docs (`docs/plans/2026-03-*`, design-system execution-plan +
+  colorspace-wrapped-variables, `agents/2026-03-06-quick-wins-design`) intentionally NOT
+  rewritten — restored after an over-broad cleanup pass.
+
+**Key decisions**
+
+- Minor (not major) release: no external consumers and every internal consumer migrated in
+  the same effort, so nothing depends on z-tone at release time.
+- Lossy mapping accepted (11 z-steps → ~6 named tokens) with the contrast gate as the net.
+- The bare `--color-{role}` alias is NOT z-tone and was deliberately kept (gradient/divide
+  utilities depend on it).
+
+**Verification**
+
+- Grep gate: zero z-tone utilities/vars in `src` (only `preset.spec.js` negative-assertion
+  guards + intentionally-historical docs remain). Themes `dist` has no `--color-*-z{n}`.
+- Contrast regression gate (`/embed/gallery` WCAG audit — 5 styles × 2 modes × 5 skins = 50
+  combinations): no new regressions from the lossy shade collapse.
+- Lint: 0 errors. Tests: 3560 passed (261 files).
+
+**Feature commit hashes**
+
+- `7bfccfe0`, `42e69eef` — Z1 codemod apps/learn + comment cleanup
+- `a5df45fe` — Z2 themes/chart/straggler migration
+- `5e0a2f51` — Z3 remove z-utility shortcut generation
+- `a83fb5f3`, `6b224eb1` — Z4 remove z-var emission (keep bare alias) + JSDoc refresh
+- `f8cab7cd` — Z5 remove getZScaleCSS + themes build injection
+- `c94fb048` — Z6 delete TONE_MAP / Z_SLOTS / collapse maps
+- `bbb873ad` — Z7 remove doctor z-scale advisory
+- `a5f021ea`, `4dd7ae84` — Z8 docs cleanup + historical-doc restore
+- `bc092163` — Z9 init-spec fix

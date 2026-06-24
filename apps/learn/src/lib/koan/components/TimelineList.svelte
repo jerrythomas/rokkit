@@ -60,21 +60,21 @@
 		border: none;
 		border-radius: var(--radius-sm, 4px);
 		text-align: left;
-		@apply text-ink-z2;
+		@apply text-ink-mute;
 		cursor: pointer;
 		font-size: 13px;
 		transition: background 120ms ease;
 	}
 	.entry:hover {
-		@apply bg-surface-z2 text-ink-z1;
+		@apply bg-paper-mute text-ink-mute;
 	}
 	.entry.active {
-		@apply bg-surface-z2 text-ink-z1;
+		@apply bg-paper-mute text-ink-mute;
 	}
 	.icon {
 		font-size: 16px;
 		text-align: center;
-		@apply text-ink-z3;
+		@apply text-ink-soft;
 	}
 	.title {
 		overflow: hidden;
@@ -83,6 +83,6 @@
 	}
 	.time {
 		font-size: 11px;
-		@apply text-ink-z4;
+		@apply text-ink-soft;
 	}
 </style>

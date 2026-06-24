@@ -25,6 +25,9 @@ export * from './switch.js'
 // List Types
 export * from './list.js'
 
+// LockMode Types
+export * from './lock-mode.js'
+
 // Tree Types
 export * from './tree.js'
 

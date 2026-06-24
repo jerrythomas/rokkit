@@ -79,17 +79,17 @@
 		padding: 6px 10px;
 		background: transparent;
 		border: none;
-		@apply text-ink-z3;
+		@apply text-ink-soft;
 		cursor: pointer;
 		font: inherit;
 	}
 	.back:hover {
-		@apply text-ink-z1;
+		@apply text-ink-mute;
 	}
 	.error,
 	.loading {
 		text-align: center;
-		@apply text-ink-z3;
+		@apply text-ink-soft;
 		padding: 48px;
 	}
 </style>

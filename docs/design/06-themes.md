@@ -41,7 +41,7 @@ packages/themes/src/
 
 **Base styles** are unconditional — they apply to all themes. They use data attributes for structural variants (`data-size`, `data-variant`, `data-orientation`) but never colors.
 
-**Theme styles** are scoped to `[data-style='<theme>']` ancestor selectors. They use `@apply` directives with semantic token classes (`bg-surface-z2`, `text-primary-z6`, etc.) that UnoCSS expands at build time.
+**Theme styles** are scoped to `[data-style='<theme>']` ancestor selectors. They use named token CSS vars (`var(--paper-soft)`, `var(--primary)`, etc.) and `@apply` directives with named-token utilities that UnoCSS expands at build time.
 
 ### Build Pipeline
 
@@ -105,22 +105,25 @@ DEFAULT_THEME_MAPPING = {
 
 The CLI `rokkit init` lets users remap roles to different palettes, and `rokkit skin create` scaffolds a custom skin config.
 
-### Z-Level Tokens (Semantic Shades)
+### Named Token Vocabulary
 
-Rather than referencing raw shade numbers (`bg-zinc-700`), components use **z-level shortcuts** that automatically resolve to the correct shade for light and dark mode:
+Rather than referencing raw shade numbers (`bg-zinc-700`), components use **named tokens** that automatically resolve to the correct value for light and dark mode:
 
 ```
-bg-surface-z0   → very dark (in dark mode)  / very light (in light mode)
-bg-surface-z1   → darker surface
-bg-surface-z2   → default surface
-bg-surface-z3   → elevated surface
-...
-bg-surface-z10  → highest contrast
+bg-paper        → canvas / page background
+bg-paper-soft   → card or panel background
+bg-paper-mute   → subdued, inset panel
+border-paper-edge → hairline border tone
+text-ink        → primary body text
+text-ink-mute   → secondary text
+text-ink-soft   → placeholder text
+bg-primary      → CTA / interactive fill
+text-on-primary → legible text on a primary fill
 ```
 
-Analogous tokens exist for `primary`, `secondary`, `accent`, and semantic roles.
+Analogous tokens exist for `accent`, `success`, `warning`, `danger`, `error`, and `info` roles.
 
-**How they work:** `Theme.getShortcuts('surface')` generates UnoCSS shortcuts that map `bg-surface-z3` → `bg-zinc-600 dark:bg-zinc-400` (the exact shade indices depend on the `TONE_MAP` for that role). These shortcuts are registered when the build runs, so `@apply bg-surface-z3` in theme CSS expands correctly.
+**How they work:** `presetRokkit` emits `--paper`, `--primary`, etc. as CSS custom properties set by the active skin. `theme.getShortcuts(role)` registers the on-color contrast shortcuts (e.g. `text-on-primary`). Named tokens flip automatically under `[data-mode="dark"]` when the skin uses a dual-palette mapping.
 
 ### Dark Mode Mechanics
 
@@ -222,7 +225,7 @@ export default {
 ### What `presetRokkit` Generates
 
 1. **CSS custom properties** on `:root` — palette vars (`--color-primary-500`), font vars (`--font-sans`), radius vars (`--radius-md`)
-2. **Semantic shortcuts** — `bg-primary-z5`, `text-surface-z7`, `text-on-primary` (all mode-aware)
+2. **Named-token shortcuts** — `bg-primary`, `bg-paper`, `text-ink-mute`, `text-on-primary`, etc. (all mode-aware)
 3. **Icon shortcuts** — `action-add` → `i-semantic:action-add[-variant]`
 4. **Skin shortcuts** — `skin-ocean` applies the named palette override
 5. **Icon collections** — `rokkit`, `semantic`, and any user-provided JSON collections
@@ -383,9 +386,9 @@ See `agents/design-patterns.md` or the `edit-theme` skill for patterns for each 
 
 Key rules:
 - **Every theme rule must include `bg-none`** where it competes with a rokkit gradient rule — prevents bleed-through
-- Hover states: use `border-l-secondary-z4` accent for minimal, `bg-surface-z3` elevation for material
-- Selected states: use `from-primary-z5 to-secondary-z5` gradient for rokkit, `border-l-primary-z4` border for minimal
-- Dark mode: handled automatically by z-level shortcuts; no manual dark: variants needed
+- Hover states: use a `border-l` accent in secondary color for minimal, `bg-paper-mute` elevation for material
+- Selected states: use a gradient from `primary` to `secondary` for rokkit, `border-l-primary` border for minimal
+- Dark mode: handled automatically by named tokens; no manual `dark:` variants needed
 
 ---
 

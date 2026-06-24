@@ -3,7 +3,6 @@ import { Theme } from '@rokkit/core'
 export {
 	Theme,
 	themeRules,
-	semanticShortcuts,
 	contrastShortcuts,
 	iconShortcuts,
 	DEFAULT_ICONS,

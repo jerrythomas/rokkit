@@ -1,16 +1,12 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
-import { DEFAULT_THEME_MAPPING, defaultColors, TONE_MAP, INVERTED_ROLES } from './constants'
+import { DEFAULT_THEME_MAPPING, defaultColors } from './constants'
 import { shades } from './colors/index'
 import { ColorSpace, relativeLuminance } from './color-space'
 import {
   NAMED_TOKENS,
   NAMED_TOKEN_SHADE_MAP,
-  NAMED_TOKEN_ROLE_MAP,
-  Z_COLLAPSE_MAP_SURFACE,
-  Z_COLLAPSE_MAP_INK,
-  Z_SLOTS,
-  hasSoftCompanion
+  NAMED_TOKEN_ROLE_MAP
 } from './named-tokens'
 
 /**
@@ -70,64 +66,6 @@ export function themeRules(mapping = DEFAULT_THEME_MAPPING, colors = defaultColo
 		.reduce((acc, { key, value }) => ({ ...acc, [key]: value }), {})
 
 	return rules
-}
-
-const SEMANTIC_PREFIXES = [
-	'bg',
-	'border',
-	'border-l',
-	'border-r',
-	'border-t',
-	'border-b',
-	'text',
-	'ring',
-	'outline',
-	'from',
-	'to',
-	'divide',
-	'stroke',
-	'fill'
-]
-
-/**
- * @param {{ prefix: string, name: string, toneName: string, lightValue: number, darkValue: number }} opts
- * @returns {Array}
- */
-function toneShortcuts({ prefix, name, toneName, lightValue, darkValue }) {
-	const variantPattern = new RegExp(`^(.+):${prefix}-${name}-${toneName}(\\/\\d+)?$`)
-	const opacityPattern = new RegExp(`^${prefix}-${name}-${toneName}(\\/\\d+)?$`)
-	const exactPattern = `${prefix}-${name}-${toneName}`
-	return [
-		[
-			variantPattern,
-			([, variant, end]) =>
-				`${variant}:${prefix}-${name}-${lightValue}${end || ''} ${variant}:dark:${prefix}-${name}-${darkValue}${end || ''}`
-		],
-		[
-			opacityPattern,
-			([, end]) =>
-				`${prefix}-${name}-${lightValue}${end || ''} dark:${prefix}-${name}-${darkValue}${end || ''}`
-		],
-		[exactPattern, `${prefix}-${name}-${lightValue} dark:${prefix}-${name}-${darkValue}`]
-	]
-}
-
-/**
- * Generates UnoCSS shortcut definitions for semantic tones with bg, border, text.
- * @param {string} name - Color name (e.g., 'primary')
- * @returns {Array} Array of shortcut definitions
- */
-export function semanticShortcuts(name) {
-	const inverted = INVERTED_ROLES.has(name)
-	const shortcuts = []
-	for (const [toneName, toneValue] of Object.entries(TONE_MAP)) {
-		const lightValue = inverted ? 1000 - toneValue : toneValue
-		const darkValue  = inverted ? toneValue : 1000 - toneValue
-		for (const prefix of SEMANTIC_PREFIXES) {
-			shortcuts.push(...toneShortcuts({ prefix, name, toneName, lightValue, darkValue }))
-		}
-	}
-	return shortcuts
 }
 
 /**
@@ -349,63 +287,18 @@ export class Theme {
 		return y >= ON_COLOR_Y_CROSSOVER ? ON_COLOR_DARK : ON_COLOR_LIGHT
 	}
 
-	/**
-	 * Generate z-aliases for surface or ink role using the provided map.
-	 */
-	#getZAliasesFromMap(role: 'surface' | 'ink', map: Record<ZSlot, NamedToken>): Record<string, string> {
-		const result: Record<string, string> = {}
-		// Bare `--color-{role}` alias — points at the role's primary named
-		// slot. Lets preset-wind3 color utilities (bg-surface, from-surface,
-		// to-surface, etc.) resolve in core mode without forcing the full
-		// palette emit. Surface → paper, Ink → ink.
-		result[`--color-${role}`] = role === 'surface' ? 'var(--paper)' : 'var(--ink)'
-		for (const z of Z_SLOTS) {
-			result[`--color-${role}-${z}`] = `var(--${map[z]})`
-		}
-		return result
+	#surfaceInkAlias(role: 'surface' | 'ink'): Record<string, string> {
+		return { [`--color-${role}`]: role === 'surface' ? 'var(--paper)' : 'var(--ink)' }
 	}
 
-	/**
-	 * Generate z-aliases for other roles using tint-vs-solid 2-state collapse.
-	 */
-	#getZAliasesOther(role: string): Record<string, string> {
-		const result: Record<string, string> = {}
-		const hasSoft = hasSoftCompanion(role)
-		const softTarget = hasSoft ? `${role}-soft` : role
-		// Bare `--color-{role}` alias points at the named token so
-		// preset-wind3 color utilities (from-{role}, to-{role}, divide-{role},
-		// etc.) resolve in core mode — they read `--color-{role}` and we'd
-		// otherwise leave it undefined since core mode skips the palette emit.
-		result[`--color-${role}`] = `var(--${role})`
-		for (const z of Z_SLOTS) {
-			const zNum = parseInt(z.slice(1), 10)
-			const target = zNum <= 2 ? softTarget : role
-			result[`--color-${role}-${z}`] = `var(--${target})`
-		}
-		return result
+	#otherRoleAlias(role: string): Record<string, string> {
+		return { [`--color-${role}`]: `var(--${role})` }
 	}
 
-	/**
-	 * Returns z-alias CSS-var assignments for back-compat in core mode.
-	 * `--color-{role}-z{n}` → `var(--{namedSlot})`.
-	 *
-	 * - surface: uses Z_COLLAPSE_MAP_SURFACE (z2/z3 → paper-mute, z9/z10 → ink, etc.)
-	 * - ink: uses Z_COLLAPSE_MAP_INK (inverted scale)
-	 * - primary/accent/status: tint-vs-solid 2-state collapse.
-	 *   z0–z2 → role-soft (if it exists) else role; z3+ → role.
-	 *
-	 * This is the back-compat layer: existing `@apply bg-surface-z3` etc. resolves
-	 * through these aliases until consumers migrate to the named vocabulary.
-	 */
-	/** Accepts SkinRole and any custom skin roles beyond the SkinRole literal union. */
-	getZAliasesForCore(role: string): Record<string, string> {
-		if (role === 'surface') {
-			return this.#getZAliasesFromMap('surface', Z_COLLAPSE_MAP_SURFACE)
-		}
-		if (role === 'ink') {
-			return this.#getZAliasesFromMap('ink', Z_COLLAPSE_MAP_INK)
-		}
-		return this.#getZAliasesOther(role)
+	/** Bare `--color-{role}` alias backing preset-wind3 utilities (from-/to-/divide-) in core mode. */
+	getRoleBaseAlias(role: string): Record<string, string> {
+		if (role === 'surface' || role === 'ink') return this.#surfaceInkAlias(role)
+		return this.#otherRoleAlias(role)
 	}
 
 	/**
@@ -450,53 +343,9 @@ export class Theme {
 		return result
 	}
 
-	/**
-	 * Emit z-aliases for one role in extended mode — they point at the palette vars,
-	 * using TONE_MAP for surface/non-inverted roles and the inverted map for ink.
-	 */
-	getZAliasesForRoleExtended(role: string): Record<string, string> {
-		const result: Record<string, string> = {}
-		const isInverted = INVERTED_ROLES.has(role)
-		for (const [zone, light] of Object.entries(TONE_MAP)) {
-			const shade = isInverted ? 1000 - light : light
-			result[`--color-${role}-${zone}`] = `var(--color-${role}-${shade})`
-		}
-		return result
-	}
-
 	getShortcuts(name) {
 		const colors = { ...defaultColors, ...this.#colors }
-		return [...semanticShortcuts(name), ...contrastShortcuts(name, this.#onColorHex(name, colors))]
+		return contrastShortcuts(name, this.#onColorHex(name, colors))
 	}
 
-	/**
-	 * Generates CSS custom property declarations for the semantic z0–z10 tone scale.
-	 *
-	 * Returns a CSS string with two blocks:
-	 * - `:root` — light-mode aliases (z0=50 … z10=950)
-	 * - `[data-mode="dark"]` — dark-mode aliases (z0=950 … z10=50)
-	 *
-	 * These let consumers write `var(--color-primary-z5)` instead of hardcoding
-	 * numeric shades, and the value automatically adapts to the active mode.
-	 */
-	getZScaleCSS() {
-		const names = Object.keys(this.#mapping)
-
-		const lightLines = names.flatMap((name) =>
-			Object.entries(TONE_MAP).map(([zone, light]) => {
-				const value = INVERTED_ROLES.has(name) ? 1000 - light : light
-				return `  --color-${name}-${zone}: var(--color-${name}-${value});`
-			})
-		)
-
-		const darkLines = names.flatMap((name) =>
-			Object.entries(TONE_MAP).map(([zone, light]) => {
-				const dark = 1000 - light
-				const value = INVERTED_ROLES.has(name) ? light : dark
-				return `  --color-${name}-${zone}: var(--color-${name}-${value});`
-			})
-		)
-
-		return `:root {\n${lightLines.join('\n')}\n}\n[data-mode="dark"] {\n${darkLines.join('\n')}\n}`
-	}
 }

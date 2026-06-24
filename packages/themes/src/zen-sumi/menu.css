@@ -2,7 +2,7 @@
  * Menu - Zen-Sumi Theme Styles
  *
  * Hairline trigger. Dropdown: paper bg, hairline border, no shadow.
- * Items: transparent default, surface-z2 hover.
+ * Items: transparent default, paper-mute hover.
  */
 
 /* =============================================================================
@@ -19,7 +19,7 @@
 
 [data-style='zen-sumi'] [data-menu-trigger]:focus-visible {
   @apply outline-none;
-  box-shadow: 0 0 0 1px var(--color-surface-z5);
+  box-shadow: 0 0 0 1px var(--ink-soft);
 }
 
 [data-style='zen-sumi'] [data-menu][data-open='true'] [data-menu-trigger] {

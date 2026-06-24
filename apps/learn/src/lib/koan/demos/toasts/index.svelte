@@ -46,7 +46,7 @@
 	}
 
 	.intro {
-		@apply text-ink-z3;
+		@apply text-ink-soft;
 		font-family: var(--font-script, 'Caveat', cursive);
 		font-size: 22px;
 		margin: 0;

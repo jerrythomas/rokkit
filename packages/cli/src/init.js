@@ -20,9 +20,7 @@ const NAMED_TOKEN_HEADER = `/**
  *   Accent   bg-primary · text-on-primary · bg-accent · bg-accent-soft
  *   Status   bg-success-soft · text-success   (+ warning / danger / error / info)
  *
- * Tokens flip automatically under [data-mode="dark"]. The older z-scale
- * utilities (bg-surface-z0, text-primary-z5) still resolve for back-compat,
- * but new code should prefer the named tokens above.
+ * Tokens flip automatically under [data-mode="dark"].
  *
  * tokens: 'core' emits the named vocabulary; 'extended' also emits the full
  * 11-shade palette ladder per role (for charts / data-viz).

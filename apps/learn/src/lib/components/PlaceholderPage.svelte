@@ -4,10 +4,10 @@
 
 <div class="max-w-[1060px] mx-auto px-[48px] pt-[36px] pb-[48px]">
 	<div class="flex items-center gap-4">
-		<span class="kanji text-[36px] text-primary-z5">{kanji}</span>
+		<span class="kanji text-[36px] text-primary">{kanji}</span>
 		<div>
-			<h1 class="display text-[28px] font-light text-ink-z1 m-0">{title}</h1>
-			<p class="text-[13px] text-ink-z5 mt-1 mb-0">{description}</p>
+			<h1 class="display text-[28px] font-light text-ink-mute m-0">{title}</h1>
+			<p class="text-[13px] text-paper-edge mt-1 mb-0">{description}</p>
 		</div>
 	</div>
 </div>

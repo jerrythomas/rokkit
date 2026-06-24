@@ -32,7 +32,7 @@
 		width = 280,
 		height = 120,
 		color = 'rgb(var(--color-primary, 249 115 22))',
-		dimColor = 'rgb(var(--color-surface-z3, 203 213 225))'
+		dimColor = 'rgb(var(--paper-mute, 203 213 225))'
 	}: Props = $props()
 
 	const cf = getContext<CrossFilter | undefined>('crossfilter')
@@ -285,7 +285,7 @@
 		flex-direction: column;
 		gap: 4px;
 		font-size: 12px;
-		color: rgb(var(--color-surface-z6, 100 116 139));
+		color: rgb(var(--ink-soft, 100 116 139));
 	}
 	[data-filter-histogram-label] {
 		font-weight: 600;

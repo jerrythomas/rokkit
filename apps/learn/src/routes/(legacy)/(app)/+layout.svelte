@@ -33,16 +33,16 @@
 >
 	<!-- ─── Sidebar ────────────────────────────────────────────────────────── -->
 	<aside
-		class="sidebar flex flex-col overflow-hidden px-3.5 py-5.5 bg-surface-z1 border-r border-surface-z2"
+		class="sidebar flex flex-col overflow-hidden px-3.5 py-5.5 bg-paper-soft border-r border-paper-mute"
 	>
 		<!-- Logo -->
 		<div class="flex items-center gap-2.5 px-2.5 pb-4.5">
-			<span class="kanji text-[20px] text-primary-z5">先</span>
+			<span class="kanji text-[20px] text-primary">先</span>
 			{#if !sidebarCollapsed}
-				<span class="font-display text-[17px] font-medium text-ink-z1 tracking-[-0.02em] flex-1">Sensei</span>
+				<span class="font-display text-[17px] font-medium text-ink-mute tracking-[-0.02em] flex-1">Sensei</span>
 			{/if}
 			<button
-				class="w-6 h-6 flex items-center justify-center text-ink-z5 text-[14px] rounded flex-shrink-0 hover:bg-surface-z1 hover:text-ink-z1 transition-colors"
+				class="w-6 h-6 flex items-center justify-center text-paper-edge text-[14px] rounded flex-shrink-0 hover:bg-paper-soft hover:text-ink-mute transition-colors"
 				onclick={() => (sidebarCollapsed = !sidebarCollapsed)}
 				title={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
 			>
@@ -72,14 +72,14 @@
 		</div>
 
 		<!-- Footer -->
-		<div class="border-t border-surface-z2 pt-2 flex flex-col gap-px">
+		<div class="border-t border-paper-mute pt-2 flex flex-col gap-px">
 			<a
 				href={settingsNav.href}
-				class="group grid items-center gap-2.5 px-2.5 py-[7px] rounded-md text-[13px] font-normal no-underline cursor-pointer transition-colors duration-[120ms] text-ink-z3 hover:bg-surface-z1 hover:text-ink-z1"
+				class="group grid items-center gap-2.5 px-2.5 py-[7px] rounded-md text-[13px] font-normal no-underline cursor-pointer transition-colors duration-[120ms] text-ink-soft hover:bg-paper-soft hover:text-ink-mute"
 				style="grid-template-columns: auto 1fr auto"
 				title={sidebarCollapsed ? 'Settings' : undefined}
 			>
-				<span class="kanji text-[14px] w-[18px] text-center text-ink-z5 group-hover:text-ink-z3">{settingsNav.kanji}</span>
+				<span class="kanji text-[14px] w-[18px] text-center text-paper-edge group-hover:text-ink-soft">{settingsNav.kanji}</span>
 				{#if !sidebarCollapsed}
 					<span class="whitespace-nowrap overflow-hidden text-ellipsis">{settingsNav.label}</span>
 				{/if}
@@ -87,8 +87,8 @@
 
 			{#if !sidebarCollapsed}
 				<div class="flex items-center gap-1.5 pt-2 px-2.5">
-					<span class="w-[6px] h-[6px] rounded-full bg-success-z5 flex-shrink-0"></span>
-					<span class="text-[10px] text-surface-z4">{m.daemon_running()}</span>
+					<span class="w-[6px] h-[6px] rounded-full bg-success flex-shrink-0"></span>
+					<span class="text-[10px] text-paper-edge">{m.daemon_running()}</span>
 				</div>
 			{/if}
 		</div>

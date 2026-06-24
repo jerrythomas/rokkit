@@ -112,9 +112,9 @@ vibe.palette = 'skin-acme-brand'
 | `error`     | Errors, destructive actions          |
 | `info`      | Informational messages               |
 
-Each role maps to a z-indexed shortcut set: `bg-primary-z1` through `bg-primary-z10`,
-and equivalent `text-` and `border-` variants. Light and dark mode are automatic — see
-`09-theming.md` for the z-index resolution table.
+Each role feeds the named-token vocabulary (`bg-primary`, `text-on-primary`, `bg-paper`,
+`text-ink`, etc.). Light and dark mode flip automatically via the dual-palette skin mapping —
+see `09-theming.md` for details.
 
 ---
 
@@ -149,8 +149,8 @@ or internal Svelte structure — the data attribute contract is the stable API.
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  background: var(--color-primary-z5);
-  color: var(--color-surface-z1);
+  background: var(--primary);
+  color: var(--on-primary);
   border: none;
   padding-block: var(--density-spacing-sm);
   padding-inline: var(--density-spacing-lg);
@@ -158,13 +158,13 @@ or internal Svelte structure — the data attribute contract is the stable API.
 }
 
 [data-style='brand'] [data-button]:hover {
-  background: var(--color-primary-z6);
+  background: color-mix(in oklch, var(--primary) 85%, black);
 }
 
 [data-style='brand'] [data-button][data-variant='outlined'] {
   background: transparent;
-  border: 1px solid var(--color-primary-z5);
-  color: var(--color-primary-z7);
+  border: 1px solid var(--primary);
+  color: var(--primary);
 }
 ```
 

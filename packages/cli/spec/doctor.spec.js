@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { runChecks, defaultStarterSource, validateConfigShape, findLegacyZUtilities } from '../src/doctor.js'
+import { runChecks, defaultStarterSource, validateConfigShape } from '../src/doctor.js'
 
 describe('runChecks', () => {
 	it('should report pass when rokkit.config.js exists', () => {
@@ -258,34 +258,3 @@ describe('defaultStarterSource', () => {
 	})
 })
 
-describe('findLegacyZUtilities', () => {
-	it('detects surface z-utilities and maps them to named tokens', () => {
-		const files = [{ path: 'src/A.svelte', content: '<div class="bg-surface-z1 text-surface-z9 border-surface-z3">' }]
-		const { count, byFile } = findLegacyZUtilities(files)
-		expect(count).toBe(3)
-		const suggestions = byFile[0].hits.map((h) => h.suggestion)
-		expect(suggestions).toContain('bg-paper-soft')
-		expect(suggestions).toContain('text-ink')
-		expect(suggestions).toContain('border-paper-mute')
-	})
-
-	it('maps primary/status z-utilities', () => {
-		const files = [{ path: 'src/B.svelte', content: 'text-primary-z5 bg-success-z1' }]
-		const { byFile } = findLegacyZUtilities(files)
-		const suggestions = byFile[0].hits.map((h) => h.suggestion)
-		expect(suggestions).toContain('text-primary')
-		expect(suggestions).toContain('bg-success-soft')
-	})
-
-	it('returns zero hits for named-token-only code', () => {
-		const files = [{ path: 'src/C.svelte', content: 'bg-paper text-ink bg-primary text-on-primary' }]
-		expect(findLegacyZUtilities(files).count).toBe(0)
-	})
-
-	it('maps z0 on accent/status roles to the -soft tint', () => {
-		const files = [{ path: 'src/D.svelte', content: 'bg-accent-z0 bg-info-z0' }]
-		const suggestions = findLegacyZUtilities(files).byFile[0].hits.map((h) => h.suggestion)
-		expect(suggestions).toContain('bg-accent-soft')
-		expect(suggestions).toContain('bg-info-soft')
-	})
-})

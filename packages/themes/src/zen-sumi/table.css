@@ -2,7 +2,7 @@
  * Table - Zen-Sumi Theme Styles
  *
  * Clean, flat rows. Header: uppercase small text, hairline bottom border.
- * No shadow on header. Row hover: surface-z1 wash. No bg on selected — left border only.
+ * No shadow on header. Row hover: paper-soft wash. No bg on selected — left border only.
  */
 
 /* =============================================================================
@@ -61,7 +61,7 @@
 
 [data-style='zen-sumi'] [data-table-row]:focus {
   @apply text-ink-mute bg-none outline-none;
-  box-shadow: inset 0 0 0 1px var(--color-surface-z4);
+  box-shadow: inset 0 0 0 1px var(--paper-edge);
 }
 
 [data-style='zen-sumi'] [data-table-row][data-selected='true'] {

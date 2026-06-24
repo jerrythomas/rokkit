@@ -1,7 +1,7 @@
 /**
  * Switch - Zen-Sumi Theme Styles
  *
- * Flat pill. Off: surface-z3 track. On: primary-z5 (shu vermillion) track.
+ * Flat pill. Off: paper-mute track. On: primary (shu vermillion) track.
  * Thumb: paper white. No shadows.
  */
 
@@ -16,7 +16,7 @@
 }
 
 [data-style='zen-sumi'] [data-switch]:focus-visible [data-switch-track] {
-  box-shadow: 0 0 0 2px var(--color-surface-z5);
+  box-shadow: 0 0 0 2px var(--ink-soft);
 }
 
 /* On state — shu vermillion */

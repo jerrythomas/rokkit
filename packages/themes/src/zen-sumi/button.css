@@ -2,8 +2,8 @@
  * Button - Zen-Sumi Theme Styles
  *
  * Ink-on-paper aesthetics. No gradients. No shadows.
- * Primary filled = ink background (surface-z9) with paper text.
- * CTA/accent = shu vermillion (primary-z5).
+ * Primary filled = ink background with paper text.
+ * CTA/accent = shu vermillion (primary).
  * Focus: border darkens — no glow ring.
  */
 
@@ -180,5 +180,5 @@
 
 [data-style='zen-sumi'] [data-button]:focus-visible {
   @apply outline-none;
-  box-shadow: 0 0 0 1px var(--color-surface-z5);
+  box-shadow: 0 0 0 1px var(--ink-soft);
 }

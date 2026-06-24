@@ -6,8 +6,8 @@
  * Key principles:
  *  - No shadows. Depth through background tone variation only.
  *  - No gradients. Color conveys meaning, not decoration.
- *  - Hairline borders (surface-z2). Paper-edge precision.
- *  - Ink-on-paper primary: surface-z9 bg / surface-z0 text.
+ *  - Hairline borders (paper-edge). Paper-edge precision.
+ *  - Ink-on-paper primary: ink bg / paper text.
  *  - Single accent: primary (shu/vermillion) for active and CTA.
  *  - Focus: border darkens — no glow rings.
  *

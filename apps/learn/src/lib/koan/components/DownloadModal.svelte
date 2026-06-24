@@ -105,7 +105,7 @@ export default {
 		padding: 0;
 		border: none;
 		border-radius: var(--radius-md, 6px);
-		@apply bg-surface-z0;
+		@apply bg-paper;
 		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 	}
 	.download-dialog::backdrop {
@@ -119,11 +119,11 @@ export default {
 		padding: 24px;
 	}
 	.download h2 {
-		@apply text-ink-z1;
+		@apply text-ink-mute;
 		margin: 0;
 	}
 	pre {
-		@apply bg-surface-z1 border border-surface-z2 text-ink-z2;
+		@apply bg-paper-soft border border-paper-mute text-ink-mute;
 		padding: 12px;
 		border-radius: var(--radius-sm, 4px);
 		overflow-x: auto;

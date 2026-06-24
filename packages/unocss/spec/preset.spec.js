@@ -154,29 +154,29 @@ describe('presetRokkit', () => {
 		expect(preset.theme.colors.primary).toHaveProperty('500')
 	})
 
-	it('should generate stroke-surface-z4 shortcut', () => {
+	it('should NOT generate stroke-surface-z4 z-tone shortcut (removed in Z3)', () => {
 		const preset = presetRokkit()
 		const shortcuts = preset.shortcuts
 		const found = shortcuts.some(
 			(s) => Array.isArray(s) && typeof s[0] === 'string' && s[0] === 'stroke-surface-z4'
 		)
-		expect(found).toBe(true)
+		expect(found).toBe(false)
 	})
 
-	it('should generate fill-primary-z5 shortcut', () => {
+	it('should NOT generate fill-primary-z5 z-tone shortcut (removed in Z3)', () => {
 		const preset = presetRokkit()
 		const shortcuts = preset.shortcuts
 		const found = shortcuts.some(
 			(s) => Array.isArray(s) && typeof s[0] === 'string' && s[0] === 'fill-primary-z5'
 		)
-		expect(found).toBe(true)
+		expect(found).toBe(false)
 	})
 
 	describe('preflights — dark mode CSS block', () => {
 		it('should not generate a [data-mode="dark"] block when all colors are plain strings', () => {
 			const preset = presetRokkit()
 			const css = preset.preflights[0].getCSS()
-			expect(css).toContain(':root{')
+			expect(css).toContain(':root, [data-mode="light"]{')
 			expect(css).not.toContain('[data-mode="dark"]')
 		})
 
@@ -185,7 +185,7 @@ describe('presetRokkit', () => {
 				skin: { surface: { light: 'slate', dark: 'zinc' } }
 			})
 			const css = preset.preflights[0].getCSS()
-			expect(css).toContain(':root{')
+			expect(css).toContain(':root, [data-mode="light"]{')
 			expect(css).toContain('[data-mode="dark"]{')
 		})
 
@@ -196,8 +196,8 @@ describe('presetRokkit', () => {
 				skin: { surface: { light: 'slate', dark: 'zinc' } }
 			})
 			const css = preset.preflights[0].getCSS()
-			const rootBlock = css.split('[data-mode')[0]
-			expect(rootBlock).toContain('--color-surface-500:rgb(100, 116, 139)')
+			const lightBlock = css.split('[data-mode="dark"]')[0]
+			expect(lightBlock).toContain('--color-surface-500:rgb(100, 116, 139)')
 		})
 
 		it('[data-mode="dark"] should use the dark palette for dual-palette roles', () => {
@@ -230,9 +230,9 @@ describe('presetRokkit', () => {
 			})
 			const css = preset.preflights[0].getCSS()
 			expect(css).toContain('[data-mode="dark"]{')
-			// Dark block should include surface vars (different palette)
+			// Dark block should include surface named-token vars (different palette resolves different values)
 			const darkBlock = css.split('[data-mode="dark"]')[1] ?? ''
-			expect(darkBlock).toContain('--color-surface-')
+			expect(darkBlock).toContain('--paper:')
 		})
 
 		it('should generate dark block when all roles use dual-palette syntax', () => {
@@ -251,8 +251,8 @@ describe('presetRokkit', () => {
 			// zinc-500 → rgb(113, 113, 122)
 			const preset = presetRokkit({ tokens: 'extended', skin: { surface: { dark: 'zinc' } } })
 			const css = preset.preflights[0].getCSS()
-			const rootBlock = css.split('[data-mode')[0]
-			expect(rootBlock).toContain('--color-surface-500:rgb(113, 113, 122)')  // zinc
+			const lightBlock = css.split('[data-mode="dark"]')[0]
+			expect(lightBlock).toContain('--color-surface-500:rgb(113, 113, 122)')  // zinc
 		})
 
 		it('should use dark palette in dark block when only dark property is specified', () => {
@@ -622,28 +622,31 @@ describe('presetRokkit', () => {
 		it('emits the 18+ named tokens in :root', () => {
 			const preset = presetRokkit()
 			const css = preset.preflights[0].getCSS()
-			const rootBlock = css.split('[data-mode')[0]
-			expect(rootBlock).toContain('--paper:')
-			expect(rootBlock).toContain('--paper-soft:')
-			expect(rootBlock).toContain('--paper-mute:')
-			expect(rootBlock).toContain('--paper-edge:')
-			expect(rootBlock).toContain('--ink:')
-			expect(rootBlock).toContain('--ink-mute:')
-			expect(rootBlock).toContain('--primary:')
-			expect(rootBlock).toContain('--on-primary:')
-			expect(rootBlock).toContain('--accent:')
-			expect(rootBlock).toContain('--accent-soft:')
-			expect(rootBlock).toContain('--focus-ring:')
+			const lightRegion = css.split('[data-mode="dark"]')[0]
+			expect(lightRegion).toContain('--paper:')
+			expect(lightRegion).toContain('--paper-soft:')
+			expect(lightRegion).toContain('--paper-mute:')
+			expect(lightRegion).toContain('--paper-edge:')
+			expect(lightRegion).toContain('--ink:')
+			expect(lightRegion).toContain('--ink-mute:')
+			expect(lightRegion).toContain('--primary:')
+			expect(lightRegion).toContain('--on-primary:')
+			expect(lightRegion).toContain('--accent:')
+			expect(lightRegion).toContain('--accent-soft:')
+			expect(lightRegion).toContain('--focus-ring:')
 		})
 
-		it('emits z-aliases pointing at named layer (no palette indirection)', () => {
-			const preset = presetRokkit()
-			const css = preset.preflights[0].getCSS()
-			expect(css).toContain('--color-surface-z0:var(--paper)')
-			expect(css).toContain('--color-surface-z1:var(--paper-soft)')
-			expect(css).toContain('--color-surface-z2:var(--paper-mute)')
-			expect(css).toContain('--color-surface-z3:var(--paper-mute)')
-			expect(css).toContain('--color-surface-z4:var(--paper-edge)')
+		it('does not emit z-tone vars (--color-{role}-z{n}) in core or extended mode', () => {
+			const core = presetRokkit().preflights.map((p) => p.getCSS()).join('\n')
+			const ext = presetRokkit({ tokens: 'extended' }).preflights.map((p) => p.getCSS()).join('\n')
+			expect(core).not.toMatch(/--color-[a-z]+-z\d/)
+			expect(ext).not.toMatch(/--color-[a-z]+-z\d/)
+		})
+
+		it('still emits the bare --color-{role} alias in core mode', () => {
+			const css = presetRokkit().preflights.map((p) => p.getCSS()).join('\n')
+			expect(css).toContain('--color-surface:')
+			expect(css).toContain('--color-primary:')
 		})
 
 		it('does NOT emit raw palette vars in core mode', () => {
@@ -712,10 +715,10 @@ describe('presetRokkit', () => {
 				overrides: { 'paper-edge': 'kami.800' }
 			})
 			const css = preset.preflights[0].getCSS()
-			const rootBlock = css.split('[data-mode')[0]
+			const lightRegion = css.split('[data-mode="dark"]')[0]
 			// Override emits AFTER the default named-token assignment, so the
 			// rightmost `--paper-edge:` wins.
-			expect(rootBlock).toContain('--paper-edge:rgb(34, 34, 34)')
+			expect(lightRegion).toContain('--paper-edge:rgb(34, 34, 34)')
 		})
 
 		it('reserved-name override with { light, dark } applies per-mode', () => {
@@ -740,6 +743,25 @@ describe('presetRokkit', () => {
 			expect(rootBlock).toContain('--paper-edge:rgb(170, 170, 170)')
 			expect(darkBlock).toContain('--paper-edge:rgb(204, 204, 204)')
 		})
+
+		it('emits light token vars under :root and [data-mode="light"] so a nested data-mode="light" re-asserts them', () => {
+			const preset = presetRokkit()
+			const css = preset.preflights[0].getCSS()
+
+			expect(css).toContain(':root, [data-mode="light"]{')
+			const lightIdx = css.indexOf('[data-mode="light"]')
+			expect(lightIdx).toBeGreaterThan(-1)
+			expect(css.slice(lightIdx)).toContain('--paper:')
+		})
+
+		it('keeps mode-independent vars (radius/font) under :root only', () => {
+			const preset = presetRokkit({ shape: { radius: 'soft' } })
+			const css = preset.preflights[0].getCSS()
+			const start = css.indexOf(':root, [data-mode="light"]{')
+			const lightBlock = css.slice(start, css.indexOf('}', start) + 1)
+			expect(lightBlock).not.toContain('--radius-md')
+			expect(css).toContain('--radius-md')
+		})
 	})
 
 	describe('preflights — extended mode', () => {
@@ -752,11 +774,11 @@ describe('presetRokkit', () => {
 			expect(css).toContain('--ink:var(--color-ink-900)')
 		})
 
-		it('emits z-aliases in extended mode (today\'s behavior)', () => {
+		it('does not emit z-tone vars in extended mode', () => {
 			const preset = presetRokkit({ tokens: 'extended' })
 			const css = preset.preflights[0].getCSS()
-			// Extended mode keeps the original getZScaleCSS-style z scale,
-			// but with named tokens layered on top.
+			// Extended mode emits palette vars + named-token aliases; no z-tone vars.
+			expect(css).not.toMatch(/--color-[a-z]+-z\d/)
 			expect(css).toContain('--paper:var(--color-surface-50)')
 		})
 	})
@@ -955,15 +977,17 @@ describe('presetRokkit', () => {
 			expect(css).not.toMatch(/--paper:var\(/)
 		})
 
-		it('emits z-aliases respecting per-role mode', () => {
+		it('does not emit z-tone vars in per-role mixed mode', () => {
 			const preset = presetRokkit({
 				tokens: { surface: 'core', primary: 'extended' }
 			})
 			const css = preset.preflights[0].getCSS()
-			// surface (core) → z-aliases point at named layer
-			expect(css).toContain('--color-surface-z1:var(--paper-soft)')
-			// primary (extended) → z-aliases point at palette vars
-			expect(css).toContain('--color-primary-z5:var(--color-primary-500)')
+			// Neither core nor extended roles emit z-tone vars any more.
+			expect(css).not.toMatch(/--color-[a-z]+-z\d/)
+			// surface (core) → bare alias only
+			expect(css).toContain('--color-surface:')
+			// primary (extended) → palette vars emitted
+			expect(css).toMatch(/--color-primary-500:rgb/)
 		})
 
 		it('extended global mode still works (regression check)', () => {

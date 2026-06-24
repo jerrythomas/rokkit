@@ -50,6 +50,7 @@ import buttonGroup from './demos/button-group/meta'
 import tooltip from './demos/tooltip/meta'
 import codeGroup from './demos/code-group/meta'
 import effects from './demos/effects/meta'
+import lockMode from './demos/lock-mode/meta'
 
 export const catalog: DemoMeta[] = [
 	themeWizard, tabs, toasts, table, treeTable, tree, multiSelect, list, form, select,
@@ -61,7 +62,7 @@ export const catalog: DemoMeta[] = [
 	lazyTree, statusList, timeline,
 	code, markdownRenderer, searchFilter, paletteManager,
 	dropdown, progress, uploadProgress, uploadTarget,
-	buttonGroup, tooltip, codeGroup, effects
+	buttonGroup, tooltip, codeGroup, effects, lockMode
 ]
 
 export const miniIndex = new MiniSearch<DemoMeta>({
@@ -139,7 +140,8 @@ export const DEMO_ROUTE: Record<string, string> = {
 	'button-group': '/app/button-group',
 	tooltip: '/app/tooltip',
 	'code-group': '/app/code-group',
-	effects: '/app/effects'
+	effects: '/app/effects',
+	'lock-mode': '/app/lock-mode'
 }
 
 export function routeFor(id: string): string | null {
