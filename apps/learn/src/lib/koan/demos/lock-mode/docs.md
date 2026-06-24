@@ -32,7 +32,9 @@ The `lockMode` Svelte action mirrors the document root's
 value. This means:
 
 - Theme switching (style, skin, density) flows through normally.
-- Mode is pinned — the observer keeps overwriting any change.
+- Mode is pinned — set once at mount and re-asserted on each sync. The
+  observer watches only `data-style` / `data-skin` / `data-density`, never
+  `data-mode`, so document mode changes never leak into the region.
 
 ## Use cases
 

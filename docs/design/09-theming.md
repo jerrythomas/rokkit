@@ -370,7 +370,7 @@ with correct token values and correct `@rokkit/themes` component CSS.
 
 ### Architectural change: symmetric light selector
 
-Prior to v1.2.0, the `@rokkit/unocss` preset emitted light token vars under `:root` only:
+Prior to v1.2.1, the `@rokkit/unocss` preset emitted light token vars under `:root` only:
 
 ```css
 /* old — a nested data-mode="light" element couldn't re-assert these */
@@ -378,7 +378,7 @@ Prior to v1.2.0, the `@rokkit/unocss` preset emitted light token vars under `:ro
 [data-mode="dark"] { --paper: …; --ink: …; }
 ```
 
-From v1.2.0, light vars are emitted under `:root, [data-mode="light"]`:
+From v1.2.1, light vars are emitted under `:root, [data-mode="light"]`:
 
 ```css
 /* new — light-locking works bidirectionally */
@@ -432,5 +432,14 @@ On hydration, the `lockMode` action is applied, mirroring style/skin/density fro
 ### What changes per mode
 
 Both token vars (`--paper`, `--ink`, `--accent-soft`, …) and `@rokkit/themes` component CSS
-(which keys off `[data-mode][data-style]` combined selectors) re-evaluate inside the locked
-region, so component appearance is fully correct — not just token colors.
+(which matches on `[data-mode]` and `[data-style]` both present on the region) re-evaluate
+inside the locked region, so component appearance is fully correct — not just token colors.
+The component renders `data-mode` statically and `lockMode` mirrors `data-style` onto the
+same element, so both attributes the themes CSS needs land together on the wrapper.
+
+> **Known limitation (light-in-dark only):** the legacy `-z` alias layer
+> (`--color-{role}-z{n}`) in `@rokkit/themes` emits its *light* values under `:root` only,
+> so a `mode="light"` region nested in a dark page inherits the root's dark `-z` values for
+> the handful of theme rules still using them (mostly shadow/border tints). Named tokens —
+> the overwhelming majority of styling — are correct. This edge disappears once the legacy
+> z-scale is removed (see the drop-legacy-z-scale effort). Dark-in-light is unaffected.
