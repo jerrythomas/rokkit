@@ -158,9 +158,9 @@ function buildPreflights(theme, colormap, config) {
 	// Overrides merged after named-token defaults so reserved-name entries
 	// (e.g. `paper-edge`) win over the skin-derived value.
 	const lightAllVars = { ...lightVars, ...lightOverrides }
-	const lightBlock = `:root{${toCssBlock(lightAllVars)}${
-		extraVars.length ? `;${extraVars.join(';')}` : ''
-	}}`
+	const lightBlock = `:root, [data-mode="light"]{${toCssBlock(lightAllVars)}}${
+		extraVars.length ? `:root{${extraVars.join(';')}}` : ''
+	}`
 
 	// Dark block: only when skin has dual-palette OR an override has { light, dark } (or dark-only)
 	let darkBlock = ''
