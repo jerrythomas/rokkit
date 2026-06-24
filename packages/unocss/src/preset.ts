@@ -203,8 +203,8 @@ function buildPerRoleModes(config, colormap) {
 
 /**
  * Builds CSS-var assignments for one mode (light or dark).
- *  - core: named tokens (palette values inlined) + z-aliases pointing at named
- *  - extended: full palette (today's emit) + named tokens as palette aliases
+ *  - core: named tokens (palette values inlined) + bare `--color-{role}` alias per role
+ *  - extended: full palette per role + named tokens as palette aliases
  * Supports per-role decomposition via config.tokens object.
  */
 function buildVarsForMode(theme, colormap, config) {
@@ -350,8 +350,9 @@ function resolvePaletteForRole(role, colormap, config) {
 }
 
 /**
- * Checks OKLCH lightness contrast between ink and surface at key z-levels.
- * Since ink has an inverted z-scale, ink-z1 maps to shade 900 while surface-z1 maps to shade 100.
+ * Checks OKLCH lightness contrast between ink and surface at complementary shades.
+ * Ink shades run inverted relative to surface (ink-900 is the darkest, analogous to
+ * surface-100), so the meaningful pairs are (surface-100, ink-900) and (surface-300, ink-700).
  * We check that these complementary shades have sufficient lightness difference.
  */
 function checkInkContrast(config, colormap) {
