@@ -5847,3 +5847,57 @@ remaining are all crossed off; only the unchecked Koan-catalog-route
 TBD (a non-priority follow-up) is queued.
 
 Lint: 0 errors. Tests: 3503 passed.
+
+## 2026-06-23 — LockMode feature: fixed-mode regions
+
+**What was built**
+
+Full end-to-end implementation of the LockMode feature — pins any subtree to a fixed
+color mode (`dark` or `light`) regardless of the document mode. Four deliverables:
+
+1. **Preset light-block symmetry fix** (`packages/unocss/src/preset.ts`) — light token
+   vars are now emitted under `:root, [data-mode="light"]` instead of `:root` only.
+   This makes `data-mode="light"` nestable (dark was already a standalone selector; now
+   light is symmetric). Added two regression tests in `packages/unocss/spec/preset.spec.js`.
+
+2. **`lockMode` action** (`packages/actions/src/lock-mode.svelte.js`) — Svelte action
+   that on mount copies `data-style`/`data-skin`/`data-density` from
+   `document.documentElement` onto the element, forces `data-mode` to the locked value,
+   and installs a `MutationObserver` to re-sync style/skin/density on root changes.
+   Mode is fixed at mount; observer disconnects on destroy. Exported from
+   `packages/actions/src/index.js`. Four spec tests in
+   `packages/actions/spec/lock-mode.spec.svelte.js`.
+
+3. **`LockMode` component** (`packages/ui/src/components/LockMode.svelte`) — SSR-safe
+   wrapper: statically renders `data-mode={mode}` (correct on first paint) then applies
+   `use:lockMode={mode}` on hydration. Props: `mode` (required), `children`, `class`.
+   Types: `packages/ui/src/types/lock-mode.ts`. Exported via
+   `packages/ui/src/components/index.ts`.
+
+4. **Demo + e2e** (`apps/learn/src/routes/(app)/lock-mode/`,
+   `apps/learn/e2e/lock-mode.e2e.ts`) — live doc page in the koan demo app at
+   `/app/lock-mode` demonstrating a dark island in a light page and a light island in a
+   dark page. Two Playwright e2e tests verify `--paper` token differs between the locked
+   region and the surrounding document.
+
+**Key design decisions**
+
+- Bidirectional locking enabled by the `:root, [data-mode="light"]` preset change.
+  Without it, a `data-mode="light"` on a nested element would inherit dark vars from
+  `[data-mode="dark"]` on the root and get no light override.
+- `lockMode` mirrors `style`/`skin`/`density` (not `direction`), matching what `themable`
+  actually stamps on the root.
+- Mode is intentionally fixed at mount (not reactive to prop changes) — the action is a
+  one-time sync, not a binding. Re-mount to change mode.
+- `LockMode` component favoured over raw action for the SSR-safety guarantee: static
+  `data-mode` on the server ensures tokens and component CSS are correct before JS runs.
+
+**Feature commit hashes**
+
+- `59d90fe0` — fix(unocss): emit light vars under :root,[data-mode=light]
+- `808fc35c` — feat(actions): add lockMode action
+- `4efd691b` — feat(ui): add LockMode component
+- `1522c88d` — test(learn): e2e + demo page for LockMode
+- `d9ee27d3`, `1d8e3a13`, `b8ffbc9f`, `2afc592a` — additional task work
+
+Lint: 0 errors (88 warnings, all pre-existing). Tests: 3579 passed (261 files).

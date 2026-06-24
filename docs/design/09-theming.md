@@ -359,3 +359,78 @@ Applied to the application root:
 
 The `themable` action optionally persists theme state to `localStorage` and listens for
 `storage` events to sync the active theme across browser tabs.
+
+---
+
+## Fixed-Mode Regions: `lockMode` and `LockMode`
+
+A subtree can be pinned to a fixed color mode regardless of the document mode. This enables
+"dark islands" inside light pages, or "light islands" inside dark pages — both rendering
+with correct token values and correct `@rokkit/themes` component CSS.
+
+### Architectural change: symmetric light selector
+
+Prior to v1.2.0, the `@rokkit/unocss` preset emitted light token vars under `:root` only:
+
+```css
+/* old — a nested data-mode="light" element couldn't re-assert these */
+:root { --paper: …; --ink: …; }
+[data-mode="dark"] { --paper: …; --ink: …; }
+```
+
+From v1.2.0, light vars are emitted under `:root, [data-mode="light"]`:
+
+```css
+/* new — light-locking works bidirectionally */
+:root, [data-mode="light"] { --paper: …; --ink: …; }
+[data-mode="dark"] { --paper: …; --ink: …; }
+```
+
+This makes `data-mode` a nestable attribute: setting it on any element (not only `<html>`)
+establishes a new mode context for its descendants. Dark already worked because
+`[data-mode="dark"]` was always a standalone selector; the change adds the same capability
+for light.
+
+### `lockMode` action (`@rokkit/actions`)
+
+```svelte
+<section use:lockMode={'dark'}>
+  <!-- Always dark, regardless of document mode -->
+</section>
+```
+
+On mount, `lockMode(node, mode)`:
+1. Copies `data-style`, `data-skin`, and `data-density` from `document.documentElement`
+   onto the element — making it a self-contained theme context.
+2. Forces `data-mode` to the locked value.
+3. Installs a `MutationObserver` on the root that re-syncs style/skin/density when the root
+   changes (e.g. the user switches style or skin at runtime). The mode stays pinned.
+4. Disconnects the observer on element destroy.
+
+The mode is fixed at the value passed at mount time. It does not react to prop changes —
+re-mount to change the mode.
+
+### `LockMode` component (`@rokkit/ui`)
+
+The component is the recommended way to use `lockMode` in most cases. It statically renders
+`data-mode` for a correct SSR first paint:
+
+```svelte
+<script>
+  import { LockMode } from '@rokkit/ui'
+</script>
+
+<LockMode mode="dark">
+  <!-- always-dark content -->
+</LockMode>
+```
+
+Rendered HTML (server): `<div data-mode="dark">…</div>`
+
+On hydration, the `lockMode` action is applied, mirroring style/skin/density from the root.
+
+### What changes per mode
+
+Both token vars (`--paper`, `--ink`, `--accent-soft`, …) and `@rokkit/themes` component CSS
+(which keys off `[data-mode][data-style]` combined selectors) re-evaluate inside the locked
+region, so component appearance is fully correct — not just token colors.

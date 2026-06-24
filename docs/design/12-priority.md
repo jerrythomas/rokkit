@@ -46,6 +46,8 @@ Major design-system initiative — phases 3–9, then release 1 of the trimmed t
 
 #### Theming & Design
 
+- [x] **LockMode: fixed-mode regions** — Shipped 2026-06-23. `lockMode` action (`@rokkit/actions`) and `LockMode` component (`@rokkit/ui`) pin a subtree to a fixed `dark`/`light` mode regardless of the document mode. Prerequisite: `@rokkit/unocss` preset now emits light token vars under `:root, [data-mode="light"]` (symmetry with the long-standing `[data-mode="dark"]` block), making mode a nestable attribute. The action mirrors `data-style`/`data-skin`/`data-density` from the root via `MutationObserver`; the component adds static `data-mode` for SSR. Demo + Playwright e2e at `apps/learn/src/routes/(app)/lock-mode/`. See journal 2026-06-23.
+
 - [x] **Minimal List guide-line style** — Shipped 2026-05-28. Continuous 1px paper-edge guide line via `[data-list]::before` on the container; active item gets `box-shadow: inset 2px 0 0 0 var(--accent)` overlapping the line at its row (no per-item border). Tree mirrors the pattern on `[data-tree-item-content][data-active="true"]` using `var(--primary)` — keeps the existing Connector indent lines.
 - [x] **Consistent state patterns design doc** — Shipped 2026-05-28 at `docs/design/18-state-patterns.md`. Defines an 8-state vocabulary (transient: idle/hover/focus-visible/pressed; persistent: current/selected/disabled/read-only), three token tiers (surface / mark / affordance), the group-vs-element distinction (`:focus-within` + element state), a refactoring before/after for List, and a phased migration plan with a ~600-line reduction estimate. Migration itself is a follow-up.
 
