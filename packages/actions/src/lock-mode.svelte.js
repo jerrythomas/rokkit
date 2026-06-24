@@ -21,7 +21,7 @@ function syncFromRoot(node, mode) {
 	const root = document.documentElement
 	for (const key of MIRRORED) {
 		const value = root.dataset[key]
-		if (value == null) delete node.dataset[key]
+		if (value === null || value === undefined) delete node.dataset[key]
 		else node.dataset[key] = value
 	}
 	node.dataset.mode = mode
