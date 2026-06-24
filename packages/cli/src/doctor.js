@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
-import { existsSync, readFileSync, writeFileSync, readdirSync } from 'fs'
-import { resolve, extname } from 'path'
+import { existsSync, readFileSync, writeFileSync } from 'fs'
+import { resolve } from 'path'
 import { loadConfig as loadParsedConfig } from './config.js'
 import {
 	generateUnoConfig,
@@ -363,85 +363,6 @@ function handleResults(checks, cwd, failures, fix) {
 	}
 }
 
-// z-slot → named token (matches @rokkit/core Z_COLLAPSE maps).
-const SURFACE_Z = {
-	z0: 'paper', z1: 'paper-soft', z2: 'paper-mute', z3: 'paper-mute', z4: 'paper-edge',
-	z5: 'ink-soft', z6: 'ink-soft', z7: 'ink-mute', z8: 'ink-mute', z9: 'ink', z10: 'ink'
-}
-const INK_Z = {
-	z0: 'ink', z1: 'ink-mute', z2: 'ink-mute', z3: 'ink-soft', z4: 'ink-soft',
-	z5: 'paper-edge', z6: 'paper-edge', z7: 'paper-mute', z8: 'paper-mute', z9: 'paper-soft', z10: 'paper'
-}
-
-/**
- * Map a z-scale role+slot to its nearest named token.
- * @param {string} role
- * @param {string} z — e.g. 'z5'
- * @returns {string}
- */
-function suggestNamedToken(role, z) {
-	if (role === 'surface') return SURFACE_Z[z]
-	if (role === 'ink') return INK_Z[z]
-	// accent + status roles collapse z0–z2 to their `-soft` tint (matches
-	// @rokkit/core theme.ts getZAliasesOther: zNum <= 2). primary has no `-soft`.
-	if (role !== 'primary' && Number(z.slice(1)) <= 2) return `${role}-soft`
-	return role
-}
-
-const Z_UTILITY_RE =
-	/\b(bg|text|border(?:-[tblr])?|fill|stroke|ring|outline|divide)-(surface|ink|primary|accent|success|warning|danger|error|info)-(z(?:10|[0-9]))\b/g
-
-/**
- * Scan files for legacy z-scale utilities and suggest named-token equivalents.
- * Advisory only — z-scale still resolves via the preset's back-compat layer.
- * @param {Array<{ path: string, content: string }>} files
- * @returns {{ count: number, byFile: Array<{ path: string, hits: Array<{ token: string, suggestion: string }> }> }}
- */
-export function findLegacyZUtilities(files) {
-	const byFile = []
-	let count = 0
-	for (const { path: filePath, content } of files) {
-		const hits = []
-		for (const match of content.matchAll(Z_UTILITY_RE)) {
-			const [token, prefix, role, z] = match
-			hits.push({ token, suggestion: `${prefix}-${suggestNamedToken(role, z)}` })
-		}
-		if (hits.length > 0) {
-			byFile.push({ path: filePath, hits })
-			count += hits.length
-		}
-	}
-	return { count, byFile }
-}
-
-const SCAN_EXTS = new Set(['.svelte', '.css', '.ts', '.js'])
-
-/**
- * Recursively gather scannable source files under cwd/src.
- * Skips node_modules, symlinks (avoids recursion loops), and uno.config.js
- * (its safelist legitimately lists z-utilities).
- * @param {string} cwd
- * @returns {Array<{ path: string, content: string }>}
- */
-function gatherSrcFiles(cwd) {
-	const root = resolve(cwd, 'src')
-	if (!existsSync(root)) return []
-	const out = []
-	const walk = (dir) => {
-		for (const dirent of readdirSync(dir, { withFileTypes: true })) {
-			if (dirent.isSymbolicLink() || dirent.name === 'node_modules') continue
-			const full = resolve(dir, dirent.name)
-			if (dirent.isDirectory()) {
-				walk(full)
-			} else if (dirent.isFile() && SCAN_EXTS.has(extname(dirent.name)) && !full.endsWith('uno.config.js')) {
-				out.push({ path: full.slice(cwd.length + 1), content: readFileSync(full, 'utf-8') })
-			}
-		}
-	}
-	walk(root)
-	return out
-}
-
 /**
  * Validate a parsed rokkit config for the named-token system. All advisory (warn).
  * @param {Record<string, unknown> | null} config
@@ -503,17 +424,6 @@ export async function doctor(opts = {}) {
 			console.info(`  WARN  ${c.label}`)
 			console.info(`        ${c.fix}`)
 		}
-	}
-
-	const { count, byFile } = findLegacyZUtilities(gatherSrcFiles(cwd))
-	if (count > 0) {
-		console.info(`\nLegacy z-scale utilities (advisory — ${count} in ${byFile.length} file(s)):`)
-		for (const { path: filePath, hits } of byFile.slice(0, 10)) {
-			const examples = [...new Map(hits.map((h) => [h.token, h.suggestion]))]
-			const shown = examples.slice(0, 3).map(([t, s]) => `${t} → ${s}`).join(', ')
-			console.info(`  ${filePath}: ${shown}${examples.length > 3 ? ', …' : ''}`)
-		}
-		console.info('        Named tokens are preferred; z-scale still works via back-compat.')
 	}
 
 	handleResults(checks, cwd, failures, opts.fix ?? false)
