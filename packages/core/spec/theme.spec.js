@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { shadesOf, themeRules, semanticShortcuts, Theme } from '../src/theme'
+import { shadesOf, themeRules, Theme } from '../src/theme'
 import { INVERTED_ROLES } from '../src/constants'
 
 const palettes = ['primary', 'secondary', 'other']
@@ -28,10 +28,13 @@ describe('Theme class', () => {
 		expect(palette).toHaveProperty('--color-tertiary-500')
 	})
 
-	it('should generate tertiary semantic shortcuts', () => {
+	it('should generate tertiary contrast shortcuts', () => {
 		const theme = new Theme()
 		const shortcuts = theme.getShortcuts('tertiary')
-		expect(shortcuts.length).toBeGreaterThan(0)
+		expect(shortcuts.length).toBe(2)
+		expect(shortcuts[0][0]).toBeInstanceOf(RegExp)
+		expect(shortcuts[0][0].source).toContain('text-on-tertiary')
+		expect(shortcuts[1][0].source).toContain('text-on-tertiary-muted')
 	})
 
 	it('should set and get colors using public API only', () => {
@@ -63,11 +66,13 @@ describe('Theme class', () => {
 		expect(paletteCustom['--color-accent']).toEqual('rgb(56, 189, 248)')
 	})
 
-	it('should get semantic shortcuts', () => {
+	it('should get contrast shortcuts only', () => {
 		const theme = new Theme()
 		const shortcuts = theme.getShortcuts('secondary')
 		expect(Array.isArray(shortcuts)).toBe(true)
-		expect(shortcuts.length).toBeGreaterThan(0)
+		expect(shortcuts.length).toBe(2)
+		expect(shortcuts[0][0].source).toContain('text-on-secondary')
+		expect(shortcuts[1][0].source).toContain('text-on-secondary-muted')
 	})
 
 	it('should get colors using shadesOf', () => {
@@ -682,99 +687,6 @@ describe('Theme.getZAliasesForExtended (named-as-aliases-of-palette)', () => {
   })
 })
 
-describe('semanticShortcuts', () => {
-	it('should generate shortcuts for secondary color', () => {
-		const shortcuts = semanticShortcuts('secondary')
-		expect(shortcuts.length).toBe(11 * 3 * 14)
-		expect(shortcuts[0]).toEqual([/^(.+):bg-secondary-z0(\/\d+)?$/, expect.any(Function)])
-		expect(shortcuts[1]).toEqual([/^bg-secondary-z0(\/\d+)?$/, expect.any(Function)])
-		expect(shortcuts[2]).toEqual(['bg-secondary-z0', 'bg-secondary-50 dark:bg-secondary-950'])
-		expect(shortcuts[3]).toEqual([/^(.+):border-secondary-z0(\/\d+)?$/, expect.any(Function)])
-		expect(shortcuts[4]).toEqual([/^border-secondary-z0(\/\d+)?$/, expect.any(Function)])
-		expect(shortcuts[5]).toEqual([
-			'border-secondary-z0',
-			'border-secondary-50 dark:border-secondary-950'
-		])
-		// border-l at index 6-8
-		expect(shortcuts[6]).toEqual([/^(.+):border-l-secondary-z0(\/\d+)?$/, expect.any(Function)])
-		expect(shortcuts[7]).toEqual([/^border-l-secondary-z0(\/\d+)?$/, expect.any(Function)])
-		expect(shortcuts[8]).toEqual([
-			'border-l-secondary-z0',
-			'border-l-secondary-50 dark:border-l-secondary-950'
-		])
-		// text at index 18-20
-		expect(shortcuts[18]).toEqual([/^(.+):text-secondary-z0(\/\d+)?$/, expect.any(Function)])
-		expect(shortcuts[19]).toEqual([/^text-secondary-z0(\/\d+)?$/, expect.any(Function)])
-		expect(shortcuts[20]).toEqual([
-			'text-secondary-z0',
-			'text-secondary-50 dark:text-secondary-950'
-		])
-	})
-
-	it('should execute variant pattern callback function (line 85)', () => {
-		const shortcuts = semanticShortcuts('primary')
-
-		// Find the variant pattern shortcut (first regex shortcut)
-		const variantShortcut = shortcuts.find(
-			([pattern]) => pattern instanceof RegExp && pattern.source.includes('(.+)')
-		)
-
-		expect(variantShortcut).toBeDefined()
-		const [, callback] = variantShortcut
-
-		// Test the callback function with matched groups
-		const result = callback(['hover:bg-primary-z0', 'hover', undefined])
-		expect(result).toBe('hover:bg-primary-50 hover:dark:bg-primary-950')
-
-		// Test with opacity
-		const resultWithOpacity = callback(['hover:bg-primary-z0/50', 'hover', '/50'])
-		expect(resultWithOpacity).toBe('hover:bg-primary-50/50 hover:dark:bg-primary-950/50')
-	})
-
-	it('should execute opacity pattern callback function (line 92)', () => {
-		const shortcuts = semanticShortcuts('primary')
-
-		// Find the opacity pattern shortcut (second regex shortcut without variant group)
-		const opacityShortcut = shortcuts.find(
-			([pattern]) =>
-				pattern instanceof RegExp &&
-				!pattern.source.includes('(.+)') &&
-				pattern.source.includes('(\\/')
-		)
-
-		expect(opacityShortcut).toBeDefined()
-		const [, callback] = opacityShortcut
-
-		// Test the callback function
-		const result = callback(['bg-primary-z0', undefined])
-		expect(result).toBe('bg-primary-50 dark:bg-primary-950')
-
-		// Test with opacity
-		const resultWithOpacity = callback(['bg-primary-z0/75', '/75'])
-		expect(resultWithOpacity).toBe('bg-primary-50/75 dark:bg-primary-950/75')
-	})
-
-	it('should invert light/dark for ink (INVERTED_ROLES)', () => {
-		const shortcuts = semanticShortcuts('ink')
-		// ink z1: light should be 900 (inverted from 100), dark should be 100
-		const z1Text = shortcuts.find(s => typeof s[0] === 'string' && s[0] === 'text-ink-z1')
-		expect(z1Text[1]).toBe('text-ink-900 dark:text-ink-100')
-
-		// ink z0: light should be 950 (inverted from 50), dark should be 50
-		const z0Bg = shortcuts.find(s => typeof s[0] === 'string' && s[0] === 'bg-ink-z0')
-		expect(z0Bg[1]).toBe('bg-ink-950 dark:bg-ink-50')
-
-		// ink z5: midpoint stays 500 (1000-500=500)
-		const z5Text = shortcuts.find(s => typeof s[0] === 'string' && s[0] === 'text-ink-z5')
-		expect(z5Text[1]).toBe('text-ink-500 dark:text-ink-500')
-	})
-
-	it('should NOT invert for normal roles like surface', () => {
-		const shortcuts = semanticShortcuts('surface')
-		const z1Text = shortcuts.find(s => typeof s[0] === 'string' && s[0] === 'text-surface-z1')
-		expect(z1Text[1]).toBe('text-surface-100 dark:text-surface-900')
-	})
-})
 
 describe('Theme.getNamedTokens with per-role modes', () => {
   it('emits inline values when role is core and palette aliases when extended', () => {

@@ -70,7 +70,6 @@ describe('@rokkit/core', () => {
 			'toHexString',
 			'shadesOf',
 			'themeRules',
-			'semanticShortcuts',
 			'contrastShortcuts',
 			'Theme'
 		])

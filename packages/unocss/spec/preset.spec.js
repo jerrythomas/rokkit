@@ -154,22 +154,22 @@ describe('presetRokkit', () => {
 		expect(preset.theme.colors.primary).toHaveProperty('500')
 	})
 
-	it('should generate stroke-surface-z4 shortcut', () => {
+	it('should NOT generate stroke-surface-z4 z-tone shortcut (removed in Z3)', () => {
 		const preset = presetRokkit()
 		const shortcuts = preset.shortcuts
 		const found = shortcuts.some(
 			(s) => Array.isArray(s) && typeof s[0] === 'string' && s[0] === 'stroke-surface-z4'
 		)
-		expect(found).toBe(true)
+		expect(found).toBe(false)
 	})
 
-	it('should generate fill-primary-z5 shortcut', () => {
+	it('should NOT generate fill-primary-z5 z-tone shortcut (removed in Z3)', () => {
 		const preset = presetRokkit()
 		const shortcuts = preset.shortcuts
 		const found = shortcuts.some(
 			(s) => Array.isArray(s) && typeof s[0] === 'string' && s[0] === 'fill-primary-z5'
 		)
-		expect(found).toBe(true)
+		expect(found).toBe(false)
 	})
 
 	describe('preflights — dark mode CSS block', () => {

@@ -72,64 +72,6 @@ export function themeRules(mapping = DEFAULT_THEME_MAPPING, colors = defaultColo
 	return rules
 }
 
-const SEMANTIC_PREFIXES = [
-	'bg',
-	'border',
-	'border-l',
-	'border-r',
-	'border-t',
-	'border-b',
-	'text',
-	'ring',
-	'outline',
-	'from',
-	'to',
-	'divide',
-	'stroke',
-	'fill'
-]
-
-/**
- * @param {{ prefix: string, name: string, toneName: string, lightValue: number, darkValue: number }} opts
- * @returns {Array}
- */
-function toneShortcuts({ prefix, name, toneName, lightValue, darkValue }) {
-	const variantPattern = new RegExp(`^(.+):${prefix}-${name}-${toneName}(\\/\\d+)?$`)
-	const opacityPattern = new RegExp(`^${prefix}-${name}-${toneName}(\\/\\d+)?$`)
-	const exactPattern = `${prefix}-${name}-${toneName}`
-	return [
-		[
-			variantPattern,
-			([, variant, end]) =>
-				`${variant}:${prefix}-${name}-${lightValue}${end || ''} ${variant}:dark:${prefix}-${name}-${darkValue}${end || ''}`
-		],
-		[
-			opacityPattern,
-			([, end]) =>
-				`${prefix}-${name}-${lightValue}${end || ''} dark:${prefix}-${name}-${darkValue}${end || ''}`
-		],
-		[exactPattern, `${prefix}-${name}-${lightValue} dark:${prefix}-${name}-${darkValue}`]
-	]
-}
-
-/**
- * Generates UnoCSS shortcut definitions for semantic tones with bg, border, text.
- * @param {string} name - Color name (e.g., 'primary')
- * @returns {Array} Array of shortcut definitions
- */
-export function semanticShortcuts(name) {
-	const inverted = INVERTED_ROLES.has(name)
-	const shortcuts = []
-	for (const [toneName, toneValue] of Object.entries(TONE_MAP)) {
-		const lightValue = inverted ? 1000 - toneValue : toneValue
-		const darkValue  = inverted ? toneValue : 1000 - toneValue
-		for (const prefix of SEMANTIC_PREFIXES) {
-			shortcuts.push(...toneShortcuts({ prefix, name, toneName, lightValue, darkValue }))
-		}
-	}
-	return shortcuts
-}
-
 /**
  * Generates "on-color" text shortcuts for readable text on colored backgrounds.
  *
@@ -466,7 +408,7 @@ export class Theme {
 
 	getShortcuts(name) {
 		const colors = { ...defaultColors, ...this.#colors }
-		return [...semanticShortcuts(name), ...contrastShortcuts(name, this.#onColorHex(name, colors))]
+		return contrastShortcuts(name, this.#onColorHex(name, colors))
 	}
 
 	/**
