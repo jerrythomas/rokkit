@@ -181,4 +181,76 @@ describe('tooltip action', () => {
 
 		cleanup()
 	})
+
+	// ─── Positioned-ancestor resolution ────────────────────────────
+
+	it('walks up to document.body when no ancestor is positioned', () => {
+		// Trigger with no positioned ancestor — chain of plain divs under body.
+		const outer = document.createElement('div')
+		const inner = document.createElement('div')
+		const node = document.createElement('button')
+		inner.appendChild(node)
+		outer.appendChild(inner)
+		document.body.appendChild(outer)
+
+		const cleanup = $effect.root(() => tooltip(node, { content: 'Body' }))
+		flushSync()
+
+		// Tooltip is mounted on document.body, not on the unpositioned parent.
+		expect(document.body.querySelector('[data-tooltip-content]')).toBeTruthy()
+		expect(node.parentElement.querySelector('[data-tooltip-content]')).toBeNull()
+
+		cleanup()
+	})
+
+	it('uses the nearest positioned ancestor several levels up', () => {
+		const positioned = document.createElement('div')
+		positioned.style.position = 'absolute'
+		const middle = document.createElement('div') // unpositioned — forces the walk-up
+		const node = document.createElement('button')
+		middle.appendChild(node)
+		positioned.appendChild(middle)
+		document.body.appendChild(positioned)
+
+		const cleanup = $effect.root(() => tooltip(node, { content: 'Ancestor' }))
+		flushSync()
+
+		expect(positioned.querySelector('[data-tooltip-content]')).toBeTruthy()
+		cleanup()
+	})
+
+	// ─── Flip fallback ─────────────────────────────────────────────
+
+	it('falls back to the first fitting side when neither preferred nor its flip fit', () => {
+		const node = createTrigger()
+		// Window so small that top/bottom cannot fit, but left/right can.
+		window.innerWidth = 1000
+		window.innerHeight = 50
+
+		// Trigger spans the full (tiny) viewport height so top & bottom overflow.
+		node.getBoundingClientRect = () => ({
+			top: 0,
+			bottom: 50,
+			left: 400,
+			right: 460,
+			width: 60,
+			height: 50
+		})
+
+		const cleanup = $effect.root(() => tooltip(node, { content: 'Flip', position: 'top' }))
+		flushSync()
+
+		const el = node.parentElement.querySelector('[data-tooltip-content]')
+		// A non-zero-size tooltip is needed so left/right are the only fitting sides.
+		el.getBoundingClientRect = () => ({ width: 80, height: 40, top: 0, left: 0, right: 0, bottom: 0 })
+
+		node.dispatchEvent(new FocusEvent('focusin'))
+
+		// preferred 'top' overflows, flip 'bottom' overflows → falls through to a fitting side.
+		expect(['left', 'right']).toContain(el.getAttribute('data-tooltip-position'))
+
+		cleanup()
+		window.innerWidth = 1024
+		window.innerHeight = 768
+	})
 })

@@ -126,6 +126,20 @@ describe('ripple', () => {
 		cleanup()
 	})
 
+	it('removes ripple span when the animation ends', () => {
+		const node = createNodeWithRect({ left: 0, top: 0, width: 100, height: 100 })
+		const cleanup = $effect.root(() => ripple(node))
+		flushSync()
+
+		node.dispatchEvent(new MouseEvent('click', { clientX: 50, clientY: 50 }))
+		const span = node.querySelector('span')
+		expect(span).toBeTruthy()
+
+		span.dispatchEvent(new Event('animationend'))
+		expect(node.querySelectorAll('span').length).toBe(0)
+		cleanup()
+	})
+
 	it('removes ripple span after timeout', () => {
 		vi.useFakeTimers()
 

@@ -332,6 +332,67 @@ describe('reveal', () => {
 		cleanup()
 	})
 
+	it('when stagger > 0 and once is false, removes data-reveal-visible from children on exit', () => {
+		vi.useFakeTimers()
+
+		const node = document.createElement('div')
+		const child1 = document.createElement('div')
+		const child2 = document.createElement('div')
+		node.appendChild(child1)
+		node.appendChild(child2)
+
+		const cleanup = $effect.root(() => reveal(node, { stagger: 100, delay: 0, once: false }))
+		flushSync()
+
+		intersectCallback([{ isIntersecting: true, target: node }])
+		vi.advanceTimersByTime(200)
+		expect(child1.hasAttribute('data-reveal-visible')).toBe(true)
+		expect(child2.hasAttribute('data-reveal-visible')).toBe(true)
+
+		intersectCallback([{ isIntersecting: false, target: node }])
+		expect(child1.hasAttribute('data-reveal-visible')).toBe(false)
+		expect(child2.hasAttribute('data-reveal-visible')).toBe(false)
+
+		cleanup()
+		vi.useRealTimers()
+	})
+
+	// ─── Stagger + prefers-reduced-motion ──────────────────────────
+
+	it('when stagger > 0 and prefers-reduced-motion, marks children visible immediately', () => {
+		vi.stubGlobal('matchMedia', vi.fn().mockReturnValue({ matches: true }))
+
+		const node = document.createElement('div')
+		const child1 = document.createElement('div')
+		const child2 = document.createElement('div')
+		node.appendChild(child1)
+		node.appendChild(child2)
+
+		const cleanup = $effect.root(() => reveal(node, { stagger: 100 }))
+		flushSync()
+
+		expect(child1.hasAttribute('data-reveal-visible')).toBe(true)
+		expect(child2.hasAttribute('data-reveal-visible')).toBe(true)
+		expect(node.hasAttribute('data-reveal-visible')).toBe(false)
+		cleanup()
+	})
+
+	it('when stagger > 0 and prefers-reduced-motion, cleans up children on teardown', () => {
+		vi.stubGlobal('matchMedia', vi.fn().mockReturnValue({ matches: true }))
+
+		const node = document.createElement('div')
+		const child = document.createElement('div')
+		node.appendChild(child)
+
+		const cleanup = $effect.root(() => reveal(node, { stagger: 100 }))
+		flushSync()
+
+		expect(child.hasAttribute('data-reveal')).toBe(true)
+		cleanup()
+		expect(child.hasAttribute('data-reveal')).toBe(false)
+		expect(child.hasAttribute('data-reveal-visible')).toBe(false)
+	})
+
 	// ─── Cleanup ───────────────────────────────────────────────────
 
 	it('removes data-reveal on cleanup', () => {

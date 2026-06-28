@@ -1,5 +1,11 @@
-import { describe, it, expect } from 'vitest'
-import { getClosestAncestorWithAttribute, getEventForKey, getClickAction } from '../src/utils.js'
+import { describe, it, expect, vi } from 'vitest'
+import {
+	getClosestAncestorWithAttribute,
+	getEventForKey,
+	getClickAction,
+	handleAction,
+	getPathFromEvent
+} from '../src/utils.js'
 
 describe('utils', () => {
 	describe('getClosestAncestorWithAttribute', () => {
@@ -126,6 +132,95 @@ describe('utils', () => {
 			})
 
 			expect(getClickAction(event)).toBe('toggle')
+		})
+
+		it('should return "range" when Shift key is pressed', () => {
+			const event = new MouseEvent('click', { shiftKey: true })
+			expect(getClickAction(event)).toBe('range')
+		})
+
+		it('should return "toggle" when clicked on a node-toggle icon (data-tag-icon + state)', () => {
+			const icon = document.createElement('div')
+			icon.setAttribute('data-tag-icon', '')
+			icon.setAttribute('data-state', 'closed')
+
+			const event = new MouseEvent('click')
+			Object.defineProperty(event, 'target', { get: () => icon })
+
+			expect(getClickAction(event)).toBe('toggle')
+		})
+
+		it('should return "toggle" when clicked on a child of a node-toggle icon', () => {
+			const icon = document.createElement('div')
+			icon.setAttribute('data-tag-icon', '')
+			icon.setAttribute('data-state', 'opened')
+			const child = document.createElement('span')
+			icon.appendChild(child)
+
+			const event = new MouseEvent('click')
+			Object.defineProperty(event, 'target', { get: () => child })
+
+			expect(getClickAction(event)).toBe('toggle')
+		})
+
+		it('should return "select" for a tag-icon without a valid open/closed state', () => {
+			const icon = document.createElement('div')
+			icon.setAttribute('data-tag-icon', '')
+			icon.setAttribute('data-state', 'other')
+
+			const event = new MouseEvent('click')
+			Object.defineProperty(event, 'target', { get: () => icon })
+
+			expect(getClickAction(event)).toBe('select')
+		})
+	})
+
+	describe('handleAction', () => {
+		it('runs the matching action and stops the event', () => {
+			const onEnter = vi.fn()
+			const actions = { Enter: onEnter }
+			const event = new KeyboardEvent('keydown', { key: 'Enter' })
+			const prevent = vi.spyOn(event, 'preventDefault')
+			const stop = vi.spyOn(event, 'stopPropagation')
+
+			handleAction(actions, event)
+
+			expect(onEnter).toHaveBeenCalledOnce()
+			expect(prevent).toHaveBeenCalledOnce()
+			expect(stop).toHaveBeenCalledOnce()
+		})
+
+		it('does nothing when there is no matching action', () => {
+			const onEnter = vi.fn()
+			const event = new KeyboardEvent('keydown', { key: 'Escape' })
+			const prevent = vi.spyOn(event, 'preventDefault')
+
+			handleAction({ Enter: onEnter }, event)
+
+			expect(onEnter).not.toHaveBeenCalled()
+			expect(prevent).not.toHaveBeenCalled()
+		})
+	})
+
+	describe('getPathFromEvent', () => {
+		it('returns the data-path of the closest ancestor', () => {
+			const parent = document.createElement('div')
+			parent.setAttribute('data-path', '1.2')
+			const child = document.createElement('span')
+			parent.appendChild(child)
+
+			const event = new MouseEvent('click')
+			Object.defineProperty(event, 'target', { get: () => child })
+
+			expect(getPathFromEvent(event)).toBe('1.2')
+		})
+
+		it('returns null/undefined when no ancestor has data-path', () => {
+			const orphan = document.createElement('div')
+			const event = new MouseEvent('click')
+			Object.defineProperty(event, 'target', { get: () => orphan })
+
+			expect(getPathFromEvent(event)).toBeUndefined()
 		})
 	})
 })
