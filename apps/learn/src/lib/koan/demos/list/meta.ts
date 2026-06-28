@@ -123,14 +123,14 @@ const meta: DemoMeta = {
 			lang: 'svelte',
 			code: `<script>
   const items = [
-    { label: 'Observatory', snippet: 'observatoryHeader', children: [{ label: 'Telescopes' }] },
+    { label: 'Observatory', snippet: 'header', children: [{ label: 'Telescopes' }] },
     { label: 'Settings', children: [{ label: 'General' }] }, // stays default
     { label: 'Pinned', snippet: 'pinned' }                   // custom leaf
   ]
 </script>
 
 <List {items} collapsible={false}>
-  {#snippet observatoryHeader(proxy)}
+  {#snippet header(proxy)}
     <span data-item-label>{proxy.label}</span>
     <span class="flex-1"></span>
     <button onclick={(e) => e.stopPropagation()}>Custom Toggle</button>

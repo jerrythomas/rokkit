@@ -390,7 +390,7 @@ describe('List', () => {
 
 	describe('named snippet resolution', () => {
 		const items = [
-			{ label: 'Observatory', snippet: 'observatoryHeader', children: [{ label: 'Telescopes' }] },
+			{ label: 'Observatory', snippet: 'header', children: [{ label: 'Telescopes' }] },
 			{ label: 'Settings', children: [{ label: 'General' }] },
 			{ label: 'Pinned Item', snippet: 'pinned' },
 			{ label: 'Regular Item' }

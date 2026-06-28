@@ -11,7 +11,7 @@
 </script>
 
 <List {items} {collapsible}>
-	{#snippet observatoryHeader(proxy)}
+	{#snippet header(proxy)}
 		<span data-named-group>Observatory: {proxy.label}</span>
 	{/snippet}
 	{#snippet pinned(proxy)}

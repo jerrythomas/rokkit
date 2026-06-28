@@ -26,7 +26,7 @@ Most lists need Tier 0 or 1. Going straight to `itemContent` is the most common 
 **Tier 2 — per-item / per-group named snippets** — when *a few* rows need bespoke markup. Set `item.snippet = 'name'`; every other row keeps the default rendering. Works for **group headers and leaf items alike**.
 ```svelte
 <List {items}>
-  {#snippet observatoryHeader(proxy)}…{/snippet}   <!-- only rows with snippet:'observatoryHeader' -->
+  {#snippet header(proxy)}…{/snippet}   <!-- only rows with snippet:'header' -->
 </List>
 ```
 
@@ -108,7 +108,7 @@ Set `item.snippet = 'name'` to route *specific* rows to a named snippet; all oth
 ```svelte
 <script>
   const items = [
-    { label: 'Observatory', snippet: 'observatoryHeader', children: [{ label: 'Telescopes' }] },
+    { label: 'Observatory', snippet: 'header', children: [{ label: 'Telescopes' }] },
     { label: 'Settings', children: [{ label: 'General' }] },   // default group header
     { label: 'Pinned', snippet: 'pinned' },                    // custom leaf
     { label: 'Reports' }                                       // default leaf
@@ -116,7 +116,7 @@ Set `item.snippet = 'name'` to route *specific* rows to a named snippet; all oth
 </script>
 
 <List {items} collapsible={false}>
-  {#snippet observatoryHeader(proxy)}
+  {#snippet header(proxy)}
     <span data-item-label>{proxy.label}</span>
     <span class="flex-1"></span>
     <button onclick={(e) => { e.stopPropagation(); /* custom toggle */ }}>Custom Toggle</button>
