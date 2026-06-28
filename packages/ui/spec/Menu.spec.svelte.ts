@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, fireEvent, waitFor } from '@testing-library/svelte'
 import Menu from '../src/components/Menu.svelte'
 import MenuSnippetTest from './MenuSnippetTest.svelte'
+import MenuNamedSnippetTest from './MenuNamedSnippetTest.svelte'
 
 const flatItems = [
 	{ label: 'Copy', icon: 'i-copy', value: 'copy' },
@@ -449,5 +450,52 @@ describe('Menu', () => {
 		const { container } = render(Menu, { items: flatItems, label: 'Actions' })
 		const trigger = container.querySelector('[data-menu-trigger]')
 		expect(trigger?.getAttribute('aria-label')).toBe('Actions')
+	})
+
+	// ─── Named snippet resolution (item.snippet) ────────────────────
+
+	describe('named snippet resolution', () => {
+		const items = [
+			{ label: 'Observatory', snippet: 'header', children: [{ label: 'Telescopes' }] },
+			{ label: 'Settings', children: [{ label: 'General' }] },
+			{ label: 'Pinned Item', snippet: 'pinned' },
+			{ label: 'Regular Item' }
+		]
+
+		it('routes a group with item.snippet to the named snippet (over groupContent)', async () => {
+			const { container } = render(MenuNamedSnippetTest, { items })
+			await openMenu(container)
+			expect(container.querySelector('[data-named-group]')?.textContent).toContain(
+				'Observatory: Observatory'
+			)
+		})
+
+		it('routes a leaf with item.snippet to the named snippet (over itemContent)', async () => {
+			const { container } = render(MenuNamedSnippetTest, { items })
+			await openMenu(container)
+			expect(container.querySelector('[data-named-item]')?.textContent).toContain(
+				'Pinned: Pinned Item'
+			)
+		})
+
+		it('falls back to groupContent for a group without item.snippet', async () => {
+			const { container } = render(MenuNamedSnippetTest, { items })
+			await openMenu(container)
+			const groups = [...container.querySelectorAll('[data-default-group]')].map(
+				(n) => n.textContent
+			)
+			expect(groups.some((t) => t?.includes('Group: Settings'))).toBe(true)
+			expect(groups.some((t) => t?.includes('Group: Observatory'))).toBe(false)
+		})
+
+		it('falls back to itemContent for a leaf without item.snippet', async () => {
+			const { container } = render(MenuNamedSnippetTest, { items })
+			await openMenu(container)
+			const leaves = [...container.querySelectorAll('[data-default-item]')].map(
+				(n) => n.textContent
+			)
+			expect(leaves.some((t) => t?.includes('Item: Regular Item'))).toBe(true)
+			expect(leaves.some((t) => t?.includes('Item: Pinned Item'))).toBe(false)
+		})
 	})
 })
