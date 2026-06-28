@@ -12,9 +12,28 @@ describe('shortcut normalization', () => {
 		expect(normalizeShortcut('shift+mod+p')).toBe('ctrl+shift+p')
 		expect(normalizeShortcut('?')).toBe('?')
 	})
+	it('handles all MODIFIER_ALIAS aliases', () => {
+		expect(normalizeShortcut('cmd+k')).toBe('meta+k')
+		expect(normalizeShortcut('option+k')).toBe('alt+k')
+		expect(normalizeShortcut('control+k')).toBe('ctrl+k')
+		expect(normalizeShortcut('alt+k')).toBe('alt+k')
+	})
+	it('skips empty segments produced by leading or double plus signs', () => {
+		// '+k' splits to ['', 'k'] — the empty string segment is skipped (covers !p continue branch)
+		expect(normalizeShortcut('+k')).toBe('k')
+		expect(normalizeShortcut('ctrl++k')).toBe('ctrl+k')
+	})
 	it('builds the same canonical string from an event', () => {
 		expect(eventToShortcut(keydown({ key: 'k', ctrl: true }))).toBe('ctrl+k')
 		expect(eventToShortcut(keydown({ key: 'P', ctrl: true, shift: true }))).toBe('ctrl+shift+p')
+	})
+	it('eventToShortcut handles meta, alt, and shift modifiers independently', () => {
+		expect(eventToShortcut(keydown({ key: 'k', meta: true }))).toBe('meta+k')
+		expect(eventToShortcut(keydown({ key: 'k', alt: true }))).toBe('alt+k')
+		expect(eventToShortcut(keydown({ key: 'k', shift: true }))).toBe('shift+k')
+		expect(eventToShortcut(keydown({ key: 'k', meta: true, alt: true }))).toBe('meta+alt+k')
+		// No modifiers at all — just the key
+		expect(eventToShortcut(keydown({ key: 'k' }))).toBe('k')
 	})
 	it('resolves mod to meta on macOS', () => {
 		const original = Object.getOwnPropertyDescriptor(globalThis.navigator, 'platform')
@@ -29,6 +48,18 @@ describe('shortcut normalization', () => {
 			} else {
 				Object.defineProperty(globalThis.navigator, 'platform', { value: '', configurable: true })
 			}
+		}
+	})
+
+	it('isMac() returns false when navigator is undefined (SSR)', () => {
+		// Simulate SSR environment where navigator is not defined
+		const originalNavigator = globalThis.navigator
+		vi.stubGlobal('navigator', undefined)
+		try {
+			// mod → ctrl because isMac() returns false when navigator undefined
+			expect(normalizeShortcut('mod+k')).toBe('ctrl+k')
+		} finally {
+			vi.stubGlobal('navigator', originalNavigator)
 		}
 	})
 })

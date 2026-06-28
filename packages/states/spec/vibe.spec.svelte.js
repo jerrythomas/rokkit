@@ -202,6 +202,39 @@ describe('vibe', () => {
 		})
 	})
 
+	describe('direction', () => {
+		it('should update direction when valid value provided', () => {
+			// vibe.direction starts as 'ltr' (detectDirection() default in jsdom)
+			vibe.direction = 'rtl'
+			expect(vibe.direction).toBe('rtl')
+			expect(vibe.isRTL).toBe(true)
+			// Reset
+			vibe.direction = 'ltr'
+			expect(vibe.isRTL).toBe(false)
+		})
+
+		it('should reject invalid direction values', () => {
+			vibe.direction = 'ltr'
+			vibe.direction = 'invalid'
+			expect(vibe.direction).toBe('ltr')
+		})
+
+		it('should reject same direction (no-op)', () => {
+			vibe.direction = 'ltr'
+			vibe.direction = 'ltr' // same value → ignored
+			expect(vibe.direction).toBe('ltr')
+		})
+
+		it('detectDirection() re-reads direction from the document', () => {
+			// jsdom defaults to ltr; calling detectDirection() should set direction
+			vibe.direction = 'rtl'
+			expect(vibe.direction).toBe('rtl')
+			vibe.detectDirection()
+			// detectDirection() reads the document lang/dir; jsdom returns 'ltr'
+			expect(vibe.direction).toBe('ltr')
+		})
+	})
+
 	describe('mocked', () => {
 		const localStorageMock = {
 			getItem: vi.fn(),

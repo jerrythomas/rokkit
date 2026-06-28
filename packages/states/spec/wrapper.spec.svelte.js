@@ -831,6 +831,37 @@ describe('Wrapper — multiselect: selected getter', () => {
 	})
 })
 
+// ─── Branch coverage: extend()/range() null-proxy guards ──────────────────────
+
+describe('Wrapper — extend()/range() edge cases', () => {
+	it('extend() with a key not in lookup is a no-op', () => {
+		const w = new Wrapper(new ProxyTree(flat), { multiselect: true })
+		w.select('0')
+		// moveTo sets focusedKey to a key, but extend uses the key directly
+		// Pass a nonexistent key directly
+		w.extend('does-not-exist')
+		// selectedKeys unchanged
+		expect(Array.from(w.selectedKeys)).toEqual(['0'])
+	})
+
+	it('range() with null path and no focusedKey is a no-op', () => {
+		const w = new Wrapper(new ProxyTree(flat), { multiselect: true })
+		// No selection, no focusedKey — range(null) should bail early
+		w.range(null)
+		expect(w.selectedKeys.size).toBe(0)
+	})
+
+	it('range() does NOT fire onselect when the target proxy is a group (hasChildren)', () => {
+		// Exercises the `proxy && !proxy.hasChildren` guard with hasChildren=true.
+		const onselect = vi.fn()
+		const w = new Wrapper(new ProxyTree(nested), { onselect, multiselect: true })
+		w.select('1') // selecting the leaf anchor fires onselect once
+		onselect.mockClear() // isolate range()'s behavior from the select above
+		w.range('0') // 'Fruits' (group) → proxy.hasChildren = true → range must NOT fire onselect
+		expect(onselect).not.toHaveBeenCalled()
+	})
+})
+
 // ─── Primitive items ──────────────────────────────────────────────────────────
 
 describe('Wrapper — primitive items', () => {

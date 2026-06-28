@@ -235,6 +235,23 @@ describe('ProxyTable — updateColumns', () => {
 	})
 })
 
+// ─── _rawData protected getter ────────────────────────────────────────────────
+
+describe('ProxyTable — _rawData getter', () => {
+	it('exposes the original data reference for subclasses', () => {
+		const data = [{ id: 1, name: 'Alice' }]
+		const t = new ProxyTable(data)
+		expect(t._rawData).toBe(data)
+	})
+
+	it('reflects the latest data after update()', () => {
+		const t = new ProxyTable(rows)
+		const newData = [{ id: 99, name: 'Zoe', age: 40 }]
+		t.update(newData)
+		expect(t._rawData).toBe(newData)
+	})
+})
+
 // ─── Integration: Wrapper navigates over ProxyTable ───────────────────────────
 
 describe('ProxyTable — integration with Wrapper', () => {
