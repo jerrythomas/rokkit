@@ -1,6 +1,8 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, afterEach } from 'vitest'
 import {
 	getClosestAncestorWithAttribute,
+	detectDirection,
+	isRTL,
 	noop,
 	id,
 	isObject,
@@ -44,6 +46,21 @@ describe('utils', () => {
 			expect(getClosestAncestorWithAttribute(element, 'data-test')).toBe(parent)
 		})
 	})
+	describe('detectDirection / isRTL', () => {
+		afterEach(() => document.documentElement.removeAttribute('dir'))
+
+		it('defaults to ltr and is not RTL', () => {
+			expect(detectDirection()).toBe('ltr')
+			expect(isRTL()).toBe(false)
+		})
+
+		it('reflects a rtl html dir attribute', () => {
+			document.documentElement.setAttribute('dir', 'rtl')
+			expect(detectDirection()).toBe('rtl')
+			expect(isRTL()).toBe(true)
+		})
+	})
+
 	describe('noop', () => {
 		it('should be a function', () => {
 			expect(typeof noop).toBe('function')
