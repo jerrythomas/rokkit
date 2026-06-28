@@ -10,6 +10,7 @@ import {
 	getKeyFromPath,
 	getPathFromKey,
 	getSnippet,
+	resolveSnippet,
 	getImage,
 	hex2rgb,
 	hex2oklch,
@@ -157,6 +158,39 @@ describe('utils', () => {
 			expect(getSnippet({}, 'test')).toBeNull()
 			expect(getSnippet(data, 'icon')).toBeNull()
 			expect(getSnippet(data, 'test')).toEqual(expect.any(Function))
+		})
+	})
+
+	describe('resolveSnippet', () => {
+		const named = vi.fn()
+		const itemContent = vi.fn()
+		const groupContent = vi.fn()
+		const snippets = { observatoryHeader: named, itemContent, groupContent }
+		// A proxy exposes its fields via .get() (like ProxyItem) — NOT a direct .snippet property.
+		const proxy = (snippetName) => ({ get: (key) => (key === 'snippet' ? snippetName : undefined) })
+
+		it('resolves a named snippet from the item snippet field (item level)', () => {
+			expect(resolveSnippet(snippets, proxy('observatoryHeader'))).toBe(named)
+		})
+
+		it('resolves a named snippet at group level over the group fallback', () => {
+			expect(resolveSnippet(snippets, proxy('observatoryHeader'), 'groupContent')).toBe(named)
+		})
+
+		it('falls back to groupContent for a group with no snippet field', () => {
+			expect(resolveSnippet(snippets, proxy(undefined), 'groupContent')).toBe(groupContent)
+		})
+
+		it('falls back to itemContent for an item with no snippet field', () => {
+			expect(resolveSnippet(snippets, proxy(undefined))).toBe(itemContent)
+		})
+
+		it('falls back to the default snippet when the named snippet is not provided', () => {
+			expect(resolveSnippet(snippets, proxy('missing'))).toBe(itemContent)
+		})
+
+		it('returns null when neither a named snippet nor the fallback exists', () => {
+			expect(resolveSnippet({}, proxy('observatoryHeader'))).toBeNull()
 		})
 	})
 

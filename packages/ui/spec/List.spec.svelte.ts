@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, fireEvent } from '@testing-library/svelte'
 import { flushSync } from 'svelte'
 import List from '../src/components/List.svelte'
+import ListSnippetTest from './ListSnippetTest.svelte'
 
 const flatItems = [
 	{ label: 'Dashboard', value: 'dashboard', icon: 'mdi:home' },
@@ -383,5 +384,44 @@ describe('List', () => {
 		const { container } = render(List, { items: flatItems, label: 'Navigation' })
 		const nav = container.querySelector('nav[data-list]')
 		expect(nav?.getAttribute('aria-label')).toBe('Navigation')
+	})
+
+	// ─── Named snippet resolution (item.snippet) ────────────────────
+
+	describe('named snippet resolution', () => {
+		const items = [
+			{ label: 'Observatory', snippet: 'observatoryHeader', children: [{ label: 'Telescopes' }] },
+			{ label: 'Settings', children: [{ label: 'General' }] },
+			{ label: 'Pinned Item', snippet: 'pinned' },
+			{ label: 'Regular Item' }
+		]
+
+		it('routes a group with item.snippet to the named snippet (over groupContent)', () => {
+			const { container } = render(ListSnippetTest, { items })
+			expect(container.querySelector('[data-named-group]')?.textContent).toContain(
+				'Observatory: Observatory'
+			)
+		})
+
+		it('routes a leaf with item.snippet to the named snippet (over itemContent)', () => {
+			const { container } = render(ListSnippetTest, { items })
+			expect(container.querySelector('[data-named-item]')?.textContent).toContain(
+				'Pinned: Pinned Item'
+			)
+		})
+
+		it('falls back to groupContent for a group without item.snippet', () => {
+			const { container } = render(ListSnippetTest, { items })
+			const groups = [...container.querySelectorAll('[data-default-group]')].map((n) => n.textContent)
+			expect(groups.some((t) => t?.includes('Group: Settings'))).toBe(true)
+			expect(groups.some((t) => t?.includes('Group: Observatory'))).toBe(false)
+		})
+
+		it('falls back to itemContent for a leaf without item.snippet', () => {
+			const { container } = render(ListSnippetTest, { items })
+			const leaves = [...container.querySelectorAll('[data-default-item]')].map((n) => n.textContent)
+			expect(leaves.some((t) => t?.includes('Item: Regular Item'))).toBe(true)
+			expect(leaves.some((t) => t?.includes('Item: Pinned Item'))).toBe(false)
+		})
 	})
 })
