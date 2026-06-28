@@ -63,20 +63,13 @@ describe('resolveMode', () => {
 		expect(resolveMode('system')).toBe('light')
 	})
 
-	it('resolves "system" to "dark" when window is undefined', () => {
-		// Temporarily hide window by deleting matchMedia so typeof window check
-		// falls back to the SSR branch (return 'dark')
-		vi.stubGlobal('matchMedia', undefined)
-		// The function checks `typeof window !== 'undefined'` — in JSDOM window
-		// always exists, so we have to test the SSR branch indirectly by making
-		// matchMedia unavailable. The actual SSR path is `window === undefined`;
-		// we cover it via the `window.matchMedia` path with a non-callable stub.
-		// This test primarily documents the intent; the direct SSR path (no window)
-		// is genuinely unreachable in a browser/JSDOM environment.
-		// We restore for the undefined check via stubGlobal:
-		vi.unstubAllGlobals()
-		// resolveMode('light') still works after restore
-		expect(resolveMode('light')).toBe('light')
+	it('resolves "system" to "dark" in an SSR environment (no window)', () => {
+		vi.stubGlobal('window', undefined)
+		try {
+			expect(resolveMode('system')).toBe('dark')
+		} finally {
+			vi.unstubAllGlobals()
+		}
 	})
 })
 

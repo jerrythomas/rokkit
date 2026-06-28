@@ -14,11 +14,10 @@ export type ResolvedMode = 'light' | 'dark'
  */
 export function resolveMode(mode: ColorMode): ResolvedMode {
 	if (mode === 'system') {
-		/* v8 ignore next 4 */
 		if (typeof window !== 'undefined') {
 			return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 		}
-		return 'dark' // SSR: unreachable in browser/JSDOM (window always defined)
+		return 'dark' // SSR: no window
 	}
 	return mode
 }
