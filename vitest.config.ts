@@ -25,7 +25,12 @@ export default defineConfig({
 				'**/dist/**',
 				'**/apps/learn/**',
 				'**/fixtures/**',
+				// Type-only declaration files have no executable statements — they
+				// can't be "covered". Logic must not live under types/.
 				'**/types.ts',
+				'**/types/**',
+				'**/*.d.ts',
+				'**/markdown-plugin.ts',
 				'**/.worktrees/**'
 			]
 		},
