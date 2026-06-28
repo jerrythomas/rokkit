@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, fireEvent } from '@testing-library/svelte'
 import Tree from '../src/components/Tree.svelte'
+import TreeSnippetTest from './TreeSnippetTest.svelte'
 
 const flatItems = [
 	{ label: 'File 1', value: 'file1' },
@@ -349,5 +350,44 @@ describe('Tree', () => {
 		// Expand and check collapse label
 		await fireEvent.click(toggleBtn!)
 		expect(toggleBtn?.getAttribute('aria-label')).toBe('Fermer')
+	})
+
+	// ─── Named snippet resolution (item.snippet) ────────────────────
+
+	describe('named snippet resolution', () => {
+		const items = [
+			{ label: 'Pinned Item', value: 'pinned', snippet: 'pinned' },
+			{ label: 'Regular Item', value: 'regular' },
+			{ label: 'Another Item', value: 'another' }
+		]
+
+		it('routes a leaf with item.snippet to the named snippet (over itemContent)', () => {
+			const { container } = render(TreeSnippetTest, { items })
+			expect(container.querySelector('[data-named-item]')?.textContent).toContain(
+				'Pinned: Pinned Item'
+			)
+		})
+
+		it('falls back to itemContent for leaves without item.snippet', () => {
+			const { container } = render(TreeSnippetTest, { items })
+			const defaults = [...container.querySelectorAll('[data-default-item]')].map(
+				(n) => n.textContent
+			)
+			expect(defaults.some((t) => t?.includes('Item: Regular Item'))).toBe(true)
+			expect(defaults.some((t) => t?.includes('Item: Another Item'))).toBe(true)
+		})
+
+		it('does not render pinned item via default itemContent', () => {
+			const { container } = render(TreeSnippetTest, { items })
+			const defaults = [...container.querySelectorAll('[data-default-item]')].map(
+				(n) => n.textContent
+			)
+			expect(defaults.some((t) => t?.includes('Pinned Item'))).toBe(false)
+		})
+
+		it('renders exactly one named-item element for the snippet-routed leaf', () => {
+			const { container } = render(TreeSnippetTest, { items })
+			expect(container.querySelectorAll('[data-named-item]').length).toBe(1)
+		})
 	})
 })
