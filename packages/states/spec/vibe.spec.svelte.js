@@ -184,6 +184,7 @@ describe('vibe', () => {
 		})
 		it('only accepts an allowed skin', () => {
 			vibe.allowedSkins = ['default', 'ocean']
+			expect(vibe.allowedSkins).toEqual(['default', 'ocean'])
 			vibe.skin = 'ocean'
 			expect(vibe.skin).toBe('ocean')
 			vibe.skin = 'nope'
