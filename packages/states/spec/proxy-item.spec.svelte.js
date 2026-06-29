@@ -175,6 +175,137 @@ describe('ProxyItem', () => {
 			expect(proxy.children[0]).toBeInstanceOf(ProxyItem)
 		})
 	})
+
+	describe('set expanded — writes back to item when field present', () => {
+		it('should write expanded back to item when item has the expanded field', () => {
+			const raw = { label: 'node', expanded: false }
+			const proxy = new ProxyItem(raw, {}, '0', 1)
+			proxy.expanded = true
+			expect(raw.expanded).toBe(true)
+			expect(proxy.expanded).toBe(true)
+		})
+
+		it('should not write to item when item lacks the expanded field (internal mode)', () => {
+			const raw = { label: 'node' }
+			const proxy = new ProxyItem(raw, {}, '0', 1)
+			proxy.expanded = true
+			expect(proxy.expanded).toBe(true)
+			expect(raw.expanded).toBeUndefined()
+		})
+	})
+
+	describe('set selected — writes back to item when field present', () => {
+		it('should write selected back to item when item has the selected field', () => {
+			const raw = { label: 'node', selected: false }
+			const proxy = new ProxyItem(raw, {}, '0', 1)
+			proxy.selected = true
+			expect(raw.selected).toBe(true)
+			expect(proxy.selected).toBe(true)
+		})
+
+		it('should not write to item when item lacks the selected field (internal mode)', () => {
+			const raw = { label: 'node' }
+			const proxy = new ProxyItem(raw, {}, '0', 1)
+			proxy.selected = true
+			expect(proxy.selected).toBe(true)
+			expect(raw.selected).toBeUndefined()
+		})
+	})
+
+	describe('mutate()', () => {
+		it('should write a single field directly to the raw item', () => {
+			const raw = { label: 'original', value: 1 }
+			const proxy = new ProxyItem(raw, {}, '0', 1)
+			proxy.mutate('label', 'mutated')
+			expect(raw.label).toBe('mutated')
+		})
+
+		it('should batch-update multiple fields when an object is passed', () => {
+			const raw = { label: 'a', value: 1, extra: 'x' }
+			const proxy = new ProxyItem(raw, {}, '0', 1)
+			proxy.mutate({ label: 'b', value: 2 })
+			expect(raw.label).toBe('b')
+			expect(raw.value).toBe(2)
+			expect(raw.extra).toBe('x') // untouched
+		})
+
+		it('should increment version so $derived children recompute', () => {
+			const raw = { label: 'parent' }
+			const proxy = new ProxyItem(raw, {}, '0', 1)
+			expect(proxy.hasChildren).toBe(false)
+			proxy.mutate('children', [{ label: 'child' }])
+			flushSync()
+			expect(proxy.hasChildren).toBe(true)
+		})
+	})
+
+	describe('type getter', () => {
+		it('returns "separator" when type field is "separator"', () => {
+			const proxy = new ProxyItem({ label: 'sep', type: 'separator' }, {}, '0', 1)
+			expect(proxy.type).toBe('separator')
+		})
+
+		it('returns "spacer" when type field is "spacer"', () => {
+			const proxy = new ProxyItem({ label: 'sp', type: 'spacer' }, {}, '0', 1)
+			expect(proxy.type).toBe('spacer')
+		})
+
+		it('returns "group" when item has children', () => {
+			const proxy = new ProxyItem({ label: 'g', children: [{ label: 'c' }] }, {}, '0', 1)
+			expect(proxy.type).toBe('group')
+		})
+
+		it('returns "item" for a leaf node', () => {
+			const proxy = new ProxyItem({ label: 'leaf' }, {}, '0', 1)
+			expect(proxy.type).toBe('item')
+		})
+	})
+
+	describe('original getter', () => {
+		it('returns the original raw input', () => {
+			const raw = { label: 'test' }
+			const proxy = new ProxyItem(raw, {}, '0', 1)
+			expect(proxy.original).toBe(raw)
+		})
+
+		it('returns the original primitive', () => {
+			const proxy = new ProxyItem('hello', {}, '0', 1)
+			expect(proxy.original).toBe('hello')
+		})
+	})
+
+	describe('#syncControlState — initialises from item fields', () => {
+		it('reads initial expanded=true from item', () => {
+			const raw = { label: 'node', expanded: true }
+			const proxy = new ProxyItem(raw, {}, '0', 1)
+			expect(proxy.expanded).toBe(true)
+		})
+
+		it('reads initial selected=true from item', () => {
+			const raw = { label: 'node', selected: true }
+			const proxy = new ProxyItem(raw, {}, '0', 1)
+			expect(proxy.selected).toBe(true)
+		})
+	})
+
+	describe('value getter — fallback to raw for primitives', () => {
+		it('returns raw value when no value field', () => {
+			const proxy = new ProxyItem('hello', {}, '0', 1)
+			expect(proxy.value).toBe('hello')
+		})
+	})
+
+	describe('disabled getter', () => {
+		it('returns true when item has disabled=true', () => {
+			const proxy = new ProxyItem({ label: 'x', disabled: true }, {}, '0', 1)
+			expect(proxy.disabled).toBe(true)
+		})
+
+		it('returns false when item lacks disabled field', () => {
+			const proxy = new ProxyItem({ label: 'x' }, {}, '0', 1)
+			expect(proxy.disabled).toBe(false)
+		})
+	})
 })
 
 describe('LazyProxyItem', () => {

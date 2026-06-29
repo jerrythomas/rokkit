@@ -57,10 +57,13 @@ function resolveUpgradeAdapters(adapters) {
 		exists: adapters.exists ?? ((p) => existsSync(p)),
 		fetchVersion:
 			adapters.fetchVersion ??
+			/* v8 ignore next 8 -- default fetchVersion calls real npm; tests always inject
+			   fetchVersion so this closure is never executed in the test environment */
 			((name) => {
 				try {
 					return execFileSync('npm', ['view', name, 'version'], { encoding: 'utf-8' }).trim()
 				} catch {
+					// npm binary absent or network error — treat as unknown version
 					return null
 				}
 			}),

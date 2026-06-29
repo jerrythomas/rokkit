@@ -1,174 +1,187 @@
 # Rokkit Toggle Component
 
-> Segmented control for switching between a set of options with keyboard navigation.
+> Data-driven segmented control or cycling button for switching between a set of options. Built on the ProxyItem + Wrapper + Navigator stack.
 
-The Toggle component renders options as a horizontal button group (radio-style). One option is selected at a time. Use it for mode switches, view selectors, or any small option set.
+Toggle renders options as a horizontal radio group (`variant="group"`, default) or as a single cycling button (`variant="button"`). **It is data-first: you describe options in data, and the component renders icon and label automatically.** Reach for snippets only when the *markup* must differ from the default — not to add an icon (that is data).
 
-## Architecture
+## Usage tiers — use the SIMPLEST that works
 
-Toggle uses the Wrapper + Navigator pattern:
-- `Wrapper` from `@rokkit/states` — manages data, focus, and selection
-- `Navigator` from `@rokkit/actions` — handles keyboard/mouse interaction (horizontal orientation)
-- `resolveSnippet` from `@rokkit/core` — custom item rendering via snippet overrides
+Most toggles need Tier 0 or 1. Going straight to `itemContent` is the most common mistake — it throws away the built-in rendering and you re-implement icon/label by hand.
 
-## Quick Start
-
-```svelte
-<script>
-  import { Toggle } from '@rokkit/ui'
-
-  const options = [
-    { label: 'Day',   value: 'day',   icon: 'i-lucide:sun' },
-    { label: 'Week',  value: 'week',  icon: 'i-lucide:calendar' },
-    { label: 'Month', value: 'month', icon: 'i-lucide:calendar-range' }
-  ]
-
-  let value = $state('day')
-</script>
-
-<Toggle {options} bind:value />
-```
-
-String arrays also work — each string becomes both the label and value:
-
+**Tier 0 — `<Toggle {options}>`** — primitives, or objects whose keys already match the defaults (`label`, `value`, `icon`, …). No config.
 ```svelte
 <Toggle options={['Daily', 'Weekly', 'Monthly']} bind:value />
+
+<Toggle options={[
+  { label: 'Day',   value: 'day',   icon: 'i-lucide:sun' },
+  { label: 'Week',  value: 'week',  icon: 'i-lucide:calendar' },
+  { label: 'Month', value: 'month', icon: 'i-lucide:calendar-range' }
+]} bind:value />
 ```
+
+**Tier 1 — `<Toggle {options} {fields}>`** — same, but your data uses different key names. `fields` is a read-only remap; it never mutates your data.
+```svelte
+<Toggle options={modes} fields={{ label: 'name', value: 'id' }} bind:value />
+```
+
+**Tier 2 — per-item named snippets** — when *a few* options need bespoke markup. Set `item.snippet = 'name'`; every other option keeps the default rendering.
+```svelte
+<Toggle {options}>
+  {#snippet custom(proxy, selected)}…{/snippet}   <!-- only items with snippet:'custom' -->
+</Toggle>
+```
+
+**Tier 3 — `itemContent`** — blanket custom rendering for *every* option. Last resort; you now own icon/label layout yourself.
+
+> **Before writing any snippet, ask: is this just an icon or a label?** If yes, it's data — use Tier 0/1. Snippets are for structurally different markup (an inline indicator, a custom layout).
+
+## What the default option renders (Tiers 0–1, no snippet)
+
+The built-in option renderer outputs, in order, whatever fields are present:
+
+| Field (data key) | Renders as | Notes |
+|---|---|---|
+| `icon` | `<span data-toggle-icon class={icon}>` | a CSS icon class (`i-lucide:sun`) rendered as a classname span |
+| `label` | `<span data-toggle-label>` | the display text; also used as `aria-label` and `title` fallback |
+
+Both are data-driven. You do **not** need a snippet to show an icon or change a label.
+
+When `showLabels={false}`, the label span is suppressed but `label` is still used as the `title` attribute (tooltip on hover).
 
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `variant` | `'group'\|'button'` | `'group'` | `'group'` = segmented radio group; `'button'` = single cycling button |
-| `options` | `unknown[]` | `[]` | Array of toggle options (strings or objects) |
-| `fields` | `Record<string, string>` | `{}` | Field mapping overrides |
+| `options` | `unknown[]` | `[]` | Data array (strings, numbers, or objects) |
+| `fields` | `Record<string,string>` | `{}` | Remap data keys to component fields |
 | `value` | `unknown` | — | Selected value — use `bind:value` |
-| `onchange` | `(value, rawItem) => void` | — | Called when selection changes |
 | `showLabels` | `boolean` | `true` | Show text labels alongside icons |
 | `size` | `'sm'\|'md'\|'lg'` | `'md'` | Size variant |
 | `disabled` | `boolean` | `false` | Disable all options |
-| `label` | `string` | from messages | Accessible `aria-label` for the group (or button title fallback) |
-| `class` | `string` | `''` | Additional CSS classes |
+| `label` | `string` | from messages | Accessible `aria-label` for the group container (or single button title fallback) |
+| `class` | `string` | `''` | Additional CSS classes on the root element |
+| `onchange` | `(value, rawItem) => void` | — | Called when selection changes |
 
-## Field Mapping
+## Field mapping (complete)
 
-Toggle uses BASE_FIELDS from `@rokkit/core`. Semantic keys map to common raw data keys:
+Default field names the component reads from your data. Override only the ones that differ.
 
-| Semantic Key | Default Raw Key | Description |
-|-------------|----------------|-------------|
-| `label` | `'text'` | Display label |
-| `value` | `'value'` | Option value emitted on selection |
-| `icon` | `'icon'` | Icon class name |
-| `disabled` | `'disabled'` | Disabled state |
-| `subtext` | `'description'` | Tooltip text |
-
-Override with the `fields` prop:
-
-```svelte
-<Toggle options={items} fields={{ label: 'name', value: 'id' }} bind:value />
-```
-
-## Icon-Only Mode
-
-Set `showLabels={false}` to show only icons:
+| Semantic key | Default data key | Renders |
+|---|---|---|
+| `label` | `'label'` | display text; also `aria-label` + `title` fallback |
+| `value` | `'value'` | selection value (falls back to the raw item for primitives) |
+| `icon` | `'icon'` | icon class string (a CSS icon class applied to a span) |
+| `disabled` | `'disabled'` | disabled state for individual options |
+| `snippet` | `'snippet'` | per-item named-snippet override (Tier 2) |
 
 ```svelte
-<script>
-  const modes = [
-    { value: 'system', icon: 'i-lucide:monitor', label: 'System' },
-    { value: 'light',  icon: 'i-lucide:sun',     label: 'Light' },
-    { value: 'dark',   icon: 'i-lucide:moon',    label: 'Dark' }
-  ]
-  let value = $state('system')
-</script>
-
-<Toggle options={modes} bind:value showLabels={false} />
+<Toggle options={modes} fields={{ label: 'name', value: 'id', icon: 'symbol' }} bind:value />
 ```
 
-When `showLabels={false}`, each option's `label` is used as tooltip text via the `title` attribute.
+## Button variant
 
-## Disabled Options
+`variant="button"` renders a **single cycling button** that advances through options on each click. The button shows the *next* option (what you'd switch to). Useful for compact mode toggles where the toggle label is the action:
 
-Individual options can be disabled via the `disabled` field:
+```svelte
+<Toggle variant="button" options={[
+  { value: 'system', icon: 'i-lucide:monitor', label: 'System' },
+  { value: 'light',  icon: 'i-lucide:sun',     label: 'Light' },
+  { value: 'dark',   icon: 'i-lucide:moon',    label: 'Dark' }
+]} bind:value showLabels={false} />
+```
+
+The button variant does **not** use `role="radiogroup"` — it is a plain `<button>` that cycles. The `label` prop supplies the `aria-label` and `title` fallback.
+
+## Tier 2 — per-item named snippets
+
+Set `item.snippet = 'name'` to route *specific* options to a named snippet; all other options keep the default rendering.
 
 ```svelte
 <script>
   const options = [
-    { label: 'Edit',  value: 'edit' },
-    { label: 'View',  value: 'view' },
-    { label: 'Admin', value: 'admin', disabled: true }
+    { label: 'Edit',   value: 'edit',  icon: 'i-lucide:pen' },
+    { label: 'Custom', value: 'x',     snippet: 'custom' },
+    { label: 'View',   value: 'view',  icon: 'i-lucide:eye' }
   ]
-  let value = $state('edit')
 </script>
 
-<Toggle {options} bind:value />
-```
-
-## Custom Item Snippet
-
-Override the default rendering with an `itemContent` snippet:
-
-```svelte
 <Toggle {options} bind:value>
-  {#snippet itemContent(proxy)}
-    <span class={proxy.get('icon')}></span>
-    <strong>{proxy.label}</strong>
+  {#snippet custom(proxy, selected)}
+    <span class="i-lucide:star"></span>
+    <strong class:font-bold={selected}>{proxy.label}</strong>
   {/snippet}
 </Toggle>
 ```
 
-The snippet receives a `ProxyItem` instance. Use `proxy.label`, `proxy.value`, `proxy.get('icon')`, etc.
+The snippet receives `(proxy: ProxyItem, selected: boolean)`.
 
-## Button Variant
+## Tier 3 — itemContent (blanket custom)
 
-`variant="button"` renders a single cycling button that advances through options on each click. The button shows the **next** option (what you'd switch to). Useful for compact mode toggles:
+Replaces the inner content of **every** option button. The component still renders the `<button>` wrapper, `data-path`, `role="radio"`, `aria-checked`, and navigation. Use only when the default renderer genuinely can't express the layout.
 
 ```svelte
-<script>
-  const modes = [
-    { value: 'system', icon: 'i-lucide:monitor', label: 'System' },
-    { value: 'light',  icon: 'i-lucide:sun',     label: 'Light' },
-    { value: 'dark',   icon: 'i-lucide:moon',    label: 'Dark' }
-  ]
-  let value = $state('system')
-</script>
-
-<Toggle variant="button" options={modes} bind:value showLabels={false} />
+<Toggle {options} bind:value>
+  {#snippet itemContent(proxy, selected)}
+    {#if proxy.get('icon')}
+      <span class={proxy.get('icon')} aria-hidden="true"></span>
+    {/if}
+    <span class:font-semibold={selected}>{proxy.label}</span>
+  {/snippet}
+</Toggle>
 ```
 
-## Keyboard Navigation
+## ProxyItem API (passed to all snippets)
 
-| Key | Action |
-|-----|--------|
-| `ArrowLeft` | Previous option |
-| `ArrowRight` | Next option |
-| `Home` | First option |
-| `End` | Last option |
-| `Enter / Space` | Select focused option |
-| `Tab` | Move focus away |
+| Property / method | Description |
+|---|---|
+| `proxy.label` | mapped display text (reads the `label` data key) |
+| `proxy.value` | the original raw item (object or primitive) |
+| `proxy.disabled` | whether this option is disabled |
+| `proxy.get('icon')` | mapped icon class |
+| `proxy.get('snippet')` | per-item snippet name |
+| `proxy.get(key)` | read any field by semantic or raw name |
 
-## Accessibility
+## Theming
 
-- `role="radiogroup"` on container
-- `role="radio"` + `aria-checked` on each option
-- `aria-label` derived from item label
-- `title` attribute for tooltip (from subtext or label)
-- Disabled options have `disabled` attribute + `aria-disabled`
+### Data attributes
 
-## Data Attributes
+| Attribute | Element | Notes |
+|---|---|---|
+| `data-toggle` | root element | present on both variants |
+| `data-toggle-variant` | root element | `"group"` or `"button"` |
+| `data-toggle-size` | root element | `"sm"`, `"md"`, or `"lg"` |
+| `data-toggle-disabled` | root element | present when all options disabled |
+| `data-toggle-labels` | root element | present when `showLabels` is true |
+| `data-toggle-option` | individual option `<button>` | group variant only |
+| `data-selected` | option `<button>` | present on the selected option |
+| `data-disabled` | option `<button>` | present on a disabled option |
+| `data-path` | option `<button>` | item path key for Navigator |
+| `data-toggle-icon` | icon `<span>` inside option | |
+| `data-toggle-label` | label `<span>` inside option | |
 
-| Attribute | Element | Description |
-|-----------|---------|-------------|
-| `data-toggle` | Container | Root element |
-| `data-toggle-option` | Button | Individual option |
-| `data-toggle-size` | Container | Size variant (sm/md/lg) |
-| `data-toggle-disabled` | Container | All options disabled |
-| `data-toggle-labels` | Container | Labels visible |
-| `data-selected` | Button | Currently selected option |
-| `data-disabled` | Button | Individually disabled option |
-| `data-path` | Button | Item path key for Navigator |
-| `data-toggle-icon` | Span | Icon element |
-| `data-toggle-label` | Span | Label element |
+### Styling via the `class` prop (UnoCSS arbitrary variants)
+
+`class` lands on the root element. Use UnoCSS arbitrary variants to reach descendants:
+
+```svelte
+<Toggle {options} bind:value class="
+  [&_[data-toggle-option]]:px-3
+  [&_[data-toggle-option][data-selected]]:font-semibold
+  [&_[data-toggle-label]]:text-sm
+" />
+```
+
+Or theme globally with named tokens in your theme CSS:
+
+```css
+[data-toggle-option][data-selected] { background: var(--primary-soft); color: var(--primary); }
+[data-toggle-option]:hover:not([data-disabled]) { background: var(--surface-raised); }
+```
+
+## Keyboard navigation (group variant)
+
+`←`/`→` move focus · `Home`/`End` · `Enter`/`Space` select focused option · `Tab` moves focus away. Disabled options are skipped.
 
 ## Import
 
@@ -176,7 +189,8 @@ The snippet receives a `ProxyItem` instance. Use `proxy.label`, `proxy.value`, `
 import { Toggle } from '@rokkit/ui'
 ```
 
-## Related Components
+## Related
 
-- [List](/llms/components/list.txt) — vertical list with selection
 - [Tabs](/llms/components/tabs.txt) — tabbed content panels
+- [List](/llms/components/list.txt) — vertical list with selection
+- [Composability guide](/llms/guides/composability.txt) — the data-first contract across all components

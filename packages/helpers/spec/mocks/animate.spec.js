@@ -21,4 +21,32 @@ describe('animate', () => {
 		animation.play()
 		expect(animation.play).toHaveBeenCalledTimes(1)
 	})
+
+	it('should allow getting and setting onfinish — setter queues microtask call', async () => {
+		const el = document.createElement('div')
+		const animation = el.animate([], 0)
+
+		// getter returns null initially
+		expect(animation.onfinish).toBeNull()
+
+		// setter stores the callback and schedules it via queueMicrotask
+		const cb = vi.fn()
+		animation.onfinish = cb
+		expect(animation.onfinish).toBe(cb)
+
+		// Flush microtasks so the queued callback runs
+		await Promise.resolve()
+		expect(cb).toHaveBeenCalledOnce()
+	})
+
+	it('should allow getting and setting oncancel', () => {
+		const el = document.createElement('div')
+		const animation = el.animate([], 0)
+
+		expect(animation.oncancel).toBeNull()
+
+		const cb = vi.fn()
+		animation.oncancel = cb
+		expect(animation.oncancel).toBe(cb)
+	})
 })

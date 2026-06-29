@@ -1005,4 +1005,97 @@ describe('presetRokkit', () => {
 			expect(css).toMatch(/--paper:rgb/)
 		})
 	})
+
+	describe('branch-coverage completions', () => {
+		it('typography.ui key emits --font-ui (canonical name, no legacy alias needed)', () => {
+			// Exercises the `typography.ui ?? typography.sans` branch when .ui is present
+			const preset = presetRokkit({ typography: { ui: 'Geist' } })
+			const css = preset.preflights[0].getCSS()
+			expect(css).toContain('--font-ui:Geist')
+		})
+
+		it('typography.display + typography.heading — display wins (heading is skipped via ??)', () => {
+			// Exercises the branch where both display and heading are set:
+			// `display ?? heading` — the right-hand side (heading) is never evaluated
+			// because display is truthy. This hits the "truthy left-hand" branch.
+			const preset = presetRokkit({ typography: { display: 'Playfair', heading: 'OldHeading' } })
+			const css = preset.preflights[0].getCSS()
+			expect(css).toContain('--font-display:Playfair')
+			// heading should NOT appear because display takes precedence
+			expect(css).not.toContain('OldHeading')
+		})
+
+		it('checkInkContrast handles missing palette shades gracefully (parseLightness null path)', () => {
+			// Sparse palette missing the expected shade keys (100, 300, 700, 900) so
+			// parseLightness receives undefined → returns null → diff check is skipped.
+			const warnings = []
+			const origWarn = console.warn
+			console.warn = (msg) => warnings.push(msg)
+			try {
+				presetRokkit({
+					palettes: { sparse: { 500: '0.5 0 0' } },
+					colorSpace: 'oklch',
+					skins: { default: { surface: 'sparse', ink: 'sparse', primary: 'sparse' } }
+				})
+			} finally {
+				console.warn = origWarn
+			}
+			// sparse has no shade 100 or 300/700/900 → parseLightness gets undefined →
+			// returns null → diff check bails without warning
+			expect(warnings.some((w) => /contrast/i.test(w))).toBe(false)
+		})
+
+		it('shape.radius as custom object (not a string preset name) injects object values directly', () => {
+			// Exercises the `typeof radiusKey === 'string' ? ... : radiusKey` false branch.
+			const preset = presetRokkit({ shape: { radius: { sm: '3px', md: '6px', full: '9999px' } } })
+			const css = preset.preflights[0].getCSS()
+			expect(css).toContain('--radius-sm:3px')
+			expect(css).toContain('--radius-md:6px')
+		})
+
+		it('override token with non-string, non-object value is not emitted as a shortcut', () => {
+			// Exercises the `typeof candidate !== 'string' return false` branch in isOverrideTokenColor.
+			// A numeric override value → candidate is a number → not a color string.
+			const preset = presetRokkit({ overrides: { 'grid-cols': 12 } })
+			const keys = preset.shortcuts.filter((s) => typeof s[0] === 'string').map((s) => s[0])
+			expect(keys).not.toContain('bg-grid-cols')
+		})
+
+		it('resolveMappingForMode dark mode with only-light dual-palette falls back to light value', () => {
+			// Exercises the `value.dark ?? value.light` branch: value.dark is undefined
+			// so the ?? takes value.light. Triggered by having a dark block generated for
+			// a skin where one role uses only {light}.
+			const preset = presetRokkit({
+				tokens: 'extended',
+				skin: {
+					surface: { light: 'slate', dark: 'zinc' },
+					primary: { light: 'orange' }   // only-light — dark mode falls back to 'orange'
+				}
+			})
+			const css = preset.preflights[0].getCSS()
+			// Both light and dark blocks present; dark block still uses 'orange' palette for primary
+			const darkBlock = css.split('[data-mode="dark"]')[1] ?? ''
+			expect(darkBlock).toContain('--color-primary-500:')
+		})
+
+		it('resolveMappingForMode light mode with only-dark dual-palette falls back to dark value', () => {
+			// Exercises the `value.light ?? value.dark ?? null` branch in light mode:
+			// value.light is undefined so ?? takes value.dark. Triggered by {dark:'x'} only.
+			const preset = presetRokkit({
+				tokens: 'extended',
+				skin: {
+					surface: { light: 'slate', dark: 'zinc' },  // triggers dark block
+					primary: { dark: 'amber' }   // only-dark — light mode ?? takes value.dark
+				}
+			})
+			const css = preset.preflights[0].getCSS()
+			// Light block uses 'amber' palette for primary (fallback from undefined light)
+			const lightBlock = css.split('[data-mode="dark"]')[0]
+			expect(lightBlock).toContain('--color-primary-500:')
+		})
+
+		// The `?? null` branches at line 76 (branches 8 and 11) require BOTH light and dark
+		// to be absent from a dual-palette entry — a configuration error that causes
+		// downstream failures, so they are marked /* v8 ignore */ in the source.
+	})
 })

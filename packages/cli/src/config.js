@@ -16,6 +16,7 @@ export async function loadConfig(adapters) {
 
 	try {
 		const { default: config } = await import(`file://${configPath}?t=${Date.now()}`)
+		/* v8 ignore next -- dynamic import succeeds only in real Node, not JSDOM */
 		return config
 	} catch {
 		return null

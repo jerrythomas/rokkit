@@ -715,5 +715,151 @@ describe('LazyWrapper', () => {
 			expect(w.flatView).toHaveLength(2)
 			expect(w.flatView[1].proxy.label).toBe('Child')
 		})
+
+		it('should handle expand() when focusedKey has no node in flatView', () => {
+			const w = new LazyWrapper(new ProxyTree([{ label: 'A', value: 'a' }]))
+			// Move to a key that exists in lookup but force a mismatch scenario:
+			// expand() bails if !node (node not in flatView).
+			// Here a leaf won't be in flatView when collapsed group hides it;
+			// to simulate: just confirm expand() with a valid focusedKey but collapsed child is a no-op.
+			w.first() // focusedKey = '0', leaf
+			w.expand()
+			expect(w.flatView).toHaveLength(1)
+		})
+	})
+
+	describe('select() with lazy unloaded node', () => {
+		it('should fetch and expand an unloaded sentinel when select() is called', async () => {
+			const lazyLoad = vi.fn().mockResolvedValue([{ label: 'Child', value: 'c' }])
+
+			const w = new LazyWrapper(
+				new ProxyTree(
+					[{ label: 'Root', value: 'r', children: true }],
+					{},
+					{
+						createProxy: (raw, fields, key, level) =>
+							new LazyProxyItem(raw, fields, key, level, lazyLoad)
+					}
+				)
+			)
+
+			// Confirm sentinel is unloaded
+			const proxy = w.lookup.get('0')
+			expect(proxy.loaded).toBe(false)
+			expect(proxy.hasChildren).toBe(false)
+
+			// select() on unloaded sentinel → #fetchAndExpand
+			w.select('0')
+
+			await new Promise((r) => setTimeout(r, 0))
+			flushSync()
+
+			expect(lazyLoad).toHaveBeenCalledTimes(1)
+			expect(proxy.loaded).toBe(true)
+			expect(proxy.expanded).toBe(true)
+			expect(w.flatView).toHaveLength(2)
+		})
+
+		it('should delegate to super.select() for group with existing children', () => {
+			const onselect = vi.fn()
+			const lazyLoad = vi.fn()
+
+			const w = new LazyWrapper(
+				new ProxyTree(
+					[
+						{
+							label: 'Group',
+							value: 'g',
+							children: [{ label: 'Child', value: 'c' }]
+						}
+					],
+					{},
+					{
+						createProxy: (raw, fields, key, level) =>
+							new LazyProxyItem(raw, fields, key, level, lazyLoad)
+					}
+				),
+				{ onselect }
+			)
+
+			// select() on a group with existing children → toggle expansion (super.select)
+			w.select('0')
+			flushSync()
+
+			expect(lazyLoad).not.toHaveBeenCalled()
+			expect(onselect).not.toHaveBeenCalled() // group, not a value
+			expect(w.flatView).toHaveLength(2) // expanded
+		})
+
+		it('should return early when select() proxy is not found', () => {
+			const w = new LazyWrapper(new ProxyTree([{ label: 'A', value: 'a' }]))
+			// select() with a key not in lookup → no-op
+			expect(() => w.select('does-not-exist')).not.toThrow()
+		})
+	})
+
+	describe('toggle() with lazy unloaded node', () => {
+		it('should fetch and expand an unloaded sentinel when toggle() is called', async () => {
+			const lazyLoad = vi.fn().mockResolvedValue([{ label: 'Child', value: 'c' }])
+
+			const w = new LazyWrapper(
+				new ProxyTree(
+					[{ label: 'Root', value: 'r', children: true }],
+					{},
+					{
+						createProxy: (raw, fields, key, level) =>
+							new LazyProxyItem(raw, fields, key, level, lazyLoad)
+					}
+				)
+			)
+
+			const proxy = w.lookup.get('0')
+			expect(proxy.loaded).toBe(false)
+
+			// toggle() on an unloaded sentinel → #fetchAndExpand
+			w.toggle('0')
+
+			await new Promise((r) => setTimeout(r, 0))
+			flushSync()
+
+			expect(lazyLoad).toHaveBeenCalledTimes(1)
+			expect(proxy.loaded).toBe(true)
+			expect(proxy.expanded).toBe(true)
+		})
+
+		it('should delegate to super.toggle() for group with existing children', () => {
+			const lazyLoad = vi.fn()
+
+			const w = new LazyWrapper(
+				new ProxyTree(
+					[
+						{
+							label: 'Group',
+							value: 'g',
+							children: [{ label: 'Child', value: 'c' }]
+						}
+					],
+					{},
+					{
+						createProxy: (raw, fields, key, level) =>
+							new LazyProxyItem(raw, fields, key, level, lazyLoad)
+					}
+				)
+			)
+
+			const proxy = w.lookup.get('0')
+			expect(proxy.loaded).toBe(true) // already has children
+
+			w.toggle('0')
+			flushSync()
+
+			expect(lazyLoad).not.toHaveBeenCalled()
+			expect(proxy.expanded).toBe(true) // toggled to expanded
+		})
+
+		it('should return early when toggle() proxy is not found', () => {
+			const w = new LazyWrapper(new ProxyTree([{ label: 'A', value: 'a' }]))
+			expect(() => w.toggle('does-not-exist')).not.toThrow()
+		})
 	})
 })

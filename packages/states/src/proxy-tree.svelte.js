@@ -40,6 +40,7 @@ const NEXT_LINE = {
  * @returns {string[]}
  */
 function computeLineTypes(parentLineTypes, position, isExpandable) {
+	/* v8 ignore next -- NEXT_LINE covers all values this function produces; ?? 'empty' is a safety net for unknown external types */
 	const inherited = parentLineTypes.slice(0, -1).map((t) => NEXT_LINE[t] ?? 'empty')
 	if (parentLineTypes.length > 0) inherited.push(position)
 	return isExpandable ? [...inherited, 'icon'] : inherited

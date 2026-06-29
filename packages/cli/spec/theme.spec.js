@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { THEME_COMPONENTS, generateThemeStub, runThemeList, runThemeCreate } from '../src/theme.js'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { THEME_COMPONENTS, generateThemeStub, runThemeList, runThemeCreate, theme } from '../src/theme.js'
 
 describe('THEME_COMPONENTS', () => {
 	it('is a non-empty array of strings', () => {
@@ -166,5 +166,28 @@ describe('runThemeCreate', () => {
 		for (const component of THEME_COMPONENTS) {
 			expect(css).toContain(`[data-${component}]`)
 		}
+	})
+})
+
+describe('theme() entry point', () => {
+	beforeEach(() => {
+		vi.spyOn(console, 'info').mockImplementation(() => {})
+		vi.spyOn(console, 'warn').mockImplementation(() => {})
+		vi.spyOn(console, 'error').mockImplementation(() => {})
+	})
+
+	afterEach(() => {
+		vi.restoreAllMocks()
+	})
+
+	it('routes "list" to runThemeList (prints Rokkit Themes header)', async () => {
+		await theme('list', {})
+		// runThemeList always prints the header
+		expect(console.info).toHaveBeenCalledWith(expect.stringContaining('Rokkit Themes'))
+	})
+
+	it('routes "create" without a name → prints Usage error', async () => {
+		await theme('create', {})
+		expect(console.error).toHaveBeenCalledWith(expect.stringContaining('Usage'))
 	})
 })

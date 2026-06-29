@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, fireEvent, waitFor } from '@testing-library/svelte'
 import Toggle from '../src/components/Toggle.svelte'
 import ToggleSnippetTest from './ToggleSnippetTest.svelte'
+import ToggleNamedSnippetTest from './ToggleNamedSnippetTest.svelte'
 
 const basicOptions = [
 	{ label: 'Option A', value: 'a' },
@@ -291,5 +292,30 @@ describe('Toggle', () => {
 		const { container } = render(Toggle, { options: basicOptions, label: 'Theme' })
 		const el = container.querySelector('[data-toggle]')
 		expect(el?.getAttribute('aria-label')).toBe('Theme')
+	})
+
+	// ─── Named snippet resolution (item.snippet) ────────────────────
+
+	describe('named snippet resolution', () => {
+		const options = [
+			{ label: 'Pinned Item', value: 'pinned', snippet: 'pinned' },
+			{ label: 'Regular Item', value: 'regular' }
+		]
+
+		it('renders the named snippet for an option with snippet: "pinned"', () => {
+			const { container } = render(ToggleNamedSnippetTest, { options })
+			expect(container.querySelector('[data-named-item]')?.textContent).toContain(
+				'Pinned: Pinned Item'
+			)
+		})
+
+		it('renders the default itemContent snippet for options without a snippet key', () => {
+			const { container } = render(ToggleNamedSnippetTest, { options })
+			const defaults = [...container.querySelectorAll('[data-default-item]')].map(
+				(n) => n.textContent
+			)
+			expect(defaults.some((t) => t?.includes('Item: Regular Item'))).toBe(true)
+			expect(defaults.some((t) => t?.includes('Item: Pinned Item'))).toBe(false)
+		})
 	})
 })

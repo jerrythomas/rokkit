@@ -1,62 +1,274 @@
 # Rokkit Menu Component
 
-> Dropdown menu with trigger button, keyboard navigation, groups, and collapsible sections.
+> Data-driven dropdown action menu with trigger button, keyboard navigation, groups, collapsible sections, and separators. Built on the ProxyItem + Wrapper + Navigator + Trigger stack.
 
-## Quick Start
+Menu renders a trigger button (label, optional icon, optional arrow) that opens a dropdown list of actions. **It is data-first: you describe items in data, and the component renders icon, label, description, badge, and shortcut automatically.** Reach for snippets only when the *markup* must differ from the default.
 
+Unlike Select/MultiSelect, Menu does not track a selected value in the traditional sense — it fires `onselect` when an item is chosen and closes. The `value` prop only highlights the matching item with `data-active` (useful for "current page" marking in nav-style menus).
+
+## Usage tiers — use the SIMPLEST that works
+
+Most menus need Tier 0 or 1. Going straight to `itemContent` throws away the built-in rendering and you re-implement icon/label/badge by hand.
+
+**Tier 0 — `<Menu {items}>`** — primitives, or objects whose keys already match the defaults (`label`, `icon`, `value`, `description`, …). No config.
 ```svelte
-<script>
-  import { Menu } from '@rokkit/ui'
-
-  const items = [
-    { label: 'Edit', icon: 'action-edit' },
-    { label: 'Delete', icon: 'action-remove' },
-    { type: 'separator' },
-    { label: 'Settings' }
-  ]
-</script>
-
-<Menu {items} label="Actions" onselect={(val) => console.log(val)} />
+<Menu items={[
+  { label: 'Edit',   icon: 'i-lucide:edit' },
+  { label: 'Delete', icon: 'i-lucide:trash', description: 'Cannot be undone' },
+  { type: 'separator' },
+  { label: 'Settings' }
+]} label="Actions" onselect={(val) => console.log(val)} />
 ```
+
+**Tier 1 — `<Menu {items} {fields}>`** — same, but your data uses different key names. `fields` is a read-only remap; it never mutates your data.
+```svelte
+<Menu items={commands} fields={{ label: 'name', value: 'id', icon: 'symbol', description: 'hint' }}
+  label="Commands" {onselect} />
+```
+
+**Tier 2 — per-item / per-group named snippets** — when *a few* items need bespoke markup. Set `item.snippet = 'name'`; every other item keeps the default rendering. Works for **group headers and leaf items alike**.
+```svelte
+<Menu {items} label="File">
+  {#snippet danger(proxy)}
+    <span class="i-lucide:trash text-danger" aria-hidden="true"></span>
+    <span class="text-danger">{proxy.label}</span>
+  {/snippet}   <!-- only items with snippet:'danger' -->
+</Menu>
+```
+
+**Tier 3 — `itemContent` / `groupContent`** — blanket custom rendering for *every* item / group header. Last resort; you now own icon/label/badge layout yourself.
+
+> **Before writing any snippet, ask: is this just an icon / badge / description / shortcut / second line?** If yes, it's data — use Tier 0/1. Snippets are for structurally different markup (an inline toggle, a custom layout).
+
+## What the default item renders (Tiers 0–1, no snippet)
+
+The built-in item renderer (`ItemContent`) outputs, in order, whatever fields are present:
+
+| Field (data key) | Renders as | Notes |
+|---|---|---|
+| `image` (avatar) | `<img data-item-avatar>` | takes precedence over `icon` |
+| `icon` | `<span data-item-icon class={icon}>` **or** `<span data-item-icon-literal>` | a CSS icon class (`i-lucide:edit`) renders as an icon span; any other string (emoji, single char) renders as literal text |
+| `label` | `<span data-item-label>` | the display text |
+| `description` | `<span data-item-description>` | secondary subtitle line, under the label |
+| `badge` | `<span data-item-badge>` | trailing count / status pill |
+| `shortcut` | `<kbd data-item-shortcut>` | trailing keyboard hint |
+
+All of these are data-driven. You do **not** need a snippet to show an icon, a description, a badge, or a shortcut hint.
 
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `items` | `unknown[]` | `[]` | Menu items array |
-| `fields` | `Record<string, string>` | `{}` | Field mapping |
-| `value` | `unknown` | — | Current selected value |
-| `size` | `string` | `'md'` | Size variant |
-| `disabled` | `boolean` | `false` | Disable menu |
-| `collapsible` | `boolean` | `false` | Allow group collapse/expand |
-| `label` | `string` | `'Menu'` | Trigger button label |
+| `items` | `unknown[]` | `[]` | Data array (objects or primitives) |
+| `fields` | `Record<string,string>` | `{}` | Remap data keys to component fields |
+| `value` | `unknown` | — | Marks matching item with `data-active` |
+| `size` | `'sm'\|'md'\|'lg'` | `'md'` | Size variant |
+| `disabled` | `boolean` | `false` | Disable the menu |
+| `collapsible` | `boolean` | `false` | Allow groups to be expanded/collapsed |
+| `label` | `string` | `'Menu'` | Trigger button label text |
 | `icon` | `string` | — | Trigger icon class |
-| `showArrow` | `boolean` | `true` | Show dropdown arrow |
-| `align` | `'start' \| 'end'` | `'start'` | Dropdown alignment |
-| `direction` | `'up' \| 'down'` | `'down'` | Dropdown direction |
-| `icons` | `{ opened, closed }` | — | Custom expand/collapse icons |
-| `onselect` | `(value, proxy) => void` | — | Selection callback |
+| `showArrow` | `boolean` | `true` | Show dropdown arrow in trigger |
+| `align` | `'start'\|'end'` | `'start'` | Dropdown alignment relative to trigger |
+| `direction` | `'up'\|'down'` | `'down'` | Dropdown direction |
+| `icons` | `{ opened?, closed? }` | — | Override expand/collapse icons |
+| `onselect` | `(value, proxy) => void` | — | Called when a leaf item is selected |
+| `class` | `string` | `''` | Additional CSS classes on root `<div>` |
 
-## Data Attributes
+## Field mapping (complete)
 
-| Attribute | Description |
-|-----------|-------------|
-| `data-menu` | Root container |
-| `data-menu-trigger` | Trigger button |
-| `data-menu-dropdown` | Dropdown container |
-| `data-menu-item` | Leaf item button |
-| `data-menu-group` | Group header button |
-| `data-menu-separator` | Separator element |
-| `data-path` | Item key (for navigation) |
-| `data-level` | Nesting depth |
-| `data-active` | Highlights current value match |
-| `data-open` | Dropdown open state |
-| `data-disabled` | Disabled state |
+Default field names the component reads from your data. Override only the ones that differ.
 
-## Behavior
+| Field | Default data key | Renders |
+|-------|------------------|---------|
+| `label` | `'label'` | display text |
+| `value` | `'value'` | value passed to `onselect` (falls back to raw item) |
+| `icon` | `'icon'` | icon class or literal char/emoji |
+| `image` (avatar) | `'image'` | avatar `<img>` |
+| `description` | `'description'` | secondary subtitle line |
+| `badge` | `'badge'` | trailing badge/count |
+| `shortcut` | `'shortcut'` | trailing `<kbd>` hint |
+| `href` | `'href'` | renders item as `<a>` |
+| `children` | `'children'` | nested items array → group |
+| `type` | `'type'` | `'separator'` / `'spacer'` structural markers |
+| `disabled` | `'disabled'` | disabled state |
+| `expanded` | `'expanded'` | initial expand state (when `collapsible`) |
+| `snippet` | `'snippet'` | per-item/group named-snippet override (Tier 2) |
 
-- Click/Enter/Space on trigger opens dropdown
-- Arrow keys navigate items; Escape closes
-- Groups support collapse/expand when `collapsible` enabled
-- Closes on selection, returns focus to trigger
-- Supports custom snippets via `itemContent`, `groupContent`
+```svelte
+<Menu {items} fields={{ label: 'name', value: 'id', icon: 'symbol', description: 'hint' }} {onselect} />
+```
+
+## Grouped items / collapsible sections
+
+Items with a `children` array become group headers. Without `collapsible`, groups render as static headers with their children always visible. With `collapsible`, groups become accordion buttons that can be toggled.
+
+```svelte
+<Menu items={[
+  { label: 'File', children: [
+    { label: 'New',  value: 'new',  shortcut: '⌘N' },
+    { label: 'Open', value: 'open', shortcut: '⌘O' }
+  ]},
+  { label: 'Edit', children: [
+    { label: 'Undo', value: 'undo', shortcut: '⌘Z' }
+  ]}
+]} label="Actions" collapsible {onselect} />
+```
+
+### Separators and spacers
+
+Use structural markers to visually divide sections:
+
+```svelte
+<Menu items={[
+  { label: 'Cut',   value: 'cut' },
+  { label: 'Copy',  value: 'copy' },
+  { type: 'separator' },              <!-- <hr data-menu-separator /> -->
+  { label: 'Paste', value: 'paste' },
+  { type: 'spacer' },                 <!-- <div data-menu-spacer /> -->
+  { label: 'Settings' }
+]} label="Edit" {onselect} />
+```
+
+## Tier 2 — per-item / per-group named snippets
+
+Set `item.snippet = 'name'` to route *specific* items to a named snippet; all other items keep the default rendering. The named snippet wins over both `itemContent` (leaves) and `groupContent` (group headers):
+
+```svelte
+<script>
+  const items = [
+    { label: 'Delete', value: 'delete', snippet: 'danger', icon: 'i-lucide:trash' },
+    { label: 'Edit',   value: 'edit',   icon: 'i-lucide:edit' },
+    { label: 'Archive', children: [
+      { label: 'Zip',  value: 'zip',  snippet: 'danger' },
+      { label: 'Tar',  value: 'tar' }
+    ], snippet: 'danger-group' }   <!-- group header uses its own named snippet -->
+  ]
+</script>
+
+<Menu {items} label="Actions" {onselect}>
+  {#snippet danger(proxy)}
+    <span class={proxy.icon ?? 'i-lucide:trash'} aria-hidden="true"></span>
+    <span class="text-danger">{proxy.label}</span>
+  {/snippet}
+  {#snippet danger-group(proxy)}
+    <span class="i-lucide:archive text-danger" aria-hidden="true"></span>
+    <span data-menu-group-text class="text-danger">{proxy.label}</span>
+  {/snippet}
+</Menu>
+```
+
+## Tier 3 — itemContent / groupContent (blanket custom)
+
+Replaces the inner content of **every** leaf item / group header. The component still renders the `<button>` wrapper, `data-path`, `data-menu-item` / `data-menu-group`, and navigation. Use only when the default renderer genuinely can't express the layout.
+
+```svelte
+<Menu {items} label="View" {onselect}>
+  {#snippet itemContent(proxy)}
+    {#if proxy.icon}<span class={proxy.icon} aria-hidden="true"></span>{/if}
+    <span class="flex-1">{proxy.label}</span>
+    {#if proxy.get('shortcut')}<kbd data-item-shortcut>{proxy.get('shortcut')}</kbd>{/if}
+  {/snippet}
+  {#snippet groupContent(proxy)}
+    {#if proxy.get('icon')}<span class={proxy.get('icon')} aria-hidden="true"></span>{/if}
+    <span data-menu-group-text>{proxy.label}</span>
+    <!-- collapsible expand icon is NOT auto-rendered — add it manually if needed -->
+  {/snippet}
+</Menu>
+```
+
+### Interactive elements inside snippets
+
+`stopPropagation()` when adding controls inside a leaf item so Navigator doesn't also fire selection. Do NOT add `onclick` on an element that carries `data-path` — the Navigator already handles it.
+
+```svelte
+{#snippet itemContent(proxy)}
+  <span class="flex-1">{proxy.label}</span>
+  <input type="checkbox" checked={proxy.get('checked')}
+    onchange={(e) => { proxy.value.checked = e.currentTarget.checked }}
+    onclick={(e) => e.stopPropagation()} />
+{/snippet}
+```
+
+## ProxyItem API (passed to all content snippets)
+
+| Property / method | Description |
+|---|---|
+| `proxy.label` | mapped display text |
+| `proxy.icon` | mapped icon class / literal |
+| `proxy.href` | mapped href |
+| `proxy.value` | the original raw item (object or primitive) |
+| `proxy.disabled` | whether this item is disabled |
+| `proxy.expanded` | expand state for groups — reactive `$state` (when `collapsible`) |
+| `proxy.hasChildren` | true when the item has a children array |
+| `proxy.get('key')` | read any field by semantic or raw name (`proxy.get('badge')`, `proxy.get('shortcut')`) |
+
+## Theming
+
+### Data attributes
+
+Outer structure:
+
+| Attribute | Element |
+|---|---|
+| `data-menu` | root `<div>` (also carries `data-open`, `data-size`, `data-disabled`, `data-align`, `data-direction`) |
+| `data-menu-trigger` | trigger `<button>` |
+| `data-menu-icon` | icon span in trigger |
+| `data-menu-label` | label span in trigger |
+| `data-menu-arrow` | dropdown arrow span in trigger |
+| `data-menu-dropdown` | dropdown `<div>` |
+| `data-menu-item` | leaf item `<button>` (also `data-path`, `data-level`, `data-active`, `data-disabled`) |
+| `data-menu-group` | group header `<button>` (also `data-path`, `data-level`, `aria-expanded`, `data-accordion-trigger`) |
+| `data-menu-group-icon` | icon span inside default group header |
+| `data-menu-group-text` | text span inside default group header |
+| `data-menu-expand-icon` | expand/collapse chevron in default group header (only when `collapsible`) |
+| `data-menu-separator` | `<hr>` from `{ type: 'separator' }` |
+| `data-menu-spacer` | `<div>` from `{ type: 'spacer' }` |
+
+Inner (default-rendered) content inside leaf items:
+
+| Attribute | Element |
+|---|---|
+| `data-item-avatar` | avatar `<img>` |
+| `data-item-icon` / `data-item-icon-literal` | icon-class span / literal-char span |
+| `data-item-text` | label + description wrapper |
+| `data-item-label` | label text |
+| `data-item-description` | secondary line |
+| `data-item-badge` | trailing badge |
+| `data-item-shortcut` | trailing `<kbd>` |
+
+### Styling via the `class` prop (UnoCSS arbitrary variants)
+
+`class` lands on the root `<div data-menu>`. Use UnoCSS arbitrary variants to reach descendants:
+
+```svelte
+<Menu {items} label="Actions" {onselect} class="
+  [&_[data-menu-item]]:py-1.5
+  [&_[data-menu-item][data-active]]:font-semibold
+  [&_[data-item-shortcut]]:text-xs [&_[data-item-shortcut]]:text-ink-mute
+" />
+```
+
+Or theme globally with named tokens in your theme CSS:
+
+```css
+[data-menu-item][data-active] { background: var(--accent-soft); color: var(--accent); }
+[data-menu-group] { color: var(--ink-mute); font-weight: 600; }
+[data-menu-separator] { border-color: var(--surface-edge); }
+```
+
+## Keyboard navigation
+
+`↑`/`↓` move focus · `→`/`←` expand/collapse groups (when `collapsible`) · `Home`/`End` · `Enter`/`Space` select or toggle group · `Escape` close and return focus to trigger · `a-z` typeahead. Disabled items are skipped.
+
+## Import
+
+```javascript
+import { Menu } from '@rokkit/ui'
+```
+
+## Related
+
+- [List](/llms/components/list.txt) — persistent inline list (no trigger, always visible)
+- [Select](/llms/components/select.txt) — dropdown with a bound selected value
+- [MultiSelect](/llms/components/multi-select.txt) — dropdown multi-selection
+- [Composability guide](/llms/guides/composability.txt) — the data-first contract across all components

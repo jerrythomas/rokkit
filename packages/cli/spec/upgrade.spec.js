@@ -3,7 +3,8 @@ import {
 	getRokkitPackages,
 	detectPackageManager,
 	buildInstallCommand,
-	runUpgrade
+	runUpgrade,
+	upgrade
 } from '../src/upgrade.js'
 
 describe('getRokkitPackages', () => {
@@ -182,3 +183,21 @@ describe('runUpgrade', () => {
 		expect(runInstall).not.toHaveBeenCalled()
 	})
 })
+
+describe('upgrade (shell entry)', () => {
+	beforeEach(() => {
+		vi.spyOn(console, 'info').mockImplementation(() => {})
+		vi.spyOn(console, 'error').mockImplementation(() => {})
+	})
+
+	it('delegates to runUpgrade — errors when cwd has no package.json', () => {
+		// upgrade() calls runUpgrade(opts) with no adapters (real-fs path).
+		// Point process.cwd at a dir that has no package.json so we hit the
+		// error branch without spawning any real child processes.
+		const cwdSpy = vi.spyOn(process, 'cwd').mockReturnValue('/tmp/__rokkit_no_pkg__')
+		upgrade({})
+		expect(console.error).toHaveBeenCalledWith(expect.stringContaining('No package.json'))
+		cwdSpy.mockRestore()
+	})
+})
+

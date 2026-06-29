@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach, vi } from 'vitest'
-import { bundle, convert, readConfigFile, getFolderNames } from '../src/convert.js'
+import { bundle, convert, bundleFolders, convertFolders, readConfigFile, getFolderNames } from '../src/convert.js'
 import fs from 'fs'
 import path from 'path'
 import { rimraf } from 'rimraf'
@@ -64,6 +64,16 @@ describe('convert module', () => {
 			const config = readConfigFile(path.join(srcDir, 'non-existent.json'))
 			expect(config).toEqual({})
 			expect(warnSpy).toHaveBeenCalled()
+		})
+
+		it('should return empty object and log error when file contains invalid JSON', () => {
+			// Write a temp file with invalid JSON to trigger the catch branch (lines 151-153)
+			const badJson = path.join(outputDir, 'bad-config.json')
+			fs.writeFileSync(badJson, '{ not valid json !! }')
+			const errorSpy = vi.spyOn(console, 'error')
+			const config = readConfigFile(badJson)
+			expect(config).toEqual({})
+			expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('Error reading config file'))
 		})
 	})
 
@@ -157,6 +167,17 @@ describe('convert module', () => {
 			expect(packageJson.homepage).toBe('https://github.com/jerrythomas/rokkit')
 		})
 
+		it('creates the target directory when it does not exist', async () => {
+			// Use a sub-directory of outputDir that doesn't exist yet (lines 119-121)
+			const newTarget = path.join(outputDir, 'new-subdir')
+			expect(fs.existsSync(newTarget)).toBe(false)
+			await convert(path.join(srcDir, 'app'), {
+				prefix: 'app',
+				target: newTarget
+			})
+			expect(fs.existsSync(newTarget)).toBe(true)
+		})
+
 		it('should use prefix as package name when no namespace provided', async () => {
 			await convert(path.join(srcDir, 'app'), {
 				prefix: 'standalone-app',
@@ -176,6 +197,41 @@ describe('convert module', () => {
 			expect(packageJson.version).toBe('1.0.0')
 			// No homepage should be present
 			expect(packageJson.homepage).toBeUndefined()
+		})
+	})
+
+	describe('bundleFolders', () => {
+		it('calls bundle for each folder in the list', async () => {
+			// bundleFolders fires bundle() for each folder (not awaited internally)
+			// We just verify it runs without throwing and invokes processing.
+			const config = { bundles: { app: { color: false } }, package: {} }
+			const opts = { input: srcDir, output: outputDir }
+			bundleFolders(['app'], config, opts)
+			// Give the unwaited async bundle call time to settle
+			await new Promise((r) => setTimeout(r, 200))
+			expect(fs.existsSync(path.join(outputDir, 'app.json'))).toBe(true)
+		})
+
+		it('handles an empty folders list without error', () => {
+			const config = { bundles: {}, package: {} }
+			const opts = { input: srcDir, output: outputDir }
+			expect(() => bundleFolders([], config, opts)).not.toThrow()
+		})
+	})
+
+	describe('convertFolders', () => {
+		it('calls convert for each folder in the list', async () => {
+			const config = { bundles: { app: { color: false } }, package: { namespace: '@rokkit', version: '1.0.0-test' } }
+			const opts = { input: srcDir, output: outputDir }
+			convertFolders(['app'], config, opts)
+			await new Promise((r) => setTimeout(r, 200))
+			expect(fs.existsSync(path.join(outputDir, 'app'))).toBe(true)
+		})
+
+		it('handles an empty folders list without error', () => {
+			const config = { bundles: {}, package: {} }
+			const opts = { input: srcDir, output: outputDir }
+			expect(() => convertFolders([], config, opts)).not.toThrow()
 		})
 	})
 })

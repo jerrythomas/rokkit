@@ -1006,6 +1006,7 @@ export class FormBuilder {
 	 * @private
 	 * @returns {Set<string>}
 	 */
+	/* v8 ignore next 9 — defined for future use; not yet called by any public method */
 	#getAllStepPaths() {
 		const paths = new SvelteSet()
 		for (const step of this.#layout?.elements ?? []) {

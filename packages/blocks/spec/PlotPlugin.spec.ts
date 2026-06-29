@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { render, fireEvent } from '@testing-library/svelte'
 import PlotPlugin from '../src/PlotPlugin.svelte'
 import { pluginDisplay } from '../src/config.svelte.js'
@@ -112,6 +112,51 @@ describe('PlotPlugin', () => {
 			await fireEvent.click(toggle)
 			expect(container.querySelector('svg')).toBeTruthy()
 			expect(container.querySelector('[data-code-block]')).toBeFalsy()
+		})
+	})
+
+	describe('footer actions (copy / download)', () => {
+		const origClipboard = Object.getOwnPropertyDescriptor(navigator, 'clipboard')
+		const origCreate = URL.createObjectURL
+		const origRevoke = URL.revokeObjectURL
+
+		beforeEach(() => {
+			pluginDisplay.codeVisible = true // the copy/download actions only render when code is visible
+		})
+		afterEach(() => {
+			pluginDisplay.codeVisible = false
+			if (origClipboard) Object.defineProperty(navigator, 'clipboard', origClipboard)
+			URL.createObjectURL = origCreate
+			URL.revokeObjectURL = origRevoke
+		})
+
+		it('copies the spec to the clipboard when the copy button is clicked', async () => {
+			const writeText = vi.fn().mockResolvedValue(undefined)
+			Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true })
+			const { container } = render(PlotPlugin, { props: { code: validSpec } })
+			await fireEvent.click(container.querySelector('[title="Copy spec to clipboard"]') as HTMLElement)
+			expect(writeText).toHaveBeenCalledTimes(1)
+		})
+
+		it('silently ignores a clipboard write failure', async () => {
+			const writeText = vi.fn().mockRejectedValue(new Error('insecure context'))
+			Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true })
+			const { container } = render(PlotPlugin, { props: { code: validSpec } })
+			// Must not throw even though writeText rejects (catch swallows it)
+			await fireEvent.click(container.querySelector('[title="Copy spec to clipboard"]') as HTMLElement)
+			await Promise.resolve()
+			expect(writeText).toHaveBeenCalled()
+		})
+
+		it('serializes + downloads the chart svg when the download button is clicked', async () => {
+			const createObjectURL = vi.fn(() => 'blob:mock')
+			const revokeObjectURL = vi.fn()
+			URL.createObjectURL = createObjectURL
+			URL.revokeObjectURL = revokeObjectURL
+			const { container } = render(PlotPlugin, { props: { code: validSpec } })
+			await fireEvent.click(container.querySelector('[title="Download chart as SVG"]') as HTMLElement)
+			expect(createObjectURL).toHaveBeenCalledTimes(1)
+			expect(revokeObjectURL).toHaveBeenCalledWith('blob:mock')
 		})
 	})
 })

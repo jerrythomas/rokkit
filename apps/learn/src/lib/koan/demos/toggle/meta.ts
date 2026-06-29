@@ -35,7 +35,49 @@ const meta: DemoMeta = {
 		{ id: 'intro', title: 'Segmented group', lang: 'svelte',
 			code: `<Toggle\n  options={[\n    { label: 'List', value: 'list' },\n    { label: 'Grid', value: 'grid' }\n  ]}\n  bind:value\n/>` },
 		{ id: 'icons', title: 'With icons', lang: 'svelte',
-			code: `<Toggle\n  options={[\n    { label: 'Left',  value: 'left',  icon: 'i-mdi:format-align-left' },\n    { label: 'Right', value: 'right', icon: 'i-mdi:format-align-right' }\n  ]}\n  bind:value\n/>` }
+			code: `<Toggle\n  options={[\n    { label: 'Left',  value: 'left',  icon: 'i-mdi:format-align-left' },\n    { label: 'Right', value: 'right', icon: 'i-mdi:format-align-right' }\n  ]}\n  bind:value\n/>` },
+		{
+			id: 'defaults',
+			title: 'Icons and labels are data (no snippet)',
+			lang: 'svelte',
+			code: `<Toggle options={[
+  { label: 'Day',   value: 'day',   icon: 'i-lucide:sun' },
+  { label: 'Week',  value: 'week',  icon: 'i-lucide:calendar' },
+  { label: 'Month', value: 'month', icon: 'i-lucide:calendar-range' }
+]} bind:value />
+
+<!-- icon takes a CSS icon class; label renders as text.
+     No snippet needed — both are data. -->`
+		},
+		{
+			id: 'named',
+			title: 'Custom markup for one option (Tier 2)',
+			lang: 'svelte',
+			code: `<script>
+  const options = [
+    { label: 'Edit',   value: 'edit',  icon: 'i-lucide:pen' },
+    { label: 'Pinned', value: 'pin',   snippet: 'pinned' },  // custom; others stay default
+    { label: 'View',   value: 'view',  icon: 'i-lucide:eye' }
+  ]
+</script>
+
+<Toggle {options} bind:value>
+  {#snippet pinned(proxy, selected)}
+    <span class="i-lucide:pin"></span>
+    <strong class:font-bold={selected}>{proxy.label}</strong>
+  {/snippet}
+</Toggle>`
+		},
+		{
+			id: 'theming',
+			title: 'Theme via class (UnoCSS arbitrary variants)',
+			lang: 'svelte',
+			code: `<Toggle {options} bind:value class="
+  [&_[data-toggle-option]]:px-4
+  [&_[data-toggle-option][data-selected]]:font-semibold
+  [&_[data-toggle-label]]:text-sm
+" />`
+		}
 	],
 	docs
 }

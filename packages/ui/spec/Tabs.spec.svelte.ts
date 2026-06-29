@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, fireEvent, waitFor } from '@testing-library/svelte'
 import Tabs from '../src/components/Tabs.svelte'
+import TabsNamedSnippetTest from './TabsNamedSnippetTest.svelte'
 
 const basicOptions = [
 	{ label: 'Tab 1', value: 'tab1', content: 'Content 1' },
@@ -542,5 +543,30 @@ describe('Tabs', () => {
 		expect(removeBtn?.getAttribute('aria-label')).toBe('Supprimer')
 		const addBtn = container.querySelector('[data-tabs-add]')
 		expect(addBtn?.getAttribute('aria-label')).toBe('Ajouter')
+	})
+
+	// ─── Named snippet resolution (item.snippet) ────────────────────
+
+	describe('named snippet resolution', () => {
+		const options = [
+			{ label: 'Pinned Tab', value: 'pinned', content: 'Pinned content', snippet: 'pinned' },
+			{ label: 'Regular Tab', value: 'regular', content: 'Regular content' }
+		]
+
+		it('renders the named snippet for a tab trigger with snippet: "pinned"', () => {
+			const { container } = render(TabsNamedSnippetTest, { options, value: 'pinned' })
+			expect(container.querySelector('[data-named-item]')?.textContent).toContain(
+				'Pinned: Pinned Tab'
+			)
+		})
+
+		it('renders the default itemContent snippet for tabs without a snippet key', () => {
+			const { container } = render(TabsNamedSnippetTest, { options, value: 'pinned' })
+			const defaults = [...container.querySelectorAll('[data-default-item]')].map(
+				(n) => n.textContent
+			)
+			expect(defaults.some((t) => t?.includes('Item: Regular Tab'))).toBe(true)
+			expect(defaults.some((t) => t?.includes('Item: Pinned Tab'))).toBe(false)
+		})
 	})
 })

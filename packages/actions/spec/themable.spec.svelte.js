@@ -168,6 +168,46 @@ describe('themable', () => {
 			cleanup()
 		})
 
+		it('warns and ignores malformed JSON in a storage event', () => {
+			const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+			const root = document.createElement('div')
+			const cleanup = $effect.root(() =>
+				themable(root, { theme: vibe, storageKey: 'rokkit-theme' })
+			)
+			flushSync()
+
+			const event = new Event('storage')
+			event.key = 'rokkit-theme'
+			event.newValue = '{not valid json'
+			window.dispatchEvent(event)
+			flushSync()
+
+			expect(warn).toHaveBeenCalled()
+			expect(warn.mock.calls[0][0]).toContain('Failed to parse theme from storage event')
+
+			warn.mockRestore()
+			cleanup()
+		})
+
+		it('ignores storage events for a different key', () => {
+			const root = document.createElement('div')
+			const cleanup = $effect.root(() =>
+				themable(root, { theme: vibe, storageKey: 'rokkit-theme' })
+			)
+			flushSync()
+			vi.clearAllMocks()
+
+			const event = new Event('storage')
+			event.key = 'some-other-key'
+			event.newValue = JSON.stringify({ style: 'material' })
+			window.dispatchEvent(event)
+			flushSync()
+
+			// theme.update is never invoked → no save triggered by this event
+			expect(localStorageMock.setItem).not.toHaveBeenCalled()
+			cleanup()
+		})
+
 		it('should handle storage events', () => {
 			const root = document.createElement('div')
 			const cleanup = $effect.root(() =>

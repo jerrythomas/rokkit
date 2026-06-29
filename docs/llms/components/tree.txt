@@ -1,139 +1,200 @@
 # Rokkit Tree Component
 
-> Hierarchical data navigation with tree lines and keyboard navigation.
+> Hierarchical data navigation with tree-line connectors, per-node expand/collapse, and keyboard navigation. Built on the ProxyItem + LazyWrapper + Navigator stack.
 
-The Tree component renders nested items with tree-line connectors, expand/collapse per node, and keyboard navigation. Built on the Wrapper + Navigator pattern (same architecture as List).
+Tree renders a nested data array as a navigable tree (`role="tree"`). **It is data-first: you describe nodes in data, and the component renders icon, label, badge, and shortcut automatically.** Reach for snippets only when the *markup* must differ from the default — not to add an icon or a badge (those are data).
 
-## Quick Start
+> **Note on description**: Tree's default renderer disables the description/subtext line for all nodes. If you need a secondary line of text inside a node, use `itemContent` (Tier 3).
 
+## Usage tiers — use the SIMPLEST that works
+
+Most trees need Tier 0 or 1. Going straight to `itemContent` is the most common mistake — it throws away the built-in rendering and you re-implement icon/label/badge by hand.
+
+**Tier 0 — `<Tree {items}>`** — objects whose keys already match the defaults (`label`, `icon`, `value`, `badge`, `children`, …). No config.
 ```svelte
-<script>
-  import { Tree } from '@rokkit/ui'
-
-  const items = [
-    {
-      text: 'src',
-      value: 'src',
-      icon: 'i-lucide:folder',
-      children: [
-        { label: 'index.ts', value: 'index', icon: 'i-lucide:file-code' },
-        { label: 'utils.ts', value: 'utils', icon: 'i-lucide:file-code' }
-      ]
-    },
-    { label: 'README.md', value: 'readme', icon: 'i-lucide:file-text' }
-  ]
-
-  let value = $state(null)
-</script>
-
-<Tree {items} bind:value onselect={(v) => (value = v)} />
+<Tree items={[
+  { label: 'src', icon: 'i-lucide:folder', children: [
+    { label: 'index.ts', value: 'index', icon: 'i-lucide:file-code' },
+    { label: 'utils.ts', value: 'utils', icon: 'i-lucide:file-code' }
+  ]},
+  { label: 'README.md', value: 'readme', icon: 'i-lucide:file-text' }
+]} bind:value />
 ```
+
+**Tier 1 — `<Tree {items} {fields}>`** — same, but your data uses different key names. `fields` is a read-only remap; it never mutates your data.
+```svelte
+<Tree items={files} fields={{ label: 'name', value: 'path', icon: 'symbol' }} bind:value />
+```
+
+**Tier 2 — per-item named snippets** — when *a few* nodes need bespoke markup. Set `item.snippet = 'name'`; every other node keeps the default rendering.
+```svelte
+<Tree {items}>
+  {#snippet pinned(proxy)}…{/snippet}   <!-- only nodes with snippet:'pinned' -->
+</Tree>
+```
+
+**Tier 3 — `itemContent`** — blanket custom rendering for *every* node (both leaf and branch). Last resort; you now own icon/label/badge layout yourself.
+
+> **Before writing any snippet, ask: is this just an icon / badge / shortcut?** If yes, it's data — use Tier 0/1. Snippets are for structurally different markup (an inline control, a progress bar, a custom layout).
+
+## What the default node renders (Tiers 0–1, no snippet)
+
+The built-in item renderer (`ItemContent`) outputs, in order, whatever fields are present:
+
+| Field (data key) | Renders as | Notes |
+|---|---|---|
+| `icon` | `<span data-item-icon class={icon}>` **or** `<span data-item-icon-literal>` | a CSS icon class (`i-lucide:folder`) renders as an icon; any other string (a single character, an emoji) renders as literal text. **Hidden on branch/parent nodes** — only leaf nodes show an icon. |
+| `label` | `<span data-item-label>` | the display text |
+| `badge` | `<span data-item-badge>` | trailing count / status pill |
+| `shortcut` | `<kbd data-item-shortcut>` | trailing keyboard hint |
+
+> **Description/subtext is not rendered** by the default Tree renderer (it passes `showSubtext={false}` to `ItemContent`). Use `itemContent` if you need a secondary line.
+
+All of these are data-driven. You do **not** need a snippet to show an icon, a badge, or a shortcut.
 
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `items` | `unknown[]` | `[]` | Hierarchical data array |
-| `fields` | `Record<string, string>` | `{}` | Field mapping |
-| `value` | `unknown` | — | Selected value |
+| `fields` | `Record<string,string>` | `{}` | Remap data keys to component fields |
+| `value` | `unknown` | — | Selected value — use `bind:value` |
 | `size` | `'sm'\|'md'\|'lg'` | `'md'` | Size variant |
-| `lineStyle` | `'none'\|'solid'\|'dashed'\|'dotted'` | `'solid'` | Tree line connector style |
-| `icons` | `{ opened?: string; closed?: string }` | defaults | Override expand/collapse icons |
-| `onselect` | `(value, proxy) => void` | — | Selection callback |
-| `class` | `string` | `''` | Additional CSS classes |
+| `lineStyle` | `'none'\|'solid'\|'dashed'\|'dotted'` | `'solid'` | Tree connector line style |
+| `icons` | `{ opened?: string; closed?: string }` | — | Override expand/collapse icons |
+| `labels` | `Record<string,string>` | — | Override ARIA labels (expand/collapse/root) |
+| `class` | `string` | `''` | Additional CSS classes on the root `<div>` |
+| `onselect` | `(value, proxy) => void` | — | Called when a node is selected |
 
-## Field Mapping
+## Field mapping (complete)
 
-| Field | Default | Description |
-|-------|---------|-------------|
-| `value` | `'value'` | Unique identifier for selection |
-| `text` | `'text'` | Display text |
-| `icon` | `'icon'` | Icon class name |
-| `description` | `'description'` | Secondary text |
-| `children` | `'children'` | Nested items array |
-| `expanded` | `'expanded'` | Initial expanded state |
-| `disabled` | `'disabled'` | Disabled state |
-| `href` | `'href'` | URL (renders as `<a>`) |
-| `badge` | `'badge'` | Badge/count indicator |
+Default field names the component reads from your data. Override only the ones that differ.
 
-## Custom Field Mapping
+| Field | Default data key | Renders |
+|-------|------------------|---------|
+| `label` | `'label'` | display text |
+| `value` | `'value'` | selection value (falls back to the raw item) |
+| `icon` | `'icon'` | icon class **or** literal char/emoji (leaf nodes only by default) |
+| `badge` | `'badge'` | trailing badge/count |
+| `shortcut` | `'shortcut'` | trailing `<kbd>` hint |
+| `href` | `'href'` | renders node as `<a>` (gets `aria-current="page"` when active) |
+| `children` | `'children'` | nested items array → branch node |
+| `snippet` | `'snippet'` | per-node named-snippet override (Tier 2) |
+| `disabled` | `'disabled'` | disabled state |
+| `expanded` | `'expanded'` | initial expand state for a branch node |
 
 ```svelte
-<Tree {items} fields={{ label: 'name', value: 'id' }} />
+<Tree {items} fields={{ label: 'name', value: 'path', icon: 'symbol' }} bind:value />
 ```
 
-## Custom Icons
+## Tier 2 — per-node named snippets
+
+Set `item.snippet = 'name'` to route *specific* nodes to a named snippet; all other nodes keep the default rendering. Named snippets win over `itemContent`:
 
 ```svelte
-<Tree {items} icons={{ opened: 'i-lucide:folder-open', closed: 'i-lucide:folder' }} />
-```
+<script>
+  const items = [
+    { label: 'src', icon: 'i-lucide:folder', children: [
+      { label: 'index.ts', value: 'index', icon: 'i-lucide:file-code' },
+      { label: 'pinned.ts', value: 'pinned', icon: 'i-lucide:file-code', snippet: 'pinned' }
+    ]}
+  ]
+</script>
 
-## Snippets
-
-### Custom Item Rendering
-
-```svelte
-<Tree {items}>
-  {#snippet itemContent(proxy)}
-    {#if proxy.icon}
-      <span class={proxy.icon} aria-hidden="true"></span>
-    {/if}
-    <span class="flex-1">{proxy.label}</span>
-    {#if proxy.get('badge')}
-      <span class="badge">{proxy.get('badge')}</span>
-    {/if}
+<Tree {items} bind:value>
+  {#snippet pinned(proxy)}
+    <span class="i-lucide:pin"></span>
+    <span>{proxy.label}</span>
   {/snippet}
 </Tree>
 ```
 
-## ProxyItem API
+## Tier 3 — itemContent (blanket custom)
 
-Snippets receive a `ProxyItem` instance:
+Replaces the inner content of **every** node (leaf and branch alike). The component still renders the `<button>`/`<a>` wrapper, `data-path`, tree connectors, and navigation. Use only when the default renderer genuinely can't express the layout.
 
-| Property | Description |
-|----------|-------------|
-| `proxy.label` | Mapped display text |
-| `proxy.icon` | Mapped icon class |
-| `proxy.value` | The original raw item |
-| `proxy.href` | Mapped href (renders as `<a>`) |
-| `proxy.disabled` | Whether the item is disabled |
-| `proxy.expanded` | Expand state for branch nodes |
-| `proxy.hasChildren` | Whether the node has children |
-| `proxy.get('field')` | Read any field by name |
+```svelte
+<Tree {items} bind:value>
+  {#snippet itemContent(proxy)}
+    {#if proxy.icon}<span class={proxy.icon} aria-hidden="true"></span>{/if}
+    <span class="flex-1">{proxy.label}</span>
+    {#if proxy.get('badge')}<span class="text-xs text-ink-mute">{proxy.get('badge')}</span>{/if}
+  {/snippet}
+</Tree>
+```
 
-## Keyboard Navigation
+### Interactive elements inside snippets
 
-| Key | Action |
-|-----|--------|
-| `ArrowUp/Down` | Move between visible nodes |
-| `ArrowRight` | Expand node / enter first child |
-| `ArrowLeft` | Collapse node / go to parent |
-| `Home/End` | First/last visible node |
-| `Enter/Space` | Select focused node |
+`stopPropagation()` so the Navigator doesn't also fire selection. Do NOT add `onclick` on an element that carries `data-path` (the wrapper) — the Navigator already handles it.
 
-## Accessibility
+```svelte
+{#snippet itemContent(proxy)}
+  <span class="flex-1">{proxy.label}</span>
+  <button onclick={(e) => { e.stopPropagation(); doSomething(proxy.value) }} tabindex={-1}>
+    <span class="i-lucide:more-horizontal"></span>
+  </button>
+{/snippet}
+```
 
-- `role="tree"` on root
-- `role="treeitem"` on each node
-- `aria-expanded` on branch nodes
-- `aria-selected` on selected nodes
-- Full keyboard navigation
+## ProxyItem API (passed to all content snippets)
 
-## Data Attributes
+| Property / method | Description |
+|---|---|
+| `proxy.label` | mapped display text |
+| `proxy.icon` | mapped icon class / literal |
+| `proxy.href` | mapped href |
+| `proxy.value` | the original raw item (object or primitive) |
+| `proxy.disabled` | whether this node is disabled |
+| `proxy.expanded` | expand state for branch nodes — reactive `$state` |
+| `proxy.hasChildren` | true when the node has a children array |
+| `proxy.get('key')` | read any field by semantic or raw name (`proxy.get('badge')`, `proxy.get('shortcut')`) |
 
-| Attribute | Description |
-|-----------|-------------|
-| `data-tree` | Root element |
-| `data-tree-node` | Tree node |
-| `data-tree-node-row` | Node content row |
-| `data-tree-toggle-btn` | Expand/collapse button |
-| `data-tree-item-content` | Clickable item content |
-| `data-tree-path` | Node path key |
-| `data-tree-level` | Node depth level |
-| `data-tree-has-children` | Branch node marker |
-| `data-active` | Active/current node |
-| `data-line-style` | Root: tree line style (solid/dashed/dotted) |
-| `data-size` | Root: size variant |
+## Theming
+
+### Data attributes
+
+Outer structure:
+
+| Attribute | Element |
+|---|---|
+| `data-tree` | root `<div>` (also carries `data-size`, `data-line-style`) |
+| `data-tree-node` | individual node wrapper (also `data-tree-level`, `data-tree-has-children`, `data-active`) |
+| `data-tree-node-row` | horizontal row inside a node (connectors + content) |
+| `data-tree-toggle-btn` | expand/collapse `<button>` |
+| `data-tree-item-content` | the clickable `<button>`/`<a>` for the node label area (also `data-path`, `data-active`) |
+
+Inner (default-rendered) content — target these to restyle the built-in rendering without a snippet:
+
+| Attribute | Element |
+|---|---|
+| `data-item-icon` / `data-item-icon-literal` | icon-class span / literal-char span |
+| `data-item-text` | label wrapper |
+| `data-item-label` | label text |
+| `data-item-badge` | trailing badge |
+| `data-item-shortcut` | trailing `<kbd>` |
+
+### Styling via the `class` prop (UnoCSS arbitrary variants)
+
+`class` lands on the root `<div data-tree>`. Use UnoCSS arbitrary variants to reach descendants:
+
+```svelte
+<Tree {items} bind:value class="
+  [&_[data-tree-node]]:px-2
+  [&_[data-tree-item-content][data-active]]:bg-accent-soft
+  [&_[data-item-badge]]:text-xs [&_[data-item-badge]]:text-ink-mute
+" />
+```
+
+Or theme globally with named tokens in your theme CSS:
+
+```css
+[data-tree-node][data-active] { background: var(--accent-soft); color: var(--accent); }
+[data-tree-toggle-btn] { color: var(--ink-mute); }
+```
+
+## Keyboard navigation
+
+`↑`/`↓` move between visible nodes · `→` expand a collapsed branch or move into its first child · `←` collapse an expanded branch or move to parent · `Home`/`End` · `Enter`/`Space` select · `a-z` typeahead. Disabled nodes are skipped.
 
 ## Import
 
@@ -141,22 +202,9 @@ Snippets receive a `ProxyItem` instance:
 import { Tree } from '@rokkit/ui'
 ```
 
-## TypeScript Types
+## Related
 
-```typescript
-interface TreeProps {
-  items?: unknown[]
-  fields?: Record<string, string>
-  value?: unknown
-  size?: 'sm' | 'md' | 'lg'
-  lineStyle?: 'none' | 'solid' | 'dashed' | 'dotted'
-  icons?: { opened?: string; closed?: string }
-  onselect?: (value: unknown, proxy: ProxyItem) => void
-  class?: string
-}
-```
-
-## Related Components
-
-- [List](/llms/components/list.txt) — flat list with collapsible groups
+- [List](/llms/components/list.txt) — flat list with optional collapsible groups
 - [LazyTree](/llms/components/lazy-tree.txt) — tree with lazy-loaded children
+- [Select](/llms/components/select.txt) / [MultiSelect](/llms/components/multi-select.txt) — dropdown selection
+- [Composability guide](/llms/guides/composability.txt) — the data-first contract across all components

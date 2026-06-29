@@ -172,12 +172,13 @@ export function getSnippet(obj, key, defaultSnippet = null) {
 /**
  * Resolve which snippet to render for a proxy item.
  *
- * Checks proxy.snippet for a per-item named override first (e.g. item.snippet = 'highlighted').
+ * Reads the proxy's `snippet` field (via proxy.get('snippet'), honoring fields.snippet)
+ * for a per-item named override first (e.g. item.snippet = 'highlighted').
  * Falls back to the component-level fallback snippet name (e.g. 'itemContent' / 'groupContent').
  * Returns null if neither is found.
  *
  * @param {Record<string, unknown>} snippets  - snippets passed to the component
- * @param {{ snippet?: string | null }} proxy  - any object with an optional .snippet property
+ * @param {{ get: (key: string) => unknown }} proxy  - a ProxyItem; its snippet field is read via proxy.get('snippet')
  * @param {string} [fallback]                  - fallback snippet name; defaults to ITEM_SNIPPET ('itemContent')
  * @returns {Function | null}
  */
@@ -190,7 +191,9 @@ function asSnippet(value) {
 }
 
 export function resolveSnippet(snippets, proxy, fallback = ITEM_SNIPPET) {
-	const name = proxy && proxy.snippet
+	// `snippet` is a field-mapped prop like icon/href — read it via the proxy's
+	// field accessor (honors fields.snippet), not as a direct property.
+	const name = proxy?.get('snippet')
 	return asSnippet(name && snippets[name]) || asSnippet(snippets[fallback])
 }
 

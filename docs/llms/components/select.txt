@@ -1,169 +1,242 @@
 # Rokkit Select Component
 
-> Data-driven dropdown select with keyboard navigation, grouping, and typeahead filtering.
+> Data-driven dropdown select with keyboard navigation, grouping, and optional typeahead filtering. Built on the ProxyItem + Wrapper + Navigator + Trigger stack.
 
-The Select component provides a dropdown selection interface that adapts to any data structure through field mapping. Supports grouped options, a typeahead filter input, and customizable dropdown direction.
+Select renders a trigger button that opens a dropdown list. **It is data-first: you describe options in data, and the component renders icon, label, description, badge, and shortcut automatically in the dropdown.** Reach for snippets only when the *markup* must differ from the default — not to add an icon or a badge (those are data).
 
-## Quick Start
+**Trigger face and selected-value display are NOT snippet-overridable.** Only the dropdown options accept `itemContent` and `groupContent`. The trigger always renders the selected item's icon + label (or a placeholder).
 
+## Usage tiers — use the SIMPLEST that works
+
+Most selects need Tier 0 or 1. Going straight to `itemContent` is the most common mistake — it throws away the built-in rendering and you re-implement icon/label/badge by hand.
+
+**Tier 0 — `<Select {items}>`** — primitives, or objects whose keys already match the defaults (`label`, `icon`, `value`, `badge`, `description`, …). No config.
 ```svelte
-<script>
-  import { Select } from '@rokkit/ui'
+<Select items={['Apple', 'Banana', 'Cherry']} bind:value />
 
-  let items = ['Apple', 'Banana', 'Cherry']
-  let value = $state(null)
-</script>
-
-<Select {items} bind:value placeholder="Choose a fruit..." />
+<Select items={[
+  { label: 'Dashboard', icon: 'i-lucide:layout-dashboard' },
+  { label: 'Reports',   icon: 'i-lucide:bar-chart', badge: 'New' }
+]} bind:value />
 ```
 
-## Object Options with Field Mapping
-
+**Tier 1 — `<Select {items} {fields}>`** — same, but your data uses different key names. `fields` is a read-only remap; it never mutates your data.
 ```svelte
-<script>
-  import { Select } from '@rokkit/ui'
-
-  const countries = [
-    { code: 'us', name: 'United States', flag: 'i-flag:us' },
-    { code: 'gb', name: 'United Kingdom', flag: 'i-flag:gb' },
-    { code: 'ca', name: 'Canada',         flag: 'i-flag:ca' }
-  ]
-  const fields = { value: 'code', label: 'name', icon: 'flag' }
-
-  let value = $state(null)
-</script>
-
-<Select items={countries} {fields} bind:value placeholder="Select country..." />
+<Select items={countries} fields={{ label: 'name', value: 'code', icon: 'flag' }} bind:value />
 ```
+
+**Tier 2 — per-item / per-group named snippets** — when *a few* options need bespoke markup. Set `item.snippet = 'name'`; every other option keeps the default rendering. Works for **group headers and leaf options alike**.
+```svelte
+<Select {items} bind:value>
+  {#snippet premium(proxy)}
+    <span class={proxy.icon}></span>
+    <span>{proxy.label}</span>
+    <span data-item-badge>PRO</span>
+  {/snippet}   <!-- only options with snippet:'premium' -->
+</Select>
+```
+
+**Tier 3 — `itemContent` / `groupContent`** — blanket custom rendering for *every* option / group header. Last resort; you now own icon/label/badge layout yourself.
+
+> **Before writing any snippet, ask: is this just an icon / badge / description / avatar / second line?** If yes, it's data — use Tier 0/1. Snippets are for structurally different markup (an inline control, a colour swatch, a custom layout).
+
+## What the default option renders (Tiers 0–1, no snippet)
+
+The built-in option renderer (`ItemContent`) outputs, in order, whatever fields are present:
+
+| Field (data key) | Renders as | Notes |
+|---|---|---|
+| `image` (avatar) | `<img data-item-avatar>` | takes precedence over `icon` |
+| `icon` | `<span data-item-icon class={icon}>` **or** `<span data-item-icon-literal>` | a CSS icon class (`i-lucide:home`) renders as an icon span; any other string (emoji, single char) renders as literal text |
+| `label` | `<span data-item-label>` | the display text |
+| `description` | `<span data-item-description>` | secondary subtitle line, under the label |
+| `badge` | `<span data-item-badge>` | trailing count / status pill |
+| `shortcut` | `<kbd data-item-shortcut>` | trailing keyboard hint |
+
+All of these are data-driven. You do **not** need a snippet to show an icon, a badge, a description, or an avatar in the dropdown options.
+
+The **trigger** shows the selected option's `icon` (as `data-select-value-icon`) and `label` (as `data-select-value-text`), or a `data-select-placeholder` when nothing is selected. This is hardcoded — not snippet-overridable.
 
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `items` | `SelectItem[]` | `[]` | Options array |
-| `fields` | `SelectFields` | defaults | Field mapping |
+| `items` | `unknown[]` | `[]` | Data array (objects or primitives) |
+| `fields` | `Record<string,string>` | `{}` | Remap data keys to component fields |
 | `value` | `unknown` | — | Selected value — use `bind:value` |
-| `selected` | `SelectItem|null` | — | Selected item reference — use `bind:selected` |
-| `placeholder` | `string` | — | Placeholder text when nothing selected |
-| `size` | `'sm'|'md'|'lg'` | `'md'` | Size variant |
-| `align` | `'start'|'end'` | `'start'` | Dropdown alignment |
-| `direction` | `'up'|'down'` | `'down'` | Dropdown slide direction |
-| `maxRows` | `number` | `8` | Visible rows in dropdown |
+| `selected` | `unknown` | `null` | Selected raw item — use `bind:selected` |
+| `placeholder` | `string` | `'Select…'` | Placeholder when nothing selected |
+| `size` | `'sm'\|'md'\|'lg'` | `'md'` | Size variant |
 | `disabled` | `boolean` | `false` | Disable the select |
 | `filterable` | `boolean` | `false` | Show typeahead filter input |
-| `filterPlaceholder` | `string` | — | Placeholder for filter input |
-| `icons` | `SelectStateIcons` | — | Override state icons |
-| `class` | `string` | `''` | Additional CSS classes |
+| `filterPlaceholder` | `string` | `'Search…'` | Placeholder for filter input |
+| `align` | `'start'\|'end'` | `'start'` | Dropdown alignment relative to trigger |
+| `direction` | `'up'\|'down'` | `'down'` | Dropdown direction |
+| `maxRows` | `number` | `8` | Visible rows before dropdown scrolls |
+| `icons` | `{ opened?, closed?, checked? }` | — | Override expand/check icons |
+| `onchange` | `(value, item) => void` | — | Called on selection |
+| `class` | `string` | `''` | Additional CSS classes on root `<div>` |
 
-## Field Mapping
+## Field mapping (complete)
 
-| Field | Default | Description |
-|-------|---------|-------------|
-| `value` | `'value'` | Selection value |
-| `text` | `'text'` | Display text |
-| `icon` | `'icon'` | Icon class name |
-| `description` | `'description'` | Secondary/subtitle text |
-| `label` | `'label'` | Aria-label override |
-| `disabled` | `'disabled'` | Disabled state |
-| `children` | `'children'` | Grouped options array |
-| `badge` | `'badge'` | Badge/count indicator |
+Default field names the component reads from your data. Override only the ones that differ.
 
-## Grouped Options
+| Field | Default data key | Renders |
+|-------|------------------|---------|
+| `label` | `'label'` | display text in trigger + option |
+| `value` | `'value'` | selection value (falls back to the raw item) |
+| `icon` | `'icon'` | icon class or literal char/emoji |
+| `image` (avatar) | `'image'` | avatar `<img>` |
+| `description` | `'description'` | secondary subtitle line |
+| `badge` | `'badge'` | trailing badge/count |
+| `shortcut` | `'shortcut'` | trailing `<kbd>` hint |
+| `children` | `'children'` | nested items array → option group |
+| `type` | `'type'` | `'separator'` structural marker |
+| `disabled` | `'disabled'` | disabled state |
+| `snippet` | `'snippet'` | per-item/group named-snippet override (Tier 2) |
 
-Use the `children` field to create option groups:
+```svelte
+<Select {items} fields={{ label: 'name', value: 'code', icon: 'flag' }} bind:value />
+```
+
+## Grouped options
+
+Items with a `children` array become non-interactive group headers — group headers are displayed as labels (not buttons), and their children appear indented below. Unlike List, groups are always fully expanded in the dropdown.
+
+```svelte
+<Select items={[
+  { label: 'Fruits', children: [
+    { label: 'Apple',  value: 'apple',  icon: '🍎' },
+    { label: 'Banana', value: 'banana', icon: '🍌' }
+  ]},
+  { label: 'Vegetables', children: [
+    { label: 'Carrot', value: 'carrot', icon: '🥕' }
+  ]}
+]} bind:value />
+```
+
+A `data-select-divider` appears automatically between successive group headers. Use `{ type: 'separator' }` for an explicit `<hr data-select-separator />` anywhere in the flat item list.
+
+## Typeahead filter
+
+```svelte
+<Select {items} bind:value filterable filterPlaceholder="Search countries…" />
+```
+
+When `filterable`, a text input appears at the top of the dropdown (`data-select-filter-input`). Arrow-down moves focus into the list; Enter selects the focused option; Escape clears the query.
+
+## Tier 2 — per-item / per-group named snippets
+
+Set `item.snippet = 'name'` to route *specific* options to a named snippet; all other options keep the default rendering. The named snippet wins over both `itemContent` (leaves) and `groupContent` (group headers):
 
 ```svelte
 <script>
   const items = [
-    { label: 'Fruits', children: [
-        { label: 'Apple',  value: 'apple' },
-        { label: 'Banana', value: 'banana' }
-    ]},
-    { label: 'Vegetables', children: [
-        { label: 'Carrot', value: 'carrot' }
-    ]}
+    { label: 'Pro Plan', value: 'pro', snippet: 'premium', icon: 'i-lucide:star' },
+    { label: 'Free Plan', value: 'free' }
   ]
-  let value = $state(null)
 </script>
 
-<Select {items} bind:value />
-```
-
-## Typeahead Filter
-
-```svelte
-<Select items={countries} bind:value filterable filterPlaceholder="Search countries..." />
-```
-
-## Callbacks
-
-| Callback | Signature | Description |
-|----------|-----------|-------------|
-| `onchange` | `(value, item) => void` | Selection changed |
-
-## Snippets
-
-### Custom Selected Value Display
-
-```svelte
 <Select {items} bind:value>
-  {#snippet selectedValue(item, fields)}
-    {#if item}
-      <span class={item.flag}></span>
-      <span>{item.name}</span>
-    {:else}
-      <span>Choose a country</span>
-    {/if}
+  {#snippet premium(proxy)}
+    <span class={proxy.icon} aria-hidden="true"></span>
+    <span>{proxy.label}</span>
+    <span data-item-badge>PRO</span>
   {/snippet}
 </Select>
 ```
 
-### Custom Option Item
+## Tier 3 — itemContent / groupContent (blanket custom)
+
+Replaces the inner content of **every** leaf option / group header. The component still renders the `<button>` wrapper, `data-path`, `data-select-option`, and the check icon for the selected item. Use only when the default renderer genuinely can't express the layout.
 
 ```svelte
 <Select {items} bind:value>
-  {#snippet item(data, fields, handlers, isActive)}
-    <button onclick={handlers.onclick} onkeydown={handlers.onkeydown}>
-      <span class={data.flag}></span>
-      <strong>{data.name}</strong>
-      <small>{data.code}</small>
-    </button>
+  {#snippet itemContent(proxy)}
+    {#if proxy.icon}<span class={proxy.icon} aria-hidden="true"></span>{/if}
+    <span class="flex-1">{proxy.label}</span>
+    {#if proxy.get('badge')}<span data-item-badge>{proxy.get('badge')}</span>{/if}
+  {/snippet}
+  {#snippet groupContent(proxy)}
+    {#if proxy.get('icon')}<span class={proxy.get('icon')} aria-hidden="true"></span>{/if}
+    <span>{proxy.label}</span>
   {/snippet}
 </Select>
 ```
 
-## State Icons
+Note: group headers are rendered inside a `<div data-select-group-label>` (not a button). You cannot add interactive elements inside `groupContent` for Select — groups are non-navigable labels.
+
+## ProxyItem API (passed to all content snippets)
+
+| Property / method | Description |
+|---|---|
+| `proxy.label` | mapped display text |
+| `proxy.icon` | mapped icon class / literal |
+| `proxy.value` | the selection value |
+| `proxy.disabled` | whether this option is disabled |
+| `proxy.hasChildren` | true when the item is a group |
+| `proxy.get('key')` | read any field by semantic or raw name (`proxy.get('badge')`, `proxy.get('description')`) |
+
+## Theming
+
+### Data attributes
+
+Outer structure:
+
+| Attribute | Element |
+|---|---|
+| `data-select` | root `<div>` (also carries `data-open`, `data-size`, `data-disabled`, `data-align`, `data-direction`) |
+| `data-select-trigger` | trigger `<button>` |
+| `data-select-value` | value display span inside trigger |
+| `data-select-value-icon` | icon span for the selected item (in trigger) |
+| `data-select-value-text` | label span for the selected item (in trigger) |
+| `data-select-placeholder` | placeholder span (when nothing selected) |
+| `data-select-arrow` | dropdown arrow icon span |
+| `data-select-dropdown` | dropdown `<div>` |
+| `data-select-filter` | filter input wrapper |
+| `data-select-filter-input` | filter `<input>` |
+| `data-select-option` | leaf option `<button>` (also `data-path`, `data-level`, `data-selected`, `data-disabled`) |
+| `data-select-group-label` | group header `<div>` (non-interactive) |
+| `data-select-group-icon` | icon span inside group label |
+| `data-select-divider` | automatic `<div>` divider between successive groups |
+| `data-select-separator` | explicit `<hr>` from `{ type: 'separator' }` |
+| `data-select-check` | check icon on the selected option |
+| `data-select-empty` | "no results" message when filter returns nothing |
+
+Inner (default-rendered) content inside options — target these to restyle without a snippet:
+
+| Attribute | Element |
+|---|---|
+| `data-item-avatar` | avatar `<img>` |
+| `data-item-icon` / `data-item-icon-literal` | icon-class span / literal-char span |
+| `data-item-text` | label + description wrapper |
+| `data-item-label` | label text |
+| `data-item-description` | secondary line |
+| `data-item-badge` | trailing badge |
+| `data-item-shortcut` | trailing `<kbd>` |
+
+### Styling via the `class` prop (UnoCSS arbitrary variants)
+
+`class` lands on the root `<div data-select>`. Use UnoCSS arbitrary variants to reach descendants:
 
 ```svelte
-<Select {items} bind:value
-  icons={{
-    opened: 'i-lucide:chevron-up',
-    closed: 'i-lucide:chevron-down',
-    checked: 'i-lucide:check'
-  }}
-/>
+<Select {items} bind:value class="
+  [&_[data-select-option]]:py-2
+  [&_[data-select-option][data-selected]]:font-semibold
+  [&_[data-item-badge]]:text-xs [&_[data-item-badge]]:text-ink-mute
+" />
 ```
 
-## Keyboard Navigation
+Or theme globally with named tokens in your theme CSS:
 
-| Key | Action |
-|-----|--------|
-| `Enter/Space` | Open dropdown |
-| `ArrowDown/Up` | Move through options |
-| `Enter` | Select focused option |
-| `Escape` | Close dropdown |
-| `Home/End` | First/last option |
+```css
+[data-select-option][data-selected] { background: var(--accent-soft); color: var(--accent); }
+[data-select-group-label] { color: var(--ink-mute); font-weight: 600; text-transform: uppercase; }
+```
 
-## Data Attributes
+## Keyboard navigation
 
-| Attribute | Description |
-|-----------|-------------|
-| `data-select` | Root element |
-| `data-select-trigger` | Trigger button |
-| `data-select-dropdown` | Dropdown container |
-| `data-select-filter` | Filter input |
-| `data-open` | Open state |
-| `data-disabled` | Disabled state |
+`↑`/`↓` move focus through options · `Home`/`End` · `Enter`/`Space` open dropdown or select focused option · `Escape` close · `a-z` typeahead (non-filterable mode). Disabled options are skipped. When `filterable`, `↓` from the filter input moves into the list.
 
 ## Import
 
@@ -171,40 +244,9 @@ Use the `children` field to create option groups:
 import { Select } from '@rokkit/ui'
 ```
 
-## TypeScript Types
+## Related
 
-```typescript
-interface SelectProps {
-  items?: SelectItem[]
-  fields?: SelectFields
-  value?: unknown
-  selected?: SelectItem | null
-  placeholder?: string
-  size?: 'sm' | 'md' | 'lg'
-  align?: 'start' | 'end'
-  direction?: 'up' | 'down'
-  maxRows?: number
-  disabled?: boolean
-  filterable?: boolean
-  filterPlaceholder?: string
-  icons?: SelectStateIcons
-  class?: string
-  onchange?: (value: unknown, item: SelectItem) => void
-  selectedValue?: Snippet<[SelectItem | null, SelectFields]>
-  item?: Snippet<[SelectItem, SelectFields, SelectItemHandlers, boolean]>
-  groupLabel?: Snippet<[SelectItem, SelectFields]>
-}
-
-interface SelectStateIcons {
-  opened?: string  // dropdown open arrow
-  closed?: string  // dropdown closed arrow
-  checked?: string // selected item indicator
-  remove?: string  // (MultiSelect) tag remove button
-}
-```
-
-## Related Components
-
-- [MultiSelect](/llms/components/multi-select.txt) — multi-item selection
-- [List](/llms/components/list.txt) — inline list selection
-- [Toggle](/llms/components/toggle.txt) — compact option group
+- [MultiSelect](/llms/components/multi-select.txt) — multi-item dropdown selection
+- [List](/llms/components/list.txt) — inline persistent list selection
+- [Menu](/llms/components/menu.txt) — contextual action menu (no selected value)
+- [Composability guide](/llms/guides/composability.txt) — the data-first contract across all components

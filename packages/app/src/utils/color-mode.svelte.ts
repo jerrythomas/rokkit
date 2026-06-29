@@ -17,7 +17,7 @@ export function resolveMode(mode: ColorMode): ResolvedMode {
 		if (typeof window !== 'undefined') {
 			return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 		}
-		return 'dark'
+		return 'dark' // SSR: no window
 	}
 	return mode
 }
@@ -80,6 +80,7 @@ export class ColorModeManager {
 	 * Call in onMount or $effect.root.
 	 */
 	listen(): () => void {
+		/* v8 ignore next -- SSR path: window is undefined in Node/server environments */
 		if (typeof window === 'undefined') return () => {}
 
 		const mq = window.matchMedia('(prefers-color-scheme: dark)')

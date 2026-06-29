@@ -25,9 +25,27 @@ export default defineConfig({
 				'**/dist/**',
 				'**/apps/learn/**',
 				'**/fixtures/**',
+				// Type-only declaration files have no executable statements — they
+				// can't be "covered". Logic must not live under types/.
 				'**/types.ts',
+				'**/types/**',
+				'**/*.d.ts',
+				'**/markdown-plugin.ts',
+				// Example/demo components are illustrative, not shipped — not gated.
+				'**/examples/**',
 				'**/.worktrees/**'
-			]
+			],
+			// Per-file ratchet (enforced on the full `bun run coverage`):
+			//  - js/ts (incl. .svelte.js/.svelte.ts): 100% statements + lines
+			//  - .svelte components: ≥80% statements (major branches covered)
+			// Functions/branches are not gated: a few genuinely-dead functions are
+			// v8-ignored (their bodies excluded, but the symbol still counts), and
+			// legit defensive/SSR branches can't be exercised in jsdom.
+			thresholds: {
+				perFile: true,
+				'**/*.{js,ts}': { statements: 100, lines: 100 },
+				'**/*.svelte': { statements: 80 }
+			}
 		},
 		projects: [
 			{ extends: true, test: { name: 'actions', root: 'packages/actions' } },

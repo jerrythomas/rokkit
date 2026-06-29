@@ -69,6 +69,49 @@ const meta: DemoMeta = {
 			title: 'Custom field mapping',
 			lang: 'svelte',
 			code: `<Grid items={data} fields={{ label: 'title', value: 'id' }} />`
+		},
+		{
+			id: 'defaults',
+			title: 'Icons, badges, descriptions — all data (no snippet)',
+			lang: 'svelte',
+			code: `<Grid items={[
+  { label: 'Rokkit',   icon: 'i-glyph:sparkle', description: 'Component library',  value: 'rokkit' },
+  { label: 'Minimal',  icon: 'i-glyph:minus',   description: 'Stripped-down style', value: 'minimal', badge: 'new' },
+  { label: 'Material', icon: '🎨',              description: 'Google-inspired',     value: 'material' }
+]} bind:value />
+
+<!-- icon takes a CSS icon class OR a literal char/emoji;
+     description, badge, and shortcut all render automatically. -->`
+		},
+		{
+			id: 'named',
+			title: 'Custom markup for one tile (Tier 2)',
+			lang: 'svelte',
+			code: `<script>
+  const items = [
+    { label: 'Rokkit',   value: 'rokkit',   icon: 'i-glyph:sparkle' },
+    { label: 'Featured', value: 'featured', icon: 'i-glyph:star', snippet: 'featured' },
+    { label: 'Minimal',  value: 'minimal',  icon: 'i-glyph:minus' } // stays default
+  ]
+</script>
+
+<Grid {items} bind:value>
+  {#snippet featured(proxy)}
+    <span class={proxy.icon} aria-hidden="true"></span>
+    <span class="font-bold">{proxy.label}</span>
+    <span class="text-xs text-accent">Editor's pick</span>
+  {/snippet}
+</Grid>`
+		},
+		{
+			id: 'theming',
+			title: 'Theme via class (UnoCSS arbitrary variants)',
+			lang: 'svelte',
+			code: `<Grid {items} bind:value class="
+  [&_[data-grid-item]]:p-3
+  [&_[data-grid-item][data-active]]:ring-2 [&_[data-grid-item][data-active]]:ring-accent
+  [&_[data-item-badge]]:text-xs [&_[data-item-badge]]:text-ink-mute
+" />`
 		}
 	],
 	docs

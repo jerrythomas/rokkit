@@ -1,33 +1,53 @@
 # Rokkit List Component
 
-> Data-driven, accessible list component with keyboard navigation, selection, and collapsible groups. Built on the ProxyItem + Wrapper + Navigator stack.
+> Data-driven, accessible list with keyboard navigation, selection, and collapsible groups. Built on the ProxyItem + Wrapper + Navigator stack.
 
-The List component renders an array of items as a navigable `<nav>`. Items can be plain buttons, navigation links (when `href` is present), or grouped with collapsible sections. Rendering is fully customizable via snippets — the `<button>`/`<a>` wrappers are always rendered by the component; snippets control only the inner content.
+List renders an array as a navigable `<nav>`. **It is data-first: you describe items in data, and the component renders icon, label, description, badge, avatar, and shortcut automatically.** Reach for snippets only when the *markup* must differ from the default — not to add an icon or a badge (those are data).
 
-## Quick Start
+## Usage tiers — use the SIMPLEST that works
 
+Most lists need Tier 0 or 1. Going straight to `itemContent` is the most common mistake — it throws away the built-in rendering and you re-implement icon/label/badge by hand for every consumer.
+
+**Tier 0 — `<List {items}>`** — primitives, or objects whose keys already match the defaults (`label`, `icon`, `value`, `badge`, `description`, …). No config.
 ```svelte
-<script>
-  import { List } from '@rokkit/ui'
+<List items={['Dashboard', 'Reports', 'Settings']} bind:value />
 
-  const items = [
-    { label: 'Dashboard', icon: 'i-lucide:layout-dashboard' },
-    { label: 'Analytics', icon: 'i-lucide:bar-chart-2' },
-    { type: 'separator' },
-    { label: 'Settings', icon: 'i-lucide:settings', disabled: true }
-  ]
-  let value = $state(null)
-</script>
-<List {items} bind:value onselect={(v) => (value = v)} />
+<List items={[
+  { label: 'Inbox',   icon: 'i-lucide:inbox', badge: '12' },
+  { label: 'Starred', icon: '⭐', description: 'Flagged messages' }
+]} bind:value />
 ```
 
-## Primitive Arrays
-
-Pass strings or numbers directly — no object wrapping needed:
-
+**Tier 1 — `<List {items} {fields}>`** — same, but your data uses different key names. `fields` is a read-only remap; it never mutates your data.
 ```svelte
-<List items={['Dashboard', 'Analytics', 'Reports']} bind:value />
+<List items={routes} fields={{ label: 'name', value: 'path', icon: 'symbol' }} bind:value />
 ```
+
+**Tier 2 — per-item / per-group named snippets** — when *a few* rows need bespoke markup. Set `item.snippet = 'name'`; every other row keeps the default rendering. Works for **group headers and leaf items alike**.
+```svelte
+<List {items}>
+  {#snippet header(proxy)}…{/snippet}   <!-- only rows with snippet:'header' -->
+</List>
+```
+
+**Tier 3 — `itemContent` / `groupContent`** — blanket custom rendering for *every* item/group. Last resort; you now own icon/label/badge layout yourself.
+
+> **Before writing any snippet, ask: is this just an icon / badge / description / avatar / second line?** If yes, it's data — use Tier 0/1. Snippets are for structurally different markup (an inline control, a chart, a custom layout).
+
+## What the default item renders (Tiers 0–1, no snippet)
+
+The built-in item renderer (`ItemContent`) outputs, in order, whatever fields are present:
+
+| Field (data key) | Renders as | Notes |
+|---|---|---|
+| `image` (avatar) | `<img data-item-avatar>` | takes precedence over `icon` |
+| `icon` | `<span data-item-icon class={icon}>` **or** `<span data-item-icon-literal>` | a CSS icon class (`i-lucide:home`) renders as an icon; **any other string** (a single character, an emoji like `⭐`, `列`) renders as literal text. So "1-char text vs icon" is the same field — no snippet needed either way. |
+| `label` | `<span data-item-label>` | the display text |
+| `description` | `<span data-item-description>` | secondary subtitle line, under the label |
+| `badge` | `<span data-item-badge>` | trailing count / status pill |
+| `shortcut` | `<kbd data-item-shortcut>` | trailing keyboard hint |
+
+All of these are data-driven. You do **not** need a snippet to show an icon, a badge, a description, or an avatar.
 
 ## Props
 
@@ -36,209 +56,175 @@ Pass strings or numbers directly — no object wrapping needed:
 | `items` | `unknown[]` | `[]` | Data array (objects or primitives) |
 | `fields` | `Record<string,string>` | `{}` | Remap data keys to component fields |
 | `value` | `unknown` | — | Selected value — use `bind:value` |
-| `size` | `'sm'|'md'|'lg'` | `'md'` | Size variant |
+| `size` | `'sm'\|'md'\|'lg'` | `'md'` | Size variant |
 | `disabled` | `boolean` | `false` | Disable all items |
 | `collapsible` | `boolean` | `false` | Allow groups to be expanded/collapsed |
-| `icons` | `{ opened?: string, closed?: string }` | — | Override expand/collapse icons |
+| `icons` | `{ opened?, closed? }` | — | Override expand/collapse icons |
 | `class` | `string` | `''` | Additional CSS classes on the root `<nav>` |
 | `onselect` | `(value, proxy) => void` | — | Called when an item is selected |
 
-## Field Mapping
+## Field mapping (complete)
 
-Default field names (what the component reads from your data):
+Default field names the component reads from your data. Override only the ones that differ.
 
-| Field | Default key | Description |
-|-------|-------------|-------------|
-| `text` | `'label'` | Display text |
-| `value` | `'value'` | Selection value (falls back to raw item) |
-| `icon` | `'icon'` | Icon CSS class |
-| `href` | `'href'` | URL — renders item as `<a>` |
-| `children` | `'children'` | Nested items array (creates a group) |
-| `type` | `'type'` | `'separator'` or `'spacer'` for structural items |
-| `disabled` | `'disabled'` | Disabled state |
-| `expanded` | `'expanded'` | Initial expand state for groups |
-| `snippet` | `'snippet'` | Named snippet override for this item |
-
-To remap — e.g. your data uses `name` and `path` instead of `label` and `value`:
+| Field | Default data key | Renders |
+|-------|------------------|---------|
+| `label` | `'label'` | display text |
+| `value` | `'value'` | selection value (falls back to the raw item) |
+| `icon` | `'icon'` | icon class **or** literal char/emoji |
+| `image` (avatar) | `'image'` | avatar `<img>` |
+| `description` | `'description'` | secondary subtitle line |
+| `badge` | `'badge'` | trailing badge/count |
+| `shortcut` | `'shortcut'` | trailing `<kbd>` hint |
+| `href` | `'href'` | renders item as `<a>` (gets `aria-current="page"` when active) |
+| `children` | `'children'` | nested items array → group |
+| `type` | `'type'` | `'separator'` / `'spacer'` structural markers |
+| `disabled` | `'disabled'` | disabled state |
+| `expanded` | `'expanded'` | initial expand state for a group |
+| `snippet` | `'snippet'` | per-item/group named-snippet override (Tier 2) |
 
 ```svelte
-<List {items} fields={{ label: 'name', value: 'path' }} bind:value />
+<List {items} fields={{ label: 'name', value: 'path', description: 'summary' }} bind:value />
 ```
 
-## Grouped Items / Collapsible Sections
+## Grouped items / collapsible sections
 
-Items with a `children` array create collapsible group sections. Add the `collapsible` prop to allow toggling. Groups start collapsed by default — set `expanded: true` on a group item to start it open:
+Items with a `children` array become collapsible group headers. Add `collapsible` to allow toggling; groups start collapsed unless `expanded: true`.
+
+```svelte
+<List items={[
+  { label: 'Mail', expanded: true, children: [
+    { label: 'Inbox', value: 'inbox', badge: '8' },
+    { label: 'Drafts', value: 'drafts' }
+  ]},
+  { label: 'Settings', children: [{ label: 'Profile', value: 'profile' }] }
+]} collapsible bind:value />
+```
+
+## Tier 2 — per-item / per-group named snippets
+
+Set `item.snippet = 'name'` to route *specific* rows to a named snippet; all other rows keep the default rendering. The named snippet **wins over both `itemContent` (leaves) and `groupContent` (group headers)** — so you can give one group header a custom layout while leaving the rest default:
 
 ```svelte
 <script>
   const items = [
-    {
-      label: 'Fruits',
-      expanded: true,
-      children: [
-        { label: 'Apple' },
-        { label: 'Banana' }
-      ]
-    },
-    {
-      label: 'Vegetables',
-      children: [{ label: 'Carrot' }]
-    }
+    { label: 'Observatory', snippet: 'header', children: [{ label: 'Telescopes' }] },
+    { label: 'Settings', children: [{ label: 'General' }] },   // default group header
+    { label: 'Pinned', snippet: 'pinned' },                    // custom leaf
+    { label: 'Reports' }                                       // default leaf
   ]
-  let value = $state(null)
 </script>
-<List {items} collapsible bind:value onselect={(v) => (value = v)} />
-```
 
-## Navigation Links
+<List {items} collapsible={false}>
+  {#snippet header(proxy)}
+    <span data-item-label>{proxy.label}</span>
+    <span class="flex-1"></span>
+    <button onclick={(e) => { e.stopPropagation(); /* custom toggle */ }}>Custom Toggle</button>
+  {/snippet}
 
-Items with an `href` field render as `<a>` tags and get `aria-current="page"` when active:
-
-```svelte
-<script>
-  import { page } from '$app/state'
-
-  const nav = [
-    { label: 'Home',     href: '/',         icon: 'i-lucide:home' },
-    { label: 'Settings', href: '/settings', icon: 'i-lucide:settings' }
-  ]
-  let current = $derived(page.url.pathname)
-</script>
-<List items={nav} value={current} />
-```
-
-## Custom Icons
-
-Override the expand/collapse icons for group sections:
-
-```svelte
-<List {items} collapsible icons={{ opened: 'i-lucide:folder-open', closed: 'i-lucide:folder' }} />
-```
-
-## Snippet Customization
-
-### `itemContent(proxy)` — Custom leaf item rendering
-
-Replaces the inner content of each `<button>`/`<a>`. The component still renders the clickable wrapper with `data-path` and handles navigation:
-
-```svelte
-<List {items} bind:value onselect={(v) => (value = v)}>
-  {#snippet itemContent(proxy)}
-    {#if proxy.icon}
-      <span class={proxy.icon} aria-hidden="true"></span>
-    {/if}
-    <span class="flex-1">{proxy.label}</span>
-    <span class="badge">{proxy.get('status')}</span>
+  {#snippet pinned(proxy)}
+    <span class="i-lucide:pin"></span>
+    <span>{proxy.label}</span>
   {/snippet}
 </List>
 ```
 
-### `groupContent(proxy)` — Custom group header rendering
+`proxy.snippet` is read via the field accessor (it honors `fields.snippet`), exactly like `icon`/`href`.
+
+## Tier 3 — itemContent / groupContent (blanket custom)
+
+Replaces the inner content of **every** leaf / group. The component still renders the `<button>`/`<a>` wrapper, `data-path`, and navigation. Use only when the default renderer genuinely can't express the layout.
 
 ```svelte
-<List {items} collapsible>
+<List {items} collapsible bind:value>
+  {#snippet itemContent(proxy)}
+    {#if proxy.icon}<span class={proxy.icon} aria-hidden="true"></span>{/if}
+    <span class="flex-1">{proxy.label}</span>
+    {#if proxy.get('badge')}<span class="text-xs text-ink-mute">{proxy.get('badge')}</span>{/if}
+  {/snippet}
   {#snippet groupContent(proxy)}
     <span class={proxy.icon}></span>
     <span>{proxy.label}</span>
-    <span class={proxy.expanded ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'}></span>
   {/snippet}
 </List>
 ```
 
-### Per-item named snippets
+### Interactive elements inside snippets
 
-Set `item.snippet = 'name'` to route specific items to a named snippet. Falls back to `itemContent`:
-
-```svelte
-<script>
-  const items = [
-    { label: 'Apple',  snippet: 'fruit',     icon: 'i-lucide:apple' },
-    { label: 'Carrot', snippet: 'vegetable', icon: 'i-lucide:carrot' }
-  ]
-</script>
-<List {items}>
-  {#snippet fruit(proxy)}
-    <span class={proxy.icon}></span>
-    <span>{proxy.label}</span>
-    <span class="text-error text-xs">fruit</span>
-  {/snippet}
-  {#snippet vegetable(proxy)}
-    <span class={proxy.icon}></span>
-    <span>{proxy.label}</span>
-    <span class="text-success text-xs">veggie</span>
-  {/snippet}
-</List>
-```
-
-## ProxyItem API (passed to snippets)
-
-| Property/Method | Description |
-|----------------|-------------|
-| `proxy.label` | Mapped display `item[fields text (reads from.text]`) |
-| `proxy.icon` | Mapped icon class |
-| `proxy.href` | Mapped href |
-| `proxy.value` | The original raw item object or primitive |
-| `proxy.disabled` | Whether this item is disabled |
-| `proxy.expanded` | Expand state (for groups) — `$state`, reactive |
-| `proxy.get('fieldName')` | Read any field by semantic or raw name |
-
-## Interactive Elements in Snippets
-
-Snippets support full Svelte reactivity. Use `proxy.value` to mutate the original item, and `e.stopPropagation()` to prevent the List from also triggering selection:
+`stopPropagation()` so the Navigator doesn't also fire selection. Do NOT add `onclick` on an element that carries `data-path` (the wrapper) — the Navigator already handles it.
 
 ```svelte
-<List {items}>
-  {#snippet itemContent(proxy)}
-    <span class="flex-1">{proxy.label}</span>
-    <input
-      type="checkbox"
-      checked={proxy.get('checked')}
-      onchange={(e) => { proxy.value.checked = e.currentTarget.checked }}
-      onclick={(e) => e.stopPropagation()}
-    />
-  {/snippet}
-</List>
+{#snippet itemContent(proxy)}
+  <span class="flex-1">{proxy.label}</span>
+  <input type="checkbox" checked={proxy.get('checked')}
+    onchange={(e) => { proxy.value.checked = e.currentTarget.checked }}
+    onclick={(e) => e.stopPropagation()} />
+{/snippet}
 ```
 
-## Custom Class
+## ProxyItem API (passed to all content snippets)
 
-Pass `class` to add CSS classes to the root `<nav>` element — useful for constraining height or adding custom styling:
+| Property / method | Description |
+|---|---|
+| `proxy.label` | mapped display text |
+| `proxy.icon` | mapped icon class / literal |
+| `proxy.href` | mapped href |
+| `proxy.value` | the original raw item (object or primitive) |
+| `proxy.disabled` | whether this item is disabled |
+| `proxy.expanded` | expand state for groups — reactive `$state` |
+| `proxy.hasChildren` | true when the item has a children array |
+| `proxy.get('key')` | read any field by semantic or raw name (`proxy.get('badge')`, `proxy.get('description')`) |
+
+## Theming
+
+### Data attributes
+
+Outer structure:
+
+| Attribute | Element |
+|---|---|
+| `data-list` | root `<nav>` (also carries `data-size`, `data-collapsible`, `data-disabled`) |
+| `data-list-item` | leaf `<button>`/`<a>` (also `data-active`, `data-disabled`, `data-level`) |
+| `data-list-group` | group header `<button>` (also `aria-expanded`, `data-level`) |
+| `data-list-separator` | `<hr>` |
+| `data-list-spacer` | `<div>` |
+
+Inner (default-rendered) content — target these to restyle the built-in rendering without a snippet:
+
+| Attribute | Element |
+|---|---|
+| `data-item-avatar` | avatar `<img>` |
+| `data-item-icon` / `data-item-icon-literal` | icon-class span / literal-char span |
+| `data-item-text` | label + description wrapper |
+| `data-item-label` | label text |
+| `data-item-description` | secondary line |
+| `data-item-badge` | trailing badge |
+| `data-item-shortcut` | trailing `<kbd>` |
+
+### Styling via the `class` prop (UnoCSS arbitrary variants)
+
+`class` lands on the root `<nav data-list>`. Use UnoCSS arbitrary variants to reach descendants — `&` is the root, `_` is a descendant combinator, and the **whole selector must be wrapped in `[...]`**:
 
 ```svelte
-<!-- Fixed height with scroll -->
-<List {items} class="max-h-64 overflow-y-auto" bind:value />
+<List {items} collapsible class="
+  [&_[data-list-group]]:px-4
+  [&_[data-list-item]]:py-1
+  [&_[data-item-badge]]:text-xs [&_[data-item-badge]]:text-ink-mute
+" />
 ```
 
-## Keyboard Navigation
+(`[&>[data-list-group]]:px-4` with `>` targets direct children only; prefer `_` (descendant) unless you specifically need the direct-child combinator.)
 
-| Key | Action |
-|-----|--------|
-| `ArrowDown` | Move focus to next visible item |
-| `ArrowUp` | Move focus to previous visible item |
-| `ArrowRight` | Expand collapsed group (when `collapsible`) |
-| `ArrowLeft` | Collapse expanded group (when `collapsible`) |
-| `Home` | Focus first item |
-| `End` | Focus last item |
-| `Enter` / `Space` | Select focused item or toggle group |
-| `a-z` | Typeahead: jump to item starting with typed character |
+Or theme globally with named tokens in your theme CSS:
 
-Disabled items are skipped during keyboard navigation.
+```css
+[data-list-item][data-active] { background: var(--accent-soft); color: var(--accent); }
+[data-list-group] { color: var(--ink-mute); font-weight: 600; }
+```
 
-## Data Attributes (for CSS theming)
+## Keyboard navigation
 
-| Attribute | Element | Description |
-|-----------|---------|-------------|
-| `data-list` | Root `<nav>` | Root marker |
-| `data-list-item` | `<button>` or `<a>` | Leaf item |
-| `data-list-group` | `<button>` | Group header |
-| `data-list-separator` | `<hr>` | Separator line |
-| `data-list-spacer` | `<div>` | Spacer |
-| `data-active` | Item | Currently selected |
-| `data-disabled` | Item | Disabled state |
-| `data-level` | Item/group | Nesting depth (1=root) |
-| `aria-expanded` | Group button | Expand state (`true`/`false`) |
-| `data-collapsible` | Root | Present when `collapsible` prop is set |
-| `data-size` | Root | Size variant |
+`↑`/`↓` move focus · `→`/`←` expand/collapse groups (when `collapsible`) · `Home`/`End` · `Enter`/`Space` select or toggle · `a-z` typeahead. Disabled items are skipped.
 
 ## Import
 
@@ -246,10 +232,9 @@ Disabled items are skipped during keyboard navigation.
 import { List } from '@rokkit/ui'
 ```
 
-## Related Components
+## Related
 
-- [Tree](/llms/components/tree.txt) — hierarchical tree with per-node expand/collapse
-- [Select](/llms/components/select.txt) — dropdown single selection
-- [MultiSelect](/llms/components/multi-select.txt) — dropdown multi-selection
-- [Menu](/llms/components/menu.txt) — contextual action menu
-- [Tabs](/llms/components/tabs.txt) — tabbed interface
+- [Tree](/llms/components/tree.txt) — deeper hierarchy with per-node expand/collapse
+- [Select](/llms/components/select.txt) / [MultiSelect](/llms/components/multi-select.txt) — dropdown selection
+- [Menu](/llms/components/menu.txt) — contextual actions
+- [Composability guide](/llms/guides/composability.txt) — the data-first contract across all components

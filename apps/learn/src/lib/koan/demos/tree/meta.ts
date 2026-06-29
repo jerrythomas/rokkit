@@ -103,6 +103,54 @@ const meta: DemoMeta = {
   icons={{ expanded: 'i-mdi:folder-open', collapsed: 'i-mdi:folder' }}
   lineStyle="dotted"
 />`
+		},
+		{
+			id: 'defaults',
+			title: 'Icons and badges — all data (no snippet)',
+			lang: 'svelte',
+			code: `<Tree items={[
+  { label: 'src', icon: 'i-lucide:folder', children: [
+    { label: 'index.ts',  value: 'index',  icon: 'i-lucide:file-code', badge: 'main' },
+    { label: 'utils.ts',  value: 'utils',  icon: 'i-lucide:file-code' },
+    { label: 'pinned.ts', value: 'pinned', icon: 'i-lucide:file-code', badge: '★' }
+  ]},
+  { label: 'README.md', value: 'readme', icon: 'i-lucide:file-text' }
+]} bind:value />
+
+<!-- icon takes a CSS icon class OR a literal char/emoji;
+     badge renders automatically on leaf nodes.
+     description is NOT shown by default — use itemContent for that. -->`
+		},
+		{
+			id: 'named',
+			title: 'Custom markup for one node (Tier 2)',
+			lang: 'svelte',
+			code: `<script>
+  const items = [
+    { label: 'src', icon: 'i-lucide:folder', children: [
+      { label: 'index.ts',  value: 'index',  icon: 'i-lucide:file-code' },
+      { label: 'pinned.ts', value: 'pinned', icon: 'i-lucide:file-code', snippet: 'pinned' }
+    ]},
+    { label: 'README.md', value: 'readme', icon: 'i-lucide:file-text' } // stays default
+  ]
+</script>
+
+<Tree {items} bind:value>
+  {#snippet pinned(proxy)}
+    <span class="i-lucide:pin"></span>
+    <span>{proxy.label}</span>
+  {/snippet}
+</Tree>`
+		},
+		{
+			id: 'theming',
+			title: 'Theme via class (UnoCSS arbitrary variants)',
+			lang: 'svelte',
+			code: `<Tree {items} bind:value class="
+  [&_[data-tree-node]]:px-2
+  [&_[data-tree-item-content][data-active]]:bg-accent-soft
+  [&_[data-item-badge]]:text-xs [&_[data-item-badge]]:text-ink-mute
+" />`
 		}
 	],
 	docs

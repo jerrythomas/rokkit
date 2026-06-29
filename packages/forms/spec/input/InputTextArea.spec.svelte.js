@@ -1,5 +1,5 @@
-import { describe, expect, beforeEach, it } from 'vitest'
-import { cleanup, render } from '@testing-library/svelte'
+import { describe, expect, beforeEach, it, vi } from 'vitest'
+import { cleanup, render, fireEvent } from '@testing-library/svelte'
 import { userEvent } from '@testing-library/user-event'
 import { flushSync, tick } from 'svelte'
 
@@ -116,5 +116,18 @@ describe('InputTextArea', () => {
 		const { container } = render(InputTextArea, { props })
 		const element = container.querySelector('textarea')
 		expect(element.wrap).toBe('hard')
+	})
+
+	it('should call onchange with new value when textarea changes', () => {
+		const onchange = vi.fn()
+		const props = $state({ value: '', onchange })
+		const { container } = render(InputTextArea, { props })
+
+		const element = container.querySelector('textarea')
+		element.value = 'new content'
+		fireEvent.change(element)
+
+		expect(onchange).toHaveBeenCalledWith('new content')
+		expect(props.value).toBe('new content')
 	})
 })

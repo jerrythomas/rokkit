@@ -48,6 +48,7 @@ function initializeHighlighter(): Promise<Highlighter> {
 			return hl
 		})
 		.catch((error: Error) => {
+			/* v8 ignore next 3 -- createHighlighter failure not reachable in test env (singleton already initialized) */
 			isInitializing = false
 			initPromise = null
 			throw error
@@ -122,6 +123,7 @@ export async function highlightCode(code: string, options: HighlightOptions = {}
 export async function preloadHighlighter(): Promise<void> {
 	try {
 		await initializeHighlighter()
+	/* v8 ignore next 3 -- preload catch body unreachable in tests (singleton already initialized) */
 	} catch {
 		// Preload failures are non-critical - highlighting will still work on demand
 	}

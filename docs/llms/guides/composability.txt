@@ -1,9 +1,33 @@
 # Composability
 
-Every Rokkit component exposes named **snippet slots**. Pass a
-snippet to replace any part of the component's rendering — item
-content, group headers, empty states — without forking the
-component or fighting with CSS overrides.
+Rokkit components are **data-first**: describe your rows as data, remap your key
+names with `fields`, and the component renders icon / label / description / badge /
+avatar / shortcut and handles selection, keyboard nav, and ARIA. **Snippets are the
+escalation for when the markup must differ — not the starting point.**
+
+## The progression — use the SIMPLEST that works
+
+This is one generic pattern for **every** component that takes `items` + `fields` +
+snippets (`List`, `Tree`, `Menu`, `Select`, `MultiSelect`, `Grid`, `Toggle`, `Tabs`):
+
+1. **Data** — `<List {items}>` with keys matching the defaults. Renders the icon
+   (a CSS icon class *or* a literal char/emoji), label, `description`, `badge`,
+   avatar, `shortcut` automatically. No snippet.
+2. **Fields** — `<List {items} {fields}>` to remap your own key names. Still no snippet.
+3. **One row differs** — set `item.snippet = 'name'` and provide a **named** snippet.
+   Only that row changes; every other row keeps the default rendering.
+4. **All rows differ** — provide `itemContent` / `groupContent`. This replaces the
+   body of **every** item / group; you now own the inner layout.
+
+> **`itemContent`/`groupContent` (all) vs. a named snippet (one):** `itemContent`
+> replaces the inside of **every** row and `groupContent` every group header — use
+> them only when you genuinely want all rows to change. A per-item `snippet: 'name'`
+> replaces just the **single** row that opts in, leaving the rest data-driven.
+> Jumping straight to `itemContent` is the most common mistake: it throws away the
+> built-in icon/label/badge rendering for rows that never needed a custom layout.
+
+Before writing any snippet, ask: *is this just an icon, badge, description, avatar,
+or a second line of text?* If so, it's **data** (steps 1–2), not a snippet.
 
 ## Why snippets, not slots
 
@@ -18,9 +42,11 @@ you control the pixels.
 
 ## itemContent — replace the inside of a row
 
-The most common snippet is `itemContent`. Every selection
-component (`List`, `Menu`, `Tree`, `Select`, `Grid`) accepts it.
-The snippet receives a `ProxyItem` you can read fields off:
+`itemContent` replaces the inside of **every** row (step 4 above) —
+use it when all rows need a custom layout, not to add an icon or
+badge that data already covers. Every selection component (`List`,
+`Menu`, `Tree`, `Select`, `Grid`) accepts it. The snippet receives a
+`ProxyItem` you can read fields off:
 
 ```svelte
 <List items={users}>

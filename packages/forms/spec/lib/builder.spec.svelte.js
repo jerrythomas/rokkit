@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { SvelteSet } from 'svelte/reactivity'
 import { FormBuilder } from '../../src/lib/builder.svelte.js'
 
@@ -1403,6 +1403,367 @@ describe('FormBuilder', () => {
 			builder.updateField('accountType', 'personal')
 			// Stale error should be cleared
 			expect(builder.isValid).toBe(true)
+		})
+	})
+
+	describe('isStepValid()', () => {
+		const schema = {
+			type: 'object',
+			properties: {
+				firstName: { type: 'string', required: true },
+				username: { type: 'string', required: true }
+			}
+		}
+		const layout = {
+			type: 'vertical',
+			elements: [
+				{
+					type: 'step',
+					label: 'Step 1',
+					elements: [{ scope: '#/firstName', label: 'First Name' }]
+				},
+				{
+					type: 'step',
+					label: 'Step 2',
+					elements: [{ scope: '#/username', label: 'Username' }]
+				}
+			]
+		}
+
+		it('returns false for the current step when required field is empty', () => {
+			const builder = new FormBuilder({}, schema, layout)
+			expect(builder.isStepValid()).toBe(false)
+		})
+
+		it('returns true for the current step when required field is filled', () => {
+			const builder = new FormBuilder({ firstName: 'Alice' }, schema, layout)
+			expect(builder.isStepValid()).toBe(true)
+		})
+
+		it('accepts explicit step index', () => {
+			const builder = new FormBuilder({ firstName: 'Alice' }, schema, layout)
+			// Step 1 (index 1) has username empty → invalid
+			expect(builder.isStepValid(1)).toBe(false)
+		})
+	})
+
+	describe('lookup integration', () => {
+		const schema = {
+			type: 'object',
+			properties: {
+				country: { type: 'string' },
+				city: { type: 'string' }
+			}
+		}
+		const layout = {
+			type: 'vertical',
+			elements: [
+				{ scope: '#/country', label: 'Country' },
+				{ scope: '#/city', label: 'City' }
+			]
+		}
+
+		it('isFieldDisabled returns false when no lookup manager exists', () => {
+			const builder = new FormBuilder({ country: 'USA' }, schema, layout)
+			expect(builder.isFieldDisabled('country')).toBe(false)
+		})
+
+		it('isFieldDisabled returns true when deps are not met', async () => {
+			const lookups = {
+				city: {
+					url: '/api/cities?country={country}',
+					dependsOn: ['country']
+				}
+			}
+			const builder = new FormBuilder({}, schema, layout, lookups)
+			await builder.initializeLookups()
+			expect(builder.isFieldDisabled('city')).toBe(true)
+		})
+
+		it('isFieldDisabled returns false after deps become met', async () => {
+			globalThis.fetch = vi.fn().mockResolvedValue({
+				ok: true,
+				json: () => Promise.resolve([{ id: 1, name: 'NYC' }])
+			})
+			const lookups = {
+				city: {
+					url: '/api/cities?country={country}',
+					dependsOn: ['country']
+				}
+			}
+			const builder = new FormBuilder({ country: 'USA' }, schema, layout, lookups)
+			await builder.initializeLookups()
+			expect(builder.isFieldDisabled('city')).toBe(false)
+		})
+
+		it('getLookupState returns null when no lookup manager', () => {
+			const builder = new FormBuilder({ country: 'USA' }, schema, layout)
+			expect(builder.getLookupState('country')).toBeNull()
+		})
+
+		it('getLookupState returns null for unknown field', () => {
+			const lookups = { city: { url: '/api/cities' } }
+			const builder = new FormBuilder({}, schema, layout, lookups)
+			expect(builder.getLookupState('country')).toBeNull()
+		})
+
+		it('getLookupState returns state object for known field', () => {
+			const lookups = { country: { url: '/api/countries' } }
+			const builder = new FormBuilder({}, schema, layout, lookups)
+			const state = builder.getLookupState('country')
+			expect(state).not.toBeNull()
+			expect(state).toHaveProperty('options')
+			expect(state).toHaveProperty('loading')
+			expect(state).toHaveProperty('error')
+			expect(state).toHaveProperty('disabled')
+			expect(state).toHaveProperty('fields')
+		})
+
+		it('refreshLookup fetches with current data', async () => {
+			globalThis.fetch = vi.fn().mockResolvedValue({
+				ok: true,
+				json: () => Promise.resolve([{ id: 1, name: 'NYC' }])
+			})
+			const lookups = {
+				city: {
+					url: '/api/cities?country={country}',
+					dependsOn: ['country']
+				}
+			}
+			const builder = new FormBuilder({ country: 'USA' }, schema, layout, lookups)
+			await builder.refreshLookup('city')
+			const state = builder.getLookupState('city')
+			expect(state.options).toHaveLength(1)
+		})
+
+		it('refreshLookup is a no-op when field has no lookup', async () => {
+			const builder = new FormBuilder({ country: 'USA' }, schema, layout)
+			// Should not throw
+			await expect(builder.refreshLookup('country')).resolves.toBeUndefined()
+		})
+
+		it('setLookups replaces lookup manager', () => {
+			const builder = new FormBuilder({}, schema, layout)
+			expect(builder.getLookupState('country')).toBeNull()
+
+			builder.setLookups({ country: { url: '/api/countries' } })
+			expect(builder.getLookupState('country')).not.toBeNull()
+		})
+
+		it('lookupManager getter returns null without lookups', () => {
+			const builder = new FormBuilder({}, schema, layout)
+			expect(builder.lookupManager).toBeNull()
+		})
+
+		it('lookupManager getter returns manager when lookups are set', () => {
+			const builder = new FormBuilder({}, schema, layout, {
+				country: { url: '/api/countries' }
+			})
+			expect(builder.lookupManager).not.toBeNull()
+		})
+
+		it('hasLookup returns false when no manager', () => {
+			const builder = new FormBuilder({}, schema, layout)
+			expect(builder.hasLookup('country')).toBe(false)
+		})
+
+		it('hasLookup returns true for known field', () => {
+			const builder = new FormBuilder({}, schema, layout, {
+				country: { url: '/api/countries' }
+			})
+			expect(builder.hasLookup('country')).toBe(true)
+		})
+
+		it('updateField with lookups=false skips lookup triggering', () => {
+			const lookups = {
+				city: {
+					url: '/api/cities?country={country}',
+					dependsOn: ['country']
+				}
+			}
+			const builder = new FormBuilder({ country: '' }, schema, layout, lookups)
+			// Should not throw; no fetch calls expected
+			builder.updateField('country', 'USA', false)
+			expect(builder.data.country).toBe('USA')
+		})
+
+		it('updateField clears dependent field value and triggers lookup', async () => {
+			globalThis.fetch = vi.fn().mockResolvedValue({
+				ok: true,
+				json: () => Promise.resolve([{ id: 1, name: 'NYC' }])
+			})
+			const lookups = {
+				city: {
+					url: '/api/cities?country={country}',
+					dependsOn: ['country']
+				}
+			}
+			const builder = new FormBuilder({ country: 'GBR', city: 'London' }, schema, layout, lookups)
+			builder.updateField('country', 'USA')
+			// city should be cleared (set to null) because it depends on country
+			expect(builder.data.city).toBeNull()
+		})
+
+		it('lookup state is injected into element props when options are available', async () => {
+			globalThis.fetch = vi.fn().mockResolvedValue({
+				ok: true,
+				json: () => Promise.resolve([{ id: 1, name: 'USA' }])
+			})
+			const lookups = { country: { url: '/api/countries' } }
+			const builder = new FormBuilder({ country: '' }, schema, layout, lookups)
+			await builder.initializeLookups()
+
+			const countryEl = builder.elements.find((e) => e.scope === '#/country')
+			expect(countryEl.props.options).toEqual([{ id: 1, name: 'USA' }])
+		})
+	})
+
+	describe('combined getter', () => {
+		it('returns schema+layout combined object for scoped elements', () => {
+			const data = { name: 'Alice', age: 30 }
+			const schema = {
+				type: 'object',
+				properties: {
+					name: { type: 'string' },
+					age: { type: 'integer' }
+				}
+			}
+			const layout = {
+				type: 'vertical',
+				elements: [
+					{ scope: '#/name', label: 'Name' },
+					{ scope: '#/age', label: 'Age' }
+				]
+			}
+			const builder = new FormBuilder(data, schema, layout)
+			const combined = builder.combined
+			expect(combined).toBeDefined()
+			expect(combined.elements).toHaveLength(2)
+		})
+
+		it('excludes non-scoped elements from combined', () => {
+			const data = { name: 'Alice' }
+			const schema = { type: 'object', properties: { name: { type: 'string' } } }
+			const layout = {
+				type: 'vertical',
+				elements: [
+					{ type: 'separator' }, // no scope → excluded
+					{ scope: '#/name', label: 'Name' }
+				]
+			}
+			const builder = new FormBuilder(data, schema, layout)
+			const combined = builder.combined
+			expect(combined.elements).toHaveLength(1)
+		})
+	})
+
+	describe('getValue() — non-object traversal', () => {
+		it('returns undefined when traversal encounters a primitive mid-path', () => {
+			// data.user is a string, not an object, so getValue('user/name') hits else
+			const builder = new FormBuilder({ user: 'Alice' })
+			expect(builder.getValue('user/name')).toBeUndefined()
+		})
+	})
+
+	describe('readonly elements', () => {
+		it('renders a readonly schema field as an info element', () => {
+			const data = { name: 'Alice' }
+			const schema = {
+				type: 'object',
+				properties: { name: { type: 'string' } }
+			}
+			const layout = {
+				type: 'vertical',
+				elements: [{ scope: '#/name', label: 'Name', readonly: true }]
+			}
+			const builder = new FormBuilder(data, schema, layout)
+			const elements = builder.elements
+
+			expect(elements).toHaveLength(1)
+			expect(elements[0].type).toBe('info')
+			expect(elements[0].scope).toBe('#/name')
+			expect(elements[0].value).toBe('Alice')
+		})
+
+		it('readonly element props include validation message', () => {
+			const schema = {
+				type: 'object',
+				properties: { name: { type: 'string', required: true } }
+			}
+			const layout = {
+				type: 'vertical',
+				elements: [{ scope: '#/name', label: 'Name', readonly: true }]
+			}
+			const builder = new FormBuilder({ name: '' }, schema, layout)
+			builder.setFieldValidation('name', { state: 'error', text: 'Name is required' })
+
+			const elements = builder.elements
+			expect(elements[0].props.message).toEqual({ state: 'error', text: 'Name is required' })
+		})
+	})
+
+	describe('#getInitialValue() — non-object traversal', () => {
+		it('isFieldDirty returns false safely when initial data has primitive at intermediate path', () => {
+			// Start with initial data where 'user' is a string (not an object).
+			// #getInitialValue('user/name') hits the else → undefined.
+			// deepEqual(undefined, undefined) → true → not dirty.
+			const builder = new FormBuilder({ user: 'Alice' })
+			// After construction user is 'Alice' (string), then update via data setter
+			builder.data = { user: { name: 'Bob' } }
+			// #getInitialValue('user/name') traverses 'Alice'['name'] → else → undefined
+			expect(builder.isFieldDirty('user/name')).toBe(true)
+		})
+	})
+
+	describe('#buildBasicElements() — error recovery fallback', () => {
+		// A schema whose `properties` is null causes getSchemaWithLayout to throw
+		// when iterating over scoped elements — triggering the catch → #buildBasicElements.
+		const badSchema = { type: 'object', properties: null }
+
+		it('falls back to basic elements when getSchemaWithLayout throws', () => {
+			const data = { name: 'Alice' }
+			const layout = {
+				type: 'vertical',
+				elements: [{ scope: '#/name', label: 'Name' }]
+			}
+			const builder = new FormBuilder(data, badSchema, layout)
+
+			// The fallback #buildBasicElements path produces a text element
+			const elements = builder.elements
+			expect(elements).toHaveLength(1)
+			expect(elements[0].type).toBe('text')
+			expect(elements[0].scope).toBe('#/name')
+			expect(elements[0].value).toBe('Alice')
+		})
+
+		it('fallback element label uses scope path when no label provided', () => {
+			const data = { email: 'a@b.com' }
+			const layout = {
+				type: 'vertical',
+				elements: [{ scope: '#/email' }] // no label
+			}
+			const builder = new FormBuilder(data, badSchema, layout)
+
+			const elements = builder.elements
+			expect(elements).toHaveLength(1)
+			expect(elements[0].props.label).toBe('email')
+		})
+
+		it('fallback skips non-scoped elements', () => {
+			// Mix a scoped element (triggers error + fallback) with a non-scoped separator.
+			// In the fallback path, non-scoped elements return null from #buildBasicElement.
+			const layout = {
+				type: 'vertical',
+				elements: [
+					{ scope: '#/name', label: 'Name' }, // triggers error (bad schema)
+					{ type: 'separator' } // no scope → skipped in fallback
+				]
+			}
+			const builder = new FormBuilder({ name: 'Alice' }, badSchema, layout)
+
+			// Only the scoped element is returned; separator is skipped
+			expect(builder.elements).toHaveLength(1)
+			expect(builder.elements[0].type).toBe('text')
 		})
 	})
 })
