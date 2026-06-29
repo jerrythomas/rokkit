@@ -131,6 +131,49 @@ const meta: DemoMeta = {
   onadd={() => (items = [...items, { label: 'New tab' }])}
   onremove={(t) => (items = items.filter((i) => i !== t))}
 />`
+		},
+		{
+			id: 'defaults',
+			title: 'Icons, labels, panel content — all data (no snippet)',
+			lang: 'svelte',
+			code: `<Tabs options={[
+  { value: 'overview', label: 'Overview', content: 'Welcome to the overview.' },
+  { value: 'api',      label: 'API',      content: 'API docs here.',   icon: 'i-lucide:code' },
+  { value: 'examples', label: 'Examples', content: 'Usage examples here.' }
+]} bind:value />
+
+<!-- icon and label render in the trigger automatically;
+     content renders in the panel — no snippets needed. -->`
+		},
+		{
+			id: 'named',
+			title: 'Custom trigger markup for one tab (Tier 2)',
+			lang: 'svelte',
+			code: `<script>
+  const options = [
+    { value: 'overview', label: 'Overview', content: 'Overview panel.' },
+    { value: 'live',     label: 'Live',     content: 'Live feed.',  snippet: 'live' },  // custom trigger; others default
+    { value: 'settings', label: 'Settings', content: 'Settings panel.' }
+  ]
+</script>
+
+<Tabs {options} bind:value>
+  {#snippet live(proxy, selected)}
+    <span class="i-lucide:radio" aria-hidden="true"></span>
+    <span>{proxy.label}</span>
+    <span class="size-2 rounded-full bg-danger"></span>
+  {/snippet}
+</Tabs>`
+		},
+		{
+			id: 'theming',
+			title: 'Theme via class (UnoCSS arbitrary variants)',
+			lang: 'svelte',
+			code: `<Tabs {options} bind:value class="
+  [&_[data-tabs-trigger]]:px-4
+  [&_[data-tabs-trigger][data-selected]]:font-semibold
+  [&_[data-tabs-panel]]:p-6
+" />`
 		}
 	],
 	docs
