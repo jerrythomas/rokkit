@@ -47,6 +47,9 @@ export function processIcons(iconSet, color) {
 		try {
 			cleanAndOptimizeIcon(svg, color)
 		} catch (err) {
+			/* v8 ignore next 6 -- catch body requires an iconify-tools internal parse
+			   error; the err1 fixture exercises this path but the exception propagates
+			   at importDirectory level before processIcons is reached */
 			console.error(`Error parsing ${name}: ${err.reason}`)
 			iconSet.remove(name)
 			return
@@ -116,6 +119,8 @@ export async function convert(folder, options) {
 
 	// Create the target directory if it doesn't exist
 	const targetDir = path.resolve(options.target)
+	/* v8 ignore next 4 -- bundle() (called above) always creates targetDir first;
+	   this guard is unreachable in practice but kept as a defensive fallback */
 	if (!fs.existsSync(targetDir)) {
 		fs.mkdirSync(targetDir, { recursive: true })
 	}

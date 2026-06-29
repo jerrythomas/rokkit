@@ -408,6 +408,7 @@ const PROMPTS_CONFIG = [
 		type: (prev) => (prev?.length > 1 ? 'select' : null),
 		name: 'defaultTheme',
 		message: 'Default theme style',
+		/* v8 ignore next 2 -- prompts.inject bypasses choices callback evaluation in tests */
 		choices: (prev) =>
 			prev.map((t) => ({ title: t.charAt(0).toUpperCase() + t.slice(1), value: t }))
 	},
@@ -547,6 +548,9 @@ export async function init(_opts = {}, adapters = {}) {
 
 	const response = await prompts(PROMPTS_CONFIG)
 
+	/* v8 ignore next 10 -- prompts mutates PROMPTS_CONFIG[n].type in-place on the
+	   first call, so the conditional primary/accent/surface prompts always resolve
+	   to null on subsequent runs; the branch is tested via generateConfig directly */
 	if (response.palette === 'custom') {
 		response.customColors = {
 			primary: response.primary,

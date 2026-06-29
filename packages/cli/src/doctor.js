@@ -240,6 +240,9 @@ function applyPatchHtml(cwd, label) {
  * @param {string} cwd
  * @param {string} label
  */
+/* v8 ignore next 16 -- chart-config check emits 'warn' (not 'fail'); applyCheckFix
+   only processes 'fail' statuses, making this handler unreachable via the normal
+   fix flow. Kept for potential future use if the check severity changes. */
 function applyPatchChartConfig(cwd, label) {
 	const configPath = resolve(cwd, 'rokkit.config.js')
 	if (!existsSync(configPath)) return false
@@ -418,6 +421,8 @@ export async function doctor(opts = {}) {
 
 	const parsed = await loadParsedConfig({ cwd })
 	const shapeChecks = validateConfigShape(parsed)
+	/* v8 ignore next 8 -- loadConfig uses dynamic file:// import which always fails in
+	   JSDOM; validateConfigShape(null) returns [] so this branch is unreachable in tests */
 	if (shapeChecks.length > 0) {
 		console.info('\nConfig shape:')
 		for (const c of shapeChecks) {

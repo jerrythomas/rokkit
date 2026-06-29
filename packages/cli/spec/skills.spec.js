@@ -1,4 +1,5 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import prompts from 'prompts'
 import { parseFrontmatter, listSkills } from '../src/skills.js'
 
 describe('parseFrontmatter', () => {
@@ -83,9 +84,14 @@ import { runSkillsAdd } from '../src/skills.js'
 describe('runSkillsAdd (no prompt when names or --all given)', () => {
 	let cwd
 	beforeEach(() => {
+		vi.spyOn(console, 'info').mockImplementation(() => {})
+		vi.spyOn(console, 'error').mockImplementation(() => {})
+		prompts._injected = null
 		cwd = mkdtempSync(pjoin(tmpdir(), 'rokkit-skills-'))
 	})
 	afterEach(() => {
+		prompts._injected = null
+		vi.restoreAllMocks()
 		rmSync(cwd, { recursive: true, force: true })
 	})
 
@@ -97,6 +103,107 @@ describe('runSkillsAdd (no prompt when names or --all given)', () => {
 	it('--all installs the entire catalog', async () => {
 		await runSkillsAdd([], { cwd, all: true })
 		expect(fsExists(pjoin(cwd, '.claude/skills/semantic-styles-rokkit/SKILL.md'))).toBe(true)
+		expect(fsExists(pjoin(cwd, '.claude/skills/rokkit-components/SKILL.md'))).toBe(true)
+	})
+
+	it('prints "skipped" for already-installed skills', async () => {
+		await runSkillsAdd(['rokkit-components'], { cwd })
+		vi.clearAllMocks()
+		vi.spyOn(console, 'info').mockImplementation(() => {})
+		await runSkillsAdd(['rokkit-components'], { cwd })
+		expect(console.info).toHaveBeenCalledWith(expect.stringContaining('skipped'))
+	})
+
+	it('prints error and sets exitCode for unknown skills', async () => {
+		process.exitCode = undefined
+		await runSkillsAdd(['does-not-exist'], { cwd })
+		expect(console.error).toHaveBeenCalledWith(expect.stringContaining('unknown skill'))
+		expect(process.exitCode).toBe(1)
+		process.exitCode = undefined
+	})
+
+	it('prints "No skills selected" when prompt returns empty selection', async () => {
+		// no names, not --all → prompts user; inject empty array for the multiselect answer
+		prompts.inject([[]])
+		await runSkillsAdd([], { cwd })
+		expect(console.info).toHaveBeenCalledWith(expect.stringContaining('No skills selected'))
+	})
+
+	it('installs from interactive prompt selection', async () => {
+		// Inject a multiselect result with one skill chosen
+		prompts.inject([['rokkit-components']])
+		await runSkillsAdd([], { cwd })
+		expect(fsExists(pjoin(cwd, '.claude/skills/rokkit-components/SKILL.md'))).toBe(true)
+	})
+})
+
+import { runSkillsList, skillsCommand } from '../src/skills.js'
+
+describe('runSkillsList', () => {
+	let cwd
+	beforeEach(() => {
+		vi.spyOn(console, 'info').mockImplementation(() => {})
+		cwd = mkdtempSync(pjoin(tmpdir(), 'rokkit-skills-'))
+	})
+	afterEach(() => {
+		vi.restoreAllMocks()
+		rmSync(cwd, { recursive: true, force: true })
+	})
+
+	it('prints each available skill with a description', async () => {
+		await runSkillsList({ cwd })
+		const calls = console.info.mock.calls.map((c) => c[0])
+		expect(calls.some((s) => s.includes('rokkit-components'))).toBe(true)
+	})
+
+	it('marks installed skills with a checkmark', async () => {
+		// Install one skill first
+		await runSkillsAdd(['rokkit-components'], { cwd })
+		vi.clearAllMocks()
+		vi.spyOn(console, 'info').mockImplementation(() => {})
+		await runSkillsList({ cwd })
+		const calls = console.info.mock.calls.map((c) => c[0])
+		// The installed skill should be marked '✓ '
+		expect(calls.some((s) => s.startsWith('✓ '))).toBe(true)
+	})
+
+	it('prints "No skills available" when skillsDir is empty', async () => {
+		await runSkillsList({ skillsDir: cwd, cwd })
+		expect(console.info).toHaveBeenCalledWith('No skills available.')
+	})
+})
+
+describe('skillsCommand entry', () => {
+	let cwd
+	beforeEach(() => {
+		vi.spyOn(console, 'info').mockImplementation(() => {})
+		vi.spyOn(console, 'error').mockImplementation(() => {})
+		cwd = mkdtempSync(pjoin(tmpdir(), 'rokkit-skills-'))
+	})
+	afterEach(() => {
+		vi.restoreAllMocks()
+		rmSync(cwd, { recursive: true, force: true })
+	})
+
+	it('routes "list" to runSkillsList', async () => {
+		const cwdSpy = vi.spyOn(process, 'cwd').mockReturnValue(cwd)
+		await skillsCommand('list', {})
+		cwdSpy.mockRestore()
+		// Should have printed the catalog header/skills
+		expect(console.info).toHaveBeenCalled()
+	})
+
+	it('routes "add" with --all to runSkillsAdd', async () => {
+		const cwdSpy = vi.spyOn(process, 'cwd').mockReturnValue(cwd)
+		await skillsCommand('add', { _: [], all: true })
+		cwdSpy.mockRestore()
+		expect(fsExists(pjoin(cwd, '.claude/skills/rokkit-components/SKILL.md'))).toBe(true)
+	})
+
+	it('routes "add" with named skills to runSkillsAdd', async () => {
+		const cwdSpy = vi.spyOn(process, 'cwd').mockReturnValue(cwd)
+		await skillsCommand('add', { _: ['rokkit-components'] })
+		cwdSpy.mockRestore()
 		expect(fsExists(pjoin(cwd, '.claude/skills/rokkit-components/SKILL.md'))).toBe(true)
 	})
 })
