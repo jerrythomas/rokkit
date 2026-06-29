@@ -5,52 +5,41 @@
    --accent, --accent-soft, …) plus the --shadow shorthand in koan/compat.css.
    ═══════════════════════════════════════════════════════════════════ */
 
-/* ─── ChatMessage ────────────────────────────────────────────────── */
+/* ─── ChatMessage (@rokkit/ui) ───────────────────────────────────────
+   Structure: [data-chat-message][data-role] > avatar? + [data-chat-bubble]
+   where the bubble holds the label snippet, [data-chat-body], [time].
+   The learn /chat route supplies an avatar (icon node) + an assistant
+   "eyebrow" via the label snippet (.msg-avatar / .msg-eyebrow live in the
+   route's scoped <style>). */
 
-/* ChatMessage layers chat-specific kind variants on top of the generic
-   IconTimeline. Structure / connector / node sizing live in IconTimeline.svelte. */
-
-[data-chat-message][data-kind='user'] [data-icon-timeline-node] {
-	background: var(--paper-mute);
-	color: var(--ink);
-}
-
-[data-chat-message][data-kind='info'] [data-icon-timeline-node] {
-	color: var(--accent);
-	border-color: color-mix(in oklab, var(--accent) 30%, var(--paper-edge));
-	background: color-mix(in oklab, var(--accent) 6%, var(--paper-soft));
-}
-
-[data-chat-message][data-kind='think'] [data-icon-timeline-node] {
-	color: var(--accent);
-	border-style: dashed;
-}
-
-/* Head row — eyebrow + author + timestamp */
-[data-chat-message-head] {
+[data-chat-message] {
 	display: flex;
-	align-items: center;
-	gap: 8px;
-	font: 500 11px var(--font-mono);
-	color: var(--ink-soft);
-	letter-spacing: 0.16em;
-	text-transform: uppercase;
-	height: 27px;
+	align-items: flex-start;
+	gap: 12px;
 }
 
-[data-chat-message-head] [data-ago] {
-	letter-spacing: 0.04em;
+[data-chat-message][data-role='user'] {
+	flex-direction: row-reverse;
 }
 
-/* Body — default reads as info text; user kind reads as display */
-[data-chat-message-body] {
-	margin-top: 6px;
+[data-chat-bubble] {
+	min-width: 0;
+	flex: 1;
+}
+
+[data-chat-message][data-role='user'] [data-chat-bubble] {
+	flex: 0 1 auto;
+	max-width: 80%;
+}
+
+/* Body — default reads as info text; user role reads as display */
+[data-chat-body] {
 	font-size: 14px;
 	line-height: 1.55;
 	color: var(--ink);
 }
 
-[data-chat-message][data-kind='user'] [data-chat-message-body] {
+[data-chat-message][data-role='user'] [data-chat-body] {
 	font-family: var(--font-display);
 	font-weight: 400;
 	font-size: 16px;
@@ -59,11 +48,42 @@
 	letter-spacing: -0.005em;
 }
 
+/* Streaming caret (assistant thinking / token stream) */
+[data-chat-caret] {
+	display: inline-block;
+	width: 2px;
+	height: 1em;
+	margin-left: 2px;
+	background: var(--accent);
+	vertical-align: text-bottom;
+	animation: koan-caret 1s steps(2) infinite;
+}
+
+@keyframes koan-caret {
+	0%,
+	50% {
+		opacity: 1;
+	}
+	50.01%,
+	100% {
+		opacity: 0;
+	}
+}
+
+/* Relative timestamp */
+[data-chat-time] {
+	display: block;
+	margin-top: 4px;
+	font: 500 10.5px var(--font-mono);
+	color: var(--ink-soft);
+	letter-spacing: 0.04em;
+}
+
 /* Inline-code chips in prose. Scoped with :not(...) so the rule does NOT
  * apply to <code> inside a CodeBlock (Shiki's <pre><code>…</code></pre>
  * shouldn't get the inline chip's border + background + padding). */
-[data-chat-message-body] code:not([data-code-block] code),
-[data-chat-message-body] [data-file]:not([data-code-block] [data-file]) {
+[data-chat-body] code:not([data-code-block] code),
+[data-chat-body] [data-file]:not([data-code-block] [data-file]) {
 	font: 500 12px var(--font-mono);
 	padding: 1px 6px;
 	border: 1px solid var(--paper-edge);
@@ -109,12 +129,11 @@
 	}
 }
 
-/* ─── ChatStream ─────────────────────────────────────────────────── */
+/* ─── ChatTimeline (@rokkit/ui) ──────────────────────────────────────
+   The .chat-stream-wrap in the /chat route owns scrolling + outer padding;
+   the timeline element is a plain flex column that spaces messages. */
 
-[data-chat-stream] {
-	flex: 1;
-	overflow-y: auto;
-	padding: 18px 16px;
+[data-chat-timeline] {
 	display: flex;
 	flex-direction: column;
 	gap: 22px;
@@ -179,16 +198,13 @@
 	margin-left: 2px;
 }
 
-/* ─── ChatComposer ───────────────────────────────────────────────── */
+/* ─── ChatComposer (@rokkit/ui) ──────────────────────────────────────
+   Structure: [data-chat-composer] (column) > leading? + [data-chat-input]
+   (textarea) + toolbar?. The route's .composer-wrap owns the outer padding;
+   this rule draws the input card. Send button + hint markup come from the
+   route's `toolbar`/`leading` snippets (.composer-* classes in its <style>). */
 
 [data-chat-composer] {
-	flex-shrink: 0;
-	padding: 12px 16px 16px;
-	border-top: 1px solid var(--paper-edge);
-	background: var(--paper);
-}
-
-[data-chat-composer-inner] {
 	display: flex;
 	flex-direction: column;
 	padding: 10px 12px 8px;
@@ -198,12 +214,12 @@
 	transition: border-color 120ms ease, box-shadow 120ms ease;
 }
 
-[data-chat-composer-inner]:focus-within {
+[data-chat-composer]:focus-within {
 	border-color: var(--ink);
 	box-shadow: 0 0 0 1px var(--ink-mute);
 }
 
-[data-chat-composer] textarea {
+[data-chat-composer] [data-chat-input] {
 	flex: 1;
 	border: 0;
 	outline: none;
@@ -215,87 +231,11 @@
 	max-height: 140px;
 	padding: 0;
 	width: 100%;
+	order: 2;
 }
 
-[data-chat-composer] textarea::placeholder {
+[data-chat-composer] [data-chat-input]::placeholder {
 	color: var(--ink-soft);
-}
-
-[data-chat-composer-controls] {
-	display: flex;
-	align-items: center;
-	gap: 4px;
-	margin-top: 8px;
-}
-
-[data-chat-composer-left] {
-	display: flex;
-	align-items: center;
-	gap: 2px;
-	flex: 1;
-}
-
-[data-chat-composer-right] {
-	display: flex;
-	align-items: center;
-	gap: 6px;
-}
-
-[data-chat-composer-hint] {
-	font: 500 10.5px var(--font-mono);
-	color: var(--ink-soft);
-	letter-spacing: 0.04em;
-	display: inline-flex;
-	align-items: center;
-	gap: 4px;
-}
-
-[data-chat-composer-hint] kbd {
-	font: 500 9.5px var(--font-mono);
-	padding: 1px 5px;
-	border: 1px solid var(--paper-edge);
-	border-radius: 3px;
-	background: var(--paper);
-	color: var(--ink-mute);
-}
-
-[data-chat-composer-send] {
-	width: 28px;
-	height: 28px;
-	display: grid;
-	place-items: center;
-	background: var(--ink);
-	color: var(--paper);
-	border-radius: 6px;
-	border: 0;
-	cursor: pointer;
-	flex-shrink: 0;
-}
-
-[data-chat-composer-send]:hover:not([disabled]) {
-	background: color-mix(in oklab, var(--ink) 80%, white);
-}
-
-[data-chat-composer-send][disabled] {
-	opacity: 0.45;
-	cursor: not-allowed;
-}
-
-[data-chat-composer-send][data-accent] {
-	background: var(--accent);
-}
-
-[data-chat-composer-send][data-accent]:hover:not([disabled]) {
-	background: color-mix(in oklab, var(--accent) 80%, white);
-}
-
-[data-chat-composer-spinner] {
-	width: 12px;
-	height: 12px;
-	border-radius: 50%;
-	border: 1.5px solid currentColor;
-	border-top-color: transparent;
-	animation: koan-spin 0.7s linear infinite;
 }
 
 @keyframes koan-spin {
