@@ -5989,3 +5989,42 @@ are `v8-ignore`d with justification (functions/branches intentionally not gated)
 NEVER `test:unit` or bare `vitest` (watch mode orphans node processes). Cap parallel
 test-writing agents (≤2–3), forbid agent nesting/worktrees. See
 [[feedback_test_run_once_scripts]]. ~33 commits this initiative (`177f36a7`..`f8ed7421`).
+
+---
+
+## 2026-06-29 — Chat components (Phase 1): first-class presentation components in @rokkit/ui
+
+Brainstormed + spec'd earlier (`docs/superpowers/specs/2026-06-24-chat-components-design.md`,
+committed `662b0a9a`); planned in `docs/superpowers/plans/2026-06-29-chat-components.md`
+(`80579fba`) and executed subagent-driven (one agent per task, two-stage discipline, Svelte
+MCP autofixer on every `.svelte`, run-once tests only — no watch-mode RAM blowups this time).
+
+**What shipped — 5 dumb, event-driven components + a typed data model, all in `@rokkit/ui`:**
+- `types/chat.ts` — `ChatRole`/`ChatStatus`/`ChatMessage<T>`/`ConversationSummary` + per-component `*Props` (type-only, coverage-excluded). `ChatMessage` deliberately doubles as a component name and an interface name — no collision (separate value/type declaration spaces; `tsc` clean).
+- `utils/relative-time.ts` — shared `formatRelativeTime(ts, relative=true)` (100% cov).
+- `ChatMessage.svelte` — role chrome (`data-role`/`data-status`), default body = `MarkdownRenderer markdown={message.text}`, fully overridable via `body` snippet, streaming caret, timestamp.
+- `ChatComposer.svelte` — controlled textarea; **plain Enter submits, Shift+Enter = newline** (intentionally diverges from the old `$lib/chat` Cmd+Enter); `$bindable` value, `onchange` per keystroke, exported `focus()`, leading/suggestions/toolbar slots.
+- `ChatHistory.svelte` — conversation rail; active highlight, conditional new/delete, item/empty/header snippets.
+- `ChatTimeline.svelte` — scrolling list; autoscroll `$effect` (re-runs on append + streaming text/status), `message` snippet = the inline-rendering seam (charts/forms live in the consumer, not in @rokkit/ui).
+- `ChatShell.svelte` — composed layout (optional History rail + Timeline + Composer), forwards events/snippets.
+- Barrel exports wired (`components/index.ts`, `src/index.ts`, `types/index.ts`) — importable as `import { ChatShell, ... } from '@rokkit/ui'`.
+- Live demo: learn `/app/chat` koan demo (mirrors lock-mode wiring exactly), showing the primitives + a `ChatShell` whose `message` snippet switches on `data.kind` to render a chart placeholder — proving the dumb-seam with **no `@rokkit/chart` dependency**.
+
+**Design seam:** @rokkit/ui stays dependency-pure — `text` renders as markdown; ALL rich/inline
+content (charts, forms, interleaved parts) is consumer-supplied via the `message`/`body`
+snippets. Orchestration (submit→API→stream) stays in the app. See [[project_demo_app]] /
+[[project_koan_interactive_mode]].
+
+**Verification:** full gate green — lint 0 errors, types clean, svelte-check 0 errors (all
+packages), coverage threshold gate passes (chat components 92.6–100% stmts; util 100%). Per
+component: TDD red→green, autofixer clean, per-package tsc/eslint.
+
+**Commits:** `1c710cdb` (types+util), `67ec60e2` (ChatMessage), `c987cc70` (ChatComposer),
+`16485b9a` (ChatHistory), `81ee206f` (ChatTimeline), `60309f1a` (ChatShell), `144659be`
+(barrels), `19d0a608` (learn demo).
+
+**PENDING (Phases 2–3):** migrate learn `/chat` onto the shared components (move the
+`BlockList`/`InlineComponent` chart/form switch into a consumer `message` snippet; keep the
+`chat-demo` store as the reference orchestration; then delete `$lib/chat`), then migrate Koan
+`/app` (replace `ChatPanel`/`TimelineList`/`ConversationList`; delete duplicates). A headless
+`createChat` store in @rokkit/states remains deferred.
