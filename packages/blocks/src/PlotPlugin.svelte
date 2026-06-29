@@ -55,11 +55,23 @@
 		const serialized = new XMLSerializer().serializeToString(svg)
 		const blob = new Blob([serialized], { type: 'image/svg+xml' })
 		const url = URL.createObjectURL(blob)
+		const base =
+			(spec?.title ?? 'chart')
+				.toLowerCase()
+				.replace(/[^a-z0-9]+/g, '-')
+				.replace(/^-+|-+$/g, '') || 'chart'
 		const a = document.createElement('a')
 		a.href = url
-		a.download = `${spec?.title?.replace(/\s+/g, '-').toLowerCase() ?? 'chart'  }.svg`
+		a.download = `${base}.svg`
+		// The anchor must be in the document for the download to fire reliably,
+		// and the object URL must be revoked AFTER the browser has read the blob.
+		// Revoking synchronously (right after click) cancels the in-flight download:
+		// Chrome logs it in history but writes no file. Defer revocation, matching
+		// the pattern used elsewhere in the repo (theme-wizard, DownloadModal).
+		document.body.appendChild(a)
 		a.click()
-		URL.revokeObjectURL(url)
+		a.remove()
+		setTimeout(() => URL.revokeObjectURL(url), 1000)
 	}
 </script>
 
