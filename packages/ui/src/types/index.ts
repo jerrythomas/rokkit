@@ -126,3 +126,6 @@ export * from './stepper.js'
 
 // Tilt Types
 export * from './tilt.js'
+
+// Chat Types
+export * from './chat.js'
