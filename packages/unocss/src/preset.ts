@@ -73,6 +73,7 @@ function resolveMappingForMode(colormap, mode) {
 		Object.entries(colormap).map(([role, value]) => [
 			role,
 			isDualPalette(value)
+				/* v8 ignore next — the ?? null fallbacks require both light+dark absent, which causes downstream errors */
 				? (mode === 'dark' ? (value.dark ?? value.light ?? null) : (value.light ?? value.dark ?? null))
 				: value
 		])
@@ -114,6 +115,7 @@ function buildSafelist(config) {
 }
 
 function buildTypographyVars(typography): string[] {
+	/* v8 ignore next — loadConfig always passes a typography object; this null-guard protects direct callers */
 	if (!typography) return []
 	// Canonical (semantic) names match the named-token vocabulary:
 	//   --font-display — the heading / display typeface
@@ -150,7 +152,9 @@ function buildPreflights(theme, colormap, config) {
 
 	const lightVars = buildVarsForMode(theme, colormap, config)
 	const lightOverrides = resolveTokens(
+		/* v8 ignore next — loadConfig always ensures overrides is {} */
 		config.overrides ?? {},
+		/* v8 ignore next — loadConfig always ensures palettes is {} */
 		config.palettes ?? {},
 		config.colorSpace,
 		'light'
@@ -167,6 +171,7 @@ function buildPreflights(theme, colormap, config) {
 	const nonAliasColormap = Object.fromEntries(
 		Object.entries(colormap).filter(([, v]) => !isAlias(v))
 	)
+	/* v8 ignore next — loadConfig always ensures overrides is {} */
 	const hasDarkOverride = Object.values(config.overrides ?? {}).some(
 		(v) => v && typeof v === 'object' && !Array.isArray(v) && 'dark' in v
 	)
@@ -179,7 +184,9 @@ function buildPreflights(theme, colormap, config) {
 		})
 		const darkVars = buildVarsForMode(darkTheme, colormap, config)
 		const darkOverrides = resolveTokens(
+			/* v8 ignore next — loadConfig always ensures overrides is {} */
 			config.overrides ?? {},
+			/* v8 ignore next — loadConfig always ensures palettes is {} */
 			config.palettes ?? {},
 			config.colorSpace,
 			'dark'
@@ -316,6 +323,7 @@ function isOverrideTokenColor(value) {
  * prefix is reserved for tokens whose name ends in `-ring`.
  */
 function buildOverrideTokenShortcuts(config, namedTokenSet) {
+	/* v8 ignore next — loadConfig always ensures overrides is {} */
 	const overrides = config.overrides ?? {}
 	const shortcuts = []
 	for (const [name, value] of Object.entries(overrides)) {
@@ -336,6 +344,7 @@ function buildOverrideTokenShortcuts(config, namedTokenSet) {
 function parseLightness(oklchStr) {
 	if (!oklchStr || typeof oklchStr !== 'string') return null
 	const parts = oklchStr.trim().split(/\s+/)
+	/* v8 ignore next — split() always returns ≥1 element; the : null branch is unreachable */
 	return parts.length >= 1 ? parseFloat(parts[0]) : null
 }
 
@@ -403,6 +412,7 @@ function buildThemeColors(theme, colormap, config) {
 			const target = value.alias
 			if (baseColors[target]) {
 				// Generate color rules under the alias name that reference the target's CSS vars
+				/* v8 ignore next 3 — alias validation ensures target's mapping exists; `|| {}` is unreachable */
 				baseColors[role] = theme.mapVariant(
 					theme.colors[theme.mapping[target]] || {},
 					target

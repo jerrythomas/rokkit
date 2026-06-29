@@ -58,6 +58,17 @@ describe('resolveTokens', () => {
     expect(result['--bleed']).toBe('rgb(248, 248, 243)')
   })
 
+  it('skips entries where both light and dark sides are absent (picked is undefined)', () => {
+    // { label: {} } — neither light nor dark defined → picked === undefined → skipped
+    const result = resolveTokens(
+      { label: {} },
+      palettes,
+      'rgb',
+      'dark'
+    )
+    expect(result).not.toHaveProperty('--label')
+  })
+
   it('returns empty object when overrides is empty', () => {
     expect(resolveTokens({}, palettes, 'rgb', 'light')).toEqual({})
   })
