@@ -3,6 +3,7 @@ import {
   NAMED_TOKENS,
   NAMED_TOKEN_SHADE_MAP,
   NAMED_TOKEN_ROLE_MAP,
+  hasSoftCompanion,
   shadeForNamedToken,
   roleForNamedToken
 } from '../src/named-tokens.ts'
@@ -134,5 +135,25 @@ describe('helpers', () => {
 
   it('roleForNamedToken returns undefined for unknown names', () => {
     expect(roleForNamedToken('not-a-token')).toBeUndefined()
+  })
+})
+
+describe('hasSoftCompanion', () => {
+  it('returns true for roles that have a -soft companion', () => {
+    expect(hasSoftCompanion('accent')).toBe(true)
+    expect(hasSoftCompanion('success')).toBe(true)
+    expect(hasSoftCompanion('warning')).toBe(true)
+    expect(hasSoftCompanion('danger')).toBe(true)
+    expect(hasSoftCompanion('error')).toBe(true)
+    expect(hasSoftCompanion('info')).toBe(true)
+    // ink-soft and paper-soft are named tokens too
+    expect(hasSoftCompanion('ink')).toBe(true)
+    expect(hasSoftCompanion('paper')).toBe(true)
+  })
+
+  it('returns false for roles without a -soft companion', () => {
+    expect(hasSoftCompanion('primary')).toBe(false)
+    expect(hasSoftCompanion('surface')).toBe(false)
+    expect(hasSoftCompanion('not-a-role')).toBe(false)
   })
 })

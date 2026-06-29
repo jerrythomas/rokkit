@@ -270,6 +270,7 @@ export class Theme {
 		if (name === 'on-primary') {
 			return this.#adapter.wrap(this.#onColorHex('primary', colors))
 		}
+		/* v8 ignore next -- on-primary is the only 'derived' token, so this default is unreachable */
 		return undefined
 	}
 

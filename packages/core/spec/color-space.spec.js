@@ -1,5 +1,60 @@
 import { describe, it, expect } from 'vitest'
-import { ColorSpace, RgbColorSpace, HslColorSpace, OklchColorSpace } from '../src/color-space.js'
+import { ColorSpace, RgbColorSpace, HslColorSpace, OklchColorSpace, relativeLuminance } from '../src/color-space.js'
+
+describe('ColorSpace base class abstract methods', () => {
+	const base = new ColorSpace()
+
+	it('name getter throws', () => {
+		expect(() => base.name).toThrow('Subclass must implement name')
+	})
+
+	it('mixSpace getter throws', () => {
+		expect(() => base.mixSpace).toThrow('Subclass must implement mixSpace')
+	})
+
+	it('fn getter throws', () => {
+		expect(() => base.fn).toThrow('Subclass must implement fn')
+	})
+
+	it('fromHex throws', () => {
+		expect(() => base.fromHex('#ff0000')).toThrow('Subclass must implement fromHex')
+	})
+
+	it('wrap throws', () => {
+		expect(() => base.wrap('red')).toThrow('Subclass must implement wrap')
+	})
+})
+
+describe('relativeLuminance', () => {
+	it('returns null for non-string values', () => {
+		expect(relativeLuminance(null)).toBeNull()
+		expect(relativeLuminance(42)).toBeNull()
+	})
+
+	it('returns luminance for hex colors', () => {
+		expect(relativeLuminance('#ffffff')).toBeCloseTo(1, 2)
+		expect(relativeLuminance('#000000')).toBeCloseTo(0, 5)
+	})
+
+	it('returns luminance for oklch bare channels', () => {
+		const lum = relativeLuminance('1 0 0', 'oklch')
+		expect(typeof lum).toBe('number')
+	})
+
+	it('returns luminance for comma-separated rgb channels', () => {
+		const lum = relativeLuminance('255, 255, 255')
+		expect(lum).toBeCloseTo(1, 2)
+	})
+
+	it('returns luminance for space-separated rgb channels', () => {
+		const lum = relativeLuminance('255 255 255')
+		expect(lum).toBeCloseTo(1, 2)
+	})
+
+	it('returns null for unrecognized string', () => {
+		expect(relativeLuminance('rebeccapurple')).toBeNull()
+	})
+})
 
 describe('ColorSpace', () => {
 	describe('factory', () => {
