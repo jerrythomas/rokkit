@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { tick } from 'svelte'
-	import { ChatHistory, configureWho } from '$lib/chat'
-	import { Button, Toggle, ChatTimeline, ChatComposer, ChatMessage } from '@rokkit/ui'
-	import type { ChatMessage as ChatMessageData } from '@rokkit/ui'
+	import { ChatComposer, ChatStream, ChatMessage, ChatHistory, configureWho } from '$lib/chat'
+	import { Button, Toggle } from '@rokkit/ui'
 	import {
 		conversation,
 		submitText,
@@ -110,40 +109,8 @@
 		{ label: 'Try: paste a user record', query: SAMPLE_USER }
 	]
 
-	// ─── Map the demo store's turns onto the @rokkit/ui ChatMessage shape.
-	// User turns carry plain text; assistant turns stash their rendered
-	// `blocks` (+ provider) in `data`, read back by the `message` snippet.
-	// A synthetic trailing message represents the "thinking" indicator.
-	type AssistantData = {
-		blocks?: import('$lib/chat-demo/types').Block[]
-		provider?: 'scripted' | 'openrouter' | 'webllm'
-		thinking?: boolean
-	}
-	const messages = $derived<ChatMessageData<AssistantData>[]>([
-		...conversation.turns.map((turn) =>
-			turn.role === 'user'
-				? { id: turn.id, role: 'user' as const, text: turn.text }
-				: {
-						id: turn.id,
-						role: 'assistant' as const,
-						status: 'done' as const,
-						data: { blocks: turn.blocks, provider: turn.provider }
-					}
-		),
-		...(conversation.thinking
-			? [
-					{
-						id: '__thinking',
-						role: 'assistant' as const,
-						status: 'streaming' as const,
-						data: { thinking: true }
-					}
-				]
-			: [])
-	])
-
-	function send(text: string = composerValue) {
-		const q = text.trim()
+	function send() {
+		const q = composerValue.trim()
 		if (!q || conversation.thinking) return
 		composerValue = ''
 		attachError = null
@@ -265,11 +232,6 @@
 
 	$effect(() => {
 		// Scroll on every new turn (incl. assistant reply).
-		// NOTE: ChatTimeline ships its own autoscroll, but it scrolls
-		// synchronously on append — before the ResizeObserver inside an inline
-		// BarChart / Table has settled the figure's final height — so it leaves
-		// the bottom clipped. We disable ChatTimeline autoscroll (autoscroll={false})
-		// and keep this tuned scroller on the .chat-stream-wrap container instead.
 		void conversation.turns.length
 		void conversation.thinking
 		// Two rAFs after tick() so the ResizeObserver inside the BarChart / Table
@@ -434,47 +396,8 @@
 
 	<div class="chat-body">
 		<div class="chat-stream-wrap" bind:this={streamRef}>
-			<ChatTimeline {messages} autoscroll={false}>
-				{#snippet message(msg)}
-					{#if msg.role === 'user'}
-						<ChatMessage message={msg}>
-							{#snippet avatar()}
-								<span class="msg-avatar" data-role="user" aria-hidden="true">
-									<span class="i-mdi:chat-outline"></span>
-								</span>
-							{/snippet}
-						</ChatMessage>
-					{:else if msg.data?.thinking}
-						<ChatMessage message={msg}>
-							{#snippet avatar()}
-								<span class="msg-avatar" data-role="assistant" aria-hidden="true">
-									<span class="i-mdi:dots-horizontal"></span>
-								</span>
-							{/snippet}
-							{#snippet body()}
-								<span class="thinking">Picking the right tool…</span>
-							{/snippet}
-						</ChatMessage>
-					{:else}
-						<ChatMessage message={msg}>
-							{#snippet avatar()}
-								<span class="msg-avatar" data-role="assistant" aria-hidden="true">
-									<span class="i-mdi:robot-happy-outline"></span>
-								</span>
-							{/snippet}
-							{#snippet label()}
-								{#if msg.data?.provider}
-									<span class="msg-eyebrow">{msg.data.provider}</span>
-								{/if}
-							{/snippet}
-							{#snippet body()}
-								<BlockList blocks={msg.data?.blocks ?? []} onSuggestion={handleSuggestion} />
-							{/snippet}
-						</ChatMessage>
-					{/if}
-				{/snippet}
-
-				{#snippet empty()}
+			<ChatStream>
+				{#if conversation.turns.length === 0}
 					<div class="welcome">
 						<h1>Ask Rokkit anything</h1>
 						<p>
@@ -498,8 +421,30 @@
 							{/each}
 						</div>
 					</div>
-				{/snippet}
-			</ChatTimeline>
+				{/if}
+
+				{#each conversation.turns as turn (turn.id)}
+					{#if turn.role === 'user'}
+						<ChatMessage kind="user" icon="i-mdi:chat-outline">
+							{turn.text}
+						</ChatMessage>
+					{:else}
+						<ChatMessage
+							kind="info"
+							icon="i-mdi:robot-happy-outline"
+							status={turn.provider}
+						>
+							<BlockList blocks={turn.blocks} onSuggestion={handleSuggestion} />
+						</ChatMessage>
+					{/if}
+				{/each}
+
+				{#if conversation.thinking}
+					<ChatMessage kind="info" status="thinking" icon="i-mdi:dots-horizontal">
+						<span class="thinking">Picking the right tool…</span>
+					</ChatMessage>
+				{/if}
+			</ChatStream>
 		</div>
 
 		<div class="composer-wrap">
@@ -513,48 +458,27 @@
 			<ChatComposer
 				bind:value={composerValue}
 				placeholder="Ask, or paste JSON / CSV, or drop a file…"
-				onsubmit={(text) => send(text)}
-				busy={conversation.thinking}
+				onsubmit={send}
+				running={conversation.thinking}
+				accent
 			>
-				{#snippet leading()}
-					<div class="composer-leading">
-						<button
-							type="button"
-							class="attach-btn"
-							title="Attach JSON or CSV"
-							onclick={() => fileInputRef?.click()}
-						>
-							<span class="i-mdi:paperclip" aria-hidden="true"></span>
-							<span class="attach-label">Attach data</span>
-						</button>
-						<input
-							type="file"
-							accept=".json,.csv,application/json,text/csv"
-							bind:this={fileInputRef}
-							onchange={onFileChange}
-							hidden
-						/>
-					</div>
-				{/snippet}
-				{#snippet toolbar()}
-					<div class="composer-toolbar">
-						<span class="composer-hint">
-							<kbd>↵</kbd> to send · <kbd>⇧↵</kbd> for newline
-						</span>
-						<button
-							type="button"
-							class="composer-send"
-							onclick={() => send(composerValue)}
-							disabled={!composerValue.trim() || conversation.thinking}
-							title="Send"
-						>
-							{#if conversation.thinking}
-								<span class="composer-spinner" aria-hidden="true"></span>
-							{:else}
-								<span class="i-mdi:arrow-up" aria-hidden="true"></span>
-							{/if}
-						</button>
-					</div>
+				{#snippet leftActions()}
+					<button
+						type="button"
+						class="attach-btn"
+						title="Attach JSON or CSV"
+						onclick={() => fileInputRef?.click()}
+					>
+						<span class="i-mdi:paperclip" aria-hidden="true"></span>
+						<span class="attach-label">Attach data</span>
+					</button>
+					<input
+						type="file"
+						accept=".json,.csv,application/json,text/csv"
+						bind:this={fileInputRef}
+						onchange={onFileChange}
+						hidden
+					/>
 				{/snippet}
 			</ChatComposer>
 		</div>
@@ -835,106 +759,6 @@
 		font: 400 13px var(--font-ui);
 		color: var(--ink-mute);
 		font-style: italic;
-	}
-
-	/* Message avatar node (icon) — assistant accent ring, user neutral fill. */
-	.msg-avatar {
-		flex-shrink: 0;
-		width: 30px;
-		height: 30px;
-		display: grid;
-		place-items: center;
-		border-radius: 8px;
-		border: 1px solid var(--paper-edge);
-		font-size: 17px;
-	}
-
-	.msg-avatar[data-role='assistant'] {
-		color: var(--accent);
-		border-color: color-mix(in oklab, var(--accent) 30%, var(--paper-edge));
-		background: color-mix(in oklab, var(--accent) 6%, var(--paper-soft));
-	}
-
-	.msg-avatar[data-role='user'] {
-		color: var(--ink);
-		background: var(--paper-mute);
-	}
-
-	.msg-eyebrow {
-		display: block;
-		margin-bottom: 6px;
-		font: 500 11px var(--font-mono);
-		color: var(--ink-soft);
-		letter-spacing: 0.16em;
-		text-transform: uppercase;
-	}
-
-	/* Composer leading row (attach) + toolbar row (hint + send). The textarea
-	   sits between them via order:2 set in chat.css. */
-	.composer-leading {
-		order: 1;
-		display: flex;
-		align-items: center;
-		gap: 2px;
-		margin-bottom: 8px;
-	}
-
-	.composer-toolbar {
-		order: 3;
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		margin-top: 8px;
-	}
-
-	.composer-hint {
-		flex: 1;
-		font: 500 10.5px var(--font-mono);
-		color: var(--ink-soft);
-		letter-spacing: 0.04em;
-		display: inline-flex;
-		align-items: center;
-		gap: 4px;
-	}
-
-	.composer-hint kbd {
-		font: 500 9.5px var(--font-mono);
-		padding: 1px 5px;
-		border: 1px solid var(--paper-edge);
-		border-radius: 3px;
-		background: var(--paper);
-		color: var(--ink-mute);
-	}
-
-	.composer-send {
-		width: 28px;
-		height: 28px;
-		display: grid;
-		place-items: center;
-		background: var(--accent);
-		color: var(--paper);
-		border-radius: 6px;
-		border: 0;
-		cursor: pointer;
-		flex-shrink: 0;
-	}
-
-	.composer-send:hover:not([disabled]) {
-		background: color-mix(in oklab, var(--accent) 80%, white);
-	}
-
-	.composer-send[disabled] {
-		opacity: 0.45;
-		cursor: not-allowed;
-	}
-
-	.composer-spinner {
-		width: 12px;
-		height: 12px;
-		border-radius: 50%;
-		border: 1.5px solid currentColor;
-		border-top-color: transparent;
-		animation: spin 0.7s linear infinite;
 	}
 
 	.attach-btn {
