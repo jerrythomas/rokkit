@@ -17,7 +17,7 @@ export function keyboardNav(node, enabled) {
 		const container = node.closest('[data-plot-geom]')
 		if (!container) return
 		const elements = [...container.querySelectorAll('[data-plot-element]')].filter(
-			(el) => /** @type {HTMLElement|SVGElement} */ (el).tabIndex >= 0
+			(el) => el.tabIndex >= 0
 		)
 		const idx = elements.indexOf(node)
 		if (idx === -1) return
@@ -25,7 +25,7 @@ export function keyboardNav(node, enabled) {
 			e.key === 'ArrowRight' ? Math.min(idx + 1, elements.length - 1) : Math.max(idx - 1, 0)
 		if (nextIdx !== idx) {
 			e.preventDefault()
-			/** @type {HTMLElement|SVGElement} */ (elements[nextIdx]).focus()
+			elements[nextIdx].focus()
 		}
 	}
 	node.addEventListener('keydown', handleKeydown)

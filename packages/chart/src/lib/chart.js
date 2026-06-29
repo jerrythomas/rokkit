@@ -97,11 +97,13 @@ class Chart {
 		this.refresh()
 	}
 
+	/* v8 ignore next 3 -- this.padding (number) set in #initFields shadows this prototype method */
 	padding(value) {
 		this.padding = value
 		return this.refresh()
 	}
 
+	/* v8 ignore next 3 -- this.margin (object) set in #initFields shadows this prototype method */
 	margin(value) {
 		this.margin = value
 		return this.refresh()

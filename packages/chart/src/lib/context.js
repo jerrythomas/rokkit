@@ -1,6 +1,8 @@
 import { getContext, setContext } from 'svelte'
 import { writable, derived } from 'svelte/store'
-import * as d3 from 'd3'
+import { scaleBand, scaleLinear, scaleOrdinal } from 'd3-scale'
+import { schemeCategory10 } from 'd3-scale-chromatic'
+import { max } from 'd3-array'
 
 const CHART_CONTEXT = 'chart-context'
 
@@ -61,22 +63,20 @@ function makeUpdateScales(data, innerDimensions) {
 		return derived([data, innerDimensions], ([$data, $innerDimensions]) => {
 			if (!$data || $data.length === 0) return null
 
-			const xScale = d3
-				.scaleBand()
+			const xScale = scaleBand()
 				.domain($data.map((d) => d[xKey]))
 				.range([0, $innerDimensions.width])
 				.padding(0.2)
 
-			const yScale = d3
-				.scaleLinear()
-				.domain([0, d3.max($data, (d) => d[yKey])])
+			const yScale = scaleLinear()
+				.domain([0, max($data, (d) => d[yKey])])
 				.nice()
 				.range([$innerDimensions.height, 0])
 
 			let colorScale = null
 			if (colorKey) {
 				const uniqueCategories = [...new Set($data.map((d) => d[colorKey]))]
-				colorScale = d3.scaleOrdinal().domain(uniqueCategories).range(d3.schemeCategory10)
+				colorScale = scaleOrdinal().domain(uniqueCategories).range(schemeCategory10)
 			}
 
 			return { xScale, yScale, colorScale }
