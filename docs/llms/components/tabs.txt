@@ -1,91 +1,122 @@
 # Rokkit Tabs Component
 
-> Data-driven tabbed interface with horizontal/vertical layout, editable tabs, and keyboard navigation.
+> Data-driven tabbed interface with keyboard navigation, orientation variants, editable tabs, and full panel customisation. Built on the ProxyItem + Wrapper + Navigator stack.
 
-The Tabs component renders a list of tab triggers above (or beside) associated content panels. Supports orientation variants, alignment, editable tabs (add/remove), and custom rendering via snippets.
+Tabs renders a list of tab triggers linked to content panels. **It is data-first: you describe tabs in data (label, icon, content), and the component renders triggers and panels automatically.** Reach for snippets only when the *markup* must differ from the default — not to change a label or add an icon (those are data).
 
-## Quick Start
+## Usage tiers — use the SIMPLEST that works
 
+Most tab sets need Tier 0 or 1. Going straight to `itemContent` or `tabPanel` is the most common mistake — it throws away the built-in rendering and you re-implement icon/label by hand.
+
+**Tier 0 — `<Tabs {options}>`** — objects whose keys already match the defaults (`label`, `value`, `icon`, `content`, …). No config.
 ```svelte
-<script>
-  import { Tabs } from '@rokkit/ui'
-
-  const options = [
-    { value: 'overview', label: 'Overview', content: 'Overview content here...' },
-    { value: 'api',      text: 'API',      content: 'API docs here...' },
-    { value: 'examples', label: 'Examples', content: 'Examples here...' }
-  ]
-
-  let value = $state('overview')
-</script>
-
-<Tabs {options} bind:value />
+<Tabs options={[
+  { value: 'overview', label: 'Overview', content: 'Overview content here…' },
+  { value: 'api',      label: 'API',      content: 'API docs here…',   icon: 'i-lucide:code' },
+  { value: 'examples', label: 'Examples', content: 'Examples here…' }
+]} bind:value />
 ```
+
+**Tier 1 — `<Tabs {options} {fields}>`** — same, but your data uses different key names. `fields` is a read-only remap; it never mutates your data.
+```svelte
+<Tabs options={pages} fields={{ label: 'title', value: 'id', content: 'body' }} bind:value />
+```
+
+**Tier 2 — per-item named snippets** — when *a few* triggers need bespoke markup. Set `item.snippet = 'name'`; every other trigger keeps the default rendering.
+```svelte
+<Tabs {options}>
+  {#snippet special(proxy, selected)}…{/snippet}   <!-- only items with snippet:'special' -->
+</Tabs>
+```
+
+**Tier 3 — `itemContent` / `tabPanel`** — blanket custom rendering for *every* trigger or every panel. Last resort; you now own trigger icon/label or panel layout yourself.
+
+> **Before writing any snippet, ask: is this just an icon / label / content string?** If yes, it's data — use Tier 0/1. Snippets are for structurally different markup (a chart panel, a rich trigger badge, a custom layout).
+
+## What the default renders (Tiers 0–1, no snippet)
+
+### Default trigger (`data-tabs-trigger`)
+
+The built-in trigger renderer outputs, in order, whatever fields are present:
+
+| Field (data key) | Renders as | Notes |
+|---|---|---|
+| `icon` | `<span data-tabs-icon class={icon}>` | a CSS icon class (`i-lucide:code`) applied to a span |
+| `label` | `<span data-tabs-label>` | the display text; also used as `aria-label` |
+
+### Default panel (`data-tabs-panel`)
+
+The built-in panel renderer outputs:
+
+| Field (data key) | Renders as | Notes |
+|---|---|---|
+| `content` | `<div data-tabs-content>` | raw string/HTML content of the panel |
+
+`content` is accessed as a raw data key (not in BASE_FIELDS); the field alias is `'content'` by default and is overridable via `fields`.
 
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `options` | `TabsItem[]` | `[]` | Tab data array |
-| `fields` | `TabsFields` | defaults | Field mapping |
+| `options` | `unknown[]` | `[]` | Data array (objects) |
+| `fields` | `Record<string,string>` | `{}` | Remap data keys to component fields |
 | `value` | `unknown` | — | Selected tab value — use `bind:value` |
-| `orientation` | `'horizontal'|'vertical'` | `'horizontal'` | Tab list direction |
-| `position` | `'before'|'after'` | `'before'` | Tab list placement (top/left vs bottom/right) |
-| `align` | `'start'|'center'|'end'` | `'start'` | Alignment of tabs within the list |
-| `name` | `string` | `'tabs'` | Accessible label for the tablist |
-| `editable` | `boolean` | `false` | Show add/remove buttons |
-| `placeholder` | `string` | — | Text shown when no tab is selected |
+| `orientation` | `'horizontal'\|'vertical'` | `'horizontal'` | Tab list direction |
+| `position` | `'before'\|'after'` | `'before'` | Tab list placement relative to panels (top/left vs bottom/right) |
+| `align` | `'start'\|'center'\|'end'` | `'start'` | Alignment of tabs within the trigger list |
+| `name` | `string` | `'tabs'` | Accessible `aria-label` for the tablist |
+| `editable` | `boolean` | `false` | Show add/remove controls |
+| `placeholder` | `string` | from messages | Text shown when `value` is `undefined` |
 | `disabled` | `boolean` | `false` | Disable all tabs |
-| `class` | `string` | `''` | Additional CSS classes |
+| `class` | `string` | `''` | Additional CSS classes on the root element |
+| `onchange` | `(value, proxy) => void` | — | Called when selection changes |
+| `onselect` | `(value, proxy) => void` | — | Called on every click (including same tab) |
+| `onadd` | `() => void` | — | Called when add button clicked (editable mode) |
+| `onremove` | `(value) => void` | — | Called when remove button clicked; receives the tab's value |
 
-## Field Mapping
+## Field mapping (complete)
 
-| Field | Default | Description |
-|-------|---------|-------------|
-| `value` | `'value'` | Tab selection value |
-| `text` | `'text'` | Tab trigger label |
-| `icon` | `'icon'` | Icon class name |
-| `label` | `'label'` | Aria-label override |
-| `content` | `'content'` | Panel content (for default renderer) |
-| `disabled` | `'disabled'` | Disabled state |
+Default field names the component reads from your data. Override only the ones that differ.
 
-## Layout Variants
-
-### Vertical Tabs
+| Semantic key | Default data key | Renders |
+|---|---|---|
+| `label` | `'label'` | trigger display text and `aria-label` |
+| `value` | `'value'` | tab selection value |
+| `icon` | `'icon'` | icon class string for the trigger |
+| `disabled` | `'disabled'` | disabled state for individual tabs |
+| `snippet` | `'snippet'` | per-item named-snippet override (Tier 2) |
+| `content` | `'content'` | panel body (raw key, not in BASE_FIELDS — overridable via `fields`) |
 
 ```svelte
+<Tabs options={pages} fields={{ label: 'title', value: 'slug', content: 'body', icon: 'sym' }} bind:value />
+```
+
+## Layout variants
+
+```svelte
+<!-- Vertical tabs -->
 <Tabs {options} bind:value orientation="vertical" />
-```
 
-### Bottom Tabs
-
-```svelte
+<!-- Tabs below panels -->
 <Tabs {options} bind:value position="after" />
-```
 
-### Centered Tabs
-
-```svelte
+<!-- Centered tab list -->
 <Tabs {options} bind:value align="center" />
 ```
 
-## Editable Tabs
-
-Add and remove tabs dynamically:
+## Editable tabs (add/remove)
 
 ```svelte
 <script>
   import { Tabs } from '@rokkit/ui'
 
-  let tabs = $state([
-    { value: 't1', label: 'Tab 1', content: 'Content 1' }
-  ])
+  let tabs = $state([{ value: 't1', label: 'Tab 1', content: 'Content 1' }])
   let value = $state('t1')
   let nextId = 2
 
   function handleAdd() {
     const id = `t${nextId++}`
-    tabs = [...tabs, { value: id, text: `Tab ${nextId - 1}`, content: '' }]
+    tabs = [...tabs, { value: id, label: `Tab ${nextId - 1}`, content: '' }]
     value = id
   }
 
@@ -97,93 +128,137 @@ Add and remove tabs dynamically:
 <Tabs options={tabs} bind:value editable onadd={handleAdd} onremove={handleRemove} />
 ```
 
-## Callbacks
+## Tier 2 — per-item named snippets
 
-| Callback | Signature | Description |
-|----------|-----------|-------------|
-| `onchange` | `(value, item) => void` | Selection changed |
-| `onselect` | `(value, item) => void` | Tab clicked (fires even on same tab) |
-| `onadd` | `() => void` | Add button clicked (editable mode) |
-| `onremove` | `(value) => void` | Remove button clicked (editable mode) |
-
-## Snippets
-
-### Custom Tab Trigger
+Set `item.snippet = 'name'` to route *specific* triggers to a named snippet; all other triggers keep the default rendering.
 
 ```svelte
+<script>
+  const options = [
+    { value: 'overview', label: 'Overview' },
+    { value: 'live',     label: 'Live',     snippet: 'live' },   // custom trigger
+    { value: 'settings', label: 'Settings' }
+  ]
+</script>
+
 <Tabs {options} bind:value>
-  {#snippet tabItem(data, fields, handlers, selected)}
-    <button onclick={handlers.onclick} onkeydown={handlers.onkeydown}
-      role="tab" aria-selected={selected}>
-      {#if data.icon}<span class={data.icon}></span>{/if}
-      <span>{data.text}</span>
-    </button>
+  {#snippet live(proxy, selected)}
+    <span class="i-lucide:radio" aria-hidden="true"></span>
+    <span>{proxy.label}</span>
+    <span class="size-2 rounded-full bg-danger"></span>
   {/snippet}
 </Tabs>
 ```
 
-### Custom Panel Content
+The named snippet **wins over `itemContent`** — so you can give one trigger a custom layout while leaving the rest default.
+
+## Tier 3 — itemContent / tabPanel / empty (blanket custom)
+
+### `itemContent` — replaces inner content of every trigger
+
+The component still renders the `<button>` wrapper, `data-path`, `role="tab"`, `aria-selected`, and navigation. Use only when the default trigger renderer can't express the layout.
 
 ```svelte
 <Tabs {options} bind:value>
-  {#snippet tabPanel(data, fields)}
-    <div class="panel">
-      <h2>{data.text}</h2>
-      <div>{@html data.content}</div>
+  {#snippet itemContent(proxy, selected)}
+    {#if proxy.get('icon')}
+      <span class={proxy.get('icon')} aria-hidden="true"></span>
+    {/if}
+    <span class:font-semibold={selected}>{proxy.label}</span>
+  {/snippet}
+</Tabs>
+```
+
+### `tabPanel` — replaces every panel's content
+
+Receives a `ProxyItem`. Access panel data via `proxy.get('content')` (or any other field via `proxy.get(key)`). The component still renders the `<div data-tabs-panel>` wrapper, `role="tabpanel"`, and visibility control.
+
+```svelte
+<Tabs {options} bind:value>
+  {#snippet tabPanel(proxy)}
+    <div class="p-6">
+      <h2 class="text-lg font-semibold">{proxy.label}</h2>
+      <p>{proxy.get('content')}</p>
     </div>
   {/snippet}
 </Tabs>
 ```
 
-### Empty State
+### `empty` — rendered when `options` is empty
 
 ```svelte
-<Tabs {options} bind:value>
+<Tabs options={[]} bind:value>
   {#snippet empty()}
-    <div class="p-8 text-center">No tabs available</div>
+    <div class="p-8 text-center text-ink-mute">No tabs available</div>
   {/snippet}
 </Tabs>
 ```
 
-## Keyboard Navigation
+## ProxyItem API (passed to all content snippets)
 
-### Horizontal Tabs
-| Key | Action |
-|-----|--------|
-| `ArrowLeft` | Previous tab |
-| `ArrowRight` | Next tab |
-| `Home/End` | First/last tab |
-| `Enter/Space` | Select focused tab |
+| Property / method | Description |
+|---|---|
+| `proxy.label` | mapped display text (reads the `label` data key) |
+| `proxy.value` | the raw item (for selection comparison) |
+| `proxy.disabled` | whether this tab is disabled |
+| `proxy.get('icon')` | mapped icon class |
+| `proxy.get('content')` | panel body content (reads `content` data key) |
+| `proxy.get('snippet')` | per-item snippet name |
+| `proxy.get(key)` | read any field by semantic or raw name |
 
-### Vertical Tabs
-| Key | Action |
-|-----|--------|
-| `ArrowUp` | Previous tab |
-| `ArrowDown` | Next tab |
-| `Home/End` | First/last tab |
+## Theming
 
-## Accessibility
+### Data attributes
 
-- `role="tablist"` on tab list
-- `role="tab"` on each tab trigger
-- `role="tabpanel"` on each panel
-- `aria-selected` on selected tab
-- `aria-orientation` reflects orientation
-- `aria-controls` links tab to panel
+Outer structure:
 
-## Data Attributes
+| Attribute | Element | Notes |
+|---|---|---|
+| `data-tabs` | root `<div>` | also carries `data-orientation`, `data-position`, `data-align`, `data-disabled` |
+| `data-tabs-list` | trigger list `<div>` | has `role="tablist"` and `aria-orientation` |
+| `data-tabs-trigger` | tab trigger `<button>` | also `data-selected`, `data-disabled`, `data-path` |
+| `data-tabs-panel` | panel `<div>` | has `role="tabpanel"`; also `data-panel-active` on the visible panel |
+| `data-tabs-empty` | empty-state wrapper `<div>` | rendered when `options` is empty |
+| `data-tabs-add` | add `<button>` | editable mode only |
+| `data-tabs-remove` | remove control inside trigger | editable mode only |
+| `data-tabs-placeholder` | placeholder `<div>` | shown when `value` is `undefined` |
 
-| Attribute | Description |
-|-----------|-------------|
-| `data-tabs` | Root element |
-| `data-tabs-list` | Tab trigger list |
-| `data-tabs-trigger` | Individual tab button |
-| `data-tabs-panel` | Content panel |
-| `data-tabs-content` | Inner panel content |
-| `data-orientation` | horizontal/vertical |
-| `data-position` | before/after |
-| `data-selected` | Selected tab/panel |
-| `data-panel-active` | Visible panel |
+Inner (default-rendered) content — target these to restyle without a snippet:
+
+| Attribute | Element |
+|---|---|
+| `data-tabs-icon` | icon `<span>` inside trigger |
+| `data-tabs-label` | label `<span>` inside trigger |
+| `data-tabs-content` | content `<div>` inside default panel |
+
+### Styling via the `class` prop (UnoCSS arbitrary variants)
+
+`class` lands on the root `<div data-tabs>`. Use UnoCSS arbitrary variants to reach descendants:
+
+```svelte
+<Tabs {options} bind:value class="
+  [&_[data-tabs-trigger]]:px-4
+  [&_[data-tabs-trigger][data-selected]]:font-semibold
+  [&_[data-tabs-panel]]:p-6
+" />
+```
+
+Or theme globally with named tokens in your theme CSS:
+
+```css
+[data-tabs-trigger][data-selected] { border-bottom: 2px solid var(--primary); color: var(--primary); }
+[data-tabs-panel]:not([data-panel-active]) { display: none; }
+```
+
+## Keyboard navigation
+
+### Horizontal tabs
+`←`/`→` move focus · `Home`/`End` · `Enter`/`Space` select focused tab · `Tab` moves to panel
+
+### Vertical tabs
+`↑`/`↓` move focus · `Home`/`End` · `Enter`/`Space` select focused tab
+
+Disabled tabs are skipped.
 
 ## Import
 
@@ -191,37 +266,8 @@ Add and remove tabs dynamically:
 import { Tabs } from '@rokkit/ui'
 ```
 
-## TypeScript Types
+## Related
 
-```typescript
-interface TabsProps {
-  options?: TabsItem[]
-  fields?: TabsFields
-  value?: unknown
-  orientation?: 'horizontal' | 'vertical'
-  position?: 'before' | 'after'
-  align?: 'start' | 'center' | 'end'
-  name?: string
-  editable?: boolean
-  placeholder?: string
-  disabled?: boolean
-  class?: string
-  onchange?: (value: unknown, item: TabsItem) => void
-  onselect?: (value: unknown, item: TabsItem) => void
-  onadd?: () => void
-  onremove?: (value: unknown) => void
-  tabItem?: Snippet<[TabsItem, TabsFields, TabsItemHandlers, boolean]>
-  tabPanel?: Snippet<[TabsItem, TabsFields]>
-  empty?: Snippet<[]>
-}
-
-interface TabsFields extends Record<string, string> {
-  content?: string  // default: 'content'
-}
-```
-
-## Related Components
-
-- [Toggle](/llms/components/toggle.txt) — compact option switcher
+- [Toggle](/llms/components/toggle.txt) — compact option switcher without panels
 - [List](/llms/components/list.txt) — vertical navigable list
-- [Toolbar](/llms/components/toolbar.txt) — horizontal action bar
+- [Composability guide](/llms/guides/composability.txt) — the data-first contract across all components
