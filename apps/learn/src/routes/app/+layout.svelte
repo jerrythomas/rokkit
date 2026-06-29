@@ -87,7 +87,7 @@
 		| 'lazy-tree' | 'status-list' | 'timeline'
 		| 'code' | 'markdown-renderer' | 'search-filter' | 'palette-manager'
 		| 'dropdown' | 'progress' | 'upload-progress' | 'upload-target'
-		| 'button-group' | 'tooltip' | 'code-group' | 'effects' | 'lock-mode'
+		| 'button-group' | 'tooltip' | 'code-group' | 'effects' | 'lock-mode' | 'chat'
 	const DEMO_ROUTE = CATALOG_DEMO_ROUTE as Record<DemoKind, string>
 
 	function pickDemoKind(query: string): DemoKind {
