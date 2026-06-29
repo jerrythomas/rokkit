@@ -255,6 +255,53 @@ describe('validateAll', () => {
 	})
 })
 
+describe('validateAll with nested paths', () => {
+	it('skips validation when scope references a field absent from schema (getFieldSchema else branch)', () => {
+		// Layout element references '#/email' but schema.properties has only 'name'.
+		// getFieldSchema('email', schema) walks schema.properties['email'] → undefined
+		// → hits the else/return-null branch → validateField skips → no result added.
+		const data = { name: 'Alice', email: 'a@b.com' }
+		const schema = {
+			type: 'object',
+			properties: {
+				name: { type: 'string' }
+				// 'email' intentionally absent → getFieldSchema returns null
+			}
+		}
+		const layout = {
+			type: 'vertical',
+			elements: [{ scope: '#/email', label: 'Email' }]
+		}
+		const results = validateAll(data, schema, layout)
+		// No result for 'email' because getFieldSchema returned null
+		expect(Object.keys(results)).toHaveLength(0)
+	})
+
+	it('returns undefined when getValueByPath traverses into a primitive (getValueByPath else branch)', () => {
+		// schema.properties['a']['b'] resolves correctly (flat schema structure).
+		// data.a is a string, so traversal into data.a['b'] hits the else branch → undefined.
+		// validateField(undefined, requiredSchema) → error → result is added.
+		const data = { a: 'notAnObject' }
+		const schema = {
+			type: 'object',
+			properties: {
+				a: { b: { type: 'string', required: true } }
+			}
+		}
+		const layout = {
+			type: 'vertical',
+			elements: [{ scope: '#/a/b', label: 'B' }]
+		}
+		// getFieldSchema('a/b', schema): current = schema.properties['a'] = {b:{...}}, then
+		// current['b'] = {type:'string', required:true} → returns schema.
+		// getValueByPath(data, 'a/b'): current='notAnObject' (string) → else → undefined.
+		// validateField(undefined, required) → error
+		const results = validateAll(data, schema, layout)
+		expect(results).toHaveProperty('a/b')
+		expect(results['a/b'].state).toBe('error')
+	})
+})
+
 describe('createMessage', () => {
 	it('should create field path to message mapping', () => {
 		const result = createMessage('email', 'error', 'Email is taken')

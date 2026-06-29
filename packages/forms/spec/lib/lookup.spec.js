@@ -335,6 +335,65 @@ describe('lookup utilities', () => {
 
 			expect(() => lookup.clearCache()).not.toThrow()
 		})
+
+		describe('unwrapApiResponse — envelope key extraction', () => {
+			it('extracts array from "data" envelope key', async () => {
+				const mockData = { data: [{ id: 1 }, { id: 2 }] }
+				globalThis.fetch = vi.fn().mockResolvedValue({
+					ok: true,
+					json: () => Promise.resolve(mockData)
+				})
+
+				const lookup = createLookup({ url: '/api/items' })
+				await lookup.fetch()
+				flushSync()
+
+				expect(lookup.options).toEqual([{ id: 1 }, { id: 2 }])
+			})
+
+			it('extracts array from "items" envelope key', async () => {
+				const mockData = { items: [{ id: 3 }, { id: 4 }] }
+				globalThis.fetch = vi.fn().mockResolvedValue({
+					ok: true,
+					json: () => Promise.resolve(mockData)
+				})
+
+				const lookup = createLookup({ url: '/api/items' })
+				await lookup.fetch()
+				flushSync()
+
+				expect(lookup.options).toEqual([{ id: 3 }, { id: 4 }])
+			})
+
+			it('extracts array from "results" envelope key', async () => {
+				const mockData = { results: [{ id: 5 }, { id: 6 }] }
+				globalThis.fetch = vi.fn().mockResolvedValue({
+					ok: true,
+					json: () => Promise.resolve(mockData)
+				})
+
+				const lookup = createLookup({ url: '/api/items' })
+				await lookup.fetch()
+				flushSync()
+
+				expect(lookup.options).toEqual([{ id: 5 }, { id: 6 }])
+			})
+
+			it('falls back to empty array when no envelope key matches', async () => {
+				// Response is a plain object with no known envelope key
+				const mockData = { unknown: [{ id: 7 }] }
+				globalThis.fetch = vi.fn().mockResolvedValue({
+					ok: true,
+					json: () => Promise.resolve(mockData)
+				})
+
+				const lookup = createLookup({ url: '/api/items' })
+				await lookup.fetch()
+				flushSync()
+
+				expect(lookup.options).toEqual([])
+			})
+		})
 	})
 
 	describe('createLookupManager', () => {
