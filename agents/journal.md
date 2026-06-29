@@ -5958,3 +5958,34 @@ kept.
 - `bbb873ad` — Z7 remove doctor z-scale advisory
 - `a5f021ea`, `4dd7ae84` — Z8 docs cleanup + historical-doc restore
 - `bc092163` — Z9 init-spec fix
+
+---
+
+## 2026-06-28 — Snippet-resolution fix + repo-wide test coverage
+
+**resolveSnippet bug (root cause of LLMs over-snippeting List).** `resolveSnippet`
+(core/utils.js) read `proxy.snippet` directly, but `ProxyItem` exposes `snippet` only via
+`get()` (like icon/href) — so the documented `item.snippet` named-snippet override silently
+never fired (always fell back to itemContent/groupContent). Fixed to `proxy.get('snippet')`
+(`177f36a7`). Added regression guards (named item/group snippet resolution) across List,
+Tree, Grid, Select, MultiSelect, Menu, Toggle, Tabs, LazyTree — proven real (reintroducing
+the bug fails 26 tests). Rewrote `docs/llms/components/list.txt` + the learn demo as the
+data-first **usage-tier** template (Tier 0 data → 1 fields → 2 named snippets → 3
+itemContent), with the complete field/default-render table + `data-item-*` themability.
+See [[feedback_data_first_over_snippets]]. PENDING: replicate the tier docs to the other
+components' llms pages.
+
+**Test coverage → 100% js/ts + ≥80% svelte (repo-wide).** Drove every package to **100%
+statements/lines on .js/.ts/.svelte.js** and **≥80% statements on .svelte components** (49
+components), excluding pure type-declaration files and example/demo components. Added an
+enforcing per-file `thresholds` gate in `vitest.config.ts` (`f8ed7421`) on the full
+`bun run coverage`. Final: **5023 tests pass, 0 lint errors.** Surfaced + fixed two real
+bugs (forms barrel wrong import path; chart `context.js` importing the non-dependency `d3`
+meta-package). A handful of genuinely-unreachable SSR/defensive branches + dead functions
+are `v8-ignore`d with justification (functions/branches intentionally not gated).
+
+**Process lesson (cost real RAM):** run tests only via the run-once scripts
+(`bun run test:ci`/`test:ui`/`coverage`, scoped with `--project X --no-file-parallelism`);
+NEVER `test:unit` or bare `vitest` (watch mode orphans node processes). Cap parallel
+test-writing agents (≤2–3), forbid agent nesting/worktrees. See
+[[feedback_test_run_once_scripts]]. ~33 commits this initiative (`177f36a7`..`f8ed7421`).
