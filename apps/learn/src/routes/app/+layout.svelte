@@ -355,14 +355,15 @@
 	})
 
 	// Canvas-view toggle options — always include `live`, conditionally
-	// include `code` (when snippets exist) and `api` (when api meta
-	// exists). Keeps the toggle compact when a demo hasn't filled in
-	// one of the sections yet.
-	// `code` option is gated on whether the demo has a `*Code`
-	// constant (all 13 currently do — see activeDemoCode below).
-	// `api` option is gated on whether the demo's meta has filled
-	// in `api`.
-	const hasActiveCode = $derived(Boolean(shell.demoType))
+	// include `code` (when the demo actually has source to show) and `api`
+	// (when api meta exists). Keeps the toggle compact when a demo hasn't
+	// filled in one of the sections yet.
+	// `code` is gated on `activeDemoCode` being non-empty — only the demos
+	// with a `*Code` constant in the switch below produce one; the rest
+	// (e.g. `chat`) fall through to '' and must NOT show a Code tab that
+	// would otherwise render identically to Live.
+	// `api` option is gated on whether the demo's meta has filled in `api`.
+	const hasActiveCode = $derived(Boolean(activeDemoCode))
 	const canvasViewOptions = $derived.by(() => {
 		const opts: Array<{ label: string; value: 'live' | 'code' | 'api' | 'docs' }> = [
 			{ label: 'Live', value: 'live' }
