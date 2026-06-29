@@ -1,125 +1,243 @@
 # Rokkit MultiSelect Component
 
-> Dropdown component for selecting multiple items with tag display.
+> Data-driven multi-select dropdown with checkbox indicators, removable tags in the trigger, and keyboard navigation. Built on the ProxyItem + Wrapper + Navigator + Trigger stack.
 
-MultiSelect extends Select for multi-item selection. Selected values are shown as removable tags inside the trigger. Supports grouping and field mapping.
+MultiSelect renders a trigger that opens a dropdown where multiple options can be toggled. Selected values appear as removable tags inside the trigger (or a count badge when the selection exceeds `maxDisplay`). **It is data-first: you describe options in data, and the component renders icon, label, description, badge, and shortcut automatically in the dropdown.** Reach for snippets only when the *markup* must differ from the default.
 
-## Quick Start
+**Trigger face and selected tags are NOT snippet-overridable.** Only the dropdown options accept `itemContent` and `groupContent`. The trigger always renders the selection as chips/tags (or a placeholder).
 
+## Usage tiers — use the SIMPLEST that works
+
+Most multi-selects need Tier 0 or 1. Going straight to `itemContent` throws away the built-in rendering.
+
+**Tier 0 — `<MultiSelect {items}>`** — primitives, or objects whose keys already match the defaults (`label`, `icon`, `value`, `badge`, `description`, …). No config.
 ```svelte
-<script>
-  import { MultiSelect } from '@rokkit/ui'
+<MultiSelect items={['JavaScript', 'TypeScript', 'Svelte']} bind:value />
 
-  let items = ['JavaScript', 'TypeScript', 'Svelte', 'React', 'Vue']
-  let value = $state([])
-</script>
-
-<MultiSelect {items} bind:value placeholder="Select languages..." />
-<p>Selected: {value.join(', ')}</p>
+<MultiSelect items={[
+  { label: 'Frontend', icon: 'i-lucide:monitor' },
+  { label: 'Backend',  icon: 'i-lucide:server',  badge: 'New' }
+]} bind:value />
 ```
 
-## Object Items
-
+**Tier 1 — `<MultiSelect {items} {fields}>`** — same, but your data uses different key names. `fields` is a read-only remap; it never mutates your data.
 ```svelte
-<script>
-  import { MultiSelect } from '@rokkit/ui'
-
-  const tags = [
-    { id: 1, name: 'Frontend',  color: '#3b82f6' },
-    { id: 2, name: 'Backend',   color: '#10b981' },
-    { id: 3, name: 'DevOps',    color: '#f59e0b' }
-  ]
-  const fields = { value: 'id', label: 'name' }
-
-  let value = $state([])
-  let selected = $state([])
-</script>
-
-<MultiSelect {items} {fields} bind:value bind:selected />
+<MultiSelect items={tags} fields={{ label: 'name', value: 'id' }} bind:value />
 ```
+
+**Tier 2 — per-item / per-group named snippets** — when *a few* options need bespoke markup. Set `item.snippet = 'name'`; every other option keeps the default rendering. Works for **group headers and leaf options alike**.
+```svelte
+<MultiSelect {items} bind:value>
+  {#snippet featured(proxy)}
+    <span class={proxy.icon}></span>
+    <span>{proxy.label}</span>
+    <span data-item-badge>Featured</span>
+  {/snippet}   <!-- only options with snippet:'featured' -->
+</MultiSelect>
+```
+
+**Tier 3 — `itemContent` / `groupContent`** — blanket custom rendering for *every* option / group header. Last resort; you now own icon/label/badge layout yourself.
+
+> **Before writing any snippet, ask: is this just an icon / badge / description / avatar / second line?** If yes, it's data — use Tier 0/1. Snippets are for structurally different markup (a colour swatch, an avatar with a status dot, a custom layout).
+
+## What the default option renders (Tiers 0–1, no snippet)
+
+Every option renders a checkbox indicator (`data-select-checkbox`) followed by the built-in `ItemContent`:
+
+| Field (data key) | Renders as | Notes |
+|---|---|---|
+| `image` (avatar) | `<img data-item-avatar>` | takes precedence over `icon` |
+| `icon` | `<span data-item-icon class={icon}>` **or** `<span data-item-icon-literal>` | a CSS icon class renders as an icon span; any other string (emoji, single char) renders as literal text |
+| `label` | `<span data-item-label>` | the display text |
+| `description` | `<span data-item-description>` | secondary subtitle line, under the label |
+| `badge` | `<span data-item-badge>` | trailing count / status pill |
+| `shortcut` | `<kbd data-item-shortcut>` | trailing keyboard hint |
+
+The checkbox is always present — it is not a data field. All other fields above are data-driven.
+
+The **trigger** shows selected items as `data-select-tag` chips (each with a `data-select-tag-remove` button), or a `data-select-count` indicator (`N selected`) when the count exceeds `maxDisplay`, or a `data-select-placeholder` when nothing is selected. This is hardcoded — not snippet-overridable.
 
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `items` | `unknown[]` | `[]` | Data array (objects or primitives) |
-| `fields` | `Record<string,string>` | `{}` | Field mapping |
+| `fields` | `Record<string,string>` | `{}` | Remap data keys to component fields |
 | `value` | `unknown[]` | `[]` | Selected values array — use `bind:value` |
-| `selected` | `unknown[]` | `[]` | Selected items — use `bind:selected` |
-| `placeholder` | `string` | — | Placeholder when nothing selected |
-| `size` | `'sm'|'md'|'lg'` | `'md'` | Size variant |
-| `align` | `'start'|'end'` | `'start'` | Dropdown alignment |
-| `direction` | `'up'|'down'` | `'down'` | Dropdown direction |
-| `maxDisplay` | `number` | `3` | Max tags shown before count indicator |
+| `selected` | `unknown[]` | `[]` | Selected raw items — use `bind:selected` |
+| `placeholder` | `string` | `'Select…'` | Placeholder when nothing selected |
+| `size` | `'sm'\|'md'\|'lg'` | `'md'` | Size variant |
 | `disabled` | `boolean` | `false` | Disable the component |
-| `icons` | `MultiSelectIcons` | — | Override state icons |
-| `class` | `string` | `''` | Additional CSS classes |
+| `maxDisplay` | `number` | `3` | Max tags shown before count indicator |
+| `align` | `'start'\|'end'` | `'start'` | Dropdown alignment relative to trigger |
+| `direction` | `'up'\|'down'` | `'down'` | Dropdown direction |
+| `icons` | `{ opened?, closed?, checked?, remove? }` | — | Override expand/check/remove icons |
+| `onchange` | `(values[], items[]) => void` | — | Called on each toggle |
+| `class` | `string` | `''` | Additional CSS classes on root `<div>` |
 
-## Field Mapping
+## Field mapping (complete)
 
-Same as [Select](/llms/components/select.txt):
+Default field names the component reads from your data. Override only the ones that differ.
 
-| Field | Default |
-|-------|---------|
-| `value` | `'value'` |
-| `label` | `'label'` |
-| `icon` | `'icon'` |
-| `disabled` | `'disabled'` |
-| `children` | `'children'` |
-
-## Callbacks
-
-| Callback | Signature | Description |
-|----------|-----------|-------------|
-| `onchange` | `(values[], items[]) => void` | Selection changed |
-
-## Max Display
-
-Collapse excess tags to a count indicator:
+| Field | Default data key | Renders |
+|-------|------------------|---------|
+| `label` | `'label'` | display text in tags + option |
+| `value` | `'value'` | selection value (falls back to the raw item) |
+| `icon` | `'icon'` | icon class or literal char/emoji |
+| `image` (avatar) | `'image'` | avatar `<img>` |
+| `description` | `'description'` | secondary subtitle line |
+| `badge` | `'badge'` | trailing badge/count |
+| `shortcut` | `'shortcut'` | trailing `<kbd>` hint |
+| `children` | `'children'` | nested items array → option group |
+| `type` | `'type'` | `'separator'` structural marker |
+| `disabled` | `'disabled'` | disabled state |
+| `snippet` | `'snippet'` | per-item/group named-snippet override (Tier 2) |
 
 ```svelte
-<MultiSelect {items} bind:value maxDisplay={3} />
+<MultiSelect items={tags} fields={{ label: 'name', value: 'id', icon: 'color' }} bind:value />
 ```
 
-## Snippets
+## Grouped options
 
-Supports `itemContent` and `groupContent` snippets (same as Select) for customizing option rendering in the dropdown. The trigger tag display is hardcoded — there is no `selectedValues` snippet.
+Items with a `children` array become non-interactive group headers. Unlike List, groups are always fully expanded. A `data-select-divider` appears automatically between successive groups.
+
+```svelte
+<MultiSelect items={[
+  { label: 'Frontend', children: [
+    { label: 'React',   value: 'react' },
+    { label: 'Svelte',  value: 'svelte' }
+  ]},
+  { label: 'Backend', children: [
+    { label: 'Node.js', value: 'node' }
+  ]}
+]} bind:value />
+```
+
+Use `{ type: 'separator' }` for an explicit `<hr data-select-separator />` anywhere in the flat item list.
+
+## Max display
+
+When the number of selected items exceeds `maxDisplay`, the trigger collapses the tags to a count indicator:
+
+```svelte
+<MultiSelect {items} bind:value maxDisplay={2} />
+<!-- trigger shows: "3 selected" when 3+ items are chosen -->
+```
+
+## Tier 2 — per-item / per-group named snippets
+
+Set `item.snippet = 'name'` to route *specific* options to a named snippet; all other options keep the default rendering. The named snippet wins over both `itemContent` (leaves) and `groupContent` (group headers):
+
+```svelte
+<script>
+  const items = [
+    { label: 'Svelte',  value: 'svelte',  snippet: 'featured', icon: 'i-logos:svelte-icon' },
+    { label: 'React',   value: 'react',   icon: 'i-logos:react' }
+  ]
+</script>
+
+<MultiSelect {items} bind:value>
+  {#snippet featured(proxy)}
+    <span class={proxy.icon} aria-hidden="true"></span>
+    <span class="flex-1">{proxy.label}</span>
+    <span data-item-badge>Featured</span>
+  {/snippet}
+</MultiSelect>
+```
+
+## Tier 3 — itemContent / groupContent (blanket custom)
+
+Replaces the inner content of **every** leaf option / group header. The component still renders the `<button>` wrapper, `data-select-checkbox`, and `data-path`. Use only when the default renderer genuinely can't express the layout.
 
 ```svelte
 <MultiSelect {items} bind:value>
   {#snippet itemContent(proxy)}
-    <span class={proxy.get('icon')}></span>
+    {#if proxy.icon}<span class={proxy.icon} aria-hidden="true"></span>{/if}
+    <span class="flex-1">{proxy.label}</span>
+    {#if proxy.get('badge')}<span data-item-badge>{proxy.get('badge')}</span>{/if}
+  {/snippet}
+  {#snippet groupContent(proxy)}
+    {#if proxy.get('icon')}<span class={proxy.get('icon')} aria-hidden="true"></span>{/if}
     <span>{proxy.label}</span>
   {/snippet}
 </MultiSelect>
 ```
 
-## Keyboard Navigation
+Note: group headers are rendered inside a `<div data-select-group-label>` (not a button). Groups are non-navigable labels — you cannot make them interactive.
 
-Same as Select:
+## ProxyItem API (passed to all content snippets)
 
-| Key | Action |
-|-----|--------|
-| `Enter/Space` | Open dropdown |
-| `ArrowDown/Up` | Navigate options |
-| `Enter` | Toggle focused option |
-| `Escape` | Close dropdown |
-| `Backspace` | Remove last selected pill |
+| Property / method | Description |
+|---|---|
+| `proxy.label` | mapped display text |
+| `proxy.icon` | mapped icon class / literal |
+| `proxy.value` | the selection value |
+| `proxy.disabled` | whether this option is disabled |
+| `proxy.hasChildren` | true when the item is a group |
+| `proxy.get('key')` | read any field by semantic or raw name (`proxy.get('badge')`, `proxy.get('description')`) |
 
-## Data Attributes
+## Theming
 
-| Attribute | Description |
-|-----------|-------------|
-| `data-multiselect` | Root element (also has `data-select` for theme compat) |
-| `data-select-trigger` | Trigger button |
-| `data-select-tags` | Tags container |
-| `data-select-tag` | Individual selected tag |
-| `data-select-tag-text` | Tag label text |
-| `data-select-tag-remove` | Tag remove button |
-| `data-select-count` | Count indicator when exceeding maxDisplay |
-| `data-select-dropdown` | Dropdown container |
-| `data-select-option` | Option items in dropdown |
-| `data-open` | Open state |
+### Data attributes
+
+Outer structure:
+
+| Attribute | Element |
+|---|---|
+| `data-select` | root `<div>` (shared with Select for theme compat) |
+| `data-multiselect` | root `<div>` (also carries `data-open`, `data-size`, `data-disabled`, `data-align`, `data-direction`) |
+| `data-select-trigger` | trigger `<button>` |
+| `data-select-value` | value display span inside trigger |
+| `data-select-tags` | tags container span |
+| `data-select-tag` | individual selected-item chip |
+| `data-select-tag-text` | chip label text |
+| `data-select-tag-remove` | chip remove button (role="button") |
+| `data-select-count` | count indicator (`N selected`) when exceeding `maxDisplay` |
+| `data-select-placeholder` | placeholder span (when nothing selected) |
+| `data-select-arrow` | dropdown arrow icon span |
+| `data-select-dropdown` | dropdown `<div>` |
+| `data-select-option` | leaf option `<button>` (also `data-path`, `data-level`, `data-selected`, `data-disabled`) |
+| `data-select-checkbox` | checkbox indicator span inside option (also `data-checked`) |
+| `data-select-group-label` | group header `<div>` (non-interactive) |
+| `data-select-group-icon` | icon span inside group label |
+| `data-select-divider` | automatic `<div>` divider between successive groups |
+| `data-select-separator` | explicit `<hr>` from `{ type: 'separator' }` |
+
+Inner (default-rendered) content inside options:
+
+| Attribute | Element |
+|---|---|
+| `data-item-avatar` | avatar `<img>` |
+| `data-item-icon` / `data-item-icon-literal` | icon-class span / literal-char span |
+| `data-item-text` | label + description wrapper |
+| `data-item-label` | label text |
+| `data-item-description` | secondary line |
+| `data-item-badge` | trailing badge |
+| `data-item-shortcut` | trailing `<kbd>` |
+
+### Styling via the `class` prop (UnoCSS arbitrary variants)
+
+`class` lands on the root `<div data-select data-multiselect>`. Use UnoCSS arbitrary variants to reach descendants:
+
+```svelte
+<MultiSelect {items} bind:value class="
+  [&_[data-select-option][data-selected]]:font-semibold
+  [&_[data-select-tag]]:rounded-full [&_[data-select-tag]]:bg-accent-soft
+  [&_[data-item-badge]]:text-xs [&_[data-item-badge]]:text-ink-mute
+" />
+```
+
+Or theme globally with named tokens in your theme CSS:
+
+```css
+[data-multiselect] [data-select-option][data-selected] { background: var(--accent-soft); }
+[data-select-tag] { background: var(--primary-soft); color: var(--primary); border-radius: 9999px; }
+[data-select-checkbox][data-checked] { color: var(--accent); }
+```
+
+## Keyboard navigation
+
+`↑`/`↓` move focus · `Home`/`End` · `Enter`/`Space` open dropdown or toggle focused option (dropdown stays open after toggle) · `Escape` close. Disabled options are skipped.
 
 ## Import
 
@@ -127,37 +245,9 @@ Same as Select:
 import { MultiSelect } from '@rokkit/ui'
 ```
 
-## TypeScript Types
+## Related
 
-```typescript
-interface MultiSelectProps {
-  items?: unknown[]
-  fields?: Record<string, string>
-  value?: unknown[]
-  selected?: unknown[]
-  placeholder?: string
-  size?: 'sm' | 'md' | 'lg'
-  align?: 'start' | 'end'
-  direction?: 'up' | 'down'
-  maxDisplay?: number
-  disabled?: boolean
-  icons?: MultiSelectIcons
-  class?: string
-  onchange?: (values: unknown[], items: unknown[]) => void
-  itemContent?: Snippet<[ProxyItem]>
-  groupContent?: Snippet<[ProxyItem]>
-}
-
-interface MultiSelectIcons {
-  opened?: string  // dropdown open arrow
-  closed?: string  // dropdown closed arrow
-  checked?: string // checkbox indicator on selected option
-  remove?: string  // tag remove button
-}
-```
-
-## Related Components
-
-- [Select](/llms/components/select.txt) — single-item dropdown
-- [List](/llms/components/list.txt) — inline multi-selection
-- [Toggle](/llms/components/toggle.txt) — compact option group
+- [Select](/llms/components/select.txt) — single-item dropdown selection
+- [List](/llms/components/list.txt) — inline persistent list selection
+- [Menu](/llms/components/menu.txt) — contextual action menu
+- [Composability guide](/llms/guides/composability.txt) — the data-first contract across all components
