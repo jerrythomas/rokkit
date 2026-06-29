@@ -42,7 +42,7 @@
 	}
 
 	[data-site-nav] a {
-		color: var(--ink-soft);
+		color: var(--ink-mute);
 		text-decoration: none;
 		padding: 4px 0;
 		border-bottom: 1.5px solid transparent;

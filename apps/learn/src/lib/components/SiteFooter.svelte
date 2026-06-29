@@ -23,7 +23,7 @@
 		border-top: 1px solid var(--paper-edge);
 		background: var(--paper);
 		font: 400 11.5px var(--font-mono);
-		color: var(--ink-soft);
+		color: var(--ink-mute);
 		letter-spacing: 0.04em;
 	}
 

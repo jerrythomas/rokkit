@@ -134,7 +134,7 @@
 
 	[data-site-header-label] {
 		font: 500 10px var(--font-mono);
-		color: var(--ink-soft);
+		color: var(--ink-mute);
 		letter-spacing: 0.16em;
 		text-transform: uppercase;
 	}
@@ -240,7 +240,7 @@
 		border-radius: 3px;
 		background: transparent;
 		background-image: none;
-		color: var(--ink-soft);
+		color: var(--ink-mute);
 	}
 
 	[data-site-header] :global(.site-header-toggle [data-toggle-option]:hover:not(:disabled)) {
