@@ -31,6 +31,24 @@
   min-width: 0;
 }
 
+/* Contrast-critical (applies to every style): the status soft-bg is a fixed
+   light tint that does NOT flip in dark mode, so the body text must be a fixed
+   DARK tone to stay readable. Darken the status hue toward black — keeps the
+   colour identity and reaches WCAG AA on the light tint in both modes. The
+   icon / border keep the vibrant status-500. */
+[data-message-root][data-type='error'] [data-message-text] {
+  color: color-mix(in oklch, var(--error) 55%, black);
+}
+[data-message-root][data-type='warning'] [data-message-text] {
+  color: color-mix(in oklch, var(--warning) 55%, black);
+}
+[data-message-root][data-type='info'] [data-message-text] {
+  color: color-mix(in oklch, var(--info) 55%, black);
+}
+[data-message-root][data-type='success'] [data-message-text] {
+  color: color-mix(in oklch, var(--success) 55%, black);
+}
+
 [data-message-actions] {
   display: flex;
   align-items: center;
