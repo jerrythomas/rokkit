@@ -125,8 +125,6 @@
 		align-items: baseline;
 		gap: 8px;
 		margin-bottom: 10px;
-		padding-bottom: 6px;
-		border-bottom: 1px solid var(--paper-edge);
 	}
 
 	[data-catalog-group-label] {

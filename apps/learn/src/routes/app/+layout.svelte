@@ -17,6 +17,7 @@
 	import type { TableColumn } from '@rokkit/ui'
 	import { FormRenderer } from '@rokkit/forms'
 	import { alerts, commands } from '@rokkit/states'
+	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
 	import LlmsBookmark from '$lib/components/LlmsBookmark.svelte'
 	import { theme } from '$lib/stores/theme.svelte'
 	import { vibe } from '@rokkit/states'
@@ -2152,16 +2153,23 @@ ${tabsTag}`
 					/>
 				{/if}
 			{:else if shell.phase === 'landing'}
-				<div class="canvas-head">
-					<div class="canvas-eyebrow">Browse · catalog</div>
-					<div class="canvas-title">Pass the data. The component does the rest.</div>
-					<div class="canvas-sub">
-						Every component in the library — {vibe.style} · 47 components · Svelte 5
-						runes. Type to filter, or jump into a tile; it mounts live with the
-						chat on the left and Tweaks at hand.
-					</div>
-				</div>
 				<div class="canvas-body catalog">
+					<div class="welcome-hero">
+						<div class="mark"><RokkitWordmark height={64} /></div>
+						<div class="lede">Pass the data. The component does the rest.</div>
+						<div class="sub">
+							Type a question on the left. The answer mounts here — themed,
+							density-tuned, copyable, and identical to what you'd ship.
+						</div>
+						<div class="meta">
+							<span>style</span>
+							<span class="meta-value">{vibe.style}</span>
+							<span class="meta-sep">·</span>
+							<span>47 components</span>
+							<span class="meta-sep">·</span>
+							<span>Svelte 5 runes</span>
+						</div>
+					</div>
 					<CatalogGrid filter={shell.composerValue} />
 				</div>
 			{:else if shell.phase === 'thinking'}
@@ -3136,6 +3144,59 @@ ${tabsTag}`
 		font: 400 13.5px/1.55 var(--font-ui);
 		color: var(--ink-mute);
 		max-width: 640px;
+	}
+
+	/* Landing hero — the original component-page banner, now stacked above the
+	   catalog grid inside the scrolling body (not full-canvas centered). */
+	.welcome-hero {
+		max-width: 640px;
+		margin: 0 auto;
+		padding: 56px 32px 32px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: 16px;
+	}
+
+	.welcome-hero .mark {
+		margin-bottom: 8px;
+		display: flex;
+		justify-content: center;
+	}
+
+	.welcome-hero .lede {
+		font: 400 28px/1.25 var(--font-display);
+		color: var(--ink);
+		letter-spacing: -0.01em;
+	}
+
+	.welcome-hero .sub {
+		font: 400 15px/1.6 var(--font-ui);
+		color: var(--ink-mute);
+		max-width: 480px;
+	}
+
+	.welcome-hero .meta {
+		margin-top: 24px;
+		display: flex;
+		gap: 16px;
+		align-items: center;
+		font: 500 10.5px var(--font-mono);
+		color: var(--ink-soft);
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	.welcome-hero .meta-value {
+		color: var(--ink-mute);
+		text-transform: none;
+		letter-spacing: 0.04em;
+		font-size: 12px;
+	}
+
+	.welcome-hero .meta-sep {
+		color: var(--ink-faint);
 	}
 
 	.canvas-body {
