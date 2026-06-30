@@ -24,7 +24,7 @@
 	<div class="border-paper-mute flex items-center justify-between border-b p-4">
 		<span class="text-ink-mute text-sm font-semibold">Theme</span>
 		<button
-			class="w-6 h-6 flex items-center justify-center text-paper-edge rounded hover:text-ink-mute hover:bg-paper-mute cursor-pointer"
+			class="w-6 h-6 flex items-center justify-center text-ink-soft rounded hover:text-ink-mute hover:bg-paper-mute cursor-pointer"
 			onclick={() => (open = false)}
 			aria-label="Close"
 		>&times;</button>

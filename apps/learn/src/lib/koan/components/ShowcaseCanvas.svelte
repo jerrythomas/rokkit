@@ -38,8 +38,8 @@
 		@apply bg-paper-soft;
 	}
 	.canvas.has-grid {
-		@apply bg-paper-soft text-paper-mute;
-		background-image: radial-gradient(circle, var(--grid-color, currentColor) 1px, transparent 1px);
+		@apply bg-paper-soft;
+		background-image: radial-gradient(circle, var(--grid-color, var(--paper-mute)) 1px, transparent 1px);
 		background-size: var(--grid-size) var(--grid-size);
 	}
 	.toolbar {
