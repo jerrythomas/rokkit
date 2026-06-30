@@ -94,7 +94,7 @@
 		font: 500 10px var(--font-mono);
 		letter-spacing: 0.12em;
 		text-transform: uppercase;
-		color: var(--ink-soft, #888);
+		color: var(--ink-mute, #555);
 		margin: 14px 8px 6px;
 	}
 	.rail ul {

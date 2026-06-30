@@ -33,14 +33,14 @@
 	}
 	.lead {
 		font: 400 15px var(--font-ui);
-		color: var(--ink-soft, #666);
+		color: var(--ink-mute, #555);
 		margin: 0 0 32px;
 	}
 	h2 {
 		font: 500 12px var(--font-mono);
 		letter-spacing: 0.12em;
 		text-transform: uppercase;
-		color: var(--ink-soft, #888);
+		color: var(--ink-mute, #555);
 		margin: 24px 0 12px;
 	}
 	.cards {
@@ -65,11 +65,18 @@
 	.cards li a:hover {
 		border-color: var(--ink-soft, #888);
 	}
+	/* Dark mode: paper-edge resolves to the near-black etched hairline, which is
+	   invisible on a dark card. Use a visible paper-mute resting border so cards
+	   don't read as borderless; the ink-soft hover then reads as a gentle lift,
+	   not a jump from invisible to bright. */
+	:global([data-mode='dark']) .cards li a {
+		border-color: var(--paper-mute);
+	}
 	.cards li strong {
 		font: 600 14px var(--font-display);
 	}
 	.cards li span {
 		font: 400 12.5px/1.5 var(--font-ui);
-		color: var(--ink-soft, #666);
+		color: var(--ink-mute, #555);
 	}
 </style>
