@@ -1,7 +1,6 @@
 [
 	"button|data-button",
 	"message|data-message-root",
-	"message|data-message-text",
 	"multiselect|data-select-tag",
 	"multiselect|data-select-tag-text",
 	"table|data-table-header-cell",
