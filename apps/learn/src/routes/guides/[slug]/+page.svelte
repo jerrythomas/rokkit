@@ -1,5 +1,6 @@
 <script lang="ts">
 	import GuidePage from '$lib/koan/components/GuidePage.svelte'
+	import LlmsBookmark from '$lib/components/LlmsBookmark.svelte'
 	const { data } = $props()
 </script>
 
@@ -10,14 +11,12 @@
 		Have a follow-up?
 		<a href={`/app?q=${encodeURIComponent(data.guide.title)}`}>Ask Koan →</a>
 	</div>
-	<div class="llms-link">
-		Or grab the LLM-ready specs at
-		<a href={`/llms/guides/${data.guide.slug}.txt`} target="_blank" rel="noopener noreferrer">
-			/llms/guides/{data.guide.slug}.txt
-		</a>
-		(<a href="/llms/index.txt" target="_blank" rel="noopener noreferrer">index</a>).
-	</div>
 </footer>
+
+<LlmsBookmark
+	href={`/llms/guides/${data.guide.slug}.txt`}
+	title="LLM-ready spec for {data.guide.title}"
+/>
 
 <style>
 	.follow-up {
@@ -33,9 +32,5 @@
 	.follow-up a {
 		color: var(--ink);
 		text-decoration: underline;
-	}
-	.llms-link {
-		font-size: 12px;
-		color: var(--ink-mute);
 	}
 </style>

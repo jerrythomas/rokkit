@@ -18,6 +18,7 @@
 	import { FormRenderer } from '@rokkit/forms'
 	import { alerts, commands } from '@rokkit/states'
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
+	import LlmsBookmark from '$lib/components/LlmsBookmark.svelte'
 	import { theme } from '$lib/stores/theme.svelte'
 	import { vibe } from '@rokkit/states'
 	import { shortcuts } from '@rokkit/actions'
@@ -2103,21 +2104,9 @@ ${tabsTag}`
 		</aside>
 
 		<main class="canvas">
-			{#if shell.phase === 'response' && currentMeta}
+			{#if shell.phase === 'response' && currentMeta && canvasViewOptions.length > 1}
 				<div class="canvas-view-toggle">
-					{#if canvasViewOptions.length > 1}
-						<Toggle options={canvasViewOptions} bind:value={canvasView} size="sm" />
-					{/if}
-					<a
-						class="llms-badge"
-						href={`/llms/components/${currentMeta.id}.txt`}
-						target="_blank"
-						rel="noopener noreferrer"
-						title="LLM-ready spec for {currentMeta.title}"
-					>
-						<span class="i-mdi:file-document-outline" aria-hidden="true"></span>
-						<span>llms.txt</span>
-					</a>
+					<Toggle options={canvasViewOptions} bind:value={canvasView} size="sm" />
 				</div>
 			{/if}
 
@@ -2176,6 +2165,12 @@ ${tabsTag}`
 						<MarkdownRenderer markdown={demoDocs} />
 					</article>
 				</div>
+				{#if currentMeta}
+					<LlmsBookmark
+						href={`/llms/components/${currentMeta.id}.txt`}
+						title="LLM-ready spec for {currentMeta.title}"
+					/>
+				{/if}
 			{:else if shell.phase === 'welcome'}
 				<div class="welcome-hero">
 					<div class="mark"><RokkitWordmark height={64} /></div>
@@ -3377,31 +3372,6 @@ ${tabsTag}`
 		display: inline-flex;
 		align-items: center;
 		gap: 10px;
-	}
-
-	.llms-badge {
-		display: inline-flex;
-		align-items: center;
-		gap: 6px;
-		padding: 4px 10px;
-		font: 500 11px var(--font-mono);
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-		color: var(--ink-mute);
-		background: var(--paper-soft);
-		border: 1px solid var(--paper-edge);
-		border-radius: var(--density-radius-base, 4px);
-		text-decoration: none;
-		transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
-	}
-	.llms-badge:hover {
-		color: var(--ink);
-		border-color: var(--ink-faint);
-		background: var(--paper);
-	}
-	.llms-badge [class^='i-'] {
-		width: 12px;
-		height: 12px;
 	}
 
 	.tabs-mount {

@@ -12,6 +12,10 @@
 		+
 		<a href="https://unocss.dev" target="_blank" rel="noopener noreferrer">UnoCSS</a>
 	</span>
+	<a data-site-footer-llms href="/llms/index.txt" target="_blank" rel="noopener noreferrer">
+		<span class="i-mdi:bookmark-outline" aria-hidden="true"></span>
+		llms.txt
+	</a>
 </footer>
 
 <style>
@@ -44,5 +48,25 @@
 	[data-site-footer-credits] a:hover {
 		color: var(--ink);
 		border-bottom-color: var(--ink-faint);
+	}
+
+	[data-site-footer-llms] {
+		margin-left: auto;
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+		color: var(--ink-mute);
+		text-decoration: none;
+		border-bottom: 1px dashed var(--paper-edge);
+	}
+
+	[data-site-footer-llms]:hover {
+		color: var(--ink);
+		border-bottom-color: var(--paper-edge-hover);
+	}
+
+	[data-site-footer-llms] [class^='i-'] {
+		width: 12px;
+		height: 12px;
 	}
 </style>
