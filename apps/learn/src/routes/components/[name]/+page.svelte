@@ -10,7 +10,7 @@
 	<header>
 		<h1>{c.title}</h1>
 		<p class="lead">{c.description}</p>
-		<a class="demo-link" href="/app/catalog">Try it in the interactive catalog →</a>
+		<a class="demo-link" href="/app">Try it in the interactive catalog →</a>
 	</header>
 
 	{#if c.docs}

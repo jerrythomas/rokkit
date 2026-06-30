@@ -245,9 +245,8 @@
 	// Welcome flow is input-first. As the user types, ComposerSuggestions
 	// matches against the catalog and surfaces the closest demos. Clicking
 	// a suggestion submits its title as the query, going through the same
-	// thinking → goto path as a typed submission. The dedicated /app/catalog
-	// route (TBD) gives the same demos a sidebar-browse entry point for
-	// users who prefer to scan visually.
+	// thinking → goto path as a typed submission. The catalog grid on the
+	// /app landing gives the same demos a browse-first entry point.
 	function pickSuggestion(demo: DemoMeta) {
 		submitQuery(demo.title)
 	}

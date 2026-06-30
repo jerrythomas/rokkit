@@ -1,6 +1,6 @@
 <script lang="ts">
 	/**
-	 * Catalog grid for /app/catalog. Renders every demo as a clickable
+	 * Catalog grid for the /app landing. Renders every demo as a clickable
 	 * tile, grouped by category. An optional `filter` prop (typed text
 	 * from the chat composer) runs through MiniSearch — when the query is
 	 * empty the full catalog shows, otherwise just the matches.
