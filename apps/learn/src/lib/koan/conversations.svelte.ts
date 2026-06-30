@@ -201,12 +201,33 @@ function touch(id: ConversationId): void {
  * initial query. Returns the new conversation id.
  */
 export function startNew(surface: ConversationSurface, query: string): ConversationId {
-	const id = makeId('conv')
 	const at = nowIso()
+	const title = query.trim().slice(0, 80) || 'New conversation'
 	const userTurn: UserTurn = { kind: 'user', id: makeId('t'), at, text: query }
+
+	// Upsert by title for the `app` surface: re-exploring the same component
+	// reuses its existing row (turns reset, moved to top) instead of stacking
+	// duplicate-titled entries. The `chat` surface always appends.
+	if (surface === 'app') {
+		const existingIdx = conversations.findIndex(
+			(c) => c.surface === 'app' && c.title === title
+		)
+		if (existingIdx >= 0) {
+			const [existing] = conversations.splice(existingIdx, 1)
+			existing.updatedAt = at
+			existing.turns = [userTurn]
+			conversations.unshift(existing)
+			currentRef.id = existing.id
+			persist()
+			persistCurrentId()
+			return existing.id
+		}
+	}
+
+	const id = makeId('conv')
 	const conv: Conversation = {
 		id,
-		title: query.trim().slice(0, 80) || 'New conversation',
+		title,
 		surface,
 		createdAt: at,
 		updatedAt: at,
