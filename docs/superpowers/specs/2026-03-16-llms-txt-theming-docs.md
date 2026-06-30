@@ -7,7 +7,7 @@
 
 ## Problem
 
-The current `llms.txt` (at `https://rokkit.vercel.app/llms/index.txt`) has a single paragraph on theming:
+The current `llms.txt` (at `https://rokkit.sensei-hq.com/llms/index.txt`) has a single paragraph on theming:
 
 ```html
 <html data-theme="rokkit" data-mode="dark"></html>
