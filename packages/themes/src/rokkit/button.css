@@ -26,7 +26,9 @@
 [data-style='rokkit'] [data-button]:not([data-style])[data-variant='default'],
 [data-style='rokkit'] [data-button][data-style='default']:not([data-variant]),
 [data-style='rokkit'] [data-button]:not([data-style]):not([data-variant]) {
-  @apply border-paper-edge text-ink-mute border;
+  /* ink (not ink-mute): the button label is primary content; ink-mute on the
+     paper-mute fill only reaches 4.07:1 in dark mode (AA fail). */
+  @apply border-paper-edge text-ink border;
   background: var(--paper-mute);
 }
 

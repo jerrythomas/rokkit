@@ -5,7 +5,7 @@
  */
 
 [data-style='zen-sumi'] [data-message-root][data-type='error'] {
-  @apply bg-error-soft border-error-soft text-error;
+  @apply bg-error-soft border-error-soft;
 }
 [data-style='zen-sumi'] [data-message-root][data-type='error'] [data-message-icon],
 [data-style='zen-sumi'] [data-message-root][data-type='error'] [data-message-dismiss] {
@@ -13,7 +13,7 @@
 }
 
 [data-style='zen-sumi'] [data-message-root][data-type='warning'] {
-  @apply bg-warning-soft border-warning-soft text-warning;
+  @apply bg-warning-soft border-warning-soft;
 }
 [data-style='zen-sumi'] [data-message-root][data-type='warning'] [data-message-icon],
 [data-style='zen-sumi'] [data-message-root][data-type='warning'] [data-message-dismiss] {
@@ -21,7 +21,7 @@
 }
 
 [data-style='zen-sumi'] [data-message-root][data-type='info'] {
-  @apply bg-info-soft border-info-soft text-info;
+  @apply bg-info-soft border-info-soft;
 }
 [data-style='zen-sumi'] [data-message-root][data-type='info'] [data-message-icon],
 [data-style='zen-sumi'] [data-message-root][data-type='info'] [data-message-dismiss] {
@@ -29,7 +29,7 @@
 }
 
 [data-style='zen-sumi'] [data-message-root][data-type='success'] {
-  @apply bg-success-soft border-success-soft text-success;
+  @apply bg-success-soft border-success-soft;
 }
 [data-style='zen-sumi'] [data-message-root][data-type='success'] [data-message-icon],
 [data-style='zen-sumi'] [data-message-root][data-type='success'] [data-message-dismiss] {

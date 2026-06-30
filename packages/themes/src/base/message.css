@@ -35,16 +35,26 @@
    light tint that does NOT flip in dark mode, so the body text must be a fixed
    DARK tone to stay readable. Darken the status hue toward black — keeps the
    colour identity and reaches WCAG AA on the light tint in both modes. The
-   icon / border keep the vibrant status-500. */
+   icon / border keep the vibrant status-500.
+
+   The same darkened tone is also set on the ROOT (not just [data-message-text]):
+   the root's `color` is the inherited default for any banner text, and the
+   styles set the vibrant `text-{status}` on the root — which fails AA on the
+   light soft-bg. The vibrant icon/dismiss keep their own higher-specificity
+   `text-{status}` rules, so this only re-tones the readable copy. */
+[data-message-root][data-type='error'],
 [data-message-root][data-type='error'] [data-message-text] {
   color: color-mix(in oklch, var(--error) 55%, black);
 }
+[data-message-root][data-type='warning'],
 [data-message-root][data-type='warning'] [data-message-text] {
   color: color-mix(in oklch, var(--warning) 55%, black);
 }
+[data-message-root][data-type='info'],
 [data-message-root][data-type='info'] [data-message-text] {
   color: color-mix(in oklch, var(--info) 55%, black);
 }
+[data-message-root][data-type='success'],
 [data-message-root][data-type='success'] [data-message-text] {
   color: color-mix(in oklch, var(--success) 55%, black);
 }

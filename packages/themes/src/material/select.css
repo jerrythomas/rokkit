@@ -49,7 +49,9 @@
    ============================================================================= */
 
 [data-style='material'] [data-select-tag] {
-  @apply bg-paper-mute text-ink-mute rounded-full bg-none shadow-sm;
+  /* ink (not ink-mute): the tag holds the selected value (primary content);
+     ink-mute on the paper-mute chip only reaches 4.07:1 in dark mode (AA fail). */
+  @apply bg-paper-mute text-ink rounded-full bg-none shadow-sm;
 }
 
 [data-style='material'] [data-select-tag-remove] {

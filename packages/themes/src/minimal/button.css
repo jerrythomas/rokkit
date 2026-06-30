@@ -12,7 +12,9 @@
 [data-style='minimal'] [data-button]:not([data-style])[data-variant='default'],
 [data-style='minimal'] [data-button][data-style='default']:not([data-variant]),
 [data-style='minimal'] [data-button]:not([data-style]):not([data-variant]) {
-  @apply bg-paper-mute border-paper-edge text-ink-mute border bg-none;
+  /* ink (not ink-mute): the button label is primary content; ink-mute on the
+     paper-mute fill only reaches 4.07:1 in dark mode (AA fail). */
+  @apply bg-paper-mute border-paper-edge text-ink border bg-none;
 }
 
 [data-style='minimal'] [data-button][data-style='default'][data-variant='primary'],

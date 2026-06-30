@@ -20,8 +20,11 @@
    Tab Triggers
    ============================================================================= */
 
+/* ink (not ink-mute): an unselected tab label is an interactive navigation
+   target that must read clearly; ink-mute on the paper-mute tab list only
+   reaches 4.07:1 in dark mode (AA fail). */
 [data-style='material'] [data-tabs-trigger] {
-  @apply text-ink-mute rounded-t-lg bg-transparent;
+  @apply text-ink rounded-t-lg bg-transparent;
 }
 
 [data-style='material'] [data-tabs][data-position='after'] [data-tabs-trigger] {
@@ -29,7 +32,7 @@
 }
 
 [data-style='material'] [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {
-  @apply bg-paper-mute text-ink-mute;
+  @apply bg-paper-mute text-ink;
 }
 
 /* Selected state */

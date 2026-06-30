@@ -9,7 +9,9 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-table-header] th {
-  @apply text-ink-mute border-b backdrop-blur-sm;
+  /* ink (not ink-mute): column headers are primary content; ink-mute on the
+     paper-mute header only reaches 4.07:1 in dark mode (AA fail). */
+  @apply text-ink border-b backdrop-blur-sm;
   border-color: color-mix(in oklch, var(--ink-soft) 20%, transparent);
   background-color: color-mix(in oklch, var(--paper-mute) 80%, transparent);
 }

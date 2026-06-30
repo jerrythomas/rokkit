@@ -3,7 +3,7 @@
  */
 
 [data-style='frosted'] [data-message-root][data-type='error'] {
-  @apply border-error/40 text-error backdrop-blur-sm;
+  @apply border-error/40 backdrop-blur-sm;
   background-color: var(--error-soft);
 }
 [data-style='frosted'] [data-message-root][data-type='error'] [data-message-icon],
@@ -12,7 +12,7 @@
 }
 
 [data-style='frosted'] [data-message-root][data-type='warning'] {
-  @apply border-warning/40 text-warning backdrop-blur-sm;
+  @apply border-warning/40 backdrop-blur-sm;
   background-color: var(--warning-soft);
 }
 [data-style='frosted'] [data-message-root][data-type='warning'] [data-message-icon],
@@ -21,7 +21,7 @@
 }
 
 [data-style='frosted'] [data-message-root][data-type='info'] {
-  @apply border-info/40 text-info backdrop-blur-sm;
+  @apply border-info/40 backdrop-blur-sm;
   background-color: var(--info-soft);
 }
 [data-style='frosted'] [data-message-root][data-type='info'] [data-message-icon],
@@ -30,7 +30,7 @@
 }
 
 [data-style='frosted'] [data-message-root][data-type='success'] {
-  @apply border-success/40 text-success backdrop-blur-sm;
+  @apply border-success/40 backdrop-blur-sm;
   background-color: var(--success-soft);
 }
 [data-style='frosted'] [data-message-root][data-type='success'] [data-message-icon],
