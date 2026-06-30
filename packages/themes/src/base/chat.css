@@ -1,0 +1,252 @@
+/* Chat — structural + neutral styling for the @rokkit/ui chat components
+   (ChatShell / ChatHistory / ChatTimeline / ChatMessage / ChatComposer).
+
+   The components are headless and emit data-* hooks only; this file owns
+   their visual treatment using the Rokkit named-token vocabulary
+   (--paper, --ink, --accent, …) so it adapts to every theme + mode
+   automatically. Component-intrinsic rules work standalone; shell-context
+   rules (the history rail width, composer inset, scroll) are scoped under
+   [data-chat-shell]. Per-style files may override for flavor. */
+
+/* ─── ChatMessage: avatar + bubble row ──────────────────────────────── */
+[data-chat-message] {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+}
+
+[data-chat-bubble] {
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+[data-chat-body] {
+	font: 400 14px/1.55 var(--font-ui);
+	color: var(--ink);
+}
+
+[data-chat-message][data-role='user'] [data-chat-body] {
+	font-family: var(--font-display, var(--font-ui));
+	font-size: 16px;
+	line-height: 1.4;
+	letter-spacing: -0.005em;
+}
+
+/* Inline-code chips in prose — but NOT inside a CodeBlock's <pre><code>. */
+[data-chat-body] code:not([data-code-block] code) {
+	font: 500 12px var(--font-mono);
+	padding: 1px 6px;
+	border: 1px solid var(--paper-edge);
+	border-radius: 4px;
+	background: var(--paper-soft);
+	color: var(--ink-mute);
+}
+
+[data-chat-time] {
+	margin-top: 6px;
+	font: 500 10.5px var(--font-mono);
+	color: var(--ink-soft);
+	letter-spacing: 0.04em;
+}
+
+/* Streaming caret (data-status='streaming' on the message). */
+[data-chat-caret] {
+	display: inline-block;
+	width: 7px;
+	height: 1.05em;
+	margin-left: 3px;
+	vertical-align: text-bottom;
+	background: var(--accent);
+	border-radius: 1px;
+	animation: rokkit-chat-caret 1s steps(2, start) infinite;
+}
+
+@keyframes rokkit-chat-caret {
+	to {
+		opacity: 0;
+	}
+}
+
+/* ─── ChatTimeline: message list ────────────────────────────────────── */
+[data-chat-timeline] {
+	flex: 1;
+	min-height: 0;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 22px;
+	padding: 24px 20px;
+}
+
+/* ─── ChatComposer: input card ──────────────────────────────────────── */
+[data-chat-composer] {
+	flex-shrink: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 10px 12px;
+	background: var(--paper-soft);
+	border: 1px solid var(--paper-edge);
+	border-radius: 10px;
+	transition: border-color 120ms ease;
+}
+
+/* Single, calm focus affordance — just darken the border (no extra ring,
+   which read as a doubled/too-thick border). */
+[data-chat-composer]:focus-within {
+	border-color: var(--ink-soft);
+}
+
+[data-chat-input] {
+	width: 100%;
+	min-height: 22px;
+	max-height: 160px;
+	padding: 0;
+	border: 0;
+	outline: none;
+	background: transparent;
+	resize: none;
+	font: 400 14px/1.45 var(--font-ui);
+	color: var(--ink);
+}
+
+[data-chat-input]::placeholder {
+	color: var(--ink-soft);
+}
+
+[data-chat-composer][data-busy] [data-chat-input] {
+	opacity: 0.7;
+}
+
+/* ─── ChatHistory: conversation rail ────────────────────────────────── */
+[data-chat-history] {
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+	overflow-y: auto;
+	padding: 8px;
+	background: var(--paper);
+	color: var(--ink);
+}
+
+[data-chat-history-new] {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	height: 32px;
+	padding: 0 10px;
+	margin-bottom: 6px;
+	border: 1px solid var(--paper-edge);
+	border-radius: 6px;
+	background: var(--paper-soft);
+	color: var(--ink);
+	font: 500 12.5px var(--font-ui);
+	cursor: pointer;
+}
+
+[data-chat-history-new]:hover {
+	border-color: var(--ink-soft);
+	background: var(--paper);
+}
+
+[data-chat-history-row] {
+	display: flex;
+	align-items: center;
+	border-radius: 6px;
+}
+
+[data-chat-history-row]:hover {
+	background: var(--paper-soft);
+}
+
+[data-chat-history-row][data-active] {
+	background: var(--paper-mute);
+}
+
+[data-chat-history-item] {
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 7px 8px;
+	border: 0;
+	background: transparent;
+	color: var(--ink-mute);
+	cursor: pointer;
+	text-align: left;
+	font-family: var(--font-ui);
+}
+
+[data-chat-history-row][data-active] [data-chat-history-item] {
+	color: var(--ink);
+}
+
+[data-chat-history-title] {
+	flex: 1;
+	min-width: 0;
+	font: 450 12.5px var(--font-ui);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+[data-chat-history-time] {
+	flex-shrink: 0;
+	font: 500 10px var(--font-mono);
+	color: var(--ink-soft);
+}
+
+[data-chat-history-delete] {
+	flex-shrink: 0;
+	width: 24px;
+	height: 24px;
+	display: grid;
+	place-items: center;
+	border: 0;
+	background: transparent;
+	color: var(--ink-soft);
+	border-radius: 4px;
+	cursor: pointer;
+	opacity: 0;
+}
+
+[data-chat-history-row]:hover [data-chat-history-delete] {
+	opacity: 1;
+}
+
+[data-chat-history-delete]:hover {
+	background: var(--paper-mute);
+	color: var(--ink);
+}
+
+/* ─── ChatShell: history rail + main column ─────────────────────────── */
+[data-chat-shell] {
+	display: flex;
+	min-height: 0;
+	background: var(--paper);
+	color: var(--ink);
+}
+
+[data-chat-main] {
+	flex: 1;
+	min-width: 0;
+	min-height: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+/* Rail chrome only applies inside the shell — a standalone ChatHistory
+   fills its own container instead of imposing a fixed rail width. */
+[data-chat-shell] [data-chat-history] {
+	width: 280px;
+	flex-shrink: 0;
+	border-right: 1px solid var(--paper-edge);
+}
+
+/* Inset the composer from the column edges inside the shell. */
+[data-chat-main] [data-chat-composer] {
+	margin: 0 20px 20px;
+}
