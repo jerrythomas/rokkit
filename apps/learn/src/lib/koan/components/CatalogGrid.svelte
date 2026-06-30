@@ -91,7 +91,13 @@
 								onclick={() => pick(demo)}
 								title={demo.title}
 							>
-								<span data-catalog-tile-glyph aria-hidden="true">{demo.icon}</span>
+								{#if demo.icon.startsWith('i-')}
+									<span data-catalog-tile-glyph aria-hidden="true">
+										<span class={demo.icon}></span>
+									</span>
+								{:else}
+									<span data-catalog-tile-glyph aria-hidden="true">{demo.icon}</span>
+								{/if}
 								<span data-catalog-tile-body>
 									<span data-catalog-tile-title>{demo.title}</span>
 									<span data-catalog-tile-desc>{demo.description}</span>
@@ -180,6 +186,11 @@
 		background: var(--paper-soft);
 		font: 600 18px var(--font-display);
 		color: var(--ink-soft);
+	}
+
+	[data-catalog-tile-glyph] [class^='i-'] {
+		width: 20px;
+		height: 20px;
 	}
 
 	[data-catalog-tile-body] {
