@@ -6103,3 +6103,47 @@ no new low-contrast text — only the pre-existing **message-status** debt (1 it
 ~2.17) remains (tracked in [[project_theme_contrast_regression]]). themes 75/75,
 tsc green. NOTE: contrast improved, so the `theme-contrast.e2e.ts` ratchet baseline
 can be re-snapshotted higher. See [[project_contrast_token_rules]].
+
+---
+
+## 2026-06-30 (cont.) — Doctor contrast gates · fixed on-colors · llms.txt relocation · legacy removal
+
+Built the **two-layer contrast gate** the prior entry called for, burned down the
+residual debt, then cleaned up navigation.
+
+- **`rokkit doctor` contrast check** (`7a194564`, `packages/cli/src/contrast.js`):
+  static WCAG audit from the config palettes in BOTH modes — warns when `ink`/`ink-mute`
+  miss AA 4.5 on paper, the ink ramp isn't monotonic (ink>mute>soft>faint), or
+  `paper-edge` is invisible vs paper. OKLCH→linear-sRGB→relative-luminance math in-file
+  (no colour dep). 0 findings against the fixed config.
+- **`rokkit doctor` surface-as-text lint** (`cdec112c`): scans `src/**/*.{css,svelte}`
+  for `text-paper-edge`/`-mute` + raw `color: var(--paper-edge|--paper-mute)`. Immediately
+  caught 41 real misuses in `apps/learn` the theme-only sweep had missed.
+- **Fixed on-colours** (`2c539607`): exported `pickOnColor` + `ON_COLOR_*` from
+  `@rokkit/core` (refactored `Theme.#onColorHex`, no behaviour change) and reused them in
+  the demo skin engine (`skins.ts`) so each `on-{role}` is luminance-picked from that
+  role's 500 fill → a FIXED hex, not the flipping `surface-50`.
+- **App surface-as-text sweep** (`b4f647cc`): the 5 active learn components
+  (ThemeControls/LanguageSwitcher/PlaceholderPage/ThemePanel/ShowcaseCanvas) →
+  `ink-mute` (readable) / `ink-soft` (inactive glyphs + hover-brighten rest states).
+- **`(legacy)` route group removed** (`071c2a8e`): the superseded old-`(app)` mockup
+  (observatory/sessions/instruments/…) + setup flow Koan replaced — unreachable, held the
+  last text-paper-edge misuses; also dropped legacy-only `$lib/data/navigation.ts`. doctor
+  surface-as-text lint now **fully clean** on the app.
+- **llms.txt relocated** (`e79c0072`): per-page chrome → one `LlmsBookmark.svelte` (fixed
+  bottom-right). Shows only on docs surfaces (component Docs tab →
+  `/llms/components/{id}.txt`; guide pages → `/llms/guides/{slug}.txt`); home `SiteFooter`
+  gets a right-aligned index link (`/llms/index.txt`).
+- **Catalog tile icons** (`3b8fa0cd`): `CatalogGrid` printed `{demo.icon}` as text → broke
+  the 2 demos whose icon is a class (chat, lock-mode). Dual-render like
+  `ComposerSuggestions` (i- prefix → nested icon span, else glyph); data left as-is so the
+  conversation-history `demoIcon` consumer (renders `meta.icon` as a class) is unaffected.
+
+**Gate (all green):** `bun run check` = lint + types + svelte-check + **5074 tests / 350
+files**; `theme-contrast.e2e.ts` = no new failures beyond baseline. The contrast ratchet
+baseline WAS re-snapshotted (12→5; remaining 5 = violet/indigo-500 mid-luminance dead-zone,
+intentional). See [[project_contrast_token_rules]], [[project_chat_components]].
+
+**Open (under discussion):** consolidating **Components + Catalog** into one section
+(catalog-as-landing, click → chat-shell canvas) and whether to keep the chat-shell
+**conversation history** rail.
