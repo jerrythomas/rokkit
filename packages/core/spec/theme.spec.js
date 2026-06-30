@@ -1,5 +1,13 @@
 import { describe, it, expect } from 'vitest'
-import { shadesOf, themeRules, Theme } from '../src/theme'
+import {
+	shadesOf,
+	themeRules,
+	Theme,
+	pickOnColor,
+	ON_COLOR_DARK,
+	ON_COLOR_LIGHT,
+	ON_COLOR_Y_CROSSOVER
+} from '../src/theme'
 import { INVERTED_ROLES } from '../src/constants'
 
 const palettes = ['primary', 'secondary', 'other']
@@ -667,5 +675,31 @@ describe('Theme.getNamedTokens with per-role modes', () => {
     const tokens = theme.getNamedTokens('light')
     expect(tokens['--paper']).toMatch(/^rgb\(/)
     expect(tokens['--primary']).toMatch(/^rgb\(/)
+  })
+})
+
+describe('pickOnColor', () => {
+  it('exports the near-black / near-white endpoints and the crossover', () => {
+    expect(ON_COLOR_DARK).toBe('#161616')
+    expect(ON_COLOR_LIGHT).toBe('#fafafa')
+    expect(ON_COLOR_Y_CROSSOVER).toBe(0.19)
+  })
+
+  it('returns near-white for a fill luminance below the crossover', () => {
+    expect(pickOnColor(ON_COLOR_Y_CROSSOVER - 0.01)).toBe(ON_COLOR_LIGHT)
+    expect(pickOnColor(0)).toBe(ON_COLOR_LIGHT)
+  })
+
+  it('returns near-black for a fill luminance above the crossover', () => {
+    expect(pickOnColor(ON_COLOR_Y_CROSSOVER + 0.01)).toBe(ON_COLOR_DARK)
+    expect(pickOnColor(1)).toBe(ON_COLOR_DARK)
+  })
+
+  it('returns near-black at exactly the crossover (inclusive)', () => {
+    expect(pickOnColor(ON_COLOR_Y_CROSSOVER)).toBe(ON_COLOR_DARK)
+  })
+
+  it('falls back to near-white when luminance is null (unmeasurable fill)', () => {
+    expect(pickOnColor(null)).toBe(ON_COLOR_LIGHT)
   })
 })

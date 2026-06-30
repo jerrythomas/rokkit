@@ -95,9 +95,12 @@ export function contrastShortcuts(name, onColor = '#fafafa') {
  * Near-black / near-white on-color endpoints. Not pure #000/#fff — a hair of
  * lift reads softer on a saturated fill while still clearing AA (near-black is
  * dark enough that even a mid-bright vermillion 500 reaches ~5:1).
+ *
+ * Exported so consumers (e.g. the demo skin engine) reuse the EXACT library
+ * derivation rather than re-deriving on-colors and drifting from `Theme`.
  */
-const ON_COLOR_DARK = '#161616'
-const ON_COLOR_LIGHT = '#fafafa'
+export const ON_COLOR_DARK = '#161616'
+export const ON_COLOR_LIGHT = '#fafafa'
 /**
  * Fill luminance where ON_COLOR_DARK and ON_COLOR_LIGHT give equal WCAG contrast:
  * solve (Yf+0.05)² = (Y_dark+0.05)(Y_light+0.05) with Y_dark≈0.0074, Y_light≈0.956
@@ -105,7 +108,21 @@ const ON_COLOR_LIGHT = '#fafafa'
  * mid-luminance fills near this point clear neither pair at AA — that's the
  * palette author's choice to make, per "pick a 500 where black or white works".)
  */
-const ON_COLOR_Y_CROSSOVER = 0.19
+export const ON_COLOR_Y_CROSSOVER = 0.19
+
+/**
+ * Pick the readable on-color hex for a fill of relative luminance `y`.
+ * Bright fills (y at/above the crossover) take near-black text; dark fills take
+ * near-white. A null `y` means the fill couldn't be measured → near-white
+ * (matches the historical default).
+ *
+ * @param {number | null} y - relative luminance (0–1) of the fill, or null
+ * @returns {string} on-color hex
+ */
+export function pickOnColor(y: number | null): string {
+	if (y === null) return ON_COLOR_LIGHT
+	return y >= ON_COLOR_Y_CROSSOVER ? ON_COLOR_DARK : ON_COLOR_LIGHT
+}
 
 /**
  * Fallback chain for nullable color mappings.
@@ -284,8 +301,7 @@ export class Theme {
 		const palette = colors[this.#mapping[role]]
 		const fill = palette?.['500']
 		const y = fill !== undefined ? relativeLuminance(fill, this.#adapter.name) : null
-		if (y === null) return ON_COLOR_LIGHT
-		return y >= ON_COLOR_Y_CROSSOVER ? ON_COLOR_DARK : ON_COLOR_LIGHT
+		return pickOnColor(y)
 	}
 
 	#surfaceInkAlias(role: 'surface' | 'ink'): Record<string, string> {
