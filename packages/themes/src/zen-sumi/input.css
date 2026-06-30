@@ -140,7 +140,7 @@
 
 /* Description */
 [data-style='zen-sumi'] [data-description] {
-  @apply text-paper-edge mt-0.5 text-xs;
+  @apply text-ink-soft mt-0.5 text-xs;
 }
 
 /* Message */
@@ -150,7 +150,7 @@
 
 /* Checkbox */
 [data-style='zen-sumi'] [data-checkbox-icon] {
-  @apply text-paper-edge text-lg;
+  @apply text-ink-soft text-lg;
 }
 
 [data-style='zen-sumi']

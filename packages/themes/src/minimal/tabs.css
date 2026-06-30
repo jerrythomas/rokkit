@@ -131,7 +131,7 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-tabs-trigger] [data-tabs-icon] {
-  @apply text-paper-edge;
+  @apply text-ink-soft;
 }
 
 [data-style='minimal'] [data-tabs-trigger]:hover:not(:disabled) [data-tabs-icon] {

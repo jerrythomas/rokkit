@@ -38,7 +38,7 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-range-tick] {
-  @apply text-paper-edge;
+  @apply text-ink-soft;
 }
 
 [data-style='zen-sumi'] [data-tick-bar] {
@@ -46,7 +46,7 @@
 }
 
 [data-style='zen-sumi'] [data-tick-label] {
-  @apply text-paper-edge;
+  @apply text-ink-soft;
 }
 
 /* =============================================================================

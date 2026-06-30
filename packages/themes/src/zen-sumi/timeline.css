@@ -10,7 +10,7 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-timeline-circle] {
-  @apply border-paper-mute text-paper-edge;
+  @apply border-paper-mute text-ink-soft;
 }
 
 [data-style='zen-sumi'] [data-timeline-item][data-completed] [data-timeline-circle] {
@@ -42,5 +42,5 @@
 }
 
 [data-style='zen-sumi'] [data-timeline-description] {
-  @apply text-paper-edge;
+  @apply text-ink-soft;
 }

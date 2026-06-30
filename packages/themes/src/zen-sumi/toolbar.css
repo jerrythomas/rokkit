@@ -62,7 +62,7 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-toolbar-item] [data-toolbar-icon] {
-  @apply text-paper-edge;
+  @apply text-ink-soft;
 }
 
 [data-style='zen-sumi'] [data-toolbar-item]:hover:not(:disabled) [data-toolbar-icon] {

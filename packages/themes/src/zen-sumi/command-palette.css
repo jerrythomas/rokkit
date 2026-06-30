@@ -15,7 +15,7 @@
 }
 
 [data-style='zen-sumi'] [data-command-input] {
-	@apply text-ink-mute placeholder:text-paper-edge;
+	@apply text-ink-mute placeholder:text-ink-soft;
 }
 
 [data-style='zen-sumi'] [data-command-item] {
@@ -27,13 +27,13 @@
 }
 
 [data-style='zen-sumi'] [data-command-shortcut] {
-	@apply text-paper-edge;
+	@apply text-ink-soft;
 }
 
 [data-style='zen-sumi'] [data-command-label] {
-	@apply text-paper-edge text-xs font-medium;
+	@apply text-ink-soft text-xs font-medium;
 }
 
 [data-style='zen-sumi'] [data-command-empty] {
-	@apply text-paper-edge;
+	@apply text-ink-soft;
 }
