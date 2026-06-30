@@ -6073,3 +6073,33 @@ re-scoped, for the Koan demo's *authored narrative* (a different concern).
 **Process note:** `rm -rf packages/*/dist` breaks the learn app — `@rokkit/themes/*.css` is a
 required runtime artifact resolved from `dist` (rebuild via `cd packages/themes && bun run
 build`). See [[project_type_health_svelte_check]], [[project_chat_components]].
+
+---
+
+## 2026-06-30 — App-wide contrast audit + token vocabulary fix
+
+Root cause of the recurring faint/invisible text+border bugs (home, guides, chat,
+TOC) was **token misuse**, fixed at the token level (per the user's direction —
+config-driven, not conditional `[data-mode]` CSS):
+
+- **`paper-edge` is borders-only.** ~30 zen-sumi (+minimal/material/frosted/rokkit)
+  rules `@apply text-paper-edge` for faint text → 0.85 grey light / near-black dark
+  (invisible). Swept `text-paper-edge` → `text-ink-soft` (`089d5144`). Real borders
+  (`border-paper-edge`) and on-fill on-colors (`text-paper-soft`, which flip with
+  their fill) left intact.
+- **`paper-edge` dark `0.04` → `sumi.300`** (visible lifted hairline). One config
+  line fixed dark border + faint-text invisibility app-wide (`ad507e94`).
+- **New tokens** (`apps/learn/rokkit.config.js` overrides): `paper-edge-hover`
+  (interactive border tone — components use `paper-edge` rest + `paper-edge-hover`
+  hover, no conditionals) and `ink-fixed` (5th, non-flipping text tone for on-fixed-
+  dark-fill text). Override pipeline auto-emits utilities + per-mode vars; consume
+  via raw `var(--…)`.
+- Readable secondary text (nav/eyebrows/labels/TOC/card desc) → `ink-mute`
+  (~6.5:1), not the placeholder/disabled `ink-soft`/`ink-faint`. Guides + home
+  earlier; TOC `text-paper-edge`→`ink-mute` (`b9a9cb4d`).
+
+Verified empirically via the `/embed/gallery?mode=dark` WCAG scanner: post-sweep,
+no new low-contrast text — only the pre-existing **message-status** debt (1 item
+~2.17) remains (tracked in [[project_theme_contrast_regression]]). themes 75/75,
+tsc green. NOTE: contrast improved, so the `theme-contrast.e2e.ts` ratchet baseline
+can be re-snapshotted higher. See [[project_contrast_token_rules]].
