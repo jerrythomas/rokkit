@@ -69,6 +69,15 @@
 
 	let composerValue = $state('')
 	let streamRef = $state<HTMLElement | null>(null)
+	// Whether to keep pinning the stream to the bottom on new turns. Goes false
+	// the moment the user scrolls up to read earlier messages, so autoscroll
+	// never yanks them back down mid-read.
+	let stickToBottom = $state(true)
+	function onStreamScroll() {
+		const el = streamRef
+		if (!el) return
+		stickToBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 80
+	}
 	let fileInputRef = $state<HTMLInputElement | null>(null)
 	let dragOver = $state(false)
 	let attachError = $state<string | null>(null)
@@ -272,6 +281,8 @@
 		// and keep this tuned scroller on the .chat-stream-wrap container instead.
 		void conversation.turns.length
 		void conversation.thinking
+		// Don't fight a user who has scrolled up to read history.
+		if (!stickToBottom) return
 		// Two rAFs after tick() so the ResizeObserver inside the BarChart / Table
 		// has fired and the figure's final height is settled before we measure
 		// scrollHeight. `behavior: 'instant'` keeps the snap-to-bottom from
@@ -433,7 +444,7 @@
 		</ChatHistory>
 
 	<div class="chat-body">
-		<div class="chat-stream-wrap" bind:this={streamRef}>
+		<div class="chat-stream-wrap" bind:this={streamRef} onscroll={onStreamScroll}>
 			<ChatTimeline {messages} autoscroll={false}>
 				{#snippet message(msg)}
 					{#if msg.role === 'user'}
@@ -516,8 +527,8 @@
 				onsubmit={(text) => send(text)}
 				busy={conversation.thinking}
 			>
-				{#snippet leading()}
-					<div class="composer-leading">
+				{#snippet toolbar()}
+					<div class="composer-toolbar">
 						<button
 							type="button"
 							class="attach-btn"
@@ -534,10 +545,6 @@
 							onchange={onFileChange}
 							hidden
 						/>
-					</div>
-				{/snippet}
-				{#snippet toolbar()}
-					<div class="composer-toolbar">
 						<span class="composer-hint">
 							<kbd>↵</kbd> to send · <kbd>⇧↵</kbd> for newline
 						</span>
@@ -547,11 +554,24 @@
 							onclick={() => send(composerValue)}
 							disabled={!composerValue.trim() || conversation.thinking}
 							title="Send"
+							aria-label="Send"
 						>
 							{#if conversation.thinking}
 								<span class="composer-spinner" aria-hidden="true"></span>
 							{:else}
-								<span class="i-mdi:arrow-up" aria-hidden="true"></span>
+								<svg
+									width="14"
+									height="14"
+									viewBox="0 0 16 16"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="1.6"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+								>
+									<path d="M2 8 L14 2 L10 14 L8 9 L2 8 Z" />
+								</svg>
 							{/if}
 						</button>
 					</div>
