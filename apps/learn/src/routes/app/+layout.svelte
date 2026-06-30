@@ -38,6 +38,7 @@
 		appendTweak,
 		clearTweaksFor,
 		loadConversation,
+		removeConversation,
 		setCurrentId,
 		getCurrentId,
 		getCurrentConversation,
@@ -1299,6 +1300,30 @@ ${tabsTag}`
 
 <div class="koan-shell" use:shortcuts={commands}>
 	<div class="stage">
+		{#snippet convRow(conv: Conversation)}
+			<div class="conv-wrap">
+				<button
+					type="button"
+					class="conv"
+					class:conv-active={conv.id === getCurrentId()}
+					data-conv-item
+					onclick={() => resumeConversation(conv)}
+				>
+					<span class="conv-icon {convIcon(conv)}" aria-hidden="true"></span>
+					<span class="conv-title">{conv.title}</span>
+					<span class="conv-when">{recencyLabel(conv)}</span>
+				</button>
+				<button
+					type="button"
+					class="conv-del"
+					aria-label="Delete {conv.title}"
+					title="Delete conversation"
+					onclick={() => removeConversation(conv.id)}
+				>
+					<span class="i-mdi:close" aria-hidden="true"></span>
+				</button>
+			</div>
+		{/snippet}
 		<ChatHistory bind:collapsed={shell.collapsed} onnew={startNewConversation}>
 			{#if allConv.length === 0}
 				<div class="conv-empty">
@@ -1309,49 +1334,19 @@ ${tabsTag}`
 			{#if buckets.today.length > 0}
 				<div class="group-label">Today</div>
 				{#each buckets.today as conv (conv.id)}
-					<button
-						type="button"
-						class="conv"
-						class:conv-active={conv.id === getCurrentId()}
-						data-conv-item
-						onclick={() => resumeConversation(conv)}
-					>
-						<span class="conv-icon {convIcon(conv)}" aria-hidden="true"></span>
-						<span class="conv-title">{conv.title}</span>
-						<span class="conv-when">{recencyLabel(conv)}</span>
-					</button>
+					{@render convRow(conv)}
 				{/each}
 			{/if}
 			{#if buckets.yesterday.length > 0}
 				<div class="group-label">Yesterday</div>
 				{#each buckets.yesterday as conv (conv.id)}
-					<button
-						type="button"
-						class="conv"
-						class:conv-active={conv.id === getCurrentId()}
-						data-conv-item
-						onclick={() => resumeConversation(conv)}
-					>
-						<span class="conv-icon {convIcon(conv)}" aria-hidden="true"></span>
-						<span class="conv-title">{conv.title}</span>
-						<span class="conv-when">{recencyLabel(conv)}</span>
-					</button>
+					{@render convRow(conv)}
 				{/each}
 			{/if}
 			{#if buckets.earlier.length > 0}
 				<div class="group-label">Earlier</div>
 				{#each buckets.earlier as conv (conv.id)}
-					<button
-						type="button"
-						class="conv"
-						class:conv-active={conv.id === getCurrentId()}
-						data-conv-item
-						onclick={() => resumeConversation(conv)}
-					>
-						<span class="conv-icon {convIcon(conv)}" aria-hidden="true"></span>
-						<span class="conv-title">{conv.title}</span>
-						<span class="conv-when">{recencyLabel(conv)}</span>
-					</button>
+					{@render convRow(conv)}
 				{/each}
 			{/if}
 			{#snippet collapsedBody()}
@@ -2919,6 +2914,54 @@ ${tabsTag}`
 		color: var(--ink-soft);
 		letter-spacing: 0.02em;
 		flex-shrink: 0;
+		transition: opacity 120ms ease;
+	}
+
+	.conv-wrap {
+		position: relative;
+	}
+
+	/* Per-row delete (×) — revealed on hover/focus, sits over the timestamp. */
+	.conv-del {
+		position: absolute;
+		top: 50%;
+		right: 6px;
+		transform: translateY(-50%);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 20px;
+		height: 20px;
+		padding: 0;
+		border: 0;
+		border-radius: 4px;
+		background: transparent;
+		color: var(--ink-soft);
+		cursor: pointer;
+		opacity: 0;
+		transition:
+			opacity 120ms ease,
+			color 120ms ease,
+			background 120ms ease;
+	}
+
+	.conv-wrap:hover .conv-del,
+	.conv-del:focus-visible {
+		opacity: 1;
+	}
+
+	.conv-del:hover {
+		color: var(--ink);
+		background: var(--paper-mute);
+	}
+
+	.conv-del [class^='i-'] {
+		width: 13px;
+		height: 13px;
+	}
+
+	.conv-wrap:hover .conv-when {
+		opacity: 0;
 	}
 
 	.conv-mini {
