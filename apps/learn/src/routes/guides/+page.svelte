@@ -63,14 +63,9 @@
 		background: var(--paper, #fff);
 	}
 	.cards li a:hover {
-		border-color: var(--ink-soft, #888);
-	}
-	/* Dark mode: paper-edge resolves to the near-black etched hairline, which is
-	   invisible on a dark card. Use a visible paper-mute resting border so cards
-	   don't read as borderless; the ink-soft hover then reads as a gentle lift,
-	   not a jump from invisible to bright. */
-	:global([data-mode='dark']) .cards li a {
-		border-color: var(--paper-mute);
+		/* Consistent border pattern: paper-edge (rest) → paper-edge-hover (hover),
+		   same tokens in light + dark; per-mode values live in rokkit.config.js. */
+		border-color: var(--paper-edge-hover);
 	}
 	.cards li strong {
 		font: 600 14px var(--font-display);

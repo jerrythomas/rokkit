@@ -123,11 +123,27 @@ export default {
 		'canvas-bleed': { light: 'kami.100', dark: 'sumi.900' },
 
 		// Reserved-name overrides — these replace the named-token defaults
-		// emitted by the skin pipeline. `paper-edge` in dark mode would
-		// otherwise resolve to sumi.400 (LIGHTER than the sumi.50 paper bg)
-		// and produce a "lifted edge" look. Pin it to a value DARKER than
-		// the canvas so the etched hairline reads correctly.
-		'paper-edge': { light: 'kami.400', dark: 'oklch(0.04 0.025 85)' }
+		// emitted by the skin pipeline. `paper-edge` is the hairline border
+		// tone. In dark it was previously pinned near-black (oklch 0.04) for an
+		// "etched" look, but on a same-colour-as-canvas element that hairline is
+		// effectively invisible — borders disappeared across the app in dark
+		// (cards, composer, rails). Use a subtle LIFTED hairline (sumi.300,
+		// lighter than the sumi.50 canvas) so borders read in both modes.
+		'paper-edge': { light: 'kami.400', dark: 'sumi.300' },
+
+		// `paper-edge-hover` — the interactive/hover border tone. Components use
+		// `paper-edge` (rest) + `paper-edge-hover` (hover) with the SAME token
+		// names in both modes; the per-mode values live here, so a border that
+		// reads wrong is a config tweak, not conditional [data-mode] CSS. Tuned
+		// to be clearly visible on hover in both light (kami.600) and dark
+		// (sumi.500) — no near-black etched value here.
+		'paper-edge-hover': { light: 'kami.600', dark: 'sumi.500' },
+
+		// `ink-fixed` — a fifth text tone that does NOT flip with mode (the four
+		// flipping text tones are ink / ink-mute / ink-soft / ink-faint). For
+		// text that sits on a fixed-dark fill regardless of page mode (badges,
+		// tooltips, active step pips), so it stays a readable warm near-white.
+		'ink-fixed': { light: 'sumi.900', dark: 'sumi.900' }
 
 		// `on-primary` is no longer overridden — the core now auto-derives every
 		// on-color (near-black / near-white) from the fill's luminance. The bright
