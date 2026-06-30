@@ -17,7 +17,6 @@
 	import type { TableColumn } from '@rokkit/ui'
 	import { FormRenderer } from '@rokkit/forms'
 	import { alerts, commands } from '@rokkit/states'
-	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
 	import LlmsBookmark from '$lib/components/LlmsBookmark.svelte'
 	import { theme } from '$lib/stores/theme.svelte'
 	import { vibe } from '@rokkit/states'
@@ -1377,49 +1376,31 @@ ${tabsTag}`
 			<div class="chat-header">
 				<span class="chat-title">
 					Conversation
-					{#if shell.phase !== 'welcome'}
+					{#if shell.phase !== 'landing'}
 						<span class="chat-sub">· {shell.lastQuery}</span>
 					{/if}
 				</span>
+				{#if shell.phase === 'response'}
+					<a class="chat-browse" href="/app">
+						<span class="i-mdi:view-grid-outline" aria-hidden="true"></span>
+						Browse
+					</a>
+				{/if}
 			</div>
 
-			{#if shell.phase === 'welcome'}
+			{#if shell.phase === 'landing'}
 				<div class="welcome-stream">
 					<h2 class="welcome-hello">Welcome back.</h2>
 					<p class="welcome-lede">
-						Tell me what you want to build. As you type I'll match
-						components from the catalog — or press <kbd>⌘</kbd><kbd>↵</kbd>
-						to send.
+						Tell me what you want to build — I'll match components as you
+						type, or browse the catalog on the right. Press
+						<kbd>⌘</kbd><kbd>↵</kbd> to send.
 					</p>
 
 					<ComposerSuggestions
 						query={shell.composerValue}
 						onpick={pickSuggestion}
 					/>
-
-					<a class="welcome-browse" href="/app/catalog">
-						<span class="i-mdi:view-grid-outline" aria-hidden="true"></span>
-						Browse the full catalog
-						<span class="i-mdi:arrow-right" aria-hidden="true"></span>
-					</a>
-				</div>
-			{:else if shell.phase === 'catalog'}
-				<div class="welcome-stream">
-					<h2 class="welcome-hello">Catalog</h2>
-					<p class="welcome-lede">
-						Every component in the library. Pick a tile on the right to
-						mount it — or filter from the composer below.
-					</p>
-
-					<ComposerSuggestions
-						query={shell.composerValue}
-						onpick={pickSuggestion}
-					/>
-
-					<a class="welcome-browse" href="/app">
-						<span class="i-mdi:arrow-left" aria-hidden="true"></span>
-						Back to welcome
-					</a>
 				</div>
 			{:else if shell.phase === 'thinking'}
 				<ChatStream>
@@ -2079,7 +2060,7 @@ ${tabsTag}`
 
 			<ChatComposer
 				bind:value={shell.composerValue}
-				placeholder={shell.phase === 'welcome'
+				placeholder={shell.phase === 'landing'
 					? 'Ask anything · type / for commands'
 					: 'Refine · ask follow-ups · request another component'}
 				running={shell.phase === 'thinking'}
@@ -2171,30 +2152,14 @@ ${tabsTag}`
 						title="LLM-ready spec for {currentMeta.title}"
 					/>
 				{/if}
-			{:else if shell.phase === 'welcome'}
-				<div class="welcome-hero">
-					<div class="mark"><RokkitWordmark height={64} /></div>
-					<div class="lede">Pass the data. The component does the rest.</div>
-					<div class="sub">
-						Type a question on the left. The answer mounts here — themed,
-						density-tuned, copyable, and identical to what you'd ship.
-					</div>
-					<div class="meta">
-						<span>style</span>
-						<span class="meta-value">{vibe.style}</span>
-						<span class="meta-sep">·</span>
-						<span>47 components</span>
-						<span class="meta-sep">·</span>
-						<span>Svelte 5 runes</span>
-					</div>
-				</div>
-			{:else if shell.phase === 'catalog'}
+			{:else if shell.phase === 'landing'}
 				<div class="canvas-head">
 					<div class="canvas-eyebrow">Browse · catalog</div>
-					<div class="canvas-title">Every component, one click away</div>
+					<div class="canvas-title">Pass the data. The component does the rest.</div>
 					<div class="canvas-sub">
-						Type to filter, or jump straight into a tile. Each lands you
-						on the live demo with the chat on the left and Tweaks at hand.
+						Every component in the library — {vibe.style} · 47 components · Svelte 5
+						runes. Type to filter, or jump into a tile; it mounts live with the
+						chat on the left and Tweaks at hand.
 					</div>
 				</div>
 				<div class="canvas-body catalog">
@@ -2991,6 +2956,8 @@ ${tabsTag}`
 		padding: 12px 16px;
 		border-bottom: 1px solid var(--paper-edge);
 		flex-shrink: 0;
+		display: flex;
+		align-items: center;
 	}
 
 	.tweaks-slab {
@@ -3104,32 +3071,28 @@ ${tabsTag}`
 		vertical-align: 1px;
 	}
 
-	.welcome-browse {
+	.chat-browse {
 		display: inline-flex;
 		align-items: center;
-		gap: 6px;
-		margin-top: auto;
-		padding: 6px 10px;
-		font: 500 12px var(--font-ui);
+		gap: 5px;
+		margin-left: auto;
+		font: 500 11px var(--font-ui);
 		color: var(--ink-mute);
-		background: transparent;
-		border: 0;
-		border-radius: var(--density-radius-base);
 		text-decoration: none;
-		align-self: flex-start;
+		padding: 3px 8px;
+		border: 1px solid var(--paper-edge);
+		border-radius: 6px;
 		transition:
 			color 120ms ease,
-			background 120ms ease;
+			border-color 120ms ease;
 	}
-
-	.welcome-browse:hover {
+	.chat-browse:hover {
 		color: var(--ink);
-		background: var(--paper-mute);
+		border-color: var(--paper-edge-hover);
 	}
-
-	.welcome-browse [class*='i-mdi'] {
-		width: 14px;
-		height: 14px;
+	.chat-browse [class^='i-'] {
+		width: 13px;
+		height: 13px;
 	}
 
 	.canvas {
