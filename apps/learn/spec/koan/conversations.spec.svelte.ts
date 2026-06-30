@@ -13,6 +13,7 @@ describe('conversations — startNew dedup', () => {
 
 	it('app surface: same title upserts (one row, refreshed, moved to top, current)', () => {
 		const first = startNew('app', 'Tabs')
+		const created = conversations[0].updatedAt
 		startNew('app', 'Table')
 		const again = startNew('app', 'Tabs')
 
@@ -22,6 +23,7 @@ describe('conversations — startNew dedup', () => {
 		expect(conversations[0].id).toBe(first)
 		expect(conversations[0].turns.length).toBe(1)
 		expect(getCurrentId()).toBe(first)
+		expect(Date.parse(conversations[0].updatedAt)).toBeGreaterThanOrEqual(Date.parse(created))
 	})
 
 	it('app surface: different titles create separate rows', () => {

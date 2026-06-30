@@ -198,7 +198,8 @@ function touch(id: ConversationId): void {
 
 /**
  * Start a new conversation, set it as current, and append the user's
- * initial query. Returns the new conversation id.
+ * initial query. Returns the conversation id — the existing row's id
+ * when an `app` title matched, otherwise a new one.
  */
 export function startNew(surface: ConversationSurface, query: string): ConversationId {
 	const at = nowIso()
