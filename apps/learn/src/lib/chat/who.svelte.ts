@@ -7,7 +7,7 @@
  *   configureWho({ assistant: 'Rokkit' })   // user stays the default 'you'
  *
  * Defaults are canonical lowercase names ('you' / 'assistant'). Visual
- * casing is the theme's call via CSS (`[data-chat-message-head]` defaults
+ * casing is the theme's call via CSS (`[data-koanchat-message-head]` defaults
  * to `text-transform: uppercase`). ChatMessage shows a single label per
  * turn — either the per-message `head` (status badges like "MOUNTED" /
  * "EXPLAINED") or this `who` value, in that order.

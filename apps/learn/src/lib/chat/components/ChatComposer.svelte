@@ -44,25 +44,25 @@
 	}
 </script>
 
-<div data-chat-composer data-composer-state={running ? 'running' : 'idle'}>
-	<div data-chat-composer-inner>
+<div data-koanchat-composer data-composer-state={running ? 'running' : 'idle'}>
+	<div data-koanchat-composer-inner>
 		<textarea
 			rows="1"
 			{placeholder}
 			bind:value
 			onkeydown={handleKey}
 		></textarea>
-		<div data-chat-composer-controls>
-			<div data-chat-composer-left>
+		<div data-koanchat-composer-controls>
+			<div data-koanchat-composer-left>
 				{#if leftActions}
 					{@render leftActions()}
 				{/if}
 			</div>
-			<div data-chat-composer-right>
+			<div data-koanchat-composer-right>
 				{#if rightActions}
 					{@render rightActions()}
 				{/if}
-				<span data-chat-composer-hint>
+				<span data-koanchat-composer-hint>
 					{#if hint}
 						{hint}
 					{:else}
@@ -73,7 +73,7 @@
 				</span>
 				<button
 					type="button"
-					data-chat-composer-send
+					data-koanchat-composer-send
 					data-accent={accent ? '' : undefined}
 					title="Send"
 					disabled={!value.trim() || running}
@@ -81,7 +81,7 @@
 					aria-label="Send"
 				>
 					{#if running}
-						<span data-chat-composer-spinner></span>
+						<span data-koanchat-composer-spinner></span>
 					{:else}
 						<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 							<path d="M2 8 L14 2 L10 14 L8 9 L2 8 Z"/>

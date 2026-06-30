@@ -41,32 +41,32 @@
 	)
 </script>
 
-<div data-chat-response>
-	<div data-chat-response-header>
-		<div data-chat-response-title>
+<div data-koanchat-response>
+	<div data-koanchat-response-header>
+		<div data-koanchat-response-title>
 			{#if icon}
-				<span data-chat-response-icon>{@render icon()}</span>
+				<span data-koanchat-response-icon>{@render icon()}</span>
 			{/if}
-			<span data-chat-response-name>{name}</span>
-			{#if meta}<span data-chat-response-meta>{meta}</span>{/if}
+			<span data-koanchat-response-name>{name}</span>
+			{#if meta}<span data-koanchat-response-meta>{meta}</span>{/if}
 		</div>
 		{#if kicker}
-			<span data-chat-response-kicker style={kickerStyle}>{kicker}</span>
+			<span data-koanchat-response-kicker style={kickerStyle}>{kicker}</span>
 		{/if}
 	</div>
 
-	<div data-chat-response-body data-flush={flush ? '' : undefined}>
+	<div data-koanchat-response-body data-flush={flush ? '' : undefined}>
 		{#if children}
 			{@render children()}
 		{/if}
 	</div>
 
 	{#if props || actions}
-		<div data-chat-response-footer>
-			<div data-chat-response-props>
+		<div data-koanchat-response-footer>
+			<div data-koanchat-response-props>
 				{#if props}{@render props()}{/if}
 			</div>
-			<div data-chat-response-actions>
+			<div data-koanchat-response-actions>
 				{#if actions}{@render actions()}{/if}
 			</div>
 		</div>

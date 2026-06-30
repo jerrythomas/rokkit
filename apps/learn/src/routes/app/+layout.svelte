@@ -3210,7 +3210,7 @@ ${tabsTag}`
 		flex-shrink: 0;
 	}
 
-	:global(.canvas-body.response > [data-chat-response]) {
+	:global(.canvas-body.response > [data-koanchat-response]) {
 		flex: 1;
 		min-height: 0;
 		display: flex;
@@ -3220,14 +3220,14 @@ ${tabsTag}`
 	/* Inside ChatResponse the mount wrapper takes the remaining height
 	   so the live component itself fills the canvas instead of sitting
 	   in a fixed min-height box with empty space underneath. */
-	:global(.canvas-body.response [data-chat-response-body]) {
+	:global(.canvas-body.response [data-koanchat-response-body]) {
 		flex: 1;
 		min-height: 0;
 		display: flex;
 		flex-direction: column;
 	}
 
-	:global(.canvas-body.response [data-chat-response-body] > *) {
+	:global(.canvas-body.response [data-koanchat-response-body] > *) {
 		flex: 1;
 		min-height: 0;
 	}
@@ -3585,7 +3585,7 @@ ${tabsTag}`
 		gap: 12px;
 	}
 
-	:global([data-chat-message] .mounted-callout) {
+	:global([data-koanchat-message] .mounted-callout) {
 		margin-top: 8px;
 		padding: 8px 10px;
 		background: var(--accent-soft);
@@ -3605,17 +3605,17 @@ ${tabsTag}`
 			border-color 120ms;
 	}
 
-	:global([data-chat-message] .mounted-callout:not(:disabled):hover) {
+	:global([data-koanchat-message] .mounted-callout:not(:disabled):hover) {
 		background: color-mix(in oklab, var(--accent) 10%, var(--paper-soft));
 		border-style: solid;
 	}
 
-	:global([data-chat-message] .mounted-callout:disabled) {
+	:global([data-koanchat-message] .mounted-callout:disabled) {
 		cursor: default;
 		opacity: 0.92;
 	}
 
-	:global([data-chat-message] .glossary) {
+	:global([data-koanchat-message] .glossary) {
 		margin: 4px 0 0;
 		padding-left: 18px;
 		font-size: 13px;
@@ -3623,16 +3623,16 @@ ${tabsTag}`
 		color: var(--ink-mute);
 	}
 
-	:global([data-chat-message] .glossary li) {
+	:global([data-koanchat-message] .glossary li) {
 		margin-bottom: 2px;
 	}
 
-	:global([data-chat-message] .glossary strong) {
+	:global([data-koanchat-message] .glossary strong) {
 		color: var(--ink);
 		font-weight: 500;
 	}
 
-	:global([data-chat-message] .mounted-callout .callout-label) {
+	:global([data-koanchat-message] .mounted-callout .callout-label) {
 		font: 500 10.5px var(--font-mono);
 		color: var(--accent);
 		letter-spacing: 0.12em;
