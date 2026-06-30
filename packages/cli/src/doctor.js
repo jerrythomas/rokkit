@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
-import { existsSync, readFileSync, writeFileSync } from 'fs'
-import { resolve } from 'path'
+import { existsSync, readFileSync, writeFileSync, readdirSync } from 'fs'
+import { resolve, join } from 'path'
 import { loadConfig as loadParsedConfig } from './config.js'
 import {
 	generateUnoConfig,
@@ -170,6 +170,26 @@ export function runChecks(fs) {
 	]
 }
 
+const SKIP_DIRS = new Set(['node_modules', '.svelte-kit', 'dist', '.git', 'coverage'])
+
+/**
+ * Recursively list absolute file paths under `dir`, skipping vendored/build dirs.
+ * @param {string} dir
+ * @returns {string[]}
+ */
+function listFiles(dir) {
+	const out = []
+	for (const entry of readdirSync(dir, { withFileTypes: true })) {
+		if (entry.isDirectory()) {
+			if (SKIP_DIRS.has(entry.name)) continue
+			out.push(...listFiles(join(dir, entry.name)))
+		} else {
+			out.push(join(dir, entry.name))
+		}
+	}
+	return out
+}
+
 /**
  * Create a real filesystem adapter rooted at cwd.
  * @param {string} cwd
@@ -178,7 +198,8 @@ function createFsAdapter(cwd) {
 	return {
 		exists: (p) => existsSync(p),
 		read: (p) => readFileSync(p, 'utf-8'),
-		resolve: (p) => resolve(cwd, p)
+		resolve: (p) => resolve(cwd, p),
+		list: (dir) => listFiles(dir)
 	}
 }
 
@@ -410,6 +431,49 @@ export function validateConfigShape(config) {
 }
 
 /**
+ * Patterns that flag a surface/border token being used as a text colour.
+ * paper-edge / paper-mute are border/surface tones — used as text they're faint
+ * in light and invisible in dark. paper / paper-soft are legitimate on-colours.
+ */
+const TEXT_MISUSE_PATTERNS = [
+	/text-paper-edge\b/,
+	/text-paper-mute\b/,
+	/color:\s*var\(\s*--paper-edge\s*\)/,
+	/color:\s*var\(\s*--paper-mute\s*\)/
+]
+
+/**
+ * Advisory lint: scan src/ for surface/border tokens used as text colour.
+ * @param {{ list?: (dir: string) => string[], exists: (p: string) => boolean, read: (p: string) => string, resolve: (p: string) => string }} fs
+ * @returns {Array<{ id: string, label: string, status: 'warn', fixable: false, fix: string }>}
+ */
+export function checkTextTokenUsage(fs) {
+	if (typeof fs.list !== 'function' || !fs.exists(fs.resolve('src'))) return []
+
+	const cwd = process.cwd()
+	const hits = []
+	for (const file of fs.list(fs.resolve('src'))) {
+		if (!file.endsWith('.css') && !file.endsWith('.svelte')) continue
+		const lines = fs.read(file).split('\n')
+		const display = file.startsWith(cwd) ? file.slice(cwd.length).replace(/^\//, '') : file
+		lines.forEach((line, i) => {
+			if (TEXT_MISUSE_PATTERNS.some((re) => re.test(line))) hits.push(`${display}:${i + 1}`)
+		})
+	}
+
+	if (hits.length === 0) return []
+	return [
+		{
+			id: 'surface-token-as-text',
+			label: 'no surface/border token used as text colour',
+			status: 'warn',
+			fixable: false,
+			fix: `paper-edge / paper-mute are border/surface tokens — never use them for text (faint in light, invisible in dark). Use the ink scale (ink-mute for readable secondary text). Found at:\n         ${hits.join('\n         ')}`
+		}
+	]
+}
+
+/**
  * Interactive doctor command — validates project setup.
  * @param {{ fix?: boolean }} [opts]
  */
@@ -439,6 +503,19 @@ export async function doctor(opts = {}) {
 	if (contrastChecks.length > 0) {
 		console.info('\nContrast (WCAG AA · light + dark):')
 		for (const c of contrastChecks) {
+			console.info(`  WARN  ${c.label}`)
+			console.info(`        ${c.fix}`)
+		}
+	}
+	/* v8 ignore stop */
+
+	const usageChecks = checkTextTokenUsage(createFsAdapter(cwd))
+	/* v8 ignore start -- this print block depends on the real filesystem walk finding
+	   a misused token in cwd; in the JSDOM doctor() test the temp project is clean, so
+	   usageChecks is [] and this is unreachable. checkTextTokenUsage is covered directly. */
+	if (usageChecks.length > 0) {
+		console.info('\nToken usage:')
+		for (const c of usageChecks) {
 			console.info(`  WARN  ${c.label}`)
 			console.info(`        ${c.fix}`)
 		}
