@@ -9,40 +9,19 @@
 	const { height = 20, alt = 'Rokkit' }: RokkitWordmarkProps = $props()
 </script>
 
-<!-- Render both variants; CSS hides the one not matching body[data-mode]. -->
-<!-- Avoids prop-drilled mode reactivity that can desync across components. -->
+<!-- The colorful wordmark (red lettering + orange icon) reads on both light and
+     dark surfaces, so we use it in every mode — no white dark-mode variant. -->
 <img
 	src="/rokkit-light.svg"
 	{alt}
 	{height}
 	class="rokkit-wordmark"
-	data-variant="light"
 	style:height={`${height}px`}
-/>
-<img
-	src="/rokkit-dark.svg"
-	{alt}
-	{height}
-	class="rokkit-wordmark"
-	data-variant="dark"
-	style:height={`${height}px`}
-	aria-hidden="true"
 />
 
 <style>
 	.rokkit-wordmark {
 		width: auto;
-	}
-	.rokkit-wordmark[data-variant='light'] {
-		display: block;
-	}
-	.rokkit-wordmark[data-variant='dark'] {
-		display: none;
-	}
-	:global(body[data-mode='dark']) .rokkit-wordmark[data-variant='light'] {
-		display: none;
-	}
-	:global(body[data-mode='dark']) .rokkit-wordmark[data-variant='dark'] {
 		display: block;
 	}
 </style>
