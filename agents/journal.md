@@ -6147,3 +6147,41 @@ intentional). See [[project_contrast_token_rules]], [[project_chat_components]].
 **Open (under discussion):** consolidating **Components + Catalog** into one section
 (catalog-as-landing, click → chat-shell canvas) and whether to keep the chat-shell
 **conversation history** rail.
+
+---
+
+## 2026-06-30 (cont.) — Components + Catalog consolidation (sub-project 1) shipped
+
+Executed `docs/superpowers/{specs,plans}/2026-06-30-components-catalog-consolidation*.md`
+via subagent-driven development (6 tasks, spec + code-quality review each).
+
+- **Conversation dedup** (`8e67bfc5`, `d96905d9`): `startNew` upserts `app`-surface
+  conversations by title — re-exploring a component reuses its row (turns reset, moved
+  to top) instead of stacking duplicate-titled history entries. `chat` surface unchanged.
+  +4 unit tests.
+- **Phase collapse** (`0232dc23`, `eaec18fb`): `ShellPhase` `welcome`+`catalog` → single
+  `landing`; `setShellLanding()` replaces both setters; default `landing`. `/app` is now
+  the catalog-first landing (compact hero header in `canvas-head` + `CatalogGrid`);
+  `/app/catalog` → `redirect(308, '/app')` (typed `PageLoad`). Rail welcome/catalog
+  branches merged; a `.chat-browse` link (→ /app) added to the chat-header for `response`
+  phase. Removed orphaned `welcome-hero`/`welcome-browse` CSS + the `RokkitWordmark` import.
+- **Nav** (`02d28b58`): single **Components** entry (Catalog folded in); match simplified
+  to `startsWith('/app')`.
+- **Repoint** (`aa16f171`): remaining `/app/catalog` links → `/app` + stale comments
+  fixed; zero `/app/catalog` refs remain.
+- **E2E** (`73982b32`): `e2e/components-catalog.e2e.ts` — nav has no Catalog, `/app`
+  shows the grid, `/app/catalog` redirects, tile-click mounts the demo, Browse returns.
+  4/4 pass.
+- Earlier same day: catalog tiles rendered icon-class metas (chat, lock-mode) as literal
+  text — `CatalogGrid` now dual-renders icon-class vs glyph (`3b8fa0cd`).
+
+**Hybrid rail [C]:** the persistent `ChatHistory` column stays (real localStorage resume);
+the catalog landing serves browse; the chat-header `Browse` link returns from a demo.
+
+**Gate:** `bun run check` = lint + types + svelte-check + **5078 tests / 351 files**;
+`theme-contrast.e2e.ts` no new failures beyond baseline. All on `develop`.
+
+**Next — Sub-project 2 (AI demo evolution):** rename "Chat demo", a mode-selection entry
+(Simulated / OpenRouter / Web LLM cards + capabilities + example prompts), and richer
+conversation **summary titles** (+ chat-surface dedup). Separate spec/plan. See
+[[project_demo_app]].
