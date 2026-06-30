@@ -88,15 +88,27 @@
 	gap: 8px;
 	padding: 10px 12px;
 	background: var(--paper-soft);
-	border: 1px solid var(--paper-edge);
+	/* Match the standard input chrome: a subtle paper-mute hairline at rest,
+	   darkening to ink-soft on focus — NOT paper-edge (the near-black etched
+	   edge in dark mode, which reads as a heavy border). */
+	border: 1px solid var(--paper-mute);
 	border-radius: 10px;
 	transition: border-color 120ms ease;
 }
 
-/* Single, calm focus affordance — just darken the border (no extra ring,
-   which read as a doubled/too-thick border). */
+/* Single, calm focus affordance — just darken the border (no ring), exactly
+   like [data-input-root]:focus-within. */
 [data-chat-composer]:focus-within {
 	border-color: var(--ink-soft);
+}
+
+/* Disabled — mirror the input disabled treatment (dim + not-allowed). */
+[data-chat-composer]:has([data-chat-input]:disabled) {
+	opacity: 0.55;
+}
+
+[data-chat-input]:disabled {
+	cursor: not-allowed;
 }
 
 [data-chat-input] {

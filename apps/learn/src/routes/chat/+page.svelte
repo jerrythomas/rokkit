@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { tick } from 'svelte'
+	import { tick, onMount } from 'svelte'
 	import { ChatHistory, configureWho } from '$lib/chat'
 	import { Button, Toggle, ChatTimeline, ChatComposer, ChatMessage } from '@rokkit/ui'
 	import type { ChatMessage as ChatMessageData } from '@rokkit/ui'
@@ -54,12 +54,15 @@
 		mode === 'scripted' ? 'Scripted' : mode === 'openrouter' ? 'OpenRouter' : 'Web-LLM'
 	)
 
-	$effect(() => {
-		// Probe WebGPU on mount so the toggle shows the right state.
+	onMount(() => {
+		// Probe WebGPU once so the toggle shows the right state.
 		void detectWebGPU()
-		// If we arrived with a current chat conversation (e.g. via the
-		// shared sidebar from /app), restore the toggle to whatever
-		// provider produced the last assistant turn.
+		// If we arrived with a current chat conversation (e.g. via the shared
+		// sidebar from /app), restore the toggle to whatever provider produced
+		// the last assistant turn. MOUNT-ONLY (not a reactive $effect): re-running
+		// this on every turn change reverted a manual provider switch — pick
+		// OpenRouter, send, turns change, and it snapped back to the last turn's
+		// provider (scripted). resumeConversation() calls it explicitly on switch.
 		syncLLMFromCurrentConversation()
 	})
 
@@ -145,7 +148,9 @@
 						id: '__thinking',
 						role: 'assistant' as const,
 						status: 'streaming' as const,
-						data: { thinking: true }
+						// Stamp the in-flight provider so the bot-name eyebrow shows
+						// who is answering (OpenRouter / Web-LLM / Scripted) while it thinks.
+						data: { thinking: true, provider: mode }
 					}
 				]
 			: [])
@@ -461,6 +466,11 @@
 								<span class="msg-avatar" data-role="assistant" aria-hidden="true">
 									<span class="i-mdi:dots-horizontal"></span>
 								</span>
+							{/snippet}
+							{#snippet label()}
+								{#if msg.data?.provider}
+									<span class="msg-eyebrow">{msg.data.provider}</span>
+								{/if}
 							{/snippet}
 							{#snippet body()}
 								<span class="thinking">Picking the right tool…</span>
