@@ -6028,3 +6028,48 @@ component: TDD red→green, autofixer clean, per-package tsc/eslint.
 `chat-demo` store as the reference orchestration; then delete `$lib/chat`), then migrate Koan
 `/app` (replace `ChatPanel`/`TimelineList`/`ConversationList`; delete duplicates). A headless
 `createChat` store in @rokkit/states remains deferred.
+
+---
+
+## 2026-06-29/30 — Chat adoption, theme CSS, and a pile of QA fixes
+
+**Outcome of the chat initiative (concluded):** the `@rokkit/ui` chat components are
+first-class and power the real chat surface; the app-local `$lib/chat` kit is kept,
+re-scoped, for the Koan demo's *authored narrative* (a different concern).
+
+- **Namespace collision (root cause of the earlier churn):** the new library components and
+  the old `$lib/chat` components both emitted `data-chat-*`, and both stylesheets load
+  app-wide → they bled onto each other (broke `/chat` composer borders + the `/app/chat`
+  rail). Fixed by re-namespacing the legacy kit to **`data-koanchat-*`** (`b174c859`),
+  freeing `data-chat-*` for the library.
+- **Theme CSS:** authored `@rokkit/themes` `base/chat.css` (`a8c70fae`) — headless, named
+  tokens, styles all five components across themes (the styling layer Phase 1 skipped).
+- **`/chat` migrated** onto `ChatTimeline`/`ChatMessage`/`ChatComposer` with `BlockList` in
+  the `message` snippet (`af722746`); matches the old look. Composer polish (`128bc21e`):
+  stick-to-bottom scroll guard, paper-plane send icon (matches `/app`), attach moved into
+  the bottom controls row. Legacy `ChatHistory` sidebar retained (Option A — library one
+  lacks collapse/search/recency-buckets).
+- **`/app` NOT migrated (deliberate):** its 64 `<ChatMessage kind=… icon=…>children`, 13
+  `<ChatResponse>` (artifact cards, no library equivalent), 13 `<Chips>` are an
+  authored-narrative presentation kit, not a data-driven chat. Forcing the data-driven
+  library components there would be a lossy rewrite for negative value. `$lib/chat` stays as
+  the Koan kit (now `data-koanchat-*`); **not deleted** (T10/T11 closed as won't-do).
+
+**Companion QA fixes this session (all verified in-browser via Playwright):**
+- `fix(blocks)` SVG export download — anchor wasn't in the DOM + the object URL was revoked
+  synchronously (Chrome logged it but wrote no file). Append + deferred revoke + filename
+  sanitize. Regression test rewritten.
+- `fix(learn)` demo Code tab — `hasActiveCode` was `Boolean(shell.demoType)` (true for every
+  demo) but `activeDemoCode`'s switch only covers 11 demos → Code showed identical to Live;
+  gate the tab on `activeDemoCode`.
+- `fix(themes)` zen-sumi filled-button hover — the default-style `:hover` flipped *every*
+  variant to `bg-ink`; in light mode the near-black `on-primary` label on the near-black ink
+  hover bg was invisible. Colored variants now darken their own fill.
+- `fix(learn)` light-mode contrast — nav/eyebrows/labels/footer used `ink-soft`(500,
+  placeholder)/`ink-faint`(300, disabled) for real secondary text (~2.1:1). On the kami light
+  ramp no shade < 700 clears AA (paper-edge is at 400), so genuine secondary text → `ink-mute`
+  (700, ~6.5:1). Home-page failing text 34→5 (remaining 5 = deliberate brand-vermillion).
+
+**Process note:** `rm -rf packages/*/dist` breaks the learn app — `@rokkit/themes/*.css` is a
+required runtime artifact resolved from `dist` (rebuild via `cd packages/themes && bun run
+build`). See [[project_type_health_svelte_check]], [[project_chat_components]].
