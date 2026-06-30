@@ -10,6 +10,7 @@ import {
 	serializeRokkitConfig
 } from './init.js'
 import { themeInitScript } from '@rokkit/unocss/hooks'
+import { checkContrastTokens } from './contrast.js'
 
 const KNOWN_THEMES = [
 	'rokkit',
@@ -430,6 +431,19 @@ export async function doctor(opts = {}) {
 			console.info(`        ${c.fix}`)
 		}
 	}
+
+	const contrastChecks = checkContrastTokens(parsed)
+	/* v8 ignore start -- loadConfig uses a dynamic file:// import which always fails in
+	   JSDOM, so parsed is null and contrastChecks is [] → this print block is unreachable
+	   in tests. The check logic itself is covered directly in contrast.spec.js. */
+	if (contrastChecks.length > 0) {
+		console.info('\nContrast (WCAG AA · light + dark):')
+		for (const c of contrastChecks) {
+			console.info(`  WARN  ${c.label}`)
+			console.info(`        ${c.fix}`)
+		}
+	}
+	/* v8 ignore stop */
 
 	handleResults(checks, cwd, failures, opts.fix ?? false)
 	console.info('')
