@@ -128,10 +128,10 @@ export function setEngine(mode: 'simulated' | 'openrouter' | 'webllm', model?: s
 	llm.enabled = true
 	if (mode === 'webllm') {
 		llm.provider = 'webllm'
-		llm.webllmModel = model || DEFAULT_WEBLLM_MODEL
+		llm.webllmModel = model ?? DEFAULT_WEBLLM_MODEL
 	} else {
 		llm.provider = 'openrouter'
-		llm.openRouterModel = model || DEFAULT_OPENROUTER_MODEL
+		llm.openRouterModel = model ?? DEFAULT_OPENROUTER_MODEL
 	}
 }
 

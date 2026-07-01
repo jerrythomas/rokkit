@@ -25,6 +25,8 @@ describe('setEngine', () => {
 	beforeEach(() => {
 		llm.enabled = true
 		llm.provider = 'openrouter'
+		llm.openRouterModel = DEFAULT_OPENROUTER_MODEL
+		llm.webllmModel = DEFAULT_WEBLLM_MODEL
 	})
 	it('simulated disables the LLM', () => {
 		setEngine('simulated')
@@ -43,5 +45,7 @@ describe('setEngine', () => {
 		expect(llm.enabled).toBe(true)
 		expect(llm.provider).toBe('webllm')
 		expect(llm.webllmModel).toBe('Qwen2.5-1.5B-Instruct-q4f16_1-MLC')
+		setEngine('webllm')
+		expect(llm.webllmModel).toBe(DEFAULT_WEBLLM_MODEL)
 	})
 })
