@@ -45,12 +45,12 @@
 	}
 </script>
 
-<aside data-chat-history data-collapsed={collapsed ? '' : undefined}>
-	<div data-chat-history-header>
+<aside data-koanchat-history data-collapsed={collapsed ? '' : undefined}>
+	<div data-koanchat-history-header>
 		{#if !collapsed}
 			<button
 				type="button"
-				data-chat-history-new
+				data-koanchat-history-new
 				onclick={onnew}
 				title={newLabel}
 				aria-label={newLabel}
@@ -58,13 +58,13 @@
 				<svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
 					<path d="M7 2 L7 12 M2 7 L12 7"/>
 				</svg>
-				<span data-chat-history-new-label>{newLabel}</span>
+				<span data-koanchat-history-new-label>{newLabel}</span>
 				<kbd>⌘N</kbd>
 			</button>
 		{/if}
 		<button
 			type="button"
-			data-chat-history-collapse
+			data-koanchat-history-collapse
 			onclick={toggleCollapsed}
 			title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
 			aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
@@ -79,7 +79,7 @@
 	</div>
 
 	{#if !collapsed}
-		<div data-chat-history-search>
+		<div data-koanchat-history-search>
 			<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
 				<circle cx="7" cy="7" r="4.5"/>
 				<path d="M10.5 10.5 L14 14"/>
@@ -95,11 +95,11 @@
 		</div>
 	{/if}
 
-	<div data-chat-history-scroll>
+	<div data-koanchat-history-scroll>
 		{#if collapsed}
 			<button
 				type="button"
-				data-chat-history-new
+				data-koanchat-history-new
 				data-collapsed-action
 				onclick={onnew}
 				title={newLabel}
@@ -118,6 +118,6 @@
 	</div>
 
 	{#if footer && !collapsed}
-		<div data-chat-history-footer>{@render footer()}</div>
+		<div data-koanchat-history-footer>{@render footer()}</div>
 	{/if}
 </aside>

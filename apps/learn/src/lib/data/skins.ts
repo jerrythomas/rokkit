@@ -7,7 +7,7 @@
  */
 
 import { defaultColors, shades } from '@rokkit/core'
-import { ColorSpace } from '@rokkit/core'
+import { ColorSpace, relativeLuminance, pickOnColor } from '@rokkit/core'
 import { NAMED_TOKENS, NAMED_TOKEN_SHADE_MAP, NAMED_TOKEN_ROLE_MAP } from '@rokkit/core'
 
 // ── Custom OKLCH palettes (copied from rokkit.config.js) ────────────────────
@@ -239,14 +239,45 @@ const activeOverrides: Record<string, RoleMapping> = {}
  * Only emits aliases for roles the skin is overriding, so we don't
  * accidentally null out tokens whose source role wasn't touched.
  */
+/**
+ * Resolve the FIXED on-color hex for a derived `on-{role}` token from THAT
+ * role's own 500 fill, luminance-picked via the shared `@rokkit/core` logic.
+ *
+ * The on-color must be FIXED (identical in light and dark) because it sits on a
+ * fill that's the same in both modes — pointing it at a surface shade (the old
+ * `var(--color-surface-50)`) flipped it with the canvas and made bright brand
+ * fills unreadable. Returns null when the role's fill can't be resolved so the
+ * caller can fall back to the previous behaviour.
+ */
+function derivedOnColorFor(role: string): string | null {
+	const mapping = activeOverrides[role]
+	if (!mapping) return null
+	// A role can map to a single palette or a {light, dark} pair; the 500 fill is
+	// the same hue in both, so the light palette (or the single name) is canonical.
+	const paletteName = typeof mapping === 'string' ? mapping : mapping.light
+	const paletteShades = getPaletteShades(paletteName)
+	const fill = paletteShades?.[500]
+	if (fill === undefined) return null
+	// Custom palettes are bare OKLCH "L C H"; tailwind palettes are hex.
+	const space = isCustomPalette(paletteName) ? 'oklch' : 'rgb'
+	const y = relativeLuminance(fill, space)
+	return pickOnColor(y)
+}
+
 function namedTokenAliases(roles: Set<string>): string {
 	const lines: string[] = []
 	for (const name of NAMED_TOKENS) {
 		const shadeOrDerived = NAMED_TOKEN_SHADE_MAP[name as keyof typeof NAMED_TOKEN_SHADE_MAP]
 		const role = NAMED_TOKEN_ROLE_MAP[name as keyof typeof NAMED_TOKEN_ROLE_MAP]
 		if (shadeOrDerived === 'derived') {
-			// on-primary derives from surface.50
-			if (roles.has('surface')) {
+			// on-{role} → FIXED on-color picked from THIS role's 500 fill luminance
+			// (same value in light + dark — it sits on a mode-invariant fill).
+			if (!roles.has(role)) continue
+			const onColor = derivedOnColorFor(role)
+			if (onColor !== null) {
+				lines.push(`--${name}:${onColor};`)
+			} else if (roles.has('surface')) {
+				// Fallback to the previous behaviour if the fill can't be resolved.
 				lines.push(`--${name}:var(--color-surface-50);`)
 			}
 			continue

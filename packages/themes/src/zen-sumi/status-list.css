@@ -14,7 +14,7 @@
   @apply text-warning;
 }
 [data-style='zen-sumi'] [data-status-item][data-status='unknown'] span {
-  @apply text-paper-edge;
+  @apply text-ink-soft;
 }
 
 [data-style='zen-sumi'] [data-status-item][data-status='pass'] {
@@ -27,7 +27,7 @@
   @apply text-warning;
 }
 [data-style='zen-sumi'] [data-status-item][data-status='unknown'] {
-  @apply text-paper-edge;
+  @apply text-ink-soft;
 }
 
 /* ── @rokkit/forms StatusList: group headers by severity ── */
@@ -62,5 +62,5 @@
 
 /* Count badge */
 [data-style='zen-sumi'] [data-status-count] {
-  @apply text-paper-edge bg-none font-medium;
+  @apply text-ink-soft bg-none font-medium;
 }

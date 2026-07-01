@@ -5989,3 +5989,286 @@ are `v8-ignore`d with justification (functions/branches intentionally not gated)
 NEVER `test:unit` or bare `vitest` (watch mode orphans node processes). Cap parallel
 test-writing agents (≤2–3), forbid agent nesting/worktrees. See
 [[feedback_test_run_once_scripts]]. ~33 commits this initiative (`177f36a7`..`f8ed7421`).
+
+---
+
+## 2026-06-29 — Chat components (Phase 1): first-class presentation components in @rokkit/ui
+
+Brainstormed + spec'd earlier (`docs/superpowers/specs/2026-06-24-chat-components-design.md`,
+committed `662b0a9a`); planned in `docs/superpowers/plans/2026-06-29-chat-components.md`
+(`80579fba`) and executed subagent-driven (one agent per task, two-stage discipline, Svelte
+MCP autofixer on every `.svelte`, run-once tests only — no watch-mode RAM blowups this time).
+
+**What shipped — 5 dumb, event-driven components + a typed data model, all in `@rokkit/ui`:**
+- `types/chat.ts` — `ChatRole`/`ChatStatus`/`ChatMessage<T>`/`ConversationSummary` + per-component `*Props` (type-only, coverage-excluded). `ChatMessage` deliberately doubles as a component name and an interface name — no collision (separate value/type declaration spaces; `tsc` clean).
+- `utils/relative-time.ts` — shared `formatRelativeTime(ts, relative=true)` (100% cov).
+- `ChatMessage.svelte` — role chrome (`data-role`/`data-status`), default body = `MarkdownRenderer markdown={message.text}`, fully overridable via `body` snippet, streaming caret, timestamp.
+- `ChatComposer.svelte` — controlled textarea; **plain Enter submits, Shift+Enter = newline** (intentionally diverges from the old `$lib/chat` Cmd+Enter); `$bindable` value, `onchange` per keystroke, exported `focus()`, leading/suggestions/toolbar slots.
+- `ChatHistory.svelte` — conversation rail; active highlight, conditional new/delete, item/empty/header snippets.
+- `ChatTimeline.svelte` — scrolling list; autoscroll `$effect` (re-runs on append + streaming text/status), `message` snippet = the inline-rendering seam (charts/forms live in the consumer, not in @rokkit/ui).
+- `ChatShell.svelte` — composed layout (optional History rail + Timeline + Composer), forwards events/snippets.
+- Barrel exports wired (`components/index.ts`, `src/index.ts`, `types/index.ts`) — importable as `import { ChatShell, ... } from '@rokkit/ui'`.
+- Live demo: learn `/app/chat` koan demo (mirrors lock-mode wiring exactly), showing the primitives + a `ChatShell` whose `message` snippet switches on `data.kind` to render a chart placeholder — proving the dumb-seam with **no `@rokkit/chart` dependency**.
+
+**Design seam:** @rokkit/ui stays dependency-pure — `text` renders as markdown; ALL rich/inline
+content (charts, forms, interleaved parts) is consumer-supplied via the `message`/`body`
+snippets. Orchestration (submit→API→stream) stays in the app. See [[project_demo_app]] /
+[[project_koan_interactive_mode]].
+
+**Verification:** full gate green — lint 0 errors, types clean, svelte-check 0 errors (all
+packages), coverage threshold gate passes (chat components 92.6–100% stmts; util 100%). Per
+component: TDD red→green, autofixer clean, per-package tsc/eslint.
+
+**Commits:** `1c710cdb` (types+util), `67ec60e2` (ChatMessage), `c987cc70` (ChatComposer),
+`16485b9a` (ChatHistory), `81ee206f` (ChatTimeline), `60309f1a` (ChatShell), `144659be`
+(barrels), `19d0a608` (learn demo).
+
+**PENDING (Phases 2–3):** migrate learn `/chat` onto the shared components (move the
+`BlockList`/`InlineComponent` chart/form switch into a consumer `message` snippet; keep the
+`chat-demo` store as the reference orchestration; then delete `$lib/chat`), then migrate Koan
+`/app` (replace `ChatPanel`/`TimelineList`/`ConversationList`; delete duplicates). A headless
+`createChat` store in @rokkit/states remains deferred.
+
+---
+
+## 2026-06-29/30 — Chat adoption, theme CSS, and a pile of QA fixes
+
+**Outcome of the chat initiative (concluded):** the `@rokkit/ui` chat components are
+first-class and power the real chat surface; the app-local `$lib/chat` kit is kept,
+re-scoped, for the Koan demo's *authored narrative* (a different concern).
+
+- **Namespace collision (root cause of the earlier churn):** the new library components and
+  the old `$lib/chat` components both emitted `data-chat-*`, and both stylesheets load
+  app-wide → they bled onto each other (broke `/chat` composer borders + the `/app/chat`
+  rail). Fixed by re-namespacing the legacy kit to **`data-koanchat-*`** (`b174c859`),
+  freeing `data-chat-*` for the library.
+- **Theme CSS:** authored `@rokkit/themes` `base/chat.css` (`a8c70fae`) — headless, named
+  tokens, styles all five components across themes (the styling layer Phase 1 skipped).
+- **`/chat` migrated** onto `ChatTimeline`/`ChatMessage`/`ChatComposer` with `BlockList` in
+  the `message` snippet (`af722746`); matches the old look. Composer polish (`128bc21e`):
+  stick-to-bottom scroll guard, paper-plane send icon (matches `/app`), attach moved into
+  the bottom controls row. Legacy `ChatHistory` sidebar retained (Option A — library one
+  lacks collapse/search/recency-buckets).
+- **`/app` NOT migrated (deliberate):** its 64 `<ChatMessage kind=… icon=…>children`, 13
+  `<ChatResponse>` (artifact cards, no library equivalent), 13 `<Chips>` are an
+  authored-narrative presentation kit, not a data-driven chat. Forcing the data-driven
+  library components there would be a lossy rewrite for negative value. `$lib/chat` stays as
+  the Koan kit (now `data-koanchat-*`); **not deleted** (T10/T11 closed as won't-do).
+
+**Companion QA fixes this session (all verified in-browser via Playwright):**
+- `fix(blocks)` SVG export download — anchor wasn't in the DOM + the object URL was revoked
+  synchronously (Chrome logged it but wrote no file). Append + deferred revoke + filename
+  sanitize. Regression test rewritten.
+- `fix(learn)` demo Code tab — `hasActiveCode` was `Boolean(shell.demoType)` (true for every
+  demo) but `activeDemoCode`'s switch only covers 11 demos → Code showed identical to Live;
+  gate the tab on `activeDemoCode`.
+- `fix(themes)` zen-sumi filled-button hover — the default-style `:hover` flipped *every*
+  variant to `bg-ink`; in light mode the near-black `on-primary` label on the near-black ink
+  hover bg was invisible. Colored variants now darken their own fill.
+- `fix(learn)` light-mode contrast — nav/eyebrows/labels/footer used `ink-soft`(500,
+  placeholder)/`ink-faint`(300, disabled) for real secondary text (~2.1:1). On the kami light
+  ramp no shade < 700 clears AA (paper-edge is at 400), so genuine secondary text → `ink-mute`
+  (700, ~6.5:1). Home-page failing text 34→5 (remaining 5 = deliberate brand-vermillion).
+
+**Process note:** `rm -rf packages/*/dist` breaks the learn app — `@rokkit/themes/*.css` is a
+required runtime artifact resolved from `dist` (rebuild via `cd packages/themes && bun run
+build`). See [[project_type_health_svelte_check]], [[project_chat_components]].
+
+---
+
+## 2026-06-30 — App-wide contrast audit + token vocabulary fix
+
+Root cause of the recurring faint/invisible text+border bugs (home, guides, chat,
+TOC) was **token misuse**, fixed at the token level (per the user's direction —
+config-driven, not conditional `[data-mode]` CSS):
+
+- **`paper-edge` is borders-only.** ~30 zen-sumi (+minimal/material/frosted/rokkit)
+  rules `@apply text-paper-edge` for faint text → 0.85 grey light / near-black dark
+  (invisible). Swept `text-paper-edge` → `text-ink-soft` (`089d5144`). Real borders
+  (`border-paper-edge`) and on-fill on-colors (`text-paper-soft`, which flip with
+  their fill) left intact.
+- **`paper-edge` dark `0.04` → `sumi.300`** (visible lifted hairline). One config
+  line fixed dark border + faint-text invisibility app-wide (`ad507e94`).
+- **New tokens** (`apps/learn/rokkit.config.js` overrides): `paper-edge-hover`
+  (interactive border tone — components use `paper-edge` rest + `paper-edge-hover`
+  hover, no conditionals) and `ink-fixed` (5th, non-flipping text tone for on-fixed-
+  dark-fill text). Override pipeline auto-emits utilities + per-mode vars; consume
+  via raw `var(--…)`.
+- Readable secondary text (nav/eyebrows/labels/TOC/card desc) → `ink-mute`
+  (~6.5:1), not the placeholder/disabled `ink-soft`/`ink-faint`. Guides + home
+  earlier; TOC `text-paper-edge`→`ink-mute` (`b9a9cb4d`).
+
+Verified empirically via the `/embed/gallery?mode=dark` WCAG scanner: post-sweep,
+no new low-contrast text — only the pre-existing **message-status** debt (1 item
+~2.17) remains (tracked in [[project_theme_contrast_regression]]). themes 75/75,
+tsc green. NOTE: contrast improved, so the `theme-contrast.e2e.ts` ratchet baseline
+can be re-snapshotted higher. See [[project_contrast_token_rules]].
+
+---
+
+## 2026-06-30 (cont.) — Doctor contrast gates · fixed on-colors · llms.txt relocation · legacy removal
+
+Built the **two-layer contrast gate** the prior entry called for, burned down the
+residual debt, then cleaned up navigation.
+
+- **`rokkit doctor` contrast check** (`7a194564`, `packages/cli/src/contrast.js`):
+  static WCAG audit from the config palettes in BOTH modes — warns when `ink`/`ink-mute`
+  miss AA 4.5 on paper, the ink ramp isn't monotonic (ink>mute>soft>faint), or
+  `paper-edge` is invisible vs paper. OKLCH→linear-sRGB→relative-luminance math in-file
+  (no colour dep). 0 findings against the fixed config.
+- **`rokkit doctor` surface-as-text lint** (`cdec112c`): scans `src/**/*.{css,svelte}`
+  for `text-paper-edge`/`-mute` + raw `color: var(--paper-edge|--paper-mute)`. Immediately
+  caught 41 real misuses in `apps/learn` the theme-only sweep had missed.
+- **Fixed on-colours** (`2c539607`): exported `pickOnColor` + `ON_COLOR_*` from
+  `@rokkit/core` (refactored `Theme.#onColorHex`, no behaviour change) and reused them in
+  the demo skin engine (`skins.ts`) so each `on-{role}` is luminance-picked from that
+  role's 500 fill → a FIXED hex, not the flipping `surface-50`.
+- **App surface-as-text sweep** (`b4f647cc`): the 5 active learn components
+  (ThemeControls/LanguageSwitcher/PlaceholderPage/ThemePanel/ShowcaseCanvas) →
+  `ink-mute` (readable) / `ink-soft` (inactive glyphs + hover-brighten rest states).
+- **`(legacy)` route group removed** (`071c2a8e`): the superseded old-`(app)` mockup
+  (observatory/sessions/instruments/…) + setup flow Koan replaced — unreachable, held the
+  last text-paper-edge misuses; also dropped legacy-only `$lib/data/navigation.ts`. doctor
+  surface-as-text lint now **fully clean** on the app.
+- **llms.txt relocated** (`e79c0072`): per-page chrome → one `LlmsBookmark.svelte` (fixed
+  bottom-right). Shows only on docs surfaces (component Docs tab →
+  `/llms/components/{id}.txt`; guide pages → `/llms/guides/{slug}.txt`); home `SiteFooter`
+  gets a right-aligned index link (`/llms/index.txt`).
+- **Catalog tile icons** (`3b8fa0cd`): `CatalogGrid` printed `{demo.icon}` as text → broke
+  the 2 demos whose icon is a class (chat, lock-mode). Dual-render like
+  `ComposerSuggestions` (i- prefix → nested icon span, else glyph); data left as-is so the
+  conversation-history `demoIcon` consumer (renders `meta.icon` as a class) is unaffected.
+
+**Gate (all green):** `bun run check` = lint + types + svelte-check + **5074 tests / 350
+files**; `theme-contrast.e2e.ts` = no new failures beyond baseline. The contrast ratchet
+baseline WAS re-snapshotted (12→5; remaining 5 = violet/indigo-500 mid-luminance dead-zone,
+intentional). See [[project_contrast_token_rules]], [[project_chat_components]].
+
+**Open (under discussion):** consolidating **Components + Catalog** into one section
+(catalog-as-landing, click → chat-shell canvas) and whether to keep the chat-shell
+**conversation history** rail.
+
+---
+
+## 2026-06-30 (cont.) — Components + Catalog consolidation (sub-project 1) shipped
+
+Executed `docs/superpowers/{specs,plans}/2026-06-30-components-catalog-consolidation*.md`
+via subagent-driven development (6 tasks, spec + code-quality review each).
+
+- **Conversation dedup** (`8e67bfc5`, `d96905d9`): `startNew` upserts `app`-surface
+  conversations by title — re-exploring a component reuses its row (turns reset, moved
+  to top) instead of stacking duplicate-titled history entries. `chat` surface unchanged.
+  +4 unit tests.
+- **Phase collapse** (`0232dc23`, `eaec18fb`): `ShellPhase` `welcome`+`catalog` → single
+  `landing`; `setShellLanding()` replaces both setters; default `landing`. `/app` is now
+  the catalog-first landing (compact hero header in `canvas-head` + `CatalogGrid`);
+  `/app/catalog` → `redirect(308, '/app')` (typed `PageLoad`). Rail welcome/catalog
+  branches merged; a `.chat-browse` link (→ /app) added to the chat-header for `response`
+  phase. Removed orphaned `welcome-hero`/`welcome-browse` CSS + the `RokkitWordmark` import.
+- **Nav** (`02d28b58`): single **Components** entry (Catalog folded in); match simplified
+  to `startsWith('/app')`.
+- **Repoint** (`aa16f171`): remaining `/app/catalog` links → `/app` + stale comments
+  fixed; zero `/app/catalog` refs remain.
+- **E2E** (`73982b32`): `e2e/components-catalog.e2e.ts` — nav has no Catalog, `/app`
+  shows the grid, `/app/catalog` redirects, tile-click mounts the demo, Browse returns.
+  4/4 pass.
+- Earlier same day: catalog tiles rendered icon-class metas (chat, lock-mode) as literal
+  text — `CatalogGrid` now dual-renders icon-class vs glyph (`3b8fa0cd`).
+
+**Hybrid rail [C]:** the persistent `ChatHistory` column stays (real localStorage resume);
+the catalog landing serves browse; the chat-header `Browse` link returns from a demo.
+
+**Gate:** `bun run check` = lint + types + svelte-check + **5078 tests / 351 files**;
+`theme-contrast.e2e.ts` no new failures beyond baseline. All on `develop`.
+
+**Next — Sub-project 2 (AI demo evolution):** rename "Chat demo", a mode-selection entry
+(Simulated / OpenRouter / Web LLM cards + capabilities + example prompts), and richer
+conversation **summary titles** (+ chat-surface dedup). Separate spec/plan. See
+[[project_demo_app]].
+
+---
+
+## 2026-07-01 — Ask Rokkit (sub-project 2) shipped
+
+Evolved the `/chat` "Chat demo" into **Ask Rokkit** per
+`docs/superpowers/{specs,plans}/2026-06-30-ask-rokkit-ai-demo*.md`, via subagent-driven
+development (8 tasks, spec + code-quality review each). The three engines
+(**Simulated / OpenRouter / Web LLM**) are now genuinely separate.
+
+- **Mode descriptor + engine setter** (`8d366c11`, `a7b7f9e5`… `modes.ts`): single `MODES`
+  source (label/blurb/capabilities/examples/defaultModel), `isChatMode` guard, `cardFor`;
+  `setEngine(mode, model?)` in `llm.svelte.ts` (simulated → scripted engine).
+- **Conversation mode tag + summary titles** (`e43eca31`, `f1780501`): `Conversation.mode`,
+  `summarizeTitle` (strip filler/article, cap 40, guard residuals), chat-title use,
+  `renameConversation`, `bucketByRecency(surface?, mode?)` mode-filter. No chat dedup.
+- **Store** (`7b9f68da`, `a7b7f9e5`): one-shot `pendingPrompt`, tag new chat convs with the
+  route mode (`PROVIDER_TO_MODE`), refine title to the component type on the first
+  single-component response.
+- **Decomposed the 1107-line `/chat/+page.svelte`** (functions separated from presentation,
+  reusing the existing chat components — per user direction): `chat-controller.svelte.ts`
+  (`4e45c597`, `accc70ad`) holds the logic (messages map, send, resume, history, file
+  parse); DOM-bound bits stay in the component.
+- **Per-mode routing** (`148e177a`, `13a3628d`): `git mv` the page → `/chat/[mode]/+page.svelte`
+  + `+page.ts` guard (unknown mode → `redirect(307,'/chat')`); engine set from route +
+  `?model=` query (bookmarkable; handles `openai/gpt-oss-20b:free`); mode-scoped history;
+  resume stays in its own mode + model; no in-chat engine toggle; "Ask Rokkit" back-link.
+- **Picker hub** (`59147aa7`, `b6898fa1`): `/chat` = three engine cards (blurb + capabilities
+  + example-prompt chips → seed a one-shot prompt + enter the mode); Web-LLM card disabled
+  without WebGPU (`$derived`).
+- **Rename** (`03d5e2bc`): nav "Chat demo" → "Ask Rokkit" (the chat-*components* catalog
+  entry keeps its own "Chat demo" wording — different thing).
+- **E2E** (`732caf35`): `ask-rokkit.e2e.ts` — nav renamed, three cards, unknown-mode redirect,
+  Simulated example-chip → response. 4/4.
+
+**Svelte-5 gotchas surfaced by the reviews:** exported `$state`/`$derived` can't be
+reassigned by importers → wrap as `{value}`/getter objects (controller state + `messages.current`);
+a bare `export const x = $derived(...)` is illegal (`derived_invalid_export`) and only errors
+when consumed — caught at Task 5, not Task 4's (consumer-less) build. Lint (`svelte/prefer-writable-derived`,
+unused import) also only surfaced at the final `bun run check`, since the per-commit hook runs
+`tsc`, not eslint (`a51d9900`).
+
+**Gate:** `bun run check` = lint (0 errors) + types + svelte-check + **5094 tests / 353 files**;
+`theme-contrast.e2e.ts` no new failures; `ask-rokkit.e2e.ts` 4/4; production build (prerender)
+green. All on `develop`. See [[project_demo_app]], [[project_koan_interactive_mode]].
+
+---
+
+## 2026-07-01 — List: nested interactives in item snippets (Toggle/Switch/etc.)
+
+Fixed the reported bug: custom snippets in `List` couldn't host a `Toggle`, `Switch`,
+or any real interactive control. Two collaborating causes:
+
+1. **HTML parser hoists nested `<button>`** — `<button>` (Toggle/Switch) inside
+   `<button data-list-group>`/`<button data-list-item>` is invalid; the parser
+   adopts the inner one out at parse time, so the visual never nests as intended.
+2. **`Navigator` hijacks the click** — the nav-root click listener walks up to
+   the item's `[data-path]`, calls `preventDefault()`, and dispatches
+   `wrapper.toggle`/`select`; the nested control never gets its click.
+
+Approach was a two-track fix:
+
+- **Defensive Navigator guards** (`packages/actions/src/navigator.js`):
+  `isNestedInteractive(target, root)` skips click/keydown/focusin when the
+  event target sits inside a real interactive descendant of a `[data-path]`
+  element (button, `[role=button|switch|checkbox|radio|menuitem|link|tab]`,
+  input/select/textarea, contenteditable). `[data-accordion-trigger]` is an
+  explicit opt-out so custom nested triggers still work. `isDisabledItem`
+  honours `data-disabled` / `aria-disabled="true"` for div-based items that
+  can't use the native `disabled` attribute. 11 new specs; navigator.spec = 50/50.
+- **Two inert renderer components in `@rokkit/ui`** for the common config-list
+  pattern (chosen over changing List's wrapper tag — user preference):
+  - `ItemSwitch` — renders label via `ItemContent` + span-based switch visual
+    (`aria-checked`, `aria-hidden`, reuses `data-switch-track|thumb`); whole row
+    is the click target, consumer flips `checked` in `onselect`.
+  - `ItemToggle` — inline `role="radiogroup"` with `role="radio"` spans; each
+    span's `onclick` fires an `onchange(value, option, proxy)` prop; Navigator's
+    guard defers to the nested radios so the row's `onselect` does NOT also fire.
+  - Both types + demo in `apps/learn/koan/demos/list/{placeholder.svelte,meta.ts,docs.md}`.
+
+**Out of scope (per Jerry):** group header with an independent switch (needs
+either a `select-all` mode or a picker sub-panel — deferred). Nested native
+`<button>` inside item snippets stays discouraged (HTML parser); users reach
+for `[role=button]` / `<div>` shells or the new renderers.
+
+**Gate:** `bun run lint` (0 errors, warnings unchanged) + `check:svelte` (0
+errors) + `bun run test:ci` = **5121 tests / 355 files** pass. All on `develop`.

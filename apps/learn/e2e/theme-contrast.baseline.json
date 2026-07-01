@@ -1,14 +1,7 @@
 [
 	"button|data-button",
-	"message|data-message-root",
-	"message|data-message-text",
-	"multiselect|data-select-tag",
-	"multiselect|data-select-tag-text",
-	"table|data-table-header-cell",
-	"table|data-table-header-text",
 	"tabs|data-tabs-label",
 	"tabs|data-tabs-trigger",
 	"toggle|data-toggle-label",
-	"toggle|data-toggle-option",
-	"tooltip|data-button"
+	"toggle|data-toggle-option"
 ]

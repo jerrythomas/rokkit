@@ -71,6 +71,7 @@ export interface Conversation {
 	id: ConversationId
 	title: string
 	surface: ConversationSurface
+	mode?: string
 	createdAt: string
 	updatedAt: string
 	turns: Turn[]
@@ -196,18 +197,62 @@ function touch(id: ConversationId): void {
 
 // ── Public API ───────────────────────────────────────────────────────────
 
+const TITLE_LEAD =
+	/^(?:please|can you|could you|show me|show|give me|make(?: me)?|build(?: me)?|generate|create|draw|render|plot|display|i want(?: to see)?|i'?d like(?: to see)?|let'?s see)\b[\s,:-]*/i
+const TITLE_ARTICLE = /^(?:a|an|the)\s+/i
+
+/** Tidy a chat prompt into a short history label. */
+export function summarizeTitle(query: string): string {
+	let t = query.trim().replace(/\s+/g, ' ')
+	let prev = ''
+	while (t !== prev) {
+		prev = t
+		t = t.replace(TITLE_LEAD, '').trim()
+	}
+	t = t.replace(TITLE_ARTICLE, '').trim()
+	if (t.length < 2) return 'New chat'
+	if (t.length > 40) {
+		const cut = t.slice(0, 40).replace(/\s+\S*$/, '').trim()
+		t = `${cut || t.slice(0, 40).trim()  }…`
+	}
+	return t.charAt(0).toUpperCase() + t.slice(1)
+}
+
 /**
  * Start a new conversation, set it as current, and append the user's
- * initial query. Returns the new conversation id.
+ * initial query. Returns the conversation id — the existing row's id
+ * when an `app` title matched, otherwise a new one.
  */
-export function startNew(surface: ConversationSurface, query: string): ConversationId {
-	const id = makeId('conv')
+export function startNew(surface: ConversationSurface, query: string, mode?: string): ConversationId {
 	const at = nowIso()
+	const title = surface === 'chat' ? summarizeTitle(query) : (query.trim().slice(0, 80) || 'New conversation')
 	const userTurn: UserTurn = { kind: 'user', id: makeId('t'), at, text: query }
+
+	// Upsert by title for the `app` surface: re-exploring the same component
+	// reuses its existing row (turns reset, moved to top) instead of stacking
+	// duplicate-titled entries. The `chat` surface always appends.
+	if (surface === 'app') {
+		const existingIdx = conversations.findIndex(
+			(c) => c.surface === 'app' && c.title === title
+		)
+		if (existingIdx >= 0) {
+			const [existing] = conversations.splice(existingIdx, 1)
+			existing.updatedAt = at
+			existing.turns = [userTurn]
+			conversations.unshift(existing)
+			currentRef.id = existing.id
+			persist()
+			persistCurrentId()
+			return existing.id
+		}
+	}
+
+	const id = makeId('conv')
 	const conv: Conversation = {
 		id,
-		title: query.trim().slice(0, 80) || 'New conversation',
+		title,
 		surface,
+		mode: surface === 'chat' ? mode : undefined,
 		createdAt: at,
 		updatedAt: at,
 		turns: [userTurn]
@@ -333,6 +378,16 @@ export function removeConversation(id: ConversationId): void {
 	persist()
 }
 
+/** Rename a conversation (used to refine a chat title after the first render). */
+export function renameConversation(id: ConversationId, title: string): void {
+	if (!title.trim()) return
+	const idx = findIndexById(id)
+	if (idx >= 0) {
+		conversations[idx].title = title
+		persist()
+	}
+}
+
 /** Drop everything. */
 export function clearAll(): void {
 	conversations.splice(0, conversations.length)
@@ -353,8 +408,10 @@ function startOfDay(d: Date): number {
 	return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime()
 }
 
-export function bucketByRecency(surface?: ConversationSurface): ConversationBuckets {
-	const pool = surface ? conversations.filter((c) => c.surface === surface) : conversations
+export function bucketByRecency(surface?: ConversationSurface, mode?: string): ConversationBuckets {
+	const pool = conversations.filter(
+		(c) => (surface ? c.surface === surface : true) && (mode ? c.mode === mode : true)
+	)
 	const sorted = [...pool].sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt))
 	const now = new SvelteDate()
 	const todayStart = startOfDay(now)

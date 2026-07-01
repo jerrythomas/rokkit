@@ -14,7 +14,7 @@
   @apply text-warning;
 }
 [data-style='rokkit'] [data-status-item][data-status='unknown'] span {
-  @apply text-paper-edge;
+  @apply text-ink-soft;
 }
 
 /* ── @rokkit/ui StatusList: text color by status ── */

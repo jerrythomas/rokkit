@@ -25,7 +25,7 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-search-clear] {
-  @apply text-paper-edge;
+  @apply text-ink-soft;
 }
 
 [data-style='zen-sumi'] [data-search-clear]:hover {
@@ -41,7 +41,7 @@
 }
 
 [data-style='zen-sumi'] [data-search-tag-remove] {
-  @apply text-paper-edge;
+  @apply text-ink-soft;
 }
 
 [data-style='zen-sumi'] [data-search-tag-remove]:hover {

@@ -50,13 +50,13 @@
 	const swatchSize = $derived(isPage ? 'w-5 h-5' : 'w-4 h-4')
 	const sectionLabelClass = $derived(
 		isPage
-			? 'text-[10px] tracking-[0.14em] uppercase text-paper-edge mb-3'
-			: 'text-paper-edge mb-2 text-xs font-semibold tracking-widest uppercase'
+			? 'text-[10px] tracking-[0.14em] uppercase text-ink-mute mb-3'
+			: 'text-ink-mute mb-2 text-xs font-semibold tracking-widest uppercase'
 	)
 	const appearanceLabelClass = $derived(
 		isPage
-			? 'text-[10px] tracking-[0.14em] uppercase text-paper-edge mb-4'
-			: 'text-paper-edge mb-2 text-xs font-semibold tracking-widest uppercase'
+			? 'text-[10px] tracking-[0.14em] uppercase text-ink-mute mb-4'
+			: 'text-ink-mute mb-2 text-xs font-semibold tracking-widest uppercase'
 	)
 
 	// Chip active/inactive styles
@@ -87,9 +87,9 @@
 						onclick={() => theme.setStyle(t.value)}
 						title={t.desc}
 					>
-						<span class="kanji text-[22px] {theme.style === t.value ? 'text-primary' : 'text-paper-edge'}">{t.kanji}</span>
+						<span class="kanji text-[22px] {theme.style === t.value ? 'text-primary' : 'text-ink-soft'}">{t.kanji}</span>
 						<span class="text-[12px] font-medium leading-tight">{t.label}</span>
-						<span class="text-[10px] text-paper-edge leading-tight">{t.desc}</span>
+						<span class="text-[10px] text-ink-mute leading-tight">{t.desc}</span>
 					</button>
 				{/each}
 			</div>
@@ -250,7 +250,7 @@
 
 	{#if show('skin')}
 		<section>
-			<h3 class="text-paper-edge mb-3 text-xs font-semibold tracking-widest uppercase">{resolvedLabels.skin}</h3>
+			<h3 class="text-ink-mute mb-3 text-xs font-semibold tracking-widest uppercase">{resolvedLabels.skin}</h3>
 			<SkinSwitcherToggle
 				skins={skinDefinitions.map((s) => ({ name: s.name, label: s.label }))}
 				showLabels
@@ -261,7 +261,7 @@
 
 	{#if show('roles')}
 		<section>
-			<h3 class="text-paper-edge mb-3 text-xs font-semibold tracking-widest uppercase">{resolvedLabels.roles}</h3>
+			<h3 class="text-ink-mute mb-3 text-xs font-semibold tracking-widest uppercase">{resolvedLabels.roles}</h3>
 			<div class="flex flex-col gap-2.5">
 				{#each ['surface', 'primary', 'secondary', 'accent'] as role (role)}
 					<div class="flex items-start gap-2">

@@ -45,6 +45,78 @@ function getClickAction(event) {
 	return 'select'
 }
 
+// ─── Nested interactive detection ─────────────────────────────────────────────
+
+// Elements that own their own click / keyboard activation. When one of these
+// sits *inside* a [data-path] item (e.g. a Toggle / Switch inside a List header
+// or config-style row), Navigator must not hijack the event — the nested
+// control owns it.
+const INTERACTIVE_SELECTOR = [
+	'button',
+	'a[href]',
+	'input',
+	'select',
+	'textarea',
+	'[role="button"]',
+	'[role="switch"]',
+	'[role="checkbox"]',
+	'[role="menuitem"]',
+	'[role="menuitemcheckbox"]',
+	'[role="menuitemradio"]',
+	'[role="radio"]',
+	'[role="tab"]',
+	'[role="link"]',
+	'[contenteditable=""]',
+	'[contenteditable="true"]'
+].join(',')
+
+/**
+ * True when `target` sits inside an interactive element that is a *descendant*
+ * of the nearest [data-path] element — i.e. the interactive is embedded inside
+ * the item, not the item itself. In that case Navigator defers.
+ *
+ * An interactive marked with data-accordion-trigger is treated as a legitimate
+ * Navigator hook (custom expand/collapse control) and does NOT trigger the
+ * skip — Navigator will still dispatch toggle for it.
+ *
+ * @param {EventTarget|null} target
+ * @param {HTMLElement} root
+ * @returns {boolean}
+ */
+function isNestedInteractive(target, root) {
+	const el = /** @type {HTMLElement|null} */ (target)
+	if (!el) return false
+	const interactive = /** @type {HTMLElement|null} */ (el.closest(INTERACTIVE_SELECTOR))
+	if (!interactive || !root.contains(interactive)) return false
+	const dataPathEl = /** @type {HTMLElement|null} */ (el.closest('[data-path]'))
+	if (!dataPathEl || interactive === dataPathEl) return false
+	if (!dataPathEl.contains(interactive)) return false
+	// A nested element explicitly declared as an accordion trigger is a
+	// Navigator-controlled control, not a stray interactive — let it through.
+	if (interactive.hasAttribute('data-accordion-trigger')) return false
+	return true
+}
+
+/**
+ * True when the [data-path] element containing `target` is marked disabled
+ * via `data-disabled` (attribute present) or `aria-disabled="true"`. Native
+ * `<button disabled>` is already blocked by the browser, so this only matters
+ * for div/span-based items that opt into disabled via attributes.
+ *
+ * @param {EventTarget|null} target
+ * @param {HTMLElement} root
+ * @returns {boolean}
+ */
+function isDisabledItem(target, root) {
+	const el = /** @type {HTMLElement|null} */ (target)
+	if (!el) return false
+	const dataPathEl = /** @type {HTMLElement|null} */ (el.closest('[data-path]'))
+	if (!dataPathEl || !root.contains(dataPathEl)) return false
+	if (dataPathEl.hasAttribute('data-disabled')) return true
+	if (dataPathEl.getAttribute('aria-disabled') === 'true') return true
+	return false
+}
+
 // ─── Path resolution ──────────────────────────────────────────────────────────
 
 /**
@@ -110,6 +182,10 @@ export class Navigator {
 	// ─── Keydown ────────────────────────────────────────────────────────────
 
 	#onKeydown = (/** @type {KeyboardEvent} */ event) => {
+		// Defer to a nested interactive descendant (Toggle / Switch / input /
+		// contenteditable inside an item snippet) — it owns its own keys.
+		if (isNestedInteractive(event.target, this.#root)) return
+
 		// Typeahead: single printable character (no modifiers except shift for caps)
 		if (this.#tryTypeahead(event)) return
 
@@ -118,6 +194,10 @@ export class Navigator {
 
 		// Links handle Enter/Space natively — browser fires a synthetic click
 		if (action === 'select' && event.target.closest('a[href]')) return
+
+		// Item explicitly marked disabled via attributes (div/span items opt in
+		// this way since they cannot use the native `disabled` attribute).
+		if (isDisabledItem(document.activeElement, this.#root)) return
 
 		event.preventDefault()
 		event.stopPropagation()
@@ -133,8 +213,14 @@ export class Navigator {
 	// ─── Click ──────────────────────────────────────────────────────────────
 
 	#onClick = (/** @type {MouseEvent} */ event) => {
+		// Defer to a nested interactive descendant — the click is meant for it.
+		if (isNestedInteractive(event.target, this.#root)) return
+
 		const path = getPath(event.target, this.#root)
 		if (path === null) return
+
+		// Item explicitly marked disabled via attributes.
+		if (isDisabledItem(event.target, this.#root)) return
 
 		const action = getClickAction(event)
 
@@ -150,6 +236,11 @@ export class Navigator {
 	// ─── Focusin ────────────────────────────────────────────────────────────
 
 	#onFocusin = (/** @type {FocusEvent} */ event) => {
+		// Focus landed inside a nested interactive (e.g. tabbed to a Switch
+		// inside a row) — leave the wrapper's focusedKey alone and let the
+		// nested control own the focus context.
+		if (isNestedInteractive(event.target, this.#root)) return
+
 		const path = getPath(event.target, this.#root)
 
 		if (path !== null) {

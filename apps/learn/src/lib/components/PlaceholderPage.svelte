@@ -7,7 +7,7 @@
 		<span class="kanji text-[36px] text-primary">{kanji}</span>
 		<div>
 			<h1 class="display text-[28px] font-light text-ink-mute m-0">{title}</h1>
-			<p class="text-[13px] text-paper-edge mt-1 mb-0">{description}</p>
+			<p class="text-[13px] text-ink-mute mt-1 mb-0">{description}</p>
 		</div>
 	</div>
 </div>

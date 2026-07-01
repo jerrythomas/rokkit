@@ -80,18 +80,18 @@
 
 <IconTimeline
 	icon={showThinkingDots ? thinkingDots : icon}
-	data-chat-message=""
+	data-koanchat-message=""
 	data-kind={kind}
 	data-message-status={status}
 >
 	{#if label || ago}
-		<div data-chat-message-head>
+		<div data-koanchat-message-head>
 			{#if label}<span data-head>{label}</span>{/if}
 			{#if ago}<span data-ago>{ago}</span>{/if}
 		</div>
 	{/if}
 	{#if children}
-		<div data-chat-message-body>
+		<div data-koanchat-message-body>
 			{@render children()}
 		</div>
 	{/if}

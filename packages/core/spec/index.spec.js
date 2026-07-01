@@ -6,6 +6,7 @@ describe('@rokkit/core', () => {
 	it('should contain all exported functions', () => {
 		expect(Object.keys(functions)).toEqual([
 			'ColorSpace',
+			'relativeLuminance',
 			'FieldMapper',
 			'getItemAtIndex',
 			'getIndexForItem',
@@ -67,6 +68,10 @@ describe('@rokkit/core', () => {
 			'shadesOf',
 			'themeRules',
 			'contrastShortcuts',
+			'ON_COLOR_DARK',
+			'ON_COLOR_LIGHT',
+			'ON_COLOR_Y_CROSSOVER',
+			'pickOnColor',
 			'Theme'
 		])
 	})

@@ -430,6 +430,131 @@ describe('Navigator', () => {
 		expect(focusSpy).not.toHaveBeenCalled()
 	})
 
+	// ─── Nested interactive descendants ──────────────────────────────
+	// Snippets sometimes render a real interactive (Toggle, Switch, input)
+	// inside an item. Navigator must defer to it and not hijack the event.
+
+	describe('nested interactive descendants', () => {
+		let item
+		let nested
+		beforeEach(() => {
+			item = document.createElement('div')
+			item.setAttribute('data-path', 'x')
+			item.setAttribute('role', 'button')
+			item.tabIndex = 0
+			nested = document.createElement('button')
+			nested.textContent = 'Toggle'
+			item.appendChild(nested)
+			root.appendChild(item)
+		})
+
+		it('click on a nested button inside a data-path item does not dispatch to wrapper', () => {
+			nav = new Navigator(root, wrapper)
+			const event = new MouseEvent('click', { bubbles: true, cancelable: true })
+			nested.dispatchEvent(event)
+			expect(wrapper.select).not.toHaveBeenCalled()
+			expect(wrapper.toggle).not.toHaveBeenCalled()
+			// Navigator must NOT swallow the default — the nested control owns it
+			expect(event.defaultPrevented).toBe(false)
+		})
+
+		it('click on a nested [role=switch] does not dispatch to wrapper', () => {
+			const sw = document.createElement('span')
+			sw.setAttribute('role', 'switch')
+			sw.setAttribute('tabindex', '0')
+			item.appendChild(sw)
+			nav = new Navigator(root, wrapper)
+			sw.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+			expect(wrapper.select).not.toHaveBeenCalled()
+		})
+
+		it('Enter/Space on a nested button does not dispatch select', () => {
+			nav = new Navigator(root, wrapper)
+			nested.focus()
+			const enter = keydown(nested, 'Enter')
+			const space = keydown(nested, ' ')
+			expect(wrapper.select).not.toHaveBeenCalled()
+			expect(enter.defaultPrevented).toBe(false)
+			expect(space.defaultPrevented).toBe(false)
+		})
+
+		it('arrow keys typed while a nested control is focused do not navigate the list', () => {
+			nav = new Navigator(root, wrapper)
+			nested.focus()
+			wrapper.moveTo.mockClear()
+			keydown(nested, 'ArrowDown')
+			expect(wrapper.next).not.toHaveBeenCalled()
+		})
+
+		it('focus landing on a nested control does not move the wrapper focus', () => {
+			nav = new Navigator(root, wrapper)
+			wrapper.moveTo.mockClear()
+			nested.dispatchEvent(new FocusEvent('focusin', { bubbles: true }))
+			expect(wrapper.moveTo).not.toHaveBeenCalled()
+		})
+
+		it('clicking on the item itself (non-nested) still dispatches select', () => {
+			nav = new Navigator(root, wrapper)
+			item.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+			expect(wrapper.select).toHaveBeenCalledWith('x')
+		})
+
+		it('an accordion trigger nested in a data-path item is still handled', () => {
+			// Explicit opt-out via data-accordion-trigger: this control IS a
+			// Navigator hook, not a stray interactive.
+			const trigger = document.createElement('button')
+			trigger.setAttribute('data-accordion-trigger', '')
+			item.appendChild(trigger)
+			nav = new Navigator(root, wrapper)
+			trigger.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+			expect(wrapper.toggle).toHaveBeenCalledWith('x')
+		})
+	})
+
+	// ─── data-disabled / aria-disabled on div items ──────────────────
+	// Native <button disabled> is blocked by the browser. For div-based
+	// items, Navigator honors data-disabled + aria-disabled="true".
+
+	describe('disabled item attributes on non-button items', () => {
+		let item
+		beforeEach(() => {
+			item = document.createElement('div')
+			item.setAttribute('data-path', 'd')
+			item.setAttribute('role', 'button')
+			item.tabIndex = 0
+			root.appendChild(item)
+		})
+
+		it('skips click on data-disabled item', () => {
+			item.setAttribute('data-disabled', '')
+			nav = new Navigator(root, wrapper)
+			item.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+			expect(wrapper.select).not.toHaveBeenCalled()
+		})
+
+		it('skips click on aria-disabled="true" item', () => {
+			item.setAttribute('aria-disabled', 'true')
+			nav = new Navigator(root, wrapper)
+			item.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+			expect(wrapper.select).not.toHaveBeenCalled()
+		})
+
+		it('skips keyboard select on data-disabled item', () => {
+			item.setAttribute('data-disabled', '')
+			nav = new Navigator(root, wrapper)
+			item.focus()
+			keydown(item, 'Enter')
+			expect(wrapper.select).not.toHaveBeenCalled()
+		})
+
+		it('does not skip when aria-disabled="false"', () => {
+			item.setAttribute('aria-disabled', 'false')
+			nav = new Navigator(root, wrapper)
+			item.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+			expect(wrapper.select).toHaveBeenCalledWith('d')
+		})
+	})
+
 	// ─── Destroy ─────────────────────────────────────────────────────
 
 	it('removes all listeners on destroy', () => {

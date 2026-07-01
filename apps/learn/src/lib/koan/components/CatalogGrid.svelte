@@ -1,6 +1,6 @@
 <script lang="ts">
 	/**
-	 * Catalog grid for /app/catalog. Renders every demo as a clickable
+	 * Catalog grid for the /app landing. Renders every demo as a clickable
 	 * tile, grouped by category. An optional `filter` prop (typed text
 	 * from the chat composer) runs through MiniSearch — when the query is
 	 * empty the full catalog shows, otherwise just the matches.
@@ -91,7 +91,13 @@
 								onclick={() => pick(demo)}
 								title={demo.title}
 							>
-								<span data-catalog-tile-glyph aria-hidden="true">{demo.icon}</span>
+								{#if demo.icon.startsWith('i-')}
+									<span data-catalog-tile-glyph aria-hidden="true">
+										<span class={demo.icon}></span>
+									</span>
+								{:else}
+									<span data-catalog-tile-glyph aria-hidden="true">{demo.icon}</span>
+								{/if}
 								<span data-catalog-tile-body>
 									<span data-catalog-tile-title>{demo.title}</span>
 									<span data-catalog-tile-desc>{demo.description}</span>
@@ -119,8 +125,6 @@
 		align-items: baseline;
 		gap: 8px;
 		margin-bottom: 10px;
-		padding-bottom: 6px;
-		border-bottom: 1px solid var(--paper-edge);
 	}
 
 	[data-catalog-group-label] {
@@ -180,6 +184,11 @@
 		background: var(--paper-soft);
 		font: 600 18px var(--font-display);
 		color: var(--ink-soft);
+	}
+
+	[data-catalog-tile-glyph] [class^='i-'] {
+		width: 20px;
+		height: 20px;
 	}
 
 	[data-catalog-tile-body] {

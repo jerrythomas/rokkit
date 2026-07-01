@@ -133,11 +133,39 @@ const meta: DemoMeta = {
   {#snippet header(proxy)}
     <span data-item-label>{proxy.label}</span>
     <span class="flex-1"></span>
-    <button onclick={(e) => e.stopPropagation()}>Custom Toggle</button>
+    <!-- Any [role="button"] / [role="switch"] descendant is deferred to
+         by Navigator (see the Config-style row example). Nested native
+         <button> won't survive SSR — the HTML parser hoists it out. -->
   {/snippet}
   {#snippet pinned(proxy)}
     <span class="i-lucide:pin"></span>
     <span>{proxy.label}</span>
+  {/snippet}
+</List>`
+		},
+		{
+			id: 'settings',
+			title: 'Config-style rows — ItemSwitch / ItemToggle',
+			lang: 'svelte',
+			code: `<script>
+  import { List, ItemSwitch, ItemToggle } from '@rokkit/ui'
+
+  const settings = $state([
+    { label: 'Notifications', description: 'Alerts & sounds', checked: true },
+    { label: 'Dark mode',     description: 'Theme',            checked: false },
+    { label: 'Density',       value: 'md', options: ['sm', 'md', 'lg'] }
+  ])
+</script>
+
+<List items={settings} onselect={(_, proxy) => {
+  if ('checked' in proxy.value) proxy.value.checked = !proxy.value.checked
+}}>
+  {#snippet itemContent(proxy)}
+    {#if proxy.get('options')}
+      <ItemToggle {proxy} onchange={(v) => (proxy.value.value = v)} />
+    {:else}
+      <ItemSwitch {proxy} />
+    {/if}
   {/snippet}
 </List>`
 		},

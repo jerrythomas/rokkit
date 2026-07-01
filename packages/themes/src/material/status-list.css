@@ -14,7 +14,7 @@
   @apply text-warning;
 }
 [data-style='material'] [data-status-item][data-status='unknown'] span {
-  @apply text-paper-edge;
+  @apply text-ink-soft;
 }
 
 [data-style='material'] [data-status-item][data-status='pass'] {

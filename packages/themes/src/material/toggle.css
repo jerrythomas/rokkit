@@ -16,13 +16,16 @@
    Toggle Options
    ============================================================================= */
 
+/* ink (not ink-mute): an unselected option label is an interactive target
+   that must read clearly; ink-mute on the paper-mute container only reaches
+   4.07:1 in dark mode (AA fail). */
 [data-style='material'] [data-toggle-option] {
-  @apply text-ink-mute rounded-full;
+  @apply text-ink rounded-full;
 }
 
 [data-style='material'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']),
 [data-style='material'] [data-toggle-option]:focus:not(:disabled):not([data-disabled='true']) {
-  @apply bg-paper-mute text-ink-mute bg-none;
+  @apply bg-paper-mute text-ink bg-none;
 }
 
 /* Selected state */

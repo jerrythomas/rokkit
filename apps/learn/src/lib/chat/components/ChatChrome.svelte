@@ -61,37 +61,37 @@
 	}
 </script>
 
-<header data-chat-chrome>
+<header data-koanchat-chrome>
 	{#if brand}
-		<div data-chat-chrome-brand>{@render brand()}</div>
+		<div data-koanchat-chrome-brand>{@render brand()}</div>
 	{/if}
 
 	{#if crumb}
-		<div data-chat-chrome-crumb>
+		<div data-koanchat-chrome-crumb>
 			<span data-sep>/</span>
 			{@render crumb()}
 		</div>
 	{/if}
 
 	{#if nav}
-		<div data-chat-chrome-nav>{@render nav()}</div>
+		<div data-koanchat-chrome-nav>{@render nav()}</div>
 	{/if}
 
-	<div data-chat-chrome-spacer></div>
+	<div data-koanchat-chrome-spacer></div>
 
 	{#if showDensity || styles.length}
-	<div data-chat-chrome-prefs>
+	<div data-koanchat-chrome-prefs>
 		{#if styles.length}
-			<span data-chat-chrome-label>style</span>
+			<span data-koanchat-chrome-label>style</span>
 			<button
 				type="button"
-				data-chat-chrome-style-pill
+				data-koanchat-chrome-style-pill
 				onclick={() => (pickerOpen = !pickerOpen)}
 				aria-haspopup="listbox"
 				aria-expanded={pickerOpen}
 			>
 				{#if currentStyle}
-					<span data-chat-chrome-swatch aria-hidden="true">
+					<span data-koanchat-chrome-swatch aria-hidden="true">
 						{#each currentStyle.colors.slice(0, 3) as c, i (i)}
 							<span style:background={c}></span>
 						{/each}
@@ -103,7 +103,7 @@
 			</button>
 
 			{#if pickerOpen}
-				<div data-chat-chrome-style-picker role="listbox">
+				<div data-koanchat-chrome-style-picker role="listbox">
 					{#each styles as s (s.id)}
 						<button
 							type="button"
@@ -112,7 +112,7 @@
 							role="option"
 							aria-selected={s.id === style}
 						>
-							<span data-chat-chrome-swatch aria-hidden="true">
+							<span data-koanchat-chrome-swatch aria-hidden="true">
 								{#each s.colors.slice(0, 3) as c, i (i)}
 									<span style:background={c}></span>
 								{/each}
@@ -123,12 +123,12 @@
 				</div>
 			{/if}
 
-			<span data-chat-chrome-div></span>
+			<span data-koanchat-chrome-div></span>
 		{/if}
 
 		{#if showDensity}
-			<span data-chat-chrome-label>density</span>
-			<div data-chat-chrome-trio role="group" aria-label="Density">
+			<span data-koanchat-chrome-label>density</span>
+			<div data-koanchat-chrome-trio role="group" aria-label="Density">
 				{#each densities as d (d.id)}
 					<button
 						type="button"
@@ -151,7 +151,7 @@
 	{/if}
 
 	{#if actions}
-		<div data-chat-chrome-actions>{@render actions()}</div>
+		<div data-koanchat-chrome-actions>{@render actions()}</div>
 	{/if}
 
 	<ThemeSwitcherToggle variant="single" />

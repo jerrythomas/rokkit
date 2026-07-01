@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
-	import { setShellWelcome } from '$lib/koan/shell.svelte'
+	import { setShellLanding } from '$lib/koan/shell.svelte'
 
 	onMount(() => {
-		setShellWelcome()
+		setShellLanding()
 	})
 </script>

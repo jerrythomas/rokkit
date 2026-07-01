@@ -9,7 +9,7 @@
 	const { children }: ChatStreamProps = $props()
 </script>
 
-<div data-chat-stream>
+<div data-koanchat-stream>
 	{#if children}
 		{@render children()}
 	{/if}

@@ -33,14 +33,14 @@
 	}
 	.lead {
 		font: 400 15px var(--font-ui);
-		color: var(--ink-soft, #666);
+		color: var(--ink-mute, #555);
 		margin: 0 0 32px;
 	}
 	h2 {
 		font: 500 12px var(--font-mono);
 		letter-spacing: 0.12em;
 		text-transform: uppercase;
-		color: var(--ink-soft, #888);
+		color: var(--ink-mute, #555);
 		margin: 24px 0 12px;
 	}
 	.cards {
@@ -63,13 +63,15 @@
 		background: var(--paper, #fff);
 	}
 	.cards li a:hover {
-		border-color: var(--ink-soft, #888);
+		/* Consistent border pattern: paper-edge (rest) → paper-edge-hover (hover),
+		   same tokens in light + dark; per-mode values live in rokkit.config.js. */
+		border-color: var(--paper-edge-hover);
 	}
 	.cards li strong {
 		font: 600 14px var(--font-display);
 	}
 	.cards li span {
 		font: 400 12.5px/1.5 var(--font-ui);
-		color: var(--ink-soft, #666);
+		color: var(--ink-mute, #555);
 	}
 </style>

@@ -18,7 +18,7 @@ Rokkit provides both composable and data-driven components.
 
 ## Libraries
 
-Components have been separated into the following packages. Refer to the [stories](sites/learn/lib/stories) for examples of all available UI components. View a live demo [here](https://rokkit.vercel.app/)
+Components have been separated into the following packages. Refer to the [stories](sites/learn/lib/stories) for examples of all available UI components. View a live demo [here](https://rokkit.sensei-hq.com/)
 
 - [@rokkit/core](packages/core)
 - [@rokkit/data](packages/data)
@@ -90,7 +90,7 @@ If you want to provide users the option of switching between dark theme and ligh
 
 ## Documentation
 
-For more detailed documentation on each control, including a list of all available props and usage examples, please refer to the Rokkit documentation on our [website](https://rokkit.vercel.app).
+For more detailed documentation on each control, including a list of all available props and usage examples, please refer to the Rokkit documentation on our [website](https://rokkit.sensei-hq.com).
 
 We hope you enjoy using Rokkit in your projects!
 

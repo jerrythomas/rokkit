@@ -148,15 +148,38 @@ describe('PlotPlugin', () => {
 			expect(writeText).toHaveBeenCalled()
 		})
 
-		it('serializes + downloads the chart svg when the download button is clicked', async () => {
+		it('serializes + downloads the chart svg, deferring URL revocation until after the download', async () => {
 			const createObjectURL = vi.fn(() => 'blob:mock')
 			const revokeObjectURL = vi.fn()
 			URL.createObjectURL = createObjectURL
 			URL.revokeObjectURL = revokeObjectURL
+
+			// Capture the download anchor's filename at click time, and whether the
+			// object URL had already been revoked by then (it must NOT be — revoking
+			// synchronously cancels the in-flight download).
+			let downloadName: string | undefined
+			let revokedAtClick = true
+			const clickSpy = vi
+				.spyOn(HTMLAnchorElement.prototype, 'click')
+				.mockImplementation(function (this: HTMLAnchorElement) {
+					downloadName = this.download
+					revokedAtClick = revokeObjectURL.mock.calls.length > 0
+				})
+
 			const { container } = render(PlotPlugin, { props: { code: validSpec } })
+			vi.useFakeTimers()
 			await fireEvent.click(container.querySelector('[title="Download chart as SVG"]') as HTMLElement)
+
 			expect(createObjectURL).toHaveBeenCalledTimes(1)
+			expect(downloadName).toMatch(/\.svg$/) // filename keeps its extension
+			expect(revokedAtClick).toBe(false) // not revoked synchronously
+			expect(revokeObjectURL).not.toHaveBeenCalled()
+
+			vi.advanceTimersByTime(1000) // deferred revocation fires
 			expect(revokeObjectURL).toHaveBeenCalledWith('blob:mock')
+
+			clickSpy.mockRestore()
+			vi.useRealTimers()
 		})
 	})
 })

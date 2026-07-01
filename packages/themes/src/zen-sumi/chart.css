@@ -37,5 +37,5 @@
 }
 
 [data-style='zen-sumi'] [data-facet-title] {
-  @apply text-paper-edge;
+  @apply text-ink-soft;
 }

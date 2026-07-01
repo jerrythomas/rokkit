@@ -12,7 +12,9 @@
 [data-style='material'] [data-button]:not([data-style])[data-variant='default'],
 [data-style='material'] [data-button][data-style='default']:not([data-variant]),
 [data-style='material'] [data-button]:not([data-style]):not([data-variant]) {
-  @apply bg-paper-mute text-ink-mute bg-none shadow-sm;
+  /* ink (not ink-mute): the button label is primary content; ink-mute on the
+     paper-mute fill only reaches 4.07:1 in dark mode (AA fail). */
+  @apply bg-paper-mute text-ink bg-none shadow-sm;
 }
 
 [data-style='material'] [data-button][data-style='default'][data-variant='primary'],

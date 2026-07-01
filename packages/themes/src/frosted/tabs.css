@@ -31,9 +31,14 @@
   background-color: color-mix(in oklch, var(--paper-mute) 15%, transparent);
 }
 
-/* Selected state */
+/* Selected state.
+   ink (not primary): the selected pill's bg is a translucent primary tint
+   (bg-primary/40) that composites to a light tint in light mode and a dark
+   tint in dark mode. Vibrant primary text on the light tint is only ~1.6:1.
+   ink flips with the mode and clears AA on both poles (~10:1 light, ~8.6:1
+   dark). The vibrant primary lives on the border + icon below. */
 [data-style='frosted'] [data-tabs-trigger][data-selected] {
-  @apply bg-primary/40 text-primary border-primary/50 border backdrop-blur-sm;
+  @apply bg-primary/40 text-ink border-primary/50 border backdrop-blur-sm;
 }
 
 /* =============================================================================

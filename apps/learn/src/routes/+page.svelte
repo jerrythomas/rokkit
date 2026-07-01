@@ -374,7 +374,7 @@
 
 	.eyebrow {
 		font: 500 11px var(--font-mono);
-		color: var(--ink-soft);
+		color: var(--ink-mute);
 		letter-spacing: 0.2em;
 		text-transform: uppercase;
 	}
@@ -440,7 +440,7 @@
 	}
 
 	.install-cmd .prompt {
-		color: var(--ink-faint);
+		color: var(--ink-mute);
 	}
 
 	.hero-mark {
@@ -480,7 +480,7 @@
 		gap: 12px;
 		align-items: center;
 		font: 500 11px var(--font-mono);
-		color: var(--ink-soft);
+		color: var(--ink-mute);
 		letter-spacing: 0.12em;
 		text-transform: uppercase;
 	}
@@ -617,7 +617,7 @@
 
 	.tabs-card-desc {
 		font: 500 11px var(--font-mono);
-		color: var(--ink-soft);
+		color: var(--ink-mute);
 		margin-left: auto;
 		letter-spacing: 0.04em;
 	}
@@ -723,14 +723,14 @@
 
 	.chat-mock-label {
 		font: 500 11px var(--font-mono);
-		color: var(--ink-soft);
+		color: var(--ink-mute);
 		letter-spacing: 0.06em;
 		flex: 1;
 	}
 
 	.chat-mock-meta {
 		font: 500 10.5px var(--font-mono);
-		color: var(--ink-faint);
+		color: var(--ink-mute);
 		letter-spacing: 0.06em;
 	}
 
@@ -980,7 +980,7 @@
 
 	.package-desc {
 		font: 400 12.5px/1.45 var(--font-ui);
-		color: var(--ink-soft);
+		color: var(--ink-mute);
 	}
 
 	.new-badge {
@@ -1044,7 +1044,7 @@
 
 	.footer-meta {
 		font: 500 11px var(--font-mono);
-		color: var(--ink-soft);
+		color: var(--ink-mute);
 		letter-spacing: 0.06em;
 		text-transform: uppercase;
 	}
@@ -1063,6 +1063,6 @@
 
 	.footer-services {
 		font: 500 11px var(--font-mono);
-		color: var(--ink-faint);
+		color: var(--ink-mute);
 	}
 </style>

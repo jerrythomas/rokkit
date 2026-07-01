@@ -28,9 +28,14 @@
   background-color: color-mix(in oklch, var(--paper-mute) 15%, transparent);
 }
 
-/* Selected state */
+/* Selected state.
+   ink (not primary): the selected bg is a translucent primary tint
+   (bg-primary/40) that composites to a light tint in light mode and a dark
+   tint in dark mode. Vibrant primary text on the light tint is only ~1.6:1.
+   ink flips with the mode and clears AA on both poles. Vibrant primary stays
+   on the border + icon. */
 [data-style='frosted'] [data-toggle-option][data-selected='true'] {
-  @apply bg-primary/40 text-primary border-primary/50 border backdrop-blur-sm;
+  @apply bg-primary/40 text-ink border-primary/50 border backdrop-blur-sm;
 }
 
 /* =============================================================================

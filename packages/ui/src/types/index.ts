@@ -64,6 +64,12 @@ export * from './tooltip.js'
 // ItemContent Types
 export * from './item-content.js'
 
+// ItemSwitch Types
+export * from './item-switch.js'
+
+// ItemToggle Types
+export * from './item-toggle.js'
+
 // StatusList Types
 export * from './status-list.js'
 
@@ -126,3 +132,6 @@ export * from './stepper.js'
 
 // Tilt Types
 export * from './tilt.js'
+
+// Chat Types
+export * from './chat.js'

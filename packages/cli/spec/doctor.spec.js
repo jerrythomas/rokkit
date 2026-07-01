@@ -2,7 +2,13 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { mkdtempSync, rmSync, writeFileSync, readFileSync, mkdirSync, existsSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { runChecks, defaultStarterSource, validateConfigShape, doctor } from '../src/doctor.js'
+import {
+	runChecks,
+	defaultStarterSource,
+	validateConfigShape,
+	checkTextTokenUsage,
+	doctor
+} from '../src/doctor.js'
 
 describe('runChecks', () => {
 	it('should report pass when rokkit.config.js exists', () => {
@@ -261,6 +267,90 @@ describe('defaultStarterSource', () => {
 	})
 })
 
+describe('checkTextTokenUsage', () => {
+	it('flags text-paper-edge and color: var(--paper-mute) misuse, one finding listing both lines', () => {
+		const css = [
+			'.a { color: var(--ink); }',
+			'.b { @apply text-paper-edge; }',
+			'.c { color: red; }',
+			'.d { color: var(--paper-mute); }'
+		].join('\n')
+		const fs = {
+			exists: () => true,
+			resolve: (p) => `/proj/${p}`,
+			list: () => ['/proj/src/one.css', '/proj/src/two.svelte'],
+			read: (p) => (p.endsWith('one.css') ? css : 'div { color: var(--ink); }')
+		}
+		const checks = checkTextTokenUsage(fs)
+		expect(checks).toHaveLength(1)
+		expect(checks[0].id).toBe('surface-token-as-text')
+		expect(checks[0].status).toBe('warn')
+		expect(checks[0].fixable).toBe(false)
+		// two distinct misuse lines from one.css
+		expect(checks[0].fix).toContain('one.css:2')
+		expect(checks[0].fix).toContain('one.css:4')
+	})
+
+	it('returns [] for clean CSS (text-ink-mute, text-paper-soft)', () => {
+		const fs = {
+			exists: () => true,
+			resolve: (p) => `/proj/${p}`,
+			list: () => ['/proj/src/clean.css'],
+			read: () => '.x { @apply text-ink-mute text-paper-soft; color: var(--paper); }'
+		}
+		expect(checkTextTokenUsage(fs)).toEqual([])
+	})
+
+	it('does NOT flag text-paper-soft / var(--paper) legitimate on-colours', () => {
+		const fs = {
+			exists: () => true,
+			resolve: (p) => `/proj/${p}`,
+			list: () => ['/proj/src/oncolor.svelte'],
+			read: () => '<div class="text-paper-soft" style="color: var(--paper)">hi</div>'
+		}
+		expect(checkTextTokenUsage(fs)).toEqual([])
+	})
+
+	it('returns [] when the adapter has no list (old adapter)', () => {
+		const fs = { exists: () => true, resolve: (p) => p, read: () => '' }
+		expect(checkTextTokenUsage(fs)).toEqual([])
+	})
+
+	it('returns [] when src/ does not exist', () => {
+		const fs = {
+			exists: () => false,
+			resolve: (p) => p,
+			list: () => [],
+			read: () => ''
+		}
+		expect(checkTextTokenUsage(fs)).toEqual([])
+	})
+
+	it('skips non-css/svelte files', () => {
+		const fs = {
+			exists: () => true,
+			resolve: (p) => `/proj/${p}`,
+			list: () => ['/proj/src/notes.txt', '/proj/src/data.json'],
+			read: () => 'text-paper-edge color: var(--paper-mute)'
+		}
+		expect(checkTextTokenUsage(fs)).toEqual([])
+	})
+
+	it('relativises paths under cwd for display', () => {
+		const cwd = process.cwd()
+		const fs = {
+			exists: () => true,
+			resolve: (p) => `${cwd}/${p}`,
+			list: () => [`${cwd}/src/styles.css`],
+			read: () => '.a { color: var(--paper-edge); }'
+		}
+		const checks = checkTextTokenUsage(fs)
+		expect(checks).toHaveLength(1)
+		expect(checks[0].fix).toContain('src/styles.css:1')
+		expect(checks[0].fix).not.toContain(`${cwd}/src/styles.css`)
+	})
+})
+
 // ─────────────────────────────────────────────────────────────────────────────
 // doctor() — integration tests using real temp directories
 // ─────────────────────────────────────────────────────────────────────────────
@@ -324,6 +414,20 @@ describe('doctor() main entry', () => {
 		await doctor({})
 		expect(process.exitCode).toBe(1)
 		// restore
+		process.exitCode = undefined
+	})
+
+	it('walks a real nested src/ tree (covers listFiles recursion + skip dirs) without throwing', async () => {
+		// Exercises the REAL fs adapter `list` (recursive listFiles): a nested src/
+		// subdir to hit the directory-recursion branch, plus a skipped dir.
+		writePassingProject(cwd)
+		mkdirSync(join(cwd, 'src', 'lib', 'components'), { recursive: true })
+		mkdirSync(join(cwd, 'src', 'node_modules'), { recursive: true }) // must be skipped
+		writeFileSync(join(cwd, 'src', 'lib', 'components', 'Card.svelte'), '<div class="text-ink">ok</div>')
+		writeFileSync(join(cwd, 'src', 'node_modules', 'vendor.css'), '.v { color: var(--paper-edge); }')
+		process.exitCode = undefined
+		await doctor({})
+		expect(console.info).toHaveBeenCalledWith(expect.stringContaining('Rokkit Doctor'))
 		process.exitCode = undefined
 	})
 

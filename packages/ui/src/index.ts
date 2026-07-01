@@ -54,7 +54,12 @@ export {
 	Tooltip,
 	NavContent,
 	ResponsiveGrid,
-	CommandPalette
+	CommandPalette,
+	ChatMessage,
+	ChatTimeline,
+	ChatComposer,
+	ChatHistory,
+	ChatShell
 } from './components/index.js'
 
 export { default as MarkdownRenderer } from './MarkdownRenderer.svelte'

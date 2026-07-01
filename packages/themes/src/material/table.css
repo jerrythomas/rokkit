@@ -9,7 +9,9 @@
    ============================================================================= */
 
 [data-style='material'] [data-table-header] th {
-  @apply text-ink-mute bg-paper-mute border-paper-edge border-b font-medium;
+  /* ink (not ink-mute): column headers are primary content; ink-mute on the
+     paper-mute header only reaches 4.07:1 in dark mode (AA fail). */
+  @apply text-ink bg-paper-mute border-paper-edge border-b font-medium;
 }
 
 [data-style='material'] [data-table-header-cell][data-sortable='true']:hover {

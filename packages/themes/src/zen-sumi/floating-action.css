@@ -52,7 +52,7 @@
 
 /* Item icon */
 [data-style='zen-sumi'] [data-fab-item] [data-fab-item-icon] {
-  @apply text-paper-edge;
+  @apply text-ink-soft;
 }
 
 [data-style='zen-sumi'] [data-fab-item]:hover:not(:disabled) [data-fab-item-icon] {

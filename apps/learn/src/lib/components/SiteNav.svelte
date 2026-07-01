@@ -10,10 +10,9 @@
 	const { homeIsActive = false }: Props = $props()
 
 	const links = [
-		{ label: 'Components', href: '/app', match: (p: string) => p === '/app' || (p.startsWith('/app') && p !== '/app/catalog') || homeIsActive },
-		{ label: 'Catalog', href: '/app/catalog', match: (p: string) => p.startsWith('/app/catalog') },
+		{ label: 'Components', href: '/app', match: (p: string) => p.startsWith('/app') || homeIsActive },
 		{ label: 'Guides', href: '/guides', match: (p: string) => p.startsWith('/guides') },
-		{ label: 'Chat demo', href: '/chat', match: (p: string) => p.startsWith('/chat') },
+		{ label: 'Ask Rokkit', href: '/chat', match: (p: string) => p.startsWith('/chat') },
 		{ label: 'GitHub ↗', href: 'https://github.com/jerrythomas/rokkit', external: true, match: () => false }
 	]
 
@@ -42,7 +41,7 @@
 	}
 
 	[data-site-nav] a {
-		color: var(--ink-soft);
+		color: var(--ink-mute);
 		text-decoration: none;
 		padding: 4px 0;
 		border-bottom: 1.5px solid transparent;

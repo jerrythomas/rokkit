@@ -18,6 +18,7 @@
 	import { FormRenderer } from '@rokkit/forms'
 	import { alerts, commands } from '@rokkit/states'
 	import RokkitWordmark from '$lib/components/RokkitWordmark.svelte'
+	import LlmsBookmark from '$lib/components/LlmsBookmark.svelte'
 	import { theme } from '$lib/stores/theme.svelte'
 	import { vibe } from '@rokkit/states'
 	import { shortcuts } from '@rokkit/actions'
@@ -37,6 +38,7 @@
 		appendTweak,
 		clearTweaksFor,
 		loadConversation,
+		removeConversation,
 		setCurrentId,
 		getCurrentId,
 		getCurrentConversation,
@@ -87,7 +89,7 @@
 		| 'lazy-tree' | 'status-list' | 'timeline'
 		| 'code' | 'markdown-renderer' | 'search-filter' | 'palette-manager'
 		| 'dropdown' | 'progress' | 'upload-progress' | 'upload-target'
-		| 'button-group' | 'tooltip' | 'code-group' | 'effects' | 'lock-mode'
+		| 'button-group' | 'tooltip' | 'code-group' | 'effects' | 'lock-mode' | 'chat'
 	const DEMO_ROUTE = CATALOG_DEMO_ROUTE as Record<DemoKind, string>
 
 	function pickDemoKind(query: string): DemoKind {
@@ -245,9 +247,8 @@
 	// Welcome flow is input-first. As the user types, ComposerSuggestions
 	// matches against the catalog and surfaces the closest demos. Clicking
 	// a suggestion submits its title as the query, going through the same
-	// thinking → goto path as a typed submission. The dedicated /app/catalog
-	// route (TBD) gives the same demos a sidebar-browse entry point for
-	// users who prefer to scan visually.
+	// thinking → goto path as a typed submission. The catalog grid on the
+	// /app landing gives the same demos a browse-first entry point.
 	function pickSuggestion(demo: DemoMeta) {
 		submitQuery(demo.title)
 	}
@@ -355,14 +356,15 @@
 	})
 
 	// Canvas-view toggle options — always include `live`, conditionally
-	// include `code` (when snippets exist) and `api` (when api meta
-	// exists). Keeps the toggle compact when a demo hasn't filled in
-	// one of the sections yet.
-	// `code` option is gated on whether the demo has a `*Code`
-	// constant (all 13 currently do — see activeDemoCode below).
-	// `api` option is gated on whether the demo's meta has filled
-	// in `api`.
-	const hasActiveCode = $derived(Boolean(shell.demoType))
+	// include `code` (when the demo actually has source to show) and `api`
+	// (when api meta exists). Keeps the toggle compact when a demo hasn't
+	// filled in one of the sections yet.
+	// `code` is gated on `activeDemoCode` being non-empty — only the demos
+	// with a `*Code` constant in the switch below produce one; the rest
+	// (e.g. `chat`) fall through to '' and must NOT show a Code tab that
+	// would otherwise render identically to Live.
+	// `api` option is gated on whether the demo's meta has filled in `api`.
+	const hasActiveCode = $derived(Boolean(activeDemoCode))
 	const canvasViewOptions = $derived.by(() => {
 		const opts: Array<{ label: string; value: 'live' | 'code' | 'api' | 'docs' }> = [
 			{ label: 'Live', value: 'live' }
@@ -1298,6 +1300,30 @@ ${tabsTag}`
 
 <div class="koan-shell" use:shortcuts={commands}>
 	<div class="stage">
+		{#snippet convRow(conv: Conversation)}
+			<div class="conv-wrap">
+				<button
+					type="button"
+					class="conv"
+					class:conv-active={conv.id === getCurrentId()}
+					data-conv-item
+					onclick={() => resumeConversation(conv)}
+				>
+					<span class="conv-icon {convIcon(conv)}" aria-hidden="true"></span>
+					<span class="conv-title">{conv.title}</span>
+					<span class="conv-when">{recencyLabel(conv)}</span>
+				</button>
+				<button
+					type="button"
+					class="conv-del"
+					aria-label="Delete {conv.title}"
+					title="Delete conversation"
+					onclick={() => removeConversation(conv.id)}
+				>
+					<span class="i-mdi:close" aria-hidden="true"></span>
+				</button>
+			</div>
+		{/snippet}
 		<ChatHistory bind:collapsed={shell.collapsed} onnew={startNewConversation}>
 			{#if allConv.length === 0}
 				<div class="conv-empty">
@@ -1308,49 +1334,19 @@ ${tabsTag}`
 			{#if buckets.today.length > 0}
 				<div class="group-label">Today</div>
 				{#each buckets.today as conv (conv.id)}
-					<button
-						type="button"
-						class="conv"
-						class:conv-active={conv.id === getCurrentId()}
-						data-conv-item
-						onclick={() => resumeConversation(conv)}
-					>
-						<span class="conv-icon {convIcon(conv)}" aria-hidden="true"></span>
-						<span class="conv-title">{conv.title}</span>
-						<span class="conv-when">{recencyLabel(conv)}</span>
-					</button>
+					{@render convRow(conv)}
 				{/each}
 			{/if}
 			{#if buckets.yesterday.length > 0}
 				<div class="group-label">Yesterday</div>
 				{#each buckets.yesterday as conv (conv.id)}
-					<button
-						type="button"
-						class="conv"
-						class:conv-active={conv.id === getCurrentId()}
-						data-conv-item
-						onclick={() => resumeConversation(conv)}
-					>
-						<span class="conv-icon {convIcon(conv)}" aria-hidden="true"></span>
-						<span class="conv-title">{conv.title}</span>
-						<span class="conv-when">{recencyLabel(conv)}</span>
-					</button>
+					{@render convRow(conv)}
 				{/each}
 			{/if}
 			{#if buckets.earlier.length > 0}
 				<div class="group-label">Earlier</div>
 				{#each buckets.earlier as conv (conv.id)}
-					<button
-						type="button"
-						class="conv"
-						class:conv-active={conv.id === getCurrentId()}
-						data-conv-item
-						onclick={() => resumeConversation(conv)}
-					>
-						<span class="conv-icon {convIcon(conv)}" aria-hidden="true"></span>
-						<span class="conv-title">{conv.title}</span>
-						<span class="conv-when">{recencyLabel(conv)}</span>
-					</button>
+					{@render convRow(conv)}
 				{/each}
 			{/if}
 			{#snippet collapsedBody()}
@@ -1375,49 +1371,31 @@ ${tabsTag}`
 			<div class="chat-header">
 				<span class="chat-title">
 					Conversation
-					{#if shell.phase !== 'welcome'}
+					{#if shell.phase !== 'landing'}
 						<span class="chat-sub">· {shell.lastQuery}</span>
 					{/if}
 				</span>
+				{#if shell.phase === 'response'}
+					<a class="chat-browse" href="/app">
+						<span class="i-mdi:view-grid-outline" aria-hidden="true"></span>
+						Browse
+					</a>
+				{/if}
 			</div>
 
-			{#if shell.phase === 'welcome'}
+			{#if shell.phase === 'landing'}
 				<div class="welcome-stream">
 					<h2 class="welcome-hello">Welcome back.</h2>
 					<p class="welcome-lede">
-						Tell me what you want to build. As you type I'll match
-						components from the catalog — or press <kbd>⌘</kbd><kbd>↵</kbd>
-						to send.
+						Tell me what you want to build — I'll match components as you
+						type, or browse the catalog on the right. Press
+						<kbd>⌘</kbd><kbd>↵</kbd> to send.
 					</p>
 
 					<ComposerSuggestions
 						query={shell.composerValue}
 						onpick={pickSuggestion}
 					/>
-
-					<a class="welcome-browse" href="/app/catalog">
-						<span class="i-mdi:view-grid-outline" aria-hidden="true"></span>
-						Browse the full catalog
-						<span class="i-mdi:arrow-right" aria-hidden="true"></span>
-					</a>
-				</div>
-			{:else if shell.phase === 'catalog'}
-				<div class="welcome-stream">
-					<h2 class="welcome-hello">Catalog</h2>
-					<p class="welcome-lede">
-						Every component in the library. Pick a tile on the right to
-						mount it — or filter from the composer below.
-					</p>
-
-					<ComposerSuggestions
-						query={shell.composerValue}
-						onpick={pickSuggestion}
-					/>
-
-					<a class="welcome-browse" href="/app">
-						<span class="i-mdi:arrow-left" aria-hidden="true"></span>
-						Back to welcome
-					</a>
 				</div>
 			{:else if shell.phase === 'thinking'}
 				<ChatStream>
@@ -2077,7 +2055,7 @@ ${tabsTag}`
 
 			<ChatComposer
 				bind:value={shell.composerValue}
-				placeholder={shell.phase === 'welcome'
+				placeholder={shell.phase === 'landing'
 					? 'Ask anything · type / for commands'
 					: 'Refine · ask follow-ups · request another component'}
 				running={shell.phase === 'thinking'}
@@ -2102,21 +2080,9 @@ ${tabsTag}`
 		</aside>
 
 		<main class="canvas">
-			{#if shell.phase === 'response' && currentMeta}
+			{#if shell.phase === 'response' && currentMeta && canvasViewOptions.length > 1}
 				<div class="canvas-view-toggle">
-					{#if canvasViewOptions.length > 1}
-						<Toggle options={canvasViewOptions} bind:value={canvasView} size="sm" />
-					{/if}
-					<a
-						class="llms-badge"
-						href={`/llms/components/${currentMeta.id}.txt`}
-						target="_blank"
-						rel="noopener noreferrer"
-						title="LLM-ready spec for {currentMeta.title}"
-					>
-						<span class="i-mdi:file-document-outline" aria-hidden="true"></span>
-						<span>llms.txt</span>
-					</a>
+					<Toggle options={canvasViewOptions} bind:value={canvasView} size="sm" />
 				</div>
 			{/if}
 
@@ -2175,33 +2141,30 @@ ${tabsTag}`
 						<MarkdownRenderer markdown={demoDocs} />
 					</article>
 				</div>
-			{:else if shell.phase === 'welcome'}
-				<div class="welcome-hero">
-					<div class="mark"><RokkitWordmark height={64} /></div>
-					<div class="lede">Pass the data. The component does the rest.</div>
-					<div class="sub">
-						Type a question on the left. The answer mounts here — themed,
-						density-tuned, copyable, and identical to what you'd ship.
-					</div>
-					<div class="meta">
-						<span>style</span>
-						<span class="meta-value">{vibe.style}</span>
-						<span class="meta-sep">·</span>
-						<span>47 components</span>
-						<span class="meta-sep">·</span>
-						<span>Svelte 5 runes</span>
-					</div>
-				</div>
-			{:else if shell.phase === 'catalog'}
-				<div class="canvas-head">
-					<div class="canvas-eyebrow">Browse · catalog</div>
-					<div class="canvas-title">Every component, one click away</div>
-					<div class="canvas-sub">
-						Type to filter, or jump straight into a tile. Each lands you
-						on the live demo with the chat on the left and Tweaks at hand.
-					</div>
-				</div>
+				{#if currentMeta}
+					<LlmsBookmark
+						href={`/llms/components/${currentMeta.id}.txt`}
+						title="LLM-ready spec for {currentMeta.title}"
+					/>
+				{/if}
+			{:else if shell.phase === 'landing'}
 				<div class="canvas-body catalog">
+					<div class="welcome-hero">
+						<div class="mark"><RokkitWordmark height={64} /></div>
+						<div class="lede">Pass the data. The component does the rest.</div>
+						<div class="sub">
+							Type a question on the left. The answer mounts here — themed,
+							density-tuned, copyable, and identical to what you'd ship.
+						</div>
+						<div class="meta">
+							<span>style</span>
+							<span class="meta-value">{vibe.style}</span>
+							<span class="meta-sep">·</span>
+							<span>47 components</span>
+							<span class="meta-sep">·</span>
+							<span>Svelte 5 runes</span>
+						</div>
+					</div>
 					<CatalogGrid filter={shell.composerValue} />
 				</div>
 			{:else if shell.phase === 'thinking'}
@@ -2951,6 +2914,54 @@ ${tabsTag}`
 		color: var(--ink-soft);
 		letter-spacing: 0.02em;
 		flex-shrink: 0;
+		transition: opacity 120ms ease;
+	}
+
+	.conv-wrap {
+		position: relative;
+	}
+
+	/* Per-row delete (×) — revealed on hover/focus, sits over the timestamp. */
+	.conv-del {
+		position: absolute;
+		top: 50%;
+		right: 6px;
+		transform: translateY(-50%);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 20px;
+		height: 20px;
+		padding: 0;
+		border: 0;
+		border-radius: 4px;
+		background: transparent;
+		color: var(--ink-soft);
+		cursor: pointer;
+		opacity: 0;
+		transition:
+			opacity 120ms ease,
+			color 120ms ease,
+			background 120ms ease;
+	}
+
+	.conv-wrap:hover .conv-del,
+	.conv-del:focus-visible {
+		opacity: 1;
+	}
+
+	.conv-del:hover {
+		color: var(--ink);
+		background: var(--paper-mute);
+	}
+
+	.conv-del [class^='i-'] {
+		width: 13px;
+		height: 13px;
+	}
+
+	.conv-wrap:hover .conv-when {
+		opacity: 0;
 	}
 
 	.conv-mini {
@@ -2995,6 +3006,8 @@ ${tabsTag}`
 		padding: 12px 16px;
 		border-bottom: 1px solid var(--paper-edge);
 		flex-shrink: 0;
+		display: flex;
+		align-items: center;
 	}
 
 	.tweaks-slab {
@@ -3108,32 +3121,28 @@ ${tabsTag}`
 		vertical-align: 1px;
 	}
 
-	.welcome-browse {
+	.chat-browse {
 		display: inline-flex;
 		align-items: center;
-		gap: 6px;
-		margin-top: auto;
-		padding: 6px 10px;
-		font: 500 12px var(--font-ui);
+		gap: 5px;
+		margin-left: auto;
+		font: 500 11px var(--font-ui);
 		color: var(--ink-mute);
-		background: transparent;
-		border: 0;
-		border-radius: var(--density-radius-base);
 		text-decoration: none;
-		align-self: flex-start;
+		padding: 3px 8px;
+		border: 1px solid var(--paper-edge);
+		border-radius: 6px;
 		transition:
 			color 120ms ease,
-			background 120ms ease;
+			border-color 120ms ease;
 	}
-
-	.welcome-browse:hover {
+	.chat-browse:hover {
 		color: var(--ink);
-		background: var(--paper-mute);
+		border-color: var(--paper-edge-hover);
 	}
-
-	.welcome-browse [class*='i-mdi'] {
-		width: 14px;
-		height: 14px;
+	.chat-browse [class^='i-'] {
+		width: 13px;
+		height: 13px;
 	}
 
 	.canvas {
@@ -3180,6 +3189,59 @@ ${tabsTag}`
 		max-width: 640px;
 	}
 
+	/* Landing hero — the original component-page banner, now stacked above the
+	   catalog grid inside the scrolling body (not full-canvas centered). */
+	.welcome-hero {
+		max-width: 640px;
+		margin: 0 auto;
+		padding: 56px 32px 32px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: 16px;
+	}
+
+	.welcome-hero .mark {
+		margin-bottom: 8px;
+		display: flex;
+		justify-content: center;
+	}
+
+	.welcome-hero .lede {
+		font: 400 28px/1.25 var(--font-display);
+		color: var(--ink);
+		letter-spacing: -0.01em;
+	}
+
+	.welcome-hero .sub {
+		font: 400 15px/1.6 var(--font-ui);
+		color: var(--ink-mute);
+		max-width: 480px;
+	}
+
+	.welcome-hero .meta {
+		margin-top: 24px;
+		display: flex;
+		gap: 16px;
+		align-items: center;
+		font: 500 10.5px var(--font-mono);
+		color: var(--ink-soft);
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	.welcome-hero .meta-value {
+		color: var(--ink-mute);
+		text-transform: none;
+		letter-spacing: 0.04em;
+		font-size: 12px;
+	}
+
+	.welcome-hero .meta-sep {
+		color: var(--ink-faint);
+	}
+
 	.canvas-body {
 		flex: 1;
 		min-height: 0;
@@ -3209,7 +3271,7 @@ ${tabsTag}`
 		flex-shrink: 0;
 	}
 
-	:global(.canvas-body.response > [data-chat-response]) {
+	:global(.canvas-body.response > [data-koanchat-response]) {
 		flex: 1;
 		min-height: 0;
 		display: flex;
@@ -3219,14 +3281,14 @@ ${tabsTag}`
 	/* Inside ChatResponse the mount wrapper takes the remaining height
 	   so the live component itself fills the canvas instead of sitting
 	   in a fixed min-height box with empty space underneath. */
-	:global(.canvas-body.response [data-chat-response-body]) {
+	:global(.canvas-body.response [data-koanchat-response-body]) {
 		flex: 1;
 		min-height: 0;
 		display: flex;
 		flex-direction: column;
 	}
 
-	:global(.canvas-body.response [data-chat-response-body] > *) {
+	:global(.canvas-body.response [data-koanchat-response-body] > *) {
 		flex: 1;
 		min-height: 0;
 	}
@@ -3376,31 +3438,6 @@ ${tabsTag}`
 		display: inline-flex;
 		align-items: center;
 		gap: 10px;
-	}
-
-	.llms-badge {
-		display: inline-flex;
-		align-items: center;
-		gap: 6px;
-		padding: 4px 10px;
-		font: 500 11px var(--font-mono);
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-		color: var(--ink-mute);
-		background: var(--paper-soft);
-		border: 1px solid var(--paper-edge);
-		border-radius: var(--density-radius-base, 4px);
-		text-decoration: none;
-		transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
-	}
-	.llms-badge:hover {
-		color: var(--ink);
-		border-color: var(--ink-faint);
-		background: var(--paper);
-	}
-	.llms-badge [class^='i-'] {
-		width: 12px;
-		height: 12px;
 	}
 
 	.tabs-mount {
@@ -3584,7 +3621,7 @@ ${tabsTag}`
 		gap: 12px;
 	}
 
-	:global([data-chat-message] .mounted-callout) {
+	:global([data-koanchat-message] .mounted-callout) {
 		margin-top: 8px;
 		padding: 8px 10px;
 		background: var(--accent-soft);
@@ -3604,17 +3641,17 @@ ${tabsTag}`
 			border-color 120ms;
 	}
 
-	:global([data-chat-message] .mounted-callout:not(:disabled):hover) {
+	:global([data-koanchat-message] .mounted-callout:not(:disabled):hover) {
 		background: color-mix(in oklab, var(--accent) 10%, var(--paper-soft));
 		border-style: solid;
 	}
 
-	:global([data-chat-message] .mounted-callout:disabled) {
+	:global([data-koanchat-message] .mounted-callout:disabled) {
 		cursor: default;
 		opacity: 0.92;
 	}
 
-	:global([data-chat-message] .glossary) {
+	:global([data-koanchat-message] .glossary) {
 		margin: 4px 0 0;
 		padding-left: 18px;
 		font-size: 13px;
@@ -3622,16 +3659,16 @@ ${tabsTag}`
 		color: var(--ink-mute);
 	}
 
-	:global([data-chat-message] .glossary li) {
+	:global([data-koanchat-message] .glossary li) {
 		margin-bottom: 2px;
 	}
 
-	:global([data-chat-message] .glossary strong) {
+	:global([data-koanchat-message] .glossary strong) {
 		color: var(--ink);
 		font-weight: 500;
 	}
 
-	:global([data-chat-message] .mounted-callout .callout-label) {
+	:global([data-koanchat-message] .mounted-callout .callout-label) {
 		font: 500 10.5px var(--font-mono);
 		color: var(--accent);
 		letter-spacing: 0.12em;
@@ -3662,58 +3699,4 @@ ${tabsTag}`
 		white-space: nowrap;
 	}
 
-	.canvas:has(.welcome-hero) {
-		display: grid;
-		place-items: center;
-	}
-
-	.welcome-hero {
-		max-width: 640px;
-		padding: 64px 32px;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		text-align: center;
-		gap: 16px;
-	}
-
-	.welcome-hero .mark {
-		margin-bottom: 8px;
-		display: flex;
-		justify-content: center;
-	}
-
-	.welcome-hero .lede {
-		font: 400 28px/1.25 var(--font-display);
-		color: var(--ink);
-		letter-spacing: -0.01em;
-	}
-
-	.welcome-hero .sub {
-		font: 400 15px/1.6 var(--font-ui);
-		color: var(--ink-mute);
-		max-width: 480px;
-	}
-
-	.welcome-hero .meta {
-		margin-top: 24px;
-		display: flex;
-		gap: 16px;
-		align-items: center;
-		font: 500 10.5px var(--font-mono);
-		color: var(--ink-soft);
-		letter-spacing: 0.16em;
-		text-transform: uppercase;
-	}
-
-	.welcome-hero .meta-value {
-		color: var(--ink-mute);
-		text-transform: none;
-		letter-spacing: 0.04em;
-		font-size: 12px;
-	}
-
-	.welcome-hero .meta-sep {
-		color: var(--ink-faint);
-	}
 </style>
