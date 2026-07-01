@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
-	import { MODES, type ChatMode } from '$lib/chat-demo/modes'
+	import { MODES, cardFor, type ChatMode } from '$lib/chat-demo/modes'
 	import { setPendingPrompt } from '$lib/chat-demo/store.svelte'
 
 	// Web-LLM needs WebGPU; disable its card when unavailable.
@@ -10,7 +10,7 @@
 	})
 
 	function routeFor(mode: ChatMode): string {
-		const card = MODES.find((c) => c.mode === mode)!
+		const card = cardFor(mode)
 		return card.needsModel && card.defaultModel
 			? `/chat/${mode}?model=${encodeURIComponent(card.defaultModel)}`
 			: `/chat/${mode}`
@@ -67,11 +67,12 @@
 		background: var(--paper);
 		transition: border-color 120ms ease;
 	}
-	[data-mode-card]:hover {
+	[data-mode-card]:not(.disabled):hover {
 		border-color: var(--paper-edge-hover);
 	}
 	[data-mode-card].disabled {
 		opacity: 0.55;
+		cursor: not-allowed;
 	}
 	[data-mode-card] header {
 		display: flex;
