@@ -115,6 +115,26 @@ export const llm = $state<{
 	webgpuSupported: null
 })
 
+/**
+ * Point the engine at a route mode + optional model. Simulated disables the
+ * LLM (scripted router); openrouter/webllm enable it and set the model
+ * (falling back to the mode default). Called by the /chat/[mode] page.
+ */
+export function setEngine(mode: 'simulated' | 'openrouter' | 'webllm', model?: string): void {
+	if (mode === 'simulated') {
+		llm.enabled = false
+		return
+	}
+	llm.enabled = true
+	if (mode === 'webllm') {
+		llm.provider = 'webllm'
+		llm.webllmModel = model || DEFAULT_WEBLLM_MODEL
+	} else {
+		llm.provider = 'openrouter'
+		llm.openRouterModel = model || DEFAULT_OPENROUTER_MODEL
+	}
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let webllmEngine: any = null
 
