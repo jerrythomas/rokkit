@@ -10,12 +10,7 @@
 import type { ChatMessage as ChatMessageData } from '@rokkit/ui'
 import type { ChatMode } from './modes'
 import { MODES } from './modes'
-import {
-	conversation,
-	submitText,
-	submitData,
-	syncLLMFromCurrentConversation
-} from '$lib/chat-demo/store.svelte'
+import { conversation, submitText, submitData } from '$lib/chat-demo/store.svelte'
 import { llm } from '$lib/chat-demo/llm.svelte'
 import {
 	bucketByRecency,
@@ -163,16 +158,23 @@ export function convIcon(conv: Conversation): string {
 }
 
 /**
- * Resume a chat conversation: route to its own mode, load it, and sync the
- * engine to whatever produced its last assistant turn. The stream re-renders
- * reactively via the conversation.turns getter.
+ * Resume a chat conversation: route to its own mode (carrying the model that
+ * produced its last assistant turn), then load it. The route's setEngine effect
+ * owns engine selection now, so we don't sync llm state here — we just put the
+ * mode + model in the URL and let the /chat/[mode] page derive the engine. The
+ * stream re-renders reactively via the conversation.turns getter.
  */
 // bucketsFor() filters the sidebar to the 'chat' surface, so callers never
 // pass app-surface conversations here; app resume lives in the /app layout.
 export function resumeConversation(conv: Conversation): void {
-	goto('/chat/' + (conv.mode ?? 'simulated'))
+	const mode = conv.mode ?? 'simulated'
+	const last = [...conv.turns].reverse().find(
+		(t) => t.kind === 'assistant' && t.body.kind === 'blocks'
+	)
+	const model =
+		last && last.kind === 'assistant' && last.body.kind === 'blocks' ? last.body.model : undefined
+	goto(`/chat/${mode}${model ? `?model=${encodeURIComponent(model)}` : ''}`)
 	loadConversation(conv.id)
-	syncLLMFromCurrentConversation()
 }
 
 export function startNewChat(): void {

@@ -34,9 +34,13 @@
 
 	const { data } = $props()
 
-	// The engine is fixed by the route. Set it from data.mode + an optional
-	// ?model= param whenever the route (or model) changes. Simulated ignores
-	// the model.
+	// The engine is fixed by the route. Set it synchronously at init so a
+	// picker-seeded prompt (consumed in onMount, which runs after init) is
+	// answered by the right engine — not the default simulated one. `page`
+	// from $app/state is available synchronously here.
+	setEngine(data.mode, page.url.searchParams.get('model') ?? undefined)
+
+	// Keep it in sync as the route/model change (?model= dropdown, resume).
 	$effect(() => {
 		setEngine(data.mode, page.url.searchParams.get('model') ?? undefined)
 	})
