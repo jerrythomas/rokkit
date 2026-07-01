@@ -37,6 +37,51 @@ describe('Plot.svelte', () => {
 		expect(() => render(Plot, { props: { spec, width: 400, height: 300 } })).not.toThrow()
 	})
 
+	// Regression: top-level `spec.stack` must reach the Bar geom's `options.stack`
+	// so a stacked bar chart from an AI response (fenced ```plot``` block) actually
+	// stacks instead of rendering identical to the grouped variant.
+	// See apps/learn/src/lib/chat-demo/router.ts (`chart-grouped` route).
+	it('forwards spec.stack to spec-driven bar geoms so stacked/grouped diverge', async () => {
+		const data = [
+			{ q: 'Q1', p: 'H', v: 20 },
+			{ q: 'Q1', p: 'S', v: 30 },
+			{ q: 'Q2', p: 'H', v: 25 },
+			{ q: 'Q2', p: 'S', v: 15 }
+		]
+		const baseSpec = {
+			data,
+			x: 'q',
+			y: 'v',
+			fill: 'p',
+			geoms: [{ type: 'bar' }]
+		}
+		const grouped = render(Plot, {
+			props: { spec: { ...baseSpec, stack: false }, width: 400, height: 300, grid: false }
+		})
+		const stacked = render(Plot, {
+			props: { spec: { ...baseSpec, stack: true }, width: 400, height: 300, grid: false }
+		})
+		await tick()
+
+		// The stacked and grouped variants must produce visibly different bar
+		// layouts — same rows, same x/y, same fill, only `stack` differs.
+		const groupedBars = grouped.container.querySelectorAll('[data-plot-canvas] rect')
+		const stackedBars = stacked.container.querySelectorAll('[data-plot-canvas] rect')
+		expect(groupedBars.length).toBeGreaterThan(0)
+		expect(stackedBars.length).toBeGreaterThan(0)
+
+		// Grouped: bars in the same x-band are placed side by side (each takes
+		// half the band width). Stacked: bars in the same x-band overlap
+		// horizontally (share the same x + width). Serialise the (x,width)
+		// tuples per SVG so the layouts must differ.
+		const shape = (nodes) =>
+			[...nodes]
+				.map((n) => `${n.getAttribute('x')}:${n.getAttribute('width')}`)
+				.sort()
+				.join('|')
+		expect(shape(groupedBars)).not.toBe(shape(stackedBars))
+	})
+
 	describe('responsive width', () => {
 		const OriginalRO = global.ResizeObserver
 

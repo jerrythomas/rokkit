@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { tick, onMount } from 'svelte'
 	import { ChatHistory, configureWho } from '$lib/chat'
-	import { Button, ChatTimeline, ChatComposer, ChatMessage } from '@rokkit/ui'
-	import { conversation, resetConversation, takePendingPrompt } from '$lib/chat-demo/store.svelte'
-	import { getCurrentId } from '$lib/koan/conversations.svelte'
+	import { ChatTimeline, ChatComposer, ChatMessage } from '@rokkit/ui'
+	import { conversation, takePendingPrompt } from '$lib/chat-demo/store.svelte'
+	import { pickStarterHints } from '$lib/chat-demo/starter-hints'
+	import { getCurrentId, getCurrentConversation, setCurrentId } from '$lib/koan/conversations.svelte'
 	import { goto } from '$app/navigation'
 	import { page } from '$app/state'
 	import {
@@ -37,13 +38,37 @@
 	// The engine is fixed by the route. Set it synchronously at init so a
 	// picker-seeded prompt (consumed in onMount, which runs after init) is
 	// answered by the right engine — not the default simulated one. `page`
-	// from $app/state is available synchronously here.
+	// from $app/state is available synchronously here. Static capture of the
+	// initial route is intentional; the $effect below handles subsequent
+	// route/model changes.
+	// svelte-ignore state_referenced_locally
 	setEngine(data.mode, page.url.searchParams.get('model') ?? undefined)
 
 	// Keep it in sync as the route/model change (?model= dropdown, resume).
 	$effect(() => {
 		setEngine(data.mode, page.url.searchParams.get('model') ?? undefined)
 	})
+
+	// A conversation is anchored to the engine that produced it. When the user
+	// navigates to a mode whose current selection was made in a *different*
+	// engine (e.g. Simulated → OpenRouter via top nav), clear it so the fresh
+	// mode starts empty — otherwise the leftover turns render and the empty
+	// state (starter hints) never gets a chance to appear. Resume flows always
+	// route to the conversation's own mode, so mode always matches after them.
+	$effect(() => {
+		const cur = getCurrentConversation()
+		if (cur && cur.surface === 'chat' && cur.mode !== data.mode) {
+			setCurrentId(null)
+		}
+	})
+
+	// Header content (icon + label + blurb) mirrors the picker card for this mode.
+	const modeCard = $derived(cardFor(data.mode))
+
+	// Starter hints — 4 randomized types (chart/table/form/list) shown on an
+	// empty conversation. Picked once per component so the chips stay stable
+	// while the user reads them; a new mount → a fresh randomization.
+	const starterHints = pickStarterHints()
 
 	onMount(() => {
 		// Probe WebGPU once so the Web-LLM status shows the right state.
@@ -61,7 +86,12 @@
 	// so the route stays the single source of truth (the $effect above re-derives
 	// the engine from it). For Web-LLM we also tear down the loaded engine so the
 	// newly-selected model is fetched fresh on next use (as the toggle version did).
+	//
+	// Model switch UX: if the current conversation has turns, spin up a fresh
+	// one so each conversation stays anchored to a single engine. Prevents the
+	// confusion of half a thread answered by one model and half by another.
 	function selectModel(id: string) {
+		if (conversation.turns.length > 0) startNewChat()
 		goto(`/chat/${data.mode}?model=${encodeURIComponent(id)}`, {
 			replaceState: true,
 			keepFocus: true,
@@ -132,72 +162,22 @@
 </svelte:head>
 
 <div class="chat-shell">
-	<div class="chat-subtoolbar">
-		<div class="subtoolbar-zone subtoolbar-left">
-			<a class="chat-back" href="/chat">‹ Ask Rokkit</a>
-		</div>
-		<div class="subtoolbar-zone subtoolbar-center">
-			<span class="title-kicker">Inline Chat</span>
-			<span class="title-sep">·</span>
-			<span class="title-mode">{cardFor(data.mode).label}</span>
-		</div>
-		<div class="subtoolbar-zone subtoolbar-right">
-			{#if data.mode === 'openrouter'}
-				<label class="subtoolbar-field">
-					<span class="subtoolbar-label">Model</span>
-					<select
-						value={llm.openRouterModel}
-						class="llm-model"
-						onchange={(e) => selectModel(e.currentTarget.value)}
-					>
-						{#each OPENROUTER_MODELS as m (m.id)}
-							<option value={m.id}>{m.label}</option>
-						{/each}
-					</select>
-				</label>
-			{:else if data.mode === 'webllm'}
-				<label class="subtoolbar-field">
-					<span class="subtoolbar-label">Model</span>
-					<select
-						value={llm.webllmModel}
-						class="llm-model"
-						disabled={llm.webllmStatus === 'loading'}
-						onchange={(e) => selectModel(e.currentTarget.value)}
-					>
-						{#each WEBLLM_MODELS as m (m.id)}
-							<option value={m.id}>{m.label} · {m.size}</option>
-						{/each}
-					</select>
-				</label>
-				{#if llm.webllmStatus === 'uninitialized'}
-					<button type="button" class="llm-load-btn" onclick={() => ensureWebLLMEngine()}>
-						<span class="i-mdi:download" aria-hidden="true"></span>
-						Load
-					</button>
-				{:else if llm.webllmStatus === 'loading'}
-					<span class="llm-progress" title={llm.webllmStage}>
-						<span class="i-mdi:loading llm-spin" aria-hidden="true"></span>
-						{Math.round(llm.webllmProgress * 100)}%
-					</span>
-				{:else if llm.webllmStatus === 'ready' || llm.webllmStatus === 'thinking'}
-					<span class="llm-ready">
-						<span class="i-mdi:check-circle-outline" aria-hidden="true"></span>
-						ready
-					</span>
-				{:else if llm.webllmStatus === 'error'}
-					<span class="llm-error" title={llm.errorMessage}>error</span>
-				{/if}
-			{/if}
-			<Button
-				variant="default"
-				size="sm"
-				icon="i-mdi:restore"
-				label="Clear"
-				title="Start a new conversation (current one stays in history)"
-				onclick={resetConversation}
-			/>
-		</div>
-	</div>
+	{#snippet convRow(conv: import('$lib/koan/conversations.svelte').Conversation)}
+		<button
+			type="button"
+			class="conv"
+			class:conv-active={conv.id === getCurrentId()}
+			data-conv-mode={conv.mode ?? 'simulated'}
+			onclick={() => resumeConversation(conv)}
+		>
+			<span class="conv-icon {convIcon(conv)}" aria-hidden="true"></span>
+			<span class="conv-title">{conv.title}</span>
+			<span class="conv-mode-badge" data-mode={conv.mode ?? 'simulated'}>
+				{conv.mode ?? 'simulated'}
+			</span>
+			<span class="conv-when">{recencyLabel(conv)}</span>
+		</button>
+	{/snippet}
 	<div class="chat-layout">
 		<ChatHistory bind:collapsed={collapsed.value} onnew={startNewChat}>
 			{#if allConv.length === 0}
@@ -209,46 +189,19 @@
 			{#if buckets.today.length > 0}
 				<div class="group-label">Today</div>
 				{#each buckets.today as conv (conv.id)}
-					<button
-						type="button"
-						class="conv"
-						class:conv-active={conv.id === getCurrentId()}
-						onclick={() => resumeConversation(conv)}
-					>
-						<span class="conv-icon {convIcon(conv)}" aria-hidden="true"></span>
-						<span class="conv-title">{conv.title}</span>
-						<span class="conv-when">{recencyLabel(conv)}</span>
-					</button>
+					{@render convRow(conv)}
 				{/each}
 			{/if}
 			{#if buckets.yesterday.length > 0}
 				<div class="group-label">Yesterday</div>
 				{#each buckets.yesterday as conv (conv.id)}
-					<button
-						type="button"
-						class="conv"
-						class:conv-active={conv.id === getCurrentId()}
-						onclick={() => resumeConversation(conv)}
-					>
-						<span class="conv-icon {convIcon(conv)}" aria-hidden="true"></span>
-						<span class="conv-title">{conv.title}</span>
-						<span class="conv-when">{recencyLabel(conv)}</span>
-					</button>
+					{@render convRow(conv)}
 				{/each}
 			{/if}
 			{#if buckets.earlier.length > 0}
 				<div class="group-label">Earlier</div>
 				{#each buckets.earlier as conv (conv.id)}
-					<button
-						type="button"
-						class="conv"
-						class:conv-active={conv.id === getCurrentId()}
-						onclick={() => resumeConversation(conv)}
-					>
-						<span class="conv-icon {convIcon(conv)}" aria-hidden="true"></span>
-						<span class="conv-title">{conv.title}</span>
-						<span class="conv-when">{recencyLabel(conv)}</span>
-					</button>
+					{@render convRow(conv)}
 				{/each}
 			{/if}
 			{#snippet collapsedBody()}
@@ -270,6 +223,59 @@
 		</ChatHistory>
 
 	<div class="chat-body">
+		<header class="chat-header" data-mode={data.mode}>
+			<div class="chat-header-lead">
+				<span class="chat-header-icon {modeCard.icon}" aria-hidden="true"></span>
+				<div class="chat-header-titles">
+					<h1 class="chat-header-title">{modeCard.label}</h1>
+					<p class="chat-header-blurb">{modeCard.blurb}</p>
+				</div>
+			</div>
+			<div class="chat-header-actions">
+				{#if data.mode === 'openrouter'}
+					<select
+						value={llm.openRouterModel}
+						class="llm-model"
+						aria-label="Model"
+						onchange={(e) => selectModel(e.currentTarget.value)}
+					>
+						{#each OPENROUTER_MODELS as m (m.id)}
+							<option value={m.id}>{m.label}</option>
+						{/each}
+					</select>
+				{:else if data.mode === 'webllm'}
+					<select
+						value={llm.webllmModel}
+						class="llm-model"
+						aria-label="Model"
+						disabled={llm.webllmStatus === 'loading'}
+						onchange={(e) => selectModel(e.currentTarget.value)}
+					>
+						{#each WEBLLM_MODELS as m (m.id)}
+							<option value={m.id}>{m.label} · {m.size}</option>
+						{/each}
+					</select>
+					{#if llm.webllmStatus === 'uninitialized'}
+						<button type="button" class="llm-load-btn" onclick={() => ensureWebLLMEngine()}>
+							<span class="i-mdi:download" aria-hidden="true"></span>
+							Load
+						</button>
+					{:else if llm.webllmStatus === 'loading'}
+						<span class="llm-progress" title={llm.webllmStage}>
+							<span class="i-mdi:loading llm-spin" aria-hidden="true"></span>
+							{Math.round(llm.webllmProgress * 100)}%
+						</span>
+					{:else if llm.webllmStatus === 'ready' || llm.webllmStatus === 'thinking'}
+						<span class="llm-ready">
+							<span class="i-mdi:check-circle-outline" aria-hidden="true"></span>
+							ready
+						</span>
+					{:else if llm.webllmStatus === 'error'}
+						<span class="llm-error" title={llm.errorMessage}>error</span>
+					{/if}
+				{/if}
+			</div>
+		</header>
 		<div class="chat-stream-wrap" bind:this={streamRef} onscroll={onStreamScroll}>
 			<ChatTimeline messages={messages.current} autoscroll={false}>
 				{#snippet message(msg)}
@@ -318,8 +324,31 @@
 
 				{#snippet empty()}
 					<div class="empty-stream">
-						<span class="i-mdi:message-text-outline" aria-hidden="true"></span>
-						<p>Ask a question or drop a CSV / JSON file to render it inline.</p>
+						<span class="empty-stream-icon i-mdi:message-text-outline" aria-hidden="true"></span>
+						<p class="empty-stream-lead">
+							Ask a question or drop a CSV / JSON file to render it inline.
+						</p>
+						<p class="empty-stream-sub">Try one of these to get started:</p>
+						<ul class="starter-hints">
+							{#each starterHints as hint (hint.kind)}
+								<li>
+									<button
+										type="button"
+										class="starter-hint"
+										data-hint-kind={hint.kind}
+										onclick={() => handleSuggestion(hint.prompt)}
+										title={hint.prompt}
+									>
+										<span class="starter-hint-icon {hint.icon}" aria-hidden="true"></span>
+										<span class="starter-hint-body">
+											<span class="starter-hint-kind">{hint.kind}</span>
+											<span class="starter-hint-label">{hint.label}</span>
+										</span>
+										<span class="starter-hint-arrow i-mdi:arrow-right" aria-hidden="true"></span>
+									</button>
+								</li>
+							{/each}
+						</ul>
 					</div>
 				{/snippet}
 			</ChatTimeline>
@@ -427,72 +456,64 @@
 		color: var(--ink);
 	}
 
-	.chat-subtoolbar {
-		display: grid;
-		grid-template-columns: auto minmax(0, 1fr) auto;
+	/* Full-width chat header — echoes the picker card shape
+	   (icon + title + blurb) so entering a mode feels like the natural next step
+	   from the gate. The model selector + status live to the right. */
+	.chat-header {
+		display: flex;
 		align-items: center;
-		gap: 16px;
-		padding: 8px 24px;
+		justify-content: space-between;
+		gap: 20px;
+		padding: 12px 24px;
 		border-bottom: 1px solid var(--paper-edge);
-		background: var(--paper-soft);
-		font: 400 12px var(--font-ui);
+		background: var(--paper);
+		flex-shrink: 0;
+	}
+
+	.chat-header-lead {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		min-width: 0;
+	}
+
+	.chat-header-icon {
+		width: 22px;
+		height: 22px;
 		color: var(--ink-mute);
 		flex-shrink: 0;
 	}
 
-	.subtoolbar-zone {
-		display: inline-flex;
-		align-items: center;
-		gap: 12px;
-		/* No wrap — toggle stays anchored left, model + clear stay anchored
-		   right, centre title truncates with ellipsis if there isn't room. */
-		flex-wrap: nowrap;
+	.chat-header-titles {
+		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
 	}
 
-	.subtoolbar-center {
-		justify-self: center;
-		min-width: 0;
+	.chat-header-title {
+		margin: 0;
+		font: 600 15px var(--font-ui);
+		color: var(--ink);
+		line-height: 1.2;
+	}
+
+	.chat-header-blurb {
+		margin: 0;
+		font: 400 12.5px var(--font-ui);
+		color: var(--ink-mute);
+		line-height: 1.35;
+		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
-		white-space: nowrap;
-		font: 500 11.5px var(--font-mono);
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
-		color: var(--ink-mute);
 	}
 
-	.title-kicker {
-		color: var(--ink-soft);
-	}
-	.title-sep {
-		color: var(--ink-faint);
-	}
-	.title-mode {
-		color: var(--ink);
-	}
-
-	.subtoolbar-field {
+	.chat-header-actions {
 		display: inline-flex;
 		align-items: center;
 		gap: 8px;
-	}
-
-	.subtoolbar-label {
-		font: 500 11px var(--font-mono);
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-		color: var(--ink-mute);
-	}
-
-	.chat-back {
-		font: 500 12px var(--font-ui);
-		color: var(--ink-mute);
-		text-decoration: none;
-		white-space: nowrap;
-	}
-
-	.chat-back:hover {
-		color: var(--ink);
+		flex-wrap: nowrap;
+		flex-shrink: 0;
 	}
 
 	.chat-layout {
@@ -570,6 +591,35 @@
 		flex-shrink: 0;
 	}
 
+	/* Per-conversation mode badge — the sidebar is now shared across all
+	   modes, so each row advertises which engine produced it. Colours use the
+	   theme tokens so it stays subtle in both light + dark. */
+	.conv-mode-badge {
+		font: 500 8.5px var(--font-mono);
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		padding: 1px 5px;
+		border-radius: 4px;
+		border: 1px solid var(--paper-edge);
+		background: var(--paper);
+		color: var(--ink-soft);
+		flex-shrink: 0;
+	}
+
+	.conv-mode-badge[data-mode='simulated'] {
+		color: var(--ink-mute);
+	}
+
+	.conv-mode-badge[data-mode='openrouter'] {
+		color: var(--accent);
+		border-color: color-mix(in oklab, var(--accent) 40%, var(--paper-edge));
+	}
+
+	.conv-mode-badge[data-mode='webllm'] {
+		color: var(--primary);
+		border-color: color-mix(in oklab, var(--primary) 40%, var(--paper-edge));
+	}
+
 	.conv-empty {
 		display: flex;
 		align-items: center;
@@ -634,8 +684,8 @@
 	}
 
 	.empty-stream {
-		max-width: 480px;
-		margin: 64px auto 24px;
+		max-width: 560px;
+		margin: 48px auto 24px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -644,15 +694,94 @@
 		color: var(--ink-mute);
 	}
 
-	.empty-stream .i-mdi\:message-text-outline {
+	.empty-stream-icon {
 		width: 32px;
 		height: 32px;
 		color: var(--ink-soft);
 	}
 
-	.empty-stream p {
+	.empty-stream-lead {
 		margin: 0;
 		font: 400 14px/1.5 var(--font-ui);
+	}
+
+	.empty-stream-sub {
+		margin: 12px 0 4px;
+		font: 500 11px var(--font-mono);
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--ink-soft);
+	}
+
+	.starter-hints {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		gap: 8px;
+		width: 100%;
+	}
+
+	.starter-hint {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 10px 12px;
+		border: 1px solid var(--paper-edge);
+		border-radius: 8px;
+		background: var(--paper);
+		color: var(--ink);
+		text-align: left;
+		cursor: pointer;
+		transition: border-color 120ms ease, background 120ms ease;
+	}
+
+	.starter-hint:hover {
+		border-color: var(--paper-edge-hover);
+		background: var(--paper-soft);
+	}
+
+	.starter-hint-icon {
+		width: 18px;
+		height: 18px;
+		color: var(--ink-mute);
+		flex-shrink: 0;
+	}
+
+	.starter-hint-body {
+		flex: 1;
+		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 1px;
+	}
+
+	.starter-hint-kind {
+		font: 500 9.5px var(--font-mono);
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--ink-soft);
+	}
+
+	.starter-hint-label {
+		font: 500 13px var(--font-ui);
+		color: var(--ink);
+	}
+
+	.starter-hint-arrow {
+		width: 14px;
+		height: 14px;
+		color: var(--ink-soft);
+		flex-shrink: 0;
+		opacity: 0.55;
+		transition: transform 120ms ease, opacity 120ms ease;
+	}
+
+	.starter-hint:hover .starter-hint-arrow {
+		opacity: 1;
+		transform: translateX(2px);
 	}
 
 	.thinking {

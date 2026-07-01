@@ -78,7 +78,10 @@
 		</button>
 	</div>
 
-	{#if !collapsed}
+	{#if !collapsed && onsearch}
+		<!-- Search UI is opt-in: only rendered when the consumer wires
+		     `onsearch`. Otherwise the ⌘K kbd + "Search past · docs · components"
+		     placeholder would be misleading — no shortcut or filter behind it. -->
 		<div data-koanchat-history-search>
 			<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
 				<circle cx="7" cy="7" r="4.5"/>

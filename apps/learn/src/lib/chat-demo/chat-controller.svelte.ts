@@ -139,11 +139,16 @@ export function handleSuggestion(query: string): void {
 }
 
 // ─── Sidebar history ─────────────────────────────────────────────────────
-// Same shared store as /app, but scoped to the chat surface + a mode.
+// Same shared store as /app. All chat modes share one sidebar so the user
+// can hop between Simulated / OpenRouter / Web-LLM without losing context;
+// per-row mode badges disambiguate. Kept as a function of `mode` (even
+// though the mode is unused inside) so the call site stays symmetrical with
+// resumeConversation / etc. and future per-mode filtering (a toggle?) can
+// re-introduce a filter without breaking callers.
 
-/** Mode-scoped history buckets for the sidebar (today / yesterday / earlier). */
-export function bucketsFor(mode: ChatMode) {
-	return bucketByRecency('chat', mode)
+/** Chat history buckets — today / yesterday / earlier, ALL modes merged. */
+export function bucketsFor(_mode: ChatMode) {
+	return bucketByRecency('chat')
 }
 
 export function convIcon(conv: Conversation): string {

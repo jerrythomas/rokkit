@@ -40,11 +40,15 @@ describe('FormPlugin', () => {
 		expect(container.querySelector('[data-block-error]')).toBeTruthy()
 	})
 
-	it('toggles to raw spec when the code button is clicked', async () => {
+	it('toggles the code panel when the View code button is clicked', async () => {
 		const { container } = render(FormPlugin, { props: { code: validSpec } })
-		const toggle = container.querySelector('[data-form-code-toggle]')!
+		const toggle = container.querySelector('[data-form-code-toggle]') as HTMLButtonElement
+		expect(toggle?.getAttribute('aria-pressed')).toBe('false')
+		expect(container.querySelector('[data-code-block]')).toBeFalsy()
 		await fireEvent.click(toggle)
-		expect(container.querySelector('[data-form-code]')).toBeTruthy()
+		expect(toggle?.getAttribute('aria-pressed')).toBe('true')
+		// CodeBlock (from @rokkit/ui) renders with [data-code-block].
+		expect(container.querySelector('[data-code-block]')).toBeTruthy()
 	})
 
 	it('renders a submit button when submitAction is set', () => {
@@ -73,6 +77,30 @@ describe('FormPlugin', () => {
 		await fireEvent.click(btn)
 		expect(btn.disabled).toBe(true)
 		expect(btn.textContent).toContain('Submitted')
+	})
+
+	it('renders schema fields even when spec omits `layout`', () => {
+		// Regression: the LLM emits { schema, data, submitAction } without a
+		// layout. FormBuilder's auto-layout comes from data — but data lands
+		// via a $effect *after* construction, so the layout would freeze
+		// with zero elements and only the submit button rendered.
+		// FormPlugin now derives a layout from schema.properties inline.
+		const supportTicket = JSON.stringify({
+			schema: {
+				type: 'object',
+				properties: {
+					priority: { type: 'string', enum: ['low', 'med', 'high'] },
+					description: { type: 'string' }
+				}
+			},
+			data: { priority: '', description: '' },
+			submitAction: 'submit',
+			submitLabel: 'Submit'
+		})
+		const { container } = render(FormPlugin, { props: { code: supportTicket } })
+		// FormRenderer renders each element as a scoped field container.
+		const fields = container.querySelectorAll('[data-scope]')
+		expect(fields.length).toBeGreaterThanOrEqual(2)
 	})
 
 	it('accepts a lookups field with url + source patterns', () => {

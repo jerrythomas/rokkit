@@ -86,7 +86,9 @@
 {:else}
 	<div data-plot-plugin>
 		<Frame flush>
-			<div data-plot-body bind:this={bodyRef}>
+			<!-- Small inset so axis tick labels and legend don't sit flush against
+			     the Frame border — keeps the chart from feeling clipped. -->
+			<div data-plot-body bind:this={bodyRef} class="plot-body-inset">
 				{#if spec?.facet}
 					<FacetPlot {...spec} />
 				{:else if spec?.animate}
@@ -148,6 +150,10 @@
 {/if}
 
 <style>
+	.plot-body-inset {
+		padding: 8px 12px 4px;
+	}
+
 	[data-plot-footer] {
 		display: flex;
 		align-items: center;

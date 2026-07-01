@@ -236,7 +236,11 @@
 						symbol={geomSpec.symbol}
 						stat={geomSpec.stat}
 						label={geomSpec.label}
-						options={geomSpec.options}
+						options={{
+							...(spec?.stack !== undefined ? { stack: spec.stack } : {}),
+							...(spec?.orientation !== undefined ? { orientation: spec.orientation } : {}),
+							...(geomSpec.options ?? {})
+						}}
 					/>
 				{/if}
 			{/each}
