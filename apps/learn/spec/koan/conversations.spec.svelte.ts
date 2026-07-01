@@ -5,7 +5,8 @@ import {
 	clearAll,
 	getCurrentId,
 	summarizeTitle,
-	bucketByRecency
+	bucketByRecency,
+	renameConversation
 } from '../../src/lib/koan/conversations.svelte'
 
 describe('conversations — startNew dedup', () => {
@@ -79,5 +80,28 @@ describe('chat conversations — mode tag + rail filter', () => {
 	it('app conversations are unaffected by the mode filter', () => {
 		startNew('app', 'Tabs')
 		expect(conversations[0].mode).toBeUndefined()
+	})
+})
+
+describe('summarizeTitle edge cases', () => {
+	it('falls back to "New chat" for a bare-article residual', () => {
+		expect(summarizeTitle('show me a')).toBe('New chat')
+	})
+	it('caps long input and never returns an ellipsis-only string', () => {
+		const t = summarizeTitle('this is a genuinely very long chat prompt that keeps going well past forty')
+		expect(t.endsWith('…')).toBe(true)
+		expect(t.length).toBeLessThanOrEqual(41)
+		expect(t).not.toBe('…')
+	})
+})
+
+describe('renameConversation', () => {
+	beforeEach(() => clearAll())
+	it('renames, persists, and ignores empty titles', () => {
+		const id = startNew('chat', 'bar chart', 'simulated')
+		renameConversation(id, 'Bar chart')
+		expect(conversations.find((c) => c.id === id)!.title).toBe('Bar chart')
+		renameConversation(id, '   ')
+		expect(conversations.find((c) => c.id === id)!.title).toBe('Bar chart')
 	})
 })

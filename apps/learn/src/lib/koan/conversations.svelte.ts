@@ -210,8 +210,11 @@ export function summarizeTitle(query: string): string {
 		t = t.replace(TITLE_LEAD, '').trim()
 	}
 	t = t.replace(TITLE_ARTICLE, '').trim()
-	if (!t) return 'New chat'
-	if (t.length > 40) t = t.slice(0, 40).replace(/\s+\S*$/, '').trim() + '…'
+	if (t.length < 2) return 'New chat'
+	if (t.length > 40) {
+		const cut = t.slice(0, 40).replace(/\s+\S*$/, '').trim()
+		t = (cut || t.slice(0, 40).trim()) + '…'
+	}
 	return t.charAt(0).toUpperCase() + t.slice(1)
 }
 
@@ -377,6 +380,7 @@ export function removeConversation(id: ConversationId): void {
 
 /** Rename a conversation (used to refine a chat title after the first render). */
 export function renameConversation(id: ConversationId, title: string): void {
+	if (!title.trim()) return
 	const idx = findIndexById(id)
 	if (idx >= 0) {
 		conversations[idx].title = title
