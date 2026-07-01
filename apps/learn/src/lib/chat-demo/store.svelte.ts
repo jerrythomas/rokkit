@@ -8,11 +8,11 @@
  * shape (turns[], thinking) as getters over the shared store so callers
  * don't need to know about the underlying schema.
  */
-import type { ChatTurn, Block, SuggestionAction } from './types'
+import type { ChatTurn, Block, ComponentBlock, SuggestionAction } from './types'
 import type { ChatMode } from './modes'
 import { routeQuery, routeData } from './router'
 import { tryParse } from './infer'
-import { routeViaLLM, llm } from './llm.svelte'
+import { routeViaLLM, llm, type LLMProvider } from './llm.svelte'
 import {
 	startNew,
 	appendUser as sharedAppendUser,
@@ -56,6 +56,7 @@ let _pending = $state<string | null>(null)
 export function setPendingPrompt(text: string): void {
 	_pending = text
 }
+
 export function takePendingPrompt(): string | null {
 	const p = _pending
 	_pending = null
@@ -76,9 +77,14 @@ export const conversation = {
 	}
 }
 
+const PROVIDER_TO_MODE: Record<LLMProvider, ChatMode> = {
+	openrouter: 'openrouter',
+	webllm: 'webllm'
+}
+
 /** Active route mode from engine state (scripted engine → 'simulated'). */
 function currentMode(): ChatMode {
-	return !llm.enabled ? 'simulated' : llm.provider // llm.provider is 'openrouter' | 'webllm'
+	return llm.enabled ? PROVIDER_TO_MODE[llm.provider] : 'simulated'
 }
 
 /** Create the chat conversation lazily, or append a user turn if one exists. */
@@ -91,6 +97,7 @@ function pushUser(text: string): void {
 	sharedAppendUser(text)
 }
 
+// Known component tools; anything not listed keeps the query-derived title.
 const COMPONENT_TITLES: Record<string, string> = {
 	mount_bar_chart: 'Bar chart',
 	mount_table: 'Products table',
@@ -105,7 +112,7 @@ function pushAssistant(blocks: Block[]): void {
 	sharedAppendAssistant({ kind: 'blocks', blocks, ...stamp })
 	// A+B titling: if the opening response is exactly one known component, prefer its type.
 	if (firstAssistant && blocks.length === 1 && blocks[0].kind === 'component') {
-		const label = COMPONENT_TITLES[(blocks[0] as { tool: string }).tool]
+		const label = COMPONENT_TITLES[(blocks[0] as ComponentBlock).tool]
 		const id = getCurrentId()
 		if (label && id) renameConversation(id, label)
 	}
