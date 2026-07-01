@@ -213,7 +213,7 @@ export function summarizeTitle(query: string): string {
 	if (t.length < 2) return 'New chat'
 	if (t.length > 40) {
 		const cut = t.slice(0, 40).replace(/\s+\S*$/, '').trim()
-		t = (cut || t.slice(0, 40).trim()) + '…'
+		t = `${cut || t.slice(0, 40).trim()  }…`
 	}
 	return t.charAt(0).toUpperCase() + t.slice(1)
 }

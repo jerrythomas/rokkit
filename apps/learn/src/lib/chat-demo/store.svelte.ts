@@ -107,7 +107,7 @@ const COMPONENT_TITLES: Record<string, string> = {
 
 function pushAssistant(blocks: Block[]): void {
 	const conv = getCurrentConversation()
-	const firstAssistant = !!conv && !conv.turns.some((t) => t.kind === 'assistant')
+	const firstAssistant = Boolean(conv) && !conv.turns.some((t) => t.kind === 'assistant')
 	const stamp = currentProviderStamp()
 	sharedAppendAssistant({ kind: 'blocks', blocks, ...stamp })
 	// A+B titling: if the opening response is exactly one known component, prefer its type.
