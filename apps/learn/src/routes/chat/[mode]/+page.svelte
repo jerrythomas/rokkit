@@ -1,76 +1,72 @@
 <script lang="ts">
 	import { tick, onMount } from 'svelte'
 	import { ChatHistory, configureWho } from '$lib/chat'
-	import { Button, Toggle, ChatTimeline, ChatComposer, ChatMessage } from '@rokkit/ui'
-	import type { ChatMessage as ChatMessageData } from '@rokkit/ui'
-	import {
-		conversation,
-		submitText,
-		submitData,
-		resetConversation,
-		syncLLMFromCurrentConversation
-	} from '$lib/chat-demo/store.svelte'
-	import {
-		conversations,
-		bucketByRecency,
-		recencyLabel,
-		loadConversation,
-		setCurrentId,
-		getCurrentId,
-		type Conversation
-	} from '$lib/koan/conversations.svelte'
-	import { findById } from '$lib/koan/catalog'
+	import { Button, ChatTimeline, ChatComposer, ChatMessage } from '@rokkit/ui'
+	import { conversation, resetConversation, takePendingPrompt } from '$lib/chat-demo/store.svelte'
+	import { getCurrentId, type Conversation } from '$lib/koan/conversations.svelte'
 	import { goto } from '$app/navigation'
-	import { tryParse, parseCSV } from '$lib/chat-demo/infer'
+	import { page } from '$app/state'
 	import {
 		llm,
+		setEngine,
 		ensureWebLLMEngine,
 		resetWebLLMEngine,
 		detectWebGPU,
 		OPENROUTER_MODELS,
 		WEBLLM_MODELS
 	} from '$lib/chat-demo/llm.svelte'
+	import { cardFor } from '$lib/chat-demo/modes'
+	import {
+		composerValue,
+		attachError,
+		collapsed,
+		messages,
+		send,
+		handleSuggestion,
+		convIcon,
+		resumeConversation,
+		startNewChat,
+		bucketsFor,
+		submitFile,
+		recencyLabel
+	} from '$lib/chat-demo/chat-controller.svelte'
 	import BlockList from '$lib/chat-demo/components/BlockList.svelte'
 
-	// ─── Mode (Scripted / OpenRouter / Web-LLM) — 3-way derived from llm state
-	type Mode = 'scripted' | 'openrouter' | 'webllm'
-	const mode = $derived<Mode>(
-		!llm.enabled ? 'scripted' : llm.provider === 'webllm' ? 'webllm' : 'openrouter'
-	)
-	function setMode(next: Mode) {
-		if (next === 'scripted') {
-			llm.enabled = false
-			return
-		}
-		llm.enabled = true
-		llm.provider = next === 'webllm' ? 'webllm' : 'openrouter'
-	}
-	const modeOptions = [
-		{ value: 'scripted', label: 'Scripted', icon: 'i-mdi:script-text-outline' },
-		{ value: 'openrouter', label: 'OpenRouter', icon: 'i-mdi:cloud-outline' },
-		{ value: 'webllm', label: 'Web-LLM', icon: 'i-mdi:laptop' }
-	]
-	const modeLabel = $derived(
-		mode === 'scripted' ? 'Scripted' : mode === 'openrouter' ? 'OpenRouter' : 'Web-LLM'
-	)
+	const { data } = $props()
+
+	// The engine is fixed by the route. Set it from data.mode + an optional
+	// ?model= param whenever the route (or model) changes. Simulated ignores
+	// the model.
+	$effect(() => {
+		setEngine(data.mode, page.url.searchParams.get('model') ?? undefined)
+	})
 
 	onMount(() => {
-		// Probe WebGPU once so the toggle shows the right state.
+		// Probe WebGPU once so the Web-LLM status shows the right state.
 		void detectWebGPU()
-		// If we arrived with a current chat conversation (e.g. via the shared
-		// sidebar from /app), restore the toggle to whatever provider produced
-		// the last assistant turn. MOUNT-ONLY (not a reactive $effect): re-running
-		// this on every turn change reverted a manual provider switch — pick
-		// OpenRouter, send, turns change, and it snapped back to the last turn's
-		// provider (scripted). resumeConversation() calls it explicitly on switch.
-		syncLLMFromCurrentConversation()
+		// A prompt seeded by the picker (Task 6) is consumed once on mount.
+		const p = takePendingPrompt()
+		if (p) send(p)
 	})
 
 	// Brand the assistant for this surface. User name stays at the default
 	// "you" — wire it up to a real session once we have auth.
 	configureWho({ assistant: 'Rokkit' })
 
-	let composerValue = $state('')
+	// The model dropdown drives the URL (?model=) rather than llm state directly,
+	// so the route stays the single source of truth (the $effect above re-derives
+	// the engine from it). For Web-LLM we also tear down the loaded engine so the
+	// newly-selected model is fetched fresh on next use (as the toggle version did).
+	function selectModel(id: string) {
+		goto(`/chat/${data.mode}?model=${encodeURIComponent(id)}`, {
+			replaceState: true,
+			keepFocus: true,
+			noScroll: true
+		})
+		if (data.mode === 'webllm') resetWebLLMEngine()
+	}
+
+	// ─── DOM-bound concerns (stay in the component) ──────────────────────────
 	let streamRef = $state<HTMLElement | null>(null)
 	// Whether to keep pinning the stream to the bottom on new turns. Goes false
 	// the moment the user scrolls up to read earlier messages, so autoscroll
@@ -83,190 +79,10 @@
 	}
 	let fileInputRef = $state<HTMLInputElement | null>(null)
 	let dragOver = $state(false)
-	let attachError = $state<string | null>(null)
-
-	const SAMPLE_SALES = JSON.stringify(
-		[
-			{ region: 'EMEA', product: 'Hardware', revenue: 124 },
-			{ region: 'EMEA', product: 'Software', revenue: 81 },
-			{ region: 'APAC', product: 'Hardware', revenue: 92 },
-			{ region: 'APAC', product: 'Software', revenue: 67 },
-			{ region: 'AMER', product: 'Hardware', revenue: 156 },
-			{ region: 'AMER', product: 'Software', revenue: 119 }
-		],
-		null,
-		2
-	)
-
-	const SAMPLE_USER = JSON.stringify(
-		{
-			name: 'Maya Anand',
-			email: 'maya@example.com',
-			role: 'editor',
-			joinedAt: '2025-08-12',
-			active: true,
-			signupCount: 3
-		},
-		null,
-		2
-	)
-
-	const seedSuggestions = [
-		{ label: 'Bar chart', query: 'Show me a bar chart of quarterly revenue' },
-		{ label: 'Line chart', query: 'Show monthly revenue as a line chart' },
-		{ label: 'Pie chart', query: 'Show market share by segment as a pie chart' },
-		{ label: 'Scatter plot', query: 'Show a scatter plot of displacement vs highway mpg' },
-		{ label: 'Box plot', query: 'Show highway mpg as a box plot by class' },
-		{ label: 'Products table', query: 'Show me a sortable table of products' },
-		{ label: 'Try: paste sales JSON', query: SAMPLE_SALES },
-		{ label: 'Try: paste a user record', query: SAMPLE_USER }
-	]
-
-	// ─── Map the demo store's turns onto the @rokkit/ui ChatMessage shape.
-	// User turns carry plain text; assistant turns stash their rendered
-	// `blocks` (+ provider) in `data`, read back by the `message` snippet.
-	// A synthetic trailing message represents the "thinking" indicator.
-	type AssistantData = {
-		blocks?: import('$lib/chat-demo/types').Block[]
-		provider?: 'scripted' | 'openrouter' | 'webllm'
-		thinking?: boolean
-	}
-	const messages = $derived<ChatMessageData<AssistantData>[]>([
-		...conversation.turns.map((turn) =>
-			turn.role === 'user'
-				? { id: turn.id, role: 'user' as const, text: turn.text }
-				: {
-						id: turn.id,
-						role: 'assistant' as const,
-						status: 'done' as const,
-						data: { blocks: turn.blocks, provider: turn.provider }
-					}
-		),
-		...(conversation.thinking
-			? [
-					{
-						id: '__thinking',
-						role: 'assistant' as const,
-						status: 'streaming' as const,
-						// Stamp the in-flight provider so the bot-name eyebrow shows
-						// who is answering (OpenRouter / Web-LLM / Scripted) while it thinks.
-						data: { thinking: true, provider: mode }
-					}
-				]
-			: [])
-	])
-
-	function send(text: string = composerValue) {
-		const q = text.trim()
-		if (!q || conversation.thinking) return
-		composerValue = ''
-		attachError = null
-		// submitText auto-detects JSON / CSV; falls back to keyword routing.
-		// Scroll-to-bottom is handled by the $effect below (it watches
-		// turns.length + thinking); duplicating it here would fight that.
-		submitText(q)
-	}
-
-	function handleSuggestion(query: string) {
-		composerValue = query
-		send()
-	}
-
-	// Sidebar history — same shared store as /app. Cross-surface clicks
-	// route /app conversations back to their demo route; /chat conversations
-	// stay here and rehydrate the stream via getCurrentConversation().
-	let collapsed = $state(false)
-	const buckets = $derived(
-		conversations.length > 0
-			? bucketByRecency()
-			: { today: [], yesterday: [], earlier: [] }
-	)
-	const allConv = $derived([...buckets.today, ...buckets.yesterday, ...buckets.earlier])
-
-	const DEMO_ROUTE: Record<string, string> = {
-		tabs: '/app/tabs',
-		'theme-wizard': '/app/theming',
-		table: '/app/table',
-		tree: '/app/tree',
-		'multi-select': '/app/multiselect',
-		list: '/app/list',
-		toasts: '/app/toasts',
-		form: '/app/form',
-		select: '/app/select',
-		chart: '/app/chart',
-		combo: '/app/combo',
-		'date-picker': '/app/date',
-		stepper: '/app/stepper'
-	}
-
-	function convIcon(conv: Conversation): string {
-		if (conv.surface === 'chat') return 'i-mdi:chat-processing-outline'
-		const lastDemo = [...conv.turns]
-			.reverse()
-			.find((t) => t.kind === 'assistant' && t.body.kind === 'demo')
-		if (lastDemo && lastDemo.kind === 'assistant' && lastDemo.body.kind === 'demo') {
-			return findById(lastDemo.body.demoType)?.icon ?? 'i-mdi:chat-outline'
-		}
-		return 'i-mdi:chat-outline'
-	}
-
-	function resumeConversation(conv: Conversation) {
-		if (conv.surface === 'app') {
-			const lastDemo = [...conv.turns]
-				.reverse()
-				.find((t) => t.kind === 'assistant' && t.body.kind === 'demo')
-			if (lastDemo && lastDemo.kind === 'assistant' && lastDemo.body.kind === 'demo') {
-				loadConversation(conv.id)
-				const route = DEMO_ROUTE[lastDemo.body.demoType]
-				const variant = lastDemo.body.variant
-				goto(variant ? `${route}?variant=${variant}` : route)
-			}
-			return
-		}
-		loadConversation(conv.id)
-		syncLLMFromCurrentConversation()
-		// Stream re-renders reactively via the conversation.turns getter.
-	}
-
-	function startNewChat() {
-		setCurrentId(null)
-		composerValue = ''
-		attachError = null
-	}
-
-	async function handleFile(file: File) {
-		attachError = null
-		const text = await file.text()
-		const isCsv = /\.csv$/i.test(file.name) || file.type === 'text/csv'
-		if (isCsv) {
-			try {
-				const rows = parseCSV(text)
-				if (rows.length === 0) {
-					attachError = 'CSV file parsed to no rows.'
-					return
-				}
-				submitData({ source: 'csv', text, parsed: rows, query: `Uploaded ${file.name}` })
-			} catch (e) {
-				attachError = `CSV error: ${(e as Error).message}`
-			}
-			return
-		}
-		const parsed = tryParse(text)
-		if (parsed.ok === false) {
-			attachError = parsed.error
-			return
-		}
-		submitData({
-			source: parsed.format,
-			text,
-			parsed: parsed.value,
-			query: `Uploaded ${file.name}`
-		})
-	}
 
 	function onFileChange(e: Event) {
 		const f = (e.target as HTMLInputElement).files?.[0]
-		if (f) handleFile(f)
+		if (f) submitFile(f)
 		;(e.target as HTMLInputElement).value = ''
 	}
 
@@ -274,8 +90,12 @@
 		e.preventDefault()
 		dragOver = false
 		const f = e.dataTransfer?.files?.[0]
-		if (f) handleFile(f)
+		if (f) submitFile(f)
 	}
+
+	// Sidebar history — scoped to the chat surface + this route's mode.
+	const buckets = $derived(bucketsFor(data.mode))
+	const allConv = $derived([...buckets.today, ...buckets.yesterday, ...buckets.earlier])
 
 	$effect(() => {
 		// Scroll on every new turn (incl. assistant reply).
@@ -304,44 +124,41 @@
 </script>
 
 <svelte:head>
-	<title>Chat · Rokkit</title>
+	<title>{cardFor(data.mode).label} · Ask Rokkit</title>
 </svelte:head>
 
 <div class="chat-shell">
 	<div class="chat-subtoolbar">
 		<div class="subtoolbar-zone subtoolbar-left">
-			<Toggle
-				variant="group"
-				size="sm"
-				options={modeOptions}
-				value={mode}
-				onchange={(v) => setMode(v as Mode)}
-				showLabels={true}
-			/>
+			<a class="chat-back" href="/chat">‹ Ask Rokkit</a>
 		</div>
 		<div class="subtoolbar-zone subtoolbar-center">
 			<span class="title-kicker">Inline Chat</span>
 			<span class="title-sep">·</span>
-			<span class="title-mode">{modeLabel}</span>
+			<span class="title-mode">{cardFor(data.mode).label}</span>
 		</div>
 		<div class="subtoolbar-zone subtoolbar-right">
-			{#if mode === 'openrouter'}
+			{#if data.mode === 'openrouter'}
 				<label class="subtoolbar-field">
 					<span class="subtoolbar-label">Model</span>
-					<select bind:value={llm.openRouterModel} class="llm-model">
+					<select
+						value={llm.openRouterModel}
+						class="llm-model"
+						onchange={(e) => selectModel(e.currentTarget.value)}
+					>
 						{#each OPENROUTER_MODELS as m (m.id)}
 							<option value={m.id}>{m.label}</option>
 						{/each}
 					</select>
 				</label>
-			{:else if mode === 'webllm'}
+			{:else if data.mode === 'webllm'}
 				<label class="subtoolbar-field">
 					<span class="subtoolbar-label">Model</span>
 					<select
-						bind:value={llm.webllmModel}
+						value={llm.webllmModel}
 						class="llm-model"
 						disabled={llm.webllmStatus === 'loading'}
-						onchange={resetWebLLMEngine}
+						onchange={(e) => selectModel(e.currentTarget.value)}
 					>
 						{#each WEBLLM_MODELS as m (m.id)}
 							<option value={m.id}>{m.label} · {m.size}</option>
@@ -378,7 +195,7 @@
 		</div>
 	</div>
 	<div class="chat-layout">
-		<ChatHistory bind:collapsed onnew={startNewChat}>
+		<ChatHistory bind:collapsed={collapsed.value} onnew={startNewChat}>
 			{#if allConv.length === 0}
 				<div class="conv-empty">
 					<span class="i-mdi:chat-plus-outline" aria-hidden="true"></span>
@@ -450,7 +267,7 @@
 
 	<div class="chat-body">
 		<div class="chat-stream-wrap" bind:this={streamRef} onscroll={onStreamScroll}>
-			<ChatTimeline {messages} autoscroll={false}>
+			<ChatTimeline messages={messages.current} autoscroll={false}>
 				{#snippet message(msg)}
 					{#if msg.role === 'user'}
 						<ChatMessage message={msg}>
@@ -496,43 +313,24 @@
 				{/snippet}
 
 				{#snippet empty()}
-					<div class="welcome">
-						<h1>Ask Rokkit anything</h1>
-						<p>
-							This is a chat-only demo. Responses are <em>rendered</em>, not just
-							described — charts, tables, forms, and lists appear inline using
-							the same <code>@rokkit</code> components.
-						</p>
-						<p>
-							Or drop a <strong>CSV / JSON file</strong> anywhere on this page
-							(or paste it in the composer) and Rokkit will pick the right UI
-							for your data — table, chart, or editable form.
-						</p>
-						<p class="welcome-meta">
-							Today: mock router (zero tokens). Next: in-browser LLM.
-						</p>
-						<div class="welcome-suggestions">
-							{#each seedSuggestions as s (s.query)}
-								<button type="button" class="welcome-chip" onclick={() => handleSuggestion(s.query)}>
-									{s.label}
-								</button>
-							{/each}
-						</div>
+					<div class="empty-stream">
+						<span class="i-mdi:message-text-outline" aria-hidden="true"></span>
+						<p>Ask a question or drop a CSV / JSON file to render it inline.</p>
 					</div>
 				{/snippet}
 			</ChatTimeline>
 		</div>
 
 		<div class="composer-wrap">
-			{#if attachError}
+			{#if attachError.message}
 				<div class="attach-error">
 					<span class="i-mdi:alert-circle-outline" aria-hidden="true"></span>
-					{attachError}
-					<button type="button" onclick={() => (attachError = null)} class="attach-error-dismiss">dismiss</button>
+					{attachError.message}
+					<button type="button" onclick={() => (attachError.message = null)} class="attach-error-dismiss">dismiss</button>
 				</div>
 			{/if}
 			<ChatComposer
-				bind:value={composerValue}
+				bind:value={composerValue.value}
 				placeholder="Ask, or paste JSON / CSV, or drop a file…"
 				onsubmit={(text) => send(text)}
 				busy={conversation.thinking}
@@ -561,8 +359,8 @@
 						<button
 							type="button"
 							class="composer-send"
-							onclick={() => send(composerValue)}
-							disabled={!composerValue.trim() || conversation.thinking}
+							onclick={() => send(composerValue.value)}
+							disabled={!composerValue.value.trim() || conversation.thinking}
 							title="Send"
 							aria-label="Send"
 						>
@@ -680,6 +478,17 @@
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
 		color: var(--ink-mute);
+	}
+
+	.chat-back {
+		font: 500 12px var(--font-ui);
+		color: var(--ink-mute);
+		text-decoration: none;
+		white-space: nowrap;
+	}
+
+	.chat-back:hover {
+		color: var(--ink);
 	}
 
 	.chat-layout {
@@ -820,56 +629,26 @@
 		padding: 0 24px 24px;
 	}
 
-	.welcome {
-		max-width: 640px;
-		margin: 48px auto 24px;
+	.empty-stream {
+		max-width: 480px;
+		margin: 64px auto 24px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 10px;
 		text-align: center;
+		color: var(--ink-mute);
 	}
 
-	.welcome h1 {
-		margin: 0 0 12px;
-		font: 600 28px/1.2 var(--font-display, var(--font-ui));
-		color: var(--ink);
-	}
-
-	.welcome p {
-		margin: 0 0 8px;
-		font: 400 14.5px/1.55 var(--font-ui);
+	.empty-stream .i-mdi\:message-text-outline {
+		width: 32px;
+		height: 32px;
 		color: var(--ink-soft);
 	}
 
-	.welcome-meta {
-		font-size: 12.5px;
-		color: var(--ink-mute);
-		margin-bottom: 24px;
-	}
-
-	.welcome-suggestions {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-		gap: 8px;
-		margin-top: 16px;
-	}
-
-	.welcome-chip {
-		display: inline-flex;
-		align-items: center;
-		height: 32px;
-		padding: 0 14px;
-		border: 1px dashed var(--paper-edge);
-		border-radius: 9999px;
-		background: var(--paper);
-		font: 500 13px var(--font-ui);
-		color: var(--ink);
-		cursor: pointer;
-	}
-
-	.welcome-chip:hover {
-		border-color: var(--accent);
-		color: var(--accent);
-		border-style: solid;
-		background: color-mix(in oklab, var(--accent) 6%, var(--paper-soft));
+	.empty-stream p {
+		margin: 0;
+		font: 400 14px/1.5 var(--font-ui);
 	}
 
 	.thinking {

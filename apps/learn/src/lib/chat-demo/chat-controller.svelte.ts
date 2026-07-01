@@ -91,7 +91,11 @@ function thinkingProvider(): 'scripted' | 'openrouter' | 'webllm' {
 	return llm.enabled ? llm.provider : 'scripted'
 }
 
-export const messages = $derived<ChatMessageData<AssistantData>[]>([
+// A module can't export `$derived` state directly (svelte.dev/e/derived_invalid_export).
+// Keep the derivation module-scoped and expose it through a getter object so the
+// page reads `messages.current` reactively — same wrapper convention as
+// composerValue / attachError / collapsed above.
+const _messages = $derived<ChatMessageData<AssistantData>[]>([
 	...conversation.turns.map((turn) =>
 		turn.role === 'user'
 			? { id: turn.id, role: 'user' as const, text: turn.text }
@@ -115,6 +119,12 @@ export const messages = $derived<ChatMessageData<AssistantData>[]>([
 			]
 		: [])
 ])
+
+export const messages = {
+	get current(): ChatMessageData<AssistantData>[] {
+		return _messages
+	}
+}
 
 // ─── Submit + suggestions ────────────────────────────────────────────────
 
