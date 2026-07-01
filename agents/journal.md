@@ -6185,3 +6185,48 @@ the catalog landing serves browse; the chat-header `Browse` link returns from a 
 (Simulated / OpenRouter / Web LLM cards + capabilities + example prompts), and richer
 conversation **summary titles** (+ chat-surface dedup). Separate spec/plan. See
 [[project_demo_app]].
+
+---
+
+## 2026-07-01 — Ask Rokkit (sub-project 2) shipped
+
+Evolved the `/chat` "Chat demo" into **Ask Rokkit** per
+`docs/superpowers/{specs,plans}/2026-06-30-ask-rokkit-ai-demo*.md`, via subagent-driven
+development (8 tasks, spec + code-quality review each). The three engines
+(**Simulated / OpenRouter / Web LLM**) are now genuinely separate.
+
+- **Mode descriptor + engine setter** (`8d366c11`, `a7b7f9e5`… `modes.ts`): single `MODES`
+  source (label/blurb/capabilities/examples/defaultModel), `isChatMode` guard, `cardFor`;
+  `setEngine(mode, model?)` in `llm.svelte.ts` (simulated → scripted engine).
+- **Conversation mode tag + summary titles** (`e43eca31`, `f1780501`): `Conversation.mode`,
+  `summarizeTitle` (strip filler/article, cap 40, guard residuals), chat-title use,
+  `renameConversation`, `bucketByRecency(surface?, mode?)` mode-filter. No chat dedup.
+- **Store** (`7b9f68da`, `a7b7f9e5`): one-shot `pendingPrompt`, tag new chat convs with the
+  route mode (`PROVIDER_TO_MODE`), refine title to the component type on the first
+  single-component response.
+- **Decomposed the 1107-line `/chat/+page.svelte`** (functions separated from presentation,
+  reusing the existing chat components — per user direction): `chat-controller.svelte.ts`
+  (`4e45c597`, `accc70ad`) holds the logic (messages map, send, resume, history, file
+  parse); DOM-bound bits stay in the component.
+- **Per-mode routing** (`148e177a`, `13a3628d`): `git mv` the page → `/chat/[mode]/+page.svelte`
+  + `+page.ts` guard (unknown mode → `redirect(307,'/chat')`); engine set from route +
+  `?model=` query (bookmarkable; handles `openai/gpt-oss-20b:free`); mode-scoped history;
+  resume stays in its own mode + model; no in-chat engine toggle; "Ask Rokkit" back-link.
+- **Picker hub** (`59147aa7`, `b6898fa1`): `/chat` = three engine cards (blurb + capabilities
+  + example-prompt chips → seed a one-shot prompt + enter the mode); Web-LLM card disabled
+  without WebGPU (`$derived`).
+- **Rename** (`03d5e2bc`): nav "Chat demo" → "Ask Rokkit" (the chat-*components* catalog
+  entry keeps its own "Chat demo" wording — different thing).
+- **E2E** (`732caf35`): `ask-rokkit.e2e.ts` — nav renamed, three cards, unknown-mode redirect,
+  Simulated example-chip → response. 4/4.
+
+**Svelte-5 gotchas surfaced by the reviews:** exported `$state`/`$derived` can't be
+reassigned by importers → wrap as `{value}`/getter objects (controller state + `messages.current`);
+a bare `export const x = $derived(...)` is illegal (`derived_invalid_export`) and only errors
+when consumed — caught at Task 5, not Task 4's (consumer-less) build. Lint (`svelte/prefer-writable-derived`,
+unused import) also only surfaced at the final `bun run check`, since the per-commit hook runs
+`tsc`, not eslint (`a51d9900`).
+
+**Gate:** `bun run check` = lint (0 errors) + types + svelte-check + **5094 tests / 353 files**;
+`theme-contrast.e2e.ts` no new failures; `ask-rokkit.e2e.ts` 4/4; production build (prerender)
+green. All on `develop`. See [[project_demo_app]], [[project_koan_interactive_mode]].
