@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/blocks",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "Markdown block plugins for Rokkit (Plot, Table, Sparkline, Mermaid)",
   "repository": {
     "type": "git",

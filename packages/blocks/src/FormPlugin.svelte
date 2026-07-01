@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { FormRenderer } from '@rokkit/forms'
-	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
+	import { CodeBlock, Frame } from '@rokkit/ui'
+	import { pluginDisplay } from './config.svelte.js'
 
 	interface LookupSpec {
 		/** URL template with {field} placeholders. */
@@ -64,7 +65,8 @@
 	let { code }: { code: string } = $props()
 
 	let showCode = $state(false)
-	const icons = DEFAULT_STATE_ICONS.view
+	let root = $state<HTMLElement | null>(null)
+	let submitted = $state(false)
 
 	const result = $derived.by(() => {
 		try {
@@ -78,24 +80,44 @@
 		}
 	})
 
+	const spec = $derived(result.spec)
+	const prettyCode = $derived(spec ? JSON.stringify(spec, null, 2) : code)
+
+	const summary = $derived.by(() => {
+		if (!spec) return [] as Array<{ label: string; value: string }>
+		const parts: Array<{ label: string; value: string }> = []
+		const schema = spec.schema as { properties?: Record<string, unknown> } | undefined
+		const fieldCount = schema?.properties ? Object.keys(schema.properties).length : 0
+		if (fieldCount) parts.push({ label: 'fields', value: `[${fieldCount}]` })
+		if (spec.lookups) parts.push({ label: 'lookups', value: `[${Object.keys(spec.lookups).length}]` })
+		if (spec.submitAction) parts.push({ label: 'action', value: String(spec.submitAction) })
+		return parts
+	})
+
 	let data = $state<Record<string, unknown>>({})
-	let root = $state<HTMLElement | null>(null)
-	let submitted = $state(false)
 
 	$effect(() => {
-		if (result.spec?.data) data = { ...result.spec.data }
+		if (spec?.data) data = { ...spec.data }
 	})
 
 	function submit() {
-		if (!root || !result.spec?.submitAction) return
+		if (!root || !spec?.submitAction) return
 		const payload = JSON.parse(JSON.stringify(data))
 		root.dispatchEvent(
 			new CustomEvent('block-action', {
 				bubbles: true,
-				detail: { name: result.spec.submitAction, payload }
+				detail: { name: spec.submitAction, payload }
 			})
 		)
 		submitted = true
+	}
+
+	async function copyCode() {
+		try {
+			await navigator.clipboard.writeText(prettyCode)
+		} catch {
+			// clipboard may be unavailable (insecure context); silent fail.
+		}
 	}
 </script>
 
@@ -108,78 +130,140 @@
 		</details>
 	</div>
 {:else}
-	{@const spec = result.spec!}
 	<div data-form-plugin bind:this={root}>
-		<button
-			data-form-code-toggle
-			onclick={() => (showCode = !showCode)}
-			title={showCode ? 'Show form' : 'Show spec'}
-			aria-pressed={showCode}
-		>
-			<span class="i-rokkit:{showCode ? icons.chart : icons.code}"></span>
-		</button>
+		<Frame flush>
+			<div data-form-body class="form-body-inset">
+				<FormRenderer
+					bind:data
+					schema={spec!.schema}
+					layout={spec!.layout}
+					lookups={sanitiseLookups(spec!.lookups) ?? {}}
+				/>
+				{#if spec!.submitAction}
+					<div data-form-actions>
+						<button
+							type="button"
+							data-form-submit
+							onclick={submit}
+							disabled={submitted}
+						>
+							{submitted ? 'Submitted ✓' : (spec!.submitLabel ?? 'Submit')}
+						</button>
+					</div>
+				{/if}
+			</div>
 
-		{#if showCode}
-			<pre data-form-code>{code}</pre>
-		{:else}
-			<FormRenderer
-				bind:data
-				schema={spec.schema}
-				layout={spec.layout}
-				lookups={sanitiseLookups(spec.lookups) ?? {}}
-			/>
-			{#if spec.submitAction}
-				<div data-form-actions>
-					<button
-						type="button"
-						data-form-submit
-						onclick={submit}
-						disabled={submitted}
-					>
-						{submitted ? 'Submitted ✓' : (spec.submitLabel ?? 'Submit')}
-					</button>
+			{#snippet footer()}
+				<div data-form-footer>
+					{#if summary.length}
+						<div data-form-summary>
+							{#each summary as part, i (part.label)}
+								{#if i > 0}<span data-sep>·</span>{/if}
+								<span data-form-summary-label>{part.label}</span>
+								<span data-form-summary-value>{part.value}</span>
+							{/each}
+						</div>
+					{:else}
+						<span></span>
+					{/if}
+
+					{#if pluginDisplay.codeVisible}
+						<div data-form-actions-row>
+							<button
+								type="button"
+								data-form-action
+								data-form-code-toggle
+								onclick={() => (showCode = !showCode)}
+								aria-pressed={showCode}
+								title={showCode ? 'Hide code' : 'View code'}
+							>
+								<span class={showCode ? 'view-off' : 'view-code'} aria-hidden="true"></span>
+								<span>{showCode ? 'Hide code' : 'View code'}</span>
+							</button>
+							<button type="button" data-form-action onclick={copyCode} title="Copy spec to clipboard">
+								<span class="action-copy" aria-hidden="true"></span>
+								<span>Copy code</span>
+							</button>
+						</div>
+					{/if}
 				</div>
-			{/if}
+			{/snippet}
+		</Frame>
+
+		{#if showCode && pluginDisplay.codeVisible}
+			<CodeBlock
+				code={prettyCode}
+				language="json"
+				filename="form.json"
+			/>
 		{/if}
 	</div>
 {/if}
 
 <style>
-	[data-form-plugin] {
-		position: relative;
+	.form-body-inset {
+		padding: 8px 12px 4px;
 	}
 
-	[data-form-code-toggle] {
-		position: absolute;
-		top: 0.375rem;
-		right: 0.375rem;
-		z-index: 1;
+	[data-form-footer] {
 		display: flex;
 		align-items: center;
-		justify-content: center;
-		width: 1.5rem;
-		height: 1.5rem;
-		border-radius: 0.25rem;
-		border: 1px solid currentColor;
+		justify-content: space-between;
+		gap: 12px;
+		flex-wrap: wrap;
+	}
+
+	[data-form-summary] {
+		display: inline-flex;
+		align-items: baseline;
+		flex-wrap: wrap;
+		gap: 4px;
+		font: 500 11px var(--font-mono);
+		color: var(--ink-mute);
+		letter-spacing: 0.04em;
+	}
+
+	[data-form-summary-label] {
+		color: var(--ink-mute);
+	}
+
+	[data-form-summary-value] {
+		color: var(--ink);
+	}
+
+	[data-form-summary] [data-sep] {
+		opacity: 0.45;
+		margin: 0 2px;
+	}
+
+	[data-form-actions-row] {
+		display: inline-flex;
+		align-items: center;
+		gap: 2px;
+	}
+
+	[data-form-action] {
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+		height: 24px;
+		padding: 0 8px;
+		border: 0;
+		border-radius: 4px;
 		background: transparent;
-		color: inherit;
-		opacity: 0.4;
+		color: var(--ink-mute);
+		font: 500 11.5px var(--font-ui);
 		cursor: pointer;
-		transition: opacity 150ms ease;
-		font-size: 1rem;
 	}
 
-	[data-form-code-toggle]:hover {
-		opacity: 0.8;
+	[data-form-action]:hover {
+		background: var(--paper-mute);
+		color: var(--ink);
 	}
 
-	[data-form-code][data-form-code] {
-		margin: 0;
-		padding: 1rem;
-		overflow-x: auto;
-		font-size: 0.75rem;
-		white-space: pre-wrap;
-		word-break: break-all;
+	[data-form-action] > span:first-child {
+		width: 14px;
+		height: 14px;
 	}
 
 	[data-form-actions] {

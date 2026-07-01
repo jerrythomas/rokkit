@@ -1,6 +1,6 @@
 import { SvelteMap, SvelteSet } from 'svelte/reactivity'
 import { deriveSchemaFromValue } from './schema.js'
-import { deriveLayoutFromValue } from './layout.js'
+import { deriveLayoutFromValue, deriveLayoutFromSchema } from './layout.js'
 import { getSchemaWithLayout } from './fields.js'
 import { createLookupManager } from './lookup.svelte.js'
 import { evaluateCondition } from './conditions.js'
@@ -169,9 +169,20 @@ export class FormBuilder {
 	/**
 	 * Set the schema
 	 * @param {Object} value - New schema object
+	 *
+	 * When the caller explicitly provides a schema, that schema is the source
+	 * of truth for which fields exist — the layout may have been derived
+	 * earlier from empty/partial data and would silently hide those fields.
+	 * Re-derive the layout from the new schema so the two stay consistent,
+	 * unless the caller has already installed an explicit non-empty layout.
 	 */
 	set schema(value) {
 		this.#schema = value ?? deriveSchemaFromValue(this.#data)
+		const layout = this.#layout
+		const hasExplicitLayout = layout && Array.isArray(layout.elements) && layout.elements.length > 0
+		if (!hasExplicitLayout) {
+			this.#layout = deriveLayoutFromSchema(this.#schema)
+		}
 	}
 
 	/**
@@ -187,7 +198,21 @@ export class FormBuilder {
 	 * @param {Object} value - New layout object
 	 */
 	set layout(value) {
-		this.#layout = value ?? deriveLayoutFromValue(this.#data)
+		if (value) {
+			this.#layout = value
+			return
+		}
+		// No explicit layout — prefer schema-derived over data-derived so
+		// declared fields render even when initial data is `{}` (a common
+		// pattern for LLM-generated forms and reset forms).
+		const schema = this.#schema
+		const hasSchemaProperties =
+			schema && typeof schema === 'object' && schema.properties &&
+			typeof schema.properties === 'object' &&
+			Object.keys(schema.properties).length > 0
+		this.#layout = hasSchemaProperties
+			? deriveLayoutFromSchema(schema)
+			: deriveLayoutFromValue(this.#data)
 	}
 
 	/**

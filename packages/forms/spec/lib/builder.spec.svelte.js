@@ -84,6 +84,102 @@ describe('FormBuilder', () => {
 			expect(formBuilder.schema).toBeDefined()
 			expect(formBuilder.layout).toBeDefined()
 		})
+
+		// ── layout/schema fallback matrix ────────────────────────────
+		// FormRenderer should handle every combination of the three inputs
+		// (data / schema / layout). When a slot is omitted the builder must
+		// derive it — and when a schema is provided, it must override any
+		// layout that would have been derived from (possibly-empty) data.
+		//
+		// Regression from the demo: an LLM emits a form with
+		//   data: {}, schema: { properties: { … } }
+		// and no layout. Previously the builder derived the layout from
+		// empty data (zero elements) instead of from the schema, so every
+		// declared field silently vanished — only the submit button rendered.
+
+		describe('schema/layout fallback matrix', () => {
+			const schemaTwoFields = {
+				type: 'object',
+				properties: {
+					priority: { type: 'string' },
+					description: { type: 'string' }
+				}
+			}
+
+			it('data only — derives both schema and layout from data', () => {
+				const data = { priority: 'med', description: 'X' }
+				const fb = new FormBuilder(data)
+				expect(fb.schema.properties.priority).toBeDefined()
+				expect(fb.schema.properties.description).toBeDefined()
+				expect(fb.layout.elements.map((e) => e.scope)).toEqual([
+					'#/priority',
+					'#/description'
+				])
+				expect(fb.elements.map((e) => e.scope)).toEqual(['#/priority', '#/description'])
+			})
+
+			it('data + schema — schema wins; layout derived from schema (not empty data)', () => {
+				const fb = new FormBuilder({}, schemaTwoFields)
+				expect(fb.schema).toEqual(schemaTwoFields)
+				// Critical: even though data is {}, the layout must reflect the schema.
+				expect(fb.layout.elements.map((e) => e.scope)).toEqual([
+					'#/priority',
+					'#/description'
+				])
+				expect(fb.elements).toHaveLength(2)
+			})
+
+			it('data + schema with partial data — still renders every schema field', () => {
+				// Practical LLM output: some fields have seed values, others don't.
+				const fb = new FormBuilder({ priority: 'high' }, schemaTwoFields)
+				expect(fb.elements.map((e) => e.scope)).toEqual(['#/priority', '#/description'])
+			})
+
+			it('data + layout — layout wins; schema derived from data', () => {
+				const layout = {
+					type: 'vertical',
+					elements: [{ label: 'Name', scope: '#/name' }]
+				}
+				const fb = new FormBuilder({ name: 'Jerry' }, null, layout)
+				expect(fb.layout).toEqual(layout)
+				expect(fb.schema.properties.name).toBeDefined()
+				expect(fb.elements).toHaveLength(1)
+				expect(fb.elements[0].scope).toBe('#/name')
+			})
+
+			it('data + schema + layout — both explicit values win', () => {
+				const layout = {
+					type: 'vertical',
+					elements: [{ label: 'Priority', scope: '#/priority' }]
+				}
+				const fb = new FormBuilder({}, schemaTwoFields, layout)
+				expect(fb.schema).toEqual(schemaTwoFields)
+				expect(fb.layout).toEqual(layout)
+				// Layout drives which fields render — schema's second field is
+				// deliberately not laid out here.
+				expect(fb.elements.map((e) => e.scope)).toEqual(['#/priority'])
+			})
+
+			it('assigning schema after construction re-derives an implicit layout', () => {
+				const fb = new FormBuilder({})
+				expect(fb.layout.elements).toHaveLength(0)
+				fb.schema = schemaTwoFields
+				expect(fb.layout.elements.map((e) => e.scope)).toEqual([
+					'#/priority',
+					'#/description'
+				])
+			})
+
+			it('assigning schema after construction does NOT clobber an explicit layout', () => {
+				const explicitLayout = {
+					type: 'vertical',
+					elements: [{ label: 'Custom', scope: '#/priority' }]
+				}
+				const fb = new FormBuilder({}, null, explicitLayout)
+				fb.schema = schemaTwoFields
+				expect(fb.layout).toEqual(explicitLayout)
+			})
+		})
 	})
 
 	describe('getters and setters', () => {

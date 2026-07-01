@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { deriveLayoutFromValue } from '../../src/lib/layout'
+import { deriveLayoutFromValue, deriveLayoutFromSchema } from '../../src/lib/layout'
 import derivedNestedLayout from './fixtures/derived-nested-layout.json'
 
 describe('layout', () => {
@@ -98,6 +98,65 @@ describe('layout', () => {
 								}
 							]
 						}
+					}
+				]
+			})
+		})
+	})
+
+	describe('deriveLayoutFromSchema', () => {
+		it('returns an empty vertical layout when the schema is null / empty', () => {
+			expect(deriveLayoutFromSchema(null)).toEqual({ type: 'vertical', elements: [] })
+			expect(deriveLayoutFromSchema({})).toEqual({ type: 'vertical', elements: [] })
+			expect(deriveLayoutFromSchema({ type: 'object' })).toEqual({
+				type: 'vertical',
+				elements: []
+			})
+		})
+
+		it('emits one element per top-level property in declaration order', () => {
+			const schema = {
+				type: 'object',
+				properties: {
+					priority: { type: 'string', enum: ['low', 'med', 'high'] },
+					description: { type: 'string' }
+				}
+			}
+			expect(deriveLayoutFromSchema(schema)).toEqual({
+				type: 'vertical',
+				elements: [
+					{ label: 'priority', scope: '#/priority' },
+					{ label: 'description', scope: '#/description' }
+				]
+			})
+		})
+
+		it('recurses into nested object schemas', () => {
+			const schema = {
+				type: 'object',
+				properties: {
+					name: { type: 'string' },
+					address: {
+						type: 'object',
+						properties: {
+							street: { type: 'string' },
+							city: { type: 'string' }
+						}
+					}
+				}
+			}
+			expect(deriveLayoutFromSchema(schema)).toEqual({
+				type: 'vertical',
+				elements: [
+					{ label: 'name', scope: '#/name' },
+					{
+						title: 'address',
+						scope: '#/address',
+						type: 'vertical',
+						elements: [
+							{ label: 'street', scope: '#/address/street' },
+							{ label: 'city', scope: '#/address/city' }
+						]
 					}
 				]
 			})
