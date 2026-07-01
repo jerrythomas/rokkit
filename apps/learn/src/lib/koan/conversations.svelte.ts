@@ -71,6 +71,7 @@ export interface Conversation {
 	id: ConversationId
 	title: string
 	surface: ConversationSurface
+	mode?: string
 	createdAt: string
 	updatedAt: string
 	turns: Turn[]
@@ -196,14 +197,32 @@ function touch(id: ConversationId): void {
 
 // ── Public API ───────────────────────────────────────────────────────────
 
+const TITLE_LEAD =
+	/^(?:please|can you|could you|show me|show|give me|make(?: me)?|build(?: me)?|generate|create|draw|render|plot|display|i want(?: to see)?|i'?d like(?: to see)?|let'?s see)\b[\s,:-]*/i
+const TITLE_ARTICLE = /^(?:a|an|the)\s+/i
+
+/** Tidy a chat prompt into a short history label. */
+export function summarizeTitle(query: string): string {
+	let t = query.trim().replace(/\s+/g, ' ')
+	let prev = ''
+	while (t !== prev) {
+		prev = t
+		t = t.replace(TITLE_LEAD, '').trim()
+	}
+	t = t.replace(TITLE_ARTICLE, '').trim()
+	if (!t) return 'New chat'
+	if (t.length > 40) t = t.slice(0, 40).replace(/\s+\S*$/, '').trim() + '…'
+	return t.charAt(0).toUpperCase() + t.slice(1)
+}
+
 /**
  * Start a new conversation, set it as current, and append the user's
  * initial query. Returns the conversation id — the existing row's id
  * when an `app` title matched, otherwise a new one.
  */
-export function startNew(surface: ConversationSurface, query: string): ConversationId {
+export function startNew(surface: ConversationSurface, query: string, mode?: string): ConversationId {
 	const at = nowIso()
-	const title = query.trim().slice(0, 80) || 'New conversation'
+	const title = surface === 'chat' ? summarizeTitle(query) : (query.trim().slice(0, 80) || 'New conversation')
 	const userTurn: UserTurn = { kind: 'user', id: makeId('t'), at, text: query }
 
 	// Upsert by title for the `app` surface: re-exploring the same component
@@ -230,6 +249,7 @@ export function startNew(surface: ConversationSurface, query: string): Conversat
 		id,
 		title,
 		surface,
+		mode: surface === 'chat' ? mode : undefined,
 		createdAt: at,
 		updatedAt: at,
 		turns: [userTurn]
@@ -355,6 +375,15 @@ export function removeConversation(id: ConversationId): void {
 	persist()
 }
 
+/** Rename a conversation (used to refine a chat title after the first render). */
+export function renameConversation(id: ConversationId, title: string): void {
+	const idx = findIndexById(id)
+	if (idx >= 0) {
+		conversations[idx].title = title
+		persist()
+	}
+}
+
 /** Drop everything. */
 export function clearAll(): void {
 	conversations.splice(0, conversations.length)
@@ -375,8 +404,10 @@ function startOfDay(d: Date): number {
 	return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime()
 }
 
-export function bucketByRecency(surface?: ConversationSurface): ConversationBuckets {
-	const pool = surface ? conversations.filter((c) => c.surface === surface) : conversations
+export function bucketByRecency(surface?: ConversationSurface, mode?: string): ConversationBuckets {
+	const pool = conversations.filter(
+		(c) => (surface ? c.surface === surface : true) && (mode ? c.mode === mode : true)
+	)
 	const sorted = [...pool].sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt))
 	const now = new SvelteDate()
 	const todayStart = startOfDay(now)

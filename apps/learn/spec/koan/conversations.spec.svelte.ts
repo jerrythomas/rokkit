@@ -3,7 +3,9 @@ import {
 	conversations,
 	startNew,
 	clearAll,
-	getCurrentId
+	getCurrentId,
+	summarizeTitle,
+	bucketByRecency
 } from '../../src/lib/koan/conversations.svelte'
 
 describe('conversations — startNew dedup', () => {
@@ -42,5 +44,40 @@ describe('conversations — startNew dedup', () => {
 		startNew('app', 'Chart')
 		startNew('chat', 'Chart')
 		expect(conversations.length).toBe(2)
+	})
+})
+
+describe('summarizeTitle', () => {
+	it('strips leading filler + article and caps length', () => {
+		expect(summarizeTitle('show me a bar chart of quarterly revenue')).toBe('Bar chart of quarterly revenue')
+		expect(summarizeTitle('Can you build me a sign-up form')).toBe('Sign-up form')
+		expect(summarizeTitle('generate a Q3 sales scenario and chart it')).toBe('Q3 sales scenario and chart it')
+	})
+	it('collapses whitespace and capitalizes', () => {
+		expect(summarizeTitle('  line   chart  ')).toBe('Line chart')
+	})
+	it('falls back for empty/filler-only input', () => {
+		expect(summarizeTitle('   ')).toBe('New chat')
+	})
+})
+
+describe('chat conversations — mode tag + rail filter', () => {
+	beforeEach(() => clearAll())
+	it('startNew records mode + summary title for chat surface', () => {
+		startNew('chat', 'show me a bar chart', 'openrouter')
+		expect(conversations[0].mode).toBe('openrouter')
+		expect(conversations[0].title).toBe('Bar chart')
+	})
+	it('bucketByRecency filters chat by mode', () => {
+		startNew('chat', 'a', 'simulated')
+		startNew('chat', 'b', 'openrouter')
+		const sim = bucketByRecency('chat', 'simulated')
+		const all = [...sim.today, ...sim.yesterday, ...sim.earlier]
+		expect(all.every((c) => c.mode === 'simulated')).toBe(true)
+		expect(all.length).toBe(1)
+	})
+	it('app conversations are unaffected by the mode filter', () => {
+		startNew('app', 'Tabs')
+		expect(conversations[0].mode).toBeUndefined()
 	})
 })
