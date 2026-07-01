@@ -157,6 +157,8 @@ export function convIcon(conv: Conversation): string {
  * engine to whatever produced its last assistant turn. The stream re-renders
  * reactively via the conversation.turns getter.
  */
+// bucketsFor() filters the sidebar to the 'chat' surface, so callers never
+// pass app-surface conversations here; app resume lives in the /app layout.
 export function resumeConversation(conv: Conversation): void {
 	goto('/chat/' + (conv.mode ?? 'simulated'))
 	loadConversation(conv.id)
