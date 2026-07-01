@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/ui",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "Data driven UI components for Rokkit applications",
   "repository": {
     "type": "git",
