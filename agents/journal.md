@@ -6230,3 +6230,45 @@ unused import) also only surfaced at the final `bun run check`, since the per-co
 **Gate:** `bun run check` = lint (0 errors) + types + svelte-check + **5094 tests / 353 files**;
 `theme-contrast.e2e.ts` no new failures; `ask-rokkit.e2e.ts` 4/4; production build (prerender)
 green. All on `develop`. See [[project_demo_app]], [[project_koan_interactive_mode]].
+
+---
+
+## 2026-07-01 — List: nested interactives in item snippets (Toggle/Switch/etc.)
+
+Fixed the reported bug: custom snippets in `List` couldn't host a `Toggle`, `Switch`,
+or any real interactive control. Two collaborating causes:
+
+1. **HTML parser hoists nested `<button>`** — `<button>` (Toggle/Switch) inside
+   `<button data-list-group>`/`<button data-list-item>` is invalid; the parser
+   adopts the inner one out at parse time, so the visual never nests as intended.
+2. **`Navigator` hijacks the click** — the nav-root click listener walks up to
+   the item's `[data-path]`, calls `preventDefault()`, and dispatches
+   `wrapper.toggle`/`select`; the nested control never gets its click.
+
+Approach was a two-track fix:
+
+- **Defensive Navigator guards** (`packages/actions/src/navigator.js`):
+  `isNestedInteractive(target, root)` skips click/keydown/focusin when the
+  event target sits inside a real interactive descendant of a `[data-path]`
+  element (button, `[role=button|switch|checkbox|radio|menuitem|link|tab]`,
+  input/select/textarea, contenteditable). `[data-accordion-trigger]` is an
+  explicit opt-out so custom nested triggers still work. `isDisabledItem`
+  honours `data-disabled` / `aria-disabled="true"` for div-based items that
+  can't use the native `disabled` attribute. 11 new specs; navigator.spec = 50/50.
+- **Two inert renderer components in `@rokkit/ui`** for the common config-list
+  pattern (chosen over changing List's wrapper tag — user preference):
+  - `ItemSwitch` — renders label via `ItemContent` + span-based switch visual
+    (`aria-checked`, `aria-hidden`, reuses `data-switch-track|thumb`); whole row
+    is the click target, consumer flips `checked` in `onselect`.
+  - `ItemToggle` — inline `role="radiogroup"` with `role="radio"` spans; each
+    span's `onclick` fires an `onchange(value, option, proxy)` prop; Navigator's
+    guard defers to the nested radios so the row's `onselect` does NOT also fire.
+  - Both types + demo in `apps/learn/koan/demos/list/{placeholder.svelte,meta.ts,docs.md}`.
+
+**Out of scope (per Jerry):** group header with an independent switch (needs
+either a `select-all` mode or a picker sub-panel — deferred). Nested native
+`<button>` inside item snippets stays discouraged (HTML parser); users reach
+for `[role=button]` / `<div>` shells or the new renderers.
+
+**Gate:** `bun run lint` (0 errors, warnings unchanged) + `check:svelte` (0
+errors) + `bun run test:ci` = **5121 tests / 355 files** pass. All on `develop`.
