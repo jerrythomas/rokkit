@@ -3,14 +3,14 @@
 
 	interface Props {
 		/** Pass `true` on routes outside `/app` and `/chat` to mark
-		 * `Components` as the implicit landing target. Optional. */
+		 * `Explore` as the implicit landing target. Optional. */
 		homeIsActive?: boolean
 	}
 
 	const { homeIsActive = false }: Props = $props()
 
 	const links = [
-		{ label: 'Components', href: '/app', match: (p: string) => p.startsWith('/app') || homeIsActive },
+		{ label: 'Explore', href: '/app', match: (p: string) => p.startsWith('/app') || homeIsActive },
 		{ label: 'Guides', href: '/guides', match: (p: string) => p.startsWith('/guides') },
 		{ label: 'Ask Rokkit', href: '/chat', match: (p: string) => p.startsWith('/chat') },
 		{ label: 'GitHub ↗', href: 'https://github.com/jerrythomas/rokkit', external: true, match: () => false }
