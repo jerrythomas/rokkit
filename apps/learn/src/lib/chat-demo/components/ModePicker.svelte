@@ -3,11 +3,10 @@
 	import { MODES, cardFor, type ChatMode } from '$lib/chat-demo/modes'
 	import { setPendingPrompt } from '$lib/chat-demo/store.svelte'
 
-	// Web-LLM needs WebGPU; disable its card when unavailable.
-	let webgpu = $state(true)
-	$effect(() => {
-		webgpu = typeof navigator !== 'undefined' && 'gpu' in navigator
-	})
+	// Web-LLM needs WebGPU; disable its card when unavailable. (Derived, not
+	// $state+$effect — evaluates to false during SSR where navigator is absent,
+	// then to the real value on the client at hydration.)
+	const webgpu = $derived(typeof navigator !== 'undefined' && 'gpu' in navigator)
 
 	function routeFor(mode: ChatMode): string {
 		const card = cardFor(mode)

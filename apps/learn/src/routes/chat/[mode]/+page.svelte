@@ -3,7 +3,7 @@
 	import { ChatHistory, configureWho } from '$lib/chat'
 	import { Button, ChatTimeline, ChatComposer, ChatMessage } from '@rokkit/ui'
 	import { conversation, resetConversation, takePendingPrompt } from '$lib/chat-demo/store.svelte'
-	import { getCurrentId, type Conversation } from '$lib/koan/conversations.svelte'
+	import { getCurrentId } from '$lib/koan/conversations.svelte'
 	import { goto } from '$app/navigation'
 	import { page } from '$app/state'
 	import {
