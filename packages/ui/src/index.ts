@@ -32,6 +32,8 @@ export {
 	Rating,
 	Connector,
 	ItemContent,
+	ItemSwitch,
+	ItemToggle,
 	Stepper,
 	Switch,
 	Table,
