@@ -1,5 +1,37 @@
 # Project Journal
 
+## 2026-07-16 — Ship preprocessed dist to consumers (fix #141: raw .svelte.ts breaks Vite dev optimizer)
+
+External consumers of `@rokkit/*` couldn't run `vite dev` without manually adding every
+consumed package to `optimizeDeps.exclude`. Root cause: the component packages point their
+`svelte`/`default` export conditions at raw `./src/*.ts` and publish only `dist/**/*.d.ts`,
+so Vite's dependency optimizer pre-bundles the shipped `.svelte.ts` runes modules via Svelte's
+`compileModule`, which does **not** strip TypeScript → `Unexpected token` on `export type`.
+Reproduced the exact issue error in a throwaway consumer (`vite optimize` on a raw-src package)
+and confirmed the fix clears it (optimizer exit 0).
+
+**It's a TS-vs-Svelte boundary, not "Svelte shouldn't ship source".** The `svelte` condition
+still serves source — `svelte-package`'s `dist` is preprocessed `.svelte` components (lang="ts"
+stripped, still compiled by the consumer) + TS-stripped `.svelte.js` runes modules. Only the raw
+`.svelte.ts` modules crash the optimizer; plain `.ts` is handled by esbuild and `.svelte`
+components are preprocessed by the optimizer hook. That's why `states`/`actions`/`data` (which
+ship plain `.svelte.js` + JSDoc) never broke — the reporter's exclude list over-listed them.
+
+**Fix — publish-time manifest transform** (`config/pack-repoint.mjs`). `bun pm pack` / `bun
+publish` ignore `publishConfig` field overrides (verified), so the standard trick is out. Instead
+`prepublishOnly` runs the transform right after `svelte-package`: it rewrites `exports`/`svelte`/
+`files` from `./src/*.ts` → `./dist/*.js` (types → `.d.ts`) so the packed tarball is dist-pointing;
+`postpublish` restores the original from a backup (CI is ephemeral, local `bun publish` restores).
+The checked-in manifests stay src-pointing, so the monorepo + `apps/learn` keep zero-build dev
+untouched. Wired into `ui`, `app`, `chart`, `forms`, and `blocks`.
+
+`blocks` needed build tooling it never had (it shipped raw `src` with a `config.svelte.ts` runes
+module): added `svelte.config.js` + `tsconfig.json` + `svelte-package` build + devDeps, and added
+it to `check:types` (auto, via the new tsconfig) and `check:svelte` — both 0 errors. Verified per
+package: dist-pointing exports, zero `src` in the tarball, dist `.js`/`.svelte`/`.d.ts` present,
+`workspace:*` peerDeps rewritten to versions, and byte-clean restore. Full gate green: lint 0,
+check:types 0, check:svelte 0, build:apps ok, 5133 tests.
+
 ## 2026-06-17 (cont.) — Typed dist via @sveltejs/package + @rokkit/unocss/hooks typed export
 
 Closed the last-mile packaging gap surfaced by a downstream consumer: rokkit's
