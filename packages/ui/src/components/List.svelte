@@ -157,18 +157,24 @@
 			<div data-list-spacer></div>
 		{:else if node.hasChildren}
 			<!--
-				Group header — data-accordion-trigger tells Navigator to dispatch
-				toggle() instead of select() when this element is clicked.
-				aria-expanded reflects the reactive proxy.expanded state.
+				Group header. When collapsible, data-accordion-trigger tells Navigator to
+				dispatch toggle() instead of select(), and aria-expanded reflects the
+				reactive proxy.expanded state. When NOT collapsible it's a static section
+				header: marked aria-disabled/data-disabled + tabindex=-1 so Navigator skips
+				it, but WITHOUT the native `disabled` attribute — a disabled <button> blocks
+				pointer/activation events across its whole subtree, which would make
+				interactive content in a group snippet inert (issue #140).
 			-->
 			<button
 				type="button"
 				data-list-group
 				data-path={node.key}
-				data-accordion-trigger
+				data-accordion-trigger={collapsible || undefined}
 				data-level={node.level}
-				aria-expanded={proxy.expanded}
-				disabled={!collapsible}
+				data-disabled={!collapsible || undefined}
+				aria-expanded={collapsible ? proxy.expanded : undefined}
+				aria-disabled={!collapsible || undefined}
+				tabindex={collapsible ? undefined : -1}
 			>
 				{#if content}
 					{@render content(proxy)}

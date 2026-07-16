@@ -94,8 +94,8 @@
   @apply text-ink-mute;
 }
 
-[data-style='zen-sumi'] [data-list] [data-list-group]:hover:not(:disabled),
-[data-style='zen-sumi'] [data-list] [data-list-group]:focus:not(:disabled) {
+[data-style='zen-sumi'] [data-list] [data-list-group]:hover:not(:disabled):not([data-disabled='true']),
+[data-style='zen-sumi'] [data-list] [data-list-group]:focus:not(:disabled):not([data-disabled='true']) {
   @apply text-ink-mute bg-none;
 }
 

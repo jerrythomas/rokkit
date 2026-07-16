@@ -155,10 +155,19 @@ describe('List', () => {
 		expect(labels[1]?.getAttribute('aria-expanded')).toBe('false')
 	})
 
-	it('disables group label button when not collapsible', () => {
+	it('marks non-collapsible group header disabled WITHOUT the native disabled attribute (#140)', () => {
+		// A native `disabled` <button> blocks pointer/activation events across its
+		// whole subtree, so interactive content in a group snippet would be inert.
+		// Use aria-disabled + tabindex=-1 + data-disabled instead so descendants stay live.
 		const { container } = render(List, { items: groupedItems, collapsible: false })
-		const labels = container.querySelectorAll('[data-list-group]')
-		expect(labels[0]?.hasAttribute('disabled')).toBe(true)
+		const header = container.querySelector('[data-list-group]')!
+		expect(header.hasAttribute('disabled')).toBe(false)
+		expect(header.getAttribute('aria-disabled')).toBe('true')
+		expect(header.getAttribute('tabindex')).toBe('-1')
+		expect(header.hasAttribute('data-disabled')).toBe(true)
+		// Not an accordion trigger / not expandable when non-collapsible.
+		expect(header.hasAttribute('data-accordion-trigger')).toBe(false)
+		expect(header.hasAttribute('aria-expanded')).toBe(false)
 	})
 
 	// ─── Selection ──────────────────────────────────────────────────
