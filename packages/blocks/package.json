@@ -11,8 +11,11 @@
     "access": "public"
   },
   "scripts": {
-    "prepublishOnly": "cp ../../LICENSE .",
-    "postpublish": "rm -f LICENSE"
+    "prepublishOnly": "cp ../../LICENSE . && bun run clean && bun run build && node ../../config/pack-repoint.mjs",
+    "postpublish": "node ../../config/pack-repoint.mjs --restore && rm -f LICENSE",
+    "clean": "rm -rf dist",
+    "build": "svelte-package -i src -o dist",
+    "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "exports": {
     ".": {
@@ -21,7 +24,7 @@
       "default": "./src/index.ts"
     }
   },
-  "files": ["src", "README.md"],
+  "files": ["src", "dist/**/*.d.ts", "README.md", "LICENSE"],
   "dependencies": {
     "dompurify": "^3.0.0"
   },
@@ -42,6 +45,11 @@
     "@rokkit/chart": "workspace:*",
     "@rokkit/core": "workspace:*",
     "@rokkit/forms": "workspace:*",
-    "@rokkit/ui": "workspace:*"
+    "@rokkit/ui": "workspace:*",
+    "@sveltejs/package": "^2.5.8",
+    "@sveltejs/vite-plugin-svelte": "^6.2.4",
+    "svelte": "^5.53.5",
+    "svelte-check": "^4.4.3",
+    "typescript": "^5.9.3"
   }
 }

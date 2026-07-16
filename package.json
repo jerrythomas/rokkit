@@ -15,7 +15,7 @@
     "format": "prettier --config config/.prettierrc --ignore-path config/.prettierignore --write .",
     "lint": "eslint --config config/eslint.config.mjs --fix",
     "check:types": "for d in packages/*/ apps/*/; do if [ -f \"${d}tsconfig.json\" ]; then echo \"→ tsc ${d}\"; (cd \"$d\" && bunx tsc --noEmit) || exit 1; fi; done",
-    "check:svelte": "for d in packages/ui packages/app packages/chart packages/forms; do echo \"→ svelte-check ${d}\"; (cd \"${d}\" && bun run check) || exit 1; done",
+    "check:svelte": "for d in packages/ui packages/app packages/chart packages/forms packages/blocks; do echo \"→ svelte-check ${d}\"; (cd \"${d}\" && bun run check) || exit 1; done",
     "check": "bun run lint && bun run check:types && bun run check:svelte && bun run build:apps && bun run test:ci",
     "bump": "bun run check && bumpp --configFilePath config/bump.config.js",
     "bump:next": "bumpp --configFilePath config/bump.config.js --preid=next",

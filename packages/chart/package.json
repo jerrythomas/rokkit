@@ -16,8 +16,8 @@
     "access": "public"
   },
   "scripts": {
-    "prepublishOnly": "cp ../../LICENSE . && bun run clean && bun run build",
-    "postpublish": "rm -f LICENSE",
+    "prepublishOnly": "cp ../../LICENSE . && bun run clean && bun run build && node ../../config/pack-repoint.mjs",
+    "postpublish": "node ../../config/pack-repoint.mjs --restore && rm -f LICENSE",
     "clean": "rm -rf dist",
     "build": "svelte-package -i src -o dist",
     "check": "svelte-check --tsconfig ./tsconfig.json"

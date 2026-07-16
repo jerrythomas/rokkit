@@ -30,8 +30,8 @@
     "LICENSE"
   ],
   "scripts": {
-    "prepublishOnly": "cp ../../LICENSE . && bun run build",
-    "postpublish": "rm -f LICENSE",
+    "prepublishOnly": "cp ../../LICENSE . && bun run build && node ../../config/pack-repoint.mjs",
+    "postpublish": "node ../../config/pack-repoint.mjs --restore && rm -f LICENSE",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "test": "vitest run",
     "test:watch": "vitest",
