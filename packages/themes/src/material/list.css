@@ -106,8 +106,8 @@
   @apply text-ink-mute font-medium;
 }
 
-[data-style='material'] [data-list] [data-list-group]:hover:not(:disabled),
-[data-style='material'] [data-list] [data-list-group]:focus:not(:disabled) {
+[data-style='material'] [data-list] [data-list-group]:hover:not(:disabled):not([data-disabled='true']),
+[data-style='material'] [data-list] [data-list-group]:focus:not(:disabled):not([data-disabled='true']) {
   @apply bg-paper-mute text-ink-mute bg-none;
 }
 

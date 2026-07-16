@@ -1,5 +1,33 @@
 # Project Journal
 
+## 2026-07-16 — Fix #140: non-collapsible List group headers no longer block interactive group-snippet content
+
+`List` rendered group headers as `<button disabled={!collapsible}>`. With
+`collapsible={false}` (the default) that's a native `disabled <button>`, which the
+browser makes inert across its **whole subtree** — so an interactive control rendered
+via a group snippet (e.g. a Toggle) showed but never received clicks.
+
+The Navigator already had the machinery to make this work: `isNestedInteractive` defers
+to embedded controls inside a `[data-path]` item, and `isDisabledItem` honors
+`aria-disabled`/`data-disabled` (not just native `disabled`). The only blocker was the
+native `disabled` attribute swallowing events before Navigator ever ran. Fix: for the
+non-collapsible header, drop native `disabled` and use `aria-disabled="true"` +
+`data-disabled` + `tabindex="-1"` instead, and stop emitting `data-accordion-trigger`/
+`aria-expanded` (a static section header isn't an accordion). Collapsible mode is
+untouched — there `disabled` was already `false`, so behavior is identical.
+
+Theme follow-on: the 5 styled variants gated group-header hover/focus on `:not(:disabled)`;
+removing native `disabled` would have given static headers a clickable-looking affordance,
+so each now also excludes `[data-disabled='true']` (the pattern leaf items already use).
+Rebuilt @rokkit/themes.
+
+TDD: added a deterministic unit test asserting the header's DOM contract (no native
+`disabled`; aria-disabled/tabindex/data-disabled present; no accordion-trigger/aria-expanded)
+and rewrote the old test that codified the bug. The true behavioral repro needs a real
+browser (jsdom's `fireEvent.click` dispatches straight on the descendant and doesn't emulate
+disabled-subtree blocking), so the contract test is the deterministic proxy. Full gate green:
+lint 0, check:types 0, check:svelte 0, build:apps ok, 5133 tests.
+
 ## 2026-07-16 — Ship preprocessed dist to consumers (fix #141: raw .svelte.ts breaks Vite dev optimizer)
 
 External consumers of `@rokkit/*` couldn't run `vite dev` without manually adding every
