@@ -212,3 +212,7 @@ tmp
 firebase-debug.log
 site/e2e/*-snapshots/
 **/packages/**/LICENCE
+
+# Agent scaffolding (local, not tracked)
+AGENTS.md
+.agents/
