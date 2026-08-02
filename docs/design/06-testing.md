@@ -28,13 +28,15 @@ packages/
     Tree.spec.svelte.ts
     ...
   states/spec/
-    list-controller.spec.svelte.js
-    proxy-item.spec.svelte.js
     wrapper.spec.svelte.js
+    lazy-wrapper.spec.svelte.js
+    proxy-item.spec.svelte.js
+    proxy-tree.spec.svelte.js
     ...
   actions/spec/
     navigator.spec.js
-    navigable.spec.js
+    trigger.spec.js
+    keymap.spec.js
     ...
   forms/spec/
     form-builder.spec.svelte.js
@@ -111,18 +113,18 @@ it('calls onselect with the selected item', async () => {
 
 #### Testing controller logic directly
 
-Controllers are pure class instances and can be tested without mounting a component:
+Controllers are pure class instances and can be tested without mounting a component. A `Wrapper` wraps a `ProxyTree` (the reactive data layer) and tracks focus via `focusedKey`:
 
 ```javascript
-import { ListController } from '../src/list-controller.svelte.js'
+import { Wrapper, ProxyTree } from '@rokkit/states'
 
 it('moves focus to next item', () => {
   const items = $state([{ label: 'A' }, { label: 'B' }, { label: 'C' }])
-  const controller = new ListController(items)
-  controller.moveFirst()
-  expect(controller.currentIndex).toBe(0)
-  controller.moveNext()
-  expect(controller.currentIndex).toBe(1)
+  const wrapper = new Wrapper(new ProxyTree(items, { fields: {} }))
+  wrapper.first()
+  expect(wrapper.focusedKey).toBe('0')
+  wrapper.next()
+  expect(wrapper.focusedKey).toBe('1')
 })
 ```
 
@@ -238,7 +240,7 @@ describe('[Component] — learn page') ← tests against /docs/components/[slug]
 
 ```typescript
 // e2e/helpers.ts
-export const themes = ['rokkit', 'minimal', 'material', 'glass']
+export const themes = ['rokkit', 'minimal', 'material', 'frosted', 'zen-sumi']
 export const modes = ['light', 'dark']
 
 // Navigate to playground and wait for idle

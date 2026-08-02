@@ -317,89 +317,87 @@ Selection components separate **state management** from **rendering**. The contr
 
 ```
 ┌──────────────┐       ┌──────────────────────┐
-│  Component   │──────►│  ListController or   │
-│  (renders)   │       │  NestedController    │
-│              │◄──────│  (manages state)     │
-│  items       │       │                      │
-│  focusedKey  │       │  selectedKeys        │
-│  selectedKey │       │  focusedKey          │
-└──────────────┘       │  moveNext/Prev       │
-                       │  select/extend       │
+│  Component   │──────►│  Wrapper (flat) or   │
+│  (renders)   │       │  LazyWrapper (lazy)  │
+│              │◄──────│  over a ProxyTree    │
+│  flatView    │       │  (manages state)     │
+│  focusedKey  │       │                      │
+│  selected    │       │  focusedKey          │
+└──────────────┘       │  next/prev/first/last│
+                       │  select/extend/range │
                        │  expand/collapse     │
                        └──────────────────────┘
 ```
 
-### ListController
+### Wrapper
 
-Manages flat selection state:
+`Wrapper` (from `@rokkit/states`) is the flat navigation controller. It wraps a `ProxyTree` (the reactive data layer) and manages the navigation layer:
 
-- `selectedKeys` — the set of selected item keys
+- `flatView` — the derived, flat, ordered list of visible nodes
 - `focusedKey` — the currently keyboard-focused item
-- `moveNext()`, `movePrev()`, `moveFirst()`, `moveLast()` — navigation
-- `select(key)` — set selection
-- `extendSelection(key)` — multi-select extend
-- `toggleSelection(key)` — toggle for multi-select
+- `next()`, `prev()`, `first()`, `last()` — movement
+- `select(path)` — commit selection (groups toggle expansion; leaves fire `onselect`/`onchange`)
+- `extend(path)` / `range(path)` — multi-select toggle and contiguous range (opt-in via `multiselect: true`)
+- `expand(path)` / `collapse(path)` / `toggle(path)` — expansion control for collapsible groups
+- `findByText(query)` — typeahead
 
-### NestedController
+### LazyWrapper
 
-Extends ListController for hierarchical data:
+`LazyWrapper` extends `Wrapper` for lazily-loaded hierarchies (Tree, LazyTree):
 
-- All ListController capabilities, plus:
-- `expandedKeys` — which nodes are currently open
-- `expand(key)` / `collapse(key)` — explicit control
-- `toggleExpansion(key)` — toggle
-- `ensureVisible(key)` — expand ancestors to reveal an item
+- All `Wrapper` capabilities, plus:
+- Overrides `expand`/`select`/`toggle` to detect unloaded `LazyProxyItem` sentinels and call `proxy.fetch()` before delegating
+- `loadMore()` — root-level pagination
+
+Collapsible nesting itself does not require `LazyWrapper` — plain `Wrapper` handles nested `ProxyTree`s (List with `collapsible` groups). `LazyWrapper` adds only the lazy-loading behavior.
 
 ### Controller is the source of truth for focus
 
-The navigator action and the component both read from the same controller. There is no separate focus tracking in the component — the controller's `focusedKey` drives both the ARIA state and the CSS `data-focused` attribute.
+`Navigator` and the component both read from the same wrapper. There is no separate focus tracking in the component — the wrapper's `focusedKey` drives both the ARIA state and the CSS `data-focused` attribute.
 
 ---
 
-## Navigator Action Pattern
+## Navigator Pattern
 
-The `use:navigator` action connects keyboard interaction to controller state. It is a Svelte action applied to the container element of a navigable component.
+The `Navigator` class (from `@rokkit/actions`) connects keyboard interaction to wrapper state. A component instantiates it on the container element inside an `$effect`, passing the wrapper and options:
 
 ```
 Container element
-  │  use:navigator={{ controller, orientation, nested }}
+  │  new Navigator(rootEl, wrapper, { collapsible, orientation, dir })
   │
-  ├── Keyboard events → navigator → controller.moveNext() etc.
+  ├── Keyboard events → Navigator → wrapper.next() etc.
   │
-  └── Click events → navigator → controller.select(key)
+  └── Click events → Navigator → wrapper.select(key)
 ```
 
 ### How it works
 
 ```
 ┌─────────────────────────────────────────────────┐
-│  navigable (low-level)                          │
-│  Listens: keydown events                        │
-│  Emits: previous, next, first, last,            │
-│          select, expand, collapse               │
-└─────────────────┬───────────────────────────────┘
-                  │ semantic events
-┌─────────────────▼───────────────────────────────┐
-│  navigator (high-level)                         │
-│  Receives: semantic events                      │
-│  Applies: controller methods                    │
-│  Manages: scrollFocusedIntoView()               │
-│  Handles: click vs keyboard discrimination      │
+│  Navigator (class)                              │
+│  Listens: keydown, click, focusin, focusout     │
+│  Resolves: event → semantic action via keymap   │
+│  Applies: wrapper.next(), wrapper.select(), …    │
+│  Manages: typeahead, roving tabindex,           │
+│           scrollIntoView on the focused element  │
+│  Lifecycle: explicit destroy() in $effect        │
 └─────────────────────────────────────────────────┘
 ```
 
+Dropdown components (Select, MultiSelect, Menu) pair `Navigator` with the `Trigger` class: `Trigger` manages open/close on the trigger button, and `Navigator` is constructed on the dropdown only while it is open.
+
 ### The data-path convention
 
-Navigator finds navigable items by looking for elements with a `data-path` attribute. Items without `data-path` are invisible to navigation — this is how separators and spacers are excluded without special configuration.
+Navigator finds focusable items by looking for elements with a `data-path` attribute. Items without `data-path` are invisible to navigation — this is how separators and spacers are excluded without special configuration.
 
 ```html
 <div data-list>
-  ← container: use:navigator applied here
+  ← container: new Navigator(rootEl, wrapper) here
   <div data-list-item data-path="1">
-    ← navigable
+    ← focusable
     <div data-list-separator>
       ← skipped (no data-path)
-      <div data-list-item data-path="2">← navigable</div>
+      <div data-list-item data-path="2">← focusable</div>
     </div>
   </div>
 </div>
@@ -533,7 +531,7 @@ Accessibility is built into every component via two parallel systems: ARIA attri
 | Expansion state     | `aria-expanded` mirrors `data-expanded`                                  |
 | Disabled state      | `aria-disabled` mirrors `data-disabled`                                  |
 | Focus management    | Controller's `focusedKey` drives `aria-activedescendant` or direct focus |
-| Keyboard navigation | via `use:navigator` — no per-component keyboard code                     |
+| Keyboard navigation | via the `Navigator` class — no per-component keyboard code                |
 
 ### The dual-attribute principle
 
@@ -589,10 +587,10 @@ Packages have a strict one-directional dependency. No package may import from a 
       │  Field mapping, types, skin definitions, utilities
       ▼
 @rokkit/states
-      │  ProxyItem, ListController, NestedController, vibe store
+      │  ProxyItem, ProxyTree, Wrapper, LazyWrapper, vibe store
       ▼
 @rokkit/actions
-      │  navigator, navigable, dismissable, ripple, hoverLift, magnetic
+      │  Navigator, Trigger, dismissable, ripple, hoverLift, magnetic
       ▼
 @rokkit/data
       │  filter, search, transform, rollup utilities
@@ -603,7 +601,7 @@ Packages have a strict one-directional dependency. No package may import from a 
 @rokkit/forms
       │  FormRenderer, FormBuilder, field types
 @rokkit/chart
-      │  BarChart, LineChart, Sparkline, AnimatedChart
+      │  BarChart, LineChart, Sparkline, AnimatedPlot
       ▼
 @rokkit/themes
       │  CSS theme files, skin CSS, icon definitions
@@ -644,7 +642,7 @@ When designing or implementing a new component, verify it meets every pattern:
 - [ ] Root element has correct ARIA role
 - [ ] Items have correct ARIA role
 - [ ] State attributes: `aria-selected`, `aria-expanded`, `aria-disabled`
-- [ ] Uses `use:navigator` for keyboard (no manual key handling)
+- [ ] Uses the `Navigator` class for keyboard (no manual key handling)
 - [ ] Focus management is controller-driven
 
 ### Styling

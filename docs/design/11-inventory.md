@@ -4,12 +4,12 @@
 
 ## Summary
 
-| Package         | Exported Components               | Status |
-| --------------- | --------------------------------- | ------ |
-| `@rokkit/ui`    | 38                                | Active |
-| `@rokkit/forms` | 30                                | Active |
-| `@rokkit/chart` | 6 (Plot primitives + ChartBrewer) | Active |
-| `@rokkit/app`   | 1                                 | Active |
+| Package         | Exported Components                                       | Status |
+| --------------- | -------------------------------------------------------- | ------ |
+| `@rokkit/ui`    | 62 (from `packages/ui/src/index.ts`)                     | Active |
+| `@rokkit/forms` | 30                                                       | Active |
+| `@rokkit/chart` | 40+ (Plot primitives, high-level charts, geoms, crossfilter) | Active |
+| `@rokkit/app`   | 1                                                        | Active |
 
 **Status key:**
 
@@ -36,6 +36,9 @@
 | Toggle       | `@rokkit/ui` | Implemented | Exclusive option toggle (button group style)                   |
 | BreadCrumbs  | `@rokkit/ui` | Implemented | Breadcrumb path navigation                                     |
 | SearchFilter | `@rokkit/ui` | Implemented | Search input with filter behaviour                             |
+| Dropdown     | `@rokkit/ui` | Implemented | Trigger + floating panel overlay (base for Select/Menu)        |
+| NavContent   | `@rokkit/ui` | Implemented | Navigation content container                                   |
+| CommandPalette | `@rokkit/ui` | Implemented | Command palette (search + run app commands)                  |
 
 ---
 
@@ -111,14 +114,38 @@
 | Component   | Package      | Status      | Description                                               |
 | ----------- | ------------ | ----------- | --------------------------------------------------------- |
 | Card        | `@rokkit/ui` | Implemented | Content card container with selection and snippet support |
-| Code        | `@rokkit/ui` | Implemented | Syntax-highlighted code block display                     |
+| Code        | `@rokkit/ui` | Implemented | Syntax-highlighted inline/code display                     |
+| CodeBlock   | `@rokkit/ui` | Implemented | Standalone syntax-highlighted code block                   |
+| CodeGroup   | `@rokkit/ui` | Implemented | Tabbed group of code blocks                                |
 | Timeline    | `@rokkit/ui` | Implemented | Chronological event display                               |
 | Table       | `@rokkit/ui` | Implemented | Tabular data display                                      |
+| TreeTable   | `@rokkit/ui` | Implemented | Tabular display with collapsible hierarchical rows         |
 | Pill        | `@rokkit/ui` | Implemented | Tag/label pill display                                    |
+| Badge       | `@rokkit/ui` | Implemented | Numeric or status badge indicator                         |
+| Avatar      | `@rokkit/ui` | Implemented | User/entity avatar (image or initials)                     |
 | ItemContent | `@rokkit/ui` | Implemented | Standardised item content layout (used inside List/Tree)  |
+| ItemSwitch  | `@rokkit/ui` | Implemented | Item renderer with a switch control                        |
+| ItemToggle  | `@rokkit/ui` | Implemented | Item renderer with a toggle control                        |
 | Connector   | `@rokkit/ui` | Implemented | Visual connector line between elements                    |
 | Reveal      | `@rokkit/ui` | Implemented | Content reveal/show-more container                        |
-| Badge       | `@rokkit/ui` | Proposed    | Numeric or status badge indicator                         |
+| MarkdownRenderer | `@rokkit/ui` | Implemented | Renders Markdown (with pluggable renderers) to components |
+
+### Buttons
+
+| Component   | Package      | Status      | Description                              |
+| ----------- | ------------ | ----------- | ---------------------------------------- |
+| Button      | `@rokkit/ui` | Implemented | Themed button with variants and sizes    |
+| ButtonGroup | `@rokkit/ui` | Implemented | Grouping container for related buttons    |
+
+### Chat
+
+| Component    | Package      | Status      | Description                                          |
+| ------------ | ------------ | ----------- | ---------------------------------------------------- |
+| ChatShell    | `@rokkit/ui` | Implemented | Chat layout shell (history + composer regions)       |
+| ChatHistory  | `@rokkit/ui` | Implemented | Scrollable list of chat messages                     |
+| ChatMessage  | `@rokkit/ui` | Implemented | Single chat message bubble (rich content via snippet) |
+| ChatComposer | `@rokkit/ui` | Implemented | Message input composer (plain-Enter submit)          |
+| ChatTimeline | `@rokkit/ui` | Implemented | Timeline grouping for chat messages                  |
 
 ---
 
@@ -129,9 +156,11 @@
 | FloatingAction     | `@rokkit/ui` | Implemented | Floating action button (FAB)             |
 | FloatingNavigation | `@rokkit/ui` | Implemented | Floating navigation panel                |
 | ProgressBar        | `@rokkit/ui` | Implemented | Linear progress indicator                |
+| Message            | `@rokkit/ui` | Implemented | Inline status/notification message       |
+| AlertList          | `@rokkit/ui` | Implemented | List of dismissable alerts (from `alerts` store) |
+| Tooltip            | `@rokkit/ui` | Implemented | Contextual hover/focus tooltip           |
 | Modal              | `@rokkit/ui` | Proposed    | Dialog/modal overlay with focus trapping |
 | Toast              | `@rokkit/ui` | Proposed    | Transient notification messages          |
-| Tooltip            | `@rokkit/ui` | Proposed    | Contextual hover tooltip                 |
 
 ---
 
@@ -139,12 +168,15 @@
 
 | Component | Package      | Status      | Description                              |
 | --------- | ------------ | ----------- | ---------------------------------------- |
-| Carousel  | `@rokkit/ui` | Implemented | Horizontally scrolling content carousel  |
-| Grid      | `@rokkit/ui` | Implemented | Responsive CSS grid layout container     |
-| Shine     | `@rokkit/ui` | Implemented | Shine/gloss visual effect layer          |
-| Tilt      | `@rokkit/ui` | Implemented | 3D tilt interaction effect container     |
-| Panel     | `@rokkit/ui` | Proposed    | Collapsible side or content panel        |
-| Divider   | `@rokkit/ui` | Planned     | Horizontal or vertical content separator |
+| Carousel      | `@rokkit/ui` | Implemented | Horizontally scrolling content carousel  |
+| Grid          | `@rokkit/ui` | Implemented | Data-driven tile grid with keyboard navigation |
+| ResponsiveGrid | `@rokkit/ui` | Implemented | Responsive CSS grid layout container    |
+| Stack         | `@rokkit/ui` | Implemented | Row/column stacking layout with gap      |
+| Divider       | `@rokkit/ui` | Implemented | Horizontal or vertical content separator |
+| Frame         | `@rokkit/ui` | Implemented | Framed/bordered content container        |
+| Shine         | `@rokkit/ui` | Implemented | Shine/gloss visual effect layer          |
+| Tilt          | `@rokkit/ui` | Implemented | 3D tilt interaction effect container     |
+| Panel         | `@rokkit/ui` | Proposed    | Collapsible side or content panel        |
 
 ---
 
@@ -159,6 +191,10 @@
 | Plot.Bar    | `@rokkit/chart` | Implemented | Bar series primitive                  |
 | Plot.Grid   | `@rokkit/chart` | Implemented | Background grid lines                 |
 | Plot.Legend | `@rokkit/chart` | Implemented | Chart legend                          |
+| Plot.Line   | `@rokkit/chart` | Implemented | Line series primitive                 |
+| Plot.Area   | `@rokkit/chart` | Implemented | Area series primitive                 |
+| Plot.Point  | `@rokkit/chart` | Implemented | Point/scatter primitive               |
+| Plot.Arc    | `@rokkit/chart` | Implemented | Arc/pie segment primitive             |
 
 ### Pattern Fills (`@rokkit/chart`)
 
@@ -167,20 +203,39 @@
 | Texture / DefinePatterns                                                             | `@rokkit/chart` | Implemented | SVG pattern fill definitions for accessibility |
 | Brick, Circles, CrossHatch, CurvedWave, Dots, OutlineCircles, Tile, Triangles, Waves | `@rokkit/chart` | Implemented | Individual repeating pattern fills             |
 
-### High-Level Chart Components (planned)
+### High-Level Chart Components
 
 | Component     | Package         | Status      | Description                                     |
 | ------------- | --------------- | ----------- | ----------------------------------------------- |
+| Chart         | `@rokkit/chart` | Implemented | Generic chart wrapper                           |
+| PlotChart     | `@rokkit/chart` | Implemented | Declarative plot host for Geom components       |
 | Sparkline     | `@rokkit/chart` | Implemented | Compact inline trend chart (line/bar/area)      |
-| BarChart      | `@rokkit/chart` | Planned     | Full bar chart with axes, legend, and animation |
-| LineChart     | `@rokkit/chart` | Planned     | Line chart with multi-series support            |
-| AreaChart     | `@rokkit/chart` | Planned     | Area chart with stacked variant                 |
-| PieChart      | `@rokkit/chart` | Planned     | Pie chart for part-to-whole data                |
-| DonutChart    | `@rokkit/chart` | Planned     | Donut chart with centre label                   |
-| ScatterPlot   | `@rokkit/chart` | Planned     | Scatter chart for correlation data              |
-| BubbleChart   | `@rokkit/chart` | Planned     | Scatter chart with size-encoded third dimension |
-| AnimatedChart | `@rokkit/chart` | Planned     | Shared animation wrapper for chart transitions  |
-| CrossFilter   | `@rokkit/chart` | Proposed    | Linked charts with cross-filtering interaction  |
+| BarChart      | `@rokkit/chart` | Implemented | Full bar chart with axes, legend, and animation |
+| LineChart     | `@rokkit/chart` | Implemented | Line chart with multi-series support            |
+| AreaChart     | `@rokkit/chart` | Implemented | Area chart with stacked variant                 |
+| PieChart      | `@rokkit/chart` | Implemented | Pie chart for part-to-whole data                |
+| ScatterPlot   | `@rokkit/chart` | Implemented | Scatter chart for correlation data              |
+| BubbleChart   | `@rokkit/chart` | Implemented | Scatter chart with size-encoded third dimension |
+| BoxPlot       | `@rokkit/chart` | Implemented | Box-and-whisker distribution chart              |
+| ViolinPlot    | `@rokkit/chart` | Implemented | Violin distribution chart                       |
+| FacetPlot     | `@rokkit/chart` | Implemented | Small-multiples / faceted plot                  |
+| AnimatedPlot  | `@rokkit/chart` | Implemented | Animated plot with transition support           |
+| DonutChart    | `@rokkit/chart` | Planned     | Donut chart with centre label (not yet exported) |
+
+### Geom Components (`@rokkit/chart` — declarative marks for `PlotChart`)
+
+| Component | Package | Status | Description |
+| --------- | ------- | ------ | ----------- |
+| GeomBar, GeomLine, GeomArea, GeomPoint, GeomArc, GeomBox, GeomViolin, GeomHeatmap, GeomCandlestick, GeomWaterfall, GeomHexbin, GeomRibbon | `@rokkit/chart` | Implemented | Declarative mark components rendered inside `PlotChart` |
+
+### CrossFilter (`@rokkit/chart`)
+
+| Component       | Package         | Status      | Description                                     |
+| --------------- | --------------- | ----------- | ----------------------------------------------- |
+| CrossFilter     | `@rokkit/chart` | Implemented | Linked charts with cross-filtering interaction  |
+| FilterBar       | `@rokkit/chart` | Implemented | Categorical cross-filter control                |
+| FilterSlider    | `@rokkit/chart` | Implemented | Range cross-filter control                      |
+| FilterHistogram | `@rokkit/chart` | Implemented | Histogram cross-filter control                  |
 
 ---
 
@@ -196,13 +251,13 @@
 
 ## Package Cross-Reference
 
-| Package           | Purpose                     | Key Exports                                   |
-| ----------------- | --------------------------- | --------------------------------------------- |
-| `@rokkit/ui`      | Main component library      | 38 UI components                              |
-| `@rokkit/forms`   | Form generation and inputs  | FormRenderer, FormBuilder, 30 form components |
-| `@rokkit/chart`   | Data visualisation          | Plot primitives, patterns, ChartBrewer        |
-| `@rokkit/app`     | Application shell utilities | ThemeSwitcherToggle                           |
-| `@rokkit/states`  | Reactive state controllers  | ListController, NestedController, Proxy, Vibe |
-| `@rokkit/actions` | Svelte actions              | `navigator`, `controller`, drag-and-drop      |
-| `@rokkit/core`    | Shared utilities            | field-mapper, mapping, types                  |
-| `@rokkit/themes`  | CSS theme definitions       | rokkit, glass, material, minimal themes       |
+| Package           | Purpose                     | Key Exports                                                                 |
+| ----------------- | --------------------------- | -------------------------------------------------------------------------- |
+| `@rokkit/ui`      | Main component library      | 62 UI components                                                           |
+| `@rokkit/forms`   | Form generation and inputs  | FormRenderer, FormBuilder, 30 form components                             |
+| `@rokkit/chart`   | Data visualisation          | Plot primitives, high-level charts, Geom marks, crossfilter, ChartBrewer   |
+| `@rokkit/app`     | Application shell utilities | ThemeSwitcherToggle                                                        |
+| `@rokkit/states`  | Reactive state controllers  | Wrapper, LazyWrapper, ProxyItem, ProxyTree, ProxyTable, ProxyTableTree, vibe, alerts, messages, commands, watchMedia |
+| `@rokkit/actions` | Svelte actions + classes    | `Navigator`, `Trigger`, `shortcuts`, `dismissable`, `themable`, `skinnable`, `lockMode`, `tooltip`, `ripple`, `hoverLift`, `magnetic`, `reveal` |
+| `@rokkit/core`    | Shared utilities            | field-mapper, mapping, types                                              |
+| `@rokkit/themes`  | CSS theme definitions       | rokkit, minimal, material, frosted, zen-sumi themes                       |

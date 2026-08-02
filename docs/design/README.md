@@ -11,13 +11,19 @@ These documents define how Rokkit works. Read them before designing or building 
 | [01-patterns](./01-patterns.md)     | **Core patterns** — data binding, field mapping, API conventions, theming, accessibility. Reference for all component work. |
 | [02-components](./02-components.md) | Component anatomy, categories, data flow, snippet model, overlay design                                                     |
 | [03-forms](./03-forms.md)           | Schema-driven form system: FormBuilder, field types, validation, lookups                                                    |
-| [04-actions](./04-actions.md)       | navigator action, interaction actions (ripple, hover-lift, magnetic)                                                        |
-| [09-website](./09-website.md)       | Learn site architecture, docs pages, playground, llms.txt, navigation                                                       |
+| [04-actions](./04-actions.md)       | Navigator class, interaction actions (ripple, hover-lift, magnetic)                                                         |
+| [05-website](./05-website.md)       | Learn site architecture, docs pages, playground, llms.txt, navigation                                                       |
 | [06-testing](./06-testing.md)       | Testing strategy: unit tests (Vitest), E2E tests (Playwright), conventions                                                  |
-| [07-priority](./07-priority.md)     | Priority checklist — all pending work items by tier                                                                         |
-| [08-tools](./08-tools.md)           | CLI, icon sets, toolchain _(planned)_                                                                                       |
-| [09-data](./09-data.md)             | `@rokkit/data` package: dataset pipeline, rollup, dataview, filtering, formatting, schema inference, joins                  |
-| [10-theming](./10-theming.md)       | Theme architecture: skin system, z-index scale, CSS variables, runtime switching                                            |
+| [08-data](./08-data.md)             | `@rokkit/data` package: dataset pipeline, rollup, dataview, filtering, formatting, schema inference, joins                  |
+| [09-theming](./09-theming.md)       | Theme architecture: skin system, CSS variables, runtime switching                                                          |
+| [10-themes](./10-themes.md)         | Theme system design: `data-style`, CSS layer architecture, build pipeline                                                  |
+| [11-inventory](./11-inventory.md)   | Component inventory + status across all packages                                                                            |
+| [12-priority](./12-priority.md)     | Priority checklist — all pending work items by tier                                                                         |
+| [17-skin-system](./17-skin-system.md) | Runtime skin switching: `vibe.skin`, `data-skin`, `skins` config                                                         |
+| [20-chart](./20-chart.md) / [21-charts](./21-charts.md) / [22-chart-preset](./22-chart-preset.md) | Chart package, chart system design, preset system                  |
+| [70-tools](./70-tools.md) / [71-tools](./71-tools.md) | CLI, icon sets, toolchain                                                                              |
+
+> Full index: every numbered doc lives in this directory. Ranges follow the convention below.
 
 ## Numbering Convention
 

@@ -281,4 +281,4 @@ Note: `BarChart` grouped bars require no changes — grouping is automatic when 
 | `packages/chart/src/lib/brewing/marks/points.js` | Add `jitterOffset()` helper |
 | `packages/chart/src/index.js` | Export `ChartProvider`, `createChartPreset` |
 | `packages/cli/src/init.js` | Add optional chart config step |
-| `docs/design/17-chart-preset.md` | This document |
+| `docs/design/22-chart-preset.md` | This document |

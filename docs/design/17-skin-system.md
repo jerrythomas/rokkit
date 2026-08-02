@@ -1,4 +1,4 @@
-# 20 — Skin System
+# 17 — Skin System
 
 **Status:** Designed 2026-06-10 (approved). Implementation plan: `docs/superpowers/plans/<date>-skin-system.md`.
 

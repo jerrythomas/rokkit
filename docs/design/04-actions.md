@@ -6,9 +6,9 @@
 
 The `@rokkit/actions` package provides Svelte actions — functions applied to DOM elements via the `use:` directive — that add interaction behaviors without coupling to any particular component. Several principles govern their design.
 
-**Actions separate behavior from rendering.** A component is responsible for what the DOM looks like. An action is responsible for how it behaves. The `navigator` action attaches keyboard and click handling to a container and calls methods on a controller, but it never reads or writes Svelte state directly. The component decides what to render in response to controller state changes.
+**Behavior is separated from rendering.** A component is responsible for what the DOM looks like. A behavior primitive is responsible for how it behaves. The `Navigator` class, for instance, attaches keyboard and click handling to a container and calls methods on a controller, but it never reads or writes Svelte state directly. The component decides what to render in response to controller state changes.
 
-**The same action works on any element.** There is no base class to extend, no special component to wrap. Applying `use:navigator` to a `<div>`, a `<ul>`, or a `<nav>` element produces identical behavior. This makes the primitives genuinely reusable for custom component authors.
+**The same action works on any element.** There is no base class to extend, no special component to wrap. Applying `use:ripple` to a `<div>`, a `<button>`, or an `<a>` element produces identical behavior. This makes the primitives genuinely reusable for custom component authors.
 
 **Actions are composable.** Each action registers its own event listeners and cleans them up independently. Multiple actions on a single element coexist without coordination. A button can carry `use:ripple` and `use:hoverLift` simultaneously; neither action knows the other exists.
 
@@ -18,71 +18,77 @@ The `@rokkit/actions` package provides Svelte actions — functions applied to D
 
 ## Action Inventory
 
-The package exports the following actions. All are Svelte 5 `$effect`-based unless noted as a plain class.
+The package exports the following. Navigation and triggering ship as plain classes (`Navigator`, `Trigger`) that components instantiate; the rest are Svelte 5 `$effect`-based actions applied via `use:`.
 
-| Action                   | Purpose                                                                   | Exported as              |
+| Export                   | Purpose                                                                   | Exported as              |
 | ------------------------ | ------------------------------------------------------------------------- | ------------------------ |
-| `navigator`              | Keyboard navigation + selection for any container (function form, legacy) | `navigator`              |
-| `Navigator`              | Keyboard navigation + selection — preferred class form                    | `Navigator` (class)      |
+| `Navigator`              | Keyboard navigation + selection for any container                         | `Navigator` (class)      |
 | `Trigger`                | Dropdown open/close management for trigger buttons                        | `Trigger` (class)        |
-| `navigable`              | Low-level semantic event emitter, foundational primitive                  | `navigable`              |
 | `dismissable`            | Escape key + click-outside dismissal                                      | `dismissable`            |
 | `keyboard`               | Custom key-to-event mapping for non-navigation keyboards                  | `keyboard`               |
+| `shortcuts`              | Registers keyboard shortcuts against the `commands` registry              | `shortcuts`              |
 | `themable`               | Applies theme data attributes to a root element                           | `themable`               |
 | `skinnable`              | Variant of themable for component-level skin overrides                    | `skinnable`              |
+| `lockMode`               | Pins a subtree to a fixed light/dark mode                                 | `lockMode`               |
 | `fillable`               | Fill-in-the-blank interaction for learning exercises                      | `fillable`               |
 | `pannable`               | Mouse and touch panning for scrollable containers                         | `pannable`               |
 | `swipeable`              | Touch swipe gesture detection                                             | `swipeable`              |
+| `tooltip`                | Hover/focus tooltip positioning and lifecycle                             | `tooltip`                |
 | `reveal`                 | Scroll-triggered viewport entry animation                                 | `reveal`                 |
 | `ripple`                 | Material-style click ripple animation                                     | `ripple`                 |
 | `hoverLift`              | Hover elevation with shadow and translateY                                | `hoverLift`              |
 | `magnetic`               | Cursor-attracted positional offset on hover                               | `magnetic`               |
 | `delegateKeyboardEvents` | Forwards keyboard events across a shadow boundary                         | `delegateKeyboardEvents` |
 
-The navigation-related entries — `Navigator`, `Trigger`, `navigable`, `dismissable`, and `keyboard` — form the core of the package and receive the most detailed treatment below.
+The package also exports the keymap helpers `buildKeymap`, `resolveAction`, and `ACTIONS`.
+
+The navigation-related entries — `Navigator`, `Trigger`, `dismissable`, and `keyboard` — form the core of the package and receive the most detailed treatment below.
 
 ---
 
 ## Navigation Architecture
 
-### The Two-Layer Model
+### Navigator over a Wrapper
 
-Navigation is split into two abstraction layers. The lower layer maps raw keyboard events to semantic intent. The upper layer acts on that intent by mutating controller state and keeping the DOM in sync.
+Navigation is split into two responsibilities. The `Navigator` class maps raw keyboard and pointer events to semantic intent and keeps the DOM in sync. The `Wrapper` controller (from `@rokkit/states`) owns the state — focus, expansion, selection — and exposes the methods the Navigator calls.
 
 ```mermaid
 flowchart TD
-    KE[Keyboard event\nkeydown / keyup]
-    NAV[navigable\nlow-level emitter]
-    NAVI[Navigator / navigator\nhigh-level integration]
-    CTL[Controller\nListController / NestedController]
+    KE[Keyboard / click event\nkeydown · click · focusin]
+    NAVI[Navigator\nkeymap → semantic action]
+    CTL[Wrapper / LazyWrapper\nover a ProxyTree]
     DOM[DOM\ndata-focused, aria-current, scroll]
 
-    KE --> NAV
-    NAV -- "CustomEvent\nprevious / next / select\nexpand / collapse" --> NAVI
     KE --> NAVI
-    NAVI -- "wrapper.moveNext()\nwrapper.select(path)\nwrapper.expand() …" --> CTL
+    NAVI -- "wrapper.next()\nwrapper.select(path)\nwrapper.expand() …" --> CTL
     CTL -- "reactive state\nfocusedKey / selected" --> DOM
     NAVI -- "scrollIntoView\nel.focus()" --> DOM
 ```
 
-**`navigable`** is the foundational layer. It listens to `keyup` on a single element and converts key presses into named `CustomEvent`s: `previous`, `next`, `select`, `expand`, `collapse`. It has no knowledge of state, controllers, or the DOM structure beyond its host element. Orientation, direction, and nesting are passed as options; they determine which physical keys fire which semantic events. It is useful when a component only needs to react to navigation signals without a full controller integration.
+**`Navigator`** attaches to a container element, listens for `keydown`, `click`, `focusin`, and `focusout`, resolves each event to a named action via a pre-built keymap, and calls the corresponding method on the controller (`wrapper`). It also handles roving tabindex management, runs typeahead search, and scrolls the focused element into view after every keyboard move.
 
-**`Navigator`** (class) and **`navigator`** (function action, legacy) are the high-level layer. They attach to a container element, listen for `keydown` and `click`, resolve each event to a named action via a pre-built keymap, and call the corresponding method on the controller (`wrapper`). They also handle `focusin` and `focusout` for roving tabindex management, run typeahead search, and scroll the focused element into view after every keyboard move.
+`Navigator` is a plain class with an explicit `destroy()`, so a component constructs it inside a Svelte `$effect` and returns `destroy` for cleanup:
 
-The class form (`Navigator`) is preferred in library components because it is a plain object with explicit `destroy()`, making lifecycle management straightforward inside Svelte `$effect` blocks. The function form (`navigator`) wraps the same logic inside a Svelte action for simpler one-liner usage.
+```javascript
+$effect(() => {
+  if (!rootRef) return
+  const nav = new Navigator(rootRef, wrapper, { collapsible, dir })
+  return () => nav.destroy()
+})
+```
 
 ### Navigator Options
 
-Both `Navigator` and `navigator` accept the same configuration object.
+`Navigator` accepts a configuration object as its third argument.
 
 | Option        | Type                         | Default      | Purpose                                                                |
 | ------------- | ---------------------------- | ------------ | ---------------------------------------------------------------------- |
-| `wrapper`     | Controller                   | required     | The controller to dispatch actions to                                  |
 | `orientation` | `'vertical' \| 'horizontal'` | `'vertical'` | Which arrow keys mean previous/next                                    |
 | `dir`         | `'ltr' \| 'rtl'`             | `'ltr'`      | Text direction; reverses horizontal arrow meaning                      |
 | `collapsible` | `boolean`                    | `false`      | Whether to bind expand/collapse keys (ArrowLeft/Right or ArrowUp/Down) |
+| `containScroll` | `boolean`                  | `false`      | Keep `scrollIntoView` contained to the scroll container (dropdowns)    |
 
-The `navigable` action uses identical options except it does not accept a `wrapper`.
+The `wrapper` is passed as the second constructor argument (`new Navigator(root, wrapper, options)`), not inside the options object.
 
 ### Key Mapping
 
@@ -140,7 +146,7 @@ sequenceDiagram
     DOM->>Navigator: keydown event (bubbles to list root)
     Navigator->>Navigator: resolveAction(event, keymap) → 'next'
     Navigator->>Navigator: event.preventDefault(), stopPropagation()
-    Navigator->>Wrapper: wrapper.moveNext()
+    Navigator->>Wrapper: wrapper.next()
     Wrapper->>Controller: advance focusedKey to next visible item
     Controller-->>Wrapper: focusedKey updated (reactive $state)
     Navigator->>Navigator: #syncFocus()
@@ -155,11 +161,11 @@ Two details are worth noting. First, `#syncFocus()` both focuses the DOM element
 
 ### The `data-path` Convention
 
-`Navigator` identifies navigable targets by the presence of a `data-path` attribute on DOM elements inside the container. Walking up from the event target to the container root, it finds the nearest element with `data--path` and treats its value as the item's key.
+`Navigator` identifies focusable targets by the presence of a `data-path` attribute on DOM elements inside the container. Walking up from the event target to the container root, it finds the nearest element with `data-path` and treats its value as the item's key.
 
-- Elements with `data-path` are navigable: list items, tree nodes, tab buttons, menu items.
-- Elements without `data-path` are invisible to the navigator: separators, spacers, group headers that only toggle (though those carry `data-accordion-trigger` instead).
-- The `data-path` value is the item's opaque string key as assigned by the controller (typically a stringified index path like `"0"`, `"1"`, or `"0.2.1"` for nested items).
+- Elements with `data-path` take part in navigation: list items, tree nodes, tab buttons, menu items.
+- Elements without `data-path` are invisible to the `Navigator`: separators, spacers, group headers that only toggle (though those carry `data-accordion-trigger` instead).
+- The `data-path` value is the item's opaque string key as assigned by the controller (typically a stringified index path like `"0"`, `"1"`, or `"0-2-1"` for nested items).
 
 This convention means separators and spacers require no special handling — they simply lack the attribute and are silently skipped.
 
@@ -167,7 +173,7 @@ This convention means separators and spacers require no special handling — the
 
 `Navigator` listens to `focusin` and `focusout` at the container level to handle focus entering and leaving the list.
 
-On `focusin`: if the focused element has a `data-path`, `moveTo(path)` is called to sync controller state. If focus landed on the container itself (the user tabbed in and no item element was focused), the Navigator redirects focus to the element matching `focusedKey`, or to the first navigable item if `focusedKey` is unset.
+On `focusin`: if the focused element has a `data-path`, `moveTo(path)` is called to sync controller state. If focus landed on the container itself (the user tabbed in and no item element was focused), the Navigator redirects focus to the element matching `focusedKey`, or to the first focusable item if `focusedKey` is unset.
 
 On `focusout`: if the newly focused element (`relatedTarget`) is outside the container, `wrapper.blur?.()` is called. Components can use this hook to close dropdowns or perform cleanup.
 
@@ -178,25 +184,24 @@ On `focusout`: if the newly focused element (`relatedTarget`) is outside the con
 Navigator does not manage selection or focus state itself. It delegates all state mutations to the controller passed as `wrapper`. The controller interface is:
 
 ```javascript
-// Movement (ignore path argument)
-wrapper.moveNext()
-wrapper.movePrev()
-wrapper.moveFirst()
-wrapper.moveLast()
+// Movement (path argument passed through but ignored)
+wrapper.next()
+wrapper.prev()
+wrapper.first()
+wrapper.last()
 wrapper.moveTo(path)
-wrapper.expand() // expand focused item (collapsible only)
-wrapper.collapse() // collapse focused item (collapsible only)
+wrapper.expand() // expand focused group (collapsible only)
+wrapper.collapse() // collapse focused group (collapsible only)
 
 // Selection (use path argument)
 wrapper.select(path)
-wrapper.extendSelection(path) // toggle individual item in multi-select
-wrapper.selectRange(path) // extend selection to path (shift+click/space)
-wrapper.toggleExpansion(path) // toggle expand/collapse at path
+wrapper.extend(path) // toggle individual item in multi-select (multiselect: true)
+wrapper.range(path) // contiguous range selection (shift+click/space)
+wrapper.toggle(path) // toggle expand/collapse of a group at path
 
 // Query
 wrapper.focusedKey // string | null — current focus
-wrapper.focused // the focused item value
-wrapper.selected // the selected value(s)
+wrapper.selected // the selected value, or array of values in multi-select
 wrapper.findByText(text, startAfter) // typeahead search
 
 // Optional lifecycle hooks
@@ -204,7 +209,7 @@ wrapper.blur?.() // called when focus leaves the container
 wrapper.cancel?.() // called on Escape
 ```
 
-`ListController` satisfies this interface for flat lists. `NestedController` extends it with expand/collapse semantics for trees and collapsible groups. Custom wrappers can satisfy the same interface to plug into `Navigator` without using the built-in controllers.
+`Wrapper` satisfies this interface for flat lists and collapsible groups. `LazyWrapper` extends it with lazy-load-on-expand semantics for trees. Custom wrappers can satisfy the same interface to plug into `Navigator` without using the built-in controllers.
 
 The reactive state (`focusedKey`, `selected`, etc.) is `$state`-based inside the controllers. When Navigator calls a mutation method, the controller updates its reactive state, which causes Svelte to re-render the component. The component reads controller state to apply `data-focused`, `aria-current`, `aria-selected`, and `aria-expanded` attributes to the correct elements on the next render.
 
@@ -212,7 +217,7 @@ The reactive state (`focusedKey`, `selected`, etc.) is `$state`-based inside the
 
 ## Trigger and Dropdown Composition
 
-Dropdown components — `Select`, `MultiSelect`, `Menu` — require two coordinated pieces: a trigger button that opens and closes the overlay, and a navigator that handles keyboard interaction inside the open overlay. The `Trigger` class manages the first responsibility.
+Dropdown components — `Select`, `MultiSelect`, `Menu` — require two coordinated pieces: a trigger button that opens and closes the overlay, and a `Navigator` that handles keyboard interaction inside the open overlay. The `Trigger` class manages the first responsibility.
 
 `Trigger` listens to events on the trigger button element and document-level events for click-outside and Escape:
 
@@ -329,8 +334,8 @@ Because each action manages its own event listeners independently, combining mul
 <!-- Ripple and lift both work on a single button -->
 <button use:ripple use:hoverLift>Click me</button>
 
-<!-- Navigation on container, ripple on items — fully independent -->
-<ul use:navigator={{ wrapper, orientation: 'vertical' }}>
+<!-- Navigator attached to the container in an $effect; ripple on items — fully independent -->
+<ul bind:this={rootRef}>
   {#each items as item}
     <li data-path={item.key} use:ripple>{item.label}</li>
   {/each}
@@ -343,12 +348,12 @@ The only interaction to be aware of: both `hoverLift` and `magnetic` write to `e
 
 ## Usage in Library Components
 
-The following table shows how `@rokkit/ui` components apply `Navigator` and related classes. All use the class form (not the `use:navigator` directive form) for explicit lifecycle control inside `$effect` blocks.
+The following table shows how `@rokkit/ui` components apply `Navigator` and related classes. All construct `Navigator` as a class inside `$effect` blocks for explicit lifecycle control (there is no `use:` directive form).
 
 | Component     | Navigator options                    | Notes                                                                                       |
 | ------------- | ------------------------------------ | ------------------------------------------------------------------------------------------- |
 | `List`        | `{ collapsible, dir }`               | `collapsible` comes from whether a `hierarchy` prop is set; vertical orientation by default |
-| `Tree`        | `{ collapsible: true, dir }`         | Always collapsible; uses `NestedController`                                                 |
+| `Tree`        | `{ collapsible: true, dir }`         | Always collapsible; uses `LazyWrapper`                                                       |
 | `LazyTree`    | `{ collapsible: true, dir }`         | Same as Tree but items load on expand                                                       |
 | `Tabs`        | `{ orientation }`                    | Horizontal by default; `orientation` prop allows vertical tabs                              |
 | `Toggle`      | `{ orientation: 'horizontal', dir }` | Horizontal, no collapsible                                                                  |
@@ -356,8 +361,9 @@ The following table shows how `@rokkit/ui` components apply `Navigator` and rela
 | `Select`      | `{ dir }`                            | Navigator on dropdown only; `Trigger` on trigger button                                     |
 | `MultiSelect` | `{ dir }`                            | Same pattern as Select                                                                      |
 | `Menu`        | `{ collapsible, dir }`               | Navigator on dropdown; `Trigger` on trigger; `collapsible` for grouped menus                |
-| `Table`       | `use:navigator` directive            | Uses legacy function form; vertical, no collapsible                                         |
-| `Toolbar`     | `use:navigator` directive            | Uses legacy function form; orientation prop forwarded                                       |
+| `Table`       | `{ orientation: 'vertical', dir }`   | `Wrapper` over a `ProxyTable`; class form on the table root                                  |
+| `TreeTable`   | `{ orientation: 'vertical', collapsible: true, dir }` | `Wrapper` over a `ProxyTableTree`; collapsible rows                          |
+| `Toolbar`     | `{ orientation, dir }`               | `Wrapper` over a `ProxyTree`; `orientation` prop forwarded                                   |
 
 Dropdown components (`Select`, `MultiSelect`, `Menu`) follow a consistent pattern:
 
@@ -416,7 +422,7 @@ These are documented design gaps — areas where the current implementation is i
 
 **Virtualization.** `Navigator` uses `querySelector('[data-path="..."]')` to find DOM elements. Virtual lists only render visible items, so off-screen items have no DOM element. Scroll and focus would fail for items outside the rendered window. Supporting virtualization would require either a callback-based scroll API (where the list component handles scrolling to an index) or a virtual-list-aware wrapper that translates key to scroll offset.
 
-**Enhanced tree navigation.** Home and End in a tree currently jump to the absolute first and last visible items. Standard tree widget patterns (ARIA Authoring Practices Guide) define additional shortcuts: Home/End at a given level navigate to first/last sibling, and Alt+Home/End navigate to first/last across all levels. The `NestedController` methods needed for sibling-level navigation (`moveToFirstSibling`, `moveToLastSibling`) do not yet exist.
+**Enhanced tree navigation.** Home and End in a tree currently jump to the absolute first and last visible items. Standard tree widget patterns (ARIA Authoring Practices Guide) define additional shortcuts: Home/End at a given level navigate to first/last sibling, and Alt+Home/End navigate to first/last across all levels. The `Wrapper`/`LazyWrapper` methods needed for sibling-level navigation (`moveToFirstSibling`, `moveToLastSibling`) do not yet exist.
 
 **Scroll behavior customization.** `scrollIntoView` is called with a fixed `{ block: 'nearest', inline: 'nearest' }` scroll option. There is no way for a consumer to request `block: 'center'`, disable smooth scrolling, or skip scrolling entirely for specific use cases. Exposing a `scrollBehavior` option on Navigator would address this.
 

@@ -13,7 +13,7 @@
 graph TD
     Consumer["Consumer Code"]
     CF["CrossFilter\n(coordinated view controller)"]
-    AC["AnimatedChart\n(time-series wrapper)"]
+    AC["AnimatedPlot\n(time-series wrapper)"]
     Static["Static Chart Components\nBarChart · LineChart · AreaChart\nScatterPlot · BubbleChart\nPieChart · DonutChart · Sparkline"]
     Brewer["ChartBrewer\n(channel mapping engine)"]
     Data["@rokkit/data\nrollup · groupByKeys · fillAligned"]
@@ -38,7 +38,7 @@ graph TD
 The architecture has three independent but composable layers:
 
 - **Rendering layer** — chart type components (BarChart, LineChart, etc.) that render a single frame of data into SVG marks.
-- **Animation layer** — `AnimatedChart` wrapper that drives a time axis, tweens between keyframes, and feeds current-frame data to the rendering layer via context.
+- **Animation layer** — `AnimatedPlot` wrapper that drives a time axis, tweens between keyframes, and feeds current-frame data to the rendering layer via context.
 - **Coordination layer** — `CrossFilter` controller that registers multiple charts in a group and propagates filter state when any one chart is filtered.
 
 ---
@@ -57,7 +57,7 @@ The architecture has three independent but composable layers:
 ├── BubbleChart             # Scatter variant with size encoding
 ├── PieChart                # Pie / donut chart
 ├── DonutChart              # Alias for PieChart with innerRadius
-├── AnimatedChart           # Time-series animation wrapper
+├── AnimatedPlot           # Time-series animation wrapper
 ├── TimelineControls        # Play / pause / scrub / speed UI
 ├── CrossFilter             # Coordinated view controller
 ├── ChartBrewer             # Visual channel assignment engine
@@ -82,7 +82,7 @@ packages/chart/src/
 │   ├── PieChart.svelte
 │   └── Sparkline.svelte
 ├── animation/
-│   ├── AnimatedChart.svelte
+│   ├── AnimatedPlot.svelte
 │   ├── TimelineControls.svelte
 │   ├── keyframe-store.svelte.js
 │   └── timer.svelte.js
@@ -132,7 +132,7 @@ Every chart component uses a uniform set of semantic channel props. These are th
 | `size`    | `string \| number`   | Marker size channel. If a field name: encodes a quantitative dimension (bubble chart). If a number: fixed size for all marks.          |
 | `symbol`  | `string`             | Symbol shape channel. Assigns a distinct marker shape per distinct value (scatter/bubble only).                                        |
 | `label`   | `string`             | Field for data labels rendered on or near marks.                                                                                       |
-| `time`    | `string`             | Time axis field. Used by `AnimatedChart` to define keyframes. Also accepts ISO date strings for temporal x-axis.                       |
+| `time`    | `string`             | Time axis field. Used by `AnimatedPlot` to define keyframes. Also accepts ISO date strings for temporal x-axis.                       |
 | `z`       | `string \| number`   | Z-axis / bubble size channel. Alias for `size` in `BubbleChart`.                                                                       |
 
 ### Usage Examples
@@ -464,12 +464,12 @@ brush.svelte.js
 
 ---
 
-## AnimatedChart — Time-Series Wrapper
+## AnimatedPlot — Time-Series Wrapper
 
 ### Component Interface
 
 ```svelte
-<AnimatedChart
+<AnimatedPlot
   data={historicalData}
   time="year"
   categoryField="language"
@@ -480,7 +480,7 @@ brush.svelte.js
   bind:currentTime
 >
   <BarChart x="language" y="pct" color="language" pattern="language" />
-</AnimatedChart>
+</AnimatedPlot>
 ```
 
 ### Props
@@ -501,7 +501,7 @@ brush.svelte.js
 ### Internal Architecture
 
 ```
-AnimatedChart.svelte
+AnimatedPlot.svelte
 │
 ├── 1. Rollup Phase (on data change)
 │      groupDataByKeys(data, [time], aggregators)
@@ -574,7 +574,7 @@ The `_rank` field is numeric and interpolated by the tweened store, producing sm
 
 ### prefers-reduced-motion
 
-When `prefers-reduced-motion: reduce` is detected, `AnimatedChart`:
+When `prefers-reduced-motion: reduce` is detected, `AnimatedPlot`:
 
 - Sets `duration` to `0` (instant transitions, no tweening)
 - Disables autoplay
@@ -906,7 +906,7 @@ When `dataTable={true}`, the chart renders a visually-hidden `<table>` that pres
 
 ### Animated Chart Announcements
 
-When `AnimatedChart` advances to a new keyframe:
+When `AnimatedPlot` advances to a new keyframe:
 
 ```svelte
 <span class="sr-only" role="status" aria-live="polite" aria-atomic="true">
@@ -1242,7 +1242,7 @@ SMIL structure per animated bar:
 
 ### Rollup for Animation Keyframes
 
-`AnimatedChart` uses `@rokkit/data` rollup functions to group flat data into aligned keyframes:
+`AnimatedPlot` uses `@rokkit/data` rollup functions to group flat data into aligned keyframes:
 
 ```javascript
 import { groupDataByKeys, fillAlignedData, getAlignGenerator } from '@rokkit/data'
@@ -1272,10 +1272,10 @@ function buildKeyframes(data, timeField, categoryField, valueField) {
 
 ### Rollup Prop
 
-For consumers who want more control, `AnimatedChart` accepts a `rollup` configuration:
+For consumers who want more control, `AnimatedPlot` accepts a `rollup` configuration:
 
 ```svelte
-<AnimatedChart
+<AnimatedPlot
   {data}
   time="month"
   rollup={{
@@ -1290,7 +1290,7 @@ For consumers who want more control, `AnimatedChart` accepts a `rollup` configur
   }}
 >
   <BarChart x="category" y="totalRevenue" />
-</AnimatedChart>
+</AnimatedPlot>
 ```
 
 ---
@@ -1370,7 +1370,7 @@ All 9 pattern components are Svelte 4 (`export let`, `$:`) and require migration
 
 ### Phase 4 — Animation
 
-- [ ] `AnimatedChart` wrapper with keyframe store
+- [ ] `AnimatedPlot` wrapper with keyframe store
 - [ ] `TimelineControls` (play/pause/scrub/speed/loop)
 - [ ] Timer system (requestAnimationFrame-based)
 - [ ] Custom array-of-objects tweened interpolator

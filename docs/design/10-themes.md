@@ -13,9 +13,11 @@ The theme system has three orthogonal axes, all written as `data-*` attributes o
 
 | Attribute | Values | Controls |
 |-----------|--------|----------|
-| `data-style` | `rokkit`, `minimal`, `material`, `frosted`, `shadcn`, `daisy-ui`, `bits-ui`, `carbon`, `ant-design`, `grada-ui` | Visual personality |
+| `data-style` | `rokkit`, `minimal`, `material`, `frosted`, `zen-sumi` | Visual personality |
 | `data-mode` | `light`, `dark` | Light/dark color mapping |
 | `data-density` | `compact`, `comfortable`, `cozy` | Spatial rhythm (spacing, font size, icon size) |
+
+> The five `data-style` values above are the styles that actually ship (they map 1:1 to the directories under `packages/themes/src/` and the files in `dist/`). Additional styles (`shadcn`, `daisy-ui`, `bits-ui`, `carbon`, `ant-design`, `grada-ui`) are **planned/aspirational** and not yet built.
 
 A fourth attribute `data-direction` (`ltr` / `rtl`) is tracked by the `vibe` store for future i18n use but is not yet consumed by CSS.
 
@@ -53,12 +55,7 @@ dist/rokkit.css    — gradients + glowing borders
 dist/minimal.css   — clean + subtle
 dist/material.css  — elevation + shadows
 dist/frosted.css   — frosted glass + blur
-dist/shadcn.css    — flat borders + ring focus
-dist/daisy-ui.css  — rounded-full + bold fills
-dist/bits-ui.css   — rounded-lg + shadow-sm
-dist/carbon.css    — square + bottom-border inputs
-dist/ant-design.css — thin borders + dense layout
-dist/grada-ui.css  — coral/purple gradient identity
+dist/zen-sumi.css  — OKLCH ink-wash identity
 dist/index.css     — full bundle (all themes concatenated)
 ```
 

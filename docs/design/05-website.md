@@ -1,6 +1,6 @@
 # Learn Site
 
-The learn site (`site`) is the primary documentation and interactive demo surface for Rokkit. It serves two audiences: developers learning the library and AI agents consuming component API references.
+The learn site (`apps/learn/`) is the primary documentation and interactive demo surface for Rokkit. It serves two audiences: developers learning the library and AI agents consuming component API references.
 
 ---
 
@@ -344,7 +344,7 @@ The sidebar uses `page.url.pathname` to determine the active item. The `canonica
 
 ### ThemeSwitcherToggle
 
-The `ThemeSwitcherToggle` component sits in the docs layout header (top-right). It cycles through available themes (rokkit, minimal, material, glass) and persists the selection via the vibe store. The store writes `data-theme` and `data-mode` attributes to `document.documentElement`, which is how Rokkit's CSS variable system activates the correct theme.
+The `ThemeSwitcherToggle` component sits in the docs layout header (top-right). It cycles through available themes (rokkit, minimal, material, frosted, zen-sumi) and persists the selection via the vibe store. The store writes `data-theme` and `data-mode` attributes to `document.documentElement`, which is how Rokkit's CSS variable system activates the correct theme.
 
 ```
 ThemeSwitcherToggle (header)
@@ -415,8 +415,8 @@ A controls column on the left side of the builder exposes four top-level setting
 
 | Control        | Attribute      | Options                                            |
 | -------------- | -------------- | -------------------------------------------------- |
-| Palette / skin | `data-palette` | `rokkit`, `glass`, `minimal`, `material`, `custom` |
-| Theme style    | `data-style`   | `rokkit`, `minimal`, `material`                    |
+| Palette / skin | `data-palette` | `rokkit`, `frosted`, `minimal`, `material`, `custom` |
+| Theme style    | `data-style`   | `rokkit`, `minimal`, `material`, `frosted`, `zen-sumi` |
 | Color mode     | `data-mode`    | `light`, `dark`, `system`                          |
 | Density        | `data-density` | `compact`, `default`, `comfortable`                |
 
@@ -562,7 +562,7 @@ A `ThemePanel` component floats in the bottom-right corner of the viewport, visi
 
 | Control | Store field  | Options                                  |
 | ------- | ------------ | ---------------------------------------- |
-| Skin    | `vibe.style` | `rokkit`, `glass`, `minimal`, `material` |
+| Skin    | `vibe.style` | `rokkit`, `frosted`, `minimal`, `material`, `zen-sumi` |
 | Mode    | `vibe.mode`  | `light`, `dark`                          |
 
 Changes write directly to the vibe store, which applies `data-style` and `data-mode` to `document.documentElement`. Theme updates are instant — no page reload required. The panel is positioned with `position: fixed; bottom: 1rem; right: 1rem` and sits above the page content at a high `z-index`.

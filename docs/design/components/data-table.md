@@ -6,7 +6,7 @@
 
 ## Overview
 
-`DataTable` is the interactive counterpart to `Table`. Where `Table` is a static renderer, `DataTable` integrates with `TabularStore` for sort state and selection, `@rokkit/data` for dataset operations, and the navigator pattern for keyboard navigation.
+`DataTable` is the interactive counterpart to `Table`. Where `Table` is a static renderer, `DataTable` integrates with `TabularStore` for sort state and selection, `@rokkit/data` for dataset operations, and the `Navigator` class for keyboard navigation.
 
 `DataTable` owns no data transformation internally. It either accepts pre-sorted/filtered data from `@rokkit/data` operations applied externally, or it can sort internally when `sortable` is set and no external sort handler is provided.
 
@@ -108,7 +108,7 @@ Row click fires `onselect(item)` and updates the binding. In multi-select mode, 
 
 ## Keyboard Navigation
 
-`DataTable` uses the navigator pattern (`use:navigator`) on the table body for arrow key movement between cells. Tab focuses the table as a unit; arrow keys move within it.
+`DataTable` uses the `Navigator` class on the table body for arrow key movement between cells. Tab focuses the table as a unit; arrow keys move within it.
 
 | Key              | Action                                 |
 | ---------------- | -------------------------------------- |
@@ -171,7 +171,7 @@ Column headers are separately focusable. Tab cycles through sortable headers; En
 
 ## Accessibility
 
-- Root `<table>` has `role="grid"` (interactive table with navigable cells).
+- Root `<table>` has `role="grid"` (interactive table with keyboard-navigated cells).
 - Sortable `<th>` elements have `aria-sort="ascending"`, `aria-sort="descending"`, or `aria-sort="none"`.
 - Selected `<tr>` elements have `aria-selected="true"`.
 - The focused row's `<tr>` receives `tabindex="0"`; all other rows have `tabindex="-1"`.
