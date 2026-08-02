@@ -28,7 +28,7 @@
 
    Files written: `rokkit.config.js`, `uno.config.js`, `src/app.css`, `src/app.html`
 
-   See [cli.txt](/llms/cli.txt) for full CLI reference (includes `rokkit skills` for installing AI skill guides).
+   See [cli.txt](/llms/cli.txt) for full CLI reference (includes `rokkit skills` / `rokkit agents` for installing AI skill guides and review agents).
 
 ## Verify & Fix
 
@@ -318,7 +318,7 @@ Opt into the full 11-shade palette ladder per role with `tokens: 'extended'` (fo
 
 ## Reference
 
-- [cli.txt](/llms/cli.txt) — CLI reference (`rokkit init`, `rokkit doctor`, icon tools)
+- [cli.txt](/llms/cli.txt) — CLI reference (`rokkit init`, `rokkit doctor`, `rokkit skills`, `rokkit agents`, icon tools)
 - [composability.txt](/llms/composability.txt) — Snippets, ProxyItem API, per-item routing, interactive snippet patterns
 - [packages/](/llms/packages/) — per-package documentation
 - [components/](/llms/components/) — component reference (50+ components)

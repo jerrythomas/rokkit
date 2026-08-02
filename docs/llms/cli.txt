@@ -194,3 +194,30 @@ npx @rokkit/cli@latest skills add --all
 ```
 
 Bundled skills: `semantic-styles-rokkit` (theming/tokens), `rokkit-components` (component usage), `command-system-rokkit` (shortcuts + palette), `skin-system-rokkit` (skins).
+
+## rokkit agents
+
+Manage bundled review agents (Claude-Code agent `.md` files) for Claude Code and compatible AI assistants. Available since v1.3.7.
+
+```bash
+rokkit agents list              # list available bundled agents (marks already-installed ones)
+rokkit agents add               # interactive multiselect — pick agents to install
+rokkit agents add <name> [...]  # install one or more named agents by name
+rokkit agents add --all         # install all available agents
+rokkit agents add --force       # overwrite existing installed agents
+rokkit agents add <name> --remote  # pull from the site instead of the bundled copy
+```
+
+Agents are copied into `.claude/agents/<name>.md` in your project root.
+
+| Flag | Description |
+|------|-------------|
+| `--all` | Install all available bundled agents |
+| `--force` | Overwrite agents that are already installed |
+| `--remote` | Fetch named agents from `https://rokkit.sensei-hq.com/agents/<name>.md` instead of the bundled copy |
+
+Bundled agents (both review a *consuming* app — before coding, and verify after with a build + Playwright light/dark snapshots):
+- `rokkit-styles-reviewer` — `rokkit.config.js` palette→skin→token wiring, named tokens vs raw hex/oklch, `shape`/`typography` config, dual-palette dark mode.
+- `rokkit-components-reviewer` — steers to the simplest customization tier (data → `fields` → snippets), plus custom icons (UnoCSS `i-*` / `@rokkit/icons` vs literal-text/emoji field) and typography usage (`font-heading`/`font-body`/`font-mono`).
+
+These agents, the skills above, and the `/llms` corpus are declared in `sensei.library.json` (repo root, also served at `/.well-known/sensei.library.json`) so tools like sensei can ingest and self-configure a rokkit-using project.
