@@ -52,6 +52,9 @@ import codeGroup from './demos/code-group/meta'
 import effects from './demos/effects/meta'
 import lockMode from './demos/lock-mode/meta'
 import chat from './demos/chat/meta'
+import frame from './demos/frame/meta'
+import responsiveGrid from './demos/responsive-grid/meta'
+import navContent from './demos/nav-content/meta'
 
 export const catalog: DemoMeta[] = [
 	themeWizard, tabs, toasts, table, treeTable, tree, multiSelect, list, form, select,
@@ -63,7 +66,8 @@ export const catalog: DemoMeta[] = [
 	lazyTree, statusList, timeline,
 	code, markdownRenderer, searchFilter, paletteManager,
 	dropdown, progress, uploadProgress, uploadTarget,
-	buttonGroup, tooltip, codeGroup, effects, lockMode, chat
+	buttonGroup, tooltip, codeGroup, effects, lockMode, chat,
+	frame, responsiveGrid, navContent
 ]
 
 export const miniIndex = new MiniSearch<DemoMeta>({
