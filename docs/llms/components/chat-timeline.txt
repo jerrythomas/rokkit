@@ -1,0 +1,68 @@
+# Rokkit ChatTimeline Component
+
+> Scrolling list of chat messages with auto-scroll to the newest content.
+
+ChatTimeline is a dumb presentation component: give it an array of `messages` and it renders one ChatMessage per entry inside a scroll container, keeping the view pinned to the bottom as messages append or stream. Override per-message rendering with a `message` snippet, or show an `empty` snippet when there are none.
+
+## Quick Start
+
+```svelte
+<script>
+  import { ChatTimeline } from '@rokkit/ui'
+
+  const messages = [
+    { id: 'm1', role: 'user', text: 'Hi!' },
+    { id: 'm2', role: 'assistant', text: 'Hello — how can I help?', status: 'streaming' }
+  ]
+</script>
+
+<ChatTimeline {messages} />
+
+<!-- Custom per-message rendering (bypasses the built-in ChatMessage) -->
+<ChatTimeline {messages}>
+  {#snippet message(msg)}
+    <MyMessage data={msg} />
+  {/snippet}
+  {#snippet empty()}
+    <p>No messages yet.</p>
+  {/snippet}
+</ChatTimeline>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `messages` | `ChatMessage[]` | `[]` | Messages to render, in order |
+| `relativeTime` | `boolean` | `true` | Forwarded to the built-in ChatMessage (ignored when a `message` snippet is supplied) |
+| `autoscroll` | `boolean` | `true` | Keep the container scrolled to the newest message |
+| `message` | `Snippet<[ChatMessage]>` | — | Overrides the default ChatMessage per row; receives the message |
+| `empty` | `Snippet` | — | Rendered when `messages` is empty |
+
+## Data Attributes
+
+| Attribute | Element |
+|-----------|---------|
+| `data-chat-timeline` | root scroll container `<div>` (holds `bind:this` for auto-scroll) |
+
+(Individual rows carry the ChatMessage attributes — see [ChatMessage](/llms/components/chat-message.txt) — unless you supply a `message` snippet.)
+
+## Behavior
+
+- **Keyed rendering** — each message is keyed by `msg.id`, so appends/reorders update efficiently.
+- **Auto-scroll** — an effect tracks `messages.length` and the last message's `text`/`status`; when `autoscroll` is on it sets `scrollTop = scrollHeight`, following both new messages and streaming updates. Set `autoscroll={false}` to leave scrolling to the user.
+- **Empty state** — when `messages` is empty, only the `empty` snippet renders (nothing if it's omitted).
+- **Default vs. custom row** — without a `message` snippet each entry renders `<ChatMessage message={msg} {relativeTime} />`. With a `message` snippet you own the row entirely (and `relativeTime` no longer applies).
+- **Purely presentational** — no roles, ARIA, or keyboard handling of its own.
+
+## Import
+
+```javascript
+import { ChatTimeline } from '@rokkit/ui'
+```
+
+## Related
+
+- [ChatMessage](/llms/components/chat-message.txt) — the per-row bubble
+- [ChatComposer](/llms/components/chat-composer.txt) — input for sending messages
+- [ChatShell](/llms/components/chat-shell.txt) — history + timeline + composer, assembled

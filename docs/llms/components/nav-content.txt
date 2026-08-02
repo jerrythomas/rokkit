@@ -1,0 +1,50 @@
+# Rokkit NavContent Component
+
+> Two-panel nav + content layout with a sizable, optionally collapsible nav panel.
+
+## Quick Start
+
+```svelte
+<script>
+  import { NavContent } from '@rokkit/ui'
+</script>
+
+<NavContent navSize="240px">
+  {#snippet nav()}
+    <nav>Sidebar links</nav>
+  {/snippet}
+
+  {#snippet content()}
+    <main>Main content</main>
+  {/snippet}
+</NavContent>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Layout orientation |
+| `navSize` | `string` | `'280px'` | Nav panel width (horizontal) or height (vertical) — CSS length |
+| `collapsible` | `boolean` | `true` | Collapse the nav panel on small screens |
+| `nav` | `Snippet` | — | Nav panel snippet (required) |
+| `content` | `Snippet` | — | Content panel snippet (required) |
+| `class` | `string` | `''` | Additional CSS class |
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-nav-content` | Root container |
+| `data-orientation` | Layout orientation (`horizontal` / `vertical`) |
+| `data-collapsible` | Present when `collapsible` is true |
+| `data-nav-content-nav` | Nav panel wrapper |
+| `data-nav-content-main` | Content panel wrapper |
+
+The root sets a `--nav-size` CSS custom property from `navSize` for the theme layer to consume.
+
+## Behavior
+
+- `horizontal` places the nav beside the content; `vertical` stacks the nav above the content.
+- `navSize` controls the nav panel's width (horizontal) or height (vertical) via the `--nav-size` variable.
+- The layout is structural only — collapsing behavior on small screens is driven by `@rokkit/themes` CSS keyed off `data-collapsible`.

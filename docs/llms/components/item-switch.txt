@@ -1,0 +1,73 @@
+# Rokkit ItemSwitch Component
+
+> Inert switch-shaped row renderer for config lists. Renders a label plus a purely visual switch; the whole row is the click target and the consumer flips the state in the List's `onselect`.
+
+`ItemSwitch` is meant to be used **inside a List (or Menu / Tree) `itemContent` snippet** to build settings / toggle rows. It renders `<ItemContent>` for the label and icon, then a span-based switch visual that reflects a boolean field via `aria-checked`. Critically it introduces **no nested interactive element** (no `<button>`/`<input>`) inside the parent `<button data-list-item>` — so the markup stays legal and the entire row remains a single click target. Clicking the row runs the parent's normal select flow; your `onselect` handler flips the underlying value.
+
+## Quick Start
+
+```svelte
+<script>
+  import { List, ItemSwitch } from '@rokkit/ui'
+
+  const settings = $state([
+    { label: 'Notifications', description: 'Alerts & sounds', checked: true },
+    { label: 'Dark mode', description: 'Theme preference', checked: false }
+  ])
+
+  function handleSelect(_, proxy) {
+    const item = proxy.value          // the raw row object
+    item.checked = !item.checked      // consumer flips the state
+  }
+</script>
+
+<List items={settings} onselect={handleSelect}>
+  {#snippet itemContent(proxy)}
+    <ItemSwitch {proxy} />
+  {/snippet}
+</List>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `proxy` | `ProxyItem` | — (required) | ProxyItem for the current row |
+| `field` | `string` | `'checked'` | Item field holding the boolean checked state (`checked = Boolean(proxy.get(field))`) |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size variant; feeds `data-switch-size` for theming |
+| `showIcon` | `boolean` | `true` | Render the leading avatar / icon (passed to ItemContent) |
+| `showSubtext` | `boolean` | `true` | Render subtext under the label (passed to ItemContent) |
+| `class` | `string` | — | Optional class on the switch wrapper span |
+
+## Data Attributes
+
+| Attribute | Element |
+|-----------|---------|
+| `data-item-switch` | switch wrapper `<span>` (also carries `data-switch`, `data-switch-size`, `aria-checked`, `aria-hidden="true"`) |
+| `data-switch` | present on the wrapper — reuses the standalone Switch's theming hooks |
+| `data-switch-size` | `'sm' \| 'md' \| 'lg'` |
+| `data-switch-track` | inner track `<span>` |
+| `data-switch-thumb` | thumb `<span>` |
+
+Plus all `ItemContent` attributes (`data-item-label`, `data-item-icon`, `data-item-description`, …) for the label/icon portion.
+
+## Behavior
+
+- **Whole row is the target** — ItemSwitch renders zero interactive elements. The parent `<button data-list-item>` handles the click; the consumer toggles `item.checked` (or `field`) inside the List `onselect`.
+- **State is read, not owned** — `checked` is derived from `proxy.get(field)`; ItemSwitch never mutates the data itself.
+- **Custom field name** — pass `field="enabled"` (etc.) to read a differently named boolean.
+- **Accessibility** — the switch visual is `aria-hidden="true"` so it doesn't double-announce; the accessible name comes from the label rendered by ItemContent, and the row (parent button) is the focusable/announced control.
+- **Switch-track/thumb visuals** are shared with the standalone Switch component via the `data-switch-*` hooks, so themes style them once.
+
+## Import
+
+```javascript
+import { ItemSwitch } from '@rokkit/ui'
+```
+
+## Related
+
+- [ItemContent](/llms/components/item-content.txt) — the label/icon renderer ItemSwitch wraps
+- [ItemToggle](/llms/components/item-toggle.txt) — multi-option sibling (radiogroup) for the same config-row pattern
+- [List](/llms/components/list.txt) — the host component; drive state via its `onselect`
+- [Composability guide](/llms/guides/composability.txt) — the data-first contract across all components

@@ -1,0 +1,61 @@
+# Rokkit CodeBlock Component
+
+> Shiki-highlighted code block with chrome — filename, language chip, and optional copy / download actions, wrapped in a Frame.
+
+## Quick Start
+
+```svelte
+<script>
+  import { CodeBlock } from '@rokkit/ui'
+
+  const source = `const answer = 42\nconsole.log(answer)`
+</script>
+
+<CodeBlock code={source} language="javascript" filename="answer.js" allowCopy allowDownload />
+```
+
+For a plain, unstyled code surface with no header chrome, use the lower-level `<Code />` component instead. For a multi-file tree picker, use `<CodeGroup />`.
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `code` | `string` | — | The code body (required) |
+| `language` | `string` | `'text'` | Language label shown as a chip and used for highlighting |
+| `filename` | `string` | `''` | Filename label shown in the header |
+| `height` | `string` | — | Max height (CSS length) of the scrollable code area; no cap when unset |
+| `theme` | `'auto' \| 'light' \| 'dark'` | `'auto'` | Shiki theme mode; `'auto'` follows `body[data-mode]` |
+| `allowCopy` | `boolean` | `false` | Show the copy-to-clipboard button |
+| `allowDownload` | `boolean` | `false` | Show the download-as-file button |
+| `actions` | `Snippet` | — | Extra-actions slot rendered after copy / download |
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-code-block` | Root wrapper (carries the `max-height` style) |
+| `data-code-block-header` | Header row (only rendered when a header is needed) |
+| `data-code-block-title` | Left group: icon + filename + language |
+| `data-code-block-icon` | Leading code icon (`class="view-code"`) |
+| `data-code-block-filename` | Filename label (only when `filename` set) |
+| `data-code-block-lang` | Language chip (only when `language` set) |
+| `data-code-block-actions` | Action-button group (copy / download / extra actions) |
+| `data-code-block-body` | Highlighted-HTML container, or the fallback `<pre>` |
+
+The body is wrapped in `<Frame flush>`, so `data-frame`, `data-frame-header`, `data-frame-body` (with `data-flush`) are also present.
+
+## Behavior
+
+- Highlights `code` via `highlightCode` (Shiki). While Shiki initialises — and on any error — it falls back to a plain `<pre><code>` render.
+- Tracks `body[data-mode]` with a MutationObserver; when `theme="auto"` the highlight theme follows the document's light / dark mode.
+- The header is rendered only when `filename`, `language`, `allowCopy`, `allowDownload`, or `actions` is present.
+- Copy button writes `code` to the clipboard and shows "Copied" for ~1.5s, then reverts; clipboard failures fail silently (API may require https or a user gesture).
+- Download button emits a `text/plain` Blob named `filename` (or `code.<language>`).
+
+## Related Utilities
+
+Exported from `@rokkit/ui` alongside the component:
+
+- `highlightCode(code, { lang, theme })` — returns highlighted HTML.
+- `preloadHighlighter()` — warm the Shiki singleton for faster first paint.
+- `getSupportedLanguages()` — list of bundled languages.

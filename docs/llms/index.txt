@@ -323,7 +323,7 @@ Opt into the full 11-shade palette ladder per role with `tokens: 'extended'` (fo
 - [cli.txt](/llms/cli.txt) — CLI reference (`rokkit init`, `rokkit doctor`, `rokkit skills`, `rokkit agents`, icon tools)
 - [composability.txt](/llms/composability.txt) — Snippets, ProxyItem API, per-item routing, interactive snippet patterns
 - [packages/](/llms/packages/) — per-package documentation
-- [components/](/llms/components/) — component reference (50+ components)
+- [components/](/llms/components/) — component reference (90+ components)
 - [guides/](/llms/guides/) — framework-level long-form guides (see below)
 
 ## Guides
@@ -390,8 +390,12 @@ Long-form prose covering framework concepts. Mirrors what users see at `/guides/
 ### Layout & Display
 
 - [Card](/llms/components/card.txt) — content card container
+- [Frame](/llms/components/frame.txt) — generic header / body / footer container (data-frame chrome)
 - [Grid](/llms/components/grid.txt) — responsive CSS grid layout wrapper
+- [ResponsiveGrid](/llms/components/responsive-grid.txt) — auto-fit CSS grid (minWidth / gap / maxCols)
 - [Stack](/llms/components/stack.txt) — flexible layout container with direction, gap, alignment
+- [NavContent](/llms/components/nav-content.txt) — nav + content split layout (collapsible, orientable)
+- [LockMode](/llms/components/lock-mode.txt) — pin a subtree to a fixed light/dark mode
 - [Divider](/llms/components/divider.txt) — visual separator line with optional label
 - [Stepper](/llms/components/stepper.txt) — step indicator / wizard progress
 - [ProgressBar](/llms/components/progress-bar.txt) — progress indicator (also see [progress.txt](/llms/components/progress.txt) as an alias)
@@ -412,9 +416,28 @@ Long-form prose covering framework concepts. Mirrors what users see at `/guides/
 - [AlertList](/llms/components/alert-list.txt) — dismissible alert stack with auto-dismiss
 - [StatusList](/llms/components/status-list.txt) — grouped validation message summary (`@rokkit/forms`)
 - [Code](/llms/components/code.txt) — syntax-highlighted code block with copy button
+- [CodeBlock](/llms/components/code-block.txt) — framed Shiki code block with header, filename, copy/download
 - [CodeGroup](/llms/components/code-group.txt) — multi-file code display with hierarchical tree picker + optional preview
 - [MarkdownRenderer](/llms/components/markdown-renderer.txt) — Markdown-to-HTML renderer with DOMPurify sanitization and Svelte component plugins
 - [Toasts](/llms/components/toasts.txt) — `AlertList` + `alerts` store entry point for time-limited feedback
+
+### Chat
+
+Dumb presentation components for chat UIs; rich content comes via a consumer `body`/`message` snippet (no chart/forms dependency).
+
+- [ChatShell](/llms/components/chat-shell.txt) — full chat layout: history + timeline + composer, wired together
+- [ChatTimeline](/llms/components/chat-timeline.txt) — scrolling message list with auto-scroll and empty state
+- [ChatMessage](/llms/components/chat-message.txt) — single message bubble (role/status, body/avatar/label snippets)
+- [ChatComposer](/llms/components/chat-composer.txt) — bindable input, plain-Enter submit, leading/toolbar/suggestions slots
+- [ChatHistory](/llms/components/chat-history.txt) — conversation list with select/new/delete
+
+### Item Renderers
+
+The building blocks List / Select / Menu render by default; use inside an `itemContent` snippet for config rows.
+
+- [ItemContent](/llms/components/item-content.txt) — the built-in default item renderer (avatar/icon/label/subtext/badge/shortcut from a ProxyItem)
+- [ItemSwitch](/llms/components/item-switch.txt) — inert switch row for a List config item (whole row is the target)
+- [ItemToggle](/llms/components/item-toggle.txt) — inline radiogroup row for a List config item
 
 ### Animation & Effects
 

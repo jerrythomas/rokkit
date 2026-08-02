@@ -1,0 +1,81 @@
+# Rokkit ChatHistory Component
+
+> Sidebar list of past conversations with select, new, and delete affordances.
+
+ChatHistory is a dumb presentation component. Pass a `conversations` array and a set of callbacks; it renders a "New conversation" button (when `onnew` is given), one selectable row per conversation, an optional delete button per row (when `ondelete` is given), and marks the `activeId` row. Override a row with the `item` snippet, or the whole empty state with `empty`.
+
+## Quick Start
+
+```svelte
+<script>
+  import { ChatHistory } from '@rokkit/ui'
+
+  const conversations = [
+    { id: 'c1', title: 'Onboarding', timestamp: '2026-08-01T10:00:00Z' },
+    { id: 'c2', title: 'Billing question' }
+  ]
+  let activeId = $state('c1')
+</script>
+
+<ChatHistory
+  {conversations}
+  {activeId}
+  onselect={(id) => (activeId = id)}
+  onnew={() => {/* create conversation */}}
+  ondelete={(id) => {/* remove conversation */}}
+/>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `conversations` | `ConversationSummary[]` | `[]` | Conversations to list |
+| `activeId` | `string \| null` | `null` | Id of the currently active conversation |
+| `relativeTime` | `boolean` | `true` | `true` → relative label; `false` → clock time (default rows only) |
+| `onselect` | `(id: string) => void` | — | Called with a conversation id when its row is clicked |
+| `onnew` | `() => void` | — | When present, renders the "New conversation" button |
+| `ondelete` | `(id: string) => void` | — | When present, renders a delete button per row |
+| `item` | `Snippet<[ConversationSummary]>` | — | Overrides the default row; receives the conversation |
+| `empty` | `Snippet` | — | Rendered when `conversations` is empty |
+| `header` | `Snippet` | — | Rendered first, above the "New conversation" button |
+
+### `ConversationSummary` object shape
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `string` | Stable identity (used for keying and callbacks) |
+| `title` | `string` | Row label |
+| `timestamp` | `string` | ISO string; rendered as a relative/clock time |
+
+## Data Attributes
+
+| Attribute | Element |
+|-----------|---------|
+| `data-chat-history` | root `<div>` |
+| `data-chat-history-new` | "New conversation" `<button>` (only when `onnew` is set) |
+| `data-chat-history-row` | per-conversation wrapper (carries `data-active` when it matches `activeId`) |
+| `data-chat-history-item` | the selectable row `<button>` |
+| `data-chat-history-title` | title `<span>` |
+| `data-chat-history-time` | `<time>`, present only when the conversation has a `timestamp` |
+| `data-chat-history-delete` | delete `<button>` (only when `ondelete` is set; `aria-label="Delete conversation"`) |
+
+## Behavior
+
+- **Conditional controls** — the new-conversation button renders only when `onnew` is provided; the per-row delete button renders only when `ondelete` is provided.
+- **Active row** — a row gets `data-active` when `conversation.id === activeId`, for theming the current selection.
+- **Keyed rows** — rows are keyed by `conversation.id`.
+- **Selection** — clicking the row button calls `onselect(conversation.id)`; the delete button calls `ondelete(conversation.id)` and is labelled `aria-label="Delete conversation"` (its visible glyph is `×`).
+- **Empty state** — when `conversations` is empty only the `empty` snippet renders (after the header/new button).
+- **Custom rows** — supply an `item` snippet to render each conversation yourself; the default title/time/delete markup is then bypassed.
+
+## Import
+
+```javascript
+import { ChatHistory } from '@rokkit/ui'
+```
+
+## Related
+
+- [ChatShell](/llms/components/chat-shell.txt) — wires ChatHistory beside the timeline + composer
+- [ChatTimeline](/llms/components/chat-timeline.txt) — the message list
