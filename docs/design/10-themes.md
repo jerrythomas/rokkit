@@ -35,7 +35,7 @@ All axes are independent. Any combination is valid:
 
 Every component has two CSS files:
 
-```
+```text
 packages/themes/src/
   base/<component>.css       ← structural: layout, padding, flex, border-radius
   <theme>/<component>.css    ← visual: colors, gradients, shadows, blur
@@ -49,7 +49,7 @@ packages/themes/src/
 
 The build script (`packages/themes/build.mjs`) produces separate output files per theme:
 
-```
+```text
 dist/base.css      — structural styles + CSS variable defaults (palette)
 dist/rokkit.css    — gradients + glowing borders
 dist/minimal.css   — clean + subtle
@@ -106,7 +106,7 @@ The CLI `rokkit init` lets users remap roles to different palettes, and `rokkit 
 
 Rather than referencing raw shade numbers (`bg-zinc-700`), components use **named tokens** that automatically resolve to the correct value for light and dark mode:
 
-```
+```text
 bg-paper        → canvas / page background
 bg-paper-soft   → card or panel background
 bg-paper-mute   → subdued, inset panel
@@ -144,11 +144,13 @@ This means `@apply dark:bg-zinc-400` compiles to:
 Two mechanisms handle this:
 
 1. **`presetRokkit`** (for apps using UnoCSS directly) configures dark mode with `:is()` selectors that match both placements:
+
    ```js
    dark: ':is([data-mode="dark"],[data-mode="dark"] *)'
    ```
 
 2. **`fixModeSelectors()`** (in the themes build for dist output) adds compound selector forms alongside the descendant forms:
+
    ```css
    /* Both emitted — either attribute placement works */
    [data-mode="dark"][data-style="rokkit"] [data-button] { ... }
@@ -159,7 +161,7 @@ Two mechanisms handle this:
 
 When text sits on a colored background, use these tokens for legible contrast:
 
-```
+```text
 text-on-primary    ┐
 text-on-secondary  │  auto near-black (#161616) or near-white (#fafafa),
 text-on-info       │  whichever contrasts with the role's 500 fill — picked
@@ -180,7 +182,7 @@ static shortcuts in `build.mjs` from the default theme.
 
 The UnoCSS preset (`@rokkit/unocss`) is the single entry point for configuring all theme tokens. Configuration flows through:
 
-```
+```text
 rokkit.config.js → loadConfig() → presetRokkit() → UnoCSS build
 ```
 
@@ -237,7 +239,7 @@ Density is a CSS custom property scale that all components inherit via cascade. 
 
 Set on `:root` (comfortable default) and overridden by `[data-density='*']` selectors:
 
-```
+```text
 --density-spacing-xs / sm / md / lg / xl    — spacing scale
 --density-font-size-sm / base / lg          — type scale
 --density-line-height                       — line height
@@ -321,6 +323,7 @@ The `use:themable` Svelte action connects `vibe` state to the DOM:
 ```
 
 **What it does:**
+
 1. On mount: calls `vibe.load(storageKey)` to restore persisted preferences
 2. Writes `dataset.style`, `dataset.mode`, `dataset.density` reactively via `$effect`
 3. Listens for `storage` events to sync across tabs
@@ -339,6 +342,7 @@ All theme CSS rules follow this selector pattern:
 ```
 
 This means:
+
 - The theme ancestor (`data-style`) can be any element, not just `<body>`
 - Multiple themes can coexist on the same page by nesting containers
 - Components with no ancestor `data-style` receive only base structural styles
@@ -370,9 +374,11 @@ These are **component-level** `data-style` attributes, distinct from the **theme
 1. Create `packages/themes/src/<name>/index.css` importing per-component files
 2. Create component CSS files under `packages/themes/src/<name>/` scoped to `[data-style='<name>']`
 3. Add entry to the build loop in `build.mjs`:
+
    ```js
    ['<name>', 'description of visual personality'],
    ```
+
 4. Add to the `allThemes` bundle array in `build.mjs`
 5. Run `cd packages/themes && bun run build`
 6. Register in CLI via `packages/cli/src/skin.js` if it should appear in `rokkit init`
@@ -382,6 +388,7 @@ These are **component-level** `data-style` attributes, distinct from the **theme
 See `agents/design-patterns.md` or the `edit-theme` skill for patterns for each theme style (rokkit gradients, minimal borders, material elevation, frosted glass).
 
 Key rules:
+
 - **Every theme rule must include `bg-none`** where it competes with a rokkit gradient rule — prevents bleed-through
 - Hover states: use a `border-l` accent in secondary color for minimal, `bg-paper-mute` elevation for material
 - Selected states: use a gradient from `primary` to `secondary` for rokkit, `border-l-primary` border for minimal

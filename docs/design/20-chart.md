@@ -47,7 +47,7 @@ The architecture has three independent but composable layers:
 
 ### Package Exports
 
-```
+```text
 @rokkit/chart
 ├── Sparkline               # Compact inline chart (line, bar, area)
 ├── BarChart                # Standalone bar chart
@@ -70,7 +70,7 @@ The architecture has three independent but composable layers:
 
 ### File Layout
 
-```
+```text
 packages/chart/src/
 ├── index.js
 ├── charts/
@@ -162,7 +162,7 @@ Every chart component uses a uniform set of semantic channel props. These are th
 
 When multiple channels reference the same data field, `ChartBrewer` computes a single combined assignment:
 
-```
+```text
 color + pattern on the same field → one color and one pattern per distinct value (dual-coding)
 fill as field + color as different field → fill driven by pattern, color drives palette assignment
 fill as CSS string → ignores palette; all marks use that color
@@ -178,7 +178,7 @@ fill as CSS string → ignores palette; all marks use that color
 
 ### Assignment Algorithm
 
-```
+```text
 Input: data, channels { x, y, color, pattern, symbol }
 
 1. Extract distinct values per channel:
@@ -336,7 +336,7 @@ stateDiagram-v2
 
 ### Internal Architecture
 
-```
+```text
 CrossFilter.svelte
 │
 ├── $state: filters = Map<dimension, FilterSpec>
@@ -417,7 +417,7 @@ Drill-down is a filter that narrows the visible data domain and resets when the 
 
 ## Brushing
 
-### Concept
+### Brushing Concept
 
 A brush is a range selection on a continuous axis. The user clicks and drags to define a start and end value. The brush emits its range via `onbrush`, which a `CrossFilter` parent can use to define a range filter.
 
@@ -445,7 +445,7 @@ Any chart with a continuous x or y axis supports brushing:
 
 ### SVG Brush Implementation
 
-```
+```text
 brush.svelte.js
 │
 ├── Renders: <rect class="brush-overlay"> — transparent, covers chart area, captures pointer events
@@ -498,9 +498,9 @@ brush.svelte.js
 | `showControls`  | `boolean` | `true`      | Render `TimelineControls`                  |
 | `currentTime`   | `unknown` | `$bindable` | Current time value                         |
 
-### Internal Architecture
+### AnimatedPlot Internal Architecture
 
-```
+```text
 AnimatedPlot.svelte
 │
 ├── 1. Rollup Phase (on data change)
@@ -830,7 +830,7 @@ Chart components follow the same data-attribute pattern as all Rokkit components
 
 Charts with data marks support keyboard navigation:
 
-```
+```text
 Tab                → focus chart container
 ArrowLeft/Right    → previous/next data mark (bar, slice, point)
 ArrowUp/Down       → increase/decrease value in editable charts (future)
@@ -1402,4 +1402,4 @@ All 9 pattern components are Svelte 4 (`export let`, `$:`) and require migration
 - Backlog #23 (ramda removal): `docs/backlog/`
 - Backlog #25 (bits-ui removal): `docs/backlog/`
 - Backlog #58 (Svelte 4→5 pattern migration): `docs/backlog/`
-- dc.js cross-filter reference: https://dc-js.github.io/dc.js/
+- dc.js cross-filter reference: <https://dc-js.github.io/dc.js/>

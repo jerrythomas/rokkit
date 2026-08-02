@@ -105,12 +105,15 @@ export default defineConfig({
 ### Shortcuts
 
 For each color role (primary, secondary, surface, etc.):
+
 - named-token shortcuts (`bg-paper`, `text-ink-mute`, `bg-primary`, `text-on-primary`, etc.) that resolve automatically for light/dark mode
 
 For each named skin (from `config.skins`):
+
 - `skin-<name>` shortcut that sets all CSS color variables for that skin
 
 For icons:
+
 - All `DEFAULT_ICONS` mapped to `i-semantic:*` classes (configurable via `icons.collection`)
 - `config.icons.style` appends a variant suffix (e.g., `-solid`, `-outline`, `-duotone-outline`)
 - `config.icons.overrides` allows per-icon class substitution
@@ -119,7 +122,7 @@ For icons:
 
 All palette colors at every shade level are safelisted so chart and dynamic color assignments are never purged:
 
-```
+```text
 bg-blue-100, bg-blue-200, ..., bg-blue-950
 bg-blue-100/50, bg-blue-200/50, ...
 ```
@@ -239,6 +242,7 @@ Interactive setup wizard. Detects existing SvelteKit projects and installs packa
 6. **Chart config** (optional) — color set (default/warm/cool) and shade contrast (standard/high/soft)
 
 Flow:
+
 1. Detects SvelteKit project (checks for `svelte.config.js`)
 2. Installs `@rokkit/ui`, `@rokkit/unocss`, `@rokkit/themes`, `@rokkit/icons` via detected package manager
 3. Writes `rokkit.config.js` — configuration file

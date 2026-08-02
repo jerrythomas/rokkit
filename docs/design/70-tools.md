@@ -10,7 +10,7 @@ The CLI is a single binary — `rokkit` — with subcommands for project setup, 
 
 ### Command surface
 
-```
+```text
 rokkit add                          — install packages, wire build config, import starter theme
 rokkit upgrade                      — update packages, apply migration transforms
 rokkit skin create --name <name>    — generate custom skin file with all token slots
@@ -292,7 +292,7 @@ A theme style file controls the visual personality of components — their shape
 
 Each theme is a directory of per-component CSS files with a single index that imports them:
 
-```
+```text
 my-theme/
   index.css          ← imports all component files
   list.css
@@ -412,7 +412,7 @@ The scaffold is immediately importable and renders with no styles applied. The d
 
 When both a custom theme and a custom skin are in use, the skin sets token values and the theme reads them. Swapping the skin file changes colors without touching the theme file:
 
-```
+```text
 skin-my-brand.css   →  sets  --primary, --paper, --paper-soft, --ink, etc.
                                     ↓
 my-theme/list.css   →  reads via  var(--primary), var(--paper-soft), var(--ink)
@@ -481,7 +481,7 @@ All five pages live in the learn site under `(play)/playground/sample-app/` and 
 
 An at-a-glance overview page. Serves as the index/home page of the sample app.
 
-```
+```text
 ┌───────────────────────────────────────────────────────────────────────┐
 │  [logo]   Home  Projects  Reports  Team          [ThemeSwitcherToggle]│
 ├──────────────────┬────────────────────────────────────────────────────┤
@@ -532,7 +532,7 @@ An at-a-glance overview page. Serves as the index/home page of the sample app.
 
 A full-featured data table with filtering, column control, and category navigation.
 
-```
+```text
 ┌───────────────────────────────────────────────────────────────────────┐
 │  [logo]   Home  Projects  Reports  Team          [ThemeSwitcherToggle]│
 ├──────────────────┬────────────────────────────────────────────────────┤
@@ -578,7 +578,7 @@ A full-featured data table with filtering, column control, and category navigati
 
 A multi-field form demonstrating the full Forms subsystem.
 
-```
+```text
 ┌───────────────────────────────────────────────────────────────────────┐
 │  [logo]   Home  Projects  Reports  Team          [ThemeSwitcherToggle]│
 ├───────────────────────────────────────────────────────────────────────┤
@@ -628,7 +628,7 @@ A multi-field form demonstrating the full Forms subsystem.
 
 A long-form content reading page with a table of contents and embedded interactive elements.
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────────────┐
 │  [logo]   Home  Projects  Reports  Team          [ThemeSwitcherToggle]│
 ├──────────────────────────────────────────────────────────────────────┤
@@ -677,7 +677,7 @@ A long-form content reading page with a table of contents and embedded interacti
 
 Application settings organized into sections with full theme customization controls.
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────────────┐
 │  [logo]   Home  Projects  Reports  Team          [ThemeSwitcherToggle]│
 ├──────────────────┬───────────────────────────────────────────────────┤

@@ -6432,7 +6432,7 @@ Enumerated in index.txt (new Chat + Item Renderers sections); component count 50
 
 **Phase 4 — site demos** (`732a8889`): Koan catalog demos for the undemoed layout
 primitives Frame/ResponsiveGrid/NavContent (meta+index.svelte+docs, Svelte-MCP
-validated; wired into catalog.ts + ShellDemoType + routes/app/<id>). Added a
+validated; wired into catalog.ts + ShellDemoType + routes/app/`<id>`). Added a
 ToolbarGroup compositional example to the toolbar demo. `layout-demos.e2e.ts` guards
 all three render (verified live against preview). Fixed a pre-existing stale
 components-catalog.e2e assertion (nav label 'Components'→'Explore' per SiteNav).

@@ -105,7 +105,7 @@ published `[data-skin]` CSS instead of the app-local `<style>`-injection (`insta
 ## Phasing
 
 - **v1 (this spec):** named-skin switching for `rokkit.config`/built-in skins — Units 1–5 + consumer
-  + skill + guide.
+  \+ skill + guide.
 - **Phase 2:** per-role overrides as a natural extension of skins config (`vibe.skin` may grow to
   `{ name, overrides }` or a config-level override layer); `PaletteManager` wired in.
 - **Phase 3:** dynamic skins not in `rokkit.config` — user-built / server-configured colorsets

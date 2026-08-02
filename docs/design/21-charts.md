@@ -238,7 +238,7 @@ Sparkline has a dedicated `pattern` prop for single-series pattern fills.
 
 **Props:**
 
-```
+```text
 animate: { by: string, duration?: number, loop?: boolean }
 tween: boolean     — smooth tweening between frames (default: true)
 sorted: boolean    — sort x values within each frame
@@ -312,6 +312,7 @@ The `Timeline` component shows frame labels and current progress as an animated 
 ### Screen Reader Support
 
 Every `Plot` renders:
+
 - `<svg role="img" aria-label={title}>` wrapping element
 - `<title>` and optional `<desc>` elements for screen reader announcement
 - `summary` prop for a longer description

@@ -184,6 +184,7 @@ const preset = createChartPreset({
 ## Bar chart: grouped bars via `fill` channel
 
 `BarChart` is a wrapper on `Plot`. The `Bar` geom has three rendering paths in `geoms/lib/bars.js`:
+
 - `buildHorizontalBars` — triggered when y is band scale + x is continuous
 - `buildStackedBars` — triggered when `options.stack === true`
 - `buildGroupedBars` — default fallback
@@ -240,7 +241,7 @@ function jitterOffset(i, range, seed = 1) {
 
 `init.js` gets an optional chart config step (skippable):
 
-```
+```text
 ? Include chart configuration? (Y/n)
 ? Chart color set: (default series / warm / cool / custom)
 ? Shade contrast: standard (300/700) / high (200/800) / soft (400/600)
