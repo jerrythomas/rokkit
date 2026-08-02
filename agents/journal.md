@@ -6377,3 +6377,52 @@ publicly and add a discovery manifest.
 **Gate:** `bun run lint` (0 errors, 106 pre-existing warnings) + `bun run test:ci`
 = **5161 tests / 357 files** pass. `apps/learn` `sync:assets` verified to emit the
 served paths + valid manifest JSON. All on `develop`. See [[project_design_token_overhaul]].
+
+---
+
+## 2026-08-02 — Deep docs-vs-code sync review (follow-on to #142)
+
+Ran a 5-way parallel read-only audit (llms component docs, llms package docs,
+llms guides+CLI, design docs, website) comparing every doc against code. Fixed
+the confirmed drift in phases; surfaced 4 source-of-truth decisions to Jerry.
+
+**Decisions (Jerry):** ghost docs (Icon/Combo/DatePicker) → relabel *Planned*;
+export gaps → add `createFormatter` + `BUILTIN_SKINS` + icons light/solid subpaths
+(data hierarchy fns stay internal — dataframe wrapper calls them); undocumented
+@rokkit/ui exports → *document all as public*; design-doc numbering → *convention-
+aligned renumber*.
+
+**Phase 1 — code exports** (`4f0aa90b`): re-export `createFormatter` (@rokkit/data),
+`BUILTIN_SKINS` (@rokkit/unocss); add `@rokkit/icons` `./light.json`+`./solid.json`,
+remove broken `./utils` (pointed at nonexistent src/convert.js). New `icons` vitest
+project + exports-map guard spec; +4 tests.
+
+**Phase 2 — llms docs** (`23a39e9a`, `fc47cb44`): field-mapping keys avatar/subtext
+(not image/description) + broken example; Select/MultiSelect placeholder default;
+Table value-not-bindable + data-attr/ARIA; rating stateIcons→icons, range defaults +
+drop phantom RangeMinMax, switch onchange; form.txt Form→FormRenderer(bind:data);
+checkbox/radiogroup fully rewritten to real @rokkit/forms InputCheckbox/InputRadio;
+relabel Icon/Combo/DatePicker Planned. Guides/CLI: themes 11→5, drop secondary prompt,
++zen-sumi +css-theme/chart-config doctor checks; drop @rokkit/vite, fix skinnable
+(action, not data-style); effects tilt/shine→real; proxy.value→proxy.original +
+proxy.get(icon/href); itemContent set. Packages: data.txt internal fns→public
+nestBy*/dataview; icons.txt i-rokkit-ui→i-rokkit, drop /utils.
+
+**Phase 5 — design docs** (`16b922c3`): terminology sweep ListController/
+NestedController→Wrapper/LazyWrapper, navigable/navigator-action→Navigator/Trigger
+classes (01/02/04/06/11 + components/* + agents/memory.md); 11-inventory rewrite
+(@rokkit/ui 38→62, charts all Implemented, Badge/Tooltip/Divider shipped);
+05-website site→apps/learn; 10-themes style list; AnimatedChart→AnimatedPlot.
+Convention-aligned renumber (git mv, history preserved): 10-chart→20-chart,
+07-charts→21-charts, 17-chart-preset→22-chart-preset, 06-themes→10-themes,
+07-tools→70-tools, 08-tools→71-tools, 20-skin-system→17-skin-system (skins are
+theming, frees chart's 20). Both READMEs rewritten to real filenames (had
+pre-existing broken links). Historical/dated refs left as-is.
+
+**Filed:** sensei-hq/sensei#111 (library-manifest ingestion format). **Closed:** #142.
+
+**Gate:** lint 0 errors + `bun run test:ci` = **5165 tests / 358 files** pass. All on
+`develop`. PENDING (Jerry to confirm scope): author llms docs for the 13 exported-
+but-undocumented components (CodeBlock/Frame/LockMode/ItemContent/ItemSwitch/
+ItemToggle/NavContent/ResponsiveGrid + Chat×5) and add site demos for the undemoed
+ones (ToolbarGroup/Connector/ResponsiveGrid/Frame/NavContent + chart subtypes).
