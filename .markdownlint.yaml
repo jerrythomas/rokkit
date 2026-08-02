@@ -1,3 +1,4 @@
+---
 # markdownlint config — encodes the repo's documentation house style.
 # Prose is intentionally hard-wrapped ~90–100 cols and docs/tables run wide,
 # so the 80-char default line-length rule is relaxed rather than rewrapping

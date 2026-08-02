@@ -72,11 +72,17 @@ name = "brakeman"
 [[plugin]]
 name = "checkov"
 
+# eslint + prettier are run by the repo itself (`bun run lint` / `bun run format`,
+# which pass `--config config/eslint.config.mjs` / `config/.prettierrc`). qlty's
+# bundled copies can't discover the configs under config/ and error out (qlty's
+# isolated tool dir can't resolve a re-export shim, and it ignores .prettierignore
+# so it chokes on package.json). Disabled here to avoid redundant, broken runs.
 [[plugin]]
 name = "eslint"
 version = "9.7.0"
 package_file = "package.json"
 package_filters = ["eslint", "prettier"]
+mode = "disabled"
 
 [[plugin]]
 name = "golangci-lint"
@@ -84,6 +90,9 @@ name = "golangci-lint"
 [[plugin]]
 name = "markdownlint"
 version = "0.41.0"
+# Linter only — the `fmt` formatter driver rewrites prose (strips spaces around
+# inline code, reflows lists) and corrupts content; formatting is hand-managed.
+drivers = ["lint"]
 
 [[plugin]]
 name = "osv-scanner"
@@ -92,6 +101,7 @@ name = "osv-scanner"
 name = "prettier"
 package_file = "package.json"
 package_filters = ["prettier"]
+mode = "disabled"
 
 [[plugin]]
 name = "ripgrep"
