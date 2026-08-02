@@ -6422,7 +6422,22 @@ pre-existing broken links). Historical/dated refs left as-is.
 **Filed:** sensei-hq/sensei#111 (library-manifest ingestion format). **Closed:** #142.
 
 **Gate:** lint 0 errors + `bun run test:ci` = **5165 tests / 358 files** pass. All on
-`develop`. PENDING (Jerry to confirm scope): author llms docs for the 13 exported-
-but-undocumented components (CodeBlock/Frame/LockMode/ItemContent/ItemSwitch/
-ItemToggle/NavContent/ResponsiveGrid + Chat×5) and add site demos for the undemoed
-ones (ToolbarGroup/Connector/ResponsiveGrid/Frame/NavContent + chart subtypes).
+`develop`.
+
+**Phase 3 — new llms docs** (`6212c928`): authored the 13 exported-but-undocumented
+component docs from real source (props/data-attrs/snippets verified): Chat×5
+(ChatShell/Timeline/Message/Composer/History), Item renderers (ItemContent/ItemSwitch/
+ItemToggle), layout/utility (CodeBlock/Frame/LockMode/NavContent/ResponsiveGrid).
+Enumerated in index.txt (new Chat + Item Renderers sections); component count 50+→90+.
+
+**Phase 4 — site demos** (`732a8889`): Koan catalog demos for the undemoed layout
+primitives Frame/ResponsiveGrid/NavContent (meta+index.svelte+docs, Svelte-MCP
+validated; wired into catalog.ts + ShellDemoType + routes/app/<id>). Added a
+ToolbarGroup compositional example to the toolbar demo. `layout-demos.e2e.ts` guards
+all three render (verified live against preview). Fixed a pre-existing stale
+components-catalog.e2e assertion (nav label 'Components'→'Explore' per SiteNav).
+Connector (rendered by Tree/TreeTable) + chart subtypes (advanced chart-demo variants)
+left surfaced within parents rather than given marginal standalone demos.
+
+**Final gate:** lint 0 errors + `bun run test:ci` = **5165 tests / 358 files**; learn
+build ✓ (prerender ✓); e2e 7/7 (3 layout demos + 4 catalog). All on `develop`.
