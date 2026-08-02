@@ -139,4 +139,23 @@ prog
 		await skillsCommand('add', opts)
 	})
 
+prog
+	.command('agents list')
+	.describe('List available Rokkit review agents')
+	.action(async () => {
+		const { agentsCommand } = await import('./agents.js')
+		await agentsCommand('list')
+	})
+
+prog
+	.command('agents add')
+	.describe('Add Rokkit review agents to .claude/agents/')
+	.option('--all', 'Install all available agents')
+	.option('--force', 'Overwrite an existing agent')
+	.option('--remote', 'Pull agents from the site instead of the bundled copy')
+	.action(async (opts) => {
+		const { agentsCommand } = await import('./agents.js')
+		await agentsCommand('add', opts)
+	})
+
 prog.parse(process.argv)

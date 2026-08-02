@@ -7,3 +7,8 @@ Allow: /
 Disallow: /embed/
 
 Sitemap: https://rokkit.sensei-hq.com/sitemap.xml
+
+# Sensei library manifest — the skills / agents / llms docs this library provides,
+# for tools that ingest and self-configure a consuming project.
+# https://rokkit.sensei-hq.com/.well-known/sensei.library.json
+Sensei-Library: https://rokkit.sensei-hq.com/.well-known/sensei.library.json

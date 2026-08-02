@@ -38,6 +38,7 @@
     "lib/**/*",
     "src/**/*.js",
     "skills/**",
+    "agents/**",
     "dist/**/*.d.ts",
     "README.md",
     "package.json",

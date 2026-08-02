@@ -4,8 +4,9 @@
   "version": "1.3.6",
   "type": "module",
   "scripts": {
-    "dev": "cp -r ../../docs/llms ./static && svelte-kit sync && vite dev",
-    "build": "cp -r ../../docs/llms ./static && svelte-kit sync && vite build",
+    "sync:assets": "cp -r ../../docs/llms ./static && cp -r ../../packages/cli/skills ./static && cp -r ../../packages/cli/agents ./static && cp ../../sensei.library.json ./static/sensei.library.json && mkdir -p ./static/.well-known && cp ../../sensei.library.json ./static/.well-known/sensei.library.json",
+    "dev": "bun run sync:assets && svelte-kit sync && vite dev",
+    "build": "bun run sync:assets && svelte-kit sync && vite build",
     "preview": "vite preview",
     "test:e2e": "playwright test",
     "test:e2e:update": "playwright test --update-snapshots",

@@ -6332,3 +6332,48 @@ for `[role=button]` / `<div>` shells or the new renderers.
 
 **Gate:** `bun run lint` (0 errors, warnings unchanged) + `check:svelte` (0
 errors) + `bun run test:ci` = **5121 tests / 355 files** pass. All on `develop`.
+
+---
+
+## 2026-08-02 — Library intelligence: own skills/agents + `sensei.library.json` (issue #142)
+
+Rokkit becomes the **single owner** of its AI skills/agents; sensei *ingests* them
+rather than forking. Scope grew in-session (per Jerry) to also publish the corpus
+publicly and add a discovery manifest.
+
+- **Two review agents** (`packages/cli/agents/`, Claude-Code agent format —
+  frontmatter `name`/`description`+examples/`tools`/`model`/`color`, body
+  `## Mindset`+`### Questions` / `## Procedure` (sensei MCP nav, not blind grep) /
+  `## Verification evidence (required)` (build + Playwright light/dark snapshots) /
+  `### Verdict PASS/FAIL`):
+  - `rokkit-styles-reviewer` (focus `styling-review`) — config→skin→token wiring,
+    named tokens vs raw hex/oklch, `shape`/`typography` config, dual-palette dark mode.
+  - `rokkit-components-reviewer` (focus `component-usage-review`) — steers to the
+    simplest customization tier (data → data+`fields` → snippets; flags the
+    "jumped to `itemContent`" mistake), plus **custom icons** (UnoCSS `i-*` /
+    `@rokkit/icons` collections vs literal-text/emoji field) and **typography usage**
+    (`font-heading/body/mono` vs hardcoded `font-family`).
+- **`rokkit agents` CLI** (`packages/cli/src/agents.js`) — mirrors `skills.js` for
+  single-`.md` files → `.claude/agents/<name>.md`; reuses `parseFrontmatter`
+  (no dup). Bundled install + **site-fetch fallback** (`--remote`, injectable
+  `fetchImpl`) so "the CLI can pull from the site". `agents list`/`add`
+  (`--all`/`--force`/`--remote`) wired in `index.js`; `agents/**` added to
+  package `files`. 22 new specs.
+- **`sensei.library.json`** (repo root) — top-level `repo`+`branch`+`site`; each
+  entry carries a git-relative `path` **and** a site-relative `url` (public URL =
+  `site`+`url`, git source = `repo`+`/raw/`+`branch`+`/`+`path`). Lists all 4
+  skills, both agents, and the `llms` corpus (`docs/llms`, index `/llms/index.txt`).
+  `manifest.spec.js` cross-checks it against the bundled CLI catalog + verifies every
+  path exists (can't drift silently). 6 specs.
+- **Public discovery** — learn `sync:assets` script now publishes `skills/`,
+  `agents/`, and the manifest into `static/` (→ `/skills`, `/agents`,
+  `/sensei.library.json`, `/.well-known/sensei.library.json`) alongside the existing
+  `/llms`. `robots.txt` carries a `Sensei-Library:` pointer. Artifacts gitignored.
+- **Sensei coordination** — filed
+  [sensei-hq/sensei#111](https://github.com/sensei-hq/sensei/issues/111) proposing the
+  manifest format + discover→match→ingest→associate→recommend→install flow for the
+  ingesting side to confirm.
+
+**Gate:** `bun run lint` (0 errors, 106 pre-existing warnings) + `bun run test:ci`
+= **5161 tests / 357 files** pass. `apps/learn` `sync:assets` verified to emit the
+served paths + valid manifest JSON. All on `develop`. See [[project_design_token_overhaul]].

@@ -1,0 +1,57 @@
+{
+  "library": "rokkit",
+  "version": ">=1.3",
+  "repo": "https://github.com/jerrythomas/rokkit",
+  "branch": "main",
+  "site": "https://rokkit.sensei-hq.com",
+  "skills": [
+    {
+      "name": "semantic-styles-rokkit",
+      "focus": "styling",
+      "path": "packages/cli/skills/semantic-styles-rokkit/SKILL.md",
+      "url": "/skills/semantic-styles-rokkit/SKILL.md"
+    },
+    {
+      "name": "rokkit-components",
+      "focus": "component-usage",
+      "path": "packages/cli/skills/rokkit-components/SKILL.md",
+      "url": "/skills/rokkit-components/SKILL.md"
+    },
+    {
+      "name": "command-system-rokkit",
+      "focus": "commands",
+      "path": "packages/cli/skills/command-system-rokkit/SKILL.md",
+      "url": "/skills/command-system-rokkit/SKILL.md"
+    },
+    {
+      "name": "skin-system-rokkit",
+      "focus": "skinning",
+      "path": "packages/cli/skills/skin-system-rokkit/SKILL.md",
+      "url": "/skills/skin-system-rokkit/SKILL.md"
+    }
+  ],
+  "agents": [
+    {
+      "name": "rokkit-styles-reviewer",
+      "focus": "styling-review",
+      "path": "packages/cli/agents/rokkit-styles-reviewer.md",
+      "url": "/agents/rokkit-styles-reviewer.md"
+    },
+    {
+      "name": "rokkit-components-reviewer",
+      "focus": "component-usage-review",
+      "path": "packages/cli/agents/rokkit-components-reviewer.md",
+      "url": "/agents/rokkit-components-reviewer.md"
+    }
+  ],
+  "llms": {
+    "focus": "reference corpus — component docs, guides, package APIs",
+    "path": "docs/llms",
+    "url": "/llms",
+    "index": "/llms/index.txt"
+  },
+  "install": {
+    "skills": "rokkit skills add <name>",
+    "agents": "rokkit agents add <name>"
+  }
+}
