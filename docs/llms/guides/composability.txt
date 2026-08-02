@@ -45,8 +45,9 @@ you control the pixels.
 `itemContent` replaces the inside of **every** row (step 4 above) —
 use it when all rows need a custom layout, not to add an icon or
 badge that data already covers. Every selection component (`List`,
-`Menu`, `Tree`, `Select`, `Grid`) accepts it. The snippet receives a
-`ProxyItem` you can read fields off:
+`Menu`, `Tree`, `Select`, `MultiSelect`, `Grid`, `Toggle`, `Tabs`)
+accepts it. The snippet receives a `ProxyItem` you can read fields
+off:
 
 ```svelte
 <List items={users}>

@@ -37,15 +37,14 @@ npx @rokkit/cli@latest add   # same as init
 
 | Prompt | Type | Description | Choices |
 |--------|------|-------------|---------|
-| `palette` | select | Color palette preset | `default` (orange/pink/sky), `vibrant` (blue/purple/sky), `seaweed` (sky/green/blue), `custom` |
+| `palette` | select | Color palette preset | `default` (orange/pink/sky), `vibrant` (blue/purple/sky), `seaweed` (sky/green/blue), `zen-sumi` (OKLCH ink-on-paper), `custom` |
 | `primary` | text | Primary color (Tailwind name) | Default: `orange`. **Conditional:** only when `palette` is `custom` |
-| `secondary` | text | Secondary color | Default: `pink`. **Conditional:** only when `palette` is `custom` |
 | `accent` | text | Accent color | Default: `sky`. **Conditional:** only when `palette` is `custom` |
 | `surface` | text | Surface color | Default: `slate`. **Conditional:** only when `palette` is `custom` |
 | `iconStyle` | select | Icon style variant | `Default (duotone)`, `Solid`, `Outline`, `Duotone outline` |
 | `icons` | select | Icon collections | `rokkit` (Rokkit icons only), `custom` (Rokkit + custom collection) |
 | `iconPath` | text | Path to custom icon collection JSON | Default: `./static/icons/custom.json`. **Conditional:** only when `icons` is `custom` |
-| `themes` | multiselect | Theme styles | `rokkit` (default), `minimal`, `material`, `frosted`, `zen-sumi`, `grada-ui`, `shadcn`, `daisy-ui`, `bits-ui`, `carbon`, `ant-design` |
+| `themes` | multiselect | Theme styles | `rokkit` (default), `minimal`, `material`, `frosted`, `zen-sumi` |
 | `defaultTheme` | select | Default theme style | **Conditional:** only when multiple themes selected |
 | `switcher` | select | Theme switching mode | `system` (prefers-color-scheme), `manual` (light/dark toggle), `full` (light/dark + style variants) |
 | `includeChart` | confirm | Include chart configuration? | Default: `true` |
@@ -83,7 +82,9 @@ npx @rokkit/cli@latest doctor --fix  # check and auto-fix where possible
 | `config-exists` | `rokkit.config.js` exists | Yes — generates an empty `export default {}` config file |
 | `uno-uses-preset` | `uno.config.js` uses `presetRokkit()` | No — requires manual edit (see below) |
 | `css-imports` | `src/app.css` has theme imports (`@rokkit/themes/base.css`) | Yes — prepends missing imports to `src/app.css` |
+| `css-theme` | `src/app.css` imports at least one theme style (e.g. `@rokkit/themes/rokkit.css`) | No — advisory **warning**, not a failure; add a theme `@import` manually |
 | `html-init-script` | `src/app.html` has theme init script (`rokkit-theme` / `data-mode`) | Yes — injects flash-prevention script after `<body>` tag |
+| `chart-config` | `rokkit.config.js` has a `chart` section | Advisory **warning**, not a failure; fixable when `rokkit.config.js` exists |
 
 ### Exit codes
 

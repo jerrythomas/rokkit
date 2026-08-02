@@ -79,7 +79,7 @@ dot paths:
 | `label` | most | The text shown to the user |
 | `value` | selection components | The bindable identifier |
 | `icon` | most | CSS class for an inline icon |
-| `description` | List / Menu | Secondary line under the label |
+| `subtext` | List / Menu | Secondary line under the label (defaults to the raw `description` key) |
 | `children` | Tree / Menu | Nested items recursion |
 | `disabled` | most | Greys out + skips keyboard nav |
 | `badge` | List / Tree | Right-aligned badge text |

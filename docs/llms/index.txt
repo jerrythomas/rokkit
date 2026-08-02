@@ -20,7 +20,7 @@
 
    The `init` command is interactive. It prompts for:
    - **Color palette:** `default` (orange/pink/sky) | `vibrant` (blue/purple/sky) | `seaweed` (sky/green/blue) | `zen-sumi` (OKLCH ink-on-paper) | `custom`
-   - If `custom`: primary, secondary, accent, surface colors (Tailwind palette names, e.g. `orange`)
+   - If `custom`: primary, accent, surface colors (Tailwind palette names, e.g. `orange`)
    - **Icon collection:** Rokkit built-in | Rokkit + custom collection
    - If custom: path to custom icon collection JSON
    - **Theme styles** (multi-select, min 1): `rokkit` | `minimal` | `material` | `frosted` | `zen-sumi`
@@ -38,13 +38,15 @@ After setup, or when things seem broken:
 npx @rokkit/cli@latest doctor
 ```
 
-Runs 4 checks:
+Runs 6 checks:
 - `rokkit.config.js` exists
 - `uno.config.js` uses `presetRokkit()`
 - `src/app.css` has theme imports
+- `src/app.css` imports at least one theme style (advisory)
 - `src/app.html` has theme init script
+- `rokkit.config.js` has a `chart` section (advisory)
 
-Auto-fix 3 of 4 checks:
+Auto-fix 4 of 6 checks:
 ```bash
 npx @rokkit/cli@latest doctor --fix
 ```
@@ -472,7 +474,7 @@ import { Reveal, Tilt, Shine } from '@rokkit/ui'
 import { Swatch, PaletteManager } from '@rokkit/ui'
 import { Message, AlertList, StatusList, Code, MarkdownRenderer } from '@rokkit/ui'
 import { Switch, Range, Rating, SearchFilter } from '@rokkit/ui'
-import { Form, FormRenderer, StatusList } from '@rokkit/forms'
+import { FormRenderer, FormBuilder, StatusList } from '@rokkit/forms'
 import { BarChart, LineChart, AreaChart, ScatterPlot, BubbleChart, PieChart, BoxPlot, ViolinPlot } from '@rokkit/chart'
 import { PlotChart, GeomBar, GeomLine, GeomArea, GeomPoint, GeomArc, GeomBox, GeomViolin } from '@rokkit/chart'
 import { FacetPlot, AnimatedPlot, Sparkline } from '@rokkit/chart'

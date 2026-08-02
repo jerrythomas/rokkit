@@ -16,10 +16,10 @@ The Table component renders flat data as an accessible table. Columns can be aut
     { id: 3, name: 'Charlie', role: 'Viewer',    active: false }
   ]
 
-  let value = $state(null)
+  let selected = $state(null)
 </script>
 
-<Table {data} bind:value />
+<Table {data} onselect={(value) => (selected = value)} />
 ```
 
 ## Explicit Columns
@@ -35,10 +35,14 @@ The Table component renders flat data as an accessible table. Columns can be aut
   ]
 
   const data = [/* ... */]
-  let value = $state(null)
+  let selected = $state(null)
+  let picked = $state([])
 </script>
 
-<Table {data} {columns} bind:value caption="User list" />
+<Table {data} {columns} onselect={(value) => (selected = value)} caption="User list" />
+
+<!-- Multi-select: `values` IS bindable -->
+<Table {data} {columns} selectable="multi" bind:values={picked} />
 ```
 
 ## Props
@@ -47,8 +51,8 @@ The Table component renders flat data as an accessible table. Columns can be aut
 |------|------|---------|-------------|
 | `data` | `Record<string,unknown>[]` | `[]` | Row data array |
 | `columns` | `TableColumn[]` | auto | Column definitions (auto-derived if omitted) |
-| `value` | `unknown` | — | Selected row value — use `bind:value` |
-| `values` | `unknown[]` | `[]` | Multi-selected row values — use `bind:values` |
+| `value` | `unknown` | — | Selected row value (controlled input; **not** bindable). Report single selection via `onselect` |
+| `values` | `unknown[]` | `[]` | Multi-selected row values — use `bind:values` (multi mode) |
 | `selectable` | `'single'|'multi'|false` | `'single'` | Selection mode |
 | `caption` | `string` | — | Table caption for accessibility |
 | `size` | `'sm'|'md'|'lg'` | `'md'` | Size variant |
@@ -167,7 +171,7 @@ The Table component renders flat data as an accessible table. Columns can be aut
 ## Accessibility
 
 - `role="grid"` on table
-- `role="row"`, `role="columnheader"`, `role="rowheader"`
+- `scope="col"` on column headers (`<th>`)
 - `aria-sort` on sortable columns
 - `aria-selected` on selected rows
 - `caption` element when `caption` prop is set
@@ -177,13 +181,13 @@ The Table component renders flat data as an accessible table. Columns can be aut
 | Attribute | Description |
 |-----------|-------------|
 | `data-table` | Root element |
-| `data-table-head` | Header row |
+| `data-table-header` | Header (`<thead>`) |
 | `data-table-body` | Body container |
 | `data-table-row` | Data row |
 | `data-table-cell` | Data cell |
 | `data-selected` | Selected row |
 | `data-sortable` | Sortable column header |
-| `data-sort` | Current sort direction |
+| `data-sort-order` | Current sort direction |
 
 ## Import
 

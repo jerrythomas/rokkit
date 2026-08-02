@@ -82,41 +82,35 @@ Show labels on tick marks:
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `number` | `min` | Current value (use `bind:value`) |
+| `value` | `number` | `50` | Current value in single mode (use `bind:value`) |
+| `lower` | `number` | `0` | Lower bound in range mode (use `bind:lower`) |
+| `upper` | `number` | `100` | Upper bound in range mode (use `bind:upper`) |
 | `min` | `number` | `0` | Minimum value |
 | `max` | `number` | `100` | Maximum value |
-| `step` | `number` | `1` | Value increment |
-| `ticks` | `number` | `10` | Number of tick marks |
-| `labelSkip` | `number` | `0` | Skip labels (0=all, 1=every other) |
-| `name` | `string` | `null` | Form input name |
+| `step` | `number` | `1` | Value increment (`0` = continuous) |
+| `range` | `boolean` | `false` | Dual-handle range mode (drives `lower`/`upper`) |
+| `ticks` | `number` | `0` | Number of tick marks (`0` = none) |
+| `labelSkip` | `number` | `0` | Show label every N ticks (0=all, 1=every other) |
+| `disabled` | `boolean` | `false` | Disable interaction |
+| `labels` | `object` | `{}` | ARIA label overrides (`lower`/`upper`/`value`) |
+| `onchange` | `function` | `undefined` | Called on change: `(value)` or `([lower, upper])` in range mode |
 | `class` | `string` | `''` | CSS class names |
 
-## Related Component: RangeMinMax
+## Range Mode (dual handles)
 
-For selecting a range of values (min and max), use the RangeMinMax component:
+For selecting a range of values (min and max), enable `range` and bind `lower`/`upper`:
 
 ```svelte
 <script>
-  import { RangeMinMax } from '@rokkit/ui'
+  import { Range } from '@rokkit/ui'
 
-  let priceRange = $state([20, 80])
+  let lower = $state(20)
+  let upper = $state(80)
 </script>
 
-<RangeMinMax bind:value={priceRange} min={0} max={100} />
-<p>Price: ${priceRange[0]} - ${priceRange[1]}</p>
+<Range range bind:lower bind:upper min={0} max={100} />
+<p>Price: ${lower} - ${upper}</p>
 ```
-
-### RangeMinMax Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `value` | `[number, number]` | `[min, max]` | Range bounds |
-| `min` | `number` | `0` | Minimum value |
-| `max` | `number` | `100` | Maximum value |
-| `step` | `number` | `1` | Value increment |
-| `ticks` | `number` | `10` | Number of tick marks |
-| `labelSkip` | `number` | `0` | Skip labels |
-| `single` | `boolean` | `false` | Single thumb mode (used by Range) |
 
 ## Component Structure
 
@@ -219,12 +213,11 @@ For selecting a range of values (min and max), use the RangeMinMax component:
 ## Import
 
 ```javascript
-// Named imports
-import { Range, RangeMinMax } from '@rokkit/ui'
+// Named import
+import { Range } from '@rokkit/ui'
 
 // Default import
 import Range from '@rokkit/ui/range'
-import RangeMinMax from '@rokkit/ui/range-min-max'
 ```
 
 ## TypeScript Types
@@ -232,24 +225,16 @@ import RangeMinMax from '@rokkit/ui/range-min-max'
 ```typescript
 interface RangeProps {
   value?: number
+  lower?: number
+  upper?: number
   min?: number
   max?: number
   step?: number
+  range?: boolean
   ticks?: number
   labelSkip?: number
-  name?: string
-  class?: string
-}
-
-interface RangeMinMaxProps {
-  value?: [number, number]
-  min?: number
-  max?: number
-  step?: number
-  ticks?: number
-  labelSkip?: number
-  single?: boolean
-  name?: string
+  disabled?: boolean
+  onchange?: (value: number | [number, number]) => void
   class?: string
 }
 ```
@@ -272,26 +257,29 @@ interface RangeMinMaxProps {
 </div>
 ```
 
-### Price Filter
+### Price Filter (range mode)
 
 ```svelte
 <script>
-  import { RangeMinMax } from '@rokkit/ui'
+  import { Range } from '@rokkit/ui'
 
-  let priceRange = $state([0, 500])
+  let low = $state(0)
+  let high = $state(500)
 </script>
 
 <div class="price-filter">
   <label>Price Range</label>
-  <RangeMinMax
-    bind:value={priceRange}
+  <Range
+    range
+    bind:lower={low}
+    bind:upper={high}
     min={0}
     max={1000}
     step={10}
     ticks={10}
     labelSkip={1}
   />
-  <p>${priceRange[0]} - ${priceRange[1]}</p>
+  <p>${low} - ${high}</p>
 </div>
 ```
 
@@ -339,26 +327,29 @@ interface RangeMinMaxProps {
 </div>
 ```
 
-### Date Range
+### Date Range (range mode)
 
 ```svelte
 <script>
-  import { RangeMinMax } from '@rokkit/ui'
+  import { Range } from '@rokkit/ui'
 
   // Year range
-  let yearRange = $state([2020, 2024])
+  let fromYear = $state(2020)
+  let toYear = $state(2024)
 </script>
 
 <label>Year Range</label>
-<RangeMinMax
-  bind:value={yearRange}
+<Range
+  range
+  bind:lower={fromYear}
+  bind:upper={toYear}
   min={2000}
   max={2030}
   step={1}
   ticks={6}
   labelSkip={0}
 />
-<p>From {yearRange[0]} to {yearRange[1]}</p>
+<p>From {fromYear} to {toYear}</p>
 ```
 
 ### With Snap Points
@@ -398,17 +389,17 @@ interface RangeMinMaxProps {
 <form>
   <div class="slider-field">
     <label>Brightness</label>
-    <Range name="brightness" bind:value={settings.brightness} />
+    <Range bind:value={settings.brightness} />
   </div>
 
   <div class="slider-field">
     <label>Contrast</label>
-    <Range name="contrast" bind:value={settings.contrast} />
+    <Range bind:value={settings.contrast} />
   </div>
 
   <div class="slider-field">
     <label>Saturation</label>
-    <Range name="saturation" bind:value={settings.saturation} />
+    <Range bind:value={settings.saturation} />
   </div>
 </form>
 ```

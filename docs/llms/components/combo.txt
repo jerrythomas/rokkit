@@ -1,5 +1,7 @@
 # Combo
 
+> **Status: Planned — not yet available in `@rokkit/ui`.** The `Combo` component described here is not yet exported; do not import it in production code.
+
 Searchable single-value picker — Select with built-in filtering. Combines a text input that filters options with a dropdown panel of matches. Use when an option list is too long to scan visually.
 
 ## Import

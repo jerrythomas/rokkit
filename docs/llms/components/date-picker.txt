@@ -1,5 +1,7 @@
 # DatePicker
 
+> **Status: Planned — not yet available in `@rokkit/ui`.** The `DatePicker` component described here is not yet exported; do not import it in production code.
+
 Calendar-grid date picker. Renders a month view with arrow navigation between months, click-to-pick, keyboard navigation (arrow keys, PageUp / PageDown for months, Home / End for week boundaries), and a min/max range constraint.
 
 ## Import

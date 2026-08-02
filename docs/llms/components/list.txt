@@ -72,8 +72,8 @@ Default field names the component reads from your data. Override only the ones t
 | `label` | `'label'` | display text |
 | `value` | `'value'` | selection value (falls back to the raw item) |
 | `icon` | `'icon'` | icon class **or** literal char/emoji |
-| `image` (avatar) | `'image'` | avatar `<img>` |
-| `description` | `'description'` | secondary subtitle line |
+| `avatar` | `'image'` | avatar `<img>` |
+| `subtext` | `'description'` | secondary subtitle line |
 | `badge` | `'badge'` | trailing badge/count |
 | `shortcut` | `'shortcut'` | trailing `<kbd>` hint |
 | `href` | `'href'` | renders item as `<a>` (gets `aria-current="page"` when active) |
@@ -84,7 +84,7 @@ Default field names the component reads from your data. Override only the ones t
 | `snippet` | `'snippet'` | per-item/group named-snippet override (Tier 2) |
 
 ```svelte
-<List {items} fields={{ label: 'name', value: 'path', description: 'summary' }} bind:value />
+<List {items} fields={{ label: 'name', value: 'path', subtext: 'summary' }} bind:value />
 ```
 
 ## Grouped items / collapsible sections

@@ -207,32 +207,41 @@ const columns = deriveMetadata(salesData, {
 - `deriveColumns` — scan data to auto-detect column names and types
 - `deriveSortableColumn` — normalize a sort spec (string / `[name, bool]` / `{name, sorter}`) into a `{ name, sorter }` object
 
-## Hierarchy Utilities
+## Hierarchy / Nesting Utilities
 
-### `deriveHierarchy(data, options)`
+Flat data becomes tree-shaped through the public nesting helpers (`nestByPath` /
+`nestByColumns`) or the reactive `dataview(...)` store wrapper (below). The
+lower-level hierarchy primitives (`deriveHierarchy`, `toggleExpansion`,
+`toggleSelection`, `flattenNestedChildren`, `removeChildren`, `hierarchicalFilter`)
+are **internal** and are not exported from `@rokkit/data` — reach them through
+`dataview(...)`, which builds and manages the hierarchy for you.
 
-Build a parent-child hierarchy from flat data with a path column:
+### `nestByPath(rows, options)`
+
+Convert flat rows carrying a separator-delimited path string into nested rows
+with a `children` array, synthesizing intermediate parent rows when a segment
+has no own row:
 
 ```js
-import { deriveHierarchy } from '@rokkit/data'
+import { nestByPath } from '@rokkit/data'
 
-const nodes = deriveHierarchy(data, { path: 'category', separator: '/' })
-// Each node: { depth, value, path, row, children, isParent, isExpanded, isHidden, parent }
+const tree = nestByPath(rows, { column: 'category', separator: '/' })
+// options: { column, separator = '/', keepPath = true }
 ```
 
-### `hierarchicalFilter(arr, filterFn)`
+### `nestByColumns(rows, columns, options?)`
 
-Apply a filter to a flattened hierarchy, retaining parents of matching children (`retainedByChild` flag).
+Group flat rows into nested rows by one or more columns — each entry in
+`columns` adds a level of grouping. Synthesized group rows carry
+`__group: true`, `__column`, and `__label` (plus the grouped value under the
+column's own field name):
 
-### `toggleExpansion(node)` / `toggleSelection(item)`
+```js
+import { nestByColumns } from '@rokkit/data'
 
-Toggle the `isExpanded` or `selected` state of a hierarchy node and cascade to children/parents.
-
-### `flattenNestedChildren(arr)` / `removeChildren(arr)`
-
-In-place operations on flattened hierarchy arrays:
-- `flattenNestedChildren` — expand all `children` arrays inline
-- `removeChildren` — remove child rows (where `parent` is set)
+const tree = nestByColumns(rows, ['region', 'quarter'])
+// options.groupRowFactory?(column, value, children) customizes group rows
+```
 
 ## `dataview(data, options)` — Svelte Store View
 
@@ -289,7 +298,7 @@ Use `@rokkit/data` when you need:
 - **Multi-step pipelines** — chaining filter → sort → group → rollup in a readable way
 - **Locale-aware formatting** — `createFormatter` handles currency, dates, and numbers correctly for any locale
 - **Column metadata inference** — `deriveMetadata` saves manual column configuration for table components
-- **Hierarchy from path strings** — `deriveHierarchy` converts flat category paths into tree structures
+- **Hierarchy from path strings** — `nestByPath` / `nestByColumns` convert flat category paths into nested tree structures (or `dataview` for a reactive tree view)
 - **Search filter parsing** — `parseFilters` lets users type `column:value operator` expressions naturally
 - **Relational joins** — when combining two datasets like SQL-style queries
 
@@ -301,5 +310,5 @@ Handle data manually when:
 ## Import
 
 ```js
-import { dataset, filterData, createFormatter, deriveMetadata, deriveHierarchy } from '@rokkit/data'
+import { dataset, filterData, createFormatter, deriveMetadata, nestByPath, dataview } from '@rokkit/data'
 ```
