@@ -58,6 +58,7 @@ export default defineConfig({
 			{ extends: true, test: { name: 'unocss', root: 'packages/unocss' } },
 			{ extends: true, test: { name: 'themes', root: 'packages/themes' } },
 			{ extends: true, test: { name: 'data', root: 'packages/data' } },
+			{ extends: true, test: { name: 'icons', root: 'packages/icons' } },
 			{
 				extends: true,
 				test: { name: 'blocks', root: 'packages/blocks', setupFiles: ['../helpers/src/mocks/index.js', 'spec/setup.js'] }
