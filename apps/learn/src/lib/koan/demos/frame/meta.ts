@@ -20,7 +20,11 @@ const meta: DemoMeta = {
 		props: [
 			{ name: 'header', type: 'Snippet', desc: 'Top slot — title, action chips, status badges' },
 			{ name: 'children', type: 'Snippet', desc: 'Main body content' },
-			{ name: 'footer', type: 'Snippet', desc: 'Bottom slot — metadata, actions, secondary controls' },
+			{
+				name: 'footer',
+				type: 'Snippet',
+				desc: 'Bottom slot — metadata, actions, secondary controls'
+			},
 			{
 				name: 'flush',
 				type: 'boolean',
@@ -31,9 +35,18 @@ const meta: DemoMeta = {
 		events: [],
 		attrs: [
 			{ selector: '[data-frame]', desc: 'Root container' },
-			{ selector: '[data-frame-header]', desc: 'Header wrapper (present only when header snippet given)' },
-			{ selector: '[data-frame-body]', desc: 'Body wrapper — carries data-flush when flush is set' },
-			{ selector: '[data-frame-footer]', desc: 'Footer wrapper (present only when footer snippet given)' }
+			{
+				selector: '[data-frame-header]',
+				desc: 'Header wrapper (present only when header snippet given)'
+			},
+			{
+				selector: '[data-frame-body]',
+				desc: 'Body wrapper — carries data-flush when flush is set'
+			},
+			{
+				selector: '[data-frame-footer]',
+				desc: 'Footer wrapper (present only when footer snippet given)'
+			}
 		]
 	},
 	snippets: [

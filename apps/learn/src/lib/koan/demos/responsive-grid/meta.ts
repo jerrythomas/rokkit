@@ -22,9 +22,23 @@ const meta: DemoMeta = {
 	variants: [],
 	api: {
 		props: [
-			{ name: 'minWidth', type: 'string', default: "'240px'", desc: 'Minimum column width — CSS length; sets --grid-min-width' },
-			{ name: 'gap', type: 'string', default: "'1rem'", desc: 'Gap between cells — CSS length; sets --grid-gap' },
-			{ name: 'maxCols', type: 'number', desc: 'Optional maximum column count; sets --grid-max-cols' },
+			{
+				name: 'minWidth',
+				type: 'string',
+				default: "'240px'",
+				desc: 'Minimum column width — CSS length; sets --grid-min-width'
+			},
+			{
+				name: 'gap',
+				type: 'string',
+				default: "'1rem'",
+				desc: 'Gap between cells — CSS length; sets --grid-gap'
+			},
+			{
+				name: 'maxCols',
+				type: 'number',
+				desc: 'Optional maximum column count; sets --grid-max-cols'
+			},
 			{ name: 'children', type: 'Snippet', desc: 'Grid cells' },
 			{ name: 'class', type: 'string', default: "''", desc: 'Additional CSS class' }
 		],

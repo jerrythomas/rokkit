@@ -25,7 +25,9 @@ describe('sensei.library.json — top level', () => {
 describe('sensei.library.json — skills', () => {
 	it('lists exactly the bundled skill catalog', () => {
 		const declared = manifest.skills.map((s) => s.name).sort()
-		const bundled = listSkills().map((s) => s.name).sort()
+		const bundled = listSkills()
+			.map((s) => s.name)
+			.sort()
 		expect(declared).toEqual(bundled)
 	})
 
@@ -42,7 +44,9 @@ describe('sensei.library.json — skills', () => {
 describe('sensei.library.json — agents', () => {
 	it('lists exactly the bundled agent catalog', () => {
 		const declared = manifest.agents.map((a) => a.name).sort()
-		const bundled = listAgents().map((a) => a.name).sort()
+		const bundled = listAgents()
+			.map((a) => a.name)
+			.sort()
 		expect(declared).toEqual(bundled)
 	})
 

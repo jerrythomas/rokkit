@@ -60,15 +60,26 @@
 		<header>ToolbarGroup — semantic grouping (role="group")</header>
 		<div class="group-row">
 			<ToolbarGroup label="History">
-				<button class="tool-btn" type="button"><span class="i-glyph:undo" aria-hidden="true"></span> Undo</button>
-				<button class="tool-btn" type="button"><span class="i-glyph:redo" aria-hidden="true"></span> Redo</button>
+				<button class="tool-btn" type="button"
+					><span class="i-glyph:undo" aria-hidden="true"></span> Undo</button
+				>
+				<button class="tool-btn" type="button"
+					><span class="i-glyph:redo" aria-hidden="true"></span> Redo</button
+				>
 			</ToolbarGroup>
 			<ToolbarGroup label="Zoom" gap="md">
-				<button class="tool-btn" type="button" aria-label="Zoom out"><span class="i-glyph:zoom-out" aria-hidden="true"></span></button>
-				<button class="tool-btn" type="button" aria-label="Zoom in"><span class="i-glyph:zoom-in" aria-hidden="true"></span></button>
+				<button class="tool-btn" type="button" aria-label="Zoom out"
+					><span class="i-glyph:zoom-out" aria-hidden="true"></span></button
+				>
+				<button class="tool-btn" type="button" aria-label="Zoom in"
+					><span class="i-glyph:zoom-in" aria-hidden="true"></span></button
+				>
 			</ToolbarGroup>
 		</div>
-		<p class="hint">Each <code>ToolbarGroup</code> is an <code>aria-label</code>ed <code>role="group"</code> container with a <code>gap</code> scale.</p>
+		<p class="hint">
+			Each <code>ToolbarGroup</code> is an <code>aria-label</code>ed <code>role="group"</code>
+			container with a <code>gap</code> scale.
+		</p>
 	</section>
 </div>
 

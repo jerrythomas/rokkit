@@ -58,7 +58,9 @@ describe('installAgents', () => {
 
 	it('every catalog agent is installable by its listed name (frontmatter name === filename)', () => {
 		for (const a of listAgents()) {
-			expect(installAgents([a.name], { cwd, force: true })).toEqual([{ name: a.name, status: 'added' }])
+			expect(installAgents([a.name], { cwd, force: true })).toEqual([
+				{ name: a.name, status: 'added' }
+			])
 		}
 	})
 })

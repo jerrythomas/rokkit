@@ -34,7 +34,12 @@ const meta: DemoMeta = {
 				default: "'280px'",
 				desc: 'Nav panel width (horizontal) or height (vertical) — CSS length; sets --nav-size'
 			},
-			{ name: 'collapsible', type: 'boolean', default: 'true', desc: 'Collapse the nav panel on small screens' },
+			{
+				name: 'collapsible',
+				type: 'boolean',
+				default: 'true',
+				desc: 'Collapse the nav panel on small screens'
+			},
 			{ name: 'nav', type: 'Snippet', desc: 'Nav panel content (required)' },
 			{ name: 'content', type: 'Snippet', desc: 'Content panel content (required)' },
 			{ name: 'class', type: 'string', default: "''", desc: 'Additional CSS class' }

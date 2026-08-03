@@ -1,5 +1,13 @@
 import { describe, it, expect } from 'vitest'
-import { presetRokkit, presetBackgrounds, loadConfig, buildNamedShortcuts, NAMED_SHORTCUT_PREFIXES, shouldEmitShortcut, BUILTIN_SKINS } from '../src/index.js'
+import {
+	presetRokkit,
+	presetBackgrounds,
+	loadConfig,
+	buildNamedShortcuts,
+	NAMED_SHORTCUT_PREFIXES,
+	shouldEmitShortcut,
+	BUILTIN_SKINS
+} from '../src/index.js'
 
 describe('@rokkit/unocss — barrel exports', () => {
 	it('exports presetRokkit', () => {

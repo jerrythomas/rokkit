@@ -1,5 +1,12 @@
 /* eslint-disable no-console */
-import { readFileSync, readdirSync, existsSync, mkdirSync, writeFileSync, copyFileSync } from 'node:fs'
+import {
+	readFileSync,
+	readdirSync,
+	existsSync,
+	mkdirSync,
+	writeFileSync,
+	copyFileSync
+} from 'node:fs'
 import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import prompts from 'prompts'

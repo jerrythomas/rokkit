@@ -33,7 +33,10 @@
 				{#snippet content()}
 					<article class="pane">
 						<h3>{active}</h3>
-						<p>The nav panel holds a fixed 200px width; this content pane takes the rest and stays flexible.</p>
+						<p>
+							The nav panel holds a fixed 200px width; this content pane takes the rest and stays
+							flexible.
+						</p>
 					</article>
 				{/snippet}
 			</NavContent>
@@ -62,7 +65,10 @@
 				{#snippet content()}
 					<section class="pane">
 						<h3>{step}</h3>
-						<p>In vertical orientation, navSize sets the height of the top rail instead of the side width.</p>
+						<p>
+							In vertical orientation, navSize sets the height of the top rail instead of the side
+							width.
+						</p>
 					</section>
 				{/snippet}
 			</NavContent>
@@ -82,7 +88,10 @@
 
 				{#snippet content()}
 					<article class="pane">
-						<p>With <code>collapsible=false</code> the rail never folds away, however narrow the container gets.</p>
+						<p>
+							With <code>collapsible=false</code> the rail never folds away, however narrow the container
+							gets.
+						</p>
 					</article>
 				{/snippet}
 			</NavContent>

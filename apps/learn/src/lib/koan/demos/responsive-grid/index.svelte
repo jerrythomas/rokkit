@@ -12,7 +12,16 @@
 		{ id: 'f', title: 'Errors', value: '0.3%' }
 	]
 
-	const swatches = ['#e2725b', '#f0a202', '#4f772d', '#2d6a8e', '#6d597a', '#b56576', '#355070', '#c9ada7']
+	const swatches = [
+		'#e2725b',
+		'#f0a202',
+		'#4f772d',
+		'#2d6a8e',
+		'#6d597a',
+		'#b56576',
+		'#355070',
+		'#c9ada7'
+	]
 </script>
 
 <div class="grid">
