@@ -476,3 +476,35 @@ describe('PlotState.data', () => {
 		expect(s.data).toEqual(rows)
 	})
 })
+
+describe('PlotState selection', () => {
+	const rows = [{ a: 1 }, { a: 2 }, { a: 3 }]
+	it('handleSelect fires onselect; selectable toggles selection', () => {
+		const calls = []
+		const s = new PlotState({ data: rows, channels: { x: 'a', y: 'a' }, onselect: (d) => calls.push(d), selectable: true })
+		expect(s.interactive).toBe(true)
+		s.handleSelect({ datum: rows[0], index: 0 })
+		expect(calls).toHaveLength(1)
+		expect(s.isSelected(rows[0])).toBe(true)
+		expect(s.selectedRows).toEqual([rows[0]])
+		s.handleSelect({ datum: rows[0], index: 0 })
+		expect(s.isSelected(rows[0])).toBe(false)
+	})
+	it('non-selectable fires onselect but does not accumulate', () => {
+		const s = new PlotState({ data: rows, channels: { x: 'a', y: 'a' }, onselect: () => {} })
+		expect(s.interactive).toBe(true)
+		s.handleSelect({ datum: rows[1], index: 1 })
+		expect(s.selectedRows).toEqual([])
+	})
+	it('setSelected / clearSelected', () => {
+		const s = new PlotState({ data: rows, channels: { x: 'a', y: 'a' }, selectable: true })
+		s.setSelected([rows[0], rows[2]])
+		expect(s.selectedRows).toEqual([rows[0], rows[2]])
+		s.clearSelected()
+		expect(s.selectedRows).toEqual([])
+	})
+	it('interactive is false with neither onselect nor selectable', () => {
+		const s = new PlotState({ data: rows, channels: { x: 'a', y: 'a' } })
+		expect(s.interactive).toBe(false)
+	})
+})
