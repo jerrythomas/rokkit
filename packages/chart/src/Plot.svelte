@@ -21,6 +21,7 @@
 	import Waterfall from './geoms/Waterfall.svelte'
 	import Hexbin from './geoms/Hexbin.svelte'
 	import Ribbon from './geoms/Ribbon.svelte'
+	import Highlight from './geoms/Highlight.svelte'
 
 	type Row = Record<string, unknown>
 	type Margin = { top: number; right: number; bottom: number; left: number }
@@ -46,6 +47,10 @@
 		xTicks?: number
 		yTicks?: number
 		minorTicks?: boolean
+		x?: string
+		y?: string
+		highlight?: 'first' | 'last' | 'min' | 'max' | number | ((row: Row, i: number) => boolean)
+		label?: boolean | string | ((row: Row) => unknown)
 		children?: Snippet
 	}
 
@@ -69,6 +74,10 @@
 		xTicks = undefined,
 		yTicks = undefined,
 		minorTicks = false,
+		x = undefined,
+		y = undefined,
+		highlight = undefined,
+		label = false,
 		children
 	}: Props = $props()
 
@@ -171,6 +180,9 @@
 	// Geoms from spec (spec-driven API)
 	const specGeoms = $derived(spec?.geoms ?? [])
 
+	const overlayX = $derived(spec?.x ?? x)
+	const overlayY = $derived(spec?.y ?? y)
+
 	// Geom component resolver for spec-driven mode
 	const GEOM_COMPONENTS = {
 		bar: Bar,
@@ -251,6 +263,10 @@
 			{#if axes}
 				<Axis type="x" label={spec?.labels?.[spec?.x ?? ''] ?? ''} format={xFormat} ticks={xTicks} {minorTicks} />
 				<Axis type="y" label={spec?.labels?.[spec?.y ?? ''] ?? ''} format={yFormat} ticks={yTicks} {minorTicks} />
+			{/if}
+
+			{#if highlight !== null && highlight !== undefined}
+				<Highlight x={overlayX} y={overlayY} {highlight} {label} />
 			{/if}
 		</g>
 	</svg>
