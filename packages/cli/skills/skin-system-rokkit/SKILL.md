@@ -14,7 +14,7 @@ shifts.
 **Skin vs style vs mode:**
 
 | Dimension | Controls | Example values |
-|-----------|----------|----------------|
+| ----------- | ---------- | ---------------- |
 | **skin** | which palette backs the roles | `default` · `ocean` · `violet` |
 | **style** | which visual theme (border radius, shadow, surface recipe) | `rokkit` · `minimal` · `zen-sumi` |
 | **mode** | light or dark rendering | `light` · `dark` |
@@ -59,7 +59,7 @@ The preset ships five built-in skins in `@rokkit/unocss`. Their `[data-skin='nam
 blocks are emitted automatically — no config needed to use them:
 
 | Skin | Surface | Ink | Primary | Accent |
-|------|---------|-----|---------|--------|
+| ------ | --------- | ----- | --------- | -------- |
 | `default` | (DEFAULT_THEME_MAPPING) | `slate` | — | — |
 | `ocean` | `slate` | `slate` | `sky` | `teal` |
 | `violet` | `zinc` | `zinc` | `violet` | `indigo` |
@@ -124,7 +124,7 @@ When `storageKey` is provided it also loads/saves the persisted skin.
 **`SkinSwitcherToggle` props:**
 
 | Prop | Type | Default | Purpose |
-|------|------|---------|---------|
+| ------ | ------ | --------- | --------- |
 | `skins` | `Array<string \| { name, label?, icon? }>` | `vibe.allowedSkins` | skin options |
 | `labels` | `Record<string, string>` | `{}` | display labels keyed by name |
 | `showLabels` | `boolean` | `false` | show label text in the toggle |
@@ -215,7 +215,7 @@ runtime-only color overrides.
 ## Common mistakes
 
 | Mistake | Why it fails | Fix |
-|---------|-------------|-----|
+| --------- | ------------- | ----- |
 | `vibe.allowedSkins` set after `themable` runs | persisted skin can't restore; `vibe.skin = storedValue` is a no-op because the list defaults to `['default']` only | set `vibe.allowedSkins` before `<svelte:body use:themable ...>` in the root layout |
 | `class="skin-ocean"` on an element | `skin-{name}` class was removed | use `data-skin='ocean'` attribute, or let `themable` write it via `vibe.skin` |
 | Hand-rolling `<style>` injection for a skin | brittle, order-dependent, bypasses named-token aliases | define in `rokkit.config.js` `skins:` + let the preset emit `[data-skin='name']` blocks |

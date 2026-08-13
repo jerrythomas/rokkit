@@ -31,7 +31,7 @@ mode-selection entry, capabilities, richer summary titles) is a separate spec.
   ("Pass the data. The component does the rest." + `style · 47 components · Svelte 5`
   meta); `catalog` → `<CatalogGrid filter={shell.composerValue} />`; `response` → mounted
   demo. The **left rail** is also phase-dependent: `welcome` → `welcome-stream` (greeting
-  + `ComposerSuggestions` + "Browse the full catalog" link → `/app/catalog`); `response`
+  - `ComposerSuggestions` + "Browse the full catalog" link → `/app/catalog`); `response`
   → `<ChatHistory>` conversation list.
 - **`src/lib/koan/conversations.svelte.ts`** — REAL `localStorage` persistence (key
   `rokkit-conversations`, cap 20, current-conversation key `rokkit-current-conversation`).
@@ -102,7 +102,7 @@ mode-selection entry, capabilities, richer summary titles) is a separate spec.
 ### 5. Module boundaries
 
 | File | Change |
-|---|---|
+| --- | --- |
 | `src/lib/components/SiteNav.svelte` | Remove Catalog link; simplify Components `match`. |
 | `src/lib/koan/shell.svelte.ts` | `ShellPhase` → `landing\|thinking\|response`; `setShellLanding()` replaces welcome/catalog setters; default `landing`. |
 | `src/routes/app/+page.svelte` | `setShellLanding()` on mount. |

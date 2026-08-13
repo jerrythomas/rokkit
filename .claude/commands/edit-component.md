@@ -7,6 +7,7 @@ You are editing an existing Rokkit UI component. Request: **$ARGUMENTS**
 ## Step 1 — Read the Blueprint
 
 Read `docs/llms/component-blueprint.md` §§3–9 for the invariants that must not be broken:
+
 - Data-attribute conventions (§3)
 - ProxyItem API (§4)
 - Primitives wiring — Wrapper, Navigator, Trigger (§5)
@@ -42,6 +43,7 @@ bun run test:ui && bun run lint   # must be zero errors
 ## Step 6 — If API changed (new/renamed props, changed behavior)
 
 Update these files to stay in sync:
+
 - `docs/llms/components/<name>.txt`
 - `apps/learn/src/routes/(learn)/docs/components/<name>/+page.svelte`
 

@@ -56,6 +56,7 @@ Expected at start: utilities ≈ 660, vars present in ~27 files. No commit.
 ### Task 1: Write and run the codemod
 
 **Files:**
+
 - Create (throwaway): `scripts/migrate-z-scale.mjs`
 
 - [ ] **Step 1: Write the codemod**
@@ -183,6 +184,7 @@ git commit -m "refactor(themes): migrate authored z-tone vars to named tokens"
 ### Task 3: Migrate `packages/chart` (z-tone only; keep numeric ladder)
 
 **Files:**
+
 - Modify: the 2 chart files using `--color-{role}-z{n}` (find with grep below)
 
 - [ ] **Step 1: Find and migrate**
@@ -198,6 +200,7 @@ Run: `grep -rnE '\-\-color-[a-z]+-[0-9]{2,3}' packages/chart/src` → numeric re
 - [ ] **Step 3: Test + commit**
 
 Run: `cd packages/chart && bunx vitest run && cd ../..` → PASS.
+
 ```bash
 git add packages/chart/src
 git commit -m "refactor(chart): migrate z-tone vars to named tokens (keep numeric ladder)"
@@ -212,9 +215,11 @@ git commit -m "refactor(chart): migrate z-tone vars to named tokens (keep numeri
 - [ ] **Step 1: Find stragglers**
 
 Run:
+
 ```bash
 grep -rnE '\b(bg|text|border|border-[tblr]|ring|outline|fill|stroke|divide|from|to)-(surface|ink|primary|accent|success|warning|danger|error|info)-z[0-9]+|\-\-color-(surface|ink|primary|accent|success|warning|danger|error|info)-z[0-9]+' packages/core/src packages/unocss/src packages/cli/src packages/app/src packages/forms/src 2>/dev/null | grep -v '/dist/'
 ```
+
 Exclude the generator files themselves (theme.ts, constants.js, named-tokens.ts, preset.ts, doctor.js) — those are deleted in Phases 4–7. Migrate any *consumer* occurrences found.
 
 - [ ] **Step 2: Commit (if any changed)**
@@ -238,6 +243,7 @@ Run: `grep -rnE '\-(secondary|tertiary)-z[0-9]+' packages apps | grep -v '/dist/
 - [ ] **Step 3: Verify + commit**
 
 Run the grep from Step 1 → empty.
+
 ```bash
 git add -A && git commit -m "refactor: migrate secondary/tertiary z-utilities to named tokens"
 ```
@@ -251,6 +257,7 @@ git add -A && git commit -m "refactor: migrate secondary/tertiary z-utilities to
 ### Task 6: Strip z-tone from `buildVarsForMode` and split the core alias
 
 **Files:**
+
 - Modify: `packages/unocss/src/preset.ts:218-227` and the Theme methods in `packages/core/src/theme.ts:355-409`
 - Test: `packages/unocss/spec/preset.spec.js`, `packages/core/spec/theme.spec.js`
 
@@ -346,6 +353,7 @@ git commit -m "refactor(unocss,core): stop emitting z-tone vars; keep bare --col
 `semanticShortcuts` (theme.ts:120) + `toneShortcuts` (96) + `SEMANTIC_PREFIXES` (75) generate the `bg-surface-z1`-style utility classes. `getShortcuts` (467) returns `[...semanticShortcuts(name), ...contrastShortcuts(...)]`; keep only `contrastShortcuts` (the `text-on-{role}` shortcuts, still needed).
 
 **Files:**
+
 - Modify: `packages/core/src/theme.ts`
 - Modify: `packages/core/src/index.*` and `packages/themes/src/index.js:6` (drop the `semanticShortcuts` re-export)
 
@@ -386,6 +394,7 @@ git commit -m "refactor(core): remove z-tone utility-shortcut generation; keep c
 ### Task 8: Delete `TONE_MAP`, `Z_SLOTS`, collapse maps; drop `getZScaleCSS` from themes build
 
 **Files:**
+
 - Modify: `packages/core/src/constants.js` (remove `TONE_MAP`, 186-198)
 - Modify: `packages/core/src/named-tokens.ts` (remove `ZSlot` 24, `Z_SLOTS` 26, `Z_COLLAPSE_MAP_SURFACE` 112-, `Z_COLLAPSE_MAP_INK` 130-)
 - Modify: `packages/themes/build.mjs` (line 260 + the concat on the next `fixModeSelectors` line)
@@ -430,6 +439,7 @@ git commit -m "refactor(core,themes): delete TONE_MAP/Z_SLOTS/collapse maps + z-
 ### Task 9a: Delete the z-scale advisory from `doctor`
 
 **Files:**
+
 - Modify: `packages/cli/src/doctor.js` (the z-scale collapse maps ~368-386, the scan function ~395, its invocation, and the `console.info('Legacy z-scale utilities …')` block ~510-516)
 - Modify: `packages/cli/spec/*` (any doctor test asserting the z-scale advisory)
 
@@ -467,6 +477,7 @@ Change the warning string to reference shades, e.g. `ink-900 on surface-100 has 
 - [ ] **Step 2: Lint + commit**
 
 Run: `bun run lint` → 0 errors.
+
 ```bash
 git add packages/unocss/src/preset.ts
 git commit -m "refactor(unocss): reword ink-contrast warning to reference shades not z-utilities"
@@ -479,6 +490,7 @@ git commit -m "refactor(unocss): reword ink-contrast warning to reference shades
 ### Task 10: Update the core spec suite
 
 **Files:**
+
 - Modify: `packages/core/spec/theme.spec.js`, `packages/core/spec/index.spec.js`
 
 - [ ] **Step 1: Remove obsolete describes**
@@ -500,6 +512,7 @@ git commit -m "test(core): drop z-scale/semanticShortcuts specs; assert contrast
 ### Task 11: Docs / skills cleanup
 
 **Files:**
+
 - Modify: `packages/cli/skills/semantic-styles-rokkit/SKILL.md` (delete the "Migrating from z-scale to named tokens" section, back-compat mentions, the `doctor` z-utility row)
 - Modify: `packages/cli/skills/skin-system-rokkit/SKILL.md`, `packages/cli/src/init.js` (header comment), `agents/references.md`, `docs/design/*.md` referencing z-scale
 - Modify: `apps/learn/static/llms/packages/core.txt` (lines ~98, ~113 referencing `semanticShortcuts`/`getShortcuts`) and any `docs/llms/*` authored source (confirm which is the source via the learn build's `cp` step)
@@ -525,10 +538,12 @@ git commit -m "docs: remove z-scale guidance; named tokens are the only vocabula
 - [ ] **Step 1: Grep gate (must be zero)**
 
 Run:
+
 ```bash
 grep -rnE '\b(bg|text|border|border-[tblr]|ring|outline|fill|stroke|divide|from|to)-(surface|ink|primary|secondary|tertiary|accent|success|warning|danger|error|info)-z[0-9]+' packages apps 2>/dev/null | grep -v node_modules | grep -v '/dist/' | grep -v '.svelte-kit' | grep -v 'docs/superpowers'
 grep -rnE '\-\-color-[a-z]+-z[0-9]+' packages apps 2>/dev/null | grep -v node_modules | grep -v '/dist/' | grep -v '.svelte-kit'
 ```
+
 Expected: **no output** from either.
 
 - [ ] **Step 2: Lint + full test suite**

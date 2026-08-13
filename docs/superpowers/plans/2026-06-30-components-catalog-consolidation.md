@@ -9,6 +9,7 @@
 **Tech Stack:** Svelte 5 runes, SvelteKit, TypeScript, Vitest (run-once via `bun run` scripts), Playwright (e2e).
 
 **Conventions:**
+
 - Run tests with run-once scripts only: from repo root `bun run test:ci` (all) or scope with vitest's project filter; NEVER `test:unit`/bare `vitest` (watch mode orphans processes).
 - The learn app's Svelte/types are validated by `bun run build` (svelte-check does NOT cover `apps/learn`).
 - Files use TAB indentation. Match it exactly.
@@ -20,7 +21,7 @@
 ## File Structure
 
 | File | Responsibility | Change |
-|---|---|---|
+| --- | --- | --- |
 | `src/lib/koan/conversations.svelte.ts` | Persisted conversation store | `startNew` upserts by title for `app` surface |
 | `spec/koan/conversations.spec.svelte.ts` | Unit tests for the store | **Create** — dedup tests |
 | `src/lib/koan/shell.svelte.ts` | Shell phase state | `ShellPhase` → `landing\|thinking\|response`; `setShellLanding()` replaces welcome/catalog setters; default `landing` |
@@ -37,6 +38,7 @@
 ## Task 1: Conversation store — upsert-by-title dedup
 
 **Files:**
+
 - Modify: `src/lib/koan/conversations.svelte.ts` (function `startNew`, lines 203-221)
 - Create: `spec/koan/conversations.spec.svelte.ts`
 
@@ -100,9 +102,11 @@ describe('conversations — startNew dedup', () => {
 - [ ] **Step 2: Run the test to verify it fails**
 
 From repo root:
+
 ```bash
 cd apps/learn && bunx vitest run spec/koan/conversations.spec.svelte.ts
 ```
+
 Expected: FAIL — the first test sees 3 "Tabs" rows (or `again !== first`), because the current `startNew` always unshifts.
 
 - [ ] **Step 3: Implement the upsert in `startNew`**
@@ -157,6 +161,7 @@ export function startNew(surface: ConversationSurface, query: string): Conversat
 ```bash
 cd apps/learn && bunx vitest run spec/koan/conversations.spec.svelte.ts
 ```
+
 Expected: PASS (4 tests).
 
 - [ ] **Step 5: Commit**
@@ -175,6 +180,7 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 This is the core change. The shell type change ripples to the two `/app` page routes and every phase check in the layout, so it lands as one cohesive task. Do all steps before building.
 
 **Files:**
+
 - Modify: `src/lib/koan/shell.svelte.ts`
 - Modify: `src/routes/app/+page.svelte`
 - Delete: `src/routes/app/catalog/+page.svelte`; Create: `src/routes/app/catalog/+page.ts`
@@ -185,6 +191,7 @@ This is the core change. The shell type change ripples to the two `/app` page ro
 In `src/lib/koan/shell.svelte.ts`:
 
 Change the phase type (line 9):
+
 ```ts
 export type ShellPhase = 'landing' | 'thinking' | 'response'
 ```
@@ -192,6 +199,7 @@ export type ShellPhase = 'landing' | 'thinking' | 'response'
 Change the default phase (line 71): `phase: 'welcome',` → `phase: 'landing',`
 
 Replace `setShellWelcome` and `setShellCatalog` (lines 89-99) with a single setter:
+
 ```ts
 export function setShellLanding(): void {
 	shell.phase = 'landing'
@@ -203,6 +211,7 @@ export function setShellLanding(): void {
 - [ ] **Step 2: `/app` index sets the landing phase**
 
 Replace `src/routes/app/+page.svelte` entirely:
+
 ```svelte
 <script lang="ts">
 	import { onMount } from 'svelte'
@@ -217,6 +226,7 @@ Replace `src/routes/app/+page.svelte` entirely:
 - [ ] **Step 3: Redirect `/app/catalog → /app`**
 
 Delete `src/routes/app/catalog/+page.svelte`. Create `src/routes/app/catalog/+page.ts`:
+
 ```ts
 import { redirect } from '@sveltejs/kit'
 
@@ -230,6 +240,7 @@ export const load = () => {
 In `src/routes/app/+layout.svelte`, the canvas currently has a `welcome` branch then a `catalog` branch. Replace BOTH (the block starting `{:else if shell.phase === 'welcome'}` with the `welcome-hero` through the end of the `catalog` branch's `</div>` before `{:else if shell.phase === 'thinking'}`) with a single `landing` branch.
 
 Find this exact current code:
+
 ```svelte
 			{:else if shell.phase === 'welcome'}
 				<div class="welcome-hero">
@@ -263,6 +274,7 @@ Find this exact current code:
 ```
 
 Replace it with:
+
 ```svelte
 			{:else if shell.phase === 'landing'}
 				<div class="canvas-head">
@@ -282,6 +294,7 @@ Replace it with:
 - [ ] **Step 5: Layout — merge the welcome + catalog RAIL branches (chat-left aside)**
 
 Find this exact current code (the welcome-stream branch followed by the catalog branch):
+
 ```svelte
 			{#if shell.phase === 'welcome'}
 				<div class="welcome-stream">
@@ -325,6 +338,7 @@ Find this exact current code (the welcome-stream branch followed by the catalog 
 ```
 
 Replace it with a single `landing` branch (drop both browse links — the catalog is the canvas now):
+
 ```svelte
 			{#if shell.phase === 'landing'}
 				<div class="welcome-stream">
@@ -346,6 +360,7 @@ Replace it with a single `landing` branch (drop both browse links — the catalo
 - [ ] **Step 6: Layout — add a "Browse" link in the chat-header (return to catalog from a demo)**
 
 Find the chat-header block:
+
 ```svelte
 			<div class="chat-header">
 				<span class="chat-title">
@@ -358,6 +373,7 @@ Find the chat-header block:
 ```
 
 Replace with (update the phase check and add the Browse link shown when a demo is mounted):
+
 ```svelte
 			<div class="chat-header">
 				<span class="chat-title">
@@ -376,6 +392,7 @@ Replace with (update the phase check and add the Browse link shown when a demo i
 ```
 
 Add this CSS rule inside the layout's `<style>` block, immediately after the `.welcome-browse` rule (search for `.welcome-browse {` to locate it):
+
 ```css
 	.chat-browse {
 		display: inline-flex;
@@ -407,17 +424,21 @@ If the `.chat-header` rule sets `display`, ensure it is `display: flex; align-it
 - [ ] **Step 7: Layout — update the composer placeholder phase check**
 
 Find (around the `<ChatComposer>`):
+
 ```svelte
 			placeholder={shell.phase === 'welcome'
 ```
+
 Change `=== 'welcome'` to `=== 'landing'`. (Leave the two placeholder strings as-is.)
 
 - [ ] **Step 8: Layout — sweep any remaining `'welcome'` / `'catalog'` phase references**
 
 Run:
+
 ```bash
 cd apps/learn && grep -n "shell.phase === 'welcome'\|shell.phase === 'catalog'\|shell.phase !== 'welcome'\|phase: 'welcome'\|phase: 'catalog'" src/routes/app/+layout.svelte
 ```
+
 Expected after Steps 4-7: no matches. If any remain, update them to `'landing'` (they are leftover references to the merged phases).
 
 - [ ] **Step 9: Remove now-orphaned `RokkitWordmark` import and `.welcome-browse` CSS**
@@ -425,12 +446,15 @@ Expected after Steps 4-7: no matches. If any remain, update them to `'landing'` 
 ```bash
 cd apps/learn && grep -n "RokkitWordmark" src/routes/app/+layout.svelte
 ```
+
 If the only remaining match is the `import` line (line ~20), delete that import line. If `RokkitWordmark` is still used elsewhere in the file, leave it.
 
 Both browse links that used `.welcome-browse` were removed in Step 5, so its CSS is now unused (Svelte would emit an "unused CSS selector" warning). Check and remove it:
+
 ```bash
 cd apps/learn && grep -n "welcome-browse" src/routes/app/+layout.svelte
 ```
+
 If the only matches are CSS rules (no `class="...welcome-browse..."` markup), delete the `.welcome-browse { … }`, `.welcome-browse:hover { … }`, and any `.welcome-browse [class^='i-'] { … }` rules from the `<style>` block. (Do NOT touch the new `.chat-browse` rules added in Step 6.)
 
 - [ ] **Step 10: Build to verify the app compiles (svelte-check does not cover apps/learn)**
@@ -438,6 +462,7 @@ If the only matches are CSS rules (no `class="...welcome-browse..."` markup), de
 ```bash
 cd apps/learn && bun run build 2>&1 | tail -6
 ```
+
 Expected: `✓ built` with exit 0, no Svelte/TS errors referencing `welcome`, `catalog`, `setShellWelcome`, or `setShellCatalog`.
 
 - [ ] **Step 11: Commit**
@@ -454,11 +479,13 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 ## Task 3: SiteNav — single "Components" entry
 
 **Files:**
+
 - Modify: `src/lib/components/SiteNav.svelte` (lines 12-18)
 
 - [ ] **Step 1: Drop the Catalog link, simplify the Components match**
 
 Replace the `links` array (lines 12-18) with:
+
 ```ts
 	const links = [
 		{ label: 'Components', href: '/app', match: (p: string) => p.startsWith('/app') || homeIsActive },
@@ -473,6 +500,7 @@ Replace the `links` array (lines 12-18) with:
 ```bash
 cd apps/learn && bun run build 2>&1 | tail -3
 ```
+
 Expected: `✓ built`, exit 0.
 
 - [ ] **Step 3: Commit**
@@ -489,6 +517,7 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 ## Task 4: Repoint stray `/app/catalog` links + stale comments
 
 **Files:**
+
 - Modify: `src/routes/components/[name]/+page.svelte` (line 13)
 - Modify: `src/lib/koan/components/CatalogGrid.svelte` (line 3, comment)
 - Modify: `src/routes/app/+layout.svelte` (line ~249, comment)
@@ -496,6 +525,7 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 - [ ] **Step 1: Repoint the static doc link**
 
 In `src/routes/components/[name]/+page.svelte` line 13, change the href:
+
 ```svelte
 		<a class="demo-link" href="/app">Try it in the interactive catalog →</a>
 ```
@@ -505,12 +535,15 @@ In `src/routes/components/[name]/+page.svelte` line 13, change the href:
 In `src/lib/koan/components/CatalogGrid.svelte` line 3, change `Catalog grid for /app/catalog.` → `Catalog grid for the /app landing.`
 
 In `src/routes/app/+layout.svelte` (the `pickSuggestion` comment near line 249), remove the now-false sentence referencing the "dedicated /app/catalog route (TBD)". Find:
+
 ```
 	// thinking → goto path as a typed submission. The dedicated /app/catalog
 	// route (TBD) gives the same demos a sidebar-browse entry point for
 	// users who prefer to scan visually.
 ```
+
 Replace with:
+
 ```
 	// thinking → goto path as a typed submission. The catalog grid on the
 	// /app landing gives the same demos a browse-first entry point.
@@ -521,6 +554,7 @@ Replace with:
 ```bash
 cd apps/learn && grep -rn "/app/catalog" src
 ```
+
 Expected: no matches (the redirect route at `src/routes/app/catalog/+page.ts` references `/app`, not `/app/catalog`).
 
 - [ ] **Step 4: Commit**
@@ -537,6 +571,7 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 ## Task 5: E2E — nav, landing, redirect, browse
 
 **Files:**
+
 - Create: `e2e/components-catalog.e2e.ts`
 
 E2E runs against `bun run build && bun run preview` (Playwright `webServer`, baseURL :4173 — match the existing `playwright.config`). Use the same patterns as existing specs in `apps/learn/e2e/`.
@@ -544,6 +579,7 @@ E2E runs against `bun run build && bun run preview` (Playwright `webServer`, bas
 - [ ] **Step 1: Write the e2e spec**
 
 Create `apps/learn/e2e/components-catalog.e2e.ts`:
+
 ```ts
 import { test, expect } from '@playwright/test'
 
@@ -584,6 +620,7 @@ test('clicking a tile mounts the demo, and Browse returns to the grid', async ({
 ```bash
 cd apps/learn && npx playwright test components-catalog
 ```
+
 Expected: 4 passed. (If `button[title="Tabs"]` is not found, confirm the Tabs tile title via the catalog — `CatalogGrid` sets `title={demo.title}`.)
 
 - [ ] **Step 3: Commit**
@@ -600,14 +637,17 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 ## Task 6: Final gate + journal
 
 **Files:**
+
 - Modify: `agents/journal.md`
 
 - [ ] **Step 1: Full check**
 
 From repo root:
+
 ```bash
 bun run check
 ```
+
 Expected: lint + types + svelte-check + test:ci all pass (test count ≥ 5074 + the 4 new dedup tests).
 
 - [ ] **Step 2: Contrast e2e (layout change — confirm no regression)**
@@ -615,6 +655,7 @@ Expected: lint + types + svelte-check + test:ci all pass (test count ≥ 5074 + 
 ```bash
 cd apps/learn && npx playwright test theme-contrast
 ```
+
 Expected: 1 passed (no new failures beyond baseline).
 
 - [ ] **Step 3: Visual sanity (dev server on :5173)**

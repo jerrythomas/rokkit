@@ -34,7 +34,7 @@ Eleven components migrated. Two did not.
 ### Old stack — `use:navigator` action + the legacy list controller
 
 | File | Lines | Role |
-|---|---:|---|
+| --- | ---: | --- |
 | `packages/actions/src/navigator.svelte.js` | 235 | Svelte action; dispatches `CustomEvent('action', ...)`; handles keydown/click/typeahead/scrollIntoView. |
 | `packages/states/src/list-controller.svelte.js` | 347 | Legacy list controller class; owns `items`, `selectedKeys` (`SvelteSet`), `expandedKeys`, `focusedKey`. Re-derives flat data via `flatVisibleNodes`. Implements `moveFirst/Prev/Next/Last`, `select`, `extendSelection`, `selectRange`, `findByText`, `toggleSelection`. |
 | `packages/states/src/table-controller.svelte.js` | 221 | Legacy table controller class; composes the list controller for rows; owns `columns`, `sortState`, `sortBy`, `clearSort`; delegates navigation/selection. |
@@ -48,7 +48,7 @@ Consumers — exactly two components:
 ### New stack — `Navigator` class + `Wrapper`
 
 | File | Lines | Role |
-|---|---:|---|
+| --- | ---: | --- |
 | `packages/actions/src/navigator.js` | 294 | Class `Navigator`; wires keydown / click / focusin / focusout / wheel to `wrapper[action](path)`; owns typeahead, focus sync, contained `scrollIntoView`. |
 | `packages/states/src/wrapper.svelte.js` | 272 | Class `Wrapper`; reads `ProxyTree.flatView`; owns `focusedKey` ($state) + `select/toggle/expand/collapse/moveTo/moveToValue/findByText/cancel/blur`. Computes the focusable subset by excluding `separator`, `spacer`, and `disabled` items. |
 | `packages/states/src/lazy-wrapper.svelte.js` | 115 | Extends `Wrapper`; overrides `expand/select/toggle` to detect unloaded `LazyProxyItem` sentinels and fire `proxy.fetch()` before delegating. Adds `loadMore()` for root-level pagination. |
@@ -84,7 +84,7 @@ The backlog assumed there were dedicated nested-tree and tabs controller classes
 Code that exists only to support the old stack and that no other consumer needs:
 
 | Item | Where | Notes |
-|---|---|---|
+| --- | --- | --- |
 | Old `navigator` Svelte action | `actions/src/navigator.svelte.js` (235) + export in `actions/src/index.js` | The `emitAction(node, controller, name, lastOnly)` + `CustomEvent('action', ...)` dispatch path. Untouched by 11 of 13 list-shaped components. |
 | Legacy list controller | `states/src/list-controller.svelte.js` (347) + export in `states/src/index.js` | Re-implements what `Wrapper + ProxyTree` already do. Maintains its own `selectedKeys`/`expandedKeys` SvelteSets, its own `flatVisibleNodes` re-derivation, its own `findByText`. |
 | Legacy table controller | `states/src/table-controller.svelte.js` (221) + export in `states/src/index.js` | Composes the list controller — falls when the dependency falls. Sort logic (`sortBy`, `clearSort`, `#applySortAndUpdate`) is the only piece worth preserving and belongs on the new `ProxyTable` per the Tree-Table backlog. |
@@ -107,7 +107,7 @@ Toolbar (the simpler of the two stragglers) read from the legacy list controller
 All of these have equivalents on `Wrapper`:
 
 | legacy list controller | `Wrapper` |
-|---|---|
+| --- | --- |
 | `focusedKey` | `focusedKey` |
 | `focused` | (read via `wrapper.lookup.get(focusedKey).value`) |
 | `selected` (array) | (TODO: multi-select on `Wrapper` is stubbed — `extend`/`range` are no-ops) |
@@ -133,7 +133,7 @@ This is the only real blocker on the migration. Estimated cost: porting `toggleS
 ## Risk assessment per candidate removal
 
 | Candidate | Risk | Mitigation |
-|---|---|---|
+| --- | --- | --- |
 | Delete `navigator.svelte.js` (action) | Low. Used only by Toolbar + Table. Tests for it can drop with it. | After Toolbar + Table migrate, grep for `use:navigator=` and `from '@rokkit/actions'.*navigator(?!\\.)` to confirm zero consumers. |
 | Delete the legacy list controller | Low. Used only by Toolbar + Table-via-composition. Public-API: the class is exported from `@rokkit/states` and listed in the `app/learn` LLM docs — those need updating. | Update exports in `states/src/index.js`. Update `apps/learn/static/llms/packages/states.txt`, `apps/learn/src/lib/guides/{toolkit,utilities,accessibility}/content.md`. |
 | Delete `TableController` | Low. Used only by `Table.svelte`. Sort logic must port to `ProxyTable` (Tree-Table Part A explicitly calls this out). | Tree-Table Part A is a hard prereq. |

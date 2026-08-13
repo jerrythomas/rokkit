@@ -23,7 +23,7 @@ import { List, Tree, Select, MultiSelect, Menu, Table, Tabs, Toggle } from '@rok
 Every Rokkit component follows a consistent API:
 
 | Prop | Purpose |
-|------|---------|
+| ------ | --------- |
 | `items` / `options` / `data` | The data array to render |
 | `bind:value` | Bindable selected value (or values array for MultiSelect) |
 | `fields` | Remap your data's key names to component semantic keys |
@@ -74,7 +74,7 @@ It never mutates your data — it is only a read instruction for the component.
 These are the raw key names each component reads by default. Override only the ones that differ in your data.
 
 | Semantic slot | Default key | Used by |
-|---------------|-------------|---------|
+| --------------- | ------------- | --------- |
 | `label` / `text` | `'label'` / `'text'` | display text (see note) |
 | `value` | `'value'` | selection value |
 | `icon` | `'icon'` | icon CSS class |
@@ -172,7 +172,7 @@ Overrides the group header button content (the expand/collapse header row):
 ### ProxyItem API (passed to all content snippets)
 
 | Property / method | Description |
-|-------------------|-------------|
+| ------------------- | ------------- |
 | `proxy.label` | Mapped display text |
 | `proxy.icon` | Mapped icon CSS class |
 | `proxy.value` | The original raw item (object or primitive) |
@@ -259,7 +259,7 @@ The navigator pattern handles keyboard events on the component's root or dropdow
 ### What you get for free
 
 | Component | Keys | ARIA |
-|-----------|------|------|
+| ----------- | ------ | ------ |
 | List / Tree | `↑↓` move focus, `↵`/`Space` select, `→`/`←` expand/collapse groups, `Home`/`End`, typeahead `a-z` | `role="navigation"`, `aria-current="page"` on active link |
 | Select / MultiSelect | `↑↓` navigate dropdown, `↵` select/toggle, `Esc` close, `Home`/`End` | `role="combobox"`, `aria-expanded`, `aria-selected` |
 | Menu | `↑↓` navigate items, `↵`/`Space` select, `Esc` close + return focus | `role="menu"`, `role="menuitem"` |
@@ -300,7 +300,7 @@ intercepts those clicks and would double-fire.
 ## Which component when
 
 | Need | Component | Data prop | Callback |
-|------|-----------|-----------|----------|
+| ------ | ----------- | ----------- | ---------- |
 | Vertical navigable list (sidebar nav, option list) | `List` | `items` | `onselect` |
 | Hierarchical tree with expand/collapse | `Tree` | `items` | `onselect` |
 | Dropdown single selection | `Select` | `items` | `onchange` |

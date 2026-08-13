@@ -23,7 +23,7 @@ Users cannot customize chart series colors, opacity, or series ordering without 
 The right split:
 
 | Concern | Where | When |
-|---------|-------|------|
+| --------- | ------- | ------ |
 | UI theme colors, dark mode, icon shortcuts | `presetRokkit` → CSS vars | Build time |
 | Chart series colors, opacity, symbols, patterns | `ChartProvider` / `createChartPreset()` | Runtime |
 | Config source of truth | `rokkit.config.js` (shared file) | Both read from it |
@@ -269,7 +269,7 @@ Note: `BarChart` grouped bars require no changes — grouping is automatic when 
 ## Files affected
 
 | File | Change |
-|------|--------|
+| ------ | -------- |
 | `packages/chart/src/lib/brewing/palette.json` | **Delete** |
 | `packages/chart/src/lib/brewing/colors.js` | Rewrite `assignColors()` to use shade mapping |
 | `packages/chart/src/lib/preset.js` | **New** — `defaultPreset`, `createChartPreset()` |

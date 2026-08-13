@@ -17,7 +17,7 @@
 ### New files (created)
 
 | Path | Responsibility |
-|---|---|
+| --- | --- |
 | `apps/learn/scripts/ts-doc-to-md.mjs` | One-shot converter — strips `export const xDocs = \`…\`` scaffolding and unescapes backticks / `${...}`. Throwaway. |
 | `apps/learn/src/lib/guides/index.ts` | Exports the ordered `guides` array, `findGuide(slug)`, and a memoised minisearch index. Single source of truth. |
 | `apps/learn/src/lib/guides/GuidePage.svelte` | Moved from `src/lib/koan/components/GuidePage.svelte` — markdown renderer with prose styling. |
@@ -34,7 +34,7 @@
 ### Modified files
 
 | Path | Change |
-|---|---|
+| --- | --- |
 | `apps/learn/src/lib/koan/catalog.ts` | Remove 11 guide imports + catalog entries + intent-map entries. |
 | `apps/learn/src/lib/koan/shell.svelte.ts` | Remove `guide-*` literals from `ShellDemoType` union. |
 | `apps/learn/src/lib/koan/demos/<component>/meta.ts` × 48 | Swap import: `import { xDocs } from './docs'` → `import docs from './docs.md?raw'`. Update `docs: xDocs` → `docs`. |
@@ -42,7 +42,7 @@
 ### Deleted files
 
 | Path | Reason |
-|---|---|
+| --- | --- |
 | `apps/learn/src/lib/koan/demos/guide-*/` × 11 folders | Whole guide demos retired (meta, index, content). |
 | `apps/learn/src/routes/app/guide-<each-slug>/` × 11 folders | Replaced by single dynamic `app/guide-[slug]` redirect. |
 | `apps/learn/src/lib/koan/components/GuidePage.svelte` | Moved to `src/lib/guides/`. |
@@ -61,6 +61,7 @@
 Build the throwaway `.ts` → `.md` converter, then dry-run it against one guide and one component-doc file to verify output. No file system writes in production paths yet — the script writes to `apps/learn/.tmp-md-migration/` first.
 
 **Files:**
+
 - Create: `apps/learn/scripts/ts-doc-to-md.mjs`
 - Create: `apps/learn/scripts/ts-doc-to-md.test.mjs`
 
@@ -162,7 +163,8 @@ cd apps/learn && node scripts/ts-doc-to-md.mjs src/lib/koan/demos/guide-getting-
 ```
 
 Expected: two files created — `src/lib/koan/demos/guide-getting-started/content.md` and `src/lib/koan/demos/button/docs.md`. Open both manually and confirm:
-- No `\`` or `\${` sequences remain.
+
+- No `\`` or`\${` sequences remain.
 - The first heading (`# Getting Started`, `## A flexible interactive primitive`) is on line 1.
 - A code block in each file looks correct in a markdown preview.
 
@@ -190,6 +192,7 @@ git commit -m "chore(learn): add ts-doc-to-md converter for prose-doc migration"
 Run the converter against every `<demo>/docs.ts` file, swap the `meta.ts` import for each, delete the `.ts` files, verify build still works.
 
 **Files:**
+
 - Run converter against: `apps/learn/src/lib/koan/demos/*/docs.ts` (48 files)
 - Modify: `apps/learn/src/lib/koan/demos/<component>/meta.ts` × 48
 
@@ -249,6 +252,7 @@ For each `<component>` in:
 `avatar`, `badge`, `breadcrumbs`, `button-group`, `card`, `carousel`, `chart`, `code-group`, `code`, `combo`, `date-picker`, `divider`, `dropdown`, `effects`, `floating-action`, `floating-navigation`, `form`, `grid`, `lazy-tree`, `list`, `markdown-renderer`, `menu`, `message`, `multi-select`, `palette-manager`, `pill`, `progress`, `range`, `rating`, `search-filter`, `select`, `stack`, `status-list`, `stepper`, `swatch`, `switch`, `table`, `tabs`, `theme-wizard`, `timeline`, `toasts`, `toggle`, `toolbar`, `tooltip`, `tree`, `upload-progress`, `upload-target`
 
 …apply the same edit pattern as Step 2.2 to `apps/learn/src/lib/koan/demos/<component>/meta.ts`:
+
 - Change `import { <camelCaseName>Docs } from './docs'` → `import docs from './docs.md?raw'`
 - Change `docs: <camelCaseName>Docs` → `docs`
 
@@ -299,6 +303,7 @@ cd apps/learn && bun run dev
 ```
 
 Then in a browser:
+
 1. Open `http://localhost:5173/app/table` and click the **Docs** tab on the canvas. Confirm the markdown renders identically to before — headings, code blocks, lists.
 2. Repeat for `/app/form` and `/app/chart`.
 
@@ -318,6 +323,7 @@ git commit -m "refactor(learn): migrate 48 component docs.ts to docs.md (Vite ?r
 Create the layout, GuidePage component, `guides` index module, and search component. Routes will resolve from an empty `guides` array for now — Task 4 fills the content.
 
 **Files:**
+
 - Create: `apps/learn/src/lib/guides/index.ts`
 - Create: `apps/learn/src/lib/guides/GuidePage.svelte`
 - Create: `apps/learn/src/lib/guides/Search.svelte`
@@ -818,6 +824,7 @@ cd apps/learn && bun run build && bun run dev
 ```
 
 Then in a browser:
+
 1. Visit `http://localhost:5173/guides` — index page lists all 11 stubs grouped by category.
 2. Click any guide — renders the stub markdown inside the layout.
 3. Resize browser to 1024×600 and visit `/guides/getting-started`. Confirm: page itself does not scroll, content column scrolls if content overflows.
@@ -840,12 +847,13 @@ git commit -m "feat(learn): scaffold /guides section (layout, search, registry, 
 Run the converter against each `guide-*/content.ts` (writing to the matching slug folder under `src/lib/guides/`), overwriting the stubs.
 
 **Files:**
+
 - Replace 11 files under `apps/learn/src/lib/guides/<slug>/content.md`
 
 The mapping from old folder name to new slug:
 
 | Old | New slug |
-|---|---|
+| --- | --- |
 | `guide-getting-started` | `getting-started` |
 | `guide-data-binding` | `data-binding` |
 | `guide-composability` | `composability` |
@@ -918,6 +926,7 @@ git commit -m "content(learn): migrate 11 guide bodies from .ts template literal
 Strip the eleven guide entries from the `/app` catalog and demo type union, delete the old route folders and demo folders, add a catch-all redirect.
 
 **Files:**
+
 - Modify: `apps/learn/src/lib/koan/catalog.ts`
 - Modify: `apps/learn/src/lib/koan/shell.svelte.ts`
 - Create: `apps/learn/src/routes/app/guide-[slug]/+page.ts`
@@ -1021,6 +1030,7 @@ cd apps/learn && grep -rn "guide-\(getting-started\|data-binding\|composability\
 Expected: a small number of matches, all inside `src/lib/guides/index.ts` (the new manifest) or `src/routes/app/guide-[slug]/+page.ts` (the redirect). If anything else turns up — e.g. references in `match.svelte.ts`, conversation seed data, the welcome screen suggestions — remove them.
 
 Common spots to double-check:
+
 - `apps/learn/src/lib/koan/match.svelte.ts` — intent rules that mention guide demo IDs.
 - `apps/learn/src/lib/koan/components/Welcome.svelte` and `ComposerSuggestions.svelte` — seeded suggestion chips.
 - `apps/learn/src/lib/koan/conversations.svelte.ts` — any seed conversations referencing guide demos.
@@ -1048,6 +1058,7 @@ cd apps/learn && bun run dev
 ```
 
 In a browser:
+
 1. `http://localhost:5173/app/guide-accessibility` → should redirect to `/guides/accessibility`.
 2. `http://localhost:5173/app` → search box / suggestions no longer surface "Accessibility & i18n" or other guide titles.
 3. `http://localhost:5173/guides/accessibility` → renders correctly with full content, no chat shell, scroll works.
@@ -1137,7 +1148,7 @@ git commit -m "docs(learn): mark guides-section split complete, update llms refe
 **Spec coverage:**
 
 | Spec requirement | Implementing task(s) |
-|---|---|
+| --- | --- |
 | URL: `/guides/<slug>` group | Task 3.8, 3.9 |
 | Layout: top-bar + 240px TOC + content | Task 3.8 |
 | Scroll containers (load-bearing) | Task 3.8 (CSS includes the `min-height: 0` chain) |

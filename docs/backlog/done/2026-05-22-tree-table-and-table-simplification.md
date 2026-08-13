@@ -2,6 +2,7 @@
 
 **Date:** 2026-05-22
 **Status:** Closed 2026-06-03 — both parts shipped.
+
 - Part A landed in `4a6022a4 feat(states): add ProxyTable as tabular data layer` + `cfaf066a refactor(ui): migrate Table to ProxyTable + Wrapper + Navigator class` (Table.svelte script 144 → 93 lines, all 33 existing specs pass unchanged).
 - Part B landed in `0631cf65 feat(ui): add TreeTable + nestByPath/nestByColumns helpers` with the per-sibling-sort `ProxyTableTree`, the `nestByPath` / `nestByColumns` data helpers, and the `<TreeTable>` component. Demo at `apps/learn/src/lib/koan/demos/tree-table/`.
 - Follow-up tweak `9cd20d4d refactor(ui): TreeTable hierarchy column shows label at every level` cleaned up the first-column convention for `nestByColumns` and switched chevrons to the `node-opened`/`node-closed` semantic icons.
@@ -66,7 +67,7 @@ Everything else — the action listener, the manual `focusByKey`, the focus-in h
 `<TreeTable>` accepts **only nested rows** (`children: []`). Path-string and column-array shapes are converted *before* the data hits the component, via standalone helpers in `@rokkit/data`. Keeps the component focused on render + navigation; helpers are testable in isolation.
 
 | Mode | Data shape | How it reaches the component |
-|---|---|---|
+| --- | --- | --- |
 | **Nested rows** *(canonical)* | rows with `children: []` | passed directly |
 | **Path string** | flat rows + one column with a separator-delimited path | `nestByPath(rows, { column: 'path', separator: '/' })` |
 | **Column array** | flat rows; group-by columns define levels | `nestByColumns(rows, ['region', 'country', 'city'])` |
@@ -116,6 +117,7 @@ Shared `column + sort` logic factored into a small `TableColumns` helper consume
 ### Why not one class with a `hierarchy` flag?
 
 Tried mentally and rejected:
+
 - `data` getter returns two different shapes (flat array vs flatView with levels/lineTypes).
 - Sort algorithms diverge.
 - Focus/move semantics diverge (`expand`/`collapse` only meaningful for tree).

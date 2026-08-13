@@ -16,12 +16,14 @@
 ## File Structure
 
 **Create:**
+
 - `packages/core/src/named-tokens.ts` — 18-name vocabulary, named→shade map, z-collapse table, role lookup. Pure constants + tiny helpers; no Theme dependency.
 - `packages/core/spec/named-tokens.spec.js` — tests for the constants and helpers.
 - `packages/unocss/src/custom-tokens.js` — resolver for the `custom` config block (palette refs, raw strings, `{ light, dark }`, collision detection, color-vs-non-color heuristic).
 - `packages/unocss/spec/custom-tokens.spec.js` — resolver tests.
 
 **Modify:**
+
 - `packages/core/src/theme.ts` — add `getNamedTokens(mode)`, `getZAliasesForCore(role)`, `getZAliasesForExtended(role)` methods. Keep existing `getPalette` / `getZScaleCSS` working (no breaking change).
 - `packages/core/src/index.ts` — re-export new constants from `named-tokens.ts`.
 - `packages/core/spec/theme.spec.js` — tests for new methods.
@@ -37,6 +39,7 @@
 ## Task 1: Named-token vocabulary constants
 
 **Files:**
+
 - Create: `packages/core/src/named-tokens.ts`
 - Create: `packages/core/spec/named-tokens.spec.js`
 
@@ -383,6 +386,7 @@ EOF
 ## Task 2: Theme.getNamedTokens() — palette-resolved named layer
 
 **Files:**
+
 - Modify: `packages/core/src/theme.ts` (add method, ~30 lines)
 - Modify: `packages/core/spec/theme.spec.js` (add describe block)
 
@@ -576,6 +580,7 @@ EOF
 ## Task 3: Theme.getZAliasesForCore() — back-compat alias layer
 
 **Files:**
+
 - Modify: `packages/core/src/theme.ts` (add method, ~25 lines)
 - Modify: `packages/core/spec/theme.spec.js`
 
@@ -752,6 +757,7 @@ EOF
 ## Task 4: Theme.getZAliasesForExtended() — full-palette aliases
 
 **Files:**
+
 - Modify: `packages/core/src/theme.ts` (add method, ~15 lines)
 - Modify: `packages/core/spec/theme.spec.js`
 
@@ -846,6 +852,7 @@ EOF
 ## Task 5: Config — `tokens` mode field
 
 **Files:**
+
 - Modify: `packages/unocss/src/config.js`
 - Modify: `packages/unocss/spec/config.spec.js`
 
@@ -1009,6 +1016,7 @@ EOF
 ## Task 6: Custom-token resolver
 
 **Files:**
+
 - Create: `packages/unocss/src/custom-tokens.js`
 - Create: `packages/unocss/spec/custom-tokens.spec.js`
 
@@ -1239,6 +1247,7 @@ EOF
 ## Task 7: Preset preflights — core mode emit
 
 **Files:**
+
 - Modify: `packages/unocss/src/preset.ts`
 - Modify: `packages/unocss/spec/preset.spec.js`
 
@@ -1444,6 +1453,7 @@ EOF
 ## Task 8: Preset shortcuts — named tokens + z-routing
 
 **Files:**
+
 - Modify: `packages/unocss/src/preset.ts`
 - Modify: `packages/unocss/spec/preset.spec.js`
 
@@ -1580,6 +1590,7 @@ EOF
 ## Task 9: Custom-token shortcuts
 
 **Files:**
+
 - Modify: `packages/unocss/src/preset.ts`
 - Modify: `packages/unocss/spec/preset.spec.js`
 
@@ -1729,6 +1740,7 @@ EOF
 ## Task 10: Demo config smoke test
 
 **Files:**
+
 - Modify: `demo/rokkit.config.js`
 
 - [ ] **Step 1: Add tokens and custom blocks to the demo config**
@@ -1753,6 +1765,7 @@ Expected: Build succeeds; preset compiles without errors.
 - [ ] **Step 3: Manually verify generated CSS includes the named layer**
 
 Inspect generated CSS in the dev-server output or build artifact. Confirm presence of:
+
 - `--paper:` `--paper-soft:` `--ink:` `--primary:` in `:root`
 - `--canvas:` `--canvas-grid:` `--canvas-bleed:` in `:root`
 - `--canvas-bleed:` (different value) in `[data-mode="dark"]`
@@ -1784,6 +1797,7 @@ EOF
 ## Task 11: README and config docs
 
 **Files:**
+
 - Modify: `packages/unocss/README.md`
 
 - [ ] **Step 1: Add a "Token modes" section**
@@ -1922,6 +1936,7 @@ EOF
 ## Self-Review Notes
 
 **Spec coverage check:**
+
 - Named vocabulary (18 tokens): Task 1 + Task 2 ✓
 - Wiring strategy W3 (trim-with-aliases): Task 7 ✓
 - Z-collapse mapping: Task 1 + Task 3 ✓
@@ -1936,6 +1951,7 @@ EOF
 **Type consistency:** `NAMED_TOKENS`, `NAMED_TOKEN_SHADE_MAP`, `NAMED_TOKEN_ROLE_MAP`, `Z_COLLAPSE_MAP_SURFACE`, `Z_COLLAPSE_MAP_INK` used consistently across Tasks 1, 2, 3, 4, 8. Method names `getNamedTokens`, `getZAliasesForCore`, `getZAliasesForExtended` consistent across Tasks 2, 3, 4, 7. `resolveCustomTokens`, `validateCustomTokenNames`, `isColorValue` consistent across Tasks 6, 7, 9.
 
 **Open questions from spec to surface during implementation:**
+
 - The spec's open question on config key name uses `custom` — this plan commits to that.
 - The spec's open question on `on-primary` derivation uses "surface.50" — this plan commits to that (matches "white-on-primary" default; skins can override via custom token).
 - `shadow-tint` is included in the vocabulary but no Uno shortcut emits for it (its purpose is `box-shadow: 0 1px 3px var(--shadow-tint)` in hand-written CSS). Task 8 explicitly skips shortcuts for it.

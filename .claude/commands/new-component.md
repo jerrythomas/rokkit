@@ -7,6 +7,7 @@ You are creating a new Rokkit UI component: **$ARGUMENTS**
 ## Step 1 — Read the Blueprint
 
 Read `docs/llms/component-blueprint.md` in full before writing any code. It is the single authoritative source for:
+
 - Tier classification (pick Tier 1–4 based on the decision table)
 - Standard props API
 - Data-attribute conventions
@@ -29,6 +30,7 @@ Using the decision table in the blueprint, state which tier this component is an
 Follow the blueprint exactly. Use the Tier example in §11 as a template.
 
 Key invariants (non-negotiable):
+
 - **Data attributes only** — never style by class or tag name
 - **`proxy.label`** — default text field is `label`, not `text`
 - **`handleSelect` outside `$derived`** — define at component scope or bindings won't propagate

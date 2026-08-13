@@ -58,21 +58,27 @@ export interface ConversationSummary {
 ```
 
 ### `ChatMessage.svelte`
+
 One message; used by `ChatTimeline`, exported standalone.
+
 - **Props:** `message: ChatMessage`, `relativeTime?: boolean`.
 - **Snippets:** `body(message)` — default renders `message.text` via `MarkdownRenderer`; `avatar(message)`, `label(message)` optional.
 - **Renders:** role-based alignment + bubble + label/avatar/timestamp chrome; reflects `status` (e.g. streaming caret, error styling) on the default body.
 - Data-attribute hooks: `data-chat-message`, `data-role`, `data-status`.
 
 ### `ChatTimeline.svelte`
+
 The timeline (message list).
+
 - **Props:** `messages: ChatMessage[]`, `relativeTime?`, `autoscroll = true`.
 - **Snippets:** `message(msg)` — override the whole bubble body (this is where consumers render charts/forms/interleaved parts; default delegates to `ChatMessage`); `empty`.
 - **Interactions:** elements inside a bubble (suggestion chips, an inline form submit) are rendered by the consumer's `message` snippet and wire their own handlers directly — the timeline exposes no `onaction`; it stays a pure renderer. (Add a specific event later only if a *built-in* affordance like retry/copy is introduced.)
 - **Behavior:** auto-scrolls to the newest message when `messages` grows or the last message's content changes (streaming); respects `autoscroll=false`.
 
 ### `ChatComposer.svelte`
+
 The interaction/composer.
+
 - **Props:** `value = $bindable('')`, `placeholder?`, `disabled?`, `busy?` (e.g. while awaiting a response).
 - **Events:** `onsubmit(text)` (Enter, when non-empty + not busy; Shift+Enter inserts newline), `onchange(value)` (every keystroke → consumer drives predictions/autocomplete).
 - **Snippets:** `suggestions`, `toolbar`, `leading` (e.g. brand mark).
@@ -80,13 +86,17 @@ The interaction/composer.
 - Data-attribute hooks: `data-chat-composer`.
 
 ### `ChatHistory.svelte`
+
 The conversation history.
+
 - **Props:** `conversations: ConversationSummary[]`, `activeId?: string | null`, `relativeTime?`.
 - **Events:** `onselect(id)`, optional `onnew()`, `ondelete(id)`.
 - **Snippets:** `item(conversation)` (override row render), `empty`, `header`.
 
 ### `ChatShell.svelte`
+
 Composed convenience wrapper — pure layout over the three primitives (no store).
+
 - **Props:** `messages`, `conversations?`, `activeConversationId?`, `value = $bindable('')`, `placeholder?`, `busy?`.
 - **Events:** forwards `onsubmit`, `onchange`, `onselectConversation`, `onnew`, `onaction`.
 - **Snippets:** pass-through `message`, `suggestions`, `toolbar`, `leading`, `historyItem`, `empty`.
@@ -109,6 +119,7 @@ The components are transport-free. The wiring `onsubmit → append user message 
 ## Migration (both surfaces — avoid duplication)
 
 **Phase order in the plan:**
+
 1. Build the 5 components + `types/chat.ts` + unit tests + a live doc page (`apps/learn`), exported from `@rokkit/ui` barrels.
 2. **Migrate `/chat`:** replace the app-local `$lib/chat` lib with the `@rokkit/ui` components; move `BlockList`/`InlineComponent`'s chart/form switch into the consumer `message` snippet; keep the `chat-demo` store as orchestration. Delete `$lib/chat`.
 3. **Migrate Koan `/app`:** replace `ChatPanel`/`TimelineList`/`ConversationList` with the shared components (or `ChatShell`); delete the duplicates. (Koan's text+demo-link responses become a simple `message` snippet.)

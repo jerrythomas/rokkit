@@ -11,6 +11,7 @@
 **Design:** `docs/design/19-command-system.md`.
 
 **Conventions (read first):**
+
 - Singleton store: `packages/states/src/vibe.svelte.js` (`#field = $state(...)` + `export const x = new X()`).
 - Messages namespace: `packages/states/src/messages.svelte.js` (`field = $state({ ...defaultMessages.field })`).
 - Action: `packages/actions/src/dismissable.svelte.js` (`export function f(node){ $effect(() => { const c = on(...); return () => c() }) }`).
@@ -23,7 +24,7 @@
 ## File Structure
 
 | File | Responsibility |
-|------|----------------|
+| ------ | ---------------- |
 | `packages/states/src/commands.svelte.js` (create) | `CommandRegistry` + `commands` singleton + `Command` typedef + `normalizeShortcut`/`eventToShortcut` |
 | `packages/states/src/index.js` (modify) | export `commands` |
 | `packages/states/src/messages.svelte.js` (modify) | add `command` messages namespace |
@@ -769,7 +770,7 @@ git commit -m "feat(themes): theme the command palette across all styles"
 <CommandPalette bind:open={paletteOpen} />
 ```
 
-  - Wire `new-conversation` / `jump-to-demo` to the actual koan store functions (check `apps/learn/src/lib/koan/store.svelte.ts` for the real action names; use what exists). Validate the `.svelte` file with the Svelte MCP autofixer.
+- Wire `new-conversation` / `jump-to-demo` to the actual koan store functions (check `apps/learn/src/lib/koan/store.svelte.ts` for the real action names; use what exists). Validate the `.svelte` file with the Svelte MCP autofixer.
 
 - [ ] **Step 2: Manual smoke test** — `cd apps/learn && bun run dev`, open `/app`, press Cmd/Ctrl+K → palette opens; type to filter; Enter runs (e.g. theme toggles). Esc closes. (Confirm the decorative `⌘K` badge now does something.)
 
@@ -806,7 +807,7 @@ git commit -m "feat(learn): wire command palette into the app shell"
 	}
 ```
 
-  - Keep `handlePrevious`/`handleNext`/`handleSelect`, `focusedIndex`, roving `tabindex`, `onfocusin` as-is. Validate with the Svelte MCP autofixer.
+- Keep `handlePrevious`/`handleNext`/`handleSelect`, `focusedIndex`, roving `tabindex`, `onfocusin` as-is. Validate with the Svelte MCP autofixer.
 
 - [ ] **Step 2: Verify ToC + actions suites still pass** — `bunx vitest run --project app` and `bunx vitest run --project actions` (the latter still has `navigable`/`kbd` present at this point) → PASS.
 
@@ -819,6 +820,7 @@ git commit -m "feat(learn): wire command palette into the app shell"
 ```bash
 grep -rn "navigable\|kbd\.js\|getKeyboardAction\|defaultNavigationOptions\|createKeyboardActionMap" packages/ apps/ --include=*.js --include=*.ts --include=*.svelte | grep -v node_modules | grep -v '/dist/'
 ```
+
 Expected: no `import`/`use:` hits (only the design doc / unrelated comments). Then `bunx vitest run --project actions` and `bunx vitest run --project app` → PASS.
 
 - [ ] **Step 6: Update actions docs** — remove `navigable`/`kbd` references in `packages/actions/README.md` and `docs/llms/packages/actions.txt`.
@@ -856,6 +858,7 @@ description: Use when adding keyboard shortcuts, a command palette, or app-level
 ```
 
 Body (match the voice/structure of `semantic-styles-rokkit`; ~150–250 lines, runnable Svelte 5 snippets verified against the code from Tasks 1–6):
+
 - `# Rokkit Command System`
 - `## The three pieces` — `commands` (states), `shortcuts` (actions), `CommandPalette` (ui), parallel to vibe/themable/ThemeSwitcherToggle.
 - `## Defining commands` — the `Command` shape (`id`/`label`/`run`/`shortcut`/`group`/`global`/`enabled`); a runnable `commands.registerMany([...])`.

@@ -13,7 +13,7 @@
 ## File Map
 
 | File | Action | Responsibility |
-|------|--------|----------------|
+| ------ | -------- | ---------------- |
 | `packages/core/src/constants.js` | Modify | Add `ink` to `DEFAULT_THEME_MAPPING`, add `INVERTED_ROLES` set |
 | `packages/core/src/theme.ts` | Modify | Inverted z-scale in `getZScaleCSS()`, alias-aware `getColorRules()` + `getPalette()` |
 | `packages/core/spec/theme.spec.js` | Modify | Tests for ink z-scale inversion, alias resolution, custom roles |
@@ -33,6 +33,7 @@
 ## Task 1: Add ink to DEFAULT_THEME_MAPPING + INVERTED_ROLES
 
 **Files:**
+
 - Modify: `packages/core/src/constants.js:155-166`
 - Test: `packages/core/spec/theme.spec.js`
 
@@ -115,6 +116,7 @@ git commit -m "feat(core): add ink to DEFAULT_THEME_MAPPING with surface fallbac
 ## Task 2: Inverted z-scale for ink in getZScaleCSS()
 
 **Files:**
+
 - Modify: `packages/core/src/theme.ts:257-274`
 - Test: `packages/core/spec/theme.spec.js`
 
@@ -211,6 +213,7 @@ git commit -m "feat(core): inverted z-scale for ink role in getZScaleCSS()"
 ## Task 3: Alias detection + validation in config.js
 
 **Files:**
+
 - Modify: `packages/unocss/src/config.js`
 - Test: `packages/unocss/spec/config.spec.js`
 
@@ -383,6 +386,7 @@ git commit -m "feat(unocss): alias validation — circular, chained, missing tar
 ## Task 4: Alias-aware color rules + shortcuts in preset.ts
 
 **Files:**
+
 - Modify: `packages/unocss/src/preset.ts:44-168`
 - Test: `packages/unocss/spec/preset.spec.js`
 
@@ -601,6 +605,7 @@ git commit -m "feat(unocss): alias-aware color rules and semantic shortcuts"
 ## Task 5: Generalize dual-palette to all roles
 
 **Files:**
+
 - Modify: `packages/unocss/src/preset.ts` (already partially supports dual-palette for surface)
 - Test: `packages/unocss/spec/preset.spec.js`
 
@@ -643,6 +648,7 @@ git commit -m "test(unocss): verify generalized dual-palette works on all roles"
 ## Task 6: Source-level theme distribution
 
 **Files:**
+
 - Modify: `packages/themes/package.json`
 - Modify: `demo/src/app.css`
 - Modify: `site/src/app.css`
@@ -709,6 +715,7 @@ configured (already the default setup)."
 ## Task 7: Add ink to demo config + migrate zen-sumi text tokens
 
 **Files:**
+
 - Modify: `demo/rokkit.config.js:99-121`
 - Modify: `packages/themes/src/zen-sumi/*.css` (selective text token migration)
 
@@ -737,7 +744,7 @@ Search for `text-surface-z7`, `text-surface-z8`, `text-surface-z9` in zen-sumi C
 Since ink is inverted, `text-surface-z9` (dark text in light mode) becomes `text-ink-z1` (dark text from the ink scale). The mapping:
 
 | Old token | z-level meaning | New token |
-|-----------|----------------|-----------|
+| ----------- | ---------------- | ----------- |
 | `text-surface-z9` | darkest text | `text-ink-z1` |
 | `text-surface-z8` | near-dark text | `text-ink-z2` |
 | `text-surface-z7` | medium-dark text | `text-ink-z3` |
@@ -781,6 +788,7 @@ git commit -m "feat(demo): add ink role to zen-sumi skin, migrate text tokens"
 ## Task 8: Contrast warning for ink/surface pairs
 
 **Files:**
+
 - Modify: `packages/unocss/src/preset.ts`
 - Test: `packages/unocss/spec/preset.spec.js`
 
@@ -903,6 +911,7 @@ git commit -m "feat(unocss): build-time contrast warning for low ink/surface pai
 ## Task 9: Update CI + docs references
 
 **Files:**
+
 - Modify: `packages/cli/src/init.js` (import paths)
 - Modify: `docs/llms/packages/themes.txt`
 - Modify: `docs/llms/index.txt`
@@ -917,11 +926,14 @@ Verify: `grep -n "themes" packages/cli/src/init.js`
 - [ ] **Step 2: Update docs/llms references**
 
 In `docs/llms/index.txt`, replace:
+
 ```
 @import '@rokkit/themes/dist/base';
 @import '@rokkit/themes/dist/rokkit';
 ```
+
 with:
+
 ```
 @import '@rokkit/themes/base.css';
 @import '@rokkit/themes/rokkit.css';
@@ -968,6 +980,7 @@ Expected: 0 errors
 
 Run: `cd demo && bun run build && npx vite preview --port 4177 &`
 Navigate to `http://localhost:4177/settings`, switch to zen-sumi, verify:
+
 - Light mode renders correctly
 - Dark mode renders correctly
 - Focus rings visible on interactive elements

@@ -10,11 +10,13 @@ Add skin customization to the Settings page — users can pick from predefined s
 ## Features
 
 ### Predefined Skins
+
 - Show available skins from `rokkit.config.js` `skins` map (default, ocean, violet, rose, emerald)
 - Each skin displayed as a swatch card with preview colors
 - Clicking a skin applies it immediately (updates `body.dataset.skin` or equivalent)
 
 ### Custom Color Picker
+
 - For each semantic role (surface, primary, secondary, accent, success, warning, danger):
   - Show current mapped palette name and color swatch
   - Allow picking a different palette from the available set (Tailwind defaults + custom palettes)
@@ -22,6 +24,7 @@ Add skin customization to the Settings page — users can pick from predefined s
 - Changes persisted to localStorage alongside other settings
 
 ### Integration with Ink (future)
+
 - Once the ink role ships, include ink in the customizable roles
 - Show ink/surface contrast preview at matching z-levels
 

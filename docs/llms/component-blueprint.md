@@ -8,7 +8,7 @@
 ## 1. Pick the Right Tier
 
 | Tier | Pattern | Primitives used | When |
-|------|---------|-----------------|------|
+| ------ | --------- | ----------------- | ------ |
 | 1 | Display only | — | No items, no interaction (Badge, Card, Message) |
 | 2 | Data-driven display | `ProxyTree` | `items` array, click handlers, no keyboard nav (BreadCrumbs, Sparkline) |
 | 3 | Persistent interactive list | `Wrapper` + `Navigator` | Always-visible, keyboard navigable list (List, Tree, Tabs, Toggle) |
@@ -52,6 +52,7 @@ let {
 ```
 
 **Rules:**
+
 - `value` is always the **extracted primitive** (`item[fields.value]`), not the full object
 - `onchange` for inputs/selectors, `onselect` for navigation/list components
 - `icons` and `labels` are shallow-merged over defaults — always merge, never replace
@@ -89,6 +90,7 @@ let {
 ```
 
 **In Svelte templates, use conditional undefined to toggle boolean attrs:**
+
 ```svelte
 data-selected={isSelected || undefined}
 data-open={isOpen || undefined}
@@ -96,6 +98,7 @@ data-disabled={disabled || undefined}
 ```
 
 **CSS always selects by attribute, never by tag or class:**
+
 ```css
 [data-list-item][data-selected] { ... }   /* correct */
 .list-item.selected { ... }               /* forbidden */
@@ -121,6 +124,7 @@ proxy.has('field') // true if field exists and is non-null/undefined
 ```
 
 **Default field mapping** (`PROXY_ITEM_FIELDS`):
+
 ```js
 { label: 'label', value: 'value', icon: 'icon', href: 'href',
   children: 'children', type: 'type', disabled: 'disabled',
@@ -326,6 +330,7 @@ Every hardcoded user-visible string must come from `messages`.
 ```
 
 **Adding a new component namespace** — edit `packages/states/src/messages.svelte.js`:
+
 ```js
 // In defaultMessages object:
 myComponent: { label: 'My Component', action: 'Do thing' }
@@ -335,6 +340,7 @@ myComponent = $state({ ...defaultMessages.myComponent })
 ```
 
 **App-level translation:**
+
 ```js
 messages.register('fr', { list: { label: 'Liste' }, tree: { expand: 'Ouvrir' } })
 messages.setLocale('fr')
@@ -368,11 +374,13 @@ Every component with renderable items must support snippet override.
 ```
 
 `resolveSnippet(snippets, proxy, fallback)` checks:
+
 1. `proxy.get('snippet')` → named snippet by item field
 2. `fallback` constant (`ITEM_SNIPPET = 'item'`, `GROUP_SNIPPET = 'group'`)
 3. Returns `undefined` if neither exists
 
 **Consumer usage:**
+
 ```svelte
 <MyList {items}>
   {#snippet item(proxy)}
@@ -609,11 +617,13 @@ A realistic minimal Tier 3 component (always-visible, keyboard navigable, remova
 ## 12. Zero-Errors Policy
 
 Before touching any code:
+
 ```bash
 bun run test:ci && bun run lint   # record baseline — fix any errors FIRST
 ```
 
 After all changes:
+
 ```bash
 bun run test:ci && bun run lint   # must be zero errors to be done
 cd packages/themes && bun run build  # if CSS changed

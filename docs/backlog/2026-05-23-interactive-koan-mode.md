@@ -10,7 +10,7 @@
 Replace the current `setTimeout(1500)` + lexical `runMatch` with a real LLM-driven intent router. Three intent classes the chat needs to route between:
 
 | Intent | Example | What renders |
-|---|---|---|
+| --- | --- | --- |
 | **Show me a component** | "Tabs with 5 panes", "sortable table" | mount the matching demo on the canvas, optionally with parameters |
 | **How-to question** | "How does theming work?", "How do I bind a list?" | render a response composition in the chat stream — prose + **inline components** + code snippets — no canvas mount |
 | **Refine the current demo** | "switch style to rokkit", "add a column", "make it dark" | mutate state on the *already-mounted* canvas; no new mount, no new route |
@@ -100,7 +100,7 @@ Fits if the demo is hosted on infrastructure we control with a managed API key.
 Run a small chat model entirely in the browser via WebGPU/WASM.
 
 | Library | What it does | Models |
-|---|---|---|
+| --- | --- | --- |
 | **transformers.js** (Xenova / Hugging Face) | General-purpose JS runtime for transformer models; broad model support. | Phi-3 mini, TinyLlama, Llama-3.2-1B-Instruct, etc. |
 | **web-llm** (MLC) | Specialized chat-model runtime, WebGPU-first, optimized inference. | Llama-3, Mistral, Phi, Qwen, Gemma — chat-tuned variants. |
 
@@ -130,6 +130,7 @@ Two ways to expose them, picked per case:
 **A. Dynamic on one page (preferred for most variations).**
 
 One route per component (`/app/tabs`). The page reads a `variant` URL param or chat-driven state, and swaps:
+
 - the data passed to the component (e.g. fewer items, grouped data, async-loaded data)
 - the field mapping (e.g. `fields={'{ label: title, value: slug }'}` instead of defaults)
 - the layout config (e.g. orientation prop, density)
@@ -139,6 +140,7 @@ One route per component (`/app/tabs`). The page reads a `variant` URL param or c
 The component stays the same Svelte instance — only its props change. The chat-left messages update to reflect the variation. The URL is `/app/tabs?variant=snippets` and is still bookmarkable.
 
 This is the cleaner pattern because:
+
 - One state owner per component (the page).
 - Side-by-side comparison: the user can toggle variations interactively without leaving the page.
 - The LLM's "refine the current demo" intent maps to swapping the variant in place — no navigation.

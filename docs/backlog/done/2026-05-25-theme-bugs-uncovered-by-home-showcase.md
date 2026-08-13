@@ -85,6 +85,7 @@ focus inside it.
 Investigation:
 
 - `packages/themes/src/rokkit/tabs.css`:
+
   ```
   [data-style='rokkit'] [data-tabs-trigger][data-selected] {
     @apply bg-paper-mute text-ink-mute;
@@ -94,6 +95,7 @@ Investigation:
     @apply from-primary to-accent text-primary bg-gradient-to-b;
   }
   ```
+
 - Resting selection is intentionally flat; the gradient is the "active"
   affordance.
 - Additionally `--primary` and `--accent` resolve to the same color in

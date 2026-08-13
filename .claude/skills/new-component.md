@@ -12,13 +12,14 @@ Every new component ships with two things simultaneously: working code and a liv
 Pick the tier before writing a single line. Wrong tier = wrong architecture.
 
 | Tier | Pattern | When to Use | Examples |
-|------|---------|-------------|----------|
+| ------ | --------- | ------------- | ---------- |
 | **1** | Simple display | No `items`, no keyboard nav, display only | Button, Card, Badge, Message, Pill |
 | **2** | Data-driven display | `items` array rendered via ProxyItem, click handlers but no keyboard nav | BreadCrumbs, PaletteManager |
 | **3** | Interactive list | `items` + keyboard nav, persistent on-screen container | List, Tree, Tabs, Toggle, Toolbar |
 | **4** | Complex interactive | Dropdowns, lazy-loading, multi-select, nested controllers | Menu, Select, MultiSelect, LazyTree |
 
 **How to decide:**
+
 - Does it show a list of `items` the user navigates with arrow keys? → Tier 3
 - Does it show a dropdown of `items`? → Tier 4
 - Does it render an array of data without keyboard nav? → Tier 2
@@ -35,6 +36,7 @@ Data attributes are the only CSS hooks. Never use scoped classes.
 **Root element:** `data-<name>-root` or `data-<name>` (check existing components for precedent)
 
 **Child elements:** `data-<name>-<element>`
+
 ```
 data-list              — root nav element
 data-list-item         — leaf item button
@@ -44,6 +46,7 @@ data-list-separator    — <hr> divider
 ```
 
 **State attributes:** use `attr={value || undefined}` — `undefined` omits the attribute, keeping HTML clean
+
 ```svelte
 data-active={isActive || undefined}       <!-- present when true, absent when false -->
 data-disabled={disabled || undefined}
@@ -79,7 +82,7 @@ Icons are UnoCSS shortcuts (e.g. `state-error` → `i-rokkit:state-error`). Appl
 **Available icon groups in `DEFAULT_STATE_ICONS`:**
 
 | Group | Keys | Use for |
-|-------|------|---------|
+| ------- | ------ | --------- |
 | `accordion` | opened, closed | List groups, collapsible sections |
 | `folder` | opened, closed | Tree nodes |
 | `selector` | opened, closed | Select/Menu dropdowns |
@@ -170,6 +173,7 @@ No `items` prop. Data comes as direct props or children. No Navigator.
 ```
 
 **ProxyItem field access:**
+
 ```svelte
 proxy.label              // display text (→ item[fields.label ?? 'label'])
 proxy.value              // semantic value (→ item[fields.value ?? 'value'])
@@ -185,6 +189,7 @@ proxy.get('href')        // → item[fields.href ?? 'href']
 ```
 
 **Fields prop usage:**
+
 ```svelte
 <!-- Data: { name: 'Home', url: '/', img: '/logo.png' } -->
 <BreadCrumbs
@@ -311,6 +316,7 @@ proxy.get('href')        // → item[fields.href ?? 'href']
 ```
 
 **Navigator options:**
+
 ```typescript
 new Navigator(el, wrapper, {
   orientation: 'horizontal',  // default: 'vertical' — affects Arrow key bindings
@@ -320,6 +326,7 @@ new Navigator(el, wrapper, {
 ```
 
 **ARIA for Tier 3:**
+
 - Persistent list/nav: `role="listbox"` or `role="navigation"` on root, `role="option"` on items
 - Toggle group: `role="radiogroup"` on root, `role="radio"` + `aria-checked` on items
 - Tab list: `role="tablist"` on container, `role="tab"` + `aria-selected` on tabs, `role="tabpanel"` on panels
@@ -421,6 +428,7 @@ Extends Tier 3 with dropdown management, lazy-loading, or multi-select. Override
 ```
 
 **ARIA for Tier 4:**
+
 - Trigger: `aria-haspopup="listbox"` (or `"menu"`), `aria-expanded={isOpen}`
 - Dropdown: `role="listbox"` or `role="menu"` on container
 - Items: `role="option"` + `aria-selected` (listbox) or `role="menuitem"` (menu)
@@ -432,11 +440,13 @@ Extends Tier 3 with dropdown management, lazy-loading, or multi-select. Override
 ## Step 3: Exports
 
 Add to `packages/ui/src/components/index.ts`:
+
 ```typescript
 export { default as MyComponent } from './MyComponent.svelte'
 ```
 
 Add to `packages/ui/src/index.ts`:
+
 ```typescript
 export { MyComponent } from './components/index.js'
 ```
@@ -446,6 +456,7 @@ export { MyComponent } from './components/index.js'
 ## Step 4: Theme CSS
 
 **Base structural styles** (`packages/themes/src/base/<name>.css`):
+
 ```css
 /* Layout and structure only — no colors */
 [data-mycomponent] {
@@ -459,11 +470,13 @@ export { MyComponent } from './components/index.js'
 ```
 
 Import in `packages/themes/src/base/index.css`:
+
 ```css
 @import './<name>.css';
 ```
 
 **Theme visual styles** (`packages/themes/src/<theme>/<name>.css` for each theme):
+
 ```css
 /* rokkit: gradients and glows */
 [data-style='rokkit'] [data-mycomponent-item] {
@@ -477,6 +490,7 @@ Import in `packages/themes/src/base/index.css`:
 ```
 
 Common color token patterns:
+
 ```
 bg-<color>-z<1-3>       light background
 border-<color>-z<3-5>   subtle to visible border
@@ -489,6 +503,7 @@ backdrop-blur-sm        glass effect
 Import in each `packages/themes/src/<theme>/index.css`.
 
 **MANDATORY: rebuild after every CSS change:**
+
 ```bash
 cd packages/themes && bun run build
 ```
@@ -521,6 +536,7 @@ describe('MyComponent', () => {
 ```
 
 **What to cover in unit tests:**
+
 - Renders root element with correct data attribute
 - Renders with default props
 - Renders each meaningful prop variant
@@ -533,6 +549,7 @@ describe('MyComponent', () => {
 - Custom class applied
 
 **JSDOM notes for animation-driven tests:**
+
 - CSS transitions never fire — dispatch `TransitionEvent` manually with `{ propertyName: '...' }`
 - `element.getAnimations` is already mocked via `packages/helpers/src/mocks/animate.js`
 
@@ -545,6 +562,7 @@ Run after writing: `bun run test:ui`
 Location: `apps/learn/src/routes/(play)/playground/components/<name>/+page.svelte`
 
 The playground page uses `PlaySection`, which provides:
+
 - **Line-grid preview area** — full height, centered content
 - **Toolbar** (top-right overlay) — doc/llms links auto-derived from URL, `props` toggle button (if `controls` provided), `data` toggle button (if `data` provided), `style` dropdown for theme switching
 - **Props overlay panel** — slides in from the right over the preview when toggled
@@ -553,7 +571,7 @@ The playground page uses `PlaySection`, which provides:
 **Three snippets:**
 
 | Snippet | Purpose | When to provide |
-|---------|---------|----------------|
+| --------- | --------- | ---------------- |
 | `preview` | Live component in the grid area | Always |
 | `controls` | FormRenderer(s) for component props | When component has configurable props |
 | `data` | Composer/sender forms (type + submit action) | When component has an async/push interaction (toasts, API calls) |
@@ -599,6 +617,7 @@ The playground page uses `PlaySection`, which provides:
 ```
 
 **`bind:data` must point to a `$state` variable, never an object literal:**
+
 ```svelte
 // ✅ correct
 let props = $state({ type: 'info', text: 'Hello' })
@@ -611,11 +630,13 @@ let props = $state({ type: 'info', text: 'Hello' })
 **Register in both nav files** or the link 404s:
 
 1. `apps/learn/src/routes/(play)/playground/+page.svelte` — add to the appropriate GROUPS array:
+
 ```js
 { name: 'My Component', description: 'Short description', slug: 'my-component' }
 ```
 
-2. `apps/learn/src/routes/(play)/playground/+layout.svelte` — add to the sidebar children array:
+1. `apps/learn/src/routes/(play)/playground/+layout.svelte` — add to the sidebar children array:
+
 ```js
 { title: 'My Component', slug: '/playground/components/my-component', icon: 'i-glyph:my-component' }
 ```
@@ -731,6 +752,7 @@ test.describe('MyComponent', () => {
 ```
 
 **Key rules:**
+
 - Always use `goToPlayPage(page, 'slug')` in `beforeEach`
 - Use `setTheme` and `setMode` helpers for cross-theme snapshots — `setTheme` opens the Dropdown in `[data-toolbar]` to switch themes
 - Use `openDropdownViaKeyboard` helper for Tier 4 keyboard open flows
@@ -749,6 +771,7 @@ Also create: `apps/learn/src/routes/(learn)/docs/components/<name>/meta.json`
 The doc page serves as documentation AND visual verification. Build it alongside the component so you can see what you're building.
 
 **Key rules:**
+
 - The layout renders the `h1` title from `meta.json` — do NOT add another `h1` in the page
 - Use `h2` for all top-level sections — the `TableOfContents` in the docs layout scans for `h2` to build the TOC
 - Use `h3` inside `data-card` divs or for sub-sections
@@ -809,6 +832,7 @@ The doc page serves as documentation AND visual verification. Build it alongside
 ```
 
 **meta.json** — set `"llms": true` to enable the llms.txt button in the docs header:
+
 ```json
 {
   "title": "Component Name",
@@ -878,6 +902,7 @@ cd apps/learn && npx playwright test e2e/<name>.e2e.ts                       # s
 ```
 
 Visual verification checklist:
+
 - `http://localhost:5175/docs/components/<name>` — check TOC, live demo, code snippets render
 - `http://localhost:5175/playground/components/<name>` — check interactive controls, props panel, all themes look correct
 - Open the theme Dropdown in the PlaySection toolbar and cycle through all 4 themes — verify styles apply correctly in each

@@ -16,20 +16,24 @@ Mockup C5 — the same Tabs response screen rendered in dark mode with a collaps
 ## Scope (light — mostly verification)
 
 The screen is the same content as C3 (Tabs response) plus:
+
 1. `data-mode="dark"` on body
 2. Sidebar in collapsed state from initial load
 
 ### Implementation options
 
 **Option A — URL query params** (lightweight):
+
 - `/app?demo=tabs&mode=dark&collapsed=true` boots into the response phase with dark mode and collapsed sidebar.
 - The existing `onMount` in `+page.svelte` already reads `?demo` and `?q` params; extend to also read `mode` and `collapsed`.
 
 **Option B — Dedicated route** (heavier):
+
 - `/app/showcase/dark` or similar — bootstraps with the right state baked in.
 - Probably overkill; URL params are sufficient.
 
 **Option C — Just verify + journal** (lightest):
+
 - Take a screenshot in the existing app with dark mode on + sidebar collapsed.
 - Log a journal entry confirming the visual matches the mockup.
 - No code changes.

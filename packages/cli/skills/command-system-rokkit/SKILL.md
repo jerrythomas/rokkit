@@ -22,7 +22,7 @@ Commands are the same shape — registry singleton + action wiring + a ready-mad
 ## The three pieces
 
 | Package | Export | Role |
-|---------|--------|------|
+| --------- | -------- | ------ |
 | `@rokkit/states` | `commands` | Singleton registry — register, resolve, execute |
 | `@rokkit/actions` | `shortcuts` | Svelte action — intercepts `keydown`, delegates to `commands` |
 | `@rokkit/ui` | `CommandPalette` | Searchable dialog — reads `commands.all`, opens on `mod+k` |
@@ -185,7 +185,7 @@ any list reading `commands.all` automatically re-renders when commands are added
 primary shortcuts so they are cross-platform by default.
 
 | Shortcut string | Fires on |
-|-----------------|----------|
+| ----------------- | ---------- |
 | `'mod+k'` | Cmd+K (macOS) / Ctrl+K (other) |
 | `'mod+shift+l'` | Cmd+Shift+L / Ctrl+Shift+L |
 | `'mod+shift+n'` | Cmd+Shift+N / Ctrl+Shift+N |
@@ -247,7 +247,7 @@ Default English values: `placeholder: 'Run a command…'`, `noResults: 'No comma
 ## Common mistakes
 
 | Mistake | Why it fails | Fix |
-|---------|-------------|-----|
+| --------- | ------------- | ----- |
 | Registering at module top-level (not in `onMount`) | The registry is a singleton; commands pile up across hot-reloads in dev and are never cleaned up on unmount | Always register in `onMount`, return the unregister fn |
 | Forgetting `global: true` on `mod+k` (or any Cmd-shortcut) | `shortcuts` skips non-global commands while a text input is focused — Cmd+K fired in the composer silently no-ops | Add `global: true` to any command that must fire during text input |
 | Hand-rolling `window.addEventListener('keydown', ...)` | No conflict detection, no `enabled()` gate, no `commands.all` integration, no cleanup | Use `use:shortcuts={commands}` — it handles all of these |

@@ -217,16 +217,16 @@ export default defineConfig({
 The named tokens auto-emit Uno shortcuts for the common color
 properties:
 
-| Token            | Shortcuts                                   |
+| Token | Shortcuts |
 | ---------------- | ------------------------------------------- |
 | `paper`, `paper-*` | `bg-paper`, `text-paper`, `border-paper`, … |
-| `ink`, `ink-*`     | `bg-ink`, `text-ink-mute`, …                |
-| `primary`        | `bg-primary`, `text-primary`, `fill-primary`, … |
-| `on-primary`     | `text-on-primary` (only)                    |
-| `accent`, `accent-soft` | `bg-accent`, `bg-accent-soft`, …       |
+| `ink`, `ink-*` | `bg-ink`, `text-ink-mute`, … |
+| `primary` | `bg-primary`, `text-primary`, `fill-primary`, … |
+| `on-primary` | `text-on-primary` (only) |
+| `accent`, `accent-soft` | `bg-accent`, `bg-accent-soft`, … |
 | status (`success`, `warning`, `danger`, `error`, `info`) | full prefix set incl. `-soft` |
-| `focus-ring`     | `ring-focus-ring`, `border-focus-ring` (only) |
-| `shadow-tint`    | (no shortcuts — used in box-shadow expressions) |
+| `focus-ring` | `ring-focus-ring`, `border-focus-ring` (only) |
+| `shadow-tint` | (no shortcuts — used in box-shadow expressions) |
 
 The same `buildNamedShortcuts()` helper is also exported from
 `@rokkit/unocss`, so themes-build pipelines (e.g.
@@ -253,6 +253,7 @@ export default defineConfig({
 ```
 
 **Resolution rules:**
+
 - `'palette.shade'` strings resolve via the same `colorSpace` adapter
   as named tokens.
 - Plain strings pass through verbatim (oklch / rgb / hex / `var(...)`).

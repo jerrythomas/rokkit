@@ -47,6 +47,7 @@ Two related changes that are easier to land together than apart:
 - Current state: markdown bodies live in `src/lib/koan/demos/guide-*/content.ts` as `` export const guideContent = `…` `` template literals. Every file has 22–41 backslash escapes for backticks and `${...}` in code samples — painful to edit, no syntax highlighting in IDEs.
 - New layout: plain `.md` files at `src/lib/guides/<slug>/content.md`. No escapes, full editor support, easier diffs, can be opened by non-developers.
 - Loaded via Vite's built-in `?raw` query suffix — zero plugin or runtime dependency:
+
   ```ts
   // src/lib/guides/index.ts
   const rawContents = import.meta.glob('./*/content.md', {
@@ -62,6 +63,7 @@ Two related changes that are easier to land together than apart:
     // …eleven entries total
   ].map((g) => ({ ...g, content: rawContents[`./${g.slug}/content.md`] }))
   ```
+
 - This single `guides` array drives the left TOC, search index, route resolution, and the index page listing.
 - Each `/guides/<slug>/+page.svelte` is one line: `<GuidePage markdown={guide.content} />`. The renderer component moves from `src/lib/koan/components/GuidePage.svelte` to `src/lib/guides/GuidePage.svelte` since it is no longer koan-scoped.
 - **Migration mechanics**: for each `guide-*/content.ts`, strip the `export const guideContent = \`` prefix and trailing backtick, then unescape `` \` `` → `` ` `` and `\${` → `${`. A short throwaway node script handles this so we don't hand-edit 300 escapes.
@@ -73,6 +75,7 @@ Same storage-format change applied to the 48 `src/lib/koan/demos/<component>/doc
 - Pattern in all 48 files is identical: `export const <name>Docs = \`...markdown...\``. No imports, no logic. 6–30 backslash-escapes each.
 - Convert each `docs.ts` to a sibling `docs.md` (same converter script as the guides — strip TS scaffolding, unescape).
 - In each `meta.ts`, swap the import:
+
   ```ts
   // before
   import { tableDocs } from './docs'
@@ -84,6 +87,7 @@ Same storage-format change applied to the 48 `src/lib/koan/demos/<component>/doc
   // …
   docs
   ```
+
 - Delete each `docs.ts` after the `.md` sibling is in place and the meta.ts swap is verified.
 - The chat-shell layout (`src/routes/app/+layout.svelte`) needs **no** changes — `findById(...)?.docs` still resolves to a `string`. The `Live | Code | API | Docs` segmented control in that layout is already conditional (Docs tab only renders when `demoDocs` is truthy), so per-component docs continue to surface correctly.
 - Note: the broken Live/Code views on the guide pages disappear because the guides leave the chat-shell entirely, not because we touch the segmented-control logic.

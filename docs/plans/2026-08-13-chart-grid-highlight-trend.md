@@ -9,6 +9,7 @@
 **Tech Stack:** Svelte 5 (runes), `d3-shape`/`d3-scale` (already deps), Vitest + `@testing-library/svelte` (jsdom, project `chart`), Playwright (learn app). Spec: `docs/backlog/2026-08-13-chart-grid-axis-highlight.md`.
 
 **Conventions:**
+
 - Run a single test file: `bun run test:ci -- <relative/path/to.spec.js>` (vitest run, one-shot).
 - Full gate before finishing: `bun run test:ci` + `bun run lint` (0 errors). Pure `.js`/`.ts` files are coverage-gated at **100% statements/lines** — the `lib/` tests must exercise every branch.
 - Commit after each task on `develop` (never `main`). Conventional commits (`feat(chart): …`).
@@ -18,6 +19,7 @@
 ## File Structure
 
 **Create:**
+
 - `packages/chart/src/lib/highlight.js` — `resolveHighlight(rows, selector, {y}) → number[]`
 - `packages/chart/src/lib/trend.js` — statistics + `computeTrend(rows, {x,y}, method)`
 - `packages/chart/src/geoms/Highlight.svelte` — marker overlay (`Plot.Highlight`/`GeomHighlight`)
@@ -28,6 +30,7 @@
 - `apps/learn/e2e/chart-metrics.e2e.ts`
 
 **Modify:**
+
 - `packages/chart/src/PlotState.svelte.js` — add `get data()`
 - `packages/chart/src/Plot/Grid.svelte` — `lines` prop, tick alignment, per-orientation attrs + CSS vars
 - `packages/chart/src/Plot.svelte` — widen `grid`; add `x`/`y`/`highlight`/`trend`; render overlays
@@ -42,6 +45,7 @@
 ## Task 1: `lib/highlight.js` — selector resolution (pure)
 
 **Files:**
+
 - Create: `packages/chart/src/lib/highlight.js`
 - Test: `packages/chart/spec/lib/highlight.spec.js`
 
@@ -156,6 +160,7 @@ git commit -m "feat(chart): add resolveHighlight selector util"
 ## Task 2: `lib/trend.js` — trend calculators (pure)
 
 **Files:**
+
 - Create: `packages/chart/src/lib/trend.js`
 - Test: `packages/chart/spec/lib/trend.spec.js`
 
@@ -402,6 +407,7 @@ git commit -m "feat(chart): add trend calculators (avg/median/min/max/linear/ma/
 ## Task 3: `PlotState.get data()`
 
 **Files:**
+
 - Modify: `packages/chart/src/PlotState.svelte.js` (add getter near other getters, ~line 348)
 - Test: `packages/chart/spec/PlotState.spec.js` (append)
 
@@ -454,6 +460,7 @@ git commit -m "feat(chart): expose PlotState.data getter for overlays"
 ## Task 4: `Grid.svelte` axis control + Plot mapping
 
 **Files:**
+
 - Modify: `packages/chart/src/Plot/Grid.svelte` (full rewrite of script + template + style)
 - Modify: `packages/chart/src/Plot.svelte` (grid prop → union; pass `lines`/ticks to Grid)
 - Test: `packages/chart/spec/Grid.spec.js`
@@ -605,6 +612,7 @@ git commit -m "feat(chart): grid axis control (boolean|x|y|both) + per-orientati
 ## Task 5: `Highlight.svelte` primitive + Plot wiring
 
 **Files:**
+
 - Create: `packages/chart/src/geoms/Highlight.svelte`
 - Modify: `packages/chart/src/Plot.svelte` (add `x`/`y`/`highlight` props; render `<Highlight>`)
 - Test: `packages/chart/spec/Highlight.spec.js`
@@ -786,6 +794,7 @@ git commit -m "feat(chart): Highlight overlay primitive + Plot wiring"
 ## Task 6: `Trend.svelte` primitive + Plot wiring
 
 **Files:**
+
 - Create: `packages/chart/src/geoms/Trend.svelte`
 - Modify: `packages/chart/src/Plot.svelte` (add `trend` prop; render `<Trend>`)
 - Test: `packages/chart/spec/Trend.spec.js`
@@ -957,6 +966,7 @@ git commit -m "feat(chart): Trend overlay primitive (constant + fitted) + Plot w
 ## Task 7: Wrappers — `AreaChart` + `LineChart`
 
 **Files:**
+
 - Modify: `packages/chart/src/charts/AreaChart.svelte`
 - Modify: `packages/chart/src/charts/LineChart.svelte`
 - Test: `packages/chart/spec/Plot.spec.js` (append wrapper-forwarding cases)
@@ -1053,6 +1063,7 @@ git commit -m "feat(chart): forward grid/highlight/trend through AreaChart + Lin
 ## Task 8: Exports — `Plot.Highlight` / `Plot.Trend` + geoms
 
 **Files:**
+
 - Modify: `packages/chart/src/index.js`
 - Test: `packages/chart/spec/exports.spec.js` (new)
 
@@ -1120,6 +1131,7 @@ git commit -m "feat(chart): export Plot.Highlight/Plot.Trend + GeomHighlight/Geo
 ## Task 9: Learn-app showcase — "Last 30 days"
 
 **Files:**
+
 - Modify: `apps/learn/src/lib/koan/demos/chart/index.svelte`
 
 The learn app imports `@rokkit/chart` from **src** (package `exports.import` → `./src/index.js`), so new exports are picked up with no build step.
@@ -1200,6 +1212,7 @@ git commit -m "docs(learn): 'last 30 days' chart showcase (grid/trend/highlight)
 ## Task 10: Playwright e2e guard
 
 **Files:**
+
 - Create: `apps/learn/e2e/chart-metrics.e2e.ts`
 
 - [ ] **Step 1: Write the e2e test**
@@ -1236,6 +1249,7 @@ git commit -m "test(learn): e2e guard for chart grid/trend/highlight showcase"
 ## Task 11: Docs, references, skills
 
 **Files:**
+
 - Modify: `docs/design/20-chart.md`, `docs/design/21-charts.md`
 - Modify: the shipped `llms/components/{plot-chart,area-chart,line-chart}.txt` (find the editable source first)
 - Audit: `.claude/skills/rokkit-components/SKILL.md`, semantic-styles-rokkit token list
@@ -1301,6 +1315,7 @@ cd /Users/Jerry/Developer/rokkit
 bun run test:ci
 bun run lint
 ```
+
 Expected: all tests pass; lint 0 errors. Do not proceed on red (sensei mandatory rule). Confirm the real exit status of each command — do not rely on a piped/tail'd summary.
 
 - [ ] **Step 2: e2e gate**
@@ -1308,6 +1323,7 @@ Expected: all tests pass; lint 0 errors. Do not proceed on red (sensei mandatory
 ```bash
 cd apps/learn && npx playwright test chart-metrics
 ```
+
 Expected: PASS.
 
 - [ ] **Step 3: Update journal**

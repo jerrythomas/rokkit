@@ -283,7 +283,7 @@ data-plot-trend-label
 
 `grid: boolean | 'x' | 'y' | 'both'`, `highlight: selector`, and `trend: method | method[]` on the
 composable primitives and the `AreaChart`/`LineChart` wrappers, CSS-var theming for all three, unit
-+ e2e coverage, a learn-app showcase reproducing the mock, and refreshed design/reference/skill
+- e2e coverage, a learn-app showcase reproducing the mock, and refreshed design/reference/skill
 docs. Backward compatible; ships on the normal patch cadence. Gate: lint 0 errors +
 `bun run test:ci` green.
 

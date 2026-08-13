@@ -9,12 +9,14 @@
 **Tech Stack:** Svelte 5 runes, SvelteKit, TypeScript, Vitest (run-once), Playwright.
 
 **Conventions:**
+
 - Run tests only with run-once commands: `cd apps/learn && bunx vitest run <file>` (never watch).
 - `apps/learn` Svelte/types are validated by `bun run build` (svelte-check does NOT cover it).
 - TAB indentation; match surrounding style. If an Edit fails to match, `sed -n 'N,Mp' file | cat -te` to see exact tabs.
 - Commit trailer: `Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>`. Stay on `develop`.
 
 **Design decisions (from the spec, refined):**
+
 - **Reuse** existing chat components — do NOT create new stream/composer/history components.
 - **Separate functions from presentation** — page logic lives in `chat-controller.svelte.ts`; route pages are thin.
 - `/chat/[mode]` is a single param route; `[mode]/+page.ts` validates + redirects unknown modes.
@@ -25,7 +27,7 @@
 ## File Structure
 
 | File | Responsibility | Change |
-|---|---|---|
+| --- | --- | --- |
 | `src/lib/chat-demo/modes.ts` | Mode descriptor + guard + engine setter data | **Create** |
 | `src/lib/chat-demo/llm.svelte.ts` | LLM engine state | add `setEngine(mode, model?)` |
 | `src/lib/koan/conversations.svelte.ts` | Shared conversation store | `mode` tag, `summarizeTitle`, chat title, `renameConversation`, rail mode-filter |
@@ -44,6 +46,7 @@
 ## Task 1: `modes.ts` descriptor + guard + `setEngine`
 
 **Files:**
+
 - Create: `src/lib/chat-demo/modes.ts`
 - Modify: `src/lib/chat-demo/llm.svelte.ts` (add `setEngine`)
 - Create: `src/lib/chat-demo/modes.spec.ts`
@@ -51,6 +54,7 @@
 - [ ] **Step 1: Write the failing test**
 
 Create `src/lib/chat-demo/modes.spec.ts`:
+
 ```ts
 import { describe, it, expect, beforeEach } from 'vitest'
 import { isChatMode, MODES, CHAT_MODES } from './modes'
@@ -182,6 +186,7 @@ export function cardFor(mode: ChatMode): ModeCard {
 - [ ] **Step 4: Add `setEngine` to `src/lib/chat-demo/llm.svelte.ts`**
 
 Append this exported function (after the `llm` state declaration, ~line 116). It imports nothing new — `llm`, `DEFAULT_OPENROUTER_MODEL`, `DEFAULT_WEBLLM_MODEL` are already in the module:
+
 ```ts
 /**
  * Point the engine at a route mode + optional model. Simulated disables the
@@ -203,11 +208,13 @@ export function setEngine(mode: 'simulated' | 'openrouter' | 'webllm', model?: s
 	}
 }
 ```
+
 (Note: `modes.ts` uses `setEngine`'s literal mode type; keeping it inline avoids a circular import with `modes.ts`.)
 
 - [ ] **Step 5: Run the test — verify PASS** (`bunx vitest run src/lib/chat-demo/modes.spec.ts`) — 7 tests pass.
 
 - [ ] **Step 6: Commit**
+
 ```bash
 git add apps/learn/src/lib/chat-demo/modes.ts apps/learn/src/lib/chat-demo/modes.spec.ts apps/learn/src/lib/chat-demo/llm.svelte.ts
 git commit -m "feat(learn): chat modes descriptor + setEngine(mode,model)
@@ -220,10 +227,12 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 ## Task 2: Conversation `mode` tag + summary titles + rail filter
 
 **Files:**
+
 - Modify: `src/lib/koan/conversations.svelte.ts`
 - Modify: `apps/learn/spec/koan/conversations.spec.svelte.ts` (extend the SP1 spec)
 
 - [ ] **Step 1: Write failing tests** — append to `apps/learn/spec/koan/conversations.spec.svelte.ts`:
+
 ```ts
 import { summarizeTitle, bucketByRecency } from '../../src/lib/koan/conversations.svelte'
 
@@ -262,6 +271,7 @@ describe('chat conversations — mode tag + rail filter', () => {
 	})
 })
 ```
+
 (The SP1 spec already imports `conversations, startNew, clearAll, getCurrentId`; add `summarizeTitle`, `bucketByRecency` to imports if not present.)
 
 - [ ] **Step 2: Run — verify FAIL** (`bunx vitest run spec/koan/conversations.spec.svelte.ts`).
@@ -269,6 +279,7 @@ describe('chat conversations — mode tag + rail filter', () => {
 - [ ] **Step 3: Implement.** In `src/lib/koan/conversations.svelte.ts`:
 
 (a) Add `mode` to the `Conversation` interface (after `surface`):
+
 ```ts
 export interface Conversation {
 	id: ConversationId
@@ -282,6 +293,7 @@ export interface Conversation {
 ```
 
 (b) Add `summarizeTitle` (near the other helpers, before `startNew`):
+
 ```ts
 const TITLE_LEAD =
 	/^(?:please|can you|could you|show me|show|give me|make(?: me)?|build(?: me)?|generate|create|draw|render|plot|display|i want(?: to see)?|i'?d like(?: to see)?|let'?s see)\b[\s,:-]*/i
@@ -303,6 +315,7 @@ export function summarizeTitle(query: string): string {
 ```
 
 (c) Change `startNew` signature + chat branch. Current signature is `startNew(surface, query)`. New:
+
 ```ts
 export function startNew(surface: ConversationSurface, query: string, mode?: string): ConversationId {
 	const at = nowIso()
@@ -314,9 +327,11 @@ export function startNew(surface: ConversationSurface, query: string, mode?: str
 	...
 }
 ```
+
 (Keep the SP1 `app`-surface upsert block exactly; only add the `title` mode-branch, the `mode` param, and `mode` on the created `Conversation`. The app upsert path does not set `mode`.)
 
 (d) Add `renameConversation`:
+
 ```ts
 /** Rename a conversation (used to refine a chat title after the first render). */
 export function renameConversation(id: ConversationId, title: string): void {
@@ -329,6 +344,7 @@ export function renameConversation(id: ConversationId, title: string): void {
 ```
 
 (e) Add an optional `mode` filter to `bucketByRecency`:
+
 ```ts
 export function bucketByRecency(surface?: ConversationSurface, mode?: string): ConversationBuckets {
 	const pool = conversations.filter(
@@ -342,6 +358,7 @@ export function bucketByRecency(surface?: ConversationSurface, mode?: string): C
 - [ ] **Step 4: Run — verify PASS** (all conversations spec tests, incl. SP1's).
 
 - [ ] **Step 5: Commit**
+
 ```bash
 git add apps/learn/src/lib/koan/conversations.svelte.ts apps/learn/spec/koan/conversations.spec.svelte.ts
 git commit -m "feat(learn): tag chat conversations with mode + summary titles + rail mode-filter
@@ -354,10 +371,12 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 ## Task 3: Store — one-shot pending prompt, mode-tagged create, title refine
 
 **Files:**
+
 - Modify: `src/lib/chat-demo/store.svelte.ts`
 - Create: `src/lib/chat-demo/store.spec.ts`
 
 - [ ] **Step 1: Write failing test** — `src/lib/chat-demo/store.spec.ts`:
+
 ```ts
 import { describe, it, expect } from 'vitest'
 import { setPendingPrompt, takePendingPrompt } from './store.svelte'
@@ -376,6 +395,7 @@ describe('pending prompt one-shot', () => {
 - [ ] **Step 3: Implement in `store.svelte.ts`:**
 
 (a) One-shot pending prompt (module top-level):
+
 ```ts
 let _pending = $state<string | null>(null)
 /** Seed a prompt from the picker; the mode page consumes it once on mount. */
@@ -390,6 +410,7 @@ export function takePendingPrompt(): string | null {
 ```
 
 (b) Tag new chat conversations with the current ROUTE mode — `simulated` (not the internal `scripted` provider) so the rail filter + resume route match `/chat/[mode]`. Add `currentMode` and use it in `pushUser`:
+
 ```ts
 import type { ChatMode } from './modes'
 
@@ -409,6 +430,7 @@ function pushUser(text: string): void {
 ```
 
 (c) Refine the title after the first assistant turn yields a single component. Add a helper + call it from `pushAssistant`:
+
 ```ts
 import { renameConversation, getCurrentId } from '$lib/koan/conversations.svelte'
 
@@ -432,11 +454,13 @@ function pushAssistant(blocks: Block[]): void {
 	}
 }
 ```
+
 (`getCurrentConversation` is already imported; add `renameConversation`, `getCurrentId` to the existing conversations import.)
 
 - [ ] **Step 4: Run — verify PASS.**
 
 - [ ] **Step 5: Commit**
+
 ```bash
 git add apps/learn/src/lib/chat-demo/store.svelte.ts apps/learn/src/lib/chat-demo/store.spec.ts
 git commit -m "feat(learn): chat pending-prompt one-shot + mode-tagged create + component title refine
@@ -451,6 +475,7 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 Separate functions from presentation: move the non-DOM logic out of the current `src/routes/chat/+page.svelte` script into a reusable controller module. **Read `src/routes/chat/+page.svelte` (script lines 1–304) first.**
 
 **Files:**
+
 - Create: `src/lib/chat-demo/chat-controller.svelte.ts`
 - (the `+page.svelte` script is emptied of this logic in Task 5)
 
@@ -466,6 +491,7 @@ Separate functions from presentation: move the non-DOM logic out of the current 
 - [ ] **Step 2: Build to verify the module compiles** (`cd apps/learn && bun run build 2>&1 | tail -4`). At this point `+page.svelte` still has its own copy; the controller just needs to type-check. Expected: `✓ built`.
 
 - [ ] **Step 3: Commit**
+
 ```bash
 git add apps/learn/src/lib/chat-demo/chat-controller.svelte.ts
 git commit -m "refactor(learn): extract /chat page logic into chat-controller.svelte.ts
@@ -480,10 +506,12 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 Move the current chat UI to the mode route, trimmed (no welcome hero, no mode toggle) and wired to the controller + route.
 
 **Files:**
+
 - Create: `src/routes/chat/[mode]/+page.ts`
 - Create: `src/routes/chat/[mode]/+page.svelte` (moved from `chat/+page.svelte`, trimmed)
 
 - [ ] **Step 1: Route guard** — `src/routes/chat/[mode]/+page.ts`:
+
 ```ts
 import { redirect } from '@sveltejs/kit'
 import type { PageLoad } from './$types'
@@ -500,6 +528,7 @@ export const load: PageLoad = ({ params }) => {
   - **Remove** the mode `Toggle` block + `mode`/`setMode`/`modeOptions`/`modeLabel` (delete the `.chat-subtoolbar` toggle; keep the model dropdown + Web-LLM progress).
   - **Remove** the welcome-hero block (welcome now lives in the picker).
   - **Set the engine from the route** on mount + when `?model=` changes:
+
     ```svelte
     import { page } from '$app/state'
     import { setEngine } from '$lib/chat-demo/llm.svelte'
@@ -508,6 +537,7 @@ export const load: PageLoad = ({ params }) => {
     $effect(() => { setEngine(data.mode, page.url.searchParams.get('model') ?? undefined) })
     onMount(() => { const p = takePendingPrompt(); if (p) chat.send(p) })
     ```
+
   - **Model dropdown syncs `?model=`**: on change, `goto(`/chat/${data.mode}?model=${encodeURIComponent(id)}`, { replaceState: true, keepFocus: true, noScroll: true })` (Web-LLM change also calls `resetWebLLMEngine()`).
   - **History rail scoped to mode**: use `chat.bucketsFor(data.mode)` for the `ChatHistory` buckets.
   - Add an **"Ask Rokkit ›" eyebrow** linking back to `/chat` (the picker) where the toggle used to be.
@@ -516,6 +546,7 @@ export const load: PageLoad = ({ params }) => {
 - [ ] **Step 3: Build** (`bun run build 2>&1 | tail -6`). Expected `✓ built`, no unused-`Toggle` / missing-import errors. Then dev-check `/chat/simulated` renders and a Simulated prompt returns a component.
 
 - [ ] **Step 4: Commit**
+
 ```bash
 git add apps/learn/src/routes/chat/[mode]/
 git commit -m "feat(learn): /chat/[mode] route — engine from route, model via ?model=, mode-scoped history
@@ -528,10 +559,12 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 ## Task 6: `/chat` picker + `ModePicker.svelte`
 
 **Files:**
+
 - Replace: `src/routes/chat/+page.svelte` (monolith → thin picker)
 - Create: `src/lib/chat-demo/components/ModePicker.svelte`
 
 - [ ] **Step 1: `ModePicker.svelte`** — render the three cards from `MODES`; card click enters the mode, example chips seed + enter:
+
 ```svelte
 <script lang="ts">
 	import { goto } from '$app/navigation'
@@ -593,6 +626,7 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 ```
 
 - [ ] **Step 2: Replace `src/routes/chat/+page.svelte`** with the thin picker:
+
 ```svelte
 <script lang="ts">
 	import ModePicker from '$lib/chat-demo/components/ModePicker.svelte'
@@ -616,6 +650,7 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 - [ ] **Step 3: Build + dev-verify** the picker at `/chat` shows three cards; the Web-LLM card disables without WebGPU. `bun run build 2>&1 | tail -4` → `✓ built`.
 
 - [ ] **Step 4: Commit**
+
 ```bash
 git add apps/learn/src/routes/chat/+page.svelte apps/learn/src/lib/chat-demo/components/ModePicker.svelte
 git commit -m "feat(learn): /chat mode picker (Ask Rokkit) with per-engine cards + example prompts
@@ -628,21 +663,27 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 ## Task 7: Rename "Chat demo" → "Ask Rokkit"
 
 **Files:**
+
 - Modify: `src/lib/components/SiteNav.svelte`
 
 - [ ] **Step 1:** In `src/lib/components/SiteNav.svelte`, change the nav entry label:
+
 ```ts
 { label: 'Ask Rokkit', href: '/chat', match: (p: string) => p.startsWith('/chat') },
 ```
+
 (The `/chat` picker page + `/chat/[mode]` pages set their own `<title>` in Tasks 5–6.)
 
 - [ ] **Step 2:** Grep for any other user-facing "Chat demo" string and update:
+
 ```bash
 cd apps/learn && grep -rn "Chat demo" src
 ```
+
 Update any remaining matches to "Ask Rokkit".
 
 - [ ] **Step 3: Build + commit**
+
 ```bash
 cd apps/learn && bun run build 2>&1 | tail -3
 cd /Users/Jerry/Developer/rokkit
@@ -657,10 +698,12 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 ## Task 8: E2E + final gate + journal
 
 **Files:**
+
 - Create: `apps/learn/e2e/ask-rokkit.e2e.ts`
 - Modify: `agents/journal.md`
 
 - [ ] **Step 1: E2E** — `apps/learn/e2e/ask-rokkit.e2e.ts` (Simulated is deterministic/offline — safe in CI; OpenRouter/Web-LLM are not asserted):
+
 ```ts
 import { test, expect } from '@playwright/test'
 
@@ -691,6 +734,7 @@ test('entering Simulated via an example chip yields a response', async ({ page }
 	await expect(page.locator('[data-block-kind], [data-inline-component], canvas, table').first()).toBeVisible({ timeout: 5000 })
 })
 ```
+
 (If the response-block selector doesn't match the actual rendered markup, adjust to a stable hook in `BlockList`/`InlineComponent` — inspect those files.)
 
 - [ ] **Step 2: Run e2e** (`cd apps/learn && npx playwright test ask-rokkit`). Expected: 4 passed.
@@ -700,6 +744,7 @@ test('entering Simulated via an example chip yields a response', async ({ page }
 - [ ] **Step 4: Journal** — append a dated entry to `agents/journal.md` summarizing Ask Rokkit (picker hub, per-mode routes + `?model=`, mode-scoped history, summary titles, monolith decomposed) with commit hashes; link `[[project_demo_app]]` and `[[project_koan_interactive_mode]]`.
 
 - [ ] **Step 5: Commit**
+
 ```bash
 git add apps/learn/e2e/ask-rokkit.e2e.ts agents/journal.md
 git commit -m "test(learn): e2e for Ask Rokkit + journal
@@ -715,4 +760,5 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 - **`$lib/chat` vs `@rokkit/ui`:** keep the current import sources (`ChatHistory`/`configureWho` from `$lib/chat`; `ChatTimeline`/`ChatComposer`/`ChatMessage` from `@rokkit/ui`). Do not "fix" these here.
 - **Model default in URL:** the picker links openrouter/webllm cards with `?model=<default>` so the URL is always explicit; the mode page still tolerates an absent `?model=`.
 - **Out of scope:** the block/inline renderer, the engines' inference internals, `/app`, LLM-generated titles, cross-mode history.
+
 ```

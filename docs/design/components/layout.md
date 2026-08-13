@@ -20,7 +20,7 @@ These are pure layout utilities — they carry no business logic and no selectio
 ### Props
 
 | Prop | Type | Default | Description |
-|------|------|---------|-------------|
+| ------ | ------ | --------- | ------------- |
 | `direction` | `'vertical' \| 'horizontal'` | `'vertical'` | Flex direction |
 | `gap` | `'none' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | Gap between children |
 | `align` | `'start' \| 'center' \| 'end' \| 'stretch'` | — | Cross-axis alignment (`align-items`) |
@@ -31,7 +31,7 @@ These are pure layout utilities — they carry no business logic and no selectio
 ### Data Attributes
 
 | Attribute | Values | Description |
-|-----------|--------|-------------|
+| ----------- | -------- | ------------- |
 | `data-stack` | — | Root element |
 | `data-direction` | `vertical` \| `horizontal` | Flex direction |
 | `data-gap` | `none` \| `xs` \| `sm` \| `md` \| `lg` \| `xl` | Spacing token |
@@ -56,7 +56,7 @@ These are pure layout utilities — they carry no business logic and no selectio
 ### Props
 
 | Prop | Type | Default | Description |
-|------|------|---------|-------------|
+| ------ | ------ | --------- | ------------- |
 | `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Separator direction |
 | `label` | `string` | — | Optional text centered in the divider |
 | `class` | `string` | `''` | Additional CSS classes |
@@ -105,7 +105,7 @@ flatView loop — single flat {#each} rendering items as <button> tiles
 ### Props
 
 | Prop | Type | Default | Description |
-|------|------|---------|-------------|
+| ------ | ------ | --------- | ------------- |
 | `items` | `unknown[]` | `[]` | Data array (objects or primitives) |
 | `fields` | `Record<string, string>` | `{}` | Field mapping overrides |
 | `value` | `unknown` | — | Selected value — use `bind:value` |
@@ -129,7 +129,7 @@ These are set inline from `minSize` and `gap` props, so they can also be overrid
 ### Data Attributes
 
 | Attribute | Values | Description |
-|-----------|--------|-------------|
+| ----------- | -------- | ------------- |
 | `data-grid` | — | Root container |
 | `data-grid-item` | — | Individual tile `<button>` |
 | `data-active` | present when selected | Selected tile indicator |
@@ -144,7 +144,7 @@ These are set inline from `minSize` and `gap` props, so they can also be overrid
 ### Keyboard Navigation
 
 | Key | Action |
-|-----|--------|
+| ----- | -------- |
 | `ArrowRight` | Next tile |
 | `ArrowLeft` | Previous tile |
 | `Enter` / `Space` | Select focused tile |
@@ -183,7 +183,7 @@ These are set inline from `minSize` and `gap` props, so they can also be overrid
 ## File Reference
 
 | Path | Purpose |
-|------|---------|
+| ------ | --------- |
 | `packages/ui/src/components/Stack.svelte` | Flex layout container |
 | `packages/ui/src/components/Divider.svelte` | Separator line with optional label |
 | `packages/ui/src/components/Grid.svelte` | Responsive selectable tile grid |

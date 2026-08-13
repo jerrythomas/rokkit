@@ -220,7 +220,7 @@ export function setPalette(name: string) {
 ;['skin-my-brand', theme.getPalette({ primary: 'emerald', secondary: 'cyan', surface: 'gray' })]
 ```
 
-2. Add the CSS rule in the application's stylesheet (not in `palette.css`):
+1. Add the CSS rule in the application's stylesheet (not in `palette.css`):
 
 ```css
 [data-palette='skin-my-brand'] {
@@ -228,7 +228,7 @@ export function setPalette(name: string) {
 }
 ```
 
-3. Activate it:
+1. Activate it:
 
 ```typescript
 setPalette('skin-my-brand')
@@ -400,6 +400,7 @@ for light.
 ```
 
 On mount, `lockMode(node, mode)`:
+
 1. Copies `data-style`, `data-skin`, and `data-density` from `document.documentElement`
    onto the element — making it a self-contained theme context.
 2. Forces `data-mode` to the locked value.

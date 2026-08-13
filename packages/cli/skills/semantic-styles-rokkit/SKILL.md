@@ -34,6 +34,7 @@ text-on-fill all come from one color family. 11 stops gives resolution without b
 **Two formats:**
 
 *RGB hex* — standard web colors; use when you have an existing brand palette:
+
 ```js
 palettes: { shu: { 50: '#FEF3EE', 500: '#E8552B', 950: '#3C100A' } }
 // colorSpace: 'rgb' (default — may be omitted)
@@ -41,6 +42,7 @@ palettes: { shu: { 50: '#FEF3EE', 500: '#E8552B', 950: '#3C100A' } }
 
 *OKLCH bare components* — perceptual, uniform lightness steps; best for palettes designed
 from scratch (increment L by equal steps for balanced results):
+
 ```js
 palettes: { shu: { 50: '0.970 0.020 35', 500: '0.580 0.150 35', 950: '0.220 0.060 35' } },
 colorSpace: 'oklch'   // REQUIRED when palette values are bare "L C H" components
@@ -61,6 +63,7 @@ them — they only matter if you opt into `tokens: 'extended'` for those roles.)
 `bg-paper` doesn't know whether `surface` is `kami`, `slate`, or `zinc`.
 
 ### Single skin (`skin:`) — one fixed colormap
+
 ```js
 skin: {
   surface: 'slate',  ink: 'slate',   // ink backs the ink-* text tokens
@@ -68,24 +71,29 @@ skin: {
   success: 'green', warning: 'yellow', danger: 'red', error: 'red', info: 'cyan',
 }
 ```
+
 `colors:` is accepted as a back-compat alias but **prefer `skin:`**. Always include an
 `ink` role — without it the `ink-*` text tokens silently fall back to the surface palette.
 
 ### Multi-skin (`skins:`) — named colormaps for runtime switching
+
 ```js
 skins: {
   default: { surface: { light: 'kami', dark: 'sumi' }, ink: { light: 'kami', dark: 'sumi' }, primary: 'shu' },
   ocean:   { surface: 'slate', primary: 'sky', accent: 'teal' },
 }
 ```
+
 `skins.default` is active on first load. **Use `skin:` OR `skins:`, not both** — providing
 `skins:` makes `skin:` ignored.
 
 ### `tokens:` — which CSS the preset emits
+
 ```js
 tokens: 'core'      // default — emit the 24 named tokens (palette values inlined)
 tokens: 'extended'  // also emit the full 11-shade ladder (--color-{role}-{shade}) per role
 ```
+
 `'core'` is the default and what apps should use. Reach for `'extended'` only when you need
 the full ladder (charts / data-viz). Per-role is allowed: `tokens: { surface: 'extended' }`.
 
@@ -154,6 +162,7 @@ flash-prevention init script), **saves on every change**, and syncs across tabs 
 ```
 
 **3. Switch the visual style** by setting state — no DOM writes:
+
 ```svelte
 <button onclick={() => (vibe.style = 'minimal')}>Minimal</button>
 ```
@@ -221,17 +230,19 @@ emits no utility (used inside `box-shadow` expressions).
 Named tokens emit `--{token}` vars holding **complete color values** —
 `--paper: oklch(0.985 0.005 85)` (oklch) or `--primary: rgb(232, 85, 43)` (rgb). Use them
 directly in CSS-only contexts; for alpha, use `color-mix` (the form the preset itself uses):
+
 ```css
 .thing      { background: var(--paper); border-color: var(--paper-edge); }
 .thing-50pc { background: color-mix(in oklch, var(--primary) 50%, transparent); }
 ```
+
 Prefer utility classes over raw vars where you can.
 
 ---
 
 ## Layer 3b — Extending the vocabulary (`overrides` + `tokens: extended`)
 
-**The named-token set is the _default_ vocabulary, not a hard limit.** When a design needs
+**The named-token set is the *default* vocabulary, not a hard limit.** When a design needs
 a token the core set lacks — a second accent tone, a dedicated `on-accent` text color, a
 divider-line color — add it. Don't conclude "core only has `accent`/`accent-soft`, so this
 can't be expressed." Two mechanisms:
@@ -299,6 +310,7 @@ Default stays `'core'`.
 
 **`rokkit init`** scaffolds `rokkit.config.js` in the named-token shape (a header comment
 documents the vocabulary). Two starters via the palette prompt:
+
 - **Tailwind (rgb)** — `skin` of Tailwind palette names, `colorSpace: 'rgb'`, `tokens: 'core'`. Single-palette → light-leaning (see Layer 2b).
 - **Zen-Sumi (OKLCH)** — ships `palettes` (kami/sumi/shu/…), `colorSpace: 'oklch'`, dual-palette `surface`/`ink` → full dark mode out of the box.
 
@@ -308,7 +320,7 @@ mode init script), it runs **advisory** config-shape warnings and migration hint
 fail the command or block `--fix`:
 
 | Check | Warns when |
-|-------|-----------|
+| ------- | ----------- |
 | `skin-ink-role` | the active colormap has no `ink` role (text tokens fall back) |
 | `oklch-needs-palettes` | `colorSpace: 'oklch'` but no `palettes` block |
 | `colors-alias` | config uses the legacy `colors:` instead of `skin:` |
@@ -321,6 +333,7 @@ colors`. Run `rokkit doctor --fix` to auto-write a real starter config when one 
 ## Typography configuration
 
 Set faces in config; the preset emits CSS vars and Tailwind `fontFamily` keys.
+
 ```js
 typography: {
   display: "'Fraunces', 'Iowan Old Style', Georgia, serif",  // heading/display face
@@ -328,8 +341,10 @@ typography: {
   mono:    "'JetBrains Mono', 'SF Mono', Menlo, monospace",
 }
 ```
+
 Canonical config keys are `display` / `ui` / `mono`; `heading` / `sans` are accepted
 aliases. Usage classes: `font-heading` (display face), `font-body` (UI face), `font-mono`.
+
 ```html
 <h1 class="font-heading text-2xl text-ink">Page Title</h1>
 <p  class="font-body text-[13px] text-ink-mute">Description</p>
@@ -343,7 +358,7 @@ aliases. Usage classes: `font-heading` (display face), `font-body` (UI face), `f
 `shape: { radius: 'soft' }` selects a preset emitting `--radius-{sm,md,lg,xl,full}`.
 
 | Preset | sm | md | lg | xl | full | Personality |
-|--------|----|----|----|----|------|-------------|
+| -------- | ---- | ---- | ---- | ---- | ------ | ------------- |
 | `sharp` | 0 | 0 | 0 | 0 | 9999px | Minimal, editorial |
 | `soft` | 2px | 6px | 10px | 12px | 9999px | Professional, calm |
 | `rounded` | 4px | 8px | 12px | 16px | 9999px | Friendly, modern |
@@ -360,7 +375,7 @@ never `rounded-[6px]`, which bypasses the config.
 Rokkit inherits Tailwind's 4px-grid spacing. **Stay on the 4px grid, use Tailwind names.**
 
 | Tailwind | px | When |
-|----------|----|------|
+| ---------- | ---- | ------ |
 | `1` / `2` / `3` | 4 / 8 / 12 | tight gap · component gap · compact padding |
 | `4` / `6` | 16 / 24 | default padding · panel padding |
 | `8` / `12` / `16` | 32 / 48 / 64 | section separation · page padding · hero whitespace |
@@ -400,7 +415,7 @@ export default {
 ## Common mistakes
 
 | Mistake | Why it fails | Fix |
-|---|---|---|
+| --- | --- | --- |
 | "core only emits `accent`/`accent-soft`, so I can't have `accent-2`/`on-accent`" | the vocabulary is extensible, not fixed | add them under `overrides:` (or use `tokens: 'extended'`) — see Layer 3b |
 | Override palette ref `'sky-600'` (hyphen) | refs use **dot** notation | `'sky.600'` (and `sky` must be in `palettes:`) |
 | `color: #3D3730` in a component | breaks on theme change | `text-ink` (or the right named token) |

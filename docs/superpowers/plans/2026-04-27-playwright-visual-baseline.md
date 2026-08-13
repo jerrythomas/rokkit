@@ -28,6 +28,7 @@ demo/
 ### Task 1: Install Playwright and Configure
 
 **Files:**
+
 - Modify: `demo/package.json`
 - Create: `demo/playwright.config.ts`
 
@@ -118,6 +119,7 @@ git commit -m "chore(demo): add Playwright with Chrome + Firefox at 1440x900"
 ### Task 2: Test Helpers
 
 **Files:**
+
 - Create: `demo/e2e/helpers.ts`
 
 - [ ] **Step 1: Create helpers.ts**
@@ -191,6 +193,7 @@ git commit -m "test(demo): add Playwright helpers — navigation, mode, locale, 
 ### Task 3: Observatory Snapshots
 
 **Files:**
+
 - Create: `demo/e2e/observatory.e2e.ts`
 
 The observatory is the main dashboard at `/observatory`. It has: greeting strip, FTR hero, koan card, insights section, recent sessions table, adopted teachings.
@@ -341,6 +344,7 @@ git commit -m "test(demo): add observatory visual regression baseline — 5 full
 ### Task 4: Sessions Snapshots
 
 **Files:**
+
 - Create: `demo/e2e/sessions.e2e.ts`
 
 The sessions page at `/sessions` has: retro digest cards (going well / not going well / insights), filter tabs, and a sessions table.
@@ -348,6 +352,7 @@ The sessions page at `/sessions` has: retro digest cards (going well / not going
 - [ ] **Step 1: Read sessions page to find selectors**
 
 Read `demo/src/routes/(app)/sessions/+page.svelte` to identify the actual DOM structure and class names used for:
+
 - The retro digest section (cards)
 - The filter bar / tabs
 - The sessions table/list
@@ -449,6 +454,7 @@ git commit -m "test(demo): add sessions visual regression baseline — full-page
 ### Task 5: Setup Wizard Snapshots
 
 **Files:**
+
 - Create: `demo/e2e/setup-wizard.e2e.ts`
 
 The setup wizard lives at `/setup` (outside the `(app)` layout — no sidebar). It has a left-rail stepper, step content area, and bottom progress bar. The wizard has multiple steps: Welcome, Folders, Projects, etc.
@@ -456,6 +462,7 @@ The setup wizard lives at `/setup` (outside the `(app)` layout — no sidebar). 
 - [ ] **Step 1: Read setup page to find selectors and step navigation**
 
 Read `demo/src/routes/setup/+page.svelte` to identify:
+
 - The stepper rail selector
 - The step content area
 - How navigation between steps works (Next/Back buttons, stepper clicks)
@@ -572,6 +579,7 @@ git commit -m "test(demo): add setup wizard visual regression baseline — welco
 ### Task 6: Full Suite Verification
 
 **Files:**
+
 - No new files. Verification pass.
 
 - [ ] **Step 1: Run the full suite — both browsers**
@@ -603,6 +611,7 @@ Expected: All tests pass with zero diffs. If any test fails with a pixel diff, i
 - [ ] **Step 4: If flaky tests found, fix them**
 
 Common fixes:
+
 - Dynamic timestamps: mask with `mask: [page.locator('.date-display')]` in `toHaveScreenshot` options
 - CSS transitions: increase `waitForTimeout` in `setMode`
 - Animations: add `animations: 'disabled'` to `toHaveScreenshot` options

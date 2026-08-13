@@ -9,6 +9,7 @@
 ### Goal
 
 Build a cohesive, configurable design token system for rokkit. Validate it by:
+
 1. Building a demo app that replicates zen/sumi mockup aesthetics
 2. Creating the zen-sumi theme as the first theme built on the new token system
 3. Replacing custom demo components with rokkit components

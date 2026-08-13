@@ -11,6 +11,7 @@
 **Spec:** `docs/backlog/2026-06-09-rokkit-skills-add.md`
 
 **Conventions to follow (read first):**
+
 - `packages/cli/src/skin.js` — module shape: pure exported functions + a `console.*` output layer + an entry function; injectable adapters for tests.
 - `packages/cli/src/index.js` — `sade` command registration; subcommands like `skin list` are registered as the two-word string `'skin list'`; extra positional args arrive on `opts._`.
 - `packages/cli/spec/init.spec.js` — Vitest style (`import { describe, it, expect } from 'vitest'`, direct function calls).
@@ -21,7 +22,7 @@
 ## File Structure
 
 | File | Responsibility |
-|------|----------------|
+| ------ | ---------------- |
 | `packages/cli/skills/semantic-styles-rokkit/SKILL.md` (create) | Bundled theming skill (copied from canonical global skill) |
 | `packages/cli/skills/rokkit-components/SKILL.md` (create) | Bundled consumer component-usage skill (net-new) |
 | `packages/cli/src/skills.js` (create) | `parseFrontmatter`, `listSkills`, `installSkills`, `runSkillsList`, `runSkillsAdd`, `skillsCommand` |
@@ -37,6 +38,7 @@
 ## Task 1: Bundle the `semantic-styles-rokkit` skill
 
 **Files:**
+
 - Create: `packages/cli/skills/semantic-styles-rokkit/SKILL.md`
 
 The canonical source is the developer's global skill at
@@ -75,6 +77,7 @@ git commit -m "feat(cli): bundle semantic-styles-rokkit skill"
 ## Task 2: Author the `rokkit-components` skill
 
 **Files:**
+
 - Create: `packages/cli/skills/rokkit-components/SKILL.md`
 
 Net-new consumer-usage skill. The **frontmatter below is exact** (the catalog
@@ -143,6 +146,7 @@ git commit -m "feat(cli): add rokkit-components usage skill"
 ## Task 3: `skills.js` — frontmatter parsing + catalog listing
 
 **Files:**
+
 - Create: `packages/cli/src/skills.js`
 - Test: `packages/cli/spec/skills.spec.js`
 
@@ -246,6 +250,7 @@ git commit -m "feat(cli): skills catalog listing from frontmatter"
 ## Task 4: `skills.js` — install skills into `.claude/skills/`
 
 **Files:**
+
 - Modify: `packages/cli/src/skills.js`
 - Test: `packages/cli/spec/skills.spec.js`
 
@@ -364,6 +369,7 @@ git commit -m "feat(cli): install skills into .claude/skills"
 ## Task 5: Command handlers + `sade` wiring
 
 **Files:**
+
 - Modify: `packages/cli/src/skills.js`
 - Modify: `packages/cli/src/index.js`
 - Test: `packages/cli/spec/skills.spec.js`
@@ -514,15 +520,19 @@ prog
 - [ ] **Step 6: Manually smoke-test the wired CLI**
 
 Run:
+
 ```bash
 node packages/cli/src/index.js skills list
 ```
+
 Expected: prints both skills with descriptions and the install hint.
 
 Run (in a throwaway temp dir):
+
 ```bash
 TMP=$(mktemp -d) && (cd "$TMP" && node "$OLDPWD/packages/cli/src/index.js" skills add rokkit-components) && ls "$TMP/.claude/skills/rokkit-components" && rm -rf "$TMP"
 ```
+
 Expected: prints `added .claude/skills/rokkit-components` and lists `SKILL.md`.
 
 - [ ] **Step 7: Commit**
@@ -537,6 +547,7 @@ git commit -m "feat(cli): wire 'rokkit skills list|add' commands"
 ## Task 6: Package the skills into the published tarball
 
 **Files:**
+
 - Modify: `packages/cli/package.json`
 
 - [ ] **Step 1: Add `skills/**` to `files`**
@@ -559,9 +570,11 @@ directory (add the one line shown):
 - [ ] **Step 2: Verify the skills are included in the packed tarball**
 
 Run:
+
 ```bash
 cd packages/cli && bun pm pack --dry-run 2>&1 | grep -c "skills/.*SKILL.md"; cd -
 ```
+
 Expected: `2` (both `SKILL.md` files are listed in the pack contents).
 
 > If `--dry-run` is unsupported in the installed bun, run `cd packages/cli && bun pm pack` then `tar -tzf *.tgz | grep skills` and `rm -f *.tgz`. Expected: both `package/skills/semantic-styles-rokkit/SKILL.md` and `package/skills/rokkit-components/SKILL.md` appear.
@@ -578,6 +591,7 @@ git commit -m "build(cli): include skills/ in published package"
 ## Task 7: README docs + project bookkeeping
 
 **Files:**
+
 - Modify: `packages/cli/README.md`
 - Modify: `docs/design/12-priority.md`
 - Modify: `agents/journal.md`
@@ -604,6 +618,7 @@ rokkit skills add <name> --force         # overwrite an existing install
 Skills install into your project's `.claude/skills/<name>/`, so they're shared
 with your team via version control. Browse the source under
 [`packages/cli/skills/`](./skills).
+
 ```
 
 - [ ] **Step 2: Verify the README renders the code fences correctly**
@@ -661,4 +676,5 @@ This is a `@rokkit/cli` feature → release with the existing flow:
 commits, tags, pushes; CI publishes on the tag), then merge `develop → main`.
 Note the unrelated `v1.1.13` CLI flash-script fix is already committed on
 `develop` and will ship in the same release.
+
 ```

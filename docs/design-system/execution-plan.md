@@ -44,6 +44,7 @@ Phase 9: Final Verification                          ✅ DONE
   - Collapsible groups (Active projects, Recent projects)
   - Daemon status footer
 - Route structure:
+
   ```
   /                    → redirect to /observatory
   /observatory         → daily dashboard
@@ -64,6 +65,7 @@ Phase 9: Final Verification                          ✅ DONE
 - All data from mocked load functions
 
 **Data stubs** (`src/lib/data/observatory.ts`):
+
 ```typescript
 export function loadObservatoryData() {
   return {
@@ -209,12 +211,14 @@ setup-wizard.spec.ts
 
 - Add `tertiary` to `DEFAULT_THEME_MAPPING`
 - Implement `resolveColors()` with inheritance chain:
+
   ```
   tertiary  → primary
   secondary → primary (if null)
   accent    → primary (if null)
   error     → danger  (if null)
   ```
+
 - Update `Theme` class to call `resolveColors()` on construction
 - Update `semanticShortcuts()` to generate shortcuts for `tertiary`
 
@@ -227,6 +231,7 @@ setup-wizard.spec.ts
 - Add `data-radius` attribute support
 - Define named presets: sharp, soft, rounded, pill
 - Add CSS custom properties:
+
   ```css
   [data-radius='soft'] {
     --radius-sm: 0.125rem;
@@ -236,6 +241,7 @@ setup-wizard.spec.ts
     --radius-full: 9999px;
   }
   ```
+
 - Update base component CSS to use `--radius-*` variables
 - Decouple `--density-radius-base` from density (keep density for spacing only)
 
@@ -246,6 +252,7 @@ setup-wizard.spec.ts
 **Files**: `packages/themes/src/base/layout.css` (new)
 
 - Define layout CSS custom properties:
+
   ```css
   :root {
     --layout-sidebar-width: 260px;
@@ -258,6 +265,7 @@ setup-wizard.spec.ts
     --layout-card-gap: 1rem;
   }
   ```
+
 - Import from `base/index.css`
 
 **Verify**: Variables available in dev tools, no regressions.
@@ -450,6 +458,7 @@ For each component, write CSS matching the mockup treatment:
 **Identity**: Gradient-forward, vibrant, energetic.
 
 Key changes:
+
 - CTA/highlight: gradient from `primary-z5` to `secondary-z5` (left → right, adapts to orientation)
 - Input focus: gradient border (using `[data-gradient-border]`)
 - Buttons: gradient fill for default, gradient border for outline
@@ -463,6 +472,7 @@ Key changes:
 **Identity**: Clean, understated, professional.
 
 Key changes:
+
 - CTA/highlight: flat underline or border-left accent
 - Input focus: underline thickens (bottom border)
 - Input default: underline style (bottom border only)
@@ -476,6 +486,7 @@ Key changes:
 **Identity**: Elevation, surfaces, tonal containers.
 
 Key changes:
+
 - CTA/highlight: tonal container (variant-z1 bg) + elevation shadow
 - Input focus: border + filled background
 - Input default: filled variant (tinted bg) or outlined
@@ -490,6 +501,7 @@ Key changes:
 **Identity**: Apple Liquid Glass — translucent, blurred, luminous.
 
 Key changes:
+
 - CTA/highlight: glass overlay with backdrop-blur
 - Input focus: glass border with specular highlight
 - Backgrounds: `color-mix()` for translucency + `backdrop-filter: blur()`
@@ -554,6 +566,7 @@ Run Playwright for the complete matrix:
 ```
 
 Pragmatic subset (key combinations):
+
 ```
 zen-sumi:  light + dark × comfortable × soft × en/ar = 4
 rokkit:    light + dark × comfortable × rounded × en = 2
@@ -629,7 +642,7 @@ Identify and document pattern to be followed in the future if we need to impleme
 ## Estimated Scope
 
 | Phase | New files | Modified files | New tests |
-|-------|-----------|----------------|-----------|
+| ------- | ----------- | ---------------- | ----------- |
 | 1 | ~25 | 3 (demo config) | 0 |
 | 2 | ~8 (messages, config) | ~20 (string extraction) | 0 |
 | 3 | ~5 (test files) | 1 (playwright config) | ~30 tests |

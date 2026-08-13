@@ -137,7 +137,8 @@ Add `SvelteSet` to the existing `svelte/reactivity` import (it already imports `
 	#selectable = $state(false)
 ```
 
-In the constructor (near `this.#chartPreset = ...`): 
+In the constructor (near `this.#chartPreset = ...`):
+
 ```js
 		this.#onselect = config.onselect
 		this.#selectable = config.selectable ?? false
@@ -145,12 +146,14 @@ In the constructor (near `this.#chartPreset = ...`):
 ```
 
 In `update(config)` (near the other `if (config.x !== undefined)` lines):
+
 ```js
 		if (config.onselect !== undefined) this.#onselect = config.onselect
 		if (config.selectable !== undefined) this.#selectable = config.selectable
 ```
 
 Add methods/getters near `setHovered`/`get hovered`:
+
 ```js
 	get interactive() {
 		return !!this.#onselect || this.#selectable
@@ -247,12 +250,15 @@ Do this before the geoms so selection is visible as soon as `handleSelect` runs.
 ```
 
 Update the template each/key + add the attribute:
+
 ```svelte
 	{#each marks as m (m.key)}
 		<circle cx={m.cx} cy={m.cy} data-plot-highlight data-plot-selected={m.selected ? 'true' : undefined} />
 		...
 ```
+
 (Keep the label block; it can key off `m.key` too.) Add to `<style>`:
+
 ```css
 	[data-plot-highlight][data-plot-selected='true'] {
 		stroke: var(--chart-selected-ring, var(--chart-highlight-color, rgb(var(--color-accent-500, 194 65 12))));
@@ -275,6 +281,7 @@ Update the template each/key + add the attribute:
 - [ ] **Step 2:** `Line.svelte` — the invisible hit circles already render when `onselect || keyboard`. Change the gate to also include `plotState.interactive`, and on click/keydown call `plotState.handleSelect(...)` in addition to the local `onselect`. Read the file; for the hit `{#each seg.points as pt ...}` circle set:
   - `role` / `tabindex` / `cursor` guard: `onselect || keyboard || plotState.interactive`.
   - build a detail and dispatch. Add a helper in the `<script>`:
+
     ```ts
     import { buildSelectDetail } from '../lib/select.js'
     const geomIndex = (row: Row) => plotState.data.indexOf(row)
@@ -284,6 +291,7 @@ Update the template each/key + add the attribute:
     		plotState.handleSelect(buildSelectDetail(pt.data, geomIndex(pt.data), { x, y }, 'line', seg.key, event))
     }
     ```
+
   - wire `onclick={(e) => select(pt, seg, e)}` and `onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && select(pt, seg, e)}` on the hit circle; keep `setHovered`/`clearHovered`.
 
 - [ ] **Step 3:** `Point.svelte` — same treatment on the point path/circle: import `buildSelectDetail`, gate interactivity on `onselect || keyboard || plotState.interactive`, and on click/keydown call both the local `onselect(pt.data)` and (when interactive) `plotState.handleSelect(buildSelectDetail(pt.data, geomIndex(pt.data), { x, y }, 'point', color ? pt.data[color] : undefined, e))`. Use the point's own index where available.
@@ -352,17 +360,21 @@ describe('chart selection', () => {
   - Destructure with `selected = $bindable([])`, `onselect = undefined`, `selectable = false`.
   - In `buildPlotConfig()` add `onselect`, `selectable` to the returned config object.
   - Sync `selected` two-way with PlotState (PlotState = source of truth):
+
     ```ts
     $effect(() => { plotState.setSelected(selected) })          // external → state (guard against no-op loops: only when differing)
     $effect(() => { const rows = plotState.selectedRows; if (rows.length !== selected.length || rows.some((r, i) => r !== selected[i])) selected = rows })
     ```
+
     Use a shallow-equality guard (as shown) to avoid an update loop.
   - Render `<Highlight>` when `highlight != null` **or** selection is active. Change the existing highlight render guard to:
+
     ```svelte
     {#if highlight !== null && highlight !== undefined || selectable || selected.length}
     	<Highlight x={overlayX} y={overlayY} {highlight} {label} />
     {/if}
     ```
+
     (Highlight already reads `plotState.selectedRows` from Task 3.)
 
   Read `Plot.svelte` and place edits by content.
@@ -400,15 +412,19 @@ describe('chart selection', () => {
 **Files:** Modify `apps/learn/src/lib/koan/demos/chart/index.svelte`.
 
 - [ ] **Step 1:** In the metrics section, add `selectable` + `onselect` to the `PlotChart` and a caption showing the last clicked point. Add to `<script>`:
+
 ```ts
 	let picked = $state<{ day: number; value: number } | null>(null)
 ```
+
 Update the `PlotChart` open tag: add `selectable onselect={(d) => (picked = { day: d.x as number, value: d.value as number })}`. Below the chart, add:
+
 ```svelte
 			{#if picked}
 				<p class="metrics-pick">Selected: {picked.day === 0 ? 'today' : `${picked.day}d`} · {picked.value}</p>
 			{/if}
 ```
+
 (Add a small `.metrics-pick` style consistent with the demo.)
 
 - [ ] **Step 2:** validate via Svelte MCP; confirm no type/lint issues in the file (`bunx eslint` on the file). Do NOT run a dev server (e2e verifies).
@@ -421,6 +437,7 @@ Update the `PlotChart` open tag: add `selectable onselect={(d) => (picked = { da
 **Files:** Create `apps/learn/e2e/chart-select.e2e.ts`.
 
 - [ ] **Step 1:** write the test — navigate `/app/chart`, click a `[data-plot-element="line-hover"]` (or `line-marker`) hit target in the metrics chart, assert a `[data-plot-selected="true"]` mark appears and the "Selected:" caption is visible.
+
 ```ts
 import { test, expect } from '@playwright/test'
 test('clicking a metrics point selects + drills', async ({ page }) => {
@@ -431,6 +448,7 @@ test('clicking a metrics point selects + drills', async ({ page }) => {
 	await expect(page.getByText(/Selected:/).first()).toBeVisible()
 })
 ```
+
 - [ ] **Step 2:** `cd apps/learn && npx playwright test chart-select` → PASS. If the hit target needs a different selector to receive the click reliably, adjust to a working one (report it). If elements are genuinely absent, STOP and report (don't force a pass).
 - [ ] **Step 3: commit** `git add apps/learn/e2e/chart-select.e2e.ts && git commit -m "test(learn): e2e for chart click-to-select"`
 

@@ -20,6 +20,7 @@ follow-up item if wanted.
 Roughly a month ago, a fix to the Select component's dropdown visibility (items overflowing other elements) introduced a regression in scroll handling. Scroll behavior in long dropdowns is now broken in a way that wasn't there before.
 
 Before patching, we need to:
+
 1. Reproduce the regression precisely and identify the offending commit.
 2. Build a **Select lab page** that demonstrates multiple proposed scroll-handling approaches side-by-side, so we can evaluate options before settling on a fix.
 3. Consider whether the right move is to fix in place OR rewrite Select to share more with `Menu` (which has cleaner scroll handling).

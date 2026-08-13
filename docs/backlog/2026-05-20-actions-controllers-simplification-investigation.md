@@ -48,6 +48,7 @@ Stripping the stack loses roving tabindex and arrow navigation — both ARIA-sta
 ## Deliverable
 
 A short audit document (`docs/design/components/actions-audit.md`) with:
+
 - Current responsibilities per file (lines of code, branches)
 - Lines / branches that could be removed under the "items are buttons" assumption
 - Risk assessment for each candidate removal

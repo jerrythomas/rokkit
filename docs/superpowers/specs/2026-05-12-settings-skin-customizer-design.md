@@ -14,11 +14,13 @@ Users can switch theme style (zen-sumi, rokkit, etc.) but cannot change the colo
 Placed between Theme Style and Appearance sections.
 
 **Predefined skin picker** — horizontal row of cards (matching theme card layout). Each card shows:
+
 - Skin name
 - 4 color swatches (surface, primary, secondary, accent at z5)
 - Active: primary border + ring
 
 **Individual color roles** — below skin cards. Per role (Surface, Primary, Secondary, Accent):
+
 - Role label
 - Row of clickable palette swatches (small circles, z5 shade of each available palette)
 - Active swatch has ring indicator
@@ -37,7 +39,7 @@ Style (visual treatment) and skin (color palette) are independent axes. Zen-sumi
 ## Files
 
 | File | Change |
-|------|--------|
+| ------ | -------- |
 | `demo/src/lib/data/skins.ts` | Create — skin definitions, palette lookup, available palettes |
 | `demo/src/lib/stores/theme.svelte.ts` | Add `skin`, `setSkin()`, `setRoleColor()`, `roleOverrides` |
 | `demo/src/routes/(app)/settings/+page.svelte` | Add SKIN section with cards + role swatches |

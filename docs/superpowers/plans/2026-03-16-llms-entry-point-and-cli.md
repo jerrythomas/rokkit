@@ -55,7 +55,7 @@ There are no automated tests for content files. Verification is done by cross-ch
      npm install
   ````
 
-  2. Initialize Rokkit:
+  1. Initialize Rokkit:
 
      ```bash
      npx @rokkit/cli@latest init
@@ -279,6 +279,7 @@ There are no automated tests for content files. Verification is done by cross-ch
   ```
 
   ## Reference
+
   - [cli.txt](/llms/cli.txt) — CLI reference (`rokkit init`, `rokkit doctor`, icon tools)
   - [packages/](/llms/packages/) — per-package documentation
   - [components/](/llms/components/) — component reference (30+ components)
@@ -380,6 +381,7 @@ There are no automated tests for content files. Verification is done by cross-ch
   ```
 
   ### Prompts
+
   1. **Color palette**
      - `default` — orange / pink / sky
      - `vibrant` — blue / purple

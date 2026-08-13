@@ -7,6 +7,7 @@
 **Design spec:** `docs/superpowers/specs/2026-05-21-direct-token-mapping-design.md`
 
 **Architecture:**
+
 - `@rokkit/unocss` — accept `skin.tokens` config block; thread to Theme.
 - `@rokkit/core` — Theme constructor accepts `tokenOverrides` map; getNamedTokens consults it first.
 - Demo — optionally adopt `tokens: {…}` for cases where defaults don't fit.
@@ -20,6 +21,7 @@
 ## Task 1: Token override types and parser
 
 **Files:**
+
 - Modify: `packages/core/src/named-tokens.ts` — add `TokenOverride` type
 - Modify: `packages/unocss/src/custom-tokens.js` — reuse `isPaletteRef` / `resolvePaletteRef` helpers; expose them
 
@@ -51,6 +53,7 @@
 ## Task 2: Theme accepts `tokenOverrides`
 
 **Files:**
+
 - Modify: `packages/core/src/theme.ts`
 - Modify: `packages/core/spec/theme.spec.js`
 
@@ -137,6 +140,7 @@
 ## Task 3: Config accepts `skin.tokens`
 
 **Files:**
+
 - Modify: `packages/unocss/src/config.js`
 - Modify: `packages/unocss/spec/config.spec.js`
 
@@ -158,6 +162,7 @@
 ## Task 4: Preset wires `tokenOverrides` to Theme
 
 **Files:**
+
 - Modify: `packages/unocss/src/preset.ts`
 - Modify: `packages/unocss/spec/preset.spec.js`
 
@@ -180,6 +185,7 @@
 ## Task 5: Migrate demo to use `tokens` overrides (where useful)
 
 **Files:**
+
 - Modify: `demo/rokkit.config.js`
 
 - [ ] **Step 1: Decide which tokens to override explicitly**
@@ -216,6 +222,7 @@
 ## Task 6: Update `demo/src/lib/data/skins.ts` (runtime store)
 
 **Files:**
+
 - Modify: `demo/src/lib/data/skins.ts`
 
 - [ ] **Step 1: Skin colormaps can declare per-token overrides**
@@ -237,6 +244,7 @@
 ## Task 7: Documentation
 
 **Files:**
+
 - Modify: `docs/design/06-themes.md` — document the `tokens` block, precedence rules, palette-ref syntax.
 - Modify: `docs/backlog/2026-05-20-named-tokens-no-dark-flip.md` — mark resolved; link to this plan.
 - Modify: `agents/journal.md` — add an entry.
@@ -284,6 +292,7 @@
 **Rollback path:** Each task is its own commit; reverting the `tokens` block emit is harmless because it's an opt-in feature.
 
 **What this plan does NOT do (intentionally):**
+
 - Doesn't drop `INVERTED_ROLES` — stays as default for the role-level shorthand path.
 - Doesn't change `NAMED_TOKEN_SHADE_MAP` — defaults unchanged for backward compat.
 - Doesn't add an `invert: true` role flag — superseded by the override mechanism.

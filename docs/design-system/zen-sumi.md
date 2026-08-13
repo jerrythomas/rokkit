@@ -27,7 +27,7 @@ The design language values:
 ### Default Light Mode
 
 | Token | Name | OKLCH | Hex (approx) | Usage |
-|-------|------|-------|--------------|-------|
+| ------- | ------ | ------- | -------------- | ------- |
 | `paper` (shade 50) | Kami (paper) | `oklch(0.975 0.008 85)` | #f5f3ee | Main background |
 | `paper-soft` (shade 100) | | `oklch(0.955 0.010 85)` | #ece9e2 | Cards, sidebar bg |
 | `paper-mute` (shade 200) | | `oklch(0.920 0.012 85)` | #ddd9d0 | Inset areas, inputs |
@@ -46,7 +46,7 @@ Invert the surface scale (dark paper, light ink) while keeping accent colors
 at similar perceived lightness:
 
 | Token | OKLCH |
-|-------|-------|
+| ------- | ------- |
 | `paper` (shade 50) | `oklch(0.170 0.010 85)` |
 | `paper-soft` (shade 100) | `oklch(0.210 0.012 85)` |
 | `paper-mute` (shade 200) | `oklch(0.250 0.014 85)` |
@@ -136,7 +136,7 @@ at similar perceived lightness:
 ## Typography
 
 | Role | Font | Fallback | Usage |
-|------|------|----------|-------|
+| ------ | ------ | ---------- | ------- |
 | Display | Fraunces | Georgia, serif | Hero text, large headings |
 | UI | Inter | system-ui, sans-serif | Body, labels, buttons |
 | Mono | JetBrains Mono | monospace | Code, data, paths |
@@ -147,7 +147,7 @@ at similar perceived lightness:
 Slightly smaller than default — the aesthetic is compact and considered:
 
 | Role | Size | Weight |
-|------|------|--------|
+| ------ | ------ | -------- |
 | Hero | 36px | 300 (Fraunces) |
 | Page title | 24px | 500 (Inter) |
 | Section header | 15px | 600 (Inter) |
@@ -193,7 +193,7 @@ Zen-sumi uses the **soft** radius preset:
 ### Buttons
 
 | Variant | Treatment |
-|---------|-----------|
+| --------- | ----------- |
 | Default (filled) | Sumi (ink) background, kami (paper) text. No gradient. |
 | Outline | Ink-line border (sumi with transparency), transparent bg |
 | Ghost | No border, sumi-2 text, hover: paper-3 bg |
@@ -217,7 +217,7 @@ Zen-sumi uses the **soft** radius preset:
 ### Inputs
 
 | Variant | Treatment |
-|---------|-----------|
+| --------- | ----------- |
 | Outline | Hairline border (paper-edge), paper-2 bg |
 | Focus | Border darkens to sumi-3, no glow/shadow |
 | Error | Border becomes shu |
@@ -228,7 +228,7 @@ Just subtle border darkening on focus.
 ### Lists / Sidebar Navigation
 
 | State | Treatment |
-|-------|-----------|
+| ------- | ----------- |
 | Default | Transparent bg, sumi-2 text |
 | Hover | Paper-3 bg |
 | Selected/Active | Paper bg (lighter), sumi text, shu kanji icon |
@@ -239,7 +239,7 @@ Grid layout per item: `auto 1fr auto` (icon + label + badge)
 ### Cards
 
 | State | Treatment |
-|-------|-----------|
+| ------- | ----------- |
 | Default | Paper-2 bg, hairline border |
 | Hover | Paper-3 bg |
 | Active | Paper bg, border darkens |
@@ -249,7 +249,7 @@ No shadows. Depth conveyed through background tone variation only.
 ### Tabs
 
 | State | Treatment |
-|-------|-----------|
+| ------- | ----------- |
 | Inactive | Transparent, sumi-3 text |
 | Active | Sumi bg, paper text |
 | Hover | Paper-3 bg |
@@ -259,7 +259,7 @@ Pill-style tabs (small radius) with clear active/inactive contrast.
 ### Tables
 
 | Element | Treatment |
-|---------|-----------|
+| --------- | ----------- |
 | Header | Sumi-4 text, uppercase, smaller font, no bg |
 | Row | Transparent bg, hairline bottom border |
 | Row hover | Paper-2 bg |
@@ -280,6 +280,7 @@ text content inside the span: `<span>聴</span>`.
 
 **Required change to @rokkit/ui**: Icon rendering in `ItemContent.svelte` (and all
 components that render icons) needs to detect whether the icon value is:
+
 - A **CSS class** (starts with `i-` or matches UnoCSS icon pattern) → render as class
 - A **literal character/string** (1–2 chars, no `i-` prefix) → render as text content
 
@@ -320,6 +321,7 @@ Color: primary for active, ink-soft for inactive.
 ### Sparklines
 
 Thin line charts with shu stroke:
+
 ```css
 stroke-width: 1.25px;
 stroke-linecap: round;
@@ -329,6 +331,7 @@ stroke: var(--primary);
 ### Enso Ring (arc gauge)
 
 SVG circular progress with sumi brush texture:
+
 - Stroke-width: 8px
 - SVG filter: feTurbulence + feDisplacementMap for ink-brush effect
 - Size: 80–120px
@@ -336,7 +339,7 @@ SVG circular progress with sumi brush texture:
 ### Status Indicators
 
 | Status | Color | Icon style |
-|--------|-------|------------|
+| -------- | ------- | ------------ |
 | Positive | Hisui (jade) | Filled dot |
 | Warning | Kohaku (amber) | Filled dot |
 | Negative | Shu (vermillion) | Filled dot |
@@ -351,6 +354,7 @@ similar. The zen aesthetic works particularly well in dark mode — dark paper
 with light ink and vermillion accents evokes traditional Japanese calligraphy.
 
 Key adjustments:
+
 - Shu accent becomes slightly lighter for readability
 - Borders become more subtle (lower opacity)
 - Card backgrounds use paper-soft (slightly lighter than bg)

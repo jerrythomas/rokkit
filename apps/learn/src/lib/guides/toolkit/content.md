@@ -15,7 +15,7 @@ Reactive state machines + proxies:
 - **Proxies** — `ProxyItem`, `ProxyTree`, `ProxyTable`,
   `LazyProxyItem` — thin reactive wrappers that adapt your
   raw data via the `fields` mapping. `ProxyTable` adds columns
-  + sort for tabular data.
+  - sort for tabular data.
 - **Stores** — `alerts` (for AlertList), `messages`
   (localised labels), `vibe` (the active style / skin / mode).
 

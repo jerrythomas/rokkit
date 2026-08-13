@@ -19,6 +19,7 @@ Zen-sumi uses the **same semantic token pipeline** as every other rokkit theme �
 This means zen-sumi is recolorable via skins, uses the same shortcuts as other themes, and gets full OKLCH precision.
 
 ### Dark mode
+
 The z-scale automatically flips for dark mode (`z0=light→dark, z10=dark→light`). The OKLCH palettes are designed so the shade scale works in both directions.
 
 ## OKLCH Palettes
@@ -26,8 +27,9 @@ The z-scale automatically flips for dark mode (`z0=light→dark, z10=dark→ligh
 Each palette defines shades 50-950 in OKLCH. These values are the zen-sumi aesthetic translated to a standard shade scale.
 
 ### Kami (paper/surface) — warm neutral
+
 | Shade | OKLCH | Role |
-|-------|-------|------|
+| ------- | ------- | ------ |
 | 50 | `0.985 0.005 85` | Lightest paper |
 | 100 | `0.975 0.008 85` | Primary paper (was `--paper`) |
 | 200 | `0.955 0.010 85` | Elevated surface (was `--paper-2`) |
@@ -41,8 +43,9 @@ Each palette defines shades 50-950 in OKLCH. These values are the zen-sumi aesth
 | 950 | `0.170 0.010 50` | Dark paper bg |
 
 ### Shu (vermillion/primary)
+
 | Shade | OKLCH | Role |
-|-------|-------|------|
+| ------- | ------- | ------ |
 | 50 | `0.970 0.020 35` | Lightest tint |
 | 100 | `0.940 0.040 35` | Soft background |
 | 200 | `0.880 0.070 35` | Light accent |
@@ -56,8 +59,9 @@ Each palette defines shades 50-950 in OKLCH. These values are the zen-sumi aesth
 | 950 | `0.220 0.060 35` | Darkest |
 
 ### Jade (green/secondary)
+
 | Shade | OKLCH | Role |
-|-------|-------|------|
+| ------- | ------- | ------ |
 | 50 | `0.970 0.015 160` | Lightest tint |
 | 100 | `0.940 0.030 160` | Soft background |
 | 200 | `0.880 0.050 160` | Light |
@@ -71,8 +75,9 @@ Each palette defines shades 50-950 in OKLCH. These values are the zen-sumi aesth
 | 950 | `0.240 0.035 160` | Darkest |
 
 ### Kohaku (amber/accent)
+
 | Shade | OKLCH | Role |
-|-------|-------|------|
+| ------- | ------- | ------ |
 | 50 | `0.980 0.020 75` | Lightest tint |
 | 100 | `0.950 0.040 75` | Soft background |
 | 200 | `0.900 0.070 75` | Light |
@@ -111,6 +116,7 @@ Selector format: `[data-style='zen-sumi'] [data-component] { ... }`
 All treatments use semantic z-scale tokens (`surface-z2`, `primary-z5`, etc.) via `@apply`. These auto-flip for dark mode.
 
 ### Button (`button.css`)
+
 - **Default**: `@apply bg-surface-z9 text-surface-z0`. Ink-dark fill, paper text
 - **Outline**: `@apply border-surface-z4 text-surface-z9`. Transparent bg, hairline border
 - **Ghost**: `@apply text-surface-z9`. Hover: `@apply bg-surface-z2`
@@ -119,12 +125,14 @@ All treatments use semantic z-scale tokens (`surface-z2`, `primary-z5`, etc.) vi
 - Border-radius: `var(--density-radius-base)`
 
 ### Input (`input.css`)
+
 - `@apply bg-surface-z1 border-surface-z4`. Subtle paper bg, hairline border
 - Focus: `@apply border-surface-z6`. Stronger border, no gradient
 - Error: `@apply border-danger-z5`
 - Disabled: `opacity: 0.5`
 
 ### List (`list.css`)
+
 - Items: transparent bg, `@apply text-surface-z7`
 - Hover: `@apply bg-surface-z2`
 - Active: `@apply bg-surface-z1 text-surface-z9`
@@ -133,25 +141,30 @@ All treatments use semantic z-scale tokens (`surface-z2`, `primary-z5`, etc.) vi
 - Literal icons: `font-family: var(--font-kanji)` on `[data-item-icon-literal]`
 
 ### Card (`card.css`)
+
 - `@apply bg-surface-z1 border-surface-z3`. No shadow, flat
 - Header: `@apply border-b-surface-z2`
 
 ### Tabs (`tabs.css`)
+
 - Active: `@apply bg-surface-z9 text-surface-z0`. Pill-style
 - Inactive: `@apply text-surface-z6`
 
 ### Table (`table.css`)
+
 - Header: `@apply text-surface-z6`. Uppercase, small, semibold
 - Rows: `@apply border-b-surface-z2`
 - Data: mono font
 
 ### Badge (`badge.css`)
+
 - Primary: `@apply bg-primary-z5 text-on-primary`
 - Success: `@apply bg-success-z5 text-on-success`
 - Warning: `@apply bg-accent-z5 text-on-accent`
 - Default: `@apply bg-surface-z2 text-surface-z7`
 
 ### Stepper (`stepper.css`)
+
 - Completed: `@apply bg-primary-z5 border-primary-z5 text-on-primary`
 - Active: `@apply border-primary-z5 text-primary-z5`
 - Pending: `@apply border-surface-z5 text-surface-z5`
@@ -159,15 +172,18 @@ All treatments use semantic z-scale tokens (`surface-z2`, `primary-z5`, etc.) vi
 - Connector pending: `@apply bg-surface-z2`
 
 ### Dropdown (`dropdown.css`)
+
 - Container: `@apply bg-surface-z0 border-surface-z3`
 - Options: `@apply text-surface-z7`
 - Hover: `@apply bg-surface-z1`
 - Selected: `@apply text-primary-z5`
 
 ### Toolbar (`toolbar.css`)
+
 - `@apply bg-surface-z1 border-b-surface-z3`
 
 ### Menu (`menu.css`)
+
 - Container: `@apply bg-surface-z0 border-surface-z3`
 - Hover: `@apply bg-surface-z1`
 - Active: `@apply text-primary-z5`
