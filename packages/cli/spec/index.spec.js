@@ -280,4 +280,26 @@ describe('CLI Integration', () => {
 		expect(themeMock).toHaveBeenCalledWith('create', expect.objectContaining({ name: 'midnight' }))
 		vi.doUnmock('../src/theme.js')
 	})
+
+	it('should invoke agentsCommand("list") for the agents list command', async () => {
+		const agentsCommandMock = vi.fn()
+		vi.doMock('../src/agents.js', () => ({ agentsCommand: agentsCommandMock }))
+
+		process.argv = ['node', 'index.js', 'agents', 'list']
+		await import('../src/index.js')
+		await new Promise((r) => setTimeout(r, 10))
+		expect(agentsCommandMock).toHaveBeenCalledWith('list')
+		vi.doUnmock('../src/agents.js')
+	})
+
+	it('should invoke agentsCommand("add", opts) for the agents add command', async () => {
+		const agentsCommandMock = vi.fn()
+		vi.doMock('../src/agents.js', () => ({ agentsCommand: agentsCommandMock }))
+
+		process.argv = ['node', 'index.js', 'agents', 'add', '--all']
+		await import('../src/index.js')
+		await new Promise((r) => setTimeout(r, 10))
+		expect(agentsCommandMock).toHaveBeenCalledWith('add', expect.objectContaining({ all: true }))
+		vi.doUnmock('../src/agents.js')
+	})
 })
