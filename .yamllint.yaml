@@ -1,0 +1,10 @@
+# yamllint config (consumed by qlty's yamllint plugin).
+# CI workflow YAML routinely carries long install commands / URLs that can't be
+# meaningfully wrapped, so the 80-char line-length rule is disabled here.
+extends: default
+
+rules:
+  line-length: disable
+  # Allow GitHub Actions' `on:` key (yamllint's truthy rule flags it otherwise).
+  truthy:
+    check-keys: false

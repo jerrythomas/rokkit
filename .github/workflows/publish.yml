@@ -7,6 +7,9 @@ on:
   # Manual re-publish (reads versions from package.json, skips already-published).
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   publish:
     runs-on: ubuntu-latest
