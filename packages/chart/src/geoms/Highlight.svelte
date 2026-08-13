@@ -2,6 +2,7 @@
 	import { getContext } from 'svelte'
 	import type { PlotState } from '../PlotState.svelte.js'
 	import { resolveHighlight } from '../lib/highlight.js'
+	import { scalePos } from '../lib/scale.js'
 
 	type Row = Record<string, unknown>
 	type Props = {
@@ -14,12 +15,6 @@
 
 	const state = getContext<PlotState>('plot-state')
 
-	const scaleX = (scale: any, v: unknown) => {
-		const p = scale(v)
-		if (p === undefined) return NaN
-		return typeof scale.bandwidth === 'function' ? p + scale.bandwidth() / 2 : p
-	}
-
 	const marks = $derived.by(() => {
 		const rows = state?.data ?? []
 		const xs = state?.xScale
@@ -29,7 +24,7 @@
 		return resolveHighlight(rows, highlight, { y })
 			.map((i) => {
 				const row = rows[i]
-				return { i, cx: scaleX(xs, row[x]), cy: ys(Number(row[y])), row }
+				return { i, cx: scalePos(xs, row[x]), cy: ys(Number(row[y])), row }
 			})
 			.filter((m) => Number.isFinite(m.cx) && Number.isFinite(m.cy))
 	})
