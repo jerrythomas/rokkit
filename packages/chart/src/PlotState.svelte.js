@@ -345,6 +345,9 @@ export class PlotState {
 		return resolvePreset(this.#presetName, this.#helpers)
 	}
 
+	get data() {
+		return this.#data
+	}
 	get margin() {
 		return this.#effectiveMargin
 	}

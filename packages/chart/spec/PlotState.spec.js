@@ -468,3 +468,11 @@ describe('PlotState — preset from spec config', () => {
 		expect(state.preset().colors.length).toBeGreaterThan(0)
 	})
 })
+
+describe('PlotState.data', () => {
+	it('exposes the current data array', () => {
+		const rows = [{ a: 1 }, { a: 2 }]
+		const s = new PlotState({ data: rows, channels: { x: 'a', y: 'a' } })
+		expect(s.data).toEqual(rows)
+	})
+})
