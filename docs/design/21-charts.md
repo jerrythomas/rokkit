@@ -186,6 +186,29 @@ vertical lines on continuous/time x-scales at the x-tick positions (aligned to t
 `xTicks`/`yTicks`); `'y'` is horizontal-only; `false` hides the grid. Per-orientation hooks:
 `[data-plot-grid-line="x"|"y"]` + `--chart-grid-{color,width,dash,opacity}`.
 
+## Interaction — Selection
+
+Cartesian charts are interactive when a Plot-level `onselect` or `selectable` is set (surfaced via
+`PlotState.interactive`, which flips the geoms' hit targets on). All cartesian geoms — Line, Point,
+Bar, and Area (per-vertex hit targets along its top edge) — are then clickable and keyboard-activatable
+(Enter/Space on a focused mark). Selection state lives in `PlotState` (a `SvelteSet` keyed by **row
+reference** — robust across multi-series and aggregated data).
+
+- **`onselect(detail)`** — fired on every observation click/activation. `detail` =
+  `{ datum, index, series, value, x, y, geom, event }` (`index` is the global data index via
+  `plotState.data.indexOf`; `datum` is the reactive row). Use it to drill or run app actions. Geoms'
+  own local `onselect(data)` still fires (backward compatible).
+- **`selectable`** — opt-in click-to-highlight. Clicking toggles the observation in/out of a
+  multi-selection, rendered through the **Highlight** overlay. A point that is both statically
+  highlighted and selected renders as *selected* (the stronger state).
+- **`selected`** — `$bindable` array of selected rows (`PlotState` is the source of truth; two-way
+  synced with a shallow-equality guard to avoid an effect loop). Forwarded through `AreaChart`/`LineChart`.
+
+Theming: selected marks carry `data-plot-selected="true"` → `--chart-selected-{ring,ring-width,fill}`
+(base marker reuses `--chart-highlight-*`). Overlay decorations that could sit above a data point
+(the highlight dots and `[data-plot-axis-line]`) set `pointer-events: none` so clicks reach the hit
+target beneath — keeping every observation, including the first and the highlighted one, selectable.
+
 ---
 
 ## Stat System

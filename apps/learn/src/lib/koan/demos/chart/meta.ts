@@ -38,13 +38,17 @@ const meta: DemoMeta = {
 			{ name: 'grid', type: "boolean | 'x' | 'y' | 'both'", default: 'true', desc: "Background gridlines. true = auto (horizontal always; vertical only for band scales); 'both'/'x' force vertical lines on continuous scales at x-tick positions; 'y' = horizontal only; false = none" },
 			{ name: 'highlight', type: "'first' | 'last' | 'min' | 'max' | number | (row, i) => boolean", desc: 'Mark a specific observation with an accent dot (predicate matches many). PlotChart / AreaChart / LineChart' },
 			{ name: 'trend', type: 'method | method[]', desc: "Overlay trend/reference lines. Constants avg/median/min/max/value → horizontal line; fits linear/ma/ema/exp → series. Dashed by default" },
+			{ name: 'onselect', type: '(detail) => void', desc: 'Fires when an observation is clicked/activated; detail = { datum, index, series, value, x, y, geom, event } — drill or act on it. All cartesian geoms' },
+			{ name: 'selectable', type: 'boolean', default: 'false', desc: 'Opt-in click-to-highlight: clicking toggles a multi-selection rendered via the Highlight overlay' },
+			{ name: 'selected', type: 'Row[] (bindable)', desc: 'Bindable selected rows (bind:selected); PlotState is the source of truth' },
 			{ name: 'tooltip', type: 'boolean', default: 'false', desc: 'Hover tooltip with the underlying row' },
 			{ name: 'innerRadius', type: 'number', default: '0', desc: 'Pie inner radius — set non-zero for a donut' },
 			{ name: 'width', type: 'number', default: '600', desc: 'SVG width (400 for Pie; smaller for Sparkline)' },
 			{ name: 'height', type: 'number', default: '400', desc: 'SVG height' }
 		],
 		events: [
-			{ name: 'onhover', signature: '(row) => void', desc: 'Fires when the pointer enters a data point (Cartesian charts with tooltip enabled)' }
+			{ name: 'onhover', signature: '(row) => void', desc: 'Fires when the pointer enters a data point (Cartesian charts with tooltip enabled)' },
+			{ name: 'onselect', signature: '(detail) => void', desc: 'Observation clicked/activated; detail = { datum, index, series, value, x, y, geom, event }' }
 		],
 		attrs: [
 			{ selector: '[data-chart]', desc: 'Root SVG container' },
@@ -56,7 +60,8 @@ const meta: DemoMeta = {
 			{ selector: '[data-legend]', desc: 'Colour-group legend' },
 			{ selector: '[data-plot-grid-line="x"|"y"]', desc: 'Grid line, per orientation — theme via --chart-grid-{color,width,dash,opacity}' },
 			{ selector: '[data-plot-trend]', desc: 'Trend/reference line (data-plot-trend="<method>") — theme via --chart-trend-{color,width,dash,opacity}' },
-			{ selector: '[data-plot-highlight]', desc: 'Highlighted observation marker — theme via --chart-highlight-{color,radius,ring}' }
+			{ selector: '[data-plot-highlight]', desc: 'Highlighted observation marker — theme via --chart-highlight-{color,radius,ring}' },
+			{ selector: '[data-plot-selected="true"]', desc: 'A selected (clicked) observation marker — theme via --chart-selected-{ring,ring-width,fill}' }
 		]
 	},
 	snippets: [
