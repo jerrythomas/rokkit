@@ -1,0 +1,44 @@
+# Rokkit LockMode Component
+
+> Pins a subtree to a fixed light or dark mode, regardless of the document's mode.
+
+## Quick Start
+
+```svelte
+<script>
+  import { LockMode } from '@rokkit/ui'
+</script>
+
+<!-- Always renders dark, even when the page is in light mode -->
+<LockMode mode="dark">
+  <div class="hero">Always-dark hero section</div>
+</LockMode>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `mode` | `'dark' \| 'light'` | — | Color mode to pin this subtree to (required) |
+| `children` | `Snippet` | — | Content rendered inside the locked region (required) |
+| `class` | `string` | `''` | Additional CSS class |
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-mode` | Rendered statically to the `mode` value so token vars + in-component `dark:` utilities are correct on first (SSR) paint |
+| `data-style` | Mirrored from the document root by the `lockMode` action at runtime |
+| `data-skin` | Mirrored from the document root by the `lockMode` action at runtime |
+| `data-density` | Mirrored from the document root by the `lockMode` action at runtime |
+
+## Behavior
+
+- Renders a wrapper `<div>` with a static `data-mode={mode}` so the first server-rendered paint already has the correct token variables.
+- On hydration the `lockMode` action (from `@rokkit/actions`) mirrors the document root's `data-style` / `data-skin` / `data-density` onto the element so `@rokkit/themes` component CSS (which keys off `[data-mode][data-style]`) engages too.
+- The action follows runtime style / skin / density changes via a MutationObserver on the document root; only `mode` stays pinned.
+- The locked mode is fixed at mount — to change it, re-mount the element (e.g. via a Svelte `{#key}` block).
+
+## Related
+
+- `lockMode` action — `import { lockMode } from '@rokkit/actions'`; use `<div use:lockMode={'dark'}>` directly when you don't need the component wrapper.

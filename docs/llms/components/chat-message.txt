@@ -1,0 +1,82 @@
+# Rokkit ChatMessage Component
+
+> Presentational chat bubble for a single message — renders role, body, timestamp, and an optional streaming caret.
+
+ChatMessage is a dumb presentation component. You pass it one `message` object; it renders the bubble, an optional avatar/label, the body, and a relative timestamp. The default body renders `message.text` as markdown — for rich or inline content (parts, chart specs, form schemas), supply your own `body` snippet and read from `message.data`.
+
+## Quick Start
+
+```svelte
+<script>
+  import { ChatMessage } from '@rokkit/ui'
+
+  const message = {
+    id: 'm1',
+    role: 'assistant',
+    text: 'Hello — how can I help?',
+    timestamp: '2026-08-02T09:00:00Z',
+    status: 'done'
+  }
+</script>
+
+<ChatMessage {message} />
+
+<!-- Rich/inline content via a body snippet (no chart/forms dependency in the component) -->
+<ChatMessage message={richMessage}>
+  {#snippet body(msg)}
+    <MyBlocks data={msg.data} />
+  {/snippet}
+</ChatMessage>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `message` | `ChatMessage` | — | The message to render (required) |
+| `relativeTime` | `boolean` | `true` | `true` → relative label ("5m ago"); `false` → clock time |
+| `body` | `Snippet<[ChatMessage]>` | — | Overrides the default markdown body; receives the message |
+| `avatar` | `Snippet<[ChatMessage]>` | — | Rendered before the bubble; receives the message |
+| `label` | `Snippet<[ChatMessage]>` | — | Rendered at the top of the bubble; receives the message |
+
+### `ChatMessage` object shape
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `string` | Stable identity (used for keying in the timeline) |
+| `role` | `'user' \| 'assistant' \| 'system'` | Surfaced as `data-role` |
+| `text` | `string` | Default body, rendered as markdown when no `body` snippet |
+| `timestamp` | `string` | ISO string; rendered inside `<time>` |
+| `status` | `'streaming' \| 'error' \| 'done'` | Surfaced as `data-status`; `'streaming'` shows the caret |
+| `data` | `unknown` | Arbitrary payload your `body` snippet reads |
+
+## Data Attributes
+
+| Attribute | Element |
+|-----------|---------|
+| `data-chat-message` | root `<div>` (also carries `data-role` and, when set, `data-status`) |
+| `data-chat-bubble` | bubble `<div>` inside the message |
+| `data-chat-body` | body wrapper (holds the markdown body or your `body` snippet) |
+| `data-chat-caret` | `<span>`, present only while `status === 'streaming'` (`aria-hidden`) |
+| `data-chat-time` | `<time>`, present only when `message.timestamp` is set |
+
+## Behavior
+
+- **Role & status hooks** — `data-role` always reflects `message.role`; `data-status` is set only when `message.status` is present, so themes can target `[data-status="error"]` / `[data-status="streaming"]`.
+- **Default body** — when no `body` snippet is given and `message.text` exists, the text is rendered via the built-in MarkdownRenderer. The component has no chart/forms dependency; anything richer comes from the consumer `body` snippet.
+- **Streaming affordance** — a blinking caret (`data-chat-caret`, `aria-hidden`) appears while `status === 'streaming'`.
+- **Timestamp** — rendered as a semantic `<time datetime="{message.timestamp}">`; the visible text is formatted by `formatRelativeTime` (relative when `relativeTime`, otherwise a locale clock time). Invalid/empty timestamps render nothing.
+- **Purely presentational** — no roles, keyboard handlers, or focus management; the only ARIA is the `aria-hidden` caret.
+
+## Import
+
+```javascript
+import { ChatMessage } from '@rokkit/ui'
+```
+
+## Related
+
+- [ChatTimeline](/llms/components/chat-timeline.txt) — scrolling list of messages
+- [ChatComposer](/llms/components/chat-composer.txt) — input for sending messages
+- [ChatShell](/llms/components/chat-shell.txt) — history + timeline + composer, assembled
+- [MarkdownRenderer](/llms/components/markdown-renderer.txt) — the default body renderer

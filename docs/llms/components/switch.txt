@@ -44,6 +44,7 @@ Switch renders a sliding toggle button (`role="switch"`) that alternates between
 | `showLabels` | `boolean` | `false` | Show text label beside track |
 | `size` | `'sm'|'md'|'lg'` | `'md'` | Size variant |
 | `disabled` | `boolean` | `false` | Disable the switch |
+| `onchange` | `(value, item) => void` | — | Called when toggled |
 | `class` | `string` | `''` | Additional CSS classes |
 
 ## Field Mapping

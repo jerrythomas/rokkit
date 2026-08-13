@@ -1,1 +1,5 @@
 /static/llms
+/static/skills
+/static/agents
+/static/sensei.library.json
+/static/.well-known

@@ -22,6 +22,8 @@ Major design-system initiative — phases 3–9, then release 1 of the trimmed t
 - **Semantic Ink + Extensible Roles (2026-05-12)** — `ink` role (inverted palette mapping for text tokens); alias validation; generalized dual-palette (any role accepts `{ light, dark }`).
 - **Trimmed Token Vocabulary release 1 (2026-05-15)** — `tokens: 'core'` (new default) emits 18→24 named tokens (`--paper`, `--ink-mute`, `--accent-soft`, …) with palette values inlined; `tokens: 'extended'` preserves legacy ~120-var output; `custom` config block for app-level tokens; per-role tokens mode. ~120 → ~40 CSS vars per skin.
 - **Trimmed Token Vocabulary release 1.x (post 2026-05-15)** — `base/*.css` + all style themes migrated to named vocabulary; `secondary` refs → `accent`; `buildNamedShortcuts` extracted for themes build.
+- **Chart grid axis control + highlight + trend (2026-08-13)** — `grid: boolean|'x'|'y'|'both'` (vertical gridlines on continuous scales; `true` = zero-regression auto); `highlight` selector overlay (`Plot.Highlight`); `trend` engine (`Plot.Trend`) with constant (avg/median/min/max/value) + fitted (linear/ma/ema/exp) methods; all CSS-var themed (`--chart-grid/highlight/trend-*`), on primitives + `AreaChart`/`LineChart`. Learn showcase + Playwright e2e. See journal 2026-08-13.
+- **Chart interactive selection (2026-08-13)** — `onselect(detail)` rich event (`{ datum, index, series, value, x, y, geom, event }`), `selectable` opt-in click-to-highlight (multi, via the Highlight overlay), and `bind:selected` (row refs), across all cartesian geoms (Line/Point/Bar/Area) + keyboard-accessible; on primitives + `AreaChart`/`LineChart`. Fixed a `#data`/`#rawData` proxy-identity gotcha and overlay `pointer-events` blocking edge points. Learn drill showcase + Playwright e2e. See journal 2026-08-13.
 
 ---
 
@@ -32,6 +34,8 @@ Major design-system initiative — phases 3–9, then release 1 of the trimmed t
 #### Developer Utilities
 
 - [x] **`rokkit skills add` — ship AI skills with the CLI** — Shipped 2026-06-09. `rokkit skills list` / `rokkit skills add [names] [--all] [--force]` install bundled SKILL.md guides into a consumer's `.claude/skills/`. v1 catalog: `semantic-styles-rokkit` + `rokkit-components`. Skills live in `packages/cli/skills/` and ride the published package. See journal 2026-06-09.
+
+- [x] **Library intelligence: own skills/agents + `sensei.library.json`** — Shipped 2026-08-02 (issue #142). Two review agents (`packages/cli/agents/`): `rokkit-styles-reviewer` (config/token wiring) + `rokkit-components-reviewer` (customization-tier ladder, custom icons, typography). `rokkit agents list|add [--all|--force|--remote]` → `.claude/agents/<name>.md`. Repo-root `sensei.library.json` (repo+branch+site + git-relative `path`/site-relative `url` per skill/agent/llms entry) declares what rokkit provides; learn `sync:assets` publishes skills/agents/manifest to the site (`/skills`, `/agents`, `/.well-known/sensei.library.json`) alongside `/llms`; `robots.txt` pointer. Ingestion contract proposed in sensei-hq/sensei#111. See journal 2026-08-02.
 
 - [x] **CLI + LLM-docs → named tokens** — Shipped 2026-06-06. `rokkit init` generates the named-token `skin` shape (rgb + new Zen-Sumi OKLCH starters, header comment); `rokkit doctor` writes a real starter on `--fix` and validates config shape; `docs/llms/*` + `unocss/README.md` rewritten named-token-first. Breaking to generated config shape (`colors` → `skin`); existing configs work via the preset alias. See journal 2026-06-06.
 

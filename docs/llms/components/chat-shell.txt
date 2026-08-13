@@ -1,0 +1,90 @@
+# Rokkit ChatShell Component
+
+> Full chat layout that composes ChatHistory, ChatTimeline, and ChatComposer.
+
+ChatShell is a thin presentational wrapper that assembles the three chat pieces: an optional history sidebar (rendered only when `conversations` is provided), a message timeline, and a composer. It forwards props and snippets down to each child — it adds no state or logic of its own.
+
+## Quick Start
+
+```svelte
+<script>
+  import { ChatShell } from '@rokkit/ui'
+
+  let messages = $state([{ id: 'm1', role: 'assistant', text: 'Hi!' }])
+  let draft = $state('')
+
+  function send(text) {
+    messages.push({ id: crypto.randomUUID(), role: 'user', text })
+    draft = ''
+  }
+</script>
+
+<ChatShell
+  {messages}
+  bind:value={draft}
+  placeholder="Message…"
+  onsubmit={send}
+/>
+
+<!-- With a history sidebar -->
+<ChatShell
+  {messages}
+  {conversations}
+  activeConversationId={activeId}
+  onselectConversation={(id) => (activeId = id)}
+  onnew={createConversation}
+  bind:value={draft}
+  onsubmit={send}
+/>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `messages` | `ChatMessage[]` | `[]` | Messages, forwarded to the timeline |
+| `conversations` | `ConversationSummary[]` | — | When provided, renders the ChatHistory sidebar |
+| `activeConversationId` | `string \| null` | `null` | Active conversation id, forwarded to history as `activeId` |
+| `value` | `string` | `''` | Composer text — use `bind:value` |
+| `placeholder` | `string` | — | Composer placeholder |
+| `busy` | `boolean` | `false` | Marks the composer busy |
+| `onsubmit` | `(text: string) => void` | — | Fired by the composer on plain Enter |
+| `onchange` | `(value: string) => void` | — | Fired by the composer on input |
+| `onselectConversation` | `(id: string) => void` | — | Wired to the history's `onselect` |
+| `onnew` | `() => void` | — | Wired to the history's new-conversation button |
+| `message` | `Snippet<[ChatMessage]>` | — | Per-message override, forwarded to the timeline |
+| `suggestions` | `Snippet` | — | Forwarded to the composer |
+| `toolbar` | `Snippet` | — | Forwarded to the composer |
+| `leading` | `Snippet` | — | Forwarded to the composer |
+| `historyItem` | `Snippet<[ConversationSummary]>` | — | Row override, forwarded to the history as `item` |
+| `empty` | `Snippet` | — | Empty state, forwarded to the timeline |
+
+## Data Attributes
+
+| Attribute | Element |
+|-----------|---------|
+| `data-chat-shell` | root `<div>` (carries `data-has-history` only when `conversations` is provided) |
+| `data-chat-main` | main column wrapping the timeline + composer |
+
+## Behavior
+
+- **Optional history** — ChatHistory renders only when `conversations` is passed; its presence is reflected on the root as `data-has-history` for two-column vs. single-column layout.
+- **Composition, not logic** — ChatShell holds no internal state; it maps its props to the children:
+  - History ← `conversations`, `activeId={activeConversationId}`, `onselect={onselectConversation}`, `onnew`, `item={historyItem}`.
+  - Timeline ← `messages`, `message`, `empty`.
+  - Composer ← `bind:value`, `placeholder`, `busy`, `onsubmit`, `onchange`, `suggestions`, `toolbar`, `leading`.
+- **Not forwarded** — history's `ondelete`/`header`/`relativeTime`, timeline's `autoscroll`/`relativeTime`, and composer's `disabled` are not exposed by ChatShell; drop down to the individual components if you need them.
+- **Behavior lives in the children** — Enter-to-submit, auto-scroll, and streaming caret come from ChatComposer, ChatTimeline, and ChatMessage respectively.
+
+## Import
+
+```javascript
+import { ChatShell } from '@rokkit/ui'
+```
+
+## Related
+
+- [ChatHistory](/llms/components/chat-history.txt) — the sidebar
+- [ChatTimeline](/llms/components/chat-timeline.txt) — the message list
+- [ChatComposer](/llms/components/chat-composer.txt) — the input
+- [ChatMessage](/llms/components/chat-message.txt) — the per-message bubble

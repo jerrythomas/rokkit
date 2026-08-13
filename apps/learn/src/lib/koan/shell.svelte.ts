@@ -59,6 +59,9 @@ export type ShellDemoType =
 	| 'effects'
 	| 'lock-mode'
 	| 'chat'
+	| 'frame'
+	| 'responsive-grid'
+	| 'nav-content'
 
 export const shell = $state<{
 	phase: ShellPhase

@@ -25,7 +25,6 @@ npm install @rokkit/icons
 | `@rokkit/icons/components.json` | `components` | Component-type icons (alias for glyph) |
 | `@rokkit/icons/auth.json` | `auth` | Auth provider logos (Google, GitHub, Firebase, etc.) |
 | `@rokkit/icons/app.json` | `app` | Application-level icons |
-| `@rokkit/icons/utils` | — | Utility functions for icon conversion |
 
 The **semantic** collection is the default for component icon shortcuts. Each icon has four variants:
 - Default (duotone) — `accordion-closed`
@@ -43,10 +42,10 @@ Set `icons.style` in `rokkit.config.js` to switch all component icons globally (
 
 ```html
 <!-- Syntax: i-{prefix}:{icon-name} -->
-<span class="i-rokkit-ui:menu"></span>
-<span class="i-rokkit-ui:action-add"></span>
-<span class="i-rokkit-solid:action-check"></span>
-<span class="i-rokkit-auth:google"></span>
+<span class="i-rokkit:menu"></span>
+<span class="i-rokkit:action-add"></span>
+<span class="i-solid:action-check"></span>
+<span class="i-auth:google"></span>
 ```
 
 Configure which collections to load in `uno.config.js`:
@@ -86,7 +85,7 @@ Each file is a standard Iconify JSON collection:
 
 ```json
 {
-  "prefix": "rokkit-ui",
+  "prefix": "base",
   "lastModified": 1234567890,
   "icons": {
     "menu": { "body": "<path d=\"...\" />" },
@@ -97,7 +96,7 @@ Each file is a standard Iconify JSON collection:
 
 ---
 
-## Base UI collection (`rokkit-ui`) — icon reference
+## Base UI collection (`rokkit`) — icon reference
 
 | Category | Icons |
 |----------|-------|
@@ -121,14 +120,14 @@ Each file is a standard Iconify JSON collection:
 | Format/align | `format-left`, `format-center`, `format-right`, `format-justify`, `align-horizontal-left`, `align-horizontal-center`, `align-horizontal-right`, `align-vertical-top`, `align-vertical-middle`, `align-vertical-bottom` |
 | Misc | `palette`, `palette-hex`, `palette-presets`, `properties`, `themes`, `swatch`, `plus`, `minus`, `logout`, `trend-up`, `trend-down` |
 
-## Auth collection (`rokkit-auth`) — providers
+## Auth collection (`auth`) — providers
 
 Includes logos for: Firebase, GitHub, Google, Microsoft, AWS Cognito, Supabase, Auth0, Clerk, Okta, Apple, Twitter/X, LinkedIn, Facebook, Discord, Slack, and others. Each provider has variants: default, black, white, wordmark, duotone, outline (availability varies by provider).
 
 ```html
-<span class="i-rokkit-auth:google"></span>
-<span class="i-rokkit-auth:github-white"></span>
-<span class="i-rokkit-auth:firebase-duotone"></span>
+<span class="i-auth:google"></span>
+<span class="i-auth:github-white"></span>
+<span class="i-auth:firebase-duotone"></span>
 ```
 
 ---

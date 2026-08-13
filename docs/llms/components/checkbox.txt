@@ -1,19 +1,21 @@
-# Rokkit CheckBox Component
+# Rokkit InputCheckbox Component
 
-> Accessible checkbox component with customizable state icons.
+> Accessible checkbox input with three visual states and customizable state icons.
 
-The CheckBox component provides a boolean toggle with three visual states: checked, unchecked, and unknown. It supports custom icons and read-only mode.
+> **`InputCheckbox` is a `@rokkit/forms` input.** It is normally rendered for you by a schema-driven [Form](/llms/components/form.txt) (`FormRenderer`), but it is also a plain Svelte component you can import and use standalone. Import it from `@rokkit/forms` — it is **not** exported from `@rokkit/ui`.
+
+The InputCheckbox component provides a boolean toggle with three visual states: checked, unchecked, and unknown (`null`/`undefined`). It renders a native `<input type="checkbox">` for form state and, in the default `custom` variant, a styled icon span you can theme per state.
 
 ## Quick Start
 
 ```svelte
 <script>
-  import { CheckBox } from '@rokkit/ui'
+  import { InputCheckbox } from '@rokkit/forms'
 
   let accepted = $state(false)
 </script>
 
-<CheckBox name="terms" bind:value={accepted} />
+<InputCheckbox name="terms" bind:value={accepted} />
 <label>I accept the terms and conditions</label>
 ```
 
@@ -21,27 +23,43 @@ The CheckBox component provides a boolean toggle with three visual states: check
 
 ### Three States
 
-CheckBox supports three visual states:
+InputCheckbox supports three visual states, driven by `value`:
 
 ```svelte
 <script>
+  import { InputCheckbox } from '@rokkit/forms'
+
   let checked = $state(true)      // Checked state
   let unchecked = $state(false)   // Unchecked state
-  let unknown = $state(null)      // Unknown/indeterminate state
+  let unknown = $state(null)      // Unknown state (null or undefined)
 </script>
 
-<CheckBox bind:value={checked} />
-<CheckBox bind:value={unchecked} />
-<CheckBox bind:value={unknown} />
+<InputCheckbox bind:value={checked} />
+<InputCheckbox bind:value={unchecked} />
+<InputCheckbox bind:value={unknown} />
+```
+
+`null` and `undefined` both render the `unknown` icon. Any other value is coerced to a boolean for the native input's `checked` state.
+
+### Variants
+
+The `variant` prop selects how the checkbox is presented:
+
+- `custom` (default) — the native `<input>` is hidden and a styled `[data-checkbox-icon]` span is shown. Toggled by click, `Enter`, or `Space`.
+- `default` — the native `<input type="checkbox">` is rendered directly, with full native semantics.
+
+```svelte
+<InputCheckbox bind:value variant="default" />
+<InputCheckbox bind:value variant="custom" />
 ```
 
 ### Custom State Icons
 
-Override the default icons for each state:
+Override the icon class used for each state via the `icons` prop. Provided values are merged over the defaults, so you can override only the states you care about:
 
 ```svelte
 <script>
-  import { CheckBox } from '@rokkit/ui'
+  import { InputCheckbox } from '@rokkit/forms'
 
   const customIcons = {
     checked: 'fa-solid fa-square-check',
@@ -50,45 +68,56 @@ Override the default icons for each state:
   }
 </script>
 
-<CheckBox stateIcons={customIcons} bind:value />
+<InputCheckbox icons={customIcons} bind:value />
 ```
 
-### Read-Only Mode
+### Disabled State
 
-Prevent user interaction while showing state:
+Set the native `disabled` attribute to prevent interaction:
 
 ```svelte
-<CheckBox value={true} readOnly />
+<InputCheckbox value={true} disabled />
 ```
 
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `boolean \| null` | `false` | Checkbox state (use `bind:value`) |
-| `name` | `string` | `undefined` | Form input name |
-| `id` | `string` | `null` | Element ID |
-| `readOnly` | `boolean` | `false` | Prevents interaction |
-| `stateIcons` | `object` | `defaultStateIcons.checkbox` | Custom icons per state |
-| `tabindex` | `number` | `0` | Tab index |
-| `class` | `string` | `''` | CSS class names |
+| `value` | `boolean \| null` | `undefined` | Checkbox state (use `bind:value`). `null`/`undefined` render the `unknown` icon |
+| `variant` | `'default' \| 'custom'` | `'custom'` | `custom` shows the icon span (native input hidden); `default` renders the native checkbox |
+| `icons` | `StateIcons` | `DEFAULT_STATE_ICONS.checkbox` | Icon class per state (`checked`/`unchecked`/`unknown`); merged over the defaults |
+| `onchange` | `(value: boolean) => void` | `undefined` | Called with the new boolean when the checkbox is toggled |
+| `name` | `string` | `undefined` | Native input `name` (form submission) |
+| `id` | `string` | `undefined` | Native input `id` |
+| `disabled` | `boolean` | `undefined` | Disables the input |
+| `required` | `boolean` | `undefined` | Marks the input required |
+
+Any other native input attribute (`onfocus`, `onblur`, `tabindex`, `class`, `aria-*`, …) is forwarded to the underlying `<input>` element.
 
 ### State Icons Object
 
+Icon values are CSS class names applied to the visual icon span (in the `custom` variant):
+
 ```javascript
-const stateIcons = {
-  checked: 'icon-class-for-checked',
-  unchecked: 'icon-class-for-unchecked',
-  unknown: 'icon-class-for-unknown'
+const icons = {
+  checked: 'checkbox-checked',
+  unchecked: 'checkbox-unchecked',
+  unknown: 'checkbox-unknown'
 }
 ```
+
+Defaults come from `DEFAULT_STATE_ICONS.checkbox` in `@rokkit/core`:
+
+- `checked`: `'checkbox-checked'`
+- `unchecked`: `'checkbox-unchecked'`
+- `unknown`: `'checkbox-unknown'`
 
 ## Component Structure
 
 ```
-[data-checkbox-root]
-├── <input type="checkbox">      // Native input (variant="default")
-└── [data-checkbox-icon]         // Visual icon (variant="custom")
+[data-checkbox-root][data-variant]
+├── <input type="checkbox">      // Native input (hidden when variant="custom")
+└── [data-checkbox-icon]         // Visual icon span (only when variant="custom")
 ```
 
 ## Data Attributes for Styling
@@ -97,6 +126,7 @@ const stateIcons = {
 |-----------|---------|---------|
 | `[data-checkbox-root]` | Root | Main container |
 | `[data-checkbox-root][data-variant="custom"]` | Root | Custom icon variant |
+| `[data-checkbox-root][data-variant="default"]` | Root | Native input variant |
 | `[data-checkbox-icon]` | Icon | Custom visual icon span |
 
 ### Styling Example
@@ -128,56 +158,56 @@ const stateIcons = {
   transform: scale(0.95);
 }
 
-[data-checkbox-root][data-disabled] {
+[data-checkbox-root]:has(input:disabled) {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-[data-checkbox-root][data-disabled]:hover [data-checkbox-icon] {
+[data-checkbox-root]:has(input:disabled):hover [data-checkbox-icon] {
   transform: none;
 }
 ```
 
 ## Keyboard Navigation
 
+In the `custom` variant, the icon span is focusable (`tabindex="0"`) and responds to:
+
 | Key | Action |
 |-----|--------|
 | `Enter` | Toggle checkbox |
 | `Space` | Toggle checkbox |
 
+In the `default` variant, the native checkbox provides standard browser keyboard behavior.
+
 ## Accessibility
 
-- Uses `role="checkbox"` for screen readers
-- `aria-checked` reflects current state
-- `aria-disabled` for read-only state
-- Hidden native input for form submission
-- Full keyboard support
+- The native `<input type="checkbox">` carries the checkbox state and participates in form submission.
+- In the `custom` variant the native input is hidden and the visual `[data-checkbox-icon]` span is `role="button"`, `tabindex="0"`, `aria-hidden="true"`, and toggles on click / `Enter` / `Space`. Pair it with a visible `<label>` for context.
+- In the `default` variant the native checkbox is rendered directly, exposing full native semantics and keyboard support.
+- `disabled` sets the native input's `disabled` attribute.
 
 ## Import
 
 ```javascript
-// Named import
-import { CheckBox } from '@rokkit/ui'
-
-// Default import
-import CheckBox from '@rokkit/ui/checkbox'
+import { InputCheckbox } from '@rokkit/forms'
 ```
 
 ## TypeScript Types
 
 ```typescript
-interface CheckBoxProps {
+import type { HTMLInputAttributes } from 'svelte/elements'
+
+type StateIcons = {
+  checked?: string
+  unchecked?: string
+  unknown?: string
+}
+
+type InputCheckboxProps = Omit<HTMLInputAttributes, 'value' | 'onchange'> & {
   value?: boolean | null
-  name?: string
-  id?: string
-  readOnly?: boolean
-  stateIcons?: {
-    checked: string
-    unchecked: string
-    unknown: string
-  }
-  tabindex?: number
-  class?: string
+  variant?: 'default' | 'custom'
+  icons?: StateIcons
+  onchange?: (value: boolean) => void
 }
 ```
 
@@ -187,13 +217,13 @@ interface CheckBoxProps {
 
 ```svelte
 <script>
-  import { CheckBox } from '@rokkit/ui'
+  import { InputCheckbox } from '@rokkit/forms'
 
   let isEnabled = $state(false)
 </script>
 
 <div class="checkbox-field">
-  <CheckBox id="enabled" name="enabled" bind:value={isEnabled} />
+  <InputCheckbox id="enabled" name="enabled" bind:value={isEnabled} />
   <label for="enabled">Enable notifications</label>
 </div>
 ```
@@ -202,7 +232,7 @@ interface CheckBoxProps {
 
 ```svelte
 <script>
-  import { CheckBox } from '@rokkit/ui'
+  import { InputCheckbox } from '@rokkit/forms'
 
   let options = $state({
     email: true,
@@ -215,27 +245,27 @@ interface CheckBoxProps {
   <legend>Notification Preferences</legend>
 
   <div class="checkbox-field">
-    <CheckBox id="email" bind:value={options.email} />
+    <InputCheckbox id="email" bind:value={options.email} />
     <label for="email">Email</label>
   </div>
 
   <div class="checkbox-field">
-    <CheckBox id="sms" bind:value={options.sms} />
+    <InputCheckbox id="sms" bind:value={options.sms} />
     <label for="sms">SMS</label>
   </div>
 
   <div class="checkbox-field">
-    <CheckBox id="push" bind:value={options.push} />
+    <InputCheckbox id="push" bind:value={options.push} />
     <label for="push">Push notifications</label>
   </div>
 </fieldset>
 ```
 
-### Indeterminate State
+### Unknown / Indeterminate State
 
 ```svelte
 <script>
-  import { CheckBox } from '@rokkit/ui'
+  import { InputCheckbox } from '@rokkit/forms'
 
   let items = $state([
     { name: 'Item 1', checked: true },
@@ -243,12 +273,12 @@ interface CheckBoxProps {
     { name: 'Item 3', checked: true }
   ])
 
-  // Parent is indeterminate when some (not all) children are checked
+  // Parent is unknown when some (not all) children are checked
   let allChecked = $derived.by(() => {
     const checkedCount = items.filter(i => i.checked).length
     if (checkedCount === 0) return false
     if (checkedCount === items.length) return true
-    return null // Indeterminate
+    return null // Unknown → renders the unknown icon
   })
 
   function toggleAll() {
@@ -258,13 +288,13 @@ interface CheckBoxProps {
 </script>
 
 <div class="checkbox-field">
-  <CheckBox value={allChecked} onclick={toggleAll} />
+  <InputCheckbox value={allChecked} onchange={toggleAll} />
   <label>Select All</label>
 </div>
 
 {#each items as item, i}
   <div class="checkbox-field indent">
-    <CheckBox bind:value={items[i].checked} />
+    <InputCheckbox bind:value={items[i].checked} />
     <label>{item.name}</label>
   </div>
 {/each}
@@ -274,7 +304,7 @@ interface CheckBoxProps {
 
 ```svelte
 <script>
-  import { CheckBox } from '@rokkit/ui'
+  import { InputCheckbox } from '@rokkit/forms'
 
   let value = $state(false)
 
@@ -293,15 +323,15 @@ interface CheckBoxProps {
   }
 </script>
 
-<CheckBox bind:value stateIcons={heartIcons} />
-<CheckBox bind:value stateIcons={starIcons} />
+<InputCheckbox bind:value icons={heartIcons} />
+<InputCheckbox bind:value icons={starIcons} />
 ```
 
 ### Form Integration
 
 ```svelte
 <script>
-  import { CheckBox } from '@rokkit/ui'
+  import { InputCheckbox } from '@rokkit/forms'
 
   let formData = $state({
     subscribe: false,
@@ -313,14 +343,14 @@ interface CheckBoxProps {
   }
 </script>
 
-<form onsubmit|preventDefault={handleSubmit}>
+<form onsubmit={handleSubmit}>
   <div class="checkbox-field">
-    <CheckBox name="subscribe" bind:value={formData.subscribe} />
+    <InputCheckbox name="subscribe" bind:value={formData.subscribe} />
     <label>Subscribe to newsletter</label>
   </div>
 
   <div class="checkbox-field">
-    <CheckBox name="terms" bind:value={formData.terms} />
+    <InputCheckbox name="terms" bind:value={formData.terms} />
     <label>I agree to the terms and conditions</label>
   </div>
 
@@ -330,11 +360,11 @@ interface CheckBoxProps {
 </form>
 ```
 
-### Read-Only Display
+### Read-Only Display (disabled)
 
 ```svelte
 <script>
-  import { CheckBox } from '@rokkit/ui'
+  import { InputCheckbox } from '@rokkit/forms'
 
   const permissions = [
     { name: 'Read', granted: true },
@@ -347,7 +377,7 @@ interface CheckBoxProps {
 <h3>Your Permissions</h3>
 {#each permissions as perm}
   <div class="checkbox-field">
-    <CheckBox value={perm.granted} readOnly />
+    <InputCheckbox value={perm.granted} disabled />
     <label>{perm.name}</label>
   </div>
 {/each}
@@ -355,7 +385,6 @@ interface CheckBoxProps {
 
 ## Related Components
 
-- **Switch** - Alternative toggle component
-- **Toggle** - Multi-option toggle
-- **RadioGroup** - Single selection from multiple options
-- **Icon** - Used for checkbox icons
+- **InputRadio** - Single selection from multiple options (`@rokkit/forms`)
+- **InputSwitch** / **InputToggle** - Alternative toggle inputs (`@rokkit/forms`)
+- **FormRenderer** - Schema-driven form that renders these inputs (`@rokkit/forms`)

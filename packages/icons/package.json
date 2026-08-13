@@ -16,8 +16,9 @@
     "./components.json": "./lib/glyph.json",
     "./auth.json": "./lib/auth.json",
     "./app.json": "./lib/app.json",
-    ".": "./lib/base.json",
-    "./utils": "./src/convert.js"
+    "./light.json": "./lib/light.json",
+    "./solid.json": "./lib/solid.json",
+    ".": "./lib/base.json"
   },
   "files": [
     "lib/**/*",

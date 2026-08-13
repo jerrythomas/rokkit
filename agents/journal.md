@@ -6332,3 +6332,203 @@ for `[role=button]` / `<div>` shells or the new renderers.
 
 **Gate:** `bun run lint` (0 errors, warnings unchanged) + `check:svelte` (0
 errors) + `bun run test:ci` = **5121 tests / 355 files** pass. All on `develop`.
+
+---
+
+## 2026-08-02 — Library intelligence: own skills/agents + `sensei.library.json` (issue #142)
+
+Rokkit becomes the **single owner** of its AI skills/agents; sensei *ingests* them
+rather than forking. Scope grew in-session (per Jerry) to also publish the corpus
+publicly and add a discovery manifest.
+
+- **Two review agents** (`packages/cli/agents/`, Claude-Code agent format —
+  frontmatter `name`/`description`+examples/`tools`/`model`/`color`, body
+  `## Mindset`+`### Questions` / `## Procedure` (sensei MCP nav, not blind grep) /
+  `## Verification evidence (required)` (build + Playwright light/dark snapshots) /
+  `### Verdict PASS/FAIL`):
+  - `rokkit-styles-reviewer` (focus `styling-review`) — config→skin→token wiring,
+    named tokens vs raw hex/oklch, `shape`/`typography` config, dual-palette dark mode.
+  - `rokkit-components-reviewer` (focus `component-usage-review`) — steers to the
+    simplest customization tier (data → data+`fields` → snippets; flags the
+    "jumped to `itemContent`" mistake), plus **custom icons** (UnoCSS `i-*` /
+    `@rokkit/icons` collections vs literal-text/emoji field) and **typography usage**
+    (`font-heading/body/mono` vs hardcoded `font-family`).
+- **`rokkit agents` CLI** (`packages/cli/src/agents.js`) — mirrors `skills.js` for
+  single-`.md` files → `.claude/agents/<name>.md`; reuses `parseFrontmatter`
+  (no dup). Bundled install + **site-fetch fallback** (`--remote`, injectable
+  `fetchImpl`) so "the CLI can pull from the site". `agents list`/`add`
+  (`--all`/`--force`/`--remote`) wired in `index.js`; `agents/**` added to
+  package `files`. 22 new specs.
+- **`sensei.library.json`** (repo root) — top-level `repo`+`branch`+`site`; each
+  entry carries a git-relative `path` **and** a site-relative `url` (public URL =
+  `site`+`url`, git source = `repo`+`/raw/`+`branch`+`/`+`path`). Lists all 4
+  skills, both agents, and the `llms` corpus (`docs/llms`, index `/llms/index.txt`).
+  `manifest.spec.js` cross-checks it against the bundled CLI catalog + verifies every
+  path exists (can't drift silently). 6 specs.
+- **Public discovery** — learn `sync:assets` script now publishes `skills/`,
+  `agents/`, and the manifest into `static/` (→ `/skills`, `/agents`,
+  `/sensei.library.json`, `/.well-known/sensei.library.json`) alongside the existing
+  `/llms`. `robots.txt` carries a `Sensei-Library:` pointer. Artifacts gitignored.
+- **Sensei coordination** — filed
+  [sensei-hq/sensei#111](https://github.com/sensei-hq/sensei/issues/111) proposing the
+  manifest format + discover→match→ingest→associate→recommend→install flow for the
+  ingesting side to confirm.
+
+**Gate:** `bun run lint` (0 errors, 106 pre-existing warnings) + `bun run test:ci`
+= **5161 tests / 357 files** pass. `apps/learn` `sync:assets` verified to emit the
+served paths + valid manifest JSON. All on `develop`. See [[project_design_token_overhaul]].
+
+---
+
+## 2026-08-02 — Deep docs-vs-code sync review (follow-on to #142)
+
+Ran a 5-way parallel read-only audit (llms component docs, llms package docs,
+llms guides+CLI, design docs, website) comparing every doc against code. Fixed
+the confirmed drift in phases; surfaced 4 source-of-truth decisions to Jerry.
+
+**Decisions (Jerry):** ghost docs (Icon/Combo/DatePicker) → relabel *Planned*;
+export gaps → add `createFormatter` + `BUILTIN_SKINS` + icons light/solid subpaths
+(data hierarchy fns stay internal — dataframe wrapper calls them); undocumented
+@rokkit/ui exports → *document all as public*; design-doc numbering → *convention-
+aligned renumber*.
+
+**Phase 1 — code exports** (`4f0aa90b`): re-export `createFormatter` (@rokkit/data),
+`BUILTIN_SKINS` (@rokkit/unocss); add `@rokkit/icons` `./light.json`+`./solid.json`,
+remove broken `./utils` (pointed at nonexistent src/convert.js). New `icons` vitest
+project + exports-map guard spec; +4 tests.
+
+**Phase 2 — llms docs** (`23a39e9a`, `fc47cb44`): field-mapping keys avatar/subtext
+(not image/description) + broken example; Select/MultiSelect placeholder default;
+Table value-not-bindable + data-attr/ARIA; rating stateIcons→icons, range defaults +
+drop phantom RangeMinMax, switch onchange; form.txt Form→FormRenderer(bind:data);
+checkbox/radiogroup fully rewritten to real @rokkit/forms InputCheckbox/InputRadio;
+relabel Icon/Combo/DatePicker Planned. Guides/CLI: themes 11→5, drop secondary prompt,
++zen-sumi +css-theme/chart-config doctor checks; drop @rokkit/vite, fix skinnable
+(action, not data-style); effects tilt/shine→real; proxy.value→proxy.original +
+proxy.get(icon/href); itemContent set. Packages: data.txt internal fns→public
+nestBy*/dataview; icons.txt i-rokkit-ui→i-rokkit, drop /utils.
+
+**Phase 5 — design docs** (`16b922c3`): terminology sweep ListController/
+NestedController→Wrapper/LazyWrapper, navigable/navigator-action→Navigator/Trigger
+classes (01/02/04/06/11 + components/* + agents/memory.md); 11-inventory rewrite
+(@rokkit/ui 38→62, charts all Implemented, Badge/Tooltip/Divider shipped);
+05-website site→apps/learn; 10-themes style list; AnimatedChart→AnimatedPlot.
+Convention-aligned renumber (git mv, history preserved): 10-chart→20-chart,
+07-charts→21-charts, 17-chart-preset→22-chart-preset, 06-themes→10-themes,
+07-tools→70-tools, 08-tools→71-tools, 20-skin-system→17-skin-system (skins are
+theming, frees chart's 20). Both READMEs rewritten to real filenames (had
+pre-existing broken links). Historical/dated refs left as-is.
+
+**Filed:** sensei-hq/sensei#111 (library-manifest ingestion format). **Closed:** #142.
+
+**Gate:** lint 0 errors + `bun run test:ci` = **5165 tests / 358 files** pass. All on
+`develop`.
+
+**Phase 3 — new llms docs** (`6212c928`): authored the 13 exported-but-undocumented
+component docs from real source (props/data-attrs/snippets verified): Chat×5
+(ChatShell/Timeline/Message/Composer/History), Item renderers (ItemContent/ItemSwitch/
+ItemToggle), layout/utility (CodeBlock/Frame/LockMode/NavContent/ResponsiveGrid).
+Enumerated in index.txt (new Chat + Item Renderers sections); component count 50+→90+.
+
+**Phase 4 — site demos** (`732a8889`): Koan catalog demos for the undemoed layout
+primitives Frame/ResponsiveGrid/NavContent (meta+index.svelte+docs, Svelte-MCP
+validated; wired into catalog.ts + ShellDemoType + routes/app/`<id>`). Added a
+ToolbarGroup compositional example to the toolbar demo. `layout-demos.e2e.ts` guards
+all three render (verified live against preview). Fixed a pre-existing stale
+components-catalog.e2e assertion (nav label 'Components'→'Explore' per SiteNav).
+Connector (rendered by Tree/TreeTable) + chart subtypes (advanced chart-demo variants)
+left surfaced within parents rather than given marginal standalone demos.
+
+**Final gate:** lint 0 errors + `bun run test:ci` = **5165 tests / 358 files**; learn
+build ✓ (prerender ✓); e2e 7/7 (3 layout demos + 4 catalog). All on `develop`.
+
+---
+
+## 2026-08-13 — Chart: grid axis control + observation highlight + trend engine
+
+**Motivation:** a minimalist 30-day time-series mock (horizontal+vertical grid, dashed average
+line, highlighted "today" dot). Three additive, backward-compatible features in `@rokkit/chart`,
+built subagent-driven (fresh implementer + spec/quality reviewers per task).
+
+**1. Grid axis control** — `grid: boolean | 'x' | 'y' | 'both'` on `PlotChart`/`AreaChart`/
+`LineChart`. `true` = **auto** (horizontal always; vertical only for band scales — identical to
+legacy, zero regression); `'both'`/`'x'` force vertical lines on continuous/time scales at the
+x-tick positions (grid now shares `xTicks`/`yTicks` with the axis, fixing prior tick drift).
+Per-orientation `[data-plot-grid-line="x"|"y"]` + `--chart-grid-{color,width,dash,opacity}`.
+
+**2. Observation highlight** — `highlight: 'first'|'last'|'min'|'max'|number|(row,i)=>boolean` via
+a new pure-overlay primitive `Plot.Highlight`/`GeomHighlight` (selection logic in pure
+`lib/highlight.js`). CSS-only theming: `[data-plot-highlight]` + `--chart-highlight-{color,radius,ring}`
+(default accent). No `registerGeom` (no domain effect).
+
+**3. Trend engine** — `trend: method | method[]` via `Plot.Trend`/`GeomTrend` (calculators in pure
+`lib/trend.js`). Constant methods (`avg`/`median`/`min`/`max`/`value`/number → horizontal line) +
+fitted (`linear` regression, `{type:'ma',window}`, `ema`, `exp` regression → series). Degenerate
+input (empty / <2 pts / `exp` y≤0 / `ma` no window) skipped. `[data-plot-trend="<type>"]` +
+`--chart-trend-{color,width,dash,opacity}` (dashed default). Absorbs the once-deferred reference line.
+
+Added `PlotState.get data()` for overlays. Both features work on the composable primitives AND the
+wrappers. Learn showcase (`koan/demos/chart` "last 30 days") reproduces the mock; Playwright e2e
+(`chart-metrics.e2e.ts`) guards grid+trend+highlight render live.
+
+**Reviews caught (and fixed):** Highlight/Line `{#each}` keyed by pixel coords → `each_key_duplicate`
+crash on tied rows (now keyed by row index, `lines.js` carries original index through the sort);
+`scaleX` `(p ?? 0)` masked out-of-domain `undefined` as a real coord (now returns `NaN`); a
+band-scale grid zero-regression test was missing (added). Repo lint bans `== null` → overlays use
+`!== null && !== undefined`.
+
+**Commits (develop):** backlog/plan `b71f77aa`/`61c2706a`; `4cc7efa0` highlight util, `a07b6bbe`
+trend calc, `5719aeb7` data getter, `a05fbd55` grid, `12465377` highlight overlay, `928bbe5d` grid
+band test, `c5af15bb` keying fix, `69ba0076` trend overlay, `421ea3d2` wrappers, `6d4e6824` exports,
+`907f2e4a` showcase, `def38178` e2e, `6b6fa962` docs. Also `4cdef9a2` — untrack + gitignore
+`docs/mockups/` (local design mockups, files kept on disk).
+
+**Docs:** `docs/design/21-charts.md` (Overlays + Grid axis control), `20-chart.md` (exports), chart
+demo `meta.ts` API (feeds the generated `static/llms/components/*.txt`, which are gitignored build
+artifacts). `.claude/skills/rokkit-components` doesn't enumerate chart props (and lives outside the
+repo) → no change.
+
+**Final gate:** lint **0 errors** + `bun run test:ci` = **5206 tests / 364 files** (+41 vs prior);
+Playwright `chart-metrics` e2e ✓ (stable ×3). All on `develop`.
+
+**Follow-ups (same day):** `mean`→`avg` trend attr normalization (`4612d74e`); shared `scalePos`
+helper extracted from the two overlays (`6c5411cb`); untracked + gitignored `docs/mockups/`
+(`4cdef9a2`); filed themes `data-chart-*`→`data-plot-*` selector-migration backlog (`a95c3645`).
+
+---
+
+## 2026-08-13 — Chart: interactive select event + click-to-highlight
+
+Make chart observations interactive so an app can drill/act on a clicked point, plus opt-in
+click-to-select. Subagent-driven (fresh implementer + spec/quality reviewers per task).
+
+**API** (primitives + `AreaChart`/`LineChart`): `onselect(detail)` fires on every observation
+click/keyboard-activation with `detail = { datum, index, series, value, x, y, geom, event }`;
+`selectable` opt-in toggles a multi-selection rendered via the **Highlight** overlay; `bind:selected`
+(row refs) two-way. All cartesian geoms clickable + keyboard-accessible (Enter/Space).
+
+**Design:** selection centralized in `PlotState` (a `SvelteSet` keyed by **row reference** — robust
+for multi-series/aggregated); pure `buildSelectDetail` in `lib/select.js`; geoms became
+interactivity-aware via `plotState.interactive` (a Plot-level `onselect`/`selectable` flips their hit
+targets on) and call `plotState.handleSelect(...)`. Highlight renders `selectedRows` (deduped;
+a point that is both statically highlighted and selected renders as *selected*). Backward compatible.
+
+**Two real bugs caught & fixed mid-build (implementers correctly halted rather than fudge):**
+1. `PlotState` held `#data` and `#rawData` as two separate `$state` fields → distinct proxy
+   identities, so `plotState.data.indexOf(pt.data)` (geoms read via `geomData()`→`#rawData`) was
+   `-1`. Fix: `get data()` returns `#rawData` (aligns identity). [[svelte-reactivity-gotcha]]
+2. Overlay decorations intercepted clicks to the data hit targets beneath — the x-axis line blocked
+   the first observation, highlight dots blocked their own point. Fix: `pointer-events: none` on
+   `[data-plot-axis-line]` + `[data-plot-highlight]`, and Highlight dedup prefers `selected`.
+Also dropped the unused `PlotState.selectable` getter to keep 100% coverage.
+
+**Commits (develop):** spec `4772b924`/plan `db64de86`; `2edbedd8` select util, `6af519ec` PlotState
+selection, `5424e770` Highlight-renders-selection, `51462c75` Line+Point, `713092d6` Bar+Area,
+`6f2e697c` Plot wiring + proxy-identity fix, `7131f58e` wrappers, `f88cab88` drop getter (100% cov),
+`51c58950` showcase drill, `8bac83ce` e2e, `181f775b` edge-selectability fix, `1608e7bd` docs.
+
+**Coverage:** new `lib/select.js`/`lib/scale.js` 100%; `PlotState.svelte.js` back to 100%; geoms ≥80%.
+(Full `bun run coverage` has one pre-existing miss: `packages/cli/src/index.js` 97.14% — not this work.)
+
+**Final gate:** lint **0 errors** + `bun run test:ci` = **5225 tests / 367 files**; Playwright
+`chart-metrics` + `chart-select` e2e ✓ (3 tests). All on `develop`.

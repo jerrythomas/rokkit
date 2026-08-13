@@ -1,0 +1,76 @@
+# Rokkit ChatComposer Component
+
+> Multi-line message input that submits on plain Enter, with slots for suggestions, a toolbar, and leading content.
+
+ChatComposer is a dumb presentation component wrapping a `<textarea>`. It owns the input value (bindable), fires `onsubmit` on plain Enter and `onchange` on every keystroke, and exposes a `focus()` method. It renders no send button itself — put one in the `toolbar` snippet.
+
+## Quick Start
+
+```svelte
+<script>
+  import { ChatComposer } from '@rokkit/ui'
+
+  let draft = $state('')
+
+  function send(text) {
+    // append message, clear draft, etc.
+    draft = ''
+  }
+</script>
+
+<ChatComposer
+  bind:value={draft}
+  placeholder="Message…"
+  onsubmit={send}
+>
+  {#snippet toolbar()}
+    <button onclick={() => send(draft)}>Send</button>
+  {/snippet}
+</ChatComposer>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | `''` | Input text — use `bind:value` |
+| `placeholder` | `string` | `''` | Textarea placeholder |
+| `disabled` | `boolean` | `false` | Disables the textarea and blocks submit |
+| `busy` | `boolean` | `false` | Marks the composer busy (`data-busy`) and blocks submit |
+| `onsubmit` | `(text: string) => void` | — | Called with the current value on plain Enter |
+| `onchange` | `(value: string) => void` | — | Called on every input event with the new value |
+| `suggestions` | `Snippet` | — | Rendered above the textarea (e.g. quick-reply chips) |
+| `toolbar` | `Snippet` | — | Rendered after the textarea (e.g. send / attach buttons) |
+| `leading` | `Snippet` | — | Rendered first, before suggestions and the textarea |
+
+### Instance method
+
+| Method | Description |
+|--------|-------------|
+| `focus()` | Focuses the underlying `<textarea>` (call via a component `bind:this`) |
+
+## Data Attributes
+
+| Attribute | Element |
+|-----------|---------|
+| `data-chat-composer` | root `<div>` (carries `data-busy` only while `busy`) |
+| `data-chat-input` | the `<textarea>` (fixed `rows="2"`) |
+
+## Behavior
+
+- **Plain Enter submits** — `Enter` without `Shift` calls `preventDefault()` and fires `onsubmit(value)`, but only when not `disabled`, not `busy`, and `value.trim()` is non-empty. `Shift+Enter` inserts a newline as usual.
+- **Change events** — every `input` fires `onchange(value)`; combine with `bind:value` for controlled state.
+- **Busy / disabled** — either flag blocks submission; `busy` additionally exposes `data-busy` for styling (e.g. a spinner in the toolbar), while `disabled` also disables the textarea element.
+- **No built-in send button** — the component only supplies the input; provide send/attach controls through the `toolbar` (or `leading`) snippet.
+- **Focus control** — expose the instance and call `focus()` to move focus into the textarea programmatically.
+
+## Import
+
+```javascript
+import { ChatComposer } from '@rokkit/ui'
+```
+
+## Related
+
+- [ChatTimeline](/llms/components/chat-timeline.txt) — the message list above the composer
+- [ChatShell](/llms/components/chat-shell.txt) — history + timeline + composer, assembled

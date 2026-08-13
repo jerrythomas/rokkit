@@ -4,7 +4,7 @@
 
 ## Item Snippets
 
-Every collection component (`List`, `Select`, `Tree`, `Tabs`, `Table`, etc.) accepts an `itemContent` snippet that receives a `ProxyItem`. The component handles layout and accessibility; the snippet only needs to render content:
+Every collection component (`List`, `Menu`, `Tree`, `Select`, `MultiSelect`, `Grid`, `Toggle`, `Tabs`) accepts an `itemContent` snippet that receives a `ProxyItem`. The component handles layout and accessibility; the snippet only needs to render content:
 
 ```svelte
 <List items={users} {fields}>
@@ -28,12 +28,13 @@ Snippets receive a `ProxyItem` — a unified interface to the underlying data it
 
 | Property / Method | Returns | Description |
 |-------------------|---------|-------------|
-| `proxy.label` | `string` | Mapped display text (via `fields.label`) |
-| `proxy.icon` | `string` | Mapped icon CSS class (via `fields.icon`) |
-| `proxy.href` | `string` | Mapped href — renders item as `<a>` if set |
-| `proxy.value` | `any` | The original raw item (object or primitive) |
+| `proxy.label` | `string` | Mapped display text (via `fields.label`) — direct getter |
+| `proxy.value` | `any` | Mapped value field (via `fields.value`); falls back to the raw item if unset — direct getter |
+| `proxy.original` | `any` | The original raw item, unmapped (object or primitive) |
 | `proxy.disabled` | `boolean` | Whether the item is disabled |
 | `proxy.expanded` | `boolean` | Expand state for groups/nodes |
+| `proxy.get('icon')` | `string` | Mapped icon CSS class (via `fields.icon`) — not a direct getter |
+| `proxy.get('href')` | `string` | Mapped href — renders item as `<a>` if set — not a direct getter |
 | `proxy.get('field')` | `any` | Read any field by name (mapped or raw) |
 
 **`proxy.get(field)`** resolves through the field map first, then falls back to the raw property name. Use it to access fields that aren't part of the standard mapping:
@@ -100,10 +101,10 @@ When embedding interactive elements (checkboxes, toggles, buttons) inside snippe
   <span class="flex-1">{proxy.label}</span>
   <input
     type="checkbox"
-    checked={proxy.value.enabled}
+    checked={proxy.original.enabled}
     onclick={(e) => {
       e.stopPropagation()            <!-- ← required: prevents List from selecting item -->
-      proxy.value.enabled = !proxy.value.enabled
+      proxy.original.enabled = !proxy.original.enabled
     }}
   />
 {/snippet}
@@ -117,7 +118,7 @@ This applies to any interactive element inside an `itemContent` snippet: checkbo
 
 | Slot | Supported by | Description |
 |------|-------------|-------------|
-| `itemContent` | List, Select, MultiSelect, Tree, Tabs, Toggle, Table | Default item renderer |
+| `itemContent` | List, Menu, Tree, Select, MultiSelect, Grid, Toggle, Tabs | Default item renderer |
 | `groupContent` | List, Tree | Group/section header |
 | `{name}` (named) | List, Select, Tree | Per-item snippet routing via `item.snippet` field |
 

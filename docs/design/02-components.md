@@ -155,14 +155,14 @@ as removable pills. The internal List uses the extend/range selection actions. T
 binding is an array of extracted primitives; the `onchange` callback receives both the array
 and the corresponding full items.
 
-**Tree** — a persistent hierarchical selection surface. Uses a NestedController-aware
-Wrapper. Arrow keys expand and collapse nodes in addition to moving focus. Keyboard
+**Tree** — a persistent hierarchical selection surface. Uses a `LazyWrapper` over a
+nested `ProxyTree`. Arrow keys expand and collapse nodes in addition to moving focus. Keyboard
 semantics follow the WAI-ARIA tree pattern: ArrowRight expands or descends, ArrowLeft
 collapses or ascends to parent. The `value` binding holds the selected leaf's value; group
 nodes are not selectable.
 
 **Toggle** — a horizontally-oriented exclusive selection surface. Designed for small option
-sets (view modes, time periods, orientations). Uses ListController with horizontal navigator
+sets (view modes, time periods, orientations). Uses `Wrapper` with a horizontal `Navigator`
 orientation. Each option is a focusable button; only one is active at a time.
 
 ### Navigation Components

@@ -28,7 +28,8 @@ describe('library', () => {
 			'filterData',
 			'filterObjectArray',
 			'nestByPath',
-			'nestByColumns'
+			'nestByColumns',
+			'createFormatter'
 		])
 	})
 })

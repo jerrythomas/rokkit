@@ -1,0 +1,16 @@
+---
+# markdownlint config — encodes the repo's documentation house style.
+# Prose is intentionally hard-wrapped ~90–100 cols and docs/tables run wide,
+# so the 80-char default line-length rule is relaxed rather than rewrapping
+# hundreds of lines. Quality rules (code-fence language, blank lines around
+# blocks/lists, bare URLs, duplicate headings) stay ON.
+default: true
+
+# MD013 — line length: disabled. Prose is hard-wrapped by hand and reference
+# tables / code run wide; the repo has never observed a fixed column limit, so
+# this cosmetic rule is off rather than churning hundreds of lines.
+MD013: false
+
+# MD041 — first line need not be a top-level heading: demo docs.md fragments
+# and the frontmatter'd skill/agent files intentionally open with `##` / `---`.
+MD041: false

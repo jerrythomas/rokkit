@@ -18,3 +18,4 @@ export {
 export { parseFilters } from './parser'
 export { filterData, filterObjectArray } from './filter'
 export { nestByPath, nestByColumns } from './nest'
+export { createFormatter } from './formatter'

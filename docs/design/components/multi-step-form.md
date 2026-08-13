@@ -121,7 +121,7 @@ Fields in steps not yet visited have no validation messages until explicitly tra
 
 `data-step-state` values:
 
-- `complete` — index < current; step is navigable via `onclick`
+- `complete` — index < current; step can be revisited via `onclick`
 - `current` — index === current; not clickable
 - `upcoming` — index > current; not clickable, visually inactive
 

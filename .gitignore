@@ -216,3 +216,6 @@ site/e2e/*-snapshots/
 # Agent scaffolding (local, not tracked)
 AGENTS.md
 .agents/
+
+# Local design mockups (not tracked)
+docs/mockups/

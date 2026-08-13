@@ -1,32 +1,33 @@
-# Rokkit RadioGroup Component
+# Rokkit InputRadio Component
 
-> Data-driven radio button group for single selection from multiple options.
+> Data-driven radio button group for single selection from a list of options.
 
-The RadioGroup component renders a vertical list of radio buttons that adapts to any data structure through field mapping. It uses native HTML radio inputs for accessibility and standard keyboard behavior.
+> **`InputRadio` is a `@rokkit/forms` input.** It is normally rendered for you by a schema-driven [Form](/llms/components/form.txt) (`FormRenderer`), but it is also a plain Svelte component you can import and use standalone. Import it from `@rokkit/forms` — it is **not** exported from `@rokkit/ui`.
+
+The InputRadio component renders a vertical list of native radio buttons that adapts to any data structure through field mapping. Each option is a native `<input type="radio">` wrapped in a `<label>`, so it inherits standard keyboard behavior and accessibility.
 
 ## Quick Start
 
 ```svelte
 <script>
-  import { RadioGroup } from '@rokkit/ui'
+  import { InputRadio } from '@rokkit/forms'
 
-  let options = ['Small', 'Medium', 'Large']
+  const options = ['Small', 'Medium', 'Large']
   let value = $state('Medium')
 </script>
 
-<RadioGroup {options} bind:value name="size" />
+<InputRadio {options} bind:value />
 ```
 
 ## Core Concepts
 
 ### Data-Driven Design
 
-RadioGroup adapts to your data structure through field mapping:
+InputRadio adapts to your data structure through field mapping. The `fields` prop is a plain `FieldMapping` object that tells the component which key holds each option's display label:
 
 ```svelte
 <script>
-  import { RadioGroup } from '@rokkit/ui'
-  import { FieldMapper } from '@rokkit/core'
+  import { InputRadio } from '@rokkit/forms'
 
   const plans = [
     { id: 'basic', name: 'Basic Plan', price: 9 },
@@ -34,105 +35,64 @@ RadioGroup adapts to your data structure through field mapping:
     { id: 'enterprise', name: 'Enterprise', price: 99 }
   ]
 
-  const mapping = new FieldMapper({ label: 'name', value: 'id' })
-  let selected = $state('basic')
+  // `selected` holds the whole chosen plan object
+  let selected = $state(plans[0])
 </script>
 
-<RadioGroup options={plans} {mapping} bind:value={selected} name="plan" />
+<InputRadio options={plans} fields={{ label: 'name' }} bind:value={selected} />
 ```
 
-### Field Mapper
+### Value Binding
 
-The component uses FieldMapper from `@rokkit/core` to extract values:
+The bound `value` is the **whole selected option**, not a mapped value field. For a string array it is the selected string; for an object array it is the selected object. Selection is matched by deep equality, so bind `value` to an item from `options` (or a deep-equal copy).
 
-```javascript
-import { FieldMapper } from '@rokkit/core'
+### Field Mapping
 
-// Create custom mapping
-const mapping = new FieldMapper({
-  label: 'name',    // Field for display text
-  value: 'id'       // Field for radio value
-})
+Each option is wrapped in a `ProxyItem` (from `@rokkit/states`) using `fields`, and its display text is read from the `label` semantic key. The default mapping (`BASE_FIELDS` from `@rokkit/core`) maps `label` to the raw `label` key; override it with `fields` to point at a different property.
 
-// Usage
-mapping.get('label', item)  // Get display text
-mapping.get('value', item)  // Get value
+```svelte
+<script>
+  import { InputRadio } from '@rokkit/forms'
+
+  // Simple string array — labels come from the strings themselves
+  const sizes = ['S', 'M', 'L', 'XL']
+  let size = $state('M')
+
+  // Object array — map `label` to a custom property
+  const colors = [
+    { colorName: 'Red', hex: '#ff0000' },
+    { colorName: 'Blue', hex: '#0000ff' }
+  ]
+  let color = $state(colors[0])
+</script>
+
+<InputRadio options={sizes} bind:value={size} />
+<InputRadio options={colors} fields={{ label: 'colorName' }} bind:value={color} />
 ```
 
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `options` | `array` | `[]` | Array of radio options |
-| `value` | `any` | — | Selected value (use `bind:value`) |
-| `name` | `string` | — | HTML name attribute (required for form submission) |
-| `mapping` | `FieldMapper` | `defaultMapping` | Field mapper for data extraction |
-| `readOnly` | `boolean` | `false` | Disable all radio buttons |
-| `textAfter` | `boolean` | `true` | Text position (after or before icon) |
-| `stateIcons` | `object` | `defaultStateIcons.radio` | Custom on/off icons |
-| `id` | `string` | `null` | HTML id attribute |
-| `class` | `string` | `''` | CSS class names |
+| `options` | `unknown[]` | `[]` | Array of options (primitives or objects) |
+| `value` | `unknown` | — | Selected option — the whole item (use `bind:value`) |
+| `fields` | `FieldMapping` | `BASE_FIELDS` | Field mapping used to resolve each option's display label |
+| `disabled` | `boolean` | `false` | Disables every radio input |
+| `flip` | `boolean` | — | Declared in the props type (reserved for label/control order) |
+| `onchange` | `(value: unknown) => void` | `noop` | Called with the newly selected item |
+| `class` | `string` | `''` | CSS class applied to the `<radio-group>` element |
+
+`onfocus` and `onblur` handlers, plus any other extra attributes, are forwarded to each native radio input.
 
 ## Field Mapping
 
-Map your data fields using FieldMapper:
+The display label for each option is resolved through the `label` key of `fields`:
 
-| Field | Default | Description |
-|-------|---------|-------------|
-| `text` | `'text'` | Display label text |
-| `value` | `'value'` | Radio button value |
+| Semantic key | Default raw key | Used for |
+|--------------|-----------------|----------|
+| `label` | `'label'` | Display text for each option |
 
-### Mapping Examples
-
-```svelte
-<script>
-  import { FieldMapper } from '@rokkit/core'
-
-  // Simple string array - no mapping needed
-  const sizes = ['S', 'M', 'L', 'XL']
-
-  // Object array with custom fields
-  const colors = [
-    { colorName: 'Red', hex: '#ff0000' },
-    { colorName: 'Blue', hex: '#0000ff' }
-  ]
-  const colorMapping = new FieldMapper({ label: 'colorName', value: 'hex' })
-</script>
-
-<RadioGroup options={sizes} bind:value={size} name="size" />
-<RadioGroup options={colors} mapping={colorMapping} bind:value={color} name="color" />
-```
-
-## State Icons
-
-Customize radio button icons:
-
-```svelte
-<script>
-  const customIcons = {
-    on: 'check-circle',   // Selected state
-    off: 'circle'         // Unselected state
-  }
-</script>
-
-<RadioGroup {options} bind:value stateIcons={customIcons} name="choice" />
-```
-
-Default icons from `defaultStateIcons.radio`:
-- `on`: `'radio-on'`
-- `off`: `'radio-off'`
-
-## Text Position
-
-Control label position relative to the radio icon:
-
-```svelte
-<!-- Text after icon (default) -->
-<RadioGroup {options} bind:value textAfter={true} name="opt1" />
-
-<!-- Text before icon -->
-<RadioGroup {options} bind:value textAfter={false} name="opt2" />
-```
+For primitive options (strings, numbers), the value is used directly as both the label and the value, so no mapping is needed. Note again that the **bound `value` is always the full option**, regardless of `fields`.
 
 ## Keyboard Navigation
 
@@ -147,42 +107,45 @@ Uses native HTML radio button behavior:
 | `Space` | Select focused option |
 | `Tab` | Move focus in/out of group |
 
-## Read-Only Mode
+## Disabled State
 
-Disable interaction while showing selection:
+Disable interaction for the whole group with the `disabled` prop:
 
 ```svelte
-<RadioGroup {options} bind:value readOnly={true} name="display" />
+<InputRadio {options} bind:value disabled />
 ```
+
+When `disabled` is true, every radio input receives the native `disabled` attribute and the `<radio-group>` element gets a `disabled` class.
 
 ## Accessibility
 
-- Uses native `<input type="radio">` elements
-- Implicit `radiogroup` role from HTML semantics
-- Each option wrapped in `<label>` for click area
-- `disabled` attribute when `readOnly` is true
-- Proper `name` attribute for form grouping
+- Uses native `<input type="radio">` elements.
+- Grouping is handled by Svelte's `bind:group` (the component does not set a `name` attribute).
+- Each option is wrapped in a `<label>` so the text is part of the click target.
+- `disabled` applies the native `disabled` attribute to every input.
 
 ## Data Attributes for Styling
 
+The component renders a custom `<radio-group>` element; style it with element/class selectors:
+
 | Element | Selector | Description |
 |---------|----------|-------------|
-| Root | `rk-radio-group` | Main container |
-| Option | `label` | Individual radio option |
-| Input | `input[type="radio"]` | Hidden radio input |
-| Icon | `icon` | State indicator icon |
-| Text | `p` | Label text |
+| Root | `radio-group` | Custom-element container |
+| Disabled root | `radio-group.disabled` | Applied when `disabled` is true |
+| Option | `radio-group label` | Individual radio option |
+| Input | `radio-group input[type="radio"]` | Native radio input |
+| Text | `radio-group p` | Label text |
 
 ### Styling Example
 
 ```css
-rk-radio-group {
+radio-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-rk-radio-group label {
+radio-group label {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -192,21 +155,16 @@ rk-radio-group label {
   transition: background-color 0.15s;
 }
 
-rk-radio-group label:hover {
+radio-group label:hover {
   background-color: var(--surface-100);
 }
 
-rk-radio-group label.disabled {
+radio-group.disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-rk-radio-group icon {
-  font-size: 1.25rem;
-  color: var(--primary);
-}
-
-rk-radio-group p {
+radio-group p {
   margin: 0;
   font-size: 0.875rem;
 }
@@ -215,32 +173,28 @@ rk-radio-group p {
 ## Import
 
 ```javascript
-// Named import
-import { RadioGroup } from '@rokkit/ui'
+import { InputRadio } from '@rokkit/forms'
 
-// With FieldMapper
-import { RadioGroup } from '@rokkit/ui'
-import { FieldMapper } from '@rokkit/core'
+// FieldMapping type (for typing custom mappings)
+import type { FieldMapping } from '@rokkit/core'
 ```
 
 ## TypeScript Types
 
 ```typescript
-interface RadioGroupProps {
-  options?: any[]
-  value?: any
-  name?: string
-  mapping?: FieldMapper
-  readOnly?: boolean
-  textAfter?: boolean
-  stateIcons?: RadioIcons
-  id?: string | null
-  class?: string
-}
+import type { FieldMapping } from '@rokkit/core'
 
-interface RadioIcons {
-  on: string
-  off: string
+interface InputRadioProps {
+  class?: string
+  value?: unknown
+  fields?: FieldMapping
+  options?: unknown[]
+  disabled?: boolean
+  flip?: boolean
+  onchange?: (value: unknown) => void
+  onfocus?: (event: FocusEvent) => void
+  onblur?: (event: FocusEvent) => void
+  [key: string]: unknown
 }
 ```
 
@@ -250,24 +204,22 @@ interface RadioIcons {
 
 ```svelte
 <script>
-  import { RadioGroup } from '@rokkit/ui'
+  import { InputRadio } from '@rokkit/forms'
 
   let priority = $state('medium')
 </script>
 
-<RadioGroup
+<InputRadio
   options={['low', 'medium', 'high', 'urgent']}
   bind:value={priority}
-  name="priority"
 />
 ```
 
-### Object Options with Mapping
+### Object Options with Field Mapping
 
 ```svelte
 <script>
-  import { RadioGroup } from '@rokkit/ui'
-  import { FieldMapper } from '@rokkit/core'
+  import { InputRadio } from '@rokkit/forms'
 
   const shippingOptions = [
     { method: 'standard', label: 'Standard (5-7 days)', cost: 0 },
@@ -275,73 +227,82 @@ interface RadioIcons {
     { method: 'overnight', label: 'Overnight', cost: 24.99 }
   ]
 
-  const mapping = new FieldMapper({ label: 'label', value: 'method' })
-  let shipping = $state('standard')
+  // `label` is already the display key, so no custom mapping is needed here.
+  // `shipping` holds the whole selected option object.
+  let shipping = $state(shippingOptions[0])
 </script>
 
-<RadioGroup
+<InputRadio
   options={shippingOptions}
-  {mapping}
   bind:value={shipping}
-  name="shipping"
 />
 ```
 
-### With Custom Icons
+### Custom Label Field
 
 ```svelte
 <script>
-  let agreement = $state(null)
+  import { InputRadio } from '@rokkit/forms'
 
-  const stateIcons = {
-    on: 'check-square',
-    off: 'square'
-  }
+  const users = [
+    { userId: 1, fullName: 'Ada Lovelace' },
+    { userId: 2, fullName: 'Alan Turing' }
+  ]
+
+  let assignee = $state(users[0])
 </script>
 
-<RadioGroup
-  options={['I agree', 'I disagree']}
-  bind:value={agreement}
-  {stateIcons}
-  name="agreement"
+<InputRadio
+  options={users}
+  fields={{ label: 'fullName' }}
+  bind:value={assignee}
+/>
+```
+
+### Disabled Group
+
+```svelte
+<script>
+  import { InputRadio } from '@rokkit/forms'
+
+  let savedChoice = $state('Option B')
+</script>
+
+<InputRadio
+  options={['Option A', 'Option B', 'Option C']}
+  bind:value={savedChoice}
+  disabled
 />
 ```
 
 ### Form Integration
 
 ```svelte
+<script>
+  import { InputRadio } from '@rokkit/forms'
+
+  let formData = $state({ size: 'M' })
+
+  function handleSubmit() {
+    console.log('Form data:', formData)
+  }
+</script>
+
 <form onsubmit={handleSubmit}>
   <fieldset>
     <legend>Select Size</legend>
-    <RadioGroup
+    <InputRadio
       options={['XS', 'S', 'M', 'L', 'XL']}
       bind:value={formData.size}
-      name="size"
     />
   </fieldset>
   <button type="submit">Submit</button>
 </form>
 ```
 
-### Read-Only Display
-
-```svelte
-<script>
-  // Show user's previous selection (non-editable)
-  let savedChoice = 'Option B'
-</script>
-
-<RadioGroup
-  options={['Option A', 'Option B', 'Option C']}
-  value={savedChoice}
-  readOnly={true}
-  name="display"
-/>
-```
-
 ## Related Components
 
-- **Switch** - Horizontal option switcher
-- **CheckBox** - Single boolean toggle
-- **Select** - Dropdown single selection
-- **InputRadio** - Form-integrated radio group (`@rokkit/forms`)
+- **InputCheckbox** - Single boolean toggle (`@rokkit/forms`)
+- **InputSwitch** / **InputToggle** - Alternative toggle inputs (`@rokkit/forms`)
+- **Select** - Dropdown single selection (`@rokkit/ui`)
+- **FormRenderer** - Schema-driven form that renders these inputs (`@rokkit/forms`)

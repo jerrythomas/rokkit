@@ -1,0 +1,82 @@
+# Rokkit ItemContent Component
+
+> The built-in default item renderer. Outputs avatar/icon, label + description, badge, and shortcut from a ProxyItem's mapped fields.
+
+`ItemContent` is what List, Select, Menu, Tree, and Toolbar render **by default** inside each item when no `itemContent` snippet is supplied. It reads everything from a `ProxyItem` (which honors the parent's `fields` remap), so a data-first list needs no snippet to show an icon, a subtitle, a badge, or an avatar. Consumers rarely instantiate it directly — reach for it only when you write a custom item snippet and still want the standard label/icon layout (see ItemSwitch / ItemToggle, which wrap it).
+
+## Quick Start
+
+```svelte
+<script>
+  import { ItemContent } from '@rokkit/ui'
+  import { ProxyItem } from '@rokkit/states'
+
+  const proxy = new ProxyItem({
+    label: 'Inbox',
+    icon: 'i-lucide:inbox',
+    description: 'Unread messages',
+    badge: '12',
+    shortcut: '⌘I'
+  })
+</script>
+
+<!-- Normally you never write this — List/Select/Menu render it for you. -->
+<ItemContent {proxy} />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `proxy` | `ProxyItem` | — (required) | Field-mapped wrapper around the row data. Exposes `proxy.label` and `proxy.get(field)`. |
+| `showIcon` | `boolean` | `true` | Render the leading avatar / icon slot |
+| `showSubtext` | `boolean` | `true` | Render the description line under the label |
+
+## Fields read from the ProxyItem
+
+Read via `proxy.get(...)` (so they respect the parent's `fields` remap) plus `proxy.label`:
+
+| Field | Renders as | Notes |
+|-------|-----------|-------|
+| `avatar` | `<img data-item-avatar>` | Takes precedence over `icon`. `alt` = `proxy.get('tooltip') ?? proxy.label` |
+| `icon` | `<span data-item-icon class={icon}>` **or** `<span data-item-icon-literal>` | A CSS icon class (`isIconClass`, e.g. `i-lucide:home`) renders as an icon span; any other string (a char / emoji) renders as literal text |
+| `label` | `<span data-item-label>` inside `<span data-item-text>` | The display text (`proxy.label`) |
+| `subtext` | `<span data-item-description>` | Secondary line; only when `showSubtext` and a value is present |
+| `badge` | `<span data-item-badge>` | Trailing count / status |
+| `shortcut` | `<kbd data-item-shortcut>` | Trailing keyboard hint |
+
+## Data Attributes
+
+| Attribute | Element |
+|-----------|---------|
+| `data-item-avatar` | avatar `<img>` |
+| `data-item-icon` | icon-class `<span>` (aria-hidden) |
+| `data-item-icon-literal` | literal char / emoji `<span>` (aria-hidden) |
+| `data-item-text` | wrapper around label + description |
+| `data-item-label` | label text |
+| `data-item-description` | secondary subtext line |
+| `data-item-badge` | trailing badge |
+| `data-item-shortcut` | trailing `<kbd>` hint |
+
+Target these to restyle the built-in rendering without writing a snippet — e.g. `[data-item-badge] { color: var(--ink-mute) }`.
+
+## Behavior
+
+- **Order is fixed**: avatar/icon → text (label + description) → badge → shortcut. Each part renders only when its field is present.
+- **Avatar wins over icon** — if `avatar` resolves, the `icon` branch is skipped.
+- **Icon vs literal is one field** — `isIconClass(icon)` decides: a recognised icon class becomes `data-item-icon`; anything else (single character, emoji) becomes `data-item-icon-literal`. No snippet needed to switch between the two.
+- **Text block is conditional** — rendered only when there is a `label`, or a `subtext` while `showSubtext` is on.
+- Icons and the avatar are `aria-hidden` (decorative); the label carries the accessible name.
+
+## Import
+
+```javascript
+import { ItemContent } from '@rokkit/ui'
+```
+
+## Related
+
+- [List](/llms/components/list.txt) — renders ItemContent by default for every row
+- [ItemSwitch](/llms/components/item-switch.txt) — wraps ItemContent + an inert switch visual
+- [ItemToggle](/llms/components/item-toggle.txt) — wraps ItemContent + an inline toggle group
+- [Composability guide](/llms/guides/composability.txt) — the data-first contract across all components

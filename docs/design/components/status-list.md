@@ -77,11 +77,11 @@ Theme CSS targets `[data-validation-item][data-status="fail"]` etc. to apply per
 
 ## Design Notes
 
-**Why `role="status"` instead of `role="list"`?** The primary function of this component is to communicate changing validation state, not to present a navigable list. `role="status"` (live region) is appropriate here — screen readers announce changes as the user interacts. If the use case is a static checklist that never updates, the consumer can override the role via spread props.
+**Why `role="status"` instead of `role="list"`?** The primary function of this component is to communicate changing validation state, not to present an interactive selectable list. `role="status"` (live region) is appropriate here — screen readers announce changes as the user interacts. If the use case is a static checklist that never updates, the consumer can override the role via spread props.
 
 **Icons default to badge group.** The `DEFAULT_STATE_ICONS.badge` group (`badge-pass`, `badge-fail`, `badge-warn`, `badge-unknown`) is the intended default. These are compact filled icons suited to inline status indicators. Consumers can swap to a different icon set (e.g. a larger outlined variant) by passing a custom `icons` map.
 
-**No selection, no navigation.** This is a display-only component. It holds no internal state and does not use a controller or `use:navigator`. Field mapping (`fields` prop) is not relevant here — items have a fixed, narrow schema (`text` + `status`).
+**No selection, no navigation.** This is a display-only component. It holds no internal state and does not use a controller or the `Navigator` keyboard class. Field mapping (`fields` prop) is not relevant here — items have a fixed, narrow schema (`text` + `status`).
 
 **Item order is the consumer's responsibility.** The component renders items in the order they are given. Sorting (e.g. failures first) is done before passing to the component, not inside it.
 

@@ -19,9 +19,9 @@ This file is read at the start of every session.
 | ----------------- | ----------------------------------------------------------------------------------------- |
 | `@rokkit/ui`      | UI components (Select, Toggle, List, Tree, Menu, etc.) — depends on core, states, actions |
 | `@rokkit/forms`   | Schema-driven form rendering (FormBuilder, FormRenderer, Input types)                     |
-| `@rokkit/themes`  | CSS themes (base structural + rokkit/minimal/material/glass variants)                     |
+| `@rokkit/themes`  | CSS themes (base structural + rokkit/minimal/material/frosted/zen-sumi variants)          |
 | `@rokkit/core`    | Constants, utilities, field mapping, icon collections                                     |
-| `@rokkit/states`  | Reactive state classes (ListController, NestedController, ProxyItem, watchMedia)          |
+| `@rokkit/states`  | Reactive state classes (Wrapper, LazyWrapper, ProxyItem, ProxyTree, ProxyTable, vibe, watchMedia) |
 | `@rokkit/actions` | Svelte actions (keyboard, navigation, dismissable, etc.)                                  |
 | `@rokkit/icons`   | SVG icon sets                                                                             |
 | `@rokkit/data`    | Data structures (Dataset, hierarchy, parsing)                                             |
@@ -71,13 +71,13 @@ Violations must be justified or the plan revised.
 
 **ADR-002: Rename @rokkit/bits-ui to @rokkit/composables (2026-01-31)** — Renamed package to better describe its composable-primitive nature and hide the bits-ui implementation detail. `@rokkit/ui` stays data-driven (single component, `options` prop); `@rokkit/composables` holds compound component primitives (e.g. `Tree.Root`, `Tree.Node`). Partially superseded by ADR-003.
 
-**ADR-003: MVC Separation — Fold Composables, Adopt Actions/States in UI (2026-02-20, FULLY COMPLETE)** — Removed `@rokkit/composables` entirely (and bits-ui with it). Added `@rokkit/states` and `@rokkit/actions` as dependencies of `@rokkit/ui`. Migrated List, Tree, Menu, Select, MultiSelect, Toggle to use `ListController`/`NestedController` + `navigator` action instead of per-component inline logic, eliminating ~1200 lines of duplication. Proxy/ItemProxy unification deferred (different abstractions).
+**ADR-003: MVC Separation — Fold Composables, Adopt Actions/States in UI (2026-02-20, FULLY COMPLETE)** — Removed `@rokkit/composables` entirely (and bits-ui with it). Added `@rokkit/states` and `@rokkit/actions` as dependencies of `@rokkit/ui`. Migrated List, Tree, Menu, Select, MultiSelect, Toggle to the shared `Wrapper`/`LazyWrapper` state controllers (over `ProxyTree`) + the `Navigator` keyboard class instead of per-component inline logic, eliminating ~1200 lines of duplication. Proxy/ItemProxy unification deferred (different abstractions).
 
 ## Technical Notes
 
 - **State icons pattern**: Two-layer customization (global `defaultIcons` in core + per-instance `icons` prop). Naming: `{group}-{state}` (e.g., `node-opened`, `checkbox-checked`)
 - **FormBuilder type resolution**: string+options→select, boolean→checkbox, number+min+max→range, readonly→info, no scope→separator
-- **Theme structure**: `base/` (structural layout), `rokkit/` (colors/effects), `minimal/`, `material/`, `glass/` — each has per-component CSS files imported via `index.css`
+- **Theme structure**: `base/` (structural layout), `rokkit/` (colors/effects), `minimal/`, `material/`, `frosted/`, `zen-sumi/` — each has per-component CSS files imported via `index.css`
 - **Playground pattern**: Each page uses `Playground` wrapper with `preview` and `controls` snippets. Toggle page is the pilot for FormRenderer-based controls.
 
 ## Current Status

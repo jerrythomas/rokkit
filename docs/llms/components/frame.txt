@@ -1,0 +1,50 @@
+# Rokkit Frame Component
+
+> Generic header / body / footer container — the canonical "card-shaped UI block" primitive, unstyled and themed via data attributes.
+
+## Quick Start
+
+```svelte
+<script>
+  import { Frame } from '@rokkit/ui'
+</script>
+
+<Frame>
+  {#snippet header()}
+    <h3>Report</h3>
+  {/snippet}
+
+  <p>Body content goes here.</p>
+
+  {#snippet footer()}
+    <button>Export</button>
+  {/snippet}
+</Frame>
+```
+
+Frame provides structure only — consumers decide what goes in each slot. Used by CodeBlock (to wrap a code block's chrome) and PlotPlugin (to wrap a chart). For an interactive card (link or button), use `<Card />` instead.
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `header` | `Snippet` | — | Top slot — title, action chips, status badges, etc. |
+| `children` | `Snippet` | — | Main content (default slot) |
+| `footer` | `Snippet` | — | Bottom slot — metadata, actions, secondary controls |
+| `flush` | `boolean` | `false` | When true the body slot has zero padding so the inner artifact controls its own padding |
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-frame` | Root container |
+| `data-frame-header` | Header section (only when `header` provided) |
+| `data-frame-body` | Body section (only when `children` provided) |
+| `data-flush` | Present on the body when `flush` is true |
+| `data-frame-footer` | Footer section (only when `footer` provided) |
+
+## Behavior
+
+- Purely structural: each section is rendered only when its snippet is provided.
+- Carries no color or spacing of its own — `@rokkit/themes` hooks the layout onto the `data-frame*` attributes.
+- `flush` removes body padding, letting a nested chart, `<pre>`, or table own its own edges.

@@ -65,7 +65,7 @@ The **trigger** shows selected items as `data-select-tag` chips (each with a `da
 | `fields` | `Record<string,string>` | `{}` | Remap data keys to component fields |
 | `value` | `unknown[]` | `[]` | Selected values array — use `bind:value` |
 | `selected` | `unknown[]` | `[]` | Selected raw items — use `bind:selected` |
-| `placeholder` | `string` | `'Select…'` | Placeholder when nothing selected |
+| `placeholder` | `string` | `'Select an option'` | Placeholder when nothing selected |
 | `size` | `'sm'\|'md'\|'lg'` | `'md'` | Size variant |
 | `disabled` | `boolean` | `false` | Disable the component |
 | `maxDisplay` | `number` | `3` | Max tags shown before count indicator |
@@ -84,8 +84,8 @@ Default field names the component reads from your data. Override only the ones t
 | `label` | `'label'` | display text in tags + option |
 | `value` | `'value'` | selection value (falls back to the raw item) |
 | `icon` | `'icon'` | icon class or literal char/emoji |
-| `image` (avatar) | `'image'` | avatar `<img>` |
-| `description` | `'description'` | secondary subtitle line |
+| `avatar` | `'image'` | avatar `<img>` |
+| `subtext` | `'description'` | secondary subtitle line |
 | `badge` | `'badge'` | trailing badge/count |
 | `shortcut` | `'shortcut'` | trailing `<kbd>` hint |
 | `children` | `'children'` | nested items array → option group |

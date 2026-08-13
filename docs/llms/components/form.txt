@@ -8,7 +8,7 @@ Rokkit Forms follows a JSON-forms style architecture with separate data-schema a
 
 ```svelte
 <script>
-  import { Form } from '@rokkit/ui'
+  import { FormRenderer } from '@rokkit/forms'
   let value = $state({
     name: 'John Doe',
     gender: 'male',
@@ -17,7 +17,7 @@ Rokkit Forms follows a JSON-forms style architecture with separate data-schema a
   })
 </script>
 
-<Form bind:value />
+<FormRenderer bind:data={value} />
 ```
 
 The simplest usage: pass a reactive `value` object and the Form auto-detects field types.
@@ -125,7 +125,7 @@ const layout = {
 
 ```svelte
 <script>
-  import { Form } from '@rokkit/ui'
+  import { FormRenderer } from '@rokkit/forms'
 
   const schema = {
     type: 'object',
@@ -164,7 +164,7 @@ const layout = {
   let value = $state({ first_name: '', last_name: '', gender: '', age: 25 })
 </script>
 
-<Form bind:value {schema} {layout} />
+<FormRenderer bind:data={value} {schema} {layout} />
 ```
 
 ## Field Types
@@ -418,7 +418,7 @@ manager.clearAllCaches()
 
 ```svelte
 <script>
-  import { Form } from '@rokkit/ui'
+  import { FormRenderer } from '@rokkit/forms'
   import { FormBuilder } from '@rokkit/forms'
 
   const schema = {
@@ -467,7 +467,7 @@ manager.clearAllCaches()
   })
 </script>
 
-<Form bind:value {schema} {layout} />
+<FormRenderer bind:data={value} {schema} {layout} />
 ```
 
 ## FormRenderer Component
@@ -514,11 +514,11 @@ Layouts automatically adapt:
 
 ## API Reference
 
-### Form Props
+### FormRenderer Props
 
 | Prop | Type | Description |
 |------|------|-------------|
-| `value` | `object` | Form data (use `bind:value`) |
+| `data` | `object` | Form data (use `bind:data`) |
 | `schema` | `array\|object` | Field definitions |
 | `layout` | `object` | Layout structure |
 
@@ -533,11 +533,8 @@ Layouts automatically adapt:
 ## Import
 
 ```javascript
-// High-level Form component
-import { Form } from '@rokkit/ui'
-
-// Low-level building blocks
-import { FormBuilder, FormRenderer } from '@rokkit/forms'
+// Form renderer + builder
+import { FormRenderer, FormBuilder } from '@rokkit/forms'
 import { InputField, Input } from '@rokkit/forms'
 
 // Lookup utilities

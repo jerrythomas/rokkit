@@ -3,7 +3,9 @@ import { test, expect } from '@playwright/test'
 test('top nav has no separate Catalog item', async ({ page }) => {
 	await page.goto('/app')
 	const nav = page.locator('[data-site-nav]')
-	await expect(nav.getByText('Components', { exact: true })).toBeVisible()
+	// The /app entry point is labelled "Explore"; components live under it,
+	// so there is no separate "Catalog" (or "Components") nav item.
+	await expect(nav.getByText('Explore', { exact: true })).toBeVisible()
 	await expect(nav.getByText('Catalog', { exact: true })).toHaveCount(0)
 })
 

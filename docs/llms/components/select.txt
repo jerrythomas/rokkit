@@ -65,7 +65,7 @@ The **trigger** shows the selected option's `icon` (as `data-select-value-icon`)
 | `fields` | `Record<string,string>` | `{}` | Remap data keys to component fields |
 | `value` | `unknown` | — | Selected value — use `bind:value` |
 | `selected` | `unknown` | `null` | Selected raw item — use `bind:selected` |
-| `placeholder` | `string` | `'Select…'` | Placeholder when nothing selected |
+| `placeholder` | `string` | `'Select an option'` | Placeholder when nothing selected |
 | `size` | `'sm'\|'md'\|'lg'` | `'md'` | Size variant |
 | `disabled` | `boolean` | `false` | Disable the select |
 | `filterable` | `boolean` | `false` | Show typeahead filter input |
@@ -86,8 +86,8 @@ Default field names the component reads from your data. Override only the ones t
 | `label` | `'label'` | display text in trigger + option |
 | `value` | `'value'` | selection value (falls back to the raw item) |
 | `icon` | `'icon'` | icon class or literal char/emoji |
-| `image` (avatar) | `'image'` | avatar `<img>` |
-| `description` | `'description'` | secondary subtitle line |
+| `avatar` | `'image'` | avatar `<img>` |
+| `subtext` | `'description'` | secondary subtitle line |
 | `badge` | `'badge'` | trailing badge/count |
 | `shortcut` | `'shortcut'` | trailing `<kbd>` hint |
 | `children` | `'children'` | nested items array → option group |

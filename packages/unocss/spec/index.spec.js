@@ -1,5 +1,13 @@
 import { describe, it, expect } from 'vitest'
-import { presetRokkit, presetBackgrounds, loadConfig, buildNamedShortcuts, NAMED_SHORTCUT_PREFIXES, shouldEmitShortcut } from '../src/index.js'
+import {
+	presetRokkit,
+	presetBackgrounds,
+	loadConfig,
+	buildNamedShortcuts,
+	NAMED_SHORTCUT_PREFIXES,
+	shouldEmitShortcut,
+	BUILTIN_SKINS
+} from '../src/index.js'
 
 describe('@rokkit/unocss — barrel exports', () => {
 	it('exports presetRokkit', () => {
@@ -30,5 +38,10 @@ describe('@rokkit/unocss — barrel exports', () => {
 	it('exports shouldEmitShortcut', () => {
 		expect(shouldEmitShortcut).toBeDefined()
 		expect(typeof shouldEmitShortcut).toBe('function')
+	})
+
+	it('exports BUILTIN_SKINS', () => {
+		expect(BUILTIN_SKINS).toBeDefined()
+		expect(typeof BUILTIN_SKINS).toBe('object')
 	})
 })

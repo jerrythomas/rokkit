@@ -38,7 +38,7 @@ These are complementary, not overlapping:
 
 ### Primary consumers
 
-- **`@rokkit/chart`** — uses `dataset().groupBy().rollup()` to produce keyframe data for `AnimatedChart`
+- **`@rokkit/chart`** — uses `dataset().groupBy().rollup()` to produce keyframe data for `AnimatedPlot`
 - **`@rokkit/ui`** — the `Table` component uses `dataview()` for sortable, expandable hierarchical table state; `parseFilters` / `filterData` power `SearchFilter`
 - **`@rokkit/forms`** — `createFormatter` drives formatted display in form fields and table cells
 

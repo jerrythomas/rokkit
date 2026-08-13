@@ -21,8 +21,11 @@
 	import Waterfall from './geoms/Waterfall.svelte'
 	import Hexbin from './geoms/Hexbin.svelte'
 	import Ribbon from './geoms/Ribbon.svelte'
+	import Highlight from './geoms/Highlight.svelte'
+	import Trend from './geoms/Trend.svelte'
 
 	type Row = Record<string, unknown>
+	type Method = string | number | { type: string; [k: string]: unknown }
 	type Margin = { top: number; right: number; bottom: number; left: number }
 	type ChartPresetCtx = { current: typeof defaultPreset }
 
@@ -33,7 +36,7 @@
 		width?: number
 		height?: number
 		mode?: 'light' | 'dark'
-		grid?: boolean
+		grid?: boolean | 'x' | 'y' | 'both'
 		axes?: boolean
 		margin?: Margin
 		legend?: boolean
@@ -46,6 +49,14 @@
 		xTicks?: number
 		yTicks?: number
 		minorTicks?: boolean
+		x?: string
+		y?: string
+		highlight?: 'first' | 'last' | 'min' | 'max' | number | ((row: Row, i: number) => boolean)
+		label?: boolean | string | ((row: Row) => unknown)
+		trend?: Method | Method[]
+		onselect?: (detail: unknown) => void
+		selectable?: boolean
+		selected?: Row[]
 		children?: Snippet
 	}
 
@@ -69,6 +80,14 @@
 		xTicks = undefined,
 		yTicks = undefined,
 		minorTicks = false,
+		x = undefined,
+		y = undefined,
+		highlight = undefined,
+		label = false,
+		trend = undefined,
+		onselect = undefined,
+		selectable = false,
+		selected = $bindable([]),
 		children
 	}: Props = $props()
 
@@ -92,7 +111,11 @@
 
 	const effectiveWidth = $derived(observedWidth > 0 ? observedWidth : (spec?.width ?? width))
 	const svgHeight = $derived(spec?.height ?? height)
-	const showGrid = $derived(spec?.grid ?? grid)
+	const gridValue = $derived(spec?.grid ?? grid)
+	const showGrid = $derived(gridValue !== false)
+	const gridLines = $derived(
+		gridValue === true || gridValue === false ? 'auto' : gridValue
+	)
 	const showLegend = $derived(spec?.legend ?? legend)
 	const chartTitle = $derived(spec?.title ?? title)
 	const chartSummary = $derived(spec?.summary ?? summary)
@@ -125,7 +148,9 @@
 			colorScheme: spec?.colorScheme,
 			colorMidpoint: spec?.colorMidpoint,
 			orientation: spec?.orientation,
-			chartPreset
+			chartPreset,
+			onselect,
+			selectable
 		}
 	}
 
@@ -138,6 +163,17 @@
 	// Keep state in sync when reactive config changes
 	$effect(() => {
 		plotState.update(buildPlotConfig())
+	})
+
+	// external control → state
+	$effect(() => {
+		plotState.setSelected(selected)
+	})
+	// clicks (state) → prop, guarded to avoid an update loop
+	$effect(() => {
+		const rows = plotState.selectedRows
+		const same = rows.length === selected.length && rows.every((r, i) => r === selected[i])
+		if (!same) selected = rows
 	})
 
 	$effect(() => {
@@ -168,6 +204,9 @@
 
 	// Geoms from spec (spec-driven API)
 	const specGeoms = $derived(spec?.geoms ?? [])
+
+	const overlayX = $derived(spec?.x ?? x)
+	const overlayY = $derived(spec?.y ?? y)
 
 	// Geom component resolver for spec-driven mode
 	const GEOM_COMPONENTS = {
@@ -217,7 +256,7 @@
 		>
 			<!-- Grid (behind everything) -->
 			{#if showGrid}
-				<Grid />
+				<Grid lines={gridLines} {xTicks} {yTicks} />
 			{/if}
 
 			<!-- Declarative children (geom components) -->
@@ -249,6 +288,14 @@
 			{#if axes}
 				<Axis type="x" label={spec?.labels?.[spec?.x ?? ''] ?? ''} format={xFormat} ticks={xTicks} {minorTicks} />
 				<Axis type="y" label={spec?.labels?.[spec?.y ?? ''] ?? ''} format={yFormat} ticks={yTicks} {minorTicks} />
+			{/if}
+
+			{#if trend !== null && trend !== undefined}
+				<Trend x={overlayX} y={overlayY} {trend} />
+			{/if}
+
+			{#if (highlight !== null && highlight !== undefined) || selectable || selected.length}
+				<Highlight x={overlayX} y={overlayY} {highlight} {label} />
 			{/if}
 		</g>
 	</svg>

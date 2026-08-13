@@ -9,7 +9,7 @@ Before doing any work, read these files in order:
 1. **`agents/workflow.md`** — methodology and pipeline
 2. **`agents/memory.md`** — project knowledge, principles, tooling
 3. **`agents/journal.md`** (last ~50 lines) — recent progress
-4. **`docs/design/07-priority.md`** — check priority checklist
+4. **`docs/design/12-priority.md`** — check priority checklist
 
 These files govern how you work. Do not skip them.
 
@@ -73,13 +73,13 @@ See `agents/workflow.md` for the full process.
 
 1. Update the relevant `docs/design/*.md` module file
 2. Log in `agents/journal.md`
-3. Create/update plan in `docs/design/07-priority.md`
+3. Create/update plan in `docs/design/12-priority.md`
 
 ### When completing work
 
 1. Run tests and lint — both must pass
 2. Check design docs are still accurate
-3. Update `docs/design/07-priority.md` — mark item complete
+3. Update `docs/design/12-priority.md` — mark item complete
 4. Update `agents/journal.md` with summary and commit hashes
 5. Update status in `docs/features/` and `docs/design/`
 

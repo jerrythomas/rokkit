@@ -39,6 +39,9 @@ export class PlotState {
 	#mode = $state('light')
 	#chartPreset = $state(defaultPreset)
 	#hovered = $state(null)
+	#selected = $state(new SvelteSet())
+	#onselect = $state(undefined)
+	#selectable = $state(false)
 	#orientationOverride = $state(undefined)
 
 	axisOrigin = $state([undefined, undefined])
@@ -274,6 +277,9 @@ export class PlotState {
 		this.#height = config.height ?? 400
 		this.#mode = config.mode ?? 'light'
 		this.#chartPreset = config.chartPreset ?? defaultPreset
+		this.#onselect = config.onselect
+		this.#selectable = config.selectable ?? false
+		if (config.selected) this.#selected = new SvelteSet(config.selected)
 		this.#axisOffset = config.axisOffset ?? 0
 		this.#marginOverride = config.margin ?? undefined
 		this.#orientationOverride = config.orientation ?? undefined
@@ -298,6 +304,8 @@ export class PlotState {
 		if (config.height !== undefined) this.#height = config.height
 		if (config.mode !== undefined) this.#mode = config.mode
 		if (config.chartPreset !== undefined) this.#chartPreset = config.chartPreset
+		if (config.onselect !== undefined) this.#onselect = config.onselect
+		if (config.selectable !== undefined) this.#selectable = config.selectable
 		if (config.axisOffset !== undefined) this.#axisOffset = config.axisOffset
 		this.#marginOverride = config.margin ?? undefined
 		this.#orientationOverride = config.orientation ?? undefined
@@ -345,6 +353,13 @@ export class PlotState {
 		return resolvePreset(this.#presetName, this.#helpers)
 	}
 
+	get data() {
+		// Return #rawData (not #data): geoms read their rows via geomData() which
+		// returns #rawData, so overlays and index lookups (plotState.data.indexOf(datum))
+		// must use the SAME proxy identity. #data and #rawData proxy the same source
+		// array separately, so their elements are not ===. Same content, aligned identity.
+		return this.#rawData
+	}
 	get margin() {
 		return this.#effectiveMargin
 	}
@@ -363,12 +378,34 @@ export class PlotState {
 	get hovered() {
 		return this.#hovered
 	}
+	get interactive() {
+		return Boolean(this.#onselect) || this.#selectable
+	}
+	get selectedRows() {
+		return [...this.#selected]
+	}
 
 	setHovered(data) {
 		this.#hovered = data
 	}
 	clearHovered() {
 		this.#hovered = null
+	}
+	isSelected(row) {
+		return this.#selected.has(row)
+	}
+	setSelected(rows) {
+		this.#selected = new SvelteSet(rows ?? [])
+	}
+	clearSelected() {
+		this.#selected = new SvelteSet()
+	}
+	handleSelect(detail) {
+		this.#onselect?.(detail)
+		if (this.#selectable && detail?.datum !== undefined) {
+			if (this.#selected.has(detail.datum)) this.#selected.delete(detail.datum)
+			else this.#selected.add(detail.datum)
+		}
 	}
 
 	applyZoom(transform) {

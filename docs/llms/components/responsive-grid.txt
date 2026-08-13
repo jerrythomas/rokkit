@@ -1,0 +1,42 @@
+# Rokkit ResponsiveGrid Component
+
+> Auto-fitting CSS grid — columns wrap based on a minimum cell width, with an optional column cap.
+
+## Quick Start
+
+```svelte
+<script>
+  import { ResponsiveGrid } from '@rokkit/ui'
+</script>
+
+<ResponsiveGrid minWidth="240px" gap="1rem">
+  <div>Cell 1</div>
+  <div>Cell 2</div>
+  <div>Cell 3</div>
+</ResponsiveGrid>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `minWidth` | `string` | `'240px'` | Minimum column width — CSS length |
+| `gap` | `string` | `'1rem'` | Gap between cells — CSS length |
+| `maxCols` | `number` | — | Maximum number of columns |
+| `children` | `Snippet` | — | Grid children (required) |
+| `class` | `string` | `''` | Additional CSS class |
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-responsive-grid` | Root grid container |
+
+The root sets CSS custom properties for the theme layer: `--grid-min-width` (from `minWidth`), `--grid-gap` (from `gap`), and `--grid-max-cols` (from `maxCols`, only when provided).
+
+## Behavior
+
+- Columns auto-fit and wrap based on `minWidth` — cells reflow as the container resizes.
+- `gap` controls spacing between cells.
+- `maxCols` caps the number of columns; when unset the grid uses as many columns as fit.
+- Layout is driven by `@rokkit/themes` CSS reading the `--grid-*` custom properties.

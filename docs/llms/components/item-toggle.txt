@@ -1,0 +1,88 @@
+# Rokkit ItemToggle Component
+
+> Inline toggle-group row renderer for config lists. Renders a label plus a `role="radiogroup"` of option spans; each pick fires `onchange(value, option, proxy)`.
+
+`ItemToggle` is used **inside a List (or Menu / Tree) `itemContent` snippet** to build a settings row that offers a small set of choices (e.g. `sm / md / lg`, `light / dark / auto`). It renders `<ItemContent>` for the label/icon, then an inline group where each option is a `<span role="radio" tabindex="-1">` with its own click handler. Navigator's `isNestedInteractive` guard defers to these nested `[role="radio"]` elements, so picking an option does **not** also fire the parent row's select flow. The wrapping element stays a non-interactive `<span>`, keeping the markup legal inside the parent `<button data-list-item>`. Consumers wire state via `onchange` — ItemToggle does not mutate the item data.
+
+## Quick Start
+
+```svelte
+<script>
+  import { List, ItemToggle } from '@rokkit/ui'
+
+  const settings = $state([
+    { label: 'Density', value: 'md', options: ['sm', 'md', 'lg'] }
+  ])
+
+  function handleToggle(next, _opt, proxy) {
+    proxy.value.value = next          // consumer updates the row's value
+  }
+</script>
+
+<List items={settings}>
+  {#snippet itemContent(proxy)}
+    <ItemToggle {proxy} onchange={handleToggle} />
+  {/snippet}
+</List>
+```
+
+Options may be primitives or objects with `{ label?, value?, icon? }`:
+
+```js
+{ label: 'Align', value: 'center', options: [
+  { label: 'Left',   value: 'left',   icon: 'i-lucide:align-left' },
+  { label: 'Center', value: 'center', icon: 'i-lucide:align-center' },
+  { label: 'Right',  value: 'right',  icon: 'i-lucide:align-right' }
+]}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `proxy` | `ProxyItem` | — (required) | ProxyItem for the current row |
+| `field` | `string` | `'value'` | Item field holding the currently selected value (`currentValue = proxy.get(field)`) |
+| `optionsField` | `string` | `'options'` | Item field holding the options array (non-array → renders no options) |
+| `onchange` | `(value: unknown, option: ItemToggleOption, proxy: ProxyItem) => void` | — | Fired when the user picks a **different** option |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size variant; feeds `data-item-toggle-size` |
+| `showIcon` | `boolean` | `true` | Render the leading avatar / icon (passed to ItemContent) |
+| `showSubtext` | `boolean` | `true` | Render subtext under the label (passed to ItemContent) |
+| `showLabels` | `boolean` | `true` | Show the textual label beside each option (falls back to the option value) |
+| `class` | `string` | — | Optional class on the radiogroup wrapper span |
+
+`ItemToggleOption = string | number | boolean | { label?: string; value?: unknown; icon?: string }`. For object options, `value` falls back to the object itself, and `label` falls back to `String(value)`.
+
+## Data Attributes
+
+| Attribute | Element |
+|-----------|---------|
+| `data-item-toggle` | radiogroup wrapper `<span>` (also `role="radiogroup"`, `data-item-toggle-size`) |
+| `data-item-toggle-size` | `'sm' \| 'md' \| 'lg'` |
+| `data-item-toggle-option` | each option `<span>` (also `role="radio"`, `tabindex="-1"`, `aria-checked`, `aria-label`) |
+| `data-selected` | present on the currently selected option (`true` or absent) |
+| `data-item-toggle-icon` | option icon `<span>` (aria-hidden), when the option supplies an `icon` |
+| `data-item-toggle-label` | option label text, when `showLabels` |
+
+Plus all `ItemContent` attributes for the leading label/icon portion.
+
+## Behavior
+
+- **Picking an option fires `onchange`** with `(extractedValue, option, proxy)`; the consumer updates the row's `field` value.
+- **No-op on re-select** — clicking the already-selected option does nothing (guarded by `value === currentValue`), so `onchange` fires only on a real change.
+- **Keyboard** — `Enter` / `Space` on a focused option activates it (prevents default and `stopPropagation`, then runs the same handler as click).
+- **Row select is suppressed** — each option calls `event.stopPropagation()` and is `[role="radio"]`, which Navigator's `isNestedInteractive` guard recognises, so the parent List row's `onselect` is not triggered when an option is picked.
+- **Options come from data** — read from `proxy.get(optionsField)`; a missing or non-array value renders an empty group (no options).
+- **Accessibility** — wrapper is `role="radiogroup"`; each option is `role="radio"` with `aria-checked` reflecting selection and `aria-label` set to the option label. Option icons are `aria-hidden`.
+
+## Import
+
+```javascript
+import { ItemToggle } from '@rokkit/ui'
+```
+
+## Related
+
+- [ItemContent](/llms/components/item-content.txt) — the label/icon renderer ItemToggle wraps
+- [ItemSwitch](/llms/components/item-switch.txt) — binary sibling (single switch) for the same config-row pattern
+- [List](/llms/components/list.txt) — the host component; render ItemToggle from its `itemContent` snippet
+- [Composability guide](/llms/guides/composability.txt) — the data-first contract across all components

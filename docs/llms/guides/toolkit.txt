@@ -55,7 +55,7 @@ Svelte actions used as building blocks:
 - `ripple` — material-style click ripple.
 - `reveal` — IntersectionObserver-based scroll-reveal (the
   Reveal component is a thin wrapper).
-- `magnetic` / `tilt` / `shine` — pointer-tracking effects.
+- `magnetic` / `hoverLift` — pointer / hover effects.
 - `pannable` / `swipeable` — touch gestures.
 - `dismissable` — Escape / click-outside handling.
 - `themable` / `skinnable` — apply theme attributes to

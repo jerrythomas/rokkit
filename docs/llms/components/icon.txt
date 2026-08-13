@@ -2,6 +2,8 @@
 
 > Flexible icon component supporting icon fonts, emoji, and interactive roles.
 
+> **Status: Planned — not yet available in `@rokkit/ui`.** The `Icon` component described here is not yet exported; do not import it in production code.
+
 The Icon component renders icons from icon fonts (like FontAwesome, Material Icons) or short text/emoji. It supports multiple roles including decorative, button, and checkbox behaviors.
 
 ## Quick Start

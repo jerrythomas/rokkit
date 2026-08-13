@@ -51,16 +51,25 @@ export default defineConfig({
 			{ extends: true, test: { name: 'actions', root: 'packages/actions' } },
 			{
 				extends: true,
-				test: { name: 'chart', root: 'packages/chart', setupFiles: ['../helpers/src/mocks/index.js', 'spec/setup.js'] }
+				test: {
+					name: 'chart',
+					root: 'packages/chart',
+					setupFiles: ['../helpers/src/mocks/index.js', 'spec/setup.js']
+				}
 			},
 			{ extends: true, test: { name: 'cli', root: 'packages/cli' } },
 			{ extends: true, test: { name: 'core', root: 'packages/core' } },
 			{ extends: true, test: { name: 'unocss', root: 'packages/unocss' } },
 			{ extends: true, test: { name: 'themes', root: 'packages/themes' } },
 			{ extends: true, test: { name: 'data', root: 'packages/data' } },
+			{ extends: true, test: { name: 'icons', root: 'packages/icons' } },
 			{
 				extends: true,
-				test: { name: 'blocks', root: 'packages/blocks', setupFiles: ['../helpers/src/mocks/index.js', 'spec/setup.js'] }
+				test: {
+					name: 'blocks',
+					root: 'packages/blocks',
+					setupFiles: ['../helpers/src/mocks/index.js', 'spec/setup.js']
+				}
 			},
 			{ extends: true, test: { name: 'forms', root: 'packages/forms' } },
 			{ extends: true, test: { name: 'helpers', root: 'packages/helpers' } },

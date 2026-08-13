@@ -58,12 +58,14 @@ How Rokkit is built — architecture decisions, patterns, and implementation det
 - [Components](design/02-components.md) — Component anatomy, data flow, API, snippets
 - [Forms](design/03-forms.md) — Schema-driven form system
 - [Actions](design/04-actions.md) — Navigator, keyboard, interaction actions
-- [Website](design/09-website.md) — Learn site, playground, AI content
+- [Website](design/05-website.md) — Learn site, playground, AI content
 - [Testing](design/06-testing.md) — Unit and e2e test design
-- [Priority](design/07-priority.md) — What's next
-- [Tools](design/08-tools.md) — CLI, icon sets, theme authoring
-- [Data](design/09-data.md) — `@rokkit/data` package
-- [Theming](design/10-theming.md) — Skin system, color scale, CSS architecture
+- [Data](design/08-data.md) — `@rokkit/data` package
+- [Theming](design/09-theming.md) — Theme architecture, CSS layers, runtime switching
+- [Themes](design/10-themes.md) — Theme system design, `data-style`, build pipeline
+- [Priority](design/12-priority.md) — What's next
+- [Charts](design/20-chart.md) — Chart package (`@rokkit/chart`)
+- [Tools](design/70-tools.md) — CLI, icon sets, theme authoring
 
 ---
 

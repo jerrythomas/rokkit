@@ -7,6 +7,8 @@ import Line from './Plot/Line.svelte'
 import Area from './Plot/Area.svelte'
 import Point from './Plot/Point.svelte'
 import Arc from './Plot/Arc.svelte'
+import Highlight from './geoms/Highlight.svelte'
+import Trend from './geoms/Trend.svelte'
 
 // Composable Plot primitives — use as <Plot.Root>, <Plot.Axis>, <Plot.Bar>, etc.
 export const Plot = {
@@ -18,7 +20,9 @@ export const Plot = {
 	Line,
 	Area,
 	Point,
-	Arc
+	Arc,
+	Highlight,
+	Trend
 }
 
 /** @deprecated Use Plot instead */
@@ -48,6 +52,8 @@ export { default as GeomCandlestick } from './geoms/Candlestick.svelte'
 export { default as GeomWaterfall } from './geoms/Waterfall.svelte'
 export { default as GeomHexbin } from './geoms/Hexbin.svelte'
 export { default as GeomRibbon } from './geoms/Ribbon.svelte'
+export { default as GeomHighlight } from './geoms/Highlight.svelte'
+export { default as GeomTrend } from './geoms/Trend.svelte'
 
 // Export standalone components
 export { default as Chart } from './Chart.svelte'
