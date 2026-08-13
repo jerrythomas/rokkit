@@ -70,6 +70,8 @@
 	// Literal CSS color (matches Highlight geom's accent dot) — see isLiteralColor()
 	// in packages/chart/src/lib/brewing/colors.js, which recognizes rgb(...) as a literal.
 	const accentColor = 'rgb(var(--color-accent-500))'
+
+	let picked = $state<{ day: number; value: number } | null>(null)
 </script>
 
 <div class="grid">
@@ -86,10 +88,18 @@
 				xFormat={dayFormat}
 				width={720}
 				height={240}
+				selectable
+				onselect={(d) => {
+					const detail = d as { x: unknown; value: unknown }
+					picked = { day: Number(detail.x), value: Number(detail.value) }
+				}}
 			>
 				<GeomArea x="day" y="value" color={accentColor} />
 				<GeomLine x="day" y="value" color={accentColor} />
 			</PlotChart>
+			{#if picked}
+				<p class="metrics-pick">Selected: {picked.day === 0 ? 'today' : `${picked.day}d`} · {picked.value}</p>
+			{/if}
 		</div>
 	</section>
 
@@ -202,6 +212,11 @@
 	.chart-stage :global(svg) {
 		max-width: 100%;
 		height: auto;
+	}
+	.metrics-pick {
+		margin: 8px 0 0;
+		font: 500 12px var(--font-mono);
+		color: var(--ink-soft);
 	}
 	.spark-row {
 		display: flex;
