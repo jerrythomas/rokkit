@@ -58,4 +58,25 @@ describe('chart selection', () => {
 		await tick()
 		expect(container.querySelectorAll('[data-plot-highlight][data-plot-selected="true"]')).toHaveLength(0)
 	})
+
+	it('LineChart wrapper forwards onselect', async () => {
+		const { default: LineChart } = await import('../src/charts/LineChart.svelte')
+		const onselect = vi.fn()
+		const { container } = render(LineChart, {
+			props: { data: line, x: 'day', y: 'v', onselect, grid: false, width: 400, height: 300 }
+		})
+		clickFirst(container, '[data-plot-element="line-hover"]')
+		expect(onselect).toHaveBeenCalledTimes(1)
+		expect(onselect.mock.calls[0][0]).toMatchObject({ geom: 'line', index: 0, value: 5 })
+	})
+
+	it('AreaChart wrapper forwards selectable (click highlights)', async () => {
+		const { default: AreaChart } = await import('../src/charts/AreaChart.svelte')
+		const { container } = render(AreaChart, {
+			props: { data: line, x: 'day', y: 'v', selectable: true, grid: false, width: 400, height: 300 }
+		})
+		clickFirst(container, '[data-plot-element="area-hover"]')
+		await tick()
+		expect(container.querySelectorAll('[data-plot-highlight][data-plot-selected="true"]')).toHaveLength(1)
+	})
 })

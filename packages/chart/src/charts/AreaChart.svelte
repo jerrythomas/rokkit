@@ -26,6 +26,9 @@
 		xTicks?: number
 		yTicks?: number
 		minorTicks?: boolean
+		onselect?: (detail: unknown) => void
+		selectable?: boolean
+		selected?: unknown[]
 	}
 
 	let {
@@ -48,10 +51,32 @@
 		yFormat = undefined,
 		xTicks = undefined,
 		yTicks = undefined,
-		minorTicks = false
+		minorTicks = false,
+		onselect = undefined,
+		selectable = false,
+		selected = $bindable([])
 	}: Props = $props()
 </script>
 
-<Plot {data} {x} {y} {width} {height} {mode} {grid} {legend} {highlight} {trend} {xFormat} {yFormat} {xTicks} {yTicks} {minorTicks}>
+<Plot
+	{data}
+	{x}
+	{y}
+	{width}
+	{height}
+	{mode}
+	{grid}
+	{legend}
+	{highlight}
+	{trend}
+	{xFormat}
+	{yFormat}
+	{xTicks}
+	{yTicks}
+	{minorTicks}
+	{onselect}
+	{selectable}
+	bind:selected
+>
 	<Area {x} {y} color={fill} {pattern} {stat} options={{ curve, stack }} />
 </Plot>
