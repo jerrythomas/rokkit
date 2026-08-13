@@ -2,6 +2,9 @@
 	import { getContext, onMount, onDestroy } from 'svelte'
 	import type { PlotState } from '../PlotState.svelte.js'
 	import { buildAreas, buildStackedAreas } from './lib/areas.js'
+	import { buildSelectDetail } from '../lib/select.js'
+
+	type Row = Record<string, unknown>
 
 	type Options = {
 		stack?: boolean
@@ -22,6 +25,13 @@
 
 	const plotState = getContext<PlotState>('plot-state')
 	let id = $state<string | null>(null)
+
+	function selectPoint(d: Row, event: MouseEvent | KeyboardEvent) {
+		if (plotState.interactive)
+			plotState.handleSelect(
+				buildSelectDetail(d, plotState.data.indexOf(d), { x, y }, 'area', color ? d[color] : undefined, event)
+			)
+	}
 
 	onMount(() => {
 		id = plotState.registerGeom({
@@ -79,16 +89,23 @@
 			{#each data as d, i (`hover::${i}`)}
 				{@const px = typeof xScale?.bandwidth === 'function' ? (xScale(d[x]) ?? 0) + xScale.bandwidth() / 2 : (xScale?.(d[x]) ?? 0)}
 				{@const py = yScale?.(d[y]) ?? 0}
+				<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 				<circle
 					cx={px}
 					cy={py}
 					r="8"
 					fill="transparent"
 					stroke="none"
-					role="presentation"
+					role={plotState.interactive ? 'button' : 'presentation'}
+					tabindex={plotState.interactive ? 0 : undefined}
+					style:cursor={plotState.interactive ? 'pointer' : undefined}
 					data-plot-element="area-hover"
 					onmouseenter={() => plotState.setHovered(d)}
 					onmouseleave={() => plotState.clearHovered()}
+					onclick={plotState.interactive ? (e) => selectPoint(d, e) : undefined}
+					onkeydown={plotState.interactive
+						? (e) => (e.key === 'Enter' || e.key === ' ') && selectPoint(d, e)
+						: undefined}
 				/>
 			{/each}
 		{/if}

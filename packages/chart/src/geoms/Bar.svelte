@@ -4,6 +4,7 @@
 	import type { createCrossFilter } from '../crossfilter/createCrossFilter.svelte.js'
 	import { buildGroupedBars, buildStackedBars, buildHorizontalBars } from './lib/bars.js'
 	import { keyboardNav } from '../lib/keyboard-nav.js'
+	import { buildSelectDetail } from '../lib/select.js'
 	import LabelPill from './LabelPill.svelte'
 
 	type Row = Record<string, unknown>
@@ -134,6 +135,36 @@
 		if (!filterable || !x || !cf) return
 		cf.toggleCategorical(x, barX)
 	}
+
+	function selectBar(bar: { data: Row }, event: MouseEvent | KeyboardEvent) {
+		if (plotState.interactive)
+			plotState.handleSelect(
+				buildSelectDetail(
+					bar.data,
+					plotState.data.indexOf(bar.data),
+					{ x, y },
+					'bar',
+					colorChannel ? bar.data[colorChannel] : undefined,
+					event
+				)
+			)
+	}
+
+	function handleBarActivate(bar: { data: Row }, event: MouseEvent) {
+		if (filterable && x) handleBarClick(bar.data[x])
+		onselect?.(bar.data)
+		selectBar(bar, event)
+	}
+
+	function handleBarKeyActivate(bar: { data: Row }, event: KeyboardEvent) {
+		if (event.key !== 'Enter' && event.key !== ' ') return
+		if (filterable && x) {
+			handleBarClick(bar.data[x])
+		} else {
+			onselect?.(bar.data)
+		}
+		selectBar(bar, event)
+	}
 </script>
 
 {#if bars.length > 0}
@@ -152,13 +183,15 @@
 				data-plot-value={bar.data[y ?? '']}
 				data-plot-category={bar.data[x ?? '']}
 				data-dimmed={dimmedByKey[bar.key] ? true : undefined}
-				style:cursor={filterable || onselect ? 'pointer' : undefined}
-				onclick={filterable && x ? () => { handleBarClick(bar.data[x]); onselect?.(bar.data) } : onselect ? () => onselect(bar.data) : undefined}
-				onkeydown={filterable && x
-					? (e) => (e.key === 'Enter' || e.key === ' ') && handleBarClick(bar.data[x])
-					: onselect ? (e) => (e.key === 'Enter' || e.key === ' ') && onselect(bar.data) : undefined}
-				role={filterable || onselect || keyboard ? 'button' : 'graphics-symbol'}
-				tabindex={filterable || onselect || keyboard ? 0 : undefined}
+				style:cursor={filterable || onselect || plotState.interactive ? 'pointer' : undefined}
+				onclick={filterable || onselect || keyboard || plotState.interactive
+					? (e) => handleBarActivate(bar, e)
+					: undefined}
+				onkeydown={filterable || onselect || keyboard || plotState.interactive
+					? (e) => handleBarKeyActivate(bar, e)
+					: undefined}
+				role={filterable || onselect || keyboard || plotState.interactive ? 'button' : 'graphics-symbol'}
+				tabindex={filterable || onselect || keyboard || plotState.interactive ? 0 : undefined}
 				use:keyboardNav={keyboard}
 				aria-label="{bar.data[x ?? '']}: {bar.data[y ?? '']}"
 				onmouseenter={() => plotState.setHovered(bar.data)}
