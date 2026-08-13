@@ -381,9 +381,6 @@ export class PlotState {
 	get interactive() {
 		return Boolean(this.#onselect) || this.#selectable
 	}
-	get selectable() {
-		return this.#selectable
-	}
 	get selectedRows() {
 		return [...this.#selected]
 	}
