@@ -200,14 +200,14 @@ Ink is the default text palette for body text, headings, labels, captions. `text
 
 ### Integration tests (theme compilation)
 
-8. Source-level compilation — theme `@apply` directives resolve through consumer config with aliases
-9. No variable duplication — compiled output with aliases contains zero references to aliased-away names
+1. Source-level compilation — theme `@apply` directives resolve through consumer config with aliases
+2. No variable duplication — compiled output with aliases contains zero references to aliased-away names
 
 ### E2E tests (visual verification)
 
-10. Ink/surface at matching z-levels — screenshots of z1-on-z1, z5-on-z5, z9-on-z9, light + dark
-11. Custom ink palette — zen-sumi with distinct sumi ink renders correctly
-12. Cross-theme regression — existing themes unaffected when ink defaults to inverted surface
+ 1. Ink/surface at matching z-levels — screenshots of z1-on-z1, z5-on-z5, z9-on-z9, light + dark
+ 2. Custom ink palette — zen-sumi with distinct sumi ink renders correctly
+ 3. Cross-theme regression — existing themes unaffected when ink defaults to inverted surface
 
 ## Breaking Changes & Release
 
@@ -216,7 +216,7 @@ Source-level theme distribution is a **breaking change**. Consumers currently im
 ### Affected packages (coordinated release)
 
 | Package | Bump | Reason |
-|---------|------|--------|
+| --------- | ------ | -------- |
 | `@rokkit/themes` | **major** | Exports change from `dist/` to `src/`, consumers must have UnoCSS |
 | `@rokkit/core` | minor | New `ink` role in `DEFAULT_THEME_MAPPING`, inverted z-scale support |
 | `@rokkit/unocss` | minor | Alias resolution, custom role passthrough, validation |
@@ -235,7 +235,7 @@ All three packages must be published together. `@rokkit/core` and `@rokkit/unocs
 ## Files Affected
 
 | File | Change |
-|------|--------|
+| ------ | -------- |
 | `packages/core/src/constants.js` | Add `ink` to `DEFAULT_THEME_MAPPING`, add `COLOR_FALLBACKS.ink` |
 | `packages/core/src/theme.ts` | Inverted z-scale for ink in `getZScaleCSS()`, alias resolution in `resolveColors()`, custom role passthrough |
 | `packages/unocss/src/preset.ts` | Alias handling in `buildPreflights()`, `buildSemanticShortcuts()`, `buildTheme()` — generate color rules for alias targets |

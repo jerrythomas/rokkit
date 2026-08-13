@@ -17,7 +17,7 @@
 ## File structure (Phase 1 — all in `packages/ui/`)
 
 | File | Responsibility |
-|---|---|
+| --- | --- |
 | `src/types/chat.ts` | `ChatRole`, `ChatStatus`, `ChatMessage<T>`, `ConversationSummary` + per-component `*Props` interfaces (type-only; excluded from coverage) |
 | `src/utils/relative-time.ts` | `formatRelativeTime(ts, relative)` — shared by ChatMessage + ChatHistory (DRY) |
 | `src/components/ChatMessage.svelte` | one message: role chrome + default markdown body + status affordance |
@@ -34,6 +34,7 @@
 ### Task 1: Types + relative-time util
 
 **Files:**
+
 - Create: `packages/ui/src/types/chat.ts`
 - Create: `packages/ui/src/utils/relative-time.ts`
 - Test: `packages/ui/spec/relative-time.spec.ts`
@@ -175,6 +176,7 @@ export function formatRelativeTime(timestamp: string, relative = true): string {
 - [ ] **Step 5: Run → PASS.** `bunx vitest run --project ui spec/relative-time.spec.ts`
 
 - [ ] **Step 6: Commit.**
+
 ```bash
 git add packages/ui/src/types/chat.ts packages/ui/src/utils/relative-time.ts packages/ui/spec/relative-time.spec.ts
 git commit -m "feat(ui): chat types + formatRelativeTime util"
@@ -185,6 +187,7 @@ git commit -m "feat(ui): chat types + formatRelativeTime util"
 ### Task 2: ChatMessage
 
 **Files:**
+
 - Create: `packages/ui/src/components/ChatMessage.svelte`
 - Test: `packages/ui/spec/ChatMessage.spec.svelte.ts` + `packages/ui/spec/ChatMessageBodyTest.svelte`
 
@@ -270,6 +273,7 @@ describe('ChatMessage', () => {
 ### Task 3: ChatComposer
 
 **Files:**
+
 - Create: `packages/ui/src/components/ChatComposer.svelte`
 - Test: `packages/ui/spec/ChatComposer.spec.svelte.ts`
 
@@ -375,6 +379,7 @@ describe('ChatComposer', () => {
 ### Task 4: ChatHistory
 
 **Files:**
+
 - Create: `packages/ui/src/components/ChatHistory.svelte`
 - Test: `packages/ui/spec/ChatHistory.spec.svelte.ts`
 
@@ -473,6 +478,7 @@ describe('ChatHistory', () => {
 ### Task 5: ChatTimeline
 
 **Files:**
+
 - Create: `packages/ui/src/components/ChatTimeline.svelte`
 - Test: `packages/ui/spec/ChatTimeline.spec.svelte.ts` + `packages/ui/spec/ChatTimelineSnippetTest.svelte`
 
@@ -571,6 +577,7 @@ describe('ChatTimeline', () => {
 ### Task 6: ChatShell
 
 **Files:**
+
 - Create: `packages/ui/src/components/ChatShell.svelte`
 - Test: `packages/ui/spec/ChatShell.spec.svelte.ts`
 
@@ -653,11 +660,13 @@ describe('ChatShell', () => {
 ### Task 7: Barrel exports
 
 **Files:**
+
 - Modify: `packages/ui/src/components/index.ts` (add the 5 component exports)
 - Modify: `packages/ui/src/index.ts` (add them to the named re-export block, alphabetical near `Chat`/`Code`)
 - Modify: `packages/ui/src/types/index.ts` (add `export * from './chat.js'`)
 
 - [ ] **Step 1:** In `components/index.ts` add:
+
 ```ts
 export { default as ChatMessage } from './ChatMessage.svelte'
 export { default as ChatTimeline } from './ChatTimeline.svelte'
@@ -665,6 +674,7 @@ export { default as ChatComposer } from './ChatComposer.svelte'
 export { default as ChatHistory } from './ChatHistory.svelte'
 export { default as ChatShell } from './ChatShell.svelte'
 ```
+
 - [ ] **Step 2:** In `src/index.ts` add `ChatComposer, ChatHistory, ChatMessage, ChatShell, ChatTimeline` to the `export { … } from './components/index.js'` block (keep its ordering style).
 - [ ] **Step 3:** In `src/types/index.ts` add `export * from './chat.js'`.
 - [ ] **Step 4: Verify exports + no manifest break.** `bunx vitest run --project ui` (repo root) → all green. If a `spec/index.spec.*` export-manifest test exists, add the 5 names (it didn't for ui as of the LockMode work — confirm).
@@ -676,6 +686,7 @@ export { default as ChatShell } from './ChatShell.svelte'
 ### Task 8: Live doc page (apps/learn)
 
 **Files:**
+
 - Create a koan demo `apps/learn/src/lib/koan/demos/chat/` (`meta.ts`, `index.svelte`) + route `apps/learn/src/routes/app/chat-components/+page.svelte`, registered in `catalog.ts`/`shell.svelte.ts`/`app/+layout.svelte` — mirror the `lock-mode` demo's wiring (see `demos/lock-mode/`).
 
 - [ ] **Step 1:** Build a demo that renders `<ChatShell>` with a few static `messages` (including one assistant message whose `data` carries a `{ kind: 'chart' }` payload) and a `message` snippet that switches on `msg.data?.kind` to render a placeholder "chart goes here" box — demonstrating the dumb-seam without depending on `@rokkit/chart`. Also show the three primitives used standalone. Match the `lock-mode` demo structure (`meta.ts` with `snippets` code examples + `index.svelte` live demo).
@@ -723,12 +734,14 @@ export { default as ChatShell } from './ChatShell.svelte'
 ---
 
 ## Final
+
 - [ ] `bun run check` (full gate: lint + types + svelte-check + 5023+ tests) → green. The new `.svelte` chat components must meet the **≥80% svelte** coverage threshold and `chat.ts` is type-only (excluded) — confirm `bun run coverage` still exits 0.
 - [ ] Update `agents/journal.md` + memory ([[feedback_data_first_over_snippets]] / a new chat-components note).
 
 ---
 
 ## Self-review notes
+
 - **Spec coverage:** data model (T1), ChatMessage (T2), ChatComposer (T3), ChatHistory (T4), ChatTimeline incl. autoscroll + message snippet (T5), ChatShell (T6), barrels (T7), doc page (T8), /chat migration + delete $lib/chat (T9–10), Koan /app migration + delete duplicates (T11). All spec sections covered.
 - **Decisions honored:** consumer-supplied `message` snippet (no chart/forms dep in ui); whole-body snippet model; orchestration stays in-app (chat-demo store); `ChatComposer` name; ChatShell ships alongside primitives; both surfaces migrated.
 - **API consistency:** `formatRelativeTime(ts, relative)` used by ChatMessage + ChatHistory; `MarkdownRenderer markdown={…}` (verified prop name); `ChatMessage`/`ChatTimeline`/etc. prop + snippet names match `types/chat.ts` throughout; data-attrs (`data-chat-message`/`-bubble`/`-body`/`-time`/`-caret`, `data-chat-composer`/`-input`, `data-chat-history`/`-item`/`-row`, `data-chat-timeline`, `data-chat-shell`/`-main`) consistent across components and tests.

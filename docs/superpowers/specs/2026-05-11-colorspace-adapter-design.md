@@ -77,18 +77,21 @@ class ColorSpace {
 ### Adapter implementations
 
 **RgbColorSpace:**
+
 - `wrap('#ff0000')` → `rgb(255, 0, 0)`
 - `wrap('255,0,0')` → `rgb(255, 0, 0)` (bare comma-separated → wrap)
 - `mixSpace` → `'srgb'`
 - Hex conversion: reuses existing `hex2rgb` logic (becomes private method)
 
 **HslColorSpace:**
+
 - `wrap('#ff0000')` → `hsl(0 100% 50%)`
 - `wrap('0 100% 50%')` → `hsl(0 100% 50%)` (bare space-separated → wrap)
 - `mixSpace` → `'srgb'`
 - Hex conversion: reuses existing `hex2hsl` logic
 
 **OklchColorSpace:**
+
 - `wrap('#ff0000')` → `oklch(0.63 0.26 29.23)`
 - `wrap('0.63 0.26 29')` → `oklch(0.63 0.26 29)` (bare → wrap)
 - `mixSpace` → `'oklch'`
@@ -115,12 +118,14 @@ constructor({ colorSpace = 'rgb', ... }) {
 ```
 
 **getPalette()** — uses `adapter.wrap(value)` instead of `colorToRgb(value, space)`
+
 ```js
 // Before: '--color-primary-500': '249,115,22'
 // After:  '--color-primary-500': 'rgb(249, 115, 22)'
 ```
 
 **getColorRules()** — uses `adapter.themeColor(varName)` instead of `COLOR_SPACE_WRAPPERS`
+
 ```js
 // Before: { 500: 'rgba(var(--color-primary-500),<alpha-value>)' }
 // After:  { 500: 'color-mix(in srgb, var(--color-primary-500) <alpha-value>%, transparent)' }
@@ -133,16 +138,19 @@ constructor({ colorSpace = 'rgb', ... }) {
 ### Deleted code
 
 These are removed from `theme.ts`:
+
 - `modifiers` object
 - `COLOR_SPACE_WRAPPERS` object
 - `shadesOf()` function (or refactored to use adapter)
 
 These are removed from `utils.js` (moved into adapter classes as private methods):
+
 - `hex2rgb()`, `hex2hsl()`, `hex2oklch()` — become private in their adapters
 - `hexToComponents()` — replaced by `adapter.wrap()`
 - `colorToRgb()` — replaced by `adapter.wrap()`
 
 These remain in `utils.js` (used elsewhere):
+
 - `oklch2hex()` — reverse conversion, used by chart/swatch
 - `hex2rgb` — keep as named export for backward compat if used externally, but mark deprecated
 
@@ -182,6 +190,7 @@ The `@rokkit/themes` CSS files were already migrated to `@apply` utilities in th
 ## Scope check
 
 This spec covers:
+
 - New `color-space.js` module with 3 adapter classes
 - Theme class refactor to use adapter
 - Removal of scattered color-space functions
@@ -189,5 +198,6 @@ This spec covers:
 - themes/build.mjs compatibility
 
 This spec does NOT cover:
+
 - Updating zen-sumi `oklch(var(...) / 1)` focus ring patterns (separate cleanup)
 - Chart package color handling (uses `oklch2hex` which is unrelated)

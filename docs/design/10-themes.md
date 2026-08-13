@@ -12,7 +12,7 @@ This document covers the complete theme architecture: CSS layer separation, colo
 The theme system has three orthogonal axes, all written as `data-*` attributes on any ancestor element (typically `<body>`):
 
 | Attribute | Values | Controls |
-|-----------|--------|----------|
+| ----------- | -------- | ---------- |
 | `data-style` | `rokkit`, `minimal`, `material`, `frosted`, `zen-sumi` | Visual personality |
 | `data-mode` | `light`, `dark` | Light/dark color mapping |
 | `data-density` | `compact`, `comfortable`, `cozy` | Spatial rhythm (spacing, font size, icon size) |
@@ -77,7 +77,7 @@ A "skin" is a mapping of semantic role names to actual color palettes. The `Them
 **Semantic roles:**
 
 | Role | Used for |
-|------|----------|
+| ------ | ---------- |
 | `surface` | Backgrounds, borders, text |
 | `primary` | Brand accent, primary actions |
 | `secondary` | Secondary accent |
@@ -251,7 +251,7 @@ Set on `:root` (comfortable default) and overridden by `[data-density='*']` sele
 ### Scale
 
 | Token | compact | comfortable (default) | cozy |
-|-------|---------|----------------------|------|
+| ------- | --------- | ---------------------- | ------ |
 | `--density-spacing-md` | 0.5rem | 0.75rem | 1rem |
 | `--density-font-size-base` | 0.8125rem | 0.875rem | 1rem |
 | `--density-icon-size` | 1rem | 1.25rem | 1.5rem |
@@ -399,7 +399,7 @@ Key rules:
 ## File Reference
 
 | Path | Purpose |
-|------|---------|
+| ------ | --------- |
 | `packages/themes/src/base/` | Structural CSS per component |
 | `packages/themes/src/<theme>/` | Visual CSS per component, per theme |
 | `packages/themes/src/palette.css` | CSS variable defaults (`skin-default` shortcut) |

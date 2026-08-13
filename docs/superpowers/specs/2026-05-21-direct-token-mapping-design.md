@@ -133,6 +133,7 @@ Authors who explicitly use the `tokens` block can pick non-colliding shades. The
 ### Backward compat
 
 All existing skins that use only role-level shorthand continue to work unchanged. Behavior is identical because:
+
 - The shade map is unchanged.
 - `INVERTED_ROLES` constant stays as the default fallback for the role-level resolver.
 
@@ -154,6 +155,7 @@ skin: {
 ```
 
 Resolution:
+
 - `--paper` → role-level: surface=kami, shade map → kami.50
 - `--ink` → role-level: ink=kami (auto-inverted via INVERTED_ROLES default), shade map → kami.900
 - `--ink-faint` → tokens override → kami.450
@@ -224,10 +226,12 @@ If `pen-*` are added to the named-token vocabulary, this just works. No `INVERTE
 ## Migration impact
 
 **Inside the repo:**
+
 - `demo/rokkit.config.js` — optional. Existing role-level config works; adding `tokens: {…}` overrides is incremental.
 - No required changes elsewhere. `INVERTED_ROLES` stays as default fallback.
 
 **Downstream consumers:**
+
 - Apps using only role-level shorthand: no change.
 - Apps wanting per-token control: opt-in via `tokens: {…}`.
 

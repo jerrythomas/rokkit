@@ -34,7 +34,7 @@ proof-of-concept onto the core and finishes `data-skin`.
 ## Architecture — the three orthogonal dimensions (after this)
 
 | Dimension | `vibe` state | `themable` writes | Switcher | CSS |
-|---|---|---|---|---|
+| --- | --- | --- | --- | --- |
 | style | `vibe.style` | `data-style` | `ThemeSwitcherToggle` | `[data-style='x']` |
 | mode | `vibe.mode` | `data-mode` | `ThemeSwitcherToggle` | `[data-mode='dark']` |
 | **skin** | **`vibe.skin`** (new) | **`data-skin`** (new) | **`SkinSwitcherToggle`** (new) | `:root` default + **`[data-skin='name']`** (new) |

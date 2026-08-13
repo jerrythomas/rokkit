@@ -199,10 +199,12 @@ git commit -m "docs(llms): add packages/actions.txt"
   Cover:
   - Available themes: `rokkit`, `minimal`, `material` — brief description of each personality
   - CSS import structure:
+
     ```css
     @import '@rokkit/themes/dist/base'; /* required */
     @import '@rokkit/themes/dist/rokkit'; /* one or more themes */
     ```
+
   - Custom palettes — how to override colors via `rokkit.config.js`
   - How themes relate to `data-style` attribute on `<body>`
   - **Boundary with index.txt theming section:** This file documents what the theme system provides (which themes, how to import them, how to configure palettes). The data attributes and UnoCSS utility class system are documented in `docs/llms/index.txt` — do not duplicate that content here; link to it instead.
@@ -235,11 +237,13 @@ git commit -m "docs(llms): add packages/actions.txt"
   Cover:
   - `presetRokkit` — the one export; what it configures (colors, shortcuts, icons, dark mode)
   - Setup in `uno.config.js`:
+
     ```js
     import { defineConfig } from 'unocss'
     import { presetRokkit } from '@rokkit/unocss'
     export default defineConfig({ presets: [presetRokkit()] })
     ```
+
   - What `presetRokkit` adds: color palette tokens, utility class shortcuts, icon integration, dark mode handling
   - Any options `presetRokkit()` accepts
   - **Note:** The full utility class authoring guide (z-scale, common patterns) is in `docs/llms/index.txt` — link to it rather than duplicating

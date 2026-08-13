@@ -17,6 +17,7 @@
 ## File Structure
 
 **Created:**
+
 ```
 demo/
   vitest.config.js                       — NEW
@@ -71,6 +72,7 @@ demo/
 ```
 
 **Moved:**
+
 ```
 demo/src/routes/(app)/*    → demo/src/routes/(legacy)/(app)/*
 demo/src/routes/setup/*    → demo/src/routes/(legacy)/setup/*
@@ -99,6 +101,7 @@ demo/src/routes/setup/*    → demo/src/routes/(legacy)/setup/*
 ### Task 1: Move Sensei pages to `(legacy)/`, verify build
 
 **Files:**
+
 - Move: `demo/src/routes/(app)/*` → `demo/src/routes/(legacy)/(app)/*`
 - Move: `demo/src/routes/setup/*` → `demo/src/routes/(legacy)/setup/*`
 
@@ -146,15 +149,18 @@ EOF
 ### Task 2: Add dependencies (minisearch, @fontsource/caveat, vitest)
 
 **Files:**
+
 - Modify: `demo/package.json`
 - Create: `demo/vitest.config.js`
 
 - [ ] **Step 1: Add runtime deps**
 
 Run:
+
 ```bash
 cd demo && bun add minisearch @fontsource/caveat
 ```
+
 Verify `demo/package.json` now lists both under `dependencies`.
 
 - [ ] **Step 2: Add vitest dev deps**
@@ -166,6 +172,7 @@ cd demo && bun add -d vitest @vitest/browser jsdom @testing-library/svelte @test
 - [ ] **Step 3: Add test script to `demo/package.json`**
 
 Edit `demo/package.json` `scripts`:
+
 ```json
 "test:unit": "vitest run",
 "test:unit:watch": "vitest"
@@ -199,6 +206,7 @@ import '@testing-library/jest-dom/vitest'
 ```bash
 cd demo && bun run test:unit
 ```
+
 Expected: vitest reports "No test files found, exiting with code 0" or similar. No errors.
 
 - [ ] **Step 7: Commit**
@@ -221,6 +229,7 @@ EOF
 ### Task 3: Import Caveat font
 
 **Files:**
+
 - Modify: `demo/src/app.css`
 
 - [ ] **Step 1: Add font import**
@@ -247,6 +256,7 @@ In the same file, in the `:root` block (or wherever font tokens live):
 ```bash
 cd demo && bun run dev
 ```
+
 Open `http://localhost:5173/`, open DevTools → Network → Fonts. Confirm `caveat-latin-400-normal.woff2` (or similar) loads. Stop dev server.
 
 - [ ] **Step 4: Commit**
@@ -269,6 +279,7 @@ EOF
 ### Task 4: Define Koan types
 
 **Files:**
+
 - Create: `demo/src/lib/koan/types.ts`
 
 - [ ] **Step 1: Write types file**
@@ -320,6 +331,7 @@ export type SavedTheme = WizardState & {
 ```bash
 cd demo && bunx tsc --noEmit
 ```
+
 Expected: no errors.
 
 - [ ] **Step 3: Commit**
@@ -342,6 +354,7 @@ EOF
 ### Task 5: Persistence adapter with unit tests
 
 **Files:**
+
 - Create: `demo/src/lib/koan/persistence.ts`
 - Create: `demo/spec/koan/persistence.spec.ts`
 
@@ -397,6 +410,7 @@ describe('persistence', () => {
 ```bash
 cd demo && bun run test:unit
 ```
+
 Expected: FAIL — `persistence.ts` does not exist.
 
 - [ ] **Step 3: Implement persistence**
@@ -437,6 +451,7 @@ export function clear(key: string): void {
 ```bash
 cd demo && bun run test:unit
 ```
+
 Expected: all 6 tests pass.
 
 - [ ] **Step 5: Commit**
@@ -459,6 +474,7 @@ EOF
 ### Task 6: Koan shell store with persisted history
 
 **Files:**
+
 - Create: `demo/src/lib/koan/store.svelte.ts`
 - Create: `demo/spec/koan/store.spec.svelte.ts`
 
@@ -508,6 +524,7 @@ describe('koan store', () => {
 ```bash
 cd demo && bun run test:unit -- store.spec
 ```
+
 Expected: FAIL — module not found.
 
 - [ ] **Step 3: Implement store**
@@ -561,6 +578,7 @@ export function resetSession() {
 ```bash
 cd demo && bun run test:unit -- store.spec
 ```
+
 Expected: 3 tests pass.
 
 - [ ] **Step 5: Commit**
@@ -584,6 +602,7 @@ EOF
 ### Task 7: Theme store (extends existing) — active/saved/draft
 
 **Files:**
+
 - Create: `demo/src/lib/koan/theme-store.svelte.ts`
 - Create: `demo/spec/koan/theme-store.spec.svelte.ts`
 
@@ -653,6 +672,7 @@ describe('theme-store', () => {
 ```bash
 cd demo && bun run test:unit -- theme-store.spec
 ```
+
 Expected: FAIL — module not found.
 
 - [ ] **Step 3: Implement theme store**
@@ -744,6 +764,7 @@ export function clearDraft() {
 ```bash
 cd demo && bun run test:unit -- theme-store.spec
 ```
+
 Expected: 4 tests pass.
 
 - [ ] **Step 5: Commit**
@@ -767,6 +788,7 @@ EOF
 ### Task 8: Demo catalog skeleton
 
 **Files:**
+
 - Create: `demo/src/lib/koan/catalog.ts`
 - Create: `demo/spec/koan/catalog.spec.ts`
 
@@ -805,6 +827,7 @@ describe('catalog', () => {
 ```bash
 cd demo && bun run test:unit -- catalog.spec
 ```
+
 Expected: FAIL — module not found.
 
 - [ ] **Step 3: Implement catalog**
@@ -844,6 +867,7 @@ export function findById(id: string): DemoMeta | undefined {
 - [ ] **Step 4: Create minimal meta files (so catalog imports resolve)**
 
 `demo/src/lib/koan/demos/theme-wizard/meta.ts`:
+
 ```ts
 import type { DemoMeta } from '../../types'
 
@@ -865,11 +889,13 @@ export default meta
 ```
 
 `demo/src/lib/koan/demos/theme-wizard/index.svelte` (placeholder, will be filled later):
+
 ```svelte
 <div data-demo="theme-wizard">Theme Builder (placeholder)</div>
 ```
 
 `demo/src/lib/koan/demos/tabs/meta.ts`:
+
 ```ts
 import type { DemoMeta } from '../../types'
 
@@ -887,11 +913,13 @@ export default meta
 ```
 
 `demo/src/lib/koan/demos/tabs/index.svelte`:
+
 ```svelte
 <div data-demo="tabs">Tabs (placeholder)</div>
 ```
 
 `demo/src/lib/koan/demos/toasts/meta.ts`:
+
 ```ts
 import type { DemoMeta } from '../../types'
 
@@ -909,6 +937,7 @@ export default meta
 ```
 
 `demo/src/lib/koan/demos/toasts/index.svelte`:
+
 ```svelte
 <div data-demo="toasts">Toasts (placeholder)</div>
 ```
@@ -918,6 +947,7 @@ export default meta
 ```bash
 cd demo && bun run test:unit -- catalog.spec
 ```
+
 Expected: 4 tests pass.
 
 - [ ] **Step 6: Commit**
@@ -941,6 +971,7 @@ EOF
 ### Task 9: Match logic ($derived from query)
 
 **Files:**
+
 - Create: `demo/src/lib/koan/match.svelte.ts`
 - Create: `demo/spec/koan/match.spec.svelte.ts`
 
@@ -978,6 +1009,7 @@ describe('runMatch', () => {
 ```bash
 cd demo && bun run test:unit -- match.spec
 ```
+
 Expected: FAIL.
 
 - [ ] **Step 3: Implement match**
@@ -1016,6 +1048,7 @@ export function nextSuggestions(visited: Set<string>): DemoMeta[] {
 ```bash
 cd demo && bun run test:unit -- match.spec
 ```
+
 Expected: 4 tests pass.
 
 - [ ] **Step 5: Commit**
@@ -1039,6 +1072,7 @@ EOF
 ### Task 10: AnnotationArrow component
 
 **Files:**
+
 - Create: `demo/src/lib/koan/components/AnnotationArrow.svelte`
 
 - [ ] **Step 1: Implement component**
@@ -1117,6 +1151,7 @@ EOF
 ```bash
 bun run lint
 ```
+
 Expected: zero errors related to this file.
 
 - [ ] **Step 3: Commit**
@@ -1140,6 +1175,7 @@ EOF
 ### Task 11: BrandMark component
 
 **Files:**
+
 - Create: `demo/src/lib/koan/components/BrandMark.svelte`
 
 - [ ] **Step 1: Implement component**
@@ -1212,6 +1248,7 @@ EOF
 ```bash
 bun run lint
 ```
+
 Expected: zero errors related to this file.
 
 - [ ] **Step 3: Commit**
@@ -1235,6 +1272,7 @@ EOF
 ### Task 12: EmptyState component
 
 **Files:**
+
 - Create: `demo/src/lib/koan/components/EmptyState.svelte`
 
 - [ ] **Step 1: Implement component**
@@ -1318,6 +1356,7 @@ EOF
 ```bash
 bun run lint
 ```
+
 Expected: zero errors.
 
 - [ ] **Step 3: Commit**
@@ -1341,6 +1380,7 @@ EOF
 ### Task 13: ShowcaseCanvas component
 
 **Files:**
+
 - Create: `demo/src/lib/koan/components/ShowcaseCanvas.svelte`
 
 - [ ] **Step 1: Implement component**
@@ -1430,6 +1470,7 @@ EOF
 ### Task 14: TimelineList component
 
 **Files:**
+
 - Create: `demo/src/lib/koan/components/TimelineList.svelte`
 
 - [ ] **Step 1: Implement component**
@@ -1555,6 +1596,7 @@ EOF
 ### Task 15: PreviewCard component
 
 **Files:**
+
 - Create: `demo/src/lib/koan/components/PreviewCard.svelte`
 
 - [ ] **Step 1: Implement component**
@@ -1653,6 +1695,7 @@ EOF
 ### Task 16: Gallery component
 
 **Files:**
+
 - Create: `demo/src/lib/koan/components/Gallery.svelte`
 
 - [ ] **Step 1: Implement component**
@@ -1747,6 +1790,7 @@ EOF
 ### Task 17: ChatPanel component
 
 **Files:**
+
 - Create: `demo/src/lib/koan/components/ChatPanel.svelte`
 
 - [ ] **Step 1: Implement component**
@@ -1892,6 +1936,7 @@ EOF
 ### Task 18: Welcome composition (Koan-local)
 
 **Files:**
+
 - Create: `demo/src/lib/koan/components/Welcome.svelte`
 
 - [ ] **Step 1: Implement component**
@@ -1994,6 +2039,7 @@ EOF
 ### Task 19: Canvas router (Koan-local)
 
 **Files:**
+
 - Create: `demo/src/lib/koan/components/Canvas.svelte`
 
 - [ ] **Step 1: Implement component**
@@ -2106,6 +2152,7 @@ EOF
 ### Task 20: Shell composition (two-pane layout)
 
 **Files:**
+
 - Create: `demo/src/lib/koan/components/Shell.svelte`
 
 - [ ] **Step 1: Implement component**
@@ -2302,6 +2349,7 @@ EOF
 ### Task 21: Mount Shell at root + e2e welcome state
 
 **Files:**
+
 - Modify: `demo/src/routes/+page.svelte`
 - Create: `demo/e2e/koan/welcome.e2e.ts`
 
@@ -2360,6 +2408,7 @@ test('typing a query and pressing Enter migrates to active state', async ({ page
 ```bash
 cd demo && bun run test:e2e -- koan/welcome.e2e.ts
 ```
+
 Expected: both tests pass.
 
 - [ ] **Step 4: Commit**
@@ -2383,6 +2432,7 @@ EOF
 ### Task 22: Tabs demo (real content)
 
 **Files:**
+
 - Modify: `demo/src/lib/koan/demos/tabs/index.svelte`
 - Create: `demo/e2e/koan/tabs-demo.e2e.ts`
 
@@ -2499,6 +2549,7 @@ test('tabs demo renders three orientations and switches panels', async ({ page }
 ```bash
 cd demo && bun run test:e2e -- koan/tabs-demo
 ```
+
 Expected: pass. (If `Tabs` panel snippet API differs in `@rokkit/ui`, adjust the snippet name/usage to match the current API — check `packages/ui/src/Tabs.svelte` for the canonical snippet name.)
 
 - [ ] **Step 4: Commit**
@@ -2521,6 +2572,7 @@ EOF
 ### Task 23: Toasts demo (real content)
 
 **Files:**
+
 - Modify: `demo/src/lib/koan/demos/toasts/index.svelte`
 - Create: `demo/e2e/koan/toasts-demo.e2e.ts`
 
@@ -2606,6 +2658,7 @@ test('toasts demo shows buttons and fires toasts', async ({ page }) => {
 ```bash
 cd demo && bun run test:e2e -- koan/toasts-demo
 ```
+
 Expected: pass.
 
 - [ ] **Step 5: Commit**
@@ -2628,6 +2681,7 @@ EOF
 ### Task 24: Theme wizard — preset card (StepStart)
 
 **Files:**
+
 - Create: `demo/src/lib/koan/demos/theme-wizard/StepStart.svelte`
 
 - [ ] **Step 1: Implement step component**
@@ -2744,6 +2798,7 @@ EOF
 ### Task 25: Theme wizard — PreviewPane
 
 **Files:**
+
 - Create: `demo/src/lib/koan/demos/theme-wizard/PreviewPane.svelte`
 
 - [ ] **Step 1: Implement preview pane**
@@ -2830,6 +2885,7 @@ EOF
 ### Task 26: Theme wizard — StepTune (chips)
 
 **Files:**
+
 - Create: `demo/src/lib/koan/demos/theme-wizard/StepTune.svelte`
 
 - [ ] **Step 1: Implement step**
@@ -2968,6 +3024,7 @@ EOF
 ### Task 27: Theme wizard — DownloadModal
 
 **Files:**
+
 - Create: `demo/src/lib/koan/components/DownloadModal.svelte`
 
 - [ ] **Step 1: Implement modal**
@@ -3096,6 +3153,7 @@ EOF
 ### Task 28: Theme wizard — StepSave
 
 **Files:**
+
 - Create: `demo/src/lib/koan/demos/theme-wizard/StepSave.svelte`
 
 - [ ] **Step 1: Implement step**
@@ -3210,6 +3268,7 @@ EOF
 ### Task 29: Theme wizard — main index.svelte
 
 **Files:**
+
 - Modify: `demo/src/lib/koan/demos/theme-wizard/index.svelte`
 
 - [ ] **Step 1: Implement wizard router**
@@ -3331,6 +3390,7 @@ EOF
 ### Task 30: Theme wizard e2e
 
 **Files:**
+
 - Create: `demo/e2e/koan/theme-wizard.e2e.ts`
 
 - [ ] **Step 1: Write e2e**
@@ -3375,6 +3435,7 @@ test('refreshing after save keeps the active theme applied', async ({ page }) =>
 ```bash
 cd demo && bun run test:e2e -- koan/theme-wizard
 ```
+
 Expected: pass.
 
 - [ ] **Step 3: Commit**
@@ -3397,6 +3458,7 @@ EOF
 ### Task 31: Timeline e2e — visited demos persist and restore
 
 **Files:**
+
 - Create: `demo/e2e/koan/timeline.e2e.ts`
 
 - [ ] **Step 1: Write e2e**
@@ -3431,6 +3493,7 @@ test('timeline survives reload', async ({ page }) => {
 ```bash
 cd demo && bun run test:e2e -- koan/timeline
 ```
+
 Expected: pass.
 
 - [ ] **Step 3: Commit**
@@ -3453,6 +3516,7 @@ EOF
 ### Task 32: Deep-link e2e
 
 **Files:**
+
 - Create: `demo/e2e/koan/deep-link.e2e.ts`
 
 - [ ] **Step 1: Write e2e**
@@ -3480,6 +3544,7 @@ test('?q=theme prefills query and shows gallery', async ({ page }) => {
 ```bash
 cd demo && bun run test:e2e -- koan/deep-link
 ```
+
 Expected: pass.
 
 - [ ] **Step 3: Commit**
@@ -3502,6 +3567,7 @@ EOF
 ### Task 33: Keyboard navigation e2e
 
 **Files:**
+
 - Create: `demo/e2e/koan/keyboard.e2e.ts`
 
 - [ ] **Step 1: Write e2e**
@@ -3533,6 +3599,7 @@ test('Enter on chat input submits query', async ({ page }) => {
 ```bash
 cd demo && bun run test:e2e -- koan/keyboard
 ```
+
 Expected: pass.
 
 - [ ] **Step 3: Commit**
@@ -3555,6 +3622,7 @@ EOF
 ### Task 34: Reduced-motion e2e
 
 **Files:**
+
 - Create: `demo/e2e/koan/reduced-motion.e2e.ts`
 
 - [ ] **Step 1: Write e2e**
@@ -3581,6 +3649,7 @@ test('brand mark renders without transition when reduced-motion is set', async (
 ```bash
 cd demo && bun run test:e2e -- koan/reduced-motion
 ```
+
 Expected: pass.
 
 - [ ] **Step 3: Commit**
@@ -3603,6 +3672,7 @@ EOF
 ### Task 35: Flash-prevention hook — apply active theme before hydration
 
 **Files:**
+
 - Modify: `demo/src/app.html`
 
 - [ ] **Step 1: Read current `app.html`**
@@ -3667,6 +3737,7 @@ test('flash prevention applies saved theme before hydration', async ({ page }) =
 ```bash
 cd demo && bun run test:e2e -- koan/deep-link
 ```
+
 Expected: pass (3 tests including the new flash-prevention case).
 
 - [ ] **Step 5: Commit**
@@ -3691,6 +3762,7 @@ EOF
 ### Task 36: Recovery toast for broken/missing theme
 
 **Files:**
+
 - Modify: `demo/src/routes/+page.svelte`
 
 - [ ] **Step 1: Add recovery logic**
@@ -3758,6 +3830,7 @@ test('broken theme triggers recovery toast and opens wizard', async ({ page }) =
 ```bash
 cd demo && bun run test:e2e -- koan/theme-wizard
 ```
+
 Expected: pass (all wizard tests including recovery).
 
 - [ ] **Step 4: Commit**
@@ -3781,6 +3854,7 @@ EOF
 ### Task 37: Wizard state derivation unit tests
 
 **Files:**
+
 - Create: `demo/spec/koan/wizard-state.spec.ts`
 
 - [ ] **Step 1: Write tests**
@@ -3834,6 +3908,7 @@ describe('wizard → SavedTheme', () => {
 ```bash
 cd demo && bun run test:unit
 ```
+
 Expected: all unit tests pass (persistence, store, theme-store, catalog, match, wizard-state).
 
 - [ ] **Step 3: Commit**
@@ -3856,6 +3931,7 @@ EOF
 ### Task 38: Visual regression baselines
 
 **Files:**
+
 - Update: `demo/playwright.config.ts` (if needed for snapshots)
 - Create: snapshot files under `demo/e2e/koan/__snapshots__/`
 
@@ -3901,6 +3977,7 @@ test.describe('Koan visual baselines', () => {
 ```bash
 cd demo && bun run test:e2e:update -- koan/visual.e2e.ts
 ```
+
 Verify the generated PNGs look correct (review each one).
 
 - [ ] **Step 3: Run again as comparison**
@@ -3908,6 +3985,7 @@ Verify the generated PNGs look correct (review each one).
 ```bash
 cd demo && bun run test:e2e -- koan/visual.e2e.ts
 ```
+
 Expected: pass.
 
 - [ ] **Step 4: Commit**
@@ -3934,6 +4012,7 @@ EOF
 ```bash
 bun run test:ci
 ```
+
 Expected: all 3369+ existing tests still pass; new unit tests included if root vitest workspace picks up `demo/spec/`. If demo unit tests are *not* picked up by the root run, that's expected (vitest workspace may exclude `demo`). Note this and ensure `bun run test:unit` (from `demo/`) is included in the CI sequence.
 
 - [ ] **Step 2: Run demo unit tests explicitly**
@@ -3941,6 +4020,7 @@ Expected: all 3369+ existing tests still pass; new unit tests included if root v
 ```bash
 cd demo && bun run test:unit
 ```
+
 Expected: all unit tests pass (catalog, match, persistence, store, theme-store, wizard-state).
 
 - [ ] **Step 3: Run demo e2e suite**
@@ -3948,6 +4028,7 @@ Expected: all unit tests pass (catalog, match, persistence, store, theme-store, 
 ```bash
 cd demo && bun run test:e2e -- koan
 ```
+
 Expected: all koan/* e2e tests pass.
 
 - [ ] **Step 4: Verify legacy pages still build**
@@ -3955,6 +4036,7 @@ Expected: all koan/* e2e tests pass.
 ```bash
 cd demo && bun run build
 ```
+
 Expected: build succeeds with no broken-link errors.
 
 - [ ] **Step 5: Lint sweep**
@@ -3962,6 +4044,7 @@ Expected: build succeeds with no broken-link errors.
 ```bash
 bun run lint
 ```
+
 Expected: zero errors (warnings acceptable per CLAUDE.md).
 
 - [ ] **Step 6: If anything fails**
@@ -3971,6 +4054,7 @@ Fix root cause. Do not commit failing tests. Do not skip steps.
 - [ ] **Step 7: Commit any final fixes**
 
 If fixes were needed:
+
 ```bash
 git add -A
 git commit -m "$(cat <<'EOF'
@@ -3986,6 +4070,7 @@ EOF
 ### Task 40: Journal + priority checklist update
 
 **Files:**
+
 - Modify: `agents/journal.md` (append)
 - Modify: `docs/design/12-priority.md` (mark demo entry)
 
@@ -4066,9 +4151,11 @@ After implementing all 40 tasks, run this checklist:
 ## Phase 1.5 (deferred to its own plan)
 
 After Phase 1 lands on `develop` and bakes for a few days, write a new plan:
+
 - `docs/superpowers/plans/YYYY-MM-DD-koan-promotion.md`
 
 That plan moves these 7 components from `demo/src/lib/koan/components/` to `packages/ui/src/<name>/`:
+
 - AnnotationArrow, BrandMark, EmptyState, ShowcaseCanvas, TimelineList, PreviewCard, Gallery, ChatPanel
 
 For each: move source, split into idiomatic `@rokkit/ui` structure, update Koan imports, add unit tests, add llms.txt, add zen-sumi theme CSS. **Skip the playground page on `sites/learn`** — Koan demos serve as the canonical live example, with the component's llms.txt linking to the appropriate Koan deep-link.

@@ -13,7 +13,7 @@
 ## File Map
 
 | File | Action | Responsibility |
-|------|--------|----------------|
+| ------ | -------- | ---------------- |
 | `packages/core/src/color-space.js` | Create | ColorSpace base + Rgb/Hsl/Oklch adapter classes |
 | `packages/core/spec/color-space.spec.js` | Create | Unit tests for all adapters |
 | `packages/core/src/theme.ts` | Modify | Replace `modifiers`, `COLOR_SPACE_WRAPPERS`, `shadesOf`, `colorToRgb` usage with adapter |
@@ -31,6 +31,7 @@
 ### Task 1: Create ColorSpace Base Class + RgbColorSpace
 
 **Files:**
+
 - Create: `packages/core/src/color-space.js`
 - Create: `packages/core/spec/color-space.spec.js`
 
@@ -236,6 +237,7 @@ feat(core): add ColorSpace base class + RgbColorSpace adapter
 ### Task 2: Add HslColorSpace + OklchColorSpace
 
 **Files:**
+
 - Modify: `packages/core/src/color-space.js`
 - Modify: `packages/core/spec/color-space.spec.js`
 
@@ -395,6 +397,7 @@ feat(core): add HslColorSpace + OklchColorSpace adapters
 ### Task 3: Refactor Theme Class to Use Adapter
 
 **Files:**
+
 - Modify: `packages/core/src/theme.ts`
 - Modify: `packages/core/spec/theme.spec.js`
 
@@ -403,6 +406,7 @@ feat(core): add HslColorSpace + OklchColorSpace adapters
 The key changes in test expectations:
 
 **`getPalette()`** — values are now wrapped:
+
 ```js
 // Before: expect(paletteCustom['--color-accent']).toEqual('56,189,248')
 // After:
@@ -410,18 +414,21 @@ expect(paletteCustom['--color-accent']).toEqual('rgb(56, 189, 248)')
 ```
 
 **`getColorRules()`** — values use color-mix:
+
 ```js
 // Before: 'rgba(var(--color-primary-500),<alpha-value>)'
 // After:  'color-mix(in srgb, var(--color-primary-500) <alpha-value>%, transparent)'
 ```
 
 **`themeRules()`** — values are wrapped:
+
 ```js
 // Before: '--color-primary-500': '249,115,22'
 // After:  '--color-primary-500': 'rgb(249, 115, 22)'
 ```
 
 **oklch color space tests** — palette values are wrapped:
+
 ```js
 // Before: expect(val.split(' ')).toHaveLength(3)
 // After:
@@ -431,6 +438,7 @@ expect(inner.split(' ')).toHaveLength(3)
 ```
 
 **`shadesOf` tests** — update to use new API (shadesOf is refactored to use adapter):
+
 ```js
 // Replace shadesOf(name, 'rgb') with ColorSpace-based approach
 // shadesOf(name, colorSpace) now produces color-mix wrapped values
@@ -467,7 +475,7 @@ export function shadesOf(name, space = 'rgb') {
 }
 ```
 
-5. Refactor `generateColorRules` to use adapter:
+1. Refactor `generateColorRules` to use adapter:
 
 ```js
 function generateColorRules(variant, colors, mapping, adapter) {
@@ -480,7 +488,7 @@ function generateColorRules(variant, colors, mapping, adapter) {
 }
 ```
 
-6. Refactor `themeRules` to create an adapter:
+1. Refactor `themeRules` to create an adapter:
 
 ```js
 export function themeRules(mapping = DEFAULT_THEME_MAPPING, colors = defaultColors, colorSpace) {
@@ -495,7 +503,7 @@ export function themeRules(mapping = DEFAULT_THEME_MAPPING, colors = defaultColo
 }
 ```
 
-7. Refactor `Theme` class:
+1. Refactor `Theme` class:
 
 ```js
 constructor({ colors = defaultColors, mapping = DEFAULT_THEME_MAPPING, colorSpace = 'rgb' } = {}) {
@@ -546,6 +554,7 @@ refactor(core): Theme class uses ColorSpace adapter instead of scattered helpers
 ### Task 4: Clean Up utils.js + Update Exports
 
 **Files:**
+
 - Modify: `packages/core/src/utils.js` — remove `hex2hsl`, `hexToComponents`, `colorToRgb`
 - Modify: `packages/core/spec/utils.spec.js` — remove tests for deleted functions
 - Modify: `packages/core/src/index.js` — add `ColorSpace` export
@@ -555,11 +564,13 @@ refactor(core): Theme class uses ColorSpace adapter instead of scattered helpers
 - [ ] **Step 1: Remove deleted functions from utils.js**
 
 Remove from `packages/core/src/utils.js`:
+
 - `hex2hsl` function (moved to HslColorSpace.fromHex)
 - `hexToComponents` function (replaced by adapter.wrap)
 - `colorToRgb` function (replaced by adapter.wrap)
 
 Keep:
+
 - `hex2rgb` — still used by RgbColorSpace (imported in color-space.js) and possibly externally
 - `hex2oklch` — still used by OklchColorSpace and externally
 - `oklch2hex` — reverse conversion used by chart/swatch
@@ -567,23 +578,27 @@ Keep:
 - [ ] **Step 2: Remove corresponding tests from utils.spec.js**
 
 Remove test blocks:
+
 - `describe('hexToComponents', ...)`
 - `describe('colorToRgb', ...)`
 - `describe('colorToRgb with color space', ...)`
 - `describe('hex2hsl', ...)`
 
 Keep:
+
 - `describe('hex2rgb', ...)`
 - `describe('hex2oklch', ...)`
 
 - [ ] **Step 3: Update index.js exports**
 
 In `packages/core/src/index.js`, add:
+
 ```js
 export { ColorSpace } from './color-space.js'
 ```
 
 In `packages/core/spec/index.spec.js`, update the expected exports list:
+
 - Remove: `'hexToComponents'`, `'colorToRgb'`, `'hex2hsl'`
 - Add: `'ColorSpace'`
 
@@ -607,6 +622,7 @@ refactor(core): remove deprecated color-space functions, export ColorSpace
 ### Task 5: Verify UnoCSS Alpha + Theme Build
 
 **Files:**
+
 - Verify: `packages/unocss/src/preset.ts` — confirm color-mix alpha works
 - Verify: `packages/themes/build.mjs` — confirm build produces correct output
 - Modify: `packages/themes/build.mjs` — remove redundant `text-on-*` hardcoded shortcuts if Theme already generates them
@@ -619,25 +635,31 @@ Expected: All 7 files built successfully
 - [ ] **Step 2: Verify compiled CSS variable values are wrapped**
 
 Check `dist/base.css` for wrapped values:
+
 ```bash
 grep '\-\-color-primary-500:' dist/base.css
 ```
+
 Expected: `--color-primary-500:rgb(249, 115, 22)` (not bare `249,115,22`)
 
 - [ ] **Step 3: Verify compiled theme CSS still works**
 
 Check that `@apply bg-primary-z5` in a theme file still produces valid CSS after compilation:
+
 ```bash
 grep 'background-color' dist/rokkit.css | head -5
 ```
+
 Expected: Valid `background-color` declarations using the color values
 
 - [ ] **Step 4: Test alpha/opacity in compiled output**
 
 Check that `@apply bg-surface-z10/40` in theme CSS produces correct output:
+
 ```bash
 grep 'color-mix' dist/rokkit.css | head -3
 ```
+
 Expected: `color-mix(in srgb, var(--color-surface-...` or inline color values from UnoCSS compilation.
 
 If UnoCSS doesn't handle `<alpha-value>%` inside `color-mix`, add a custom rule in `packages/unocss/src/preset.ts` to handle opacity modifiers. The semantic shortcuts already resolve z-scale → numeric shades, so this rule would intercept `bg-{color}-{shade}/{opacity}` and emit color-mix CSS.
@@ -667,6 +689,7 @@ feat(themes): verify theme build with wrapped color variables
 ### Task 6: Full Integration Verification
 
 **Files:**
+
 - No new files — verification only
 
 - [ ] **Step 1: Build all packages**
@@ -687,11 +710,13 @@ Expected: 0 errors
 - [ ] **Step 4: Spot-check the z-scale CSS**
 
 The `Theme.getZScaleCSS()` output should be unchanged — it's pure var aliases:
+
 ```css
 :root {
   --color-primary-z5: var(--color-primary-500);
 }
 ```
+
 Verify the actual palette variable `--color-primary-500` is now wrapped in the preflight/base output.
 
 - [ ] **Step 5: Commit final state**

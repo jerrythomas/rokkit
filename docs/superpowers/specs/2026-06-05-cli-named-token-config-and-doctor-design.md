@@ -204,7 +204,7 @@ in addition to `runChecks`. When the config can't be loaded, these checks are sk
 (the `config-exists` text check already covers absence). Checks (all `warn`, none fail):
 
 | id | Condition | Message |
-|----|-----------|---------|
+| ---- | ----------- | --------- |
 | `skin-ink-role` | the active colormap has no `ink` role | `ink` role missing — text tokens (ink-*) fall back to the surface palette. Add `ink: '<palette>'`. |
 | `oklch-needs-palettes` | `colorSpace: 'oklch'` and no/empty `palettes` | oklch values require a `palettes` block; named Tailwind colors are rgb. |
 | `colors-alias` | uses `colors:` instead of `skin:` | `colors:` is a back-compat alias; prefer `skin:`. |
@@ -229,6 +229,7 @@ export function findLegacyZUtilities(files) → { count, byFile: [{ path, hits: 
 
 Suggestion mapping (z-slot → named token), per `Z_COLLAPSE_MAP_SURFACE` /
 `Z_COLLAPSE_MAP_INK` and the role:
+
 - surface: `z0→paper`, `z1→paper-soft`, `z2/z3→paper-mute`, `z4→paper-edge`,
   `z5/z6→ink-soft`, `z7/z8→ink-mute`, `z9/z10→ink`
 - primary/accent/status: `z5→{role}`, `z1→{role}-soft` (other shades → nearest named token)
@@ -286,7 +287,7 @@ the journal and release notes.
 ## Components & interfaces (summary)
 
 | Unit | File | Responsibility |
-|------|------|----------------|
+| ------ | ------ | ---------------- |
 | `resolveSkin` | `init.js` | palette/custom → named-token skin (with `ink`) |
 | `generateZenSumiConfig` | `init.js` | fixed OKLCH starter object |
 | `serializeRokkitConfig` | `init.js` | config object → file string with header comment |

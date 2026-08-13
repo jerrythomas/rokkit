@@ -14,3 +14,9 @@ MD013: false
 # MD041 — first line need not be a top-level heading: demo docs.md fragments
 # and the frontmatter'd skill/agent files intentionally open with `##` / `---`.
 MD041: false
+
+# MD010 — hard tabs: the codebase indents with TABS (see prettier config), so
+# code samples pasted into docs are tab-indented by design. Don't flag tabs
+# inside fenced code blocks; still catch accidental tabs in prose.
+MD010:
+  code_blocks: false

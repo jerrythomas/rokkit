@@ -139,7 +139,7 @@ export const commands = new CommandRegistry()
 After this work, `@rokkit/actions` has **three** clean, non-overlapping keyboard concerns:
 
 | Concern | API | Scope |
-|---|---|---|
+| --- | --- | --- |
 | Widget input keys | `keyboard` (`use:keyboard`) | element-local key → CustomEvent (`remove`/`submit`/`add`); used by `Pill`, `Carousel` |
 | In-widget list navigation | `keymap.js` (`buildKeymap`/`resolveAction`) + `navigator` | arrow/Enter/Home/End within a focused list (Tree, List, Select, Menu…) |
 | Global command shortcuts | `commands.resolve` + `shortcuts` | global `'mod+k'`-style keystroke → command dispatch (this design) |
@@ -166,6 +166,7 @@ through the nav keymaps.
 ## Consumer wiring + live demo (`apps/learn`)
 
 `apps/learn` becomes the first consumer and the live demo:
+
 - `/app/+layout.svelte` registers the v1 global commands (`palette.open` `mod+k` global;
   `toggle-theme`; `new-conversation`; `jump-to-demo`/focus-search), applies
   `<svelte:body use:shortcuts={commands}>`, and renders `<CommandPalette bind:open />`.

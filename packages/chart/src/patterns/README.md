@@ -1,3 +1,3 @@
 # Patterns
 
-These patterns are inspired from https://superdesigner.co/tools/svg-backgrounds
+These patterns are inspired from <https://superdesigner.co/tools/svg-backgrounds>

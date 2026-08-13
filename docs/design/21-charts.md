@@ -20,7 +20,7 @@ There are three layers of chart components:
 ### Layer 2 — Wrappers
 
 | Component | Purpose |
-|-----------|---------|
+| ----------- | --------- |
 | `Chart` | Thin wrapper that adds responsive `ResizeObserver` and forwards all props to `Plot` |
 | `AnimatedPlot` | Frame-based animation over a `by` time field; renders `Plot` with a changing data slice + `Timeline` |
 | `FacetPlot` | Splits data by a facet field and renders one `Plot` panel per group |
@@ -31,7 +31,7 @@ There are three layers of chart components:
 Pre-wired channel mappings for common chart shapes:
 
 | Component | Geom | Key props |
-|-----------|------|-----------|
+| ----------- | ------ | ----------- |
 | `BarChart` | bar | `x`, `y`, `color`, `fill`, `stack` |
 | `LineChart` | line | `x`, `y`, `color` |
 | `AreaChart` | area | `x`, `y`, `color`, `fill` |
@@ -76,7 +76,7 @@ These are all thin wrappers over `Plot` with `spec` pre-built from their props.
 Channels map data fields to visual encodings. They follow ggplot2 conventions:
 
 | Channel | Encoding | Geoms |
-|---------|----------|-------|
+| --------- | ---------- | ------- |
 | `x` | Horizontal position | All |
 | `y` | Vertical position | All except Arc |
 | `color` | Stroke/line color | Line, Box, Violin |
@@ -134,7 +134,7 @@ helpers = {
 Each geom is a Svelte component in `packages/chart/src/geoms/`:
 
 | Geom | Component | Shape | Notes |
-|------|-----------|-------|-------|
+| ------ | ----------- | ------- | ------- |
 | `bar` | `Bar.svelte` | Rectangles | Auto-detects orientation; supports stacked and grouped |
 | `line` | `Line.svelte` | Path | Connects ordered x values |
 | `area` | `Area.svelte` | Filled path | `opacity` from preset |
@@ -330,7 +330,7 @@ The `Timeline` component shows frame labels and current progress as an animated 
 **`scales` option:**
 
 | Value | Behavior |
-|-------|----------|
+| ------- | ---------- |
 | `'fixed'` | All panels share the same x and y domains |
 | `'free'` | Each panel has its own x and y domains |
 | `'free_x'` | Shared y, per-panel x |
@@ -401,7 +401,7 @@ Geoms (Bar, Point, Line) support the `keyboard` prop. When enabled:
 ## File Reference
 
 | Path | Purpose |
-|------|---------|
+| ------ | --------- |
 | `packages/chart/src/Plot.svelte` | Core rendering primitive |
 | `packages/chart/src/PlotState.svelte.js` | Reactive chart state (scales, color maps, geoms) |
 | `packages/chart/src/Chart.svelte` | Responsive wrapper (ResizeObserver) |

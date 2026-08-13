@@ -4,12 +4,12 @@
 
 ## Summary
 
-| Package         | Exported Components                                       | Status |
+| Package | Exported Components | Status |
 | --------------- | -------------------------------------------------------- | ------ |
-| `@rokkit/ui`    | 62 (from `packages/ui/src/index.ts`)                     | Active |
-| `@rokkit/forms` | 30                                                       | Active |
+| `@rokkit/ui` | 62 (from `packages/ui/src/index.ts`) | Active |
+| `@rokkit/forms` | 30 | Active |
 | `@rokkit/chart` | 40+ (Plot primitives, high-level charts, geoms, crossfilter) | Active |
-| `@rokkit/app`   | 1                                                        | Active |
+| `@rokkit/app` | 1 | Active |
 
 **Status key:**
 
@@ -166,17 +166,17 @@
 
 ## Layout
 
-| Component | Package      | Status      | Description                              |
+| Component | Package | Status | Description |
 | --------- | ------------ | ----------- | ---------------------------------------- |
-| Carousel      | `@rokkit/ui` | Implemented | Horizontally scrolling content carousel  |
-| Grid          | `@rokkit/ui` | Implemented | Data-driven tile grid with keyboard navigation |
-| ResponsiveGrid | `@rokkit/ui` | Implemented | Responsive CSS grid layout container    |
-| Stack         | `@rokkit/ui` | Implemented | Row/column stacking layout with gap      |
-| Divider       | `@rokkit/ui` | Implemented | Horizontal or vertical content separator |
-| Frame         | `@rokkit/ui` | Implemented | Framed/bordered content container        |
-| Shine         | `@rokkit/ui` | Implemented | Shine/gloss visual effect layer          |
-| Tilt          | `@rokkit/ui` | Implemented | 3D tilt interaction effect container     |
-| Panel         | `@rokkit/ui` | Proposed    | Collapsible side or content panel        |
+| Carousel | `@rokkit/ui` | Implemented | Horizontally scrolling content carousel |
+| Grid | `@rokkit/ui` | Implemented | Data-driven tile grid with keyboard navigation |
+| ResponsiveGrid | `@rokkit/ui` | Implemented | Responsive CSS grid layout container |
+| Stack | `@rokkit/ui` | Implemented | Row/column stacking layout with gap |
+| Divider | `@rokkit/ui` | Implemented | Horizontal or vertical content separator |
+| Frame | `@rokkit/ui` | Implemented | Framed/bordered content container |
+| Shine | `@rokkit/ui` | Implemented | Shine/gloss visual effect layer |
+| Tilt | `@rokkit/ui` | Implemented | 3D tilt interaction effect container |
+| Panel | `@rokkit/ui` | Proposed | Collapsible side or content panel |
 
 ---
 

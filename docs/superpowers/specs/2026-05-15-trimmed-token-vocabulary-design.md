@@ -180,6 +180,7 @@ presetRokkit({
 ```
 
 **Resolution rules:**
+
 - `'palette.shade'` string → resolved via the same `colorSpace` adapter as named tokens.
 - Plain string → passes through verbatim (`oklch(...)`, `#hex`, `rgb()`, `var(...)`).
 - `{ light, dark }` → mode-aware, emitted into `:root` and `[data-mode="dark"]` respectively.
@@ -262,9 +263,9 @@ Per-release emit size:
 
 | Release | Emit per skin (core mode) |
 | ------- | ------------------------- |
-| Today   | ~120                      |
+| Today | ~120 |
 | 1 (transition) | ~40 (18 named + ~22 z-aliases) |
-| 2 (steady state) | ~18 (named only)    |
+| 2 (steady state) | ~18 (named only) |
 
 ## Out of Scope
 

@@ -29,7 +29,7 @@ Reference this file before implementing new features to ensure consistency.
 <div data-rating>...</div>
 ```
 
-2. **Sub-element markers** — Child elements use `data-{component}-{role}`:
+1. **Sub-element markers** — Child elements use `data-{component}-{role}`:
 
 ```html
 <div data-list-item data-path="0">
@@ -37,7 +37,7 @@ Reference this file before implementing new features to ensure consistency.
 </div>
 ```
 
-3. **Boolean state attributes** — Presence means true, absence means false (no `="true"`/`="false"`):
+1. **Boolean state attributes** — Presence means true, absence means false (no `="true"`/`="false"`):
 
 ```html
 <div data-list-item data-active>
@@ -49,7 +49,7 @@ Reference this file before implementing new features to ensure consistency.
 </div>
 ```
 
-4. **Value state attributes** — Enumerated states use `data-{attr}="{value}"`:
+1. **Value state attributes** — Enumerated states use `data-{attr}="{value}"`:
 
 ```html
 <div data-select data-size="md">
@@ -57,7 +57,7 @@ Reference this file before implementing new features to ensure consistency.
 </div>
 ```
 
-5. **CSS selectors** — Theme CSS always selects by attribute, never by element tag or class:
+1. **CSS selectors** — Theme CSS always selects by attribute, never by element tag or class:
 
 ```css
 /* Correct */
@@ -69,7 +69,7 @@ rk-item { ... }
 .list-item.active { ... }
 ```
 
-6. **Naming convention** for data attributes: `data-{component}` (root), `data-{component}-{part}` (child), consistent `data-{state}` names across components (`data-disabled`, `data-active`, `data-selected`, `data-open`).
+1. **Naming convention** for data attributes: `data-{component}` (root), `data-{component}-{part}` (child), consistent `data-{state}` names across components (`data-disabled`, `data-active`, `data-selected`, `data-open`).
 
 **Enforcement:** No `<rk-*>` custom element tags anywhere in library components, test fixtures, or documentation examples. Use `<span>`, `<div>`, or semantic HTML with `data-*` attributes instead.
 
@@ -334,7 +334,7 @@ export const defaultStateIcons: StateIcons = {
 }
 ```
 
-2. **Add to props interface**:
+1. **Add to props interface**:
 
 ```typescript
 export interface Props {
@@ -343,7 +343,7 @@ export interface Props {
 }
 ```
 
-3. **Use in component** with merge-with-defaults pattern:
+1. **Use in component** with merge-with-defaults pattern:
 
 ```svelte
 <script lang="ts">
@@ -356,7 +356,7 @@ export interface Props {
 <span class={icons.opened} aria-hidden="true"></span>
 ```
 
-4. **Add new icon names** — If a new state is needed:
+1. **Add new icon names** — If a new state is needed:
    - Add flat name to `DEFAULT_ICONS` array in `packages/core/src/constants.js`
    - Add SVG to `packages/icons/src/base/{group}-{state}.svg`
    - The UnoCSS shortcut is auto-generated via `iconShortcuts()`

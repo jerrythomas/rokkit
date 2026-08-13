@@ -15,7 +15,7 @@
 ## File Structure
 
 | File | Change | Responsibility |
-|------|--------|----------------|
+| ------ | -------- | ---------------- |
 | `packages/cli/src/init.js` | modify | rgb skin gen, OKLCH starter, header serializer, prompt choice |
 | `packages/cli/src/doctor.js` | modify | real-starter fix, `validateConfigShape`, `findLegacyZUtilities`, wiring |
 | `packages/cli/spec/init.spec.js` | modify | migrate `colors`→`skin` assertions, add OKLCH + serializer tests |
@@ -34,6 +34,7 @@
 ## Task 1: rgb starter — `generateConfig` emits the `skin` shape with `ink`
 
 **Files:**
+
 - Modify: `packages/cli/src/init.js` (constants `SKIN_PRESETS`/`DEFAULT_COLORS` ~lines 64-100; `resolveColors`/`generateConfig` ~lines 97-145)
 - Test: `packages/cli/spec/init.spec.js`
 
@@ -223,6 +224,7 @@ git commit -m "feat(cli): init emits named-token skin shape (skin + ink + tokens
 ## Task 2: Zen-Sumi OKLCH starter
 
 **Files:**
+
 - Modify: `packages/cli/src/init.js` (add `ZEN_SUMI_PALETTES`, `generateZenSumiConfig`, branch in `generateConfig`, add prompt choice)
 - Test: `packages/cli/spec/init.spec.js`
 
@@ -368,6 +370,7 @@ git commit -m "feat(cli): add Zen-Sumi OKLCH starter to rokkit init"
 ## Task 3: `serializeRokkitConfig` with header comment
 
 **Files:**
+
 - Modify: `packages/cli/src/init.js` (add headers + `serializeRokkitConfig`; rewire `writeRokkitConfig`)
 - Test: `packages/cli/spec/init.spec.js`
 
@@ -468,6 +471,7 @@ git commit -m "feat(cli): write rokkit.config.js with named-token header comment
 ## Task 4: doctor `--fix` writes the real starter (not `export default {}`)
 
 **Files:**
+
 - Modify: `packages/cli/src/doctor.js` (imports + `applyGenerateConfig` ~lines 4, 164-168)
 - Test: `packages/cli/spec/doctor.spec.js`
 
@@ -557,6 +561,7 @@ git commit -m "fix(cli): doctor --fix writes a real named-token starter config"
 ## Task 5: `validateConfigShape` — parsed-config warnings
 
 **Files:**
+
 - Modify: `packages/cli/src/doctor.js` (add `validateConfigShape`; wire into `doctor()`)
 - Test: `packages/cli/spec/doctor.spec.js`
 
@@ -691,6 +696,7 @@ git commit -m "feat(cli): doctor validates named-token config shape (ink / oklch
 ## Task 6: `findLegacyZUtilities` — advisory z-scale migration hints
 
 **Files:**
+
 - Modify: `packages/cli/src/doctor.js` (add suggestion map, `findLegacyZUtilities`, `gatherSrcFiles`; wire into `doctor()`)
 - Test: `packages/cli/spec/doctor.spec.js`
 
@@ -862,6 +868,7 @@ git commit -m "feat(cli): doctor reports advisory z-scale migration hints"
 ## Task 7: Docs sweep — `docs/llms/index.txt` Theming section
 
 **Files:**
+
 - Modify: `docs/llms/index.txt` (Theming section, lines ~232-309)
 
 - [ ] **Step 1: Replace the "UnoCSS Utility Classes" example block**
@@ -965,6 +972,7 @@ git commit -m "docs(llms): teach named tokens as primary in index.txt theming se
 ## Task 8: Docs sweep — package docs + README
 
 **Files:**
+
 - Modify: `docs/llms/packages/unocss.txt` (~171-184), `docs/llms/packages/themes.txt` (~204), `docs/llms/packages/core.txt` (~114), `packages/unocss/README.md` (~50-61)
 
 - [ ] **Step 1: `unocss.txt` — rewrite the tone-shortcut section**
@@ -1049,6 +1057,7 @@ git commit -m "docs: named-token-first guidance in package llms docs + unocss RE
 ## Task 9: Full verification + repo hygiene
 
 **Files:**
+
 - Modify: `agents/journal.md`, `docs/design/12-priority.md`
 
 - [ ] **Step 1: Full test suite**
@@ -1064,10 +1073,12 @@ Expected: 0 errors (pre-existing warnings acceptable).
 - [ ] **Step 3: Smoke-test the generator output**
 
 Run:
+
 ```bash
 cd /tmp && rm -rf rokkit-init-smoke && mkdir rokkit-init-smoke && cd rokkit-init-smoke
 node --input-type=module -e "import('/Users/Jerry/Developer/rokkit/packages/cli/src/init.js').then(m => { process.stdout.write(m.serializeRokkitConfig(m.generateConfig({palette:'default',icons:'rokkit',themes:['rokkit'],switcher:'manual'}))); process.stdout.write('\n--- ZEN ---\n'); process.stdout.write(m.serializeRokkitConfig(m.generateZenSumiConfig({}))) })"
 ```
+
 Expected: two configs print; both start with the named-token header; rgb one has `skin.ink: "slate"`; zen one has `palettes` + `colorSpace: "oklch"`.
 
 - [ ] **Step 4: Update the journal**

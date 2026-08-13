@@ -138,7 +138,7 @@ CSS custom variables for the current skin are written to `:root` via a preflight
 Registered in the UnoCSS theme:
 
 | Key | Fonts |
-|-----|-------|
+| ----- | ------- |
 | `mono` | Victor Mono, monospace |
 | `heading` | Open Sans, sans-serif |
 | `sans` | Overpass, ui-serif, sans-serif |
@@ -153,7 +153,7 @@ Registered in the UnoCSS theme:
 Rokkit ships multiple icon collections in `@rokkit/icons`:
 
 | Collection | Prefix | Description |
-|-----------|--------|-------------|
+| ----------- | -------- | ------------- |
 | `ui.json` | `rokkit` | Base UI icons |
 | `semantic.json` | `semantic` | Semantic icons with style variants (default for shortcuts) |
 | `glyph.json` | `glyph` | Large icon set (600+) |
@@ -266,7 +266,7 @@ Upgrades all `@rokkit/*` packages to their latest published versions.
 Health check that validates the project is correctly configured. Runs a series of checks:
 
 | Check | What it validates |
-|-------|------------------|
+| ------- | ------------------ |
 | `config-exists` | `rokkit.config.js` is present |
 | `uno-uses-preset` | `uno.config.js` imports and calls `presetRokkit(config)` |
 | `base-css-imported` | `app.css` imports `@rokkit/themes/dist/base.css` |
@@ -290,7 +290,7 @@ Generates a CSS theme stub file at `src/themes/<name>.css`. The stub contains on
 ## File Reference
 
 | Path | Purpose |
-|------|---------|
+| ------ | --------- |
 | `packages/cli/src/init.js` | `rokkit init` — interactive setup wizard |
 | `packages/cli/src/upgrade.js` | `rokkit upgrade` — version update check and apply |
 | `packages/cli/src/doctor.js` | `rokkit doctor` — project health checks |

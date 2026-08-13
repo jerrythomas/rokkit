@@ -403,13 +403,13 @@ For each platform, fetch the official wordmark SVG and call `writeWordmarkPair`.
 
 | Platform   | Source URL                                                         |
 | ---------- | ------------------------------------------------------------------ |
-| auth0      | https://auth0.com/press (download brand kit)                       |
-| clerk      | https://clerk.com/brand (SVG download)                             |
-| appwrite   | https://appwrite.io/assets/appwrite-logo-white.svg (flip for dark) |
-| supabase   | https://supabase.com/brand-assets                                  |
+| auth0      | <https://auth0.com/press> (download brand kit)                       |
+| clerk      | <https://clerk.com/brand> (SVG download)                             |
+| appwrite   | <https://appwrite.io/assets/appwrite-logo-white.svg> (flip for dark) |
+| supabase   | <https://supabase.com/brand-assets>                                  |
 | amplify    | AWS brand center                                                   |
-| nextauth   | https://authjs.dev logo                                            |
-| pocketbase | https://github.com/pocketbase/pocketbase — assets in README        |
+| nextauth   | <https://authjs.dev> logo                                            |
+| pocketbase | <https://github.com/pocketbase/pocketbase> — assets in README        |
 
 Fetch each, paste into the script:
 

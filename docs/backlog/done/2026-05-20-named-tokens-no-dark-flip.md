@@ -17,6 +17,7 @@ The plan is 8 sequenced tasks (1–6 implementation, 7–8 docs + verification),
 ## Why the pivot
 
 The original 2026-05-21 plan ("invert flag + unified shade map") added complexity:
+
 - New `invert: true` role flag
 - New `1000 - shade` math everywhere
 - Refactor of `NAMED_TOKEN_SHADE_MAP`
@@ -24,6 +25,7 @@ The original 2026-05-21 plan ("invert flag + unified shade map") added complexit
 - ~50–80 test assertions to update
 
 The direct-mapping pattern (UnoCSS shortcuts-shaped: `tokens: { ink: 'sumi.900', paper: 'kami.50' }`) achieves the same goals more simply:
+
 - Authors specify shades directly — no shade-map math
 - No role-name coupling — custom role names work without special-casing
 - 500-on-500 collision avoidable by overriding the affected token

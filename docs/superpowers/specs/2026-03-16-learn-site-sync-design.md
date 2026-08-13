@@ -40,8 +40,9 @@ but need not be identical.
   not for selecting the visual style personality.
 
 **Correct data attributes:**
+
 | Attribute | Values | Purpose |
-|-----------|--------|---------|
+| ----------- | -------- | --------- |
 | `data-style` | `rokkit`, `minimal`, `material` | Visual personality |
 | `data-mode` | `light`, `dark` | Light/dark mode |
 | `data-palette` | color variant name | Color skin override |

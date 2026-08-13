@@ -25,6 +25,7 @@ content). So the per-component docs are **not indexable**: searches like
 that's exactly the long-tail traffic a component library wants.
 
 Options (pick one):
+
 - **Static doc routes** — a prerendered `/components` + `/components/[name]` set
   rendering each component's doc (markdown + a static example), indexable, with
   per-component `<Seo>` (title/description) and added to the sitemap. The

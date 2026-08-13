@@ -11,6 +11,7 @@
 **Design:** `docs/design/20-skin-system.md`.
 
 **Conventions (read first):**
+
 - `vibe`: `packages/states/src/vibe.svelte.js` — `#field = $state()`, `isAllowedValue(v, allowed, current)`, `allowedStyles` setter, `save()`/`load()`/`update()`.
 - `themable`: `packages/actions/src/themable.svelte.js` — the `$effect` writing `root.dataset.*` + the `documentElement` mirror; `DEFAULT_THEME` fallback.
 - preset: `packages/unocss/src/preset.ts` — `buildPreflights` (returns `[{ getCSS() }]`; emits `:root{…}` + `[data-mode="dark"]{…}`), `buildSkinShortcuts`, `resolveMappingForMode(map, mode)`, `theme.getPalette(map)`; `packages/unocss/src/config.js` `resolveColormap`, `DEFAULT_CONFIG.skins`.
@@ -22,7 +23,7 @@
 ## File Structure
 
 | File | Responsibility |
-|------|----------------|
+| ------ | ---------------- |
 | `packages/states/src/vibe.svelte.js` (modify) | add `#skin`/`#allowedSkins` + save/load/update |
 | `packages/states/spec/vibe.spec.svelte.js` (modify) | skin tests |
 | `packages/actions/src/themable.svelte.js` (modify) | write `data-skin` + `DEFAULT_THEME.skin` |
@@ -78,11 +79,14 @@ describe('vibe.skin', () => {
 
 - [ ] **Step 3: Implement** — in `packages/states/src/vibe.svelte.js`:
   (a) add fields beside `#style`/`#allowedStyles`:
+
 ```js
 	#allowedSkins = $state(['default'])
 	#skin = $state('default')
 ```
+
   (b) add getter/setter beside `style`/`allowedStyles` (reuse `isAllowedValue`):
+
 ```js
 	get skin() {
 		return this.#skin
@@ -98,6 +102,7 @@ describe('vibe.skin', () => {
 		if (skins.length > 0) this.#allowedSkins = skins
 	}
 ```
+
   (c) add `skin: this.#skin` to the `save()` config object; (d) add `if (value.skin) this.skin = value.skin` to `update()` (guard so a stored config without skin doesn't reset it; place AFTER setting allowedSkins if load sets them — for v1 the consumer sets allowedSkins, and `load()` calls `update()`, so guard with `value.skin` truthiness). Confirm `load()` routes through `update()`.
 
   NOTE: the validating setter means `load()` only restores `skin` if it's in `allowedSkins`. Since the consumer sets `allowedSkins` before load in practice, and the test sets it first, this holds. If `load()` runs before `allowedSkins` is set, document that the app must set `allowedSkins` first (same constraint as `allowedStyles`).
@@ -128,24 +133,30 @@ it('writes data-skin to the node and mirrors to documentElement', () => {
 	expect(document.documentElement.dataset.skin).toBe('ocean')
 })
 ```
+
 (If the existing tests use a local helper to mount + a `theme` object, reuse it; ensure `theme` includes a `skin` field.)
 
 - [ ] **Step 2: Run to verify it fails** — `bunx vitest run --project actions packages/actions/spec/themable.spec.svelte.js` → FAIL (`data-skin` not written).
 
 - [ ] **Step 3: Implement** — in `packages/actions/src/themable.svelte.js`:
   (a) add to the `$effect` beside the `dataset.style/mode/density` writes:
+
 ```js
 		root.dataset.skin = theme.skin
 ```
+
   and in the `documentElement` mirror block:
+
 ```js
 		el.dataset.skin = theme.skin
 ```
+
   (b) add `skin: 'default'` to the `DEFAULT_THEME` fallback object (top of file) so the no-`vibe` path has a skin.
 
 - [ ] **Step 4: Run to verify it passes** — same command → PASS; then full `bunx vitest run --project actions` (the existing save-to-storage themable test may assert the serialized shape — if it does, add `skin` to its expected object).
 
 - [ ] **Step 5: Tighten `skinnable` docs** — in `packages/actions/src/skinnable.svelte.js`, update the JSDoc to:
+
 ```js
 /**
  * Apply named-token CSS custom properties to an element as inline styles.
@@ -157,6 +168,7 @@ it('writes data-skin to the node and mirrors to documentElement', () => {
  * @param {Record<string, string>} variables - CSS var name → value (e.g. { '--primary': 'oklch(...)' })
  */
 ```
+
 (No behavior change.)
 
 - [ ] **Step 6: Commit**
@@ -190,6 +202,7 @@ export const BUILTIN_SKINS = {
 	emerald: { surface: 'slate', ink: 'slate', primary: 'emerald', accent: 'cyan' }
 }
 ```
+
 (Confirm the role keys + palette names against `packages/unocss/src/config.js` `DEFAULT_CONFIG.skin` and `@rokkit/core` `defaultColors`; adjust role set to match the project's named-token roles. `default` must match the preset's current default colormap so `:root` and `[data-skin='default']` agree.)
 
 - [ ] **Step 2: Write the failing test** — append to `packages/unocss/spec/preset.spec.js` (mirror the existing `preflights — dark mode CSS block` describe):
@@ -253,6 +266,7 @@ git commit -m "feat(unocss): emit [data-skin] blocks + built-in skins; drop skin
 	}
 }
 ```
+
 The default skin's named-token vars now come from the preset's `:root` preflight (Task 3). `themable` writes `data-skin='default'` by default (Task 2's `DEFAULT_THEME.skin`), and `[data-skin='default']` is the resolved-default skin so `:root` already carries its vars — no regression.
 
 - [ ] **Step 2: Verify themes build + coverage** — `bunx vitest run --project themes` → green. If a theme build/snapshot test referenced `skin-default`, update it.
@@ -296,6 +310,7 @@ describe('SkinSwitcherToggle', () => {
 	})
 })
 ```
+
 (Confirm the Toggle's per-option selector — `[data-toggle-option]` / `data-value` — against `ThemeSwitcherToggle.spec` and `Toggle.svelte`; adjust the query to match how the group variant renders options.)
 
 - [ ] **Step 2: Run to verify it fails** — `bunx vitest run --project app packages/app/spec/SkinSwitcherToggle.spec.svelte.ts` → FAIL.
@@ -368,9 +383,11 @@ export function buildSkinSwitcherOptions(
 	class={className}
 />
 ```
+
 Validate with the Svelte MCP autofixer; fix what it flags.
 
 - [ ] **Step 5: Export** — add to `packages/app/src/components/index.ts`:
+
 ```ts
 export { default as SkinSwitcherToggle } from './SkinSwitcherToggle.svelte'
 ```
@@ -402,18 +419,23 @@ git commit -m "feat(app): SkinSwitcherToggle"
 **Files:** Create `packages/cli/skills/skin-system-rokkit/SKILL.md`; modify `packages/cli/spec/skills.spec.js`.
 
 - [ ] **Step 1: Update catalog test first** — add to the `listSkills` assertion in `packages/cli/spec/skills.spec.js`:
+
 ```js
 		expect(names).toContain('skin-system-rokkit')
 ```
+
 - [ ] **Step 2: Run to verify it fails** — `bunx vitest run --project cli packages/cli/spec/skills.spec.js` → FAIL.
 - [ ] **Step 3: Author** `packages/cli/skills/skin-system-rokkit/SKILL.md`, beginning EXACTLY:
+
 ```
 ---
 name: skin-system-rokkit
 description: Use when switching color skins (which palette backs paper/ink/primary/accent) in a Rokkit (Svelte 5) app — the vibe.skin state, the data-skin mechanism, themable sync, defining skins in rokkit.config.js (skins:), built-in skins, SkinSwitcherToggle, and the skinnable action for dynamic/runtime skins.
 ---
 ```
+
 Body (verified against the shipped API from Tasks 1–6; match `semantic-styles-rokkit` voice, ~150–250 lines): the skin concept (palette per named token); defining skins (`skins:` in rokkit.config + built-ins); switching at runtime (`vibe.skin` + `vibe.allowedSkins`, `themable` writes `data-skin`, `SkinSwitcherToggle`); the `data-skin` CSS mechanism (default on `:root`, `[data-skin='name']` overrides); `skinnable` for dynamic/server skins; common mistakes (forgetting to set `allowedSkins`; using the removed `skin-{name}` class instead of `data-skin`; hand-rolling skin CSS).
+
 - [ ] **Step 4: Verify** — frontmatter exact; `bunx vitest run --project cli packages/cli/spec/skills.spec.js` → PASS; fences balanced.
 - [ ] **Step 5: Commit** — `git add packages/cli/skills/skin-system-rokkit packages/cli/spec/skills.spec.js && git commit -m "feat(cli): add skin-system-rokkit skill"`
 
@@ -447,5 +469,6 @@ Body (verified against the shipped API from Tasks 1–6; match `semantic-styles-
 Coordinated patch via `bun run bump patch --yes` → next version; merge `develop → main`; CI publishes. **Breaking:** the `skin-{name}` utility class is removed from `@rokkit/unocss` (consumers using `class="skin-x"` switch to `data-skin="x"`) — call it out in release notes. `rokkit skills add skin-system-rokkit` then goes live.
 
 ## Phasing note (out of scope for this plan)
+
 - **Phase 2:** per-role overrides folded into skins config (`vibe.skin` → `{ name, overrides }` or a config override layer; `PaletteManager` wired in).
 - **Phase 3:** dynamic skins not in `rokkit.config` — runtime/server colorsets applied via `skinnable` + `data-skin`.

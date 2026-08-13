@@ -13,7 +13,7 @@
 ## File Map
 
 | File | Action | Responsibility |
-|------|--------|----------------|
+| ------ | -------- | ---------------- |
 | `packages/core/src/constants.js` | Modify | Add `tertiary` to `DEFAULT_THEME_MAPPING` and `defaultPalette` |
 | `packages/core/src/colors/index.ts` | Modify | Add `tertiary` to `defaultPalette` array |
 | `packages/core/src/theme.ts` | Modify | Add `resolveColors()`, update `Theme` constructor |
@@ -37,6 +37,7 @@
 ### Task 1: Add `tertiary` to Semantic Color System
 
 **Files:**
+
 - Modify: `packages/core/src/constants.js:155-165`
 - Modify: `packages/core/src/colors/index.ts:9-18`
 - Modify: `packages/unocss/src/config.js:5-14`
@@ -161,6 +162,7 @@ git commit -m "feat(core): add tertiary to semantic color system"
 ### Task 2: Nullable Color Resolution
 
 **Files:**
+
 - Modify: `packages/core/src/theme.ts:164-177`
 - Test: `packages/core/spec/theme.spec.js`
 
@@ -280,6 +282,7 @@ git commit -m "feat(core): add nullable color resolution with fallback chain"
 ### Task 3: Roundedness Axis
 
 **Files:**
+
 - Create: `packages/themes/src/base/radius.css`
 - Modify: `packages/themes/src/base/density.css`
 - Modify: `packages/themes/src/base/index.css`
@@ -381,6 +384,7 @@ git commit -m "feat(themes): add roundedness axis — data-radius attribute with
 ### Task 4: Layout Tokens
 
 **Files:**
+
 - Create: `packages/themes/src/base/layout.css`
 - Modify: `packages/themes/src/base/index.css`
 
@@ -436,6 +440,7 @@ git commit -m "feat(themes): add layout tokens — sidebar, content, section spa
 ### Task 5: Gradient Border Wrapper
 
 **Files:**
+
 - Create: `packages/themes/src/base/gradient-border.css`
 - Modify: `packages/themes/src/base/index.css`
 
@@ -504,6 +509,7 @@ git commit -m "feat(themes): add gradient border wrapper structural CSS"
 ### Task 6: Literal Icon Support
 
 **Files:**
+
 - Modify: `packages/core/src/utils.js`
 - Modify: `packages/ui/src/components/ItemContent.svelte`
 - Modify: `packages/themes/src/base/item.css`
@@ -630,6 +636,7 @@ git commit -m "feat(ui): add literal icon support — kanji/emoji render as text
 ### Task 7: UnoCSS Preset Updates
 
 **Files:**
+
 - Modify: `packages/unocss/src/preset.ts:53-57,78-86`
 
 - [ ] **Step 1: Add `soft` radius preset and update preflight generation**
@@ -668,6 +675,7 @@ git commit -m "feat(unocss): add soft radius preset, tertiary shortcuts auto-gen
 ### Task 8: Wire Tokens into Demo App
 
 **Files:**
+
 - Modify: `demo/src/routes/(app)/+layout.svelte:106-113,124-126`
 - Modify: `demo/src/app.css:60-62`
 - Modify: `demo/rokkit.config.js`
@@ -696,6 +704,7 @@ export default {
 In `demo/src/routes/(app)/+layout.svelte`, update the `<style>` block:
 
 Replace:
+
 ```css
 .app-layout {
   display: grid;
@@ -709,6 +718,7 @@ Replace:
 ```
 
 With:
+
 ```css
 .app-layout {
   display: grid;
@@ -726,6 +736,7 @@ With:
 In `demo/src/app.css`, replace the hardcoded radius values:
 
 Replace:
+
 ```css
   /* ── Radii ──────────────────────────────────────────────── */
   --radius:    6px;
@@ -733,6 +744,7 @@ Replace:
 ```
 
 With:
+
 ```css
   /* ── Radii (consumed from layout tokens, overridable) ──── */
   --radius: var(--radius-md);
@@ -769,7 +781,8 @@ Expected: Server starts on localhost:5173
 
 - [ ] **Step 2: Verify layout tokens in browser dev tools**
 
-Open http://localhost:5173 in browser. Inspect `:root` in dev tools:
+Open <http://localhost:5173> in browser. Inspect `:root` in dev tools:
+
 - `--layout-sidebar-width: 240px` exists
 - `--layout-sidebar-collapsed: 64px` exists
 - `--layout-content-max-width: 1280px` exists
@@ -815,6 +828,7 @@ Expected: All visual regression tests pass (or produce expected diffs from token
 ### Task 10: Update Execution Plan and Journal
 
 **Files:**
+
 - Modify: `docs/design-system/execution-plan.md`
 - Modify: `agents/journal.md`
 

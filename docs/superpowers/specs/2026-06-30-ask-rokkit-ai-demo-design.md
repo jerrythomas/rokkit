@@ -66,7 +66,7 @@ A `ModePicker` view (new component, e.g. `src/lib/chat-demo/components/ModePicke
 renders three cards from a static `MODES` descriptor:
 
 | Mode | What it is | Capabilities | Example chips |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | **Simulated** | Instant canned demos — no AI, works offline | Fixed set: chart/table/form/list examples | "Bar chart of quarterly revenue", "Sortable products table", "Sign-up form" |
 | **OpenRouter** | A hosted LLM builds live components | Any prompt → charts/tables/forms/lists; needs network (key server-side); model picker | "Generate a Q3 sales scenario and chart it", "Table of the top 5 EVs by range" |
 | **Web LLM** | A model runs in your browser — fully private | Same generation, offline after a one-time WebGPU model download (~0.7–2 GB); model picker | "Invent a startup's monthly burn and plot it", "Build a newsletter signup form" |
@@ -116,7 +116,7 @@ renderer — extracted into a reusable piece the `[mode]` page renders, scoped t
 ### 5. Module boundaries
 
 | File | Change |
-|---|---|
+| --- | --- |
 | `src/lib/components/SiteNav.svelte` | label "Chat demo" → "Ask Rokkit" |
 | `src/routes/chat/+page.svelte` | becomes the picker — renders `<ModePicker/>` (chat UI moves to `[mode]`) |
 | `src/routes/chat/[mode]/+page.svelte` (new) | validate mode (else redirect `/chat`); set engine from route + `?model=`; render the mode-scoped chat |

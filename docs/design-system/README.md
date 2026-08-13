@@ -42,7 +42,7 @@
 The zen-sumi theme uses Japanese aesthetic vocabulary as its design language:
 
 | Term | Kanji | Meaning | Maps to |
-|------|-------|---------|---------|
+| ------ | ------- | --------- | --------- |
 | Sumi | 墨 | Ink | Text/foreground |
 | Kami | 紙 | Paper | Surface/background |
 | Shu | 朱 | Vermillion | Primary accent |
@@ -104,7 +104,7 @@ in rokkit. Most themes skip this layer entirely — semantic tokens are sufficie
 ### 3.1 Semantic Colors (10 variants)
 
 | Variant | Role | Default Palette | Fallback |
-|---------|------|-----------------|----------|
+| --------- | ------ | ----------------- | ---------- |
 | **surface** | Backgrounds, containers, borders | slate | — |
 | **primary** | Brand, CTAs, main interactive | orange | — |
 | **secondary** | Supporting brand, gradients | pink | → primary |
@@ -148,6 +148,7 @@ When a color is not provided, it inherits from its logical parent:
 ```
 
 **Inheritance chain:**
+
 ```
 tertiary  → primary
 secondary → primary (if not set)
@@ -170,7 +171,7 @@ Each variant has 11 shades following Tailwind's scale:
 Semantic aliases that auto-invert for dark mode:
 
 | Zone | Light shade | Dark shade | Usage |
-|------|-------------|------------|-------|
+| ------ | ------------- | ------------ | ------- |
 | z0 | 50 | 950 | Lightest background |
 | z1 | 100 | 900 | Subtle background |
 | z2 | 200 | 800 | Hover states, cards |
@@ -223,7 +224,7 @@ text-on-surface          → Inverts for dark mode surface backgrounds
 Three named densities, set via `data-density` attribute:
 
 | Density | Base | XS | SM | MD | LG | XL | Icon | Line-height |
-|---------|------|----|----|----|----|----|------|-------------|
+| --------- | ------ | ---- | ---- | ---- | ---- | ---- | ------ | ------------- |
 | **compact** | 0.75rem | 0.125rem | 0.25rem | 0.5rem | 0.75rem | 1rem | 1rem | 1.375 |
 | **comfortable** | 1rem | 0.25rem | 0.5rem | 0.75rem | 1rem | 1.5rem | 1.25rem | 1.5 |
 | **cozy** | 1.25rem | 0.375rem | 0.625rem | 1rem | 1.25rem | 2rem | 1.5rem | 1.75 |
@@ -265,6 +266,7 @@ For page-level structure (sidebar width, header height, content area):
 ```
 
 Sidebar + main layout:
+
 ```css
 .app-layout {
   display: grid;
@@ -280,7 +282,7 @@ Sidebar + main layout:
 ### 5.1 Font Roles
 
 | Role | CSS Variable | Default | Usage |
-|------|-------------|---------|-------|
+| ------ | ------------- | --------- | ------- |
 | **display** | `--font-display` | System serif | Hero text, large headings |
 | **sans** | `--font-sans` | Inter, system-ui | UI text, body, labels |
 | **mono** | `--font-mono` | JetBrains Mono | Code, data, paths |
@@ -318,7 +320,7 @@ Follows a modular scale. Sizes adapt to density:
 Roundedness is decoupled from density. Set via `data-radius` or CSS custom properties:
 
 | Preset | SM | MD | LG | XL | FULL |
-|--------|----|----|----|----|------|
+| -------- | ---- | ---- | ---- | ---- | ------ |
 | **sharp** | 0 | 2px | 2px | 4px | 4px |
 | **soft** | 2px | 4px | 6px | 8px | 10px |
 | **rounded** | 4px | 6px | 8px | 12px | 16px |
@@ -355,7 +357,7 @@ while cards retain their own radius level.
 ### 7.1 Input Variants
 
 | Variant | Description | Visual |
-|---------|-------------|--------|
+| --------- | ------------- | -------- |
 | **outline** | Border all around, transparent bg | Standard form input |
 | **filled** | Tinted background, subtle border | Material-style filled |
 | **underline** | Bottom border only, no bg | Minimal style |
@@ -364,7 +366,7 @@ while cards retain their own radius level.
 ### 7.2 Button Variants
 
 | Variant | Description |
-|---------|-------------|
+| --------- | ------------- |
 | **default** | Filled background (solid or gradient per theme) |
 | **outline** | Border + transparent background |
 | **ghost** | No border, text only, hover reveals bg |
@@ -375,7 +377,7 @@ while cards retain their own radius level.
 These vary **per theme** and represent the primary visual differentiator:
 
 | Theme | CTA Style | Input Focus | Highlight |
-|-------|-----------|-------------|-----------|
+| ------- | ----------- | ------------- | ----------- |
 | **rokkit** | Gradient (primary → secondary) | Gradient border | Gradient bg |
 | **minimal** | Flat underline | Underline thickens | Border-left accent |
 | **material** | Elevation + shadow | Border + fill | Tonal container |
@@ -396,6 +398,7 @@ For themes that use gradient borders (rokkit, zen-sumi on some elements):
 ```
 
 CSS:
+
 ```css
 [data-gradient-border] {
   padding: 1px;  /* border width */
@@ -575,16 +578,18 @@ Each theme's component file follows this pattern:
 Components emit data attributes that themes target:
 
 ### Global Axes
+
 | Attribute | Values | Set on |
-|-----------|--------|--------|
+| ----------- | -------- | -------- |
 | `data-style` | Theme name: `rokkit`, `minimal`, `zen-sumi` | Container/root |
 | `data-mode` | `light`, `dark` | `<html>` |
 | `data-density` | `compact`, `comfortable`, `cozy` | Container/root |
 | `data-radius` | `sharp`, `soft`, `rounded`, `pill` | Container/root |
 
 ### Component Attributes
+
 | Attribute | Values | Component |
-|-----------|--------|-----------|
+| ----------- | -------- | ----------- |
 | `data-button` | (present) | Button |
 | `data-variant` | `primary`, `secondary`, `accent`, `danger`, etc. | Any colored component |
 | `data-size` | `sm`, `md`, `lg` | Button, Input |

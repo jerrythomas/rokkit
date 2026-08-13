@@ -7,7 +7,7 @@
 ## UI Components (`@rokkit/ui`)
 
 | Component | llms | learn | play | impl | Notes |
-|-----------|------|-------|------|------|-------|
+| ----------- | ------ | ------- | ------ | ------ | ------- |
 | AlertList | ✓ | ~ | ✓ | ✓ | Learn covered in Message page |
 | Avatar | ✓ | ✓ | — | ✓ | |
 | Badge | ✓ | ✓ | — | ✓ | |
@@ -59,7 +59,7 @@
 ## Chart Components (`@rokkit/chart`)
 
 | Component | llms | learn | play | impl | Notes |
-|-----------|------|-------|------|------|-------|
+| ----------- | ------ | ------- | ------ | ------ | ------- |
 | AnimatedPlot | ✓ | ✓ | ✓ | ✓ | |
 | AreaChart | ✓ | ✓ | ✓ | ✓ | |
 | BarChart | ✓ | ✓ | ✓ | ✓ | |
@@ -77,7 +77,7 @@
 ## Forms Components (`@rokkit/forms`)
 
 | Component | llms | learn | play | impl | Notes |
-|-----------|------|-------|------|------|-------|
+| ----------- | ------ | ------- | ------ | ------ | ------- |
 | Form / FormRenderer | ✓ | ✓ | ✓ | ✓ | |
 | CheckBox | ✓ | ~ | ~ | ✓ | Rendered by FormRenderer only |
 | RadioGroup | ✓ | ~ | ~ | ✓ | Rendered by FormRenderer only |
