@@ -54,6 +54,9 @@
 		highlight?: 'first' | 'last' | 'min' | 'max' | number | ((row: Row, i: number) => boolean)
 		label?: boolean | string | ((row: Row) => unknown)
 		trend?: Method | Method[]
+		onselect?: (detail: unknown) => void
+		selectable?: boolean
+		selected?: Row[]
 		children?: Snippet
 	}
 
@@ -82,6 +85,9 @@
 		highlight = undefined,
 		label = false,
 		trend = undefined,
+		onselect = undefined,
+		selectable = false,
+		selected = $bindable([]),
 		children
 	}: Props = $props()
 
@@ -142,7 +148,9 @@
 			colorScheme: spec?.colorScheme,
 			colorMidpoint: spec?.colorMidpoint,
 			orientation: spec?.orientation,
-			chartPreset
+			chartPreset,
+			onselect,
+			selectable
 		}
 	}
 
@@ -155,6 +163,17 @@
 	// Keep state in sync when reactive config changes
 	$effect(() => {
 		plotState.update(buildPlotConfig())
+	})
+
+	// external control → state
+	$effect(() => {
+		plotState.setSelected(selected)
+	})
+	// clicks (state) → prop, guarded to avoid an update loop
+	$effect(() => {
+		const rows = plotState.selectedRows
+		const same = rows.length === selected.length && rows.every((r, i) => r === selected[i])
+		if (!same) selected = rows
 	})
 
 	$effect(() => {
@@ -275,7 +294,7 @@
 				<Trend x={overlayX} y={overlayY} {trend} />
 			{/if}
 
-			{#if highlight !== null && highlight !== undefined}
+			{#if (highlight !== null && highlight !== undefined) || selectable || selected.length}
 				<Highlight x={overlayX} y={overlayY} {highlight} {label} />
 			{/if}
 		</g>

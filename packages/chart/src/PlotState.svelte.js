@@ -354,7 +354,11 @@ export class PlotState {
 	}
 
 	get data() {
-		return this.#data
+		// Return #rawData (not #data): geoms read their rows via geomData() which
+		// returns #rawData, so overlays and index lookups (plotState.data.indexOf(datum))
+		// must use the SAME proxy identity. #data and #rawData proxy the same source
+		// array separately, so their elements are not ===. Same content, aligned identity.
+		return this.#rawData
 	}
 	get margin() {
 		return this.#effectiveMargin
