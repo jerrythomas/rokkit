@@ -22,8 +22,10 @@
 	import Hexbin from './geoms/Hexbin.svelte'
 	import Ribbon from './geoms/Ribbon.svelte'
 	import Highlight from './geoms/Highlight.svelte'
+	import Trend from './geoms/Trend.svelte'
 
 	type Row = Record<string, unknown>
+	type Method = string | number | { type: string; [k: string]: unknown }
 	type Margin = { top: number; right: number; bottom: number; left: number }
 	type ChartPresetCtx = { current: typeof defaultPreset }
 
@@ -51,6 +53,7 @@
 		y?: string
 		highlight?: 'first' | 'last' | 'min' | 'max' | number | ((row: Row, i: number) => boolean)
 		label?: boolean | string | ((row: Row) => unknown)
+		trend?: Method | Method[]
 		children?: Snippet
 	}
 
@@ -78,6 +81,7 @@
 		y = undefined,
 		highlight = undefined,
 		label = false,
+		trend = undefined,
 		children
 	}: Props = $props()
 
@@ -265,6 +269,10 @@
 			{#if axes}
 				<Axis type="x" label={spec?.labels?.[spec?.x ?? ''] ?? ''} format={xFormat} ticks={xTicks} {minorTicks} />
 				<Axis type="y" label={spec?.labels?.[spec?.y ?? ''] ?? ''} format={yFormat} ticks={yTicks} {minorTicks} />
+			{/if}
+
+			{#if trend !== null && trend !== undefined}
+				<Trend x={overlayX} y={overlayY} {trend} />
 			{/if}
 
 			{#if highlight !== null && highlight !== undefined}
