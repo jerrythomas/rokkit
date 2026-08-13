@@ -8,7 +8,10 @@
 		BubbleChart,
 		BoxPlot,
 		ViolinPlot,
-		Sparkline
+		Sparkline,
+		PlotChart,
+		GeomArea,
+		GeomLine
 	} from '@rokkit/chart'
 
 	// Quarterly revenue across two products — drives Bar / Line / Area.
@@ -57,9 +60,39 @@
 
 	const sparkSeries = [12, 45, 23, 67, 34, 89, 56, 72, 41, 90, 78, 84]
 	const sparkRevenue = [110, 145, 132, 168, 154, 192]
+
+	// 30-day daily metric — gently rising with wobble (deterministic, no RNG).
+	const metrics = Array.from({ length: 30 }, (_, i) => ({
+		day: i - 29, // -29 … 0 (today)
+		value: Math.round(40 + i * 1.6 + 8 * Math.sin(i / 2))
+	}))
+	const dayFormat = (d: unknown) => (Number(d) === 0 ? 'today' : `${d}d`)
+	// Literal CSS color (matches Highlight geom's accent dot) — see isLiteralColor()
+	// in packages/chart/src/lib/brewing/colors.js, which recognizes rgb(...) as a literal.
+	const accentColor = 'rgb(var(--color-accent-500))'
 </script>
 
 <div class="grid">
+	<section>
+		<header>Metrics — last 30 days · daily (grid + trend + highlight)</header>
+		<div class="chart-stage">
+			<PlotChart
+				data={metrics}
+				x="day"
+				y="value"
+				grid="both"
+				trend="avg"
+				highlight="last"
+				xFormat={dayFormat}
+				width={720}
+				height={240}
+			>
+				<GeomArea x="day" y="value" color={accentColor} />
+				<GeomLine x="day" y="value" color={accentColor} />
+			</PlotChart>
+		</div>
+	</section>
+
 	<section>
 		<header>BarChart — quarterly revenue, grouped by product</header>
 		<div class="chart-stage">
