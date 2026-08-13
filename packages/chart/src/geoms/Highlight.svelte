@@ -20,6 +20,8 @@
 		const xs = state?.xScale
 		const ys = state?.yScale
 		if (!xs || !ys || !x || !y) return []
+		const selectedRows = state?.selectedRows ?? []
+		const selectedSet = new Set(selectedRows)
 		const out = []
 		const seen = new Set()
 		if (highlight !== null && highlight !== undefined && rows.length) {
@@ -30,12 +32,13 @@
 					cx: scalePos(xs, row[x]),
 					cy: ys(Number(row[y])),
 					row,
-					selected: false
+					// A statically-highlighted point that is also selected renders as
+					// selected — selection is the stronger, interactive state.
+					selected: selectedSet.has(row)
 				})
 				seen.add(row)
 			}
 		}
-		const selectedRows = state?.selectedRows ?? []
 		selectedRows.forEach((row, j) => {
 			if (seen.has(row)) return
 			out.push({
@@ -83,6 +86,9 @@
 		fill: var(--chart-highlight-color, rgb(var(--color-accent-500, 194 65 12)));
 		stroke: var(--chart-highlight-ring, none);
 		r: var(--chart-highlight-radius, 4);
+		/* Visual only — let clicks pass through to the data hit target beneath so the
+		   highlighted/selected observation stays selectable (and de-selectable). */
+		pointer-events: none;
 	}
 	[data-plot-highlight-label] {
 		fill: currentColor;

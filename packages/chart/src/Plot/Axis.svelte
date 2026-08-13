@@ -141,5 +141,7 @@
 	}
 	[data-plot-axis-line] {
 		stroke: currentColor;
+		/* Decoration only — never intercept clicks meant for data marks beneath it. */
+		pointer-events: none;
 	}
 </style>

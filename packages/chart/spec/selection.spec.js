@@ -59,6 +59,17 @@ describe('chart selection', () => {
 		expect(container.querySelectorAll('[data-plot-highlight][data-plot-selected="true"]')).toHaveLength(0)
 	})
 
+	it('selecting a statically-highlighted point tags it selected (dedup prefers selected)', async () => {
+		const spec = { data: line, x: 'day', y: 'v', geoms: [{ type: 'line' }] }
+		const { container } = render(Plot, {
+			props: { spec, highlight: 'last', selectable: true, grid: false, width: 400, height: 300 }
+		})
+		const hits = container.querySelectorAll('[data-plot-element="line-hover"]')
+		hits[hits.length - 1].dispatchEvent(new MouseEvent('click', { bubbles: true })) // click the 'last' (highlighted) point
+		await tick()
+		expect(container.querySelectorAll('[data-plot-highlight][data-plot-selected="true"]')).toHaveLength(1)
+	})
+
 	it('LineChart wrapper forwards onselect', async () => {
 		const { default: LineChart } = await import('../src/charts/LineChart.svelte')
 		const onselect = vi.fn()
