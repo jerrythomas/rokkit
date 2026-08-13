@@ -15,8 +15,10 @@
 		Array.isArray(trend) ? trend : trend === null || trend === undefined ? [] : [trend]
 	)
 
-	const typeOf = (m: Method) =>
-		typeof m === 'string' ? m : typeof m === 'number' ? 'value' : (m?.type ?? '')
+	const typeOf = (m: Method) => {
+		const t = typeof m === 'string' ? m : typeof m === 'number' ? 'value' : (m?.type ?? '')
+		return t === 'mean' ? 'avg' : t
+	}
 
 	const paths = $derived.by(() => {
 		const rows = state?.data ?? []

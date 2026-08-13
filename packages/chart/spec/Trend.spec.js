@@ -33,4 +33,9 @@ describe('Trend overlay', () => {
 	it('duplicate methods do not crash (index keying)', () => {
 		expect(paths(['avg', 'avg'])).toHaveLength(2)
 	})
+	it("normalizes the 'mean' alias to 'avg' in the data attribute", () => {
+		const p = paths('mean')
+		expect(p).toHaveLength(1)
+		expect(p[0].getAttribute('data-plot-trend')).toBe('avg')
+	})
 })
