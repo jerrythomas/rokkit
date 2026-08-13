@@ -1,4 +1,4 @@
-# Chart — Grid axis control + observation highlight
+# Chart — Grid axis control + observation highlight + trend lines
 
 **Date:** 2026-08-13
 **Status:** Backlog — agreed design, ready to plan
@@ -8,20 +8,23 @@ wrappers). Showcase + e2e live in `apps/learn`. Design docs: `docs/design/20-cha
 
 ## Summary
 
-Two additive, backward-compatible capabilities on the chart components, motivated by a
-minimalist time-series mock (30-day daily line/area, faint horizontal grid, a single
-highlighted "today" observation):
+Three additive, backward-compatible capabilities on the chart components, motivated by a
+minimalist time-series mock (30-day daily line/area, faint horizontal grid, a dashed average
+line, a single highlighted "today" observation):
 
 1. **Grid axis control** — a `grid` prop that selects which axes draw grid lines
    (`boolean | 'x' | 'y' | 'both'`), including **vertical grid lines on a continuous/time
    x-scale** (today they only render for band/bar scales), plus first-class CSS theming hooks.
 2. **Observation highlight** — a `highlight` prop that marks a specific observation (or
    several) with a styled marker layered above the series, themed purely via CSS.
+3. **Trend lines** — a `trend` prop that overlays one or more computed trend/reference lines.
+   Constant methods (`avg`/`median`/`min`/`max`/fixed value) draw a horizontal line (the mock's
+   dashed average); fitted methods (`linear` regression, `ma`/`ema` moving averages, `exp`
+   regression) draw a series across x. Dashed by default; themed purely via CSS.
 
-Both land on the composable primitives **and** the high-level wrappers, per the agreed scope.
+All three land on the composable primitives **and** the high-level wrappers, per the agreed scope.
 
-Not in this item: a dashed **average/reference line** (a separate `ReferenceLine`/threshold
-feature) and giving `<AreaChart>` a crisp top stroke — the showcase composes
+Not in this item: giving `<AreaChart>` a crisp top stroke — the showcase composes
 `PlotChart + GeomArea + GeomLine` to reproduce the mock's outlined area.
 
 ---
@@ -132,6 +135,86 @@ Appearance is entirely theme CSS, consistent with the library's data-attribute h
 
 ---
 
+## Feature 3 — Trend lines
+
+Folds in the (previously deferred) average/reference line as one method of a small trend engine.
+
+### Public API
+
+On `<PlotChart>`, `<AreaChart>`, `<LineChart>`:
+
+```ts
+type TrendType =
+  | 'avg' | 'mean' | 'median' | 'min' | 'max'  // constant → horizontal line at aggregate(y)
+  | 'value'                                     // constant → horizontal line at `value`
+  | 'linear'                                    // least-squares regression line across x
+  | 'ma'                                        // simple moving average (needs `window`)
+  | 'ema'                                        // exponential moving average (span/alpha)
+  | 'exp'                                        // exponential regression fit  y = a·e^(bx)
+
+type TrendConfig = {
+  type: TrendType
+  value?: number              // for 'value'
+  window?: number             // for 'ma' (required)
+  span?: number               // for 'ema' (default 7); alpha = 2/(span+1)
+  alpha?: number              // for 'ema' (alt to span)
+  label?: boolean | string    // text callout; string overrides the auto label
+}
+
+// shorthands: a bare string picks a param-less method; a number is a fixed-value line
+type TrendMethod = TrendType | number | TrendConfig
+
+trend?: TrendMethod | TrendMethod[]   // one, or several rendered together
+```
+
+Shorthands: `trend='avg'` → `{type:'avg'}`; `trend={7}` → `{type:'value', value:7}`;
+`trend='ema'` → `{type:'ema', span:7}`. `'mean'` is an alias of `'avg'`.
+`trend={['avg','max',{type:'ema',span:7}]}` renders three lines at once.
+
+### Calculators — `src/lib/trend.js` (pure, unit-tested)
+
+| Method     | Output kind | Notes                                                                         |
+| ---------- | ----------- | ----------------------------------------------------------------------------- |
+| avg/median/min/max/value | constant | horizontal line spanning the x-domain at the computed y             |
+| `linear`   | series      | least-squares `{m,b}` over (xNumeric or index, y); straight line end-to-end   |
+| `ma`       | series      | trailing simple moving average over `window` (partial windows at the head)    |
+| `ema`      | series      | recursive EMA, `alpha = alpha ?? 2/(span+1)`                                   |
+| `exp`      | series      | log-linear least squares `ln y = ln a + b·x`; **returns null if any y ≤ 0**   |
+
+`computeTrend(rows, {x, y}, config) → { kind:'constant', value } | { kind:'series', points }`.
+For non-numeric x (point/time scale) regression/`exp` use the datum **index** as the x variable.
+Degenerate inputs (empty, single point, `exp` with non-positive y) return `null` → the trend is
+skipped and a `console.warn` is emitted (no throw).
+
+### Rendering — new primitive
+
+- New geom `geoms/Trend.svelte`, exported as `GeomTrend` and `Plot.Trend`. Reads data + x/y +
+  scales from plot-state; renders each trend as a `<path>` (2-point line for constants, sampled
+  series otherwise), layered above the grid but below/above the series is fine (overlay).
+- Pure overlay — does **not** `registerGeom` (no domain expansion; fitted values may sit slightly
+  outside the data range and are simply drawn, not clamped).
+- Wrappers add a `trend` prop and render `<Trend>` internally from their own `x`/`y`.
+
+### Theming (CSS only — dashed by default, matching the mock)
+
+```
+data-plot-trend           /* every trend line   */
+data-plot-trend="avg"     /* per-method targeting (type as the value) */
+data-plot-trend-label
+```
+
+```css
+[data-plot-trend] {
+  fill: none;
+  stroke: var(--chart-trend-color, currentColor);
+  stroke-width: var(--chart-trend-width, 1);
+  stroke-dasharray: var(--chart-trend-dash, 4 4);
+  opacity: var(--chart-trend-opacity, 0.7);
+}
+```
+
+---
+
 ## Scope / files
 
 **Library (`packages/chart`):**
@@ -139,10 +222,13 @@ Appearance is entirely theme CSS, consistent with the library's data-attribute h
 - `src/Plot/Grid.svelte` — `lines` prop, tick alignment, per-orientation attrs + CSS vars.
 - `src/geoms/Highlight.svelte` *(new)* + a selector-resolution helper in `src/lib/` (e.g.
   `lib/highlight.js`) with unit-testable pure logic.
-- `src/Plot.svelte` — widen `grid`, add `highlight`, render `Grid` (mapped) + `Highlight`.
-- `src/charts/AreaChart.svelte`, `src/charts/LineChart.svelte` — widen `grid`, add `highlight`,
-  forward both.
-- `src/index.js` — export `Plot.Highlight` and `GeomHighlight`.
+- `src/geoms/Trend.svelte` *(new)* + `src/lib/trend.js` *(new)* — pure calculators
+  (avg/median/min/max/value/linear/ma/ema/exp) and `computeTrend()`.
+- `src/Plot.svelte` — widen `grid`, add `highlight` + `trend`, render `Grid` (mapped) +
+  `Highlight` + `Trend`.
+- `src/charts/AreaChart.svelte`, `src/charts/LineChart.svelte` — widen `grid`, add `highlight` +
+  `trend`, forward all three.
+- `src/index.js` — export `Plot.Highlight`/`GeomHighlight` and `Plot.Trend`/`GeomTrend`.
 
 **Tests (`packages/chart/spec/`):**
 
@@ -151,44 +237,55 @@ Appearance is entirely theme CSS, consistent with the library's data-attribute h
   x-line positions equal axis x-tick positions.
 - `highlight.spec.js` *(new)* — each selector resolves to the correct index/coordinates; predicate
   matches multiple; `data-plot-highlight` present; label toggles.
-- Extend `Plot.spec.js` — wrappers forward `grid` + `highlight` through to primitives.
+- `lib/trend.spec.js` *(new)* — calculators against known fixtures: mean/median/min/max; `linear`
+  slope/intercept; `ma` window (incl. head); `ema` span→alpha; `exp` fit; edge cases return
+  `null` (empty, single point, `exp` with y ≤ 0).
+- `Trend.spec.js` *(new)* — constant → 2-point horizontal path; `linear` → straight; `ma`/`ema`/
+  `exp` → series of expected length; `data-plot-trend="<type>"` present; array of trends renders
+  multiple `<path>`s; label toggle.
+- Extend `Plot.spec.js` — wrappers forward `grid` + `highlight` + `trend` through to primitives.
 
 **Showcase + e2e (`apps/learn`):**
 
 - Add a **"Last 30 days" showcase** on the chart page reproducing the mock: `PlotChart` +
-  `GeomArea` + `GeomLine` + `grid="both"` + `highlight="last"` + custom `xFormat` (`-29d … today`).
-  Also show the one-liner `<AreaChart grid="both" highlight="max" />` variant and a
-  per-orientation CSS-themed grid example.
-- Playwright e2e asserting the showcase renders the highlight marker and the horizontal +
-  vertical grid lines.
+  `GeomArea` + `GeomLine` + `grid="both"` + `trend="avg"` (the dashed average line) +
+  `highlight="last"` + custom `xFormat` (`-29d … today`). Also show the one-liner
+  `<AreaChart grid="both" trend={['avg','max']} highlight="max" />` variant, a fitted trend
+  (`trend={{type:'ema',span:7}}` or `trend="linear"`), and a per-orientation CSS-themed grid example.
+- Playwright e2e asserting the showcase renders the highlight marker, the trend line, and the
+  horizontal + vertical grid lines.
 
 ## Docs & references (post-implementation)
 
 - Update `docs/design/20-chart.md` and `docs/design/21-charts.md` — document the `grid` union,
-  the `Highlight` primitive, and the new CSS-var theming hooks.
+  the `Highlight` and `Trend` primitives (incl. the trend calculators), and the new CSS-var
+  theming hooks.
 - Refresh the reference/"skill" docs the library ships:
   `apps/learn/**/llms/components/{area-chart,line-chart,plot-chart}.txt` (props, data-attributes,
-  CSS vars). Add a `highlight.txt` primitive entry if the llms index lists geoms individually.
+  CSS vars). Add `highlight.txt` / `trend.txt` primitive entries if the llms index lists geoms
+  individually.
 - Audit chart-facing skills for staleness: `.claude/skills/rokkit-components/SKILL.md` and the
-  semantic-styles-rokkit token vocabulary — add the `--chart-grid-*` / `--chart-highlight-*`
-  tokens if those skills enumerate chart tokens. (Grep during implementation; only touch if
-  they currently mention chart props/tokens.)
+  semantic-styles-rokkit token vocabulary — add the `--chart-grid-*` / `--chart-highlight-*` /
+  `--chart-trend-*` tokens if those skills enumerate chart tokens. (Grep during implementation;
+  only touch if they currently mention chart props/tokens.)
 - `docs/design/12-priority.md`, `agents/journal.md` — per the completion checklist.
 
 ## Out of scope
 
-- Dashed **average / reference / threshold line** — separate `ReferenceLine` (`Plot.Rule`)
-  feature; file as its own backlog item.
 - A crisp top stroke on the `<AreaChart>` wrapper — the showcase composes `Area + Line` instead.
 - Grid line **count** as a prop — grid density derives from `xTicks`/`yTicks`; no separate knob.
 - Interactive/hover highlighting — this is a **static, data-driven** marker only.
+- Trend **extrapolation/forecasting** beyond the data range, and **confidence bands** — trends are
+  drawn only across the existing x-range (a later `Ribbon`-backed band could add intervals).
+- Polynomial / LOESS / seasonal-decomposition trends — only the listed methods ship in v1.
 
 ## Deliverable
 
-`grid: boolean | 'x' | 'y' | 'both'` and `highlight: selector` on the composable primitives and
-the `AreaChart`/`LineChart` wrappers, CSS-var theming for both, unit + e2e coverage, a learn-app
-showcase reproducing the mock, and refreshed design/reference/skill docs. Backward compatible;
-ships on the normal patch cadence. Gate: lint 0 errors + `bun run test:ci` green.
+`grid: boolean | 'x' | 'y' | 'both'`, `highlight: selector`, and `trend: method | method[]` on the
+composable primitives and the `AreaChart`/`LineChart` wrappers, CSS-var theming for all three, unit
++ e2e coverage, a learn-app showcase reproducing the mock, and refreshed design/reference/skill
+docs. Backward compatible; ships on the normal patch cadence. Gate: lint 0 errors +
+`bun run test:ci` green.
 
 ## Acceptance criteria
 
@@ -200,7 +297,14 @@ ships on the normal patch cadence. Gate: lint 0 errors + `bun run test:ci` green
 - [ ] `highlight` resolves `first`/`last`/`min`/`max`/index/predicate to the correct
       observation(s) and renders a marker above the series with `data-plot-highlight`.
 - [ ] `--chart-highlight-{color,radius,ring}` restyle the marker; no color/size component props.
-- [ ] Both features work via the wrappers **and** the composable `Plot.*` primitives.
-- [ ] Learn showcase reproduces the mock; Playwright guards grid + highlight render.
+- [ ] `trend` renders a horizontal line for constant methods (`avg`/`median`/`min`/`max`/value)
+      and a series for fitted methods (`linear`/`ma`/`ema`/`exp`); an array renders several.
+- [ ] Trend calculators match known fixtures; degenerate inputs (empty / single point / `exp`
+      with y ≤ 0) return `null` and skip the trend with a warning (no throw).
+- [ ] `[data-plot-trend="<type>"]` + `--chart-trend-{color,width,dash,opacity}` restyle trend
+      lines; dashed by default.
+- [ ] All three features work via the wrappers **and** the composable `Plot.*` primitives.
+- [ ] Learn showcase reproduces the mock (grid + dashed avg trend + highlighted today);
+      Playwright guards grid + trend + highlight render.
 - [ ] Design docs, llms reference docs, and any chart-facing skills updated.
 - [ ] Lint 0 errors; `bun run test:ci` green.
