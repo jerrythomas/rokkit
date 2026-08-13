@@ -103,7 +103,9 @@
 	const svgHeight = $derived(spec?.height ?? height)
 	const gridValue = $derived(spec?.grid ?? grid)
 	const showGrid = $derived(gridValue !== false)
-	const gridLines = $derived(gridValue === true ? 'auto' : (gridValue as 'x' | 'y' | 'both' | 'auto'))
+	const gridLines = $derived(
+		gridValue === true || gridValue === false ? 'auto' : gridValue
+	)
 	const showLegend = $derived(spec?.legend ?? legend)
 	const chartTitle = $derived(spec?.title ?? title)
 	const chartSummary = $derived(spec?.summary ?? summary)

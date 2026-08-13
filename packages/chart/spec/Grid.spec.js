@@ -36,4 +36,17 @@ describe('Grid axis control', () => {
 	it('false renders no grid lines', () => {
 		expect(grid(false)).toEqual({ x: 0, y: 0 })
 	})
+	it('true (auto) draws BOTH axes on a band/bar scale (zero-regression)', () => {
+		const barData = [
+			{ q: 'Q1', v: 3 },
+			{ q: 'Q2', v: 5 },
+			{ q: 'Q3', v: 4 }
+		]
+		const barSpec = { data: barData, x: 'q', y: 'v', geoms: [{ type: 'bar' }] }
+		const { container } = render(Plot, {
+			props: { spec: barSpec, grid: true, width: 400, height: 300 }
+		})
+		expect(container.querySelectorAll('[data-plot-grid-line="x"]').length).toBeGreaterThan(0)
+		expect(container.querySelectorAll('[data-plot-grid-line="y"]').length).toBeGreaterThan(0)
+	})
 })
