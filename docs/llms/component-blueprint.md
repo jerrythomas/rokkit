@@ -506,7 +506,7 @@ createEventDispatcher()    → callback props (onchange, onselect)
 
 ## 10. File Checklist
 
-```
+```text
 packages/ui/src/components/<Name>.svelte          ← component
 packages/ui/src/components/index.ts               ← add export
 packages/ui/src/index.ts                          ← add export

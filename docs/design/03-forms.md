@@ -87,7 +87,7 @@ flowchart LR
 
 `FormBuilder` (`lib/builder.svelte.js`) is the reactive core. It manages all mutable form state using Svelte 5 runes. `FormRenderer` creates one stable instance at mount and wires prop changes to it via `$effect`.
 
-```
+```text
 FormBuilder (reactive state)
 │
 ├── #data ($state)             — current field values, immutable updates
@@ -641,7 +641,7 @@ Add and remove buttons are rendered alongside each item. The `addItem` function 
 
 ### Structural overview
 
-```
+```text
 FormElement (group)
 └── props.elements: FormElement[]
     ├── FormElement (text)    → InputField → InputText
@@ -735,7 +735,7 @@ FormElement (array of objects)
 
 ## Appendix: Component File Map
 
-```
+```text
 packages/forms/src/
 ├── FormRenderer.svelte          — public component; owns FormBuilder lifecycle
 ├── InputField.svelte            — label + input + message wrapper
@@ -819,7 +819,7 @@ $effect(() => {
 
 `resolveRenderer` performs a three-step lookup against a merged registry of built-in and consumer-provided renderers:
 
-```
+```text
 element
   │
   ├── props.renderer set?

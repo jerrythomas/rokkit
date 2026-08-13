@@ -140,7 +140,7 @@ Each dual-palette role generates its own `[data-mode="dark"]` override block wit
 
 Themes ship as source CSS (`@apply` directives), not pre-compiled dist. The consumer's UnoCSS build is the sole compilation step.
 
-```
+```text
 themes/src/zen-sumi/button.css    (@apply bg-surface-z1)
        |
 consumer imports: import '@rokkit/themes/zen-sumi'
@@ -162,7 +162,7 @@ Nothing new. They already have `presetRokkit()` configured with `transformerDire
 
 ## Fallback Chain
 
-```
+```text
 ink       → surface (inverted z-scale)
 tertiary  → primary
 secondary → primary

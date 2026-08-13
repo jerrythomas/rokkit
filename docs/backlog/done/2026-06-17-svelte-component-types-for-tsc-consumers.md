@@ -30,7 +30,7 @@ implicit `any`, or `tsc` reports "Cannot find module './X.svelte'".
 This is why the sensei-hq site uses a local `ThemeToggle` instead of `@rokkit/app`'s, and it
 is the general version of the (now-fixed) `@rokkit/unocss/hooks` gap — there the export was
 plain `.js` with no `types` condition; fixed in `947f8efc` by adding `types: ./dist/hooks.d.ts`
-- an optional `@sveltejs/kit` peer dep so `themeHook` types as `Handle`. Plain-JS/TS subpaths
+— an optional `@sveltejs/kit` peer dep so `themeHook` types as `Handle`. Plain-JS/TS subpaths
 are easy to type; `.svelte` is the remaining hard case.
 
 ## Options

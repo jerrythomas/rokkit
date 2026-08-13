@@ -9,7 +9,7 @@ Flatten the `solution/` wrapper folder so the monorepo workspace root becomes th
 
 ## Target Directory Structure
 
-```
+```text
 rokkit/                        ← repo root = workspace root
   packages/                    ← moved from solution/packages/
   site/                        ← moved + renamed from solution/sites/learn/

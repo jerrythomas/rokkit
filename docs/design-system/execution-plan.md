@@ -7,7 +7,7 @@
 
 ## Overview
 
-```
+```text
 Phase 1: Demo App Foundation (SvelteKit + mockup replication)           ✅ DONE
 Phase 2: Internationalization (Paraglide + Spanish + Arabic/RTL)        ✅ DONE
 Phase 3: Playwright Baseline (visual regression snapshots)              ✅ DONE
@@ -45,7 +45,7 @@ Phase 9: Final Verification                          ✅ DONE
   - Daemon status footer
 - Route structure:
 
-  ```
+  ```text
   /                    → redirect to /observatory
   /observatory         → daily dashboard
   /sessions            → session browser
@@ -170,7 +170,7 @@ export function loadObservatoryData() {
 
 Write tests for each screen + variant:
 
-```
+```text
 observatory.spec.ts
   ├─ light mode (en)
   ├─ dark mode (en)
@@ -212,7 +212,7 @@ setup-wizard.spec.ts
 - Add `tertiary` to `DEFAULT_THEME_MAPPING`
 - Implement `resolveColors()` with inheritance chain:
 
-  ```
+  ```text
   tertiary  → primary
   secondary → primary (if null)
   accent    → primary (if null)
@@ -328,7 +328,7 @@ setup-wizard.spec.ts
 
 ### Step 5.1: Create Theme Structure in Demo
 
-```
+```text
 demo/src/themes/zen-sumi/
 ├── index.css
 ├── button.css
@@ -561,13 +561,13 @@ Key changes:
 
 Run Playwright for the complete matrix:
 
-```
+```text
 5 themes × 2 modes × 3 densities × 4 radii × 3 languages = 360 combinations
 ```
 
 Pragmatic subset (key combinations):
 
-```
+```text
 zen-sumi:  light + dark × comfortable × soft × en/ar = 4
 rokkit:    light + dark × comfortable × rounded × en = 2
 minimal:   light + dark × compact × soft × en = 2
@@ -609,7 +609,7 @@ frosted:   light + dark × cozy × rounded × en = 2
 
 ## Dependency Graph
 
-```
+```text
 Phase 1 ─────────────────┐
 Phase 2 ─────────────────┤
                          ├──▶ Phase 3 (baseline snapshots)

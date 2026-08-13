@@ -1002,13 +1002,13 @@ named tokens; `tokens: 'extended'` adds the full 11-shade palette ladder per rol
 
 Change the line under `## Utility Classes and Data Attributes` from:
 
-```
+```text
 For utility classes (`bg-primary-z5`, `text-surface-z8`, `data-mode`, etc.) and the full data attribute reference, see `docs/llms/index.txt`.
 ```
 
 to:
 
-```
+```text
 For utility classes (named tokens: `bg-paper`, `text-ink`, `bg-primary`, `text-on-primary`; z-scale `bg-*-z*` is back-compat) and the full data attribute reference, see `docs/llms/index.txt`.
 ```
 
@@ -1016,13 +1016,13 @@ For utility classes (named tokens: `bg-paper`, `text-ink`, `bg-primary`, `text-o
 
 Change the `### semanticShortcuts(name) / contrastShortcuts(name)` description line from:
 
-```
+```text
 Generate UnoCSS shortcut arrays for semantic tone utilities (`bg-primary-z5`, etc.) and on-color text utilities (`text-on-primary`).
 ```
 
 to:
 
-```
+```text
 Generate UnoCSS shortcut arrays for semantic z-scale tone utilities (`bg-primary-z5`, etc.) and on-color text utilities (`text-on-primary`). Note: z-scale is the back-compat layer — app code should prefer named tokens (`bg-primary`, `bg-paper`), which `presetRokkit` emits via `buildNamedShortcuts`.
 ```
 
@@ -1030,13 +1030,13 @@ Generate UnoCSS shortcut arrays for semantic z-scale tone utilities (`bg-primary
 
 In `packages/unocss/README.md`, change the sentence (~line 60):
 
-```
+```text
 Colors are referenced by palette name (e.g. Tailwind color names). The preset generates CSS variable-backed scale utilities like `bg-primary-z5`, `text-secondary-z8`, etc.
 ```
 
 to:
 
-```
+```text
 Colors are referenced by palette name (e.g. Tailwind color names). The preset emits the named-token vocabulary (`bg-paper`, `text-ink`, `bg-primary`, `text-on-primary`, `*-soft`); the z-scale utilities (`bg-primary-z5`, `text-surface-z8`) remain as a back-compat layer pointing at the named tokens.
 ```
 

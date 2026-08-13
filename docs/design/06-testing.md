@@ -19,7 +19,7 @@ Rokkit uses two testing layers with distinct purposes and toolchains: unit tests
 
 Each package has a `spec/` directory at its root:
 
-```
+```text
 packages/
   ui/spec/
     List.spec.svelte.ts
@@ -179,7 +179,7 @@ Every UI component must have unit tests covering:
 
 ## E2E Tests (Playwright)
 
-### Toolchain
+### Toolchain (E2E)
 
 | Tool                               | Role                                        |
 | ---------------------------------- | ------------------------------------------- |
@@ -189,7 +189,7 @@ Every UI component must have unit tests covering:
 
 ### Configuration
 
-```
+```text
 apps/learn/playwright.config.ts
 ```
 
@@ -202,9 +202,9 @@ Key settings:
 - Chromium only — single browser for consistent visual snapshots
 - `baseURL: 'http://localhost:4173'` — preview server
 
-### Test location
+### Test location (E2E)
 
-```
+```text
 apps/learn/e2e/
   helpers.ts              ← shared utilities: goToPlayPage, setTheme, setMode
   list.e2e.ts
@@ -226,7 +226,7 @@ apps/learn/e2e/
 
 Each component E2E file is organized into two sections:
 
-```
+```text
 describe('[Component] — play page')  ← tests against /playground/components/[slug]
   describe('keyboard navigation')
   describe('mouse interaction')

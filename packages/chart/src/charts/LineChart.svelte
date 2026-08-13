@@ -3,6 +3,7 @@
 	import Line from '../geoms/Line.svelte'
 
 	type Row = Record<string, unknown>
+	type Method = string | number | { type: string; [k: string]: unknown }
 	type Format = (v: unknown) => string
 
 	type Props = {
@@ -21,7 +22,7 @@
 		grid?: boolean | 'x' | 'y' | 'both'
 		legend?: boolean
 		highlight?: 'first' | 'last' | 'min' | 'max' | number | ((row: Row, i: number) => boolean)
-		trend?: unknown
+		trend?: Method | Method[]
 		xFormat?: Format
 		yFormat?: Format
 		xTicks?: number
@@ -29,7 +30,7 @@
 		minorTicks?: boolean
 		onselect?: (detail: unknown) => void
 		selectable?: boolean
-		selected?: unknown[]
+		selected?: Row[]
 	}
 
 	let {

@@ -45,17 +45,28 @@ export type Inference =
 // ─── Type detection ─────────────────────────────────────────────────────
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}(:\d{2})?(\.\d+)?(Z|[+-]\d{2}:?\d{2})?)?$/
+const NUMERIC_STRING_RE = /^-?\d+(\.\d+)?$/
 
-function detectType(value: unknown): FieldType {
-	if (value === null || value === undefined || value === '') return 'unknown'
+function isNumericString(value: string): boolean {
+	return NUMERIC_STRING_RE.test(value)
+}
+
+function isEmptyValue(value: unknown): boolean {
+	return value === null || value === undefined || value === ''
+}
+
+function detectStringType(value: string): FieldType {
+	if (DATE_RE.test(value)) return 'date'
+	if (isNumericString(value)) return 'number'
+	if (value === 'true' || value === 'false') return 'boolean'
+	return 'string'
+}
+
+export function detectType(value: unknown): FieldType {
+	if (isEmptyValue(value)) return 'unknown'
 	if (typeof value === 'boolean') return 'boolean'
 	if (typeof value === 'number') return Number.isFinite(value) ? 'number' : 'unknown'
-	if (typeof value === 'string') {
-		if (DATE_RE.test(value)) return 'date'
-		if (/^-?\d+(\.\d+)?$/.test(value)) return 'number'
-		if (value === 'true' || value === 'false') return 'boolean'
-		return 'string'
-	}
+	if (typeof value === 'string') return detectStringType(value)
 	return 'unknown'
 }
 
@@ -98,47 +109,69 @@ function summarizeColumn(rows: Record<string, unknown>[], name: string): FieldSu
 
 // ─── CSV parsing ────────────────────────────────────────────────────────
 
+type TokenizerState = {
+	rows: string[][]
+	field: string
+	row: string[]
+	inQuotes: boolean
+}
+
 /**
- * Tiny RFC-4180-ish CSV parser. Handles quoted fields with commas and
- * doubled-up quotes (""). Doesn't try to be papaparse — just enough to
- * get a real-world CSV into rows.
+ * Advance past a character while inside a quoted field. Handles the
+ * doubled-quote escape (`""` → literal `"`) and the closing quote.
+ * Returns the (possibly advanced, to skip an escaped quote) index.
  */
-export function parseCSV(text: string): Record<string, unknown>[] {
-	const cleaned = text.replace(/\r\n?/g, '\n').trim()
-	if (!cleaned) return []
-	const rows: string[][] = []
-	let field = ''
-	let row: string[] = []
-	let inQuotes = false
+function consumeQuotedChar(cleaned: string, i: number, state: TokenizerState): number {
+	const c = cleaned[i]
+	if (c !== '"') {
+		state.field += c
+		return i
+	}
+	if (cleaned[i + 1] === '"') {
+		state.field += '"'
+		return i + 1
+	}
+	state.inQuotes = false
+	return i
+}
+
+/** Advance past a character outside any quoted field (field/row/quote-start delimiters). */
+function consumeUnquotedChar(c: string, state: TokenizerState): void {
+	if (c === '"') {
+		state.inQuotes = true
+	} else if (c === ',') {
+		state.row.push(state.field)
+		state.field = ''
+	} else if (c === '\n') {
+		state.row.push(state.field)
+		state.rows.push(state.row)
+		state.row = []
+		state.field = ''
+	} else {
+		state.field += c
+	}
+}
+
+/**
+ * Character-by-character tokenizer for the CSV state machine: splits
+ * newline-normalized text into rows of raw (still-quoted) string fields.
+ */
+function tokenizeCSV(cleaned: string): string[][] {
+	const state: TokenizerState = { rows: [], field: '', row: [], inQuotes: false }
 	for (let i = 0; i < cleaned.length; i++) {
-		const c = cleaned[i]
-		if (inQuotes) {
-			if (c === '"') {
-				if (cleaned[i + 1] === '"') {
-					field += '"'
-					i++
-				} else {
-					inQuotes = false
-				}
-			} else {
-				field += c
-			}
-		} else if (c === '"') {
-			inQuotes = true
-		} else if (c === ',') {
-			row.push(field)
-			field = ''
-		} else if (c === '\n') {
-			row.push(field)
-			rows.push(row)
-			row = []
-			field = ''
+		if (state.inQuotes) {
+			i = consumeQuotedChar(cleaned, i, state)
 		} else {
-			field += c
+			consumeUnquotedChar(cleaned[i], state)
 		}
 	}
-	row.push(field)
-	if (row.length > 1 || row[0] !== '') rows.push(row)
+	state.row.push(state.field)
+	if (state.row.length > 1 || state.row[0] !== '') state.rows.push(state.row)
+	return state.rows
+}
+
+/** First row is the header; remaining rows become header-keyed objects. */
+function rowsToObjects(rows: string[][]): Record<string, unknown>[] {
 	if (rows.length === 0) return []
 	const headers = rows[0]
 	const out: Record<string, unknown>[] = []
@@ -149,20 +182,39 @@ export function parseCSV(text: string): Record<string, unknown>[] {
 		}
 		out.push(obj)
 	}
-	// Coerce numeric / boolean strings now so consumers don't have to.
-	for (const row of out) {
+	return out
+}
+
+/** Coerce a single raw CSV string field into null / number / boolean / string. */
+function coerceFieldValue(v: string): unknown {
+	if (v === '') return null
+	if (isNumericString(v)) return Number(v)
+	if (v === 'true' || v === 'false') return v === 'true'
+	return v
+}
+
+// Coerce numeric / boolean strings now so consumers don't have to.
+function coerceRowTypes(rows: Record<string, unknown>[]): void {
+	for (const row of rows) {
 		for (const key of Object.keys(row)) {
 			const v = row[key]
 			if (typeof v !== 'string') continue
-			if (v === '') {
-				row[key] = null
-			} else if (/^-?\d+(\.\d+)?$/.test(v)) {
-				row[key] = Number(v)
-			} else if (v === 'true' || v === 'false') {
-				row[key] = v === 'true'
-			}
+			row[key] = coerceFieldValue(v)
 		}
 	}
+}
+
+/**
+ * Tiny RFC-4180-ish CSV parser. Handles quoted fields with commas and
+ * doubled-up quotes (""). Doesn't try to be papaparse — just enough to
+ * get a real-world CSV into rows.
+ */
+export function parseCSV(text: string): Record<string, unknown>[] {
+	const cleaned = text.replace(/\r\n?/g, '\n').trim()
+	if (!cleaned) return []
+	const rows = tokenizeCSV(cleaned)
+	const out = rowsToObjects(rows)
+	coerceRowTypes(out)
 	return out
 }
 
@@ -187,6 +239,21 @@ function inferChartAxes(columns: FieldSummary[]): { x: string; y: string; fill?:
 	return out
 }
 
+/** Summarize every column of an array of records (union of all keys seen). */
+function summarizeRows(rows: Record<string, unknown>[]): FieldSummary[] {
+	const keys = Array.from(new Set(rows.flatMap((r) => Object.keys(r))))
+	return keys.map((k) => summarizeColumn(rows, k))
+}
+
+/** Field summary for each key of a single record (density is always 1 — the key is present). */
+function buildRecordFields(value: Record<string, unknown>): FieldSummary[] {
+	return Object.keys(value).map((k) => ({
+		name: k,
+		type: detectType(value[k]),
+		density: 1
+	}))
+}
+
 /**
  * Optional hint to override the auto-detection. If `force` is provided and
  * the data can plausibly fit that shape, we return that shape; otherwise we
@@ -199,14 +266,11 @@ export function inferShape(
 ): Inference {
 	if (force === 'table' && Array.isArray(value) && value.every(isPlainObject)) {
 		const rows = value as Record<string, unknown>[]
-		const keys = Array.from(new Set(rows.flatMap((r) => Object.keys(r))))
-		const columns = keys.map((k) => summarizeColumn(rows, k))
-		return { kind: 'table', columns, rows }
+		return { kind: 'table', columns: summarizeRows(rows), rows }
 	}
 	if (force === 'chart' && Array.isArray(value) && value.every(isPlainObject)) {
 		const rows = value as Record<string, unknown>[]
-		const keys = Array.from(new Set(rows.flatMap((r) => Object.keys(r))))
-		const columns = keys.map((k) => summarizeColumn(rows, k))
+		const columns = summarizeRows(rows)
 		const axes = inferChartAxes(columns)
 		if (axes) return { kind: 'chart', columns, rows, ...axes }
 		// Fall through to normal inference if we can't pick axes.
@@ -215,46 +279,37 @@ export function inferShape(
 		return { kind: 'list', items: value }
 	}
 	if (force === 'record' && isPlainObject(value)) {
-		const keys = Object.keys(value)
-		const fields = keys.map((k) => ({
-			name: k,
-			type: detectType((value as Record<string, unknown>)[k]),
-			density: 1
-		}))
-		return { kind: 'record', fields, record: value as Record<string, unknown> }
+		return { kind: 'record', fields: buildRecordFields(value), record: value }
 	}
 	return inferShapeAuto(value)
 }
 
-function inferShapeAuto(value: unknown): Inference {
-	// 1. Array of records → table or chart
-	if (Array.isArray(value)) {
-		if (value.length === 0) return { kind: 'list', items: [] }
-		if (value.every(isPlainObject)) {
-			const rows = value as Record<string, unknown>[]
-			const keys = Array.from(new Set(rows.flatMap((r) => Object.keys(r))))
-			const columns = keys.map((k) => summarizeColumn(rows, k))
-			const axes = inferChartAxes(columns)
-			// Chart if we have a clean (categorical, numeric) pair AND not too
-			// many rows (charts get crowded). Threshold is conservative; user
-			// can always ask for "show as a table" via prose later.
-			if (axes && rows.length <= 60 && columns.length <= 4) {
-				return { kind: 'chart', columns, rows, ...axes }
-			}
-			return { kind: 'table', columns, rows }
-		}
-		// Array of primitives
-		return { kind: 'list', items: value }
+/**
+ * Array of records → chart when there's a clean (categorical, numeric) pair
+ * and the data isn't too big to plot legibly; otherwise a table. Array of
+ * primitives (or empty) → list.
+ */
+function inferArrayShape(value: unknown[]): Inference {
+	if (value.length === 0) return { kind: 'list', items: [] }
+	if (!value.every(isPlainObject)) return { kind: 'list', items: value }
+	const rows = value as Record<string, unknown>[]
+	const columns = summarizeRows(rows)
+	const axes = inferChartAxes(columns)
+	// Chart if we have a clean (categorical, numeric) pair AND not too many
+	// rows (charts get crowded). Threshold is conservative; user can always
+	// ask for "show as a table" via prose later.
+	if (axes && rows.length <= 60 && columns.length <= 4) {
+		return { kind: 'chart', columns, rows, ...axes }
 	}
+	return { kind: 'table', columns, rows }
+}
+
+export function inferShapeAuto(value: unknown): Inference {
+	// 1. Array of records → table or chart
+	if (Array.isArray(value)) return inferArrayShape(value)
 	// 2. Single object → editable form
 	if (isPlainObject(value)) {
-		const keys = Object.keys(value)
-		const fields = keys.map((k) => ({
-			name: k,
-			type: detectType((value as Record<string, unknown>)[k]),
-			density: 1
-		}))
-		return { kind: 'record', fields, record: value as Record<string, unknown> }
+		return { kind: 'record', fields: buildRecordFields(value), record: value }
 	}
 	return { kind: 'json', value }
 }
@@ -279,26 +334,32 @@ export function schemaFromRecord(record: Record<string, unknown>): Record<string
 
 // ─── Try-parse: JSON or CSV ─────────────────────────────────────────────
 
-export function tryParse(text: string): { ok: true; value: unknown; format: 'json' | 'csv' } | { ok: false; error: string } {
+type ParseResult = { ok: true; value: unknown; format: 'json' | 'csv' } | { ok: false; error: string }
+
+function tryParseJson(trimmed: string): ParseResult {
+	try {
+		return { ok: true, value: JSON.parse(trimmed), format: 'json' }
+	} catch (e) {
+		return { ok: false, error: `Invalid JSON: ${(e as Error).message}` }
+	}
+}
+
+function tryParseCsv(trimmed: string): ParseResult {
+	try {
+		const rows = parseCSV(trimmed)
+		if (rows.length === 0) return { ok: false, error: 'CSV parsed to no rows.' }
+		return { ok: true, value: rows, format: 'csv' }
+	} catch (e) {
+		return { ok: false, error: `Invalid CSV: ${(e as Error).message}` }
+	}
+}
+
+export function tryParse(text: string): ParseResult {
 	const trimmed = text.trim()
 	if (!trimmed) return { ok: false, error: 'Empty input.' }
 	// JSON first: starts with { [ " or a digit
-	if (/^[{[]/.test(trimmed)) {
-		try {
-			return { ok: true, value: JSON.parse(trimmed), format: 'json' }
-		} catch (e) {
-			return { ok: false, error: `Invalid JSON: ${(e as Error).message}` }
-		}
-	}
+	if (/^[{[]/.test(trimmed)) return tryParseJson(trimmed)
 	// Heuristic CSV: at least one comma and at least one newline
-	if (trimmed.includes(',') && trimmed.includes('\n')) {
-		try {
-			const rows = parseCSV(trimmed)
-			if (rows.length === 0) return { ok: false, error: 'CSV parsed to no rows.' }
-			return { ok: true, value: rows, format: 'csv' }
-		} catch (e) {
-			return { ok: false, error: `Invalid CSV: ${(e as Error).message}` }
-		}
-	}
+	if (trimmed.includes(',') && trimmed.includes('\n')) return tryParseCsv(trimmed)
 	return { ok: false, error: 'Could not detect JSON or CSV.' }
 }

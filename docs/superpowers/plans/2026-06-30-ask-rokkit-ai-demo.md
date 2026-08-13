@@ -760,5 +760,3 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 - **`$lib/chat` vs `@rokkit/ui`:** keep the current import sources (`ChatHistory`/`configureWho` from `$lib/chat`; `ChatTimeline`/`ChatComposer`/`ChatMessage` from `@rokkit/ui`). Do not "fix" these here.
 - **Model default in URL:** the picker links openrouter/webllm cards with `?model=<default>` so the URL is always explicit; the mode page still tolerates an absent `?model=`.
 - **Out of scope:** the block/inline renderer, the engines' inference internals, `/app`, LLM-generated titles, cross-mode history.
-
-```

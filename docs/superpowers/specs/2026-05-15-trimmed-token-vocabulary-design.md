@@ -192,7 +192,7 @@ presetRokkit({
 
 Auto-emit for every named token:
 
-```
+```text
 bg-paper        → background: var(--paper)
 bg-paper-soft   → background: var(--paper-soft)
 bg-paper-mute   → background: var(--paper-mute)

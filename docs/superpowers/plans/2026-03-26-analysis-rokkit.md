@@ -209,7 +209,7 @@ git commit -m "feat(chart): add Sparkline component — thin Plot wrapper with s
 
 ## Chunk 2: `<MarkdownRenderer>` in `@rokkit/ui`
 
-### File Map
+### File Map (Chunk 2)
 
 - **Create:** `packages/ui/src/MarkdownRenderer.svelte` — tokenizer loop + plugin dispatch
 - **Create:** `packages/ui/src/markdown-plugin.ts` — `MarkdownPlugin` interface type
@@ -442,7 +442,7 @@ git commit -m "feat(ui): add MarkdownRenderer with plugin system and DOMPurify s
 
 ## Chunk 3: `@rokkit/blocks` package
 
-### File Map
+### File Map (Chunk 3)
 
 - **Create:** `packages/blocks/` — new package (scaffold from existing package as template)
 - **Create:** `packages/blocks/package.json`
@@ -971,7 +971,7 @@ git commit -m "feat: add @rokkit/blocks package with PlotPlugin, TablePlugin, Sp
 
 Enables multiple `plot` blocks in the same markdown document to share a CrossFilter context for linked interactive filtering. A `"crossfilter": "group-id"` field in a `plot` spec groups co-labelled plots into a shared `<CrossFilter>` wrapper.
 
-### File Map
+### File Map (Chunk 4)
 
 - **Modify:** `packages/ui/src/MarkdownRenderer.svelte` — pre-pass to group crossfilter plots
 - **Modify:** `packages/ui/spec/MarkdownRenderer.spec.ts` — add crossfilter grouping tests

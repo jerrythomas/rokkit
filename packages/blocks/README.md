@@ -51,7 +51,7 @@ graph TD
 
 Renders a `Plot` or `FacetPlot` from `@rokkit/chart`. The code block body must be valid JSON matching the chart spec.
 
-```
+```md
 \`\`\`plot
 {
   "type": "bar",
@@ -67,7 +67,7 @@ Renders a `Plot` or `FacetPlot` from `@rokkit/chart`. The code block body must b
 
 Renders a `Table` from `@rokkit/ui`. The code block body must be valid JSON — either an array of objects or `{ data, fields }`.
 
-```
+```md
 \`\`\`table
 [{"name":"Alice","age":30},{"name":"Bob","age":25}]
 \`\`\`
@@ -77,7 +77,7 @@ Renders a `Table` from `@rokkit/ui`. The code block body must be valid JSON — 
 
 Renders a `Sparkline` from `@rokkit/chart`. The code block body must be valid JSON matching the sparkline spec.
 
-```
+```md
 \`\`\`sparkline
 {"values":[10,20,15,30,25],"type":"line","color":"steelblue"}
 \`\`\`
@@ -87,7 +87,7 @@ Renders a `Sparkline` from `@rokkit/chart`. The code block body must be valid JS
 
 Renders a Mermaid diagram. Requires `mermaid` as a peer dependency. The code block body is passed directly to Mermaid.
 
-```
+```md
 \`\`\`mermaid
 sequenceDiagram
   Alice->>Bob: Hello

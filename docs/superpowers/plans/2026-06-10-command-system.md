@@ -850,7 +850,7 @@ git commit -m "refactor(actions): remove legacy kbd.js + navigable; migrate Tabl
 
 - [ ] **Step 3: Author the skill** — `packages/cli/skills/command-system-rokkit/SKILL.md`, beginning with EXACTLY:
 
-```
+```yaml
 ---
 name: command-system-rokkit
 description: Use when adding keyboard shortcuts, a command palette, or app-level commands to a Rokkit (Svelte 5) app — the commands registry (@rokkit/states), the shortcuts action (@rokkit/actions), the CommandPalette component (@rokkit/ui), the 'mod+k' shortcut grammar, command scope/lifecycle, conflict detection, and i18n.

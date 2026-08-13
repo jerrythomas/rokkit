@@ -53,7 +53,7 @@
 	const plotState = getContext<PlotState>('plot-state')
 	let id = $state<string | null>(null)
 
-	function selectPoint(pt, event) {
+	function selectPoint(pt: { data: Row }, event: MouseEvent | KeyboardEvent) {
 		onselect?.(pt.data)
 		if (plotState.interactive)
 			plotState.handleSelect(

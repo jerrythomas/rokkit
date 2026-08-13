@@ -424,7 +424,7 @@ override the named-token defaults via cascade order; non-reserved names
 emit as new custom tokens. Same resolution pipeline for both — palette
 ref → light/dark pick → colorSpace adapter.
 
-**Motivation**
+### Motivation
 
 When porting Rokkit tokens into the sensei app, a `paper-edge` override
 in dark mode was needed (default `sumi.400` is lighter than `sumi.50`
@@ -434,14 +434,14 @@ mapping instead", but skin mapping is role-level, not token-level — no
 way to redirect one shade without disturbing the rest. The compat.css
 override pattern worked but pushed config concerns into stylesheets.
 
-**Why a single field, not two**
+### Why a single field, not two
 
 The check between custom-vs-override added nothing — the resolver is
 name-agnostic and the cascade does the right thing automatically.
 Dropping the validator collapses the API surface to one concept: "CSS
 custom-property definitions, resolved per-mode."
 
-**Changes**
+### Changes
 
 - `packages/unocss/src/custom-tokens.js`: dropped
   `validateCustomTokenNames`; renamed `resolveCustomTokens` →
@@ -463,7 +463,7 @@ custom-property definitions, resolved per-mode."
   reserved-name overrides win in `:root`, and per-mode reserved-name
   overrides land correctly in both `:root` and `[data-mode="dark"]`.
 
-**Migration impact**
+### Migration impact
 
 External consumers (sensei) need a one-shot rename of `custom:` →
 `overrides:` in their `rokkit.config.js`. No semantic change for
@@ -478,11 +478,11 @@ Two coordinated changes landed on `develop`. Backlog/spec/plan:
 `docs/backlog/2026-06-01-guides-section-split.md` and
 `docs/plans/2026-06-01-guides-section.md`.
 
-**Information architecture**
+### Information architecture
 
 Eleven guide pages moved out of the `/app` chat-shell into a dedicated
-`/guides` section with its own layout — top-bar with brand + section nav
-- search, 240px left TOC rail grouped by category, scrollable content
+`/guides` section with its own layout — top-bar with brand + section nav,
+search, 240px left TOC rail grouped by category, scrollable content
 column. No composer / conversation list / canvas tabs. The chat shell
 now hosts only interactive demos.
 
@@ -502,7 +502,7 @@ now hosts only interactive demos.
   (`/app/guide-*/`), and 11 `ShellDemoType`/`DemoKind`/`catalog` literals
   removed.
 
-**Storage migration: .ts → .md**
+### Storage migration: .ts → .md
 
 All 59 prose-doc files (11 guide bodies + 48 component docs) moved from
 TypeScript template-literal exports (`` export const xDocs = `…` ``) to
@@ -530,7 +530,7 @@ Converter discovered two real bugs during execution:
   reformatted). 16 files needed cosmetic normalization (table column
   padding, `*italic*` → `_italic_`, list marker style); applied.
 
-**Verification**
+### Verification (Split guides into /guides section + migrate prose docs to .md)
 
 `bun run test:ci` — 3518/3518 pass (was 3511 — added 7 new
 `guides/index.spec.ts` tests). `bun run lint` — 0 errors. Production
@@ -1275,7 +1275,7 @@ After reviewing Menu, Toggle, Tree migrations, adopted a cleaner approach:
 
 ---
 
-## 2026-02-28
+## 2026-02-28 — Select Migration to Navigator/Wrapper/ProxyItem Stack
 
 ### Select Migration to Navigator/Wrapper/ProxyItem Stack — Complete
 
@@ -1424,7 +1424,7 @@ Achieved 100% coverage on all production files in `packages/testbed/src/`:
 
 **Coverage result:**
 
-```
+```text
 keymap.js     100 | 100 | 100 | 100
 navigator.js  100 | 100 | 100 | 100
 wrapper.js    100 | 100 | 100 | 100
@@ -3158,7 +3158,7 @@ learn site demos that used `text:` as item property or field mapping key. Fixed:
 **Design doc:** `docs/superpowers/specs/2026-03-12-conditional-fields-design.md`
 **Priority:** `docs/design/12-priority.md` — conditional fields ✅
 
-**All tests: 2745/2745 passing**
+#### All tests: 2745/2745 passing
 
 ### CLI Toolchain: upgrade + skin + theme commands (2026-03-18)
 
@@ -3316,7 +3316,7 @@ const sizeScale = buildSizeScale(data, 'value', 20) // → sqrt scale [0, 20]
 - `size` prop drives radius via sqrt scale; `color` + `symbol` aesthetics supported
 - Commit: `f35c7a6a`
 
-**ggplot2-style Aesthetic Channel Fix**
+#### ggplot2-style Aesthetic Channel Fix
 
 - `fill` → polygon interior (BarChart, AreaChart, PieChart); `color` → stroke/line (LineChart, ScatterPlot)
 - All aesthetic channels null-default with NO cross-channel fallbacks (ggplot2 convention)
@@ -3337,7 +3337,7 @@ const sizeScale = buildSizeScale(data, 'value', 20) // → sqrt scale [0, 20]
 
 ## 2026-03-26 — Chart System Completion (Session 2)
 
-**Interactive Tooltips, Click Selection, Keyboard Navigation**
+### Interactive Tooltips, Click Selection, Keyboard Navigation
 
 - `plotState.setHovered(data)` / `clearHovered()` already on PlotState; `Tooltip.svelte` renders at mouse position
 - Area.svelte: added invisible hit circles (`<circle r="8" fill="transparent">`) per data point for tooltip hover
@@ -3349,11 +3349,11 @@ const sizeScale = buildSizeScale(data, 'value', 20) // → sqrt scale [0, 20]
 - Arc.svelte: added `onselect` prop; fires with `{ ...arc.data, '%': '...' }`
 - `packages/chart/src/lib/keyboard-nav.js` (new): Svelte action; ArrowLeft/ArrowRight between `[data-plot-element]` siblings in `[data-plot-geom]` container
 
-**Pattern Fills for Series**
+### Pattern Fills for Series
 
 - Feature already complete; marked done in priority doc (21 patterns, `pattern` channel on Bar + Area)
 
-**Zoom and Pan**
+### Zoom and Pan
 
 - `d3-zoom` added as dependency (`packages/chart/package.json`)
 - `PlotState`: `#zoomTransform = $state(null)`; `xScale` applies `rescaleX` for non-band scales; `yScale` applies `rescaleY`; `applyZoom(transform)` + `resetZoom()` methods
@@ -3363,7 +3363,7 @@ const sizeScale = buildSizeScale(data, 'value', 20) // → sqrt scale [0, 20]
 
 ## 2026-03-27 — Multi-Step Forms, StepIndicator, Theme Rename, Frosted Revamp
 
-**Multi-Step Forms**
+### Multi-Step Forms
 
 - `FormBuilder` extended: `isMultiStep`, `totalSteps`, `currentStep`, `canAdvance`, `next()`/`prev()`/`goToStep()`, `validateStep()`
 - `StepIndicator.svelte` new presentational component — `data-step-indicator` ol, `data-step-item` li, `data-step-state` (complete/current/upcoming), `data-step-number`, `data-step-label`; keyboard accessible (complete steps are buttons)
@@ -3373,21 +3373,21 @@ const sizeScale = buildSizeScale(data, 'value', 20) // → sqrt scale [0, 20]
 - Playground: multi-step tab in `site/src/routes/(play)/playground/components/forms/+page.svelte`
 - Commits: `c34d0409`, `5a8d9a0f`
 
-**StepIndicator Theme CSS**
+### StepIndicator Theme CSS
 
 - `packages/themes/src/base/step-indicator.css` — structural layout (flex, connectors, circle sizing)
 - All 10 theme variants created: rokkit, minimal, material, frosted, shadcn, daisy-ui, bits-ui, ant-design, carbon, grada-ui
 - Theme-specific shapes: carbon=square (radius 0), ant-design=4px, bits-ui=0.5rem, shadcn=rounded-md
 - Commit: `ec0634d9`
 
-**Glass → Frosted Theme Rename**
+### Glass → Frosted Theme Rename
 
 - Folder renamed: `src/glass/` → `src/frosted/`, all selectors `[data-style='glass']` → `[data-style='frosted']`
 - `build.mjs`, `src/index.css`, CLI (init.js, doctor.js, specs), site files, e2e helpers all updated
 - 6 extra themes (ant-design, bits-ui, carbon, daisy-ui, shadcn, grada-ui) added step-indicator.css
 - Commit: `e723384f`
 
-**Frosted Theme Liquid Glass Revamp**
+### Frosted Theme Liquid Glass Revamp
 
 - Replaced `bg-surface-z*/70` with `color-mix(in srgb, var(--color-surface-z4) 28%, transparent)` for proper translucency
 - Specular border highlights: `border-color: rgba(255,255,255,0.2-0.28)` on all surfaces
@@ -3401,7 +3401,7 @@ const sizeScale = buildSizeScale(data, 'value', 20) // → sqrt scale [0, 20]
 
 ## 2026-03-27 (continued)
 
-**Density System**
+### Density System
 
 - Created `packages/themes/src/base/density.css` — three CSS custom property scales:
   - `compact`: tighter spacing (xs=0.125rem, sm=0.25rem, md=0.5rem), icons 1rem, smaller radius
@@ -3420,7 +3420,7 @@ const sizeScale = buildSizeScale(data, 'value', 20) // → sqrt scale [0, 20]
 
 ## 2026-03-27 (continued) — i18n MessagesStore + Component Blueprint + design-patterns polish + CrossFilter in MarkdownRenderer
 
-**i18n MessagesStore class**
+### i18n MessagesStore class
 
 - Rewrote `packages/states/src/messages.svelte.js` to use a `MessagesStore` class with `$state` fields, `get locale()` getter, `register()`/`setLocale()`/`set()`/`reset()` methods
 - `export const messages = new MessagesStore()` — single named export; all other functions removed from `index.js`
@@ -3428,13 +3428,13 @@ const sizeScale = buildSizeScale(data, 'value', 20) // → sqrt scale [0, 20]
 - Updated all 28+ `@rokkit/ui` components from `messages.current.*` → `messages.*`
 - Commits: `cb5335b3`, `6509d1a5`, `02c6632a`
 
-**Component Blueprint**
+### Component Blueprint
 
 - Created `docs/llms/component-blueprint.md` — single comprehensive LLM reference for all 4 tiers, ProxyTree/Wrapper/Navigator wiring, messages integration, snippet customization, theme CSS, file checklist, complete Tier 3 TagList example
 - Updated `/.claude/commands/new-component.md` and `edit-component.md` to reference blueprint instead of 5-file read chain
 - Commit: `6509d1a5`
 
-**design-patterns.md polish**
+### design-patterns.md polish
 
 - Navigator/Wrapper section: ProxyTree as 4th layer, `new Wrapper(tree, { onselect })`, `node.type`/`node.hasChildren`, `snippets` from `$props()` spread, `resolveSnippet` with constants, `proxy.original`
 - Snippet Customization: `proxy.text` → `proxy.label`, `$$snippets` → `snippets`
@@ -3443,7 +3443,7 @@ const sizeScale = buildSizeScale(data, 'value', 20) // → sqrt scale [0, 20]
 - Removed all "Tree (planned)" — Tree is fully implemented
 - Commits: `e1e41390` (earlier pattern fixes), `e1e41390`
 
-**CrossFilter grouping in MarkdownRenderer**
+### CrossFilter grouping in MarkdownRenderer
 
 - Added optional `crossfilterWrapper?: Component<{ children?: Snippet }>` prop to `MarkdownRenderer.svelte`
 - Pre-pass groups plot code blocks with matching `"crossfilter"` field values into a shared wrapper instance
@@ -3458,7 +3458,7 @@ const sizeScale = buildSizeScale(data, 'value', 20) // → sqrt scale [0, 20]
 
 **Summary:** Extended @rokkit/core, @rokkit/themes, @rokkit/unocss, and @rokkit/ui with the new design token architecture. Wired all tokens into the demo app and verified in browser.
 
-**Tertiary color + nullable resolution**
+### Tertiary color + nullable resolution
 
 - Added `tertiary: 'violet'` to `DEFAULT_THEME_MAPPING` in constants.js
 - Added `tertiary` to `defaultPalette` in colors/index.ts
@@ -3468,7 +3468,7 @@ const sizeScale = buildSizeScale(data, 'value', 20) // → sqrt scale [0, 20]
 - 8 new tests (3 tertiary existence + 5 nullable resolution)
 - Commits: `3d533bbe`..`cd500184`
 
-**Roundedness axis**
+### Roundedness axis
 
 - Created `packages/themes/src/base/radius.css` — 4 presets: sharp, soft (default), rounded, pill
 - Each preset defines `--radius-sm`, `--radius-md`, `--radius-lg`, `--radius-xl`, `--radius-full`
@@ -3476,18 +3476,18 @@ const sizeScale = buildSizeScale(data, 'value', 20) // → sqrt scale [0, 20]
 - Added `soft` preset to `RADIUS_PRESETS` in unocss/preset.ts
 - Commit: `3d533bbe`, `55240bbf`
 
-**Layout tokens**
+### Layout tokens
 
 - Created `packages/themes/src/base/layout.css` — 8 tokens: sidebar-width (240px), sidebar-collapsed (64px), header-height (56px), content-max-width (1280px), section-gap, section-padding, content-padding, card-gap
 - Commit: `3d533bbe`
 
-**Gradient border wrapper**
+### Gradient border wrapper
 
 - Created `packages/themes/src/base/gradient-border.css` — structural pattern: outer element with gradient bg + padding as "border", inner element covers content
 - Fallback rule for non-gradient themes uses standard border
 - Commit: `6eddb226`
 
-**Literal icon support**
+### Literal icon support
 
 - Added `isIconClass()` to `@rokkit/core/utils.js` — returns true for `i-*` CSS class strings, false for kanji/emoji/text
 - Updated `ItemContent.svelte` to branch: CSS class icons → `[data-item-icon]`, literal text → `[data-item-icon-literal]`
@@ -3495,7 +3495,7 @@ const sizeScale = buildSizeScale(data, 'value', 20) // → sqrt scale [0, 20]
 - 3 new tests for isIconClass
 - Commit: `4b527027`
 
-**Demo app wiring**
+### Demo app wiring
 
 - Added `tertiary: 'violet'` and `shape: { radius: 'soft' }` to demo/rokkit.config.js
 - Replaced hardcoded `240px`/`64px` sidebar widths with `var(--layout-sidebar-width)`/`var(--layout-sidebar-collapsed)` in layout.svelte
@@ -3503,7 +3503,7 @@ const sizeScale = buildSizeScale(data, 'value', 20) // → sqrt scale [0, 20]
 - Added `data-radius="soft"` to app root div
 - Commit: `500b1b04`
 
-**Browser verification**
+### Browser verification
 
 - All tokens confirmed live in browser dev tools (layout, radius, tertiary color)
 - Radius axis responsive: sharp→0, soft→0.375rem, rounded→0.5rem, pill→9999px
@@ -3562,7 +3562,7 @@ const sizeScale = buildSizeScale(data, 'value', 20) // → sqrt scale [0, 20]
 - `card.css` adds `retro-good`, `retro-warn`, `retro-mute` — tone-coded `border-top` via CSS class (same `color-mix()` values as original inline styles)
 - No `header` snippet used → avoids unwanted divider border; content in default `children` slot
 
-**Bug fix: zen-sumi theme not activating**
+### Bug fix: zen-sumi theme not activating
 
 - Root cause: `app.html` inline script defaulted `data-style` to `''` (empty string)
 - All zen-sumi CSS is scoped to `[data-style='zen-sumi']` — with empty string, no hover, active, or focus styles applied
@@ -3575,19 +3575,19 @@ const sizeScale = buildSizeScale(data, 'value', 20) // → sqrt scale [0, 20]
 
 **Summary:** Implemented mockup C4 — the theme wizard mounted as a `<ChatResponse>` artifact on the canvas, triggered by theme/skin/palette/brand queries.
 
-**Files**
+### Files (Koan C4: Theme Wizard response screen)
 
 - `demo/src/routes/app/+page.svelte` — extended `demoType` to `'tabs' | 'theme-wizard' | null`. Replaced the hardcoded `demoType = 'tabs'` with `pickDemoKind(query)`, which routes via `runMatch` from the existing catalog (theme-wizard already indexed with the right keywords). Added chat-left branch with YOU / STARTED / GLOSSARY messages + wizard chips. Added canvas branch with eyebrow "Theme wizard · live preview", title "Build a theme · step 02 of 04", and a `<ChatResponse>` (kicker=WIZARD, name=`<ThemeWizard/>`, meta=`· step 02 · skin`, propsRow=`style {style} · palette warm-gray + shu · dual-mode yes`, actions=Save preset / Export tokens.css / Preview live) wrapping the new `ThemeWizardCard`. Added small `.glossary` `:global` styling for the bullet list inside `ChatMessage`.
 - `demo/src/lib/koan/demos/theme-wizard/ThemeWizardCard.svelte` — new static-display component for step 02. Horizontal stepper (01 Style done → 02 Skin active → 03 Typography → 04 Preview & export), 4-card palette grid (warm-gray, slate, neutral, shu — first two IN USE), and 7-row role table (paper, paper-2, paper-3, edge, ink, ink-2, accent) with light/dark `PaletteStepPicker` cells (`data-active` toggled by `mode` prop, selected step outlined with the accent color).
 - `demo/src/routes/chat-lab/+page.svelte` — dropped 4 pre-existing lint errors (3 `{#snippet children()}` wrappers + 2 `console.log` debug calls) so the repo returns to 0 lint errors.
 
-**Decisions**
+### Decisions (Koan C4: Theme Wizard response screen)
 
 - Chose the lighter "static display" path over reusing the existing 4-step interactive wizard. The chat-shell context is an artifact card, not an interactive flow — the mockup only renders step 02. Real save/export/Stage-by-stage navigation deferred per the backlog spec.
 - IN USE badge stays on palettes 0 + 1 (warm-gray + slate) per the mockup JSX, even though the propsRow says "warm-gray + shu". The mockup has the same inconsistency; not worth fixing in the static demo.
 - `mode` prop pipes through from `theme.mode` (already `$derived` in `+page.svelte`) so toggling mode in the chrome reactively swaps which picker column is highlighted.
 
-**Verification**
+### Verification (Koan C4: Theme Wizard response screen)
 
 - `bun run lint` — 0 errors (down from 7), 15 warnings (pre-existing).
 - `bun run test:ci` — 3480 / 3480 passing.
@@ -3597,7 +3597,7 @@ const sizeScale = buildSizeScale(data, 'value', 20) // → sqrt scale [0, 20]
 
 **Summary:** Split the single-page `/app` chat shell into a layout + state-setter sub-routes. URLs now drive demo selection; bookmarkable showcases. Stage C5 (dark + collapsed showcase) ships on top of this as `/app/tabs?mode=dark&collapsed=true`.
 
-**Files**
+### Files (/app refactor: layout + sub-routes (incl. C5))
 
 - New `demo/src/lib/koan/shell.svelte.ts` — shared `$state` module with `phase`, `demoType`, `lastQuery`, `collapsed`, `composerValue` + `setShellResponse(kind)` / `setShellWelcome()` helpers.
 - `demo/src/routes/app/+page.svelte` → renamed to `+layout.svelte`. Replaced local `$state` with `shell.*`. Replaced `setTimeout` → state-mutation with `setTimeout` → `goto(DEMO_ROUTE[kind])`. `startNewConversation` calls `goto('/app')`. URL-param handling: `?mode=light|dark`, `?collapsed=true|1`, `?q=...` read once in layout `onMount`. The layout's `{@render children?.()}` renders the active sub-route's empty marker page.
@@ -3606,14 +3606,14 @@ const sizeScale = buildSizeScale(data, 'value', 20) // → sqrt scale [0, 20]
 - New `demo/src/routes/app/wizard/+page.svelte` — onMount sets `shell.demoType='theme-wizard'`, defaults `lastQuery` to "Theme for our brand".
 - `docs/design/12-priority.md`, `docs/backlog/2026-05-22-koan-dark-collapsed-showcase.md` — C5 marked Shipped with the new URL form.
 
-**Decisions**
+### Decisions (/app refactor: layout + sub-routes (incl. C5))
 
 - Shared `$state` module rather than context. Simpler, type-safe, no setContext/getContext dance, and the chat shell is a single application — no isolation concerns.
 - Layout renders all branched content; pages are state-setters. Alternative was three-slot snippets via context — significantly more boilerplate for the same outcome.
 - C5's URL became `/app/tabs?mode=dark&collapsed=true` instead of the original spec's `/app?demo=tabs&mode=dark&collapsed=true`. Tabs is now a real route so `?demo=` is redundant. The `mode` + `collapsed` params remain because they affect layout-level chrome state, not the canvas content.
 - Browser back/forward verified working: chip → goto(/app/tabs) → history.back() restores to /app welcome state.
 
-**Verification**
+### Verification (/app refactor: layout + sub-routes (incl. C5))
 
 - `bun run lint` — 0 errors, 16 warnings (one extra pre-existing complexity warning vs the prior baseline; no new errors introduced).
 - `bun run test:ci` — 3480 / 3480 passing.
@@ -3637,14 +3637,14 @@ Closed out the `demo/` showcase item per the open-question phrasing in `docs/des
 
 **Decision:** the Koan shell (chat panel + canvas) is the canonical demo for `@rokkit/ui`. The original business-analytics spec (dashboard / data explorer / analytics / operations / notifications + curtain-reveal code drawer) is superseded and will not be built.
 
-**Why**
+### Why
 
 - The Koan shell has already proven, through C3 + C4 + C5, that the chat-first framing reads as a coherent demo: "ask for a component, see it mounted on the canvas with source + style chrome".
 - Chat-first is a stronger story for an AI-era component library than a generic business dashboard. The analytics framing predates the AI/chat pivot.
 - Maintaining two demos (chat + analytics) would split design attention and double the surface area for every theme/density/locale change.
 - The components that *would* benefit from a non-chat surface (charts, tables, dashboards) can still be demonstrated inside the Koan canvas as response artifacts — they're not blocked by the framing.
 
-**Follow-on backlog items (now tracked under P2 / Demo App)**
+### Follow-on backlog items (now tracked under P2 / Demo App)
 
 - Koan catalog expansion — table, tree, multi-select, list, combo as `/app/<demo>` sub-routes. Several welcome chips already point at these (currently fall back to Tabs).
 - Interactive theme wizard (D1–D3) — wire the static C4 card to the existing theme-store primitives so swatches actually mutate.
@@ -3656,7 +3656,7 @@ No files changed by this entry beyond `docs/design/12-priority.md` and this jour
 
 Started the Koan catalog expansion (first item under the Demo App backlog). Added a sortable Products table as `/app/table`.
 
-**Files**
+### Files (Koan catalog: Table demo added)
 
 - New `demo/src/lib/koan/demos/table/meta.ts` — DemoMeta with keywords (table, data, sortable, columns, rows, sort, grid, tabular, spreadsheet, list, records, dataset). Icon: 表.
 - New `demo/src/lib/koan/demos/table/placeholder.svelte` — minimal mounted-component file so the `load` field of DemoMeta resolves; not actually mounted by the layout (the layout owns rendering), kept for symmetry with existing demos.
@@ -3665,7 +3665,7 @@ Started the Koan catalog expansion (first item under the Demo App backlog). Adde
 - `demo/src/routes/app/+layout.svelte` — extended DemoKind union, DEMO_ROUTE, pickDemoKind. Added table sample data (Products: name/price/stock), table code snippet, chat-left branch (YOU / MOUNTED / EXPLAINED / TRY messages), canvas branch (ChatResponse with name=`<Table/>`, rows/columns/sortable propsRow, Copy code / Download actions, real Table + CodeBlock). Added `.table-mount` CSS rule.
 - New `demo/src/routes/app/table/+page.svelte` — state-setter; defaults lastQuery to "Sortable data table" on direct nav.
 
-**Verification**
+### Verification (Koan catalog: Table demo added)
 
 - lint: 0 errors, 16 warnings.
 - Browser: `/app/table` direct nav renders correctly; "Sortable data table" welcome chip routes to `/app/table` via runMatch; clicking Price column header sorts rows ascending (Mouse 59 → Laptop 1299).
@@ -3677,7 +3677,7 @@ The user mentioned a TreeTable component exists, but I could only find a `TreeTa
 
 Added a hierarchical Tree demo at `/app/tree` with a file-tree shape (src + docs + package.json + README.md, with src nested 2 levels deep into components/ + utilities/).
 
-**Files**
+### Files (Koan catalog: Tree demo added)
 
 - New `demo/src/lib/koan/demos/tree/meta.ts` + placeholder.svelte. Keywords: tree, hierarchy, nested, select, folder, navigation, directory, outline, parent, child, children. Icon: 枝.
 - `catalog.ts` — registered.
@@ -3685,19 +3685,19 @@ Added a hierarchical Tree demo at `/app/tree` with a file-tree shape (src + docs
 - `+layout.svelte` — imported Tree; extended DemoKind / DEMO_ROUTE / pickDemoKind; added treeItems sample data, treeFields, treeValue $state, treeCode snippet; chat-left branch (YOU / MOUNTED / WHEN TO USE / TRY); canvas branch with ChatResponse + CodeBlock. New `.tree-mount` CSS rule.
 - New `demo/src/routes/app/tree/+page.svelte` state-setter.
 
-**Notable**
+### Notable
 
 - The MOUNTED message includes a "WHEN TO USE" panel: Tree for multi-level hierarchy (file systems, org charts); List with collapsible groups for shallow 1–2 level grouping where the groups are headings, not the focus. This came from the user's clarification mid-session that List handles "groups, collapsible groups, flat one level or mixed 1/2 levels". Helps users pick the right component before mounting.
 - Welcome chip "Tree select" now resolves correctly (was falling back to Tabs).
 
-**Verification**
+### Verification (Koan catalog: Tree demo added)
 
 - Lint: 0 errors, 16 warnings.
 - Browser: `/app/tree` direct nav renders folders + files; clicking `src` expands to show `components`, `utilities`, `index.ts`.
 
 ## 2026-05-23 — Koan catalog: MultiSelect demo + canvas scroll fix + zen-sumi table dark-mode fix
 
-**Demo: MultiSelect with chips**
+### Demo: MultiSelect with chips
 
 - New `demo/src/lib/koan/demos/multi-select/` (meta.ts + placeholder.svelte). Keywords: multi, multi-select, multiple, select, pick, choose, chips, tag, options, checkbox, combo. Icon: 選.
 - `catalog.ts` — registered as the 6th demo.
@@ -3706,22 +3706,22 @@ Added a hierarchical Tree demo at `/app/tree` with a file-tree shape (src + docs
 - New `demo/src/routes/app/multiselect/+page.svelte` state-setter.
 - Welcome chip "Multi-select with chips" now resolves correctly (was falling back to Tabs).
 
-**Fix: canvas scroll for response demos**
+### Fix: canvas scroll for response demos
 
 User reported the canvas wasn't scrollable — Table preview's CodeBlock went off-screen and couldn't be reached. Root cause: `.canvas-body` is `flex: 1` (bounded by canvas height) but its content can exceed that; `.canvas { overflow: auto }` doesn't kick in because the flex layout treats body's allocated height as the canvas's content height. Fix: added `overflow-y: auto` to `.canvas-body.response`, making the body itself the vertical scroll container.
 
-**Fix: zen-sumi table headers invisible in dark mode**
+### Fix: zen-sumi table headers invisible in dark mode
 
 User reported headers in the table are almost invisible in dark mode. Root cause: `packages/themes/src/zen-sumi/table.css` used `text-paper-edge` (a paper-tone color) for text-on-paper at five sites — header, sort icon, empty state, cell icon, responsive cell label. Paper tones against paper background are by definition near-invisible. Fix: changed all five to ink-soft / ink-faint (ink tokens are the correct family for text). Rebuilt themes. Other themes (rokkit, minimal, material, frosted) don't have this bug.
 
-**Verification**
+### Verification (Koan catalog: MultiSelect demo + canvas scroll fix + zen-sumi table dark-mode fix)
 
 - Lint: 0 errors, 16 warnings.
 - Browser: `/app/multiselect` renders correctly; trigger shows "2 selected from 8" with red + blue pre-picked. `/app/table?mode=dark` headers (NAME / PRICE / STOCK) are legible. Resizing window to 500px height confirms `.canvas-body.response` becomes scrollable (`scrollHeight > clientHeight`).
 
 ## 2026-05-23 (cont.) — Koan catalog: List with collapsible groups + flex-shrink fix
 
-**Demo: List with collapsible groups**
+### Demo: List with collapsible groups
 
 - New `demo/src/lib/koan/demos/list/` (meta.ts + placeholder.svelte). Keywords: list, menu, sidebar, group, collapsible, expand, section, category. Icon: 列.
 - `catalog.ts` — registered as the 7th demo.
@@ -3730,22 +3730,22 @@ User reported headers in the table are almost invisible in dark mode. Root cause
 - New `demo/src/routes/app/list/+page.svelte` state-setter.
 - The MOUNTED chat-left message includes a "WHEN TO USE" panel — counterpoint to the same panel in the Tree demo. List with collapsible groups for shallow grouping where items are the focus; Tree when hierarchy is the point.
 
-**Fix: canvas-body children flex-shrink**
+### Fix: canvas-body children flex-shrink
 
 User reported the CodeBlock shrinks when the List expands, because flex children default to `flex-shrink: 1`. Added `:global(.canvas-body.response > *) { flex-shrink: 0 }` so the response card and code block hold their natural heights, and overflow triggers the body's vertical scroll. The `:global` is required — without it Svelte's scoped CSS doesn't reach the CodeBlock (which comes from another component file).
 
-**Backlog**
+### Backlog
 
 - `docs/backlog/2026-05-22-tree-table-and-table-simplification.md` (added by user this session) — committed alongside this work for record-keeping.
 
-**Verification**
+### Verification (Koan catalog: List with collapsible groups + flex-shrink fix)
 
 - Lint: 0 errors, 16 warnings.
 - Browser: `/app/list` renders 3 collapsible groups; the WHEN TO USE callout explains the List vs Tree trade-off; at a 500px-tall viewport the body becomes scrollable (clientH 298 → scrollH 928) and the CodeBlock holds its full 595px height instead of being compressed.
 
 ## 2026-05-23 (cont.) — Toasts demo + interactive Koan mode draft
 
-**Demo: Toast notifications**
+### Demo: Toast notifications
 
 - `demo/src/lib/koan/demos/toasts/` already had meta + index.svelte; the catalog had registered it but no route existed.
 - New `demo/src/routes/app/toasts/+page.svelte` state-setter.
@@ -3754,7 +3754,7 @@ User reported the CodeBlock shrinks when the List expands, because flex children
 - New welcome chip "Toast notifications" added to buildChips so the demo is discoverable from welcome.
 - Welcome chip routes via runMatch through the existing toast keywords in the catalog meta.
 
-**Backlog draft: interactive Koan mode**
+### Backlog draft: interactive Koan mode
 
 `docs/backlog/2026-05-23-interactive-koan-mode.md` — architecture for moving Koan from static catalog + lexical match to LLM-driven intent routing. Three intent classes (show me / how-to / refine). The centerpiece is **response compositions**: each chat response is an ordered list of blocks (text / code / component / comparison), and the LLM picks `inline_capable` components from a whitelist + provides JSON props matching a schema. The LLM never writes Svelte source; the renderer stays deterministic.
 
@@ -3765,7 +3765,7 @@ Two phases:
 
 Memory updated at `~/.claude/projects/-Users-Jerry-Developer-rokkit/memory/project_koan_interactive_mode.md` so future sessions can pick this up.
 
-**Verification**
+### Verification (Toasts demo + interactive Koan mode draft)
 
 - Lint: 0 errors, 17 warnings (one new max-lines-per-function warning on the layout's growing per-demo branch — pre-existing pattern).
 - Tests: 3480/3480.
@@ -3775,7 +3775,7 @@ Memory updated at `~/.claude/projects/-Users-Jerry-Developer-rokkit/memory/proje
 
 ## 2026-05-23 (cont.) — Koan catalog: Form demo + /app/wizard → /app/theming
 
-**Demo: schema-driven form**
+### Demo: schema-driven form
 
 - New `demo/src/lib/koan/demos/form/` (meta + placeholder). Keywords: form, input, schema, validation, sign-up, contact, json-schema. Icon: 入.
 - New `demo/src/routes/app/form/+page.svelte` state-setter.
@@ -3784,7 +3784,7 @@ Memory updated at `~/.claude/projects/-Users-Jerry-Developer-rokkit/memory/proje
 - Chat-left messages emphasize "schema in, form out" — no per-input boilerplate, required/format/enum drive rendering and validation automatically.
 - "Schema-driven form" welcome chip added.
 
-**Route rename: /app/wizard → /app/theming**
+### Route rename: /app/wizard → /app/theming
 
 Per Jerry: `/app/wizard` was too generic given a real Wizard component may exist later. The theme-wizard demo is specifically about *theming*, so the route should reflect that.
 
@@ -3795,7 +3795,7 @@ Renamed via `git mv demo/src/routes/app/wizard demo/src/routes/app/theming`. Upd
 
 Historical journal entries (where the route WAS `/app/wizard`) left as-is — they're a record of what was committed at the time, not forward-looking spec.
 
-**Verification**
+### Verification (Koan catalog: Form demo + /app/wizard → /app/theming)
 
 - Lint: 0 errors, 17 warnings.
 - Browser: `/app/form` direct nav renders name/email/role/newsletter fields with validation. `/app/theming` direct nav renders the theme wizard (rename works).
@@ -3804,7 +3804,7 @@ Historical journal entries (where the route WAS `/app/wizard`) left as-is — th
 
 ## 2026-05-23 (cont.) — Select demo + maxRows prop fix
 
-**Demo: single-pick Select**
+### Demo: single-pick Select
 
 - New `demo/src/lib/koan/demos/select/` (meta + placeholder). Keywords: select, dropdown, picker, pick, choose, option, single, combo. Icon: 択.
 - `catalog.ts` + `shell.svelte.ts` + `+layout.svelte` — wired through.
@@ -3826,7 +3826,7 @@ Fix in `packages/ui/src/components/Select.svelte`:
 
 This makes the visible window deterministic per `maxRows` setting and theme-aware (since the measured item height already reflects the active theme + density). Verified in browser: with maxRows=8 and 20 items, dropdown clientHeight is 294px (≈ 8 × 37), scrollHeight is 740px (all 20), and scrolling to `scrollTop = scrollHeight - clientHeight` brings Option 20 fully into view.
 
-**Verification**
+### Verification (Select demo + maxRows prop fix)
 
 - Lint: 0 errors, 17 warnings.
 - Tests: 3480/3480 (existing Select tests pass; the prop is backward-compatible).
@@ -3842,14 +3842,14 @@ User reported two new Select bugs after the maxRows fix:
 
 User pinpointed the focus-sync $effect as a likely culprit. Confirmed: there were **two** focus-sync paths competing.
 
-**Root causes**
+### Root causes
 
 - The Navigator class (`packages/actions/src/navigator.js`) owns focus + scroll via its private `#syncFocus()` method.
 - `Select.svelte` had a duplicate `$effect` that watched `wrapper.focusedKey` and called `target.focus()` + `target.scrollIntoView({ block: 'nearest' })` itself. Two implementations doing similar work, ordered nondeterministically across renders.
 - Both `focus()` and `scrollIntoView({ block: 'nearest' })` climb the ancestor chain — so when the dropdown was inside a scrollable parent (the demo's `canvas-body.response`), the focus/scroll calls scrolled that parent too.
 - The dropdown's `position: absolute` left it visually clipped by the same ancestor's `overflow-y: auto`. The dropdown's own max-height became irrelevant — what mattered was how much room the ancestor gave it.
 
-**Fixes**
+### Fixes
 
 - `Select.svelte` — removed the duplicate focus-sync `$effect`. Single source of truth lives in Navigator's `#syncFocus()`.
 - `Navigator` (`packages/actions/src/navigator.js`):
@@ -3857,7 +3857,7 @@ User pinpointed the focus-sync $effect as a likely culprit. Confirmed: there wer
   - New `#scrollItemIntoView(el)` method scrolls **within `this.#root` only**, computed from `offsetTop` / `clientHeight` / `scrollTop` — never walks ancestors. Replaces the previous `el.scrollIntoView()` call.
 - `Select.svelte` — new `$effect` runs on open: computes the trigger's `getBoundingClientRect()` and sets the dropdown to `position: fixed` with explicit `top` / `left` / `right` / `bottom` (per `direction` + `align` props). Adds resize + ancestor-scroll listeners; closes the dropdown on outer scroll (standard popup behavior).
 
-**Why position: fixed**
+### Why position: fixed
 
 - Escapes any ancestor `overflow: auto/hidden` clipping. The dropdown lives in viewport coordinates, so a Select inside a card / modal / scrollable canvas no longer gets clipped by the container.
 - `[data-select]` has `position: relative` (the original abs anchor) but we override with inline `position: fixed`. CSS specificity is on our side (inline beats stylesheet).
@@ -3865,7 +3865,7 @@ User pinpointed the focus-sync $effect as a likely culprit. Confirmed: there wer
 
 These are real `@rokkit/ui` improvements, not demo-specific.
 
-**Verification**
+### Verification (Select: focus-sync race + ancestor-clipping fixes)
 
 - Lint: 0 errors, 17 warnings.
 - Tests: 3480/3480 (existing Select + Navigator tests pass; the API surface is unchanged).
@@ -3873,7 +3873,7 @@ These are real `@rokkit/ui` improvements, not demo-specific.
 
 ## 2026-05-24 — Koan catalog: BarChart demo + SSR-safe localStorage
 
-**Demo: BarChart**
+### Demo: BarChart
 
 - New `demo/src/lib/koan/demos/chart/` (meta + placeholder). Keywords: chart, graph, bar, plot, visualization, analytics, data, metrics, sales, series. Icon: 図.
 - `catalog.ts` + `shell.svelte.ts` + `+layout.svelte` — wired through. New `BarChart` import from `@rokkit/chart`.
@@ -3881,7 +3881,7 @@ These are real `@rokkit/ui` improvements, not demo-specific.
 - Chat-left messages emphasize "field-mapped, declarative" — no D3 boilerplate; `x`, `y`, `fill`, `label`, `stack`, `stat` props cover the common cases.
 - New welcome chip "Bar chart with quarterly revenue".
 
-**SSR-safe localStorage guards**
+### SSR-safe localStorage guards
 
 User noticed a Node v25 `--localstorage-file` warning when running the demo. Cause: vite (run under Node v25 via its `#!/usr/bin/env node` shebang, even when invoked through `bun run dev`) exposes a native `localStorage` global that emits a one-time warning on first access without the `--localstorage-file` CLI flag.
 
@@ -3895,7 +3895,7 @@ Note on Bun: `bun run dev` invokes the script which is `vite dev`. The `vite` bi
 
 **Catalog state (10 routes, 10 demos):** tabs, table, tree, multi-select, list, toasts, form, select, chart, theme-wizard (at /app/theming). All nine build-component welcome chips resolve correctly.
 
-**Verification**
+### Verification (Koan catalog: BarChart demo + SSR-safe localStorage)
 
 - Lint: 0 errors, 18 warnings.
 - Tests: 3480/3480 (after updating the two vibe specs for the new console.warn signature).
@@ -3903,7 +3903,7 @@ Note on Bun: `bun run dev` invokes the script which is `vite dev`. The `vite` bi
 
 ## 2026-05-24 (cont.) — Koan catalog: Combo (filterable Select)
 
-**Demo: Combobox**
+### Demo: Combobox
 
 - New `demo/src/lib/koan/demos/combo/` (meta + placeholder). Keywords: combo, combobox, autocomplete, typeahead, filter, search. Icon: 探.
 - `catalog.ts` + `shell.svelte.ts` + `+layout.svelte` — wired through.
@@ -3912,7 +3912,7 @@ Note on Bun: `bun run dev` invokes the script which is `vite dev`. The `vite` bi
 - Chat-left messages include a "WHEN TO USE" panel — Combobox for large option counts where typing beats scanning; plain Select for short fixed lists.
 - New welcome chip "Combobox with type-to-filter".
 
-**Verification**
+### Verification (Koan catalog: Combo (filterable Select))
 
 - Lint: 0 errors, 18 warnings.
 - Browser: `/app/combo` direct nav opens the dropdown with the filter input. Typing "ne" narrows 42 options to 4 (Indonesia, Netherlands, New Zealand, Philippines).
@@ -3921,7 +3921,7 @@ Note on Bun: `bun run dev` invokes the script which is `vite dev`. The `vite` bi
 
 ## 2026-05-24 (cont.) — Koan catalog: Date Picker + customization sub-pages note
 
-**Demo: Date Picker**
+### Demo: Date Picker
 
 - New `demo/src/lib/koan/demos/date-picker/` (meta + placeholder). Keywords: date, datetime, picker, calendar, time, event, schedule, appointment, iso8601. Icon: 日.
 - `catalog.ts` + `shell.svelte.ts` + `+layout.svelte` — wired through.
@@ -3930,7 +3930,7 @@ Note on Bun: `bun run dev` invokes the script which is `vite dev`. The `vite` bi
 - Route: `/app/date` (not `/app/date-picker` — keeping route names short).
 - New welcome chip "Date and time picker".
 
-**Customization sub-pages — backlog note**
+### Customization sub-pages — backlog note
 
 Per Jerry: each component-demo will eventually need sub-pages for variations — custom field mapping, custom snippets, event handlers, validation rules, lookup integrations. These act as follow-up questions in the chat:
 
@@ -3940,7 +3940,7 @@ Per Jerry: each component-demo will eventually need sub-pages for variations —
 
 Added a "Per-demo customization sub-pages (post-MVP)" section to `docs/backlog/2026-05-23-interactive-koan-mode.md`. The pattern: sub-routes are also thin state-setter pages that set a new `shell.demoVariant` field; the layout renders variant-specific messages + extra props on the canvas component. Sequenced AFTER the interactive chat ships, since they're the content the chat surfaces.
 
-**Verification**
+### Verification (Koan catalog: Date Picker + customization sub-pages note)
 
 - Lint: 0 errors, 18 warnings.
 - Browser: `/app/date` direct nav renders both date inputs, bound values shown live in propsRow.
@@ -3949,7 +3949,7 @@ Added a "Per-demo customization sub-pages (post-MVP)" section to `docs/backlog/2
 
 ## 2026-05-24 (cont.) — Koan catalog: Stepper demo
 
-**Demo: Multi-step Stepper**
+### Demo: Multi-step Stepper
 
 - New `demo/src/lib/koan/demos/stepper/` (meta + placeholder). Keywords: stepper, steps, wizard, checkout, flow, sign-up, onboarding, progress, multi-step, workflow. Icon: 段.
 - `catalog.ts` + `shell.svelte.ts` + `+layout.svelte` — wired through. New Stepper import from `@rokkit/ui`.
@@ -3958,7 +3958,7 @@ Added a "Per-demo customization sub-pages (post-MVP)" section to `docs/backlog/2
 - Chat-left messages emphasize "steps are data, not markup" — array of `{ label, completed }` drives the display.
 - New welcome chip "Multi-step stepper".
 
-**Verification**
+### Verification (Koan catalog: Stepper demo)
 
 - Lint: 0 errors, 18 warnings.
 - Browser: `/app/stepper` direct nav renders 4 circles with connectors, the active "Preferences" step highlighted, "Complete & Next" button below, propsRow showing current=2 + active="Preferences".
@@ -3967,7 +3967,7 @@ Added a "Per-demo customization sub-pages (post-MVP)" section to `docs/backlog/2
 
 ## 2026-05-24 (cont.) — Theme Wizard D1: in-card interactivity + customization architecture note
 
-**D1: interactive theme wizard (in-card)**
+### D1: interactive theme wizard (in-card)
 
 `demo/src/lib/koan/demos/theme-wizard/ThemeWizardCard.svelte` now responds to clicks:
 
@@ -3978,7 +3978,7 @@ Added a "Per-demo customization sub-pages (post-MVP)" section to `docs/backlog/2
 
 This is the first real interactivity milestone for the theme-wizard. State is local to the card — D2 will wire it to live theme application (`theme.setSkin()` from the shared store) and D3 to Save preset + Export tokens.css.
 
-**Architecture note: customization variations**
+### Architecture note: customization variations
 
 Per Jerry's question — instead of sub-folders for every customization, **dynamic-on-one-page** is the preferred pattern. Updated `docs/backlog/2026-05-23-interactive-koan-mode.md` to flip the previous "sub-routes" recommendation:
 
@@ -3987,7 +3987,7 @@ Per Jerry's question — instead of sub-folders for every customization, **dynam
 
 Each catalog entry's tool spec declares its variants with `mode: 'dynamic' | 'route'`, letting the LLM pick correctly.
 
-**Verification**
+### Verification (Theme Wizard D1: in-card interactivity + customization architecture note)
 
 - Lint: 0 errors, 18 warnings.
 - Browser: `/app/theming` direct nav. Clicked neutral palette → IN USE badge appeared. Clicked role swatch at index 2 → step text changed to "·200", selection outline moved. Click handlers fire correctly with rAF-paced re-render.
@@ -4005,7 +4005,7 @@ User noted: there was no way to associate a palette with a role (e.g., "use slat
 
 This naturally demonstrates composability — `<Select>` (a Rokkit catalog component) is being used inside `<ThemeWizardCard>` (another demo). Same pattern future inline-composition responses will use.
 
-**Verification**
+### Verification (Theme Wizard D1.5: per-role palette switcher)
 
 - Lint: 0 errors.
 - Browser: opened first role's light palette Select → dropdown showed only "warm gray" + "slate" (the two IN-USE palettes). Picked slate → role label updated, ramp swatches re-rendered with slate colors (rgb 248/250/252 → 226/232/240).
@@ -4014,7 +4014,7 @@ This naturally demonstrates composability — `<Select>` (a Rokkit catalog compo
 
 The wizard's role-mapping state now writes directly to `document.documentElement`'s inline CSS variables, so the running app reskins as the user picks.
 
-**Implementation**
+### Implementation (Theme Wizard D2: live theme application)
 
 - `ROLE_TO_VAR` map in `ThemeWizardCard.svelte` translates the wizard's mockup-conventional role names to the actual Rokkit named-token vars:
   - `paper → --paper`, `paper-2 → --paper-soft`, `paper-3 → --paper-mute`, `edge → --paper-edge`, `ink → --ink`, `ink-2 → --ink-mute`, `accent → --accent`.
@@ -4024,13 +4024,13 @@ The wizard's role-mapping state now writes directly to `document.documentElement
 
 Crucially we write to `documentElement` (not `body`) so the inline styles cascade into the chat shell which is `position: fixed; inset: 0` — every component inheriting these vars reskins.
 
-**Verification**
+### Verification (Theme Wizard D2: live theme application)
 
 - `--paper` defaults to `#f7f3ea` (warm-gray @ 100) which matches the zen-sumi theme — the page looks identical on first load.
 - Clicked the `paper` row's step-7 swatch (warm-gray @ 700 = `#3a3025`). The entire shell (sidebar, chat-left, canvas, role-table) re-rendered in dark brown immediately. The selected outline moved to step 7, `·700` shows in the row, and `documentElement.style['--paper']` is `#3a3025`.
 - Navigating away clears the overrides via `onDestroy`.
 
-**Next**
+### Next
 
 D3 — wire the wizard's footer actions: Save preset (persist the role mapping to localStorage), Export tokens.css (generate a downloadable CSS file with `--paper`, `--ink`, etc. set per the user's picks).
 
@@ -4049,23 +4049,23 @@ Lifted `palettes`, `roles`, `ramps`, `stepKeys`, `shadeLabels`, and `ROLE_TO_VAR
 
 Store loads from localStorage on first import — so reload restores the saved preset.
 
-**Layout wiring**
+### Layout wiring
 
 Imported the store helpers in `+layout.svelte`; added `handleSaveWizardPreset` / `handleExportTokensCss` / `handleResetWizardPreset` that call the store fn + push a confirmation toast via `alerts.push()`. Wired to the ChatResponse `actions` snippet. Replaced "Preview live" (which already happens live) with "Reset to defaults" — more useful.
 
-**Shell-level AlertList**
+### Shell-level AlertList
 
 Moved `<AlertList position="top-right" />` out of the toasts canvas branch and into the shell root, so confirmations from the wizard (and any future demo) show regardless of which route is active. The toasts demo still works — the buttons just push into the same shared `alerts` store.
 
-**$derived bindings**
+### $derived bindings
 
 ThemeWizardCard captured `wizardState.palettes` / `.roles` as plain `const` references — when `resetPreset()` reassigned those fields, the captured references stayed pointing at the old arrays. Switched to `const palettes = $derived(wizardState.palettes)` so reassignment propagates to the template.
 
-**Pre-existing data fix**
+### Pre-existing data fix
 
 While exporting CSS, noticed `stepKeys` has `'950'` (not `'900'`) at index 9, but some role defaults used `'900'` — leaving `--ink` and `--paper-soft` missing from exports. Normalized all `'900'` values in defaults to `'950'`.
 
-**End-to-end verified**
+### End-to-end verified (Theme Wizard D3: Save preset + Export tokens.css + Reset)
 
 1. Open `/app/theming`.
 2. Click paper row's step-6 swatch (warm-gray @ 600). The shell repaints; `--paper` becomes `#574832`.
@@ -4085,7 +4085,7 @@ All 13 catalog entries now declare a `tool` / `inline` / `variants` block per th
 - New exported types: `ToolParamSchema` (loose `Record<string, unknown>` for now), `DemoTool`, `DemoInline`, `DemoVariant`.
 - `DemoMeta` gains three optional fields: `tool?`, `inline?`, `variants?`.
 
-**Per-demo spec**
+### Per-demo spec
 
 Each demo's `meta.ts` describes:
 
@@ -4113,7 +4113,7 @@ Concrete variants registered:
 
 Nothing in the runtime reads these yet. The point is shape: when the LLM router lands, every demo already declares its tool, inline capability, and variation menu in the same place its title/keywords/icon live.
 
-**Verification**
+### Verification (Catalog tool specs (schema-only))
 
 - Lint: 0 errors, 20 warnings.
 - Tests: 3480/3480.
@@ -4122,13 +4122,13 @@ Nothing in the runtime reads these yet. The point is shape: when the LLM router 
 
 First proof-of-concept for the **dynamic-on-one-page** variant pattern outlined in the interactive-koan-mode draft. Picked Tabs as the test bed since its variants (`vertical`, `with-icons`) are real prop swaps with no schema gymnastics.
 
-**Plumbing**
+### Plumbing
 
 - `shell.svelte.ts` — added `demoVariant: string | null` field and `setShellVariant()` helper. `setShellWelcome()` now also clears the variant.
 - `app/tabs/+page.svelte` — `$effect` (not `onMount`) reads `page.url.searchParams.get('variant')` and writes to the shell. `$effect` over `onMount` so query-string changes update the shell without remount.
 - `+layout.svelte` — imports `findById` from the catalog. New `activeVariant` $derived looks up the current demo's variants array and finds the one matching `shell.demoVariant`. `tabsVariantProps()` returns the variant's `props` if `mode === 'dynamic'`.
 
-**Tabs canvas branch wired**
+### Tabs canvas branch wired
 
 - The `<Tabs>` element spreads `tabsVariantProps()` after its base props, so the variant overrides flow in.
 - Canvas eyebrow shows `· variant: vertical orientation` when active.
@@ -4136,7 +4136,7 @@ First proof-of-concept for the **dynamic-on-one-page** variant pattern outlined 
 - ChatResponse meta + propsRow include the variant id when active.
 - New `.variant-chip` styles in the layout: rounded-pill, accent border + tint when active.
 
-**Verified**
+### Verified (Dynamic variation prototype (Tabs))
 
 - `/app/tabs?variant=vertical` → mounts vertically-oriented Tabs (panels on the left, content right).
 - Click "With icons" chip → URL updates to `?variant=with-icons`, meta + propsRow refresh, no remount.
@@ -4144,7 +4144,7 @@ First proof-of-concept for the **dynamic-on-one-page** variant pattern outlined 
 
 The pattern works. Future demos add their own `tabsVariantProps()`-style helper (or refactor to a generic one) and the same chip row applies — driven entirely by the catalog's `variants[]` array.
 
-**What's next, when we want it**
+### What's next, when we want it
 
 - Real variant content beyond just prop swaps — e.g. Tabs `with-icons` variant needs an `items` array that includes icons, not just an `iconize=true` prop. The pattern can either ship variant data alongside `props` in the catalog, or have the layout pick variant-specific data inline.
 - Generalize the chip row helper so we don't write it per demo.
@@ -4160,7 +4160,7 @@ Three things came out of trying the prototype on a fresh page:
 
 **`with-icons` variant** keeps the full item objects (icons survive). All other variants strip icons via the `$derived` so the snippet matches what's rendered — no phantom icon fields the user can't see.
 
-**Verified**
+### Verified (Variant chips extracted; Tabs panels + reactive code)
 
 - `/app/tabs` — Theming tab selected, panel content visible, code block lists 5 items without icons, `<Tabs options={items} bind:value />`.
 - `/app/tabs?variant=vertical` — strip on the left, panel on the right, code block has `orientation="vertical"`.
@@ -4170,20 +4170,20 @@ Three things came out of trying the prototype on a fresh page:
 
 Validated the chip pattern on a second demo. Stepper meta had three variants stubbed (`horizontal`, `vertical`, `with-content`); dropped `horizontal` since it's the default and pruned `vertical`'s label to `'Vertical orientation'` to match Tabs' style. `vertical` carries `{ orientation: 'vertical' }`; `with-content` swaps in a `content` snippet instead of props.
 
-**Plumbing reused**
+### Plumbing reused
 
 - `VariantChips` dropped straight in — `<VariantChips demoId="stepper" basePath="/app/stepper" activeId={activeVariant?.id ?? null}/>` is the whole call site.
 - `stepperVariantProps` $derived (gated on `shell.demoType === 'stepper'` so it doesn't leak into other demos that share `activeVariant`).
 - `app/stepper/+page.svelte` got the same `$effect` reading `?variant=` as the Tabs page.
 
-**Stepper-specific bits**
+### Stepper-specific bits
 
 - Fixed step shape: was `{ label: 'Account', completed }`; Stepper renders the visible label from `step.text` (it uses `step.label` for the short text inside the circle, defaulting to the step number). Steps now use `{ text: 'Account', completed: true }` — labels actually show below the circles in default mode.
 - Conditional `content` snippet pattern: declared `stepperContent` once at the markup level, then passed `content={activeVariant?.id === 'with-content' ? stepperContent : undefined}`. Tried wrapping `{#snippet content}` inside `{#if}` directly under `<Stepper>` first — that doesn't bind the snippet as a prop, the snippet has to be a top-level declaration that's passed conditionally.
 - `stepperCode` is `$derived.by()` like Tabs — the snippet block only appears in the displayed code when the `with-content` variant is active. orientation line only appears when not horizontal.
 - `.stepper-mount[data-orientation='vertical']` flips to `flex-direction: row` so the vertical stepper sits left of the Complete & Next button.
 
-**Verified**
+### Verified (Variants in Stepper (second demo to adopt))
 
 - `/app/stepper` — horizontal default, no extra code in the snippet, "Account / Profile / Preferences / Review" labels below each circle.
 - `/app/stepper?variant=vertical` — steps stacked, code shows `orientation="vertical"`.
@@ -4197,7 +4197,7 @@ Tests: 3480/3480. Lint: 0 errors.
 
 Generalized the chip pattern to every demo. The user asked for the same treatment Tabs and Stepper got, applied to the remaining 11.
 
-**What changed everywhere**
+### What changed everywhere
 
 - Renamed `tabsVariantProps` / removed `stepperVariantProps` → one shared `variantProps` $derived that any branch can spread. Demos with variant props get them through `<Component {...baseProps} {...variantProps} />`.
 - Each `/app/X/+page.svelte` now reads `?variant=` via the same `$effect` Tabs uses. 11 files, identical 3-line pattern.
@@ -4208,13 +4208,13 @@ Generalized the chip pattern to every demo. The user asked for the same treatmen
   - `variant: <id>` in the propsRow
   - ChatResponse `meta` includes `variant=<id>`
 
-**Meta updates**
+### Meta updates
 
 - `combo` had no variants — added `no-filter` (real prop swap to plain Select) and `with-counts` (placeholder for future).
 - `toasts` had no variants — added `bottom-right` and `auto-dismiss` (placeholders for future).
 - Other demos kept their existing variant lists.
 
-**Behaviour coverage**
+### Behaviour coverage
 
 Variants that have `props` and work end-to-end today:
 
@@ -4240,7 +4240,7 @@ Variants that show the chip + variant indicator but don't yet change the compone
 
 This is intentional: the scaffolding lands first so every demo has a consistent UX (chip row, URL params, indicator), then real per-variant behaviour can be added incrementally in follow-ups without further plumbing churn.
 
-**Verified**
+### Verified (Variant scaffolding across all 13 demos)
 
 - Lint: 0 errors, 20 pre-existing warnings.
 - All 13 `/app/<demo>` routes return 200.
@@ -4251,41 +4251,41 @@ This is intentional: the scaffolding lands first so every demo has a consistent 
 
 Filled in the gap from the scaffolding pass: every chip on every demo now changes something visible. Approach: derive items/data/columns/schema from the active variant id rather than spreading props the component doesn't have.
 
-**Chart (3 variants)**
+### Chart (3 variants)
 
 - `grouped` / `stacked` → swap `chartData` to a per-product 8-row dataset and pass `fill: 'product', legend: true` (plus `stack: true` for stacked). Browser-verified: two-series bars render with a Hardware/Software legend.
 - `with-labels` → `label: true` on BarChart. Value labels render above each bar.
 
-**Select (2 variants)**
+### Select (2 variants)
 
 - `with-icons` → items get an `icon` field via a derived `selectIconItems`. Dropdown renders each option with its icon.
 - `grouped` → items become a 3-group nested shape (Frontend / Backend / Database). Select picks up group headers from `children`.
 
-**List (2 variants)**
+### List (2 variants)
 
 - `flat` → swap `listItems` to a flat 8-item array, and `collapsible={false}` when active.
 - `snippets` → defined a top-level `listItemSnippet` and passed it as `itemContent` when active. Each item renders with accent icon + label + a "CUSTOM" badge to make it obvious the snippet replaced the default.
 
-**MultiSelect (2 variants)**
+### MultiSelect (2 variants)
 
 - `with-counts` → adds an "X of Y picked" line below the trigger.
 - `no-overflow` → CSS toggle on `.multiselect-mount[data-variant='no-overflow']` lets the chip strip wrap freely instead of clipping.
 
-**Toasts (2 variants)**
+### Toasts (2 variants)
 
 - `bottom-right` → moved the shell's AlertList `position` to a $derived that returns 'bottom-right' when this variant is active and the demo is toasts. Verified the AlertList re-renders at the bottom-right corner.
 - `auto-dismiss` → `showToast()` passes `timeout: 3000` (vs `0`/persistent default) when this variant is active.
 
-**Combo (1 deferred variant)**
+### Combo (1 deferred variant)
 
 - `with-counts` → placeholder swaps to "Type to search · 42 countries available"; below the trigger we render "Picked: France · 1 of 42" once the user picks.
 
-**Date Picker (2 variants)**
+### Date Picker (2 variants)
 
 - `with-validation` → schema gets `minimum: '2026-06-01'` + `maximum: '2026-12-31'` on `eventDate`.
 - `range` → schema becomes two `format: 'date'` fields (`eventDate`, `checkOut`) for a check-in / check-out pair.
 
-**Table (mapping, sticky-header — striped already worked)**
+### Table (mapping, sticky-header — striped already worked)
 
 - `mapping` → passes a `columns` prop with relabeled headers ("Product Name", "Unit Price (USD)", "On Hand") and right-aligned numeric columns.
 - `sticky-header` → swap to a 14-row dataset, wrap mount with `max-height: 340px; overflow: auto` and `position: sticky` on `[data-table-header-row]`.
@@ -4298,12 +4298,12 @@ Original `async` + `multi-select` variants weren't feasible without component ch
 
 **`tabsCode`, `selectCode`, `listCode`, `dateCode`, `tableCode`, `chartCode`** are all `$derived.by()` now — the displayed code snippet always matches the running component, across every variant.
 
-**Deliberately not done in this pass**
+### Deliberately not done in this pass
 
 - `form.{multi-step,conditional,with-lookups}` — multi-step needs a different component (`<MultiStep/>`), conditional needs JSON-schema rule wiring, with-lookups needs the lookups system. Each is a small feature unto itself; deferring.
 - `theme-wizard.{export,save-preset}` — these are action triggers (call `savePreset()` / `downloadTokensCss()`), not display variants. Could re-classify as `mode: 'route'` or remove them; keeping them as visible-chip placeholders for now since they hint at the action buttons.
 
-**Verification**
+### Verification (Real behaviour for the deferred variants)
 
 - Lint: 0 errors (25 pre-existing warnings).
 - Browser-verified: chart.grouped (2-series bars + legend), chart.with-labels (value labels above bars), select.with-icons (icons in dropdown), select.grouped (group headers in dropdown), combo.with-counts (count in placeholder), toasts.bottom-right (AlertList moves to bottom-right), table.mapping (custom column labels + right-align).
@@ -4314,7 +4314,7 @@ User feedback: "instead of the chips under the header for variants would it be n
 
 Right call. The variant chips are conversational nudges ("try this next") — they belong with the assistant's reply, not stapled to the canvas chrome. The canvas keeps the eyebrow variant indicator + propsRow row; the chat is where the suggestions live now.
 
-**Implementation**
+### Implementation (Variant chips moved to chat as suggestions)
 
 - `Chips` component picked up an `active` field hook (+ optional `[data-chip-clear]` "· clear" suffix) so a chip can be styled as the currently-selected variant. CSS in chat.css highlights active chips with the accent border/tint pattern we already use elsewhere.
 - Layout has a `variantChipItems` $derived that maps `findById(shell.demoType).variants` to chip items (label, icon, id, active). `pickVariant(item)` either gotos `/app/<demo>?variant=<id>` or, if the item is already active, clears back to the base path.
@@ -4327,7 +4327,7 @@ Right call. The variant chips are conversational nudges ("try this next") — th
 **What it feels like**
 The chat reads: USER → MOUNTED → EXPLAINED → TRY → TRY VARIANTS (chip row). Picking a chip updates the URL, the eyebrow + propsRow, and the active chip — all without a remount. Logical flow.
 
-**Verified**
+### Verified (Variant chips moved to chat as suggestions)
 
 - `/app/tabs?variant=vertical` → chat shows `Vertical orientation · clear` (active) + `With icons` (inactive). Canvas eyebrow says `· variant: vertical orientation`.
 - All 13 demos have the row when their meta declares variants.
@@ -4340,7 +4340,7 @@ User asked: should the "rokkit + AI" story live alongside `/app` or in its own r
 
 Direction agreed: separate `/chat` route, mock router first, browser LLM later. Built phase 1 (b–d in the plan): scaffold + block renderer + scripted router.
 
-**Architecture**
+### Architecture
 
 - `demo/src/lib/chat-demo/types.ts` — `Block` union of `prose | code | component | suggestions`. A `ChatTurn` is `{role: 'user' | 'assistant', …}` with `blocks: Block[]` for assistant turns. Same shape an LLM tool-call response would have, so swapping in a real model later doesn't touch the UI.
 - `demo/src/lib/chat-demo/router.ts` — `routeQuery(query): Block[]`. Keyword-based pattern match against `ROUTES[]`. Each route's `build(query)` returns the Block list. Routes are order-sensitive (more specific first — chart-grouped beats chart). Fallback returns a suggestion list.
@@ -4349,7 +4349,7 @@ Direction agreed: separate `/chat` route, mock router first, browser LLM later. 
 - `demo/src/lib/chat-demo/components/BlockList.svelte` — walks the Block list, renders prose / code / component / suggestion chips. Suggestion chip click → calls back into `submitQuery`.
 - `demo/src/routes/chat/+page.svelte` — chat-only chrome (no canvas, no sidebar). Welcome screen with seed suggestions if empty. ChatStream + ChatComposer. Auto-scrolls on new turn.
 
-**Routes shipped (5 archetypes)**
+### Routes shipped (5 archetypes)
 
 - `chart` → quarterly revenue BarChart + "Try" chips (Group by product / Stack / Show as table).
 - `chart-grouped` (or stacked) → two-series Hardware/Software chart with legend; `stack: true` when the query says "stacked".
@@ -4357,14 +4357,14 @@ Direction agreed: separate `/chat` route, mock router first, browser LLM later. 
 - `form` → 4-field FormRenderer (name/email/role/newsletter) driven by schema.
 - `list` → settings menu with 2 collapsible groups.
 
-**Browser-verified flows**
+### Browser-verified flows
 
 - `/chat` → welcome screen with 4 seed chips.
 - Click "Quarterly revenue chart" → user turn + assistant prose + live BarChart + 3 suggestion chips, all in one scroll. Chart caption "QUARTERLY REVENUE · FY 2026".
 - Click "Group by product" suggestion → second turn, grouped chart with Hardware/Software bars + legend, caption "REVENUE BY PRODUCT".
 - Click "Sign-up form" seed → live FormRenderer with name/email/role(Select)/newsletter(toggle), all interactive.
 
-**Phase 2 plan (browser LLM)**
+### Phase 2 plan (browser LLM)
 
 The mock router is the only thing that needs to change. The UI doesn't care where `Block[]` comes from. When we wire the LLM:
 
@@ -4372,7 +4372,7 @@ The mock router is the only thing that needs to change. The UI doesn't care wher
 - Pass each demo's `tool: DemoTool` declarations as the LLM's tool list (already in DemoMeta).
 - LLM picks a tool + emits props; we wrap with prose + suggestion blocks the same way.
 
-**Also in this commit**
+### Also in this commit
 
 - "Canvas →" callouts in `/app` chat messages are now clickable buttons that reset the active variant (goto base path). Hover changes border from dashed to solid; `disabled` when no variant is active so they don't look clickable for nothing.
 - Note: today the `disabled` attribute only kicks in for the CURRENT canvas state, but the `<button>` element itself is always rendered. The first MOUNTED message in the chat history will become re-enabled later when we wire conversation history — clicking it then will reset the variant for that historical state.
@@ -4383,7 +4383,7 @@ Lint: 0 errors, 28 pre-existing warnings.
 
 Picks up where the chat scaffold left off. User asks: can the chat accept JSON or CSV and pick the right UI? That's the "data → live component" story we've been building toward. Built it end-to-end.
 
-**Inference pipeline**
+### Inference pipeline
 
 `demo/src/lib/chat-demo/infer.ts`:
 
@@ -4401,7 +4401,7 @@ Type detection: ISO-8601 date regex, numeric regex over strings, boolean string 
 
 Chart-axis picking: first categorical column → x, first numeric → y, second categorical (if present) → `fill`. This is enough to make a useful chart out of any sales / revenue / metrics dataset without the user specifying axes.
 
-**Router**
+### Router
 
 `router.ts` gets a new `routeData(source, parsed, originalQuery?)` returning `Block[]`. It always prepends a headline prose block + a `data-note` block (small chip strip showing source, shape, row count, column types), then the inferred component, then suggestions tailored to the shape:
 
@@ -4409,7 +4409,7 @@ Chart-axis picking: first categorical column → x, first numeric → y, second 
 - table → "Chart Y by X" if we can guess axes
 - chart → "Show as table", "Stack the series" when grouped
 
-**Store + composer**
+### Store + composer
 
 `submitText(text)` is the new front door — `tryParse`s the text first, routes to data pipeline if it looks like data, otherwise falls back to keyword `submitQuery`. `submitData({source, text, parsed, query})` pushes a user turn with a short summary ("pasted JSON · 6 rows · 3 fields") + an assistant turn with the inferred blocks.
 
@@ -4420,17 +4420,17 @@ Chart-axis picking: first categorical column → x, first numeric → y, second 
 - Welcome screen has two new sample chips ("Try: paste sales JSON", "Try: paste a user record") that paste real sample data into the composer.
 - New `Block` kind: `data-note` — small monospace strip with the source tag (JSON / CSV), the detected shape, row count, and per-column name + type.
 
-**End-to-end verified**
+### End-to-end verified (Data upload → smart UI inference)
 
 - Paste 6-row sales JSON (`{region, product, revenue}[]`) → chart with Hardware/Software bars grouped by region, legend, suggestion chips.
 - Paste single user record (`{name, email, role, joinedAt, active, signupCount}`) → editable form with the right input types: text for strings, native date picker for `joinedAt`, checkbox for `active`, number input for `signupCount`. Caption "EDITABLE RECORD".
 - Upload `sample-employees.csv` (5 rows, mixed types incl. ISO dates and "true"/"false" booleans) → sortable Table with all 5 employees; data-note shows `name(string) department(string) salary(number) startDate(date) remote(boolean)`. Booleans show as "true"/"false"; numbers/dates stay raw (formatting is a follow-up).
 
-**Composer + drop UI**
+### Composer + drop UI
 
 `Attach data` button next to the textarea. Window-level drop overlay with accent dashed border on `dragover` (only when the drag includes files). File extension fallback to MIME type — `.csv` always goes through `parseCSV`, anything else through `tryParse` (JSON first).
 
-**What this proves**
+### What this proves
 
 The catalog's `inline: { capable: true }` declarations + the `Block` shape are doing real work now. The same `<Table/>` / `<BarChart/>` / `<FormRenderer/>` that power `/app` render arbitrary user data with zero per-shape code — the inference layer just picks the right tool and props.
 
@@ -4442,7 +4442,7 @@ Lint: 0 errors, 37 pre-existing warnings.
 
 Picks up the inline-component story. The user can edit the form Rokkit renders for their data; now they can also push those edits back into the conversation as a JSON code block. Closes the round-trip and gives the demo a concrete "I edited it, here's what came out" moment.
 
-**InlineComponent.svelte**
+### InlineComponent.svelte
 
 - Tracks `formData` (already had this) + a `seedData` derived from the incoming `props.data` for diffing.
 - New `isFormDirty` derived — `JSON.stringify(formData) !== JSON.stringify(seedData)`. Save button is disabled until the user actually changes something.
@@ -4452,18 +4452,18 @@ Picks up the inline-component story. The user can edit the form Rokkit renders f
   - `Copy` — writes JSON to clipboard (best-effort; silently skipped if clipboard API unavailable).
 - Saves a JSON snapshot via `JSON.parse(JSON.stringify(formData))` so subsequent edits don't mutate the saved turn (avoids the user being confused when "their save" appears to keep changing).
 
-**Store**
+### Store (Bidirectional flow: edits → JSON round-trip)
 
 - New `submitExport({ source, data, caption })` — pushes a user turn ("Saved changes to '...' · N fields") then an assistant turn containing:
   - prose ("Here's the updated value — copy or paste it back to keep the round-trip going.")
   - a JSON code block named `edited.json`
   - a `Render again` suggestion that paste the JSON string straight back into `submitText`, which routes it through inference and re-renders the form with the new values as the seed. Full loop.
 
-**FormRenderer gotcha (debugged)**
+### FormRenderer gotcha (debugged)
 
 InputText fires its `onchange` callback on the native `change` event, not `input`. That's blur-semantics on text inputs. Programmatic `.fill()` from a test runner won't trigger the bind until the field blurs (Tab / click-out). Real users blur naturally; tests need a Tab. Left a journal note here because we'll hit it again when wiring tests.
 
-**End-to-end verified**
+### End-to-end verified (Bidirectional flow: edits → JSON round-trip)
 
 1. Paste user record → form mounts, Save disabled.
 2. Edit `name` → Tab → Save enables, `formData` shows the new value (instrumented via a temp `window.__formData` for debugging, then removed).
@@ -4478,13 +4478,13 @@ Lint: 0 errors, 38 pre-existing warnings.
 
 Two follow-ups to the bidirectional flow:
 
-**Inline table editing**
+### Inline table editing
 
 Tables now have an "Edit rows" toggle. When on, the read-only Table swaps for a CSS-grid of native inputs (text / number / date / checkbox picked from the cell's value type). Each cell uses `oninput` rather than `onchange`, so the Save button enables on the first keystroke — no Tab dance like the form needs (we noted that gotcha last commit). Cancel reverts to the seed.
 
 Save flows through the same `submitExport(...)` as the form, producing an `edited.json` code block in the next assistant turn. Browser-verified: changed `EMEA·Hardware·124 → 999` and the new JSON came back with `"revenue": 999`.
 
-**Data-aware suggestions**
+### Data-aware suggestions
 
 `SuggestionItem` picked up an optional `action`:
 
@@ -4495,14 +4495,14 @@ Save flows through the same `submitExport(...)` as the form, producing an `edite
 
 `submitAction({ label, action })` in the store dispatches based on kind: reshape → `routeData(...)` with the force hint; props → emit a one-block `component` turn. `BlockList` calls `submitAction` when an item has an action, otherwise it falls back to the text-query path (which is what the future LLM will use too).
 
-**Updated suggestions**
+### Updated suggestions
 
 - Table → "Chart Y by X" now reshapes the table data into a chart inline, no re-paste.
 - Chart → "Show as a table" reshapes back.
 - Chart with `fill` → "Stack the series" remounts BarChart with `stack: true` via the props action.
 - Record → "Wrap in a list" turns the single record into a 1-row table via reshape.
 
-**Browser-verified flow**
+### Browser-verified flow
 
 1. Paste sales JSON (6 region/product/revenue records) → chart.
 2. Click "Show as a table" → reshape action fires, second turn is the same data as a Table.
@@ -4526,7 +4526,7 @@ Added `@mlc-ai/web-llm` and built the router-swap that replaces the mock with a 
 - `routeViaLLM(query)` — Phase-2 replacement for `routeQuery`. Calls the engine with `tools` + `tool_choice: 'auto'` + `temperature: 0.3`, parses the response into the same `Block[]` shape (prose for content, `component` blocks for tool calls). Same UI, no changes needed downstream.
 - `resetEngine()` — drops the cached engine so picking a different model triggers a fresh load.
 
-**Store**
+### Store (Phase 2 scaffolding: in-browser LLM via web-llm)
 
 - `conversation.useLLM: boolean` (default false).
 - `submitQuery` branches: if `useLLM && llm.status !== 'error'`, await `routeViaLLM(text)` and push the assistant turn when it resolves. Otherwise mock path as before.
@@ -4536,7 +4536,7 @@ Added `@mlc-ai/web-llm` and built the router-swap that replaces the mock with a 
 - New LLM control row in the ChatChrome actions slot: ☐ 🤖 LLM toggle. When on: model dropdown (4 curated picks), "Load model" button (when uninitialized), live load progress percentage (when loading), green "ready" indicator (when ready), red error pill (when failed). Toggle is disabled when `webgpuSupported === false` with a tooltip explaining why.
 - WebGPU presence probed via `detectWebGPU()` on mount.
 
-**Browser-verified**
+### Browser-verified
 
 - `/chat` renders with the LLM toggle in the chrome.
 - Toggling on reveals the model selector + Load button.
@@ -4549,7 +4549,7 @@ Added `@mlc-ai/web-llm` and built the router-swap that replaces the mock with a 
 - Tool-call parsing against real LLM output — the parser handles the OpenAI-compatible shape we expect from web-llm 0.2.83. If the model emits malformed JSON in `function.arguments`, we surface a one-line "Tool X returned invalid JSON arguments; skipping." prose block and continue.
 - Streaming output. `chat.completions.create` is awaited as a non-stream call for simplicity. Easy follow-up: switch to `stream: true` and incrementally render prose blocks.
 
-**Future wiring**
+### Future wiring
 
 - Tighten `buildToolSpecs()` parameter schemas as each demo gets a real JSON Schema.
 - Add a "system" message variant per demo that explains what the tool should produce (especially for data tools — current chart/table props vary by inferred shape).
@@ -4561,7 +4561,7 @@ Earlier Phase 2 commit only had Web-LLM, and that download is large enough (~1�
 
 **Also fixed a Vite-vs-web-llm crash** that surfaced when the user clicked "Load model": Vite's dependency optimiser blows its call stack transforming the web-llm npm bundle (Maximum call stack exceeded in `vite/chunks/config.js:28332`). `optimizeDeps.exclude` alone wasn't enough — the package still hit the transform pipeline. Solution: import web-llm from `https://esm.run/@mlc-ai/web-llm@0.2.83` at request time via a `/* @vite-ignore */` dynamic import. The CDN URL is opaque to Vite so the browser fetches it directly.
 
-**Provider design**
+### Provider design
 
 `lib/chat-demo/llm.svelte.ts` exposes:
 
@@ -4572,21 +4572,21 @@ Earlier Phase 2 commit only had Web-LLM, and that download is large enough (~1�
 
 `routeViaLLM(query)` dispatches on `llm.provider`. On OpenRouter failure it returns a fallback block with a `switch-provider` suggestion chip that flips `llm.provider` via `submitAction`.
 
-**OpenRouter path**
+### OpenRouter path
 
 - `routes/api/llm/openrouter/+server.ts` — SvelteKit POST endpoint. Reads `OPENROUTER_API_KEY` from `$env/dynamic/private` (demo/.env.local) and forwards the body to `https://openrouter.ai/api/v1/chat/completions`. Adds `HTTP-Referer` + `X-Title`. Key stays server-side.
 - Client `routeViaOpenRouter` POSTs to `/api/llm/openrouter`. No tool-calling — free-tier providers don't all support it. Uses `response_format: { type: 'json_object' }` + a system prompt that defines a strict envelope.
 
-**JSON envelope**
+### JSON envelope
 
-```
+```json
 { "say": "one short sentence",
   "render": [ { "tool": "<name>", "props": { ... } } ] }
 ```
 
 System prompt enumerates the catalog's `tool: DemoTool` declarations so the model knows what tools exist + their parameter shapes. `parseCompletion` handles both the envelope AND OpenAI-style `tool_calls` for paid providers + Web-LLM. A best-effort JSON extractor strips ```` ```json ```` fences and walks brace depth to find the first complete object.
 
-**Curated free models (current)**
+### Curated free models (current)
 
 The :free list rotates over time. Refreshed against the live `/api/v1/models` endpoint and picked:
 
@@ -4600,14 +4600,14 @@ The :free list rotates over time. Refreshed against the live `/api/v1/models` en
 
 Notes from testing: Llama 3.2 3B and 3.3 70B were both upstream-rate-limited (429) at the moment. `gpt-oss-20b` returned cleanly.
 
-**UI**
+### UI
 
 - Single ☐ 🤖 LLM master toggle
 - When on: provider dropdown (OpenRouter / Web-LLM) + per-provider model dropdown
 - Web-LLM dropdown disabled when WebGPU isn't available
 - Web-LLM keeps the Load button + progress %; OpenRouter doesn't need either
 
-**End-to-end verified**
+### End-to-end verified (LLM via OpenRouter (default) + Web-LLM (opt-in fallback))
 
 `/chat` → toggle LLM on → "Show a bar chart of quarterly revenue" → OpenRouter → gpt-oss-20b → JSON envelope → router parsed `mount_bar_chart` + props → BarChart rendered inline with Q1 120k / Q2 150k / Q3 170k / Q4 200k (the model picked the data). Caption "mount_bar_chart · LLM". Export data + Copy buttons present.
 
@@ -4620,7 +4620,7 @@ Fall-back path also verified: 429 from rate-limited Llama → error prose + "Swi
 
 Lint: 0 errors, 45 pre-existing warnings.
 
-**Followups (lower priority)**
+### Followups (lower priority)
 
 - Streaming output. Current call is awaited; switching to `stream: true` + incremental block rendering would feel snappier on slower models.
 - Per-demo JSON Schema for `parameters`. Today all params are typed as `string` in the tool spec; the LLM mostly figures out reasonable shapes but tighter schemas would reduce failures on the larger demos (form, chart with fill).
@@ -4630,7 +4630,7 @@ Lint: 0 errors, 45 pre-existing warnings.
 
 Four issues caught while testing the LLM path:
 
-**System prompt with concrete examples**
+### System prompt with concrete examples
 
 The prompt enumerated tool names + their `parameters` object (which is mostly prose). Small models had to invent prop shapes from scratch, and gpt-oss-20b would sometimes return `{ data: "Q1=42, Q2=58, ..." }` (string) instead of `data: [{ quarter, revenue }, ...]` (array).
 
@@ -4651,7 +4651,7 @@ Plus explicit rules:
 - Empty-render fallback when nothing matches
 - Pick defaults; never ask the user for missing fields
 
-**Code-block field (configurable)**
+### Code-block field (configurable)
 
 User wanted the option to include source-code snippets in chat responses. Added `code?: [{ language, filename?, code }]` to the envelope and a `☐ code` toggle in the LLM chrome (defaults OFF).
 
@@ -4664,7 +4664,7 @@ The prompt branches on `llm.includeCode`:
 
 **Confirmed code is LLM-generated**: `grep -rn "InventoryTable" demo/src packages` returns zero matches. The Svelte file you saw came entirely from the LLM via the code field; there's no static InventoryTable.svelte anywhere in the repo. gpt-oss-120b (120B parameters) is big enough to generate ~20 lines of working Svelte from the prop shape the prompt taught it.
 
-**Dedicated ErrorBlock**
+### Dedicated ErrorBlock
 
 `{ kind: 'error', title, message, details?, hint? }` rendered as a red-bordered card with:
 
@@ -4676,17 +4676,17 @@ The prompt branches on `llm.includeCode`:
 `routeViaLLM`'s failure path now produces these instead of mashing the raw error into prose. Failure modes mapped to human titles:
 
 - 429 → "Rate-limited by the free provider"
-- 404 → "Model unavailable (<id>)" with hint to pick another
+- 404 → "Model unavailable (`<id>`)" with hint to pick another
 - 503 → "OpenRouter unreachable"
-- otherwise → "OpenRouter <status>"
+- otherwise → "OpenRouter `<status>`"
 
 Web-LLM init / call errors also flow through ErrorBlock.
 
-**Whitespace fix**
+### Whitespace fix
 
 `.inline-mount` had a `margin-top: 10px` on top of the BlockList's `gap: 12px`. Dropped the explicit margin — gap handles spacing now, no more double-gap between prose and the rendered table/chart/form.
 
-**Verified**
+### Verified (Prompt examples, code toggle, error block, layout fix)
 
 - Error rendering: triggered a 429 on Llama 3.2 3B, got the red card with title "Rate-limited by the free provider" + wrapped message + hint + Retry / Switch-to-Web-LLM chips below.
 - Code toggle: default off → prompt tells model to skip `code`; toggling on lets it emit (verified earlier with gpt-oss-120b producing InventoryTable.svelte).
@@ -4708,15 +4708,15 @@ Each plugin keeps the existing code/visual toggle convention from `PlotPlugin` �
 
 Added to `packages/blocks/src/index.ts` exports, with specs in `packages/blocks/spec/`. Added `@rokkit/forms` as a peer dep of `@rokkit/blocks` (FormPlugin uses FormRenderer).
 
-**Chat demo rewired**
+### Chat demo rewired
 
 - New `Block` kind: `markdown` — raw markdown string. Rendered via `MarkdownRenderer` with the full plugin set (plot/table/form/list/stepper/sparkline/mermaid).
 - `parseCompletion` simplified: dropped the `{ say, render, code? }` envelope, dropped the manual JSON extractor. Just wraps the LLM's content in a `markdown` block. Free models are way more reliable at markdown than strict JSON envelopes.
-- For `tool_calls` (paid OpenRouter routes + Web-LLM), we still translate each call into a `\`\`\`<fence>\n<args>\n\`\`\`` and concatenate — same downstream rendering.
+- For `tool_calls` (paid OpenRouter routes + Web-LLM), we still translate each call into a fenced code block tagged `<fence>` containing `<args>` and concatenate — same downstream rendering.
 - System prompt completely rewritten: enumerate the 7 fence languages, show one full example per fence, drop the `response_format: json_object` hint (LLM is in markdown mode now).
 - `BlockList` mounts `MarkdownRenderer` for `markdown` blocks. Adds a window-level `block-action` listener bound to its root that intercepts plugin submissions and calls `submitText` with a structured payload.
 
-**Human-in-the-loop flow (verified contract, not yet end-to-end with LLM)**
+### Human-in-the-loop flow (verified contract, not yet end-to-end with LLM)
 
 LLM responds:
 
@@ -4735,13 +4735,13 @@ I need a few details before I file the ticket.
 
 User fills the form → clicks Submit → FormPlugin dispatches `CustomEvent('block-action', { detail: { name: 'file_ticket', payload: {...} } })` on its root. BlockList catches it, formats as `[file_ticket] { "priority": "high", ... }` and calls `submitText`. That becomes the next user turn; LLM receives it and continues. The contract is implemented; the LLM-side prompt example is in the system prompt.
 
-**Removed**
+### Removed
 
 - `TOOL_EXAMPLES` map (envelope-shape examples). Replaced by inline markdown-fence examples in the prompt.
 - `extractJsonEnvelope` (custom JSON extractor). marked handles it via the standard markdown lexer.
 - The `response_format: { type: 'json_object' }` hint on OpenRouter requests.
 
-**End-to-end verified live**
+### End-to-end verified live
 
 `/chat` → toggle LLM → "Show a bar chart of quarterly revenue" → OpenRouter (gpt-oss-120b) returned markdown including a `\`\`\`plot` fence → MarkdownRenderer dispatched to PlotPlugin → real BarChart rendered with Q1=42, Q2=58, Q3=51, Q4=73. The plot's own show-code/show-chart toggle is visible top-right.
 
@@ -4751,7 +4751,7 @@ Lint: 0 errors. Tests: 248 files, 1 pre-existing fail in `FormPlugin.spec` was a
 
 ## 2026-05-25 (cont.) — FormPlugin lookups + home page consistency
 
-**FormPlugin lookups**
+### FormPlugin lookups
 
 Lookups are a FormBuilder feature for cascading dropdowns (country → city) and option lists from URL/source data. Surfaced through FormPlugin so the LLM can ask for them in a `\`\`\`form` fence.
 
@@ -4762,7 +4762,7 @@ Lookups are a FormBuilder feature for cascading dropdowns (country → city) and
 
 System prompt picked up a third form example (cascading dropdowns):
 
-```
+```json
 { "schema": { ... country, city ... },
   "data": { ... },
   "lookups": {
@@ -4773,7 +4773,7 @@ System prompt picked up a third form example (cascading dropdowns):
 
 Spec added: a lookup config doesn't crash; renders the form-plugin root.
 
-**Home page consistency**
+### Home page consistency
 
 The home page rolled its own `<a class="cta-primary">` / `cta-secondary` instead of using `@rokkit/ui` Button. Bullet points from feedback:
 
@@ -4852,7 +4852,7 @@ User caught hardcoded "Jerry" everywhere and suggested: configure once at startu
 - `/chat-lab/+page.svelte`: hardcoded names stripped.
 - Home-page mock: `Jerry` dropped; assistant brand-name `Rokkit` shown next to head=`ASSISTANT`.
 
-**Net effect**
+### Net effect (ChatMessage author defaults via a shared store)
 
 To rebrand the assistant for a new product, one line per surface:
 
@@ -4976,7 +4976,7 @@ Lint: 0 errors. Tests: 3500 passed.
 
 User flagged that the build-component chip rail on `/app` will get cluttered as the Koan catalog grows past its current 12 demos. Picked "curated rail + browse all" — small change, big readability win, no extra route.
 
-**Change**
+### Change
 
 `demo/src/routes/app/+layout.svelte`:
 
@@ -4989,7 +4989,7 @@ User flagged that the build-component chip rail on `/app` will get cluttered as 
 
 `demo/uno.config.js`: safelisted `i-mdi:chevron-up` for the "Show fewer" affordance.
 
-**Net effect**
+### Net effect (/app welcome: curated rail + inline catalog reveal)
 
 Welcome state defaults to 6 starter chips for "Build a component" (down from 12), plus the unchanged "How-to" (3) and "Theme & customize" (2) sections. Total visible chips drop from 17 → 11. The full catalog is one click away, organized by purpose. Adding the next demo means appending one line to `buildCatalog[group].items`; no churn on the welcome density.
 
@@ -5001,11 +5001,11 @@ Lint: 0 errors. Tests: 3500 passed.
 
 User reported the home page `Open the playground` primary button was effectively invisible in both light and dark mode. Root cause was different from the earlier `text-on-primary` fix.
 
-**Diagnosis**
+### Diagnosis
 
 Inspecting the rendered CSS for the primary button selector showed:
 
-```
+```css
 border-width: 1px;
 --un-gradient-shape: to right in oklch;
 --un-gradient: var(--un-gradient-shape), var(--un-gradient-stops);
@@ -5018,7 +5018,7 @@ color: var(--on-primary);
 
 Tried adding `--color-{role}` bare aliases to `core` mode (theme.ts `#getZAliasesOther` + `#getZAliasesFromMap`) — preset-wind3's color rules use `--color-primary` (etc.) and core mode wasn't emitting that bare key. Confirmed via probe that `--color-primary` now resolves to `oklch(0.580 0.150 35)` at runtime. **But the rule cssText still didn't include the gradient stops.** preset-wind3's `from-{color}` rule isn't producing CSS during `@apply` even with the var defined — likely a transformerDirectives ↔ preset-wind3 gradient interaction that doesn't kick in for our color-mix-wrapped theme color values.
 
-**Fix**
+### Fix
 
 Library-wide aliases stayed (the `--color-{role}: var(--{role})` line in `#getZAliasesOther` and the analogous lines in `#getZAliasesFromMap`). Independently of gradient utilities, those are correct — preset-wind3's solid color rules (`bg-{role}`, `border-{role}` opacity variants, etc.) read `--color-{role}` and we should provide it in core mode.
 
@@ -5028,13 +5028,13 @@ Patched all five default-style variants (default, primary, secondary, accent, da
 
 Material/minimal default primaries already use solid `bg-primary` (which works via the `buildNamedShortcuts()` named-token shortcut) so they weren't affected. Frosted uses `bg-primary/60` (with backdrop blur) — that path takes a separate preset-wind3 opacity branch and renders correctly today.
 
-**Verification**
+### Verification (Home page primary button contrast: gradient @apply fail in core mode)
 
 Browser-confirmed on `/`: rokkit primary button now renders `linear-gradient(to right, oklch(0.58 0.15 35), oklch(0.406 0.105 35))` — saffron sweeping to a darker saffron — with paper-white text. High contrast in both light and (when fully wired) dark modes.
 
 Lint: 0 errors. Tests: 3500 passed.
 
-**Follow-up tracked**
+### Follow-up tracked (Home page primary button contrast: gradient @apply fail in core mode)
 
 Library-wide `[data-style='gradient']` variant + frosted/material/minimal gradient buttons still rely on `@apply from-X to-Y` and will hit the same `bg-image: none` failure. Worth a sweep in a separate change since it's the same OKLCH color-mix recipe per variant.
 
@@ -5042,7 +5042,7 @@ Library-wide `[data-style='gradient']` variant + frosted/material/minimal gradie
 
 Replaced the chip-grid welcome (curated 6 starter + browse-all reveal from the earlier change) with a live, search-driven surface. The composer input is now the primary discovery path; suggestions update as the user types.
 
-**New component**
+### New component
 
 `demo/src/lib/koan/components/ComposerSuggestions.svelte` — takes the composer's `query` value plus an `onpick` callback. Behaviour:
 
@@ -5066,9 +5066,9 @@ Added:
 - New welcome stream: `Welcome back.` hello, a short lede explaining the natural-language flow with the ⌘↵ kbd hint, `<ComposerSuggestions/>` directly under the lede, and a `Browse the full catalog →` link pinned to the bottom of the welcome area.
 - `.welcome-browse` link style + `.welcome-lede kbd` style for the inline keyboard hint.
 
-The browse link points at `/app/catalog` — that route is the planned grouped-sidebar entry point. Stubbed reference in the journal as the next piece of work, not built yet. The same demos will be reachable via either entry: composer search OR catalog sidebar → same /app/<demo> destinations.
+The browse link points at `/app/catalog` — that route is the planned grouped-sidebar entry point. Stubbed reference in the journal as the next piece of work, not built yet. The same demos will be reachable via either entry: composer search OR catalog sidebar → same `/app/<demo>` destinations.
 
-**Browser-verified (rokkit body)**
+### Browser-verified (rokkit body)
 
 - Empty welcome: shows the five starter prompts with kanji glyph icons (from each demo's `meta.icon`) and short descriptions. Browse link visible at the bottom of the welcome area.
 - Typed `pick from a tree` → heading reads `5 matches for "pick from a tree"`, suggestions are `Multi-Select`, `Tree Select`, `Date Picker`, `Select`, `Combobox` (miniIndex's title+keywords+description scoring).
@@ -5079,7 +5079,7 @@ uno.config safelist updated with the mdi icons the welcome and suggestions need:
 
 Lint: 0 errors. Tests: 3500 passed.
 
-**Follow-up tracked**
+### Follow-up tracked (/app welcome flips to chat-first discovery)
 
 `/app/catalog` route — grouped sidebar (Data display, Selection, Forms & flows, Charts, Layout & feedback) linking to the same `/app/<demo>` routes. Lets users who prefer browsing find demos without composing a query. Should reuse `ComposerSuggestions`' demo-meta + onpick contract so both entry points feed into the same submit flow.
 
@@ -5110,7 +5110,7 @@ Now any theme's `border-{side}-[Npx]` renders cleanly without needing a per-rule
 
 Browser-verified the four-theme showcase iframes: zen-sumi keeps its ink fill, rokkit keeps its branded gradient, minimal shows ONLY the 3px bottom hairline on the selected tab, material keeps its saffron pill.
 
-**Default style — zen-sumi**
+### Default style — zen-sumi
 
 User flagged that the demo lands on `rokkit` style on first visit. Looked at `packages/states/src/vibe.svelte.js` — class default is `style: 'rokkit'`. And critically `DEFAULT_STYLES = ['rokkit', 'minimal', 'material']` (from `packages/states/src/constants.js`) — `zen-sumi` and `frosted` are NOT in the allowed list, so vibe's setter silently rejects `vibe.style = 'zen-sumi'` if you try it without first expanding `allowedStyles`.
 
@@ -5130,7 +5130,7 @@ User feedback after the earlier `color-mix` patch:
 
 Two concrete fixes plus an embed-page race that surfaced while verifying.
 
-**Gradient — primary → accent, not primary → darker-primary**
+### Gradient — primary → accent, not primary → darker-primary
 
 Reverted the rokkit-tabs and rokkit-button `color-mix(in oklch, var(--primary) 70%, black)` darker-stop trick to use `var(--accent)` as the second stop. The user is right that this is the cleaner intent — the theme reads as a primary→accent sweep, and skins that don't declare a distinct accent fall back to a flat fill (which is acceptable).
 
@@ -5138,11 +5138,11 @@ Reverted the rokkit-tabs and rokkit-button `color-mix(in oklch, var(--primary) 7
 
 Touched: `packages/themes/src/rokkit/tabs.css` (all four orientation variants of the selected trigger), `packages/themes/src/rokkit/button.css` (primary variant gradient).
 
-**Demo config — accent: hisui**
+### Demo config — accent: hisui
 
 `demo/rokkit.config.js` had `accent: 'shu'` (same palette as primary) in both `skin` and `skins.default`. With the new gradient using `var(--accent)`, accent === primary collapses to a one-tone fill. Switched accent to `'hisui'` (jade) — gives a real saffron → jade sweep on rokkit. Other themes that use `text-accent` / `bg-accent` (zen-sumi, material) now render those surfaces in jade instead of saffron; the change is intentional and reads cleanly because jade is in the same OKLCH chroma range as the rest of the palette.
 
-**Hover-on-selected — keep the gradient**
+### Hover-on-selected — keep the gradient
 
 `[data-style='rokkit'] [data-tabs-trigger]:hover` had `bg-paper-mute text-ink-mute` with no `:not([data-selected])` guard. Hovering a selected tab overrode the gradient's `text-on-primary` (paper-white) with `text-ink-mute` (dark ink) while the gradient bg leaked through the `background-color` override — net effect was hard-to-read dark text on the saffron gradient in both modes.
 
@@ -5157,7 +5157,7 @@ Fix in `packages/themes/src/rokkit/tabs.css`:
 
 Verified by hover via Playwright: selected hover keeps `linear-gradient(saffron, jade)` + paper-white text; unselected hover gets paper-mute bg + ink-mute text. Both legible.
 
-**Embed page race**
+### Embed page race
 
 While verifying I noticed `/embed/tabs?theme=rokkit` was rendering with `body.dataset.style === 'zen-sumi'` even though the embed page's onMount/$effect set it to 'rokkit'. The root layout's `themable` action also writes to `body.dataset.style` from `vibe.style` (now defaulted to zen-sumi), and its reactive effect was overriding the embed page's direct dataset write.
 
@@ -5165,7 +5165,7 @@ Fix in `demo/src/routes/embed/tabs/+page.svelte`: drive the active style through
 
 Now each iframe on the home theme showcase isolates its theme via the proper vibe channel, not by setting dataset directly.
 
-**Verification — four-theme home showcase**
+### Verification — four-theme home showcase
 
 | theme    | selected tab                                   |
 |----------|------------------------------------------------|
@@ -5178,7 +5178,7 @@ Hover-on-selected for rokkit keeps gradient + paper-white. Hover-on-unselected s
 
 Lint: 0 errors. Tests: 3500 passed.
 
-**Known follow-up**
+### Known follow-up
 
 `[data-style='gradient']` variants in material/minimal/frosted (and the gradient-related code paths in frosted's filled buttons) still use `@apply from-X to-Y` and have the same latent dropout. They aren't user-visible in the default flows but worth the sweep when someone reaches for that style.
 
@@ -5186,7 +5186,7 @@ Lint: 0 errors. Tests: 3500 passed.
 
 Two follow-ups in this round:
 
-**Flicker on load — themeInitScript was being injected too late**
+### Flicker on load — themeInitScript was being injected too late
 
 The library ships `themeInitScript` in `@rokkit/unocss/hooks` and the demo's `hooks.server.js` was already wiring it. But the existing wiring injected the script via `transformPageChunk({ html }) => html.replace(/<body[^>]*>/, ...)` — right after `<body>` opens. The SSR HTML body ships with no `data-style` attribute. Between the body open tag and the inline script running, the browser had a brief window where CSS `[data-style='X']` selectors didn't match anything; first paint computed against the unprefixed cascade, then the script flipped the body's dataset and the theme snapped in.
 
@@ -5206,7 +5206,7 @@ Verified:
 - `document.documentElement.dataset.style` and `document.body.dataset.style` both read `zen-sumi` on first paint.
 - Embed iframes on the home theme showcase each paint in their `?theme=` value from the first frame (zen-sumi, rokkit, minimal, material).
 
-**Accent revert — back to shu**
+### Accent revert — back to shu
 
 User flagged a green tint appearing after the previous round's `accent: 'hisui'` change. The demo's koan UI uses `text-accent-z5`, `border-accent-z5`, `bg-accent-z1` extensively as highlight/focus surfaces (ConversationList, PreviewCard, Shell, AnnotationArrow, etc.) — switching accent to jade made every highlight green, which read as a brand shift, not as a rokkit-gradient adjustment.
 
@@ -5220,7 +5220,7 @@ Lint: 0 errors. Tests: 3500 passed.
 
 Two more follow-ups after the flash-prevention move:
 
-**Persistent blinking on header items**
+### Persistent blinking on header items
 
 After moving the init script to `<head>` and writing to `documentElement.dataset.*`, `themable` was still only writing to `body.dataset.*` at runtime. The theme CSS uses a mix of two selector shapes:
 
@@ -5231,7 +5231,7 @@ When `vibe.mode` changed at runtime, themable updated body, but `documentElement
 
 Fix in `packages/actions/src/themable.svelte.js`: themable's effect now mirrors `style`/`mode`/`density` to `document.documentElement` in addition to the supplied `root` (when they differ). Keeps html and body in sync for runtime toggles.
 
-**Mode flip on home → /app**
+### Mode flip on home → /app
 
 `ColorModeManager`'s constructor unconditionally set `target.mode = resolveMode(initialMode)` where `initialMode` defaulted to `'system'`. Every mount of a consumer (`<ThemeSwitcherToggle/>` on home, then again inside ChatChrome under /app) re-ran that constructor and force-resolved `vibe.mode` to the current OS preference — overriding whatever the user had explicitly set or what storage had persisted.
 
@@ -5239,11 +5239,11 @@ User-visible effect: open home in dark mode → click around → navigate to /ap
 
 Fix in `packages/app/src/utils/color-mode.svelte.ts`: constructor now reads `target.mode` first. If it's already `light` / `dark`, adopt it as the resolved state without touching the target. Only when the target has no usable value do we fall back to deriving from `initialMode` and writing it back.
 
-**Layout sync — extended to mode + density**
+### Layout sync — extended to mode + density
 
 `demo/src/routes/+layout.svelte`'s initial sync only mirrored `style` from the inline-applied dataset. Mode and density were left to themable.load() — which is fine for localStorage-backed values, but if the inline script applied a value from `?theme=` or system-preference defaults that don't round-trip to storage, vibe would still be at its library defaults and themable's first effect would overwrite the inline-applied values. Extended the sync to read all three (style/mode/density) from documentElement → body fallback, and writes each through vibe's validating setters.
 
-**Verification**
+### Verification (Theme blink across nav + mode-flip on route change)
 
 - Fresh-load `/` → html=zen-sumi/light, body=zen-sumi/light. Matches stored values, no observable mutation cycles.
 - Set localStorage to `{mode: 'dark'}`, reload, navigate to /app → both stay dark.
@@ -5318,13 +5318,13 @@ survive reload.
 - Per-conv icon: demo type's catalog icon for app convs;
   `i-mdi:chat-processing-outline` for chat convs.
 
-**Layout polish on /chat**
+### Layout polish on /chat
 
 - Subtoolbar (mode toggle + model select + Clear) moved from spanning the full
   width above the sidebar into the content column above the conversation
   stream. Sidebar now extends top-to-bottom of the page.
 
-**Verified end-to-end in browser**
+### Verified end-to-end in browser
 
 - Empty state on first load. Submit query → conversation persists with user
   turn + assistant turn. Variant pick → 3rd turn appended. Reload → history
@@ -5334,7 +5334,7 @@ survive reload.
   assistant turn. Toggle restoration confirmed via a synthetic openrouter-
   tagged turn (after click, toggle flipped from Scripted to OpenRouter).
 
-**Commits**
+### Commits
 
 - `34f197dd` feat(demo): shared conversation history across /app and /chat
 - `a37007cc` feat(demo/chat): tag turns with provider + model; subheader inside content
@@ -5347,7 +5347,7 @@ The ThemeWizardCard's 01/02/03/04 stepper at the top was decorative — clicking
 nothing, only Step 02 (Skin) content rendered. Made the stepper a real tab-list
 and added content for the three previously-empty steps.
 
-**Step nav**
+### Step nav
 
 - `activeStep: 0|1|2|3` local state; the 4 step pills are `<button>` elements
   with `role="tab"` + `aria-selected`/`aria-current="step"`. Click cycles
@@ -5383,7 +5383,7 @@ and added content for the three previously-empty steps.
   (palette/role) propagate immediately — useful for confirming the theme
   reads correctly on real surfaces before Save preset / Export tokens.css.
 
-**What was already interactive — corrected**
+### What was already interactive — corrected
 
 The priority text said to wire swatch clicks, palette IN USE toggling, and
 Save/Export. Inspection showed those were already done — `setRoleStep()`,
@@ -5391,7 +5391,7 @@ Save/Export. Inspection showed those were already done — `setRoleStep()`,
 wired into the ChatResponse action buttons. Only the step nav + content for
 01/03/04 was actually missing.
 
-**Verified in browser**
+### Verified in browser (Interactive theme wizard: step nav + Style + Preview steps)
 
 - Step nav cycles. Active step has accent text + faint background.
 - Step 01: click zen-sumi while on rokkit → header style pill flips,
@@ -5412,9 +5412,9 @@ samples actually have ("src/lib/components/Button.svelte" alongside
 considerations were the second design question: tabs scroll horizontally,
 but a tree-rail on the left can't fit beside the code on narrow viewports.
 
-**Layout — responsive grid**
+### Layout — responsive grid
 
-```
+```text
 DESKTOP (≥ 768px)             MOBILE (< 768px)
 ┌────────┬─────────┐          ┌──────────────┐
 │ FILES  │ // code │          │ Btn.svelte ▾ │  ← picker pill
@@ -5437,7 +5437,7 @@ CSS grid:
   toggles `data-open`. `.backdrop` covers the code panel when open, click
   to close.
 
-**API**
+### API
 
 ```ts
 {
@@ -5457,7 +5457,7 @@ CSS grid:
 }
 ```
 
-**Implementation notes**
+### Implementation notes
 
 - Tree built by splitting each path on `/`, deduping intermediate folder
   segments into a Map keyed by accumulated path. Final segment becomes a
@@ -5473,7 +5473,7 @@ CSS grid:
   button shows `i-mdi:eye-outline` / `i-mdi:eye-off-outline` + label,
   picks up `data-action[aria-expanded='true']` for the accent highlight.
 
-**Gotcha discovered + fixed during dev**
+### Gotcha discovered + fixed during dev
 
 The playground page demonstrates the component by passing Svelte source
 strings as the `code` value of each file. Those strings contained
@@ -5488,7 +5488,7 @@ when the containing element was narrower than 280px (e.g., when the
 site's left sidebar eats half the viewport on mobile). Changed to
 `min(280px, 100%)` so the rail stays inside its container.
 
-**Verified in browser**
+### Verified in browser (CodeGroup site component)
 
 - Desktop 1280px: tree on left, code panel on right, Show preview reveals
   preview pane below code. Tree expand/collapse works. Click `index.ts`
@@ -5499,7 +5499,7 @@ site's left sidebar eats half the viewport on mobile). Changed to
   position: absolute, transform identity when open vs translateX(-100%)
   when closed). z-index puts rail above the backdrop above the code.
 
-**Tested**
+### Tested
 
 Lint: 0 errors. Tests: not affected — site-only addition.
 
@@ -5548,7 +5548,7 @@ existing Save preset + Export tokens.css flow.
   on `documentElement.style` after applying the role colors — so the
   whole running app reflows in the picked font immediately.
 
-**Verified in browser**
+### Verified in browser (Theme wizard Step 03: real typography picker)
 
 - Wizard → step 03 renders all three rows with samples in the right
   fonts. Fraunces / Inter / JetBrains Mono shown as active by default.
@@ -5564,7 +5564,7 @@ existing Save preset + Export tokens.css flow.
   Reload → defaults restore correctly (load merges with current defaults
   to forgive partial / outdated preset blobs).
 
-**Commit**
+### Commit
 
 - `<next>` feat(demo/wizard): real typography picker in Step 03
 
@@ -5580,7 +5580,7 @@ Three follow-ups to the freshly shipped CodeGroup, per user review:
 3. Provide per-language semantic file icon names (`file-default`,
    `file-svelte`, etc.) mapped through `packages/icons/src/` (Solar source).
 
-**Icons (Phase C)**
+### Icons (Phase C)
 
 - Added 8 file-type semantic names to both `glyph-map.json` and
   `semantic-map.json`:
@@ -5601,7 +5601,7 @@ Three follow-ups to the freshly shipped CodeGroup, per user review:
   and `DEFAULT_STATE_ICONS.view.{preview,off}`.
 - Updated the `constants.spec.js` snapshot to cover the new groups.
 
-**CodeGroup → @rokkit/ui (Phase B)**
+### CodeGroup → @rokkit/ui (Phase B)
 
 - Moved `site/src/lib/components/CodeGroup.svelte` →
   `packages/ui/src/components/CodeGroup.svelte`. Exported from the ui
@@ -5614,7 +5614,7 @@ Three follow-ups to the freshly shipped CodeGroup, per user review:
   layout.
 - Updated site playground to import from `@rokkit/ui`.
 
-**Semantic icons (Phase A)**
+### Semantic icons (Phase A)
 
 - Replaced every `i-mdi:*` reference in CodeGroup with semantic names
   from `DEFAULT_STATE_ICONS`. Picker chevron uses `navigate-down`;
@@ -5628,7 +5628,7 @@ Three follow-ups to the freshly shipped CodeGroup, per user review:
   yaml / yml / md / mdx). Unknown extensions fall back to
   `icons.file.default`.
 
-**Gotcha: ItemContent + bare names**
+### Gotcha: ItemContent + bare names
 
 `ItemContent.svelte`'s `isIconClass()` only accepts `i-*`-prefixed
 classes as CSS-class icons — bare semantic names (the canonical form in
@@ -5640,7 +5640,7 @@ now prefixes file icons with `i-semantic:` before handing them to the
 tree. The `asClass` helper makes the prefix opt-in: consumers passing a
 pre-prefixed class (e.g. `i-glyph:foo`) skip the prefix.
 
-**Site config additions**
+### Site config additions
 
 - `site/rokkit.config.js`: registered `semantic: '@rokkit/icons/semantic.json'`
   so the `i-semantic:*` collection resolves (was previously absent,
@@ -5723,7 +5723,7 @@ Updated:
   restored (the earlier "fileLogo" rename was a red herring; the real
   conflict is the pseudo variant, not the collection name)
 
-**Verified in browser**
+### Verified in browser (Length-based isIconClass + rename file-*→ doc-*)
 
 - `class="doc-svelte"` → `.doc-svelte { ... }` CSS rule generated by
   shortcut chain, icon renders correctly.
@@ -5732,7 +5732,7 @@ Updated:
 - HTML uses bare semantic names directly (no `i-semantic:` prefix), and
   they paint correctly through the running app.
 
-**Why the rename, in one line**
+### Why the rename, in one line
 
 `file-` is reserved by UnoCSS's `file:` pseudo-element variant. Avoid
 shadow-prone prefixes (`marker-`, `placeholder-`, `before-`, `after-`,
@@ -5753,7 +5753,7 @@ real violations beyond what `CodeGroup` already cleaned up:
 3. `@rokkit/ui/utils/upload.js::inferIcon()` — 6× `i-lucide:*` strings
    for MIME-type icons (image / video / audio / file-text / archive / file)
 
-**Two new semantic groups added per user direction (Phase B)**
+### Two new semantic groups added per user direction (Phase B)
 
 - `media-*` — kept the prefix because there's no `media:` UnoCSS variant.
   Group: `media-image` (Solar `gallery-minimalistic`), `media-video`
@@ -5776,7 +5776,7 @@ All 7 new names went through the usual pipeline:
 - Browser-verified the bare-name shortcut chain emits CSS for each new
   semantic name (`.action-download`, `.media-image`, `.doc-pdf` etc.)
 
-**Component swaps**
+### Component swaps
 
 CodeBlock.svelte:
 
@@ -5802,13 +5802,13 @@ upload.js `inferIcon`:
 - archives (zip/gzip/x-tar) → `doc-archive`
 - everything else (unknown / null / undefined / empty) → `doc-default`
 
-**Test updates**
+### Test updates
 
 `upload-utils.spec.js` — 9 assertions for `inferIcon` updated to expect
 the new semantic names. `UploadFileStatus.spec.svelte.ts` — class-
 contains assertion for `image/jpeg` updated to `media-image`.
 
-**Out of scope (not violations)**
+### Out of scope (not violations)
 
 - `packages/stories/` — `i-solar:*` refs in Demo.svelte +
   StoryViewer.svelte. That's the Storybook-style demo package, not a
@@ -5850,7 +5850,7 @@ block:
 - `should register rokkit / semantic / glyph icon collections by default`
 - `should auto-safelist user-defined icon override keys`
 
-**Consumer simplification**
+### Consumer simplification
 
 - `demo/rokkit.config.js`: dropped explicit `glyph` declaration —
   preset provides it. Only `app: '@rokkit/icons/app.json'` remains.
@@ -5875,7 +5875,7 @@ Added a new `### Icons` section under Setup with three subsections:
 Also a table of the three always-available collections (`i-rokkit:`,
 `i-semantic:`, `i-glyph:`) so newcomers know what's free out of the box.
 
-**Verified in browser**
+### Verified in browser (presetRokkit: glyph default + auto-safelist overrides)
 
 After dropping the redundant safelist + collection declarations, the
 site playground at `/playground/code-group` still emits bare-name
@@ -5919,7 +5919,7 @@ line at its row.
   active row, reading as a continuation of the tree's existing
   visual language.
 
-**Verified**
+### Verified (Minimal List/Tree guide-line style)
 
 - Rendered CSS from `/app/list?theme=minimal`:
   - `[data-style='minimal'] [data-list]::before { content: ''; position:
@@ -5940,20 +5940,20 @@ Priority item said "add more demo responses" + listed three chips that
 fell back to Tabs ("Sortable data table" / "Tree select" / "Multi-select
 with chips"). Audited the current state — it's done:
 
-**Inventory**
+### Inventory
 
 13 catalog entries (`demo/src/lib/koan/demos/*/meta.ts`), 13 matching
 `/app/<demo>` routes, 13 branches in `pickDemoKind` in
 `+layout.svelte`. Names align (with the obvious `date-picker → /app/date`
 and `theme-wizard → /app/theming` URL mappings via the DEMO_ROUTE map).
 
-**runMatch verification**
+### runMatch verification
 
 Reproduced the MiniSearch index config (title boost ×3, keywords ×2,
 description ×1, fuzzy 0.2, prefix true) in a node script and ran the
 three priority-listed queries:
 
-```
+```text
 "Sortable data table"     → table
 "Tree select"             → tree
 "Multi-select with chips" → multi-select
@@ -5962,7 +5962,7 @@ three priority-listed queries:
 Plus "tabs", "how do tabs work", "show me a form" all resolve to their
 expected ids.
 
-**Follow-up noted, not blocking**
+### Follow-up noted, not blocking
 
 The welcome page has `<a href="/app/catalog">Browse the full catalog</a>`
 but no route exists. Existing inline comment marks it TBD. Not part of
@@ -5999,7 +5999,7 @@ at the time. (User will update the Vercel base-folder config separately.)
 Verified both apps' dev servers boot to 200 on `/`, `/app`, `/chat`,
 `/playground/code-group`. `bun install` clean. Tests pass.
 
-**State patterns design doc**
+### State patterns design doc
 
 `docs/design/18-state-patterns.md` lays out:
 
@@ -6020,7 +6020,7 @@ Migration itself is a separate item — the doc is the planning
 artifact. Out of scope: animations/transitions on state changes,
 form-field validity (covered by named tokens), and compound states.
 
-**Priority status**
+### Priority status
 
 Both items marked complete in docs/design/12-priority.md. Open P2 items
 remaining are all crossed off; only the unchecked Koan-catalog-route
@@ -6030,7 +6030,7 @@ Lint: 0 errors. Tests: 3503 passed.
 
 ## 2026-06-23 — LockMode feature: fixed-mode regions
 
-**What was built**
+### What was built
 
 Full end-to-end implementation of the LockMode feature — pins any subtree to a fixed
 color mode (`dark` or `light`) regardless of the document mode. Four deliverables:
@@ -6060,7 +6060,7 @@ color mode (`dark` or `light`) regardless of the document mode. Four deliverable
    dark page. Two Playwright e2e tests verify `--paper` token differs between the locked
    region and the surrounding document.
 
-**Key design decisions**
+### Key design decisions
 
 - Bidirectional locking enabled by the `:root, [data-mode="light"]` preset change.
   Without it, a `data-mode="light"` on a nested element would inherit dark vars from
@@ -6072,7 +6072,7 @@ color mode (`dark` or `light`) regardless of the document mode. Four deliverable
 - `LockMode` component favoured over raw action for the SSR-safety guarantee: static
   `data-mode` on the server ensures tokens and component CSS are correct before JS runs.
 
-**Feature commit hashes**
+### Feature commit hashes (LockMode feature: fixed-mode regions)
 
 - `59d90fe0` — fix(unocss): emit light vars under :root,[data-mode=light]
 - `808fc35c` — feat(actions): add lockMode action
@@ -6092,7 +6092,7 @@ collapsing onto the named tokens; named tokens (`paper`/`ink`/`primary`/…) are
 vocabulary. The unrelated `tokens: 'extended'` numeric ladder (`--color-{role}-{shade}`) is
 kept.
 
-**What changed**
+### What changed
 
 - **Consumers migrated first** (build stayed green throughout): `apps/learn/src` via a
   throwaway codemod applying the documented mapping (surface z0=paper … z9/z10=ink; ink
@@ -6111,7 +6111,7 @@ kept.
   colorspace-wrapped-variables, `agents/2026-03-06-quick-wins-design`) intentionally NOT
   rewritten — restored after an over-broad cleanup pass.
 
-**Key decisions**
+### Key decisions
 
 - Minor (not major) release: no external consumers and every internal consumer migrated in
   the same effort, so nothing depends on z-tone at release time.
@@ -6119,7 +6119,7 @@ kept.
 - The bare `--color-{role}` alias is NOT z-tone and was deliberately kept (gradient/divide
   utilities depend on it).
 
-**Verification**
+### Verification (Drop legacy z-scale)
 
 - Grep gate: zero z-tone utilities/vars in `src` (only `preset.spec.js` negative-assertion
   guards + intentionally-historical docs remain). Themes `dist` has no `--color-*-z{n}`.
@@ -6127,7 +6127,7 @@ kept.
   combinations): no new regressions from the lossy shade collapse.
 - Lint: 0 errors. Tests: 3560 passed (261 files).
 
-**Feature commit hashes**
+### Feature commit hashes (Drop legacy z-scale)
 
 - `7bfccfe0`, `42e69eef` — Z1 codemod apps/learn + comment cleanup
 - `a5df45fe` — Z2 themes/chart/straggler migration

@@ -21,7 +21,7 @@ These files govern how you work. Do not skip them.
 
 ## Repository Structure
 
-```
+```text
 rokkit/
   CLAUDE.md                      <-- You are here
   agents/                        <-- AI operational files

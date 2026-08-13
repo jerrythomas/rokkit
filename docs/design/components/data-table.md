@@ -204,7 +204,7 @@ When `store` is provided externally, `DataTable` reads sort state from it and ca
 
 ## Component File Map
 
-```
+```text
 packages/ui/src/
 └── DataTable/
     ├── DataTable.svelte         — root component

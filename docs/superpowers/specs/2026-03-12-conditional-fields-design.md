@@ -227,7 +227,7 @@ No template changes needed — `FormRenderer` already iterates `formBuilder.elem
 
 ## Data Flow
 
-```
+```text
 User changes controlling field
   → FormBuilder.updateField('accountType', 'business')
   → #data updated ($state)

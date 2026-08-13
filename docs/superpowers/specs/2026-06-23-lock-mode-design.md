@@ -63,7 +63,7 @@ Three pieces.
 Emit the light vars under a combined selector so `data-mode="light"` re-asserts them on a
 nested element:
 
-```
+```css
 :root, [data-mode="light"] { …light vars… }   // was: :root { … }
 ```
 

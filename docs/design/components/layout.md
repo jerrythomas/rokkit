@@ -53,7 +53,7 @@ These are pure layout utilities — they carry no business logic and no selectio
 
 `Divider` renders a horizontal or vertical separator line. It maps to `<hr>` semantics via `role="separator"`.
 
-### Props
+### Divider Props
 
 | Prop | Type | Default | Description |
 | ------ | ------ | --------- | ------------- |
@@ -61,7 +61,7 @@ These are pure layout utilities — they carry no business logic and no selectio
 | `label` | `string` | — | Optional text centered in the divider |
 | `class` | `string` | `''` | Additional CSS classes |
 
-### Data Attributes
+### Divider Data Attributes
 
 | Attribute | Values | Description |
 |-----------|--------|-------------|
@@ -70,7 +70,7 @@ These are pure layout utilities — they carry no business logic and no selectio
 
 The label, when present, renders inside `<span data-divider-label>` for independent CSS targeting.
 
-### Usage
+### Divider Usage
 
 ```svelte
 <!-- Simple horizontal rule -->
@@ -95,14 +95,14 @@ The label, when present, renders inside `<span data-divider-label>` for independ
 
 ### Architecture
 
-```
+```text
 Wrapper       — owns focusedKey $state + flatView $derived
 Navigator     — attaches DOM event handlers, calls wrapper[action](path)
               — horizontal orientation (ArrowLeft/ArrowRight)
 flatView loop — single flat {#each} rendering items as <button> tiles
 ```
 
-### Props
+### Grid Props
 
 | Prop | Type | Default | Description |
 | ------ | ------ | --------- | ------------- |
@@ -126,7 +126,7 @@ flatView loop — single flat {#each} rendering items as <button> tiles
 
 These are set inline from `minSize` and `gap` props, so they can also be overridden via a parent `style` attribute.
 
-### Data Attributes
+### Grid Data Attributes
 
 | Attribute | Values | Description |
 | ----------- | -------- | ------------- |
@@ -150,7 +150,7 @@ These are set inline from `minSize` and `gap` props, so they can also be overrid
 | `Enter` / `Space` | Select focused tile |
 | `Home` / `End` | First / last tile |
 
-### Usage
+### Grid Usage
 
 ```svelte
 <script>

@@ -927,14 +927,14 @@ Verify: `grep -n "themes" packages/cli/src/init.js`
 
 In `docs/llms/index.txt`, replace:
 
-```
+```css
 @import '@rokkit/themes/dist/base';
 @import '@rokkit/themes/dist/rokkit';
 ```
 
 with:
 
-```
+```css
 @import '@rokkit/themes/base.css';
 @import '@rokkit/themes/rokkit.css';
 ```

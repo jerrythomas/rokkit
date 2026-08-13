@@ -588,7 +588,7 @@ uses `options` — wrong throughout.
 
   Structure:
 
-  ```
+  ```text
   intro para
   h2: How actions work
   h2: navigable — keyboard navigation
@@ -691,7 +691,7 @@ uses `options` — wrong throughout.
 
   Structure:
 
-  ```
+  ```text
   intro para
   h2: ProxyItem — view mapping
     Code: 00-proxy-item.svelte
@@ -757,7 +757,7 @@ uses `options` — wrong throughout.
 
   Structure:
 
-  ```
+  ```text
   intro para
   h2: Field mapping
     Code: 00-field-mapper.svelte
@@ -814,7 +814,7 @@ uses `options` — wrong throughout.
 
   Structure:
 
-  ```
+  ```text
   intro para
   h2: Dataset pipeline
     Code: 00-dataset.js
@@ -884,7 +884,7 @@ uses `options` — wrong throughout.
 
   Structure:
 
-  ```
+  ```text
   intro para
   h2: Setup
     Code: 00-setup.js
@@ -974,7 +974,7 @@ uses `options` — wrong throughout.
 
   Structure:
 
-  ```
+  ```text
   intro para
   h2: ThemeSwitcherToggle
     Code: 00-theme-switcher.svelte

@@ -92,7 +92,7 @@ Each palette defines shades 50-950 in OKLCH. These values are the zen-sumi aesth
 
 ## File Structure
 
-```
+```text
 packages/themes/src/zen-sumi/
 ├── index.css         (imports tokens + all component files)
 ├── tokens.css        (zen-sumi OKLCH palette, light + dark)

@@ -86,7 +86,7 @@ Investigation:
 
 - `packages/themes/src/rokkit/tabs.css`:
 
-  ```
+  ```css
   [data-style='rokkit'] [data-tabs-trigger][data-selected] {
     @apply bg-paper-mute text-ink-mute;
   }

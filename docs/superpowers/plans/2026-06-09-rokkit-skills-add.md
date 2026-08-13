@@ -59,7 +59,7 @@ cp ~/.claude/skills/semantic-styles-rokkit/SKILL.md \
 Run: `head -3 packages/cli/skills/semantic-styles-rokkit/SKILL.md`
 Expected: the first three lines are
 
-```
+```yaml
 ---
 name: semantic-styles-rokkit
 description: Use when building, styling, or auditing a Rokkit-powered app ...
@@ -128,7 +128,7 @@ focused on **using** components (not building them). Target ~150–300 lines.
 Run: `head -3 packages/cli/skills/rokkit-components/SKILL.md`
 Expected:
 
-```
+```yaml
 ---
 name: rokkit-components
 description: Use when building UI with Rokkit components in a Svelte 5 app ...
@@ -613,7 +613,6 @@ rokkit skills add semantic-styles-rokkit # install one
 rokkit skills add                        # interactive multi-select
 rokkit skills add --all                  # install everything
 rokkit skills add <name> --force         # overwrite an existing install
-```
 
 Skills install into your project's `.claude/skills/<name>/`, so they're shared
 with your team via version control. Browse the source under
@@ -676,5 +675,3 @@ This is a `@rokkit/cli` feature → release with the existing flow:
 commits, tags, pushes; CI publishes on the tag), then merge `develop → main`.
 Note the unrelated `v1.1.13` CLI flash-script fix is already committed on
 `develop` and will ship in the same release.
-
-```

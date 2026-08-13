@@ -60,7 +60,7 @@ All color references use semantic tokens (`--color-primary-500`, `--color-surfac
 
 ## 2. Custom `palettes` Field
 
-### Motivation
+### Motivation for Custom Palettes
 
 Currently users can only remap semantic colors (`primary`, `surface`, etc.) to UnoCSS preset-mini palette names (e.g. `primary: 'blue'`). There is no way to use custom brand colors like `#0f4c81` or `oklch(65% 0.2 240)`.
 

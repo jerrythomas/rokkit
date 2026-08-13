@@ -352,7 +352,7 @@ Feature: Accessible Charts
 
 ## Status
 
-### Plot System
+### Plot System Status
 
 | Feature                                         | Status     |
 | ----------------------------------------------- | ---------- |
@@ -463,13 +463,13 @@ Feature: Accessible Charts
 | Custom symbol registration via helpers.symbols       | 🔲 Planned        |
 | Continuous color schemes (greens, blues, rdbu, etc.) | 🔲 Planned (#126) |
 
-### Sparklines
+### Sparklines Status
 
 | Feature                   | Status         |
 | ------------------------- | -------------- |
 | Sparkline — line/bar/area | ✅ Implemented |
 
-### Accessibility
+### Accessibility Status
 
 | Feature                       | Status     |
 | ----------------------------- | ---------- |

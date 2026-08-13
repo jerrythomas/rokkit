@@ -12,7 +12,7 @@
 
 **Template (use for all files, scale sections to package complexity):**
 
-````
+````markdown
 # @rokkit/<package>
 
 > <one-line description>
@@ -21,7 +21,6 @@
 
 ```bash
 npm install @rokkit/<package>
-````
 
 ## Key Exports
 
@@ -37,7 +36,7 @@ npm install @rokkit/<package>
 
 - `@rokkit/<other>` — brief reason
 
-```
+````
 
 **Reference template file:** `docs/llms/components/list.txt` — read this before starting to match tone and depth.
 
@@ -48,6 +47,7 @@ npm install @rokkit/<package>
 ### Task 1: actions.txt
 
 **Files:**
+
 - Create: `docs/llms/packages/actions.txt`
 - Source: `packages/actions/src/index.js`, `packages/actions/src/` (all action files)
 
@@ -55,17 +55,16 @@ The `@rokkit/actions` package provides Svelte actions — functions used with th
 
 - [ ] **Step 1: Read source files**
 
-```
-
+```text
 packages/actions/src/index.js — full export list
 packages/actions/src/navigable.svelte.js — keyboard navigation action
 packages/actions/src/ — scan remaining action files for exports
-
-````
+```
 
 - [ ] **Step 2: Create docs/llms/packages/actions.txt**
 
 Cover:
+
 - What Svelte actions are and how to apply them (`use:actionName`)
 - Each exported action: what it does, what events it dispatches, any options
 - The `navigable` action in detail — it is the primary keyboard navigation mechanism. It dispatches: `previous`, `next`, `select`, `collapse`, `expand` on **keyup** (not keydown). Default orientation: vertical (ArrowUp/Down).
@@ -89,7 +88,7 @@ git commit -m "docs(llms): add packages/actions.txt"
 
 - [ ] **Step 1: Read source files**
 
-  ```
+  ```text
   packages/states/src/index.js   — full export list
   packages/states/src/           — scan for key classes/functions
   ```
@@ -123,7 +122,7 @@ git commit -m "docs(llms): add packages/actions.txt"
 
 - [ ] **Step 1: Read source files**
 
-  ```
+  ```text
   packages/core/src/index.js   — full export list
   packages/core/src/           — scan key utility files
   ```
@@ -155,7 +154,7 @@ git commit -m "docs(llms): add packages/actions.txt"
 
 - [ ] **Step 1: Read source files**
 
-  ```
+  ```text
   packages/data/src/index.js   — full export list
   packages/data/src/           — scan filter, formatter, dataset, hierarchy files
   ```
@@ -189,7 +188,7 @@ git commit -m "docs(llms): add packages/actions.txt"
 
 - [ ] **Step 1: Read source files**
 
-  ```
+  ```text
   packages/themes/              — list available theme files (dist/ structure)
   packages/unocss/src/index.js  — presetRokkit export and options
   ```
@@ -227,7 +226,7 @@ git commit -m "docs(llms): add packages/actions.txt"
 
 - [ ] **Step 1: Read source files**
 
-  ```
+  ```text
   packages/unocss/src/index.js     — presetRokkit export and options
   packages/unocss/spec/preset.spec.js  — understand what the preset sets up
   ```
@@ -268,7 +267,7 @@ git commit -m "docs(llms): add packages/actions.txt"
 
 - [ ] **Step 1: Read source files**
 
-  ```
+  ```text
   packages/app/src/index.ts           — full export list
   packages/app/src/components/        — list component files
   ```
@@ -310,7 +309,7 @@ This is the most complex package. Take time to read all source files before writ
 
 - [ ] **Step 1: Read source files**
 
-  ```
+  ```text
   packages/forms/src/index.js
   packages/forms/src/lib/builder.svelte.js   — createForm(), updateField(), isFieldDisabled(), refreshLookup()
   packages/forms/src/lib/schema.js           — all supported field types

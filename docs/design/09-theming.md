@@ -10,7 +10,7 @@
 Every Rokkit component is unstyled by default. Visual appearance is entirely determined by
 three independent axes, each controlled by a data attribute on the `<html>` element:
 
-```
+```text
 <html
   data-palette="skin-sea-green"   ← Skin: which colors
   data-mode="dark"                ← Mode: light or dark
@@ -23,7 +23,7 @@ affecting component shapes or spacing. Switching the mode inverts lightness with
 changing hue or style. Switching the style changes component geometry and decoration
 without changing the palette.
 
-```
+```text
 ┌──────────────────────────────────────┐
 │  Skin layer  (data-palette)          │
 │  Maps semantic color roles to        │
@@ -110,7 +110,7 @@ content focus. Appropriate for documentation sites and content-heavy application
 
 Style variant CSS lives in:
 
-```
+```text
 packages/themes/src/
   rokkit/      — rokkit style CSS per component
   material/    — material style CSS per component
@@ -263,7 +263,7 @@ Theme CSS never references `teal-500` or `zinc-200` directly. It references
 named tokens such as `var(--primary)` or `var(--paper)`, which resolve to the correct
 complete color value for the active skin and mode. The full resolution chain:
 
-```
+```text
 [data-list-item][data-active] { background: var(--primary); color: var(--on-primary) }
   → --primary resolves to teal-500 in the sea-green skin
   → --on-primary resolves to near-white (auto-selected for contrast)

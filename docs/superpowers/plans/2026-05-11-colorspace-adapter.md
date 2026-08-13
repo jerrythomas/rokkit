@@ -228,7 +228,7 @@ Expected: All RGB tests PASS
 
 - [ ] **Step 5: Commit**
 
-```
+```text
 feat(core): add ColorSpace base class + RgbColorSpace adapter
 ```
 
@@ -388,7 +388,7 @@ Expected: All PASS
 
 - [ ] **Step 5: Commit**
 
-```
+```text
 feat(core): add HslColorSpace + OklchColorSpace adapters
 ```
 
@@ -545,7 +545,7 @@ Expected: All PASS
 
 - [ ] **Step 5: Commit**
 
-```
+```text
 refactor(core): Theme class uses ColorSpace adapter instead of scattered helpers
 ```
 
@@ -613,7 +613,7 @@ Expected: All PASS
 
 - [ ] **Step 6: Commit**
 
-```
+```text
 refactor(core): remove deprecated color-space functions, export ColorSpace
 ```
 
@@ -680,7 +680,7 @@ Expected: 0 errors
 
 - [ ] **Step 8: Commit**
 
-```
+```text
 feat(themes): verify theme build with wrapped color variables
 ```
 
@@ -721,7 +721,7 @@ Verify the actual palette variable `--color-primary-500` is now wrapped in the p
 
 - [ ] **Step 5: Commit final state**
 
-```
+```text
 chore: verify colorspace adapter integration — all tests pass
 ```
 
@@ -729,7 +729,7 @@ chore: verify colorspace adapter integration — all tests pass
 
 ## Dependency Graph
 
-```
+```text
 Task 1 (Rgb adapter) ──► Task 2 (Hsl + Oklch adapters)
                                     │
                                     ▼

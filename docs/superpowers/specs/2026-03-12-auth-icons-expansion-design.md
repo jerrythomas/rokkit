@@ -13,7 +13,7 @@ Flat hyphenated filenames in `src/auth/`. No build system changes required.
 
 ### Brand icon variants
 
-```
+```text
 {name}                    # default (color)
 {name}-white              # white mono
 {name}-black              # black mono
@@ -28,7 +28,7 @@ Flat hyphenated filenames in `src/auth/`. No build system changes required.
 
 Solar icon set has 4 variants per icon:
 
-```
+```text
 {name}                    # solid (filled, default)
 {name}-outline            # linear/outline stroked
 {name}-duotone            # duotone solid (two-tone fill)
@@ -97,7 +97,7 @@ Icons with published wordmarks get full variants; others get color/white/black o
 
 ## File Structure After Implementation
 
-```
+```text
 src/auth/
   # Auth platforms
   supabase.svg, supabase-white.svg, supabase-black.svg, supabase-wordmark.svg, ...

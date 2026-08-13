@@ -89,7 +89,7 @@ Phase 1 ships the shell plus three demos (Theme Builder wizard, Tabs, Toasts). P
 
 ### Routes
 
-```
+```text
 demo/src/routes/
   +layout.svelte                 KEEP (app-wide CSS imports)
   +page.svelte                   REWRITE → mounts the Koan shell
@@ -108,7 +108,7 @@ Koan is single-route. State (current demo, query, timeline) lives in Svelte stor
 
 ### Code layout
 
-```
+```text
 demo/src/lib/koan/
   catalog.ts                     demo registry + minisearch index build
   match.svelte.ts                $derived match results from the query store
@@ -150,7 +150,7 @@ After Phase 1.5: `AnnotationArrow`, `BrandMark`, `EmptyState`, `Gallery`, `ChatP
 
 ### State transitions
 
-```
+```text
 [Welcome (full canvas, no sidebar)]
    │ user types + Enter
    ▼
@@ -450,7 +450,7 @@ Single module: `read<T>(key, schema)`, `write(key, value)`, `clear(key)`. Inline
 
 ### Boot sequence
 
-```
+```text
 1. Read koan.mode → apply to documentElement.dataset.mode
 2. Read koan.theme.active → look up in koan.themes → apply CSS variables
    - If active theme references missing palette → fallback + recovery toast on mount

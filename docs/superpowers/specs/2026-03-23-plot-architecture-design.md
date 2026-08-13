@@ -26,7 +26,7 @@ Backwards compatibility is **not required**. Thin wrappers for specific use case
 
 ### Two entry points, one rendering path
 
-```
+```text
 Declarative API              Spec API
 <Plot x="month" y="revenue"> <Plot spec={...} helpers={...} />
   <Bar stat="sum" />
@@ -46,7 +46,7 @@ Both entry points normalize to the same `PlotState` before rendering. One render
 
 ### Component tree
 
-```
+```text
 Plot.svelte                  ← orchestrator: owns PlotState, sets context
   Grid.svelte                ← horizontal/vertical grid lines
   [geoms in order]           ← Bar, Line, Area, Point, Box, Violin, Arc
@@ -58,7 +58,7 @@ Plot.svelte                  ← orchestrator: owns PlotState, sets context
 
 ### File structure
 
-```
+```text
 packages/chart/src/
   Plot.svelte                ← orchestrator
   PlotSpec.js                ← TypeScript types + JSON schema
@@ -188,7 +188,7 @@ For backend/AI-driven specs, the backend resolves labels for the user's locale b
 
 ### Data pipeline
 
-```
+```text
 raw data
   → [per-geom stat transform]     groups by non-value channels, aggregates value channels
   → post-stat data per geom
@@ -235,7 +235,7 @@ class PlotState {
 
 Orientation is **inferred from scale types**, not declared:
 
-```
+```text
 x = band/ordinal, y = continuous  →  vertical  (column chart, standard violin)
 y = band/ordinal, x = continuous  →  horizontal (bar chart, horizontal box)
 both continuous                   →  no orientation (scatter, line, area)
@@ -298,7 +298,7 @@ Each geom is a **pure render component**: reads post-stat data and scales from `
 
 ### Stat resolution
 
-```
+```text
 stat string on GeomSpec
   → is built-in? ('identity'|'count'|'sum'|'mean'|'median'|'min'|'max')
       → use internal implementation
@@ -352,7 +352,7 @@ interface PlotHelpers {
 
 ### Resolution pattern (same for all extension points)
 
-```
+```text
 string name → built-in implementation
            → helpers[name] if provided
            → warn + sensible fallback
@@ -402,7 +402,7 @@ facet?: {
 
 ### Data pipeline with facets
 
-```
+```text
 raw data
   → split by facet.by → frames: [{ key, rows }]
   → shared scales from FULL dataset (fixed) or per-frame (free)
@@ -415,7 +415,7 @@ Stat runs **within each frame independently**. `stat: 'sum'` on a bar geom aggre
 
 Domains always derived from the full dataset regardless of `scales` mode. If a panel has no data for a category, the geom simply doesn't render for that position — gap in the chart. The axis still shows all categories (alignment preserved). No reordering, no error.
 
-```
+```text
 Full data:  Jan Feb Mar Apr
 West:       Jan  ·  Mar Apr    ← gap at Feb, x-axis unchanged
 East:       Jan Feb Mar  ·     ← gap at Apr
@@ -448,7 +448,7 @@ Axis display in facet grids:
 
 Scales computed from **full dataset across all frames** before animation starts — axis never rescales mid-animation.
 
-### Spec
+### Animation Spec
 
 ```typescript
 animate?: {
@@ -460,7 +460,7 @@ animate?: {
 
 ### Pipeline
 
-```
+```text
 full data
   → extract ordered frames by animate.by field
   → normalize frames: fill missing combinations with 0 (so tweening works smoothly)
@@ -581,7 +581,7 @@ interface PlotPreset {
 
 ### Resolution — same pattern as stats and geoms
 
-```
+```text
 preset name in spec (string)
   → 'default'            → built-in 21-color palette + standard patterns/symbols
   → 'accessible'         → ColorBrewer qualitative (colorblind-safe)

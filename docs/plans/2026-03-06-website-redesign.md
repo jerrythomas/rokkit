@@ -41,20 +41,20 @@ All paths below are relative to `solution/` unless stated otherwise.
 - Delete: `sites/sample/` (entire directory)
 - Rename: `docs/design/05-website.md` → `docs/design/09-website.md` (repo root)
 
-**Step 1: Delete sites**
+### Step 1: Delete sites
 
 ```bash
 rm -rf sites/quick-start sites/sample
 ```
 
-**Step 2: Rename design doc**
+### Step 2: Rename design doc
 
 ```bash
 cd /Users/Jerry/Developer/rokkit
 git mv docs/design/05-website.md docs/design/09-website.md
 ```
 
-**Step 3: Verify no broken references to old path**
+### Step 3: Verify no broken references to old path
 
 ```bash
 cd /Users/Jerry/Developer/rokkit
@@ -62,7 +62,7 @@ grep -r "05-website" docs/ agents/ --include="*.md" -l
 # Update any hits to use 09-website
 ```
 
-**Step 4: Run tests**
+### Step 4: Run tests
 
 ```bash
 cd solution && bun run test:ci
@@ -70,7 +70,7 @@ cd solution && bun run test:ci
 
 Expected: all pass (no code changed, only docs/sites)
 
-**Step 5: Commit**
+### Step 5: Commit
 
 ```bash
 git add -A
@@ -91,7 +91,7 @@ Goal: make "Getting Started" a collapsible group containing introduction, quick-
 - Move: `introduction/` → `getting-started/introduction/`
 - Update: both moved meta.json files
 
-**Step 1: Create group-level meta.json for getting-started**
+### Step 1: Create group-level meta.json for getting-started
 
 The current `docs/getting-started/` has `meta.json` + `+page.svelte`. We need it to become the GROUP HEADER (no page, just a nav label).
 
@@ -114,7 +114,7 @@ Then overwrite `getting-started/meta.json`:
 }
 ```
 
-**Step 2: Create getting-started/installation/ from old getting-started page**
+### Step 2: Create getting-started/installation/ from old getting-started page
 
 ```bash
 mkdir -p sites/learn/src/routes/\(learn\)/docs/getting-started/installation
@@ -134,7 +134,7 @@ Create `getting-started/installation/meta.json`:
 }
 ```
 
-**Step 3: Move introduction/ → getting-started/introduction/**
+### Step 3: Move introduction/ → getting-started/introduction/
 
 ```bash
 mv sites/learn/src/routes/\(learn\)/docs/introduction \
@@ -154,7 +154,7 @@ Update `getting-started/introduction/meta.json`:
 }
 ```
 
-**Step 4: Create getting-started/quick-start/ (placeholder)**
+### Step 4: Create getting-started/quick-start/ (placeholder)
 
 Create `getting-started/quick-start/meta.json`:
 
@@ -179,13 +179,13 @@ Create `getting-started/quick-start/+page.svelte`:
 </article>
 ```
 
-**Step 5: Run tests**
+### Step 5: Run tests
 
 ```bash
 cd solution && bun run test:ci
 ```
 
-**Step 6: Commit**
+### Step 6: Commit
 
 ```bash
 git add sites/learn/src/routes/\(learn\)/docs/getting-started/
@@ -203,7 +203,7 @@ git commit -m "feat(docs): restructure getting-started as feature pillar group"
 - Move: `field-mapping/` → `data-binding/field-mapping/` + update meta.json
 - Create: `data-binding/data-sources/` (placeholder)
 
-**Step 1: Create data-binding group**
+### Step 1: Create data-binding group
 
 ```bash
 mkdir -p sites/learn/src/routes/\(learn\)/docs/data-binding
@@ -221,7 +221,7 @@ Create `data-binding/meta.json`:
 }
 ```
 
-**Step 2: Create overview page**
+### Step 2: Create overview page
 
 Create `data-binding/overview/meta.json`:
 
@@ -261,7 +261,7 @@ Create `data-binding/overview/+page.svelte`:
 </article>
 ```
 
-**Step 3: Move field-mapping into data-binding**
+### Step 3: Move field-mapping into data-binding
 
 ```bash
 mv sites/learn/src/routes/\(learn\)/docs/field-mapping \
@@ -281,7 +281,7 @@ Update `data-binding/field-mapping/meta.json` (change category, add order):
 }
 ```
 
-**Step 4: Create data-sources placeholder**
+### Step 4: Create data-sources placeholder
 
 Create `data-binding/data-sources/meta.json`:
 
@@ -306,7 +306,7 @@ Create `data-binding/data-sources/+page.svelte`:
 </article>
 ```
 
-**Step 5: Commit**
+### Step 5: Commit (Data Binding)
 
 ```bash
 git add sites/learn/src/routes/\(learn\)/docs/data-binding/ \
@@ -324,7 +324,7 @@ git commit -m "feat(docs): add data-binding feature pillar"
 - Create: `composability/overview/`
 - Move: `snippets/` → `composability/snippets/`
 
-**Step 1: Create composability group**
+### Step 1: Create composability group
 
 Create `composability/meta.json`:
 
@@ -338,7 +338,7 @@ Create `composability/meta.json`:
 }
 ```
 
-**Step 2: Create overview page**
+### Step 2: Create overview page (Composability)
 
 Create `composability/overview/meta.json`:
 
@@ -372,7 +372,7 @@ Create `composability/overview/+page.svelte`:
 </article>
 ```
 
-**Step 3: Move snippets into composability**
+### Step 3: Move snippets into composability
 
 ```bash
 mv sites/learn/src/routes/\(learn\)/docs/snippets \
@@ -392,7 +392,7 @@ Update `composability/snippets/meta.json`:
 }
 ```
 
-**Step 4: Commit**
+### Step 4: Commit
 
 ```bash
 git add sites/learn/src/routes/\(learn\)/docs/composability/ \
@@ -412,7 +412,7 @@ git commit -m "feat(docs): add composability feature pillar"
 - Move: `styling/` → `theming/styling/`
 - Create: `theming/density/` and `theming/whitelabeling/` (placeholders)
 
-**Step 1: Create theming group**
+### Step 1: Create theming group
 
 Create `theming/meta.json`:
 
@@ -426,7 +426,7 @@ Create `theming/meta.json`:
 }
 ```
 
-**Step 2: Create overview page**
+### Step 2: Create overview page (Theming)
 
 Create `theming/overview/meta.json`:
 
@@ -459,7 +459,7 @@ Create `theming/overview/+page.svelte`:
 </article>
 ```
 
-**Step 3: Move color-system and styling**
+### Step 3: Move color-system and styling
 
 ```bash
 mv sites/learn/src/routes/\(learn\)/docs/color-system \
@@ -494,7 +494,7 @@ Update `theming/styling/meta.json`:
 }
 ```
 
-**Step 4: Create placeholder pages**
+### Step 4: Create placeholder pages
 
 Create `theming/density/meta.json`:
 
@@ -531,7 +531,7 @@ Create `theming/whitelabeling/meta.json`:
 }
 ```
 
-**Step 5: Commit**
+### Step 5: Commit (Theming)
 
 ```bash
 git add sites/learn/src/routes/\(learn\)/docs/theming/ \
@@ -551,7 +551,7 @@ git commit -m "feat(docs): add theming feature pillar"
 - Move: `keyboard-navigation/` → `accessibility/keyboard-navigation/`
 - Create: `accessibility/tooltips/` and `accessibility/i18n/` (placeholders)
 
-**Step 1: Create accessibility group**
+### Step 1: Create accessibility group
 
 Create `accessibility/meta.json`:
 
@@ -565,7 +565,7 @@ Create `accessibility/meta.json`:
 }
 ```
 
-**Step 2: Create overview page**
+### Step 2: Create overview page (Accessibility)
 
 Create `accessibility/overview/meta.json`:
 
@@ -604,7 +604,7 @@ Create `accessibility/overview/+page.svelte`:
 </article>
 ```
 
-**Step 3: Move keyboard-navigation**
+### Step 3: Move keyboard-navigation
 
 ```bash
 mv sites/learn/src/routes/\(learn\)/docs/keyboard-navigation \
@@ -624,7 +624,7 @@ Update `accessibility/keyboard-navigation/meta.json`:
 }
 ```
 
-**Step 4: Create placeholder pages**
+### Step 4: Create placeholder pages (Accessibility)
 
 Create `accessibility/tooltips/meta.json`:
 
@@ -652,7 +652,7 @@ Create `accessibility/i18n/meta.json`:
 
 Both placeholders use the same `+page.svelte` as in Task 2 Step 4 (coming soon card).
 
-**Step 5: Commit**
+### Step 5: Commit (Accessibility)
 
 ```bash
 git add sites/learn/src/routes/\(learn\)/docs/accessibility/ \
@@ -664,11 +664,11 @@ git commit -m "feat(docs): add accessibility & i18n feature pillar"
 
 ## Task 7: Update Forms pillar + move remaining orphan pages
 
-**Part A — Forms**
+### Part A — Forms
 
 `docs/forms/` is currently a single guide page. Convert it to a proper group.
 
-**Step 1: Convert forms to a group**
+### Step 1: Convert forms to a group
 
 Update `docs/forms/meta.json`:
 
@@ -684,7 +684,7 @@ Update `docs/forms/meta.json`:
 
 The existing `docs/forms/+page.svelte` becomes the group's overview page (reachable at `/docs/forms`). No move needed — it's already at the right depth.
 
-**Step 2: Add form sub-pages**
+### Step 2: Add form sub-pages
 
 The `docs/forms/snippets/` child likely already has a meta.json. Update its category to `forms`.
 
@@ -714,7 +714,7 @@ Create `docs/forms/multi-step/meta.json`:
 
 Both get the "coming soon" `+page.svelte`.
 
-**Part B — Move remaining orphan guide pages**
+### Part B — Move remaining orphan guide pages
 
 These flat guide pages still need homes:
 
@@ -730,7 +730,7 @@ mv sites/learn/src/routes/\(learn\)/docs/icons \
 
 Update each meta.json to change `category` from `guide` to `utilities` and set appropriate `order`.
 
-**Step 3: Run tests and commit**
+### Step 3: Run tests and commit
 
 ```bash
 cd solution && bun run test:ci
@@ -804,7 +804,7 @@ git commit -m "feat(docs): add placeholder pages for unbuilt components"
 
 - Create: `charts/meta.json` through `charts/animation/`
 
-**Step 1: Create charts group**
+### Step 1: Create charts group
 
 Create `charts/meta.json`:
 
@@ -818,7 +818,7 @@ Create `charts/meta.json`:
 }
 ```
 
-**Step 2: Create overview page**
+### Step 2: Create overview page (Charts)
 
 Create `charts/overview/meta.json`:
 
@@ -834,7 +834,7 @@ Create `charts/overview/meta.json`:
 
 Create `charts/overview/+page.svelte` with prose about chart architecture (SVG-based, theme token integration, dark mode via `data-mode`).
 
-**Step 3: Create chart type pages**
+### Step 3: Create chart type pages
 
 For `bar-chart/`, `line-chart/`, `sparkline/` — these are BUILT components. Create full doc pages referencing the `StoryBuilder` pattern (like list's `+page.svelte`). If stories don't exist yet, create minimal pages with placeholder story sections.
 
@@ -870,14 +870,14 @@ For `bar-chart/`, `line-chart/`, `sparkline/` — these are BUILT components. Cr
 
 Repeat for `line-chart/` (order: 3), `sparkline/` (order: 4).
 
-**Step 4: Create placeholder chart pages**
+### Step 4: Create placeholder chart pages
 
 Create meta.json + coming-soon page for:
 
 - `charts/pie-donut/` (order: 5) — "Pie / Donut chart"
 - `charts/scatter/` (order: 6) — "Scatter chart"
 
-**Step 5: Create cross-cutting pages**
+### Step 5: Create cross-cutting pages
 
 `charts/interactivity/meta.json`:
 
@@ -926,7 +926,7 @@ git commit -m "feat(docs): add charts feature pillar"
 
 ## Task 10: Update Utilities pillar + Toolchain pillar
 
-**Part A — Utilities**
+### Part A — Utilities
 
 `docs/utilities/` already exists as a group (category: utilities). Add overview and new sub-pages; move effects/ into utilities/.
 
@@ -961,7 +961,7 @@ Update each moved meta.json: change `category` from `effects` to `utilities`.
 
 **Step 5:** Create `utilities/custom-primitives/` placeholder.
 
-**Part B — Toolchain**
+### Part B — Toolchain
 
 Create `toolchain/meta.json`:
 
@@ -998,7 +998,7 @@ Create the `(preview)` route group with the Nexus app shell layout and a floatin
 - Create: `sites/learn/src/routes/(preview)/preview/+page.server.js`
 - Create: `sites/learn/src/routes/(preview)/preview/ThemePanel.svelte`
 
-**Step 1: Create ThemePanel component**
+### Step 1: Create ThemePanel component
 
 `sites/learn/src/routes/(preview)/preview/ThemePanel.svelte`:
 
@@ -1057,7 +1057,7 @@ Create the `(preview)` route group with the Nexus app shell layout and a floatin
 </div>
 ```
 
-**Step 2: Create app shell layout**
+### Step 2: Create app shell layout
 
 `sites/learn/src/routes/(preview)/preview/+layout.svelte`:
 
@@ -1122,7 +1122,7 @@ Create the `(preview)` route group with the Nexus app shell layout and a floatin
 <ThemePanel />
 ```
 
-**Step 3: Create redirect from /preview to /preview/dashboard**
+### Step 3: Create redirect from /preview to /preview/dashboard
 
 `sites/learn/src/routes/(preview)/preview/+page.server.js`:
 
@@ -1133,7 +1133,7 @@ export function load() {
 }
 ```
 
-**Step 4: Verify the route compiles**
+### Step 4: Verify the route compiles
 
 ```bash
 cd solution && bun run lint
@@ -1141,7 +1141,7 @@ cd solution && bun run lint
 
 Expected: 0 errors
 
-**Step 5: Commit**
+### Step 5: Commit (Preview App)
 
 ```bash
 git add sites/learn/src/routes/\(preview\)/
@@ -1624,7 +1624,7 @@ git commit -m "docs: update 09-website.md with preview app section"
 
 ## Task 18: Final verification
 
-**Step 1: Run all unit tests**
+### Step 1: Run all unit tests
 
 ```bash
 cd solution && bun run test:ci
@@ -1632,7 +1632,7 @@ cd solution && bun run test:ci
 
 Expected: all 2745+ pass
 
-**Step 2: Run lint**
+### Step 2: Run lint
 
 ```bash
 cd solution && bun run lint
@@ -1640,7 +1640,7 @@ cd solution && bun run lint
 
 Expected: 0 errors
 
-**Step 3: Start the learn site and manually verify**
+### Step 3: Start the learn site and manually verify
 
 ```bash
 cd sites/learn && bun dev
@@ -1655,4 +1655,4 @@ Check:
 - Floating action buttons still work on component pages
 - No 404s from internal links
 
-**Step 4: Commit any fixes found during manual testing**
+### Step 4: Commit any fixes found during manual testing

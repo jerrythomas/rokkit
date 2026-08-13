@@ -98,7 +98,7 @@ Component attribute hooks follow the pattern `[data-style='my-theme'] [data-butt
 
 ## Architecture
 
-```
+```text
 src/
   base/        -- Structural styles (layout, spacing, positioning)
   rokkit/      -- Default theme (gradients + borders)

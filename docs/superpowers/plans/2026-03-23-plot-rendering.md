@@ -62,7 +62,7 @@ PlotState properties used by infrastructure components:
 
 ## File Structure
 
-```
+```text
 packages/chart/src/
   plot/                           ← shared infrastructure (new folder)
     Axis.svelte                   CREATE
@@ -1727,7 +1727,7 @@ git commit -m "feat(chart): add Arc, Box, Violin geom components"
 
 ### Task 12: `Plot.svelte` orchestrator
 
-**Status: completed**
+#### Status: completed
 
 The top-level chart component. Creates `PlotState`, sets context, renders SVG canvas with optional grid, axes, legend, and pattern defs. Accepts either declarative children (geoms as child components) or a `spec` prop.
 
@@ -2001,7 +2001,7 @@ git commit -m "feat(chart): add Plot.svelte orchestrator — declarative + spec-
 
 ### Task 13: Updated chart wrappers
 
-**Status: completed**
+#### Status: completed (Task 13)
 
 All existing chart wrapper components become thin wrappers around `Plot.svelte`. They preserve their existing prop signatures for backward compatibility. Read each file before rewriting it.
 
@@ -2244,7 +2244,7 @@ git commit -m "refactor(chart): update all chart wrappers to use new Plot.svelte
 
 ### Task 14: Update `index.js` exports
 
-**Status: completed**
+#### Status: completed (Task 14)
 
 The package's public API should export `Plot.svelte` and all geom components under a `Plot` namespace, alongside the existing exports.
 

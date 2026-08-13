@@ -51,7 +51,7 @@ Once implemented here, FitTrack can remove its app-level overrides in app.css.
 
 Child items within a group are rendered at the same indentation level as the group header. This makes it hard to visually distinguish the hierarchy. Child items should have additional left padding to indent them under their parent group.
 
-### Selector
+### Selector (group child indentation)
 
 - `[data-list-group-items] [data-list-item]` - add left padding (e.g. pl-4 or pl-6) to child items within groups
 
@@ -61,6 +61,6 @@ Child items within a group are rendered at the same indentation level as the gro
 
 When a group header has no icon, there appears to be extra leading space before the text (as if space is reserved for a missing icon). The group label should not have phantom spacing when no icon is present.
 
-### Selector
+### Selector (group icon spacing)
 
 - `[data-list-group]` - check for leftover gap/padding when `[data-list-group-icon]` is absent or empty

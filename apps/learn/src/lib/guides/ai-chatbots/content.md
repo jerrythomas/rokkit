@@ -81,7 +81,7 @@ matches a plugin — mounts a live component.
 The trick is teaching the model **the JSON shape per language**.
 Use a system prompt that includes a tool-style catalog:
 
-```
+```text
 You can render rich responses using fenced code blocks. When the
 user wants a visualization, table, form, or list, emit a block
 whose language is the renderer name (plot / table / form / list)

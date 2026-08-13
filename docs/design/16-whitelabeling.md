@@ -13,7 +13,7 @@ visual language. The component contract (data attributes, props, events) is unto
 
 Four independent replacement axes cover the full visual surface:
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────┐
 │  1. Skin         — brand color palette                       │
 │     data-palette="brand-name" on <html>                      │
@@ -125,7 +125,7 @@ properties. It is a set of CSS files that target Rokkit's data attribute contrac
 
 ### Style file structure
 
-```
+```text
 brand-theme/
   src/
     button.css     ← [data-button] rules
@@ -274,7 +274,7 @@ Load fonts before or alongside these overrides:
 
 A fully whitelabeled integration requires:
 
-```
+```text
 □ Skin     — custom skin registered in uno.config.ts and CSS mapping added
 □ Style    — custom style CSS authored for all components in use
 □ Icons    — defaultStateIcons overridden at app startup

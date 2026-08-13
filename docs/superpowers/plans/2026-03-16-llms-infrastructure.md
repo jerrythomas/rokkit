@@ -35,7 +35,7 @@
 
   Expected:
 
-  ```
+  ```text
   components  index.txt
   28
   ```
@@ -62,7 +62,7 @@
 
   Add this line to `site/.gitignore`:
 
-  ```
+  ```text
   /static/llms
   ```
 

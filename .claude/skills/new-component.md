@@ -37,7 +37,7 @@ Data attributes are the only CSS hooks. Never use scoped classes.
 
 **Child elements:** `data-<name>-<element>`
 
-```
+```text
 data-list              — root nav element
 data-list-item         — leaf item button
 data-list-item-icon    — icon span inside item
@@ -491,7 +491,7 @@ Import in `packages/themes/src/base/index.css`:
 
 Common color token patterns:
 
-```
+```text
 bg-<color>-z<1-3>       light background
 border-<color>-z<3-5>   subtle to visible border
 text-<color>-z<6-9>     readable text

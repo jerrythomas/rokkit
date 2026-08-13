@@ -20,7 +20,7 @@ Color-space logic is scattered across 5 locations in `@rokkit/core`: `modifiers`
 
 ### ColorSpace class hierarchy
 
-```
+```text
 ColorSpace (base)            — abstract interface + static factory
 ├── RgbColorSpace            — rgb(r, g, b)
 ├── HslColorSpace            — hsl(H S% L%)

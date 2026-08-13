@@ -427,7 +427,7 @@ git commit -m "feat(app): SkinSwitcherToggle"
 - [ ] **Step 2: Run to verify it fails** — `bunx vitest run --project cli packages/cli/spec/skills.spec.js` → FAIL.
 - [ ] **Step 3: Author** `packages/cli/skills/skin-system-rokkit/SKILL.md`, beginning EXACTLY:
 
-```
+```yaml
 ---
 name: skin-system-rokkit
 description: Use when switching color skins (which palette backs paper/ink/primary/accent) in a Rokkit (Svelte 5) app — the vibe.skin state, the data-skin mechanism, themable sync, defining skins in rokkit.config.js (skins:), built-in skins, SkinSwitcherToggle, and the skinnable action for dynamic/runtime skins.

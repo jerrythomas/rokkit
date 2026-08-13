@@ -300,13 +300,13 @@ git commit -m "feat(unocss): wire palettes config into Theme construction"
 
 ## Chunk 2: Five New Themes
 
-### Files
+### Files (Chunk 2)
 
 Each theme follows the exact pattern of `packages/themes/src/rokkit/`. The CSS uses `[data-style='<name>']` selectors and Rokkit's `@apply` token classes.
 
 **Files to create per theme (×5 themes):**
 
-```
+```text
 packages/themes/src/<theme>/
   index.css
   button.css
@@ -756,7 +756,7 @@ cd packages/themes && bun run build
 
 Expected output includes:
 
-```
+```text
 ✓ dist/shadcn.css (flat borders + ring focus)
 ✓ dist/daisy-ui.css (rounded-full + bold fills)
 ✓ dist/bits-ui.css (rounded-lg + shadow-sm)
@@ -853,7 +853,7 @@ git commit -m "feat(themes): wire 5 new themes into build, exports, CLI init + d
 
 ## Chunk 3: Verification Page
 
-### Files
+### Files (Chunk 3)
 
 | Action | Path                                                    | Responsibility                                      |
 | ------ | ------------------------------------------------------- | --------------------------------------------------- |

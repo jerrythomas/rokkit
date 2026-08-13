@@ -51,7 +51,7 @@ These mirror the theming trio (`vibe` / `themable` / `ThemeSwitcherToggle`).
 
 ## Architecture
 
-```
+```text
 keydown ─▶ use:shortcuts={commands}  ─▶ commands.resolve(event) ─▶ Command ─▶ run()
             (@rokkit/actions)             (@rokkit/states)
                                               ▲
