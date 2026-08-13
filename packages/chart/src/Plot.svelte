@@ -33,7 +33,7 @@
 		width?: number
 		height?: number
 		mode?: 'light' | 'dark'
-		grid?: boolean
+		grid?: boolean | 'x' | 'y' | 'both'
 		axes?: boolean
 		margin?: Margin
 		legend?: boolean
@@ -92,7 +92,9 @@
 
 	const effectiveWidth = $derived(observedWidth > 0 ? observedWidth : (spec?.width ?? width))
 	const svgHeight = $derived(spec?.height ?? height)
-	const showGrid = $derived(spec?.grid ?? grid)
+	const gridValue = $derived(spec?.grid ?? grid)
+	const showGrid = $derived(gridValue !== false)
+	const gridLines = $derived(gridValue === true ? 'auto' : (gridValue as 'x' | 'y' | 'both' | 'auto'))
 	const showLegend = $derived(spec?.legend ?? legend)
 	const chartTitle = $derived(spec?.title ?? title)
 	const chartSummary = $derived(spec?.summary ?? summary)
@@ -217,7 +219,7 @@
 		>
 			<!-- Grid (behind everything) -->
 			{#if showGrid}
-				<Grid />
+				<Grid lines={gridLines} {xTicks} {yTicks} />
 			{/if}
 
 			<!-- Declarative children (geom components) -->
