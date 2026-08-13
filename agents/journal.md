@@ -6441,3 +6441,52 @@ left surfaced within parents rather than given marginal standalone demos.
 
 **Final gate:** lint 0 errors + `bun run test:ci` = **5165 tests / 358 files**; learn
 build ✓ (prerender ✓); e2e 7/7 (3 layout demos + 4 catalog). All on `develop`.
+
+---
+
+## 2026-08-13 — Chart: grid axis control + observation highlight + trend engine
+
+**Motivation:** a minimalist 30-day time-series mock (horizontal+vertical grid, dashed average
+line, highlighted "today" dot). Three additive, backward-compatible features in `@rokkit/chart`,
+built subagent-driven (fresh implementer + spec/quality reviewers per task).
+
+**1. Grid axis control** — `grid: boolean | 'x' | 'y' | 'both'` on `PlotChart`/`AreaChart`/
+`LineChart`. `true` = **auto** (horizontal always; vertical only for band scales — identical to
+legacy, zero regression); `'both'`/`'x'` force vertical lines on continuous/time scales at the
+x-tick positions (grid now shares `xTicks`/`yTicks` with the axis, fixing prior tick drift).
+Per-orientation `[data-plot-grid-line="x"|"y"]` + `--chart-grid-{color,width,dash,opacity}`.
+
+**2. Observation highlight** — `highlight: 'first'|'last'|'min'|'max'|number|(row,i)=>boolean` via
+a new pure-overlay primitive `Plot.Highlight`/`GeomHighlight` (selection logic in pure
+`lib/highlight.js`). CSS-only theming: `[data-plot-highlight]` + `--chart-highlight-{color,radius,ring}`
+(default accent). No `registerGeom` (no domain effect).
+
+**3. Trend engine** — `trend: method | method[]` via `Plot.Trend`/`GeomTrend` (calculators in pure
+`lib/trend.js`). Constant methods (`avg`/`median`/`min`/`max`/`value`/number → horizontal line) +
+fitted (`linear` regression, `{type:'ma',window}`, `ema`, `exp` regression → series). Degenerate
+input (empty / <2 pts / `exp` y≤0 / `ma` no window) skipped. `[data-plot-trend="<type>"]` +
+`--chart-trend-{color,width,dash,opacity}` (dashed default). Absorbs the once-deferred reference line.
+
+Added `PlotState.get data()` for overlays. Both features work on the composable primitives AND the
+wrappers. Learn showcase (`koan/demos/chart` "last 30 days") reproduces the mock; Playwright e2e
+(`chart-metrics.e2e.ts`) guards grid+trend+highlight render live.
+
+**Reviews caught (and fixed):** Highlight/Line `{#each}` keyed by pixel coords → `each_key_duplicate`
+crash on tied rows (now keyed by row index, `lines.js` carries original index through the sort);
+`scaleX` `(p ?? 0)` masked out-of-domain `undefined` as a real coord (now returns `NaN`); a
+band-scale grid zero-regression test was missing (added). Repo lint bans `== null` → overlays use
+`!== null && !== undefined`.
+
+**Commits (develop):** backlog/plan `b71f77aa`/`61c2706a`; `4cc7efa0` highlight util, `a07b6bbe`
+trend calc, `5719aeb7` data getter, `a05fbd55` grid, `12465377` highlight overlay, `928bbe5d` grid
+band test, `c5af15bb` keying fix, `69ba0076` trend overlay, `421ea3d2` wrappers, `6d4e6824` exports,
+`907f2e4a` showcase, `def38178` e2e, `6b6fa962` docs. Also `4cdef9a2` — untrack + gitignore
+`docs/mockups/` (local design mockups, files kept on disk).
+
+**Docs:** `docs/design/21-charts.md` (Overlays + Grid axis control), `20-chart.md` (exports), chart
+demo `meta.ts` API (feeds the generated `static/llms/components/*.txt`, which are gitignored build
+artifacts). `.claude/skills/rokkit-components` doesn't enumerate chart props (and lives outside the
+repo) → no change.
+
+**Final gate:** lint **0 errors** + `bun run test:ci` = **5206 tests / 364 files** (+41 vs prior);
+Playwright `chart-metrics` e2e ✓ (stable ×3). All on `develop`.

@@ -22,6 +22,7 @@ Major design-system initiative — phases 3–9, then release 1 of the trimmed t
 - **Semantic Ink + Extensible Roles (2026-05-12)** — `ink` role (inverted palette mapping for text tokens); alias validation; generalized dual-palette (any role accepts `{ light, dark }`).
 - **Trimmed Token Vocabulary release 1 (2026-05-15)** — `tokens: 'core'` (new default) emits 18→24 named tokens (`--paper`, `--ink-mute`, `--accent-soft`, …) with palette values inlined; `tokens: 'extended'` preserves legacy ~120-var output; `custom` config block for app-level tokens; per-role tokens mode. ~120 → ~40 CSS vars per skin.
 - **Trimmed Token Vocabulary release 1.x (post 2026-05-15)** — `base/*.css` + all style themes migrated to named vocabulary; `secondary` refs → `accent`; `buildNamedShortcuts` extracted for themes build.
+- **Chart grid axis control + highlight + trend (2026-08-13)** — `grid: boolean|'x'|'y'|'both'` (vertical gridlines on continuous scales; `true` = zero-regression auto); `highlight` selector overlay (`Plot.Highlight`); `trend` engine (`Plot.Trend`) with constant (avg/median/min/max/value) + fitted (linear/ma/ema/exp) methods; all CSS-var themed (`--chart-grid/highlight/trend-*`), on primitives + `AreaChart`/`LineChart`. Learn showcase + Playwright e2e. See journal 2026-08-13.
 
 ---
 
