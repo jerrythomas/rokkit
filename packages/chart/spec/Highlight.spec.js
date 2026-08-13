@@ -54,4 +54,11 @@ describe('Highlight overlay', () => {
 		})
 		expect(container.querySelectorAll('[data-plot-highlight]')).toHaveLength(2)
 	})
+	it('static highlight marks are not tagged data-plot-selected', () => {
+		const { container } = render(Plot, {
+			props: { spec, highlight: 'first', grid: false, width: 400, height: 300 }
+		})
+		const m = container.querySelector('[data-plot-highlight]')
+		expect(m.getAttribute('data-plot-selected')).toBe(null)
+	})
 })
