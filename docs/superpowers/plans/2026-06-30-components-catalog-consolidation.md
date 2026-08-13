@@ -536,7 +536,7 @@ In `src/lib/koan/components/CatalogGrid.svelte` line 3, change `Catalog grid for
 
 In `src/routes/app/+layout.svelte` (the `pickSuggestion` comment near line 249), remove the now-false sentence referencing the "dedicated /app/catalog route (TBD)". Find:
 
-```
+```js
 	// thinking → goto path as a typed submission. The dedicated /app/catalog
 	// route (TBD) gives the same demos a sidebar-browse entry point for
 	// users who prefer to scan visually.
@@ -544,7 +544,7 @@ In `src/routes/app/+layout.svelte` (the `pickSuggestion` comment near line 249),
 
 Replace with:
 
-```
+```js
 	// thinking → goto path as a typed submission. The catalog grid on the
 	// /app landing gives the same demos a browse-first entry point.
 ```

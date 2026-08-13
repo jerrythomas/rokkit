@@ -16,7 +16,7 @@
 
 ## File Structure
 
-```
+```text
 packages/chart/src/
   FacetPlot.svelte              CREATE — grid of Plot panels
   AnimatedPlot.svelte           CREATE — time-animated Plot with controls
@@ -33,7 +33,7 @@ packages/chart/src/
 
 ### Task 1: `lib/plot/facet.js`
 
-**Status: in_progress**
+#### Status: in_progress
 
 Pure functions for splitting data into panels and computing shared or per-panel scales.
 
@@ -1186,7 +1186,7 @@ export { default as AnimatedPlot } from './AnimatedPlot.svelte'
 
 Update these rows from 🔲 Planned to ✅ Implemented:
 
-```
+```text
 | `FacetPlot.svelte`               | ✅ Implemented |
 | Fixed scales (shared domain)      | ✅ Implemented |
 | Free scales (per-panel domain)    | ✅ Implemented |

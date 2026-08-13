@@ -381,7 +381,7 @@ export interface Props {
 
 **Naming convention — nested by component, semantic role:**
 
-```
+```text
 messages.list.label        → aria-label on <nav>
 messages.tree.expand       → "Expand" for expand button
 messages.carousel.prev     → "Previous slide" aria-label

@@ -150,4 +150,4 @@ Standard props: `items`/`options`, `value` (bindable), `fields`, `onchange`/`ons
 | `@rokkit/states`   | `packages/states/`                                 | Reactive state (ListController, NestedController, Proxy)        |
 | `@rokkit/themes`   | `packages/themes/`                                 | CSS themes (base + rokkit/minimal/material/glass)               |
 | `@rokkit/ui`       | `packages/ui/`                                     | UI components                                                   |
-| `site`             | Documentation site + interactive demos + e2e tests |
+| `site`             | `apps/learn/`                                       | Documentation site + interactive demos + e2e tests              |

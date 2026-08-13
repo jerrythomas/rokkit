@@ -18,7 +18,7 @@
 
 The learn site (`sites/learn`) gains a third route group alongside the existing two:
 
-```
+```text
 sites/learn/src/routes/
   (learn)/                      ← documentation (feature-first)
   (play)/                       ← component playgrounds
@@ -50,7 +50,7 @@ Route groups are logical — they share the URL namespace. The `play/` and `prev
 
 The `(learn)` sidebar is reorganized from a flat component list to feature pillars. Each pillar has an overview page and sub-pages for components and concepts that belong to it.
 
-```
+```text
 Getting Started
   ├── Introduction
   ├── Installation
@@ -121,7 +121,7 @@ Toolchain
 
 The URL slug matches the pillar name:
 
-```
+```text
 /getting-started/introduction
 /data-binding/field-mapping
 /components/list
@@ -141,7 +141,7 @@ A fictional project workspace app built entirely with Rokkit components. Lives a
 
 ### Route structure
 
-```
+```text
 (preview)/preview/
   +layout.svelte         ← app shell (sidebar nav, top bar, floating theme panel)
   dashboard/             → /preview/dashboard
@@ -152,7 +152,7 @@ A fictional project workspace app built entirely with Rokkit components. Lives a
 
 ### App shell layout
 
-```
+```text
 ┌──────────────────────────────────────────────────────────┐
 │  Nexus  [logo]          [search]         [user avatar]   │  ← top bar
 ├─────────────┬────────────────────────────────────────────┤

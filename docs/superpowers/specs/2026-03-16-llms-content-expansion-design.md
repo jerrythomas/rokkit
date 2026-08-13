@@ -17,13 +17,13 @@ Currently `docs/llms/` documents components only. An LLM helping a developer set
 
 Two independent plans:
 
-**Plan 1 — Entry point + CLI reference**
+### Plan 1 — Entry point + CLI reference
 
 - Rewrite `docs/llms/index.txt` as a navigational entry point
 - Create `docs/llms/cli.txt`
 - Correct the theming section (supersedes `docs/superpowers/specs/2026-03-16-llms-txt-theming-docs.md`)
 
-**Plan 2 — Package documentation**
+### Plan 2 — Package documentation
 
 - Create `docs/llms/packages/*.txt` — one file per non-UI package
 

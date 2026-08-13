@@ -61,7 +61,7 @@ The component was originally a minimal wrapper (`text`, `type`, `children`). Thi
 
 ## Props
 
-### Message
+### Message Props
 
 ```ts
 interface MessageProps {
@@ -78,7 +78,7 @@ interface MessageProps {
 
 `children` and `text` are mutually exclusive — `children` takes precedence when both are provided. `text` is the common shorthand; `children` is for richer content.
 
-### AlertList
+### AlertList Props
 
 ```ts
 interface AlertListProps {

@@ -347,7 +347,7 @@ SVG circular progress with sumi brush texture:
 
 ---
 
-## Dark Mode
+## Dark Mode Principles
 
 Dark mode inverts surface (dark paper) while keeping accent colors perceptually
 similar. The zen aesthetic works particularly well in dark mode — dark paper

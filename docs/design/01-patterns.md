@@ -10,7 +10,7 @@ The most fundamental pattern: **data flows in as-is; components adapt to it**.
 
 Components never require data to be shaped in a particular way. The consumer passes their data directly — API responses, local state, static arrays — and declares how to read it via a `fields` mapping.
 
-```
+```text
 Consumer data (any shape)
         │
         ▼
@@ -113,7 +113,7 @@ An individual item can carry a `snippet` field (or whatever field is mapped to `
 
 ProxyItem is the runtime adapter between raw data and component rendering. Every item in a component is accessed through a proxy, not directly.
 
-```
+```text
 raw item object
        │
        ▼
@@ -228,7 +228,7 @@ Every selection component in Rokkit exposes the same core set of props. This is 
 
 Snippets are the extensibility mechanism. They let consumers replace any rendered part of a component without touching component source and without losing built-in behavior.
 
-```
+```text
 Component
 ├── renders each item
 │     └── ── checks: does itemContent snippet exist?
@@ -248,7 +248,7 @@ Component
 
 An item can specify which snippet it wants by including a `snippet` field. This enables a single component to render headers, dividers, and regular items in the same pass:
 
-```
+```text
 ┌──────────────────────────┐
 │  item { snippet: null  } │ → itemContent snippet (or default)
 │  item { snippet: 'hdr' } │ → header snippet
@@ -315,7 +315,7 @@ Classes are composable but semantically opaque. Data attributes carry meaning �
 
 Selection components separate **state management** from **rendering**. The controller holds state; the component renders it.
 
-```
+```text
 ┌──────────────┐       ┌──────────────────────┐
 │  Component   │──────►│  Wrapper (flat) or   │
 │  (renders)   │       │  LazyWrapper (lazy)  │
@@ -361,7 +361,7 @@ Collapsible nesting itself does not require `LazyWrapper` — plain `Wrapper` ha
 
 The `Navigator` class (from `@rokkit/actions`) connects keyboard interaction to wrapper state. A component instantiates it on the container element inside an `$effect`, passing the wrapper and options:
 
-```
+```text
 Container element
   │  new Navigator(rootEl, wrapper, { collapsible, orientation, dir })
   │
@@ -372,7 +372,7 @@ Container element
 
 ### How it works
 
-```
+```text
 ┌─────────────────────────────────────────────────┐
 │  Navigator (class)                              │
 │  Listens: keydown, click, focusin, focusout     │
@@ -420,7 +420,7 @@ RTL reverses the meaning of ArrowLeft/ArrowRight in horizontal mode.
 
 Theming is pure CSS. Components carry no visual opinions — they only annotate the DOM. Themes read those annotations.
 
-```
+```text
 Component (no visual styles)
   │  annotates DOM with data-attributes
   ▼
@@ -435,7 +435,7 @@ Mode (dark/light: inverts the variable values)
 
 ### The three-layer separation
 
-```
+```text
 ┌──────────────────────────────────────┐
 │  Skin layer                          │
 │  data-palette="skin-sea-green"       │
@@ -561,7 +561,7 @@ Selection components expose `value` as a bindable prop using Svelte 5's `$bindab
 
 Controllers use Svelte 5 `$state` internally. The component reads from the controller reactively:
 
-```
+```text
 controller.focusedKey changes ($state)
     → component template re-renders the affected item
     → data-focused attribute updates
@@ -582,7 +582,7 @@ Svelte 5 cannot track reactivity through a `$derived` Map into nested `$state` p
 
 Packages have a strict one-directional dependency. No package may import from a package above it in this hierarchy.
 
-```
+```text
 @rokkit/core
       │  Field mapping, types, skin definitions, utilities
       ▼

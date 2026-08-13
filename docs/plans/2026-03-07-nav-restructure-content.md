@@ -18,7 +18,7 @@
 - Modified: `solution/sites/learn/src/routes/(learn)/docs/charts/meta.json`
 - Deleted: `solution/sites/learn/src/routes/(learn)/docs/components/meta.json`
 
-**Step 1: Stage and commit**
+### Step 1: Stage and commit
 
 ```bash
 cd /Users/Jerry/Developer/rokkit
@@ -44,7 +44,7 @@ Each of `utilities/reveal`, `utilities/shine`, `utilities/tilt` has a `+page.js`
 - `solution/sites/learn/src/routes/(learn)/docs/utilities/reveal/play/` (if exists)
 - Same for `shine` and `tilt`
 
-**Step 1: Delete the dead files**
+### Step 1: Delete the dead files
 
 ```bash
 cd /Users/Jerry/Developer/rokkit/solution/sites/learn/src/routes/\(learn\)/docs/utilities
@@ -54,7 +54,7 @@ for dir in reveal shine tilt; do
 done
 ```
 
-**Step 2: Verify redirects still work**
+### Step 2: Verify redirects still work
 
 Each directory should only contain `+page.js`:
 
@@ -63,7 +63,7 @@ ls solution/sites/learn/src/routes/\(learn\)/docs/utilities/reveal/
 # Expected: +page.js only
 ```
 
-**Step 3: Commit**
+### Step 3: Commit
 
 ```bash
 git add -A solution/sites/learn/src/routes/\(learn\)/docs/utilities/reveal/
@@ -80,7 +80,7 @@ The playground home (`/playground`) currently shows a flat card grid. Replace wi
 
 **File:** `solution/sites/learn/src/routes/(play)/playground/+page.svelte`
 
-**Step 1: Replace the file content**
+### Step 1: Replace the file content
 
 ```svelte
 <script>
@@ -206,7 +206,7 @@ The playground home (`/playground`) currently shows a flat card grid. Replace wi
 </div>
 ```
 
-**Step 2: Verify the page compiles**
+### Step 2: Verify the page compiles
 
 Start the dev server and navigate to `/playground`. Confirm four group sections render with the correct component cards.
 
@@ -314,11 +314,11 @@ const fields = { label: 'title', href: 'slug', icon: 'icon', value: 'slug' }
 
 Also remove the `<h3>Components</h3>` heading from the aside since groups now have their own headings.
 
-**Step 2: Verify sidebar**
+### Step 2: Verify sidebar
 
 Navigate to any `/playground/components/*` page. Confirm sidebar shows four collapsible groups.
 
-**Step 3: Commit tasks 3+4**
+### Step 3: Commit tasks 3+4
 
 ```bash
 git add solution/sites/learn/src/routes/\(play\)/playground/+page.svelte
@@ -350,7 +350,7 @@ const UTILITIES = [
 const EFFECTS = ['/docs/effects/reveal', '/docs/effects/shine', '/docs/effects/tilt']
 ```
 
-**Step 2: Add combined section pages**
+### Step 2: Add combined section pages
 
 Add a new constant after the existing ones:
 
@@ -366,7 +366,7 @@ const COMBINED_SECTIONS = [
 ]
 ```
 
-**Step 3: Add test suites for new constants**
+### Step 3: Add test suites for new constants
 
 After the existing `Utilities pages` describe block, add:
 
@@ -388,7 +388,7 @@ test.describe('Combined section pages', () => {
 })
 ```
 
-**Step 4: Verify page count**
+### Step 4: Verify page count
 
 Count the total URLs across all constants — should be ~90 pages now.
 
@@ -398,7 +398,7 @@ Count the total URLs across all constants — should be ~90 pages now.
 
 **File:** `solution/sites/learn/e2e/playground.e2e.ts` (new file)
 
-**Step 1: Create the file**
+### Step 1: Create the file
 
 ```ts
 /**
@@ -473,7 +473,7 @@ test.describe('Playground component pages', () => {
 })
 ```
 
-**Step 2: Commit tasks 5+6**
+### Step 2: Commit tasks 5+6
 
 ```bash
 git add solution/sites/learn/e2e/pages.e2e.ts
@@ -489,7 +489,7 @@ git commit -m "test(e2e): add effects/combined-section pages, add playground e2e
 
 **Problem:** Uses `import { Code } from '@rokkit/ui'` — should use `Code` from `$lib/components/Story` and the forms content is minimal.
 
-**Step 1: Rewrite the page**
+### Step 1: Rewrite the page
 
 ```svelte
 <script>
@@ -583,7 +583,7 @@ git commit -m "test(e2e): add effects/combined-section pages, add playground e2e
 </article>
 ```
 
-**Step 2: Commit**
+### Step 2: Commit (Forms Doc)
 
 ```bash
 git add solution/sites/learn/src/routes/\(learn\)/docs/components/forms/+page.svelte
@@ -598,7 +598,7 @@ git commit -m "fix: rewrite forms component doc with correct Code import and rea
 
 The `Grid` component is a responsive tile grid. Props: `items`, `fields`, `value` (bindable), `size`, `disabled`, `minSize`, `gap`, `label`, `onselect`. Snippets: `itemContent(proxy)`, named per-item snippets.
 
-**Step 1: Replace the stub**
+### Step 1: Replace the stub
 
 ```svelte
 <article data-article-root>
@@ -701,7 +701,7 @@ The `Grid` component is a responsive tile grid. Props: `items`, `fields`, `value
 </article>
 ```
 
-**Step 2: Commit**
+### Step 2: Commit (Grid Doc)
 
 ```bash
 git add solution/sites/learn/src/routes/\(learn\)/docs/components/grid/+page.svelte
@@ -813,7 +813,7 @@ If "Coming soon", replace with:
 </article>
 ```
 
-**Step: Commit task 9**
+### Step: Commit task 9
 
 ```bash
 git add solution/sites/learn/src/routes/\(learn\)/docs/toolchain/overview/+page.svelte

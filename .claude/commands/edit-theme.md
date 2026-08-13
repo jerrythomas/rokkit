@@ -16,7 +16,7 @@ Changes to source CSS have NO effect until this runs. Do it after every edit.
 
 ## File Locations
 
-```
+```text
 packages/themes/src/
   base/<name>.css          ← structural layout (padding, flex, border-radius, border-width)
   rokkit/<name>.css        ← gradients, glows, rich colors
@@ -186,7 +186,7 @@ Each theme folder has an `index.css` — import new files there.
 
 ## Color Token Reference
 
-```
+```text
 Surface levels (neutral):
   bg-surface-z0 → z1 → z2 → z3 (light to elevated)
   text-surface-z4 → z5 → z6 → z7 → z8 → z9 → z10 (subtle to high-contrast)

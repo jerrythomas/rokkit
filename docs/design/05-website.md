@@ -8,7 +8,7 @@ The learn site (`apps/learn/`) is the primary documentation and interactive demo
 
 The site is a SvelteKit application organized into two route groups that share a global layout and header but diverge in purpose and chrome.
 
-```
+```text
 apps/learn/src/routes/
   (learn)/                  ← documentation group
     docs/
@@ -22,7 +22,7 @@ apps/learn/src/routes/
   +page.svelte              ← home/landing page
 ```
 
-```
+```text
 Browser request
       │
       ▼
@@ -75,7 +75,7 @@ Each example is self-contained in a subfolder (`intro/App.svelte`, `nested/App.s
 - Optionally displays the source code below it
 - Marks its root with `data-story-viewer` for E2E test targeting
 
-```
+```text
 docs/components/list/
   +page.svelte          ← page assembles stories and prose
   meta.json             ← title, description, icon, llms flag
@@ -98,7 +98,7 @@ The sidebar is a `Sidebar.svelte` component that renders the full section tree. 
 - Collapses to a slide-in drawer on mobile (below `lg` breakpoint)
 - On large screens, renders inline as a fixed-width `18rem` column
 
-```
+```text
 Sidebar
   ├── Search input (Cmd+K focus)
   ├── Section: Getting Started
@@ -119,7 +119,7 @@ Navigation data is loaded via the `+layout.server.js` and passed as `data.sectio
 
 Breadcrumbs are built dynamically from the section tree:
 
-```
+```text
 Learn  /  Components  /  List
 ```
 
@@ -137,13 +137,13 @@ Static code fragments are displayed using the `Code` component (syntax-highlight
 
 ## Playground Pages
 
-### Purpose
+### Purpose (Playground)
 
 The playground is an interactive sandbox for developers to explore component behavior without reading documentation. Each page presents a live component instance with real controls — theme switching, prop editing, and state inspection.
 
-### Page anatomy
+### Page anatomy (Playground)
 
-```
+```text
 playground/components/[slug]/+page.svelte
 ```
 
@@ -151,7 +151,7 @@ Each playground page is deliberately minimal. It renders one or more live compon
 
 ### Layout structure
 
-```
+```text
 Playground layout
   ├── Header bar
   │     ├── "Component Playground" title + description
@@ -186,13 +186,13 @@ Individual playground pages may embed additional controls for variants, sizes, o
 
 ## AI Content (llms.txt)
 
-### Purpose
+### Purpose (AI Content)
 
 Each component has a static plain-text file that provides a concise, machine-readable API reference for AI agents and LLMs. These files are authored by hand in `apps/learn/static/llms/`.
 
 ### File locations
 
-```
+```text
 static/llms/
   index.txt                     ← library overview + component index
   components/
@@ -248,7 +248,7 @@ Documentation pages and playground pages both show floating icon buttons in the 
 
 ### Docs page buttons
 
-```
+```text
 ┌──────────────────────────────────────────┐
 │  [content]                  [🎮] [📄]   │
 │                              │     │     │
@@ -262,7 +262,7 @@ Documentation pages and playground pages both show floating icon buttons in the 
 
 ### Playground page buttons
 
-```
+```text
 ┌─────────────────────────────────────────┐
 │  [sandbox]                  [📖] [📄]  │
 │                              │     │    │
@@ -287,7 +287,7 @@ Each button is an `<a>` tag styled as a `32×32px` icon button using `flex`, `ro
 
 The sidebar groups documentation pages into sections. Each section has a title and an ordered list of pages. Sections are rendered as collapsible groups in the sidebar.
 
-```
+```text
 Getting Started
   Introduction
   Field Mapping
@@ -322,7 +322,7 @@ Pressing `Cmd+K` (or `Ctrl+K`) while on any docs page focuses the search input i
 
 ### Responsive behavior
 
-```
+```text
 Viewport      Sidebar behavior
 ──────────    ────────────────────────────────────────────
 < lg (1024)   Slide-in drawer; closed by default;
@@ -346,7 +346,7 @@ The sidebar uses `page.url.pathname` to determine the active item. The `canonica
 
 The `ThemeSwitcherToggle` component sits in the docs layout header (top-right). It cycles through available themes (rokkit, minimal, material, frosted, zen-sumi) and persists the selection via the vibe store. The store writes `data-theme` and `data-mode` attributes to `document.documentElement`, which is how Rokkit's CSS variable system activates the correct theme.
 
-```
+```text
 ThemeSwitcherToggle (header)
     │  user clicks
     ▼
@@ -403,7 +403,7 @@ The Theme Builder is an interactive page in the learn site's playground at `/pla
 
 The page lives inside the `(play)` route group and uses the standard playground layout (compact header, back link, no ToC). Unlike per-component playground pages, it has no left-side component list — the full width is dedicated to the builder UI.
 
-```
+```text
 (play)/playground/theme-builder/
   +page.svelte        ← builder UI
   +page.ts            ← loads built-in skin definitions for initial state
@@ -455,7 +455,7 @@ Each property picker shows the raw CSS custom property name it will emit alongsi
 
 The preview panel shows a grid of representative components rendered in the current theme configuration. It covers the full interactive state surface:
 
-```
+```text
 ┌──────────────────────────────────────────────────────────┐
 │  Preview — rokkit skin / material style / dark / default │
 ├──────────────────────────────────────────────────────────┤
@@ -532,13 +532,13 @@ The builder uses `PaletteManager` for the skin swatch picker and `ThemeSwitcherT
 
 ## 10. Preview App ("Nexus")
 
-### Purpose
+### Purpose (Preview App)
 
 Nexus is a fictional workspace application hosted at `/preview/*` inside the `(preview)` route group. Its role is to demonstrate what a real Rokkit application looks and feels like — not a documentation example, but a plausible product UI built entirely from Rokkit components. It provides a realistic, multi-screen context for evaluating how theme/skin combinations behave across different component types and data densities.
 
 ### Route structure
 
-```
+```text
 apps/learn/src/routes/
   (preview)/
     preview/

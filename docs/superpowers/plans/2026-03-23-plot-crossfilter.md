@@ -16,7 +16,7 @@
 
 ## File Structure
 
-```
+```text
 packages/chart/src/
   crossfilter/
     createCrossFilter.svelte.js   CREATE — factory + filter state (.svelte.js for $state)
@@ -1019,7 +1019,7 @@ export { default as FilterSlider } from './crossfilter/FilterSlider.svelte'
 
 Update these rows from 🔲 Planned to ✅ Implemented:
 
-```
+```text
 | `CrossFilter` context provider         | ✅ Implemented |
 | `createCrossFilter()` for spec API     | ✅ Implemented |
 | Click filter (categorical)             | ✅ Implemented |

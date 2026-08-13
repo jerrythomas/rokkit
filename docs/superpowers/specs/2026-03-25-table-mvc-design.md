@@ -10,7 +10,7 @@ This document describes the Model-View-Controller architecture for the Table com
 
 ### Three Layers
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │  MODEL: ReactiveDataSet  (packages/data/src/dataset.svelte.js)  │
 │  - Source rows ($state)                                         │
@@ -176,7 +176,7 @@ function nextSortState(current, field, extend) {
 
 ## 4. Sort Interaction Flow
 
-```
+```text
 User clicks column header "Revenue"
           │
           ▼
@@ -310,7 +310,7 @@ const ds = dataset(parents).nestedJoin(children, matcher)
 
 ### Tree Interaction Flow
 
-```
+```text
 User clicks expand toggle on row "Electronics"
           │
           ▼

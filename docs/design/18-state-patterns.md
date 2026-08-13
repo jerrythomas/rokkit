@@ -67,7 +67,7 @@ the persistent `current` mark with the transient `hover` overlay.
 
 State styling often depends on the group's focus:
 
-```
+```text
 [data-list]:focus-within  [data-list-item][data-active='true']
    ^^^^^^^^^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
    group-focus            element-current

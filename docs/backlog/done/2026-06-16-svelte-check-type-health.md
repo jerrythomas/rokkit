@@ -21,7 +21,7 @@ captures them so they can be burned down and svelte-check added to the gate.
 How to run (workspace svelte-check 4.4.3 — do NOT use `bunx svelte-check`, which fetches
 `@latest` and floods the output with duplicate-`svelte/types` errors):
 
-```
+```bash
 cd apps/learn
 /Users/Jerry/Developer/rokkit/packages/app/node_modules/.bin/svelte-check \
   --tsconfig ./.svelte-kit/tsconfig.json

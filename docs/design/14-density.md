@@ -35,7 +35,7 @@ context API, no prop drilling.
 
 Density is the fourth axis alongside skin, mode, and style:
 
-```
+```text
 ┌──────────────────────────────────────────────┐
 │  Skin layer    (data-palette)                │
 │  Mode layer    (data-mode)                   │
@@ -165,7 +165,7 @@ Because `data-density` sets CSS custom properties, descendant elements inherit t
 through normal CSS cascade. A nested element with its own `data-density` overrides for
 its subtree:
 
-```
+```text
 <html data-density="compact">          ← app default: compact
   <main>
     <aside data-density="default">     ← sidebar reverts to default

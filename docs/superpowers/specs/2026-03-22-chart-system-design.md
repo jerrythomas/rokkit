@@ -19,7 +19,7 @@ Three layers:
 2. **Brewer layer** — `ChartBrewer` (Svelte 5 reactive class): channel assignment, D3 scales, mark geometry
 3. **Render layer** — `Chart.svelte` wrapper + individual chart components + `Plot.*` primitives
 
-```
+```text
 chart(data).aes({ x, y, color }).bar().legend()
      ↓ ChartSpec
 Chart.svelte → ChartBrewer context → BarChart / LineChart / Plot.Bar / ...
@@ -221,7 +221,7 @@ These are required for chart theme CSS to style axis lines, tick labels, and gri
 
 ### Data attributes
 
-```
+```text
 [data-chart]               — root wrapper div (contains SVG)
 [data-chart-canvas]        — inner plot area <g> (clipped to margins)
 [data-chart-axis="x|y"]    — axis group
@@ -244,7 +244,7 @@ These are required for chart theme CSS to style axis lines, tick labels, and gri
 
 ### File locations
 
-```
+```text
 packages/themes/src/base/chart.css      — structure, typography, pointer-events
 packages/themes/src/rokkit/chart.css    — visual: stroke/fill tokens, hover, dimmed
 packages/themes/src/minimal/chart.css
@@ -312,7 +312,7 @@ Uses `--color-{role}-500` / `--color-{role}-300` CSS variables directly. No `dat
 
 ## File Structure
 
-```
+```text
 packages/chart/src/
 ├── index.js                        — exports Chart, BarChart, LineChart,
 │                                     AreaChart, PieChart, ScatterPlot,

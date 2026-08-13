@@ -58,7 +58,7 @@ This vocabulary is specific to zen-sumi. The generic token system uses clear Eng
 
 ### Three Layers
 
-```
+```text
 ┌─────────────────────────────────────────────────────┐
 │  Layer 3: Component Tokens                          │
 │  --button-bg, --input-border, --card-shadow         │
@@ -88,7 +88,7 @@ in rokkit. Most themes skip this layer entirely — semantic tokens are sufficie
 
 ### Token Namespacing
 
-```
+```text
 --color-{variant}-{shade}     Primitive   --color-primary-500
 --{token}                     Semantic    --primary, --paper, --ink-mute
 --density-{category}-{size}   Semantic    --density-spacing-md
@@ -149,7 +149,7 @@ When a color is not provided, it inherits from its logical parent:
 
 **Inheritance chain:**
 
-```
+```text
 tertiary  → primary
 secondary → primary (if not set)
 accent    → primary (if not set)
@@ -162,7 +162,7 @@ This lets users create monotone themes by only specifying `primary` + `surface`.
 
 Each variant has 11 shades following Tailwind's scale:
 
-```
+```text
 50  100  200  300  400  500  600  700  800  900  950
 ```
 
@@ -209,7 +209,7 @@ functions for UnoCSS utilities.
 
 For text on colored backgrounds:
 
-```
+```text
 text-on-{variant}        → High contrast (always light text on z5+ bg)
 text-on-{variant}-muted  → Slightly subdued but readable
 text-on-surface          → Inverts for dark mode surface backgrounds
@@ -303,7 +303,7 @@ Follows a modular scale. Sizes adapt to density:
 
 ### 5.3 Weight Scale
 
-```
+```text
 300 — light      (display, large text)
 400 — regular    (body text)
 500 — medium     (labels, nav items)
@@ -420,7 +420,7 @@ Themes that don't use gradient borders simply set `[data-gradient-border]` to
 
 ### 8.1 Architecture
 
-```
+```text
 ┌──────────────────────┐     ┌─────────────────────┐
 │  Theme Config (JS)   │     │  Visual CSS Files    │
 │                      │     │                      │
@@ -520,7 +520,7 @@ The factory produces:
 
 ### 9.1 File Structure
 
-```
+```text
 packages/themes/src/
 ├── base/                   ← Structural layout (no color)
 │   ├── index.css

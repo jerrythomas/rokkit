@@ -12,7 +12,7 @@
 
 ## File Structure
 
-```
+```text
 demo/
 ├── playwright.config.ts          — Create: test config (Chrome + Firefox, 1440x900)
 ├── e2e/

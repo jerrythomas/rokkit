@@ -104,7 +104,7 @@ Both are pure functions, no Svelte deps — sit next to `deriveColumns` in `@rok
 
 **Recommendation: split.** Mirrors how `List` uses `Wrapper` and `Tree` uses `LazyWrapper` — same data layer (ProxyTree), different navigation semantics.
 
-```
+```text
 ProxyTable          — flat tabular data + columns + sort       (new, Part A)
 ProxyTableTree      — hierarchical tabular data + columns      (new, Part B; extends/wraps ProxyTree)
 

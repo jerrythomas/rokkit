@@ -17,7 +17,7 @@ Also skim:
 
 If no specific item was requested in `$ARGUMENTS`, present the open items grouped by priority. Format:
 
-```
+```text
 P1 — High Impact
   [ ] Item name — one-line description
   [ ] Item name — one-line description

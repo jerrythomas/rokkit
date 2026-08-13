@@ -18,7 +18,7 @@
 
 **Created:**
 
-```
+```text
 demo/
   vitest.config.js                       — NEW
   package.json                           — MODIFIED (add deps)
@@ -73,7 +73,7 @@ demo/
 
 **Moved:**
 
-```
+```text
 demo/src/routes/(app)/*    → demo/src/routes/(legacy)/(app)/*
 demo/src/routes/setup/*    → demo/src/routes/(legacy)/setup/*
 ```

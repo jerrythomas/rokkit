@@ -67,7 +67,7 @@ consumer opts in. Forcing verticals on a time series (the mock) is the explicit 
 
 Formalize per-orientation attributes and add CSS-var hooks (defaults preserve today's look):
 
-```
+```text
 data-plot-grid-line="x"   /* vertical   */
 data-plot-grid-line="y"   /* horizontal */
 ```
@@ -88,7 +88,7 @@ no verticals) via the attribute. Existing `--chart-grid-color` continues to work
 
 ## Feature 2 — Observation highlight
 
-### Public API
+### Public API (Observation highlight)
 
 On `<PlotChart>`, `<AreaChart>`, `<LineChart>`:
 
@@ -118,7 +118,7 @@ highlight?: 'last' | 'first' | 'min' | 'max' | number | ((row: Row, i: number) =
 
 ### Theming (CSS only — no color/size props)
 
-```
+```text
 data-plot-highlight        /* the marker circle */
 data-plot-highlight-label  /* optional callout  */
 ```
@@ -139,7 +139,7 @@ Appearance is entirely theme CSS, consistent with the library's data-attribute h
 
 Folds in the (previously deferred) average/reference line as one method of a small trend engine.
 
-### Public API
+### Public API (Trend lines)
 
 On `<PlotChart>`, `<AreaChart>`, `<LineChart>`:
 
@@ -186,7 +186,7 @@ For non-numeric x (point/time scale) regression/`exp` use the datum **index** as
 Degenerate inputs (empty, single point, `exp` with non-positive y) return `null` → the trend is
 skipped and a `console.warn` is emitted (no throw).
 
-### Rendering — new primitive
+### Rendering — new primitive (Trend lines)
 
 - New geom `geoms/Trend.svelte`, exported as `GeomTrend` and `Plot.Trend`. Reads data + x/y +
   scales from plot-state; renders each trend as a `<path>` (2-point line for constants, sampled
@@ -197,7 +197,7 @@ skipped and a `console.warn` is emitted (no throw).
 
 ### Theming (CSS only — dashed by default, matching the mock)
 
-```
+```text
 data-plot-trend           /* every trend line   */
 data-plot-trend="avg"     /* per-method targeting (type as the value) */
 data-plot-trend-label
@@ -282,8 +282,8 @@ data-plot-trend-label
 ## Deliverable
 
 `grid: boolean | 'x' | 'y' | 'both'`, `highlight: selector`, and `trend: method | method[]` on the
-composable primitives and the `AreaChart`/`LineChart` wrappers, CSS-var theming for all three, unit
-- e2e coverage, a learn-app showcase reproducing the mock, and refreshed design/reference/skill
+composable primitives and the `AreaChart`/`LineChart` wrappers, CSS-var theming for all three,
+unit-e2e coverage, a learn-app showcase reproducing the mock, and refreshed design/reference/skill
 docs. Backward compatible; ships on the normal patch cadence. Gate: lint 0 errors +
 `bun run test:ci` green.
 

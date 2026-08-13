@@ -111,7 +111,7 @@ bunx @rokkit/cli bundle -i ./icons -o ./dist
 
 ## Icon Folder Layout
 
-```
+```text
 src/
   ui/
     menu.svg
@@ -125,7 +125,7 @@ src/
 
 Running `rokkit build -i src -o lib` produces:
 
-```
+```text
 lib/
   ui.json
   solid.json

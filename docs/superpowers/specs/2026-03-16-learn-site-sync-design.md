@@ -60,7 +60,7 @@ to be a real overview that covers:
 
 The current installation page covers only the manual approach. Add a CLI-first section at the top:
 
-```
+```bash
 npx @rokkit/cli@latest init
 ```
 

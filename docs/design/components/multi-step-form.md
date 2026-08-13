@@ -55,7 +55,7 @@ A layout that mixes step and non-step elements is invalid. The presence of any `
 
 `FormBuilder` gains step state and navigation when the layout contains step elements.
 
-```
+```text
 FormBuilder (step extensions)
 │
 ├── currentStep ($state)       — zero-based index of active step
@@ -177,7 +177,7 @@ The Submit button is absent from non-final steps. The consumer can suppress defa
 
 ## Component File Map
 
-```
+```text
 packages/forms/src/
 ├── FormRenderer.svelte          — extended with isMultiStep rendering path
 ├── StepIndicator.svelte         — new standalone step indicator component

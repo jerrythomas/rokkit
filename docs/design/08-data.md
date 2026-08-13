@@ -8,7 +8,7 @@ The data manipulation layer for Rokkit. This package provides collection-level o
 
 `@rokkit/data` occupies a specific position in the package hierarchy:
 
-```
+```text
 @rokkit/core          ← field mapping types, utilities
       │
 @rokkit/states        ← ProxyItem, controllers
@@ -46,7 +46,7 @@ These are complementary, not overlapping:
 
 ## Module Map
 
-```
+```text
 @rokkit/data
 ├── dataset.js     ← DataSet class + dataset() factory (fluent collection pipeline)
 ├── rollup.js      ← groupDataByKeys, aggregateData, fillAlignedData, getAlignGenerator
@@ -88,7 +88,7 @@ Note: `rollup.js` internals (`groupDataByKeys`, `aggregateData`, etc.) are not r
 
 `dataset()` returns a `DataSet` — a fluent, chainable wrapper around an array of objects. It is the primary API for transforming collections.
 
-```
+```text
 dataset(rawArray)
    .where(condition)        ← set row filter
    .groupBy(...fields)      ← define group keys
@@ -106,7 +106,7 @@ dataset(rawArray)
 
 ### Rollup internals
 
-```
+```text
 groupDataByKeys(data, groupByKeys, summaries)
         │  partition rows into buckets keyed by JSON.stringify(pick(groupByKeys))
         │  for each bucket, collect values into summary arrays
@@ -154,7 +154,7 @@ const diff = ds1.minus(otherArray)
 
 `dataview(data, options)` wraps a data array in a Svelte writable-compatible store designed for tabular display. It derives two reactive values: `columns` (metadata with formatters) and `hierarchy` (flat list of nodes with depth, expansion, and selection state).
 
-```
+```text
 dataview(data, options)
    → { subscribe, sortBy, clearSort, select, toggle }
 ```

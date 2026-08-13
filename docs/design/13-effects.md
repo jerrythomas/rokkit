@@ -229,7 +229,7 @@ Actions communicate state by setting `data-*` attributes on the host element. CS
 targets those attributes. This follows the same contract used by all other Rokkit
 components.
 
-```
+```text
 ┌──────────────────────────────────────────────┐
 │  use:reveal → data-reveal, data-revealed     │
 │  use:shine  → data-shine, data-shine-active  │

@@ -8,7 +8,7 @@ description: Use when adding keyboard shortcuts, a command palette, or app-level
 Three packages, one coherent system — commands live in a registry, shortcuts fire them from the keyboard,
 the palette lets users search and run them by name.
 
-```
+```text
 @rokkit/states → commands registry (register, execute, resolve, commands.all)
 @rokkit/actions → shortcuts action (use:shortcuts={commands})
 @rokkit/ui → CommandPalette component (<CommandPalette bind:open />)

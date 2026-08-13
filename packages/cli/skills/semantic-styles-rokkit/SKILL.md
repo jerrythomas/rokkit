@@ -10,7 +10,7 @@ set of utility classes. Components use **named tokens** (`bg-paper`, `text-ink`,
 `text-on-primary`) — never raw hex/oklch values. That indirection is the consistency
 guarantee: change the config, the whole app reskins.
 
-```
+```text
 rokkit.config.js
   palettes + skin + colorSpace + tokens
        ↓

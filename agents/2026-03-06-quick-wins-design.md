@@ -122,7 +122,7 @@ Test `table-controller.svelte.js` (extends ListController):
 
 ## Sequencing
 
-```
+```text
 Step 1 (fix tests) → verify green → Step 2 (rename) → verify green → Step 3 (coverage)
 ```
 

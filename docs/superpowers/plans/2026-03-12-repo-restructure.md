@@ -484,13 +484,13 @@ Replace with:
 
 Find:
 
-```
+```bash
 cd sites/learn && npx playwright test
 ```
 
 Replace with:
 
-```
+```bash
 cd site && npx playwright test
 ```
 
@@ -500,13 +500,13 @@ Also update the repo structure section — change any `solution/packages/`, `sol
 
 Find the repository structure table entry:
 
-```
+```markdown
 | `sites/learn` | Documentation site + interactive demos + e2e tests |
 ```
 
 Replace with:
 
-```
+```markdown
 | `site` | Documentation site + interactive demos + e2e tests |
 ```
 
@@ -516,13 +516,13 @@ Also find and update any other `solution/` or `sites/learn` references in the fi
 
 Find (around line 186):
 
-```
+```markdown
 | `sites/learn` | ...
 ```
 
 Replace with:
 
-```
+```markdown
 | `site` | ...
 ```
 

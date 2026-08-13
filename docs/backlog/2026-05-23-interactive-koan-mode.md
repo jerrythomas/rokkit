@@ -21,7 +21,7 @@ Today's deterministic matcher handles only the first intent, and only when the u
 
 This is the centerpiece of the move from "static demo cards" to "real chat-first showcase". A chat response is not a static template per demo type — it's an **ordered list of blocks** the LLM composes:
 
-```
+```text
 response = Block[]
 Block = { kind: 'text', markdown: string }
       | { kind: 'code', language: string, source: string }
@@ -61,7 +61,7 @@ Each catalog entry's tool spec declares whether it's `inline_capable: true`. Com
 
 **Hybrid: deterministic fast-path + LLM tool-use fallback.**
 
-```
+```text
 user query
     │
     ▼

@@ -6,7 +6,7 @@ Naming conventions for: **$ARGUMENTS**
 
 ## Data Attributes
 
-```
+```text
 Root element:       data-<component>              e.g. data-list, data-select, data-tabs
 Child elements:     data-<component>-<element>    e.g. data-list-item, data-select-trigger
 State attributes:   data-<state>=<value>          e.g. data-open="true", data-selected, data-disabled
@@ -26,7 +26,7 @@ data-variant="primary" ← enum, always present data-orientation="horizontal" �
 
 ## Component Props
 
-```
+```text
 items        — data array (unknown[])
 value        — selected/current value ($bindable)
 fields       — key remapping (Record<string, string>)
@@ -39,7 +39,7 @@ disabled     — boolean disable
 
 **ProxyItem default field mappings** (what `fields` remaps from data):
 
-```
+```text
 fields.label   ?? 'label'        → display text (NOT 'text', NOT 'name')
 fields.value   ?? 'value'        → semantic value
 fields.icon    ?? 'icon'         → icon class
@@ -53,7 +53,7 @@ fields.href    ?? 'href'         → link target
 
 ## Component Names (PascalCase)
 
-```
+```text
 Tier 1: Button, Card, Badge, Message, Pill, Icon, Spinner, Avatar
 Tier 2: BreadCrumbs, PaletteManager, Timeline
 Tier 3: List, Tree, Tabs, Toggle, Toolbar, Table, SearchFilter
@@ -63,7 +63,7 @@ Forms:  FormRenderer, FormBuilder, Input, TextArea, Checkbox, Radio, Switch
 
 ## File Naming
 
-```
+```text
 Component:    PascalCase.svelte          → MyComponent.svelte
 Unit test:    PascalCase.spec.svelte.ts  → MyComponent.spec.svelte.ts
 E2E test:     kebab-case.e2e.ts          → my-component.e2e.ts
@@ -75,7 +75,7 @@ LLMs txt:     apps/learn/static/llms/components/kebab-case.txt
 
 ## CSS Token Conventions
 
-```
+```text
 bg-surface-z0..z3        surface backgrounds (z0=darkest, z3=lightest in dark mode)
 text-surface-z4..z10     text colors (z4=subtle, z10=high-contrast)
 border-surface-z2..z5    border colors (z2=subtle, z5=visible)
@@ -95,7 +95,7 @@ bg-none                           background-image: none (prevents rokkit gradie
 
 ## Event / Callback Names
 
-```
+```text
 onchange     — value changed (e.g. selection changed, input changed)
 onselect     — item explicitly selected (menu item, list item)
 onexpand     — item or group expanded
@@ -108,7 +108,7 @@ oninput      — input text changed (debounced)
 
 ## Icon Classes
 
-```
+```text
 Format:       i-<set>:<name>             e.g. i-solar:check-bold, i-glyph:list
 State icons:  state-error, state-warning, state-success, state-info
 Action icons: i-solar:close-circle-bold-duotone, i-solar:add-circle-bold
@@ -116,7 +116,7 @@ Action icons: i-solar:close-circle-bold-duotone, i-solar:add-circle-bold
 
 ## ARIA Roles by Component Type
 
-```
+```text
 List/nav (persistent):   role="listbox" on root, role="option" on items
 Toggle group:            role="radiogroup" on root, role="radio" + aria-checked on items
 Tab list:                role="tablist" on container, role="tab" on triggers, role="tabpanel" on panels
@@ -130,7 +130,7 @@ Decorative icons:        aria-hidden="true"
 
 ## Package Names
 
-```
+```text
 @rokkit/ui        — UI components (Svelte)
 @rokkit/states    — ProxyTree, ProxyItem, Wrapper, ListController, NestedController
 @rokkit/actions   — Navigator, use:navigator, use:dismissable, use:reveal

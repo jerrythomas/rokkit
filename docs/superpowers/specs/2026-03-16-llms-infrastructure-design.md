@@ -16,7 +16,7 @@ Currently the 29 `.txt` files in `site/static/llms/` are the only copy. They are
 
 ### Source location
 
-```
+```text
 docs/llms/           ← source of truth (committed)
   index.txt
   breadcrumbs.txt
@@ -26,7 +26,7 @@ docs/llms/           ← source of truth (committed)
 
 ### Generated location
 
-```
+```text
 site/static/llms/    ← copy, gitignored
 ```
 
@@ -46,7 +46,7 @@ In `site/package.json`:
 
 Add to `site/.gitignore`:
 
-```
+```text
 /static/llms
 ```
 

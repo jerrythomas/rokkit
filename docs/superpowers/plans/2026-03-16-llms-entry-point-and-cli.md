@@ -28,7 +28,7 @@ There are no automated tests for content files. Verification is done by cross-ch
 
   Read these files to gather accurate information before writing:
 
-  ```
+  ```text
   packages/cli/src/init.js        — PROMPTS_CONFIG array (prompts list)
   packages/cli/src/doctor.js      — CHECKS array (check IDs, labels, autofix flags)
   docs/superpowers/specs/2026-03-16-llms-txt-theming-docs.md — theming content
@@ -39,7 +39,7 @@ There are no automated tests for content files. Verification is done by cross-ch
 
   Replace the entire contents of `docs/llms/index.txt` with the following. The component index and keyboard nav table are preserved from the current file. Insert correct content for all new sections.
 
-  ````
+  ````markdown
   # Rokkit — LLM Reference Index
 
   > Data-driven, accessible UI components for Svelte 5
@@ -53,7 +53,6 @@ There are no automated tests for content files. Verification is done by cross-ch
      npm create svelte@latest myapp
      cd myapp
      npm install
-  ````
 
   1. Initialize Rokkit:
 
@@ -301,11 +300,9 @@ There are no automated tests for content files. Verification is done by cross-ch
   import { Form, FormRenderer } from '@rokkit/forms'
   ```
 
-  ```
+  ````
 
   **Important:** Replace the two `[PRESERVE VERBATIM ...]` placeholders by copying verbatim from the current `docs/llms/index.txt` — do not rewrite or reformat them. Read the current file to get the exact text.
-
-  ```
 
 - [ ] **Step 3: Verify accuracy**
 
@@ -341,7 +338,7 @@ There are no automated tests for content files. Verification is done by cross-ch
 
   Read these files for accurate content:
 
-  ```
+  ```text
   packages/cli/src/init.js     — full prompt list, generated files, conditional logic
   packages/cli/src/doctor.js   — check IDs, labels, fix behaviour
   packages/cli/src/index.js    — bundle/build command signatures and flags
@@ -351,7 +348,7 @@ There are no automated tests for content files. Verification is done by cross-ch
 
   Create `docs/llms/cli.txt` with this content (verify all details against source files):
 
-  ````
+  ````markdown
   # Rokkit CLI
 
   > Command-line tools for setting up and validating Rokkit projects
@@ -363,7 +360,6 @@ There are no automated tests for content files. Verification is done by cross-ch
   Run without installing:
   ```bash
   npx @rokkit/cli@latest <command>
-  ````
 
   Or install globally:
 
@@ -491,9 +487,7 @@ There are no automated tests for content files. Verification is done by cross-ch
 
   Same flags as `bundle`. Produces full Iconify package structure with prefix, icons, width, height metadata.
 
-  ```
-
-  ```
+  ````
 
 - [ ] **Step 3: Verify accuracy**
 

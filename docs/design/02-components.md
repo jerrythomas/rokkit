@@ -136,7 +136,7 @@ contract is defined in Section 7.
 
 ### Selection Components
 
-**List, Select, MultiSelect, Tree, Toggle**
+#### List, Select, MultiSelect, Tree, Toggle
 
 Selection components are the core of Rokkit's data-driven model. They all share the
 ProxyItem + Wrapper + Navigator architecture. The distinguishing design considerations are:
@@ -167,7 +167,7 @@ orientation. Each option is a focusable button; only one is active at a time.
 
 ### Navigation Components
 
-**Tabs, Menu, Toolbar**
+#### Tabs, Menu, Toolbar
 
 Navigation components move the user between views or actions. They share the horizontal
 navigator orientation but differ in their destination and lifecycle.
@@ -188,7 +188,7 @@ Separators and spacers are visually present but excluded from the focus order.
 
 ### Input Components
 
-**Input, Checkbox, Switch**
+#### Input, Checkbox, Switch
 
 Input components are form-integrated primitives. They do not use the ProxyItem + Wrapper
 stack because they operate on scalar values, not item arrays. Each participates in Svelte
@@ -200,7 +200,7 @@ styling contract as all other components.
 
 ### Overlay Components
 
-**Dropdown, Popover**
+#### Dropdown, Popover
 
 Overlay components layer content above the page. They manage positioning relative to a
 trigger, focus trapping within the panel, and dismissal via Escape or outside click. The
@@ -216,7 +216,7 @@ entirely defined by snippets; the Card imposes no opinion on its internal layout
 
 ### Layout Components
 
-**Stack, Grid, Divider**
+#### Stack, Grid, Divider
 
 Layout components are structural and carry no interactive behavior. They exist to provide
 consistent spatial arrangements — row/column stacking with configurable gaps, responsive
@@ -793,7 +793,7 @@ Every interactive component provides both data-attribute styling hooks and ARIA 
 
 Dropdown components — Menu, Select, MultiSelect, Combobox — have two distinct interactive zones that must coordinate state:
 
-```
+```text
 ┌───────────────────────────┐
 │  Trigger (always visible) │  button or input that opens the panel
 │  click → open()           │

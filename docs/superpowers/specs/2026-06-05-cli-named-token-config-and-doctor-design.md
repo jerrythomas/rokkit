@@ -140,7 +140,7 @@ zen-sumi palettes), trimmed of the app-specific `overrides`/`skins`/`canvas` ext
 
 `writeRokkitConfig` stops using bare `JSON.stringify` and prepends a concise header:
 
-```
+```js
 /**
  * Rokkit token configuration — consumed by presetRokkit() in uno.config.js.
  *
