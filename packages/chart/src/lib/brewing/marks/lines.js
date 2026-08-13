@@ -7,7 +7,7 @@ import { line, curveCatmullRom, curveStep } from 'd3-shape'
  * @param {Function} yScale
  * @param {Map} colors
  * @param {'linear'|'smooth'|'step'} [curve]
- * @returns {{ d: string | null, fill: string, stroke: string, points: {x:number, y:number, data: Record<string, unknown>}[], key?: unknown }[]}
+ * @returns {{ d: string | null, fill: string, stroke: string, points: {x:number, y:number, data: Record<string, unknown>, i: number}[], key?: unknown }[]}
  */
 export function buildLines(data, channels, xScale, yScale, colors, curve) {
 	const { x: xf, y: yf, color: cf } = channels
@@ -15,27 +15,31 @@ export function buildLines(data, channels, xScale, yScale, colors, curve) {
 		typeof xScale.bandwidth === 'function' ? xScale(d[xf]) + xScale.bandwidth() / 2 : xScale(d[xf])
 	const makeGen = () => {
 		const gen = line()
-			.x(xPos)
-			.y((d) => yScale(d[yf]))
+			.x((d) => xPos(d.data ?? d))
+			.y((d) => yScale((d.data ?? d)[yf]))
 		if (curve === 'smooth') gen.curve(curveCatmullRom)
 		else if (curve === 'step') gen.curve(curveStep)
 		return gen
 	}
-	const toPoints = (rows) => rows.map((d) => ({ x: xPos(d), y: yScale(d[yf]), data: d }))
+	const toPoints = (rowsWithIndices) => rowsWithIndices.map(({ data: d, i }) => ({ x: xPos(d), y: yScale(d[yf]), data: d, i }))
 
-	const sortByX = (rows) => [...rows].sort((a, b) => xPos(a) - xPos(b))
+	const sortByX = (rows) => {
+		const withIndices = rows.map((d, i) => ({ data: d, i }))
+		withIndices.sort((a, b) => xPos(a.data) - xPos(b.data))
+		return withIndices
+	}
 
 	if (!cf) {
 		const sorted = sortByX(data)
 		const stroke = colors?.values().next().value?.stroke ?? '#888'
-		return [{ d: makeGen()(sorted), fill: 'none', stroke, points: toPoints(sorted) }]
+		return [{ d: makeGen()(sorted.map(d => d.data)), fill: 'none', stroke, points: toPoints(sorted) }]
 	}
 	const groups = groupBy(data, cf)
 	return [...groups.entries()].map(([key, rows]) => {
 		const sorted = sortByX(rows)
 		const colorEntry = colors?.get(key) ?? { fill: 'none', stroke: '#888' }
 		return {
-			d: makeGen()(sorted),
+			d: makeGen()(sorted.map(d => d.data)),
 			fill: 'none',
 			stroke: colorEntry.stroke,
 			points: toPoints(sorted),

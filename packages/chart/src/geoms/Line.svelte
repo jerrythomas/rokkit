@@ -91,7 +91,7 @@
 				data-plot-element="line"
 			/>
 			{#if symbolField && symbolMap}
-				{#each seg.points as pt (`${pt.x}::${pt.y}`)}
+				{#each seg.points as pt (pt.i)}
 					<path
 						transform="translate({pt.x},{pt.y})"
 						d={buildSymbolPath(symbolMap.get(pt.data[symbolField]) ?? 'circle', markerRadius)}
@@ -103,7 +103,7 @@
 				{/each}
 			{/if}
 			{#if label}
-				{#each seg.points as pt (`label::${pt.x}::${pt.y}`)}
+				{#each seg.points as pt (`label::${pt.i}`)}
 					{@const text = resolveLabel(pt.data)}
 					{#if text}
 						<LabelPill
@@ -117,7 +117,7 @@
 			{/if}
 			<!-- Invisible hit areas for tooltip and selection -->
 			<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-			{#each seg.points as pt (`hover::${pt.x}::${pt.y}`)}
+			{#each seg.points as pt (`hover::${pt.i}`)}
 				<circle
 					cx={pt.x}
 					cy={pt.y}

@@ -16,7 +16,8 @@
 
 	const scaleX = (scale: any, v: unknown) => {
 		const p = scale(v)
-		return typeof scale.bandwidth === 'function' ? (p ?? 0) + scale.bandwidth() / 2 : p
+		if (p === undefined) return NaN
+		return typeof scale.bandwidth === 'function' ? p + scale.bandwidth() / 2 : p
 	}
 
 	const marks = $derived.by(() => {
@@ -28,7 +29,7 @@
 		return resolveHighlight(rows, highlight, { y })
 			.map((i) => {
 				const row = rows[i]
-				return { cx: scaleX(xs, row[x]), cy: ys(Number(row[y])), row }
+				return { i, cx: scaleX(xs, row[x]), cy: ys(Number(row[y])), row }
 			})
 			.filter((m) => Number.isFinite(m.cx) && Number.isFinite(m.cy))
 	})
@@ -43,7 +44,7 @@
 
 {#if marks.length}
 	<g data-plot-geom="highlight">
-		{#each marks as m (`${m.cx}::${m.cy}`)}
+		{#each marks as m (m.i)}
 			<circle cx={m.cx} cy={m.cy} data-plot-highlight />
 			{#if label}
 				{@const text = resolveLabel(m.row)}

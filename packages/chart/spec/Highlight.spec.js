@@ -33,4 +33,25 @@ describe('Highlight overlay', () => {
 		const { container } = render(Plot, { props: { spec, grid: false, width: 400, height: 300 } })
 		expect(container.querySelectorAll('[data-plot-highlight]')).toHaveLength(0)
 	})
+	it('supports index 0 (not treated as falsy)', () => {
+		const { container } = render(Plot, {
+			props: { spec, highlight: 0, grid: false, width: 400, height: 300 }
+		})
+		expect(container.querySelectorAll('[data-plot-highlight]')).toHaveLength(1)
+	})
+	it('renders multiple markers when two rows share x/y (no key crash)', () => {
+		const dupSpec = {
+			data: [
+				{ day: 0, v: 5 },
+				{ day: 0, v: 5 }
+			],
+			x: 'day',
+			y: 'v',
+			geoms: [{ type: 'line' }]
+		}
+		const { container } = render(Plot, {
+			props: { spec: dupSpec, highlight: () => true, grid: false, width: 400, height: 300 }
+		})
+		expect(container.querySelectorAll('[data-plot-highlight]')).toHaveLength(2)
+	})
 })
