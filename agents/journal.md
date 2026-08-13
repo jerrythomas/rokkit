@@ -6490,3 +6490,45 @@ repo) → no change.
 
 **Final gate:** lint **0 errors** + `bun run test:ci` = **5206 tests / 364 files** (+41 vs prior);
 Playwright `chart-metrics` e2e ✓ (stable ×3). All on `develop`.
+
+**Follow-ups (same day):** `mean`→`avg` trend attr normalization (`4612d74e`); shared `scalePos`
+helper extracted from the two overlays (`6c5411cb`); untracked + gitignored `docs/mockups/`
+(`4cdef9a2`); filed themes `data-chart-*`→`data-plot-*` selector-migration backlog (`a95c3645`).
+
+---
+
+## 2026-08-13 — Chart: interactive select event + click-to-highlight
+
+Make chart observations interactive so an app can drill/act on a clicked point, plus opt-in
+click-to-select. Subagent-driven (fresh implementer + spec/quality reviewers per task).
+
+**API** (primitives + `AreaChart`/`LineChart`): `onselect(detail)` fires on every observation
+click/keyboard-activation with `detail = { datum, index, series, value, x, y, geom, event }`;
+`selectable` opt-in toggles a multi-selection rendered via the **Highlight** overlay; `bind:selected`
+(row refs) two-way. All cartesian geoms clickable + keyboard-accessible (Enter/Space).
+
+**Design:** selection centralized in `PlotState` (a `SvelteSet` keyed by **row reference** — robust
+for multi-series/aggregated); pure `buildSelectDetail` in `lib/select.js`; geoms became
+interactivity-aware via `plotState.interactive` (a Plot-level `onselect`/`selectable` flips their hit
+targets on) and call `plotState.handleSelect(...)`. Highlight renders `selectedRows` (deduped;
+a point that is both statically highlighted and selected renders as *selected*). Backward compatible.
+
+**Two real bugs caught & fixed mid-build (implementers correctly halted rather than fudge):**
+1. `PlotState` held `#data` and `#rawData` as two separate `$state` fields → distinct proxy
+   identities, so `plotState.data.indexOf(pt.data)` (geoms read via `geomData()`→`#rawData`) was
+   `-1`. Fix: `get data()` returns `#rawData` (aligns identity). [[svelte-reactivity-gotcha]]
+2. Overlay decorations intercepted clicks to the data hit targets beneath — the x-axis line blocked
+   the first observation, highlight dots blocked their own point. Fix: `pointer-events: none` on
+   `[data-plot-axis-line]` + `[data-plot-highlight]`, and Highlight dedup prefers `selected`.
+Also dropped the unused `PlotState.selectable` getter to keep 100% coverage.
+
+**Commits (develop):** spec `4772b924`/plan `db64de86`; `2edbedd8` select util, `6af519ec` PlotState
+selection, `5424e770` Highlight-renders-selection, `51462c75` Line+Point, `713092d6` Bar+Area,
+`6f2e697c` Plot wiring + proxy-identity fix, `7131f58e` wrappers, `f88cab88` drop getter (100% cov),
+`51c58950` showcase drill, `8bac83ce` e2e, `181f775b` edge-selectability fix, `1608e7bd` docs.
+
+**Coverage:** new `lib/select.js`/`lib/scale.js` 100%; `PlotState.svelte.js` back to 100%; geoms ≥80%.
+(Full `bun run coverage` has one pre-existing miss: `packages/cli/src/index.js` 97.14% — not this work.)
+
+**Final gate:** lint **0 errors** + `bun run test:ci` = **5225 tests / 367 files**; Playwright
+`chart-metrics` + `chart-select` e2e ✓ (3 tests). All on `develop`.
