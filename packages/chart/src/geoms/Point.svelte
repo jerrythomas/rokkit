@@ -4,6 +4,7 @@
 	import type { PlotState } from '../PlotState.svelte.js'
 	import { buildPoints } from '../lib/brewing/marks/points.js'
 	import { keyboardNav } from '../lib/keyboard-nav.js'
+	import { buildSelectDetail } from '../lib/select.js'
 	import LabelPill from './LabelPill.svelte'
 
 	type Row = Record<string, unknown>
@@ -51,6 +52,21 @@
 
 	const plotState = getContext<PlotState>('plot-state')
 	let id = $state<string | null>(null)
+
+	function selectPoint(pt, event) {
+		onselect?.(pt.data)
+		if (plotState.interactive)
+			plotState.handleSelect(
+				buildSelectDetail(
+					pt.data,
+					plotState.data.indexOf(pt.data),
+					{ x, y },
+					'point',
+					color ? pt.data[color] : undefined,
+					event
+				)
+			)
+	}
 
 	onMount(() => {
 		id = plotState.registerGeom({
@@ -118,14 +134,16 @@
 					stroke-width="1"
 					fill-opacity={options.opacity ?? plotState.chartPreset.opacity.point}
 					data-plot-element="point"
-					role={onselect || keyboard ? 'button' : 'graphics-symbol'}
-					tabindex={onselect || keyboard ? 0 : undefined}
-					style:cursor={onselect ? 'pointer' : undefined}
+					role={onselect || keyboard || plotState.interactive ? 'button' : 'graphics-symbol'}
+					tabindex={onselect || keyboard || plotState.interactive ? 0 : undefined}
+					style:cursor={onselect || keyboard || plotState.interactive ? 'pointer' : undefined}
 					aria-label="{pt.data[x ?? '']}, {pt.data[y ?? '']}"
 					onmouseenter={() => plotState.setHovered(pt.data)}
 					onmouseleave={() => plotState.clearHovered()}
-					onclick={onselect ? () => onselect(pt.data) : undefined}
-					onkeydown={onselect ? (e) => (e.key === 'Enter' || e.key === ' ') && onselect(pt.data) : undefined}
+					onclick={onselect || keyboard || plotState.interactive ? (e) => selectPoint(pt, e) : undefined}
+					onkeydown={onselect || keyboard || plotState.interactive
+						? (e) => (e.key === 'Enter' || e.key === ' ') && selectPoint(pt, e)
+						: undefined}
 					use:keyboardNav={keyboard}
 				/>
 			{:else}
@@ -138,14 +156,16 @@
 					stroke-width="1"
 					fill-opacity={options.opacity ?? plotState.chartPreset.opacity.point}
 					data-plot-element="point"
-					role={onselect || keyboard ? 'button' : 'graphics-symbol'}
-					tabindex={onselect || keyboard ? 0 : undefined}
-					style:cursor={onselect ? 'pointer' : undefined}
+					role={onselect || keyboard || plotState.interactive ? 'button' : 'graphics-symbol'}
+					tabindex={onselect || keyboard || plotState.interactive ? 0 : undefined}
+					style:cursor={onselect || keyboard || plotState.interactive ? 'pointer' : undefined}
 					aria-label="{pt.data[x ?? '']}, {pt.data[y ?? '']}"
 					onmouseenter={() => plotState.setHovered(pt.data)}
 					onmouseleave={() => plotState.clearHovered()}
-					onclick={onselect ? () => onselect(pt.data) : undefined}
-					onkeydown={onselect ? (e) => (e.key === 'Enter' || e.key === ' ') && onselect(pt.data) : undefined}
+					onclick={onselect || keyboard || plotState.interactive ? (e) => selectPoint(pt, e) : undefined}
+					onkeydown={onselect || keyboard || plotState.interactive
+						? (e) => (e.key === 'Enter' || e.key === ' ') && selectPoint(pt, e)
+						: undefined}
 					use:keyboardNav={keyboard}
 				/>
 			{/if}

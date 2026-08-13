@@ -4,6 +4,7 @@
 	import { buildLines } from '../lib/brewing/marks/lines.js'
 	import { buildSymbolPath } from '../lib/brewing/marks/points.js'
 	import { keyboardNav } from '../lib/keyboard-nav.js'
+	import { buildSelectDetail } from '../lib/select.js'
 	import LabelPill from './LabelPill.svelte'
 
 	type Row = Record<string, unknown>
@@ -47,6 +48,14 @@
 
 	const plotState = getContext<PlotState>('plot-state')
 	let id = $state<string | null>(null)
+
+	function selectPoint(pt, seg, event) {
+		onselect?.(pt.data)
+		if (plotState.interactive)
+			plotState.handleSelect(
+				buildSelectDetail(pt.data, plotState.data.indexOf(pt.data), { x, y }, 'line', seg?.key, event)
+			)
+	}
 
 	onMount(() => {
 		id = plotState.registerGeom({
@@ -124,14 +133,18 @@
 					r="8"
 					fill="transparent"
 					stroke="none"
-					role={onselect || keyboard ? 'button' : 'presentation'}
-					tabindex={onselect || keyboard ? 0 : undefined}
-					style:cursor={onselect ? 'pointer' : undefined}
+					role={onselect || keyboard || plotState.interactive ? 'button' : 'presentation'}
+					tabindex={onselect || keyboard || plotState.interactive ? 0 : undefined}
+					style:cursor={onselect || keyboard || plotState.interactive ? 'pointer' : undefined}
 					data-plot-element="line-hover"
 					onmouseenter={() => plotState.setHovered(pt.data)}
 					onmouseleave={() => plotState.clearHovered()}
-					onclick={onselect ? () => onselect(pt.data) : undefined}
-					onkeydown={onselect ? (e) => (e.key === 'Enter' || e.key === ' ') && onselect(pt.data) : undefined}
+					onclick={onselect || keyboard || plotState.interactive
+						? (e) => selectPoint(pt, seg, e)
+						: undefined}
+					onkeydown={onselect || keyboard || plotState.interactive
+						? (e) => (e.key === 'Enter' || e.key === ' ') && selectPoint(pt, seg, e)
+						: undefined}
 					use:keyboardNav={keyboard}
 				/>
 			{/each}
