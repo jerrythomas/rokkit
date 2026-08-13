@@ -2,6 +2,8 @@ import { describe, it, expect, afterEach } from 'vitest'
 import { render } from '@testing-library/svelte'
 import { tick } from 'svelte'
 import Plot from '../src/Plot.svelte'
+import AreaChart from '../src/charts/AreaChart.svelte'
+import LineChart from '../src/charts/LineChart.svelte'
 import mpg from './fixtures/mpg.json'
 
 // Minimal render test — confirms Plot creates SVG and sets context
@@ -117,5 +119,30 @@ describe('Plot.svelte', () => {
 			// JSDOM's getBoundingClientRect returns 0 — effectiveWidth falls back to prop
 			expect(Number(container.querySelector('svg').getAttribute('width'))).toBe(400)
 		})
+	})
+})
+
+describe('wrapper forwarding: grid / highlight / trend', () => {
+	const data = Array.from({ length: 6 }, (_, i) => ({ day: i, v: i + 1 }))
+
+	it('AreaChart forwards grid="both" + trend + highlight', () => {
+		const { container } = render(AreaChart, {
+			props: {
+				data, x: 'day', y: 'v', grid: 'both', trend: 'avg', highlight: 'last', width: 400, height: 300
+			}
+		})
+		expect(container.querySelectorAll('[data-plot-grid-line="x"]').length).toBeGreaterThan(0)
+		expect(container.querySelectorAll('[data-plot-trend]')).toHaveLength(1)
+		expect(container.querySelectorAll('[data-plot-highlight]')).toHaveLength(1)
+	})
+
+	it('LineChart forwards highlight + trend array', () => {
+		const { container } = render(LineChart, {
+			props: {
+				data, x: 'day', y: 'v', trend: ['avg', 'max'], highlight: 'max', width: 400, height: 300
+			}
+		})
+		expect(container.querySelectorAll('[data-plot-trend]')).toHaveLength(2)
+		expect(container.querySelectorAll('[data-plot-highlight]')).toHaveLength(1)
 	})
 })

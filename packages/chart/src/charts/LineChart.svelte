@@ -18,8 +18,10 @@
 		width?: number
 		height?: number
 		mode?: 'light' | 'dark'
-		grid?: boolean
+		grid?: boolean | 'x' | 'y' | 'both'
 		legend?: boolean
+		highlight?: 'first' | 'last' | 'min' | 'max' | number | ((row: Row, i: number) => boolean)
+		trend?: unknown
 		xFormat?: Format
 		yFormat?: Format
 		xTicks?: number
@@ -42,6 +44,8 @@
 		mode = 'light',
 		grid = true,
 		legend = false,
+		highlight = undefined,
+		trend = undefined,
 		xFormat = undefined,
 		yFormat = undefined,
 		xTicks = undefined,
@@ -50,6 +54,6 @@
 	}: Props = $props()
 </script>
 
-<Plot {data} {width} {height} {mode} {grid} {legend} {tooltip} {xFormat} {yFormat} {xTicks} {yTicks} {minorTicks}>
+<Plot {data} {x} {y} {width} {height} {mode} {grid} {legend} {tooltip} {highlight} {trend} {xFormat} {yFormat} {xTicks} {yTicks} {minorTicks}>
 	<Line {x} {y} {color} {symbol} {label} {stat} options={{ curve }} />
 </Plot>
