@@ -62,7 +62,9 @@ The architecture has three independent but composable layers:
 ├── CrossFilter             # Coordinated view controller
 ├── ChartBrewer             # Visual channel assignment engine
 ├── ChartExporter           # SVG / PNG / animated SVG export
-├── Plot                    # Composable primitives (Root, Axis, Bar, Grid, Legend)
+├── Plot                    # Composable primitives (Root, Axis, Bar, Grid, Legend, Highlight, Trend)
+├── GeomHighlight           # Overlay: mark a specific observation (highlight prop)
+├── GeomTrend               # Overlay: computed trend/reference lines (trend prop)
 ├── patterns                # SVG pattern components
 ├── symbols                 # SVG symbol shapes
 └── palette                 # palette.json — 21 colors × 11 shades

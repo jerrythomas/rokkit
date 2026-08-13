@@ -155,6 +155,39 @@ BarChart auto-detects horizontal vs vertical: if `y` is categorical and `x` is n
 
 ---
 
+## Overlays — Highlight & Trend
+
+Two **pure overlay** primitives sit above the geoms. They read `data` + `xScale`/`yScale` from
+`PlotState` and never `registerGeom` (no effect on scale domains). Both render from `Plot`'s
+`x`/`y` props (or a `spec`) and are exposed as `Plot.Highlight` / `Plot.Trend` (aliases
+`GeomHighlight` / `GeomTrend`). `PlotChart`, `AreaChart`, and `LineChart` forward the props.
+
+- **`Highlight`** (`highlight` prop) — marks a specific observation. Accepts
+  `'first' | 'last' | 'min' | 'max' | number(index) | (row,i)=>boolean` (a predicate matches
+  many; `min`/`max` compare `y`). Selection logic lives in the pure `lib/highlight.js`
+  (`resolveHighlight`). Renders `<circle data-plot-highlight>` per match (keyed by row index) plus
+  an optional `data-plot-highlight-label`. Themed via `[data-plot-highlight]` +
+  `--chart-highlight-{color,radius,ring}` (default fill = accent).
+- **`Trend`** (`trend` prop) — overlays one or more computed trend/reference lines; accepts a
+  single method or an array. Calculators live in the pure `lib/trend.js` (`computeTrend`).
+  **Constant** methods (`avg`/`mean`, `median`, `min`, `max`, `value`/fixed number) draw a
+  horizontal line at the aggregate; **fitted** methods (`linear` regression, `{type:'ma',window}`,
+  `ema`, `exp` regression) draw a per-x series. Degenerate inputs (empty, `<2` points for a fit,
+  `exp` with `y ≤ 0`, `ma` without `window`) are skipped. Renders `<path data-plot-trend="<type>">`
+  (keyed by method index). Themed via `[data-plot-trend="<type>"]` +
+  `--chart-trend-{color,width,dash,opacity}` (dashed by default).
+
+## Grid axis control
+
+`Grid` accepts `lines: 'auto' | 'x' | 'y' | 'both'`, surfaced through the `grid` prop as
+`boolean | 'x' | 'y' | 'both'`. `true` (default) is **auto** — horizontal (y) lines always;
+vertical (x) lines only for band/bar scales (identical to legacy behaviour). `'both'`/`'x'` force
+vertical lines on continuous/time x-scales at the x-tick positions (aligned to the axis via shared
+`xTicks`/`yTicks`); `'y'` is horizontal-only; `false` hides the grid. Per-orientation hooks:
+`[data-plot-grid-line="x"|"y"]` + `--chart-grid-{color,width,dash,opacity}`.
+
+---
+
 ## Stat System
 
 Stats aggregate raw data before rendering. Applied in `PlotState` via `applyGeomStat()`.
