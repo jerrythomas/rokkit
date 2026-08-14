@@ -1,0 +1,32 @@
+name: Check
+
+on:
+  push:
+    branches: [develop, main]
+  pull_request:
+    branches: [develop, main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+      - uses: actions/checkout@v6
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24.x
+      - name: Install dependencies
+        run: bun install
+      # svelte-check catches .svelte type errors that `tsc --noEmit` (the
+      # per-package pre-commit hook) does not — this is the gate `bun run bump`
+      # runs, so surface failures in CI too.
+      - name: Type + Svelte check
+        run: bun run check
+      - name: Lint
+        run: bun run lint

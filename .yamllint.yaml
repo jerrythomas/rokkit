@@ -5,6 +5,9 @@ extends: default
 
 rules:
   line-length: disable
+  # GitHub Actions workflows conventionally open with `name:`, not a `---`
+  # document-start marker.
+  document-start: disable
   # Allow GitHub Actions' `on:` key (yamllint's truthy rule flags it otherwise).
   truthy:
     check-keys: false
