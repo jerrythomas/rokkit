@@ -313,10 +313,12 @@ describe('PlotState — yScale domain for box/violin geoms', () => {
 			stat: 'boxplot'
 		})
 		const [domMin, domMax] = state.yScale.domain()
-		// d3 linear interpolation on [10,20,30,40]: q1=17.5, q3=32.5, IQR=15
-		// iqr_min = 17.5 - 22.5 = -5, iqr_max = 32.5 + 22.5 = 55
-		expect(domMin).toBeLessThan(5) // below raw data min of 5
-		expect(domMax).toBeGreaterThan(40) // above raw data max of 40
+		// Tukey-clamped whiskers (no outliers in this fixture):
+		//   A [10,20,30,40] → iqr_min=10, iqr_max=40
+		//   B [5,15,25,35]  → iqr_min=5,  iqr_max=35
+		// Domain is derived from the box rows' iqr fields, spanning [5, 40].
+		expect(domMin).toBeLessThanOrEqual(5)
+		expect(domMax).toBeGreaterThanOrEqual(40)
 	})
 
 	it('yScale domain does not use the raw y field (which is absent in aggregated rows)', () => {
