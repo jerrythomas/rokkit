@@ -17,13 +17,17 @@
 	const plotState = getContext<PlotState>('plot-state')
 	let id = $state<string | null>(null)
 
-	// fill ?? x drives the color lookup
-	const fillChannel = $derived(fill ?? x)
+	// Fall back to the root Plot channels when the geom omits x/y (composes under
+	// <Plot.Root x y> without silently NaN-ing).
+	const xf = $derived(x ?? plotState.channels?.x)
+	const yf = $derived(y ?? plotState.channels?.y)
+	// fill ?? effective-x drives the color lookup
+	const fillChannel = $derived(fill ?? xf)
 
 	onMount(() => {
 		id = plotState.registerGeom({
 			type: 'jitter',
-			channels: { x, y, color: fillChannel },
+			channels: { x: xf, y: yf, color: fillChannel },
 			stat: 'identity',
 			options
 		})
@@ -33,7 +37,7 @@
 	})
 
 	$effect(() => {
-		if (id) plotState.updateGeom(id, { channels: { x, y, color: fillChannel }, stat: 'identity' })
+		if (id) plotState.updateGeom(id, { channels: { x: xf, y: yf, color: fillChannel }, stat: 'identity' })
 	})
 
 	const data = $derived(id ? plotState.geomData(id) : [])
@@ -43,7 +47,7 @@
 
 	const points = $derived.by(() => {
 		if (!data?.length || !xScale || !yScale) return []
-		return buildSwarm(data, { x, y, fill: fillChannel }, xScale, yScale, colors, { method, r })
+		return buildSwarm(data, { x: xf, y: yf, fill: fillChannel }, xScale, yScale, colors, { method, r })
 	})
 </script>
 
@@ -60,7 +64,7 @@
 				stroke-width="0.5"
 				data-plot-element="jitter-point"
 				role="graphics-symbol"
-				aria-label={`(${String(pt.data[x ?? ''])}, ${String(pt.data[y ?? ''])})`}
+				aria-label={`(${String(pt.data[xf ?? ''])}, ${String(pt.data[yf ?? ''])})`}
 				onmouseenter={() => plotState.setHovered(pt.data)}
 				onmouseleave={() => plotState.clearHovered()}
 			/>

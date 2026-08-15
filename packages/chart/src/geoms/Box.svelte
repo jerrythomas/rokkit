@@ -16,13 +16,17 @@
 	const plotState = getContext<PlotState>('plot-state')
 	let id = $state<string | null>(null)
 
-	// fill ?? x drives the colors map for both box interior and whisker strokes
-	const fillChannel = $derived(fill ?? x)
+	// Fall back to the root Plot channels when the geom's own x/y are omitted, so
+	// <Plot.Box> composes under <Plot.Root x y> without silently NaN-ing.
+	const xf = $derived(x ?? plotState.channels?.x)
+	const yf = $derived(y ?? plotState.channels?.y)
+	// fill ?? effective-x drives the colors map for both box interior and whisker strokes
+	const fillChannel = $derived(fill ?? xf)
 
 	onMount(() => {
 		id = plotState.registerGeom({
 			type: 'box',
-			channels: { x, y, color: fillChannel },
+			channels: { x: xf, y: yf, color: fillChannel },
 			stat,
 			options
 		})
@@ -32,7 +36,7 @@
 	})
 
 	$effect(() => {
-		if (id) plotState.updateGeom(id, { channels: { x, y, color: fillChannel }, stat })
+		if (id) plotState.updateGeom(id, { channels: { x: xf, y: yf, color: fillChannel }, stat })
 	})
 
 	const data = $derived(id ? plotState.geomData(id) : [])
@@ -42,7 +46,7 @@
 
 	const boxes = $derived.by(() => {
 		if (!data?.length || !xScale || !yScale) return []
-		return buildBoxes(data, { x, fill: fillChannel }, xScale, yScale, colors)
+		return buildBoxes(data, { x: xf, fill: fillChannel }, xScale, yScale, colors)
 	})
 </script>
 
@@ -126,7 +130,10 @@
 					stroke={box.stroke}
 					stroke-width="1"
 					data-plot-element="box-outlier"
-					role="presentation"
+					role="graphics-symbol"
+					aria-label={`outlier: ${o.value}`}
+					onmouseenter={() => plotState.setHovered({ ...box.data, value: o.value })}
+					onmouseleave={() => plotState.clearHovered()}
 				/>
 			{/each}
 		{/each}

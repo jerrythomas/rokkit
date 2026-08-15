@@ -593,6 +593,15 @@ describe('PlotState — band x-axis for box/violin/jitter with numeric x', () =>
 	})
 })
 
+// ─── channels getter (geom root-channel fallback) ──────────────────────────────
+describe('PlotState — channels getter', () => {
+	it('exposes the root channels so geoms can fall back when their props are omitted', () => {
+		const state = new PlotState({ data: [{ a: 1, b: 2 }], channels: { x: 'a', y: 'b' } })
+		expect(state.channels.x).toBe('a')
+		expect(state.channels.y).toBe('b')
+	})
+})
+
 // ─── box + jitter coexisting on one PlotState (the demo's overlay scenario) ────
 describe('PlotState — box + jitter geoms on one state', () => {
 	it('y-domain spans all raw points (inliers + outliers) with both geoms registered', () => {

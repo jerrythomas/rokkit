@@ -364,6 +364,10 @@ export class PlotState {
 		// array separately, so their elements are not ===. Same content, aligned identity.
 		return this.#rawData
 	}
+	/** @returns {{ x?: string, y?: string, color?: string, pattern?: string, symbol?: string }} */
+	get channels() {
+		return this.#channels
+	}
 	get margin() {
 		return this.#effectiveMargin
 	}
