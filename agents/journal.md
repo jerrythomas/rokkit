@@ -69,9 +69,7 @@ quality reviewers per task; two real bugs caught by review + live browser test).
    errors the build/unit tests never caught: the demo used `<Plot.Box />` without `x`/`y`, and
    `PlotState.geomData`'s `{...root, ...geomChannels}` merge lets a geom's `undefined` channel
    **clobber** the root's — so `applyBoxStat` saw no x/y and emitted rows with no quartiles.
-   Fixed the demo to pass explicit `x`/`y` (the documented API). Follow-up worth filing: harden
-   `geomData` to skip `undefined` geom-channel values so `<Plot.Box>` can safely inherit root
-   channels instead of silently NaN-ing.
+   Fixed the demo to pass explicit `x`/`y` (the documented API).
    Also: `svelte-check` (the CI `bun run check` gate) caught a `pt.data[x]` index-type error that
    the pre-commit `tsc --noEmit` had masked — guarded with `x ?? ''` + typed `buildSwarm`'s point
    `data` as `Record<string, unknown>`.
@@ -85,6 +83,15 @@ exports, `06652a33` demo, `3c45e1b7` demo x/y fix.
 **Final gate:** `bun run test:ci` = **5334 tests / 372 files**, all green; `lint` **0 errors**;
 `check:types` + `check:svelte` clean (chart 0/0). Live `/app/chart` composable section: 0 console
 errors, 5 boxes + 5 violins + 36 jitter points rendered, 0 NaN geometry.
+
+**Post-PR follow-ups (`9ce77f5f`, reviewed → ship):** (1) Box/Violin/Jitter now resolve `x`/`y`
+from the root `Plot.Root` channels when their own props are omitted (new `PlotState.channels`
+getter), so `<Plot.Box>` composes under `<Plot.Root x y>` without the silent-NaN footgun —
+fixed at the component level (geoms pass resolved channels into `registerGeom`), not by touching
+the shared `geomData` merge; verified end-to-end with a **real-`PlotState`** render test (a
+`geomData` mock would have hidden the stat path, the same blind spot that let the original bug
+through). (2) Box outliers are now `role="graphics-symbol"` + `aria-label` + hover-wired
+(consumes the previously-unused outlier `value`). Chart suite **1277**, svelte-check + lint clean.
 
 ## 2026-07-16 — Fix #140: non-collapsible List group headers no longer block interactive group-snippet content
 
