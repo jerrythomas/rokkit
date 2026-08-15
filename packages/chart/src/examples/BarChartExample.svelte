@@ -36,7 +36,7 @@
 			<Plot.Grid />
 			<Plot.Axis type="x" label="Product Category" />
 			<Plot.Axis type="y" label="Number of Products" />
-			<Plot.Bar {data} x="category" y="count" fill="category" />
+			<Plot.Bar x="category" y="count" fill="category" />
 			<Plot.Legend labels={{ category: 'Categories' }} />
 		</Plot.Root>
 	</div>

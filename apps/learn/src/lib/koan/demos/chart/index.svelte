@@ -198,6 +198,17 @@
 			</div>
 		</section>
 
+		<section>
+			<header>Composable Plot.Bar — unified geom (one impl, was two)</header>
+			<div class="chart-stage">
+				<Plot.Root data={segments} x="segment" y="share" width={520} height={280} margin={{ top: 10, right: 20, bottom: 40, left: 50 }}>
+					<Plot.Axis type="x" />
+					<Plot.Axis type="y" />
+					<Plot.Bar x="segment" y="share" fill="segment" />
+				</Plot.Root>
+			</div>
+		</section>
+
 	<section>
 		<header>Sparkline — three inline shapes</header>
 		<div class="spark-row">
