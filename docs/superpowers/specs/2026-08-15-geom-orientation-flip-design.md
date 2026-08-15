@@ -21,6 +21,18 @@ Arc/pie (radial).
 Commits: `86085fe4` foundation+Point/Jitter, `dd95c3f0` Box, `9f73bb7f` Violin, `9fdf03c0`
 Line/Area/Axis, `fc1d7fad` consolidation, `8a012ced` Bar, `76e97675` Waterfall/Candlestick.
 
+### Post-ship correction (`262cc84f`)
+
+The "AnimatedPlot byte-identical / both-continuous is a no-op" claim was **not fully true**. The
+bar race is a `bar` geom, and `bar ∈ CATEGORICAL_X` force-bands its continuous `revenue` x for
+scale construction. `#bandIsX` read that forced band, so `isFlipped` became `true` for the race,
+routing it away from `buildHorizontalBars` and collapsing every entity onto one row. The unit
+suite didn't catch it (no test asserted the race's row layout); a live browser demo did. Fix:
+`#bandIsX` (the flip decision) now uses the **natural** x field type — force-banding is a scale
+concern, not a flip signal — which restores the no-op guarantee for genuinely-continuous charts.
+Known limitation accepted (YAGNI): a chart with a **numeric** category on x (e.g. year) won't take
+the new place-flip path; string categories flip as designed.
+
 ## Goal
 
 Support **horizontal orientation** across all cartesian geoms via a single

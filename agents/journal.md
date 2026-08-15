@@ -1,5 +1,33 @@
 # Project Journal
 
+## 2026-08-15 — Chart: animate marks on data/flip change + AnimatedPlot race fix
+
+Investigated the animation story ("look into animation") and shipped two things on `develop` /
+PR #145.
+
+**Animate-on-change (new)** — opt-in `[data-plot-animate]` on the chart root enables CSS
+**geometry transitions** (`x/y/width/height/cx/cy/r`, 0.4s) on marks, so bars/points/boxes glide
+on data updates **and** on the orientation flip — no JS tweening. Set one frame *after* the width
+settles so the initial paint doesn't animate; respects `prefers-reduced-motion`; path/line marks
+(`d`, endpoints) aren't CSS-animatable so they snap. New `animate` prop (default `true`) on
+`Plot` and `Plot.Root`. `AnimatedPlot` passes `animate={false}` so its own frame tween isn't
+double-animated. Rule lives in `@rokkit/themes` `base/chart.css`. Demo: an animate-on-change
+section (toggle data / orientation) + an **AnimatedPlot bar-chart race** on the Koan chart page —
+the first live showcase of `AnimatedPlot` (it was only consumed by `blocks/PlotPlugin`).
+
+**Correction to the orientation entry below** — that entry claimed AnimatedPlot's value×`_rank`
+bar race was "provably untouched" by the flip. **It wasn't.** Standing the demo up in a real
+browser showed every company collapsed onto one row: the race is a `bar` geom, and
+`bar ∈ CATEGORICAL_X` force-bands the (continuous) `revenue` x for scale construction — which
+`#bandIsX` was reading, so `isFlipped` went `true` and the race routed away from
+`buildHorizontalBars` into the place-flip path. The unit suite (5325) stayed green because no test
+asserted the race's row layout. Fix: `#bandIsX` (the flip decision) now uses the **natural** x
+field type, not the geom-forced band — force-banding is a scale concern, not a flip signal. This
+restores the intended both-continuous-is-a-no-op guarantee. Guarded by a PlotState test that
+registers a bar geom over continuous x/y and asserts `isFlipped === false` (fails without the fix).
+Lesson reinforced: **a green unit suite is a proxy; the layout was only provable against live
+pixels.** Commit `262cc84f`.
+
 ## 2026-08-14 — qlty hotspots: `llm.svelte.ts` + `doctor.js` resolved behind characterization tests
 
 Picked up `docs/backlog/2026-08-14-demo-app-complexity-refactors.md`. The demo-app hotspots
