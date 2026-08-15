@@ -116,7 +116,19 @@
 				stroke={box.stroke}
 				stroke-width="1"
 			/>
-			<!-- Outlier rendering deferred: buildBoxes does not compute outliers yet -->
+			<!-- Outliers: individual points beyond the 1.5·IQR fence -->
+			{#each box.outliers as o, oi (`${i}-outlier-${oi}`)}
+				<circle
+					cx={xMid}
+					cy={o.cy}
+					r="2"
+					fill="none"
+					stroke={box.stroke}
+					stroke-width="1"
+					data-plot-element="box-outlier"
+					role="presentation"
+				/>
+			{/each}
 		{/each}
 	</g>
 {/if}
