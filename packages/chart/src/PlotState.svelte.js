@@ -17,6 +17,9 @@ import { assignSymbols } from './lib/brewing/marks/points.js'
 
 let nextId = 0
 
+// Geoms that treat the x channel as categorical (band scale), even for numeric x.
+const CATEGORICAL_X = new Set(['bar', 'box', 'violin', 'jitter'])
+
 export class PlotState {
 	#data = $state([])
 	#rawData = $state([])
@@ -74,8 +77,8 @@ export class PlotState {
 	})
 
 	#resolveXType(rawXType, yType) {
-		const hasBarGeom = this.#geoms.some((g) => g.type === 'bar')
-		return hasBarGeom && rawXType === 'continuous' && yType === 'continuous' ? 'band' : rawXType
+		const hasBandGeom = this.#geoms.some((g) => CATEGORICAL_X.has(g.type))
+		return hasBandGeom && rawXType === 'continuous' && yType === 'continuous' ? 'band' : rawXType
 	}
 
 	orientation = $derived.by(() => {
@@ -121,8 +124,8 @@ export class PlotState {
 		const includeZero = this.orientation === 'horizontal'
 		// For vertical bar charts, force scaleBand even when X values are numeric (e.g. year).
 		// Horizontal bar charts keep X as a continuous value axis.
-		const hasBarGeom = this.#geoms.some((g) => g.type === 'bar')
-		const bandX = hasBarGeom && this.orientation !== 'horizontal'
+		const hasBandGeom = this.#geoms.some((g) => CATEGORICAL_X.has(g.type))
+		const bandX = hasBandGeom && this.orientation !== 'horizontal'
 		const base = buildUnifiedXScale(datasets, field, this.#innerWidth, {
 			domain: this.#xDomain,
 			includeZero,
@@ -139,8 +142,9 @@ export class PlotState {
 		if (!boxGeom) return null
 		const boxData = this.geomData(boxGeom.id)
 		const isValid = (v) => v !== null && v !== undefined && !isNaN(v)
-		const mins = boxData.map((d) => d.iqr_min).filter(isValid)
-		const maxs = boxData.map((d) => d.iqr_max).filter(isValid)
+		const flatOutliers = boxData.flatMap((d) => d.outliers ?? []).filter(isValid)
+		const mins = [...boxData.map((d) => d.iqr_min).filter(isValid), ...flatOutliers]
+		const maxs = [...boxData.map((d) => d.iqr_max).filter(isValid), ...flatOutliers]
 		return mins.length > 0 && maxs.length > 0 ? [Math.min(...mins), Math.max(...maxs)] : null
 	}
 

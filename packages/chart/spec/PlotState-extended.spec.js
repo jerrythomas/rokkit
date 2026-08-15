@@ -548,3 +548,37 @@ describe('PlotState — stacked bar Y domain using pattern channel for stack', (
 		expect(domMax).toBeLessThan(100)
 	})
 })
+
+// ─── box domain includes outliers ─────────────────────────────────────────────
+describe('PlotState — box y-domain includes outliers', () => {
+	it('extends the y-domain to cover outlier points', () => {
+		// [1,2,3,4,100] → whisker_max clamps to 4, but 100 is an outlier
+		const data = [1, 2, 3, 4, 100].map((v) => ({ g: 'X', v }))
+		const state = new PlotState({ data, channels: { x: 'g', y: 'v' }, width: 600, height: 400 })
+		state.registerGeom({ type: 'box', channels: { x: 'g', y: 'v' }, stat: 'boxplot' })
+		const [, domMax] = state.yScale.domain()
+		expect(domMax).toBeGreaterThanOrEqual(100)
+	})
+})
+
+// ─── band x-axis forced for distribution geoms with numeric x ──────────────────
+describe('PlotState — band x-axis for box/violin/jitter with numeric x', () => {
+	it('forces a band x-scale for a box geom even when x is numeric', () => {
+		const data = [
+			{ week: 1, v: 10 }, { week: 1, v: 20 }, { week: 1, v: 30 },
+			{ week: 2, v: 15 }, { week: 2, v: 25 }, { week: 2, v: 35 }
+		]
+		const state = new PlotState({ data, channels: { x: 'week', y: 'v' }, width: 600, height: 400 })
+		state.registerGeom({ type: 'box', channels: { x: 'week', y: 'v' }, stat: 'boxplot' })
+		expect(typeof state.xScale.bandwidth).toBe('function')
+	})
+
+	it('forces a band x-scale for a jitter geom even when x is numeric', () => {
+		const data = [
+			{ week: 1, v: 10 }, { week: 2, v: 20 }
+		]
+		const state = new PlotState({ data, channels: { x: 'week', y: 'v' }, width: 600, height: 400 })
+		state.registerGeom({ type: 'jitter', channels: { x: 'week', y: 'v' }, stat: 'identity' })
+		expect(typeof state.xScale.bandwidth).toBe('function')
+	})
+})
