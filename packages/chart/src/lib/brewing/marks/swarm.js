@@ -65,8 +65,12 @@ export function buildSwarm(data, channels, xScale, yScale, colors, opts = {}) {
 
 /**
  * Computes horizontal offsets for a beeswarm: sort by y, then for each point
- * pick the offset of smallest magnitude that doesn't collide (distance < 2r)
- * with any already-placed point in this group. Returns offsets in INPUT order.
+ * pick the smallest-magnitude offset that doesn't collide (distance >= 2r) with
+ * any already-placed point in the group. When the band is over capacity (more
+ * points than fit at 2r spacing), fall back to the least-crowded slot (max
+ * separation) so overflow points spread across the band instead of stacking at
+ * the center — a best-effort layout, not a hard non-overlap guarantee.
+ * Returns offsets in INPUT order.
  */
 function swarmOffsets(rows, yf, yScale, r, halfBand) {
 	const order = rows
@@ -75,20 +79,30 @@ function swarmOffsets(rows, yf, yScale, r, halfBand) {
 	const placed = []
 	const offsetByIndex = new Array(rows.length).fill(0)
 	const step = r / 2
+	const kMax = Math.ceil((2 * halfBand) / step)
 
 	for (const { i, cy } of order) {
-		let offset = 0
-		for (let k = 0; k <= Math.ceil((2 * halfBand) / step); k++) {
+		let chosen = 0
+		let placedOne = false
+		let best = { offset: 0, sep: -Infinity }
+		for (let k = 0; k <= kMax; k++) {
 			const candidate = k === 0 ? 0 : (k % 2 === 1 ? 1 : -1) * Math.ceil(k / 2) * step
 			if (Math.abs(candidate) > halfBand) continue
-			const collides = placed.some((p) => Math.hypot(candidate - p.offset, cy - p.cy) < 2 * r)
-			if (!collides) {
-				offset = candidate
+			const sep = placed.length
+				? Math.min(...placed.map((p) => Math.hypot(candidate - p.offset, cy - p.cy)))
+				: Infinity
+			if (sep >= 2 * r) {
+				chosen = candidate
+				placedOne = true
 				break
 			}
+			if (sep > best.sep) best = { offset: candidate, sep }
 		}
-		placed.push({ offset, cy })
-		offsetByIndex[i] = offset
+		// Band over capacity: fall back to the least-crowded slot (max separation)
+		// rather than stacking every overflow point at the center.
+		if (!placedOne) chosen = best.offset
+		placed.push({ offset: chosen, cy })
+		offsetByIndex[i] = chosen
 	}
 	return offsetByIndex
 }

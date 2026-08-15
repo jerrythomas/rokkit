@@ -59,4 +59,16 @@ describe('buildSwarm', () => {
 			}
 		}
 	})
+
+	it('spreads overflow points across the band instead of stacking them (best-effort)', () => {
+		// 20 identical-y points at r=8 exceed the band capacity; they must not all
+		// collapse to the center — verify they spread and the layout is deterministic.
+		const dense = Array.from({ length: 20 }, () => ({ cat: 'A', val: 50 }))
+		const opts = { method: 'swarm', r: 8 }
+		const a = buildSwarm(dense, { x: 'cat', y: 'val' }, xScale, yScale, colors, opts)
+		const b = buildSwarm(dense, { x: 'cat', y: 'val' }, xScale, yScale, colors, opts)
+		expect(a.map((p) => p.cx)).toEqual(b.map((p) => p.cx)) // deterministic
+		const distinct = new Set(a.map((p) => Math.round(p.cx * 100)))
+		expect(distinct.size).toBeGreaterThanOrEqual(5) // not collapsed to one x
+	})
 })
