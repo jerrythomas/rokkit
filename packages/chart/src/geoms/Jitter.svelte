@@ -60,7 +60,7 @@
 				stroke-width="0.5"
 				data-plot-element="jitter-point"
 				role="graphics-symbol"
-				aria-label={`(${String(pt.data[x])}, ${String(pt.data[y])})`}
+				aria-label={`(${String(pt.data[x ?? ''])}, ${String(pt.data[y ?? ''])})`}
 				onmouseenter={() => plotState.setHovered(pt.data)}
 				onmouseleave={() => plotState.clearHovered()}
 			/>

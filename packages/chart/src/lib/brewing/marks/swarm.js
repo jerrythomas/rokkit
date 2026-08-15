@@ -23,7 +23,7 @@ function hashUnit(n) {
  * @param {import('d3-scale').ScaleLinear} yScale
  * @param {Map<unknown, {fill:string, stroke:string}>} colors
  * @param {{ method?: 'jitter'|'swarm', r?: number }} opts
- * @returns {Array<{ cx:number, cy:number, fill:string, stroke:string, data:Object }>}
+ * @returns {Array<{ cx:number, cy:number, fill:string, stroke:string, data:Record<string, unknown> }>}
  */
 export function buildSwarm(data, channels, xScale, yScale, colors, opts = {}) {
 	const { x: xf, y: yf, fill: ff } = channels
