@@ -581,4 +581,30 @@ describe('PlotState — band x-axis for box/violin/jitter with numeric x', () =>
 		state.registerGeom({ type: 'jitter', channels: { x: 'week', y: 'v' }, stat: 'identity' })
 		expect(typeof state.xScale.bandwidth).toBe('function')
 	})
+
+	it('forces a band x-scale for a violin geom even when x is numeric', () => {
+		const data = [
+			{ week: 1, v: 10 }, { week: 1, v: 20 }, { week: 1, v: 30 },
+			{ week: 2, v: 15 }, { week: 2, v: 25 }, { week: 2, v: 35 }
+		]
+		const state = new PlotState({ data, channels: { x: 'week', y: 'v' }, width: 600, height: 400 })
+		state.registerGeom({ type: 'violin', channels: { x: 'week', y: 'v' }, stat: 'boxplot' })
+		expect(typeof state.xScale.bandwidth).toBe('function')
+	})
+})
+
+// ─── box + jitter coexisting on one PlotState (the demo's overlay scenario) ────
+describe('PlotState — box + jitter geoms on one state', () => {
+	it('y-domain spans all raw points (inliers + outliers) with both geoms registered', () => {
+		// box rows are aggregated (no raw y); jitter rows are raw. The box domain
+		// (iqr + outliers) must still cover every raw jitter point so none is clipped.
+		const data = [1, 2, 3, 4, 100].map((v) => ({ g: 'X', v }))
+		const state = new PlotState({ data, channels: { x: 'g', y: 'v' }, width: 600, height: 400 })
+		state.registerGeom({ type: 'box', channels: { x: 'g', y: 'v' }, stat: 'boxplot' })
+		state.registerGeom({ type: 'jitter', channels: { x: 'g', y: 'v' }, stat: 'identity' })
+		const [domMin, domMax] = state.yScale.domain()
+		expect(domMin).toBeLessThanOrEqual(1)
+		expect(domMax).toBeGreaterThanOrEqual(100)
+		expect(typeof state.xScale.bandwidth).toBe('function')
+	})
 })

@@ -67,8 +67,15 @@ Gaps vs. the issues:
 
 ### 2. Violin (issue #144)
 
-No behavioral change. Promote `geoms/Violin.svelte` into the `Plot` namespace as
-`Plot.Violin`. KDE silhouette already works.
+Promote `geoms/Violin.svelte` into the `Plot` namespace as `Plot.Violin`. No new
+code — but note a **side-effect of the Tukey change**: `buildViolins` uses
+`iqr_min`/`iqr_max` as the violin's top/bottom silhouette anchors, and the
+composable Violin sources its rows from `applyBoxStat`. Redefining those fields
+from raw fences (`q1 ± 1.5·IQR`) to Tukey-clamped data extremes therefore shifts
+the violin's tapered tips to the actual data min/max instead of the theoretical
+fences. This is intentional and an improvement (the silhouette now spans real
+data), and the older brewer-based `charts/ViolinPlot.svelte` is unaffected (it
+computes its own fences in `QuartileBrewer`).
 
 ### 3. `Plot.Jitter` / beeswarm — new (issue #144)
 
