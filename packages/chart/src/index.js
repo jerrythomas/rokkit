@@ -9,6 +9,9 @@ import Point from './Plot/Point.svelte'
 import Arc from './Plot/Arc.svelte'
 import Highlight from './geoms/Highlight.svelte'
 import Trend from './geoms/Trend.svelte'
+import Box from './geoms/Box.svelte'
+import Violin from './geoms/Violin.svelte'
+import Jitter from './geoms/Jitter.svelte'
 
 // Composable Plot primitives — use as <Plot.Root>, <Plot.Axis>, <Plot.Bar>, etc.
 export const Plot = {
@@ -22,7 +25,10 @@ export const Plot = {
 	Point,
 	Arc,
 	Highlight,
-	Trend
+	Trend,
+	Box,
+	Violin,
+	Jitter
 }
 
 /** @deprecated Use Plot instead */
@@ -54,6 +60,7 @@ export { default as GeomHexbin } from './geoms/Hexbin.svelte'
 export { default as GeomRibbon } from './geoms/Ribbon.svelte'
 export { default as GeomHighlight } from './geoms/Highlight.svelte'
 export { default as GeomTrend } from './geoms/Trend.svelte'
+export { default as GeomJitter } from './geoms/Jitter.svelte'
 
 // Export standalone components
 export { default as Chart } from './Chart.svelte'
