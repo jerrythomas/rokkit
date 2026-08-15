@@ -71,6 +71,21 @@ describe('Box.svelte root-channel inheritance', () => {
 	})
 })
 
+describe('Box.svelte orientation flip', () => {
+	it('transposes the box body (width<->height) when the plot is flipped', () => {
+		const rows = [{ cat: 'A', q1: 20, median: 40, q3: 60, iqr_min: 10, iqr_max: 80, outliers: [] }]
+		const bodyOf = (state) => {
+			const { container } = render(TestBox, { props: { state, x: 'cat', y: 'val' } })
+			const r = container.querySelector('[data-plot-element="box-body"]')
+			return { w: Number(r.getAttribute('width')), h: Number(r.getAttribute('height')) }
+		}
+		const v = bodyOf(boxState(rows))
+		const f = bodyOf(boxState(rows, { isFlipped: true, place: (u, w) => ({ x: w, y: u }) }))
+		expect(f.w).toBeCloseTo(v.h)
+		expect(f.h).toBeCloseTo(v.w)
+	})
+})
+
 describe('Box.svelte outlier interactivity', () => {
 	it('labels each outlier with its value and is inspectable (not presentation)', () => {
 		const state = boxState() // BOX_ROWS carries outliers: [95]

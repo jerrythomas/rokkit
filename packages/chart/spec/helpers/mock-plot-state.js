@@ -33,6 +33,9 @@ export function createMockState(overrides = {}) {
 		registerGeom: (_config) => 'geom-0',
 		updateGeom: (_id, _config) => {},
 		unregisterGeom: (_id) => {},
+		// Orientation helpers (default: vertical → place is identity)
+		isFlipped: false,
+		place: (u, v) => ({ x: u, y: v }),
 		...overrides
 	}
 }

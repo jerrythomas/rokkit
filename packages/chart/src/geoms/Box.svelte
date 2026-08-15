@@ -52,91 +52,102 @@
 
 {#if boxes.length > 0}
 	<g data-plot-geom="box">
-		{#each boxes as box, i (`${String(box.cx)}::${i}`)}
-			{@const x0 = box.cx - box.width / 2}
-			{@const xMid = box.cx}
-			{@const xCap0 = box.cx - box.whiskerWidth / 2}
-			{@const xCap1 = box.cx + box.whiskerWidth / 2}
-			<!-- Box body (IQR): lighter fill shade -->
-			<rect
-				x={x0}
-				y={box.q3}
-				width={box.width}
-				height={Math.max(0, box.q1 - box.q3)}
-				fill={box.fill}
-				fill-opacity={options?.opacity ?? plotState.chartPreset.opacity.box}
-				stroke={box.stroke}
-				stroke-width="1"
-				data-plot-element="box-body"
-				role="graphics-symbol"
-				aria-label={`${String(box.data[xf ?? ''] ?? 'box')}: median ${box.data.median}, IQR ${box.data.q1}–${box.data.q3}`}
-				onmouseenter={() => plotState.setHovered(box.data)}
-				onmouseleave={() => plotState.clearHovered()}
-			/>
-			<!-- Median line: darker stroke shade -->
-			<line
-				x1={x0}
-				y1={box.median}
-				x2={x0 + box.width}
-				y2={box.median}
-				stroke={box.stroke}
-				stroke-width="2"
-				data-plot-element="box-median"
-			/>
-			<!-- Lower whisker (q1 to iqr_min) -->
-			<line
-				x1={xMid}
-				y1={box.q1}
-				x2={xMid}
-				y2={box.iqr_min}
-				stroke={box.stroke}
-				stroke-width="1"
-				data-plot-element="box-whisker"
-			/>
-			<!-- Upper whisker (q3 to iqr_max) -->
-			<line
-				x1={xMid}
-				y1={box.q3}
-				x2={xMid}
-				y2={box.iqr_max}
-				stroke={box.stroke}
-				stroke-width="1"
-				data-plot-element="box-whisker"
-			/>
-			<!-- Lower whisker cap -->
-			<line
-				x1={xCap0}
-				y1={box.iqr_min}
-				x2={xCap1}
-				y2={box.iqr_min}
-				stroke={box.stroke}
-				stroke-width="1"
-			/>
-			<!-- Upper whisker cap -->
-			<line
-				x1={xCap0}
-				y1={box.iqr_max}
-				x2={xCap1}
-				y2={box.iqr_max}
-				stroke={box.stroke}
-				stroke-width="1"
-			/>
-			<!-- Outliers: individual points beyond the 1.5·IQR fence -->
-			{#each box.outliers as o, oi (`${i}-outlier-${oi}`)}
-				<circle
-					cx={xMid}
-					cy={o.cy}
-					r="2"
-					fill="none"
+			{#each boxes as box, i (`${String(box.cx)}::${i}`)}
+				<!-- Each primitive is placed through plotState.place(band, value) so the whole
+				     box transposes correctly under orientation='horizontal' (flip). -->
+				{@const c1 = plotState.place(box.cx - box.width / 2, box.q3)}
+				{@const c2 = plotState.place(box.cx + box.width / 2, box.q1)}
+				{@const mA = plotState.place(box.cx - box.width / 2, box.median)}
+				{@const mB = plotState.place(box.cx + box.width / 2, box.median)}
+				{@const wLoA = plotState.place(box.cx, box.q1)}
+				{@const wLoB = plotState.place(box.cx, box.iqr_min)}
+				{@const wHiA = plotState.place(box.cx, box.q3)}
+				{@const wHiB = plotState.place(box.cx, box.iqr_max)}
+				{@const capLoA = plotState.place(box.cx - box.whiskerWidth / 2, box.iqr_min)}
+				{@const capLoB = plotState.place(box.cx + box.whiskerWidth / 2, box.iqr_min)}
+				{@const capHiA = plotState.place(box.cx - box.whiskerWidth / 2, box.iqr_max)}
+				{@const capHiB = plotState.place(box.cx + box.whiskerWidth / 2, box.iqr_max)}
+				<!-- Box body (IQR): lighter fill shade -->
+				<rect
+					x={Math.min(c1.x, c2.x)}
+					y={Math.min(c1.y, c2.y)}
+					width={Math.abs(c2.x - c1.x)}
+					height={Math.abs(c2.y - c1.y)}
+					fill={box.fill}
+					fill-opacity={options?.opacity ?? plotState.chartPreset.opacity.box}
 					stroke={box.stroke}
 					stroke-width="1"
-					data-plot-element="box-outlier"
+					data-plot-element="box-body"
 					role="graphics-symbol"
-					aria-label={`outlier: ${o.value}`}
-					onmouseenter={() => plotState.setHovered({ ...box.data, value: o.value })}
+					aria-label={`${String(box.data[xf ?? ''] ?? 'box')}: median ${box.data.median}, IQR ${box.data.q1}–${box.data.q3}`}
+					onmouseenter={() => plotState.setHovered(box.data)}
 					onmouseleave={() => plotState.clearHovered()}
 				/>
+				<!-- Median line: darker stroke shade -->
+				<line
+					x1={mA.x}
+					y1={mA.y}
+					x2={mB.x}
+					y2={mB.y}
+					stroke={box.stroke}
+					stroke-width="2"
+					data-plot-element="box-median"
+				/>
+				<!-- Lower whisker (q1 to iqr_min) -->
+				<line
+					x1={wLoA.x}
+					y1={wLoA.y}
+					x2={wLoB.x}
+					y2={wLoB.y}
+					stroke={box.stroke}
+					stroke-width="1"
+					data-plot-element="box-whisker"
+				/>
+				<!-- Upper whisker (q3 to iqr_max) -->
+				<line
+					x1={wHiA.x}
+					y1={wHiA.y}
+					x2={wHiB.x}
+					y2={wHiB.y}
+					stroke={box.stroke}
+					stroke-width="1"
+					data-plot-element="box-whisker"
+				/>
+				<!-- Lower whisker cap -->
+				<line
+					x1={capLoA.x}
+					y1={capLoA.y}
+					x2={capLoB.x}
+					y2={capLoB.y}
+					stroke={box.stroke}
+					stroke-width="1"
+				/>
+				<!-- Upper whisker cap -->
+				<line
+					x1={capHiA.x}
+					y1={capHiA.y}
+					x2={capHiB.x}
+					y2={capHiB.y}
+					stroke={box.stroke}
+					stroke-width="1"
+				/>
+				<!-- Outliers: individual points beyond the 1.5·IQR fence -->
+				{#each box.outliers as o, oi (`${i}-outlier-${oi}`)}
+					{@const op = plotState.place(box.cx, o.cy)}
+					<circle
+						cx={op.x}
+						cy={op.y}
+						r="2"
+						fill="none"
+						stroke={box.stroke}
+						stroke-width="1"
+						data-plot-element="box-outlier"
+						role="graphics-symbol"
+						aria-label={`outlier: ${o.value}`}
+						onmouseenter={() => plotState.setHovered({ ...box.data, value: o.value })}
+						onmouseleave={() => plotState.clearHovered()}
+					/>
+				{/each}
 			{/each}
-		{/each}
 	</g>
 {/if}
