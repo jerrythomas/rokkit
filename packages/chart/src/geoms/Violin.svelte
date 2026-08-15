@@ -46,7 +46,7 @@
 
 	const violins = $derived.by(() => {
 		if (!data?.length || !xScale || !yScale) return []
-		return buildViolins(data, { x: xf, fill: fillChannel }, xScale, yScale, colors)
+		return buildViolins(data, { x: xf, fill: fillChannel }, xScale, yScale, colors, plotState.place.bind(plotState))
 	})
 </script>
 

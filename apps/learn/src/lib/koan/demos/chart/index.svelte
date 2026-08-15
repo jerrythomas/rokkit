@@ -186,6 +186,12 @@
 					<Plot.Jitter x="class" y="hwy" method="jitter" r={3} />
 				</Plot.Root>
 			</div>
+			<div class="chart-stage">
+				<Plot.Root data={cars} x="class" y="hwy" orientation="horizontal" width={520} height={280}>
+					<Plot.Violin x="class" y="hwy" />
+					<Plot.Jitter x="class" y="hwy" method="jitter" r={2} />
+				</Plot.Root>
+			</div>
 		</section>
 
 	<section>

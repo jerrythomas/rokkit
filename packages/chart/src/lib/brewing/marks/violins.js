@@ -20,7 +20,7 @@ const ANCHOR_ORDER = ['iqr_max', 'q3', 'median', 'q1', 'iqr_min']
  * @param {Map} colors
  * @returns {Array}
  */
-export function buildViolins(data, channels, xScale, yScale, colors) {
+export function buildViolins(data, channels, xScale, yScale, colors, place = (x, y) => ({ x, y })) {
 	const { x: xf, fill: ff } = channels
 	const bw = typeof xScale.bandwidth === 'function' ? xScale.bandwidth() : 40
 	const grouped = ff && ff !== xf
@@ -55,7 +55,7 @@ export function buildViolins(data, channels, xScale, yScale, colors) {
 			return {
 				data: d,
 				cx,
-				d: pathGen([...rightPts, ...leftPts, rightPts[0]]),
+				d: pathGen([...rightPts, ...leftPts, rightPts[0]].map((pt) => place(pt.x, pt.y))),
 				fill: colorEntry.fill,
 				stroke: colorEntry.stroke
 			}
@@ -82,7 +82,7 @@ export function buildViolins(data, channels, xScale, yScale, colors) {
 		return {
 			data: d,
 			cx,
-			d: pathGen([...rightPts, ...leftPts, rightPts[0]]),
+			d: pathGen([...rightPts, ...leftPts, rightPts[0]].map((pt) => place(pt.x, pt.y))),
 			fill: colorEntry.fill,
 			stroke: colorEntry.stroke
 		}

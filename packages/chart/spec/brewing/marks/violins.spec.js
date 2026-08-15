@@ -13,6 +13,13 @@ describe('buildViolins', () => {
 		expect(violins).toHaveLength(1)
 	})
 
+	it('routes silhouette points through the place fn (flip transposes the path)', () => {
+		const [vertical] = buildViolins(data, { x: 'cat' }, xScale, yScale, colors)
+		const [flipped] = buildViolins(data, { x: 'cat' }, xScale, yScale, colors, (x, y) => ({ x: y, y: x }))
+		// A place() that swaps x/y must change the path (the silhouette transposes).
+		expect(flipped.d).not.toBe(vertical.d)
+	})
+
 	it('violin has d (SVG path), fill, stroke, cx', () => {
 		const [v] = buildViolins(data, { x: 'cat' }, xScale, yScale, colors)
 		expect(v).toHaveProperty('d')
