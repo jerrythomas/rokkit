@@ -74,6 +74,24 @@
   transition: filter 0.12s ease, opacity 0.15s ease;
 }
 
+/* ── Data-change / flip animation (opt-in) ──────────────────────────────────
+   When the chart root carries [data-plot-animate] — set AFTER the first mount so
+   the initial paint doesn't animate, and NOT set by AnimatedPlot (which tweens its
+   own frames) — marks glide/resize smoothly on data updates and on the orientation
+   flip. Only CSS-animatable geometry transitions (rect x/y/width/height, circle
+   cx/cy/r); path `d` and line endpoints can't, so those snap. */
+[data-plot-animate] [data-plot-element] {
+  transition:
+    x 0.4s ease, y 0.4s ease, width 0.4s ease, height 0.4s ease,
+    cx 0.4s ease, cy 0.4s ease, r 0.4s ease,
+    transform 0.12s ease, filter 0.12s ease, opacity 0.15s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-plot-animate] [data-plot-element] {
+    transition: filter 0.12s ease, opacity 0.15s ease;
+  }
+}
+
 /* Suppress the browser default focus rectangle (a large box on SVG shapes);
    the :focus-visible ring below (base fallback + per-style) replaces it. */
 [data-plot-element]:focus {

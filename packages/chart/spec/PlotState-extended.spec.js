@@ -628,6 +628,22 @@ describe('PlotState — horizontal orientation flip', () => {
 		expect(state.place(1, 2)).toEqual({ x: 1, y: 2 })
 	})
 
+	it('stays a no-op for a BAR geom over continuous x/y (AnimatedPlot value×_rank race)', () => {
+		// The bar geom force-bands a continuous x for scale construction; that must NOT make
+		// the chart read as flippable, or the horizontal bar race routes away from
+		// buildHorizontalBars and every entity collapses onto one row (all bars at y=0).
+		const race = [
+			{ revenue: 60, _rank: 0 }, { revenue: 40, _rank: 1 },
+			{ revenue: 20, _rank: 2 }, { revenue: 10, _rank: 3 }
+		]
+		const state = new PlotState({
+			data: race, channels: { x: 'revenue', y: '_rank' }, width: 400, height: 300, orientation: 'horizontal'
+		})
+		state.registerGeom({ type: 'bar', channels: { x: 'revenue', y: '_rank' }, stat: 'identity' })
+		expect(state.isFlipped).toBe(false)
+		expect(state.place(5, 9)).toEqual({ x: 5, y: 9 })
+	})
+
 	it('vertical (default) keeps category(x) over width, value(y) over height', () => {
 		const state = new PlotState({ data, channels: { x: 'cls', y: 'v' }, width: 400, height: 300 })
 		expect(state.isFlipped).toBe(false)

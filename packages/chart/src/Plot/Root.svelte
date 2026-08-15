@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { setContext, untrack } from 'svelte'
+	import { setContext, untrack, onMount } from 'svelte'
 	import type { Snippet } from 'svelte'
 	import { PlotState } from '../PlotState.svelte.js'
 	import { defaultPreset } from '../lib/preset.js'
@@ -19,6 +19,9 @@
 		 *  axis sideways — x/y channels are unchanged. `flip` is sugar for 'horizontal'. */
 		orientation?: 'vertical' | 'horizontal'
 		flip?: boolean
+		/** Animate marks on data/flip changes. Enabled one frame after mount so the
+		 *  initial layout paints un-animated. Default `true`. */
+		animate?: boolean
 		children?: Snippet
 	}
 
@@ -33,10 +36,21 @@
 		mode = 'light',
 		orientation = undefined,
 		flip = false,
+		animate = true,
 		children
 	}: Props = $props()
 
 	const resolvedOrientation = $derived(flip ? 'horizontal' : orientation)
+
+	// Enable data-change / flip animation one frame after mount so the initial
+	// layout paints without animating (see base/chart.css [data-plot-animate]).
+	let animateReady = $state(false)
+	onMount(() => {
+		const raf = requestAnimationFrame(() => {
+			animateReady = true
+		})
+		return () => cancelAnimationFrame(raf)
+	})
 
 	const plotState = untrack(
 		() =>
@@ -80,6 +94,7 @@
 	role="img"
 	aria-label="Chart visualization"
 	data-plot-root
+	data-plot-animate={animate && animateReady ? '' : undefined}
 >
 	<g transform="translate({marginLeft}, {marginTop})" data-plot-canvas>
 		{@render children?.()}

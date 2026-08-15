@@ -101,7 +101,12 @@ export class PlotState {
 		const x = this.#effectiveChannels.x
 		const y = this.#effectiveChannels.y
 		if (!x || !y) return false
-		return this.#resolveXType(inferFieldType(this.#data, x), inferFieldType(this.#data, y)) === 'band'
+		// Use the NATURAL x type, NOT the geom-forced band (CATEGORICAL_X). Forcing a band
+		// scale is a scale-construction concern (numeric categories still want a band axis);
+		// it must not leak into the flip decision. If it did, AnimatedPlot's value×_rank bar
+		// race (x=revenue continuous, forced to band by the bar geom) would read as flippable
+		// and route away from buildHorizontalBars, collapsing every entity onto one row.
+		return inferFieldType(this.#data, x) === 'band'
 	})
 
 	// Flip = render a category-on-x chart horizontally: the category (x) axis stands up

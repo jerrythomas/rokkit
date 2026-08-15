@@ -10,6 +10,7 @@
 		ViolinPlot,
 		Sparkline,
 		PlotChart,
+		AnimatedPlot,
 		GeomArea,
 		GeomLine,
 		Plot
@@ -73,6 +74,41 @@
 	const accentColor = 'rgb(var(--color-accent-500))'
 
 	let picked = $state<{ day: number; value: number } | null>(null)
+
+	// ── Animation demos ──────────────────────────────────────────────────────
+	// (a) Data-change / flip animation: two value sets over the same segments;
+	//     toggling swaps values (or orientation) and the bars glide via the
+	//     [data-plot-animate] CSS geometry transitions (no JS tweening).
+	const barsA = [
+		{ segment: 'Mobile', share: 42 },
+		{ segment: 'Desktop', share: 35 },
+		{ segment: 'Tablet', share: 15 },
+		{ segment: 'Smart TV', share: 5 },
+		{ segment: 'Other', share: 3 }
+	]
+	const barsB = [
+		{ segment: 'Mobile', share: 22 },
+		{ segment: 'Desktop', share: 48 },
+		{ segment: 'Tablet', share: 9 },
+		{ segment: 'Smart TV', share: 12 },
+		{ segment: 'Other', share: 9 }
+	]
+	let barSet = $state<'A' | 'B'>('A')
+	let barOrient = $state<'vertical' | 'horizontal'>('vertical')
+	const bars = $derived(barSet === 'A' ? barsA : barsB)
+
+	// (b) AnimatedPlot bar-chart race: revenue per company across years (frames).
+	//     Deterministic (Math.sin wobble, no RNG); rankings cross so the race moves.
+	const raceCompanies = ['Acme', 'Globex', 'Initech', 'Umbrella', 'Wayne']
+	const raceBase: Record<string, number> = { Acme: 60, Globex: 20, Initech: 35, Umbrella: 50, Wayne: 10 }
+	const raceGrowth: Record<string, number> = { Acme: 8, Globex: 14, Initech: 11, Umbrella: 6, Wayne: 17 }
+	const raceData = Array.from({ length: 6 }, (_, t) => t).flatMap((t) =>
+		raceCompanies.map((company) => ({
+			year: 2019 + t,
+			company,
+			revenue: Math.round(raceBase[company] + raceGrowth[company] * t + 6 * Math.sin(t + company.length))
+		}))
+	)
 </script>
 
 <div class="grid">
@@ -217,6 +253,52 @@
 		</section>
 
 	<section>
+		<header>Animate on change — bars glide on value & orientation changes (data-plot-animate)</header>
+		<div class="demo-controls">
+			<button type="button" onclick={() => (barSet = barSet === 'A' ? 'B' : 'A')}>
+				Toggle data (set {barSet})
+			</button>
+			<button
+				type="button"
+				onclick={() => (barOrient = barOrient === 'vertical' ? 'horizontal' : 'vertical')}
+			>
+				Orientation: {barOrient}
+			</button>
+		</div>
+		<div class="chart-stage">
+			<Plot.Root
+				data={bars}
+				x="segment"
+				y="share"
+				orientation={barOrient}
+				width={520}
+				height={280}
+				margin={{ top: 10, right: 20, bottom: 40, left: 80 }}
+			>
+				<Plot.Axis type="x" />
+				<Plot.Axis type="y" />
+				<Plot.Bar x="segment" y="share" fill="segment" />
+			</Plot.Root>
+		</div>
+	</section>
+
+	<section>
+		<header>AnimatedPlot — revenue bar-chart race (frames by year · press play)</header>
+		<div class="chart-stage">
+			<AnimatedPlot
+				data={raceData}
+				animate={{ by: 'year', duration: 900, loop: true }}
+				x="revenue"
+				y="company"
+				sorted
+				label
+				width={600}
+				height={280}
+			/>
+		</div>
+	</section>
+
+	<section>
 		<header>Sparkline — three inline shapes</header>
 		<div class="spark-row">
 			<div class="spark-tile">
@@ -274,6 +356,26 @@
 		margin: 8px 0 0;
 		font: 500 12px var(--font-mono);
 		color: var(--ink-soft);
+	}
+	.demo-controls {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+	.demo-controls button {
+		font: 500 11px var(--font-mono);
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: var(--ink-soft);
+		background: var(--paper);
+		border: 1px solid var(--paper-edge);
+		border-radius: 6px;
+		padding: 6px 12px;
+		cursor: pointer;
+	}
+	.demo-controls button:hover {
+		color: var(--ink);
+		border-color: var(--paper-edge-hover, var(--paper-edge));
 	}
 	.spark-row {
 		display: flex;

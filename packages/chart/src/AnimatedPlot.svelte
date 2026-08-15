@@ -364,7 +364,7 @@
 </script>
 
 <div data-plot-animated>
-	<PlotChart spec={frameSpec} {helpers} {width} {height} {mode} {grid} {legend}>
+	<PlotChart spec={frameSpec} {helpers} {width} {height} {mode} {grid} {legend} animate={false}>
 		{@render children?.()}
 	</PlotChart>
 

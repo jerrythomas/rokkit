@@ -57,6 +57,10 @@
 		onselect?: (detail: unknown) => void
 		selectable?: boolean
 		selected?: Row[]
+		/** Animate marks on data/flip changes (opt-out for e.g. AnimatedPlot, which
+		 *  tweens its own frames). Enabled one frame after the width settles so the
+		 *  initial layout paints un-animated. Default `true`. */
+		animate?: boolean
 		children?: Snippet
 	}
 
@@ -88,6 +92,7 @@
 		onselect = undefined,
 		selectable = false,
 		selected = $bindable([]),
+		animate = true,
 		children
 	}: Props = $props()
 
@@ -110,6 +115,17 @@
 	})
 
 	const effectiveWidth = $derived(observedWidth > 0 ? observedWidth : (spec?.width ?? width))
+
+	// Enable data-change / flip animation one frame after the responsive width first
+	// settles, so the initial (possibly reflowed) layout paints without animating.
+	let animateReady = $state(false)
+	$effect(() => {
+		if (!animate || animateReady || observedWidth <= 0) return
+		const raf = requestAnimationFrame(() => {
+			animateReady = true
+		})
+		return () => cancelAnimationFrame(raf)
+	})
 	const svgHeight = $derived(spec?.height ?? height)
 	const gridValue = $derived(spec?.grid ?? grid)
 	const showGrid = $derived(gridValue !== false)
@@ -229,7 +245,13 @@
 	}
 </script>
 
-<div class="plot-root" data-plot-root data-mode={mode} bind:this={containerEl}>
+<div
+	class="plot-root"
+	data-plot-root
+	data-mode={mode}
+	data-plot-animate={animate && animateReady ? '' : undefined}
+	bind:this={containerEl}
+>
 	{#if chartTitle}
 		<div class="plot-title" data-plot-title>{chartTitle}</div>
 	{/if}
