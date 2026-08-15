@@ -38,6 +38,50 @@ Verification: `qlty smells` clean on all 9 touched files; `test:ci` 5313 green; 
 (106 warnings, down from the 110 baseline); `check:types` clean. Remaining backlog: `routeData`
 (`router.ts`), `collectContrast`/`auditGallery` (`contrast-collector.mjs`).
 
+## 2026-08-15 — Chart: horizontal orientation for all geoms + geom consolidation + fixes
+
+Big chart session on top of the distribution geoms (below), all on `develop` / PR #145.
+
+**Horizontal orientation flip (SHIPPED)** — `<Plot.Root orientation="horizontal">` (or `flip`)
+rotates a category-x chart so the category axis stands up on screen-Y and the value axis runs
+along screen-X. **x/y channels stay fixed — only the direction changes** (user's explicit
+model). One primitive drives it: `plotState.place(band, value)` (identity vertical → byte-
+identical; swap when flipped). Each geom places its corners/vertices/edges through it. Scales
+get orientation-aware ranges; `#flipped = orientation==='horizontal' && bandIsX`, so it's a
+**no-op when both channels are continuous** — which is why AnimatedPlot's value×`_rank` race +
+all scatter charts are provably untouched (full suite green across every commit). Flipping:
+Point, Jitter, Box, Violin, Line, Area, Bar (grouped+stacked), Waterfall, Candlestick, and the
+Axis (category→left, value→bottom). N/A by design: Hexbin (both continuous), Heatmap (transpose
+is separate), Ribbon (sankey), Arc (radial). Spec:
+`docs/superpowers/specs/2026-08-15-geom-orientation-flip-design.md`.
+Reconciliation gotcha: the existing `orientation` was entangled with a channel-swap model
+(horizontal ⟺ x=value) that AnimatedPlot relies on — the flip is scoped to `bandIsX` charts to
+avoid disturbing it; the old `buildHorizontalBars` path is untouched.
+
+**Geom consolidation (one impl per geom)** — deleted the duplicate prop-based
+`Plot/{Bar,Line,Area,Point}.svelte` primitives (thin twins of the full `geoms/*` versions used
+by every high-level chart). `Plot.*` now points at `geoms/*` — matching how Box/Violin/Jitter
+already worked. Composable `Plot.*` gains the full-featured geoms (grouped/stacked, symbols,
+selection, crossfilter, flip); BREAKING: `Plot.Bar/Line/Area/Point` are now registration-based.
+
+**Seven fixes (each live-verified in-browser + reviewed):** (1) mark interactions — killed the
+browser default focus-outline rect, per-style `:focus-visible` rings (rokkit/minimal/material/
+frosted/zen-sumi) via `@rokkit/themes` base+per-style `chart.css`, hover scale on point-family;
+(2) pie/donut inner radius — `innerRadius` ≤1 fraction / >1 pixels + clamp (was a 60×radius
+mixup drawing a giant ring, black-circle centre); (3) composable geoms color by category
+(PlotState `#effectiveChannels` merged per-field so a geom's `color` no longer dropped → no
+more `#aaa` gray); (4) box outliers inspectable (role/aria/hover); (5) geoms inherit root
+channels (`x ?? plotState.channels?.x`); (6) learn app right-canvas scroll
+(`overflow-y:auto` on the response body); (7) svelte-check-only bugs the pre-commit tsc masks
+(guarded index types). Recurring lesson logged: **verify with the full package suite + `bun run
+check` (svelte-check), not a narrow filter or the pre-commit tsc.**
+
+**Method:** brainstorm → spec → plan → subagent-driven build with per-task spec + code-quality
+review; every substantive change adversarially reviewed and driven in a real browser via
+Playwright (found 3 defects green unit tests missed: masked-filter regression, focus-token that
+resolved empty, a `transform: scale` that teleported symbol/line marks). ~21 commits; full
+suite ~5322, lint 0 errors, svelte-check clean.
+
 ## 2026-08-14 — Chart: distribution geoms `Plot.Box` / `Plot.Violin` / `Plot.Jitter` (issues #143, #144)
 
 sensei's metric-detail views want a *distribution per period* (spread + outliers, not just a

@@ -1,7 +1,25 @@
 # Geom orientation / axis-flip (horizontal support for all geoms)
 
 **Date:** 2026-08-15
-**Status:** Approved (approach + scope) — spec for review before planning
+**Status:** ✅ SHIPPED (2026-08-15) — all value-axis geoms flip; see completion note below.
+
+## Completion note
+
+Delivered on `develop` (PR #145). Foundation (`isFlipped` / `place()` / orientation-aware
+scale ranges, AnimatedPlot no-op guard) + all value-axis geoms flipping, live-verified:
+**Point, Jitter, Box, Violin, Line, Area, Bar (grouped + stacked), Waterfall, Candlestick**,
+and the **Axis** (category → left, value → bottom). Every geom places its corners/vertices/
+edges through the single `plotState.place(band, value)` primitive (identity when vertical →
+byte-identical, swap when flipped). Also folded in the **geom consolidation** — one
+implementation per geom (deleted the duplicate `Plot/{Bar,Line,Area,Point}.svelte`
+primitives; `Plot.*` now points at `geoms/*` like Box/Violin/Jitter already did).
+
+**Deliberately N/A** (no value axis to reorient): Hexbin (both continuous → no-op),
+Heatmap (both categorical → transpose is a separate feature), Ribbon (sankey/flow layout),
+Arc/pie (radial).
+
+Commits: `86085fe4` foundation+Point/Jitter, `dd95c3f0` Box, `9f73bb7f` Violin, `9fdf03c0`
+Line/Area/Axis, `fc1d7fad` consolidation, `8a012ced` Bar, `76e97675` Waterfall/Candlestick.
 
 ## Goal
 

@@ -2,7 +2,7 @@
 
 **Date:** 2026-08-14
 **Issues:** [#143 Plot.Box](https://github.com/jerrythomas/rokkit/issues/143), [#144 Plot.Violin / beeswarm](https://github.com/jerrythomas/rokkit/issues/144)
-**Status:** Approved — ready for planning
+**Status:** ✅ SHIPPED (2026-08-14) — Plot.Box/Violin/Jitter with Tukey whiskers + outliers, buildSwarm (jitter/beeswarm), demo, on PR #145. Two follow-ups landed: box/violin/jitter inherit root channels; box outliers are inspectable (role + aria + hover).
 
 ## Problem
 
