@@ -172,3 +172,16 @@ describe('buildHorizontalBars', () => {
 		expect(bar29?.width).toBeCloseTo(xLin(29), 1)
 	})
 })
+
+describe('buildGroupedBars — orientation flip', () => {
+	const xs = scaleBand().domain(['compact', 'suv']).range([0, 300]).padding(0.2)
+	const ys = scaleLinear().domain([0, 30]).range([200, 0])
+	const cols = new Map([['f', { fill: '#a', stroke: '#a' }], ['4', { fill: '#b', stroke: '#b' }]])
+	it('transposes each bar rect (width<->height) via place() when flipped', () => {
+		const vertical = buildGroupedBars(data, { x: 'class', y: 'hwy', color: 'drv' }, xs, ys, cols, 200)
+		const flipped = buildGroupedBars(data, { x: 'class', y: 'hwy', color: 'drv' }, xs, ys, cols, 200, undefined, (x, y) => ({ x: y, y: x }))
+		// The flip swaps the rect's width and height for each bar.
+		expect(flipped[0].width).toBeCloseTo(vertical[0].height)
+		expect(flipped[0].height).toBeCloseTo(vertical[0].width)
+	})
+})

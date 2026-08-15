@@ -33,7 +33,7 @@ function subBandFields(channels) {
 	return out
 }
 
-export function buildGroupedBars(data, channels, xScale, yScale, colors, innerHeight, patterns) {
+export function buildGroupedBars(data, channels, xScale, yScale, colors, innerHeight, patterns, place = (x, y) => ({ x, y })) {
 	const { x: xf, y: yf, color: cf, pattern: pf } = channels
 
 	const bandScale = ensureBandX(xScale, data, xf)
@@ -50,10 +50,12 @@ export function buildGroupedBars(data, channels, xScale, yScale, colors, innerHe
 	// Baseline for bars: at y=0 when domain spans zero (supports negative bars),
 	// otherwise at the bottom of the chart area.
 	const yDomain = typeof yScale.bandwidth !== 'function' ? yScale.domain?.() : null
+	// Value baseline: y=0 when the domain spans zero (supports negative bars), else the
+	// value-axis origin (yScale.range()[0] — innerHeight when vertical, 0 when flipped).
 	const baseline =
 		yDomain && yDomain[0] <= 0 && yDomain[yDomain.length - 1] >= 0
-			? (yScale(0) ?? innerHeight)
-			: innerHeight
+			? (yScale(0) ?? yScale.range()[0])
+			: yScale.range()[0]
 
 	return data.map((d, i) => {
 		const xVal = d[xf]
@@ -70,17 +72,20 @@ export function buildGroupedBars(data, channels, xScale, yScale, colors, innerHe
 
 		const bandX = bandScale(xVal) ?? 0
 		const subX = subScale && subKey ? (subScale(subKey) ?? 0) : 0
-		const barX = bandX + subX
-		const barWidth = subScale ? subScale.bandwidth() : bandScale.bandwidth()
-		const barY = yScale(d[yf]) ?? baseline
+		const barBand = bandX + subX
+		const barThickness = subScale ? subScale.bandwidth() : bandScale.bandwidth()
+		const barValue = yScale(d[yf]) ?? baseline
+		// Two opposite corners in (band, value) space, placed to screen — transposes under flip.
+		const c1 = place(barBand, baseline)
+		const c2 = place(barBand + barThickness, barValue)
 
 		return {
 			data: d,
 			key: `${String(xVal)}::${subKey}::${i}`,
-			x: barX,
-			y: Math.min(barY, baseline),
-			width: barWidth,
-			height: Math.abs(baseline - barY),
+			x: Math.min(c1.x, c2.x),
+			y: Math.min(c1.y, c2.y),
+			width: Math.abs(c2.x - c1.x),
+			height: Math.abs(c2.y - c1.y),
 			fill: colorEntry.fill,
 			stroke: colorEntry.stroke,
 			patternId
@@ -88,7 +93,7 @@ export function buildGroupedBars(data, channels, xScale, yScale, colors, innerHe
 	})
 }
 
-export function buildStackedBars(data, channels, xScale, yScale, colors, innerHeight, patterns) {
+export function buildStackedBars(data, channels, xScale, yScale, colors, innerHeight, patterns, place = (x, y) => ({ x, y })) {
 	const { x: xf, y: yf, color: cf, pattern: pf } = channels
 
 	const bandScale = ensureBandX(xScale, data, xf)
@@ -96,7 +101,7 @@ export function buildStackedBars(data, channels, xScale, yScale, colors, innerHe
 	// Stack dimension: first non-x grouping field (prefer pattern, then color)
 	const subFields = subBandFields(channels)
 	if (subFields.length === 0) {
-		return buildGroupedBars(data, channels, xScale, yScale, colors, innerHeight, patterns)
+		return buildGroupedBars(data, channels, xScale, yScale, colors, innerHeight, patterns, place)
 	}
 	const stackField = subFields[0]
 

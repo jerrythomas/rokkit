@@ -102,6 +102,16 @@
 	const bars = $derived.by(() => {
 		if (!data?.length || !xScale || !yScale) return []
 		const channels = { x, y, color: colorChannel, pattern }
+		// Orientation flip (category-x → horizontal): reuse the grouped/stacked builders but
+		// transpose each rect through place(). Kept separate from the old channel-swap
+		// `horizontal` path below, which AnimatedPlot's value×_rank race still relies on.
+		if (plotState.isFlipped) {
+			const place = plotState.place.bind(plotState)
+			if (options.stack) {
+				return buildStackedBars(data, channels, xScale, yScale, colors, innerHeight, patterns, place)
+			}
+			return buildGroupedBars(data, channels, xScale, yScale, colors, innerHeight, patterns, place)
+		}
 		if (effectiveOrientation === 'horizontal') {
 			return buildHorizontalBars(data, channels, xScale, yScale, colors, innerHeight)
 		}

@@ -199,9 +199,16 @@
 		</section>
 
 		<section>
-			<header>Composable Plot.Bar — unified geom (one impl, was two)</header>
+			<header>Composable Plot.Bar — unified geom, vertical + horizontal (flip)</header>
 			<div class="chart-stage">
 				<Plot.Root data={segments} x="segment" y="share" width={520} height={280} margin={{ top: 10, right: 20, bottom: 40, left: 50 }}>
+					<Plot.Axis type="x" />
+					<Plot.Axis type="y" />
+					<Plot.Bar x="segment" y="share" fill="segment" />
+				</Plot.Root>
+			</div>
+			<div class="chart-stage">
+				<Plot.Root data={segments} x="segment" y="share" orientation="horizontal" width={520} height={280} margin={{ top: 10, right: 20, bottom: 40, left: 80 }}>
 					<Plot.Axis type="x" />
 					<Plot.Axis type="y" />
 					<Plot.Bar x="segment" y="share" fill="segment" />
