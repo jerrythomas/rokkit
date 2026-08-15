@@ -6,6 +6,28 @@ function sortedQuantile(values, p) {
 }
 
 /**
+ * Tukey whisker bounds for a group of numeric values.
+ * Whiskers clamp to the most extreme datum within the 1.5·IQR fence;
+ * values outside the fence are outliers.
+ *
+ * @param {number[]} values
+ * @returns {{ min: number, max: number, outliers: number[] }}
+ */
+function whiskerBounds(values) {
+	const q1 = sortedQuantile(values, 0.25)
+	const q3 = sortedQuantile(values, 0.75)
+	const iqr = q3 - q1
+	const lo = q1 - 1.5 * iqr
+	const hi = q3 + 1.5 * iqr
+	const within = values.filter((v) => v >= lo && v <= hi)
+	return {
+		min: within.length ? min(within) : q1,
+		max: within.length ? max(within) : q3,
+		outliers: values.filter((v) => v < lo || v > hi)
+	}
+}
+
+/**
  * Built-in reduction functions. Each receives an array of numeric values.
  * @type {Record<string, (values: number[]) => number>}
  */
@@ -19,7 +41,9 @@ export const STAT_FNS = {
 
 /**
  * Computes box plot quartile statistics grouped by x (and optionally color).
- * Output rows have { q1, median, q3, iqr_min, iqr_max } replacing the raw y values.
+ * Output rows have { q1, median, q3, iqr_min, iqr_max, outliers } replacing the raw y values.
+ * iqr_min/iqr_max are Tukey-clamped whisker endpoints (most extreme datum within
+ * the 1.5·IQR fence); outliers holds values outside the fence.
  *
  * @param {Object[]} data
  * @param {{ x?: string, y?: string, color?: string }} channels
@@ -35,16 +59,9 @@ export function applyBoxStat(data, channels) {
 			q1: (v) => sortedQuantile(v, 0.25),
 			median: (v) => sortedQuantile(v, 0.5),
 			q3: (v) => sortedQuantile(v, 0.75),
-			iqr_min: (v) => {
-				const q1 = sortedQuantile(v, 0.25)
-				const q3 = sortedQuantile(v, 0.75)
-				return q1 - 1.5 * (q3 - q1)
-			},
-			iqr_max: (v) => {
-				const q1 = sortedQuantile(v, 0.25)
-				const q3 = sortedQuantile(v, 0.75)
-				return q3 + 1.5 * (q3 - q1)
-			}
+			iqr_min: (v) => whiskerBounds(v).min,
+			iqr_max: (v) => whiskerBounds(v).max,
+			outliers: (v) => whiskerBounds(v).outliers
 		})
 		.rollup()
 		.select()

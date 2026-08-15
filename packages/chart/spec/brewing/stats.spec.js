@@ -88,18 +88,39 @@ describe('applyBoxStat', () => {
 		expect(a.q3).toBeCloseTo(32.5)
 	})
 
-	it('computes iqr_min = q1 - 1.5 * IQR', () => {
+	it('clamps iqr_min to the smallest datum within the lower fence', () => {
 		const result = applyBoxStat(boxData, { x: 'class', y: 'hwy' })
 		const a = result.find((r) => r.class === 'A')
-		// IQR = 32.5 - 17.5 = 15, iqr_min = 17.5 - 1.5*15 = -5
-		expect(a.iqr_min).toBeCloseTo(-5)
+		// A = [10,20,30,40]: q1=17.5, q3=32.5, IQR=15, fence_min=-5 → smallest datum ≥ -5 is 10
+		expect(a.iqr_min).toBeCloseTo(10)
 	})
 
-	it('computes iqr_max = q3 + 1.5 * IQR', () => {
+	it('clamps iqr_max to the largest datum within the upper fence', () => {
 		const result = applyBoxStat(boxData, { x: 'class', y: 'hwy' })
 		const a = result.find((r) => r.class === 'A')
-		// IQR = 32.5 - 17.5 = 15, iqr_max = 32.5 + 1.5*15 = 55
-		expect(a.iqr_max).toBeCloseTo(55)
+		// fence_max = 32.5 + 1.5*15 = 55 → largest datum ≤ 55 is 40
+		expect(a.iqr_max).toBeCloseTo(40)
+	})
+
+	it('returns an empty outliers array when all data is within the fence', () => {
+		const result = applyBoxStat(boxData, { x: 'class', y: 'hwy' })
+		const a = result.find((r) => r.class === 'A')
+		expect(a.outliers).toEqual([])
+	})
+
+	it('extracts values beyond the fence as outliers and clamps whiskers to inliers', () => {
+		// [1,2,3,4,100]: q1=2, q3=4, IQR=2, fence=[-1,7] → 100 is an outlier
+		const withOutlier = [
+			{ g: 'X', v: 1 },
+			{ g: 'X', v: 2 },
+			{ g: 'X', v: 3 },
+			{ g: 'X', v: 4 },
+			{ g: 'X', v: 100 }
+		]
+		const [row] = applyBoxStat(withOutlier, { x: 'g', y: 'v' })
+		expect(row.outliers).toEqual([100])
+		expect(row.iqr_min).toBeCloseTo(1)
+		expect(row.iqr_max).toBeCloseTo(4)
 	})
 
 	it('groups by x + color when color channel provided', () => {
