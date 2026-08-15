@@ -165,15 +165,15 @@
 		<div class="chart-stage">
 			<Plot.Root data={cars} x="class" y="hwy" width={520} height={280}>
 				<Plot.Axis />
-				<Plot.Box />
-				<Plot.Jitter method="swarm" r={2.5} />
+				<Plot.Box x="class" y="hwy" />
+				<Plot.Jitter x="class" y="hwy" method="swarm" r={2.5} />
 			</Plot.Root>
 		</div>
 		<div class="chart-stage">
 			<Plot.Root data={cars} x="class" y="hwy" width={520} height={280}>
 				<Plot.Axis />
-				<Plot.Violin />
-				<Plot.Jitter method="jitter" r={2} />
+				<Plot.Violin x="class" y="hwy" />
+				<Plot.Jitter x="class" y="hwy" method="jitter" r={2} />
 			</Plot.Root>
 		</div>
 	</section>
