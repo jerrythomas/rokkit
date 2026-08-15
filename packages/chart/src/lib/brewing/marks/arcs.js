@@ -15,7 +15,13 @@ import { toPatternId } from '../../brewing/patterns.js'
 export function buildArcs(data, channels, colors, width, height, opts = {}, patterns) {
 	const { color: lf, y: yf } = channels
 	const radius = Math.min(width, height) / 2
-	const innerRadius = opts.innerRadius ?? 0
+	// innerRadius: a value <= 1 is a fraction of the radius (responsive donut);
+	// a value > 1 is absolute pixels. Clamp below the outer radius so a bad value
+	// (e.g. a fraction/pixel mixup) can never invert the arc into a giant ring
+	// rendered outside the circle.
+	const rawInner = opts.innerRadius ?? 0
+	const innerPx = rawInner <= 1 ? rawInner * radius : rawInner
+	const innerRadius = Math.max(0, Math.min(innerPx, radius * 0.98))
 	const pieGen = pie().value((d) => Number(d[yf]))
 	const arcGen = arc().innerRadius(innerRadius).outerRadius(radius)
 	const slices = pieGen(data)

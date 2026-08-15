@@ -63,3 +63,40 @@ describe('buildArcs — color channel drives fill lookup', () => {
 		expect(donutArcs[0].d).not.toBe(solidArcs[0].d)
 	})
 })
+
+// Extract the arc radii from an SVG path's `A<rx>,<ry>` commands.
+const arcRadii = (d) => [...d.matchAll(/A(\d+(?:\.\d+)?),/g)].map((m) => Number(m[1]))
+
+describe('buildArcs — innerRadius interpretation + clamp', () => {
+	const ch = { color: 'segment', y: 'hwy' }
+
+	it('a solid pie draws to the outer radius min(w,h)/2 (no oversized ring)', () => {
+		// 400x400 → outer radius 200
+		const [arc] = buildArcs(data, ch, colors, 400, 400, { innerRadius: 0 })
+		expect(Math.max(...arcRadii(arc.d))).toBeCloseTo(200, -1)
+	})
+
+	it('interprets innerRadius <= 1 as a fraction of the radius (responsive donut)', () => {
+		// 400x400 → R 200; fraction 0.5 → inner 100
+		const [arc] = buildArcs(data, ch, colors, 400, 400, { innerRadius: 0.5 })
+		const rs = arcRadii(arc.d)
+		expect(Math.max(...rs)).toBeCloseTo(200, -1)
+		expect(Math.min(...rs)).toBeCloseTo(100, 0)
+	})
+
+	it('interprets innerRadius > 1 as absolute pixels', () => {
+		// 400x400 → R 200; 60px inner hole
+		const [arc] = buildArcs(data, ch, colors, 400, 400, { innerRadius: 60 })
+		const rs = arcRadii(arc.d)
+		expect(Math.max(...rs)).toBeCloseTo(200, -1)
+		expect(Math.min(...rs)).toBeCloseTo(60, 0)
+	})
+
+	it('clamps an out-of-range innerRadius so slices never render outside the circle', () => {
+		// The original bug: a fraction×px mixup produced innerRadius 11400 >> outer 200,
+		// which d3 silently swapped into a giant ring outside the circle. The clamp must
+		// keep the outer radius ~200 regardless.
+		const [arc] = buildArcs(data, ch, colors, 400, 400, { innerRadius: 11400 })
+		expect(Math.max(...arcRadii(arc.d))).toBeLessThanOrEqual(201)
+	})
+})

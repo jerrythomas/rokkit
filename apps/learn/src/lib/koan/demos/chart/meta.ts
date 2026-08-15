@@ -42,7 +42,7 @@ const meta: DemoMeta = {
 			{ name: 'selectable', type: 'boolean', default: 'false', desc: 'Opt-in click-to-highlight: clicking toggles a multi-selection rendered via the Highlight overlay' },
 			{ name: 'selected', type: 'Row[] (bindable)', desc: 'Bindable selected rows (bind:selected); PlotState is the source of truth' },
 			{ name: 'tooltip', type: 'boolean', default: 'false', desc: 'Hover tooltip with the underlying row' },
-			{ name: 'innerRadius', type: 'number', default: '0', desc: 'Pie inner radius — set non-zero for a donut' },
+			{ name: 'innerRadius', type: 'number', default: '0', desc: 'Donut hole — a value ≤1 is a fraction of the radius, >1 is pixels' },
 			{ name: 'width', type: 'number', default: '600', desc: 'SVG width (400 for Pie; smaller for Sparkline)' },
 			{ name: 'height', type: 'number', default: '400', desc: 'SVG height' }
 		],

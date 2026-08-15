@@ -65,14 +65,15 @@
 		// this derived runs first with stale data whose rows don't have the new
 		// field — causing all keys to be undefined (duplicate key error).
 		if (fillField && !(fillField in data[0])) return []
-		const innerRadius = ((options.innerRadius ?? 0) * Math.min(w, h)) / 2
+		// innerRadius passed through raw — buildArcs interprets it (a fraction of the
+		// radius when <= 1, absolute pixels when > 1) and clamps it below the outer radius.
 		return buildArcs(
 			data,
 			{ color: fillField, y: theta, pattern },
 			colors,
 			w,
 			h,
-			{ innerRadius },
+			{ innerRadius: options.innerRadius ?? 0 },
 			patterns
 		)
 	})
