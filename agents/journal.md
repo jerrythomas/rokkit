@@ -1,5 +1,91 @@
 # Project Journal
 
+## 2026-08-14 — qlty hotspots: `llm.svelte.ts` + `doctor.js` resolved behind characterization tests
+
+Picked up `docs/backlog/2026-08-14-demo-app-complexity-refactors.md`. The demo-app hotspots
+actually live in `lib/chat-demo/llm.svelte.ts` (not `router.ts` as the backlog table said), plus
+`packages/cli/src/doctor.js`:
+
+**`llm.svelte.ts`** (file-complexity 154 → 0 smells):
+- Added `apps/learn/spec/chat-demo/parse.spec.ts` (42 characterization tests) covering
+  `toolNameToFence`, `inferFenceLanguage`, `findBalancedBraceEnd`, `wrapBareJSON`,
+  `splitSuggestions`, `parseCompletion`, `buildSystemPrompt`, and `routeViaLLM` error/status
+  mapping via stubbed `fetch`. Four expectations were corrected to the *actual* behavior
+  (multi-fence output keeps leftover blank lines; malformed-suggestions content degrades to the
+  `(empty response)` prose block; the 240-char truncation path is only reachable via a long
+  non-status error because `routeViaOpenRouter` caps bodies at 200).
+- Split the pure parsing out of `llm.svelte.ts` into three sibling modules:
+  - `parse.ts` — `parseCompletion`, `splitSuggestions` + façade re-exports.
+  - `scan.ts` — `copyFence`, `wrapBareJSON`, `skipString`, `findBalancedBraceEnd`.
+  - `prompt.ts` — `buildSystemPrompt`, `inferFenceLanguage` (matcher table), `toolNameToFence`
+    (lookup map).
+- `routeViaLLM`'s 5-level title/hint ternary chains → `OPENROUTER_STATUS_META` lookup table
+  (per-status `title(model)` factory + `hint`) + a shared `formatErrorDetail` helper (also used
+  by the web-llm catch). Dropped the dead `inFence` flag in `wrapBareJSON`; extracted
+  `copyFence`/`skipString` scanners. `llm.svelte.ts` now holds only state/engine/routing.
+
+**`packages/cli/src/doctor.js`** (file-complexity 81 → 0 smells):
+- Split into `checks.js` (the six checks + `runChecks`), `fix.js` (fs adapter, auto-fix
+  handlers, `defaultStarterSource`, `autoFix`), `report.js` (`printChecks`, `handleResults`),
+  and `validate.js` (`validateConfigShape`, `checkTextTokenUsage`). `doctor.js` is now command
+  orchestration + re-exports, so `doctor.spec.js` imports are untouched and per-file coverage
+  stays 100% statements + lines on all five CLI files.
+
+Also typed `items` as `unknown[]` in `splitSuggestions` (killed an implicit-`any` svelte-check
+error that had come along in the verbatim move).
+
+Verification: `qlty smells` clean on all 9 touched files; `test:ci` 5313 green; `lint` 0 errors
+(106 warnings, down from the 110 baseline); `check:types` clean. Remaining backlog: `routeData`
+(`router.ts`), `collectContrast`/`auditGallery` (`contrast-collector.mjs`).
+
+## 2026-08-14 — Chart: distribution geoms `Plot.Box` / `Plot.Violin` / `Plot.Jitter` (issues #143, #144)
+
+sensei's metric-detail views want a *distribution per period* (spread + outliers, not just a
+median). Shipped the composable distribution geoms. Subagent-driven (fresh implementer + spec/
+quality reviewers per task; two real bugs caught by review + live browser test).
+
+**What shipped:**
+- **`Plot.Box`** — promoted the existing registration-based `geoms/Box.svelte` into the `Plot.*`
+  namespace, now with **proper Tukey whiskers + outlier points**. `applyBoxStat` redefines
+  `iqr_min`/`iqr_max` as the clamped whisker endpoints (most extreme datum *within* the 1.5·IQR
+  fence) and adds an `outliers: number[]` field; `buildBoxes` maps outliers to screen positions;
+  `Box.svelte` renders `data-plot-element="box-outlier"` circles.
+- **`Plot.Violin`** — promoted `geoms/Violin.svelte` (KDE silhouette, unchanged) into `Plot.*`.
+- **`Plot.Jitter`** — NEW beeswarm geom + `buildSwarm` mark builder (`lib/brewing/marks/swarm.js`),
+  prop-selectable `method='jitter'|'swarm'`. Both deterministic (no `Math.random`; `Math.sin`-hash
+  jitter). Swarm greedily dodges to keep points ≥2r apart; when a band is over capacity it spreads
+  overflow to the least-crowded slot instead of stacking at center.
+- **`PlotState`**: `#resolveBoxDomain` folds outliers into the y-domain (dots not clipped);
+  generalized bar-only band-x forcing to `CATEGORICAL_X = {bar,box,violin,jitter}` so numeric
+  periods still get a categorical x-axis. Additive — bar/orientation behavior unchanged.
+- Exports: `Plot.Box/Violin/Jitter` + `GeomJitter`. Live composable demo in the Koan chart page.
+
+**Two bugs caught mid-build (not fudged):**
+1. Review found the Tukey change broke a stale `PlotState.spec.js` assertion that hard-coded the
+   old *fence* values (−5/55) — the implementer's narrow `-- chart` test filter had masked it
+   (123 tests vs the full 1252). Fixed the assertion; lesson: verify against the full package
+   suite, not a path-substring filter, after a semantic-changing edit.
+2. **Live browser test** (Playwright on `/app/chart`) surfaced 36 `<rect height="NaN">` console
+   errors the build/unit tests never caught: the demo used `<Plot.Box />` without `x`/`y`, and
+   `PlotState.geomData`'s `{...root, ...geomChannels}` merge lets a geom's `undefined` channel
+   **clobber** the root's — so `applyBoxStat` saw no x/y and emitted rows with no quartiles.
+   Fixed the demo to pass explicit `x`/`y` (the documented API). Follow-up worth filing: harden
+   `geomData` to skip `undefined` geom-channel values so `<Plot.Box>` can safely inherit root
+   channels instead of silently NaN-ing.
+   Also: `svelte-check` (the CI `bun run check` gate) caught a `pt.data[x]` index-type error that
+   the pre-commit `tsc --noEmit` had masked — guarded with `x ?? ''` + typed `buildSwarm`'s point
+   `data` as `Record<string, unknown>`.
+
+**Commits (develop):** spec `f39d3225` / plan `3d358622`; `11508550` Tukey whiskers+outliers,
+`e1676b46` PlotState box-domain test fix, `e68d5501` buildBoxes outliers, `3e64e7f8` Box.svelte
+outlier render, `9ee67564` PlotState outlier-domain + band-x, `7aa8137a` buildSwarm, `d7fdd9da`
+swarm overflow fix, `f07d361f` Jitter geom, `349c08b9` Jitter svelte-check guard, `881babc0`
+exports, `06652a33` demo, `3c45e1b7` demo x/y fix.
+
+**Final gate:** `bun run test:ci` = **5334 tests / 372 files**, all green; `lint` **0 errors**;
+`check:types` + `check:svelte` clean (chart 0/0). Live `/app/chart` composable section: 0 console
+errors, 5 boxes + 5 violins + 36 jitter points rendered, 0 NaN geometry.
+
 ## 2026-07-16 — Fix #140: non-collapsible List group headers no longer block interactive group-snippet content
 
 `List` rendered group headers as `<button disabled={!collapsible}>`. With
