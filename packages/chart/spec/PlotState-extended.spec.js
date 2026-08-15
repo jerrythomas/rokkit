@@ -593,6 +593,49 @@ describe('PlotState — band x-axis for box/violin/jitter with numeric x', () =>
 	})
 })
 
+// ─── horizontal flip (category-x charts) ───────────────────────────────────────
+describe('PlotState — horizontal orientation flip', () => {
+	const data = [
+		{ cls: 'A', v: 10 }, { cls: 'A', v: 20 },
+		{ cls: 'B', v: 30 }, { cls: 'B', v: 40 }
+	]
+
+	it('flips scale ranges: category(x) over height, value(y) over width', () => {
+		const state = new PlotState({
+			data, channels: { x: 'cls', y: 'v' }, width: 400, height: 300, orientation: 'horizontal'
+		})
+		expect(state.isFlipped).toBe(true)
+		// x (category, band) now spans the vertical screen (height)
+		expect(typeof state.xScale.bandwidth).toBe('function')
+		expect(Math.max(...state.xScale.range())).toBeCloseTo(state.innerHeight)
+		// y (value) now spans the horizontal screen (width)
+		expect(Math.max(...state.yScale.range())).toBeCloseTo(state.innerWidth)
+	})
+
+	it('place() swaps the screen axes when flipped', () => {
+		const state = new PlotState({
+			data, channels: { x: 'cls', y: 'v' }, width: 400, height: 300, orientation: 'horizontal'
+		})
+		expect(state.place(11, 22)).toEqual({ x: 22, y: 11 })
+	})
+
+	it('is a no-op when both channels are continuous (scatter / AnimatedPlot race)', () => {
+		const scatter = [{ a: 1, b: 2 }, { a: 3, b: 4 }]
+		const state = new PlotState({
+			data: scatter, channels: { x: 'a', y: 'b' }, width: 400, height: 300, orientation: 'horizontal'
+		})
+		expect(state.isFlipped).toBe(false)
+		expect(state.place(1, 2)).toEqual({ x: 1, y: 2 })
+	})
+
+	it('vertical (default) keeps category(x) over width, value(y) over height', () => {
+		const state = new PlotState({ data, channels: { x: 'cls', y: 'v' }, width: 400, height: 300 })
+		expect(state.isFlipped).toBe(false)
+		expect(Math.max(...state.xScale.range())).toBeCloseTo(state.innerWidth)
+		expect(Math.max(...state.yScale.range())).toBeCloseTo(state.innerHeight)
+	})
+})
+
 // ─── geom color channel drives colors when top-level color is unset ────────────
 describe('PlotState — colors fall back to the first geom color channel', () => {
 	it('derives per-category colors from a geom color channel when the Plot has x/y but no color', () => {

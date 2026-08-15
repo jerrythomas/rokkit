@@ -17,6 +17,7 @@ export function inferOrientation(xType, yType) {
 }
 
 export function buildUnifiedXScale(datasets, field, width, opts = {}) {
+	const range = opts.range ?? [0, width]
 	const allValues = datasets.flatMap((d) => d.map((r) => r[field]))
 	const isNumeric = allValues.every(
 		(v) => typeof v === 'number' || (!isNaN(Number(v)) && String(v).trim() !== '')
@@ -26,11 +27,11 @@ export function buildUnifiedXScale(datasets, field, width, opts = {}) {
 	if (opts.domain) {
 		const domainIsNumeric = opts.domain.every((v) => typeof v === 'number')
 		if (!opts.band && (domainIsNumeric || isNumeric)) {
-			return scaleLinear().domain(opts.domain).range([0, width]).nice()
+			return scaleLinear().domain(opts.domain).range(range).nice()
 		}
 		return scaleBand()
 			.domain(opts.domain)
-			.range([0, width])
+			.range(range)
 			.padding(opts.padding ?? 0.2)
 	}
 
@@ -40,20 +41,21 @@ export function buildUnifiedXScale(datasets, field, width, opts = {}) {
 		const domainMin = (opts.includeZero ?? false) ? 0 : (minVal ?? 0)
 		return scaleLinear()
 			.domain([domainMin, maxVal ?? 0])
-			.range([0, width])
+			.range(range)
 			.nice()
 	}
 
 	const domain = [...new Set(allValues)].filter((v) => v !== null && v !== undefined)
 	return scaleBand()
 		.domain(domain)
-		.range([0, width])
+		.range(range)
 		.padding(opts.padding ?? 0.2)
 }
 
 export function buildUnifiedYScale(datasets, field, height, opts = {}) {
+	const yrange = opts.range ?? [height, 0]
 	if (opts.domain) {
-		return scaleLinear().domain(opts.domain).range([height, 0]).nice()
+		return scaleLinear().domain(opts.domain).range(yrange).nice()
 	}
 	const rawValues = datasets.flatMap((d) => d.map((r) => r[field])).filter((v) => v !== null && v !== undefined)
 	const isNumeric = rawValues.length > 0 && rawValues.every(
@@ -62,14 +64,14 @@ export function buildUnifiedYScale(datasets, field, height, opts = {}) {
 	if (!isNumeric) {
 		// Categorical y-axis (e.g. horizontal bar chart) — use scaleBand
 		const domain = [...new Set(rawValues.map(String))]
-		return scaleBand().domain(domain).range([height, 0]).padding(0.2)
+		return scaleBand().domain(domain).range(yrange).padding(0.2)
 	}
 	const numericValues = rawValues.map(Number)
 	const [minVal, maxVal] = extent(numericValues)
 	const domainMin = (opts.includeZero ?? true) ? 0 : (minVal ?? 0)
 	return scaleLinear()
 		.domain([domainMin, maxVal ?? 0])
-		.range([height, 0])
+		.range(yrange)
 		.nice()
 }
 

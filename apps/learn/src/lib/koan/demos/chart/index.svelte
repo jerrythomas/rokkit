@@ -178,6 +178,15 @@
 		</div>
 	</section>
 
+		<section>
+			<header>Orientation flip — horizontal jitter strip (same x/y, orientation="horizontal")</header>
+			<div class="chart-stage">
+				<Plot.Root data={cars} x="class" y="hwy" orientation="horizontal" width={520} height={280}>
+					<Plot.Jitter x="class" y="hwy" method="jitter" r={3} />
+				</Plot.Root>
+			</div>
+		</section>
+
 	<section>
 		<header>Sparkline — three inline shapes</header>
 		<div class="spark-row">

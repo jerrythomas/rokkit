@@ -15,6 +15,10 @@
 		height?: number
 		margin?: Margin
 		mode?: 'light' | 'dark'
+		/** Chart direction. 'horizontal' stands the category axis up and runs the value
+		 *  axis sideways — x/y channels are unchanged. `flip` is sugar for 'horizontal'. */
+		orientation?: 'vertical' | 'horizontal'
+		flip?: boolean
 		children?: Snippet
 	}
 
@@ -27,8 +31,12 @@
 		height = 400,
 		margin = undefined,
 		mode = 'light',
+		orientation = undefined,
+		flip = false,
 		children
 	}: Props = $props()
+
+	const resolvedOrientation = $derived(flip ? 'horizontal' : orientation)
 
 	const plotState = untrack(
 		() =>
@@ -39,6 +47,7 @@
 				height,
 				margin,
 				mode,
+				orientation: flip ? 'horizontal' : orientation,
 				chartPreset: defaultPreset
 			})
 	)
@@ -51,6 +60,7 @@
 			height,
 			margin,
 			mode,
+			orientation: resolvedOrientation,
 			chartPreset: defaultPreset
 		})
 	})

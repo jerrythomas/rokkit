@@ -94,6 +94,21 @@ export class PlotState {
 		return inferOrientation(this.#resolveXType(rawXType, yType), yType)
 	})
 
+	// True when the x-channel is the categorical (band) axis. Only such charts have a
+	// meaningful flip; when both channels are continuous (scatter, AnimatedPlot's
+	// value×_rank race) this is false and orientation is a no-op for the scales.
+	#bandIsX = $derived.by(() => {
+		const x = this.#effectiveChannels.x
+		const y = this.#effectiveChannels.y
+		if (!x || !y) return false
+		return this.#resolveXType(inferFieldType(this.#data, x), inferFieldType(this.#data, y)) === 'band'
+	})
+
+	// Flip = render a category-on-x chart horizontally: the category (x) axis stands up
+	// on the vertical screen and the value (y) axis runs along the horizontal screen.
+	// x/y channels are unchanged — only the screen mapping rotates.
+	#flipped = $derived(this.orientation === 'horizontal' && this.#bandIsX)
+
 	colorScaleType = $derived.by(() => {
 		const field = this.#effectiveChannels.color
 		if (!field) return 'categorical'
@@ -123,15 +138,20 @@ export class PlotState {
 		if (!field) return null
 		const datasets =
 			this.#geoms.length > 0 ? this.#geoms.map((g) => this.geomData(g.id)) : [this.#rawData]
-		const includeZero = this.orientation === 'horizontal'
-		// For vertical bar charts, force scaleBand even when X values are numeric (e.g. year).
-		// Horizontal bar charts keep X as a continuous value axis.
+		// includeZero applies to the VALUE axis. When flipped, x is the category axis, not
+		// the value axis, so it must NOT include zero (that's the old channel-swap horizontal).
+		const includeZero = this.orientation === 'horizontal' && !this.#flipped
+		// Force scaleBand when x is the categorical axis (incl. flipped, where numeric
+		// categories must stay a band even though orientation is horizontal).
 		const hasBandGeom = this.#geoms.some((g) => CATEGORICAL_X.has(g.type))
-		const bandX = hasBandGeom && this.orientation !== 'horizontal'
+		const bandX = hasBandGeom && (this.orientation !== 'horizontal' || this.#flipped)
+		// Flip: the category (x) axis stands up on the vertical screen → range over height.
+		const range = this.#flipped ? [this.#innerHeight, 0] : undefined
 		const base = buildUnifiedXScale(datasets, field, this.#innerWidth, {
 			domain: this.#xDomain,
 			includeZero,
-			band: bandX
+			band: bandX,
+			range
 		})
 		return this.#zoomTransform && typeof base?.bandwidth !== 'function'
 			? this.#zoomTransform.rescaleX(base)
@@ -187,9 +207,13 @@ export class PlotState {
 		if (!field) return null
 		const datasets =
 			this.#geoms.length > 0 ? this.#geoms.map((g) => this.geomData(g.id)) : [this.#rawData]
-		const includeZero = this.orientation === 'vertical'
+		// includeZero applies to the VALUE axis: vertical charts (value on y) and flipped
+		// charts (value still y, but now the horizontal screen axis) both want a 0 baseline.
+		const includeZero = this.orientation === 'vertical' || this.#flipped
 		const yDomain = this.#yDomain ?? this.#resolveBoxDomain() ?? this.#resolveStackDomain(field)
-		const base = buildUnifiedYScale(datasets, field, this.#innerHeight, { domain: yDomain, includeZero })
+		// Flip: the value (y) axis runs along the horizontal screen → range over width.
+		const range = this.#flipped ? [0, this.#innerWidth] : undefined
+		const base = buildUnifiedYScale(datasets, field, this.#innerHeight, { domain: yDomain, includeZero, range })
 		return this.#zoomTransform ? this.#zoomTransform.rescaleY(base) : base
 	})
 
@@ -369,6 +393,27 @@ export class PlotState {
 	/** @returns {{ x?: string, y?: string, color?: string, pattern?: string, symbol?: string }} */
 	get channels() {
 		return this.#channels
+	}
+
+	// ─── Orientation helpers (horizontal / axis-flip) ──────────────────────────
+	// True when the chart is rendered horizontally (category axis stood up on the
+	// vertical screen, value axis along the horizontal screen). x/y channels unchanged.
+	get isFlipped() {
+		return this.#flipped
+	}
+	// Map abstract (x-channel, y-channel) scale outputs to screen coords. When flipped,
+	// the two screen axes swap. Geoms compute u = xScale(d[x]), v = yScale(d[y]) then
+	// `const { x, y } = plotState.place(u, v)`.
+	place(u, v) {
+		return this.#flipped ? { x: v, y: u } : { x: u, y: v }
+	}
+	// The categorical (band) scale and the continuous (value) scale, regardless of
+	// orientation — their ranges are already oriented to the correct screen axis.
+	get bandScale() {
+		return this.#bandIsX ? this.xScale : this.yScale
+	}
+	get valueScale() {
+		return this.#bandIsX ? this.yScale : this.xScale
 	}
 	get margin() {
 		return this.#effectiveMargin

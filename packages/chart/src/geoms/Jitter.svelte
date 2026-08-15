@@ -47,7 +47,14 @@
 
 	const points = $derived.by(() => {
 		if (!data?.length || !xScale || !yScale) return []
-		return buildSwarm(data, { x: xf, y: yf, fill: fillChannel }, xScale, yScale, colors, { method, r })
+		const raw = buildSwarm(data, { x: xf, y: yf, fill: fillChannel }, xScale, yScale, colors, { method, r })
+		if (!plotState.isFlipped) return raw
+		// Horizontal: the band axis (swarm spread) stands up on screen-Y and the value
+		// axis runs along screen-X — swap the computed coords through place().
+		return raw.map((p) => {
+			const s = plotState.place(p.cx, p.cy)
+			return { ...p, cx: s.x, cy: s.y }
+		})
 	})
 </script>
 

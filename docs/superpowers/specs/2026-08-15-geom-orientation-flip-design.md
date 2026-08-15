@@ -29,12 +29,27 @@ horizontally without the caller rethinking channels.
   the roles: value scale → width, band scale → height, `x:0,width:valueScale(v)`.
 - All other geoms hardcode `x→xScale (horizontal screen)`, `y→yScale (vertical screen)`.
 
+## Semantics (user-confirmed): x stays x, y stays y — only the direction flips
+
+`orientation` changes **the chart's direction, not the channels.** The caller keeps
+`x`/`y` as authored; `orientation='horizontal'` rotates the layout so the value axis
+points right and the category axis points down.
+
+- The **category axis** = the band (categorical) channel; the **value axis** = the
+  continuous channel. `orientation` swaps which *screen* direction each points.
+- **Both channels continuous** (plain scatter, and AnimatedPlot's value×`_rank` race)
+  → orientation is a **no-op** for scale ranges. This is deliberate: there is no
+  categorical axis to stand up, and it keeps `AnimatedPlot` (which sets
+  `orientation:'horizontal'` with two continuous channels + `buildHorizontalBars`)
+  **byte-identical**. Existing horizontal bars keep working unchanged.
+- `includeZero` follows the **value channel** (bar/area baseline), not a hardcoded axis.
+
 ## The model: (band, value) space → screen via `place()`
 
 The key simplification: **flipping swaps which screen axis each data channel maps to;
 it does NOT change a geom's logic** (group by the categorical channel, extend by the
-value channel). So each geom expresses marks in abstract axis coordinates and a single
-helper maps them to screen based on orientation.
+value channel). Channels are fixed; each geom expresses marks in abstract axis
+coordinates and a single helper maps them to screen based on orientation.
 
 Define per-datum coordinates:
 - `u` = position along the **x-channel** axis = `xScale(d[x])`

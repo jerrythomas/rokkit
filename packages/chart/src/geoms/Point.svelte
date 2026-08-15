@@ -107,7 +107,7 @@
 
 	const points = $derived.by(() => {
 		if (!data?.length || !xScale || !yScale) return []
-		return buildPoints(
+		const raw = buildPoints(
 			data,
 			{ x, y, color, size, symbol: symbolField },
 			xScale,
@@ -118,6 +118,12 @@
 			defaultRadius,
 			options?.jitter ?? null
 		)
+		if (!plotState.isFlipped) return raw
+		// Horizontal: swap each point's screen coords (value → screen-X, category → screen-Y).
+		return raw.map((p) => {
+			const s = plotState.place(p.cx, p.cy)
+			return { ...p, cx: s.x, cy: s.y }
+		})
 	})
 </script>
 
