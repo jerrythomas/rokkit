@@ -593,6 +593,25 @@ describe('PlotState — band x-axis for box/violin/jitter with numeric x', () =>
 	})
 })
 
+// ─── geom color channel drives colors when top-level color is unset ────────────
+describe('PlotState — colors fall back to the first geom color channel', () => {
+	it('derives per-category colors from a geom color channel when the Plot has x/y but no color', () => {
+		// Mirrors the composable overlay: <Plot.Root x y> + <Plot.Box color=x> — the box
+		// registers color: 'cls' but the Plot has no color channel. Without the fallback,
+		// colors is a single default keyed by null and every category renders gray.
+		const data = [
+			{ cls: 'A', v: 10 }, { cls: 'A', v: 20 },
+			{ cls: 'B', v: 15 }, { cls: 'B', v: 25 }
+		]
+		const state = new PlotState({ data, channels: { x: 'cls', y: 'v' } }) // no color
+		state.registerGeom({ type: 'box', channels: { x: 'cls', y: 'v', color: 'cls' }, stat: 'boxplot' })
+		const colors = state.colors
+		expect(colors.has('A')).toBe(true)
+		expect(colors.has('B')).toBe(true)
+		expect(colors.get('A').fill).not.toBe(colors.get('B').fill)
+	})
+})
+
 // ─── channels getter (geom root-channel fallback) ──────────────────────────────
 describe('PlotState — channels getter', () => {
 	it('exposes the root channels so geoms can fall back when their props are omitted', () => {

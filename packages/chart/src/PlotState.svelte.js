@@ -56,8 +56,11 @@ export class PlotState {
 	#innerWidth = $derived(this.#width - this.#effectiveMargin.left - this.#effectiveMargin.right)
 	#innerHeight = $derived(this.#height - this.#effectiveMargin.top - this.#effectiveMargin.bottom)
 
-	// Effective channels: prefer top-level channels; fall back to first geom's channels
-	// for the declarative API where no spec is provided.
+	// Effective channels: prefer top-level channels PER FIELD, falling back to the
+	// first geom's channels. Merged per-field (not all-or-nothing) so a composable
+	// <Plot.Root x y> that omits `color` still picks up a geom's color channel
+	// (e.g. <Plot.Box color=x>) — otherwise `colors` has no per-category entries and
+	// every mark falls back to gray.
 	#mergeGeomChannels(tc, geom) {
 		return {
 			x: tc.x ?? geom.channels?.x,
@@ -70,7 +73,6 @@ export class PlotState {
 
 	#effectiveChannels = $derived.by(() => {
 		const tc = this.#channels
-		if (tc.x && tc.y) return tc
 		const firstGeom = this.#geoms[0]
 		if (!firstGeom) return tc
 		return this.#mergeGeomChannels(tc, firstGeom)
