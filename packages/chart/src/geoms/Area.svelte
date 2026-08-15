@@ -64,9 +64,9 @@
 		if (!data?.length || !xScale || !yScale || !x || !y) return []
 		const channels = { x, y, color, pattern }
 		if (options.stack) {
-			return buildStackedAreas(data, channels, xScale, yScale, colors, options.curve, patterns)
+			return buildStackedAreas(data, channels, xScale, yScale, colors, options.curve, patterns, plotState.place.bind(plotState))
 		}
-		return buildAreas(data, channels, xScale, yScale, colors, options.curve, patterns)
+		return buildAreas(data, channels, xScale, yScale, colors, options.curve, patterns, plotState.place.bind(plotState))
 	})
 </script>
 

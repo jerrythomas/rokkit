@@ -85,7 +85,7 @@
 
 	const lines = $derived.by(() => {
 		if (!data?.length || !xScale || !yScale) return []
-		return buildLines(data, { x, y, color }, xScale, yScale, colors, options.curve)
+		return buildLines(data, { x, y, color }, xScale, yScale, colors, options.curve, plotState.place.bind(plotState))
 	})
 
 	const markerRadius = $derived(options.markerRadius ?? 4)

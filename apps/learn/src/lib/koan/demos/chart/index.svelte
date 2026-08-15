@@ -181,13 +181,17 @@
 		<section>
 			<header>Orientation flip — horizontal box + jitter (same x/y, orientation="horizontal")</header>
 			<div class="chart-stage">
-				<Plot.Root data={cars} x="class" y="hwy" orientation="horizontal" width={520} height={280}>
+				<Plot.Root data={cars} x="class" y="hwy" orientation="horizontal" width={520} height={280} margin={{ top: 10, right: 20, bottom: 40, left: 80 }}>
+					<Plot.Axis type="x" />
+					<Plot.Axis type="y" />
 					<Plot.Box x="class" y="hwy" />
 					<Plot.Jitter x="class" y="hwy" method="jitter" r={3} />
 				</Plot.Root>
 			</div>
 			<div class="chart-stage">
-				<Plot.Root data={cars} x="class" y="hwy" orientation="horizontal" width={520} height={280}>
+				<Plot.Root data={cars} x="class" y="hwy" orientation="horizontal" width={520} height={280} margin={{ top: 10, right: 20, bottom: 40, left: 80 }}>
+					<Plot.Axis type="x" />
+					<Plot.Axis type="y" />
 					<Plot.Violin x="class" y="hwy" />
 					<Plot.Jitter x="class" y="hwy" method="jitter" r={2} />
 				</Plot.Root>

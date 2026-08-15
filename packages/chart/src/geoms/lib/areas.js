@@ -11,20 +11,24 @@ import { toPatternId } from '../../lib/brewing/patterns.js'
  * @param {Map<unknown, {fill: string, stroke: string}>} colors
  * @param {'linear'|'smooth'|'step'} [curve]
  * @param {Map<unknown, string>} [patterns]
+ * @param {Function} [place] - orientation mapper (x, y) => {x, y}
  * @returns {{ d: string, fill: string, stroke: string, key: unknown, patternId: string|null }[]}
  */
-export function buildAreas(data, channels, xScale, yScale, colors, curve, patterns) {
+export function buildAreas(data, channels, xScale, yScale, colors, curve, patterns, place = (x, y) => ({ x, y })) {
 	const { x: xf, y: yf, color: cf, pattern: pf } = channels
 	const baseline = yScale.range()[0] // bottom of the chart (y pixel max)
 
 	const xPos = (d) =>
 		typeof xScale.bandwidth === 'function' ? xScale(d[xf]) + xScale.bandwidth() / 2 : xScale(d[xf])
 
+	// Each area edge (baseline + top) is placed so the area transposes under orientation.
+	const toEdge = (d) => ({ base: place(xPos(d), baseline), top: place(xPos(d), yScale(d[yf])) })
 	const makeGen = () => {
 		const gen = area()
-			.x(xPos)
-			.y0(baseline)
-			.y1((d) => yScale(d[yf]))
+			.x0((p) => p.base.x)
+			.y0((p) => p.base.y)
+			.x1((p) => p.top.x)
+			.y1((p) => p.top.y)
 		if (curve === 'smooth') gen.curve(curveCatmullRom)
 		else if (curve === 'step') gen.curve(curveStep)
 		return gen
@@ -47,7 +51,7 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
 			patternKey !== null && patternKey !== undefined && patterns?.has(patternKey)
 				? toPatternId(String(patternKey))
 				: null
-		return [{ d: makeGen()(sortByX(data)), fill: entry.fill, stroke: 'none', key: null, patternId }]
+		return [{ d: makeGen()(sortByX(data).map(toEdge)), fill: entry.fill, stroke: 'none', key: null, patternId }]
 	}
 
 	// Group by color field
@@ -72,7 +76,7 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
 			patternKey !== null && patternKey !== undefined && patterns?.has(patternKey)
 				? toPatternId(String(patternKey))
 				: null
-		return { d: makeGen()(sortByX(rows)), fill: entry.fill, stroke: 'none', key, patternId }
+		return { d: makeGen()(sortByX(rows).map(toEdge)), fill: entry.fill, stroke: 'none', key, patternId }
 	})
 }
 
@@ -88,7 +92,7 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
  * @param {Map<unknown, string>} [patterns]
  * @returns {{ d: string, fill: string, stroke: string, key: unknown, patternId: string|null }[]}
  */
-export function buildStackedAreas(data, channels, xScale, yScale, colors, curve, patterns) {
+export function buildStackedAreas(data, channels, xScale, yScale, colors, curve, patterns, place = (x, y) => ({ x, y })) {
 	const { x: xf, y: yf, color: cf, pattern: pf } = channels
 	if (!cf) return buildAreas(data, channels, xScale, yScale, colors, curve, patterns)
 
@@ -115,11 +119,13 @@ export function buildStackedAreas(data, channels, xScale, yScale, colors, curve,
 			? xScale(d.data[xf]) + xScale.bandwidth() / 2
 			: xScale(d.data[xf])
 
+	const toEdge = (d) => ({ base: place(xPos(d), yScale(d[0])), top: place(xPos(d), yScale(d[1])) })
 	const makeGen = () => {
 		const gen = area()
-			.x(xPos)
-			.y0((d) => yScale(d[0]))
-			.y1((d) => yScale(d[1]))
+			.x0((p) => p.base.x)
+			.y0((p) => p.base.y)
+			.x1((p) => p.top.x)
+			.y1((p) => p.top.y)
 		if (curve === 'smooth') gen.curve(curveCatmullRom)
 		else if (curve === 'step') gen.curve(curveStep)
 		return gen
@@ -144,7 +150,7 @@ export function buildStackedAreas(data, channels, xScale, yScale, colors, curve,
 				? toPatternId(String(patternKey))
 				: null
 		return {
-			d: makeGen()(layer) ?? '',
+			d: makeGen()(layer.map(toEdge)) ?? '',
 			fill: entry.fill,
 			stroke: 'none',
 			key: colorKey,

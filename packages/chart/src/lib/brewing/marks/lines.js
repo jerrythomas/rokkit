@@ -9,40 +9,43 @@ import { line, curveCatmullRom, curveStep } from 'd3-shape'
  * @param {'linear'|'smooth'|'step'} [curve]
  * @returns {{ d: string | null, fill: string, stroke: string, points: {x:number, y:number, data: Record<string, unknown>, i: number}[], key?: unknown }[]}
  */
-export function buildLines(data, channels, xScale, yScale, colors, curve) {
+export function buildLines(data, channels, xScale, yScale, colors, curve, place = (x, y) => ({ x, y })) {
 	const { x: xf, y: yf, color: cf } = channels
 	const xPos = (d) =>
 		typeof xScale.bandwidth === 'function' ? xScale(d[xf]) + xScale.bandwidth() / 2 : xScale(d[xf])
+	// Screen points, sorted by the x-channel position, each mapped through place() so the
+	// whole line transposes under orientation='horizontal' (identity default → unchanged).
+	const screenPoints = (rows) => {
+		const withIndices = rows.map((d, i) => ({ data: d, i }))
+		withIndices.sort((a, b) => xPos(a.data) - xPos(b.data))
+		return withIndices.map(({ data: d, i }) => {
+			const p = place(xPos(d), yScale(d[yf]))
+			return { x: p.x, y: p.y, data: d, i }
+		})
+	}
 	const makeGen = () => {
 		const gen = line()
-			.x((d) => xPos(d.data ?? d))
-			.y((d) => yScale((d.data ?? d)[yf]))
+			.x((p) => p.x)
+			.y((p) => p.y)
 		if (curve === 'smooth') gen.curve(curveCatmullRom)
 		else if (curve === 'step') gen.curve(curveStep)
 		return gen
 	}
-	const toPoints = (rowsWithIndices) => rowsWithIndices.map(({ data: d, i }) => ({ x: xPos(d), y: yScale(d[yf]), data: d, i }))
-
-	const sortByX = (rows) => {
-		const withIndices = rows.map((d, i) => ({ data: d, i }))
-		withIndices.sort((a, b) => xPos(a.data) - xPos(b.data))
-		return withIndices
-	}
 
 	if (!cf) {
-		const sorted = sortByX(data)
+		const pts = screenPoints(data)
 		const stroke = colors?.values().next().value?.stroke ?? '#888'
-		return [{ d: makeGen()(sorted.map(d => d.data)), fill: 'none', stroke, points: toPoints(sorted) }]
+		return [{ d: makeGen()(pts), fill: 'none', stroke, points: pts }]
 	}
 	const groups = groupBy(data, cf)
 	return [...groups.entries()].map(([key, rows]) => {
-		const sorted = sortByX(rows)
+		const pts = screenPoints(rows)
 		const colorEntry = colors?.get(key) ?? { fill: 'none', stroke: '#888' }
 		return {
-			d: makeGen()(sorted.map(d => d.data)),
+			d: makeGen()(pts),
 			fill: 'none',
 			stroke: colorEntry.stroke,
-			points: toPoints(sorted),
+			points: pts,
 			key
 		}
 	})

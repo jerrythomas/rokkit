@@ -174,3 +174,12 @@ describe('buildStackedAreas', () => {
 		expect(fArea.patternId).toBe('chart-pat-f')
 	})
 })
+
+describe('buildAreas — orientation flip', () => {
+	const data = [{ x: 1, y: 10 }, { x: 2, y: 20 }, { x: 3, y: 30 }]
+	it('routes edges through place() so a flip transposes the area path', () => {
+		const vertical = buildAreas(data, { x: 'x', y: 'y' }, xScale, yScale, colors, 'linear')
+		const flipped = buildAreas(data, { x: 'x', y: 'y' }, xScale, yScale, colors, 'linear', undefined, (x, y) => ({ x: y, y: x }))
+		expect(flipped[0].d).not.toBe(vertical[0].d)
+	})
+})

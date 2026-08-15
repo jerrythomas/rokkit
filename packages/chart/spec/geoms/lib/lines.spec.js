@@ -96,3 +96,14 @@ describe('buildLines — band scale X (categorical months)', () => {
 		expect(janPoint).toBeDefined()
 	})
 })
+
+describe('buildLines — orientation flip', () => {
+	const data = [{ x: 1, y: 10 }, { x: 2, y: 20 }, { x: 3, y: 30 }]
+	it('routes points through place() so a flip transposes the path + points', () => {
+		const vertical = buildLines(data, { x: 'x', y: 'y' }, xScale, yScale, colors, 'linear')
+		const flipped = buildLines(data, { x: 'x', y: 'y' }, xScale, yScale, colors, 'linear', (x, y) => ({ x: y, y: x }))
+		expect(flipped[0].d).not.toBe(vertical[0].d)
+		expect(flipped[0].points[0].x).toBeCloseTo(vertical[0].points[0].y)
+		expect(flipped[0].points[0].y).toBeCloseTo(vertical[0].points[0].x)
+	})
+})

@@ -59,16 +59,21 @@
 	const xTicks = $derived(buildTicks(state.xScale))
 	const yTicks = $derived(buildTicks(state.yScale))
 
-	const xTransform = $derived(`translate(0, ${state.xAxisY ?? state.innerHeight})`)
-	const yTransform = $derived(`translate(${state.yAxisX ?? 0}, 0)`)
+	// When flipped, the x-channel (category) axis stands up on the left and the value (y)
+	// axis lies along the bottom — each axis type renders on the opposite screen orientation.
+	const flipped = $derived(state.isFlipped)
+	const renderAsX = $derived((type === 'x') !== flipped)
+	const ticks = $derived(type === 'x' ? xTicks : yTicks)
+	const hAxisY = $derived(flipped ? state.innerHeight : (state.xAxisY ?? state.innerHeight))
+	const vAxisX = $derived(flipped ? 0 : (state.yAxisX ?? 0))
 </script>
 
-{#if type === 'x'}
-	<g class="axis x-axis" transform={xTransform} data-plot-axis="x">
+{#if renderAsX}
+	<g class="axis x-axis" transform={`translate(0, ${hAxisY})`} data-plot-axis="x">
 		{#if showLine}
 			<line x1="0" y1="0" x2={state.innerWidth} y2="0" data-plot-axis-line />
 		{/if}
-		{#each xTicks as tick (tick.minor ? `minor-${tick.pos}` : tick.value)}
+		{#each ticks as tick (tick.minor ? `minor-${tick.pos}` : tick.value)}
 			<g transform="translate({tick.pos}, 0)" data-plot-tick>
 				{#if showTicks}
 					<line
@@ -96,11 +101,11 @@
 		{/if}
 	</g>
 {:else}
-	<g class="axis y-axis" transform={yTransform} data-plot-axis="y">
+	<g class="axis y-axis" transform={`translate(${vAxisX}, 0)`} data-plot-axis="y">
 		{#if showLine}
 			<line x1="0" y1="0" x2="0" y2={state.innerHeight} data-plot-axis-line />
 		{/if}
-		{#each yTicks as tick (tick.minor ? `minor-${tick.pos}` : tick.value)}
+		{#each ticks as tick (tick.minor ? `minor-${tick.pos}` : tick.value)}
 			<g transform="translate(0, {tick.pos})" data-plot-tick>
 				{#if showTicks}
 					<line
