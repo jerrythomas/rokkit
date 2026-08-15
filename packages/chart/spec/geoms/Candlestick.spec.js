@@ -160,3 +160,14 @@ describe('Candlestick.svelte', () => {
 		expect(firstWick.getAttribute('stroke-width')).toBe('3')
 	})
 })
+
+describe('Candlestick.svelte orientation flip', () => {
+	it('runs the wick horizontally (along the price axis) when the plot is flipped', () => {
+		const state = candlestickState(CANDLE_DATA, { isFlipped: true, place: (u, v) => ({ x: v, y: u }) })
+		const { container } = render(TestCandlestick, { props: { state, x: 'date' } })
+		const wick = container.querySelector('[data-plot-element="wick"]')
+		const dx = Math.abs(Number(wick.getAttribute('x2')) - Number(wick.getAttribute('x1')))
+		const dy = Math.abs(Number(wick.getAttribute('y2')) - Number(wick.getAttribute('y1')))
+		expect(dx).toBeGreaterThan(dy)
+	})
+})

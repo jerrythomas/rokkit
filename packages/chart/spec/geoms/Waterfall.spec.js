@@ -182,3 +182,19 @@ describe('Waterfall.svelte', () => {
 		expect(firstConnector.getAttribute('stroke-width')).toBe('2')
 	})
 })
+
+describe('Waterfall.svelte orientation flip', () => {
+	it('transposes the bar (width<->height) when the plot is flipped', () => {
+		const bodyOf = (state) => {
+			const { container } = render(TestWaterfall, { props: { state, x: 'label', y: 'value' } })
+			const r = container.querySelector('[data-plot-element="waterfall-bar"]')
+			return { w: Number(r.getAttribute('width')), h: Number(r.getAttribute('height')) }
+		}
+		const v = bodyOf(waterfallState({ geomData: () => WATERFALL_DATA }))
+		const f = bodyOf(
+			waterfallState({ geomData: () => WATERFALL_DATA, isFlipped: true, place: (u, w) => ({ x: w, y: u }) })
+		)
+		expect(f.w).toBeCloseTo(v.h)
+		expect(f.h).toBeCloseTo(v.w)
+	})
+})

@@ -87,14 +87,19 @@
 				fill = yVal >= 0 ? positiveColor : negativeColor
 			}
 
+			// Place two (band, value) corners so the bar transposes under orientation flip.
+			const c1 = plotState.place(xPos, barTop)
+			const c2 = plotState.place(xPos + bw, barBottom)
 			return {
 				key: `${xVal}-${i}`,
-				x: xPos,
-				y: barTop,
-				width: bw,
-				height: Math.max(1, barBottom - barTop),
+				x: Math.min(c1.x, c2.x),
+				y: Math.min(c1.y, c2.y),
+				width: Math.abs(c2.x - c1.x),
+				height: Math.max(1, Math.abs(c2.y - c1.y)),
 				fill,
-				cumulative,
+				bandStart: xPos,
+				bandEnd: xPos + bw,
+				cumY: yScale(cumulative) ?? 0,
 				data: d
 			}
 		})
@@ -119,11 +124,13 @@
 			</rect>
 			<!-- Connector line to next bar -->
 			{#if i < bars.length - 1}
+				{@const cs = plotState.place(bar.bandEnd, bar.cumY)}
+				{@const ce = plotState.place(bars[i + 1].bandStart, bar.cumY)}
 				<line
-					x1={bar.x + bar.width}
-					y1={yScale(bar.cumulative)}
-					x2={bars[i + 1].x}
-					y2={yScale(bar.cumulative)}
+					x1={cs.x}
+					y1={cs.y}
+					x2={ce.x}
+					y2={ce.y}
 					stroke="currentColor"
 					stroke-width={connectorWidth}
 					stroke-dasharray="3 2"

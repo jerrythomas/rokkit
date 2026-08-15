@@ -81,18 +81,24 @@
 			const bodyTop = yScale(isUp ? closeVal : openVal)
 			const bodyBottom = yScale(isUp ? openVal : closeVal)
 
+			// Place (band, value) points so the candle transposes under orientation flip.
+			const b1 = plotState.place(xPos, bodyTop)
+			const b2 = plotState.place(xPos + bodyWidth, bodyBottom)
+			const wa = plotState.place(xPos + bodyWidth / 2, yScale(highVal))
+			const wb = plotState.place(xPos + bodyWidth / 2, yScale(lowVal))
 			return {
 				key: `${d[x ?? '']}-${i}`,
 				// Body
-				bodyX: xPos,
-				bodyY: bodyTop,
-				bodyWidth,
-				bodyHeight: Math.max(1, bodyBottom - bodyTop),
+				bodyX: Math.min(b1.x, b2.x),
+				bodyY: Math.min(b1.y, b2.y),
+				bodyWidth: Math.abs(b2.x - b1.x),
+				bodyHeight: Math.max(1, Math.abs(b2.y - b1.y)),
 				fill: isUp ? upColor : downColor,
 				// Wick
-				wickX: xPos + bodyWidth / 2,
-				wickTop: yScale(highVal),
-				wickBottom: yScale(lowVal),
+				wickX1: wa.x,
+				wickY1: wa.y,
+				wickX2: wb.x,
+				wickY2: wb.y,
 				data: d
 			}
 		})
@@ -104,10 +110,10 @@
 		{#each candles as c (c.key)}
 			<!-- Wick (high to low) -->
 			<line
-				x1={c.wickX}
-				y1={c.wickTop}
-				x2={c.wickX}
-				y2={c.wickBottom}
+				x1={c.wickX1}
+				y1={c.wickY1}
+				x2={c.wickX2}
+				y2={c.wickY2}
 				stroke={c.fill}
 				stroke-width={wickWidth}
 				data-plot-element="wick"
