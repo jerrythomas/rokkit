@@ -58,4 +58,17 @@ describe('buildBoxes', () => {
 		const [box] = buildBoxes(d, { x: 'cat', fill: 'region' }, xScale, yScale, fillColors)
 		expect(box.stroke).toBe('darkblue')
 	})
+
+	it('maps outliers to screen positions at the box cx', () => {
+		const d = [{ cat: 'A', q1: 20, median: 40, q3: 60, iqr_min: 10, iqr_max: 80, outliers: [95] }]
+		const [box] = buildBoxes(d, { x: 'cat' }, xScale, yScale, colors)
+		expect(box.outliers).toHaveLength(1)
+		expect(box.outliers[0].cy).toBeCloseTo(yScale(95))
+		expect(box.outliers[0].value).toBe(95)
+	})
+
+	it('defaults outliers to an empty array when the field is absent', () => {
+		const [box] = buildBoxes(data, { x: 'cat' }, xScale, yScale, colors)
+		expect(box.outliers).toEqual([])
+	})
 })
