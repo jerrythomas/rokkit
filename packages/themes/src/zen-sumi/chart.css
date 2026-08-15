@@ -39,3 +39,9 @@
 [data-style='zen-sumi'] [data-facet-title] {
   @apply text-ink-soft;
 }
+
+/* Interaction — zen-sumi: a quiet, sumi-ink ring (understated, brush-like). */
+[data-style='zen-sumi'] [data-plot-element]:focus-visible {
+  outline: 1.5px solid var(--ink);
+  outline-offset: 2px;
+}

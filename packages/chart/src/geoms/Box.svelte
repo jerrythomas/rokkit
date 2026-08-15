@@ -68,7 +68,8 @@
 				stroke={box.stroke}
 				stroke-width="1"
 				data-plot-element="box-body"
-				role="presentation"
+				role="graphics-symbol"
+				aria-label={`${String(box.data[xf ?? ''] ?? 'box')}: median ${box.data.median}, IQR ${box.data.q1}–${box.data.q3}`}
 				onmouseenter={() => plotState.setHovered(box.data)}
 				onmouseleave={() => plotState.clearHovered()}
 			/>

@@ -36,3 +36,15 @@
 [data-style='material'] [data-facet-title] {
   @apply text-ink-soft;
 }
+
+/* Interaction — material: accent ring with a wider halo + hover elevation. */
+[data-style='material'] [data-plot-element]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+[data-style='material'] [data-plot-element='point']:hover,
+[data-style='material'] [data-plot-element='jitter-point']:hover,
+[data-style='material'] [data-plot-element='box-outlier']:hover,
+[data-style='material'] [data-plot-element='line-marker']:hover {
+  filter: drop-shadow(0 1px 3px color-mix(in oklab, var(--ink) 35%, transparent));
+}

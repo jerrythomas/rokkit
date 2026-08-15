@@ -80,6 +80,14 @@ describe('Box.svelte outlier interactivity', () => {
 		expect(dot.getAttribute('aria-label')).toContain('95')
 	})
 
+	it('exposes the box body as a labelled graphics symbol (a11y)', () => {
+		const state = boxState() // BOX_ROWS: cat A, median 40, q1 20, q3 60
+		const { container } = render(TestBox, { props: { state, x: 'cat', y: 'val' } })
+		const body = container.querySelector('[data-plot-element="box-body"]')
+		expect(body.getAttribute('role')).toBe('graphics-symbol')
+		expect(body.getAttribute('aria-label')).toContain('median 40')
+	})
+
 	it('calls setHovered with the outlier value on mouseenter', async () => {
 		let hovered = null
 		const state = boxState(BOX_ROWS, { setHovered: (d) => { hovered = d } })

@@ -36,3 +36,15 @@
 [data-style='frosted'] [data-facet-title] {
   @apply text-ink-soft;
 }
+
+/* Interaction — frosted: a soft, diffused accent glow ring + hover glow (glass). */
+[data-style='frosted'] [data-plot-element]:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--accent) 55%, transparent);
+  outline-offset: 3px;
+}
+[data-style='frosted'] [data-plot-element='point']:hover,
+[data-style='frosted'] [data-plot-element='jitter-point']:hover,
+[data-style='frosted'] [data-plot-element='box-outlier']:hover,
+[data-style='frosted'] [data-plot-element='line-marker']:hover {
+  filter: drop-shadow(0 0 4px color-mix(in oklab, var(--accent) 45%, transparent));
+}

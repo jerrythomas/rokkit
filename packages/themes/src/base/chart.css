@@ -67,12 +67,56 @@
   user-select: none;
 }
 
-[data-plot-element='bar'],
-[data-plot-element='line'],
-[data-plot-element='area'],
-[data-plot-element='point'],
-[data-plot-element='arc'] {
-  transition: opacity 0.15s ease;
+/* ── Interaction: hover emphasis + keyboard focus ──────────────────────────
+   Structure / behaviour only. The focus-ring colour and any hover character
+   are set per style (see each style's chart.css). */
+[data-plot-element] {
+  transition: filter 0.12s ease, opacity 0.15s ease;
+}
+
+/* Suppress the browser default focus rectangle (a large box on SVG shapes);
+   the :focus-visible ring below (base fallback + per-style) replaces it. */
+[data-plot-element]:focus {
+  outline: none;
+}
+
+/* Keyboard focus ring — base fallback in the element's own colour so a
+   base-only consumer still gets a focus indicator; each style overrides the
+   colour/width (higher specificity) for on-brand character. */
+[data-plot-element]:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Chosen hover style — point-family marks enlarge from their OWN centre.
+   ONLY circle marks: transform-box: fill-box centres the scale on the mark's
+   own bbox so cx/cy circles grow in place. Path-based marks (line-marker, symbol
+   points) are positioned by a transform ATTRIBUTE that a CSS transform would
+   clobber (teleporting them to the SVG origin), so they get a filter hover below.
+   The transform transition is scoped here too, to avoid animating any mark that
+   is positioned/animated via a transform attribute. */
+circle[data-plot-element='point'],
+[data-plot-element='jitter-point'],
+[data-plot-element='box-outlier'] {
+  transition: transform 0.12s ease, filter 0.12s ease, opacity 0.15s ease;
+}
+circle[data-plot-element='point']:hover,
+[data-plot-element='jitter-point']:hover,
+[data-plot-element='box-outlier']:hover {
+  transform: scale(var(--chart-hover-scale, 1.15));
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Bars / arcs / transform-positioned marks read wrong when scaled — a subtle
+   brightness lift instead. */
+[data-plot-element='bar']:hover,
+[data-plot-element='arc']:hover,
+[data-plot-element='waterfall-bar']:hover,
+[data-plot-element='candle']:hover,
+[data-plot-element='line-marker']:hover,
+path[data-plot-element='point']:hover {
+  filter: brightness(var(--chart-hover-brightness, 1.08));
 }
 
 [data-facet-grid] {

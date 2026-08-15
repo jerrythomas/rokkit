@@ -3286,6 +3286,10 @@ ${tabsTag}`
 		min-height: 0;
 		display: flex;
 		flex-direction: column;
+		/* A demo taller than the canvas (e.g. the stacked chart grid) must scroll
+		   here — the response card clips with overflow:hidden for its rounded
+		   border, so the body owns the scroll instead of clipping the content. */
+		overflow-y: auto;
 	}
 
 	:global(.canvas-body.response [data-koanchat-response-body] > *) {
