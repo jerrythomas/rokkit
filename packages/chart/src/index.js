@@ -12,6 +12,11 @@ import Trend from './geoms/Trend.svelte'
 import Box from './geoms/Box.svelte'
 import Violin from './geoms/Violin.svelte'
 import Jitter from './geoms/Jitter.svelte'
+import Candlestick from './geoms/Candlestick.svelte'
+import Heatmap from './geoms/Heatmap.svelte'
+import Hexbin from './geoms/Hexbin.svelte'
+import Ribbon from './geoms/Ribbon.svelte'
+import Waterfall from './geoms/Waterfall.svelte'
 
 // Composable Plot primitives — use as <Plot.Root>, <Plot.Axis>, <Plot.Bar>, etc.
 export const Plot = {
@@ -28,7 +33,12 @@ export const Plot = {
 	Trend,
 	Box,
 	Violin,
-	Jitter
+	Jitter,
+	Candlestick,
+	Heatmap,
+	Hexbin,
+	Ribbon,
+	Waterfall
 }
 
 /** @deprecated Use Plot instead */

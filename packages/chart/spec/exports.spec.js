@@ -20,4 +20,12 @@ describe('chart exports', () => {
 		expect(GeomViolin).toBeTruthy()
 		expect(GeomJitter).toBeTruthy()
 	})
+
+	it('exposes Candlestick/Heatmap/Hexbin/Ribbon/Waterfall on the Plot namespace', () => {
+		expect(Plot.Candlestick).toBeTruthy()
+		expect(Plot.Heatmap).toBeTruthy()
+		expect(Plot.Hexbin).toBeTruthy()
+		expect(Plot.Ribbon).toBeTruthy()
+		expect(Plot.Waterfall).toBeTruthy()
+	})
 })
