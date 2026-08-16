@@ -29,18 +29,30 @@ scale construction. `#bandIsX` read that forced band, so `isFlipped` became `tru
 routing it away from `buildHorizontalBars` and collapsing every entity onto one row. The unit
 suite didn't catch it (no test asserted the race's row layout); a live browser demo did.
 
-The final resolution distinguishes the two cases that share a field signature — a **numeric
-category** (bar over year/week, which *should* flip) and the **race** (value×`_rank`, which must
-stay on `buildHorizontalBars` because its linear rank scale is what tweens smoothly):
+A numeric category (bar over year/week) *should* flip, and it shares a field signature with the
+race (both `(numeric-x, numeric-y)` + bar geom). `#bandIsX` uses the **resolved** (force-banded) x
+type, so numeric categories flip like string categories.
 
-- `#bandIsX` uses the **resolved** (force-banded) x type, so numeric categories flip just like
-  string categories.
-- The race is the *legacy channel-swap* (value on x), produced only by AnimatedPlot, which now sets
-  an explicit `legacyHorizontal` spec marker. `#flipped = orientation==='horizontal' && #bandIsX &&
-  !legacyHorizontal` — so the race opts out of the flip and keeps `buildHorizontalBars`.
+### Full unification (`e2ebbced`) — one `buildBars`, no `buildHorizontalBars`
 
-When two cases are data-indistinguishable, the intent is encoded explicitly (the marker) rather than
-guessed heuristically. String-x, numeric-x, and stacked bars all flip; the race is unaffected.
+The interim step (`61920f33`) kept the race on a separate `buildHorizontalBars` via a
+`legacyHorizontal` opt-out. The final state removes that split entirely. **`buildGroupedBars` →
+`buildBars`**, which maps (category, value) space to screen via `place()` (vertical *or* horizontal)
+and gains a **`continuousCategory`** mode: a LINEAR category axis (the race's tweened `_rank`),
+positioned at `scale(pos) − thickness/2` with a step-derived thickness so *fractional* ranks tween
+smoothly. `buildHorizontalBars` is deleted (band branch was already superseded by the flip; linear
+branch is now `buildBars`).
+
+- The race adopts the **standard convention** (x=`_rank` category, y=value) and flips through the
+  same `place()` path as every chart. The tween is unchanged — it already emits both rank and value
+  per entity; `frameSpec` just swaps which channel reads which.
+- `legacyHorizontal` (opt OUT of the flip) → **`continuousCategory`** (keep the rank axis linear;
+  the race now *flips*). `#flipped = orientation==='horizontal' && #bandIsX`; PlotState skips
+  band-forcing when `continuousCategory` so the rank scale stays linear.
+
+The unification is sound precisely because a band scale can't express fractional positions — the one
+constraint that had justified a separate builder is exactly what `continuousCategory` encodes.
+String-x, numeric-x, stacked, and the animated race all flow through `buildBars`.
 
 ## Goal
 

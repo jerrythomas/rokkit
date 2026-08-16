@@ -1,5 +1,29 @@
 # Project Journal
 
+## 2026-08-16 — Chart: unify bar builders into `buildBars` (delete `buildHorizontalBars`)
+
+Closed the loop the previous two entries left open: the AnimatedPlot bar race no longer needs a
+separate builder. **One bar builder, one path.** `buildGroupedBars` → **`buildBars`**, which
+expresses each bar in abstract (category, value) space and maps it to screen via `place()` — so it
+renders vertical or horizontal from the same code — plus a **`continuousCategory`** mode: when the
+category (x) axis is a LINEAR position scale (a race's tweened `_rank`), it positions bars at
+`scale(pos) − thickness/2` with a step-derived thickness, so a *fractional* rank tweens smoothly (a
+band scale can only jump between slots — the reason the race had its own builder).
+
+`buildHorizontalBars` is **deleted**. Its band branch was already dead (superseded by the `place()`
+flip); its linear branch is now `buildBars(continuousCategory)`. The **race adopts the standard
+convention** — x=`_rank` (category), y=value — so it flips through the same path as every chart; the
+tween is untouched (it already emits both rank and value per entity, so `frameSpec` just swaps which
+channel reads which). The `legacyHorizontal` marker (opt OUT of the flip) became
+**`continuousCategory`** (keep the rank axis linear; the race now *flips*, it doesn't opt out).
+
+The unification is only sound because a band scale can't do fractional positions — that constraint,
+which I'd flagged as the blocker, turned out to be exactly what `continuousCategory` encodes.
+Verified live: the race still **reorders smoothly** (sampled bar Y sliding through intermediate
+positions mid-play, not slot-jumping); numeric-, string-, and animated-flips all intact; console
+clean. Bar-builder tests migrated to `buildBars` (continuous mode + grouped-horizontal via `place`).
+Full chart suite **1269**, svelte-check + lint clean. Commit `e2ebbced`.
+
 ## 2026-08-16 — Chart: AnimatedPlot honors orientation via the shared place() path
 
 Follow-on to the orientation + animation work below. AnimatedPlot reuses the same geoms, so a
