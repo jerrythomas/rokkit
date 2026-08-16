@@ -21,12 +21,22 @@ browser showed every company collapsed onto one row: the race is a `bar` geom, a
 `bar ∈ CATEGORICAL_X` force-bands the (continuous) `revenue` x for scale construction — which
 `#bandIsX` was reading, so `isFlipped` went `true` and the race routed away from
 `buildHorizontalBars` into the place-flip path. The unit suite (5325) stayed green because no test
-asserted the race's row layout. Fix: `#bandIsX` (the flip decision) now uses the **natural** x
-field type, not the geom-forced band — force-banding is a scale concern, not a flip signal. This
-restores the intended both-continuous-is-a-no-op guarantee. Guarded by a PlotState test that
-registers a bar geom over continuous x/y and asserts `isFlipped === false` (fails without the fix).
-Lesson reinforced: **a green unit suite is a proxy; the layout was only provable against live
-pixels.** Commit `262cc84f`.
+asserted the race's row layout. Caught only against live pixels. Commit `262cc84f`.
+
+**Follow-up — numeric-category flip + the honest race discriminator (`61920f33`).** The `262cc84f`
+fix used the *natural* x type for `#bandIsX`, which sidelined the race but also meant a **numeric
+category** (bar over year/week on x) no longer flipped. The two are field-signature-identical —
+`(numeric-x, numeric-y)` + bar geom — so `isFlipped` can't tell them apart, and the race genuinely
+*needs* `buildHorizontalBars` (its linear rank scale is what lets rank tween smoothly; a band scale
+would make ranks jump). The real difference is semantic: the race is the **legacy channel-swap**
+(value on x), the only producer of which is AnimatedPlot. So: `#bandIsX` went back to the resolved
+(force-banded) type — numeric categories flip again — and AnimatedPlot now sets an explicit
+`legacyHorizontal` spec marker that `#flipped` reads to opt its race out of the flip. Now
+string-x, numeric-x, and stacked bars all flip; the race stays on `buildHorizontalBars`. Verified
+live: revenue-by-year renders as horizontal bars (years standing up, value axis on the bottom); the
+race still shows 5 distinct rows. Guarded by three PlotState tests (numeric-cat flips; marker opts
+the race out; same shape *without* the marker would flip). Lesson: when two cases are
+data-indistinguishable, encode the intent explicitly rather than heuristically.
 
 ## 2026-08-14 — qlty hotspots: `llm.svelte.ts` + `doctor.js` resolved behind characterization tests
 

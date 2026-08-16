@@ -21,17 +21,26 @@ Arc/pie (radial).
 Commits: `86085fe4` foundation+Point/Jitter, `dd95c3f0` Box, `9f73bb7f` Violin, `9fdf03c0`
 Line/Area/Axis, `fc1d7fad` consolidation, `8a012ced` Bar, `76e97675` Waterfall/Candlestick.
 
-### Post-ship correction (`262cc84f`)
+### Post-ship correction (`262cc84f`, then `61920f33`)
 
 The "AnimatedPlot byte-identical / both-continuous is a no-op" claim was **not fully true**. The
 bar race is a `bar` geom, and `bar ∈ CATEGORICAL_X` force-bands its continuous `revenue` x for
 scale construction. `#bandIsX` read that forced band, so `isFlipped` became `true` for the race,
 routing it away from `buildHorizontalBars` and collapsing every entity onto one row. The unit
-suite didn't catch it (no test asserted the race's row layout); a live browser demo did. Fix:
-`#bandIsX` (the flip decision) now uses the **natural** x field type — force-banding is a scale
-concern, not a flip signal — which restores the no-op guarantee for genuinely-continuous charts.
-Known limitation accepted (YAGNI): a chart with a **numeric** category on x (e.g. year) won't take
-the new place-flip path; string categories flip as designed.
+suite didn't catch it (no test asserted the race's row layout); a live browser demo did.
+
+The final resolution distinguishes the two cases that share a field signature — a **numeric
+category** (bar over year/week, which *should* flip) and the **race** (value×`_rank`, which must
+stay on `buildHorizontalBars` because its linear rank scale is what tweens smoothly):
+
+- `#bandIsX` uses the **resolved** (force-banded) x type, so numeric categories flip just like
+  string categories.
+- The race is the *legacy channel-swap* (value on x), produced only by AnimatedPlot, which now sets
+  an explicit `legacyHorizontal` spec marker. `#flipped = orientation==='horizontal' && #bandIsX &&
+  !legacyHorizontal` — so the race opts out of the flip and keeps `buildHorizontalBars`.
+
+When two cases are data-indistinguishable, the intent is encoded explicitly (the marker) rather than
+guessed heuristically. String-x, numeric-x, and stacked bars all flip; the race is unaffected.
 
 ## Goal
 
