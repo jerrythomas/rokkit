@@ -33,25 +33,59 @@ function subBandFields(channels) {
 	return out
 }
 
-export function buildGroupedBars(data, channels, xScale, yScale, colors, innerHeight, patterns, place = (x, y) => ({ x, y })) {
+/**
+ * The one bar builder. Expresses each bar in abstract (category, value) space and maps it to
+ * screen via `place()`, so it renders vertical or horizontal (flip) with the same code.
+ *
+ * Category (x) positioning has two modes:
+ * - band (default): a scaleBand slots each category; sub-bands split grouped series.
+ * - continuous (`continuousCategory`): a LINEAR position scale (e.g. a bar-chart race's tweened
+ *   `_rank`). Each bar centres on `xScale(pos)` with a fixed thickness from the scale step, so a
+ *   fractional position tweens smoothly (a band scale can only jump between slots). No sub-banding.
+ */
+export function buildBars(
+	data,
+	channels,
+	xScale,
+	yScale,
+	colors,
+	innerHeight,
+	patterns,
+	place = (x, y) => ({ x, y }),
+	continuousCategory = false
+) {
 	const { x: xf, y: yf, color: cf, pattern: pf } = channels
 
-	const bandScale = ensureBandX(xScale, data, xf)
-
-	// Sub-banding: only fields that differ from x drive grouping within a band
-	const subFields = subBandFields(channels)
+	const subFields = continuousCategory ? [] : subBandFields(channels)
 	const getSubKey = (d) => subFields.map((f) => String(d[f])).join('::')
-	const subDomain = subFields.length > 0 ? [...new Set(data.map(getSubKey))] : []
-	const subScale =
-		subDomain.length > 1
-			? scaleBand().domain(subDomain).range([0, bandScale.bandwidth()]).padding(0.05)
-			: null
 
-	// Baseline for bars: at y=0 when domain spans zero (supports negative bars),
-	// otherwise at the bottom of the chart area.
-	const yDomain = typeof yScale.bandwidth !== 'function' ? yScale.domain?.() : null
-	// Value baseline: y=0 when the domain spans zero (supports negative bars), else the
+	let positionOf
+	let thicknessOf
+	if (continuousCategory) {
+		const [r0, r1] = xScale.range()
+		const [d0, d1] = xScale.domain()
+		const step = Math.max(Math.abs(r0 - r1) / Math.max(d1 - d0, 1), 1)
+		const thickness = step * 0.9
+		thicknessOf = () => thickness
+		positionOf = (d) => (xScale(Number(d[xf])) ?? 0) - thickness / 2
+	} else {
+		const bandScale = ensureBandX(xScale, data, xf)
+		const subDomain = subFields.length > 0 ? [...new Set(data.map(getSubKey))] : []
+		const subScale =
+			subDomain.length > 1
+				? scaleBand().domain(subDomain).range([0, bandScale.bandwidth()]).padding(0.05)
+				: null
+		thicknessOf = () => (subScale ? subScale.bandwidth() : bandScale.bandwidth())
+		positionOf = (d) => {
+			const bandX = bandScale(d[xf]) ?? 0
+			const subX = subScale ? (subScale(getSubKey(d)) ?? 0) : 0
+			return bandX + subX
+		}
+	}
+
+	// Value baseline: at value=0 when the domain spans zero (supports negative bars), else the
 	// value-axis origin (yScale.range()[0] — innerHeight when vertical, 0 when flipped).
+	const yDomain = typeof yScale.bandwidth !== 'function' ? yScale.domain?.() : null
 	const baseline =
 		yDomain && yDomain[0] <= 0 && yDomain[yDomain.length - 1] >= 0
 			? (yScale(0) ?? yScale.range()[0])
@@ -70,18 +104,22 @@ export function buildGroupedBars(data, channels, xScale, yScale, colors, innerHe
 				? toPatternId(String(patternKey))
 				: null
 
-		const bandX = bandScale(xVal) ?? 0
-		const subX = subScale && subKey ? (subScale(subKey) ?? 0) : 0
-		const barBand = bandX + subX
-		const barThickness = subScale ? subScale.bandwidth() : bandScale.bandwidth()
+		const barBand = positionOf(d)
+		const barThickness = thicknessOf(d)
 		const barValue = yScale(d[yf]) ?? baseline
 		// Two opposite corners in (band, value) space, placed to screen — transposes under flip.
 		const c1 = place(barBand, baseline)
 		const c2 = place(barBand + barThickness, barValue)
 
+		// Continuous mode keys by _entity so Svelte reuses each bar as its position tweens (a
+		// race's rows reorder every frame); band mode keys by category + sub-band + index.
+		const key = continuousCategory
+			? `${String(d._entity ?? xVal)}::${String(colorKey ?? '')}`
+			: `${String(xVal)}::${subKey}::${i}`
+
 		return {
 			data: d,
-			key: `${String(xVal)}::${subKey}::${i}`,
+			key,
 			x: Math.min(c1.x, c2.x),
 			y: Math.min(c1.y, c2.y),
 			width: Math.abs(c2.x - c1.x),
@@ -101,7 +139,7 @@ export function buildStackedBars(data, channels, xScale, yScale, colors, innerHe
 	// Stack dimension: first non-x grouping field (prefer pattern, then color)
 	const subFields = subBandFields(channels)
 	if (subFields.length === 0) {
-		return buildGroupedBars(data, channels, xScale, yScale, colors, innerHeight, patterns, place)
+		return buildBars(data, channels, xScale, yScale, colors, innerHeight, patterns, place)
 	}
 	const stackField = subFields[0]
 
@@ -156,73 +194,4 @@ export function buildStackedBars(data, channels, xScale, yScale, colors, innerHe
 		}
 	}
 	return bars
-}
-
-export function buildHorizontalBars(data, channels, xScale, yScale, colors, _innerHeight) {
-	const { x: xf, y: yf, color: cf } = channels
-	const isBand = typeof yScale?.bandwidth === 'function'
-
-	if (!isBand) {
-		// Linear y-scale: rank-based bar chart race.
-		// Each row has a numeric _rank that tweens smoothly between frames.
-		// No sub-grouping — each rank position holds exactly one entity.
-		const [r0, r1] = yScale.range() // [innerHeight, 0]
-		const [d0, d1] = yScale.domain() // [0, N-1]
-		const step = Math.max(Math.abs(r0 - r1) / Math.max(d1 - d0, 1), 1)
-		const barH = step * 0.9
-
-		return data.map((d) => {
-			const rankVal = Number(d[yf])
-			const colorKey = cf ? d[cf] : null
-			const colorEntry =
-				colors?.get(colorKey) ??
-				colors?.values().next().value ?? { fill: '#888', stroke: '#888' }
-
-			const centerY = yScale(rankVal) ?? 0
-			return {
-				data: d,
-				// Key by entity name (_entity) so Svelte reuses elements as rank tweens
-				key: `${String(d._entity ?? d[yf])}::${String(colorKey ?? '')}`,
-				x: 0,
-				y: centerY - barH / 2,
-				width: xScale(d[xf]) ?? 0,
-				height: barH,
-				fill: colorEntry.fill,
-				stroke: colorEntry.stroke,
-				patternId: null
-			}
-		})
-	}
-
-	// Band scale: standard grouped horizontal bars.
-	// Only create sub-bands when multiple entities share the same y-band (true grouping).
-	const yVals = new Set(data.map((d) => d[yf]))
-	const colorKeys = cf && !isLiteralColor(cf) ? [...new Set(data.map((d) => d[cf]))] : []
-	const hasSubBands = colorKeys.length > 1 && data.length > yVals.size
-	const subScale = hasSubBands
-		? scaleBand().domain(colorKeys).range([0, yScale.bandwidth()]).padding(0.05)
-		: null
-
-	return data.map((d) => {
-		const yVal = d[yf]
-		const colorKey = cf ? d[cf] : null
-		const colorEntry =
-			colors?.get(colorKey) ??
-			colors?.values().next().value ?? { fill: '#888', stroke: '#888' }
-
-		const bandY = yScale(yVal) ?? 0
-		const subY = subScale ? (subScale(colorKey) ?? 0) : 0
-
-		return {
-			data: d,
-			key: `${String(yVal)}::${String(colorKey ?? '')}`,
-			x: 0,
-			y: bandY + subY,
-			width: xScale(d[xf]) ?? 0,
-			height: subScale ? subScale.bandwidth() : yScale.bandwidth(),
-			fill: colorEntry.fill,
-			stroke: colorEntry.stroke,
-			patternId: null
-		}
-	})
 }

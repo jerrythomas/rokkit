@@ -359,23 +359,23 @@
 		}))
 	)
 
-	const xDomainForFrame = $derived(
+	// The race's value-axis domain (the caller's x = the measured value), dynamic or static.
+	const valueDomainForFrame = $derived(
 		isHorizontalRace && dynamicDomain ? $xDomainTween : staticDomains.xDomain
 	)
 	const frameSpec = $derived<PlotSpec>({
 		data: $displayTween,
-		x,
-		y: isHorizontalRace ? '_rank' : y,
+		// Race uses the STANDARD convention so it flips through the same place() path as every
+		// chart: x = the continuous `_rank` (category/position axis), y = the caller's value.
+		// `continuousCategory` keeps the rank scale linear so fractional ranks tween smoothly.
+		x: isHorizontalRace ? '_rank' : x,
+		y: isHorizontalRace ? x : y,
 		color,
 		geoms: isHorizontalRace ? raceGeoms : prepared.geoms,
-		xDomain: xDomainForFrame,
-		yDomain: isHorizontalRace ? [0, entityCount - 1] : staticDomains.yDomain,
-		// Race → legacy channel-swap horizontal; otherwise the caller's orientation drives the
-		// standard place-flip (category-x stands up, value-y runs sideways).
+		xDomain: isHorizontalRace ? [0, entityCount - 1] : staticDomains.xDomain,
+		yDomain: isHorizontalRace ? valueDomainForFrame : staticDomains.yDomain,
 		orientation: isHorizontalRace ? 'horizontal' : resolvedOrientation,
-		// The race's 'horizontal' is the legacy channel-swap (value on x + continuous rank on y),
-		// NOT the category flip — opt out so PlotState keeps it on buildHorizontalBars.
-		legacyHorizontal: isHorizontalRace
+		continuousCategory: isHorizontalRace
 	})
 </script>
 

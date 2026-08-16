@@ -1,10 +1,9 @@
 import { describe, it, expect } from 'vitest'
 import { scaleBand, scaleLinear } from 'd3-scale'
-import {
-	buildGroupedBars,
-	buildStackedBars,
-	buildHorizontalBars
-} from '../../../src/geoms/lib/bars.js'
+import { buildBars, buildStackedBars } from '../../../src/geoms/lib/bars.js'
+
+// Horizontal orientation: category on the vertical screen, value on the horizontal screen.
+const swap = (u, v) => ({ x: v, y: u })
 
 const data = [
 	{ class: 'compact', drv: 'f', hwy: 29 },
@@ -20,9 +19,9 @@ const colors = new Map([
 	['4', { fill: '#f28e2b', stroke: '#f28e2b' }]
 ])
 
-describe('buildGroupedBars', () => {
+describe('buildBars', () => {
 	it('returns one rect per datum', () => {
-		const bars = buildGroupedBars(
+		const bars = buildBars(
 			data,
 			{ x: 'class', y: 'hwy', color: 'drv' },
 			xScale,
@@ -34,7 +33,7 @@ describe('buildGroupedBars', () => {
 	})
 
 	it('groups rects within the parent band', () => {
-		const bars = buildGroupedBars(
+		const bars = buildBars(
 			data,
 			{ x: 'class', y: 'hwy', color: 'drv' },
 			xScale,
@@ -52,7 +51,7 @@ describe('buildGroupedBars', () => {
 	})
 
 	it('applies color fill from colors Map', () => {
-		const bars = buildGroupedBars(
+		const bars = buildBars(
 			data,
 			{ x: 'class', y: 'hwy', color: 'drv' },
 			xScale,
@@ -65,7 +64,7 @@ describe('buildGroupedBars', () => {
 	})
 
 	it('bar height reflects y value', () => {
-		const bars = buildGroupedBars(
+		const bars = buildBars(
 			data,
 			{ x: 'class', y: 'hwy', color: 'drv' },
 			xScale,
@@ -78,7 +77,7 @@ describe('buildGroupedBars', () => {
 	})
 
 	it('returns single-bar-per-x when no color channel', () => {
-		const bars = buildGroupedBars(data, { x: 'class', y: 'hwy' }, xScale, yScale, colors, 200)
+		const bars = buildBars(data, { x: 'class', y: 'hwy' }, xScale, yScale, colors, 200)
 		expect(bars).toHaveLength(4)
 	})
 
@@ -92,7 +91,7 @@ describe('buildGroupedBars', () => {
 		const yLin = scaleLinear().domain([-20, 25]).range([200, 0])
 		const baseline = yLin(0)
 
-		const bars = buildGroupedBars(negData, { x: 'cat', y: 'val' }, xBand, yLin, new Map(), 200)
+		const bars = buildBars(negData, { x: 'cat', y: 'val' }, xBand, yLin, new Map(), 200)
 
 		const barA = bars.find((b) => b.data.cat === 'A')
 		const barB = bars.find((b) => b.data.cat === 'B')
@@ -143,43 +142,49 @@ describe('buildStackedBars', () => {
 	})
 })
 
-describe('buildHorizontalBars', () => {
-	const yBand = scaleBand().domain(['compact', 'suv']).range([0, 200]).padding(0.2)
-	const xLin = scaleLinear().domain([0, 40]).range([0, 300])
+// Grouped horizontal bars = buildBars with a band category (class) + place() swap. The value
+// (hwy) runs along the horizontal screen (width); the category stands up on the vertical screen.
+describe('buildBars — grouped horizontal (band category via place)', () => {
+	const classBand = scaleBand().domain(['compact', 'suv']).range([0, 200]).padding(0.2)
+	const hwyLin = scaleLinear().domain([0, 40]).range([0, 300])
 
 	it('returns one rect per datum', () => {
-		const bars = buildHorizontalBars(
+		const bars = buildBars(
 			data,
-			{ x: 'hwy', y: 'class', color: 'drv' },
-			xLin,
-			yBand,
+			{ x: 'class', y: 'hwy', color: 'drv' },
+			classBand,
+			hwyLin,
 			colors,
-			200
+			200,
+			undefined,
+			swap
 		)
 		expect(bars).toHaveLength(4)
 	})
 
-	it('bar width reflects x value', () => {
-		const bars = buildHorizontalBars(
+	it('bar width reflects the value (hwy)', () => {
+		const bars = buildBars(
 			data,
-			{ x: 'hwy', y: 'class', color: 'drv' },
-			xLin,
-			yBand,
+			{ x: 'class', y: 'hwy', color: 'drv' },
+			classBand,
+			hwyLin,
 			colors,
-			200
+			200,
+			undefined,
+			swap
 		)
 		const bar29 = bars.find((b) => b.data.hwy === 29)
-		expect(bar29?.width).toBeCloseTo(xLin(29), 1)
+		expect(bar29?.width).toBeCloseTo(hwyLin(29), 1)
 	})
 })
 
-describe('buildGroupedBars — orientation flip', () => {
+describe('buildBars — orientation flip', () => {
 	const xs = scaleBand().domain(['compact', 'suv']).range([0, 300]).padding(0.2)
 	const ys = scaleLinear().domain([0, 30]).range([200, 0])
 	const cols = new Map([['f', { fill: '#a', stroke: '#a' }], ['4', { fill: '#b', stroke: '#b' }]])
 	it('transposes each bar rect (width<->height) via place() when flipped', () => {
-		const vertical = buildGroupedBars(data, { x: 'class', y: 'hwy', color: 'drv' }, xs, ys, cols, 200)
-		const flipped = buildGroupedBars(data, { x: 'class', y: 'hwy', color: 'drv' }, xs, ys, cols, 200, undefined, (x, y) => ({ x: y, y: x }))
+		const vertical = buildBars(data, { x: 'class', y: 'hwy', color: 'drv' }, xs, ys, cols, 200)
+		const flipped = buildBars(data, { x: 'class', y: 'hwy', color: 'drv' }, xs, ys, cols, 200, undefined, (x, y) => ({ x: y, y: x }))
 		// The flip swaps the rect's width and height for each bar.
 		expect(flipped[0].width).toBeCloseTo(vertical[0].height)
 		expect(flipped[0].height).toBeCloseTo(vertical[0].width)

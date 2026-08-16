@@ -46,9 +46,10 @@ export class PlotState {
 	#onselect = $state(undefined)
 	#selectable = $state(false)
 	#orientationOverride = $state(undefined)
-	// When true, orientation='horizontal' means the legacy channel-swap (value on x), not the
-	// category flip. Set only by AnimatedPlot's bar race. See #flipped.
-	#legacyHorizontal = $state(false)
+	// When true, the category (x) axis is a CONTINUOUS position scale (kept linear, not
+	// band-forced) — e.g. AnimatedPlot's bar-chart race, whose tweened `_rank` must position
+	// smoothly. It still flips like any category-x chart; buildBars uses continuous positioning.
+	#continuousCategory = $state(false)
 
 	axisOrigin = $state([undefined, undefined])
 	#axisOffset = $state(0)
@@ -97,9 +98,10 @@ export class PlotState {
 		return inferOrientation(this.#resolveXType(rawXType, yType), yType)
 	})
 
-	// True when the x-channel is the categorical (band) axis. Only such charts have a
-	// meaningful flip; when both channels are continuous (scatter, AnimatedPlot's
-	// value×_rank race) this is false and orientation is a no-op for the scales.
+	// True when the x-channel is the categorical (band) axis — a string category, or a numeric
+	// category a bar/box/violin/jitter geom bands (incl. a race's rank via continuousCategory).
+	// Only such charts flip; a plain scatter (both continuous, no banding geom) is false → the
+	// orientation is a no-op for the scales.
 	#bandIsX = $derived.by(() => {
 		const x = this.#effectiveChannels.x
 		const y = this.#effectiveChannels.y
@@ -112,15 +114,7 @@ export class PlotState {
 	// Flip = render a category-on-x chart horizontally: the category (x) axis stands up on the
 	// vertical screen and the value (y) axis runs along the horizontal screen. x/y channels are
 	// unchanged — only the screen mapping rotates.
-	//
-	// `#legacyHorizontal` opts a chart out: AnimatedPlot's value×_rank bar race sets
-	// orientation='horizontal' to mean the OLD channel-swap (value on x, continuous rank on y via
-	// buildHorizontalBars — a linear rank scale it needs for smooth tweening). Without this guard,
-	// the bar geom force-bands its continuous revenue x, #bandIsX reads true, and the race would
-	// route into the place-flip path and collapse every entity onto one row.
-	#flipped = $derived(
-		this.orientation === 'horizontal' && this.#bandIsX && !this.#legacyHorizontal
-	)
+	#flipped = $derived(this.orientation === 'horizontal' && this.#bandIsX)
 
 	colorScaleType = $derived.by(() => {
 		const field = this.#effectiveChannels.color
@@ -152,12 +146,16 @@ export class PlotState {
 		const datasets =
 			this.#geoms.length > 0 ? this.#geoms.map((g) => this.geomData(g.id)) : [this.#rawData]
 		// includeZero applies to the VALUE axis. When flipped, x is the category axis, not
-		// the value axis, so it must NOT include zero (that's the old channel-swap horizontal).
+		// the value axis, so it must NOT include zero.
 		const includeZero = this.orientation === 'horizontal' && !this.#flipped
-		// Force scaleBand when x is the categorical axis (incl. flipped, where numeric
-		// categories must stay a band even though orientation is horizontal).
+		// Force scaleBand when x is the categorical axis (incl. flipped, where numeric categories
+		// must stay a band). Exception: a CONTINUOUS category axis (a bar race's tweened rank) is
+		// kept LINEAR so fractional positions tween smoothly — buildBars positions it directly.
 		const hasBandGeom = this.#geoms.some((g) => CATEGORICAL_X.has(g.type))
-		const bandX = hasBandGeom && (this.orientation !== 'horizontal' || this.#flipped)
+		const bandX =
+			hasBandGeom &&
+			!this.#continuousCategory &&
+			(this.orientation !== 'horizontal' || this.#flipped)
 		// Flip: the category (x) axis stands up on the vertical screen → range over height.
 		const range = this.#flipped ? [this.#innerHeight, 0] : undefined
 		const base = buildUnifiedXScale(datasets, field, this.#innerWidth, {
@@ -326,7 +324,7 @@ export class PlotState {
 		this.#axisOffset = config.axisOffset ?? 0
 		this.#marginOverride = config.margin ?? undefined
 		this.#orientationOverride = config.orientation ?? undefined
-		this.#legacyHorizontal = config.legacyHorizontal ?? false
+		this.#continuousCategory = config.continuousCategory ?? false
 	}
 
 	update(config) {
@@ -353,7 +351,7 @@ export class PlotState {
 		if (config.axisOffset !== undefined) this.#axisOffset = config.axisOffset
 		this.#marginOverride = config.margin ?? undefined
 		this.#orientationOverride = config.orientation ?? undefined
-		this.#legacyHorizontal = config.legacyHorizontal ?? false
+		this.#continuousCategory = config.continuousCategory ?? false
 	}
 
 	registerGeom(config) {
@@ -415,6 +413,11 @@ export class PlotState {
 	// vertical screen, value axis along the horizontal screen). x/y channels unchanged.
 	get isFlipped() {
 		return this.#flipped
+	}
+	// True when the category (x) axis is a continuous position scale (kept linear) rather than a
+	// band — a bar-chart race's tweened rank. buildBars uses continuous positioning for it.
+	get continuousCategory() {
+		return this.#continuousCategory
 	}
 	// Map abstract (x-channel, y-channel) scale outputs to screen coords. When flipped,
 	// the two screen axes swap. Geoms compute u = xScale(d[x]), v = yScale(d[y]) then

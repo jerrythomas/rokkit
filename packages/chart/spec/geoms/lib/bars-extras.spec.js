@@ -1,11 +1,15 @@
 import { describe, it, expect } from 'vitest'
 import { scaleBand, scaleLinear } from 'd3-scale'
-import { buildHorizontalBars, buildGroupedBars, buildStackedBars } from '../../../src/geoms/lib/bars.js'
+import { buildBars, buildStackedBars } from '../../../src/geoms/lib/bars.js'
+
+// Horizontal orientation: category on the vertical screen, value on the horizontal screen.
+const swap = (u, v) => ({ x: v, y: u })
 
 /**
- * Extra tests covering uncovered lines in geoms/lib/bars.js:
- * - Lines 161-190: buildHorizontalBars with linear y-scale (rank-based)
- * - Lines 99-100: ensureBandX for linear x scale (band derived from data)
+ * Extra coverage for geoms/lib/bars.js:
+ * - buildBars continuous-category mode (a bar-chart race's linear rank axis)
+ * - buildBars band mode: ensureBandX for a linear x scale (band derived from data)
+ * - buildBars grouped-horizontal (band category via place)
  */
 
 const colors = new Map([
@@ -14,127 +18,68 @@ const colors = new Map([
 	['CompanyC', { fill: '#e15759', stroke: '#e15759' }]
 ])
 
-describe('buildHorizontalBars — linear y-scale (rank-based)', () => {
-	// Simulate a bar chart race: y is numeric _rank, x is numeric value
+// A bar-chart race in the STANDARD convention: x = _rank (a continuous category/position on a
+// LINEAR scale), y = revenue (value). place() swap → rank on the vertical screen, value along the
+// horizontal. continuousCategory=true keeps the rank axis linear so fractional ranks tween smoothly.
+describe('buildBars — continuous category (rank-based race)', () => {
 	const rankData = [
 		{ _entity: 'CompanyA', revenue: 300, _rank: 0, category: 'CompanyA' },
 		{ _entity: 'CompanyB', revenue: 200, _rank: 1, category: 'CompanyB' },
 		{ _entity: 'CompanyC', revenue: 150, _rank: 2, category: 'CompanyC' }
 	]
-
-	// Linear y-scale: domain [0, 2] (ranks), range [200, 0]
-	const yLinear = scaleLinear().domain([0, 2]).range([200, 0])
-	const xLinear = scaleLinear().domain([0, 400]).range([0, 300])
-
-	it('returns one bar per datum with linear y scale', () => {
-		const bars = buildHorizontalBars(
-			rankData,
-			{ x: 'revenue', y: '_rank', color: 'category' },
-			xLinear,
-			yLinear,
+	const rankScale = scaleLinear().domain([0, 2]).range([200, 0]) // continuous position axis
+	const valueScale = scaleLinear().domain([0, 400]).range([0, 300]) // value axis
+	const build = (data = rankData) =>
+		buildBars(
+			data,
+			{ x: '_rank', y: 'revenue', color: 'category' },
+			rankScale,
+			valueScale,
 			colors,
-			200
+			200,
+			undefined,
+			swap,
+			true
 		)
-		expect(bars).toHaveLength(3)
+
+	it('returns one bar per datum', () => {
+		expect(build()).toHaveLength(3)
 	})
 
-	it('bar x is 0 (all bars start from left)', () => {
-		const bars = buildHorizontalBars(
-			rankData,
-			{ x: 'revenue', y: '_rank', color: 'category' },
-			xLinear,
-			yLinear,
-			colors,
-			200
-		)
-		for (const bar of bars) {
-			expect(bar.x).toBe(0)
-		}
+	it('bars start at x=0 (value grows along the horizontal screen)', () => {
+		for (const bar of build()) expect(bar.x).toBeCloseTo(0, 6)
 	})
 
-	it('bar width reflects x value', () => {
-		const bars = buildHorizontalBars(
-			rankData,
-			{ x: 'revenue', y: '_rank', color: 'category' },
-			xLinear,
-			yLinear,
-			colors,
-			200
-		)
-		const barA = bars.find((b) => b._entity === 'CompanyA' || b.data._entity === 'CompanyA')
-		// width = xScale(300) = 300 * (300/400) = 225
-		expect(barA?.width).toBeCloseTo(xLinear(300), 1)
+	it('bar width reflects the value (revenue)', () => {
+		const barA = build().find((b) => b.data._entity === 'CompanyA')
+		expect(barA?.width).toBeCloseTo(valueScale(300), 1)
 	})
 
-	it('bar height > 0 (derived from step size)', () => {
-		const bars = buildHorizontalBars(
-			rankData,
-			{ x: 'revenue', y: '_rank', color: 'category' },
-			xLinear,
-			yLinear,
-			colors,
-			200
-		)
-		for (const bar of bars) {
-			expect(bar.height).toBeGreaterThan(0)
-		}
+	it('bar height > 0 (thickness derived from the step size)', () => {
+		for (const bar of build()) expect(bar.height).toBeGreaterThan(0)
 	})
 
-	it('bar key uses _entity when present', () => {
-		const bars = buildHorizontalBars(
-			rankData,
-			{ x: 'revenue', y: '_rank', color: 'category' },
-			xLinear,
-			yLinear,
-			colors,
-			200
-		)
-		const barA = bars.find((b) => b.data._entity === 'CompanyA')
+	it('bar key uses _entity (so Svelte reuses each bar as its rank tweens)', () => {
+		const barA = build().find((b) => b.data._entity === 'CompanyA')
 		expect(barA?.key).toContain('CompanyA')
 	})
 
-	it('applies color fill from colors map', () => {
-		const bars = buildHorizontalBars(
-			rankData,
-			{ x: 'revenue', y: '_rank', color: 'category' },
-			xLinear,
-			yLinear,
-			colors,
-			200
-		)
-		const barA = bars.find((b) => b.data._entity === 'CompanyA')
+	it('applies color fill from the colors map', () => {
+		const barA = build().find((b) => b.data._entity === 'CompanyA')
 		expect(barA?.fill).toBe('#4e79a7')
 	})
 
-	it('falls back to first color entry when color key not found', () => {
-		const noMatchData = [{ _entity: 'Unknown', revenue: 100, _rank: 0, category: 'Unknown' }]
-		const bars = buildHorizontalBars(
-			noMatchData,
-			{ x: 'revenue', y: '_rank', color: 'category' },
-			xLinear,
-			yLinear,
-			colors,
-			200
-		)
+	it('falls back to the first color entry when the color key is not found', () => {
+		const bars = build([{ _entity: 'Unknown', revenue: 100, _rank: 0, category: 'Unknown' }])
 		expect(bars[0].fill).toBeTruthy()
 	})
 
-	it('patternId is null for horizontal bars', () => {
-		const bars = buildHorizontalBars(
-			rankData,
-			{ x: 'revenue', y: '_rank', color: 'category' },
-			xLinear,
-			yLinear,
-			colors,
-			200
-		)
-		for (const bar of bars) {
-			expect(bar.patternId).toBeNull()
-		}
+	it('patternId is null when no patterns provided', () => {
+		for (const bar of build()) expect(bar.patternId).toBeNull()
 	})
 })
 
-describe('buildGroupedBars — linear x scale (ensureBandX derivation)', () => {
+describe('buildBars — band mode: linear x scale (ensureBandX derivation)', () => {
 	// When xScale is linear (not band), ensureBandX derives a band scale from data
 	const yearData = [
 		{ year: 2020, val: 100, group: 'A' },
@@ -151,7 +96,7 @@ describe('buildGroupedBars — linear x scale (ensureBandX derivation)', () => {
 	])
 
 	it('builds bars with linear x scale (ensureBandX creates band from data)', () => {
-		const bars = buildGroupedBars(
+		const bars = buildBars(
 			yearData,
 			{ x: 'year', y: 'val', color: 'group' },
 			xLinear,
@@ -163,7 +108,7 @@ describe('buildGroupedBars — linear x scale (ensureBandX derivation)', () => {
 	})
 
 	it('each bar has positive width', () => {
-		const bars = buildGroupedBars(
+		const bars = buildBars(
 			yearData,
 			{ x: 'year', y: 'val', color: 'group' },
 			xLinear,
@@ -286,68 +231,74 @@ describe('buildStackedBars — extra coverage', () => {
 	})
 })
 
-describe('buildHorizontalBars — band y-scale sub-bands', () => {
+// Grouped horizontal bars = buildBars, band category (class) on x, value (hwy) on y, place() swap.
+// The bar's on-screen HEIGHT is the (sub-)band thickness; its WIDTH is the value.
+describe('buildBars — grouped horizontal sub-bands (band category via place)', () => {
 	const data = [
 		{ class: 'compact', drv: 'f', hwy: 29 },
 		{ class: 'compact', drv: '4', hwy: 26 },
 		{ class: 'suv', drv: 'f', hwy: 20 },
 		{ class: 'suv', drv: '4', hwy: 18 }
 	]
-	const yBand = scaleBand().domain(['compact', 'suv']).range([0, 200]).padding(0.2)
-	const xLin = scaleLinear().domain([0, 40]).range([0, 300])
+	const classBand = scaleBand().domain(['compact', 'suv']).range([0, 200]).padding(0.2)
+	const hwyLin = scaleLinear().domain([0, 40]).range([0, 300])
 	const groupColors = new Map([
 		['f', { fill: '#blue', stroke: '#darkblue' }],
 		['4', { fill: '#red', stroke: '#darkred' }]
 	])
 
-	it('creates sub-bands when multiple color keys and data > unique y values', () => {
-		const bars = buildHorizontalBars(
+	it('creates sub-bands when multiple color keys split a category', () => {
+		const bars = buildBars(
 			data,
-			{ x: 'hwy', y: 'class', color: 'drv' },
-			xLin,
-			yBand,
+			{ x: 'class', y: 'hwy', color: 'drv' },
+			classBand,
+			hwyLin,
 			groupColors,
-			200
+			200,
+			undefined,
+			swap
 		)
 		expect(bars).toHaveLength(4)
-		// With sub-bands, bar heights should be smaller than full band
+		// Sub-banded → each bar's on-screen thickness (height) is less than the full band
 		for (const bar of bars) {
-			expect(bar.height).toBeLessThan(yBand.bandwidth())
+			expect(bar.height).toBeLessThan(classBand.bandwidth())
 		}
 	})
 
-	it('no sub-bands when single color key per y category', () => {
+	it('no sub-bands when a single color key per category → full band thickness', () => {
 		const singleColorData = [
 			{ class: 'compact', drv: 'f', hwy: 29 },
 			{ class: 'suv', drv: 'f', hwy: 20 }
 		]
 		const singleColors = new Map([['f', { fill: '#blue', stroke: '#darkblue' }]])
-		const bars = buildHorizontalBars(
+		const bars = buildBars(
 			singleColorData,
-			{ x: 'hwy', y: 'class', color: 'drv' },
-			xLin,
-			yBand,
+			{ x: 'class', y: 'hwy', color: 'drv' },
+			classBand,
+			hwyLin,
 			singleColors,
-			200
+			200,
+			undefined,
+			swap
 		)
-		// Only one color key → no sub-scale → full band height
 		expect(bars).toHaveLength(2)
-		expect(bars[0].height).toBeCloseTo(yBand.bandwidth(), 1)
+		expect(bars[0].height).toBeCloseTo(classBand.bandwidth(), 1)
 	})
 
-	it('handles literal color field (isLiteralColor) — no sub-bands created', () => {
-		// When color field is a CSS color literal, it is not treated as a data field
+	it('handles a literal color field (isLiteralColor) — no sub-bands created', () => {
 		const literalColorData = [
 			{ class: 'compact', hwy: 29 },
 			{ class: 'suv', hwy: 20 }
 		]
-		const bars = buildHorizontalBars(
+		const bars = buildBars(
 			literalColorData,
-			{ x: 'hwy', y: 'class', color: '#ff0000' },
-			xLin,
-			yBand,
+			{ x: 'class', y: 'hwy', color: '#ff0000' },
+			classBand,
+			hwyLin,
 			new Map(),
-			200
+			200,
+			undefined,
+			swap
 		)
 		expect(bars).toHaveLength(2)
 	})

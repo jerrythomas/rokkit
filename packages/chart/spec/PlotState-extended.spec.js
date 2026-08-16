@@ -643,26 +643,41 @@ describe('PlotState — horizontal orientation flip', () => {
 		expect(state.place(11, 22)).toEqual({ x: 22, y: 11 })
 	})
 
-	it('legacyHorizontal opts the AnimatedPlot value×_rank race out of the flip', () => {
-		// The bar geom force-bands the continuous revenue x, so #bandIsX is true; without the
-		// legacyHorizontal marker the race would route into the place-flip and collapse every
-		// entity onto one row. AnimatedPlot sets legacyHorizontal → stays on buildHorizontalBars.
+	it('continuousCategory keeps the race rank axis LINEAR but still flips via place()', () => {
+		// The race adopts the standard convention: x = _rank (continuous category/position),
+		// y = revenue (value). continuousCategory keeps x LINEAR (not band-forced) so fractional
+		// ranks tween smoothly, while the chart still flips like any category-x chart.
 		const race = [
 			{ revenue: 60, _rank: 0 }, { revenue: 40, _rank: 1 },
 			{ revenue: 20, _rank: 2 }, { revenue: 10, _rank: 3 }
 		]
-		const opts = {
-			data: race, channels: { x: 'revenue', y: '_rank' }, width: 400, height: 300, orientation: 'horizontal'
-		}
-		const raced = new PlotState({ ...opts, legacyHorizontal: true })
-		raced.registerGeom({ type: 'bar', channels: { x: 'revenue', y: '_rank' }, stat: 'identity' })
-		expect(raced.isFlipped).toBe(false)
-		expect(raced.place(5, 9)).toEqual({ x: 5, y: 9 })
+		const state = new PlotState({
+			data: race,
+			channels: { x: '_rank', y: 'revenue' },
+			width: 400,
+			height: 300,
+			orientation: 'horizontal',
+			continuousCategory: true
+		})
+		state.registerGeom({ type: 'bar', channels: { x: '_rank', y: 'revenue' }, stat: 'identity' })
+		expect(state.continuousCategory).toBe(true)
+		expect(state.isFlipped).toBe(true) // flips via place, like every category-x chart
+		expect(state.place(5, 9)).toEqual({ x: 9, y: 5 }) // horizontal → screen axes swap
+		// The rank (x) axis stays a LINEAR scale so a fractional rank positions smoothly.
+		expect(typeof state.xScale.bandwidth).not.toBe('function')
+	})
 
-		// Without the marker the same shape WOULD read as flippable (guards the marker's effect).
-		const unmarked = new PlotState(opts)
-		unmarked.registerGeom({ type: 'bar', channels: { x: 'revenue', y: '_rank' }, stat: 'identity' })
-		expect(unmarked.isFlipped).toBe(true)
+	it('without continuousCategory, a bar force-bands numeric x (year flips as a band)', () => {
+		// Contrast: an ordinary numeric category (year) IS band-forced and flips as a band.
+		const byYear = [
+			{ year: 2019, sales: 10 }, { year: 2020, sales: 20 }, { year: 2021, sales: 15 }
+		]
+		const state = new PlotState({
+			data: byYear, channels: { x: 'year', y: 'sales' }, width: 400, height: 300, orientation: 'horizontal'
+		})
+		state.registerGeom({ type: 'bar', channels: { x: 'year', y: 'sales' }, stat: 'identity' })
+		expect(state.isFlipped).toBe(true)
+		expect(typeof state.xScale.bandwidth).toBe('function') // band-forced
 	})
 
 	it('vertical (default) keeps category(x) over width, value(y) over height', () => {

@@ -2,7 +2,7 @@
 	import { getContext, onMount, onDestroy } from 'svelte'
 	import type { PlotState } from '../PlotState.svelte.js'
 	import type { createCrossFilter } from '../crossfilter/createCrossFilter.svelte.js'
-	import { buildGroupedBars, buildStackedBars, buildHorizontalBars } from './lib/bars.js'
+	import { buildBars, buildStackedBars } from './lib/bars.js'
 	import { keyboardNav } from '../lib/keyboard-nav.js'
 	import { buildSelectDetail } from '../lib/select.js'
 	import LabelPill from './LabelPill.svelte'
@@ -102,23 +102,24 @@
 	const bars = $derived.by(() => {
 		if (!data?.length || !xScale || !yScale) return []
 		const channels = { x, y, color: colorChannel, pattern }
-		// Orientation flip (category-x → horizontal): reuse the grouped/stacked builders but
-		// transpose each rect through place(). Kept separate from the old channel-swap
-		// `horizontal` path below, which AnimatedPlot's value×_rank race still relies on.
-		if (plotState.isFlipped) {
-			const place = plotState.place.bind(plotState)
-			if (options.stack) {
-				return buildStackedBars(data, channels, xScale, yScale, colors, innerHeight, patterns, place)
-			}
-			return buildGroupedBars(data, channels, xScale, yScale, colors, innerHeight, patterns, place)
-		}
-		if (effectiveOrientation === 'horizontal') {
-			return buildHorizontalBars(data, channels, xScale, yScale, colors, innerHeight)
-		}
+		// One builder, one path: express bars in (category, value) space and map to screen via
+		// place() (identity vertical, swap when flipped). `continuousCategory` keeps a linear
+		// category axis (the bar-chart race's tweened rank) so it positions/tweens smoothly.
+		const place = plotState.place.bind(plotState)
 		if (options.stack) {
-			return buildStackedBars(data, channels, xScale, yScale, colors, innerHeight, patterns)
+			return buildStackedBars(data, channels, xScale, yScale, colors, innerHeight, patterns, place)
 		}
-		return buildGroupedBars(data, channels, xScale, yScale, colors, innerHeight, patterns)
+		return buildBars(
+			data,
+			channels,
+			xScale,
+			yScale,
+			colors,
+			innerHeight,
+			patterns,
+			place,
+			plotState.continuousCategory
+		)
 	})
 
 	let dimmedByKey = $state<Record<string, boolean>>({})
