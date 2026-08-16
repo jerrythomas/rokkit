@@ -13,10 +13,12 @@
 		/** Box thickness as a fraction of the (sub-)band — use a small value (e.g. 0.16) for a
 		 *  thin raincloud box. Defaults to the full box width. */
 		width?: number
+		/** Data field driving a texture fill (from the shared pattern set) instead of a solid fill. */
+		pattern?: string
 		options?: { opacity?: number }
 	}
 
-	let { x, y, fill, stat = 'boxplot', side = 'center', width, options = {} }: Props = $props()
+	let { x, y, fill, stat = 'boxplot', side = 'center', width, pattern, options = {} }: Props = $props()
 
 	const plotState = getContext<PlotState>('plot-state')
 	let id = $state<string | null>(null)
@@ -31,7 +33,7 @@
 	onMount(() => {
 		id = plotState.registerGeom({
 			type: 'box',
-			channels: { x: xf, y: yf, color: fillChannel },
+			channels: { x: xf, y: yf, color: fillChannel, pattern },
 			stat,
 			options
 		})
@@ -41,17 +43,23 @@
 	})
 
 	$effect(() => {
-		if (id) plotState.updateGeom(id, { channels: { x: xf, y: yf, color: fillChannel }, stat })
+		if (id)
+			plotState.updateGeom(id, { channels: { x: xf, y: yf, color: fillChannel, pattern }, stat })
 	})
 
 	const data = $derived(id ? plotState.geomData(id) : [])
 	const xScale = $derived(plotState.xScale)
 	const yScale = $derived(plotState.yScale)
 	const colors = $derived(plotState.colors)
+	const patterns = $derived(plotState.patterns)
 
 	const boxes = $derived.by(() => {
 		if (!data?.length || !xScale || !yScale) return []
-		return buildBoxes(data, { x: xf, fill: fillChannel }, xScale, yScale, colors, { side, width })
+		return buildBoxes(data, { x: xf, fill: fillChannel, pattern }, xScale, yScale, colors, {
+			side,
+			width,
+			patterns
+		})
 	})
 </script>
 
@@ -88,6 +96,17 @@
 					onmouseenter={() => plotState.setHovered(box.data)}
 					onmouseleave={() => plotState.clearHovered()}
 				/>
+				{#if box.patternId}
+					<!-- Texture fill overlay (matches the box body) -->
+					<rect
+						x={Math.min(c1.x, c2.x)}
+						y={Math.min(c1.y, c2.y)}
+						width={Math.abs(c2.x - c1.x)}
+						height={Math.abs(c2.y - c1.y)}
+						fill="url(#{box.patternId})"
+						pointer-events="none"
+					/>
+				{/if}
 				<!-- Median line: darker stroke shade -->
 				<line
 					x1={mA.x}

@@ -3,6 +3,7 @@
 	import type { Snippet } from 'svelte'
 	import { PlotState } from '../PlotState.svelte.js'
 	import { defaultPreset } from '../lib/preset.js'
+	import DefinePatterns from '../patterns/DefinePatterns.svelte'
 
 	type Margin = { top?: number; right?: number; bottom?: number; left?: number }
 
@@ -96,6 +97,8 @@
 	data-plot-root
 	data-plot-animate={animate && animateReady ? '' : undefined}
 >
+	<!-- SVG <pattern> defs for texture fills (Bar/Area/Arc/Box/Violin `pattern` channel) -->
+	<DefinePatterns />
 	<g transform="translate({marginLeft}, {marginTop})" data-plot-canvas>
 		{@render children?.()}
 	</g>

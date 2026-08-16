@@ -1,4 +1,5 @@
 import { line, curveCatmullRom } from 'd3-shape'
+import { toPatternId } from '../patterns.js'
 
 // Relative widths at each stat anchor (fraction of max half-width)
 const DENSITY_AT = { iqr_min: 0.08, q1: 0.55, median: 1.0, q3: 0.55, iqr_max: 0.08 }
@@ -13,7 +14,7 @@ const ANCHOR_ORDER = ['iqr_max', 'q3', 'median', 'q1', 'iqr_min']
  * Violin body uses the lighter fill shade; outline uses the darker stroke shade.
  *
  * @param {Object[]} data
- * @param {{ x?: string, fill?: string }} channels
+ * @param {{ x?: string, fill?: string, pattern?: string }} channels
  *   `fill` drives violin interior and outline (defaults to x-field).
  * @param {import('d3-scale').ScaleBand} xScale
  * @param {import('d3-scale').ScaleLinear} yScale
@@ -44,11 +45,17 @@ export function buildViolins(
 	yScale,
 	colors,
 	place = (x, y) => ({ x, y }),
-	side = 'center'
+	side = 'center',
+	patterns
 ) {
-	const { x: xf, fill: ff } = channels
+	const { x: xf, fill: ff, pattern: pf } = channels
 	const bw = typeof xScale.bandwidth === 'function' ? xScale.bandwidth() : 40
 	const grouped = ff && ff !== xf
+	// Texture fill: patternId per violin from the pattern channel value (null = solid fill).
+	const patternIdFor = (d) => {
+		const key = pf ? d[pf] : null
+		return key !== null && key !== undefined && patterns?.has(key) ? toPatternId(String(key)) : null
+	}
 
 	const pathGen = line()
 		.x((pt) => pt.x)
@@ -73,7 +80,8 @@ export function buildViolins(
 				cx,
 				d: pathGen(violinPoints(cx, halfMax, d, yScale, side).map((pt) => place(pt.x, pt.y))),
 				fill: colorEntry.fill,
-				stroke: colorEntry.stroke
+				stroke: colorEntry.stroke,
+				patternId: patternIdFor(d)
 			}
 		})
 	}
@@ -91,7 +99,8 @@ export function buildViolins(
 			cx,
 			d: pathGen(violinPoints(cx, halfMax, d, yScale, side).map((pt) => place(pt.x, pt.y))),
 			fill: colorEntry.fill,
-			stroke: colorEntry.stroke
+			stroke: colorEntry.stroke,
+			patternId: patternIdFor(d)
 		}
 	})
 }

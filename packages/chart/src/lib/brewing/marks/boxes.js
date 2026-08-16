@@ -1,3 +1,5 @@
+import { toPatternId } from '../patterns.js'
+
 /**
  * Builds box geometry for box plot charts.
  * Input data rows must already contain { q1, median, q3, iqr_min, iqr_max } —
@@ -8,23 +10,29 @@
  * Box body uses the lighter fill shade; whiskers and median use the darker stroke shade.
  *
  * @param {Object[]} data - Pre-aggregated rows with quartile fields
- * @param {{ x?: string, fill?: string }} channels
+ * @param {{ x?: string, fill?: string, pattern?: string }} channels
  *   `fill` drives the box and whisker color (defaults to x-field).
  * @param {import('d3-scale').ScaleBand} xScale
  * @param {import('d3-scale').ScaleLinear} yScale
  * @param {Map<unknown, {fill:string, stroke:string}>} colors
- * @param {{ side?: 'left'|'right'|'center', width?: number }} [opts]
+ * @param {{ side?: 'left'|'right'|'center', width?: number, patterns?: Map<unknown, string> }} [opts]
  *   `side` offsets the box to one half of the band; `width` is the box thickness as a
- *   fraction of the (sub-)band (for a thin raincloud box). Defaults preserve the full box.
+ *   fraction of the (sub-)band (for a thin raincloud box); `patterns` maps a pattern-channel
+ *   value to a pattern name for texture fills. Defaults preserve the full box.
  * @returns {Array}
  */
 export function buildBoxes(data, channels, xScale, yScale, colors, opts = {}) {
-	const { x: xf, fill: ff } = channels
-	const { side = 'center', width } = opts
+	const { x: xf, fill: ff, pattern: pf } = channels
+	const { side = 'center', width, patterns } = opts
 	const bw = typeof xScale.bandwidth === 'function' ? xScale.bandwidth() : 20
 	const grouped = ff && ff !== xf
 	// Offset the box centre to the middle of the chosen half-lane.
 	const laneOffset = (unit) => (side === 'left' ? -unit / 4 : side === 'right' ? unit / 4 : 0)
+	// Texture fill: patternId per box from the pattern channel value (null = solid fill).
+	const patternIdFor = (d) => {
+		const key = pf ? d[pf] : null
+		return key !== null && key !== undefined && patterns?.has(key) ? toPatternId(String(key)) : null
+	}
 
 	if (grouped) {
 		const fillValues = [...new Set(data.map((d) => d[ff]))]
@@ -52,7 +60,8 @@ export function buildBoxes(data, channels, xScale, yScale, colors, opts = {}) {
 				width: boxWidth,
 				whiskerWidth,
 				fill: colorEntry.fill,
-				stroke: colorEntry.stroke
+				stroke: colorEntry.stroke,
+				patternId: patternIdFor(d)
 			}
 		})
 	}
@@ -80,7 +89,8 @@ export function buildBoxes(data, channels, xScale, yScale, colors, opts = {}) {
 			width: boxWidth,
 			whiskerWidth,
 			fill: colorEntry.fill,
-			stroke: colorEntry.stroke
+			stroke: colorEntry.stroke,
+			patternId: patternIdFor(d)
 		}
 	})
 }

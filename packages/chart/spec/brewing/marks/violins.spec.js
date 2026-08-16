@@ -72,3 +72,17 @@ describe('buildViolins — side (half violin)', () => {
 		expect(new Set([right.d, left.d, center.d]).size).toBe(3)
 	})
 })
+
+describe('buildViolins — pattern fill', () => {
+	const patterns = new Map([['A', 'diagonal']])
+
+	it('sets patternId from the pattern channel value', () => {
+		const [v] = buildViolins(data, { x: 'cat', pattern: 'cat' }, xScale, yScale, colors, undefined, 'center', patterns)
+		expect(v.patternId).toBeTruthy()
+	})
+
+	it('patternId is null without a pattern channel', () => {
+		const [v] = buildViolins(data, { x: 'cat' }, xScale, yScale, colors)
+		expect(v.patternId).toBeNull()
+	})
+})

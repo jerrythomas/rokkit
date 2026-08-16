@@ -238,6 +238,24 @@
 		</div>
 	</section>
 
+	<section>
+		<header>Pattern fills — Box & Violin textured (an option beside solid/transparent)</header>
+		<div class="chart-stage">
+			<Plot.Root data={cars} x="class" y="hwy" width={560} height={280} margin={{ top: 10, right: 20, bottom: 40, left: 50 }}>
+				<Plot.Axis type="x" />
+				<Plot.Axis type="y" />
+				<Plot.Box x="class" y="hwy" pattern="class" />
+			</Plot.Root>
+		</div>
+		<div class="chart-stage">
+			<Plot.Root data={cars} x="class" y="hwy" width={560} height={280} margin={{ top: 10, right: 20, bottom: 40, left: 50 }}>
+				<Plot.Axis type="x" />
+				<Plot.Axis type="y" />
+				<Plot.Violin x="class" y="hwy" pattern="class" />
+			</Plot.Root>
+		</div>
+	</section>
+
 		<section>
 			<header>Orientation flip — horizontal box + jitter (same x/y, orientation="horizontal")</header>
 			<div class="chart-stage">

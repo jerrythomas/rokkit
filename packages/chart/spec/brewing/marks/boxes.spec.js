@@ -101,3 +101,17 @@ describe('buildBoxes — side & width (raincloud)', () => {
 		expect(box.cx).toBeCloseTo(centerOf('A'), 3)
 	})
 })
+
+describe('buildBoxes — pattern fill', () => {
+	const patterns = new Map([['A', 'diagonal'], ['B', 'dots']])
+
+	it('sets patternId from the pattern channel value', () => {
+		const boxes = buildBoxes(data, { x: 'cat', pattern: 'cat' }, xScale, yScale, colors, { patterns })
+		expect(boxes.every((b) => b.patternId)).toBe(true)
+	})
+
+	it('patternId is null without a pattern channel', () => {
+		const boxes = buildBoxes(data, { x: 'cat' }, xScale, yScale, colors)
+		expect(boxes.every((b) => b.patternId === null)).toBe(true)
+	})
+})
