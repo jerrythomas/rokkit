@@ -1,5 +1,37 @@
 # Project Journal
 
+## 2026-08-16 — Chart: raincloud `side`, pattern fills on Box/Violin, Rule geom, Plot.* completions
+
+Answered "any missing geoms? do we support pattern fills?" with an audit, then shipped the four
+things the user picked (composable `side`, pattern fills on Box/Violin, a reference-line geom,
+surfacing the orphaned geoms). All on `develop`.
+
+**Raincloud — composable `side` (`f01092c2`).** `side: 'left'|'right'|'center'` on Violin/Box/Jitter
+renders each on one half of the band, so a raincloud composes under one `Plot.Root`:
+`<Plot.Violin side=left/> <Plot.Box side=center width=0.16/> <Plot.Jitter side=right/>`. Violin draws
+a half silhouette (flat edge at the band centre); Jitter confines swarm/jitter offsets to one half;
+Box offsets into a half-lane + a `width` fraction for a thin box. Defaults byte-identical.
+
+**Plot.* completions (`be1e396a`).** Candlestick/Heatmap/Hexbin/Ribbon/Waterfall existed as `Geom*` +
+spec `type:` but weren't in the composable `Plot.*` namespace — added.
+
+**Pattern (texture) fills on Box & Violin (`2fa9e27b`).** Wired the existing 21-pattern channel into
+Box/Violin (like Bar/Area/Arc): a `pattern=<field>` prop overlays a texture fill. **Fix:** composable
+`Plot.Root` never rendered `<DefinePatterns>`, so patterns didn't resolve in composable mode (Bar was
+affected too) — added it to `Plot.Root`. Live-verified the `url(#…)` refs resolve and textures paint.
+
+**Rule geom — reference/threshold lines (`ae78ea4b`).** New `<Plot.Rule x= y=>` (hline/vline) at
+literal axis value(s) — targets/means/thresholds. Expressed in (x,y)-channel space + `place()`, so it
+transposes with the chart flip (stays perpendicular to its axis). `Plot.Rule` + `GeomRule`.
+
+Every piece: unit tests on the builders/geom + live-verified in-browser (raincloud, patterned box/
+violin, target line all screenshotted). Full chart suite **1291**, svelte-check + lint clean.
+
+**Audit findings (still-missing geoms, filed to backlog):** errorbar/interval, a general text/label
+geom, rug, segment/arrow, standalone 1-D density curve, contour/2-D density. Plus Rule follow-ups
+(auto-extend the domain to include out-of-range references; data-driven rules). See
+`docs/backlog/2026-08-16-chart-geom-gaps.md`.
+
 ## 2026-08-16 — Chart: unify bar builders into `buildBars` (delete `buildHorizontalBars`)
 
 Closed the loop the previous two entries left open: the AnimatedPlot bar race no longer needs a
