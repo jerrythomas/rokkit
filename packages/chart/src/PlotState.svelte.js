@@ -46,6 +46,9 @@ export class PlotState {
 	#onselect = $state(undefined)
 	#selectable = $state(false)
 	#orientationOverride = $state(undefined)
+	// When true, orientation='horizontal' means the legacy channel-swap (value on x), not the
+	// category flip. Set only by AnimatedPlot's bar race. See #flipped.
+	#legacyHorizontal = $state(false)
 
 	axisOrigin = $state([undefined, undefined])
 	#axisOffset = $state(0)
@@ -101,18 +104,23 @@ export class PlotState {
 		const x = this.#effectiveChannels.x
 		const y = this.#effectiveChannels.y
 		if (!x || !y) return false
-		// Use the NATURAL x type, NOT the geom-forced band (CATEGORICAL_X). Forcing a band
-		// scale is a scale-construction concern (numeric categories still want a band axis);
-		// it must not leak into the flip decision. If it did, AnimatedPlot's value×_rank bar
-		// race (x=revenue continuous, forced to band by the bar geom) would read as flippable
-		// and route away from buildHorizontalBars, collapsing every entity onto one row.
-		return inferFieldType(this.#data, x) === 'band'
+		// Resolved type: a bar/box/violin/jitter geom bands a numeric x (e.g. year, week),
+		// so those NUMERIC categories are flippable too — not just string categories.
+		return this.#resolveXType(inferFieldType(this.#data, x), inferFieldType(this.#data, y)) === 'band'
 	})
 
-	// Flip = render a category-on-x chart horizontally: the category (x) axis stands up
-	// on the vertical screen and the value (y) axis runs along the horizontal screen.
-	// x/y channels are unchanged — only the screen mapping rotates.
-	#flipped = $derived(this.orientation === 'horizontal' && this.#bandIsX)
+	// Flip = render a category-on-x chart horizontally: the category (x) axis stands up on the
+	// vertical screen and the value (y) axis runs along the horizontal screen. x/y channels are
+	// unchanged — only the screen mapping rotates.
+	//
+	// `#legacyHorizontal` opts a chart out: AnimatedPlot's value×_rank bar race sets
+	// orientation='horizontal' to mean the OLD channel-swap (value on x, continuous rank on y via
+	// buildHorizontalBars — a linear rank scale it needs for smooth tweening). Without this guard,
+	// the bar geom force-bands its continuous revenue x, #bandIsX reads true, and the race would
+	// route into the place-flip path and collapse every entity onto one row.
+	#flipped = $derived(
+		this.orientation === 'horizontal' && this.#bandIsX && !this.#legacyHorizontal
+	)
 
 	colorScaleType = $derived.by(() => {
 		const field = this.#effectiveChannels.color
@@ -318,6 +326,7 @@ export class PlotState {
 		this.#axisOffset = config.axisOffset ?? 0
 		this.#marginOverride = config.margin ?? undefined
 		this.#orientationOverride = config.orientation ?? undefined
+		this.#legacyHorizontal = config.legacyHorizontal ?? false
 	}
 
 	update(config) {
@@ -344,6 +353,7 @@ export class PlotState {
 		if (config.axisOffset !== undefined) this.#axisOffset = config.axisOffset
 		this.#marginOverride = config.margin ?? undefined
 		this.#orientationOverride = config.orientation ?? undefined
+		this.#legacyHorizontal = config.legacyHorizontal ?? false
 	}
 
 	registerGeom(config) {

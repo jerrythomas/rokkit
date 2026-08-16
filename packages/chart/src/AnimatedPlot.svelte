@@ -359,7 +359,10 @@
 		geoms: isHorizontalRace ? raceGeoms : prepared.geoms,
 		xDomain: xDomainForFrame,
 		yDomain: isHorizontalRace ? [0, entityCount - 1] : staticDomains.yDomain,
-		orientation: isHorizontalRace ? 'horizontal' : undefined
+		orientation: isHorizontalRace ? 'horizontal' : undefined,
+		// The race's 'horizontal' is the legacy channel-swap (value on x + continuous rank on y),
+		// NOT the category flip — opt out so PlotState keeps it on buildHorizontalBars.
+		legacyHorizontal: isHorizontalRace
 	})
 </script>
 

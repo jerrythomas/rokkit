@@ -164,6 +164,7 @@
 			colorScheme: spec?.colorScheme,
 			colorMidpoint: spec?.colorMidpoint,
 			orientation: spec?.orientation,
+			legacyHorizontal: spec?.legacyHorizontal,
 			chartPreset,
 			onselect,
 			selectable

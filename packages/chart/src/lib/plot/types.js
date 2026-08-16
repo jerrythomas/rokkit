@@ -46,6 +46,7 @@
  * @property {string} [title]
  * @property {string} [summary]
  * @property {'horizontal'|'vertical'} [orientation]
+ * @property {boolean} [legacyHorizontal]  When orientation='horizontal', use the legacy channel-swap (value on x) instead of the category flip. Set only by AnimatedPlot's bar race; not a public authoring flag.
  * @property {boolean} [stack]  Stack (true) or group (false) multi-series bars. Forwarded to spec-driven bar geoms via `options.stack`. Default: false.
  * @property {string} [preset]
  * @property {number} [width]

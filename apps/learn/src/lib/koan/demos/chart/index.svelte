@@ -97,6 +97,15 @@
 	let barOrient = $state<'vertical' | 'horizontal'>('vertical')
 	const bars = $derived(barSet === 'A' ? barsA : barsB)
 
+	// Numeric-category flip: x is a NUMBER (year) the bar geom bands — flips like a string category.
+	const yearlyRevenue = [
+		{ year: 2019, revenue: 120 },
+		{ year: 2020, revenue: 150 },
+		{ year: 2021, revenue: 135 },
+		{ year: 2022, revenue: 180 },
+		{ year: 2023, revenue: 210 }
+	]
+
 	// (b) AnimatedPlot bar-chart race: revenue per company across years (frames).
 	//     Deterministic (Math.sin wobble, no RNG); rankings cross so the race moves.
 	const raceCompanies = ['Acme', 'Globex', 'Initech', 'Umbrella', 'Wayne']
@@ -278,6 +287,25 @@
 				<Plot.Axis type="x" />
 				<Plot.Axis type="y" />
 				<Plot.Bar x="segment" y="share" fill="segment" />
+			</Plot.Root>
+		</div>
+	</section>
+
+	<section>
+		<header>Numeric-category flip — revenue by year (numeric x), horizontal</header>
+		<div class="chart-stage">
+			<Plot.Root
+				data={yearlyRevenue}
+				x="year"
+				y="revenue"
+				orientation="horizontal"
+				width={520}
+				height={280}
+				margin={{ top: 10, right: 20, bottom: 40, left: 60 }}
+			>
+				<Plot.Axis type="x" />
+				<Plot.Axis type="y" />
+				<Plot.Bar x="year" y="revenue" fill="year" />
 			</Plot.Root>
 		</div>
 	</section>

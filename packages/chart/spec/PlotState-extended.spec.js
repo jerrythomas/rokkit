@@ -628,20 +628,41 @@ describe('PlotState — horizontal orientation flip', () => {
 		expect(state.place(1, 2)).toEqual({ x: 1, y: 2 })
 	})
 
-	it('stays a no-op for a BAR geom over continuous x/y (AnimatedPlot value×_rank race)', () => {
-		// The bar geom force-bands a continuous x for scale construction; that must NOT make
-		// the chart read as flippable, or the horizontal bar race routes away from
-		// buildHorizontalBars and every entity collapses onto one row (all bars at y=0).
+	it('flips a NUMERIC category (bar over year × sales) — numeric categories are flippable too', () => {
+		// A bar geom bands a numeric x (year); orientation='horizontal' should stand that
+		// category axis up via the place-flip, exactly like a string category.
+		const byYear = [
+			{ year: 2019, sales: 10 }, { year: 2020, sales: 20 },
+			{ year: 2021, sales: 15 }, { year: 2022, sales: 30 }
+		]
+		const state = new PlotState({
+			data: byYear, channels: { x: 'year', y: 'sales' }, width: 400, height: 300, orientation: 'horizontal'
+		})
+		state.registerGeom({ type: 'bar', channels: { x: 'year', y: 'sales' }, stat: 'identity' })
+		expect(state.isFlipped).toBe(true)
+		expect(state.place(11, 22)).toEqual({ x: 22, y: 11 })
+	})
+
+	it('legacyHorizontal opts the AnimatedPlot value×_rank race out of the flip', () => {
+		// The bar geom force-bands the continuous revenue x, so #bandIsX is true; without the
+		// legacyHorizontal marker the race would route into the place-flip and collapse every
+		// entity onto one row. AnimatedPlot sets legacyHorizontal → stays on buildHorizontalBars.
 		const race = [
 			{ revenue: 60, _rank: 0 }, { revenue: 40, _rank: 1 },
 			{ revenue: 20, _rank: 2 }, { revenue: 10, _rank: 3 }
 		]
-		const state = new PlotState({
+		const opts = {
 			data: race, channels: { x: 'revenue', y: '_rank' }, width: 400, height: 300, orientation: 'horizontal'
-		})
-		state.registerGeom({ type: 'bar', channels: { x: 'revenue', y: '_rank' }, stat: 'identity' })
-		expect(state.isFlipped).toBe(false)
-		expect(state.place(5, 9)).toEqual({ x: 5, y: 9 })
+		}
+		const raced = new PlotState({ ...opts, legacyHorizontal: true })
+		raced.registerGeom({ type: 'bar', channels: { x: 'revenue', y: '_rank' }, stat: 'identity' })
+		expect(raced.isFlipped).toBe(false)
+		expect(raced.place(5, 9)).toEqual({ x: 5, y: 9 })
+
+		// Without the marker the same shape WOULD read as flippable (guards the marker's effect).
+		const unmarked = new PlotState(opts)
+		unmarked.registerGeom({ type: 'bar', channels: { x: 'revenue', y: '_rank' }, stat: 'identity' })
+		expect(unmarked.isFlipped).toBe(true)
 	})
 
 	it('vertical (default) keeps category(x) over width, value(y) over height', () => {
