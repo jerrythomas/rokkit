@@ -1,5 +1,27 @@
 # Project Journal
 
+## 2026-08-16 — Chart: AnimatedPlot honors orientation via the shared place() path
+
+Follow-on to the orientation + animation work below. AnimatedPlot reuses the same geoms, so a
+**standard (non-race) animation now flips through the exact same `place()` mechanism as static
+charts** — no special-casing. Added `orientation`/`flip` props threaded to the frameSpec (the bar
+race keeps its legacy channel-swap horizontal; everything else takes the caller's orientation). The
+frame tween interpolates *values* orientation-agnostically, so animation + flip compose: a chart
+**animates while rendered horizontal** (verified live — toggling orientation transposes 5 company
+bars, and Play still advances the frames in either orientation).
+
+Building the demo surfaced a **latent Plot.svelte bug**: the accessible data-table built its columns
+as `[x, y, color]`, so a chart with `x === color` produced a duplicate key in the table's keyed
+each → Svelte throws `each_key_duplicate` and blanks the whole chart. Columns now dedupe. (Only a
+live browser hit it; the crash was invisible to the unit suite until a test reproduced it.)
+
+Tests: AnimatedPlot horizontal transposes (widths vary, bars start at x=0) vs vertical; `flip` is
+sugar for `'horizontal'`; Plot dedupes sr-table columns when `x === color` — each fails without its
+fix (verified by reverting). Full chart suite **1268**, svelte-check + lint clean. Commit
+`31177b36`. Scope note: the **bar race stays on `buildHorizontalBars`** — its continuous rank axis
+(smooth overtaking) genuinely needs a linear scale a band-based flip can't provide; unifying that
+is a separate, larger refactor, deliberately not taken here.
+
 ## 2026-08-15 — Chart: animate marks on data/flip change + AnimatedPlot race fix
 
 Investigated the animation story ("look into animation") and shipped two things on `develop` /
