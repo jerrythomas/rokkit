@@ -17,6 +17,7 @@ import Heatmap from './geoms/Heatmap.svelte'
 import Hexbin from './geoms/Hexbin.svelte'
 import Ribbon from './geoms/Ribbon.svelte'
 import Waterfall from './geoms/Waterfall.svelte'
+import Rule from './geoms/Rule.svelte'
 
 // Composable Plot primitives — use as <Plot.Root>, <Plot.Axis>, <Plot.Bar>, etc.
 export const Plot = {
@@ -38,7 +39,8 @@ export const Plot = {
 	Heatmap,
 	Hexbin,
 	Ribbon,
-	Waterfall
+	Waterfall,
+	Rule
 }
 
 /** @deprecated Use Plot instead */
@@ -71,6 +73,7 @@ export { default as GeomRibbon } from './geoms/Ribbon.svelte'
 export { default as GeomHighlight } from './geoms/Highlight.svelte'
 export { default as GeomTrend } from './geoms/Trend.svelte'
 export { default as GeomJitter } from './geoms/Jitter.svelte'
+export { default as GeomRule } from './geoms/Rule.svelte'
 
 // Export standalone components
 export { default as Chart } from './Chart.svelte'
