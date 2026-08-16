@@ -39,6 +39,26 @@ describe('Plot.svelte', () => {
 		expect(() => render(Plot, { props: { spec, width: 400, height: 300 } })).not.toThrow()
 	})
 
+	// Regression: when a channel repeats (x === color), the accessible data table's keyed
+	// each must not emit a duplicate key (Svelte throws each_key_duplicate). Columns dedupe.
+	it('dedupes screen-reader table columns when x === color', () => {
+		const spec = {
+			data: mpg.slice(0, 5),
+			x: 'class',
+			y: 'hwy',
+			color: 'class',
+			geoms: [{ type: 'bar', stat: 'identity' }]
+		}
+		let container
+		expect(() => {
+			container = render(Plot, { props: { spec, width: 400, height: 300 } }).container
+		}).not.toThrow()
+		const headers = [...container.querySelectorAll('.plot-sr-table th')].map((th) => th.textContent)
+		expect(headers).toEqual([...new Set(headers)]) // no duplicates
+		expect(headers).toContain('class')
+		expect(headers).toContain('hwy')
+	})
+
 	// Regression: top-level `spec.stack` must reach the Bar geom's `options.stack`
 	// so a stacked bar chart from an AI response (fenced ```plot``` block) actually
 	// stacks instead of rendering identical to the grouped variant.

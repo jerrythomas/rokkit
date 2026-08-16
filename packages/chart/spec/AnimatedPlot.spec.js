@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { render } from '@testing-library/svelte'
 import AnimatedPlot from '../src/AnimatedPlot.svelte'
 import mpg from './fixtures/mpg.json'
@@ -59,5 +59,41 @@ describe('AnimatedPlot', () => {
 		// Slider max should be 0 (only one frame)
 		const slider = container.querySelector('[data-plot-timeline-scrub]')
 		expect(Number(slider?.getAttribute('max'))).toBe(0)
+	})
+
+	// A standard (non-race) animation flips via the same geom place() path as static charts —
+	// the caller's orientation drives the layout; the frame tween interpolates values regardless.
+	// tween:false → the frame's display data is set with duration 0; vi.waitFor lets the tweened
+	// store emit so the first frame's bars are in the DOM.
+	const readBars = (container) =>
+		[...container.querySelectorAll('rect[data-plot-element="bar"]')].map((r) => ({
+			x: Math.round(Number(r.getAttribute('x'))),
+			w: Math.round(Number(r.getAttribute('width'))),
+			h: Math.round(Number(r.getAttribute('height')))
+		}))
+	const barsFor = async (props) => {
+		const { container } = render(AnimatedPlot, {
+			props: { ...defaultProps, tween: false, ...props }
+		})
+		await vi.waitFor(() => expect(readBars(container).length).toBeGreaterThan(1))
+		return readBars(container)
+	}
+	const uniq = (arr, k) => new Set(arr.map((o) => o[k])).size
+
+	it('vertical (default): bar heights vary by value', async () => {
+		const vert = await barsFor({ orientation: 'vertical' })
+		expect(uniq(vert, 'h')).toBeGreaterThan(1)
+	})
+
+	it('orientation="horizontal" transposes: widths vary by value and bars start at x=0', async () => {
+		const horiz = await barsFor({ orientation: 'horizontal' })
+		expect(uniq(horiz, 'w')).toBeGreaterThan(1)
+		expect(horiz.every((b) => b.x === 0)).toBe(true)
+	})
+
+	it('flip is sugar for orientation="horizontal"', async () => {
+		const byFlip = await barsFor({ flip: true })
+		const byOrientation = await barsFor({ orientation: 'horizontal' })
+		expect(byFlip).toEqual(byOrientation)
 	})
 })

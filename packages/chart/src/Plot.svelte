@@ -139,9 +139,11 @@
 	// Accessible data table — screen reader fallback
 	const tableData = $derived(spec?.data ?? data)
 	const tableColumns = $derived.by(() => {
-		const cols = [spec?.x, spec?.y, spec?.color ?? spec?.fill].filter(
-			(c): c is string => Boolean(c)
-		)
+		// Dedupe: a channel may repeat (e.g. x === color), and the table's keyed each
+		// requires unique column names.
+		const cols = [...new Set(
+			[spec?.x, spec?.y, spec?.color ?? spec?.fill].filter((c): c is string => Boolean(c))
+		)]
 		if (cols.length > 0) return cols
 		const first = tableData[0]
 		return first ? Object.keys(first) : []

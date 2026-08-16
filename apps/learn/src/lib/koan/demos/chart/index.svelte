@@ -96,6 +96,8 @@
 	let barSet = $state<'A' | 'B'>('A')
 	let barOrient = $state<'vertical' | 'horizontal'>('vertical')
 	const bars = $derived(barSet === 'A' ? barsA : barsB)
+	// AnimatedPlot orientation — flips a standard animation via the same geom place() path.
+	let animOrient = $state<'vertical' | 'horizontal'>('vertical')
 
 	// Numeric-category flip: x is a NUMBER (year) the bar geom bands — flips like a string category.
 	const yearlyRevenue = [
@@ -307,6 +309,30 @@
 				<Plot.Axis type="y" />
 				<Plot.Bar x="year" y="revenue" fill="year" />
 			</Plot.Root>
+		</div>
+	</section>
+
+	<section>
+		<header>AnimatedPlot orientation — a standard animation flips via the same geom place() path</header>
+		<div class="demo-controls">
+			<button
+				type="button"
+				onclick={() => (animOrient = animOrient === 'vertical' ? 'horizontal' : 'vertical')}
+			>
+				Orientation: {animOrient}
+			</button>
+		</div>
+		<div class="chart-stage">
+			<AnimatedPlot
+				data={raceData}
+				animate={{ by: 'year', duration: 900, loop: true }}
+				x="company"
+				y="revenue"
+				color="company"
+				orientation={animOrient}
+				width={600}
+				height={280}
+			/>
 		</div>
 	</section>
 

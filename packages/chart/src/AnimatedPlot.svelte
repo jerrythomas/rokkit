@@ -34,6 +34,11 @@
 		tween?: boolean
 		sorted?: boolean
 		dynamicDomain?: boolean
+		/** Chart direction for standard (non-race) animations — flips via the same geom
+		 *  place() mechanism as static charts. `flip` is sugar for 'horizontal'. Ignored for
+		 *  the bar-chart race, which is inherently horizontal. */
+		orientation?: 'vertical' | 'horizontal'
+		flip?: boolean
 		label?: boolean | string | ((data: Row) => string)
 		children?: Snippet
 	}
@@ -59,9 +64,15 @@
 		tween = true,
 		sorted = false,
 		dynamicDomain = false,
+		orientation = undefined,
+		flip = false,
 		label = false,
 		children
 	}: Props = $props()
+
+	// Standard-animation direction (non-race). Flows to the frameSpec so the geoms flip via the
+	// same place() path as static charts; the frame tween interpolates values orientation-agnostically.
+	const resolvedOrientation = $derived(flip ? 'horizontal' : orientation)
 
 	// Effective geom list: explicit array takes precedence; otherwise build from shorthand props
 	const effectiveGeoms = $derived(
@@ -359,7 +370,9 @@
 		geoms: isHorizontalRace ? raceGeoms : prepared.geoms,
 		xDomain: xDomainForFrame,
 		yDomain: isHorizontalRace ? [0, entityCount - 1] : staticDomains.yDomain,
-		orientation: isHorizontalRace ? 'horizontal' : undefined,
+		// Race → legacy channel-swap horizontal; otherwise the caller's orientation drives the
+		// standard place-flip (category-x stands up, value-y runs sideways).
+		orientation: isHorizontalRace ? 'horizontal' : resolvedOrientation,
 		// The race's 'horizontal' is the legacy channel-swap (value on x + continuous rank on y),
 		// NOT the category flip — opt out so PlotState keeps it on buildHorizontalBars.
 		legacyHorizontal: isHorizontalRace
