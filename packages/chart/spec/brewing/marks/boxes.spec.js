@@ -72,3 +72,32 @@ describe('buildBoxes', () => {
 		expect(box.outliers).toEqual([])
 	})
 })
+
+describe('buildBoxes — side & width (raincloud)', () => {
+	const centerOf = (xVal) => (xScale(xVal) ?? 0) + xScale.bandwidth() / 2
+
+	it('side=left offsets the box into the left half', () => {
+		const [center] = buildBoxes(data, { x: 'cat' }, xScale, yScale, colors)
+		const [left] = buildBoxes(data, { x: 'cat' }, xScale, yScale, colors, { side: 'left' })
+		expect(left.cx).toBeLessThan(center.cx)
+		expect(left.cx).toBeCloseTo(centerOf('A') - xScale.bandwidth() / 4, 3)
+	})
+
+	it('side=right offsets the box into the right half', () => {
+		const [right] = buildBoxes(data, { x: 'cat' }, xScale, yScale, colors, { side: 'right' })
+		expect(right.cx).toBeCloseTo(centerOf('A') + xScale.bandwidth() / 4, 3)
+	})
+
+	it('width shrinks the box thickness (thin raincloud box)', () => {
+		const [wide] = buildBoxes(data, { x: 'cat' }, xScale, yScale, colors)
+		const [thin] = buildBoxes(data, { x: 'cat' }, xScale, yScale, colors, { width: 0.16 })
+		expect(thin.width).toBeLessThan(wide.width)
+		expect(thin.width).toBeCloseTo(xScale.bandwidth() * 0.16, 3)
+	})
+
+	it('defaults are unchanged when no opts are passed', () => {
+		const [box] = buildBoxes(data, { x: 'cat' }, xScale, yScale, colors)
+		expect(box.width).toBeCloseTo(xScale.bandwidth() * 0.6, 3)
+		expect(box.cx).toBeCloseTo(centerOf('A'), 3)
+	})
+})

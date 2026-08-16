@@ -20,7 +20,32 @@ const ANCHOR_ORDER = ['iqr_max', 'q3', 'median', 'q1', 'iqr_min']
  * @param {Map} colors
  * @returns {Array}
  */
-export function buildViolins(data, channels, xScale, yScale, colors, place = (x, y) => ({ x, y })) {
+// Build the silhouette points for one violin. `side` selects half vs full:
+//  'right'  → density bulges right of the centre line, flat edge at cx
+//  'left'   → density bulges left, flat edge at cx
+//  'center' → symmetric (both sides) — the default
+function violinPoints(cx, halfMax, d, yScale, side) {
+	const right = ANCHOR_ORDER.map((key) => ({ x: cx + halfMax * DENSITY_AT[key], y: yScale(d[key]) }))
+	const left = [...ANCHOR_ORDER].reverse().map((key) => ({
+		x: cx - halfMax * DENSITY_AT[key],
+		y: yScale(d[key])
+	}))
+	const topY = yScale(d.iqr_max)
+	const botY = yScale(d.iqr_min)
+	if (side === 'right') return [...right, { x: cx, y: botY }, { x: cx, y: topY }]
+	if (side === 'left') return [...left, { x: cx, y: topY }, { x: cx, y: botY }]
+	return [...right, ...left, right[0]]
+}
+
+export function buildViolins(
+	data,
+	channels,
+	xScale,
+	yScale,
+	colors,
+	place = (x, y) => ({ x, y }),
+	side = 'center'
+) {
 	const { x: xf, fill: ff } = channels
 	const bw = typeof xScale.bandwidth === 'function' ? xScale.bandwidth() : 40
 	const grouped = ff && ff !== xf
@@ -43,19 +68,10 @@ export function buildViolins(data, channels, xScale, yScale, colors, place = (x,
 			const cx = bandStart + subIndex * subBandWidth + subBandWidth / 2
 			const colorEntry = colors?.get(fillVal) ?? { fill: '#aaa', stroke: '#666' }
 
-			const rightPts = ANCHOR_ORDER.map((key) => ({
-				x: cx + halfMax * DENSITY_AT[key],
-				y: yScale(d[key])
-			}))
-			const leftPts = [...ANCHOR_ORDER].reverse().map((key) => ({
-				x: cx - halfMax * DENSITY_AT[key],
-				y: yScale(d[key])
-			}))
-
 			return {
 				data: d,
 				cx,
-				d: pathGen([...rightPts, ...leftPts, rightPts[0]].map((pt) => place(pt.x, pt.y))),
+				d: pathGen(violinPoints(cx, halfMax, d, yScale, side).map((pt) => place(pt.x, pt.y))),
 				fill: colorEntry.fill,
 				stroke: colorEntry.stroke
 			}
@@ -70,19 +86,10 @@ export function buildViolins(data, channels, xScale, yScale, colors, place = (x,
 		const colorEntry = colors?.get(fillKey) ?? { fill: '#aaa', stroke: '#666' }
 		const cx = (xScale(d[xf]) ?? 0) + (typeof xScale.bandwidth === 'function' ? bw / 2 : 0)
 
-		const rightPts = ANCHOR_ORDER.map((key) => ({
-			x: cx + halfMax * DENSITY_AT[key],
-			y: yScale(d[key])
-		}))
-		const leftPts = [...ANCHOR_ORDER].reverse().map((key) => ({
-			x: cx - halfMax * DENSITY_AT[key],
-			y: yScale(d[key])
-		}))
-
 		return {
 			data: d,
 			cx,
-			d: pathGen([...rightPts, ...leftPts, rightPts[0]].map((pt) => place(pt.x, pt.y))),
+			d: pathGen(violinPoints(cx, halfMax, d, yScale, side).map((pt) => place(pt.x, pt.y))),
 			fill: colorEntry.fill,
 			stroke: colorEntry.stroke
 		}

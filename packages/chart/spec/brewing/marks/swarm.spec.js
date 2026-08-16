@@ -72,3 +72,30 @@ describe('buildSwarm', () => {
 		expect(distinct.size).toBeGreaterThanOrEqual(5) // not collapsed to one x
 	})
 })
+
+describe('buildSwarm — side (raincloud half)', () => {
+	const centerOf = (xVal) => (xScale(xVal) ?? 0) + xScale.bandwidth() / 2
+
+	it('side=right confines points to the right half of the band', () => {
+		const pts = buildSwarm(data, { x: 'cat', y: 'val' }, xScale, yScale, colors, { side: 'right' })
+		for (const p of pts) expect(p.cx).toBeGreaterThanOrEqual(centerOf(p.data.cat) - 1e-6)
+	})
+
+	it('side=left confines points to the left half of the band', () => {
+		const pts = buildSwarm(data, { x: 'cat', y: 'val' }, xScale, yScale, colors, { side: 'left' })
+		for (const p of pts) expect(p.cx).toBeLessThanOrEqual(centerOf(p.data.cat) + 1e-6)
+	})
+
+	it('the swarm method also respects side', () => {
+		const pts = buildSwarm(data, { x: 'cat', y: 'val' }, xScale, yScale, colors, { side: 'right', method: 'swarm' })
+		for (const p of pts) expect(p.cx).toBeGreaterThanOrEqual(centerOf(p.data.cat) - 1e-6)
+	})
+
+	it('center (default) straddles the band centre', () => {
+		const pts = buildSwarm(data, { x: 'cat', y: 'val' }, xScale, yScale, colors, { side: 'center' })
+		const aPts = pts.filter((p) => p.data.cat === 'A')
+		const c = centerOf('A')
+		expect(aPts.some((p) => p.cx < c)).toBe(true)
+		expect(aPts.some((p) => p.cx > c)).toBe(true)
+	})
+})

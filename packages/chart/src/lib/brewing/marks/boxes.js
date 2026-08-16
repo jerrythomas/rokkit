@@ -13,25 +13,31 @@
  * @param {import('d3-scale').ScaleBand} xScale
  * @param {import('d3-scale').ScaleLinear} yScale
  * @param {Map<unknown, {fill:string, stroke:string}>} colors
+ * @param {{ side?: 'left'|'right'|'center', width?: number }} [opts]
+ *   `side` offsets the box to one half of the band; `width` is the box thickness as a
+ *   fraction of the (sub-)band (for a thin raincloud box). Defaults preserve the full box.
  * @returns {Array}
  */
-export function buildBoxes(data, channels, xScale, yScale, colors) {
+export function buildBoxes(data, channels, xScale, yScale, colors, opts = {}) {
 	const { x: xf, fill: ff } = channels
+	const { side = 'center', width } = opts
 	const bw = typeof xScale.bandwidth === 'function' ? xScale.bandwidth() : 20
 	const grouped = ff && ff !== xf
+	// Offset the box centre to the middle of the chosen half-lane.
+	const laneOffset = (unit) => (side === 'left' ? -unit / 4 : side === 'right' ? unit / 4 : 0)
 
 	if (grouped) {
 		const fillValues = [...new Set(data.map((d) => d[ff]))]
 		const n = fillValues.length
 		const subBandWidth = bw / n
-		const boxWidth = subBandWidth * 0.75
-		const whiskerWidth = subBandWidth * 0.4
+		const boxWidth = width !== undefined ? subBandWidth * width : subBandWidth * 0.75
+		const whiskerWidth = width !== undefined ? boxWidth * 0.53 : subBandWidth * 0.4
 
 		return data.map((d) => {
 			const fillVal = d[ff]
 			const subIndex = fillValues.indexOf(fillVal)
 			const bandStart = xScale(d[xf]) ?? 0
-			const cx = bandStart + subIndex * subBandWidth + subBandWidth / 2
+			const cx = bandStart + subIndex * subBandWidth + subBandWidth / 2 + laneOffset(subBandWidth)
 			const colorEntry = colors?.get(fillVal) ?? { fill: '#aaa', stroke: '#666' }
 
 			return {
@@ -52,13 +58,16 @@ export function buildBoxes(data, channels, xScale, yScale, colors) {
 	}
 
 	// Non-grouped: one box per x category
-	const boxWidth = bw * 0.6
-	const whiskerWidth = bw * 0.3
+	const boxWidth = width !== undefined ? bw * width : bw * 0.6
+	const whiskerWidth = width !== undefined ? boxWidth * 0.5 : bw * 0.3
 
 	return data.map((d) => {
 		const fillKey = ff ? d[ff] : d[xf]
 		const colorEntry = colors?.get(fillKey) ?? { fill: '#aaa', stroke: '#666' }
-		const cx = (xScale(d[xf]) ?? 0) + (typeof xScale.bandwidth === 'function' ? bw / 2 : 0)
+		const cx =
+			(xScale(d[xf]) ?? 0) +
+			(typeof xScale.bandwidth === 'function' ? bw / 2 : 0) +
+			laneOffset(bw)
 		return {
 			data: d,
 			cx,

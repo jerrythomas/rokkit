@@ -22,13 +22,15 @@ function hashUnit(n) {
  * @param {import('d3-scale').ScaleBand} xScale
  * @param {import('d3-scale').ScaleLinear} yScale
  * @param {Map<unknown, {fill:string, stroke:string}>} colors
- * @param {{ method?: 'jitter'|'swarm', r?: number }} opts
+ * @param {{ method?: 'jitter'|'swarm', r?: number, side?: 'left'|'right'|'center' }} opts
+ *   `side` confines points to one half of the band (for raincloud/half-plots).
  * @returns {Array<{ cx:number, cy:number, fill:string, stroke:string, data:Record<string, unknown> }>}
  */
 export function buildSwarm(data, channels, xScale, yScale, colors, opts = {}) {
 	const { x: xf, y: yf, fill: ff } = channels
-	const { method = 'jitter', r = 2 } = opts
+	const { method = 'jitter', r = 2, side = 'center' } = opts
 	const bw = typeof xScale.bandwidth === 'function' ? xScale.bandwidth() : 40
+	// One-sided layouts get the full half-band on their side; centred straddles ±halfBand.
 	const halfBand = (bw / 2) * 0.8 // leave a small gutter
 
 	// Group rows by x value, preserving first-seen order.
@@ -45,8 +47,8 @@ export function buildSwarm(data, channels, xScale, yScale, colors, opts = {}) {
 		const center = bandStart + bw / 2
 		const offsets =
 			method === 'swarm'
-				? swarmOffsets(rows, yf, yScale, r, halfBand)
-				: rows.map((_, i) => (hashUnit(i) * 2 - 1) * halfBand)
+				? swarmOffsets(rows, yf, yScale, r, halfBand, side)
+				: rows.map((_, i) => jitterOffset(hashUnit(i), halfBand, side))
 
 		rows.forEach((d, i) => {
 			const fillKey = ff ? d[ff] : xVal
@@ -63,6 +65,14 @@ export function buildSwarm(data, channels, xScale, yScale, colors, opts = {}) {
 	return result
 }
 
+// Map a [0,1) hash to a horizontal offset, confined to the requested side.
+//  center → [-halfBand, halfBand];  right → [0, halfBand];  left → [-halfBand, 0]
+function jitterOffset(u, halfBand, side) {
+	if (side === 'right') return u * halfBand
+	if (side === 'left') return -u * halfBand
+	return (u * 2 - 1) * halfBand
+}
+
 /**
  * Computes horizontal offsets for a beeswarm: sort by y, then for each point
  * pick the smallest-magnitude offset that doesn't collide (distance >= 2r) with
@@ -70,9 +80,9 @@ export function buildSwarm(data, channels, xScale, yScale, colors, opts = {}) {
  * points than fit at 2r spacing), fall back to the least-crowded slot (max
  * separation) so overflow points spread across the band instead of stacking at
  * the center — a best-effort layout, not a hard non-overlap guarantee.
- * Returns offsets in INPUT order.
+ * `side` confines candidates to one half of the band. Returns offsets in INPUT order.
  */
-function swarmOffsets(rows, yf, yScale, r, halfBand) {
+function swarmOffsets(rows, yf, yScale, r, halfBand, side = 'center') {
 	const order = rows
 		.map((d, i) => ({ i, cy: yScale(d[yf]) }))
 		.sort((a, b) => ascending(a.cy, b.cy))
@@ -86,7 +96,14 @@ function swarmOffsets(rows, yf, yScale, r, halfBand) {
 		let placedOne = false
 		let best = { offset: 0, sep: -Infinity }
 		for (let k = 0; k <= kMax; k++) {
-			const candidate = k === 0 ? 0 : (k % 2 === 1 ? 1 : -1) * Math.ceil(k / 2) * step
+			const candidate =
+				side === 'right'
+					? k * step
+					: side === 'left'
+						? -k * step
+						: k === 0
+							? 0
+							: (k % 2 === 1 ? 1 : -1) * Math.ceil(k / 2) * step
 			if (Math.abs(candidate) > halfBand) continue
 			const sep = placed.length
 				? Math.min(...placed.map((p) => Math.hypot(candidate - p.offset, cy - p.cy)))

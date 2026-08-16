@@ -8,10 +8,13 @@
 		y?: string
 		fill?: string
 		stat?: string
+		/** Half-violin: 'left'/'right' draw one side (flat edge at the band centre) for
+		 *  raincloud/split plots; 'center' (default) is the full symmetric silhouette. */
+		side?: 'left' | 'right' | 'center'
 		options?: { opacity?: number }
 	}
 
-	let { x, y, fill, stat = 'boxplot', options = {} }: Props = $props()
+	let { x, y, fill, stat = 'boxplot', side = 'center', options = {} }: Props = $props()
 
 	const plotState = getContext<PlotState>('plot-state')
 	let id = $state<string | null>(null)
@@ -46,7 +49,7 @@
 
 	const violins = $derived.by(() => {
 		if (!data?.length || !xScale || !yScale) return []
-		return buildViolins(data, { x: xf, fill: fillChannel }, xScale, yScale, colors, plotState.place.bind(plotState))
+		return buildViolins(data, { x: xf, fill: fillChannel }, xScale, yScale, colors, plotState.place.bind(plotState), side)
 	})
 </script>
 

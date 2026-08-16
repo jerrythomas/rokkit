@@ -225,6 +225,19 @@
 		</div>
 	</section>
 
+	<section>
+		<header>Raincloud — half-violin + thin box + jittered points (composable `side`)</header>
+		<div class="chart-stage">
+			<Plot.Root data={cars} x="class" y="hwy" width={560} height={300} margin={{ top: 10, right: 20, bottom: 40, left: 50 }}>
+				<Plot.Axis type="x" />
+				<Plot.Axis type="y" />
+				<Plot.Violin x="class" y="hwy" side="left" />
+				<Plot.Box x="class" y="hwy" side="center" width={0.16} />
+				<Plot.Jitter x="class" y="hwy" side="right" method="swarm" r={2.5} />
+			</Plot.Root>
+		</div>
+	</section>
+
 		<section>
 			<header>Orientation flip — horizontal box + jitter (same x/y, orientation="horizontal")</header>
 			<div class="chart-stage">

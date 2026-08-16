@@ -8,10 +8,15 @@
 		y?: string
 		fill?: string
 		stat?: string
+		/** Offset the box to one half of the band (raincloud/split plots). Default 'center'. */
+		side?: 'left' | 'right' | 'center'
+		/** Box thickness as a fraction of the (sub-)band — use a small value (e.g. 0.16) for a
+		 *  thin raincloud box. Defaults to the full box width. */
+		width?: number
 		options?: { opacity?: number }
 	}
 
-	let { x, y, fill, stat = 'boxplot', options = {} }: Props = $props()
+	let { x, y, fill, stat = 'boxplot', side = 'center', width, options = {} }: Props = $props()
 
 	const plotState = getContext<PlotState>('plot-state')
 	let id = $state<string | null>(null)
@@ -46,7 +51,7 @@
 
 	const boxes = $derived.by(() => {
 		if (!data?.length || !xScale || !yScale) return []
-		return buildBoxes(data, { x: xf, fill: fillChannel }, xScale, yScale, colors)
+		return buildBoxes(data, { x: xf, fill: fillChannel }, xScale, yScale, colors, { side, width })
 	})
 </script>
 

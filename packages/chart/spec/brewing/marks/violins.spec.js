@@ -49,3 +49,26 @@ describe('buildViolins', () => {
 		expect(v.stroke).toBe('darkblue')
 	})
 })
+
+describe('buildViolins — side (half violin)', () => {
+	const meanX = (d) => {
+		const xs = [...d.matchAll(/(-?\d+\.?\d*),(-?\d+\.?\d*)/g)].map((m) => Number(m[1]))
+		return xs.reduce((a, b) => a + b, 0) / xs.length
+	}
+
+	it('side=right bulges right of the centre line; side=left bulges left', () => {
+		const [right] = buildViolins(data, { x: 'cat' }, xScale, yScale, colors, undefined, 'right')
+		const [left] = buildViolins(data, { x: 'cat' }, xScale, yScale, colors, undefined, 'left')
+		const [center] = buildViolins(data, { x: 'cat' }, xScale, yScale, colors, undefined, 'center')
+		expect(meanX(right.d)).toBeGreaterThan(right.cx)
+		expect(meanX(left.d)).toBeLessThan(left.cx)
+		expect(meanX(center.d)).toBeCloseTo(center.cx, 0)
+	})
+
+	it('each side produces a distinct path', () => {
+		const [right] = buildViolins(data, { x: 'cat' }, xScale, yScale, colors, undefined, 'right')
+		const [left] = buildViolins(data, { x: 'cat' }, xScale, yScale, colors, undefined, 'left')
+		const [center] = buildViolins(data, { x: 'cat' }, xScale, yScale, colors, undefined, 'center')
+		expect(new Set([right.d, left.d, center.d]).size).toBe(3)
+	})
+})
