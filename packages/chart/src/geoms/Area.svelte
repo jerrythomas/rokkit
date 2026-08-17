@@ -1,73 +1,67 @@
 <script lang="ts">
 	import { getContext, onMount, onDestroy } from 'svelte'
 	import type { PlotState } from '../PlotState.svelte.js'
-	import { buildAreas, buildStackedAreas } from './lib/areas.js'
+	import { GeomState } from './lib/GeomState.svelte.js'
+	import { buildAreaMarks } from './lib/marks/area.js'
 	import { buildSelectDetail } from '../lib/select.js'
 
 	type Row = Record<string, unknown>
-
 	type Options = {
 		stack?: boolean
 		curve?: 'linear' | 'smooth' | 'step'
-		opacity?: number
 	}
 
 	type Props = {
 		x?: string
 		y?: string
+		/** Border aesthetic (field); a border is drawn only when both fill and color are set. */
 		color?: string
+		/** Interior aesthetic (field); falls back to `color`. */
+		fill?: string
 		pattern?: string
+		/** Fixed area opacity 0–1; defaults to the per-geom preset (area = 0.6). */
+		alpha?: number
 		stat?: string
 		options?: Options
 	}
 
-	let { x, y, color, pattern, stat = 'identity', options = {} }: Props = $props()
+	let { x, y, color, fill, pattern, alpha, stat = 'identity', options = {} }: Props = $props()
 
 	const plotState = getContext<PlotState>('plot-state')
-	let id = $state<string | null>(null)
+
+	const geom = new GeomState(plotState, () => ({
+		type: 'area',
+		channels: { x, y, color, fill, pattern },
+		stat,
+		options: { stack: options?.stack ?? false, curve: options?.curve },
+		alpha,
+		build: buildAreaMarks
+	}))
+	onMount(geom.register)
+	onDestroy(geom.destroy)
+	$effect(geom.sync)
+
+	const areas = $derived(geom.marks)
+	// Per-row tooltip hit-circles are rendered from the geom's rows + shared scales.
+	const rows = $derived(geom.data)
+	const xScale = $derived(plotState.xScale)
+	const yScale = $derived(plotState.yScale)
+
+	const seriesField = $derived(fill ?? color)
 
 	function selectPoint(d: Row, event: MouseEvent | KeyboardEvent) {
 		if (plotState.interactive)
 			plotState.handleSelect(
-				buildSelectDetail(d, plotState.data.indexOf(d), { x, y }, 'area', color ? d[color] : undefined, event)
+				buildSelectDetail(
+					d,
+					plotState.data.indexOf(d),
+					{ x, y },
+					'area',
+					seriesField ? d[seriesField] : undefined,
+					event
+				)
 			)
 	}
-
-	onMount(() => {
-		id = plotState.registerGeom({
-			type: 'area',
-			channels: { x, y, color, pattern },
-			stat,
-			options: { stack: options?.stack ?? false }
-		})
-	})
-	onDestroy(() => {
-		if (id) plotState.unregisterGeom(id)
-	})
-
-	$effect(() => {
-		if (id)
-			plotState.updateGeom(id, {
-				channels: { x, y, color, pattern },
-				stat,
-				options: { stack: options?.stack ?? false }
-			})
-	})
-
-	const data = $derived(id ? plotState.geomData(id) : [])
-	const xScale = $derived(plotState.xScale)
-	const yScale = $derived(plotState.yScale)
-	const colors = $derived(plotState.colors)
-	const patterns = $derived(plotState.patterns)
-
-	const areas = $derived.by(() => {
-		if (!data?.length || !xScale || !yScale || !x || !y) return []
-		const channels = { x, y, color, pattern }
-		if (options.stack) {
-			return buildStackedAreas(data, channels, xScale, yScale, colors, options.curve, patterns, plotState.place.bind(plotState))
-		}
-		return buildAreas(data, channels, xScale, yScale, colors, options.curve, patterns, plotState.place.bind(plotState))
-	})
 </script>
 
 {#if areas.length > 0}
@@ -76,7 +70,7 @@
 			<path
 				d={seg.d}
 				fill={seg.fill}
-				fill-opacity={seg.patternId ? 1 : (options.opacity ?? plotState.chartPreset.opacity.area)}
+				fill-opacity={seg.patternId ? 1 : seg.alpha}
 				stroke={seg.stroke ?? 'none'}
 				data-plot-element="area"
 			/>
@@ -86,7 +80,7 @@
 		{/each}
 		<!-- Invisible hit circles for tooltip: one per data point -->
 		{#if x && y}
-			{#each data as d, i (`hover::${i}`)}
+			{#each rows as d, i (`hover::${i}`)}
 				{@const px = typeof xScale?.bandwidth === 'function' ? (xScale(d[x]) ?? 0) + xScale.bandwidth() / 2 : (xScale?.(d[x]) ?? 0)}
 				{@const py = yScale?.(d[y]) ?? 0}
 				<!-- svelte-ignore a11y_no_noninteractive_tabindex -->

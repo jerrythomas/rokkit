@@ -56,6 +56,12 @@ export class GeomState {
 
 	#data = $derived(this.#id !== null ? this.#plot.geomData(this.#id) : [])
 
+	// The geom's rows (post-stat). Exposed for templates that render per-row overlays
+	// (e.g. an area's invisible tooltip hit-circles) alongside the computed `marks`.
+	get data() {
+		return this.#data
+	}
+
 	// The renderable array. `build` reads scales/colors/preset from `plot` synchronously,
 	// so those reads register as dependencies and `marks` recomputes on any change.
 	marks = $derived.by(() => {
