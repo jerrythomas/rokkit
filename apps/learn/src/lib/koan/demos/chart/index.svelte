@@ -239,6 +239,17 @@
 	</section>
 
 	<section>
+		<header>Sort by value — bars ordered by size (sort="desc"), not by axis label</header>
+		<div class="chart-stage">
+			<Plot.Root data={yearlyRevenue} x="year" y="revenue" sort="desc" width={560} height={280} margin={{ top: 10, right: 20, bottom: 40, left: 50 }}>
+				<Plot.Axis type="x" />
+				<Plot.Axis type="y" />
+				<Plot.Bar x="year" y="revenue" fill="year" />
+			</Plot.Root>
+		</div>
+	</section>
+
+	<section>
 		<header>Reference lines — Plot.Rule (thresholds/targets), transpose with the chart</header>
 		<div class="chart-stage">
 			<Plot.Root data={yearlyRevenue} x="year" y="revenue" width={560} height={280} margin={{ top: 10, right: 20, bottom: 40, left: 50 }}>

@@ -166,6 +166,7 @@
 			colorScheme: spec?.colorScheme,
 			colorMidpoint: spec?.colorMidpoint,
 			orientation: spec?.orientation,
+			sort: spec?.sort,
 			continuousCategory: spec?.continuousCategory,
 			chartPreset,
 			onselect,

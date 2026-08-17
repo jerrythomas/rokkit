@@ -20,6 +20,9 @@
 		 *  axis sideways — x/y channels are unchanged. `flip` is sugar for 'horizontal'. */
 		orientation?: 'vertical' | 'horizontal'
 		flip?: boolean
+		/** Order the category (band) axis by aggregated value instead of by label — bars sorted
+		 *  by size (histogram-style). 'desc' (largest first) | 'asc'. */
+		sort?: 'asc' | 'desc'
 		/** Animate marks on data/flip changes. Enabled one frame after mount so the
 		 *  initial layout paints un-animated. Default `true`. */
 		animate?: boolean
@@ -37,6 +40,7 @@
 		mode = undefined,
 		orientation = undefined,
 		flip = false,
+		sort = undefined,
 		animate = true,
 		children
 	}: Props = $props()
@@ -63,6 +67,7 @@
 				margin,
 				mode,
 				orientation: flip ? 'horizontal' : orientation,
+				sort,
 				chartPreset: defaultPreset
 			})
 	)
@@ -76,6 +81,7 @@
 			margin,
 			mode,
 			orientation: resolvedOrientation,
+			sort,
 			chartPreset: defaultPreset
 		})
 	})

@@ -731,3 +731,41 @@ describe('PlotState — box + jitter geoms on one state', () => {
 		expect(typeof state.xScale.bandwidth).toBe('function')
 	})
 })
+
+describe('PlotState — sort band axis by value (bars by size)', () => {
+	const data = [
+		{ cat: 'A', v: 10 },
+		{ cat: 'B', v: 30 },
+		{ cat: 'C', v: 20 }
+	]
+	const withSort = (sort) => {
+		const state = new PlotState({ data, channels: { x: 'cat', y: 'v' }, width: 400, height: 300, sort })
+		state.registerGeom({ type: 'bar', channels: { x: 'cat', y: 'v' }, stat: 'identity' })
+		return state
+	}
+
+	it("sort='desc' orders the band domain largest value first", () => {
+		expect(withSort('desc').xScale.domain()).toEqual(['B', 'C', 'A']) // 30, 20, 10
+	})
+
+	it("sort='asc' orders the band domain smallest value first", () => {
+		expect(withSort('asc').xScale.domain()).toEqual(['A', 'C', 'B']) // 10, 20, 30
+	})
+
+	it('no sort keeps the data/label order', () => {
+		expect(withSort(undefined).xScale.domain()).toEqual(['A', 'B', 'C'])
+	})
+
+	it('an explicit xDomain override wins over sort', () => {
+		const state = new PlotState({
+			data,
+			channels: { x: 'cat', y: 'v' },
+			width: 400,
+			height: 300,
+			sort: 'desc',
+			xDomain: ['C', 'B', 'A']
+		})
+		state.registerGeom({ type: 'bar', channels: { x: 'cat', y: 'v' }, stat: 'identity' })
+		expect(state.xScale.domain()).toEqual(['C', 'B', 'A'])
+	})
+})

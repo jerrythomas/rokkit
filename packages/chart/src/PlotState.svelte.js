@@ -50,6 +50,9 @@ export class PlotState {
 	// band-forced) — e.g. AnimatedPlot's bar-chart race, whose tweened `_rank` must position
 	// smoothly. It still flips like any category-x chart; buildBars uses continuous positioning.
 	#continuousCategory = $state(false)
+	// Order the category (band) axis by aggregated value instead of by label: 'desc' | 'asc'.
+	// Sorts bars by size (histogram-style); undefined keeps data/label order.
+	#sort = $state(undefined)
 
 	axisOrigin = $state([undefined, undefined])
 	#axisOffset = $state(0)
@@ -85,6 +88,24 @@ export class PlotState {
 	#resolveXType(rawXType, yType) {
 		const hasBandGeom = this.#geoms.some((g) => CATEGORICAL_X.has(g.type))
 		return hasBandGeom && rawXType === 'continuous' && yType === 'continuous' ? 'band' : rawXType
+	}
+
+	// Category order sorted by aggregated value (sum of the value channel per category).
+	// Drives "sort bars by size" for the band axis + its ticks. Returns null when not sorting.
+	#sortedBandDomain(datasets) {
+		if (!this.#sort) return null
+		const xf = this.#effectiveChannels.x
+		const yf = this.#effectiveChannels.y
+		if (!xf || !yf) return null
+		const totals = new Map()
+		for (const ds of datasets) {
+			for (const d of ds) {
+				const key = d[xf]
+				totals.set(key, (totals.get(key) ?? 0) + (Number(d[yf]) || 0))
+			}
+		}
+		const dir = this.#sort === 'asc' ? 1 : -1
+		return [...totals.keys()].sort((a, b) => dir * ((totals.get(a) ?? 0) - (totals.get(b) ?? 0)))
 	}
 
 	orientation = $derived.by(() => {
@@ -158,8 +179,11 @@ export class PlotState {
 			(this.orientation !== 'horizontal' || this.#flipped)
 		// Flip: the category (x) axis stands up on the vertical screen → range over height.
 		const range = this.#flipped ? [this.#innerHeight, 0] : undefined
+		// Sort the band domain by aggregated value when requested (bars by size); an explicit
+		// xDomain override wins.
+		const domain = this.#xDomain ?? (bandX ? this.#sortedBandDomain(datasets) : null) ?? undefined
 		const base = buildUnifiedXScale(datasets, field, this.#innerWidth, {
-			domain: this.#xDomain,
+			domain,
 			includeZero,
 			band: bandX,
 			range,
@@ -328,6 +352,7 @@ export class PlotState {
 		this.#marginOverride = config.margin ?? undefined
 		this.#orientationOverride = config.orientation ?? undefined
 		this.#continuousCategory = config.continuousCategory ?? false
+		this.#sort = config.sort ?? undefined
 	}
 
 	update(config) {
@@ -355,6 +380,7 @@ export class PlotState {
 		this.#marginOverride = config.margin ?? undefined
 		this.#orientationOverride = config.orientation ?? undefined
 		this.#continuousCategory = config.continuousCategory ?? false
+		this.#sort = config.sort ?? undefined
 	}
 
 	registerGeom(config) {

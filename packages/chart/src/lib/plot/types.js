@@ -46,6 +46,7 @@
  * @property {string} [title]
  * @property {string} [summary]
  * @property {'horizontal'|'vertical'} [orientation]
+ * @property {'asc'|'desc'} [sort]  Order the category (band) axis by aggregated value — bars sorted by size (histogram-style).
  * @property {boolean} [continuousCategory]  Keep the category (x) axis linear (a continuous position scale) instead of band-forcing it — a bar-chart race's tweened rank. Set only by AnimatedPlot; not a public authoring flag.
  * @property {boolean} [stack]  Stack (true) or group (false) multi-series bars. Forwarded to spec-driven bar geoms via `options.stack`. Default: false.
  * @property {string} [preset]
