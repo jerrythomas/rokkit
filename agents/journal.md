@@ -20,9 +20,14 @@ But the layers ABOVE the shared root had diverged — the recurring pattern:
 Guarded by a BarChart selectable+onselect click test (proves the pass-through through the whole
 consolidated stack). Suite 1302, svelte-check + lint clean, demo unregressed. Commit `ccd8336a`.
 
-Minor items left as-is (noted, not bugs): the plugin passes `{spec}` to PlotChart vs `{...spec}` to
-AnimatedPlot/FacetPlot (it abstracts this from spec authors); `downloadSvg` exports only the first
-`<svg>` (a facet plot exports one panel).
+Minor item left as-is (noted, not a bug): the plugin passes `{spec}` to PlotChart vs `{...spec}` to
+AnimatedPlot/FacetPlot (it abstracts this from spec authors).
+
+**Follow-up (`31aef296`):** fixed the plugin's facet SVG export — `downloadSvg` grabbed
+`querySelector('svg')` so a facet exported only panel 1. `buildExportSvg` now composes all panels
+into one wrapper svg (each nested at its `getBoundingClientRect` position + the HTML titles as
+`<text>`); single charts unchanged. Verified in a real browser that nested svgs position correctly
+and round-trip through serialize/reparse.
 
 ## 2026-08-17 — Chart: one chart-root shell (`PlotSurface`) — PlotChart + Plot.Root reuse it
 
