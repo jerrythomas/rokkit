@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { setContext, getContext, untrack } from 'svelte'
+	import { getContext } from 'svelte'
 	import type { Snippet } from 'svelte'
-	import { PlotState } from './PlotState.svelte.js'
 	import { defaultPreset } from './lib/preset.js'
 	import type { PlotSpec, PlotHelpers } from './lib/plot/types.js'
+	import PlotSurface from './PlotSurface.svelte'
 	import Axis from './Plot/Axis.svelte'
 	import Grid from './Plot/Grid.svelte'
 	import Legend from './Plot/Legend.svelte'
 	import Tooltip from './Plot/Tooltip.svelte'
-	import DefinePatterns from './patterns/DefinePatterns.svelte'
 	import Bar from './geoms/Bar.svelte'
 	import Line from './geoms/Line.svelte'
 	import Area from './geoms/Area.svelte'
@@ -99,34 +98,6 @@
 	const chartPresetCtx = getContext<ChartPresetCtx | undefined>('chart-preset')
 	const chartPreset = $derived(chartPresetCtx?.current ?? defaultPreset)
 
-	// Responsive width: observe container and use actual pixel width for scale calculations
-	let svgEl = $state<SVGSVGElement | null>(null)
-	let containerEl = $state<HTMLDivElement | null>(null)
-	let observedWidth = $state(0)
-
-	$effect(() => {
-		if (!containerEl) return
-		const ro = new ResizeObserver((entries) => {
-			const w = Math.floor(entries[0].contentRect.width)
-			if (w > 0) observedWidth = w
-		})
-		ro.observe(containerEl)
-		return () => ro.disconnect()
-	})
-
-	const effectiveWidth = $derived(observedWidth > 0 ? observedWidth : (spec?.width ?? width))
-
-	// Enable data-change / flip animation one frame after the responsive width first
-	// settles, so the initial (possibly reflowed) layout paints without animating.
-	let animateReady = $state(false)
-	$effect(() => {
-		if (!animate || animateReady || observedWidth <= 0) return
-		const raf = requestAnimationFrame(() => {
-			animateReady = true
-		})
-		return () => cancelAnimationFrame(raf)
-	})
-	const svgHeight = $derived(spec?.height ?? height)
 	const gridValue = $derived(spec?.grid ?? grid)
 	const showGrid = $derived(gridValue !== false)
 	const gridLines = $derived(
@@ -149,10 +120,12 @@
 		return first ? Object.keys(first) : []
 	})
 
+	// Config for the shared PlotSurface (which owns PlotState, the responsive width, context,
+	// animation, patterns, and zoom). `width` is the fallback — PlotSurface observes the container.
 	function buildPlotConfig() {
 		return {
 			data: spec?.data ?? data,
-			width: effectiveWidth,
+			width: spec?.width ?? width,
 			height: spec?.height ?? height,
 			mode,
 			margin,
@@ -173,54 +146,6 @@
 			selectable
 		}
 	}
-
-	// Create PlotState with initial values and provide as context.
-	// untrack() suppresses "captures initial value" warnings — intentional:
-	// the $effect below handles all subsequent reactive updates.
-	const plotState = untrack(() => new PlotState(buildPlotConfig()))
-	setContext('plot-state', plotState)
-
-	// Keep state in sync when reactive config changes
-	$effect(() => {
-		plotState.update(buildPlotConfig())
-	})
-
-	// external control → state
-	$effect(() => {
-		plotState.setSelected(selected)
-	})
-	// clicks (state) → prop, guarded to avoid an update loop
-	$effect(() => {
-		const rows = plotState.selectedRows
-		const same = rows.length === selected.length && rows.every((r, i) => r === selected[i])
-		if (!same) selected = rows
-	})
-
-	$effect(() => {
-		if (!zoom || !svgEl) return
-		// d3-zoom/d3-selection are client-only; load them dynamically so they are
-		// not bundled into (and tree-shaken-as-unused from) the SSR/main bundle.
-		let cancelled = false
-		let detach: (() => void) | undefined
-		Promise.all([import('d3-zoom'), import('d3-selection')]).then(
-			([{ zoom: d3Zoom }, { select }]) => {
-				if (cancelled || !svgEl) return
-				const zoomBehavior = d3Zoom<SVGSVGElement, unknown>()
-					.scaleExtent([1, 8])
-					.on('zoom', (event) => {
-						plotState.applyZoom(event.transform)
-					})
-				const sel = select(svgEl)
-				sel.call(zoomBehavior)
-				detach = () => sel.on('.zoom', null)
-			}
-		)
-		return () => {
-			cancelled = true
-			detach?.()
-			plotState.resetZoom()
-		}
-	})
 
 	// Geoms from spec (spec-driven API)
 	const specGeoms = $derived(spec?.geoms ?? [])
@@ -249,117 +174,100 @@
 	}
 </script>
 
-<div
-	class="plot-root"
-	data-plot-root
-	data-mode={mode}
-	data-plot-animate={animate && animateReady ? '' : undefined}
-	bind:this={containerEl}
->
+<div class="plot-root">
 	{#if chartTitle}
 		<div class="plot-title" data-plot-title>{chartTitle}</div>
 	{/if}
 
-	<svg
-		bind:this={svgEl}
-		width={effectiveWidth}
-		height={svgHeight}
-		viewBox="0 0 {effectiveWidth} {svgHeight}"
-		role="img"
-		aria-label={chartTitle || 'Chart visualization'}
-		style:cursor={zoom ? 'grab' : undefined}
+	<!-- The shared root shell (PlotState, responsive width, context, animation, patterns, zoom).
+	     The batteries below (grid/axes/geoms/overlays) render inside its canvas via context. -->
+	<PlotSurface
+		config={buildPlotConfig()}
+		{animate}
+		{zoom}
+		ariaLabel={chartTitle || 'Chart visualization'}
+		summary={chartSummary}
+		bind:selected
 	>
-		{#if chartSummary}
-			<desc>{chartSummary}</desc>
+		<!-- Grid (behind everything) -->
+		{#if showGrid}
+			<Grid lines={gridLines} {xTicks} {yTicks} />
 		{/if}
-		<!-- SVG pattern defs -->
-		<DefinePatterns />
 
-		<g
-			class="plot-canvas"
-			transform="translate({plotState.margin.left}, {plotState.margin.top})"
-			data-plot-canvas
-		>
-			<!-- Grid (behind everything) -->
-			{#if showGrid}
-				<Grid lines={gridLines} {xTicks} {yTicks} />
+		<!-- Declarative children (geom components) -->
+		{@render children?.()}
+
+		<!-- Spec-driven geoms -->
+		{#each specGeoms as geomSpec (geomSpec.type)}
+			{@const GeomComponent = resolveGeomComponent(geomSpec.type)}
+			{#if GeomComponent}
+				<GeomComponent
+					x={geomSpec.x ?? spec?.x}
+					y={geomSpec.y ?? spec?.y}
+					color={geomSpec.color ?? spec?.color}
+					fill={geomSpec.fill ?? spec?.fill}
+					pattern={geomSpec.pattern}
+					symbol={geomSpec.symbol}
+					stat={geomSpec.stat}
+					label={geomSpec.label}
+					options={{
+						...(spec?.stack !== undefined ? { stack: spec.stack } : {}),
+						...(spec?.orientation !== undefined ? { orientation: spec.orientation } : {}),
+						...(geomSpec.options ?? {})
+					}}
+				/>
+			{/if}
+		{/each}
+
+		<!-- Axes -->
+		{#if axes}
+			<Axis type="x" label={spec?.labels?.[spec?.x ?? ''] ?? ''} format={xFormat} ticks={xTicks} {minorTicks} />
+			<Axis type="y" label={spec?.labels?.[spec?.y ?? ''] ?? ''} format={yFormat} ticks={yTicks} {minorTicks} />
+		{/if}
+
+		{#if trend !== null && trend !== undefined}
+			<Trend x={overlayX} y={overlayY} {trend} />
+		{/if}
+
+		{#if (highlight !== null && highlight !== undefined) || selectable || selected.length}
+			<Highlight x={overlayX} y={overlayY} {highlight} {label} />
+		{/if}
+
+		<!-- HTML overlays — outside the svg but INSIDE the plot-state context. -->
+		{#snippet overlay()}
+			{#if showLegend}
+				<Legend labels={spec?.labels ?? {}} />
 			{/if}
 
-			<!-- Declarative children (geom components) -->
-			{@render children?.()}
-
-			<!-- Spec-driven geoms -->
-			{#each specGeoms as geomSpec (geomSpec.type)}
-				{@const GeomComponent = resolveGeomComponent(geomSpec.type)}
-				{#if GeomComponent}
-					<GeomComponent
-						x={geomSpec.x ?? spec?.x}
-						y={geomSpec.y ?? spec?.y}
-						color={geomSpec.color ?? spec?.color}
-						fill={geomSpec.fill ?? spec?.fill}
-						pattern={geomSpec.pattern}
-						symbol={geomSpec.symbol}
-						stat={geomSpec.stat}
-						label={geomSpec.label}
-						options={{
-							...(spec?.stack !== undefined ? { stack: spec.stack } : {}),
-							...(spec?.orientation !== undefined ? { orientation: spec.orientation } : {}),
-							...(geomSpec.options ?? {})
-						}}
-					/>
-				{/if}
-			{/each}
-
-			<!-- Axes -->
-			{#if axes}
-				<Axis type="x" label={spec?.labels?.[spec?.x ?? ''] ?? ''} format={xFormat} ticks={xTicks} {minorTicks} />
-				<Axis type="y" label={spec?.labels?.[spec?.y ?? ''] ?? ''} format={yFormat} ticks={yTicks} {minorTicks} />
+			{#if tooltip}
+				<Tooltip {tooltip} />
 			{/if}
 
-			{#if trend !== null && trend !== undefined}
-				<Trend x={overlayX} y={overlayY} {trend} />
-			{/if}
-
-			{#if (highlight !== null && highlight !== undefined) || selectable || selected.length}
-				<Highlight x={overlayX} y={overlayY} {highlight} {label} />
-			{/if}
-		</g>
-	</svg>
-
-	<!-- Legend (HTML, outside SVG) -->
-	{#if showLegend}
-		<Legend labels={spec?.labels ?? {}} />
-	{/if}
-
-	<!-- Tooltip (HTML, fixed-position overlay) -->
-	{#if tooltip}
-		<Tooltip {tooltip} />
-	{/if}
-
-	<!-- Accessible data table — visually hidden, announces data to screen readers -->
-	{#if tableData.length > 0 && tableColumns.length > 0}
-		<table class="plot-sr-table" aria-label={chartTitle || 'Chart data'}>
-			{#if chartTitle}
-				<caption>{chartTitle}</caption>
-			{/if}
-			<thead>
-				<tr>
-					{#each tableColumns as col (col)}
-						<th scope="col">{col}</th>
-					{/each}
-				</tr>
-			</thead>
-			<tbody>
-				{#each tableData as row, i (i)}
-					<tr>
-						{#each tableColumns as col (col)}
-							<td>{row[col] ?? ''}</td>
+			{#if tableData.length > 0 && tableColumns.length > 0}
+				<table class="plot-sr-table" aria-label={chartTitle || 'Chart data'}>
+					{#if chartTitle}
+						<caption>{chartTitle}</caption>
+					{/if}
+					<thead>
+						<tr>
+							{#each tableColumns as col (col)}
+								<th scope="col">{col}</th>
+							{/each}
+						</tr>
+					</thead>
+					<tbody>
+						{#each tableData as row, i (i)}
+							<tr>
+								{#each tableColumns as col (col)}
+									<td>{row[col] ?? ''}</td>
+								{/each}
+							</tr>
 						{/each}
-					</tr>
-				{/each}
-			</tbody>
-		</table>
-	{/if}
+					</tbody>
+				</table>
+			{/if}
+		{/snippet}
+	</PlotSurface>
 </div>
 
 <style>
@@ -367,23 +275,6 @@
 		position: relative;
 		width: 100%;
 		height: auto;
-	}
-
-	[data-plot-root][data-mode='light'] {
-		color: rgba(var(--color-surface-700, 59, 65, 77), 1);
-	}
-
-	[data-plot-root][data-mode='dark'] {
-		color: rgba(var(--color-surface-200, 224, 224, 224), 1);
-	}
-
-	svg {
-		display: block;
-		overflow: visible;
-	}
-
-	.plot-canvas {
-		pointer-events: all;
 	}
 
 	.plot-title {

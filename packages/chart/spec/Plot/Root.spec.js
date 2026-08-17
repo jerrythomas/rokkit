@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { tick } from 'svelte'
 import { render } from '@testing-library/svelte'
 import Root from '../../src/Plot/Root.svelte'
@@ -19,7 +19,7 @@ describe('Plot/Root.svelte', () => {
 		const { container } = render(Root, {
 			props: { data, x: 'class', y: 'hwy', width: 400, height: 300 }
 		})
-		const wrapper = container.querySelector('.plot-root-container')
+		const wrapper = container.querySelector('.plot-surface')
 		expect(wrapper).toBeTruthy()
 		expect(wrapper.querySelector('svg[data-plot-root]')).toBeTruthy()
 	})
@@ -115,13 +115,17 @@ describe('Plot/Root.svelte — data-plot-animate gating', () => {
 		expect(rootOf(container).hasAttribute('data-plot-animate')).toBe(false)
 	})
 
-	it('sets data-plot-animate one frame after mount (default animate=true)', async () => {
+	it('gates data-plot-animate on the responsive width settling (not just mount)', async () => {
+		// PlotSurface enables animation one frame AFTER the ResizeObserver first reports a width,
+		// so the initial responsive reflow doesn't animate. jsdom never lays out → the observer
+		// stays at 0 → the attribute stays off. (The enabled case is verified live in-browser.)
 		const { container } = render(Root, {
 			props: { data, x: 'class', y: 'hwy', width: 400, height: 300 }
 		})
-		await vi.waitFor(() => {
-			expect(rootOf(container).hasAttribute('data-plot-animate')).toBe(true)
-		})
+		await nextFrame()
+		await nextFrame()
+		await tick()
+		expect(rootOf(container).hasAttribute('data-plot-animate')).toBe(false)
 	})
 
 	it('never sets data-plot-animate when animate={false} (AnimatedPlot opt-out)', async () => {
