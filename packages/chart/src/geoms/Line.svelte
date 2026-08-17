@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { getContext, onMount, onDestroy } from 'svelte'
 	import type { PlotState } from '../PlotState.svelte.js'
-	import { buildLines } from '../lib/brewing/marks/lines.js'
+	import { GeomState } from './lib/GeomState.svelte.js'
+	import { buildLineMarks } from './lib/marks/line.js'
 	import { buildSymbolPath } from '../lib/brewing/marks/points.js'
 	import { keyboardNav } from '../lib/keyboard-nav.js'
 	import { buildSelectDetail } from '../lib/select.js'
@@ -18,8 +19,13 @@
 	type Props = {
 		x?: string
 		y?: string
+		/** Line/stroke aesthetic (field). */
 		color?: string
+		/** Accepted as an alias for `color` (a line has no interior). */
+		fill?: string
 		symbol?: string
+		/** Fixed line opacity 0–1; defaults to the per-geom preset (line = 1). */
+		alpha?: number
 		label?: boolean | string | ((data: Row) => unknown)
 		stat?: string
 		options?: Options
@@ -31,7 +37,9 @@
 		x,
 		y,
 		color,
+		fill,
 		symbol: symbolField,
+		alpha,
 		label = false,
 		stat = 'identity',
 		options = {},
@@ -47,7 +55,23 @@
 	}
 
 	const plotState = getContext<PlotState>('plot-state')
-	let id = $state<string | null>(null)
+
+	const geom = new GeomState(plotState, () => ({
+		type: 'line',
+		channels: { x, y, color, fill, symbol: symbolField },
+		stat,
+		options,
+		alpha,
+		build: buildLineMarks
+	}))
+	onMount(geom.register)
+	onDestroy(geom.destroy)
+	$effect(geom.sync)
+
+	const lines = $derived(geom.marks)
+	// Markers are a rendering detail resolved from the shared symbol scale.
+	const symbolMap = $derived(plotState.symbols)
+	const markerRadius = $derived(options.markerRadius ?? 4)
 
 	function selectPoint(
 		pt: { data: Row },
@@ -60,35 +84,6 @@
 				buildSelectDetail(pt.data, plotState.data.indexOf(pt.data), { x, y }, 'line', seg?.key, event)
 			)
 	}
-
-	onMount(() => {
-		id = plotState.registerGeom({
-			type: 'line',
-			channels: { x, y, color, symbol: symbolField },
-			stat,
-			options
-		})
-	})
-	onDestroy(() => {
-		if (id) plotState.unregisterGeom(id)
-	})
-
-	$effect(() => {
-		if (id) plotState.updateGeom(id, { channels: { x, y, color, symbol: symbolField }, stat })
-	})
-
-	const data = $derived(id ? plotState.geomData(id) : [])
-	const xScale = $derived(plotState.xScale)
-	const yScale = $derived(plotState.yScale)
-	const colors = $derived(plotState.colors)
-	const symbolMap = $derived(plotState.symbols)
-
-	const lines = $derived.by(() => {
-		if (!data?.length || !xScale || !yScale) return []
-		return buildLines(data, { x, y, color }, xScale, yScale, colors, options.curve, plotState.place.bind(plotState))
-	})
-
-	const markerRadius = $derived(options.markerRadius ?? 4)
 </script>
 
 {#if lines.length > 0}
@@ -101,6 +96,7 @@
 				stroke-width={options.strokeWidth ?? 2}
 				stroke-linejoin="round"
 				stroke-linecap="round"
+				stroke-opacity={seg.alpha}
 				data-plot-element="line"
 			/>
 			{#if symbolField && symbolMap}

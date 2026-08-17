@@ -12,8 +12,6 @@
 		minRadius?: number
 		maxRadius?: number
 		radius?: number
-		/** @deprecated use `alpha` — kept as a fallback alias */
-		opacity?: number
 		jitter?: { width?: number; height?: number } | null
 		labelOffset?: { x?: number; y?: number }
 	}
@@ -67,7 +65,7 @@
 		channels: { x, y, color, fill, size, symbol: symbolField },
 		stat,
 		options,
-		alpha: alpha ?? options.opacity,
+		alpha,
 		build: buildPointMarks
 	}))
 	onMount(geom.register)
