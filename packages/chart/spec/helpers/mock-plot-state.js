@@ -1,4 +1,5 @@
 import { scaleBand, scaleLinear } from 'd3-scale'
+import { defaultPreset } from '../../src/lib/preset.js'
 
 /**
  * Creates a minimal PlotState-compatible object for testing infrastructure
@@ -24,6 +25,8 @@ export function createMockState(overrides = {}) {
 			['b', { fill: '#f28e2b', stroke: '#f28e2b' }]
 		]),
 		patterns: new Map(),
+		// Mirror the real PlotState: geoms resolve mark opacity via chartPreset.opacity[type].
+		chartPreset: defaultPreset,
 		preset: () => ({
 			colors: ['#4e79a7', '#f28e2b', '#e15759'],
 			patterns: [],

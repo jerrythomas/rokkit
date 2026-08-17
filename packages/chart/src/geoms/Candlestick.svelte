@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { getContext, onMount, onDestroy } from 'svelte'
 	import type { PlotState } from '../PlotState.svelte.js'
+	import { GeomState } from './lib/GeomState.svelte.js'
+	import { buildCandleMarks } from './lib/marks/candlestick.js'
 
 	type Options = {
 		open?: string
@@ -17,92 +19,33 @@
 		y?: string
 		color?: string
 		fill?: string
+		/** Fixed opacity 0–1; defaults to the per-geom preset (candlestick = 1). */
+		alpha?: number
 		stat?: string
 		options?: Options
 	}
 
-	let {
-		x,
-		y: _y = undefined,
-		color = undefined,
-		fill: fillProp = undefined,
-		stat = 'identity',
-		options = {}
-	}: Props = $props()
+	let { x, y: _y = undefined, color, fill, alpha, stat = 'identity', options = {} }: Props = $props()
 
-	const open = $derived(options.open ?? 'open')
+	const colorField = $derived(fill ?? color)
 	const high = $derived(options.high ?? 'high')
-	const low = $derived(options.low ?? 'low')
-	const close = $derived(options.close ?? 'close')
-	const upColor = $derived(options.upColor ?? '#22c55e')
-	const downColor = $derived(options.downColor ?? '#ef4444')
 	const wickWidth = $derived(options.wickWidth ?? 1)
-
 	const plotState = getContext<PlotState>('plot-state')
-	let id = $state<string | null>(null)
 
-	onMount(() => {
-		// Register with y pointing to 'high' so the y scale covers the full range
-		id = plotState.registerGeom({
-			type: 'candlestick',
-			channels: { x, y: high, color: fillProp ?? color },
-			stat
-		})
-	})
-	onDestroy(() => {
-		if (id) plotState.unregisterGeom(id)
-	})
+	// Register with y pointing to 'high' so the y scale covers the full range.
+	const geom = new GeomState(plotState, () => ({
+		type: 'candlestick',
+		channels: { x, y: high, color: colorField },
+		stat,
+		options,
+		alpha,
+		build: buildCandleMarks
+	}))
+	onMount(geom.register)
+	onDestroy(geom.destroy)
+	$effect(geom.sync)
 
-	$effect(() => {
-		if (id)
-			plotState.updateGeom(id, {
-				channels: { x, y: high, color: fillProp ?? color },
-				stat
-			})
-	})
-
-	const data = $derived(id ? plotState.geomData(id) : [])
-	const xScale = $derived(plotState.xScale)
-	const yScale = $derived(plotState.yScale)
-
-	const candles = $derived.by(() => {
-		if (!data?.length || !xScale || !yScale) return []
-		const bw = typeof xScale.bandwidth === 'function' ? xScale.bandwidth() : 10
-		const bodyWidth = bw * 0.6
-		const bodyOffset = (bw - bodyWidth) / 2
-
-		return data.map((d, i) => {
-			const xPos = (xScale(d[x ?? '']) ?? 0) + bodyOffset
-			const openVal = Number(d[open])
-			const closeVal = Number(d[close])
-			const highVal = Number(d[high])
-			const lowVal = Number(d[low])
-			const isUp = closeVal >= openVal
-			const bodyTop = yScale(isUp ? closeVal : openVal)
-			const bodyBottom = yScale(isUp ? openVal : closeVal)
-
-			// Place (band, value) points so the candle transposes under orientation flip.
-			const b1 = plotState.place(xPos, bodyTop)
-			const b2 = plotState.place(xPos + bodyWidth, bodyBottom)
-			const wa = plotState.place(xPos + bodyWidth / 2, yScale(highVal))
-			const wb = plotState.place(xPos + bodyWidth / 2, yScale(lowVal))
-			return {
-				key: `${d[x ?? '']}-${i}`,
-				// Body
-				bodyX: Math.min(b1.x, b2.x),
-				bodyY: Math.min(b1.y, b2.y),
-				bodyWidth: Math.abs(b2.x - b1.x),
-				bodyHeight: Math.max(1, Math.abs(b2.y - b1.y)),
-				fill: isUp ? upColor : downColor,
-				// Wick
-				wickX1: wa.x,
-				wickY1: wa.y,
-				wickX2: wb.x,
-				wickY2: wb.y,
-				data: d
-			}
-		})
-	})
+	const candles = $derived(geom.marks)
 </script>
 
 {#if candles.length > 0}
@@ -115,6 +58,7 @@
 				x2={c.wickX2}
 				y2={c.wickY2}
 				stroke={c.fill}
+				stroke-opacity={c.alpha}
 				stroke-width={wickWidth}
 				data-plot-element="wick"
 			/>
@@ -125,12 +69,13 @@
 				width={c.bodyWidth}
 				height={c.bodyHeight}
 				fill={c.fill}
+				fill-opacity={c.alpha}
 				data-plot-element="candle"
 				role="img"
 				onmouseenter={() => plotState.setHovered(c.data)}
 				onmouseleave={() => plotState.clearHovered()}
 			>
-				<title>{c.data[x ?? '']}: O={c.data[open]} H={c.data[high]} L={c.data[low]} C={c.data[close]}</title>
+				<title>{c.data[x ?? '']}: O={c.data[options.open ?? 'open']} H={c.data[options.high ?? 'high']} L={c.data[options.low ?? 'low']} C={c.data[options.close ?? 'close']}</title>
 			</rect>
 		{/each}
 	</g>

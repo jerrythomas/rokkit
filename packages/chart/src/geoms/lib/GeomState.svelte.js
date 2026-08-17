@@ -11,7 +11,7 @@
  * @property {string} [stat]
  * @property {Record<string, unknown>} [options]
  * @property {number} [alpha]
- * @property {(ctx: { data: any[], plot: any, channels: any, options: any, alpha: number|undefined, type: string }) => any[]} build
+ * @property {(ctx: { data: any[], plot: any, channels: any, options: any, alpha: number|undefined, type: string }) => any} build
  */
 export class GeomState {
 	#plot

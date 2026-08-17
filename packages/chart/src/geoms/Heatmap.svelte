@@ -1,85 +1,39 @@
 <script lang="ts">
 	import { getContext, onMount, onDestroy } from 'svelte'
 	import type { PlotState } from '../PlotState.svelte.js'
+	import { GeomState } from './lib/GeomState.svelte.js'
+	import { buildHeatmapMarks } from './lib/marks/heatmap.js'
 
 	type Props = {
 		x?: string
 		y?: string
 		color?: string
 		fill?: string
+		/** Fixed cell opacity 0–1; defaults to the per-geom preset (heatmap = 1). */
+		alpha?: number
 		stat?: string
 		options?: { rounded?: number }
 	}
 
-	let {
-		x,
-		y,
-		color,
-		fill: fillProp,
-		stat = 'identity',
-		options = {}
-	}: Props = $props()
+	let { x, y, color, fill, alpha, stat = 'identity', options = {} }: Props = $props()
 
-	const colorChannel = $derived(fillProp ?? color)
-
+	const colorField = $derived(fill ?? color)
 	const plotState = getContext<PlotState>('plot-state')
-	let id = $state<string | null>(null)
 
-	onMount(() => {
-		id = plotState.registerGeom({
-			type: 'heatmap',
-			channels: { x, y, color: colorChannel },
-			stat
-		})
-	})
-	onDestroy(() => {
-		if (id) plotState.unregisterGeom(id)
-	})
+	const geom = new GeomState(plotState, () => ({
+		type: 'heatmap',
+		channels: { x, y, color: colorField },
+		stat,
+		options,
+		alpha,
+		build: buildHeatmapMarks
+	}))
+	onMount(geom.register)
+	onDestroy(geom.destroy)
+	$effect(geom.sync)
 
-	$effect(() => {
-		if (id)
-			plotState.updateGeom(id, {
-				channels: { x, y, color: colorChannel },
-				stat
-			})
-	})
-
-	const data = $derived(id ? plotState.geomData(id) : [])
-	const xScale = $derived(plotState.xScale)
-	const yScale = $derived(plotState.yScale)
-	const continuousColor = $derived(plotState.continuousColorScale)
-	const categoricalColors = $derived(plotState.colors)
+	const cells = $derived(geom.marks)
 	const rx = $derived(options.rounded ?? 0)
-
-	const cells = $derived.by(() => {
-		if (!data?.length || !xScale || !yScale) return []
-		const bwX = typeof xScale.bandwidth === 'function' ? xScale.bandwidth() : 0
-		const bwY = typeof yScale.bandwidth === 'function' ? yScale.bandwidth() : 0
-
-		return data.map((d, i) => {
-			const xVal = d[x ?? '']
-			const yVal = d[y ?? '']
-			const colorVal = colorChannel ? d[colorChannel] : null
-			let cellFill = '#ccc'
-
-			if (continuousColor) {
-				cellFill = continuousColor.scale(Number(colorVal))
-			} else {
-				const entry = categoricalColors?.get(colorVal)
-				if (entry) cellFill = entry.fill
-			}
-
-			return {
-				key: `${xVal}-${yVal}-${i}`,
-				x: xScale(xVal) ?? 0,
-				y: yScale(yVal) ?? 0,
-				width: bwX,
-				height: bwY,
-				fill: cellFill,
-				data: d
-			}
-		})
-	})
 </script>
 
 {#if cells.length > 0}
@@ -91,13 +45,14 @@
 				width={Math.max(0, cell.width)}
 				height={Math.max(0, cell.height)}
 				fill={cell.fill}
+				fill-opacity={cell.alpha}
 				rx={rx}
 				data-plot-element="cell"
 				role="img"
 				onmouseenter={() => plotState.setHovered(cell.data)}
 				onmouseleave={() => plotState.clearHovered()}
 			>
-				<title>{cell.data[x ?? '']}, {cell.data[y ?? '']}: {colorChannel ? cell.data[colorChannel] : ''}</title>
+				<title>{cell.data[x ?? '']}, {cell.data[y ?? '']}: {colorField ? cell.data[colorField] : ''}</title>
 			</rect>
 		{/each}
 	</g>
