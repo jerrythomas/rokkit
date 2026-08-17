@@ -72,12 +72,17 @@ One shared categorical palette + one legend. `colors.get(key)` keeps returning t
 
 → **Fully backward compatible:** every existing single-channel chart collapses to today's output.
 
-**Builder consolidation (recommended):** switch geoms onto the two-channel builders that already
-exist (`lib/brewing/marks/bars.js`, `areas.js` model fill-interior + color-stroke independently),
-extend `points.js` / `lines.js` / `boxes.js` / `violins.js` / `arcs.js` / `swarm.js` to the same
-`fill` + `color` signature, and **delete the orphaned single-channel duplicates**
-(`geoms/lib/bars.js`, `geoms/lib/areas.js`). This removes existing duplication rather than
-reimplementing the split.
+**Builder strategy (corrected 2026-08-17 after topology audit):** the earlier draft had this
+backwards. The **live** builders are `geoms/lib/{bars,areas}.js` (advanced: flip/`place`, bar-race
+`continuousCategory`, stacking, sub-band/dodge) and `lib/brewing/marks/{points,lines,arcs,boxes,violins,swarm}.js`.
+`lib/brewing/marks/{bars,areas}.js` are the *two-channel-but-simple* pair — imported only by the
+legacy brewer and **runtime-dead**; they are removed in Phase 1, not adopted. Correct approach:
+
+- Extend the **live** builders in place to a separate `fill` (interior) + `color` (stroke) split:
+  `geoms/lib/{bars,areas}.js` and `lib/brewing/marks/{points,lines,arcs}.js` gain `fill`≠`color`.
+- `boxes.js` / `violins.js` / `swarm.js` **already** read a distinct `fill` (defaulting to `x`) but
+  derive stroke from that same entry — extend them to take a separate `color`→stroke channel.
+- No new duplication; the dead two-channel pair is deleted during brewer consolidation (§9).
 
 ## 3. alpha (fixed, consistent)
 
@@ -161,6 +166,37 @@ Update to reflect the unified API:
 - **Preset:** `packages/chart/src/lib/preset.js` (opacity map)
 - **Tests:** `packages/chart/spec/**`
 - **Docs:** as in §8
+
+## 9. Brewer consolidation (added to scope 2026-08-17)
+
+The topology audit found **three** chart surfaces. Consolidate onto the geom/Plot path:
+
+- **Reimplement `Chart.svelte`** as a thin wrapper over `Plot`/`PlotState` (keep the published
+  `Chart` export; unify internals). Decision: keep the public surface, remove the machinery behind it.
+- **Delete the reactive brewer classes:** `lib/brewing/brewer.svelte.js` (`ChartBrewer`) and
+  `CartesianBrewer` / `PieBrewer` / `QuartileBrewer` / `BoxBrewer` / `ViolinBrewer`.
+- **Delete the dead imperative brewing** (zero consumers): `lib/brewing/index.svelte.js` and
+  `lib/brewing/{bars,axes,legends,dimensions,scales}.svelte.js`.
+- **Delete the runtime-dead marks** `lib/brewing/marks/{bars,areas}.js` (only the brewer imported them).
+- **Rewire `Plot/Arc.svelte`** (the only brewer-context consumer) to render via `geoms/Arc.svelte`
+  / `PlotState`, so `Plot.Arc` no longer needs `chart-brewer` context.
+- **Keep** the shared color engine (`lib/brewing/colors.js`, `palette.json`, `patterns.js`) and all
+  live `lib/brewing/marks/{points,lines,arcs,boxes,violins,swarm}.js`.
+- **Update `index.js` exports** and migrate/remove the brewer-only spec tests.
+- Fold any genuinely-unique brewer capability (aggregation, quartile stats) into `PlotState` or a
+  shared helper class so it stays reusable/extendable (per the "classes + state" preference).
+
+## 10. Sequencing (phases)
+
+1. **Phase 1 — Brewer consolidation (§9).** Clean the topology to one path first.
+2. **Phase 2 — Foundation.** PlotState `fill` channel + shared-scale union + preset alpha (§2, §3, §5).
+3. **Phase 3 — Builder + geom aesthetics sweep.** fill/color/alpha across live builders + geoms (§2, §3, §6).
+4. **Phase 4 — position/group** (§4).
+5. **Phase 5 — Root/wrapper defaults + full suite + lint** (§5, §7).
+6. **Phase 6 — Playwright verification.**
+7. **Docs sweep (§8).**
+
+Each phase ends green (vitest + lint, zero errors) and is committed to `develop`.
 
 ## Open follow-ups (out of scope, tracked)
 
