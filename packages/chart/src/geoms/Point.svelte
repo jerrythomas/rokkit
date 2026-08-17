@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { getContext, onMount, onDestroy } from 'svelte'
-	import { scaleSqrt } from 'd3-scale'
 	import type { PlotState } from '../PlotState.svelte.js'
-	import { buildPoints } from '../lib/brewing/marks/points.js'
+	import { GeomState } from './lib/GeomState.svelte.js'
+	import { buildPointMarks } from './lib/marks/point.js'
 	import { keyboardNav } from '../lib/keyboard-nav.js'
 	import { buildSelectDetail } from '../lib/select.js'
 	import LabelPill from './LabelPill.svelte'
@@ -12,6 +12,7 @@
 		minRadius?: number
 		maxRadius?: number
 		radius?: number
+		/** @deprecated use `alpha` — kept as a fallback alias */
 		opacity?: number
 		jitter?: { width?: number; height?: number } | null
 		labelOffset?: { x?: number; y?: number }
@@ -20,9 +21,14 @@
 	type Props = {
 		x?: string
 		y?: string
+		/** Outline / point-stroke aesthetic (field). */
 		color?: string
+		/** Interior aesthetic (field); falls back to `color` when omitted. */
+		fill?: string
 		size?: string
 		symbol?: string
+		/** Fixed mark opacity 0–1; defaults to the per-geom preset (point = 0.8). */
+		alpha?: number
 		label?: boolean | string | ((data: Row) => unknown)
 		stat?: string
 		options?: Options
@@ -34,8 +40,10 @@
 		x,
 		y,
 		color,
+		fill,
 		size,
 		symbol: symbolField,
+		alpha,
 		label = false,
 		stat = 'identity',
 		options = {},
@@ -51,7 +59,24 @@
 	}
 
 	const plotState = getContext<PlotState>('plot-state')
-	let id = $state<string | null>(null)
+
+	// All plumbing (register/data/scales/colors) + mark building (geometry + fill/color/alpha)
+	// lives in GeomState + buildPointMarks. This component only renders + handles interactivity.
+	const geom = new GeomState(plotState, () => ({
+		type: 'point',
+		channels: { x, y, color, fill, size, symbol: symbolField },
+		stat,
+		options,
+		alpha: alpha ?? options.opacity,
+		build: buildPointMarks
+	}))
+	onMount(geom.register)
+	onDestroy(geom.destroy)
+	$effect(geom.sync)
+
+	const points = $derived(geom.marks)
+
+	const seriesField = $derived(fill ?? color)
 
 	function selectPoint(pt: { data: Row }, event: MouseEvent | KeyboardEvent) {
 		onselect?.(pt.data)
@@ -62,75 +87,17 @@
 					plotState.data.indexOf(pt.data),
 					{ x, y },
 					'point',
-					color ? pt.data[color] : undefined,
+					seriesField ? pt.data[seriesField] : undefined,
 					event
 				)
 			)
 	}
-
-	onMount(() => {
-		id = plotState.registerGeom({
-			type: 'point',
-			channels: { x, y, color, size, symbol: symbolField },
-			stat,
-			options
-		})
-	})
-	onDestroy(() => {
-		if (id) plotState.unregisterGeom(id)
-	})
-
-	$effect(() => {
-		if (id) plotState.updateGeom(id, { channels: { x, y, color, size, symbol: symbolField }, stat })
-	})
-
-	const data = $derived(id ? plotState.geomData(id) : [])
-	const xScale = $derived(plotState.xScale)
-	const yScale = $derived(plotState.yScale)
-	const colors = $derived(plotState.colors)
-	const symbolMap = $derived(plotState.symbols)
-
-	function buildSizeScale() {
-		if (!size || !data?.length) return null
-		const vals = data.map((d) => Number(d[size])).filter((v) => !isNaN(v))
-		if (!vals.length) return null
-		const minVal = Math.min(...vals)
-		const maxVal = Math.max(...vals)
-		const minRadius = options.minRadius ?? 3
-		const maxRadius = options.maxRadius ?? 20
-		return scaleSqrt().domain([minVal, maxVal]).range([minRadius, maxRadius])
-	}
-
-	const sizeScale = $derived.by(() => buildSizeScale())
-
-	const defaultRadius = $derived(options.radius ?? 4)
-
-	const points = $derived.by(() => {
-		if (!data?.length || !xScale || !yScale) return []
-		const raw = buildPoints(
-			data,
-			{ x, y, color, size, symbol: symbolField },
-			xScale,
-			yScale,
-			colors,
-			sizeScale,
-			symbolMap,
-			defaultRadius,
-			options?.jitter ?? null
-		)
-		if (!plotState.isFlipped) return raw
-		// Horizontal: swap each point's screen coords (value → screen-X, category → screen-Y).
-		return raw.map((p) => {
-			const s = plotState.place(p.cx, p.cy)
-			return { ...p, cx: s.x, cy: s.y }
-		})
-	})
 </script>
 
 {#if points.length > 0}
 	<g data-plot-geom="point">
 		<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-		{#each points as pt, i (`${i}::${pt.data[x ?? '']}::${pt.data[y ?? '']}`)}
+		{#each points as pt (pt.key)}
 			{#if pt.symbolPath}
 				<path
 					transform="translate({pt.cx},{pt.cy})"
@@ -138,7 +105,7 @@
 					fill={pt.fill}
 					stroke={pt.stroke}
 					stroke-width="1"
-					fill-opacity={options.opacity ?? plotState.chartPreset.opacity.point}
+					fill-opacity={pt.alpha}
 					data-plot-element="point"
 					role={onselect || keyboard || plotState.interactive ? 'button' : 'graphics-symbol'}
 					tabindex={onselect || keyboard || plotState.interactive ? 0 : undefined}
@@ -160,7 +127,7 @@
 					fill={pt.fill}
 					stroke={pt.stroke}
 					stroke-width="1"
-					fill-opacity={options.opacity ?? plotState.chartPreset.opacity.point}
+					fill-opacity={pt.alpha}
 					data-plot-element="point"
 					role={onselect || keyboard || plotState.interactive ? 'button' : 'graphics-symbol'}
 					tabindex={onselect || keyboard || plotState.interactive ? 0 : undefined}
