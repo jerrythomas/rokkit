@@ -27,7 +27,10 @@ export function buildUnifiedXScale(datasets, field, width, opts = {}) {
 	if (opts.domain) {
 		const domainIsNumeric = opts.domain.every((v) => typeof v === 'number')
 		if (!opts.band && (domainIsNumeric || isNumeric)) {
-			return scaleLinear().domain(opts.domain).range(range).nice()
+			const s = scaleLinear().domain(opts.domain).range(range)
+			// nice() rounds the domain to pretty numbers — wrong for a synthetic position axis
+			// (a bar-race rank) whose domain is deliberately padded (e.g. [-0.5, N-0.5]).
+			return opts.nice === false ? s : s.nice()
 		}
 		return scaleBand()
 			.domain(opts.domain)

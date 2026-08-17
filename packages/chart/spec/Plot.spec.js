@@ -22,6 +22,20 @@ describe('Plot.svelte', () => {
 		expect(container.querySelector('[data-plot-root]')).toBeTruthy()
 	})
 
+	it('does NOT lock a mode by default — inherits the app theme (no data-mode)', () => {
+		const { container } = render(Plot, {
+			props: { data: mpg.slice(0, 5), width: 400, height: 300 }
+		})
+		expect(container.querySelector('[data-plot-root]')?.hasAttribute('data-mode')).toBe(false)
+	})
+
+	it('locks the mode token subtree only when mode is passed explicitly', () => {
+		const { container } = render(Plot, {
+			props: { data: mpg.slice(0, 5), width: 400, height: 300, mode: 'dark' }
+		})
+		expect(container.querySelector('[data-plot-root]')?.getAttribute('data-mode')).toBe('dark')
+	})
+
 	it('renders canvas transform group', () => {
 		const { container } = render(Plot, {
 			props: { data: mpg.slice(0, 5), width: 400, height: 300 }

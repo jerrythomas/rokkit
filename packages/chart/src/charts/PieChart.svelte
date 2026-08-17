@@ -31,7 +31,7 @@
 		tooltip = false,
 		width = 400,
 		height = 400,
-		mode = 'light',
+		mode = undefined,
 		legend = false,
 		stat = 'sum'
 	}: Props = $props()

@@ -33,7 +33,7 @@
 		size, // required: field name for bubble radius
 		width = 600,
 		height = 400,
-		mode = 'light',
+		mode = undefined,
 		grid = true,
 		legend = false,
 		xFormat = undefined,

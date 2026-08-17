@@ -196,14 +196,14 @@
 	<section>
 		<header>BoxPlot — highway mpg distribution by class</header>
 		<div class="chart-stage">
-			<BoxPlot data={cars} x="class" y="hwy" fill="drv" legend grid />
+			<BoxPlot data={cars} x="class" y="hwy" legend grid />
 		</div>
 	</section>
 
 	<section>
 		<header>ViolinPlot — same data as BoxPlot, with density</header>
 		<div class="chart-stage">
-			<ViolinPlot data={cars} x="class" y="hwy" fill="drv" legend grid />
+			<ViolinPlot data={cars} x="class" y="hwy" legend grid />
 		</div>
 	</section>
 
@@ -387,6 +387,7 @@
 				animate={{ by: 'year', duration: 900, loop: true }}
 				x="revenue"
 				y="company"
+				color="company"
 				sorted
 				label
 				width={600}

@@ -135,17 +135,21 @@
 {/if}
 
 <style>
+	/* Readable, theme-adaptive axis colours (fall back to currentColor for a base-only
+	   consumer that doesn't provide the --ink token vocabulary). currentColor alone was a
+	   mode-hardcoded surface tone that went faint on a dark theme paper. */
 	.axis {
 		font-size: 11px;
-		fill: currentColor;
-		stroke: currentColor;
+		fill: var(--ink-mute, currentColor);
+		stroke: var(--ink-mute, currentColor);
 	}
 	.axis-label {
 		font-size: 13px;
 		font-weight: 500;
+		fill: var(--ink, currentColor);
 	}
 	[data-plot-axis-line] {
-		stroke: currentColor;
+		stroke: var(--paper-edge, currentColor);
 		/* Decoration only — never intercept clicks meant for data marks beneath it. */
 		pointer-events: none;
 	}

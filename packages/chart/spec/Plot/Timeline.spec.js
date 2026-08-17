@@ -70,3 +70,21 @@ describe('Timeline', () => {
 		expect(slider?.disabled).toBe(true)
 	})
 })
+
+describe('Timeline — speed control (themed numeric input)', () => {
+	it('renders the speed control as a number input, not a native select', () => {
+		const { container } = render(Timeline, { props: defaultProps })
+		const speed = container.querySelector('[data-plot-timeline-speed]')
+		expect(speed?.tagName.toLowerCase()).toBe('input')
+		expect(speed?.getAttribute('type')).toBe('number')
+		expect(container.querySelector('select')).toBeNull()
+	})
+
+	it('reports speed changes via onspeed', async () => {
+		const onspeed = vi.fn()
+		const { container } = render(Timeline, { props: { ...defaultProps, onspeed } })
+		const speed = container.querySelector('[data-plot-timeline-speed]')
+		await fireEvent.change(speed, { target: { value: '2' } })
+		expect(onspeed).toHaveBeenCalledWith(2)
+	})
+})

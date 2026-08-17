@@ -58,7 +58,7 @@
 		helpers = {},
 		width = 600,
 		height = 400,
-		mode = 'light',
+		mode = undefined,
 		grid = true,
 		legend = false,
 		tween = true,
@@ -372,7 +372,9 @@
 		y: isHorizontalRace ? x : y,
 		color,
 		geoms: isHorizontalRace ? raceGeoms : prepared.geoms,
-		xDomain: isHorizontalRace ? [0, entityCount - 1] : staticDomains.xDomain,
+		// Pad the rank axis half a slot each end so the first/last bar's thickness doesn't spill
+		// past the axis (a continuous-category bar centres on the rank with a step-derived height).
+		xDomain: isHorizontalRace ? [-0.5, entityCount - 0.5] : staticDomains.xDomain,
 		yDomain: isHorizontalRace ? valueDomainForFrame : staticDomains.yDomain,
 		orientation: isHorizontalRace ? 'horizontal' : resolvedOrientation,
 		continuousCategory: isHorizontalRace

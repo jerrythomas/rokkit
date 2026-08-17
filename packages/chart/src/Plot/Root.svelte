@@ -34,7 +34,7 @@
 		width = 600,
 		height = 400,
 		margin = undefined,
-		mode = 'light',
+		mode = undefined,
 		orientation = undefined,
 		flip = false,
 		animate = true,

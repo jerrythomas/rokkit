@@ -24,8 +24,6 @@
 	const safeIndex = $derived(
 		frameKeys.length === 0 ? 0 : Math.min(currentIndex, frameKeys.length - 1)
 	)
-
-	const SPEEDS = [0.5, 1, 1.5, 2, 4]
 </script>
 
 <div class="timeline" data-plot-timeline>
@@ -56,17 +54,20 @@
 		data-plot-timeline-scrub
 	/>
 
-	<!-- Speed selector -->
-	<select
-		aria-label="Playback speed"
-		value={speed}
-		onchange={(e) => onspeed?.(Number(e.currentTarget.value))}
-		data-plot-timeline-speed
-	>
-		{#each SPEEDS as s (s)}
-			<option value={s}>{s}×</option>
-		{/each}
-	</select>
+	<!-- Speed (× multiplier) — themed numeric input -->
+	<div class="speed">
+		<input
+			type="number"
+			min="0.25"
+			max="8"
+			step="0.25"
+			value={speed}
+			aria-label="Playback speed"
+			onchange={(e) => onspeed?.(Math.max(0.25, Number(e.currentTarget.value) || 1))}
+			data-plot-timeline-speed
+		/>
+		<span class="speed-unit" aria-hidden="true">×</span>
+	</div>
 </div>
 
 <style>
@@ -76,6 +77,7 @@
 		gap: 8px;
 		padding: 8px 0;
 		font-size: 12px;
+		color: var(--ink-mute, currentColor);
 	}
 	.play-pause {
 		font-size: 16px;
@@ -83,12 +85,36 @@
 		background: none;
 		border: none;
 		padding: 0;
+		color: var(--ink, currentColor);
 	}
 	.scrub {
 		flex: 1;
+		accent-color: var(--accent, currentColor);
 	}
 	.frame-label {
 		min-width: 4ch;
 		text-align: right;
+		color: var(--ink, currentColor);
+	}
+	.speed {
+		display: inline-flex;
+		align-items: center;
+		gap: 2px;
+	}
+	.speed input {
+		width: 3.5em;
+		font: inherit;
+		color: var(--ink, currentColor);
+		background: var(--paper, transparent);
+		border: 1px solid var(--paper-edge, currentColor);
+		border-radius: 4px;
+		padding: 2px 4px;
+	}
+	.speed input:focus-visible {
+		outline: 2px solid var(--accent, currentColor);
+		outline-offset: 1px;
+	}
+	.speed-unit {
+		color: var(--ink-mute, currentColor);
 	}
 </style>

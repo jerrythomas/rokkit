@@ -144,3 +144,16 @@ describe('inferColorScaleType', () => {
 		expect(inferColorScaleType(mpg, 'cty', { colorScale: 'categorical' })).toBe('categorical')
 	})
 })
+
+describe('buildUnifiedXScale — nice option (padded rank axis)', () => {
+	const rows = [{ _rank: 0 }, { _rank: 9 }]
+	it('nice:false preserves the exact padded domain (rank axis keeps its edge padding)', () => {
+		const scale = buildUnifiedXScale([rows], '_rank', 500, { domain: [-0.5, 9.5], nice: false })
+		expect(scale.domain()).toEqual([-0.5, 9.5])
+	})
+	it('nice (default) may round the domain to whole numbers', () => {
+		const scale = buildUnifiedXScale([rows], '_rank', 500, { domain: [-0.5, 9.5] })
+		// nice() rounds [-0.5, 9.5] outward → the padding is not guaranteed to survive
+		expect(scale.domain()).toEqual([-1, 10])
+	})
+})

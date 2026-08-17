@@ -26,7 +26,7 @@
 		fill = undefined,
 		width = 600,
 		height = 400,
-		mode = 'light',
+		mode = undefined,
 		grid = true,
 		legend = false,
 		yFormat = undefined,

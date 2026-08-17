@@ -162,7 +162,10 @@ export class PlotState {
 			domain: this.#xDomain,
 			includeZero,
 			band: bandX,
-			range
+			range,
+			// A continuous category axis (bar-race rank) uses a deliberately padded domain —
+			// don't nice() it back to whole numbers.
+			nice: !this.#continuousCategory
 		})
 		return this.#zoomTransform && typeof base?.bandwidth !== 'function'
 			? this.#zoomTransform.rescaleX(base)

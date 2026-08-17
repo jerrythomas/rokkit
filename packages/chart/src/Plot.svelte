@@ -70,7 +70,7 @@
 		helpers = {},
 		width = 600,
 		height = 400,
-		mode = 'light',
+		mode = undefined,
 		grid = true,
 		axes = true,
 		margin = undefined,

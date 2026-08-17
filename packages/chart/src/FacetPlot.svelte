@@ -47,7 +47,7 @@
 		panelHeight,
 		width = 900,
 		height = 300,
-		mode = 'light',
+		mode = undefined,
 		grid = true,
 		legend = false,
 		children
