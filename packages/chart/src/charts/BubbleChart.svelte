@@ -4,6 +4,7 @@
 
 	type Row = Record<string, unknown>
 	type Format = (v: unknown) => string
+	type Method = string | number | { type: string; [k: string]: unknown }
 
 	type Props = {
 		data?: Row[]
@@ -17,11 +18,17 @@
 		mode?: 'light' | 'dark'
 		grid?: boolean
 		legend?: boolean
+		tooltip?: boolean | ((data: Row) => string)
+		highlight?: 'first' | 'last' | 'min' | 'max' | number | ((row: Row, i: number) => boolean)
+		trend?: Method | Method[]
 		xFormat?: Format
 		yFormat?: Format
 		xTicks?: number
 		yTicks?: number
 		minorTicks?: boolean
+		onselect?: (detail: unknown) => void
+		selectable?: boolean
+		selected?: Row[]
 	}
 
 	let {
@@ -36,14 +43,38 @@
 		mode = undefined,
 		grid = true,
 		legend = false,
+		tooltip = false,
+		highlight = undefined,
+		trend = undefined,
 		xFormat = undefined,
 		yFormat = undefined,
 		xTicks = undefined,
 		yTicks = undefined,
-		minorTicks = false
+		minorTicks = false,
+		onselect = undefined,
+		selectable = false,
+		selected = $bindable([])
 	}: Props = $props()
 </script>
 
-<Plot {data} {width} {height} {mode} {grid} {legend} {xFormat} {yFormat} {xTicks} {yTicks} {minorTicks}>
+<Plot
+	{data}
+	{width}
+	{height}
+	{mode}
+	{grid}
+	{legend}
+	{tooltip}
+	{highlight}
+	{trend}
+	{xFormat}
+	{yFormat}
+	{xTicks}
+	{yTicks}
+	{minorTicks}
+	{onselect}
+	{selectable}
+	bind:selected
+>
 	<Point {x} {y} {color} {size} />
 </Plot>

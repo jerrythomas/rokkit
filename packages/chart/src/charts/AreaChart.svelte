@@ -20,6 +20,7 @@
 		mode?: 'light' | 'dark'
 		grid?: boolean | 'x' | 'y' | 'both'
 		legend?: boolean
+		tooltip?: boolean | ((data: Row) => string)
 		highlight?: 'first' | 'last' | 'min' | 'max' | number | ((row: Row, i: number) => boolean)
 		trend?: Method | Method[]
 		xFormat?: Format
@@ -46,6 +47,7 @@
 		mode = undefined,
 		grid = true,
 		legend = false,
+		tooltip = false,
 		highlight = undefined,
 		trend = undefined,
 		xFormat = undefined,
@@ -68,6 +70,7 @@
 	{mode}
 	{grid}
 	{legend}
+	{tooltip}
 	{highlight}
 	{trend}
 	{xFormat}

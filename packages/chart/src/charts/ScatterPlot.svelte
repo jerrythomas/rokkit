@@ -4,6 +4,7 @@
 
 	type Row = Record<string, unknown>
 	type Format = (v: unknown) => string
+	type Method = string | number | { type: string; [k: string]: unknown }
 
 	type Props = {
 		data?: Row[]
@@ -20,11 +21,16 @@
 		grid?: boolean
 		legend?: boolean
 		jitter?: { width?: number; height?: number } | null
+		highlight?: 'first' | 'last' | 'min' | 'max' | number | ((row: Row, i: number) => boolean)
+		trend?: Method | Method[]
 		xFormat?: Format
 		yFormat?: Format
 		xTicks?: number
 		yTicks?: number
 		minorTicks?: boolean
+		onselect?: (detail: unknown) => void
+		selectable?: boolean
+		selected?: Row[]
 	}
 
 	let {
@@ -42,14 +48,37 @@
 		grid = true,
 		legend = false,
 		jitter = undefined,
+		highlight = undefined,
+		trend = undefined,
 		xFormat = undefined,
 		yFormat = undefined,
 		xTicks = undefined,
 		yTicks = undefined,
-		minorTicks = false
+		minorTicks = false,
+		onselect = undefined,
+		selectable = false,
+		selected = $bindable([])
 	}: Props = $props()
 </script>
 
-<Plot {data} {width} {height} {mode} {grid} {legend} {tooltip} {xFormat} {yFormat} {xTicks} {yTicks} {minorTicks}>
+<Plot
+	{data}
+	{width}
+	{height}
+	{mode}
+	{grid}
+	{legend}
+	{tooltip}
+	{highlight}
+	{trend}
+	{xFormat}
+	{yFormat}
+	{xTicks}
+	{yTicks}
+	{minorTicks}
+	{onselect}
+	{selectable}
+	bind:selected
+>
 	<Point {x} {y} {color} {size} {symbol} {label} options={{ jitter }} />
 </Plot>

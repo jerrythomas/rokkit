@@ -14,6 +14,7 @@
 		mode?: 'light' | 'dark'
 		grid?: boolean
 		legend?: boolean
+		tooltip?: boolean | ((data: Row) => string)
 		yFormat?: (v: unknown) => string
 		yTicks?: number
 		minorTicks?: boolean
@@ -29,12 +30,13 @@
 		mode = undefined,
 		grid = true,
 		legend = false,
+		tooltip = false,
 		yFormat = undefined,
 		yTicks = undefined,
 		minorTicks = false
 	}: Props = $props()
 </script>
 
-<Plot {data} {width} {height} {mode} {grid} {legend} {yFormat} {yTicks} {minorTicks}>
+<Plot {data} {width} {height} {mode} {grid} {legend} {tooltip} {yFormat} {yTicks} {minorTicks}>
 	<Violin {x} {y} {fill} />
 </Plot>

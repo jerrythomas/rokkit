@@ -4,9 +4,10 @@
 	import PlotSurface from '../PlotSurface.svelte'
 
 	type Margin = { top?: number; right?: number; bottom?: number; left?: number }
+	type Row = Record<string, unknown>
 
 	type Props = {
-		data?: Record<string, unknown>[]
+		data?: Row[]
 		x?: string
 		y?: string
 		color?: string
@@ -21,6 +22,20 @@
 		/** Order the category (band) axis by aggregated value instead of by label — bars sorted
 		 *  by size (histogram-style). 'desc' (largest first) | 'asc'. */
 		sort?: 'asc' | 'desc'
+		/** Explicit scale domain overrides. */
+		xDomain?: unknown[]
+		yDomain?: unknown[]
+		/** Continuous colour scale controls (sequential/diverging). */
+		colorScale?: unknown
+		colorScheme?: string
+		colorDomain?: unknown[]
+		colorMidpoint?: number
+		/** Enable d3-zoom pan/zoom. */
+		zoom?: boolean
+		/** Opt-in click-to-select; fires onselect(detail) and syncs bind:selected (row refs). */
+		selectable?: boolean
+		onselect?: (detail: unknown) => void
+		selected?: Row[]
 		/** Animate marks on data/flip changes. Enabled one frame after mount so the
 		 *  initial layout paints un-animated. Default `true`. */
 		animate?: boolean
@@ -39,6 +54,16 @@
 		orientation = undefined,
 		flip = false,
 		sort = undefined,
+		xDomain = undefined,
+		yDomain = undefined,
+		colorScale = undefined,
+		colorScheme = undefined,
+		colorDomain = undefined,
+		colorMidpoint = undefined,
+		zoom = false,
+		selectable = false,
+		onselect = undefined,
+		selected = $bindable([]),
 		animate = true,
 		children
 	}: Props = $props()
@@ -53,10 +78,18 @@
 		mode,
 		orientation: flip ? 'horizontal' : orientation,
 		sort,
+		xDomain,
+		yDomain,
+		colorScale,
+		colorScheme,
+		colorDomain,
+		colorMidpoint,
+		onselect,
+		selectable,
 		chartPreset: defaultPreset
 	})
 </script>
 
-<PlotSurface {config} {animate}>
+<PlotSurface {config} {animate} {zoom} bind:selected>
 	{@render children?.()}
 </PlotSurface>

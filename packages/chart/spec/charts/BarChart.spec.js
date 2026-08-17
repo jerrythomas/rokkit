@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
-import { render } from '@testing-library/svelte'
+import { describe, it, expect, vi } from 'vitest'
+import { render, fireEvent } from '@testing-library/svelte'
 import BarChart from '../../src/charts/BarChart.svelte'
 
 const catData = [
@@ -118,5 +118,21 @@ describe('BarChart — grouped with color', () => {
 		const { container } = render(BarChart, { data: stackData, x: 'class', y: 'hwy', fill: 'drv' })
 		const bars = container.querySelectorAll('[data-plot-element="bar"]')
 		expect(bars.length).toBe(4)
+	})
+})
+
+describe('BarChart — interactivity pass-through (standardized wrappers)', () => {
+	it('forwards selectable + onselect: clicking a bar fires onselect', async () => {
+		const onselect = vi.fn()
+		const { container } = render(BarChart, {
+			data: catData,
+			x: 'category',
+			y: 'revenue',
+			selectable: true,
+			onselect
+		})
+		const bar = container.querySelector('[data-plot-element="bar"]')
+		await fireEvent.click(bar)
+		expect(onselect).toHaveBeenCalled()
 	})
 })
