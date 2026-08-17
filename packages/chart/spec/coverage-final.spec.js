@@ -2,7 +2,6 @@ import { describe, it, expect } from 'vitest'
 import mpg from './fixtures/mpg.json'
 import * as chart from '../src/index.js'
 import { PlotState } from '../src/PlotState.svelte.js'
-import { QuartileBrewer } from '../src/lib/brewing/QuartileBrewer.svelte.js'
 
 describe('chart index barrel', () => {
 	it('re-exports the Plot primitives and top-level components', () => {
@@ -32,14 +31,5 @@ describe('PlotState.continuousColorScale', () => {
 		const s = new PlotState({ data: mpg, channels: { color: 'cty' }, colorMidpoint: 20 })
 		expect(s.colorScaleType).toBe('diverging')
 		expect(s.continuousColorScale).toBeTruthy()
-	})
-})
-
-describe('QuartileBrewer scales', () => {
-	it('derives x and y scales from grouped quartile data', () => {
-		const brewer = new QuartileBrewer()
-		brewer.update({ data: mpg, channels: { x: 'class', y: 'cty' }, width: 600, height: 400 })
-		expect(brewer.xScale).toBeTruthy()
-		expect(brewer.yScale).toBeTruthy()
 	})
 })

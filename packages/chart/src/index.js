@@ -6,7 +6,7 @@ import Legend from './Plot/Legend.svelte'
 import Line from './geoms/Line.svelte'
 import Area from './geoms/Area.svelte'
 import Point from './geoms/Point.svelte'
-import Arc from './Plot/Arc.svelte'
+import Arc from './geoms/Arc.svelte'
 import Highlight from './geoms/Highlight.svelte'
 import Trend from './geoms/Trend.svelte'
 import Box from './geoms/Box.svelte'
@@ -91,14 +91,7 @@ export { default as BubbleChart } from './charts/BubbleChart.svelte'
 export { PlotState } from './PlotState.svelte.js'
 
 // Export utilities
-export { ChartBrewer } from './lib/brewing/index.svelte.js'
-export * from './lib/brewing/index.svelte.js'
 export { buildSequentialScale, buildDivergingScale } from './lib/brewing/colors.js'
-export { CartesianBrewer } from './lib/brewing/CartesianBrewer.svelte.js'
-export { PieBrewer } from './lib/brewing/PieBrewer.svelte.js'
-export { QuartileBrewer } from './lib/brewing/QuartileBrewer.svelte.js'
-export { BoxBrewer } from './lib/brewing/BoxBrewer.svelte.js'
-export { ViolinBrewer } from './lib/brewing/ViolinBrewer.svelte.js'
 
 // CrossFilter system
 export { createCrossFilter } from './crossfilter/createCrossFilter.svelte.js'
