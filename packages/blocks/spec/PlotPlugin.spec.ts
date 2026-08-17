@@ -181,5 +181,40 @@ describe('PlotPlugin', () => {
 			clickSpy.mockRestore()
 			vi.useRealTimers()
 		})
+
+		it('a facet export composes ALL panels into one svg (not just the first)', async () => {
+			URL.createObjectURL = vi.fn(() => 'blob:mock')
+			URL.revokeObjectURL = vi.fn()
+			const clickSpy = vi
+				.spyOn(HTMLAnchorElement.prototype, 'click')
+				.mockImplementation(() => {})
+
+			// Capture the serialized SVG string from the Blob constructor (jsdom Blob has no .text()).
+			const OrigBlob = globalThis.Blob
+			let svgText = ''
+			globalThis.Blob = class extends OrigBlob {
+				constructor(parts: BlobPart[], opts?: BlobPropertyBag) {
+					super(parts, opts)
+					svgText = String(parts?.[0] ?? '')
+				}
+			} as typeof Blob
+
+			try {
+				const { container } = render(PlotPlugin, { props: { code: facetSpec } })
+				// Sanity: the facet renders one panel svg per category (A, B).
+				expect(container.querySelectorAll('[data-facet-panel] svg').length).toBe(2)
+
+				await fireEvent.click(
+					container.querySelector('[title="Download chart as SVG"]') as HTMLElement
+				)
+
+				// One wrapper <svg> + a nested <svg> per panel → at least 3 (was 1 before the fix).
+				const svgCount = (svgText.match(/<svg/g) ?? []).length
+				expect(svgCount).toBeGreaterThanOrEqual(3)
+			} finally {
+				globalThis.Blob = OrigBlob
+				clickSpy.mockRestore()
+			}
+		})
 	})
 })

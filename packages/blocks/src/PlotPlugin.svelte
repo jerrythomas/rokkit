@@ -48,11 +48,60 @@
 		}
 	}
 
+	const SVG_NS = 'http://www.w3.org/2000/svg'
+
+	/**
+	 * Serialize the rendered chart to a single self-contained SVG string.
+	 * A single chart → its one <svg>. A facet plot (a grid of panels, each its own <svg> with an
+	 * HTML title) → one wrapper <svg> with every panel nested at its on-screen position plus the
+	 * panel titles as <text>, so the export isn't just the first panel.
+	 */
+	function buildExportSvg(): string | null {
+		if (!bodyRef) return null
+		const svgs = [...bodyRef.querySelectorAll('svg')]
+		if (svgs.length === 0) return null
+		if (svgs.length === 1) return new XMLSerializer().serializeToString(svgs[0])
+
+		const body = bodyRef.getBoundingClientRect()
+		const width = Math.max(1, Math.ceil(body.width))
+		const height = Math.max(1, Math.ceil(body.height))
+		const wrapper = document.createElementNS(SVG_NS, 'svg')
+		wrapper.setAttribute('xmlns', SVG_NS)
+		wrapper.setAttribute('width', String(width))
+		wrapper.setAttribute('height', String(height))
+		wrapper.setAttribute('viewBox', `0 0 ${width} ${height}`)
+
+		// Panel charts → nested <svg> at their positions relative to the body.
+		for (const svg of svgs) {
+			const r = svg.getBoundingClientRect()
+			const clone = svg.cloneNode(true) as SVGSVGElement
+			clone.setAttribute('x', String(Math.round(r.left - body.left)))
+			clone.setAttribute('y', String(Math.round(r.top - body.top)))
+			clone.setAttribute('width', String(Math.round(r.width) || Math.round(body.width)))
+			clone.setAttribute('height', String(Math.round(r.height) || Math.round(body.height)))
+			wrapper.appendChild(clone)
+		}
+
+		// Facet titles (HTML) → <text> on top, so the panels stay labelled.
+		for (const title of bodyRef.querySelectorAll<HTMLElement>('[data-facet-title]')) {
+			const r = title.getBoundingClientRect()
+			const cs = getComputedStyle(title)
+			const text = document.createElementNS(SVG_NS, 'text')
+			text.setAttribute('x', String(Math.round(r.left - body.left)))
+			text.setAttribute('y', String(Math.round(r.top - body.top + (parseFloat(cs.fontSize) || 12))))
+			text.setAttribute('font-size', cs.fontSize || '12px')
+			text.setAttribute('font-family', cs.fontFamily || 'sans-serif')
+			text.setAttribute('fill', cs.color || 'currentColor')
+			text.textContent = title.textContent ?? ''
+			wrapper.appendChild(text)
+		}
+
+		return new XMLSerializer().serializeToString(wrapper)
+	}
+
 	function downloadSvg() {
-		if (!bodyRef) return
-		const svg = bodyRef.querySelector('svg')
-		if (!svg) return
-		const serialized = new XMLSerializer().serializeToString(svg)
+		const serialized = buildExportSvg()
+		if (!serialized) return
 		const blob = new Blob([serialized], { type: 'image/svg+xml' })
 		const url = URL.createObjectURL(blob)
 		const base =
