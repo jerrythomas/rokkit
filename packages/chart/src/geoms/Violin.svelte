@@ -1,25 +1,29 @@
 <script lang="ts">
 	import { getContext, onMount, onDestroy } from 'svelte'
 	import type { PlotState } from '../PlotState.svelte.js'
-	import { buildViolins } from '../lib/brewing/marks/violins.js'
+	import { GeomState } from './lib/GeomState.svelte.js'
+	import { buildViolinMarks } from './lib/marks/violin.js'
 
 	type Props = {
 		x?: string
 		y?: string
+		/** Violin interior aesthetic (field); defaults to `x`. */
 		fill?: string
+		/** Outline aesthetic (field); overrides the silhouette stroke when set. */
+		color?: string
 		stat?: string
 		/** Half-violin: 'left'/'right' draw one side (flat edge at the band centre) for
 		 *  raincloud/split plots; 'center' (default) is the full symmetric silhouette. */
 		side?: 'left' | 'right' | 'center'
 		/** Data field driving a texture fill (from the shared pattern set) instead of a solid fill. */
 		pattern?: string
-		options?: { opacity?: number }
+		/** Fixed violin opacity 0–1; defaults to the per-geom preset (violin = 0.5). */
+		alpha?: number
 	}
 
-	let { x, y, fill, stat = 'boxplot', side = 'center', pattern, options = {} }: Props = $props()
+	let { x, y, fill, color, stat = 'boxplot', side = 'center', pattern, alpha }: Props = $props()
 
 	const plotState = getContext<PlotState>('plot-state')
-	let id = $state<string | null>(null)
 
 	// Fall back to the root Plot channels when the geom omits x/y (composes under
 	// <Plot.Root x y> without silently NaN-ing).
@@ -28,42 +32,19 @@
 	// fill ?? effective-x drives the colors map for both violin interior and outline
 	const fillChannel = $derived(fill ?? xf)
 
-	onMount(() => {
-		id = plotState.registerGeom({
-			type: 'violin',
-			channels: { x: xf, y: yf, color: fillChannel, pattern },
-			stat,
-			options
-		})
-	})
-	onDestroy(() => {
-		if (id) plotState.unregisterGeom(id)
-	})
+	const geom = new GeomState(plotState, () => ({
+		type: 'violin',
+		channels: { x: xf, y: yf, fill: fillChannel, color, pattern },
+		stat,
+		options: { side },
+		alpha,
+		build: buildViolinMarks
+	}))
+	onMount(geom.register)
+	onDestroy(geom.destroy)
+	$effect(geom.sync)
 
-	$effect(() => {
-		if (id)
-			plotState.updateGeom(id, { channels: { x: xf, y: yf, color: fillChannel, pattern }, stat })
-	})
-
-	const data = $derived(id ? plotState.geomData(id) : [])
-	const xScale = $derived(plotState.xScale)
-	const yScale = $derived(plotState.yScale)
-	const colors = $derived(plotState.colors)
-	const patterns = $derived(plotState.patterns)
-
-	const violins = $derived.by(() => {
-		if (!data?.length || !xScale || !yScale) return []
-		return buildViolins(
-			data,
-			{ x: xf, fill: fillChannel, pattern },
-			xScale,
-			yScale,
-			colors,
-			plotState.place.bind(plotState),
-			side,
-			patterns
-		)
-	})
+	const violins = $derived(geom.marks)
 </script>
 
 {#if violins.length > 0}
@@ -72,7 +53,7 @@
 			<path
 				d={v.d}
 				fill={v.fill}
-				fill-opacity={options?.opacity ?? plotState.chartPreset.opacity.violin}
+				fill-opacity={v.alpha}
 				stroke={v.stroke}
 				stroke-width="1.5"
 				data-plot-element="violin"
