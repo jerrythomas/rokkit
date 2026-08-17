@@ -8,6 +8,9 @@
 		x?: RuleValue | RuleValue[]
 		/** Horizontal reference line(s) at these y-axis value(s). */
 		y?: RuleValue | RuleValue[]
+		/** Line color (aligns with the other geoms' `color` aesthetic). */
+		color?: string
+		/** @deprecated use `color` — kept as an alias. */
 		stroke?: string
 		/** SVG stroke-dasharray (default dashed). Pass '' for a solid line. */
 		dash?: string
@@ -19,6 +22,7 @@
 	let {
 		x,
 		y,
+		color = undefined,
 		stroke = undefined,
 		dash = '4 4',
 		strokeWidth = 1,
@@ -79,7 +83,7 @@
 		return out
 	})
 
-	const strokeColor = $derived(stroke ?? 'currentColor')
+	const strokeColor = $derived(color ?? stroke ?? 'currentColor')
 </script>
 
 {#if rules.length > 0}

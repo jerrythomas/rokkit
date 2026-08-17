@@ -18,7 +18,12 @@
 		grid?: boolean
 		legend?: boolean
 		stat?: string
+		/** @deprecated use `position="stack"`. */
 		stack?: boolean
+		/** Multi-series arrangement: 'stack' | 'dodge' (default) | 'fill' | 'identity'. */
+		position?: 'stack' | 'dodge' | 'fill' | 'identity'
+		/** Fixed bar opacity 0–1. */
+		alpha?: number
 		label?: boolean | string | ((data: Row) => unknown)
 		tooltip?: boolean | ((data: Row) => string)
 		highlight?: 'first' | 'last' | 'min' | 'max' | number | ((row: Row, i: number) => boolean)
@@ -46,6 +51,8 @@
 		legend = false,
 		stat = 'identity',
 		stack = false,
+		position = undefined,
+		alpha = undefined,
 		label = false,
 		tooltip = false,
 		highlight = undefined,
@@ -80,5 +87,5 @@
 	{selectable}
 	bind:selected
 >
-	<Bar {x} {y} color={fill} {pattern} {label} {stat} options={{ stack }} />
+	<Bar {x} {y} color={fill} {pattern} {label} {stat} {position} {alpha} options={{ stack }} />
 </Plot>

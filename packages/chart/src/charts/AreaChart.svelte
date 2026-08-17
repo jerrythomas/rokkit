@@ -14,7 +14,12 @@
 		stat?: string
 		curve?: 'linear' | 'smooth' | 'step'
 		pattern?: string
+		/** @deprecated use `position="stack"`. */
 		stack?: boolean
+		/** Multi-series arrangement: 'stack' | 'fill' | 'identity' (default). */
+		position?: 'stack' | 'fill' | 'identity'
+		/** Fixed area opacity 0–1. */
+		alpha?: number
 		width?: number
 		height?: number
 		mode?: 'light' | 'dark'
@@ -42,6 +47,8 @@
 		curve = undefined,
 		pattern = undefined,
 		stack = false,
+		position = undefined,
+		alpha = undefined,
 		width = 600,
 		height = 400,
 		mode = undefined,
@@ -82,5 +89,5 @@
 	{selectable}
 	bind:selected
 >
-	<Area {x} {y} color={fill} {pattern} {stat} options={{ curve, stack }} />
+	<Area {x} {y} color={fill} {pattern} {stat} {position} {alpha} options={{ curve, stack }} />
 </Plot>

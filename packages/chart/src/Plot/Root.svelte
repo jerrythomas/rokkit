@@ -11,6 +11,8 @@
 		x?: string
 		y?: string
 		color?: string
+		/** Interior aesthetic default (field); geoms inherit unless they set their own. */
+		fill?: string
 		width?: number
 		height?: number
 		margin?: Margin
@@ -47,6 +49,7 @@
 		x = undefined,
 		y = undefined,
 		color = undefined,
+		fill = undefined,
 		width = 600,
 		height = 400,
 		margin = undefined,
@@ -71,7 +74,7 @@
 	// The composable root is just PlotSurface (the shared shell) fed a config from these props.
 	const config = $derived({
 		data,
-		channels: { x, y, color },
+		channels: { x, y, color, fill },
 		width,
 		height,
 		margin,
