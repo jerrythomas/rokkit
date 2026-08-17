@@ -2,7 +2,8 @@
 	import { getContext, onMount, onDestroy } from 'svelte'
 	import type { PlotState } from '../PlotState.svelte.js'
 	import type { createCrossFilter } from '../crossfilter/createCrossFilter.svelte.js'
-	import { buildBars, buildStackedBars } from './lib/bars.js'
+	import { GeomState } from './lib/GeomState.svelte.js'
+	import { buildBarMarks } from './lib/marks/bar.js'
 	import { keyboardNav } from '../lib/keyboard-nav.js'
 	import { buildSelectDetail } from '../lib/select.js'
 	import LabelPill from './LabelPill.svelte'
@@ -19,9 +20,13 @@
 	type Props = {
 		x?: string
 		y?: string
+		/** Border/outline aesthetic (field). */
 		color?: string
+		/** Interior aesthetic (field); falls back to `color`. */
 		fill?: string
 		pattern?: string
+		/** Fixed bar opacity 0–1; defaults to the per-geom preset (bar = 1). */
+		alpha?: number
 		label?: boolean | string | ((data: Row) => unknown)
 		stat?: string
 		options?: Options
@@ -34,8 +39,9 @@
 		x,
 		y,
 		color,
-		fill: fillProp,
+		fill,
 		pattern,
+		alpha,
 		label = false,
 		stat = 'identity',
 		options = {},
@@ -43,9 +49,6 @@
 		onselect = undefined,
 		keyboard = false
 	}: Props = $props()
-
-	// `fill` is accepted as an alias for `color` (consistent with Arc.svelte)
-	const colorChannel = $derived(fillProp ?? color)
 
 	function resolveLabel(data: Row, defaultField: string | undefined): string | null {
 		if (!label) return null
@@ -68,59 +71,22 @@
 
 	const plotState = getContext<PlotState>('plot-state')
 	const cf = getContext<CrossFilter | undefined>('crossfilter')
-	let id = $state<string | null>(null)
 
-	onMount(() => {
-		id = plotState.registerGeom({
-			type: 'bar',
-			channels: { x, y, color: colorChannel, pattern },
-			stat,
-			options: { stack: options?.stack ?? false }
-		})
-	})
-	onDestroy(() => {
-		if (id) plotState.unregisterGeom(id)
-	})
+	const geom = new GeomState(plotState, () => ({
+		type: 'bar',
+		channels: { x, y, color, fill, pattern },
+		stat,
+		options: { stack: options?.stack ?? false },
+		alpha,
+		build: buildBarMarks
+	}))
+	onMount(geom.register)
+	onDestroy(geom.destroy)
+	$effect(geom.sync)
 
-	$effect(() => {
-		if (id)
-			plotState.updateGeom(id, {
-				channels: { x, y, color: colorChannel, pattern },
-				stat,
-				options: { stack: options?.stack ?? false }
-			})
-	})
-
-	const data = $derived(id ? plotState.geomData(id) : [])
-	const xScale = $derived(plotState.xScale)
-	const yScale = $derived(plotState.yScale)
-	const colors = $derived(plotState.colors)
-	const patterns = $derived(plotState.patterns)
+	const bars = $derived(geom.marks)
 	const effectiveOrientation = $derived(options.orientation ?? plotState.orientation)
-	const innerHeight = $derived(plotState.innerHeight)
-
-	const bars = $derived.by(() => {
-		if (!data?.length || !xScale || !yScale) return []
-		const channels = { x, y, color: colorChannel, pattern }
-		// One builder, one path: express bars in (category, value) space and map to screen via
-		// place() (identity vertical, swap when flipped). `continuousCategory` keeps a linear
-		// category axis (the bar-chart race's tweened rank) so it positions/tweens smoothly.
-		const place = plotState.place.bind(plotState)
-		if (options.stack) {
-			return buildStackedBars(data, channels, xScale, yScale, colors, innerHeight, patterns, place)
-		}
-		return buildBars(
-			data,
-			channels,
-			xScale,
-			yScale,
-			colors,
-			innerHeight,
-			patterns,
-			place,
-			plotState.continuousCategory
-		)
-	})
+	const seriesField = $derived(fill ?? color)
 
 	let dimmedByKey = $state<Record<string, boolean>>({})
 
@@ -155,7 +121,7 @@
 					plotState.data.indexOf(bar.data),
 					{ x, y },
 					'bar',
-					colorChannel ? bar.data[colorChannel] : undefined,
+					seriesField ? bar.data[seriesField] : undefined,
 					event
 				)
 			)
@@ -188,6 +154,7 @@
 				width={Math.max(0, bar.width)}
 				height={Math.max(0, bar.height)}
 				fill={bar.fill}
+				fill-opacity={bar.alpha}
 				stroke={bar.stroke ?? 'none'}
 				stroke-width={bar.stroke ? 0.5 : 0}
 				data-plot-element="bar"
