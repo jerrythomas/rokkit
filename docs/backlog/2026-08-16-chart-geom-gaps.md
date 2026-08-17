@@ -32,6 +32,16 @@ Not yet supported:
 - **Data-driven rules** — accept `data` + a field (e.g. one rule per category mean) in addition to
   literal values.
 
+## Sort follow-ups
+
+- **Static `sort` shipped** (2026-08-17): `sort='asc'|'desc'` on `Plot.Root`/spec orders the band
+  axis by aggregated value (bars by size). See journal 2026-08-17.
+- **Smooth vertical animated race** — the horizontal bar race reorders smoothly via the
+  continuous-category rank mechanism; the vertical (band) animation only snaps between positions.
+  A smooth vertical race needs `continuousCategory` positioning applied on the vertical axis (like
+  the horizontal race, un-flipped). Threading `sort` into `AnimatedPlot`'s frameSpec would give a
+  snapping vertical reorder in the meantime.
+
 ## Notes
 
 - Pattern fills now work on Bar/Area/Arc/Box/Violin. Still solid-only: Waterfall, Heatmap, Ribbon,

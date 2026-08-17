@@ -1,5 +1,31 @@
 # Project Journal
 
+## 2026-08-17 — Chart: triage of 6 reported issues (axis contrast, race, boxplot, sort)
+
+A batch bug report against the Koan chart demo. Findings + fixes (all live-verified, on `develop`):
+
+- **Faint axis labels on every chart (`f1911ac4`)** — the real cause wasn't the axis colour, it was
+  that charts hardcoded `mode='light'`, which locks a light-mode **token subtree** (`data-mode`) →
+  dark ink on the dark app paper. Defaulted `mode` to `undefined` (inherit the app; palette still
+  falls back to light shades via `config.mode ?? 'light'`) across all 13 chart wrappers, and gave
+  the Axis readable `--ink-mute`/`--ink`/`--paper-edge` tokens.
+- **Speed dropdown unstyled `<select>` (`f1911ac4`)** → themed numeric input.
+- **Race bottom bar overlapped the x-axis (`f1911ac4`)** — the continuous rank domain `[0, N-1]`
+  had no edge padding; padded to `[-0.5, N-0.5]` + `nice:false` (d3 `nice()` rounds a padded domain
+  back for N=10). *Note: my first "gap=0" reading was a `querySelector` hitting the WRONG
+  `[data-plot-animated]` (two on the page) — the fix worked; the measurement was wrong.*
+- **Race single colour (`f1911ac4`)** — demo omitted `color`; added `color='company'`.
+- **BoxPlot "three per label" (`f1911ac4`)** — not a bug; `fill='drv'` grouped boxes on sparse data.
+  Demo now one box/violin per class.
+- **Sort bars by value — NEW `sort` prop (`1788d919`)** — `sort='asc'|'desc'` on `Plot.Root`/spec
+  orders the band axis by summed value (histogram-style); bars *and* ticks reorder together, an
+  explicit `xDomain` wins. Follow-up (backlog): a *smooth* vertical animated race needs the
+  continuous-category mechanism applied vertically — the static sort snaps.
+
+Lesson banked: with duplicate elements on a page, `querySelector` silently picks the first —
+target by section, and trust the screenshot over a numeric probe. Suite 1301, svelte-check + lint
+clean.
+
 ## 2026-08-16 — Chart: raincloud `side`, pattern fills on Box/Violin, Rule geom, Plot.* completions
 
 Answered "any missing geoms? do we support pattern fills?" with an audit, then shipped the four
