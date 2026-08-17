@@ -1,5 +1,29 @@
 # Project Journal
 
+## 2026-08-17 — Chart: one chart-root shell (`PlotSurface`) — PlotChart + Plot.Root reuse it
+
+Root-cause fix for a recurring bug class the user spotted: **PlotChart (`Plot.svelte`) never reused
+`Plot.Root`.** Both independently reimplemented the whole root — `new PlotState` + `setContext`,
+ResizeObserver→width, the animate gate, `<DefinePatterns>`, the `<svg>`+`<g data-plot-canvas>` shell,
+zoom, selection. So every root fix landed on one side and diverged: patterns didn't render composably
+(fixed in PlotChart only), composable charts didn't stretch (observer in PlotChart only), the
+`mode`/`animate` defaults had to be changed in both. Same smell as the `geoms/*` vs `Plot/*` and
+`buildHorizontalBars` splits we already consolidated.
+
+Extracted **`PlotSurface.svelte`** as the single shell (PlotState+context, responsive width, animate
+gate, patterns, svg+canvas, zoom, selection sync). Both roots now render it:
+- `Plot.Root` → thin wrapper (build config from props → `PlotSurface`).
+- `PlotChart` → `PlotSurface` + its batteries: grid/axes/geoms/trend/highlight as canvas **children**;
+  legend/tooltip/a11y-table via an **`overlay` snippet** — the key subtlety, since the `plot-state`
+  context is set *inside* PlotSurface, so overlays rendered outside it can't read `plotState` (that
+  crashed Legend on the first pass; the overlay snippet keeps them inside the subtree).
+
+Now a root fix lands everywhere by construction. Live-verified **every** chart type (20 sections
+render, all stretch to fill, selection/legend/a11y-table/trend/highlight/grid/zoom all work, console
+clean). Full suite **1302**, svelte-check + lint clean. Commit `5514b51c`. One test changed: the
+composable animate gate is now width-settle-driven (shared with PlotChart), which jsdom can't
+observe — retargeted to the negative/gate case, positive verified live.
+
 ## 2026-08-17 — Chart: triage of 6 reported issues (axis contrast, race, boxplot, sort)
 
 A batch bug report against the Koan chart demo. Findings + fixes (all live-verified, on `develop`):
