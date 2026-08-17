@@ -7,6 +7,7 @@
 
 	type Row = Record<string, unknown>
 	type Options = {
+		/** @deprecated use `position="stack"` — kept as an alias. */
 		stack?: boolean
 		curve?: 'linear' | 'smooth' | 'step'
 	}
@@ -19,13 +20,19 @@
 		/** Interior aesthetic (field); falls back to `color`. */
 		fill?: string
 		pattern?: string
+		/** Multi-series arrangement: 'stack' | 'fill' (100%) | 'identity' (overlap, default). */
+		position?: 'stack' | 'fill' | 'identity'
 		/** Fixed area opacity 0–1; defaults to the per-geom preset (area = 0.6). */
 		alpha?: number
 		stat?: string
 		options?: Options
 	}
 
-	let { x, y, color, fill, pattern, alpha, stat = 'identity', options = {} }: Props = $props()
+	let { x, y, color, fill, pattern, position, alpha, stat = 'identity', options = {} }: Props =
+		$props()
+
+	// `options.stack: true` is the back-compat alias for position='stack'.
+	const resolvedPosition = $derived(position ?? (options?.stack ? 'stack' : 'identity'))
 
 	const plotState = getContext<PlotState>('plot-state')
 
@@ -33,7 +40,7 @@
 		type: 'area',
 		channels: { x, y, color, fill, pattern },
 		stat,
-		options: { stack: options?.stack ?? false, curve: options?.curve },
+		options: { stack: options?.stack ?? false, position: resolvedPosition, curve: options?.curve },
 		alpha,
 		build: buildAreaMarks
 	}))

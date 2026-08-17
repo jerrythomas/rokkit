@@ -239,8 +239,12 @@ export class PlotState {
 
 	// For stacked bars, compute y domain from per-x column totals.
 	#resolveStackDomain(field) {
-		const stackGeom = this.#geoms.find((g) => g.options?.stack)
+		const stackGeom = this.#geoms.find(
+			(g) => g.options?.stack || g.options?.position === 'stack' || g.options?.position === 'fill'
+		)
 		if (!stackGeom) return null
+		// position='fill' normalizes each column to 100% → the value domain is [0,1].
+		if (stackGeom.options?.position === 'fill') return [0, 1]
 		const xField = this.#effectiveChannels.x
 		const stackData = this.geomData(stackGeom.id)
 		if (!xField || stackData.length === 0) return null
@@ -250,8 +254,13 @@ export class PlotState {
 		const colorField = isLiteralColor(this.#effectiveChannels.color)
 			? null
 			: this.#effectiveChannels.color
+		const fillField = isLiteralColor(this.#effectiveChannels.fill)
+			? null
+			: this.#effectiveChannels.fill
 		const patternField = this.#effectiveChannels.pattern
-		const stackField = [colorField, patternField].find((f) => f && f !== xField) ?? colorField
+		// Mirror buildStackedBars/subBandFields (group=fill first, then color, then pattern).
+		const stackField =
+			[fillField, colorField, patternField].find((f) => f && f !== xField) ?? (fillField ?? colorField)
 		const lookup = new SvelteMap()
 		for (const d of stackData) {
 			const xVal = d[xField]

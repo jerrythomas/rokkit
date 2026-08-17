@@ -1,5 +1,5 @@
 import { scaleBand } from 'd3-scale'
-import { stack } from 'd3-shape'
+import { stack, stackOffsetExpand } from 'd3-shape'
 import { toPatternId } from '../../lib/brewing/patterns.js'
 import { isLiteralColor } from '../../lib/brewing/colors.js'
 
@@ -17,14 +17,15 @@ function ensureBandX(xScale, data, xField) {
 }
 
 /**
- * Returns the sub-band fields: distinct non-x fields among [color, pattern].
- * These are the fields that cause multiple bars within a single x-band.
+ * Returns the sub-band fields: distinct non-x fields among [group, color, pattern].
+ * These are the fields that cause multiple bars within a single x-band (dodge/grouping).
+ * `group` (the explicit grouping channel) takes precedence as the first sub-band.
  */
 function subBandFields(channels) {
-	const { x: xf, color: cf, pattern: pf } = channels
+	const { x: xf, group: gf, color: cf, pattern: pf } = channels
 	const seen = new Set()
 	const out = []
-	for (const f of [cf, pf]) {
+	for (const f of [gf, cf, pf]) {
 		if (f && f !== xf && !seen.has(f) && !isLiteralColor(f)) {
 			seen.add(f)
 			out.push(f)
@@ -52,11 +53,13 @@ export function buildBars(
 	innerHeight,
 	patterns,
 	place = (x, y) => ({ x, y }),
-	continuousCategory = false
+	continuousCategory = false,
+	dodge = true
 ) {
 	const { x: xf, y: yf, color: cf, pattern: pf } = channels
 
-	const subFields = continuousCategory ? [] : subBandFields(channels)
+	// No sub-banding for a continuous (race) axis or position='identity' (dodge=false → overlap).
+	const subFields = continuousCategory || !dodge ? [] : subBandFields(channels)
 	const getSubKey = (d) => subFields.map((f) => String(d[f])).join('::')
 
 	let positionOf
@@ -131,7 +134,7 @@ export function buildBars(
 	})
 }
 
-export function buildStackedBars(data, channels, xScale, yScale, colors, innerHeight, patterns, place = (x, y) => ({ x, y })) {
+export function buildStackedBars(data, channels, xScale, yScale, colors, innerHeight, patterns, place = (x, y) => ({ x, y }), normalize = false) {
 	const { x: xf, y: yf, color: cf, pattern: pf } = channels
 
 	const bandScale = ensureBandX(xScale, data, xf)
@@ -159,6 +162,8 @@ export function buildStackedBars(data, channels, xScale, yScale, colors, innerHe
 	})
 
 	const stackGen = stack().keys(stackCategories)
+	// position='fill' → normalize each x column to [0,1] (100% stacked).
+	if (normalize) stackGen.offset(stackOffsetExpand)
 	const layers = stackGen(wide)
 
 	const bars = []

@@ -1,4 +1,4 @@
-import { area, stack, curveCatmullRom, curveStep } from 'd3-shape'
+import { area, stack, stackOffsetExpand, curveCatmullRom, curveStep } from 'd3-shape'
 import { toPatternId } from '../../lib/brewing/patterns.js'
 
 /**
@@ -92,7 +92,7 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
  * @param {Map<unknown, string>} [patterns]
  * @returns {{ d: string, fill: string, stroke: string, key: unknown, patternId: string|null }[]}
  */
-export function buildStackedAreas(data, channels, xScale, yScale, colors, curve, patterns, place = (x, y) => ({ x, y })) {
+export function buildStackedAreas(data, channels, xScale, yScale, colors, curve, patterns, place = (x, y) => ({ x, y }), normalize = false) {
 	const { x: xf, y: yf, color: cf, pattern: pf } = channels
 	if (!cf) return buildAreas(data, channels, xScale, yScale, colors, curve, patterns)
 
@@ -132,6 +132,8 @@ export function buildStackedAreas(data, channels, xScale, yScale, colors, curve,
 	}
 
 	const stackGen = stack().keys(colorCategories)
+	// position='fill' → normalize each x column to [0,1] (100% stacked area).
+	if (normalize) stackGen.offset(stackOffsetExpand)
 	const layers = stackGen(wide)
 
 	const orderedPatternKeys = pf && pf !== cf ? [...(patterns?.keys() ?? [])] : null

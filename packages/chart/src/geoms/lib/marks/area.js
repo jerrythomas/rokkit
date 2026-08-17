@@ -22,8 +22,11 @@ export function buildAreaMarks({ data, plot, channels, options = {}, alpha, type
 		color: interiorField,
 		pattern: channels.pattern
 	}
-	const raw = options.stack
-		? buildStackedAreas(data, areaChannels, xScale, yScale, colors, options.curve, patterns, place)
+	// Areas don't dodge; position selects stack | fill (100%) | identity (overlap, default).
+	const position = options.position ?? (options.stack ? 'stack' : 'identity')
+	const stacked = position === 'stack' || position === 'fill'
+	const raw = stacked
+		? buildStackedAreas(data, areaChannels, xScale, yScale, colors, options.curve, patterns, place, position === 'fill')
 		: buildAreas(data, areaChannels, xScale, yScale, colors, options.curve, patterns, place)
 
 	const a = resolveAlpha(alpha, type, plot.chartPreset)

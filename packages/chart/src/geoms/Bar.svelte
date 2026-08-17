@@ -11,6 +11,7 @@
 	type Row = Record<string, unknown>
 	type CrossFilter = ReturnType<typeof createCrossFilter>
 	type Options = {
+		/** @deprecated use `position="stack"` — kept as an alias. */
 		stack?: boolean
 		orientation?: 'horizontal' | 'vertical'
 		labelInside?: boolean
@@ -25,6 +26,10 @@
 		/** Interior aesthetic (field); falls back to `color`. */
 		fill?: string
 		pattern?: string
+		/** Multi-series arrangement: 'stack' | 'dodge' (default) | 'fill' (100%) | 'identity' (overlap). */
+		position?: 'stack' | 'dodge' | 'fill' | 'identity'
+		/** Sub-series field for stack/dodge; defaults to `fill ?? color`. */
+		group?: string
 		/** Fixed bar opacity 0–1; defaults to the per-geom preset (bar = 1). */
 		alpha?: number
 		label?: boolean | string | ((data: Row) => unknown)
@@ -41,6 +46,8 @@
 		color,
 		fill,
 		pattern,
+		position,
+		group,
 		alpha,
 		label = false,
 		stat = 'identity',
@@ -49,6 +56,9 @@
 		onselect = undefined,
 		keyboard = false
 	}: Props = $props()
+
+	// `options.stack: true` is the back-compat alias for position='stack'.
+	const resolvedPosition = $derived(position ?? (options?.stack ? 'stack' : 'dodge'))
 
 	function resolveLabel(data: Row, defaultField: string | undefined): string | null {
 		if (!label) return null
@@ -74,9 +84,9 @@
 
 	const geom = new GeomState(plotState, () => ({
 		type: 'bar',
-		channels: { x, y, color, fill, pattern },
+		channels: { x, y, color, fill, pattern, group },
 		stat,
-		options: { stack: options?.stack ?? false },
+		options: { stack: options?.stack ?? false, position: resolvedPosition },
 		alpha,
 		build: buildBarMarks
 	}))
