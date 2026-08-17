@@ -15,6 +15,15 @@ describe('Plot/Root.svelte', () => {
 		expect(container.querySelector('svg')).toBeTruthy()
 	})
 
+	it('wraps the svg in a full-width responsive container (stretches to fill the stage)', () => {
+		const { container } = render(Root, {
+			props: { data, x: 'class', y: 'hwy', width: 400, height: 300 }
+		})
+		const wrapper = container.querySelector('.plot-root-container')
+		expect(wrapper).toBeTruthy()
+		expect(wrapper.querySelector('svg[data-plot-root]')).toBeTruthy()
+	})
+
 	it('renders data-plot-root attribute', () => {
 		const { container } = render(Root, {
 			props: { data, x: 'class', y: 'hwy', width: 400, height: 300 }

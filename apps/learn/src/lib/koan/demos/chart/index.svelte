@@ -98,6 +98,8 @@
 	const bars = $derived(barSet === 'A' ? barsA : barsB)
 	// AnimatedPlot orientation — flips a standard animation via the same geom place() path.
 	let animOrient = $state<'vertical' | 'horizontal'>('vertical')
+	// Raincloud orientation toggle.
+	let rainOrient = $state<'vertical' | 'horizontal'>('vertical')
 
 	// Numeric-category flip: x is a NUMBER (year) the bar geom bands — flips like a string category.
 	const yearlyRevenue = [
@@ -227,13 +229,21 @@
 
 	<section>
 		<header>Raincloud — half-violin + thin box + jittered points (composable `side`)</header>
+		<div class="demo-controls">
+			<button
+				type="button"
+				onclick={() => (rainOrient = rainOrient === 'vertical' ? 'horizontal' : 'vertical')}
+			>
+				Orientation: {rainOrient}
+			</button>
+		</div>
 		<div class="chart-stage">
-			<Plot.Root data={cars} x="class" y="hwy" width={560} height={300} margin={{ top: 10, right: 20, bottom: 40, left: 50 }}>
+			<Plot.Root data={cars} x="class" y="hwy" orientation={rainOrient} height={300} margin={{ top: 10, right: 20, bottom: 40, left: 50 }}>
 				<Plot.Axis type="x" />
 				<Plot.Axis type="y" />
 				<Plot.Violin x="class" y="hwy" side="left" />
 				<Plot.Box x="class" y="hwy" side="center" width={0.16} />
-				<Plot.Jitter x="class" y="hwy" side="right" method="swarm" r={2.5} />
+				<Plot.Jitter x="class" y="hwy" side="right" method="jitter" r={2.5} />
 			</Plot.Root>
 		</div>
 	</section>
