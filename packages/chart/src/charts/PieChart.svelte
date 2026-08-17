@@ -18,6 +18,7 @@
 		mode?: 'light' | 'dark'
 		legend?: boolean
 		stat?: string
+		alpha?: number
 	}
 
 	let {
@@ -33,7 +34,8 @@
 		height = 400,
 		mode = undefined,
 		legend = false,
-		stat = 'sum'
+		stat = 'sum',
+		alpha = undefined
 	}: Props = $props()
 </script>
 
@@ -48,5 +50,5 @@
 	{legend}
 	{tooltip}
 >
-	<Arc theta={y} fill={label ?? fill} {pattern} {labelFn} {stat} options={{ innerRadius }} />
+	<Arc theta={y} fill={label ?? fill} {pattern} {labelFn} {stat} {alpha} options={{ innerRadius }} />
 </Plot>

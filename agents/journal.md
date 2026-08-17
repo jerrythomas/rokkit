@@ -1,5 +1,56 @@
 # Project Journal
 
+## 2026-08-17 — Chart: ggplot-aligned aesthetics unification + GeomState + brewer consolidation
+
+Large refactor unifying the geom aesthetic API onto one rendering path. Spec:
+`docs/backlog/2026-08-17-chart-aesthetics-unification.md`.
+
+**Brewer consolidation (Phase 1):** the topology audit found THREE chart surfaces (the live
+geom/Plot path, the legacy reactive brewers, and dead imperative brewing). Reimplemented
+`Chart.svelte` as a thin wrapper over `Plot`/`PlotState` (kept the published `Chart` export),
+rewired `Plot.Arc` to the geom-path `geoms/Arc.svelte`, and deleted the reactive brewers +
+imperative brewing + the runtime-dead `marks/{bars,areas}.js` — 30 files. One path now.
+
+**Foundation (Phase 2):** `PlotState` gained a `fill` channel (+ `fillField` getter); the
+categorical `colors` scale now UNIONs the distinct values of every color+fill field across ALL
+geoms (shared palette; fixes the first-geom-only multi-geom domain bug). `preset.opacity` gained
+a key for every geom so `alpha` is the single opacity knob.
+
+**GeomState + rollout (Phases 3′/3″):** extracted the ~50-line per-geom plumbing into
+`geoms/lib/GeomState.svelte.js` (a runes class fed by the shared context) + shared
+`geoms/lib/aesthetics.js` (`resolveFillStroke` ggplot fallback + `resolveAlpha`). Migrated ALL 13
+data geoms; each is now a config thunk + a pure build wrapper returning marks with
+`{ …geometry, fill, stroke, alpha, value, display }`, templates are pure render + interactivity,
+and every geom gained ggplot-aligned `fill`/`color`/`alpha`. Backward compatible (single-channel
+renders identically). Trend/Highlight already styled via `data-*` attribute selectors — the whole
+geom layer is `data-*`-consistent.
+
+**position/group (Phase 4):** Bar gained `position` = stack|dodge|fill|identity + a `group`
+channel (default `fill ?? color`); Area gained stack|fill|identity. `buildBars` gained a dodge
+flag; `buildStackedBars`/`buildStackedAreas` a normalize flag (100% via `stackOffsetExpand`);
+`#resolveStackDomain` triggers on position, returns `[0,1]` for fill, and derives the stack field
+from `fill ?? color`. `options.stack:true` → `position="stack"` (deprecated alias).
+
+**Wrappers/Root (Phase 5):** `Rule` gained a `color` alias (stroke deprecated); `Plot.Root` gained
+a `fill` channel default; BarChart/AreaChart forward `position`/`alpha`; the remaining wrappers
+forward `alpha`.
+
+**Dead code:** removed 5 pre-existing orphan lib modules (`brewer`, `context`, `ticks`,
+`scales.svelte`, `plot/chartProps`) + their isolated specs — verified zero src importers (static
++ dynamic) before removal.
+
+**Verification:** unit suite green throughout (1122 → 1128, net of new geom/aesthetic tests and
+removed dead-module specs); lint **0** + svelte-check **0** at every phase. Playwright on the live
+learn app (`/app/chart`): all geoms render, **zero console errors**, `fill-opacity` matches preset
+defaults (area 0.6, bar 1), grouped bars dodge correctly (8 bars / 8 x-positions / 2 palette series).
+
+**Commits (develop):** spec `1c5987df` `fc0fbef3` `168a6f4f`; Phase 1 `74ac0655`; Phase 2
+`8f1570be`; pilot `90129424`; rollout `8a008e0b` `75b61e9b` `5415728f` `5fd208a9` `4c8d073c`
+`308be0dd`; Phase 4 `727d15bd`; Phase 5 `7b4a9349`; dead-code `836ce288`.
+
+**Follow-ups (in the spec):** independent dual color scales for fill vs color; `alpha` as a mapped
+aesthetic; wire `pattern` into the still-solid-only geoms.
+
 ## 2026-08-17 — Chart: flow review + standardize the layers above PlotSurface
 
 Thorough review of the chart flow (incl. the `blocks/PlotPlugin`). **Verified the root is now

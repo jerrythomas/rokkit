@@ -9,6 +9,7 @@
 		x?: string
 		y?: string
 		fill?: string
+		alpha?: number
 		width?: number
 		height?: number
 		mode?: 'light' | 'dark'
@@ -25,6 +26,7 @@
 		x = undefined,
 		y = undefined,
 		fill = undefined,
+		alpha = undefined,
 		width = 600,
 		height = 400,
 		mode = undefined,
@@ -38,5 +40,5 @@
 </script>
 
 <Plot {data} {width} {height} {mode} {grid} {legend} {tooltip} {yFormat} {yTicks} {minorTicks}>
-	<Violin {x} {y} {fill} />
+	<Violin {x} {y} {fill} {alpha} />
 </Plot>

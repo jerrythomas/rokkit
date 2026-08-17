@@ -1,6 +1,6 @@
 # ViolinPlot
 
-Data-driven SVG violin plot. Shows distribution shape — wider sections indicate higher density. Shares `QuartileBrewer` base with `BoxPlot`.
+Data-driven SVG violin plot. Shows distribution shape — wider sections indicate higher density. Shares quartile stats with `BoxPlot`.
 
 ## Import
 
@@ -31,7 +31,7 @@ import { ViolinPlot } from '@rokkit/chart'
 
 ## Notes
 
-- Uses `ViolinBrewer` internally (extends `QuartileBrewer`, the shared base with `BoxBrewer`)
+- Renders via the shared `buildViolins` mark builder (kernel-density silhouette)
 - x must be categorical; y must be numeric raw observations
 
 ## Related

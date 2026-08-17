@@ -9,7 +9,7 @@
 Chart appearance is currently hardcoded in three places:
 
 1. **`lib/brewing/palette.json`** — 21 series entries with hardcoded hex values for `fill`/`stroke` per mode. Duplicates `lib/palette.json` without referencing it. Changing chart colors requires editing raw hex.
-2. **Geom opacity** — `Area.svelte` uses `opacity ?? 0.6`, `Box.svelte` and `Violin.svelte` hardcode `0.5`. No user control.
+2. **Geom opacity** — `Area.svelte` uses `opacity ?? 0.6`, `Box.svelte` and `Violin.svelte` hardcode `0.5`. No user control. *(Resolved 2026-08-17: every geom now takes a fixed `alpha` prop resolving via `preset.opacity[type]` — the opacity map covers all geoms. See journal.)*
 3. **`SYMBOL_ORDER` / `PATTERN_ORDER`** — fixed sequences in separate files. No way to change ordering or add entries without forking.
 
 Users cannot customize chart series colors, opacity, or series ordering without patching library internals.

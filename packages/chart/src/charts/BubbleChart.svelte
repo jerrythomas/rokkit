@@ -13,6 +13,7 @@
 		color?: string
 		symbol?: string
 		size?: string
+		alpha?: number
 		width?: number
 		height?: number
 		mode?: 'light' | 'dark'
@@ -38,6 +39,7 @@
 		color = undefined,
 		symbol: _symbol = undefined,
 		size, // required: field name for bubble radius
+		alpha = undefined,
 		width = 600,
 		height = 400,
 		mode = undefined,
@@ -76,5 +78,5 @@
 	{selectable}
 	bind:selected
 >
-	<Point {x} {y} {color} {size} />
+	<Point {x} {y} {color} {size} {alpha} />
 </Plot>

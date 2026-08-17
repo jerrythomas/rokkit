@@ -21,7 +21,7 @@ npm install @rokkit/chart
 | `BubbleChart` | [bubble-chart.txt](/llms/components/bubble-chart.txt) | Three-variable chart with scaleSqrt bubble sizing |
 | `PieChart` | [pie-chart.txt](/llms/components/pie-chart.txt) | Pie/donut chart with `innerRadius` |
 | `BoxPlot` | [box-plot.txt](/llms/components/box-plot.txt) | Quartile box plot from raw observations |
-| `ViolinPlot` | [violin-plot.txt](/llms/components/violin-plot.txt) | Distribution shape using QuartileBrewer |
+| `ViolinPlot` | [violin-plot.txt](/llms/components/violin-plot.txt) | Distribution shape (kernel density) with quartile stats |
 | `Sparkline` | [sparkline.txt](/llms/components/sparkline.txt) | Lightweight inline sparkline (no axes) |
 
 ### Composition & animation
@@ -124,22 +124,28 @@ const custom = createChartPreset({
 })
 ```
 
-## Brewer System (advanced)
+## Geom Aesthetics (fill / color / alpha / position / group)
 
-Brewers transform raw data into chart-ready geometry. Extend to build custom chart types.
+Every geom maps to data via ggplot-aligned aesthetic channels (field names), resolved through one
+shared categorical palette. A geom is a declarative component backed by a per-geom `GeomState`
+class: set props, the shared `PlotState` context supplies scales/colors, and the geom renders the
+computed marks (tagged `data-plot-geom` / `data-plot-element`).
 
-```javascript
-import { ChartBrewer, CartesianBrewer, PieBrewer, QuartileBrewer, BoxBrewer, ViolinBrewer } from '@rokkit/chart'
-```
+| Channel | Meaning |
+|---------|---------|
+| `x`, `y` | position (field) |
+| `color` | outline / line / point-stroke (field) |
+| `fill` | interior (field); falls back to `color` |
+| `alpha` | fixed opacity 0–1 (number); per-geom preset default via `preset.opacity[type]` |
+| `size` | mark size (field) — Point |
+| `symbol` | shape (field) — Point / Line markers |
+| `pattern` | texture fill (field) |
+| `group` | sub-series (field); defaults to `fill ?? color` |
+| `position` | Bar/Area arrangement: `stack` \| `dodge` \| `fill` (100%) \| `identity` |
 
-| Class | Extends | Use for |
-|-------|---------|---------|
-| `ChartBrewer` | — | Base class — override `transform()`, add `$derived` mark properties |
-| `CartesianBrewer` | `ChartBrewer` | X/Y cartesian charts with scales |
-| `PieBrewer` | `ChartBrewer` | Pie/donut charts |
-| `QuartileBrewer` | `ChartBrewer` | Shared quartile transform + scales for box/violin |
-| `BoxBrewer` | `QuartileBrewer` | Adds `boxes` derived property |
-| `ViolinBrewer` | `QuartileBrewer` | Adds `violins` derived property |
+Fill/color fallback: color-only → fill & stroke from color; fill-only → both from fill; both →
+interior from fill, outline from color. `options.stack: true` is a deprecated alias for
+`position="stack"`. `Plot.Root` accepts `color`/`fill` channel defaults that geoms inherit.
 
 ## Related
 

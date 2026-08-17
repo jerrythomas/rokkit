@@ -32,8 +32,8 @@ import { BoxPlot } from '@rokkit/chart'
 ## Notes
 
 - Box spans Q1–Q3, whiskers extend to IQR bounds, median line across box
-- Uses `BoxBrewer` internally (extends `QuartileBrewer`)
+- Renders via the shared `buildBoxes` mark builder (quartile stats + whiskers)
 
 ## Related
 
-- [ViolinPlot](/llms/components/violin-plot.txt) — distribution shape variant using the same `QuartileBrewer` base
+- [ViolinPlot](/llms/components/violin-plot.txt) — distribution shape variant (kernel density)

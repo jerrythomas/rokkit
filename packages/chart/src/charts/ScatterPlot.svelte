@@ -13,6 +13,7 @@
 		color?: string
 		symbol?: string
 		size?: string
+		alpha?: number
 		label?: boolean | string | ((data: Row) => unknown)
 		tooltip?: boolean | ((data: Row) => string)
 		width?: number
@@ -40,6 +41,7 @@
 		color = undefined,
 		symbol = undefined,
 		size = undefined,
+		alpha = undefined,
 		label = false,
 		tooltip = false,
 		width = 600,
@@ -80,5 +82,5 @@
 	{selectable}
 	bind:selected
 >
-	<Point {x} {y} {color} {size} {symbol} {label} options={{ jitter }} />
+	<Point {x} {y} {color} {size} {symbol} {label} {alpha} options={{ jitter }} />
 </Plot>

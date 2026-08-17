@@ -462,7 +462,7 @@ The building blocks List / Select / Menu render by default; use inside an `itemC
 - [BubbleChart](/llms/components/bubble-chart.txt) — three-variable chart with scaleSqrt bubble sizing
 - [PieChart](/llms/components/pie-chart.txt) — pie/donut chart with innerRadius
 - [BoxPlot](/llms/components/box-plot.txt) — quartile box plot from raw observations
-- [ViolinPlot](/llms/components/violin-plot.txt) — distribution shape using QuartileBrewer
+- [ViolinPlot](/llms/components/violin-plot.txt) — distribution shape (kernel density)
 - [Sparkline](/llms/components/sparkline.txt) — lightweight inline sparkline (no axes)
 - [PlotChart](/llms/components/plot-chart.txt) — low-level container with declarative geom API (Bar/Line/Area/Point/Arc/Box/Violin/Heatmap/Candlestick/Waterfall/Hexbin/Ribbon)
 - ChartLegend — standalone HTML legend, scrollable, multi-orientation, shared across charts

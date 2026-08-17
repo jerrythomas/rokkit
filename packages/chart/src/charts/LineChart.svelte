@@ -12,6 +12,7 @@
 		y?: string
 		color?: string
 		stat?: string
+		alpha?: number
 		symbol?: string
 		curve?: 'linear' | 'smooth' | 'step'
 		label?: boolean | string | ((data: Row) => unknown)
@@ -39,6 +40,7 @@
 		y = undefined,
 		color = undefined,
 		stat = 'identity',
+		alpha = undefined,
 		symbol = undefined,
 		curve = undefined, // forwarded to Line options
 		label = false,
@@ -82,5 +84,5 @@
 	{selectable}
 	bind:selected
 >
-	<Line {x} {y} {color} {symbol} {label} {stat} options={{ curve }} />
+	<Line {x} {y} {color} {symbol} {label} {stat} {alpha} options={{ curve }} />
 </Plot>
