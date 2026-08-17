@@ -1,5 +1,29 @@
 # Project Journal
 
+## 2026-08-17 — Chart: flow review + standardize the layers above PlotSurface
+
+Thorough review of the chart flow (incl. the `blocks/PlotPlugin`). **Verified the root is now
+single**: `grep "new PlotState"` → only `PlotSurface`; the plugin, `FacetPlot` (via `PlotPanel`),
+`AnimatedPlot`, and all 8 wrappers funnel through `PlotChart → PlotSurface`. No third root. (The
+consolidation also fixed a latent `Plot.Root` svg-sizing bug: it used `right:30` for svgWidth while
+PlotState uses `right:20`, so the composable svg was ~10px too wide — gone now that PlotSurface's
+viewBox is the full width.)
+
+But the layers ABOVE the shared root had diverged — the recurring pattern:
+- **Wrappers**: interactivity (`selectable/onselect/highlight/trend/bind:selected`) was wired only on
+  LineChart + AreaChart; `tooltip` was missing from AreaChart + BubbleChart. Standardized: Bar/
+  Scatter/Bubble get the full interactive suite, Box/Violin get `tooltip` (highlight/trend are
+  point-oriented, N/A for aggregated distributions), Area/Bubble get their missing tooltip.
+- **`Plot.Root`** surfaced none of PlotSurface's zoom/selection/colour-scale/domains — now it does,
+  so composable is as capable as PlotChart.
+
+Guarded by a BarChart selectable+onselect click test (proves the pass-through through the whole
+consolidated stack). Suite 1302, svelte-check + lint clean, demo unregressed. Commit `ccd8336a`.
+
+Minor items left as-is (noted, not bugs): the plugin passes `{spec}` to PlotChart vs `{...spec}` to
+AnimatedPlot/FacetPlot (it abstracts this from spec authors); `downloadSvg` exports only the first
+`<svg>` (a facet plot exports one panel).
+
 ## 2026-08-17 — Chart: one chart-root shell (`PlotSurface`) — PlotChart + Plot.Root reuse it
 
 Root-cause fix for a recurring bug class the user spotted: **PlotChart (`Plot.svelte`) never reused
