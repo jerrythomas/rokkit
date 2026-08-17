@@ -73,9 +73,38 @@ export class PlotState {
 			x: tc.x ?? geom.channels?.x,
 			y: tc.y ?? geom.channels?.y,
 			color: tc.color ?? geom.channels?.color,
+			fill: tc.fill ?? geom.channels?.fill,
 			pattern: tc.pattern ?? geom.channels?.pattern,
 			symbol: tc.symbol ?? geom.channels?.symbol
 		}
+	}
+
+	// Field names feeding the shared categorical color scale: the `color` AND `fill` channels,
+	// from the top-level channels and EVERY geom (union, de-duped, order-preserving). Literal
+	// CSS colors are excluded. One palette/legend spans both aesthetics — the "shared scale"
+	// model (see docs/backlog/2026-08-17-chart-aesthetics-unification.md §2).
+	#sharedColorValues() {
+		const fields = []
+		const addField = (f) => {
+			if (f && !isLiteralColor(f) && !fields.includes(f)) fields.push(f)
+		}
+		addField(this.#channels.color)
+		addField(this.#channels.fill)
+		for (const g of this.#geoms) {
+			addField(g.channels?.color)
+			addField(g.channels?.fill)
+		}
+		const seen = new Set()
+		const values = []
+		for (const f of fields) {
+			for (const v of distinct(this.#data, f)) {
+				if (!seen.has(v)) {
+					seen.add(v)
+					values.push(v)
+				}
+			}
+		}
+		return values
 	}
 
 	#effectiveChannels = $derived.by(() => {
@@ -268,7 +297,7 @@ export class PlotState {
 			const literal = new Map([[null, { fill: field, stroke: field }]])
 			return literal
 		}
-		const values = this.#colorDomain ?? distinct(this.#data, field)
+		const values = this.#colorDomain ?? this.#sharedColorValues()
 		// No color channel but data exists → use first preset color for single-series rendering.
 		// This prevents geoms from falling back to gray (#888) on charts with no fill channel.
 		if (values.length === 0 && this.#data.length > 0) return assignColors([null], this.#mode, this.#chartPreset)
@@ -295,6 +324,10 @@ export class PlotState {
 	// Returns null for literal CSS colors since they don't map to a data field.
 	colorField = $derived(
 		isLiteralColor(this.#effectiveChannels.color) ? null : this.#effectiveChannels.color
+	)
+	// Fill field (interior aesthetic), parallel to colorField. Null for a literal CSS color.
+	fillField = $derived(
+		isLiteralColor(this.#effectiveChannels.fill) ? null : this.#effectiveChannels.fill
 	)
 	patternField = $derived(this.#effectiveChannels.pattern)
 	symbolField = $derived(this.#effectiveChannels.symbol)
@@ -432,7 +465,7 @@ export class PlotState {
 		// array separately, so their elements are not ===. Same content, aligned identity.
 		return this.#rawData
 	}
-	/** @returns {{ x?: string, y?: string, color?: string, pattern?: string, symbol?: string }} */
+	/** @returns {{ x?: string, y?: string, color?: string, fill?: string, pattern?: string, symbol?: string }} */
 	get channels() {
 		return this.#channels
 	}
