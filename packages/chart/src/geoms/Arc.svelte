@@ -1,19 +1,20 @@
 <script lang="ts">
 	import { getContext, onMount, onDestroy } from 'svelte'
 	import type { PlotState } from '../PlotState.svelte.js'
-	import { buildArcs } from '../lib/brewing/marks/arcs.js'
+	import { GeomState } from './lib/GeomState.svelte.js'
+	import { buildArcMarks } from './lib/marks/arc.js'
 
 	type Row = Record<string, unknown>
 
-	/**
-	 * `fill` is the primary prop name; `color` is accepted as an alias for
-	 * spec-driven usage (Plot.svelte passes `color` to all geoms generically).
-	 */
 	type Props = {
 		theta?: string
+		/** Slice interior aesthetic (field). */
 		fill?: string
+		/** Accepted as an alias for `fill`. */
 		color?: string
 		pattern?: string
+		/** Fixed slice opacity 0–1; defaults to the per-geom preset (arc = 1). */
+		alpha?: number
 		stat?: string
 		labelFn?: (data: Row) => string
 		options?: { innerRadius?: number }
@@ -25,58 +26,30 @@
 		fill,
 		color,
 		pattern,
+		alpha,
 		labelFn = undefined,
 		stat = 'identity',
 		options = {},
 		onselect = undefined
 	}: Props = $props()
 
-	const fillField = $derived(fill ?? color)
-
 	const plotState = getContext<PlotState>('plot-state')
-	let id = $state<string | null>(null)
 
-	onMount(() => {
-		id = plotState.registerGeom({
-			type: 'arc',
-			channels: { color: fillField, y: theta, pattern },
-			stat,
-			options
-		})
-	})
-	onDestroy(() => {
-		if (id) plotState.unregisterGeom(id)
-	})
+	const geom = new GeomState(plotState, () => ({
+		type: 'arc',
+		channels: { y: theta, color, fill, pattern },
+		stat,
+		options: { innerRadius: options.innerRadius ?? 0 },
+		alpha,
+		build: buildArcMarks
+	}))
+	onMount(geom.register)
+	onDestroy(geom.destroy)
+	$effect(geom.sync)
 
-	$effect(() => {
-		if (id) plotState.updateGeom(id, { channels: { color: fillField, y: theta, pattern }, stat })
-	})
-
-	const data = $derived(id ? plotState.geomData(id) : [])
-	const colors = $derived(plotState.colors)
-	const patterns = $derived(plotState.patterns)
+	const arcs = $derived(geom.marks)
 	const w = $derived(plotState.innerWidth)
 	const h = $derived(plotState.innerHeight)
-
-	const arcs = $derived.by(() => {
-		if (!data?.length) return []
-		// Guard: skip until data catches up after a fill-field change.
-		// When fillField changes, the $effect updates the geom asynchronously, but
-		// this derived runs first with stale data whose rows don't have the new
-		// field — causing all keys to be undefined (duplicate key error).
-		if (fillField && !(fillField in data[0])) return []
-		// innerRadius passed through raw — buildArcs interprets it (a fraction of the
-		// radius when <= 1, absolute pixels when > 1) and clamps it below the outer radius.
-		return buildArcs(
-			data,
-			{ color: fillField, y: theta, pattern },
-			colors,
-			w,
-			h,
-			{ innerRadius: options.innerRadius ?? 0 },
-			patterns
-		)
-	})
 </script>
 
 {#if arcs.length > 0}
@@ -86,6 +59,7 @@
 			<path
 				d={arc.d}
 				fill={arc.fill}
+				fill-opacity={arc.alpha}
 				stroke={arc.stroke}
 				stroke-width="1"
 				role={onselect ? 'button' : 'presentation'}
@@ -116,15 +90,7 @@
 						pointer-events="none"
 						data-plot-element="arc-label"
 					>
-						<rect
-							x={-lw / 2}
-							y="-9"
-							width={lw}
-							height="18"
-							rx="4"
-							fill="white"
-							fill-opacity="0.82"
-						/>
+						<rect x={-lw / 2} y="-9" width={lw} height="18" rx="4" fill="white" fill-opacity="0.82" />
 						<text
 							text-anchor="middle"
 							dominant-baseline="central"
