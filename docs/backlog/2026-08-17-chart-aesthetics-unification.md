@@ -198,6 +198,39 @@ The topology audit found **three** chart surfaces. Consolidate onto the geom/Plo
 
 Each phase ends green (vitest + lint, zero errors) and is committed to `develop`.
 
+## 11. GeomState abstraction (added to scope 2026-08-17 — absorbs Phase 3)
+
+Every data geom repeats ~50–70 lines of identical plumbing (getContext → registerGeom/
+updateGeom/unregisterGeom → data/xScale/yScale/colors deriveds → `marks = $derived.by(build)`).
+Extract that into a reusable Svelte-5 runes class fed by the shared `PlotState` context — the
+*integrated* version of the brewer idea (one shared path, not a parallel one).
+
+- **`geoms/lib/GeomState.svelte.js`** — `$state` id + `$derived` data/marks; `register`/`sync`/
+  `destroy` arrow methods wired from the geom's `onMount`/`$effect`/`onDestroy`. Constructed with
+  a getter-thunk config: `new GeomState(plotState, () => ({ type, channels, stat, options, alpha, build }))`
+  (getter-thunk is the Svelte-mandated way to pass reactive values into a class).
+- **`geoms/lib/aesthetics.js`** — shared `resolveFillStroke(row, {fill,color}, colors)` (the ggplot
+  fallback: fill-only → stroke = same-key shade; color-only → fill = same-key shade; both → interior
+  from fill / outline from color; neither → first series) and `resolveAlpha(alpha, type, preset)`
+  (`alpha ?? preset.opacity[type] ?? 1`). Done ONCE; every geom inherits it.
+- **Renderable marks** carry `{ …geometry, fill, stroke, alpha, value, display }` — templates become
+  pure rendering + interactivity. `value`/`display` support labels, tooltips, and sorting.
+- **Escape hatches**: Bar (crossfilter/labels/contrast), Box/Violin (`side`/quartiles) keep geom-local
+  extras; overlays (Highlight/Trend/Rule) don't register geoms and stay as-is.
+
+This **replaces** the standalone Phase 3 — the fill/color/alpha unification is delivered by the shared
+layer instead of being threaded through each geom.
+
+## 10a. Revised sequencing (supersedes §10 phases 2–3)
+
+1. **Phase 1 — Brewer consolidation** ✅ (`74ac0655`)
+2. **Phase 2 — PlotState fill channel + shared-scale union + preset alpha** ✅ (`8f1570be`)
+3. **Phase 3′ — GeomState pilot.** Build `GeomState` + `aesthetics.js`; migrate ONE geom (Point)
+   end-to-end (fill/color/alpha), green commit, review the pattern.
+4. **Phase 3″ — Rollout.** Migrate the remaining data geoms (green per geom/batch); delivers the
+   fill/color/alpha unification everywhere.
+5. **Phase 4** position/group · **Phase 5** Root/wrappers + full suite · **Phase 6** Playwright.
+
 ## Open follow-ups (out of scope, tracked)
 
 - Independent dual color scales + second legend for `fill` vs `color`.
