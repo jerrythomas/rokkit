@@ -43,6 +43,8 @@
 		summary?: string
 		tooltip?: boolean | ((data: Row) => string)
 		zoom?: boolean
+		/** Force chart direction (else inferred). Also settable via `spec.orientation`. */
+		orientation?: 'horizontal' | 'vertical'
 		xFormat?: (v: unknown) => string
 		yFormat?: (v: unknown) => string
 		xTicks?: number
@@ -78,6 +80,7 @@
 		summary = '',
 		tooltip = false,
 		zoom = false,
+		orientation = undefined,
 		xFormat = undefined,
 		yFormat = undefined,
 		xTicks = undefined,
@@ -138,7 +141,7 @@
 			colorScale: spec?.colorScale,
 			colorScheme: spec?.colorScheme,
 			colorMidpoint: spec?.colorMidpoint,
-			orientation: spec?.orientation,
+			orientation: orientation ?? spec?.orientation,
 			sort: spec?.sort,
 			continuousCategory: spec?.continuousCategory,
 			chartPreset,

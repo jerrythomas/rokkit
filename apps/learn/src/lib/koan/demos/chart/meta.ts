@@ -4,7 +4,7 @@ const meta: DemoMeta = {
 	id: 'chart',
 	title: 'Charts',
 	description:
-		'Nine field-mapped chart components — bars, lines, areas, pies, scatter, bubble, box, violin, sparkline. Pass rows + field names, get an SVG.',
+		'Interactive chart explorer — pick from 14 chart types (bar, line, area, pie, scatter, bubble, box, violin + heatmap, hexbin, candlestick, waterfall, ribbon, rule) and tweak orientation, position (stack/dodge/fill), color/fill, pattern and opacity live, with guided suggestions.',
 	keywords: [
 		'chart', 'charts', 'graph', 'graphs', 'plot', 'plots',
 		'visualization', 'viz', 'analytics', 'data', 'metrics', 'svg',
@@ -19,8 +19,10 @@ const meta: DemoMeta = {
 	tool: {
 		name: 'mount_charts',
 		description:
-			'Mount the Charts gallery on the canvas — shows the nine chart shapes from @rokkit/chart side by side.',
-		parameters: {}
+			'Mount the interactive chart explorer on the canvas — the user picks a chart type and tweaks its settings live. Pass `type` to open a specific chart (e.g. "violin", "bar").',
+		parameters: {
+			type: 'optional chart type to open: bar | line | area | pie | scatter | bubble | box | violin | heatmap | hexbin | candlestick | waterfall | ribbon | rule (defaults to bar)'
+		}
 	},
 	inline: { capable: true },
 	variants: [],
