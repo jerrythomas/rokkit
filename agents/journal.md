@@ -1,5 +1,56 @@
 # Project Journal
 
+## 2026-08-18 — Chart: enriched Sparkline (negative-bar baseline + highlight + trend)
+
+Answered a user question ("are sparklines completely different, or can we support spark bar + trend
++ highlight leveraging existing geoms?") by grounding in the real geom architecture: every primitive
+already existed, but the standalone `Sparkline.svelte` was a separate island that reused **none** of
+it. Chose the **lean-island** path (over a full `<PlotChart>` preset) — keep `Sparkline` a
+`PlotState`-free lightweight SVG island (perf-safe for hundreds in a table) and reuse only the two
+**pure, unit-tested** utils `resolveHighlight` (`lib/highlight.js`) and `computeTrend`
+(`lib/trend.js`) via a trivial `rows = values.map((v,i)=>({x:i,y:v}))` adapter. Engines reused,
+not rebuilt; only the small per-type SVG rendering is re-expressed. Mirrors the geom `data-plot-*`
+attributes + `--chart-*` tokens so a theme styles the island and the geom overlays identically.
+
+**Three additive, backward-compatible props:**
+- `baseline` — the value bars grow *from* (positive up, negative down). The **negative-bar fix**:
+  bars re-anchor at `yScale(baseline)` (`y=min(vy,anchor)`, `h=|vy-anchor|`); for `type="bar"` with
+  any negative value it **auto-defaults to 0** (negative sparkbars were broken — every bar measured
+  from the pixel bottom); all-positive bars with no baseline stay min-anchored (no regression);
+  y-domain extends to include the baseline (explicit `min`/`max` still win); draws a
+  `data-plot-baseline` reference rule for all types. Line/area negative-fill anchoring deferred.
+- `highlight` — `'first'|'last'|'min'|'max'|<index>|<predicate>` or an array → deduped
+  `data-plot-highlight` markers; reuses `resolveHighlight`, `--chart-highlight-*` tokens.
+- `trend` — `avg|median|min|max|linear|ma|ema|exp|<number>` or an array → `data-plot-trend={type}`
+  line(s); reuses `computeTrend`, `--chart-trend-*` tokens.
+
+**Method:** subagent-driven (fresh implementer + spec + code-quality reviewer per task, TDD). Two
+real cross-task issues surfaced by review rather than fudged: (1) a **finite-guard parity gap** — the
+trend series branch didn't filter non-finite points (the `if (d)` guard doesn't catch `"M0,NaN…"`)
+unlike its sibling geom and the highlight branch; added the filter + `Number.isFinite(yy)` on the
+constant path. (2) a **masked type gate** — Task-2's untyped `const seen = new Set()` made
+`Sparkline.svelte` `unknown[]`, turning the chart `svelte-check` gate **red (2 errors)**, but the
+pre-commit hook only runs plain `tsc` (which skips `.svelte`), so it slipped. Fixed with
+`new Set<number>()` and proved `svelte-check` green (`0 ERRORS`) in real output. [[project-type-health-svelte-check]]
+
+**Tests:** Sparkline spec **10 → 24** (+14), all asserting real computed SVG geometry (negative-bar
+`y`/`height` split, marker `cx`/`cy`, constant trend exact `M0,20 L100,20`, series command count),
+not mocks.
+
+**Commits (develop):** spec `a63dfc82`+`32047100`, plan `157a000e`; Task 1 `cbaddaf4`+`89144f1`;
+Task 2 `e64edec3`+`f1f2f9ab`; Task 3 `60167574`+`ae01f804`+`202fd43a`; docs `7df8654369`.
+
+**Final gate (real exit status, not a piped tail):** `bun run test:ci` = **5264 passed / 366 files,
+0 failed**; `bun run lint` = **0 errors** (112 pre-existing warnings); chart `svelte-check` =
+**0 errors / 0 warnings**. All on `develop`.
+
+**Follow-ups filed (not done):** (1) the enriched demo snippet in `koan/demos/chart/meta.ts` is
+inert metadata — the chart demo mounts the interactive `ChartExplorer` and wires no Source/Code tab,
+so the example isn't surfaced in-app; needs a demo-tab wiring to be visible. (2) line/area
+negative-fill anchoring. (3) consolidate the duplicate `apps/learn/src/lib/components/Sparkline.svelte`
++ the `packages/blocks` `SparklinePlugin` onto the enriched component. Spec/plan:
+`docs/superpowers/{specs,plans}/2026-08-18-enriched-sparkline*.md`.
+
 ## 2026-08-18 — Chart demo rebuilt on shared chat kit + 4 chart fixes + #146 → v1.3.10
 
 Follow-on to the aesthetics-unification arc, driven by live user feedback on the /app/chart demo.
