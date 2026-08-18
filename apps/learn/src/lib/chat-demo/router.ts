@@ -541,35 +541,23 @@ const SHAPE_HEADLINE: Record<string, string> = {
 	json: 'Could not infer a structured shape, falling back to a JSON code block.'
 }
 
-export function routeData(
+// Each per-shape builder returns the blocks that FOLLOW the headline for that
+// inferred shape. `routeData` prepends the headline (or a query-contextual line)
+// and dispatches here — keeping the top-level function a thin, low-complexity router.
+
+function buildRecordBlocks(
 	source: 'json' | 'csv',
-	parsed: unknown,
-	originalQuery?: string,
-	force?: 'table' | 'chart' | 'record' | 'list'
+	inf: Extract<Inference, { kind: 'record' }>
 ): Block[] {
-	const inf = inferShape(parsed, force)
-
-	if (inf.kind === 'error') {
-		return [{ kind: 'prose', text: `Could not parse the data — ${inf.message}` }]
-	}
-
-	const headline: Block = { kind: 'prose', text: SHAPE_HEADLINE[inf.kind] }
-	const blocks: Block[] = [headline]
-
-	if (inf.kind === 'record') {
-		blocks.push(
-			dataNote('record', source, inf.fields as unknown as FieldSummary[])
-		)
-		blocks.push({
+	return [
+		dataNote('record', source, inf.fields as unknown as FieldSummary[]),
+		{
 			kind: 'component',
 			tool: 'mount_form',
 			caption: 'Editable record',
-			props: {
-				schema: schemaFromRecord(inf.record),
-				data: inf.record
-			}
-		})
-		blocks.push({
+			props: { schema: schemaFromRecord(inf.record), data: inf.record }
+		},
+		{
 			kind: 'suggestions',
 			intro: 'Or',
 			items: [
@@ -585,50 +573,65 @@ export function routeData(
 					}
 				}
 			]
-		})
-	} else if (inf.kind === 'table') {
-		blocks.push(dataNote('table', source, inf.columns, inf.rows.length))
-		blocks.push({
+		}
+	]
+}
+
+function buildTableBlocks(
+	source: 'json' | 'csv',
+	inf: Extract<Inference, { kind: 'table' }>
+): Block[] {
+	const blocks: Block[] = [
+		dataNote('table', source, inf.columns, inf.rows.length),
+		{
 			kind: 'component',
 			tool: 'mount_table',
 			caption: `${inf.rows.length} rows · ${inf.columns.length} columns`,
 			props: { data: inf.rows }
-		})
-		const chartAxes = inferShape(inf.rows, 'chart')
-		if (chartAxes.kind === 'chart') {
-			blocks.push({
-				kind: 'suggestions',
-				intro: 'Or',
-				items: [
-					{
-						label: `Chart ${chartAxes.y} by ${chartAxes.x}`,
-						query: `Visualize this as a bar chart with x=${chartAxes.x} y=${chartAxes.y}`,
-						action: { kind: 'reshape', source, data: inf.rows, force: 'chart' }
-					}
-				]
-			})
 		}
-	} else if (inf.kind === 'chart') {
-		blocks.push(dataNote('chart', source, inf.columns, inf.rows.length))
-		const props: Record<string, unknown> = {
-			data: inf.rows,
-			x: inf.x,
-			y: inf.y,
-			height: 280,
-			grid: true
-		}
-		if (inf.fill) {
-			props.fill = inf.fill
-			props.legend = true
-		}
+	]
+	const chartAxes = inferShape(inf.rows, 'chart')
+	if (chartAxes.kind === 'chart') {
 		blocks.push({
+			kind: 'suggestions',
+			intro: 'Or',
+			items: [
+				{
+					label: `Chart ${chartAxes.y} by ${chartAxes.x}`,
+					query: `Visualize this as a bar chart with x=${chartAxes.x} y=${chartAxes.y}`,
+					action: { kind: 'reshape', source, data: inf.rows, force: 'chart' }
+				}
+			]
+		})
+	}
+	return blocks
+}
+
+function buildChartBlocks(
+	source: 'json' | 'csv',
+	inf: Extract<Inference, { kind: 'chart' }>
+): Block[] {
+	const props: Record<string, unknown> = {
+		data: inf.rows,
+		x: inf.x,
+		y: inf.y,
+		height: 280,
+		grid: true
+	}
+	if (inf.fill) {
+		props.fill = inf.fill
+		props.legend = true
+	}
+	const stackProps: Record<string, unknown> = { ...props, stack: true }
+	return [
+		dataNote('chart', source, inf.columns, inf.rows.length),
+		{
 			kind: 'component',
 			tool: 'mount_bar_chart',
 			caption: `${inf.y} by ${inf.x}${inf.fill ? ` (grouped by ${inf.fill})` : ''}`,
 			props
-		})
-		const stackProps: Record<string, unknown> = { ...props, stack: true }
-		blocks.push({
+		},
+		{
 			kind: 'suggestions',
 			intro: 'Or',
 			items: [
@@ -652,9 +655,13 @@ export function routeData(
 						]
 					: [])
 			]
-		})
-	} else if (inf.kind === 'list') {
-		blocks.push({
+		}
+	]
+}
+
+function buildListBlocks(inf: Extract<Inference, { kind: 'list' }>): Block[] {
+	return [
+		{
 			kind: 'component',
 			tool: 'mount_list',
 			caption: `${inf.items.length} items`,
@@ -663,24 +670,46 @@ export function routeData(
 					typeof item === 'object' && item !== null ? item : { label: String(item) }
 				)
 			}
-		})
-	} else {
-		blocks.push({
-			kind: 'code',
-			language: 'json',
-			filename: 'data.json',
-			code: JSON.stringify(parsed, null, 2)
-		})
+		}
+	]
+}
+
+function buildJsonFallback(parsed: unknown): Block[] {
+	return [{ kind: 'code', language: 'json', filename: 'data.json', code: JSON.stringify(parsed, null, 2) }]
+}
+
+// Replace the standalone headline (blocks[0]) with a query-contextual prose line.
+function prependQueryContext(blocks: Block[], originalQuery: string | undefined, kind: string): Block[] {
+	if (!originalQuery || !originalQuery.trim()) return blocks
+	const lead: Block = {
+		kind: 'prose',
+		text: `For "${originalQuery.trim()}" — ${SHAPE_HEADLINE[kind].toLowerCase()}`
+	}
+	return [lead, ...blocks.slice(1)]
+}
+
+export function routeData(
+	source: 'json' | 'csv',
+	parsed: unknown,
+	originalQuery?: string,
+	force?: 'table' | 'chart' | 'record' | 'list'
+): Block[] {
+	const inf = inferShape(parsed, force)
+	if (inf.kind === 'error') {
+		return [{ kind: 'prose', text: `Could not parse the data — ${inf.message}` }]
 	}
 
-	if (originalQuery && originalQuery.trim()) {
-		blocks.unshift({
-			kind: 'prose',
-			text: `For "${originalQuery.trim()}" — ${SHAPE_HEADLINE[inf.kind].toLowerCase()}`
-		})
-		// shift removes the headline we already added; re-pop it cleanly:
-		blocks.splice(1, 1)
-	}
+	const headline: Block = { kind: 'prose', text: SHAPE_HEADLINE[inf.kind] }
+	const body =
+		inf.kind === 'record'
+			? buildRecordBlocks(source, inf)
+			: inf.kind === 'table'
+				? buildTableBlocks(source, inf)
+				: inf.kind === 'chart'
+					? buildChartBlocks(source, inf)
+					: inf.kind === 'list'
+						? buildListBlocks(inf)
+						: buildJsonFallback(parsed)
 
-	return blocks
+	return prependQueryContext([headline, ...body], originalQuery, inf.kind)
 }
