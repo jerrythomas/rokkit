@@ -9,6 +9,30 @@ const colors = new Map([
 	['4', { fill: '#f28e2b', stroke: '#f28e2b' }]
 ])
 
+describe('buildAreas — null y is a gap (not zero)', () => {
+	it('breaks the area at a null y instead of filling down to the baseline', () => {
+		const data = [
+			{ month: 1, val: 10 },
+			{ month: 2, val: null },
+			{ month: 3, val: 30 }
+		]
+		const [area] = buildAreas(data, { x: 'month', y: 'val' }, xScale, yScale, colors)
+		// The gap splits the area into two segments (two Move commands); no fill spans it.
+		expect((area.d.match(/M/g) ?? []).length).toBe(2)
+		expect(area.d).not.toContain('NaN')
+	})
+
+	it('keeps a genuine 0 as a filled point (one continuous area)', () => {
+		const data = [
+			{ month: 1, val: 10 },
+			{ month: 2, val: 0 },
+			{ month: 3, val: 30 }
+		]
+		const [area] = buildAreas(data, { x: 'month', y: 'val' }, xScale, yScale, colors)
+		expect((area.d.match(/M/g) ?? []).length).toBe(1)
+	})
+})
+
 describe('buildAreas — single series (no color channel)', () => {
 	const data = [
 		{ month: 3, val: 30 },

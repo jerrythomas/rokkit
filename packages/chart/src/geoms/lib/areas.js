@@ -22,9 +22,13 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
 		typeof xScale.bandwidth === 'function' ? xScale(d[xf]) + xScale.bandwidth() / 2 : xScale(d[xf])
 
 	// Each area edge (baseline + top) is placed so the area transposes under orientation.
-	const toEdge = (d) => ({ base: place(xPos(d), baseline), top: place(xPos(d), yScale(d[yf])) })
+	// `v` carries the raw y-value so the generator can break the area at a gap (null).
+	const toEdge = (d) => ({ base: place(xPos(d), baseline), top: place(xPos(d), yScale(d[yf])), v: d[yf] })
 	const makeGen = () => {
 		const gen = area()
+			// A null y-value is a GAP (a missing period): break the area there instead of
+			// dropping it onto the 0 baseline. A genuine 0 stays defined and fills.
+			.defined((p) => Number.isFinite(p.top.y) && (yf == null || p.v != null))
 			.x0((p) => p.base.x)
 			.y0((p) => p.base.y)
 			.x1((p) => p.top.x)

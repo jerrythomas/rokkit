@@ -45,6 +45,31 @@ describe('buildLines — single series (no color channel)', () => {
 	})
 })
 
+describe('buildLines — null y is a gap (not zero)', () => {
+	it('breaks the path at a null y instead of diving to the baseline', () => {
+		const data = [
+			{ month: 1, val: 10 },
+			{ month: 2, val: null },
+			{ month: 3, val: 30 }
+		]
+		const [line] = buildLines(data, { x: 'month', y: 'val' }, xScale, yScale, colors)
+		// The gap splits the line into two subpaths (two Move commands) — the absent
+		// period is not drawn onto the 0 baseline.
+		expect((line.d.match(/M/g) ?? []).length).toBe(2)
+		expect(line.d).not.toContain('NaN')
+	})
+
+	it('keeps a genuine 0 as a plotted point (one continuous path)', () => {
+		const data = [
+			{ month: 1, val: 10 },
+			{ month: 2, val: 0 },
+			{ month: 3, val: 30 }
+		]
+		const [line] = buildLines(data, { x: 'month', y: 'val' }, xScale, yScale, colors)
+		expect((line.d.match(/M/g) ?? []).length).toBe(1)
+	})
+})
+
 describe('buildLines — multi-series (with color channel)', () => {
 	const data = [
 		{ month: 2, drv: 'f', val: 20 },
