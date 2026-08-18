@@ -129,9 +129,9 @@ Merge semantics: all fields are independently overridable; omitted fields fall b
 </ChartProvider>
 ```
 
-`ChartProvider` sets a `'chart-preset'` Svelte context. `PlotState` reads the preset from context (falling back to the built-in default if no provider is present). Individual `<PlotChart>` or chart wrapper components can accept a `preset` prop that overrides the context for that chart only.
+`ChartProvider` sets a `'chart-preset'` Svelte context; `PlotState` reads the preset from it (falling back to the built-in `defaultPreset` if no provider is present). To override for one chart or a sub-group, nest another `<ChartProvider>` around it — there is no per-chart `preset` prop on `PlotChart` or the chart wrappers. Separately, a **named** preset (`'default'` / `'accessible'` / `'print'`, or a custom one registered via `helpers.presets`) can be selected through `spec.preset`.
 
-**Fallback chain**: `Plot preset prop` → `ChartProvider context` → built-in default. Charts work with zero configuration.
+**Fallback chain**: nearest `ChartProvider` context → built-in `defaultPreset`. Charts work with zero configuration.
 
 ---
 
