@@ -1,4 +1,5 @@
 import { line, curveCatmullRom, curveStep } from 'd3-shape'
+import { isLiteralColor } from '../colors.js'
 
 /**
  * @param {Object[]} data
@@ -10,7 +11,12 @@ import { line, curveCatmullRom, curveStep } from 'd3-shape'
  * @returns {{ d: string | null, fill: string, stroke: string, points: {x:number, y:number, data: Record<string, unknown>, i: number}[], key?: unknown }[]}
  */
 export function buildLines(data, channels, xScale, yScale, colors, curve, place = (x, y) => ({ x, y })) {
-	const { x: xf, y: yf, color: cf } = channels
+	const { x: xf, y: yf } = channels
+	// A literal color (var()/oklch()/hex/currentColor) is NOT a data field — it's the exact
+	// stroke the caller wants for THIS geom. Don't group the series on it, and don't fall
+	// back to the shared color scale (which is one value across all geoms); use it directly.
+	const literalColor = isLiteralColor(channels.color) ? channels.color : undefined
+	const cf = literalColor ? undefined : channels.color
 	const xPos = (d) =>
 		typeof xScale.bandwidth === 'function' ? xScale(d[xf]) + xScale.bandwidth() / 2 : xScale(d[xf])
 	// Screen points, sorted by the x-channel position, each mapped through place() so the
@@ -38,7 +44,8 @@ export function buildLines(data, channels, xScale, yScale, colors, curve, place 
 
 	if (!cf) {
 		const pts = screenPoints(data)
-		const stroke = colors?.values().next().value?.stroke ?? '#888'
+		// A literal color IS the stroke; a single-series field uses the shared shade.
+		const stroke = literalColor ?? colors?.values().next().value?.stroke ?? '#888'
 		return [{ d: makeGen()(pts), fill: 'none', stroke, points: pts }]
 	}
 	const groups = groupBy(data, cf)

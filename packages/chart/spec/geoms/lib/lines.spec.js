@@ -45,6 +45,17 @@ describe('buildLines — single series (no color channel)', () => {
 	})
 })
 
+describe('buildLines — literal color channel is one fixed color, used directly', () => {
+	it('uses the literal stroke directly, not the shared color scale', () => {
+		// The shared scale would give this line blue; the per-geom literal must win.
+		const shared = new Map([[null, { fill: '#0061bd', stroke: '#0061bd' }]])
+		const data = [{ month: 1, val: 10 }, { month: 2, val: 20 }]
+		const lines = buildLines(data, { x: 'month', y: 'val', color: 'var(--ink)' }, xScale, yScale, shared)
+		expect(lines).toHaveLength(1)
+		expect(lines[0].stroke).toBe('var(--ink)')
+	})
+})
+
 describe('buildLines — null y is a gap (not zero)', () => {
 	it('breaks the path at a null y instead of diving to the baseline', () => {
 		const data = [

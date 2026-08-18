@@ -9,6 +9,17 @@ const colors = new Map([
 	['4', { fill: '#f28e2b', stroke: '#f28e2b' }]
 ])
 
+describe('buildAreas — literal color channel is one fixed fill, used directly', () => {
+	it('uses the literal fill directly, not the shared color scale', () => {
+		// The shared scale would give this area blue; the per-geom literal must win.
+		const shared = new Map([[null, { fill: '#0061bd', stroke: '#0061bd' }]])
+		const data = [{ month: 1, val: 10 }, { month: 2, val: 20 }]
+		const areas = buildAreas(data, { x: 'month', y: 'val', color: 'var(--accent-soft)' }, xScale, yScale, shared)
+		expect(areas).toHaveLength(1)
+		expect(areas[0].fill).toBe('var(--accent-soft)')
+	})
+})
+
 describe('buildAreas — null y is a gap (not zero)', () => {
 	it('breaks the area at a null y instead of filling down to the baseline', () => {
 		const data = [
