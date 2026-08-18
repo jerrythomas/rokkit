@@ -52,7 +52,7 @@ type Method =
 
 highlight?: Selector | Selector[]   // e.g. ['min','max','last']
 trend?:     Method   | Method[]
-baseline?:  number                  // optional reference rule, e.g. 0
+baseline?:  number                  // bar anchor + reference rule, e.g. 0
 ```
 
 Example:
@@ -61,6 +61,9 @@ Example:
 <Sparkline data={rows} field="sales" type="bar"
            highlight={['min','max','last']} trend="linear" baseline={0} />
 ```
+
+`baseline` is load-bearing for **negative bars**: it is the value bars grow *from* (positive up,
+negative down), not merely a decorative line.
 
 ## Design detail
 
@@ -87,11 +90,27 @@ accepting an array renders one path per method.
 - **Trend** — `constant` → horizontal `<path d="M0,{y} L{width},{y}">`; `series` → a `d3line` path
   through `(xScale(i), yScale(seriesValues[i]))`. Inside `<g data-plot-geom="trend">`, each path
   carries `data-plot-trend={type}`.
-- **Baseline** — a horizontal rule at `yScale(baseline)`. When `baseline` is set, the y-domain is
-  extended to include it, so e.g. a `0` line stays on-canvas for all-positive data. **v1 = visual
-  reference line only** — it does not re-anchor bar growth (bars keep their current behavior).
-- **Draw order** — series/area/bars → trend → baseline → markers (markers on top). Trend and markers
-  are `pointer-events: none`, matching the geom overlays.
+- **Baseline** — two responsibilities:
+  1. **Bar anchor (the negative-bar fix).** When a baseline is in effect, each bar spans between the
+     value and the baseline instead of the pixel bottom:
+     `anchorY = yScale(baseline)`, `y = Math.min(yScale(v), anchorY)`,
+     `barHeight = Math.abs(yScale(v) - anchorY)`. Positive values grow up from the baseline, negative
+     values hang down — so a mixed-sign sparkbar reads correctly.
+  2. **Reference rule.** A horizontal `<path>` at `anchorY` (styled like `GeomRule`), drawn for all
+     types so the eye has a zero/reference datum.
+- **Baseline default (smart, backward-compatible):**
+  - `type="bar"` **with any negative value** and no explicit `baseline` → **defaults to `0`** so
+    negative bars render correctly out of the box (there is no sensible current behavior to preserve
+    — negative sparkbars are broken today).
+  - `type="bar"` all-positive, no explicit `baseline` → **stays min-anchored** (today's look; no
+    regression). The shortest bar keeps near-zero height.
+  - `type="line"`/`"area"` → `baseline` is a **reference rule only**; the area fill anchor is
+    unchanged in v1 (still fills to the pixel bottom). Negative-fill areas are a follow-up.
+- **Y-domain** — when a baseline is in effect the y-domain is extended to include it
+  (`domainMin = min(yMin, baseline)`, `domainMax = max(yMax, baseline)`), guaranteeing the baseline
+  and the full negative extent are on-canvas. Explicit `min`/`max` props still win.
+- **Draw order** — series/area/bars → trend → baseline rule → markers (markers on top). Trend and
+  markers are `pointer-events: none`, matching the geom overlays.
 
 ### Theming — mirror geom tokens verbatim
 
@@ -113,7 +132,10 @@ Extend `packages/chart/spec/Sparkline.spec.js` (the util math is already covered
   (including dedup when selectors overlap);
 - trend: constant method renders a horizontal path; series method (`linear`) renders a multi-point
   path;
-- baseline: rule renders and the y-domain includes it;
+- baseline: rule renders and the y-domain includes the baseline value;
+- **negative bars**: mixed-sign data with `baseline={0}` (and via the auto-default) anchors bars at
+  the zero line — positive bars grow up, negative bars hang down (assert `y`/`height` split around
+  `anchorY`); all-positive data with no baseline stays min-anchored (regression guard);
 - `data-plot-highlight` / `data-plot-trend` attributes present;
 - existing line / bar / area / pattern cases remain green (regression guard).
 
@@ -127,6 +149,8 @@ Extend `packages/chart/spec/Sparkline.spec.js` (the util math is already covered
 
 - No change to `PlotState` or `scales.js`.
 - No last-value **text label** in v1 (natural follow-up).
+- No negative-fill **area** anchoring in v1 — `baseline` re-anchors bars; for line/area it is a
+  reference rule only (area still fills to the pixel bottom). Follow-up.
 - The second duplicate sparkline at `apps/learn/src/lib/components/Sparkline.svelte` — flagged for
   consolidation as a **follow-up**, not folded into this change.
 - The `packages/blocks/src/SparklinePlugin.svelte` wrapper spreads props, so it inherits the new
