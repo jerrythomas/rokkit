@@ -3065,9 +3065,12 @@ ${tabsTag}`
 	}
 
 	.composer-tweak-toggle[data-on] {
-		background: color-mix(in oklab, var(--accent) 10%, var(--paper));
-		border-color: color-mix(in oklab, var(--accent) 40%, var(--paper-edge));
-		color: var(--accent);
+		/* Signal "on" with an accent tint + solid accent border, but keep the label in --ink.
+		   Accent is a mid-tone (~L0.64), so accent-coloured TEXT on a light tint fails contrast
+		   (~3:1 in light mode); ink on the tint is ~10:1 and reads in both modes. */
+		background: color-mix(in oklab, var(--accent) 15%, var(--paper));
+		border-color: var(--accent);
+		color: var(--ink);
 	}
 
 	.composer-tweak-toggle .i-mdi\:tune-variant {
