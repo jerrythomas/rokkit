@@ -20,7 +20,7 @@ These documents define how Rokkit works. Read them before designing or building 
 | [11-inventory](./11-inventory.md)   | Component inventory + status across all packages                                                                            |
 | [12-priority](./12-priority.md)     | Priority checklist — all pending work items by tier                                                                         |
 | [17-skin-system](./17-skin-system.md) | Runtime skin switching: `vibe.skin`, `data-skin`, `skins` config                                                         |
-| [20-chart](./20-chart.md) / [21-charts](./21-charts.md) / [22-chart-preset](./22-chart-preset.md) | Chart package, chart system design, preset system                  |
+| [20-chart](./20-chart.md) / [22-chart-preset](./22-chart-preset.md) | Chart package (system design) and preset system                  |
 | [70-tools](./70-tools.md) / [71-tools](./71-tools.md) | CLI, icon sets, toolchain                                                                              |
 
 > Full index: every numbered doc lives in this directory. Ranges follow the convention below.
