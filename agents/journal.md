@@ -44,12 +44,14 @@ Task 2 `e64edec3`+`f1f2f9ab`; Task 3 `60167574`+`ae01f804`+`202fd43a`; docs `7df
 0 failed**; `bun run lint` = **0 errors** (112 pre-existing warnings); chart `svelte-check` =
 **0 errors / 0 warnings**. All on `develop`.
 
-**Follow-ups filed (not done):** (1) the enriched demo snippet in `koan/demos/chart/meta.ts` is
-inert metadata — the chart demo mounts the interactive `ChartExplorer` and wires no Source/Code tab,
-so the example isn't surfaced in-app; needs a demo-tab wiring to be visible. (2) line/area
-negative-fill anchoring. (3) consolidate the duplicate `apps/learn/src/lib/components/Sparkline.svelte`
-+ the `packages/blocks` `SparklinePlugin` onto the enriched component. Spec/plan:
-`docs/superpowers/{specs,plans}/2026-08-18-enriched-sparkline*.md`.
+**Follow-ups filed as GitHub issues (#147–#150):** (1) **#147** — live Sparkline demo(s) +
+Playwright verification; the enriched snippet in `koan/demos/chart/meta.ts` is inert metadata (the
+chart demo mounts the interactive `ChartExplorer` and wires no Source/Code tab), so it isn't
+surfaced in-app. (2) **#148** — line/area negative-fill (baseline) anchoring. (3) **#149** —
+consolidate the duplicate `apps/learn/src/lib/components/Sparkline.svelte` + the `packages/blocks`
+`SparklinePlugin` onto the enriched component. (4) **#150** — multi-quadrant charts (Q1/2/4) in the
+shared `PlotState` coordinate layer (was in initial requirements; consistency-over-duplication
+mandate). Spec/plan: `docs/superpowers/{specs,plans}/2026-08-18-enriched-sparkline*.md`.
 
 ## 2026-08-18 — Chart demo rebuilt on shared chat kit + 4 chart fixes + #146 → v1.3.10
 
