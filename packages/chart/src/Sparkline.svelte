@@ -3,6 +3,7 @@
 	import { line as d3line, area as d3area, curveCatmullRom } from 'd3-shape'
 	import PatternDef from './patterns/PatternDef.svelte'
 	import { PATTERNS } from './patterns/patterns.js'
+	import { resolveHighlight } from './lib/highlight.js'
 
 	type Props = {
 		data?: number[] | Record<string, unknown>[]
@@ -16,6 +17,21 @@
 		min?: number
 		max?: number
 		baseline?: number
+		highlight?:
+			| 'first'
+			| 'last'
+			| 'min'
+			| 'max'
+			| number
+			| ((row: { x: number; y: number }, i: number) => boolean)
+			| Array<
+					| 'first'
+					| 'last'
+					| 'min'
+					| 'max'
+					| number
+					| ((row: { x: number; y: number }, i: number) => boolean)
+			  >
 	}
 
 	let {
@@ -29,7 +45,8 @@
 		height = 24,
 		min = undefined,
 		max = undefined,
-		baseline = undefined
+		baseline = undefined,
+		highlight = undefined
 	}: Props = $props()
 
 	const values = $derived(
@@ -37,6 +54,9 @@
 			field && typeof d === 'object' && d !== null ? Number(d[field]) : Number(d)
 		)
 	)
+
+	// Adapter to the pure geom utilities (they operate on {x,y} rows).
+	const rows = $derived(values.map((v, i) => ({ x: i, y: v })))
 
 	const hasNegative = $derived(values.some((v) => v < 0))
 	// Bars with negative values are meaningless when measured from the pixel bottom, so a
@@ -64,6 +84,21 @@
 	// When no baseline is in effect, anchor at the pixel bottom — preserves the classic
 	// min-anchored sparkbar look (Math.min/abs below both collapse to the old formula).
 	const barAnchorY = $derived(effectiveBaseline !== undefined ? yScale(effectiveBaseline) : height)
+
+	const highlightSelectors = $derived(
+		Array.isArray(highlight)
+			? highlight
+			: highlight === null || highlight === undefined
+				? []
+				: [highlight]
+	)
+	const highlightIndices = $derived.by(() => {
+		const seen = new Set()
+		for (const sel of highlightSelectors) {
+			for (const i of resolveHighlight(rows, sel, { y: 'y' })) seen.add(i)
+		}
+		return [...seen]
+	})
 
 	const linePath = $derived.by(() => {
 		const gen = d3line<number>()
@@ -145,6 +180,14 @@
 	{#if effectiveBaseline !== undefined}
 		<line x1={0} y1={barAnchorY} x2={width} y2={barAnchorY} data-plot-baseline />
 	{/if}
+
+	{#if highlightIndices.length}
+		<g data-plot-geom="highlight">
+			{#each highlightIndices as i (i)}
+				<circle cx={xScale(i)} cy={yScale(values[i])} data-plot-highlight />
+			{/each}
+		</g>
+	{/if}
 </svg>
 
 <style>
@@ -153,6 +196,13 @@
 		stroke-width: var(--chart-baseline-width, 1);
 		stroke-dasharray: var(--chart-baseline-dash, 4 4);
 		opacity: var(--chart-baseline-opacity, 0.5);
+		pointer-events: none;
+	}
+
+	[data-plot-highlight] {
+		fill: var(--chart-highlight-color, rgb(var(--color-accent-500, 194 65 12)));
+		stroke: var(--chart-highlight-ring, none);
+		r: var(--chart-highlight-radius, 3);
 		pointer-events: none;
 	}
 </style>

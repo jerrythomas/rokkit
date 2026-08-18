@@ -172,4 +172,42 @@ describe('Sparkline', () => {
 		// the line path is still present (fill/line rendering unaffected)
 		expect(container.querySelector('path')).toBeTruthy()
 	})
+
+	it('renders highlight markers for min and max', () => {
+		const { container } = render(Sparkline, {
+			data: [10, 20, 30, 15],
+			type: 'line',
+			highlight: ['min', 'max']
+		})
+		const dots = container.querySelectorAll('[data-plot-highlight]')
+		expect(dots.length).toBe(2)
+	})
+
+	it('renders a highlight marker for the last point', () => {
+		const { container } = render(Sparkline, {
+			data: [10, 20, 30, 15],
+			type: 'line',
+			width: 90,
+			highlight: 'last'
+		})
+		const dots = container.querySelectorAll('[data-plot-highlight]')
+		expect(dots.length).toBe(1)
+		// last index = 3, xScale domain [0,3] range [0,90] → cx = 90
+		expect(dots[0].getAttribute('cx')).toBe('90')
+	})
+
+	it('dedupes overlapping highlight selectors', () => {
+		const { container } = render(Sparkline, {
+			data: [10, 20, 30, 15],
+			type: 'line',
+			highlight: ['last', 3]
+		})
+		// 'last' and index 3 resolve to the same point → one marker
+		expect(container.querySelectorAll('[data-plot-highlight]').length).toBe(1)
+	})
+
+	it('renders no markers when highlight is unset', () => {
+		const { container } = render(Sparkline, { data: [10, 20, 30], type: 'line' })
+		expect(container.querySelectorAll('[data-plot-highlight]').length).toBe(0)
+	})
 })
