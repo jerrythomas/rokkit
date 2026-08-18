@@ -129,7 +129,7 @@ const meta: DemoMeta = {
 			id: 'sparkline',
 			title: 'Sparkline',
 			lang: 'svelte',
-			code: `<Sparkline data={[12, 45, 23, 67, 34, 89, 56, 72, 41, 90]} type="area" width={120} height={32} />`
+			code: `<Sparkline data={[12, -8, 23, -17, 34, 56, -9, 41]} type="bar" baseline={0} highlight={['min', 'max', 'last']} trend="linear" width={140} height={36} />`
 		}
 	],
 	docs

@@ -368,6 +368,20 @@ component tree. `FilterBar`, `FilterSlider`, and `FilterHistogram` are the filte
 `Sparkline` computes inline scales with no axes/grid/legend, for table cells or KPIs. `type`
 selects `line` | `bar` | `area`; a dedicated `pattern` prop applies a single-series texture.
 
+Enrichment props (all optional, additive):
+
+- `highlight` — `'first'|'last'|'min'|'max'|<index>|<predicate>` or an array; draws
+  `data-plot-highlight` markers (deduped when selectors overlap). Reuses the geom
+  `resolveHighlight` util and `--chart-highlight-*` tokens.
+- `trend` — `'avg'|'median'|'min'|'max'|'linear'|'ema'|'exp'|<number>|{type:'ma',window}` or an
+  array; draws `data-plot-trend` line(s) via the geom `computeTrend` util and `--chart-trend-*`
+  tokens.
+- `baseline` — the value bars grow *from* (positive up, negative down), and a `data-plot-baseline`
+  reference rule. For `type="bar"` with any negative value it **defaults to `0`** so negative
+  sparkbars render correctly; all-positive bars with no baseline stay min-anchored. The y-domain
+  extends to include the baseline. For `line`/`area` it is a reference rule only (fill anchor
+  unchanged).
+
 ---
 
 ## SVG / Raster Export (ChartExporter)
