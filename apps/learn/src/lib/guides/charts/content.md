@@ -3,8 +3,8 @@
 `@rokkit/chart` is an SVG charting layer built on the same
 field-mapped, data-first principles as the rest of Rokkit. It
 ships nine prebuilt chart shapes for the common cases plus a
-lower-level `<Plot>` you compose with explicit geoms when you
-need something custom.
+lower-level `<PlotChart>` you compose with explicit `Plot.*`
+geoms when you need something custom.
 
 ## The nine prebuilt shapes
 
@@ -20,7 +20,8 @@ need something custom.
 | `ViolinPlot`  | violin                   | distribution per category w/ density |
 | `Sparkline`   | line / bar / area (tiny) | inline KPI / table cell              |
 
-See the [Charts demo](/app/chart) for a live gallery.
+See the [Charts demo](/app/chart) for a live, interactive
+explorer — pick a type and tweak its aesthetics.
 
 ## Common props
 
@@ -73,7 +74,7 @@ Explore every channel interactively in the [Charts demo](/app/chart) —
 switch chart type and tweak orientation, position, colour/fill, pattern
 and opacity live.
 
-## When to drop to `<Plot>`
+## When to drop to `<PlotChart>`
 
 For multiple geoms on one canvas (e.g. bar + line overlay),
 custom aesthetics (jitter, ribbons), or faceted small multiples,
@@ -94,7 +95,7 @@ category, sharing axes:
 
 ```svelte
 <FacetPlot data={mpg} x="displ" y="hwy" facet="class">
-  <GeomPoint />
+  <Plot.Point />
 </FacetPlot>
 ```
 
@@ -112,14 +113,23 @@ flows through the shared filter state automatically.
 
 ## Theming charts
 
-Chart colours map to the same semantic roles as the rest of
-Rokkit (`--primary`, `--accent`, `--success`, …). Pass a custom
-`palette` per chart to override per-instance:
+Chart colours come from a **preset** — a list of palette roles
+that follows the active skin and light/dark mode. Override it
+with `createChartPreset` and wrap a subtree in `ChartProvider`:
 
 ```svelte
-<BarChart {data} x="quarter" y="revenue"
-  palette={['#b1170e', '#f57c00', '#fbc02d']} />
+<script>
+  import { ChartProvider, createChartPreset, BarChart } from '@rokkit/chart'
+  const preset = createChartPreset({ colors: ['rose', 'amber', 'teal'] })
+</script>
+
+<ChartProvider {preset}>
+  <BarChart {data} x="quarter" y="revenue" fill="product" />
+</ChartProvider>
 ```
+
+Or colour a single geom straight from a design token with a
+literal `fill`/`color` (see [Aesthetics](#aesthetics--colour-fill-pattern-position)).
 
 ## In Markdown
 

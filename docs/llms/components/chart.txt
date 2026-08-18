@@ -1,6 +1,6 @@
 # Charts
 
-The \`@rokkit/chart\` package ships nine prebuilt chart components plus a lower-level \`<Plot>\` for custom compositions. Every chart is field-mapped — pass row data and name the x/y/fill/color/size fields; the SVG is built for you.
+The \`@rokkit/chart\` package ships nine prebuilt chart components plus a lower-level \`<PlotChart>\` (composed with \`Plot.*\` geoms) for custom compositions. Every chart is field-mapped — pass row data and name the x/y/fill/color/size fields; the SVG is built for you.
 
 ## Import
 
@@ -41,11 +41,13 @@ All Cartesian charts share most props:
   data={rows}
   x="quarter"
   y="revenue"
-  fill="product"      // Bar / Area / Box / Violin / Pie
-  color="product"     // Line / Scatter / Bubble (Pie uses 'fill')
+  fill="product"      // interior colour-group field: Bar / Area / Box / Violin / Pie
+  color="product"     // outline colour-group field: Line / Scatter / Bubble (fill falls back to color)
   size="population"   // Bubble only (also optional on Scatter)
   stat="sum"          // sum / mean / count / min / max / identity
-  stack
+  position="dodge"    // Bar / Area: dodge (default) | stack | fill (100%) | identity
+  pattern="product"   // texture-fill field (reads apart without colour)
+  alpha={0.9}         // fixed opacity 0–1
   legend
   grid
   tooltip
@@ -54,15 +56,17 @@ All Cartesian charts share most props:
 />
 ```
 
-## When to drop to \`<Plot>\`
+\`fill\`/\`color\` accept a **literal** colour — \`var(--token)\`, \`oklch(…)\`, \`#hex\` or \`currentColor\` — to paint the mark directly from a design token instead of mapping a field. (\`stack\` is a deprecated boolean alias for \`position="stack"\`.)
 
-For multiple geoms on one canvas (e.g. bar + line overlay), faceted small multiples, or custom encodings, compose explicit geoms inside a \`<Plot>\`:
+## When to drop to \`<PlotChart>\`
+
+For multiple geoms on one canvas (e.g. bar + line overlay), faceted small multiples, or custom encodings, compose explicit \`Plot.*\` geoms inside a \`<PlotChart>\`:
 
 ```svelte
-<Plot data={sales} width={600} height={300}>
-  <GeomBar x="quarter" y="revenue" />
-  <GeomLine x="quarter" y="forecast" color="primary" />
-</Plot>
+<PlotChart data={sales} width={600} height={300}>
+  <Plot.Bar x="quarter" y="revenue" />
+  <Plot.Line x="quarter" y="forecast" color="var(--accent)" />
+</PlotChart>
 ```
 
 ## Markdown / LLM integration
@@ -79,4 +83,4 @@ The geom \`type\` accepts: \`bar\`, \`line\`, \`area\`, \`point\`, \`arc\`, \`bo
 
 ## Theming
 
-Colour palette comes from the active theme's semantic roles (\`--primary\`, \`--accent\`, \`--success\`, …). Override per-instance via the \`palette\` prop (array of CSS colour strings).
+Colours come from a **preset** (a list of palette roles) that follows the active skin and light/dark mode. Override it with \`createChartPreset({ colors: [...] })\` and wrap a subtree in \`<ChartProvider {preset}>\`. For a one-off colour, pass a literal \`fill\`/\`color\` (\`var(--token)\`, \`#hex\`, …) on the geom.

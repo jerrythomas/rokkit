@@ -100,16 +100,25 @@ When a channel value is detected as a CSS color (hex, `rgb()`, `hsl()`, `oklch()
 
 ## Spec API vs. Declarative API
 
-**Declarative API** — used by high-level chart components and most direct `Plot` usage:
+**Declarative API** — the prebuilt chart components (one geom, named channels):
 
 ```svelte
-<Plot data={mpg} x="year" y="hwy" color="class" geom="line" />
+<LineChart data={mpg} x="year" y="hwy" color="class" />
 ```
 
-**Spec API** — full control, used for multi-geom compositions:
+**Component composition** — a `<PlotChart>` root with explicit `Plot.*` geom children (multi-geom overlays):
 
 ```svelte
-<Plot data={mpg} spec={{
+<PlotChart data={mpg}>
+  <Plot.Bar x="year" y="hwy" fill="class" stat="mean" />
+  <Plot.Line x="year" y="hwy" color="class" stat="mean" />
+</PlotChart>
+```
+
+**Spec API** — full control from a plain object, same result:
+
+```svelte
+<PlotChart data={mpg} spec={{
   geoms: [
     { type: 'bar', channels: { x: 'year', y: 'hwy', fill: 'class' }, stat: 'mean' },
     { type: 'line', channels: { x: 'year', y: 'hwy', color: 'class' }, stat: 'mean' }

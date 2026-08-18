@@ -129,7 +129,7 @@ Merge semantics: all fields are independently overridable; omitted fields fall b
 </ChartProvider>
 ```
 
-`ChartProvider` sets a `'chart-preset'` Svelte context. `PlotState` reads the preset from context (falling back to the built-in default if no provider is present). Individual `<Plot>` or chart wrapper components can accept a `preset` prop that overrides the context for that chart only.
+`ChartProvider` sets a `'chart-preset'` Svelte context. `PlotState` reads the preset from context (falling back to the built-in default if no provider is present). Individual `<PlotChart>` or chart wrapper components can accept a `preset` prop that overrides the context for that chart only.
 
 **Fallback chain**: `Plot preset prop` → `ChartProvider context` → built-in default. Charts work with zero configuration.
 
@@ -147,10 +147,10 @@ const preset = getContext('chart-preset') ?? defaultPreset
 fill-opacity={options.opacity ?? plotState.preset.opacity.area}
 ```
 
-`Bar` geom does not use opacity (solid fills). `Area`, `Box`, `Violin` each read their respective key. Users can override per-chart:
+`Bar` geom does not use opacity (solid fills). `Area`, `Box`, `Violin` each read their respective key. Users override per-chart with the `alpha` prop (the single opacity knob):
 
 ```svelte
-<AreaChart data={...} x="date" y="value" opacity={0.3} />
+<AreaChart data={...} x="date" y="value" alpha={0.3} />
 ```
 
 The `opacity` prop on chart wrappers overrides the preset's geom-level default for that instance.
@@ -217,10 +217,10 @@ Jitter adds seeded random offsets to prevent overplotting — especially useful 
 />
 
 <!-- Or overlay on a BoxPlot -->
-<Plot {data} x="class" y="hwy">
-  <Box />
-  <Point jitter={{ width: 0.25 }} size={4} opacity={0.5} />
-</Plot>
+<PlotChart {data} x="class" y="hwy">
+  <Plot.Box />
+  <Plot.Point jitter={{ width: 0.25 }} size={4} alpha={0.5} />
+</PlotChart>
 ```
 
 `jitter.width` and `jitter.height` are relative to band width (0–1). For continuous axes, a pixel value is used. The offset is seeded by row index for stable re-renders.

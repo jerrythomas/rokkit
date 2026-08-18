@@ -43,19 +43,21 @@ import { PlotChart, GeomBar, GeomLine, GeomArea, GeomPoint, GeomArc, GeomBox, Ge
 
 ## Geom Props
 
-All geoms accept `stat` (`identity` | `sum` | `mean` | `min` | `max` | `count`).
+The `Geom*` exports are equivalent to the `Plot.*` namespace members (`GeomBar` === `Plot.Bar`) — use either.
 
-**GeomBar**: `x`, `y`, `color`, `fill`, `pattern`, `label`, `stack`, `filterable`
+All geoms accept `stat` (`identity` | `sum` | `mean` | `min` | `max` | `count`) and `alpha` (fixed opacity 0–1). Any `fill`/`color` channel also accepts a literal colour — `var(--token)`, `oklch(…)`, `#hex`, `currentColor` — painted directly instead of mapping a field.
 
-**GeomLine**: `x`, `y`, `color`, `symbol`, `label`, `options.curve`, `options.strokeWidth`
+**GeomBar**: `x`, `y`, `fill`, `color`, `pattern`, `group`, `position` (`dodge` (default) | `stack` | `fill` | `identity`), `alpha`, `label`, `filterable`, `options.orientation` (`vertical` (default) | `horizontal`). (`options.stack: true` is a deprecated alias for `position="stack"`.)
 
-**GeomPoint**: `x`, `y`, `color`, `size`, `symbol`, `label`, `options.radius`
+**GeomLine**: `x`, `y`, `color`, `symbol`, `alpha`, `label`, `options.curve`, `options.strokeWidth`
 
-**GeomArc**: `theta`, `fill` (or `color`), `pattern`, `labelFn`, `options.innerRadius`
+**GeomPoint**: `x`, `y`, `color`, `size`, `symbol`, `alpha`, `label`, `options.radius`
 
-**GeomArea**: `x`, `y`, `color`, `pattern`, `options.stack`, `options.opacity`
+**GeomArc**: `theta`, `fill` (or `color`), `pattern`, `alpha`, `labelFn`, `options.innerRadius`
 
-**GeomBox** / **GeomViolin**: `x`, `y`, `fill`, `color`
+**GeomArea**: `x`, `y`, `fill`, `color`, `pattern`, `group`, `position` (`stack` | `fill` | `identity`), `alpha`
+
+**GeomBox** / **GeomViolin**: `x`, `y`, `fill`, `color`, `pattern`, `alpha`
 
 ## Spec-driven API
 

@@ -1,5 +1,49 @@
 # Project Journal
 
+## 2026-08-18 — Chart demo rebuilt on shared chat kit + 4 chart fixes + #146 → v1.3.10
+
+Follow-on to the aesthetics-unification arc, driven by live user feedback on the /app/chart demo.
+
+**Chart demo rebuilt on the shared chat kit** (`bb1fd242`). The demo had a bespoke chat UI
+(`ChartSidebar` with hand-rolled `.msg`/`.hint` divs) — styling/interaction diverged from every
+other demo. Rebuilt on the shared `$lib/chat` kit like the `tabs` branch: `ChartConversation`
+(a `ChatStream` of `ChatMessage` nodes + `Chips` for tips) and `ChartControls` (type picker +
+settings) hosted in the toggled details slab (composer "tweak" toggle), not an always-on panel.
+Types regrouped BY PURPOSE (Comparison / Trend / Part-to-whole / Relationship / Distribution /
+Financial / Flow / Reference — every type is a geom, so "Charts vs Geoms" was wrong). Store seeds
+initial settings from the type's field mapping (`settingsFor`) so the first chart is grouped.
+Deleted `ChartSidebar` + the unused `toggleDrawer`/`drawerOpen`. See [[feedback-koan-shared-chat-kit]].
+
+**Four chart fixes:**
+1. `3f97ce81` — strict null checks in the line/area gap guard (`== null` tripped eqeqeq/no-eq-null,
+   left develop lint-red from `7b258c42`).
+2. `e92fb11b` — `#resolveStackDomain` collapsed the Y-domain to the last row per x when there was
+   NO group field (every row → same key, `set()` overwrote) → bars overflowed. Bail to the value
+   extent (buildStackedBars already falls back to buildBars there). + regression test.
+3. `333a4ed2` — `buildStackedBars` never applied the `place()` transpose, so a grouped stack/fill
+   ignored `orientation="horizontal"` (worked only ungrouped, via buildBars). Map the two
+   band/value corners through `place()` like buildBars. + transpose test.
+4. `6bf817a9` — composer "tweak" toggle painted mid-tone `--accent` as its LABEL (~3:1 light /
+   ~4.8:1 dark). Keep accent as the border/tint signal, label → `--ink` (~14:1).
+
+**#146 — literal colour across all geoms** (`dd29a826`, issue closed). A literal
+(`var()`/`oklch()`/`#hex`/`currentColor`) on color/fill was only honored by Line/Area; every other
+geom read it as a FIELD → `#888`/`#aaa`. Extracted `literalColor()` + `markEntry()` into
+`lib/brewing/colors.js`; applied to Point, Jitter, Bar (+stacked), Arc, Box, Violin, Heatmap,
+Ribbon; realigned Line/Area. New `spec/geoms/literal-color.spec.js` (8 tests).
+
+**Docs** (`1fde6e2b`, `bca170b8`): charts guide gained an "Aesthetics" section (fill/color/group,
+pattern, alpha, position, orientation, literal colours) + fixed the stale `<Plot><GeomBar/>` snippet
+→ `<PlotChart><Plot.Bar/>`; chart-explorer spec updated for the regroup + grouped-by-default.
+
+**Gate:** lint 0 errors; `bun run test:ci` = **5223 tests / 364 files** green (chart alone 1149).
+App-barrel `spec/index.spec.ts` flakes on a 5s collect-timeout in full runs; passes in isolation
+(~1.4s) — not a real failure.
+
+**Release:** merged develop → main (ff), cut **v1.3.10** (`34bb32c3`, tag pushed → publish.yml),
+develop ff'd back + pushed. Pre-existing chat-demo/cli WIP was stashed for a clean release, restored
+after — not part of this release.
+
 ## 2026-08-17 — Chart: ggplot-aligned aesthetics unification + GeomState + brewer consolidation
 
 Large refactor unifying the geom aesthetic API onto one rendering path. Spec:

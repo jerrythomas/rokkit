@@ -245,7 +245,7 @@
 | ------------------- | --------------- | ----------- | ---------------------------------------------------------------------- |
 | PaletteManager      | `@rokkit/ui`    | Implemented | UI for browsing and switching colour palettes                          |
 | ThemeSwitcherToggle | `@rokkit/app`   | Implemented | Toggle button for switching between themes/modes                       |
-| ChartBrewer         | `@rokkit/chart` | Implemented | Utility class for deriving chart colour palettes from the active theme |
+| ChartProvider       | `@rokkit/chart` | Implemented | Supplies a chart colour preset via context (`createChartPreset`); replaced the old ChartBrewer class |
 
 ---
 
@@ -255,7 +255,7 @@
 | ----------------- | --------------------------- | -------------------------------------------------------------------------- |
 | `@rokkit/ui`      | Main component library      | 62 UI components                                                           |
 | `@rokkit/forms`   | Form generation and inputs  | FormRenderer, FormBuilder, 30 form components                             |
-| `@rokkit/chart`   | Data visualisation          | Plot primitives, high-level charts, Geom marks, crossfilter, ChartBrewer   |
+| `@rokkit/chart`   | Data visualisation          | Plot primitives, high-level charts, Geom marks, crossfilter, colour presets |
 | `@rokkit/app`     | Application shell utilities | ThemeSwitcherToggle                                                        |
 | `@rokkit/states`  | Reactive state controllers  | Wrapper, LazyWrapper, ProxyItem, ProxyTree, ProxyTable, ProxyTableTree, vibe, alerts, messages, commands, watchMedia |
 | `@rokkit/actions` | Svelte actions + classes    | `Navigator`, `Trigger`, `shortcuts`, `dismissable`, `themable`, `skinnable`, `lockMode`, `tooltip`, `ripple`, `hoverLift`, `magnetic`, `reveal` |
