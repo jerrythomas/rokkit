@@ -17,6 +17,7 @@ describe('listAgents (bundled catalog)', () => {
 		const names = listAgents().map((a) => a.name)
 		expect(names).toContain('rokkit-styles-reviewer')
 		expect(names).toContain('rokkit-components-reviewer')
+		expect(names).toContain('rokkit-chart-reviewer')
 		for (const a of listAgents()) {
 			expect(a.name).toBeTruthy()
 			expect(a.description.length).toBeGreaterThan(0)
