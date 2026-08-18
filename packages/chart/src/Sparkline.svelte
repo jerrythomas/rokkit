@@ -15,6 +15,7 @@
 		height?: number
 		min?: number
 		max?: number
+		baseline?: number
 	}
 
 	let {
@@ -27,7 +28,8 @@
 		width = 80,
 		height = 24,
 		min = undefined,
-		max = undefined
+		max = undefined,
+		baseline = undefined
 	}: Props = $props()
 
 	const values = $derived(
@@ -36,8 +38,21 @@
 		)
 	)
 
-	const yMin = $derived(min ?? Math.min(...values))
-	const yMax = $derived(max ?? Math.max(...values))
+	const hasNegative = $derived(values.some((v) => v < 0))
+	// Bars with negative values are meaningless when measured from the pixel bottom, so a
+	// bar sparkline auto-anchors at 0 when any value is negative. Everything else is opt-in.
+	const effectiveBaseline = $derived(baseline ?? (type === 'bar' && hasNegative ? 0 : undefined))
+
+	const rawMin = $derived(Math.min(...values))
+	const rawMax = $derived(Math.max(...values))
+	// Explicit min/max win; otherwise extend the auto domain to include the baseline so it
+	// (and the full negative extent) stay on-canvas.
+	const yMin = $derived(
+		min ?? (effectiveBaseline !== undefined ? Math.min(rawMin, effectiveBaseline) : rawMin)
+	)
+	const yMax = $derived(
+		max ?? (effectiveBaseline !== undefined ? Math.max(rawMax, effectiveBaseline) : rawMax)
+	)
 
 	const xScale = $derived(
 		scaleLinear()
@@ -45,6 +60,10 @@
 			.range([0, width])
 	)
 	const yScale = $derived(scaleLinear().domain([yMin, yMax]).range([height, 0]))
+
+	// When no baseline is in effect, anchor at the pixel bottom — preserves the classic
+	// min-anchored sparkbar look (Math.min/abs below both collapse to the old formula).
+	const barAnchorY = $derived(effectiveBaseline !== undefined ? yScale(effectiveBaseline) : height)
 
 	const linePath = $derived.by(() => {
 		const gen = d3line<number>()
@@ -100,23 +119,41 @@
 		/>
 	{:else if type === 'bar'}
 		{#each values as v, i (i)}
+			{@const vy = yScale(v)}
+			{@const top = Math.min(vy, barAnchorY)}
+			{@const barHeight = Math.abs(vy - barAnchorY)}
 			<rect
 				x={xScale(i) - barWidth / 2}
-				y={yScale(v)}
+				y={top}
 				width={barWidth}
-				height={height - yScale(v)}
+				height={barHeight}
 				fill={strokeColor}
 			/>
 			{#if patternMarks}
 				<rect
 					x={xScale(i) - barWidth / 2}
-					y={yScale(v)}
+					y={top}
 					width={barWidth}
-					height={height - yScale(v)}
+					height={barHeight}
 					fill="url(#{patternId})"
 					pointer-events="none"
 				/>
 			{/if}
 		{/each}
 	{/if}
+
+	{#if effectiveBaseline !== undefined}
+		{@const by = yScale(effectiveBaseline)}
+		<line x1={0} y1={by} x2={width} y2={by} data-plot-baseline />
+	{/if}
 </svg>
+
+<style>
+	[data-plot-baseline] {
+		stroke: var(--chart-baseline-color, currentColor);
+		stroke-width: var(--chart-baseline-width, 1);
+		stroke-dasharray: var(--chart-baseline-dash, 4 4);
+		opacity: var(--chart-baseline-opacity, 0.5);
+		pointer-events: none;
+	}
+</style>

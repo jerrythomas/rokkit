@@ -82,4 +82,65 @@ describe('Sparkline', () => {
 		const patternRects = container.querySelectorAll('rect[fill^="url("]')
 		expect(patternRects.length).toBe(3)
 	})
+
+	it('re-anchors bars at an explicit baseline (negative bars hang down)', () => {
+		// values [5,-5], height 40, domain [-5,5] → yScale(0)=20, yScale(5)=0, yScale(-5)=40
+		const { container } = render(Sparkline, {
+			data: [5, -5],
+			type: 'bar',
+			width: 100,
+			height: 40,
+			baseline: 0
+		})
+		const rects = container.querySelectorAll('rect')
+		expect(rects.length).toBe(2)
+		// positive bar grows UP from the zero line: top at 0, height 20
+		expect(rects[0].getAttribute('y')).toBe('0')
+		expect(rects[0].getAttribute('height')).toBe('20')
+		// negative bar hangs DOWN from the zero line: top at 20, height 20
+		expect(rects[1].getAttribute('y')).toBe('20')
+		expect(rects[1].getAttribute('height')).toBe('20')
+	})
+
+	it('auto-defaults baseline to 0 for bars with negative values', () => {
+		const { container } = render(Sparkline, {
+			data: [5, -5],
+			type: 'bar',
+			width: 100,
+			height: 40
+		})
+		const rects = container.querySelectorAll('rect')
+		// same anchoring as explicit baseline={0}: negative bar hangs from the zero line
+		expect(rects[1].getAttribute('y')).toBe('20')
+		expect(rects[1].getAttribute('height')).toBe('20')
+	})
+
+	it('draws a baseline reference line when a baseline is in effect', () => {
+		const { container } = render(Sparkline, {
+			data: [5, -5],
+			type: 'bar',
+			width: 100,
+			height: 40,
+			baseline: 0
+		})
+		const line = container.querySelector('[data-plot-baseline]')
+		expect(line).toBeTruthy()
+		expect(line?.getAttribute('y1')).toBe('20')
+		expect(line?.getAttribute('y2')).toBe('20')
+	})
+
+	it('keeps all-positive bars min-anchored with no baseline (regression)', () => {
+		// domain [10,30] range [40,0] → yScale(10)=40 → shortest bar has height 0
+		const { container } = render(Sparkline, {
+			data: [10, 20, 30],
+			type: 'bar',
+			width: 100,
+			height: 40
+		})
+		const rects = container.querySelectorAll('rect')
+		expect(rects.length).toBe(3)
+		expect(rects[0].getAttribute('height')).toBe('0')
+		// no baseline line drawn when baseline is not in effect
+		expect(container.querySelector('[data-plot-baseline]')).toBeNull()
+	})
 })
