@@ -124,13 +124,18 @@
 		flex-direction: column;
 	}
 	.controls {
-		flex-shrink: 0;
-		padding: 14px 16px;
+		/* Always-on, but capped: on the tallest types the picker + settings scroll
+		   internally instead of starving the conversation below. Keeps the chat the
+		   focal point and stops a type switch from reflowing everything under it. */
+		flex: 0 1 auto;
+		max-height: 44%;
+		overflow-y: auto;
+		padding: 12px 16px;
 		border-bottom: 1px solid var(--paper-edge);
 	}
 	.stream {
-		flex: 1;
-		min-height: 0;
+		flex: 1 1 auto;
+		min-height: 96px;
 		overflow-y: auto;
 		padding: 14px 16px;
 		display: flex;
@@ -138,8 +143,13 @@
 		gap: 8px;
 	}
 	.hints {
-		flex-shrink: 0;
-		padding: 12px 16px;
+		/* Fixed height so switching type (which swaps the tip list for a shorter or
+		   longer one) never repositions the buttons or the composer beneath them —
+		   the strip scrolls in place instead of becoming a moving target. */
+		flex: 0 0 auto;
+		height: 124px;
+		overflow-y: auto;
+		padding: 10px 16px 12px;
 		border-top: 1px solid var(--paper-edge);
 	}
 	.eyebrow {
