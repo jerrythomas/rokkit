@@ -28,6 +28,12 @@
       "focus": "skinning",
       "path": "packages/cli/skills/skin-system-rokkit/SKILL.md",
       "url": "/skills/skin-system-rokkit/SKILL.md"
+    },
+    {
+      "name": "charts-rokkit",
+      "focus": "charts",
+      "path": "packages/cli/skills/charts-rokkit/SKILL.md",
+      "url": "/skills/charts-rokkit/SKILL.md"
     }
   ],
   "agents": [
@@ -42,6 +48,12 @@
       "focus": "component-usage-review",
       "path": "packages/cli/agents/rokkit-components-reviewer.md",
       "url": "/agents/rokkit-components-reviewer.md"
+    },
+    {
+      "name": "rokkit-chart-reviewer",
+      "focus": "chart-review",
+      "path": "packages/cli/agents/rokkit-chart-reviewer.md",
+      "url": "/agents/rokkit-chart-reviewer.md"
     }
   ],
   "llms": {
