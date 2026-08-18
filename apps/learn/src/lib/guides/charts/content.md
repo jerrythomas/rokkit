@@ -36,17 +36,55 @@ The prebuilt shapes share most of their prop surface:
 - `legend`, `grid`, `tooltip` — display toggles.
 - `width` / `height` — explicit dimensions (responsive otherwise).
 
+## Aesthetics — colour, fill, pattern, position
+
+Every geom shares one ggplot-style aesthetic surface. Most channels
+take a **field name**, and the palette assigns one colour per distinct
+value of that field:
+
+- `fill` — interior colour-group (Bar / Area / Box / Violin / Pie).
+- `color` — outline/stroke colour-group (Line / Scatter / Bubble).
+  `fill` falls back to `color` when only one is set.
+- `group` — sub-series field for stacking/dodging; defaults to
+  `fill ?? color`.
+- `pattern` — a field mapped to texture fills (hatch, dots…), so
+  series read apart without relying on colour alone.
+- `alpha` — a fixed opacity `0–1` for the whole geom.
+- `position` (Bar / Area) — how grouped series sit together:
+  `dodge` (default, side-by-side) · `stack` (stacked; the value axis
+  grows to the column total) · `fill` (stacked and normalised to 100%
+  — read share, not totals) · `identity` (overlaid on a shared
+  baseline).
+- `orientation` (Bar) — `vertical` (default) or `horizontal`.
+
+A **literal** colour — `var(--token)`, `oklch(…)`, `#hex` or
+`currentColor` — is painted as the exact fill/stroke instead of being
+read as a field, so a geom can be coloured straight from a design token
+(`fill="var(--accent)"`).
+
+```svelte
+<PlotChart {data} width={640} height={360} legend>
+  <!-- colour-group by product, stack the series, texture each, 90% opacity -->
+  <Plot.Bar x="quarter" y="revenue" fill="product" position="stack" pattern="product" alpha={0.9} />
+</PlotChart>
+```
+
+Explore every channel interactively in the [Charts demo](/app/chart) —
+switch chart type and tweak orientation, position, colour/fill, pattern
+and opacity live.
+
 ## When to drop to `<Plot>`
 
 For multiple geoms on one canvas (e.g. bar + line overlay),
 custom aesthetics (jitter, ribbons), or faceted small multiples,
-use `<Plot>` with explicit `<GeomBar/>`, `<GeomLine/>` children:
+compose `<PlotChart>` with explicit `<Plot.Bar/>`, `<Plot.Line/>`
+children:
 
 ```svelte
-<Plot data={sales} width={600} height={300}>
-  <GeomBar x="quarter" y="revenue" />
-  <GeomLine x="quarter" y="forecast" color="primary" />
-</Plot>
+<PlotChart data={sales} width={600} height={300}>
+  <Plot.Bar x="quarter" y="revenue" />
+  <Plot.Line x="quarter" y="forecast" color="var(--accent)" />
+</PlotChart>
 ```
 
 ## Faceted plots
