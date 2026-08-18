@@ -92,7 +92,7 @@
 				: [highlight]
 	)
 	const highlightIndices = $derived.by(() => {
-		const seen = new Set()
+		const seen = new Set<number>()
 		for (const sel of highlightSelectors) {
 			for (const i of resolveHighlight(rows, sel, { y: 'y' })) seen.add(i)
 		}
