@@ -73,6 +73,38 @@ export class ChartExplorerStore {
 	toggleDrawer(open?: boolean): void {
 		this.drawerOpen = open ?? !this.drawerOpen
 	}
+
+	/** A short bot-style description of what the canvas is currently showing. */
+	describe(): string {
+		const c = this.config
+		const s = this.settings
+		const context: Record<string, string> = {
+			productSeries: 'quarterly revenue across two products',
+			segments: 'market share by segment',
+			cars: 'engine size vs. highway efficiency by car class',
+			daily: 'a daily metric over the last 30 days',
+			heatmap: 'weekly activity by day and hour',
+			points: 'a dense 2-D point cloud',
+			ohlc: 'open/high/low/close prices over 12 sessions',
+			waterfall: 'a running total built up step by step',
+			flows: 'flows between source and target groups'
+		}
+		const bits = [`Here's a **${c.label.toLowerCase()} chart** showing ${context[c.dataset] ?? 'the sample data'}.`]
+		if (this.applies('position') && s.position) {
+			const p: Record<string, string> = {
+				stack: 'The series are stacked to show cumulative totals.',
+				dodge: 'The series sit side-by-side for direct comparison.',
+				fill: 'Each column is normalised to 100% so you read share, not totals.',
+				identity: 'The series overlap on a shared baseline.'
+			}
+			if (p[s.position]) bits.push(p[s.position])
+		}
+		if (this.applies('orientation') && s.orientation === 'horizontal') bits.push('Bars run horizontally.')
+		if (this.applies('pattern') && s.pattern) bits.push('Fills use textured patterns.')
+		if (this.applies('innerRadius') && s.innerRadius) bits.push('The centre is cut out into a donut.')
+		if (this.applies('legend') && s.legend) bits.push('A colour legend is shown.')
+		return bits.join(' ')
+	}
 }
 
 /** Shared singleton for the demo (components import this). */
