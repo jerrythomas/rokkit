@@ -143,8 +143,7 @@
 	{/if}
 
 	{#if effectiveBaseline !== undefined}
-		{@const by = yScale(effectiveBaseline)}
-		<line x1={0} y1={by} x2={width} y2={by} data-plot-baseline />
+		<line x1={0} y1={barAnchorY} x2={width} y2={barAnchorY} data-plot-baseline />
 	{/if}
 </svg>
 

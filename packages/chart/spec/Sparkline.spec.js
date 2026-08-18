@@ -143,4 +143,33 @@ describe('Sparkline', () => {
 		// no baseline line drawn when baseline is not in effect
 		expect(container.querySelector('[data-plot-baseline]')).toBeNull()
 	})
+
+	it('extends the domain to include an explicit baseline (all-positive bars)', () => {
+		// data [10,20,30] with baseline 0 → domain becomes [0,30] (not [10,30]),
+		// so the shortest bar is no longer collapsed to height 0, and a baseline line is drawn.
+		const { container } = render(Sparkline, {
+			data: [10, 20, 30],
+			type: 'bar',
+			width: 100,
+			height: 40,
+			baseline: 0
+		})
+		const rects = container.querySelectorAll('rect')
+		expect(rects[0].getAttribute('height')).not.toBe('0')
+		expect(container.querySelector('[data-plot-baseline]')).toBeTruthy()
+	})
+
+	it('draws a baseline reference line for line type without changing the fill', () => {
+		const { container } = render(Sparkline, {
+			data: [10, 20, 30],
+			type: 'line',
+			width: 100,
+			height: 40,
+			baseline: 15
+		})
+		// reference rule renders for non-bar types
+		expect(container.querySelector('[data-plot-baseline]')).toBeTruthy()
+		// the line path is still present (fill/line rendering unaffected)
+		expect(container.querySelector('path')).toBeTruthy()
+	})
 })
