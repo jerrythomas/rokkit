@@ -212,4 +212,46 @@ describe('Sparkline', () => {
 		const { container } = render(Sparkline, { data: [10, 20, 30], type: 'line' })
 		expect(container.querySelectorAll('[data-plot-highlight]').length).toBe(0)
 	})
+
+	it('renders a horizontal trend line for a constant method', () => {
+		const { container } = render(Sparkline, {
+			data: [10, 20, 30],
+			type: 'line',
+			width: 100,
+			height: 40,
+			trend: 'avg'
+		})
+		const path = container.querySelector('[data-plot-trend]')
+		expect(path).toBeTruthy()
+		const d = path?.getAttribute('d') ?? ''
+		expect(d.startsWith('M0,')).toBe(true)
+		// avg of 10,20,30 = 20; a constant trend is a horizontal line, so both ends share one y
+		const ys = [...d.matchAll(/[ML]\d+,([\d.]+)/g)].map((m) => m[1])
+		expect(ys[0]).toBe(ys[1]) // same y at both ends → horizontal
+	})
+
+	it('renders a fitted trend series path', () => {
+		const { container } = render(Sparkline, {
+			data: [10, 20, 30],
+			type: 'line',
+			trend: 'linear'
+		})
+		const path = container.querySelector('[data-plot-trend]')
+		expect(path).toBeTruthy()
+		expect(path?.getAttribute('d')).not.toContain('NaN')
+	})
+
+	it('renders one path per method for an array of trends', () => {
+		const { container } = render(Sparkline, {
+			data: [10, 20, 30, 25],
+			type: 'line',
+			trend: ['avg', 'linear']
+		})
+		expect(container.querySelectorAll('[data-plot-trend]').length).toBe(2)
+	})
+
+	it('renders no trend when trend is unset', () => {
+		const { container } = render(Sparkline, { data: [10, 20, 30], type: 'line' })
+		expect(container.querySelectorAll('[data-plot-trend]').length).toBe(0)
+	})
 })

@@ -4,6 +4,7 @@
 	import PatternDef from './patterns/PatternDef.svelte'
 	import { PATTERNS } from './patterns/patterns.js'
 	import { resolveHighlight } from './lib/highlight.js'
+	import { computeTrend } from './lib/trend.js'
 
 	type HighlightSelector =
 		| 'first'
@@ -26,6 +27,11 @@
 		max?: number
 		baseline?: number
 		highlight?: HighlightSelector | HighlightSelector[]
+		trend?:
+			| string
+			| number
+			| { type: string; [k: string]: unknown }
+			| Array<string | number | { type: string; [k: string]: unknown }>
 	}
 
 	let {
@@ -40,7 +46,8 @@
 		min = undefined,
 		max = undefined,
 		baseline = undefined,
-		highlight = undefined
+		highlight = undefined,
+		trend = undefined
 	}: Props = $props()
 
 	const values = $derived(
@@ -98,6 +105,28 @@
 			.map((i) => ({ i, cx: xScale(i), cy: yScale(values[i]) }))
 			.filter((m) => Number.isFinite(m.cx) && Number.isFinite(m.cy))
 	)
+
+	const trendMethods = $derived(
+		Array.isArray(trend) ? trend : trend === null || trend === undefined ? [] : [trend]
+	)
+	const trendPaths = $derived.by(() => {
+		const out = []
+		trendMethods.forEach((m, idx) => {
+			const res = computeTrend(rows, { x: 'x', y: 'y' }, m)
+			if (!res) return
+			if (res.kind === 'constant') {
+				const yy = yScale(res.value)
+				out.push({ d: `M0,${yy} L${width},${yy}`, i: idx })
+			} else {
+				const gen = d3line()
+					.x((_, i) => xScale(i))
+					.y((v) => yScale(v))
+				const d = gen(res.values)
+				if (d) out.push({ d, i: idx })
+			}
+		})
+		return out
+	})
 
 	const linePath = $derived.by(() => {
 		const gen = d3line<number>()
@@ -176,6 +205,14 @@
 		{/each}
 	{/if}
 
+	{#if trendPaths.length}
+		<g data-plot-geom="trend">
+			{#each trendPaths as p (p.i)}
+				<path d={p.d} data-plot-trend fill="none" />
+			{/each}
+		</g>
+	{/if}
+
 	{#if effectiveBaseline !== undefined}
 		<line x1={0} y1={barAnchorY} x2={width} y2={barAnchorY} data-plot-baseline />
 	{/if}
@@ -202,6 +239,15 @@
 		fill: var(--chart-highlight-color, rgb(var(--color-accent-500, 194 65 12)));
 		stroke: var(--chart-highlight-ring, none);
 		r: var(--chart-highlight-radius, 3);
+		pointer-events: none;
+	}
+
+	[data-plot-trend] {
+		fill: none;
+		stroke: var(--chart-trend-color, currentColor);
+		stroke-width: var(--chart-trend-width, 1);
+		stroke-dasharray: var(--chart-trend-dash, 4 4);
+		opacity: var(--chart-trend-opacity, 0.7);
 		pointer-events: none;
 	}
 </style>
