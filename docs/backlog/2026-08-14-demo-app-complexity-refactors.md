@@ -1,7 +1,7 @@
 # Demo-app high-complexity refactors (qlty smells)
 
 **Date:** 2026-08-14
-**Status:** Partially done — `llm.svelte.ts` + `packages/cli/src/doctor.js` resolved (2026-08-14); `routeData` and the contrast-collector functions remain backlogged.
+**Status:** DONE — all listed hotspots resolved. `llm.svelte.ts` + `packages/cli/src/doctor.js` (2026-08-14); `routeData` + the contrast-collector functions (`collectContrast`, `auditGallery`) (2026-08-18).
 **Site Applicability:** `apps/learn` demo/tooling + `@rokkit/cli` only.
 
 ## Problem
@@ -19,9 +19,9 @@ characterization tests first:
 | `inferFenceLanguage` + `toolNameToFence` | `apps/learn/src/lib/chat-demo/llm.svelte.ts` | 9 / 6 returns | ✅ resolved 2026-08-14 |
 | `llm.svelte.ts` file-complexity | — | 154 | ✅ resolved 2026-08-14 |
 | `packages/cli/src/doctor.js` file-complexity | — | 81 | ✅ resolved 2026-08-14 |
-| `routeData` | `apps/learn/src/lib/chat-demo/router.ts` | ~19 | ⏳ backlogged |
-| `collectContrast` | `apps/learn/e2e/contrast-collector.mjs` | ~53 | ⏳ backlogged |
-| `auditGallery` | `apps/learn/e2e/contrast-collector.mjs` | ~29 | ⏳ backlogged |
+| `routeData` | `apps/learn/src/lib/chat-demo/router.ts` | ~19 | ✅ resolved 2026-08-18 |
+| `collectContrast` | `apps/learn/e2e/contrast-collector.mjs` | ~53 | ✅ resolved 2026-08-18 |
+| `auditGallery` | `apps/learn/e2e/contrast-collector.mjs` | ~29 | ✅ resolved 2026-08-18 |
 
 > Note: the original table pointed at `router.ts`, but the LLM-block hotspots actually live in
 > `llm.svelte.ts` (the parser functions moved there when the demo switched from scripted routing
@@ -72,12 +72,16 @@ Verification: all 9 touched files are qlty-smell-free; `test:ci` 5313 green; `li
    current outputs across representative + malformed fenced blocks), then split the pure parsing
    into `parse.ts` / `scan.ts` / `prompt.ts` and replaced the error-mapping ternary chains with a
    lookup table, keeping tests green. Mirrored the `infer.ts` approach (`42742044`).
-2. **`router.ts` `routeData`** (~19) — still backlogged; add characterization tests for the
-   data-route branches, then extract per-branch helpers.
-3. **`contrast-collector.mjs`** — still backlogged; this is an e2e helper (runs in the browser
-   via Playwright). Extract the per-element contrast-collection and the audit-loop into named
-   helpers; verify by running the `theme-contrast` e2e before/after and diffing the collected
-   report.
+2. **`router.ts` `routeData`** (~19) ✅ 2026-08-18 — added 17 characterization tests
+   (`spec/chat-demo/router.spec.ts`) covering every shape branch + the originalQuery prefix, then
+   extracted `buildRecordBlocks` / `buildTableBlocks` / `buildChartBlocks` / `buildListBlocks` /
+   `buildJsonFallback` + `prependQueryContext`; `routeData` is now infer → error-guard → dispatch.
+3. **`contrast-collector.mjs`** ✅ 2026-08-18 — `collectContrast` (~53) restructured with a nested
+   self-contained `evaluate(el)` (stays serializable for `page.evaluate`); `auditGallery` (~29)
+   flattened onto a `matrix()` config list + `mergeFinding()` / `collectConfig()` helpers. The
+   Node-side helpers (`matrix`, `mergeFinding`, `isAllowed`, `formatReport`) now have 10 unit tests
+   (`spec/theme-contrast-collector.spec.ts`); the browser collector verified by the
+   `theme-contrast` e2e (passed, no new failures beyond baseline).
 
 ## Out of scope
 
@@ -87,5 +91,6 @@ Verification: all 9 touched files are qlty-smell-free; `test:ci` 5313 green; `li
 ## Deliverable
 
 The listed functions below qlty's complexity threshold, each behind characterization tests, with
-the demo + contrast e2e verified unchanged. **Done:** `llm.svelte.ts` (all hotspots + file 154) and
-`packages/cli/src/doctor.js` (file 81). **Remaining:** `routeData`, `collectContrast`, `auditGallery`.
+the demo + contrast e2e verified unchanged. **DONE (all):** `llm.svelte.ts` (all hotspots + file 154),
+`packages/cli/src/doctor.js` (file 81), `routeData`, and the contrast-collector functions
+(`collectContrast`, `auditGallery`).

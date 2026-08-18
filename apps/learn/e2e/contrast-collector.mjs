@@ -82,45 +82,56 @@ export function collectContrast({ mode }) {
 
 	const IGNORE = new Set(['data-style', 'data-mode', 'data-skin', 'data-density', 'data-gallery-comp'])
 	const isPart = (a) => a.name.startsWith('data-') && !a.name.startsWith('data-sveltekit') && !IGNORE.has(a.name)
-	const seen = new Set()
-	const findings = []
 
-	for (const el of document.querySelectorAll('.gallery [data-gallery-comp] *')) {
+	// Evaluate one element → a { finding, sig } pair, or null when it isn't a
+	// measurable text part or its contrast passes. Nested (not module-scope) so the
+	// whole function stays self-contained for page.evaluate serialization. Same
+	// guards/order as before — just lifted out of the collection loop.
+	const evaluate = (el) => {
 		const parts = [...el.attributes].filter(isPart)
-		if (!parts.length) continue
+		if (!parts.length) return null
 		const txt = el.textContent.trim()
-		if (!txt) continue
+		if (!txt) return null
 		const ownText = [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())
 		const inlineOnly = el.childElementCount <= 4 && [...el.children].every((c) => ['SPAN', 'I', 'SVG', 'EM', 'STRONG', 'CODE', 'B', 'LABEL'].includes(c.tagName))
-		if (!ownText && !inlineOnly) continue
+		if (!ownText && !inlineOnly) return null
 		const r = el.getBoundingClientRect()
-		if (r.width < 4 || r.height < 4 || r.height > 96) continue
+		if (r.width < 4 || r.height < 4 || r.height > 96) return null
 		const cs = getComputedStyle(el)
-		if (cs.visibility === 'hidden' || cs.display === 'none') continue
-		if (parseFloat(cs.opacity) < 0.75) continue // intentionally muted (disabled/placeholder)
+		if (cs.visibility === 'hidden' || cs.display === 'none') return null
+		if (parseFloat(cs.opacity) < 0.75) return null // intentionally muted (disabled/placeholder)
 
 		const color = toRGBA(cs.color)
-		if (color[3] < 0.1) continue
+		if (color[3] < 0.1) return null
 		const bg = effectiveBg(el)
-		if (!bg) continue // gradient/image fill — contrast indeterminate, skip
+		if (!bg) return null // gradient/image fill — contrast indeterminate, skip
 		const fg = color[3] >= 0.999 ? [color[0], color[1], color[2]] : over(color, bg)
 		const ratio = contrast(relLum(fg), relLum(bg))
 		const px = parseFloat(cs.fontSize)
 		const weight = parseInt(cs.fontWeight, 10) || 400
 		const large = px >= 24 || (px >= 18.66 && weight >= 700)
 		const threshold = large ? 3.0 : 4.5
-		if (ratio >= threshold) continue
+		if (ratio >= threshold) return null
 
 		const comp = el.closest('[data-gallery-comp]')?.dataset.galleryComp ?? '?'
 		const part = parts[0].name
 		const text = txt.slice(0, 32).replace(/\s+/g, ' ')
-		const sig = `${comp}|${part}|${text}|${ratio.toFixed(1)}`
-		if (seen.has(sig)) continue
-		seen.add(sig)
-		findings.push({
-			comp, part, text, ratio: +ratio.toFixed(2), threshold,
-			fg: `rgb(${fg.join(',')})`, bg: `rgb(${bg.join(',')})`, px, weight
-		})
+		return {
+			sig: `${comp}|${part}|${text}|${ratio.toFixed(1)}`,
+			finding: {
+				comp, part, text, ratio: +ratio.toFixed(2), threshold,
+				fg: `rgb(${fg.join(',')})`, bg: `rgb(${bg.join(',')})`, px, weight
+			}
+		}
+	}
+
+	const seen = new Set()
+	const findings = []
+	for (const el of document.querySelectorAll('.gallery [data-gallery-comp] *')) {
+		const r = evaluate(el)
+		if (!r || seen.has(r.sig)) continue
+		seen.add(r.sig)
+		findings.push(r.finding)
 	}
 	return findings
 }
@@ -142,26 +153,46 @@ export function isAllowed(f) {
 	return ALLOW.some((a) => a.comp === f.comp && a.part === f.part && (!a.text || f.text.includes(a.text)))
 }
 
+/** The full audit matrix as a flat list of { style, mode, skin } configs (skin → style → mode). */
+export function matrix() {
+	const configs = []
+	for (const skin of SKINS)
+		for (const style of STYLES) for (const mode of MODES) configs.push({ style, mode, skin })
+	return configs
+}
+
+/**
+ * Merge one finding into the dedup map, keyed by comp|part|text. First sighting
+ * seeds `configs`; later sightings append the config and keep the WORST (lowest) ratio.
+ */
+export function mergeFinding(uniq, f, cfg) {
+	const key = `${f.comp}|${f.part}|${f.text}`
+	const existing = uniq.get(key)
+	if (!existing) {
+		uniq.set(key, { ...f, configs: [cfg] })
+		return
+	}
+	existing.configs.push(cfg)
+	if (f.ratio < existing.ratio) existing.ratio = f.ratio
+}
+
+/** Collect the in-page findings for one gallery config. */
+async function collectConfig(page, base, { style, mode, skin }) {
+	await page.goto(`${base}/embed/gallery?style=${style}&skin=${skin}&mode=${mode}`, {
+		waitUntil: 'networkidle',
+		timeout: 20000
+	})
+	await page.waitForTimeout(120)
+	return page.evaluate(collectContrast, { mode })
+}
+
 /** Drive the whole matrix against a Playwright page; returns deduped findings. */
 export async function auditGallery(page, base) {
 	const uniq = new Map()
-	for (const skin of SKINS) {
-		for (const style of STYLES) {
-			for (const mode of MODES) {
-				await page.goto(`${base}/embed/gallery?style=${style}&skin=${skin}&mode=${mode}`, {
-					waitUntil: 'networkidle', timeout: 20000
-				})
-				await page.waitForTimeout(120)
-				const found = await page.evaluate(collectContrast, { mode })
-				for (const f of found) {
-					if (isAllowed(f)) continue
-					const key = `${f.comp}|${f.part}|${f.text}`
-					const cfg = `${style}/${mode}/${skin}`
-					if (!uniq.has(key)) uniq.set(key, { ...f, configs: [cfg] })
-					else { const u = uniq.get(key); u.configs.push(cfg); if (f.ratio < u.ratio) u.ratio = f.ratio }
-				}
-			}
-		}
+	for (const cfg of matrix()) {
+		const found = await collectConfig(page, base, cfg)
+		const label = `${cfg.style}/${cfg.mode}/${cfg.skin}`
+		for (const f of found) if (!isAllowed(f)) mergeFinding(uniq, f, label)
 	}
 	return [...uniq.values()].sort((a, b) => a.comp.localeCompare(b.comp) || a.ratio - b.ratio)
 }
