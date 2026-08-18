@@ -228,6 +228,8 @@ describe('Sparkline', () => {
 		// avg of 10,20,30 = 20; a constant trend is a horizontal line, so both ends share one y
 		const ys = [...d.matchAll(/[ML]\d+,([\d.]+)/g)].map((m) => m[1])
 		expect(ys[0]).toBe(ys[1]) // same y at both ends → horizontal
+		// avg=20, domain [10,30] → range [40,0] → yScale(20)=20
+		expect(d).toBe('M0,20 L100,20')
 	})
 
 	it('renders a fitted trend series path', () => {
@@ -239,6 +241,9 @@ describe('Sparkline', () => {
 		const path = container.querySelector('[data-plot-trend]')
 		expect(path).toBeTruthy()
 		expect(path?.getAttribute('d')).not.toContain('NaN')
+		// 3 data points → 3 path commands (1 M + 2 L)
+		const commands = (path?.getAttribute('d') ?? '').match(/[ML]/g) ?? []
+		expect(commands.length).toBe(3)
 	})
 
 	it('renders one path per method for an array of trends', () => {

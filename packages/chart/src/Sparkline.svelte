@@ -14,6 +14,8 @@
 		| number
 		| ((row: { x: number; y: number }, i: number) => boolean)
 
+	type TrendMethod = string | number | { type: string; [k: string]: unknown }
+
 	type Props = {
 		data?: number[] | Record<string, unknown>[]
 		field?: string
@@ -27,11 +29,7 @@
 		max?: number
 		baseline?: number
 		highlight?: HighlightSelector | HighlightSelector[]
-		trend?:
-			| string
-			| number
-			| { type: string; [k: string]: unknown }
-			| Array<string | number | { type: string; [k: string]: unknown }>
+		trend?: TrendMethod | TrendMethod[]
 	}
 
 	let {
@@ -109,20 +107,28 @@
 	const trendMethods = $derived(
 		Array.isArray(trend) ? trend : trend === null || trend === undefined ? [] : [trend]
 	)
+	const typeOf = (m: TrendMethod) => {
+		const t = typeof m === 'string' ? m : typeof m === 'number' ? 'value' : (m?.type ?? '')
+		return t === 'mean' ? 'avg' : t
+	}
 	const trendPaths = $derived.by(() => {
-		const out = []
+		const out: { d: string; type: string; i: number }[] = []
 		trendMethods.forEach((m, idx) => {
 			const res = computeTrend(rows, { x: 'x', y: 'y' }, m)
 			if (!res) return
 			if (res.kind === 'constant') {
 				const yy = yScale(res.value)
-				out.push({ d: `M0,${yy} L${width},${yy}`, i: idx })
+				if (Number.isFinite(yy))
+					out.push({ d: `M0,${yy} L${width},${yy}`, type: typeOf(m), i: idx })
 			} else {
-				const gen = d3line()
-					.x((_, i) => xScale(i))
-					.y((v) => yScale(v))
-				const d = gen(res.values)
-				if (d) out.push({ d, i: idx })
+				const pts = res.values
+					.map((v, i) => ({ vx: xScale(i), vy: yScale(v) }))
+					.filter((p) => Number.isFinite(p.vx) && Number.isFinite(p.vy))
+				const gen = d3line<{ vx: number; vy: number }>()
+					.x((p) => p.vx)
+					.y((p) => p.vy)
+				const d = gen(pts)
+				if (d) out.push({ d, type: typeOf(m), i: idx })
 			}
 		})
 		return out
@@ -208,7 +214,7 @@
 	{#if trendPaths.length}
 		<g data-plot-geom="trend">
 			{#each trendPaths as p (p.i)}
-				<path d={p.d} data-plot-trend fill="none" />
+				<path d={p.d} data-plot-trend={p.type} />
 			{/each}
 		</g>
 	{/if}
