@@ -549,6 +549,33 @@ describe('PlotState — stacked bar Y domain using pattern channel for stack', (
 	})
 })
 
+// ─── position=stack with no grouping field must not collapse the Y domain ───────
+
+describe('PlotState — position=stack with no group field falls back to the value extent', () => {
+	// Two rows per x but no color/fill/pattern to stack on. buildStackedBars renders
+	// individual bars (no real stacking), so the domain must cover the largest single
+	// value — not the last row per x, which used to shrink the axis and overflow the bars.
+	const data = [
+		{ x: 'A', y: 120 },
+		{ x: 'A', y: 80 },
+		{ x: 'B', y: 160 },
+		{ x: 'B', y: 100 }
+	]
+
+	it('sizes the Y domain to the value extent, not the last row per x', () => {
+		const state = new PlotState({ data, channels: { x: 'x', y: 'y' }, width: 600, height: 400 })
+		state.registerGeom({
+			type: 'bar',
+			channels: { x: 'x', y: 'y' },
+			stat: 'identity',
+			options: { position: 'stack' }
+		})
+		const [, domMax] = state.yScale.domain()
+		// Largest single value is 160; the bug collapsed the domain to 100 (B's last row).
+		expect(domMax).toBeGreaterThanOrEqual(160)
+	})
+})
+
 // ─── box domain includes outliers ─────────────────────────────────────────────
 describe('PlotState — box y-domain includes outliers', () => {
 	it('extends the y-domain to cover outlier points', () => {

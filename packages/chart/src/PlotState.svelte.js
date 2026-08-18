@@ -261,6 +261,11 @@ export class PlotState {
 		// Mirror buildStackedBars/subBandFields (group=fill first, then color, then pattern).
 		const stackField =
 			[fillField, colorField, patternField].find((f) => f && f !== xField) ?? (fillField ?? colorField)
+		// No grouping field → buildStackedBars falls back to buildBars (individual bars, no
+		// actual stacking), so there's no stacked total to size to. Bail to the normal value
+		// extent; otherwise every row collapses to the same cKey below and the lookup's set()
+		// overwrites, shrinking the domain to the last row per x — and the bars overflow.
+		if (!stackField) return null
 		const lookup = new SvelteMap()
 		for (const d of stackData) {
 			const xVal = d[xField]
