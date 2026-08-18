@@ -1,15 +1,17 @@
 import { describe, it, expect } from 'vitest'
-import { registry, chartTypes } from '../../src/lib/koan/demos/chart/registry'
+import { registry, chartTypes, chartGroups } from '../../src/lib/koan/demos/chart/registry'
 import { datasets } from '../../src/lib/koan/demos/chart/datasets'
 import { ChartExplorerStore } from '../../src/lib/koan/demos/chart/store.svelte'
 
 describe('chart explorer — registry', () => {
-	it('has all 14 types across the two groups', () => {
+	it('has all 14 types, each in a declared purpose group', () => {
 		expect(chartTypes).toHaveLength(14)
-		const charts = chartTypes.filter((t) => t.group === 'Charts')
-		const geoms = chartTypes.filter((t) => t.group === 'Geoms')
-		expect(charts).toHaveLength(8)
-		expect(geoms).toHaveLength(6)
+		for (const t of chartTypes) {
+			expect(chartGroups, `${t.id} group`).toContain(t.group)
+		}
+		// the purpose groups partition all 14 types
+		const counted = chartGroups.reduce((n, g) => n + chartTypes.filter((t) => t.group === g).length, 0)
+		expect(counted).toBe(14)
 	})
 
 	it('every type points at an existing dataset and has non-empty applies + tips', () => {
@@ -83,12 +85,11 @@ describe('chart explorer — store', () => {
 		expect(s.type).toBe('violin')
 	})
 
-	it('toggleDrawer() opens and closes', () => {
+	it('initialises the first chart grouped (fill seeded from the type fields)', () => {
+		// A bare BASE_SETTINGS (fill='') mounted an ungrouped bar whose stack had nothing to
+		// group, so the axis couldn't size to the total and the bars overflowed. The initial
+		// settings must seed the type's field mapping, same as select().
 		const s = new ChartExplorerStore()
-		expect(s.drawerOpen).toBe(false)
-		s.toggleDrawer()
-		expect(s.drawerOpen).toBe(true)
-		s.toggleDrawer(false)
-		expect(s.drawerOpen).toBe(false)
+		expect(s.settings.fill).toBe('product')
 	})
 })
