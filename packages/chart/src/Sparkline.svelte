@@ -5,6 +5,14 @@
 	import { PATTERNS } from './patterns/patterns.js'
 	import { resolveHighlight } from './lib/highlight.js'
 
+	type HighlightSelector =
+		| 'first'
+		| 'last'
+		| 'min'
+		| 'max'
+		| number
+		| ((row: { x: number; y: number }, i: number) => boolean)
+
 	type Props = {
 		data?: number[] | Record<string, unknown>[]
 		field?: string
@@ -17,21 +25,7 @@
 		min?: number
 		max?: number
 		baseline?: number
-		highlight?:
-			| 'first'
-			| 'last'
-			| 'min'
-			| 'max'
-			| number
-			| ((row: { x: number; y: number }, i: number) => boolean)
-			| Array<
-					| 'first'
-					| 'last'
-					| 'min'
-					| 'max'
-					| number
-					| ((row: { x: number; y: number }, i: number) => boolean)
-			  >
+		highlight?: HighlightSelector | HighlightSelector[]
 	}
 
 	let {
@@ -99,6 +93,11 @@
 		}
 		return [...seen]
 	})
+	const highlightMarks = $derived(
+		highlightIndices
+			.map((i) => ({ i, cx: xScale(i), cy: yScale(values[i]) }))
+			.filter((m) => Number.isFinite(m.cx) && Number.isFinite(m.cy))
+	)
 
 	const linePath = $derived.by(() => {
 		const gen = d3line<number>()
@@ -181,10 +180,10 @@
 		<line x1={0} y1={barAnchorY} x2={width} y2={barAnchorY} data-plot-baseline />
 	{/if}
 
-	{#if highlightIndices.length}
+	{#if highlightMarks.length}
 		<g data-plot-geom="highlight">
-			{#each highlightIndices as i (i)}
-				<circle cx={xScale(i)} cy={yScale(values[i])} data-plot-highlight />
+			{#each highlightMarks as m (m.i)}
+				<circle cx={m.cx} cy={m.cy} data-plot-highlight />
 			{/each}
 		</g>
 	{/if}

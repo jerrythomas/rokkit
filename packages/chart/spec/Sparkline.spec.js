@@ -194,6 +194,8 @@ describe('Sparkline', () => {
 		expect(dots.length).toBe(1)
 		// last index = 3, xScale domain [0,3] range [0,90] → cx = 90
 		expect(dots[0].getAttribute('cx')).toBe('90')
+		// last index = 3, value 15; domain [10,30] range [24,0] → yScale(15)=18
+		expect(dots[0].getAttribute('cy')).toBe('18')
 	})
 
 	it('dedupes overlapping highlight selectors', () => {
