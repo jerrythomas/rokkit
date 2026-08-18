@@ -34,7 +34,7 @@ export function buildLines(data, channels, xScale, yScale, colors, curve, place 
 			// A null y-value is a GAP (a missing period), not a zero: break the path there
 			// (d3 `.defined`) instead of letting yScale(null) collapse it onto the 0 baseline.
 			// A genuine 0 stays defined and plots.
-			.defined((p) => Number.isFinite(p.y) && (yf == null || p.data?.[yf] != null))
+			.defined((p) => Number.isFinite(p.y) && (yf === undefined || yf === null || (p.data?.[yf] !== undefined && p.data?.[yf] !== null)))
 			.x((p) => p.x)
 			.y((p) => p.y)
 		if (curve === 'smooth') gen.curve(curveCatmullRom)

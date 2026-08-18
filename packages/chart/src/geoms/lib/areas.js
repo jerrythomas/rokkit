@@ -34,7 +34,7 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
 		const gen = area()
 			// A null y-value is a GAP (a missing period): break the area there instead of
 			// dropping it onto the 0 baseline. A genuine 0 stays defined and fills.
-			.defined((p) => Number.isFinite(p.top.y) && (yf == null || p.v != null))
+			.defined((p) => Number.isFinite(p.top.y) && (yf === undefined || yf === null || (p.v !== undefined && p.v !== null)))
 			.x0((p) => p.base.x)
 			.y0((p) => p.base.y)
 			.x1((p) => p.top.x)
