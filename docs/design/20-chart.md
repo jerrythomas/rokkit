@@ -379,8 +379,10 @@ Enrichment props (all optional, additive):
 - `baseline` — the value bars grow *from* (positive up, negative down), and a `data-plot-baseline`
   reference rule. For `type="bar"` with any negative value it **defaults to `0`** so negative
   sparkbars render correctly; all-positive bars with no baseline stay min-anchored. The y-domain
-  extends to include the baseline. For `line`/`area` it is a reference rule only (fill anchor
-  unchanged).
+  extends to include the baseline; explicit `min`/`max` still win (if they exclude the baseline, the
+  anchor may fall at the domain edge). For `line`/`area` the series fill still anchors to the bottom,
+  but a `baseline` outside the data range extends the y-domain (rescaling the series), not just draws
+  the rule.
 
 ---
 

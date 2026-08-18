@@ -259,4 +259,30 @@ describe('Sparkline', () => {
 		const { container } = render(Sparkline, { data: [10, 20, 30], type: 'line' })
 		expect(container.querySelectorAll('[data-plot-trend]').length).toBe(0)
 	})
+
+	it('composes baseline, highlight, and trend together consistently', () => {
+		// data [5,-5,3], baseline 0, height 40, domain [-5,5] → yScale: 5→0, 0→20, -5→40
+		const { container } = render(Sparkline, {
+			data: [5, -5, 3],
+			type: 'bar',
+			width: 100,
+			height: 40,
+			baseline: 0,
+			highlight: ['max'],
+			trend: 'avg'
+		})
+		// all three overlays render alongside the bars
+		const rects = container.querySelectorAll('rect')
+		expect(rects.length).toBe(3)
+		expect(container.querySelector('[data-plot-baseline]')).toBeTruthy()
+		const dots = container.querySelectorAll('[data-plot-highlight]')
+		expect(dots.length).toBe(1)
+		expect(container.querySelector('[data-plot-trend]')).toBeTruthy()
+		// shared yScale: the max marker (value 5, index 0) and the max bar's top both sit at y=0
+		expect(dots[0].getAttribute('cy')).toBe('0')
+		expect(rects[0].getAttribute('y')).toBe('0')
+		// baseline↔bar coupling: the zero line and the negative bar's top both sit at y=20
+		expect(container.querySelector('[data-plot-baseline]')?.getAttribute('y1')).toBe('20')
+		expect(rects[1].getAttribute('y')).toBe('20')
+	})
 })
