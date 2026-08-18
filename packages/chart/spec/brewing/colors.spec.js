@@ -65,10 +65,22 @@ describe('isLiteralColor', () => {
 		expect(isLiteralColor('oklch(0.7 0.15 200)')).toBe(true)
 	})
 
+	it('detects CSS custom-property refs and currentColor', () => {
+		expect(isLiteralColor('var(--accent)')).toBe(true)
+		expect(isLiteralColor('var(--color-ink-500)')).toBe(true)
+		expect(isLiteralColor('var( --accent )')).toBe(true)
+		expect(isLiteralColor('var(--accent, #f00)')).toBe(true)
+		expect(isLiteralColor('currentColor')).toBe(true)
+		expect(isLiteralColor('currentcolor')).toBe(true)
+	})
+
 	it('returns false for field names', () => {
 		expect(isLiteralColor('region')).toBe(false)
 		expect(isLiteralColor('category')).toBe(false)
 		expect(isLiteralColor('year')).toBe(false)
+		// Field names that merely start like a color keyword are still fields.
+		expect(isLiteralColor('variant')).toBe(false)
+		expect(isLiteralColor('colorway')).toBe(false)
 	})
 
 	it('returns false for falsy values', () => {

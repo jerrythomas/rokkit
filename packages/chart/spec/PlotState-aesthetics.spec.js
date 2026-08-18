@@ -48,6 +48,20 @@ describe('PlotState — fill/color shared categorical scale (Phase 2)', () => {
 		const s = new PlotState({ data, channels: { fill: '#4a90d9' } })
 		expect(s.fillField).toBeNull()
 	})
+
+	it('passes a var(--token) color straight through to the mark (theme-reactive)', () => {
+		const s = new PlotState({ data, channels: { x: 'region', y: 'v', color: 'var(--accent)' } })
+		// Not treated as a data field...
+		expect(s.colorField).toBeNull()
+		// ...and every mark resolves to the literal token, so it stays [data-mode]-reactive.
+		expect(s.colors.get(null)).toEqual({ fill: 'var(--accent)', stroke: 'var(--accent)' })
+	})
+
+	it('passes currentColor straight through to the mark', () => {
+		const s = new PlotState({ data, channels: { x: 'region', y: 'v', color: 'currentColor' } })
+		expect(s.colorField).toBeNull()
+		expect(s.colors.get(null)).toEqual({ fill: 'currentColor', stroke: 'currentColor' })
+	})
 })
 
 describe('preset.opacity covers every geom (Phase 2)', () => {

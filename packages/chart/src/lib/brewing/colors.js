@@ -6,7 +6,8 @@ import { defaultPreset } from '../preset.js'
 
 /**
  * Returns true if the value looks like a CSS color literal (not a field name).
- * Supports hex (#rgb, #rrggbb, #rrggbbaa), and functional notations (rgb, hsl, oklch, etc.).
+ * Supports hex (#rgb, #rrggbb, #rrggbbaa), functional notations (rgb, hsl, oklch, etc.),
+ * CSS custom-property refs (var(--token)), and the `currentColor` keyword.
  * @param {unknown} value
  * @returns {boolean}
  */
@@ -14,6 +15,11 @@ export function isLiteralColor(value) {
 	if (!value || typeof value !== 'string') return false
 	if (/^#([0-9a-fA-F]{3,8})$/.test(value)) return true
 	if (/^(rgb|rgba|hsl|hsla|oklch|oklab|hwb|lab|lch|color)\s*\(/i.test(value)) return true
+	// A `var(--token)` ref or `currentColor` resolves to a concrete color at paint time
+	// (and stays theme-reactive under [data-mode]), so it means "use this color", not
+	// "map the field with this name" — pass it straight through to fill/stroke.
+	if (/^var\(\s*--/.test(value)) return true
+	if (/^currentcolor$/i.test(value)) return true
 	return false
 }
 
