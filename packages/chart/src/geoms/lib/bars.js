@@ -185,13 +185,19 @@ export function buildStackedBars(data, channels, xScale, yScale, colors, innerHe
 					? toPatternId(String(patternKey))
 					: null
 
+			// Two opposite corners in (band, value) space, mapped through place() so the
+			// stack transposes under orientation='horizontal' (identity default → unchanged).
+			// Without this a grouped stack/fill ignored place() and always drew vertically.
+			const band = bandScale(xVal) ?? 0
+			const c1 = place(band, yScale(y0))
+			const c2 = place(band + bandScale.bandwidth(), yScale(y1))
 			bars.push({
 				data: point.data,
 				key: `${String(xVal)}::${String(stackKey)}`,
-				x: bandScale(xVal) ?? 0,
-				y: yScale(y1),
-				width: bandScale.bandwidth(),
-				height: yScale(y0) - yScale(y1),
+				x: Math.min(c1.x, c2.x),
+				y: Math.min(c1.y, c2.y),
+				width: Math.abs(c2.x - c1.x),
+				height: Math.abs(c2.y - c1.y),
 				fill: colorEntry.fill,
 				stroke: colorEntry.stroke,
 				patternId

@@ -61,6 +61,20 @@ describe('buildBarMarks — position', () => {
 		expect(totalH).toBeLessThan(100)
 	})
 
+	it('stack transposes under a horizontal place() (band on y, value on width, stacks along x)', () => {
+		// A transposing place() (x↔y) is how orientation='horizontal' flips the chart. A grouped
+		// stack used to ignore place() and always draw vertically; it must now transpose too.
+		const plot = { ...fakePlot(), place: (x, y) => ({ x: y, y: x }) }
+		const bars = buildBarMarks({ data, plot, channels: { x: 'cat', y: 'val', fill: 'grp' }, options: { position: 'stack' }, type: 'bar' })
+		const a = aBars(bars)
+		expect(new Set(a.map((b) => Math.round(b.y))).size).toBe(1) // one band (shared y)
+		expect(new Set(a.map((b) => Math.round(b.x))).size).toBe(2) // two segments stacked along x
+		// value is now encoded on width; A column = 3 + 1 = 4 of [0,10] → ~80px total
+		const totalW = a.reduce((s, b) => s + b.width, 0)
+		expect(totalW).toBeGreaterThan(60)
+		expect(totalW).toBeLessThan(100)
+	})
+
 	it('fill normalizes each column to 100% (spans the full value range)', () => {
 		// fill sets the value domain to [0,1] (mirrors PlotState.#resolveStackDomain)
 		const plot = fakePlot([0, 1])
