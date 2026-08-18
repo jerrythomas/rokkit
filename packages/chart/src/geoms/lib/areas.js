@@ -1,6 +1,6 @@
 import { area, stack, stackOffsetExpand, curveCatmullRom, curveStep } from 'd3-shape'
 import { toPatternId } from '../../lib/brewing/patterns.js'
-import { isLiteralColor } from '../../lib/brewing/colors.js'
+import { literalColor, markEntry } from '../../lib/brewing/colors.js'
 
 /**
  * Builds area path geometry for multi-series area charts.
@@ -20,8 +20,8 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
 	// A literal color (var()/oklch()/hex/currentColor) isn't a data field — it's the exact
 	// fill the caller wants for THIS area. Don't group on it, and don't fall back to the
 	// shared color scale (one value across all geoms); use it directly.
-	const literalColor = isLiteralColor(channels.color) ? channels.color : undefined
-	const cf = literalColor ? undefined : channels.color
+	const lit = literalColor(channels.color)
+	const cf = lit ? undefined : channels.color
 	const baseline = yScale.range()[0] // bottom of the chart (y pixel max)
 
 	const xPos = (d) =>
@@ -56,9 +56,7 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
 
 	if (!cf) {
 		// A literal color IS the fill; a single-series field uses the shared shade.
-		const entry = literalColor
-			? { fill: literalColor, stroke: literalColor }
-			: (colors?.values().next().value ?? { fill: '#888', stroke: '#888' })
+		const entry = markEntry(lit, undefined, colors, colors?.values().next().value ?? { fill: '#888', stroke: '#888' })
 		const patternKey = pf ? data[0]?.[pf] : null
 		const patternId =
 			patternKey !== null && patternKey !== undefined && patterns?.has(patternKey)

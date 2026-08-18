@@ -24,6 +24,33 @@ export function isLiteralColor(value) {
 }
 
 /**
+ * A color-channel value as a literal CSS color (var()/oklch()/#hex/currentColor),
+ * or undefined when it names a data field. Pair with {@link markEntry}: a literal is
+ * painted directly on every mark; a field is grouped and looked up in the color scale.
+ * @param {unknown} value
+ * @returns {string | undefined}
+ */
+export function literalColor(value) {
+	return isLiteralColor(value) ? /** @type {string} */ (value) : undefined
+}
+
+/**
+ * Resolves the `{fill, stroke}` for one mark. A `literal` color IS the paint for every
+ * mark — applied directly, never grouped as a field or run through the shared `colors`
+ * scale (which holds a single value across all geoms). Otherwise `key` is looked up in
+ * `colors`, falling back to `fallback`.
+ * @param {string | undefined} literal
+ * @param {unknown} key
+ * @param {Map<unknown, {fill: string, stroke: string}> | undefined} colors
+ * @param {{fill: string, stroke: string}} fallback
+ * @returns {{fill: string, stroke: string}}
+ */
+export function markEntry(literal, key, colors, fallback) {
+	if (literal) return { fill: literal, stroke: literal }
+	return colors?.get(key) ?? fallback
+}
+
+/**
  * Extracts distinct values for a given field from the data array.
  * @param {Object[]} data
  * @param {string|null} field

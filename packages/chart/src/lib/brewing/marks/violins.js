@@ -1,5 +1,6 @@
 import { line, curveCatmullRom } from 'd3-shape'
 import { toPatternId } from '../patterns.js'
+import { literalColor, markEntry } from '../colors.js'
 
 // Relative widths at each stat anchor (fraction of max half-width)
 const DENSITY_AT = { iqr_min: 0.08, q1: 0.55, median: 1.0, q3: 0.55, iqr_max: 0.08 }
@@ -49,8 +50,11 @@ export function buildViolins(
 	patterns
 ) {
 	const { x: xf, fill: ff, pattern: pf } = channels
+	// A literal fill colours every violin directly; a field sub-groups within each x-band.
+	const lit = literalColor(ff)
+	const field = lit ? undefined : ff
 	const bw = typeof xScale.bandwidth === 'function' ? xScale.bandwidth() : 40
-	const grouped = ff && ff !== xf
+	const grouped = field && field !== xf
 	// Texture fill: patternId per violin from the pattern channel value (null = solid fill).
 	const patternIdFor = (d) => {
 		const key = pf ? d[pf] : null
@@ -73,7 +77,7 @@ export function buildViolins(
 			const subIndex = fillValues.indexOf(fillVal)
 			const bandStart = xScale(d[xf]) ?? 0
 			const cx = bandStart + subIndex * subBandWidth + subBandWidth / 2
-			const colorEntry = colors?.get(fillVal) ?? { fill: '#aaa', stroke: '#666' }
+			const colorEntry = markEntry(lit, fillVal, colors, { fill: '#aaa', stroke: '#666' })
 
 			return {
 				data: d,
@@ -90,8 +94,8 @@ export function buildViolins(
 	const halfMax = bw * 0.45
 
 	return data.map((d) => {
-		const fillKey = ff ? d[ff] : d[xf]
-		const colorEntry = colors?.get(fillKey) ?? { fill: '#aaa', stroke: '#666' }
+		const fillKey = field ? d[field] : d[xf]
+		const colorEntry = markEntry(lit, fillKey, colors, { fill: '#aaa', stroke: '#666' })
 		const cx = (xScale(d[xf]) ?? 0) + (typeof xScale.bandwidth === 'function' ? bw / 2 : 0)
 
 		return {

@@ -1,4 +1,5 @@
 import { ascending } from 'd3-array'
+import { literalColor, markEntry } from '../colors.js'
 
 /**
  * Deterministic pseudo-random in [0, 1) from a non-negative integer seed.
@@ -28,6 +29,9 @@ function hashUnit(n) {
  */
 export function buildSwarm(data, channels, xScale, yScale, colors, opts = {}) {
 	const { x: xf, y: yf, fill: ff } = channels
+	// A literal fill colours every point directly; otherwise group on the fill field.
+	const lit = literalColor(ff)
+	const field = lit ? undefined : ff
 	const { method = 'jitter', r = 2, side = 'center' } = opts
 	const bw = typeof xScale.bandwidth === 'function' ? xScale.bandwidth() : 40
 	// One-sided layouts get the full half-band on their side; centred straddles ±halfBand.
@@ -51,8 +55,8 @@ export function buildSwarm(data, channels, xScale, yScale, colors, opts = {}) {
 				: rows.map((_, i) => jitterOffset(hashUnit(i), halfBand, side))
 
 		rows.forEach((d, i) => {
-			const fillKey = ff ? d[ff] : xVal
-			const colorEntry = colors?.get(fillKey) ?? { fill: '#aaa', stroke: '#666' }
+			const fillKey = field ? d[field] : xVal
+			const colorEntry = markEntry(lit, fillKey, colors, { fill: '#aaa', stroke: '#666' })
 			result.push({
 				data: d,
 				cx: center + offsets[i],

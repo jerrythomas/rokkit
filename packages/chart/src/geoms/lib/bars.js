@@ -1,7 +1,7 @@
 import { scaleBand } from 'd3-scale'
 import { stack, stackOffsetExpand } from 'd3-shape'
 import { toPatternId } from '../../lib/brewing/patterns.js'
-import { isLiteralColor } from '../../lib/brewing/colors.js'
+import { isLiteralColor, literalColor, markEntry } from '../../lib/brewing/colors.js'
 
 /**
  * Returns a band scale suitable for bar x-positioning.
@@ -57,6 +57,9 @@ export function buildBars(
 	dodge = true
 ) {
 	const { x: xf, y: yf, color: cf, pattern: pf } = channels
+	// A literal color is the exact fill for every bar; a field indexes the shared color scale.
+	const lit = literalColor(cf)
+	const field = lit ? undefined : cf
 
 	// No sub-banding for a continuous (race) axis or position='identity' (dodge=false → overlap).
 	const subFields = continuousCategory || !dodge ? [] : subBandFields(channels)
@@ -96,12 +99,16 @@ export function buildBars(
 
 	return data.map((d, i) => {
 		const xVal = d[xf]
-		const colorKey = cf ? d[cf] : null
+		const colorKey = field ? d[field] : null
 		const patternKey = pf ? d[pf] : null
 		const subKey = getSubKey(d)
 
-		const colorEntry = colors?.get(colorKey) ??
+		const colorEntry = markEntry(
+			lit,
+			colorKey,
+			colors,
 			colors?.values().next().value ?? { fill: '#888', stroke: '#888' }
+		)
 		const patternId =
 			patternKey !== null && patternKey !== undefined && patterns?.has(patternKey)
 				? toPatternId(String(patternKey))
@@ -136,6 +143,8 @@ export function buildBars(
 
 export function buildStackedBars(data, channels, xScale, yScale, colors, innerHeight, patterns, place = (x, y) => ({ x, y }), normalize = false) {
 	const { x: xf, y: yf, color: cf, pattern: pf } = channels
+	const lit = literalColor(cf)
+	const field = lit ? undefined : cf
 
 	const bandScale = ensureBandX(xScale, data, xf)
 
@@ -175,8 +184,8 @@ export function buildStackedBars(data, channels, xScale, yScale, colors, innerHe
 			const xVal = point.data[xf]
 
 			// Color lookup: cf may equal xf (= xVal) or stackField (= stackKey)
-			const colorKey = cf ? (cf === xf ? xVal : cf === stackField ? stackKey : null) : null
-			const colorEntry = colors?.get(colorKey) ?? { fill: '#888', stroke: '#888' }
+			const colorKey = field ? (field === xf ? xVal : field === stackField ? stackKey : null) : null
+			const colorEntry = markEntry(lit, colorKey, colors, { fill: '#888', stroke: '#888' })
 
 			// Pattern lookup: pf may equal xf (= xVal) or stackField (= stackKey)
 			const patternKey = pf ? (pf === xf ? xVal : pf === stackField ? stackKey : null) : null

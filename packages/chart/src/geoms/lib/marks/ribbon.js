@@ -1,12 +1,13 @@
 import { resolveAlpha } from '../aesthetics.js'
+import { literalColor } from '../../../lib/brewing/colors.js'
 
 /**
  * Build a Sankey-style ribbon layout: links (flows) + source/target node boxes. Link fill
  * comes from the source (then target) palette entry; `alpha` is fixed (default 0.5). Returns
  * an object rather than a flat array, so the geom template renders links + node labels.
- * @param {{ data: any[], plot: any, options?: any, alpha?: number, type?: string }} ctx
+ * @param {{ data: any[], plot: any, channels?: any, options?: any, alpha?: number, type?: string }} ctx
  */
-export function buildRibbonMarks({ data, plot, options = {}, alpha, type = 'ribbon' }) {
+export function buildRibbonMarks({ data, plot, channels = {}, options = {}, alpha, type = 'ribbon' }) {
 	const empty = { links: [], sourceNodes: [], targetNodes: [] }
 	if (!data?.length) return empty
 
@@ -14,6 +15,8 @@ export function buildRibbonMarks({ data, plot, options = {}, alpha, type = 'ribb
 	const sourceField = options.source ?? 'source'
 	const targetField = options.target ?? 'target'
 	const valueField = options.value ?? 'value'
+	// A literal color/fill paints every ribbon directly (else fill comes from the node palette).
+	const lit = literalColor(channels.color ?? channels.fill)
 	const a = resolveAlpha(alpha, type, plot.chartPreset)
 
 	const flows = data.map((d) => ({
@@ -69,7 +72,7 @@ export function buildRibbonMarks({ data, plot, options = {}, alpha, type = 'ribb
 		sourceOffsets.set(f.source, sy0 + sh)
 		targetOffsets.set(f.target, ty0 + th)
 
-		const fill = colors?.get(f.source)?.fill ?? colors?.get(f.target)?.fill ?? '#888'
+		const fill = lit ?? (colors?.get(f.source)?.fill ?? colors?.get(f.target)?.fill ?? '#888')
 		return { key: `ribbon-${i}`, d: path, fill, alpha: a, data: f.data }
 	})
 

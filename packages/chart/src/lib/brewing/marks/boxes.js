@@ -1,4 +1,5 @@
 import { toPatternId } from '../patterns.js'
+import { literalColor, markEntry } from '../colors.js'
 
 /**
  * Builds box geometry for box plot charts.
@@ -23,9 +24,12 @@ import { toPatternId } from '../patterns.js'
  */
 export function buildBoxes(data, channels, xScale, yScale, colors, opts = {}) {
 	const { x: xf, fill: ff, pattern: pf } = channels
+	// A literal fill colours every box directly; a field sub-groups within each x-band.
+	const lit = literalColor(ff)
+	const field = lit ? undefined : ff
 	const { side = 'center', width, patterns } = opts
 	const bw = typeof xScale.bandwidth === 'function' ? xScale.bandwidth() : 20
-	const grouped = ff && ff !== xf
+	const grouped = field && field !== xf
 	// Offset the box centre to the middle of the chosen half-lane.
 	const laneOffset = (unit) => (side === 'left' ? -unit / 4 : side === 'right' ? unit / 4 : 0)
 	// Texture fill: patternId per box from the pattern channel value (null = solid fill).
@@ -46,7 +50,7 @@ export function buildBoxes(data, channels, xScale, yScale, colors, opts = {}) {
 			const subIndex = fillValues.indexOf(fillVal)
 			const bandStart = xScale(d[xf]) ?? 0
 			const cx = bandStart + subIndex * subBandWidth + subBandWidth / 2 + laneOffset(subBandWidth)
-			const colorEntry = colors?.get(fillVal) ?? { fill: '#aaa', stroke: '#666' }
+			const colorEntry = markEntry(lit, fillVal, colors, { fill: '#aaa', stroke: '#666' })
 
 			return {
 				data: d,
@@ -71,8 +75,8 @@ export function buildBoxes(data, channels, xScale, yScale, colors, opts = {}) {
 	const whiskerWidth = width !== undefined ? boxWidth * 0.5 : bw * 0.3
 
 	return data.map((d) => {
-		const fillKey = ff ? d[ff] : d[xf]
-		const colorEntry = colors?.get(fillKey) ?? { fill: '#aaa', stroke: '#666' }
+		const fillKey = field ? d[field] : d[xf]
+		const colorEntry = markEntry(lit, fillKey, colors, { fill: '#aaa', stroke: '#666' })
 		const cx =
 			(xScale(d[xf]) ?? 0) +
 			(typeof xScale.bandwidth === 'function' ? bw / 2 : 0) +

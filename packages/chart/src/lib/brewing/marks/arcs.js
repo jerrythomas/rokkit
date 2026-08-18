@@ -1,5 +1,6 @@
 import { pie, arc } from 'd3-shape'
 import { toPatternId } from '../../brewing/patterns.js'
+import { literalColor, markEntry } from '../colors.js'
 
 /**
  * Builds arc geometry for pie/donut charts.
@@ -14,6 +15,8 @@ import { toPatternId } from '../../brewing/patterns.js'
  */
 export function buildArcs(data, channels, colors, width, height, opts = {}, patterns) {
 	const { color: lf, y: yf } = channels
+	// A literal color paints every slice directly; a field indexes the palette scale.
+	const lit = literalColor(lf)
 	const radius = Math.min(width, height) / 2
 	// innerRadius: a value <= 1 is a fraction of the radius (responsive donut);
 	// a value > 1 is absolute pixels. Clamp below the outer radius so a bad value
@@ -29,11 +32,13 @@ export function buildArcs(data, channels, colors, width, height, opts = {}, patt
 	// Label radius: midpoint between inner and outer (or 70% out for solid pie)
 	const labelRadius = innerRadius > 0 ? (innerRadius + radius) / 2 : radius * 0.65
 	const labelArc = arc().innerRadius(labelRadius).outerRadius(labelRadius)
-	return slices.map((slice) => {
-		const key = slice.data[lf]
-		const colorEntry = colors?.get(key) ?? { fill: '#888', stroke: '#fff' }
+	return slices.map((slice, i) => {
+		// With a literal color there's no category field, so key each slice by index to keep
+		// them distinct (patterns, which are field-keyed, don't apply to a single literal fill).
+		const key = lit ? i : slice.data[lf]
+		const colorEntry = markEntry(lit, key, colors, { fill: '#888', stroke: '#fff' })
 		const patternId =
-			key !== null && key !== undefined && patterns?.has(key) ? toPatternId(String(key)) : null
+			!lit && key !== null && key !== undefined && patterns?.has(key) ? toPatternId(String(key)) : null
 		const pct = Math.round(((slice.endAngle - slice.startAngle) / total) * 100)
 		const [cx, cy] = labelArc.centroid(slice)
 		return {

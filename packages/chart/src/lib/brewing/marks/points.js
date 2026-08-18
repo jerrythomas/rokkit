@@ -8,6 +8,7 @@ import {
 	symbolStar
 } from 'd3-shape'
 import { defaultPreset } from '../../preset.js'
+import { literalColor, markEntry } from '../colors.js'
 
 const SYMBOL_TYPES = [
 	symbolCircle,
@@ -84,9 +85,13 @@ export function buildPoints(
 	jitter = null
 ) {
 	const { x: xf, y: yf, color: cf, size: sf, symbol: symf } = channels
+	// A literal color (var()/oklch()/#hex/currentColor) is the exact fill for every point,
+	// not a field to group on — apply it directly instead of looking it up in the scale.
+	const lit = literalColor(cf)
+	const field = lit ? undefined : cf
 	return data.map((d, i) => {
-		const colorKey = cf ? d[cf] : null
-		const colorEntry = colors?.get(colorKey) ?? { fill: '#888', stroke: '#444' }
+		const colorKey = field ? d[field] : null
+		const colorEntry = markEntry(lit, colorKey, colors, { fill: '#888', stroke: '#444' })
 		const r = sf && sizeScale ? sizeScale(d[sf]) : defaultRadius
 		const shapeName = symf && symbolMap ? (symbolMap.get(d[symf]) ?? 'circle') : null
 		const symbolPath = shapeName ? buildSymbolPath(shapeName, r) : null
