@@ -25,14 +25,31 @@ const BASE_SETTINGS: Settings = {
 }
 
 /**
+ * The settings a type mounts with: its field mapping (fill/color/size) plus any per-type
+ * default overrides. Used both for the store's initial value and on every `select()`, so the
+ * very first chart is already grouped/coloured (not bare BASE_SETTINGS) — otherwise a stack
+ * with no fill has nothing to group and the axis can't size to the stacked total.
+ */
+function settingsFor(typeId: string): Settings {
+	const cfg = registry[typeId]
+	if (!cfg) return { ...BASE_SETTINGS }
+	return {
+		...BASE_SETTINGS,
+		fill: cfg.fields.fill ?? '',
+		color: cfg.fields.color ?? '',
+		size: cfg.fields.size ?? '',
+		...(cfg.defaults as Partial<Settings>)
+	}
+}
+
+/**
  * The chart explorer's single source of truth. The chart host, control drawer, and guidance
  * strip all read/write this slice. Selecting a type resets settings to that type's defaults +
  * field mapping, so controls never carry over stale values from a different chart.
  */
 export class ChartExplorerStore {
 	type = $state('bar')
-	settings = $state<Settings>({ ...BASE_SETTINGS })
-	drawerOpen = $state(false)
+	settings = $state<Settings>(settingsFor('bar'))
 
 	get config() {
 		return registry[this.type]
@@ -48,16 +65,9 @@ export class ChartExplorerStore {
 
 	/** Switch chart type — resets settings to the type's field mapping + defaults. */
 	select(typeId: string): void {
-		const cfg = registry[typeId]
-		if (!cfg) return
+		if (!registry[typeId]) return
 		this.type = typeId
-		this.settings = {
-			...BASE_SETTINGS,
-			fill: cfg.fields.fill ?? '',
-			color: cfg.fields.color ?? '',
-			size: cfg.fields.size ?? '',
-			...(cfg.defaults as Partial<Settings>)
-		}
+		this.settings = settingsFor(typeId)
 	}
 
 	set<K extends keyof Settings>(key: K, value: Settings[K]): void {
@@ -68,10 +78,6 @@ export class ChartExplorerStore {
 	apply(tip: Tip): void {
 		if (tip.to) this.select(tip.to)
 		if (tip.set) this.settings = { ...this.settings, ...(tip.set as Partial<Settings>) }
-	}
-
-	toggleDrawer(open?: boolean): void {
-		this.drawerOpen = open ?? !this.drawerOpen
 	}
 
 	/** A short bot-style description of what the canvas is currently showing. */
@@ -89,7 +95,7 @@ export class ChartExplorerStore {
 			waterfall: 'a running total built up step by step',
 			flows: 'flows between source and target groups'
 		}
-		const bits = [`Here's a **${c.label.toLowerCase()} chart** showing ${context[c.dataset] ?? 'the sample data'}.`]
+		const bits = [`A ${c.label.toLowerCase()} chart of ${context[c.dataset] ?? 'the sample data'}.`]
 		if (this.applies('position') && s.position) {
 			const p: Record<string, string> = {
 				stack: 'The series are stacked to show cumulative totals.',

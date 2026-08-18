@@ -45,7 +45,8 @@
 		type Conversation
 	} from '$lib/koan/conversations.svelte'
 	import ComposerSuggestions from '$lib/koan/components/ComposerSuggestions.svelte'
-	import ChartSidebar from '$lib/koan/demos/chart/ChartSidebar.svelte'
+	import ChartConversation from '$lib/koan/demos/chart/ChartConversation.svelte'
+	import ChartControls from '$lib/koan/demos/chart/ChartControls.svelte'
 	import DetailsSlab from '$lib/koan/components/DetailsSlab.svelte'
 	import type { DemoMeta } from '$lib/koan/types'
 	import ThemeWizardCard from '$lib/koan/demos/theme-wizard/ThemeWizardCard.svelte'
@@ -381,6 +382,13 @@
 	const hasDetails = $derived(
 		Boolean(propsSchema && Object.keys(propsSchema).length > 0)
 	)
+
+	// The chart demo drives a live store (not the generic prop-tweak schema), so
+	// it has no propsSchema — but it still surfaces its knobs in the details slab
+	// via a chart-specific ChartControls panel. Treat it as "has details" so the
+	// composer tweak toggle + slab appear for it too.
+	const hasChartControls = $derived(shell.demoType === 'chart')
+	const showDetails = $derived(hasDetails || hasChartControls)
 
 	// The details slab is opt-in: the user clicks the icon on the
 	// composer to surface it (no layout disruption when closed). Reset
@@ -2040,19 +2048,23 @@ ${tabsTag}`
 					{/if}
 				</ChatStream>
 			{:else if shell.phase === 'response' && shell.demoType === 'chart'}
-				<ChartSidebar />
+				<ChartConversation />
 			{/if}
 
-			{#if shell.phase === 'response' && hasDetails && tweaksOpen && shell.demoType}
+			{#if shell.phase === 'response' && showDetails && tweaksOpen && shell.demoType}
 				<div class="tweaks-slab" data-glide-in>
-					<DetailsSlab
-						demoId={shell.demoType}
-						propsSchema={propsSchema}
-						tweakValues={tweakProps}
-						onTweakChange={setTweak}
-						onTweakReset={resetTweaks}
-						onTweakCopy={copyTweaks}
-					/>
+					{#if shell.demoType === 'chart'}
+						<ChartControls />
+					{:else}
+						<DetailsSlab
+							demoId={shell.demoType}
+							propsSchema={propsSchema}
+							tweakValues={tweakProps}
+							onTweakChange={setTweak}
+							onTweakReset={resetTweaks}
+							onTweakCopy={copyTweaks}
+						/>
+					{/if}
 				</div>
 			{/if}
 
@@ -2065,7 +2077,7 @@ ${tabsTag}`
 				onsubmit={submitQuery}
 			>
 				{#snippet rightActions()}
-					{#if shell.phase === 'response' && hasDetails}
+					{#if shell.phase === 'response' && showDetails}
 						<button
 							type="button"
 							class="composer-tweak-toggle"
