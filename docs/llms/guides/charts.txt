@@ -74,7 +74,7 @@ Explore every channel interactively in the [Charts demo](/app/chart) —
 switch chart type and tweak orientation, position, colour/fill, pattern
 and opacity live.
 
-## When to drop to `<Plot>`
+## When to drop to `<PlotChart>`
 
 For multiple geoms on one canvas (e.g. bar + line overlay),
 custom aesthetics (jitter, ribbons), or faceted small multiples,
@@ -129,7 +129,7 @@ with `createChartPreset` and wrap a subtree in `ChartProvider`:
 ```
 
 Or colour a single geom straight from a design token with a
-literal `fill`/`color` (see [Aesthetics](#aesthetics--colour-fill-pattern-position)).
+literal `fill`/`color` (see the Aesthetics section above).
 
 ## In Markdown
 

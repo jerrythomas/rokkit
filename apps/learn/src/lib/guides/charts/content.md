@@ -129,7 +129,7 @@ with `createChartPreset` and wrap a subtree in `ChartProvider`:
 ```
 
 Or colour a single geom straight from a design token with a
-literal `fill`/`color` (see [Aesthetics](#aesthetics--colour-fill-pattern-position)).
+literal `fill`/`color` (see the Aesthetics section above).
 
 ## In Markdown
 
