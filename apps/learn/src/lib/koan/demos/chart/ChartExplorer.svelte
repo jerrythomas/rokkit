@@ -9,6 +9,8 @@
 	const s = $derived(explorer.settings)
 	// Pie + Sankey ribbon are radial/flow layouts — no cartesian axes/grid.
 	const noAxes = $derived(explorer.type === 'pie' || explorer.type === 'ribbon')
+	// Fill the available canvas height — the chart area flex-grows and the chart matches it.
+	let chartHeight = $state(420)
 </script>
 
 <div class="explorer" data-plot-explorer>
@@ -17,9 +19,9 @@
 		<h3 data-plot-explorer-title>{config.label}</h3>
 	</header>
 
-	<div class="chart" data-plot-explorer-chart>
+	<div class="chart" data-plot-explorer-chart bind:clientHeight={chartHeight}>
 		{#key explorer.type}
-			<PlotChart {data} width={640} height={400} grid={!noAxes} axes={!noAxes} legend={s.legend} orientation={s.orientation}>
+			<PlotChart {data} width={640} height={Math.max(240, chartHeight)} grid={!noAxes} axes={!noAxes} legend={s.legend} orientation={s.orientation}>
 				{#if explorer.type === 'bar'}
 					<Plot.Bar x={f.x} y={f.y} fill={s.fill || undefined} position={s.position} alpha={s.alpha} pattern={s.pattern || undefined} />
 				{:else if explorer.type === 'line'}
@@ -60,6 +62,8 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.75rem;
+		height: 100%;
+		min-height: 0;
 	}
 	.eyebrow {
 		font-size: 0.7rem;
@@ -74,5 +78,7 @@
 	}
 	.chart {
 		width: 100%;
+		flex: 1;
+		min-height: 0;
 	}
 </style>

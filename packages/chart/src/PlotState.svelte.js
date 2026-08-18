@@ -278,6 +278,31 @@ export class PlotState {
 		return [0, Math.max(0, ...totals.values())]
 	}
 
+	// Waterfall bars sit at the RUNNING TOTAL, not the per-step value — so the y-domain must
+	// span the cumulative range, else bars overflow the axis. Mirrors buildWaterfallMarks.
+	#resolveWaterfallDomain(field) {
+		const geom = this.#geoms.find((g) => g.type === 'waterfall')
+		if (!geom) return null
+		const data = this.geomData(geom.id)
+		if (data.length === 0) return null
+		const totalField = geom.options?.totalField
+		let cumulative = 0
+		let min = 0
+		let max = 0
+		for (const d of data) {
+			if (totalField && d[totalField]) {
+				min = Math.min(min, 0, cumulative)
+				max = Math.max(max, 0, cumulative)
+			} else {
+				const start = cumulative
+				cumulative += Number(d[field]) || 0
+				min = Math.min(min, start, cumulative)
+				max = Math.max(max, start, cumulative)
+			}
+		}
+		return [min, max]
+	}
+
 	yScale = $derived.by(() => {
 		const field = this.#effectiveChannels.y
 		if (!field) return null
@@ -286,7 +311,11 @@ export class PlotState {
 		// includeZero applies to the VALUE axis: vertical charts (value on y) and flipped
 		// charts (value still y, but now the horizontal screen axis) both want a 0 baseline.
 		const includeZero = this.orientation === 'vertical' || this.#flipped
-		const yDomain = this.#yDomain ?? this.#resolveBoxDomain() ?? this.#resolveStackDomain(field)
+		const yDomain =
+			this.#yDomain ??
+			this.#resolveBoxDomain() ??
+			this.#resolveStackDomain(field) ??
+			this.#resolveWaterfallDomain(field)
 		// Flip: the value (y) axis runs along the horizontal screen → range over width.
 		const range = this.#flipped ? [0, this.#innerWidth] : undefined
 		const base = buildUnifiedYScale(datasets, field, this.#innerHeight, { domain: yDomain, includeZero, range })
