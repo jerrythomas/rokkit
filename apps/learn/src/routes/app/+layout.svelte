@@ -45,6 +45,7 @@
 		type Conversation
 	} from '$lib/koan/conversations.svelte'
 	import ComposerSuggestions from '$lib/koan/components/ComposerSuggestions.svelte'
+	import ChartSidebar from '$lib/koan/demos/chart/ChartSidebar.svelte'
 	import DetailsSlab from '$lib/koan/components/DetailsSlab.svelte'
 	import type { DemoMeta } from '$lib/koan/types'
 	import ThemeWizardCard from '$lib/koan/demos/theme-wizard/ThemeWizardCard.svelte'
@@ -2038,6 +2039,8 @@ ${tabsTag}`
 						<Chips items={variantChipItems} onselect={pickVariant} />
 					{/if}
 				</ChatStream>
+			{:else if shell.phase === 'response' && shell.demoType === 'chart'}
+				<ChartSidebar />
 			{/if}
 
 			{#if shell.phase === 'response' && hasDetails && tweaksOpen && shell.demoType}
