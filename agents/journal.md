@@ -1,5 +1,27 @@
 # Project Journal
 
+## 2026-08-19 — #149: consolidate sparkline implementations onto @rokkit/chart
+
+Closed the consolidation follow-up. The app-local `apps/learn/src/lib/components/Sparkline.svelte`
+`<polyline>` duplicate was already removed in the #147 pass; this closes the rest.
+
+Verified single source of truth: `packages/chart/src/Sparkline.svelte` is the only sparkline
+definition; every consumer imports `{ Sparkline } from '@rokkit/chart'` (the blocks `SparklinePlugin`
+and the learn `SparklineExplorer` + docs example) — no hand-rolled `<polyline>` sparkline remains
+anywhere in `src`.
+
+Added the missing forwarding contract to `packages/blocks/spec/SparklinePlugin.spec.ts` (2 → 6 tests):
+the plugin spreads the parsed JSON straight into the canonical component, so the enriched v1.3.14
+props must reach it — assert `baseline` → `[data-plot-baseline]`, `highlight` → `[data-plot-highlight]`,
+`trend` → `[data-plot-geom="trend"]`/`[data-plot-trend]`, plus the `[data-sparkline-plugin]` wrapper
+(added in #147) and the invalid-JSON error path. A regression that drifts the plugin off the component
+now fails a test.
+
+**Gate:** `bun run test:ci --project blocks` = **59 passed / 9 files, 0 failed**. Only a test file
+changed (no app/source edits), so no visual-regression risk; the learn e2e stayed green from #147.
+
+**Commit (develop):** `7988a00e`.
+
 ## 2026-08-19 — #147: live Sparkline demo + guide gallery + e2e verification
 
 Closed the #147 follow-up to the enriched Sparkline: the shipped component had no live surface (the
