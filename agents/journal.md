@@ -1,5 +1,28 @@
 # Project Journal
 
+## 2026-08-19 — #148: baseline-anchored area fill for Sparkline (negative-fill)
+
+Closed the v1 deferral: for `type="area"`, the fill anchored to the pixel bottom even with a
+`baseline` (it was a reference rule only). Now the area fill anchors at `yScale(baseline)`, so a
+mixed-sign area fills up above / down below the zero crossing.
+
+**Change (`packages/chart/src/Sparkline.svelte`):** `areaPath` y0 is `baselineY ?? height`. When a
+baseline is in effect the fill splits into two clamped regions — `data-plot-area-sign="above"` and
+`"below"`, each anchored at the baseline — so themes can colour positive vs negative fills via
+`--chart-area-above-color` / `--chart-area-below-color` (both default to the resolved
+`--spark-area-fill`; the fill moved from an inline attribute to a CSS var so it's themeable). Bars
+are unchanged; the all-positive / no-baseline path stays a single pixel-bottom area (no regression).
+
+**Tests (`packages/chart/spec/Sparkline.spec.js`, 25→27):** assert the above region is bounded by
+the baseline (never reaches the pixel bottom) and the below region reaches the negative extent while
+anchored at the baseline; a regression test keeps the no-baseline area pixel-bottom-anchored. Charts
+guide gained an "Area · fills above / below zero" card.
+
+**Gate:** `test:ci --project chart` = 1166 passed; lint 0 errors; check:svelte 0 errors; app build
+(incl. prerender) green; guide e2e green.
+
+**Commits (develop):** `f79ca68a` (component + tests), `590d4106` (guide demo).
+
 ## 2026-08-19 — #149: consolidate sparkline implementations onto @rokkit/chart
 
 Closed the consolidation follow-up. The app-local `apps/learn/src/lib/components/Sparkline.svelte`
