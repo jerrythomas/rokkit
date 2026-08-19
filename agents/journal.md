@@ -1,5 +1,38 @@
 # Project Journal
 
+## 2026-08-19 — #150: multi-quadrant support in the shared coordinate layer
+
+Closed the last enriched-Sparkline follow-up. Grounding revealed the shared-layer design was already
+largely in place: `PlotState` had `axisOrigin` + derived `xAxisY`/`yAxisX` that auto-cross at zero
+when the domain spans it, honor an explicit `axisOrigin`, or edge-pin for Q1 — and `Axis.svelte`
+already renders at those data-coordinate positions (not margin-pinned). The gap was pure plumbing:
+`config.axisOrigin` was never read by the constructor/`update`, so an explicit origin (via spec or
+prop) was ignored.
+
+**Change:** `PlotState` constructor + `update()` now read `config.axisOrigin`; `Plot.svelte` gained
+`axisOrigin`/`axisOffset` props and forwards `spec.axisOrigin ?? prop` (+ `axisOffset`) via
+`buildPlotConfig`; the `PlotSpec` typedef gained `axisOffset`. No per-geom origin logic — everything
+flows from the shared scales, per the consistency mandate. 1-/2-/4-quadrant all fall out of where the
+origin sits relative to the domain (a mixed-sign scatter auto-crosses; centred/symmetric domains are
+available via the already-plumbed `xDomain`/`yDomain`).
+
+**Tests (`packages/chart/spec`):** PlotState.spec — config→state plumbing for `axisOrigin`
+(constructor + `update` reset-to-auto); Plot.spec — a mixed-sign point chart renders both axes at the
+interior origin vs. a Q1 chart (end-to-end, shared-scale-driven). Chart project 1166→1169.
+
+**Demo surfaces:** a `Quadrant` explorer type (cars scatter with explicit `axisOrigin: [3, 26]` — a
+BCG/risk-matrix split) in `demos/chart` (registry + ChartExplorer passes `axisOrigin={config.axisOrigin}`);
+a 4-quadrant scatter card in the Charts guide. e2e: `quadrant type crosses the axes at the data origin`.
+
+**Gate:** `test:ci --project chart` 1169 passed; lint 0 errors; check:svelte 0 errors (added
+`axisOffset` to `PlotSpec` to clear a type error); app build incl. prerender green; e2e green.
+
+Deferred (optional, not in acceptance): a dedicated quadrant-label overlay layer.
+
+**Commits (develop):** `3fbf7f7f` (coordinate layer), `169f1040` (explorer type + guide). This closes
+the enriched-Sparkline follow-up epic (#147 demo/gallery/e2e, #148 area negative-fill, #149
+consolidation, #150 multi-quadrant).
+
 ## 2026-08-19 — #148: baseline-anchored area fill for Sparkline (negative-fill)
 
 Closed the v1 deferral: for `type="area"`, the fill anchored to the pixel bottom even with a
