@@ -21,5 +21,7 @@
 		</details>
 	</div>
 {:else}
-	<Sparkline {...result.spec} />
+	<div data-sparkline-plugin>
+		<Sparkline {...result.spec} />
+	</div>
 {/if}
