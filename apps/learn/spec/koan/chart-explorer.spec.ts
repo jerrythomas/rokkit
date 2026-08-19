@@ -4,14 +4,16 @@ import { datasets } from '../../src/lib/koan/demos/chart/datasets'
 import { ChartExplorerStore } from '../../src/lib/koan/demos/chart/store.svelte'
 
 describe('chart explorer — registry', () => {
-	it('has all 14 types, each in a declared purpose group', () => {
-		expect(chartTypes).toHaveLength(14)
+	it('registers every type in a declared purpose group', () => {
+		// Count-agnostic: chartTypes mirrors the registry, and the purpose groups must
+		// partition all of them (no magic number that breaks whenever a type is added).
+		const total = Object.keys(registry).length
+		expect(chartTypes).toHaveLength(total)
 		for (const t of chartTypes) {
 			expect(chartGroups, `${t.id} group`).toContain(t.group)
 		}
-		// the purpose groups partition all 14 types
 		const counted = chartGroups.reduce((n, g) => n + chartTypes.filter((t) => t.group === g).length, 0)
-		expect(counted).toBe(14)
+		expect(counted).toBe(total)
 	})
 
 	it('every type points at an existing dataset and has non-empty applies + tips', () => {
