@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { MarkdownRenderer } from '@rokkit/ui'
+	import { BLOCK_PLUGINS } from '$lib/koan/block-plugins'
 
 	interface Props {
 		markdown: string
@@ -9,7 +10,7 @@
 </script>
 
 <article class="guide-page">
-	<MarkdownRenderer {markdown} />
+	<MarkdownRenderer {markdown} plugins={BLOCK_PLUGINS} />
 </article>
 
 <style>
@@ -108,5 +109,11 @@
 		margin: 24px 0;
 		border: 0;
 		border-top: 1px solid var(--paper-edge);
+	}
+	.guide-page :global([data-sparkline-plugin]),
+	.guide-page :global([data-plot-plugin]) {
+		display: flex;
+		justify-content: center;
+		margin: 16px 0;
 	}
 </style>

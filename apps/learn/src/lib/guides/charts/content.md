@@ -144,3 +144,30 @@ prose via fenced `plot` code blocks:
 
 See the [AI Chatbots guide](/guides/ai-chatbots) for how this
 plays with LLM responses.
+
+## Live gallery
+
+The blocks below are real components, rendered from fenced `` ```sparkline ``
+blocks by the same plugin system the chat demo uses.
+
+A plain line and an area sparkline:
+
+```sparkline
+{ "data": [4, 8, 5, 11, 7, 13, 9, 15], "type": "line", "width": 160, "height": 40 }
+```
+
+```sparkline
+{ "data": [4, 8, 5, 11, 7, 13, 9, 15], "type": "area", "highlight": ["min", "max", "last"], "width": 160, "height": 40 }
+```
+
+Bars over a mixed-sign series, anchored to a zero baseline:
+
+```sparkline
+{ "data": [12, -8, 23, -17, 34, 56, -9, 41], "type": "bar", "baseline": 0, "width": 200, "height": 44 }
+```
+
+A line with a linear trend overlay:
+
+```sparkline
+{ "data": [4, 8, 5, 11, 7, 13, 9, 15], "type": "line", "trend": "linear", "width": 200, "height": 44 }
+```
