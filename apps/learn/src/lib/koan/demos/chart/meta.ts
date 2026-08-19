@@ -10,8 +10,8 @@ const meta: DemoMeta = {
 		'visualization', 'viz', 'analytics', 'data', 'metrics', 'svg',
 		'bar', 'bar-chart', 'line', 'line-chart', 'area', 'area-chart',
 		'pie', 'pie-chart', 'scatter', 'scatter-plot', 'bubble', 'bubble-chart',
-		'box', 'box-plot', 'violin', 'violin-plot', 'sparkline', 'spark-line',
-		'trends', 'distribution', 'kpi', 'inline-chart'
+		'box', 'box-plot', 'violin', 'violin-plot',
+		'trends', 'distribution', 'kpi'
 	],
 	category: 'data',
 	icon: '図',
