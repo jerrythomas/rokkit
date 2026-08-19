@@ -260,6 +260,48 @@ describe('Sparkline', () => {
 		expect(container.querySelectorAll('[data-plot-trend]').length).toBe(0)
 	})
 
+	it('anchors the area fill at the baseline for mixed-sign data (not the pixel bottom)', () => {
+		// data [5,-5], height 40, domain [-5,5] → yScale(0)=20 (baseline); pixel bottom = 40
+		const { container } = render(Sparkline, {
+			data: [5, -5],
+			type: 'area',
+			width: 100,
+			height: 40,
+			baseline: 0
+		})
+		const above = container.querySelector('[data-plot-area-sign="above"]')
+		const below = container.querySelector('[data-plot-area-sign="below"]')
+		expect(above).toBeTruthy()
+		expect(below).toBeTruthy()
+		const ysOf = (el) =>
+			[...(el.getAttribute('d') ?? '').matchAll(/,(-?[\d.]+)/g)].map((m) => Number(m[1]))
+		// the positive-region fill is bounded by the baseline (20); it never reaches the bottom (40)
+		const aboveYs = ysOf(above)
+		expect(aboveYs).toContain(20)
+		expect(aboveYs).not.toContain(40)
+		// the negative-region fill reaches the negative extent (40), anchored at the baseline (20)
+		const belowYs = ysOf(below)
+		expect(belowYs).toContain(40)
+		expect(belowYs).toContain(20)
+	})
+
+	it('keeps the area fill anchored at the pixel bottom with no baseline (regression)', () => {
+		// data [10,20,30], height 40, domain [10,30] → yScale: 10→40, 20→20, 30→0
+		const { container } = render(Sparkline, {
+			data: [10, 20, 30],
+			type: 'area',
+			width: 100,
+			height: 40
+		})
+		// no baseline in effect → a single, un-split area anchored at the pixel bottom
+		expect(container.querySelector('[data-plot-area-sign]')).toBeNull()
+		const area = container.querySelector('[data-plot-area]')
+		expect(area).toBeTruthy()
+		const ys = [...(area.getAttribute('d') ?? '').matchAll(/,(-?[\d.]+)/g)].map((m) => Number(m[1]))
+		// the fill's bottom edge sits at the pixel bottom (height = 40)
+		expect(ys).toContain(40)
+	})
+
 	it('composes baseline, highlight, and trend together consistently', () => {
 		// data [5,-5,3], baseline 0, height 40, domain [-5,5] → yScale: 5→0, 0→20, -5→40
 		const { container } = render(Sparkline, {

@@ -142,11 +142,36 @@
 		return gen(values)
 	})
 
+	// Area fill anchors at the baseline when one is in effect (so a mixed-sign
+	// area fills up above / down below the crossing), else at the pixel bottom.
+	const baselineY = $derived(effectiveBaseline !== undefined ? yScale(effectiveBaseline) : null)
+
 	const areaPath = $derived.by(() => {
 		const gen = d3area<number>()
 			.x((_, i) => xScale(i))
-			.y0(height)
+			.y0(baselineY ?? height)
 			.y1((v) => yScale(v))
+		if (curve === 'smooth') gen.curve(curveCatmullRom)
+		return gen(values)
+	})
+
+	// When a baseline is in effect, split the fill into above/below regions (each
+	// clamped at the baseline) so themes can colour positive vs negative fills.
+	const areaAbovePath = $derived.by(() => {
+		if (baselineY === null) return null
+		const gen = d3area<number>()
+			.x((_, i) => xScale(i))
+			.y0(baselineY)
+			.y1((v) => Math.min(yScale(v), baselineY))
+		if (curve === 'smooth') gen.curve(curveCatmullRom)
+		return gen(values)
+	})
+	const areaBelowPath = $derived.by(() => {
+		if (baselineY === null) return null
+		const gen = d3area<number>()
+			.x((_, i) => xScale(i))
+			.y0(baselineY)
+			.y1((v) => Math.max(yScale(v), baselineY))
 		if (curve === 'smooth') gen.curve(curveCatmullRom)
 		return gen(values)
 	})
@@ -160,7 +185,7 @@
 	const patternMarks = $derived(pattern ? (PATTERNS[pattern] ?? null) : null)
 </script>
 
-<svg {width} {height} style="overflow: visible; display: block;">
+<svg {width} {height} style="overflow: visible; display: block; --spark-area-fill: {fillColor};">
 	{#if patternMarks}
 		<defs>
 			<PatternDef id={patternId} marks={patternMarks} stroke={strokeColor} />
@@ -177,7 +202,22 @@
 			stroke-linecap="round"
 		/>
 	{:else if type === 'area'}
-		<path d={areaPath} fill={patternMarks ? `url(#${patternId})` : fillColor} stroke="none" />
+		{#if baselineY !== null}
+			<path
+				d={areaAbovePath}
+				data-plot-area
+				data-plot-area-sign="above"
+				fill={patternMarks ? `url(#${patternId})` : undefined}
+			/>
+			<path
+				d={areaBelowPath}
+				data-plot-area
+				data-plot-area-sign="below"
+				fill={patternMarks ? `url(#${patternId})` : undefined}
+			/>
+		{:else}
+			<path d={areaPath} data-plot-area fill={patternMarks ? `url(#${patternId})` : undefined} />
+		{/if}
 		<path
 			d={linePath}
 			fill="none"
@@ -233,6 +273,19 @@
 </svg>
 
 <style>
+	[data-plot-area] {
+		fill: var(--spark-area-fill, rgba(var(--color-primary-300), 0.25));
+		stroke: none;
+	}
+	/* Positive vs negative regions of a baseline-anchored area — default to the
+	   same fill; a theme can distinguish them via these vars. */
+	[data-plot-area][data-plot-area-sign='above'] {
+		fill: var(--chart-area-above-color, var(--spark-area-fill));
+	}
+	[data-plot-area][data-plot-area-sign='below'] {
+		fill: var(--chart-area-below-color, var(--spark-area-fill));
+	}
+
 	[data-plot-baseline] {
 		stroke: var(--chart-baseline-color, currentColor);
 		stroke-width: var(--chart-baseline-width, 1);
