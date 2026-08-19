@@ -1,10 +1,21 @@
 <script lang="ts">
 	import { page } from '$app/state'
+	import { afterNavigate } from '$app/navigation'
 	import { TableOfContents } from '@rokkit/app'
 	import { guidesByCategory, type GuideCategory } from '$lib/guides'
 	import Search from '$lib/guides/Search.svelte'
 
 	const { children } = $props()
+
+	// The reading pane is an inner scroll container (<main>), which SvelteKit's
+	// window-level scroll restoration doesn't manage — so its scroll position
+	// carries over when you switch guides. Reset it to the top on a real page
+	// change (pathname differs), leaving same-page hash navigation (TOC anchor
+	// clicks) untouched.
+	let mainEl = $state<HTMLElement | null>(null)
+	afterNavigate(({ from, to }) => {
+		if (to && from?.url.pathname !== to.url.pathname) mainEl?.scrollTo({ top: 0 })
+	})
 
 	const grouped = guidesByCategory()
 	const categories: GuideCategory[] = ['basics', 'data', 'design', 'workflows', 'advanced']
@@ -41,7 +52,7 @@
 		</nav>
 	</aside>
 
-	<main id="guides-main" class="content">
+	<main id="guides-main" class="content" bind:this={mainEl}>
 		<div class="content-inner">
 			{@render children?.()}
 		</div>
