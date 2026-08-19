@@ -34,3 +34,18 @@ test('switching chart type via the tweak drawer re-renders the geom', async ({ p
 	await page.locator('[data-chart-type="area"]').click()
 	await expect(page.locator('[data-plot-geom="area"]').first()).toBeAttached()
 })
+
+// Composition types wrap the geoms differently: FacetPlot (small multiples) and
+// AnimatedPlot (tweened frames), selectable from the same type picker.
+test('composition types (facet, animated) render in the explorer', async ({ page }) => {
+	await page.goto('/app/chart')
+	await page.locator('.composer-tweak-toggle').click()
+
+	await page.locator('[data-chart-type="facet"]').click()
+	await expect(page.locator('[data-chart-type="facet"]')).toHaveAttribute('data-active', 'true')
+	await expect(page.locator('[data-facet-panel]').first()).toBeAttached()
+
+	await page.locator('[data-chart-type="animated"]').click()
+	await expect(page.locator('[data-chart-type="animated"]')).toHaveAttribute('data-active', 'true')
+	await expect(page.locator('[data-plot-geom="bar"]').first()).toBeAttached()
+})

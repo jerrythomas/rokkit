@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { PlotChart, Plot } from '@rokkit/chart'
+	import { PlotChart, FacetPlot, AnimatedPlot, Plot } from '@rokkit/chart'
 	import { explorer } from './store.svelte'
 	import { datasets } from './datasets'
 
@@ -19,7 +19,16 @@
 
 	<div class="chart" data-plot-explorer-chart>
 		{#key explorer.type}
-			<PlotChart {data} width={640} height={460} grid={!noAxes} axes={!noAxes} legend={s.legend} orientation={s.orientation}>
+			{#if explorer.type === 'facet'}
+				<FacetPlot {data} x={f.x} y={f.y} facet={{ by: 'class', cols: 3 }} width={640} height={460} legend={s.legend}>
+					<Plot.Point color={f.color || undefined} alpha={s.alpha} />
+				</FacetPlot>
+			{:else if explorer.type === 'animated'}
+				<AnimatedPlot {data} x={f.x} y={f.y} animate={{ by: 'quarter', duration: 900, loop: true }} width={640} height={460} legend={s.legend}>
+					<Plot.Bar alpha={s.alpha} />
+				</AnimatedPlot>
+			{:else}
+				<PlotChart {data} width={640} height={460} grid={!noAxes} axes={!noAxes} legend={s.legend} orientation={s.orientation}>
 				{#if explorer.type === 'bar'}
 					<Plot.Bar x={f.x} y={f.y} fill={s.fill || undefined} position={s.position} alpha={s.alpha} pattern={s.pattern || undefined} />
 				{:else if explorer.type === 'line'}
@@ -50,7 +59,8 @@
 					<Plot.Line x={f.x} y={f.y} alpha={s.alpha} />
 					<Plot.Rule y={[60, 85]} label="target" />
 				{/if}
-			</PlotChart>
+				</PlotChart>
+			{/if}
 		{/key}
 	</div>
 </div>

@@ -26,6 +26,7 @@ export type ChartGroup =
 	| 'Financial'
 	| 'Flow'
 	| 'Reference'
+	| 'Composition'
 
 /** A leading guidance nudge — one tap either switches `to` a type or `set`s settings. */
 export type Tip = { text: string; to?: string; set?: Record<string, unknown> }
@@ -169,6 +170,26 @@ export const registry: Record<string, ChartTypeConfig> = {
 		applies: ['alpha'],
 		defaults: {},
 		tips: [{ text: 'Reference lines mark thresholds or targets' }]
+	},
+	facet: {
+		id: 'facet', label: 'Facet', group: 'Composition', dataset: 'cars',
+		fields: { x: 'displ', y: 'hwy', color: 'drv' },
+		applies: ['alpha', 'legend'],
+		defaults: { legend: true, alpha: 0.8 },
+		tips: [
+			{ text: 'Small multiples — one panel per class, sharing axes' },
+			{ text: 'Prefer everything on one canvas? Switch to scatter', to: 'scatter' }
+		]
+	},
+	animated: {
+		id: 'animated', label: 'Animated', group: 'Composition', dataset: 'productSeries',
+		fields: { x: 'product', y: 'revenue' },
+		applies: ['alpha'],
+		defaults: {},
+		tips: [
+			{ text: 'Frames tween across quarters — a bar-chart race' },
+			{ text: 'See the quarters side by side as grouped bars', to: 'bar' }
+		]
 	}
 }
 
@@ -181,5 +202,6 @@ export const chartGroups: ChartGroup[] = [
 	'Distribution',
 	'Financial',
 	'Flow',
-	'Reference'
+	'Reference',
+	'Composition'
 ]
