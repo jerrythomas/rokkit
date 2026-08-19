@@ -51,4 +51,13 @@ describe('SparklinePlugin', () => {
 		expect(container.querySelector('[data-plot-geom="trend"]')).toBeTruthy()
 		expect(container.querySelector('[data-plot-trend]')).toBeTruthy()
 	})
+
+	it('renders a titled card (figure + caption) when `title` is set, without passing it to the component', () => {
+		const code = JSON.stringify({ data: [1, 2, 3], type: 'line', title: 'Signups' })
+		const { container } = render(SparklinePlugin, { props: { code } })
+		const card = container.querySelector('[data-sparkline-plugin]')
+		expect(card?.tagName.toLowerCase()).toBe('figure')
+		expect(container.querySelector('[data-sparkline-caption]')?.textContent).toBe('Signups')
+		expect(container.querySelector('svg')).toBeTruthy()
+	})
 })
