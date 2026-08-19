@@ -154,39 +154,32 @@ fence and rendered client-side.
 
 ### Sparklines
 
-Word-sized ` ```sparkline ` blocks — line, area and bar, with baselines, markers
-and trend overlays.
-
-A plain line, and a smooth line marking its latest point:
+Word-sized ` ```sparkline ` blocks. Each fence sets a `title`, so it renders as a
+labelled card — line, area and bar with baselines, markers and trend overlays,
+laid out as a wrapping row of equal-sized cards:
 
 ```sparkline
-{ "data": [4, 8, 5, 11, 7, 13, 9, 15], "type": "line", "width": 160, "height": 40 }
+{ "data": [4, 8, 5, 11, 7, 13, 9, 15], "type": "line", "width": 180, "height": 48, "title": "Line" }
 ```
 
 ```sparkline
-{ "data": [4, 8, 5, 11, 7, 13, 9, 15], "type": "line", "curve": "smooth", "highlight": ["last"], "width": 160, "height": 40 }
-```
-
-An area with the min, max and last points called out:
-
-```sparkline
-{ "data": [4, 8, 5, 11, 7, 13, 9, 15], "type": "area", "highlight": ["min", "max", "last"], "width": 200, "height": 44 }
-```
-
-Bars over a mixed-sign series, anchored to a zero baseline:
-
-```sparkline
-{ "data": [12, -8, 23, -17, 34, 56, -9, 41], "type": "bar", "baseline": 0, "width": 200, "height": 44 }
-```
-
-A line with a linear trend overlay, and an accent-coloured area with a mean line:
-
-```sparkline
-{ "data": [4, 8, 5, 11, 7, 13, 9, 15], "type": "line", "trend": "linear", "width": 200, "height": 44 }
+{ "data": [4, 8, 5, 11, 7, 13, 9, 15], "type": "line", "curve": "smooth", "highlight": ["last"], "width": 180, "height": 48, "title": "Smooth · last point" }
 ```
 
 ```sparkline
-{ "data": [4, 8, 5, 11, 7, 13, 9, 15], "type": "area", "color": "accent", "trend": "avg", "width": 200, "height": 44 }
+{ "data": [4, 8, 5, 11, 7, 13, 9, 15], "type": "area", "highlight": ["min", "max", "last"], "width": 180, "height": 48, "title": "Area · min / max / last" }
+```
+
+```sparkline
+{ "data": [12, -8, 23, -17, 34, 56, -9, 41], "type": "bar", "baseline": 0, "width": 180, "height": 48, "title": "Bars · zero baseline" }
+```
+
+```sparkline
+{ "data": [4, 8, 5, 11, 7, 13, 9, 15], "type": "line", "trend": "linear", "width": 180, "height": 48, "title": "Linear trend" }
+```
+
+```sparkline
+{ "data": [4, 8, 5, 11, 7, 13, 9, 15], "type": "area", "color": "accent", "trend": "avg", "width": 180, "height": 48, "title": "Mean trend" }
 ```
 
 ### Charts
@@ -227,4 +220,16 @@ Two geoms on one canvas — bars with a forecast line overlaid:
 
 ```plot
 { "data": [{ "quarter": "Q1", "revenue": 120, "forecast": 130 }, { "quarter": "Q2", "revenue": 180, "forecast": 170 }, { "quarter": "Q3", "revenue": 160, "forecast": 175 }, { "quarter": "Q4", "revenue": 210, "forecast": 200 }], "x": "quarter", "y": "revenue", "width": 520, "height": 300, "geoms": [{ "type": "bar" }, { "type": "line", "y": "forecast", "color": "var(--accent)" }] }
+```
+
+Small multiples with `FacetPlot` — one panel per drivetrain, points coloured by class:
+
+```plot
+{ "data": [{ "class": "compact", "drv": "f", "displ": 1.4, "hwy": 35 }, { "class": "compact", "drv": "r", "displ": 2.0, "hwy": 29 }, { "class": "midsize", "drv": "f", "displ": 2.0, "hwy": 30 }, { "class": "midsize", "drv": "4", "displ": 3.0, "hwy": 25 }, { "class": "suv", "drv": "4", "displ": 3.5, "hwy": 22 }, { "class": "suv", "drv": "r", "displ": 4.6, "hwy": 18 }, { "class": "pickup", "drv": "4", "displ": 5.0, "hwy": 17 }, { "class": "subcompact", "drv": "f", "displ": 1.4, "hwy": 38 }, { "class": "subcompact", "drv": "r", "displ": 2.0, "hwy": 28 }], "x": "displ", "y": "hwy", "color": "class", "facet": { "by": "drv", "cols": 3 }, "width": 520, "height": 300, "geoms": [{ "type": "point" }] }
+```
+
+An animated bar-race with `AnimatedPlot` — the bars tween across quarters:
+
+```plot
+{ "data": [{ "quarter": "Q1", "product": "Pro", "revenue": 80 }, { "quarter": "Q2", "product": "Pro", "revenue": 120 }, { "quarter": "Q3", "product": "Pro", "revenue": 110 }, { "quarter": "Q4", "product": "Pro", "revenue": 165 }, { "quarter": "Q1", "product": "Lite", "revenue": 40 }, { "quarter": "Q2", "product": "Lite", "revenue": 60 }, { "quarter": "Q3", "product": "Lite", "revenue": 50 }, { "quarter": "Q4", "product": "Lite", "revenue": 45 }], "x": "product", "y": "revenue", "animate": { "by": "quarter", "loop": true }, "width": 520, "height": 300, "geoms": [{ "type": "bar" }] }
 ```

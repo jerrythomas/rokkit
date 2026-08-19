@@ -49,6 +49,9 @@ test('charts guide renders the live sparkline gallery', async ({ page }) => {
 	await expect(plugins.first()).toBeVisible()
 	expect(await plugins.count()).toBeGreaterThanOrEqual(6)
 
+	// Each fence sets a `title`, so it renders as a labelled card.
+	await expect(page.locator('[data-sparkline-caption]').first()).toBeVisible()
+
 	// The gallery covers a zero baseline (negative bars), markers, and a trend line.
 	await expect(page.locator('[data-sparkline-plugin] [data-plot-baseline]').first()).toBeAttached()
 	await expect(page.locator('[data-sparkline-plugin] [data-plot-highlight]').first()).toBeAttached()
@@ -64,7 +67,7 @@ test('charts guide renders the live chart gallery', async ({ page }) => {
 
 	const plots = page.locator('[data-plot-plugin]')
 	await expect(plots.first()).toBeVisible()
-	expect(await plots.count()).toBeGreaterThanOrEqual(6)
+	expect(await plots.count()).toBeGreaterThanOrEqual(8)
 
 	// The gallery covers bar, line, area and scatter (point) geoms — each is a
 	// real @rokkit/chart PlotChart rendered from a plot spec.
@@ -75,4 +78,7 @@ test('charts guide renders the live chart gallery', async ({ page }) => {
 
 	// A legend renders for the colour-mapped grouped-bar spec.
 	await expect(page.locator('[data-plot-plugin] [data-plot-legend]').first()).toBeAttached()
+
+	// FacetPlot renders small-multiple panels; AnimatedPlot renders a tweened bar geom.
+	await expect(page.locator('[data-plot-plugin] [data-facet-panel]').first()).toBeAttached()
 })

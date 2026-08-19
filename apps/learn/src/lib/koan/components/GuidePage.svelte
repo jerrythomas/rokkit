@@ -110,10 +110,31 @@
 		border: 0;
 		border-top: 1px solid var(--paper-edge);
 	}
-	.guide-page :global([data-sparkline-plugin]),
+	/* Chart blocks (```plot) — one per row, centred, capped to the column so
+	   every chart reads at a consistent size. */
 	.guide-page :global([data-plot-plugin]) {
-		display: flex;
-		justify-content: center;
-		margin: 16px 0;
+		display: block;
+		margin: 16px auto;
+		max-width: 100%;
+	}
+	/* Sparkline blocks (```sparkline) — consecutive fences lay out as a wrapping
+	   row of equal cards; a `title` in the fence renders a caption beneath each. */
+	.guide-page :global([data-sparkline-plugin]) {
+		display: inline-flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 8px;
+		margin: 0 10px 12px 0;
+		padding: 14px 16px;
+		border: 1px solid var(--paper-edge);
+		border-radius: 10px;
+		background: var(--paper-soft);
+		vertical-align: top;
+	}
+	.guide-page :global([data-sparkline-caption]) {
+		margin: 0;
+		font: 500 12px var(--font-ui);
+		color: var(--ink-mute);
+		text-align: center;
 	}
 </style>
