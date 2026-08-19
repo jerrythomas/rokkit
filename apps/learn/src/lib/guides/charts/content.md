@@ -147,17 +147,30 @@ plays with LLM responses.
 
 ## Live gallery
 
-The blocks below are real components, rendered from fenced `` ```sparkline ``
-blocks by the same plugin system the chat demo uses.
+The blocks below are **real components**, rendered from fenced code blocks by the
+same `@rokkit/blocks` plugin system the chat demo uses — no screenshots, no
+iframes. Everything is authored as JSON in a ` ```sparkline ` or ` ```plot `
+fence and rendered client-side.
 
-A plain line and an area sparkline:
+### Sparklines
+
+Word-sized ` ```sparkline ` blocks — line, area and bar, with baselines, markers
+and trend overlays.
+
+A plain line, and a smooth line marking its latest point:
 
 ```sparkline
 { "data": [4, 8, 5, 11, 7, 13, 9, 15], "type": "line", "width": 160, "height": 40 }
 ```
 
 ```sparkline
-{ "data": [4, 8, 5, 11, 7, 13, 9, 15], "type": "area", "highlight": ["min", "max", "last"], "width": 160, "height": 40 }
+{ "data": [4, 8, 5, 11, 7, 13, 9, 15], "type": "line", "curve": "smooth", "highlight": ["last"], "width": 160, "height": 40 }
+```
+
+An area with the min, max and last points called out:
+
+```sparkline
+{ "data": [4, 8, 5, 11, 7, 13, 9, 15], "type": "area", "highlight": ["min", "max", "last"], "width": 200, "height": 44 }
 ```
 
 Bars over a mixed-sign series, anchored to a zero baseline:
@@ -166,8 +179,52 @@ Bars over a mixed-sign series, anchored to a zero baseline:
 { "data": [12, -8, 23, -17, 34, 56, -9, 41], "type": "bar", "baseline": 0, "width": 200, "height": 44 }
 ```
 
-A line with a linear trend overlay:
+A line with a linear trend overlay, and an accent-coloured area with a mean line:
 
 ```sparkline
 { "data": [4, 8, 5, 11, 7, 13, 9, 15], "type": "line", "trend": "linear", "width": 200, "height": 44 }
+```
+
+```sparkline
+{ "data": [4, 8, 5, 11, 7, 13, 9, 15], "type": "area", "color": "accent", "trend": "avg", "width": 200, "height": 44 }
+```
+
+### Charts
+
+Full ` ```plot ` blocks — the same `PlotSpec` you'd pass to `<PlotChart>`,
+rendered live. Each carries an explicit `width`/`height` so the gallery lays out
+predictably.
+
+A single-series bar chart:
+
+```plot
+{ "data": [{ "quarter": "Q1", "revenue": 120 }, { "quarter": "Q2", "revenue": 180 }, { "quarter": "Q3", "revenue": 160 }, { "quarter": "Q4", "revenue": 210 }], "x": "quarter", "y": "revenue", "width": 520, "height": 300, "geoms": [{ "type": "bar" }] }
+```
+
+Grouped bars with a colour-mapped series and a legend:
+
+```plot
+{ "data": [{ "quarter": "Q1", "product": "A", "revenue": 80 }, { "quarter": "Q1", "product": "B", "revenue": 40 }, { "quarter": "Q2", "product": "A", "revenue": 110 }, { "quarter": "Q2", "product": "B", "revenue": 70 }, { "quarter": "Q3", "product": "A", "revenue": 90 }, { "quarter": "Q3", "product": "B", "revenue": 70 }, { "quarter": "Q4", "product": "A", "revenue": 130 }, { "quarter": "Q4", "product": "B", "revenue": 80 }], "x": "quarter", "y": "revenue", "fill": "product", "legend": true, "width": 520, "height": 300, "geoms": [{ "type": "bar" }] }
+```
+
+The same six-month trend as a line, then as a filled area:
+
+```plot
+{ "data": [{ "month": "Jan", "users": 20 }, { "month": "Feb", "users": 28 }, { "month": "Mar", "users": 24 }, { "month": "Apr", "users": 36 }, { "month": "May", "users": 44 }, { "month": "Jun", "users": 52 }], "x": "month", "y": "users", "width": 520, "height": 300, "geoms": [{ "type": "line" }] }
+```
+
+```plot
+{ "data": [{ "month": "Jan", "users": 20 }, { "month": "Feb", "users": 28 }, { "month": "Mar", "users": 24 }, { "month": "Apr", "users": 36 }, { "month": "May", "users": 44 }, { "month": "Jun", "users": 52 }], "x": "month", "y": "users", "width": 520, "height": 300, "geoms": [{ "type": "area" }] }
+```
+
+A scatter plot:
+
+```plot
+{ "data": [{ "x": 1, "y": 2 }, { "x": 2, "y": 5 }, { "x": 3, "y": 4 }, { "x": 4, "y": 8 }, { "x": 5, "y": 7 }, { "x": 6, "y": 11 }], "x": "x", "y": "y", "width": 520, "height": 300, "geoms": [{ "type": "point" }] }
+```
+
+Two geoms on one canvas — bars with a forecast line overlaid:
+
+```plot
+{ "data": [{ "quarter": "Q1", "revenue": 120, "forecast": 130 }, { "quarter": "Q2", "revenue": 180, "forecast": 170 }, { "quarter": "Q3", "revenue": 160, "forecast": 175 }, { "quarter": "Q4", "revenue": 210, "forecast": 200 }], "x": "quarter", "y": "revenue", "width": 520, "height": 300, "geoms": [{ "type": "bar" }, { "type": "line", "y": "forecast", "color": "var(--accent)" }] }
 ```

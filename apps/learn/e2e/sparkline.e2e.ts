@@ -41,16 +41,38 @@ test('sparkline demo toggles baseline / highlight / trend live', async ({ page }
 	await expect(demo.locator('[data-plot-trend]')).toHaveCount(0)
 })
 
-// The Charts guide now renders live sparklines from fenced ```sparkline blocks.
-test('charts guide renders live sparklines', async ({ page }) => {
+// The Charts guide renders a live sparkline gallery from fenced ```sparkline blocks.
+test('charts guide renders the live sparkline gallery', async ({ page }) => {
 	await page.goto('/guides/charts')
 
 	const plugins = page.locator('[data-sparkline-plugin]')
 	await expect(plugins.first()).toBeVisible()
-	expect(await plugins.count()).toBeGreaterThan(0)
+	expect(await plugins.count()).toBeGreaterThanOrEqual(6)
 
 	// The gallery covers a zero baseline (negative bars), markers, and a trend line.
 	await expect(page.locator('[data-sparkline-plugin] [data-plot-baseline]').first()).toBeAttached()
 	await expect(page.locator('[data-sparkline-plugin] [data-plot-highlight]').first()).toBeAttached()
 	await expect(page.locator('[data-sparkline-plugin] [data-plot-trend]').first()).toBeAttached()
+
+	// No fence rendered as a parse error.
+	await expect(page.locator('[data-block-error]')).toHaveCount(0)
+})
+
+// The Charts guide also renders a live chart gallery from fenced ```plot blocks.
+test('charts guide renders the live chart gallery', async ({ page }) => {
+	await page.goto('/guides/charts')
+
+	const plots = page.locator('[data-plot-plugin]')
+	await expect(plots.first()).toBeVisible()
+	expect(await plots.count()).toBeGreaterThanOrEqual(6)
+
+	// The gallery covers bar, line, area and scatter (point) geoms — each is a
+	// real @rokkit/chart PlotChart rendered from a plot spec.
+	await expect(page.locator('[data-plot-plugin] [data-plot-geom="bar"]').first()).toBeAttached()
+	await expect(page.locator('[data-plot-plugin] [data-plot-geom="line"]').first()).toBeAttached()
+	await expect(page.locator('[data-plot-plugin] [data-plot-geom="area"]').first()).toBeAttached()
+	await expect(page.locator('[data-plot-plugin] [data-plot-geom="point"]').first()).toBeAttached()
+
+	// A legend renders for the colour-mapped grouped-bar spec.
+	await expect(page.locator('[data-plot-plugin] [data-plot-legend]').first()).toBeAttached()
 })
