@@ -1,5 +1,56 @@
 # Project Journal
 
+## 2026-08-19 — #147: live Sparkline demo + guide gallery + e2e verification
+
+Closed the #147 follow-up to the enriched Sparkline: the shipped component had no live surface (the
+chart demo mounts `ChartExplorer`, and its authored sparkline snippet was inert metadata — no Source
+tab), and two chart e2e specs still targeted the removed "Metrics" showcase.
+
+**Method:** planned with superpowers:writing-plans → a 16-task plan
+(`docs/superpowers/plans/2026-08-19-sparkline-demo-guide-gallery-e2e.md`), then executed
+subagent-driven (fresh implementer per chunk, controller-verified diffs + gate). The plan was
+independently verified before execution by a 6-agent codebase map, an 11-point fact-check (all
+confirmed), and a depth-gate that caught one real blocker (below).
+
+**Part 1 — `/app/sparkline` demo.** New `apps/learn/src/lib/koan/demos/sparkline/`: framework-free
+`mapping.ts` (`toSparklineProps` — the single place UI vocab → real props), `store.svelte.ts`
+(`$state` settings + derived `props`/`describe`/`tips`), `SparklineExplorer` (primary sparkline in
+`[data-sparkline-demo]` + a KPI table-row example), `SparklineControls`
+(`data-sparkline-control="type|baseline|highlight|trend"` + `data-active`), `SparklineConversation`
+(reuses `$lib/chat`), `index.svelte`, `docs.md`, `meta.ts`. Registered in `catalog.ts`
+(catalog[]+`DEMO_ROUTE`), `ShellDemoType`, the local `DemoKind`+`pickDemoKind`, and wired into
+`routes/app/+layout.svelte` (conversation + controls branches, `hasSparklineControls`→`showDetails`).
+Auto-gets Live + API + Docs tabs. Moved `sparkline`/`spark-line`/`inline-chart` keywords off
+`chart/meta.ts` so search resolves to the new demo.
+
+**Part 2 — live guide gallery.** Extracted the block-plugin list to `koan/block-plugins.ts`
+(`BLOCK_PLUGINS`), imported by both `chat-demo/BlockList` and `koan/GuidePage`; `GuidePage` now passes
+`plugins={BLOCK_PLUGINS}` so guides render live fenced blocks. Added a `## Live gallery` to
+`guides/charts/content.md` (line/area/negative-baseline-bar/trend `sparkline` fences). Gave
+`packages/blocks/SparklinePlugin.svelte` a `<div data-sparkline-plugin>` wrapper (mirrors PlotPlugin).
+
+**Part 3 — e2e.** Rewrote `chart-metrics.e2e.ts` + `chart-select.e2e.ts` against the live
+`ChartExplorer` (type selection via the tweak drawer; `data-plot-geom`/grid assertions using the
+`toBeAttached()`+count degenerate-box pattern); added `sparkline.e2e.ts` (control toggles scoped to
+`[data-sparkline-demo]` + guide-gallery `[data-sparkline-plugin]` marks). Deleted the dead
+`apps/learn/src/lib/components/Sparkline.svelte` (trivial slice of #149).
+
+**Spec correction caught by the depth gate (a real bug, not doc drift):** `Sparkline` computes
+`effectiveBaseline = baseline ?? (type==='bar' && hasNegative ? 0 : undefined)`, so a bar over the
+mixed-sign sample auto-anchors the baseline *regardless of the prop* — the bar baseline toggle is
+inert, and a naive "baseline off → rule gone" e2e would fail deterministically. Fixed by defaulting
+the store to `type:'line'` (toggle live on first load) and asserting the on↔off transition on `line`
+(presence-only on `bar`).
+
+**Final gate (real exit status):** `bun run lint` = **0 errors** (112 pre-existing warnings);
+`bun run check:svelte` = **0 errors** across ui/app/chart/forms/blocks; `bun run test:ci` = **5270
+passed / 367 files, 0 failed**; `bun run test:e2e` (the three specs) = **6 passed**.
+
+**Commits (develop):** delete+plan `c3ab68c8`; mapping+tests `5860f018`; store `778dd141`;
+Explorer `b2b7777d`; Controls `a10027a9`; Conversation `17228c3c`; index/docs/meta `aadb33ba`;
+register+keyword-move `4a290a5c`; shell wiring `476ca0c5`; blocks hook `90d43612`; BLOCK_PLUGINS
+`aaa058e5`; guide gallery `4f741276`; chart e2e `c5fdd631`; sparkline e2e `88034ead`.
+
 ## 2026-08-18 — Chart: enriched Sparkline (negative-bar baseline + highlight + trend)
 
 Answered a user question ("are sparklines completely different, or can we support spark bar + trend
