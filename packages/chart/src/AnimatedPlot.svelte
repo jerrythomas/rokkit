@@ -202,7 +202,10 @@
 	})
 
 	onDestroy(() => {
-		cancelAnimationFrame(rafId)
+		// onDestroy is the one lifecycle hook that also runs during SSR, where
+		// cancelAnimationFrame is undefined — guard it so the component can be
+		// server-rendered / prerendered (rafId is only ever set in the browser).
+		if (typeof cancelAnimationFrame !== 'undefined') cancelAnimationFrame(rafId)
 		clearInterval(reducedInterval)
 	})
 
