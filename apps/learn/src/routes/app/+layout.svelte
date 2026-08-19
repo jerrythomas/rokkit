@@ -47,6 +47,8 @@
 	import ComposerSuggestions from '$lib/koan/components/ComposerSuggestions.svelte'
 	import ChartConversation from '$lib/koan/demos/chart/ChartConversation.svelte'
 	import ChartControls from '$lib/koan/demos/chart/ChartControls.svelte'
+	import SparklineConversation from '$lib/koan/demos/sparkline/SparklineConversation.svelte'
+	import SparklineControls from '$lib/koan/demos/sparkline/SparklineControls.svelte'
 	import DetailsSlab from '$lib/koan/components/DetailsSlab.svelte'
 	import type { DemoMeta } from '$lib/koan/types'
 	import ThemeWizardCard from '$lib/koan/demos/theme-wizard/ThemeWizardCard.svelte'
@@ -83,7 +85,7 @@
 
 	type DemoKind =
 		| 'tabs' | 'theme-wizard' | 'table' | 'tree' | 'multi-select' | 'list' | 'toasts'
-		| 'form' | 'select' | 'chart' | 'combo' | 'date-picker' | 'stepper'
+		| 'form' | 'select' | 'chart' | 'sparkline' | 'combo' | 'date-picker' | 'stepper'
 		| 'button' | 'badge' | 'pill' | 'avatar' | 'divider' | 'message' | 'swatch'
 		| 'range' | 'rating' | 'switch' | 'toggle'
 		| 'breadcrumbs' | 'menu' | 'toolbar' | 'floating-action' | 'floating-navigation'
@@ -105,6 +107,7 @@
 		if (top === 'form') return 'form'
 		if (top === 'select') return 'select'
 		if (top === 'chart') return 'chart'
+		if (top === 'sparkline') return 'sparkline'
 		if (top === 'combo') return 'combo'
 		if (top === 'date-picker') return 'date-picker'
 		if (top === 'stepper') return 'stepper'
@@ -388,7 +391,10 @@
 	// via a chart-specific ChartControls panel. Treat it as "has details" so the
 	// composer tweak toggle + slab appear for it too.
 	const hasChartControls = $derived(shell.demoType === 'chart')
-	const showDetails = $derived(hasDetails || hasChartControls)
+	// Sparkline is likewise store-driven (no propsSchema) but surfaces its knobs
+	// via SparklineControls in the details slab — treat it as "has details".
+	const hasSparklineControls = $derived(shell.demoType === 'sparkline')
+	const showDetails = $derived(hasDetails || hasChartControls || hasSparklineControls)
 
 	// The details slab is opt-in: the user clicks the icon on the
 	// composer to surface it (no layout disruption when closed). Reset
@@ -2049,12 +2055,16 @@ ${tabsTag}`
 				</ChatStream>
 			{:else if shell.phase === 'response' && shell.demoType === 'chart'}
 				<ChartConversation />
+			{:else if shell.phase === 'response' && shell.demoType === 'sparkline'}
+				<SparklineConversation />
 			{/if}
 
 			{#if shell.phase === 'response' && showDetails && tweaksOpen && shell.demoType}
 				<div class="tweaks-slab" data-glide-in>
 					{#if shell.demoType === 'chart'}
 						<ChartControls />
+					{:else if shell.demoType === 'sparkline'}
+						<SparklineControls />
 					{:else}
 						<DetailsSlab
 							demoId={shell.demoType}
