@@ -49,3 +49,21 @@ test('composition types (facet, animated) render in the explorer', async ({ page
 	await expect(page.locator('[data-chart-type="animated"]')).toHaveAttribute('data-active', 'true')
 	await expect(page.locator('[data-plot-geom="bar"]').first()).toBeAttached()
 })
+
+// #150 — a quadrant scatter crosses the axes at a chosen data origin (BCG matrix),
+// placed by the shared coordinate layer: the y-axis shifts off the left edge.
+test('quadrant type crosses the axes at the data origin', async ({ page }) => {
+	await page.goto('/app/chart')
+	await page.locator('.composer-tweak-toggle').click()
+
+	await page.locator('[data-chart-type="quadrant"]').click()
+	await expect(page.locator('[data-chart-type="quadrant"]')).toHaveAttribute('data-active', 'true')
+	await expect(page.locator('[data-plot-geom="point"]').first()).toBeAttached()
+
+	// The y-axis is placed at the x-origin (x=3), an interior offset — not the left edge (0).
+	const yAxis = page.locator('[data-plot-axis="y"]')
+	await expect(yAxis).toBeAttached()
+	const transform = (await yAxis.getAttribute('transform')) ?? ''
+	const xOffset = Number((transform.match(/translate\(\s*(-?[\d.]+)/) ?? [])[1])
+	expect(xOffset).toBeGreaterThan(0)
+})

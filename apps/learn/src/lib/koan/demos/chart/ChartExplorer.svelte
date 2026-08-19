@@ -28,7 +28,7 @@
 					<Plot.Bar alpha={s.alpha} />
 				</AnimatedPlot>
 			{:else}
-				<PlotChart {data} width={640} height={460} grid={!noAxes} axes={!noAxes} legend={s.legend} orientation={s.orientation}>
+				<PlotChart {data} width={640} height={460} grid={!noAxes} axes={!noAxes} legend={s.legend} orientation={s.orientation} axisOrigin={config.axisOrigin}>
 				{#if explorer.type === 'bar'}
 					<Plot.Bar x={f.x} y={f.y} fill={s.fill || undefined} position={s.position} alpha={s.alpha} pattern={s.pattern || undefined} />
 				{:else if explorer.type === 'line'}
@@ -41,6 +41,8 @@
 					<Plot.Point x={f.x} y={f.y} color={s.color || undefined} alpha={s.alpha} />
 				{:else if explorer.type === 'bubble'}
 					<Plot.Point x={f.x} y={f.y} size={f.size} color={s.color || undefined} alpha={s.alpha} />
+					{:else if explorer.type === 'quadrant'}
+						<Plot.Point x={f.x} y={f.y} color={s.color || undefined} alpha={s.alpha} />
 				{:else if explorer.type === 'box'}
 					<Plot.Box x={f.x} y={f.y} fill={s.fill || undefined} alpha={s.alpha} pattern={s.pattern || undefined} />
 				{:else if explorer.type === 'violin'}

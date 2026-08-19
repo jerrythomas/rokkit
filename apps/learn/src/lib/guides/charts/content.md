@@ -220,6 +220,12 @@ A scatter plot:
 { "data": [{ "x": 1, "y": 2 }, { "x": 2, "y": 5 }, { "x": 3, "y": 4 }, { "x": 4, "y": 8 }, { "x": 5, "y": 7 }, { "x": 6, "y": 11 }], "x": "x", "y": "y", "width": 520, "height": 300, "geoms": [{ "type": "point" }] }
 ```
 
+A **4-quadrant** scatter — mixed-sign data makes the axes cross at the data origin (a BCG / risk matrix), placed by the shared coordinate layer:
+
+```plot
+{ "data": [{ "x": -4, "y": 3 }, { "x": 6, "y": 5 }, { "x": -3, "y": -2 }, { "x": 5, "y": -4 }, { "x": 2, "y": 6 }, { "x": -6, "y": -5 }], "x": "x", "y": "y", "width": 520, "height": 300, "geoms": [{ "type": "point" }] }
+```
+
 Two geoms on one canvas — bars with a forecast line overlaid:
 
 ```plot

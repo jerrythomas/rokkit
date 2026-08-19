@@ -44,6 +44,8 @@ export type ChartTypeConfig = {
 	defaults: Record<string, unknown>
 	/** Contextual guidance shown while this type is active. */
 	tips: Tip[]
+	/** Data-coordinate axis crossing `[x, y]` for quadrant charts (BCG/risk matrices). */
+	axisOrigin?: [number, number]
 }
 
 export const registry: Record<string, ChartTypeConfig> = {
@@ -107,6 +109,19 @@ export const registry: Record<string, ChartTypeConfig> = {
 		defaults: { legend: true, alpha: 0.7 },
 		tips: [
 			{ text: 'Drop the size channel for a plain scatter', to: 'scatter' }
+		]
+	},
+	quadrant: {
+		id: 'quadrant', label: 'Quadrant', group: 'Relationship', dataset: 'cars',
+		fields: { x: 'displ', y: 'hwy', color: 'class' },
+		applies: ['color', 'alpha', 'legend'],
+		defaults: { legend: true, alpha: 0.8 },
+		// Axes cross at chosen thresholds (mid engine size × mid efficiency) instead of the
+		// chart edges — a BCG/risk-matrix layout. The shared coordinate layer places them.
+		axisOrigin: [3, 26],
+		tips: [
+			{ text: 'Axes cross at the data origin (a 4-quadrant matrix), not the edges' },
+			{ text: 'Drop the quadrant split for a plain scatter', to: 'scatter' }
 		]
 	},
 	box: {
