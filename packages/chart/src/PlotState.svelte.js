@@ -425,6 +425,7 @@ export class PlotState {
 		this.#selectable = config.selectable ?? false
 		if (config.selected) this.#selected = new SvelteSet(config.selected)
 		this.#axisOffset = config.axisOffset ?? 0
+		this.axisOrigin = config.axisOrigin ?? [undefined, undefined]
 		this.#marginOverride = config.margin ?? undefined
 		this.#orientationOverride = config.orientation ?? undefined
 		this.#continuousCategory = config.continuousCategory ?? false
@@ -453,6 +454,7 @@ export class PlotState {
 		if (config.onselect !== undefined) this.#onselect = config.onselect
 		if (config.selectable !== undefined) this.#selectable = config.selectable
 		if (config.axisOffset !== undefined) this.#axisOffset = config.axisOffset
+		this.axisOrigin = config.axisOrigin ?? [undefined, undefined]
 		this.#marginOverride = config.margin ?? undefined
 		this.#orientationOverride = config.orientation ?? undefined
 		this.#continuousCategory = config.continuousCategory ?? false

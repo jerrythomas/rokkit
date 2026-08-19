@@ -58,6 +58,13 @@
 		onselect?: (detail: unknown) => void
 		selectable?: boolean
 		selected?: Row[]
+		/** Data-coordinate crossing point of the axes: `[xCross, yCross]`. Drives
+		 *  quadrant mode — where the origin sits relative to the domain makes a chart
+		 *  1- / 2- / 4-quadrant. Omit a component to leave that axis auto (crosses at 0
+		 *  when the domain spans it, else edge-pinned). Also settable via `spec.axisOrigin`. */
+		axisOrigin?: [number | undefined, number | undefined]
+		/** Nudge an edge-pinned axis outward by N px (Q1 only). Also via `spec.axisOffset`. */
+		axisOffset?: number
 		/** Animate marks on data/flip changes (opt-out for e.g. AnimatedPlot, which
 		 *  tweens its own frames). Enabled one frame after the width settles so the
 		 *  initial layout paints un-animated. Default `true`. */
@@ -94,6 +101,8 @@
 		onselect = undefined,
 		selectable = false,
 		selected = $bindable([]),
+		axisOrigin = undefined,
+		axisOffset = undefined,
 		animate = true,
 		children
 	}: Props = $props()
@@ -142,6 +151,8 @@
 			colorScheme: spec?.colorScheme,
 			colorMidpoint: spec?.colorMidpoint,
 			orientation: orientation ?? spec?.orientation,
+			axisOrigin: spec?.axisOrigin ?? axisOrigin,
+			axisOffset: spec?.axisOffset ?? axisOffset,
 			sort: spec?.sort,
 			continuousCategory: spec?.continuousCategory,
 			chartPreset,

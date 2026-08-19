@@ -33,6 +33,7 @@
  * @property {string} [xLabel]
  * @property {string} [yLabel]
  * @property {[number, number]} [axisOrigin]
+ * @property {number} [axisOffset]
  * @property {'categorical'|'sequential'|'diverging'} [colorScale]
  * @property {string} [colorScheme]
  * @property {number} [colorMidpoint]

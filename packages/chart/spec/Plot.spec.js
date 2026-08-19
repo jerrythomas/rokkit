@@ -53,6 +53,36 @@ describe('Plot.svelte', () => {
 		expect(() => render(Plot, { props: { spec, width: 400, height: 300 } })).not.toThrow()
 	})
 
+	// #150 — multi-quadrant: a scatter with mixed-sign data crosses the axes at the
+	// data origin, driven entirely by the shared scales (no per-geom origin logic).
+	it('renders a scatter with axes crossing at the data origin (4-quadrant)', () => {
+		const point = (data) =>
+			render(Plot, {
+				props: { spec: { data, x: 'x', y: 'y', geoms: [{ type: 'point' }] }, width: 400, height: 300 }
+			})
+		const q1 = point([
+			{ x: 1, y: 1 },
+			{ x: 6, y: 5 }
+		])
+		const quad = point([
+			{ x: -4, y: -2 },
+			{ x: 6, y: 5 },
+			{ x: -3, y: 4 },
+			{ x: 5, y: -1 }
+		])
+		const axisCoord = (c, axis, re) => {
+			const t = c.container.querySelector(`[data-plot-axis="${axis}"]`)?.getAttribute('transform') ?? ''
+			return Number(t.match(re)?.[1])
+		}
+		const xAxisTop = (c) => axisCoord(c, 'x', /translate\(0,\s*(-?[\d.]+)\)/)
+		const yAxisLeft = (c) => axisCoord(c, 'y', /translate\(\s*(-?[\d.]+)\s*,/)
+		expect(quad.container.querySelector('[data-plot-geom="point"]')).toBeTruthy()
+		// Q1 pins the x-axis to the bottom + y-axis to the left; the 4-quadrant chart
+		// lifts the x-axis to the y=0 crossing and shifts the y-axis to the x=0 crossing.
+		expect(xAxisTop(quad)).toBeLessThan(xAxisTop(q1))
+		expect(yAxisLeft(quad)).toBeGreaterThan(yAxisLeft(q1))
+	})
+
 	// Regression: when a channel repeats (x === color), the accessible data table's keyed
 	// each must not emit a duplicate key (Svelte throws each_key_duplicate). Columns dedupe.
 	it('dedupes screen-reader table columns when x === color', () => {

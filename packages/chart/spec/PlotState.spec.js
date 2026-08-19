@@ -242,6 +242,40 @@ describe('PlotState — axisOrigin', () => {
 		const domain = state.xScale.domain()
 		expect(state.yAxisX).toBe(state.xScale(domain[0]))
 	})
+
+	it('reads axisOrigin from config (plumbed through the constructor)', () => {
+		const state = new PlotState({
+			data: [
+				{ x: -4, y: -2 },
+				{ x: 6, y: 5 }
+			],
+			channels: { x: 'x', y: 'y' },
+			width: 600,
+			height: 400,
+			axisOrigin: [0, 0]
+		})
+		expect(state.axisOrigin).toEqual([0, 0])
+		// shared-layer: both axes cross at the data origin via the scales — no per-geom logic
+		expect(state.xAxisY).toBe(state.yScale(0))
+		expect(state.yAxisX).toBe(state.xScale(0))
+	})
+
+	it('update() plumbs axisOrigin and resets it to auto when omitted', () => {
+		const config = {
+			data: [
+				{ x: -4, y: -2 },
+				{ x: 6, y: 5 }
+			],
+			channels: { x: 'x', y: 'y' },
+			width: 600,
+			height: 400
+		}
+		const state = new PlotState(config)
+		state.update({ ...config, axisOrigin: [0, 0] })
+		expect(state.axisOrigin).toEqual([0, 0])
+		state.update(config)
+		expect(state.axisOrigin).toEqual([undefined, undefined])
+	})
 })
 
 describe('PlotState — geomData with stat=boxplot', () => {
