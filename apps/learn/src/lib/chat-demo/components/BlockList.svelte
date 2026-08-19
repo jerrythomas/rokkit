@@ -1,27 +1,9 @@
 <script lang="ts">
 	import type { Block, SuggestionItem } from '../types'
 	import { CodeBlock, MarkdownRenderer } from '@rokkit/ui'
-	import {
-		PlotPlugin,
-		TablePlugin,
-		FormPlugin,
-		ListPlugin,
-		StepperPlugin,
-		SparklinePlugin,
-		MermaidPlugin
-	} from '@rokkit/blocks'
+	import { BLOCK_PLUGINS } from '$lib/koan/block-plugins'
 	import InlineComponent from './InlineComponent.svelte'
 	import { submitAction, submitText } from '../store.svelte'
-
-	const PLUGINS = [
-		PlotPlugin,
-		TablePlugin,
-		FormPlugin,
-		ListPlugin,
-		StepperPlugin,
-		SparklinePlugin,
-		MermaidPlugin
-	]
 
 	let root = $state<HTMLElement | null>(null)
 
@@ -71,7 +53,7 @@
 			<p data-block data-block-kind="prose">{block.text}</p>
 		{:else if block.kind === 'markdown'}
 			<div data-block data-block-kind="markdown">
-				<MarkdownRenderer markdown={block.markdown} plugins={PLUGINS} />
+				<MarkdownRenderer markdown={block.markdown} plugins={BLOCK_PLUGINS} />
 			</div>
 		{:else if block.kind === 'code'}
 			<CodeBlock
