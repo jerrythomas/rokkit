@@ -175,6 +175,10 @@ laid out as a wrapping row of equal-sized cards:
 ```
 
 ```sparkline
+{ "data": [12, -8, 23, -17, 34, 56, -9, 41], "type": "area", "baseline": 0, "width": 180, "height": 48, "title": "Area · fills above / below zero" }
+```
+
+```sparkline
 { "data": [4, 8, 5, 11, 7, 13, 9, 15], "type": "line", "trend": "linear", "width": 180, "height": 48, "title": "Linear trend" }
 ```
 
