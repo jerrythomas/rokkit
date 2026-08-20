@@ -1,6 +1,9 @@
 import { describe, it, expect } from 'vitest'
 import { scaleLinear } from 'd3-scale'
+import { render } from '@testing-library/svelte'
 import { buildAreas } from '../../src/geoms/lib/areas.js'
+import TestArea from '../helpers/TestArea.svelte'
+import { createMockState } from '../helpers/mock-plot-state.js'
 
 const data = [
 	{ x: 0, y: 5 },
@@ -16,6 +19,12 @@ const colors = new Map([[undefined, { fill: '#888', stroke: '#888' }]])
 // generator emits the top edge first (forward, in the order rows were given) and then the
 // base edge (reversed) before closing — used below to isolate exactly which edge a given
 // pixel belongs to, instead of substring-matching the whole path.
+// Assumes the default linear curve (only `ML` commands, one point per row): the clamp in
+// `toEdge` runs per-row, in value space, before the curve generator ever sees the points, so
+// which curve interpolates between them doesn't change what's being asserted here. It's just
+// that this regex can't parse the output of a non-linear curve — 'smooth' emits bezier `C`
+// commands it won't match, and 'step' inserts extra interpolated points that would break the
+// "first half is the top edge" split above. A baseline+curve test needs its own point-parser.
 const parsePoints = (d) => [...d.matchAll(/[ML](-?[\d.]+),(-?[\d.]+)/g)].map((m) => [Number(m[1]), Number(m[2])])
 
 describe('buildAreas — baseline split', () => {
@@ -101,6 +110,52 @@ describe('buildAreas — baseline split', () => {
 			for (const [, y] of parsePoints(s.d)) {
 				expect(categoryPixels).toContain(y)
 			}
+		}
+	})
+})
+
+describe('Area geom — baseline hooks', () => {
+	const areaState = () =>
+		createMockState({
+			xScale: scaleLinear().domain([0, 2]).range([0, 100]),
+			yScale: scaleLinear().domain([-5, 5]).range([50, 0]),
+			geomData: () => data,
+			colors: new Map([[undefined, { fill: '#888', stroke: '#888' }]])
+		})
+
+	it('keeps the pre-existing hooks untouched', () => {
+		const { container } = render(TestArea, { state: areaState() })
+		expect(container.querySelector('[data-plot-geom="area"]')).toBeTruthy()
+		expect(container.querySelector('[data-plot-element="area"]')).toBeTruthy()
+	})
+
+	it('emits no sign attribute without a baseline', () => {
+		const { container } = render(TestArea, { state: areaState() })
+		expect(container.querySelector('[data-plot-area-sign]')).toBeNull()
+	})
+
+	it('adds data-plot-area to every segment path', () => {
+		const { container } = render(TestArea, { state: areaState() })
+		expect(container.querySelectorAll('[data-plot-area]').length).toBeGreaterThan(0)
+	})
+
+	it('emits above and below signed segments with a baseline', () => {
+		const { container } = render(TestArea, { state: areaState(), options: { baseline: 0 } })
+		expect(container.querySelector('[data-plot-area-sign="above"]')).toBeTruthy()
+		expect(container.querySelector('[data-plot-area-sign="below"]')).toBeTruthy()
+	})
+
+	it('renders exactly two signed paths for a single series', () => {
+		const { container } = render(TestArea, { state: areaState(), options: { baseline: 0 } })
+		expect(container.querySelectorAll('[data-plot-area-sign]').length).toBe(2)
+	})
+
+	it('draws valid paths for both signed segments', () => {
+		const { container } = render(TestArea, { state: areaState(), options: { baseline: 0 } })
+		for (const p of container.querySelectorAll('[data-plot-area-sign]')) {
+			const d = p.getAttribute('d')
+			expect(d).toBeTruthy()
+			expect(d).not.toContain('NaN')
 		}
 	})
 })

@@ -27,12 +27,13 @@ export function buildAreaMarks({ data, plot, channels, options = {}, alpha, type
 	const stacked = position === 'stack' || position === 'fill'
 	const raw = stacked
 		? buildStackedAreas(data, areaChannels, xScale, yScale, colors, options.curve, patterns, place, position === 'fill')
-		: buildAreas(data, areaChannels, xScale, yScale, colors, options.curve, patterns, place)
+		: buildAreas(data, areaChannels, xScale, yScale, colors, options.curve, patterns, place, options.baseline)
 
 	const a = resolveAlpha(alpha, type, plot.chartPreset)
 	return raw.map((seg) => ({
 		...seg,
 		stroke: hasBorder ? (colors.get(seg.key)?.stroke ?? 'none') : 'none',
-		alpha: a
+		alpha: a,
+		sign: seg.sign
 	}))
 }

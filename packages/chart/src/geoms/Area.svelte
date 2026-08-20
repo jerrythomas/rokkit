@@ -10,6 +10,8 @@
 		/** @deprecated use `position="stack"` — kept as an alias. */
 		stack?: boolean
 		curve?: 'linear' | 'smooth' | 'step'
+		/** Data-space value to anchor/split the fill at; splits the area into above/below segments. */
+		baseline?: number
 	}
 
 	type Props = {
@@ -40,7 +42,12 @@
 		type: 'area',
 		channels: { x, y, color, fill, pattern },
 		stat,
-		options: { stack: options?.stack ?? false, position: resolvedPosition, curve: options?.curve },
+		options: {
+			stack: options?.stack ?? false,
+			position: resolvedPosition,
+			curve: options?.curve,
+			baseline: options?.baseline
+		},
 		alpha,
 		build: buildAreaMarks
 	}))
@@ -80,9 +87,17 @@
 				fill-opacity={seg.patternId ? 1 : seg.alpha}
 				stroke={seg.stroke ?? 'none'}
 				data-plot-element="area"
+				data-plot-area
+				data-plot-area-sign={seg.sign}
 			/>
 			{#if seg.patternId}
-				<path d={seg.d} fill="url(#{seg.patternId})" data-plot-element="area" />
+				<path
+					d={seg.d}
+					fill="url(#{seg.patternId})"
+					data-plot-element="area"
+					data-plot-area
+					data-plot-area-sign={seg.sign}
+				/>
 			{/if}
 		{/each}
 		<!-- Invisible hit circles for tooltip: one per data point -->
