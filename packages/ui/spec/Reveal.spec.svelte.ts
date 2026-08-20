@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, fireEvent } from '@testing-library/svelte'
-import { flushSync } from 'svelte'
+import { render } from '@testing-library/svelte'
 import Reveal from '../src/components/Reveal.svelte'
 
 // ─── IntersectionObserver Mock ──────────────────────────────────────

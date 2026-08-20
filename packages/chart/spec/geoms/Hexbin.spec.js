@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { render, fireEvent } from '@testing-library/svelte'
-import { scaleBand, scaleLinear } from 'd3-scale'
+import { scaleLinear } from 'd3-scale'
 import TestHexbin from '../helpers/TestHexbin.svelte'
 import { createMockState } from '../helpers/mock-plot-state.js'
 

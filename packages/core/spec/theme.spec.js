@@ -8,7 +8,6 @@ import {
 	ON_COLOR_LIGHT,
 	ON_COLOR_Y_CROSSOVER
 } from '../src/theme'
-import { INVERTED_ROLES } from '../src/constants'
 
 const palettes = ['primary', 'secondary', 'other']
 

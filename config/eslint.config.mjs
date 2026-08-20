@@ -194,16 +194,5 @@ export default [
       'max-params': 'off',
       'max-depth': 'off'
     }
-  },
-  {
-    files: [
-      '**/examples/**',
-      '**/fragments/**'
-    ],
-    rules: {
-      'no-console': 'off',
-      '@typescript-eslint/no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-expressions': 'off'
-    }
   }
 ]

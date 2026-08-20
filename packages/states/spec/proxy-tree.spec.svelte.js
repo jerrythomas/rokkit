@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { ProxyTree } from '../src/proxy-tree.svelte.js'
 import { ProxyItem } from '../src/proxy-item.svelte.js'
 import { flushSync } from 'svelte'
