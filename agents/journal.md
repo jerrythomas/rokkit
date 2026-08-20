@@ -1,5 +1,130 @@
 # Project Journal
 
+## 2026-08-20 — Chart: Spark — sparklines compose real geoms, not a parallel path
+
+**Motivation:** `Sparkline.svelte` had grown into a 312-line parallel render path — recomputing
+scales and emitting its own line/area/bar geometry, duplicating what `geoms/Line`/`Area`/`Bar`
+already do through `PlotState` + `GeomState`. `GeomState`'s own doc comment names the intent this
+violated: "one shared path, not a parallel one." Twelve-task effort (subagent-driven, fresh
+implementer + spec/quality reviewers per task) to close that gap. `Sparkline.svelte` is now a
+**127-line wrapper** (was 312) composing a new lean `<Spark>` container + real `Plot.*` geoms:
+
+```svelte
+<Spark data={rows} x="day" y="sales" width={80} height={24}>
+  <Line x="day" y="sales" />
+  <Trend trend="avg" x="day" y="sales" />
+</Spark>
+```
+
+**Design — `SparkState` + the conformance contract.** `SparkState` publishes on the SAME
+`'plot-state'` context key `PlotState` uses, so every existing geom and overlay (`Line`/`Area`/
+`Bar`/`Trend`/`Highlight`/…) composes inside a `<Spark>` with **zero geom-side changes** — a geom
+never knows, or branches on, which container it resolved. It's a thin composition of the same pure
+modules `PlotState` uses (`lib/plot/scales.js`, `lib/plot/stat.js`, `lib/brewing/colors.js`,
+`lib/preset.js`), deliberately omitting zoom, crossfilter, selection, facets, symbols, tooltip/
+format helpers, axis positions, orientation flipping, and animation gating — none of these apply to
+an 80×24 glyph. `GEOM_CONTRACT` is a pinned, code-derived list of the 23 members a geom reads off
+`'plot-state'` context; `spec/spark-contract.spec.js` (70 tests: `it.each` over the contract ×
+{SparkState provides it, PlotState provides it too, both agree on its kind}) turns a drifted
+contract into an immediate CI failure instead of a runtime break inside a consumer's table cell.
+
+**Prerequisite — `geoms/Area` gained baseline-anchored negative fill.** Ported the above/below
+fill split that `Sparkline` already had (#148) into the shared `buildAreas` builder: `Area` now
+accepts `options.baseline`, emitting `data-plot-area` / `data-plot-area-sign="above"|"below"`. Two
+review passes caught real collision bugs in the signed-key discriminator before it landed — first,
+loosely-equal group values (`5` vs `'5'`) collided on the same string-coerced key; then, after
+fixing that, `null` vs `undefined` group values collided the same way for a different reason
+(branching on the group's *value* instead of *whether it was grouped at all*). Both reproduced the
+exact `each_key_duplicate` Svelte crash before the fix. That port is what let `Sparkline` sit on the
+geoms losslessly.
+
+**A live pre-existing bug fixed along the way.** `PlotState.geomData` merged
+`{ ...container.channels, ...geom.channels }`, but geom components always pass every channel key
+from `$props()` — a geom omitting `x`/`y` to inherit from the container therefore sent
+`{ x: undefined }`, not `{}`, which (as an own property) silently clobbered the container's value in
+the spread. `applyGeomStat`'s primary-key lookup then found nothing and fell back to identity with
+no warning — reproduced concretely: a `sum` stat returned 2 unaggregated rows instead of 1
+aggregated one. Fixed by stripping undefined-valued channel keys before the spread, in both
+`PlotState.geomData` and the new `SparkState.geomData`.
+
+**Honest engineering history — six tests passed while the code was broken**, each asserting
+something *adjacent* to the real behaviour rather than the behaviour itself:
+
+1. `xScale.range()` asserted `[0, 80]` — true whether or not `nice()` silently shrank the *domain*
+   short of the box's edge. Fixed by asserting `domain()` too, which a niced scale fails.
+2. A "draws valid paths for both signed segments" test asserted only inside a `{#each}`-style loop
+   that could execute zero times and still pass.
+3. `expect(() => s.xScale).not.toThrow()` stood in for "survives empty data," asserting nothing
+   about what it actually produced; the `updateGeom`/`unregisterGeom` "no-op on an unknown id"
+   tests had the same shape — `.not.toThrow()` against an empty instance, never registering a real
+   geom to prove it was actually left untouched.
+4. A channel-merge precedence test used the same value on both sides of the merge, so the two
+   merge orders were indistinguishable — reversing precedence silently kept passing.
+5. A substring-based baseline test passed even with the value-space clamp fully disabled, because
+   `y0` was already unconditionally pinned to the baseline regardless of the clamp.
+6. A pattern-fill test used `'diagonal'` as its only case — which is `PATTERN_ORDER[0]`, so a
+   sabotaged index-based `assignPatterns` substitution (instead of the correct literal self-map)
+   would have silently produced the identical value. Fixed with a `'hatch'` case (not
+   `PATTERN_ORDER[0]`) asserting the actual rendered mark count, not just the fill id.
+
+The practice that caught all six: **deliberately break the implementation and confirm the test
+fails**, not just that it passes.
+
+**Also recovered:** an implementing agent stalled mid-verification and left a deliberately-
+sabotaged `geomData` (returning a copy of the data instead of the live array) uncommitted on disk —
+it nearly got carried forward as the shipped feature. Restored, then ran all three break-it checks
+to completion (returning a copy fails 3 tests; a no-op `updateGeom` fails 1; a constant geom id
+fails 2). Lesson banked in `agents/memory.md`-adjacent practice: after any agent failure, check for
+a leftover break-it mutation before trusting a green suite.
+
+**Structure-only tests are blind to appearance.** An area sparkline's fill was silently rendering
+at ~0.15 effective opacity (`preset.opacity.area = 0.6` × a baked-in `rgba(…, 0.25)`) and would have
+passed all 27 of `Sparkline.spec.js`'s structural tests without complaint. Caught only by adding
+browser-mode computed-style assertions, which also assert geometry parity between a geom rendered
+inside `<Spark>` and the same geom inside `<PlotChart>` — the guard against `SparkState`'s inert/
+no-op members silently changing rendered output.
+
+**Measured cost (200 cells, real Chromium, medians of 5 alternating samples, 3 local runs):**
+render time Spark ~28.5–30ms vs Plot ~95–99ms (**~3.2–3.5×**); bare instance construction Spark
+~0.2ms vs Plot ~1.2–1.3ms (**~6–6.5×**). Honest caveat: the absolute numbers are small and DOM work
+dominates render time (~30ms vs ~0.2ms for construction alone), so the perf win is real but is not
+what justifies the work — the composition win (one render path instead of two) stands on its own
+regardless of the benchmark. A follow-up re-run during this final task reproduced the same
+direction and rough magnitude (Spark cheaper on both measures), with the usual run-to-run noise at
+this scale.
+
+**Commits (develop):** spec/plan `74190ba4`/`ffc01732`/`8991b5aa`; `geoms/Area` negative-fill port
+`52aac3c3`/`891f61aa`/`a7c92250`/`0b5ae773`/`671a44bc`; `SparkState` core + scale fixes
+`7f645a80`/`ddf93eeb`/`d5dfd0ba`; geom lifecycle + the `PlotState` fix `38ba395c`/`fc706e82`/
+`926c280a`; aesthetics + conformance contract `f1d8e601`/`fa3b7299`; `Spark` container
+`f1dff0a9`/`ba5a7127`/`d1658612`; exports `0bcdcf2e`; patterns `8a24f4a4`; `Sparkline` refactor
+`410795da`; browser-mode parity/appearance tests `d9c2fdf5`; perf benchmark `f201b9e1`. This task
+(docs, learn example): `70ea1b50` (Spark design-doc section), `e480c730` (live "table column of
+sparklines" example — a new `spark-table` block-plugin in `@rokkit/blocks` composing a real
+`<Spark><GeomLine/><GeomTrend/></Spark>` per row, beside the equivalent `<Sparkline trend="avg">`
+one-liner, in the Charts guide).
+
+**Suites:** chart 1389 tests; monorepo `bun run test:ci` **5606 passed** (+10 vs the prior gate: the
+new `SparkTablePlugin` fence in `@rokkit/blocks`); browser-mode **25 passed**.
+
+**Final gate:** lint **0 errors** (112 pre-existing warnings); `bun run check:svelte` **0 errors**;
+`bun run check` (lint + types + svelte-check + `build:apps` + `test:ci`) ✓; `bun run test:browser`
+**25/25**; `bun run coverage` ✓ — 100% statements/lines on `.js`/`.ts`, ≥90% statements on `.svelte`
+(new `Spark.svelte` 100%, `SparkTablePlugin.svelte` 100%). Playwright `guides.e2e.ts` +
+`sparkline.e2e.ts` (4 tests) verified live against a real build/preview. All on `develop`.
+
+**Follow-ups:**
+
+- **Cycle 2 (the radar/spider geom) is now unblocked, and `SparkRadar` is obsolete under this
+  design** — radar will work in both `Plot` and `Spark` with no spark-specific code, exactly the
+  payoff this effort was for.
+- **Latent, unfixed — flagged, not chased down:** `theme.ts`'s `adapter.wrap()` fully wraps colour
+  vars as `rgb(...)`, but `Sparkline`, `Highlight`, and `FilterHistogram` consume them as bare
+  comma-triples inside `rgb(var(--color-x-500, r,g,b))`. If that code path ever emits those chart
+  tokens, the result is `rgb(rgb(16, 185, 129))` — invalid CSS that silently fails, rendering
+  default black. Today's generated stylesheet uses the correct bare form, so nothing is broken
+  now — worth a follow-up audit before it is.
+
 ## 2026-08-19 — #150: multi-quadrant support in the shared coordinate layer
 
 Closed the last enriched-Sparkline follow-up. Grounding revealed the shared-layer design was already
