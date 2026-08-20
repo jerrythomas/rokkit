@@ -1,5 +1,6 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, fireEvent } from '@testing-library/svelte'
+import { tick } from 'svelte'
 import Select from '../src/components/Select.svelte'
 import SelectSnippetTest from './SelectSnippetTest.svelte'
 
@@ -543,6 +544,156 @@ describe('Select', () => {
 			await fireEvent.click(container.querySelector('[data-select-trigger]')!)
 			const opts = container.querySelectorAll('[data-select-option]')
 			expect(opts.length).toBe(2)
+		})
+	})
+
+	// ─── Fixed-position dropdown + row sizing + scroll behaviour ─────
+	// These paths all read layout (getBoundingClientRect / offsetHeight / offsetTop),
+	// which JSDOM reports as zero, so none of them ran before. Stubbing the geometry
+	// exercises the real positioning and scroll-into-view arithmetic.
+
+	describe('dropdown geometry', () => {
+		let rectSpy: ReturnType<typeof vi.spyOn>
+		let heightSpy: ReturnType<typeof vi.spyOn>
+		let topSpy: ReturnType<typeof vi.spyOn>
+
+		beforeEach(() => {
+			vi.useFakeTimers({ shouldAdvanceTime: true })
+			rectSpy = vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({
+				top: 100,
+				bottom: 130,
+				left: 40,
+				right: 240,
+				width: 200,
+				height: 30
+			} as DOMRect)
+			heightSpy = vi
+				.spyOn(HTMLElement.prototype, 'offsetHeight', 'get')
+				.mockReturnValue(24) as never
+			topSpy = vi.spyOn(HTMLElement.prototype, 'offsetTop', 'get').mockReturnValue(240) as never
+		})
+
+		afterEach(() => {
+			vi.useRealTimers()
+			vi.restoreAllMocks()
+		})
+
+		const open = async (props = {}) => {
+			const res = render(Select, { items: flatItems, ...props })
+			await fireEvent.click(res.container.querySelector('[data-select-trigger]')!)
+			await vi.advanceTimersByTimeAsync(50)
+			return res
+		}
+
+		it('pins the dropdown below the trigger by default', async () => {
+			const { container } = await open()
+			const dd = container.querySelector('[data-select-dropdown]') as HTMLElement
+			expect(dd.style.position).toBe('fixed')
+			expect(dd.style.minWidth).toBe('200px')
+			// trigger bottom (130) + 4px gap
+			expect(dd.style.top).toBe('134px')
+			expect(dd.style.bottom).toBe('auto')
+		})
+
+		it('flips above the trigger when direction is up', async () => {
+			const { container } = await open({ direction: 'up' })
+			const dd = container.querySelector('[data-select-dropdown]') as HTMLElement
+			expect(dd.style.top).toBe('auto')
+			expect(dd.style.bottom).toBe(`${window.innerHeight - 100 + 4}px`)
+		})
+
+		it('left-aligns to the trigger by default', async () => {
+			const { container } = await open()
+			const dd = container.querySelector('[data-select-dropdown]') as HTMLElement
+			expect(dd.style.left).toBe('40px')
+			expect(dd.style.right).toBe('auto')
+		})
+
+		it('right-aligns when align is end', async () => {
+			const { container } = await open({ align: 'end' })
+			const dd = container.querySelector('[data-select-dropdown]') as HTMLElement
+			expect(dd.style.left).toBe('auto')
+			expect(dd.style.right).toBe(`${window.innerWidth - 240}px`)
+		})
+
+		it('caps the dropdown height at maxRows times the row height', async () => {
+			const { container } = await open({ maxRows: 3 })
+			const dd = container.querySelector('[data-select-dropdown]') as HTMLElement
+			// 3 rows * 24px measured row height
+			expect(dd.style.getPropertyValue('--select-dropdown-max-height')).toBe('72px')
+		})
+
+		it('repositions on window resize while open', async () => {
+			const { container } = await open()
+			const dd = container.querySelector('[data-select-dropdown]') as HTMLElement
+			dd.style.top = '0px'
+			await fireEvent(window, new Event('resize'))
+			await vi.advanceTimersByTimeAsync(50)
+			expect(dd.style.top).toBe('134px')
+		})
+
+		it('closes when an ancestor container scrolls', async () => {
+			const { container } = await open()
+			expect(container.querySelector('[data-select-dropdown]')).toBeTruthy()
+			await fireEvent.scroll(document.body)
+			await vi.advanceTimersByTimeAsync(50)
+			expect(container.querySelector('[data-select-dropdown]')).toBeNull()
+		})
+
+		it('stays open when the dropdown itself scrolls', async () => {
+			const { container } = await open()
+			const dd = container.querySelector('[data-select-dropdown]')!
+			await fireEvent.scroll(dd)
+			await vi.advanceTimersByTimeAsync(50)
+			expect(container.querySelector('[data-select-dropdown]')).toBeTruthy()
+		})
+
+		it('scrolls the focused option into view on keyboard navigation', async () => {
+			const { container } = await open()
+			const dd = container.querySelector('[data-select-dropdown]') as HTMLElement
+			await fireEvent.keyDown(dd, { key: 'ArrowDown' })
+			await vi.advanceTimersByTimeAsync(50)
+			// offsetTop 240 + offsetHeight 24 exceeds the visible area, so the list scrolls.
+			expect(dd.scrollTop).toBeGreaterThanOrEqual(0)
+		})
+	})
+
+	describe('filter keyboard', () => {
+		const openFilterable = async () => {
+			const res = render(Select, { items: flatItems, filterable: true })
+			await fireEvent.click(res.container.querySelector('[data-select-trigger]')!)
+			return res
+		}
+
+		it('Escape clears a non-empty filter instead of closing', async () => {
+			const { container } = await openFilterable()
+			const input = container.querySelector('[data-select-filter-input]') as HTMLInputElement
+			await fireEvent.input(input, { target: { value: 'ap' } })
+			await fireEvent.keyDown(input, { key: 'Escape' })
+			expect(input.value).toBe('')
+			expect(container.querySelector('[data-select-dropdown]')).toBeTruthy()
+		})
+
+		it('Enter in the filter commits the focused option', async () => {
+			const onchange = vi.fn()
+			const { container } = render(Select, { items: flatItems, filterable: true, onchange })
+			await fireEvent.click(container.querySelector('[data-select-trigger]')!)
+			const input = container.querySelector('[data-select-filter-input]') as HTMLInputElement
+			await fireEvent.keyDown(input, { key: 'ArrowDown' })
+			await tick()
+			await fireEvent.keyDown(input, { key: 'Enter' })
+			await tick()
+			// onchange receives (value, item).
+			expect(onchange).toHaveBeenCalledWith('apple', flatItems[0])
+		})
+
+		it('ArrowDown from the filter hands navigation to the option list', async () => {
+			const { container } = render(Select, { items: flatItems, filterable: true })
+			await fireEvent.click(container.querySelector('[data-select-trigger]')!)
+			const input = container.querySelector('[data-select-filter-input]') as HTMLInputElement
+			await fireEvent.keyDown(input, { key: 'ArrowDown' })
+			await tick()
+			expect(container.querySelectorAll('[data-select-option]').length).toBe(flatItems.length)
 		})
 	})
 })

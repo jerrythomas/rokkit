@@ -36,14 +36,14 @@ export default defineConfig({
 			],
 			// Per-file ratchet (enforced on the full `bun run coverage`):
 			//  - js/ts (incl. .svelte.js/.svelte.ts): 100% statements + lines
-			//  - .svelte components: ≥88% statements (major branches covered)
+			//  - .svelte components: ≥90% statements (major branches covered)
 			// Functions/branches are not gated: a few genuinely-dead functions are
 			// v8-ignored (their bodies excluded, but the symbol still counts), and
 			// legit defensive/SSR branches can't be exercised in jsdom.
 			thresholds: {
 				perFile: true,
 				'**/*.{js,ts}': { statements: 100, lines: 100 },
-				'**/*.svelte': { statements: 88 }
+				'**/*.svelte': { statements: 90 }
 			}
 		},
 		projects: [

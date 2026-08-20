@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, fireEvent } from '@testing-library/svelte'
 import FloatingNavigation from '../src/components/FloatingNavigation.svelte'
 
@@ -358,5 +358,142 @@ describe('FloatingNavigation', () => {
 		})
 		const pin = container.querySelector('[data-floating-nav-pin]')
 		expect(pin?.getAttribute('aria-label')).toBe('Epingler')
+	})
+
+	// ─── Keyboard activation + scroll-spy ───────────────────────────
+
+	describe('keyboard activation', () => {
+		const openNav = async (props = {}) => {
+			const res = render(FloatingNavigation, { items: basicItems, pinned: true, ...props })
+			return res
+		}
+		const items = (c: Element) => [...c.querySelectorAll('[data-floating-nav-item]')] as HTMLElement[]
+
+		it('Enter activates the arrowed-to item', async () => {
+			const onselect = vi.fn()
+			const { container } = await openNav({ onselect })
+			const nav = container.querySelector('[data-floating-nav]')!
+			await fireEvent.keyDown(nav, { key: 'ArrowDown' })
+			await fireEvent.keyDown(nav, { key: 'Enter' })
+			expect(onselect).toHaveBeenCalledWith('intro', basicItems[0])
+		})
+
+		it('Space activates the focused item', async () => {
+			const onselect = vi.fn()
+			const { container } = await openNav({ onselect })
+			const nav = container.querySelector('[data-floating-nav]')!
+			await fireEvent.keyDown(nav, { key: 'End' })
+			await fireEvent.keyDown(nav, { key: ' ' })
+			expect(onselect).toHaveBeenCalledWith('contact', basicItems[basicItems.length - 1])
+		})
+
+		it('Enter with nothing focused selects nothing', async () => {
+			const onselect = vi.fn()
+			const { container } = await openNav({ onselect })
+			await fireEvent.keyDown(container.querySelector('[data-floating-nav]')!, { key: 'Enter' })
+			expect(onselect).not.toHaveBeenCalled()
+		})
+
+		it('ArrowUp from the initial position wraps to the last item', async () => {
+			const { container } = await openNav()
+			const nav = container.querySelector('[data-floating-nav]')!
+			await fireEvent.keyDown(nav, { key: 'ArrowUp' })
+			expect(document.activeElement).toBe(items(container)[basicItems.length - 1])
+		})
+
+		it('ArrowUp steps backwards from a focused item', async () => {
+			const { container } = await openNav()
+			const nav = container.querySelector('[data-floating-nav]')!
+			await fireEvent.keyDown(nav, { key: 'ArrowDown' })
+			await fireEvent.keyDown(nav, { key: 'ArrowDown' })
+			await fireEvent.keyDown(nav, { key: 'ArrowUp' })
+			expect(document.activeElement).toBe(items(container)[0])
+		})
+
+		it('an unhandled key is left alone', async () => {
+			const onselect = vi.fn()
+			const { container } = await openNav({ onselect })
+			await fireEvent.keyDown(container.querySelector('[data-floating-nav]')!, { key: 'q' })
+			expect(onselect).not.toHaveBeenCalled()
+		})
+	})
+
+	describe('scroll-spy via IntersectionObserver', () => {
+		let capturedCallback: ((entries: unknown[]) => void) | null
+
+		beforeEach(() => {
+			capturedCallback = null
+			vi.stubGlobal(
+				'IntersectionObserver',
+				class {
+					constructor(cb: (entries: unknown[]) => void) {
+						capturedCallback = cb
+					}
+					observe() {}
+					unobserve() {}
+					disconnect() {}
+				}
+			)
+		})
+
+		afterEach(() => vi.unstubAllGlobals())
+
+		const sectionsFor = (ids: string[]) => {
+			for (const id of ids) {
+				const el = document.createElement('section')
+				el.id = id
+				document.body.appendChild(el)
+			}
+			return () => ids.forEach((id) => document.getElementById(id)?.remove())
+		}
+
+		it('marks the intersecting section as the active item', async () => {
+			const cleanupDom = sectionsFor(['intro', 'features'])
+			const { container } = render(FloatingNavigation, {
+				items: basicItems,
+				pinned: true,
+				observe: true
+			})
+			expect(capturedCallback).toBeTypeOf('function')
+
+			capturedCallback!([{ isIntersecting: true, target: { id: 'features' } }])
+			await Promise.resolve()
+
+			const active = container.querySelector('[data-floating-nav-item][data-active]')
+			expect(active?.textContent).toContain('Features')
+			cleanupDom()
+		})
+
+		it('ignores entries that are not intersecting', async () => {
+			const cleanupDom = sectionsFor(['intro', 'features'])
+			const { container } = render(FloatingNavigation, {
+				items: basicItems,
+				pinned: true,
+				observe: true,
+				value: 'intro'
+			})
+			capturedCallback!([{ isIntersecting: false, target: { id: 'features' } }])
+			await Promise.resolve()
+			expect(container.querySelector('[data-floating-nav-item][data-active]')?.textContent).toContain(
+				'Introduction'
+			)
+			cleanupDom()
+		})
+
+		it('ignores an intersecting section with no matching nav item', async () => {
+			const cleanupDom = sectionsFor(['intro'])
+			const { container } = render(FloatingNavigation, {
+				items: basicItems,
+				pinned: true,
+				observe: true,
+				value: 'intro'
+			})
+			capturedCallback!([{ isIntersecting: true, target: { id: 'not-a-section' } }])
+			await Promise.resolve()
+			expect(container.querySelector('[data-floating-nav-item][data-active]')?.textContent).toContain(
+				'Introduction'
+			)
+			cleanupDom()
+		})
 	})
 })

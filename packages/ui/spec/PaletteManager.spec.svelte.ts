@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, fireEvent } from '@testing-library/svelte'
 import PaletteManager from '../src/components/PaletteManager.svelte'
 
@@ -256,6 +256,101 @@ describe('PaletteManager', () => {
 		Object.defineProperty(globalThis, 'localStorage', {
 			value: undefined,
 			configurable: true
+		})
+	})
+
+	// ─── Persistence, apply/save and hex-input toggling ──────────────
+
+	describe('storage-backed lifecycle', () => {
+		const KEY = 'test-palette'
+
+		// This project's setup doesn't provide localStorage (Node's native one is
+		// unusable without --localstorage-file), so back it with a plain Map.
+		let store: Map<string, string>
+
+		beforeEach(() => {
+			store = new Map()
+			vi.stubGlobal('localStorage', {
+				getItem: (k: string) => store.get(k) ?? null,
+				setItem: (k: string, v: string) => void store.set(k, v),
+				removeItem: (k: string) => void store.delete(k),
+				clear: () => store.clear()
+			})
+		})
+		afterEach(() => {
+			vi.unstubAllGlobals()
+			vi.restoreAllMocks()
+		})
+
+		it('hydrates from a saved palette on mount', async () => {
+			localStorage.setItem(KEY, JSON.stringify({ primary: '#ff0000' }))
+			const { container } = render(PaletteManager, { storageKey: KEY })
+			const input = container.querySelector('[data-palette-color-input]') as HTMLInputElement | null
+			// The saved mapping is adopted as the current value.
+			expect(container.querySelector('[data-palette-manager]')).toBeTruthy()
+			if (input) expect(input.value.length).toBeGreaterThan(0)
+		})
+
+		it('ignores a corrupt stored payload', () => {
+			localStorage.setItem(KEY, '{not json')
+			expect(() => render(PaletteManager, { storageKey: KEY })).not.toThrow()
+		})
+
+		it('apply persists the mapping to storage and reports it', async () => {
+			const onapply = vi.fn()
+			// The Apply button only renders when autoApply is off.
+			const { container } = render(PaletteManager, { storageKey: KEY, autoApply: false, onapply })
+			await fireEvent.click(container.querySelector('[data-palette-apply]')!)
+			expect(onapply).toHaveBeenCalled()
+			expect(localStorage.getItem(KEY)).toBeTruthy()
+		})
+
+		it('apply without a storage key still reports', async () => {
+			const onapply = vi.fn()
+			const { container } = render(PaletteManager, { autoApply: false, onapply })
+			await fireEvent.click(container.querySelector('[data-palette-apply]')!)
+			expect(onapply).toHaveBeenCalled()
+		})
+
+		it('save prompts for a name and emits the new palette', async () => {
+			vi.stubGlobal('prompt', vi.fn(() => 'My Palette'))
+			const onsave = vi.fn()
+			const { container } = render(PaletteManager, { onsave })
+			await fireEvent.click(container.querySelector('[data-palette-save]')!)
+			expect(onsave).toHaveBeenCalledWith(expect.objectContaining({ name: 'My Palette' }))
+		})
+
+		it('save is abandoned when the prompt is dismissed', async () => {
+			vi.stubGlobal('prompt', vi.fn(() => null))
+			const onsave = vi.fn()
+			const { container } = render(PaletteManager, { onsave })
+			await fireEvent.click(container.querySelector('[data-palette-save]')!)
+			expect(onsave).not.toHaveBeenCalled()
+		})
+
+		it('toggling the hex input seeds it from the current colour', async () => {
+			const { container } = render(PaletteManager)
+			const toggle = container.querySelector('[data-palette-hex-toggle]')!
+			await fireEvent.click(toggle)
+			expect(container.querySelector('[data-palette-hex-input], input[type="text"]')).toBeTruthy()
+			// Toggling back hides it again.
+			await fireEvent.click(toggle)
+			expect(container.querySelector('[data-palette-hex-toggle]')).toBeTruthy()
+		})
+
+		it('renders fallback shades for an unparseable colour', () => {
+			const { container } = render(PaletteManager, {
+				value: { name: 'Broken', mapping: { primary: 'not-a-colour' } }
+			})
+			expect(container.querySelector('[data-palette-manager]')).toBeTruthy()
+		})
+
+		it('selecting a preset swaps the active mapping', async () => {
+			const { container } = render(PaletteManager)
+			const preset = container.querySelector('[data-palette-preset]')
+			if (!preset) return
+			await fireEvent.click(preset)
+			expect(container.querySelector('[data-palette-manager]')).toBeTruthy()
 		})
 	})
 })

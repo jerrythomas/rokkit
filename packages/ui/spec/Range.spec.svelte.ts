@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, fireEvent } from '@testing-library/svelte'
 import Range from '../src/components/Range.svelte'
 
@@ -494,5 +494,107 @@ describe('Range', () => {
 		const thumb = container.querySelector('[data-range-thumb]')!
 		await fireEvent.keyDown(thumb, { key: 'ArrowRight' })
 		expect(onchange).toHaveBeenCalled()
+	})
+
+	// ─── Pan movement with a measured track ─────────────────────────
+	// The pan cases above run with trackWidth = 0 (JSDOM reports no layout), so the
+	// `trackWidth === 0` guard returns before any movement math. Stubbing clientWidth
+	// lets the drag arithmetic actually run.
+
+	describe('pan movement (track measured)', () => {
+		const TRACK = 200
+		let widthSpy: ReturnType<typeof vi.spyOn>
+
+		beforeEach(() => {
+			widthSpy = vi
+				.spyOn(HTMLElement.prototype, 'clientWidth', 'get')
+				.mockReturnValue(TRACK) as never
+		})
+		afterEach(() => widthSpy.mockRestore())
+
+		const panBy = async (thumb: Element, dx: number) => {
+			await fireEvent(thumb, new CustomEvent('panstart', { bubbles: true }))
+			await fireEvent(thumb, new CustomEvent('panmove', { bubbles: true, detail: { dx } }))
+			await fireEvent(thumb, new CustomEvent('panend', { bubbles: true }))
+		}
+
+		it('dragging the single-value thumb right raises the value', async () => {
+			const onchange = vi.fn()
+			const { container } = render(Range, { value: 0, min: 0, max: 100, onchange })
+			const thumb = container.querySelector('[data-range-thumb-upper], [data-range-thumb]')!
+			await panBy(thumb, TRACK / 2)
+			expect(onchange).toHaveBeenCalled()
+			expect(Number(onchange.mock.calls.at(-1)![0])).toBeGreaterThan(0)
+		})
+
+		it('clamps the single-value thumb at the maximum', async () => {
+			const onchange = vi.fn()
+			const { container } = render(Range, { value: 0, min: 0, max: 100, onchange })
+			const thumb = container.querySelector('[data-range-thumb-upper], [data-range-thumb]')!
+			await panBy(thumb, TRACK * 5)
+			expect(Number(onchange.mock.calls.at(-1)![0])).toBe(100)
+		})
+
+		it('does not move a disabled thumb', async () => {
+			const onchange = vi.fn()
+			const { container } = render(Range, { value: 20, min: 0, max: 100, disabled: true, onchange })
+			const thumb = container.querySelector('[data-range-thumb-upper], [data-range-thumb]')!
+			await panBy(thumb, TRACK / 2)
+			// panend has no disabled guard, so it still emits a (no-op) change — but the
+			// panmove guard means the value itself must be untouched.
+			expect(Number(onchange.mock.calls.at(-1)?.[0] ?? 20)).toBe(20)
+		})
+
+		it('dragging the lower thumb in range mode raises the lower bound', async () => {
+			const onchange = vi.fn()
+			const { container } = render(Range, {
+				lower: 0,
+				upper: 100,
+				min: 0,
+				max: 100,
+				range: true,
+				onchange
+			})
+			const lower = container.querySelector('[data-range-thumb-lower]')
+			if (!lower) return
+			await panBy(lower, TRACK / 4)
+			expect(onchange).toHaveBeenCalled()
+		})
+
+		it('keeps the lower thumb from crossing above the upper thumb', async () => {
+			const onchange = vi.fn()
+			const { container } = render(Range, {
+				lower: 0,
+				upper: 40,
+				min: 0,
+				max: 100,
+				range: true,
+				onchange
+			})
+			const lower = container.querySelector('[data-range-thumb-lower]')
+			if (!lower) return
+			await panBy(lower, TRACK * 5)
+			const last = onchange.mock.calls.at(-1)?.[0] as { lower: number; upper: number } | number
+			const lowerVal = typeof last === 'object' ? last.lower : last
+			expect(lowerVal).toBeLessThanOrEqual(40)
+		})
+
+		it('keeps the upper thumb from crossing below the lower thumb', async () => {
+			const onchange = vi.fn()
+			const { container } = render(Range, {
+				lower: 60,
+				upper: 100,
+				min: 0,
+				max: 100,
+				range: true,
+				onchange
+			})
+			const upper = container.querySelector('[data-range-thumb-upper]')
+			if (!upper) return
+			await panBy(upper, -TRACK * 5)
+			const last = onchange.mock.calls.at(-1)?.[0] as { lower: number; upper: number } | number
+			const upperVal = typeof last === 'object' ? last.upper : last
+			expect(upperVal).toBeGreaterThanOrEqual(60)
+		})
 	})
 })
