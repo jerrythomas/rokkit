@@ -40,6 +40,10 @@ geoms on a plot, so multi-geom charts share one consistent legend and palette.
   `Plot.Jitter`, plus `Plot.Root`/`Plot.Axis`/`Plot.Grid`/`Plot.Legend`. Each member is the same
   component as the `Geom*` export (`Plot.Bar === GeomBar`) — use either name.
 - **`Sparkline`** — a minimal inline chart (no axes/grid/legend) for table cells and small containers.
+- **`Spark`** — the lean container `Sparkline` composes internally: publishes `SparkState` on the
+  same context key `PlotState` uses, so real `Plot.*` geoms (`Line`, `Area`, `Bar`, `Trend`,
+  `Highlight`, …) render inside it unchanged. Use it directly when a cell needs more than one
+  geom's worth of aesthetics — see the dedicated **Spark** section below.
 
 > The root is `PlotChart`, not `<Plot>`. `Plot` is the geom namespace object; `<Plot …>` is not a
 > component. `Chart` is a thin back-compat wrapper over `PlotChart` (a fluent `spec` → geoms).
@@ -367,6 +371,8 @@ component tree. `FilterBar`, `FilterSlider`, and `FilterHistogram` are the filte
 
 `Sparkline` computes inline scales with no axes/grid/legend, for table cells or KPIs. `type`
 selects `line` | `bar` | `area`; a dedicated `pattern` prop applies a single-series texture.
+Internally it is a thin wrapper composing `<Spark>` + `Plot.*` geoms (see **Spark** below) —
+same rendered output, no parallel geometry code.
 
 Enrichment props (all optional, additive):
 
@@ -383,6 +389,87 @@ Enrichment props (all optional, additive):
   anchor may fall at the domain edge). For `line`/`area` the series fill still anchors to the bottom,
   but a `baseline` outside the data range extends the y-domain (rescaling the series), not just draws
   the rule.
+
+---
+
+## Spark
+
+`Spark` is the lean container that lets a sparkline compose **real geoms** instead of hand-rolled
+line/area/bar geometry. It publishes a `SparkState` instance on the same `'plot-state'` context
+key `PlotState` uses, so any existing `Plot.*` geom or overlay (`Line`, `Area`, `Bar`, `Trend`,
+`Highlight`, …) renders inside a `<Spark>` with **zero geom-side changes** — a geom never knows,
+or branches on, which container it resolved.
+
+```svelte
+<Spark data={rows} x="day" y="sales" width={80} height={24}>
+  <Line x="day" y="sales" />
+  <Trend trend="avg" x="day" y="sales" />
+</Spark>
+```
+
+### When to reach for `Spark` vs `Sparkline` vs `PlotChart` with chrome off
+
+- **`Sparkline`** — the convenient form. One component, a `type` prop, and a handful of flat
+  props (`baseline`/`highlight`/`trend`/`pattern`) cover line/area/bar with reference lines and
+  markers. Reach for this first; it is not a lesser API — it composes `Spark` internally.
+- **`Spark`** — reach for this directly when a cell needs **more than one geom's worth of
+  aesthetics at once**, or a combination `Sparkline`'s flat prop surface doesn't express (e.g. a
+  bar + a custom overlay geom together, or a geom `Sparkline` doesn't wrap at all).
+- **`PlotChart` with axes/legend/tooltip disabled** (`axes={false} legend={false}`) — reach for
+  this instead of `Spark` the moment you need axes, a legend, a tooltip, zoom/pan, crossfilter,
+  selection, or facets. `Spark` omits all of these **by design** (see Limitations below), not as
+  a temporary gap.
+
+### Composition model
+
+`SparkState` is a thin composition of the same pure modules `PlotState` uses
+(`lib/plot/scales.js`, `lib/plot/stat.js`, `lib/brewing/colors.js`, `lib/preset.js`) — not a
+re-implementation of `PlotState`'s scope. It deliberately omits zoom, crossfilter, selection,
+facets, symbols, tooltip/format helpers, axis positions, orientation flipping, and animation
+gating: none of these apply to an 80×24 glyph. Members a geom reads but a spark has no use for
+(`symbols`, `isFlipped`, `orientation`, `continuousCategory`, `continuousColorScale`,
+`interactive`, `place`, `setHovered`/`clearHovered`/`handleSelect`) are kept present and explicit
+— empty Maps, `false`/`null`, no-op methods — rather than absent, so no geom ever needs a
+spark-specific branch.
+
+`GEOM_CONTRACT` (exported alongside `SparkState`) is the pinned, code-derived list of every
+member a geom reads off `'plot-state'` context — the single place to update when that surface
+legitimately grows. `spec/spark-contract.spec.js` asserts `SparkState` and `PlotState` both
+satisfy the exact same 23-member contract and agree on each member's *kind* (function / Map /
+array / null / primitive), turning a drifted contract into a CI failure instead of a runtime
+break inside a consumer's table cell.
+
+### Two things that catch people out
+
+- **Geoms need their own `x`/`y` — they do NOT inherit from `<Spark>`.** `GeomState.marks` reads
+  a geom's own props only; there is no fallback to the container's `x`/`y`. Always set `x`/`y` on
+  every composed geom, even when the value repeats what `<Spark>` itself was given.
+- **`baseline` does double duty, and it lives on `<Spark>`, not on a geom.** It extends the
+  y-domain to include the anchor value **and** draws a `[data-plot-baseline]` reference line —
+  one prop, two effects. It is owned by the container (not e.g. `Area`'s own `options.baseline`)
+  because it applies to bar sparks too, not just area.
+
+### `pattern`
+
+`<Spark pattern="diagonal">` takes a **literal pattern name**, not a field. A spark is
+single-series, so the grouping the chart pattern *channel* encodes (assigning a distinct
+`PATTERN_ORDER` entry per distinct field value, via `assignPatterns`) has no referent here — there
+is no field to group on, only "texture this one fill." `SparkState.patterns` self-maps the name
+(`Map([[name, name]])`) instead of assigning by index, so it still resolves through the exact
+shared `toPatternId`/`DefinePatterns` mechanism `PlotState` uses, unchanged.
+
+### Limitations (by design, not a gap)
+
+`Spark` has **no axes, legend, or tooltip** — and never will. If you need any of those, or
+zoom/pan, crossfilter, selection, or facets, drop to `<PlotChart>` with the relevant chrome
+disabled instead of reaching for `Spark`.
+
+### Live example
+
+The [Charts guide](/guides/charts) (`apps/learn/src/lib/guides/charts/content.md`) renders a
+live "table column of sparklines" built from `<Spark><Line/><Trend/></Spark>` per row, next to
+the equivalent `<Sparkline trend="avg">` one-liner for the same series, so the relationship
+between the two is visible rather than just described.
 
 ---
 
@@ -423,7 +510,9 @@ conversation uses the shared `$lib/chat` kit; controls live in the composer "twe
 | `packages/chart/src/FacetPlot.svelte` | Small-multiples layout |
 | `packages/chart/src/ChartProvider.svelte` | Preset context provider |
 | `packages/chart/src/ChartExporter.svelte` | SVG/PNG export |
-| `packages/chart/src/Sparkline.svelte` | Inline mini-chart |
+| `packages/chart/src/Sparkline.svelte` | Inline mini-chart (composes `Spark` + geoms) |
+| `packages/chart/src/Spark.svelte` | Lean geom-composition container (publishes `SparkState`) |
+| `packages/chart/src/SparkState.svelte.js` | Reactive state for `Spark` (`GEOM_CONTRACT`-pinned) |
 | `packages/chart/src/charts/` | Prebuilt shapes (BarChart, LineChart, …) |
 | `packages/chart/src/geoms/` | Geom components (Bar, Line, Area, Point, Arc, Box, Violin, Heatmap, Hexbin, Candlestick, Waterfall, Ribbon, Rule, Highlight, Trend, Jitter) |
 | `packages/chart/src/geoms/lib/` | Geom mark builders (bars, areas, …) |
