@@ -175,6 +175,49 @@ describe('SparkState — geom lifecycle', () => {
 		expect(out[0].v).toBe(4)
 	})
 
+	it('a geom channel value wins over the container value for the same key', () => {
+		const s = new SparkState({
+			data: [
+				{ k: 'a', v: 1, other: 100 },
+				{ k: 'a', v: 3, other: 200 }
+			],
+			channels: { x: 'k', y: 'v' }
+		})
+		// The geom overrides y with a DIFFERENT field than the container's. If the merge
+		// order were reversed (container wins), this would aggregate `v` (sum 4) instead
+		// of `other` (sum 300) — the two orders are only distinguishable when the values
+		// for the same key actually differ, which the other merge test above deliberately
+		// does not exercise.
+		const id = s.registerGeom({ type: 'bar', channels: { y: 'other' }, stat: 'sum' })
+		const out = s.geomData(id)
+		expect(out).toHaveLength(1)
+		expect(out[0].other).toBe(300)
+		expect(out[0]).not.toHaveProperty('v')
+	})
+
+	it('an explicit undefined channel inherits from the container instead of clobbering it', () => {
+		const s = new SparkState({
+			data: [
+				{ k: 'a', v: 1 },
+				{ k: 'a', v: 3 },
+				{ k: 'b', v: 5 }
+			],
+			channels: { x: 'k', y: 'v' }
+		})
+		// Mirrors a real geom component: Line.svelte always passes every channel key from
+		// $props() (`channels: { x, y, color, fill, symbol }`), so a geom that omits x/y to
+		// inherit them from the container sends `{ x: undefined, y: undefined }`, not `{}`.
+		const id = s.registerGeom({
+			type: 'bar',
+			channels: { x: undefined, y: undefined },
+			stat: 'sum'
+		})
+		const out = s.geomData(id)
+		expect(out).toHaveLength(2)
+		expect(out.find((r) => r.k === 'a').v).toBe(4)
+		expect(out.find((r) => r.k === 'b').v).toBe(5)
+	})
+
 	it('updateGeom changes the stat applied', () => {
 		const s = new SparkState({
 			data: [
@@ -189,9 +232,35 @@ describe('SparkState — geom lifecycle', () => {
 		expect(s.geomData(id)).toHaveLength(1)
 	})
 
+	it('updateGeom only updates the targeted geom, leaving others unchanged', () => {
+		const s = new SparkState({
+			data: [
+				{ k: 'a', v: 1 },
+				{ k: 'a', v: 3 }
+			],
+			channels: { x: 'k', y: 'v' }
+		})
+		const idA = s.registerGeom({ type: 'bar', channels: { x: 'k', y: 'v' }, stat: 'identity' })
+		const idB = s.registerGeom({ type: 'line', channels: { x: 'k', y: 'v' }, stat: 'identity' })
+		s.updateGeom(idA, { channels: { x: 'k', y: 'v' }, stat: 'sum' })
+		expect(s.geomData(idA)).toHaveLength(1)
+		// idB was never updated — it must still be the untouched identity data, not
+		// picked up by idA's stat change.
+		expect(s.geomData(idB)).toBe(s.data)
+		expect(s.geomData(idB)).toEqual([
+			{ k: 'a', v: 1 },
+			{ k: 'a', v: 3 }
+		])
+	})
+
 	it('updateGeom on an unknown id is a no-op, not a throw', () => {
 		const s = make()
+		const id = s.registerGeom(cfg)
 		expect(() => s.updateGeom('no-such-geom', { stat: 'sum' })).not.toThrow()
+		// The real geom must be unaffected...
+		expect(s.geomData(id)).toBe(s.data)
+		// ...and no spurious geom must have been registered under the unknown id.
+		expect(s.geomData('no-such-geom')).toEqual([])
 	})
 
 	it('unregisterGeom removes it', () => {
@@ -210,6 +279,11 @@ describe('SparkState — geom lifecycle', () => {
 	})
 
 	it('unregisterGeom on an unknown id is a no-op, not a throw', () => {
-		expect(() => make().unregisterGeom('no-such-geom')).not.toThrow()
+		const s = make()
+		const id = s.registerGeom(cfg)
+		expect(() => s.unregisterGeom('no-such-geom')).not.toThrow()
+		// The real geom must still be registered and unaffected — a sabotaged
+		// unregisterGeom that wipes #geoms on any unknown id would empty this out.
+		expect(s.geomData(id)).toBe(s.data)
 	})
 })

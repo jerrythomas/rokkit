@@ -127,6 +127,10 @@ export class SparkState {
 		this.#geoms = untrack(() => this.#geoms).map((g) => (g.id === id ? { ...g, ...config } : g))
 	}
 
+	// No untrack needed here (unlike updateGeom above): this only ever runs from a geom's
+	// onDestroy, which Svelte always executes outside any reactive tracking scope — there's
+	// no enclosing effect for a #geoms read to register against, so no self-retrigger risk
+	// exists. Mirrors PlotState.unregisterGeom, which is untrack-free for the same reason.
 	unregisterGeom(id) {
 		this.#geoms = this.#geoms.filter((g) => g.id !== id)
 	}
@@ -139,7 +143,17 @@ export class SparkState {
 		if (!geom) return []
 		const stat = geom.stat ?? 'identity'
 		if (stat === 'identity') return this.#data
-		const mergedChannels = { ...this.#channels, ...geom.channels }
+		// Strip explicit `undefined` values before spreading: geom components always pass
+		// every channel key (e.g. Line.svelte's `channels: { x, y, color, fill, symbol }`),
+		// so a geom that omits x/y to inherit them from the container sends
+		// `{ x: undefined, y: undefined }`, not `{}`. Left unstripped, that `undefined`
+		// becomes an own property that overrides the container's value in the spread below,
+		// silently clobbering an inherited channel (applyGeomStat's primary-key lookup then
+		// finds nothing and falls back to identity with no warning).
+		const geomChannels = Object.fromEntries(
+			Object.entries(geom.channels ?? {}).filter(([, v]) => v !== undefined)
+		)
+		const mergedChannels = { ...this.#channels, ...geomChannels }
 		return applyGeomStat(this.#data, { stat, channels: mergedChannels })
 	}
 }
