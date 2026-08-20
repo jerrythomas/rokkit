@@ -1,10 +1,10 @@
 <script>
-	import { setContext } from 'svelte'
+	import { setContext, untrack } from 'svelte'
 	import Ribbon from '../../src/geoms/Ribbon.svelte'
 
 	let { state, x = undefined, y = undefined, color = undefined, fill = undefined, options = {} } =
 		$props()
-	setContext('plot-state', state)
+	setContext('plot-state', untrack(() => state))
 </script>
 
 <svg>

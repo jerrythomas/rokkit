@@ -1,5 +1,5 @@
 <script>
-	import { setContext } from 'svelte'
+	import { setContext, untrack } from 'svelte'
 	import Waterfall from '../../src/geoms/Waterfall.svelte'
 
 	let {
@@ -10,7 +10,7 @@
 		fill = undefined,
 		options = {}
 	} = $props()
-	setContext('plot-state', state)
+	setContext('plot-state', untrack(() => state))
 </script>
 
 <svg>

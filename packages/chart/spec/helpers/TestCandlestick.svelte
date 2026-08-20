@@ -1,5 +1,5 @@
 <script>
-	import { setContext } from 'svelte'
+	import { setContext, untrack } from 'svelte'
 	import Candlestick from '../../src/geoms/Candlestick.svelte'
 
 	let {
@@ -9,7 +9,7 @@
 		fill = undefined,
 		options = {}
 	} = $props()
-	setContext('plot-state', state)
+	setContext('plot-state', untrack(() => state))
 </script>
 
 <svg>
