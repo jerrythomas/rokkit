@@ -482,7 +482,14 @@ export class PlotState {
 		if (!geom) return []
 		const stat = geom.stat ?? 'identity'
 		if (stat === 'identity') return this.#rawData
-		const mergedChannels = { ...this.#channels, ...geom.channels }
+		// Strip explicit `undefined` values before spreading: a geom that omits a channel
+		// to inherit it from the container sends `{ x: undefined }`, not `{}`, which would
+		// otherwise become an own property that clobbers the container's value below (see
+		// SparkState.geomData for the fuller writeup — same bug, same fix, both classes).
+		const geomChannels = Object.fromEntries(
+			Object.entries(geom.channels ?? {}).filter(([, v]) => v !== undefined)
+		)
+		const mergedChannels = { ...this.#channels, ...geomChannels }
 		return applyGeomStat(this.#rawData, { stat, channels: mergedChannels }, this.#helpers)
 	}
 

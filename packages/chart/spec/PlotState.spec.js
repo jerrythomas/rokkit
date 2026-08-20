@@ -61,6 +61,30 @@ describe('PlotState — geom registration and stat', () => {
 			mpg.filter((r) => r.class === 'compact').length
 		expect(compact.hwy).toBeCloseTo(expectedMean)
 	})
+
+	it('an explicit undefined channel inherits from the container instead of clobbering it', () => {
+		const state = new PlotState({
+			data: [
+				{ class: 'a', cty: 1 },
+				{ class: 'a', cty: 3 },
+				{ class: 'b', cty: 5 }
+			],
+			channels: { x: 'class', y: 'cty' }
+		})
+		// Mirrors a real geom component: geoms always pass every channel key from $props()
+		// (e.g. Line.svelte's `channels: { x, y, color, fill, symbol }`), so a geom that
+		// omits x/y to inherit them from the container sends `{ x: undefined, y: undefined }`,
+		// not `{}`.
+		const id = state.registerGeom({
+			type: 'bar',
+			channels: { x: undefined, y: undefined },
+			stat: 'sum'
+		})
+		const rows = state.geomData(id)
+		expect(rows).toHaveLength(2)
+		expect(rows.find((r) => r.class === 'a').cty).toBe(4)
+		expect(rows.find((r) => r.class === 'b').cty).toBe(5)
+	})
 })
 
 describe('PlotState — color scale type inference', () => {
