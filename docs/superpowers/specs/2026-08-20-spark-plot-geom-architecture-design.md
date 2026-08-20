@@ -12,9 +12,9 @@ own line/area/bar geometry, duplicating what `geoms/Line.svelte`, `geoms/Area.sv
 `geoms/Bar.svelte` already do through `PlotState` + `GeomState`.
 
 The duplication is only in the *rendering*. The pure layer is already shared — `Sparkline` imports the
-same `lib/highlight.js` and `lib/trend.js` that the chart overlays use, and it already emits the same
-`data-plot-*` DOM hooks as the geoms (`data-plot-geom`, `data-plot-area`, `data-plot-highlight`,
-`data-plot-trend`, `data-plot-baseline`).
+same `lib/highlight.js` and `lib/trend.js` that the chart overlays use, and it uses the same
+`data-plot-*` hook *vocabulary*. It does **not** share the geoms' DOM *structure* — see the Correction
+section below, which is the single most important constraint on this work.
 
 The cost of the parallel path is paid on every new geom: adding radar (cycle 2) under the current
 design means writing a bespoke `SparkRadar` that shares nothing with `geoms/Radar.svelte`. That
