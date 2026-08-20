@@ -3,6 +3,7 @@ import { buildUnifiedXScale, buildUnifiedYScale } from './lib/plot/scales.js'
 import { defaultPreset } from './lib/preset.js'
 import { applyGeomStat } from './lib/plot/stat.js'
 import { distinct, assignColors } from './lib/brewing/colors.js'
+import { PATTERNS } from './patterns/patterns.js'
 
 let nextGeomId = 0
 
@@ -93,11 +94,13 @@ export const GEOM_CONTRACT = [
  * This class also carries the rest of the surface a geom reads off `plot-state`:
  * `colors` — a real categorical palette, built from the same brewing helpers PlotState
  * uses, keyed off `channels.color ?? channels.fill` — plus a set of members geoms read
- * but a spark has no use for (patterns/symbols/isFlipped/orientation/continuousCategory/
+ * but a spark has no use for (symbols/isFlipped/orientation/continuousCategory/
  * continuousColorScale/interactive/place/setHovered/clearHovered/handleSelect). Those are
  * kept present and explicit — empty Maps, false/null/identity, no-op methods — rather
  * than simply absent, so a geom never needs a spark-specific branch and a later
- * conformance test can pin the full contract.
+ * conformance test can pin the full contract. `patterns` is the one exception with a real,
+ * non-empty case — see its own doc comment below for why a literal name is the only
+ * sensible spark case.
  *
  * `data` deliberately holds ONE array (`$state.raw`, not a proxying `$state`), unlike
  * PlotState's `#data`/`#rawData` pair. That split gave PlotState's data two distinct
@@ -113,6 +116,7 @@ export class SparkState {
 	#min = $state(undefined)
 	#max = $state(undefined)
 	#baseline = $state(undefined)
+	#pattern = $state(undefined)
 	#geoms = $state([])
 
 	// Mirrors Sparkline's current yMin/yMax logic: an explicit min/max wins; otherwise
@@ -177,6 +181,7 @@ export class SparkState {
 		this.#min = config.min
 		this.#max = config.max
 		this.#baseline = config.baseline
+		this.#pattern = config.pattern
 	}
 
 	get data() {
@@ -203,11 +208,38 @@ export class SparkState {
 	// unconditionally, with no branch for "am I inside a Plot or a Spark?" Kept present
 	// and explicit (not simply absent) so that contract holds for a spark too.
 
-	// A spark never sets a pattern or symbol channel — always empty, so a geom's
-	// `.get()` lookup returns undefined safely instead of throwing on a missing Map.
-	// A plain Map (not SvelteMap): this is a fresh, never-mutated value on every read,
-	// so there's nothing here for Svelte's reactivity to track.
+	// A spark never sets a pattern CHANNEL (there's no per-row field to group on), but a
+	// `<Spark pattern="diagonal">` prop names a single, literal pattern to texture the
+	// whole fill with. PlotState's `patterns` Map exists to solve "which of these several
+	// distinct field values gets which pattern from PATTERN_ORDER" — `assignPatterns`
+	// solves that BY INDEX. A spark is single-series: that grouping problem does not
+	// exist here, so there is nothing to assign an index to. "Texture this fill" is the
+	// only meaning `pattern` can have on a spark, and the value already IS the pattern
+	// name — so the Map self-maps it (`[[name, name]]`) instead of going through
+	// `assignPatterns`, which would silently substitute PATTERN_ORDER[0] regardless of
+	// what was asked for.
+	//
+	// This still routes through the exact shared mechanism PlotState uses, unchanged:
+	// `DefinePatterns` iterates `[key, patternName]` and renders `<pattern
+	// id={toPatternId(key)}>`; `buildAreas`/`buildBars` independently compute
+	// `toPatternId(row[patternField])` and fill with `url(#...)`. Both call `toPatternId`
+	// on the SAME value here (the literal name), so they agree by construction — no geom
+	// or pattern-consuming helper needs to know a spark is involved at all.
+	//
+	// An unset or unknown name (not a key of PATTERNS) falls through to an empty Map —
+	// same reasoning as `assignPatterns` never inventing a texture for a channel that
+	// isn't there: a typo'd pattern name must not silently resolve to SOME pattern, and
+	// `DefinePatterns` skips any Map entry whose name isn't a real `PATTERNS` key anyway
+	// (`patterns[patternName] ?? []`), so keeping a bogus entry out of the Map here is
+	// belt-and-braces, not load-bearing.
+	// A plain Map (not SvelteMap): this is a fresh value on every read, built from `#pattern`
+	// (a $state field), so reactivity is already covered by that read — nothing here needs
+	// its own reactive container.
 	get patterns() {
+		if (this.#pattern !== undefined && Object.hasOwn(PATTERNS, this.#pattern)) {
+			// eslint-disable-next-line svelte/prefer-svelte-reactivity
+			return new Map([[this.#pattern, this.#pattern]])
+		}
 		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		return new Map()
 	}

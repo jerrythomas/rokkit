@@ -20,6 +20,11 @@
 		 *  reference line at its pixel. Owned by the container, not a geom — it already owns
 		 *  the domain extension, and it applies to bar sparks too, not just area. */
 		baseline?: number
+		/** Literal pattern name (e.g. 'diagonal') to texture the composed geom's fill with.
+		 *  A spark is single-series, so unlike a Plot's pattern CHANNEL (which assigns a
+		 *  distinct pattern per distinct field value), there's no grouping to assign — this
+		 *  names the one pattern to use directly. See `SparkState.patterns` for the mechanism. */
+		pattern?: string
 		/** The geom(s) to compose inside — e.g. `<Line />`, `<Area />`, `<Trend />`. */
 		children?: Snippet
 	}
@@ -34,6 +39,7 @@
 		min = undefined,
 		max = undefined,
 		baseline = undefined,
+		pattern = undefined,
 		children
 	}: Props = $props()
 
@@ -46,7 +52,8 @@
 		height,
 		min,
 		max,
-		baseline
+		baseline,
+		pattern
 	})
 
 	// untrack: the constructor's initial read of config() must not register as a dependency of

@@ -1,6 +1,9 @@
 import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/svelte'
 import SparkHarness from './helpers/SparkHarness.svelte'
+import SparkAreaPatternHarness from './helpers/SparkAreaPatternHarness.svelte'
+import { toPatternId } from '../src/lib/brewing/patterns.js'
+import { PATTERNS } from '../src/patterns/patterns.js'
 
 /**
  * `Spark` is the first container to actually drive a real geom off `SparkState` — the
@@ -77,10 +80,104 @@ describe('Spark container — geom composition (the real integration check)', ()
 describe('Spark container — pattern defs', () => {
 	it('renders the pattern-defs container so pattern fills can resolve, same as PlotSurface', () => {
 		const { container } = render(SparkHarness, { data: rows })
-		// SparkState.patterns is always an empty Map (a spark never sets a pattern channel), so
-		// no <pattern> ever actually appears — but the <defs>/<DefinePatterns/> wiring itself
-		// must be present so a consumer's pattern channel resolves the moment one is composed.
+		// SparkHarness never sets a `pattern` prop here, so SparkState.patterns is an empty
+		// Map for this render and no <pattern> actually appears — but the <defs>/
+		// <DefinePatterns/> wiring itself must be present unconditionally so a consumer's
+		// pattern resolves the moment one is composed (see the integration block below for
+		// the non-empty, pattern-actually-renders case).
 		expect(container.querySelector('defs')).toBeTruthy()
+	})
+})
+
+describe('Spark container — literal pattern fill (integration)', () => {
+	// SparkState.patterns self-maps a literal `pattern` prop (`Map([[name, name]])`) rather
+	// than assigning by index — proven here against a REAL <Spark> wrapping a REAL <Area>,
+	// not a mock plot-state, so a wrong mechanism (e.g. `assignPatterns`, which would
+	// substitute PATTERN_ORDER[0] regardless of what was asked for) fails this test.
+	const texturedRows = [
+		{ day: 0, sales: 10, texture: 'diagonal' },
+		{ day: 1, sales: 20, texture: 'diagonal' }
+	]
+
+	it('resolves the area fill to exactly url(#chart-pat-diagonal), built from toPatternId', () => {
+		const { container } = render(SparkAreaPatternHarness, {
+			data: texturedRows,
+			pattern: 'diagonal',
+			areaPattern: 'texture',
+			width: 100,
+			height: 40
+		})
+
+		const areaElements = container.querySelectorAll('[data-plot-area]')
+		expect(areaElements.length).toBeGreaterThan(0)
+		const patterned = [...areaElements].find((el) => el.getAttribute('fill')?.startsWith('url('))
+		expect(patterned).toBeTruthy()
+		expect(patterned.getAttribute('fill')).toBe(`url(#${toPatternId('diagonal')})`)
+	})
+
+	it('renders "hatch"\'s own marks, not "diagonal"\'s — guards against assignPatterns substituting PATTERN_ORDER[0]', () => {
+		// The rendered <pattern>'s id is keyed by the Map KEY (the literal name itself), which
+		// `assignPatterns([pattern])` leaves untouched — only the Map VALUE (which pattern's
+		// marks get drawn) would silently change to PATTERN_ORDER[0] ('diagonal'). So a fill-id
+		// assertion alone can't catch that substitution; this asserts on the pattern's actual
+		// mark count instead. 'hatch' (6 <line> marks) vs 'diagonal' (3 <line> marks) makes the
+		// two unmistakably different — and 'hatch' isn't PATTERN_ORDER[0], so there's no
+		// coincidental match the way there would be with 'diagonal'.
+		const hatchRows = [
+			{ day: 0, sales: 10, texture: 'hatch' },
+			{ day: 1, sales: 20, texture: 'hatch' }
+		]
+		const { container } = render(SparkAreaPatternHarness, {
+			data: hatchRows,
+			pattern: 'hatch',
+			areaPattern: 'texture',
+			width: 100,
+			height: 40
+		})
+
+		const areaElements = container.querySelectorAll('[data-plot-area]')
+		expect(areaElements.length).toBeGreaterThan(0)
+		const patterned = [...areaElements].find((el) => el.getAttribute('fill')?.startsWith('url('))
+		expect(patterned).toBeTruthy()
+		expect(patterned.getAttribute('fill')).toBe(`url(#${toPatternId('hatch')})`)
+
+		const patternDef = container.querySelector(`pattern#${toPatternId('hatch')}`)
+		expect(patternDef).toBeTruthy()
+		const hatchLineCount = PATTERNS.hatch.filter((m) => m.type === 'line').length
+		expect(hatchLineCount).toBeGreaterThan(0)
+		expect(patternDef.querySelectorAll('line').length).toBe(hatchLineCount)
+	})
+
+	it('renders the actual <pattern> def the fill references', () => {
+		const { container } = render(SparkAreaPatternHarness, {
+			data: texturedRows,
+			pattern: 'diagonal',
+			areaPattern: 'texture',
+			width: 100,
+			height: 40
+		})
+
+		const patternDef = container.querySelector('defs pattern')
+		expect(patternDef).toBeTruthy()
+		expect(patternDef.getAttribute('id')).toBe(toPatternId('diagonal'))
+	})
+
+	it('does not resolve a pattern fill when the Area row names a pattern Spark was not given', () => {
+		const { container } = render(SparkAreaPatternHarness, {
+			data: [
+				{ day: 0, sales: 10, texture: 'hatch' },
+				{ day: 1, sales: 20, texture: 'hatch' }
+			],
+			pattern: 'diagonal', // Spark only self-maps 'diagonal' — 'hatch' has no Map entry
+			areaPattern: 'texture',
+			width: 100,
+			height: 40
+		})
+
+		const areaElements = container.querySelectorAll('[data-plot-area]')
+		expect(areaElements.length).toBeGreaterThan(0)
+		const patterned = [...areaElements].find((el) => el.getAttribute('fill')?.startsWith('url('))
+		expect(patterned).toBeUndefined()
 	})
 })
 

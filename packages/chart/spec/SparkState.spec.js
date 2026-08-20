@@ -340,6 +340,29 @@ describe('SparkState — colors', () => {
 	})
 })
 
+describe('SparkState — patterns (literal texture name)', () => {
+	it('is an empty Map when no pattern is configured', () => {
+		expect(make().patterns).toEqual(new Map())
+	})
+
+	it('self-maps a valid literal pattern name — Map([[name, name]])', () => {
+		const s = make({ pattern: 'diagonal' })
+		expect(s.patterns).toEqual(new Map([['diagonal', 'diagonal']]))
+	})
+
+	it('yields an empty Map for a name that is not a key of PATTERNS', () => {
+		const s = make({ pattern: 'nonsense' })
+		expect(s.patterns).toEqual(new Map())
+	})
+
+	it('re-applying a valid pattern via update() after an unset one produces the self-map (live prop)', () => {
+		const s = make()
+		expect(s.patterns).toEqual(new Map())
+		s.update({ data: rows, channels: { x: 'day', y: 'sales' }, pattern: 'hatch' })
+		expect(s.patterns).toEqual(new Map([['hatch', 'hatch']]))
+	})
+})
+
 describe('SparkState — inert members', () => {
 	it('returns empty patterns and symbols maps', () => {
 		const s = make()
