@@ -58,6 +58,48 @@ originally written would both break tests and **regress a feature shipped the da
 Resolution (chosen): port negative-fill into `geoms/Area` as part of this cycle, so the geom gains
 the capability and `Sparkline` can sit on top of it losslessly. §5a below covers the port.
 
+
+## Correction 2 (2026-08-20) — patterns, and geom channel inheritance
+
+Two findings from building the `Spark` container, both of which invalidated parts of §5.
+
+### Geoms do NOT inherit channels from the container
+
+`GeomState.marks` reads channels from the geom's **own props only** — there is no fallback to the
+container's channels. `<Spark><Line /></Spark>` renders `NaN` paths; it must be `<Line {x} {y} />`.
+`charts/LineChart.svelte` already forwards `{x} {y}` to `<Line>` explicitly for this reason, even
+though `Plot`'s own config carries them.
+
+Every `<Spark>` usage example in this spec and in the implementation plan showing a bare `<Line />`
+is **wrong** and must pass `x`/`y`.
+
+### Patterns route through the SHARED mechanism, not a literal special case
+
+`Sparkline` takes a literal pattern name (`pattern="diagonal"`). The geoms treat `pattern` as a
+data-field channel resolved via `plotState.patterns`. Initially these looked irreconcilable —
+criterion 2 (27 tests unmodified) versus goal 2 (zero geom changes).
+
+They aren't. `DefinePatterns` renders id `toPatternId(key)` with marks `PATTERNS[patternName]` for
+each `[key, patternName]` in `state.patterns`; `buildAreas` computes
+`patternId = toPatternId(row[patternField])`. **Both sides call `toPatternId` on the same value**, so
+they agree by construction. The false constraint was assuming a literal name must pass through
+`assignPatterns`, which assigns patterns by index — `SparkState` builds its own Map and can map a
+value to *itself*.
+
+Resolution, requiring **no geom change**:
+
+- `Sparkline` includes the pattern name as an ordinary data column on the rows it builds, and passes
+  that column as the geom's `pattern` channel.
+- `SparkState.patterns` returns `Map([[name, name]])` when a pattern is set, else an empty Map.
+- The geom resolves `url(#chart-pat-diagonal)` — verified end-to-end against a real `Area` render.
+
+**Why a literal is the only sensible spark case:** sparks are single-series. The chart pattern system
+exists to distinguish groups, and a spark has no grouping to encode. So "texture this fill" is the
+only meaning available — which is exactly what the literal form expresses. Data-driven patterning is
+not a gap here; it is inapplicable.
+
+This supersedes §5's implication that `pattern` passes straight through to the geom unchanged.
+
 ## Key insight
 
 `PlotState` is **already assembled from pure, reusable modules**:
