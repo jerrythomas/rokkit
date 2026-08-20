@@ -133,8 +133,11 @@ Composes (does not reimplement):
 | Per-geom opacity | `lib/preset.js` — `defaultPreset` |
 
 **Deliberately omitted** (this is where the weight goes): zoom, crossfilter, selection sets, facets,
-patterns, symbols, tooltip/format/label helpers, axis positions (`xAxisY`/`yAxisX`), orientation
-flipping, animation gating, continuous/diverging colour scales.
+symbols, tooltip/format/label helpers, axis positions (`xAxisY`/`yAxisX`), orientation flipping,
+animation gating, continuous/diverging colour scales.
+
+`patterns` is **not** omitted — see Correction 2. It returns `Map([[name, name]])` for a literal
+pattern name so the shared `DefinePatterns` path resolves, and an empty Map otherwise.
 
 ### 2. The geom-facing contract
 
@@ -150,8 +153,9 @@ must implement all of it:
 **Interactivity** — `interactive`, `handleSelect`, `setHovered`, `clearHovered`
 
 Spark-specific values: `place` is identity, `isFlipped` is `false`, `orientation` is `'vertical'`,
-`patterns`/`symbols` are empty `Map`s, `continuousColorScale` is `null`, `interactive` is `false`,
-and `setHovered`/`clearHovered`/`handleSelect` are no-ops.
+`symbols` is an empty `Map`, `patterns` carries a literal pattern name when one is set (Correction 2),
+`continuousColorScale` is `null`, `interactive` is `false`, and
+`setHovered`/`clearHovered`/`handleSelect` are no-ops.
 
 **`data` must return the same array identity the geoms receive from `geomData()`.** A previous bug
 (journal 2026-08-13) had `PlotState` holding `#data` and `#rawData` as separate `$state` fields,
