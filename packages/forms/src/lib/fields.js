@@ -1,4 +1,31 @@
-import { omit, pick } from 'ramda'
+/**
+ * Pick only the listed keys from an object (native replacement for ramda.pick).
+ * @param {string[]} keys
+ * @param {Object} obj
+ * @returns {Object}
+ */
+function pick(keys, obj) {
+	const result = {}
+	for (const key of keys) {
+		if (key in obj) result[key] = obj[key]
+	}
+	return result
+}
+
+/**
+ * Return a shallow copy with the listed keys removed (native replacement for ramda.omit).
+ * @param {string[]} keys
+ * @param {Object} obj
+ * @returns {Object}
+ */
+function omit(keys, obj) {
+	const keySet = new Set(keys)
+	const result = {}
+	for (const key of Object.keys(obj)) {
+		if (!keySet.has(key)) result[key] = obj[key]
+	}
+	return result
+}
 
 /**
  * Combines array elements with schema
@@ -109,6 +136,7 @@ function combineNestedElementsWithSchema(element, attribute, schema) {
  * @returns {import('../types').LayoutSchema}
  */
 export function getSchemaWithLayout(schema, layout) {
+	if (!layout) return { elements: [] }
 	const combined = omit(['elements'], layout)
 	combined.elements =
 		layout.elements?.map((element) => combineElementWithSchema(element, schema)) ?? []

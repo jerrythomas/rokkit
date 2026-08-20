@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { getContext, type Component } from 'svelte'
-	import { omit } from 'ramda'
 	import InputField from './InputField.svelte'
 	import FieldLayout from './FieldLayout.svelte'
 
@@ -32,8 +31,8 @@
 
 	let { value = $bindable({}), schema = {}, path = [], onchange }: Props = $props()
 
-	let Wrapper = registry.wrappers[schema.wrapper ?? ''] ?? registry.wrappers.default
-	let wrapperProps = omit(['wrapper', 'elements', 'key'], schema)
+	let Wrapper = $derived(registry.wrappers[schema.wrapper ?? ''] ?? registry.wrappers.default)
+	const { wrapper: _w, elements: _e, key: _k, ...wrapperProps } = $derived(schema)
 </script>
 
 {#if !Array.isArray(schema.elements)}

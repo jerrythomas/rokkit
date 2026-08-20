@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { HTMLInputAttributes } from 'svelte/elements'
 	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
-	import { isNil } from 'ramda'
 
 	type StateIcons = {
 		checked?: string
@@ -42,7 +41,7 @@
 
 	let checked = $derived(Boolean(value))
 	let stateIcons = $derived({ ...DEFAULT_STATE_ICONS.checkbox, ...icons })
-	let icon = $derived(stateIcons[isNil(value) ? 'unknown' : value ? 'checked' : 'unchecked'])
+	let icon = $derived(stateIcons[value === null || value === undefined ? 'unknown' : value ? 'checked' : 'unchecked'])
 </script>
 
 <div data-checkbox-root data-variant={variant}>

@@ -1,9 +1,10 @@
-import { describe, expect, beforeEach, it, vi } from 'vitest'
-import { cleanup, render, fireEvent } from '@testing-library/svelte'
+import { describe, expect, beforeEach, it } from 'vitest'
+import { cleanup, render } from '@testing-library/svelte'
 import { flushSync } from 'svelte'
 
 import FieldLayout from '../src/FieldLayout.svelte'
 import WrapperDiv from './fixtures/WrapperDiv.svelte'
+import WrapperSection from './fixtures/WrapperSection.svelte'
 import ComponentSpan from './fixtures/ComponentSpan.svelte'
 
 /**
@@ -244,5 +245,44 @@ describe('FieldLayout', () => {
 
 		const field = container.querySelector('[data-field-root]')
 		expect(field).toBeTruthy()
+	})
+
+	// ---------- Reactivity to schema changes ----------
+
+	it('should update wrapper props when schema changes', () => {
+		const props = $state({
+			schema: { elements: [], title: 'before' },
+			value: {}
+		})
+		const { container } = render(FieldLayout, {
+			props,
+			context: makeRegistry()
+		})
+
+		expect(container.querySelector('[data-layout-wrapper]').getAttribute('title')).toBe('before')
+
+		props.schema = { elements: [], title: 'after' }
+		flushSync()
+
+		expect(container.querySelector('[data-layout-wrapper]').getAttribute('title')).toBe('after')
+	})
+
+	it('should swap the wrapper component when schema.wrapper changes', () => {
+		const props = $state({
+			schema: { elements: [] },
+			value: {}
+		})
+		const { container } = render(FieldLayout, {
+			props,
+			context: makeRegistry({ wrappers: { alt: WrapperSection } })
+		})
+
+		expect(container.querySelector('[data-layout-wrapper]')).toBeTruthy()
+
+		props.schema = { wrapper: 'alt', elements: [] }
+		flushSync()
+
+		expect(container.querySelector('[data-layout-wrapper]')).toBeNull()
+		expect(container.querySelector('[data-layout-wrapper-alt]')).toBeTruthy()
 	})
 })

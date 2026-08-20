@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { SvelteSet } from 'svelte/reactivity'
 import { FormBuilder } from '../../src/lib/builder.svelte.js'
 
@@ -1815,6 +1815,15 @@ describe('FormBuilder', () => {
 		// A schema whose `properties` is null causes getSchemaWithLayout to throw
 		// when iterating over scoped elements — triggering the catch → #buildBasicElements.
 		const badSchema = { type: 'object', properties: null }
+		let warnSpy
+
+		beforeEach(() => {
+			warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+		})
+
+		afterEach(() => {
+			warnSpy.mockRestore()
+		})
 
 		it('falls back to basic elements when getSchemaWithLayout throws', () => {
 			const data = { name: 'Alice' }
