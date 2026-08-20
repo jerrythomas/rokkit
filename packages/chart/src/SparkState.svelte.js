@@ -1,5 +1,9 @@
+import { untrack } from 'svelte'
 import { buildUnifiedXScale, buildUnifiedYScale } from './lib/plot/scales.js'
 import { defaultPreset } from './lib/preset.js'
+import { applyGeomStat } from './lib/plot/stat.js'
+
+let nextGeomId = 0
 
 /**
  * SparkState — the lean, PlotState-compatible context that lets a sparkline compose
@@ -10,8 +14,11 @@ import { defaultPreset } from './lib/preset.js'
  *
  * An 80×24 glyph has no use for most of what PlotState carries, so this is a thin
  * composition of the same pure scale modules PlotState uses — not a re-implementation
- * of PlotState's scope. Deliberately omitted, permanently (later slices add the geom
- * lifecycle, aesthetics and the <Spark> container, but none of these):
+ * of PlotState's scope. It publishes the same registerGeom/updateGeom/unregisterGeom/
+ * geomData lifecycle as PlotState (see those methods below), at smaller scope, so
+ * GeomState — and therefore any geom component — drives a spark unchanged. Deliberately
+ * omitted, permanently (a later slice adds aesthetics and the <Spark> container, but
+ * none of these):
  *  - zoom/pan transforms — a spark is a static glyph, never panned or zoomed.
  *  - crossfilter/selection — nothing to click or brush at this size.
  *  - facets — a spark is always a single small panel, never a grid of panels.
@@ -33,6 +40,7 @@ export class SparkState {
 	#min = $state(undefined)
 	#max = $state(undefined)
 	#baseline = $state(undefined)
+	#geoms = $state([])
 
 	// Mirrors Sparkline's current yMin/yMax logic: an explicit min/max wins; otherwise
 	// the domain is the raw data extent, widened to include the baseline when one is
@@ -102,5 +110,36 @@ export class SparkState {
 	}
 	get chartPreset() {
 		return defaultPreset
+	}
+
+	// Mirrors PlotState.registerGeom at smaller scope: GeomState.register() (called
+	// from a geom's onMount) calls this once per mounted geom and keeps the returned id.
+	registerGeom(config) {
+		const id = `spark-geom-${nextGeomId++}`
+		this.#geoms = [...this.#geoms, { id, ...config }]
+		return id
+	}
+
+	// untrack the read of #geoms, same as PlotState: GeomState.sync() calls this from
+	// a geom's `$effect`, which would otherwise track #geoms as a dependency and retrigger
+	// itself on every update (effect_update_depth_exceeded).
+	updateGeom(id, config) {
+		this.#geoms = untrack(() => this.#geoms).map((g) => (g.id === id ? { ...g, ...config } : g))
+	}
+
+	unregisterGeom(id) {
+		this.#geoms = this.#geoms.filter((g) => g.id !== id)
+	}
+
+	// Identity stat returns `this.#data` itself, not a copy — geoms look up rows via
+	// `plotState.data.indexOf(row)` (see e.g. Line.svelte's selectPoint), which only
+	// works if geomData's rows are the exact same object instances as `data`.
+	geomData(id) {
+		const geom = this.#geoms.find((g) => g.id === id)
+		if (!geom) return []
+		const stat = geom.stat ?? 'identity'
+		if (stat === 'identity') return this.#data
+		const mergedChannels = { ...this.#channels, ...geom.channels }
+		return applyGeomStat(this.#data, { stat, channels: mergedChannels })
 	}
 }

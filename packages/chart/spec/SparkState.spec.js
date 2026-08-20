@@ -121,3 +121,95 @@ describe('SparkState — update', () => {
 		expect(s.xScale.range()).toEqual([0, 200])
 	})
 })
+
+describe('SparkState — geom lifecycle', () => {
+	const cfg = { type: 'line', channels: { x: 'day', y: 'sales' }, stat: 'identity' }
+
+	it('returns a distinct id per registered geom', () => {
+		const s = make()
+		expect(s.registerGeom(cfg)).not.toBe(s.registerGeom(cfg))
+	})
+
+	it('geomData returns the SAME array identity for stat=identity', () => {
+		const s = make()
+		expect(s.geomData(s.registerGeom(cfg))).toBe(s.data)
+	})
+
+	it('geomData returns [] for an unknown id', () => {
+		expect(make().geomData('no-such-geom')).toEqual([])
+	})
+
+	it('defaults to identity when a geom omits stat', () => {
+		const s = make()
+		const id = s.registerGeom({ type: 'line', channels: { x: 'day', y: 'sales' } })
+		expect(s.geomData(id)).toBe(s.data)
+	})
+
+	it('aggregates when a stat is set', () => {
+		const s = new SparkState({
+			data: [
+				{ k: 'a', v: 1 },
+				{ k: 'a', v: 3 },
+				{ k: 'b', v: 5 }
+			],
+			channels: { x: 'k', y: 'v' }
+		})
+		const id = s.registerGeom({ type: 'bar', channels: { x: 'k', y: 'v' }, stat: 'sum' })
+		const out = s.geomData(id)
+		expect(out).toHaveLength(2)
+		expect(out.find((r) => r.k === 'a').v).toBe(4)
+	})
+
+	it('merges container channels with geom channels, geom winning', () => {
+		const s = new SparkState({
+			data: [
+				{ k: 'a', v: 1 },
+				{ k: 'a', v: 3 }
+			],
+			channels: { x: 'k', y: 'v' }
+		})
+		// The geom supplies only a stat; x/y must come from the container.
+		const id = s.registerGeom({ type: 'bar', channels: {}, stat: 'sum' })
+		const out = s.geomData(id)
+		expect(out).toHaveLength(1)
+		expect(out[0].v).toBe(4)
+	})
+
+	it('updateGeom changes the stat applied', () => {
+		const s = new SparkState({
+			data: [
+				{ k: 'a', v: 1 },
+				{ k: 'a', v: 3 }
+			],
+			channels: { x: 'k', y: 'v' }
+		})
+		const id = s.registerGeom({ type: 'bar', channels: { x: 'k', y: 'v' }, stat: 'identity' })
+		expect(s.geomData(id)).toHaveLength(2)
+		s.updateGeom(id, { channels: { x: 'k', y: 'v' }, stat: 'sum' })
+		expect(s.geomData(id)).toHaveLength(1)
+	})
+
+	it('updateGeom on an unknown id is a no-op, not a throw', () => {
+		const s = make()
+		expect(() => s.updateGeom('no-such-geom', { stat: 'sum' })).not.toThrow()
+	})
+
+	it('unregisterGeom removes it', () => {
+		const s = make()
+		const id = s.registerGeom(cfg)
+		s.unregisterGeom(id)
+		expect(s.geomData(id)).toEqual([])
+	})
+
+	it('unregisterGeom leaves other geoms intact', () => {
+		const s = make()
+		const a = s.registerGeom(cfg)
+		const b = s.registerGeom(cfg)
+		s.unregisterGeom(a)
+		expect(s.geomData(b)).toBe(s.data)
+	})
+
+	it('unregisterGeom on an unknown id is a no-op, not a throw', () => {
+		expect(() => make().unregisterGeom('no-such-geom')).not.toThrow()
+	})
+})
