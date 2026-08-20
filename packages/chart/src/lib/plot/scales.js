@@ -42,10 +42,10 @@ export function buildUnifiedXScale(datasets, field, width, opts = {}) {
 		const numericValues = allValues.map(Number)
 		const [minVal, maxVal] = extent(numericValues)
 		const domainMin = (opts.includeZero ?? false) ? 0 : (minVal ?? 0)
-		return scaleLinear()
-			.domain([domainMin, maxVal ?? 0])
-			.range(range)
-			.nice()
+		const s = scaleLinear().domain([domainMin, maxVal ?? 0]).range(range)
+		// Same opts.nice escape hatch as the opts.domain branch above (e.g. a spark's x-axis,
+		// which must span the full width edge-to-edge, not stop short at a rounded tick).
+		return opts.nice === false ? s : s.nice()
 	}
 
 	const domain = [...new Set(allValues)].filter((v) => v !== null && v !== undefined)

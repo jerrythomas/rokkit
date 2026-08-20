@@ -113,6 +113,17 @@ describe('buildUnifiedXScale', () => {
 		// After nice(), might be slightly below 5 but domain min <= 5
 		expect(min).toBeLessThanOrEqual(5)
 	})
+
+	it('nices the auto-derived (no explicit domain) numeric domain by default (guards existing callers)', () => {
+		const scale = buildUnifiedXScale([[{ x: 0 }, { x: 29 }]], 'x', 400)
+		// nice() pads [0, 29] outward — it must not stay exactly [0, 29]
+		expect(scale.domain()).not.toEqual([0, 29])
+	})
+
+	it('skips nicing the auto-derived domain when nice:false (e.g. a spark spanning its full box)', () => {
+		const scale = buildUnifiedXScale([[{ x: 0 }, { x: 29 }]], 'x', 400, { nice: false })
+		expect(scale.domain()).toEqual([0, 29])
+	})
 })
 
 // ---------------------------------------------------------------------------

@@ -37,9 +37,14 @@ export class SparkState {
 	// Mirrors Sparkline's current yMin/yMax logic: an explicit min/max wins; otherwise
 	// the domain is the raw data extent, widened to include the baseline when one is
 	// set (so a below-baseline dip or an above-baseline spike stays on-canvas).
+	// Non-numeric/missing y values coerce to NaN and are filtered out before min/max —
+	// otherwise one bad row poisons the whole domain to NaN (silent blank render).
+	// A single distinct finite value (flat line) deliberately falls through to a
+	// zero-extent domain ([v, v]); d3 renders that as a flat mid-scale line, which is
+	// the correct flat-line behaviour, not a bug to be guarded against later.
 	#yDomain = $derived.by(() => {
 		const field = this.#channels.y
-		const values = this.#data.map((d) => Number(d[field]))
+		const values = this.#data.map((d) => Number(d[field])).filter((v) => Number.isFinite(v))
 		const rawMin = values.length > 0 ? Math.min(...values) : 0
 		const rawMax = values.length > 0 ? Math.max(...values) : 0
 		const min =
@@ -49,7 +54,12 @@ export class SparkState {
 		return [min, max]
 	})
 
-	xScale = $derived.by(() => buildUnifiedXScale([this.#data], this.#channels.x, this.#width))
+	// nice:false — a spark's rightmost point should reach the right edge of its box; the
+	// padding nice() adds for pretty tick labels only shrinks the glyph a sparkline has no
+	// ticks to label (mirrors the same reasoning as yScale's nice:false below).
+	xScale = $derived.by(() =>
+		buildUnifiedXScale([this.#data], this.#channels.x, this.#width, { nice: false })
+	)
 
 	// nice:false — a spark's peak/trough should reach the edge of its box; the padding
 	// nice() adds for pretty tick labels only shrinks the glyph a sparkline has no ticks to label.
