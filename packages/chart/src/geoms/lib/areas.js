@@ -16,6 +16,8 @@ import { literalColor, markEntry } from '../../lib/brewing/colors.js'
  * @param {number} [baselineValue] - data-space value to anchor/split the fill at. When set,
  *   each segment is emitted twice (sign: 'above' | 'below'), both anchored at this value's
  *   pixel position instead of the chart bottom, so themes can colour the two independently.
+ *   Fed straight into `yScale()`, so a value outside the scale's domain extrapolates (e.g.
+ *   100 against a domain of [-5, 5] gives pixel -475) rather than clamping to the chart edge.
  * @returns {{ d: string, fill: string, stroke: string, key: unknown, patternId: string|null, sign?: 'above'|'below' }[]}
  */
 export function buildAreas(data, channels, xScale, yScale, colors, curve, patterns, place = (x, y) => ({ x, y }), baselineValue = undefined) {
@@ -25,19 +27,28 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
 	// shared color scale (one value across all geoms); use it directly.
 	const lit = literalColor(channels.color)
 	const cf = lit ? undefined : channels.color
-	const hasBaseline = baselineValue !== undefined && baselineValue !== null
+	// Number.isFinite (not a loose !=null check) also rejects NaN/Infinity — a caller-computed
+	// stat (e.g. a mean over an empty group) can easily produce NaN, which would otherwise sail
+	// through and emit literal "NaN" path commands.
+	const hasBaseline = Number.isFinite(baselineValue)
 	const baseline = hasBaseline ? yScale(baselineValue) : yScale.range()[0] // bottom of the chart (y pixel max) unless an explicit baseline value is given
 
 	const xPos = (d) =>
 		typeof xScale.bandwidth === 'function' ? xScale(d[xf]) + xScale.bandwidth() / 2 : xScale(d[xf])
 
 	// Each area edge (baseline + top) is placed so the area transposes under orientation.
-	// `v` carries the raw y-value so the generator can break the area at a gap (null).
-	const toEdge = (d) => ({ base: place(xPos(d), baseline), top: place(xPos(d), yScale(d[yf])), v: d[yf] })
-	// `clamp` restricts the top edge to one side of the baseline so an 'above' pass never
-	// dips below it and a 'below' pass never rises above it — the same technique proven in
-	// Sparkline (#148). With no clamp, behaviour is unchanged from before baselines existed.
-	const makeGen = (clamp) => {
+	// `sign` clamps the top edge to one side of the baseline — 'above' never dips below it,
+	// 'below' never rises above it — the same technique proven in Sparkline (#148). This MUST
+	// happen here, in value space, before `place()` runs: `place` is how horizontal/flipped
+	// orientation is implemented (it can swap x/y), so clamping the post-place coordinate would
+	// clamp whatever axis ends up there — including the category axis on a flipped chart. `v`
+	// carries the raw y-value so the generator can break the area at a gap (null).
+	const toEdge = (d, sign) => {
+		const rawTop = yScale(d[yf])
+		const clampedTop = sign === 'above' ? Math.min(rawTop, baseline) : sign === 'below' ? Math.max(rawTop, baseline) : rawTop
+		return { base: place(xPos(d), baseline), top: place(xPos(d), clampedTop), v: d[yf] }
+	}
+	const makeGen = () => {
 		const gen = area()
 			// A null y-value is a GAP (a missing period): break the area there instead of
 			// dropping it onto the 0 baseline. A genuine 0 stays defined and fills.
@@ -45,25 +56,25 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
 			.x0((p) => p.base.x)
 			.y0((p) => p.base.y)
 			.x1((p) => p.top.x)
-			.y1((p) =>
-				clamp === 'above' ? Math.min(p.top.y, baseline) : clamp === 'below' ? Math.max(p.top.y, baseline) : p.top.y
-			)
+			.y1((p) => p.top.y)
 		if (curve === 'smooth') gen.curve(curveCatmullRom)
 		else if (curve === 'step') gen.curve(curveStep)
 		return gen
 	}
-	// One unsigned segment normally; with a baseline, an above and a below copy so themes
-	// can colour positive vs negative fill independently. Mirrors the approach proven in
-	// Sparkline (#148).
-	const expand = (seg, rows) =>
-		hasBaseline
-			? ['above', 'below'].map((sign) => ({
-					...seg,
-					d: makeGen(sign)(rows.map(toEdge)),
-					sign,
-					key: seg.key === undefined ? sign : `${seg.key}::${sign}`
-				}))
-			: [seg]
+	// One unsigned segment normally; with a baseline, an above and a below copy so themes can
+	// colour positive vs negative fill independently. Mirrors the approach proven in Sparkline
+	// (#148). Also owns the "no baseline" `d` computation so both call sites just hand over rows.
+	const splitBySign = (segBase, rows) => {
+		if (!hasBaseline) return [{ ...segBase, d: makeGen()(rows.map((d) => toEdge(d))) }]
+		return ['above', 'below'].map((sign) => ({
+			...segBase,
+			d: makeGen()(rows.map((d) => toEdge(d, sign))),
+			sign,
+			// A single-series segment's key is `null` (not `undefined`, see below); either way,
+			// there's nothing meaningful to prefix, so the sign alone is the key.
+			key: segBase.key === undefined || segBase.key === null ? sign : `${segBase.key}::${sign}`
+		}))
+	}
 
 	// For band (categorical) x scales, sort by domain index to preserve intended ordering.
 	// For continuous scales, sort numerically so the path draws left-to-right.
@@ -83,9 +94,7 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
 			patternKey !== null && patternKey !== undefined && patterns?.has(patternKey)
 				? toPatternId(String(patternKey))
 				: null
-		const rows = sortByX(data)
-		const seg = { fill: entry.fill, stroke: 'none', key: null, patternId }
-		return expand(hasBaseline ? seg : { ...seg, d: makeGen()(rows.map(toEdge)) }, rows)
+		return splitBySign({ fill: entry.fill, stroke: 'none', key: null, patternId }, sortByX(data))
 	}
 
 	// Group by color field
@@ -110,9 +119,7 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
 			patternKey !== null && patternKey !== undefined && patterns?.has(patternKey)
 				? toPatternId(String(patternKey))
 				: null
-		const sortedRows = sortByX(rows)
-		const seg = { fill: entry.fill, stroke: 'none', key, patternId }
-		return expand(hasBaseline ? seg : { ...seg, d: makeGen()(sortedRows.map(toEdge)) }, sortedRows)
+		return splitBySign({ fill: entry.fill, stroke: 'none', key, patternId }, sortByX(rows))
 	})
 }
 
