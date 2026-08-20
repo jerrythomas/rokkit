@@ -13,16 +13,20 @@ import { literalColor, markEntry } from '../../lib/brewing/colors.js'
  * @param {'linear'|'smooth'|'step'} [curve]
  * @param {Map<unknown, string>} [patterns]
  * @param {Function} [place] - orientation mapper (x, y) => {x, y}
- * @returns {{ d: string, fill: string, stroke: string, key: unknown, patternId: string|null }[]}
+ * @param {number} [baselineValue] - data-space value to anchor/split the fill at. When set,
+ *   each segment is emitted twice (sign: 'above' | 'below'), both anchored at this value's
+ *   pixel position instead of the chart bottom, so themes can colour the two independently.
+ * @returns {{ d: string, fill: string, stroke: string, key: unknown, patternId: string|null, sign?: 'above'|'below' }[]}
  */
-export function buildAreas(data, channels, xScale, yScale, colors, curve, patterns, place = (x, y) => ({ x, y })) {
+export function buildAreas(data, channels, xScale, yScale, colors, curve, patterns, place = (x, y) => ({ x, y }), baselineValue = undefined) {
 	const { x: xf, y: yf, pattern: pf } = channels
 	// A literal color (var()/oklch()/hex/currentColor) isn't a data field — it's the exact
 	// fill the caller wants for THIS area. Don't group on it, and don't fall back to the
 	// shared color scale (one value across all geoms); use it directly.
 	const lit = literalColor(channels.color)
 	const cf = lit ? undefined : channels.color
-	const baseline = yScale.range()[0] // bottom of the chart (y pixel max)
+	const hasBaseline = baselineValue !== undefined && baselineValue !== null
+	const baseline = hasBaseline ? yScale(baselineValue) : yScale.range()[0] // bottom of the chart (y pixel max) unless an explicit baseline value is given
 
 	const xPos = (d) =>
 		typeof xScale.bandwidth === 'function' ? xScale(d[xf]) + xScale.bandwidth() / 2 : xScale(d[xf])
@@ -30,7 +34,10 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
 	// Each area edge (baseline + top) is placed so the area transposes under orientation.
 	// `v` carries the raw y-value so the generator can break the area at a gap (null).
 	const toEdge = (d) => ({ base: place(xPos(d), baseline), top: place(xPos(d), yScale(d[yf])), v: d[yf] })
-	const makeGen = () => {
+	// `clamp` restricts the top edge to one side of the baseline so an 'above' pass never
+	// dips below it and a 'below' pass never rises above it — the same technique proven in
+	// Sparkline (#148). With no clamp, behaviour is unchanged from before baselines existed.
+	const makeGen = (clamp) => {
 		const gen = area()
 			// A null y-value is a GAP (a missing period): break the area there instead of
 			// dropping it onto the 0 baseline. A genuine 0 stays defined and fills.
@@ -38,11 +45,25 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
 			.x0((p) => p.base.x)
 			.y0((p) => p.base.y)
 			.x1((p) => p.top.x)
-			.y1((p) => p.top.y)
+			.y1((p) =>
+				clamp === 'above' ? Math.min(p.top.y, baseline) : clamp === 'below' ? Math.max(p.top.y, baseline) : p.top.y
+			)
 		if (curve === 'smooth') gen.curve(curveCatmullRom)
 		else if (curve === 'step') gen.curve(curveStep)
 		return gen
 	}
+	// One unsigned segment normally; with a baseline, an above and a below copy so themes
+	// can colour positive vs negative fill independently. Mirrors the approach proven in
+	// Sparkline (#148).
+	const expand = (seg, rows) =>
+		hasBaseline
+			? ['above', 'below'].map((sign) => ({
+					...seg,
+					d: makeGen(sign)(rows.map(toEdge)),
+					sign,
+					key: seg.key === undefined ? sign : `${seg.key}::${sign}`
+				}))
+			: [seg]
 
 	// For band (categorical) x scales, sort by domain index to preserve intended ordering.
 	// For continuous scales, sort numerically so the path draws left-to-right.
@@ -62,7 +83,9 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
 			patternKey !== null && patternKey !== undefined && patterns?.has(patternKey)
 				? toPatternId(String(patternKey))
 				: null
-		return [{ d: makeGen()(sortByX(data).map(toEdge)), fill: entry.fill, stroke: 'none', key: null, patternId }]
+		const rows = sortByX(data)
+		const seg = { fill: entry.fill, stroke: 'none', key: null, patternId }
+		return expand(hasBaseline ? seg : { ...seg, d: makeGen()(rows.map(toEdge)) }, rows)
 	}
 
 	// Group by color field
@@ -75,7 +98,7 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
 	// For different-field patterns, assign positionally so each area gets a distinct pattern
 	const orderedPatternKeys = pf && pf !== cf ? [...(patterns?.keys() ?? [])] : null
 
-	return [...groups.entries()].map(([key, rows], i) => {
+	return [...groups.entries()].flatMap(([key, rows], i) => {
 		const entry = colors?.get(key) ?? { fill: '#888', stroke: '#888' }
 		// Same field or no pf: look up by colorKey. Different field: assign positionally.
 		const patternKey = !pf
@@ -87,7 +110,9 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
 			patternKey !== null && patternKey !== undefined && patterns?.has(patternKey)
 				? toPatternId(String(patternKey))
 				: null
-		return { d: makeGen()(sortByX(rows).map(toEdge)), fill: entry.fill, stroke: 'none', key, patternId }
+		const sortedRows = sortByX(rows)
+		const seg = { fill: entry.fill, stroke: 'none', key, patternId }
+		return expand(hasBaseline ? seg : { ...seg, d: makeGen()(sortedRows.map(toEdge)) }, sortedRows)
 	})
 }
 
