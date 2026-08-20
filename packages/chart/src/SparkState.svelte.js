@@ -7,6 +7,71 @@ import { distinct, assignColors } from './lib/brewing/colors.js'
 let nextGeomId = 0
 
 /**
+ * The full set of members a geom reads off its `'plot-state'` context — derived by
+ * scanning every geom for `plotState.*` / `plot.*` / `state.*` reads (`geoms/*.svelte`,
+ * `geoms/lib/**`, including the `marks/*.js` adapters). `SparkState` must implement
+ * every one of these: a `<Spark>` composes the SAME geom components a `<Plot>` does,
+ * and no geom branches on which container it's inside — so a member missing here is a
+ * member that throws inside a `<Spark>` at runtime, not at the point that grew it.
+ *
+ * This is the ONE place to update when that surface legitimately changes. Adding a
+ * geom (or a new context read inside an existing one) that needs a `PlotState` member
+ * means adding it here too. `spec/spark-contract.spec.js` asserts `SparkState` and
+ * `PlotState` both satisfy this exact list and agree on each member's kind (function /
+ * Map / array / null / primitive). If that test goes red after you add a member here,
+ * that is the signal working as intended — it means `SparkState` is missing the
+ * member, not that the test is wrong. Do not "fix" a red conformance test by deleting
+ * the entry you just added.
+ *
+ * Deliberately excluded — read only by `Plot`'s chrome (`Axis`/`Legend`/`Tooltip`/
+ * `Grid`) or by `PlotSurface`'s own wiring, never by a geom: `xAxisY`, `yAxisX`,
+ * `hovered`, `mode`, `colorScaleType`, `geomTypes`, `colorField`, `patternField`,
+ * `symbolField`, `format`, `label`, `tooltip`, `margin`, `bandScale`, `valueScale`,
+ * `preset`, `geomComponent`. A `<Spark>` has no axis, legend, tooltip or grid to
+ * drive, so none of these ever apply.
+ *
+ * Also excluded: `selectedRows` / `isSelected` / `setSelected` / `clearSelected` /
+ * `applyZoom` / `resetZoom`. `geoms/Highlight.svelte` is the one geom that reads
+ * `state?.selectedRows`, but it does so defensively (`?? []`) — multi-select and zoom
+ * are explicit non-goals for a spark (see
+ * docs/superpowers/specs/2026-08-20-spark-plot-geom-architecture-design.md), so their
+ * absence degrades Highlight to "nothing selected", not a runtime error. That's a
+ * different failure mode than every member below, where absence throws.
+ */
+export const GEOM_CONTRACT = [
+	// ─── Scales + dimensions ───────────────────────────────────────────────────
+	'xScale',
+	'yScale',
+	'innerWidth',
+	'innerHeight',
+	// ─── Geom lifecycle ────────────────────────────────────────────────────────
+	'registerGeom',
+	'updateGeom',
+	'unregisterGeom',
+	'geomData',
+	// ─── Data ──────────────────────────────────────────────────────────────────
+	'data',
+	'channels',
+	// ─── Aesthetics ────────────────────────────────────────────────────────────
+	'colors',
+	'patterns',
+	'symbols',
+	'chartPreset',
+	// ─── Orientation ───────────────────────────────────────────────────────────
+	'place',
+	'isFlipped',
+	'orientation',
+	// ─── Colour typing ─────────────────────────────────────────────────────────
+	'continuousCategory',
+	'continuousColorScale',
+	// ─── Interactivity ─────────────────────────────────────────────────────────
+	'interactive',
+	'handleSelect',
+	'setHovered',
+	'clearHovered'
+]
+
+/**
  * SparkState — the lean, PlotState-compatible context that lets a sparkline compose
  * real geoms (`<Spark><Line /></Spark>`) instead of Sparkline's own hand-rolled
  * line/area/bar rendering. It publishes on the same 'plot-state' context key as
