@@ -3,6 +3,7 @@
 	import type { PlotState } from '../PlotState.svelte.js'
 	import { GeomState } from './lib/GeomState.svelte.js'
 	import { buildLineMarks } from './lib/marks/line.js'
+	import { resolveLabel } from './lib/aesthetics.js'
 	import { buildSymbolPath } from '../lib/brewing/marks/points.js'
 	import { keyboardNav } from '../lib/keyboard-nav.js'
 	import { buildSelectDetail } from '../lib/select.js'
@@ -46,13 +47,6 @@
 		onselect = undefined,
 		keyboard = false
 	}: Props = $props()
-
-	function resolveLabel(data: Row): string | null {
-		if (!label) return null
-		if (label === true) return String((y ? data[y] : undefined) ?? '')
-		if (typeof label === 'function') return String(label(data) ?? '')
-		return typeof label === 'string' ? String(data[label] ?? '') : null
-	}
 
 	const plotState = getContext<PlotState>('plot-state')
 
@@ -113,7 +107,7 @@
 			{/if}
 			{#if label}
 				{#each seg.points as pt (`label::${pt.i}`)}
-					{@const text = resolveLabel(pt.data)}
+					{@const text = resolveLabel(label, pt.data, y)}
 					{#if text}
 						<LabelPill
 							x={pt.x + (options.labelOffset?.x ?? 0)}

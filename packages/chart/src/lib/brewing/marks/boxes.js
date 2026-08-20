@@ -37,6 +37,23 @@ export function buildBoxes(data, channels, xScale, yScale, colors, opts = {}) {
 		const key = pf ? d[pf] : null
 		return key !== null && key !== undefined && patterns?.has(key) ? toPatternId(String(key)) : null
 	}
+	// Every box shares the same vertical quartile geometry; only horizontal placement,
+	// thickness and colour differ between the grouped and non-grouped branches.
+	const toBox = (d, { cx, boxWidth, whiskerWidth, colorEntry }) => ({
+		data: d,
+		cx,
+		q1: yScale(d.q1),
+		median: yScale(d.median),
+		q3: yScale(d.q3),
+		iqr_min: yScale(d.iqr_min),
+		iqr_max: yScale(d.iqr_max),
+		outliers: (d.outliers ?? []).map((v) => ({ cy: yScale(v), value: v })),
+		width: boxWidth,
+		whiskerWidth,
+		fill: colorEntry.fill,
+		stroke: colorEntry.stroke,
+		patternId: patternIdFor(d)
+	})
 
 	if (grouped) {
 		const fillValues = [...new Set(data.map((d) => d[ff]))]
@@ -52,21 +69,7 @@ export function buildBoxes(data, channels, xScale, yScale, colors, opts = {}) {
 			const cx = bandStart + subIndex * subBandWidth + subBandWidth / 2 + laneOffset(subBandWidth)
 			const colorEntry = markEntry(lit, fillVal, colors, { fill: '#aaa', stroke: '#666' })
 
-			return {
-				data: d,
-				cx,
-				q1: yScale(d.q1),
-				median: yScale(d.median),
-				q3: yScale(d.q3),
-				iqr_min: yScale(d.iqr_min),
-				iqr_max: yScale(d.iqr_max),
-				outliers: (d.outliers ?? []).map((v) => ({ cy: yScale(v), value: v })),
-				width: boxWidth,
-				whiskerWidth,
-				fill: colorEntry.fill,
-				stroke: colorEntry.stroke,
-				patternId: patternIdFor(d)
-			}
+			return toBox(d, { cx, boxWidth, whiskerWidth, colorEntry })
 		})
 	}
 
@@ -81,20 +84,6 @@ export function buildBoxes(data, channels, xScale, yScale, colors, opts = {}) {
 			(xScale(d[xf]) ?? 0) +
 			(typeof xScale.bandwidth === 'function' ? bw / 2 : 0) +
 			laneOffset(bw)
-		return {
-			data: d,
-			cx,
-			q1: yScale(d.q1),
-			median: yScale(d.median),
-			q3: yScale(d.q3),
-			iqr_min: yScale(d.iqr_min),
-			iqr_max: yScale(d.iqr_max),
-			outliers: (d.outliers ?? []).map((v) => ({ cy: yScale(v), value: v })),
-			width: boxWidth,
-			whiskerWidth,
-			fill: colorEntry.fill,
-			stroke: colorEntry.stroke,
-			patternId: patternIdFor(d)
-		}
+		return toBox(d, { cx, boxWidth, whiskerWidth, colorEntry })
 	})
 }

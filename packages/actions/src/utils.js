@@ -1,17 +1,9 @@
 import { find, toPairs } from 'ramda'
+import { getClosestAncestorWithAttribute } from '@rokkit/core'
 
-/**
- * Finds the closest ancestor of the given element that has the given attribute.
- *
- * @param {HTMLElement} element
- * @param {string} attribute
- * @returns {HTMLElement|null}
- */
-export function getClosestAncestorWithAttribute(element, attribute) {
-	if (!element) return null
-	if (element.getAttribute(attribute)) return element
-	return getClosestAncestorWithAttribute(element.parentElement, attribute)
-}
+// Re-exported so `@rokkit/actions` keeps its existing public surface; the single
+// implementation lives in @rokkit/core.
+export { getClosestAncestorWithAttribute }
 
 /**
  * Get the event name for a given key.
@@ -50,7 +42,6 @@ export function handleAction(actions, event) {
 export function getPathFromEvent(event) {
 	const node = getClosestAncestorWithAttribute(event.target, 'data-path')
 	return node?.getAttribute('data-path')
-	// return node ? getPathFromKey(node.getAttribute('data-path')) : null
 }
 
 /**

@@ -3,6 +3,7 @@
 	import type { PlotState } from '../PlotState.svelte.js'
 	import { resolveHighlight } from '../lib/highlight.js'
 	import { scalePos } from '../lib/scale.js'
+	import { resolveLabel } from './lib/aesthetics.js'
 
 	type Row = Record<string, unknown>
 	type Props = {
@@ -52,12 +53,6 @@
 		return out.filter((m) => Number.isFinite(m.cx) && Number.isFinite(m.cy))
 	})
 
-	function resolveLabel(row: Row): string | null {
-		if (!label) return null
-		if (label === true) return String((y ? row[y] : '') ?? '')
-		if (typeof label === 'function') return String(label(row) ?? '')
-		return String(row[label] ?? '')
-	}
 </script>
 
 {#if marks.length}
@@ -70,7 +65,7 @@
 				data-plot-selected={m.selected ? 'true' : undefined}
 			/>
 			{#if label}
-				{@const text = resolveLabel(m.row)}
+				{@const text = resolveLabel(label, m.row, y)}
 				{#if text}
 					<text x={m.cx} y={m.cy} dy="-8" text-anchor="middle" data-plot-highlight-label
 						>{text}</text

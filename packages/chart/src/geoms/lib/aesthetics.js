@@ -43,3 +43,24 @@ export function resolveAlpha(alpha, type, preset) {
 	if (typeof alpha === 'number') return alpha
 	return preset?.opacity?.[type] ?? 1
 }
+
+/**
+ * Resolve a mark's text label from the geom's `label` prop.
+ *
+ *  - falsy      → no label
+ *  - `true`     → the row's value in `defaultField` (usually the geom's y channel)
+ *  - function   → its return value, stringified
+ *  - string     → the row's value in that field
+ *
+ * @param {boolean|string|((row: Record<string, unknown>) => unknown)|undefined} label
+ * @param {Record<string, unknown>} row
+ * @param {string} [defaultField] - field used when `label` is `true`
+ * @returns {string|null}
+ */
+export function resolveLabel(label, row, defaultField) {
+	if (!label) return null
+	if (label === true) return String((defaultField ? row[defaultField] : undefined) ?? '')
+	if (typeof label === 'function') return String(label(row) ?? '')
+	if (typeof label === 'string') return String(row[label] ?? '')
+	return null
+}

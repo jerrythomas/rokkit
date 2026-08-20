@@ -4,6 +4,7 @@
 	import type { createCrossFilter } from '../crossfilter/createCrossFilter.svelte.js'
 	import { GeomState } from './lib/GeomState.svelte.js'
 	import { buildBarMarks } from './lib/marks/bar.js'
+	import { resolveLabel } from './lib/aesthetics.js'
 	import { keyboardNav } from '../lib/keyboard-nav.js'
 	import { buildSelectDetail } from '../lib/select.js'
 	import LabelPill from './LabelPill.svelte'
@@ -59,14 +60,6 @@
 
 	// `options.stack: true` is the back-compat alias for position='stack'.
 	const resolvedPosition = $derived(position ?? (options?.stack ? 'stack' : 'dodge'))
-
-	function resolveLabel(data: Row, defaultField: string | undefined): string | null {
-		if (!label) return null
-		if (label === true) return String((defaultField ? data[defaultField] : undefined) ?? '')
-		if (typeof label === 'function') return String(label(data) ?? '')
-		if (typeof label === 'string') return String(data[label] ?? '')
-		return null
-	}
 
 	/**
 	 * Pick white or dark text based on perceived luminance of a hex fill color.
@@ -198,7 +191,7 @@
 				/>
 			{/if}
 			{#if label}
-				{@const text = resolveLabel(bar.data, effectiveOrientation === 'horizontal' ? x : y)}
+				{@const text = resolveLabel(label, bar.data, effectiveOrientation === 'horizontal' ? x : y)}
 				{#if text}
 					{#if effectiveOrientation === 'horizontal'}
 						{#if options.labelInside}
