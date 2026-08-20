@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { SparkState } from '../src/SparkState.svelte.js'
 import { defaultPreset } from '../src/lib/preset.js'
+import { distinct, assignColors } from '../src/lib/brewing/colors.js'
 
 const rows = [
 	{ day: 0, sales: 10 },
@@ -285,5 +286,110 @@ describe('SparkState — geom lifecycle', () => {
 		// The real geom must still be registered and unaffected — a sabotaged
 		// unregisterGeom that wipes #geoms on any unknown id would empty this out.
 		expect(s.geomData(id)).toBe(s.data)
+	})
+})
+
+describe('SparkState — colors', () => {
+	it('assigns one color entry per distinct series value, each with fill and stroke', () => {
+		const data = [
+			{ day: 0, sales: 10, region: 'east' },
+			{ day: 1, sales: 20, region: 'west' },
+			{ day: 2, sales: 30, region: 'east' }
+		]
+		const s = new SparkState({ data, channels: { x: 'day', y: 'sales', color: 'region' } })
+		const expected = assignColors(distinct(data, 'region'), 'light', defaultPreset)
+		expect(s.colors).toEqual(expected)
+		expect(s.colors.size).toBe(2)
+		expect(s.colors.get('east')).toEqual(expect.objectContaining({ fill: expect.any(String), stroke: expect.any(String) }))
+	})
+
+	it('falls back to a single-entry palette when there is no color or fill channel', () => {
+		const s = make()
+		const expected = assignColors([null], 'light', defaultPreset)
+		expect(s.colors).toEqual(expected)
+		expect(s.colors.size).toBe(1)
+	})
+
+	it('resolves the fill channel when color is absent', () => {
+		const data = [
+			{ day: 0, sales: 10, region: 'east' },
+			{ day: 1, sales: 20, region: 'west' }
+		]
+		const s = new SparkState({ data, channels: { x: 'day', y: 'sales', fill: 'region' } })
+		const expected = assignColors(distinct(data, 'region'), 'light', defaultPreset)
+		expect(s.colors).toEqual(expected)
+		expect([...s.colors.keys()].sort()).toEqual(['east', 'west'])
+	})
+
+	it('prefers the color channel over fill when both are set', () => {
+		// region (color) has 3 distinct values; team (fill) has only 1 — the two fields
+		// give different answers, so this only passes if `color` truly wins over `fill`.
+		const data = [
+			{ day: 0, sales: 10, region: 'east', team: 'alpha' },
+			{ day: 1, sales: 20, region: 'west', team: 'alpha' },
+			{ day: 2, sales: 30, region: 'north', team: 'alpha' }
+		]
+		const s = new SparkState({
+			data,
+			channels: { x: 'day', y: 'sales', color: 'region', fill: 'team' }
+		})
+		const expected = assignColors(distinct(data, 'region'), 'light', defaultPreset)
+		expect(s.colors).toEqual(expected)
+		expect(s.colors.size).toBe(3)
+		expect([...s.colors.keys()].sort()).toEqual(['east', 'north', 'west'])
+	})
+})
+
+describe('SparkState — inert members', () => {
+	it('returns empty patterns and symbols maps', () => {
+		const s = make()
+		expect(s.patterns).toEqual(new Map())
+		expect(s.symbols).toEqual(new Map())
+	})
+
+	it('is never flipped', () => {
+		expect(make().isFlipped).toBe(false)
+	})
+
+	it('reports vertical orientation', () => {
+		expect(make().orientation).toBe('vertical')
+	})
+
+	it('is never a continuous category axis', () => {
+		expect(make().continuousCategory).toBe(false)
+	})
+
+	it('has no continuous color scale', () => {
+		expect(make().continuousColorScale).toBe(null)
+	})
+
+	it('is never interactive', () => {
+		expect(make().interactive).toBe(false)
+	})
+
+	it('place() is the identity mapping for several coordinate pairs', () => {
+		const s = make()
+		expect(s.place(12, 34)).toEqual({ x: 12, y: 34 })
+		expect(s.place(0, 0)).toEqual({ x: 0, y: 0 })
+		expect(s.place(-5, 100)).toEqual({ x: -5, y: 100 })
+	})
+
+	it('setHovered/clearHovered/handleSelect are no-ops: they do not throw and leave state unchanged', () => {
+		const s = make()
+		const before = {
+			data: s.data,
+			channels: s.channels,
+			colors: s.colors,
+			xScaleDomain: s.xScale.domain(),
+			yScaleDomain: s.yScale.domain()
+		}
+		expect(() => s.setHovered({ day: 0, sales: 10 })).not.toThrow()
+		expect(() => s.clearHovered()).not.toThrow()
+		expect(() => s.handleSelect({ datum: { day: 0, sales: 10 } })).not.toThrow()
+		expect(s.data).toBe(before.data)
+		expect(s.channels).toEqual(before.channels)
+		expect(s.colors).toEqual(before.colors)
+		expect(s.xScale.domain()).toEqual(before.xScaleDomain)
+		expect(s.yScale.domain()).toEqual(before.yScaleDomain)
 	})
 })
