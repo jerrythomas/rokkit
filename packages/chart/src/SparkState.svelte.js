@@ -51,8 +51,13 @@ export class SparkState {
 
 	xScale = $derived.by(() => buildUnifiedXScale([this.#data], this.#channels.x, this.#width))
 
+	// nice:false — a spark's peak/trough should reach the edge of its box; the padding
+	// nice() adds for pretty tick labels only shrinks the glyph a sparkline has no ticks to label.
 	yScale = $derived.by(() =>
-		buildUnifiedYScale([this.#data], this.#channels.y, this.#height, { domain: this.#yDomain })
+		buildUnifiedYScale([this.#data], this.#channels.y, this.#height, {
+			domain: this.#yDomain,
+			nice: false
+		})
 	)
 
 	constructor(config = {}) {

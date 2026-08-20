@@ -71,6 +71,11 @@ describe('SparkState — scales', () => {
 		const s = make({ baseline: 50, data: [{ day: 0, sales: 5 }, { day: 1, sales: 9 }] })
 		expect(s.yScale.domain()[1]).toBeGreaterThanOrEqual(50)
 	})
+
+	it('does not nice a non-round domain (a spark uses its full box, not padded tick labels)', () => {
+		const s = make({ data: [{ day: 0, sales: 1 }, { day: 1, sales: 9.5 }] })
+		expect(s.yScale.domain()).toEqual([1, 9.5])
+	})
 })
 
 describe('SparkState — update', () => {

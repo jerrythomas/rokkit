@@ -58,7 +58,10 @@ export function buildUnifiedXScale(datasets, field, width, opts = {}) {
 export function buildUnifiedYScale(datasets, field, height, opts = {}) {
 	const yrange = opts.range ?? [height, 0]
 	if (opts.domain) {
-		return scaleLinear().domain(opts.domain).range(yrange).nice()
+		const s = scaleLinear().domain(opts.domain).range(yrange)
+		// nice() pads the domain outward to round numbers — wrong for a caller (e.g. a spark)
+		// whose domain is already the exact value it wants rendered edge-to-edge.
+		return opts.nice === false ? s : s.nice()
 	}
 	const rawValues = datasets.flatMap((d) => d.map((r) => r[field])).filter((v) => v !== null && v !== undefined)
 	const isNumeric = rawValues.length > 0 && rawValues.every(

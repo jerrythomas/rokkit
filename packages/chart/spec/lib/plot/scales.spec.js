@@ -165,6 +165,17 @@ describe('buildUnifiedYScale', () => {
 		// No numeric values → isNumeric=false → band scale with empty string domain
 		expect(scale.bandwidth).toBeDefined()
 	})
+
+	it('nices an explicit domain by default (guards existing callers, e.g. PlotState)', () => {
+		const scale = buildUnifiedYScale(numDatasets, 'y', 300, { domain: [1, 9.5] })
+		// nice() pads [1, 9.5] outward to round numbers — it must not stay exactly [1, 9.5]
+		expect(scale.domain()).not.toEqual([1, 9.5])
+	})
+
+	it('skips nicing an explicit domain when nice:false (spark y-domain stays exact)', () => {
+		const scale = buildUnifiedYScale(numDatasets, 'y', 300, { domain: [1, 9.5], nice: false })
+		expect(scale.domain()).toEqual([1, 9.5])
+	})
 })
 
 // ---------------------------------------------------------------------------
