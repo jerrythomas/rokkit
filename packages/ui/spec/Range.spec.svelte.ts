@@ -521,7 +521,7 @@ describe('Range', () => {
 		it('dragging the single-value thumb right raises the value', async () => {
 			const onchange = vi.fn()
 			const { container } = render(Range, { value: 0, min: 0, max: 100, onchange })
-			const thumb = container.querySelector('[data-range-thumb-upper], [data-range-thumb]')!
+			const thumb = container.querySelector('[data-thumb="value"]')!
 			await panBy(thumb, TRACK / 2)
 			expect(onchange).toHaveBeenCalled()
 			expect(Number(onchange.mock.calls.at(-1)![0])).toBeGreaterThan(0)
@@ -530,19 +530,36 @@ describe('Range', () => {
 		it('clamps the single-value thumb at the maximum', async () => {
 			const onchange = vi.fn()
 			const { container } = render(Range, { value: 0, min: 0, max: 100, onchange })
-			const thumb = container.querySelector('[data-range-thumb-upper], [data-range-thumb]')!
+			const thumb = container.querySelector('[data-thumb="value"]')!
 			await panBy(thumb, TRACK * 5)
 			expect(Number(onchange.mock.calls.at(-1)![0])).toBe(100)
 		})
 
-		it('does not move a disabled thumb', async () => {
+		it('does not move or emit for a disabled thumb', async () => {
 			const onchange = vi.fn()
 			const { container } = render(Range, { value: 20, min: 0, max: 100, disabled: true, onchange })
-			const thumb = container.querySelector('[data-range-thumb-upper], [data-range-thumb]')!
+			const thumb = container.querySelector('[data-thumb="value"]')!
 			await panBy(thumb, TRACK / 2)
-			// panend has no disabled guard, so it still emits a (no-op) change — but the
-			// panmove guard means the value itself must be untouched.
-			expect(Number(onchange.mock.calls.at(-1)?.[0] ?? 20)).toBe(20)
+			// A disabled control must be inert across the whole gesture — panstart,
+			// panmove AND panend.
+			expect(onchange).not.toHaveBeenCalled()
+		})
+
+		it('does not emit on panend for a disabled range thumb', async () => {
+			const onchange = vi.fn()
+			const { container } = render(Range, {
+				lower: 20,
+				upper: 80,
+				min: 0,
+				max: 100,
+				range: true,
+				disabled: true,
+				onchange
+			})
+			const lower = container.querySelector('[data-thumb="lower"]')!
+			expect(lower).toBeTruthy()
+			await panBy(lower, TRACK / 2)
+			expect(onchange).not.toHaveBeenCalled()
 		})
 
 		it('dragging the lower thumb in range mode raises the lower bound', async () => {
@@ -555,10 +572,10 @@ describe('Range', () => {
 				range: true,
 				onchange
 			})
-			const lower = container.querySelector('[data-range-thumb-lower]')
-			if (!lower) return
+			const lower = container.querySelector('[data-thumb="lower"]')!
 			await panBy(lower, TRACK / 4)
-			expect(onchange).toHaveBeenCalled()
+			const [lowerVal] = onchange.mock.calls.at(-1)![0] as [number, number]
+			expect(lowerVal).toBeGreaterThan(0)
 		})
 
 		it('keeps the lower thumb from crossing above the upper thumb', async () => {
@@ -571,12 +588,13 @@ describe('Range', () => {
 				range: true,
 				onchange
 			})
-			const lower = container.querySelector('[data-range-thumb-lower]')
-			if (!lower) return
+			const lower = container.querySelector('[data-thumb="lower"]')!
 			await panBy(lower, TRACK * 5)
-			const last = onchange.mock.calls.at(-1)?.[0] as { lower: number; upper: number } | number
-			const lowerVal = typeof last === 'object' ? last.lower : last
+			// Range mode emits [lower, upper].
+			const [lowerVal, upperVal] = onchange.mock.calls.at(-1)![0] as [number, number]
+			expect(lowerVal).toBeLessThanOrEqual(upperVal)
 			expect(lowerVal).toBeLessThanOrEqual(40)
+			expect(Number(lower.getAttribute('aria-valuenow'))).toBe(lowerVal)
 		})
 
 		it('keeps the upper thumb from crossing below the lower thumb', async () => {
@@ -589,12 +607,12 @@ describe('Range', () => {
 				range: true,
 				onchange
 			})
-			const upper = container.querySelector('[data-range-thumb-upper]')
-			if (!upper) return
+			const upper = container.querySelector('[data-thumb="upper"]')!
 			await panBy(upper, -TRACK * 5)
-			const last = onchange.mock.calls.at(-1)?.[0] as { lower: number; upper: number } | number
-			const upperVal = typeof last === 'object' ? last.upper : last
+			const [lowerVal, upperVal] = onchange.mock.calls.at(-1)![0] as [number, number]
+			expect(upperVal).toBeGreaterThanOrEqual(lowerVal)
 			expect(upperVal).toBeGreaterThanOrEqual(60)
+			expect(Number(upper.getAttribute('aria-valuenow'))).toBe(upperVal)
 		})
 	})
 })

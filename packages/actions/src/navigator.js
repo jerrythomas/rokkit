@@ -143,6 +143,8 @@ export class Navigator {
 	#wrapper
 	#keymap
 	#containScroll
+	// Set by destroy() so a deferred focusout can tell it's been torn down.
+	#destroyed = false
 
 	// Typeahead state
 	#buffer = ''
@@ -169,6 +171,7 @@ export class Navigator {
 	}
 
 	destroy() {
+		this.#destroyed = true
 		this.#root.removeEventListener('keydown', this.#onKeydown)
 		this.#root.removeEventListener('click', this.#onClick)
 		this.#root.removeEventListener('focusin', this.#onFocusin)
@@ -275,8 +278,18 @@ export class Navigator {
 		// If it's null or outside this root, focus left the list
 		const next = /** @type {Node|null} */ (event.relatedTarget)
 		if (!next || !this.#root.contains(next)) {
-			// Focus left the list — wrapper can react (e.g. close a dropdown)
-			this.#wrapper.blur?.()
+			// Removing a focused element also fires focusout with a null
+			// relatedTarget, so teardown looks exactly like a real blur here. Calling
+			// wrapper.blur() synchronously in that case mutates state during Svelte's
+			// effect-cleanup phase, which throws `state_unsafe_mutation`. Deferring by
+			// a microtask lets destroy() land first, so a torn-down navigator stays
+			// quiet while a genuine blur still reaches the wrapper.
+			// JSDOM never fires focusout on removal, so this only shows up in a real
+			// browser — see packages/ui/browser/Select.browser.spec.ts.
+			queueMicrotask(() => {
+				if (this.#destroyed) return
+				this.#wrapper.blur?.()
+			})
 		}
 	}
 

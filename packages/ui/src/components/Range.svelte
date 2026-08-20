@@ -98,6 +98,7 @@
 
 	function handleUpperPanEnd() {
 		slidingUpper = false
+		if (disabled) return
 		// Final snap
 		if (rangeMode) {
 			upper = snapToStep(clamp(upper, lower, max))
@@ -175,6 +176,7 @@
 
 	function handleLowerPanEnd() {
 		slidingLower = false
+		if (disabled) return
 		lower = snapToStep(clamp(lower, min, upper))
 		fireChange()
 	}

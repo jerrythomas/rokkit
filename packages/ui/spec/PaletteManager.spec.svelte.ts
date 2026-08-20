@@ -345,12 +345,14 @@ describe('PaletteManager', () => {
 			expect(container.querySelector('[data-palette-manager]')).toBeTruthy()
 		})
 
-		it('selecting a preset swaps the active mapping', async () => {
+		it('selecting a preset marks it active', async () => {
 			const { container } = render(PaletteManager)
-			const preset = container.querySelector('[data-palette-preset]')
-			if (!preset) return
-			await fireEvent.click(preset)
-			expect(container.querySelector('[data-palette-manager]')).toBeTruthy()
+			const presets = [...container.querySelectorAll('[data-palette-preset]')]
+			expect(presets.length).toBeGreaterThan(0)
+
+			const target = presets.find((p) => !p.hasAttribute('data-active')) ?? presets[0]
+			await fireEvent.click(target)
+			expect(target.hasAttribute('data-active')).toBe(true)
 		})
 	})
 })

@@ -249,8 +249,13 @@ describe('Navigator', () => {
 	})
 
 	// ─── Focusout ────────────────────────────────────────────────────
+	// blur() is deliberately deferred by a microtask: removing a focused element
+	// fires focusout too, and reacting synchronously would mutate state during
+	// Svelte's effect cleanup. Tests therefore await a microtask before asserting.
 
-	it('focusout to an element outside the root calls wrapper.blur', () => {
+	const flushMicrotasks = () => Promise.resolve()
+
+	it('focusout to an element outside the root calls wrapper.blur', async () => {
 		const outside = document.createElement('button')
 		document.body.appendChild(outside)
 		nav = new Navigator(root, wrapper)
@@ -258,16 +263,29 @@ describe('Navigator', () => {
 		const event = new FocusEvent('focusout', { bubbles: true })
 		Object.defineProperty(event, 'relatedTarget', { value: outside })
 		items[0].dispatchEvent(event)
+		await flushMicrotasks()
 
 		expect(wrapper.blur).toHaveBeenCalledOnce()
 	})
 
-	it('focusout with no relatedTarget calls wrapper.blur', () => {
+	it('focusout with no relatedTarget calls wrapper.blur', async () => {
 		nav = new Navigator(root, wrapper)
 		const event = new FocusEvent('focusout', { bubbles: true })
 		Object.defineProperty(event, 'relatedTarget', { value: null })
 		items[0].dispatchEvent(event)
+		await flushMicrotasks()
 		expect(wrapper.blur).toHaveBeenCalledOnce()
+	})
+
+	it('does not blur when the navigator is destroyed before the microtask runs', async () => {
+		nav = new Navigator(root, wrapper)
+		const event = new FocusEvent('focusout', { bubbles: true })
+		Object.defineProperty(event, 'relatedTarget', { value: null })
+		items[0].dispatchEvent(event)
+		// Mirrors Svelte tearing the list down in the same synchronous flush.
+		nav.destroy()
+		await flushMicrotasks()
+		expect(wrapper.blur).not.toHaveBeenCalled()
 	})
 
 	it('focusout to another item inside the root does not blur', () => {
