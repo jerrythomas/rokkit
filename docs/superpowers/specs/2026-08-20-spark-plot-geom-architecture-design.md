@@ -40,6 +40,24 @@ scales badly — every geom needs a hand-written spark twin.
 - Spark tooltips, `selectable`/Highlight multi-select, zoom, crossfilter, facets.
 - Deprecating `Sparkline`. It remains the useful one-liner for the common case.
 
+## Correction (2026-08-20, after review)
+
+The first draft of this spec claimed Sparkline's DOM contract was already aligned with the geoms
+because both use `data-plot-*` hooks. **That was wrong** — they share a prefix, not a structure:
+
+| Hook | In `Sparkline` | In any geom |
+| --- | --- | --- |
+| `data-plot-area` | yes | **no** |
+| `data-plot-area-sign` (`above`/`below`) | yes | **no** |
+| `data-plot-baseline` | yes | **no** |
+
+`data-plot-area-sign` is the baseline-anchored negative-fill split shipped as **#148 on 2026-08-19**.
+`geoms/Area` renders a single fill and has no equivalent, so refactoring `Sparkline` onto it as
+originally written would both break tests and **regress a feature shipped the day before**.
+
+Resolution (chosen): port negative-fill into `geoms/Area` as part of this cycle, so the geom gains
+the capability and `Sparkline` can sit on top of it losslessly. §5a below covers the port.
+
 ## Key insight
 
 `PlotState` is **already assembled from pure, reusable modules**:
@@ -123,6 +141,41 @@ chrome. Defaults inherited from `Sparkline`: 80×24.
 
 Props: `data`, `x`, `y`, `color`, `width`, `height`, `min`, `max`, `baseline`, `children`.
 
+### 5a. Port negative-fill into `geoms/Area`
+
+`buildAreas` gains a `baseline` option. When set, an area crossing it splits into two segments
+carrying `sign: 'above' | 'below'`; when unset, behaviour is byte-identical to today.
+
+`geoms/Area.svelte` **adds** attributes rather than changing them — `data-plot-geom="area"` and
+`data-plot-element="area"` stay exactly as they are, so every existing chart consumer and Area test
+is unaffected. New: `data-plot-area` on each segment path, plus `data-plot-area-sign` when a baseline
+is in effect.
+
+This is what makes criterion 2 achievable: additive on the chart side, sufficient on the spark side.
+
+### 5b. Hooks `Sparkline`'s tests depend on
+
+Enumerated from the 27 specs, with the post-refactor provider for each:
+
+| Assertion | Count | Provided by |
+| --- | --- | --- |
+| `svg` | 3 | `Spark` root |
+| `rect`, `rect[fill^="url("]` | 7 | `geoms/Bar` (already emits `<rect>`) |
+| `[data-plot-baseline]` | 6 | `Spark` (owns the baseline — see below) |
+| `[data-plot-highlight]` | 5 | `geoms/Highlight` (already emits it) |
+| `[data-plot-trend]` | 5 | `geoms/Trend` (already emits it) |
+| `path`, `path[fill^="url("]` | 5 | `geoms/Line` / `geoms/Area` |
+| `[data-plot-area]`, `[data-plot-area-sign]` | 3 | `geoms/Area` after §5a |
+| `defs pattern` | 1 | `Spark` renders `<DefinePatterns />`, as `PlotSurface` does |
+
+**The baseline line belongs to `Spark`, not a geom.** It already owns the domain extension, and the
+baseline applies to bar sparks too (not just area). `Spark` renders
+`<line data-plot-baseline>` when given `baseline`, and Sparkline's `[data-plot-baseline]` CSS moves
+to `Spark` with it. `Rule` is not used — it emits `data-plot-element`/`data-plot-geom`, not
+`data-plot-baseline`, and bending it to do so would be worse than one line of SVG in the container.
+
+This supersedes §5's earlier claim that `baseline` maps to `<Rule>`.
+
 ### 5. `Sparkline` becomes a wrapper
 
 | Current prop | Becomes |
@@ -130,7 +183,7 @@ Props: `data`, `x`, `y`, `color`, `width`, `height`, `min`, `max`, `baseline`, `
 | `type='line' \| 'area' \| 'bar'` | `<Line />` / `<Area />` / `<Bar />` |
 | `trend` | `<Trend {trend} />` |
 | `highlight` | `<Highlight {highlight} />` |
-| `baseline` | split — see below |
+| `baseline` | `Spark`'s `baseline` prop (domain + line) — see §5b |
 | `data`, `field`, `color`, `width`, `height`, `min`, `max` | passed to `Spark` |
 | `curve` | `options={{ curve }}` on the geom |
 | `pattern` | the geom's `pattern` prop (`Area`/`Bar` only — a line has no interior) |
@@ -142,8 +195,11 @@ Props: `data`, `x`, `y`, `color`, `width`, `height`, `min`, `max`, `baseline`, `
 **`baseline` does two jobs** and splits accordingly:
 
 - *Extending the y-domain* so the baseline and the full negative extent stay on-canvas — a scale
-  concern, so it stays a `Spark` prop (like Plot's `yDomain`).
-- *Drawing the line* — `<Rule y={baseline} />`, which already exists.
+  concern.
+- *Drawing the line* and *anchoring the area/bar fill* — see §5a/§5b.
+
+Both stay on `Spark` as a single `baseline` prop, which it forwards to the geoms as
+`options.baseline`.
 
 Bar auto-anchoring at 0 when any value is negative stays `Sparkline` behaviour, expressed by passing
 the resolved baseline to `Spark`.
@@ -160,14 +216,18 @@ every other container.
 
 1. `<Spark>` + `<GeomLine>` renders a line sparkline with no changes to `geoms/Line.svelte`.
 2. Every existing `Sparkline` test (27) and `apps/learn/e2e/sparkline.e2e.ts` passes **unmodified**.
-   This is the definition of backward compatible — not a claim in a commit message.
-3. The conformance test fails when a member is removed from `SparkState`.
-4. `Trend` and `Highlight` render inside `Spark` from context, with no spark-specific branches.
-5. A spark geom's rendered pixel geometry inside `Spark` matches the same geom inside `Plot` at the
+   This is the definition of backward compatible — not a claim in a commit message. §5b maps every
+   assertion to its post-refactor provider; if any needs editing, the design is wrong, not the test.
+3. Every existing `geoms/Area` test passes **unmodified** — the §5a port is additive only.
+4. The conformance test fails when a member is removed from `SparkState`.
+5. `Trend` and `Highlight` render inside `Spark` from context, with no spark-specific branches.
+6. A spark geom's rendered pixel geometry inside `Spark` matches the same geom inside `Plot` at the
    same dimensions — asserted in browser mode, where geometry is real.
-6. Coverage gates hold: 100% statements+lines on `SparkState.svelte.js`, ≥90% on `Spark.svelte` and
-   the refactored `Sparkline.svelte`.
-7. `bun run check` green; `bun run test:browser` green.
+7. `geoms/Area` with `options.baseline` splits into `above`/`below` segments; without it, output is
+   unchanged.
+8. Coverage gates hold: 100% statements+lines on `SparkState.svelte.js` and the `buildAreas` changes,
+   ≥90% on `Spark.svelte` and the refactored `Sparkline.svelte`.
+9. `bun run check` green; `bun run test:browser` green.
 
 ## Testing
 
