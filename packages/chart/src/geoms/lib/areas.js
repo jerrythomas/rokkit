@@ -64,21 +64,24 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
 	// One unsigned segment normally; with a baseline, an above and a below copy so themes can
 	// colour positive vs negative fill independently. Mirrors the approach proven in Sparkline
 	// (#148). Also owns the "no baseline" `d` computation so both call sites just hand over rows.
-	const splitBySign = (segBase, rows) => {
+	const splitBySign = (segBase, rows, grouped) => {
 		if (!hasBaseline) return [{ ...segBase, d: makeGen()(rows.map((d) => toEdge(d))) }]
 		return ['above', 'below'].map((sign) => ({
 			...segBase,
 			d: makeGen()(rows.map((d) => toEdge(d, sign))),
 			sign,
-			// A single-series segment's key is `null` (not `undefined`, see below); either way,
-			// there's nothing meaningful to prefix, so the sign alone is the key. For a real
-			// group key, a template literal alone would string-coerce it — colliding distinct
-			// values that share a string form (number 5 and string '5' both become "5::above").
-			// Prefixing with `typeof` keeps those apart without losing the original key's value.
-			key:
-				segBase.key === undefined || segBase.key === null
-					? sign
-					: `${typeof segBase.key}:${segBase.key}::${sign}`
+			// Only the genuinely ungrouped case (no color/fill channel at all) may use a bare
+			// sign — there's exactly one segment set in that case, so 'above'/'below' are
+			// already unique. A grouped segment must ALWAYS get a discriminated key, even when
+			// its group's value happens to be null/undefined: that's a real, distinct group,
+			// not "no grouping" — collapsing the two onto the same bare key is exactly the bug
+			// this branches around. `typeof` alone already keeps null (typeof 'object') and
+			// undefined (typeof 'undefined') apart, no extra special-casing needed for them.
+			// This assumes group values are primitives (string/number/boolean/null/undefined),
+			// true for every color/fill channel today; two distinct objects (or two Dates with
+			// equal timestamps) stringifying to the same "type:value" could still collide —
+			// an accepted, documented bound, not an oversight.
+			key: grouped ? `${typeof segBase.key}:${segBase.key}::${sign}` : sign
 		}))
 	}
 
@@ -104,7 +107,7 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
 		// that need to look a segment back up in a colors/patterns Map (keyed by the raw group
 		// value, not by our render key) should use this instead of `key`, since `key` gets a
 		// sign suffix once a baseline is in effect.
-		return splitBySign({ fill: entry.fill, stroke: 'none', key: null, groupKey: null, patternId }, sortByX(data))
+		return splitBySign({ fill: entry.fill, stroke: 'none', key: null, groupKey: null, patternId }, sortByX(data), false)
 	}
 
 	// Group by color field
@@ -129,7 +132,7 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
 			patternKey !== null && patternKey !== undefined && patterns?.has(patternKey)
 				? toPatternId(String(patternKey))
 				: null
-		return splitBySign({ fill: entry.fill, stroke: 'none', key, groupKey: key, patternId }, sortByX(rows))
+		return splitBySign({ fill: entry.fill, stroke: 'none', key, groupKey: key, patternId }, sortByX(rows), true)
 	})
 }
 

@@ -145,6 +145,38 @@ describe('buildAreas — baseline split', () => {
 		const keys = segs.map((s) => s.key)
 		expect(new Set(keys).size).toBe(4)
 	})
+
+	it('keeps signed keys distinct when a grouped color channel mixes an absent value and an explicit null', () => {
+		// Two groups that are both "no value" in different ways: one row set never has the
+		// color field at all (d[cf] reads as `undefined`), the other sets it explicitly to
+		// `null`. Both are real, distinct groups — not "there is no grouping" — so a grouped
+		// segment must discriminate even here; a bare sign for "falsy-ish key" would collapse
+		// these two onto the same "above"/"below" pair, which is the exact crash this guards.
+		const nullishData = [
+			{ x: 0, y: 5 },
+			{ x: 1, y: -3 },
+			{ x: 0, y: 4, cat: null },
+			{ x: 1, y: 2, cat: null }
+		]
+		const nullishColors = new Map([
+			[undefined, { fill: '#111', stroke: '#111' }],
+			[null, { fill: '#222', stroke: '#222' }]
+		])
+		const segs = buildAreas(
+			nullishData,
+			{ x: 'x', y: 'y', color: 'cat' },
+			xScale,
+			yScale,
+			nullishColors,
+			undefined,
+			undefined,
+			undefined,
+			0
+		)
+		expect(segs).toHaveLength(4)
+		const keys = segs.map((s) => s.key)
+		expect(new Set(keys).size).toBe(4)
+	})
 })
 
 describe('buildAreaMarks — baseline preserves the border-stroke color lookup', () => {
