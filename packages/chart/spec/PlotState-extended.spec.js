@@ -796,3 +796,58 @@ describe('PlotState — sort band axis by value (bars by size)', () => {
 		expect(state.xScale.domain()).toEqual(['C', 'B', 'A'])
 	})
 })
+
+// ─── stacked bar domain when the FILL channel is a literal colour ──────────────
+
+describe('PlotState — stacked bar Y domain when fill is a literal colour', () => {
+	// Mirror of the literal-colour case above, but for the `fill` channel: a literal
+	// fill is a paint instruction, not a field, so it must not be picked as the stack
+	// dimension — the pattern channel has to carry the stacking.
+	const data = [
+		{ x: 'A', pat: 'solid', y: 20 },
+		{ x: 'A', pat: 'dots', y: 30 },
+		{ x: 'B', pat: 'solid', y: 15 },
+		{ x: 'B', pat: 'dots', y: 25 }
+	]
+
+	it('ignores the literal fill and stacks on the pattern channel', () => {
+		const channels = { x: 'x', y: 'y', fill: '#00ff00', pattern: 'pat' }
+		const state = new PlotState({ data, channels, width: 600, height: 400 })
+		state.registerGeom({ type: 'bar', channels, stat: 'identity', options: { stack: true } })
+
+		const [, domMax] = state.yScale.domain()
+		// A column total = 20+30 = 50; B column = 15+25 = 40; max = 50
+		expect(domMax).toBeGreaterThanOrEqual(50)
+		expect(domMax).toBeLessThan(100)
+	})
+})
+
+// ─── orientation-agnostic scale accessors ─────────────────────────────────────
+
+describe('PlotState — bandScale / valueScale', () => {
+	it('maps band→x and value→y when the x channel is the categorical axis', () => {
+		const channels = { x: 'cat', y: 'v' }
+		const data = [
+			{ cat: 'A', v: 10 },
+			{ cat: 'B', v: 20 }
+		]
+		const state = new PlotState({ data, channels, width: 400, height: 300 })
+		state.registerGeom({ type: 'bar', channels, stat: 'identity' })
+
+		expect(state.bandScale).toBe(state.xScale)
+		expect(state.valueScale).toBe(state.yScale)
+	})
+
+	it('swaps to band→y and value→x when x is not the categorical axis', () => {
+		const channels = { x: 'a', y: 'b' }
+		const data = [
+			{ a: 1, b: 10 },
+			{ a: 2, b: 20 }
+		]
+		const state = new PlotState({ data, channels, width: 400, height: 300 })
+		state.registerGeom({ type: 'point', channels, stat: 'identity' })
+
+		expect(state.bandScale).toBe(state.yScale)
+		expect(state.valueScale).toBe(state.xScale)
+	})
+})
