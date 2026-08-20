@@ -1,10 +1,12 @@
 <script lang="ts">
-	import { scaleLinear } from 'd3-scale'
-	import { line as d3line, area as d3area, curveCatmullRom } from 'd3-shape'
-	import PatternDef from './patterns/PatternDef.svelte'
+	import Spark from './Spark.svelte'
+	import Line from './geoms/Line.svelte'
+	import Area from './geoms/Area.svelte'
+	import Bar from './geoms/Bar.svelte'
+	import Trend from './geoms/Trend.svelte'
+	import Highlight from './geoms/Highlight.svelte'
 	import { PATTERNS } from './patterns/patterns.js'
 	import { resolveHighlight } from './lib/highlight.js'
-	import { computeTrend } from './lib/trend.js'
 
 	type HighlightSelector =
 		| 'first'
@@ -54,36 +56,26 @@
 		)
 	)
 
-	// Adapter to the pure geom utilities (they operate on {x,y} rows).
-	const rows = $derived(values.map((v, i) => ({ x: i, y: v })))
-
 	const hasNegative = $derived(values.some((v) => v < 0))
 	// Bars with negative values are meaningless when measured from the pixel bottom, so a
 	// bar sparkline auto-anchors at 0 when any value is negative. Everything else is opt-in.
 	const effectiveBaseline = $derived(baseline ?? (type === 'bar' && hasNegative ? 0 : undefined))
 
-	const rawMin = $derived(Math.min(...values))
-	const rawMax = $derived(Math.max(...values))
-	// Explicit min/max win; otherwise extend the auto domain to include the baseline so it
-	// (and the full negative extent) stay on-canvas.
-	const yMin = $derived(
-		min ?? (effectiveBaseline !== undefined ? Math.min(rawMin, effectiveBaseline) : rawMin)
+	// Adapter to the shared geom pipeline: Spark/SparkState/geoms all read rows keyed by
+	// channel name, same as a full Plot — 'x'/'y' here. A geom's `pattern` prop is a
+	// data-field CHANNEL, not a literal name, so the literal pattern name is also written onto
+	// every row as an ordinary column, and that column name is what's handed to the geom below.
+	// `SparkState.patterns` (driven by `Spark`'s own `pattern` prop) maps the same literal name
+	// to itself, so both sides resolve `toPatternId(name)` in agreement — no new mechanism.
+	const rows = $derived.by(() =>
+		values.map((v, i) => (pattern !== undefined ? { x: i, y: v, pattern } : { x: i, y: v }))
 	)
-	const yMax = $derived(
-		max ?? (effectiveBaseline !== undefined ? Math.max(rawMax, effectiveBaseline) : rawMax)
-	)
+	const patternChannel = $derived(pattern !== undefined ? 'pattern' : undefined)
 
-	const xScale = $derived(
-		scaleLinear()
-			.domain([0, values.length - 1])
-			.range([0, width])
-	)
-	const yScale = $derived(scaleLinear().domain([yMin, yMax]).range([height, 0]))
-
-	// When no baseline is in effect, anchor at the pixel bottom — preserves the classic
-	// min-anchored sparkbar look (Math.min/abs below both collapse to the old formula).
-	const barAnchorY = $derived(effectiveBaseline !== undefined ? yScale(effectiveBaseline) : height)
-
+	// The Highlight geom's own `highlight` prop takes exactly ONE selector. Sparkline's contract
+	// additionally accepts an array with overlap dedup (e.g. ['last', 3] on a 4-point series
+	// name the same point) — resolved here into a single index-predicate, the one selector shape
+	// every geom already understands, so Highlight.svelte needs no change.
 	const highlightSelectors = $derived(
 		Array.isArray(highlight)
 			? highlight
@@ -96,217 +88,40 @@
 		for (const sel of highlightSelectors) {
 			for (const i of resolveHighlight(rows, sel, { y: 'y' })) seen.add(i)
 		}
-		return [...seen]
+		return seen
 	})
-	const highlightMarks = $derived(
-		highlightIndices
-			.map((i) => ({ i, cx: xScale(i), cy: yScale(values[i]) }))
-			.filter((m) => Number.isFinite(m.cx) && Number.isFinite(m.cy))
+	const highlightPredicate = $derived(
+		highlightIndices.size > 0
+			? (_row: Record<string, unknown>, i: number) => highlightIndices.has(i)
+			: undefined
 	)
 
-	const trendMethods = $derived(
-		Array.isArray(trend) ? trend : trend === null || trend === undefined ? [] : [trend]
-	)
-	const typeOf = (m: TrendMethod) => {
-		const t = typeof m === 'string' ? m : typeof m === 'number' ? 'value' : (m?.type ?? '')
-		return t === 'mean' ? 'avg' : t
-	}
-	const trendPaths = $derived.by(() => {
-		const out: { d: string; type: string; i: number }[] = []
-		trendMethods.forEach((m, idx) => {
-			const res = computeTrend(rows, { x: 'x', y: 'y' }, m)
-			if (!res) return
-			if (res.kind === 'constant') {
-				const yy = yScale(res.value)
-				if (Number.isFinite(yy))
-					out.push({ d: `M0,${yy} L${width},${yy}`, type: typeOf(m), i: idx })
-			} else {
-				const pts = res.values
-					.map((v, i) => ({ vx: xScale(i), vy: yScale(v) }))
-					.filter((p) => Number.isFinite(p.vx) && Number.isFinite(p.vy))
-				const gen = d3line<{ vx: number; vy: number }>()
-					.x((p) => p.vx)
-					.y((p) => p.vy)
-				const d = gen(pts)
-				if (d) out.push({ d, type: typeOf(m), i: idx })
-			}
-		})
-		return out
-	})
-
-	const linePath = $derived.by(() => {
-		const gen = d3line<number>()
-			.x((_, i) => xScale(i))
-			.y((v) => yScale(v))
-		if (curve === 'smooth') gen.curve(curveCatmullRom)
-		return gen(values)
-	})
-
-	// Area fill anchors at the baseline when one is in effect (so a mixed-sign
-	// area fills up above / down below the crossing), else at the pixel bottom.
-	const baselineY = $derived(effectiveBaseline !== undefined ? yScale(effectiveBaseline) : null)
-
-	const areaPath = $derived.by(() => {
-		const gen = d3area<number>()
-			.x((_, i) => xScale(i))
-			.y0(baselineY ?? height)
-			.y1((v) => yScale(v))
-		if (curve === 'smooth') gen.curve(curveCatmullRom)
-		return gen(values)
-	})
-
-	// When a baseline is in effect, split the fill into above/below regions (each
-	// clamped at the baseline) so themes can colour positive vs negative fills.
-	const areaAbovePath = $derived.by(() => {
-		if (baselineY === null) return null
-		const gen = d3area<number>()
-			.x((_, i) => xScale(i))
-			.y0(baselineY)
-			.y1((v) => Math.min(yScale(v), baselineY))
-		if (curve === 'smooth') gen.curve(curveCatmullRom)
-		return gen(values)
-	})
-	const areaBelowPath = $derived.by(() => {
-		if (baselineY === null) return null
-		const gen = d3area<number>()
-			.x((_, i) => xScale(i))
-			.y0(baselineY)
-			.y1((v) => Math.max(yScale(v), baselineY))
-		if (curve === 'smooth') gen.curve(curveCatmullRom)
-		return gen(values)
-	})
-
-	const barWidth = $derived(Math.max(1, width / values.length - 1))
-
+	// `color` names a design-token family (e.g. 'primary'), not a data field — resolved to a
+	// literal CSS color string once here and handed to each geom's own color/fill channel.
+	// `isLiteralColor` (geoms/lib/brewing/colors.js) recognises the rgb(...)/rgba(...) shape and
+	// paints it directly on every mark, bypassing the categorical color scale a data-field
+	// channel would otherwise be grouped through.
 	const strokeColor = $derived(`rgb(var(--color-${color}-500, 100,116,139))`)
 	const fillColor = $derived(`rgba(var(--color-${color}-300), 0.25)`)
-
-	const patternId = 'sparkline-pattern'
-	const patternMarks = $derived(pattern ? (PATTERNS[pattern] ?? null) : null)
 </script>
 
-<svg {width} {height} style="overflow: visible; display: block; --spark-area-fill: {fillColor};">
-	{#if patternMarks}
-		<defs>
-			<PatternDef id={patternId} marks={patternMarks} stroke={strokeColor} />
-		</defs>
-	{/if}
-
+<Spark data={rows} x="x" y="y" {width} {height} {min} {max} baseline={effectiveBaseline} {pattern}>
 	{#if type === 'line'}
-		<path
-			d={linePath}
-			fill="none"
-			stroke={strokeColor}
-			stroke-width="1.5"
-			stroke-linejoin="round"
-			stroke-linecap="round"
-		/>
+		<Line x="x" y="y" color={strokeColor} options={{ curve, strokeWidth: 1.5 }} />
 	{:else if type === 'area'}
-		{#if baselineY !== null}
-			<path
-				d={areaAbovePath}
-				data-plot-area
-				data-plot-area-sign="above"
-				fill={patternMarks ? `url(#${patternId})` : undefined}
-			/>
-			<path
-				d={areaBelowPath}
-				data-plot-area
-				data-plot-area-sign="below"
-				fill={patternMarks ? `url(#${patternId})` : undefined}
-			/>
-		{:else}
-			<path d={areaPath} data-plot-area fill={patternMarks ? `url(#${patternId})` : undefined} />
-		{/if}
-		<path
-			d={linePath}
-			fill="none"
-			stroke={strokeColor}
-			stroke-width="1.5"
-			stroke-linejoin="round"
-			stroke-linecap="round"
+		<Area
+			x="x"
+			y="y"
+			fill={fillColor}
+			pattern={patternChannel}
+			alpha={1}
+			options={{ curve, baseline: effectiveBaseline }}
 		/>
+		<Line x="x" y="y" color={strokeColor} options={{ curve, strokeWidth: 1.5 }} />
 	{:else if type === 'bar'}
-		{#each values as v, i (i)}
-			{@const vy = yScale(v)}
-			{@const top = Math.min(vy, barAnchorY)}
-			{@const barHeight = Math.abs(vy - barAnchorY)}
-			<rect
-				x={xScale(i) - barWidth / 2}
-				y={top}
-				width={barWidth}
-				height={barHeight}
-				fill={strokeColor}
-			/>
-			{#if patternMarks}
-				<rect
-					x={xScale(i) - barWidth / 2}
-					y={top}
-					width={barWidth}
-					height={barHeight}
-					fill="url(#{patternId})"
-					pointer-events="none"
-				/>
-			{/if}
-		{/each}
+		<Bar x="x" y="y" fill={strokeColor} pattern={patternChannel} />
 	{/if}
 
-	{#if trendPaths.length}
-		<g data-plot-geom="trend">
-			{#each trendPaths as p (p.i)}
-				<path d={p.d} data-plot-trend={p.type} />
-			{/each}
-		</g>
-	{/if}
-
-	{#if effectiveBaseline !== undefined}
-		<line x1={0} y1={barAnchorY} x2={width} y2={barAnchorY} data-plot-baseline />
-	{/if}
-
-	{#if highlightMarks.length}
-		<g data-plot-geom="highlight">
-			{#each highlightMarks as m (m.i)}
-				<circle cx={m.cx} cy={m.cy} data-plot-highlight />
-			{/each}
-		</g>
-	{/if}
-</svg>
-
-<style>
-	[data-plot-area] {
-		fill: var(--spark-area-fill, rgba(var(--color-primary-300), 0.25));
-		stroke: none;
-	}
-	/* Positive vs negative regions of a baseline-anchored area — default to the
-	   same fill; a theme can distinguish them via these vars. */
-	[data-plot-area][data-plot-area-sign='above'] {
-		fill: var(--chart-area-above-color, var(--spark-area-fill));
-	}
-	[data-plot-area][data-plot-area-sign='below'] {
-		fill: var(--chart-area-below-color, var(--spark-area-fill));
-	}
-
-	[data-plot-baseline] {
-		stroke: var(--chart-baseline-color, currentColor);
-		stroke-width: var(--chart-baseline-width, 1);
-		stroke-dasharray: var(--chart-baseline-dash, 4 4);
-		opacity: var(--chart-baseline-opacity, 0.5);
-		pointer-events: none;
-	}
-
-	[data-plot-highlight] {
-		fill: var(--chart-highlight-color, rgb(var(--color-accent-500, 194 65 12)));
-		stroke: var(--chart-highlight-ring, none);
-		r: var(--chart-highlight-radius, 3);
-		pointer-events: none;
-	}
-
-	[data-plot-trend] {
-		fill: none;
-		stroke: var(--chart-trend-color, currentColor);
-		stroke-width: var(--chart-trend-width, 1);
-		stroke-dasharray: var(--chart-trend-dash, 4 4);
-		opacity: var(--chart-trend-opacity, 0.7);
-		pointer-events: none;
-	}
-</style>
+	<Trend x="x" y="y" {trend} />
+	<Highlight x="x" y="y" highlight={highlightPredicate} />
+</Spark>
