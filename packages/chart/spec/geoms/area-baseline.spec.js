@@ -2,6 +2,8 @@ import { describe, it, expect } from 'vitest'
 import { scaleLinear } from 'd3-scale'
 import { render } from '@testing-library/svelte'
 import { buildAreas } from '../../src/geoms/lib/areas.js'
+import { buildAreaMarks } from '../../src/geoms/lib/marks/area.js'
+import { defaultPreset } from '../../src/lib/preset.js'
 import TestArea from '../helpers/TestArea.svelte'
 import { createMockState } from '../helpers/mock-plot-state.js'
 
@@ -112,6 +114,73 @@ describe('buildAreas — baseline split', () => {
 			}
 		}
 	})
+
+	it('keeps signed keys distinct when a grouped color channel mixes a number and its string twin', () => {
+		// Two groups whose color-field values are loosely equal (5 vs '5') but strictly
+		// distinct. Svelte's keyed {#each} in Area.svelte keys on the raw group value directly
+		// when there's no baseline, so 5 and '5' were always kept apart there — a signed key
+		// built by string-templating the group value must preserve that, not collapse them.
+		const mixedData = [
+			{ x: 0, y: 5, cat: 5 },
+			{ x: 1, y: -3, cat: 5 },
+			{ x: 0, y: 4, cat: '5' },
+			{ x: 1, y: 2, cat: '5' }
+		]
+		const mixedColors = new Map([
+			[5, { fill: '#111', stroke: '#111' }],
+			['5', { fill: '#222', stroke: '#222' }]
+		])
+		const segs = buildAreas(
+			mixedData,
+			{ x: 'x', y: 'y', color: 'cat' },
+			xScale,
+			yScale,
+			mixedColors,
+			undefined,
+			undefined,
+			undefined,
+			0
+		)
+		expect(segs).toHaveLength(4)
+		const keys = segs.map((s) => s.key)
+		expect(new Set(keys).size).toBe(4)
+	})
+})
+
+describe('buildAreaMarks — baseline preserves the border-stroke color lookup', () => {
+	// A signed segment's `key` gets a sign suffix (see the split-key test above); the border
+	// stroke lookup in buildAreaMarks must not use that suffixed key to look the group back up
+	// in the colors Map, or every bordered+baseline+grouped area would silently lose its border.
+	it('keeps the correct per-group border stroke for a grouped, bordered area when a baseline is set', () => {
+		const groupedData = [
+			{ t: 0, v: 5, region: 'North' },
+			{ t: 1, v: -3, region: 'North' },
+			{ t: 0, v: 4, region: 'South' },
+			{ t: 1, v: 2, region: 'South' }
+		]
+		const groupColors = new Map([
+			['North', { fill: 'lightblue', stroke: 'darkblue' }],
+			['South', { fill: 'lightred', stroke: 'darkred' }]
+		])
+		const plot = {
+			xScale: scaleLinear().domain([0, 1]).range([0, 100]),
+			yScale: scaleLinear().domain([-5, 5]).range([50, 0]),
+			colors: groupColors,
+			patterns: new Map(),
+			chartPreset: defaultPreset,
+			place: (x, y) => ({ x, y })
+		}
+		const segs = buildAreaMarks({
+			data: groupedData,
+			plot,
+			channels: { x: 't', y: 'v', fill: 'region', color: 'region' },
+			options: { baseline: 0 },
+			type: 'area'
+		})
+		expect(segs).toHaveLength(4)
+		expect(segs.every((s) => s.stroke !== 'none')).toBe(true)
+		expect(segs.map((s) => s.stroke).sort()).toEqual(['darkblue', 'darkblue', 'darkred', 'darkred'])
+	})
 })
 
 describe('Area geom — baseline hooks', () => {
@@ -145,14 +214,13 @@ describe('Area geom — baseline hooks', () => {
 		expect(container.querySelector('[data-plot-area-sign="below"]')).toBeTruthy()
 	})
 
-	it('renders exactly two signed paths for a single series', () => {
+	it('renders exactly two signed paths for a single series, each with a valid drawable path', () => {
 		const { container } = render(TestArea, { state: areaState(), options: { baseline: 0 } })
-		expect(container.querySelectorAll('[data-plot-area-sign]').length).toBe(2)
-	})
-
-	it('draws valid paths for both signed segments', () => {
-		const { container } = render(TestArea, { state: areaState(), options: { baseline: 0 } })
-		for (const p of container.querySelectorAll('[data-plot-area-sign]')) {
+		const paths = container.querySelectorAll('[data-plot-area-sign]')
+		// Assert the collection is non-empty BEFORE looping — a loop-only assertion below would
+		// still pass vacuously if the sign attribute were removed entirely (zero iterations).
+		expect(paths.length).toBe(2)
+		for (const p of paths) {
 			const d = p.getAttribute('d')
 			expect(d).toBeTruthy()
 			expect(d).not.toContain('NaN')

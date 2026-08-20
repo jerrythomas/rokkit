@@ -18,7 +18,7 @@ import { literalColor, markEntry } from '../../lib/brewing/colors.js'
  *   pixel position instead of the chart bottom, so themes can colour the two independently.
  *   Fed straight into `yScale()`, so a value outside the scale's domain extrapolates (e.g.
  *   100 against a domain of [-5, 5] gives pixel -475) rather than clamping to the chart edge.
- * @returns {{ d: string, fill: string, stroke: string, key: unknown, patternId: string|null, sign?: 'above'|'below' }[]}
+ * @returns {{ d: string, fill: string, stroke: string, key: unknown, groupKey: unknown, patternId: string|null, sign?: 'above'|'below' }[]}
  */
 export function buildAreas(data, channels, xScale, yScale, colors, curve, patterns, place = (x, y) => ({ x, y }), baselineValue = undefined) {
 	const { x: xf, y: yf, pattern: pf } = channels
@@ -71,8 +71,14 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
 			d: makeGen()(rows.map((d) => toEdge(d, sign))),
 			sign,
 			// A single-series segment's key is `null` (not `undefined`, see below); either way,
-			// there's nothing meaningful to prefix, so the sign alone is the key.
-			key: segBase.key === undefined || segBase.key === null ? sign : `${segBase.key}::${sign}`
+			// there's nothing meaningful to prefix, so the sign alone is the key. For a real
+			// group key, a template literal alone would string-coerce it — colliding distinct
+			// values that share a string form (number 5 and string '5' both become "5::above").
+			// Prefixing with `typeof` keeps those apart without losing the original key's value.
+			key:
+				segBase.key === undefined || segBase.key === null
+					? sign
+					: `${typeof segBase.key}:${segBase.key}::${sign}`
 		}))
 	}
 
@@ -94,7 +100,11 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
 			patternKey !== null && patternKey !== undefined && patterns?.has(patternKey)
 				? toPatternId(String(patternKey))
 				: null
-		return splitBySign({ fill: entry.fill, stroke: 'none', key: null, patternId }, sortByX(data))
+		// `groupKey` is the untouched, unsigned group discriminator (here always null): callers
+		// that need to look a segment back up in a colors/patterns Map (keyed by the raw group
+		// value, not by our render key) should use this instead of `key`, since `key` gets a
+		// sign suffix once a baseline is in effect.
+		return splitBySign({ fill: entry.fill, stroke: 'none', key: null, groupKey: null, patternId }, sortByX(data))
 	}
 
 	// Group by color field
@@ -119,7 +129,7 @@ export function buildAreas(data, channels, xScale, yScale, colors, curve, patter
 			patternKey !== null && patternKey !== undefined && patterns?.has(patternKey)
 				? toPatternId(String(patternKey))
 				: null
-		return splitBySign({ fill: entry.fill, stroke: 'none', key, patternId }, sortByX(rows))
+		return splitBySign({ fill: entry.fill, stroke: 'none', key, groupKey: key, patternId }, sortByX(rows))
 	})
 }
 
