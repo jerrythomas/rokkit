@@ -2,6 +2,7 @@ import type { MarkdownPlugin } from '@rokkit/ui'
 import PlotPluginComponent from './PlotPlugin.svelte'
 import TablePluginComponent from './TablePlugin.svelte'
 import SparklinePluginComponent from './SparklinePlugin.svelte'
+import SparkTablePluginComponent from './SparkTablePlugin.svelte'
 import MermaidPluginComponent from './MermaidPlugin.svelte'
 import FormPluginComponent from './FormPlugin.svelte'
 import ListPluginComponent from './ListPlugin.svelte'
@@ -22,6 +23,11 @@ export const TablePlugin: MarkdownPlugin = {
 export const SparklinePlugin: MarkdownPlugin = {
 	language: 'sparkline',
 	component: SparklinePluginComponent
+}
+
+export const SparkTablePlugin: MarkdownPlugin = {
+	language: 'spark-table',
+	component: SparkTablePluginComponent
 }
 
 export const MermaidPlugin: MarkdownPlugin = {

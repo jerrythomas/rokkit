@@ -10,6 +10,7 @@ import {
 	PlotPlugin,
 	TablePlugin,
 	SparklinePlugin,
+	SparkTablePlugin,
 	MermaidPlugin,
 	FormPlugin,
 	ListPlugin,
@@ -32,6 +33,11 @@ describe('blocks barrel — plugin objects', () => {
 	it('SparklinePlugin has language "sparkline" and a component', () => {
 		expect(SparklinePlugin.language).toBe('sparkline')
 		expect(SparklinePlugin.component).toBeDefined()
+	})
+
+	it('SparkTablePlugin has language "spark-table" and a component', () => {
+		expect(SparkTablePlugin.language).toBe('spark-table')
+		expect(SparkTablePlugin.component).toBeDefined()
 	})
 
 	it('MermaidPlugin has language "mermaid" and a component', () => {

@@ -186,6 +186,59 @@ laid out as a wrapping row of equal-sized cards:
 { "data": [4, 8, 5, 11, 7, 13, 9, 15], "type": "area", "color": "accent", "trend": "avg", "width": 180, "height": 48, "title": "Mean trend" }
 ```
 
+### Spark — composing sparklines from real geoms
+
+`Sparkline` above is the convenient one-liner: a `type` prop picks line/area/bar and a
+handful of flat props (`baseline`/`highlight`/`trend`) cover the common cases. Internally,
+`Sparkline` is just a composition of `<Spark>` — the lean container — wrapping the SAME
+`<Line>`/`<Area>`/`<Bar>`/`<Trend>`/`<Highlight>` geoms a full `<PlotChart>` uses. Reach for
+`<Spark>` directly when a cell needs more than one geom's worth of aesthetics at once, or a
+combination `Sparkline`'s flat prop surface doesn't cover:
+
+```svelte
+<Spark data={rows} x="day" y="sales" width={80} height={24}>
+  <Line x="day" y="sales" />
+  <Trend trend="avg" x="day" y="sales" />
+</Spark>
+```
+
+Two things catch people out the first time:
+
+- **Geoms need their own `x`/`y` — they do NOT inherit from `<Spark>`.** `GeomState.marks`
+  reads a geom's own props only, never the container's. Set `x`/`y` on every geom you compose,
+  even when they repeat the container's.
+- **`baseline` does double duty.** It's read by `<Spark>` itself (not a geom prop): it extends
+  the y-domain to include the anchor value AND draws a `[data-plot-baseline]` reference line —
+  one prop, two effects, owned by the container because it applies to bar sparks too, not just
+  area.
+
+`pattern` on `<Spark>` takes a **literal pattern name** (e.g. `pattern="diagonal"`), not a field
+— a spark is single-series, so there's no per-row value to assign a texture to, only "texture
+this one fill."
+
+`<Spark>` deliberately has **no axes, legend, or tooltip** — if you need those, drop to
+`<PlotChart>` with chrome disabled (`axes={false} legend={false}`) instead of reaching for Spark.
+
+The table below is the scenario `<Spark>` targets — a trend column where every row composes its
+own `<Spark><Line/><Trend/></Spark>`, next to the equivalent `<Sparkline trend="avg">` one-liner
+for the same series so the relationship is obvious: same pixels, two ways to get there.
+
+```spark-table
+{
+  "title": "Weekly signups by team — composed from Spark + Line + Trend",
+  "trend": "avg",
+  "rows": [
+    { "label": "Growth", "data": [4, 8, 5, 11, 7, 13, 9, 15] },
+    { "label": "Platform", "data": [10, 9, 11, 8, 7, 6, 8, 9] },
+    { "label": "Sales", "data": [3, 5, 4, 9, 12, 10, 14, 16] }
+  ]
+}
+```
+
+```sparkline
+{ "data": [4, 8, 5, 11, 7, 13, 9, 15], "type": "line", "trend": "avg", "width": 180, "height": 48, "title": "Same series, via <Sparkline trend=\"avg\">" }
+```
+
 ### Charts
 
 Full ` ```plot ` blocks — the same `PlotSpec` you'd pass to `<PlotChart>`,
