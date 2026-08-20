@@ -130,4 +130,41 @@ describe('Pill', () => {
 		const removeBtn = container.querySelector('[data-pill-remove]')
 		expect(removeBtn?.getAttribute('aria-label')).toBe('Remove Tag')
 	})
+
+	// ─── Keyboard removal ───────────────────────────────────────────
+
+	it('Delete on a removable pill fires onremove', async () => {
+		const onremove = vi.fn()
+		const { container } = render(Pill, { value: 'Tag', removable: true, onremove })
+		await fireEvent.keyDown(container.querySelector('[data-pill]')!, { key: 'Delete' })
+		expect(onremove).toHaveBeenCalledWith('Tag')
+	})
+
+	it('Backspace on a removable pill fires onremove', async () => {
+		const onremove = vi.fn()
+		const { container } = render(Pill, { value: 'Tag', removable: true, onremove })
+		await fireEvent.keyDown(container.querySelector('[data-pill]')!, { key: 'Backspace' })
+		expect(onremove).toHaveBeenCalledWith('Tag')
+	})
+
+	it('ignores other keys', async () => {
+		const onremove = vi.fn()
+		const { container } = render(Pill, { value: 'Tag', removable: true, onremove })
+		await fireEvent.keyDown(container.querySelector('[data-pill]')!, { key: 'a' })
+		expect(onremove).not.toHaveBeenCalled()
+	})
+
+	it('ignores Delete when the pill is not removable', async () => {
+		const onremove = vi.fn()
+		const { container } = render(Pill, { value: 'Tag', removable: false, onremove })
+		await fireEvent.keyDown(container.querySelector('[data-pill]')!, { key: 'Delete' })
+		expect(onremove).not.toHaveBeenCalled()
+	})
+
+	it('ignores Delete when disabled', async () => {
+		const onremove = vi.fn()
+		const { container } = render(Pill, { value: 'Tag', removable: true, disabled: true, onremove })
+		await fireEvent.keyDown(container.querySelector('[data-pill]')!, { key: 'Delete' })
+		expect(onremove).not.toHaveBeenCalled()
+	})
 })

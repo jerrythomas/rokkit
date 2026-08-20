@@ -117,3 +117,96 @@ describe('ChartExporter.svelte', () => {
 		})
 	})
 })
+
+// ─── exportPNG rasterisation ──────────────────────────────────────────────────
+// The tests above only assert exportPNG() doesn't throw: in JSDOM `img.onload`
+// never fires and canvas has no 2d context, so the whole rasterise-and-download
+// body never ran. Stubbing Image + canvas exercises it for real.
+
+describe('exportPNG() rasterisation', () => {
+	let origImage
+	let origCreate
+	let downloads
+	let ctx
+	let toBlobResult
+
+	function installStubs({ context = 'ok' } = {}) {
+		downloads = []
+		ctx = { scale: vi.fn(), drawImage: vi.fn() }
+		toBlobResult = new Blob(['png'], { type: 'image/png' })
+
+		global.URL.createObjectURL = vi.fn(() => 'blob:mock-url')
+		global.URL.revokeObjectURL = vi.fn()
+
+		// Setting .src resolves the load synchronously so onload runs in-test.
+		origImage = global.Image
+		global.Image = class {
+			set src(_v) {
+				this.onload?.()
+			}
+		}
+
+		origCreate = document.createElement.bind(document)
+		vi.spyOn(document, 'createElement').mockImplementation((tag) => {
+			if (tag === 'canvas') {
+				return {
+					width: 0,
+					height: 0,
+					getContext: () => (context === 'ok' ? ctx : null),
+					toBlob: (cb) => cb(toBlobResult)
+				}
+			}
+			const el = origCreate(tag)
+			if (tag === 'a') {
+				vi.spyOn(el, 'click').mockImplementation(() => downloads.push(el.download))
+			}
+			return el
+		})
+		vi.spyOn(document.body, 'appendChild').mockImplementation((el) => el)
+		vi.spyOn(document.body, 'removeChild').mockImplementation(() => {})
+	}
+
+	afterEach(() => {
+		global.Image = origImage
+		vi.restoreAllMocks()
+	})
+
+	it('draws the svg onto a canvas and downloads a .png', async () => {
+		installStubs()
+		const { component } = render(TestChartExporter)
+		await tick()
+		component.callExportPNG()
+
+		expect(ctx.drawImage).toHaveBeenCalled()
+		expect(global.URL.revokeObjectURL).toHaveBeenCalledWith('blob:mock-url')
+		expect(downloads).toEqual(['chart.png'])
+	})
+
+	it('scales the canvas by the given factor', async () => {
+		installStubs()
+		const { component } = render(TestChartExporter)
+		await tick()
+		component.callExportPNG(3)
+		expect(ctx.scale).toHaveBeenCalledWith(3, 3)
+	})
+
+	it('bails out without downloading when no 2d context is available', async () => {
+		installStubs({ context: null })
+		const { component } = render(TestChartExporter)
+		await tick()
+		component.callExportPNG()
+
+		expect(downloads).toEqual([])
+		// revokeObjectURL comes after the ctx guard, so it must not have run either.
+		expect(global.URL.revokeObjectURL).not.toHaveBeenCalled()
+	})
+
+	it('skips the download when the canvas yields no blob', async () => {
+		installStubs()
+		toBlobResult = null
+		const { component } = render(TestChartExporter)
+		await tick()
+		component.callExportPNG()
+		expect(downloads).toEqual([])
+	})
+})

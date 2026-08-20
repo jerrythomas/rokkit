@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi, afterEach } from 'vitest'
 import { render, fireEvent, waitFor } from '@testing-library/svelte'
 import Code from '../src/components/Code.svelte'
 
@@ -108,5 +108,54 @@ describe('Code', () => {
 		})
 		const btn = container.querySelector('.copy-button')
 		expect(btn?.getAttribute('aria-label')).toBe('Copier')
+	})
+
+	// ─── Copy state lifecycle ───────────────────────────────────────
+	// The existing case only asserts the click doesn't throw; these drive the
+	// success and fallback paths and the 2s reset that follows each.
+
+	describe('copy feedback', () => {
+		afterEach(() => {
+			vi.useRealTimers()
+			vi.restoreAllMocks()
+		})
+
+		const copyLabelOf = (container: Element) =>
+			container.querySelector('.copy-button')!.getAttribute('aria-label')
+
+		it('flips to the copied label on a successful clipboard write, then resets', async () => {
+			vi.useFakeTimers({ shouldAdvanceTime: true })
+			const writeText = vi.fn().mockResolvedValue(undefined)
+			vi.stubGlobal('navigator', { ...navigator, clipboard: { writeText } })
+
+			const { container } = render(Code, { code: 'let x = 1', language: 'js' })
+			const before = copyLabelOf(container)
+
+			await fireEvent.click(container.querySelector('.copy-button')!)
+			expect(writeText).toHaveBeenCalledWith('let x = 1')
+			await waitFor(() => expect(copyLabelOf(container)).not.toBe(before))
+
+			await vi.advanceTimersByTimeAsync(2000)
+			await waitFor(() => expect(copyLabelOf(container)).toBe(before))
+		})
+
+		it('falls back to execCommand when the clipboard API rejects, then resets', async () => {
+			vi.useFakeTimers({ shouldAdvanceTime: true })
+			vi.stubGlobal('navigator', {
+				...navigator,
+				clipboard: { writeText: vi.fn().mockRejectedValue(new Error('denied')) }
+			})
+			const exec = vi.spyOn(document, 'execCommand').mockReturnValue(true)
+
+			const { container } = render(Code, { code: 'let y = 2', language: 'js' })
+			const before = copyLabelOf(container)
+
+			await fireEvent.click(container.querySelector('.copy-button')!)
+			await waitFor(() => expect(exec).toHaveBeenCalledWith('copy'))
+			await waitFor(() => expect(copyLabelOf(container)).not.toBe(before))
+
+			await vi.advanceTimersByTimeAsync(2000)
+			await waitFor(() => expect(copyLabelOf(container)).toBe(before))
+		})
 	})
 })

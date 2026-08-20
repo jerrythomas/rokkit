@@ -382,4 +382,46 @@ describe('Toolbar', () => {
 		const el = container.querySelector('[data-toolbar]')
 		expect(el?.getAttribute('aria-label')).toBe('Formatting')
 	})
+
+	// ─── Snippet handlers + named snippet resolution ────────────────
+
+	describe('snippet handlers', () => {
+		it.each(['Enter', ' '])('%s on a snippet item invokes onclick', async (key) => {
+			const onclick = vi.fn()
+			const { container } = render(ToolbarSnippetTest, {
+				items: basicItems,
+				useItemSnippet: true,
+				onclick
+			})
+			await fireEvent.keyDown(container.querySelector('[data-custom-toolbar-item]')!, { key })
+			expect(onclick).toHaveBeenCalledWith('bold', basicItems[0])
+		})
+
+		it('ignores unrelated keys on a snippet item', async () => {
+			const onclick = vi.fn()
+			const { container } = render(ToolbarSnippetTest, {
+				items: basicItems,
+				useItemSnippet: true,
+				onclick
+			})
+			await fireEvent.keyDown(container.querySelector('[data-custom-toolbar-item]')!, { key: 'x' })
+			expect(onclick).not.toHaveBeenCalled()
+		})
+
+		it('prefers a per-item named snippet over the generic item snippet', () => {
+			const items = [{ label: 'Fav', value: 'fav', snippet: 'starred' }, ...basicItems]
+			const { container } = render(ToolbarSnippetTest, { items, useNamedSnippet: true })
+			expect(container.querySelector('[data-named-toolbar-item]')?.textContent).toContain('Fav')
+			expect(container.querySelectorAll('[data-custom-toolbar-item]').length).toBe(
+				basicItems.length
+			)
+		})
+
+		it('falls back to the generic snippet when the named one is missing', () => {
+			const items = [{ label: 'Ghost', value: 'ghost', snippet: 'nope' }]
+			const { container } = render(ToolbarSnippetTest, { items, useNamedSnippet: true })
+			expect(container.querySelector('[data-named-toolbar-item]')).toBeNull()
+			expect(container.querySelector('[data-custom-toolbar-item]')?.textContent).toContain('Ghost')
+		})
+	})
 })

@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, fireEvent } from '@testing-library/svelte'
 import FloatingAction from '../src/components/FloatingAction.svelte'
+import FloatingActionSnippetTest from './FloatingActionSnippetTest.svelte'
 
 const basicItems = [
 	{ label: 'Add', value: 'add', icon: 'mdi:plus' },
@@ -291,5 +292,150 @@ describe('FloatingAction', () => {
 		const { container } = render(FloatingAction, { items: basicItems, backdrop: false })
 		await fireEvent.click(container.querySelector('[data-fab-trigger]')!)
 		expect(container.querySelector('[data-fab-backdrop]')).toBeNull()
+	})
+
+	// ─── Keyboard navigation (handlers live on document while the menu is open) ──
+
+	const openFab = async (props = {}) => {
+		const res = render(FloatingAction, { items: basicItems, ...props })
+		await fireEvent.click(res.container.querySelector('[data-fab-trigger]')!)
+		return res
+	}
+	const itemsOf = (container: Element) =>
+		[...container.querySelectorAll('[data-fab-item]:not([data-disabled])')] as HTMLElement[]
+
+	it('ArrowDown from the trigger opens the menu', async () => {
+		const { container } = render(FloatingAction, { items: basicItems })
+		await fireEvent.keyDown(container.querySelector('[data-fab-trigger]')!, { key: 'ArrowDown' })
+		expect(container.querySelector('[data-fab-menu]')).toBeTruthy()
+	})
+
+	it('ArrowUp from the trigger opens the menu', async () => {
+		const { container } = render(FloatingAction, { items: basicItems })
+		await fireEvent.keyDown(container.querySelector('[data-fab-trigger]')!, { key: 'ArrowUp' })
+		expect(container.querySelector('[data-fab-menu]')).toBeTruthy()
+	})
+
+	it.each(['Enter', ' '])('%s on the trigger toggles the menu', async (key) => {
+		const { container } = render(FloatingAction, { items: basicItems })
+		await fireEvent.keyDown(container.querySelector('[data-fab-trigger]')!, { key })
+		expect(container.querySelector('[data-fab-menu]')).toBeTruthy()
+	})
+
+	// Opening the menu already sets focusedIndex to 0, so the first ArrowDown lands on
+	// item 1 rather than item 0.
+	it('ArrowDown steps forward from the pre-focused first item', async () => {
+		const { container } = await openFab()
+		const items = itemsOf(container)
+		await fireEvent.keyDown(document, { key: 'ArrowDown' })
+		expect(document.activeElement).toBe(items[1])
+		await fireEvent.keyDown(document, { key: 'ArrowDown' })
+		expect(document.activeElement).toBe(items[2])
+	})
+
+	it('ArrowDown past the last item wraps to the first', async () => {
+		const { container } = await openFab()
+		const items = itemsOf(container)
+		await fireEvent.keyDown(document, { key: 'End' })
+		expect(document.activeElement).toBe(items[items.length - 1])
+		await fireEvent.keyDown(document, { key: 'ArrowDown' })
+		expect(document.activeElement).toBe(items[0])
+	})
+
+	it('ArrowUp from the first item wraps to the last', async () => {
+		const { container } = await openFab()
+		const items = itemsOf(container)
+		await fireEvent.keyDown(document, { key: 'ArrowUp' })
+		expect(document.activeElement).toBe(items[items.length - 1])
+	})
+
+	it('ArrowUp steps backwards', async () => {
+		const { container } = await openFab()
+		const items = itemsOf(container)
+		await fireEvent.keyDown(document, { key: 'ArrowDown' })
+		await fireEvent.keyDown(document, { key: 'ArrowUp' })
+		expect(document.activeElement).toBe(items[0])
+	})
+
+	it('Home focuses the first item and End the last', async () => {
+		const { container } = await openFab()
+		const items = itemsOf(container)
+		await fireEvent.keyDown(document, { key: 'End' })
+		expect(document.activeElement).toBe(items[items.length - 1])
+		await fireEvent.keyDown(document, { key: 'Home' })
+		expect(document.activeElement).toBe(items[0])
+	})
+
+	it('an unhandled key leaves focus where it was', async () => {
+		const { container } = await openFab()
+		const items = itemsOf(container)
+		await fireEvent.keyDown(document, { key: 'ArrowDown' })
+		await fireEvent.keyDown(document, { key: 'x' })
+		expect(document.activeElement).toBe(items[1])
+	})
+
+	it('Enter activates the focused item and closes the menu', async () => {
+		const onselect = vi.fn()
+		const { container } = await openFab({ onselect })
+		await fireEvent.keyDown(document, { key: 'ArrowDown' })
+		await fireEvent.keyDown(document, { key: 'Enter' })
+		expect(onselect).toHaveBeenCalledWith('edit', basicItems[1])
+		expect(container.querySelector('[data-fab-menu]')).toBeNull()
+	})
+
+	it('Enter activates the pre-focused first item straight after opening', async () => {
+		const onselect = vi.fn()
+		await openFab({ onselect })
+		await fireEvent.keyDown(document, { key: 'Enter' })
+		expect(onselect).toHaveBeenCalledWith('add', basicItems[0])
+	})
+
+	it('Escape closes the menu and restores focus to the trigger', async () => {
+		const { container } = await openFab()
+		await fireEvent.keyDown(document, { key: 'Escape' })
+		expect(container.querySelector('[data-fab-menu]')).toBeNull()
+		expect(document.activeElement).toBe(container.querySelector('[data-fab-trigger]'))
+	})
+
+	it('keydown is ignored while the menu is closed', async () => {
+		const onselect = vi.fn()
+		render(FloatingAction, { items: basicItems, onselect })
+		await fireEvent.keyDown(document, { key: 'ArrowDown' })
+		expect(onselect).not.toHaveBeenCalled()
+	})
+
+	// ─── Item snippets ──────────────────────────────────────────────
+
+	it('uses the default item snippet for plain items', async () => {
+		const { container } = render(FloatingActionSnippetTest, { items: basicItems })
+		expect(container.querySelectorAll('[data-default-item]').length).toBe(basicItems.length)
+	})
+
+	it('prefers a named snippet when the item names one', async () => {
+		const items = [{ label: 'Fav', value: 'fav', snippet: 'starred' }, ...basicItems]
+		const { container } = render(FloatingActionSnippetTest, { items })
+		expect(container.querySelector('[data-named-item]')?.textContent).toContain('Fav')
+		expect(container.querySelectorAll('[data-default-item]').length).toBe(basicItems.length)
+	})
+
+	it('falls back to the default snippet when the named one does not exist', async () => {
+		const items = [{ label: 'Ghost', value: 'ghost', snippet: 'nope' }]
+		const { container } = render(FloatingActionSnippetTest, { items })
+		expect(container.querySelector('[data-named-item]')).toBeNull()
+		expect(container.querySelector('[data-default-item]')?.textContent).toContain('Ghost')
+	})
+
+	it.each(['Enter', ' '])('%s on a snippet item selects it', async (key) => {
+		const onselect = vi.fn()
+		const { container } = render(FloatingActionSnippetTest, { items: basicItems, onselect })
+		await fireEvent.keyDown(container.querySelector('[data-default-item]')!, { key })
+		expect(onselect).toHaveBeenCalledWith('add', basicItems[0])
+	})
+
+	it('ignores unrelated keys on a snippet item', async () => {
+		const onselect = vi.fn()
+		const { container } = render(FloatingActionSnippetTest, { items: basicItems, onselect })
+		await fireEvent.keyDown(container.querySelector('[data-default-item]')!, { key: 'x' })
+		expect(onselect).not.toHaveBeenCalled()
 	})
 })

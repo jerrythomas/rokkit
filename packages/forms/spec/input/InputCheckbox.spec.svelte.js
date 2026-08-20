@@ -77,4 +77,39 @@ describe('InputCheckbox', () => {
 		expect(element.checked).toBe(true)
 		expect(props.value).toBe(true)
 	})
+
+
+	// ─── Icon-variant toggle (non-default variants render a clickable icon) ─────
+
+	it('clicking the icon toggles the value and fires onchange', async () => {
+		const onchange = vi.fn()
+		const props = $state({ value: false, variant: 'icon', onchange })
+		const { container } = render(InputCheckbox, { props })
+		await fireEvent.click(container.querySelector('[data-checkbox-icon]'))
+		expect(onchange).toHaveBeenCalledWith(true)
+	})
+
+	it.each(['Enter', ' '])('%s on the icon toggles the value', async (key) => {
+		const onchange = vi.fn()
+		const props = $state({ value: false, variant: 'icon', onchange })
+		const { container } = render(InputCheckbox, { props })
+		await fireEvent.keyDown(container.querySelector('[data-checkbox-icon]'), { key })
+		expect(onchange).toHaveBeenCalledWith(true)
+	})
+
+	it('other keys on the icon do nothing', async () => {
+		const onchange = vi.fn()
+		const props = $state({ value: false, variant: 'icon', onchange })
+		const { container } = render(InputCheckbox, { props })
+		await fireEvent.keyDown(container.querySelector('[data-checkbox-icon]'), { key: 'x' })
+		expect(onchange).not.toHaveBeenCalled()
+	})
+
+	it('toggling from true goes back to false', async () => {
+		const onchange = vi.fn()
+		const props = $state({ value: true, variant: 'icon', onchange })
+		const { container } = render(InputCheckbox, { props })
+		await fireEvent.click(container.querySelector('[data-checkbox-icon]'))
+		expect(onchange).toHaveBeenCalledWith(false)
+	})
 })

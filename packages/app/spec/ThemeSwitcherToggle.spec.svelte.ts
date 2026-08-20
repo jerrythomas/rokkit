@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { render } from '@testing-library/svelte'
+import { render, fireEvent } from '@testing-library/svelte'
 import { vibe } from '@rokkit/states'
 import ThemeSwitcherToggle from '../src/components/ThemeSwitcherToggle.svelte'
 
@@ -53,5 +53,28 @@ describe('ThemeSwitcherToggle group variant renders option labels', () => {
 		for (const option of options) {
 			expect((option.getAttribute('aria-label') ?? '').length).toBeGreaterThan(0)
 		}
+	})
+})
+
+describe('ThemeSwitcherToggle applies the selected mode', () => {
+	it('writes the picked mode to vibe and reports it through onchange', async () => {
+		const onchange = vi.fn()
+		const { container } = render(ThemeSwitcherToggle, { props: { variant: 'triad', onchange } })
+		const options = [...container.querySelectorAll('[data-toggle-option]')] as HTMLElement[]
+		const dark = options.find((o) => (o.getAttribute('aria-label') ?? '').toLowerCase().includes('dark'))
+		expect(dark).toBeTruthy()
+
+		await fireEvent.click(dark!)
+		expect(onchange).toHaveBeenCalledWith('dark')
+		expect(vibe.mode).toBe('dark')
+	})
+
+	it('toggling the single variant flips the resolved mode', async () => {
+		vibe.mode = 'light'
+		const onchange = vi.fn()
+		const { container } = render(ThemeSwitcherToggle, { props: { variant: 'single', onchange } })
+		await fireEvent.click(container.querySelector('[data-toggle-variant="button"]')!)
+		expect(onchange).toHaveBeenCalled()
+		expect(vibe.mode).toBe('dark')
 	})
 })

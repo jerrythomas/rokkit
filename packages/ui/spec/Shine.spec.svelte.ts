@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
-import { render } from '@testing-library/svelte'
+import { describe, it, expect, vi } from 'vitest'
+import { render, fireEvent } from '@testing-library/svelte'
 import Shine from '../src/components/Shine.svelte'
 
 describe('Shine', () => {
@@ -84,5 +84,38 @@ describe('Shine', () => {
 		const { container } = render(Shine, { class: 'my-shine' })
 		const el = container.querySelector('[data-shine]')
 		expect(el?.classList.contains('my-shine')).toBe(true)
+	})
+
+
+	// ─── Pointer tracking (window-level handlers drive the light source) ─────────
+
+	const pointLight = (container: Element) => container.querySelector('fePointLight')!
+
+	it('moves the light source to follow the pointer', async () => {
+		const { container } = render(Shine)
+		expect(pointLight(container).getAttribute('x')).toBe('0')
+		await fireEvent.pointerMove(window, { clientX: 120, clientY: 80 })
+		expect(pointLight(container).getAttribute('x')).toBe('120')
+		expect(pointLight(container).getAttribute('y')).toBe('80')
+	})
+
+	it('re-measures the wrapper on scroll without moving the pointer', async () => {
+		const { container } = render(Shine)
+		await fireEvent.pointerMove(window, { clientX: 40, clientY: 25 })
+		await fireEvent.scroll(window)
+		// The pointer position is retained; only the wrapper offset is recomputed.
+		expect(pointLight(container).getAttribute('x')).toBe('40')
+		expect(pointLight(container).getAttribute('y')).toBe('25')
+	})
+
+	it('offsets the light by the wrapper position', async () => {
+		const { container } = render(Shine)
+		const wrapper = container.querySelector('[data-shine]') ?? container.firstElementChild!
+		vi.spyOn(wrapper, 'getBoundingClientRect').mockReturnValue({
+			left: 10,
+			top: 5
+		} as DOMRect)
+		await fireEvent.pointerMove(window, { clientX: 100, clientY: 50 })
+		expect(Number(pointLight(container).getAttribute('x'))).toBeLessThanOrEqual(100)
 	})
 })

@@ -181,4 +181,42 @@ describe('UploadProgress', () => {
 			'active'
 		)
 	})
+
+	// ─── Action callbacks hand back the ORIGINAL item, not the proxy ────────────
+
+	const oneFile = [{ id: 'f1', name: 'a.txt', status: 'error', progress: 0 }]
+
+	it('cancel hands the raw item to oncancel', async () => {
+		const oncancel = vi.fn()
+		const files = [{ id: 'f1', name: 'a.txt', status: 'uploading', progress: 40 }]
+		const { container } = render(UploadProgress, {
+			files,
+			cancelWhen: ['uploading'],
+			oncancel
+		})
+		await fireEvent.click(container.querySelector('[data-upload-cancel]')!)
+		expect(oncancel).toHaveBeenCalledWith(files[0])
+	})
+
+	it('retry hands the raw item to onretry', async () => {
+		const onretry = vi.fn()
+		const { container } = render(UploadProgress, {
+			files: oneFile,
+			retryWhen: ['error'],
+			onretry
+		})
+		await fireEvent.click(container.querySelector('[data-upload-retry]')!)
+		expect(onretry).toHaveBeenCalledWith(oneFile[0])
+	})
+
+	it('remove hands the raw item to onremove', async () => {
+		const onremove = vi.fn()
+		const { container } = render(UploadProgress, {
+			files: oneFile,
+			removeWhen: ['error'],
+			onremove
+		})
+		await fireEvent.click(container.querySelector('[data-upload-remove]')!)
+		expect(onremove).toHaveBeenCalledWith(oneFile[0])
+	})
 })
