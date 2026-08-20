@@ -1,5 +1,17 @@
 import { describe, it, expect } from 'vitest'
-import { Plot, GeomHighlight, GeomTrend, GeomBox, GeomViolin, GeomJitter, GeomRule } from '../src/index.js'
+import { render } from '@testing-library/svelte'
+import {
+	Plot,
+	GeomHighlight,
+	GeomTrend,
+	GeomBox,
+	GeomViolin,
+	GeomJitter,
+	GeomRule,
+	Spark,
+	SparkState,
+	GEOM_CONTRACT
+} from '../src/index.js'
 
 describe('chart exports', () => {
 	it('exposes Highlight + Trend on the Plot namespace and as Geom*', () => {
@@ -32,5 +44,26 @@ describe('chart exports', () => {
 	it('exposes Rule (reference line) on the Plot namespace and as GeomRule', () => {
 		expect(Plot.Rule).toBeTruthy()
 		expect(GeomRule).toBeTruthy()
+	})
+
+	it('exposes Spark as a real component — rendering it produces the spark svg', () => {
+		// A missing/undefined export throws on render rather than merely being falsy, so this
+		// proves Spark resolved to an actual Svelte component, not just "some truthy value".
+		const { container } = render(Spark, { props: { data: [{ x: 0, y: 1 }], x: 'x', y: 'y' } })
+		expect(container.querySelector('svg[data-spark]')).toBeTruthy()
+	})
+
+	it('exposes SparkState as a class — constructing it yields a SparkState instance', () => {
+		expect(typeof SparkState).toBe('function')
+		const instance = new SparkState({ data: [{ x: 0, y: 1 }], channels: { x: 'x', y: 'y' } })
+		expect(instance).toBeInstanceOf(SparkState)
+		// A real instance, not a stub — it carries the actual scale/data surface.
+		expect(instance.data).toEqual([{ x: 0, y: 1 }])
+	})
+
+	it('exposes GEOM_CONTRACT as a non-empty array of member names', () => {
+		expect(Array.isArray(GEOM_CONTRACT)).toBe(true)
+		expect(GEOM_CONTRACT.length).toBeGreaterThan(0)
+		expect(GEOM_CONTRACT).toContain('xScale')
 	})
 })

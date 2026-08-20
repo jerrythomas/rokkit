@@ -78,6 +78,7 @@ export { default as GeomRule } from './geoms/Rule.svelte'
 // Export standalone components
 export { default as Chart } from './Chart.svelte'
 export { default as Sparkline } from './Sparkline.svelte'
+export { default as Spark } from './Spark.svelte'
 export { default as BarChart } from './charts/BarChart.svelte'
 export { default as LineChart } from './charts/LineChart.svelte'
 export { default as AreaChart } from './charts/AreaChart.svelte'
@@ -89,6 +90,7 @@ export { default as BubbleChart } from './charts/BubbleChart.svelte'
 
 // Export state and types
 export { PlotState } from './PlotState.svelte.js'
+export { SparkState, GEOM_CONTRACT } from './SparkState.svelte.js'
 
 // Export utilities
 export { buildSequentialScale, buildDivergingScale } from './lib/brewing/colors.js'
