@@ -202,3 +202,91 @@ export function domainsFor(axes, data, channels, opts = {}) {
 
 	return axes.map((axis) => axis.domain ?? shared ?? infer(valuesByKey.get(axis.key)))
 }
+
+/**
+ * Maps a value to a radius, in pixels, for one axis of a radar/spider chart.
+ *
+ * The centre is `domain.min`, NOT zero: on a domain of `[-5, 10]` with `R = 100`, a value of 0
+ * sits at `R * 5/15 ≈ 33.33`, not at the centre. Centring on 0 unconditionally would silently
+ * misplace every axis whose domain doesn't start at zero — this follows `domainsFor`'s own
+ * inferred-negative-domain rule (`[min, max]`, never clamped to 0): whatever `domainsFor` decided
+ * an axis's low end is, THAT is the value drawn at the centre, not literal zero.
+ *
+ * `transform` is `'linear'` (`R * ratio`) or `'sqrt'` (`R * sqrt(ratio)`) — see
+ * `resolveRadiusTransform` for why a caller would ever want the latter. Anything other than the
+ * literal string `'sqrt'` is treated as `'linear'`.
+ *
+ * Two failure modes are handled explicitly rather than left to produce `NaN`:
+ *
+ * - A zero-width domain (`min === max`, e.g. the `[0, 0]` `domainsFor` returns for an axis
+ *   absent from every row) would divide by zero. Rather than `NaN`, it resolves to `0` — the
+ *   centre — continuing the promise `domainsFor`'s own doc comment already makes for that case:
+ *   "enough for a caller to render an empty spoke without the radius math blowing up."
+ * - A non-finite `value` (missing field, a stray string that slipped past upstream filtering)
+ *   returns `null` rather than being coerced to some position. Plotting it anyway — at the
+ *   centre, say — would silently reshape the polygon exactly the way `resolveAxes` already
+ *   refuses to do for axis membership ("better a visible gap than a silently reshaped polygon").
+ *   The geom is expected to break the line at a `null` vertex rather than draw a false one.
+ *
+ * A finite value outside `[min, max]` is clamped into `[0, R]` rather than left to overshoot the
+ * ring (linear) or hand a negative ratio to `sqrt`, which has no real root and would produce
+ * `NaN`. `domainsFor` treats an out-of-domain value as "the caller/renderer problem, not
+ * domainsFor's" — `radiusFor` *is* that renderer, so this is where the clamp belongs.
+ *
+ * @param {number} value
+ * @param {[number, number]} domain
+ * @param {number} R - outer radius in pixels
+ * @param {'linear'|'sqrt'} transform
+ * @returns {number|null} radius in pixels, or `null` for a non-finite value
+ */
+export function radiusFor(value, domain, R, transform) {
+	if (!Number.isFinite(value)) return null
+
+	const [min, max] = domain
+	const span = max - min
+	if (span === 0) return 0
+
+	let ratio = (value - min) / span
+	if (ratio < 0) ratio = 0
+	else if (ratio > 1) ratio = 1
+
+	return transform === 'sqrt' ? R * Math.sqrt(ratio) : R * ratio
+}
+
+/**
+ * Picks the radius transform for a radar chart, given its axis weights.
+ *
+ * A wedge's area is ~½θr². `anglesFor` already makes θ (a wedge's angular width) proportional to
+ * weight for a weighted radar. If radius stayed linear in value, a heavily-weighted axis would get
+ * both a wider wedge AND a radius growing at the ordinary linear rate for the same value — the two
+ * compound, so swept area grows faster than `weight × value`, stacking on top of radar's already
+ * well-known area exaggeration (a 2x difference in a linear radius already reads as ~4x in swept
+ * area). Making radius track `√value` cancels exactly one factor of that compounding: with
+ * `r² ∝ value`, area becomes `∝ θ * value ∝ weight * value` — the honest claim a weighted radar is
+ * making about its data in the first place. (This module's spec asserts that proportionality
+ * numerically rather than arguing it, since it is the entire reason this branch exists.)
+ *
+ * At equal weights every wedge is the same width regardless of transform, so there is nothing to
+ * compensate for — `'linear'` is used, matching conventional radar (whose area exaggeration is a
+ * documented, accepted limitation, not something this module tries to fix).
+ *
+ * `requested` lets a caller pin the transform explicitly; an explicit `'linear'` or `'sqrt'`
+ * always wins over the weight-derived choice, so a consumer who has deliberately chosen one never
+ * has it silently swapped out from under them the next time someone adds an unequal weight to the
+ * axes list.
+ *
+ * Weights are normalised the same way `anglesFor` normalises them (non-positive or non-finite
+ * treated as 1) before the equality check, so this function's answer always matches the wedges
+ * `anglesFor` actually draws for the same `weights` array.
+ *
+ * @param {number[]} weights - one per axis, the same array `anglesFor` would receive
+ * @param {'linear'|'sqrt'|'auto'} [requested] - defaults to `'auto'`
+ * @returns {'linear'|'sqrt'}
+ */
+export function resolveRadiusTransform(weights, requested = 'auto') {
+	if (requested === 'linear' || requested === 'sqrt') return requested
+
+	const w = weights.map((x) => (Number.isFinite(x) && x > 0 ? x : 1))
+	const allEqual = w.every((x) => x === w[0])
+	return allEqual ? 'linear' : 'sqrt'
+}

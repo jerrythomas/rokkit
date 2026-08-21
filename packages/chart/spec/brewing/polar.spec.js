@@ -1,5 +1,11 @@
 import { describe, it, expect, vi } from 'vitest'
-import { resolveAxes, anglesFor, domainsFor } from '../../src/lib/brewing/polar.js'
+import {
+	resolveAxes,
+	anglesFor,
+	domainsFor,
+	radiusFor,
+	resolveRadiusTransform
+} from '../../src/lib/brewing/polar.js'
 
 const rows = [
 	{ m: 'a', v: 1 },
@@ -274,5 +280,167 @@ describe('domainsFor', () => {
 		expect(result).toHaveLength(2)
 		expect(result[1]).toEqual([0, 0])
 		expect(result[1].every((n) => Number.isFinite(n))).toBe(true)
+	})
+})
+
+describe('radiusFor', () => {
+	it('linear matches R * (v - min) / (max - min) exactly', () => {
+		// domain [0, 20], v=5 => ratio 0.25 => 12.5, an exact value (no float noise to hide behind)
+		expect(radiusFor(5, [0, 20], 50, 'linear')).toBe(12.5)
+	})
+
+	it('centres on domain.min, NOT zero: on [-5, 10] v=0 sits at R*5/15, not the middle', () => {
+		const result = radiusFor(0, [-5, 10], 100, 'linear')
+		// R * (0 - -5) / (10 - -5) = 100 * 5/15 = 33.33...
+		expect(result).toBeCloseTo(100 / 3, 10)
+		// the naive "centre = 0" reading would put this at R * (10-0)/(10-(-5)) = 66.67, and a
+		// true geometric centre would be exactly R/2 = 50 — assert neither of those, since a test
+		// that merely avoided one wrong number could still be passing under another one.
+		expect(result).not.toBeCloseTo(50, 5)
+		expect(result).not.toBeCloseTo((100 * 10) / 15, 5)
+	})
+
+	it('sqrt matches R * sqrt((v - min) / (max - min)) exactly', () => {
+		// domain [0, 16], v=4 => ratio 0.25 => sqrt 0.5 => 5, again an exact value
+		expect(radiusFor(4, [0, 16], 10, 'sqrt')).toBe(5)
+	})
+
+	it('linear and sqrt give different radii for the same input', () => {
+		const linear = radiusFor(4, [0, 16], 10, 'linear')
+		const sqrt = radiusFor(4, [0, 16], 10, 'sqrt')
+		expect(linear).toBe(2.5)
+		expect(sqrt).toBe(5)
+		expect(linear).not.toBe(sqrt)
+	})
+
+	it('a zero-width domain does not divide by zero — resolves to the centre, 0', () => {
+		const linear = radiusFor(7, [7, 7], 100, 'linear')
+		const sqrt = radiusFor(7, [7, 7], 100, 'sqrt')
+		expect(linear).toBe(0)
+		expect(sqrt).toBe(0)
+		expect(Number.isNaN(linear)).toBe(false)
+		expect(Number.isNaN(sqrt)).toBe(false)
+	})
+
+	it('a non-finite value does not yield NaN — returns null instead', () => {
+		expect(radiusFor(NaN, [0, 10], 100, 'linear')).toBe(null)
+		expect(radiusFor(Infinity, [0, 10], 100, 'sqrt')).toBe(null)
+		expect(radiusFor(-Infinity, [0, 10], 100, 'linear')).toBe(null)
+	})
+
+	it('a finite out-of-domain value is clamped rather than producing NaN or overshoot', () => {
+		// below min: ratio would be negative, which is fatal to sqrt (no real root) — clamps to 0
+		expect(radiusFor(-5, [0, 10], 100, 'sqrt')).toBe(0)
+		expect(radiusFor(-5, [0, 10], 100, 'linear')).toBe(0)
+		// above max: ratio would exceed 1 — clamps to R
+		expect(radiusFor(15, [0, 10], 100, 'sqrt')).toBe(100)
+		expect(radiusFor(15, [0, 10], 100, 'linear')).toBe(100)
+	})
+})
+
+describe('resolveRadiusTransform', () => {
+	it("auto picks 'linear' when all weights are equal", () => {
+		expect(resolveRadiusTransform([1, 1, 1], 'auto')).toBe('linear')
+	})
+
+	it("auto picks 'sqrt' when any weight differs", () => {
+		expect(resolveRadiusTransform([2, 1, 1], 'auto')).toBe('sqrt')
+	})
+
+	it("defaults to 'auto' when requested is omitted", () => {
+		expect(resolveRadiusTransform([1, 1, 1])).toBe('linear')
+		expect(resolveRadiusTransform([2, 1, 1])).toBe('sqrt')
+	})
+
+	it('an explicit linear overrides auto even with unequal weights', () => {
+		expect(resolveRadiusTransform([2, 1, 1], 'linear')).toBe('linear')
+	})
+
+	it('an explicit sqrt overrides auto even with equal weights', () => {
+		expect(resolveRadiusTransform([1, 1, 1], 'sqrt')).toBe('sqrt')
+	})
+
+	it('normalises non-positive/non-finite weights like anglesFor before comparing them', () => {
+		// 0, negative and NaN all coerce to 1 in anglesFor, so [1, 0, 1] draws 3 equal wedges —
+		// resolveRadiusTransform must agree, or its choice would contradict the shape actually drawn.
+		expect(resolveRadiusTransform([1, 0, 1], 'auto')).toBe('linear')
+		expect(resolveRadiusTransform([1, -3, 1], 'auto')).toBe('linear')
+		expect(resolveRadiusTransform([1, NaN, 1], 'auto')).toBe('linear')
+	})
+})
+
+describe('radiusFor + anglesFor: area proportionality (the whole justification for sqrt)', () => {
+	it('under sqrt, wedge area (1/2 * theta * r^2) is proportional to weight * value', () => {
+		// Three axes so wedge widths are actually recoverable from anglesFor's midpoints: with
+		// only 2 axes the two wedges are complementary and their midpoints are ALWAYS 180 degrees
+		// apart regardless of the weight split, so the split ratio can't be read back out. With 3+
+		// axes, the "spaces midpoints by the half-sum of adjacent wedges" relationship (asserted
+		// above in the anglesFor suite) is invertible, so we solve it here rather than hardcode
+		// 360*weight/total ourselves.
+		const weights = [2, 1, 1]
+		const a = anglesFor(weights)
+		expect(a).toHaveLength(3)
+
+		const g1 = a[1] - a[0] // (x0 + x1) / 2
+		const g2 = a[2] - a[1] // (x1 + x2) / 2
+		const g3 = 360 - (a[2] - a[0]) // (x2 + x0) / 2, wrapping back to axis 0
+		const x0 = g1 + g3 - g2 // wedge width (degrees) for the weight-2 axis
+		const x1 = g1 + g2 - g3 // wedge width (degrees) for the first weight-1 axis
+
+		expect(x0).toBeCloseTo(180, 9) // sanity: matches 360 * 2/4
+		expect(x1).toBeCloseTo(90, 9) //  sanity: matches 360 * 1/4
+
+		// Weights are unequal, so this is exactly the case the whole feature exists for: derive
+		// the transform through resolveRadiusTransform's 'auto' path (as a real Radar geom would)
+		// rather than hardcoding 'sqrt' — that ties this test to the actual selection logic, not
+		// just to radiusFor's sqrt branch in isolation.
+		const transform = resolveRadiusTransform(weights, 'auto')
+		expect(transform).toBe('sqrt')
+
+		// Same domain/R for both axes so those factors cancel in the ratio, isolating weight*value.
+		const domain = [0, 10]
+		const R = 100
+		const v0 = 8 // on the weight-2 axis
+		const v1 = 4 // on a weight-1 axis
+
+		const r0 = radiusFor(v0, domain, R, transform)
+		const r1 = radiusFor(v1, domain, R, transform)
+
+		const area0 = 0.5 * (x0 * (Math.PI / 180)) * r0 ** 2
+		const area1 = 0.5 * (x1 * (Math.PI / 180)) * r1 ** 2
+
+		const areaRatio = area0 / area1
+		const weightValueRatio = (weights[0] * v0) / (weights[1] * v1)
+
+		expect(areaRatio).toBeCloseTo(weightValueRatio, 9)
+		// pin the actual numbers too, not just their ratio, so a coincidental ratio match on
+		// wrong absolute areas can't sneak this test through
+		expect(area0).toBeCloseTo(4000 * Math.PI, 6)
+		expect(area1).toBeCloseTo(1000 * Math.PI, 6)
+		expect(weightValueRatio).toBe(4)
+	})
+
+	it('under linear (equal weights, no sqrt), area is NOT proportional to weight * value the same way', () => {
+		// Control case: equal weights => 'auto' picks linear => no compensation applied, so the
+		// sqrt branch's proportionality claim is specific to sqrt, not an accident of the area
+		// formula. With equal weights and unequal values, area ratio should track value^2, not value.
+		const weights = [1, 1]
+		const domain = [0, 10]
+		const R = 100
+		const v0 = 8
+		const v1 = 4
+
+		const transform = resolveRadiusTransform(weights, 'auto')
+		expect(transform).toBe('linear')
+
+		const r0 = radiusFor(v0, domain, R, transform)
+		const r1 = radiusFor(v1, domain, R, transform)
+		// equal weights => equal wedge widths => they cancel in the ratio regardless of their value
+		const areaRatio = r0 ** 2 / r1 ** 2
+		const valueRatio = v0 / v1
+		const valueSquaredRatio = (v0 / v1) ** 2
+
+		expect(areaRatio).toBeCloseTo(valueSquaredRatio, 9)
+		expect(areaRatio).not.toBeCloseTo(valueRatio, 5)
 	})
 })
