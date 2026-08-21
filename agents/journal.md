@@ -7570,3 +7570,49 @@ learn e2e **36 passing / 55s** (was 34 — the two new tests), snapshot test 31s
 
 **Not done:** Phases 1–5 (token set, List, Tree, long tail, measure). `#152` Phase 2 still
 blocked on the typography scale-choice decision.
+
+## 2026-08-21 — Clear the `svelte/prefer-svelte-reactivity` warnings (6 sites)
+
+Not a blanket swap to `SvelteMap`/`SvelteSet`: that would have been wrong. Those types make
+*reads* reactive, so applying them to a function-local collection that is built, consumed
+and discarded inside one synchronous call adds a signal per key for something nothing can
+observe. Each site was judged separately.
+
+**Rule behaviour worth knowing** (probed, not guessed — a throwaway `__probe.svelte.js`):
+in `.svelte.js` / `.svelte.ts` **modules the rule flags every `new Set()`/`new Map()`
+regardless of mutation**, including `new Set(iterable)` that is only ever read. In `.svelte`
+components it is narrower and fires only on actual mutation — which is why
+`new Set(selectedRows)` in `Highlight.svelte` was never flagged while `seen.add(row)` two
+lines below was. So a Set/Map in a `.svelte.js` module can only ever be silenced, never
+satisfied.
+
+**Restructured — 4 sites, no suppression:**
+- `PlotState.#sharedColorValues` — dropped the `seen` Set for `!values.includes(v)`, the
+  idiom `addField` already uses three lines above. These are category values feeding one
+  palette/legend (a domain of dozens, not rows), so the linear scan is free. `includes`
+  uses SameValueZero like `Set.has`, so `NaN` dedup is unchanged — `indexOf` would not have
+  been.
+- `Sparkline.svelte` — `$derived.by` + `seen.add()` → `$derived(new Set(flatMap(…)))`;
+  `resolveHighlight` returns `number[]` in every branch, so the union is just a flatMap.
+- `Highlight.svelte` — the dedup set is now read off the marks already built
+  (`new Set(out.map((m) => m.row))`) instead of maintained beside them. One source of truth
+  for "already emitted", one line shorter.
+- `commands.svelte.js normalizeShortcut` — Set → plain array, matching its sibling
+  `eventToShortcut`. Duplicates cannot reach the output anyway: `MOD_ORDER.filter()` emits
+  each modifier at most once, so the Set bought nothing.
+
+**Suppressed with a stated reason — 3 sites (matching the existing `MarkdownRenderer.svelte`
+precedent):** `PlotState.#sortedBandDomain`'s `totals` Map (keyed accumulator over data rows
+— `includes` would be O(n²) on rows, and a plain object would coerce number/Date keys to
+strings), and the two localStorage test doubles in `PaletteManager.spec` / `palette.spec`
+(they model a deliberately non-reactive browser API).
+
+Also learned: `bun run lint` runs with `--fix`, which **strips unused disable directives**.
+A first attempt put the disable on `let store: Map<string, string>` — a type annotation, not
+an instantiation — and the directive was silently removed, leaving a whitespace-only line.
+The disable has to sit on the `new Map()` itself.
+
+**Measured:** lint **117 → 107 warnings, 0 errors** (10 warning instances = 6 unique sites,
+several double-reported because two config globs match the same file). `bun run check` green
+end-to-end; `test:ci` **5774 passing / 383 files**; learn e2e **36 passing**. The new state
+snapshot gate reproduced its baseline exactly on its third consecutive run.

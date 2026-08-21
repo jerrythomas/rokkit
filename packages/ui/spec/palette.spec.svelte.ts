@@ -506,6 +506,9 @@ describe('Palette Utilities', () => {
 	describe('savePalette and loadPalette', () => {
 		// Node / JSDOM may expose a broken native localStorage — install a
 		// working in-memory mock for the duration of this describe block.
+		// Deliberately NOT a SvelteMap: this models the non-reactive Web Storage
+		// API and is only ever read through the stubbed accessors below.
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const storage = new Map<string, string>()
 		const localStorageMock = {
 			getItem: (key: string) => storage.get(key) ?? null,

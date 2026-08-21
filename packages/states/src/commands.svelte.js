@@ -24,16 +24,19 @@ function isMac() {
 
 /** Canonicalize a shortcut string: resolve `mod`, sort modifiers, lowercase the key. */
 export function normalizeShortcut(shortcut) {
-	const mods = new Set()
+	// A plain array, matching eventToShortcut below. Duplicates cannot reach the
+	// output because MOD_ORDER.filter() emits each modifier at most once, so the
+	// Set this used to be bought nothing.
+	const mods = []
 	let key = ''
 	for (const raw of String(shortcut).toLowerCase().split('+')) {
 		const p = raw.trim()
 		if (!p) continue
-		if (p === 'mod') mods.add(isMac() ? 'meta' : 'ctrl')
-		else if (MODIFIER_ALIAS[p]) mods.add(MODIFIER_ALIAS[p])
+		if (p === 'mod') mods.push(isMac() ? 'meta' : 'ctrl')
+		else if (MODIFIER_ALIAS[p]) mods.push(MODIFIER_ALIAS[p])
 		else key = p
 	}
-	return [...MOD_ORDER.filter((m) => mods.has(m)), key].join('+')
+	return [...MOD_ORDER.filter((m) => mods.includes(m)), key].join('+')
 }
 
 /** Build the canonical shortcut string from a KeyboardEvent. */

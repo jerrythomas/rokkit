@@ -84,13 +84,11 @@
 				? []
 				: [highlight]
 	)
-	const highlightIndices = $derived.by(() => {
-		const seen = new Set<number>()
-		for (const sel of highlightSelectors) {
-			for (const i of resolveHighlight(rows, sel, { y: 'y' })) seen.add(i)
-		}
-		return seen
-	})
+	// `resolveHighlight` returns number[], so the union is a flatMap and the Set is
+	// built from that iterable — no incremental .add() to make reactive.
+	const highlightIndices = $derived(
+		new Set<number>(highlightSelectors.flatMap((sel) => resolveHighlight(rows, sel, { y: 'y' })))
+	)
 	const highlightPredicate = $derived(
 		highlightIndices.size > 0
 			? (_row: Record<string, unknown>, i: number) => highlightIndices.has(i)

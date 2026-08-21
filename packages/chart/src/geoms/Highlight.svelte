@@ -24,7 +24,6 @@
 		const selectedRows = state?.selectedRows ?? []
 		const selectedSet = new Set(selectedRows)
 		const out = []
-		const seen = new Set()
 		if (highlight !== null && highlight !== undefined && rows.length) {
 			for (const i of resolveHighlight(rows, highlight, { y })) {
 				const row = rows[i]
@@ -37,9 +36,11 @@
 					// selected — selection is the stronger, interactive state.
 					selected: selectedSet.has(row)
 				})
-				seen.add(row)
 			}
 		}
+		// Read off the marks just built instead of maintained alongside them: one
+		// source of truth for "already emitted", and no mutable dedup set.
+		const seen = new Set(out.map((m) => m.row))
 		selectedRows.forEach((row, j) => {
 			if (seen.has(row)) return
 			out.push({

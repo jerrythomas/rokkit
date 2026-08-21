@@ -94,15 +94,13 @@ export class PlotState {
 			addField(g.channels?.color)
 			addField(g.channels?.fill)
 		}
-		const seen = new Set()
+		// `includes` dedup rather than a Set, matching `addField` above. These are
+		// category values feeding one palette/legend — a domain of dozens, not
+		// rows — so the linear scan costs nothing and the function stays free of
+		// a collection the reactivity linter has to be told to ignore.
 		const values = []
 		for (const f of fields) {
-			for (const v of distinct(this.#data, f)) {
-				if (!seen.has(v)) {
-					seen.add(v)
-					values.push(v)
-				}
-			}
+			for (const v of distinct(this.#data, f)) if (!values.includes(v)) values.push(v)
 		}
 		return values
 	}
@@ -126,6 +124,12 @@ export class PlotState {
 		const xf = this.#effectiveChannels.x
 		const yf = this.#effectiveChannels.y
 		if (!xf || !yf) return null
+		// Keyed accumulator, function-local and discarded before returning — a
+		// SvelteMap would register a reactive signal per category on every
+		// derivation for a collection nothing outside this call can observe.
+		// Not a plain object either: keys are raw data values (numbers, Dates),
+		// which object keys would coerce to strings.
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const totals = new Map()
 		for (const ds of datasets) {
 			for (const d of ds) {

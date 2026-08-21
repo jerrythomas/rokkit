@@ -266,9 +266,13 @@ describe('PaletteManager', () => {
 
 		// This project's setup doesn't provide localStorage (Node's native one is
 		// unusable without --localstorage-file), so back it with a plain Map.
+		// Deliberately NOT a SvelteMap: this is a Web Storage test double, read
+		// only through the stubbed getItem/setItem — it models a non-reactive
+		// browser API, and making it reactive would misrepresent what's tested.
 		let store: Map<string, string>
 
 		beforeEach(() => {
+			// eslint-disable-next-line svelte/prefer-svelte-reactivity
 			store = new Map()
 			vi.stubGlobal('localStorage', {
 				getItem: (k: string) => store.get(k) ?? null,
