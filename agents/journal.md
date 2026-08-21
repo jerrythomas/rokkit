@@ -7616,3 +7616,90 @@ The disable has to sit on the `new Map()` itself.
 several double-reported because two config globs match the same file). `bun run check` green
 end-to-end; `test:ci` **5774 passing / 383 files**; learn e2e **36 passing**. The new state
 snapshot gate reproduced its baseline exactly on its third consecutive run.
+
+## 2026-08-21 — Decompose the flagged functions: 108 → 41 lint warnings
+
+Follow-on from the reactivity-warning pass. Every split follows a seam the code
+already had; none is a line-count trick. Where a function was a dispatch over kinds it
+became a table of small resolvers; where two branches walked the same data twice they now
+share a helper; where six positionals were unreadable at the call site they became a named
+bag.
+
+**Done — all shipped library code + the CLI + part of the demo app (67 warnings):**
+
+- **chart (14)** — `resolveHighlight` was complexity 24; now one resolver per selector kind
+  plus a `NAMED` table and a 6-line dispatcher. `computeTrend`'s nine-case switch became a
+  `BUILDERS` table. `polar.js` gained `axisKeysInData` (both `resolveAxes` branches were
+  walking rows with near-identical loops), `finiteValuesByAxis`, `inferDomain`,
+  `cellsBySeriesAndAxis`, `cellValue`. Two internal signatures changed:
+  `verticesFor(data, axes, channels, {angles, domains, R, transform})` — matching
+  `ringsFor`'s existing shape — and `buildSelectDetail({...})`; 12 + 5 call sites migrated.
+- **core / actions / states / data / ui / unocss / blocks (19)** — `relativeLuminance`
+  split; the four value-shape regexes named and hoisted (fixing a use-before-define where
+  `HEX_RE` was declared 90 lines below its reader). `themable` split into
+  `syncWithStorage` + `applyThemeAttrs`. `nest.js`'s 7-positional `walkSegments` became
+  `(row, segments, config, acc)`. `Select.svelte`'s 38-line triple-nested rAF became three
+  named functions. `preset.ts` gained `FONT_ROLES` + `buildDarkBlock`.
+  `FormPlugin`'s five hand-written type checks became a `LOOKUP_FIELDS` allowlist, which
+  states the security property directly.
+- **cli (23)** — `checkContrastTokens` was the worst function in the repo (complexity 21,
+  57 lines) doing three unrelated checks inline; now one function per check plus named
+  constants (`AA`, `EDGE_MIN`, `RAMP_SLACK`, `INK_RAMP`, `READABLE`). The `{light,dark}`
+  unwrap was written twice and is now `pickMode`. `validateConfigShape`'s three if-blocks
+  became a `SHAPE_RULES` table. `doctor.js`'s three byte-identical print blocks became one
+  `printAdvisories`. `runSkillsList`/`runAgentsList` were `async` with no `await` — the
+  async was a lie; dropped it (every caller already uses `await`, which works on a
+  non-promise). `init.js`'s fixed zen-sumi block moved to a module const, and `init()`
+  gained three helpers, which let its `eslint-disable max-lines-per-function` be **deleted**
+  rather than kept.
+- **learn, first passes (11)** — `parseTweakIntent` (complexity 20) became a `PATTERNS`
+  array in precedence order; `matchesFilter` (complexity 24) became `NUMERIC_OPS` +
+  `TEXT_OPS` tables; `inferShape`'s four `force` branches became `FORCED_SHAPES` returning
+  "an Inference or null to fall through", which makes explicit what the original expressed
+  by falling out of an if-block *without* returning. Plus `parseCompletion`,
+  `splitSuggestions`, `summarizeColumn`, `rewriteSkinStyle`.
+
+**Two things worth remembering.**
+
+*Every dispatch table is read through `Object.hasOwn`.* A bare `NAMED[selector]` resolves
+inherited keys, so `resolveHighlight(rows, 'constructor')` would have returned Object's
+constructor and **called it**, handing callers an object where they expect `number[]`.
+`SparkState` already guarded `PATTERNS` this way — the idiom existed, it just wasn't
+applied consistently.
+
+*The 100% js/ts coverage ratchet caught two regressions from this work, and the cause
+generalises.* Extracting a guard-and-return helper makes the function's **tail**
+unreachable when every caller trips the guard, so V8 reports the closing brace uncovered.
+Both `v8 ignore` comments now wrap the whole function via `start`/`stop`: a `next N` count
+misses the tail *and* drifts the moment a line moves. (Same family as the earlier
+discovery that `bun run lint` runs with `--fix`, which silently **deletes** an unused
+disable directive — a misplaced one leaves a whitespace-only line and no warning.)
+
+*Behaviour-preserving, and shown to be rather than asserted.* For `resolveHighlight` I
+wrote 6 edge-case tests FIRST, against the original — ties keep the first index,
+all-Infinity resolves, undefined selector, non-array rows, index 0 and the most-negative
+in-range index, empty predicate. That paid off immediately: the obvious rewrite (a
+strict-improvement scan seeded with `Infinity`) fails the all-Infinity case, so `byExtreme`
+collects candidates before reducing. Elsewhere the exactness mattered too —
+`Array.includes` uses SameValueZero like `Set.has` (unlike `indexOf`), so NaN dedup is
+unchanged; `firstDefined` keeps `??`-chain semantics so a configured empty string does not
+fall through to a legacy key the way `find(Boolean)` would; `parseFrontmatter` still
+captures its block **untrimmed** so `^`-anchored field regexes keep rejecting indented
+frontmatter.
+
+**Gate:** lint **41 warnings, 0 errors** (from 108); `bun run check` green end-to-end;
+`test:ci` **5780 passing / 383 files** (+6, the new highlight tests); `bun run coverage`
+**exit 0, zero threshold errors**, 99.54% statements; learn e2e **36 passing**; the #153
+state-snapshot baseline still byte-identical.
+
+**Commits (develop):** `e9667b96` chart, `89dfe8ac` remaining library packages,
+`6c55ca14` cli, `8f7c11c5` + `ae9fdca4` learn batches 1–2.
+
+**REMAINING 41 — all in `apps/learn`, and 24 of them sit in two very large files:**
+`routes/app/+layout.svelte` (13, a 1265-line component) and `lib/chat-demo/router.ts`
+(11 — every one is `Method 'build' has too many lines`, where each `build` is mostly a
+chart-spec **data literal**; the fix is hoisting the fixtures to named module consts plus a
+`fence(lang, spec)` helper for a pattern repeated ~12 times, not logic surgery). The other
+17 are spread one-to-three per file across `chat-demo/{store,llm,scan,prompt}` and
+`koan/{store,conversations,components/Tweaks,demos/*}`. Those two big files deserve their
+own focused pass rather than being rushed at the end of this one.
