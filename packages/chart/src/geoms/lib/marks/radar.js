@@ -9,7 +9,48 @@ import { toPatternId } from '../../../lib/brewing/patterns.js'
 // `min(width, height) / 2` or a spoke's label collides with the plot's own edge. This is a fixed
 // pixel budget (rather than a fraction of R) because label text is a roughly fixed size
 // regardless of how big the plot is.
-const LABEL_MARGIN = 32
+export const LABEL_MARGIN = 32
+
+/**
+ * Smallest outer radius at which the full form is actually usable: 24px is the minimum
+ * reachable hit target, and a vertex sits ON the outer radius, so below this the chrome
+ * is unreadable and the targets unreachable.
+ */
+export const MIN_PLOT_RADIUS = 24
+
+/**
+ * Below this extent (the smaller of width/height) there is no room for BOTH the label
+ * margin and a usable plot radius, so radar drops to its micro form.
+ */
+export const MICRO_THRESHOLD = 2 * (LABEL_MARGIN + MIN_PLOT_RADIUS)
+
+/** Legible axis-count range for the micro form — see the warn in `buildRadarMarks`. */
+export const MICRO_MIN_AXES = 3
+export const MICRO_MAX_AXES = 5
+
+/**
+ * The one definition of radar's outer radius and which form it is drawing.
+ *
+ * Both `Radar.svelte` (grid, spokes, labels, vertices) and `buildRadarMarks` (the
+ * polygons) need this, and they used to derive it separately from the same
+ * `innerWidth`/`innerHeight` — two copies of one rule, free to drift apart. A test had to
+ * pin the outermost grid ring to the polygon's own radius to catch that drift; this
+ * removes the possibility instead of policing it.
+ *
+ * The micro form draws no labels, so it spends the whole half-extent on the polygon.
+ * Reserving the label margin there is what collapsed it: a Spark is 80×24, so the
+ * half-extent is 12px against a 32px margin, giving R = 0 and an invisible glyph.
+ *
+ * @param {number} innerWidth
+ * @param {number} innerHeight
+ * @returns {{ R: number, micro: boolean }}
+ */
+export function resolveRadarRadius(innerWidth, innerHeight) {
+	const extent = Math.min(innerWidth, innerHeight)
+	const micro = extent < MICRO_THRESHOLD
+	const half = extent / 2
+	return { R: Math.max(0, micro ? half : half - LABEL_MARGIN), micro }
+}
 
 /**
  * Converts `polar.js`'s angle convention (degrees, -90 = top, increasing clockwise) to
@@ -50,8 +91,7 @@ export function buildRadarMarks({ data, plot, channels, options = {}, alpha, typ
 
 	const { innerWidth, innerHeight, colors, patterns, chartPreset } = plot
 
-	const rawR = Math.min(innerWidth, innerHeight) / 2
-	const R = Math.max(0, rawR - LABEL_MARGIN)
+	const { R, micro } = resolveRadarRadius(innerWidth, innerHeight)
 
 	const layout = buildRadarLayout(data, channels, {
 		axes: options.axes,
@@ -60,6 +100,19 @@ export function buildRadarMarks({ data, plot, channels, options = {}, alpha, typ
 		radiusScale: options.radiusScale,
 		R
 	})
+
+	// The micro form is read as a gestalt shape, not measured: below 3 axes there is no area
+	// to perceive, and above 5 at glyph size the spokes collapse into an unreadable star.
+	// Warned rather than clamped — silently dropping a caller's axis would change what the
+	// glyph asserts about the data. Lives here, alongside polar.js's own dev warns, rather
+	// than in Radar.svelte, so the component stays render-only.
+	if (micro && (layout.axes.length < MICRO_MIN_AXES || layout.axes.length > MICRO_MAX_AXES))
+		// eslint-disable-next-line no-console
+		console.warn(
+			`[Radar] ${layout.axes.length} axes in a micro (Spark-sized) radar — ` +
+				`${MICRO_MIN_AXES}–${MICRO_MAX_AXES} is the legible range at glyph size. ` +
+				'The shape is meant to be read at a glance, not measured.'
+		)
 
 	const radial = lineRadial()
 		.angle((p) => p.angleRad)

@@ -2,7 +2,7 @@
 	import { getContext, onMount, onDestroy } from 'svelte'
 	import type { PlotState } from '../PlotState.svelte.js'
 	import { GeomState } from './lib/GeomState.svelte.js'
-	import { buildRadarMarks } from './lib/marks/radar.js'
+	import { buildRadarMarks, resolveRadarRadius } from './lib/marks/radar.js'
 	import { buildRadarLayout } from '../lib/brewing/polar.js'
 	import { buildSelectDetail } from '../lib/select.js'
 
@@ -63,14 +63,6 @@
 		onselect = undefined
 	}: Props = $props()
 
-	// Space reserved outside the outer ring for axis labels, in pixels — MUST stay numerically
-	// identical to `LABEL_MARGIN` in `geoms/lib/marks/radar.js`. That adapter computes its own
-	// outer radius from the same `innerWidth`/`innerHeight` to build the polygons; this
-	// component independently calls the shared pure `buildRadarLayout` (see its doc comment —
-	// it's meant to be called from both the Radar geom and any future sparkline-style radar) to
-	// get the grid/spokes/labels geometry the adapter doesn't return. Both call sites must
-	// resolve to the same R or the grid drawn here would disagree with the polygons.
-	const LABEL_MARGIN = 32
 	const LABEL_GAP = 12
 	const ZERO_MARKER_HALF_SPAN_DEG = 6
 	const VERTEX_RADIUS = 3
@@ -97,7 +89,19 @@
 	const marks: RadarMark[] = $derived(geom.marks)
 	const w = $derived(plotState.innerWidth)
 	const h = $derived(plotState.innerHeight)
-	const R = $derived(Math.max(0, Math.min(w, h) / 2 - LABEL_MARGIN))
+
+	// One shared definition of the radius AND of which form we're drawing — the adapter
+	// builds its polygons from the very same call, so the grid can no longer disagree
+	// with them. `micro` is derived from the space actually available rather than from
+	// "am I inside a Spark": that keeps the geom free of any container-specific branch
+	// (the spec's requirement) and correctly also covers a Plot too small for chrome.
+	//
+	// Deliberately NOT `plotState.interactive`, which the plan proposed: that is
+	// `Boolean(onselect) || selectable`, so an ordinary static <Plot> reads false too and
+	// would silently lose its rings, spokes and axis labels.
+	const geometry = $derived(resolveRadarRadius(w, h))
+	const R = $derived(geometry.R)
+	const micro = $derived(geometry.micro)
 
 	// Radar takes its own channel props — like `GeomState.marks`, this never falls back to the
 	// container's `x`/`y`. Without both `axis` and `value` there is nothing coherent to lay a
@@ -182,7 +186,7 @@
 </script>
 
 <g data-plot-geom="radar" transform="translate({w / 2}, {h / 2})">
-	{#if layout && options.grid}
+	{#if layout && options.grid && !micro}
 		{#each layout.rings as ring, i (i)}
 			<circle data-plot-element="radar-grid-ring" cx="0" cy="0" r={ring.radius} />
 		{/each}
@@ -241,7 +245,7 @@
 		{/if}
 	{/each}
 
-	{#if layout}
+	{#if layout && !micro}
 		{#each [...layout.series] as [seriesKey, seriesVertices] (seriesKey)}
 			{#each seriesVertices as vertex, i (i)}
 				<!-- A null vertex is a genuine gap in the data — no reading for this (series, axis)
@@ -275,7 +279,7 @@
 		{/each}
 	{/if}
 
-	{#if layout}
+	{#if layout && !micro}
 		{#each layout.axes as ax, i (ax.key)}
 			{@const { x: lx, y: ly } = toXY(layout.angles[i], layout.radius + LABEL_GAP)}
 			<text
