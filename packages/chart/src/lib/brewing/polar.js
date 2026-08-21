@@ -290,3 +290,107 @@ export function resolveRadiusTransform(weights, requested = 'auto') {
 	const allEqual = w.every((x) => x === w[0])
 	return allEqual ? 'linear' : 'sqrt'
 }
+
+/**
+ * @typedef {Object} Vertex
+ * @property {string} axisKey - the axis this vertex belongs to
+ * @property {number} value - the plotted value; the average when the `(series, axis)` cell had
+ *   more than one row
+ * @property {number} angle - degrees, taken from `angles` at this axis's position
+ * @property {number} radius - pixels, from `radiusFor`; never `null` here because `value` is
+ *   always finite by construction (non-finite readings are filtered out before averaging)
+ * @property {Object} row - one of the original rows for this cell, chosen so `===` identity with
+ *   the container's `data` array survives averaging
+ */
+
+/**
+ * Turns rows into one polygon's worth of vertices per series, positionally aligned with `axes`.
+ *
+ * A row belongs to the `(series, axis)` cell identified by `channels.color` (or the single
+ * implicit series `undefined`, when no series channel is given at all) crossed with
+ * `channels.x`. Two situations a naive per-cell lookup would mishandle are resolved explicitly,
+ * for reasons that matter more than they look like they should:
+ *
+ * DUPLICATE cells — more than one row landing on the same `(series, axis)` pair — are averaged
+ * HERE, inside this module, rather than by routing through the generic `stat`/`applyGeomStat`
+ * machinery the rest of the package uses for aggregation. `applyGeomStat` calls
+ * `groupDataByKeys`, which builds a FRESH row object containing only the group-by keys plus the
+ * summarised value — a new allocation that fails `===` identity against anything in the
+ * container's `data` array. Every geom in this package computes its `onselect` index as
+ * `plotState.data.indexOf(row)`, so an aggregated row would report `index: -1` and silently drop
+ * every field that wasn't a channel. That is not a rare edge case for radar: long-format
+ * `(series × axis)` data duplicating a cell is the single most common data-shape mistake a radar
+ * consumer will make, so aggregation cannot be allowed to degrade interactivity the way a generic
+ * stat would. The fix: average the values, but keep a reference to one of the ORIGINAL row
+ * objects (the first one encountered) as the vertex's `row`, so identity survives. A repeated
+ * `(series, axis)` pair also `console.warn`s in dev, matching this file's existing warn
+ * register — axis is a small, fixed enum rather than a repeated-measurement field, so a duplicate
+ * is almost always a mistake rather than intentional multiple sampling.
+ *
+ * MISSING cells — a `(series, axis)` pair with no matching row at all, or one whose only
+ * matching row(s) all have a non-finite value — resolve to `null`, never to a value of `0`. Zero
+ * is a real, meaningful position on almost every axis (the centre, per `radiusFor`'s own
+ * contract), so defaulting a gap to it would silently invent a score and render as a real low
+ * value rather than as missing data — the same "better a visible gap than a silently reshaped
+ * polygon" principle `resolveAxes` already applies to axis membership. The geom is expected to
+ * break the polygon's outline at a `null` vertex instead of drawing a line through it.
+ *
+ * @param {Object[]} data
+ * @param {ResolvedAxis[]} axes - from `resolveAxes`; vertex order follows this array
+ * @param {number[]} angles - from `anglesFor(axes.map(a => a.weight))`, aligned with `axes`
+ * @param {[number, number][]} domains - from `domainsFor`, aligned with `axes`
+ * @param {number} R - outer radius in pixels, forwarded to `radiusFor`
+ * @param {'linear'|'sqrt'} transform - forwarded to `radiusFor`
+ * @param {{ x: string, y: string, color?: string }} channels - `x` names the axis field, `y` the
+ *   value field, `color` the series field — mirroring `fill ?? color`'s role as the series
+ *   channel in every other geom. Omitting it entirely means one implicit series.
+ * @returns {Map<unknown, (Vertex|null)[]>} one entry per distinct series value (or the single key
+ *   `undefined` when `channels.color` is omitted), each holding one vertex — or `null` for a
+ *   gap — per axis, in `axes` order
+ */
+export function verticesFor(data, axes, angles, domains, R, transform, channels) {
+	const { x: axisField, y: valueField, color: seriesField } = channels
+
+	const cells = new Map()
+	for (const row of data) {
+		const seriesKey = seriesField !== undefined ? row?.[seriesField] : undefined
+		const axisKey = row?.[axisField]
+		if (!cells.has(seriesKey)) cells.set(seriesKey, new Map())
+		const bySeries = cells.get(seriesKey)
+		if (!bySeries.has(axisKey)) bySeries.set(axisKey, [])
+		bySeries.get(axisKey).push(row)
+	}
+
+	const result = new Map()
+	for (const [seriesKey, bySeries] of cells) {
+		const vertices = axes.map((axis, i) => {
+			const rows = bySeries.get(axis.key)
+			if (!rows) return null
+
+			if (rows.length > 1) {
+				// eslint-disable-next-line no-console
+				console.warn(
+					`[Radar] Duplicate (series, axis) cell — axis "${axis.key}"` +
+						`${seriesKey !== undefined ? `, series "${seriesKey}"` : ''} has ${rows.length} rows; ` +
+						'averaging their values. A repeated (series, axis) pair is almost always a data bug, ' +
+						'since axis is a small fixed enum rather than a repeated-measurement field.'
+				)
+			}
+
+			const values = rows.map((row) => row[valueField]).filter(Number.isFinite)
+			if (values.length === 0) return null
+
+			const value = values.reduce((a, b) => a + b, 0) / values.length
+			return {
+				axisKey: axis.key,
+				value,
+				angle: angles[i],
+				radius: radiusFor(value, domains[i], R, transform),
+				row: rows[0]
+			}
+		})
+		result.set(seriesKey, vertices)
+	}
+
+	return result
+}

@@ -4,7 +4,8 @@ import {
 	anglesFor,
 	domainsFor,
 	radiusFor,
-	resolveRadiusTransform
+	resolveRadiusTransform,
+	verticesFor
 } from '../../src/lib/brewing/polar.js'
 
 const rows = [
@@ -442,5 +443,202 @@ describe('radiusFor + anglesFor: area proportionality (the whole justification f
 
 		expect(areaRatio).toBeCloseTo(valueSquaredRatio, 9)
 		expect(areaRatio).not.toBeCloseTo(valueRatio, 5)
+	})
+})
+
+describe('verticesFor', () => {
+	// `color` carries the series field, mirroring `fill ?? color`'s role as the series
+	// channel in every other geom (Point/Bar/Area) — Radar's channel mapping is
+	// `{ x: axis, y: value, color: series }`.
+	const channels = { x: 'm', y: 'v', color: 's' }
+
+	it('one series across three axes yields three vertices, in axis order', () => {
+		const data = [
+			{ s: 'A', m: 'a', v: 1 },
+			{ s: 'A', m: 'b', v: 2 },
+			{ s: 'A', m: 'c', v: 3 }
+		]
+		const axes = resolveAxes(['a', 'b', 'c'], data, 'm')
+		const angles = anglesFor(axes.map((ax) => ax.weight))
+		const domains = domainsFor(axes, data, channels)
+
+		const result = verticesFor(data, axes, angles, domains, 100, 'linear', channels)
+		const vertices = result.get('A')
+
+		expect(vertices).toHaveLength(3)
+		expect(vertices.every((v) => v !== null)).toBe(true)
+		expect(vertices.map((v) => v.axisKey)).toEqual(['a', 'b', 'c'])
+	})
+
+	it("each vertex's angle and radius match anglesFor/radiusFor for that axis", () => {
+		const data = [
+			{ s: 'A', m: 'a', v: 1 },
+			{ s: 'A', m: 'b', v: 2 },
+			{ s: 'A', m: 'c', v: 3 }
+		]
+		const axes = resolveAxes(['a', 'b', 'c'], data, 'm')
+		const angles = anglesFor(axes.map((ax) => ax.weight))
+		const domains = domainsFor(axes, data, channels)
+
+		const result = verticesFor(data, axes, angles, domains, 100, 'linear', channels)
+		const vertices = result.get('A')
+
+		expect(vertices).toHaveLength(3)
+		vertices.forEach((vertex, i) => {
+			expect(vertex.angle).toBe(angles[i])
+			expect(vertex.radius).toBe(radiusFor(vertex.value, domains[i], 100, 'linear'))
+		})
+	})
+
+	it('two series yield two independent vertex lists, keyed by series value', () => {
+		const data = [
+			{ s: 'A', m: 'a', v: 1 },
+			{ s: 'A', m: 'b', v: 2 },
+			{ s: 'B', m: 'a', v: 10 },
+			{ s: 'B', m: 'b', v: 20 }
+		]
+		const axes = resolveAxes(['a', 'b'], data, 'm')
+		const angles = anglesFor(axes.map((ax) => ax.weight))
+		const domains = domainsFor(axes, data, channels)
+
+		const result = verticesFor(data, axes, angles, domains, 100, 'linear', channels)
+
+		expect(result.size).toBe(2)
+		const a = result.get('A')
+		const b = result.get('B')
+		expect(a).toHaveLength(2)
+		expect(b).toHaveLength(2)
+		expect(a.map((v) => v.value)).toEqual([1, 2])
+		expect(b.map((v) => v.value)).toEqual([10, 20])
+	})
+
+	it('duplicate (series, axis) cell averages the value: 4 and 6 give 5', () => {
+		const data = [
+			{ s: 'A', m: 'a', v: 4 },
+			{ s: 'A', m: 'a', v: 6 }
+		]
+		const axes = resolveAxes(['a'], data, 'm')
+		const angles = anglesFor(axes.map((ax) => ax.weight))
+		const domains = domainsFor(axes, data, channels)
+
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+		const result = verticesFor(data, axes, angles, domains, 100, 'linear', channels)
+		warn.mockRestore()
+
+		const vertex = result.get('A')[0]
+		expect(vertex).not.toBeNull()
+		expect(vertex.value).toBe(5)
+	})
+
+	it('duplicate preserves row identity — the surviving row is === one of the input rows', () => {
+		const rowA = { s: 'A', m: 'a', v: 4 }
+		const rowB = { s: 'A', m: 'a', v: 6 }
+		const data = [rowA, rowB]
+		const axes = resolveAxes(['a'], data, 'm')
+		const angles = anglesFor(axes.map((ax) => ax.weight))
+		const domains = domainsFor(axes, data, channels)
+
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+		const result = verticesFor(data, axes, angles, domains, 100, 'linear', channels)
+		warn.mockRestore()
+
+		const vertex = result.get('A')[0]
+		// A synthesised `{ ...row }` copy is structurally similar but fails this strict
+		// reference check — `toContain` uses identity, not deep equality.
+		expect([rowA, rowB]).toContain(vertex.row)
+	})
+
+	it('duplicates console.warn in dev', () => {
+		const data = [
+			{ s: 'A', m: 'a', v: 4 },
+			{ s: 'A', m: 'a', v: 6 }
+		]
+		const axes = resolveAxes(['a'], data, 'm')
+		const angles = anglesFor(axes.map((ax) => ax.weight))
+		const domains = domainsFor(axes, data, channels)
+
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+		verticesFor(data, axes, angles, domains, 100, 'linear', channels)
+		expect(warn).toHaveBeenCalled()
+		warn.mockRestore()
+	})
+
+	it('does NOT warn when there are no duplicates', () => {
+		const data = [
+			{ s: 'A', m: 'a', v: 4 },
+			{ s: 'A', m: 'b', v: 6 }
+		]
+		const axes = resolveAxes(['a', 'b'], data, 'm')
+		const angles = anglesFor(axes.map((ax) => ax.weight))
+		const domains = domainsFor(axes, data, channels)
+
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+		verticesFor(data, axes, angles, domains, 100, 'linear', channels)
+		expect(warn).not.toHaveBeenCalled()
+		warn.mockRestore()
+	})
+
+	it('a missing (series, axis) cell yields a gap — not a value of 0', () => {
+		const data = [{ s: 'A', m: 'a', v: 5 }]
+		const axes = resolveAxes(['a', 'b'], data, 'm')
+		const angles = anglesFor(axes.map((ax) => ax.weight))
+		const domains = domainsFor(axes, data, channels)
+
+		const result = verticesFor(data, axes, angles, domains, 100, 'linear', channels)
+		const vertices = result.get('A')
+
+		expect(vertices).toHaveLength(2)
+		expect(vertices[0]).not.toBeNull()
+		expect(vertices[1]).toBeNull()
+		expect(vertices[1]).not.toBe(0)
+	})
+
+	it('a non-finite value yields a gap rather than NaN', () => {
+		const data = [{ s: 'A', m: 'a', v: 'oops' }]
+		const axes = resolveAxes(['a'], data, 'm')
+		const angles = anglesFor(axes.map((ax) => ax.weight))
+		const domains = domainsFor(axes, data, channels)
+
+		const result = verticesFor(data, axes, angles, domains, 100, 'linear', channels)
+		const vertex = result.get('A')[0]
+
+		expect(vertex).toBeNull()
+	})
+
+	it('duplicates warn without a series channel too (exercises the no-series message branch)', () => {
+		const data = [
+			{ m: 'a', v: 4 },
+			{ m: 'a', v: 6 }
+		]
+		const implicitChannels = { x: 'm', y: 'v' }
+		const axes = resolveAxes(['a'], data, 'm')
+		const angles = anglesFor(axes.map((ax) => ax.weight))
+		const domains = domainsFor(axes, data, implicitChannels)
+
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+		const result = verticesFor(data, axes, angles, domains, 100, 'linear', implicitChannels)
+
+		expect(warn).toHaveBeenCalled()
+		expect(result.get(undefined)[0].value).toBe(5)
+		warn.mockRestore()
+	})
+
+	it('no series channel (single implicit series) still produces one vertex list', () => {
+		const data = [
+			{ m: 'a', v: 1 },
+			{ m: 'b', v: 2 },
+			{ m: 'c', v: 3 }
+		]
+		const implicitChannels = { x: 'm', y: 'v' }
+		const axes = resolveAxes(['a', 'b', 'c'], data, 'm')
+		const angles = anglesFor(axes.map((ax) => ax.weight))
+		const domains = domainsFor(axes, data, implicitChannels)
+
+		const result = verticesFor(data, axes, angles, domains, 100, 'linear', implicitChannels)
+
+		expect(result.size).toBe(1)
+		const vertices = [...result.values()][0]
+		expect(vertices).toHaveLength(3)
+		expect(vertices.every((v) => v !== null)).toBe(true)
 	})
 })
