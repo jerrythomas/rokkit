@@ -541,16 +541,46 @@ work, since it is a distinct fix.
 
 **Files:** Create `charts/RadarChart.svelte`; modify `Plot.svelte`, `index.js`; append to `exports.spec.js`
 
-- [ ] Wrapper mirrors `PieChart` — `<Plot grid={false} axes={false} margin={…}>` + `<Radar>`.
-- [ ] ⚠ **Legend defaults ON for 2+ series.** `PieChart`'s `legend` defaults to `false`; radar must
+- [x] Wrapper mirrors `PieChart` — `<Plot grid={false} axes={false} margin={…}>` + `<Radar>`.
+- [x] ⚠ **Legend defaults ON for 2+ series.** `PieChart`'s `legend` defaults to `false`; radar must
 not inherit that, because colour-matching alone is insufficient with washed-out fill intersections.
 Assert: one series → no legend; two → legend present.
-- [ ] Register `radar` in `Plot.svelte`'s `GEOM_COMPONENTS`, consistent with `arc`.
-- [ ] Export `Radar` (as `GeomRadar`, matching the `Geom*` convention) and `RadarChart`.
-- [ ] ⚠ Assert `Plot`'s inherited `plot-sr-table` renders something legible for radar's long-format
+- [x] Register `radar` in `Plot.svelte`'s `GEOM_COMPONENTS`, consistent with `arc`.
+- [x] Export `Radar` (as `GeomRadar`, matching the `Geom*` convention) and `RadarChart`.
+- [x] ⚠ Assert `Plot`'s inherited `plot-sr-table` renders something legible for radar's long-format
 rows — `tableColumns` falls back to `Object.keys(firstRow)`, giving a flat 3-column dump. Do not
 assume inheritance means correctness.
-- [ ] Break-it: force `legend={false}` → the two-series legend test MUST fail. Commit.
+- [x] Break-it: force `legend={false}` → the two-series legend test MUST fail. Commit.
+
+  Done 2026-08-21 (`f3faae98`). `charts/RadarChart.svelte`,
+  `spec/charts/RadarChart.spec.js` (10 tests), +2 in `spec/exports.spec.js`.
+
+  **Registration needed more than a map entry.** `GEOM_COMPONENTS` is consulted *only* by
+  Plot's spec-driven path, whose passthrough is a fixed prop list
+  (`x`/`y`/`color`/`fill`/`pattern`/`symbol`/`stat`/`label`/`options`) — never radar's own
+  `axis`/`value`/`series`. Adding just the entry would have been a registration that can
+  never render. Radar now accepts `x`/`y`/`color` as generic-pipeline aliases (its own
+  names win when both are given) and reads axis order from `options.axes`, so a spec drives
+  it through the existing passthrough with **no change to the generic block** — avoiding
+  radar-specific props leaking onto every other geom. Both routes tested.
+
+  **sr-table verdict: legible, no pivot needed.** The fallback yields
+  `metric | score | team` with one row per (series, axis) cell — a faithful reading of
+  long-format data, arguably better for a screen reader than a pivoted matrix. Asserted
+  concretely (exact headers, row count, and one row's real values), not assumed.
+
+  Four break-it checks confirmed and restored. **One initially FAILED TO FAIL and exposed a
+  real defect in the test:** the declared axis order matched the data's first-appearance
+  order, so `resolveAxes`'s inference produced an identical answer and the assertion could
+  not distinguish a working fallback from a dropped one (plan rule 3, exactly). Reordered
+  the declared axes to `['range','speed','power']` so a dropped fallback now yields a
+  provably different result — re-verified failing.
+
+  Simplified while green: the `seriesCount` ternary had a `data.length ? 1 : 0` arm that
+  could never change the outcome (with no series channel the count cannot exceed one), now
+  a direct `multiSeries` boolean. `RadarChart` 100% on all four metrics.
+
+  `test:ci` 5752 passing / 382 files; lint 0 errors; `svelte-check` 0 errors 0 warnings.
 
 ---
 
