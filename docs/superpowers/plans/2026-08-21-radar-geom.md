@@ -407,11 +407,34 @@ radius to reserve the label margin** — `buildArcs` reserves none, so labels wo
 ⚠ Do **not** use the `keyboardNav` action — it does linear traversal over DOM order, built for a 1-D
 category list; radar vertices are 2-D. Use the per-element `onkeydown` pattern `Point`/`Arc` use.
 
-- [ ] Vertices focusable; Enter and Space fire `onselect` with the standard `buildSelectDetail` shape;
+- [x] Vertices focusable; Enter and Space fire `onselect` with the standard `buildSelectDetail` shape;
 `plotState.handleSelect` called when `plotState.interactive`.
-- [ ] **Assert `detail.index !== -1`** and that a non-channel field on the original row survives into
+- [x] **Assert `detail.index !== -1`** and that a non-channel field on the original row survives into
 `detail.datum` — this is what the Task 5 identity work exists to guarantee.
-- [ ] Break-it: pass a synthesised row to `buildSelectDetail` → the index test MUST fail. Commit.
+- [x] Break-it: pass a synthesised row to `buildSelectDetail` → the index test MUST fail. Commit.
+
+  Done 2026-08-21 (`c2eb68a0`). `spec/geoms/Radar.interaction.spec.js` (11 tests).
+  Used `Point`/`Arc`'s per-element `onkeydown`; `keyboardNav` correctly avoided.
+
+  On the payload: the plan's wording reads as though `onselect` itself receives the
+  detail, but Line/Point/Bar/Area all pass the **raw row** to the geom's own `onselect`
+  and route the full `buildSelectDetail` shape through `plotState.handleSelect`. Followed
+  the house split rather than inventing a radar-only convention.
+
+  Five break-it checks confirmed and restored. The plan's named one needed splitting:
+  passing `{ ...row }` as `buildSelectDetail`'s *datum* leaves `indexOf` still receiving
+  the original, so it only broke the identity assertion — the index assertion needed
+  `plotState.data.indexOf({ ...row })` to prove it has teeth (then: `expected -1 not to
+  be -1`). Also: dropped `interactive` guard → withheld-routing test fails; `reachable`
+  forced true → unfocusable test fails; any-key accepted → Enter/Space-only test fails.
+  Those last two passed vacuously during RED, so the checks are what make them count.
+
+  Two type gaps surfaced and were fixed at the root, not suppressed: `buildSelectDetail`'s
+  `geom` union omitted `'radar'`, and `polar.js` typed `Vertex.row` as the bare `Object`
+  (not assignable to a `Record`-shaped row).
+
+  `Radar.svelte` 100% statements+lines, 93% branch; `select.js`/`polar.js` still 100%.
+  Chart suite 1492 → 1503; full `test:ci` 5720 passing; lint 0 errors; `svelte-check` 0/0.
 
 ---
 
