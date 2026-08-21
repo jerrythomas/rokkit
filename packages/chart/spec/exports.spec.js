@@ -10,7 +10,9 @@ import {
 	GeomRule,
 	Spark,
 	SparkState,
-	GEOM_CONTRACT
+	GEOM_CONTRACT,
+	GeomRadar,
+	RadarChart
 } from '../src/index.js'
 
 describe('chart exports', () => {
@@ -65,5 +67,28 @@ describe('chart exports', () => {
 		expect(Array.isArray(GEOM_CONTRACT)).toBe(true)
 		expect(GEOM_CONTRACT.length).toBeGreaterThan(0)
 		expect(GEOM_CONTRACT).toContain('xScale')
+	})
+
+	it('exposes RadarChart, and it renders a real radar rather than an empty shell', () => {
+		// Rendering (not just truthiness) is what proves the export resolved to an actual
+		// component — an undefined export throws here.
+		const { container } = render(RadarChart, {
+			props: {
+				data: [
+					{ metric: 'a', score: 3, team: 'T' },
+					{ metric: 'b', score: 6, team: 'T' }
+				],
+				axis: 'metric',
+				value: 'score',
+				series: 'team',
+				axes: ['a', 'b']
+			}
+		})
+		expect(container.querySelector('[data-plot-element="radar-area"]')).toBeTruthy()
+	})
+
+	it('exposes Radar as GeomRadar, following the Geom* convention', () => {
+		expect(GeomRadar).toBeTruthy()
+		expect(typeof GeomRadar).toBe('function')
 	})
 })

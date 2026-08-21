@@ -36,6 +36,9 @@
 		rings?: number
 		sharedDomain?: boolean
 		radiusScale?: 'linear' | 'sqrt' | 'auto'
+		/** Alias for the `axes` prop, for callers that can only reach `options` — notably
+		 *  Plot's spec-driven path, whose passthrough is a fixed prop list. */
+		axes?: (string | AxisSpec)[]
 	}
 
 	type Props = {
@@ -43,6 +46,13 @@
 		axis?: string
 		value?: string
 		series?: string
+		/** Generic-pipeline aliases for `axis`/`value`/`series`. Radar's own names say what
+		 *  the channels mean here (an axis is not an x position), but Plot's spec-driven
+		 *  path passes only the generic set, so these let a spec drive radar too. The
+		 *  specific names win when both are given. */
+		x?: string
+		y?: string
+		color?: string
 		pattern?: string
 		/** Fixed area opacity 0–1; defaults to the per-geom preset (radar = 0.25). */
 		alpha?: number
@@ -52,16 +62,26 @@
 	}
 
 	let {
-		axes,
-		axis,
-		value,
-		series,
+		axes: axesProp,
+		axis: axisProp,
+		value: valueProp,
+		series: seriesProp,
+		x = undefined,
+		y = undefined,
+		color = undefined,
 		pattern,
 		alpha,
 		stat = 'identity',
 		options = {},
 		onselect = undefined
 	}: Props = $props()
+
+	// Radar's own channel names take precedence; the generic ones are the fallback so a
+	// spec-driven <Plot> (which passes only x/y/color) can drive this geom too.
+	const axis = $derived(axisProp ?? x)
+	const value = $derived(valueProp ?? y)
+	const series = $derived(seriesProp ?? color)
+	const axes = $derived(axesProp ?? options.axes)
 
 	const LABEL_GAP = 12
 	const ZERO_MARKER_HALF_SPAN_DEG = 6

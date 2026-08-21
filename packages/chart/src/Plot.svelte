@@ -20,6 +20,7 @@
 	import Waterfall from './geoms/Waterfall.svelte'
 	import Hexbin from './geoms/Hexbin.svelte'
 	import Ribbon from './geoms/Ribbon.svelte'
+	import Radar from './geoms/Radar.svelte'
 	import Highlight from './geoms/Highlight.svelte'
 	import Trend from './geoms/Trend.svelte'
 
@@ -112,9 +113,7 @@
 
 	const gridValue = $derived(spec?.grid ?? grid)
 	const showGrid = $derived(gridValue !== false)
-	const gridLines = $derived(
-		gridValue === true || gridValue === false ? 'auto' : gridValue
-	)
+	const gridLines = $derived(gridValue === true || gridValue === false ? 'auto' : gridValue)
 	const showLegend = $derived(spec?.legend ?? legend)
 	const chartTitle = $derived(spec?.title ?? title)
 	const chartSummary = $derived(spec?.summary ?? summary)
@@ -124,9 +123,11 @@
 	const tableColumns = $derived.by(() => {
 		// Dedupe: a channel may repeat (e.g. x === color), and the table's keyed each
 		// requires unique column names.
-		const cols = [...new Set(
-			[spec?.x, spec?.y, spec?.color ?? spec?.fill].filter((c): c is string => Boolean(c))
-		)]
+		const cols = [
+			...new Set(
+				[spec?.x, spec?.y, spec?.color ?? spec?.fill].filter((c): c is string => Boolean(c))
+			)
+		]
 		if (cols.length > 0) return cols
 		const first = tableData[0]
 		return first ? Object.keys(first) : []
@@ -180,7 +181,10 @@
 		candlestick: Candlestick,
 		waterfall: Waterfall,
 		hexbin: Hexbin,
-		ribbon: Ribbon
+		ribbon: Ribbon,
+		// Radar reads the generic x/y/color this path passes via its own aliases, and takes
+		// its axis order from `options.axes` — see Radar.svelte's Props.
+		radar: Radar
 	}
 
 	function resolveGeomComponent(type: string) {
@@ -235,8 +239,20 @@
 
 		<!-- Axes -->
 		{#if axes}
-			<Axis type="x" label={spec?.labels?.[spec?.x ?? ''] ?? ''} format={xFormat} ticks={xTicks} {minorTicks} />
-			<Axis type="y" label={spec?.labels?.[spec?.y ?? ''] ?? ''} format={yFormat} ticks={yTicks} {minorTicks} />
+			<Axis
+				type="x"
+				label={spec?.labels?.[spec?.x ?? ''] ?? ''}
+				format={xFormat}
+				ticks={xTicks}
+				{minorTicks}
+			/>
+			<Axis
+				type="y"
+				label={spec?.labels?.[spec?.y ?? ''] ?? ''}
+				format={yFormat}
+				ticks={yTicks}
+				{minorTicks}
+			/>
 		{/if}
 
 		{#if trend !== null && trend !== undefined}
