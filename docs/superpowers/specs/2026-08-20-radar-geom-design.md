@@ -1,208 +1,294 @@
 # Radar / spider geom
 
 **Date:** 2026-08-20
-**Status:** Design approved
+**Status:** Design approved — revised after depth, feasibility and dataviz review
 **Package:** `packages/chart`
 **Cycle:** 2 of 2 — cycle 1 was `Spark` (`2026-08-20-spark-plot-geom-architecture-design.md`), shipped
 
 ## Problem
 
-`@rokkit/chart` has no way to plot a multi-dimensional profile — one series measured across N
-named axes. That is the radar/spider/kiviat form, and it is the natural chart for scorecards,
-capability comparisons and any "how does this thing score across these dimensions" question.
+`@rokkit/chart` has no way to plot a multi-dimensional profile — one series measured across N named
+axes. That is the radar/spider/kiviat form, the natural chart for scorecards and capability
+comparisons.
 
 ## Why now
 
-Cycle 1 replaced `Sparkline`'s parallel render path with `Spark` — a lean context published on the
-same `'plot-state'` key `PlotState` uses, so any geom composes into a spark unchanged.
+Cycle 1 replaced `Sparkline`'s parallel render path with `Spark` — a lean context on the same
+`'plot-state'` key `PlotState` uses, so any geom composes into a spark. **`SparkRadar` is obsolete
+and will not be written.**
 
-That makes radar strictly cheaper than it would have been. Under the old design, a micro radar meant
-writing a bespoke `SparkRadar` sharing nothing with the full geom. **`SparkRadar` is now obsolete and
-will not be written** — `<Spark><Radar …/></Spark>` works for free.
+## Revision note
+
+The first draft was reviewed three ways before implementation: a depth gate, a feasibility pass
+against the real code, and a dataviz-correctness pass. All three found substantive problems,
+including a **provably wrong angle formula backing an acceptance criterion**. Everything below
+marked ⚠ is a correction to that draft, kept visible so the reasoning isn't lost.
 
 ## Goals
 
-1. A `Radar` geom usable inside `Plot` (via a `RadarChart` wrapper) and inside `Spark`, with no
-   spark-specific code.
-2. Handle mixed units sensibly — a profile across revenue, satisfaction and latency must be readable
-   without the consumer pre-normalising.
-3. Vertex-level interactivity matching the other geoms' contract, so radar isn't second-class.
-4. A layout module built so **weighted axes can be added later without restructuring**.
+1. A `Radar` geom usable inside `Plot` (via `RadarChart`) and inside `Spark`, with no spark-specific
+   code in the geom itself.
+2. Mixed units readable without consumer pre-normalisation — **and honest about it**, per §Radial
+   scale.
+3. Interactivity matching the `Point`/`Bar`/`Line` contract in the `Plot` form.
+4. Layout built so weighted axes can be added later without restructuring.
+5. **Accessible in both forms.** Cycle 1 shipped `Spark` with no accessible name and no data
+   fallback; that is fixed here rather than compounded.
 
 ## Non-goals
 
-- **Weighted axes in this cycle.** Angles are equal. See "Weight-ready, not weighted" below.
-- Polar `Grid`/`Axis` components — the geom owns its grid (decision below).
-- `selectable` / `bind:selected` multi-select via the Highlight overlay — Highlight positions marks
-  from cartesian scales.
+- Weighted axes this cycle (angles equal; layout weight-ready).
+- Polar `Grid`/`Axis` components — the geom owns its grid.
+- `selectable` / Highlight multi-select.
 - Stacked or faceted radar; animated transitions.
-- `SparkRadar` — obsolete by design.
-
+- Arrow-key traversal between vertices (see §Interactivity).
+- `SparkRadar`.
 
 ## Site and docs scope
 
-The learn site is a **generic exploration surface** — charts and sparks are browsed through the
-existing explorer and guides, not through bespoke per-geom demo routes. Radar therefore needs:
+The learn site browses charts and sparks **generically** via the explorer and guides, not per-geom
+routes. Radar needs: a chart-explorer registry entry so it's reachable by existing navigation;
+guides coverage at the same depth as other geoms (what it's for, **when it misleads**, the API);
+and reachability in spark form. Cycle 1's `Spark` composition guidance lands in the same pass.
 
-1. **Reachability through the existing generic surfaces.** Radar joins the chart explorer registry
-   like any other geom type, so it is discoverable by the same navigation users already use. No
-   dedicated `/app/radar` demo route, no Koan catalog entry.
-2. **Guidance alongside the others.** The guides gain radar coverage at the same depth as the
-   existing geoms — what it's for, when it misleads, and the API. Spark composition guidance
-   (from cycle 1) belongs in the same pass.
-3. **Reachable in spark form too**, since `<Spark><Radar/></Spark>` is a supported composition.
-
-Explicitly NOT in scope: a bespoke radar demo app, an interactive radar playground, or per-geom
-routes. The value is that a user exploring charts and sparks generically arrives at radar with
-useful guidance — not that radar gets special treatment.
+NOT in scope: a bespoke radar demo route, playground, or Koan catalog entry.
 
 ## Architecture
 
-Radar cannot use `xScale`/`yScale`. It follows the **`Arc` precedent**: compute polar geometry from
-`innerWidth`/`innerHeight`, centre with a transform, and let the wrapper disable cartesian chrome
-(`PieChart` does exactly this — `<Plot grid={false} axes={false}>`).
+Radar ignores `xScale`/`yScale`, computing polar geometry from `innerWidth`/`innerHeight` and
+centring via a transform.
 
 | Layer | File | Role |
 | --- | --- | --- |
-| Pure layout | `src/lib/brewing/polar.js` | `buildRadarLayout(...)` → axes, per-series vertices, rings. **No Svelte, no context.** |
-| Geom adapter | `src/geoms/lib/marks/radar.js` | `buildRadarMarks(ctx)` — pulls `colors`/`chartPreset` off `plot`, applies `resolveFillStroke`/`resolveAlpha` |
-| Geom | `src/geoms/Radar.svelte` | `GeomState` registration, renders grid + polygons + vertex hit targets |
-| Wrapper | `src/charts/RadarChart.svelte` | `<Plot grid={false} axes={false}>` + `<Radar>`, mirroring `PieChart` |
+| Pure layout | `src/lib/brewing/polar.js` | `buildRadarLayout(...)` → axes, vertices, rings. No Svelte, no context. |
+| Geom adapter | `src/geoms/lib/marks/radar.js` | `buildRadarMarks(ctx)` — colours, alpha, paint order |
+| Geom | `src/geoms/Radar.svelte` | `GeomState` registration, renders grid + polygons + hit targets |
+| Wrapper | `src/charts/RadarChart.svelte` | `<Plot grid={false} axes={false}>` + `<Radar>` |
 
-It lives in `lib/brewing/polar.js` rather than `marks/radars.js` because it is a **layout** (angles,
-radii, rings), not a mark set — sitting alongside `scales.js`/`stats.js`/`symbols.js`. That also keeps
-it plot-free, which is what makes it reusable.
+⚠ **Two precedents, not one.** `Arc` is the precedent for *geometry* (ignores both scales, centres
+with a transform, wrapped by `PieChart` with chrome off). It is **not** the precedent for
+interactivity — `Arc.svelte` calls `onselect` bare and never touches `buildSelectDetail`. The
+interactivity precedent is `Point`/`Bar`/`Line`. The first draft conflated these.
+
+⚠ Use **d3-shape's `lineRadial`** for the polygon path rather than hand-rolled trig — already a
+dependency, and the same idiom `lines.js` uses with `line()`.
 
 ## API
 
-Following `Arc`'s pattern of domain-meaningful **prop** names mapped to standard **channels**
-internally (`Arc`'s `theta` → `channels.y`):
-
 ```svelte
-<Radar axis="metric" value="score" series="team" />
-<!-- → channels { x: axis, y: value, color: series } -->
+<Radar axes={['revenue','csat','latency']} axis="metric" value="score" series="team" />
+<!-- → channels { x: axis, y: value, color: series, pattern } -->
 ```
 
-Long-format data — one row per (series × axis). The stat pipeline, palette and legend then work
-unchanged.
+Long-format data — one row per (series × axis).
 
-### Radar must take its own props — it does not inherit from the container
+⚠ **Radar takes its own channel props.** `GeomState.marks` passes the geom's own config through; it
+does not fall back to the container. But the framing "there is no fallback" in the first draft was
+imprecise: `geomData()` in **both** `PlotState` and `SparkState` merges
+`{...containerChannels, ...geomChannels}` before running the stat. So a partially-specified geom
+would be *grouped* using inherited channels while `buildRadarMarks` receives `undefined` for the
+same channel — an inconsistency. Radar must always supply all channels explicitly.
 
-Cycle 1 established this the hard way: `GeomState.marks` reads channels from the geom's **own props
-only**. There is no fallback to the container's channels. `<Spark><Radar /></Spark>` would render
-nothing; it must be `<Radar axis="metric" value="score" />`.
+⚠ **`pattern` is supported**, matching `Bar`/`Area`/`Box`/`Violin`/`Arc`. This is not decoration:
+overlapping translucent polygons wash out at their intersections, and pattern is the non-colour
+channel that keeps series distinguishable for colour-vision-deficient readers.
 
-Every usage example in this spec and its plan passes the props explicitly. Do not "simplify" them.
+⚠ Register `radar` in `Plot.svelte`'s `GEOM_COMPONENTS` map, for consistency with `arc` on the
+spec-driven path.
 
 ## Radial scale
 
-**Per-axis by default.** Each spoke normalises to `[0, max]` of that axis, so mixed units are
-comparable at a glance. `sharedDomain` switches to one domain across all axes for genuinely
-comparable metrics.
+**Per-axis by default**, with the scale made **visible** — each axis label carries its own end value,
+e.g. `Latency (max 350ms)`. Per-axis is right for the mixed-unit scorecard case, but without a
+visible scale it invites reading equal radii as equal values. Labelling the axis end is cheaper than
+a full per-spoke tick ladder and directly neutralises the ambiguity.
 
-Two semantics stated explicitly rather than left to discovery:
+⚠ **The domain→radius mapping, stated explicitly** (unspecified in the first draft, and every other
+radial claim depends on it):
 
-- **Negatives extend, they do not clamp.** If any value on an axis is negative, that axis's domain
-  becomes `[min, max]` rather than `[0, max]`. Clamping to the centre would silently hide data.
-- **Duplicate `(series, axis)` cells are averaged**, and `stat` is exposed for explicit aggregation.
+```
+radius(v, axis) = R × (v - domain.min) / (domain.max - domain.min)
+```
+
+One linear scale per axis. **The centre is `domain.min`, not zero.** For a non-negative axis that
+coincides; for `[-5, 10]` the centre is `-5` and zero sits at `R × 5/15`.
+
+- **Negatives extend, they do not clamp.** An axis containing a negative gets `[min, max]` instead
+  of `[0, max]`. Clamping would silently delete data.
+- ⚠ **Zero-reference marker.** Because the hub then means different things on different spokes, any
+  axis whose domain excludes zero renders a dashed zero-ring segment on that spoke, so a reader can
+  find "nothing". Without it an all-zeros row bows outward instead of collapsing to the centre,
+  which contradicts how radars are read.
+- ⚠ **`sharedDomain` join rule:** `[min of all values across all series×axes, max of the same]`,
+  applying the negatives-extend rule globally.
+- **Known instability, documented:** per-axis domains derive from the rows present, so filtering a
+  comparator series out moves the remaining series' radii. The visible axis maxima make this legible
+  rather than silent. Consumers needing frozen shapes should pass explicit `min`/`max` per axis.
 
 ## Layout
 
-Axis *i* sits at `-90° + i × 360/n` — first axis at top, clockwise.
-
-**Axis order** is the explicit `axes` prop if given, else first-appearance order in the data. Stable
-by construction, because arbitrary reordering changes what the shape means.
-
-### Weight-ready, not weighted
-
-Angles are equal in this cycle. But `buildRadarLayout` computes them from a weights array that
-**defaults to equal**, so weighting later is a prop, not a restructuring:
+⚠ **Corrected angle formula.** The first draft gave
+`-90° + 360° × (cumulativeBefore(i) + w[i]/2) / total` and claimed it reduces to `-90° + i × 360/n`
+at equal weights. **It does not** — it is off by exactly `180/n` (half a sector) for every n,
+putting the first axis at −45° rather than −90° for n=4. The `w[i]/2` term places an axis at its
+wedge *midpoint*, which is the right weighted semantics but breaks "first axis at top". Subtracting
+the first axis's half-wedge restores both:
 
 ```js
-// weights default to equal; angle is a function over the cumulative weight
-buildRadarLayout(data, channels, { weights = axes.map(() => 1), ... })
-// angleOf(i) = -90° + 360° × (cumulativeBefore(i) + w[i] / 2) / totalWeight
+angleOf(i) = -90° + 360° × (cumulativeBefore(i) + w[i]/2 - w[0]/2) / totalWeight
 ```
 
-With equal weights this reduces exactly to `-90° + i × 360/n`. **A test must assert that reduction
-holds**, so the generalised form cannot silently drift from the simple one.
+Verified: reduces **exactly** to `-90° + i × 360/n` at equal weights for n = 3, 4, 5; and for
+`w = [2,1,1]` yields wedge widths 180°/90°/90° with axis 0 at top. A test asserts the reduction.
 
-Weighting is deferred deliberately, not overlooked: unequal angles break the *regular polygon =
-balanced profile* heuristic people use to read radars, and deciding whether weight should drive
-angle, radius or annotation deserves its own design pass.
+**Axis order** comes from the `axes` prop. ⚠ If omitted, fall back to first-appearance **and
+`console.warn` in dev** — matching the existing precedent in `stat.js` and `preset.js`, which warn
+when silently patching over something. Order is an analytical choice; inferring it from incidental
+row order makes the shape depend on upstream sort.
 
-## Grid
+⚠ **Missing `(series, axis)` cells** render as a gap in the polygon — never defaulted to zero, which
+would invent data. ⚠ An `axes` prop naming an axis absent from the data renders that spoke empty;
+data containing an axis absent from `axes` is dropped, with a dev warn.
 
-The geom owns its grid — `options.grid` with `rings` (default 4) concentric polygons plus one spoke
-per axis, drawn behind the polygons.
+⚠ **Rings are evenly spaced in radius** (`i/rings × R`), which follows from the linear mapping above.
 
-**Accepted tradeoff, recorded so it isn't rediscovered as a defect:** the grid cannot be replaced,
-restyled or reordered independently the way `Grid`/`Axis`/`Legend` can on the cartesian side. A
-consumer wanting a different ring style must fork the geom. The documented upgrade path is a polar
-descriptor on `PlotState` (axis list + per-axis radial scale) that a composable `RadarGrid` could
-read — deliberately not built now.
+⚠ **Axis labels** sit at `R + labelGap` with `text-anchor` flipped by hemisphere (`start` right of
+centre, `end` left, `middle` at top and bottom). `buildArcs` reserves no margin — radar must reduce
+its outer radius to leave room, or labels clip the viewport. No collision handling at high axis
+counts; documented, with the axis cap below as the practical mitigation.
+
+## Duplicate cells
+
+Averaged **inside `buildRadarLayout`**, not via a `stat` default.
+
+Reasoning: routing through `applyGeomStat` calls `groupDataByKeys`, which builds fresh row objects
+containing only the group keys plus the summarised value — breaking `===` identity with
+`plotState.data` and dropping every other field. Every existing geom computes
+`index` as `plotState.data.indexOf(row)`, so aggregated rows would yield `index === -1` and lose
+metadata in `onselect`. Aggregation is radar's *common* path, so it cannot degrade interactivity.
+
+⚠ Duplicates also `console.warn` in dev. A repeated `(series, axis)` is nearly always a data bug —
+axis is a small fixed enum, not a repeated-measurement field.
+
+`stat` remains exposed for explicit aggregation. Note the built-in is **`mean`**, not `avg`.
+
+## Grid and paint order
+
+`options.grid` with `rings` (default 4) concentric polygons plus one spoke per axis, behind the
+polygons.
+
+⚠ **Paint order: all fills, then all strokes.** Otherwise a smaller series nested inside a larger one
+has its outline buried under the next series' fill — invisible in the chart while present in the
+data.
+
+⚠ **`defaultPreset.opacity` has no `radar` entry**, so `resolveAlpha` would fall back to `1` and
+render fully opaque overlapping polygons, hiding all but the top series. Add `radar: 0.25` (fill);
+strokes stay opaque.
+
+⚠ **A legend is required for 2+ series.** `RadarChart` mirrors `PieChart`, whose `legend` defaults to
+`false` — radar must default it **on** when more than one series is present. Colour-matching alone is
+not sufficient identification, especially with washed-out fill intersections.
+
+**Accepted tradeoff:** the grid can't be replaced or restyled independently the way
+`Grid`/`Axis`/`Legend` can. Upgrade path is a polar descriptor on `PlotState` that a composable
+`RadarGrid` could read — deliberately not built now.
+
+## The two forms
+
+### Full form — inside `Plot` / `RadarChart`
+
+Grid, axis labels with visible maxima, legend when multi-series, per-vertex hit targets.
+
+### ⚠ Micro form — inside `Spark`: a static glyph
+
+The first draft specced full grid and per-vertex keyboard interactivity at ~28×28px. A 24px minimum
+hit target does not fit once at that size, let alone 5–7 times — arithmetic, not judgement.
+
+Inside `Spark`, radar renders the **polygon only**: no rings, no spokes, no labels, no hit targets,
+no tooltips. One `aria-label` on the container summarises the profile. A gestalt shape, exactly as a
+sparkline is.
+
+⚠ Axis cap **3–5** in the micro form with a dev warn, replacing "not capped; documented".
+
+The geom detects context via `plotState.interactive` — already `false` on `SparkState` and part of
+the 23-member `GEOM_CONTRACT` — so no spark-specific branch is needed in the geom.
 
 ## Interactivity
 
-Each polygon vertex is a focusable hit target firing `onselect` with the standard `buildSelectDetail`
-shape, plus tooltips. No `selectable`/Highlight.
+Vertex hit targets in the full form only: focusable, Enter/Space activation, `onselect` with the
+standard `buildSelectDetail` shape, tooltips.
 
-## DOM hooks
+⚠ Do **not** use the `keyboardNav` action. It does linear left/right traversal over DOM order, built
+for `Point`/`Bar`'s 1-D category list; radar vertices are logically 2-D (series × axis). Use the
+per-element `onkeydown` pattern `Arc`/`Point` use for tab-reach plus Enter/Space. Arrow-key traversal
+across a vertex grid is a non-goal.
 
-Planned deliberately, because cycle 1's most expensive lesson was assuming hook compatibility:
+## ⚠ Accessibility
 
-| Hook | On |
-| --- | --- |
-| `data-plot-geom="radar"` | the geom's root `<g>` |
-| `data-plot-element="radar-area"` | each series polygon |
-| `data-plot-element="radar-vertex"` | each vertex hit target |
-| `data-plot-element="radar-grid-ring"` | each concentric ring |
-| `data-plot-element="radar-grid-spoke"` | each axis spoke |
-| `data-plot-element="radar-axis-label"` | each axis label |
-| `data-plot-series` | series value, on polygon and vertex |
-| `data-plot-axis` | axis value, on vertex and label |
+Cycle 1's gap, fixed here rather than shipped through.
 
-These follow the existing `data-plot-geom` / `data-plot-element` convention rather than inventing a
-parallel vocabulary — the mistake that cost cycle 1 two extra rounds.
+- **`Spark` gains an accessible name and data fallback.** `Spark.svelte` currently renders a bare
+  `<svg data-spark>` with no `role`, `aria-label` or `<title>` — every spark is invisible to
+  assistive tech today. It gains `role="img"`, an `aria-label` (a `label` prop, else a generated
+  summary), and an sr-only textual summary.
+- **`Plot`'s inherited sr-table must be checked for radar**, not assumed. `Plot.svelte` renders a
+  `plot-sr-table`, but `tableColumns` falls back to `Object.keys(firstRow)` — for long-format radar
+  rows that is a flat 3-column dump rather than a pivoted series×axis matrix. An acceptance criterion
+  covers this rather than trusting inheritance.
+- Series are distinguishable without colour, via the `pattern` channel.
 
 ## Acceptance criteria
 
-1. `buildRadarLayout` is pure — no Svelte import, no context — and unit-testable standalone.
-2. With equal weights, `angleOf(i)` equals `-90° + i × 360/n` exactly. Asserted.
-3. Per-axis normalisation: two axes with different maxima both reach the outer ring at their own max.
-4. `sharedDomain` makes them share one domain — asserted with inputs where the two modes **differ**.
-5. A negative value extends its axis domain rather than clamping to the centre.
-6. Duplicate `(series, axis)` rows average.
-7. `<Radar>` renders inside **both** `<Plot>` and `<Spark>` with no spark-specific code.
-8. Vertex `onselect` fires with the standard detail shape; vertices are keyboard-reachable.
-9. Every existing test in the repo passes **unmodified**.
-10. Coverage gates hold: 100% statements+lines on the new `.js` files, ≥90% on the `.svelte`.
-11. `bun run check` and `bun run test:browser` green.
+1. `buildRadarLayout` is pure — no Svelte import, no context.
+2. ⚠ With equal weights, `angleOf(i)` equals `-90° + i × 360/n` **exactly**, asserted for n = 3, 4, 5.
+3. ⚠ `radius(v, axis)` matches the stated formula, asserted with a `[-5, 10]` axis where zero is at
+   `R × 5/15` — not at the centre.
+4. Per-axis normalisation: two axes with different maxima both reach the outer ring at their own max.
+5. `sharedDomain` differs from per-axis — asserted with inputs where the two modes **disagree**.
+6. A negative value extends its axis domain; that axis renders a zero-reference marker.
+7. Duplicate `(series, axis)` rows average **and** `onselect` still resolves a real `index` (not
+   `-1`) with non-channel fields intact.
+8. Missing cells render a gap; nothing is defaulted to zero.
+9. ⚠ Omitting `axes` warns in dev; supplying it produces a deterministic order.
+10. `<Radar>` renders in both `<Plot>` and `<Spark>` with no spark-specific code in the geom.
+11. ⚠ In `Spark`: no grid, no hit targets, and the container carries an accessible name.
+12. ⚠ In `Plot`: legend present by default for 2+ series; fills at `preset.opacity.radar`, not 1.
+13. ⚠ Paint order — a nested smaller series' stroke is not covered by a larger series' fill.
+14. ⚠ `Plot`'s sr-table renders something legible for radar's long-format rows.
+15. Every existing test in the repo passes **unmodified**.
+16. Coverage: 100% statements+lines on new `.js`, ≥90% on `.svelte`.
+17. `bun run check` and `bun run test:browser` green.
 
 ## Testing
 
-**jsdom** — layout maths (angles, radii, rings, normalisation, negatives, duplicates), mark
-building, rendering, interactivity.
+**jsdom** — layout maths (angles, radii, rings, normalisation, negatives, duplicates, missing
+cells), mark building, warnings, rendering, interactivity, accessibility attributes.
 
-**Browser mode** — real geometry: a vertex must land at the pixel its angle and radius imply. jsdom
-reports zero for all geometry, so this cannot live there. Also: a `<Radar>` inside `<Spark>` must
-render the same geometry as inside `<Plot>` at the same size.
+**Browser mode** — real geometry: a vertex lands at the pixel its angle and radius imply, asserted
+against the **pinned formula's output**, not merely self-consistency. Also: `<Radar>` in `<Spark>`
+versus in `<Plot>`, and computed-style checks on fill opacity and paint order — the class of
+regression cycle 1 found only by reasoning (an area fill silently at ~0.15 effective opacity).
 
 ### Test-quality rules carried from cycle 1
 
-Six tests in cycle 1 passed while the code was broken. Every one asserted something *adjacent* to the
-behaviour rather than the behaviour itself. These rules are part of the spec, not advice:
+Six cycle-1 tests passed while the code was broken; each asserted something *adjacent* to the
+behaviour. Binding, not advisory:
 
 - Assert the value the feature computes, not a property that survives the feature being wrong.
 - Never loop a collection without first asserting it is non-empty.
-- Where a test's name promises a difference or precedence, construct inputs where a broken
-  implementation gives a **different** answer.
+- Where a test's name promises a difference, construct inputs where a broken implementation gives a
+  **different** answer.
 - `.not.toThrow()` is never sufficient for a no-op claim.
 - Before committing, break the implementation and confirm the test notices. Report the outcome.
 
 ## Known limitations
 
-- `<Spark><Radar/></Spark>` at 28×28 fits roughly 5–7 axes before the polygon is unreadable. Not
-  capped in code; documented.
-- Radar area scales quadratically with radius, so area comparisons between series overstate
-  differences. Inherent to the form; worth a documentation note.
+- Radar area scales quadratically with radius, so a 2× difference reads as ~4×. Documented at the
+  point of use, not just here. ⚠ When weighting lands it should pair with a sqrt-radius option so
+  area tracks value (Nightingale-rose logic); bolting weighted angles onto a linear radius would
+  compound this.
+- Per-axis domains move when the comparison set changes (mitigated by visible axis maxima).
+- No axis-label collision handling; the axis cap is the practical mitigation.
+- ⚠ `lib/brewing/scales.js` — cited in the first draft as a placement sibling — has **zero
+  production importers** and is effectively dead. The live scale module is `lib/plot/scales.js`.
+  Placement of `polar.js` in `brewing/` still holds on the `colors.js`/`patterns.js` precedent.
