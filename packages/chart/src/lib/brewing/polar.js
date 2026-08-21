@@ -394,3 +394,191 @@ export function verticesFor(data, axes, angles, domains, R, transform, channels)
 
 	return result
 }
+
+/**
+ * @typedef {Object} Ring
+ * @property {number} radius - pixels from centre
+ * @property {(string|number)[]} labels - one label per axis, positionally aligned with `axes`
+ */
+
+/**
+ * How many concentric rings the shared grid draws, and why it can only ever be one number
+ * for the whole chart rather than one per axis.
+ *
+ * @param {ResolvedAxis[]} axes
+ * @param {number} fallbackRings
+ * @returns {number}
+ */
+function resolveRingCount(axes, fallbackRings) {
+	const ticks = axes.map((axis) => axis.ticks)
+	// Vacuously false when axes is empty, which is what we want: nothing to agree on, so fall
+	// through to the fallback rather than reading `ticks[0]` off an empty array.
+	const uniform = axes.length > 0 && ticks.every((t) => t !== undefined && t === ticks[0])
+	if (uniform) return ticks[0]
+
+	if (ticks.some((t) => t !== undefined)) {
+		// eslint-disable-next-line no-console
+		console.warn(
+			'[Radar] AxisSpec.ticks differ across axes — falling back to `opts.rings` ' +
+				`(${fallbackRings}) for the shared grid. The geom draws ONE grid, common to every ` +
+				'spoke, so per-spoke ring counts cannot be honoured; declare the same `ticks` on ' +
+				'every axis if a ring is meant to read as "k of n" everywhere.'
+		)
+	}
+	return fallbackRings
+}
+
+/**
+ * Inverts `radiusFor` to answer "what value does ring `ratio` (a fraction of R) sit at, on
+ * THIS axis's domain and transform?" — needed because rings are laid out evenly in RADIUS
+ * (see `ringsFor`), so the value a given ring represents depends on the axis's domain and,
+ * under `sqrt`, on the transform too: `radius = R * sqrt(ratio)` inverts to `valueRatio =
+ * ratio^2`, not `ratio` itself.
+ *
+ * @param {number} ratio - `i / ringCount`, the SAME fraction of R every ring uses
+ * @param {[number, number]} domain
+ * @param {'linear'|'sqrt'} transform
+ * @returns {number}
+ */
+function valueAtRing(ratio, domain, transform) {
+	const [min, max] = domain
+	const valueRatio = transform === 'sqrt' ? ratio ** 2 : ratio
+	return min + valueRatio * (max - min)
+}
+
+/**
+ * Concentric grid rings for a radar chart — one shared set of circles, evenly spaced in
+ * RADIUS, that every spoke is drawn against.
+ *
+ * Ring *i* sits at `(i / ringCount) * R`. This follows directly from `radiusFor`'s own linear
+ * mapping between radius and normalised position: since every spoke shares one `R` and the
+ * grid is one set of concentric circles (not one grid per axis), the only spacing that keeps
+ * "ring 2 is twice as far out as ring 1" true on EVERY spoke simultaneously is spacing by
+ * radius. Spacing the rings evenly in VALUE instead would only coincide with this for a
+ * domain that starts at 0 (see the spec: a `[20, 120]`-style domain exposes the divergence,
+ * because splitting an unanchored domain into equal value steps and converting each through
+ * `radiusFor` on ITS OWN axis does not reduce to `(i/ringCount) * R` the way it would for a
+ * zero-anchored domain).
+ *
+ * Ring COUNT has to be one number for the whole grid, because there is only one grid, drawn
+ * once. When every `AxisSpec` declares the same `ticks`, that count is used verbatim and ring
+ * *k* genuinely means "k of n" on every spoke. When they disagree, honouring any one axis's
+ * count would silently mislabel every other axis's rings, so this falls back to `opts.rings`
+ * (default 4) and warns — the geom cannot draw a different number of rings per spoke.
+ *
+ * Ring LABELS are resolved per axis (each ring has one label per axis, since the same radius
+ * means a different value on each spoke): a declared `tickLabels` entry wins outright — it is
+ * the ordinal vocabulary of a Likert-style axis and has no "value" to compute at all. Absent
+ * that, the ring's value on that axis (via `valueAtRing`) is run through the axis's `format`
+ * if one is given, else left as the bare number. A DECLARED domain makes this value a stable,
+ * meaningful tick; an INFERRED one (no `domain` supplied anywhere for this axis) makes it only
+ * an approximation of "if the current rows were the whole story."
+ *
+ * @param {ResolvedAxis[]} axes
+ * @param {{ R: number, rings?: number, domains?: [number, number][], transform?: 'linear'|'sqrt' }} opts
+ * @returns {Ring[]}
+ */
+export function ringsFor(axes, opts = {}) {
+	const { R, rings: fallbackRings = 4, domains, transform = 'linear' } = opts
+	const ringCount = resolveRingCount(axes, fallbackRings)
+
+	return Array.from({ length: ringCount }, (_, idx) => {
+		const i = idx + 1
+		const radius = (i / ringCount) * R
+		const labels = axes.map((axis, axisIndex) => {
+			if (Array.isArray(axis.tickLabels) && axis.tickLabels[idx] !== undefined) {
+				return axis.tickLabels[idx]
+			}
+			const domain = domains?.[axisIndex] ?? axis.domain ?? [0, 0]
+			const value = valueAtRing(i / ringCount, domain, transform)
+			return typeof axis.format === 'function' ? axis.format(value) : value
+		})
+		return { radius, labels }
+	})
+}
+
+/**
+ * Zero-reference marker, per axis — a dashed ring segment (in the geom, not here) at the
+ * radius where the value 0 actually sits on that spoke.
+ *
+ * `radiusFor` centres each spoke on `domain.min`, not on 0, because `domainsFor` lets a
+ * negative value extend a domain rather than clamping it. That is honest about the data but
+ * has a real cost: the hub means a DIFFERENT value on every spoke whose domain doesn't start
+ * at 0, so a reader has no way to tell where "nothing" is just by looking at the centre. An
+ * all-zeros row would then bow OUTWARD to wherever 0 lands on each axis instead of collapsing
+ * to a point at the centre — the opposite of how a radar's most basic case is meant to read.
+ *
+ * So: any axis whose domain CONTAINS zero (`min <= 0 <= max`) but does not START there
+ * (`min !== 0`) gets a marker at `radiusFor(0, domain, R, transform)`. Two axes need none:
+ *
+ * - `min === 0` — the hub already is zero, nothing to mark.
+ * - the domain EXCLUDES zero entirely (`min > 0` or `max < 0`) — there is no honest position
+ *   for "zero" ON this spoke at all. `radiusFor` would clamp value `0` to whichever end of
+ *   `[0, R]` is nearest, which is exactly the position `domain.min` already occupies — drawing
+ *   a "this is zero" marker there would misrepresent `domain.min` as zero, which is worse than
+ *   drawing nothing. This module returns `null` for that case rather than a clamped radius.
+ *
+ * @param {ResolvedAxis[]} axes
+ * @param {[number, number][]} domains - aligned with `axes`, from `domainsFor`
+ * @param {number} R
+ * @param {'linear'|'sqrt'} transform
+ * @returns {(number|null)[]} one entry per axis, positionally aligned with `axes`
+ */
+export function zeroRingFor(axes, domains, R, transform) {
+	return axes.map((_, i) => {
+		const [min, max] = domains[i]
+		const containsZero = min <= 0 && max >= 0
+		return containsZero && min !== 0 ? radiusFor(0, domains[i], R, transform) : null
+	})
+}
+
+/**
+ * @typedef {Object} RadarLayout
+ * @property {ResolvedAxis[]} axes
+ * @property {number[]} angles - from `anglesFor`, aligned with `axes`
+ * @property {[number, number][]} domains - from `domainsFor`, aligned with `axes`
+ * @property {Map<unknown, (import('./polar.js').Vertex|null)[]>} series - from `verticesFor`
+ * @property {Ring[]} rings - from `ringsFor`
+ * @property {(number|null)[]} zeroRings - from `zeroRingFor`, aligned with `axes`
+ * @property {number} radius - the outer radius, `R`, every other measurement is relative to
+ * @property {'linear'|'sqrt'} transform - resolved via `resolveRadiusTransform`
+ */
+
+/**
+ * Composes every piece of this module into the one call a `Radar` geom actually needs — the
+ * public entry point, and the reason the rest of the module is allowed to stay a set of small,
+ * separately-testable functions instead of one large one.
+ *
+ * This function makes the ordering dependency between those functions explicit, because it is
+ * real, not incidental: `axes` must exist before weights can be read off it for `anglesFor`/
+ * `resolveRadiusTransform`; domains must exist before `verticesFor` (which places vertices) or
+ * `zeroRingFor` (which needs to know each axis's centre) can run; and the resolved `transform`
+ * must be shared between `verticesFor` and `ringsFor`/`zeroRingFor` so a ring drawn at "80% of
+ * R" and a vertex plotted at "80% of R" agree on what value that actually represents.
+ *
+ * `channels` follows the same `{ x, y, color? }` convention as `domainsFor`/`verticesFor` — `x`
+ * names the axis field, `y` the value field, `color` the series field. `opts.axes` is the
+ * `Radar` component's own `axes` prop (bare strings, full `AxisSpec`s, or a mix — see
+ * `resolveAxes`); `opts.R` defaults to `100` so this function is independently callable (by
+ * tests, tooling, anything that isn't a geom mid-render) without having to invent a pixel
+ * radius — a real `Radar.svelte` is expected to pass its actual computed outer radius instead.
+ *
+ * @param {Object[]} data
+ * @param {{ x: string, y: string, color?: string }} channels
+ * @param {{ axes?: (string|AxisSpec)[], sharedDomain?: boolean, rings?: number,
+ *   radiusScale?: 'linear'|'sqrt'|'auto', R?: number }} [opts]
+ * @returns {RadarLayout}
+ */
+export function buildRadarLayout(data, channels, opts = {}) {
+	const R = opts.R ?? 100
+	const axes = resolveAxes(opts.axes, data, channels.x)
+	const weights = axes.map((axis) => axis.weight)
+	const angles = anglesFor(weights)
+	const domains = domainsFor(axes, data, channels, { sharedDomain: opts.sharedDomain })
+	const transform = resolveRadiusTransform(weights, opts.radiusScale)
+	const series = verticesFor(data, axes, angles, domains, R, transform, channels)
+	const rings = ringsFor(axes, { R, rings: opts.rings, domains, transform })
+	const zeroRings = zeroRingFor(axes, domains, R, transform)
+
+	return { axes, angles, domains, series, rings, zeroRings, radius: R, transform }
+}

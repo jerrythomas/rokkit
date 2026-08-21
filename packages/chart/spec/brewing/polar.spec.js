@@ -1,12 +1,22 @@
 import { describe, it, expect, vi } from 'vitest'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import {
 	resolveAxes,
 	anglesFor,
 	domainsFor,
 	radiusFor,
 	resolveRadiusTransform,
-	verticesFor
+	verticesFor,
+	ringsFor,
+	zeroRingFor,
+	buildRadarLayout
 } from '../../src/lib/brewing/polar.js'
+
+// Vitest runs from the repo root; the jsdom env sets import.meta.url to a
+// non-file: URL, so resolve against cwd rather than the module URL (see
+// packages/icons/spec/exports.spec.js for the same pattern).
+const polarSourcePath = join(process.cwd(), 'packages/chart/src/lib/brewing/polar.js')
 
 const rows = [
 	{ m: 'a', v: 1 },
@@ -640,5 +650,255 @@ describe('verticesFor', () => {
 		const vertices = [...result.values()][0]
 		expect(vertices).toHaveLength(3)
 		expect(vertices.every((v) => v !== null)).toBe(true)
+	})
+})
+
+describe('ringsFor', () => {
+	it('spaces rings evenly in radius: rings=4, R=100 -> 25, 50, 75, 100', () => {
+		const axes = resolveAxes(
+			['a', 'b'],
+			[
+				{ m: 'a', v: 1 },
+				{ m: 'b', v: 2 }
+			],
+			'm'
+		)
+		const rings = ringsFor(axes, { R: 100, rings: 4 })
+		expect(rings).toHaveLength(4)
+		expect(rings.map((r) => r.radius)).toEqual([25, 50, 75, 100])
+	})
+
+	it('spaces rings evenly in RADIUS, not in value, on a non-zero-anchored domain', () => {
+		const axes = resolveAxes([{ key: 'a', domain: [20, 120] }], [{ m: 'a', v: 50 }], 'm')
+		const domains = [[20, 120]]
+		const rings = ringsFor(axes, { R: 100, rings: 4, domains })
+		const radii = rings.map((r) => r.radius)
+		expect(radii).toEqual([25, 50, 75, 100])
+
+		// A broken implementation that spaces evenly in VALUE (v_i = (i/n) * domain.max,
+		// forgetting the domain.min offset) and converts back through radiusFor gives a
+		// DIFFERENT set of radii on this non-zero-anchored domain — [10, 40, 70, 100], not
+		// [25, 50, 75, 100]. A domain starting at 0 could not distinguish the two (the offset
+		// is zero either way), which is why this test deliberately uses [20, 120].
+		const [min, max] = [20, 120]
+		const valueSpaced = [1, 2, 3, 4].map((i) => radiusFor((i / 4) * max, [min, max], 100, 'linear'))
+		expect(valueSpaced).not.toEqual(radii)
+	})
+
+	it('uniform AxisSpec.ticks across every axis drives the ring count', () => {
+		const axes = resolveAxes(
+			[
+				{ key: 'a', ticks: 5 },
+				{ key: 'b', ticks: 5 }
+			],
+			[
+				{ m: 'a', v: 1 },
+				{ m: 'b', v: 2 }
+			],
+			'm'
+		)
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+		// opts.rings=4 would be wrong if it were honoured instead of the uniform ticks=5.
+		const rings = ringsFor(axes, { R: 100, rings: 4 })
+		expect(rings).toHaveLength(5)
+		expect(warn).not.toHaveBeenCalled()
+		warn.mockRestore()
+	})
+
+	it('differing AxisSpec.ticks falls back to opts.rings and warns', () => {
+		const axes = resolveAxes(
+			[
+				{ key: 'a', ticks: 5 },
+				{ key: 'b', ticks: 7 }
+			],
+			[
+				{ m: 'a', v: 1 },
+				{ m: 'b', v: 2 }
+			],
+			'm'
+		)
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+		const rings = ringsFor(axes, { R: 100, rings: 3 })
+		expect(rings).toHaveLength(3)
+		expect(warn).toHaveBeenCalled()
+		warn.mockRestore()
+	})
+
+	it('uses tickLabels for ring labels when declared; formats the ring value with `format` otherwise', () => {
+		const axes = resolveAxes(
+			[
+				{ key: 'csat', domain: [0, 4], ticks: 4, tickLabels: ['Poor', 'Fair', 'Good', 'Best'] },
+				{ key: 'latency', domain: [0, 400], ticks: 4, format: (v) => `${v}ms` }
+			],
+			[
+				{ m: 'csat', v: 1 },
+				{ m: 'latency', v: 100 }
+			],
+			'm'
+		)
+		const domains = [
+			[0, 4],
+			[0, 400]
+		]
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+		const rings = ringsFor(axes, { R: 100, domains, transform: 'linear' })
+		expect(warn).not.toHaveBeenCalled() // both axes agree on ticks=4 -- no fallback needed
+		warn.mockRestore()
+
+		expect(rings).toHaveLength(4)
+		expect(rings.map((r) => r.labels[0])).toEqual(['Poor', 'Fair', 'Good', 'Best'])
+		expect(rings.map((r) => r.labels[1])).toEqual([100, 200, 300, 400].map((v) => `${v}ms`))
+	})
+
+	it('falls back to the bare numeric value when neither tickLabels nor format is declared', () => {
+		const axes = resolveAxes([{ key: 'a', domain: [0, 4] }], [{ m: 'a', v: 1 }], 'm')
+		const rings = ringsFor(axes, { R: 100, rings: 4, domains: [[0, 4]] })
+		expect(rings.map((r) => r.labels[0])).toEqual([1, 2, 3, 4])
+	})
+})
+
+describe('zeroRingFor', () => {
+	it('emits a zero marker at radiusFor(0, domain, R, transform) when the domain contains zero but does not start there', () => {
+		const axes = resolveAxes(['a'], [{ m: 'a', v: -2 }], 'm')
+		const domains = [[-5, 10]]
+		const R = 100
+		const transform = 'linear'
+
+		const zeroRings = zeroRingFor(axes, domains, R, transform)
+		expect(zeroRings).toHaveLength(1)
+		expect(zeroRings[0]).not.toBeNull()
+		expect(zeroRings[0]).toBe(radiusFor(0, domains[0], R, transform))
+	})
+
+	it('emits no marker when the domain already starts at zero -- the hub already is zero', () => {
+		const axes = resolveAxes(['a'], [{ m: 'a', v: 5 }], 'm')
+		const zeroRings = zeroRingFor(axes, [[0, 10]], 100, 'linear')
+		expect(zeroRings).toEqual([null])
+	})
+
+	it('emits no marker when the domain excludes zero entirely, e.g. [5, 10]', () => {
+		const axes = resolveAxes(['a'], [{ m: 'a', v: 8 }], 'm')
+		const zeroRings = zeroRingFor(axes, [[5, 10]], 100, 'linear')
+		// Decision: null, not a clamped radius. radiusFor(0, [5, 10], ...) would clamp to ratio 0
+		// -- the exact same position domain.min (5) already occupies -- so a marker drawn there
+		// would sit on the hub and read as "this is zero", falsely implying 5 IS zero. When the
+		// domain excludes zero entirely there is no position on this spoke that honestly
+		// represents zero, so it renders nothing rather than a misleading clamp.
+		expect(zeroRings).toEqual([null])
+	})
+
+	it('emits no marker on the degenerate [0, 0] domain (axis absent from every row)', () => {
+		const data = [{ m: 'a', v: 1 }]
+		const axes = resolveAxes(['a', 'zzz'], data, 'm')
+		const domains = domainsFor(axes, data, { x: 'm', y: 'v' })
+		expect(domains[1]).toEqual([0, 0])
+		const zeroRings = zeroRingFor(axes, domains, 100, 'linear')
+		expect(zeroRings[1]).toBeNull()
+	})
+
+	it('resolves each axis independently, positionally aligned with axes/domains', () => {
+		const axes = resolveAxes(['a', 'b', 'c'], rows, 'm')
+		const domains = [
+			[-5, 10],
+			[0, 10],
+			[5, 10]
+		]
+		const zeroRings = zeroRingFor(axes, domains, 100, 'linear')
+		expect(zeroRings[0]).toBe(radiusFor(0, domains[0], 100, 'linear'))
+		expect(zeroRings[1]).toBeNull()
+		expect(zeroRings[2]).toBeNull()
+	})
+})
+
+describe('buildRadarLayout', () => {
+	const channels = { x: 'm', y: 'v', color: 's' }
+
+	it('returns every documented key', () => {
+		const data = [
+			{ s: 'A', m: 'a', v: 1 },
+			{ s: 'A', m: 'b', v: 2 },
+			{ s: 'A', m: 'c', v: 3 }
+		]
+		const layout = buildRadarLayout(data, channels, { axes: ['a', 'b', 'c'] })
+		for (const key of ['axes', 'angles', 'domains', 'series', 'rings', 'zeroRings', 'radius', 'transform']) {
+			expect(layout).toHaveProperty(key)
+		}
+	})
+
+	it('composes axes/angles/domains/transform exactly as the standalone functions would for the same inputs', () => {
+		const data = [
+			{ s: 'A', m: 'a', v: 1 },
+			{ s: 'A', m: 'b', v: 2 },
+			{ s: 'A', m: 'c', v: 3 }
+		]
+		const opts = { axes: ['a', 'b', 'c'], R: 100 }
+		const layout = buildRadarLayout(data, channels, opts)
+
+		const axes = resolveAxes(opts.axes, data, channels.x)
+		const angles = anglesFor(axes.map((a) => a.weight))
+		const domains = domainsFor(axes, data, channels)
+		const transform = resolveRadiusTransform(axes.map((a) => a.weight))
+
+		expect(layout.axes).toEqual(axes)
+		expect(layout.angles).toEqual(angles)
+		expect(layout.domains).toEqual(domains)
+		expect(layout.transform).toBe(transform)
+		expect(layout.radius).toBe(100)
+	})
+
+	it("series matches verticesFor's output for the same inputs", () => {
+		const data = [
+			{ s: 'A', m: 'a', v: 1 },
+			{ s: 'A', m: 'b', v: 2 },
+			{ s: 'B', m: 'a', v: 10 },
+			{ s: 'B', m: 'b', v: 20 }
+		]
+		const opts = { axes: ['a', 'b'], R: 100 }
+		const layout = buildRadarLayout(data, channels, opts)
+
+		const axes = resolveAxes(opts.axes, data, channels.x)
+		const angles = anglesFor(axes.map((a) => a.weight))
+		const domains = domainsFor(axes, data, channels)
+		const transform = resolveRadiusTransform(axes.map((a) => a.weight))
+		const expectedSeries = verticesFor(data, axes, angles, domains, 100, transform, channels)
+
+		expect(layout.series.size).toBeGreaterThan(0)
+		expect(layout.series).toEqual(expectedSeries)
+	})
+
+	it('defaults R to a sane pixel radius when opts.R is omitted', () => {
+		const data = [{ m: 'a', v: 1 }]
+		const layout = buildRadarLayout(data, { x: 'm', y: 'v' }, { axes: ['a'] })
+		expect(layout.radius).toBeGreaterThan(0)
+	})
+
+	it('forwards opts.sharedDomain, opts.rings and opts.radiusScale to the underlying calls', () => {
+		const data = [
+			{ s: 'A', m: 'p', v: -4 },
+			{ s: 'A', m: 'p', v: 3 },
+			{ s: 'A', m: 'q', v: 2 },
+			{ s: 'A', m: 'q', v: 6 }
+		]
+		const layout = buildRadarLayout(data, channels, {
+			axes: ['p', 'q'],
+			sharedDomain: true,
+			rings: 2,
+			radiusScale: 'sqrt',
+			R: 100
+		})
+		expect(layout.domains).toEqual([
+			[-4, 6],
+			[-4, 6]
+		])
+		expect(layout.transform).toBe('sqrt')
+		expect(layout.rings).toHaveLength(2)
+	})
+})
+
+describe('module purity', () => {
+	it('imports nothing from svelte and never reaches into context -- polar.js is a plain data-in/data-out transform', () => {
+		const source = readFileSync(polarSourcePath, 'utf8')
+		expect(source).not.toMatch(/from\s+['"]svelte/)
+		expect(source).not.toMatch(/getContext/)
 	})
 })
