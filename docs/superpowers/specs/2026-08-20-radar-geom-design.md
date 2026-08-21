@@ -172,10 +172,19 @@ coincides; for `[-5, 10]` the centre is `-5` and zero sits at `R × 5/15`.
 
 - **Negatives extend, they do not clamp.** An axis containing a negative gets `[min, max]` instead
   of `[0, max]`. Clamping would silently delete data.
-- ⚠ **Zero-reference marker.** Because the hub then means different things on different spokes, any
-  axis whose domain excludes zero renders a dashed zero-ring segment on that spoke, so a reader can
-  find "nothing". Without it an all-zeros row bows outward instead of collapsing to the centre,
-  which contradicts how radars are read.
+- ⚠ **Zero-reference marker.** Because the hub means `domain.min`, it means different things on
+  different spokes. An axis whose domain **contains zero but is not zero-anchored** (`min < 0 < max`)
+  renders a dashed zero marker at `radiusFor(0, …)`, so a reader can find "nothing". Without it an
+  all-zeros row bows outward instead of collapsing to the centre, contradicting how radars are read.
+
+  Two cases get **no** marker, and the distinction matters:
+  - `min === 0` — the hub already *is* zero, so a marker would be redundant.
+  - The domain **excludes** zero entirely (e.g. `[5, 10]`) — there is no zero on that spoke to mark.
+    A marker at the clamped position would sit exactly where `domain.min` already is, falsely
+    labelling 5 as zero. Worse than showing nothing.
+
+  An earlier draft of this bullet said the opposite — that an axis *excluding* zero should get the
+  marker. That was wrong, and is corrected here.
 - ⚠ **`sharedDomain` join rule:** `[min of all values across all series×axes, max of the same]`,
   applying the negatives-extend rule globally.
 - **Known instability, documented:** per-axis domains derive from the rows present, so filtering a

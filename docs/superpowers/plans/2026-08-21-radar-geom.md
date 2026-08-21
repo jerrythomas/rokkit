@@ -325,8 +325,8 @@ axis whose domain excludes zero, at `radiusFor(0, …)`; `tickLabels` used for r
 supplied, `format` applied otherwise.
 
 - [ ] Then compose the public `buildRadarLayout(data, channels, opts)` returning
-`{ axes, series, rings, radius }`, and assert it is **pure** — no Svelte import (grep the file), and
-callable with no context.
+`{ axes, angles, domains, series, rings, zeroRings, radius, transform }`, and assert it is **pure** —
+no Svelte import (grep the file), and callable with no context.
 
 - [ ] Break-it: space rings evenly in *value* rather than radius on a non-zero-anchored axis → the
 ring test MUST fail. Commit.
