@@ -4,6 +4,9 @@
 	import { GeomState } from './lib/GeomState.svelte.js'
 	import { buildRadarMarks } from './lib/marks/radar.js'
 	import { buildRadarLayout } from '../lib/brewing/polar.js'
+	import { buildSelectDetail } from '../lib/select.js'
+
+	type Row = Record<string, unknown>
 
 	type AxisSpec = {
 		key: string
@@ -45,6 +48,7 @@
 		alpha?: number
 		stat?: string
 		options?: Options
+		onselect?: (data: Row) => void
 	}
 
 	let {
@@ -55,7 +59,8 @@
 		pattern,
 		alpha,
 		stat = 'identity',
-		options = {}
+		options = {},
+		onselect = undefined
 	}: Props = $props()
 
 	// Space reserved outside the outer ring for axis labels, in pixels — MUST stay numerically
@@ -144,6 +149,29 @@
 		)
 	)
 
+	// A vertex is reachable when either the geom was handed its own callback or the plot is
+	// running interactively. Deliberately NOT the `keyboardNav` action: that walks a 1-D
+	// category list in DOM order, and radar's vertices are a 2-D series × axis grid, so
+	// left/right traversal has no meaning here. Tab reach plus Enter/Space, like Point/Arc.
+	const reachable = $derived(Boolean(onselect) || plotState.interactive)
+
+	function selectVertex(row: Row, seriesKey: unknown, event: MouseEvent | KeyboardEvent) {
+		onselect?.(row)
+		if (plotState.interactive)
+			plotState.handleSelect(
+				buildSelectDetail(
+					row,
+					// `row` is one of the container's original row objects — averaging happens
+					// inside polar.js precisely so this lookup resolves instead of returning -1.
+					plotState.data.indexOf(row),
+					{ x: axis, y: value },
+					'radar',
+					seriesKey,
+					event
+				)
+			)
+	}
+
 	// A short dashed arc at the radius where value 0 sits on this one spoke — see
 	// `zeroRingFor`'s doc comment for why this can't just be a shared ring.
 	function zeroMarkerPath(angleDeg: number, radius: number) {
@@ -221,6 +249,7 @@
 				     a zero the source never contained. -->
 				{#if vertex}
 					{@const { x: vx, y: vy } = toXY(vertex.angle, vertex.radius)}
+					<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 					<circle
 						data-plot-element="radar-vertex"
 						data-plot-series={String(seriesKey)}
@@ -229,6 +258,17 @@
 						cy={vy}
 						r={VERTEX_RADIUS}
 						fill={strokeBySeries.get(String(seriesKey))}
+						role={reachable ? 'button' : 'graphics-symbol'}
+						tabindex={reachable ? 0 : undefined}
+						style:cursor={reachable ? 'pointer' : undefined}
+						aria-label="{layout.axes[i].displayLabel}, {vertex.value}"
+						onmouseenter={() => plotState.setHovered(vertex.row)}
+						onmouseleave={() => plotState.clearHovered()}
+						onclick={reachable ? (e) => selectVertex(vertex.row, seriesKey, e) : undefined}
+						onkeydown={reachable
+							? (e) =>
+									(e.key === 'Enter' || e.key === ' ') && selectVertex(vertex.row, seriesKey, e)
+							: undefined}
 					/>
 				{/if}
 			{/each}

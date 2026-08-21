@@ -299,7 +299,7 @@ export function resolveRadiusTransform(weights, requested = 'auto') {
  * @property {number} angle - degrees, taken from `angles` at this axis's position
  * @property {number} radius - pixels, from `radiusFor`; never `null` here because `value` is
  *   always finite by construction (non-finite readings are filtered out before averaging)
- * @property {Object} row - one of the original rows for this cell, chosen so `===` identity with
+ * @property {Record<string, unknown>} row - one of the original rows for this cell, chosen so `===` identity with
  *   the container's `data` array survives averaging
  */
 

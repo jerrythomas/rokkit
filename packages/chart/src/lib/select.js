@@ -3,7 +3,7 @@
  * @param {Record<string, unknown>} datum
  * @param {number} index  index within the geom's rendered data
  * @param {{ x?: string, y?: string }} channels
- * @param {'line'|'point'|'area'|'bar'} geom
+ * @param {'line'|'point'|'area'|'bar'|'radar'} geom
  * @param {unknown} series  color/group value, or undefined
  * @param {MouseEvent|KeyboardEvent} event
  */

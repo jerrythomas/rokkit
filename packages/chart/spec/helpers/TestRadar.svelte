@@ -11,7 +11,8 @@
 		pattern = undefined,
 		alpha = undefined,
 		stat = 'identity',
-		options = {}
+		options = {},
+		onselect = undefined
 	} = $props()
 
 	setContext(
@@ -21,5 +22,5 @@
 </script>
 
 <svg>
-	<Radar {axes} {axis} {value} {series} {pattern} {alpha} {stat} {options} />
+	<Radar {axes} {axis} {value} {series} {pattern} {alpha} {stat} {options} {onselect} />
 </svg>
