@@ -591,13 +591,48 @@ assume inheritance means correctness.
 Read `packages/ui/browser/README.md` for conventions first. Disable animations in fixtures; await a
 frame before measuring.
 
-- [ ] A vertex lands at the pixel its angle and radius imply — assert against the **pinned formula's
+- [x] A vertex lands at the pixel its angle and radius imply — assert against the **pinned formula's
 output**, not merely self-consistency.
-- [ ] Under sqrt radius with unequal weights, measured wedge area is proportional to `weight × value`.
-- [ ] Computed-style: fill opacity is `preset.opacity.radar`, not `1`.
-- [ ] Paint order holds in the rendered document.
-- [ ] `<Radar>` in `<Spark>` versus in `<Plot>` — same polygon geometry at the same size.
-- [ ] Commit.
+- [x] Under sqrt radius with unequal weights, measured wedge area is proportional to `weight × value`.
+- [x] Computed-style: fill opacity is `preset.opacity.radar`, not `1`.
+- [x] Paint order holds in the rendered document.
+- [x] `<Radar>` in `<Spark>` versus in `<Plot>` — same polygon geometry at the same size.
+- [x] Commit.
+
+  Done 2026-08-21 (`f020e1bb`). `browser/Radar.browser.spec.ts` (9 tests) + 4 fixtures.
+  Browser suite 25 → 34.
+
+  Independence is real, not claimed: the expected radius and the equal-weight closed form
+  are re-derived in the spec from literal constants, **not** by calling
+  `resolveRadarRadius`/`anglesFor`. Proven by a break-it check — changing `LABEL_MARGIN`
+  32 → 40 in the source fails the pinned test, which self-consistent assertions would not.
+
+  Area proportionality uses weights 3/1/2 against values 8/8/2 → products 24/8/4,
+  deliberately ordered unlike the weights alone or the values alone, so an implementation
+  tracking only one factor ranks them differently. Radii are measured from real pixels;
+  wedge widths come from the declared weights (the transform is what is under test).
+
+  Spark/Plot parity is at 300px, above the micro threshold, so **both** render the full
+  form — which is the point: the form follows available space, not container identity, so
+  a container-sniffing implementation fails this test.
+
+  **Two test-authoring bugs found here, both of which would have produced a
+  passing-but-wrong suite:**
+  1. Measured against `[data-plot-canvas]` instead of the `<svg>`. `getBoundingClientRect`
+     on an SVG `<g>` returns the union bbox of its **children**, not the group's coordinate
+     origin, so every measurement was offset. The vertex read 118 where 150 was expected —
+     exactly `R`, which is what gave it away.
+  2. A break-it check that silently **did not apply**: the sabotage pattern missed
+     `preset.js`'s aligned `radar:       0.25` formatting, so "removing the preset" changed
+     nothing and the check passed vacuously. A break-it check that cannot fail is worth
+     exactly as much as a test that cannot fail — re-run two ways once corrected.
+
+  Five break-it checks confirmed and restored (md5-verified): `LABEL_MARGIN` 32→40 → pinned
+  geometry fails; sqrt ignored → area proportionality fails; preset 0.25→1 → the `< 1`
+  assertion fails; adapter hardcoding `alpha = 1` → the ≈0.25 assertion fails; interleaved
+  fills/strokes → paint order fails.
+
+  `test:browser` 34 passing; `test:ci` 5752 / 382 files; lint 0 errors; `svelte-check` 0/0.
 
 ---
 
