@@ -7778,3 +7778,67 @@ threshold errors; learn e2e **65 passing**.
 
 **Commits:** `d1adcff2` smoke gate, `31069eb6` List demo fix, `653fe415` two-way
 `bind:value`, plus this polish pass.
+
+## 2026-08-21 — Zero lint warnings (108 → 0)
+
+Finished the decomposition effort. The last 42 were all in `apps/learn`.
+
+**Eighteen in the logic files.** `buildSystemPrompt` (93 lines) became one named const
+per prompt section — the prompt is a contract with the model and a flat array literal hid
+which rules even existed; content verified byte-identical by extracting all 89 array items
+from HEAD and comparing. `llm.svelte.ts` gave up a real duplication: the system+user
+message pair was written out in both provider routes and is now `chatMessages()`.
+`isValidConversation`'s six-clause `&&` became a `CONVERSATION_SHAPE` table;
+`Tweaks.buildFormSpec`'s four-branch renderer chain became `PROP_RENDERERS`;
+`chart/store.describe`'s five near-identical `if (applies && setting) push(...)` lines
+became `#flagClauses`. The theme-wizard's `(palette, step) → colour` resolution was
+duplicated between the CSS export and the live-document apply, and is now one exported
+`roleColor()` the card imports.
+
+`createThemeStore` needed a different answer: a factory returning a 60-line accessor
+object **cannot** be split, because getters do not survive a spread — `{ ...group() }`
+copies their current VALUES and freezes the store at construction. Converted to a
+`ThemeStore` class instantiated once at module scope.
+
+**Eleven in `router.ts`**, every one `Method 'build' has too many lines`, and in every case
+the bulk was a chart-spec data literal inside the closure. Ten fixtures hoisted to named
+module consts via a string-aware brace matcher. `chart-grouped` keeps its spec inline and
+says why — `stack` is read from the query, so that one genuinely varies per call.
+
+**Twelve in `+layout.svelte`.** Four were `$derived.by` wrappers around long code-sample
+template literals — the case where splitting a function genuinely hurts, since the value
+IS a contiguous sample someone copies. Each became a variant-keyed table with a one-line
+lookup.
+
+**That transform corrupted the file on the first attempt, and only a content check caught
+it.** Indenting the generated table with a blanket `replace('\n', '\n\t')` also indented
+the template literal INTERIORS, prefixing every line of every code sample with a tab.
+**Lint passed. Tests passed. The e2e suite would have passed.** What failed was comparing
+the 20 samples as a multiset against HEAD. Redone emitting indentation on generated
+structural lines only. The lesson generalises: when a mechanical transform touches literal
+content, verify the content, not the build.
+
+`activeDemoCode`'s 11-case switch became `CODE_BY_DEMO` with **thunk** values on purpose —
+reading only the selected one keeps the derived's dependency set as narrow as the switch
+had it, rather than depending on all eleven `*Code` deriveds at once.
+
+**Also fixed en route, same defect class as `31069eb6`:** the router's `list` route mounted
+`collapsible: true` with no `value`, so like the `/app/list` demo it arrived as closed
+headers with no items. Its leaves now carry explicit `value`s and it seeds `value: 'profile'`.
+Spotted only because the lint work put me in the file.
+
+**CLAUDE.md updated** — "warnings are pre-existing and acceptable" is no longer true, and
+leaving it would tell the next agent to ignore warnings. It now says warnings must be zero,
+and records the two traps found this session: `bun run lint` runs with `--fix` and silently
+deletes an unused disable directive; and an extracted guard-and-return helper leaves the
+function tail unreachable, so `v8 ignore` must wrap the whole function, never `next N`.
+
+**Gate:** lint **0 warnings / 0 errors** (from 108) · `bun run check` green · `test:ci`
+**5794 / 384** · `bun run coverage` exit 0, zero threshold errors · learn e2e **65 passing**.
+
+**Commits:** `26330014` (learn logic files), `005f269b` (router.ts), `6f4ceabf`
+(+layout.svelte).
+
+**NOT done — one decision for the owner:** the lint script has no `--max-warnings 0`, so
+nothing stops a regression back to 108. Adding it is a one-line change to the root `lint`
+script and would make any new warning a hard failure. Left as the owner's call.
