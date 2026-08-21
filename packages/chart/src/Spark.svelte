@@ -25,6 +25,10 @@
 		 *  distinct pattern per distinct field value), there's no grouping to assign — this
 		 *  names the one pattern to use directly. See `SparkState.patterns` for the mechanism. */
 		pattern?: string
+		/** Accessible name for the glyph. Omit and one is generated from the series — see
+		 *  `summary` below. Pass a real one whenever the surrounding copy doesn't already
+		 *  say what the sparkline is measuring. */
+		label?: string
 		/** The geom(s) to compose inside — e.g. `<Line />`, `<Area />`, `<Trend />`. */
 		children?: Snippet
 	}
@@ -40,6 +44,7 @@
 		max = undefined,
 		baseline = undefined,
 		pattern = undefined,
+		label = undefined,
 		children
 	}: Props = $props()
 
@@ -73,6 +78,39 @@
 		state.update(config())
 	})
 
+	/** Round for speech: drops a pointless `.00` without truncating real precision. */
+	function speak(n: number) {
+		return String(Math.round(n * 100) / 100)
+	}
+
+	// A sparkline carries meaning purely visually, so without this it is not merely
+	// unlabelled — it is unreadable to a screen reader. Cycle 1 shipped every spark as a
+	// bare <svg> with no role or name at all.
+	//
+	// Generated from the series rather than a fixed "sparkline" string: a constant would
+	// satisfy an axe rule while still telling the user nothing. Count, direction, endpoints
+	// and extent are what someone reads off the shape visually, so they are what the text
+	// alternative says.
+	const summary = $derived.by(() => {
+		const values = y ? data.map((row) => Number(row[y])).filter((v) => Number.isFinite(v)) : []
+		if (!values.length) return 'Sparkline with no data'
+
+		const first = values[0]
+		const last = values[values.length - 1]
+		// reduce rather than Math.min(...values): spread on a long series risks a stack
+		// overflow, and a spark is free to be handed thousands of points.
+		const lo = values.reduce((a, b) => (b < a ? b : a), first)
+		const hi = values.reduce((a, b) => (b > a ? b : a), first)
+		const direction = last > first ? 'rising' : last < first ? 'falling' : 'flat'
+
+		return (
+			`Sparkline: ${values.length} values, ${direction} from ${speak(first)} to ` +
+			`${speak(last)}, ranging ${speak(lo)} to ${speak(hi)}.`
+		)
+	})
+
+	const accessibleName = $derived(label ?? summary)
+
 	// The baseline line is the container's concern, not a geom's: it already owns the domain
 	// extension (SparkState's y-domain widening), and it applies to bar sparks too, not just
 	// area — so a single reference line lives here rather than duplicated inside every geom.
@@ -88,7 +126,21 @@
 	})
 </script>
 
-<svg {width} {height} data-spark style="overflow: visible; display: block;">
+<svg
+	{width}
+	{height}
+	data-spark
+	role="img"
+	aria-label={accessibleName}
+	style="overflow: visible; display: block;"
+>
+	<!-- role="img" + aria-label is what actually gets announced; title/desc are the
+	     SVG-native equivalents, kept for tooling and non-ARIA consumers. `desc` always
+	     holds the generated data summary even when `label` overrides the name, so the
+	     numbers stay available rather than being replaced by the caller's wording. -->
+	<title>{accessibleName}</title>
+	<desc>{summary}</desc>
+
 	<!-- SVG <pattern> defs for texture fills — the same mechanism PlotSurface wires up, so a
 	     geom's pattern channel resolves inside a Spark exactly as it does inside a Plot. -->
 	<defs>

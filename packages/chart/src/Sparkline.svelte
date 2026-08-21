@@ -32,6 +32,8 @@
 		baseline?: number
 		highlight?: HighlightSelector | HighlightSelector[]
 		trend?: TrendMethod | TrendMethod[]
+		/** Accessible name, forwarded to `Spark`. Omitted → generated from the series. */
+		label?: string
 	}
 
 	let {
@@ -47,13 +49,12 @@
 		max = undefined,
 		baseline = undefined,
 		highlight = undefined,
-		trend = undefined
+		trend = undefined,
+		label = undefined
 	}: Props = $props()
 
 	const values = $derived(
-		data.map((d) =>
-			field && typeof d === 'object' && d !== null ? Number(d[field]) : Number(d)
-		)
+		data.map((d) => (field && typeof d === 'object' && d !== null ? Number(d[field]) : Number(d)))
 	)
 
 	const hasNegative = $derived(values.some((v) => v < 0))
@@ -105,7 +106,18 @@
 	const fillColor = $derived(`rgba(var(--color-${color}-300), 0.25)`)
 </script>
 
-<Spark data={rows} x="x" y="y" {width} {height} {min} {max} baseline={effectiveBaseline} {pattern}>
+<Spark
+	data={rows}
+	x="x"
+	y="y"
+	{width}
+	{height}
+	{min}
+	{max}
+	baseline={effectiveBaseline}
+	{pattern}
+	{label}
+>
 	{#if type === 'line'}
 		<Line x="x" y="y" color={strokeColor} options={{ curve, strokeWidth: 1.5 }} />
 	{:else if type === 'area'}
