@@ -288,19 +288,32 @@ function namedTokenAliases(roles: Set<string>): string {
 	return lines.join('')
 }
 
+/**
+ * Light and dark declaration lists for the active overrides. A single palette
+ * name applies to light only (dark inherits); a `{light,dark}` pair fills both.
+ */
+function overrideDeclarations() {
+	const light: string[] = []
+	const dark: string[] = []
+	for (const [role, mapping] of Object.entries(activeOverrides)) {
+		if (typeof mapping === 'string') {
+			light.push(declarationsFor(role, mapping))
+		} else {
+			light.push(declarationsFor(role, mapping.light))
+			dark.push(declarationsFor(role, mapping.dark))
+		}
+	}
+	return { light, dark }
+}
+
+/** One CSS rule, or `''` when it would have an empty body. */
+const cssBlock = (selector: string, decls: string[], aliases: string) =>
+	decls.length || aliases ? `${selector}{${decls.join('')}${aliases}}` : ''
+
 function rewriteSkinStyle() {
 	const el = getSkinStyleEl()
 	if (!el) return
-	const lightDecls: string[] = []
-	const darkDecls: string[] = []
-	for (const [role, mapping] of Object.entries(activeOverrides)) {
-		if (typeof mapping === 'string') {
-			lightDecls.push(declarationsFor(role, mapping))
-		} else {
-			lightDecls.push(declarationsFor(role, mapping.light))
-			darkDecls.push(declarationsFor(role, mapping.dark))
-		}
-	}
+	const { light, dark } = overrideDeclarations()
 	// Named-token aliases — only for roles in the override set. Lets
 	// theme CSS reading `var(--primary)` etc. follow palette swaps.
 	//
@@ -313,13 +326,8 @@ function rewriteSkinStyle() {
 	// modes in sync — for single-palette skins the palette vars are
 	// only defined at :root, so the dark alias just resolves to the
 	// light palette value.
-	const overrideRoles = new Set(Object.keys(activeOverrides))
-	const aliases = namedTokenAliases(overrideRoles)
-	const css = [
-		lightDecls.length || aliases ? `:root{${lightDecls.join('')}${aliases}}` : '',
-		darkDecls.length || aliases ? `[data-mode="dark"]{${darkDecls.join('')}${aliases}}` : ''
-	].join('')
-	el.textContent = css
+	const aliases = namedTokenAliases(new Set(Object.keys(activeOverrides)))
+	el.textContent = cssBlock(':root', light, aliases) + cssBlock('[data-mode="dark"]', dark, aliases)
 }
 
 /**

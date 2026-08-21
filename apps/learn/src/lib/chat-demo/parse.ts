@@ -15,41 +15,54 @@ import { toolNameToFence } from './prompt'
 export { buildSystemPrompt, inferFenceLanguage, toolNameToFence } from './prompt'
 export { findBalancedBraceEnd, wrapBareJSON } from './scan'
 
+type ToolCall = { function?: { name?: string; arguments?: string } }
+
+/** A fresh block list, so no caller can mutate a shared constant. */
+const emptyResponse = (): Block[] => [{ kind: 'prose', text: '(empty response)' }]
+
+/** The assistant message from a completion, or null when there isn't one. */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const messageOf = (result: any) => result?.choices?.[0]?.message ?? null
+
+/**
+ * Each recognised tool call as a markdown fence the renderer's plugin system
+ * understands. The naming convention: tool `mount_bar_chart` → fence language
+ * `plot`, `mount_table` → `table`. Unrecognised names are dropped.
+ */
+function toolCallFences(toolCalls: ToolCall[]): string[] {
+	return toolCalls
+		.map((call) => ({
+			lang: toolNameToFence(call.function?.name ?? ''),
+			args: call.function?.arguments ?? '{}'
+		}))
+		.filter((f) => f.lang)
+		.map((f) => `\n\`\`\`${f.lang}\n${f.args}\n\`\`\`\n`)
+}
+
+/** Prose (if any) followed by one markdown block holding every tool fence. */
+function blocksFromToolCalls(content: string, toolCalls: ToolCall[]): Block[] {
+	const blocks: Block[] = []
+	if (content) blocks.push({ kind: 'prose', text: content })
+	const fences = toolCallFences(toolCalls)
+	if (fences.length > 0) blocks.push({ kind: 'markdown', markdown: fences.join('') })
+	return blocks
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function parseCompletion(result: any): Block[] {
-	const choice = result?.choices?.[0]
-	const message = choice?.message
-	if (!message) return [{ kind: 'prose', text: '(empty response)' }]
+	const message = messageOf(result)
+	if (!message) return emptyResponse()
 
 	const content = String(message.content ?? '').trim()
 
 	// 1. OpenAI-style tool_calls (web-llm + paid OpenRouter routes).
-	// Convert each tool call into a markdown fence the renderer's plugin
-	// system understands. The naming convention: tool `mount_bar_chart`
-	// → fence language `plot`, `mount_table` → `table`, etc.
-	const toolCalls = (message.tool_calls ?? []) as Array<{
-		function?: { name?: string; arguments?: string }
-	}>
-	if (toolCalls.length > 0) {
-		const blocks: Block[] = []
-		if (content) blocks.push({ kind: 'prose', text: content })
-		const out: string[] = []
-		for (const call of toolCalls) {
-			const name = call.function?.name
-			if (!name) continue
-			const lang = toolNameToFence(name)
-			if (!lang) continue
-			out.push(`\n\`\`\`${lang}\n${call.function?.arguments ?? '{}'}\n\`\`\`\n`)
-		}
-		if (out.length > 0) blocks.push({ kind: 'markdown', markdown: out.join('') })
-		return blocks
-	}
+	const toolCalls = (message.tool_calls ?? []) as ToolCall[]
+	if (toolCalls.length > 0) return blocksFromToolCalls(content, toolCalls)
 
-	// 2. Markdown body (preferred — the system prompt asks for it). Pass
+	// 2. Markdown body (preferred — the system prompt asks for it). Passed
 	// through verbatim; MarkdownRenderer + the plugin set turn ```plot,
 	// ```table, ```form, ```list, ```stepper fences into live components.
-	if (content) return splitSuggestions(content)
-	return [{ kind: 'prose', text: '(empty response)' }]
+	return content ? splitSuggestions(content) : emptyResponse()
 }
 
 /**
@@ -60,36 +73,41 @@ export function parseCompletion(result: any): Block[] {
  * raw code blocks.
  */
 const SUGGESTIONS_FENCE = /```suggestions\s*\n([\s\S]*?)```/gi
-export function splitSuggestions(rawContent: string): Block[] {
-	const content = wrapBareJSON(rawContent)
-	const suggestions: Block[] = []
-	const remaining = content.replace(SUGGESTIONS_FENCE, (_, body) => {
-		try {
-			const parsed = JSON.parse(String(body).trim())
-			const items: unknown[] = Array.isArray(parsed?.items) ? parsed.items : []
-			const safeItems = items
-				.filter((i: unknown): i is { label: string; query: string } =>
-					typeof i === 'object' && i !== null
-					&& typeof (i as { label?: unknown }).label === 'string'
-					&& typeof (i as { query?: unknown }).query === 'string'
-				)
-				.slice(0, 6)
-			if (safeItems.length > 0) {
-				suggestions.push({
-					kind: 'suggestions',
-					intro: typeof parsed?.intro === 'string' ? parsed.intro : undefined,
-					items: safeItems.map((i) => ({ label: i.label, query: i.query }))
-				})
-			}
-		} catch {
-			// Malformed JSON — drop silently rather than show a code block.
+/** A model-supplied suggestion is only usable with both a label and a query. */
+const isSuggestion = (i: unknown): i is { label: string; query: string } =>
+	typeof i === 'object' &&
+	i !== null &&
+	typeof (i as { label?: unknown }).label === 'string' &&
+	typeof (i as { query?: unknown }).query === 'string'
+
+/** One fence body → a suggestions block, or null when malformed or empty. */
+function parseSuggestionsFence(body: unknown): Block | null {
+	try {
+		const parsed = JSON.parse(String(body).trim())
+		const items: unknown[] = Array.isArray(parsed?.items) ? parsed.items : []
+		const safeItems = items.filter(isSuggestion).slice(0, 6)
+		if (safeItems.length === 0) return null
+		return {
+			kind: 'suggestions',
+			intro: typeof parsed?.intro === 'string' ? parsed.intro : undefined,
+			items: safeItems.map((i) => ({ label: i.label, query: i.query }))
 		}
+	} catch {
+		// Malformed JSON — drop silently rather than show a code block.
+		return null
+	}
+}
+
+export function splitSuggestions(rawContent: string): Block[] {
+	const suggestions: Block[] = []
+	const remaining = wrapBareJSON(rawContent).replace(SUGGESTIONS_FENCE, (_, body) => {
+		const block = parseSuggestionsFence(body)
+		if (block) suggestions.push(block)
 		return ''
 	})
 	const trimmed = remaining.trim()
 	const blocks: Block[] = []
 	if (trimmed) blocks.push({ kind: 'markdown', markdown: trimmed })
 	blocks.push(...suggestions)
-	if (blocks.length === 0) blocks.push({ kind: 'prose', text: '(empty response)' })
-	return blocks
+	return blocks.length > 0 ? blocks : emptyResponse()
 }

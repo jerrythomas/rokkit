@@ -27,24 +27,27 @@ export type TweakIntent = { name: string; value: unknown }
 const BOOL_TRUE = new Set(['true', 'yes', 'on', '1', 'enable', 'enabled'])
 const BOOL_FALSE = new Set(['false', 'no', 'off', '0', 'disable', 'disabled'])
 
+/**
+ * One coercer per prop type. `r` is the lowercased/trimmed value (what the enum
+ * and boolean vocabularies match against); `raw` is the original, which `string`
+ * uses so casing typed by the user survives.
+ */
+const COERCERS: Record<
+	string,
+	(spec: DemoPropSchema, r: string, raw: string) => unknown | undefined
+> = {
+	enum: (spec, r) => spec.options.find((opt) => opt.toLowerCase() === r),
+	boolean: (_spec, r) => (BOOL_TRUE.has(r) ? true : BOOL_FALSE.has(r) ? false : undefined),
+	number: (_spec, r) => (Number.isFinite(Number(r)) ? Number(r) : undefined),
+	string: (_spec, _r, raw) => raw.trim()
+}
+
 function coerceValue(spec: DemoPropSchema, raw: string): unknown | undefined {
 	const r = raw.trim().toLowerCase()
 	if (!r) return undefined
-	if (spec.type === 'enum') {
-		const match = spec.options.find((opt) => opt.toLowerCase() === r)
-		return match
-	}
-	if (spec.type === 'boolean') {
-		if (BOOL_TRUE.has(r)) return true
-		if (BOOL_FALSE.has(r)) return false
-		return undefined
-	}
-	if (spec.type === 'number') {
-		const n = Number(r)
-		return Number.isFinite(n) ? n : undefined
-	}
-	if (spec.type === 'string') return raw.trim()
-	return undefined
+	// hasOwn, not a bare lookup: an unrecognised type must fall through to
+	// undefined rather than reaching an inherited Object key.
+	return Object.hasOwn(COERCERS, spec.type) ? COERCERS[spec.type](spec, r, raw) : undefined
 }
 
 function findPropByName(
@@ -69,6 +72,47 @@ function findPropByName(
  * tweak intent OR when the prop/value can't be resolved against the
  * active schema.
  */
+type RawTweak = { prop: string; value: string }
+
+/** A phrasing whose first two capture groups are the prop and the value. */
+const twoGroups = (re: RegExp) => (q: string): RawTweak | null => {
+	const m = q.match(re)
+	return m ? { prop: m[1], value: m[2] } : null
+}
+
+/**
+ * Accepted phrasings, in PRECEDENCE order — the first match wins, which is what
+ * the original cascade of `if (!m) m = q.match(...)` expressed. Order matters:
+ * "turn on debug" must reach the enable/disable shortcut rather than the
+ * `turn <prop> on|off` form, which requires the on/off word at the end.
+ */
+const PATTERNS: Array<(q: string) => RawTweak | null> = [
+	// "change <prop> to <value>" / "set <prop> to <value>"
+	twoGroups(/^(?:change|set)\s+(\S+)\s+to\s+(.+)$/i),
+	// "make <prop> <value>"
+	twoGroups(/^make\s+(\S+)\s+(.+)$/i),
+	// "turn <prop> on|off"
+	twoGroups(/^turn\s+(\S+)\s+(on|off)$/i),
+	// "enable|disable|turn on|turn off <prop>" → boolean shortcut
+	(q) => {
+		const m = q.match(/^(enable|disable|turn\s+on|turn\s+off)\s+(.+)$/i)
+		if (!m) return null
+		const verb = m[1].toLowerCase()
+		return { prop: m[2], value: verb.includes('disable') || verb.includes('off') ? 'off' : 'on' }
+	},
+	// "<prop> = <value>" / "<prop>: <value>"
+	twoGroups(/^(\S+?)\s*[:=]\s*(.+)$/)
+]
+
+/** The first phrasing that matches `q`, or null when none do. */
+function firstPattern(q: string): RawTweak | null {
+	for (const pattern of PATTERNS) {
+		const hit = pattern(q)
+		if (hit) return hit
+	}
+	return null
+}
+
 export function parseTweakIntent(
 	query: string,
 	schema: Record<string, DemoPropSchema> | undefined
@@ -77,45 +121,11 @@ export function parseTweakIntent(
 	const q = query.trim()
 	if (!q) return null
 
-	// Pattern 1: "change/set <prop> to <value>" or "make <prop> <value>"
-	const setRe = /^(?:change|set)\s+(\S+)\s+to\s+(.+)$/i
-	const makeRe = /^make\s+(\S+)\s+(.+)$/i
-	// Pattern 2: "<prop> = <value>" or "<prop>: <value>"
-	const eqRe = /^(\S+?)\s*[:=]\s*(.+)$/
-	// Pattern 3: "enable/disable <prop>" → boolean shortcut
-	const toggleRe = /^(enable|disable|turn\s+on|turn\s+off)\s+(.+)$/i
-	const turnRe = /^turn\s+(\S+)\s+(on|off)$/i
+	const hit = firstPattern(q)
+	if (!hit) return null
 
-	let propRaw: string | null = null
-	let valueRaw: string | null = null
-
-	let m = q.match(setRe) ?? q.match(makeRe)
-	if (m) {
-		propRaw = m[1]
-		valueRaw = m[2]
-	}
-	if (!m) m = q.match(turnRe)
-	if (m && !propRaw) {
-		propRaw = m[1]
-		valueRaw = m[2]
-	}
-	if (!m) m = q.match(toggleRe)
-	if (m && !propRaw) {
-		const verb = m[1].toLowerCase()
-		propRaw = m[2]
-		valueRaw = verb.includes('disable') || verb.includes('off') ? 'off' : 'on'
-	}
-	if (!m) m = q.match(eqRe)
-	if (m && !propRaw) {
-		propRaw = m[1]
-		valueRaw = m[2]
-	}
-
-	if (!propRaw || !valueRaw) return null
-
-	const prop = findPropByName(schema, propRaw)
+	const prop = findPropByName(schema, hit.prop)
 	if (!prop) return null
-	const value = coerceValue(prop.spec, valueRaw)
-	if (value === undefined) return null
-	return { name: prop.name, value }
+	const value = coerceValue(prop.spec, hit.value)
+	return value === undefined ? null : { name: prop.name, value }
 }
