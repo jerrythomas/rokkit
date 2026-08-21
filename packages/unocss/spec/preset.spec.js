@@ -1,4 +1,6 @@
 import { describe, it, expect } from 'vitest'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { presetRokkit } from '../src/preset.js'
 
 describe('presetRokkit', () => {
@@ -252,14 +254,14 @@ describe('presetRokkit', () => {
 			const preset = presetRokkit({ tokens: 'extended', skin: { surface: { dark: 'zinc' } } })
 			const css = preset.preflights[0].getCSS()
 			const lightBlock = css.split('[data-mode="dark"]')[0]
-			expect(lightBlock).toContain('--color-surface-500:rgb(113, 113, 122)')  // zinc
+			expect(lightBlock).toContain('--color-surface-500:rgb(113, 113, 122)') // zinc
 		})
 
 		it('should use dark palette in dark block when only dark property is specified', () => {
 			const preset = presetRokkit({ tokens: 'extended', skin: { surface: { dark: 'zinc' } } })
 			const css = preset.preflights[0].getCSS()
 			const darkBlock = css.split('[data-mode="dark"]')[1] ?? ''
-			expect(darkBlock).toContain('--color-surface-500:rgb(113, 113, 122)')  // zinc
+			expect(darkBlock).toContain('--color-surface-500:rgb(113, 113, 122)') // zinc
 		})
 
 		it('should include typography vars in :root when typography is set', () => {
@@ -282,6 +284,81 @@ describe('presetRokkit', () => {
 			const preset = presetRokkit({ typography: { heading: 'Cal Sans' } })
 			const css = preset.preflights[0].getCSS()
 			expect(css).toContain('--font-display:Cal Sans')
+		})
+
+		// Type scale — #152. Levels are h1-h3 + body + small (h4 as headroom); h5/h6 are
+		// deliberately absent, since nothing in the app or the rendered guides uses them.
+		it('emits the default type scale even with no typography config', () => {
+			const preset = presetRokkit({})
+			const css = preset.preflights[0].getCSS()
+			// A scale that only appears when configured would leave every existing consumer
+			// with no sizes at all.
+			expect(css).toContain('--text-h1:')
+			expect(css).toContain('--text-body:')
+			expect(css).toContain('--leading-h1:')
+			expect(css).toContain('--weight-h1:')
+		})
+
+		it('derives level sizes from typography.ratio', () => {
+			const tight = presetRokkit({ typography: { ratio: 1.15 } }).preflights[0].getCSS()
+			const loose = presetRokkit({ typography: { ratio: 1.5 } }).preflights[0].getCSS()
+
+			const h1Of = (css) => Number(css.match(/--text-h1:([\d.]+)rem/)?.[1])
+			// A bigger ratio must produce a bigger h1 — a hardcoded scale passes neither.
+			expect(h1Of(loose)).toBeGreaterThan(h1Of(tight))
+		})
+
+		it('keeps the scale monotonically decreasing from h1 to small', () => {
+			const css = presetRokkit({ typography: { ratio: 1.25 } }).preflights[0].getCSS()
+			// Parsed with one static regex rather than a per-level dynamic RegExp.
+			const sizes = Object.fromEntries(
+				[...css.matchAll(/--text-([a-z0-9]+):([\d.]+)rem/g)].map(([, k, v]) => [k, Number(v)])
+			)
+			const levels = ['h1', 'h2', 'h3', 'h4', 'body', 'small'].map((k) => sizes[k])
+
+			expect(levels.every((n) => Number.isFinite(n))).toBe(true)
+			for (let i = 1; i < levels.length; i++) {
+				expect(levels[i], `level ${i} vs ${i - 1}`).toBeLessThan(levels[i - 1])
+			}
+		})
+
+		it('lets an explicit per-level override win over the ratio', () => {
+			const preset = presetRokkit({ typography: { ratio: 1.25, levels: { h1: '5rem' } } })
+			const css = preset.preflights[0].getCSS()
+			expect(css).toContain('--text-h1:5rem')
+			// Only the overridden level changes; the rest still come from the ratio.
+			expect(css).not.toContain('--text-h2:5rem')
+		})
+
+		it('does not emit h5/h6 levels, which have no consumer', () => {
+			const css = presetRokkit({}).preflights[0].getCSS()
+			expect(css).not.toContain('--text-h5')
+			expect(css).not.toContain('--text-h6')
+		})
+
+		it('agrees with the base-layer defaults in @rokkit/themes', () => {
+			// The scale is declared twice on purpose — base/typography.css so the tokens exist
+			// without the UnoCSS preset, and buildTypeScaleVars so a config can retune them.
+			// Two sources of one truth drift silently unless something pins them together.
+			const base = readFileSync(
+				resolve(import.meta.dirname, '../../themes/src/base/typography.css'),
+				'utf8'
+			)
+			const fromCss = Object.fromEntries(
+				[...base.matchAll(/--text-([a-z0-9]+):\s*([\d.]+)rem/g)].map(([, k, v]) => [k, Number(v)])
+			)
+			const fromPreset = Object.fromEntries(
+				[
+					...presetRokkit({})
+						.preflights[0].getCSS()
+						.matchAll(/--text-([a-z0-9]+):([\d.]+)rem/g)
+				].map(([, k, v]) => [k, Number(v)])
+			)
+
+			// Non-empty on both sides, or the comparison is vacuous.
+			expect(Object.keys(fromCss).length).toBe(6)
+			expect(Object.keys(fromPreset).length).toBe(6)
+			expect(fromCss).toEqual(fromPreset)
 		})
 
 		it('should include radius vars in :root when a named shape preset is set', () => {
@@ -511,7 +588,7 @@ describe('presetRokkit', () => {
 			const preset = presetRokkit({
 				skins: {
 					default: { primary: 'orange', surface: 'slate' },
-					ocean:   { primary: 'sky',    surface: 'slate' }
+					ocean: { primary: 'sky', surface: 'slate' }
 				}
 			})
 			// No skin-* utility-class shortcuts are emitted any more.
@@ -529,9 +606,7 @@ describe('presetRokkit', () => {
 			const preset = presetRokkit({
 				icons: { overrides: { 'accordion-opened': 'i-custom:accordion' } }
 			})
-			const entry = preset.shortcuts.find(
-				(s) => Array.isArray(s) && s[0] === 'accordion-opened'
-			)
+			const entry = preset.shortcuts.find((s) => Array.isArray(s) && s[0] === 'accordion-opened')
 			expect(entry[1]).toBe('i-custom:accordion')
 			// Non-overridden icons still use the default collection
 			const checkboxEntry = preset.shortcuts.find(
@@ -580,9 +655,17 @@ describe('presetRokkit', () => {
 				presetRokkit({
 					palettes: {
 						flat: {
-							50: '0.5 0 0', 100: '0.5 0 0', 200: '0.5 0 0', 300: '0.5 0 0',
-							400: '0.5 0 0', 500: '0.5 0 0', 600: '0.5 0 0', 700: '0.5 0 0',
-							800: '0.5 0 0', 900: '0.5 0 0', 950: '0.5 0 0'
+							50: '0.5 0 0',
+							100: '0.5 0 0',
+							200: '0.5 0 0',
+							300: '0.5 0 0',
+							400: '0.5 0 0',
+							500: '0.5 0 0',
+							600: '0.5 0 0',
+							700: '0.5 0 0',
+							800: '0.5 0 0',
+							900: '0.5 0 0',
+							950: '0.5 0 0'
 						}
 					},
 					colorSpace: 'oklch',
@@ -598,7 +681,7 @@ describe('presetRokkit', () => {
 				console.warn = origWarn
 			}
 
-			expect(warnings.some(w => /contrast/i.test(w))).toBe(true)
+			expect(warnings.some((w) => /contrast/i.test(w))).toBe(true)
 		})
 
 		it('should not warn when ink and surface have good contrast', () => {
@@ -614,7 +697,7 @@ describe('presetRokkit', () => {
 				console.warn = origWarn
 			}
 
-			expect(warnings.some(w => /contrast/i.test(w))).toBe(false)
+			expect(warnings.some((w) => /contrast/i.test(w))).toBe(false)
 		})
 	})
 
@@ -637,14 +720,20 @@ describe('presetRokkit', () => {
 		})
 
 		it('does not emit z-tone vars (--color-{role}-z{n}) in core or extended mode', () => {
-			const core = presetRokkit().preflights.map((p) => p.getCSS()).join('\n')
-			const ext = presetRokkit({ tokens: 'extended' }).preflights.map((p) => p.getCSS()).join('\n')
+			const core = presetRokkit()
+				.preflights.map((p) => p.getCSS())
+				.join('\n')
+			const ext = presetRokkit({ tokens: 'extended' })
+				.preflights.map((p) => p.getCSS())
+				.join('\n')
 			expect(core).not.toMatch(/--color-[a-z]+-z\d/)
 			expect(ext).not.toMatch(/--color-[a-z]+-z\d/)
 		})
 
 		it('still emits the bare --color-{role} alias in core mode', () => {
-			const css = presetRokkit().preflights.map((p) => p.getCSS()).join('\n')
+			const css = presetRokkit()
+				.preflights.map((p) => p.getCSS())
+				.join('\n')
 			expect(css).toContain('--color-surface:')
 			expect(css).toContain('--color-primary:')
 		})
@@ -707,9 +796,17 @@ describe('presetRokkit', () => {
 			const preset = presetRokkit({
 				palettes: {
 					kami: {
-						50: '#ffffff', 100: '#ffffff', 200: '#ffffff', 300: '#ffffff',
-						400: '#aaaaaa', 500: '#ffffff', 600: '#ffffff', 700: '#ffffff',
-						800: '#222222', 900: '#000000', 950: '#000000'
+						50: '#ffffff',
+						100: '#ffffff',
+						200: '#ffffff',
+						300: '#ffffff',
+						400: '#aaaaaa',
+						500: '#ffffff',
+						600: '#ffffff',
+						700: '#ffffff',
+						800: '#222222',
+						900: '#000000',
+						950: '#000000'
 					}
 				},
 				overrides: { 'paper-edge': 'kami.800' }
@@ -725,14 +822,30 @@ describe('presetRokkit', () => {
 			const preset = presetRokkit({
 				palettes: {
 					kami: {
-						50: '#ffffff', 100: '#ffffff', 200: '#ffffff', 300: '#ffffff',
-						400: '#aaaaaa', 500: '#ffffff', 600: '#ffffff', 700: '#ffffff',
-						800: '#222222', 900: '#000000', 950: '#000000'
+						50: '#ffffff',
+						100: '#ffffff',
+						200: '#ffffff',
+						300: '#ffffff',
+						400: '#aaaaaa',
+						500: '#ffffff',
+						600: '#ffffff',
+						700: '#ffffff',
+						800: '#222222',
+						900: '#000000',
+						950: '#000000'
 					},
 					sumi: {
-						50: '#111111', 100: '#111111', 200: '#111111', 300: '#111111',
-						400: '#333333', 500: '#111111', 600: '#111111', 700: '#111111',
-						800: '#cccccc', 900: '#ffffff', 950: '#ffffff'
+						50: '#111111',
+						100: '#111111',
+						200: '#111111',
+						300: '#111111',
+						400: '#333333',
+						500: '#111111',
+						600: '#111111',
+						700: '#111111',
+						800: '#cccccc',
+						900: '#ffffff',
+						950: '#ffffff'
 					}
 				},
 				skin: { surface: { light: 'kami', dark: 'sumi' }, ink: { light: 'kami', dark: 'sumi' } },
@@ -786,7 +899,7 @@ describe('presetRokkit', () => {
 	describe('shortcuts — named layer', () => {
 		it('emits bg-paper, bg-paper-soft, bg-paper-mute, bg-paper-edge', () => {
 			const preset = presetRokkit()
-			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			const keys = preset.shortcuts.filter((s) => typeof s[0] === 'string').map((s) => s[0])
 			expect(keys).toContain('bg-paper')
 			expect(keys).toContain('bg-paper-soft')
 			expect(keys).toContain('bg-paper-mute')
@@ -795,7 +908,7 @@ describe('presetRokkit', () => {
 
 		it('emits text-ink, text-ink-mute, text-ink-soft, text-ink-faint', () => {
 			const preset = presetRokkit()
-			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			const keys = preset.shortcuts.filter((s) => typeof s[0] === 'string').map((s) => s[0])
 			expect(keys).toContain('text-ink')
 			expect(keys).toContain('text-ink-mute')
 			expect(keys).toContain('text-ink-soft')
@@ -804,14 +917,14 @@ describe('presetRokkit', () => {
 
 		it('emits text-on-primary but not bg-on-primary', () => {
 			const preset = presetRokkit()
-			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			const keys = preset.shortcuts.filter((s) => typeof s[0] === 'string').map((s) => s[0])
 			expect(keys).toContain('text-on-primary')
 			expect(keys).not.toContain('bg-on-primary')
 		})
 
 		it('emits status soft shortcuts: bg-success-soft, bg-warning-soft, bg-danger-soft', () => {
 			const preset = presetRokkit()
-			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			const keys = preset.shortcuts.filter((s) => typeof s[0] === 'string').map((s) => s[0])
 			expect(keys).toContain('bg-success-soft')
 			expect(keys).toContain('bg-warning-soft')
 			expect(keys).toContain('bg-danger-soft')
@@ -819,7 +932,7 @@ describe('presetRokkit', () => {
 
 		it('emits border-paper-edge for hairline borders', () => {
 			const preset = presetRokkit()
-			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			const keys = preset.shortcuts.filter((s) => typeof s[0] === 'string').map((s) => s[0])
 			expect(keys).toContain('border-paper-edge')
 			expect(keys).toContain('border-t-paper-edge')
 			expect(keys).toContain('border-b-paper-edge')
@@ -827,7 +940,7 @@ describe('presetRokkit', () => {
 
 		it('emits ring-focus-ring but not bg-focus-ring', () => {
 			const preset = presetRokkit()
-			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			const keys = preset.shortcuts.filter((s) => typeof s[0] === 'string').map((s) => s[0])
 			expect(keys).toContain('ring-focus-ring')
 			expect(keys).not.toContain('bg-focus-ring')
 			expect(keys).not.toContain('text-focus-ring')
@@ -835,7 +948,7 @@ describe('presetRokkit', () => {
 
 		it('does NOT emit shortcuts for shadow-tint', () => {
 			const preset = presetRokkit()
-			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			const keys = preset.shortcuts.filter((s) => typeof s[0] === 'string').map((s) => s[0])
 			expect(keys).not.toContain('bg-shadow-tint')
 			expect(keys).not.toContain('text-shadow-tint')
 			expect(keys).not.toContain('border-shadow-tint')
@@ -843,7 +956,7 @@ describe('presetRokkit', () => {
 
 		it('bg-paper expands to background: var(--paper)', () => {
 			const preset = presetRokkit()
-			const entry = preset.shortcuts.find(s => s[0] === 'bg-paper')
+			const entry = preset.shortcuts.find((s) => s[0] === 'bg-paper')
 			expect(entry).toBeDefined()
 			const expansion = entry[1]
 			const str = typeof expansion === 'string' ? expansion : JSON.stringify(expansion)
@@ -852,7 +965,7 @@ describe('presetRokkit', () => {
 
 		it('bg-* shortcuts use background-color (not the background shorthand)', () => {
 			const preset = presetRokkit()
-			const entry = preset.shortcuts.find(s => s[0] === 'bg-paper')
+			const entry = preset.shortcuts.find((s) => s[0] === 'bg-paper')
 			expect(entry).toBeDefined()
 			const expansion = entry[1]
 			// expansion is a CSS-properties object; key should be background-color
@@ -862,7 +975,7 @@ describe('presetRokkit', () => {
 
 		it('emits fill- and stroke- shortcuts for chart use', () => {
 			const preset = presetRokkit()
-			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			const keys = preset.shortcuts.filter((s) => typeof s[0] === 'string').map((s) => s[0])
 			expect(keys).toContain('fill-primary')
 			expect(keys).toContain('stroke-accent')
 		})
@@ -874,7 +987,7 @@ describe('presetRokkit', () => {
 				palettes: { kami: { 50: '#f8f8f3' } },
 				overrides: { canvas: 'kami.50' }
 			})
-			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			const keys = preset.shortcuts.filter((s) => typeof s[0] === 'string').map((s) => s[0])
 			expect(keys).toContain('bg-canvas')
 			expect(keys).toContain('text-canvas')
 			expect(keys).toContain('border-canvas')
@@ -888,7 +1001,7 @@ describe('presetRokkit', () => {
 					flag: 'rgb(255, 0, 0)'
 				}
 			})
-			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			const keys = preset.shortcuts.filter((s) => typeof s[0] === 'string').map((s) => s[0])
 			expect(keys).toContain('bg-primary2')
 			expect(keys).toContain('bg-edge')
 			expect(keys).toContain('bg-flag')
@@ -898,7 +1011,7 @@ describe('presetRokkit', () => {
 			const preset = presetRokkit({
 				overrides: { 'grid-size': '8px', fade: '1.2s ease', spacer: '100%' }
 			})
-			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			const keys = preset.shortcuts.filter((s) => typeof s[0] === 'string').map((s) => s[0])
 			expect(keys).not.toContain('bg-grid-size')
 			expect(keys).not.toContain('bg-fade')
 			expect(keys).not.toContain('bg-spacer')
@@ -909,7 +1022,7 @@ describe('presetRokkit', () => {
 				palettes: { kami: { 50: '#f8f8f3' }, sumi: { 900: '#0d0d0d' } },
 				overrides: { bleed: { light: 'kami.50', dark: 'sumi.900' } }
 			})
-			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			const keys = preset.shortcuts.filter((s) => typeof s[0] === 'string').map((s) => s[0])
 			expect(keys).toContain('bg-bleed')
 		})
 
@@ -918,7 +1031,7 @@ describe('presetRokkit', () => {
 				palettes: { kami: { 50: '#f8f8f3' } },
 				overrides: { canvas: 'kami.50' }
 			})
-			const entry = preset.shortcuts.find(s => s[0] === 'bg-canvas')
+			const entry = preset.shortcuts.find((s) => s[0] === 'bg-canvas')
 			expect(entry).toBeDefined()
 			expect(entry[1]).toEqual({ 'background-color': 'var(--canvas)' })
 		})
@@ -928,7 +1041,7 @@ describe('presetRokkit', () => {
 				palettes: { kami: { 50: '#f8f8f3' } },
 				overrides: { canvas: 'kami.50' }
 			})
-			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			const keys = preset.shortcuts.filter((s) => typeof s[0] === 'string').map((s) => s[0])
 			expect(keys).not.toContain('ring-canvas')
 		})
 
@@ -936,7 +1049,7 @@ describe('presetRokkit', () => {
 			const preset = presetRokkit({
 				overrides: { 'glow-ring': '#ff0000' }
 			})
-			const keys = preset.shortcuts.filter(s => typeof s[0] === 'string').map(s => s[0])
+			const keys = preset.shortcuts.filter((s) => typeof s[0] === 'string').map((s) => s[0])
 			expect(keys).toContain('ring-glow-ring')
 		})
 	})
@@ -968,7 +1081,7 @@ describe('presetRokkit', () => {
 
 		it('emits named tokens inlined for core roles in mixed mode', () => {
 			const preset = presetRokkit({
-				tokens: { primary: 'extended' }   // surface defaults to 'core'
+				tokens: { primary: 'extended' } // surface defaults to 'core'
 			})
 			const css = preset.preflights[0].getCSS()
 			// --paper resolves to a concrete color, not a var()
@@ -1069,7 +1182,7 @@ describe('presetRokkit', () => {
 				tokens: 'extended',
 				skin: {
 					surface: { light: 'slate', dark: 'zinc' },
-					primary: { light: 'orange' }   // only-light — dark mode falls back to 'orange'
+					primary: { light: 'orange' } // only-light — dark mode falls back to 'orange'
 				}
 			})
 			const css = preset.preflights[0].getCSS()
@@ -1084,8 +1197,8 @@ describe('presetRokkit', () => {
 			const preset = presetRokkit({
 				tokens: 'extended',
 				skin: {
-					surface: { light: 'slate', dark: 'zinc' },  // triggers dark block
-					primary: { dark: 'amber' }   // only-dark — light mode ?? takes value.dark
+					surface: { light: 'slate', dark: 'zinc' }, // triggers dark block
+					primary: { dark: 'amber' } // only-dark — light mode ?? takes value.dark
 				}
 			})
 			const css = preset.preflights[0].getCSS()

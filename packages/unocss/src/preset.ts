@@ -38,10 +38,10 @@ const FONT_FAMILIES = {
 }
 
 const RADIUS_PRESETS = {
-	sharp:   { sm: '0',        md: '0',        lg: '0',        xl: '0',      full: '9999px' },
-	soft:    { sm: '0.125rem', md: '0.375rem', lg: '0.625rem', xl: '0.75rem', full: '9999px' },
-	rounded: { sm: '0.25rem',  md: '0.5rem',   lg: '0.75rem',  xl: '1rem',   full: '9999px' },
-	pill:    { sm: '9999px',   md: '9999px',   lg: '9999px',   xl: '9999px', full: '9999px' }
+	sharp: { sm: '0', md: '0', lg: '0', xl: '0', full: '9999px' },
+	soft: { sm: '0.125rem', md: '0.375rem', lg: '0.625rem', xl: '0.75rem', full: '9999px' },
+	rounded: { sm: '0.25rem', md: '0.5rem', lg: '0.75rem', xl: '1rem', full: '9999px' },
+	pill: { sm: '9999px', md: '9999px', lg: '9999px', xl: '9999px', full: '9999px' }
 }
 
 // ─── Shared predicate ────────────────────────────────────────────────────────
@@ -73,8 +73,10 @@ function resolveMappingForMode(colormap, mode) {
 		Object.entries(colormap).map(([role, value]) => [
 			role,
 			isDualPalette(value)
-				/* v8 ignore next — the ?? null fallbacks require both light+dark absent, which causes downstream errors */
-				? (mode === 'dark' ? (value.dark ?? value.light ?? null) : (value.light ?? value.dark ?? null))
+				? /* v8 ignore next — the ?? null fallbacks require both light+dark absent, which causes downstream errors */
+					mode === 'dark'
+					? (value.dark ?? value.light ?? null)
+					: (value.light ?? value.dark ?? null)
 				: value
 		])
 	)
@@ -82,7 +84,10 @@ function resolveMappingForMode(colormap, mode) {
 
 // ─── CSS var serialization ───────────────────────────────────────────────────
 
-const toCssBlock = (vars) => Object.entries(vars).map(([k, v]) => `${k}:${v}`).join(';')
+const toCssBlock = (vars) =>
+	Object.entries(vars)
+		.map(([k, v]) => `${k}:${v}`)
+		.join(';')
 
 // ─── Builder helpers ─────────────────────────────────────────────────────────
 
@@ -137,6 +142,71 @@ function buildTypographyVars(typography): string[] {
 	return vars
 }
 
+/**
+ * Type scale — one ratio, per-level overrides, emitted as
+ * `--text-{level}` / `--leading-{level}` / `--weight-{level}`.
+ *
+ * Levels are h1–h4 + body + small. h5/h6 are deliberately absent: nothing in the app,
+ * the component library or the rendered guides uses them (measured — h4 itself is 0 and
+ * kept only as headroom), and tokens with no consumer are dead output nobody can verify.
+ *
+ * Sizes derive from `body` × ratio^n so one knob moves the whole scale, with `levels`
+ * overriding any single step — the same shape `--radius-*` already offers (named preset
+ * plus per-key override) rather than a new idiom. Line-height tightens as size grows,
+ * because a heading set at body line-height reads loose.
+ *
+ * Deliberately density-independent: control heights are fixed so controls align, and
+ * type that resized with density would break that alignment and reflow every layout on
+ * a density toggle.
+ */
+const TYPE_LEVELS = ['h1', 'h2', 'h3', 'h4', 'body', 'small'] as const
+/** Steps above `body` (0). Negative goes smaller. */
+const TYPE_STEPS: Record<(typeof TYPE_LEVELS)[number], number> = {
+	h1: 4,
+	h2: 3,
+	h3: 2,
+	h4: 1,
+	body: 0,
+	small: -1
+}
+const TYPE_LEADING: Record<(typeof TYPE_LEVELS)[number], number> = {
+	h1: 1.1,
+	h2: 1.15,
+	h3: 1.25,
+	h4: 1.35,
+	body: 1.5,
+	small: 1.45
+}
+const TYPE_WEIGHT: Record<(typeof TYPE_LEVELS)[number], number> = {
+	h1: 600,
+	h2: 600,
+	h3: 600,
+	h4: 600,
+	body: 400,
+	small: 400
+}
+const DEFAULT_TYPE_RATIO = 1.25
+const DEFAULT_TYPE_BASE = 1
+
+function roundRem(n: number): number {
+	return Math.round(n * 1000) / 1000
+}
+
+function buildTypeScaleVars(typography): string[] {
+	const ratio = Number(typography?.ratio) > 0 ? Number(typography.ratio) : DEFAULT_TYPE_RATIO
+	const base = Number(typography?.base) > 0 ? Number(typography.base) : DEFAULT_TYPE_BASE
+	const overrides = typography?.levels ?? {}
+
+	return TYPE_LEVELS.flatMap((level) => {
+		const size = overrides[level] ?? `${roundRem(base * ratio ** TYPE_STEPS[level])}rem`
+		return [
+			`--text-${level}:${size}`,
+			`--leading-${level}:${TYPE_LEADING[level]}`,
+			`--weight-${level}:${TYPE_WEIGHT[level]}`
+		]
+	})
+}
+
 function buildRadiusVars(shape): string[] {
 	const radiusKey = shape?.radius
 	if (!radiusKey) return []
@@ -148,7 +218,13 @@ function buildRadiusVars(shape): string[] {
 }
 
 function buildPreflights(theme, colormap, config) {
-	const extraVars = [...buildTypographyVars(config.typography), ...buildRadiusVars(config.shape)]
+	const extraVars = [
+		...buildTypographyVars(config.typography),
+		// Unconditional: a scale that only appeared when configured would leave every
+		// existing consumer with no sizes at all.
+		...buildTypeScaleVars(config.typography),
+		...buildRadiusVars(config.shape)
+	]
 
 	const lightVars = buildVarsForMode(theme, colormap, config)
 	const lightOverrides = resolveTokens(
@@ -247,9 +323,7 @@ const DEFAULT_SKIN_NAME = 'default'
  * change the selector. Aliases are stripped (they get no own CSS vars).
  */
 function buildSkinVars(mapping, config, mode) {
-	const nonAliasMapping = Object.fromEntries(
-		Object.entries(mapping).filter(([, v]) => !isAlias(v))
-	)
+	const nonAliasMapping = Object.fromEntries(Object.entries(mapping).filter(([, v]) => !isAlias(v)))
 	const theme = new Theme({
 		colors: { ...defaultColors, ...config.palettes },
 		mapping: resolveMappingForMode(nonAliasMapping, mode),
@@ -372,7 +446,7 @@ function checkInkContrast(config, colormap) {
 	// Check shade pairs: surface-100 vs ink-900, surface-300 vs ink-700
 	const checkLevels = [
 		{ surfaceShade: 100, inkShade: 900 },
-		{ surfaceShade: 300, inkShade: 700 },
+		{ surfaceShade: 300, inkShade: 700 }
 	]
 
 	for (const { surfaceShade, inkShade } of checkLevels) {
@@ -384,7 +458,7 @@ function checkInkContrast(config, colormap) {
 				// eslint-disable-next-line no-console
 				console.warn(
 					`rokkit: ink-${inkShade} on surface-${surfaceShade} has low lightness contrast (${diff.toFixed(2)}). ` +
-					`Consider a palette with more tonal range for ink.`
+						`Consider a palette with more tonal range for ink.`
 				)
 			}
 		}
@@ -413,10 +487,7 @@ function buildThemeColors(theme, colormap, config) {
 			if (baseColors[target]) {
 				// Generate color rules under the alias name that reference the target's CSS vars
 				/* v8 ignore next 3 — alias validation ensures target's mapping exists; `|| {}` is unreachable */
-				baseColors[role] = theme.mapVariant(
-					theme.colors[theme.mapping[target]] || {},
-					target
-				)
+				baseColors[role] = theme.mapVariant(theme.colors[theme.mapping[target]] || {}, target)
 			}
 		}
 	}

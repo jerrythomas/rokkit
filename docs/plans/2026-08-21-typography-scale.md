@@ -52,8 +52,27 @@ These are choices, not lookups — each changes the token surface:
    respond to density, or stay fixed? (Precedent: the control-height memory note says
    heights are deliberately density-*independent*, so fixed is the likely answer.)
 
-Recommendation: ratio + per-level override, h1–h4 + body + small, varying
-size/line-height/weight, weight-only for styles, density-independent. Confirm before building.
+## ✅ Answers — approved by the user 2026-08-21
+
+1. **Both** — a `--type-ratio` default with per-level token overrides. Mirrors the existing
+   `--radius-*` shape (named preset + per-key override), so it is a house pattern, not a
+   new idiom.
+2. **h1–h3 + `body` + `small`, with h4 defined as headroom.** Measured, not assumed:
+   `h1: 7`, `h2: 14`, `h3: 54`, `h4/h5/h6: 0` across `apps/learn/src`, `packages/ui/src`
+   and `packages/blocks/src`, and no rendered guide markdown goes deeper than `###`.
+   h5/h6 would be tokens with no consumer.
+3. **size + line-height + weight.** Line-height has to scale with size or large headings
+   read loose. Tracking is deferred — Fraunces already handles optical sizing, so there is
+   nothing visibly asking for it yet.
+4. **No variable-font axes — weight only.** Axes are per-face; exposing `SOFT`/`WONK` would
+   make the wizard's controls depend on which font is selected, and the wizard is
+   face-agnostic.
+5. **Density-independent.** Precedent: control heights are deliberately fixed so controls
+   align (see the control-height note). Type that resized with density would break that
+   alignment and reflow every layout on a density toggle.
+
+Guiding constraint behind (2) and (4): **do not ship tokens nothing reads.** A scale with
+six levels and two axes looks thorough while half of it is unreachable and unverifiable.
 
 ---
 
