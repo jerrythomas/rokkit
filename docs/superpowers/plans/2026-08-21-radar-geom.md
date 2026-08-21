@@ -340,14 +340,24 @@ ring test MUST fail. Commit.
 ⚠ `defaultPreset.opacity` has **no `radar` entry**, so `resolveAlpha` would return `1` and render
 fully opaque overlapping polygons, hiding every series but the top one. Verified absent.
 
-- [ ] Add `radar: 0.25`. Every existing preset test must pass **unmodified**.
-- [ ] `buildRadarMarks({ data, plot, channels, options, alpha, type })` — call `buildRadarLayout`,
+- [x] Add `radar: 0.25`. Every existing preset test must pass **unmodified**. (`27097ec5`)
+- [x] `buildRadarMarks({ data, plot, channels, options, alpha, type })` — call `buildRadarLayout`,
 resolve per-series fill/stroke via `resolveFillStroke` on one representative row per series (the
 pattern `lines.js` uses), apply `resolveAlpha`, build the polygon `d` with **d3-shape `lineRadial`**,
-and return marks ordered so **all fills precede all strokes**.
-- [ ] Test the paint order explicitly: a smaller series nested inside a larger one must have its
+and return marks ordered so **all fills precede all strokes**. (`d65b668f`)
+- [x] Test the paint order explicitly: a smaller series nested inside a larger one must have its
 stroke emitted after every fill.
-- [ ] Break-it: emit fill-then-stroke per series → the paint-order test MUST fail. Commit.
+- [x] Break-it: emit fill-then-stroke per series → the paint-order test MUST fail. Commit.
+
+  Done 2026-08-21. `packages/chart/src/geoms/lib/marks/radar.js` +
+  `packages/chart/spec/geoms/radar-marks.spec.js` (8 tests). All four break-it checks
+  confirmed and restored (opacity-removed → fill alpha 1; interleaved fill/stroke →
+  paint-order assertion fails 2 vs 1; margin-dropped → 100 not < 100; unconverted
+  angle → x off by ~0.89R). Angle conversion: `(deg + 90) * PI / 180` (both
+  conventions wind clockwise, only the zero-offset differs). `LABEL_MARGIN = 32`px
+  reserved outside the outer ring (radar's axis labels sit outside, unlike Arc's).
+  100% statements+lines on `radar.js` and `preset.js`. Full chart suite
+  1463 → 1472; full `test:ci` 5689 passing; lint 0 errors.
 
 ---
 
