@@ -23,7 +23,8 @@ export const defaultPreset = {
     hexbin:      1,
     ribbon:      0.5,
     waterfall:   1,
-    rule:        1
+    rule:        1,
+    radar:       0.25
   },
   patterns: ['diagonal', 'dots', 'triangles', 'hatch', 'lattice', 'swell',
              'checkerboard', 'waves', 'petals', 'brick', 'diamonds', 'tile',

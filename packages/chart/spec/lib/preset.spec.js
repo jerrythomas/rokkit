@@ -19,6 +19,10 @@ describe('defaultPreset', () => {
     expect(defaultPreset.opacity).toHaveProperty('violin', 0.5)
     expect(defaultPreset.opacity).toHaveProperty('point', 0.8)
   })
+
+  it('has a translucent opacity default for radar (overlapping polygons must not render fully opaque)', () => {
+    expect(defaultPreset.opacity).toHaveProperty('radar', 0.25)
+  })
 })
 
 describe('createChartPreset', () => {
