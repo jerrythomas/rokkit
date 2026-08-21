@@ -96,22 +96,18 @@
 		| 'button-group' | 'tooltip' | 'code-group' | 'effects' | 'lock-mode' | 'chat'
 	const DEMO_ROUTE = CATALOG_DEMO_ROUTE as Record<DemoKind, string>
 
+	/**
+	 * Demo ids that are also canvas kinds, i.e. map 1:1. Anything else — including
+	 * no match at all — falls back to `tabs`, the generic component surface.
+	 */
+	const DEMO_KINDS = new Set<DemoKind>([
+		'theme-wizard', 'table', 'tree', 'multi-select', 'list', 'toasts',
+		'form', 'select', 'chart', 'sparkline', 'combo', 'date-picker', 'stepper'
+	])
+
 	function pickDemoKind(query: string): DemoKind {
-		const top = runMatch(query)[0]?.id
-		if (top === 'theme-wizard') return 'theme-wizard'
-		if (top === 'table') return 'table'
-		if (top === 'tree') return 'tree'
-		if (top === 'multi-select') return 'multi-select'
-		if (top === 'list') return 'list'
-		if (top === 'toasts') return 'toasts'
-		if (top === 'form') return 'form'
-		if (top === 'select') return 'select'
-		if (top === 'chart') return 'chart'
-		if (top === 'sparkline') return 'sparkline'
-		if (top === 'combo') return 'combo'
-		if (top === 'date-picker') return 'date-picker'
-		if (top === 'stepper') return 'stepper'
-		return 'tabs'
+		const top = runMatch(query)[0]?.id as DemoKind | undefined
+		return top && DEMO_KINDS.has(top) ? top : 'tabs'
 	}
 
 	function submitQuery(value: string) {
@@ -226,25 +222,36 @@
 	//   - same demoType, different variant → append (variant pick is a turn)
 	//   - different demoType → treat as side-trip browsing, no append
 	//     (new demos are reached via submitQuery which calls startNew)
+	/**
+	 * Does this demo/variant pair deserve a new assistant turn? After a user turn,
+	 * always. After one of our own demo turns, only when the VARIANT changed — the
+	 * same demo re-rendering is not a new turn. Otherwise it is side-trip browsing.
+	 */
+	type LastTurn =
+		| { kind?: string; body?: { kind?: string; demoType?: string; variant?: string } }
+		| undefined
+
+	function shouldAppendDemoTurn(
+		last: LastTurn,
+		demoType: string,
+		variant: string | undefined
+	): boolean {
+		if (!last) return false
+		if (last.kind === 'user') return true
+		const body = last.body
+		if (last.kind !== 'assistant' || body?.kind !== 'demo') return false
+		return body.demoType === demoType && body.variant !== variant
+	}
+
 	$effect(() => {
 		if (shell.phase !== 'response' || !shell.demoType) return
 		const id = getCurrentId()
 		if (!id) return
 		const current = conversations.find((c) => c.id === id)
 		if (!current) return
-		const last = current.turns.at(-1)
 		const dt = shell.demoType
 		const dv = shell.demoVariant
-		if (last?.kind === 'user') {
-			appendAssistant({ kind: 'demo', demoType: dt, variant: dv })
-			return
-		}
-		if (
-			last?.kind === 'assistant' &&
-			last.body.kind === 'demo' &&
-			last.body.demoType === dt &&
-			last.body.variant !== dv
-		) {
+		if (shouldAppendDemoTurn(current.turns.at(-1), dt, dv)) {
 			appendAssistant({ kind: 'demo', demoType: dt, variant: dv })
 		}
 	})
@@ -369,16 +376,6 @@
 	// (e.g. `chat`) fall through to '' and must NOT show a Code tab that
 	// would otherwise render identically to Live.
 	// `api` option is gated on whether the demo's meta has filled in `api`.
-	const hasActiveCode = $derived(Boolean(activeDemoCode))
-	const canvasViewOptions = $derived.by(() => {
-		const opts: Array<{ label: string; value: 'live' | 'code' | 'api' | 'docs' }> = [
-			{ label: 'Live', value: 'live' }
-		]
-		if (hasActiveCode) opts.push({ label: 'Code', value: 'code' })
-		if (demoApi && demoApi.props.length > 0) opts.push({ label: 'API', value: 'api' })
-		if (demoDocs) opts.push({ label: 'Docs', value: 'docs' })
-		return opts
-	})
 
 	// Whether the chat-left slab has anything to show (Tweaks only —
 	// API moved to canvas, Source moved to the Code mode there).
@@ -419,19 +416,33 @@
 		const demoType = shell.demoType
 		const conv = getCurrentConversation()
 		if (!demoType || !conv) return
+		const replayed = replayTweaks(conv, demoType)
+		// Only assign when persisted state differs from the in-memory scratch —
+		// avoids a self-firing effect loop on every keystroke.
+		if (!sameTweaks(replayed, tweaksByDemo[demoType] ?? {})) {
+			tweaksByDemo[demoType] = replayed
+		}
+	})
+
+	/** Tweak values rebuilt from a conversation's TweakTurn rows for one demo. */
+	function replayTweaks(
+		conv: { turns: Array<Record<string, unknown>> },
+		demoType: string
+	): Record<string, unknown> {
 		const replayed: Record<string, unknown> = {}
 		for (const turn of conv.turns) {
 			if (turn.kind === 'tweak' && turn.demoType === demoType) {
-				replayed[turn.name] = turn.to
+				replayed[turn.name as string] = turn.to
 			}
 		}
-		// Only assign when persisted state differs from the in-memory
-		// scratch — avoids a self-firing effect loop on every keystroke.
-		const current = tweaksByDemo[demoType] ?? {}
-		const sameKeys = Object.keys(replayed).length === Object.keys(current).length
-		const sameVals = sameKeys && Object.keys(replayed).every((k) => current[k] === replayed[k])
-		if (!sameVals) tweaksByDemo[demoType] = replayed
-	})
+		return replayed
+	}
+
+	/** Shallow equality on two tweak maps — what keeps the effect above from self-firing. */
+	function sameTweaks(a: Record<string, unknown>, b: Record<string, unknown>): boolean {
+		const keys = Object.keys(a)
+		return keys.length === Object.keys(b).length && keys.every((k) => b[k] === a[k])
+	}
 
 	// Count of props the user has tweaked away from default for the active
 	// demo. Drives the canvas strip ("N tweaks active — Reset"). Tweaks
@@ -440,14 +451,19 @@
 	// messages (felt noisy when clicking through enum values).
 	const tweakCount = $derived(Object.keys(tweakProps).length)
 
+	/**
+	 * The value a tweak is moving away FROM: the current tweak, else the active
+	 * variant's value, else the schema default — so the recorded diff reads the way
+	 * the user perceives it.
+	 */
+	function tweakFrom(name: string, cur: Record<string, unknown>): unknown {
+		return cur[name] ?? variantProps[name] ?? propsSchema?.[name]?.default
+	}
+
 	function setTweak(name: string, value: unknown) {
 		if (!shell.demoType) return
 		const cur = tweaksByDemo[shell.demoType] ?? {}
-		// Determine "from" — current tweak value, falling back to the
-		// active variant's value, then the schema default — so the diff
-		// reads as the user perceives it.
-		const schema = propsSchema?.[name]
-		const from = cur[name] ?? variantProps[name] ?? schema?.default
+		const from = tweakFrom(name, cur)
 		if (from === value) return // no-op: nothing actually changed
 		tweaksByDemo[shell.demoType] = { ...cur, [name]: value }
 		appendTweak(shell.demoType, name, from, value)
@@ -566,9 +582,9 @@ ${tabsTag}`
 	]
 	const tableColumns = $derived(activeVariant?.id === 'mapping' ? tableMappedColumns : undefined)
 
-	const tableCode = $derived.by(() => {
-		if (activeVariant?.id === 'mapping') {
-			return `<script>
+	/** Source samples for the table demo, keyed by variant id. */
+	const TABLE_CODE: Record<string, string> = {
+		mapping: `<script>
   import { Table } from '@rokkit/ui'
 
   const products = [ /* same 6 rows */ ]
@@ -580,10 +596,8 @@ ${tabsTag}`
   ]
 <\/script>
 
-<Table data={products} {columns} caption="Products" />`
-		}
-		if (activeVariant?.id === 'sticky-header') {
-			return `<script>
+<Table data={products} {columns} caption="Products" />`,
+		'sticky-header': `<script>
   import { Table } from '@rokkit/ui'
   // 14 rows
   const products = [ /* … */ ]
@@ -598,17 +612,14 @@ ${tabsTag}`
     position: sticky; top: 0; z-index: 1;
     background: var(--paper);
   }
-</style>`
-		}
-		if (activeVariant?.id === 'striped') {
-			return `<script>
+</style>`,
+		striped: `<script>
   import { Table } from '@rokkit/ui'
   const products = [ /* same 6 rows */ ]
 <\/script>
 
-<Table data={products} striped caption="Products" />`
-		}
-		return `<script>
+<Table data={products} striped caption="Products" />`,
+		default: `<script>
   import { Table } from '@rokkit/ui'
 
   const products = [
@@ -621,8 +632,12 @@ ${tabsTag}`
   ]
 <\/script>
 
-<Table data={products} caption="Products" />`
-	})
+<Table data={products} caption="Products" />`,
+	}
+
+	const tableCode = $derived(
+		TABLE_CODE[activeVariant?.id ?? 'default'] ?? TABLE_CODE.default
+	)
 
 	// Tree demo state — file-tree shape with deep nesting
 	const treeShallow = [
@@ -787,9 +802,9 @@ ${tabsTag}`
 				: dateSchemaDefault
 	)
 
-	const dateCode = $derived.by(() => {
-		if (activeVariant?.id === 'with-validation') {
-			return `<script>
+	/** Source samples for the date demo, keyed by variant id. */
+	const DATE_CODE: Record<string, string> = {
+		'with-validation': `<script>
   import { FormRenderer } from '@rokkit/forms'
 
   let data = $state({
@@ -809,10 +824,8 @@ ${tabsTag}`
   }
 <\/script>
 
-<FormRenderer bind:data {schema} />`
-		}
-		if (activeVariant?.id === 'range') {
-			return `<script>
+<FormRenderer bind:data {schema} />`,
+		range: `<script>
   import { FormRenderer } from '@rokkit/forms'
 
   let data = $state({ eventDate: '2026-06-15', checkOut: '2026-06-22' })
@@ -826,9 +839,8 @@ ${tabsTag}`
   }
 <\/script>
 
-<FormRenderer bind:data {schema} />`
-		}
-		return `<script>
+<FormRenderer bind:data {schema} />`,
+		default: `<script>
   import { FormRenderer } from '@rokkit/forms'
 
   let data = $state({
@@ -845,8 +857,12 @@ ${tabsTag}`
   }
 <\/script>
 
-<FormRenderer bind:data {schema} />`
-	})
+<FormRenderer bind:data {schema} />`,
+	}
+
+	const dateCode = $derived(
+		DATE_CODE[activeVariant?.id ?? 'default'] ?? DATE_CODE.default
+	)
 
 	// Combo demo state — filterable Select with country list
 	const countryItems = [
@@ -935,9 +951,9 @@ ${tabsTag}`
 	)
 	let selectValue = $state<unknown>(null)
 
-	const selectCode = $derived.by(() => {
-		if (activeVariant?.id === 'with-icons') {
-			return `<script>
+	/** Source samples for the select demo, keyed by variant id. */
+	const SELECT_CODE: Record<string, string> = {
+		'with-icons': `<script>
   import { Select } from '@rokkit/ui'
 
   const items = [
@@ -948,10 +964,8 @@ ${tabsTag}`
   let value = $state(null)
 <\/script>
 
-<Select {items} bind:value placeholder="Pick an option" />`
-		}
-		if (activeVariant?.id === 'grouped') {
-			return `<script>
+<Select {items} bind:value placeholder="Pick an option" />`,
+		grouped: `<script>
   import { Select } from '@rokkit/ui'
 
   const items = [
@@ -966,9 +980,8 @@ ${tabsTag}`
   let value = $state(null)
 <\/script>
 
-<Select {items} bind:value placeholder="Pick a tool" />`
-		}
-		return `<script>
+<Select {items} bind:value placeholder="Pick a tool" />`,
+		default: `<script>
   import { Select } from '@rokkit/ui'
 
   const items = Array.from({ length: 20 }, (_, i) => ({
@@ -978,8 +991,12 @@ ${tabsTag}`
   let value = $state(null)
 <\/script>
 
-<Select {items} bind:value placeholder="Pick an option" />`
-	})
+<Select {items} bind:value placeholder="Pick an option" />`,
+	}
+
+	const selectCode = $derived(
+		SELECT_CODE[activeVariant?.id ?? 'default'] ?? SELECT_CODE.default
+	)
 
 	// Form demo state — sign-up form driven by schema
 	let formData = $state({
@@ -1147,9 +1164,9 @@ ${tabsTag}`
 		)
 	)
 
-	const listCode = $derived.by(() => {
-		if (activeVariant?.id === 'flat') {
-			return `<script>
+	/** Source samples for the list demo, keyed by variant id. */
+	const LIST_CODE: Record<string, string> = {
+		flat: `<script>
   import { List } from '@rokkit/ui'
 
   // No children — List renders a flat list.
@@ -1162,10 +1179,8 @@ ${tabsTag}`
   let value = $state('profile')
 <\/script>
 
-<List {items} bind:value />`
-		}
-		if (activeVariant?.id === 'snippets') {
-			return `<script>
+<List {items} bind:value />`,
+		snippets: `<script>
   import { List } from '@rokkit/ui'
   const items = [/* same grouped settings menu, each leaf with its own value */]
   // Seeded so the group holding it starts expanded.
@@ -1178,9 +1193,8 @@ ${tabsTag}`
     <span class="custom-label">{proxy.label}</span>
     <span class="custom-badge">{proxy.get('badge') ?? ''}</span>
   {/snippet}
-</List>`
-		}
-		return `<script>
+</List>`,
+		default: `<script>
   import { List } from '@rokkit/ui'
 
   const items = [
@@ -1209,8 +1223,12 @@ ${tabsTag}`
   let value = $state('profile')
 <\/script>
 
-<List {items} collapsible bind:value />`
-	})
+<List {items} collapsible bind:value />`,
+	}
+
+	const listCode = $derived(
+		LIST_CODE[activeVariant?.id ?? 'default'] ?? LIST_CODE.default
+	)
 
 	// MultiSelect demo state — colors with chip overflow
 	const colorItems = [
@@ -1274,43 +1292,73 @@ ${tabsTag}`
 	 * they'd paste to recreate the current preview, not a static
 	 * example. Reads the matching `*Code` $derived constant per demo.
 	 */
+	/**
+	 * demoType → its source sample. The values are THUNKS on purpose: reading only
+	 * the selected one keeps `activeDemoCode`'s dependency set as narrow as the
+	 * switch it replaced, instead of depending on every *Code derived at once.
+	 */
+	const CODE_BY_DEMO: Record<string, () => string> = {
+		tabs: () => tabsCode,
+		table: () => tableCode,
+		tree: () => treeCode,
+		stepper: () => stepperCode,
+		'date-picker': () => dateCode,
+		combo: () => comboCode,
+		select: () => selectCode,
+		form: () => formCode,
+		toasts: () => toastsCode,
+		list: () => listCode,
+		'multi-select': () => multiSelectCode
+	}
+
 	const activeDemoCode = $derived.by(() => {
-		switch (shell.demoType) {
-			case 'tabs':          return tabsCode
-			case 'table':         return tableCode
-			case 'tree':          return treeCode
-			case 'stepper':       return stepperCode
-			case 'date-picker':   return dateCode
-			case 'combo':         return comboCode
-			case 'select':        return selectCode
-			case 'form':          return formCode
-			case 'toasts':        return toastsCode
-			case 'list':          return listCode
-			case 'multi-select':  return multiSelectCode
-			default:              return ''
-		}
+		const demo = shell.demoType
+		const read = demo && Object.hasOwn(CODE_BY_DEMO, demo) ? CODE_BY_DEMO[demo] : null
+		return read ? read() : ''
 	})
 
-	onMount(() => {
-		if (!browser) return
+	// Declared after activeDemoCode, which they read. Only the template consumes
+	// canvasViewOptions, and $derived is lazy, so placement is presentation order
+	// rather than a dependency constraint — but it keeps the file readable
+	// top-to-bottom and satisfies no-use-before-define.
+	const hasActiveCode = $derived(Boolean(activeDemoCode))
+	const canvasViewOptions = $derived.by(() => {
+		const opts: Array<{ label: string; value: 'live' | 'code' | 'api' | 'docs' }> = [
+			{ label: 'Live', value: 'live' }
+		]
+		if (hasActiveCode) opts.push({ label: 'Code', value: 'code' })
+		if (demoApi && demoApi.props.length > 0) opts.push({ label: 'API', value: 'api' })
+		if (demoDocs) opts.push({ label: 'Docs', value: 'docs' })
+		return opts
+	})
+
+	/** `?mode` wins over the persisted mode, when it actually names one. */
+	function resolveInitialMode(param: string | null): 'dark' | 'light' {
+		if (param === 'dark' || param === 'light') return param
+		return theme.mode === 'dark' ? 'dark' : 'light'
+	}
+
+	/** Apply the ?mode / ?collapsed / ?q deep-link params on first mount. */
+	function applyUrlParams() {
 		const params = new URL(window.location.href).searchParams
-		const modeParam = params.get('mode')
-		const collapsedParam = params.get('collapsed')
+
+		const mode = resolveInitialMode(params.get('mode'))
+		if (theme.mode !== mode) theme.setMode(mode)
+		if (vibe.mode !== mode) vibe.mode = mode
+
+		const collapsed = params.get('collapsed')
+		if (collapsed === 'true' || collapsed === '1') shell.collapsed = true
+
 		const q = params.get('q')
-
-		const persistedMode = theme.mode === 'dark' ? 'dark' : 'light'
-		const initialMode = modeParam === 'dark' || modeParam === 'light' ? modeParam : persistedMode
-		if (theme.mode !== initialMode) theme.setMode(initialMode)
-		if (vibe.mode !== initialMode) vibe.mode = initialMode
-
-		if (collapsedParam === 'true' || collapsedParam === '1') {
-			shell.collapsed = true
-		}
 		if (q) {
 			koan.query = q
 			shell.lastQuery = q
 		}
+	}
 
+	onMount(() => {
+		if (!browser) return
+		applyUrlParams()
 		return commands.registerMany([
 			{
 				id: 'palette.open',
