@@ -1391,7 +1391,10 @@ ${tabsTag}`
 					{/if}
 				</span>
 				{#if shell.phase === 'response'}
-					<a class="chat-browse" href="/app">
+					<!-- Points at the dedicated browse route rather than /app: this affordance
+					     exists to get back to browsing, and /app/catalog is the browse-first
+					     grid. /app (hero + grid) and the composer are untouched. -->
+					<a class="chat-browse" href="/app/catalog" data-app-browse-link>
 						<span class="i-mdi:view-grid-outline" aria-hidden="true"></span>
 						Browse
 					</a>
@@ -2173,23 +2176,28 @@ ${tabsTag}`
 					/>
 				{/if}
 			{:else if shell.phase === 'landing'}
-				<div class="canvas-body catalog">
-					<div class="welcome-hero">
-						<div class="mark"><RokkitWordmark height={64} /></div>
-						<div class="lede">Pass the data. The component does the rest.</div>
-						<div class="sub">
-							Type a question on the left. The answer mounts here — themed,
-							density-tuned, copyable, and identical to what you'd ship.
+				<div class="canvas-body catalog" data-app-catalog={shell.browse ? 'browse' : 'landing'}>
+					<!-- Browse-first (/app/catalog) shows the grid on its own; the hero belongs to
+					     the landing entry point. Typing in the composer still narrows the grid in
+					     both, so browse stays searchable. -->
+					{#if !shell.browse}
+						<div class="welcome-hero">
+							<div class="mark"><RokkitWordmark height={64} /></div>
+							<div class="lede">Pass the data. The component does the rest.</div>
+							<div class="sub">
+								Type a question on the left. The answer mounts here — themed,
+								density-tuned, copyable, and identical to what you'd ship.
+							</div>
+							<div class="meta">
+								<span>style</span>
+								<span class="meta-value">{vibe.style}</span>
+								<span class="meta-sep">·</span>
+								<span>47 components</span>
+								<span class="meta-sep">·</span>
+								<span>Svelte 5 runes</span>
+							</div>
 						</div>
-						<div class="meta">
-							<span>style</span>
-							<span class="meta-value">{vibe.style}</span>
-							<span class="meta-sep">·</span>
-							<span>47 components</span>
-							<span class="meta-sep">·</span>
-							<span>Svelte 5 runes</span>
-						</div>
-					</div>
+					{/if}
 					<CatalogGrid filter={shell.composerValue} />
 				</div>
 			{:else if shell.phase === 'thinking'}

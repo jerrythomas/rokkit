@@ -71,13 +71,25 @@ export const shell = $state<{
 	lastQuery: string
 	collapsed: boolean
 	composerValue: string
+	/**
+	 * Browse-first presentation of the landing surface (`/app/catalog`): same catalog
+	 * grid, no welcome hero.
+	 *
+	 * A flag rather than a fourth `ShellPhase` on purpose. Browse differs from landing
+	 * only in whether the hero shows — everything else (composer placeholder, the
+	 * type-to-filter wiring, the canvas body) is identical. A new phase would have to be
+	 * threaded through ~40 `shell.phase ===` branches in the shell layout to reproduce
+	 * behaviour that already exists, and each of those is a chance to miss one.
+	 */
+	browse: boolean
 }>({
 	phase: 'landing',
 	demoType: null,
 	demoVariant: null,
 	lastQuery: '',
 	collapsed: false,
-	composerValue: ''
+	composerValue: '',
+	browse: false
 })
 
 export function setShellResponse(demoType: ShellDemoType, query?: string): void {
@@ -94,4 +106,15 @@ export function setShellLanding(): void {
 	shell.phase = 'landing'
 	shell.demoType = null
 	shell.demoVariant = null
+	// Navigating back to /app leaves browse mode — otherwise the hero would stay hidden
+	// after visiting /app/catalog once.
+	shell.browse = false
+}
+
+/** The `/app/catalog` browse route: the landing surface with the hero suppressed. */
+export function setShellBrowse(): void {
+	shell.phase = 'landing'
+	shell.demoType = null
+	shell.demoVariant = null
+	shell.browse = true
 }
