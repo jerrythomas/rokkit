@@ -53,23 +53,36 @@ const SCREENS: Screen[] = [
 		}
 	},
 	{
+		// The marker is the regression guard for the seeded selection: List derives
+		// group expansion from the active value, so if `listValue` ever goes back to
+		// null this screen fails with "never rendered its marker" — which is exactly
+		// how the demo used to arrive, three collapsed headers and no items.
 		path: '/app/list',
-		marker: '[data-list]',
-		note: 'navigator isStrictlyInsideItem + the accordion-trigger branch, and wrapper extend/range',
+		marker: '[data-list-item]',
+		note: 'seeded-selection first paint + navigator accordion-trigger branch and wrapper extend/range',
 		interact: async (page) => {
-			// The mounted demo is the collapsible-groups variant, so EVERY group
-			// starts collapsed (List only auto-expands the active value's ancestor,
-			// and there is no active value). Leaf items therefore do not exist in
-			// the DOM until a group is expanded — which is the point: the click
-			// below goes through navigator's data-accordion-trigger path, and the
-			// items appearing afterwards is the proof it worked.
-			const group = page.locator('[data-list-group]').first()
-			await expect(group).toBeVisible()
-			await group.click()
+			// Exactly one group open on arrival: the one holding the seeded item.
+			await expect(page.locator('[data-list-group][aria-expanded="true"]')).toHaveCount(1)
 
-			const item = page.locator('[data-list-item]').first()
-			await expect(item, 'expanding a group did not reveal any leaf items').toBeVisible()
-			await item.click()
+			// Toggling a COLLAPSED header goes through navigator's
+			// data-accordion-trigger path; the count going to 2 proves it expanded
+			// that group without collapsing the seeded one.
+			await page.locator('[data-list-group][aria-expanded="false"]').first().click()
+			await expect(page.locator('[data-list-group][aria-expanded="true"]')).toHaveCount(2)
+
+			// Selecting an item in the newly-opened group re-anchors expansion there
+			// and collapses the rest. It has to be a DIFFERENT item than the seeded
+			// one: expansion is recomputed by an effect on `value`, so re-selecting
+			// the already-active row changes nothing and nothing would collapse.
+			// This also covers the demo's onselect wiring — List never writes back
+			// to `value` itself, so without it the selection could not move at all.
+			await page.locator('[data-list-item]').filter({ hasText: 'Theme' }).first().click()
+			await expect(page.locator('[data-list-group][aria-expanded="true"]')).toHaveCount(1)
+			await expect(
+				page.locator('[data-list-item][data-active="true"]'),
+				'selecting a row did not move the active item — is onselect wired?'
+			).toHaveCount(1)
+
 			await page.keyboard.press('ArrowDown')
 			await page.keyboard.press('ArrowUp')
 		}

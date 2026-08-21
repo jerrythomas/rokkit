@@ -1084,43 +1084,68 @@ ${tabsTag}`
 			label: 'General',
 			icon: 'i-mdi:cog-outline',
 			children: [
-				{ label: 'Profile', icon: 'i-mdi:account-outline' },
-				{ label: 'Account', icon: 'i-mdi:shield-account-outline' },
-				{ label: 'Notifications', icon: 'i-mdi:bell-outline' }
+				{ label: 'Profile', value: 'profile', icon: 'i-mdi:account-outline' },
+				{ label: 'Account', value: 'account', icon: 'i-mdi:shield-account-outline' },
+				{ label: 'Notifications', value: 'notifications', icon: 'i-mdi:bell-outline' }
 			]
 		},
 		{
 			label: 'Appearance',
 			icon: 'i-mdi:palette-outline',
 			children: [
-				{ label: 'Theme', icon: 'i-mdi:invert-colors' },
-				{ label: 'Density', icon: 'i-mdi:format-line-spacing' },
-				{ label: 'Typography', icon: 'i-mdi:format-font' }
+				{ label: 'Theme', value: 'theme', icon: 'i-mdi:invert-colors' },
+				{ label: 'Density', value: 'density', icon: 'i-mdi:format-line-spacing' },
+				{ label: 'Typography', value: 'typography', icon: 'i-mdi:format-font' }
 			]
 		},
 		{
 			label: 'Advanced',
 			icon: 'i-mdi:tune',
 			children: [
-				{ label: 'Keyboard shortcuts', icon: 'i-mdi:keyboard-outline' },
-				{ label: 'Developer', icon: 'i-mdi:code-tags' }
+				{ label: 'Keyboard shortcuts', value: 'shortcuts', icon: 'i-mdi:keyboard-outline' },
+				{ label: 'Developer', value: 'developer', icon: 'i-mdi:code-tags' }
 			]
 		}
 	]
 	const listFlatItems = [
-		{ label: 'Profile', icon: 'i-mdi:account-outline' },
-		{ label: 'Account', icon: 'i-mdi:shield-account-outline' },
-		{ label: 'Notifications', icon: 'i-mdi:bell-outline' },
-		{ label: 'Theme', icon: 'i-mdi:invert-colors' },
-		{ label: 'Density', icon: 'i-mdi:format-line-spacing' },
-		{ label: 'Typography', icon: 'i-mdi:format-font' },
-		{ label: 'Keyboard shortcuts', icon: 'i-mdi:keyboard-outline' },
-		{ label: 'Developer', icon: 'i-mdi:code-tags' }
+		{ label: 'Profile', value: 'profile', icon: 'i-mdi:account-outline' },
+		{ label: 'Account', value: 'account', icon: 'i-mdi:shield-account-outline' },
+		{ label: 'Notifications', value: 'notifications', icon: 'i-mdi:bell-outline' },
+		{ label: 'Theme', value: 'theme', icon: 'i-mdi:invert-colors' },
+		{ label: 'Density', value: 'density', icon: 'i-mdi:format-line-spacing' },
+		{ label: 'Typography', value: 'typography', icon: 'i-mdi:format-font' },
+		{ label: 'Keyboard shortcuts', value: 'shortcuts', icon: 'i-mdi:keyboard-outline' },
+		{ label: 'Developer', value: 'developer', icon: 'i-mdi:code-tags' }
 	]
 	const listItems = $derived(
 		activeVariant?.id === 'flat' ? listFlatItems : listGroupedItems
 	)
-	let listValue = $state<unknown>(null)
+	// Seeded, not null. List derives group expansion from the active value: with
+	// `collapsible` and no value it expands nothing, so the demo opened as three
+	// collapsed headers and no items — which also contradicted the caption
+	// telling you to click a header to COLLAPSE one. Selecting the first leaf
+	// makes its group ("General") open on arrival.
+	// Seeded, and seeded with the item's `value` rather than the item OBJECT.
+	// Two reasons, both load-bearing:
+	//   1. List derives group expansion from the active value, so with
+	//      `collapsible` and no value it expands nothing — the demo used to open
+	//      as three collapsed headers and no items, which also contradicted the
+	//      caption telling you to click a header to COLLAPSE one.
+	//   2. It must be a primitive. `$state` DEEP-PROXIES objects, so seeding the
+	//      item object stores a Proxy, and List's `proxy.value === value` identity
+	//      check compares that Proxy against the raw array item and never matches.
+	//      Giving every leaf an explicit `value` makes the match a string compare.
+	let listValue = $state<unknown>('profile')
+
+	// value → label, for the props readout. Handles both the flat and grouped
+	// shapes, since the variant picker swaps between them.
+	const listLabelByValue = $derived(
+		new Map(
+			(listItems as Array<Record<string, unknown>>)
+				.flatMap((entry) => (entry.children as Array<Record<string, unknown>>) ?? [entry])
+				.map((leaf) => [leaf.value, String(leaf.label)])
+		)
+	)
 
 	const listCode = $derived.by(() => {
 		if (activeVariant?.id === 'flat') {
@@ -1129,24 +1154,25 @@ ${tabsTag}`
 
   // No children — List renders a flat list.
   const items = [
-    { label: 'Profile',       icon: 'i-mdi:account-outline'        },
-    { label: 'Account',       icon: 'i-mdi:shield-account-outline' },
-    { label: 'Notifications', icon: 'i-mdi:bell-outline'           },
+    { label: 'Profile',       value: 'profile',       icon: 'i-mdi:account-outline'        },
+    { label: 'Account',       value: 'account',       icon: 'i-mdi:shield-account-outline' },
+    { label: 'Notifications', value: 'notifications', icon: 'i-mdi:bell-outline'           },
     /* …8 items */
   ]
-  let value = $state(null)
+  let value = $state('profile')
 <\/script>
 
-<List {items} bind:value />`
+<List {items} bind:value onselect={(next) => (value = next)} />`
 		}
 		if (activeVariant?.id === 'snippets') {
 			return `<script>
   import { List } from '@rokkit/ui'
-  const items = [/* same grouped settings menu */]
-  let value = $state(null)
+  const items = [/* same grouped settings menu, each leaf with its own value */]
+  // Seeded so the group holding it starts expanded.
+  let value = $state('profile')
 <\/script>
 
-<List {items} collapsible bind:value>
+<List {items} collapsible bind:value onselect={(next) => (value = next)}>
   {#snippet itemContent(proxy)}
     <span class={proxy.get('icon')} aria-hidden="true"></span>
     <span class="custom-label">{proxy.label}</span>
@@ -1162,25 +1188,28 @@ ${tabsTag}`
       label: 'General',
       icon: 'i-mdi:cog-outline',
       children: [
-        { label: 'Profile',       icon: 'i-mdi:account-outline'         },
-        { label: 'Account',       icon: 'i-mdi:shield-account-outline'  },
-        { label: 'Notifications', icon: 'i-mdi:bell-outline'            }
+        { label: 'Profile',       value: 'profile',       icon: 'i-mdi:account-outline'         },
+        { label: 'Account',       value: 'account',       icon: 'i-mdi:shield-account-outline'  },
+        { label: 'Notifications', value: 'notifications', icon: 'i-mdi:bell-outline'            }
       ]
     },
     {
       label: 'Appearance',
       icon: 'i-mdi:palette-outline',
       children: [
-        { label: 'Theme',      icon: 'i-mdi:invert-colors'        },
-        { label: 'Density',    icon: 'i-mdi:format-line-spacing'  },
-        { label: 'Typography', icon: 'i-mdi:format-font'          }
+        { label: 'Theme',      value: 'theme',      icon: 'i-mdi:invert-colors'        },
+        { label: 'Density',    value: 'density',    icon: 'i-mdi:format-line-spacing'  },
+        { label: 'Typography', value: 'typography', icon: 'i-mdi:format-font'          }
       ]
     }
   ]
-  let value = $state(null)
+  // With collapsible, List expands only the ACTIVE value's group, so seeding
+  // value is what makes a group open on first paint. Seed the primitive, not the
+  // item object: $state deep-proxies objects, and List matches on identity.
+  let value = $state('profile')
 <\/script>
 
-<List {items} collapsible bind:value />`
+<List {items} collapsible bind:value onselect={(next) => (value = next)} />`
 	})
 
 	// MultiSelect demo state — colors with chip overflow
@@ -2664,8 +2693,10 @@ ${tabsTag}`
 					<div class="canvas-title">List · collapsible groups</div>
 					<div class="canvas-sub">
 						Settings menu shape — three groups, each with its own items via
-						<code>children</code>. Click a group header to collapse. Same
-						component renders flat lists when you drop <code>children</code>.
+						<code>children</code>. The group holding the selected item starts open;
+						a header click toggles just that group, while selecting an item
+						collapses the others. Same component renders flat lists when you drop
+						<code>children</code>.
 					</div>
 				</div>
 				<div class="canvas-body response">
@@ -2683,10 +2714,17 @@ ${tabsTag}`
 								<span style="flex:1">{proxy.label}</span>
 								<span style="font:500 10px var(--font-ui);color:var(--accent);background:color-mix(in oklab,var(--accent) 12%,var(--paper-soft));padding:2px 6px;border-radius:4px">CUSTOM</span>
 							{/snippet}
+							<!--
+								`onselect` is required, not optional garnish: unlike Select, List
+								never writes back to its own `value` prop — the Wrapper fires
+								onselect and the consumer owns the state. Without this the active
+								row (and the group expansion derived from it) would never move.
+							-->
 							<List
 								items={listItems}
 								collapsible={activeVariant?.id !== 'flat'}
 								bind:value={listValue}
+								onselect={(next) => (listValue = next)}
 								itemContent={activeVariant?.id === 'snippets' ? listItemSnippet : undefined}
 								{...variantProps}
 							/>
@@ -2696,7 +2734,7 @@ ${tabsTag}`
 							<span data-sep>·</span>
 							<span>collapsible</span><span data-value>{activeVariant?.id === 'flat' ? 'no' : 'yes'}</span>
 							<span data-sep>·</span>
-							<span>selected</span><span data-value>{String((listValue as { label?: string } | null)?.label ?? '—')}</span>
+							<span>selected</span><span data-value>{listLabelByValue.get(listValue) ?? '—'}</span>
 							{#if activeVariant}
 								<span data-sep>·</span>
 								<span>variant</span><span data-value>{activeVariant.id}</span>
