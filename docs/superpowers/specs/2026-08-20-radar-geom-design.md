@@ -31,13 +31,15 @@ marked ⚠ is a correction to that draft, kept visible so the reasoning isn't lo
 2. Mixed units readable without consumer pre-normalisation — **and honest about it**, per §Radial
    scale.
 3. Interactivity matching the `Point`/`Bar`/`Line` contract in the `Plot` form.
-4. Layout built so weighted axes can be added later without restructuring.
-5. **Accessible in both forms.** Cycle 1 shipped `Spark` with no accessible name and no data
+4. **Declared per-axis scales** — a fixed domain, ticks and labels supplied by the consumer, which
+   makes a rendered shape a stable property of the entity rather than of the current row set.
+5. **Weighted axes** — angular width proportional to importance, with a radius transform that keeps
+   wedge area proportional to weight × value.
+6. **Accessible in both forms.** Cycle 1 shipped `Spark` with no accessible name and no data
    fallback; that is fixed here rather than compounded.
 
 ## Non-goals
 
-- Weighted axes this cycle (angles equal; layout weight-ready).
 - Polar `Grid`/`Axis` components — the geom owns its grid.
 - `selectable` / Highlight multi-select.
 - Stacked or faceted radar; animated transitions.
@@ -96,6 +98,61 @@ channel that keeps series distinguishable for colour-vision-deficient readers.
 ⚠ Register `radar` in `Plot.svelte`'s `GEOM_COMPONENTS` map, for consistency with `arc` on the
 spec-driven path.
 
+## Axis specification
+
+⚠ **Added after review.** `axes` accepts either bare names or full descriptors, mixed freely:
+
+```svelte
+<!-- inferred domains, as before -->
+<Radar axes={['revenue','csat','latency']} axis="metric" value="score" />
+
+<!-- declared scales: fixed domain, real tick labels, weights -->
+<Radar
+  axes={[
+    { key: 'csat',    label: 'Satisfaction', domain: [0, 5], ticks: 5,
+      tickLabels: ['Poor','Fair','Good','Great','Best'], weight: 2 },
+    { key: 'latency', label: 'Latency', domain: [0, 350], unit: 'ms' },
+    { key: 'revenue', label: 'Revenue', domain: [0, 5e6], format: '£.2s' }
+  ]}
+  axis="metric" value="score" series="team"
+/>
+```
+
+```ts
+type AxisSpec = {
+  key: string                 // the axis value in the data
+  label?: string              // display name; defaults to key
+  domain?: [number, number]   // DECLARED — not derived from rows
+  ticks?: number              // ring count for this axis; drives grid when uniform
+  tickLabels?: string[]       // ordinal names, e.g. Likert intervals
+  unit?: string               // appended to the axis label
+  format?: string             // d3-format specifier for tick/label values
+  weight?: number             // angular share; default 1
+}
+```
+
+**A declared domain is the recommended form, and why it matters:** an inferred domain is computed
+from the rows present, so filtering a comparator series out moves every remaining series' radius —
+the shape is a property of the *query*, not the entity. A declared domain is fixed, so the shape is
+stable and comparable across renders. This is the mitigation for the primary "radar charts lie"
+critique, and it is why declaring scales is documented as the default recommendation rather than an
+advanced option.
+
+Three things follow from a declared scale:
+
+- **Rings become real tick marks.** With `domain: [0,5], ticks: 5`, ring *k* genuinely means "k out
+  of 5" on that spoke. Under inferred domains rings are decorative, because each spoke's domain
+  differs.
+- **Labels can carry interval names.** `tickLabels` renders the ordinal vocabulary
+  (`Poor…Best`) rather than a bare number — the honest rendering of a Likert-style axis.
+- **The scale is separated from the geometry.** Position is always the normalised `0..1`
+  projection, so all spokes share one geometry; per-axis *meaning* is carried by the label. That
+  separation is what makes a mixed-unit radar defensible.
+
+⚠ **Uniform vs per-axis `ticks`.** The shared grid needs one ring count. If every `AxisSpec` gives
+the same `ticks`, use it. If they differ, fall back to `options.rings` for the drawn grid and dev-warn
+— per-spoke ring counts would need per-spoke rings, which the geom-owned grid does not draw.
+
 ## Radial scale
 
 **Per-axis by default**, with the scale made **visible** — each axis label carries its own end value,
@@ -127,6 +184,25 @@ coincides; for `[-5, 10]` the centre is `-5` and zero sits at `R × 5/15`.
 
 ## Layout
 
+### Radius transform
+
+⚠ **Added after review.** Wedge area is `~½ θ r²`. With angular width `θ ∝ weight`, keeping area
+proportional to `weight × value` requires `r ∝ √value`:
+
+| Weights | Radius | Rationale |
+| --- | --- | --- |
+| All equal | **linear** | Conventional radar. Area exaggeration is the documented known limitation. |
+| Any unequal | **sqrt** | Wedge area tracks `weight × value` — Nightingale-rose logic. |
+
+`radiusScale: 'linear' | 'sqrt' | 'auto'` (default `'auto'`, applying the table). An explicit value
+always wins, so the transform never changes silently underneath a consumer who has pinned it.
+
+Weighted angles on a *linear* radius would compound the area exaggeration radar already has — a 2×
+difference already reads as ~4×, and a wider wedge makes it worse. That is why weighting and the
+transform ship together rather than weighting alone.
+
+### Angle
+
 ⚠ **Corrected angle formula.** The first draft gave
 `-90° + 360° × (cumulativeBefore(i) + w[i]/2) / total` and claimed it reduces to `-90° + i × 360/n`
 at equal weights. **It does not** — it is off by exactly `180/n` (half a sector) for every n,
@@ -140,6 +216,9 @@ angleOf(i) = -90° + 360° × (cumulativeBefore(i) + w[i]/2 - w[0]/2) / totalWei
 
 Verified: reduces **exactly** to `-90° + i × 360/n` at equal weights for n = 3, 4, 5; and for
 `w = [2,1,1]` yields wedge widths 180°/90°/90° with axis 0 at top. A test asserts the reduction.
+
+⚠ Weights come from `AxisSpec.weight`, defaulting to `1`. A bare-string `axes` array is therefore
+always equal-weighted, which keeps the simple case exactly as it was.
 
 **Axis order** comes from the `axes` prop. ⚠ If omitted, fall back to first-appearance **and
 `console.warn` in dev** — matching the existing precedent in `stat.js` and `preset.js`, which warn
@@ -257,7 +336,17 @@ Cycle 1's gap, fixed here rather than shipped through.
 14. ⚠ `Plot`'s sr-table renders something legible for radar's long-format rows.
 15. Every existing test in the repo passes **unmodified**.
 16. Coverage: 100% statements+lines on new `.js`, ≥90% on `.svelte`.
-17. `bun run check` and `bun run test:browser` green.
+17. ⚠ `axes` accepts a bare `string[]`, an `AxisSpec[]`, and a mixed array — all three asserted.
+18. ⚠ A declared `domain` is used verbatim: adding or removing a series does NOT move any radius.
+    Asserted by rendering the same series with and without a comparator and comparing vertex radii.
+19. ⚠ `tickLabels` render as the axis's ring labels when supplied; a numeric `format` applies otherwise.
+20. ⚠ Differing per-axis `ticks` falls back to `options.rings` and warns in dev.
+21. ⚠ `radiusScale: 'auto'` selects linear for equal weights and sqrt for unequal — asserted with
+    inputs where the two transforms give **different** radii. An explicit value overrides `auto`.
+22. ⚠ With `weight: [2,1,1]`, wedge widths are 180°/90°/90° and axis 0 remains at top.
+23. ⚠ Under sqrt radius with unequal weights, wedge area is proportional to `weight × value` —
+    asserted numerically, since this is the whole justification for the transform.
+24. `bun run check` and `bun run test:browser` green.
 
 ## Testing
 
@@ -283,11 +372,13 @@ behaviour. Binding, not advisory:
 
 ## Known limitations
 
-- Radar area scales quadratically with radius, so a 2× difference reads as ~4×. Documented at the
-  point of use, not just here. ⚠ When weighting lands it should pair with a sqrt-radius option so
-  area tracks value (Nightingale-rose logic); bolting weighted angles onto a linear radius would
-  compound this.
-- Per-axis domains move when the comparison set changes (mitigated by visible axis maxima).
+- Radar area scales quadratically with radius under the **linear** transform, so a 2× difference
+  reads as ~4×. Documented at the point of use, not just here. Mitigated for the weighted case by
+  `radiusScale: 'sqrt'` (see §Radius transform); an equal-weight radar keeps the conventional linear
+  radius and therefore keeps this limitation.
+- **Inferred** per-axis domains move when the comparison set changes — mitigated by visible axis
+  maxima, and avoided entirely by declaring `domain` on the `AxisSpec`, which is the documented
+  recommendation.
 - No axis-label collision handling; the axis cap is the practical mitigation.
 - ⚠ `lib/brewing/scales.js` — cited in the first draft as a placement sibling — has **zero
   production importers** and is effectively dead. The live scale module is `lib/plot/scales.js`.
