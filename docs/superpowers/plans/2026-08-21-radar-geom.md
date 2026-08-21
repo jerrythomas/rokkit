@@ -365,14 +365,38 @@ stroke emitted after every fill.
 
 **Files:** Create `geoms/Radar.svelte`, `spec/geoms/Radar.spec.svelte.js`, a `TestRadar.svelte` harness
 
-- [ ] Follow the house harness pattern (`spec/helpers/TestBar.svelte`), including `untrack(() => state)`.
-- [ ] Register via `GeomState` with `channels: { x: axis, y: value, color: series, pattern }`.
-- [ ] Render the DOM hooks exactly as the spec's table specifies — `data-plot-geom="radar"`, and
+- [x] Follow the house harness pattern (`spec/helpers/TestBar.svelte`), including `untrack(() => state)`.
+- [x] Register via `GeomState` with `channels: { x: axis, y: value, color: series, pattern }`.
+- [x] Render the DOM hooks exactly as the spec's table specifies — `data-plot-geom="radar"`, and
 `data-plot-element` values `radar-area`, `radar-vertex`, `radar-grid-ring`, `radar-grid-spoke`,
 `radar-axis-label`, plus `data-plot-series` / `data-plot-axis`.
-- [ ] Axis labels at `R + labelGap` with `text-anchor` flipped by hemisphere; **reduce the outer
+- [x] Axis labels at `R + labelGap` with `text-anchor` flipped by hemisphere; **reduce the outer
 radius to reserve the label margin** — `buildArcs` reserves none, so labels would otherwise clip.
-- [ ] Break-it: hardcode `text-anchor="middle"` → the hemisphere test MUST fail. Commit.
+- [x] Break-it: hardcode `text-anchor="middle"` → the hemisphere test MUST fail. Commit.
+
+  Done 2026-08-21 (`a037a00e`). `geoms/Radar.svelte` + `spec/geoms/Radar.spec.svelte.js`
+  (20 tests) + `spec/helpers/TestRadar.svelte`. Also emits `radar-zero-ring` for Task 6's
+  per-axis zero marker (a spoke-local dashed arc, not a full ring).
+
+  Four break-it checks confirmed and restored. Because these files were untracked,
+  `git diff` could not verify restoration (plan rule 6) — used an md5-checked backup
+  instead. Hardcoded `text-anchor` → only the hemisphere test fails; gap defaulted to a
+  centre vertex → only the gap test fails; one shared vertex colour → only the colour
+  test fails; vertices pinned to the outer radius → only the half-domain test fails, and
+  **not** the full-radius geometry test, which is why both assertions exist.
+
+  Vertices are visual only here; focus/Enter/Space/`onselect` is Task 9. Vertex colour is
+  read back off the adapter's stroke marks rather than re-resolving the palette, so a dot
+  cannot disagree with its own polygon outline. Needed a local `RadarMark` type — the
+  first geom to read `geom.marks` in script rather than only spreading it in a template.
+
+  `Radar.svelte` 100% statements+lines, 98% branch. Chart suite 1472 → 1492; full
+  `test:ci` 5709 passing / 378 files; lint 0 errors; `svelte-check` 0 errors 0 warnings.
+
+  Incidental: a stale `packages/cli/spec/fixtures/output/` scratch dir (leftover from an
+  interrupted `convert.spec.js` run) was failing lint with a `require()` error in a
+  generated file. Ignored in `.gitignore` + eslint config (`1114d4db`), verified with the
+  dir present on disk.
 
 ---
 
