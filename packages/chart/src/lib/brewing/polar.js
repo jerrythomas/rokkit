@@ -112,3 +112,31 @@ export function resolveAxes(axes, data, axisField) {
 
 	return resolved
 }
+
+/**
+ * Angle in degrees for each axis — first axis at the top, proceeding clockwise.
+ *
+ * Each axis owns a wedge proportional to its weight and sits at that wedge's
+ * MIDPOINT, so the wedge is symmetric around its spoke. Midpoint placement alone
+ * would put axis 0 half a sector past the top, so axis 0's half-wedge is
+ * subtracted to rotate the whole diagram back.
+ *
+ * At equal weights this reduces exactly to -90 + i*360/n. A test asserts that for
+ * n=3..6, because an earlier draft of this formula omitted the rotation term and was
+ * off by 180/n for every n — nothing sat at the top.
+ *
+ * @param {number[]} weights - one per axis; non-positive or non-finite treated as 1
+ * @returns {number[]} degrees, -90 = top
+ */
+export function anglesFor(weights) {
+	const w = weights.map((x) => (Number.isFinite(x) && x > 0 ? x : 1))
+	const total = w.reduce((a, b) => a + b, 0)
+	if (!total) return []
+	const half0 = w[0] / 2
+	let before = 0
+	return w.map((wi) => {
+		const angle = -90 + (360 * (before + wi / 2 - half0)) / total
+		before += wi
+		return angle
+	})
+}
