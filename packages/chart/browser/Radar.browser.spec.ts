@@ -164,9 +164,12 @@ describe('Radar — rendered paint order and alpha', () => {
 		const { container } = render(RadarLayers)
 		await nextFrames()
 
-		const paths = [...container.querySelectorAll('[data-plot-geom="radar"] path')]
-		// Strokes are the fill="none" copies; fills are everything else.
-		const isStroke = (p: Element) => p.getAttribute('fill') === 'none'
+		const paths = [
+			...container.querySelectorAll(
+				'[data-plot-element="radar-area"], [data-plot-element="radar-outline"]'
+			)
+		]
+		const isStroke = (p: Element) => p.getAttribute('data-plot-element') === 'radar-outline'
 
 		const strokeIndexes = paths.map((p, i) => (isStroke(p) ? i : -1)).filter((i) => i >= 0)
 		const fillIndexes = paths.map((p, i) => (isStroke(p) ? -1 : i)).filter((i) => i >= 0)
@@ -181,13 +184,20 @@ describe('Radar — rendered paint order and alpha', () => {
 		const { container } = render(RadarLayers)
 		await nextFrames()
 
-		const paths = [...container.querySelectorAll('[data-plot-geom="radar"] path')]
-		const outerFill = paths.findIndex(
-			(p) => p.getAttribute('data-plot-series') === 'outer' && p.getAttribute('fill') !== 'none'
-		)
-		const innerStroke = paths.findIndex(
-			(p) => p.getAttribute('data-plot-series') === 'inner' && p.getAttribute('fill') === 'none'
-		)
+		const paths = [
+			...container.querySelectorAll(
+				'[data-plot-element="radar-area"], [data-plot-element="radar-outline"]'
+			)
+		]
+		const at = (series: string, element: string) =>
+			paths.findIndex(
+				(p) =>
+					p.getAttribute('data-plot-series') === series &&
+					p.getAttribute('data-plot-element') === element
+			)
+
+		const outerFill = at('outer', 'radar-area')
+		const innerStroke = at('inner', 'radar-outline')
 
 		expect(outerFill).toBeGreaterThanOrEqual(0)
 		expect(innerStroke).toBeGreaterThanOrEqual(0)

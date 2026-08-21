@@ -101,6 +101,61 @@ describe('Radar — series polygons', () => {
 	})
 })
 
+describe('Radar — outline hook', () => {
+	// Every other radar mark is addressable through `data-plot-element`; the stroke copy
+	// must be too, or theme CSS has to reach it via a brittle `path[fill="none"]` selector.
+	// The architecture spec makes `data-plot-*` the hook vocabulary for all marks.
+	it('tags each series outline with data-plot-element and its series', () => {
+		const state = radarState({ geomData: () => twoSeriesData })
+		const { container } = render(TestRadar, {
+			state,
+			axis: 'axis',
+			value: 'value',
+			series: 'series',
+			axes: AXES
+		})
+		const outlines = [...container.querySelectorAll('[data-plot-element="radar-outline"]')]
+		expect(outlines.length).toBe(2)
+		expect(outlines.map((el) => el.getAttribute('data-plot-series')).sort()).toEqual(['S1', 'S2'])
+	})
+
+	it('draws the outline as a stroke-only copy of the polygon', () => {
+		const state = radarState({ geomData: () => oneSeriesData })
+		const { container } = render(TestRadar, {
+			state,
+			axis: 'axis',
+			value: 'value',
+			series: 'series',
+			axes: AXES
+		})
+		const outline = container.querySelector('[data-plot-element="radar-outline"]')
+		const fill = container.querySelector('[data-plot-element="radar-area"]')
+
+		expect(outline.getAttribute('fill')).toBe('none')
+		expect(outline.getAttribute('stroke')).toBe('darkblue')
+		// Same geometry as its fill — it is the outline OF that polygon, not another shape.
+		expect(outline.getAttribute('d')).toBe(fill.getAttribute('d'))
+	})
+
+	it('keeps every fill before every outline in DOM order', () => {
+		const state = radarState({ geomData: () => twoSeriesData })
+		const { container } = render(TestRadar, {
+			state,
+			axis: 'axis',
+			value: 'value',
+			series: 'series',
+			axes: AXES
+		})
+		const marks = [
+			...container.querySelectorAll(
+				'[data-plot-element="radar-area"], [data-plot-element="radar-outline"]'
+			)
+		]
+		const kinds = marks.map((el) => el.getAttribute('data-plot-element'))
+		expect(kinds).toEqual(['radar-area', 'radar-area', 'radar-outline', 'radar-outline'])
+	})
+})
+
 describe('Radar — grid', () => {
 	it('renders rings and spokes when options.grid is true', () => {
 		const state = radarState({ geomData: () => oneSeriesData })

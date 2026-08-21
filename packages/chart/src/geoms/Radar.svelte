@@ -260,6 +260,7 @@
 				fill="none"
 				stroke={mark.stroke}
 				stroke-width="2"
+				data-plot-element="radar-outline"
 				data-plot-series={seriesOf(mark.key)}
 			/>
 		{/if}
