@@ -500,12 +500,40 @@ only** — no rings, spokes, labels, hit targets or tooltips.
 ⚠ `Spark.svelte` renders a bare `<svg data-spark>` with **no `role`, `aria-label` or `<title>`** —
 every sparkline shipped in cycle 1 is invisible to assistive tech. Verified.
 
-- [ ] Add `role="img"`, an `aria-label` from a new `label` prop else a generated summary, and an
+- [x] Add `role="img"`, an `aria-label` from a new `label` prop else a generated summary, and an
 sr-only textual data summary.
-- [ ] Every existing `Spark` and `Sparkline` test must pass **unmodified** — 27 Sparkline specs and
+- [x] Every existing `Spark` and `Sparkline` test must pass **unmodified** — 27 Sparkline specs and
 `sparkline.e2e.ts` included. If one fails, report BLOCKED.
-- [ ] Break-it: drop the `aria-label` → the a11y test MUST fail. Commit separately from the radar
+- [x] Break-it: drop the `aria-label` → the a11y test MUST fail. Commit separately from the radar
 work, since it is a distinct fix.
+
+  Done 2026-08-21 (`b029b522`). `spec/Spark.a11y.spec.svelte.js` (9 tests) +
+  `spec/helpers/SparkLabelHarness.svelte`. Committed separately, as required.
+
+  **Constraint met, and verified rather than asserted:** 27 Sparkline specs + 13 Spark
+  specs + 3 `sparkline.e2e.ts` tests all pass **unmodified** — `git diff` over those files
+  is empty, and the e2e was actually run (`3 passed`), not assumed. No BLOCKED needed.
+  Checked *before* implementing that none of them assert `textContent` or child counts,
+  which is what made adding `<title>`/`<desc>` safe.
+
+  Two deliberate choices beyond the letter of the task:
+  - The "sr-only textual summary" is `<desc>` inside the SVG, not a sibling sr-only
+    `<div>`. A `<div>` cannot be an SVG child, so it would have forced a wrapper element
+    around `<svg data-spark>` — a DOM structure change, and the fastest way to break the
+    40 specs this task must not break. `<title>`/`<desc>` are the SVG-native mechanism and
+    need no wrapper. `desc` keeps the generated data summary even when `label` overrides
+    the name, so the numbers survive the caller's wording.
+  - `Sparkline` gained a forwarding `label` prop. Without it the shipped API could only
+    ever get the generated summary, which makes the fix half-useful for real callers.
+
+  The fallback name is generated from the series (count, direction, endpoints, extent),
+  never a fixed string — a constant would satisfy an axe rule while telling a screen
+  reader user nothing. Break-it check proves it: replacing the summary with the constant
+  `'Sparkline'` fails 4 tests, including the two-series-must-differ assertion. Also
+  confirmed: `aria-label` dropped → 6 fail; `role` dropped → the role tests fail.
+
+  `Spark.svelte` 100% statements+lines / 96% branch; `Sparkline.svelte` 100% / 100%.
+  `test:ci` 5740 passing / 381 files; lint 0 errors; `svelte-check` 0 errors 0 warnings.
 
 ---
 
