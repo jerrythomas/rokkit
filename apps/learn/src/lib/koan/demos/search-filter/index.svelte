@@ -20,35 +20,40 @@
 
 	let filters = $state<FilterObject[]>([])
 
-	function matchesFilter(row: Record<string, unknown>, f: FilterObject): boolean {
-		const targets = f.column ? [String(row[f.column] ?? '')] : Object.values(row).map(String)
-		const value = f.value
-		const op = f.operator
+	// Operators as two lookup tables rather than one if/else chain. Numeric ops
+	// only apply when BOTH sides parse as numbers; text ops compare
+	// case-insensitively. `:` is an alias for `=`.
+	const NUMERIC_OPS: Record<string, (a: number, b: number) => boolean> = {
+		'>': (a, b) => a > b,
+		'<': (a, b) => a < b,
+		'>=': (a, b) => a >= b,
+		'<=': (a, b) => a <= b
+	}
+	const TEXT_OPS: Record<string, (a: string, b: string) => boolean> = {
+		'=': (a, b) => a === b,
+		':': (a, b) => a === b,
+		'!=': (a, b) => a !== b
+	}
 
-		for (const target of targets) {
-			if (value instanceof RegExp) {
-				if (value.test(target)) return true
-				continue
-			}
-			const numTarget = Number(target)
-			const numValue = Number(value)
-			const bothNumeric = !Number.isNaN(numTarget) && !Number.isNaN(numValue)
-
-			if (op === '>') {
-				if (bothNumeric && numTarget > numValue) return true
-			} else if (op === '<') {
-				if (bothNumeric && numTarget < numValue) return true
-			} else if (op === '>=') {
-				if (bothNumeric && numTarget >= numValue) return true
-			} else if (op === '<=') {
-				if (bothNumeric && numTarget <= numValue) return true
-			} else if (op === '=' || op === ':') {
-				if (target.toLowerCase() === String(value).toLowerCase()) return true
-			} else if (op === '!=') {
-				if (target.toLowerCase() !== String(value).toLowerCase()) return true
-			}
+	/** Does one cell value satisfy the filter? */
+	function targetMatches(target: string, f: FilterObject): boolean {
+		if (f.value instanceof RegExp) return f.value.test(target)
+		const op = String(f.operator)
+		if (Object.hasOwn(NUMERIC_OPS, op)) {
+			const a = Number(target)
+			const b = Number(f.value)
+			return !Number.isNaN(a) && !Number.isNaN(b) && NUMERIC_OPS[op](a, b)
+		}
+		if (Object.hasOwn(TEXT_OPS, op)) {
+			return TEXT_OPS[op](target.toLowerCase(), String(f.value).toLowerCase())
 		}
 		return false
+	}
+
+	function matchesFilter(row: Record<string, unknown>, f: FilterObject): boolean {
+		// No column named → free-text search across every cell.
+		const targets = f.column ? [String(row[f.column] ?? '')] : Object.values(row).map(String)
+		return targets.some((target) => targetMatches(target, f))
 	}
 
 	const visible = $derived(

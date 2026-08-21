@@ -78,32 +78,34 @@ function coalesceTypes(types: FieldType[]): FieldType {
 	return 'string'
 }
 
-function summarizeColumn(rows: Record<string, unknown>[], name: string): FieldSummary {
-	let nonNull = 0
-	const types: FieldType[] = []
+/** Min/max across a column's numeric cells, or null when it has none. */
+function numericRange(
+	rows: Record<string, unknown>[],
+	name: string
+): { min: number; max: number } | null {
 	let min = Infinity
 	let max = -Infinity
 	for (const row of rows) {
 		const v = row[name]
-		const t = detectType(v)
-		if (t !== 'unknown') nonNull++
-		types.push(t)
-		if (t === 'number') {
-			const n = typeof v === 'number' ? v : Number(v)
-			if (n < min) min = n
-			if (n > max) max = n
-		}
+		if (detectType(v) !== 'number') continue
+		const n = typeof v === 'number' ? v : Number(v)
+		if (n < min) min = n
+		if (n > max) max = n
 	}
+	return min === Infinity ? null : { min, max }
+}
+
+function summarizeColumn(rows: Record<string, unknown>[], name: string): FieldSummary {
+	const types: FieldType[] = rows.map((row) => detectType(row[name]))
+	const nonNull = types.filter((t) => t !== 'unknown').length
 	const type = coalesceTypes(types)
 	const summary: FieldSummary = {
 		name,
 		type,
 		density: rows.length === 0 ? 0 : nonNull / rows.length
 	}
-	if (type === 'number' && min !== Infinity) {
-		summary.min = min
-		summary.max = max
-	}
+	const range = type === 'number' ? numericRange(rows, name) : null
+	if (range) Object.assign(summary, range)
 	return summary
 }
 
@@ -260,28 +262,41 @@ function buildRecordFields(value: Record<string, unknown>): FieldSummary[] {
  * fall back to the normal inference. Used by data-aware suggestions
  * ("Show as a table", "Chart Y by X").
  */
+/** The value as an array of plain records, or null when it isn't one. */
+const asRecordArray = (value: unknown) =>
+	Array.isArray(value) && value.every(isPlainObject) ? (value as Record<string, unknown>[]) : null
+
+/**
+ * One builder per forced shape. Each returns an Inference when the data can
+ * plausibly fit, or null to fall through to auto-detection — which is what made
+ * the original's `chart` branch fall out of its own `if` block without
+ * returning.
+ */
+const FORCED_SHAPES: Record<string, (value: unknown) => Inference | null> = {
+	table: (value) => {
+		const rows = asRecordArray(value)
+		return rows ? { kind: 'table', columns: summarizeRows(rows), rows } : null
+	},
+	chart: (value) => {
+		const rows = asRecordArray(value)
+		if (!rows) return null
+		const columns = summarizeRows(rows)
+		const axes = inferChartAxes(columns)
+		return axes ? { kind: 'chart', columns, rows, ...axes } : null
+	},
+	list: (value) => (Array.isArray(value) ? { kind: 'list', items: value } : null),
+	record: (value) =>
+		isPlainObject(value)
+			? { kind: 'record', fields: buildRecordFields(value), record: value }
+			: null
+}
+
 export function inferShape(
 	value: unknown,
 	force?: 'table' | 'chart' | 'record' | 'list'
 ): Inference {
-	if (force === 'table' && Array.isArray(value) && value.every(isPlainObject)) {
-		const rows = value as Record<string, unknown>[]
-		return { kind: 'table', columns: summarizeRows(rows), rows }
-	}
-	if (force === 'chart' && Array.isArray(value) && value.every(isPlainObject)) {
-		const rows = value as Record<string, unknown>[]
-		const columns = summarizeRows(rows)
-		const axes = inferChartAxes(columns)
-		if (axes) return { kind: 'chart', columns, rows, ...axes }
-		// Fall through to normal inference if we can't pick axes.
-	}
-	if (force === 'list' && Array.isArray(value)) {
-		return { kind: 'list', items: value }
-	}
-	if (force === 'record' && isPlainObject(value)) {
-		return { kind: 'record', fields: buildRecordFields(value), record: value }
-	}
-	return inferShapeAuto(value)
+	const forced = force && Object.hasOwn(FORCED_SHAPES, force) ? FORCED_SHAPES[force](value) : null
+	return forced ?? inferShapeAuto(value)
 }
 
 /**
