@@ -445,12 +445,51 @@ category list; radar vertices are 2-D. Use the per-element `onkeydown` pattern `
 ⚠ A 24px hit target does not fit in 28×28 even once. Inside `Spark`, radar renders the **polygon
 only** — no rings, spokes, labels, hit targets or tooltips.
 
-- [ ] Detect via `plotState.interactive` (already `false` on `SparkState`, and part of the 23-member
-`GEOM_CONTRACT`) so **no spark-specific branch lives in the geom**.
-- [ ] Assert inside `Spark`: a polygon exists, and `[data-plot-element="radar-grid-ring"]`,
+- [x] ~~Detect via `plotState.interactive`~~ → **detect via available space.** See the deviation below.
+- [x] Assert inside `Spark`: a polygon exists, and `[data-plot-element="radar-grid-ring"]`,
 `radar-vertex` and `radar-axis-label` are all **absent**.
-- [ ] Axis cap 3–5 in the micro form with a dev warn.
-- [ ] Break-it: render the grid unconditionally → the absence tests MUST fail. Commit.
+- [x] Axis cap 3–5 in the micro form with a dev warn.
+- [x] Break-it: render the grid unconditionally → the absence tests MUST fail. Commit.
+
+  Done 2026-08-21 (`72ab885c`). `spec/geoms/Radar.spark.spec.svelte.js` (11 tests) +
+  `spec/helpers/SparkRadarHarness.svelte`.
+
+  **⚠ Plan deviation — `plotState.interactive` is the wrong detector.** It is
+  `Boolean(onselect) || selectable`, so an ordinary *static* `<Plot>` reads `false` just
+  like `SparkState` does. Gating chrome on it would strip rings, spokes and axis labels
+  from any radar without a click handler, and would have failed Task 8's committed
+  full-form tests. Verified against `PlotState.svelte.js:568`, not assumed.
+
+  It was also insufficient on its own. A **second, independent defect** broke the micro
+  form: both `Radar.svelte` and `buildRadarMarks` subtracted `LABEL_MARGIN` (32px) from
+  the radius. A `Spark` is 80×24 → half-extent 12px − 32px, clamped to **R = 0**, so the
+  polygon collapsed to an invisible point. Proven by a RED test before any fix
+  (`expected 0 to be greater than 1`). Gating on `interactive` alone would have produced
+  a correctly-empty but still invisible glyph.
+
+  **Replacement:** `resolveRadarRadius(innerWidth, innerHeight) → { R, micro }` in
+  `geoms/lib/marks/radar.js` is now the single definition of the radius *and* of which
+  form is drawn. The component (grid/labels/vertices) and the adapter (polygons) both
+  call it, so the two can no longer disagree — Task 8 needed a test to *police* that
+  drift, and it is now structurally impossible. `micro` is derived from available space
+  rather than from "am I inside a Spark", which keeps the geom free of any
+  container-specific branch (the spec's actual requirement) and correctly covers a Plot
+  too small for chrome. Threshold is derived, not taste:
+  `2 × (LABEL_MARGIN + MIN_PLOT_RADIUS) = 112px` — the size at which the label margin and
+  a usable 24px hit-target radius both just fit.
+
+  A contract member (`micro` on `SparkState`) was considered and rejected:
+  `spark-contract.spec.js` hardcodes `EXPECTED_CONTRACT` and asserts its length, so it
+  would require editing a pre-existing test file — blocked by rule 7 without a waiver.
+
+  The axis-count warn lives in the adapter beside `polar.js`'s other dev warns, so the
+  component stays render-only and needs no `eslint-disable` in a `.svelte` file
+  (`no-console` is only relaxed for specs).
+
+  Six break-it checks confirmed and restored (md5-verified), including re-checking the
+  warn after relocating it. `Radar.svelte` 100% statements+lines / 94% branch;
+  `marks/radar.js` 100% / 96%. Chart suite 1503 → 1514; `test:ci` 5731; lint 0 errors;
+  `svelte-check` 0 errors 0 warnings.
 
 ---
 
