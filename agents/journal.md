@@ -7389,3 +7389,106 @@ selection, `5424e770` Highlight-renders-selection, `51462c75` Line+Point, `71309
 
 **Final gate:** lint **0 errors** + `bun run test:ci` = **5225 tests / 367 files**; Playwright
 `chart-metrics` + `chart-select` e2e ✓ (3 tests). All on `develop`.
+
+---
+
+## 2026-08-21 — Radar/spider geom (cycle 2) + Spark accessibility debt
+
+The radar geom, in both forms, with declared per-axis scales and weighted axes. Cycle 1 (`Spark`,
+2026-08-20) predicted radar would need **no spark-specific code**; that held — the geom never
+branches on its container.
+
+**Architecture** — four layers, mirroring the existing geom convention: pure layout
+(`lib/brewing/polar.js` — `resolveAxes`, `anglesFor`, `domainsFor`, `radiusFor`, `verticesFor`,
+`ringsFor`, `zeroRingFor`, `buildRadarLayout`; no Svelte import), a marks adapter
+(`geoms/lib/marks/radar.js`), the geom (`geoms/Radar.svelte`), and a `RadarChart` wrapper. Radar
+ignores `xScale`/`yScale` and computes polar geometry from `innerWidth`/`innerHeight`, like `Arc`.
+
+**Design decisions that came from review feedback**
+
+- **Declared per-axis scales.** An inferred domain is *unstable*: adding or removing a series can
+  change an axis's max, silently rescaling that spoke and reshaping every other series on it. A
+  test constructs exactly that — same series with and without a comparator — and asserts declared
+  domains are invariant where inferred ones are not.
+- **Weighted axes.** Each axis owns a wedge ∝ its weight and sits at that wedge's midpoint,
+  rotated so axis 0 lands at `-90°` for any weights. Under `radiusScale: 'sqrt'` the sector area
+  (`½θr²`) stays ∝ `weight × value`, so a heavily-weighted axis can't dominate the silhouette just
+  by being wide. `'auto'` picks linear at equal weights, sqrt otherwise.
+- **Averaging lives in `polar.js`, not a stat.** `applyGeomStat` builds fresh rows, which would
+  break `indexOf` identity — `onselect` would report `index: -1` and drop non-channel fields. Two
+  tests assert the emitted detail resolves an index and preserves an unbound field.
+
+**Three pre-implementation reviews, and what they caught**
+
+1. A **provably wrong angle formula in an already-approved spec** — off by exactly `180/n`, putting
+   nothing at the top. The plan made the break-it check for it mandatory: removing the rotation
+   term reproduces the historical error, so the test that guards it was verified against the real bug.
+2. `defaultPreset.opacity` had **no `radar` entry**, so `resolveAlpha` would have returned 1 and
+   rendered opaque overlapping polygons — hiding every series but the topmost.
+3. `Spark.svelte` shipped in cycle 1 as a bare `<svg data-spark>` with **no `role`, `aria-label` or
+   `<title>`** — every sparkline was invisible to assistive tech.
+
+**Two plan corrections found during implementation** (recorded in the plan file)
+
+- **The micro-form detector was wrong.** The plan specified `plotState.interactive`; it is
+  `Boolean(onselect) || selectable`, so an ordinary *static* `<Plot>` reads `false` exactly like
+  `SparkState` and would have lost its rings, spokes and labels — failing task 8's own committed
+  tests. It was also insufficient: a **second, independent defect** collapsed the micro form
+  regardless, because both the geom and the adapter subtracted a 32px `LABEL_MARGIN`, and a
+  `Spark` is 80×24 → `12 − 32` clamped to **R = 0**, an invisible glyph (proven by a RED test:
+  `expected 0 to be greater than 1`). Replaced by `resolveRadarRadius(w,h) → { R, micro }`, now the
+  single definition of the radius shared by geom and adapter — task 8 needed a test to *police*
+  that duplication, and it is now structurally impossible. `micro` is derived from **available
+  space** (threshold `2 × (LABEL_MARGIN 32 + MIN_PLOT_RADIUS 24) = 112px`), so the geom still
+  carries no container-specific branch and a too-small `Plot` is handled for free.
+- **`onselect` payload.** The plan read as though `onselect` receives the detail; Line/Point/Bar/Area
+  all pass the **raw row** to the geom's own `onselect` and route `buildSelectDetail` through
+  `plotState.handleSelect`. Followed the house split rather than inventing a radar-only convention.
+
+**Cycle 1 debt paid** — `Spark` gains `role="img"`, an `aria-label` **generated from the series**
+(count, direction, endpoints, extent — a constant would satisfy an axe rule while telling a
+screen-reader user nothing), SVG-native `<title>`/`<desc>`, and a `label` prop that `Sparkline`
+forwards. Constraint met and *verified*: all 27 Sparkline specs, 13 Spark specs and 3
+`sparkline.e2e.ts` tests pass **unmodified** (`git diff` empty over those files; the e2e was
+actually run). Used `<desc>` rather than a sibling sr-only `<div>` because a `<div>` can't be an
+SVG child and would have forced a wrapper around `<svg data-spark>` — the fastest way to break the
+40 specs this task must not break.
+
+**Break-it checks caught three defects in the tests themselves** — the discipline's real payoff
+this cycle was finding bad *tests*, not bad code:
+
+- An `options.axes` check **failed to fail**: the declared axis order matched the data's
+  first-appearance order, so inference produced an identical answer and the assertion could not
+  distinguish a working fallback from a dropped one. Reordered so it now yields a provably
+  different result.
+- A browser measurement used `[data-plot-canvas]` as origin, but `getBoundingClientRect` on an SVG
+  `<g>` returns its **children's** union bbox, not the group's coordinate origin — every pixel was
+  offset (the vertex read 118 where 150 was expected; 118 being exactly `R` gave it away).
+- A break-it check that **silently didn't apply** — the sabotage pattern missed `preset.js`'s
+  aligned `radar:       0.25`, so "removing the preset" changed nothing and the check passed
+  vacuously. A break-it check that cannot fail is worth exactly as much as a test that cannot fail.
+
+**Also fixed** — the radar outline path carried only `data-plot-series`, no `data-plot-element`,
+breaking the hook vocabulary the architecture spec establishes and leaving the outline unstylable
+(no radar theme CSS exists yet). Now `radar-outline`; both paint-order tests select by hook.
+
+**Commits (develop):** `1114d4db` CLI scratch-dir lint fix; `a037a00e` full form (task 8),
+`3cd54756` interactivity (9), `aebf0e35` vitest `maxWorkers: 4` (a full run was OOM-killed at
+~50GB on a 48GB box), `72ab885c` micro form (10), `b029b522` Spark a11y (11), `f3faae98` RadarChart
++ exports (12), `f020e1bb` browser mode (13), `82c444ba` outline hook, `102ab319` docs/explorer/guide
+(14). Plan-tracking commits interleaved.
+
+**Measured outcome:** `test:ci` **5756 passing / 382 files** (was 5689 at task 7); `test:browser`
+**34** (was 25); e2e **12** (guides + sparkline + chart-metrics, incl. 2 new radar assertions
+because the existing gallery test only checked bar/line/area/point and would have passed with an
+empty radar block); `bun run coverage` exit 0 at **99.54%** statements — `polar.js` 100/100,
+`marks/radar.js` 100% stmts+lines, `Radar.svelte` 100% stmts+lines / 94% branch, `RadarChart.svelte`
+100% on all four, `Spark.svelte` 100% stmts+lines; lint **0 errors**; `svelte-check` **0 errors 0
+warnings**.
+
+**Docs:** `docs/design/20-chart.md` gains a full Radar section (channels + generic aliases,
+`AxisSpec`, radius-transform table, domains, both forms, interactivity, legend divergence, and a
+**"when radar misleads"** section — area exaggeration, inferred-domain instability, axis order not
+being neutral). Explorer gains a `profiles` dataset + registry entry (15 types); the Charts guide
+gains a **live** radar `plot` block, which doubles as end-to-end proof that radar's channel aliases
+and `options.axes` work through Plot's spec-driven path.

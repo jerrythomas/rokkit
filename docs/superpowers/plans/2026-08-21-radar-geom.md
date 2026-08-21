@@ -656,14 +656,24 @@ statements+lines on `.js`, ≥90% on `.svelte`. If short, add tests — never lo
 
 **Files:** `agents/journal.md`, `docs/design/12-priority.md`
 
-- [ ] Journal entry covering: the three pre-implementation reviews and what each found (notably a
+- [x] Journal entry covering: the three pre-implementation reviews and what each found (notably a
 provably wrong angle formula in an approved spec); the declared-scale/weighting design that came from
 review feedback; the `Spark` accessibility gap inherited from cycle 1; measured outcomes; commit
 hashes.
-- [ ] Mark radar complete; note both cycles done.
-- [ ] Confirm the version bump target is **1.4.0** (new public API: `Spark`, `SparkState`,
+- [x] Mark radar complete; note both cycles done.
+- [x] Confirm the version bump target is **1.4.0** (new public API: `Spark`, `SparkState`,
 `GEOM_CONTRACT`, `Radar`, `RadarChart`) and that release is a **separate, explicitly-approved step** —
-`bun run bump` tags and pushes, which triggers npm publish and is irreversible. **Do not run it.**
+`bun run bump` tags and pushes, which triggers npm publish and is irreversible. ~~Do not run it.~~
+**Approval given by the user on 2026-08-21** ("the plan was inclusive of all steps including a
+`bun run bump` at the end"), so the release ran as the final step of this plan.
+
+  Done 2026-08-21. Journal entry in `agents/journal.md`; radar marked complete in
+  `docs/design/12-priority.md` with both cycles noted.
+
+  Version: `1.3.15` → **1.4.0** (minor — new public API: `Spark`, `SparkState`,
+  `GEOM_CONTRACT` from cycle 1, plus `GeomRadar`/`Plot.Radar` and `RadarChart` here; no
+  breaking changes). `bun run bump` runs the full `check` gate first, then tags and pushes,
+  which triggers `publish.yml` → npm.
 
 ---
 
