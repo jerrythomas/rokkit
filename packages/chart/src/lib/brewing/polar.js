@@ -140,3 +140,65 @@ export function anglesFor(weights) {
 		return angle
 	})
 }
+
+/**
+ * Value domain per axis for a radar/spider chart.
+ *
+ * A radar's most-cited honesty problem is that per-axis domains are usually INFERRED from
+ * whichever rows happen to be present: filter a comparator series out of `data` and every
+ * remaining series' radius moves, because the domain that normalises it just shrank — the
+ * rendered shape becomes a property of the query, not of the entity being plotted. A
+ * DECLARED `AxisSpec.domain` fixes this by being used verbatim regardless of which rows are
+ * in `data`, so removing a comparator moves nothing. That is why declaring `domain` is the
+ * documented recommendation rather than an advanced option — this module's spec asserts the
+ * stability directly: the same series computes identical domains with and without a
+ * much-larger comparator series under a declared domain, and DIFFERENT domains under an
+ * inferred one, so the distinction is provably real rather than assumed.
+ *
+ * Inferred domains (no declared `domain`) are `[0, max]` for non-negative data. An axis whose
+ * values include a negative infers `[min, max]` instead of clamping the low end to 0 —
+ * clamping would silently delete the part of the shape that dips below centre, which is a
+ * worse failure than an occasionally-asymmetric domain. Non-finite values (a stray string, a
+ * missing field) are filtered out of the min/max computation entirely, so they cannot poison
+ * a domain to `NaN`.
+ *
+ * `opts.sharedDomain` collapses every undeclared axis onto one `[min, max]` computed across
+ * ALL axes' values (still applying the negatives-extend rule globally, so one negative
+ * anywhere widens every shared-mode axis down), for callers who want one consistent scale
+ * across mixed axes instead of a per-axis one. A declared `domain` still wins per-axis even
+ * when `sharedDomain` is on — declaring an axis is a stronger, more specific statement than a
+ * chart-wide default.
+ *
+ * An axis with no data at all (named in `axes` but absent from every row) gets the finite,
+ * degenerate domain `[0, 0]` rather than `NaN` — enough for a caller to render an empty spoke
+ * without the radius math blowing up.
+ *
+ * @param {ResolvedAxis[]} axes
+ * @param {Object[]} data
+ * @param {{ x: string, y: string }} channels - `x` names the axis field, `y` the value field
+ * @param {{ sharedDomain?: boolean }} [opts]
+ * @returns {[number, number][]} one domain per axis, positionally aligned with `axes`
+ */
+export function domainsFor(axes, data, channels, opts = {}) {
+	const { x: axisField, y: valueField } = channels
+	const sharedDomain = opts.sharedDomain ?? false
+
+	const valuesByKey = new Map(axes.map((axis) => [axis.key, []]))
+	for (const row of data) {
+		const values = valuesByKey.get(row?.[axisField])
+		if (!values) continue
+		const value = row?.[valueField]
+		if (Number.isFinite(value)) values.push(value)
+	}
+
+	const infer = (values) => {
+		if (values.length === 0) return [0, 0]
+		const min = Math.min(...values)
+		const max = Math.max(...values)
+		return min < 0 ? [min, max] : [0, max]
+	}
+
+	const shared = sharedDomain ? infer([...valuesByKey.values()].flat()) : null
+
+	return axes.map((axis) => axis.domain ?? shared ?? infer(valuesByKey.get(axis.key)))
+}
