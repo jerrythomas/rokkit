@@ -13,6 +13,19 @@ export default defineConfig({
 	test: {
 		globals: true,
 		environment: 'jsdom',
+		// Cap total concurrent workers across ALL projects. Left unset, vitest
+		// defaults to `availableParallelism() - 1` (15 forks on a 16-core box);
+		// each fork carries its own jsdom + v8 coverage state and peaks around
+		// 4GB, so a full `bun run coverage` / `test:ci` reached ~50GB resident
+		// and OOM-killed a 48GB machine (macOS jetsam,
+		// vm-compressor-space-shortage).
+		//
+		// `maxWorkers` is a root-only (non-project) option, so this one value is
+		// the global ceiling. Do NOT use `poolOptions.forks.maxForks` here: that
+		// IS a per-project option and takes priority over `maxWorkers`, so with
+		// the 15 `projects` below it would be applied per project rather than
+		// once overall.
+		maxWorkers: 4,
 		include: ['spec/**/*.{spec,spec.svelte}.[jt]s', 'src/**/*.{spec,spec.svelte}.[jt]s'],
 		exclude: ['**/node_modules/**', '**/dist/**', '**/.worktrees/**'],
 		coverage: {
