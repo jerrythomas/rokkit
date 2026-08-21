@@ -7492,3 +7492,81 @@ warnings**.
 being neutral). Explorer gains a `profiles` dataset + registry entry (15 types); the Charts guide
 gains a **live** radar `plot` block, which doubles as end-to-end proof that radar's channel aliases
 and `options.axes` work through Plot's spec-driven path.
+
+## 2026-08-21 — #153 Phase 0: computed-style snapshot gate for List states
+
+**Why this existed to be built.** The state-pattern migration rewrites ~790 lines of
+per-theme List CSS into shared base rules + tokens under the acceptance criterion "no
+visual regression" — and the repo had no gate that could check it.
+`apps/learn/e2e/theme-contrast.e2e.ts` is a WCAG-contrast ratchet, blind by construction
+to "the active mark changed from a 2px inset bar to a gradient fill"; there is no
+pixel-level visual-regression suite (`packages/ui/browser/README.md` is explicit that
+browser-mode tests are layout-only). So: an exact-match computed-style snapshot.
+
+**Shape.** Fixture `apps/learn/src/routes/embed/states/+page.svelte` owns the case matrix
+and declares each case as a `data-state-spec` JSON blob (`measure` / `set` / `interact` /
+`on`); `e2e/state-snapshot-collector.mjs` discovers cases from the DOM and drives them;
+`e2e/state-snapshot.e2e.ts` diffs against `e2e/state-snapshot.baseline.json` (3872 keys,
+540 KB). Adding a component means editing the fixture only — no collector change. Matrix:
+**5 styles × 2 modes × 2 skins × 14 cases × 2 icon kinds = 560 case instances**, recording
+colour / background / background-image / box-shadow / border / outline / weight /
+decoration per element *and* per rendered `::before`/`::after` (minimal's list guide line
+is a pseudo-element, so pseudos are load-bearing). Reset noise
+(`border: 0 solid #e5e7eb`, `outline-width: 3px` under `outline-style: none`) is pruned
+symmetrically on both sides of the diff, which cut the file 664 KB → 540 KB while making
+diffs readable.
+
+**The break-it check failed to break anything on the first try — and that was the finding.**
+The plan said "hand-edit one theme's active-mark colour". Did exactly that (minimal's
+`box-shadow: inset 2px 0 0 0 var(--accent)` → `var(--primary)`), rebuilt themes, ran the
+gate: **passed**. Not a harness bug. `apps/learn/rokkit.config.js` maps the default skin's
+`primary` and `accent` both to `shu`, so the two tokens compute to the same colour and the
+sabotage was a value-level no-op. That is precisely the substitution this migration will be
+tempted into (`--state-current-mark: var(--primary)` where the theme said `var(--accent)`),
+and a default-skin-only snapshot waves it through. Added the `ocean` skin
+(primary/secondary/accent → teal/emerald/sky, all distinct); re-running the identical
+sabotage produced **8 diffs, all in `ocean`, zero in `default`**. The blindness is now
+demonstrated rather than argued — and it is the same trap as the radar `preset.js` sabotage
+two entries up: a break-it check that silently does not apply.
+
+Second sabotage, the one the whole gate is justified by: minimal's group-focused mark from
+`inset` bar → gradient block fill. **16 diffs**, `box-shadow: … inset` →
+`background-image: linear-gradient(…)`. In the default skin that gradient computes to
+`linear-gradient(…, oklch(0.641 0.19 36), oklch(0.641 0.19 36))` — the same colour twice,
+a flat fill whose text contrast is *identical* to the bar it replaced. The contrast ratchet
+cannot see it. This gate does.
+
+**Made self-verifying, not just committed.** Every interaction asserts the pseudo-class
+actually matched (`el.matches(':hover'|':focus'|':active')`) and throws otherwise, so a
+selector typo cannot leave a case quietly measuring idle styles; a second test asserts the
+baseline is non-trivial (key count, exactly 560 cases, `inset` and `linear-gradient`
+present somewhere). Transitions are killed on the fixture — `base/list.css` animates
+background-color/color over 150ms, so an unguarded read right after `hover()` would capture
+a mid-transition value and flake.
+
+**Bonus finding, and it changes Phase 2: the List `[data-selected]` theme rules are dead
+code.** No component emits `[data-list-item][data-selected='true']`. `data-selected` comes
+from Toggle / Swatch / Tabs / Select / MultiSelect / Table / TreeTable on their own hooks,
+and from ItemToggle on `[data-item-toggle-option]` — never on a list item. `List.svelte` is
+single-value (`data-active` from `value`) with no `multiselect` prop, though
+`base/list.css` still carries `[data-list][data-multiselect='true']`. So ~20
+multi-selection rules across the five `<theme>/list.css` files are unreachable. Phase 2
+should probably delete rather than port them, but that needs an owner call — the other
+reading is that List is *missing* a multi-select feature the themes were written for. The
+harness covers them either way: the fixture sets the attribute on the real component DOM
+via the case spec's `set` clause, so they are snapshotted and cannot drift while the
+question is open.
+
+**Also corrected mid-flight:** the first matrix measured every element in each case,
+including the decoy item that exists only to hold focus for the `-groupfocus` cases. Its
+styling is already pinned by the dedicated `idle`/`focus` cases, so measuring it doubled
+every baseline entry to restate them. Cases now declare a `measure` selector and the
+collector records the list container plus that subtree only.
+
+**Gate at commit:** `bun run check` green end-to-end (lint **0 errors** / 117 pre-existing
+warnings → `tsc` → `svelte-check` → `build:apps` → `test:ci` **5774 passing / 383 files**);
+learn e2e **36 passing / 55s** (was 34 — the two new tests), snapshot test 31s of that;
+`theme-contrast.e2e.ts` still green.
+
+**Not done:** Phases 1–5 (token set, List, Tree, long tail, measure). `#152` Phase 2 still
+blocked on the typography scale-choice decision.
