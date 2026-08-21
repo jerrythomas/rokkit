@@ -19,6 +19,225 @@ type Route = {
 	build: (query: string) => Block[]
 }
 
+/**
+ * Plot/chart specs for the scripted demo routes, one per route id.
+ * Hoisted out of their `build` closures: each is a fixture, not logic, and
+ * inline they made every build method longer than it had any reason to be.
+ */
+
+/** `line-chart` route. */
+const LINE_CHART_SPEC = {
+	title: 'Monthly revenue · trends by product',
+	data: [
+		{ month: 'Jan', product: 'Pro', revenue: 80 },
+		{ month: 'Feb', product: 'Pro', revenue: 92 },
+		{ month: 'Mar', product: 'Pro', revenue: 110 },
+		{ month: 'Apr', product: 'Pro', revenue: 105 },
+		{ month: 'May', product: 'Pro', revenue: 128 },
+		{ month: 'Jun', product: 'Pro', revenue: 145 },
+		{ month: 'Jan', product: 'Lite', revenue: 30 },
+		{ month: 'Feb', product: 'Lite', revenue: 38 },
+		{ month: 'Mar', product: 'Lite', revenue: 42 },
+		{ month: 'Apr', product: 'Lite', revenue: 50 },
+		{ month: 'May', product: 'Lite', revenue: 48 },
+		{ month: 'Jun', product: 'Lite', revenue: 55 }
+	],
+	x: 'month',
+	y: 'revenue',
+	color: 'product',
+	legend: true,
+	geoms: [{ type: 'line' }],
+	height: 240,
+	grid: true,
+	margin: { top: 8, right: 16, bottom: 36, left: 44 }
+}
+
+/** `area-chart` route. */
+const AREA_CHART_SPEC = {
+	title: 'Monthly revenue · stacked area',
+	data: [
+		{ month: 'Jan', product: 'Pro', revenue: 80 },
+		{ month: 'Feb', product: 'Pro', revenue: 92 },
+		{ month: 'Mar', product: 'Pro', revenue: 110 },
+		{ month: 'Apr', product: 'Pro', revenue: 105 },
+		{ month: 'May', product: 'Pro', revenue: 128 },
+		{ month: 'Jun', product: 'Pro', revenue: 145 },
+		{ month: 'Jan', product: 'Lite', revenue: 30 },
+		{ month: 'Feb', product: 'Lite', revenue: 38 },
+		{ month: 'Mar', product: 'Lite', revenue: 42 },
+		{ month: 'Apr', product: 'Lite', revenue: 50 },
+		{ month: 'May', product: 'Lite', revenue: 48 },
+		{ month: 'Jun', product: 'Lite', revenue: 55 }
+	],
+	x: 'month',
+	y: 'revenue',
+	fill: 'product',
+	stack: true,
+	legend: true,
+	geoms: [{ type: 'area' }],
+	height: 240,
+	grid: true,
+	margin: { top: 8, right: 16, bottom: 36, left: 44 }
+}
+
+/** `pie-chart` route. */
+const PIE_CHART_SPEC = {
+	title: 'Market share by segment',
+	data: [
+		{ segment: 'Mobile', share: 42 },
+		{ segment: 'Desktop', share: 35 },
+		{ segment: 'Tablet', share: 15 },
+		{ segment: 'Smart TV', share: 5 },
+		{ segment: 'Other', share: 3 }
+	],
+	y: 'share',
+	fill: 'segment',
+	legend: true,
+	geoms: [{ type: 'arc', options: { innerRadius: 60 } }],
+	height: 280,
+	margin: { top: 8, right: 16, bottom: 8, left: 16 }
+}
+
+/** `scatter-plot` route. */
+const SCATTER_PLOT_SPEC = {
+	title: 'Engine displacement vs highway mpg',
+	data: [
+		{ class: 'compact', displ: 1.4, hwy: 35 },
+		{ class: 'compact', displ: 1.6, hwy: 33 },
+		{ class: 'compact', displ: 1.8, hwy: 31 },
+		{ class: 'midsize', displ: 2.0, hwy: 30 },
+		{ class: 'midsize', displ: 2.4, hwy: 28 },
+		{ class: 'midsize', displ: 3.0, hwy: 25 },
+		{ class: 'suv', displ: 3.0, hwy: 23 },
+		{ class: 'suv', displ: 3.5, hwy: 22 },
+		{ class: 'suv', displ: 4.0, hwy: 20 },
+		{ class: 'suv', displ: 4.6, hwy: 18 },
+		{ class: 'pickup', displ: 4.0, hwy: 19 },
+		{ class: 'pickup', displ: 5.0, hwy: 17 },
+		{ class: 'pickup', displ: 5.7, hwy: 16 }
+	],
+	x: 'displ',
+	y: 'hwy',
+	color: 'class',
+	legend: true,
+	geoms: [{ type: 'point' }],
+	height: 280,
+	grid: true,
+	margin: { top: 8, right: 16, bottom: 36, left: 44 }
+}
+
+/** `bubble-chart` route. */
+const BUBBLE_CHART_SPEC = {
+	title: 'City vs highway mpg · size = displ',
+	data: [
+		{ class: 'compact', cty: 28, hwy: 35, displ: 1.4 },
+		{ class: 'compact', cty: 26, hwy: 33, displ: 1.6 },
+		{ class: 'midsize', cty: 22, hwy: 30, displ: 2.0 },
+		{ class: 'midsize', cty: 20, hwy: 28, displ: 2.4 },
+		{ class: 'suv', cty: 17, hwy: 23, displ: 3.0 },
+		{ class: 'suv', cty: 16, hwy: 22, displ: 3.5 },
+		{ class: 'suv', cty: 14, hwy: 20, displ: 4.0 },
+		{ class: 'pickup', cty: 14, hwy: 19, displ: 4.0 },
+		{ class: 'pickup', cty: 12, hwy: 17, displ: 5.0 },
+		{ class: 'pickup', cty: 11, hwy: 16, displ: 5.7 }
+	],
+	x: 'cty',
+	y: 'hwy',
+	color: 'class',
+	legend: true,
+	geoms: [{ type: 'point', size: 'displ' }],
+	height: 280,
+	grid: true,
+	margin: { top: 8, right: 16, bottom: 36, left: 44 }
+}
+
+/** `box-plot` route. */
+const BOX_PLOT_SPEC = {
+	title: 'Highway mpg distribution by class',
+	data: [
+		{ class: 'compact', hwy: 35 }, { class: 'compact', hwy: 33 }, { class: 'compact', hwy: 31 }, { class: 'compact', hwy: 29 }, { class: 'compact', hwy: 27 },
+		{ class: 'midsize', hwy: 30 }, { class: 'midsize', hwy: 28 }, { class: 'midsize', hwy: 26 }, { class: 'midsize', hwy: 25 }, { class: 'midsize', hwy: 24 },
+		{ class: 'suv', hwy: 23 }, { class: 'suv', hwy: 22 }, { class: 'suv', hwy: 20 }, { class: 'suv', hwy: 18 }, { class: 'suv', hwy: 17 },
+		{ class: 'pickup', hwy: 19 }, { class: 'pickup', hwy: 17 }, { class: 'pickup', hwy: 16 }, { class: 'pickup', hwy: 15 }, { class: 'pickup', hwy: 14 }
+	],
+	x: 'class',
+	y: 'hwy',
+	geoms: [{ type: 'box' }],
+	height: 260,
+	grid: true,
+	margin: { top: 8, right: 16, bottom: 36, left: 44 }
+}
+
+/** `violin-plot` route. */
+const VIOLIN_PLOT_SPEC = {
+	title: 'Highway mpg density by class',
+	data: [
+		{ class: 'compact', hwy: 35 }, { class: 'compact', hwy: 33 }, { class: 'compact', hwy: 31 }, { class: 'compact', hwy: 29 }, { class: 'compact', hwy: 27 },
+		{ class: 'midsize', hwy: 30 }, { class: 'midsize', hwy: 28 }, { class: 'midsize', hwy: 26 }, { class: 'midsize', hwy: 25 }, { class: 'midsize', hwy: 24 },
+		{ class: 'suv', hwy: 23 }, { class: 'suv', hwy: 22 }, { class: 'suv', hwy: 20 }, { class: 'suv', hwy: 18 }, { class: 'suv', hwy: 17 },
+		{ class: 'pickup', hwy: 19 }, { class: 'pickup', hwy: 17 }, { class: 'pickup', hwy: 16 }, { class: 'pickup', hwy: 15 }, { class: 'pickup', hwy: 14 }
+	],
+	x: 'class',
+	y: 'hwy',
+	geoms: [{ type: 'violin' }],
+	height: 260,
+	grid: true,
+	margin: { top: 8, right: 16, bottom: 36, left: 44 }
+}
+
+/** `chart` route. */
+const CHART_SPEC = {
+	title: 'Quarterly revenue · FY 2026',
+	data: [
+		{ quarter: 'Q1', revenue: 42 },
+		{ quarter: 'Q2', revenue: 58 },
+		{ quarter: 'Q3', revenue: 51 },
+		{ quarter: 'Q4', revenue: 73 }
+	],
+	x: 'quarter',
+	y: 'revenue',
+	geoms: [{ type: 'bar' }],
+	height: 220,
+	grid: true,
+	margin: { top: 8, right: 16, bottom: 36, left: 44 }
+}
+/** `chart-grouped` route dataset — the spec around it varies with the query. */
+const REVENUE_BY_PRODUCT = [
+	{ quarter: 'Q1', product: 'Hardware', revenue: 24 },
+	{ quarter: 'Q1', product: 'Software', revenue: 18 },
+	{ quarter: 'Q2', product: 'Hardware', revenue: 31 },
+	{ quarter: 'Q2', product: 'Software', revenue: 27 },
+	{ quarter: 'Q3', product: 'Hardware', revenue: 28 },
+	{ quarter: 'Q3', product: 'Software', revenue: 23 },
+	{ quarter: 'Q4', product: 'Hardware', revenue: 39 },
+	{ quarter: 'Q4', product: 'Software', revenue: 34 }
+]
+
+/**
+ * `list` route items. Every leaf carries an explicit `value`: without one the
+ * selection value falls back to the raw item object and matching is by
+ * reference, which breaks as soon as it passes through `$state`.
+ */
+const SETTINGS_MENU_ITEMS = [
+	{
+		label: 'General',
+		icon: 'i-mdi:cog-outline',
+		children: [
+			{ label: 'Profile', value: 'profile', icon: 'i-mdi:account-outline' },
+			{ label: 'Account', value: 'account', icon: 'i-mdi:shield-account-outline' },
+			{ label: 'Notifications', value: 'notifications', icon: 'i-mdi:bell-outline' }
+		]
+	},
+	{
+		label: 'Appearance',
+		icon: 'i-mdi:palette-outline',
+		children: [
+			{ label: 'Theme', value: 'theme', icon: 'i-mdi:invert-colors' },
+			{ label: 'Density', value: 'density', icon: 'i-mdi:format-line-spacing' }
+		]
+	}
+]
+
 const ROUTES: Route[] = [
 	{
 		// Order matters: chart-grouped is the "stacked / grouped *bars*" case
@@ -30,19 +249,12 @@ const ROUTES: Route[] = [
 		id: 'chart-grouped',
 		keywords: /\b(grouped[\s-]?bar|stacked[\s-]?bar|stack[\s-]?the[\s-]?bars?|by[\s-]?product|two[\s-]?series|multi[\s-]?series)\b/i,
 		build: (q) => {
+			// The only spec that cannot be a plain fixture: `stack` is read from the
+			// query, so the object is built per call around the hoisted dataset.
 			const stack = /\b(stack|stacked)\b/i.test(q)
 			const spec = {
 				title: stack ? 'Revenue stacked by product' : 'Revenue by product',
-				data: [
-					{ quarter: 'Q1', product: 'Hardware', revenue: 24 },
-					{ quarter: 'Q1', product: 'Software', revenue: 18 },
-					{ quarter: 'Q2', product: 'Hardware', revenue: 31 },
-					{ quarter: 'Q2', product: 'Software', revenue: 27 },
-					{ quarter: 'Q3', product: 'Hardware', revenue: 28 },
-					{ quarter: 'Q3', product: 'Software', revenue: 23 },
-					{ quarter: 'Q4', product: 'Hardware', revenue: 39 },
-					{ quarter: 'Q4', product: 'Software', revenue: 34 }
-				],
+				data: REVENUE_BY_PRODUCT,
 				x: 'quarter',
 				y: 'revenue',
 				fill: 'product',
@@ -75,31 +287,7 @@ const ROUTES: Route[] = [
 			},
 			{
 				kind: 'markdown',
-				markdown: `\`\`\`plot\n${JSON.stringify({
-					title: 'Monthly revenue · trends by product',
-					data: [
-						{ month: 'Jan', product: 'Pro', revenue: 80 },
-						{ month: 'Feb', product: 'Pro', revenue: 92 },
-						{ month: 'Mar', product: 'Pro', revenue: 110 },
-						{ month: 'Apr', product: 'Pro', revenue: 105 },
-						{ month: 'May', product: 'Pro', revenue: 128 },
-						{ month: 'Jun', product: 'Pro', revenue: 145 },
-						{ month: 'Jan', product: 'Lite', revenue: 30 },
-						{ month: 'Feb', product: 'Lite', revenue: 38 },
-						{ month: 'Mar', product: 'Lite', revenue: 42 },
-						{ month: 'Apr', product: 'Lite', revenue: 50 },
-						{ month: 'May', product: 'Lite', revenue: 48 },
-						{ month: 'Jun', product: 'Lite', revenue: 55 }
-					],
-					x: 'month',
-					y: 'revenue',
-					color: 'product',
-					legend: true,
-					geoms: [{ type: 'line' }],
-					height: 240,
-					grid: true,
-					margin: { top: 8, right: 16, bottom: 36, left: 44 }
-				})}\n\`\`\``
+				markdown: `\`\`\`plot\n${JSON.stringify(LINE_CHART_SPEC)}\n\`\`\``
 			},
 			{
 				kind: 'suggestions',
@@ -121,32 +309,7 @@ const ROUTES: Route[] = [
 			},
 			{
 				kind: 'markdown',
-				markdown: `\`\`\`plot\n${JSON.stringify({
-					title: 'Monthly revenue · stacked area',
-					data: [
-						{ month: 'Jan', product: 'Pro', revenue: 80 },
-						{ month: 'Feb', product: 'Pro', revenue: 92 },
-						{ month: 'Mar', product: 'Pro', revenue: 110 },
-						{ month: 'Apr', product: 'Pro', revenue: 105 },
-						{ month: 'May', product: 'Pro', revenue: 128 },
-						{ month: 'Jun', product: 'Pro', revenue: 145 },
-						{ month: 'Jan', product: 'Lite', revenue: 30 },
-						{ month: 'Feb', product: 'Lite', revenue: 38 },
-						{ month: 'Mar', product: 'Lite', revenue: 42 },
-						{ month: 'Apr', product: 'Lite', revenue: 50 },
-						{ month: 'May', product: 'Lite', revenue: 48 },
-						{ month: 'Jun', product: 'Lite', revenue: 55 }
-					],
-					x: 'month',
-					y: 'revenue',
-					fill: 'product',
-					stack: true,
-					legend: true,
-					geoms: [{ type: 'area' }],
-					height: 240,
-					grid: true,
-					margin: { top: 8, right: 16, bottom: 36, left: 44 }
-				})}\n\`\`\``
+				markdown: `\`\`\`plot\n${JSON.stringify(AREA_CHART_SPEC)}\n\`\`\``
 			},
 			{
 				kind: 'suggestions',
@@ -167,22 +330,7 @@ const ROUTES: Route[] = [
 			},
 			{
 				kind: 'markdown',
-				markdown: `\`\`\`plot\n${JSON.stringify({
-					title: 'Market share by segment',
-					data: [
-						{ segment: 'Mobile', share: 42 },
-						{ segment: 'Desktop', share: 35 },
-						{ segment: 'Tablet', share: 15 },
-						{ segment: 'Smart TV', share: 5 },
-						{ segment: 'Other', share: 3 }
-					],
-					y: 'share',
-					fill: 'segment',
-					legend: true,
-					geoms: [{ type: 'arc', options: { innerRadius: 60 } }],
-					height: 280,
-					margin: { top: 8, right: 16, bottom: 8, left: 16 }
-				})}\n\`\`\``
+				markdown: `\`\`\`plot\n${JSON.stringify(PIE_CHART_SPEC)}\n\`\`\``
 			},
 			{
 				kind: 'suggestions',
@@ -203,32 +351,7 @@ const ROUTES: Route[] = [
 			},
 			{
 				kind: 'markdown',
-				markdown: `\`\`\`plot\n${JSON.stringify({
-					title: 'Engine displacement vs highway mpg',
-					data: [
-						{ class: 'compact', displ: 1.4, hwy: 35 },
-						{ class: 'compact', displ: 1.6, hwy: 33 },
-						{ class: 'compact', displ: 1.8, hwy: 31 },
-						{ class: 'midsize', displ: 2.0, hwy: 30 },
-						{ class: 'midsize', displ: 2.4, hwy: 28 },
-						{ class: 'midsize', displ: 3.0, hwy: 25 },
-						{ class: 'suv', displ: 3.0, hwy: 23 },
-						{ class: 'suv', displ: 3.5, hwy: 22 },
-						{ class: 'suv', displ: 4.0, hwy: 20 },
-						{ class: 'suv', displ: 4.6, hwy: 18 },
-						{ class: 'pickup', displ: 4.0, hwy: 19 },
-						{ class: 'pickup', displ: 5.0, hwy: 17 },
-						{ class: 'pickup', displ: 5.7, hwy: 16 }
-					],
-					x: 'displ',
-					y: 'hwy',
-					color: 'class',
-					legend: true,
-					geoms: [{ type: 'point' }],
-					height: 280,
-					grid: true,
-					margin: { top: 8, right: 16, bottom: 36, left: 44 }
-				})}\n\`\`\``
+				markdown: `\`\`\`plot\n${JSON.stringify(SCATTER_PLOT_SPEC)}\n\`\`\``
 			},
 			{
 				kind: 'suggestions',
@@ -249,29 +372,7 @@ const ROUTES: Route[] = [
 			},
 			{
 				kind: 'markdown',
-				markdown: `\`\`\`plot\n${JSON.stringify({
-					title: 'City vs highway mpg · size = displ',
-					data: [
-						{ class: 'compact', cty: 28, hwy: 35, displ: 1.4 },
-						{ class: 'compact', cty: 26, hwy: 33, displ: 1.6 },
-						{ class: 'midsize', cty: 22, hwy: 30, displ: 2.0 },
-						{ class: 'midsize', cty: 20, hwy: 28, displ: 2.4 },
-						{ class: 'suv', cty: 17, hwy: 23, displ: 3.0 },
-						{ class: 'suv', cty: 16, hwy: 22, displ: 3.5 },
-						{ class: 'suv', cty: 14, hwy: 20, displ: 4.0 },
-						{ class: 'pickup', cty: 14, hwy: 19, displ: 4.0 },
-						{ class: 'pickup', cty: 12, hwy: 17, displ: 5.0 },
-						{ class: 'pickup', cty: 11, hwy: 16, displ: 5.7 }
-					],
-					x: 'cty',
-					y: 'hwy',
-					color: 'class',
-					legend: true,
-					geoms: [{ type: 'point', size: 'displ' }],
-					height: 280,
-					grid: true,
-					margin: { top: 8, right: 16, bottom: 36, left: 44 }
-				})}\n\`\`\``
+				markdown: `\`\`\`plot\n${JSON.stringify(BUBBLE_CHART_SPEC)}\n\`\`\``
 			}
 		]
 	},
@@ -285,21 +386,7 @@ const ROUTES: Route[] = [
 			},
 			{
 				kind: 'markdown',
-				markdown: `\`\`\`plot\n${JSON.stringify({
-					title: 'Highway mpg distribution by class',
-					data: [
-						{ class: 'compact', hwy: 35 }, { class: 'compact', hwy: 33 }, { class: 'compact', hwy: 31 }, { class: 'compact', hwy: 29 }, { class: 'compact', hwy: 27 },
-						{ class: 'midsize', hwy: 30 }, { class: 'midsize', hwy: 28 }, { class: 'midsize', hwy: 26 }, { class: 'midsize', hwy: 25 }, { class: 'midsize', hwy: 24 },
-						{ class: 'suv', hwy: 23 }, { class: 'suv', hwy: 22 }, { class: 'suv', hwy: 20 }, { class: 'suv', hwy: 18 }, { class: 'suv', hwy: 17 },
-						{ class: 'pickup', hwy: 19 }, { class: 'pickup', hwy: 17 }, { class: 'pickup', hwy: 16 }, { class: 'pickup', hwy: 15 }, { class: 'pickup', hwy: 14 }
-					],
-					x: 'class',
-					y: 'hwy',
-					geoms: [{ type: 'box' }],
-					height: 260,
-					grid: true,
-					margin: { top: 8, right: 16, bottom: 36, left: 44 }
-				})}\n\`\`\``
+				markdown: `\`\`\`plot\n${JSON.stringify(BOX_PLOT_SPEC)}\n\`\`\``
 			},
 			{
 				kind: 'suggestions',
@@ -320,21 +407,7 @@ const ROUTES: Route[] = [
 			},
 			{
 				kind: 'markdown',
-				markdown: `\`\`\`plot\n${JSON.stringify({
-					title: 'Highway mpg density by class',
-					data: [
-						{ class: 'compact', hwy: 35 }, { class: 'compact', hwy: 33 }, { class: 'compact', hwy: 31 }, { class: 'compact', hwy: 29 }, { class: 'compact', hwy: 27 },
-						{ class: 'midsize', hwy: 30 }, { class: 'midsize', hwy: 28 }, { class: 'midsize', hwy: 26 }, { class: 'midsize', hwy: 25 }, { class: 'midsize', hwy: 24 },
-						{ class: 'suv', hwy: 23 }, { class: 'suv', hwy: 22 }, { class: 'suv', hwy: 20 }, { class: 'suv', hwy: 18 }, { class: 'suv', hwy: 17 },
-						{ class: 'pickup', hwy: 19 }, { class: 'pickup', hwy: 17 }, { class: 'pickup', hwy: 16 }, { class: 'pickup', hwy: 15 }, { class: 'pickup', hwy: 14 }
-					],
-					x: 'class',
-					y: 'hwy',
-					geoms: [{ type: 'violin' }],
-					height: 260,
-					grid: true,
-					margin: { top: 8, right: 16, bottom: 36, left: 44 }
-				})}\n\`\`\``
+				markdown: `\`\`\`plot\n${JSON.stringify(VIOLIN_PLOT_SPEC)}\n\`\`\``
 			}
 		]
 	},
@@ -348,21 +421,7 @@ const ROUTES: Route[] = [
 			},
 			{
 				kind: 'markdown',
-				markdown: `\`\`\`plot\n${  JSON.stringify({
-					title: 'Quarterly revenue · FY 2026',
-					data: [
-						{ quarter: 'Q1', revenue: 42 },
-						{ quarter: 'Q2', revenue: 58 },
-						{ quarter: 'Q3', revenue: 51 },
-						{ quarter: 'Q4', revenue: 73 }
-					],
-					x: 'quarter',
-					y: 'revenue',
-					geoms: [{ type: 'bar' }],
-					height: 220,
-					grid: true,
-					margin: { top: 8, right: 16, bottom: 36, left: 44 }
-				})  }\n\`\`\``
+				markdown: `\`\`\`plot\n${  JSON.stringify(CHART_SPEC)  }\n\`\`\``
 			},
 			{
 				kind: 'suggestions',
@@ -448,28 +507,10 @@ const ROUTES: Route[] = [
 				kind: 'component',
 				tool: 'mount_list',
 				caption: 'Settings',
-				props: {
-					items: [
-						{
-							label: 'General',
-							icon: 'i-mdi:cog-outline',
-							children: [
-								{ label: 'Profile', icon: 'i-mdi:account-outline' },
-								{ label: 'Account', icon: 'i-mdi:shield-account-outline' },
-								{ label: 'Notifications', icon: 'i-mdi:bell-outline' }
-							]
-						},
-						{
-							label: 'Appearance',
-							icon: 'i-mdi:palette-outline',
-							children: [
-								{ label: 'Theme', icon: 'i-mdi:invert-colors' },
-								{ label: 'Density', icon: 'i-mdi:format-line-spacing' }
-							]
-						}
-					],
-					collapsible: true
-				}
+				// `value` is seeded for the same reason the /app/list demo seeds it:
+				// with `collapsible` and no active value List expands nothing, so the
+				// component would mount as two closed headers and no items.
+				props: { items: SETTINGS_MENU_ITEMS, collapsible: true, value: 'profile' }
 			}
 		]
 	}
@@ -557,24 +598,29 @@ function buildRecordBlocks(
 			caption: 'Editable record',
 			props: { schema: schemaFromRecord(inf.record), data: inf.record }
 		},
-		{
-			kind: 'suggestions',
-			intro: 'Or',
-			items: [
-				{
-					label: 'Wrap in a list',
-					query: 'Wrap this record in a one-item list',
-					action: {
-						kind: 'reshape',
-						source,
-						data: [inf.record],
-						force: 'table',
-						caption: 'as a 1-row table'
-					}
-				}
-			]
-		}
+		recordSuggestions(source, inf.record)
 	]
+}
+
+/** The one follow-up a record offers: re-render it as a 1-row table. */
+function recordSuggestions(source: 'json' | 'csv', record: unknown): Block {
+	return {
+		kind: 'suggestions',
+		intro: 'Or',
+		items: [
+			{
+				label: 'Wrap in a list',
+				query: 'Wrap this record in a one-item list',
+				action: {
+					kind: 'reshape',
+					source,
+					data: [record],
+					force: 'table',
+					caption: 'as a 1-row table'
+				}
+			}
+		]
+	}
 }
 
 function buildTableBlocks(
@@ -611,6 +657,21 @@ function buildChartBlocks(
 	source: 'json' | 'csv',
 	inf: Extract<Inference, { kind: 'chart' }>
 ): Block[] {
+	const props = chartProps(inf)
+	return [
+		dataNote('chart', source, inf.columns, inf.rows.length),
+		{
+			kind: 'component',
+			tool: 'mount_bar_chart',
+			caption: `${inf.y} by ${inf.x}${inf.fill ? ` (grouped by ${inf.fill})` : ''}`,
+			props
+		},
+		chartSuggestions(source, inf, props)
+	]
+}
+
+/** Chart props from an inference. A `fill` channel also turns the legend on. */
+function chartProps(inf: Extract<Inference, { kind: 'chart' }>): Record<string, unknown> {
 	const props: Record<string, unknown> = {
 		data: inf.rows,
 		x: inf.x,
@@ -622,39 +683,48 @@ function buildChartBlocks(
 		props.fill = inf.fill
 		props.legend = true
 	}
-	const stackProps: Record<string, unknown> = { ...props, stack: true }
+	return props
+}
+
+/**
+ * Follow-ups a chart offers: the table view always, plus stacking when there is
+ * a series channel to stack by.
+ */
+function chartSuggestions(
+	source: 'json' | 'csv',
+	inf: Extract<Inference, { kind: 'chart' }>,
+	props: Record<string, unknown>
+): Block {
+	return {
+		kind: 'suggestions',
+		intro: 'Or',
+		items: [
+			{
+				label: 'Show as a table',
+				query: 'Show the data as a table',
+				action: { kind: 'reshape', source, data: inf.rows, force: 'table' }
+			},
+			...stackSuggestion(inf, props)
+		]
+	}
+}
+
+/** The "stack the series" chip — only offered when there is a series to stack by. */
+function stackSuggestion(
+	inf: Extract<Inference, { kind: 'chart' }>,
+	props: Record<string, unknown>
+) {
+	if (!inf.fill) return []
 	return [
-		dataNote('chart', source, inf.columns, inf.rows.length),
 		{
-			kind: 'component',
-			tool: 'mount_bar_chart',
-			caption: `${inf.y} by ${inf.x}${inf.fill ? ` (grouped by ${inf.fill})` : ''}`,
-			props
-		},
-		{
-			kind: 'suggestions',
-			intro: 'Or',
-			items: [
-				{
-					label: 'Show as a table',
-					query: 'Show the data as a table',
-					action: { kind: 'reshape', source, data: inf.rows, force: 'table' }
-				},
-				...(inf.fill
-					? [
-							{
-								label: 'Stack the series',
-								query: `Stack the chart by ${inf.fill}`,
-								action: {
-									kind: 'props' as const,
-									tool: 'mount_bar_chart',
-									props: stackProps,
-									caption: `${inf.y} stacked by ${inf.fill}`
-								}
-							}
-						]
-					: [])
-			]
+			label: 'Stack the series',
+			query: `Stack the chart by ${inf.fill}`,
+			action: {
+				kind: 'props' as const,
+				tool: 'mount_bar_chart',
+				props: { ...props, stack: true },
+				caption: `${inf.y} stacked by ${inf.fill}`
+			}
 		}
 	]
 }
