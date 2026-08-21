@@ -40,14 +40,14 @@ const meta: DemoMeta = {
 		props: [
 			{ name: 'items', type: 'any[]', default: '[]', desc: 'Array of items (objects or primitives)' },
 			{ name: 'fields', type: 'FieldMapping', desc: 'Remap data keys to component fields' },
-			{ name: 'value', type: 'any', default: 'null', desc: 'Currently selected item value', bindable: true },
+			{ name: 'value', type: 'any', default: 'null', desc: 'Currently selected item value. Two-way — a selection writes it back, so `bind:value` is all you need', bindable: true },
 			{ name: 'collapsible', type: 'boolean', default: 'false', desc: 'Allow groups to expand/collapse' },
 			{ name: 'icons', type: 'Partial<IconMap>', desc: 'Override expand/collapse icons' },
 			{ name: 'disabled', type: 'boolean', default: 'false', desc: 'Disable the entire list' },
 			{ name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", desc: 'Row density' }
 		],
 		events: [
-			{ name: 'onselect', signature: '(value, proxy) => void', desc: 'Fires when an item is selected — receives raw value + ProxyItem' }
+			{ name: 'onselect', signature: '(value, proxy) => void', desc: 'Fires when an item is selected — receives raw value + ProxyItem. Notification only; `value` is already updated by the time it runs' }
 		],
 		attrs: [
 			{ selector: '[data-list]', desc: 'Root <nav> (carries data-size, data-collapsible)' },

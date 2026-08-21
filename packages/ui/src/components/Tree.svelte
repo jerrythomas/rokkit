@@ -46,8 +46,23 @@
 
 	const icons = $derived({ ...DEFAULT_STATE_ICONS.folder, ...userIcons })
 
+	/**
+	 * The outbound half of `value` — see List's handleSelect for the full
+	 * reasoning; the contract is identical. Skips disabled nodes, skips a write
+	 * that wouldn't change anything, and writes before notifying so a consumer's
+	 * own assignment in `onselect` still wins.
+	 *
+	 * Runs from a DOM event rather than an effect, so writing the prop here cannot
+	 * re-enter the moveToValue effect below.
+	 */
+	function handleSelect(next: unknown, proxy: ProxyItem) {
+		if (proxy.disabled) return
+		if (next !== value) value = next
+		onselect?.(next, proxy)
+	}
+
 	const proxyTree = $derived(new ProxyTree(items, fields))
-	const wrapper = $derived(new LazyWrapper(proxyTree, { onselect }))
+	const wrapper = $derived(new LazyWrapper(proxyTree, { onselect: handleSelect }))
 
 	let treeRef = $state<HTMLElement | null>(null)
 

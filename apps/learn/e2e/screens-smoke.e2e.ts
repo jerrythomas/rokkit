@@ -74,13 +74,13 @@ const SCREENS: Screen[] = [
 			// and collapses the rest. It has to be a DIFFERENT item than the seeded
 			// one: expansion is recomputed by an effect on `value`, so re-selecting
 			// the already-active row changes nothing and nothing would collapse.
-			// This also covers the demo's onselect wiring — List never writes back
-			// to `value` itself, so without it the selection could not move at all.
+			// This also covers List honouring `bind:value`: it writes the selection
+			// back itself, so no onselect workaround is needed for the row to move.
 			await page.locator('[data-list-item]').filter({ hasText: 'Theme' }).first().click()
 			await expect(page.locator('[data-list-group][aria-expanded="true"]')).toHaveCount(1)
 			await expect(
 				page.locator('[data-list-item][data-active="true"]'),
-				'selecting a row did not move the active item — is onselect wired?'
+				'selecting a row did not move the active item — is bind:value honoured?'
 			).toHaveCount(1)
 
 			await page.keyboard.press('ArrowDown')

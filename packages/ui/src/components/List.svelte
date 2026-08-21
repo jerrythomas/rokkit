@@ -66,11 +66,46 @@
 
 	const icons = $derived({ ...DEFAULT_STATE_ICONS.accordion, ...userIcons })
 
+	/**
+	 * The outbound half of `value`. It is two-way: inbound it decides `data-active`
+	 * and which group is expanded; outbound a selection publishes the new value.
+	 * This is the only place `value` is written.
+	 *
+	 * Three deliberate details:
+	 *
+	 * - `proxy.disabled` bails, matching Select. A disabled row is unreachable by
+	 *   pointer (base CSS sets `pointer-events: none`) but not by the keyboard.
+	 *
+	 * - The write is skipped when nothing changed. `onselect` fires on EVERY
+	 *   activation, re-activating the already-active row included, and writing
+	 *   unconditionally would invalidate `value` for every consumer and re-run both
+	 *   effects below — including `syncExpandedGroups`, which would collapse any
+	 *   group the user had opened by hand — for no actual change.
+	 *
+	 * - The write lands BEFORE the consumer's callback, so a consumer reading the
+	 *   bound variable inside `onselect` sees the new value, and a consumer that
+	 *   assigns its own (transformed, or reverted) value writes last and wins. That
+	 *   ordering is what keeps existing `onselect={(v) => (mine = v)}` code behaving
+	 *   exactly as it did before `value` became two-way.
+	 *
+	 * No feedback loop: this runs from a DOM event, never from an effect, so writing
+	 * a prop here cannot re-enter the effects that read it. `moveToValue` then
+	 * re-syncs to the value it already holds and settles.
+	 *
+	 * Persisting the write needs `bind:value` — assigning a non-bound `$bindable`
+	 * updates only the local fallback, same as every other Svelte component.
+	 */
+	function handleSelect(next: unknown, proxy: ProxyItem) {
+		if (proxy.disabled) return
+		if (next !== value) value = next
+		onselect?.(next, proxy)
+	}
+
 	// Single source of truth.
 	// Navigator calls wrapper[action](path) → focusedKey / proxy.expanded updates →
 	// flatView $derived re-computes → Svelte re-renders the changed nodes.
 	const proxyTree = $derived(new ProxyTree(items, fields))
-	const wrapper = $derived(new Wrapper(proxyTree, { onselect, collapsible }))
+	const wrapper = $derived(new Wrapper(proxyTree, { onselect: handleSelect, collapsible }))
 
 	let listRef = $state<HTMLElement | null>(null)
 
@@ -117,6 +152,9 @@
 	$effect(syncExpandedGroups)
 
 	// ─── Sync external value → focused key ────────────────────────────────────
+	// The inbound half of the two-way `value`. Safe against the outbound write in
+	// handleSelect: moveToValue only assigns focusedKey/selectedValue, neither of
+	// which this effect reads, so a selection settles in one pass.
 
 	$effect(() => {
 		wrapper.moveToValue(value)

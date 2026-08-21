@@ -1162,7 +1162,7 @@ ${tabsTag}`
   let value = $state('profile')
 <\/script>
 
-<List {items} bind:value onselect={(next) => (value = next)} />`
+<List {items} bind:value />`
 		}
 		if (activeVariant?.id === 'snippets') {
 			return `<script>
@@ -1172,7 +1172,7 @@ ${tabsTag}`
   let value = $state('profile')
 <\/script>
 
-<List {items} collapsible bind:value onselect={(next) => (value = next)}>
+<List {items} collapsible bind:value>
   {#snippet itemContent(proxy)}
     <span class={proxy.get('icon')} aria-hidden="true"></span>
     <span class="custom-label">{proxy.label}</span>
@@ -1209,7 +1209,7 @@ ${tabsTag}`
   let value = $state('profile')
 <\/script>
 
-<List {items} collapsible bind:value onselect={(next) => (value = next)} />`
+<List {items} collapsible bind:value />`
 	})
 
 	// MultiSelect demo state — colors with chip overflow
@@ -2715,16 +2715,16 @@ ${tabsTag}`
 								<span style="font:500 10px var(--font-ui);color:var(--accent);background:color-mix(in oklab,var(--accent) 12%,var(--paper-soft));padding:2px 6px;border-radius:4px">CUSTOM</span>
 							{/snippet}
 							<!--
-								`onselect` is required, not optional garnish: unlike Select, List
-								never writes back to its own `value` prop — the Wrapper fires
-								onselect and the consumer owns the state. Without this the active
-								row (and the group expansion derived from it) would never move.
+								`bind:value` alone is enough: List writes the selection back, so the
+								active row and the group expansion derived from it both follow a
+								click. It did not always — the demo carried an
+								`onselect={(v) => (listValue = v)}` workaround until List started
+								honouring the binding it already advertised.
 							-->
 							<List
 								items={listItems}
 								collapsible={activeVariant?.id !== 'flat'}
 								bind:value={listValue}
-								onselect={(next) => (listValue = next)}
 								itemContent={activeVariant?.id === 'snippets' ? listItemSnippet : undefined}
 								{...variantProps}
 							/>

@@ -47,14 +47,14 @@ const meta: DemoMeta = {
 		props: [
 			{ name: 'items', type: 'any[]', default: '[]', desc: 'Nested array of node objects' },
 			{ name: 'fields', type: 'FieldMapping', desc: 'Remap data keys to component fields (label / value / children / icon)' },
-			{ name: 'value', type: 'any', default: 'null', desc: 'Currently selected node value', bindable: true },
+			{ name: 'value', type: 'any', default: 'null', desc: 'Currently selected node value. Two-way — a selection writes it back, so `bind:value` is all you need', bindable: true },
 			{ name: 'lineStyle', type: "'solid' | 'dashed' | 'dotted' | 'none'", default: "'solid'", desc: 'Indent connector line style' },
 			{ name: 'icons', type: 'Partial<IconMap>', desc: 'Override expand/collapse icons' },
 			{ name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", desc: 'Row density' },
 			{ name: 'class', type: 'string', default: "''", desc: 'Additional CSS class names' }
 		],
 		events: [
-			{ name: 'onselect', signature: '(value, proxy) => void', desc: 'Fires when a node is selected — receives raw value + ProxyItem' }
+			{ name: 'onselect', signature: '(value, proxy) => void', desc: 'Fires when a node is selected — receives raw value + ProxyItem. Notification only; `value` is already updated by the time it runs' }
 		],
 		attrs: [
 			{ selector: '[data-tree-root]', desc: 'Root container' },
