@@ -40,6 +40,9 @@ export default [
       '**/spec/error/*.js',
       '**/fixtures/error/*.js',
       '**/fixtures/**/invalid.js',
+      // Scratch output written by convert.spec.js and removed in its afterAll; an
+      // interrupted run leaves generated files that are not ours to lint.
+      '**/spec/fixtures/output/**',
       '**/dist/**',
       '**/node_modules/**',
       '**/coverage/**',

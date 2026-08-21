@@ -219,3 +219,8 @@ AGENTS.md
 
 # Local design mockups (not tracked)
 docs/mockups/
+
+# CLI convert-command scratch output. convert.spec.js writes here and removes it in
+# afterAll, but an interrupted run leaves generated files behind that then fail lint
+# (`require()` style import in a generated index.js).
+packages/cli/spec/fixtures/output/
