@@ -123,12 +123,27 @@ covered by the named token set); compound states like "selected + hover + group-
 
 - `18-state-patterns.md` §Refactoring shows the exact before/after for
   `minimal` + List — start from that snippet, it is the contract.
-- The rokkit theme is the awkward one: its active mark is a **gradient**, so
-  `--state-current-mark` has to be usable as a `background-image` in one theme and an
-  inset `box-shadow` colour in another. The doc acknowledges this
-  (§Mark tier, "the mark replaces inset with bg") but does not resolve it. Decide that
-  before Phase 2, or rokkit will force a per-theme component rule back in and defeat
-  the exercise.
+- **RESOLVED 2026-08-21 — divergent mark shapes get a scoped rule, not an overloaded
+  token.** rokkit's current-mark is a gradient fill; minimal's is an inset bar. Rather
+  than force `--state-current-mark` to serve as a `background-image` in one theme and a
+  `box-shadow` colour in another, the theme targets the state's `data-` attribute
+  directly and overrides the property it needs:
+
+  ```css
+  [data-style='rokkit'] [data-list-item][data-active='true'] {
+    background-image: linear-gradient(to right, var(--primary), var(--accent));
+    box-shadow: none;
+  }
+  ```
+
+  A token that has to be reinterpreted per theme is worse than an explicit rule — it
+  looks shared while behaving differently. Written up in `18-state-patterns.md`
+  §Mark tier.
+
+  **Consequence for the target:** the goal is "themes stop repeating the *same* state
+  rules", not "zero per-theme component CSS". Report the measured reduction in Phase 5
+  against that framing rather than the doc's original ~600-line figure, which assumed
+  full collapse.
 - Per the themes memory note: skin-role colours resolve as `@apply` gradient stops but
   named-token shortcuts silently drop — use raw `linear-gradient` + `color-mix` in theme
   CSS, not `@apply`.

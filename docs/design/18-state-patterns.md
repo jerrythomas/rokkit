@@ -143,22 +143,43 @@ Component-side:
 }
 ```
 
-Theme overrides change the shape, not the component:
+A theme that uses the *same shape* retokens and writes no component CSS:
 
 ```css
-/* minimal — thin inset bar */
+/* minimal — thin inset bar, the base recipe's shape */
 [data-style='minimal'] {
   --state-current-mark: var(--accent);
   --state-current-mark-width: 2px;
 }
+```
 
-/* rokkit — gradient block fill (the mark replaces inset with bg) */
-[data-style='rokkit'] {
-  --state-current-mark: linear-gradient(to right, var(--primary), var(--accent));
-  --state-current-mark-width: 0;
-  /* and a layered rule: --state-current-bg overrides to be the gradient */
+### ⚠ When a theme's mark is a different shape, scope a rule — don't overload the token
+
+`rokkit`'s current-mark is a **gradient block fill**; `minimal`'s is an **inset bar**.
+Those are not one value with two settings, and a single `--state-current-mark` cannot be
+both a `background-image` and a `box-shadow` colour without meaning something different
+per theme — which is exactly the drift these tokens exist to remove.
+
+**Decision:** tokens carry the values that genuinely are shared (colour, width, strength).
+Where the mark's *shape* differs, the theme targets the state's `data-` attribute directly
+and overrides the property it actually needs:
+
+```css
+/* rokkit — the mark IS the fill, so say so, scoped by the data attribute */
+[data-style='rokkit'] [data-list-item][data-active='true'] {
+  background-image: linear-gradient(to right, var(--primary), var(--accent));
+  box-shadow: none;
 }
 ```
+
+This is not a failure of the token model. A token that has to be reinterpreted per theme
+is worse than an explicit rule: it looks shared while behaving differently, and the next
+person reading `--state-current-mark` cannot tell which meaning applies. The data
+attribute is the state hook — using it is the point.
+
+So the reduction target is "themes stop repeating the *same* state rules", not "zero
+per-theme component CSS". A theme with a genuinely distinct treatment keeps one small
+scoped rule, and that is the correct outcome.
 
 ### Affordance tier — focus rings, cursors
 
