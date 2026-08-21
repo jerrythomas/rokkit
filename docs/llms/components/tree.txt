@@ -58,13 +58,13 @@ All of these are data-driven. You do **not** need a snippet to show an icon, a b
 |------|------|---------|-------------|
 | `items` | `unknown[]` | `[]` | Hierarchical data array |
 | `fields` | `Record<string,string>` | `{}` | Remap data keys to component fields |
-| `value` | `unknown` | — | Selected value — use `bind:value` |
+| `value` | `unknown` | — | Selected value. **Two-way** — a selection writes it back, so `bind:value` is all you need |
 | `size` | `'sm'\|'md'\|'lg'` | `'md'` | Size variant |
 | `lineStyle` | `'none'\|'solid'\|'dashed'\|'dotted'` | `'solid'` | Tree connector line style |
 | `icons` | `{ opened?: string; closed?: string }` | — | Override expand/collapse icons |
 | `labels` | `Record<string,string>` | — | Override ARIA labels (expand/collapse/root) |
 | `class` | `string` | `''` | Additional CSS classes on the root `<div>` |
-| `onselect` | `(value, proxy) => void` | — | Called when a node is selected |
+| `onselect` | `(value, proxy) => void` | — | Called when a node is selected. Notification only — `value` is already updated when it runs, and assigning your own value here overrides it |
 
 ## Field mapping (complete)
 
@@ -73,7 +73,7 @@ Default field names the component reads from your data. Override only the ones t
 | Field | Default data key | Renders |
 |-------|------------------|---------|
 | `label` | `'label'` | display text |
-| `value` | `'value'` | selection value (falls back to the raw item) |
+| `value` | `'value'` | selection value (falls back to the raw item — see the warning below) |
 | `icon` | `'icon'` | icon class **or** literal char/emoji (leaf nodes only by default) |
 | `badge` | `'badge'` | trailing badge/count |
 | `shortcut` | `'shortcut'` | trailing `<kbd>` hint |
@@ -82,6 +82,12 @@ Default field names the component reads from your data. Override only the ones t
 | `snippet` | `'snippet'` | per-node named-snippet override (Tier 2) |
 | `disabled` | `'disabled'` | disabled state |
 | `expanded` | `'expanded'` | initial expand state for a branch node |
+
+> **Give your nodes an explicit `value`.** Without one, the selection value falls back to the
+> raw item OBJECT and matching is by reference — which breaks the moment that value passes
+> through `$state`, because Svelte deep-proxies objects. `$state(items[0])` stores a Proxy,
+> `Tree` compares it against the raw item, and nothing ever matches: no active row, and for
+> a `collapsible` Tree no expanded group either. A primitive `value` compares reliably.
 
 ```svelte
 <Tree {items} fields={{ label: 'name', value: 'path', icon: 'symbol' }} bind:value />

@@ -55,13 +55,13 @@ All of these are data-driven. You do **not** need a snippet to show an icon, a b
 |------|------|---------|-------------|
 | `items` | `unknown[]` | `[]` | Data array (objects or primitives) |
 | `fields` | `Record<string,string>` | `{}` | Remap data keys to component fields |
-| `value` | `unknown` | — | Selected value — use `bind:value` |
+| `value` | `unknown` | — | Selected value. **Two-way** — a selection writes it back, so `bind:value` is all you need |
 | `size` | `'sm'\|'md'\|'lg'` | `'md'` | Size variant |
 | `disabled` | `boolean` | `false` | Disable all items |
 | `collapsible` | `boolean` | `false` | Allow groups to be expanded/collapsed |
 | `icons` | `{ opened?, closed? }` | — | Override expand/collapse icons |
 | `class` | `string` | `''` | Additional CSS classes on the root `<nav>` |
-| `onselect` | `(value, proxy) => void` | — | Called when an item is selected |
+| `onselect` | `(value, proxy) => void` | — | Called when an item is selected. Notification only — `value` is already updated when it runs, and assigning your own value here overrides it |
 
 ## Field mapping (complete)
 
@@ -70,7 +70,7 @@ Default field names the component reads from your data. Override only the ones t
 | Field | Default data key | Renders |
 |-------|------------------|---------|
 | `label` | `'label'` | display text |
-| `value` | `'value'` | selection value (falls back to the raw item) |
+| `value` | `'value'` | selection value (falls back to the raw item — see the warning below) |
 | `icon` | `'icon'` | icon class **or** literal char/emoji |
 | `avatar` | `'image'` | avatar `<img>` |
 | `subtext` | `'description'` | secondary subtitle line |
@@ -80,8 +80,14 @@ Default field names the component reads from your data. Override only the ones t
 | `children` | `'children'` | nested items array → group |
 | `type` | `'type'` | `'separator'` / `'spacer'` structural markers |
 | `disabled` | `'disabled'` | disabled state |
-| `expanded` | `'expanded'` | initial expand state for a group |
+| `expanded` | `'expanded'` | initial expand state for a group — ignored when `collapsible` is set (see below) |
 | `snippet` | `'snippet'` | per-item/group named-snippet override (Tier 2) |
+
+> **Give your items an explicit `value`.** Without one, the selection value falls back to the
+> raw item OBJECT and matching is by reference — which breaks the moment that value passes
+> through `$state`, because Svelte deep-proxies objects. `$state(items[0])` stores a Proxy,
+> `List` compares it against the raw item, and nothing ever matches: no active row, and for
+> a `collapsible` List no expanded group either. A primitive `value` compares reliably.
 
 ```svelte
 <List {items} fields={{ label: 'name', value: 'path', subtext: 'summary' }} bind:value />
@@ -89,11 +95,25 @@ Default field names the component reads from your data. Override only the ones t
 
 ## Grouped items / collapsible sections
 
-Items with a `children` array become collapsible group headers. Add `collapsible` to allow toggling; groups start collapsed unless `expanded: true`.
+Items with a `children` array become group headers. Add `collapsible` to make them toggleable.
+
+Which groups are open is derived from the active `value`, NOT from the data:
+
+- **without `collapsible`** — every group is expanded and its header is a static, non-interactive section label.
+- **with `collapsible`** — the group containing the active `value` is open and the rest are closed; selecting an item re-anchors that, while a header click toggles just its own group. Seed `value` to choose what is open on first paint — with no value, nothing is expanded.
+
+> `expanded: true` on an item is **not** honoured when `collapsible` is set — the value-driven
+> sync overwrites it. (It *is* honoured by `Tree`.) Use `value` instead.
 
 ```svelte
+<script>
+  // Seeded, so the Mail group is open on arrival. Left undefined, every group
+  // starts closed and the list shows headers only.
+  let value = $state('inbox')
+</script>
+
 <List items={[
-  { label: 'Mail', expanded: true, children: [
+  { label: 'Mail', children: [
     { label: 'Inbox', value: 'inbox', badge: '8' },
     { label: 'Drafts', value: 'drafts' }
   ]},

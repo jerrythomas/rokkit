@@ -124,6 +124,38 @@ describe('List — two-way value', () => {
 		expect(container.querySelectorAll('[data-list-group][aria-expanded="true"]')).toHaveLength(1)
 	})
 
+	/**
+	 * Pins the asymmetry documented in docs/llms/components/list.txt: with
+	 * `collapsible`, expansion is derived from the active value and an item's own
+	 * `expanded: true` is overwritten by syncExpandedGroups. Tree honours it —
+	 * Tree has no equivalent sync. Asserted so the docs and the code cannot drift
+	 * apart silently; if List ever starts honouring the flag, this fails and the
+	 * docs get updated with it.
+	 */
+	it('collapsible mode ignores an item-level expanded flag — value drives it', () => {
+		const seeded = [
+			{ label: 'Mail', expanded: true, children: [{ label: 'Inbox', value: 'inbox' }] },
+			{ label: 'Settings', children: [{ label: 'Profile', value: 'profile' }] }
+		]
+		const { container } = render(List, { items: seeded, collapsible: true })
+		expect(container.querySelectorAll('[data-list-group][aria-expanded="true"]')).toHaveLength(0)
+		expect(items(container)).toHaveLength(0)
+
+		// The value is what opens a group, not the flag.
+		const withValue = render(List, { items: seeded, collapsible: true, value: 'inbox' })
+		expect(
+			withValue.container.querySelectorAll('[data-list-group][aria-expanded="true"]')
+		).toHaveLength(1)
+	})
+
+	it('without collapsible every group is expanded', () => {
+		const { container } = render(List, {
+			items: [{ label: 'Mail', children: [{ label: 'Inbox', value: 'inbox' }] }],
+			collapsible: false
+		})
+		expect(items(container)).toHaveLength(1)
+	})
+
 	it('settles without re-entering its own effects', async () => {
 		// A write that fed back into moveToValue → syncExpandedGroups → write would
 		// blow the effect budget and warn. Nothing on the console means it settled.

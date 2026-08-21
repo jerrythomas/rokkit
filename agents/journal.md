@@ -7703,3 +7703,78 @@ chart-spec **data literal**; the fix is hoisting the fixtures to named module co
 17 are spread one-to-three per file across `chat-demo/{store,llm,scan,prompt}` and
 `koan/{store,conversations,components/Tweaks,demos/*}`. Those two big files deserve their
 own focused pass rather than being rushed at the end of this one.
+
+## 2026-08-21 — Screen smoke gate, and the three bugs it surfaced in the List demo
+
+**Built a screen smoke gate** (`apps/learn/e2e/screens-smoke.e2e.ts` +
+`console-collector.mjs`): 29 screens, each asserting a marker element rendered, running an
+interaction, and reporting nothing on three channels — `console` (error+warning),
+`pageerror` (**uncaught exceptions, which never reach console.error**) and any 4xx/5xx
+response. The pageerror channel is the one that matters after a refactor: a handler that
+throws leaves the DOM looking fine, so a render-only check passes while the feature is dead.
+
+The interactions are the point, not decoration. Screens over recently-touched paths drive
+them: opening the Select dropdown runs its rAF focus chain; typing `role:engineer`, `age>30`
+and a bare `active` in SearchFilter runs the text/numeric/free-text branches of the new
+operator tables; clicking a chart mark runs `buildSelectDetail`'s named bag; expanding a
+list group runs navigator's `data-accordion-trigger` path.
+
+`ALLOW` is **empty**, and that was verified rather than assumed — I'd pre-written a 404
+allowance, emptied the list, re-ran, and all 29 were still clean, so it went. An unneeded
+allowance is how a gate quietly stops catching things. Break-it verified on both channels: a
+temporary `console.error` + `setTimeout(() => { throw })` in the root layout failed all 29
+with the channels reported distinctly; reverted → 29 pass.
+
+**Then the gate earned its keep.** `/app/list` failed its marker, and the cause was not one
+bug but three — found by instrumenting the page, after two wrong hypotheses (stale preview
+server; the `{...variantProps}` spread) that measurement killed:
+
+1. `listValue` started `null`. List derives group expansion from the ACTIVE value, so
+   `collapsible` + no value expands nothing: three collapsed headers, no items — while the
+   caption said "click a group header to collapse" one.
+2. **Seeding the item OBJECT does not work.** `$state` DEEP-PROXIES objects, so
+   `$state(items[0].children[0])` stores a Proxy; List matches `proxy.value === value`,
+   comparing that Proxy against the raw array item, never equal. A diagnostic effect
+   reported `seedIsSameRef: false`; `$state.raw` flipped it to true. Shipped the better fix
+   — every leaf got an explicit `value` and the seed is the primitive `'profile'` — because
+   `$state.raw` in a copyable doc sample would teach the trap.
+3. Selection could not move at all: `bind:value` with no `onselect`, and List never wrote
+   back.
+
+**That third one became a library fix** (`653fe415`, marked `!`). List and Tree declared
+`value = $bindable()` and documented it `bindable: true` but never wrote it — only Select
+did — so consumers needed an `onselect={(v) => (mine = v)}` workaround for a binding they
+had already asked for. Both now route selection through a `handleSelect` interceptor.
+
+The race contract, since `value` is input AND output:
+- The write happens in a **DOM event handler, never in an effect**, so it cannot re-enter the
+  effects that read `value`; `moveToValue` re-syncs to what it already holds and settles.
+- The write is **skipped when unchanged** — `onselect` fires on every activation, and an
+  unconditional write would re-run `syncExpandedGroups` and **collapse groups the user had
+  opened by hand**.
+- The write lands **before** the consumer's callback, so a consumer assigning its own value
+  writes last and wins. That ordering is what makes it backward compatible.
+- Disabled rows and group/parent rows never write.
+
+14 tests in `packages/ui/spec/value-binding.spec.svelte.ts` with two DOM-observable
+fixtures; break-it verified (reverting List's interceptor fails 4, Tree's keep passing).
+`Table`/`TreeTable` are unaffected — their bindable prop is `values`; `value` is input-only
+by design.
+
+**Polish pass found a doc defect worth recording.** `docs/llms/components/list.txt` said
+"groups start collapsed unless `expanded: true`". Measured: with `collapsible`, List
+**ignores** item-level `expanded` (0 groups open, 0 items) because `expandAncestorGroups`
+overwrites it every run — while **Tree honours it** (Tree has no such sync). Docs corrected
+to describe value-driven expansion, and both llms.txt contracts gained the `$state`-proxy
+warning next to the "falls back to the raw item" row. The asymmetry is now pinned by tests
+so docs and code cannot drift apart silently.
+
+**OPEN QUESTION for the owner:** should `List` honour `expanded: true` as a first-paint seed
+under `collapsible`? Today it cannot, because accordion semantics re-derive expansion from
+`value` on every change. Documented as-is rather than changed.
+
+**Gate:** `bun run check` green; `test:ci` **5794 / 384**; `bun run coverage` exit 0, zero
+threshold errors; learn e2e **65 passing**.
+
+**Commits:** `d1adcff2` smoke gate, `31069eb6` List demo fix, `653fe415` two-way
+`bind:value`, plus this polish pass.
