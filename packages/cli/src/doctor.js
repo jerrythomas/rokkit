@@ -30,43 +30,36 @@ export async function doctor(opts = {}) {
 	const failures = printChecks(checks)
 
 	const parsed = await loadParsedConfig({ cwd })
-	const shapeChecks = validateConfigShape(parsed)
-	/* v8 ignore next 8 -- loadConfig uses dynamic file:// import which always fails in
-	   JSDOM; validateConfigShape(null) returns [] so this branch is unreachable in tests */
-	if (shapeChecks.length > 0) {
-		console.info('\nConfig shape:')
-		for (const c of shapeChecks) {
-			console.info(`  WARN  ${c.label}`)
-			console.info(`        ${c.fix}`)
-		}
-	}
-
-	const contrastChecks = checkContrastTokens(parsed)
-	/* v8 ignore start -- loadConfig uses a dynamic file:// import which always fails in
-	   JSDOM, so parsed is null and contrastChecks is [] → this print block is unreachable
-	   in tests. The check logic itself is covered directly in contrast.spec.js. */
-	if (contrastChecks.length > 0) {
-		console.info('\nContrast (WCAG AA · light + dark):')
-		for (const c of contrastChecks) {
-			console.info(`  WARN  ${c.label}`)
-			console.info(`        ${c.fix}`)
-		}
-	}
-	/* v8 ignore stop */
-
-	const usageChecks = checkTextTokenUsage(createFsAdapter(cwd))
-	/* v8 ignore start -- this print block depends on the real filesystem walk finding
-	   a misused token in cwd; in the JSDOM doctor() test the temp project is clean, so
-	   usageChecks is [] and this is unreachable. checkTextTokenUsage is covered directly. */
-	if (usageChecks.length > 0) {
-		console.info('\nToken usage:')
-		for (const c of usageChecks) {
-			console.info(`  WARN  ${c.label}`)
-			console.info(`        ${c.fix}`)
-		}
-	}
-	/* v8 ignore stop */
+	printAdvisories('Config shape', validateConfigShape(parsed))
+	printAdvisories('Contrast (WCAG AA · light + dark)', checkContrastTokens(parsed))
+	printAdvisories('Token usage', checkTextTokenUsage(createFsAdapter(cwd)))
 
 	handleResults(checks, cwd, failures, opts.fix ?? false)
 	console.info('')
 }
+
+/**
+ * Print one titled advisory section, or nothing at all when there is nothing to
+ * report. Replaces three identical if/heading/loop blocks — and, with them,
+ * three separate coverage-ignore comments saying the same thing.
+ *
+ * @param {string} title
+ * @param {Array<{ label: string, fix: string }>} findings
+ */
+/* v8 ignore start -- every caller is empty under test: loadConfig uses a dynamic
+   file:// import that always fails in JSDOM (so parsed is null and both config-derived
+   lists are []), and the doctor() test's temp project is clean (so the usage walk finds
+   nothing), which means this never gets past its own guard. The check logic itself is
+   covered directly in contrast.spec.js and via validateConfigShape /
+   checkTextTokenUsage. The ignore wraps the WHOLE function rather than a counted line
+   range: with an early return the function's tail is unreached too, and a `next N` count
+   silently drifts the moment a line is added. */
+function printAdvisories(title, findings) {
+	if (findings.length === 0) return
+	console.info(`\n${title}:`)
+	for (const c of findings) {
+		console.info(`  WARN  ${c.label}`)
+		console.info(`        ${c.fix}`)
+	}
+}
+/* v8 ignore stop */

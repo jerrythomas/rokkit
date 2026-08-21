@@ -24,18 +24,36 @@ const PALETTE_REF = /^([a-z][\w-]*)\.(\d{2,3})$/i
  */
 export function parseColor(value, palettes = {}) {
 	if (typeof value !== 'string') return null
-	let raw = value.trim()
-	const ref = raw.match(PALETTE_REF)
-	if (ref) {
-		const shade = palettes[ref[1]]?.[ref[2]]
-		if (!shade) return null
-		raw = String(shade).trim()
-	}
-	const fn = raw.match(/^oklch\(\s*([^)]+)\)$/i)
-	if (fn) raw = fn[1].trim()
-	const parts = raw.split(/[\s,/]+/).filter(Boolean).map(Number)
+	const raw = resolvePaletteRef(value.trim(), palettes)
+	if (raw === null) return null
+	const parts = stripColorFn(raw).split(/[\s,/]+/).filter(Boolean).map(Number)
 	if (parts.length < 3 || parts.some((n) => Number.isNaN(n))) return null
 	return [parts[0], parts[1], parts[2]]
+}
+
+/**
+ * Follow a `"kami.400"` palette reference to its value. Non-references pass
+ * through unchanged; a reference pointing at a missing shade returns null,
+ * which the caller treats as unparseable.
+ * @param {string} raw
+ * @param {Record<string, Record<string|number,string>>} palettes
+ * @returns {string | null}
+ */
+function resolvePaletteRef(raw, palettes) {
+	const ref = raw.match(PALETTE_REF)
+	if (!ref) return raw
+	const shade = palettes[ref[1]]?.[ref[2]]
+	return shade ? String(shade).trim() : null
+}
+
+/**
+ * Unwrap `oklch(L C H)` to its bare channels; anything else passes through.
+ * @param {string} raw
+ * @returns {string}
+ */
+function stripColorFn(raw) {
+	const fn = raw.match(/^oklch\(\s*([^)]+)\)$/i)
+	return fn ? fn[1].trim() : raw
 }
 
 /**
@@ -82,28 +100,127 @@ export function contrastRatio(a, b) {
 	return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05)
 }
 
+/**
+ * Unwrap a `{ light, dark }` dual to the value for `mode`; scalars pass through.
+ * Both skin roles and config overrides accept the dual form, so this is the one
+ * place that knows the shape.
+ * @param {unknown} value
+ * @param {string} mode
+ */
+function pickMode(value, mode) {
+	if (value && typeof value === 'object' && !Array.isArray(value)) {
+		return mode === 'dark' ? value.dark : value.light
+	}
+	return value
+}
+
 /** Pick a skin role's palette name for a mode (handles `{light,dark}` duals). */
 function roleName(skin, role, mode) {
-	const v = skin?.[role]
-	if (v && typeof v === 'object' && !Array.isArray(v)) return mode === 'dark' ? v.dark : v.light
-	return v
+	return pickMode(skin?.[role], mode)
 }
 
 /**
  * Resolve a named token's OKLCH for a mode: config `overrides` win, else the
  * role palette at the token's shade.
+ * @param {{ config: Record<string, any>, skin: Record<string, any>, role: string,
+ *   shade: number, name: string, mode: string }} args
  */
-function resolveToken(config, skin, role, shade, name, mode) {
-	const ov = config.overrides?.[name]
-	if (ov !== undefined) {
-		const v = ov && typeof ov === 'object' && !Array.isArray(ov) ? (mode === 'dark' ? ov.dark : ov.light) : ov
-		return parseColor(v, config.palettes)
-	}
-	const pal = config.palettes?.[roleName(skin, role, mode)]
-	return pal ? parseColor(String(pal[shade]), config.palettes) : null
+function resolveToken({ config, skin, role, shade, name, mode }) {
+	const override = config.overrides?.[name]
+	if (override !== undefined) return parseColor(pickMode(override, mode), config.palettes)
+	const palette = config.palettes?.[roleName(skin, role, mode)]
+	return palette ? parseColor(String(palette[shade]), config.palettes) : null
 }
 
 const AA = 4.5
+/** Below this ratio a hairline border is effectively invisible against the canvas. */
+const EDGE_MIN = 1.18
+/** Float slack, so noise in the ramp doesn't read as a real inversion. */
+const RAMP_SLACK = 0.01
+/** The ink ramp, darkest first — the order the monotonic check asserts. */
+const INK_RAMP = [
+	['ink', 900],
+	['ink-mute', 700],
+	['ink-soft', 500],
+	['ink-faint', 300]
+]
+/** The two ink tones that carry readable text, and so must clear AA. */
+const READABLE = new Set(['ink', 'ink-mute'])
+
+/** The skin block, under whichever of the three accepted config keys holds it. */
+function skinOf(config) {
+	return config.skins?.default ?? config.skin ?? config.colors
+}
+
+/** Each ink tone's contrast against paper, in ramp order; null where unresolvable. */
+function inkRamp(config, skin, paper, mode) {
+	return INK_RAMP.map(([name, shade]) => {
+		const token = resolveToken({ config, skin, role: 'ink', shade, name, mode })
+		return { name, c: token ? contrastRatio(token, paper) : null }
+	})
+}
+
+/** AA gate on the tones that actually carry text. */
+function checkReadableText(ramp, mode) {
+	return ramp
+		.filter(({ name, c }) => READABLE.has(name) && c !== null && c < AA)
+		.map(({ name, c }) => ({
+			id: `contrast-${name}-${mode}`,
+			label: `${name} on paper clears AA in ${mode}`,
+			status: 'warn',
+			fixable: false,
+			fix: `${name} vs paper is ${c.toFixed(2)}:1 in ${mode} (need ≥ ${AA}). It backs ${name === 'ink' ? 'primary' : 'secondary'} text — darken ${name} (or lighten paper) in this mode.`
+		}))
+}
+
+/**
+ * ink > ink-mute > ink-soft > ink-faint. Reports the FIRST inversion only —
+ * once the ramp is out of order every later pair is suspect too, and four
+ * findings for one mistake is noise.
+ */
+function checkRampMonotonic(ramp, mode) {
+	const seq = ramp.filter((r) => r.c !== null)
+	const broken = seq.findIndex((r, i) => i > 0 && r.c > seq[i - 1].c + RAMP_SLACK)
+	if (broken < 0) return []
+	return [
+		{
+			id: `contrast-ramp-${mode}`,
+			label: `ink ramp is monotonic in ${mode}`,
+			status: 'warn',
+			fixable: false,
+			fix: `${seq[broken].name} (${seq[broken].c.toFixed(2)}:1) has MORE contrast than ${seq[broken - 1].name} (${seq[broken - 1].c.toFixed(2)}:1) in ${mode} — the ramp ink > ink-mute > ink-soft > ink-faint is inverted/compressed.`
+		}
+	]
+}
+
+/** paper-edge must be distinguishable from paper, or the hairline border vanishes. */
+function checkEdgeVisible(config, skin, paper, mode) {
+	const edge = resolveToken({ config, skin, role: 'surface', shade: 400, name: 'paper-edge', mode })
+	if (!edge) return []
+	const ratio = contrastRatio(edge, paper)
+	if (ratio >= EDGE_MIN) return []
+	return [
+		{
+			id: `contrast-paper-edge-${mode}`,
+			label: `paper-edge is visible against paper in ${mode}`,
+			status: 'warn',
+			fixable: false,
+			fix: `paper-edge vs paper is only ${ratio.toFixed(2)}:1 in ${mode} — the hairline border is effectively invisible. Pick a paper-edge value with more lightness separation from the canvas in this mode.`
+		}
+	]
+}
+
+/** All three checks for one mode. */
+function checksForMode(config, skin, mode) {
+	const paper = resolveToken({ config, skin, role: 'surface', shade: 50, name: 'paper', mode })
+	if (!paper) return []
+	const ramp = inkRamp(config, skin, paper, mode)
+	return [
+		...checkReadableText(ramp, mode),
+		...checkRampMonotonic(ramp, mode),
+		...checkEdgeVisible(config, skin, paper, mode)
+	]
+}
 
 /**
  * Verify text/border contrast tokens from the parsed config, in light + dark.
@@ -112,65 +229,7 @@ const AA = 4.5
  */
 export function checkContrastTokens(config) {
 	if (!config?.palettes) return []
-	const skin = config.skins?.default ?? config.skin ?? config.colors
-	if (!skin || !skin.ink || !skin.surface) return []
-
-	const findings = []
-	for (const mode of ['light', 'dark']) {
-		const paper = resolveToken(config, skin, 'surface', 50, 'paper', mode)
-		if (!paper) continue
-		const ramp = [
-			['ink', 900],
-			['ink-mute', 700],
-			['ink-soft', 500],
-			['ink-faint', 300]
-		].map(([name, shade]) => ({ name, c: (() => {
-			const tok = resolveToken(config, skin, 'ink', shade, name, mode)
-			return tok ? contrastRatio(tok, paper) : null
-		})() }))
-
-		// AA gate on the readable text tones.
-		for (const { name, c } of ramp) {
-			if ((name === 'ink' || name === 'ink-mute') && c !== null && c < AA) {
-				findings.push({
-					id: `contrast-${name}-${mode}`,
-					label: `${name} on paper clears AA in ${mode}`,
-					status: 'warn',
-					fixable: false,
-					fix: `${name} vs paper is ${c.toFixed(2)}:1 in ${mode} (need ≥ ${AA}). It backs ${name === 'ink' ? 'primary' : 'secondary'} text — darken ${name} (or lighten paper) in this mode.`
-				})
-			}
-		}
-
-		// Monotonic ramp: ink > ink-mute > ink-soft > ink-faint.
-		const seq = ramp.filter((r) => r.c !== null)
-		for (let i = 1; i < seq.length; i++) {
-			if (seq[i].c > seq[i - 1].c + 0.01) {
-				findings.push({
-					id: `contrast-ramp-${mode}`,
-					label: `ink ramp is monotonic in ${mode}`,
-					status: 'warn',
-					fixable: false,
-					fix: `${seq[i].name} (${seq[i].c.toFixed(2)}:1) has MORE contrast than ${seq[i - 1].name} (${seq[i - 1].c.toFixed(2)}:1) in ${mode} — the ramp ink > ink-mute > ink-soft > ink-faint is inverted/compressed.`
-				})
-				break
-			}
-		}
-
-		// Border visibility: paper-edge must be distinguishable from paper.
-		const edge = resolveToken(config, skin, 'surface', 400, 'paper-edge', mode)
-		if (edge) {
-			const ec = contrastRatio(edge, paper)
-			if (ec < 1.18) {
-				findings.push({
-					id: `contrast-paper-edge-${mode}`,
-					label: `paper-edge is visible against paper in ${mode}`,
-					status: 'warn',
-					fixable: false,
-					fix: `paper-edge vs paper is only ${ec.toFixed(2)}:1 in ${mode} — the hairline border is effectively invisible. Pick a paper-edge value with more lightness separation from the canvas in this mode.`
-				})
-			}
-		}
-	}
-	return findings
+	const skin = skinOf(config)
+	if (!skin?.ink || !skin.surface) return []
+	return ['light', 'dark'].flatMap((mode) => checksForMode(config, skin, mode))
 }

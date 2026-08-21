@@ -77,29 +77,36 @@ export async function fetchAgents(
 ) {
 	const targetRoot = resolve(cwd, '.claude', 'agents')
 	const results = []
+	// Sequential on purpose: the outcomes should print in the order the user
+	// listed the agents, and every write targets the same directory anyway.
 	for (const name of names) {
-		const dest = join(targetRoot, `${name}.md`)
-		if (existsSync(dest) && !force) {
-			results.push({ name, status: 'skipped' })
-			continue
-		}
-		const res = await fetchImpl(`${baseUrl}/${name}.md`)
-		if (!res.ok) {
-			results.push({ name, status: 'unknown' })
-			continue
-		}
-		mkdirSync(targetRoot, { recursive: true })
-		writeFileSync(dest, await res.text())
-		results.push({ name, status: 'added' })
+		results.push(await fetchAgent(name, { targetRoot, force, baseUrl, fetchImpl }))
 	}
 	return results
+}
+
+/**
+ * Fetch and write one agent. Reports its outcome rather than throwing, so one
+ * missing name doesn't abandon the rest of the batch.
+ * @param {string} name
+ * @param {{ targetRoot: string, force: boolean, baseUrl: string, fetchImpl: typeof fetch }} ctx
+ * @returns {Promise<{ name: string, status: 'added' | 'skipped' | 'unknown' }>}
+ */
+async function fetchAgent(name, { targetRoot, force, baseUrl, fetchImpl }) {
+	const dest = join(targetRoot, `${name}.md`)
+	if (existsSync(dest) && !force) return { name, status: 'skipped' }
+	const res = await fetchImpl(`${baseUrl}/${name}.md`)
+	if (!res.ok) return { name, status: 'unknown' }
+	mkdirSync(targetRoot, { recursive: true })
+	writeFileSync(dest, await res.text())
+	return { name, status: 'added' }
 }
 
 /**
  * Print the catalog, marking already-installed agents.
  * @param {{ agentsDir?: string, cwd?: string }} [opts]
  */
-export async function runAgentsList({ agentsDir, cwd = process.cwd() } = {}) {
+export function runAgentsList({ agentsDir, cwd = process.cwd() } = {}) {
 	const catalog = listAgents({ agentsDir })
 	if (catalog.length === 0) {
 		console.info('No agents available.')
@@ -120,40 +127,66 @@ export async function runAgentsList({ agentsDir, cwd = process.cwd() } = {}) {
  * @param {string[]} names
  * @param {{ all?: boolean, force?: boolean, remote?: boolean, agentsDir?: string, cwd?: string, fetchImpl?: typeof fetch }} [opts]
  */
-export async function runAgentsAdd(
-	names,
-	{ all = false, force = false, remote = false, agentsDir, cwd = process.cwd(), fetchImpl } = {}
-) {
+export async function runAgentsAdd(names, opts = {}) {
+	const { all = false, agentsDir } = opts
 	const catalog = listAgents({ agentsDir })
-	let selected = names
-	if (all) {
-		selected = catalog.map((a) => a.name)
-	} else if (selected.length === 0) {
-		const res = await prompts({
-			type: 'multiselect',
-			name: 'picked',
-			message: 'Select agents to add',
-			choices: catalog.map((a) => ({ title: a.name, value: a.name, description: a.description }))
-		})
-		selected = res.picked ?? []
-	}
+	const selected = await resolveAgentSelection(names, catalog, all)
 	if (selected.length === 0) {
 		console.info('No agents selected.')
 		return
 	}
+	await installAndReport(selected, catalog, opts)
+}
+
+/**
+ * Install the selection — locally, or from the site with `--remote` — and report
+ * each outcome.
+ *
+ * @param {string[]} selected
+ * @param {Array<{ name: string, description: string }>} catalog
+ * @param {{ force?: boolean, remote?: boolean, agentsDir?: string, cwd?: string, fetchImpl?: typeof fetch }} opts
+ */
+async function installAndReport(
+	selected,
+	catalog,
+	{ force = false, remote = false, agentsDir, cwd = process.cwd(), fetchImpl }
+) {
 	const results = remote
 		? await fetchAgents(selected, { cwd, force, fetchImpl })
 		: installAgents(selected, { cwd, force, agentsDir })
-	for (const r of results) {
-		if (r.status === 'added') console.info(`  added .claude/agents/${r.name}.md`)
-		else if (r.status === 'skipped')
-			console.info(`  skipped ${r.name} (exists — use --force to overwrite)`)
-		else console.error(`  unknown agent: ${r.name}`)
-	}
-	if (results.some((r) => r.status === 'unknown')) {
-		if (!remote) console.error(`\nValid agents: ${catalog.map((a) => a.name).join(', ')}`)
-		process.exitCode = 1
-	}
+	results.forEach(reportAgentResult)
+	if (!results.some((r) => r.status === 'unknown')) return
+	// A remote fetch has no catalog to enumerate, so there are no valid names to suggest.
+	if (!remote) console.error(`\nValid agents: ${catalog.map((a) => a.name).join(', ')}`)
+	process.exitCode = 1
+}
+
+/**
+ * Which agents to install: everything with `--all`, the named ones, or an
+ * interactive pick when neither was given.
+ * @param {string[]} names
+ * @param {Array<{ name: string, description: string }>} catalog
+ * @param {boolean} all
+ * @returns {Promise<string[]>}
+ */
+async function resolveAgentSelection(names, catalog, all) {
+	if (all) return catalog.map((a) => a.name)
+	if (names.length > 0) return names
+	const res = await prompts({
+		type: 'multiselect',
+		name: 'picked',
+		message: 'Select agents to add',
+		choices: catalog.map((a) => ({ title: a.name, value: a.name, description: a.description }))
+	})
+	return res.picked ?? []
+}
+
+/** Report one install outcome. Unknown names go to stderr — they're a user error. */
+function reportAgentResult(r) {
+	if (r.status === 'added') console.info(`  added .claude/agents/${r.name}.md`)
+	else if (r.status === 'skipped')
+		console.info(`  skipped ${r.name} (exists — use --force to overwrite)`)
+	else console.error(`  unknown agent: ${r.name}`)
 }
 
 /**

@@ -222,36 +222,59 @@ export function generateChartConfig({ chartColors, chartShades }) {
  *   storageKey?: string }} [opts]
  * @returns {Record<string, unknown>}
  */
+/**
+ * The zen-sumi design decisions themselves — fixed, so they live outside the
+ * function rather than being rebuilt per call alongside the user's answers.
+ */
+const ZEN_SUMI_BASE = {
+	palettes: ZEN_SUMI_PALETTES,
+	colorSpace: 'oklch',
+	tokens: 'core',
+	skin: {
+		surface: { light: 'kami', dark: 'sumi' },
+		ink: { light: 'kami', dark: 'sumi' },
+		primary: 'shu',
+		accent: 'shu',
+		success: 'hisui',
+		warning: 'kohaku',
+		danger: 'shu',
+		error: 'shu',
+		info: 'kohaku'
+	},
+	shape: { radius: 'soft' },
+	typography: {
+		display: "'Fraunces', 'Iowan Old Style', Georgia, serif",
+		sans: "'Inter', system-ui, -apple-system, sans-serif",
+		mono: "'JetBrains Mono', 'SF Mono', Menlo, monospace"
+	}
+}
+
+/** `{ storageKey }` when one was derived, else nothing to spread. */
+const storageSection = (storageKey) => (storageKey ? { storageKey } : {})
+
+/** `{ chart }` when charts were requested, else nothing to spread. */
+function chartSection(includeChart, chartColors, chartShades) {
+	return includeChart ? { chart: generateChartConfig({ chartColors, chartShades }) } : {}
+}
+
+/** `{ icons }` when a style or a custom path was chosen, else nothing to spread. */
+function iconSection(icons, iconPath, iconStyle) {
+	const config = {}
+	if (iconStyle) config.style = iconStyle
+	if (icons === 'custom' && iconPath) config.custom = iconPath
+	return Object.keys(config).length > 0 ? { icons: config } : {}
+}
+
 export function generateZenSumiConfig(opts = {}) {
 	const { themes, defaultTheme, switcher, includeChart, chartColors, chartShades, storageKey } = opts
-	const config = {
-		palettes: ZEN_SUMI_PALETTES,
-		colorSpace: 'oklch',
-		tokens: 'core',
-		skin: {
-			surface: { light: 'kami', dark: 'sumi' },
-			ink: { light: 'kami', dark: 'sumi' },
-			primary: 'shu',
-			accent: 'shu',
-			success: 'hisui',
-			warning: 'kohaku',
-			danger: 'shu',
-			error: 'shu',
-			info: 'kohaku'
-		},
-		shape: { radius: 'soft' },
-		typography: {
-			display: "'Fraunces', 'Iowan Old Style', Georgia, serif",
-			sans: "'Inter', system-ui, -apple-system, sans-serif",
-			mono: "'JetBrains Mono', 'SF Mono', Menlo, monospace"
-		},
-		themes: themes && themes.length ? themes : ['rokkit', 'zen-sumi'],
+	return {
+		...ZEN_SUMI_BASE,
+		themes: themes?.length ? themes : ['rokkit', 'zen-sumi'],
 		defaultTheme: defaultTheme || 'zen-sumi',
 		switcher: switcher || 'full',
-		...(storageKey ? { storageKey } : {})
+		...storageSection(storageKey),
+		...chartSection(includeChart, chartColors, chartShades)
 	}
-	if (includeChart) config.chart = generateChartConfig({ chartColors, chartShades })
-	return config
 }
 
 /**
@@ -264,25 +287,26 @@ export function generateZenSumiConfig(opts = {}) {
  *   storageKey?: string }} opts
  * @returns {Record<string, unknown>}
  */
-export function generateConfig({
-	palette,
-	customColors,
-	icons,
-	iconPath,
-	iconStyle,
-	themes,
-	defaultTheme,
-	switcher,
-	includeChart,
-	chartColors,
-	chartShades,
-	storageKey
-}) {
-	if (palette === 'zen-sumi') {
-		return generateZenSumiConfig({ themes, defaultTheme, switcher, includeChart, chartColors, chartShades, storageKey })
-	}
+export function generateConfig(opts) {
+	const {
+		palette,
+		customColors,
+		icons,
+		iconPath,
+		iconStyle,
+		themes,
+		defaultTheme,
+		switcher,
+		includeChart,
+		chartColors,
+		chartShades,
+		storageKey
+	} = opts
+	// Forwarding the whole `opts` is safe: generateZenSumiConfig destructures only
+	// the keys it needs and ignores the palette/icon answers.
+	if (palette === 'zen-sumi') return generateZenSumiConfig(opts)
 
-	const config = {
+	return {
 		skin: resolveSkin(palette, customColors),
 		colorSpace: 'rgb',
 		tokens: 'core',
@@ -290,19 +314,10 @@ export function generateConfig({
 		themes,
 		defaultTheme: defaultTheme || themes[0],
 		switcher,
-		...(storageKey ? { storageKey } : {})
+		...storageSection(storageKey),
+		...iconSection(icons, iconPath, iconStyle),
+		...chartSection(includeChart, chartColors, chartShades)
 	}
-
-	const iconConfig = {}
-	if (iconStyle) iconConfig.style = iconStyle
-	if (icons === 'custom' && iconPath) iconConfig.custom = iconPath
-	if (Object.keys(iconConfig).length > 0) config.icons = iconConfig
-
-	if (includeChart) {
-		config.chart = generateChartConfig({ chartColors, chartShades })
-	}
-
-	return config
 }
 
 /**
@@ -521,51 +536,75 @@ function writeAppHtml(cwd, initScript, storageKey) {
 }
 
 /**
+ * When this doesn't look like a SvelteKit project, warn and ask. Returns false
+ * to abort the whole command.
+ * @param {string} cwd
+ * @returns {Promise<boolean>}
+ */
+async function confirmSvelteKit(cwd) {
+	if (detectSvelteKit(cwd)) return true
+	console.warn('No svelte.config.js found — this may not be a SvelteKit project.')
+	const { proceed } = await prompts({
+		type: 'confirm',
+		name: 'proceed',
+		message: 'Continue anyway?',
+		initial: false
+	})
+	return Boolean(proceed)
+}
+
+/**
+ * The host package's name, or undefined when there's no readable package.json —
+ * the storage key is derived from it, and a missing name is not an error.
+ * @param {string} cwd
+ * @returns {string | undefined}
+ */
+function readAppName(cwd) {
+	try {
+		return JSON.parse(readFileSync(resolve(cwd, 'package.json'), 'utf-8')).name
+	} catch {
+		return undefined
+	}
+}
+
+/**
+ * Fold the three separate custom-colour answers into the single `customColors`
+ * shape `generateConfig` expects. Mutates `response` in place, like the rest of
+ * the prompt post-processing.
+ * @param {Record<string, unknown>} response
+ */
+/* v8 ignore start -- prompts mutates PROMPTS_CONFIG[n].type in-place on the first call,
+   so the conditional primary/accent/surface prompts always resolve to null on subsequent
+   runs and this never gets past its own guard; the behaviour is tested via generateConfig
+   directly. Wrapping the whole function rather than counting lines: with an early return
+   the tail is unreached too, and a `next N` count drifts as soon as a line moves. */
+function applyCustomColors(response) {
+	if (response.palette !== 'custom') return
+	response.customColors = {
+		primary: response.primary,
+		accent: response.accent,
+		surface: response.surface
+	}
+}
+/* v8 ignore stop */
+
+/**
  * Interactive init command — prompts the user, writes config files.
  * @param {Record<string, unknown>} [_opts]
  * @param {{ runInstall?: (bin: string, args: string[]) => void }} [adapters] — injectable for testing
  */
-// eslint-disable-next-line max-lines-per-function
 export async function init(_opts = {}, adapters = {}) {
 	const cwd = process.cwd()
 
-	// Detect SvelteKit project
-	if (!detectSvelteKit(cwd)) {
-		console.warn('No svelte.config.js found — this may not be a SvelteKit project.')
-		const { proceed } = await prompts({
-			type: 'confirm',
-			name: 'proceed',
-			message: 'Continue anyway?',
-			initial: false
-		})
-		if (!proceed) return
-	}
+	if (!(await confirmSvelteKit(cwd))) return
 
 	console.info('Rokkit Init — Setting up your SvelteKit project\n')
 
-	// Install packages
 	installPackages(cwd, adapters)
 
 	const response = await prompts(PROMPTS_CONFIG)
-
-	/* v8 ignore next 10 -- prompts mutates PROMPTS_CONFIG[n].type in-place on the
-	   first call, so the conditional primary/accent/surface prompts always resolve
-	   to null on subsequent runs; the branch is tested via generateConfig directly */
-	if (response.palette === 'custom') {
-		response.customColors = {
-			primary: response.primary,
-			accent: response.accent,
-			surface: response.surface
-		}
-	}
-
-	let appName
-	try {
-		appName = JSON.parse(readFileSync(resolve(cwd, 'package.json'), 'utf-8')).name
-	} catch {
-		appName = undefined
-	}
-	response.storageKey = storageKeyFromName(appName)
+	applyCustomColors(response)
+	response.storageKey = storageKeyFromName(readAppName(cwd))
 
 	const config = generateConfig(response)
 

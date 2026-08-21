@@ -24,12 +24,26 @@ export function parseFrontmatter(md) {
 	// Keep these as literal regexes — do NOT collapse into a dynamic
 	// `new RegExp(`^${key}:...`)` helper: the keys are fixed, so the dynamic form
 	// adds nothing but trips the no-dynamic-regex lint, and the literals are
-	// plainly linear-time. The `?.[1]?.trim() ?? ''` chain returns '' for a
-	// missing block, a missing field, or a bare `key:` with no value.
-	const block = md.match(/^---\n([\s\S]*?)\n---/)?.[1] ?? ''
-	const name = block.match(/^name:\s*(.+)$/m)?.[1]?.trim() ?? ''
-	const description = block.match(/^description:\s*(.+)$/m)?.[1]?.trim() ?? ''
-	return { name, description }
+	// plainly linear-time.
+	//
+	// The block is captured UNTRIMMED on purpose: the field regexes are anchored
+	// with `^`, so indented frontmatter should miss, exactly as before.
+	const block = capture(md, /^---\n([\s\S]*?)\n---/)
+	return {
+		name: capture(block, /^name:\s*(.+)$/m).trim(),
+		description: capture(block, /^description:\s*(.+)$/m).trim()
+	}
+}
+
+/**
+ * First capture group of `re` in `text`, or `''` when there is no match — so a
+ * missing block, a missing field and a bare `key:` all collapse to `''`.
+ * @param {string} text
+ * @param {RegExp} re
+ * @returns {string}
+ */
+function capture(text, re) {
+	return text.match(re)?.[1] ?? ''
 }
 
 /**
@@ -72,7 +86,7 @@ export function installSkills(
  * Print the catalog, marking already-installed skills.
  * @param {{ skillsDir?: string, cwd?: string }} [opts]
  */
-export async function runSkillsList({ skillsDir, cwd = process.cwd() } = {}) {
+export function runSkillsList({ skillsDir, cwd = process.cwd() } = {}) {
 	const catalog = listSkills({ skillsDir })
 	if (catalog.length === 0) {
 		console.info('No skills available.')
@@ -98,33 +112,45 @@ export async function runSkillsAdd(
 	{ all = false, force = false, skillsDir, cwd = process.cwd() } = {}
 ) {
 	const catalog = listSkills({ skillsDir })
-	let selected = names
-	if (all) {
-		selected = catalog.map((s) => s.name)
-	} else if (selected.length === 0) {
-		const res = await prompts({
-			type: 'multiselect',
-			name: 'picked',
-			message: 'Select skills to add',
-			choices: catalog.map((s) => ({ title: s.name, value: s.name, description: s.description }))
-		})
-		selected = res.picked ?? []
-	}
+	const selected = await resolveSkillSelection(names, catalog, all)
 	if (selected.length === 0) {
 		console.info('No skills selected.')
 		return
 	}
 	const results = installSkills(selected, { cwd, force, skillsDir })
-	for (const r of results) {
-		if (r.status === 'added') console.info(`  added .claude/skills/${r.name}`)
-		else if (r.status === 'skipped')
-			console.info(`  skipped ${r.name} (exists — use --force to overwrite)`)
-		else console.error(`  unknown skill: ${r.name}`)
-	}
+	results.forEach(reportSkillResult)
 	if (results.some((r) => r.status === 'unknown')) {
 		console.error(`\nValid skills: ${catalog.map((s) => s.name).join(', ')}`)
 		process.exitCode = 1
 	}
+}
+
+/**
+ * Which skills to install: everything with `--all`, the named ones, or an
+ * interactive pick when neither was given.
+ * @param {string[]} names
+ * @param {Array<{ name: string, description: string }>} catalog
+ * @param {boolean} all
+ * @returns {Promise<string[]>}
+ */
+async function resolveSkillSelection(names, catalog, all) {
+	if (all) return catalog.map((s) => s.name)
+	if (names.length > 0) return names
+	const res = await prompts({
+		type: 'multiselect',
+		name: 'picked',
+		message: 'Select skills to add',
+		choices: catalog.map((s) => ({ title: s.name, value: s.name, description: s.description }))
+	})
+	return res.picked ?? []
+}
+
+/** Report one install outcome. Unknown names go to stderr — they're a user error. */
+function reportSkillResult(r) {
+	if (r.status === 'added') console.info(`  added .claude/skills/${r.name}`)
+	else if (r.status === 'skipped')
+		console.info(`  skipped ${r.name} (exists — use --force to overwrite)`)
+	else console.error(`  unknown skill: ${r.name}`)
 }
 
 /**
