@@ -85,17 +85,19 @@ See `agents/workflow.md` for the full process.
 
 ### Lint Rules
 
-- **Errors must be zero**
-- **Warnings must be zero too.** The repo reached 0 warnings on 2026-08-21 (from
-  108). "Pre-existing and acceptable" no longer applies — if `bun run lint`
-  prints anything, this change introduced it.
+**Zero errors and zero warnings. Both.** `bun run lint` runs with
+`--max-warnings 0`, so a single warning fails the build — there is no tolerated
+backlog to hide a new one in. If lint prints anything, this change caused it.
+
 - Do not silence a warning you can fix. Decompose the function, or table-drive
-  the branch. Reach for `eslint-disable` only when the rule is genuinely wrong
-  for the case, and then state why on the line above — see
-  `PlotState.#sortedBandDomain` (a keyed accumulator a SvelteMap would make
-  worse) for the shape of an acceptable one.
-- Note `bun run lint` runs with `--fix`, which silently DELETES an unused
-  disable directive. A misplaced one leaves a blank line and no warning.
+  the branch it is complaining about.
+- Reach for `eslint-disable` only when the rule is genuinely wrong for the case,
+  and state why on the line above. `PlotState.#sortedBandDomain` is the shape of
+  an acceptable one: a function-local keyed accumulator that `SvelteMap` would
+  make measurably worse.
+- `bun run lint` runs with `--fix`, which silently DELETES an unused disable
+  directive. A misplaced one leaves a blank line and no warning, so check that a
+  disable you added is still there.
 
 ## Key Files Quick Reference
 

@@ -82,6 +82,7 @@ Violations must be justified or the plan revised.
 
 ## Current Status
 
-- Tests: 2536 passing (179 files)
-- Lint: 0 errors (pre-existing warnings only)
+- Tests: 5794 passing (384 files)
+- Lint: **0 errors, 0 warnings** — enforced by `--max-warnings 0` in the root
+  `lint` script, so any new warning fails the build
 - Phase: ProxyItem migration complete. All components use ProxyItem + ProxyTree + Wrapper stack. Ready for new features (Upload, Table phases, etc.)

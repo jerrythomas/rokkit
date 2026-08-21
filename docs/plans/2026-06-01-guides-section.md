@@ -294,7 +294,7 @@ Expected: build completes with no new warnings, no missing-import errors.
 cd /Users/Jerry/Developer/rokkit && bun run lint
 ```
 
-Expected: 0 errors (warnings are pre-existing and acceptable per CLAUDE.md).
+Expected: 0 errors. (Written when a warning backlog was tolerated; the rule is now 0 errors AND 0 warnings — see CLAUDE.md.)
 
 - [ ] **Step 2.8: Manually verify rendering for three representative demos**
 

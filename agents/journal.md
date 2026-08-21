@@ -7827,8 +7827,8 @@ had it, rather than depending on all eleven `*Code` deriveds at once.
 headers with no items. Its leaves now carry explicit `value`s and it seeds `value: 'profile'`.
 Spotted only because the lint work put me in the file.
 
-**CLAUDE.md updated** — "warnings are pre-existing and acceptable" is no longer true, and
-leaving it would tell the next agent to ignore warnings. It now says warnings must be zero,
+**CLAUDE.md updated** — its old lint rule tolerated a standing warning backlog, which would
+have told the next agent to ignore warnings. It now says warnings must be zero,
 and records the two traps found this session: `bun run lint` runs with `--fix` and silently
 deletes an unused disable directive; and an extracted guard-and-return helper leaves the
 function tail unreachable, so `v8 ignore` must wrap the whole function, never `next N`.

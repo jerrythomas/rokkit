@@ -93,7 +93,7 @@ Everything goes to `docs/backlog/`. No inline insertion into current work. Pick 
 ### Before Commit
 
 1. Run tests — all must pass
-2. Run lint — 0 errors
+2. Run lint — 0 errors AND 0 warnings (`--max-warnings 0` enforces it)
 3. Update `agents/journal.md`
 
 ---
