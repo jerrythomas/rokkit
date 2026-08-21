@@ -153,37 +153,54 @@ export function resetPreset(): void {
 	if (typeof localStorage !== 'undefined') localStorage.removeItem(STORAGE_KEY)
 }
 
-export function exportTokensCss(): string {
-	const lightDecls: string[] = []
-	const darkDecls: string[] = []
+/**
+ * The literal colour a (palette, step) pair resolves to, or null when either is
+ * unknown. Shared with ThemeWizardCard, which applies the same pairs to the live
+ * document — the resolution rule belongs in one place.
+ *
+ * Role steps are stored as plain `string` while `stepKeys` is `as const`, hence
+ * the narrowing cast on the lookup.
+ */
+export function roleColor(paletteId: string, step: string): string | null {
+	const ramp = ramps[paletteId]
+	if (!ramp) return null
+	const idx = stepKeys.indexOf(step as (typeof stepKeys)[number])
+	return idx >= 0 ? (ramp[idx] ?? null) : null
+}
+
+/** One `--var: colour;` line per role that resolves in `mode`. */
+function roleDeclarations(mode: 'light' | 'dark'): string[] {
+	const out: string[] = []
 	for (const r of wizardState.roles) {
 		const varName = ROLE_TO_VAR[r.role]
 		if (!varName) continue
-		const lightRamp = ramps[r.light[0]]
-		const darkRamp = ramps[r.dark[0]]
-		const lightIdx = stepKeys.indexOf(r.light[1] as typeof stepKeys[number])
-		const darkIdx = stepKeys.indexOf(r.dark[1] as typeof stepKeys[number])
-		if (lightRamp && lightIdx >= 0) {
-			lightDecls.push(`\t${varName}: ${lightRamp[lightIdx]}; /* ${r.light[0]} · ${r.light[1]} */`)
-		}
-		if (darkRamp && darkIdx >= 0) {
-			darkDecls.push(`\t${varName}: ${darkRamp[darkIdx]}; /* ${r.dark[0]} · ${r.dark[1]} */`)
-		}
+		const [paletteId, step] = mode === 'dark' ? r.dark : r.light
+		const color = roleColor(paletteId, step)
+		if (color) out.push(`\t${varName}: ${color}; /* ${paletteId} · ${step} */`)
 	}
-	const fontDecls: string[] = []
+	return out
+}
+
+/** One `--font-*: stack;` line per font role the user has chosen. */
+function fontDeclarations(): string[] {
+	const out: string[] = []
 	for (const role of ['display', 'ui', 'mono'] as FontRole[]) {
 		const choice = fontCatalogs[role].find((c) => c.id === wizardState.fonts[role])
-		if (choice) fontDecls.push(`\t${FONT_VAR[role]}: ${choice.stack}; /* ${choice.label} */`)
+		if (choice) out.push(`\t${FONT_VAR[role]}: ${choice.stack}; /* ${choice.label} */`)
 	}
+	return out
+}
+
+export function exportTokensCss(): string {
 	return [
 		'/* Rokkit theme tokens — exported from the Koan Theme Wizard */',
 		':root {',
-		...lightDecls,
-		...fontDecls,
+		...roleDeclarations('light'),
+		...fontDeclarations(),
 		'}',
 		'',
 		'[data-mode="dark"] {',
-		...darkDecls,
+		...roleDeclarations('dark'),
 		'}',
 		''
 	].join('\n')

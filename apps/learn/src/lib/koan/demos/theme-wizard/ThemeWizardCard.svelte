@@ -9,6 +9,7 @@
 		ramps,
 		stepKeys,
 		shadeLabels,
+		roleColor,
 		ROLE_TO_VAR,
 		FONT_VAR,
 		fontCatalogs,
@@ -71,23 +72,21 @@
 
 	const appliedVars = new SvelteSet<string>()
 
+	/** Write one custom property and remember it, so destroy can revert it. */
+	function setVar(root: HTMLElement, name: string, value: string) {
+		root.style.setProperty(name, value)
+		appliedVars.add(name)
+	}
+
 	function applyRolesToDocument() {
 		if (typeof document === 'undefined') return
 		const root = document.documentElement
 		for (const r of roles) {
 			const varName = ROLE_TO_VAR[r.role]
 			if (!varName) continue
-			const [paletteId, step] = mode === 'dark' ? r.dark : r.light
-			const ramp = ramps[paletteId]
-			if (!ramp) continue
-			// Role steps are stored as `string`; stepKeys is `as const`, so narrow
-			// for the lookup (same pattern as store.svelte's indexOf calls).
-			const idx = stepKeys.indexOf(step as (typeof stepKeys)[number])
-			if (idx < 0) continue
-			const color = ramp[idx]
-			if (!color) continue
-			root.style.setProperty(varName, color)
-			appliedVars.add(varName)
+			// Same resolution rule the CSS export uses — imported, not repeated.
+			const color = roleColor(...(mode === 'dark' ? r.dark : r.light))
+			if (color) setVar(root, varName, color)
 		}
 		for (const role of ['display', 'ui', 'mono'] as FontRole[]) {
 			const stack = fontStack(role)

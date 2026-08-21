@@ -92,17 +92,24 @@ function loadFromStorage(): Conversation[] {
 	}
 }
 
+/**
+ * The persisted shape, field by field. A table rather than one long `&&` chain so
+ * adding a required field is an entry, and a rejected record can be traced to the
+ * field that failed.
+ */
+const CONVERSATION_SHAPE: Array<[string, (v: unknown) => boolean]> = [
+	['id', (v) => typeof v === 'string'],
+	['title', (v) => typeof v === 'string'],
+	['surface', (v) => v === 'app' || v === 'chat'],
+	['createdAt', (v) => typeof v === 'string'],
+	['updatedAt', (v) => typeof v === 'string'],
+	['turns', Array.isArray]
+]
+
 function isValidConversation(c: unknown): c is Conversation {
 	if (!c || typeof c !== 'object') return false
 	const o = c as Record<string, unknown>
-	return (
-		typeof o.id === 'string' &&
-		typeof o.title === 'string' &&
-		(o.surface === 'app' || o.surface === 'chat') &&
-		typeof o.createdAt === 'string' &&
-		typeof o.updatedAt === 'string' &&
-		Array.isArray(o.turns)
-	)
+	return CONVERSATION_SHAPE.every(([key, isValid]) => isValid(o[key]))
 }
 
 function loadCurrentIdFromStorage(): ConversationId | null {
@@ -223,28 +230,38 @@ export function summarizeTitle(query: string): string {
  * initial query. Returns the conversation id — the existing row's id
  * when an `app` title matched, otherwise a new one.
  */
+/**
+ * Upsert by title for the `app` surface: re-exploring the same component reuses
+ * its existing row (turns reset, moved to top) instead of stacking
+ * duplicate-titled entries. Returns the reused id, or null when there was
+ * nothing to reuse and the caller should create a fresh conversation.
+ */
+function reuseAppConversation(
+	title: string,
+	at: string,
+	userTurn: UserTurn
+): ConversationId | null {
+	const idx = conversations.findIndex((c) => c.surface === 'app' && c.title === title)
+	if (idx < 0) return null
+	const [existing] = conversations.splice(idx, 1)
+	existing.updatedAt = at
+	existing.turns = [userTurn]
+	conversations.unshift(existing)
+	currentRef.id = existing.id
+	persist()
+	persistCurrentId()
+	return existing.id
+}
+
 export function startNew(surface: ConversationSurface, query: string, mode?: string): ConversationId {
 	const at = nowIso()
 	const title = surface === 'chat' ? summarizeTitle(query) : (query.trim().slice(0, 80) || 'New conversation')
 	const userTurn: UserTurn = { kind: 'user', id: makeId('t'), at, text: query }
 
-	// Upsert by title for the `app` surface: re-exploring the same component
-	// reuses its existing row (turns reset, moved to top) instead of stacking
-	// duplicate-titled entries. The `chat` surface always appends.
+	// The `chat` surface always appends; `app` upserts by title.
 	if (surface === 'app') {
-		const existingIdx = conversations.findIndex(
-			(c) => c.surface === 'app' && c.title === title
-		)
-		if (existingIdx >= 0) {
-			const [existing] = conversations.splice(existingIdx, 1)
-			existing.updatedAt = at
-			existing.turns = [userTurn]
-			conversations.unshift(existing)
-			currentRef.id = existing.id
-			persist()
-			persistCurrentId()
-			return existing.id
-		}
+		const reused = reuseAppConversation(title, at, userTurn)
+		if (reused) return reused
 	}
 
 	const id = makeId('conv')

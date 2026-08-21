@@ -44,29 +44,27 @@ export function selectDemo(demoId: string): void {
 	koan.visitedThisSession.add(demoId)
 }
 
+/** What the assistant says about how many demos matched. */
+function matchCopy(matches: ReturnType<typeof runMatch>): string {
+	if (matches.length === 0) return "I don't have anything matching that yet."
+	if (matches.length === 1) return matches[0].description
+	return 'I have a few options that might fit.'
+}
+
 export function submitQuery(query: string): { matches: ReturnType<typeof runMatch> } {
 	const q = query.trim()
 	if (!q) return { matches: [] }
 	const matches = runMatch(q)
 	const ts = new SvelteDate().toISOString()
-	const userMsg: UserMessage = {
-		kind: 'user',
-		id: `u-${Date.now().toString(36)}`,
-		query: q,
-		timestamp: ts
-	}
-	const copy =
-		matches.length === 0
-			? "I don't have anything matching that yet."
-			: matches.length === 1
-				? matches[0].description
-				: `I have a few options that might fit.`
+	// One stamp for the pair, so a user turn and its response share a suffix.
+	const stamp = Date.now().toString(36)
+	const userMsg: UserMessage = { kind: 'user', id: `u-${stamp}`, query: q, timestamp: ts }
 	const respMsg: ResponseMessage = {
 		kind: 'response',
-		id: `r-${Date.now().toString(36)}`,
+		id: `r-${stamp}`,
 		query: q,
 		matches: matches.map((m) => m.id),
-		copy,
+		copy: matchCopy(matches),
 		timestamp: ts
 	}
 	koan.messages = [...koan.messages, userMsg, respMsg]

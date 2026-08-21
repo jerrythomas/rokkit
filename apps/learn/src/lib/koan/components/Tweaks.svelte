@@ -38,6 +38,53 @@
 	 * triple { schema, layout, lookups } plus seed `data` populated with
 	 * each prop's current value (falling back to the schema default).
 	 */
+	/**
+	 * Per-prop-type mapping: the JSON-schema type, plus the extra element keys that
+	 * pick a FormRenderer and shape it. A table rather than a four-branch if/else
+	 * chain, so adding a prop type is one entry instead of another branch.
+	 */
+	const PROP_RENDERERS: Record<
+		string,
+		{ schemaType: string; element: (spec: DemoPropSchema) => Record<string, unknown> }
+	> = {
+		// Enums use FormRenderer's built-in `toggle` renderer, which dogfoods
+		// `<Toggle>` from @rokkit/ui — one horizontal row of segmented buttons that
+		// picks up the active theme's toggle styling automatically.
+		enum: {
+			schemaType: 'string',
+			element: (spec) => ({
+				renderer: 'toggle',
+				options: spec.options,
+				size: 'sm',
+				variant: 'stacked'
+			})
+		},
+		// Boolean → `switch` renderer (iOS-style pill switch). Inline
+		// label-left/switch-right is the natural shape.
+		boolean: {
+			schemaType: 'boolean',
+			element: () => ({ renderer: 'switch', size: 'sm', variant: 'inline' })
+		},
+		string: {
+			schemaType: 'string',
+			element: (spec) => ({
+				renderer: 'text',
+				variant: 'stacked',
+				...(spec.placeholder ? { placeholder: spec.placeholder } : {})
+			})
+		},
+		number: {
+			schemaType: 'number',
+			element: (spec) => ({
+				renderer: 'number',
+				variant: 'stacked',
+				...(spec.min !== undefined ? { min: spec.min } : {}),
+				...(spec.max !== undefined ? { max: spec.max } : {}),
+				...(spec.step !== undefined ? { step: spec.step } : {})
+			})
+		}
+	}
+
 	function buildFormSpec(specs: Record<string, DemoPropSchema>, current: Record<string, unknown>) {
 		const properties: Record<string, { type: string }> = {}
 		const elements: Array<Record<string, unknown>> = []
@@ -51,35 +98,14 @@
 				label: spec.label ?? name,
 				description: spec.desc
 			}
-			if (spec.type === 'enum') {
-				properties[name] = { type: 'string' }
-				// Enums use FormRenderer's built-in `toggle` renderer,
-				// which dogfoods `<Toggle>` from @rokkit/ui — one
-				// horizontal row of segmented buttons that picks up
-				// the active theme's toggle styling automatically.
-				element.renderer = 'toggle'
-				element.options = spec.options
-				element.size = 'sm'
-				element.variant = 'stacked'
-			} else if (spec.type === 'boolean') {
-				properties[name] = { type: 'boolean' }
-				// Boolean → `switch` renderer (iOS-style pill switch).
-				// Inline label-left/switch-right is the natural shape.
-				element.renderer = 'switch'
-				element.size = 'sm'
-				element.variant = 'inline'
-			} else if (spec.type === 'string') {
-				properties[name] = { type: 'string' }
-				element.renderer = 'text'
-				if (spec.placeholder) element.placeholder = spec.placeholder
-				element.variant = 'stacked'
-			} else if (spec.type === 'number') {
-				properties[name] = { type: 'number' }
-				element.renderer = 'number'
-				if (spec.min !== undefined) element.min = spec.min
-				if (spec.max !== undefined) element.max = spec.max
-				if (spec.step !== undefined) element.step = spec.step
-				element.variant = 'stacked'
+			// An unmapped type still contributes its element (label + description)
+			// but no schema property, exactly as the previous if/else chain did.
+			const mapping = Object.hasOwn(PROP_RENDERERS, spec.type)
+				? PROP_RENDERERS[spec.type]
+				: null
+			if (mapping) {
+				properties[name] = { type: mapping.schemaType }
+				Object.assign(element, mapping.element(spec))
 			}
 			elements.push(element)
 		}

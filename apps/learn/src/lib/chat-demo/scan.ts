@@ -25,6 +25,27 @@ function copyFence(content: string, i: number, out: string[]): number {
  * For each block whose shape maps to a known fence language, wrap it in the
  * matching fence in-place. Untouched otherwise.
  */
+/**
+ * Try to consume a balanced `{ … }` starting at `i` and push its fenced (or
+ * verbatim) form. Returns the index to continue scanning from, or -1 when there
+ * is nothing usable there — in which case the caller copies one character and
+ * moves on, exactly as it would for any other text.
+ */
+function tryWrapBlob(content: string, i: number, out: string[]): number {
+	const end = findBalancedBraceEnd(content, i)
+	if (end === -1) return -1
+	const blob = content.slice(i, end + 1)
+	let lang: string | null
+	try {
+		lang = inferFenceLanguage(JSON.parse(blob))
+	} catch {
+		return -1
+	}
+	// Valid JSON but no known shape — leave it alone.
+	out.push(lang ? `\`\`\`${lang}\n${blob}\n\`\`\`` : blob)
+	return end + 1
+}
+
 export function wrapBareJSON(content: string): string {
 	const out: string[] = []
 	let i = 0
@@ -33,33 +54,15 @@ export function wrapBareJSON(content: string): string {
 			i = copyFence(content, i, out)
 			continue
 		}
-		if (content[i] !== '{') {
-			out.push(content[i])
-			i++
-			continue
-		}
-		// Try to match a balanced { ... } starting at i.
-		const end = findBalancedBraceEnd(content, i)
-		if (end === -1) {
-			out.push(content[i])
-			i++
-			continue
-		}
-		const blob = content.slice(i, end + 1)
-		try {
-			const lang = inferFenceLanguage(JSON.parse(blob))
-			if (lang) {
-				out.push(`\`\`\`${lang}\n${blob}\n\`\`\``)
-			} else {
-				// Valid JSON but no known shape — leave it alone.
-				out.push(blob)
+		if (content[i] === '{') {
+			const next = tryWrapBlob(content, i, out)
+			if (next !== -1) {
+				i = next
+				continue
 			}
-		} catch {
-			out.push(content[i])
-			i++
-			continue
 		}
-		i = end + 1
+		out.push(content[i])
+		i++
 	}
 	return out.join('')
 }

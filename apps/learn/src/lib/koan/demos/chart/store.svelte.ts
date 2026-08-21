@@ -47,6 +47,27 @@ function settingsFor(typeId: string): Settings {
  * strip all read/write this slice. Selecting a type resets settings to that type's defaults +
  * field mapping, so controls never carry over stale values from a different chart.
  */
+/** What each dataset is, in words — opens the description. */
+const DATASET_CONTEXT: Record<string, string> = {
+	productSeries: 'quarterly revenue across two products',
+	segments: 'market share by segment',
+	cars: 'engine size vs. highway efficiency by car class',
+	daily: 'a daily metric over the last 30 days',
+	heatmap: 'weekly activity by day and hour',
+	points: 'a dense 2-D point cloud',
+	ohlc: 'open/high/low/close prices over 12 sessions',
+	waterfall: 'a running total built up step by step',
+	flows: 'flows between source and target groups'
+}
+
+/** What each position mode does to how the chart reads. */
+const POSITION_COPY: Record<string, string> = {
+	stack: 'The series are stacked to show cumulative totals.',
+	dodge: 'The series sit side-by-side for direct comparison.',
+	fill: 'Each column is normalised to 100% so you read share, not totals.',
+	identity: 'The series overlap on a shared baseline.'
+}
+
 export class ChartExplorerStore {
 	type = $state('bar')
 	settings = $state<Settings>(settingsFor('bar'))
@@ -82,34 +103,35 @@ export class ChartExplorerStore {
 
 	/** A short bot-style description of what the canvas is currently showing. */
 	describe(): string {
-		const c = this.config
+		const dataset = DATASET_CONTEXT[this.config.dataset] ?? 'the sample data'
+		return [
+			`A ${this.config.label.toLowerCase()} chart of ${dataset}.`,
+			...this.#positionClause(),
+			...this.#flagClauses()
+		].join(' ')
+	}
+
+	/** How the series are laid out, when the chart type has a position mode. */
+	#positionClause(): string[] {
+		const mode = this.settings.position
+		if (!this.applies('position') || !mode) return []
+		const copy = POSITION_COPY[mode]
+		return copy ? [copy] : []
+	}
+
+	/**
+	 * One clause per on-and-applicable toggle, in reading order. A table rather
+	 * than five near-identical `if (applies && setting) push(...)` lines.
+	 */
+	#flagClauses(): string[] {
 		const s = this.settings
-		const context: Record<string, string> = {
-			productSeries: 'quarterly revenue across two products',
-			segments: 'market share by segment',
-			cars: 'engine size vs. highway efficiency by car class',
-			daily: 'a daily metric over the last 30 days',
-			heatmap: 'weekly activity by day and hour',
-			points: 'a dense 2-D point cloud',
-			ohlc: 'open/high/low/close prices over 12 sessions',
-			waterfall: 'a running total built up step by step',
-			flows: 'flows between source and target groups'
-		}
-		const bits = [`A ${c.label.toLowerCase()} chart of ${context[c.dataset] ?? 'the sample data'}.`]
-		if (this.applies('position') && s.position) {
-			const p: Record<string, string> = {
-				stack: 'The series are stacked to show cumulative totals.',
-				dodge: 'The series sit side-by-side for direct comparison.',
-				fill: 'Each column is normalised to 100% so you read share, not totals.',
-				identity: 'The series overlap on a shared baseline.'
-			}
-			if (p[s.position]) bits.push(p[s.position])
-		}
-		if (this.applies('orientation') && s.orientation === 'horizontal') bits.push('Bars run horizontally.')
-		if (this.applies('pattern') && s.pattern) bits.push('Fills use textured patterns.')
-		if (this.applies('innerRadius') && s.innerRadius) bits.push('The centre is cut out into a donut.')
-		if (this.applies('legend') && s.legend) bits.push('A colour legend is shown.')
-		return bits.join(' ')
+		const flags: Array<[Setting, boolean, string]> = [
+			['orientation', s.orientation === 'horizontal', 'Bars run horizontally.'],
+			['pattern', Boolean(s.pattern), 'Fills use textured patterns.'],
+			['innerRadius', Boolean(s.innerRadius), 'The centre is cut out into a donut.'],
+			['legend', Boolean(s.legend), 'A colour legend is shown.']
+		]
+		return flags.filter(([setting, on]) => on && this.applies(setting)).map(([, , copy]) => copy)
 	}
 }
 

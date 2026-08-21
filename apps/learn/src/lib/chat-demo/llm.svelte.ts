@@ -150,6 +150,30 @@ export function detectWebGPU(): boolean {
 
 const OPENROUTER_TIMEOUT_MS = 90_000
 
+/** System + user turn — identical for both providers, so it lives in one place. */
+const chatMessages = (query: string) => [
+	{ role: 'system', content: buildSystemPrompt() },
+	{ role: 'user', content: query }
+]
+
+/** Parse a completion response, turning a non-2xx into a status-tagged error. */
+async function readCompletion(res: Response): Promise<Block[]> {
+	if (!res.ok) throw new Error(`${res.status} · ${(await res.text()).slice(0, 200)}`)
+	return parseCompletion(await res.json())
+}
+
+/**
+ * AbortError means OUR timeout fired, not a provider error. Normalise it to a
+ * status-tagged message so the caller's "<status> · …" matcher renders it
+ * cleanly instead of showing a bare "Failed to fetch".
+ */
+function normaliseTimeout(err: unknown): Error {
+	if ((err as Error).name !== 'AbortError') return err as Error
+	return new Error(
+		`408 · timed out after ${OPENROUTER_TIMEOUT_MS / 1000}s — the free-tier provider didn't respond in time`
+	)
+}
+
 async function routeViaOpenRouter(query: string): Promise<Block[]> {
 	// Free-tier providers can take 20–60 s for the first token; the browser's
 	// implicit fetch timeout otherwise surfaces as a generic "Failed to fetch"
@@ -163,26 +187,14 @@ async function routeViaOpenRouter(query: string): Promise<Block[]> {
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({
 				model: llm.openRouterModel,
-				messages: [
-					{ role: 'system', content: buildSystemPrompt() },
-					{ role: 'user', content: query }
-				],
+				messages: chatMessages(query),
 				temperature: 0.3
 			}),
 			signal: ctrl.signal
 		})
-		if (!res.ok) {
-			const text = await res.text()
-			throw new Error(`${res.status} · ${text.slice(0, 200)}`)
-		}
-		return parseCompletion(await res.json())
+		return await readCompletion(res)
 	} catch (err) {
-		// AbortError → our timeout fired. Normalise it to a status-tagged error
-		// so the caller's "<status> · ..." matcher can render a clean message.
-		if ((err as Error).name === 'AbortError') {
-			throw new Error(`408 · timed out after ${OPENROUTER_TIMEOUT_MS / 1000}s — the free-tier provider didn't respond in time`)
-		}
-		throw err
+		throw normaliseTimeout(err)
 	} finally {
 		clearTimeout(timer)
 	}
@@ -232,18 +244,24 @@ export function resetWebLLMEngine() {
 	llm.errorMessage = ''
 }
 
+/** Shown when the in-browser engine cannot initialise at all. */
+const webllmUnavailable = (): Block[] => [
+	{
+		kind: 'error',
+		title: 'Web-LLM unavailable',
+		message: llm.errorMessage || 'Unknown initialisation error.',
+		hint: 'Switch back to OpenRouter, or check that this browser has WebGPU enabled.'
+	}
+]
+
+/** Shown when the engine initialised but the request itself failed. */
+const webllmFailed = (msg: string): Block[] => [
+	{ kind: 'error', title: 'Web-LLM request failed', ...formatErrorDetail(msg) }
+]
+
 async function routeViaWebLLM(query: string): Promise<Block[]> {
 	const e = await ensureWebLLMEngine()
-	if (!e) {
-		return [
-			{
-				kind: 'error',
-				title: 'Web-LLM unavailable',
-				message: llm.errorMessage || 'Unknown initialisation error.',
-				hint: 'Switch back to OpenRouter, or check that this browser has WebGPU enabled.'
-			}
-		]
-	}
+	if (!e) return webllmUnavailable()
 	llm.webllmStatus = 'thinking'
 	try {
 		// No tools/tool_choice here — most free web-llm models (Llama-3.2-3B,
@@ -253,22 +271,12 @@ async function routeViaWebLLM(query: string): Promise<Block[]> {
 		// path as OpenRouter picks them up.
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const result: any = await e.chat.completions.create({
-			messages: [
-				{ role: 'system', content: buildSystemPrompt() },
-				{ role: 'user', content: query }
-			],
+			messages: chatMessages(query),
 			temperature: 0.3
 		})
 		return parseCompletion(result)
 	} catch (err) {
-		const msg = (err as Error).message || String(err)
-		return [
-			{
-				kind: 'error',
-				title: 'Web-LLM request failed',
-				...formatErrorDetail(msg)
-			}
-		]
+		return webllmFailed((err as Error).message || String(err))
 	} finally {
 		llm.webllmStatus = 'ready'
 	}
@@ -325,34 +333,34 @@ function describeOpenRouterError(raw: string): { title: string; detail: string; 
  * OpenRouter failure, surfaces a "switch to web-llm" suggestion so the
  * user can fall back without typing.
  */
-export async function routeViaLLM(query: string): Promise<Block[]> {
-	if (llm.provider === 'openrouter') {
-		try {
-			return await routeViaOpenRouter(query)
-		} catch (err) {
-			const raw = (err as Error).message || String(err)
-			const { title, detail, hint } = describeOpenRouterError(raw)
-			return [
+/**
+ * The error plus the "switch provider / retry" chips shown when OpenRouter
+ * fails, so the user can fall back without typing anything.
+ */
+function openRouterFailureBlocks(raw: string, query: string): Block[] {
+	const { title, detail, hint } = describeOpenRouterError(raw)
+	return [
+		{ kind: 'error', title, ...formatErrorDetail(detail), hint },
+		{
+			kind: 'suggestions',
+			intro: 'Or',
+			items: [
 				{
-					kind: 'error',
-					title,
-					...formatErrorDetail(detail),
-					hint
+					label: 'Switch to Web-LLM (downloads ~2 GB)',
+					query: '__switch_to_webllm',
+					action: { kind: 'switch-provider', provider: 'webllm' }
 				},
-				{
-					kind: 'suggestions',
-					intro: 'Or',
-					items: [
-						{
-							label: 'Switch to Web-LLM (downloads ~2 GB)',
-							query: '__switch_to_webllm',
-							action: { kind: 'switch-provider', provider: 'webllm' }
-						},
-						{ label: 'Retry', query }
-					]
-				}
+				{ label: 'Retry', query }
 			]
 		}
+	]
+}
+
+export async function routeViaLLM(query: string): Promise<Block[]> {
+	if (llm.provider !== 'openrouter') return routeViaWebLLM(query)
+	try {
+		return await routeViaOpenRouter(query)
+	} catch (err) {
+		return openRouterFailureBlocks((err as Error).message || String(err), query)
 	}
-	return routeViaWebLLM(query)
 }

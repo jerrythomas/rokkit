@@ -172,15 +172,22 @@ export function submitExport(args: {
 	caption?: string
 }): void {
 	const { source, data, caption } = args
-	const isObj = typeof data === 'object' && data !== null
-	const detail = Array.isArray(data)
-		? `${data.length} rows`
-		: isObj
-			? `${Object.keys(data as Record<string, unknown>).length} fields`
-			: 'value'
-	const label = caption ?? source
-	pushUser(`Saved changes to "${label}" · ${detail}`)
-	thinkThenBlocks([
+	pushUser(`Saved changes to "${caption ?? source}" · ${describeShape(data)}`)
+	thinkThenBlocks(exportBlocks(data))
+}
+
+/** "12 rows" / "4 fields" / "value" — how the user turn summarises what changed. */
+function describeShape(data: unknown): string {
+	if (Array.isArray(data)) return `${data.length} rows`
+	if (typeof data === 'object' && data !== null) {
+		return `${Object.keys(data as Record<string, unknown>).length} fields`
+	}
+	return 'value'
+}
+
+/** Prose + the edited JSON + a "render it again" chip, so the round-trip continues. */
+function exportBlocks(data: unknown): Block[] {
+	return [
 		{
 			kind: 'prose',
 			text: "Here's the updated value — copy or paste it back to keep the round-trip going."
@@ -194,14 +201,9 @@ export function submitExport(args: {
 		{
 			kind: 'suggestions',
 			intro: 'Or',
-			items: [
-				{
-					label: 'Render again',
-					query: JSON.stringify(data)
-				}
-			]
+			items: [{ label: 'Render again', query: JSON.stringify(data) }]
 		}
-	])
+	]
 }
 
 /**
@@ -210,41 +212,41 @@ export function submitExport(args: {
  * different props. No re-parsing, no second paste — the user's data lives
  * inside the action.
  */
+/** Re-render the same tool with different props. */
+const propsBlocks = (action: Extract<SuggestionAction, { kind: 'props' }>): Block[] => [
+	{ kind: 'prose', text: `Re-rendered with new props for ${action.tool}.` },
+	{ kind: 'component', tool: action.tool, props: action.props, caption: action.caption }
+]
+
+/** Flip the active provider and say what that means for the user. */
+function switchProviderBlocks(
+	action: Extract<SuggestionAction, { kind: 'switch-provider' }>
+): Block[] {
+	llm.provider = action.provider
+	return [
+		{
+			kind: 'prose',
+			text:
+				action.provider === 'webllm'
+					? 'Switched to Web-LLM. Click "Load model" in the chrome — first-time download is ~1–2 GB and runs entirely in the browser after.'
+					: 'Switched to OpenRouter.'
+		}
+	]
+}
+
 export function submitAction(item: { label?: string; action: SuggestionAction }): void {
 	const { action, label } = item
-	const userText = label ? `[suggestion] ${label}` : '[suggestion]'
-	pushUser(userText)
+	pushUser(label ? `[suggestion] ${label}` : '[suggestion]')
+
+	// An unrecognised kind is a no-op on purpose: the user turn is already
+	// recorded, so a future action type degrades to "nothing happened" rather
+	// than throwing mid-conversation.
 	if (action.kind === 'reshape') {
 		thinkThenBlocks(routeData(action.source, action.data, label, action.force))
-		return
-	}
-	if (action.kind === 'props') {
-		thinkThenBlocks([
-			{
-				kind: 'prose',
-				text: `Re-rendered with new props for ${action.tool}.`
-			},
-			{
-				kind: 'component',
-				tool: action.tool,
-				props: action.props,
-				caption: action.caption
-			}
-		])
-		return
-	}
-	if (action.kind === 'switch-provider') {
-		llm.provider = action.provider
-		thinkThenBlocks([
-			{
-				kind: 'prose',
-				text:
-					action.provider === 'webllm'
-						? 'Switched to Web-LLM. Click "Load model" in the chrome — first-time download is ~1–2 GB and runs entirely in the browser after.'
-						: 'Switched to OpenRouter.'
-			}
-		])
-		return
+	} else if (action.kind === 'props') {
+		thinkThenBlocks(propsBlocks(action))
+	} else if (action.kind === 'switch-provider') {
+		thinkThenBlocks(switchProviderBlocks(action))
 	}
 }
 
@@ -286,21 +288,27 @@ export function resetConversation(): void {
  * most recent assistant turn used. Lets resume default to the original
  * provider; the user can still switch mid-thread afterwards.
  */
+/** Point `llm` at one turn's provider/model pair. */
+function adoptProvider(provider: string, model?: string): void {
+	if (provider === 'scripted') {
+		llm.enabled = false
+		return
+	}
+	llm.enabled = true
+	llm.provider = provider
+	if (!model) return
+	if (provider === 'openrouter') llm.openRouterModel = model
+	if (provider === 'webllm') llm.webllmModel = model
+}
+
 export function syncLLMFromCurrentConversation(): void {
 	const conv = getCurrentConversation()
 	if (!conv || conv.surface !== 'chat') return
-	for (let i = conv.turns.length - 1; i >= 0; i--) {
-		const t = conv.turns[i]
-		if (t.kind !== 'assistant' || t.body.kind !== 'blocks' || !t.body.provider) continue
-		const { provider, model } = t.body
-		if (provider === 'scripted') {
-			llm.enabled = false
-		} else {
-			llm.enabled = true
-			llm.provider = provider
-			if (model && provider === 'openrouter') llm.openRouterModel = model
-			if (model && provider === 'webllm') llm.webllmModel = model
-		}
-		return
-	}
+	// Most recent assistant turn wins — walk backwards and stop at the first one
+	// that actually recorded a provider.
+	const turn = [...conv.turns]
+		.reverse()
+		.find((t) => t.kind === 'assistant' && t.body.kind === 'blocks' && t.body.provider)
+	if (!turn || turn.kind !== 'assistant' || turn.body.kind !== 'blocks') return
+	adoptProvider(turn.body.provider as string, turn.body.model)
 }
