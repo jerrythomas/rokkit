@@ -38,6 +38,24 @@ will not be written** — `<Spark><Radar …/></Spark>` works for free.
 - Stacked or faceted radar; animated transitions.
 - `SparkRadar` — obsolete by design.
 
+
+## Site and docs scope
+
+The learn site is a **generic exploration surface** — charts and sparks are browsed through the
+existing explorer and guides, not through bespoke per-geom demo routes. Radar therefore needs:
+
+1. **Reachability through the existing generic surfaces.** Radar joins the chart explorer registry
+   like any other geom type, so it is discoverable by the same navigation users already use. No
+   dedicated `/app/radar` demo route, no Koan catalog entry.
+2. **Guidance alongside the others.** The guides gain radar coverage at the same depth as the
+   existing geoms — what it's for, when it misleads, and the API. Spark composition guidance
+   (from cycle 1) belongs in the same pass.
+3. **Reachable in spark form too**, since `<Spark><Radar/></Spark>` is a supported composition.
+
+Explicitly NOT in scope: a bespoke radar demo app, an interactive radar playground, or per-geom
+routes. The value is that a user exploring charts and sparks generically arrives at radar with
+useful guidance — not that radar gets special treatment.
+
 ## Architecture
 
 Radar cannot use `xScale`/`yScale`. It follows the **`Arc` precedent**: compute polar geometry from
