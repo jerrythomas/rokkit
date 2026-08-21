@@ -48,6 +48,15 @@ Major design-system initiative — phases 3–9, then release 1 of the trimmed t
 
 - [x] **CodeGroup site component** — Shipped 2026-05-28. Tree-based (chosen over tabs since real projects have nested folders). Tree-rail on the left at ≥ 768px; collapses to a top picker pill that opens a drawer overlay on narrower viewports — code area gets full width on mobile. Optional `preview` Svelte snippet, collapsed by default with a "Show preview" toggle per spec. Shiki highlighting + copy button. Lives at `site/src/lib/components/CodeGroup.svelte`; playground at `site/src/routes/(play)/playground/code-group/`.
 
+#### Components
+
+- [x] **List / Tree honour `bind:value`** — Shipped 2026-08-21 (`653fe415`, **breaking**). Both declared `value = $bindable()` and documented it `bindable: true` but never wrote it — only Select did — so consumers needed an `onselect={(v) => (mine = v)}` workaround for a binding they had already asked for. Selection now routes through a `handleSelect` interceptor. Race contract, since `value` is input *and* output: the write happens in a DOM event handler (never an effect, so it cannot re-enter the effects reading `value`); it is skipped when unchanged (an unconditional write would re-run `syncExpandedGroups` and collapse groups the user expanded by hand); it lands *before* the consumer callback, so a consumer assigning its own value still wins — which is what makes it backward compatible. Disabled and group/parent rows never write. 14 tests + 2 DOM-observable fixtures, break-it verified. `Table`/`TreeTable` unaffected (their bindable prop is `values`). See journal 2026-08-21.
+  - **Open:** should `List` honour item-level `expanded: true` as a first-paint seed under `collapsible`? It cannot today — accordion semantics re-derive expansion from `value` on every change, overwriting the flag. `Tree` does honour it. Documented and pinned by tests; needs an owner decision.
+
+#### Developer Utilities — quality gates
+
+- [x] **Screen smoke gate** — Shipped 2026-08-21 (`d1adcff2`). `apps/learn/e2e/screens-smoke.e2e.ts` + `console-collector.mjs`: 29 screens, each asserting a marker element, running an interaction that drives the code the screen exists for, and reporting nothing on three channels — `console` (error+warning), `pageerror` (uncaught exceptions, which never reach console.error) and 4xx/5xx responses. Accept-list is empty and verified empty. Break-it verified on both channels. It immediately caught a three-cause bug in the List demo (`31069eb6`). See journal 2026-08-21.
+
 #### Demo App
 
 - [x] **`demo/` showcase app** — Direction decided 2026-05-22: Koan (chat-shell + canvas) is the canonical demo. Original business-analytics spec (dashboard / data explorer / analytics / operations / notifications + curtain-reveal code drawer) is superseded. Shipped: Koan shell at `/app`, welcome page, Tabs response (C3), Theme Wizard response (C4), Dark + collapsed showcase (C5, `/app/tabs?mode=dark&collapsed=true`), layout + sub-routes architecture, conversation history sidebar, ThemePanel, catalog system. Future work tracked under the Koan catalog expansion item below.
