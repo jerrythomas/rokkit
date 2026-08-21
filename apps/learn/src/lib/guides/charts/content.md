@@ -2,11 +2,11 @@
 
 `@rokkit/chart` is an SVG charting layer built on the same
 field-mapped, data-first principles as the rest of Rokkit. It
-ships nine prebuilt chart shapes for the common cases plus a
+ships ten prebuilt chart shapes for the common cases plus a
 lower-level `<PlotChart>` you compose with explicit `Plot.*`
 geoms when you need something custom.
 
-## The nine prebuilt shapes
+## The ten prebuilt shapes
 
 | Shape         | Geom                     | Use when…                            |
 | ------------- | ------------------------ | ------------------------------------ |
@@ -14,6 +14,7 @@ geoms when you need something custom.
 | `LineChart`   | line                     | ordered numeric × numeric (trends)   |
 | `AreaChart`   | area                     | LineChart with the area filled       |
 | `PieChart`    | arc                      | parts of a whole (use sparingly)     |
+| `RadarChart`  | radar                    | compare profiles across shared axes  |
 | `ScatterPlot` | point                    | numeric × numeric + optional color   |
 | `BubbleChart` | point + size             | scatter + a size channel             |
 | `BoxPlot`     | box                      | 5-number summary per category        |
@@ -278,6 +279,14 @@ A **4-quadrant** scatter — mixed-sign data makes the axes cross at the data or
 ```plot
 { "data": [{ "x": -4, "y": 3 }, { "x": 6, "y": 5 }, { "x": -3, "y": -2 }, { "x": 5, "y": -4 }, { "x": 2, "y": 6 }, { "x": -6, "y": -5 }], "x": "x", "y": "y", "width": 520, "height": 300, "geoms": [{ "type": "point" }] }
 ```
+
+A **radar** comparing two profiles across five shared axes. Radar is polar, so it takes no cartesian grid or axes — it draws its own rings and spokes. Note `options.axes`: the axis order is an analytical choice (adjacent spokes read as related), so declare it rather than letting it fall out of row order.
+
+```plot
+{ "data": [{ "metric": "Speed", "score": 9, "team": "Model A" }, { "metric": "Comfort", "score": 4, "team": "Model A" }, { "metric": "Safety", "score": 6, "team": "Model A" }, { "metric": "Range", "score": 8, "team": "Model A" }, { "metric": "Value", "score": 5, "team": "Model A" }, { "metric": "Speed", "score": 5, "team": "Model B" }, { "metric": "Comfort", "score": 9, "team": "Model B" }, { "metric": "Safety", "score": 8, "team": "Model B" }, { "metric": "Range", "score": 4, "team": "Model B" }, { "metric": "Value", "score": 7, "team": "Model B" }], "x": "metric", "y": "score", "color": "team", "grid": false, "axes": false, "legend": true, "width": 520, "height": 360, "geoms": [{ "type": "radar", "options": { "grid": true, "axes": ["Speed", "Comfort", "Safety", "Range", "Value"] } }] }
+```
+
+Two things radar gets wrong if you let it. **Area exaggerates** — perceived area grows with the square of the radius, so a doubled value looks four times bigger; that is what `radiusScale: "sqrt"` is for, and why radar compares *shape*, not magnitudes read off the rings. And an **inferred domain is unstable** — adding or removing a series can change an axis's max, silently rescaling that spoke and reshaping every other series on it. Declare a `domain` per axis whenever the chart is compared across renders or over time.
 
 Two geoms on one canvas — bars with a forecast line overlaid:
 

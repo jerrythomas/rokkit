@@ -179,6 +179,19 @@ export const registry: Record<string, ChartTypeConfig> = {
 		defaults: { alpha: 0.5 },
 		tips: [{ text: 'Ribbon width is proportional to the flow' }]
 	},
+	radar: {
+		id: 'radar', label: 'Radar', group: 'Comparison', dataset: 'profiles',
+		fields: { axis: 'metric', value: 'score', series: 'team' },
+		applies: ['pattern', 'alpha', 'legend'],
+		// Legend on: with two washed-out overlapping fills, colour alone is not enough to
+		// tell the polygons apart. `grid` on by default — the rings are what makes a radar
+		// readable as magnitudes rather than just a silhouette.
+		defaults: { legend: true, grid: true },
+		tips: [
+			{ text: 'Add texture so the series read without colour', set: { pattern: 'team' } },
+			{ text: 'Compare the same profiles as grouped bars instead', to: 'bar' }
+		]
+	},
 	rule: {
 		id: 'rule', label: 'Rule', group: 'Reference', dataset: 'daily',
 		fields: { x: 'day', y: 'value' },

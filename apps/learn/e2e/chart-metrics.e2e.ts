@@ -67,3 +67,24 @@ test('quadrant type crosses the axes at the data origin', async ({ page }) => {
 	const xOffset = Number((transform.match(/translate\(\s*(-?[\d.]+)/) ?? [])[1])
 	expect(xOffset).toBeGreaterThan(0)
 })
+
+// Radar is polar: it draws its own rings/spokes instead of cartesian axes, and needs its
+// own channel props (axis/value/series) rather than x/y — so reaching it through the
+// generic type picker is the check that the registry entry is wired, not just present.
+test('radar type renders a polar profile with its own grid', async ({ page }) => {
+	await page.goto('/app/chart')
+	await page.locator('.composer-tweak-toggle').click()
+
+	await page.locator('[data-chart-type="radar"]').click()
+	await expect(page.locator('[data-chart-type="radar"]')).toHaveAttribute('data-active', 'true')
+
+	const radar = page.locator('[data-plot-geom="radar"]')
+	await expect(radar).toBeAttached()
+
+	// The profiles dataset is two teams over five metrics.
+	await expect(radar.locator('[data-plot-element="radar-area"]')).toHaveCount(2)
+	await expect(radar.locator('[data-plot-element="radar-axis-label"]')).toHaveCount(5)
+	// Its own polar grid, and no cartesian axis lines.
+	await expect(radar.locator('[data-plot-element="radar-grid-spoke"]')).toHaveCount(5)
+	await expect(page.locator('[data-plot-axis-line]')).toHaveCount(0)
+})

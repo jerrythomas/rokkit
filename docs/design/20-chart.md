@@ -35,7 +35,7 @@ geoms on a plot, so multi-geom charts share one consistent legend and palette.
   channel props, renders geoms + axes + grid + legend + tooltip. Responsive width comes from
   `PlotSurface` (a `ResizeObserver`); `width`/`height` are fallbacks.
 - **`Plot`** — a **namespace object** of geom components: `Plot.Bar`, `Plot.Line`, `Plot.Area`,
-  `Plot.Point`, `Plot.Arc`, `Plot.Box`, `Plot.Violin`, `Plot.Heatmap`, `Plot.Hexbin`,
+  `Plot.Point`, `Plot.Arc`, `Plot.Radar`, `Plot.Box`, `Plot.Violin`, `Plot.Heatmap`, `Plot.Hexbin`,
   `Plot.Candlestick`, `Plot.Waterfall`, `Plot.Ribbon`, `Plot.Rule`, `Plot.Highlight`, `Plot.Trend`,
   `Plot.Jitter`, plus `Plot.Root`/`Plot.Axis`/`Plot.Grid`/`Plot.Legend`. Each member is the same
   component as the `Geom*` export (`Plot.Bar === GeomBar`) — use either name.
@@ -72,6 +72,7 @@ Thin wrappers over `PlotChart` with a `spec` pre-built from named channel props:
 | `BoxPlot` | box | `x`, `y`, `fill` |
 | `ViolinPlot` | violin | `x`, `y`, `fill` |
 | `PieChart` | arc | `theta` (`y`), `fill`, `innerRadius` |
+| `RadarChart` | radar | `axis`, `value`, `series`, `axes`, `radiusScale`, `sharedDomain` |
 | `Sparkline` | line/bar/area (tiny) | `data`, `type`, `width`, `height` |
 
 ---
@@ -181,6 +182,7 @@ exposed both as `Plot.<Name>` and `Geom<Name>`.
 | `point` | `Point.svelte` | Circle/symbol; `size` for bubbles |
 | `jitter` | `Jitter.svelte` | Jittered/beeswarm points within a band |
 | `arc` | `Arc.svelte` | Pie/donut slice (`theta`, `innerRadius`) |
+| `radar` | `Radar.svelte` | Polar profile polygon (`axis`, `value`, `series`) — see [Radar](#radar) |
 | `box` | `Box.svelte` | Box-and-whisker (quartile stat) |
 | `violin` | `Violin.svelte` | Density shape (Catmull-Rom over quartile anchors) |
 | `heatmap` | `Heatmap.svelte` | Grid cells; sequential/categorical colour |
@@ -367,6 +369,122 @@ component tree. `FilterBar`, `FilterSlider`, and `FilterHistogram` are the filte
 
 ---
 
+## Radar
+
+A polar profile chart: each axis is a spoke, each series a closed polygon. Reach for it via
+`RadarChart` (wrapper) or `Plot.Radar` / `GeomRadar` inside a `PlotChart`.
+
+Radar ignores `xScale`/`yScale` entirely — it computes its own polar geometry from
+`innerWidth`/`innerHeight`, like `Arc` does. All layout maths lives in the pure, Svelte-free
+`lib/brewing/polar.js` (`buildRadarLayout`), so it is callable and testable outside a component.
+
+### Channels
+
+Radar's channel names say what they mean here — an axis is not an x position:
+
+| Prop | Meaning | Generic alias |
+| --- | --- | --- |
+| `axis` | field naming which spoke a row belongs to | `x` |
+| `value` | field holding the plotted magnitude | `y` |
+| `series` | field distinguishing one polygon from another | `color` |
+
+The aliases exist because `Plot`'s spec-driven path passes only the generic set; the specific
+names win when both are given. A spec-driven radar declares its axis order via
+`options.axes`.
+
+### `axes` — order and per-axis config
+
+`axes` accepts bare names, full descriptors, or a mix:
+
+```svelte
+<RadarChart
+  data={rows} axis="metric" value="score" series="team"
+  axes={['Speed', { key: 'Comfort', label: 'Comfort', unit: 'idx', domain: [0, 10], ticks: 5, weight: 2 }]}
+/>
+```
+
+`AxisSpec` fields: `key`, `label` (defaults to `key`), `unit` (appended to the display label),
+`domain`, `ticks`, `tickLabels`, `format`, `weight` (defaults to `1`).
+
+**Order is an analytical choice.** Adjacent axes read as related, so the shape depends on the
+order you pick. Omitting `axes` still works — order is inferred from first appearance in the
+data — but it warns, because that makes the chart's meaning depend on an incidental upstream
+sort.
+
+Each axis owns a wedge proportional to its `weight`, and sits at that wedge's midpoint, rotated
+so the first axis lands at the top (`-90°`) for any weights. At equal weights this reduces
+exactly to `-90 + i × 360/n`.
+
+### Radius transform
+
+| `radiusScale` | Radius | Use when |
+| --- | --- | --- |
+| `'linear'` | `R × (v − min)/(max − min)` | equal weights; radius should read linearly |
+| `'sqrt'` | `R × √((v − min)/(max − min))` | unequal weights — keeps wedge **area** (`½θr²`) proportional to `weight × value` |
+| `'auto'` (default) | linear when all weights are equal, else sqrt | you haven't thought about it yet |
+
+Under `sqrt`, a heavily-weighted axis cannot dominate the silhouette merely by being wide.
+
+### Domains
+
+Inferred per axis as `[0, max]` (or `[min, max]` when the axis contains a negative), so each
+axis reaches the outer ring at its own maximum. `options.sharedDomain` puts every axis on one
+`[min, max]` across all values. A declared `domain` is used verbatim.
+
+An axis whose domain excludes zero gets a short dashed zero-reference arc on that spoke, at the
+radius where zero sits — so a `[−5, 10]` axis doesn't silently imply the centre is zero.
+
+### The two forms
+
+Radar picks its form from the **space available**, not from which container it is inside:
+
+- **Full form** (extent ≥ 112px) — polygons, optional ring/spoke grid, axis labels anchored by
+  hemisphere, vertex hit targets.
+- **Micro form** (extent < 112px, e.g. inside `Spark`) — the polygon only. No rings, spokes,
+  labels, hit targets or tooltips: a 24px minimum hit target does not fit in a 24px-tall glyph
+  even once. 3–5 axes stay legible at glyph size; outside that range it warns.
+
+The threshold is `2 × (LABEL_MARGIN + MIN_PLOT_RADIUS)` = `2 × (32 + 24)`. Both the geom and the
+marks adapter derive their radius from the one shared `resolveRadarRadius`, so the grid can never
+disagree with the polygons.
+
+Deliberately **not** keyed on `plotState.interactive`: that is
+`Boolean(onselect) || selectable`, so an ordinary static `<Plot>` reads `false` and would lose
+its chrome.
+
+### Interactivity
+
+Vertices become hit targets when the geom is given an `onselect` or the plot is interactive:
+`role="button"`, tab reach, Enter/Space, plus hover for tooltips. Arrow-key traversal across a
+vertex grid is a non-goal — radar's vertices are logically 2-D (series × axis), so the
+`keyboardNav` action (1-D, DOM order) is deliberately not used.
+
+Duplicate `(series, axis)` cells are averaged **inside `polar.js`**, not via a stat, so the
+surviving row keeps `===` identity with the container's data — `onselect` reports a real index
+and non-channel fields survive into the detail.
+
+### Legend
+
+`RadarChart` defaults `legend` **on** for 2+ series — unlike `PieChart`, which defaults it off.
+Fills are washed out (`preset.opacity.radar` = 0.25) and they overlap, so where two polygons
+intersect the blend belongs to neither series; colour-matching alone is unreliable.
+
+### ⚠ When radar misleads
+
+- **Area exaggerates.** Perceived area grows with the square of the radius, so a value twice
+  another looks four times bigger under a linear radius. That is why `sqrt` exists, and why
+  radar is for *profile shape* comparison, not for reading magnitudes off the rings.
+- **An inferred domain is unstable.** Adding or removing a series can change an axis's inferred
+  max, which silently rescales that spoke and changes the shape of *every other* series on it.
+  Declare `domain` per axis whenever the chart is meant to be compared across renders,
+  screenshots or time.
+- **Axis order is not neutral.** Reordering the same data produces a different silhouette.
+  Choose an order deliberately and keep it stable.
+- **Too many axes.** Past roughly 8 spokes the polygon reads as noise; consider a grouped bar
+  chart or a heatmap.
+
+---
+
 ## Sparkline
 
 `Sparkline` computes inline scales with no axes/grid/legend, for table cells or KPIs. `type`
@@ -488,11 +606,18 @@ Marks and decorations expose `data-*` hooks so themes style them without class c
 `data-fill`/`data-group` where relevant), `[data-plot-axis]`, `[data-plot-grid-line]`,
 `[data-legend]`, `[data-plot-highlight]`, `[data-plot-trend]`, `[data-plot-selected]`.
 
+Radar's own `data-plot-element` values, each also carrying `data-plot-series` or
+`data-plot-axis` as applicable: `radar-area` (the filled polygon), `radar-outline` (its
+stroke-only copy), `radar-vertex`, `radar-grid-ring`, `radar-grid-spoke`, `radar-zero-ring`,
+`radar-axis-label`. Fills and outlines are separate marks because paint order runs
+all-fills-then-all-outlines across the whole series set — otherwise a smaller series nested
+inside a larger one has its outline buried under the next series' fill.
+
 ---
 
 ## Interactive demo
 
-The `/app/chart` route (apps/learn) is an interactive **chart explorer**: pick from 14 types
+The `/app/chart` route (apps/learn) is an interactive **chart explorer**: pick from 15 types
 grouped by purpose (Comparison / Trend / Part-to-whole / Relationship / Distribution / Financial /
 Flow / Reference) and tweak orientation, position, colour/fill, pattern and opacity live. Its
 conversation uses the shared `$lib/chat` kit; controls live in the composer "tweak" details slab.
@@ -514,13 +639,15 @@ conversation uses the shared `$lib/chat` kit; controls live in the composer "twe
 | `packages/chart/src/Spark.svelte` | Lean geom-composition container (publishes `SparkState`) |
 | `packages/chart/src/SparkState.svelte.js` | Reactive state for `Spark` (`GEOM_CONTRACT`-pinned) |
 | `packages/chart/src/charts/` | Prebuilt shapes (BarChart, LineChart, …) |
-| `packages/chart/src/geoms/` | Geom components (Bar, Line, Area, Point, Arc, Box, Violin, Heatmap, Hexbin, Candlestick, Waterfall, Ribbon, Rule, Highlight, Trend, Jitter) |
+| `packages/chart/src/geoms/` | Geom components (Bar, Line, Area, Point, Arc, Radar, Box, Violin, Heatmap, Hexbin, Candlestick, Waterfall, Ribbon, Rule, Highlight, Trend, Jitter) |
 | `packages/chart/src/geoms/lib/` | Geom mark builders (bars, areas, …) |
 | `packages/chart/src/crossfilter/` | CrossFilter, FilterBar, FilterSlider, FilterHistogram, createCrossFilter |
 | `packages/chart/src/lib/preset.js` | `defaultPreset`, `createChartPreset()` |
 | `packages/chart/src/lib/palette.json` | Master palette (named colours → shades) |
 | `packages/chart/src/lib/brewing/colors.js` | `assignColors()`, `isLiteralColor()`, `literalColor()`, `markEntry()` |
 | `packages/chart/src/lib/brewing/patterns.js` | `assignPatterns()` |
+| `packages/chart/src/lib/brewing/polar.js` | Pure radar layout — `resolveAxes`, `anglesFor`, `domainsFor`, `radiusFor`, `verticesFor`, `ringsFor`, `buildRadarLayout` |
+| `packages/chart/src/geoms/lib/marks/radar.js` | Radar marks adapter — `buildRadarMarks`, `resolveRadarRadius` |
 | `packages/chart/src/lib/plot/stat.js` | `resolveStat()`, `applyGeomStat()` |
 | `packages/chart/src/lib/plot/frames.js` | `extractFrames()`, `completeFrames()`, `computeStaticDomains()` |
 | `packages/chart/src/lib/plot/scales.js` | field-type inference, unified scale builders |

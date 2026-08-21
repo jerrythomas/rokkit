@@ -4,7 +4,7 @@ const meta: DemoMeta = {
 	id: 'chart',
 	title: 'Charts',
 	description:
-		'Interactive chart explorer — pick from 14 chart types (bar, line, area, pie, scatter, bubble, box, violin + heatmap, hexbin, candlestick, waterfall, ribbon, rule) and tweak orientation, position (stack/dodge/fill), color/fill, pattern and opacity live, with guided suggestions.',
+		'Interactive chart explorer — pick from 15 chart types (bar, line, area, pie, radar, scatter, bubble, box, violin + heatmap, hexbin, candlestick, waterfall, ribbon, rule) and tweak orientation, position (stack/dodge/fill), color/fill, pattern and opacity live, with guided suggestions.',
 	keywords: [
 		'chart', 'charts', 'graph', 'graphs', 'plot', 'plots',
 		'visualization', 'viz', 'analytics', 'data', 'metrics', 'svg',

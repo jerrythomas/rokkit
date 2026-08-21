@@ -87,6 +87,25 @@ export const flows = [
 	{ source: 'Social', target: 'Bounce', value: 15 }
 ]
 
+/**
+ * Long format — one row per (series, axis) cell, which is what Radar reads: `axis` names
+ * the spoke, `score` the magnitude, `team` the polygon. Two teams with deliberately
+ * different profile shapes (A is strong on Speed/Range, B on Comfort/Safety) so the
+ * overlap actually says something rather than nesting one inside the other.
+ */
+export const profiles = [
+	{ metric: 'Speed', score: 9, team: 'Model A' },
+	{ metric: 'Comfort', score: 4, team: 'Model A' },
+	{ metric: 'Safety', score: 6, team: 'Model A' },
+	{ metric: 'Range', score: 8, team: 'Model A' },
+	{ metric: 'Value', score: 5, team: 'Model A' },
+	{ metric: 'Speed', score: 5, team: 'Model B' },
+	{ metric: 'Comfort', score: 9, team: 'Model B' },
+	{ metric: 'Safety', score: 8, team: 'Model B' },
+	{ metric: 'Range', score: 4, team: 'Model B' },
+	{ metric: 'Value', score: 7, team: 'Model B' }
+]
+
 export const datasets = {
 	productSeries,
 	segments,
@@ -96,6 +115,7 @@ export const datasets = {
 	points,
 	ohlc,
 	waterfall,
-	flows
+	flows,
+	profiles
 }
 export type DatasetKey = keyof typeof datasets

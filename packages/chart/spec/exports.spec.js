@@ -91,4 +91,10 @@ describe('chart exports', () => {
 		expect(GeomRadar).toBeTruthy()
 		expect(typeof GeomRadar).toBe('function')
 	})
+
+	it('exposes Radar on the Plot namespace as well, like every other geom', () => {
+		// The design doc's contract: each geom is reachable BOTH as Plot.<Name> and Geom<Name>.
+		expect(Plot.Radar).toBeTruthy()
+		expect(Plot.Radar).toBe(GeomRadar)
+	})
 })

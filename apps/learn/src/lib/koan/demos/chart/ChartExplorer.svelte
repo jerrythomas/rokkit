@@ -7,8 +7,11 @@
 	const data = $derived(datasets[config.dataset] as Record<string, unknown>[])
 	const f = $derived(config.fields)
 	const s = $derived(explorer.settings)
-	// Pie + Sankey ribbon are radial/flow layouts — no cartesian axes/grid.
-	const noAxes = $derived(explorer.type === 'pie' || explorer.type === 'ribbon')
+	// Pie, Sankey ribbon and radar are radial/flow layouts — no cartesian axes/grid. Radar
+	// draws its own polar grid (rings + spokes) via its `grid` option instead.
+	const noAxes = $derived(
+		explorer.type === 'pie' || explorer.type === 'ribbon' || explorer.type === 'radar'
+	)
 </script>
 
 <div class="explorer" data-plot-explorer>
@@ -57,6 +60,15 @@
 					<Plot.Waterfall x={f.x} y={f.y} alpha={s.alpha} options={{ totalField: 'total' }} />
 				{:else if explorer.type === 'ribbon'}
 					<Plot.Ribbon alpha={s.alpha} options={{ source: 'source', target: 'target', value: 'value' }} />
+				{:else if explorer.type === 'radar'}
+					<Plot.Radar
+						axis={f.axis}
+						value={f.value}
+						series={f.series}
+						alpha={s.alpha}
+						pattern={s.pattern || undefined}
+						options={{ grid: true }}
+					/>
 				{:else if explorer.type === 'rule'}
 					<Plot.Line x={f.x} y={f.y} alpha={s.alpha} />
 					<Plot.Rule y={[60, 85]} label="target" />

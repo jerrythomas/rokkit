@@ -18,6 +18,7 @@ import Hexbin from './geoms/Hexbin.svelte'
 import Ribbon from './geoms/Ribbon.svelte'
 import Waterfall from './geoms/Waterfall.svelte'
 import Rule from './geoms/Rule.svelte'
+import Radar from './geoms/Radar.svelte'
 
 // Composable Plot primitives — use as <Plot.Root>, <Plot.Axis>, <Plot.Bar>, etc.
 export const Plot = {
@@ -40,7 +41,8 @@ export const Plot = {
 	Hexbin,
 	Ribbon,
 	Waterfall,
-	Rule
+	Rule,
+	Radar
 }
 
 /** @deprecated Use Plot instead */

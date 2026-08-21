@@ -76,6 +76,17 @@ test('charts guide renders the live chart gallery', async ({ page }) => {
 	await expect(page.locator('[data-plot-plugin] [data-plot-geom="area"]').first()).toBeAttached()
 	await expect(page.locator('[data-plot-plugin] [data-plot-geom="point"]').first()).toBeAttached()
 
+	// Radar goes through Plot's spec-driven path (GEOM_COMPONENTS), which passes only the
+	// generic x/y/color — so this is the end-to-end proof that radar's channel aliases and
+	// its options.axes order actually work from a plain plot spec, not just from props.
+	const radar = page.locator('[data-plot-plugin] [data-plot-geom="radar"]').first()
+	await expect(radar).toBeAttached()
+	// One polygon per series, and the declared axis order reaching the labels.
+	await expect(radar.locator('[data-plot-element="radar-area"]')).toHaveCount(2)
+	await expect(radar.locator('[data-plot-element="radar-outline"]')).toHaveCount(2)
+	await expect(radar.locator('[data-plot-element="radar-axis-label"]')).toHaveCount(5)
+	await expect(radar.locator('[data-plot-element="radar-grid-ring"]').first()).toBeAttached()
+
 	// A legend renders for the colour-mapped grouped-bar spec.
 	await expect(page.locator('[data-plot-plugin] [data-plot-legend]').first()).toBeAttached()
 
