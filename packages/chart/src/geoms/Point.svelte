@@ -74,14 +74,14 @@
 		onselect?.(pt.data)
 		if (plotState.interactive)
 			plotState.handleSelect(
-				buildSelectDetail(
-					pt.data,
-					plotState.data.indexOf(pt.data),
-					{ x, y },
-					'point',
-					seriesField ? pt.data[seriesField] : undefined,
+				buildSelectDetail({
+					datum: pt.data,
+					index: plotState.data.indexOf(pt.data),
+					channels: { x, y },
+					geom: 'point',
+					series: seriesField ? pt.data[seriesField] : undefined,
 					event
-				)
+				})
 			)
 	}
 </script>

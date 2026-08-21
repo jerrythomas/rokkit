@@ -75,7 +75,14 @@
 		onselect?.(pt.data)
 		if (plotState.interactive)
 			plotState.handleSelect(
-				buildSelectDetail(pt.data, plotState.data.indexOf(pt.data), { x, y }, 'line', seg?.key, event)
+				buildSelectDetail({
+					datum: pt.data,
+					index: plotState.data.indexOf(pt.data),
+					channels: { x, y },
+					geom: 'line',
+					series: seg?.key,
+					event
+				})
 			)
 	}
 </script>

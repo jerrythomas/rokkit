@@ -66,14 +66,14 @@
 	function selectPoint(d: Row, event: MouseEvent | KeyboardEvent) {
 		if (plotState.interactive)
 			plotState.handleSelect(
-				buildSelectDetail(
-					d,
-					plotState.data.indexOf(d),
-					{ x, y },
-					'area',
-					seriesField ? d[seriesField] : undefined,
+				buildSelectDetail({
+					datum: d,
+					index: plotState.data.indexOf(d),
+					channels: { x, y },
+					geom: 'area',
+					series: seriesField ? d[seriesField] : undefined,
 					event
-				)
+				})
 			)
 	}
 </script>

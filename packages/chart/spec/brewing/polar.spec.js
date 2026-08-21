@@ -472,7 +472,7 @@ describe('verticesFor', () => {
 		const angles = anglesFor(axes.map((ax) => ax.weight))
 		const domains = domainsFor(axes, data, channels)
 
-		const result = verticesFor(data, axes, angles, domains, 100, 'linear', channels)
+		const result = verticesFor(data, axes, channels, { angles, domains, R: 100, transform: 'linear' })
 		const vertices = result.get('A')
 
 		expect(vertices).toHaveLength(3)
@@ -490,7 +490,7 @@ describe('verticesFor', () => {
 		const angles = anglesFor(axes.map((ax) => ax.weight))
 		const domains = domainsFor(axes, data, channels)
 
-		const result = verticesFor(data, axes, angles, domains, 100, 'linear', channels)
+		const result = verticesFor(data, axes, channels, { angles, domains, R: 100, transform: 'linear' })
 		const vertices = result.get('A')
 
 		expect(vertices).toHaveLength(3)
@@ -511,7 +511,7 @@ describe('verticesFor', () => {
 		const angles = anglesFor(axes.map((ax) => ax.weight))
 		const domains = domainsFor(axes, data, channels)
 
-		const result = verticesFor(data, axes, angles, domains, 100, 'linear', channels)
+		const result = verticesFor(data, axes, channels, { angles, domains, R: 100, transform: 'linear' })
 
 		expect(result.size).toBe(2)
 		const a = result.get('A')
@@ -532,7 +532,7 @@ describe('verticesFor', () => {
 		const domains = domainsFor(axes, data, channels)
 
 		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-		const result = verticesFor(data, axes, angles, domains, 100, 'linear', channels)
+		const result = verticesFor(data, axes, channels, { angles, domains, R: 100, transform: 'linear' })
 		warn.mockRestore()
 
 		const vertex = result.get('A')[0]
@@ -549,7 +549,7 @@ describe('verticesFor', () => {
 		const domains = domainsFor(axes, data, channels)
 
 		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-		const result = verticesFor(data, axes, angles, domains, 100, 'linear', channels)
+		const result = verticesFor(data, axes, channels, { angles, domains, R: 100, transform: 'linear' })
 		warn.mockRestore()
 
 		const vertex = result.get('A')[0]
@@ -568,7 +568,7 @@ describe('verticesFor', () => {
 		const domains = domainsFor(axes, data, channels)
 
 		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-		verticesFor(data, axes, angles, domains, 100, 'linear', channels)
+		verticesFor(data, axes, channels, { angles, domains, R: 100, transform: 'linear' })
 		expect(warn).toHaveBeenCalled()
 		warn.mockRestore()
 	})
@@ -583,7 +583,7 @@ describe('verticesFor', () => {
 		const domains = domainsFor(axes, data, channels)
 
 		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-		verticesFor(data, axes, angles, domains, 100, 'linear', channels)
+		verticesFor(data, axes, channels, { angles, domains, R: 100, transform: 'linear' })
 		expect(warn).not.toHaveBeenCalled()
 		warn.mockRestore()
 	})
@@ -594,7 +594,7 @@ describe('verticesFor', () => {
 		const angles = anglesFor(axes.map((ax) => ax.weight))
 		const domains = domainsFor(axes, data, channels)
 
-		const result = verticesFor(data, axes, angles, domains, 100, 'linear', channels)
+		const result = verticesFor(data, axes, channels, { angles, domains, R: 100, transform: 'linear' })
 		const vertices = result.get('A')
 
 		expect(vertices).toHaveLength(2)
@@ -609,7 +609,7 @@ describe('verticesFor', () => {
 		const angles = anglesFor(axes.map((ax) => ax.weight))
 		const domains = domainsFor(axes, data, channels)
 
-		const result = verticesFor(data, axes, angles, domains, 100, 'linear', channels)
+		const result = verticesFor(data, axes, channels, { angles, domains, R: 100, transform: 'linear' })
 		const vertex = result.get('A')[0]
 
 		expect(vertex).toBeNull()
@@ -626,7 +626,7 @@ describe('verticesFor', () => {
 		const domains = domainsFor(axes, data, implicitChannels)
 
 		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-		const result = verticesFor(data, axes, angles, domains, 100, 'linear', implicitChannels)
+		const result = verticesFor(data, axes, implicitChannels, { angles, domains, R: 100, transform: 'linear' })
 
 		expect(warn).toHaveBeenCalled()
 		expect(result.get(undefined)[0].value).toBe(5)
@@ -644,7 +644,7 @@ describe('verticesFor', () => {
 		const angles = anglesFor(axes.map((ax) => ax.weight))
 		const domains = domainsFor(axes, data, implicitChannels)
 
-		const result = verticesFor(data, axes, angles, domains, 100, 'linear', implicitChannels)
+		const result = verticesFor(data, axes, implicitChannels, { angles, domains, R: 100, transform: 'linear' })
 
 		expect(result.size).toBe(1)
 		const vertices = [...result.values()][0]
@@ -860,7 +860,7 @@ describe('buildRadarLayout', () => {
 		const angles = anglesFor(axes.map((a) => a.weight))
 		const domains = domainsFor(axes, data, channels)
 		const transform = resolveRadiusTransform(axes.map((a) => a.weight))
-		const expectedSeries = verticesFor(data, axes, angles, domains, 100, transform, channels)
+		const expectedSeries = verticesFor(data, axes, channels, { angles, domains, R: 100, transform: transform })
 
 		expect(layout.series.size).toBeGreaterThan(0)
 		expect(layout.series).toEqual(expectedSeries)

@@ -16,44 +16,69 @@
 
 	const state = getContext<PlotState>('plot-state')
 
-	const marks = $derived.by(() => {
-		const rows = state?.data ?? []
-		const xs = state?.xScale
-		const ys = state?.yScale
-		if (!xs || !ys || !x || !y) return []
-		const selectedRows = state?.selectedRows ?? []
-		const selectedSet = new Set(selectedRows)
-		const out = []
-		if (highlight !== null && highlight !== undefined && rows.length) {
-			for (const i of resolveHighlight(rows, highlight, { y })) {
-				const row = rows[i]
-				out.push({
-					key: `h${i}`,
-					cx: scalePos(xs, row[x]),
-					cy: ys(Number(row[y])),
-					row,
-					// A statically-highlighted point that is also selected renders as
-					// selected — selection is the stronger, interactive state.
-					selected: selectedSet.has(row)
-				})
-			}
+	type Mark = { key: string; cx: number; cy: number; row: Row; selected: boolean }
+	/** Everything both mark builders need, resolved once per derivation. */
+	type Ctx = {
+		rows: Row[]
+		selectedRows: Row[]
+		// Scales come from PlotState (untyped JS), so they stay loose here.
+		xs: (v: unknown) => number
+		ys: (v: number) => number
+		x: string
+		y: string
+	}
+
+	const hasScales = (s: PlotState | undefined) => Boolean(s?.xScale && s?.yScale)
+
+	/** Null until the plot has both scales and both channels — nothing can be placed before then. */
+	const ctx = $derived.by((): Ctx | null => {
+		if (!hasScales(state) || !x || !y) return null
+		return {
+			rows: state.data ?? [],
+			selectedRows: state.selectedRows ?? [],
+			xs: state.xScale,
+			ys: state.yScale,
+			x,
+			y
 		}
-		// Read off the marks just built instead of maintained alongside them: one
-		// source of truth for "already emitted", and no mutable dedup set.
-		const seen = new Set(out.map((m) => m.row))
-		selectedRows.forEach((row, j) => {
-			if (seen.has(row)) return
-			out.push({
-				key: `s${j}`,
-				cx: scalePos(xs, row[x]),
-				cy: ys(Number(row[y])),
-				row,
-				selected: true
-			})
-		})
-		return out.filter((m) => Number.isFinite(m.cx) && Number.isFinite(m.cy))
 	})
 
+	const place = (c: Ctx, row: Row) => ({
+		cx: scalePos(c.xs, row[c.x]),
+		cy: c.ys(Number(row[c.y]))
+	})
+
+	/** Marks for the declarative `highlight` selector. */
+	function highlightMarks(c: Ctx, selector: Props['highlight']): Mark[] {
+		if (selector === null || selector === undefined) return []
+		const selected = new Set(c.selectedRows)
+		return resolveHighlight(c.rows, selector, { y: c.y }).map((i) => ({
+			key: `h${i}`,
+			...place(c, c.rows[i]),
+			row: c.rows[i],
+			// A statically-highlighted point that is also selected renders as
+			// selected — selection is the stronger, interactive state.
+			selected: selected.has(c.rows[i])
+		}))
+	}
+
+	/** Marks for interactive selection, minus any row a highlight mark already covers. */
+	function selectionMarks(c: Ctx, covered: Set<Row>): Mark[] {
+		return c.selectedRows
+			.map((row, j) => ({ row, j }))
+			.filter(({ row }) => !covered.has(row))
+			.map(({ row, j }) => ({ key: `s${j}`, ...place(c, row), row, selected: true }))
+	}
+
+	const isPlaced = (m: Mark) => Number.isFinite(m.cx) && Number.isFinite(m.cy)
+
+	const marks = $derived.by(() => {
+		if (!ctx) return []
+		const highlighted = highlightMarks(ctx, highlight)
+		// Derived from the marks just built, so "already emitted" has one source of truth.
+		const selected = selectionMarks(ctx, new Set(highlighted.map((m) => m.row)))
+		return [...highlighted, ...selected].filter(isPlaced)
+	})
 </script>
 
 {#if marks.length}

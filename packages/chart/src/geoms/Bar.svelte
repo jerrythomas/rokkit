@@ -119,14 +119,14 @@
 	function selectBar(bar: { data: Row }, event: MouseEvent | KeyboardEvent) {
 		if (plotState.interactive)
 			plotState.handleSelect(
-				buildSelectDetail(
-					bar.data,
-					plotState.data.indexOf(bar.data),
-					{ x, y },
-					'bar',
-					seriesField ? bar.data[seriesField] : undefined,
+				buildSelectDetail({
+					datum: bar.data,
+					index: plotState.data.indexOf(bar.data),
+					channels: { x, y },
+					geom: 'bar',
+					series: seriesField ? bar.data[seriesField] : undefined,
 					event
-				)
+				})
 			)
 	}
 

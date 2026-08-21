@@ -183,16 +183,16 @@
 		onselect?.(row)
 		if (plotState.interactive)
 			plotState.handleSelect(
-				buildSelectDetail(
-					row,
+				buildSelectDetail({
+					datum: row,
 					// `row` is one of the container's original row objects — averaging happens
 					// inside polar.js precisely so this lookup resolves instead of returning -1.
-					plotState.data.indexOf(row),
-					{ x: axis, y: value },
-					'radar',
-					seriesKey,
+					index: plotState.data.indexOf(row),
+					channels: { x: axis, y: value },
+					geom: 'radar',
+					series: seriesKey,
 					event
-				)
+				})
 			)
 	}
 

@@ -58,12 +58,61 @@ export function expRegression(xs, ys) {
 	return { a: Math.exp(reg.b), b: reg.m }
 }
 
+/** `mean` is an accepted alias for `avg`. */
+const canonicalType = (type) => (type === 'mean' ? 'avg' : type)
+
+/** Accept a number, a bare type name, or a full config object; produce a config or null. */
 function normalize(method) {
 	if (typeof method === 'number') return { type: 'value', value: method }
-	if (typeof method === 'string') return { type: method === 'mean' ? 'avg' : method }
+	if (typeof method === 'string') return { type: canonicalType(method) }
 	if (method && typeof method === 'object' && method.type)
-		return { ...method, type: method.type === 'mean' ? 'avg' : method.type }
+		return { ...method, type: canonicalType(method.type) }
 	return null
+}
+
+/**
+ * Numeric series for the two channels. A non-finite x falls back to the row
+ * index, which is what makes trends work on a categorical/band axis.
+ * @param {Array<Record<string, unknown>>} rows
+ * @param {{x?: string, y?: string}} channels
+ */
+function toSeries(rows, { x, y }) {
+	return {
+		ys: rows.map((r) => Number(r[y])),
+		xs: rows.map((r, i) => {
+			const v = Number(r[x])
+			return Number.isFinite(v) ? v : i
+		})
+	}
+}
+
+/**
+ * One builder per trend type, replacing a nine-case switch. Each takes the
+ * prepared series plus the normalized config and returns a trend or null, so a
+ * new trend type is a new entry rather than another branch.
+ * @type {Record<string, (ctx: {xs: number[], ys: number[], cfg: Record<string, any>}) => object | null>}
+ */
+const BUILDERS = {
+	avg: ({ ys }) => ({ kind: 'constant', value: mean(ys) }),
+	median: ({ ys }) => ({ kind: 'constant', value: median(ys) }),
+	min: ({ ys }) => ({ kind: 'constant', value: Math.min(...ys) }),
+	max: ({ ys }) => ({ kind: 'constant', value: Math.max(...ys) }),
+	value: ({ cfg }) =>
+		typeof cfg.value === 'number' ? { kind: 'constant', value: cfg.value } : null,
+	linear: ({ xs, ys }) => {
+		const reg = linearRegression(xs, ys)
+		return reg ? { kind: 'series', values: xs.map((v) => reg.m * v + reg.b) } : null
+	},
+	ma: ({ ys, cfg }) =>
+		cfg.window ? { kind: 'series', values: movingAverage(ys, cfg.window) } : null,
+	ema: ({ ys, cfg }) => ({
+		kind: 'series',
+		values: ema(ys, { span: cfg.span, alpha: cfg.alpha })
+	}),
+	exp: ({ xs, ys }) => {
+		const reg = expRegression(xs, ys)
+		return reg ? { kind: 'series', values: xs.map((v) => reg.a * Math.exp(reg.b * v)) } : null
+	}
 }
 
 /**
@@ -73,41 +122,8 @@ function normalize(method) {
 export function computeTrend(rows, channels, method) {
 	const cfg = normalize(method)
 	if (!cfg || !Array.isArray(rows) || rows.length === 0) return null
-	const { x, y } = channels
-	const ys = rows.map((r) => Number(r[y]))
-	const xs = rows.map((r, i) => {
-		const v = Number(r[x])
-		return Number.isFinite(v) ? v : i
-	})
-
-	switch (cfg.type) {
-		case 'avg':
-			return { kind: 'constant', value: mean(ys) }
-		case 'median':
-			return { kind: 'constant', value: median(ys) }
-		case 'min':
-			return { kind: 'constant', value: Math.min(...ys) }
-		case 'max':
-			return { kind: 'constant', value: Math.max(...ys) }
-		case 'value':
-			return typeof cfg.value === 'number' ? { kind: 'constant', value: cfg.value } : null
-		case 'linear': {
-			const reg = linearRegression(xs, ys)
-			if (!reg) return null
-			return { kind: 'series', values: xs.map((v) => reg.m * v + reg.b) }
-		}
-		case 'ma': {
-			if (!cfg.window) return null
-			return { kind: 'series', values: movingAverage(ys, cfg.window) }
-		}
-		case 'ema':
-			return { kind: 'series', values: ema(ys, { span: cfg.span, alpha: cfg.alpha }) }
-		case 'exp': {
-			const reg = expRegression(xs, ys)
-			if (!reg) return null
-			return { kind: 'series', values: xs.map((v) => reg.a * Math.exp(reg.b * v)) }
-		}
-		default:
-			return null
-	}
+	// hasOwn, not a bare lookup: an unknown type must fall through to null, and a
+	// bare `BUILDERS[cfg.type]` would resolve inherited keys like 'constructor'.
+	if (!Object.hasOwn(BUILDERS, cfg.type)) return null
+	return BUILDERS[cfg.type]({ ...toSeries(rows, channels), cfg })
 }

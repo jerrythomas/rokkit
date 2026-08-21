@@ -79,38 +79,50 @@ function normaliseAxis(entry) {
  */
 export function resolveAxes(axes, data, axisField) {
 	if (!axes) {
-		const seen = new Set()
-		for (const row of data) {
-			const key = row?.[axisField]
-			if (key !== undefined && !seen.has(key)) seen.add(key)
-		}
-		// eslint-disable-next-line no-console
-		console.warn(
-			'[Radar] No `axes` prop given — falling back to first-appearance order in the data. ' +
-				'Radar shape is order-sensitive (adjacent axes read as related), so pass an explicit ' +
-				'`axes` array to make the order an analytical choice rather than an accident of row order.'
-		)
-		return [...seen].map(normaliseAxis)
+		warnInferredAxisOrder()
+		return axisKeysInData(data, axisField).map(normaliseAxis)
 	}
 
 	const resolved = axes.map(normaliseAxis)
-
 	const declaredKeys = new Set(resolved.map((a) => a.key))
-	const dataKeys = new Set()
+	warnDroppedAxes(axisKeysInData(data, axisField).filter((key) => !declaredKeys.has(key)))
+	return resolved
+}
+
+/**
+ * Distinct axis keys present in the data, in first-appearance order. Shared by
+ * both branches of `resolveAxes`, which previously walked the rows twice with
+ * near-identical loops.
+ * @param {Object[]} data
+ * @param {string} axisField
+ * @returns {unknown[]}
+ */
+function axisKeysInData(data, axisField) {
+	const seen = new Set()
 	for (const row of data) {
 		const key = row?.[axisField]
-		if (key !== undefined) dataKeys.add(key)
+		if (key !== undefined) seen.add(key)
 	}
-	const dropped = [...dataKeys].filter((key) => !declaredKeys.has(key))
-	if (dropped.length > 0) {
-		// eslint-disable-next-line no-console
-		console.warn(
-			`[Radar] Data axis(es) not named in \`axes\` were dropped: ${dropped.join(', ')}. ` +
-				'Add them to `axes` if they belong on the chart.'
-		)
-	}
+	return [...seen]
+}
 
-	return resolved
+function warnInferredAxisOrder() {
+	// eslint-disable-next-line no-console
+	console.warn(
+		'[Radar] No `axes` prop given — falling back to first-appearance order in the data. ' +
+			'Radar shape is order-sensitive (adjacent axes read as related), so pass an explicit ' +
+			'`axes` array to make the order an analytical choice rather than an accident of row order.'
+	)
+}
+
+/** @param {unknown[]} dropped */
+function warnDroppedAxes(dropped) {
+	if (dropped.length === 0) return
+	// eslint-disable-next-line no-console
+	console.warn(
+		`[Radar] Data axis(es) not named in \`axes\` were dropped: ${dropped.join(', ')}. ` +
+			'Add them to `axes` if they belong on the chart.'
+	)
 }
 
 /**
@@ -180,27 +192,42 @@ export function anglesFor(weights) {
  * @returns {[number, number][]} one domain per axis, positionally aligned with `axes`
  */
 export function domainsFor(axes, data, channels, opts = {}) {
-	const { x: axisField, y: valueField } = channels
-	const sharedDomain = opts.sharedDomain ?? false
+	const valuesByKey = finiteValuesByAxis(axes, data, channels)
+	const shared = opts.sharedDomain ? inferDomain([...valuesByKey.values()].flat()) : null
+	return axes.map((axis) => axis.domain ?? shared ?? inferDomain(valuesByKey.get(axis.key)))
+}
 
-	const valuesByKey = new Map(axes.map((axis) => [axis.key, []]))
+/**
+ * Finite values bucketed per axis key. Rows naming an axis that isn't declared
+ * are skipped — `resolveAxes` has already warned about them.
+ * @param {ResolvedAxis[]} axes
+ * @param {Object[]} data
+ * @param {{ x: string, y: string }} channels
+ * @returns {Map<unknown, number[]>}
+ */
+function finiteValuesByAxis(axes, data, { x: axisField, y: valueField }) {
+	const byKey = new Map(axes.map((axis) => [axis.key, []]))
 	for (const row of data) {
-		const values = valuesByKey.get(row?.[axisField])
+		const values = byKey.get(row?.[axisField])
 		if (!values) continue
 		const value = row?.[valueField]
 		if (Number.isFinite(value)) values.push(value)
 	}
+	return byKey
+}
 
-	const infer = (values) => {
-		if (values.length === 0) return [0, 0]
-		const min = Math.min(...values)
-		const max = Math.max(...values)
-		return min < 0 ? [min, max] : [0, max]
-	}
-
-	const shared = sharedDomain ? infer([...valuesByKey.values()].flat()) : null
-
-	return axes.map((axis) => axis.domain ?? shared ?? infer(valuesByKey.get(axis.key)))
+/**
+ * Domain covering `values`, anchored at 0 unless the data goes negative. An
+ * axis with no values gets `[0, 0]` — enough to render an empty spoke without
+ * the radius math blowing up (see `radiusFor`).
+ * @param {number[]} values
+ * @returns {[number, number]}
+ */
+function inferDomain(values) {
+	if (values.length === 0) return [0, 0]
+	const min = Math.min(...values)
+	const max = Math.max(...values)
+	return min < 0 ? [min, max] : [0, max]
 }
 
 /**
@@ -335,52 +362,36 @@ export function resolveRadiusTransform(weights, requested = 'auto') {
  * polygon" principle `resolveAxes` already applies to axis membership. The geom is expected to
  * break the polygon's outline at a `null` vertex instead of drawing a line through it.
  *
+ * The geometry arguments travel as one bag rather than six positionals, matching `ringsFor`'s
+ * `(axes, { R, rings, domains, transform })` shape. At the call site that is the difference
+ * between `verticesFor(data, axes, angles, domains, 100, 'linear', channels)` — where the reader
+ * has to count commas to learn what `100` and `'linear'` mean — and naming each one.
+ *
  * @param {Object[]} data
  * @param {ResolvedAxis[]} axes - from `resolveAxes`; vertex order follows this array
- * @param {number[]} angles - from `anglesFor(axes.map(a => a.weight))`, aligned with `axes`
- * @param {[number, number][]} domains - from `domainsFor`, aligned with `axes`
- * @param {number} R - outer radius in pixels, forwarded to `radiusFor`
- * @param {'linear'|'sqrt'} transform - forwarded to `radiusFor`
  * @param {{ x: string, y: string, color?: string }} channels - `x` names the axis field, `y` the
  *   value field, `color` the series field — mirroring `fill ?? color`'s role as the series
  *   channel in every other geom. Omitting it entirely means one implicit series.
+ * @param {Object} geometry
+ * @param {number[]} geometry.angles - from `anglesFor(axes.map(a => a.weight))`, aligned with `axes`
+ * @param {[number, number][]} geometry.domains - from `domainsFor`, aligned with `axes`
+ * @param {number} geometry.R - outer radius in pixels, forwarded to `radiusFor`
+ * @param {'linear'|'sqrt'} geometry.transform - forwarded to `radiusFor`
  * @returns {Map<unknown, (Vertex|null)[]>} one entry per distinct series value (or the single key
  *   `undefined` when `channels.color` is omitted), each holding one vertex — or `null` for a
  *   gap — per axis, in `axes` order
  */
-export function verticesFor(data, axes, angles, domains, R, transform, channels) {
-	const { x: axisField, y: valueField, color: seriesField } = channels
-
-	const cells = new Map()
-	for (const row of data) {
-		const seriesKey = seriesField !== undefined ? row?.[seriesField] : undefined
-		const axisKey = row?.[axisField]
-		if (!cells.has(seriesKey)) cells.set(seriesKey, new Map())
-		const bySeries = cells.get(seriesKey)
-		if (!bySeries.has(axisKey)) bySeries.set(axisKey, [])
-		bySeries.get(axisKey).push(row)
-	}
+export function verticesFor(data, axes, channels, { angles, domains, R, transform }) {
+	const { y: valueField } = channels
+	const cells = cellsBySeriesAndAxis(data, channels)
 
 	const result = new Map()
 	for (const [seriesKey, bySeries] of cells) {
 		const vertices = axes.map((axis, i) => {
 			const rows = bySeries.get(axis.key)
 			if (!rows) return null
-
-			if (rows.length > 1) {
-				// eslint-disable-next-line no-console
-				console.warn(
-					`[Radar] Duplicate (series, axis) cell — axis "${axis.key}"` +
-						`${seriesKey !== undefined ? `, series "${seriesKey}"` : ''} has ${rows.length} rows; ` +
-						'averaging their values. A repeated (series, axis) pair is almost always a data bug, ' +
-						'since axis is a small fixed enum rather than a repeated-measurement field.'
-				)
-			}
-
-			const values = rows.map((row) => row[valueField]).filter(Number.isFinite)
-			if (values.length === 0) return null
-
-			const value = values.reduce((a, b) => a + b, 0) / values.length
+			const value = cellValue(rows, { axisKey: axis.key, seriesKey, valueField })
+			if (value === null) return null
 			return {
 				axisKey: axis.key,
 				value,
@@ -393,6 +404,56 @@ export function verticesFor(data, axes, angles, domains, R, transform, channels)
 	}
 
 	return result
+}
+
+/**
+ * Group rows two levels deep, series → axis → rows, because a radar cell is
+ * identified by the `(series, axis)` pair rather than by either alone.
+ * @param {Object[]} data
+ * @param {{ x: string, color?: string }} channels
+ * @returns {Map<unknown, Map<unknown, Object[]>>}
+ */
+function cellsBySeriesAndAxis(data, { x: axisField, color: seriesField }) {
+	const cells = new Map()
+	for (const row of data) {
+		const seriesKey = seriesField !== undefined ? row?.[seriesField] : undefined
+		const axisKey = row?.[axisField]
+		if (!cells.has(seriesKey)) cells.set(seriesKey, new Map())
+		const bySeries = cells.get(seriesKey)
+		if (!bySeries.has(axisKey)) bySeries.set(axisKey, [])
+		bySeries.get(axisKey).push(row)
+	}
+	return cells
+}
+
+/**
+ * The single value a `(series, axis)` cell contributes: the mean of its finite
+ * values, or `null` when it has none. See this module's `verticesFor` doc for
+ * why a repeated pair is averaged AND warned about rather than silently picked.
+ * @param {Object[]} rows
+ * @param {{ axisKey: unknown, seriesKey: unknown, valueField: string }} cell
+ * @returns {number|null}
+ */
+function cellValue(rows, { axisKey, seriesKey, valueField }) {
+	if (rows.length > 1) warnDuplicateCell(rows.length, axisKey, seriesKey)
+	const values = rows.map((row) => row[valueField]).filter(Number.isFinite)
+	if (values.length === 0) return null
+	return values.reduce((a, b) => a + b, 0) / values.length
+}
+
+/**
+ * @param {number} count
+ * @param {unknown} axisKey
+ * @param {unknown} seriesKey
+ */
+function warnDuplicateCell(count, axisKey, seriesKey) {
+	// eslint-disable-next-line no-console
+	console.warn(
+		`[Radar] Duplicate (series, axis) cell — axis "${axisKey}"` +
+			`${seriesKey !== undefined ? `, series "${seriesKey}"` : ''} has ${count} rows; ` +
+			'averaging their values. A repeated (series, axis) pair is almost always a data bug, ' +
+			'since axis is a small fixed enum rather than a repeated-measurement field.'
+	)
 }
 
 /**
@@ -576,7 +637,7 @@ export function buildRadarLayout(data, channels, opts = {}) {
 	const angles = anglesFor(weights)
 	const domains = domainsFor(axes, data, channels, { sharedDomain: opts.sharedDomain })
 	const transform = resolveRadiusTransform(weights, opts.radiusScale)
-	const series = verticesFor(data, axes, angles, domains, R, transform, channels)
+	const series = verticesFor(data, axes, channels, { angles, domains, R, transform })
 	const rings = ringsFor(axes, { R, rings: opts.rings, domains, transform })
 	const zeroRings = zeroRingFor(axes, domains, R, transform)
 
