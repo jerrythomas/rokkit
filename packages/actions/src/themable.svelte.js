@@ -1,5 +1,48 @@
 const DEFAULT_THEME = { style: 'rokkit', mode: 'dark', density: 'comfortable', skin: 'default' }
 
+/** The four data-attributes that together select a theme. */
+const THEME_ATTRS = ['style', 'mode', 'density', 'skin']
+
+/**
+ * Write the theme's attributes onto one element's dataset.
+ *
+ * @param {HTMLElement} el
+ * @param {Record<string, string>} theme
+ */
+function applyThemeAttrs(el, theme) {
+	for (const attr of THEME_ATTRS) el.dataset[attr] = theme[attr]
+}
+
+/**
+ * Persist the theme to storage, and adopt changes another document writes to the
+ * same key — that second half is what keeps two open tabs in agreement.
+ *
+ * @param {import('./types.js').Themable} theme
+ * @param {string} storageKey
+ */
+function syncWithStorage(theme, storageKey) {
+	theme.load(storageKey)
+
+	$effect(() => {
+		theme.save(storageKey)
+	})
+
+	const handleStorage = (event) => {
+		if (event.key !== storageKey || event.newValue === null) return
+		try {
+			theme.update(JSON.parse(event.newValue))
+		} catch (e) {
+			// eslint-disable-next-line no-console
+			console.warn('Failed to parse theme from storage event for key "%s"', storageKey, e)
+		}
+	}
+
+	$effect.root(() => {
+		window.addEventListener('storage', handleStorage)
+		return () => window.removeEventListener('storage', handleStorage)
+	})
+}
+
 /**
  * Update the theme attributes when the state changes.
  *
@@ -9,38 +52,10 @@ const DEFAULT_THEME = { style: 'rokkit', mode: 'dark', density: 'comfortable', s
 export function themable(root, options) {
 	const { theme = DEFAULT_THEME, storageKey } = options ?? {}
 
-	if (storageKey) {
-		// Initial load from storage
-		theme.load(storageKey)
+	if (storageKey) syncWithStorage(theme, storageKey)
 
-		// Save changes to storage
-		$effect(() => {
-			theme.save(storageKey)
-		})
-
-		// Handle storage events
-		const handleStorage = (event) => {
-			if (event.key === storageKey && event.newValue !== null) {
-				try {
-					const newTheme = JSON.parse(event.newValue)
-					theme.update(newTheme)
-				} catch (e) {
-					// eslint-disable-next-line no-console
-					console.warn('Failed to parse theme from storage event for key "%s"', storageKey, e)
-				}
-			}
-		}
-		// Set up storage event listener
-		$effect.root(() => {
-			window.addEventListener('storage', handleStorage)
-			return () => window.removeEventListener('storage', handleStorage)
-		})
-	}
 	$effect(() => {
-		root.dataset.style = theme.style
-		root.dataset.mode = theme.mode
-		root.dataset.density = theme.density
-		root.dataset.skin = theme.skin
+		applyThemeAttrs(root, theme)
 
 		// Mirror onto documentElement too. The flash-prevention init script
 		// sets `html.dataset.*` before body parses; without this mirror,
@@ -50,13 +65,7 @@ export function themable(root, options) {
 		// so both the old html value and the new body value would apply,
 		// causing the partial / no-op style change users see when toggling.
 		if (typeof document !== 'undefined' && root !== document.documentElement) {
-			const el = document.documentElement
-			el.dataset.style = theme.style
-			el.dataset.mode = theme.mode
-			el.dataset.density = theme.density
-			el.dataset.skin = theme.skin
+			applyThemeAttrs(document.documentElement, theme)
 		}
-
-		// if (storageKey) theme.save(storageKey)
 	})
 }

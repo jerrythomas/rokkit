@@ -209,39 +209,50 @@
 
 	// ─── Trigger action ───────────────────────────────────────────────────────
 
+	/** Bring `el` into view inside the dropdown only — never scroll an ancestor. */
+	function scrollIntoDropdown(el: HTMLElement) {
+		if (!dropdownRef) return
+		const top = el.offsetTop
+		const bottom = top + el.offsetHeight
+		if (top < dropdownRef.scrollTop) {
+			dropdownRef.scrollTop = top
+		} else if (bottom > dropdownRef.scrollTop + dropdownRef.clientHeight) {
+			dropdownRef.scrollTop = bottom - dropdownRef.clientHeight
+		}
+	}
+
+	/**
+	 * Move DOM focus to the wrapper's focused item so subsequent keydown events
+	 * fire inside the dropdown, where Navigator is listening. preventScroll plus
+	 * the dropdown-only scroll above keeps ancestor containers still.
+	 */
+	function focusFocusedItem() {
+		if (!dropdownRef) return
+		const key = wrapper.focusedKey
+		if (!key) return
+		const el = dropdownRef.querySelector(`[data-path="${key}"]`) as HTMLElement | null
+		if (!el) return
+		el.focus({ preventScroll: true })
+		scrollIntoDropdown(el)
+	}
+
+	/** Where focus lands once the dropdown is open: the filter box, or the current item. */
+	function handleOpened() {
+		if (filterable) {
+			filterInputRef?.focus()
+			return
+		}
+		focusSelectedOrFirst()
+		requestAnimationFrame(focusFocusedItem)
+	}
+
 	$effect(() => {
 		if (!triggerRef || !selectRef || disabled) return
 		const t = new Trigger(triggerRef, selectRef, {
 			isOpen: () => isOpen,
 			onopen: () => {
 				isOpen = true
-				requestAnimationFrame(() => {
-					if (filterable) {
-						filterInputRef?.focus()
-						return
-					}
-					focusSelectedOrFirst()
-					// Move DOM focus to the wrapper's focused item so subsequent
-					// keydown events fire inside the dropdown (Navigator is
-					// listening there). preventScroll + dropdown-only scroll
-					// to avoid moving ancestor containers.
-					requestAnimationFrame(() => {
-						if (!dropdownRef) return
-						const key = wrapper.focusedKey
-						if (!key) return
-						const el = dropdownRef.querySelector(`[data-path="${key}"]`) as HTMLElement | null
-						if (el) {
-							el.focus({ preventScroll: true })
-							const top = el.offsetTop
-							const bottom = top + el.offsetHeight
-							if (top < dropdownRef.scrollTop) {
-								dropdownRef.scrollTop = top
-							} else if (bottom > dropdownRef.scrollTop + dropdownRef.clientHeight) {
-								dropdownRef.scrollTop = bottom - dropdownRef.clientHeight
-							}
-						}
-					})
-				})
+				requestAnimationFrame(handleOpened)
 			},
 			onclose: () => {
 				isOpen = false

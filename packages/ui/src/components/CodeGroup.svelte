@@ -92,31 +92,45 @@
 	// carrying the original path as its id. Folder nodes get their icon
 	// from the Tree's default state (it owns folder open/closed via its
 	// own icons prop); file leaves get the per-extension semantic icon.
+	const makeNode = (id: string, name: string, isLeaf: boolean, icon?: string) => ({
+		id,
+		name,
+		icon,
+		children: isLeaf ? undefined : []
+	})
+
+	/**
+	 * Insert one file's path into the tree, creating any missing folder nodes on
+	 * the way down. `lookup` is prototype-less: a path segment literally named
+	 * `constructor` or `toString` would otherwise find an inherited value and be
+	 * treated as an already-created node.
+	 */
+	function insertPath(
+		f: (typeof files)[number],
+		root: unknown[],
+		lookup: Record<string, Record<string, unknown>>
+	) {
+		const parts = f.path.split('/').filter(Boolean)
+		let parentChildren = root
+		let acc = ''
+		for (let i = 0; i < parts.length; i++) {
+			const part = parts[i]
+			const isLeaf = i === parts.length - 1
+			acc = acc ? `${acc}/${part}` : part
+			let node = lookup[acc]
+			if (!node) {
+				node = makeNode(acc, part, isLeaf, isLeaf ? iconForFile(f) : undefined)
+				lookup[acc] = node
+				parentChildren.push(node)
+			}
+			if (!isLeaf) parentChildren = node.children as unknown[]
+		}
+	}
+
 	const tree = $derived.by(() => {
 		const root: unknown[] = []
-		const lookup: Record<string, Record<string, unknown>> = {}
-		for (const f of files) {
-			const parts = f.path.split('/').filter(Boolean)
-			let parentChildren = root
-			let acc = ''
-			for (let i = 0; i < parts.length; i++) {
-				const part = parts[i]
-				const isLeaf = i === parts.length - 1
-				acc = acc ? `${acc}/${part}` : part
-				let node = lookup[acc]
-				if (!node) {
-					node = {
-						id: acc,
-						name: part,
-						icon: isLeaf ? iconForFile(f) : undefined,
-						children: isLeaf ? undefined : []
-					}
-					lookup[acc] = node
-					parentChildren.push(node)
-				}
-				if (!isLeaf) parentChildren = node.children as unknown[]
-			}
-		}
+		const lookup: Record<string, Record<string, unknown>> = Object.create(null)
+		for (const f of files) insertPath(f, root, lookup)
 		return root
 	})
 

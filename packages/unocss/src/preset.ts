@@ -119,27 +119,41 @@ function buildSafelist(config) {
 	]
 }
 
+/**
+ * Font roles, in emit order. Canonical (semantic) names match the named-token
+ * vocabulary:
+ *   --font-display — the heading / display typeface
+ *   --font-ui      — the body / UI typeface
+ *   --font-mono    — code, eyebrows, kbd shortcuts
+ *
+ * `keys` lists the config keys that can supply the role, most-canonical first —
+ * the legacy `heading` / `sans` spellings are still accepted. `legacyVar`, where
+ * present, is emitted as an alias so consumers still reading the old CSS var
+ * name keep working; see the typography.css base layer.
+ */
+const FONT_ROLES = [
+	{ token: 'display', keys: ['display', 'heading'], legacyVar: '--font-heading' },
+	{ token: 'ui', keys: ['ui', 'sans'], legacyVar: '--font-sans' },
+	{ token: 'mono', keys: ['mono'], legacyVar: null }
+] as const
+
+/** First value that is present at all — `??`-chain semantics, so `''` does not fall through. */
+const firstDefined = (values: unknown[]) => values.find((v) => v !== undefined && v !== null)
+
 function buildTypographyVars(typography): string[] {
 	/* v8 ignore next — loadConfig always passes a typography object; this null-guard protects direct callers */
 	if (!typography) return []
-	// Canonical (semantic) names match the named-token vocabulary:
-	//   --font-display — the heading / display typeface
-	//   --font-ui      — the body / UI typeface
-	//   --font-mono    — code, eyebrows, kbd shortcuts
-	// Legacy config keys (`heading`, `sans`) are still accepted; legacy CSS
-	// var names (`--font-heading`, `--font-sans`) are emitted as aliases for
-	// backward compat — see the typography.css base layer.
-	const display = typography.display ?? typography.heading
-	const ui = typography.ui ?? typography.sans
-	const mono = typography.mono
 	const vars: string[] = []
-	if (display) vars.push(`--font-display:${display}`)
-	if (ui) vars.push(`--font-ui:${ui}`)
-	if (mono) vars.push(`--font-mono:${mono}`)
-	// Legacy aliases — keep working for any consumer still reading the old names.
-	if (display) vars.push(`--font-heading:var(--font-display)`)
-	if (ui) vars.push(`--font-sans:var(--font-ui)`)
-	return vars
+	// Aliases are collected separately so they all follow the canonical vars,
+	// preserving the emit order consumers' snapshots were written against.
+	const aliases: string[] = []
+	for (const { token, keys, legacyVar } of FONT_ROLES) {
+		const value = firstDefined(keys.map((key) => typography[key]))
+		if (!value) continue
+		vars.push(`--font-${token}:${value}`)
+		if (legacyVar) aliases.push(`${legacyVar}:var(--font-${token})`)
+	}
+	return [...vars, ...aliases]
 }
 
 /**
@@ -242,35 +256,50 @@ function buildPreflights(theme, colormap, config) {
 		extraVars.length ? `:root{${extraVars.join(';')}}` : ''
 	}`
 
-	// Dark block: only when skin has dual-palette OR an override has { light, dark } (or dark-only)
-	let darkBlock = ''
-	const nonAliasColormap = Object.fromEntries(
-		Object.entries(colormap).filter(([, v]) => !isAlias(v))
-	)
+	return [{ getCSS: () => `${lightBlock}${buildDarkBlock(colormap, config)}` }]
+}
+
+/**
+ * Roles whose mapping is a real palette rather than an alias — the only ones a
+ * dark theme can be built from.
+ */
+function nonAliasRoles(colormap) {
+	return Object.fromEntries(Object.entries(colormap).filter(([, v]) => !isAlias(v)))
+}
+
+/** True when any override declares a dark value, as `{ light, dark }` or dark-only. */
+function hasDarkOverride(config) {
 	/* v8 ignore next — loadConfig always ensures overrides is {} */
-	const hasDarkOverride = Object.values(config.overrides ?? {}).some(
+	return Object.values(config.overrides ?? {}).some(
 		(v) => v && typeof v === 'object' && !Array.isArray(v) && 'dark' in v
 	)
+}
 
-	if (hasDualPaletteMapping(nonAliasColormap) || hasDarkOverride) {
-		const darkTheme = new Theme({
-			colors: { ...defaultColors, ...config.palettes },
-			mapping: resolveMappingForMode(nonAliasColormap, 'dark'),
-			colorSpace: config.colorSpace
-		})
-		const darkVars = buildVarsForMode(darkTheme, colormap, config)
-		const darkOverrides = resolveTokens(
-			/* v8 ignore next — loadConfig always ensures overrides is {} */
-			config.overrides ?? {},
-			/* v8 ignore next — loadConfig always ensures palettes is {} */
-			config.palettes ?? {},
-			config.colorSpace,
-			'dark'
-		)
-		darkBlock = `[data-mode="dark"]{${toCssBlock({ ...darkVars, ...darkOverrides })}}`
-	}
+/**
+ * The `[data-mode="dark"]` block, or `''` when nothing asks for one — emitted
+ * only when the skin has a dual palette OR an override declares a dark value.
+ * Returning empty rather than a no-op block keeps the output free of a selector
+ * that would match and set nothing.
+ */
+function buildDarkBlock(colormap, config) {
+	const roles = nonAliasRoles(colormap)
+	if (!hasDualPaletteMapping(roles) && !hasDarkOverride(config)) return ''
 
-	return [{ getCSS: () => `${lightBlock}${darkBlock}` }]
+	const darkTheme = new Theme({
+		colors: { ...defaultColors, ...config.palettes },
+		mapping: resolveMappingForMode(roles, 'dark'),
+		colorSpace: config.colorSpace
+	})
+	const darkVars = buildVarsForMode(darkTheme, colormap, config)
+	const darkOverrides = resolveTokens(
+		/* v8 ignore next — loadConfig always ensures overrides is {} */
+		config.overrides ?? {},
+		/* v8 ignore next — loadConfig always ensures palettes is {} */
+		config.palettes ?? {},
+		config.colorSpace,
+		'dark'
+	)
+	return `[data-mode="dark"]{${toCssBlock({ ...darkVars, ...darkOverrides })}}`
 }
 
 /**
@@ -399,16 +428,20 @@ function isOverrideTokenColor(value) {
 function buildOverrideTokenShortcuts(config, namedTokenSet) {
 	/* v8 ignore next — loadConfig always ensures overrides is {} */
 	const overrides = config.overrides ?? {}
-	const shortcuts = []
-	for (const [name, value] of Object.entries(overrides)) {
-		if (namedTokenSet.has(name)) continue
-		if (!isOverrideTokenColor(value)) continue
-		for (const { prefix, prop } of NAMED_SHORTCUT_PREFIXES) {
-			if (prefix === 'ring' && !name.endsWith('-ring')) continue
-			shortcuts.push([`${prefix}-${name}`, { [prop]: `var(--${name})` }])
-		}
-	}
-	return shortcuts
+	return Object.entries(overrides)
+		.filter(([name, value]) => !namedTokenSet.has(name) && isOverrideTokenColor(value))
+		.flatMap(([name]) => shortcutsForOverrideToken(name))
+}
+
+/**
+ * The color-meaningful shortcuts for one override token, one per prefix.
+ * @param {string} name
+ */
+function shortcutsForOverrideToken(name) {
+	return NAMED_SHORTCUT_PREFIXES
+		// The ring- prefix is reserved for tokens whose name ends in `-ring`.
+		.filter(({ prefix }) => prefix !== 'ring' || name.endsWith('-ring'))
+		.map(({ prefix, prop }) => [`${prefix}-${name}`, { [prop]: `var(--${name})` }])
 }
 
 /**

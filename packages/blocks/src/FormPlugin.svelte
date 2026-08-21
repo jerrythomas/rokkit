@@ -44,20 +44,39 @@
 	 * `filter` if someone tries to inject them via JSON-as-string). The
 	 * builder accepts only url + source patterns from this path.
 	 */
+	/**
+	 * The allowlist itself: field name → the shape its value must have. Anything
+	 * absent from this table is dropped, which is what makes `fetch` / `filter`
+	 * unreachable from the JSON path regardless of what the input claims.
+	 */
+	const LOOKUP_FIELDS: Array<[keyof LookupSpec, (v: unknown) => boolean]> = [
+		['url', (v) => typeof v === 'string'],
+		['source', Array.isArray],
+		['dependsOn', Array.isArray],
+		['fields', (v) => Boolean(v) && typeof v === 'object'],
+		['cacheTime', (v) => typeof v === 'number']
+	]
+
+	/** Copy across only allowlisted fields whose value has the expected shape. */
+	function sanitiseLookup(lk: unknown): LookupSpec | null {
+		if (!lk || typeof lk !== 'object') return null
+		const source = lk as Record<string, unknown>
+		const safe: Record<string, unknown> = {}
+		for (const [key, isValid] of LOOKUP_FIELDS) {
+			if (isValid(source[key])) safe[key] = source[key]
+		}
+		// A lookup with neither a url nor a source can never resolve options.
+		return safe.url || safe.source ? (safe as LookupSpec) : null
+	}
+
 	function sanitiseLookups(
 		raw: Record<string, LookupSpec> | undefined
 	): Record<string, LookupSpec> | undefined {
 		if (!raw || typeof raw !== 'object') return undefined
 		const out: Record<string, LookupSpec> = {}
 		for (const [path, lk] of Object.entries(raw)) {
-			if (!lk || typeof lk !== 'object') continue
-			const safe: LookupSpec = {}
-			if (typeof lk.url === 'string') safe.url = lk.url
-			if (Array.isArray(lk.source)) safe.source = lk.source
-			if (Array.isArray(lk.dependsOn)) safe.dependsOn = lk.dependsOn
-			if (lk.fields && typeof lk.fields === 'object') safe.fields = lk.fields
-			if (typeof lk.cacheTime === 'number') safe.cacheTime = lk.cacheTime
-			if (safe.url || safe.source) out[path] = safe
+			const safe = sanitiseLookup(lk)
+			if (safe) out[path] = safe
 		}
 		return Object.keys(out).length > 0 ? out : undefined
 	}

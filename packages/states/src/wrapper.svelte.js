@@ -262,12 +262,17 @@ export class Wrapper {
 		this.#anchorKey = key
 		if (proxy.hasChildren) return
 
-		if (this.#selectedKeys.has(key)) {
-			this.#selectedKeys.delete(key)
-		} else {
-			this.#selectedKeys.add(key)
-		}
+		this.#toggleSelected(key)
 		this.#onselect?.(proxy.value, proxy)
+	}
+
+	/**
+	 * Flip one key's membership in the selection set.
+	 * @param {string} key
+	 */
+	#toggleSelected(key) {
+		if (this.#selectedKeys.has(key)) this.#selectedKeys.delete(key)
+		else this.#selectedKeys.add(key)
 	}
 
 	/**
@@ -291,18 +296,37 @@ export class Wrapper {
 			return
 		}
 
+		const span = this.#navigableSpan(anchorKey, key)
+		if (span) this.#replaceSelection(span, key)
+	}
+
+	/**
+	 * Navigable keys from `fromKey` to `toKey` inclusive, in navigable order —
+	 * direction-agnostic, so dragging a range upwards behaves the same as
+	 * downwards. Null when either endpoint isn't navigable.
+	 *
+	 * @param {string} fromKey
+	 * @param {string} toKey
+	 * @returns {string[]|null}
+	 */
+	#navigableSpan(fromKey, toKey) {
 		const nav = this.#navigable
-		const anchorIdx = nav.findIndex((n) => n.key === anchorKey)
-		const targetIdx = nav.findIndex((n) => n.key === key)
-		if (anchorIdx < 0 || targetIdx < 0) return
+		const from = nav.findIndex((n) => n.key === fromKey)
+		const to = nav.findIndex((n) => n.key === toKey)
+		if (from < 0 || to < 0) return null
+		return nav.slice(Math.min(from, to), Math.max(from, to) + 1).map((n) => n.key)
+	}
 
-		const lo = Math.min(anchorIdx, targetIdx)
-		const hi = Math.max(anchorIdx, targetIdx)
-
+	/**
+	 * Replace the entire selection with `keys`, move focus to `key`, and notify
+	 * for a leaf target (groups aren't selectable values).
+	 *
+	 * @param {string[]} keys
+	 * @param {string} key
+	 */
+	#replaceSelection(keys, key) {
 		this.#selectedKeys.clear()
-		for (let i = lo; i <= hi; i++) {
-			this.#selectedKeys.add(nav[i].key)
-		}
+		for (const k of keys) this.#selectedKeys.add(k)
 		this.#focusedKey = key
 
 		const proxy = this.#proxyTree.lookup.get(key)

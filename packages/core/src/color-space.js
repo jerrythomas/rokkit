@@ -77,6 +77,16 @@ function oklchLuminance(L, C, H) {
 	return matMul(LMS_TO_XYZ, lms)[1]
 }
 
+// ── Value-shape regexes ─────────────────────────────────────────────────
+// Declared above their first use (relativeLuminance) rather than beside the
+// class that also consumes them, and named rather than inlined so the three
+// bare-channel dialects can be told apart at a glance.
+
+const HEX_RE = /^#[0-9a-fA-F]{6}$/
+const BARE_OKLCH_RE = /^[\d.]+\s+[\d.]+\s+[\d.]+$/
+const BARE_RGB_COMMA_RE = /^\d+\s*,\s*\d+\s*,\s*\d+$/
+const BARE_RGB_SPACE_RE = /^\d+\s+\d+\s+\d+$/
+
 /**
  * Relative luminance (Y, 0–1) of a palette value in the given color space.
  * Accepts hex (`#rrggbb`), bare RGB (`"r,g,b"` / `"r g b"`), and bare OKLCH
@@ -94,16 +104,27 @@ export function relativeLuminance(value, space = 'rgb') {
 		const [r, g, b] = parseHex(v)
 		return rgbLuminance(r, g, b)
 	}
-	if (space === 'oklch' && /^[\d.]+\s+[\d.]+\s+[\d.]+$/.test(v)) {
+	// OKLCH is checked before bare RGB and only when asked for: "0.6 0.1 40" is a
+	// valid shape for both dialects, and `space` is the only thing that says which.
+	if (space === 'oklch' && BARE_OKLCH_RE.test(v)) {
 		const [L, C, H] = v.split(/\s+/).map(Number)
 		return oklchLuminance(L, C, H)
 	}
-	if (/^\d+\s*,\s*\d+\s*,\s*\d+$/.test(v)) {
+	return bareRgbLuminance(v)
+}
+
+/**
+ * Luminance of a bare `"r,g,b"` or `"r g b"` triple, or null when `v` is neither.
+ * @param {string} v
+ * @returns {number | null}
+ */
+function bareRgbLuminance(v) {
+	if (BARE_RGB_COMMA_RE.test(v)) {
 		const [r, g, b] = v.split(',').map((s) => Number(s.trim()))
 		return rgbLuminance(r, g, b)
 	}
-	if (/^\d+\s+\d+\s+\d+$/.test(v)) {
-		const [r, g, b] = v.trim().split(/\s+/).map(Number)
+	if (BARE_RGB_SPACE_RE.test(v)) {
+		const [r, g, b] = v.split(/\s+/).map(Number)
 		return rgbLuminance(r, g, b)
 	}
 	return null
@@ -175,10 +196,6 @@ function hexToOklch(hex) {
 
 	return `${Lr} ${Cr} ${Hr}`
 }
-
-// ── Hex regex ───────────────────────────────────────────────────────────
-
-const HEX_RE = /^#[0-9a-fA-F]{6}$/
 
 // ── Base class ──────────────────────────────────────────────────────────
 

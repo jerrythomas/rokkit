@@ -88,13 +88,26 @@ function isNestedInteractive(target, root) {
 	if (!el) return false
 	const interactive = /** @type {HTMLElement|null} */ (el.closest(INTERACTIVE_SELECTOR))
 	if (!interactive || !root.contains(interactive)) return false
-	const dataPathEl = /** @type {HTMLElement|null} */ (el.closest('[data-path]'))
-	if (!dataPathEl || interactive === dataPathEl) return false
-	if (!dataPathEl.contains(interactive)) return false
 	// A nested element explicitly declared as an accordion trigger is a
 	// Navigator-controlled control, not a stray interactive — let it through.
 	if (interactive.hasAttribute('data-accordion-trigger')) return false
-	return true
+	return isStrictlyInsideItem(el, interactive)
+}
+
+/**
+ * True when `interactive` sits STRICTLY inside the `[data-path]` item that
+ * contains `el` — i.e. the item exists, is not the interactive itself, and
+ * really is its ancestor. Being the item (a `<button data-path>` list row) is
+ * the normal case and must not count as nesting.
+ *
+ * @param {HTMLElement} el
+ * @param {HTMLElement} interactive
+ * @returns {boolean}
+ */
+function isStrictlyInsideItem(el, interactive) {
+	const item = /** @type {HTMLElement|null} */ (el.closest('[data-path]'))
+	if (!item || interactive === item) return false
+	return item.contains(interactive)
 }
 
 /**

@@ -24,21 +24,23 @@
 	const spec = $derived(parsed.spec)
 	const prettyCode = $derived(spec ? JSON.stringify(spec, null, 2) : code)
 
-	const summary = $derived.by(() => {
-		if (!spec) return [] as Array<{ label: string; value: string }>
-		const parts: Array<{ label: string; value: string }> = []
-		const rows = Array.isArray(spec.data) ? spec.data.length : 0
-		if (rows) parts.push({ label: 'rows', value: `[${rows}]` })
-		const channels: Array<[string, string | undefined]> = [
-			['x', spec.x],
-			['y', spec.y],
-			['fill', spec.fill ?? spec.color]
+	/** `label: value` chips describing the parsed spec, shown in the collapsed header. */
+	function specSummary(s: Record<string, unknown>): Array<{ label: string; value: string }> {
+		const rows = Array.isArray(s.data) ? s.data.length : 0
+		const channels: Array<[string, unknown]> = [
+			['x', s.x],
+			['y', s.y],
+			['fill', s.fill ?? s.color]
 		]
-		for (const [name, field] of channels) {
-			if (typeof field === 'string' && field) parts.push({ label: name, value: field })
-		}
-		return parts
-	})
+		return [
+			...(rows ? [{ label: 'rows', value: `[${rows}]` }] : []),
+			...channels
+				.filter(([, field]) => typeof field === 'string' && field)
+				.map(([label, field]) => ({ label, value: String(field) }))
+		]
+	}
+
+	const summary = $derived(spec ? specSummary(spec) : [])
 
 	async function copyCode() {
 		try {
@@ -56,13 +58,8 @@
 	 * HTML title) → one wrapper <svg> with every panel nested at its on-screen position plus the
 	 * panel titles as <text>, so the export isn't just the first panel.
 	 */
-	function buildExportSvg(): string | null {
-		if (!bodyRef) return null
-		const svgs = [...bodyRef.querySelectorAll('svg')]
-		if (svgs.length === 0) return null
-		if (svgs.length === 1) return new XMLSerializer().serializeToString(svgs[0])
-
-		const body = bodyRef.getBoundingClientRect()
+	/** The wrapper <svg> a facet export nests its panels into, sized to the body. */
+	function createExportRoot(body: DOMRect): SVGSVGElement {
 		const width = Math.max(1, Math.ceil(body.width))
 		const height = Math.max(1, Math.ceil(body.height))
 		const wrapper = document.createElementNS(SVG_NS, 'svg')
@@ -70,32 +67,46 @@
 		wrapper.setAttribute('width', String(width))
 		wrapper.setAttribute('height', String(height))
 		wrapper.setAttribute('viewBox', `0 0 ${width} ${height}`)
+		return wrapper
+	}
 
-		// Panel charts → nested <svg> at their positions relative to the body.
-		for (const svg of svgs) {
-			const r = svg.getBoundingClientRect()
-			const clone = svg.cloneNode(true) as SVGSVGElement
-			clone.setAttribute('x', String(Math.round(r.left - body.left)))
-			clone.setAttribute('y', String(Math.round(r.top - body.top)))
-			clone.setAttribute('width', String(Math.round(r.width) || Math.round(body.width)))
-			clone.setAttribute('height', String(Math.round(r.height) || Math.round(body.height)))
-			wrapper.appendChild(clone)
-		}
+	/** One panel chart as a nested <svg>, positioned relative to the export origin. */
+	function panelClone(svg: SVGSVGElement, body: DOMRect): SVGSVGElement {
+		const r = svg.getBoundingClientRect()
+		const clone = svg.cloneNode(true) as SVGSVGElement
+		clone.setAttribute('x', String(Math.round(r.left - body.left)))
+		clone.setAttribute('y', String(Math.round(r.top - body.top)))
+		clone.setAttribute('width', String(Math.round(r.width) || Math.round(body.width)))
+		clone.setAttribute('height', String(Math.round(r.height) || Math.round(body.height)))
+		return clone
+	}
 
-		// Facet titles (HTML) → <text> on top, so the panels stay labelled.
+	/** One HTML facet title mirrored as <text>, so exported panels stay labelled. */
+	function titleText(title: HTMLElement, body: DOMRect): SVGTextElement {
+		const r = title.getBoundingClientRect()
+		const cs = getComputedStyle(title)
+		const text = document.createElementNS(SVG_NS, 'text')
+		text.setAttribute('x', String(Math.round(r.left - body.left)))
+		text.setAttribute('y', String(Math.round(r.top - body.top + (parseFloat(cs.fontSize) || 12))))
+		text.setAttribute('font-size', cs.fontSize || '12px')
+		text.setAttribute('font-family', cs.fontFamily || 'sans-serif')
+		text.setAttribute('fill', cs.color || 'currentColor')
+		text.textContent = title.textContent ?? ''
+		return text
+	}
+
+	function buildExportSvg(): string | null {
+		if (!bodyRef) return null
+		const svgs = [...bodyRef.querySelectorAll('svg')]
+		if (svgs.length === 0) return null
+		if (svgs.length === 1) return new XMLSerializer().serializeToString(svgs[0])
+
+		const body = bodyRef.getBoundingClientRect()
+		const wrapper = createExportRoot(body)
+		for (const svg of svgs) wrapper.appendChild(panelClone(svg, body))
 		for (const title of bodyRef.querySelectorAll<HTMLElement>('[data-facet-title]')) {
-			const r = title.getBoundingClientRect()
-			const cs = getComputedStyle(title)
-			const text = document.createElementNS(SVG_NS, 'text')
-			text.setAttribute('x', String(Math.round(r.left - body.left)))
-			text.setAttribute('y', String(Math.round(r.top - body.top + (parseFloat(cs.fontSize) || 12))))
-			text.setAttribute('font-size', cs.fontSize || '12px')
-			text.setAttribute('font-family', cs.fontFamily || 'sans-serif')
-			text.setAttribute('fill', cs.color || 'currentColor')
-			text.textContent = title.textContent ?? ''
-			wrapper.appendChild(text)
+			wrapper.appendChild(titleText(title, body))
 		}
-
 		return new XMLSerializer().serializeToString(wrapper)
 	}
 
