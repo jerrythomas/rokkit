@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import {
 	matrix,
 	mergeFinding,
+	where,
 	isAllowed,
 	formatReport,
 	STYLES,
@@ -40,7 +41,7 @@ describe('mergeFinding', () => {
 	it('seeds a new entry with the config in a fresh configs array', () => {
 		const uniq = new Map()
 		mergeFinding(uniq, finding(), 'rokkit/light/default')
-		const entry = uniq.get('Button|data-x|Go')
+		const entry = uniq.get('Button|data-x|idle|Go')
 		expect(entry.configs).toEqual(['rokkit/light/default'])
 		expect(entry.ratio).toBe(4.0)
 	})
@@ -49,7 +50,7 @@ describe('mergeFinding', () => {
 		const uniq = new Map()
 		mergeFinding(uniq, finding({ ratio: 4.0 }), 'a')
 		mergeFinding(uniq, finding({ ratio: 3.2 }), 'b')
-		const entry = uniq.get('Button|data-x|Go')
+		const entry = uniq.get('Button|data-x|idle|Go')
 		expect(entry.configs).toEqual(['a', 'b'])
 		expect(entry.ratio).toBe(3.2)
 	})
@@ -58,7 +59,7 @@ describe('mergeFinding', () => {
 		const uniq = new Map()
 		mergeFinding(uniq, finding({ ratio: 3.2 }), 'a')
 		mergeFinding(uniq, finding({ ratio: 4.9 }), 'b')
-		expect(uniq.get('Button|data-x|Go').ratio).toBe(3.2)
+		expect(uniq.get('Button|data-x|idle|Go').ratio).toBe(3.2)
 	})
 
 	it('keys distinct comp/part/text as separate entries', () => {
@@ -66,6 +67,35 @@ describe('mergeFinding', () => {
 		mergeFinding(uniq, finding(), 'a')
 		mergeFinding(uniq, finding({ part: 'data-y' }), 'a')
 		expect(uniq.size).toBe(2)
+	})
+
+	it('keeps the same part distinct per interaction state', () => {
+		// The resting and hovered forms of one part are different defects with
+		// different fixes, so collapsing them would hide one behind the other.
+		const uniq = new Map()
+		mergeFinding(uniq, finding({ state: 'idle', ratio: 4.0 }), 'a')
+		mergeFinding(uniq, finding({ state: 'hover', ratio: 2.1 }), 'a')
+		expect(uniq.size).toBe(2)
+		expect(uniq.get('Button|data-x|hover|Go').ratio).toBe(2.1)
+		expect(uniq.get('Button|data-x|idle|Go').ratio).toBe(4.0)
+	})
+
+	it("treats a finding with no state as 'idle'", () => {
+		const uniq = new Map()
+		mergeFinding(uniq, finding(), 'a')
+		expect([...uniq.keys()]).toEqual(['Button|data-x|idle|Go'])
+	})
+})
+
+describe('where', () => {
+	it('collapses configs to style/mode pairs with a skin count', () => {
+		expect(where(['rokkit/dark/default', 'rokkit/dark/ocean', 'minimal/light/rose']))
+			.toBe('minimal/light×1 rokkit/dark×2')
+	})
+
+	it('is empty for no configs', () => {
+		expect(where([])).toBe('')
+		expect(where()).toBe('')
 	})
 })
 

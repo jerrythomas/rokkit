@@ -1,7 +1,5 @@
 [
-	"button|data-button",
-	"tabs|data-tabs-label",
-	"tabs|data-tabs-trigger",
-	"toggle|data-toggle-label",
-	"toggle|data-toggle-option"
+	"list|data-item-label",
+	"list|data-item-text",
+	"list|data-list-item"
 ]
