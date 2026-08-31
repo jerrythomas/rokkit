@@ -44,6 +44,19 @@ jobs:
       - name: Report results to DeepSource
         env:
           DEEPSOURCE_DSN: ${{ secrets.DEEPSOURCE_DSN }}
+          # Pinned release + published checksum, replacing `curl https://deepsource.io/cli | sh`.
+          # Piping a remote installer straight into a shell executes whatever the
+          # server returns: a compromised host, a hijacked URL — or simply an HTML
+          # error page — runs on the runner with the job's secrets in scope.
+          #
+          # linux_amd64 matches runs-on: ubuntu-latest. Moving to an arm runner
+          # means changing this asset name too.
+          DS_VERSION: 0.10.1
+          DS_SHA256: e415a6a53257457ef1dad900fdb39aeb991dd01c35c4be9cafa88a41f9e50b3b
         run: |
-          curl https://deepsource.io/cli | sh
-          ./bin/deepsource report --analyzer test-coverage --key javascript --value-file ./coverage/lcov.info
+          set -euo pipefail
+          curl -sSfL --proto '=https' --tlsv1.2 -o deepsource.tar.gz \
+            "https://github.com/deepsourcelabs/cli/releases/download/v${DS_VERSION}/deepsource_${DS_VERSION}_linux_amd64.tar.gz"
+          echo "${DS_SHA256}  deepsource.tar.gz" | sha256sum --check --strict
+          tar -xzf deepsource.tar.gz deepsource
+          ./deepsource report --analyzer test-coverage --key javascript --value-file ./coverage/lcov.info
