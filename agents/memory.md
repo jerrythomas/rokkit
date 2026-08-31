@@ -80,9 +80,41 @@ Violations must be justified or the plan revised.
 - **Theme structure**: `base/` (structural layout), `rokkit/` (colors/effects), `minimal/`, `material/`, `frosted/`, `zen-sumi/` — each has per-component CSS files imported via `index.css`
 - **Playground pattern**: Each page uses `Playground` wrapper with `preview` and `controls` snippets. Toggle page is the pilot for FormRenderer-based controls.
 
+## Contrast & State Gates
+
+Three gates, and they see different things — a change usually has to satisfy all three:
+
+| Gate | Fixture | Asserts | Tolerance |
+| --- | --- | --- | --- |
+| `theme-contrast.e2e.ts` | `/embed/gallery` | WCAG contrast **at rest** | ratchet (3 baselined) |
+| `interaction-contrast.e2e.ts` | `/embed/gallery` | WCAG contrast under **hover / focus / focus-visible / active / focus-hover**, for text (4.5), icons (3.0) and SVG chart marks (3.0) | ratchet (58 baselined) |
+| `state-snapshot.e2e.ts` | `/embed/states` | exact computed styles for List states | exact match |
+
+Rules that fall out of this, learned the hard way:
+
+- **`ink-soft` is the placeholder tone** (ink.500 — 1.95–2.13:1 on paper). It cannot carry an
+  interactive control's label or icon. `ink-mute` is the readable-secondary token.
+- **On a `paper-mute` fill the text is `ink`, never `ink-mute`** — that pairing is 4.07:1 in
+  dark mode. It passes at rest only because resting items sit on `paper`.
+- **A hover rule out-specifies a `[data-selected]` rule** ((0,5,0) vs (0,3,0)) unless the
+  selected state is restated with the pseudo-class. This applies again one level deeper for
+  the item's icon ((0,5,0) vs (0,4,0)).
+- **A filled element's label takes the fill's on-color.** Only `on-primary` is a real CSS
+  variable; `text-on-accent`/`text-on-danger` compile to a **build-time-baked hex** and cannot
+  react to a skin.
+- **Hover must move a fill AWAY from its label**, and the safe direction depends on which side
+  of the y=0.19 crossover the fill sits. Use `oklch(from … calc(l + (l - 0.566) * 0.3) …)`;
+  never a fixed darken or lighten.
+- **Translucent tints are not solid fills** — the on-color picked for the solid 500 is the
+  wrong reference for `bg-primary/35`. Use `ink`.
+- **The on-color dead zone:** a fill with relative luminance in (0.1735, 0.2111) clears 4.5:1
+  against neither near-black nor near-white. `violet-500` and `indigo-500` are the only two
+  built-in palettes in it.
+- Freeze transitions before measuring a state, or you read the idle colour at t=0.
+
 ## Current Status
 
-- Tests: 5794 passing (384 files)
+- Tests: 5798 passing (384 files)
 - Lint: **0 errors, 0 warnings** — enforced by `--max-warnings 0` in the root
   `lint` script, so any new warning fails the build
 - Phase: ProxyItem migration complete. All components use ProxyItem + ProxyTree + Wrapper stack. Ready for new features (Upload, Table phases, etc.)

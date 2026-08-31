@@ -7842,3 +7842,137 @@ function tail unreachable, so `v8 ignore` must wrap the whole function, never `n
 **NOT done — one decision for the owner:** the lint script has no `--max-warnings 0`, so
 nothing stops a regression back to 108. Adding it is a one-line change to the root `lint`
 script and would make any new warning a hard failure. Left as the owner's call.
+
+## 2026-08-31 — Interaction-state contrast: the states nobody was measuring
+
+**Reported:** hovering a *selected* toggle in zen-sumi dark looked wrong. It was two
+separate defects wearing one symptom, and neither was visible to any existing gate.
+
+**The cascade half.** `[data-toggle-option]:hover:not(:disabled):not([data-disabled='true'])`
+scores **(0,5,0)**; `[data-toggle-option][data-selected='true']` scores **(0,3,0)**. Hover
+therefore *won over selection* — the vermillion fill was replaced by `paper-mute` and the
+label by `ink-mute`, so hovering the selected option made it read as unselected. Same
+defect in `tabs.css`, where it also stranded the selected tab's icon at `paper-soft` on
+`paper-mute` (effectively invisible).
+
+**The token half.** That hover pairing — `text-ink-mute` on `bg-paper-mute` — is **4.07:1
+in dark mode**, and it was *every* hover/focus state in zen-sumi (list, tree, table, select,
+multiselect, menu, toggle, toolbar). The resting gate never caught it because at rest those
+items sit on `paper`, where `ink-mute` is 5.33:1 and passes. `minimal/button.css` already
+carried a comment recording this exact 4.07 number and the exact fix (`ink`, not `ink-mute`)
+— the knowledge existed, it just had no gate to enforce it.
+
+### The gate
+
+`e2e/interaction-contrast.e2e.ts` + `interaction-collector.mjs`: hover / focus /
+focus-visible / active / **focus-hover** across 5 styles × 2 modes × 5 skins.
+
+States are synthesised by **rewriting each interaction pseudo-class into an attribute
+selector in place** — `rule.selectorText = sel.replace(':hover', '[data-fh]')`. An attribute
+selector has identical specificity to a pseudo-class (0,1,0) and the rule keeps its position,
+so the substitution is **cascade-neutral**. That is load-bearing rather than clever: the bug
+being hunted IS a cascade defect, and any approach that perturbed specificity would hide
+precisely it. It is also fast — no per-node CDP round trips, so a config costs ~1.1s and the
+whole 50-config matrix runs in under a minute.
+
+Targets are **derived from the stylesheets**, not hand-listed: for every rule declaring an
+interaction state, the harness works out which compound carries the pseudo-class and queries
+for it. Coverage therefore grows with the themes, and rules matching nothing are **reported
+as gaps** rather than silently passing.
+
+`focus-hover` (group focused AND row hovered) is not a luxury — themes gate their strongest
+active-row styling on `[data-list]:focus-within [data-active]:hover`, which nothing else
+measured.
+
+**Three measurement paths, because two of them were blind.** Text at 4.5:1; **icons at 3.0**
+(WCAG 1.4.11 — an icon has no text, so a text-only audit cannot see a `paper-soft` glyph on a
+`paper-mute` fill); **SVG chart marks at 3.0** via `fill`, with mask-mode icons measured
+against their PARENT because `background-color: currentColor` behind a `mask-image` IS the
+glyph.
+
+**One trap worth recording:** every theme animates `background-color` on hover, so reading a
+computed style straight after entering a state returns the value mid-interpolation — the idle
+colour at t=0. The first probe reported hover identical to idle until transitions were frozen.
+A hover audit without `freezeTransitions` silently re-measures the resting state.
+
+### Fixture: /embed/gallery, 28 → 37 cells
+
+The coverage report immediately proved the fixture was the bottleneck. The List was mounted
+`collapsible` with no `value`, so it rendered **closed group headers and no items** — every
+item-level rule was unreachable (the same defect the journal records for `/app/list` at
+`31069eb6`). Dropdowns were closed, so options/menu-items were unaudited. Toggle and Tabs had
+no icons, so the icon pass had nothing to measure.
+
+Now seeded, with icons, and with `data-gallery-open` declaring the trigger the audit must
+click. They are opened **one at a time** — dismissal is a document-level listener, so opening
+one closes the last — and clicked **in-page**, because the permanently-open CommandPalette
+renders a `position:fixed inset:0` backdrop that swallows a real pointer click. Added
+Carousel, ChatHistory, FloatingNavigation, CommandPalette and five chart types.
+
+### 11 defect classes fixed
+
+1. **`minimal` filled buttons: 1.13:1 — invisible labels.** `[data-button]:not([data-style]):hover`
+   omitted the variant qualifiers, so it also matched `primary`/`secondary`/`danger` and
+   repainted their fill to `paper-mute` while `text-on-*` stayed. Worse than the reported bug
+   and nobody had seen it.
+2. **zen-sumi `ink-mute` on `paper-mute` → `ink`** (15 rules), then the same in
+   rokkit/minimal/material/frosted (15 more), then the *cross-rule* cases where the bg came
+   from one rule and the stranded text token from another (select trigger, table cells/headers,
+   tags).
+3. **Hover direction on filled buttons.** Two prior attempts had failed in *opposite*
+   directions, and for the same reason: the label's on-color is picked from the RESTING fill's
+   luminance, so any fixed direction is wrong for half the skins. Darkening collapsed shu
+   4.97 → 3.03; lightening collapsed indigo-600 6.02 → 4.22. The fix pushes L *away from
+   0.566* — the OKLCH lightness whose relative luminance IS the on-color crossover — so
+   separation increases whichever side the fill sits on. Verified across all five skins.
+4. **`[data-selected]:hover` overrides** for toggle and tabs, at (0,6,0).
+5. **My own regression, caught by the gate.** Once the fill correctly STAYED vermillion on
+   hover, the *icon* flipped to `ink-mute` on it (1.18:1) — the hover icon rule is (0,5,0) and
+   the selected icon rule only (0,4,0). Previously hidden because hover also replaced the fill.
+   Same trap, one level deeper.
+6. **`material`/`frosted` open-state triggers: 1.07:1.** Dropdown and Menu paint the trigger
+   with `bg-primary` on open but left the label/icon/arrow at `text-ink-mute`. Reachable only
+   with the panel open — which is exactly what the new sweep added.
+7. **`material/select.css` painted `bg-primary` AND `text-primary`** on the selected option.
+8. **CommandPalette: `data-command-label` at 1.05:1 in all ten style/mode combos.** The
+   command's primary text was pinned to `ink-soft` (the *placeholder* tone) in every style, and
+   kept it when the row took a primary fill. It now inherits the item's colour.
+9. **`ink-soft` as an interactive foreground** — toolbar icons, pill remove, floating-nav
+   items/icons/pins. `ink-soft` is documented as the placeholder tone (1.95–2.13:1 on paper).
+10. **Translucent tints ≠ solid fills.** frosted's `bg-primary/35` and `/80` composite into a
+    mid-luminance surface, where the on-color picked for the solid 500 is the wrong reference.
+    `/80` failed against *both* on-colors (3.51 near-black, 3.03 near-white) — the dead zone
+    again; dropped to a 35% wash + `ink`, matching its sibling components.
+11. **The violet skin was in the on-color dead zone.** Exactly 2 of 21 built-in palettes are:
+    the auto on-color is near-black above y=0.19 and near-white below, and a fill with
+    y ∈ (0.1735, 0.2111) clears 4.5:1 against **neither**. `violet-500` (y=0.1980) → 4.27,
+    `indigo-500` (y=0.1851) → 4.28 — and they are precisely the two the violet skin uses.
+    Shifted one stop **lighter**, not darker: going darker also clears AA but flips the
+    on-color polarity, and `text-on-accent`/`text-on-danger` compile to a **build-time-baked
+    hex** (only `on-primary` is in `NAMED_TOKENS`), so they would have kept painting near-black
+    on a now-dark fill — measured 2.67:1. Lighter perturbs nothing.
+
+### Break-it check
+
+Deleted the selected+hover override, rebuilt, ran the gate: **it failed**. Restored: green. A
+gate that cannot fail is worth nothing, so this is the same discipline Phase 0 applied to the
+state snapshot.
+
+### Residual: one class, booked not hidden
+
+**173 → 60 findings.** What remains is a single category — a brand or status colour used as a
+**foreground** on a light surface: `text-primary` selected labels (2.09–2.19), `primary` on
+`primary-soft` (1.64–2.12), ocean `teal` icons (2.12–2.31), `warning` on `warning-soft`
+(2.17), chart mark fills (1.10–1.39). That is the recorded fill principle in reverse, and
+fixing it changes what "selected" looks like in all five themes — a design decision, not a
+token swap. 58 keys baselined + 3 in the resting gate, with the options written up in
+`docs/backlog/2026-08-31-brand-colour-as-foreground.md`.
+
+**The resting baseline SHRANK from 5 keys to 3** — button, tabs×2 and toggle×2 now pass, so
+they were removed to lock the improvement in, per that gate's own contract.
+
+**Gate:** lint **0 errors / 0 warnings** · `check:types` + `check:svelte` clean (0/0) ·
+`test:ci` **5798 / 384** (+4, covering the new `state` dedup key and `where()`) · learn e2e
+**67 passed** (was 65) · state-snapshot re-baselined (264 diffs, every one the intended
+`ink-mute → ink` swap; the four `color == background-color` entries are `list-expand-icon`, a
+mask-mode icon where that equality is correct).
