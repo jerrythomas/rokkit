@@ -16,18 +16,28 @@ jobs:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
       - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-      - uses: actions/setup-node@v6
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: 24.x
 
       - name: Install dependencies
-        run: bun install
+        # --ignore-scripts for the same reason as publish.yml: @rokkit/themes'
+        # `prepare` runs build.mjs mid-install, which reaches @rokkit/core →
+        # date-fns before the workspace is fully linked. That is what broke this
+        # job at v1.4.1 — the failure is a race, so it had passed for weeks
+        # beforehand on the same bun version.
+        run: bun install --ignore-scripts
+      - name: Build theme CSS
+        # @rokkit/themes is the ONLY package with a `prepare` script, so it is the
+        # only thing --ignore-scripts skips. Run it explicitly now that
+        # dependencies are linked.
+        run: cd packages/themes && bun run build
       - name: Run code coverage
         run: bun run coverage
-      - uses: qltysh/qlty-action/coverage@v2
+      - uses: qltysh/qlty-action/coverage@08a0a862c159eae9b9003081da6663d96efef637 # v2
         with:
           token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
           files: coverage/lcov.info
