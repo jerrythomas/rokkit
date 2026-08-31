@@ -109,6 +109,52 @@ export default {
 			800: '0.780 0.008 85',
 			900: '0.940 0.008 85',
 			950: '0.975 0.008 85',
+		},
+
+		/**
+		 * violet / indigo — shifted one stop LIGHTER than Tailwind's ramps.
+		 *
+		 * These two back the `violet` skin's primary and accent, and Tailwind's
+		 * 500s are the ONLY two of the 21 built-in palettes that land in the
+		 * "on-color dead zone". The auto on-color is near-black above a fill
+		 * luminance of 0.19 and near-white below it, so a fill whose luminance
+		 * sits between 0.1735 and 0.2111 cannot reach 4.5:1 against EITHER:
+		 *
+		 *   violet-500 #8b5cf6  y=0.1980 → near-black → 4.27:1  (AA fail)
+		 *   indigo-500 #6366f1  y=0.1851 → near-white → 4.28:1  (AA fail)
+		 *
+		 * Escaping upward keeps the on-color near-black, which is what every
+		 * other skin resolves to and — critically — what the baked `text-on-*`
+		 * utilities already assume (see below):
+		 *
+		 *   violet-500 #a78bfa  y=0.3358 → near-black → 6.65:1
+		 *   indigo-500 #818cf8  y=0.3020 → near-black → 6.07:1
+		 *
+		 * Escaping DOWNWARD (to the 600 stops) also clears AA on paper, but it
+		 * flips the on-color to near-white — and only `on-primary` is a real CSS
+		 * variable. `text-on-accent` / `text-on-danger` compile to a build-time
+		 * hex (there is no `--on-accent` token), so they would have kept
+		 * painting near-black on a now-dark fill: measured 2.67:1 on the
+		 * secondary button. Lighter perturbs nothing.
+		 *
+		 * Overriding here rather than Tailwind's own violet/indigo keeps
+		 * `bg-violet-500` meaning what it means everywhere else. The whole ramp
+		 * shifts to stay monotonic; 50 is extrapolated since the shift consumes
+		 * Tailwind's lightest stop.
+		 *
+		 * NOTE: BUILTIN_SKINS.violet in @rokkit/unocss maps to the unshifted
+		 * Tailwind palettes, so any consumer using the built-in `violet` skin
+		 * still hits the dead zone. Tracked separately in the backlog.
+		 */
+		violet: {
+			50:  '#faf9ff', 100: '#f5f3ff', 200: '#ede9fe', 300: '#ddd6fe',
+			400: '#c4b5fd', 500: '#a78bfa', 600: '#8b5cf6', 700: '#7c3aed',
+			800: '#6d28d9', 900: '#5b21b6', 950: '#4c1d95',
+		},
+		indigo: {
+			50:  '#f5f8ff', 100: '#eef2ff', 200: '#e0e7ff', 300: '#c7d2fe',
+			400: '#a5b4fc', 500: '#818cf8', 600: '#6366f1', 700: '#4f46e5',
+			800: '#4338ca', 900: '#3730a3', 950: '#312e81',
 		}
 	},
 
