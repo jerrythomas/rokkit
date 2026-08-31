@@ -103,7 +103,7 @@
 
 [data-style='zen-sumi'] [data-button][data-style='gradient'][data-variant='default'],
 [data-style='zen-sumi'] [data-button][data-style='gradient']:not([data-variant]) {
-  @apply bg-paper-mute text-ink-mute bg-none;
+  @apply bg-paper-mute text-ink bg-none;
 }
 
 [data-style='zen-sumi'] [data-button][data-style='gradient'][data-variant='primary'] {
@@ -156,7 +156,7 @@
 }
 
 /* =============================================================================
-   Hover States — darken, no glow
+   Hover States — shift the fill away from its label, no glow
    ============================================================================= */
 
 /* Default / unspecified variant — the ink fill stays inky on hover. */
@@ -167,25 +167,40 @@
   @apply bg-ink bg-none;
 }
 
-/* Filled colored variants — darken the fill, keep the on-color label.
-   The old rule flipped these to bg-ink, which put zen-sumi's near-black
-   on-primary / on-accent label on a near-black background (invisible in
-   light mode). Darkening the variant's own fill preserves contrast. */
+/* Filled colored variants — hover moves the fill AWAY from its own label.
+ *
+ * Two earlier attempts both failed, in opposite directions, and the reason is
+ * the same: the label's on-color is auto-picked from the RESTING fill's
+ * luminance (near-black above the 0.19 crossover, near-white below), so ANY
+ * fixed direction is wrong for half the skins.
+ *   flip to bg-ink            → near-black label on near-black fill (invisible)
+ *   darken (color-mix, black) → shu 4.97 → 3.03  (AA fail, measured)
+ *   lighten (color-mix, white)→ indigo-600 6.02 → 4.22  (AA fail, measured)
+ *
+ * Pushing L away from 0.566 — the OKLCH lightness whose relative luminance IS
+ * the on-color crossover (ON_COLOR_Y_CROSSOVER in @rokkit/core) — increases
+ * separation whichever side the fill sits on. Measured across all five skins:
+ * shu 4.97→5.45, teal 7.27→8.41, rose 4.93→5.42, violet-600 5.46→5.65,
+ * indigo-600 6.02→6.49.
+ *
+ * A browser without relative-color syntax drops the declaration and keeps the
+ * resting fill — no hover feedback, but never a contrast regression.
+ */
 [data-style='zen-sumi'] [data-button][data-style='default'][data-variant='primary']:hover:not(:disabled):not([data-disabled]),
 [data-style='zen-sumi'] [data-button]:not([data-style])[data-variant='primary']:hover:not(:disabled):not([data-disabled]) {
-  background-color: color-mix(in oklab, var(--primary) 88%, black);
+  background-color: oklch(from var(--primary) clamp(0, calc(l + (l - 0.566) * 0.3), 1) c h);
 }
 
 [data-style='zen-sumi'] [data-button][data-style='default'][data-variant='secondary']:hover:not(:disabled):not([data-disabled]),
 [data-style='zen-sumi'] [data-button]:not([data-style])[data-variant='secondary']:hover:not(:disabled):not([data-disabled]),
 [data-style='zen-sumi'] [data-button][data-style='default'][data-variant='accent']:hover:not(:disabled):not([data-disabled]),
 [data-style='zen-sumi'] [data-button]:not([data-style])[data-variant='accent']:hover:not(:disabled):not([data-disabled]) {
-  background-color: color-mix(in oklab, var(--accent) 88%, black);
+  background-color: oklch(from var(--accent) clamp(0, calc(l + (l - 0.566) * 0.3), 1) c h);
 }
 
 [data-style='zen-sumi'] [data-button][data-style='default'][data-variant='danger']:hover:not(:disabled):not([data-disabled]),
 [data-style='zen-sumi'] [data-button]:not([data-style])[data-variant='danger']:hover:not(:disabled):not([data-disabled]) {
-  background-color: color-mix(in oklab, var(--danger) 88%, black);
+  background-color: oklch(from var(--danger) clamp(0, calc(l + (l - 0.566) * 0.3), 1) c h);
 }
 
 [data-style='zen-sumi']

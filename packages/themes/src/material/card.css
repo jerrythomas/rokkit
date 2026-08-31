@@ -95,5 +95,5 @@
 
 /* Tertiary — elevated surface with no color accent */
 [data-style='material'] [data-card][data-variant='tertiary'] {
-  @apply bg-paper-mute border-paper-mute text-ink-mute border bg-none shadow-none;
+  @apply bg-paper-mute border-paper-mute text-ink border bg-none shadow-none;
 }

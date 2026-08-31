@@ -26,7 +26,7 @@
 
 [data-style='zen-sumi'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']),
 [data-style='zen-sumi'] [data-toggle-option]:focus:not(:disabled):not([data-disabled='true']) {
-  @apply bg-paper-mute text-ink-mute;
+  @apply bg-paper-mute text-ink;
 }
 
 /* Selected state — primary (shu) fill */
@@ -36,16 +36,34 @@
   font-weight: 500;
 }
 
+/* Selected AND hovered/focused — keep the fill.
+ *
+ * The hover/focus rule above scores (0,5,0) — two attribute selectors, the
+ * pseudo-class and two :not() clauses — against this selected rule's (0,3,0).
+ * Without this override the pointer therefore WINS over selection: the
+ * vermillion fill was replaced by paper-mute and the label by ink-mute, so
+ * hovering the selected option made it read as unselected (and, in dark mode,
+ * at 4.07:1). Restating the fill at (0,6,0) puts selection back on top.
+ *
+ * The fill still shifts away from its label so the hover is felt — same formula
+ * as button.css, see that file for why a fixed direction is unsafe. */
+[data-style='zen-sumi'] [data-toggle-option][data-selected='true']:hover:not(:disabled):not([data-disabled='true']),
+[data-style='zen-sumi'] [data-toggle-option][data-selected='true']:focus:not(:disabled):not([data-disabled='true']) {
+  @apply text-on-primary bg-none;
+  background-color: oklch(from var(--primary) clamp(0, calc(l + (l - 0.566) * 0.3), 1) c h);
+}
+
 /* =============================================================================
    Toggle Icon
    ============================================================================= */
 
-/* Icons follow the option's text colour — `paper-edge` (hairline border
- * tone) was the wrong baseline because it renders the icon nearly
- * invisible against paper-soft/paper-mute in both modes. `ink-soft` at
- * rest reads as "available but secondary," `ink-mute` on hover/focus
- * matches the option label, and `paper` for selected contrasts cleanly
- * against the ink fill. */
+/* Icons sit one step behind the option's text colour — `paper-edge` (hairline
+ * border tone) was the wrong baseline because it renders the icon nearly
+ * invisible against paper-soft/paper-mute in both modes. `ink-mute` at rest
+ * reads as "available but secondary"; on hover/focus it stays `ink-mute` while
+ * the LABEL brightens to `ink`, which keeps the label primary and still clears
+ * the 3.0 non-text floor (ink-mute on paper-mute is 4.07:1); `on-primary` for
+ * selected contrasts cleanly against the vermillion fill. */
 [data-style='zen-sumi'] [data-toggle-option] [data-toggle-icon] {
   @apply text-ink-mute;
 }
@@ -56,6 +74,17 @@
 }
 
 [data-style='zen-sumi'] [data-toggle-option][data-selected='true'] [data-toggle-icon] {
+  @apply text-on-primary;
+}
+
+/* Selected AND hovered/focused — the icon needs restating for the same reason
+ * the fill did, one level deeper. The hover icon rule above is (0,5,0) and the
+ * selected icon rule is only (0,4,0), so once the fill correctly STAYS
+ * vermillion on hover, the icon flipped to `ink-mute` on it: 1.18:1. Before the
+ * fill was fixed this was hidden, because hover also replaced the fill with
+ * paper-mute, where ink-mute happened to read. (0,6,0) settles it. */
+[data-style='zen-sumi'] [data-toggle-option][data-selected='true']:hover:not(:disabled) [data-toggle-icon],
+[data-style='zen-sumi'] [data-toggle-option][data-selected='true']:focus:not(:disabled) [data-toggle-icon] {
   @apply text-on-primary;
 }
 
@@ -73,7 +102,7 @@
 
 [data-style='zen-sumi'] [data-toggle][data-toggle-variant='button']:hover:not(:disabled):not([data-toggle-disabled='true']),
 [data-style='zen-sumi'] [data-toggle][data-toggle-variant='button']:focus-visible:not(:disabled):not([data-toggle-disabled='true']) {
-  @apply bg-paper-mute text-ink-mute;
+  @apply bg-paper-mute text-ink;
 }
 
 [data-style='zen-sumi'] [data-toggle][data-toggle-variant='button'] [data-toggle-icon] {

@@ -158,10 +158,41 @@
    Hover States
    ============================================================================= */
 
-[data-style='minimal']
-  [data-button][data-style='default']:hover:not(:disabled):not([data-disabled]),
-[data-style='minimal'] [data-button]:not([data-style]):hover:not(:disabled):not([data-disabled]) {
+/* Neutral variant only.
+ *
+ * This rule used to omit the variant qualifiers, so it also matched
+ * [data-variant='primary'|'secondary'|'danger'] — repainting a filled coloured
+ * button's background to paper-mute while its `text-on-*` label stayed put. In
+ * dark mode that put a near-black label on a near-black fill: 1.13:1, i.e. the
+ * label vanished. The variant qualifiers mirror the resting rule above, so the
+ * neutral fill still gets its border shift and the coloured fills keep theirs.
+ */
+[data-style='minimal'] [data-button][data-style='default'][data-variant='default']:hover:not(:disabled):not([data-disabled]),
+[data-style='minimal'] [data-button][data-style='default']:not([data-variant]):hover:not(:disabled):not([data-disabled]),
+[data-style='minimal'] [data-button]:not([data-style])[data-variant='default']:hover:not(:disabled):not([data-disabled]),
+[data-style='minimal'] [data-button]:not([data-style]):not([data-variant]):hover:not(:disabled):not([data-disabled]) {
   @apply bg-paper-mute border-ink-soft bg-none;
+}
+
+/* Filled coloured variants — hover shifts the fill away from its own label.
+ * Same formula and rationale as zen-sumi/button.css: the label's on-color is
+ * derived from the resting fill's luminance, so pushing L away from the 0.566
+ * crossover is the only direction that is safe for every skin. */
+[data-style='minimal'] [data-button][data-style='default'][data-variant='primary']:hover:not(:disabled):not([data-disabled]),
+[data-style='minimal'] [data-button]:not([data-style])[data-variant='primary']:hover:not(:disabled):not([data-disabled]) {
+  background-color: oklch(from var(--primary) clamp(0, calc(l + (l - 0.566) * 0.3), 1) c h);
+}
+
+[data-style='minimal'] [data-button][data-style='default'][data-variant='secondary']:hover:not(:disabled):not([data-disabled]),
+[data-style='minimal'] [data-button]:not([data-style])[data-variant='secondary']:hover:not(:disabled):not([data-disabled]),
+[data-style='minimal'] [data-button][data-style='default'][data-variant='accent']:hover:not(:disabled):not([data-disabled]),
+[data-style='minimal'] [data-button]:not([data-style])[data-variant='accent']:hover:not(:disabled):not([data-disabled]) {
+  background-color: oklch(from var(--accent) clamp(0, calc(l + (l - 0.566) * 0.3), 1) c h);
+}
+
+[data-style='minimal'] [data-button][data-style='default'][data-variant='danger']:hover:not(:disabled):not([data-disabled]),
+[data-style='minimal'] [data-button]:not([data-style])[data-variant='danger']:hover:not(:disabled):not([data-disabled]) {
+  background-color: oklch(from var(--danger) clamp(0, calc(l + (l - 0.566) * 0.3), 1) c h);
 }
 
 [data-style='minimal']

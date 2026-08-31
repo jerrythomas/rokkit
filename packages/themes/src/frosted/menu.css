@@ -26,9 +26,18 @@
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.25);
 }
 
+/* `ink`, not `on-primary`: a 35% primary TINT, not a solid fill, so the auto
+ * on-color picked for the solid 500 is the wrong reference (1.07:1 measured).
+ * Same reasoning as frosted/dropdown.css. */
 [data-style='frosted'] [data-menu][data-open='true'] [data-menu-trigger] {
-  @apply bg-none bg-primary/35;
+  @apply bg-none bg-primary/35 text-ink;
   border-color: rgba(255, 255, 255, 0.3);
+}
+
+[data-style='frosted'] [data-menu][data-open='true'] [data-menu-trigger] [data-menu-label],
+[data-style='frosted'] [data-menu][data-open='true'] [data-menu-trigger] [data-menu-icon],
+[data-style='frosted'] [data-menu][data-open='true'] [data-menu-trigger] [data-menu-arrow] {
+  @apply text-ink;
 }
 
 /* Trigger elements */

@@ -9,7 +9,7 @@
 }
 
 [data-style='rokkit'] [data-pill-remove] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='rokkit'] [data-pill-remove]:hover:not(:disabled) {

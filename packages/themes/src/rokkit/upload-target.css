@@ -13,7 +13,7 @@
 }
 
 [data-style='rokkit'] [data-upload-target]:hover:not([data-disabled]) {
-  @apply border-ink-soft text-ink-mute bg-paper-mute;
+  @apply border-ink-soft text-ink bg-paper-mute;
 }
 
 [data-style='rokkit'] [data-upload-target]:focus-visible:not([data-disabled]) {

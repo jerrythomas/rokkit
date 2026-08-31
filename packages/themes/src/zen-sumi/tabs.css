@@ -41,6 +41,18 @@
   font-weight: 500;
 }
 
+/* Selected AND hovered — keep the ink fill.
+ *
+ * Same cascade defect as toggle.css: the hover rule above is (0,5,0) and this
+ * selected rule is (0,3,0), so the pointer replaced the ink fill with
+ * paper-mute. That also stranded the selected tab's icon, which stays
+ * `text-paper-soft` (its rule wins by order) — paper-soft on paper-mute is
+ * effectively invisible. Restating the fill at (0,6,0) fixes both. */
+[data-style='zen-sumi'] [data-tabs-trigger][data-selected]:hover:not(:disabled):not([data-disabled]) {
+  @apply text-paper bg-none;
+  background-color: oklch(from var(--ink) clamp(0, calc(l + (l - 0.566) * 0.3), 1) c h);
+}
+
 /* Reset any gradient leakage */
 [data-style='zen-sumi'] [data-tabs-list]:focus-within [data-tabs-trigger][data-selected] {
   @apply bg-none;
@@ -66,6 +78,14 @@
 }
 
 [data-style='zen-sumi'] [data-tabs-trigger][data-selected] [data-tabs-icon] {
+  @apply text-paper-soft;
+}
+
+/* Selected AND hovered — same one-level-deeper cascade problem as toggle.css:
+ * the hover icon rule is (0,5,0) and the selected icon rule (0,4,0), so with the
+ * ink fill now correctly retained on hover the icon would flip to `ink-mute` on
+ * near-black. */
+[data-style='zen-sumi'] [data-tabs-trigger][data-selected]:hover:not(:disabled) [data-tabs-icon] {
   @apply text-paper-soft;
 }
 

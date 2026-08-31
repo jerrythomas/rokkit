@@ -64,5 +64,5 @@
 
 /* Count badge */
 [data-style='rokkit'] [data-status-count] {
-  @apply bg-paper-mute text-ink-mute font-semibold;
+  @apply bg-paper-mute text-ink font-semibold;
 }

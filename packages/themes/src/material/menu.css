@@ -20,8 +20,17 @@
   @apply ring-primary ring-2 outline-none;
 }
 
+/* Open state fills the trigger with primary, so its contents must switch to the
+ * on-color — the resting `text-ink-mute` measured 1.07:1 on that fill. Same
+ * defect as material/dropdown.css; reachable only with the menu open. */
 [data-style='material'] [data-menu][data-open='true'] [data-menu-trigger] {
-  @apply bg-primary border-primary bg-none shadow-md;
+  @apply bg-primary border-primary bg-none shadow-md text-on-primary;
+}
+
+[data-style='material'] [data-menu][data-open='true'] [data-menu-trigger] [data-menu-label],
+[data-style='material'] [data-menu][data-open='true'] [data-menu-trigger] [data-menu-icon],
+[data-style='material'] [data-menu][data-open='true'] [data-menu-trigger] [data-menu-arrow] {
+  @apply text-on-primary;
 }
 
 /* Trigger elements */

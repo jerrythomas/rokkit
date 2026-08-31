@@ -43,19 +43,19 @@
   [data-input-root]
   input:not([type='checkbox'], [type='radio'], [type='color']),
 [data-style='rokkit'] [data-input-root] select {
-  @apply bg-paper-mute text-ink-mute rounded-md border-none px-3 focus:outline-none;
+  @apply bg-paper-mute text-ink rounded-md border-none px-3 focus:outline-none;
   font-size: 0.875rem;
   height: 2.25rem;
 }
 
 [data-style='rokkit'] [data-input-root] textarea {
-  @apply bg-paper-mute text-ink-mute rounded-md border-none px-3 py-2 focus:outline-none;
+  @apply bg-paper-mute text-ink rounded-md border-none px-3 py-2 focus:outline-none;
   font-size: 0.875rem;
 }
 
 /* Select inside input-root: remove trigger styles since input-root provides the border */
 [data-style='rokkit'] [data-input-root] [data-select-trigger] {
-  @apply bg-paper-mute text-ink-mute rounded-md border-none shadow-none ring-0 focus:outline-none;
+  @apply bg-paper-mute text-ink rounded-md border-none shadow-none ring-0 focus:outline-none;
   background-image: none;
 }
 

@@ -32,7 +32,7 @@
 }
 
 [data-style='material'] [data-tree-toggle-btn]:hover {
-  @apply bg-paper-mute text-ink-mute bg-none;
+  @apply bg-paper-mute text-ink bg-none;
 }
 
 /* =============================================================================
@@ -104,7 +104,7 @@
 }
 
 [data-style='material'] [data-tree-item-content] [data-item-badge] {
-  @apply text-ink-mute bg-paper-mute rounded-full bg-none;
+  @apply text-ink bg-paper-mute rounded-full bg-none;
 }
 
 [data-style='material'] [data-tree-item-content][data-active='true'] [data-item-badge] {

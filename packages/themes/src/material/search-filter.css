@@ -29,7 +29,7 @@
 }
 
 [data-style='material'] [data-search-clear]:hover {
-  @apply text-ink-mute bg-paper-mute rounded;
+  @apply text-ink bg-paper-mute rounded;
 }
 
 /* =============================================================================
@@ -37,7 +37,7 @@
    ============================================================================= */
 
 [data-style='material'] [data-search-tag] {
-  @apply text-ink-mute bg-paper-mute rounded-full bg-none shadow-sm;
+  @apply text-ink bg-paper-mute rounded-full bg-none shadow-sm;
 }
 
 [data-style='material'] [data-search-tag-remove] {

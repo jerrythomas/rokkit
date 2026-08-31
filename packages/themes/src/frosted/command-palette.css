@@ -26,18 +26,36 @@
 	@apply text-ink-mute;
 }
 
+/* A WASH plus ink, not a near-solid fill plus an on-color.
+ *
+ * `bg-primary/80` composites with the backdrop into a mid-luminance vermillion,
+ * and a mid-luminance fill is the one case where NEITHER on-color works: it
+ * measured 3.51:1 against near-black and 3.03:1 against near-white. Dropping to
+ * a 35% wash keeps the fill close to the frosted surface, so `ink` reads against
+ * it in both modes — the same treatment already applied to the open triggers in
+ * frosted/dropdown.css and frosted/menu.css, so the family stays consistent. */
 [data-style='frosted'] [data-command-item][data-active] {
-	@apply bg-primary/80 text-on-primary;
+	@apply bg-primary/35 text-ink;
 }
 
 [data-style='frosted'] [data-command-shortcut] {
-	@apply text-ink-soft;
+	@apply text-ink-mute;
 }
 
+/* The label is the command's PRIMARY text, so it inherits the item's colour
+ * rather than setting its own. Every style used to pin it to `ink-soft` (the
+ * placeholder tone): 1.39:1 on paper, and 1.05:1 once the active item paints a
+ * primary fill, because the item's `on-primary` never reached the label. */
 [data-style='frosted'] [data-command-label] {
-	@apply text-ink-soft text-xs font-medium;
+	@apply text-xs font-medium;
 }
 
 [data-style='frosted'] [data-command-empty] {
 	@apply text-ink-soft;
+}
+
+/* The shortcut is a child element with its own colour, so the active item's
+ * on-color did not reach it either — inherit so it follows any fill. */
+[data-style='frosted'] [data-command-item][data-active] [data-command-shortcut] {
+	color: inherit;
 }

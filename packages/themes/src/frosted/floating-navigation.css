@@ -23,7 +23,7 @@
 }
 
 [data-style='frosted'] [data-floating-nav-pin] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='frosted'] [data-floating-nav-pin]:hover {
@@ -58,7 +58,7 @@
 
 /* Icon */
 [data-style='frosted'] [data-floating-nav-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='frosted'] [data-floating-nav-item]:hover [data-floating-nav-icon] {

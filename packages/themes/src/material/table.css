@@ -56,6 +56,14 @@
   @apply bg-paper-mute bg-none;
 }
 
+/* Cells carry their own colour, so the row's hover fill does not bring their
+ * text with it: the resting `ink-mute` stayed on the new paper-mute background
+ * at 4.07:1 in dark mode. The cell has to be named explicitly. */
+[data-style='material'] [data-table-row]:hover [data-table-cell],
+[data-style='material'] [data-table-row]:hover [data-cell-value] {
+  @apply text-ink;
+}
+
 [data-style='material'] [data-table-row]:focus {
   @apply bg-paper-mute text-ink ring-primary bg-none ring-2 outline-none ring-inset;
 }

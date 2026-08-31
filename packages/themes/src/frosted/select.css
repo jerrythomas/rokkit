@@ -62,7 +62,7 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-select-tag] {
-  @apply text-ink-mute;
+  @apply text-ink;
   background-color: color-mix(in oklch, var(--paper-mute) 15%, transparent);
 }
 

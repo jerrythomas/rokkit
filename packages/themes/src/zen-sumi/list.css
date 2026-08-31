@@ -34,7 +34,7 @@
 [data-style='zen-sumi']
   [data-list]
   [data-list-item]:focus:not(:disabled):not([data-disabled='true']) {
-  @apply bg-paper-mute text-ink-mute bg-none outline-none;
+  @apply bg-paper-mute text-ink bg-none outline-none;
 }
 
 /* Active state — ink wash background */
@@ -44,7 +44,7 @@
 
 /* Active state — richer ink when list has focus */
 [data-style='zen-sumi'] [data-list]:focus-within [data-list-item][data-active='true'] {
-  @apply bg-paper-mute text-ink-mute bg-none;
+  @apply bg-paper-mute text-ink bg-none;
 }
 
 /* Active + hover/focus */

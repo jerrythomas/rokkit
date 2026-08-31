@@ -68,7 +68,7 @@
    ============================================================================= */
 
 [data-style='frosted'] [data-toolbar-item] [data-toolbar-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='frosted'] [data-toolbar-item]:hover:not(:disabled) [data-toolbar-icon] {

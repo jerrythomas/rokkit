@@ -15,7 +15,7 @@
 }
 
 [data-style='minimal'] [data-table-header-cell][data-sortable='true']:hover {
-  @apply text-ink-mute;
+  @apply text-ink;
 }
 
 [data-style='minimal'] [data-table-header-cell][data-sort-order='ascending'],

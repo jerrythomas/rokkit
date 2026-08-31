@@ -25,13 +25,23 @@
 }
 
 [data-style='material'] [data-command-shortcut] {
-	@apply text-ink-soft;
+	@apply text-ink-mute;
 }
 
+/* The label is the command's PRIMARY text, so it inherits the item's colour
+ * rather than setting its own. Every style used to pin it to `ink-soft` (the
+ * placeholder tone): 1.39:1 on paper, and 1.05:1 once the active item paints a
+ * primary fill, because the item's `on-primary` never reached the label. */
 [data-style='material'] [data-command-label] {
-	@apply text-ink-soft text-xs font-medium;
+	@apply text-xs font-medium;
 }
 
 [data-style='material'] [data-command-empty] {
 	@apply text-ink-soft;
+}
+
+/* The shortcut is a child element with its own colour, so the active item's
+ * on-color did not reach it either — inherit so it follows any fill. */
+[data-style='material'] [data-command-item][data-active] [data-command-shortcut] {
+	color: inherit;
 }

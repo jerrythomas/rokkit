@@ -16,8 +16,19 @@
   @apply ring-primary ring-2 outline-none;
 }
 
+/* Open state fills the trigger with primary, so its contents must switch to the
+ * on-color. Without this the label, icon and arrow kept the resting
+ * `text-ink-mute` and sat on the vermillion fill at 1.07:1 — invisible for as
+ * long as the dropdown was open. Only reachable with the panel open, which is
+ * why the resting audit never saw it. */
 [data-style='material'] [data-dropdown][data-open='true'] [data-dropdown-trigger] {
-  @apply bg-primary border-primary bg-none shadow-md;
+  @apply bg-primary border-primary bg-none shadow-md text-on-primary;
+}
+
+[data-style='material'] [data-dropdown][data-open='true'] [data-dropdown-trigger] [data-dropdown-label],
+[data-style='material'] [data-dropdown][data-open='true'] [data-dropdown-trigger] [data-dropdown-icon],
+[data-style='material'] [data-dropdown][data-open='true'] [data-dropdown-trigger] [data-dropdown-arrow] {
+  @apply text-on-primary;
 }
 
 [data-style='material'] [data-dropdown-trigger] [data-dropdown-icon] {

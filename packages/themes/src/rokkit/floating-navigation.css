@@ -21,7 +21,7 @@
 }
 
 [data-style='rokkit'] [data-floating-nav-pin] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='rokkit'] [data-floating-nav-pin]:hover {
@@ -54,7 +54,7 @@
 
 /* Icon */
 [data-style='rokkit'] [data-floating-nav-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='rokkit'] [data-floating-nav-item]:hover [data-floating-nav-icon] {

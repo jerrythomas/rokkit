@@ -151,7 +151,7 @@
 }
 
 [data-style='rokkit'] [data-select-option] [data-item-badge] {
-  @apply text-ink-mute bg-paper-mute;
+  @apply text-ink bg-paper-mute;
 }
 
 /* Selected badge sits on a primary fill → on-primary text (not text-primary,

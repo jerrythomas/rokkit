@@ -9,7 +9,7 @@
 }
 
 [data-style='frosted'] [data-pill-remove] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
 [data-style='frosted'] [data-pill-remove]:hover:not(:disabled) {

@@ -55,6 +55,13 @@
   background-color: color-mix(in oklch, var(--paper-mute) 80%, transparent);
 }
 
+/* As in material/table.css: cells hold their own colour, so the row's hover
+ * tint left the resting `ink-mute` on it at 4.07:1 in dark mode. */
+[data-style='frosted'] [data-table-row]:hover [data-table-cell],
+[data-style='frosted'] [data-table-row]:hover [data-cell-value] {
+  @apply text-ink;
+}
+
 [data-style='frosted'] [data-table-row]:focus {
   @apply text-ink outline-none;
   background-color: color-mix(in oklch, var(--paper-mute) 80%, transparent);

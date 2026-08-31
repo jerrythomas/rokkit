@@ -39,7 +39,7 @@
 }
 
 [data-style='zen-sumi'] [data-toolbar-item]:hover:not(:disabled):not([data-disabled='true']) {
-  @apply bg-paper-mute text-ink-mute bg-none;
+  @apply bg-paper-mute text-ink bg-none;
 }
 
 [data-style='zen-sumi']
@@ -62,10 +62,18 @@
    ============================================================================= */
 
 [data-style='zen-sumi'] [data-toolbar-item] [data-toolbar-icon] {
-  @apply text-ink-soft;
+  @apply text-ink-mute;
 }
 
-[data-style='zen-sumi'] [data-toolbar-item]:hover:not(:disabled) [data-toolbar-icon] {
+/* Focus is listed alongside hover on purpose: the item had a :focus-visible rule
+ * but the ICON did not, so a keyboard-focused toolbar item fell back to its
+ * resting glyph. That resting tone is now `ink-mute` too (it was `ink-soft`, the
+ * placeholder tone, at 2.13:1 against paper — under the 3.0 non-text floor of
+ * WCAG 1.4.11), so these selectors are belt-and-braces rather than the fix. A
+ * text-only contrast audit cannot see either problem: an icon has no text. */
+[data-style='zen-sumi'] [data-toolbar-item]:hover:not(:disabled) [data-toolbar-icon],
+[data-style='zen-sumi'] [data-toolbar-item]:focus:not(:disabled) [data-toolbar-icon],
+[data-style='zen-sumi'] [data-toolbar-item]:focus-visible:not(:disabled) [data-toolbar-icon] {
   @apply text-ink-mute;
 }
 

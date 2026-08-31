@@ -13,7 +13,7 @@
 }
 
 [data-style='material'] [data-select-trigger]:hover:not(:disabled) {
-  @apply bg-paper-mute border-ink-soft bg-none shadow-md;
+  @apply bg-paper-mute text-ink border-ink-soft bg-none shadow-md;
 }
 
 [data-style='material'] [data-select-trigger]:focus-visible {
@@ -87,13 +87,19 @@
   @apply ring-primary ring-2 outline-none ring-inset;
 }
 
+/* `text-on-primary`, not `text-primary` — this rule painted the primary fill AND
+ * primary text, i.e. the label in the same hue as the surface under it (2.09:1).
+ * A filled option takes the fill's on-color. */
 [data-style='material'] [data-select-option][data-selected='true'] {
-  @apply bg-primary text-primary bg-none;
+  @apply bg-primary text-on-primary bg-none;
 }
 
+/* The on-color must be restated here: the plain option hover rule above is
+ * (0,4,0) and the selected rule only (0,3,0), so hovering a selected option put
+ * `text-ink` on the primary fill (2.09:1) even though the fill was right. */
 [data-style='material'] [data-select-option][data-selected='true']:hover:not(:disabled),
 [data-style='material'] [data-select-option][data-selected='true']:focus:not(:disabled) {
-  @apply bg-primary bg-none;
+  @apply bg-primary bg-none text-on-primary;
 }
 
 /* Reset rokkit gradients bleeding in from body[data-style='rokkit'] ancestor */

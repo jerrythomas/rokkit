@@ -69,7 +69,7 @@
 
 [data-style='frosted'] [data-toggle][data-toggle-variant='button']:hover:not(:disabled):not([data-toggle-disabled='true']),
 [data-style='frosted'] [data-toggle][data-toggle-variant='button']:focus-visible:not(:disabled):not([data-toggle-disabled='true']) {
-  @apply bg-paper-mute text-ink-mute;
+  @apply bg-paper-mute text-ink;
 }
 
 [data-style='frosted'] [data-toggle][data-toggle-variant='button'] [data-toggle-icon] {
