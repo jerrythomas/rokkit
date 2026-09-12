@@ -51,15 +51,15 @@ Distance from each package's floor to the pre-vitest-4 bar (`js/ts` 100,
 | `packages/chart/**/*.svelte` | 35 | 40 | **-55** |
 | `packages/ui/**/*.svelte` | 50 | 70 | **-40** |
 | `packages/blocks/**/*.svelte` | 53 | 66 | **-37** |
-| `packages/forms/**/*.svelte` | 66 | 76 | **-24** |
+| `packages/forms/**/*.svelte` | 66 | 77 | **-24** |
 | `packages/helpers/**/*.{js,ts}` | 84 | 87 | -16 |
-| `packages/actions/**/*.{js,ts}` | 86 | 92 | -14 |
+| `packages/actions/**/*.{js,ts}` | 86 | 89 | -14 |
 | `packages/chart/**/*.{js,ts}` | 87 | 95 | -13 |
 | `packages/ui/**/*.{js,ts}` | 92 | 91 | -8 |
 | `packages/states/**/*.{js,ts}` | 92 | 100 | -8 |
 | `packages/cli/**/*.{js,ts}` | 93 | 92 | -7 |
 | `packages/app/**/*.{js,ts}` | 96 | 100 | -4 |
-| `packages/app/**/*.svelte` | 96 | 96 | +6 |
+| `packages/app/**/*.svelte` | 96 | 97 | +6 |
 | `packages/forms/**/*.{js,ts}` | 96 | 99 | -4 |
 | `packages/core/**/*.{js,ts}` | 97 | 96 | -3 |
 | `packages/data/**/*.{js,ts}` | 98 | 100 | -2 |
@@ -91,3 +91,15 @@ same contract as the contrast baselines.
 Some of the newly-counted statements will be genuinely unreachable in jsdom (SSR
 branches, defensive guards). Those want a `v8 ignore` comment rather than a test,
 which is also what lets the floor rise.
+
+## The floors also move with the Svelte compiler
+
+Bumping svelte 5.53 → 5.57 in the same sweep shifted three of them with no test
+change: `actions` js/ts lines 92 → **89**, `app` .svelte lines 96 → **97**,
+`forms` .svelte lines 76 → **77**. `.svelte.js` rune modules are compiler output,
+so their statement map moves with the compiler version.
+
+Expect a svelte minor to nudge a floor. Recompute against
+`coverage/coverage-final.json` rather than hand-editing the one that failed —
+otherwise an improvement elsewhere silently goes unbanked, which is how a ratchet
+rots.

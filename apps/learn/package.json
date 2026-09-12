@@ -28,7 +28,7 @@
     "@unocss/reset": "66.5.1",
     "@vitest/browser": "^4.1.11",
     "jsdom": "^29.1.1",
-    "svelte": "^5.39.2",
+    "svelte": "^5.55.7",
     "unocss": "^66.5.1",
     "vite": "^7.3.5",
     "vitest": "^4.1.11"
