@@ -1,6 +1,12 @@
 import { vi } from 'vitest'
 
-global.Touch = vi.fn().mockImplementation((input) => input)
+// `function`, not an arrow: callers do `new Touch({...})`, and arrows have no
+// [[Construct]]. vitest 3 wrapped the implementation in a constructable shim;
+// vitest 4 invokes it directly, so an arrow here throws "is not a constructor".
+// A constructor returning an object yields that object, so `new Touch(x) === x`.
+global.Touch = vi.fn().mockImplementation(function (input) {
+	return input
+})
 
 /**
  * Simulates a mouse event on a given node.

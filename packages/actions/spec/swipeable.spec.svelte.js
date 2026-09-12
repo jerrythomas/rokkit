@@ -20,7 +20,10 @@ describe('swipable', () => {
 			swipeDown: vi.fn()
 		}
 
-		global.Touch = vi.fn().mockImplementation((input) => input)
+		// `function`, not an arrow — see packages/helpers/src/simulators/touch.js
+		global.Touch = vi.fn().mockImplementation(function (input) {
+			return input
+		})
 		Object.entries(handlers).forEach(([event, handler]) => node.addEventListener(event, handler))
 		vi.useFakeTimers()
 	})

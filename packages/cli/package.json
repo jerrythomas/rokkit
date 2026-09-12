@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "iconify": "^1.4.0",
-    "vitest": "^4.0.18"
+    "vitest": "^4.1.11"
   },
   "dependencies": {
     "@mdi/svg": "^7.4.47",

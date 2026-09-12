@@ -8,7 +8,10 @@ let intersectCallback = null
 let mockObserverInstance = null
 
 function createMockIO() {
-	return vi.fn((callback) => {
+	// `function`, not an arrow: the action does `new IntersectionObserver(...)`,
+	// and vitest 4 invokes the implementation directly rather than through a
+	// constructable shim, so an arrow throws "is not a constructor".
+	return vi.fn(function (callback) {
 		intersectCallback = callback
 		mockObserverInstance = {
 			observe: vi.fn(),

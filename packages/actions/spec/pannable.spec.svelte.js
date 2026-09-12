@@ -8,10 +8,12 @@ describe('pannable', () => {
 	let node = null
 
 	beforeEach(() => {
-		global.CustomEvent = vi.fn().mockImplementation((name, params) => ({
-			name,
-			params
-		}))
+		// `function`, not an arrow: pannable does `new CustomEvent(...)`, and
+		// vitest 4 invokes the implementation directly rather than through a
+		// constructable shim, so an arrow throws "is not a constructor".
+		global.CustomEvent = vi.fn().mockImplementation(function (name, params) {
+			return { name, params }
+		})
 		handlers = {
 			window: {},
 			node: {}
