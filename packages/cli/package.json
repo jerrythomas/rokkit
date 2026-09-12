@@ -29,7 +29,7 @@
     "@mdi/svg": "^7.4.47",
     "@rokkit/unocss": "workspace:*",
     "sade": "^1.8.1",
-    "@iconify/tools": "5.0.3",
+    "@iconify/tools": "^5.0.14",
     "@iconify/types": "^2.0.0",
     "prompts": "^2.4.2",
     "ramda": "^0.32.0"

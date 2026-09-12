@@ -52,6 +52,6 @@
     }
   },
   "devDependencies": {
-    "@sveltejs/kit": "^2.42.1"
+    "@sveltejs/kit": "^2.70.3"
   }
 }
