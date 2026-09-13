@@ -81,7 +81,7 @@ export default defineConfig({
 				'packages/app/**/*.{js,ts}': { statements: 96, lines: 100 },
 				'packages/app/**/*.svelte': { statements: 96, lines: 97 },
 				'packages/blocks/**/*.{js,ts}': { statements: 100, lines: 100 },
-				'packages/blocks/**/*.svelte': { statements: 53, lines: 66 },
+				'packages/blocks/**/*.svelte': { statements: 93, lines: 95 },
 				'packages/chart/**/*.{js,ts}': { statements: 87, lines: 95 },
 				'packages/chart/**/*.svelte': { statements: 35, lines: 40 },
 				'packages/cli/**/*.{js,ts}': { statements: 93, lines: 92 },

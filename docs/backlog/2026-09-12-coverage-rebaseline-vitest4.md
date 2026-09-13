@@ -50,7 +50,7 @@ Distance from each package's floor to the pre-vitest-4 bar (`js/ts` 100,
 | --- | --- | --- | --- |
 | `packages/chart/**/*.svelte` | 35 | 40 | **-55** |
 | `packages/ui/**/*.svelte` | 50 | 70 | **-40** |
-| `packages/blocks/**/*.svelte` | 53 | 66 | **-37** |
+| `packages/blocks/**/*.svelte` | 93 | 95 | +3 |
 | `packages/forms/**/*.svelte` | 66 | 77 | **-24** |
 | `packages/helpers/**/*.{js,ts}` | 84 | 87 | -16 |
 | `packages/actions/**/*.{js,ts}` | 86 | 89 | -14 |
@@ -74,7 +74,7 @@ Worst individual files, which is where to start:
 | --- | --- |
 | `packages/chart/src/elements/DefinePatterns.svelte` | 35.7 |
 | `packages/ui/src/components/ItemContent.svelte` | 50.0 |
-| `packages/blocks/src/MermaidPlugin.svelte` | 53.8 |
+| ~~`packages/blocks/src/MermaidPlugin.svelte`~~ | ~~53.8~~ → **100** (fixed, see below) |
 | `packages/chart/src/FacetPlot/Panel.svelte` | 57.1 |
 | `packages/chart/src/patterns/PatternDef.svelte` | 63.3 |
 | `packages/forms/src/FormRenderer.svelte` | 66.5 |
@@ -91,6 +91,33 @@ same contract as the contrast baselines.
 Some of the newly-counted statements will be genuinely unreachable in jsdom (SSR
 branches, defensive guards). Those want a `v8 ignore` comment rather than a test,
 which is also what lets the floor rise.
+
+## A floor that differed between laptop and CI meant a racy test
+
+The first CI run after this re-baseline **failed**, on one file:
+`packages/blocks/src/MermaidPlugin.svelte`, measured at **38.46%** statements on
+CI where the laptop had measured **53.84%**.
+
+That gap was the finding. The component does its work in an `async onMount` that
+awaits `import('mermaid')` and `import('dompurify')`, and its single test called
+`render()` then asserted synchronously — never awaiting. So how much of the body
+executed before teardown depended on how fast the dynamic imports resolved, i.e.
+on the machine. The coverage number was sampling a race.
+
+Lowering the floor to CI's number would have enshrined that race. The test was
+rewritten instead: 1 test → 8, every output assertion behind `waitFor`, covering
+the success path, the sanitize call, both error branches and the non-`Error`
+rejection fallback. The file went to **100% / 100%**, and the whole
+`packages/blocks/**/*.svelte` floor rose **53/66 → 93/95**.
+
+Worth repeating the diagnostic: a coverage number that differs between two
+machines is not noise to be averaged away — it means something in that file is
+timing-dependent, and the test is not pinning it.
+
+Rewriting it also exposed a second leak the original had: the synchronous test
+left its `onMount` in flight, and it resolved *during the next test*, past the
+`beforeEach` reset — visible as `expected "vi.fn()" to be called 1 times, but got
+2 times` once call counts were actually asserted.
 
 ## The floors also move with the Svelte compiler
 

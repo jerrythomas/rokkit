@@ -1,7 +1,7 @@
 # CHECKPOINT
 
 **Slice:** rokkit#156 dependency sweep (2026-09-12). Working tree CLEAN,
-7 commits on `develop`, NOT pushed.
+pushed to `origin/develop`; Check + Coverage green.
 
 ## Done
 
@@ -17,6 +17,9 @@
 - `06942b2c` cookie `^0.7.2` — the issue's "no clean fix" resolves because youch
   only calls `cookie.parse`.
 - `ae26e415` `check:types` off `bunx`; svelte-check aligned `^4.7.6`.
+- `_pending_` MermaidPlugin spec 1 → 8 tests. CI coverage caught it at 38.46%
+  vs 53.84% locally — an un-awaited async `onMount` made the number a race.
+  Now 100%; blocks .svelte floor rose 53/66 → **93/95**.
 
 ## Remains
 
@@ -35,6 +38,5 @@ vulnerable svelte. Left alone — a consumer-facing break, not a sweep call.
 
 ## Known-broken
 
-Nothing. lint 0/0 · check:types + check:svelte 0/0 · test:ci 5802/386 ·
+Nothing. lint 0/0 · check:types + check:svelte 0/0 · test:ci 5809/386 ·
 coverage exit 0 · build:apps exit 0 · learn e2e 67 · frozen-lockfile clean.
-Two throwaway TS-experiment stashes remain (`stash@{0}`, `stash@{1}`).
