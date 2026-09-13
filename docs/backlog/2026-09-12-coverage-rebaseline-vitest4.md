@@ -114,6 +114,47 @@ Worth repeating the diagnostic: a coverage number that differs between two
 machines is not noise to be averaged away — it means something in that file is
 timing-dependent, and the test is not pinning it.
 
+### Turning the accident into a sweep
+
+MermaidPlugin was found by luck — CI happened to disagree with a laptop. Running
+that comparison *deliberately* found a second one. Diffing CI's per-directory
+coverage table against a local run showed exactly one divergent directory,
+`ui/src/components` (CI 91.00 vs local 90.97), and matching CI's truncated file
+rows against local per-file numbers isolated **`CodeBlock.svelte`**: CI 89.69 vs
+local 88.66, where every other file differed only in the 0.01 of rounding.
+
+Cause: the component calls the real `highlightCode`, which builds an expensive
+singleton highlighter. The first test pays initialisation and later ones hit the
+cache, so whether `highlighted` was set before a test ended depended on ordering
+and machine speed. Its spec had adapted to that rather than fixing it —
+
+```js
+// Either shiki resolved or the pre fallback is shown — code must be present somewhere
+const body = container.querySelector('[data-code-block-body]')
+expect(body).toBeTruthy()
+```
+
+A test written to pass in *either* state is the signature. `Code.svelte` had the
+same shape in a blunter form, `if (loading) { ...assert... }`, which asserted
+nothing at all whenever shiki had already resolved.
+
+Both now mock `highlightCode`, making pending / resolved / rejected three states
+the test selects rather than a race it observes. `CodeBlock.svelte` 88.66 → **100%**,
+`Code.svelte` 85.00 → **100%**, and the `{:catch}` arm — previously untested —
+is covered. `shiki.ts` keeps its own direct coverage via `shiki.spec.svelte.ts`,
+so nothing was lost by mocking it.
+
+**A static sweep for the pattern is not enough on its own.** Searching for
+`onMount(async`, `.then(`, `await`, `setTimeout` and `requestAnimationFrame` in
+components returns 17 candidates, but most are fine. `PlotSurface.svelte` has the
+textbook shape — `Promise.all([import('d3-zoom'), import('d3-selection')]).then(...)`
+inside an `$effect`, plus a `requestAnimationFrame` gate — and is **not** racy,
+because its spec deliberately awaits both. Pattern presence is a lead; the
+divergence measurement is the evidence.
+
+Verified after the fix: two consecutive full runs differ on **0** files, and a
+1-worker run matches a 4-worker run on 0 files.
+
 Rewriting it also exposed a second leak the original had: the synchronous test
 left its `onMount` in flight, and it resolved *during the next test*, past the
 `beforeEach` reset — visible as `expected "vi.fn()" to be called 1 times, but got

@@ -1,6 +1,25 @@
-import { describe, it, expect, vi, afterEach } from 'vitest'
+import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest'
 import { render, fireEvent, waitFor } from '@testing-library/svelte'
+import { tick } from 'svelte'
 import Code from '../src/components/Code.svelte'
+
+// Shiki is mocked so the three {#await} branches become states we select rather
+// than a race we observe. Against the real highlighter the pending branch only
+// appears if shiki has not resolved yet, which depends on singleton warm-up and
+// machine speed — the same defect that made CodeBlock's coverage differ between
+// CI and a laptop. shiki.ts keeps its own direct coverage in shiki.spec.svelte.ts.
+const shiki = vi.hoisted(() => ({ highlightCode: vi.fn() }))
+vi.mock('../src/utils/shiki.js', () => ({ highlightCode: shiki.highlightCode }))
+
+const HIGHLIGHTED = '<pre class="shiki"><code><span data-token>const</span> x = 1</code></pre>'
+
+/** Never settles — pins the component in the {#await} pending branch. */
+const pending = () => new Promise<string>(() => {})
+
+beforeEach(() => {
+	shiki.highlightCode.mockReset()
+	shiki.highlightCode.mockResolvedValue(HIGHLIGHTED)
+})
 
 describe('Code', () => {
 	// ─── Rendering ──────────────────────────────────────────────────
@@ -32,26 +51,51 @@ describe('Code', () => {
 
 	// ─── Loading State ──────────────────────────────────────────────
 
-	it('shows raw code in loading state', () => {
+	it('shows raw code in loading state', async () => {
+		// Was `if (loading) { ... }` — which asserted NOTHING whenever shiki had
+		// already resolved, so it passed either way. Pinning the promise makes the
+		// pending branch an actual state rather than a coin flip.
+		shiki.highlightCode.mockReturnValue(pending())
 		const { container } = render(Code, { code: 'const x = 1' })
-		// Initially shows the loading state with raw code
+		await tick()
+
 		const loading = container.querySelector('.code-loading')
-		if (loading) {
-			expect(loading.querySelector('code')?.textContent).toBe('const x = 1')
-		}
+		expect(loading).toBeTruthy()
+		expect(loading?.querySelector('code')?.textContent).toBe('const x = 1')
+		expect(container.querySelector('.shiki')).toBeNull()
 	})
 
 	// ─── Highlighted State ──────────────────────────────────────────
 
 	it('renders highlighted HTML after loading', async () => {
 		const { container } = render(Code, { code: 'const x = 1', language: 'javascript' })
-		// Wait for shiki to initialize and highlight
-		await waitFor(
-			() => {
-				const shikiPre = container.querySelector('.code-block .shiki')
-				expect(shikiPre).toBeTruthy()
-			},
-			{ timeout: 10000 }
+
+		await waitFor(() => expect(container.querySelector('.code-block .shiki')).toBeTruthy())
+		expect(container.querySelector('[data-token]')).toBeTruthy()
+		expect(container.querySelector('.code-loading')).toBeNull()
+	})
+
+	it('passes code, language and theme to the highlighter', async () => {
+		render(Code, { code: 'const x = 1', language: 'javascript', theme: 'light' })
+
+		await waitFor(() => expect(shiki.highlightCode).toHaveBeenCalled())
+		expect(shiki.highlightCode).toHaveBeenCalledWith('const x = 1', {
+			lang: 'javascript',
+			theme: 'light'
+		})
+	})
+
+	// ─── Error State ────────────────────────────────────────────────
+
+	it('renders the error branch with the raw code when highlighting rejects', async () => {
+		// The {:catch} arm had no test at all — it was part of the 15% gap.
+		shiki.highlightCode.mockRejectedValue(new Error('no grammar for brainfuck'))
+		const { container } = render(Code, { code: 'const x = 1', language: 'brainfuck' })
+
+		await waitFor(() => expect(container.querySelector('.code-error')).toBeTruthy())
+		expect(container.querySelector('.code-error code')?.textContent).toBe('const x = 1')
+		expect(container.querySelector('.error-message')?.textContent).toContain(
+			'Highlighting failed: no grammar for brainfuck'
 		)
 	})
 
