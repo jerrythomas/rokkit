@@ -7976,3 +7976,88 @@ they were removed to lock the improvement in, per that gate's own contract.
 **67 passed** (was 65) · state-snapshot re-baselined (264 diffs, every one the intended
 `ink-mute → ink` swap; the four `color == background-color` entries are `list-expand-icon`, a
 mask-mode icon where that equality is correct).
+
+## 2026-09-12 — rokkit#156: dependency sweep, 28 vulnerable packages → 1
+
+Triaged the issue against the repo rather than taking its table on faith, then worked it in
+six gated commits. `bun audit`: **28 vulnerable packages → 1**.
+
+### The issue was partly stale, and wrong in two places
+
+**§1 is obsolete.** It says Dependabot alerts are off (404). `GET /vulnerability-alerts` now
+returns **204** — alerts, secret scanning and push protection are all enabled. Steps 1 and 5 of
+its suggested order were already done. But the conclusion it draws does not survive: Dependabot
+has exactly **one** open alert and **never flagged dompurify** despite 3.3.3 being locked.
+`bun audit` is the real signal here, not Dependabot.
+
+**Its esbuild entry cited a withdrawn advisory.** `GHSA-gv7w-rqvm-qjhr` was withdrawn
+2026-06-17 — it described esbuild's *Deno* distribution, a different ecosystem. The live npm
+one is `GHSA-g7r4-m6w7-qqqr`, **low**, dev-server only. The issue called it HIGH and proposed an
+override that would have pushed wrangler past its own exact pin.
+
+**It missed `@rokkit/blocks`.** It framed dompurify as a `@rokkit/ui` problem; blocks declared
+the identical `^3.0.0` and is published too. Also missed: `@rokkit/states` and `@rokkit/data`
+declare **svelte as a real dependency**, not a peer, so their floor reaches consumers; and
+`@rokkit/helpers` ships `@vitest/expect` the same way.
+
+### Three traps worth remembering
+
+**Raising a floor can make the tree worse.** After bumping dompurify, bun hoisted 3.4.15 but
+kept `mermaid` and `@types/dompurify` pinned to nested 3.3.3 — two copies where there had been
+one. bun preserves a parent's previously-locked resolution rather than re-resolving upward.
+`bun update <pkg>` fixes it; on a package that is *not* already a direct dep it also silently
+adds one to root.
+
+**A local pass can be a stale symlink.** The brace-expansion override passed lint locally and
+looked fine. A clean scratch install reproduced `TypeError: expand is not a function` —
+minimatch@3 needs brace-expansion 1.x, which 5.x dropped the callable CJS default for. CI
+installs fresh, so CI would have hit it. Wiping `node_modules` entirely is now the rule before
+believing a dependency result.
+
+**Surgical lockfile edits are not surgical.** Deleting two `yaml` entries and reinstalling did
+fix yaml — and re-resolved **40 other packages**, including shiki 3.23.0 → 4.4.3 (violating
+`@rokkit/ui`'s declared `^3.23.0` peer) and two downgrades. Restored and booked yaml instead.
+
+### vitest 4 cost a coverage re-baseline
+
+Root was the last workspace on vitest 3.2.4 — and root is what `test:ci` runs, so the 4.x
+already declared elsewhere was not what executed. Moving to 4.1.11 cleared three criticals
+(two in `@vitest/browser`, which the issue never mentioned) and broke 87 tests: vitest 4 invokes
+`vi.fn()` implementations directly instead of wrapping them in a constructable shim, so six
+ARROW mocks behind `new` threw "is not a constructor".
+
+It also made AST-aware V8 remapping unconditional — no opt-out flag remains — which re-measured
+coverage repo-wide with no test change. 91 threshold failures, aggregate 94.47%. Since 129/177
+js/ts files were still at 100% and 142/174 `.svelte` still cleared 90%, a single global floor
+would have thrown away most of the signal, so floors are now **per-package at today's measured
+minimum**. Note vitest checks every matching glob group independently — a specific glob does
+*not* exempt a file from a broader one, so these replace the strict generic globs.
+
+Booked: `docs/backlog/2026-09-12-coverage-rebaseline-vitest4.md`.
+
+### Left open, deliberately
+
+**`yaml`** (moderate) — two majors in the tree needing two different patches, and bun ignores
+nested overrides. Both parents' ranges already permit the fixes; it is purely a stale pin, but
+the only lever is a full re-resolve. Booked with the blast radius measured.
+
+**TypeScript 7** (§4) — deferred with a *verified* path, not a proposed one. Measured: TS 6.0.3
+gives 0 tsc errors everywhere, but svelte-check 4.7.6 **breaks** on bare TS 6
+(`forEachResolvedModule is not a function`) despite its gate advertising `<= 6.0` support. The
+`~6.0.3` + `@typescript/native` + `--tsgo` pairing works, 0 errors. Not adopted because `--tsgo`
+pulls `dist/` into the check and shrinks the surface (ui 989 → 158 files). The trap is not
+urgent: CI runs `bun run check`, so a stray `upgrade:all` fails loudly — unlike dbd, where
+`check` never ran. Prerequisites done: svelte-check aligned to 4.7.6, `check:types` moved off
+`bunx`.
+
+Booked: `docs/backlog/2026-09-12-typescript-7-migration.md`,
+`docs/backlog/2026-09-12-residual-advisories.md`.
+
+### Gate
+
+Every commit: lint **0/0** · `check:types` + `check:svelte` **0/0** · `test:ci` **5802/386**
+(+4 dompurify guards) · `coverage` exit 0 · `build:apps` exit 0 · `bun install --frozen-lockfile`
+clean. The two slices touching the learn app also ran e2e: **67 passed**, including the
+contrast, interaction-contrast and state-snapshot baselines.
+
+Commits: `cc335be6` `1bbb28d2` `bcc0430c` `5bce7720` `06942b2c` `ae26e415`
