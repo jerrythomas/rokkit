@@ -33,6 +33,7 @@
     "prepublishOnly": "cp ../../LICENSE . && bun run build && node ../../config/pack-repoint.mjs",
     "postpublish": "node ../../config/pack-repoint.mjs --restore && rm -f LICENSE",
     "check": "svelte-check --tsconfig ./tsconfig.json",
+    "check:types": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
     "build": "svelte-package -i src -o dist"
@@ -55,7 +56,7 @@
     "@vitest/browser": "^4.1.11",
     "playwright": "^1.58.2",
     "svelte": "^5.55.7",
-    "svelte-check": "^4.4.3",
+    "svelte-check": "^4.7.6",
     "typescript": "^5.9.3",
     "vite": "^7.3.5",
     "vitest": "^4.1.11"
