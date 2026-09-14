@@ -8490,3 +8490,47 @@ Still open: learn's `.svelte` files remain unchecked — `tsc` ignores them and
 learn isn't in `check:svelte`'s list.
 
 Commits: `a21e5278` (ui) `76a88837` (learn gate)
+
+---
+
+## 2026-09-14 — the .svelte half, and what a consumer-side gate is for
+
+Adding `apps/learn` to `check:svelte` closed the other half of the gate gap: 14
+errors in 4 files. Eleven were one root cause — the `ChatMessage` collision
+again, this time in a file that imports the component and the type on adjacent
+lines, which is the clearest possible statement of the bug:
+
+    import { ChatMessage, ChatComposer, … } from '@rokkit/ui'
+    import type { ChatMessage as ChatMessageData, … } from '@rokkit/ui'
+
+The other three were worth having:
+
+- `Plot.Area`'s `position` union excludes `'dodge'` (bar-only). The controls
+  already hide it for area and `select('area')` resets to `'stack'` — but chart
+  settings are also reachable from typed tweaks, so it now degrades to area's own
+  default instead of relying on that being unreachable.
+- Two snippet parameters implicitly `any`, because `List` collects snippets
+  behind `[key: string]: unknown`. Annotated at the call site and **booked** —
+  the library should type its documented snippet props, and that is not
+  List-only, so it wants one uniform pass rather than four patches.
+
+Wired with `--diagnostic-sources js,svelte`. The CSS language service doesn't
+know UnoCSS's `@apply` and produced 50 `Unknown at rule` warnings; dropping CSS
+diagnostics is the honest trade, since it can't usefully check this app's CSS
+anyway, and it holds the 0-errors-0-warnings standard the five library packages
+already meet. Stated rather than silently thresholded.
+
+Verified under both module resolutions again — 0/0 with `packages/ui/dist`
+present (1370 files) and with it moved aside (1394, resolving ui's source). Since
+`dist` is gitignored and CI installs with `--ignore-scripts`, that second one is
+what CI actually runs. Break-it checked: mistyping a snippet parameter fails the
+gate with exit 1.
+
+The theme of the last two slices: **a gate that checks a library against its own
+source cannot find consumer-facing API defects.** `packages/ui` has been 0/0
+under svelte-check the whole time, and `ChatMessage<T>` has been unreachable for
+every consumer the whole time. Both statements were true simultaneously. The
+only thing that found it was pointing a checker at the package the way a
+consumer sees it.
+
+Commit: `134d09b9`

@@ -72,7 +72,13 @@ unused disable directives.
 4. Break-it verified: mistyping `waitForHydration`'s parameter fails the gate
    with exit 1, and catches it transitively in the specs that import it.
 
-## Still open
+## The other half — also closed
 
-`.svelte` files in learn are not checked — `tsc` ignores them, and learn is not
-in `check:svelte`'s list. That is the other half of this gap and is unmeasured.
+`.svelte` files were unchecked too (`tsc` ignores them, and learn was not in
+`check:svelte`). Added in `134d09b9`: 14 errors in 4 files, 11 of them the same
+`ChatMessage` collision. Wired with `--diagnostic-sources js,svelte` because the
+CSS service does not understand UnoCSS's `@apply` (50 false warnings). All six
+gated dirs are now 0 errors / 0 warnings.
+
+One finding booked rather than fixed: snippet props are untyped across the
+component surface — see `2026-09-14-untyped-snippet-props.md`.
