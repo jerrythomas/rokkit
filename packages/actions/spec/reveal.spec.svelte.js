@@ -439,3 +439,35 @@ describe('reveal', () => {
 		expect(node.style.transitionDelay).toBe('')
 	})
 })
+
+describe('reveal — repeated stagger entry', () => {
+	it('clears pending child timers before scheduling a new run', () => {
+		// handleIntersectEnter clears the previous batch first. Without that, a
+		// second intersection while the first stagger is still running would leave
+		// both batches queued and children would be revealed twice, out of order.
+		vi.useFakeTimers()
+
+		const node = document.createElement('div')
+		const child1 = document.createElement('div')
+		const child2 = document.createElement('div')
+		node.append(child1, child2)
+
+		const cleanup = $effect.root(() => reveal(node, { stagger: 100, delay: 50 }))
+		flushSync()
+
+		intersectCallback([{ isIntersecting: true, target: node }])
+		// Re-enter before the first batch has fired anything.
+		intersectCallback([{ isIntersecting: true, target: node }])
+
+		vi.advanceTimersByTime(50)
+		expect(child1.hasAttribute('data-reveal-visible')).toBe(true)
+		vi.advanceTimersByTime(100)
+		expect(child2.hasAttribute('data-reveal-visible')).toBe(true)
+
+		// Only the second batch's timers survived, so the clock is fully drained.
+		expect(vi.getTimerCount()).toBe(0)
+
+		cleanup()
+		vi.useRealTimers()
+	})
+})

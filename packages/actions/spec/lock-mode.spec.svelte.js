@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { flushSync } from 'svelte'
 import { lockMode } from '../src/lock-mode.svelte.js'
 
@@ -67,5 +67,28 @@ describe('lockMode', () => {
 		document.documentElement.dataset.style = 'material'
 		await new Promise((r) => setTimeout(r, 0))
 		expect(node.dataset.style).toBe('rokkit') // last synced value, not updated
+	})
+})
+
+describe('lockMode — server rendering', () => {
+	it('does nothing when document is undefined', () => {
+		// @rokkit/actions is imported by SvelteKit server code, where reading
+		// document.documentElement would throw. The guard returns before the
+		// initial sync and before the MutationObserver is constructed.
+		const node = document.createElement('section')
+		const MO = vi.fn()
+		vi.stubGlobal('MutationObserver', MO)
+		vi.stubGlobal('document', undefined)
+		let cleanup
+		try {
+			cleanup = $effect.root(() => lockMode(node, 'dark'))
+			flushSync()
+		} finally {
+			vi.unstubAllGlobals()
+		}
+
+		expect(MO).not.toHaveBeenCalled()
+		expect(node.dataset.mode).toBeUndefined()
+		cleanup()
 	})
 })

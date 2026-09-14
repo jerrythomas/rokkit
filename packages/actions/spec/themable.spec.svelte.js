@@ -235,3 +235,29 @@ describe('themable', () => {
 		})
 	})
 })
+
+describe('themable — storage listener lifecycle', () => {
+	it('removes the storage listener when the effect is torn down', () => {
+		// Regression guard. This used to use `$effect.root` and discard the disposer,
+		// so the listener outlived the action and accumulated on every re-application.
+		const add = vi.spyOn(window, 'addEventListener')
+		const remove = vi.spyOn(window, 'removeEventListener')
+		try {
+			const theme = { load: vi.fn(), save: vi.fn(), update: vi.fn() }
+			const cleanup = $effect.root(() =>
+				themable(document.createElement('div'), { theme, storageKey: 'rokkit-theme' })
+			)
+			flushSync()
+
+			const handler = add.mock.calls.find(([type]) => type === 'storage')?.[1]
+			expect(handler).toBeTypeOf('function')
+
+			cleanup()
+
+			expect(remove).toHaveBeenCalledWith('storage', handler)
+		} finally {
+			add.mockRestore()
+			remove.mockRestore()
+		}
+	})
+})

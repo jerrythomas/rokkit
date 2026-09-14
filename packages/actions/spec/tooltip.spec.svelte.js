@@ -253,4 +253,76 @@ describe('tooltip action', () => {
 		window.innerWidth = 1024
 		window.innerHeight = 768
 	})
+
+	// ─── Placement arithmetic ──────────────────────────────────────
+	// Only 'bottom' and the flip fallback were exercised. Each branch of the
+	// switch computes different coordinates, so a transposed sign in one of them
+	// was invisible. These pin the actual top/left the action writes.
+
+	/** Drive a specific resolved placement by mocking both rects. */
+	function placeWith({ position, trigger, tip, vw = 1000, vh = 1000 }) {
+		const node = createTrigger()
+		window.innerWidth = vw
+		window.innerHeight = vh
+		node.getBoundingClientRect = () => trigger
+
+		const cleanup = $effect.root(() => tooltip(node, { content: 'Info', position }))
+		flushSync()
+		const el = node.parentElement.querySelector('[data-tooltip-content]')
+		el.getBoundingClientRect = () => tip
+		node.dispatchEvent(new FocusEvent('focusin'))
+		return { el, cleanup }
+	}
+
+	afterEach(() => {
+		window.innerWidth = 1024
+		window.innerHeight = 768
+	})
+
+	it('places above the trigger and centres horizontally when top fits', () => {
+		const { el, cleanup } = placeWith({
+			position: 'top',
+			trigger: { top: 500, bottom: 550, left: 400, right: 460, width: 60, height: 50 },
+			tip: { width: 80, height: 40, top: 0, left: 0, right: 0, bottom: 0 }
+		})
+
+		expect(el.getAttribute('data-tooltip-position')).toBe('top')
+		// top: 500 - 0 - 40 - 6
+		expect(el.style.top).toBe('454px')
+		// left: 400 - 0 + (60 - 80) / 2
+		expect(el.style.left).toBe('390px')
+		cleanup()
+	})
+
+	it('places to the right of the trigger and centres vertically when right fits', () => {
+		const { el, cleanup } = placeWith({
+			position: 'right',
+			trigger: { top: 200, bottom: 250, left: 100, right: 160, width: 60, height: 50 },
+			tip: { width: 80, height: 40, top: 0, left: 0, right: 0, bottom: 0 }
+		})
+
+		expect(el.getAttribute('data-tooltip-position')).toBe('right')
+		// top: 200 - 0 + (50 - 40) / 2
+		expect(el.style.top).toBe('205px')
+		// left: 160 - 0 + 6
+		expect(el.style.left).toBe('166px')
+		cleanup()
+	})
+
+	it('falls back to the origin when no side fits and the preference is unknown', () => {
+		// Nothing fits, so resolveFlip returns `preferred` unchanged; an unrecognised
+		// value then lands in the switch default rather than throwing.
+		const { el, cleanup } = placeWith({
+			position: 'nowhere',
+			trigger: { top: 0, bottom: 50, left: 0, right: 50, width: 50, height: 50 },
+			tip: { width: 200, height: 200, top: 0, left: 0, right: 0, bottom: 0 },
+			vw: 50,
+			vh: 50
+		})
+
+		expect(el.getAttribute('data-tooltip-position')).toBe('nowhere')
+		expect(el.style.top).toBe('0px')
+		expect(el.style.left).toBe('0px')
+		cleanup()
+	})
 })
