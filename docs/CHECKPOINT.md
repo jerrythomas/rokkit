@@ -32,8 +32,7 @@ interface named `ChatMessage`, the component's type shadowing the interface — 
   `[key: string]: unknown`, so consumers' params are implicitly `any`; two
   interim annotations in learn to delete when fixed.
 
-Open question: narrow published `peerDependencies` (`svelte: ^5.0.0`) to exclude
-vulnerable svelte? Consumer-facing break, not a sweep call.
+Open question: narrow `peerDependencies` (`svelte: ^5.0.0`) to exclude vulnerable svelte? A consumer-facing break, not a sweep call.
 
 ## Known-broken
 
