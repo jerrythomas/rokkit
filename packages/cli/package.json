@@ -16,7 +16,8 @@
     "prepublishOnly": "cp ../../LICENSE . && bun clean && bun tsc --project tsconfig.build.json",
     "postpublish": "rm -f LICENSE",
     "clean": "rm -rf dist",
-    "build": "bun prepublishOnly"
+    "build": "bun prepublishOnly",
+    "check:build": "bun run clean && tsc --project tsconfig.build.json"
   },
   "publishConfig": {
     "access": "public"

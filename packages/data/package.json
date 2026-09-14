@@ -18,7 +18,8 @@
     "clean": "rm -rf dist",
     "build": "bun clean && bun prepublishOnly",
     "benchmark": "bun benchmark/index.js",
-    "benchmark:save": "bun benchmark/index.js --save"
+    "benchmark:save": "bun benchmark/index.js --save",
+    "check:build": "bun run clean && tsc --project tsconfig.build.json"
   },
   "files": [
     "src/**/*.js",

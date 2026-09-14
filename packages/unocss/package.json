@@ -1,7 +1,7 @@
 {
   "name": "@rokkit/unocss",
   "version": "1.4.2",
-  "description": "UnoCSS preset for Rokkit — one-line setup for colors, shortcuts, icons, and dark mode.",
+  "description": "UnoCSS preset for Rokkit \u2014 one-line setup for colors, shortcuts, icons, and dark mode.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jerrythomas/rokkit.git"
@@ -9,12 +9,15 @@
   "author": "Jerry Thomas <me@jerrythomas.name>",
   "license": "MIT",
   "type": "module",
-  "publishConfig": { "access": "public" },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "prepublishOnly": "cp ../../LICENSE . && bunx tsc --project tsconfig.build.json",
     "postpublish": "rm -f LICENSE",
     "clean": "rm -rf dist",
-    "build": "bun clean && bun prepublishOnly"
+    "build": "bun clean && bun prepublishOnly",
+    "check:build": "bun run clean && tsc --project tsconfig.build.json"
   },
   "files": [
     "src/**/*.js",
