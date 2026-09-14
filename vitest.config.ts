@@ -94,7 +94,7 @@ export default defineConfig({
 				'packages/states/**/*.{js,ts}': { statements: 100, lines: 100 },
 				'packages/themes/**/*.{js,ts}': { statements: 100, lines: 100 },
 				'packages/ui/**/*.{js,ts}': { statements: 100, lines: 100 },
-				'packages/ui/**/*.svelte': { statements: 50, lines: 70 },
+				'packages/ui/**/*.svelte': { statements: 90, lines: 85 },
 				'packages/unocss/**/*.{js,ts}': { statements: 100, lines: 100 }
 			}
 		},
