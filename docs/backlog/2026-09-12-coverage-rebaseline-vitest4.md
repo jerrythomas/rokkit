@@ -152,8 +152,37 @@ inside an `$effect`, plus a `requestAnimationFrame` gate — and is **not** racy
 because its spec deliberately awaits both. Pattern presence is a lead; the
 divergence measurement is the evidence.
 
-Verified after the fix: two consecutive full runs differ on **0** files, and a
-1-worker run matches a 4-worker run on 0 files.
+### 100% statements did not mean deterministic
+
+After the statement-level fix, CI and local agreed exactly on statements,
+functions and lines — but `ui/src/components` **branch** coverage still differed,
+CI 86.06 vs local 86.02, isolating again to `CodeBlock.svelte` (CI 83.72, local
+81.40) at a flat 100% statements.
+
+The effect's `then`/`catch` both guard with `if (!cancelled)`, and `cancelled` is
+set by the effect's own teardown. Which arm runs depends on whether the highlight
+promise settles before or after unmount — the same race, one level down. Every
+statement can execute while a conditional still lands differently, so statement
+coverage cannot detect it.
+
+Two tests now hold the promise open across `unmount()` and settle it afterwards,
+once resolved and once rejected. Branches 81.40 → **86.05%**.
+
+### Final state
+
+CI and a local run now produce **identical** numbers on all four metrics across
+all 23 directories:
+
+```
+All files | 94.66 % Stmts | 87.28 % Branch | 93.38 % Funcs | 96.68 % Lines
+```
+
+Also verified locally: two consecutive full runs differ on **0** files for
+statements *and* branches, and a 1-worker run matches a 4-worker run on 0 files.
+
+**Use this as the regression check.** If a future CI coverage number disagrees
+with a local one, that is not rounding — diff the per-directory table, isolate the
+file, and look for an un-awaited async boundary or a teardown-guarded branch.
 
 Rewriting it also exposed a second leak the original had: the synchronous test
 left its `onMount` in flight, and it resolved *during the next test*, past the

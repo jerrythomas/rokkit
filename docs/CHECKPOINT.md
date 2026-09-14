@@ -5,7 +5,7 @@ pushed to `origin/develop`; Check + Coverage green.
 
 ## Done
 
-`bun audit` **28 vulnerable packages -> 1**, in six gated commits:
+`bun audit` **28 vulnerable packages -> 1**, plus a coverage-determinism fix:
 
 - `cc335be6` dompurify `^3.0.0` -> `^3.4.13` in ui AND blocks (issue missed
   blocks); dropped the `@types/dompurify` stub; +4 guard specs.
@@ -17,9 +17,9 @@ pushed to `origin/develop`; Check + Coverage green.
 - `06942b2c` cookie `^0.7.2` — the issue's "no clean fix" resolves because youch
   only calls `cookie.parse`.
 - `ae26e415` `check:types` off `bunx`; svelte-check aligned `^4.7.6`.
-- `_pending_` MermaidPlugin spec 1 → 8 tests. CI coverage caught it at 38.46%
-  vs 53.84% locally — an un-awaited async `onMount` made the number a race.
-  Now 100%; blocks .svelte floor rose 53/66 → **93/95**.
+- `e07aaa5f` `690c132e` `c4313dd9` three racy specs pinned — MermaidPlugin,
+  CodeBlock, Code all to **100%** statements. CI and local now match **exactly**
+  on all four metrics across all 23 directories.
 
 ## Remains
 
@@ -29,7 +29,7 @@ ignores nested overrides), **TypeScript 7** (deferred, path verified),
 
 ## Next command
 
-    git push origin develop
+    git checkout main && git merge develop   # main is still unpatched
 
 ## Open questions
 
@@ -38,5 +38,5 @@ vulnerable svelte. Left alone — a consumer-facing break, not a sweep call.
 
 ## Known-broken
 
-Nothing. lint 0/0 · check:types + check:svelte 0/0 · test:ci 5809/386 ·
+Nothing. lint 0/0 · check:types + check:svelte 0/0 · test:ci 5819/386 ·
 coverage exit 0 · build:apps exit 0 · learn e2e 67 · frozen-lockfile clean.

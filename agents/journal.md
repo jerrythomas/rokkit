@@ -8061,3 +8061,78 @@ clean. The two slices touching the learn app also ran e2e: **67 passed**, includ
 contrast, interaction-contrast and state-snapshot baselines.
 
 Commits: `cc335be6` `1bbb28d2` `bcc0430c` `5bce7720` `06942b2c` `ae26e415`
+
+## 2026-09-13 — Turning a coverage disagreement into a race detector
+
+CI Coverage failed the pushed sweep on one file. The fix mattered less than the
+method, so it is worth recording separately.
+
+### The signal
+
+`MermaidPlugin.svelte` measured **38.46%** statements on CI and **53.84%** on a
+laptop. That gap *was* the bug: an `async onMount` awaiting two dynamic imports,
+with a test that called `render()` and asserted synchronously. How much of the
+body ran before teardown depended on how fast the imports resolved — the coverage
+number was sampling a race, and any floor derived from one machine was
+unreproducible by construction.
+
+Lowering the floor to CI's number would have enshrined it. Rewrote the test
+instead: 1 → 8, every assertion behind `waitFor`. 100%, and the blocks floor
+*rose* 53/66 → 93/95.
+
+### Making it deliberate
+
+That first one was luck. Running the comparison on purpose found two more:
+
+Diff CI's per-directory coverage table against a local run → exactly one divergent
+directory (`ui/src/components`, CI 91.00 vs local 90.97) → match CI's truncated
+file rows against local per-file numbers → **`CodeBlock.svelte`**, CI 89.69 vs
+local 88.66, where every other file differed only in the 0.01 of rounding.
+
+Same cause: the real `highlightCode` builds an expensive singleton, so the first
+test pays init and later ones hit the cache. Both specs had *adapted* to the race
+rather than fixing it — CodeBlock's comment literally read "Either shiki resolved
+or the pre fallback is shown", and `Code.svelte`'s was blunter:
+
+```js
+const loading = container.querySelector('.code-loading')
+if (loading) { expect(...) }   // asserts NOTHING once shiki has resolved
+```
+
+**A test written to pass in either state is the signature.** Both now mock
+`highlightCode`, making pending / resolved / rejected three states the test
+selects. CodeBlock 88.66 → 100%, Code 85.00 → 100%, and Code's `{:catch}` arm —
+previously untested — is covered.
+
+### 100% statements is not determinism
+
+Statements, functions and lines then matched CI exactly, but **branch** coverage
+still diverged: CodeBlock CI 83.72 vs local 81.40, at a flat 100% statements.
+
+The effect's `then`/`catch` guard with `if (!cancelled)`, and `cancelled` is set by
+the effect's own teardown — so which arm runs depends on whether the promise
+settles before or after unmount. Every statement executes either way, which is
+exactly why statement coverage cannot see it. Two tests now hold the promise open
+across `unmount()` and settle it afterwards. Branches 81.40 → 86.05%.
+
+### Pattern-matching alone would have been wrong
+
+Grepping components for `onMount(async` / `.then(` / `await` / `setTimeout` /
+`requestAnimationFrame` returns 17 candidates. Most are fine.
+`PlotSurface.svelte` has the textbook shape —
+`Promise.all([import('d3-zoom'), import('d3-selection')]).then(...)` in an
+`$effect`, plus a `requestAnimationFrame` gate — and is **not** racy, because its
+spec deliberately awaits both and says so in a comment. Pattern presence is a
+lead; the divergence measurement is the evidence.
+
+### Result
+
+CI and local now produce identical numbers on all four metrics across all 23
+directories: `94.66 / 87.28 / 93.38 / 96.68`. Two consecutive local runs differ on
+0 files for statements *and* branches; a 1-worker run matches a 4-worker run on 0.
+
+Keep this as the regression check: a CI-vs-local coverage disagreement is not
+rounding. Diff the per-directory table, isolate the file, look for an un-awaited
+async boundary or a teardown-guarded branch.
+
+Commits: `e07aaa5f` `690c132e` `c4313dd9`
