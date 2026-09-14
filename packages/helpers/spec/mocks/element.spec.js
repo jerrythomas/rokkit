@@ -136,15 +136,33 @@ describe('element', () => {
 	})
 
 	describe('mockFormRequestSubmit', () => {
-		it('should detect unimplemented requestSubmit before mocking', () => {
-			console.error = vi.fn()
-			// Create a form and try to use requestSubmit
-			const form = document.createElement('form')
-			form.requestSubmit()
-			expect(console.error).toHaveBeenCalled()
-			expect(console.error.mock.calls[0][0]).toContain('Not implemented')
+		it('starts on the native requestSubmit, which records no calls', () => {
+			// Precondition for the two tests below: they assert on the mock's call
+			// record, which only means anything if the prototype starts un-mocked.
+			// Must stay first in this describe — mockFormRequestSubmit() patches
+			// HTMLFormElement.prototype permanently.
+			//
+			// This previously asserted that JSDOM emits "Not implemented" for
+			// requestSubmit, via a stubbed global console.error. Two separate things
+			// retired that: JSDOM now dispatches a real submit event (and honours the
+			// submitter argument) so the method is no longer unimplemented, and
+			// vitest 4 routes JSDOM's virtual console through its own reporter, so
+			// stubbing console.error no longer observes the diagnostic at all. The
+			// "Not implemented" JSDOM still logs refers to the navigation that
+			// follows an uncancelled submit, which preventDefault below suppresses.
+			expect(vi.isMockFunction(HTMLFormElement.prototype.requestSubmit)).toBe(false)
 
-			vi.resetAllMocks()
+			const form = document.createElement('form')
+			const submitSpy = vi.fn()
+			form.addEventListener('submit', (event) => {
+				event.preventDefault()
+				submitSpy(event)
+			})
+
+			form.requestSubmit()
+
+			expect(submitSpy).toHaveBeenCalled()
+			expect(HTMLFormElement.prototype.requestSubmit.mock).toBeUndefined()
 		})
 
 		it('should mock form requestSubmit', () => {

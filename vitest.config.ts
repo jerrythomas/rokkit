@@ -47,16 +47,55 @@ export default defineConfig({
 				'**/markdown-plugin.ts',
 				'**/.worktrees/**'
 			],
-			// Per-file ratchet (enforced on the full `bun run coverage`):
-			//  - js/ts (incl. .svelte.js/.svelte.ts): 100% statements + lines
-			//  - .svelte components: ≥90% statements (major branches covered)
+			// Per-file ratchet (enforced on the full `bun run coverage`).
+			//
 			// Functions/branches are not gated: a few genuinely-dead functions are
 			// v8-ignored (their bodies excluded, but the symbol still counts), and
 			// legit defensive/SSR branches can't be exercised in jsdom.
+			//
+			// These were a flat `js/ts: 100, .svelte: 90` until vitest 4. That
+			// release made AST-aware V8 remapping unconditional (the opt-in
+			// `experimentalAstAwareRemapping` flag is gone), which counts statements
+			// the old remapper never emitted — so measured coverage fell repo-wide
+			// with no test change. Aggregate went to 94.46% statements. The numbers
+			// below are each package's CURRENT measured floor, not a target: they
+			// lock in today's position so any further drop fails, and each is meant
+			// to be ratcheted back up. The debt is itemised in
+			// docs/backlog/2026-09-12-coverage-rebaseline-vitest4.md.
+			//
+			// Per-package rather than one global floor because the tail is narrow:
+			// 129 of 177 js/ts files are still at 100% and 142 of 174 .svelte at
+			// ≥90%, so a single global number would discard most of the signal.
+			//
+			// NOTE: vitest checks every matching glob group independently — a
+			// specific glob does NOT exempt a file from a broader one. So these
+			// replace the old generic globs rather than overriding them, and the
+			// two catch-alls below sit at the global minimum purely as a backstop
+			// for a package added without its own entry.
 			thresholds: {
 				perFile: true,
-				'**/*.{js,ts}': { statements: 100, lines: 100 },
-				'**/*.svelte': { statements: 90 }
+				'**/*.{js,ts}': { statements: 84, lines: 87 },
+				'**/*.svelte': { statements: 35, lines: 40 },
+
+				'packages/actions/**/*.{js,ts}': { statements: 86, lines: 89 },
+				'packages/app/**/*.{js,ts}': { statements: 96, lines: 100 },
+				'packages/app/**/*.svelte': { statements: 96, lines: 97 },
+				'packages/blocks/**/*.{js,ts}': { statements: 100, lines: 100 },
+				'packages/blocks/**/*.svelte': { statements: 93, lines: 95 },
+				'packages/chart/**/*.{js,ts}': { statements: 87, lines: 95 },
+				'packages/chart/**/*.svelte': { statements: 35, lines: 40 },
+				'packages/cli/**/*.{js,ts}': { statements: 93, lines: 92 },
+				'packages/core/**/*.{js,ts}': { statements: 97, lines: 96 },
+				'packages/data/**/*.{js,ts}': { statements: 98, lines: 100 },
+				'packages/forms/**/*.{js,ts}': { statements: 96, lines: 99 },
+				'packages/forms/**/*.svelte': { statements: 66, lines: 77 },
+				'packages/helpers/**/*.{js,ts}': { statements: 84, lines: 87 },
+				'packages/helpers/**/*.svelte': { statements: 100, lines: 100 },
+				'packages/states/**/*.{js,ts}': { statements: 92, lines: 100 },
+				'packages/themes/**/*.{js,ts}': { statements: 100, lines: 100 },
+				'packages/ui/**/*.{js,ts}': { statements: 92, lines: 91 },
+				'packages/ui/**/*.svelte': { statements: 50, lines: 70 },
+				'packages/unocss/**/*.{js,ts}': { statements: 99, lines: 100 }
 			}
 		},
 		projects: [

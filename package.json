@@ -15,15 +15,15 @@
     "coverage": "vitest run --coverage",
     "format": "prettier --config config/.prettierrc --ignore-path config/.prettierignore --write .",
     "lint": "eslint --config config/eslint.config.mjs --fix --max-warnings 0",
-    "check:types": "for d in packages/*/ apps/*/; do if [ -f \"${d}tsconfig.json\" ]; then echo \"\u2192 tsc ${d}\"; (cd \"$d\" && bunx tsc --noEmit) || exit 1; fi; done",
-    "check:svelte": "for d in packages/ui packages/app packages/chart packages/forms packages/blocks; do echo \"\u2192 svelte-check ${d}\"; (cd \"${d}\" && bun run check) || exit 1; done",
+    "check:types": "for d in packages/*/ apps/*/; do if [ -f \"${d}tsconfig.json\" ]; then echo \"→ tsc ${d}\"; (cd \"$d\" && bun run check:types) || exit 1; fi; done",
+    "check:svelte": "for d in packages/ui packages/app packages/chart packages/forms packages/blocks; do echo \"→ svelte-check ${d}\"; (cd \"${d}\" && bun run check) || exit 1; done",
     "check": "bun run lint && bun run check:types && bun run check:svelte && bun run build:apps && bun run test:ci",
     "bump": "bun run check && bumpp --configFilePath config/bump.config.js",
     "bump:next": "bumpp --configFilePath config/bump.config.js --preid=next",
     "upgrade:all": "find ./packages -type d -depth 1 -exec sh -c 'cd \"{}\" && bun update --latest' \\;",
     "publish:all": "for dir in ./packages/*/; do grep -q '\"private\": true' \"${dir}package.json\" 2>/dev/null || (cd \"$dir\" && bun publish); done",
     "build:all": "find ./packages -type d -depth 1 -exec sh -c 'cd \"{}\" && bun run build' \\;",
-    "build:apps": "for d in ./apps/*/; do if grep -q '\"build\"' \"${d}package.json\" 2>/dev/null; then echo \"\u2192 build ${d}\"; (cd \"$d\" && bun run build) || exit 1; fi; done",
+    "build:apps": "for d in ./apps/*/; do if grep -q '\"build\"' \"${d}package.json\" 2>/dev/null; then echo \"→ build ${d}\"; (cd \"$d\" && bun run build) || exit 1; fi; done",
     "release": "bun run clean && bun install && bun run publish:all"
   },
   "devDependencies": {
@@ -31,24 +31,23 @@
     "@testing-library/svelte": "^5.2.8",
     "@testing-library/user-event": "^14.6.1",
     "@types/bun": "^1.2.22",
-    "@types/dompurify": "^3.2.0",
-    "@vitest/browser": "^3.2.4",
-    "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/browser": "^4.1.11",
+    "@vitest/coverage-v8": "^4.1.11",
     "bumpp": "^10.2.3",
-    "eslint": "^9.35.0",
-    "eslint-plugin-svelte": "^3.12.3",
+    "eslint": "^9.39.5",
+    "eslint-plugin-svelte": "^3.23.0",
     "globals": "^17.3.0",
     "jsdom": "^27.0.0",
     "playwright": "^1.59.1",
     "prettier": "^3.6.2",
     "prettier-plugin-svelte": "^3.5.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
-    "rimraf": "^6.0.1",
-    "svelte": "^5.53.3",
-    "svelte-eslint-parser": "^1.5.1",
-    "typescript-eslint": "^8.56.1",
-    "vite": "^7.1.6",
-    "vitest": "^3.2.4"
+    "rimraf": "^6.1.3",
+    "svelte": "^5.55.7",
+    "svelte-eslint-parser": "^1.8.1",
+    "typescript-eslint": "^8.70.0",
+    "vite": "^7.3.5",
+    "vitest": "^4.1.11"
   },
   "peerDependencies": {
     "typescript": "^5.9.2"
@@ -59,9 +58,26 @@
   ],
   "dependencies": {
     "@types/ramda": "^0.31.1",
-    "dompurify": "^3.3.3"
+    "dompurify": "^3.4.13"
   },
   "overrides": {
-    "svelte": "^5.53.3"
+    "@humanfs/node": "^0.16.8",
+    "@tootallnate/once": "^2.0.1",
+    "cookie": "^0.7.2",
+    "defu": "^6.1.7",
+    "devalue": "^5.9.2",
+    "esbuild": "0.28.1",
+    "fflate": "^0.8.3",
+    "flatted": "^3.4.4",
+    "form-data": "^4.0.6",
+    "kysely": "^0.28.17",
+    "nanoid": "^3.3.16",
+    "picomatch": "^4.0.7",
+    "postcss": "^8.5.28",
+    "postcss-selector-parser": "^7.1.6",
+    "svelte": "^5.55.7",
+    "svgo": "^4.1.0",
+    "undici": "^7.29.1",
+    "ws": "^8.21.3"
   }
 }

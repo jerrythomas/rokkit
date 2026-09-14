@@ -20,7 +20,8 @@
     "postpublish": "node ../../config/pack-repoint.mjs --restore && rm -f LICENSE",
     "clean": "rm -rf dist",
     "build": "svelte-package -i src -o dist",
-    "check": "svelte-check --tsconfig ./tsconfig.json"
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "check:types": "tsc --noEmit"
   },
   "files": [
     "src/**/*.js",
@@ -74,6 +75,6 @@
     "@types/d3-transition": "^3.0.9",
     "@types/d3-zoom": "^3.0.8",
     "@types/ramda": "^0.31.1",
-    "svelte-check": "^4.4.3"
+    "svelte-check": "^4.7.6"
   }
 }

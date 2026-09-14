@@ -7976,3 +7976,163 @@ they were removed to lock the improvement in, per that gate's own contract.
 **67 passed** (was 65) · state-snapshot re-baselined (264 diffs, every one the intended
 `ink-mute → ink` swap; the four `color == background-color` entries are `list-expand-icon`, a
 mask-mode icon where that equality is correct).
+
+## 2026-09-12 — rokkit#156: dependency sweep, 28 vulnerable packages → 1
+
+Triaged the issue against the repo rather than taking its table on faith, then worked it in
+six gated commits. `bun audit`: **28 vulnerable packages → 1**.
+
+### The issue was partly stale, and wrong in two places
+
+**§1 is obsolete.** It says Dependabot alerts are off (404). `GET /vulnerability-alerts` now
+returns **204** — alerts, secret scanning and push protection are all enabled. Steps 1 and 5 of
+its suggested order were already done. But the conclusion it draws does not survive: Dependabot
+has exactly **one** open alert and **never flagged dompurify** despite 3.3.3 being locked.
+`bun audit` is the real signal here, not Dependabot.
+
+**Its esbuild entry cited a withdrawn advisory.** `GHSA-gv7w-rqvm-qjhr` was withdrawn
+2026-06-17 — it described esbuild's *Deno* distribution, a different ecosystem. The live npm
+one is `GHSA-g7r4-m6w7-qqqr`, **low**, dev-server only. The issue called it HIGH and proposed an
+override that would have pushed wrangler past its own exact pin.
+
+**It missed `@rokkit/blocks`.** It framed dompurify as a `@rokkit/ui` problem; blocks declared
+the identical `^3.0.0` and is published too. Also missed: `@rokkit/states` and `@rokkit/data`
+declare **svelte as a real dependency**, not a peer, so their floor reaches consumers; and
+`@rokkit/helpers` ships `@vitest/expect` the same way.
+
+### Three traps worth remembering
+
+**Raising a floor can make the tree worse.** After bumping dompurify, bun hoisted 3.4.15 but
+kept `mermaid` and `@types/dompurify` pinned to nested 3.3.3 — two copies where there had been
+one. bun preserves a parent's previously-locked resolution rather than re-resolving upward.
+`bun update <pkg>` fixes it; on a package that is *not* already a direct dep it also silently
+adds one to root.
+
+**A local pass can be a stale symlink.** The brace-expansion override passed lint locally and
+looked fine. A clean scratch install reproduced `TypeError: expand is not a function` —
+minimatch@3 needs brace-expansion 1.x, which 5.x dropped the callable CJS default for. CI
+installs fresh, so CI would have hit it. Wiping `node_modules` entirely is now the rule before
+believing a dependency result.
+
+**Surgical lockfile edits are not surgical.** Deleting two `yaml` entries and reinstalling did
+fix yaml — and re-resolved **40 other packages**, including shiki 3.23.0 → 4.4.3 (violating
+`@rokkit/ui`'s declared `^3.23.0` peer) and two downgrades. Restored and booked yaml instead.
+
+### vitest 4 cost a coverage re-baseline
+
+Root was the last workspace on vitest 3.2.4 — and root is what `test:ci` runs, so the 4.x
+already declared elsewhere was not what executed. Moving to 4.1.11 cleared three criticals
+(two in `@vitest/browser`, which the issue never mentioned) and broke 87 tests: vitest 4 invokes
+`vi.fn()` implementations directly instead of wrapping them in a constructable shim, so six
+ARROW mocks behind `new` threw "is not a constructor".
+
+It also made AST-aware V8 remapping unconditional — no opt-out flag remains — which re-measured
+coverage repo-wide with no test change. 91 threshold failures, aggregate 94.47%. Since 129/177
+js/ts files were still at 100% and 142/174 `.svelte` still cleared 90%, a single global floor
+would have thrown away most of the signal, so floors are now **per-package at today's measured
+minimum**. Note vitest checks every matching glob group independently — a specific glob does
+*not* exempt a file from a broader one, so these replace the strict generic globs.
+
+Booked: `docs/backlog/2026-09-12-coverage-rebaseline-vitest4.md`.
+
+### Left open, deliberately
+
+**`yaml`** (moderate) — two majors in the tree needing two different patches, and bun ignores
+nested overrides. Both parents' ranges already permit the fixes; it is purely a stale pin, but
+the only lever is a full re-resolve. Booked with the blast radius measured.
+
+**TypeScript 7** (§4) — deferred with a *verified* path, not a proposed one. Measured: TS 6.0.3
+gives 0 tsc errors everywhere, but svelte-check 4.7.6 **breaks** on bare TS 6
+(`forEachResolvedModule is not a function`) despite its gate advertising `<= 6.0` support. The
+`~6.0.3` + `@typescript/native` + `--tsgo` pairing works, 0 errors. Not adopted because `--tsgo`
+pulls `dist/` into the check and shrinks the surface (ui 989 → 158 files). The trap is not
+urgent: CI runs `bun run check`, so a stray `upgrade:all` fails loudly — unlike dbd, where
+`check` never ran. Prerequisites done: svelte-check aligned to 4.7.6, `check:types` moved off
+`bunx`.
+
+Booked: `docs/backlog/2026-09-12-typescript-7-migration.md`,
+`docs/backlog/2026-09-12-residual-advisories.md`.
+
+### Gate
+
+Every commit: lint **0/0** · `check:types` + `check:svelte` **0/0** · `test:ci` **5802/386**
+(+4 dompurify guards) · `coverage` exit 0 · `build:apps` exit 0 · `bun install --frozen-lockfile`
+clean. The two slices touching the learn app also ran e2e: **67 passed**, including the
+contrast, interaction-contrast and state-snapshot baselines.
+
+Commits: `cc335be6` `1bbb28d2` `bcc0430c` `5bce7720` `06942b2c` `ae26e415`
+
+## 2026-09-13 — Turning a coverage disagreement into a race detector
+
+CI Coverage failed the pushed sweep on one file. The fix mattered less than the
+method, so it is worth recording separately.
+
+### The signal
+
+`MermaidPlugin.svelte` measured **38.46%** statements on CI and **53.84%** on a
+laptop. That gap *was* the bug: an `async onMount` awaiting two dynamic imports,
+with a test that called `render()` and asserted synchronously. How much of the
+body ran before teardown depended on how fast the imports resolved — the coverage
+number was sampling a race, and any floor derived from one machine was
+unreproducible by construction.
+
+Lowering the floor to CI's number would have enshrined it. Rewrote the test
+instead: 1 → 8, every assertion behind `waitFor`. 100%, and the blocks floor
+*rose* 53/66 → 93/95.
+
+### Making it deliberate
+
+That first one was luck. Running the comparison on purpose found two more:
+
+Diff CI's per-directory coverage table against a local run → exactly one divergent
+directory (`ui/src/components`, CI 91.00 vs local 90.97) → match CI's truncated
+file rows against local per-file numbers → **`CodeBlock.svelte`**, CI 89.69 vs
+local 88.66, where every other file differed only in the 0.01 of rounding.
+
+Same cause: the real `highlightCode` builds an expensive singleton, so the first
+test pays init and later ones hit the cache. Both specs had *adapted* to the race
+rather than fixing it — CodeBlock's comment literally read "Either shiki resolved
+or the pre fallback is shown", and `Code.svelte`'s was blunter:
+
+```js
+const loading = container.querySelector('.code-loading')
+if (loading) { expect(...) }   // asserts NOTHING once shiki has resolved
+```
+
+**A test written to pass in either state is the signature.** Both now mock
+`highlightCode`, making pending / resolved / rejected three states the test
+selects. CodeBlock 88.66 → 100%, Code 85.00 → 100%, and Code's `{:catch}` arm —
+previously untested — is covered.
+
+### 100% statements is not determinism
+
+Statements, functions and lines then matched CI exactly, but **branch** coverage
+still diverged: CodeBlock CI 83.72 vs local 81.40, at a flat 100% statements.
+
+The effect's `then`/`catch` guard with `if (!cancelled)`, and `cancelled` is set by
+the effect's own teardown — so which arm runs depends on whether the promise
+settles before or after unmount. Every statement executes either way, which is
+exactly why statement coverage cannot see it. Two tests now hold the promise open
+across `unmount()` and settle it afterwards. Branches 81.40 → 86.05%.
+
+### Pattern-matching alone would have been wrong
+
+Grepping components for `onMount(async` / `.then(` / `await` / `setTimeout` /
+`requestAnimationFrame` returns 17 candidates. Most are fine.
+`PlotSurface.svelte` has the textbook shape —
+`Promise.all([import('d3-zoom'), import('d3-selection')]).then(...)` in an
+`$effect`, plus a `requestAnimationFrame` gate — and is **not** racy, because its
+spec deliberately awaits both and says so in a comment. Pattern presence is a
+lead; the divergence measurement is the evidence.
+
+### Result
+
+CI and local now produce identical numbers on all four metrics across all 23
+directories: `94.66 / 87.28 / 93.38 / 96.68`. Two consecutive local runs differ on
+0 files for statements *and* branches; a 1-worker run matches a 4-worker run on 0.
+
+Keep this as the regression check: a CI-vs-local coverage disagreement is not
+rounding. Diff the per-directory table, isolate the file, look for an un-awaited
+async boundary or a teardown-guarded branch.
+
+Commits: `e07aaa5f` `690c132e` `c4313dd9`

@@ -1,6 +1,29 @@
-import { describe, it, expect, vi } from 'vitest'
-import { render, fireEvent } from '@testing-library/svelte'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { render, fireEvent, waitFor } from '@testing-library/svelte'
+import { tick } from 'svelte'
 import CodeBlockTest from './CodeBlockTest.svelte'
+
+// Shiki is mocked so the two render branches become STATES we choose rather than
+// a race we observe. The real `highlightCode` builds an expensive singleton
+// highlighter: the first test pays initialisation, later ones hit the cache, so
+// whether `highlighted` is set before a test ends depended on ordering and
+// machine speed. That made this file's coverage differ between machines —
+// CI measured 89.69% statements against 88.66% locally.
+//
+// shiki.ts keeps its own direct coverage via shiki.spec.svelte.ts, so mocking it
+// here costs nothing.
+const shiki = vi.hoisted(() => ({ highlightCode: vi.fn() }))
+vi.mock('../src/utils/shiki.js', () => ({ highlightCode: shiki.highlightCode }))
+
+const HIGHLIGHTED = '<pre class="shiki"><code><span data-token>const</span> x = 1</code></pre>'
+
+/** Never settles — pins the component in its pre-highlight state. */
+const pending = () => new Promise<string>(() => {})
+
+beforeEach(() => {
+	shiki.highlightCode.mockReset()
+	shiki.highlightCode.mockResolvedValue(HIGHLIGHTED)
+})
 
 describe('CodeBlock', () => {
 	// ─── Rendering ──────────────────────────────────────────────────
@@ -10,20 +33,113 @@ describe('CodeBlock', () => {
 		expect(container.querySelector('[data-code-block]')).toBeTruthy()
 	})
 
-	it('renders fallback pre/code while shiki is loading', () => {
+	it('renders the fallback pre/code while shiki is still pending', async () => {
+		shiki.highlightCode.mockReturnValue(pending())
 		const { container } = render(CodeBlockTest, { props: { code: 'hello world' } })
-		// Shiki is async — before it resolves, the fallback <pre> is shown
-		const pre = container.querySelector('[data-code-block-body] pre, pre[data-code-block-body]')
-		// Either shiki resolved or the pre fallback is shown — code must be present somewhere
-		const body = container.querySelector('[data-code-block-body]')
-		expect(body).toBeTruthy()
+		await tick()
+
+		const pre = container.querySelector('pre[data-code-block-body]')
+		expect(pre).toBeTruthy()
+		expect(pre?.querySelector('code')?.textContent).toBe('hello world')
+		expect(container.querySelector('.shiki')).toBeNull()
 	})
 
-	it('shows the raw code text in the fallback', () => {
+	it('swaps the fallback for shiki output once it resolves', async () => {
+		const { container } = render(CodeBlockTest, { props: { code: 'const x = 1' } })
+
+		await waitFor(() => expect(container.querySelector('.shiki')).toBeTruthy())
+		expect(container.querySelector('[data-code-block-body] [data-token]')).toBeTruthy()
+		expect(container.querySelector('pre[data-code-block-body]')).toBeNull()
+	})
+
+	it('keeps the fallback when highlighting rejects', async () => {
+		shiki.highlightCode.mockRejectedValue(new Error('no grammar'))
 		const { container } = render(CodeBlockTest, { props: { code: 'hello world' } })
-		const body = container.querySelector('[data-code-block-body]')
-		// The code appears either in a <code> child (fallback) or highlighted HTML
-		expect(body?.textContent).toContain('hello world')
+
+		await waitFor(() => expect(shiki.highlightCode).toHaveBeenCalled())
+		await tick()
+		expect(container.querySelector('pre[data-code-block-body] code')?.textContent).toBe(
+			'hello world'
+		)
+		expect(container.querySelector('.shiki')).toBeNull()
+	})
+
+	// The `if (!cancelled)` guards in the effect's then/catch are themselves
+	// timing-dependent: whether the promise settles before or after teardown
+	// decides which arm runs. Left to chance, CodeBlock's BRANCH coverage still
+	// differed between CI (83.72%) and a laptop (81.40%) even at 100% statements.
+	// These two drive the cancelled arm deliberately.
+	it('ignores a highlight that resolves after teardown', async () => {
+		let resolveHighlight!: (html: string) => void
+		shiki.highlightCode.mockReturnValue(
+			new Promise<string>((resolve) => {
+				resolveHighlight = resolve
+			})
+		)
+		const { container, unmount } = render(CodeBlockTest, { props: { code: 'const x = 1' } })
+		await tick()
+		expect(container.querySelector('pre[data-code-block-body]')).toBeTruthy()
+
+		unmount()
+		resolveHighlight(HIGHLIGHTED)
+		await tick()
+
+		expect(document.querySelector('.shiki')).toBeNull()
+	})
+
+	it('ignores a highlight that rejects after teardown', async () => {
+		let rejectHighlight!: (reason: unknown) => void
+		shiki.highlightCode.mockReturnValue(
+			new Promise<string>((_, reject) => {
+				rejectHighlight = reject
+			})
+		)
+		const { unmount } = render(CodeBlockTest, { props: { code: 'const x = 1' } })
+		await tick()
+
+		unmount()
+		rejectHighlight(new Error('too late'))
+		await tick()
+
+		expect(document.querySelector('.shiki')).toBeNull()
+	})
+
+	it('passes the language and resolved theme through to shiki', async () => {
+		render(CodeBlockTest, { props: { code: 'x', language: 'typescript', theme: 'light' } })
+
+		await waitFor(() => expect(shiki.highlightCode).toHaveBeenCalled())
+		expect(shiki.highlightCode).toHaveBeenCalledWith('x', { lang: 'typescript', theme: 'light' })
+	})
+
+	it('resolves theme="auto" from the body data-mode', async () => {
+		document.body.dataset.mode = 'light'
+		render(CodeBlockTest, { props: { code: 'x', language: 'ts', theme: 'auto' } })
+
+		await waitFor(() =>
+			expect(shiki.highlightCode).toHaveBeenCalledWith('x', { lang: 'ts', theme: 'light' })
+		)
+		delete document.body.dataset.mode
+	})
+
+	it('re-highlights when the body mode changes', async () => {
+		document.body.dataset.mode = 'light'
+		render(CodeBlockTest, { props: { code: 'x', language: 'ts', theme: 'auto' } })
+		await waitFor(() => expect(shiki.highlightCode).toHaveBeenCalledTimes(1))
+
+		// Covers the MutationObserver wired up in onMount.
+		document.body.dataset.mode = 'dark'
+		await waitFor(() =>
+			expect(shiki.highlightCode).toHaveBeenLastCalledWith('x', { lang: 'ts', theme: 'dark' })
+		)
+		delete document.body.dataset.mode
+	})
+
+	it('shows the raw code text in the fallback', async () => {
+		shiki.highlightCode.mockReturnValue(pending())
+		const { container } = render(CodeBlockTest, { props: { code: 'hello world' } })
+		await tick()
+
+		expect(container.querySelector('[data-code-block-body]')?.textContent).toContain('hello world')
 	})
 
 	// ─── Header ──────────────────────────────────────────────────────
@@ -43,15 +159,9 @@ describe('CodeBlock', () => {
 		expect(container.querySelector('[data-code-block-lang]')?.textContent).toBe('typescript')
 	})
 
-	it('does not render header when no filename, language, allowCopy, allowDownload, or actions', () => {
+	it('renders no header when filename, language and every action are absent', () => {
 		const { container } = render(CodeBlockTest, { props: { code: 'x', language: '' } })
-		// When nothing is set that triggers hasHeader, no header renders
-		// (language defaults to 'text' from props, so header should appear by default)
-		// Let's just verify we can query
-		const header = container.querySelector('[data-code-block-header]')
-		// With language='text' (default) hasHeader=true so header exists normally;
-		// forcing language='' makes hasHeader false
-		expect(header).toBeNull()
+		expect(container.querySelector('[data-code-block-header]')).toBeNull()
 	})
 
 	it('renders icon in header', () => {
@@ -70,60 +180,108 @@ describe('CodeBlock', () => {
 
 	it('renders copy button when allowCopy=true', () => {
 		const { container } = render(CodeBlockTest, { props: { code: 'x', allowCopy: true } })
-		const actions = container.querySelector('[data-code-block-actions]')
-		expect(actions).toBeTruthy()
-		const btn = actions?.querySelector('button[title="Copy code"]')
+		const btn = container.querySelector('[data-code-block-actions] button[title="Copy code"]')
 		expect(btn).toBeTruthy()
 	})
 
 	it('copy button has "Copy" label initially', () => {
 		const { container } = render(CodeBlockTest, { props: { code: 'x', allowCopy: true } })
-		const btn = container.querySelector('button[title="Copy code"]')
-		expect(btn?.textContent).toContain('Copy')
+		expect(container.querySelector('button[title="Copy code"]')?.textContent).toContain('Copy')
 	})
 
-	it('clicking copy button does not throw', async () => {
+	it('writes the code to the clipboard and flips the label to Copied', async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined)
+		const original = navigator.clipboard
+		Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true })
+
 		const { container } = render(CodeBlockTest, { props: { code: 'hello', allowCopy: true } })
 		const btn = container.querySelector('button[title="Copy code"]')!
-		await expect(fireEvent.click(btn)).resolves.not.toThrow()
+		await fireEvent.click(btn)
+
+		await waitFor(() => expect(btn.textContent).toContain('Copied'))
+		expect(writeText).toHaveBeenCalledWith('hello')
+		expect(btn.querySelector('.action-check')).toBeTruthy()
+
+		Object.defineProperty(navigator, 'clipboard', { value: original, configurable: true })
 	})
 
-	it('copy silently fails when clipboard API is unavailable', async () => {
-		// Mock clipboard to reject — covers the catch branch in copyCode
-		const origClipboard = navigator.clipboard
+	it('reverts the Copied label after the 1500ms timeout', async () => {
+		vi.useFakeTimers()
+		const original = navigator.clipboard
+		Object.defineProperty(navigator, 'clipboard', {
+			value: { writeText: vi.fn().mockResolvedValue(undefined) },
+			configurable: true
+		})
+
+		const { container } = render(CodeBlockTest, { props: { code: 'hello', allowCopy: true } })
+		const btn = container.querySelector('button[title="Copy code"]')!
+		await fireEvent.click(btn)
+
+		// Flushes the await on clipboard.writeText without advancing the clock.
+		await vi.advanceTimersByTimeAsync(0)
+		await tick()
+		expect(btn.textContent).toContain('Copied')
+
+		await vi.advanceTimersByTimeAsync(1500)
+		await tick()
+		expect(btn.textContent).toContain('Copy')
+		expect(btn.textContent).not.toContain('Copied')
+
+		Object.defineProperty(navigator, 'clipboard', { value: original, configurable: true })
+		vi.useRealTimers()
+	})
+
+	it('copy silently fails when the clipboard rejects, leaving the label alone', async () => {
+		const original = navigator.clipboard
 		Object.defineProperty(navigator, 'clipboard', {
 			value: { writeText: vi.fn().mockRejectedValue(new Error('No clipboard')) },
 			configurable: true
 		})
+
 		const { container } = render(CodeBlockTest, { props: { code: 'hello', allowCopy: true } })
 		const btn = container.querySelector('button[title="Copy code"]')!
-		await expect(fireEvent.click(btn)).resolves.not.toThrow()
-		Object.defineProperty(navigator, 'clipboard', { value: origClipboard, configurable: true })
+		await fireEvent.click(btn)
+		await tick()
+
+		expect(btn.textContent).toContain('Copy')
+		expect(btn.textContent).not.toContain('Copied')
+
+		Object.defineProperty(navigator, 'clipboard', { value: original, configurable: true })
 	})
 
 	// ─── Download button ──────────────────────────────────────────────
 
 	it('renders download button when allowDownload=true', () => {
-		const { container } = render(CodeBlockTest, { props: { code: 'x', allowDownload: true, language: 'ts' } })
-		const btn = container.querySelector('button[title="Download as file"]')
-		expect(btn).toBeTruthy()
+		const { container } = render(CodeBlockTest, {
+			props: { code: 'x', allowDownload: true, language: 'ts' }
+		})
+		expect(container.querySelector('button[title="Download as file"]')).toBeTruthy()
 	})
 
 	it('download button shows language extension', () => {
-		const { container } = render(CodeBlockTest, { props: { code: 'x', allowDownload: true, language: 'ts' } })
-		const btn = container.querySelector('button[title="Download as file"]')
-		expect(btn?.textContent).toContain('.ts')
+		const { container } = render(CodeBlockTest, {
+			props: { code: 'x', allowDownload: true, language: 'ts' }
+		})
+		expect(container.querySelector('button[title="Download as file"]')?.textContent).toContain('.ts')
 	})
 
-	it('clicking download button does not throw', async () => {
-		// Mock URL.createObjectURL
+	it('downloads the code as a named blob', async () => {
+		const createObjectURL = vi.fn(() => 'blob:test')
+		const revokeObjectURL = vi.fn()
 		const origCreate = URL.createObjectURL
 		const origRevoke = URL.revokeObjectURL
-		URL.createObjectURL = vi.fn(() => 'blob:test')
-		URL.revokeObjectURL = vi.fn()
-		const { container } = render(CodeBlockTest, { props: { code: 'x', allowDownload: true, language: 'ts' } })
-		const btn = container.querySelector('button[title="Download as file"]')!
-		await expect(fireEvent.click(btn)).resolves.not.toThrow()
+		URL.createObjectURL = createObjectURL
+		URL.revokeObjectURL = revokeObjectURL
+
+		const { container } = render(CodeBlockTest, {
+			props: { code: 'x', allowDownload: true, language: 'ts', filename: 'main.ts' }
+		})
+		await fireEvent.click(container.querySelector('button[title="Download as file"]')!)
+
+		expect(createObjectURL).toHaveBeenCalledTimes(1)
+		expect(createObjectURL.mock.calls[0][0]).toBeInstanceOf(Blob)
+		expect(revokeObjectURL).toHaveBeenCalledWith('blob:test')
+
 		URL.createObjectURL = origCreate
 		URL.revokeObjectURL = origRevoke
 	})
@@ -132,22 +290,20 @@ describe('CodeBlock', () => {
 
 	it('sets max-height style when height is provided', () => {
 		const { container } = render(CodeBlockTest, { props: { code: 'x', height: '400px' } })
-		const el = container.querySelector('[data-code-block]') as HTMLElement
-		expect(el.style.maxHeight).toBe('400px')
+		expect((container.querySelector('[data-code-block]') as HTMLElement).style.maxHeight).toBe(
+			'400px'
+		)
 	})
 
 	it('does not set max-height when height is not provided', () => {
 		const { container } = render(CodeBlockTest, { props: { code: 'x' } })
-		const el = container.querySelector('[data-code-block]') as HTMLElement
-		expect(el.style.maxHeight).toBe('')
+		expect((container.querySelector('[data-code-block]') as HTMLElement).style.maxHeight).toBe('')
 	})
 
 	// ─── Actions snippet ──────────────────────────────────────────────
 
 	it('renders custom actions from test wrapper', () => {
-		const { container } = render(CodeBlockTest, {
-			props: { code: 'x', showActions: true }
-		})
+		const { container } = render(CodeBlockTest, { props: { code: 'x', showActions: true } })
 		expect(container.querySelector('[data-code-block-actions]')).toBeTruthy()
 		expect(container.querySelector('[data-test-action]')).toBeTruthy()
 	})
