@@ -1,186 +1,119 @@
-# Rokkit Menu Component
+# Rokkit Dropdown Component
 
-> Data-driven dropdown menu with keyboard navigation, grouping, and custom snippets.
+> Trigger button whose label reflects the currently selected value, plus a panel of options.
 
-The Menu component renders a trigger button that opens a dropdown list of selectable options. Supports grouped options, shortcut display, custom item snippets, and named snippet slots per item.
+Dropdown sits between Menu and Select. Like Menu it is an option panel hung off a
+trigger; unlike Menu, the trigger shows the **current selection** rather than a
+static label. Unlike Select it is not a form-style control — there is no filter,
+no `selected` raw-item binding, and no snippet customisation of the options.
+
+Reach for it when you want a compact "current value + choices" control, such as a
+view switcher or a sort order.
 
 ## Quick Start
 
 ```svelte
 <script>
-  import { Menu } from '@rokkit/ui'
+  import { Dropdown } from '@rokkit/ui'
 
-  const options = [
-    { label: 'Edit',      value: 'edit',   icon: 'i-lucide:edit' },
-    { label: 'Duplicate', value: 'dup',    icon: 'i-lucide:copy' },
-    { label: 'Delete',    value: 'delete', icon: 'i-lucide:trash' }
+  const items = [
+    { text: 'Newest first', value: 'desc' },
+    { text: 'Oldest first', value: 'asc' }
   ]
+  let value = $state('desc')
 </script>
 
-<Menu {options} label="Actions" onselect={(v) => console.log(v)} />
+<Dropdown {items} bind:value placeholder="Sort by" />
 ```
 
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `options` | `MenuItem[]` | `[]` | Menu items array |
-| `fields` | `MenuFields` | defaults | Field mapping |
-| `label` | `string` | `'Menu'` | Trigger button label |
-| `icon` | `string` | — | Trigger button icon class |
-| `showArrow` | `boolean` | `true` | Show dropdown arrow on trigger |
-| `size` | `'sm'|'md'|'lg'` | `'md'` | Size variant |
-| `align` | `'left'|'right'|'start'|'end'` | `'left'` | Dropdown alignment |
-| `direction` | `'up'|'down'` | `'down'` | Dropdown slide direction |
-| `disabled` | `boolean` | `false` | Disable the menu |
-| `icons` | `MenuStateIcons` | — | Override state icons |
-| `class` | `string` | `''` | Additional CSS classes |
+| `items` | `unknown[]` | `[]` | Data array (objects or primitives) |
+| `fields` | `Record<string,string>` | `{}` | Remap data keys to component fields |
+| `value` | `unknown` | — | Selected value — use `bind:value` |
+| `placeholder` | `string` | `'Select an option'` | Trigger text when nothing is selected |
+| `icon` | `string` | — | Icon class rendered in the trigger |
+| `size` | `string` | `'md'` | Size variant (`sm` \| `md` \| `lg`) |
+| `disabled` | `boolean` | `false` | Disable the dropdown |
+| `showArrow` | `boolean` | `true` | Show the expand/collapse chevron |
+| `align` | `'start'\|'end'` | `'start'` | Panel alignment relative to trigger |
+| `direction` | `'up'\|'down'` | `'down'` | Panel direction |
+| `icons` | `{ opened?, closed? }` | — | Override the chevron icons |
+| `onchange` | `(value, item) => void` | — | Called on selection |
+| `class` | `string` | `''` | Additional CSS classes on root `<div>` |
 
-## Field Mapping
+**No snippet props.** Dropdown renders options with the built-in item content
+only. If you need custom option markup, use [Menu](/llms/components/menu.txt) or
+[Select](/llms/components/select.txt), both of which accept `itemContent` and
+`groupContent`.
 
-| Field | Default | Description |
-|-------|---------|-------------|
-| `value` | `'value'` | Value emitted on selection |
-| `text` | `'text'` | Display label |
-| `icon` | `'icon'` | Icon class name |
-| `description` | `'description'` | Secondary/subtitle text |
-| `shortcut` | `'shortcut'` | Keyboard shortcut display |
-| `label` | `'label'` | Aria-label override |
-| `disabled` | `'disabled'` | Disabled state |
-| `children` | `'children'` | Nested group items |
-| `snippet` | `'snippet'` | Named snippet for custom rendering |
+## Field mapping
 
-## Callbacks
-
-| Callback | Signature | Description |
-|----------|-----------|-------------|
-| `onselect` | `(value, item) => void` | Item selected |
-
-## Grouped Options
-
-Use the `children` field to create groups:
+Dropdown uses the standard `BASE_FIELDS` mapping — `text`, `value`, `icon`,
+`description`, and so on. Remap with `fields`:
 
 ```svelte
-<script>
-  const options = [
-    { label: 'File', children: [
-      { label: 'New',  value: 'new',  icon: 'i-lucide:file-plus', shortcut: 'Ctrl+N' },
-      { label: 'Open', value: 'open', icon: 'i-lucide:folder-open', shortcut: 'Ctrl+O' }
-    ]},
-    { label: 'Edit', children: [
-      { label: 'Cut',   value: 'cut',   icon: 'i-lucide:scissors', shortcut: 'Ctrl+X' },
-      { label: 'Paste', value: 'paste', icon: 'i-lucide:clipboard', shortcut: 'Ctrl+V' }
-    ]}
-  ]
-</script>
-
-<Menu {options} label="File" onselect={handleAction} />
+<Dropdown items={rows} fields={{ text: 'label', value: 'id' }} bind:value />
 ```
 
-## Custom Item Snippet
+## Theming
+
+### Data attributes
+
+| Attribute | Element |
+|---|---|
+| `data-dropdown` | root `<div>` (also carries `data-open`, `data-size`, `data-align`, `data-direction`) |
+| `data-dropdown-trigger` | trigger `<button>` |
+| `data-dropdown-icon` | optional icon span in the trigger |
+| `data-dropdown-label` | selected-value text in the trigger |
+| `data-dropdown-arrow` | expand/collapse chevron |
+| `data-dropdown-panel` | options panel |
+| `data-dropdown-option` | each option item |
+| `data-dropdown-separator` | separator between options |
+| `data-active` | marks the currently selected option |
+
+### Styling via the `class` prop
 
 ```svelte
-<Menu {options} label="Actions">
-  {#snippet item(data, fields, handlers)}
-    <button onclick={handlers.onclick} onkeydown={handlers.onkeydown}
-      data-menu-item>
-      {#if data.icon}<span class={data.icon}></span>{/if}
-      <span>{data.text}</span>
-      {#if data.shortcut}<kbd>{data.shortcut}</kbd>{/if}
-    </button>
-  {/snippet}
-</Menu>
+<Dropdown {items} bind:value class="[&[data-open]]:shadow-lg" />
 ```
 
-## Named Snippets per Item
-
-Use the `snippet` field to assign different renderers to individual items:
-
-```svelte
-<script>
-  const options = [
-    { label: 'Normal',    value: 'a' },
-    { label: 'Separator', value: 'sep', snippet: 'divider' },
-    { label: 'Danger',    value: 'd',   snippet: 'danger' }
-  ]
-</script>
-
-<Menu {options} label="Options">
-  {#snippet divider(data, fields, handlers)}
-    <hr />
-  {/snippet}
-  {#snippet danger(data, fields, handlers)}
-    <button onclick={handlers.onclick} class="text-red-500">{data.text}</button>
-  {/snippet}
-</Menu>
-```
-
-## Custom Group Label
-
-```svelte
-<Menu {options} label="Actions">
-  {#snippet groupLabel(data, fields)}
-    <div class="px-3 py-1 text-xs uppercase text-muted">{data.text}</div>
-  {/snippet}
-</Menu>
-```
-
-## Keyboard Navigation
+## Keyboard navigation
 
 | Key | Action |
 |-----|--------|
-| `Enter/Space` | Open menu |
-| `ArrowDown/Up` | Navigate items |
-| `Enter` | Select focused item |
-| `Escape` | Close menu |
-| `Home/End` | First/last item |
-
-## Data Attributes
-
-| Attribute | Description |
-|-----------|-------------|
-| `data-menu` | Root element |
-| `data-menu-trigger` | Trigger button |
-| `data-menu-dropdown` | Dropdown container |
-| `data-menu-item` | Individual item |
-| `data-menu-group` | Group container |
-| `data-menu-group-label` | Group header |
-| `data-open` | Open state |
-
-## Import
-
-```javascript
-import { Menu } from '@rokkit/ui'
-```
+| `Enter` / `Space` | Open the panel (or select the focused option) |
+| `ArrowDown` / `ArrowUp` | Move between options |
+| `Home` / `End` | First / last option |
+| `Escape` | Close the panel |
+| `Tab` | Close and move focus on |
 
 ## TypeScript Types
 
 ```typescript
-interface MenuProps {
-  options?: MenuItem[]
-  fields?: MenuFields
-  label?: string
+import type { DropdownProps } from '@rokkit/ui'
+
+interface DropdownProps extends SelectBaseProps {
+  value?: unknown
   icon?: string
   showArrow?: boolean
-  size?: 'sm' | 'md' | 'lg'
-  align?: 'left' | 'right' | 'start' | 'end'
-  direction?: 'up' | 'down'
-  disabled?: boolean
-  icons?: MenuStateIcons
-  class?: string
-  onselect?: (value: unknown, item: MenuItem) => void
-  item?: Snippet<[MenuItem, MenuFields, MenuItemHandlers]>
-  groupLabel?: Snippet<[MenuItem, MenuFields]>
+  onchange?: (value: unknown, item: unknown) => void
 }
+```
 
-interface MenuStateIcons {
-  opened?: string  // open arrow icon
-  closed?: string  // closed arrow icon
-}
+`Dropdown.svelte` annotates its own `$props()` with `DropdownProps`, so this
+table and the component cannot drift.
+
+## Import
+
+```svelte
+import { Dropdown } from '@rokkit/ui'
 ```
 
 ## Related Components
 
-- [Select](/llms/components/select.txt) — form-style dropdown for value selection
-- [Toolbar](/llms/components/toolbar.txt) — horizontal action bar
-- [FloatingActions](/llms/components/floating-action.txt) — FAB action menu
+- [Menu](/llms/components/menu.txt) — static trigger label, supports snippets
+- [Select](/llms/components/select.txt) — form-style control with filter and `selected`
+- [Combo](/llms/components/combo.txt) — editable input with suggestions

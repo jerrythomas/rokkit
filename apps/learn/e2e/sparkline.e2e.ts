@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { gotoHydrated } from './helpers'
 
 // /app/sparkline mounts SparklineExplorer. Controls live behind the composer
 // "tweak" drawer (same pattern as chart). The baseline rule and trend path are
@@ -6,7 +7,7 @@ import { test, expect } from '@playwright/test'
 // All assertions are scoped to [data-sparkline-demo] (the primary sparkline) so
 // the fixed KPI example in the same view can't pollute counts.
 test('sparkline demo toggles baseline / highlight / trend live', async ({ page }) => {
-	await page.goto('/app/sparkline')
+	await gotoHydrated(page, '/app/sparkline')
 	const demo = page.locator('[data-sparkline-demo]')
 	await expect(demo).toBeVisible()
 

@@ -8,13 +8,13 @@
 	 * Default item content: icon + label + badge + shortcut (no avatar/description).
 	 * Parent nodes hide their icon by default.
 	 */
-	import type { ProxyItem } from '@rokkit/states'
 	import { LazyWrapper, LazyProxyItem, ProxyTree, messages } from '@rokkit/states'
 	import { Navigator } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET } from '@rokkit/core'
 	import ItemContent from './ItemContent.svelte'
 	import Connector from './Connector.svelte'
 	import Button from './Button.svelte'
+	import type { LazyTreeProps } from '../types/tree.js'
 
 	let {
 		items = [],
@@ -29,20 +29,7 @@
 		hasMore = false,
 		class: className = '',
 		...snippets
-	}: {
-		items?: unknown[]
-		fields?: Record<string, string>
-		value?: unknown
-		size?: 'sm' | 'md' | 'lg'
-		lineStyle?: 'none' | 'solid' | 'dashed' | 'dotted'
-		labels?: Record<string, string>
-		icons?: { opened?: string; closed?: string }
-		onselect?: (value: unknown, proxy: ProxyItem) => void
-		onlazyload?: (current?: unknown) => Promise<unknown[]>
-		hasMore?: boolean
-		class?: string
-		[key: string]: unknown
-	} = $props()
+	}: LazyTreeProps = $props()
 
 	const labels = $derived({ ...messages.tree, ...userLabels })
 

@@ -7,6 +7,8 @@
  */
 
 import { DEFAULT_STATE_ICONS } from '@rokkit/core'
+import type { ProxyItem } from '@rokkit/states'
+import type { ItemSnippets } from './snippets.js'
 
 // =============================================================================
 // Field Mapping Types
@@ -80,54 +82,32 @@ export const defaultListFields: Required<Omit<ListFields, 'fields'>> = {
 export type ListItem = Record<string, unknown>
 
 // =============================================================================
-// Snippet Types
-// =============================================================================
-
-/**
- * Handlers passed to custom item snippets
- */
-export interface ListItemHandlers {
-	/** Call to trigger item selection (for button items) */
-	onclick: () => void
-	/** Forward keyboard events for accessibility */
-	onkeydown: (event: KeyboardEvent) => void
-}
-
-/**
- * Snippet type for rendering list items.
- * Parameters: item, fields, handlers, isActive
- */
-export type ListItemSnippet = import('svelte').Snippet<
-	[ListItem, ListFields, ListItemHandlers, boolean]
->
-
-/**
- * Snippet type for rendering group labels
- * Parameters: item (group), fields, toggleExpanded, isExpanded
- */
-export type ListGroupLabelSnippet = import('svelte').Snippet<
-	[ListItem, ListFields, () => void, boolean]
->
-
-// =============================================================================
 // Component Props Types
 // =============================================================================
 
 /**
- * Props for the List component
+ * Props for the List component.
+ *
+ * `List.svelte` annotates its own `$props()` with this interface, so the two
+ * cannot drift — which is how the previous version of this type came to
+ * describe `item` / `groupLabel` snippets and `multiselect` / `expanded` /
+ * `selected` props the component never read.
+ *
+ * Extends {@link ItemSnippets} for `itemContent` / `groupContent` plus the open
+ * index signature that per-item named snippets (`item.snippet = 'name'`) need.
  */
-export interface ListProps {
+export interface ListProps extends ItemSnippets {
 	/** Array of list items or groups */
-	items?: ListItem[]
+	items?: unknown[]
 
 	/** Field mapping configuration */
-	fields?: ListFields
+	fields?: Record<string, string>
 
-	/** Currently selected value (for highlighting button items) */
+	/** Selected value (bindable) — matched against each item's value field */
 	value?: unknown
 
 	/** Size variant */
-	size?: 'sm' | 'md' | 'lg'
+	size?: string
 
 	/** Whether the entire list is disabled */
 	disabled?: boolean
@@ -135,38 +115,17 @@ export interface ListProps {
 	/** Whether groups can be collapsed */
 	collapsible?: boolean
 
-	/** Enable multiple item selection (Ctrl+click toggle, Shift+click range) */
-	multiselect?: boolean
-
-	/** Which groups are expanded (bindable) - keyed by group value/text */
-	expanded?: Record<string, boolean>
-
-	/** Selected items array (bindable) - populated in multiselect mode */
-	selected?: unknown[]
-
-	/** Active item value - List looks up item by this value to highlight it */
-	active?: unknown
-
-	/** Called when a button item is selected */
-	onselect?: (value: unknown, item: ListItem) => void
-
-	/** Called when selected items change in multiselect mode */
-	onselectedchange?: (selected: unknown[]) => void
-
-	/** Called when expanded state changes (for bindable expanded) */
-	onexpandedchange?: (expanded: Record<string, boolean>) => void
-
-	/** Additional CSS classes */
-	class?: string
+	/** Accessible name for the list */
+	label?: string
 
 	/** Icons for list group states (expand/collapse arrow) */
 	icons?: ListStateIcons
 
-	/** Custom snippet for rendering list items */
-	item?: ListItemSnippet
+	/** Called when an item is selected, with the item's `ProxyItem` */
+	onselect?: (value: unknown, proxy: ProxyItem) => void
 
-	/** Custom snippet for rendering group labels/headers */
-	groupLabel?: ListGroupLabelSnippet
+	/** Additional CSS classes */
+	class?: string
 }
 
 // =============================================================================

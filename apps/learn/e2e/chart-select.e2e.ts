@@ -1,11 +1,12 @@
 import { test, expect } from '@playwright/test'
+import { gotoHydrated } from './helpers'
 
 // The old click-to-select "Metrics" showcase is gone; ChartExplorer does not
 // wire point selection. This guards the live selection the explorer DOES have:
 // exclusive chart-type selection driving the canvas, and an interactive setting
 // toggle that re-renders without breaking. Controls live behind the tweak drawer.
 test('selecting a chart type is exclusive and drives the canvas geom', async ({ page }) => {
-	await page.goto('/app/chart')
+	await gotoHydrated(page, '/app/chart')
 	await page.locator('.composer-tweak-toggle').click()
 
 	// Default type is bar.
@@ -20,7 +21,7 @@ test('selecting a chart type is exclusive and drives the canvas geom', async ({ 
 })
 
 test('toggling a live setting stays interactive and keeps the canvas rendering', async ({ page }) => {
-	await page.goto('/app/chart')
+	await gotoHydrated(page, '/app/chart')
 	await page.locator('.composer-tweak-toggle').click()
 
 	// Bar applies the 'legend' setting (default off) — a checkbox row.

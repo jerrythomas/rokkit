@@ -1,34 +1,9 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte'
 	import type { ProxyItem } from '@rokkit/states'
 	import { Wrapper, ProxyTree } from '@rokkit/states'
 	import { Navigator } from '@rokkit/actions'
+	import type { SwatchProps } from '../types/swatch.js'
 
-	interface SwatchProps {
-		/** Color options — primitives (hex/name strings) or objects with mapped fields */
-		options?: Array<string | number | Record<string, unknown>>
-		/** Field mapping for object options (value, fill, stroke, …) */
-		fields?: Record<string, string>
-		/** Selected value (bindable). Array when `multiple`. */
-		value?: unknown
-		/** Allow multiple selection */
-		multiple?: boolean
-		/** Swatch shape */
-		shape?: 'square' | 'circle'
-		/** Size variant */
-		size?: 'sm' | 'md' | 'lg'
-		/** Disable the whole group */
-		disabled?: boolean
-		/** Accessible group label */
-		label?: string
-		/** Additional CSS classes */
-		class?: string
-		/** Called when selection changes */
-		onchange?: (value: unknown, item: unknown) => void
-		/** Custom snippet for rendering a swatch (receives proxy + selected) */
-		item?: Snippet<[ProxyItem, boolean]>
-		[key: string]: unknown
-	}
 
 	let {
 		options = [],

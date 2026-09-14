@@ -42,6 +42,19 @@
 	}
 
 	let { children } = $props()
+
+	// Hydration marker, for e2e. SSR ships every control fully formed — visible,
+	// enabled, hit-testable — and inert, because Svelte attaches handlers (the
+	// delegated root listener and the per-element property alike) only when it
+	// hydrates. Every actionability check Playwright runs is already satisfied by
+	// that inert markup, so a click dispatched before hydration is swallowed with
+	// no visible symptom, and the assertion after it times out on a page that
+	// looks correct. Effects run once the tree is mounted and handlers are
+	// attached, so this flips exactly when clicking becomes safe.
+	// See apps/learn/e2e/hydration.e2e.ts and e2e/helpers.ts `gotoHydrated`.
+	$effect(() => {
+		document.body.dataset.hydrated = 'true'
+	})
 </script>
 
 <!-- `storageKey` is omitted on /embed/* so the iframes neither persist

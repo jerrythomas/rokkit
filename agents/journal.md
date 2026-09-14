@@ -8384,3 +8384,301 @@ Also worth knowing: the publish step downgrades a per-package failure to a
 `::warning::`, so a green workflow does NOT by itself mean all 14 shipped.
 
 Commits: `9c259ce1` (release) `4d6bb0b2` / `18e71f8c` (publish fix + gate)
+
+---
+
+## 2026-09-14 — the flaky learn e2e was a pre-hydration dead click
+
+`components-catalog.e2e.ts` failed about one full run in three. Root cause: SSR
+ships every control fully formed — visible, enabled, hit-testable — and inert,
+because Svelte attaches handlers (delegated root listener and per-element
+property alike) only at hydration. Every actionability check Playwright runs
+before dispatching a click is already satisfied by that inert markup, so the
+click is swallowed and the `toHaveURL` after it times out against a page that
+looks entirely correct. That is why it read as flaky rather than broken.
+
+`/app` server-renders 330 catalog tiles, which is why this test and not the
+other 66.
+
+The method mattered more than the fix. It would not reproduce on demand — 12/12
+in isolation, then 201/201 across three full suite runs — so rather than keep
+rolling dice, the window is now held open deliberately: a `page.route` handler
+stalls `**/_app/immutable/**/*.js` for 3s. The race becomes deterministic, and
+`hydration.e2e.ts` pins it: assert the tile is visible AND enabled, click it,
+assert the URL did not change. That test passes on the *broken* code — it is the
+proof, not the guard. The guard is the other two.
+
+Fix: the root layout sets `body[data-hydrated]` in an `$effect`. Effects run once
+the tree is mounted and handlers are attached, so the marker flips exactly when
+clicking becomes safe — no timing constant anywhere. `waitForHydration` /
+`gotoHydrated` in `e2e/helpers.ts`; 13 goto sites across 8 specs converted.
+Pure-assertion navigations were left alone on purpose.
+
+Two things surfaced that the flake was hiding:
+
+- `components-catalog.e2e.ts` had a **second** racy test, not one.
+- "navigating back to /app from browse restores the hero" could pass **vacuously**.
+  Its comment insists the navigation MUST be client-side, because a full load
+  re-initialises the shell module and hides the stale-state bug it exists to
+  catch. But an un-hydrated anchor click *is* a full page load — so without the
+  wait, the test could silently degrade into the goto-based version its own
+  comment warns against. Correctness fix, not just determinism.
+
+Booked on the way out: `apps/learn` has no `tsconfig.json`, so the e2e
+TypeScript is transpile-only and never typechecked — the same family of gate gap
+as the `check:build` publish hole, and the helper added here is unchecked by it.
+
+Full suite ×3: 210/210, and 2.2m → 1.7m — waiting on a marker beats waiting on
+timeouts.
+
+Commit: `3ee1bd5f`
+
+---
+
+## 2026-09-14 — the learn app was never typechecked, and measuring cost two minutes
+
+Booked this one expecting a slog: `apps/learn` had no `tsconfig.json`, so the
+root gate — which runs `check:types` only where one exists — skipped the whole
+app, including a ~2,300-line `routes/app/+layout.svelte` that had never been
+checked. Nothing else covered it either: Playwright transpiles specs without
+typechecking, `vite build` strips types, and `check:svelte` enumerates five
+library packages by name. `bun run check` was green on code no type checker had
+read.
+
+The estimate was wrong. First measurement said 149 errors; 143 of those were the
+four `.mjs` collectors, surfaced only because the *measuring config* set
+`checkJs: true`. The real number was **6, in 3 files**. Deferring it cost more
+than fixing it would have. Lesson worth keeping: measure before booking, not
+after.
+
+All 6 were genuine:
+
+- `adoptProvider(provider: string)` forced an `as string` at the call site that
+  laundered `ChatProvider` away. A missing provider then failed the
+  `=== 'scripted'` guard and wrote `llm.provider = undefined` with `enabled`
+  left true — a value outside the field's own union.
+- `spec.options` reached through the `DemoPropSchema` union instead of narrowing
+  on the discriminant.
+- `Boolean(conv) &&` didn't narrow for the `.turns` access after it.
+- And the one worth the whole exercise: **`@rokkit/ui` exports a component
+  `ChatMessage` and an interface `ChatMessage`.** Svelte's generated component
+  types contribute a type of that name, which shadows the interface — so
+  `ChatMessage<T>` is unreachable for every consumer of the package. Fixed
+  additively as `ChatMessageData<T>`; renaming either is a major.
+
+That last one is the argument for this gate. `check:types` and `check:svelte`
+run `packages/ui` against its own source, where the interface is imported
+directly from `types/chat.ts` and the collision does not exist. It is only
+visible through the package entry — which is how learn imports it. The gate that
+finds consumer-facing API defects has to *be* a consumer.
+
+Two things learned that will bite again:
+
+- **Which surface gets checked depends on the machine.** `@rokkit/ui` resolves
+  `types → ./dist/index.d.ts` with `default → ./src/index.ts` behind it. `dist`
+  is gitignored and CI installs with `--ignore-scripts`, so locally this checks
+  built declarations and in CI it checks source. Verified green under both (by
+  moving `dist` aside). When a type error reproduces on only one of them, this
+  is why.
+- **`lint --fix` and `tsc` disagree on one idiom.** The autofix rewrites
+  `!!x &&` into `Boolean(x) &&`, and `Boolean()` doesn't narrow — so lint passes
+  and then typecheck fails on the line lint just rewrote. Cost two full gate
+  runs to spot, because each gate was individually green at the moment it ran. A
+  ternary satisfies both. Sibling of the `--fix` warning already in CLAUDE.md.
+
+Still open: learn's `.svelte` files remain unchecked — `tsc` ignores them and
+learn isn't in `check:svelte`'s list.
+
+Commits: `a21e5278` (ui) `76a88837` (learn gate)
+
+---
+
+## 2026-09-14 — the .svelte half, and what a consumer-side gate is for
+
+Adding `apps/learn` to `check:svelte` closed the other half of the gate gap: 14
+errors in 4 files. Eleven were one root cause — the `ChatMessage` collision
+again, this time in a file that imports the component and the type on adjacent
+lines, which is the clearest possible statement of the bug:
+
+    import { ChatMessage, ChatComposer, … } from '@rokkit/ui'
+    import type { ChatMessage as ChatMessageData, … } from '@rokkit/ui'
+
+The other three were worth having:
+
+- `Plot.Area`'s `position` union excludes `'dodge'` (bar-only). The controls
+  already hide it for area and `select('area')` resets to `'stack'` — but chart
+  settings are also reachable from typed tweaks, so it now degrades to area's own
+  default instead of relying on that being unreachable.
+- Two snippet parameters implicitly `any`, because `List` collects snippets
+  behind `[key: string]: unknown`. Annotated at the call site and **booked** —
+  the library should type its documented snippet props, and that is not
+  List-only, so it wants one uniform pass rather than four patches.
+
+Wired with `--diagnostic-sources js,svelte`. The CSS language service doesn't
+know UnoCSS's `@apply` and produced 50 `Unknown at rule` warnings; dropping CSS
+diagnostics is the honest trade, since it can't usefully check this app's CSS
+anyway, and it holds the 0-errors-0-warnings standard the five library packages
+already meet. Stated rather than silently thresholded.
+
+Verified under both module resolutions again — 0/0 with `packages/ui/dist`
+present (1370 files) and with it moved aside (1394, resolving ui's source). Since
+`dist` is gitignored and CI installs with `--ignore-scripts`, that second one is
+what CI actually runs. Break-it checked: mistyping a snippet parameter fails the
+gate with exit 1.
+
+The theme of the last two slices: **a gate that checks a library against its own
+source cannot find consumer-facing API defects.** `packages/ui` has been 0/0
+under svelte-check the whole time, and `ChatMessage<T>` has been unreachable for
+every consumer the whole time. Both statements were true simultaneously. The
+only thing that found it was pointing a checker at the package the way a
+consumer sees it.
+
+Commit: `134d09b9`
+
+---
+
+## 2026-09-14 — the gate I added broke Coverage, and why my verification missed it
+
+`apps/learn/tsconfig.json` extends the **generated** `.svelte-kit/tsconfig.json`.
+Vite reads the nearest tsconfig to transform learn's specs, so on a fresh
+checkout the `extends` dangles and all 16 learn spec files fail to transform:
+
+    TSConfckParseError: failed to resolve "extends":"./.svelte-kit/tsconfig.json"
+
+`bun run check` never saw it, because `check:types` runs `svelte-kit sync`
+before `test:ci` in the chain. The Coverage workflow invokes `bun run coverage`
+standalone, where nothing had synced. Green locally, green in Check, red in
+Coverage.
+
+The interesting part is the verification failure, not the bug. I *did* anticipate
+this class — it is exactly why learn's `check:types` is `svelte-kit sync && tsc`.
+And I *did* test the sibling staleness hazard, moving `packages/ui/dist` aside to
+confirm the gate holds under CI's resolution. Then I never applied the same
+treatment to `.svelte-kit`, because a local copy had been sitting there since the
+first `bun run build` and everything I ran found it. I tested the hazard I had
+named and missed the one I hadn't.
+
+Rule worth keeping: **when a config depends on a generated artifact, test with
+the artifact absent, not merely stale.** The absent case is what CI runs on every
+push, and it is the one a developer machine can never reach by accident.
+
+Fixed by syncing first in `test:ci` and `coverage`. Routed through learn's own
+`sync` script, because bun only puts the *root* package's `node_modules/.bin` on
+PATH — `cd apps/learn && svelte-kit sync` exits 127, which the first attempt did.
+
+Verified with the directory genuinely moved aside: sync regenerates it, `test:ci`
+exits 0 at 404/404 files and 6181 tests, coverage completes unchanged at
+97.85 / 90.38 / 96.91 / 98.59. Then confirmed in the real environment — Check and
+Coverage both green on `c4744bb8`.
+
+Commit: `c4744bb8`
+
+---
+
+## 2026-09-14 — yaml, and the snippet props that led somewhere bigger
+
+**yaml (closed).** The advisory GHSA-48c2-rrv3-qjmp spans *two* ranges —
+`<1.10.3` and `>=2.0.0 <2.8.3` — which is why the tree showed two findings and
+why the original booking was right that one global override can't fix it:
+`postcss-load-config` declares `^1.10.2`, `bumpp` declares `^2.8.2`, and any
+single forced version breaks one of them. Confirmed empirically that bun ignores
+scoped override keys (a control and a `"postcss-load-config/yaml": "1.10.2"` arm
+resolve identically), so package.json can't express a per-dependent pin either.
+
+But no override was needed. Both dependents' own ranges already admit a patched
+version — the lockfile just held stale pins from before those versions existed.
+Three dead ends first, each worth remembering:
+
+- `bun update yaml` added yaml as a **root dependency** and left the nested pin
+  alone. Same trap as earlier in this sweep.
+- Deleting only the scoped pin let bun hoist-satisfy `postcss-load-config`
+  (`^1.10.2`) with **yaml 2.8.2** — a major violation the audit scored as an
+  improvement. Audits read the lockfile, not the tree.
+- Deleting every yaml pin and re-resolving *did* fix it, but dragged 245/307
+  lines with it including `@antfu/install-pkg` 1.1.0 → **2.0.1**.
+
+Final change is 2 lines: bun's own resolved entries from that re-resolve,
+transplanted onto the original lockfile. Verified on a genuinely clean slate —
+node_modules moved aside, fresh install — the tree contains only yaml@1.10.3 and
+yaml@2.9.1. **bun audit: 2 → 0.**
+
+One methodological note: my first three readings of "which yaml does
+postcss-load-config use" were all wrong, because I probed a path that doesn't
+exist (`.bun` dirs carry a hash suffix) and `require.resolve` silently walked up
+to the hoisted copy. A probe that can't fail isn't a measurement. The reading
+only became trustworthy once I read the sibling `node_modules/yaml` directly.
+
+**Snippet props (closed), and what they uncovered.** Typing the documented
+snippets was straightforward once surveyed rather than assumed — seven
+components call `content(proxy)`, Tabs and Toggle call `content(proxy, selected)`,
+and three others aren't item snippets at all. The index signature stays, because
+`item.snippet = 'name'` needs it; explicit members simply win over it.
+
+Proving the fix mattered more than making it. Green here could easily be vacuous
+— if the parameter fell back to `any` the gate would also report 0. So:
+assigning it to `number` now yields *"Type 'ProxyItem' is not assignable to type
+'number'"*. That's the difference between "no errors" and "actually typed".
+
+Then the real find: **four published `*Props` interfaces describe components that
+no longer exist.** `ListProps` advertises `item`/`groupLabel` snippets,
+`multiselect`, `expanded`, `selected`, `active` — none of which `List.svelte`
+reads — and types `onselect` as `(value, item)` when the component passes a
+`ProxyItem`. 44 of 48 props interfaces are imported by their own component, which
+is exactly what keeps them honest; the four that aren't are the four that drifted.
+Booked rather than fixed: correcting them is a breaking type change, and
+`ListProps`'s extra props look like a designed API someone meant to build, not an
+accident. That's a call for the owner.
+
+Commits: `97cc8b64` (yaml) `1fc4e987` (snippets)
+
+---
+
+## 2026-09-14 — the props types were lying, and now they can't
+
+Decision from the owner: the component is the truth, and every component should
+have its own declared props type. Both halves done.
+
+Four published `*Props` interfaces described components that no longer exist.
+The mechanism is the interesting part: **nothing connected the declared type to
+the component's real `$props()`**. The type was exported, the component declared
+its props inline, and no checker ever compared them — so they drifted freely for
+however long. `ListProps` advertised `item`/`groupLabel` snippets and
+`multiselect`/`expanded`/`selected`/`active` that `List` never read; `TreeProps`
+added `expandAll`, `ontoggle`, `onloadchildren` and three more snippets;
+`SelectBaseProps` called the data prop `options` when every component in that
+family takes `items`.
+
+Nine components wired in total — the stale four plus five that had no declared
+type at all. Twelve snippet/handler types removed outright: they described
+callback shapes no component accepts, and none were used outside their own file.
+Five component-local icon interfaces collapsed into the existing `*StateIcons`.
+
+The part worth keeping is the guard. Wiring stops *drift* — once a component
+annotates `$props()` with its own type, disagreement is a compile error. But a
+**new** component can still be added with an inline type, and no type checker can
+notice that, because an inline type is perfectly valid. So
+`spec/props-types.spec.ts` asserts both halves for all 62 components: it
+references its own `<Name>Props`, and that type is declared in `src/types/`.
+
+It earned itself immediately. My manual survey had reported 62/62 wired and
+declared the job done — but the survey only checked the first half. The spec
+failed on `Swatch`, which declared `SwatchProps` **inline**: it satisfied "the
+component references its own props type" and failed "that type lives in
+src/types". A guard that only encodes what you already checked tells you nothing;
+this one encoded the stricter property and caught what the survey couldn't.
+
+Two smaller lessons from the mechanics:
+
+- `import.meta.url` is a non-`file:` URL under the jsdom env, so path resolution
+  in a spec has to go through `process.cwd()`. `dependencies.spec.js` had already
+  learned this and left a comment; I rediscovered it the slow way.
+- I wrote `if (!t.includes('ProxyItem'))` to guard adding an import — and the
+  file already contained the string in text I'd just inserted, so the import
+  never landed. Guarding on a substring that your own edit introduces is not a
+  guard.
+
+`check:types` on `packages/ui` alone would not have caught any of the original
+drift, and still wouldn't catch the next consumer-facing break. `apps/learn`
+stays in the gate.
+
+Commit: `d735e56e`

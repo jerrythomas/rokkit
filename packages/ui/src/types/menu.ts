@@ -6,6 +6,7 @@
  */
 
 import type { ProxyItem } from '@rokkit/states'
+import type { ItemSnippets } from './snippets.js'
 import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 
 // =============================================================================
@@ -17,7 +18,13 @@ import { DEFAULT_STATE_ICONS } from '@rokkit/core'
  * Content props (items, fields, value, size, disabled, collapsible, icons, onselect, class, snippets)
  * are identical to List. Additional props: label, icon, showArrow, align, direction.
  */
-export interface MenuProps {
+/**
+ * Props for the Menu component.
+ *
+ * `Menu.svelte` annotates its own `$props()` with this interface, so the two
+ * cannot drift.
+ */
+export interface MenuProps extends ItemSnippets {
 	/** Array of items (same as List: supports groups, separators, nested children) */
 	items?: unknown[]
 
@@ -28,7 +35,7 @@ export interface MenuProps {
 	value?: unknown
 
 	/** Size variant */
-	size?: 'sm' | 'md' | 'lg'
+	size?: string
 
 	/** Whether the entire menu is disabled */
 	disabled?: boolean

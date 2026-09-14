@@ -6,7 +6,8 @@
  * Field mapping and data access is handled by ProxyItem from @rokkit/states.
  */
 
-import type { Snippet } from 'svelte'
+import type { ItemSnippets } from './snippets.js'
+import type { ProxyItem } from '@rokkit/states'
 import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 
 // =============================================================================
@@ -142,108 +143,61 @@ export const defaultTreeStateIcons: TreeStateIcons = {
 }
 
 // =============================================================================
-// Snippet Types
-// =============================================================================
-
-/**
- * Handlers passed to custom item snippets
- */
-export interface TreeItemHandlers {
-	/** Call to trigger item selection */
-	onclick: () => void
-	/** Call to toggle expand/collapse */
-	ontoggle: () => void
-	/** Forward keyboard events for accessibility */
-	onkeydown: (event: KeyboardEvent) => void
-}
-
-/**
- * Snippet type for rendering tree nodes.
- * Parameters: item, fields, handlers, isActive, isExpanded, level
- */
-export type TreeItemSnippet = Snippet<
-	[TreeItem, TreeFields, TreeItemHandlers, boolean, boolean, number]
->
-
-/**
- * Snippet type for rendering the expand/collapse icon
- * Parameters: isExpanded, hasChildren, icons
- */
-export type TreeToggleSnippet = Snippet<[boolean, boolean, TreeStateIcons]>
-
-/**
- * Snippet type for rendering tree line connectors
- * Parameters: lineType
- */
-export type TreeConnectorSnippet = Snippet<[TreeLineType]>
-
-// =============================================================================
 // Component Props Types
 // =============================================================================
 
 /**
  * Props for the Tree component
  */
-export interface TreeProps {
+/**
+ * Props for the Tree component.
+ *
+ * `Tree.svelte` annotates its own `$props()` with this interface, so the two
+ * cannot drift — which is how the previous version came to describe
+ * `multiselect`, `expanded`, `selected`, `expandAll`, `active` and four
+ * callbacks the component never read.
+ */
+export interface TreeProps extends ItemSnippets {
 	/** Array of tree items (hierarchical) */
-	items?: TreeItem[]
+	items?: unknown[]
 
 	/** Field mapping configuration */
-	fields?: TreeFields
+	fields?: Record<string, string>
 
-	/** Currently selected value */
+	/** Selected value (bindable) */
 	value?: unknown
 
 	/** Size variant */
-	size?: 'sm' | 'md' | 'lg'
+	size?: string
 
-	/** Tree line connector style — 'none' hides lines, 'solid'|'dashed'|'dotted' set the line style */
+	/** Connector style — 'none' hides the lines */
 	lineStyle?: 'none' | 'solid' | 'dashed' | 'dotted'
 
-	/** Enable multiple item selection (Ctrl+click toggle, Shift+click range) */
-	multiselect?: boolean
-
-	/** Which nodes are expanded (bindable) - keyed by node value */
-	expanded?: Record<string, boolean>
-
-	/** Selected items array (bindable) - populated in multiselect mode */
-	selected?: unknown[]
-
-	/** Expand all nodes by default */
-	expandAll?: boolean
-
-	/** Active item value - Tree looks up item by this value to highlight it */
-	active?: unknown
+	/** Accessible label overrides */
+	labels?: Record<string, string>
 
 	/** Icons for expand/collapse states */
-	icons?: TreeStateIcons
+	icons?: { opened?: string; closed?: string }
 
-	/** Called when an item is selected */
-	onselect?: (value: unknown, item: TreeItem) => void
-
-	/** Called when selected items change in multiselect mode */
-	onselectedchange?: (selected: unknown[]) => void
-
-	/** Called when expanded state changes */
-	onexpandedchange?: (expanded: Record<string, boolean>) => void
-
-	/** Called when a node is toggled */
-	ontoggle?: (value: unknown, item: TreeItem, isExpanded: boolean) => void
-
-	/** Called when expanding a node with unloaded children (children: true). Returns the children array. */
-	onloadchildren?: (value: unknown, item: TreeItem) => Promise<TreeItem[]>
+	/** Called when an item is selected, with the item's `ProxyItem` */
+	onselect?: (value: unknown, proxy: ProxyItem) => void
 
 	/** Additional CSS classes */
 	class?: string
+}
 
-	/** Custom snippet for rendering tree items */
-	item?: TreeItemSnippet
+/**
+ * Props for the LazyTree component — Tree plus on-demand child loading.
+ */
+export interface LazyTreeProps extends TreeProps {
+	/** Size variant */
+	size?: 'sm' | 'md' | 'lg'
 
-	/** Custom snippet for rendering expand/collapse toggle */
-	toggle?: TreeToggleSnippet
+	/** Called to fetch the children of a node being expanded */
+	onlazyload?: (current?: unknown) => Promise<unknown[]>
 
-	/** Custom snippet for rendering tree line connectors */
-	connector?: TreeConnectorSnippet
+	/** Whether more nodes remain to load */
+	hasMore?: boolean
 }
 
 // =============================================================================

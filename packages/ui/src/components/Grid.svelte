@@ -32,6 +32,7 @@
 	import { Navigator } from '@rokkit/actions'
 	import { resolveSnippet, ITEM_SNIPPET } from '@rokkit/core'
 	import ItemContent from './ItemContent.svelte'
+	import type { GridProps } from '../types/grid.js'
 
 	let {
 		items = [],
@@ -45,19 +46,7 @@
 		onselect,
 		class: className = '',
 		...snippets
-	}: {
-		items?: unknown[]
-		fields?: Record<string, string>
-		value?: unknown
-		size?: string
-		disabled?: boolean
-		minSize?: string
-		gap?: string
-		label?: string
-		onselect?: (value: unknown, proxy: ProxyItem) => void
-		class?: string
-		[key: string]: unknown
-	} = $props()
+	}: GridProps = $props()
 
 	// ─── Wrapper ──────────────────────────────────────────────────────────────
 

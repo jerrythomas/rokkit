@@ -36,7 +36,11 @@ const COERCERS: Record<
 	string,
 	(spec: DemoPropSchema, r: string, raw: string) => unknown | undefined
 > = {
-	enum: (spec, r) => spec.options.find((opt) => opt.toLowerCase() === r),
+	// `options` lives on the enum member of the DemoPropSchema union only, so
+	// narrow on the discriminant rather than reaching through the union — this
+	// coercer is reachable with any spec, not just the one keyed 'enum'.
+	enum: (spec, r) =>
+		spec.type === 'enum' ? spec.options.find((opt) => opt.toLowerCase() === r) : undefined,
 	boolean: (_spec, r) => (BOOL_TRUE.has(r) ? true : BOOL_FALSE.has(r) ? false : undefined),
 	number: (_spec, r) => (Number.isFinite(Number(r)) ? Number(r) : undefined),
 	string: (_spec, _r, raw) => raw.trim()

@@ -5,8 +5,7 @@
  * Field mapping and data access is handled by ProxyItem from @rokkit/states.
  */
 
-import type { Snippet } from 'svelte'
-import type { ProxyItem } from '@rokkit/states'
+import type { ItemSnippets } from './snippets.js'
 import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 
 // =============================================================================
@@ -19,125 +18,104 @@ import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 export type SelectItem = Record<string, unknown>
 
 // =============================================================================
-// Legacy types — retained while PaletteManager still uses old snippet API
-// =============================================================================
-
-/** @deprecated Legacy handlers — will be removed when PaletteManager migrates to Navigator stack */
-export interface SelectItemHandlers {
-	onclick: () => void
-	onkeydown: (event: KeyboardEvent) => void
-}
-
-// =============================================================================
-// Snippet Types — ProxyItem-based API
-// =============================================================================
-
-/**
- * Snippet type for rendering a single option in the dropdown.
- * The component renders the focusable wrapper; the snippet renders the inner content.
- * Navigator handles click selection via data-path — no handlers needed in snippet.
- */
-export type SelectOptionSnippet = Snippet<[ProxyItem]>
-
-/**
- * Snippet type for rendering a group header label.
- */
-export type SelectGroupLabelSnippet = Snippet<[ProxyItem]>
-
-/**
- * Snippet type for rendering the selected value display in the trigger button.
- */
-export type SelectValueSnippet = Snippet<[ProxyItem]>
-
-/**
- * Snippet type for rendering selected values in MultiSelect trigger.
- * Receives the array of selected ProxyItems.
- */
-export type MultiSelectValueSnippet = Snippet<[ProxyItem[]]>
-
-// =============================================================================
 // Component Props Types
 // =============================================================================
 
 /**
- * Common props shared between Select and MultiSelect
+ * Common props shared between Select, MultiSelect and Dropdown.
+ *
+ * Each component annotates its own `$props()` with the derived interface, so
+ * they cannot drift — which is how the previous version came to name the data
+ * prop `options` when every component takes `items`, and to declare
+ * `option` / `groupLabel` snippets the components never read.
  */
 export interface SelectBaseProps {
-	/** Array of select options or groups */
-	options?: SelectItem[]
+	/** Array of options or groups */
+	items?: unknown[]
 
-	/** Field mapping — overrides BASE_FIELDS defaults (text → 'label', value → 'value', …) */
+	/** Field mapping — overrides BASE_FIELDS defaults */
 	fields?: Record<string, string>
 
 	/** Placeholder text when no selection */
 	placeholder?: string
 
 	/** Size variant */
-	size?: 'sm' | 'md' | 'lg'
+	size?: string
+
+	/** Whether the control is disabled */
+	disabled?: boolean
 
 	/** Dropdown alignment relative to trigger */
-	align?: 'left' | 'right' | 'start' | 'end'
+	align?: 'start' | 'end'
 
 	/** Dropdown slide direction */
 	direction?: 'up' | 'down'
 
-	/** Maximum visible rows in dropdown (default: 5) */
-	maxRows?: number
-
-	/** Whether the select is disabled */
-	disabled?: boolean
+	/** Icons for dropdown arrow, check and remove */
+	icons?: SelectStateIcons
 
 	/** Additional CSS classes on root element */
 	class?: string
-
-	/** Icons for select states (dropdown arrow, check, remove) */
-	icons?: SelectStateIcons
-
-	/** Custom snippet for rendering options in dropdown */
-	option?: SelectOptionSnippet
-
-	/** Custom snippet for rendering group labels */
-	groupLabel?: SelectGroupLabelSnippet
-
-	/** Enable typeahead filter input in dropdown header */
-	filterable?: boolean
-
-	/** Placeholder text for the filter input */
-	filterPlaceholder?: string
 }
 
 /**
- * Props for the Select component (single selection)
+ * Props for the Select component (single selection).
  */
-export interface SelectProps extends SelectBaseProps {
-	/** Currently selected value (bindable) — extracted via item[fields.value] */
+export interface SelectProps extends SelectBaseProps, ItemSnippets {
+	/** Selected value (bindable) — extracted via item[fields.value] */
 	value?: unknown
 
-	/** Currently selected raw item (bindable) — full object from options array */
-	selected?: SelectItem | null
+	/** Selected raw item (bindable) */
+	selected?: unknown
+
+	/** Enable the typeahead filter input in the dropdown header */
+	filterable?: boolean
+
+	/** Placeholder for the filter input */
+	filterPlaceholder?: string
+
+	/** Maximum visible rows in the dropdown */
+	maxRows?: number
 
 	/** Called when selection changes */
-	onchange?: (value: unknown, item: SelectItem) => void
-
-	/** Custom snippet for rendering the selected value in the trigger */
-	selectedValue?: SelectValueSnippet
+	onchange?: (value: unknown, item: unknown) => void
 }
 
 /**
- * Props for the MultiSelect component (multiple selection)
+ * Props for the MultiSelect component (multiple selection).
  */
-export interface MultiSelectProps extends SelectBaseProps {
-	/** Currently selected values (bindable) - extracted primitives */
+export interface MultiSelectProps extends SelectBaseProps, ItemSnippets {
+	/** Selected values (bindable) */
 	value?: unknown[]
 
-	/** Currently selected items (bindable) - full item objects for convenience */
-	selected?: SelectItem[]
+	/** Selected items (bindable) */
+	selected?: unknown[]
+
+	/** Maximum tags shown before collapsing to a count */
+	maxDisplay?: number
 
 	/** Called when selection changes */
-	onchange?: (values: unknown[], items: SelectItem[]) => void
+	onchange?: (values: unknown[], items: unknown[]) => void
+}
 
-	/** Maximum number of tags to show before collapsing to count */
-	maxDisplay?: number
+/**
+ * Props for the Dropdown component.
+ *
+ * Unlike Select and MultiSelect it does not spread snippets, so it takes the
+ * base props only.
+ */
+export interface DropdownProps extends SelectBaseProps {
+	/** Selected value (bindable) */
+	value?: unknown
+
+	/** Trigger icon class */
+	icon?: string
+
+	/** Whether to show the dropdown arrow indicator on the trigger */
+	showArrow?: boolean
+
+	/** Called when selection changes */
+	onchange?: (value: unknown, item: unknown) => void
 }
 
 // =============================================================================

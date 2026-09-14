@@ -1,41 +1,35 @@
 # CHECKPOINT
 
-**Slice:** rokkit#156 sweep + coverage debt — **RELEASED v1.4.2** (2026-09-14).
-Working tree CLEAN; develop, main and the tag pushed; all 14 packages live.
+**Slice:** post-v1.4.2 backlog burn-down — **all booked items closed**.
+Working tree clean; `d735e56e` on develop.
 
 ## Done
 
-- `cc335be6`…`ae26e415` dependency sweep: **bun audit 28 → 1**. Dependabot open
-  alerts now **0**.
-- `e07aaa5f`…`c4313dd9` three racy specs pinned; CI and local now agree exactly
-  on all four metrics across all 23 directories.
-- `bb9a5408`…`26d48401` **coverage debt CLOSED** — js/ts 13/13 at 100%,
-  `.svelte` 0 files below 90 (was 29 files / 493 statements). Aggregate 97.85%.
-- `4d6bb0b2` publish-gate fix (below).
-- Four production bugs found on the way, each dead code behind a coverage gap:
-  the `themable` storage-listener leak, the `override:` → `child` snippet route,
-  DefinePatterns asserting its own error branch, and the async races.
-
-Verified as a consumer: a clean install of `@rokkit/ui@1.4.2` resolves
-`dompurify@3.4.15` with no override — what #156 §3 asked for. Full narrative in
-`agents/journal.md`.
+- **Flaky learn e2e CLOSED** (`3ee1bd5f`) — pre-hydration dead click. SSR ships
+  controls hit-testable but inert; `hydration.e2e.ts` holds the window open so
+  the race is deterministic. ×3: 210/210, 2.2→1.7 m.
+- **learn typecheck + svelte-check gates CLOSED** (`a21e5278`, `76a88837`,
+  `134d09b9`; regression fixed in `c4744bb8`). All six gated dirs 0/0.
+- **yaml CLOSED** (`97cc8b64`) — **bun audit 2 → 0**. Advisory spans both majors,
+  bun ignores scoped override keys (verified), but no override was needed: the
+  lockfile just held stale pins. 2-line diff vs 552 for a full re-resolve.
+- **Snippet props CLOSED** (`1fc4e987`) — typed across 9 components; green proven
+  non-vacuous.
+- **Stale props types CLOSED** (`d735e56e`, **breaking**) — four interfaces
+  described components that no longer existed, because nothing connected a
+  declared type to the real `$props()`. Corrected to match the components and
+  wired; 12 dead snippet/handler types removed. All **62** components now
+  annotate `$props()` with their own type from `src/types/`.
+  `spec/props-types.spec.ts` guards both halves — it caught `Swatch` declaring
+  its type inline, which my manual survey had passed.
 
 ## Remains
 
-Booked in `docs/backlog/`: **yaml** (moderate; two majors, bun ignores nested
-overrides), **TypeScript 7** (deferred, path verified), **flaky learn e2e**.
-
-Open question: whether to narrow published `peerDependencies` (`svelte: ^5.0.0`)
-to exclude vulnerable svelte. A consumer-facing break, not a sweep call.
-
-## Release note
-
-v1.4.2's first publish FAILED on @rokkit/helpers — `bun run check` was green, but
-the declaration build that runs at publish time was not the build the gate ran.
-Nothing published. Fixed by declaring `@vitest/spy`; the gap is closed by
-`check:build`, now part of `bun run check`.
+- **TypeScript 7** — path verified, deferred by choice.
+- Open question: narrow `peerDependencies` (`svelte: ^5.0.0`) to exclude vulnerable svelte?
+- `d735e56e` is breaking for published types — worth a **minor**, not a patch.
 
 ## Known-broken
 
-Nothing. lint 0/0 · check:types + check:build + check:svelte 0/0 ·
-test:ci 6181/404 · coverage exit 0 · build:apps exit 0 · learn e2e 67.
+Nothing. lint 0/0 · check:types + check:build + check:svelte 0/0 · build:apps 0 ·
+test:ci 6306/405 · e2e 70/70 · bun audit 0. (Sensei daemon down — this is the record.)

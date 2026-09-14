@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { gotoHydrated } from './helpers'
 
 test('nav says Ask Rokkit, not Chat demo', async ({ page }) => {
 	await page.goto('/chat')
@@ -19,7 +20,7 @@ test('an unknown mode redirects to the picker', async ({ page }) => {
 })
 
 test('entering Simulated via an example chip yields a response', async ({ page }) => {
-	await page.goto('/chat')
+	await gotoHydrated(page, '/chat')
 	const simCard = page.locator('[data-mode-card]', { hasText: 'Simulated' })
 	await simCard.locator('[data-mode-examples] button').first().click()
 	await expect(page).toHaveURL(/\/chat\/simulated/)

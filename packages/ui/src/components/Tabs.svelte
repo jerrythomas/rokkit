@@ -22,6 +22,7 @@
 	import { Wrapper, ProxyTree, messages } from '@rokkit/states'
 	import { Navigator } from '@rokkit/actions'
 	import { resolveSnippet, ITEM_SNIPPET, DEFAULT_STATE_ICONS } from '@rokkit/core'
+	import type { SelectableItemSnippet } from '../types/snippets.js'
 
 	let {
 		options = [],
@@ -41,7 +42,12 @@
 		onadd,
 		onremove,
 		...snippets
-	}: TabsProps & { labels?: Record<string, string>; [key: string]: unknown } = $props()
+	}: TabsProps & {
+		labels?: Record<string, string>
+		// Tabs renders its content as content(proxy, selected).
+		itemContent?: SelectableItemSnippet
+		[key: string]: unknown
+	} = $props()
 
 	const labels = $derived({ ...messages.tabs, ...userLabels })
 

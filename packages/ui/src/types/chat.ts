@@ -3,6 +3,16 @@ import type { Snippet } from 'svelte'
 export type ChatRole = 'user' | 'assistant' | 'system'
 export type ChatStatus = 'streaming' | 'error' | 'done'
 
+/**
+ * A single message in a chat transcript.
+ *
+ * Also exported as `ChatMessageData`, which is the name consumers should import.
+ * The package entry exports a *component* called `ChatMessage` as well, and
+ * Svelte's generated component types contribute a type of that name — which
+ * shadows this interface, making `ChatMessage<T>` unreachable from outside the
+ * package. The alias is the reachable spelling; renaming either the component or
+ * this interface is a breaking change, so it waits for a major.
+ */
 export interface ChatMessage<T = unknown> {
 	id: string
 	role: ChatRole
@@ -14,6 +24,12 @@ export interface ChatMessage<T = unknown> {
 	/** Arbitrary payload (parts/blocks/chart spec/form schema) the consumer's `message` snippet reads. */
 	data?: T
 }
+
+/**
+ * Reachable alias for {@link ChatMessage} — see the note on that interface for
+ * why the bare name does not survive the package boundary.
+ */
+export type ChatMessageData<T = unknown> = ChatMessage<T>
 
 export interface ConversationSummary {
 	id: string

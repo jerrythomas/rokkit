@@ -20,15 +20,10 @@
 	 *   data-align             — panel alignment (start | end)
 	 *   data-direction         — panel direction (down | up)
 	 */
-	// @ts-nocheck
 	import { ProxyTree, Wrapper, messages } from '@rokkit/states'
 	import { Navigator, Trigger } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
-
-	interface DropdownIcons {
-		opened?: string
-		closed?: string
-	}
+	import type { DropdownProps, SelectStateIcons } from '../types/select.js'
 
 	let {
 		items = [],
@@ -41,24 +36,10 @@
 		showArrow = true,
 		align = 'start',
 		direction = 'down',
-		icons: userIcons = {} as DropdownIcons,
+		icons: userIcons = {} as SelectStateIcons,
 		onchange,
 		class: className = ''
-	}: {
-		items?: unknown[]
-		fields?: Record<string, string>
-		value?: unknown
-		placeholder?: string
-		icon?: string
-		size?: string
-		disabled?: boolean
-		showArrow?: boolean
-		align?: 'start' | 'end'
-		direction?: 'up' | 'down'
-		icons?: DropdownIcons
-		onchange?: (value: unknown, item: unknown) => void
-		class?: string
-	} = $props()
+	}: DropdownProps = $props()
 
 	const icons = $derived({ ...DEFAULT_STATE_ICONS.selector, ...userIcons })
 

@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { gotoHydrated } from './helpers'
 
 /**
  * Theme wizard step 03 (Typography) — #152.
@@ -10,7 +11,7 @@ import { test, expect } from '@playwright/test'
  */
 
 async function openTypographyStep(page: import('@playwright/test').Page) {
-	await page.goto('/app/theming')
+	await gotoHydrated(page, '/app/theming')
 	// Step tabs are a tablist; 03 is Typography.
 	await page.getByRole('tab', { name: /Typography/ }).click()
 	await expect(page.locator('.font-card').first()).toBeVisible()

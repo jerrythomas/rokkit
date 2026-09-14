@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { gotoHydrated } from './helpers'
 
 // /app/chart mounts the live ChartExplorer (default type='bar'). Guards that the
 // canvas renders a geom + grid, and that switching type via the tweak drawer
@@ -24,7 +25,7 @@ test('chart explorer renders the default bar geom with a grid', async ({ page })
 // The chart-type chips live in ChartControls, which only renders inside the tweak
 // slab — so we open it via the composer toggle before selecting a type.
 test('switching chart type via the tweak drawer re-renders the geom', async ({ page }) => {
-	await page.goto('/app/chart')
+	await gotoHydrated(page, '/app/chart')
 	await page.locator('.composer-tweak-toggle').click()
 
 	await page.locator('[data-chart-type="line"]').click()
@@ -38,7 +39,7 @@ test('switching chart type via the tweak drawer re-renders the geom', async ({ p
 // Composition types wrap the geoms differently: FacetPlot (small multiples) and
 // AnimatedPlot (tweened frames), selectable from the same type picker.
 test('composition types (facet, animated) render in the explorer', async ({ page }) => {
-	await page.goto('/app/chart')
+	await gotoHydrated(page, '/app/chart')
 	await page.locator('.composer-tweak-toggle').click()
 
 	await page.locator('[data-chart-type="facet"]').click()
@@ -53,7 +54,7 @@ test('composition types (facet, animated) render in the explorer', async ({ page
 // #150 — a quadrant scatter crosses the axes at a chosen data origin (BCG matrix),
 // placed by the shared coordinate layer: the y-axis shifts off the left edge.
 test('quadrant type crosses the axes at the data origin', async ({ page }) => {
-	await page.goto('/app/chart')
+	await gotoHydrated(page, '/app/chart')
 	await page.locator('.composer-tweak-toggle').click()
 
 	await page.locator('[data-chart-type="quadrant"]').click()
@@ -72,7 +73,7 @@ test('quadrant type crosses the axes at the data origin', async ({ page }) => {
 // own channel props (axis/value/series) rather than x/y — so reaching it through the
 // generic type picker is the check that the registry entry is wired, not just present.
 test('radar type renders a polar profile with its own grid', async ({ page }) => {
-	await page.goto('/app/chart')
+	await gotoHydrated(page, '/app/chart')
 	await page.locator('.composer-tweak-toggle').click()
 
 	await page.locator('[data-chart-type="radar"]').click()
