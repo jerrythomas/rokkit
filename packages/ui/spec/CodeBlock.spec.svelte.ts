@@ -64,6 +64,46 @@ describe('CodeBlock', () => {
 		expect(container.querySelector('.shiki')).toBeNull()
 	})
 
+	// The `if (!cancelled)` guards in the effect's then/catch are themselves
+	// timing-dependent: whether the promise settles before or after teardown
+	// decides which arm runs. Left to chance, CodeBlock's BRANCH coverage still
+	// differed between CI (83.72%) and a laptop (81.40%) even at 100% statements.
+	// These two drive the cancelled arm deliberately.
+	it('ignores a highlight that resolves after teardown', async () => {
+		let resolveHighlight!: (html: string) => void
+		shiki.highlightCode.mockReturnValue(
+			new Promise<string>((resolve) => {
+				resolveHighlight = resolve
+			})
+		)
+		const { container, unmount } = render(CodeBlockTest, { props: { code: 'const x = 1' } })
+		await tick()
+		expect(container.querySelector('pre[data-code-block-body]')).toBeTruthy()
+
+		unmount()
+		resolveHighlight(HIGHLIGHTED)
+		await tick()
+
+		expect(document.querySelector('.shiki')).toBeNull()
+	})
+
+	it('ignores a highlight that rejects after teardown', async () => {
+		let rejectHighlight!: (reason: unknown) => void
+		shiki.highlightCode.mockReturnValue(
+			new Promise<string>((_, reject) => {
+				rejectHighlight = reject
+			})
+		)
+		const { unmount } = render(CodeBlockTest, { props: { code: 'const x = 1' } })
+		await tick()
+
+		unmount()
+		rejectHighlight(new Error('too late'))
+		await tick()
+
+		expect(document.querySelector('.shiki')).toBeNull()
+	})
+
 	it('passes the language and resolved theme through to shiki', async () => {
 		render(CodeBlockTest, { props: { code: 'x', language: 'typescript', theme: 'light' } })
 
