@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { matchMediaMock, updateMedia } from '../../src/mocks/match-media'
 
 describe('match-media', () => {
@@ -70,6 +70,68 @@ describe('match-media', () => {
 			// should remove the listener
 			query1.removeListener()
 			query2.removeListener()
+		})
+	})
+
+	// The registry is the half of this mock that components actually depend on —
+	// anything using MediaQuery/matchMedia subscribes rather than polling `matches`.
+	// Nothing registered a listener before, so the four registration bodies and the
+	// dispatch loop in updateMedia were never executed.
+	describe('listener registry', () => {
+		it('invokes a listener registered via addListener on update', () => {
+			const query = matchMediaMock('(min-width: 100px)')
+			const listener = vi.fn()
+			query.addListener(listener)
+
+			window.innerWidth = 500
+			updateMedia()
+
+			expect(listener).toHaveBeenCalled()
+			query.removeListener(listener)
+		})
+
+		it('invokes a listener registered via addEventListener on update', () => {
+			const query = matchMediaMock('(min-width: 100px)')
+			const listener = vi.fn()
+			query.addEventListener('change', listener)
+
+			window.innerWidth = 500
+			updateMedia()
+
+			expect(listener).toHaveBeenCalled()
+			query.removeEventListener('change', listener)
+		})
+
+		it('stops invoking a listener once removeEventListener has run', () => {
+			const query = matchMediaMock('(min-width: 100px)')
+			const listener = vi.fn()
+			query.addEventListener('change', listener)
+
+			window.innerWidth = 500
+			updateMedia()
+			const whileRegistered = listener.mock.calls.length
+			expect(whileRegistered).toBeGreaterThan(0)
+
+			query.removeEventListener('change', listener)
+			updateMedia()
+
+			expect(listener).toHaveBeenCalledTimes(whileRegistered)
+		})
+
+		it('stops invoking a listener once removeListener has run', () => {
+			const query = matchMediaMock('(min-width: 100px)')
+			const listener = vi.fn()
+			query.addListener(listener)
+
+			window.innerWidth = 500
+			updateMedia()
+			const whileRegistered = listener.mock.calls.length
+			expect(whileRegistered).toBeGreaterThan(0)
+
+			query.removeListener(listener)
+			updateMedia()
+
+			expect(listener).toHaveBeenCalledTimes(whileRegistered)
 		})
 	})
 })

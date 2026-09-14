@@ -3,6 +3,7 @@ import {
 	shadesOf,
 	themeRules,
 	Theme,
+	contrastShortcuts,
 	pickOnColor,
 	ON_COLOR_DARK,
 	ON_COLOR_LIGHT,
@@ -701,4 +702,41 @@ describe('pickOnColor', () => {
   it('falls back to near-white when luminance is null (unmeasurable fill)', () => {
     expect(pickOnColor(null)).toBe(ON_COLOR_LIGHT)
   })
+})
+
+// ─── contrastShortcuts ────────────────────────────────────────────────────────
+// The rules were only ever checked for shape. The replacement callbacks are the
+// part UnoCSS actually invokes on a match, so they get exercised directly:
+// without this, a broken interpolation would ship green.
+
+describe('contrastShortcuts', () => {
+	const ruleFor = (name, onColor, utility) => {
+		const rules = contrastShortcuts(name, onColor)
+		for (const [pattern, handler] of rules) {
+			const match = utility.match(pattern)
+			if (match) return handler(match)
+		}
+		return null
+	}
+
+	it('resolves text-on-<role> to the supplied on-color', () => {
+		expect(ruleFor('primary', '#101010', 'text-on-primary')).toBe('text-[#101010]')
+	})
+
+	it('resolves the muted variant to the same on-color', () => {
+		expect(ruleFor('primary', '#101010', 'text-on-primary-muted')).toBe('text-[#101010]')
+	})
+
+	it('preserves an opacity suffix', () => {
+		expect(ruleFor('accent', '#fff', 'text-on-accent/50')).toBe('text-[#fff]/50')
+		expect(ruleFor('accent', '#fff', 'text-on-accent-muted/25')).toBe('text-[#fff]/25')
+	})
+
+	it('defaults the on-color when none is given', () => {
+		expect(ruleFor('danger', undefined, 'text-on-danger')).toBe('text-[#fafafa]')
+	})
+
+	it('does not match an unrelated role', () => {
+		expect(ruleFor('primary', '#000', 'text-on-accent')).toBeNull()
+	})
 })

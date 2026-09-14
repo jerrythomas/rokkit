@@ -218,17 +218,26 @@ describe('ColorModeManager — listen()', () => {
 	})
 
 	it('returns a no-op cleanup when window is undefined (SSR guard)', () => {
-		// Simulate SSR: remove window entirely by mocking it out
-		// We can't truly remove window in JSDOM, so test via matchMedia being absent.
-		// The listen() guard is `if (typeof window === 'undefined') return () => {}`
-		// which is only reachable in Node/SSR environments, not JSDOM.
-		// We verify the window-present path fully above; mark this path with a
-		// v8 ignore in the source rather than trying to fake away window here.
-		// This test confirms the overall function is callable and returns a function.
-		const mq = stubMQ(false)
-		const target = { mode: '' }
-		const mgr = new ColorModeManager(target, 'light')
-		const cleanup = mgr.listen()
+		// The previous version of this test asserted `typeof cleanup === 'function'`,
+		// which is true on BOTH paths — it passed whether or not the guard existed,
+		// and its comment claimed window could not be removed under JSDOM. It can:
+		// vi.stubGlobal makes `typeof window` return 'undefined', and listen()
+		// returns at the guard before touching anything else.
+		const matchMedia = vi.fn()
+		vi.stubGlobal('matchMedia', matchMedia)
+		const mgr = new ColorModeManager({ mode: '' }, 'light')
+
+		vi.stubGlobal('window', undefined)
+		let cleanup
+		try {
+			cleanup = mgr.listen()
+		} finally {
+			vi.unstubAllGlobals()
+		}
+
 		expect(typeof cleanup).toBe('function')
+		// The real path subscribes; the SSR path must not.
+		expect(matchMedia).not.toHaveBeenCalled()
+		expect(() => cleanup()).not.toThrow()
 	})
 })

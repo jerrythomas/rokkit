@@ -78,24 +78,24 @@ export default defineConfig({
 				'**/*.svelte': { statements: 35, lines: 40 },
 
 				'packages/actions/**/*.{js,ts}': { statements: 86, lines: 89 },
-				'packages/app/**/*.{js,ts}': { statements: 96, lines: 100 },
+				'packages/app/**/*.{js,ts}': { statements: 100, lines: 100 },
 				'packages/app/**/*.svelte': { statements: 96, lines: 97 },
 				'packages/blocks/**/*.{js,ts}': { statements: 100, lines: 100 },
 				'packages/blocks/**/*.svelte': { statements: 93, lines: 95 },
 				'packages/chart/**/*.{js,ts}': { statements: 87, lines: 95 },
 				'packages/chart/**/*.svelte': { statements: 35, lines: 40 },
 				'packages/cli/**/*.{js,ts}': { statements: 93, lines: 92 },
-				'packages/core/**/*.{js,ts}': { statements: 97, lines: 96 },
-				'packages/data/**/*.{js,ts}': { statements: 98, lines: 100 },
+				'packages/core/**/*.{js,ts}': { statements: 100, lines: 100 },
+				'packages/data/**/*.{js,ts}': { statements: 100, lines: 100 },
 				'packages/forms/**/*.{js,ts}': { statements: 96, lines: 99 },
 				'packages/forms/**/*.svelte': { statements: 66, lines: 77 },
-				'packages/helpers/**/*.{js,ts}': { statements: 84, lines: 87 },
+				'packages/helpers/**/*.{js,ts}': { statements: 100, lines: 100 },
 				'packages/helpers/**/*.svelte': { statements: 100, lines: 100 },
-				'packages/states/**/*.{js,ts}': { statements: 92, lines: 100 },
+				'packages/states/**/*.{js,ts}': { statements: 97, lines: 100 },
 				'packages/themes/**/*.{js,ts}': { statements: 100, lines: 100 },
-				'packages/ui/**/*.{js,ts}': { statements: 92, lines: 91 },
+				'packages/ui/**/*.{js,ts}': { statements: 100, lines: 100 },
 				'packages/ui/**/*.svelte': { statements: 50, lines: 70 },
-				'packages/unocss/**/*.{js,ts}': { statements: 99, lines: 100 }
+				'packages/unocss/**/*.{js,ts}': { statements: 100, lines: 100 }
 			}
 		},
 		projects: [

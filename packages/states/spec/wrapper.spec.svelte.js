@@ -947,3 +947,41 @@ describe('Wrapper — integration', () => {
 		expect(w.findByText('v')).toBe('1') // Vegetables
 	})
 })
+
+// ─── Guard clauses ────────────────────────────────────────────────────────────
+// These are the no-op contracts callers rely on: a keyboard handler calls next()
+// or extend() without first checking whether anything is focused or navigable.
+
+describe('Wrapper — navigation with nothing navigable', () => {
+	it('next() is a no-op on an empty tree', () => {
+		const w = new Wrapper(new ProxyTree())
+
+		expect(() => w.next()).not.toThrow()
+		expect(w.focusedKey).toBeNull()
+	})
+
+	it('prev() is a no-op on an empty tree', () => {
+		const w = new Wrapper(new ProxyTree())
+
+		expect(() => w.prev()).not.toThrow()
+		expect(w.focusedKey).toBeNull()
+	})
+
+	it('next() is a no-op when every item is disabled', () => {
+		const w = new Wrapper(new ProxyTree([{ label: 'A', disabled: true }]))
+
+		w.next()
+
+		expect(w.focusedKey).toBeNull()
+	})
+})
+
+describe('Wrapper — extend without a target', () => {
+	it('is a no-op when multiselect is on but nothing is focused', () => {
+		const w = new Wrapper(new ProxyTree(flat), { multiselect: true })
+		expect(w.focusedKey).toBeNull()
+
+		expect(() => w.extend(null)).not.toThrow()
+		expect(w.selectedKeys ?? []).toHaveLength(0)
+	})
+})
