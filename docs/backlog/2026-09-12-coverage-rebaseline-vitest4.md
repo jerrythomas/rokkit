@@ -50,7 +50,7 @@ Distance from each package's floor to the pre-vitest-4 bar (`js/ts` 100,
 | --- | --- | --- | --- |
 | `packages/chart/**/*.svelte` | 35 | 40 | **-55** |
 | `packages/ui/**/*.svelte` | 50 | 70 | **-40** |
-| `packages/forms/**/*.svelte` | 66 | 77 | **-24** |
+| `packages/forms/**/*.svelte` | 90 | 92 | **0** |
 | `packages/actions/**/*.{js,ts}` | 100 | 100 | **0** |
 | `packages/app/**/*.{js,ts}` | 100 | 100 | **0** |
 | `packages/blocks/**/*.{js,ts}` | 100 | 100 | **0** |
@@ -70,12 +70,31 @@ Distance from each package's floor to the pre-vitest-4 bar (`js/ts` 100,
 
 ## Progress — 2026-09-14
 
-**All 13 js/ts packages are back at 100%.** The strict js/ts half of the
-pre-vitest-4 bar is fully restored: 0 uncovered statements, every package floor
-at `statements: 100, lines: 100`.
+**All 13 js/ts packages are back at 100%** — 0 uncovered statements, every js/ts
+floor at `statements: 100, lines: 100`.
 
-The `.svelte` side is untouched and is now the whole of the remaining debt —
-roughly 490 statements across chart (35 floor), ui (50) and forms (66).
+**`.svelte`: forms is done too** (66 → **90**, the original bar). Remaining:
+**chart** (floor 35) and **ui** (floor 50), roughly 410 statements.
+
+### forms .svelte — and a documented feature that never worked
+
+Covering FormRenderer's `child` snippet branch surfaced a real bug. README and
+docs/llms both document the same contract — `override: true` on a layout element
+routes that field to the consumer's `child` snippet — but `getSchemaWithLayout`
+folds unrecognised layout keys into `props`, and `#buildStandardElement` only read
+`element.override`. The flag landed in `props.override`, the top-level stayed
+false, the branch never fired, and `override: true` leaked downstream as a stray
+prop on the input component. Fixed to read from either position.
+
+Two things worth knowing before touching FormRenderer again:
+
+- The custom `actions` snippet, and the default action bar, live inside the
+  `<form>` branch **only**. Without `onsubmit` the root is a bare `<div>` with no
+  actions at all — tests that omit it will find nothing and look like the snippet
+  is broken.
+- `InputField` emits `onchange`; a raw `input` event never marks the form dirty.
+- `ctx.submit` is typed `(e: Event) => …` and calls `preventDefault()` on it, so a
+  custom actions bar must forward its click event.
 
 Most of what was paid down was not "missing tests" in the usual sense:
 
