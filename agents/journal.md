@@ -8384,3 +8384,51 @@ Also worth knowing: the publish step downgrades a per-package failure to a
 `::warning::`, so a green workflow does NOT by itself mean all 14 shipped.
 
 Commits: `9c259ce1` (release) `4d6bb0b2` / `18e71f8c` (publish fix + gate)
+
+---
+
+## 2026-09-14 — the flaky learn e2e was a pre-hydration dead click
+
+`components-catalog.e2e.ts` failed about one full run in three. Root cause: SSR
+ships every control fully formed — visible, enabled, hit-testable — and inert,
+because Svelte attaches handlers (delegated root listener and per-element
+property alike) only at hydration. Every actionability check Playwright runs
+before dispatching a click is already satisfied by that inert markup, so the
+click is swallowed and the `toHaveURL` after it times out against a page that
+looks entirely correct. That is why it read as flaky rather than broken.
+
+`/app` server-renders 330 catalog tiles, which is why this test and not the
+other 66.
+
+The method mattered more than the fix. It would not reproduce on demand — 12/12
+in isolation, then 201/201 across three full suite runs — so rather than keep
+rolling dice, the window is now held open deliberately: a `page.route` handler
+stalls `**/_app/immutable/**/*.js` for 3s. The race becomes deterministic, and
+`hydration.e2e.ts` pins it: assert the tile is visible AND enabled, click it,
+assert the URL did not change. That test passes on the *broken* code — it is the
+proof, not the guard. The guard is the other two.
+
+Fix: the root layout sets `body[data-hydrated]` in an `$effect`. Effects run once
+the tree is mounted and handlers are attached, so the marker flips exactly when
+clicking becomes safe — no timing constant anywhere. `waitForHydration` /
+`gotoHydrated` in `e2e/helpers.ts`; 13 goto sites across 8 specs converted.
+Pure-assertion navigations were left alone on purpose.
+
+Two things surfaced that the flake was hiding:
+
+- `components-catalog.e2e.ts` had a **second** racy test, not one.
+- "navigating back to /app from browse restores the hero" could pass **vacuously**.
+  Its comment insists the navigation MUST be client-side, because a full load
+  re-initialises the shell module and hides the stale-state bug it exists to
+  catch. But an un-hydrated anchor click *is* a full page load — so without the
+  wait, the test could silently degrade into the goto-based version its own
+  comment warns against. Correctness fix, not just determinism.
+
+Booked on the way out: `apps/learn` has no `tsconfig.json`, so the e2e
+TypeScript is transpile-only and never typechecked — the same family of gate gap
+as the `check:build` publish hole, and the helper added here is unchecked by it.
+
+Full suite ×3: 210/210, and 2.2m → 1.7m — waiting on a marker beats waiting on
+timeouts.
+
+Commit: `3ee1bd5f`

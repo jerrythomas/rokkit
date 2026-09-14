@@ -1,41 +1,40 @@
 # CHECKPOINT
 
-**Slice:** rokkit#156 sweep + coverage debt — **RELEASED v1.4.2** (2026-09-14).
-Working tree CLEAN; develop, main and the tag pushed; all 14 packages live.
+**Slice:** post-v1.4.2 backlog burn-down — flaky learn e2e **CLOSED** (2026-09-14).
+Working tree clean; `3ee1bd5f` on develop.
 
 ## Done
 
-- `cc335be6`…`ae26e415` dependency sweep: **bun audit 28 → 1**. Dependabot open
-  alerts now **0**.
-- `e07aaa5f`…`c4313dd9` three racy specs pinned; CI and local now agree exactly
-  on all four metrics across all 23 directories.
-- `bb9a5408`…`26d48401` **coverage debt CLOSED** — js/ts 13/13 at 100%,
-  `.svelte` 0 files below 90 (was 29 files / 493 statements). Aggregate 97.85%.
-- `4d6bb0b2` publish-gate fix (below).
-- Four production bugs found on the way, each dead code behind a coverage gap:
-  the `themable` storage-listener leak, the `override:` → `child` snippet route,
-  DefinePatterns asserting its own error branch, and the async races.
-
-Verified as a consumer: a clean install of `@rokkit/ui@1.4.2` resolves
-`dompurify@3.4.15` with no override — what #156 §3 asked for. Full narrative in
-`agents/journal.md`.
+- v1.4.2 released and verified as a consumer (`dompurify@3.4.15`, no override).
+- `3ee1bd5f` **pre-hydration dead-click window closed**. SSR ships every control
+  visible, enabled and hit-testable but inert — Playwright's actionability
+  checks can't tell it from a live one, so the click is swallowed and the next
+  assertion times out on a page that looks correct. `/app` hydrates 330 tiles,
+  hence ~1 full run in three.
+  - Wouldn't reproduce on demand, so the window is now held open deliberately
+    (stall the client bundle 3s) — `hydration.e2e.ts` makes the race
+    deterministic and pins the marker contract.
+  - `body[data-hydrated]` set in a layout `$effect`; 13 goto sites across 8
+    specs wait on it.
+  - Found a **second** racy test in the same file, and one that could pass
+    vacuously — an un-hydrated anchor click is a full page load, exactly what
+    its own comment warned against.
+  - Full suite ×3: **210/210**, 2.2m → 1.7m.
 
 ## Remains
 
-Booked in `docs/backlog/`: **yaml** (moderate; two majors, bun ignores nested
-overrides), **TypeScript 7** (deferred, path verified), **flaky learn e2e**.
+Booked in `docs/backlog/`:
+
+- **yaml** (moderate) — two majors in the tree, bun ignores nested overrides;
+  only lever is a full re-resolve (blast radius measured: 40 packages).
+- **TypeScript 7** — path verified, deferred by choice.
+- **`apps/learn` has no `tsconfig.json`** (new) — e2e TypeScript is
+  transpile-only, never typechecked. Same family as the `check:build` gap.
 
 Open question: whether to narrow published `peerDependencies` (`svelte: ^5.0.0`)
-to exclude vulnerable svelte. A consumer-facing break, not a sweep call.
-
-## Release note
-
-v1.4.2's first publish FAILED on @rokkit/helpers — `bun run check` was green, but
-the declaration build that runs at publish time was not the build the gate ran.
-Nothing published. Fixed by declaring `@vitest/spy`; the gap is closed by
-`check:build`, now part of `bun run check`.
+to exclude vulnerable svelte. Consumer-facing break, not a sweep call.
 
 ## Known-broken
 
-Nothing. lint 0/0 · check:types + check:build + check:svelte 0/0 ·
-test:ci 6181/404 · coverage exit 0 · build:apps exit 0 · learn e2e 67.
+Nothing. lint 0/0 · check:types 0/0 · learn e2e 70 tests, 210/210 across ×3.
+(Sensei daemon down this session — no MCP checkpoint; this file is the record.)
