@@ -8136,3 +8136,71 @@ rounding. Diff the per-directory table, isolate the file, look for an un-awaited
 async boundary or a teardown-guarded branch.
 
 Commits: `e07aaa5f` `690c132e` `c4313dd9`
+
+## 2026-09-14 — Merge to main, then pay down the js/ts coverage debt
+
+Merged the #156 sweep into `main` (`f8d55f9c`, ff-clean, 11 commits). The Dependabot
+alert cleared on merge: **open alerts 0**. PR #157 is now obsolete — it still
+proposes vitest 3.2.7 → 5.0.0, and we are on 4.1.11 deliberately.
+
+Then started on the debt booked by the vitest 4 re-baseline. js/ts carries the
+strict 100% target and was the smaller half: ~96 uncovered statements against ~493
+in `.svelte`. **9 of 13 js/ts packages are now back at 100%, up from 2.** Remaining:
+chart 28, cli 14, forms 12, states 2.
+
+### Most of it was not "missing tests"
+
+**Guard clauses are contracts.** A keyboard handler calls `next()` / `expand()` /
+`extend()` without first checking whether anything is focused, so the unfocused
+no-op is the behaviour callers depend on. Likewise the SSR guards: `@rokkit/core`
+and `@rokkit/states` are imported by SvelteKit server code where reading `document`
+or `localStorage` throws. These are worth pinning on their own terms.
+
+**Two more vacuous tests, same family as the shiki races.** color-mode's SSR case
+asserted `typeof cleanup === 'function'` — true on *both* paths — and its comment
+claimed `window` could not be removed under JSDOM. It can; `vi.stubGlobal` makes
+`typeof window` return `'undefined'`. `contrastShortcuts` was only ever checked for
+shape, never for the replacement callbacks UnoCSS actually invokes, so a broken
+interpolation would have shipped green.
+
+**One was a real bug.** `themable` wrote
+
+```js
+$effect.root(() => {
+  window.addEventListener('storage', handleStorage)
+  return () => window.removeEventListener('storage', handleStorage)
+})
+```
+
+and discarded the disposer. `$effect.root` creates a root detached from the
+surrounding lifecycle and hands ownership to the caller, so that teardown never
+ran: the listener outlived the action and a fresh one accumulated on every
+re-application. The unreachable cleanup line was the *symptom*. Now a plain
+`$effect` — the sibling `$effect` two lines up already proves an effect context is
+available, so it costs callers nothing.
+
+### `v8 ignore next` silently stopped working in some positions
+
+The repo has 24 `v8 ignore next` directives. **5 had stopped firing** under vitest
+4's AST-aware remapping and had quietly become debt. The region form still works:
+
+    /* v8 ignore start -- reason */
+    if (!typography) return []
+    /* v8 ignore stop */
+
+Confirmed on `core/theme.ts`, `unocss/preset.ts`, `actions/navigator.js` and
+`actions/utils.js`. Failing cases include a single-line `if (...) return`, which is
+two statements on one line. The other 19 still fire — **not** a blanket migration.
+
+And reach for an ignore only after establishing unreachability. `navigator`'s
+`if (!el) return false` sits behind `event.target`, which a dispatched DOM event
+always populates; `utils`' `isAccordionTrigger` null-guard cannot be reached
+because its only caller dereferences `target.parentElement` first and would throw.
+
+### Gate
+
+lint 0/0 · check:types + check:svelte 0/0 · test:ci **5856/386** (+37) · coverage
+exit 0 · learn e2e 67 (run because `themable` is production behaviour) · CI green
+on both branches.
+
+Commits: `f8d55f9c` (main merge) · `bb9a5408` `85b5a0c6`

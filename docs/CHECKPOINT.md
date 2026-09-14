@@ -1,7 +1,7 @@
 # CHECKPOINT
 
-**Slice:** rokkit#156 dependency sweep (2026-09-12). Working tree CLEAN,
-pushed to `origin/develop`; Check + Coverage green.
+**Slice:** rokkit#156 sweep + coverage debt (2026-09-14). Working tree CLEAN,
+`develop` and `main` both pushed; Check + Coverage green on each.
 
 ## Done
 
@@ -20,16 +20,20 @@ pushed to `origin/develop`; Check + Coverage green.
 - `e07aaa5f` `690c132e` `c4313dd9` three racy specs pinned — MermaidPlugin,
   CodeBlock, Code all to **100%** statements. CI and local now match **exactly**
   on all four metrics across all 23 directories.
+- `bb9a5408` `85b5a0c6` coverage debt: **9 of 13 js/ts packages back to 100%**
+  (was 2). Found a real bug — `themable` leaked a `storage` listener via a
+  discarded `$effect.root` disposer.
 
 ## Remains
 
-Three booked in `docs/backlog/2026-09-12-*`: **yaml** (moderate; two majors, bun
-ignores nested overrides), **TypeScript 7** (deferred, path verified),
-**coverage debt** (floors at today's minimum, to ratchet up).
+Booked in `docs/backlog/2026-09-12-*`: **yaml** (moderate; two majors, bun ignores
+nested overrides), **TypeScript 7** (deferred, path verified), **coverage debt**
+— 56 js/ts statements left (chart 28, cli 14, forms 12, states 2) plus ~490 in
+`.svelte` (chart, ui, forms).
 
 ## Next command
 
-    git checkout main && git merge develop   # main is still unpatched
+    # continue the debt: chart/cli/forms/states js/ts, then .svelte
 
 ## Open questions
 
@@ -38,5 +42,5 @@ vulnerable svelte. Left alone — a consumer-facing break, not a sweep call.
 
 ## Known-broken
 
-Nothing. lint 0/0 · check:types + check:svelte 0/0 · test:ci 5819/386 ·
+Nothing. lint 0/0 · check:types + check:svelte 0/0 · test:ci 5856/386 ·
 coverage exit 0 · build:apps exit 0 · learn e2e 67 · frozen-lockfile clean.

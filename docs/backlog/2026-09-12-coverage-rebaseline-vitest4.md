@@ -44,29 +44,72 @@ rather than silently never matching.
 ## The debt
 
 Distance from each package's floor to the pre-vitest-4 bar (`js/ts` 100,
-`.svelte` 90). Ordered worst-first.
+`.svelte` 90). Ordered worst-first. **Updated 2026-09-14** — see "Progress" below.
 
 | Glob | statements | lines | gap |
 | --- | --- | --- | --- |
 | `packages/chart/**/*.svelte` | 35 | 40 | **-55** |
 | `packages/ui/**/*.svelte` | 50 | 70 | **-40** |
-| `packages/blocks/**/*.svelte` | 93 | 95 | +3 |
 | `packages/forms/**/*.svelte` | 66 | 77 | **-24** |
-| `packages/helpers/**/*.{js,ts}` | 84 | 87 | -16 |
-| `packages/actions/**/*.{js,ts}` | 86 | 89 | -14 |
 | `packages/chart/**/*.{js,ts}` | 87 | 95 | -13 |
-| `packages/ui/**/*.{js,ts}` | 92 | 91 | -8 |
-| `packages/states/**/*.{js,ts}` | 92 | 100 | -8 |
 | `packages/cli/**/*.{js,ts}` | 93 | 92 | -7 |
-| `packages/app/**/*.{js,ts}` | 96 | 100 | -4 |
-| `packages/app/**/*.svelte` | 96 | 97 | +6 |
 | `packages/forms/**/*.{js,ts}` | 96 | 99 | -4 |
-| `packages/core/**/*.{js,ts}` | 97 | 96 | -3 |
-| `packages/data/**/*.{js,ts}` | 98 | 100 | -2 |
-| `packages/unocss/**/*.{js,ts}` | 99 | 100 | -1 |
-| `packages/blocks/**/*.{js,ts}` | 100 | 100 | 0 |
+| `packages/states/**/*.{js,ts}` | 97 | 100 | -3 |
+| `packages/actions/**/*.{js,ts}` | 100 | 100 | **0** |
+| `packages/app/**/*.{js,ts}` | 100 | 100 | **0** |
+| `packages/blocks/**/*.{js,ts}` | 100 | 100 | **0** |
+| `packages/core/**/*.{js,ts}` | 100 | 100 | **0** |
+| `packages/data/**/*.{js,ts}` | 100 | 100 | **0** |
+| `packages/helpers/**/*.{js,ts}` | 100 | 100 | **0** |
+| `packages/themes/**/*.{js,ts}` | 100 | 100 | **0** |
+| `packages/ui/**/*.{js,ts}` | 100 | 100 | **0** |
+| `packages/unocss/**/*.{js,ts}` | 100 | 100 | **0** |
+| `packages/blocks/**/*.svelte` | 93 | 95 | +3 |
+| `packages/app/**/*.svelte` | 96 | 97 | +6 |
 | `packages/helpers/**/*.svelte` | 100 | 100 | +10 |
-| `packages/themes/**/*.{js,ts}` | 100 | 100 | 0 |
+
+## Progress — 2026-09-14
+
+**9 of 13 js/ts packages are back at 100%**, up from 2. Remaining js/ts: chart
+(28 statements), cli (14), forms (12), states (2) — **56 in total**. The `.svelte`
+side is untouched and is the larger half at roughly 490.
+
+Most of what was paid down was not "missing tests" in the usual sense:
+
+- **Guard clauses are contracts, not filler.** A keyboard handler calls
+  `next()`/`expand()`/`extend()` without first checking whether anything is
+  focused, so the unfocused no-op is the behaviour callers rely on. Same for the
+  SSR guards — `@rokkit/core` and `@rokkit/states` are imported by SvelteKit
+  server code where touching `document` or `localStorage` throws.
+- **Two vacuous tests were replaced.** color-mode's SSR case asserted
+  `typeof cleanup === 'function'` — true on both paths — and its comment claimed
+  `window` could not be removed under JSDOM. `vi.stubGlobal` does exactly that.
+  `contrastShortcuts` was only checked for shape, never for what UnoCSS invokes.
+- **One was a real bug.** `themable` used `$effect.root` and discarded the
+  disposer, so its `storage` listener was never removed and accumulated on every
+  re-application. The unreachable cleanup line was the symptom, not the disease.
+
+### `v8 ignore next` silently stopped working in some positions
+
+The repo has 24 `v8 ignore next` directives; **5 had stopped firing** under vitest
+4's AST-aware remapping, quietly becoming debt. The `start`/`stop` region form
+still works:
+
+```js
+/* v8 ignore start -- reason */
+if (!typography) return []
+/* v8 ignore stop */
+```
+
+Confirmed on `core/theme.ts`, `unocss/preset.ts`, `actions/navigator.js` and
+`actions/utils.js`. The failing cases include a single-line `if (...) return`,
+which is two statements on one line. The other 19 `next` directives still fire, so
+this is **not** a blanket migration — check before converting.
+
+Reach for an ignore only after establishing the path is genuinely unreachable.
+`navigator`'s `if (!el) return false` sits behind `event.target`, which a
+dispatched DOM event always populates; `utils`' `isAccordionTrigger` null-guard
+cannot be hit because its only caller dereferences `target.parentElement` first.
 
 Worst individual files, which is where to start:
 
