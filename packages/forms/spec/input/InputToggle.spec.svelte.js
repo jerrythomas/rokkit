@@ -121,3 +121,14 @@ describe('InputToggle', () => {
 		expect(labels[2].textContent).toBe('baz')
 	})
 })
+
+describe('InputToggle — default options', () => {
+	it('renders without throwing when no options are supplied', () => {
+		// The schema may not have resolved an enum yet, or a lookup may still be in
+		// flight. The default empty list keeps the control renderable meanwhile.
+		const props = $state({ value: undefined })
+		const { container } = render(InputToggle, { props })
+
+		expect(container.querySelector('[data-toggle]')).toBeTruthy()
+	})
+})

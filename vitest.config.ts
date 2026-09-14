@@ -88,7 +88,7 @@ export default defineConfig({
 				'packages/core/**/*.{js,ts}': { statements: 100, lines: 100 },
 				'packages/data/**/*.{js,ts}': { statements: 100, lines: 100 },
 				'packages/forms/**/*.{js,ts}': { statements: 100, lines: 100 },
-				'packages/forms/**/*.svelte': { statements: 66, lines: 77 },
+				'packages/forms/**/*.svelte': { statements: 90, lines: 92 },
 				'packages/helpers/**/*.{js,ts}': { statements: 100, lines: 100 },
 				'packages/helpers/**/*.svelte': { statements: 100, lines: 100 },
 				'packages/states/**/*.{js,ts}': { statements: 100, lines: 100 },

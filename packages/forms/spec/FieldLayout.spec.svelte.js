@@ -1,5 +1,5 @@
 import { describe, expect, beforeEach, it } from 'vitest'
-import { cleanup, render } from '@testing-library/svelte'
+import { cleanup, render, fireEvent } from '@testing-library/svelte'
 import { flushSync } from 'svelte'
 
 import FieldLayout from '../src/FieldLayout.svelte'
@@ -284,5 +284,100 @@ describe('FieldLayout', () => {
 
 		expect(container.querySelector('[data-layout-wrapper]')).toBeNull()
 		expect(container.querySelector('[data-layout-wrapper-alt]')).toBeTruthy()
+	})
+
+	// ---------- Keyed elements: recursion and value binding ----------
+	// The keyless variants were covered; the keyed ones are the shape a real
+	// schema produces, and they are what bind a nested object's slice of `value`.
+
+	it('recurses into a nested element that carries a key, binding its slice of value', () => {
+		const props = $state({
+			schema: {
+				elements: [
+					{
+						key: 'address',
+						elements: [{ key: 'street', props: { label: 'Street' } }]
+					}
+				]
+			},
+			value: { address: { street: '221B' } }
+		})
+		const { container } = render(FieldLayout, { props, context: makeRegistry() })
+		flushSync()
+
+		// Two wrappers: the outer layout plus the nested one it recursed into.
+		expect(container.querySelectorAll('[data-layout-wrapper]').length).toBeGreaterThan(1)
+		expect(container.querySelector('input')?.value).toBe('221B')
+	})
+
+	it('binds a keyed leaf field to its slice of value', () => {
+		const props = $state({
+			schema: { elements: [{ key: 'name', props: { label: 'Name' } }] },
+			value: { name: 'Alice' }
+		})
+		const { container } = render(FieldLayout, { props, context: makeRegistry() })
+		flushSync()
+
+		expect(container.querySelector('input')?.value).toBe('Alice')
+	})
+
+	it('names a keyed field by its full path', () => {
+		const props = $state({
+			schema: {
+				elements: [{ key: 'address', elements: [{ key: 'city', props: { label: 'City' } }] }]
+			},
+			value: { address: { city: 'Pune' } },
+			path: ['form']
+		})
+		const { container } = render(FieldLayout, { props, context: makeRegistry() })
+		flushSync()
+
+		expect(container.querySelector('[name="form.address.city"]')).toBeTruthy()
+	})
+
+	it('falls back to its own defaults when value and schema are both omitted', () => {
+		// The prop defaults (`value = $bindable({})`, `schema = {}`) only execute when
+		// the prop is absent — passing `{}` explicitly skips them, which is what every
+		// other case here does.
+		const props = $state({})
+		const { container } = render(FieldLayout, { props, context: makeRegistry() })
+
+		expect(container.querySelector('error')).toBeTruthy()
+	})
+
+	it('writes a keyed leaf edit back into the bound value', async () => {
+		// `bind:value={value[item.key]}` compiles to a getter AND a setter; reading
+		// alone never runs the setter, so the write-back path needs a real edit.
+		const props = $state({
+			schema: { elements: [{ key: 'name', props: { label: 'Name' } }] },
+			value: { name: 'Alice' }
+		})
+		render(FieldLayout, { props, context: makeRegistry() })
+		flushSync()
+
+		const input = document.querySelector('input')
+		input.value = 'Bob'
+		await fireEvent.change(input)
+		flushSync()
+
+		expect(props.value.name).toBe('Bob')
+	})
+
+	it('writes a keyed nested edit back through the recursive layout', async () => {
+		const props = $state({
+			schema: {
+				elements: [{ key: 'address', elements: [{ key: 'street', props: { label: 'Street' } }] }]
+			},
+			value: { address: { street: '221B' } }
+		})
+		render(FieldLayout, { props, context: makeRegistry() })
+		flushSync()
+
+		const input = document.querySelector('input')
+		input.value = '10 Downing'
+		await fireEvent.change(input)
+		flushSync()
+
+		expect(props.value.address.street).toBe('10 Downing')
 	})
 })
