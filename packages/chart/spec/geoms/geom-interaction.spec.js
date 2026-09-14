@@ -7,6 +7,7 @@ import TestViolin from '../helpers/TestViolin.svelte'
 import TestLine from '../helpers/TestLine.svelte'
 import TestHighlight from '../helpers/TestHighlight.svelte'
 import TestArcFull from '../helpers/TestArcFull.svelte'
+import TestBar from '../helpers/TestBar.svelte'
 
 /**
  * Geoms render their marks in the existing specs, but nothing ever hovers,
@@ -437,5 +438,104 @@ describe('Highlight — labels', () => {
 		})
 
 		expect(container.querySelector('[data-plot-highlight-label]')).toBeNull()
+	})
+})
+
+describe('Bar — hover and label placement', () => {
+	const barState = (overrides = {}) =>
+		createMockState({
+			xScale: scaleBand().domain(['a', 'b']).range([0, 300]).padding(0.1),
+			yScale: scaleLinear().domain([0, 40]).range([200, 0]),
+			geomData: () => rows,
+			colors: new Map([
+				['a', { fill: '#4e79a7', stroke: '#31597c' }],
+				['b', { fill: '#f28e2b', stroke: '#b56a20' }]
+			]),
+			...overrides
+		})
+
+	const bars = (container) => [...container.querySelectorAll('[data-plot-element="bar"]')]
+
+	it('reports the hovered row and clears it on leave', async () => {
+		const setHovered = vi.fn()
+		const clearHovered = vi.fn()
+		const { container } = render(TestBar, {
+			state: barState({ setHovered, clearHovered }),
+			x: 'cat',
+			y: 'val'
+		})
+
+		const [first] = bars(container)
+		expect(first).toBeTruthy()
+
+		await fireEvent.mouseEnter(first)
+		expect(setHovered).toHaveBeenCalledWith(rows[0])
+
+		await fireEvent.mouseLeave(first)
+		expect(clearHovered).toHaveBeenCalled()
+	})
+
+	it('places a pill above the bar in the vertical orientation', () => {
+		const { container } = render(TestBar, {
+			state: barState(),
+			x: 'cat',
+			y: 'val',
+			label: true
+		})
+
+		expect(container.querySelectorAll('[data-plot-element="label"]').length).toBeGreaterThan(0)
+	})
+
+	it('places a pill beside the bar in the horizontal orientation', () => {
+		const { container } = render(TestBar, {
+			state: barState({ orientation: 'horizontal' }),
+			x: 'cat',
+			y: 'val',
+			label: true,
+			options: { orientation: 'horizontal' }
+		})
+
+		expect(container.querySelectorAll('[data-plot-element="label"]').length).toBeGreaterThan(0)
+	})
+
+	it('draws the label inside the bar when labelInside is set and it fits', () => {
+		// Inside labels sit on the fill, so they use a contrast colour rather than the
+		// stroke — the wrong branch here makes a dark label on a dark bar.
+		const { container } = render(TestBar, {
+			state: barState({ orientation: 'horizontal' }),
+			x: 'cat',
+			y: 'val',
+			label: () => 'x',
+			options: { orientation: 'horizontal', labelInside: true }
+		})
+
+		const label = container.querySelector('text[data-plot-element="label"]')
+		expect(label).toBeTruthy()
+		expect(label.getAttribute('text-anchor')).toBe('end')
+	})
+
+	it('pushes an inside label outside when the bar is too narrow for it', () => {
+		const { container } = render(TestBar, {
+			state: barState({ orientation: 'horizontal' }),
+			x: 'cat',
+			y: 'val',
+			label: () => 'a very long label that cannot fit',
+			options: { orientation: 'horizontal', labelInside: true }
+		})
+
+		const label = container.querySelector('text[data-plot-element="label"]')
+		expect(label).toBeTruthy()
+		expect(label.getAttribute('text-anchor')).toBe('start')
+	})
+
+	it('renders no label when the formatter yields nothing', () => {
+		const { container } = render(TestBar, {
+			state: barState(),
+			x: 'cat',
+			y: 'val',
+			label: () => ''
+		})
+
+		expect(container.querySelectorAll('[data-plot-element="label"]')).toHaveLength(0)
 	})
 })

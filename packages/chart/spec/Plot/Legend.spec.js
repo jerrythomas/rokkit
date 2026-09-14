@@ -157,3 +157,140 @@ describe('Legend — rendered sections', () => {
 		expect(style).toContain('rgb(8, 69, 148)')
 	})
 })
+
+// The cases above derive `items` inline and assert on that local construction —
+// they never render Legend. These drive the actual swatch branches, which differ
+// per geom: a line gets a stroke rule, a scatter gets its symbol shape, and a
+// pattern-encoded series gets a texture overlay.
+
+describe('Legend — swatch variants', () => {
+	const colors = new Map([
+		['a', { fill: '#4e79a7', stroke: '#31597c' }],
+		['b', { fill: '#f28e2b', stroke: '#b56a20' }]
+	])
+
+	// colorField AND symbolField set to the SAME field: that makes splitSymbol and
+	// symbolOnly both false, which is the combined-swatch path. With no colorField
+	// the component diverts to a separate symbol-only section instead.
+	const legendState = (overrides = {}) =>
+		createMockState({
+			colors,
+			legend: true,
+			colorField: 'cat',
+			symbolField: 'cat',
+			channels: { color: 'cat', symbol: 'cat' },
+			...overrides
+		})
+
+	it('renders a line rule swatch for a line geom', () => {
+		const { container } = render(TestLegend, {
+			state: legendState({ geomTypes: new Set(['line']) })
+		})
+
+		const swatch = container.querySelector('[data-plot-legend-swatch]')
+		expect(swatch).toBeTruthy()
+		expect(swatch.querySelector('line')).toBeTruthy()
+	})
+
+	it('adds the symbol onto the line swatch when the series has one', () => {
+		const { container } = render(TestLegend, {
+			state: legendState({
+				geomTypes: new Set(['line']),
+				symbols: new Map([
+					['a', 'circle'],
+					['b', 'square']
+				])
+			})
+		})
+
+		const swatch = container.querySelector('[data-plot-legend-swatch]')
+		expect(swatch.querySelector('line')).toBeTruthy()
+		expect(swatch.querySelector('path')).toBeTruthy()
+	})
+
+	it('renders a symbol-only swatch for a point geom', () => {
+		const { container } = render(TestLegend, {
+			state: legendState({
+				geomTypes: new Set(['point']),
+				symbols: new Map([
+					['a', 'triangle'],
+					['b', 'square']
+				])
+			})
+		})
+
+		const swatch = container.querySelector('[data-plot-legend-swatch]')
+		expect(swatch).toBeTruthy()
+		expect(swatch.querySelector('path')).toBeTruthy()
+		// A scatter legend must NOT draw the line rule.
+		expect(swatch.querySelector('line')).toBeNull()
+	})
+
+	it('falls back to a plain fill swatch for a point geom with no symbols', () => {
+		const { container } = render(TestLegend, {
+			state: legendState({ geomTypes: new Set(['point']), symbols: new Map() })
+		})
+
+		expect(container.querySelector('[data-plot-legend-item]')).toBeTruthy()
+	})
+
+	it('renders one legend item per colour key', () => {
+		const { container } = render(TestLegend, {
+			state: legendState({ geomTypes: new Set(['bar']) })
+		})
+
+		expect(container.querySelectorAll('[data-plot-legend-item]')).toHaveLength(2)
+	})
+})
+
+describe('Legend — separate symbol section', () => {
+	// When symbol encodes a DIFFERENT field from colour, the legend grows a second
+	// section so the reader can decode both channels independently.
+	const splitState = (overrides = {}) =>
+		createMockState({
+			colors: new Map([
+				['a', { fill: '#4e79a7', stroke: '#31597c' }],
+				['b', { fill: '#f28e2b', stroke: '#b56a20' }]
+			]),
+			legend: true,
+			colorField: 'cat',
+			symbolField: 'shape',
+			channels: { color: 'cat', symbol: 'shape' },
+			symbols: new Map([
+				['round', 'circle'],
+				['boxy', 'square']
+			]),
+			...overrides
+		})
+
+	it('renders a second section for the symbol channel', () => {
+		const { container } = render(TestLegend, {
+			state: splitState({ geomTypes: new Set(['point']) })
+		})
+
+		expect(container.querySelectorAll('.legend-section').length).toBeGreaterThan(0)
+	})
+
+	it('uses a dashed rule plus the shape for a line geom', () => {
+		const { container } = render(TestLegend, {
+			state: splitState({ geomTypes: new Set(['line']) })
+		})
+
+		const dashed = [...container.querySelectorAll('line')].filter((l) =>
+			l.getAttribute('stroke-dasharray')
+		)
+		expect(dashed.length).toBeGreaterThan(0)
+		// The shape rides on the dashed rule so both channels read at once.
+		expect(dashed[0].parentElement.querySelector('path')).toBeTruthy()
+	})
+
+	it('uses a shape-only swatch for a non-line geom', () => {
+		const { container } = render(TestLegend, {
+			state: splitState({ geomTypes: new Set(['point']) })
+		})
+
+		const section = container.querySelector('.legend-section')
+		expect(section.querySelector('path')).toBeTruthy()
+		expect(section.querySelector('line[stroke-dasharray]')).toBeNull()
+	})
+})
