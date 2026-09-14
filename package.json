@@ -8,11 +8,11 @@
   "scripts": {
     "clean": "find . -name  node_modules -o -name .svelte-kit -o -name dist | xargs rm -rf",
     "test:unit": "vitest",
-    "test:ci": "vitest run",
+    "test:ci": "bun run sync:kit && vitest run",
     "test:ui": "vitest run --project ui",
     "test:browser": "vitest run --config vitest.browser.config.ts",
     "test:e2e": "cd apps/learn && npx playwright test",
-    "coverage": "vitest run --coverage",
+    "coverage": "bun run sync:kit && vitest run --coverage",
     "format": "prettier --config config/.prettierrc --ignore-path config/.prettierignore --write .",
     "lint": "eslint --config config/eslint.config.mjs --fix --max-warnings 0",
     "check:types": "for d in packages/*/ apps/*/; do if [ -f \"${d}tsconfig.json\" ]; then echo \"→ tsc ${d}\"; (cd \"$d\" && bun run check:types) || exit 1; fi; done",
@@ -25,7 +25,8 @@
     "publish:all": "for dir in ./packages/*/; do grep -q '\"private\": true' \"${dir}package.json\" 2>/dev/null || (cd \"$dir\" && bun publish); done",
     "build:all": "find ./packages -type d -depth 1 -exec sh -c 'cd \"{}\" && bun run build' \\;",
     "build:apps": "for d in ./apps/*/; do if grep -q '\"build\"' \"${d}package.json\" 2>/dev/null; then echo \"→ build ${d}\"; (cd \"$d\" && bun run build) || exit 1; fi; done",
-    "release": "bun run clean && bun install && bun run publish:all"
+    "release": "bun run clean && bun install && bun run publish:all",
+    "sync:kit": "cd apps/learn && bun run sync"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^6.2.0",
