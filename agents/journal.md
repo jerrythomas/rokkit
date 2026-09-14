@@ -8572,3 +8572,61 @@ exits 0 at 404/404 files and 6181 tests, coverage completes unchanged at
 Coverage both green on `c4744bb8`.
 
 Commit: `c4744bb8`
+
+---
+
+## 2026-09-14 — yaml, and the snippet props that led somewhere bigger
+
+**yaml (closed).** The advisory GHSA-48c2-rrv3-qjmp spans *two* ranges —
+`<1.10.3` and `>=2.0.0 <2.8.3` — which is why the tree showed two findings and
+why the original booking was right that one global override can't fix it:
+`postcss-load-config` declares `^1.10.2`, `bumpp` declares `^2.8.2`, and any
+single forced version breaks one of them. Confirmed empirically that bun ignores
+scoped override keys (a control and a `"postcss-load-config/yaml": "1.10.2"` arm
+resolve identically), so package.json can't express a per-dependent pin either.
+
+But no override was needed. Both dependents' own ranges already admit a patched
+version — the lockfile just held stale pins from before those versions existed.
+Three dead ends first, each worth remembering:
+
+- `bun update yaml` added yaml as a **root dependency** and left the nested pin
+  alone. Same trap as earlier in this sweep.
+- Deleting only the scoped pin let bun hoist-satisfy `postcss-load-config`
+  (`^1.10.2`) with **yaml 2.8.2** — a major violation the audit scored as an
+  improvement. Audits read the lockfile, not the tree.
+- Deleting every yaml pin and re-resolving *did* fix it, but dragged 245/307
+  lines with it including `@antfu/install-pkg` 1.1.0 → **2.0.1**.
+
+Final change is 2 lines: bun's own resolved entries from that re-resolve,
+transplanted onto the original lockfile. Verified on a genuinely clean slate —
+node_modules moved aside, fresh install — the tree contains only yaml@1.10.3 and
+yaml@2.9.1. **bun audit: 2 → 0.**
+
+One methodological note: my first three readings of "which yaml does
+postcss-load-config use" were all wrong, because I probed a path that doesn't
+exist (`.bun` dirs carry a hash suffix) and `require.resolve` silently walked up
+to the hoisted copy. A probe that can't fail isn't a measurement. The reading
+only became trustworthy once I read the sibling `node_modules/yaml` directly.
+
+**Snippet props (closed), and what they uncovered.** Typing the documented
+snippets was straightforward once surveyed rather than assumed — seven
+components call `content(proxy)`, Tabs and Toggle call `content(proxy, selected)`,
+and three others aren't item snippets at all. The index signature stays, because
+`item.snippet = 'name'` needs it; explicit members simply win over it.
+
+Proving the fix mattered more than making it. Green here could easily be vacuous
+— if the parameter fell back to `any` the gate would also report 0. So:
+assigning it to `number` now yields *"Type 'ProxyItem' is not assignable to type
+'number'"*. That's the difference between "no errors" and "actually typed".
+
+Then the real find: **four published `*Props` interfaces describe components that
+no longer exist.** `ListProps` advertises `item`/`groupLabel` snippets,
+`multiselect`, `expanded`, `selected`, `active` — none of which `List.svelte`
+reads — and types `onselect` as `(value, item)` when the component passes a
+`ProxyItem`. 44 of 48 props interfaces are imported by their own component, which
+is exactly what keeps them honest; the four that aren't are the four that drifted.
+Booked rather than fixed: correcting them is a breaking type change, and
+`ListProps`'s extra props look like a designed API someone meant to build, not an
+accident. That's a call for the owner.
+
+Commits: `97cc8b64` (yaml) `1fc4e987` (snippets)
