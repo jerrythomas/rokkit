@@ -1,40 +1,38 @@
 # CHECKPOINT
 
-**Slice:** post-v1.4.2 backlog burn-down. Three items closed (2026-09-14).
-Working tree clean; `c4744bb8` on develop — CI green (Check + Coverage).
+**Slice:** post-v1.4.2 backlog burn-down — **backlog now empty of open items
+except one owner decision**. Working tree clean; `1fc4e987` on develop.
 
 ## Done
 
-- **Flaky learn e2e CLOSED** (`3ee1bd5f`). Pre-hydration dead click: SSR ships
-  controls hit-testable but inert, so Playwright's actionability checks pass and
-  the click is swallowed (`/app` hydrates 330 tiles). Wouldn't reproduce on
-  demand, so `hydration.e2e.ts` holds the window open deliberately.
-  `body[data-hydrated]` in a layout `$effect`; 13 goto sites wait on it. Found a
-  *second* racy test, and one that could pass vacuously. ×3: 210/210, 2.2→1.7 m.
-- **learn typecheck gate CLOSED** (`a21e5278`, `76a88837`) — booked as large,
-  measured as 6 errors in 3 files. **svelte-check gate CLOSED** (`134d09b9`) —
-  14 in 4. All six gated dirs now 0 errors / 0 warnings.
-- **Coverage regression from that gate, fixed** (`c4744bb8`) — learn's tsconfig
-  extends the *generated* `.svelte-kit/tsconfig.json` and standalone `coverage`
-  had not synced. `test:ci`/`coverage` sync now.
+- **Flaky learn e2e CLOSED** (`3ee1bd5f`) — pre-hydration dead click. SSR ships
+  controls hit-testable but inert; `hydration.e2e.ts` holds the window open so
+  the race is deterministic. ×3: 210/210, 2.2→1.7 m.
+- **learn typecheck + svelte-check gates CLOSED** (`a21e5278`, `76a88837`,
+  `134d09b9`); regression fixed in `c4744bb8`. All six gated dirs 0/0.
+- **yaml CLOSED** (`97cc8b64`) — **bun audit 2 → 0**. Advisory spans both majors
+  (`<1.10.3` and `>=2.0.0 <2.8.3`), so no single override works, and bun ignores
+  scoped keys (verified). No override needed: both ranges already admit a patched
+  version, the lockfile just held stale pins. 2-line diff; a full re-resolve
+  would have dragged 245/307 lines incl. `@antfu/install-pkg` 1→2.
+- **Snippet props CLOSED** (`1fc4e987`) — `ItemSnippet`/`SelectableItemSnippet`
+  applied across 9 components after surveying actual call shapes. Green proven
+  non-vacuous.
 
-Both gates found one library defect: `@rokkit/ui` exports a component **and** an
-interface named `ChatMessage`, the component's type shadowing the interface — so
-`ChatMessage<T>` was unreachable for every consumer. Fixed additively as
-`ChatMessageData<T>`. Only a consumer-side gate can see this.
+Consumer-side gating found two library defects invisible to the package's own
+checks: the `ChatMessage` component/interface collision, and the below.
 
-## Remains (booked in `docs/backlog/`)
+## Remains
 
-- **yaml** (moderate) — two majors, bun ignores nested overrides; only lever is
-  a full re-resolve (blast radius measured: 40 packages).
+- **Stale `*Props` types** (new, needs your call) — `ListProps`, `MenuProps`,
+  `SelectBaseProps`, `TreeProps` describe components that no longer exist.
+  They're the only 4 of 48 their component doesn't import. Correcting them is a
+  breaking type change, and `ListProps`'s `multiselect`/`expanded`/`selected`
+  look like a designed API, not an accident — which side is the truth is yours.
 - **TypeScript 7** — path verified, deferred by choice.
-- **Untyped snippet props** (new) — `List` and siblings collect snippets behind
-  `[key: string]: unknown`, so consumers' params are implicitly `any`; two
-  interim annotations in learn to delete when fixed.
-
-Open question: narrow `peerDependencies` (`svelte: ^5.0.0`) to exclude vulnerable svelte? A consumer-facing break, not a sweep call.
+- Open question: narrow `peerDependencies` (`svelte: ^5.0.0`) to exclude vulnerable svelte?
 
 ## Known-broken
 
 Nothing. lint 0/0 · check:types + check:build + check:svelte 0/0 · build:apps 0 ·
-test:ci 6181/404 · e2e 70/70. (Sensei daemon down — this file is the record.)
+test:ci 6181/404 · e2e 70/70 · bun audit 0. (Sensei daemon down — this is the record.)
