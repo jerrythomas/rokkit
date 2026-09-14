@@ -1,53 +1,78 @@
 # `apps/learn` TypeScript is never typechecked
 
 **Raised:** 2026-09-14, while fixing the pre-hydration e2e flake.
-**Status:** open.
+**Status:** CLOSED 2026-09-14 — gate added, 0 errors.
 
 ## The gap
 
-`apps/learn` has no `tsconfig.json` and no `check:types` / `check` script. The
-root gate iterates `packages/*/ apps/*/` and runs `check:types` only where a
-`tsconfig.json` exists, so the whole learn app — `src/` and `e2e/` alike — is
-skipped:
+`apps/learn` had no `tsconfig.json` and no `check:types` script. The root gate
+iterates `packages/*/ apps/*/` and runs `check:types` only where a
+`tsconfig.json` exists, so the whole learn app — `src/` and `e2e/` alike — was
+skipped. Nothing else covered it: Playwright transpiles specs without
+typechecking, `vite build` strips types, and `check:svelte` enumerates five
+library packages by name.
 
-    → tsc packages/app/      → tsc packages/blocks/   → tsc packages/chart/
-    → tsc packages/forms/    → tsc packages/ui/
-    (apps/learn absent)
+`bun run check` was green on code no type checker had read.
 
-Nothing else covers it. Playwright transpiles `.ts` specs without typechecking,
-`vite build` strips types, and `check:svelte` enumerates five library packages
-by name — learn is not one of them.
+## The estimate was wrong, and measuring was cheap
 
-So `bun run check` is green on code no type checker has read.
+This was booked expecting a large error count — a ~2,300-line
+`routes/app/+layout.svelte` that had never been checked. The actual measurement:
 
-## Why it matters
+| Scope | Errors |
+| --- | --- |
+| `e2e/**/*.ts` (the specs) | **0** |
+| `src/**/*.ts` | **6** |
+| `e2e/*.mjs` collectors | 143 — but only under `checkJs: true` |
 
-This is the same shape as the `check:build` publish hole found at v1.4.2: the
-gate was green because the build that would have failed was not the build the
-gate ran. Here the checker that would have failed is not run at all.
+The 143 were self-inflicted by the measuring config. With `checkJs: false` the
+real number was **6**, in 3 files. Two minutes of measuring turned a deferred
+slice into a same-session fix.
 
-Concretely, `e2e/helpers.ts` gained `waitForHydration`/`gotoHydrated` in
-`3ee1bd5f` and is imported by eight specs. A signature error in it would surface
-as a runtime e2e failure, not a type error — and on the deployed site, `src/` is
-in the same position.
+## The 6 were real defects, not typing noise
 
-## Why it is booked and not done
+- **`@rokkit/ui` exports a component `ChatMessage` and an interface
+  `ChatMessage`.** Svelte's generated component types contribute a type of that
+  name, which shadows the interface — so `ChatMessage<T>` is *unreachable for any
+  consumer*. Fixed additively with a `ChatMessageData<T>` alias; renaming either
+  is breaking and waits for a major. This is a library API defect that the
+  package-internal gates structurally cannot see, because they check `ui`
+  against its own source, never through the package entry.
+- **`adoptProvider(provider: string)`** forced an `as string` at the call site
+  that laundered away `ChatProvider`. A missing provider then failed the
+  `=== 'scripted'` guard and wrote `llm.provider = undefined` with `enabled`
+  left true — a value outside the field's own union.
+- **`spec.options`** reached through the `DemoPropSchema` union instead of
+  narrowing on the discriminant.
+- **`Boolean(conv) &&`** did not narrow for the `.turns` access that followed.
 
-Adding a `tsconfig.json` turns on checking for an app that has never had it —
-including a ~2,300-line `routes/app/+layout.svelte`. The error count is unknown
-and probably not small. That is a slice of its own, not a rider on a flake fix.
+## Two things worth keeping
 
-## Suggested approach
+**The gate checks the consumer-facing surface, and which surface depends on the
+machine.** `@rokkit/ui` resolves via `exports`: `types → ./dist/index.d.ts`, with
+`default → ./src/index.ts` behind it. `dist` is gitignored and CI runs
+`bun install --ignore-scripts`, so **locally the check runs against built
+declarations and in CI against source.** Both were verified green here (by moving
+`dist` aside). Worth remembering when a type error reproduces on only one of them.
 
-1. Add `apps/learn/tsconfig.json` extending `./.svelte-kit/tsconfig.json`, and a
-   `check:types` script. Measure the damage first — do not commit it red.
-2. If the count is large, split: gate `e2e/` (small, new, and the reason this
-   was noticed) ahead of `src/`.
-3. Once green, the root gate picks it up automatically — the loop already looks
-   for `apps/*/tsconfig.json`, so no root change is needed.
-4. Consider adding learn to `check:svelte` for the `.svelte` half.
+**`lint --fix` and `tsc` actively disagree on one idiom.** The autofix rewrites
+`!!x &&` into `Boolean(x) &&`, and `Boolean()` does not narrow — so lint passes,
+then typecheck fails on the very line lint just rewrote. A ternary satisfies
+both. Sibling of the existing warning in CLAUDE.md that `--fix` silently deletes
+unused disable directives.
 
-## Related
+## What was done
 
-- `docs/backlog/2026-09-12-typescript-7-migration.md` — the check surface shrank
-  under `--tsgo`; whatever is decided here should survive that move.
+1. `apps/learn/tsconfig.json` extending `./.svelte-kit/tsconfig.json`.
+2. `check:types` = `svelte-kit sync && tsc --noEmit` — the sync is required,
+   since `.svelte-kit/tsconfig.json` is generated and the root gate runs
+   `check:types` long before `build:apps` would create it.
+3. The root gate picked it up with no root change (the loop already looks for
+   `apps/*/tsconfig.json`).
+4. Break-it verified: mistyping `waitForHydration`'s parameter fails the gate
+   with exit 1, and catches it transitively in the specs that import it.
+
+## Still open
+
+`.svelte` files in learn are not checked — `tsc` ignores them, and learn is not
+in `check:svelte`'s list. That is the other half of this gap and is unmeasured.

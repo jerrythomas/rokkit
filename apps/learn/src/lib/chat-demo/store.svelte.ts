@@ -107,7 +107,11 @@ const COMPONENT_TITLES: Record<string, string> = {
 
 function pushAssistant(blocks: Block[]): void {
 	const conv = getCurrentConversation()
-	const firstAssistant = Boolean(conv) && !conv.turns.some((t) => t.kind === 'assistant')
+	// A ternary, not `x && …`, because the two gates disagree on the guard form:
+	// `Boolean(conv) &&` is what `lint --fix` rewrites `!!conv &&` into, and
+	// `Boolean()` does not narrow, so tsc then flags `conv` as possibly null.
+	// The ternary narrows and survives the autofix.
+	const firstAssistant = conv ? !conv.turns.some((t) => t.kind === 'assistant') : false
 	const stamp = currentProviderStamp()
 	sharedAppendAssistant({ kind: 'blocks', blocks, ...stamp })
 	// A+B titling: if the opening response is exactly one known component, prefer its type.
@@ -289,8 +293,13 @@ export function resetConversation(): void {
  * provider; the user can still switch mid-thread afterwards.
  */
 /** Point `llm` at one turn's provider/model pair. */
-function adoptProvider(provider: string, model?: string): void {
-	if (provider === 'scripted') {
+function adoptProvider(provider: ChatProvider | undefined, model?: string): void {
+	// `ChatProvider`, not `string`. Typing this as string forced an `as string` at
+	// the call site, which laundered the union away and let a missing provider
+	// through: `undefined !== 'scripted'`, so it fell past this guard and wrote
+	// `llm.provider = undefined` with `enabled` left true — every later read of
+	// the provider then saw a value outside its own union.
+	if (!provider || provider === 'scripted') {
 		llm.enabled = false
 		return
 	}
@@ -310,5 +319,5 @@ export function syncLLMFromCurrentConversation(): void {
 		.reverse()
 		.find((t) => t.kind === 'assistant' && t.body.kind === 'blocks' && t.body.provider)
 	if (!turn || turn.kind !== 'assistant' || turn.body.kind !== 'blocks') return
-	adoptProvider(turn.body.provider as string, turn.body.model)
+	adoptProvider(turn.body.provider, turn.body.model)
 }

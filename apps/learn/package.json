@@ -11,7 +11,8 @@
     "test:e2e": "playwright test",
     "test:e2e:update": "playwright test --update-snapshots",
     "test:unit": "vitest run",
-    "test:unit:watch": "vitest"
+    "test:unit:watch": "vitest",
+    "check:types": "svelte-kit sync && tsc --noEmit"
   },
   "devDependencies": {
     "@iconify-json/mdi": "^1.2.3",

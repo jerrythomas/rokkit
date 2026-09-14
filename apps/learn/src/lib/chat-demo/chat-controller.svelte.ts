@@ -7,7 +7,10 @@
  * the hidden file input) stay in the component — this module never touches
  * the DOM. Runes are allowed here because the file is a `.svelte.ts` module.
  */
-import type { ChatMessage as ChatMessageData } from '@rokkit/ui'
+// `ChatMessageData`, not `ChatMessage as ChatMessageData`: the package also
+// exports a component of that name, whose generated type shadows the interface,
+// so the bare name arrives here non-generic.
+import type { ChatMessageData } from '@rokkit/ui'
 import type { ChatMode } from './modes'
 import { MODES } from './modes'
 import { conversation, submitText, submitData } from '$lib/chat-demo/store.svelte'
