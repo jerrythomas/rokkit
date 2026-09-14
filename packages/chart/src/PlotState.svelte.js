@@ -387,7 +387,12 @@ export class PlotState {
 		const crossVal = this.axisOrigin[1]
 		if (crossVal !== undefined) return this.yScale(crossVal)
 		const domain = this.yScale.domain?.()
+		/* v8 ignore start -- unreachable: yScale is either null (caught by the guard
+		   above) or a d3 scale from buildUnifiedYScale, whose every return path is a
+		   scaleLinear or scaleBand — both always expose domain() returning an array.
+		   `ignore next` does not fire on a single-line `if (...) return`. */
 		if (!domain) return this.#innerHeight
+		/* v8 ignore stop */
 		// Auto quadrant: place x-axis at y=0 when domain spans zero (no offset)
 		if (domain[0] <= 0 && domain[domain.length - 1] >= 0) return this.yScale(0)
 		// Q1-only: axis at bottom edge, optionally with offset

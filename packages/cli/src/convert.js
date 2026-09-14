@@ -47,12 +47,14 @@ export function processIcons(iconSet, color) {
 		try {
 			cleanAndOptimizeIcon(svg, color)
 		} catch (err) {
-			/* v8 ignore next 6 -- catch body requires an iconify-tools internal parse
+			/* v8 ignore start -- catch body requires an iconify-tools internal parse
 			   error; the err1 fixture exercises this path but the exception propagates
-			   at importDirectory level before processIcons is reached */
+			   at importDirectory level before processIcons is reached. Uses start/stop
+			   because `ignore next N` no longer fires under vitest 4's AST remapping. */
 			console.error(`Error parsing ${name}: ${err.reason}`)
 			iconSet.remove(name)
 			return
+			/* v8 ignore stop */
 		}
 
 		iconSet.fromSVG(name, svg)

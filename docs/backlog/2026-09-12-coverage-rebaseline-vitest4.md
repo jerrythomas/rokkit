@@ -51,16 +51,16 @@ Distance from each package's floor to the pre-vitest-4 bar (`js/ts` 100,
 | `packages/chart/**/*.svelte` | 35 | 40 | **-55** |
 | `packages/ui/**/*.svelte` | 50 | 70 | **-40** |
 | `packages/forms/**/*.svelte` | 66 | 77 | **-24** |
-| `packages/chart/**/*.{js,ts}` | 87 | 95 | -13 |
-| `packages/cli/**/*.{js,ts}` | 93 | 92 | -7 |
-| `packages/forms/**/*.{js,ts}` | 96 | 99 | -4 |
-| `packages/states/**/*.{js,ts}` | 97 | 100 | -3 |
 | `packages/actions/**/*.{js,ts}` | 100 | 100 | **0** |
 | `packages/app/**/*.{js,ts}` | 100 | 100 | **0** |
 | `packages/blocks/**/*.{js,ts}` | 100 | 100 | **0** |
+| `packages/chart/**/*.{js,ts}` | 100 | 100 | **0** |
+| `packages/cli/**/*.{js,ts}` | 100 | 100 | **0** |
 | `packages/core/**/*.{js,ts}` | 100 | 100 | **0** |
 | `packages/data/**/*.{js,ts}` | 100 | 100 | **0** |
+| `packages/forms/**/*.{js,ts}` | 100 | 100 | **0** |
 | `packages/helpers/**/*.{js,ts}` | 100 | 100 | **0** |
+| `packages/states/**/*.{js,ts}` | 100 | 100 | **0** |
 | `packages/themes/**/*.{js,ts}` | 100 | 100 | **0** |
 | `packages/ui/**/*.{js,ts}` | 100 | 100 | **0** |
 | `packages/unocss/**/*.{js,ts}` | 100 | 100 | **0** |
@@ -70,9 +70,12 @@ Distance from each package's floor to the pre-vitest-4 bar (`js/ts` 100,
 
 ## Progress — 2026-09-14
 
-**9 of 13 js/ts packages are back at 100%**, up from 2. Remaining js/ts: chart
-(28 statements), cli (14), forms (12), states (2) — **56 in total**. The `.svelte`
-side is untouched and is the larger half at roughly 490.
+**All 13 js/ts packages are back at 100%.** The strict js/ts half of the
+pre-vitest-4 bar is fully restored: 0 uncovered statements, every package floor
+at `statements: 100, lines: 100`.
+
+The `.svelte` side is untouched and is now the whole of the remaining debt —
+roughly 490 statements across chart (35 floor), ui (50) and forms (66).
 
 Most of what was paid down was not "missing tests" in the usual sense:
 
@@ -81,6 +84,14 @@ Most of what was paid down was not "missing tests" in the usual sense:
   focused, so the unfocused no-op is the behaviour callers rely on. Same for the
   SSR guards — `@rokkit/core` and `@rokkit/states` are imported by SvelteKit
   server code where touching `document` or `localStorage` throws.
+- **Injected adapters hid the real code paths.** `rokkit init`, `theme create`
+  and `upgrade` all take injectable fs/exec adapters, and every existing test
+  injected all of them — so the DEFAULT implementations, the ones that actually
+  run for a user, were never executed. Mocking the node builtins instead of
+  injecting runs them for real and asserts what they call, which is how a dropped
+  `stdio: 'inherit'` or a missing `recursive: true` would now be caught. Note the
+  sources import from `'fs'`/`'child_process'`, **not** the `node:` prefixed
+  specifiers — the mock path has to match or the factory silently never applies.
 - **Two vacuous tests were replaced.** color-mode's SSR case asserted
   `typeof cleanup === 'function'` — true on both paths — and its comment claimed
   `window` could not be removed under JSDOM. `vi.stubGlobal` does exactly that.
@@ -88,6 +99,14 @@ Most of what was paid down was not "missing tests" in the usual sense:
 - **One was a real bug.** `themable` used `$effect.root` and discarded the
   disposer, so its `storage` listener was never removed and accumulated on every
   re-application. The unreachable cleanup line was the symptom, not the disease.
+
+### One pattern paid for twelve statements
+
+Every mark builder in `@rokkit/chart` opens with the same bail-out —
+`if (!data?.length || !xScale || !yScale) return []` — and none of the twelve was
+exercised. It is the contract that keeps a Plot renderable before data arrives or
+while a scale is being derived. One `describe.each` over the twelve builders
+covers the family and is far more maintainable than twelve near-identical tests.
 
 ### `v8 ignore next` silently stopped working in some positions
 

@@ -143,7 +143,12 @@ export class Wrapper {
 	collapse(_path) {
 		if (!this.#focusedKey) return
 		const node = this.flatView.find((n) => n.key === this.#focusedKey)
+		/* v8 ignore start -- unreachable: focusedKey is only ever set from flatView and
+		   the ProxyTree is immutable after construction (no items setter, no update()),
+		   so a focused key cannot go stale. Kept as a guard in case the tree gains
+		   mutation. `ignore next` does not fire on a single-line `if (...) return`. */
 		if (!node) return
+		/* v8 ignore stop */
 		const canCollapse = node.hasChildren && node.proxy.expanded && this.#collapsible
 		if (canCollapse) {
 			node.proxy.expanded = false

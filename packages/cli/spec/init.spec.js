@@ -574,3 +574,30 @@ describe('init()', () => {
 		expect(console.info).toHaveBeenCalledWith(expect.stringContaining('already has theme imports'))
 	})
 })
+
+describe('generateConfig — icon style selection', () => {
+	it('records the chosen icon style under icons.style', () => {
+		// `rokkit init` offers light/solid/twotone; the answer has to survive into
+		// the written config or the choice silently does nothing.
+		const config = generateConfig({
+			palette: 'default',
+			icons: 'rokkit',
+			iconStyle: 'twotone',
+			themes: ['rokkit'],
+			switcher: 'full'
+		})
+
+		expect(config.icons).toEqual({ style: 'twotone' })
+	})
+
+	it('omits the icons section entirely when no style or custom path is chosen', () => {
+		const config = generateConfig({
+			palette: 'default',
+			icons: 'rokkit',
+			themes: ['rokkit'],
+			switcher: 'full'
+		})
+
+		expect(config.icons).toBeUndefined()
+	})
+})

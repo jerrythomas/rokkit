@@ -231,3 +231,11 @@ describe('agentsCommand entry', () => {
 		expect(fsExists(pjoin(cwd, '.claude/agents/rokkit-components-reviewer.md'))).toBe(true)
 	})
 })
+
+describe('listAgents — missing catalog directory', () => {
+	it('returns an empty list rather than throwing', () => {
+		// `rokkit agents` runs from an install that may predate the bundled catalog,
+		// so a missing directory has to read as "none available".
+		expect(listAgents({ agentsDir: pjoin(tmpdir(), 'rokkit-no-such-agents-dir') })).toEqual([])
+	})
+})

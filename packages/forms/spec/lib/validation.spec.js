@@ -340,3 +340,14 @@ describe('patterns', () => {
 		expect(patterns.url.test('not-a-url')).toBe(false)
 	})
 })
+
+describe('validateAll — schema without properties', () => {
+	it('does not throw when the schema declares no properties', () => {
+		// An opaque or not-yet-loaded schema must resolve each field to "no
+		// definition" rather than throwing while walking a missing properties map.
+		const layout = { type: 'vertical', elements: [{ scope: '#/anything', label: 'Anything' }] }
+
+		expect(() => validateAll({ anything: 1 }, {}, layout)).not.toThrow()
+		expect(validateAll({ anything: 1 }, {}, layout)).toBeTruthy()
+	})
+})

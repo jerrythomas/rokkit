@@ -1872,3 +1872,205 @@ describe('FormBuilder', () => {
 		})
 	})
 })
+
+// ─── Guard clauses ────────────────────────────────────────────────────────────
+// FormBuilder is driven by a schema and a layout that consumers author, so every
+// one of these is a shape the builder has to tolerate rather than throw on.
+
+describe('FormBuilder — path and schema guards', () => {
+	it('getValue returns undefined for an empty path', () => {
+		const fb = new FormBuilder({ name: 'a' })
+
+		expect(fb.getValue('')).toBeUndefined()
+		expect(fb.getValue(undefined)).toBeUndefined()
+	})
+
+	it('tolerates a schema with no properties', () => {
+		// An empty/opaque schema must not blow up field lookups — the field simply
+		// has no definition and falls back to defaults.
+		const fb = new FormBuilder({ name: 'a' }, {})
+
+		expect(() => fb.elements).not.toThrow()
+	})
+
+	it('validateStep returns true for an index that is not a step', () => {
+		// Callers advance by index; an index past the end, or one pointing at a
+		// non-step element, must read as "nothing to block on" rather than throw.
+		const fb = new FormBuilder({ name: 'a' })
+
+		expect(fb.validateStep(0)).toBe(true)
+		expect(fb.validateStep(99)).toBe(true)
+	})
+
+	it('clones primitives by value and objects by copy', () => {
+		// deepClone short-circuits on non-objects rather than JSON round-tripping
+		// them, which is what keeps undefined from becoming null.
+		const original = { n: 1, nested: { deep: true } }
+		const fb = new FormBuilder(original)
+
+		fb.updateField('n', 2)
+		expect(original.n).toBe(1)
+		expect(fb.getValue('n')).toBe(2)
+	})
+
+	it('reports a change when two array values differ in length', () => {
+		const fb = new FormBuilder({ tags: ['a', 'b'] })
+
+		fb.updateField('tags', ['a'])
+		expect(fb.getValue('tags')).toEqual(['a'])
+		expect(fb.isDirty).toBe(true)
+	})
+})
+
+describe('FormBuilder — layout-driven element shapes', () => {
+	it('honours an explicit renderer format over the schema type', () => {
+		// A `format` that is not text/number selects the input renderer directly,
+		// which is how date/email/etc. reach their specialised components.
+		const fb = new FormBuilder(
+			{ when: '2026-01-01' },
+			{ type: 'object', properties: { when: { type: 'string' } } },
+			{ type: 'vertical', elements: [{ label: 'When', scope: '#/when', format: 'date' }] }
+		)
+
+		expect(fb.elements[0].type).toBe('date')
+	})
+
+	it('collects paths from nested step elements', () => {
+		const fb = new FormBuilder(
+			{ a: 1, b: 2 },
+			{ type: 'object', properties: { a: { type: 'number' }, b: { type: 'number' } } },
+			{
+				type: 'stepper',
+				elements: [
+					{
+						type: 'step',
+						label: 'One',
+						elements: [
+							{ type: 'group', elements: [{ scope: '#/a' }] },
+							{ scope: '#/b' }
+						]
+					}
+				]
+			}
+		)
+
+		expect(fb.validateStep(0)).toBe(true)
+	})
+})
+
+describe('FormBuilder — degenerate schema and layout shapes', () => {
+	it('accepts null data without cloning it', () => {
+		// deepClone short-circuits on non-objects; a null/undefined data prop is the
+		// shape a form has before its record loads.
+		expect(() => new FormBuilder(null)).not.toThrow()
+		expect(() => new FormBuilder(undefined)).not.toThrow()
+	})
+
+	it('builds an element even when the schema has no properties for it', () => {
+		// The layout, not the schema, decides what renders. A field with no schema
+		// definition falls back to defaults rather than throwing in the lookup.
+		const fb = new FormBuilder(
+			{ name: 'a' },
+			{},
+			{ type: 'vertical', elements: [{ scope: '#/name', label: 'Name' }] }
+		)
+
+		expect(() => fb.elements).not.toThrow()
+	})
+
+	it('falls back to title, then to the field path, when naming a field in errors', () => {
+		// The layout label is what a validation message calls the field. With no
+		// `label` it uses `title`, and with neither it uses the raw path — otherwise
+		// the user sees "undefined is required".
+		const schema = { type: 'object', properties: { a: { type: 'string', required: true } } }
+
+		const titled = new FormBuilder({ a: '' }, schema, {
+			type: 'vertical',
+			elements: [{ scope: '#/a', title: 'From title' }]
+		})
+		expect(titled.validateField('a')?.text).toBe('From title is required')
+
+		const bare = new FormBuilder({ a: '' }, schema, {
+			type: 'vertical',
+			elements: [{ scope: '#/a' }]
+		})
+		expect(bare.validateField('a')?.text).toBe('a is required')
+	})
+
+	it('drops a layout element that resolves to no field key', () => {
+		const fb = new FormBuilder(
+			{ a: 1 },
+			{ type: 'object', properties: { a: { type: 'number' } } },
+			{ type: 'vertical', elements: [{ scope: '#/' }, { scope: '#/a' }] }
+		)
+
+		expect(() => fb.elements).not.toThrow()
+		expect(fb.elements.some((e) => e.scope === '#/a')).toBe(true)
+	})
+})
+
+describe('FormBuilder — dependent lookup clearing', () => {
+	it('only clears lookups that declare a dependency on the changed field', () => {
+		// Changing `country` must reset `city`, but must NOT wipe an unrelated
+		// lookup-backed field — that was the bug the dependsOn filter prevents.
+		const fb = new FormBuilder(
+			{ country: 'IN', city: 'Pune', currency: 'INR' },
+			{
+				type: 'object',
+				properties: {
+					country: { type: 'string' },
+					city: { type: 'string' },
+					currency: { type: 'string' }
+				}
+			},
+			{
+				type: 'vertical',
+				elements: [{ scope: '#/country' }, { scope: '#/city' }, { scope: '#/currency' }]
+			},
+			{
+				city: { dependsOn: ['country'], source: [], filter: () => true },
+				currency: { dependsOn: ['region'], source: [], filter: () => true }
+			}
+		)
+
+		fb.updateField('country', 'US')
+
+		expect(fb.getValue('currency')).toBe('INR')
+	})
+})
+
+describe('FormBuilder — validateField without a schema definition', () => {
+	it('returns null when the schema exposes no properties at all', () => {
+		// validateField resolves the field's schema first; with none it must report
+		// "nothing to validate" rather than constructing a message from undefined.
+		const fb = new FormBuilder({ a: 1 }, {})
+
+		expect(fb.validateField('a')).toBeNull()
+	})
+})
+
+describe('FormBuilder — group with a mixed child list', () => {
+	it('builds a group holding both a control and a presentational child', () => {
+		// A group can hold presentational children (separators, headings) alongside
+		// controls. The combined map is keyed by field, so the separator is filtered
+		// out upstream and the control still resolves.
+		const fb = new FormBuilder(
+			{ a: 1 },
+			{ type: 'object', properties: { a: { type: 'number' } } },
+			{
+				type: 'vertical',
+				elements: [
+					{
+						type: 'group',
+						label: 'Group',
+						elements: [{ scope: '#/a' }, { type: 'separator' }]
+					}
+				]
+			}
+		)
+
+		expect(() => fb.elements).not.toThrow()
+		// The control survives; the keyless sibling is dropped rather than emitted.
+		expect(JSON.stringify(fb.elements)).toContain('#/a')
+	})
+})

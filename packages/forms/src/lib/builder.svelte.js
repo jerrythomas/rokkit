@@ -682,7 +682,12 @@ export class FormBuilder {
 	 */
 	#convertToFormElement(element, parentPath = '') {
 		const { key } = element
+		/* v8 ignore start -- unreachable: both call sites source elements from the
+		   combined map, which #buildCombinedMap populates under `if (el.key)`, so a
+		   keyless element never arrives here. `ignore next` does not fire on a
+		   single-line `if (...) return`. */
 		if (!key) return null
+		/* v8 ignore stop */
 
 		const fieldPath = this.#resolveFieldPath(key, parentPath)
 		const scope = `#/${fieldPath}`

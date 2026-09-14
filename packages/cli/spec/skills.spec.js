@@ -208,3 +208,9 @@ describe('skillsCommand entry', () => {
 		expect(fsExists(pjoin(cwd, '.claude/skills/rokkit-components/SKILL.md'))).toBe(true)
 	})
 })
+
+describe('listSkills — missing catalog directory', () => {
+	it('returns an empty list rather than throwing', () => {
+		expect(listSkills({ skillsDir: '/definitely/not/a/real/skills/dir' })).toEqual([])
+	})
+})
