@@ -6,6 +6,7 @@
 	import StepTune from './StepTune.svelte'
 	import StepSave from './StepSave.svelte'
 	import type { WizardState } from '../../types'
+	import type { ProxyItem } from '@rokkit/states'
 	import { themeStore, saveDraft, clearDraft, setActiveTheme } from '../../theme-store.svelte'
 	import { theme } from '$lib/stores/theme.svelte'
 
@@ -63,7 +64,9 @@
 				if (i !== -1 && i < stepIdx) stepIdx = i
 			}}
 		>
-			{#snippet itemContent(proxy)}
+			<!-- Annotated: List spreads its snippets behind `[key: string]: unknown`,
+				 so the parameter arrives untyped. -->
+			{#snippet itemContent(proxy: ProxyItem)}
 				<ListItem {proxy} />
 			{/snippet}
 		</List>

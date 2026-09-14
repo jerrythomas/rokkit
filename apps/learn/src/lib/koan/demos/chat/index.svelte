@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { ChatMessage, ChatComposer, ChatHistory, ChatShell } from '@rokkit/ui'
-	import type { ChatMessage as ChatMessageData, ConversationSummary } from '@rokkit/ui'
+	// `ChatMessageData`, not `ChatMessage as …`: the component imported on the line
+	// above owns the `ChatMessage` name in the type space too, so the alias
+	// resolved to the component's props type rather than the message interface.
+	import type { ChatMessageData, ConversationSummary } from '@rokkit/ui'
 
 	// Static demo conversation. One assistant turn carries a {kind:'chart'}
 	// payload on `data` — the consumer-supplied `message` snippet below switches

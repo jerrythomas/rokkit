@@ -24,7 +24,9 @@
 </script>
 
 <List items={settings} onselect={handleSelect}>
-	{#snippet itemContent(proxy)}
+	<!-- Annotated because List spreads its snippets behind `[key: string]: unknown`,
+		 so the parameter arrives untyped. See the backlog note on typing snippet props. -->
+	{#snippet itemContent(proxy: ProxyItem)}
 		{#if proxy.get('options')}
 			<ItemToggle {proxy} onchange={handleToggle} />
 		{:else}

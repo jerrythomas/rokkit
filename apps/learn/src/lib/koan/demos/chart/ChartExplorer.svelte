@@ -37,7 +37,11 @@
 				{:else if explorer.type === 'line'}
 					<Plot.Line x={f.x} y={f.y} color={s.color || undefined} alpha={s.alpha} />
 				{:else if explorer.type === 'area'}
-					<Plot.Area x={f.x} y={f.y} fill={s.fill || undefined} position={s.position} alpha={s.alpha} pattern={s.pattern || undefined} />
+					<!-- `dodge` is bar-only — Plot.Area's position union excludes it. The
+						 controls already hide it for area and `select('area')` resets to
+						 'stack', but settings are also reachable from typed tweaks, so
+						 degrade to area's own default rather than assume unreachable. -->
+					<Plot.Area x={f.x} y={f.y} fill={s.fill || undefined} position={s.position === 'dodge' ? 'stack' : s.position} alpha={s.alpha} pattern={s.pattern || undefined} />
 				{:else if explorer.type === 'pie'}
 					<Plot.Arc theta={f.y} fill={s.fill || undefined} alpha={s.alpha} pattern={s.pattern || undefined} options={{ innerRadius: s.innerRadius }} />
 				{:else if explorer.type === 'scatter'}
