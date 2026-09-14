@@ -8682,3 +8682,55 @@ drift, and still wouldn't catch the next consumer-facing break. `apps/learn`
 stays in the gate.
 
 Commit: `d735e56e`
+
+---
+
+## 2026-09-14 — v1.5.0 released
+
+Minor rather than patch because `d735e56e` is breaking for published types: the
+corrected props interfaces are narrower than the ones they replace, so code typed
+against `ListProps.multiselect`, `TreeProps.onloadchildren`,
+`SelectBaseProps.options` or the removed snippet types no longer compiles. Such
+code could never have *worked* — the components never read those props — but it
+would have type-checked, and that is enough to call it a break.
+
+Two things surfaced during the pre-release checklist that were worth the detour:
+
+**Three stale `@ts-nocheck`.** `Dropdown` and `Menu` — two of the nine components
+whose props types I had just wired — carried `// @ts-nocheck`, which made the
+annotation decoration: the type was declared, the checker was switched off.
+`CodeGroup` had one too. All three turned out to be stale; removing them cost **0
+errors** across all six gated dirs. The props spec now asserts their absence,
+because an annotation a suppression disables is worse than no annotation — it
+reads as covered.
+
+**`dropdown.txt` documented a component it wasn't about.** Titled "Rokkit Menu
+Component", it described Menu's pre-ProxyItem API throughout (`options` not
+`items`, `item`/`groupLabel` snippets, `onselect: (value, item)`), duplicating
+`menu.txt` which was already correct — while the real `Dropdown`, exported and
+linked from `index.txt`, had no accurate doc at all. Rewritten against
+`DropdownProps`. Every other component doc already used the ProxyItem API;
+`toolbar.txt` and `floating-action.txt` still show
+`Snippet<[item, fields, handlers]>`, which is right for those two.
+
+Verification went beyond "the workflow was green", which it was last time too
+while nothing had published. Publish log shows 14 `+ @rokkit/x@1.5.0` lines; the
+one `::warning` grep hit is the workflow echoing its own script line, not an
+emitted warning. All 14 confirmed on npm.
+
+The artifact check was a real consumer probe: a scratch project installing
+`@rokkit/ui@1.5.0` and type-checking against the **shipped** `.d.ts`. Positive
+side — `ChatMessageData<T>` is reachable and generic, the snippet vocabulary is
+exported, `ListProps.onselect` hands over a `ProxyItem`. Negative side matters
+more, since a passing probe only proves additions: importing `ListItemSnippet`
+now fails (TS even suggests `ItemSnippet`), and `DropdownProps.options` no longer
+exists.
+
+One limit worth knowing: the removal of props like `multiselect` is *not*
+provable by property access, because `ListProps extends ItemSnippets` and that
+index signature admits any key as `unknown`. The per-item named-snippet feature
+requires the open signature, so this is the price of it.
+
+GitHub release carries a 🚨 Breaking Changes section naming both ui commits.
+
+Tag: `v1.5.0` · release commit `c98d4332`
