@@ -6,22 +6,19 @@ Working tree clean; `134d09b9` on develop.
 ## Done
 
 - **Flaky learn e2e CLOSED** (`3ee1bd5f`). Pre-hydration dead click: SSR ships
-  controls visible, enabled and hit-testable but inert, so Playwright's
-  actionability checks pass and the click is swallowed (`/app` hydrates 330
-  tiles). Wouldn't reproduce on demand, so `hydration.e2e.ts` holds the window
-  open deliberately. `body[data-hydrated]` in a layout `$effect`; 13 goto sites
-  wait on it. Found a *second* racy test, and one that could pass vacuously.
-  Suite ×3: 210/210, 2.2 m → 1.7 m.
-- **`apps/learn` typecheck gate CLOSED** (`a21e5278`, `76a88837`). Booked as
-  large; measured as 6 errors in 3 files — the fix cost less than the deferral.
-- **`apps/learn` svelte-check gate CLOSED** (`134d09b9`). 14 errors in 4 files.
-  All six gated dirs now 0 errors / 0 warnings.
+  controls hit-testable but inert, so Playwright's actionability checks pass and
+  the click is swallowed (`/app` hydrates 330 tiles). Wouldn't reproduce on
+  demand, so `hydration.e2e.ts` holds the window open deliberately.
+  `body[data-hydrated]` in a layout `$effect`; 13 goto sites wait on it. Found a
+  *second* racy test, and one that could pass vacuously. ×3: 210/210, 2.2→1.7 m.
+- **learn typecheck gate CLOSED** (`a21e5278`, `76a88837`) — booked as large,
+  measured as 6 errors in 3 files. **svelte-check gate CLOSED** (`134d09b9`) —
+  14 in 4. All six gated dirs now 0 errors / 0 warnings.
 
-Both gates found the same library defect: `@rokkit/ui` exports a component
-**and** an interface named `ChatMessage`, the component's generated type
-shadowing the interface — so `ChatMessage<T>` was unreachable for every
-consumer. Fixed additively as `ChatMessageData<T>`. Only a consumer-side gate
-can see this.
+Both gates found one library defect: `@rokkit/ui` exports a component **and** an
+interface named `ChatMessage`, the component's generated type shadowing the
+interface — so `ChatMessage<T>` was unreachable for every consumer. Fixed
+additively as `ChatMessageData<T>`. Only a consumer-side gate can see this.
 
 ## Remains
 
