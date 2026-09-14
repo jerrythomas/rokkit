@@ -44,6 +44,15 @@ describe('component props types', () => {
 		expect(source, `${name}.svelte should reference ${name}Props`).toContain(`${name}Props`)
 	})
 
+	it.each(components)('%s does not suppress type checking', (name) => {
+		// Without this, the annotation above is decoration. Dropdown and Menu both
+		// carried a `@ts-nocheck` that made their props type unenforced — and by the
+		// time it was noticed the suppressions were stale anyway, costing 0 errors
+		// to remove.
+		const source = readFileSync(join(COMPONENTS_DIR, `${name}.svelte`), 'utf8')
+		expect(source, `${name}.svelte must not use @ts-nocheck`).not.toContain('@ts-nocheck')
+	})
+
 	it.each(components)('%sProps is declared in src/types', (name) => {
 		// Plain substring checks rather than a built RegExp: the declaration forms
 		// are a closed set, and this keeps the assertion readable.

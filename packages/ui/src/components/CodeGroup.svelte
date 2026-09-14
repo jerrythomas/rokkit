@@ -1,5 +1,4 @@
 <script lang="ts">
-	// @ts-nocheck
 	/**
 	 * CodeGroup — multi-file code display with a hierarchical tree picker
 	 * and an optional live preview panel.

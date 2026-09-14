@@ -20,7 +20,6 @@
 	 *   data-align             — panel alignment (start | end)
 	 *   data-direction         — panel direction (down | up)
 	 */
-	// @ts-nocheck
 	import { ProxyTree, Wrapper, messages } from '@rokkit/states'
 	import { Navigator, Trigger } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS } from '@rokkit/core'

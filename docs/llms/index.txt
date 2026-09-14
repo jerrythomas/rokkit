@@ -363,7 +363,7 @@ Long-form prose covering framework concepts. Mirrors what users see at `/guides/
 
 - [CommandPalette](/llms/components/command-palette.txt) — modal command search backed by the `commands` registry
 - [Menu](/llms/components/menu.txt) — dropdown menu with trigger, keyboard nav, groups, collapsible sections
-- [Dropdown](/llms/components/dropdown.txt) — dropdown container with grouped options
+- [Dropdown](/llms/components/dropdown.txt) — trigger showing the selected value, plus an options panel
 - [Toolbar](/llms/components/toolbar.txt) — horizontal action bar with sections
 - [ToolbarGroup](/llms/components/toolbar-group.txt) — semantic grouping container for toolbar items
 - [FloatingAction](/llms/components/floating-action.txt) — floating action button (FAB)

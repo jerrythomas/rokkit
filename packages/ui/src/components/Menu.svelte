@@ -42,7 +42,6 @@
 	 *   data-align              — dropdown alignment
 	 *   data-direction          — dropdown direction
 	 */
-	// @ts-nocheck
 	import type { ProxyItem } from '@rokkit/states'
 	import { Wrapper, ProxyTree, messages } from '@rokkit/states'
 	import { Navigator, Trigger } from '@rokkit/actions'
