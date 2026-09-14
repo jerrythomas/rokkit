@@ -1,68 +1,80 @@
 # Snippet props are untyped across the component surface
 
 **Raised:** 2026-09-14, while adding `apps/learn` to `check:svelte`.
-**Status:** open.
+**Status:** CLOSED 2026-09-14 — documented snippets typed; one larger finding
+split out (see below).
 
 ## The gap
 
-`List` collects its snippets with a rest element behind an index signature:
+The item-rendering components collected their snippets with a rest element
+behind an index signature:
 
 ```svelte
-let {
-    items = [], fields = {}, /* … */
-    ...snippets
-}: {
+let { items = [], /* … */, ...snippets }: {
     /* … typed props … */
     [key: string]: unknown
 } = $props()
 ```
 
-`itemContent` is therefore `unknown`, and every consumer's snippet parameter
-arrives implicitly `any`:
+So `itemContent` was `unknown`, and every consumer's snippet parameter arrived
+implicitly `any`:
 
     Parameter 'proxy' implicitly has an 'any' type.
 
-The index signature exists for a real reason — `List` supports per-item snippet
-selection via `item.snippet = 'name'`, so arbitrary named snippets must be
-accepted (documented in the component header). But the *documented* snippets
-(`itemContent`, and the group/leaf variants) are a known, closed set and could be
-declared explicitly alongside it. TypeScript prefers an explicit member over the
-index signature, so the two coexist.
+The index signature exists for a real reason — an item can name its own snippet
+(`item.snippet = 'name'`, resolved by `resolveSnippet`), so arbitrary keys must
+stay accepted. But the *documented* snippets are a closed set and can be
+declared alongside it: TypeScript prefers an explicit member over the index
+signature, so the common case is checked and named snippets still work.
 
-## Why it matters
+## What was done
 
-The whole point of shipping `.d.ts` is that a consumer's snippet body is checked
-against what the component actually passes. Today it is not: a snippet can read
-`proxy.whatever`, pass `proxy` somewhere expecting a different type, and nothing
-complains until runtime.
+`packages/ui/src/types/snippets.ts` introduces the shared vocabulary, exported
+from the package:
 
-`packages/ui` is 0 errors / 0 warnings under `svelte-check`, but that measures
-the library against itself. This only shows up from a consumer — it surfaced the
-moment `apps/learn` was added to the gate.
+- `ItemSnippet` = `Snippet<[ProxyItem]>` — `itemContent` / `groupContent`
+- `SelectableItemSnippet` = `Snippet<[ProxyItem, boolean]>`
+- `ItemSnippets` — the bag, for spreading into a props type
 
-## Scope
+Applied uniformly after surveying how each component actually calls its snippet,
+rather than assuming one shape:
 
-Not just `List`. Any component using the `...snippets` + `[key: string]: unknown`
-shape has it. Worth enumerating before starting — `Tree`, `Select`,
-`MultiSelect`, `Menu`, `Table`, `Toolbar` are the likely set, and the fix should
-be uniform rather than per-component.
+| Shape | Components |
+| --- | --- |
+| `content(proxy)` | Grid, LazyTree, List, Menu, MultiSelect, Select, Tree |
+| `content(proxy, selected)` | Tabs, Toggle |
 
-Note `packages/ui/src/types/` already does this correctly in places —
-`breadcrumbs.ts` declares `crumb?: Snippet<[ProxyItem, boolean]>`. That is the
-pattern to spread, not a new one to invent.
+Not changed: `UploadProgress` (already typed via `UploadItemSnippet`),
+`UploadTarget` (`content(dragging)` — not an item snippet), and
+`FloatingAction` / `Toolbar`, whose custom snippets take
+`(original, fields, handlers)` and are a different concept.
 
-## Interim
+## Verification
 
-Two call sites in learn annotate the parameter explicitly so the gate can go
-green, each with a comment pointing here:
+Red/green through the consumer-side gate, which is what made this visible:
 
-- `src/lib/koan/demos/list/placeholder.svelte`
-- `src/lib/koan/demos/theme-wizard/index.svelte`
+1. Stripped the two interim annotations in learn → `svelte-check` reported 2
+   implicit-`any` errors.
+2. Typed the library → 0 errors with the annotations still removed.
+3. Proved the green is not vacuous: assigning the parameter to `number` yields
+   *"Type 'ProxyItem' is not assignable to type 'number'"* — it is genuinely
+   inferred, not `any` again.
 
-Those annotations should be deleted when the props are typed properly — they are
-a workaround, not the destination.
+The interim annotations and the now-unused `ProxyItem` import in
+`theme-wizard/index.svelte` are gone.
 
-## Related
+## Split out: four published props types describe components that don't exist
 
-- `docs/backlog/2026-09-14-learn-app-untypechecked.md` — the gate that found it,
-  and the `ChatMessage` collision found the same way.
+Found while doing this, and **larger than the original item** — booked
+separately in `2026-09-14-stale-props-types.md`.
+
+`types/list.ts` exports a full `ListProps`, but `List.svelte` never imports it,
+and they have drifted: `ListProps` advertises `item` / `groupLabel` snippets,
+`multiselect`, `expanded`, `selected` and `active` — none of which the component
+reads — and types `onselect` as `(value, item: ListItem)` when the component
+passes a `ProxyItem`.
+
+44 of 48 `*Props` interfaces *are* wired to their component. The four that are
+not — `ListProps`, `MenuProps`, `SelectBaseProps`, `TreeProps` — are exactly the
+ones free to drift, because nothing cross-checks a declared type against the
+component's real `$props()`.

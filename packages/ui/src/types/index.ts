@@ -135,3 +135,6 @@ export * from './tilt.js'
 
 // Chat Types
 export * from './chat.js'
+
+// Shared snippet types for the item-rendering components
+export * from './snippets.js'

@@ -4,6 +4,7 @@
 	import { Wrapper, ProxyTree, messages } from '@rokkit/states'
 	import { Navigator } from '@rokkit/actions'
 	import { resolveSnippet } from '@rokkit/core'
+	import type { SelectableItemSnippet } from '../types/snippets.js'
 
 	let {
 		variant = 'group',
@@ -17,7 +18,11 @@
 		label = messages.toggle.label,
 		class: className = '',
 		...snippets
-	}: ToggleProps & { [key: string]: unknown } = $props()
+	}: ToggleProps & {
+		// Toggle renders its content as content(proxy, selected).
+		itemContent?: SelectableItemSnippet
+		[key: string]: unknown
+	} = $props()
 
 	// ─── Wrapper ──────────────────────────────────────────────────────────────
 

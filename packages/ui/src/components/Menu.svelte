@@ -48,6 +48,7 @@
 	import { Navigator, Trigger } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET, GROUP_SNIPPET } from '@rokkit/core'
 	import ItemContent from './ItemContent.svelte'
+	import type { ItemSnippet } from '../types/snippets.js'
 
 	interface MenuIcons {
 		opened?: string
@@ -85,6 +86,8 @@
 		icons?: MenuIcons
 		onselect?: (value: unknown, proxy: ProxyItem) => void
 		class?: string
+		itemContent?: ItemSnippet
+		groupContent?: ItemSnippet
 		[key: string]: unknown
 	} = $props()
 

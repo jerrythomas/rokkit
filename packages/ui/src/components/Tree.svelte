@@ -17,6 +17,7 @@
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET } from '@rokkit/core'
 	import ItemContent from './ItemContent.svelte'
 	import Connector from './Connector.svelte'
+	import type { ItemSnippet } from '../types/snippets.js'
 
 	let {
 		items = [],
@@ -39,6 +40,8 @@
 		icons?: { opened?: string; closed?: string }
 		onselect?: (value: unknown, proxy: ProxyItem) => void
 		class?: string
+		itemContent?: ItemSnippet
+		groupContent?: ItemSnippet
 		[key: string]: unknown
 	} = $props()
 

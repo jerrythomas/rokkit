@@ -32,6 +32,7 @@
 	import { Navigator } from '@rokkit/actions'
 	import { resolveSnippet, ITEM_SNIPPET } from '@rokkit/core'
 	import ItemContent from './ItemContent.svelte'
+	import type { ItemSnippet } from '../types/snippets.js'
 
 	let {
 		items = [],
@@ -56,6 +57,8 @@
 		label?: string
 		onselect?: (value: unknown, proxy: ProxyItem) => void
 		class?: string
+		itemContent?: ItemSnippet
+		groupContent?: ItemSnippet
 		[key: string]: unknown
 	} = $props()
 

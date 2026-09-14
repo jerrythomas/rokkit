@@ -15,6 +15,7 @@
 	import ItemContent from './ItemContent.svelte'
 	import Connector from './Connector.svelte'
 	import Button from './Button.svelte'
+	import type { ItemSnippet } from '../types/snippets.js'
 
 	let {
 		items = [],
@@ -41,6 +42,8 @@
 		onlazyload?: (current?: unknown) => Promise<unknown[]>
 		hasMore?: boolean
 		class?: string
+		itemContent?: ItemSnippet
+		groupContent?: ItemSnippet
 		[key: string]: unknown
 	} = $props()
 
