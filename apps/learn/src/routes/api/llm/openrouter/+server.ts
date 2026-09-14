@@ -26,6 +26,20 @@ export const POST: RequestHandler = async ({ request, fetch, url }) => {
 		throw error(400, 'Invalid JSON body')
 	}
 
+	const { messages, model } = body
+	const isValidMessage = (m: unknown): boolean =>
+		typeof m === 'object' &&
+		m !== null &&
+		typeof (m as Record<string, unknown>).role === 'string' &&
+		typeof (m as Record<string, unknown>).content === 'string'
+
+	if (!Array.isArray(messages) || messages.length === 0 || !messages.every(isValidMessage)) {
+		throw error(400, 'Invalid request body: "messages" must be a non-empty array of {role, content}')
+	}
+	if (model !== undefined && typeof model !== 'string') {
+		throw error(400, 'Invalid request body: "model" must be a string')
+	}
+
 	const upstream = await fetch('https://openrouter.ai/api/v1/chat/completions', {
 		method: 'POST',
 		headers: {
