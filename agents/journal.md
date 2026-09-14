@@ -8335,3 +8335,52 @@ One flake surfaced and is booked rather than retried:
 `docs/backlog/2026-09-14-flaky-components-catalog-e2e.md`.
 
 Commits: `61d21f07` `20b0add1` `81c0e1a7` `94f7dca6` `9601d2f1` `26d48401`
+
+## 2026-09-14 — Released v1.4.2, and the release gate gap it exposed
+
+Merged the coverage work to main and cut a patch. **All 14 packages are live at
+1.4.2** with provenance, GitHub release created.
+
+Verified as a real consumer would see it, not just from a local pack: a clean
+`bun install @rokkit/ui@1.4.2` resolves `dompurify@3.4.15` with **no override**.
+That is exactly what rokkit#156 §3 asked for — dbd can now delete its
+`"overrides": { "dompurify": "^3.4.15" }`.
+
+### The first publish failed, and the reason matters
+
+It died on the FIRST package, so nothing published and no release was created —
+a clean failure, no partial state. `@rokkit/helpers`' `prepublishOnly` emits
+declarations with `tsc --project tsconfig.build.json`, and that failed TS2742 on
+three exports whose inferred types come from `@vitest/spy`: an UNDECLARED
+transitive of `@vitest/expect`, so the emitted `.d.ts` could only name it through
+a bun-store path. Latent since the vitest 4 upgrade. Fixed by declaring it.
+
+**The gate gap is the real lesson.** `bun run check` was green — lint, `tsc
+--noEmit`, svelte-check, the app build, 6181 tests — and the tag still could not
+ship, because *the build that runs at publish time was not the build the gate
+ran*. `build:all` exists but is useless as a gate on two counts: `find -exec`
+swallows a failing inner build so it exits 0 regardless, and it rewrites
+committed icon artifacts (lastModified timestamps).
+
+So each package with a `tsconfig.build.json` gained a `check:build` script and
+the root loops them with `|| exit 1`, the same shape as `check:types` /
+`check:svelte`, wired into `bun run check`. Each cleans first — a stale `dist/`
+becomes a tsc INPUT and fails TS5055 instead, which is why `prepublishOnly` runs
+clean before compiling.
+
+Break-it check: removing `@vitest/spy` again makes `bun run check:build` exit 1
+naming TS2742 on the same three lines.
+
+### Two process notes
+
+The v1.4.2 tag was moved rather than the version burned: nothing consumed it —
+no npm artifact, no GitHub release — so re-tagging at the fixed commit left a
+tidier history than skipping to 1.4.3.
+
+`npm view` lags the registry by a minute or more. Four packages read as MISSING
+immediately after a successful publish and were all present on re-check; the
+workflow log (`+ @rokkit/x@1.4.2`, 14 of them) is the faster source of truth.
+Also worth knowing: the publish step downgrades a per-package failure to a
+`::warning::`, so a green workflow does NOT by itself mean all 14 shipped.
+
+Commits: `9c259ce1` (release) `4d6bb0b2` / `18e71f8c` (publish fix + gate)
