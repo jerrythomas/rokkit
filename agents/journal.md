@@ -8259,3 +8259,79 @@ coverage exit 0 · CI green. Break-it check: deleting the new `fix.spec.js` fail
 the cli floor naming `fix.js`; restoring returns exit 0.
 
 Commit: `53b12d41`
+
+## 2026-09-14 (cont.) — the .svelte coverage debt, closed
+
+Every package is back at or above its pre-vitest-4 bar. **js/ts 13/13 at 100%**,
+**`.svelte` 0 files below 90** — down from 29 files and 493 statements. Aggregate
+`97.85 / 90.38 / 96.91 / 98.59`. forms 66→90, chart 35→91, ui 50→90.
+
+### Two blind spots account for nearly all of it
+
+**Snippet slots.** A component's primary interface is often a snippet, and
+`render(Component, { props })` cannot supply one — so the slot AND the default it
+replaces are both dead. That single shape covers Card's regions, Table and
+TreeTable's header/row/cell/empty, Toolbar's start/center/end, Carousel's slide,
+BreadCrumbs' crumb, SearchFilter's tag, Swatch's item, FormRenderer's actions and
+child. Every one needs a small `*Test.svelte` wrapper; there is now one per
+component that takes snippets.
+
+**Interaction.** Geoms rendered marks that were never hovered, clicked, keyed,
+labelled or pattern-filled — Point, Line, Arc, Violin, Highlight, Bar all shared
+it.
+
+### Two more production bugs, both dead code rather than untested code
+
+`FormBuilder` never hoisted `override` off the layout element. README and
+docs/llms both document `override: true` → the consumer's `child` snippet;
+`getSchemaWithLayout` folds unknown layout keys into `props`, and
+`#buildStandardElement` read only `element.override`. The flag landed in
+`props.override`, the branch never fired, and `override: true` leaked downstream
+as a stray prop on the input component.
+
+`elements/DefinePatterns`' spec passed `name` where the component destructures
+`id`, so every id was undefined, `uniq` collapsed them, and EVERY case took the
+error branch — including the two named "should render the patterns". Three
+snapshots had recorded that `<error>` element as expected output. It also imported
+`{ Circles, Triangles }` from `src/patterns`, which exports neither.
+
+That component is unreachable anyway: **`packages/chart/src/elements/` has no
+importer**. Not in `src/`, no `./elements` subpath in the exports map, not
+re-exported from `src/index.js` — every file in it is imported only by its own
+spec. Six of the seven are at 100%, so it costs nothing in coverage. Whether the
+directory should exist is a call for its owner; flagged, not acted on.
+
+### API details that each cost a cycle
+
+- LazyTree's item snippet is not a `content` prop — it is resolved by name via
+  `resolveSnippet(snippets, proxy, ITEM_SNIPPET)`, arriving as `itemContent`.
+- BreadCrumbs' callback is `onclick`, not `onselect`.
+- FormRenderer's `actions` block lives inside the `<form>` branch only; without
+  `onsubmit` the root is a bare `<div>` with no action bar at all.
+- `ctx.submit` is typed `(e: Event)` and calls `preventDefault()` on it.
+- `InputField` emits `onchange`; a raw `input` event never marks a form dirty.
+- BASE_FIELDS maps semantic names to different RAW keys: avatar→`image`,
+  subtext→`description`, tooltip→`title`.
+- Clicking a disabled button via `fireEvent` still fires — it dispatches straight
+  at the element and bypasses the browser's disabled handling. Assert the
+  attribute instead.
+
+### Driving AnimatedPlot's rAF loop
+
+Worth reusing. Queue the rAF callbacks and step them by hand rather than running
+real time, because the component schedules its next frame from inside its own
+callback. Two traps: Svelte's scheduler also uses rAF so the queue is not only the
+component's and its length proves nothing — assert behaviour; and assign the
+globals directly rather than via `vi.stubGlobal`, because the component cancels
+its frame in `onDestroy`, which runs during testing-library cleanup, i.e. after
+`unstubAllGlobals` would have removed `cancelAnimationFrame`.
+
+### Gate
+
+lint 0/0 · check:types + check:svelte 0/0 · test:ci **6181/404** · coverage exit 0
+· build:apps exit 0 · learn e2e 67.
+
+One flake surfaced and is booked rather than retried:
+`docs/backlog/2026-09-14-flaky-components-catalog-e2e.md`.
+
+Commits: `61d21f07` `20b0add1` `81c0e1a7` `94f7dca6` `9601d2f1` `26d48401`

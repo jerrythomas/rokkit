@@ -41,91 +41,52 @@ Break-it check: raising `packages/helpers/**/*.{js,ts}` from 84 to 99 fails with
 the error naming that glob, confirming the per-package entries actually bind
 rather than silently never matching.
 
-## The debt
+## CLOSED — 2026-09-14
 
-Distance from each package's floor to the pre-vitest-4 bar (`js/ts` 100,
-`.svelte` 90). Ordered worst-first. **Updated 2026-09-14** — see "Progress" below.
+**The debt is paid.** Every package is back at or above its pre-vitest-4 bar:
 
-| Glob | statements | lines | gap |
-| --- | --- | --- | --- |
-| `packages/chart/**/*.svelte` | 35 | 40 | **-55** |
-| `packages/ui/**/*.svelte` | 50 | 70 | **-40** |
-| `packages/forms/**/*.svelte` | 90 | 92 | **0** |
-| `packages/actions/**/*.{js,ts}` | 100 | 100 | **0** |
-| `packages/app/**/*.{js,ts}` | 100 | 100 | **0** |
-| `packages/blocks/**/*.{js,ts}` | 100 | 100 | **0** |
-| `packages/chart/**/*.{js,ts}` | 100 | 100 | **0** |
-| `packages/cli/**/*.{js,ts}` | 100 | 100 | **0** |
-| `packages/core/**/*.{js,ts}` | 100 | 100 | **0** |
-| `packages/data/**/*.{js,ts}` | 100 | 100 | **0** |
-| `packages/forms/**/*.{js,ts}` | 100 | 100 | **0** |
-| `packages/helpers/**/*.{js,ts}` | 100 | 100 | **0** |
-| `packages/states/**/*.{js,ts}` | 100 | 100 | **0** |
-| `packages/themes/**/*.{js,ts}` | 100 | 100 | **0** |
-| `packages/ui/**/*.{js,ts}` | 100 | 100 | **0** |
-| `packages/unocss/**/*.{js,ts}` | 100 | 100 | **0** |
-| `packages/blocks/**/*.svelte` | 93 | 95 | +3 |
-| `packages/app/**/*.svelte` | 96 | 97 | +6 |
-| `packages/helpers/**/*.svelte` | 100 | 100 | +10 |
+- **js/ts — 13/13 packages at 100%**, 0 uncovered statements.
+- **`.svelte` — 0 files below the 90% bar**, down from 29 files and 493
+  statements. forms 66 → 90, chart 35 → 91, ui 50 → 90.
 
-## Progress — 2026-09-14
+Aggregate: `97.85 % Stmts · 90.38 % Branch · 96.91 % Funcs · 98.59 % Lines`.
 
-**All 13 js/ts packages are back at 100%** — 0 uncovered statements, every js/ts
-floor at `statements: 100, lines: 100`.
+Current floors live in `vitest.config.ts`. They remain a **ratchet**: recompute
+against `coverage/coverage-final.json` after any change rather than editing the
+one that failed, or an improvement elsewhere silently goes unbanked.
 
-**`.svelte`: forms is done too** (66 → **90**, the original bar). Remaining:
-**chart** (floor 35) and **ui** (floor 50), roughly 410 statements.
+## What the work actually found
 
-### forms .svelte — and a documented feature that never worked
+Very little of this was "missing tests" in the ordinary sense.
 
-Covering FormRenderer's `child` snippet branch surfaced a real bug. README and
-docs/llms both document the same contract — `override: true` on a layout element
-routes that field to the consumer's `child` snippet — but `getSchemaWithLayout`
-folds unrecognised layout keys into `props`, and `#buildStandardElement` only read
-`element.override`. The flag landed in `props.override`, the top-level stayed
-false, the branch never fired, and `override: true` leaked downstream as a stray
-prop on the input component. Fixed to read from either position.
+**Three production bugs, each surfaced as a coverage gap that was really dead
+code:**
 
-Two things worth knowing before touching FormRenderer again:
+1. `themable` used `$effect.root` and discarded the disposer, so its `storage`
+   listener was never removed and accumulated on every re-application.
+2. `FormBuilder` never hoisted `override` off the layout element, so the
+   documented `override: true` → `child` snippet route silently did nothing and
+   leaked `override` downstream as a stray prop.
+3. `elements/DefinePatterns`' spec passed `name` where the component reads `id`,
+   so every case — including the two named "should render the patterns" — took the
+   error branch, and three snapshots had recorded that `<error>` as expected.
 
-- The custom `actions` snippet, and the default action bar, live inside the
-  `<form>` branch **only**. Without `onsubmit` the root is a bare `<div>` with no
-  actions at all — tests that omit it will find nothing and look like the snippet
-  is broken.
-- `InputField` emits `onchange`; a raw `input` event never marks the form dirty.
-- `ctx.submit` is typed `(e: Event) => …` and calls `preventDefault()` on it, so a
-  custom actions bar must forward its click event.
+**Vacuous tests that could not fail**, found and replaced: a colour-mode SSR case
+asserting `typeof cleanup === 'function'` (true on both paths) whose comment
+claimed `window` could not be removed under JSDOM; `contrastShortcuts` checked for
+shape but never invoked; a ChartProvider consumer that checked the context existed
+but never read it; Legend cases that build `items` inline and assert on their own
+local construction without rendering the component.
 
-Most of what was paid down was not "missing tests" in the usual sense:
+**Snippet slots are the biggest single blind spot.** A component's primary
+interface is often a snippet, and `render(Component, { props })` cannot supply one
+— so the slot AND the default it replaces are both dead. That one shape accounts
+for most of the `.svelte` debt: Card's regions, Table/TreeTable's header/row/cell/
+empty, Toolbar's start/center/end, Carousel's slide, BreadCrumbs' crumb,
+SearchFilter's tag, Swatch's item.
 
-- **Guard clauses are contracts, not filler.** A keyboard handler calls
-  `next()`/`expand()`/`extend()` without first checking whether anything is
-  focused, so the unfocused no-op is the behaviour callers rely on. Same for the
-  SSR guards — `@rokkit/core` and `@rokkit/states` are imported by SvelteKit
-  server code where touching `document` or `localStorage` throws.
-- **Injected adapters hid the real code paths.** `rokkit init`, `theme create`
-  and `upgrade` all take injectable fs/exec adapters, and every existing test
-  injected all of them — so the DEFAULT implementations, the ones that actually
-  run for a user, were never executed. Mocking the node builtins instead of
-  injecting runs them for real and asserts what they call, which is how a dropped
-  `stdio: 'inherit'` or a missing `recursive: true` would now be caught. Note the
-  sources import from `'fs'`/`'child_process'`, **not** the `node:` prefixed
-  specifiers — the mock path has to match or the factory silently never applies.
-- **Two vacuous tests were replaced.** color-mode's SSR case asserted
-  `typeof cleanup === 'function'` — true on both paths — and its comment claimed
-  `window` could not be removed under JSDOM. `vi.stubGlobal` does exactly that.
-  `contrastShortcuts` was only checked for shape, never for what UnoCSS invokes.
-- **One was a real bug.** `themable` used `$effect.root` and discarded the
-  disposer, so its `storage` listener was never removed and accumulated on every
-  re-application. The unreachable cleanup line was the symptom, not the disease.
-
-### One pattern paid for twelve statements
-
-Every mark builder in `@rokkit/chart` opens with the same bail-out —
-`if (!data?.length || !xScale || !yScale) return []` — and none of the twelve was
-exercised. It is the contract that keeps a Plot renderable before data arrives or
-while a scale is being derived. One `describe.each` over the twelve builders
-covers the family and is far more maintainable than twelve near-identical tests.
+**Interaction is the second.** Geoms rendered marks that were never hovered,
+clicked, keyed, labelled or pattern-filled.
 
 ### `v8 ignore next` silently stopped working in some positions
 
