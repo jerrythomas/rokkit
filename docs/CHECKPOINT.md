@@ -18,20 +18,20 @@
 - `ae26e415` `check:types` off `bunx`; svelte-check `^4.7.6`.
 - `e07aaa5f` `690c132e` `c4313dd9` three racy specs pinned. CI and local now match
   **exactly** on all four metrics across all 23 directories.
-- `bb9a5408` `85b5a0c6` coverage debt: **9 of 13 js/ts packages back to 100%**
-  (was 2). Found a real bug — `themable` leaked a `storage` listener via a
-  discarded `$effect.root` disposer.
+- `bb9a5408` `85b5a0c6` `53b12d41` coverage debt: **all 13 js/ts packages back
+  to 100%** (was 2), 0 uncovered statements. Found a real bug — `themable` leaked
+  a `storage` listener via a discarded `$effect.root` disposer.
 
 ## Remains
 
 Booked in `docs/backlog/2026-09-12-*`: **yaml** (moderate; two majors, bun ignores
 nested overrides), **TypeScript 7** (deferred, path verified), **coverage debt** —
-56 js/ts statements (chart 28, cli 14, forms 12, states 2) plus ~490 in `.svelte`
-(chart, ui, forms).
+js/ts is DONE; ~490 statements remain in `.svelte` (chart floor 35, ui 50,
+forms 66). That is its own slice.
 
 ## Next command
 
-    # continue the debt: chart/cli/forms/states js/ts, then .svelte
+    # next slice: the .svelte coverage debt (chart, ui, forms)
 
 ## Open questions
 
@@ -40,5 +40,5 @@ vulnerable svelte. A consumer-facing break, not a sweep call.
 
 ## Known-broken
 
-Nothing. lint 0/0 · check:types + check:svelte 0/0 · test:ci 5856/386 ·
+Nothing. lint 0/0 · check:types + check:svelte 0/0 · test:ci 5970/390 ·
 coverage exit 0 · build:apps exit 0 · learn e2e 67 · frozen-lockfile clean.

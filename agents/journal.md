@@ -8204,3 +8204,58 @@ exit 0 · learn e2e 67 (run because `themable` is production behaviour) · CI gr
 on both branches.
 
 Commits: `f8d55f9c` (main merge) · `bb9a5408` `85b5a0c6`
+
+## 2026-09-14 (cont.) — js/ts coverage debt closed: 13/13 packages at 100%
+
+Finished the js/ts half of the vitest 4 debt. **0 uncovered statements**, every
+js/ts floor at `statements: 100, lines: 100`. chart 87 → 100, cli 93 → 100,
+forms 96 → 100, states 97 → 100.
+
+Remaining debt is entirely `.svelte`: ~490 statements in chart (floor 35), ui (50)
+and forms (66). Its own slice.
+
+### One pattern paid for twelve statements
+
+Every mark builder in `@rokkit/chart` opens with the same bail-out —
+`if (!data?.length || !xScale || !yScale) return []` — and not one of the twelve
+was exercised. It is the contract that keeps a Plot renderable before data arrives
+or while a scale is being derived. A single `describe.each` over the family covers
+it; twelve near-identical tests would rot.
+
+### Injected adapters were hiding the real code paths
+
+`rokkit init`, `theme create` and `upgrade` all take injectable fs/exec adapters,
+and every existing test injected **all** of them — so the DEFAULT implementations,
+the ones that run for an actual user, were never executed. Mocking the node
+builtins instead of injecting runs them for real and asserts what they call, which
+is how a dropped `stdio: 'inherit'` or a missing `recursive: true` gets caught.
+
+Gotcha worth keeping: those sources import from `'fs'` and `'child_process'`, NOT
+the `node:` prefixed specifiers. `vi.mock('node:fs', …)` silently never applies —
+it looks exactly like the mock being ignored. A factory must also supply `default`
+when anything in the graph does `import fs from 'fs'`.
+
+### Six guards were unreachable, not untested
+
+Confirmed by reading the callers, then marked with the start/stop ignore form that
+actually fires under vitest 4:
+
+- `PlotState`'s yScale domain check — every `buildUnifiedYScale` return path is a
+  `scaleLinear`/`scaleBand`, both of which always expose `domain()`.
+- `Wrapper`/`LazyWrapper` stale-key guards — `ProxyTree` is immutable after
+  construction (no items setter, no `update()`), so a focused key cannot go stale.
+- `validation.getFieldSchema` — `validateAll` already returns early on the same
+  `!schema.properties` condition.
+- `FormBuilder`'s keyless-element guard — `#buildCombinedMap` populates the map
+  under `if (el.key)`.
+
+The discipline that matters: establish unreachability from the call sites *first*,
+then ignore. An ignore applied to reachable code is just hidden debt.
+
+### Gate
+
+lint 0/0 · check:types + check:svelte 0/0 · test:ci **5970/390** (+114) ·
+coverage exit 0 · CI green. Break-it check: deleting the new `fix.spec.js` fails
+the cli floor naming `fix.js`; restoring returns exit 0.
+
+Commit: `53b12d41`
