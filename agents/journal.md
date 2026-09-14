@@ -8432,3 +8432,61 @@ Full suite ×3: 210/210, and 2.2m → 1.7m — waiting on a marker beats waiting
 timeouts.
 
 Commit: `3ee1bd5f`
+
+---
+
+## 2026-09-14 — the learn app was never typechecked, and measuring cost two minutes
+
+Booked this one expecting a slog: `apps/learn` had no `tsconfig.json`, so the
+root gate — which runs `check:types` only where one exists — skipped the whole
+app, including a ~2,300-line `routes/app/+layout.svelte` that had never been
+checked. Nothing else covered it either: Playwright transpiles specs without
+typechecking, `vite build` strips types, and `check:svelte` enumerates five
+library packages by name. `bun run check` was green on code no type checker had
+read.
+
+The estimate was wrong. First measurement said 149 errors; 143 of those were the
+four `.mjs` collectors, surfaced only because the *measuring config* set
+`checkJs: true`. The real number was **6, in 3 files**. Deferring it cost more
+than fixing it would have. Lesson worth keeping: measure before booking, not
+after.
+
+All 6 were genuine:
+
+- `adoptProvider(provider: string)` forced an `as string` at the call site that
+  laundered `ChatProvider` away. A missing provider then failed the
+  `=== 'scripted'` guard and wrote `llm.provider = undefined` with `enabled`
+  left true — a value outside the field's own union.
+- `spec.options` reached through the `DemoPropSchema` union instead of narrowing
+  on the discriminant.
+- `Boolean(conv) &&` didn't narrow for the `.turns` access after it.
+- And the one worth the whole exercise: **`@rokkit/ui` exports a component
+  `ChatMessage` and an interface `ChatMessage`.** Svelte's generated component
+  types contribute a type of that name, which shadows the interface — so
+  `ChatMessage<T>` is unreachable for every consumer of the package. Fixed
+  additively as `ChatMessageData<T>`; renaming either is a major.
+
+That last one is the argument for this gate. `check:types` and `check:svelte`
+run `packages/ui` against its own source, where the interface is imported
+directly from `types/chat.ts` and the collision does not exist. It is only
+visible through the package entry — which is how learn imports it. The gate that
+finds consumer-facing API defects has to *be* a consumer.
+
+Two things learned that will bite again:
+
+- **Which surface gets checked depends on the machine.** `@rokkit/ui` resolves
+  `types → ./dist/index.d.ts` with `default → ./src/index.ts` behind it. `dist`
+  is gitignored and CI installs with `--ignore-scripts`, so locally this checks
+  built declarations and in CI it checks source. Verified green under both (by
+  moving `dist` aside). When a type error reproduces on only one of them, this
+  is why.
+- **`lint --fix` and `tsc` disagree on one idiom.** The autofix rewrites
+  `!!x &&` into `Boolean(x) &&`, and `Boolean()` doesn't narrow — so lint passes
+  and then typecheck fails on the line lint just rewrote. Cost two full gate
+  runs to spot, because each gate was individually green at the moment it ran. A
+  ternary satisfies both. Sibling of the `--fix` warning already in CLAUDE.md.
+
+Still open: learn's `.svelte` files remain unchecked — `tsc` ignores them and
+learn isn't in `check:svelte`'s list.
+
+Commits: `a21e5278` (ui) `76a88837` (learn gate)
