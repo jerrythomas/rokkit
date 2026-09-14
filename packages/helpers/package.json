@@ -42,10 +42,12 @@
     "prepublishOnly": "cp ../../LICENSE . && tsc --project tsconfig.build.json",
     "postpublish": "rm -f LICENSE",
     "clean": "rm -rf dist",
-    "build": "bun clean && bun prepublishOnly"
+    "build": "bun clean && bun prepublishOnly",
+    "check:build": "bun run clean && tsc --project tsconfig.build.json"
   },
   "dependencies": {
     "@vitest/expect": "^4.1.11",
+    "@vitest/spy": "^4.1.11",
     "ramda": "^0.32.0"
   }
 }
