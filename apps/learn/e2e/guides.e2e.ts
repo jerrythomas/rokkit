@@ -1,10 +1,11 @@
 import { test, expect } from '@playwright/test'
+import { gotoHydrated } from './helpers'
 
 // The guide reading pane is an inner scroll container (<main id="guides-main">).
 // SvelteKit restores window scroll, not inner containers, so its scroll position
 // used to carry over between guides. It must reset to the top on a page switch.
 test('guide reading pane scroll resets on switching guides', async ({ page }) => {
-	await page.goto('/guides/charts')
+	await gotoHydrated(page, '/guides/charts')
 	const main = page.locator('#guides-main')
 	await expect(main).toBeVisible()
 

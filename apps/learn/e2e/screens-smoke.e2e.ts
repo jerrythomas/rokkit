@@ -4,6 +4,7 @@ import {
 	formatDiagnostics,
 	problemCount
 } from './console-collector.mjs'
+import { waitForHydration } from './helpers'
 
 /**
  * Screen smoke gate — every screen renders, and does so without runtime noise.
@@ -204,7 +205,12 @@ for (const screen of SCREENS) {
 			`${screen.path} never rendered its marker (${screen.marker})`
 		).toBeVisible({ timeout: 10_000 })
 
-		if (screen.interact) await screen.interact(page)
+		// `networkidle` implies hydration in practice but does not guarantee it, and
+		// the interactions below click controls that are hit-testable while inert.
+		if (screen.interact) {
+			await waitForHydration(page)
+			await screen.interact(page)
+		}
 
 		// Give a mid-flight effect or a late chunk a chance to fail loudly before
 		// we declare the screen clean.

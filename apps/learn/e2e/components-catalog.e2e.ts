@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { gotoHydrated } from './helpers'
 
 test('top nav has no separate Catalog item', async ({ page }) => {
 	await page.goto('/app')
@@ -46,7 +47,7 @@ test('/app/catalog lists every catalog demo, same as the landing grid', async ({
 })
 
 test('a tile on /app/catalog navigates to its demo', async ({ page }) => {
-	await page.goto('/app/catalog')
+	await gotoHydrated(page, '/app/catalog')
 	await page.locator('button[title="Tabs"]').click()
 	await expect(page).toHaveURL(/\/app\/tabs/)
 	// The demo mounted, so the grid is gone.
@@ -61,7 +62,7 @@ test('/app landing keeps its hero and grid, unchanged', async ({ page }) => {
 })
 
 test('clicking a tile mounts the demo, and Browse reaches the browse grid', async ({ page }) => {
-	await page.goto('/app')
+	await gotoHydrated(page, '/app')
 	await page.locator('button[title="Tabs"]').click()
 	await expect(page).toHaveURL(/\/app\/tabs/)
 	await expect(page.locator('[data-catalog-grid]')).toHaveCount(0)
@@ -82,7 +83,7 @@ test('navigating back to /app from browse restores the hero', async ({ page }) =
 	// version of this test passes even with the reset deleted (verified). Clicking the
 	// in-app nav link keeps the same JS context, which is the only way the stale-state bug
 	// is reachable.
-	await page.goto('/app/catalog')
+	await gotoHydrated(page, '/app/catalog')
 	await expect(page.locator('.welcome-hero')).toHaveCount(0)
 
 	await page.locator('[data-site-nav] a[href="/app"]').click()
