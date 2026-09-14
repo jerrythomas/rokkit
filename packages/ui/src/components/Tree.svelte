@@ -17,7 +17,7 @@
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET } from '@rokkit/core'
 	import ItemContent from './ItemContent.svelte'
 	import Connector from './Connector.svelte'
-	import type { ItemSnippet } from '../types/snippets.js'
+	import type { TreeProps } from '../types/tree.js'
 
 	let {
 		items = [],
@@ -30,20 +30,7 @@
 		onselect,
 		class: className = '',
 		...snippets
-	}: {
-		items?: unknown[]
-		fields?: Record<string, string>
-		value?: unknown
-		size?: string
-		lineStyle?: 'none' | 'solid' | 'dashed' | 'dotted'
-		labels?: Record<string, string>
-		icons?: { opened?: string; closed?: string }
-		onselect?: (value: unknown, proxy: ProxyItem) => void
-		class?: string
-		itemContent?: ItemSnippet
-		groupContent?: ItemSnippet
-		[key: string]: unknown
-	} = $props()
+	}: TreeProps = $props()
 
 	const labels = $derived({ ...messages.tree, ...userLabels })
 

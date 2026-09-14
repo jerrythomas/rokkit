@@ -138,3 +138,12 @@ export * from './chat.js'
 
 // Shared snippet types for the item-rendering components
 export * from './snippets.js'
+
+// Grid
+export * from './grid.js'
+
+// CommandPalette
+export * from './command-palette.js'
+
+// Swatch
+export * from './swatch.js'

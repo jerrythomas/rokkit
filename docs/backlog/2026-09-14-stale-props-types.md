@@ -1,18 +1,19 @@
 # Four published `*Props` types describe components that no longer exist
 
 **Raised:** 2026-09-14, while typing snippet props.
-**Status:** open.
+**Status:** CLOSED 2026-09-14 — corrected to match the components, and every
+component now annotates `$props()` with its own declared type.
 
 ## The defect
 
 `@rokkit/ui` publishes a props interface per component. For four of them the
-interface and the component have drifted, and nothing catches it because **the
-component never imports its own props type** — so there is no cross-check
-between the declared shape and the real `$props()`.
+interface and the component had drifted, and nothing caught it because **the
+component never imported its own props type** — there was no cross-check between
+the declared shape and the real `$props()`.
 
-`types/list.ts` is the clearest case. `ListProps` declares:
+`ListProps` was the clearest case:
 
-| `ListProps` says | `List.svelte` actually has |
+| `ListProps` said | `List.svelte` actually had |
 | --- | --- |
 | `item?: ListItemSnippet` — `(item, fields, handlers, isActive)` | `itemContent` — `(proxy)` |
 | `groupLabel?: ListGroupLabelSnippet` | `groupContent` — `(proxy)` |
@@ -20,41 +21,53 @@ between the declared shape and the real `$props()`.
 | `onselectedchange`, `onexpandedchange` | *(absent)* |
 | `onselect?: (value, item: ListItem)` | `onselect?: (value, proxy: ProxyItem)` |
 
-A consumer typing against `ListProps` gets a shape the component will not
-accept, and snippets that will never be rendered. It is published and wrong.
+`TreeProps` was worse (also `expandAll`, `ontoggle`, `onloadchildren`, and
+`item`/`toggle`/`connector` snippets). `SelectBaseProps` named the data prop
+`options` when every component in that family takes `items`.
 
-## Scope
+## The resolution
 
-Exactly four of 48 are unwired — and they are precisely the four free to drift:
+Direction taken: **the component is the truth.** Each interface was rewritten to
+match its component, and the component now annotates `$props()` with it — so any
+future drift is a compile error rather than a silent lie.
 
-- `ListProps` (`types/list.ts`)
-- `MenuProps` (`types/menu.ts`)
-- `SelectBaseProps` (`types/select.ts`)
-- `TreeProps` (`types/tree.ts`)
+Nine components were wired, covering both the stale four and five that had no
+declared type at all:
 
-The other 44 import their type into the component, which keeps them honest.
+| Component | Change |
+| --- | --- |
+| List, Menu, Tree, Select, MultiSelect | interface corrected, then wired |
+| Grid, CommandPalette, Dropdown, LazyTree | interface written (`grid.ts`, `command-palette.ts`, `DropdownProps`, `LazyTreeProps`), then wired |
 
-## Why it is booked rather than fixed
+Also removed, as they described snippet/handler APIs no component accepts:
+`ListItemSnippet`, `ListGroupLabelSnippet`, `ListItemHandlers`,
+`TreeItemSnippet`, `TreeToggleSnippet`, `TreeConnectorSnippet`,
+`TreeItemHandlers`, `SelectOptionSnippet`, `SelectGroupLabelSnippet`,
+`SelectValueSnippet`, `MultiSelectValueSnippet`, `SelectItemHandlers`. All were
+unused outside their own files.
 
-Correcting these is a **breaking change to published types** for anyone who
-imported them, and the four components are the most-used in the library. It also
-wants a decision that is not mine to make: whether to correct the interfaces to
-match the components, or treat the interfaces as the intended API and change the
-components toward them. `ListProps`'s `multiselect` / `expanded` / `selected`
-look like a *designed* API someone meant to build, not an accident — that is
-worth confirming before deleting.
+Duplicate icon interfaces declared inside components (`ListIcons`, `MenuIcons`,
+`SelectIcons`, `MultiSelectIcons`, `DropdownIcons`) were dropped in favour of
+the existing `ListStateIcons` / `MenuStateIcons` / `SelectStateIcons`.
 
-## Suggested approach
+## The guard
 
-1. Decide, per component, which side is the truth.
-2. Make each component import and use its own `*Props`, so the two cannot drift
-   again. That single change is what turns this from a recurring class of bug
-   into a compile error.
-3. Note that `check:types` on `packages/ui` alone will **not** catch a
-   regression here — only a consumer does. Keep `apps/learn` in the gate.
+Wiring stops *drift*, but a **new** component could still be added with an
+inline type — which no type checker can notice. `spec/props-types.spec.ts`
+enforces both halves for all 62 components:
 
-## Related
+1. the component references its own `<Name>Props`, and
+2. that type is declared in `src/types/`, not inline.
 
-- `2026-09-14-untyped-snippet-props.md` — where this was found, now closed.
-- `2026-09-14-learn-app-untypechecked.md` — the consumer-side gate that
-  surfaced it, along with the `ChatMessage` collision.
+It found one case immediately that the manual survey had passed: `Swatch`
+declared `SwatchProps` **inline**, so it satisfied (1) and failed (2). Moved to
+`types/swatch.ts`.
+
+Break-it verified: unwiring `Grid` fails the spec. The suite also asserts it
+found >50 components, so a bad glob can't make every case vacuous.
+
+## Note for whoever touches this next
+
+`check:types` on `packages/ui` alone would **not** have caught the original
+drift, and still wouldn't catch a similar consumer-facing break — only a
+consumer does. Keep `apps/learn` in the gate.

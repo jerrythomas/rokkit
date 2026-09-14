@@ -48,12 +48,7 @@
 	import { Navigator, Trigger } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET, GROUP_SNIPPET } from '@rokkit/core'
 	import ItemContent from './ItemContent.svelte'
-	import type { ItemSnippet } from '../types/snippets.js'
-
-	interface MenuIcons {
-		opened?: string
-		closed?: string
-	}
+	import type { MenuProps, MenuStateIcons } from '../types/menu.js'
 
 	let {
 		items = [],
@@ -67,29 +62,11 @@
 		showArrow = true,
 		align = 'start',
 		direction = 'down',
-		icons: userIcons = {} as MenuIcons,
+		icons: userIcons = {} as MenuStateIcons,
 		onselect,
 		class: className = '',
 		...snippets
-	}: {
-		items?: unknown[]
-		fields?: Record<string, string>
-		value?: unknown
-		size?: string
-		disabled?: boolean
-		collapsible?: boolean
-		label?: string
-		icon?: string
-		showArrow?: boolean
-		align?: 'start' | 'end'
-		direction?: 'up' | 'down'
-		icons?: MenuIcons
-		onselect?: (value: unknown, proxy: ProxyItem) => void
-		class?: string
-		itemContent?: ItemSnippet
-		groupContent?: ItemSnippet
-		[key: string]: unknown
-	} = $props()
+	}: MenuProps = $props()
 
 	const icons = $derived({ ...DEFAULT_STATE_ICONS.selector, ...userIcons })
 

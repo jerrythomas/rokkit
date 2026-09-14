@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { commands, messages } from '@rokkit/states'
 	import { dismissable } from '@rokkit/actions'
+	import type { CommandPaletteProps } from '../types/command-palette.js'
 
 	/** Minimal command shape this palette reads (states' Command typedef isn't exported). */
 	type CommandLike = { id: string; label: string; keywords?: string[] }
 
-	let { open = $bindable(false), placeholder }: { open?: boolean; placeholder?: string } = $props()
+	let { open = $bindable(false), placeholder }: CommandPaletteProps = $props()
 
 	let query = $state('')
 	let activeIndex = $state(0)

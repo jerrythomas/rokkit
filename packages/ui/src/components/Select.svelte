@@ -43,13 +43,7 @@
 	import { Navigator, Trigger } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET, GROUP_SNIPPET } from '@rokkit/core'
 	import ItemContent from './ItemContent.svelte'
-	import type { ItemSnippet } from '../types/snippets.js'
-
-	interface SelectIcons {
-		opened?: string
-		closed?: string
-		checked?: string
-	}
+	import type { SelectProps, SelectStateIcons } from '../types/select.js'
 
 	let {
 		items = [],
@@ -64,30 +58,11 @@
 		align = 'start',
 		direction = 'down',
 		maxRows = 8,
-		icons: userIcons = {} as SelectIcons,
+		icons: userIcons = {} as SelectStateIcons,
 		onchange,
 		class: className = '',
 		...snippets
-	}: {
-		items?: unknown[]
-		fields?: Record<string, string>
-		value?: unknown
-		selected?: unknown
-		placeholder?: string
-		size?: string
-		disabled?: boolean
-		filterable?: boolean
-		filterPlaceholder?: string
-		align?: 'start' | 'end'
-		direction?: 'up' | 'down'
-		maxRows?: number
-		icons?: SelectIcons
-		onchange?: (value: unknown, item: unknown) => void
-		class?: string
-		itemContent?: ItemSnippet
-		groupContent?: ItemSnippet
-		[key: string]: unknown
-	} = $props()
+	}: SelectProps = $props()
 
 	const icons = $derived({
 		...DEFAULT_STATE_ICONS.selector,
