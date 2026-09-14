@@ -1,7 +1,7 @@
 # CHECKPOINT
 
 **Slice:** post-v1.4.2 backlog burn-down. Three items closed (2026-09-14).
-Working tree clean; `134d09b9` on develop.
+Working tree clean; `c4744bb8` on develop — CI green (Check + Coverage).
 
 ## Done
 
@@ -14,11 +14,14 @@ Working tree clean; `134d09b9` on develop.
 - **learn typecheck gate CLOSED** (`a21e5278`, `76a88837`) — booked as large,
   measured as 6 errors in 3 files. **svelte-check gate CLOSED** (`134d09b9`) —
   14 in 4. All six gated dirs now 0 errors / 0 warnings.
+- **Coverage regression from that gate, fixed** (`c4744bb8`) — learn's tsconfig
+  extends the *generated* `.svelte-kit/tsconfig.json`; standalone `coverage` had
+  not synced, so 16 spec files failed to transform. `test:ci`/`coverage` sync now.
 
 Both gates found one library defect: `@rokkit/ui` exports a component **and** an
-interface named `ChatMessage`, the component's generated type shadowing the
-interface — so `ChatMessage<T>` was unreachable for every consumer. Fixed
-additively as `ChatMessageData<T>`. Only a consumer-side gate can see this.
+interface named `ChatMessage`, the component's type shadowing the interface — so
+`ChatMessage<T>` was unreachable for every consumer. Fixed additively as
+`ChatMessageData<T>`. Only a consumer-side gate can see this.
 
 ## Remains
 

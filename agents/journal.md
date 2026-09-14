@@ -8534,3 +8534,41 @@ only thing that found it was pointing a checker at the package the way a
 consumer sees it.
 
 Commit: `134d09b9`
+
+---
+
+## 2026-09-14 — the gate I added broke Coverage, and why my verification missed it
+
+`apps/learn/tsconfig.json` extends the **generated** `.svelte-kit/tsconfig.json`.
+Vite reads the nearest tsconfig to transform learn's specs, so on a fresh
+checkout the `extends` dangles and all 16 learn spec files fail to transform:
+
+    TSConfckParseError: failed to resolve "extends":"./.svelte-kit/tsconfig.json"
+
+`bun run check` never saw it, because `check:types` runs `svelte-kit sync`
+before `test:ci` in the chain. The Coverage workflow invokes `bun run coverage`
+standalone, where nothing had synced. Green locally, green in Check, red in
+Coverage.
+
+The interesting part is the verification failure, not the bug. I *did* anticipate
+this class — it is exactly why learn's `check:types` is `svelte-kit sync && tsc`.
+And I *did* test the sibling staleness hazard, moving `packages/ui/dist` aside to
+confirm the gate holds under CI's resolution. Then I never applied the same
+treatment to `.svelte-kit`, because a local copy had been sitting there since the
+first `bun run build` and everything I ran found it. I tested the hazard I had
+named and missed the one I hadn't.
+
+Rule worth keeping: **when a config depends on a generated artifact, test with
+the artifact absent, not merely stale.** The absent case is what CI runs on every
+push, and it is the one a developer machine can never reach by accident.
+
+Fixed by syncing first in `test:ci` and `coverage`. Routed through learn's own
+`sync` script, because bun only puts the *root* package's `node_modules/.bin` on
+PATH — `cd apps/learn && svelte-kit sync` exits 127, which the first attempt did.
+
+Verified with the directory genuinely moved aside: sync regenerates it, `test:ci`
+exits 0 at 404/404 files and 6181 tests, coverage completes unchanged at
+97.85 / 90.38 / 96.91 / 98.59. Then confirmed in the real environment — Check and
+Coverage both green on `c4744bb8`.
+
+Commit: `c4744bb8`
