@@ -8630,3 +8630,55 @@ Booked rather than fixed: correcting them is a breaking type change, and
 accident. That's a call for the owner.
 
 Commits: `97cc8b64` (yaml) `1fc4e987` (snippets)
+
+---
+
+## 2026-09-14 — the props types were lying, and now they can't
+
+Decision from the owner: the component is the truth, and every component should
+have its own declared props type. Both halves done.
+
+Four published `*Props` interfaces described components that no longer exist.
+The mechanism is the interesting part: **nothing connected the declared type to
+the component's real `$props()`**. The type was exported, the component declared
+its props inline, and no checker ever compared them — so they drifted freely for
+however long. `ListProps` advertised `item`/`groupLabel` snippets and
+`multiselect`/`expanded`/`selected`/`active` that `List` never read; `TreeProps`
+added `expandAll`, `ontoggle`, `onloadchildren` and three more snippets;
+`SelectBaseProps` called the data prop `options` when every component in that
+family takes `items`.
+
+Nine components wired in total — the stale four plus five that had no declared
+type at all. Twelve snippet/handler types removed outright: they described
+callback shapes no component accepts, and none were used outside their own file.
+Five component-local icon interfaces collapsed into the existing `*StateIcons`.
+
+The part worth keeping is the guard. Wiring stops *drift* — once a component
+annotates `$props()` with its own type, disagreement is a compile error. But a
+**new** component can still be added with an inline type, and no type checker can
+notice that, because an inline type is perfectly valid. So
+`spec/props-types.spec.ts` asserts both halves for all 62 components: it
+references its own `<Name>Props`, and that type is declared in `src/types/`.
+
+It earned itself immediately. My manual survey had reported 62/62 wired and
+declared the job done — but the survey only checked the first half. The spec
+failed on `Swatch`, which declared `SwatchProps` **inline**: it satisfied "the
+component references its own props type" and failed "that type lives in
+src/types". A guard that only encodes what you already checked tells you nothing;
+this one encoded the stricter property and caught what the survey couldn't.
+
+Two smaller lessons from the mechanics:
+
+- `import.meta.url` is a non-`file:` URL under the jsdom env, so path resolution
+  in a spec has to go through `process.cwd()`. `dependencies.spec.js` had already
+  learned this and left a comment; I rediscovered it the slow way.
+- I wrote `if (!t.includes('ProxyItem'))` to guard adding an import — and the
+  file already contained the string in text I'd just inserted, so the import
+  never landed. Guarding on a substring that your own edit introduces is not a
+  guard.
+
+`check:types` on `packages/ui` alone would not have caught any of the original
+drift, and still wouldn't catch the next consumer-facing break. `apps/learn`
+stays in the gate.
+
+Commit: `d735e56e`
