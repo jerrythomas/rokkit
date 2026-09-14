@@ -568,3 +568,118 @@ describe('PlotState selection', () => {
 		expect(s.interactive).toBe(false)
 	})
 })
+
+describe('PlotState — constructor and update config branches', () => {
+	const base = { data: mpg, channels: { x: 'class', y: 'cty' } }
+
+	it('seeds the selection set from config.selected', () => {
+		const row = mpg[0]
+		const state = new PlotState({ ...base, selectable: true, selected: [row] })
+
+		expect(state.isSelected(row)).toBe(true)
+		expect(state.selectedRows).toHaveLength(1)
+	})
+
+	it('starts with an empty selection when config.selected is omitted', () => {
+		const state = new PlotState({ ...base, selectable: true })
+
+		expect(state.selectedRows).toHaveLength(0)
+	})
+
+	it('update() applies a new preset only when one is supplied', () => {
+		// `preset()` re-resolves on every call, so compare by value — an identity
+		// check here would pass whether or not the preset actually changed.
+		const state = new PlotState({ ...base })
+		const before = state.preset()
+
+		state.update({ preset: 'print' })
+		const after = state.preset()
+		expect(after).not.toEqual(before)
+
+		// An update that omits `preset` must not reset it back to the default.
+		state.update({ width: 900 })
+		expect(state.preset()).toEqual(after)
+	})
+
+	it('update() applies a new colorScale only when one is supplied', () => {
+		const state = new PlotState({ ...base, channels: { x: 'class', y: 'cty', color: 'drv' } })
+
+		state.update({ colorScale: 'viridis' })
+		const withScale = state.colors
+
+		state.update({ width: 800 })
+		expect(state.colors).toEqual(withScale)
+	})
+})
+
+describe('PlotState — derived guards with incomplete channels', () => {
+	it('does not sort the band domain when the y channel is missing', () => {
+		// `sort` is on but there is nothing to aggregate by, so the band order falls
+		// back to natural order rather than throwing inside the accumulator.
+		const state = new PlotState({ data: mpg, channels: { x: 'class' }, sort: 'asc' })
+
+		expect(() => state.xScale).not.toThrow()
+		expect(state.xScale).toBeTruthy()
+	})
+
+	it('is not band-oriented when only one channel is mapped', () => {
+		const state = new PlotState({ data: mpg, channels: { x: 'class' } })
+
+		expect(() => state.xScale).not.toThrow()
+	})
+})
+
+describe('PlotState — stack and waterfall domains with no rows', () => {
+	it('normalises the value domain to [0,1] for a fill-position stack', () => {
+		const state = new PlotState({
+			data: mpg,
+			channels: { x: 'class', y: 'cty', color: 'drv' }
+		})
+		state.registerGeom({
+			type: 'bar',
+			channels: { x: 'class', y: 'cty', color: 'drv' },
+			options: { position: 'fill' }
+		})
+
+		expect(state.yScale.domain()).toEqual([0, 1])
+	})
+
+	it('ignores a waterfall geom that has no rows', () => {
+		const state = new PlotState({ data: [], channels: { x: 'step', y: 'delta' } })
+		state.registerGeom({ type: 'waterfall', channels: { x: 'step', y: 'delta' }, options: {} })
+
+		expect(() => state.yScale).not.toThrow()
+	})
+
+	it('ignores a stack geom that has no rows', () => {
+		const state = new PlotState({ data: [], channels: { x: 'step', y: 'delta' } })
+		state.registerGeom({
+			type: 'bar',
+			channels: { x: 'step', y: 'delta' },
+			options: { position: 'stack' }
+		})
+
+		expect(() => state.yScale).not.toThrow()
+	})
+})
+
+describe('PlotState — band derivations without a y channel', () => {
+	it('skips band sorting when there is no value channel to sort by', () => {
+		// `sort` is requested and a band geom is present, so the sorted-domain path
+		// runs — but with no y field there is nothing to aggregate, and it must fall
+		// back to the natural category order instead of throwing in the accumulator.
+		const state = new PlotState({ data: mpg, channels: { x: 'class' }, sort: 'asc' })
+		state.registerGeom({ type: 'bar', channels: { x: 'class' }, options: {} })
+
+		expect(() => state.xScale).not.toThrow()
+		expect(state.xScale.domain()).toContain('compact')
+	})
+
+	it('reports no band orientation when only x is mapped', () => {
+		const state = new PlotState({ data: mpg, channels: { x: 'class' } })
+
+		// bandIsX is false, so bandScale resolves to the (null) y scale rather than x.
+		expect(state.bandScale).toBeNull()
+		expect(state.valueScale).toBe(state.xScale)
+	})
+})

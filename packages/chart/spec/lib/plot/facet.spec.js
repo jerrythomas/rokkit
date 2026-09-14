@@ -80,3 +80,37 @@ describe('getFacetDomains', () => {
 		expect(anyXDomain).toEqual(expect.arrayContaining(allClasses))
 	})
 })
+
+describe('getFacetDomains — free categorical x', () => {
+	it('gives each panel only its own categories when x is free and categorical', () => {
+		// The categorical + free-x combination is a distinct branch: a numeric free-x
+		// uses extent(), and a fixed categorical x uses the global category list.
+		// Here each panel must narrow to the categories it actually contains.
+		const panels = new Map([
+			[
+				'p1',
+				[
+					{ cat: 'a', v: 1 },
+					{ cat: 'b', v: 2 }
+				]
+			],
+			['p2', [{ cat: 'c', v: 3 }]]
+		])
+
+		const domains = getFacetDomains(panels, { x: 'cat', y: 'v' }, 'free')
+
+		expect(domains.get('p1').xDomain).toEqual(['a', 'b'])
+		expect(domains.get('p2').xDomain).toEqual(['c'])
+	})
+
+	it('keeps the global category list when x is fixed', () => {
+		const panels = new Map([
+			['p1', [{ cat: 'a', v: 1 }]],
+			['p2', [{ cat: 'c', v: 3 }]]
+		])
+
+		const domains = getFacetDomains(panels, { x: 'cat', y: 'v' }, 'fixed')
+
+		expect(domains.get('p1').xDomain).toEqual(['a', 'c'])
+	})
+})

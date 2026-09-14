@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi, afterEach } from 'vitest'
 import { highlightCode, getSupportedLanguages, preloadHighlighter } from '../src/utils/shiki.js'
 
 describe('Shiki Utilities', () => {
@@ -151,5 +151,49 @@ describe('Shiki Utilities', () => {
 			await Promise.all([preloadHighlighter(), preloadHighlighter(), preloadHighlighter()])
 			await expect(preloadHighlighter()).resolves.not.toThrow()
 		})
+	})
+})
+
+// ─── highlighter initialisation failure ───────────────────────────────────────
+// The `.catch` in initializeHighlighter resets the singleton so a later call can
+// retry. It is only reachable on a cold module with createHighlighter rejecting,
+// hence resetModules + a dynamic import rather than the top-level one.
+
+describe('initializeHighlighter failure path', () => {
+	afterEach(() => {
+		vi.resetModules()
+		vi.doUnmock('shiki')
+	})
+
+	it('rejects and clears the singleton so a later call can retry', async () => {
+		vi.resetModules()
+		const createHighlighter = vi
+			.fn()
+			.mockRejectedValueOnce(new Error('wasm unavailable'))
+			.mockResolvedValue({
+				getLoadedLanguages: () => ['text'],
+				codeToHtml: () => '<pre class="shiki"><code>ok</code></pre>'
+			})
+		vi.doMock('shiki', () => ({ createHighlighter }))
+
+		const mod = await import('../src/utils/shiki.js')
+
+		await expect(mod.highlightCode('x', { lang: 'text' })).rejects.toThrow('wasm unavailable')
+
+		// The catch nulls initPromise; without that reset the rejected promise would
+		// be handed to every subsequent caller and highlighting would stay broken.
+		await expect(mod.highlightCode('x', { lang: 'text' })).resolves.toContain('shiki')
+		expect(createHighlighter).toHaveBeenCalledTimes(2)
+	})
+
+	it('preloadHighlighter swallows the failure', async () => {
+		vi.resetModules()
+		vi.doMock('shiki', () => ({
+			createHighlighter: vi.fn().mockRejectedValue(new Error('wasm unavailable'))
+		}))
+
+		const mod = await import('../src/utils/shiki.js')
+
+		await expect(mod.preloadHighlighter()).resolves.toBeUndefined()
 	})
 })

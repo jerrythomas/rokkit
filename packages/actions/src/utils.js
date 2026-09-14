@@ -75,7 +75,10 @@ function findClosestWithAttribute(element, attribute) {
  * @returns {boolean}
  */
 function isAccordionTrigger(target) {
+	/* v8 ignore start -- unreachable: the only caller is isToggleTarget, which
+	   dereferences target.parentElement first and would throw on null. */
 	if (!target) return false
+	/* v8 ignore stop */
 	const trigger = findClosestWithAttribute(target, 'data-accordion-trigger')
 	return trigger !== null
 }

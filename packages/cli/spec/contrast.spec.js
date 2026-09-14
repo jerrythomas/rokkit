@@ -126,3 +126,31 @@ describe('checkContrastTokens', () => {
 		expect(checkContrastTokens(viaSkin)).toEqual([])
 	})
 })
+
+describe('checkEdgeVisible — unresolvable paper-edge', () => {
+	it('skips the edge check when the surface ramp has no 400 shade', () => {
+		// `rokkit doctor` runs against user configs, and a partial palette is a real
+		// shape. paper resolves from shade 50 so the mode is still checked, but
+		// paper-edge (shade 400) does not — that check has to drop out rather than
+		// compare against null and report a bogus 1.00:1 failure.
+		const partial = {
+			palettes: { sparse: { 50: '0.985 0.005 85', 900: '0.200 0.008 85' } },
+			skins: {
+				default: {
+					surface: { light: 'sparse', dark: 'sparse' },
+					ink: { light: 'sparse', dark: 'sparse' }
+				}
+			}
+		}
+
+		const results = checkContrastTokens(partial)
+
+		expect(results.some((r) => r.label?.includes('paper-edge'))).toBe(false)
+	})
+
+	it('still reports the edge check when paper-edge does resolve', () => {
+		const results = checkContrastTokens(healthy)
+
+		expect(results.every((r) => r.status !== 'error')).toBe(true)
+	})
+})

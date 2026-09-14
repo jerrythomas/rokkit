@@ -18,6 +18,12 @@ describe('matchesAccept', () => {
 		expect(matchesAccept({ type: 'image/png', name: 'photo.png' }, undefined)).toBe(true)
 	})
 
+	it('returns true when accept contains only separators and whitespace', () => {
+		// `!accept` catches '' and undefined, but a non-empty string that yields no
+		// tokens after trim/filter falls through to the tokens.length guard.
+		expect(matchesAccept({ type: 'image/png', name: 'photo.png' }, ' , ,  ,')).toBe(true)
+	})
+
 	it('returns true when accept is null', () => {
 		expect(matchesAccept({ type: 'image/png', name: 'photo.png' }, null)).toBe(true)
 	})

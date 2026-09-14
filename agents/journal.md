@@ -8136,3 +8136,202 @@ rounding. Diff the per-directory table, isolate the file, look for an un-awaited
 async boundary or a teardown-guarded branch.
 
 Commits: `e07aaa5f` `690c132e` `c4313dd9`
+
+## 2026-09-14 — Merge to main, then pay down the js/ts coverage debt
+
+Merged the #156 sweep into `main` (`f8d55f9c`, ff-clean, 11 commits). The Dependabot
+alert cleared on merge: **open alerts 0**. PR #157 is now obsolete — it still
+proposes vitest 3.2.7 → 5.0.0, and we are on 4.1.11 deliberately.
+
+Then started on the debt booked by the vitest 4 re-baseline. js/ts carries the
+strict 100% target and was the smaller half: ~96 uncovered statements against ~493
+in `.svelte`. **9 of 13 js/ts packages are now back at 100%, up from 2.** Remaining:
+chart 28, cli 14, forms 12, states 2.
+
+### Most of it was not "missing tests"
+
+**Guard clauses are contracts.** A keyboard handler calls `next()` / `expand()` /
+`extend()` without first checking whether anything is focused, so the unfocused
+no-op is the behaviour callers depend on. Likewise the SSR guards: `@rokkit/core`
+and `@rokkit/states` are imported by SvelteKit server code where reading `document`
+or `localStorage` throws. These are worth pinning on their own terms.
+
+**Two more vacuous tests, same family as the shiki races.** color-mode's SSR case
+asserted `typeof cleanup === 'function'` — true on *both* paths — and its comment
+claimed `window` could not be removed under JSDOM. It can; `vi.stubGlobal` makes
+`typeof window` return `'undefined'`. `contrastShortcuts` was only ever checked for
+shape, never for the replacement callbacks UnoCSS actually invokes, so a broken
+interpolation would have shipped green.
+
+**One was a real bug.** `themable` wrote
+
+```js
+$effect.root(() => {
+  window.addEventListener('storage', handleStorage)
+  return () => window.removeEventListener('storage', handleStorage)
+})
+```
+
+and discarded the disposer. `$effect.root` creates a root detached from the
+surrounding lifecycle and hands ownership to the caller, so that teardown never
+ran: the listener outlived the action and a fresh one accumulated on every
+re-application. The unreachable cleanup line was the *symptom*. Now a plain
+`$effect` — the sibling `$effect` two lines up already proves an effect context is
+available, so it costs callers nothing.
+
+### `v8 ignore next` silently stopped working in some positions
+
+The repo has 24 `v8 ignore next` directives. **5 had stopped firing** under vitest
+4's AST-aware remapping and had quietly become debt. The region form still works:
+
+    /* v8 ignore start -- reason */
+    if (!typography) return []
+    /* v8 ignore stop */
+
+Confirmed on `core/theme.ts`, `unocss/preset.ts`, `actions/navigator.js` and
+`actions/utils.js`. Failing cases include a single-line `if (...) return`, which is
+two statements on one line. The other 19 still fire — **not** a blanket migration.
+
+And reach for an ignore only after establishing unreachability. `navigator`'s
+`if (!el) return false` sits behind `event.target`, which a dispatched DOM event
+always populates; `utils`' `isAccordionTrigger` null-guard cannot be reached
+because its only caller dereferences `target.parentElement` first and would throw.
+
+### Gate
+
+lint 0/0 · check:types + check:svelte 0/0 · test:ci **5856/386** (+37) · coverage
+exit 0 · learn e2e 67 (run because `themable` is production behaviour) · CI green
+on both branches.
+
+Commits: `f8d55f9c` (main merge) · `bb9a5408` `85b5a0c6`
+
+## 2026-09-14 (cont.) — js/ts coverage debt closed: 13/13 packages at 100%
+
+Finished the js/ts half of the vitest 4 debt. **0 uncovered statements**, every
+js/ts floor at `statements: 100, lines: 100`. chart 87 → 100, cli 93 → 100,
+forms 96 → 100, states 97 → 100.
+
+Remaining debt is entirely `.svelte`: ~490 statements in chart (floor 35), ui (50)
+and forms (66). Its own slice.
+
+### One pattern paid for twelve statements
+
+Every mark builder in `@rokkit/chart` opens with the same bail-out —
+`if (!data?.length || !xScale || !yScale) return []` — and not one of the twelve
+was exercised. It is the contract that keeps a Plot renderable before data arrives
+or while a scale is being derived. A single `describe.each` over the family covers
+it; twelve near-identical tests would rot.
+
+### Injected adapters were hiding the real code paths
+
+`rokkit init`, `theme create` and `upgrade` all take injectable fs/exec adapters,
+and every existing test injected **all** of them — so the DEFAULT implementations,
+the ones that run for an actual user, were never executed. Mocking the node
+builtins instead of injecting runs them for real and asserts what they call, which
+is how a dropped `stdio: 'inherit'` or a missing `recursive: true` gets caught.
+
+Gotcha worth keeping: those sources import from `'fs'` and `'child_process'`, NOT
+the `node:` prefixed specifiers. `vi.mock('node:fs', …)` silently never applies —
+it looks exactly like the mock being ignored. A factory must also supply `default`
+when anything in the graph does `import fs from 'fs'`.
+
+### Six guards were unreachable, not untested
+
+Confirmed by reading the callers, then marked with the start/stop ignore form that
+actually fires under vitest 4:
+
+- `PlotState`'s yScale domain check — every `buildUnifiedYScale` return path is a
+  `scaleLinear`/`scaleBand`, both of which always expose `domain()`.
+- `Wrapper`/`LazyWrapper` stale-key guards — `ProxyTree` is immutable after
+  construction (no items setter, no `update()`), so a focused key cannot go stale.
+- `validation.getFieldSchema` — `validateAll` already returns early on the same
+  `!schema.properties` condition.
+- `FormBuilder`'s keyless-element guard — `#buildCombinedMap` populates the map
+  under `if (el.key)`.
+
+The discipline that matters: establish unreachability from the call sites *first*,
+then ignore. An ignore applied to reachable code is just hidden debt.
+
+### Gate
+
+lint 0/0 · check:types + check:svelte 0/0 · test:ci **5970/390** (+114) ·
+coverage exit 0 · CI green. Break-it check: deleting the new `fix.spec.js` fails
+the cli floor naming `fix.js`; restoring returns exit 0.
+
+Commit: `53b12d41`
+
+## 2026-09-14 (cont.) — the .svelte coverage debt, closed
+
+Every package is back at or above its pre-vitest-4 bar. **js/ts 13/13 at 100%**,
+**`.svelte` 0 files below 90** — down from 29 files and 493 statements. Aggregate
+`97.85 / 90.38 / 96.91 / 98.59`. forms 66→90, chart 35→91, ui 50→90.
+
+### Two blind spots account for nearly all of it
+
+**Snippet slots.** A component's primary interface is often a snippet, and
+`render(Component, { props })` cannot supply one — so the slot AND the default it
+replaces are both dead. That single shape covers Card's regions, Table and
+TreeTable's header/row/cell/empty, Toolbar's start/center/end, Carousel's slide,
+BreadCrumbs' crumb, SearchFilter's tag, Swatch's item, FormRenderer's actions and
+child. Every one needs a small `*Test.svelte` wrapper; there is now one per
+component that takes snippets.
+
+**Interaction.** Geoms rendered marks that were never hovered, clicked, keyed,
+labelled or pattern-filled — Point, Line, Arc, Violin, Highlight, Bar all shared
+it.
+
+### Two more production bugs, both dead code rather than untested code
+
+`FormBuilder` never hoisted `override` off the layout element. README and
+docs/llms both document `override: true` → the consumer's `child` snippet;
+`getSchemaWithLayout` folds unknown layout keys into `props`, and
+`#buildStandardElement` read only `element.override`. The flag landed in
+`props.override`, the branch never fired, and `override: true` leaked downstream
+as a stray prop on the input component.
+
+`elements/DefinePatterns`' spec passed `name` where the component destructures
+`id`, so every id was undefined, `uniq` collapsed them, and EVERY case took the
+error branch — including the two named "should render the patterns". Three
+snapshots had recorded that `<error>` element as expected output. It also imported
+`{ Circles, Triangles }` from `src/patterns`, which exports neither.
+
+That component is unreachable anyway: **`packages/chart/src/elements/` has no
+importer**. Not in `src/`, no `./elements` subpath in the exports map, not
+re-exported from `src/index.js` — every file in it is imported only by its own
+spec. Six of the seven are at 100%, so it costs nothing in coverage. Whether the
+directory should exist is a call for its owner; flagged, not acted on.
+
+### API details that each cost a cycle
+
+- LazyTree's item snippet is not a `content` prop — it is resolved by name via
+  `resolveSnippet(snippets, proxy, ITEM_SNIPPET)`, arriving as `itemContent`.
+- BreadCrumbs' callback is `onclick`, not `onselect`.
+- FormRenderer's `actions` block lives inside the `<form>` branch only; without
+  `onsubmit` the root is a bare `<div>` with no action bar at all.
+- `ctx.submit` is typed `(e: Event)` and calls `preventDefault()` on it.
+- `InputField` emits `onchange`; a raw `input` event never marks a form dirty.
+- BASE_FIELDS maps semantic names to different RAW keys: avatar→`image`,
+  subtext→`description`, tooltip→`title`.
+- Clicking a disabled button via `fireEvent` still fires — it dispatches straight
+  at the element and bypasses the browser's disabled handling. Assert the
+  attribute instead.
+
+### Driving AnimatedPlot's rAF loop
+
+Worth reusing. Queue the rAF callbacks and step them by hand rather than running
+real time, because the component schedules its next frame from inside its own
+callback. Two traps: Svelte's scheduler also uses rAF so the queue is not only the
+component's and its length proves nothing — assert behaviour; and assign the
+globals directly rather than via `vi.stubGlobal`, because the component cancels
+its frame in `onDestroy`, which runs during testing-library cleanup, i.e. after
+`unstubAllGlobals` would have removed `cancelAnimationFrame`.
+
+### Gate
+
+lint 0/0 · check:types + check:svelte 0/0 · test:ci **6181/404** · coverage exit 0
+· build:apps exit 0 · learn e2e 67.
+
+One flake surfaced and is booked rather than retried:
+`docs/backlog/2026-09-14-flaky-components-catalog-e2e.md`.
+
+Commits: `61d21f07` `20b0add1` `81c0e1a7` `94f7dca6` `9601d2f1` `26d48401`

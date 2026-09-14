@@ -97,3 +97,41 @@ describe('buildPointMarks', () => {
 		expect(m.display).toBe('50')
 	})
 })
+
+describe('buildPointMarks — size scale with no usable values', () => {
+	it('falls back to the default radius when every size value is non-numeric', () => {
+		// buildSizeScale filters NaN out; if nothing survives there is no domain to
+		// build a scaleSqrt from, so it returns null and points keep their default
+		// radius rather than rendering with NaN geometry.
+		const nonNumeric = [
+			{ gdp: 1, life: 50, region: 'North', weight: 'heavy' },
+			{ gdp: 5, life: 80, region: 'South', weight: 'light' }
+		]
+
+		const marks = buildPointMarks({
+			data: nonNumeric,
+			plot: fakePlot(),
+			channels: { x: 'gdp', y: 'life', color: 'region', size: 'weight' },
+			type: 'point'
+		})
+
+		expect(marks).toHaveLength(2)
+		for (const m of marks) expect(Number.isNaN(m.r)).toBe(false)
+	})
+
+	it('builds a real size scale when the values are numeric', () => {
+		const sized = [
+			{ gdp: 1, life: 50, region: 'North', weight: 1 },
+			{ gdp: 5, life: 80, region: 'South', weight: 100 }
+		]
+
+		const marks = buildPointMarks({
+			data: sized,
+			plot: fakePlot(),
+			channels: { x: 'gdp', y: 'life', color: 'region', size: 'weight' },
+			type: 'point'
+		})
+
+		expect(marks[0].r).not.toBe(marks[1].r)
+	})
+})

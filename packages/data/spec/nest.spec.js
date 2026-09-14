@@ -156,3 +156,24 @@ describe('nestByColumns', () => {
 		expect(nested).toHaveLength(3)
 	})
 })
+
+// ─── payload merge guards ─────────────────────────────────────────────────────
+
+describe('nestByPath — leaf payload merge', () => {
+	it('does not let an incoming children field clobber the nested children', () => {
+		// mergeLeafPayload skips the 'children' key explicitly. Without that guard a
+		// source row carrying its own `children` would overwrite the array nestByPath
+		// just built, silently dropping every descendant.
+		const rows = [
+			{ path: 'a', children: 'not-an-array', label: 'A' },
+			{ path: 'a/b', label: 'B' }
+		]
+
+		const [root] = nestByPath(rows, { column: 'path' })
+
+		expect(Array.isArray(root.children)).toBe(true)
+		expect(root.children).toHaveLength(1)
+		expect(root.children[0].label).toBe('B')
+		expect(root.label).toBe('A')
+	})
+})

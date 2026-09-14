@@ -141,8 +141,12 @@ const FONT_ROLES = [
 const firstDefined = (values: unknown[]) => values.find((v) => v !== undefined && v !== null)
 
 function buildTypographyVars(typography): string[] {
-	/* v8 ignore next — loadConfig always passes a typography object; this null-guard protects direct callers */
+	/* v8 ignore start -- loadConfig always passes a typography object and this
+	   function is not exported, so the null-guard only protects direct callers.
+	   `ignore next` does NOT fire on a single-line `if (...) return` under vitest
+	   4's AST-aware remapping — that is two statements on one line. */
 	if (!typography) return []
+	/* v8 ignore stop */
 	const vars: string[] = []
 	// Aliases are collected separately so they all follow the canonical vars,
 	// preserving the emit order consumers' snapshots were written against.

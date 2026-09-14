@@ -54,7 +54,10 @@ export class LazyWrapper extends Wrapper {
 		const key = this.focusedKey
 		if (!key) return
 		const node = this.flatView.find((n) => n.key === key)
+		/* v8 ignore start -- unreachable for the same reason as Wrapper.collapse: the
+		   focused key always exists in flatView while the tree is immutable. */
 		if (!node) return
+		/* v8 ignore stop */
 
 		// Lazy unloaded node: fetch children, then expand
 		if (!node.hasChildren && node.proxy.loaded === false) {

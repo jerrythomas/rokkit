@@ -59,6 +59,18 @@ describe('utils', () => {
 			expect(detectDirection()).toBe('rtl')
 			expect(isRTL()).toBe(true)
 		})
+
+		it('falls back to ltr on the server, where document is undefined', () => {
+			// The SSR guard is real behaviour, not dead code: @rokkit/core is imported
+			// by SvelteKit server code, where reading `document` would throw.
+			vi.stubGlobal('document', undefined)
+			try {
+				expect(detectDirection()).toBe('ltr')
+				expect(isRTL()).toBe(false)
+			} finally {
+				vi.unstubAllGlobals()
+			}
+		})
 	})
 
 	describe('noop', () => {

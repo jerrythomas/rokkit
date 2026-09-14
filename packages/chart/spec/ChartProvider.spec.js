@@ -25,6 +25,21 @@ describe('ChartProvider.svelte', () => {
 		expect(container.querySelector('[data-testid="preset-consumer"]')).toBeTruthy()
 	})
 
+	it('exposes the live preset through the context getter', () => {
+		const customPreset = createChartPreset({ colors: ['red', 'blue'] })
+		const { container } = render(TestChartProvider, { props: { preset: customPreset } })
+		const child = container.querySelector('[data-testid="preset-consumer"]')
+
+		expect(child.getAttribute('data-preset-colors')).toBe('red,blue')
+	})
+
+	it('falls back to the default preset when none is supplied', () => {
+		const { container } = render(TestChartProvider)
+		const child = container.querySelector('[data-testid="preset-consumer"]')
+
+		expect(child.getAttribute('data-preset-colors')).toBeTruthy()
+	})
+
 	it('works with a custom preset prop', () => {
 		const customPreset = createChartPreset({ colors: ['red', 'blue'] })
 		const { container } = render(TestChartProvider, { props: { preset: customPreset } })

@@ -37,7 +37,13 @@ function syncWithStorage(theme, storageKey) {
 		}
 	}
 
-	$effect.root(() => {
+	// A plain $effect, not $effect.root. `$effect.root` creates a root detached
+	// from the surrounding lifecycle and hands the caller its disposer — which this
+	// code discarded, so the listener was never removed and every re-application of
+	// the action added another one. The sibling $effect above establishes that we
+	// are in an effect context, so a plain $effect ties the listener to the action's
+	// lifetime and its teardown actually runs.
+	$effect(() => {
 		window.addEventListener('storage', handleStorage)
 		return () => window.removeEventListener('storage', handleStorage)
 	})

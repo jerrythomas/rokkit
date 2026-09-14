@@ -653,7 +653,13 @@ export class FormBuilder {
 	 * @private
 	 */
 	#buildStandardElement(element, fieldPath, scope, value) {
-		const { props } = element
+		// `override` is authored on the LAYOUT element (documented in the README and
+		// docs/llms as the way to opt a field into the consumer's `child` snippet).
+		// getSchemaWithLayout folds unrecognised layout keys into `props`, so reading
+		// only `element.override` left it permanently false and the child snippet
+		// never rendered. Take it from either position, and keep it out of the props
+		// handed to the input component.
+		const { override: propsOverride, ...props } = element.props ?? {}
 		const type = this.#resolveInputType(props)
 		const finalProps = {
 			...props,
@@ -662,7 +668,13 @@ export class FormBuilder {
 			dirty: this.isFieldDirty(fieldPath)
 		}
 		this.#applyLookupState(fieldPath, finalProps)
-		return { scope, type, value, override: element.override || false, props: finalProps }
+		return {
+			scope,
+			type,
+			value,
+			override: element.override || propsOverride || false,
+			props: finalProps
+		}
 	}
 
 	/**
@@ -682,7 +694,12 @@ export class FormBuilder {
 	 */
 	#convertToFormElement(element, parentPath = '') {
 		const { key } = element
+		/* v8 ignore start -- unreachable: both call sites source elements from the
+		   combined map, which #buildCombinedMap populates under `if (el.key)`, so a
+		   keyless element never arrives here. `ignore next` does not fire on a
+		   single-line `if (...) return`. */
 		if (!key) return null
+		/* v8 ignore stop */
 
 		const fieldPath = this.#resolveFieldPath(key, parentPath)
 		const scope = `#/${fieldPath}`

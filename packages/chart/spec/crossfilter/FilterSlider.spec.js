@@ -79,3 +79,23 @@ describe('FilterSlider', () => {
 		await expect(fireEvent.input(low, { target: { value: '20' } })).resolves.not.toThrow()
 	})
 })
+
+describe('FilterSlider — label', () => {
+	it('renders the label when one is supplied', () => {
+		const { container } = render(FilterSlider, {
+			props: { field: 'v', min: 0, max: 10, label: 'Value range' }
+		})
+
+		const label = container.querySelector('[data-filter-slider-label]')
+		expect(label).toBeTruthy()
+		expect(label.textContent).toBe('Value range')
+	})
+
+	it('omits the label element entirely when none is supplied', () => {
+		// The slider is often used inside an already-labelled control group, so an
+		// empty label must not leave a stray empty span in the layout.
+		const { container } = render(FilterSlider, { props: { field: 'v', min: 0, max: 10 } })
+
+		expect(container.querySelector('[data-filter-slider-label]')).toBeNull()
+	})
+})

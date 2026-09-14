@@ -153,3 +153,26 @@ describe('ProxyTableTree — integration with Wrapper', () => {
 		expect(w.focusedKey).toBe('0')
 	})
 })
+
+describe('ProxyTableTree — unsorted', () => {
+	it('preserves source order when no sort has been applied', () => {
+		// `_sortedData` short-circuits on an empty sortState. Without this the
+		// unsorted case would fall into the comparator path and depend on sort
+		// stability rather than on the guard.
+		const t = new ProxyTableTree(nestedRows)
+
+		expect(t.sortState).toHaveLength(0)
+		expect(t.flatView.map((n) => n.proxy.value.region)).toEqual(['EU', 'AM'])
+	})
+
+	it('returns to source order once the sort is cleared', () => {
+		const t = new ProxyTableTree(nestedRows)
+		t.sortBy('region')
+		expect(t.flatView.map((n) => n.proxy.value.region)).toEqual(['AM', 'EU'])
+
+		t.sortBy('region') // desc
+		t.sortBy('region') // cleared
+		expect(t.sortState).toHaveLength(0)
+		expect(t.flatView.map((n) => n.proxy.value.region)).toEqual(['EU', 'AM'])
+	})
+})

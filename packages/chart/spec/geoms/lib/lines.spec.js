@@ -143,3 +143,34 @@ describe('buildLines — orientation flip', () => {
 		expect(flipped[0].points[0].y).toBeCloseTo(vertical[0].points[0].x)
 	})
 })
+
+describe('buildLines — curve interpolation', () => {
+	const data = [
+		{ month: 1, val: 10 },
+		{ month: 2, val: 40 },
+		{ month: 3, val: 20 }
+	]
+	const pathFor = (curve) =>
+		buildLines(data, { x: 'month', y: 'val' }, xScale, yScale, colors, curve)[0].d
+
+	it('draws a stepped path for curve="step"', () => {
+		// curveStep emits axis-aligned segments, so the path is pure H/V moves with
+		// no cubic segments — that is what distinguishes it from linear and smooth.
+		const stepped = pathFor('step')
+
+		expect(stepped).not.toContain('C')
+		expect(stepped).not.toBe(pathFor(undefined))
+		expect(stepped).not.toContain('NaN')
+	})
+
+	it('draws a cubic path for curve="smooth"', () => {
+		expect(pathFor('smooth')).toContain('C')
+	})
+
+	it('defaults to a straight polyline', () => {
+		const linear = pathFor(undefined)
+
+		expect(linear).not.toContain('C')
+		expect(linear.startsWith('M')).toBe(true)
+	})
+})

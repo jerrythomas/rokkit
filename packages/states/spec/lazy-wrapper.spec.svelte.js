@@ -863,3 +863,40 @@ describe('LazyWrapper', () => {
 		})
 	})
 })
+
+// ─── Guard clauses ────────────────────────────────────────────────────────────
+// A keyboard handler calls expand()/select()/toggle() without first checking
+// whether anything is focused, so the unfocused no-op is part of the contract.
+
+describe('LazyWrapper — no focused key', () => {
+	it('expand() is a no-op when nothing is focused', () => {
+		const w = new LazyWrapper(new ProxyTree([{ label: 'A', value: 'a' }]))
+		expect(w.focusedKey).toBeNull()
+
+		expect(() => w.expand(null)).not.toThrow()
+		expect(w.flatView).toHaveLength(1)
+	})
+
+	it('select() is a no-op when neither a path nor a focused key resolves', () => {
+		const w = new LazyWrapper(new ProxyTree([{ label: 'A', value: 'a' }]))
+		const onselect = vi.fn()
+		w.onselect = onselect
+
+		expect(() => w.select(null)).not.toThrow()
+		expect(onselect).not.toHaveBeenCalled()
+	})
+
+	it('toggle() is a no-op when neither a path nor a focused key resolves', () => {
+		const w = new LazyWrapper(new ProxyTree([{ label: 'A', value: 'a' }]))
+
+		expect(() => w.toggle(null)).not.toThrow()
+		expect(w.flatView).toHaveLength(1)
+	})
+
+	it('select() with an unknown path resolves to nothing and is a no-op', () => {
+		const w = new LazyWrapper(new ProxyTree([{ label: 'A', value: 'a' }]))
+
+		expect(() => w.select('no-such-key')).not.toThrow()
+		expect(w.flatView).toHaveLength(1)
+	})
+})

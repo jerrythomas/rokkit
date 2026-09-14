@@ -142,3 +142,26 @@ describe('applyBoxStat', () => {
 		expect(applyBoxStat(boxData, { x: 'class' })).toBe(boxData)
 	})
 })
+
+describe('applyAggregate — unresolvable stat', () => {
+	const data = [
+		{ g: 'a', v: 1 },
+		{ g: 'a', v: 2 },
+		{ g: 'b', v: 3 }
+	]
+
+	it('returns the data untouched when the stat name is not a known function', () => {
+		// A typo'd or future stat name must degrade to identity rather than throw
+		// mid-render: STAT_FNS[stat] is undefined and the guard hands the rows back.
+		const out = applyAggregate(data, { by: ['g'], value: 'v', stat: 'no-such-stat' })
+
+		expect(out).toEqual(data)
+	})
+
+	it('still aggregates when the stat does resolve', () => {
+		const out = applyAggregate(data, { by: ['g'], value: 'v', stat: 'sum' })
+
+		expect(out).not.toEqual(data)
+		expect(out.find((r) => r.g === 'a').v).toBe(3)
+	})
+})

@@ -287,8 +287,11 @@ export class Theme {
 		if (name === 'on-primary') {
 			return this.#adapter.wrap(this.#onColorHex('primary', colors))
 		}
-		/* v8 ignore next -- on-primary is the only 'derived' token, so this default is unreachable */
+		/* v8 ignore start -- on-primary is the only 'derived' token, so this default is
+		   unreachable. `ignore next` does NOT fire here under vitest 4's AST-aware
+		   remapping; the start/stop region does. */
 		return undefined
+		/* v8 ignore stop */
 	}
 
 	/**

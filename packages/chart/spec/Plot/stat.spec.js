@@ -163,3 +163,29 @@ describe('applyGeomStat', () => {
 		expect(compact.hwy).toBe(expectedHwy)
 	})
 })
+
+describe('applyGeomStat — no value channel', () => {
+	it('returns the data unchanged when no y/size/theta channel is mapped', () => {
+		// Aggregation needs something to aggregate. With only an x channel there is
+		// no primary key, so the rows pass through rather than collapsing to one
+		// row per group with an undefined value.
+		const data = [{ cls: 'a' }, { cls: 'a' }, { cls: 'b' }]
+
+		const out = applyGeomStat(data, { stat: 'sum', channels: { x: 'cls' } })
+
+		expect(out).toEqual(data)
+	})
+
+	it('does aggregate once a value channel is present', () => {
+		const data = [
+			{ cls: 'a', n: 1 },
+			{ cls: 'a', n: 2 },
+			{ cls: 'b', n: 5 }
+		]
+
+		const out = applyGeomStat(data, { stat: 'sum', channels: { x: 'cls', y: 'n' } })
+
+		expect(out).toHaveLength(2)
+		expect(out.find((r) => r.cls === 'a').n).toBe(3)
+	})
+})

@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
-import { render, fireEvent } from '@testing-library/svelte'
+import { render, fireEvent, waitFor } from '@testing-library/svelte'
 import SearchFilter from '../src/components/SearchFilter.svelte'
+import SearchFilterTest from './SearchFilterTest.svelte'
 
 describe('SearchFilter', () => {
 	// ─── Rendering ──────────────────────────────────────────────────
@@ -161,5 +162,60 @@ describe('SearchFilter', () => {
 		expect(clearBtn?.getAttribute('aria-label')).toBe('Effacer')
 		const removeBtn = container.querySelector('[data-search-tag-remove]')
 		expect(removeBtn?.getAttribute('aria-label')).toBe('Retirer')
+	})
+})
+
+// ─── Tag removal ──────────────────────────────────────────────────────────────
+// Filters are shown as removable tags, but nothing ever removed one — so the
+// remove handler and the custom `tag` snippet were both unrendered.
+
+describe('SearchFilter — removing a tag', () => {
+	async function withTwoFilters(props = {}) {
+		const onfilter = vi.fn()
+		const result = render(SearchFilterTest, { props: { onfilter, delay: 0, ...props } })
+		const input = result.container.querySelector('[data-search-input]') as HTMLInputElement
+		input.value = 'age > 20, name = ada'
+		await fireEvent.input(input)
+		await waitFor(() =>
+			expect(result.container.querySelectorAll('[data-search-tag], [data-custom-tag]').length).toBe(2)
+		)
+		onfilter.mockClear()
+		return { ...result, onfilter }
+	}
+
+	it('drops just the clicked tag and reports the rest', async () => {
+		const { container, onfilter } = await withTwoFilters()
+
+		const [firstRemove] = container.querySelectorAll('[data-search-tag-remove]')
+		await fireEvent.click(firstRemove)
+
+		await waitFor(() => expect(container.querySelectorAll('[data-search-tag]')).toHaveLength(1))
+		expect(onfilter).toHaveBeenCalled()
+		const remaining = onfilter.mock.calls.at(-1)[0]
+		expect(remaining).toHaveLength(1)
+		expect(remaining[0].column).toBe('name')
+	})
+
+	it('removes every tag one at a time', async () => {
+		const { container } = await withTwoFilters()
+
+		await fireEvent.click(container.querySelectorAll('[data-search-tag-remove]')[0])
+		await waitFor(() => expect(container.querySelectorAll('[data-search-tag]')).toHaveLength(1))
+		await fireEvent.click(container.querySelectorAll('[data-search-tag-remove]')[0])
+
+		await waitFor(() => expect(container.querySelector('[data-search-tags]')).toBeNull())
+	})
+
+	it('renders a custom tag snippet and wires its remove callback', async () => {
+		const { container, onfilter } = await withTwoFilters({ withTagSnippet: true })
+
+		expect(container.querySelectorAll('[data-custom-tag]')).toHaveLength(2)
+		// The built-in tag must not also render.
+		expect(container.querySelector('[data-search-tag]')).toBeNull()
+
+		await fireEvent.click(container.querySelectorAll('[data-custom-tag-remove]')[0])
+
+		await waitFor(() => expect(container.querySelectorAll('[data-custom-tag]')).toHaveLength(1))
+		expect(onfilter).toHaveBeenCalled()
 	})
 })

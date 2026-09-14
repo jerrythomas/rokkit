@@ -41,32 +41,74 @@ Break-it check: raising `packages/helpers/**/*.{js,ts}` from 84 to 99 fails with
 the error naming that glob, confirming the per-package entries actually bind
 rather than silently never matching.
 
-## The debt
+## CLOSED — 2026-09-14
 
-Distance from each package's floor to the pre-vitest-4 bar (`js/ts` 100,
-`.svelte` 90). Ordered worst-first.
+**The debt is paid.** Every package is back at or above its pre-vitest-4 bar:
 
-| Glob | statements | lines | gap |
-| --- | --- | --- | --- |
-| `packages/chart/**/*.svelte` | 35 | 40 | **-55** |
-| `packages/ui/**/*.svelte` | 50 | 70 | **-40** |
-| `packages/blocks/**/*.svelte` | 93 | 95 | +3 |
-| `packages/forms/**/*.svelte` | 66 | 77 | **-24** |
-| `packages/helpers/**/*.{js,ts}` | 84 | 87 | -16 |
-| `packages/actions/**/*.{js,ts}` | 86 | 89 | -14 |
-| `packages/chart/**/*.{js,ts}` | 87 | 95 | -13 |
-| `packages/ui/**/*.{js,ts}` | 92 | 91 | -8 |
-| `packages/states/**/*.{js,ts}` | 92 | 100 | -8 |
-| `packages/cli/**/*.{js,ts}` | 93 | 92 | -7 |
-| `packages/app/**/*.{js,ts}` | 96 | 100 | -4 |
-| `packages/app/**/*.svelte` | 96 | 97 | +6 |
-| `packages/forms/**/*.{js,ts}` | 96 | 99 | -4 |
-| `packages/core/**/*.{js,ts}` | 97 | 96 | -3 |
-| `packages/data/**/*.{js,ts}` | 98 | 100 | -2 |
-| `packages/unocss/**/*.{js,ts}` | 99 | 100 | -1 |
-| `packages/blocks/**/*.{js,ts}` | 100 | 100 | 0 |
-| `packages/helpers/**/*.svelte` | 100 | 100 | +10 |
-| `packages/themes/**/*.{js,ts}` | 100 | 100 | 0 |
+- **js/ts — 13/13 packages at 100%**, 0 uncovered statements.
+- **`.svelte` — 0 files below the 90% bar**, down from 29 files and 493
+  statements. forms 66 → 90, chart 35 → 91, ui 50 → 90.
+
+Aggregate: `97.85 % Stmts · 90.38 % Branch · 96.91 % Funcs · 98.59 % Lines`.
+
+Current floors live in `vitest.config.ts`. They remain a **ratchet**: recompute
+against `coverage/coverage-final.json` after any change rather than editing the
+one that failed, or an improvement elsewhere silently goes unbanked.
+
+## What the work actually found
+
+Very little of this was "missing tests" in the ordinary sense.
+
+**Three production bugs, each surfaced as a coverage gap that was really dead
+code:**
+
+1. `themable` used `$effect.root` and discarded the disposer, so its `storage`
+   listener was never removed and accumulated on every re-application.
+2. `FormBuilder` never hoisted `override` off the layout element, so the
+   documented `override: true` → `child` snippet route silently did nothing and
+   leaked `override` downstream as a stray prop.
+3. `elements/DefinePatterns`' spec passed `name` where the component reads `id`,
+   so every case — including the two named "should render the patterns" — took the
+   error branch, and three snapshots had recorded that `<error>` as expected.
+
+**Vacuous tests that could not fail**, found and replaced: a colour-mode SSR case
+asserting `typeof cleanup === 'function'` (true on both paths) whose comment
+claimed `window` could not be removed under JSDOM; `contrastShortcuts` checked for
+shape but never invoked; a ChartProvider consumer that checked the context existed
+but never read it; Legend cases that build `items` inline and assert on their own
+local construction without rendering the component.
+
+**Snippet slots are the biggest single blind spot.** A component's primary
+interface is often a snippet, and `render(Component, { props })` cannot supply one
+— so the slot AND the default it replaces are both dead. That one shape accounts
+for most of the `.svelte` debt: Card's regions, Table/TreeTable's header/row/cell/
+empty, Toolbar's start/center/end, Carousel's slide, BreadCrumbs' crumb,
+SearchFilter's tag, Swatch's item.
+
+**Interaction is the second.** Geoms rendered marks that were never hovered,
+clicked, keyed, labelled or pattern-filled.
+
+### `v8 ignore next` silently stopped working in some positions
+
+The repo has 24 `v8 ignore next` directives; **5 had stopped firing** under vitest
+4's AST-aware remapping, quietly becoming debt. The `start`/`stop` region form
+still works:
+
+```js
+/* v8 ignore start -- reason */
+if (!typography) return []
+/* v8 ignore stop */
+```
+
+Confirmed on `core/theme.ts`, `unocss/preset.ts`, `actions/navigator.js` and
+`actions/utils.js`. The failing cases include a single-line `if (...) return`,
+which is two statements on one line. The other 19 `next` directives still fire, so
+this is **not** a blanket migration — check before converting.
+
+Reach for an ignore only after establishing the path is genuinely unreachable.
+`navigator`'s `if (!el) return false` sits behind `event.target`, which a
+dispatched DOM event always populates; `utils`' `isAccordionTrigger` null-guard
+cannot be hit because its only caller dereferences `target.parentElement` first.
 
 Worst individual files, which is where to start:
 

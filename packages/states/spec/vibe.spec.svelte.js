@@ -271,3 +271,43 @@ describe('vibe', () => {
 		})
 	})
 })
+
+// ─── SSR storage guards ───────────────────────────────────────────────────────
+// @rokkit/states is imported by SvelteKit server code. Reading `localStorage`
+// there throws on pre-v25 Node, and warns on v25+ without --localstorage-file,
+// so both entry points bail before touching it.
+
+describe('vibe — storage on the server', () => {
+	it('load() is a no-op when localStorage is undefined', () => {
+		const before = { style: vibe.style, mode: vibe.mode, density: vibe.density }
+		vi.stubGlobal('localStorage', undefined)
+		try {
+			expect(() => vibe.load('rokkit-theme')).not.toThrow()
+		} finally {
+			vi.unstubAllGlobals()
+		}
+
+		expect(vibe.style).toBe(before.style)
+		expect(vibe.mode).toBe(before.mode)
+		expect(vibe.density).toBe(before.density)
+	})
+
+	it('save() is a no-op when localStorage is undefined', () => {
+		vi.stubGlobal('localStorage', undefined)
+		try {
+			expect(() => vibe.save('rokkit-theme')).not.toThrow()
+		} finally {
+			vi.unstubAllGlobals()
+		}
+	})
+
+	it('save() still rejects a missing key before reaching storage', () => {
+		// The key check precedes the SSR guard, so it throws on the server too.
+		vi.stubGlobal('localStorage', undefined)
+		try {
+			expect(() => vibe.save('')).toThrow('Key is required')
+		} finally {
+			vi.unstubAllGlobals()
+		}
+	})
+})

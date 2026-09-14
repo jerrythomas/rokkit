@@ -85,7 +85,11 @@ const INTERACTIVE_SELECTOR = [
  */
 function isNestedInteractive(target, root) {
 	const el = /** @type {HTMLElement|null} */ (target)
+	/* v8 ignore start -- a dispatched DOM event always carries a target; the null
+	   branch exists for the EventTarget|null type, not for a reachable state.
+	   `ignore next` does not fire on a single-line `if (...) return`. */
 	if (!el) return false
+	/* v8 ignore stop */
 	const interactive = /** @type {HTMLElement|null} */ (el.closest(INTERACTIVE_SELECTOR))
 	if (!interactive || !root.contains(interactive)) return false
 	// A nested element explicitly declared as an accordion trigger is a
@@ -122,7 +126,9 @@ function isStrictlyInsideItem(el, interactive) {
  */
 function isDisabledItem(target, root) {
 	const el = /** @type {HTMLElement|null} */ (target)
+	/* v8 ignore start -- see isNestedInteractive: event.target is never null */
 	if (!el) return false
+	/* v8 ignore stop */
 	const dataPathEl = /** @type {HTMLElement|null} */ (el.closest('[data-path]'))
 	if (!dataPathEl || !root.contains(dataPathEl)) return false
 	if (dataPathEl.hasAttribute('data-disabled')) return true

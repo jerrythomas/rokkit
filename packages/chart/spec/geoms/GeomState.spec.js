@@ -78,3 +78,18 @@ describe('GeomState', () => {
 		expect(plot.calls.unregister).toBe(1)
 	})
 })
+
+describe('GeomState — sync before register', () => {
+	it('is a no-op when the geom has not registered yet', () => {
+		// Svelte may run the config effect before the register effect on first mount,
+		// so sync() has to tolerate a null id rather than calling updateGeom(null).
+		const plot = fakePlot([])
+		const geom = new GeomState(
+			() => plot,
+			() => ({ channels: { x: 'a', y: 'b' }, stat: 'identity', options: {} })
+		)
+
+		expect(() => geom.sync()).not.toThrow()
+		expect(plot.calls.update).toBe(0)
+	})
+})

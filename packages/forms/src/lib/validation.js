@@ -182,7 +182,10 @@ export const patterns = {
  * @returns {Object|null} Field schema
  */
 function getFieldSchema(fieldPath, schema) {
+	/* v8 ignore start -- unreachable: the only caller is validateElement, reached
+	   from validateAll, which already returns early on !schema.properties. */
 	if (!schema.properties) return null
+	/* v8 ignore stop */
 
 	const keys = fieldPath.split('/')
 	let current = schema.properties
