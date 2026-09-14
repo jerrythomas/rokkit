@@ -31,13 +31,13 @@ Booked in `docs/backlog/`:
   a full re-resolve (blast radius measured: 40 packages).
 - **TypeScript 7** — path verified, deferred by choice.
 - **Untyped snippet props** (new) — `List` and siblings collect snippets behind
-  `[key: string]: unknown`, so consumers' snippet params are implicitly `any`.
-  Two interim annotations in learn to delete when fixed.
+  `[key: string]: unknown`, so consumers' params are implicitly `any`. Two
+  interim annotations in learn to delete when fixed.
 
-Open question: whether to narrow published `peerDependencies` (`svelte: ^5.0.0`)
-to exclude vulnerable svelte. Consumer-facing break, not a sweep call.
+Open question: narrow published `peerDependencies` (`svelte: ^5.0.0`) to exclude
+vulnerable svelte? Consumer-facing break, not a sweep call.
 
 ## Known-broken
 
 Nothing. lint 0/0 · check:types + check:build + check:svelte 0/0 · build:apps 0 ·
-test:ci 6181/404 · learn e2e 70/70. (Sensei daemon down — this file is the record.)
+test:ci 6181/404 · e2e 70/70. (Sensei daemon down — this file is the record.)
