@@ -8734,3 +8734,50 @@ requires the open signature, so this is the price of it.
 GitHub release carries a 🚨 Breaking Changes section naming both ui commits.
 
 Tag: `v1.5.0` · release commit `c98d4332`
+
+---
+
+## 2026-09-14 — killing the index signature
+
+`[key: string]: unknown` was how per-item named snippets got accepted. The
+decision to drop it came after measuring, not from taste:
+
+- **Dropping it outright** would break a real, used, documented feature —
+  `item.snippet = 'name'` is exercised in nine harnesses and the learn demos.
+- **Tightening it in place is impossible.** `unknown` → `ItemSnippet | undefined`
+  produced **77 errors**, because TypeScript requires every declared member to
+  conform to the index signature: `items`, `class`, `gap`, `onselect` would all
+  have to be snippets. It is `unknown` or nothing, as long as it shares an
+  interface with the real props.
+- **What it cost:** `{ itemcontnt: snip }` and `{ onSelect: fn }` both compiled.
+  Declared props were still checked — only unknown *keys* slipped through — but
+  that is exactly where typos live.
+
+So the bag became a declared prop. `<List {items} snippets={{ pinned }} />`.
+Both typos are now errors, and TS suggests the correct spelling.
+
+Three components turned out not to need a bag at all: `UploadProgress` only ever
+read `itemContent`, `UploadTarget` only `content`, and `Swatch` destructured the
+rest into `_rest` and discarded it. Their signatures were pure width.
+
+And two snippets had been hiding inside the looseness: **Tabs reads
+`snippets.empty` and `snippets.tabPanel`**, neither declared anywhere. An open
+index signature does not just admit typos — it conceals real API.
+
+The guard now asserts both directions: no props type carries an index signature,
+and no component widens its own. 250 cases across 62 components.
+
+Two process notes, both self-inflicted:
+
+- I wrote a doc migration as one greedy regex over the whole file. It matched a
+  `<List>` opening tag in one fenced block against a `</List>` in a *later* one
+  and hoisted snippets across code blocks, producing `bind:value / snippets={{…}}>`.
+  Stashed it, rewrote it fence-scoped — transform each ```svelte block in
+  isolation — and reviewed the diff before trusting it. Twice, because the second
+  attempt had the same boundary bug in a different place.
+- `table.txt` was deliberately **excluded** from the migration. `Table.svelte`
+  declares `header`/`row`/`cell`/`empty` and never reads `column.snippet` — the
+  documented `actions` example describes a feature that does not exist. Migrating
+  it would only have made it differently wrong. Booked separately.
+
+Commit: `12563bdd`
