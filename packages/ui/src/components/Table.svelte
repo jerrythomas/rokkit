@@ -23,7 +23,8 @@
 		header: headerSnippet,
 		row: rowSnippet,
 		cell: cellSnippet,
-		empty: emptySnippet
+		empty: emptySnippet,
+		snippets = {}
 	}: TableProps = $props()
 
 	const icons = $derived<TableSortIcons>({ ...defaultTableSortIcons, ...userIcons })
@@ -172,9 +173,15 @@
 							tabindex={isFocused ? 0 : -1}
 						>
 							{#each proxyTable.columns as column (column.name)}
-								{#if cellSnippet}
+								<!-- A column that names a snippet is more specific than the blanket
+									 `cell`, so it wins — the same precedence per-item named snippets
+									 have over `itemContent` elsewhere. Naming one nobody passed falls
+									 through to the default renderer rather than blanking the cell. -->
+								{@const namedCell = column.snippet ? snippets[column.snippet] : undefined}
+								{@const renderCell = namedCell ?? cellSnippet}
+								{#if renderCell}
 									<td data-table-cell data-column={column.name} data-label={column.label ?? column.name} style:text-align={column.align}>
-										{@render cellSnippet(getCellValue(row, column), column, row)}
+										{@render renderCell(getCellValue(row, column), column, row)}
 									</td>
 								{:else}
 									{@const cellIcon = getCellIcon(row, column)}

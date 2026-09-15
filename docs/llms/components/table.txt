@@ -115,14 +115,14 @@ The Table component renders flat data as an accessible table. Columns can be aut
   ]
 </script>
 
-<Table {data} {columns}>
-  {#snippet actions(value, column, row)}
-    <div class="flex gap-2">
-      <button onclick={() => edit(row)}>Edit</button>
-      <button onclick={() => del(row)}>Delete</button>
-    </div>
-  {/snippet}
-</Table>
+{#snippet actions(value, column, row)}
+  <div class="flex gap-2">
+    <button onclick={() => edit(row)}>Edit</button>
+    <button onclick={() => del(row)}>Delete</button>
+  </div>
+{/snippet}
+
+<Table {data} {columns} snippets={{ actions }} />
 ```
 
 ### Custom Row

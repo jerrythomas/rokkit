@@ -214,6 +214,12 @@ export interface TableProps {
 	/** Custom cell snippet */
 	cell?: TableCellSnippet
 
+	/**
+	 * Per-column named snippets, selected via a column's `snippet` field. Takes
+	 * precedence over `cell` for the columns that name one.
+	 */
+	snippets?: Record<string, TableCellSnippet>
+
 	/** Empty state snippet */
 	empty?: TableEmptySnippet
 }
