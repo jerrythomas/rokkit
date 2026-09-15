@@ -8781,3 +8781,50 @@ Two process notes, both self-inflicted:
   it would only have made it differently wrong. Booked separately.
 
 Commit: `12563bdd`
+
+---
+
+## 2026-09-15 — Table's promised feature, and declining to narrow the svelte peer
+
+**`TableColumn.snippet` implemented.** It had been declared in `types/table.ts`
+and taught in `table.txt` while `Table.svelte` never read it — four explicit
+snippet props, no `column.snippet` anywhere. The documented example silently
+rendered the default cell.
+
+Implemented rather than removed. The docs had promised it long enough that
+implementing was the smaller surprise, and it cost ~4 lines: `TableCellSnippet`
+and the cell loop already existed, so it was only ever a missing lookup.
+
+Precedence mirrors the rest of the library — a column naming a snippet beats the
+blanket `cell`, the way a per-item named snippet beats `itemContent`. Naming one
+nobody passed falls through to the default rather than blanking the cell.
+
+Five tests first. Three red (routing, column isolation, precedence), **two green
+from the start and still green** — the fallback paths were never broken, and a
+test that passes before and after is worth keeping precisely because it proves
+the change didn't take something away.
+
+`table.txt` had been deliberately skipped in the earlier doc migration, since
+migrating an example of a feature that didn't exist would only have made it
+differently wrong. Now migrated with the other nine.
+
+**Svelte peer range: decided no change.** Every svelte 5 at or below 5.55.6
+carries at least one moderate advisory, so `^5.0.0` does permit a vulnerable
+pairing. Narrowing to `^5.55.7` was still the wrong move:
+
+- It would use a *compatibility* claim to carry a *security* assertion. Rokkit
+  works on svelte 5.0; nothing here needs 5.55.7. The next reader couldn't tell
+  which kind of constraint it was.
+- It protects nobody. `svelte` is a peer — the consumer installs it and audits it
+  in their own tree. A narrowed range changes an install error, not an exposure.
+- It's a treadmill: five packages republished per future advisory, and any gap
+  leaves the range *asserting* a property it no longer has. Worse than silent.
+- All five advisories are in svelte's own SSR/compiler surface (promise
+  serialisation, spread attributes, DOM clobbering, `<svelte:element>` ReDoS),
+  none reachable through a rokkit API.
+
+The trigger that would change the answer: a high/critical advisory reachable
+*through* a rokkit component's API. Recorded in the backlog so the reasoning
+survives the next time someone asks.
+
+Commit: `6632295a`

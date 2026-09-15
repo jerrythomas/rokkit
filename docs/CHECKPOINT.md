@@ -2,7 +2,7 @@
 
 **Slice:** post-v1.4.2 backlog burn-down. v1.5.0 shipped; develop has since
 gained a **second breaking change, deliberately unreleased** — holding until
-something else lands. Working tree clean; `ef6c600e` on develop.
+something else lands. Working tree clean; `6632295a` on develop. Both pre-release blockers now cleared.
 
 ## Released in v1.5.0 (2026-09-14)
 
@@ -29,10 +29,9 @@ not a patch. Also surfaced that Tabs' `empty`/`tabPanel` were undeclared.
 
 ## Remains
 
-- **`TableColumn.snippet` is dead** (new) — documented and typed, never read by
-  `Table.svelte`. Implement it or remove it; decide before shipping either.
 - **TypeScript 7** — path verified, deferred by choice.
-- Open question: narrow `peerDependencies` (`svelte: ^5.0.0`) to exclude vulnerable svelte?
+- Ready to release: both blockers cleared (Table named snippets implemented;
+  svelte peer range decided as no-change, reasoning in docs/backlog/).
 
 ## Known-broken
 
