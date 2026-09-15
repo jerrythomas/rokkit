@@ -1,8 +1,8 @@
 # CHECKPOINT
 
 **Slice:** post-v1.4.2 backlog burn-down. v1.5.0 shipped; develop has since
-gained a **second breaking change, deliberately unreleased** — holding until
-something else lands. Working tree clean; `6632295a` on develop. Both pre-release blockers now cleared.
+gained a **second breaking change, still unreleased**. Both pre-release blockers
+are now cleared — this is ready to cut. Working tree clean; `6632295a` on develop.
 
 ## Released in v1.5.0 (2026-09-14)
 
@@ -36,4 +36,4 @@ not a patch. Also surfaced that Tabs' `empty`/`tabPanel` were undeclared.
 ## Known-broken
 
 Nothing. lint 0/0 · check:types + check:build + check:svelte 0/0 · build:apps 0 ·
-test:ci 6431/405 · e2e 70/70 · bun audit 0. (Sensei daemon down — this is the record.)
+test:ci 6436/406 · e2e 70/70 · bun audit 0. (Sensei daemon down — this is the record.)
