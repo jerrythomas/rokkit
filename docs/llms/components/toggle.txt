@@ -26,9 +26,9 @@ Most toggles need Tier 0 or 1. Going straight to `itemContent` is the most commo
 
 **Tier 2 — per-item named snippets** — when *a few* options need bespoke markup. Set `item.snippet = 'name'`; every other option keeps the default rendering.
 ```svelte
-<Toggle {options}>
-  {#snippet custom(proxy, selected)}…{/snippet}   <!-- only items with snippet:'custom' -->
-</Toggle>
+{#snippet custom(proxy, selected)}…{/snippet}   <!-- only items with snippet:'custom' -->
+
+<Toggle {options} snippets={{ custom }} />
 ```
 
 **Tier 3 — `itemContent`** — blanket custom rendering for *every* option. Last resort; you now own icon/label layout yourself.
@@ -106,12 +106,12 @@ Set `item.snippet = 'name'` to route *specific* options to a named snippet; all 
   ]
 </script>
 
-<Toggle {options} bind:value>
-  {#snippet custom(proxy, selected)}
-    <span class="i-lucide:star"></span>
-    <strong class:font-bold={selected}>{proxy.label}</strong>
-  {/snippet}
-</Toggle>
+{#snippet custom(proxy, selected)}
+  <span class="i-lucide:star"></span>
+  <strong class:font-bold={selected}>{proxy.label}</strong>
+{/snippet}
+
+<Toggle {options} bind:value snippets={{ custom }} />
 ```
 
 The snippet receives `(proxy: ProxyItem, selected: boolean)`.

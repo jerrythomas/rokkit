@@ -45,17 +45,26 @@ export type SelectableItemSnippet = Snippet<[ProxyItem, boolean]>
  * let { items = [], ...snippets }: { items?: unknown[] } & ItemSnippets = $props()
  * ```
  */
-export interface ItemSnippets {
+export interface ItemSnippets<S = ItemSnippet> {
 	/** Inner content for a leaf item. */
-	itemContent?: ItemSnippet
+	itemContent?: S
 
 	/** Inner content for a group/parent item. Falls back to `itemContent`. */
-	groupContent?: ItemSnippet
+	groupContent?: S
 
 	/**
-	 * Per-item named snippets, selected via the item's `snippet` field. Kept as
-	 * `unknown` rather than `ItemSnippet` because this signature also has to
-	 * admit every other prop the component spreads through.
+	 * Per-item named snippets, selected via the item's `snippet` field:
+	 *
+	 * ```svelte
+	 * {#snippet pinned(proxy)}…{/snippet}
+	 * <List items={[{ label: 'A', snippet: 'pinned' }]} snippets={{ pinned }} />
+	 * ```
+	 *
+	 * A declared prop rather than an index signature. An index signature would
+	 * have to admit every other prop too — TypeScript requires each declared
+	 * member to conform to it — which forced it to `unknown` and silently
+	 * accepted any misspelled prop name (`itemcontnt`, `onSelect`) on every
+	 * component that used it.
 	 */
-	[key: string]: unknown
+	snippets?: Record<string, S>
 }

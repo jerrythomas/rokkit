@@ -27,13 +27,14 @@ Most multi-selects need Tier 0 or 1. Going straight to `itemContent` throws away
 
 **Tier 2 — per-item / per-group named snippets** — when *a few* options need bespoke markup. Set `item.snippet = 'name'`; every other option keeps the default rendering. Works for **group headers and leaf options alike**.
 ```svelte
-<MultiSelect {items} bind:value>
-  {#snippet featured(proxy)}
-    <span class={proxy.icon}></span>
-    <span>{proxy.label}</span>
-    <span data-item-badge>Featured</span>
-  {/snippet}   <!-- only options with snippet:'featured' -->
-</MultiSelect>
+{#snippet featured(proxy)}
+  <span class={proxy.icon}></span>
+  <span>{proxy.label}</span>
+  <span data-item-badge>Featured</span>
+{/snippet}   <!-- only options with snippet:'featured' -->
+{/snippet}
+
+<MultiSelect {items} bind:value snippets={{ featured }} />
 ```
 
 **Tier 3 — `itemContent` / `groupContent`** — blanket custom rendering for *every* option / group header. Last resort; you now own icon/label/badge layout yourself.
@@ -136,13 +137,13 @@ Set `item.snippet = 'name'` to route *specific* options to a named snippet; all 
   ]
 </script>
 
-<MultiSelect {items} bind:value>
-  {#snippet featured(proxy)}
-    <span class={proxy.icon} aria-hidden="true"></span>
-    <span class="flex-1">{proxy.label}</span>
-    <span data-item-badge>Featured</span>
-  {/snippet}
-</MultiSelect>
+{#snippet featured(proxy)}
+  <span class={proxy.icon} aria-hidden="true"></span>
+  <span class="flex-1">{proxy.label}</span>
+  <span data-item-badge>Featured</span>
+{/snippet}
+
+<MultiSelect {items} bind:value snippets={{ featured }} />
 ```
 
 ## Tier 3 — itemContent / groupContent (blanket custom)

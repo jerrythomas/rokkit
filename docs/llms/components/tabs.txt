@@ -141,13 +141,13 @@ Set `item.snippet = 'name'` to route *specific* triggers to a named snippet; all
   ]
 </script>
 
-<Tabs {options} bind:value>
-  {#snippet live(proxy, selected)}
-    <span class="i-lucide:radio" aria-hidden="true"></span>
-    <span>{proxy.label}</span>
-    <span class="size-2 rounded-full bg-danger"></span>
-  {/snippet}
-</Tabs>
+{#snippet live(proxy, selected)}
+  <span class="i-lucide:radio" aria-hidden="true"></span>
+  <span>{proxy.label}</span>
+  <span class="size-2 rounded-full bg-danger"></span>
+{/snippet}
+
+<Tabs {options} bind:value snippets={{ live }} />
 ```
 
 The named snippet **wins over `itemContent`** — so you can give one trigger a custom layout while leaving the rest default.

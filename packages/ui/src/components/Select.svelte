@@ -61,8 +61,15 @@
 		icons: userIcons = {} as SelectStateIcons,
 		onchange,
 		class: className = '',
-		...snippets
+		itemContent,
+		groupContent,
+		snippets = {}
 	}: SelectProps = $props()
+
+	// What resolveSnippet searches: the per-item named snippets plus the two
+	// defaults it falls back to. Named snippets arrive as a declared `snippets`
+	// prop now, so a misspelled prop name is a type error rather than a no-op.
+	const snippetBag = $derived({ ...snippets, itemContent, groupContent })
 
 	const icons = $derived({
 		...DEFAULT_STATE_ICONS.selector,
@@ -442,7 +449,7 @@
 				{@const proxy = node.proxy}
 				{@const sel = !node.hasChildren && proxy.value === value}
 				{@const content = resolveSnippet(
-					snippets as Record<string, unknown>,
+					snippetBag,
 					proxy,
 					node.hasChildren ? GROUP_SNIPPET : ITEM_SNIPPET
 				)}

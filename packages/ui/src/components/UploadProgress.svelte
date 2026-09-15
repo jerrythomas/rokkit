@@ -15,7 +15,6 @@
 	import type { ProxyItem } from '@rokkit/states'
 	import type { UploadProgressProps, UploadItem } from '../types/upload-progress.js'
 	import { messages } from '@rokkit/states'
-	import { ITEM_SNIPPET } from '@rokkit/core'
 	import List from './List.svelte'
 	import Grid from './Grid.svelte'
 	import UploadFileStatus from './UploadFileStatus.svelte'
@@ -33,8 +32,8 @@
 		onclear,
 		labels: userLabels = {} as Record<string, string>,
 		class: className = '',
-		...snippets
-	}: UploadProgressProps & { [key: string]: unknown } = $props()
+		itemContent
+	}: UploadProgressProps = $props()
 
 	// ─── Labels ──────────────────────────────────────────────────────────────
 
@@ -71,7 +70,7 @@
 
 	// ─── Snippet resolution ──────────────────────────────────────────────────
 
-	let itemSnippet = $derived(snippets[ITEM_SNIPPET] as typeof defaultItemContent | undefined)
+	let itemSnippet = $derived(itemContent as typeof defaultItemContent | undefined)
 
 	// ─── Action callbacks (unwrap proxy → raw item) ──────────────────────────
 

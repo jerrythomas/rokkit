@@ -44,6 +44,25 @@ describe('component props types', () => {
 		expect(source, `${name}.svelte should reference ${name}Props`).toContain(`${name}Props`)
 	})
 
+	it('no props type carries an open index signature', () => {
+		// `[key: string]: unknown` was how per-item named snippets used to be
+		// accepted. TypeScript requires every declared member to conform to the
+		// index signature, which forced it to `unknown` — and then silently
+		// accepted any misspelled prop name on every component that used it.
+		// Named snippets are a declared `snippets` prop now; see types/snippets.ts.
+		const offenders = readdirSync(TYPES_DIR)
+			.filter((f) => f.endsWith('.ts'))
+			.filter((f) => readFileSync(join(TYPES_DIR, f), 'utf8').includes('[key: string]'))
+		expect(offenders, `index signature re-introduced in: ${offenders.join(', ')}`).toEqual([])
+	})
+
+	it.each(components)('%s declares its props without an index signature', (name) => {
+		const source = readFileSync(join(COMPONENTS_DIR, `${name}.svelte`), 'utf8')
+		expect(source, `${name}.svelte must not widen its props with an index signature`).not.toContain(
+			'[key: string]'
+		)
+	})
+
 	it.each(components)('%s does not suppress type checking', (name) => {
 		// Without this, the annotation above is decoration. Dropdown and Menu both
 		// carried a `@ts-nocheck` that made their props type unenforced — and by the

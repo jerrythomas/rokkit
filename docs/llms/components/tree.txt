@@ -28,9 +28,9 @@ Most trees need Tier 0 or 1. Going straight to `itemContent` is the most common 
 
 **Tier 2 — per-item named snippets** — when *a few* nodes need bespoke markup. Set `item.snippet = 'name'`; every other node keeps the default rendering.
 ```svelte
-<Tree {items}>
-  {#snippet pinned(proxy)}…{/snippet}   <!-- only nodes with snippet:'pinned' -->
-</Tree>
+{#snippet pinned(proxy)}…{/snippet}   <!-- only nodes with snippet:'pinned' -->
+
+<Tree {items} snippets={{ pinned }} />
 ```
 
 **Tier 3 — `itemContent`** — blanket custom rendering for *every* node (both leaf and branch). Last resort; you now own icon/label/badge layout yourself.
@@ -107,12 +107,12 @@ Set `item.snippet = 'name'` to route *specific* nodes to a named snippet; all ot
   ]
 </script>
 
-<Tree {items} bind:value>
-  {#snippet pinned(proxy)}
-    <span class="i-lucide:pin"></span>
-    <span>{proxy.label}</span>
-  {/snippet}
-</Tree>
+{#snippet pinned(proxy)}
+  <span class="i-lucide:pin"></span>
+  <span>{proxy.label}</span>
+{/snippet}
+
+<Tree {items} bind:value snippets={{ pinned }} />
 ```
 
 ## Tier 3 — itemContent (blanket custom)

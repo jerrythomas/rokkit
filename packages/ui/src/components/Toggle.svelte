@@ -17,12 +17,17 @@
 		disabled = false,
 		label = messages.toggle.label,
 		class: className = '',
-		...snippets
+		itemContent,
+		snippets = {}
 	}: ToggleProps & {
 		// Toggle renders its content as content(proxy, selected).
 		itemContent?: SelectableItemSnippet
-		[key: string]: unknown
+		/** Per-item named snippets, keyed by the item's `snippet` field. */
+		snippets?: Record<string, SelectableItemSnippet>
 	} = $props()
+
+	// See the note in List.svelte — named snippets are a declared prop now.
+	const snippetBag = $derived({ ...snippets, itemContent })
 
 	// ─── Wrapper ──────────────────────────────────────────────────────────────
 
@@ -76,7 +81,7 @@
 
 {#if variant === 'button'}
 	{@const proxy = nextNode?.proxy}
-	{@const content = proxy ? resolveSnippet(snippets, proxy) : null}
+	{@const content = proxy ? resolveSnippet(snippetBag, proxy) : null}
 	<button
 		type="button"
 		data-toggle
@@ -119,7 +124,7 @@
 		{#each wrapper.flatView as node (node.key)}
 			{@const proxy = node.proxy}
 			{@const sel = proxy.value === value}
-			{@const content = resolveSnippet(snippets, proxy)}
+			{@const content = resolveSnippet(snippetBag, proxy)}
 			<button
 				type="button"
 				data-toggle-option

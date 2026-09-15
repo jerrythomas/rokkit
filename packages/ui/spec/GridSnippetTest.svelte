@@ -8,10 +8,11 @@
 	} = $props()
 </script>
 
-<Grid {items}>
-	{#snippet pinned(proxy)}
-		<span data-named-item>Pinned: {proxy.label}</span>
-	{/snippet}
+{#snippet pinned(proxy)}
+	<span data-named-item>Pinned: {proxy.label}</span>
+{/snippet}
+
+<Grid {items} snippets={{ pinned }}>
 	{#snippet itemContent(proxy)}
 		<span data-default-item>Item: {proxy.label}</span>
 	{/snippet}

@@ -28,12 +28,13 @@ Most menus need Tier 0 or 1. Going straight to `itemContent` throws away the bui
 
 **Tier 2 — per-item / per-group named snippets** — when *a few* items need bespoke markup. Set `item.snippet = 'name'`; every other item keeps the default rendering. Works for **group headers and leaf items alike**.
 ```svelte
-<Menu {items} label="File">
-  {#snippet danger(proxy)}
-    <span class="i-lucide:trash text-danger" aria-hidden="true"></span>
-    <span class="text-danger">{proxy.label}</span>
-  {/snippet}   <!-- only items with snippet:'danger' -->
-</Menu>
+{#snippet danger(proxy)}
+  <span class="i-lucide:trash text-danger" aria-hidden="true"></span>
+  <span class="text-danger">{proxy.label}</span>
+{/snippet}   <!-- only items with snippet:'danger' -->
+{/snippet}
+
+<Menu {items} label="File" snippets={{ danger }} />
 ```
 
 **Tier 3 — `itemContent` / `groupContent`** — blanket custom rendering for *every* item / group header. Last resort; you now own icon/label/badge layout yourself.
@@ -145,11 +146,12 @@ Set `item.snippet = 'name'` to route *specific* items to a named snippet; all ot
   ]
 </script>
 
-<Menu {items} label="Actions" {onselect}>
-  {#snippet danger(proxy)}
-    <span class={proxy.icon ?? 'i-lucide:trash'} aria-hidden="true"></span>
-    <span class="text-danger">{proxy.label}</span>
-  {/snippet}
+{#snippet danger(proxy)}
+  <span class={proxy.icon ?? 'i-lucide:trash'} aria-hidden="true"></span>
+  <span class="text-danger">{proxy.label}</span>
+{/snippet}
+
+<Menu {items} label="Actions" {onselect} snippets={{ danger }}>
   {#snippet danger-group(proxy)}
     <span class="i-lucide:archive text-danger" aria-hidden="true"></span>
     <span data-menu-group-text class="text-danger">{proxy.label}</span>

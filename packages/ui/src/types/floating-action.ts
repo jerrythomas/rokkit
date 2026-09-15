@@ -117,6 +117,12 @@ export interface FloatingActionProps {
 
 	/** Custom snippet for rendering action items */
 	item?: FloatingActionItemSnippet
+
+	/**
+	 * Per-item named snippets, selected via the item's `snippet` field. A declared
+	 * prop rather than an index signature — see types/snippets.ts for why.
+	 */
+	snippets?: Record<string, FloatingActionItemSnippet>
 }
 
 // Re-export getSnippet for convenience

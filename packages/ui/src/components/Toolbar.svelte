@@ -27,8 +27,8 @@
 		center,
 		end,
 		children,
-		...snippets
-	}: ToolbarProps & { label?: string; [key: string]: ToolbarItemSnippet | unknown } = $props()
+		snippets = {}
+	}: ToolbarProps & { label?: string } = $props()
 
 	/**
 	 * Create a ProxyItem for the given item

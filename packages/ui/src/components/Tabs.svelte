@@ -22,7 +22,8 @@
 	import { Wrapper, ProxyTree, messages } from '@rokkit/states'
 	import { Navigator } from '@rokkit/actions'
 	import { resolveSnippet, ITEM_SNIPPET, DEFAULT_STATE_ICONS } from '@rokkit/core'
-	import type { SelectableItemSnippet } from '../types/snippets.js'
+	import type { Snippet } from 'svelte'
+	import type { SelectableItemSnippet, ItemSnippet } from '../types/snippets.js'
 
 	let {
 		options = [],
@@ -41,13 +42,24 @@
 		onselect,
 		onadd,
 		onremove,
-		...snippets
+		itemContent,
+		empty,
+		tabPanel,
+		snippets = {}
 	}: TabsProps & {
 		labels?: Record<string, string>
 		// Tabs renders its content as content(proxy, selected).
 		itemContent?: SelectableItemSnippet
-		[key: string]: unknown
+		/** Shown when there are no tabs. */
+		empty?: Snippet<[]>
+		/** Panel body for the active tab. */
+		tabPanel?: ItemSnippet
+		/** Per-item named snippets, keyed by the item's `snippet` field. */
+		snippets?: Record<string, SelectableItemSnippet>
 	} = $props()
+
+	// See the note in List.svelte — named snippets are a declared prop now.
+	const snippetBag = $derived({ ...snippets, itemContent })
 
 	const labels = $derived({ ...messages.tabs, ...userLabels })
 
@@ -141,8 +153,8 @@
 >
 	{#if options.length === 0}
 		<div data-tabs-empty>
-			{#if snippets.empty}
-				{@render snippets.empty()}
+			{#if empty}
+				{@render empty()}
 			{:else}
 				{@render defaultEmpty()}
 			{/if}
@@ -152,7 +164,7 @@
 			{#each wrapper.flatView as node (node.key)}
 				{@const proxy = node.proxy}
 				{@const sel = proxy.value === value}
-				{@const content = resolveSnippet(snippets, proxy, ITEM_SNIPPET)}
+				{@const content = resolveSnippet(snippetBag, proxy, ITEM_SNIPPET)}
 
 				<button
 					type="button"
@@ -190,8 +202,8 @@
 				id="tab-panel-{node.key}"
 				aria-labelledby="tab-{node.key}"
 			>
-				{#if snippets.tabPanel}
-					{@render snippets.tabPanel(proxy)}
+				{#if tabPanel}
+					{@render tabPanel(proxy)}
 				{:else}
 					{@render defaultPanel(proxy)}
 				{/if}

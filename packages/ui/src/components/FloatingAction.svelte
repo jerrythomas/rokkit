@@ -28,8 +28,8 @@
 		onclose,
 		class: className = '',
 		item: itemSnippet,
-		...snippets
-	}: FloatingActionProps & { [key: string]: FloatingActionItemSnippet | unknown } = $props()
+		snippets = {}
+	}: FloatingActionProps = $props()
 
 	const icons = $derived({
 		add: DEFAULT_STATE_ICONS.action.add,

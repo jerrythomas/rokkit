@@ -26,9 +26,9 @@ Most grids need Tier 0 or 1. Going straight to `itemContent` is the most common 
 
 **Tier 2 — per-item named snippets** — when *a few* tiles need bespoke markup. Set `item.snippet = 'name'`; every other tile keeps the default rendering.
 ```svelte
-<Grid {items}>
-  {#snippet featured(proxy)}…{/snippet}   <!-- only tiles with snippet:'featured' -->
-</Grid>
+{#snippet featured(proxy)}…{/snippet}   <!-- only tiles with snippet:'featured' -->
+
+<Grid {items} snippets={{ featured }} />
 ```
 
 **Tier 3 — `itemContent`** — blanket custom rendering for *every* tile. Last resort; you now own icon/label/badge layout yourself.
@@ -99,13 +99,13 @@ Set `item.snippet = 'name'` to route *specific* tiles to a named snippet; all ot
   ]
 </script>
 
-<Grid {items} bind:value>
-  {#snippet featured(proxy)}
-    <span class={proxy.icon} aria-hidden="true"></span>
-    <span class="font-bold">{proxy.label}</span>
-    <span class="text-xs text-accent">Editor's pick</span>
-  {/snippet}
-</Grid>
+{#snippet featured(proxy)}
+  <span class={proxy.icon} aria-hidden="true"></span>
+  <span class="font-bold">{proxy.label}</span>
+  <span class="text-xs text-accent">Editor's pick</span>
+{/snippet}
+
+<Grid {items} bind:value snippets={{ featured }} />
 ```
 
 ## Tier 3 — itemContent (blanket custom)

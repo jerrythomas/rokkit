@@ -136,6 +136,12 @@ export interface ToolbarProps {
 	/** Custom snippet for rendering toolbar items */
 	item?: ToolbarItemSnippet
 
+	/**
+	 * Per-item named snippets, selected via the item's `snippet` field. A declared
+	 * prop rather than an index signature — see types/snippets.ts for why.
+	 */
+	snippets?: Record<string, ToolbarItemSnippet>
+
 	/** Slot for start section content */
 	start?: import('svelte').Snippet
 

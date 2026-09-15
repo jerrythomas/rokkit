@@ -45,8 +45,15 @@
 		label = messages.grid.label,
 		onselect,
 		class: className = '',
-		...snippets
+		itemContent,
+		groupContent,
+		snippets = {}
 	}: GridProps = $props()
+
+	// What resolveSnippet searches: the per-item named snippets plus the two
+	// defaults it falls back to. Named snippets arrive as a declared `snippets`
+	// prop now, so a misspelled prop name is a type error rather than a no-op.
+	const snippetBag = $derived({ ...snippets, itemContent, groupContent })
 
 	// ─── Wrapper ──────────────────────────────────────────────────────────────
 
@@ -95,7 +102,7 @@
 	{#each wrapper.flatView as node (node.key)}
 		{@const proxy = node.proxy}
 		{@const sel = proxy.value === value}
-		{@const content = resolveSnippet(snippets as Record<string, unknown>, proxy, ITEM_SNIPPET)}
+		{@const content = resolveSnippet(snippetBag, proxy, ITEM_SNIPPET)}
 		<button
 			type="button"
 			data-grid-item

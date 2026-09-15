@@ -48,7 +48,4 @@ export interface SwatchProps {
 
 	/** Custom snippet for rendering a swatch (receives proxy + selected) */
 	item?: Snippet<[ProxyItem, boolean]>
-
-	/** Remaining props are spread through */
-	[key: string]: unknown
 }

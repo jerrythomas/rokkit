@@ -25,9 +25,9 @@ Most lists need Tier 0 or 1. Going straight to `itemContent` is the most common 
 
 **Tier 2 — per-item / per-group named snippets** — when *a few* rows need bespoke markup. Set `item.snippet = 'name'`; every other row keeps the default rendering. Works for **group headers and leaf items alike**.
 ```svelte
-<List {items}>
-  {#snippet header(proxy)}…{/snippet}   <!-- only rows with snippet:'header' -->
-</List>
+{#snippet header(proxy)}…{/snippet}   <!-- only rows with snippet:'header' -->
+
+<List {items} snippets={{ header }} />
 ```
 
 **Tier 3 — `itemContent` / `groupContent`** — blanket custom rendering for *every* item/group. Last resort; you now own icon/label/badge layout yourself.
@@ -135,18 +135,17 @@ Set `item.snippet = 'name'` to route *specific* rows to a named snippet; all oth
   ]
 </script>
 
-<List {items} collapsible={false}>
-  {#snippet header(proxy)}
-    <span data-item-label>{proxy.label}</span>
-    <span class="flex-1"></span>
-    <button onclick={(e) => { e.stopPropagation(); /* custom toggle */ }}>Custom Toggle</button>
-  {/snippet}
+{#snippet header(proxy)}
+  <span data-item-label>{proxy.label}</span>
+  <span class="flex-1"></span>
+  <button onclick={(e) => { e.stopPropagation(); /* custom toggle */ }}>Custom Toggle</button>
+{/snippet}
+{#snippet pinned(proxy)}
+  <span class="i-lucide:pin"></span>
+  <span>{proxy.label}</span>
+{/snippet}
 
-  {#snippet pinned(proxy)}
-    <span class="i-lucide:pin"></span>
-    <span>{proxy.label}</span>
-  {/snippet}
-</List>
+<List {items} collapsible={false} snippets={{ header, pinned }} />
 ```
 
 `proxy.snippet` is read via the field accessor (it honors `fields.snippet`), exactly like `icon`/`href`.

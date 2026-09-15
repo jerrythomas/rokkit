@@ -17,7 +17,6 @@
 		class: className = '',
 		onchange,
 		item: itemSnippet,
-		..._rest
 	}: SwatchProps = $props()
 
 	const proxyTree = $derived(new ProxyTree(options, userFields))

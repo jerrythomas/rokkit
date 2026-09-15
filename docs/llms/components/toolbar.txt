@@ -128,15 +128,15 @@ Set `snippet: 'myWidget'` on an item and pass a matching snippet:
   ]
 </script>
 
-<Toolbar {items}>
-  {#snippet zoom(data, fields, handlers)}
-    <div class="zoom-control">
-      <button onclick={() => zoom(-1)}>-</button>
-      <span>100%</span>
-      <button onclick={() => zoom(1)}>+</button>
-    </div>
-  {/snippet}
-</Toolbar>
+{#snippet zoom(data, fields, handlers)}
+  <div class="zoom-control">
+    <button onclick={() => zoom(-1)}>-</button>
+    <span>100%</span>
+    <button onclick={() => zoom(1)}>+</button>
+  </div>
+{/snippet}
+
+<Toolbar {items} snippets={{ zoom }} />
 ```
 
 ## Keyboard Navigation
