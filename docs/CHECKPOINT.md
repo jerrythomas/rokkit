@@ -1,7 +1,6 @@
 # CHECKPOINT
 
-**Slice:** post-v1.4.2 burn-down — **RELEASED v1.6.0** (2026-09-16). Backlog
-empty; develop and main at the release commit; all 14 packages live on npm.
+**Slice:** post-v1.4.2 burn-down — **RELEASED v1.6.0** (2026-09-16). Backlog empty; develop and main at the release commit; all 14 packages live on npm.
 
 ## Released in v1.6.0
 
@@ -13,9 +12,8 @@ Three breaking changes, held until they could ship together:
   putting a second svelte runtime in consumers' trees.
 - **unocss as a peer** (`2da23978`) — same shape, plus a guard
   (`packages/core/spec/workspace-peers.spec.js`) so the class can't return.
-
-Also Table's per-column named snippets (`6632295a`), which its docs had promised
-while the component never read `column.snippet`.
+- **Table per-column snippets** (`6632295a`) — its docs promised these while the
+  component never read `column.snippet`. Not breaking; additive.
 
 ## Verified on the shipped artifacts
 
@@ -29,8 +27,8 @@ Not "CI is green" — the exact repros that failed on 1.5.0, re-run against npm:
 
 ## Earlier, in v1.5.0
 
-Flaky learn e2e, the learn typecheck + svelte-check gates, yaml (audit 2 → 0),
-and the props-type correction wiring all 62 components to their own type.
+Flaky learn e2e, learn typecheck + svelte-check gates, yaml (audit 2 → 0), and
+the props-type correction wiring all 62 components to their own type.
 
 ## Remains
 
