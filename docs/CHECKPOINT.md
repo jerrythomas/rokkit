@@ -29,12 +29,12 @@ Not "CI is green" — the exact repros that failed on 1.5.0, re-run against npm:
 
 ## Earlier, in v1.5.0
 
-Flaky learn e2e, the learn typecheck + svelte-check gates, yaml (`bun audit`
-2 → 0), and the props-type correction wiring all 62 components to their own type.
+Flaky learn e2e, the learn typecheck + svelte-check gates, yaml (audit 2 → 0),
+and the props-type correction wiring all 62 components to their own type.
 
 ## Remains
 
-- **TypeScript 7** — path verified, deferred by choice. Only open item.
+**TypeScript 7** — path verified, deferred by choice. Only open item.
 
 ## Known-broken
 
