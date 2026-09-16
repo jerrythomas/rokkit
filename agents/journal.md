@@ -8828,3 +8828,49 @@ The trigger that would change the answer: a high/critical advisory reachable
 survives the next time someone asks.
 
 Commit: `6632295a`
+
+---
+
+## 2026-09-16 — "what breaks if we upgrade svelte?" turned out to be the wrong direction
+
+Direct answer: **nothing.** `latest` is 5.57.0, that is exactly what is installed,
+one copy in the tree, no svelte 6. The gate was already green on it.
+
+The useful finding was the opposite direction — what breaks if a consumer does
+*not* upgrade. Chasing whether the published `^5.0.0` peer is honest turned up
+that `@rokkit/states` and `@rokkit/data` shipped **svelte under `dependencies`**,
+not `peerDependencies`. Verified against the published artifact, not the repo
+manifest.
+
+A Svelte library cannot do that. The package manager is free to install a second
+copy beside the consumer's, and two svelte runtimes do not share module state.
+Demonstrated instead of argued — a scratch consumer pinned to 5.40.0 installing
+`@rokkit/ui@1.5.0`:
+
+    5.40.0  node_modules/svelte                          (the app's)
+    5.57.0  node_modules/@rokkit/states/node_modules/svelte
+    5.57.0  node_modules/@rokkit/data/node_modules/svelte
+
+Three copies, two runtimes. Every consumer whose svelte misses `^5.55.7` gets
+it — which is every consumer the `^5.0.0` peer explicitly invites.
+
+Floors were derived, not copied. `states` needs `MediaQuery` from
+`svelte/reactivity`: absent at 5.6.0, present at 5.7.0, binary-searched across
+releases. `data` uses only `svelte/store` and runes, so `^5.0.0` is genuine.
+
+**This corrects yesterday's analysis.** I closed the peer-range question as "no
+change" with reasoning I still stand by — a compatibility claim shouldn't carry a
+security floor. But I had checked only the *peer* declarations of
+ui/app/chart/forms/blocks, and never grepped for svelte as a hard dep. It was in
+two packages, silently imposing ≥5.55.7 transitively while `@rokkit/ui`
+advertised `^5.0.0`. The conclusion was defensible; the survey behind it was not
+complete. The peer range was never the lever.
+
+Method note worth keeping: the probe that found this was asking *what version
+does each API actually require*, then binary-searching real installs, rather than
+trusting memory of when a feature landed. My recollection said `$state.raw`
+arrived around 5.19 — it compiles identically from 5.0.0, so that hunch would
+have produced a wrong floor. The one real floor (`MediaQuery`, 5.7.0) was not one
+I would have guessed.
+
+Commit: `a5103514`
