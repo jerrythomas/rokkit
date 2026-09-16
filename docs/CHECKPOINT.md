@@ -1,39 +1,45 @@
 # CHECKPOINT
 
-**Slice:** post-v1.4.2 backlog burn-down. v1.5.0 shipped; develop has since
-gained a **second breaking change, still unreleased**. Both pre-release blockers
-are now cleared — this is ready to cut. Working tree clean; `6632295a` on develop.
+**Slice:** post-v1.4.2 backlog burn-down — **RELEASED v1.6.0** (2026-09-16).
+Backlog empty of open items. Working tree clean; develop and main both at the
+release commit; all 14 packages live on npm.
 
-## Released in v1.5.0 (2026-09-14)
+## Released in v1.6.0
 
-- **Flaky learn e2e** (`3ee1bd5f`) — pre-hydration dead click; `hydration.e2e.ts`
-  holds the window open so the race is deterministic. ×3: 210/210.
-- **learn typecheck + svelte-check gates** (`a21e5278`…`134d09b9`, `c4744bb8`).
-- **yaml** (`97cc8b64`) — bun audit 2 → 0 in a 2-line lockfile diff.
-- **Snippet props + stale props types** (`1fc4e987`, `d735e56e`) — all 62
-  components annotate `$props()` with their own type; drift is now a compile
-  error. **Breaking**, hence the minor.
-- **Three stale `@ts-nocheck`** + the Dropdown doc (`935fc868`).
+Three breaking changes, held until they could ship together:
 
-## On develop, NOT released
+- **`snippets` prop** (`12563bdd`) — replaces the open `[key: string]: unknown`
+  index signature. Named snippets move from children to a declared prop, so
+  misspelled prop names are now type errors instead of silently ignored.
+- **svelte as a peer** (`a5103514`) — `states` and `data` shipped it as a *hard*
+  dependency, putting a second svelte runtime in consumers' trees.
+- **unocss as a peer** (`2da23978`) — same shape in `@rokkit/unocss`, plus a
+  guard (`packages/core/spec/workspace-peers.spec.js`) so the class can't return.
 
-`12563bdd` — **breaking**. The `[key: string]: unknown` index signature is gone;
-per-item named snippets move from children to a declared prop:
+Also: Table's per-column named snippets (`6632295a`), which its docs had
+promised for a long time while the component never read `column.snippet`.
 
-    {#snippet pinned(proxy)}…{/snippet}
-    <List {items} snippets={{ pinned }} />
+## Verified on the shipped artifacts
 
-Passing them as children no longer compiles, and silently renders the default at
-runtime. Needs a migration note in the release body when it does ship — a minor,
-not a patch. Also surfaced that Tabs' `empty`/`tabPanel` were undeclared.
+Not "CI is green" — the exact repros that failed on 1.5.0, re-run against npm:
+
+| Repro | 1.5.0 | 1.6.0 |
+| --- | --- | --- |
+| consumer on svelte 5.40.0 + `@rokkit/ui` | 3 svelte copies | **1** |
+| consumer on unocss 66.0.0 + `@rokkit/unocss` | 2 engines | **1** |
+| `{ itemcontnt: … }` against `ListProps` | compiled | **type error** |
+
+## Earlier, in v1.5.0
+
+Flaky learn e2e (pre-hydration dead click), the learn typecheck + svelte-check
+gates, yaml (`bun audit` 2 → 0), and the props-type correction that made all 62
+components annotate `$props()` with their own type.
 
 ## Remains
 
-- **TypeScript 7** — path verified, deferred by choice.
-- Ready to release: both blockers cleared (Table named snippets implemented;
-  svelte peer range decided as no-change, reasoning in docs/backlog/).
+- **TypeScript 7** — path verified, deferred by choice. Only open item.
 
 ## Known-broken
 
 Nothing. lint 0/0 · check:types + check:build + check:svelte 0/0 · build:apps 0 ·
-test:ci 6436/406 · e2e 70/70 · bun audit 0. (Sensei daemon down — this is the record.)
+test:ci 6465/407 · learn e2e 70/70 · bun audit 0. (Sensei daemon down — this is the record.)
