@@ -32,7 +32,9 @@ the props-type correction wiring all 62 components to their own type.
 
 ## Remains
 
-**TypeScript 7** — path verified, deferred by choice. Only open item.
+**TypeScript 7** — waiting on upstream: svelte-check 4.7.6 (latest) still caps TS
+at <= 6.0. Dual-install workaround verified but not worth two compilers in six
+packages. Trigger + steps in the backlog. Only open item.
 
 ## Known-broken
 
