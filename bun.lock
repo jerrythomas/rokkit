@@ -37,7 +37,7 @@
     },
     "apps/learn": {
       "name": "@rokkit/learn",
-      "version": "1.4.2",
+      "version": "1.5.0",
       "dependencies": {
         "@fontsource/caveat": "^5.2.8",
         "@fontsource/fraunces": "^5.2.9",
@@ -86,7 +86,7 @@
     },
     "packages/actions": {
       "name": "@rokkit/actions",
-      "version": "1.4.2",
+      "version": "1.5.0",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "ramda": "^0.32.0",
@@ -98,7 +98,7 @@
     },
     "packages/app": {
       "name": "@rokkit/app",
-      "version": "1.4.2",
+      "version": "1.5.0",
       "dependencies": {
         "@rokkit/actions": "workspace:*",
         "@rokkit/core": "workspace:*",
@@ -125,7 +125,7 @@
     },
     "packages/blocks": {
       "name": "@rokkit/blocks",
-      "version": "1.4.2",
+      "version": "1.5.0",
       "dependencies": {
         "dompurify": "^3.4.13",
       },
@@ -155,7 +155,7 @@
     },
     "packages/chart": {
       "name": "@rokkit/chart",
-      "version": "1.4.2",
+      "version": "1.5.0",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "@rokkit/data": "workspace:latest",
@@ -192,7 +192,7 @@
     },
     "packages/cli": {
       "name": "@rokkit/cli",
-      "version": "1.4.2",
+      "version": "1.5.0",
       "bin": {
         "rokkit": "src/index.js",
       },
@@ -212,7 +212,7 @@
     },
     "packages/core": {
       "name": "@rokkit/core",
-      "version": "1.4.2",
+      "version": "1.5.0",
       "dependencies": {
         "@unocss/preset-mini": "^66.6.1",
         "date-fns": "^4.1.0",
@@ -224,19 +224,24 @@
     },
     "packages/data": {
       "name": "@rokkit/data",
-      "version": "1.4.2",
+      "version": "1.5.0",
       "dependencies": {
         "@lukeed/uuid": "^2.0.1",
         "@rokkit/core": "workspace:*",
         "d3-array": "^3.2.4",
         "d3-collection": "^1.0.7",
         "ramda": "^0.32.0",
+      },
+      "devDependencies": {
         "svelte": "^5.55.7",
+      },
+      "peerDependencies": {
+        "svelte": "^5.0.0",
       },
     },
     "packages/forms": {
       "name": "@rokkit/forms",
-      "version": "1.4.2",
+      "version": "1.5.0",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "@rokkit/data": "workspace:latest",
@@ -256,7 +261,7 @@
     },
     "packages/helpers": {
       "name": "@rokkit/helpers",
-      "version": "1.4.2",
+      "version": "1.5.0",
       "dependencies": {
         "@vitest/expect": "^4.1.11",
         "@vitest/spy": "^4.1.11",
@@ -265,7 +270,7 @@
     },
     "packages/icons": {
       "name": "@rokkit/icons",
-      "version": "1.4.2",
+      "version": "1.5.0",
       "devDependencies": {
         "@iconify-json/solar": "^1.2.5",
         "@rokkit/cli": "workspace:latest",
@@ -274,18 +279,23 @@
     },
     "packages/states": {
       "name": "@rokkit/states",
-      "version": "1.4.2",
+      "version": "1.5.0",
       "dependencies": {
         "@rokkit/core": "workspace:*",
         "@rokkit/data": "workspace:*",
         "d3-array": "^3.2.4",
         "ramda": "^0.32.0",
+      },
+      "devDependencies": {
         "svelte": "^5.55.7",
+      },
+      "peerDependencies": {
+        "svelte": "^5.7.0",
       },
     },
     "packages/themes": {
       "name": "@rokkit/themes",
-      "version": "1.4.2",
+      "version": "1.5.0",
       "dependencies": {
         "@rokkit/core": "workspace:*",
       },
@@ -297,7 +307,7 @@
     },
     "packages/ui": {
       "name": "@rokkit/ui",
-      "version": "1.4.2",
+      "version": "1.5.0",
       "dependencies": {
         "@rokkit/actions": "workspace:*",
         "@rokkit/core": "workspace:*",
@@ -320,7 +330,7 @@
     },
     "packages/unocss": {
       "name": "@rokkit/unocss",
-      "version": "1.4.2",
+      "version": "1.5.0",
       "dependencies": {
         "@rokkit/core": "workspace:*",
         "@rokkit/icons": "workspace:*",

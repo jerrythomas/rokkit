@@ -42,7 +42,12 @@
     "@rokkit/core": "workspace:*",
     "d3-array": "^3.2.4",
     "d3-collection": "^1.0.7",
-    "ramda": "^0.32.0",
+    "ramda": "^0.32.0"
+  },
+  "peerDependencies": {
+    "svelte": "^5.0.0"
+  },
+  "devDependencies": {
     "svelte": "^5.55.7"
   }
 }
