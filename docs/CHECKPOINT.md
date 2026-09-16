@@ -1,8 +1,7 @@
 # CHECKPOINT
 
-**Slice:** post-v1.4.2 backlog burn-down — **RELEASED v1.6.0** (2026-09-16).
-Backlog empty of open items. Working tree clean; develop and main both at the
-release commit; all 14 packages live on npm.
+**Slice:** post-v1.4.2 burn-down — **RELEASED v1.6.0** (2026-09-16). Backlog
+empty; develop and main at the release commit; all 14 packages live on npm.
 
 ## Released in v1.6.0
 
