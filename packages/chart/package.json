@@ -75,6 +75,7 @@
     "@types/d3-transition": "^3.0.9",
     "@types/d3-zoom": "^3.0.8",
     "@types/ramda": "^0.31.1",
-    "svelte-check": "^4.7.6"
+    "svelte-check": "^4.7.6",
+    "svelte": "^5.55.7"
   }
 }

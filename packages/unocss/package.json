@@ -1,7 +1,7 @@
 {
   "name": "@rokkit/unocss",
   "version": "1.5.0",
-  "description": "UnoCSS preset for Rokkit \u2014 one-line setup for colors, shortcuts, icons, and dark mode.",
+  "description": "UnoCSS preset for Rokkit — one-line setup for colors, shortcuts, icons, and dark mode.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jerrythomas/rokkit.git"
@@ -42,12 +42,12 @@
   },
   "dependencies": {
     "@rokkit/core": "workspace:*",
-    "@rokkit/icons": "workspace:*",
-    "@unocss/extractor-svelte": "^66.6.1",
-    "unocss": "^66.6.1"
+    "@rokkit/icons": "workspace:*"
   },
   "peerDependencies": {
-    "@sveltejs/kit": "^2.0.0"
+    "@sveltejs/kit": "^2.0.0",
+    "unocss": "^66.0.0",
+    "@unocss/extractor-svelte": "^66.0.0"
   },
   "peerDependenciesMeta": {
     "@sveltejs/kit": {
@@ -55,6 +55,8 @@
     }
   },
   "devDependencies": {
-    "@sveltejs/kit": "^2.70.3"
+    "@sveltejs/kit": "^2.70.3",
+    "unocss": "^66.6.1",
+    "@unocss/extractor-svelte": "^66.6.1"
   }
 }

@@ -1,7 +1,7 @@
-# `@rokkit/states` and `@rokkit/data` shipped svelte as a hard dependency
+# Framework singletons shipped as hard dependencies
 
 **Raised:** 2026-09-16, from the question "what breaks if we upgrade to latest svelte 5?"
-**Status:** CLOSED 2026-09-16 — moved to `peerDependencies`. **Unreleased.**
+**Status:** CLOSED 2026-09-16 — svelte and unocss moved to `peerDependencies`, guarded. **Unreleased.**
 
 ## The defect
 
@@ -52,9 +52,44 @@ a hard dependency elsewhere. It did, in two packages, which silently imposed a
 
 The peer range was never the lever. The hard dependency was.
 
-## Worth checking next
+## The same bug in unocss
 
-Nothing else in `packages/*` declares svelte as a dependency (verified). But the
-same class of bug — a peer-shaped dependency declared as a hard one — is worth a
-guard, the way `props-types.spec.ts` guards the props types. Candidates:
-`shiki` (already a peer on `ui`), `d3-*`, `marked`.
+`@rokkit/unocss` listed **unocss** and **@unocss/extractor-svelte** under
+`dependencies`. It is a *preset* package — its presets are composed into the
+consumer's unocss engine, so a second engine builds preset objects the first
+cannot consume.
+
+Demonstrated the same way, and the range matters:
+
+| Consumer's unocss | Result |
+| --- | --- |
+| 66.7.0 (satisfies `^66.6.1`) | one copy, hoisted — fine |
+| 66.0.0 (does **not** satisfy) | second engine at 66.10.5 nested under `@rokkit/unocss` |
+
+Now peers at `^66.0.0` — the honest floor, since `presetWind3` is absent at
+65.5.0 and present at 66.0.0 (probed against real installs, not recalled).
+
+## The guard
+
+`packages/core/spec/workspace-peers.spec.js` — no publishable package may list
+`svelte`, `unocss` or `@sveltejs/kit` under `dependencies`. Nothing else
+catches this: the manifest is valid either way and only misbehaves in a
+consumer's tree.
+
+It found two more on its first run — `@rokkit/chart` and `@rokkit/forms` peered
+on svelte with no devDependency. Not breakage (workspace hoisting covers it at
+build time) but an unpinned version, and nothing recorded what they were tested
+against. Added; 7/7 consistent now.
+
+Break-it verified: reintroducing `dependencies.svelte` on states fails the spec
+by name.
+
+## Left as dependencies, deliberately
+
+- **d3-\***, **ramda**, **date-fns**, **marked**, **dompurify**, **@lukeed/uuid** —
+  plain libraries, no process-wide identity. A duplicate wastes bytes, nothing more.
+- **@vitest/expect**, **@vitest/spy** in `helpers` — checked rather than assumed:
+  helpers never calls `expect.extend`, it exports matcher *functions* the consumer
+  registers, and `equals` is pure. No registry, no singleton.
+- **@unocss/preset-mini** in `core` — imports a colour data object, not engine state.
+- **cli deps** — a CLI bundling its own tools is correct.
