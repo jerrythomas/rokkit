@@ -8874,3 +8874,52 @@ have produced a wrong floor. The one real floor (`MediaQuery`, 5.7.0) was not on
 I would have guessed.
 
 Commit: `a5103514`
+
+---
+
+## 2026-09-16 — fixing the class, not the instance
+
+The svelte hard-dependency fix handled one package pair. The real question was
+whether anything else had the same shape, so I audited every publishable
+manifest's deps against its peers rather than guessing.
+
+**One more real case: `@rokkit/unocss`** listed `unocss` and
+`@unocss/extractor-svelte` as dependencies. It is a *preset* package — its
+presets are composed into the consumer's engine, so a second engine builds
+objects the first cannot consume. Demonstrated, and the range turned out to be
+the whole story:
+
+| consumer's unocss | result |
+| --- | --- |
+| 66.7.0 (satisfies `^66.6.1`) | one copy, hoisted — fine |
+| 66.0.0 (does not satisfy) | second engine 66.10.5 nested under `@rokkit/unocss` |
+
+That is worth remembering generally: a hard dep on a singleton is only *latent*
+while consumers happen to satisfy the range. It looks fine right up until someone
+pins differently.
+
+Floor probed, not recalled: `presetWind3` absent at 65.5.0, present at 66.0.0 →
+`^66.0.0`. Same method as `MediaQuery`/5.7.0 yesterday, and the same reason — my
+memory of when things landed has now been wrong twice.
+
+**The guard is the actual deliverable.** `packages/core/spec/workspace-peers.spec.js`
+asserts no publishable package lists svelte, unocss or `@sveltejs/kit` under
+`dependencies`. Nothing else can catch this: the manifest is valid either way and
+only misbehaves in someone else's tree — not in CI, not in the type checker, not
+at publish time.
+
+It earned itself immediately by failing on two packages I had not touched —
+`chart` and `forms` peer on svelte with no devDependency. I checked before
+"fixing": workspace hoisting means they build fine today, so this is an unpinned
+version, not breakage. I rewrote the assertion's message to say that rather than
+overstate it. A guard that lies about severity trains people to ignore it.
+
+**Audited the rest rather than converting everything.** `d3-*`, `ramda`,
+`date-fns`, `marked`, `dompurify`, `@lukeed/uuid` are plain libraries — a
+duplicate wastes bytes and nothing else. `@unocss/preset-mini` in core imports a
+colour data object. And `@vitest/expect`/`@vitest/spy` in helpers looked
+singleton-shaped but are not: helpers never calls `expect.extend`, it exports
+matcher *functions* the consumer registers, and `equals` is pure. Checking that
+took two minutes and avoided a pointless breaking change.
+
+Commit: `2da23978`
