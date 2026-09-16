@@ -1,7 +1,9 @@
 # TypeScript 7 migration
 
 **Raised:** 2026-09-12, from rokkit#156 §4.
-**Status:** open — deliberately deferred. The path below is **verified working**, not proposed.
+**Status:** open — **waiting on upstream** (decided 2026-09-16). The dual-install
+path below is verified working, but will not be adopted; we wait for svelte-check
+to support TypeScript 7 natively. See "How to know it is ready" at the end.
 
 ## The trap, and why it is not urgent here
 
@@ -80,3 +82,55 @@ tsgo does not report. That is probably fine — arguably better — but it means
 gate stops measuring the same thing, so the first `--tsgo` run is not comparable
 to the last non-tsgo one. Worth stating in whatever commit adopts it, so a future
 reader does not read the drop as lost coverage.
+
+---
+
+## Decision (2026-09-16): wait for native support
+
+The dual-install path works, but adopting it means carrying **two TypeScript
+installs and a non-default flag in six packages** to gain a compiler that already
+reports 0 errors on this codebase via plain `tsc`. The cost is ongoing; the
+benefit is speed we are not currently short of.
+
+Re-checked on the day of the decision, and nothing had moved:
+
+| | |
+| --- | --- |
+| `svelte-check` latest | 4.7.6 — same as installed; no release since the original measurement |
+| its gate | `bin/ts-version-check.js` still reads `typescript/package.json` and throws on major > 6 |
+| `typescript` latest | 7.0.2 |
+
+Deferring stays safe for the reason given above: CI runs `bun run check` →
+`check:svelte`, so an `upgrade:all` that drags in TS 7 fails the build loudly,
+with the fix named in the error text.
+
+## Two corrections to the notes above
+
+**`@typescript/native` is an alias, not a package.** The manifest entry is
+`"@typescript/native": "npm:typescript@^7.0.2"` — it installs the ordinary
+`typescript` package under a second local name so svelte-check's gate (which
+reads `typescript/package.json`) sees 6.x while tsgo reaches 7.x. Looking it up
+on npm returns nothing; that is expected and not a blocker.
+
+**The scope grew from five packages to six.** `apps/learn` joined `check:svelte`
+on 2026-09-14 and is now the largest surface in it:
+
+| | ui | app | chart | forms | blocks | learn |
+| --- | --- | --- | --- | --- | --- | --- |
+| source files | 122 | 9 | 63 | 35 | 10 | **274** |
+
+Whatever the original measurements said about five packages, learn was not among
+them and has never been checked under `--tsgo`.
+
+## How to know it is ready
+
+Watch for a `svelte-check` release whose `bin/ts-version-check.js` drops the
+`<= 6.0` ceiling — that is the single gate. When it lands:
+
+1. `typescript` `^5.9.3` → `^7.x` in the packages that declare it.
+2. Drop the `@typescript/native` alias and the `--tsgo` flag entirely; they exist
+   only to work around this gate.
+3. Re-measure the two open issues, which are tsgo-specific and may simply vanish
+   with a native path — `dist/` being pulled into the check, and the reported file
+   count dropping (ui 989 → 158) because dependency `.d.ts` files stop counting.
+4. Include `apps/learn`, which no prior measurement covered.
