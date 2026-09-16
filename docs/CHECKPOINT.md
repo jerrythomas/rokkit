@@ -25,11 +25,6 @@ Not "CI is green" — the exact repros that failed on 1.5.0, re-run against npm:
 | consumer on unocss 66.0.0 + `@rokkit/unocss` | 2 engines | **1** |
 | `{ itemcontnt: … }` against `ListProps` | compiled | **type error** |
 
-## Earlier, in v1.5.0
-
-Flaky learn e2e, learn typecheck + svelte-check gates, yaml (audit 2 → 0), and
-the props-type correction wiring all 62 components to their own type.
-
 ## Remains
 
 **TypeScript 7** — waiting on upstream: svelte-check 4.7.6 (latest) still caps TS
