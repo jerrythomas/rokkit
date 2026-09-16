@@ -8923,3 +8923,37 @@ matcher *functions* the consumer registers, and `equals` is pure. Checking that
 took two minutes and avoided a pointless breaking change.
 
 Commit: `2da23978`
+
+---
+
+## 2026-09-16 — v1.6.0 released
+
+Three breaking changes, held deliberately until they could ship together:
+the `snippets` prop replacing the open index signature (`12563bdd`), and svelte
+and unocss moving from hard dependencies to peers (`a5103514`, `2da23978`).
+Plus Table's per-column named snippets, which finally made the docs true.
+
+(I had said "four" — the props-type correction `d735e56e` shipped in v1.5.0, not
+this one. `git log v1.5.0..main | grep '!:'` says three.)
+
+Verified against the **shipped artifacts**, not the repo, and specifically by
+re-running the repros that failed on 1.5.0:
+
+- consumer pinned to svelte 5.40.0 installing `@rokkit/ui@1.6.0` → **one** svelte
+  copy. On 1.5.0 the same install produced three.
+- consumer pinned to unocss 66.0.0 installing `@rokkit/unocss@1.6.0` → **one**
+  engine. On 1.5.0, two.
+- `@rokkit/states@1.6.0` ships no svelte under `dependencies`; peer is `^5.7.0`.
+- shipped `.d.ts` carries `ListProps.snippets` and `TableProps.snippets`, and
+  `{ itemcontnt: … }` is now a type error with TS suggesting `itemContent`.
+
+Publish log shows 14 `+ @rokkit/x@1.6.0` lines and no genuine `::warning::` —
+the only grep hit is the workflow echoing its own script line, as before. All 14
+confirmed on npm.
+
+Worth keeping from this release: the useful verification was never "is CI green",
+it was "does the exact failing repro now pass against what npm actually serves".
+Both duplicate-runtime bugs were invisible to every gate in the repo and only
+observable in a consumer's tree.
+
+Tag: `v1.6.0` · release commit `5513399d`
