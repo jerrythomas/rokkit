@@ -1,40 +1,39 @@
 # CHECKPOINT
 
 **Slice:** #159 — extract dbd's ER-diagram viewer into a new **`@rokkit/graph`**.
-Design agreed and committed (`0b023faa`): `docs/design/23-graph.md` +
-`docs/backlog/2026-09-27-graph-package-extraction.md`. **No code yet.**
+Design (`0b023faa`) + slice-1 plan (`183f330e`) committed. **No code yet.** 3 commits ahead of
+origin/develop, not pushed.
+
+**Plan:** `docs/plans/2026-09-27-graph-package-extraction.md` — 21 tasks, 132 TDD steps, and every
+fact already verified. This file is only orientation.
 
 ## Remains
 
-1. Slice-1 plan → `docs/plans/2026-09-27-graph-package-extraction.md`
-2. Slice 1: normalizer → `cluster` layout → components → theme → learn demo → dbd consumes it
-3. Slice 2: force-directed (sensei's call graph) · Slice 3: dbd#24 v2 model
-
-**Next command:** write the slice-1 plan, TDD-ordered. Port from `~/Developer/dbd/site/src/lib/design/`.
+1. **Task 1** — scaffold `packages/graph`, register the vitest project + coverage thresholds, add
+   it to the **hardcoded** `check:svelte` list in root `package.json`
+2. Tasks 2–20 — palette move → normalizer → 2 layouts → `Graph` → schema views → theme → demo
+3. **Task 21** — dbd consumes the package (separate repo + PR). **The acceptance proof; slice 1
+   is not done without it.** Needs `@rokkit/graph` published or a workspace link.
+4. Slice 2: force-directed (sensei's call graph) · Slice 3: dbd#24 v2 model
 
 ## Decisions locked — do not relitigate
 
-New package, **not** `@rokkit/chart` (chart is scales/channels/marks; `d3-force` must not reach
-bar-chart consumers). Entry points `.` + `./schema`. Contract = **mapped input, canonical
-internals** (`nodes`/`edges`/`fields`, normalized once). Viewer core only — app-shell and
-`SchemaModel` stay in dbd. Theming splits by vocabulary: `data-node-kind` in CSS for the closed
-set, a brewer preset for open-ended groups. `base` + `rokkit` themes only. `LayoutFn` interface
-now, `cluster` only. **Learn examples ship in slice 1** — they are the verification surface.
+New package, **not** `@rokkit/chart`. Entry points `.` + `./schema`. **Mapped input, canonical
+internals.** Viewer core only; app-shell and `SchemaModel` stay in dbd. `data-node-kind` in CSS
+for the closed set, `createGraphPreset` (`using: color|pattern|symbol`) for open-ended groups.
+`base` + `rokkit` themes only. Learn examples ship **in** slice 1. And, already in both docs:
+`EntityDiagram.svelte`'s own constants/`buildCard`/`anchorY`/`path` (~100 lines duplicating
+`layout-cards`/`layout-edges`) become a `neighborhood` `LayoutFn`, so slice 1 ships **two**
+layouts at _less_ code and the seam is validated by two real implementations.
 
-## Findings the plan must honour
+## Invariants the executor must not violate
 
-- `chart/src/lib/palette.json` + categorical `preset.js` + `brewing/patterns.js` → `@rokkit/core`;
-  safe (absent from chart's `exports`, zero imports, no d3). Ship as a distinct
-  `categoricalPalette`, **not** merged — core's `tailwind.json` is a different palette, so merging
-  would move chart baselines.
-- `[data-graph-paper]` already exists and **is** the dotted canvas — delete `.dg-dots`.
-  `Icon.svelte` does not port (icons-as-CSS-classes, 2026-02).
-- **Two live defects to fix, not carry:** `styles.css:194,201` put `.ctype`/`.dg-fkicon` on
-  `ink-soft` inside a `<button>` (forbidden → `ink-mute`); `styles.css:174` uses `accent`, whose
-  on-color bakes a hex and can't react to a skin (→ `primary`/`on-primary`).
-- Contrast sweep must use a **non-default** skin — default maps primary _and_ accent to `shu`.
+1. **A failing ported assertion means the port changed behaviour** — fix the port, never
+   rebaseline a characterization test. Both suites (344 lines, incl. 7 exact SVG path strings)
+   carry every number across; only fixtures change shape.
+2. **A contrast failure on a graph selector is a real finding** — fix the token, never
+   accept-list it. Sweep a **non-default** skin (default maps primary _and_ accent to `shu`).
+3. `base/*.css` is structure only, **no colour** — a spec asserts it.
 
-## Open questions / known-broken
-
-None blocking; nothing broken; `check:types` clean. Deferred: dbd adopting `createGraphPreset` for
-`SchemaSnapshot`'s six hue rules. Other open repo item: TypeScript 7 (needs svelte-check > TS 6).
+**Known-broken:** nothing; `check:types` clean; no blocking questions. Other open item:
+TypeScript 7 (needs svelte-check > TS 6).
