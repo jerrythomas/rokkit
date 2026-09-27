@@ -41,10 +41,10 @@ The monorepo already separates by _abstraction_, not by "is it visual" — `form
 
 `@rokkit/graph`, two entry points:
 
-| Entry      | Contents                                                                                                 |
-| ---------- | -------------------------------------------------------------------------------------------------------- |
-| `.`        | Canonical model, normalizer, layout interface + built-in layouts, `Graph` canvas, edge routing, pan/zoom |
-| `./schema` | ER views: `EntityView`, `EntitiesView`, `NoteBlocks`, `fromSchemaModel`, key/FK badges                   |
+| Entry      | Contents                                                                                                         |
+| ---------- | ---------------------------------------------------------------------------------------------------------------- |
+| `.`        | Canonical model, normalizer, layout interface + built-in layouts, `Graph` canvas, edge routing, fit-to-container |
+| `./schema` | ER views: `EntityView`, `EntitiesView`, `NoteBlocks`, `fromSchemaModel`, key/FK badges                           |
 
 The entity-centric diagram is **not** a `./schema` component — it is the `neighborhood` layout
 under `.`, rendered by the same `Graph` canvas. See _Layout interface_.
@@ -60,6 +60,12 @@ is not among them — see _Reuse instead of port_.
 The two entry points keep the boundary honest without prematurely splitting into two packages.
 Splitting later is a manifest change, not a redesign.
 
+**No interactive pan/zoom in slice 1.** The `Graph` canvas does static fit-to-container, because
+that is what the ported source does — `DiagramView.svelte:41` says so in its own comment:
+`// Static fit-to-container (no pan/zoom — this is a gallery render).` Drag-to-pan and
+scroll-to-zoom are a later slice. `@rokkit/chart` has `d3-zoom` wired to `PlotState`, so there is
+prior art to draw on when that lands, but nothing to inherit today.
+
 ---
 
 ## Data contract: mapped in, canonical inside
@@ -72,9 +78,23 @@ normalize step resolves the mapping **once**; everything downstream sees concret
   nodes={schema.tables}
   edges={schema.refs}
   layout="cluster"
-  fields={{ group: 'schema', kind: 'kind', rows: 'columns', source: 'from.t', target: 'to.t' }}
+  fields={{
+    group: 'schema',
+    kind: 'kind',
+    rows: 'columns',
+    source: 'from.t',
+    target: 'to.t',
+    sourceGroup: 'from.s',
+    targetGroup: 'to.s'
+  }}
 />
 ```
+
+`sourceGroup`/`targetGroup` are not optional decoration. An edge endpoint like `from.t` yields a
+bare label (`orders`), and qualifying it to a node id needs the group — which lives on the
+_endpoint_ (`from.s`), not on the edge. Declaring the path is deliberate: the alternative is
+sweeping the endpoint's sibling fields for anything that happens to form a known id, which
+resolves the wrong node whenever a stale schema name coincides with a real one.
 
 ```ts
 normalizeGraph(nodes, edges, fields) → GraphModel
@@ -285,7 +305,7 @@ createGraphPreset({
     light: { fill: '100', stroke: '400', label: '700' },
     dark: { fill: '900', stroke: '600', label: '200' }
   },
-  using: 'color' // | 'pattern' | 'symbol'
+  using: 'color' // | 'pattern'
 })
 ```
 
@@ -447,7 +467,7 @@ theming section, and it is what a consumer reads to write an override rule.
 | `edgeStyle`      | Switch `curved` / `orthogonal`                                                                                               |
 | `layout`         | Switch `cluster` / `neighborhood` — two real implementations, so the seam is exercised, not just declared                    |
 | `data-node-kind` | Data covering every kind, so each kind's colour is visible at once                                                           |
-| `using`          | Switch `color` / `pattern` / `symbol` — the colour-blind-safe path is verified, not assumed                                  |
+| `using`          | Switch `color` / `pattern` — the colour-blind-safe path is verified, not assumed                                             |
 | Group preset     | Multi-schema data, so the `groups` ramp assigns and wraps visibly                                                            |
 | Override         | A documented snippet showing a one-rule `[data-node-kind=…]` override actually taking effect                                 |
 | Views            | The `Graph` canvas, `EntityView` and `EntitiesView` each reachable                                                           |

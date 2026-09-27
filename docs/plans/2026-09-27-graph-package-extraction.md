@@ -464,8 +464,18 @@ describe('chart colours survive the palette move', () => {
 
 Run: `bun run test:ci --project chart -t "survive the palette move"`
 
-**These expected values are placeholders you must replace with real ones.** Before making any
-change, print the actual values and paste them in:
+**These expected values are placeholders.** They are Tailwind's blue/emerald/rose 200/700, and
+chart's palette differs on every one (`blue.200` is `#bfeeff`, not `#bfdbfe`) — so they will fail,
+loudly. That is the point: the failure proves the guard is wired to the real code path before you
+trust it.
+
+- [ ] **Step 3a: Run it and confirm it FAILS with the placeholders**
+
+Run: `bun run test:ci --project chart -t "survive the palette move"`
+Expected: **FAIL**, showing chart's real hex values in the diff. If it PASSES, stop — the test is
+not reaching `assignColors` and the guard is worthless.
+
+- [ ] **Step 3b: Substitute the real values and confirm it PASSES, still pre-move**
 
 ```bash
 cd packages/chart && bun -e "
@@ -474,7 +484,11 @@ console.log(JSON.stringify([...assignColors(['a','b','c'],'light')], null, 2))
 "
 ```
 
-Expected after substitution: PASS (it pins current behaviour, pre-move).
+Paste those values in, re-run, expect PASS. **This green run is the baseline** — it records
+chart's colours _before_ anything moves, which is what makes a later failure unambiguous. Without
+this observed red→green pair, a post-move failure could mean either "the move broke chart" or "the
+baseline was wrong all along", and the plan's instruction to fix the move rather than the test
+would be guesswork.
 
 - [ ] **Step 4: Move the file**
 
@@ -721,6 +735,13 @@ export type GraphFields = {
   /** Edge-level paths. */
   source?: string
   target?: string
+  /**
+   * Where each endpoint's GROUP is read from, when the endpoint value is a bare label.
+   * Declared explicitly rather than guessed: dbd's refs nest as `from: { s, t, c }`, so the
+   * group is `from.s`. Falls back to `group` (the node-level path) when unset.
+   */
+  sourceGroup?: string
+  targetGroup?: string
   sourceRow?: string
   targetRow?: string
   edgeKind?: string
@@ -799,6 +820,8 @@ const FIELDS = {
   rowBadges: { pk: 'pk', nn: 'nn' },
   source: 'from.t',
   target: 'to.t',
+  sourceGroup: 'from.s',
+  targetGroup: 'to.s',
   sourceRow: 'from.c',
   targetRow: 'to.c'
 }
@@ -869,6 +892,22 @@ describe('normalizeGraph', () => {
         action: undefined
       }
     ])
+  })
+
+  it('maps cardinality and action when the source carries them', () => {
+    // The only coverage these had was asserting they default to undefined — which a
+    // normalizer that ignored the fields entirely would also satisfy.
+    const edges = [
+      {
+        from: { s: 'public', t: 'orders', c: 'user_id' },
+        to: { s: 'public', t: 'users', c: 'id' },
+        cardinality: '1:N',
+        action: 'cascade'
+      }
+    ]
+    const model = normalizeGraph(TABLES, edges, FIELDS)
+
+    expect(model.edges[0]).toMatchObject({ cardinality: '1:N', action: 'cascade' })
   })
 
   it('reads an explicit edge kind when mapped', () => {
@@ -949,7 +988,7 @@ describe('normalizeGraph', () => {
     expect(model.byId.size).toBe(0)
   })
 
-  it('gives each edge a distinct id when two refs join the same pair of nodes', () => {
+  it('gives each edge a distinct id when two refs join the same pair via different rows', () => {
     const model = normalizeGraph(
       TABLES,
       [
@@ -963,6 +1002,68 @@ describe('normalizeGraph', () => {
     )
 
     expect(new Set(model.edges.map((e) => e.id)).size).toBe(2)
+  })
+
+  it('gives each edge a distinct id when two ROW-LESS edges join the same pair', () => {
+    // The case endpoints-plus-rows cannot key: a dependency edge has no column anchors, so
+    // both would be `dependency:p.a:->p.b:`. A procedure calling a function twice, or a view
+    // reaching a table by two paths, produces exactly this.
+    const nodes = [
+      { schema: 'p', name: 'a', columns: [] },
+      { schema: 'p', name: 'b', columns: [] }
+    ]
+    const edges = [
+      { from: { s: 'p', t: 'a' }, to: { s: 'p', t: 'b' }, rel: 'dependency' },
+      { from: { s: 'p', t: 'a' }, to: { s: 'p', t: 'b' }, rel: 'dependency' }
+    ]
+    const model = normalizeGraph(nodes, edges, { ...FIELDS, edgeKind: 'rel' })
+
+    expect(model.edges).toHaveLength(2)
+    expect(new Set(model.edges.map((e) => e.id)).size).toBe(2)
+  })
+
+  it('distinguishes a reference edge from a dependency edge on the same pair and rows', () => {
+    const edges = [
+      {
+        from: { s: 'public', t: 'orders', c: 'user_id' },
+        to: { s: 'public', t: 'users', c: 'id' }
+      },
+      {
+        from: { s: 'public', t: 'orders', c: 'user_id' },
+        to: { s: 'public', t: 'users', c: 'id' },
+        rel: 'dependency'
+      }
+    ]
+    const model = normalizeGraph(TABLES, edges, { ...FIELDS, edgeKind: 'rel' })
+
+    expect(new Set(model.edges.map((e) => e.id)).size).toBe(2)
+  })
+
+  it('DROPS an unresolvable endpoint rather than guessing a coincidental node', () => {
+    // `staging.orders` does not exist, but `legacy.orders` does. A resolver that swept every
+    // sibling field for a match would attach the edge to `legacy.orders` and draw a
+    // relationship between two entities that have none.
+    const nodes = [
+      { schema: 'legacy', name: 'orders', columns: [{ name: 'id' }] },
+      { schema: 'public', name: 'users', columns: [{ name: 'id' }] }
+    ]
+    const edges = [
+      { from: { s: 'staging', t: 'orders', c: 'legacy' }, to: { s: 'public', t: 'users', c: 'id' } }
+    ]
+
+    expect(normalizeGraph(nodes, edges, FIELDS).edges).toEqual([])
+  })
+
+  it('drops the edge when no group path resolves on the edge object', () => {
+    // `group: 'schema'` is a path on a NODE. Read against dbd's edge shape
+    // (`{ from: { s, t, c } }`) it finds nothing, so the bare label `orders` cannot be
+    // qualified and the edge is dropped. This is why SCHEMA_FIELDS declares
+    // sourceGroup/targetGroup explicitly — see fromSchemaModel.
+    const withoutEndpointGroups = { ...FIELDS }
+    delete withoutEndpointGroups.sourceGroup
+    delete withoutEndpointGroups.targetGroup
+
+    expect(normalizeGraph(TABLES, REFS, withoutEndpointGroups).edges).toEqual([])
   })
 })
 ```
@@ -1057,9 +1158,18 @@ function buildNode(source: unknown, fields: GraphFields): GraphNode {
 }
 
 /**
- * Resolves the source edge's endpoint to a node id. A map may name either the
- * node's own id field or its label — when a group is in play the raw value is a
- * bare label, so try the qualified form against the known nodes first.
+ * Resolves an edge endpoint to a node id.
+ *
+ * Exactly two strategies, both explicit:
+ *   1. the raw value already IS a node id
+ *   2. `${group}.${raw}` where the group comes from a DECLARED path
+ *
+ * There is deliberately no third "try every sibling field and take the first hit"
+ * fallback. That shape guesses: for `{ from: { s: 'staging', t: 'orders', c: 'legacy' } }`
+ * where `staging.orders` does not exist but `legacy.orders` does, it would resolve the
+ * endpoint to `legacy.orders` — silently drawing a relationship between two entities
+ * that have none. An unresolvable endpoint must drop the edge, not land on a
+ * coincidental match.
  */
 function resolveEndpoint(
   source: unknown,
@@ -1075,39 +1185,52 @@ function resolveEndpoint(
   const group = groupPath ? str(readPath(source, groupPath)) : undefined
   if (group && byId.has(`${group}.${raw}`)) return `${group}.${raw}`
 
-  // A source like dbd's puts the group beside the table on the same endpoint
-  // object (`from.s` next to `from.t`), so derive it from the endpoint prefix.
-  const prefix = (path ?? fallbackKey).split('.').slice(0, -1)
-  if (prefix.length) {
-    const endpoint = readPath(source, prefix.join('.'))
-    for (const value of Object.values((endpoint ?? {}) as Record<string, unknown>)) {
-      if (typeof value === 'string' && byId.has(`${value}.${raw}`)) return `${value}.${raw}`
-    }
-  }
-
   return undefined
 }
 
 function buildEdge(
   source: unknown,
   fields: GraphFields,
-  byId: Map<string, GraphNode>
+  byId: Map<string, GraphNode>,
+  seen: Map<string, number>
 ): GraphEdge | null {
-  const from = resolveEndpoint(source, fields.source, 'source', fields.group, byId)
-  const to = resolveEndpoint(source, fields.target, 'target', fields.group, byId)
+  const from = resolveEndpoint(
+    source,
+    fields.source,
+    'source',
+    fields.sourceGroup ?? fields.group,
+    byId
+  )
+  const to = resolveEndpoint(
+    source,
+    fields.target,
+    'target',
+    fields.targetGroup ?? fields.group,
+    byId
+  )
   if (!from || !to) return null
 
   const sourceRow = str(pick(source, fields.sourceRow, 'sourceRow'))
   const targetRow = str(pick(source, fields.targetRow, 'targetRow'))
-  const kind = str(pick(source, fields.edgeKind, 'kind'))
+  const rawKind = str(pick(source, fields.edgeKind, 'kind'))
+  const kind: EdgeKind = rawKind === 'dependency' ? 'dependency' : 'reference'
+
+  // `kind` is in the key, and a per-key counter breaks the remaining ties. Endpoints plus row
+  // names are NOT unique on their own: two dependency edges between the same pair (a procedure
+  // calling a function twice, a view reaching a table by two paths) carry no row anchors at
+  // all, so they would both key as `a:->b:`. A duplicate id silently breaks every id-keyed
+  // use — `{#each … as e (e.id)}` first among them.
+  const base = `${kind}:${from}:${sourceRow ?? ''}->${to}:${targetRow ?? ''}`
+  const seq = seen.get(base) ?? 0
+  seen.set(base, seq + 1)
 
   return {
-    id: `${from}:${sourceRow ?? ''}->${to}:${targetRow ?? ''}`,
+    id: seq === 0 ? base : `${base}#${seq}`,
     source: from,
     target: to,
     sourceRow,
     targetRow,
-    kind: kind === 'dependency' ? 'dependency' : ('reference' as EdgeKind),
+    kind,
     cardinality: str(pick(source, fields.cardinality, 'cardinality')),
     action: str(pick(source, fields.action, 'action'))
   }
@@ -1156,8 +1279,9 @@ export function normalizeGraph(
   const built = nodes.map((source) => buildNode(source, fields))
   const byId = new Map(built.map((node) => [node.id, node]))
 
+  const seen = new Map<string, number>()
   const resolved = edges
-    .map((source) => buildEdge(source, fields, byId))
+    .map((source) => buildEdge(source, fields, byId, seen))
     .filter((edge): edge is GraphEdge => edge !== null)
 
   markForeignKeys(byId, resolved)
@@ -1306,7 +1430,15 @@ Create `packages/graph/src/preset.ts`:
 ```ts
 import { categoricalPalette } from '@rokkit/core'
 
-export type GraphChannel = 'color' | 'pattern' | 'symbol'
+/**
+ * How open-ended groups are differentiated.
+ *
+ * `pattern` is the colour-blind- and print-safe path and reuses chart's patterns.js.
+ * A `symbol` channel is deliberately NOT here in slice 1: the preset could emit a name, but
+ * nothing renders a glyph (chart's Shape.svelte stays in chart), so it would be a documented
+ * API that silently does nothing. It returns when it has a renderer.
+ */
+export type GraphChannel = 'color' | 'pattern'
 
 export type GraphShades = { fill: string; stroke: string; label: string }
 
@@ -1317,7 +1449,6 @@ export type GraphPreset = {
   groups: string[]
   shades: { light: GraphShades; dark: GraphShades }
   patterns: string[]
-  symbols: string[]
   using: GraphChannel
 }
 
@@ -1341,7 +1472,6 @@ export const defaultGraphPreset: GraphPreset = {
     dark: { fill: '900', stroke: '600', label: '200' }
   },
   patterns: ['diagonal', 'dots', 'triangles', 'hatch', 'lattice', 'swell', 'checkerboard', 'waves'],
-  symbols: ['circle', 'square', 'triangle', 'diamond', 'cross', 'star'],
   using: 'color'
 }
 
@@ -1380,10 +1510,6 @@ export function resolveGroupStyles(
       styles.set(group, { '--group-pattern': preset.patterns[index % preset.patterns.length] })
       return
     }
-    if (preset.using === 'symbol') {
-      styles.set(group, { '--group-symbol': preset.symbols[index % preset.symbols.length] })
-      return
-    }
 
     const family = categoricalPalette[preset.groups[index % preset.groups.length]]
     const shades = preset.shades[mode]
@@ -1416,7 +1542,7 @@ rather than concrete fills, so an attribute rule still wins — JS picks the
 default, CSS keeps the final say.
 
 Assignment is by sorted group name so a group keeps its colour when `arrange`
-reorders the layout. using: pattern|symbol gives a colour-blind- and
+reorders the layout. using: 'pattern' gives a colour-blind- and
 print-safe path for free."
 ```
 
@@ -1988,6 +2114,8 @@ const FIELDS = {
   rows: 'columns',
   source: 'from.t',
   target: 'to.t',
+  sourceGroup: 'from.s',
+  targetGroup: 'to.s',
   sourceRow: 'from.c',
   targetRow: 'to.c'
 }
@@ -2179,6 +2307,8 @@ const FIELDS = {
   rowBadges: { pk: 'pk' },
   source: 'from.t',
   target: 'to.t',
+  sourceGroup: 'from.s',
+  targetGroup: 'to.s',
   sourceRow: 'from.c',
   targetRow: 'to.c'
 }
@@ -2452,6 +2582,8 @@ const FIELDS = {
   rowBadges: { pk: 'pk' },
   source: 'from.t',
   target: 'to.t',
+  sourceGroup: 'from.s',
+  targetGroup: 'to.s',
   sourceRow: 'from.c',
   targetRow: 'to.c'
 }
@@ -3201,6 +3333,8 @@ const FIELDS = {
   rowBadges: { pk: 'pk' },
   source: 'from.t',
   target: 'to.t',
+  sourceGroup: 'from.s',
+  targetGroup: 'to.s',
   sourceRow: 'from.c',
   targetRow: 'to.c'
 }
@@ -3219,6 +3353,12 @@ const NODES = [
 const EDGES = [
   { from: { s: 'public', t: 'orders', c: 'user_id' }, to: { s: 'public', t: 'users', c: 'id' } }
 ]
+
+/** A second, geometrically distinct edge — needed to catch loop-variable bugs. */
+const SECOND_EDGE = {
+  from: { s: 'audit', t: 'log', c: 'actor' },
+  to: { s: 'public', t: 'users', c: 'id' }
+}
 
 /** A state is the component's ONLY input — that is what makes this spec DOM-only. */
 const state = (config = {}) =>
@@ -3345,13 +3485,18 @@ describe('Graph — state reflected into the DOM', () => {
     expect(cluster.style.getPropertyValue('--group-fill')).not.toBe('')
   })
 
-  it('uses the state edge path for the edge geometry', () => {
-    const s = state()
+  it('uses the state edge path for EACH edge, keyed by the loop variable', () => {
+    // TWO edges on purpose. With one, `graph.edgePath(graph.routedEdges[0])` hardcoded in
+    // place of the loop variable passes — there is nothing else in the array to disagree.
+    const s = state({ edges: [...EDGES, SECOND_EDGE] })
     const { container } = render(Graph, { state: s })
-
-    expect(container.querySelector('[data-graph-edge] path')?.getAttribute('d')).toBe(
-      s.edgePath(s.routedEdges[0])
+    const rendered = [...container.querySelectorAll('[data-graph-edge] path')].map((p) =>
+      p.getAttribute('d')
     )
+
+    expect(rendered).toHaveLength(2)
+    expect(new Set(rendered).size).toBe(2)
+    expect(rendered).toEqual(s.routedEdges.map((e) => s.edgePath(e)))
   })
 })
 
@@ -3810,8 +3955,11 @@ export const SCHEMA_FIELDS: GraphFields = {
   rowBadges: { pk: 'pk', uq: 'uq', nn: 'nn' },
   source: 'from.t',
   target: 'to.t',
+  sourceGroup: 'from.s',
+  targetGroup: 'to.s',
   sourceRow: 'from.c',
   targetRow: 'to.c',
+  cardinality: 'cardinality',
   action: 'action'
 }
 
@@ -3972,12 +4120,34 @@ describe('EntitiesView', () => {
     expect(container.querySelectorAll('[data-graph-entity-row]')).toHaveLength(0)
   })
 
-  it('resolves the state from context when no prop is given', () => {
-    // <Graph> publishes on 'graph-state', so a sibling view inside it needs no prop.
+  it('constructs its own state from raw props when given neither state nor context', () => {
     const { container } = render(EntitiesView, {
       nodes: TABLES,
       edges: REFS,
       fields: SCHEMA_FIELDS
+    })
+
+    expect(container.querySelectorAll('[data-graph-entity-row]')).toHaveLength(2)
+  })
+
+  it('resolves the state from CONTEXT when no prop is given', () => {
+    // The previous test exercises the self-construct fallback, not this. <Graph> publishes on
+    // 'graph-state', so the context branch needs a real provider to be exercised at all —
+    // otherwise the branch ships with no discriminating coverage under a name that claims it.
+    const s = state()
+    const { container } = render(EntitiesView, {
+      context: new Map([['graph-state', s]])
+    })
+
+    expect(container.querySelectorAll('[data-graph-entity-row]')).toHaveLength(2)
+  })
+
+  it('prefers the state PROP over context when both are present', () => {
+    const fromProp = state()
+    const fromContext = state([], [])
+    const { container } = render(EntitiesView, {
+      props: { state: fromProp },
+      context: new Map([['graph-state', fromContext]])
     })
 
     expect(container.querySelectorAll('[data-graph-entity-row]')).toHaveLength(2)
@@ -4201,12 +4371,21 @@ describe('EntityView', () => {
     expect(container.querySelector('[data-graph-relationships-empty]')).not.toBeNull()
   })
 
-  it('resolves the state from context when no prop is given', () => {
+  it('constructs its own state from raw props when given neither state nor context', () => {
     const { container } = render(EntityView, {
       nodes: TABLES,
       edges: REFS,
       fields: SCHEMA_FIELDS,
       value: 'public.users'
+    })
+
+    expect(container.querySelectorAll('[data-graph-column]')).toHaveLength(2)
+  })
+
+  it('resolves the state from CONTEXT when no prop is given', () => {
+    // Exercises the middle branch of the three-way resolution, which the test above does not.
+    const { container } = render(EntityView, {
+      context: new Map([['graph-state', state()]])
     })
 
     expect(container.querySelectorAll('[data-graph-column]')).toHaveLength(2)
@@ -4261,15 +4440,41 @@ Expected: lint 0 errors 0 warnings; types 0; svelte 0; all tests pass.
 
 - [ ] **Step 7: Verify the layer rule actually held**
 
-The point of Task 12 was that components stop computing. Check it rather than assume it:
+The point of Task 12 was that components stop computing. Check it rather than assume it — but
+these greps are a **triage aid, not a gate**. Two things a regex cannot do here: it cannot tell
+`graph.edgePath(edge)` (required, a state call) from a component recomputing geometry itself, and
+it cannot catch an expression-bodied arrow like
+`{#each graph.entities.map((e) => e.rowCount + e.refCount) as total}` — a real derivation with no
+brace after `=>`.
+
+**Hard rule — a genuine gate, zero hits permitted:**
 
 ```bash
-rg -n "filter\(|reduce\(|\.map\(.*=>.*\{|normalizeGraph|edgePath\(" packages/graph/src/*.svelte packages/graph/src/schema/*.svelte
+rg -n "normalizeGraph|buildCards|buildEdges|buildClusters|resolveGroupStyles|layouts\[" \
+  packages/graph/src/*.svelte packages/graph/src/schema/*.svelte
 ```
 
-Expected: **no hits** for `normalizeGraph`, and no `filter`/`reduce` deriving a value. `.map()`
-directly inside an `{#each}` over a state getter is fine; a `.map()` that computes a new value is
-a derivation that belongs in `GraphState`. If you find one, move it and add a `GraphState` test.
+Expected: **no hits.** Any of these in a component means the layer boundary broke outright — the
+component reached past `GraphState` into the machinery it is supposed to be insulated from.
+
+**Soft sweep — expect hits, read each one:**
+
+```bash
+rg -n "\.filter\(|\.reduce\(|\.flatMap\(|\.sort\(|\.map\(" \
+  packages/graph/src/*.svelte packages/graph/src/schema/*.svelte
+```
+
+Judge each hit:
+
+| Shape                                                                                    | Verdict                                                                                |
+| ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `{#each graph.clusters as c}` with no transform                                          | fine                                                                                   |
+| `graph.edgePath(edge)`, `graph.nodeState(id)`, `graph.groupStyle(g)`                     | fine — these are state calls, and Task 13 requires them                                |
+| `{...graph.groupStyle(g)}` spread                                                        | fine                                                                                   |
+| `graph.entities.map(e => …)`, `.filter(…)`, `.sort(…)` — expression- **or** block-bodied | **violation.** Move it to `GraphState` as a getter and add a `GraphState.spec.ts` test |
+| any arithmetic over two state values in the template                                     | **violation**, same fix                                                                |
+
+If a hit is a violation, moving it is not optional — the design's testability claim rests on it.
 
 - [ ] **Step 8: Commit**
 
@@ -4322,14 +4527,35 @@ describe('graph theme CSS', () => {
     expect(read('rokkit/index.css')).toContain('graph.css')
   })
 
-  it('keeps base structural — no colour, per the headless-base rule', () => {
-    const base = read('base/graph.css')
+  // A colour token or literal in base/ bleeds into every style and makes a missing theme
+  // override invisible instead of actionable.
+  //
+  // Every colour FORM, not just the three the first draft of this test checked. A guard that
+  // catches oklch/hex/named-token but waves through `hsl()`, `color-mix()` or a bare `red`
+  // does not enforce the invariant the checkpoint claims it does.
+  it.each([
+    [
+      'named tokens',
+      /var\(--(paper|ink|primary|accent|success|warning|danger|error|info|focus-ring|shadow-tint|on-)[a-z-]*\)/
+    ],
+    ['hex literals', /#[0-9a-fA-F]{3,8}\b/],
+    ['oklch()', /\boklch\(/],
+    ['oklab()', /\boklab\(/],
+    ['hsl()/hsla()', /\bhsla?\(/],
+    ['rgb()/rgba()', /\brgba?\(/],
+    ['lab()/lch()', /\bl(ab|ch)\(/],
+    ['hwb()', /\bhwb\(/],
+    ['color-mix()', /\bcolor-mix\(/],
+    [
+      'CSS named colours',
+      /:\s*(red|green|blue|black|white|gray|grey|orange|purple|pink|yellow|teal|cyan|magenta)\s*[;!]/
+    ]
+  ])('keeps base structural — no %s', (_form, pattern) => {
+    expect(read('base/graph.css')).not.toMatch(pattern)
+  })
 
-    // A colour token or literal in base/ bleeds into every style and makes a
-    // missing theme override invisible instead of actionable.
-    expect(base).not.toMatch(/var\(--(paper|ink|primary|accent|danger|on-)[a-z-]*\)/)
-    expect(base).not.toMatch(/#[0-9a-fA-F]{3,8}\b/)
-    expect(base).not.toMatch(/oklch\(/)
+  it('does assert on a non-empty file — the guard above is vacuous on an empty one', () => {
+    expect(read('base/graph.css').length).toBeGreaterThan(200)
   })
 
   it('styles every node kind the preset names', () => {
@@ -4340,16 +4566,43 @@ describe('graph theme CSS', () => {
     }
   })
 
-  it('never puts ink-soft on a row type or a badge', () => {
-    // ink-soft is the placeholder tone and cannot carry an interactive
-    // control's label or icon — the graph node card IS a button.
-    const rokkit = read('rokkit/graph.css')
-    const offending = rokkit
-      .split('\n')
-      .filter((l) => /--ink-soft/.test(l))
-      .filter((l) => /row-type|row-badge|entity/.test(l))
+  // ink-soft is the placeholder tone (ink.500, 1.95-2.13:1 on paper) and cannot carry an
+  // interactive control's label or icon — the graph node card IS a button.
+  //
+  // Matched per RULE, not per line. A line-by-line filter cannot see this at all: normal CSS
+  // puts the selector and the declaration on separate lines, so no single line carries both
+  // `row-type` and `--ink-soft`, and the guard passes while the violation ships. That is
+  // exactly the defect this test exists to catch.
+  it.each(['data-graph-row-type', "data-row-badge='fk'", 'data-graph-entity'])(
+    'never puts ink-soft on %s',
+    (selector) => {
+      const rules = read('rokkit/graph.css')
+        .split('}')
+        .filter((rule) => rule.includes(selector))
 
-    expect(offending).toEqual([])
+      expect(rules.length, `no rule found for ${selector}`).toBeGreaterThan(0)
+      for (const rule of rules) expect(rule).not.toMatch(/--ink-soft/)
+    }
+  )
+
+  it('puts ink-mute on the row type — the positive case, not just the absence', () => {
+    const rules = read('rokkit/graph.css')
+      .split('}')
+      .filter((rule) => rule.includes('data-graph-row-type'))
+
+    expect(rules.some((r) => /--ink-mute/.test(r))).toBe(true)
+  })
+
+  it('backs the selected node with primary, never accent', () => {
+    // text-on-accent compiles to a build-time-baked hex and cannot react to a skin;
+    // only on-primary is a real CSS variable. This is the design's defect #2.
+    const rules = read('rokkit/graph.css')
+      .split('}')
+      .filter((rule) => rule.includes("data-node-state='selected'"))
+
+    expect(rules.length).toBeGreaterThan(0)
+    expect(rules.some((r) => /--primary/.test(r))).toBe(true)
+    for (const rule of rules) expect(rule).not.toMatch(/var\(--accent\b/)
   })
 
   it('does not redefine the dotted canvas that graph-paper.css already provides', () => {
@@ -4518,7 +4771,7 @@ verification table:
 | Density          | `names` / `keys` / `full`         |
 | Arrange          | `untangle` / `a-z`                |
 | Edge style       | `curved` / `orthogonal`           |
-| Differentiate by | `color` / `pattern` / `symbol`    |
+| Differentiate by | `color` / `pattern`               |
 
 Use `@rokkit/ui` controls (`Select`, `Toggle`), not bespoke ones.
 
@@ -4588,7 +4841,7 @@ git add apps/learn packages/graph bun.lock
 git commit -m "feat(learn): graph demo — the verification surface for @rokkit/graph
 
 One control per claim in the design's verification table, so layout, density,
-arrange, edge style and the color|pattern|symbol channel are all checkable by
+arrange, edge style and the color|pattern channel are all checkable by
 eye rather than only by unit test.
 
 Two datasets on purpose. The second is deliberately NOT dbd-shaped — it maps a
