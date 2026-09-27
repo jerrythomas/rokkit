@@ -20,6 +20,34 @@ brewer preset for open-ended group names.
 
 ---
 
+## Standing per-commit ritual — applies to EVERY task's commit step
+
+Every task below ends in a `git commit`. The repo's process docs make three things mandatory at
+each one, and they are stated here **once** rather than repeated 22 times. Not repeated does not
+mean optional: skipping them is skipping the step.
+
+Before each commit:
+
+1. `bun run lint` — 0 errors **and** 0 warnings (`--max-warnings 0`). Catching a regression six
+   tasks later means bisecting six commits to find it.
+2. The task's own tests green, plus `bun run test:ci` for any task that touched shared code
+   (Task 2's palette move and Task 18's theme CSS both reach outside `packages/graph`).
+3. `git diff --cached --stat` — read it. One concern per commit.
+
+After each commit:
+
+4. Append one line to `agents/journal.md`. `agents/workflow.md`'s own Crash Recovery procedure
+   reads that file to resume, so a crash between Task 5 and Task 12 with no entries leaves the
+   next session nothing to work from.
+5. Run `/sensei:checkpoint <one-line state>` and mirror it into `docs/CHECKPOINT.md`
+   (**under 40 lines**, one current entry — overwrite, never accumulate).
+
+`bun run lint` runs with `--fix`, so it will rewrite files. Re-read anything it touched before
+committing, and if you added an `eslint-disable`, confirm it survived — `--fix` silently deletes
+an unused directive, leaving a blank line and no warning.
+
+---
+
 ## Refinement discovered while reading the source
 
 `EntityDiagram.svelte` (the entity-centric neighbour view) carries its **own** `C` constants,
@@ -5223,8 +5251,23 @@ renders through field mapping alone."
 
 - Modify: `docs/design/23-graph.md`, `docs/design/12-priority.md`, `agents/journal.md`,
   `agents/memory.md`, `docs/backlog/2026-09-27-graph-package-extraction.md`,
-  `docs/CHECKPOINT.md`
-- Create: `docs/llms/components/graph.txt`
+  `docs/CHECKPOINT.md`, **`docs/llms/index.txt`**, **`README.md`**
+- Create: `docs/llms/components/graph.txt`, **`docs/llms/packages/graph.txt`**
+
+The two bolded modifications and the bolded creation are index surfaces that currently claim
+completeness, so they go stale the moment this ships:
+
+| Surface                       | What it claims                                                                 | What to add                           |
+| ----------------------------- | ------------------------------------------------------------------------------ | ------------------------------------- |
+| `docs/llms/index.txt:114`     | a `## Packages` table listing **every** workspace package                      | a `@rokkit/graph` row                 |
+| `docs/llms/index.txt:326,347` | "component reference (90+ components)" plus a categorised `## Component Index` | a `### Graph (@rokkit/graph)` section |
+| `docs/llms/packages/`         | one `.txt` per package (10 of them today)                                      | `graph.txt`, mirroring `chart.txt`    |
+| `README.md`                   | a package list                                                                 | a `@rokkit/graph` row                 |
+
+**Checked, and genuinely absent from this repo** — do _not_ go hunting for them: `docs/guide/`,
+`docs/skills/`, `src/assets/skills/`, `site/src/lib/content/`. The global release checklist names
+all four, but this repo does not have them (the site lives in `apps/learn`, and skills live in
+`packages/cli/skills/`). Nothing to sync there.
 
 - [ ] **Step 1: Check the design doc still matches what got built**
 
