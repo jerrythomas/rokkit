@@ -2152,7 +2152,7 @@ side-gap threshold and the `+14` same-anchor nudge **exactly** as they are.
 - [ ] **Step 5: Run to verify it passes**
 
 Run: `bun run test:ci --project graph`
-Expected: PASS — all ported assertions, including the seven exact SVG path strings.
+Expected: PASS — all ported assertions, including all nine exact SVG path strings.
 
 - [ ] **Step 6: Commit**
 
@@ -2160,7 +2160,7 @@ Expected: PASS — all ported assertions, including the seven exact SVG path str
 git add packages/graph/src/layout/edges.ts packages/graph/spec/layout/edges.spec.ts
 git commit -m "feat(graph): port edge routing + path building
 
-The seven exact SVG path-string assertions come across unchanged, so the
+All nine exact SVG path-string assertions come across unchanged, so the
 bezier and orthogonal geometry is provably identical after the model swap.
 
 sourceRow/targetRow are optional now: an unset anchor falls through to the

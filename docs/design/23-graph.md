@@ -64,8 +64,11 @@ sanitiser into their tree. That is precisely the cost this design rejects `@rokk
 three sections above; taking it here would be inconsistent. `@rokkit/blocks` already establishes
 the pattern with `peerDependenciesMeta.mermaid.optional`.
 
-**What crosses:** ~1,170 lines of source plus ~400 lines of existing tests. `Icon.svelte` (78)
-is not among them — see _Reuse instead of port_.
+**What crosses:** ~1,020-1,050 lines of source plus ~400 lines of existing tests. (The port
+table's per-file counts are whole-file figures; two rows carry only a subset — `model.ts`
+contributes ~22 of its 68 lines, and `EntityDiagram.svelte` ~125 of its 222, since its rendering
+half becomes `Graph.svelte` rather than the layout.) `Icon.svelte` (78) does not cross at all —
+see _Reuse instead of port_.
 
 The two entry points keep the boundary honest without prematurely splitting into two packages.
 Splitting later is a manifest change, not a redesign.
@@ -168,6 +171,11 @@ the Rust type.
 `fromSchemaModel()` ships in `./schema` as optional sugar over the same normalizer — a
 convenience for dbd, not a second contract.
 
+**The drift is not hypothetical — it has already happened.** `crates/dbd-core/src/schema_model.rs`
+shipped a v2 on 2026-09-27 (`version`, `entities`, `deps`, plus `fk`/`uq` on `Column`), while
+`site/src/lib/design/model.ts` was last touched 2026-06-15 and is still v1-shaped. Two definitions
+kept in step by hand, currently out of step. Keeping that mirror out of Rokkit is the whole point.
+
 What does cross from `model.ts` is `toLayoutData`, `neighborsOf` and `nodeId`, re-expressed in
 canonical terms inside the normalizer.
 
@@ -253,10 +261,10 @@ type LayoutResult = {
 
 Slice 1 ships **two** layouts:
 
-| Layout         | Source                                                                        | Notes                                                                                                                       |
-| -------------- | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `cluster`      | `layout-cards.ts`, `layout-clusters.ts`, `layout-edges.ts`, `layout-types.ts` | Both existing test suites (`layout-clusters.test.ts` 192 lines, `layout-edges.test.ts` 152) run against the canonical types |
-| `neighborhood` | `EntityDiagram.svelte`'s geometry                                             | Focus node centred, inbound neighbours left, outbound right                                                                 |
+| Layout         | Source                                                                        | Notes                                                                                                                                                                   |
+| -------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `cluster`      | `layout-cards.ts`, `layout-clusters.ts`, `layout-edges.ts`, `layout-types.ts` | Both existing test suites (`layout-clusters.test.ts` 192 lines, `layout-edges.test.ts` 152 — nine exact SVG path assertions among them) run against the canonical types |
+| `neighborhood` | `EntityDiagram.svelte`'s geometry                                             | Focus node centred, inbound neighbours left, outbound right                                                                                                             |
 
 **Why `neighborhood` is in slice 1 and costs nothing.** `EntityDiagram.svelte` carries its own
 `C` constants, `buildCard`, `anchorY` and `path` — roughly 100 lines duplicating `layout-cards.ts`
@@ -352,8 +360,15 @@ exported; it is not part of this extraction.
 
 ## Shared categorical palette moves to `@rokkit/core`
 
-`chart/src/lib/palette.json`, the categorical half of `chart/src/lib/preset.js`, and
-`chart/src/lib/brewing/patterns.js` move to `@rokkit/core`; chart imports them from there.
+`chart/src/lib/palette.json` moves to `@rokkit/core` as `colors/categorical.json`, re-exported as
+`categoricalPalette`; chart imports it from there.
+
+**Scope note — `preset.js` does NOT move.** Its `createChartPreset`/`defaultPreset` are re-exported
+through chart's `.` entry (`chart/src/index.js:56`) and are documented public API, used in
+`packages/cli/skills/charts-rokkit/SKILL.md` and the charts guide. Moving them would be a breaking
+change to `@rokkit/chart`. `@rokkit/graph` gets its own `createGraphPreset` modelled on the same
+shape instead — the shapes rhyme so a consumer learns one, but they are separate exports.
+`brewing/patterns.js` is genuinely internal and can move if `using: 'pattern'` needs it.
 Charts and diagrams then agree on categorical colour by construction — a schema tinted teal in
 the ER diagram matches a teal series in a chart.
 
@@ -361,7 +376,7 @@ Each risk checked, not assumed:
 
 | Risk                                  | Finding                                                                                                                                                                                |
 | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Public API breakage                   | None of the three appear in chart's `exports` map — internal only                                                                                                                      |
+| Public API breakage                   | `palette.json` is absent from chart's `exports` map — internal only. `preset.js` is **not**, which is why it stays behind (scope note above).                                          |
 | New transitive deps in core           | `brewing/patterns.js` and `brewing/symbols.js` have **zero imports** — pure data. Core gains no d3.                                                                                    |
 | Collides with core's existing palette | It does **not**. `core/src/colors/tailwind.json` is a _different_ palette: chart has `gold`/`lavender`/`wood`, core has `fuscia`/`green`/`slate`, and shared families differ in value. |
 | Chart's colours shift                 | Ships as a distinct `categoricalPalette` export, **not merged** into `defaultColors`; values byte-identical, so no chart visual or contrast baseline moves.                            |
@@ -372,8 +387,9 @@ Each risk checked, not assumed:
 
 ## Reuse instead of port
 
-- **`[data-graph-paper]` already exists** (`themes/src/base/graph-paper.css`) and is exactly the
-  dotted diagram canvas. dbd's `.dg-dots` radial-gradient rule is **deleted**, not translated.
+- **`[data-graph-paper]` already exists** (`themes/src/base/graph-paper.css`) and is the
+  graph-paper canvas backdrop to reuse. It draws crossing grid _lines_ where dbd's `.dg-dots` drew
+  radial _dots_ — same role, different texture. The `.dg-dots` rule is **deleted**, not translated.
 - **`EntitiesView` composes `@rokkit/ui`'s `Table`** rather than shipping a bespoke table. It is
   80 lines and is already a table usage.
 - **The `.dbd-app` scoped preflight is dropped.** `styles.css:27-70` re-applies a Tailwind-style
