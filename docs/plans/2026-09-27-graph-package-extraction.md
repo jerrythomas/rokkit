@@ -2768,6 +2768,27 @@ describe('GraphState — layout', () => {
     expect(make().size.w).toBeGreaterThan(0)
   })
 
+  it('reports a content extent tighter than size, since size adds a right/bottom margin', () => {
+    // A pure max over clusters — no viewport, so it is state's job and testable with no DOM.
+    const state = make()
+
+    expect(state.contentSize.w).toBeLessThan(state.size.w)
+    expect(state.contentSize.h).toBeLessThan(state.size.h)
+  })
+
+  it('falls back to card bounds for an ungrouped layout that reports no clusters', () => {
+    const state = make({ layout: 'neighborhood', focus: 'public.users' })
+
+    expect(state.clusters).toEqual([])
+    expect(state.contentSize.w).toBeGreaterThan(0)
+  })
+
+  it('falls back to size when there is nothing laid out at all', () => {
+    const state = new GraphState({ nodes: [], edges: [], fields: FIELDS })
+
+    expect(state.contentSize).toEqual(state.size)
+  })
+
   it('exposes routed edges', () => {
     expect(make().routedEdges).toHaveLength(1)
   })
@@ -3048,7 +3069,8 @@ import type {
   Density,
   EdgeStyle,
   LayoutFn,
-  RoutedEdge
+  RoutedEdge,
+  Size
 } from './layout/types.js'
 import type { GraphEdge, GraphFields, GraphModel, GraphNode } from './types.js'
 
@@ -3264,6 +3286,32 @@ export class GraphState {
   }
   get size() {
     return this.#result.size
+  }
+  /**
+   * The true content extent, as distinct from `size`.
+   *
+   * `LayoutResult.size` adds a +60 margin on the right and bottom only, so fitting to it hugs
+   * the left/top edge and floats away from the right/bottom. Centring needs the real bounds.
+   *
+   * This lives in state, not in `Graph.svelte`, because it is a pure max over `clusters` — no
+   * viewport involved. Only the `scale`/`tx`/`ty` that consume it need `clientWidth`, and those
+   * stay in the component. Keeping this here is what lets it be tested without a renderer.
+   */
+  get contentSize(): Size {
+    let w = 0
+    let h = 0
+    for (const c of this.#result.clusters) {
+      w = Math.max(w, c.x + (c.w ?? 0))
+      h = Math.max(h, c.y + (c.h ?? 0))
+    }
+    // An ungrouped layout (neighborhood) reports no clusters, so fall back to the cards.
+    if (!w || !h) {
+      for (const card of Object.values(this.#result.cards)) {
+        w = Math.max(w, card.x + card.w)
+        h = Math.max(h, card.y + card.h)
+      }
+    }
+    return { w: w || this.#result.size.w, h: h || this.#result.size.h }
   }
   get related(): SvelteSet<string> {
     return this.#related
@@ -3617,7 +3665,16 @@ const config = $derived(() => ({
 // untrack: the constructor's initial read must not become a dependency of the
 // creating scope — mirrors Spark's `untrack(() => new SparkState(config()))`.
 const own = untrack(() => new GraphState(config()))
-const graph = $derived(state ?? own)
+
+// Resolved ONCE, not $derived. setContext runs a single time at init and captures the value
+// it is handed, so publishing a $derived would put whichever object won the branch at that
+// instant into context forever — a caller later swapping `state` (or going from none to one)
+// would leave nested EntityView/EntitiesView reading the stale object, silently.
+//
+// PlotState and SparkState hold the same discipline: reactivity flows through mutating ONE
+// object's $state fields, never through replacing which object is in context. Resolving once
+// here makes that discipline explicit instead of accidental.
+const graph = state ?? own
 
 setContext('graph-state', graph)
 
@@ -3626,6 +3683,11 @@ $effect(() => {
   if (!state) own.update(config())
 })
 ```
+
+> **Documented constraint:** the `state` prop must have **stable identity for the component's
+> lifetime**. Swapping instances after mount is unsupported — drive the existing instance through
+> its own methods and `update()` instead. Task 13's spec pins the supported shapes (prop, context,
+> self-construct); it does not pin identity-swapping, because that is not a contract offered.
 
 **The template reads, never computes.** Every value comes off `graph`:
 `graph.clusters`, `graph.cards`, `graph.routedEdges`, `graph.size`, `graph.label`,
@@ -3661,9 +3723,27 @@ Also:
    default — the `defaultIcons` + per-instance `icons` pattern already in `@rokkit/core`.
 3. **Accessibility:** `role="img"`, `aria-label={graph.label}`, plus `<title>`/`<desc>`.
 4. Keep `bind:clientWidth`/`bind:clientHeight` and the `scale`/`tx`/`ty` fit maths — these are
-   genuinely view concerns (they depend on the rendered viewport, which state cannot know).
-   Keep the source's comment explaining why it centres on content bounds rather than
-   `layout.size`.
+   genuinely view concerns, since they depend on the rendered viewport, which state cannot know.
+
+   But **do not** port the source's `content` extent block. It is a pure `Math.max` over
+   `layout.clusters` with no viewport input, so it is a derivation and lives in state as
+   `graph.contentSize` (Task 12). The component reads it:
+
+   ```ts
+   const scale = $derived(
+     Math.max(
+       0.08,
+       Math.min((vw - PAD * 2) / graph.contentSize.w, (vh - PAD * 2) / graph.contentSize.h, 1)
+     ) || 0.5
+   )
+   const tx = $derived((vw - graph.contentSize.w * scale) / 2)
+   const ty = $derived((vh - graph.contentSize.h * scale) / 2)
+   ```
+
+   Carry the source's comment across — it explains _why_ centring uses content bounds rather
+   than `layout.size` (which adds a right/bottom-only margin) — but put it on `contentSize` in
+   `GraphState`, where the logic now is.
+
 5. **No `data-path`** on the clickable node element — there is no navigator here, so a direct
    `onclick` is correct, but `data-path` would invite the double-handling the navigator note in
    `agents/memory.md` warns about.
