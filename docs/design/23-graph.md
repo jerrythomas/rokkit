@@ -143,6 +143,45 @@ canonical terms inside the normalizer.
 
 ---
 
+## Layer separation: state owns every derivation
+
+Three layers, each testable alone — the `sensei:ui-state-pattern` shape, and the one
+`PlotState`/`SparkState` already use in `@rokkit/chart`.
+
+| Layer         | Here                                         | Owns                                                          | Tested by    |
+| ------------- | -------------------------------------------- | ------------------------------------------------------------- | ------------ |
+| **Load**      | the consumer                                 | where `nodes`/`edges` come from                               | the consumer |
+| **State**     | `GraphState.svelte.ts`                       | normalize → layout → preset → selection. **Every** derivation | no DOM       |
+| **Component** | `Graph.svelte`, `EntityView`, `EntitiesView` | render + route intent through state methods                   | DOM only     |
+
+`@rokkit/graph` is a library, not a screen, so the **load** layer belongs to the consumer: the
+package's contract is `nodes`/`edges`/`fields` and it never fetches.
+
+`GraphState` follows `PlotState`'s idiom — private `$state` inputs, `$derived` outputs, explicit
+getters, named methods for every transition, and an `update(config)` that is re-callable and
+**fully re-applies** rather than merging deltas. It publishes on `setContext('graph-state', …)`,
+so a view composed inside a `<Graph>` needs no prop, mirroring how a geom resolves `'plot-state'`.
+
+### The rule that makes this worth doing
+
+**A component may not compute.** No `refCount` loop in `EntitiesView`, no `cardState()` helper in
+`Graph`, no relationship partitioning in `EntityView`. If a template needs a value, `GraphState`
+exposes it.
+
+That is what buys the testability: the geometry, badge derivation, group-colour assignment and
+selection logic are covered exhaustively with **no renderer**, and the component specs assert only
+attributes. Two failure modes stay clearly separated — "the layout is wrong" fails a state test,
+"the attribute is missing" fails a DOM test, and neither can masquerade as the other.
+
+One deliberate exception: the fit maths in `Graph.svelte` (`clientWidth`/`scale`/`tx`/`ty`) stays
+in the component. It depends on the rendered viewport, which state cannot know.
+
+`value` is the one input that is also an output, so `update()` adopts it only when the caller
+supplies one — otherwise a re-render would wipe a selection the user just made. Same hazard
+`List`/`Tree`'s `bind:value` race contract documents.
+
+---
+
 ## Layout interface
 
 ```ts

@@ -49,9 +49,10 @@ porting it** — this plan gives the transformations, not a transcription.
 | `layout-edges.ts`                                         |    82 | `src/layout/edges.ts`                  |    9 |
 | `layout.ts`                                               |    60 | `src/layout/cluster.ts`                |   10 |
 | `EntityDiagram.svelte` (geometry only)                    |   222 | `src/layout/neighborhood.ts`           |   11 |
-| `DiagramView.svelte` (render only)                        |   139 | `src/Graph.svelte`                     |   12 |
+| `DiagramView.svelte` (derivations)                        |     — | `src/GraphState.svelte.ts`             |   12 |
+| `DiagramView.svelte` (render only)                        |   139 | `src/Graph.svelte`                     |   13 |
 | `md.ts`                                                   |    50 | `src/schema/notes.ts`                  |   14 |
-| `EntityView.svelte`                                       |   211 | `src/schema/EntityView.svelte`         |   15 |
+| `EntityView.svelte`                                       |   211 | `src/schema/EntityView.svelte`         |   17 |
 | `EntitiesView.svelte`                                     |    80 | `src/schema/EntitiesView.svelte`       |   16 |
 | `layout-clusters.test.ts`                                 |   192 | `spec/layout/clusters.spec.ts`         |    8 |
 | `layout-edges.test.ts`                                    |   152 | `spec/layout/edges.spec.ts`            |    9 |
@@ -86,13 +87,14 @@ packages/graph/
       neighborhood.ts       the `neighborhood` LayoutFn
       index.ts              layout registry { cluster, neighborhood }
     preset.ts               createGraphPreset, resolveGroupStyles
-    Graph.svelte            the canvas — renders any LayoutResult
+    GraphState.svelte.ts    THE STORE — every derivation lives here
+    Graph.svelte            presentation only — reads state, renders, routes intent
     schema/
       index.ts              public barrel for "./schema"
       notes.ts              inlineSegs, noteBlocks
       fromSchemaModel.ts    optional sugar over normalizeGraph
-      EntityView.svelte
-      EntitiesView.svelte
+      EntityView.svelte     presentation only — reads state.entity / state.relationships
+      EntitiesView.svelte   presentation only — reads state.entities
       NoteBlocks.svelte     shared note renderer (used by both views)
   spec/
     setup.js
@@ -106,13 +108,35 @@ packages/graph/
       edges.spec.ts         ported
       cluster.spec.ts
       neighborhood.spec.ts
-    Graph.spec.ts
+    GraphState.spec.ts      NO DOM — the bulk of the behaviour coverage
+    Graph.spec.ts           DOM only — fed a state, asserts attributes
     schema/
       notes.spec.ts
       fromSchemaModel.spec.ts
       EntitiesView.spec.ts
       EntityView.spec.ts
 ```
+
+### Layer separation
+
+Three layers, each testable alone — this is the `sensei:ui-state-pattern` shape, and it matches
+how `PlotState`/`SparkState` already work in `@rokkit/chart`.
+
+| Layer         | Here                                         | Owns                                                          | Tested by                    |
+| ------------- | -------------------------------------------- | ------------------------------------------------------------- | ---------------------------- |
+| **Load**      | the consumer (and `demos/graph/datasets.ts`) | where `nodes`/`edges` come from                               | the consumer                 |
+| **State**     | `GraphState.svelte.ts`                       | normalize → layout → preset → selection. **Every** derivation | `GraphState.spec.ts`, no DOM |
+| **Component** | `Graph.svelte`, `EntityView`, `EntitiesView` | render + route user intent through state methods              | `*.spec.ts`, DOM only        |
+
+`@rokkit/graph` is a library, not a screen, so the **load** layer belongs to the consumer — the
+package's contract is `nodes`/`edges`/`fields` and it never fetches. The learn demo's
+`datasets.ts` is the load layer for the demo specifically.
+
+**The rule that makes this worth doing:** a component may not compute. No `refCount` loop in
+`EntitiesView`, no `cardState()` helper in `Graph`, no relationship partitioning in `EntityView`.
+If a template needs a value, `GraphState` exposes it. That is what lets the geometry, the badge
+derivation and the selection logic be tested exhaustively without rendering anything, and lets
+the DOM specs assert only attributes.
 
 Plus, outside the package:
 
@@ -1163,7 +1187,7 @@ which makes dbd#24 shipping fk natively a change to this file alone."
 ## Task 5: `createGraphPreset`
 
 Colour for the **open** vocabulary (group names). The closed vocabulary (`data-node-kind`) is
-pure CSS and needs no JS — that lands in Task 17.
+pure CSS and needs no JS — that lands in Task 18.
 
 **Files:**
 
@@ -2270,21 +2294,30 @@ implementations instead of one plus a promise about d3-force."
 
 ---
 
-## Task 12: The `Graph` canvas
+## Task 12: `GraphState` — the store
+
+**Every** derivation in the package lives here. After this task, no component computes anything.
+
+Follow the house idiom exactly — read `packages/chart/src/PlotState.svelte.js` (`constructor(config)`
+
+- a re-callable `update(config)` that **fully re-applies** rather than merging deltas) and
+  `packages/chart/src/Spark.svelte` (`untrack(() => new State(config()))`, `setContext`, then a
+  single `$effect(() => state.update(config()))`).
 
 **Files:**
 
-- Create: `packages/graph/src/Graph.svelte`, `packages/graph/spec/Graph.spec.ts`
+- Create: `packages/graph/src/GraphState.svelte.ts`, `packages/graph/spec/GraphState.spec.ts`
 - Modify: `packages/graph/src/index.ts`
 
 - [ ] **Step 1: Write the failing test**
 
-Create `packages/graph/spec/Graph.spec.ts`:
+Create `packages/graph/spec/GraphState.spec.ts`. **No DOM anywhere in this file** — that is the
+whole point of the layer.
 
 ```ts
-import { describe, it, expect } from 'vitest'
-import { render } from '@testing-library/svelte'
-import Graph from '../src/Graph.svelte'
+import { describe, it, expect, vi } from 'vitest'
+import { GraphState } from '../src/GraphState.svelte.ts'
+import { createGraphPreset } from '../src/preset.ts'
 
 const FIELDS = {
   label: 'name',
@@ -2299,151 +2332,818 @@ const FIELDS = {
 }
 
 const NODES = [
-  { schema: 'public', name: 'users', kind: 'table', columns: [{ name: 'id', pk: true }] },
-  { schema: 'public', name: 'orders', kind: 'view', columns: [{ name: 'user_id' }] }
+  {
+    schema: 'public',
+    name: 'users',
+    kind: 'table',
+    noteMd: 'People',
+    columns: [{ name: 'id', type: 'uuid', pk: true }]
+  },
+  { schema: 'public', name: 'orders', kind: 'view', columns: [{ name: 'user_id', type: 'uuid' }] },
+  { schema: 'audit', name: 'log', kind: 'table', columns: [{ name: 'id', type: 'uuid', pk: true }] }
 ]
 
 const EDGES = [
   { from: { s: 'public', t: 'orders', c: 'user_id' }, to: { s: 'public', t: 'users', c: 'id' } }
 ]
 
-const props = (extra = {}) => ({ nodes: NODES, edges: EDGES, fields: FIELDS, ...extra })
+const make = (config = {}) =>
+  new GraphState({ nodes: NODES, edges: EDGES, fields: FIELDS, ...config })
 
-describe('Graph', () => {
-  it('renders one node element per node', () => {
-    const { container } = render(Graph, props())
+describe('GraphState — model', () => {
+  it('normalizes nodes and edges on construction', () => {
+    const state = make()
 
-    expect(container.querySelectorAll('[data-graph-node]')).toHaveLength(2)
+    expect(state.model.nodes).toHaveLength(3)
+    expect(state.model.edges).toHaveLength(1)
   })
 
-  it('publishes each node kind as data-node-kind so CSS can colour it', () => {
-    const { container } = render(Graph, props())
-    const kinds = [...container.querySelectorAll('[data-graph-node]')].map((el) =>
-      el.getAttribute('data-node-kind')
+  it('exposes the node ids it laid out', () => {
+    expect(Object.keys(make().cards).sort()).toEqual(['audit.log', 'public.orders', 'public.users'])
+  })
+
+  it('re-normalizes when nodes change through update', () => {
+    const state = make()
+    state.update({ nodes: [NODES[0]], edges: [], fields: FIELDS })
+
+    expect(state.model.nodes).toHaveLength(1)
+  })
+
+  it('fully re-applies on update rather than merging deltas', () => {
+    // PlotState.update is documented as re-callable and fully re-applying; matching
+    // that means a prop that reverts to undefined actually reverts.
+    const state = make({ density: 'full' })
+    state.update({ nodes: NODES, edges: EDGES, fields: FIELDS })
+
+    expect(state.density).toBe('keys')
+  })
+})
+
+describe('GraphState — layout', () => {
+  it('defaults to the cluster layout', () => {
+    expect(
+      make()
+        .clusters.map((c) => c.name)
+        .sort()
+    ).toEqual(['audit', 'public'])
+  })
+
+  it('resolves a layout named as a string', () => {
+    const state = make({ layout: 'neighborhood', focus: 'public.users' })
+
+    expect(state.clusters).toEqual([])
+  })
+
+  it('accepts a LayoutFn directly', () => {
+    const state = make({
+      layout: () => ({ clusters: [], cards: {}, edges: [], size: { w: 0, h: 0 } })
+    })
+
+    expect(state.cards).toEqual({})
+  })
+
+  it('falls back to cluster for an unknown layout name', () => {
+    expect(make({ layout: 'nope' }).clusters).toHaveLength(2)
+  })
+
+  it('recomputes the layout when density changes', () => {
+    const state = make({ density: 'names' })
+    const short = state.cards['public.users'].h
+
+    state.update({ nodes: NODES, edges: EDGES, fields: FIELDS, density: 'full' })
+    expect(state.cards['public.users'].h).toBeGreaterThan(short)
+  })
+
+  it('exposes the canvas size', () => {
+    expect(make().size.w).toBeGreaterThan(0)
+  })
+
+  it('exposes routed edges', () => {
+    expect(make().routedEdges).toHaveLength(1)
+  })
+
+  it('builds an SVG path per edge at the configured edge style', () => {
+    const curved = make({ edgeStyle: 'curved' })
+    const orthogonal = make({ edgeStyle: 'orthogonal' })
+
+    expect(curved.edgePath(curved.routedEdges[0])).not.toBe(
+      orthogonal.edgePath(orthogonal.routedEdges[0])
     )
+  })
+})
 
-    expect(kinds.sort()).toEqual(['table', 'view'])
+describe('GraphState — group styles', () => {
+  it('resolves a style per group', () => {
+    const state = make()
+
+    expect(state.groupStyle('public')).toHaveProperty('--group-fill')
+    expect(state.groupStyle('audit')).toHaveProperty('--group-fill')
   })
 
-  it('publishes the group name for attribute overrides', () => {
-    const { container } = render(Graph, props())
+  it('gives two groups different fills', () => {
+    const state = make()
 
-    expect(container.querySelector('[data-node-group="public"]')).not.toBeNull()
+    expect(state.groupStyle('public')['--group-fill']).not.toBe(
+      state.groupStyle('audit')['--group-fill']
+    )
   })
 
-  it('renders one edge element per routed edge, carrying its kind', () => {
-    const { container } = render(Graph, props())
-    const edges = container.querySelectorAll('[data-graph-edge]')
-
-    expect(edges).toHaveLength(1)
-    expect(edges[0].getAttribute('data-edge-kind')).toBe('reference')
+  it('returns an empty style object for an unknown group', () => {
+    expect(make().groupStyle('nope')).toEqual({})
   })
 
-  it('renders a cluster per group under the cluster layout', () => {
-    const { container } = render(Graph, props())
+  it('switches to patterns when the preset says using: pattern', () => {
+    const state = make({ preset: createGraphPreset({ using: 'pattern' }) })
 
-    expect(container.querySelectorAll('[data-graph-cluster]')).toHaveLength(1)
+    expect(state.groupStyle('public')).toHaveProperty('--group-pattern')
   })
 
-  it('renders no clusters under the neighborhood layout', () => {
-    const { container } = render(Graph, props({ layout: 'neighborhood', focus: 'public.users' }))
+  it('picks dark-mode shades when mode is dark', () => {
+    const light = make({ mode: 'light' }).groupStyle('public')
+    const dark = make({ mode: 'dark' }).groupStyle('public')
+
+    expect(light['--group-fill']).not.toBe(dark['--group-fill'])
+  })
+})
+
+describe('GraphState — selection', () => {
+  it('starts with nothing selected', () => {
+    expect(make().value).toBeNull()
+  })
+
+  it('select() sets the value', () => {
+    const state = make()
+    state.select('public.users')
+
+    expect(state.value).toBe('public.users')
+  })
+
+  it('clear() unsets it', () => {
+    const state = make()
+    state.select('public.users')
+    state.clear()
+
+    expect(state.value).toBeNull()
+  })
+
+  it('calls onselect when select() runs', () => {
+    const onselect = vi.fn()
+    make({ onselect }).select('public.users')
+
+    expect(onselect).toHaveBeenCalledWith('public.users')
+  })
+
+  it('reports related node ids for the selection', () => {
+    const state = make()
+    state.select('public.users')
+
+    expect([...state.related]).toEqual(['public.orders'])
+  })
+
+  it('reports an empty related set with nothing selected', () => {
+    expect(make().related.size).toBe(0)
+  })
+
+  it('nodeState returns null with nothing selected', () => {
+    expect(make().nodeState('public.users')).toBeNull()
+  })
+
+  it('nodeState marks the selection, its neighbours, and everything else', () => {
+    const state = make()
+    state.select('public.users')
+
+    expect(state.nodeState('public.users')).toBe('selected')
+    expect(state.nodeState('public.orders')).toBe('related')
+    expect(state.nodeState('audit.log')).toBe('dim')
+  })
+
+  it('edgeState returns null with nothing selected', () => {
+    const state = make()
+
+    expect(state.edgeState(state.routedEdges[0])).toBeNull()
+  })
+
+  it('edgeState highlights an edge touching the selection', () => {
+    const state = make()
+    state.select('public.users')
+
+    expect(state.edgeState(state.routedEdges[0])).toBe('highlight')
+  })
+
+  it('edgeState dims an edge that does not touch the selection', () => {
+    const state = make()
+    state.select('audit.log')
+
+    expect(state.edgeState(state.routedEdges[0])).toBe('dim')
+  })
+})
+
+describe('GraphState — entity derivations', () => {
+  it('exposes one entity row per node, with row and ref counts', () => {
+    const state = make()
+    const users = state.entities.find((e) => e.id === 'public.users')
+
+    expect(users).toMatchObject({
+      label: 'users',
+      group: 'public',
+      kind: 'table',
+      rowCount: 1,
+      refCount: 1
+    })
+  })
+
+  it('counts references in both directions', () => {
+    const state = make()
+
+    expect(state.entities.find((e) => e.id === 'public.orders')?.refCount).toBe(1)
+  })
+
+  it('reports zero refs for an unreferenced node', () => {
+    expect(make().entities.find((e) => e.id === 'audit.log')?.refCount).toBe(0)
+  })
+
+  it('exposes the focused entity', () => {
+    const state = make()
+    state.select('public.users')
+
+    expect(state.entity?.label).toBe('users')
+  })
+
+  it('exposes no entity when nothing is selected', () => {
+    expect(make().entity).toBeNull()
+  })
+
+  it('exposes no entity for an unknown id', () => {
+    const state = make()
+    state.select('public.ghost')
+
+    expect(state.entity).toBeNull()
+  })
+
+  it('partitions relationships into inbound and outbound', () => {
+    const state = make()
+    state.select('public.users')
+
+    expect(state.relationships).toEqual([
+      {
+        direction: 'in',
+        id: 'public.orders',
+        label: 'orders',
+        group: 'public',
+        edge: expect.anything()
+      }
+    ])
+  })
+
+  it('reports an outbound relationship from the other side', () => {
+    const state = make()
+    state.select('public.orders')
+
+    expect(state.relationships[0].direction).toBe('out')
+  })
+
+  it('reports no relationships for an unconnected node', () => {
+    const state = make()
+    state.select('audit.log')
+
+    expect(state.relationships).toEqual([])
+  })
+})
+
+describe('GraphState — accessible name', () => {
+  it('uses an explicit label when given', () => {
+    expect(make({ label: 'Schema diagram' }).label).toBe('Schema diagram')
+  })
+
+  it('derives a name from the data when no label is given', () => {
+    const label = make().label
+
+    expect(label).toContain('3')
+    expect(label).toContain('1')
+  })
+})
+
+describe('GraphState — edges', () => {
+  it('handles an empty model without throwing', () => {
+    const state = new GraphState({ nodes: [], edges: [], fields: FIELDS })
+
+    expect(state.cards).toEqual({})
+    expect(state.clusters).toEqual([])
+    expect(state.entities).toEqual([])
+    expect(state.label).toContain('0')
+  })
+
+  it('survives construction with no config at all', () => {
+    expect(() => new GraphState()).not.toThrow()
+  })
+})
+```
+
+- [ ] **Step 2: Run it to verify it fails**
+
+Run: `bun run test:ci --project graph`
+Expected: FAIL — `Cannot find module '../src/GraphState.svelte.ts'`.
+
+- [ ] **Step 3: Implement**
+
+Create `packages/graph/src/GraphState.svelte.ts`. Shape — `#private $state` inputs, `$derived`
+outputs, explicit getters, named methods for every transition:
+
+```ts
+import { SvelteSet } from 'svelte/reactivity'
+import { normalizeGraph } from './model/normalize.ts'
+import { layouts } from './layout/index.ts'
+import { edgePath } from './layout/edges.ts'
+import { defaultGraphPreset, resolveGroupStyles } from './preset.ts'
+import type { GraphPreset } from './preset.ts'
+import type {
+  Arrange,
+  Cards,
+  Cluster,
+  Density,
+  EdgeStyle,
+  LayoutFn,
+  RoutedEdge
+} from './layout/types.ts'
+import type { GraphFields, GraphModel, GraphNode } from './types.ts'
+
+export type EntityRow = {
+  id: string
+  label: string
+  group?: string
+  kind?: string
+  rowCount: number
+  refCount: number
+  note?: string
+}
+
+export type Relationship = {
+  direction: 'in' | 'out'
+  id: string
+  label: string
+  group?: string
+  edge: RoutedEdge
+}
+
+export type GraphStateConfig = {
+  nodes?: unknown[]
+  edges?: unknown[]
+  fields?: GraphFields
+  layout?: string | LayoutFn
+  density?: Density
+  arrange?: Arrange
+  edgeStyle?: EdgeStyle
+  focus?: string | null
+  value?: string | null
+  preset?: GraphPreset
+  mode?: 'light' | 'dark'
+  label?: string
+  onselect?: (id: string) => void
+}
+
+/**
+ * The store. Turns raw `nodes`/`edges`/`fields` into the reactive shape the visuals
+ * render, and owns every transition.
+ *
+ * Components read from this and call its methods — they never compute. That is what
+ * lets the geometry, badge derivation and selection logic be covered exhaustively
+ * with no DOM, and lets the component specs assert only attributes.
+ *
+ * `update()` is re-callable and FULLY re-applies config rather than merging deltas,
+ * matching `PlotState.update` — so a prop reverting to undefined actually reverts.
+ */
+export class GraphState {
+  #nodes = $state<unknown[]>([])
+  #edges = $state<unknown[]>([])
+  #fields = $state<GraphFields>({})
+  #layout = $state<string | LayoutFn>('cluster')
+  #density = $state<Density>('keys')
+  #arrange = $state<Arrange>('untangle')
+  #edgeStyle = $state<EdgeStyle>('curved')
+  #focus = $state<string | null>(null)
+  #value = $state<string | null>(null)
+  #preset = $state<GraphPreset>(defaultGraphPreset)
+  #mode = $state<'light' | 'dark'>('light')
+  #label = $state<string | undefined>(undefined)
+  #onselect = $state<((id: string) => void) | undefined>(undefined)
+
+  #model = $derived(normalizeGraph(this.#nodes, this.#edges, this.#fields))
+
+  #layoutFn = $derived(
+    typeof this.#layout === 'function' ? this.#layout : (layouts[this.#layout] ?? layouts.cluster)
+  )
+
+  #result = $derived(
+    this.#layoutFn(this.#model, {
+      density: this.#density,
+      arrange: this.#arrange,
+      edgeStyle: this.#edgeStyle,
+      focus: this.#focus ?? this.#value
+    })
+  )
+
+  #groups = $derived([
+    ...new Set(this.#model.nodes.map((n) => n.group).filter(Boolean))
+  ] as string[])
+
+  #groupStyles = $derived(resolveGroupStyles(this.#groups, this.#mode, this.#preset))
+
+  #related = $derived(
+    this.#value
+      ? new SvelteSet(this.#model.neighbors.get(this.#value) ?? [])
+      : new SvelteSet<string>()
+  )
+
+  #entities = $derived(
+    this.#model.nodes.map((node) => ({
+      id: node.id,
+      label: node.label,
+      group: node.group,
+      kind: node.kind,
+      rowCount: node.rows.length,
+      refCount: this.#model.edges.filter((e) => e.source === node.id || e.target === node.id)
+        .length,
+      note: node.note
+    }))
+  )
+
+  #entity = $derived(this.#value ? (this.#model.byId.get(this.#value) ?? null) : null)
+
+  #relationships = $derived.by((): Relationship[] => {
+    const id = this.#value
+    if (!id) return []
+
+    const describe = (other: string, direction: 'in' | 'out', edge: RoutedEdge): Relationship => {
+      const node = this.#model.byId.get(other)
+      return { direction, id: other, label: node?.label ?? other, group: node?.group, edge }
+    }
+
+    return this.#result.edges.flatMap((edge) => {
+      if (edge.fromKey === id && edge.toKey === id) return [describe(id, 'out', edge)]
+      if (edge.toKey === id) return [describe(edge.fromKey, 'in', edge)]
+      if (edge.fromKey === id) return [describe(edge.toKey, 'out', edge)]
+      return []
+    })
+  })
+
+  constructor(config: GraphStateConfig = {}) {
+    this.update(config)
+  }
+
+  /** Fully re-applies config. Safe to call on every prop change. */
+  update(config: GraphStateConfig = {}): void {
+    this.#nodes = config.nodes ?? []
+    this.#edges = config.edges ?? []
+    this.#fields = config.fields ?? {}
+    this.#layout = config.layout ?? 'cluster'
+    this.#density = config.density ?? 'keys'
+    this.#arrange = config.arrange ?? 'untangle'
+    this.#edgeStyle = config.edgeStyle ?? 'curved'
+    this.#focus = config.focus ?? null
+    this.#preset = config.preset ?? defaultGraphPreset
+    this.#mode = config.mode ?? 'light'
+    this.#label = config.label
+    this.#onselect = config.onselect
+    // `value` is input AND output, so it is only adopted when the caller supplies
+    // one — otherwise a re-render would wipe a selection the user just made.
+    if (config.value !== undefined) this.#value = config.value
+  }
+
+  // ─── transitions ───────────────────────────────────────────────────────────
+  select(id: string): void {
+    this.#value = id
+    this.#onselect?.(id)
+  }
+
+  clear(): void {
+    this.#value = null
+  }
+
+  // ─── per-item lookups the templates need ───────────────────────────────────
+  nodeState(id: string): 'selected' | 'related' | 'dim' | null {
+    if (!this.#value) return null
+    if (id === this.#value) return 'selected'
+    return this.#related.has(id) ? 'related' : 'dim'
+  }
+
+  edgeState(edge: RoutedEdge): 'highlight' | 'dim' | null {
+    if (!this.#value) return null
+    return edge.fromKey === this.#value || edge.toKey === this.#value ? 'highlight' : 'dim'
+  }
+
+  edgePath(edge: RoutedEdge): string {
+    return edgePath(edge, this.#edgeStyle)
+  }
+
+  groupStyle(group: string | undefined): Record<string, string> {
+    return (group && this.#groupStyles.get(group)) || {}
+  }
+
+  // ─── reads ─────────────────────────────────────────────────────────────────
+  get model(): GraphModel {
+    return this.#model
+  }
+  get clusters(): Cluster[] {
+    return this.#result.clusters
+  }
+  get cards(): Cards {
+    return this.#result.cards
+  }
+  get routedEdges(): RoutedEdge[] {
+    return this.#result.edges
+  }
+  get size() {
+    return this.#result.size
+  }
+  get related(): SvelteSet<string> {
+    return this.#related
+  }
+  get entities(): EntityRow[] {
+    return this.#entities
+  }
+  get entity(): GraphNode | null {
+    return this.#entity
+  }
+  get relationships(): Relationship[] {
+    return this.#relationships
+  }
+  get density(): Density {
+    return this.#density
+  }
+  get value(): string | null {
+    return this.#value
+  }
+  get label(): string {
+    return (
+      this.#label ??
+      `Diagram of ${this.#model.nodes.length} nodes and ${this.#model.edges.length} relationships`
+    )
+  }
+}
+```
+
+Then add to `packages/graph/src/index.ts`:
+
+```ts
+export { GraphState } from './GraphState.svelte.ts'
+export type { EntityRow, GraphStateConfig, Relationship } from './GraphState.svelte.ts'
+```
+
+- [ ] **Step 4: Run to verify it passes**
+
+Run: `bun run test:ci --project graph`
+Expected: PASS — 38 `GraphState` tests, none of which render anything.
+
+- [ ] **Step 5: Check types**
+
+Run: `cd packages/graph && bun run check:types`
+Expected: no output.
+
+- [ ] **Step 6: Commit**
+
+```bash
+git add packages/graph/src/GraphState.svelte.ts packages/graph/src/index.ts packages/graph/spec/GraphState.spec.ts
+git commit -m "feat(graph): GraphState — every derivation in one store
+
+Layer 2 of the ui-state-pattern, in the shape PlotState/SparkState already use:
+private \$state inputs, \$derived outputs, explicit getters, named methods for
+every transition. update() fully re-applies rather than merging deltas, matching
+PlotState, so a prop reverting to undefined actually reverts.
+
+38 tests and not one of them renders anything. Normalization, layout resolution,
+group-style assignment, selection, node/edge state and the entity derivations are
+all covered without a DOM, which leaves the component specs free to assert only
+attributes.
+
+One asymmetry worth noting: \`value\` is input AND output, so update() adopts it
+only when the caller supplies one — otherwise a re-render would wipe a selection
+the user just made."
+```
+
+---
+
+## Task 13: The `Graph` canvas — presentation only
+
+`Graph.svelte` renders what `GraphState` already computed and routes clicks back through its
+methods. **It computes nothing.** No `cardState()` helper, no `edgeClass()` helper, no
+normalization, no layout call — all of that moved to Task 12.
+
+The spec here therefore asserts **only DOM and attributes**. Everything about _what_ the values
+should be is already covered by `GraphState.spec.ts` with no DOM; duplicating it here would just
+make the same assertion slower.
+
+**Files:**
+
+- Create: `packages/graph/src/Graph.svelte`, `packages/graph/spec/Graph.spec.ts`
+- Modify: `packages/graph/src/index.ts`
+
+- [ ] **Step 1: Write the failing test**
+
+Create `packages/graph/spec/Graph.spec.ts`:
+
+```ts
+import { describe, it, expect } from 'vitest'
+import { render } from '@testing-library/svelte'
+import Graph from '../src/Graph.svelte'
+import { GraphState } from '../src/GraphState.svelte.ts'
+
+const FIELDS = {
+  label: 'name',
+  group: 'schema',
+  kind: 'kind',
+  rows: 'columns',
+  rowBadges: { pk: 'pk' },
+  source: 'from.t',
+  target: 'to.t',
+  sourceRow: 'from.c',
+  targetRow: 'to.c'
+}
+
+const NODES = [
+  {
+    schema: 'public',
+    name: 'users',
+    kind: 'table',
+    columns: [{ name: 'id', type: 'uuid', pk: true }]
+  },
+  { schema: 'public', name: 'orders', kind: 'view', columns: [{ name: 'user_id', type: 'uuid' }] },
+  { schema: 'audit', name: 'log', kind: 'matview', columns: [] }
+]
+
+const EDGES = [
+  { from: { s: 'public', t: 'orders', c: 'user_id' }, to: { s: 'public', t: 'users', c: 'id' } }
+]
+
+/** A state is the component's ONLY input — that is what makes this spec DOM-only. */
+const state = (config = {}) =>
+  new GraphState({ nodes: NODES, edges: EDGES, fields: FIELDS, ...config })
+
+describe('Graph — structure', () => {
+  it('renders one node element per laid-out card', () => {
+    const { container } = render(Graph, { state: state() })
+
+    expect(container.querySelectorAll('[data-graph-node]')).toHaveLength(3)
+  })
+
+  it('renders one edge element per routed edge', () => {
+    const { container } = render(Graph, { state: state() })
+
+    expect(container.querySelectorAll('[data-graph-edge]')).toHaveLength(1)
+  })
+
+  it('renders one cluster element per cluster the state reports', () => {
+    const { container } = render(Graph, { state: state() })
+
+    expect(container.querySelectorAll('[data-graph-cluster]')).toHaveLength(2)
+  })
+
+  it('renders no clusters when the state reports none', () => {
+    const { container } = render(Graph, {
+      state: state({ layout: 'neighborhood', focus: 'public.users' })
+    })
 
     expect(container.querySelectorAll('[data-graph-cluster]')).toHaveLength(0)
   })
 
-  it('switches layout by name — proving the seam is real', () => {
-    const { container: a } = render(Graph, props({ layout: 'cluster' }))
-    const { container: b } = render(Graph, props({ layout: 'neighborhood', focus: 'public.users' }))
+  it('reuses the dotted canvas primitive instead of shipping its own', () => {
+    // [data-graph-paper] already exists in @rokkit/themes; .dg-dots is deleted.
+    const { container } = render(Graph, { state: state() })
 
-    expect(a.querySelectorAll('[data-graph-node]').length).not.toBe(
-      b.querySelectorAll('[data-graph-node]').length
+    expect(container.querySelector('[data-graph-paper]')).not.toBeNull()
+  })
+
+  it('renders an empty canvas for an empty model', () => {
+    const { container } = render(Graph, {
+      state: new GraphState({ nodes: [], edges: [], fields: FIELDS })
+    })
+
+    expect(container.querySelectorAll('[data-graph-node]')).toHaveLength(0)
+    expect(container.querySelector('[data-graph-paper]')).not.toBeNull()
+  })
+})
+
+describe('Graph — published attributes', () => {
+  it('publishes each node kind as data-node-kind so CSS can colour it', () => {
+    const { container } = render(Graph, { state: state() })
+    const kinds = [...container.querySelectorAll('[data-graph-node]')].map((el) =>
+      el.getAttribute('data-node-kind')
+    )
+
+    expect(kinds.sort()).toEqual(['matview', 'table', 'view'])
+  })
+
+  it('publishes the group name for attribute overrides', () => {
+    const { container } = render(Graph, { state: state() })
+
+    expect(container.querySelector('[data-node-group="public"]')).not.toBeNull()
+  })
+
+  it('publishes the edge kind', () => {
+    const { container } = render(Graph, { state: state() })
+
+    expect(container.querySelector('[data-graph-edge]')?.getAttribute('data-edge-kind')).toBe(
+      'reference'
     )
   })
 
-  it('accepts a LayoutFn directly, not just a registered name', () => {
-    const empty = () => ({ clusters: [], cards: {}, edges: [], size: { w: 0, h: 0 } })
-    const { container } = render(Graph, props({ layout: empty }))
-
-    expect(container.querySelectorAll('[data-graph-node]')).toHaveLength(0)
-  })
-
-  it('marks the selected node and its related neighbours', () => {
-    const { container } = render(Graph, props({ value: 'public.users' }))
-
-    expect(container.querySelector('[data-node-state="selected"]')).not.toBeNull()
-    expect(container.querySelector('[data-node-state="related"]')).not.toBeNull()
-  })
-
-  it('dims a node that is neither selected nor related', () => {
-    const detached = [...NODES, { schema: 'public', name: 'solo', kind: 'table', columns: [] }]
-    const { container } = render(Graph, {
-      ...props({ value: 'public.users' }),
-      nodes: detached
-    })
-
-    expect(container.querySelector('[data-node-state="dim"]')).not.toBeNull()
-  })
-
-  it('highlights an edge touching the selection and dims the rest', () => {
-    const { container } = render(Graph, props({ value: 'public.users' }))
-
-    expect(container.querySelector('[data-edge-state="highlight"]')).not.toBeNull()
-  })
-
   it('marks a pk row with data-row-badge', () => {
-    const { container } = render(Graph, props({ density: 'full' }))
+    const { container } = render(Graph, { state: state({ density: 'full' }) })
 
     expect(container.querySelector('[data-row-badge="pk"]')).not.toBeNull()
   })
 
   it('marks a derived fk row with data-row-badge', () => {
-    const { container } = render(Graph, props({ density: 'full' }))
+    const { container } = render(Graph, { state: state({ density: 'full' }) })
 
     expect(container.querySelector('[data-row-badge="fk"]')).not.toBeNull()
   })
 
-  it('sets group custom properties from the preset rather than a hardcoded fill', () => {
-    const { container } = render(Graph, props())
+  it('renders a row element per visible row and none at density names', () => {
+    const { container: full } = render(Graph, { state: state({ density: 'full' }) })
+    const { container: names } = render(Graph, { state: state({ density: 'names' }) })
+
+    expect(full.querySelectorAll('[data-graph-row]').length).toBeGreaterThan(0)
+    expect(names.querySelectorAll('[data-graph-row]')).toHaveLength(0)
+  })
+
+  it('shows the hidden-row count when the density hides rows', () => {
+    const { container } = render(Graph, { state: state({ density: 'names' }) })
+
+    expect(container.querySelector('[data-graph-more]')?.textContent).toContain('1')
+  })
+})
+
+describe('Graph — state reflected into the DOM', () => {
+  it('reflects nodeState onto data-node-state', () => {
+    const s = state()
+    s.select('public.users')
+    const { container } = render(Graph, { state: s })
+
+    expect(container.querySelector('[data-node-state="selected"]')).not.toBeNull()
+    expect(container.querySelector('[data-node-state="related"]')).not.toBeNull()
+    expect(container.querySelector('[data-node-state="dim"]')).not.toBeNull()
+  })
+
+  it('reflects edgeState onto data-edge-state', () => {
+    const s = state()
+    s.select('public.users')
+    const { container } = render(Graph, { state: s })
+
+    expect(container.querySelector('[data-edge-state="highlight"]')).not.toBeNull()
+  })
+
+  it('spreads the state group style onto the cluster as custom properties', () => {
+    const { container } = render(Graph, { state: state() })
     const cluster = container.querySelector('[data-graph-cluster]') as HTMLElement
 
     expect(cluster.style.getPropertyValue('--group-fill')).not.toBe('')
   })
 
-  it('reuses the dotted canvas primitive instead of shipping its own', () => {
-    // [data-graph-paper] already exists in @rokkit/themes; .dg-dots is deleted.
-    const { container } = render(Graph, props())
+  it('uses the state edge path for the edge geometry', () => {
+    const s = state()
+    const { container } = render(Graph, { state: s })
 
-    expect(container.querySelector('[data-graph-paper]')).not.toBeNull()
+    expect(container.querySelector('[data-graph-edge] path')?.getAttribute('d')).toBe(
+      s.edgePath(s.routedEdges[0])
+    )
+  })
+})
+
+describe('Graph — intent routing', () => {
+  it('routes a node click through state.select', () => {
+    const s = state()
+    const { container } = render(Graph, { state: s })
+
+    ;(container.querySelector('[data-graph-node]') as HTMLElement).click()
+    expect(s.value).not.toBeNull()
   })
 
-  it('calls onselect with the node id when a node is activated', async () => {
-    let picked: string | null = null
-    const { container } = render(Graph, props({ onselect: (id: string) => (picked = id) }))
-    const node = container.querySelector('[data-graph-node]') as HTMLElement
+  it('routes a canvas click through state.clear', () => {
+    const s = state()
+    s.select('public.users')
+    const { container } = render(Graph, { state: s })
 
-    node.click()
-    expect(picked).not.toBeNull()
+    ;(container.querySelector('[data-graph-paper]') as HTMLElement).click()
+    expect(s.value).toBeNull()
+  })
+})
+
+describe('Graph — accessibility and construction', () => {
+  it('takes its accessible name from the state', () => {
+    // Cycle 1 of the radar work shipped sparklines with no role/accessible name
+    // and had to pay it back later. Not repeating that here.
+    const { container } = render(Graph, { state: state({ label: 'Schema diagram' }) })
+
+    expect(container.querySelector('[role="img"]')?.getAttribute('aria-label')).toBe(
+      'Schema diagram'
+    )
   })
 
-  it('gives the canvas an accessible role and name', () => {
-    // Cycle 1 of the radar work shipped sparklines with no role/accessible
-    // name and had to pay it back later. Not repeating that here.
-    const { container } = render(Graph, props({ label: 'Schema diagram' }))
-    const svg = container.querySelector('[role="img"]')
+  it('constructs its own state when given nodes/edges/fields instead', () => {
+    // The common case stays a one-liner; passing a state is for composition and tests.
+    const { container } = render(Graph, { nodes: NODES, edges: EDGES, fields: FIELDS })
 
-    expect(svg?.getAttribute('aria-label')).toBe('Schema diagram')
-  })
-
-  it('derives an accessible name from the data when no label is given', () => {
-    const { container } = render(Graph, props())
-
-    expect(container.querySelector('[role="img"]')?.getAttribute('aria-label')).toContain('2')
-  })
-
-  it('renders nothing but an empty canvas for an empty model', () => {
-    const { container } = render(Graph, { nodes: [], edges: [], fields: FIELDS })
-
-    expect(container.querySelectorAll('[data-graph-node]')).toHaveLength(0)
+    expect(container.querySelectorAll('[data-graph-node]')).toHaveLength(3)
   })
 })
 ```
@@ -2455,45 +3155,84 @@ Expected: FAIL — `Cannot find module '../src/Graph.svelte'`.
 
 - [ ] **Step 3: Implement**
 
-Create `packages/graph/src/Graph.svelte`, porting `DiagramView.svelte`'s render with these
-changes:
+Create `packages/graph/src/Graph.svelte`, porting `DiagramView.svelte`'s **render only**.
 
-1. **Props:** `nodes`, `edges`, `fields`, `layout` (a `LayoutName` **or** a `LayoutFn`, default
-   `'cluster'`), `density`, `arrange`, `edgeStyle`, `focus`, `value` (bindable — the selected
-   node id), `preset`, `label`, `onselect`. `$derived`: `normalizeGraph(nodes, edges, fields)`
-   then the resolved layout.
-2. **Every class becomes a data-attribute**, per the design's published vocabulary:
-   - `.dg-viewport`/`.dg-dots` → the root, with `data-graph-paper` (the existing themes
-     primitive) — **do not** port `.dg-dots`
-   - `.dg-world` → `data-graph-world`
-   - `.dg-cluster` → `data-graph-cluster`, `data-node-group`, `data-graph-group-index`
-   - `.dg-cluster-label` → `data-graph-cluster-label`
-   - `.dg-card` → `data-graph-node`, plus `data-node-kind` and `data-node-state`
-   - `.dg-card.sel|rel|dim` → `data-node-state="selected|related|dim"`
-   - `.dg-card.headonly` → `data-node-headonly`
-   - `.dg-card-head` → `data-graph-node-head`; `.dg-card-title` → `data-graph-node-title`
-   - `.dg-row` → `data-graph-row`; `.dg-row.iskey` → `data-graph-row-key`
-   - `.cname`/`.ctype` → `data-graph-row-name`/`data-graph-row-type`
-   - `.dg-more` → `data-graph-more`
-   - `.dg-keyicon`/`.dg-fkicon` → a single element with `data-row-badge="pk|fk|uq"`
-   - `g.dg-edge` → `data-graph-edge`, plus `data-edge-kind` and `data-edge-state`
-   - `.dot-from`/`.dot-to` → `data-graph-edge-dot="from|to"`
-   - `.tinted` → dropped; group colour is always on via custom properties
-3. **`--cl-h: {c.hue}` is replaced** by the custom properties from
-   `resolveGroupStyles(groups, mode, preset)`, spread onto the cluster and card elements.
-4. **Icons are CSS classes, not a component.** Replace `<Icon name="table" size={13} />` with a
-   `<span>` carrying an icon class resolved from `data-node-kind`; take the class map from an
-   `icons` prop merged over a default, matching the `defaultIcons` + per-instance `icons`
-   pattern in `@rokkit/core`.
-5. **Accessibility:** give the canvas `role="img"`, an `aria-label` from `label` falling back to
-   a data-derived string (node and edge counts), and `<title>`/`<desc>`.
-6. Keep `bind:clientWidth`/`bind:clientHeight`, the `content` extent calculation and the
-   `scale`/`tx`/`ty` fit maths as they are — including the comment explaining why it centres on
-   content bounds rather than `layout.size`.
-7. **No `onclick` on an element that also carries a `data-path`** — there is no navigator here,
-   so a direct `onclick` on the node element is correct, but do not add `data-path`.
+**Props.** `state?: GraphState`, plus the config props (`nodes`, `edges`, `fields`, `layout`,
+`density`, `arrange`, `edgeStyle`, `focus`, `value`, `preset`, `mode`, `label`, `onselect`,
+`icons`). Follow the `Spark.svelte` idiom exactly — read it first:
 
-Then fill in `packages/graph/src/index.ts`:
+```ts
+const config = $derived(() => ({
+  nodes,
+  edges,
+  fields,
+  layout,
+  density,
+  arrange,
+  edgeStyle,
+  focus,
+  value,
+  preset,
+  mode,
+  label,
+  onselect
+}))
+
+// untrack: the constructor's initial read must not become a dependency of the
+// creating scope — mirrors Spark's `untrack(() => new SparkState(config()))`.
+const own = untrack(() => new GraphState(config()))
+const graph = $derived(state ?? own)
+
+setContext('graph-state', graph)
+
+// Only sync the state WE own. A caller-supplied state is theirs to drive.
+$effect(() => {
+  if (!state) own.update(config())
+})
+```
+
+**The template reads, never computes.** Every value comes off `graph`:
+`graph.clusters`, `graph.cards`, `graph.routedEdges`, `graph.size`, `graph.label`,
+`graph.nodeState(id)`, `graph.edgeState(edge)`, `graph.edgePath(edge)`,
+`graph.groupStyle(group)`. Clicks call `graph.select(id)` and `graph.clear()`.
+
+**Attribute vocabulary** — every BEM class from the source becomes a data-attribute:
+
+| `DiagramView.svelte`               | `Graph.svelte`                                                      |
+| ---------------------------------- | ------------------------------------------------------------------- |
+| `.dg-viewport` + `.dg-dots`        | root, with `data-graph-paper` (**do not** port `.dg-dots`)          |
+| `.dg-world`                        | `data-graph-world`                                                  |
+| `.dg-cluster`                      | `data-graph-cluster` + `data-node-group` + `data-graph-group-index` |
+| `.dg-cluster-label`                | `data-graph-cluster-label`                                          |
+| `.dg-card`                         | `data-graph-node` + `data-node-kind` + `data-node-state`            |
+| `.dg-card.sel/.rel/.dim`           | `data-node-state="selected\|related\|dim"`                          |
+| `.dg-card.headonly`                | `data-node-headonly`                                                |
+| `.dg-card-head` / `.dg-card-title` | `data-graph-node-head` / `data-graph-node-title`                    |
+| `.dg-row` / `.dg-row.iskey`        | `data-graph-row` / `data-graph-row-key`                             |
+| `.cname` / `.ctype`                | `data-graph-row-name` / `data-graph-row-type`                       |
+| `.dg-more`                         | `data-graph-more`                                                   |
+| `.dg-keyicon` / `.dg-fkicon`       | one element with `data-row-badge="pk\|fk\|uq"`                      |
+| `g.dg-edge`                        | `data-graph-edge` + `data-edge-kind` + `data-edge-state`            |
+| `.dot-from` / `.dot-to`            | `data-graph-edge-dot="from\|to"`                                    |
+| `.tinted`                          | dropped — group colour is always on, via custom properties          |
+
+Also:
+
+1. **`--cl-h: {c.hue}` is gone.** Spread `graph.groupStyle(...)` onto the cluster and card
+   elements instead.
+2. **Icons are CSS classes, not a component.** Replace `<Icon name="table" size={13} />` with a
+   `<span>` carrying an icon class keyed off `data-node-kind`, from an `icons` prop merged over a
+   default — the `defaultIcons` + per-instance `icons` pattern already in `@rokkit/core`.
+3. **Accessibility:** `role="img"`, `aria-label={graph.label}`, plus `<title>`/`<desc>`.
+4. Keep `bind:clientWidth`/`bind:clientHeight` and the `scale`/`tx`/`ty` fit maths — these are
+   genuinely view concerns (they depend on the rendered viewport, which state cannot know).
+   Keep the source's comment explaining why it centres on content bounds rather than
+   `layout.size`.
+5. **No `data-path`** on the clickable node element — there is no navigator here, so a direct
+   `onclick` is correct, but `data-path` would invite the double-handling the navigator note in
+   `agents/memory.md` warns about.
+
+Then add to `packages/graph/src/index.ts`:
 
 ```ts
 export { default as Graph } from './Graph.svelte'
@@ -2509,7 +3248,7 @@ export type { GraphChannel, GraphPreset, GraphShades } from './preset.ts'
 - [ ] **Step 4: Run to verify it passes**
 
 Run: `bun run test:ci --project graph`
-Expected: PASS — 19 `Graph` tests.
+Expected: PASS — 20 `Graph` tests.
 
 - [ ] **Step 5: Check types and svelte**
 
@@ -2520,20 +3259,25 @@ Expected: 0 errors, 0 warnings.
 
 ```bash
 git add packages/graph/src/Graph.svelte packages/graph/src/index.ts packages/graph/spec/Graph.spec.ts
-git commit -m "feat(graph): Graph canvas — one renderer for any layout
+git commit -m "feat(graph): Graph canvas — presentation only
+
+Reads GraphState and renders it. No cardState/edgeClass helpers, no
+normalization, no layout call — the component computes nothing, so its spec
+asserts only DOM and attributes and the behaviour coverage stays in
+GraphState.spec.ts where it needs no renderer.
 
 Every BEM class from dbd's DiagramView becomes a data-attribute, so themes
-target structure instead of implementation. --cl-h (a raw oklch hue angle) is
-replaced by preset-resolved custom properties, and the dotted background reuses
+target structure rather than implementation. --cl-h (a raw oklch hue angle) is
+replaced by state-resolved custom properties, and the dotted background reuses
 the existing [data-graph-paper] primitive rather than porting .dg-dots.
 
-role=img + a data-derived aria-label from the start: the radar work shipped
-sparklines with no accessible name and had to pay it back a cycle later."
+The fit maths (clientWidth/scale/tx/ty) deliberately STAYS in the component —
+it depends on the rendered viewport, which state cannot know."
 ```
 
 ---
 
-## Task 13: Note rendering
+## Task 14: Note rendering
 
 **Files:**
 
@@ -2699,7 +3443,7 @@ inlined separately, which is what kept their formatting in sync by hand."
 
 ---
 
-## Task 14: `fromSchemaModel`
+## Task 15: `fromSchemaModel`
 
 Optional sugar for dbd. Proves the canonical model is reachable from dbd's JSON without dbd's
 types entering the package.
@@ -2849,7 +3593,14 @@ definition to keep in step by hand — which was issue #159's top-listed risk."
 
 ---
 
-## Task 15: `EntitiesView` on `@rokkit/ui` Table
+## Task 16: `EntitiesView` — presentation only, on `@rokkit/ui` Table
+
+Two changes from dbd's version, both structural:
+
+1. It reads `state.entities` — the derived rows from Task 12. **No `refCount` loop in the
+   component.** That derivation is already covered by `GraphState.spec.ts` with no DOM.
+2. It composes `@rokkit/ui`'s `Table` instead of hand-rolling a `<table>` with `onclick` on each
+   `<tr>` and no keyboard handler, which made dbd's rows mouse-only.
 
 **Files:**
 
@@ -2858,19 +3609,20 @@ definition to keep in step by hand — which was issue #159's top-listed risk."
 
 - [ ] **Step 1: Read the source**
 
-Read `~/Developer/dbd/site/src/lib/design/EntitiesView.svelte` (80 lines). Note that it hand-rolls
-a `<table>` with `onclick` on each `<tr>` and **no keyboard handler** — this port fixes that by
-composing `@rokkit/ui`'s `Table`.
+Read `~/Developer/dbd/site/src/lib/design/EntitiesView.svelte` (80 lines). Its `refCount`
+function and its `<table>` markup are both replaced, not ported — only the column set and the
+note formatting carry over.
 
 - [ ] **Step 2: Write the failing test**
 
-Create `packages/graph/spec/schema/EntitiesView.spec.ts`:
+Create `packages/graph/spec/schema/EntitiesView.spec.ts`. DOM only — the counts themselves are
+`GraphState`'s tests, not this file's:
 
 ```ts
 import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/svelte'
 import EntitiesView from '../../src/schema/EntitiesView.svelte'
-import { normalizeGraph } from '../../src/model/normalize.ts'
+import { GraphState } from '../../src/GraphState.svelte.ts'
 import { SCHEMA_FIELDS } from '../../src/schema/fromSchemaModel.ts'
 
 const TABLES = [
@@ -2891,51 +3643,53 @@ const REFS = [
   { from: { s: 'public', t: 'orders', c: 'user_id' }, to: { s: 'public', t: 'users', c: 'id' } }
 ]
 
-const model = () => normalizeGraph(TABLES, REFS, SCHEMA_FIELDS)
+const state = (tables = TABLES, refs = REFS) =>
+  new GraphState({ nodes: tables, edges: refs, fields: SCHEMA_FIELDS })
 
 describe('EntitiesView', () => {
-  it('renders a row per node', () => {
-    const { container } = render(EntitiesView, { model: model() })
+  it('renders a row per entity the state reports', () => {
+    const { container } = render(EntitiesView, { state: state() })
 
     expect(container.querySelectorAll('[data-graph-entity-row]')).toHaveLength(2)
   })
 
   it('shows each entity name', () => {
-    const { getByText } = render(EntitiesView, { model: model() })
+    const { getByText } = render(EntitiesView, { state: state() })
 
     expect(getByText('users')).toBeTruthy()
   })
 
-  it('shows the row count per entity', () => {
-    const { container } = render(EntitiesView, { model: model() })
-    const counts = [...container.querySelectorAll('[data-graph-entity-rows]')].map(
+  it('renders the row count the state derived', () => {
+    const s = state()
+    const { container } = render(EntitiesView, { state: s })
+    const shown = [...container.querySelectorAll('[data-graph-entity-rows]')].map(
       (el) => el.textContent
     )
 
-    expect(counts).toContain('2')
+    expect(shown).toEqual(s.entities.map((e) => String(e.rowCount)))
   })
 
-  it('counts references in both directions', () => {
-    const { container } = render(EntitiesView, { model: model() })
-    const refs = [...container.querySelectorAll('[data-graph-entity-refs]')].map(
+  it('renders the ref count the state derived', () => {
+    const s = state()
+    const { container } = render(EntitiesView, { state: s })
+    const shown = [...container.querySelectorAll('[data-graph-entity-refs]')].map(
       (el) => el.textContent
     )
 
-    // One ref touches both nodes, so each shows 1.
-    expect(refs).toEqual(['1', '1'])
+    expect(shown).toEqual(s.entities.map((e) => String(e.refCount)))
   })
 
-  it('shows an em dash when an entity has no references', () => {
-    const { container } = render(EntitiesView, { model: normalizeGraph(TABLES, [], SCHEMA_FIELDS) })
-    const refs = [...container.querySelectorAll('[data-graph-entity-refs]')].map(
+  it('shows an em dash rather than a zero when an entity has no references', () => {
+    const { container } = render(EntitiesView, { state: state(TABLES, []) })
+    const shown = [...container.querySelectorAll('[data-graph-entity-refs]')].map(
       (el) => el.textContent
     )
 
-    expect(refs).toEqual(['—', '—'])
+    expect(shown).toEqual(['—', '—'])
   })
 
   it('renders the note as formatted blocks', () => {
-    const { container } = render(EntitiesView, { model: model() })
+    const { container } = render(EntitiesView, { state: state() })
 
     expect(container.querySelector('[data-graph-note]')?.textContent).toContain(
       'People who sign in'
@@ -2943,7 +3697,7 @@ describe('EntitiesView', () => {
   })
 
   it('publishes the entity kind for theming', () => {
-    const { container } = render(EntitiesView, { model: model() })
+    const { container } = render(EntitiesView, { state: state() })
     const kinds = [...container.querySelectorAll('[data-graph-entity-row]')].map((el) =>
       el.getAttribute('data-node-kind')
     )
@@ -2951,31 +3705,36 @@ describe('EntitiesView', () => {
     expect(kinds.sort()).toEqual(['table', 'view'])
   })
 
-  it('calls onselect with the node id when a row is activated', () => {
-    let picked: string | null = null
-    const { container } = render(EntitiesView, {
-      model: model(),
-      onselect: (id: string) => (picked = id)
-    })
+  it('routes a row click through state.select', () => {
+    const s = state()
+    const { container } = render(EntitiesView, { state: s })
 
     ;(container.querySelector('[data-graph-entity-row]') as HTMLElement).click()
-    expect(picked).toBe('public.users')
+    expect(s.value).toBe('public.users')
   })
 
   it('reaches every row from the keyboard — the hand-rolled table could not', () => {
-    const { container } = render(EntitiesView, { model: model() })
+    const { container } = render(EntitiesView, { state: state() })
     const row = container.querySelector('[data-graph-entity-row]') as HTMLElement
 
-    // A clickable row must be focusable and activatable without a pointer.
     expect(row.tabIndex).toBeGreaterThanOrEqual(0)
   })
 
   it('renders an empty table for an empty model', () => {
-    const { container } = render(EntitiesView, {
-      model: normalizeGraph([], [], SCHEMA_FIELDS)
-    })
+    const { container } = render(EntitiesView, { state: state([], []) })
 
     expect(container.querySelectorAll('[data-graph-entity-row]')).toHaveLength(0)
+  })
+
+  it('resolves the state from context when no prop is given', () => {
+    // <Graph> publishes on 'graph-state', so a sibling view inside it needs no prop.
+    const { container } = render(EntitiesView, {
+      nodes: TABLES,
+      edges: REFS,
+      fields: SCHEMA_FIELDS
+    })
+
+    expect(container.querySelectorAll('[data-graph-entity-row]')).toHaveLength(2)
   })
 })
 ```
@@ -2987,23 +3746,25 @@ Expected: FAIL — `Cannot find module '../../src/schema/EntitiesView.svelte'`.
 
 - [ ] **Step 4: Implement**
 
-Create `packages/graph/src/schema/EntitiesView.svelte`. Requirements:
+Create `packages/graph/src/schema/EntitiesView.svelte`:
 
-1. Props: `model: GraphModel`, `onselect?: (id: string) => void`.
-2. Derive per-node `{ id, group, label, kind, rowCount, refCount, note }`. `refCount` counts
-   edges where the node is source **or** target.
-3. Compose `@rokkit/ui`'s `Table` with columns Entity / Rows / Refs / Comment. Read
-   `packages/ui/src/components/` for the current `Table` props before writing this — use its
-   per-column named snippets for the Entity cell (group prefix plus label) and the Comment cell
-   (`<NoteBlocks note={...} />`).
-4. Each row carries `data-graph-entity-row` and `data-node-kind`; the numeric cells carry
-   `data-graph-entity-rows` and `data-graph-entity-refs`.
-5. **Selection goes through `Table`'s own mechanism**, so keyboard activation comes for free
-   rather than being bolted onto a `<tr onclick>`.
-6. **Token translation.** dbd's `text-faint` on the group prefix → **`ink-mute`**, not
-   `ink-soft`: the row is interactive, and `ink-soft` cannot carry an interactive control's
-   text. Also `bg-bg` → `paper`, `border-line-soft` → `paper-edge`, `hover:bg-paper-2` →
-   `paper-mute`, `text-fg` → `ink`, `text-muted` → `ink-mute`, `text-accent-2` → `primary`.
+1. **Props:** `state?: GraphState`, plus `nodes`/`edges`/`fields` for standalone use. Resolve in
+   this order: the `state` prop, then `getContext('graph-state')`, then a state it constructs
+   itself — same three-way resolution `Graph.svelte` uses, so a view works inside a `<Graph>`,
+   beside one, or alone.
+2. **Compose `@rokkit/ui`'s `Table`** with columns Entity / Rows / Refs / Comment, fed
+   `state.entities` directly. **Read `packages/ui/src/components/` for the current `Table` props
+   before writing this** — use its per-column named snippets for the Entity cell (group prefix
+   plus label) and the Comment cell (`<NoteBlocks note={entity.note} />`).
+3. Each row carries `data-graph-entity-row` and `data-node-kind`; the numeric cells carry
+   `data-graph-entity-rows` and `data-graph-entity-refs`. The em dash for a zero ref count is a
+   **presentation** choice and belongs here — `state.entities` reports the number `0`.
+4. **Selection goes through `Table`'s own mechanism**, calling `state.select(id)`. Keyboard
+   activation then comes for free instead of being bolted onto a `<tr onclick>`.
+5. **Token translation.** dbd's `text-faint` on the group prefix → **`ink-mute`**, not
+   `ink-soft`: the row is interactive, and `ink-soft` cannot carry an interactive control's text.
+   Also `bg-bg` → `paper`, `border-line-soft` → `paper-edge`, `hover:bg-paper-2` → `paper-mute`,
+   `text-fg` → `ink`, `text-muted` → `ink-mute`, `text-accent-2` → `primary`.
 
 - [ ] **Step 5: Run to verify it passes**
 
@@ -3014,11 +3775,15 @@ Expected: PASS — 11 `EntitiesView` tests.
 
 ```bash
 git add packages/graph/src/schema/EntitiesView.svelte packages/graph/spec/schema/EntitiesView.spec.ts
-git commit -m "feat(graph): EntitiesView on @rokkit/ui Table
+git commit -m "feat(graph): EntitiesView — reads state.entities, renders a ui Table
 
-dbd's version hand-rolls a <table> with onclick on each <tr> and no keyboard
-handler, so the rows were mouse-only. Composing @rokkit/ui's Table fixes that
-rather than porting it, and the spec pins it.
+Two structural changes from dbd's version. The refCount loop is gone from the
+component — it is a GraphState derivation now, covered without a DOM. And
+composing @rokkit/ui's Table replaces a hand-rolled <table> with onclick on each
+<tr> and no keyboard handler, which made dbd's rows mouse-only.
+
+The em dash for a zero ref count stays HERE: state reports the number 0, and
+how to display it is presentation.
 
 Token fix carried in: the group prefix was text-faint (ink-soft) inside an
 interactive row, which the ink-soft rule forbids. It is ink-mute now."
@@ -3026,7 +3791,10 @@ interactive row, which the ink-soft rule forbids. It is ink-mute now."
 
 ---
 
-## Task 16: `EntityView`
+## Task 17: `EntityView` — presentation only
+
+Reads `state.entity` and `state.relationships` from Task 12. **No relationship partitioning in
+the component** — the in/out split is a `GraphState` derivation, already covered without a DOM.
 
 **Files:**
 
@@ -3037,7 +3805,8 @@ interactive row, which the ink-soft rule forbids. It is ink-mute now."
 
 Read `~/Developer/dbd/site/src/lib/design/EntityView.svelte` (211 lines) in full. It is the
 single-entity detail panel: header, note, column table with `pk`/`fk` badges, indexes, and the
-relationship list.
+relationship list. Its inbound/outbound partitioning loop does **not** port — that moved to
+`GraphState.#relationships`.
 
 - [ ] **Step 2: Write the failing test**
 
@@ -3047,7 +3816,7 @@ Create `packages/graph/spec/schema/EntityView.spec.ts`:
 import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/svelte'
 import EntityView from '../../src/schema/EntityView.svelte'
-import { normalizeGraph } from '../../src/model/normalize.ts'
+import { GraphState } from '../../src/GraphState.svelte.ts'
 import { SCHEMA_FIELDS } from '../../src/schema/fromSchemaModel.ts'
 
 const TABLES = [
@@ -3056,6 +3825,7 @@ const TABLES = [
     name: 'users',
     kind: 'table',
     noteMd: 'People who sign in',
+    indexes: [{ def: 'btree(email)', unique: true, name: 'users_email_key' }],
     columns: [
       { name: 'id', type: 'uuid', pk: true, note: 'Primary key' },
       { name: 'email', type: 'text', nn: true }
@@ -3076,19 +3846,23 @@ const REFS = [
   { from: { s: 'public', t: 'orders', c: 'user_id' }, to: { s: 'public', t: 'users', c: 'id' } }
 ]
 
-const model = () => normalizeGraph(TABLES, REFS, SCHEMA_FIELDS)
-const props = (extra = {}) => ({ model: model(), value: 'public.users', ...extra })
+/** Selection drives which entity is shown, so the fixture selects. */
+function state(value: string | null = 'public.users', refs = REFS) {
+  const s = new GraphState({ nodes: TABLES, edges: refs, fields: SCHEMA_FIELDS })
+  if (value) s.select(value)
+  return s
+}
 
 describe('EntityView', () => {
   it('shows the entity label and group', () => {
-    const { getByText } = render(EntityView, props())
+    const { getByText } = render(EntityView, { state: state() })
 
     expect(getByText('users')).toBeTruthy()
     expect(getByText(/public/)).toBeTruthy()
   })
 
   it('renders the entity note', () => {
-    const { container } = render(EntityView, props())
+    const { container } = render(EntityView, { state: state() })
 
     expect(container.querySelector('[data-graph-note]')?.textContent).toContain(
       'People who sign in'
@@ -3096,77 +3870,100 @@ describe('EntityView', () => {
   })
 
   it('lists every row of the entity', () => {
-    const { container } = render(EntityView, props())
+    const { container } = render(EntityView, { state: state() })
 
     expect(container.querySelectorAll('[data-graph-column]')).toHaveLength(2)
   })
 
   it('badges the primary key', () => {
-    const { container } = render(EntityView, props())
+    const { container } = render(EntityView, { state: state() })
 
     expect(container.querySelector('[data-row-badge="pk"]')).not.toBeNull()
   })
 
   it('badges a derived foreign key on the referencing entity', () => {
-    const { container } = render(EntityView, props({ value: 'public.orders' }))
+    const { container } = render(EntityView, { state: state('public.orders') })
 
     expect(container.querySelector('[data-row-badge="fk"]')).not.toBeNull()
   })
 
   it('renders a per-row note when present', () => {
-    const { getByText } = render(EntityView, props())
+    const { getByText } = render(EntityView, { state: state() })
 
     expect(getByText('Primary key')).toBeTruthy()
   })
 
-  it('lists inbound relationships', () => {
-    const { container } = render(EntityView, props())
-    const rels = [...container.querySelectorAll('[data-graph-relationship]')]
+  it('lists indexes from the node meta passthrough', () => {
+    const { container } = render(EntityView, { state: state() })
 
-    expect(rels).toHaveLength(1)
-    expect(rels[0].getAttribute('data-graph-relationship')).toBe('in')
+    expect(container.querySelectorAll('[data-graph-index]')).toHaveLength(1)
   })
 
-  it('lists outbound relationships', () => {
-    const { container } = render(EntityView, props({ value: 'public.orders' }))
+  it('renders one element per relationship the state reports', () => {
+    const s = state()
+    const { container } = render(EntityView, { state: s })
+
+    expect(container.querySelectorAll('[data-graph-relationship]')).toHaveLength(
+      s.relationships.length
+    )
+  })
+
+  it('reflects the relationship direction onto the attribute', () => {
+    const { container } = render(EntityView, { state: state() })
+
+    expect(
+      container.querySelector('[data-graph-relationship]')?.getAttribute('data-graph-relationship')
+    ).toBe('in')
+  })
+
+  it('reflects an outbound relationship from the other side', () => {
+    const { container } = render(EntityView, { state: state('public.orders') })
 
     expect(container.querySelector('[data-graph-relationship="out"]')).not.toBeNull()
   })
 
-  it('calls onselect when a related entity is activated', () => {
-    let picked: string | null = null
-    const { container } = render(EntityView, props({ onselect: (id: string) => (picked = id) }))
+  it('routes a relationship click through state.select', () => {
+    const s = state()
+    const { container } = render(EntityView, { state: s })
 
     ;(container.querySelector('[data-graph-relationship]') as HTMLElement).click()
-    expect(picked).toBe('public.orders')
+    expect(s.value).toBe('public.orders')
   })
 
   it('publishes the entity kind for theming', () => {
-    const { container } = render(EntityView, props())
+    const { container } = render(EntityView, { state: state() })
 
     expect(container.querySelector('[data-node-kind="table"]')).not.toBeNull()
   })
 
-  it('renders an empty state when the value names no known node', () => {
-    const { container } = render(EntityView, props({ value: 'public.ghost' }))
+  it('renders an empty state when nothing is selected', () => {
+    const { container } = render(EntityView, { state: state(null) })
 
     expect(container.querySelectorAll('[data-graph-column]')).toHaveLength(0)
   })
 
-  it('renders an empty state when value is null', () => {
-    const { container } = render(EntityView, props({ value: null }))
+  it('renders an empty state when the selection names no known node', () => {
+    const { container } = render(EntityView, { state: state('public.ghost') })
 
     expect(container.querySelectorAll('[data-graph-column]')).toHaveLength(0)
   })
 
   it('says so when an entity has no relationships', () => {
-    const { container } = render(EntityView, {
-      model: normalizeGraph(TABLES, [], SCHEMA_FIELDS),
-      value: 'public.users'
-    })
+    const { container } = render(EntityView, { state: state('public.users', []) })
 
     expect(container.querySelectorAll('[data-graph-relationship]')).toHaveLength(0)
     expect(container.querySelector('[data-graph-relationships-empty]')).not.toBeNull()
+  })
+
+  it('resolves the state from context when no prop is given', () => {
+    const { container } = render(EntityView, {
+      nodes: TABLES,
+      edges: REFS,
+      fields: SCHEMA_FIELDS,
+      value: 'public.users'
+    })
+
+    expect(container.querySelectorAll('[data-graph-column]')).toHaveLength(2)
   })
 })
 ```
@@ -3178,19 +3975,22 @@ Expected: FAIL — `Cannot find module '../../src/schema/EntityView.svelte'`.
 
 - [ ] **Step 4: Implement**
 
-Create `packages/graph/src/schema/EntityView.svelte`, porting the source with:
+Create `packages/graph/src/schema/EntityView.svelte`, porting the source's markup with:
 
-1. Props `model: GraphModel`, `value: string | null`, `onselect?: (id: string) => void`.
-   Everything reads off `model.byId` and `model.edges` — no `SchemaModel`.
-2. Attribute vocabulary: `data-graph-entity`, `data-node-kind`, `data-graph-column`,
+1. **Props:** `state?: GraphState`, plus `nodes`/`edges`/`fields`/`value` for standalone use. Same
+   three-way resolution as `EntitiesView` — prop, then `getContext('graph-state')`, then
+   construct.
+2. **Reads only.** `state.entity` for the header/note/rows/indexes, `state.relationships` for the
+   list. Clicking a relationship calls `state.select(rel.id)`. No loops that derive anything.
+3. **Attribute vocabulary:** `data-graph-entity`, `data-node-kind`, `data-graph-column`,
    `data-row-badge="pk|fk|uq"`, `data-graph-index`, `data-graph-relationship="in|out"`,
-   `data-graph-relationships-empty`. `col-badge.pk`/`col-badge.fk` become
+   `data-graph-relationships-empty`. The source's `col-badge.pk`/`col-badge.fk` classes become
    `data-row-badge` values.
-3. Notes render through `<NoteBlocks />` — do **not** re-inline the `segs` snippet.
-4. Token translation, same table as Task 15. In particular any `--faint` on text inside a
-   clickable relationship row becomes **`ink-mute`**.
-5. Indexes come from `node.meta.indexes` when present — `GraphNode.meta` is exactly the
+4. Notes render through `<NoteBlocks />` — do **not** re-inline the `segs` snippet.
+5. Indexes come from `state.entity.meta.indexes` when present — `GraphNode.meta` is exactly the
    passthrough for source fields the canonical model does not name.
+6. **Token translation, same table as Task 16.** In particular any `--faint` on text inside a
+   clickable relationship row becomes **`ink-mute`**.
 
 Create `packages/graph/src/schema/index.ts`:
 
@@ -3206,20 +4006,36 @@ export type { Block, Seg } from './notes.ts'
 - [ ] **Step 5: Run to verify it passes**
 
 Run: `bun run test:ci --project graph`
-Expected: PASS — 13 `EntityView` tests.
+Expected: PASS — 16 `EntityView` tests.
 
 - [ ] **Step 6: Full gate**
 
 Run: `bun run lint && bun run check:types && bun run check:svelte && bun run test:ci`
 Expected: lint 0 errors 0 warnings; types 0; svelte 0; all tests pass.
 
-- [ ] **Step 7: Commit**
+- [ ] **Step 7: Verify the layer rule actually held**
+
+The point of Task 12 was that components stop computing. Check it rather than assume it:
+
+```bash
+rg -n "filter\(|reduce\(|\.map\(.*=>.*\{|normalizeGraph|edgePath\(" packages/graph/src/*.svelte packages/graph/src/schema/*.svelte
+```
+
+Expected: **no hits** for `normalizeGraph`, and no `filter`/`reduce` deriving a value. `.map()`
+directly inside an `{#each}` over a state getter is fine; a `.map()` that computes a new value is
+a derivation that belongs in `GraphState`. If you find one, move it and add a `GraphState` test.
+
+- [ ] **Step 8: Commit**
 
 ```bash
 git add packages/graph/src/schema packages/graph/spec/schema/EntityView.spec.ts
-git commit -m "feat(graph): EntityView detail panel + ./schema barrel
+git commit -m "feat(graph): EntityView — reads state.entity + state.relationships
 
-Reads entirely off GraphModel — no SchemaModel anywhere. Indexes come through
+The inbound/outbound partitioning loop does not port; it is a GraphState
+derivation now, so the in/out split is tested without a renderer and this
+component only reflects direction onto an attribute.
+
+Reads entirely off GraphState — no SchemaModel anywhere. Indexes come through
 GraphNode.meta, which is what that passthrough is for.
 
 Notes render via the shared NoteBlocks rather than a second inlined copy of the
@@ -3228,7 +4044,7 @@ segs snippet, so the two views cannot drift apart again."
 
 ---
 
-## Task 17: Theme CSS
+## Task 18: Theme CSS
 
 `base/*.css` is structure only and carries **no colour** — that is the headless-base rule.
 
@@ -3374,9 +4190,21 @@ arrives styled."
 
 ---
 
-## Task 18: Learn demo
+## Task 19: Learn demo
 
 The examples **are** the verification surface. Every control in the design's table must exist.
+
+**The demo is where all three layers are visible at once**, which makes it the readable reference
+for how to use the package:
+
+| Layer     | File                                           | Owns                                                                                                     |
+| --------- | ---------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Load      | `datasets.ts`                                  | the two datasets — hand-crafted to exercise every kind, group wrap and an empty case                     |
+| State     | `store.svelte.ts` + `GraphState`               | `store` holds the **UI control** choices; `GraphState` turns them plus a dataset into render-ready shape |
+| Component | `GraphExplorer.svelte`, `GraphControls.svelte` | render + route intent                                                                                    |
+
+Keep those two states distinct. `store.svelte.ts` is "which dataset, which view, which density" —
+demo chrome. `GraphState` is the package's own store and must not be reimplemented in the demo.
 
 **Files:**
 
@@ -3436,9 +4264,12 @@ Use `@rokkit/ui` controls (`Select`, `Toggle`), not bespoke ones.
 
 - [ ] **Step 5: Write `GraphExplorer.svelte`**
 
-Renders `<Graph>`, `<EntityView>` or `<EntitiesView>` per the `view` state, driven by the store,
-with a `data-graph-explorer` marker element for the smoke gate. Selection is two-way:
-clicking a node in the diagram sets `selected`, which `EntityView` reads.
+Construct **one** `GraphState` from the store's choices and feed it to whichever view the `view`
+state selects — `<Graph>`, `<EntityView>` or `<EntitiesView>`. One state shared across all three
+is what makes selection two-way for free: clicking a node in the diagram sets `state.value`, and
+`EntityView` already reads it.
+
+Include a `data-graph-explorer` marker element for the smoke gate.
 
 - [ ] **Step 6: Write `meta.ts`**
 
@@ -3491,7 +4322,7 @@ Moved the `graph`/`graphs` keywords off the chart demo, which had claimed them."
 
 ---
 
-## Task 19: E2E and contrast gates
+## Task 20: E2E and contrast gates
 
 **Files:**
 
@@ -3619,7 +4450,7 @@ renders through field mapping alone."
 
 ---
 
-## Task 20: Docs, journal, and slice close-out
+## Task 21: Docs, journal, and slice close-out
 
 **Files:**
 
@@ -3711,7 +4542,7 @@ is validated by two real implementations rather than one plus a promise."
 
 ---
 
-## Task 21: dbd consumes the package
+## Task 22: dbd consumes the package
 
 **This task is in a different repository** (`~/Developer/dbd`) and must be a separate PR. It is
 the acceptance proof for slice 1 — do not call the slice done without it.
@@ -3795,17 +4626,18 @@ gh issue comment 159 --body "Slice 1 shipped — see rokkit docs/design/23-graph
 
 ## Verification summary
 
-| Gate         | Command                                | Expected                                                 |
-| ------------ | -------------------------------------- | -------------------------------------------------------- |
-| Unit         | `bun run test:ci`                      | All pass, incl. every ported numeric assertion unchanged |
-| Lint         | `bun run lint`                         | 0 errors, **0 warnings**                                 |
-| Types        | `bun run check:types`                  | 0 errors                                                 |
-| Declarations | `bun run check:build`                  | 0 errors                                                 |
-| Svelte       | `bun run check:svelte`                 | 0 errors, 0 warnings                                     |
-| Apps build   | `bun run build:apps`                   | Success                                                  |
-| Coverage     | `bun run coverage`                     | Meets the `packages/graph` thresholds                    |
-| E2E          | `cd apps/learn && npx playwright test` | All pass, accept-lists unchanged                         |
-| Acceptance   | dbd's site on the package              | Renders equivalently, two intended contrast fixes        |
+| Gate         | Command                                | Expected                                                                                  |
+| ------------ | -------------------------------------- | ----------------------------------------------------------------------------------------- |
+| Unit         | `bun run test:ci`                      | All pass, incl. every ported numeric assertion unchanged                                  |
+| Layer rule   | Task 17 Step 7 grep                    | No component computes — no `normalizeGraph`, no deriving `filter`/`reduce` in a `.svelte` |
+| Lint         | `bun run lint`                         | 0 errors, **0 warnings**                                                                  |
+| Types        | `bun run check:types`                  | 0 errors                                                                                  |
+| Declarations | `bun run check:build`                  | 0 errors                                                                                  |
+| Svelte       | `bun run check:svelte`                 | 0 errors, 0 warnings                                                                      |
+| Apps build   | `bun run build:apps`                   | Success                                                                                   |
+| Coverage     | `bun run coverage`                     | Meets the `packages/graph` thresholds                                                     |
+| E2E          | `cd apps/learn && npx playwright test` | All pass, accept-lists unchanged                                                          |
+| Acceptance   | dbd's site on the package              | Renders equivalently, two intended contrast fixes                                         |
 
 **Two rules for this slice specifically:**
 
